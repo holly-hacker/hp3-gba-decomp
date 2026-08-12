@@ -196,6 +196,24 @@ references elsewhere in the ROM (literal 4-byte search, whole ROM):
   them as confirmed IWRAM call targets — flagging explicitly per instruction
   to be confident, not just plausible, before asserting a match.
 
+## Dynamic verification attempt — inconclusive, dropped for now
+
+Tried to confirm the `kramWorker`/mixer candidates by attaching gdb to
+mGBA's GDB stub (`--gdb`, port 2345) with the ROM running under a real BIOS
+dump. Confirmed mGBA halts the CPU on `--gdb` until a client attaches
+(observed BIOS boot sound only start after issuing `continue`), so the
+mechanism works in principle. However, breakpoint+continue sequencing was
+unreliable across many attempts — the stub would sometimes report a stop
+snapshot on attach while simultaneously treating the target as "still
+running" for subsequent commands, and reconnects would intermittently hang
+with no response at all. Root cause not identified (possibly an mGBA
+GDB-stub quirk/bug, possibly a client-side gdb version mismatch — not
+determined). Dropped rather than continuing to iterate blindly; all
+candidate identifications above remain at their stated confidence level
+(STRUCTURAL MATCH / UNCONFIRMED), none upgraded to PROVEN by this attempt.
+Worth revisiting later, possibly with an interactive (non-batch) gdb session
+or a different debugging frontend.
+
 ## Next steps
 
 - [ ] Do NOT expect the public Krawall repo to resolve function identity by
