@@ -21,3 +21,7 @@ label 0x080000C0 _080000C0
 
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
+
+0x0800027C 0x080002A4 asm/rt/divsi3.s           divsi3
+0x080002A4 0x080002E0 asm/rt/divmodsi4.s        divmodsi4
+0x080002E0 0x080005AC asm/rt/udivsi3.s          udivsi3

@@ -59,6 +59,14 @@ the classic **ARM ADS/RVCT `__rt_sdiv`-family calling convention**. GCC's
 the remainder. This is a second, structurally independent signal (distinct
 from the branch-tree divide algorithm) and it agrees with the first.
 
+All three routines (`divsi3`, `divmodsi4`, `udivsi3`) have confirmed, fully
+traced boundaries and are extracted as real source at `asm/rt/`, shared
+between the US and JP builds (byte-identical in both). `udivsi3` in
+particular is a complete, classic binary long-division algorithm: a
+binary-search dispatch (the branch-tree bit-length lookup) into one of 32
+straight-line `cmp`/`adc`/`subhs` bit-position handlers that fall through to
+a shared return.
+
 ## Working hypothesis
 
 **This ROM was compiled with ARM ADS/RVCT (`armcc`), not GCC/agbcc.** Two
