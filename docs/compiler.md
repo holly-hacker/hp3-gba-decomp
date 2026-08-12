@@ -17,7 +17,7 @@ ROM entry point (US, `baserom.us.gba`, sha1 `5be308501f0cfe0c30c60ef1fbf886707cd
   boilerplate seen across many licensed GBA titles regardless of compiler
   (likely derived from Nintendo SDK sample code), so it is **not** diagnostic
   on its own.
-- `0x0800026C`–`0x080002E0`: signed division wrapper — computes abs(r0),
+- `0x0800027C`–`0x080002E0`: signed division wrapper — computes abs(r0),
   abs(r1), xors the sign bits, calls the unsigned divide at `0x080002E0`,
   then negates the result if signs differed. This sign-handling wrapper
   pattern is common to many runtimes and also not diagnostic alone.
@@ -37,13 +37,13 @@ This binary-search-tree division shape matches **ARM's own compiler runtime
 library** (ADS / RVCT `armcc`, i.e. `_uidiv`/`__rt_udiv`-family routines),
 **not** GCC's `__udivsi3`.
 
-## Finding: paired div/mod wrappers at 0x0800026C and 0x080002A4
+## Finding: paired div/mod wrappers at 0x0800027C and 0x080002A4
 
 Immediately before the unsigned divide, there are two back-to-back signed
 wrapper functions, both computing `abs(r0)`, `abs(r1)`, and a sign-xor, then
-calling the shared unsigned divide at `0x080002E0`:
+calling the shared unsigned divide at `0x080002E0`.
 
-- `0x0800026C`: plain signed divide. Negates r0 (quotient) per the sign flag,
+- `0x0800027C`: plain signed divide. Negates r0 (quotient) per the sign flag,
   returns quotient only in r0.
 - `0x080002A4`: signed **divide-and-modulo**. Before calling, it
   `stmdb sp!, {r2}` — i.e. the caller passes a pointer to a remainder cell

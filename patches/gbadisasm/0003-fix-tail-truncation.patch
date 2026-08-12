@@ -1,0 +1,19 @@
+diff --git a/disasm.c b/disasm.c
+index 1ae99a2..898bd4e 100755
+--- a/disasm.c
++++ b/disasm.c
+@@ -915,7 +915,14 @@ static void print_disassembly(void)
+ 
+         i++;
+         if (i >= gLabelsCount)
++        {
++            // no more labels; gap-fill out to the true end of the ROM
++            // instead of silently dropping the trailing bytes
++            uint32_t romEnd = ROM_LOAD_ADDR + gInputFileBufferSize;
++            if (addr < romEnd)
++                print_gap(addr, romEnd);
+             break;
++        }
+         nextAddr = gLabels[i].addr;
+         assert(addr <= nextAddr);
+ 

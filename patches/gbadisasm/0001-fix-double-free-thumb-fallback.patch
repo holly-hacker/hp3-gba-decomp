@@ -1,0 +1,14 @@
+diff --git a/disasm.c b/disasm.c
+index e21755a..374e6c4 100755
+--- a/disasm.c
++++ b/disasm.c
+@@ -363,7 +363,8 @@ static void analyze(void)
+                             if (insn[i].size == 2) continue;
+                             tmp_cnt = cs_disasm(sCapstone, gInputFileBuffer + addr - ROM_LOAD_ADDR, 2, addr, 0, &tmp);
+                             assert(tmp_cnt == 1);
+-                            free(insn[i].detail);
++                            // insn[i].detail is owned by Capstone's cs_free(insn, count)
++                            // below; freeing it here double-frees it once that runs
+                             insn[i] = *tmp;
+                             free(tmp);
+                             goto no_inc;

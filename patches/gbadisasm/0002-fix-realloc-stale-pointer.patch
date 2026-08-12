@@ -1,0 +1,19 @@
+diff --git a/disasm.c b/disasm.c
+index 374e6c4..1ae99a2 100755
+--- a/disasm.c
++++ b/disasm.c
+@@ -310,7 +310,13 @@ static void renew_or_add_new_func_label(int type, uint32_t word)
+         else
+         {
+             // implicitly set to BRANCH_TYPE_BL
+-            gLabels[disasm_add_label(word & ~1, type, NULL)].isFunc = true;
++            // (disasm_add_label may realloc gLabels; must not index it in
++            // the same expression as the call, or a stale base pointer can
++            // get used once the call returns)
++            {
++                int lbl = disasm_add_label(word & ~1, type, NULL);
++                gLabels[lbl].isFunc = true;
++            }
+         }
+     }
+ }

@@ -11,37 +11,31 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        luvdis = pkgs.python3Packages.buildPythonApplication rec {
-          pname = "Luvdis";
-          version = "0.8.0";
-          format = "pyproject";
-          src = pkgs.python3Packages.fetchPypi {
-            inherit pname version;
-            sha256 = "5df5e7754d4231ce2daf3d2462a1bf8cdc9159537b428abfc524dcc86e0d743d";
-          };
-          # Luvdis 0.8.0 uses pkg_resources.resource_stream/resource_string to
-          # load its bundled data files, but pkg_resources was removed from
-          # recent setuptools. Patch both usages to importlib.resources.
-          postPatch = ''
-            substituteInPlace luvdis/rom.py \
-              --replace-fail "import pkg_resources" "import importlib.resources" \
-              --replace-fail "DB_F = pkg_resources.resource_stream('luvdis', 'gba-db.pickle')" \
-                              "DB_F = importlib.resources.files('luvdis').joinpath('gba-db.pickle').open('rb')"
-            substituteInPlace luvdis/analyze.py \
-              --replace-fail "import pkg_resources" "import importlib.resources" \
-              --replace-fail "MACROS = pkg_resources.resource_string('luvdis', 'functions.inc').decode('utf-8')" \
-                              "MACROS = importlib.resources.files('luvdis').joinpath('functions.inc').read_text()"
-          '';
-          nativeBuildInputs = [ pkgs.python3Packages.setuptools ];
-          propagatedBuildInputs = with pkgs.python3Packages; [
-            click
-            click-default-group
-            tqdm
-          ];
-          doCheck = false;
-        };
-
         pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ]);
+
+        # pret's matching GBA disassembler. Pinned to the last upstream
+        # commit (inactive since 2020-01). Two heap bugs in disasm.c crash
+        # it on real ROMs under modern glibc; patched here.
+        gbadisasm = pkgs.stdenv.mkDerivation {
+          pname = "gbadisasm";
+          version = "unstable-2020-01-07";
+          src = pkgs.fetchFromGitHub {
+            owner = "camthesaxman";
+            repo = "gbadisasm";
+            rev = "e35982bd105fd8b9bb497d955900f8375cdc9e60";
+            hash = "sha256-XcYvUqDyytySjav2fSMV4t3GU1pjDBlYQzhEPlvsjJc=";
+          };
+          nativeBuildInputs = [ pkgs.gnutar ];
+          patches = [
+            ./patches/gbadisasm/0001-fix-double-free-thumb-fallback.patch
+            ./patches/gbadisasm/0002-fix-realloc-stale-pointer.patch
+            ./patches/gbadisasm/0003-fix-tail-truncation.patch
+          ];
+          installPhase = ''
+            mkdir -p $out/bin
+            cp gbadisasm $out/bin/
+          '';
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -50,7 +44,7 @@
             pythonEnv
             pkgs.just
             pkgs.mgba
-            luvdis
+            gbadisasm
           ];
         };
       });

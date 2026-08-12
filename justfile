@@ -14,7 +14,12 @@ setup:
 # it from scratch every time.
 disasm ver="us":
     mkdir -p build/{{ver}}
-    luvdis disasm baserom.{{ver}}.gba -c functions.{{ver}}.cfg -o build/{{ver}}/rom.s
+    { \
+        echo ".syntax unified"; \
+        echo '.include "macros.inc"'; \
+        echo ".text"; \
+        gbadisasm -c functions.{{ver}}.cfg baserom.{{ver}}.gba; \
+    } > build/{{ver}}/rom.s
 
 # Assemble and link the disassembly into a ROM image.
 build ver="us": (disasm ver)
