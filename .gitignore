@@ -1,0 +1,6 @@
+baserom*.gba
+build/
+*.o
+*.elf
+result
+result-*
