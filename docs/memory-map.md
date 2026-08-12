@@ -1,5 +1,19 @@
 # Memory map / binary layout notes
 
+## Confidence key
+
+Findings below are marked:
+
+- **PROVEN** — directly verifiable fact (string bytes, instruction bytes,
+  cross-referenced addresses). Re-running the same disassembly/search will
+  reproduce it.
+- **STRUCTURAL MATCH** — behavior/shape observed in disassembly matches a
+  documented Krawall API function or convention closely, but is not
+  confirmed against exact source, so the specific name (e.g. "kramWorker")
+  is a working label, not a proven identity.
+- **UNCONFIRMED** — plausible but with no independent corroboration found
+  yet; flagged explicitly so it doesn't get mistaken for something stronger.
+
 ## Krawall audio engine — confirmed, located
 
 CLAUDE.md already assumed Krawall (LGPL, https://github.com/sebknzl/krawall)
@@ -83,6 +97,105 @@ the per-channel setters take `(handle, value)` — this matches the
 evidence that these are `kramSet*`/`kramStop`/`kramActive`-family calls.
 Which three specifically is still unconfirmed.
 
+## Candidate kramWorker() and inner mixer routine
+
+Chased the third pointer reference (`0x00FB1E10`, a table of ROM/EWRAM/IWRAM
+pointers immediately preceding an ARM-mode function) and found a strongly
+plausible pair of core engine functions, both ARM-mode, right after the
+Krawall version-string data blob:
+
+### `0x08FB1E18` — candidate `kramWorker()` [STRUCTURAL MATCH]
+
+APCS frame-pointer prologue (`mov ip, sp` / `push {r4,r5,r6,fp,ip,lr,pc}`),
+matching epilogue (`ldmdb fp, {r4,r5,r6,fp,sp,lr}` / `bx lr`). Behavior:
+
+1. Calls a Thumb-mode function at `0x08046E0C` (via `mov lr,pc; bx r2`
+   interworking call) passing two stack out-params (`[fp-0x1c]`,
+   `[fp-0x20]`) — plausibly a "get current write pointer" callback,
+   returning a requested/needed sample count in r0/r4.
+2. Compares that count against a running value at EWRAM `0x0200163E`
+   (halfword) — call it `avail`.
+3. **If `avail > requested`** (enough contiguous space): one call into
+   `0x08FB19F8` with the full requested count, decrement `avail` by that
+   amount, return 1 (success/did-work).
+4. **If `avail <= requested`** (not enough contiguous space — buffer
+   wraparound case): checks a function pointer at EWRAM `0x02001638`
+   (null-checked, then actually *called* later in this same path — so
+   `0x02001638` holds a callback, not a flag); fills the first chunk via
+   `0x08FB19F8`, advances the two output pointers by the consumed amount,
+   decrements the remaining requested count, invokes the `0x02001638`
+   callback again (presumably a "wrapped to buffer start" notification),
+   reloads a buffer-size constant from EWRAM `0x0200163C` into the `avail`
+   counter (`0x0200163E`) — i.e. resets available-space after wrapping —
+   and loops back to fill the remainder.
+5. Return value is `0` (nothing to do, taken when the very first callback
+   returns a 0 request count) or `1` (did work) — a plausible
+   `int kramWorker()`-style status return.
+
+This is a genuine ring-buffer wraparound refill loop, which is more
+specific and more internally consistent than a generic "buffer feed" shape
+— strengthens the case this is `kramWorker()` or its direct equivalent.
+**Caveat**: which register/global holds "available space" vs "requested
+amount" is inferred from control flow, not verified by running the code
+(no emulator/debugger session was used) — the mechanics (branch structure,
+the second callback invocation, the constant reload) are read directly off
+real instructions, but the semantic labels attached to each value are best
+judged as reasonable inference, not fact, until checked dynamically.
+
+**EWRAM engine-state globals found so far**: `0x02001638` (callback
+function pointer, invoked on buffer wrap), `0x0200163C` (u16, buffer-size
+constant), `0x0200163E` (u16, available-space counter). Worth grouping into
+a `KramEngineState`-style struct once more fields are found.
+
+### `0x08FB19F8` — candidate inner mixer / channel-scan routine [PROVEN mechanics / STRUCTURAL MATCH interpretation]
+
+The loop mechanics themselves (32 iterations, `+0x2C` stride, status-byte
+check at `+2`) are read directly off real instructions — reproducible by
+disassembling this address. The *interpretation* ("this is a channel array
+scan for active channels") is inference from that shape, not confirmed
+against source.
+
+Also APCS-framed, saves the full `r4-r11` register set (heavier frame than
+`kramWorker`, consistent with being the actual hot per-sample/per-channel
+path). Behavior: iterates what looks like a **32-channel array**
+(`mov sb, #0x20` = 32, decrementing loop counter) with **`0x2C` (44)-byte
+stride per element**, checking a status byte at **offset `+2`** of each
+channel struct to find active channels, then dispatches into per-channel
+mixing via a further `bx` call. 32 channels matches typical GBA audio-engine
+scale (Krawall's public API talks in terms of a fixed channel pool); the
+44-byte stride and offset-2 status byte are concrete candidate fields for a
+future `KramChannel` struct.
+
+Not yet confirmed whether this or a callee is IWRAM-resident at runtime (may
+be DMA'd/copied into IWRAM at init rather than linked there directly — worth
+checking the EWRAM/IWRAM copy step in the init flow once we look at that).
+
+### Cross-referencing the pointer table at 0xFB1DF4–0xFB1E14 [mixed confidence]
+
+The 7-word table immediately preceding `kramWorker`'s candidate address
+(`0x03000AFC`, `0x03001144`, `0x020008B4`, `0x03000B38`, `0x03000B30`,
+`0x03000B34`, `0x08FA9568`, `0x03000AB4`) was checked for independent
+references elsewhere in the ROM (literal 4-byte search, whole ROM):
+
+- **`0x020008B4`** (EWRAM) — **PROVEN heavily used**: 20 independent
+  references, clustered in `0x46E00`–`0x47200`, i.e. inside the same
+  channel-dispatch code region documented above (`0x08047994`/`0x08047A40`).
+  Strong evidence `0x46000`–`0x48000` and `0xFB19F0`–`0xFB1EE0` are one
+  cohesive Krawall driver code block, and that this address is a real,
+  important shared global (likely channel-array base or context pointer).
+- **`0x03000AB4`** (IWRAM) — **PROVEN independently referenced**: appears
+  once in the table and once more at `0x0473B0`, also inside that same code
+  cluster. Confirms this is a real, meaningfully-used address, not table
+  noise.
+- **`0x03000AFC`, `0x03001144`, `0x03000B38`, `0x03000B30`, `0x03000B34`** —
+  **UNCONFIRMED**: each appears *only* inside this one table, nowhere else
+  in the ROM as a literal. This doesn't disprove the "IWRAM code-relocation
+  table" theory (code could load these dynamically from the table at
+  runtime rather than hardcoding each one separately as an immediate), but
+  it means these five have no independent corroboration yet. Do not treat
+  them as confirmed IWRAM call targets — flagging explicitly per instruction
+  to be confident, not just plausible, before asserting a match.
+
 ## Next steps
 
 - [ ] Do NOT expect the public Krawall repo to resolve function identity by
@@ -90,10 +203,11 @@ Which three specifically is still unconfirmed.
       will require either behavioral/structural inference from disassembly,
       or finding an actual 2003-era Krawall source snapshot if one exists
       (unlikely to be publicly available).
-- [ ] Chase the third pointer reference at `0x00FB1E10`.
-- [ ] Identify the actual mixer/IRQ-driven playback routine (likely IWRAM,
-      per Krawall's documented performance requirement) — not yet located;
-      the code found so far looks like higher-level channel/SFX dispatch,
-      not the low-level sample mixer itself.
+- [ ] Trace the Thumb "query free space" callback at `0x08046E0C`.
+- [ ] Confirm whether `0x08FB19F8` (or a callee) gets copied to IWRAM at
+      startup, per Krawall's documented perf requirement for the mixer.
+- [ ] Map more fields of the candidate `KramEngineState` (EWRAM
+      `0x02001638`-`0x0200163E`) and `KramChannel` (44-byte stride, status
+      byte at `+2`) structs.
 - [ ] Once functions are named (via inference, not source diff), begin
       populating `symbols.us.txt`.
