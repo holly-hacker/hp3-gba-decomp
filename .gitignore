@@ -1,4 +1,6 @@
 baserom*.gba
+*.sav
+gba_bios.*
 build/
 *.o
 *.elf

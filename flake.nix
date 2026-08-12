@@ -14,8 +14,9 @@
       {
         devShells.default = pkgs.mkShell {
           buildInputs = [
-            pkgs.pkgsCross.armEmbedded.buildPackages.binutils
+            pkgs.gcc-arm-embedded
             pkgs.python3
+            pkgs.python3Packages.pip
             pkgs.just
             pkgs.mgba
           ];
