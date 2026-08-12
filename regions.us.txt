@@ -1,0 +1,23 @@
+# Extracted-region manifest for the US ROM.
+#
+# label <address> <name>
+#   Declares a symbol at an address that isn't extracted yet (still raw
+#   .incbin) but needs to be referenced from code that IS extracted.
+#
+# <start> <end> <asm-file> <name>
+#   A curated, hand-verified extracted region. Boundaries must be fully
+#   confirmed (all reachable code walked to genuine termination) before
+#   a function earns a row here -- see docs/ for how each was confirmed.
+#
+# Everything not covered by a region stays as raw .incbin from
+# baserom.us.gba, filled in by tools/gen_rom_s.py. The file it generates
+# (build/us/rom.s) is never committed, same as everything else in build/.
+#
+# A row whose asm-file is also listed in regions.jp.txt at the same
+# address must be byte-identical in both ROMs at that address (verified,
+# not assumed -- see the file itself for how).
+
+label 0x080000C0 _080000C0
+
+0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
+0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail

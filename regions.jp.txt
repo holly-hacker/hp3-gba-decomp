@@ -1,0 +1,7 @@
+# Extracted-region manifest for the JP ROM. See regions.us.txt for format
+# and the sharing convention.
+
+label 0x080000C0 _080000C0
+
+0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
+0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail
