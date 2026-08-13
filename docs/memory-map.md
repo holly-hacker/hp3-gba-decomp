@@ -170,6 +170,85 @@ Not yet confirmed whether this or a callee is IWRAM-resident at runtime (may
 be DMA'd/copied into IWRAM at init rather than linked there directly — worth
 checking the EWRAM/IWRAM copy step in the init flow once we look at that).
 
+### Full disassembly of `kramWorker_MixChannels`, and the 44-byte channel struct [PROVEN mechanics, STRUCTURAL MATCH interpretation]
+
+`gbadisasm` only disassembles part of this function -- it treats the
+mid-function `bx r2` at `0x08FB1A24` (an indirect call, not a return) as a
+function boundary and dumps everything after it as raw `.byte`s. Read the
+whole thing with `objdump -b binary -m arm` over
+`0x08FB19F8`-`0x08FB1E18` instead (outside the manifest/build, pure
+discovery -- see the `disasm ver="us"` comment for why `gbadisasm`'s output
+is reference-only in the first place). This is a large, real software
+mixer, not a stub. Confident findings:
+
+- **Outer skeleton, argument-literal so essentially PROVEN**: at entry,
+  calls IWRAM address `0x03000AFC` as a function, args `(0x03001144,
+  count)` -- a "clear/reset the mix accumulator" pass. Then scans the
+  32-channel array (`0x2C`/44-byte stride, base EWRAM `0x020008B4`, status
+  byte at `+2`, `1` = active -- as already noted above) accumulating each
+  active channel. After the scan, calls IWRAM address `0x03000B38` as a
+  function, args `(0x03001144, savedArg0, savedArg1, count)` -- a
+  "finalize/convert the accumulator to output" pass. `0x03001144` is never
+  called, only ever passed as a pointer -- almost certainly the mix
+  accumulator buffer address, read/written by both bookend calls. This
+  upgrades all five of the previously-UNCONFIRMED IWRAM addresses from the
+  pointer-table section above to PROVEN: they're real, independently-called
+  code/data, not table-only noise.
+- **`0x03000B30`/`0x03000B34`** are plain IWRAM *data* words (not
+  functions): read, incremented by per-channel byte fields `+0x1E`/`+0x1F`
+  (candidate: a running L/R output-level or position accumulator), and
+  written back every active-channel iteration.
+- **The `0x08FA9568` table is word-indexed, not struct-indexed as first
+  assumed**: `kramWorker_MixChannels` computes an index from
+  `(u8)[ch+0x20] + (u8)[ch+0x21]` and reads `table[index]` with a plain
+  `lsl #2` (4-byte stride), then `bx`es through the result. Both real index
+  values observed so far land on slot 7 within an 8-word run -- i.e. this
+  *is* consistent with the original "5 addresses + 2 reserved + 1
+  `kramMixChannel` function pointer, per 32-byte bank" reading (see
+  "Effect/mixer-descriptor table" above), just now confirmed to be
+  reached via `[ch+0x20]` (bank base) + `[ch+0x21]` (slot, `7` = "the
+  mixer function") rather than a fixed offset. Revises the earlier
+  "buffer addresses per entry are otherwise unconfirmed" note -- the
+  mechanism generating the index is now understood, even though what
+  picks a *different* bank (there are only 2 known banks, both landing on
+  the same function) is not.
+- **Confirms `0x2C`-stride channel struct fields** beyond `+0x00`
+  (mode: `0` selects a simpler "no resampling" copy path at `0x08FB1CBC`,
+  nonzero the full resampling path) and `+0x02` (status):
+  - `+0x03`: loop-mode byte (`0`/`2` branches seen; forward vs. some kind
+    of wrap/ping-pong handling)
+  - `+0x08`, `+0x0C`: a position/limit `u32` pair, compared each step for
+    loop-boundary wraparound
+  - `+0x10`: a further length/start-offset `u32`
+  - `+0x14`: signed `u32`, fixed-point (16.16) pitch/step -- `asr #16`
+    taken as the per-step integer position delta
+  - `+0x1C`: `u16`, another step-sized value (`lsr #2`'d before use)
+  - `+0x1E`, `+0x1F`: bytes added into the `0x03000B30`/`0x03000B34`
+    accumulators (see above)
+  - `+0x20`, `+0x21`: bytes summed to index the `0x08FA9568` table (see
+    above)
+  These are a **different struct** from the effect-handler one documented
+  in "`KramChannel` field offsets" above (that one's fields run to
+  `+0x5D`, this one is only 44/`0x2C` bytes total) -- confirms the earlier
+  "two different structs, not one" conclusion from a second, independent
+  direction.
+- **Uses the GBA BIOS division SWI (`swi 0x06`, `Div`) directly**, twice
+  (mirrored in both the forward and the `0x08FB1C50` alternate branch), for
+  position/step math -- notable since it's a different division path than
+  the compiled `__rt_sdiv`-family routines documented in `docs/compiler.md`;
+  the hot mixer path apparently prefers the BIOS call over the linked-in
+  compiler runtime.
+
+Net effect on the earlier open question ("worth checking the EWRAM/IWRAM
+copy step"): there's now a third confirmed IWRAM code address
+(`0x03000AFC`, `0x03000B38`, alongside the earlier `0x03000AB4`) whose
+bytes have to come from *somewhere* in ROM given "No bulk startup copy
+into IWRAM/EWRAM" above already ruled out a global copy -- finding that
+local Krawall-specific copy (or confirming these are just linked directly
+to run from IWRAM, e.g. via a linker script section this project hasn't
+found the ROM-side evidence for yet) is the concrete next step on this
+thread.
+
 ### Cross-referencing the pointer table at 0xFB1DF4–0xFB1E14 [mixed confidence]
 
 The 7-word table immediately preceding `kramWorker`'s candidate address
@@ -188,13 +267,10 @@ references elsewhere in the ROM (literal 4-byte search, whole ROM):
   cluster. Confirms this is a real, meaningfully-used address, not table
   noise.
 - **`0x03000AFC`, `0x03001144`, `0x03000B38`, `0x03000B30`, `0x03000B34`** —
-  **UNCONFIRMED**: each appears *only* inside this one table, nowhere else
-  in the ROM as a literal. This doesn't disprove the "IWRAM code-relocation
-  table" theory (code could load these dynamically from the table at
-  runtime rather than hardcoding each one separately as an immediate), but
-  it means these five have no independent corroboration yet. Do not treat
-  them as confirmed IWRAM call targets — flagging explicitly per instruction
-  to be confident, not just plausible, before asserting a match.
+  originally flagged UNCONFIRMED (no reference outside this one table). Now
+  **PROVEN**, superseding that: `kramWorker_MixChannels` itself (see the
+  full writeup below) reads this same literal pool a second time and uses
+  all five directly — no longer table-only.
 
 ## No bulk startup copy into IWRAM/EWRAM [PROVEN]
 
@@ -427,6 +503,75 @@ once per tick by the effect handlers) that presumably holds a pointer into
 the compact one. Revising the earlier "could be the same struct viewed
 from a different base" note above -- it isn't.
 
+## Searching for where IWRAM code gets installed — dead end, documented so it isn't re-walked
+
+Follow-up to the confirmed-but-unexplained IWRAM code addresses above
+(`0x03000AB4`, `0x03000AFC`, `0x03000B38`, and now several more — see
+below). "No bulk startup copy into IWRAM/EWRAM" already ruled out a
+global scatter-load; this was a search for a *local* Krawall-specific
+copy. Static search only, no dynamic verification attempted this round.
+
+**Expanded the known IWRAM code footprint.** Re-reading how the effect
+handlers' "recompute mix output" call actually works revealed a
+misreading from the earlier "Effect/mixer-descriptor table" section: the
+literal addresses I'd read as a "table selector" argument to
+`sub_0804A2C8` (`0x03000434`, `0x030004B4`, `0x030003E8`, `0x03000320`,
+`0x03000090`, `0x03000BF0`, etc.) aren't data at all. `sub_0804A2C8` and
+its neighbors (`sub_0804A2C0`..`sub_0804A2E4`, all defined right next to
+each other at `0x0804A2C0`-`0x0804A2E4`) are **register-indirect call
+trampolines** -- `sub_0804A2C8` is literally just `bx r2`, `sub_0804A2C4`
+is `bx r1`, `sub_0804A2CC` is `bx r3`, etc. This is the standard
+ARMv4T-Thumb interworking veneer pattern (Thumb has no `blx reg`, so
+calling a function pointer held in a register other than what a direct
+`bl` can reach needs a tiny glue stub). So each of those literals is
+itself a real IWRAM function pointer, called through the trampoline --
+meaning the actual IWRAM code footprint is considerably larger than the
+5 addresses first flagged: at least `0x03000090`, `0x03000320`,
+`0x030003E8`, `0x03000434`, `0x030004B4`, `0x03000578`, `0x03000AB4`,
+`0x03000AFC`, `0x03000B38`, `0x03000BF0` are called as code (`0x03000B30`/
+`0x03000B34` remain confirmed as plain data words, not code -- see the
+`kramWorker_MixChannels` writeup above).
+
+**Searched exhaustively for the copy mechanism, found none in the
+Krawall-relevant code**:
+- No `CpuSet`/`CpuFastSet` BIOS calls (`swi 0x0B`/`0x0C`) anywhere in the
+  Krawall driver's code cluster (`0x08046000`-`0x08048000`) or near
+  `kramWorker`/`kramWorker_MixChannels`.
+- Fully read `kramWorker` itself (`0x08FB1E18`, the top-level per-callback
+  entry point) -- no copy there either, just a buffer-space query (calls
+  `0x08046E0C`, resolving the earlier-flagged "trace the query free space
+  callback" next step -- it's exactly that, confirmed by this read) and a
+  chunked loop calling `kramWorker_MixChannels`.
+- Widened the literal-address scan to the whole ROM for anything writing
+  `0x03000000`-`0x03002000`: found only individual small state-cell writes
+  (bytes/halfwords) scattered across dozens of unrelated functions, never
+  a bulk block copy.
+- Found a real DMA3-register setup sequence (`sub_08049F0C`, a generic
+  `DMA3Transfer(src, dest, count)` helper sitting right next to the effect
+  tables) and chased it as the most promising lead yet -- **false alarm**.
+  Its actual callers pass `0x0D000000` as the transfer address, which is
+  the GBA's EEPROM save-data access range, not IWRAM; one caller
+  (`sub_08049F8C`) does a write-then-read pair through that address, the
+  standard GBA EEPROM read protocol. This is unrelated save-data I/O code
+  that happens to sit near the Krawall tables in link order, not an IWRAM
+  loader. Confirmed dead end, not worth re-checking.
+
+**Conclusion**: the install mechanism for these ~10 IWRAM functions is
+still unknown. Either it's a copy this search genuinely missed (candidates
+not yet checked: the ~30 subsystem-init calls from `0x08029690` --
+tracing which one is audio-specific was never done; or a copy that uses
+plain `ldr`/`str` in a loop rather than any BIOS/DMA primitive, which a
+literal-address search wouldn't catch if the loop computes the destination
+arithmetically instead of loading it as one immediate), or these functions
+are linked to run from IWRAM directly and something outside pure static
+ROM analysis (an ELF section with separate LMA/VMA, or a linker-generated
+region this project hasn't looked for yet) is responsible. The previous
+"Dynamic verification attempt" below was inconclusive for a different
+question (confirming `kramWorker` candidates) but never retried
+specifically for this one (e.g. a hardware breakpoint on a write to
+`0x03000090` would answer it directly) -- likely the fastest path forward
+if this thread gets picked up again.
+
 ## Dynamic verification attempt — inconclusive, dropped for now
 
 Tried to confirm the `kramWorker`/mixer candidates by attaching gdb to
@@ -452,7 +597,10 @@ or a different debugging frontend.
       will require either behavioral/structural inference from disassembly,
       or finding an actual 2003-era Krawall source snapshot if one exists
       (unlikely to be publicly available).
-- [ ] Trace the Thumb "query free space" callback at `0x08046E0C`.
+- [x] Trace the Thumb "query free space" callback at `0x08046E0C` -- it's
+      called directly from `kramWorker` (see "Searching for where IWRAM
+      code gets installed" below); not yet disassembled itself, just its
+      call site and role confirmed.
 - [x] Confirmed there's no global startup copy into IWRAM (see "No bulk
       startup copy" above) — dropped as a dead end. `0x03000AB4` is still
       un-disassembled; if it's installed at all rather than statically
@@ -478,9 +626,30 @@ or a different debugging frontend.
       volume-combine formula, candidate: baked-in panning or instrument
       default volume) and what `+0x18`/`+0x08` mean (compared against small
       constants like `0x14`/`0x17`/`0x31` in several handlers).
-- [ ] Find/confirm the 44-byte-stride compact mixer-channel struct's own
-      fields (separate from the one above) by walking `kramMixChannel`
-      (`0x080471FC`) and `kramWorker_MixChannels` more closely.
+- [x] Found the 44-byte-stride compact mixer-channel struct's own fields by
+      fully disassembling `kramWorker_MixChannels` with `objdump` (gbadisasm
+      stops early on its mid-function indirect `bx`) -- see "Full
+      disassembly of `kramWorker_MixChannels`" above. Also upgraded all 5
+      previously-UNCONFIRMED IWRAM pointer-table addresses to PROVEN, and
+      corrected the `0x08FA9568` table's indexing mechanism.
+- [x] Searched for where the ~10 confirmed IWRAM code addresses
+      (`0x03000090`, `0x03000320`, `0x030003E8`, `0x03000434`, `0x030004B4`,
+      `0x03000578`, `0x03000AB4`, `0x03000AFC`, `0x03000B38`, `0x03000BF0`)
+      get installed -- dead end for now, see "Searching for where IWRAM
+      code gets installed" above. Ruled out `CpuSet`/`CpuFastSet` and a
+      DMA-based copy (the one DMA setup found nearby turned out to be
+      unrelated EEPROM save I/O). Fully read `kramWorker` itself, which
+      also resolved the standalone "trace the query free space callback at
+      `0x08046E0C`" item below -- it's exactly that, called from
+      `kramWorker`. Next things to try if this gets picked up again: trace
+      which of the ~30 subsystem-init calls from `0x08029690` is
+      audio-specific, or go dynamic (hardware breakpoint on a write to
+      `0x03000090`).
+- [ ] Disassemble the ~10 IWRAM functions themselves (accumulator
+      clear/finalize passes, the `kramMixChannel`-family functions reached
+      through the `0x08FA9568` table, etc.) once their source bytes are
+      located (can't `gbadisasm`/`objdump` a RAM address against the ROM
+      file directly).
 - [ ] Once functions are named (via inference, not source diff), begin
       populating `symbols.us.txt`. The 41 effect-handler names above are the
       first real candidates for this.
