@@ -14,6 +14,12 @@ RLUnComp-compressed 32-byte (one 4bpp tile) sprite graphic, caught via an
 mGBA watchpoint on OBJ tile VRAM (0x06010000) during actual gameplay --
 see docs/formats/graphics.md's "A real, confirmed sprite tile" section.
 
+Only rl_uncomp (type 3) has been exercised against a real, confirmed
+resource so far. lz77_uncomp and huff_uncomp (types 1/2) are straight
+reimplementations of the public GBA BIOS spec, not speculative, but no
+resource found in this ROM has needed them yet -- treat them as
+unverified-in-practice until one does.
+
 Usage: decode_bios.py <ver> <hex addr>
   <hex addr> is the ROM address of the resource's 4-byte BIOS header
   (byte0 high nibble = type 1/2/3, low 3 bytes = decompressed size).
