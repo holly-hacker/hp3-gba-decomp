@@ -254,12 +254,10 @@ targets):
    Spot-checked 3 of the 41 handler addresses by direct disassembly
    (`0x08048400`, `0x08048578`, `0x08049424`) — all are real Thumb function
    starts (`push {..,lr}` / `pop {..}` / `bx`) that read/write byte and
-   halfword fields of what's presumably a `KramChannel` struct, at offsets
-   `+0x08`, `+0x18`, `+0x19`, `+0x24`, `+0x3C`, `+0x48` (new candidate field
-   offsets, not yet cross-checked against the `+0x2C`-stride/`+2`-status-byte
-   picture from `kramWorker_MixChannels` above — could be the same struct
-   viewed from a different base, needs reconciling before trusting either
-   layout). All 41 are now identified by name -- see the next section.
+   halfword fields of what's presumably a `KramChannel` struct. All 41 are
+   now identified by name, and the struct fields fleshed out much further
+   -- see "Naming the 41 effect handlers" and "`KramChannel` field offsets"
+   below.
 
    All 41 addresses (`&~1`'d) are now seeded in `functions.us.cfg` as
    `thumb_func`, plus `kramMixChannel` above as `arm_func`; `just disasm us`
@@ -357,25 +355,77 @@ Effect-column table (`0x08FA95B4`-`0x08FA980C`, ref. `effects[1..50]`,
 | 49 | `eff_volslide_vibrato_xm` | (reuses 7 + 20) | `0x8048578` | `0x80497E0` |
 | 50 | `eff_volslide_porta_xm` | (reuses 7 + 19) | `0x8048578` | `0x8048A48` |
 
-Volume-column table (`0x08FA980C`-`0x08FA985C`, ref. `effectsVC[1..10]`) --
-**not yet seeded in `functions.<ver>.cfg`**, addresses given for reference:
+Volume-column table (`0x08FA980C`-`0x08FA985C`, ref. `effectsVC[1..10]`):
 
-| # | name (source) | tick addr |
-|---|---|---|
-| 1 | `eff_VC_volslide_down` | `0x8049BAC` |
-| 2 | `eff_VC_volslide_up` | `0x8049BFC` |
-| 3 | `eff_VC_fvolslide_down` | `0x8049C50` |
-| 4 | `eff_VC_fvolslide_up` | `0x8049C9C` |
-| 5 | `eff_VC_vibrato_setspeed` | `0x8049CE8` |
-| 6 | `eff_VC_vibrato` | `0x80490CC` |
-| 7 | `eff_VC_pan` | `0x8049D04` |
-| 8 | `eff_VC_panslide_left` | `0x8049D60` |
-| 9 | `eff_VC_panslide_right` | `0x8049DB8` |
-| 10 | `eff_VC_portanote` | `0x8049E14` |
+| # | name (source) | `functions.us.cfg` name | tick addr |
+|---|---|---|---|
+| 1 | `eff_VC_volslide_down` | `kramEff_VC_VolSlideDown` | `0x8049BAC` |
+| 2 | `eff_VC_volslide_up` | `kramEff_VC_VolSlideUp` | `0x8049BFC` |
+| 3 | `eff_VC_fvolslide_down` | `kramEff_VC_VolSlideDownFine` | `0x8049C50` |
+| 4 | `eff_VC_fvolslide_up` | `kramEff_VC_VolSlideUpFine` | `0x8049C9C` |
+| 5 | `eff_VC_vibrato_setspeed` | `kramEff_VC_VibratoSetSpeed` | `0x8049CE8` |
+| 6 | `eff_VC_vibrato` | `kramEff_VC_Vibrato` | `0x80490CC` |
+| 7 | `eff_VC_pan` | `kramEff_VC_Pan` | `0x8049D04` |
+| 8 | `eff_VC_panslide_left` | `kramEff_VC_PanSlideLeft` | `0x8049D60` |
+| 9 | `eff_VC_panslide_right` | `kramEff_VC_PanSlideRight` | `0x8049DB8` |
+| 10 | `eff_VC_portanote` | `kramEff_VC_PortaNote` | `0x8049E14` |
 
-All 41 effect-column functions renamed in `functions.us.cfg` accordingly;
-`just check-all` still passes (renaming a `functions.<ver>.cfg` seed can't
-change the produced bytes, but re-checked anyway per hard rule 4).
+All 51 functions (41 effect-column + 10 volume-column) are now named in
+`functions.us.cfg`; `just check-all` still passes (renaming/seeding a
+`functions.<ver>.cfg` entry can't change the produced bytes, but re-checked
+anyway per hard rule 4).
+
+`kramEff_VC_PortaNote`'s tick path (`0x08049E32`) is a direct `bl
+kramEff_PortaNote` into the effect-column function above -- a real,
+gbadisasm-verified symbolic cross-reference between the two tables, not
+just matching shape. About as strong a confirmation of both names as is
+possible without the original source.
+
+## `KramChannel` field offsets, from reading all 51 handlers [STRUCTURAL MATCH]
+
+Cross-referencing field accesses across all 51 named functions (effect +
+volume-column) gives a much fuller picture than any single function did.
+The recurring "recompute mix output" sequence --
+`([ch+4] * [ch+5] * (s8)[ch+0x4D]) >> 12` passed to `sub_0804A2C8` -- alone
+appears in over a dozen of them, which is what makes the following offsets
+confident despite no single function proving all of them at once:
+
+| offset | size | field | evidence |
+|---|---|---|---|
+| `+0x00` | 4 | sample/voice pointer | arg0 to `sub_0804A2C8` in every volume-affecting handler |
+| `+0x04` | 1 | Volume (0-`0x40`) | set directly by `kramEff_Volume`, slid+clamped-at-`0x40` by all `VolSlide*`/`VC_VolSlide*` |
+| `+0x05` | 1 | Channel Volume (0-`0x40`) | same shape, but set by `kramEff_ChannelVolume`/`ChannelVolSlide` instead -- confirms these are two distinct, both-multiplied-in volume factors, not the same field read two ways |
+| `+0x06` | 1 (s8) | Panning (~-0x40..0x3F) | set/slid by `kramEff_VC_Pan`/`PanSlideLeft`/`PanSlideRight`, combined with a `+0x57` "pan envelope" offset before clamping |
+| `+0x0C` | 2 | Period (live pitch) | read by vibrato as the base to offset from; written directly by the portamento family (`PortaUp*`/`PortaDown*`) |
+| `+0x0E` | 2 | Period, post-vibrato | written only by `kramEff_VC_Vibrato`'s tick path (`period + waveTable[phase]*depth>>7`), consumed downstream (presumably by `kramMixChannel` or a callee) |
+| `+0x18` | 1 | unclear | compared against small constants (`0x14`, `0x17`, `0x31`) in a handful of handlers; not yet pinned to a specific meaning |
+| `+0x19` | 1 | current effect-column param (`xy`) | read generically as input by nearly all 41 effect-column handlers; several memoize a nonzero value into a handler-specific "remembered param" byte elsewhere in the struct (e.g. `+0x3C`, `+0x3E`, `+0x40`, `+0x44`) |
+| `+0x1A` | 2 | tone-porta target delta | set by `kramEff_VC_PortaNote`'s init path from the low nibble of its param |
+| `+0x20` | 1 | vibrato phase/position | incremented by `+0x21` (speed) each tick, `&0x3F`-wrapped, used ×2 as a halfword index into the `+0x24` waveform table |
+| `+0x21` | 1 | vibrato speed | set by `kramEff_VC_VibratoSetSpeed` |
+| `+0x22` | 1 | vibrato depth (×4 scaled) | set by `kramEff_VC_Vibrato`'s init path from the low nibble of its `+0x5D` param |
+| `+0x24` | 4 | vibrato waveform table pointer | read by `kramEff_VC_Vibrato`, presumably set by `kramEff_WaveVibrato` (not yet checked) |
+| `+0x48` | 1 | dirty/pending flag | read-and-cleared by several handlers when `+0x18 == 0x14`; likely tells the mixer a per-channel recompute is needed |
+| `+0x4D` | 1 (s8) | volume-combine multiplier | third factor in the `([ch+4]*[ch+5]*[ch+0x4D])>>12` formula everywhere; not yet independently pinned to what sets it (candidate: baked-in panning contribution or instrument default volume) |
+| `+0x57` | 1 | pan envelope offset | added to `+0x06` before the final pan clamp in `VC_Pan`/`PanSlideLeft`/`PanSlideRight` |
+| `+0x5D` | 1 | current volume-column param | the volume-column equivalent of `+0x19` -- confirms the effect-column and volume-column params are stored as two separate bytes in the same struct, not shared |
+
+**Global (not per-channel) fields, EWRAM `0x02001644`+**: `+0x1D`/`+0x1E`
+hold Global Volume's value/raw-slide-param, written by
+`kramEff_GlobalVolSlide` -- this is the player-wide state struct
+(`docs/memory-map.md`'s earlier candidate `KramEngineState`), not
+`KramChannel`.
+
+**Resolving the earlier "two different offset pictures" question**: this
+struct's fields run out to at least `+0x5D`, well past the 44-byte
+(`0x2C`) stride `kramWorker_MixChannels` uses to scan its channel array
+with a status byte at `+2`. Those two pictures don't reconcile into one
+struct -- they're almost certainly **two different structs**: a compact,
+hot-path mixer-channel struct (44 bytes, scanned every mix callback) and a
+separate, larger per-track player/effect-state struct (this one, walked
+once per tick by the effect handlers) that presumably holds a pointer into
+the compact one. Revising the earlier "could be the same struct viewed
+from a different base" note above -- it isn't.
 
 ## Dynamic verification attempt — inconclusive, dropped for now
 
@@ -408,19 +458,29 @@ or a different debugging frontend.
       un-disassembled; if it's installed at all rather than statically
       linked there, it must happen inside Krawall's own init path, not
       crt0. Worth revisiting only if a driver-local copy loop turns up.
-- [ ] Map more fields of the candidate `KramEngineState` (EWRAM
-      `0x02001638`-`0x0200163E`) and reconcile the two different
-      `KramChannel` offset pictures now on file: 44-byte stride/status byte
-      at `+2` (from `kramWorker_MixChannels`) vs. `+0x08`/`+0x18`/`+0x19`/
-      `+0x24`/`+0x3C`/`+0x48` (from the effect-handler spot checks) — same
-      struct from a different base, or two different structs.
 - [x] Walked the effect-handler table at `0x08FA9568` to its confirmed end
       (`0x08FA985C`, right where the volume-column table `effectsVC[]`
-      finishes) and named all 41 effect-column functions by matching the
-      table's `inbet`/`flags` sequence and dual-function reuse pattern
-      against `player.c`'s `effects[]`/`effectsVC[]` -- see "Naming the 41
-      effect handlers" above. The 10 volume-column (`effectsVC[]`) handler
-      addresses are identified but not yet seeded in `functions.<ver>.cfg`.
+      finishes) and named all 41 effect-column + 10 volume-column functions
+      by matching the tables' `inbet`/`flags` sequences and dual-function
+      reuse pattern against `player.c`'s `effects[]`/`effectsVC[]` -- see
+      "Naming the 41 effect handlers" above, all seeded in
+      `functions.us.cfg`.
+- [x] Mapped many more `KramChannel` fields by cross-referencing all 51
+      named handlers (see "`KramChannel` field offsets" above) and resolved
+      the "two offset pictures" question: they're two different structs,
+      not one -- `kramWorker_MixChannels`' 44-byte-stride array is a
+      compact hot-path mixer-channel struct, separate from this larger
+      per-track effect-state struct (fields run to at least `+0x5D`).
+- [ ] Map more fields of the candidate `KramEngineState` (EWRAM
+      `0x02001638`-`0x0200163E`); confirmed `+0x1D`/`+0x1E` there are
+      Global Volume's value/raw-slide-param (via `kramEff_GlobalVolSlide`).
+- [ ] Pin down what sets `KramChannel+0x4D` (the third factor in the
+      volume-combine formula, candidate: baked-in panning or instrument
+      default volume) and what `+0x18`/`+0x08` mean (compared against small
+      constants like `0x14`/`0x17`/`0x31` in several handlers).
+- [ ] Find/confirm the 44-byte-stride compact mixer-channel struct's own
+      fields (separate from the one above) by walking `kramMixChannel`
+      (`0x080471FC`) and `kramWorker_MixChannels` more closely.
 - [ ] Once functions are named (via inference, not source diff), begin
       populating `symbols.us.txt`. The 41 effect-handler names above are the
       first real candidates for this.
