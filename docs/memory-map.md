@@ -196,6 +196,77 @@ references elsewhere in the ROM (literal 4-byte search, whole ROM):
   them as confirmed IWRAM call targets — flagging explicitly per instruction
   to be confident, not just plausible, before asserting a match.
 
+## No bulk startup copy into IWRAM/EWRAM [PROVEN]
+
+Traced execution from `EntryPoint` (`0x08000000`) to answer the open
+question above about an EWRAM/IWRAM copy step: there isn't one. `EntryPoint`
+sets up the IRQ/System stacks and the user IRQ vector (`0x03007FFC`), then
+`sub_080000EC` does a single `bx` straight into `0x08029690`, which itself
+just calls ~30 subsystem-`Init`-style functions back to back — no
+scatter-load table walk (the classic ADS/RVCT `__main`/`Region$$Table`
+pattern) appears anywhere between reset and there. So whatever put code at
+`0x03000AB4` did it locally (Krawall's own init), not as part of a global
+runtime-init step; there's nothing broader to find here.
+
+## `kramMixChannel` — the per-channel resample/mix routine [STRUCTURAL MATCH]
+
+`0x080471FC` (ARM, now seeded in `functions.us.cfg` as `kramMixChannel`) is
+a 4x-unrolled fixed-point resampling loop, matching a classic software
+audio channel mixer: a fractional sample-position accumulator at struct
+offsets `+0x28`/`+0x2A`, per-channel volume bytes at `+0x1E`/`+0x1F`, and a
+`mul`+`asr #3` volume-scale-and-accumulate into the output buffer (`ldrh
+[lr]` / `strh [lr]`). Its remainder/tail case (`< 4` samples left) falls
+through to `ldr ip, =0x03000AB4; bx ip` — this is the concrete call site
+for the previously-flagged IWRAM address, and it's a real, hot, per-channel
+path (matches `kramWorker_MixChannels`' 32-channel scan interpretation).
+The IWRAM target itself is still not disassembled/named.
+
+## Effect/mixer-descriptor table at `0x08FA9568` [STRUCTURAL MATCH]
+
+Immediately after the Krawall `$Id` string block sits a two-part table,
+read directly (not via gbadisasm, which can't reach function-pointer-only
+targets):
+
+1. **Two 32-byte "mixer descriptor" entries** (`0x08FA9568`–`0x08FA95A7`):
+   each holds 5 IWRAM buffer addresses, 2 reserved/zero words, and a
+   function pointer — both entries point to `kramMixChannel` above. Two
+   entries lines up with the GBA's two hardware DirectSound FIFOs (A/B), or
+   a ping-pong buffer pair; the 5 buffer addresses per entry are otherwise
+   unconfirmed.
+2. **A Krawall XM effect-command dispatch table**, starting at `0x08FA95B4`:
+   repeating 12-byte entries of `{tick_fn, init_fn, flags}`. At least 40
+   populated entries confirmed by direct reads (some `tick`-only, some with
+   both `tick` and `init` set, `flags` observed as 0 or 1), consistent with
+   one entry per XM effect letter (`0`–`9`, `A`–`Z`, plus volume-column
+   effects). The table's exact full extent (there's more populated data
+   past `0x08FA97F0`) hasn't been walked to a confirmed terminator yet.
+
+   All table entries store the function pointer with the Thumb bit set
+   (odd address, BX-style) — the real function start is `addr & ~1`. (Caught
+   this by hand before it corrupted `functions.us.cfg`: gbadisasm silently
+   errors with "function at 0x08048401 is not aligned" rather than
+   crashing, so it's an easy mistake to catch, but seeding the raw odd
+   address first triggered an unrelated-looking `Assertion 'tmp_cnt == 1'
+   failed` abort — the alignment check apparently isn't hit until *after*
+   some duplicate-registration bookkeeping, so the wrong crash message
+   shows up first when other seeds nearby are also present.)
+
+   Spot-checked 3 of the 41 handler addresses by direct disassembly
+   (`0x08048400`, `0x08048578`, `0x08049424`) — all are real Thumb function
+   starts (`push {..,lr}` / `pop {..}` / `bx`) that read/write byte and
+   halfword fields of what's presumably a `KramChannel` struct, at offsets
+   `+0x08`, `+0x18`, `+0x19`, `+0x24`, `+0x3C`, `+0x48` (new candidate field
+   offsets, not yet cross-checked against the `+0x2C`-stride/`+2`-status-byte
+   picture from `kramWorker_MixChannels` above — could be the same struct
+   viewed from a different base, needs reconciling before trusting either
+   layout). None of the 41 have been identified as a *specific* named XM
+   effect (Arpeggio, Vibrato, etc.) yet — that needs per-function behavioral
+   analysis against a settled `KramChannel` layout.
+
+   All 41 addresses (`&~1`'d) are now seeded in `functions.us.cfg` as
+   `thumb_func`, plus `kramMixChannel` above as `arm_func`; `just disasm us`
+   and `just compare us` both still pass after adding them.
+
 ## Dynamic verification attempt — inconclusive, dropped for now
 
 Tried to confirm the `kramWorker`/mixer candidates by attaching gdb to
@@ -222,10 +293,20 @@ or a different debugging frontend.
       or finding an actual 2003-era Krawall source snapshot if one exists
       (unlikely to be publicly available).
 - [ ] Trace the Thumb "query free space" callback at `0x08046E0C`.
-- [ ] Confirm whether `0x08FB19F8` (or a callee) gets copied to IWRAM at
-      startup, per Krawall's documented perf requirement for the mixer.
+- [x] Confirmed there's no global startup copy into IWRAM (see "No bulk
+      startup copy" above) — dropped as a dead end. `0x03000AB4` is still
+      un-disassembled; if it's installed at all rather than statically
+      linked there, it must happen inside Krawall's own init path, not
+      crt0. Worth revisiting only if a driver-local copy loop turns up.
 - [ ] Map more fields of the candidate `KramEngineState` (EWRAM
-      `0x02001638`-`0x0200163E`) and `KramChannel` (44-byte stride, status
-      byte at `+2`) structs.
+      `0x02001638`-`0x0200163E`) and reconcile the two different
+      `KramChannel` offset pictures now on file: 44-byte stride/status byte
+      at `+2` (from `kramWorker_MixChannels`) vs. `+0x08`/`+0x18`/`+0x19`/
+      `+0x24`/`+0x3C`/`+0x48` (from the effect-handler spot checks) — same
+      struct from a different base, or two different structs.
+- [ ] Walk the effect-handler table at `0x08FA9568` to a confirmed end
+      (populated entries continue past `0x08FA97F0`) and identify individual
+      handlers against known XM effect semantics (Arpeggio, Vibrato,
+      Portamento, etc.) via behavioral analysis of the 41 seeded functions.
 - [ ] Once functions are named (via inference, not source diff), begin
       populating `symbols.us.txt`.
