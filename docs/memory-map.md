@@ -259,13 +259,123 @@ targets):
    offsets, not yet cross-checked against the `+0x2C`-stride/`+2`-status-byte
    picture from `kramWorker_MixChannels` above — could be the same struct
    viewed from a different base, needs reconciling before trusting either
-   layout). None of the 41 have been identified as a *specific* named XM
-   effect (Arpeggio, Vibrato, etc.) yet — that needs per-function behavioral
-   analysis against a settled `KramChannel` layout.
+   layout). All 41 are now identified by name -- see the next section.
 
    All 41 addresses (`&~1`'d) are now seeded in `functions.us.cfg` as
    `thumb_func`, plus `kramMixChannel` above as `arm_func`; `just disasm us`
    and `just compare us` both still pass after adding them.
+
+## Naming the 41 effect handlers, via `player.c`'s `effects[]`/`effectsVC[]` [STRUCTURAL MATCH, very high confidence]
+
+The public Krawall repo (`github.com/sebknzl/krawall`, `lib/player.c`) defines
+exactly this table shape:
+
+```c
+typedef void (*EffFunc)( MChannel*, bool );
+typedef struct { EffFunc func1; EffFunc func2; u8 inbet1; } effectStruct;
+static const effectStruct effects[] = { ... 50 entries ... };
+
+typedef struct { EffFunc func; u8 inbet; } effectStructVC;
+static const effectStructVC effectsVC[] = { ... 10 entries ... };
+```
+
+`{func1, func2, inbet1}` is exactly our `{tick_fn, init_fn, flags}` shape
+(`func2`/`init_fn` only set for the 4 "dual" entries that combine a
+volume-slide with vibrato or tone-porta). This is the same "API-shape
+reference, not a byte-level source match" use of the public repo that
+identified `kramWorker`'s naming conventions (see above) -- CLAUDE.md's
+caution that the public repo is a different revision than what's compiled
+into the ROM still applies; nothing here is a compiled-code diff.
+
+**Verification**: extracted the `inbet`/`flags` bit for all 50 `effects[]`
+slots (including the unused all-zero ones) directly from ROM and diffed
+against the reference source's sequence -- **exact match, all 50 entries**,
+including which specific unused-slot indices are zero. Stronger still: the
+reference table reuses `eff_volslide_s3m` in slot 23 (paired with
+`eff_vibrato`) and slot 24 (paired with `eff_portanote`), and reuses
+`eff_volslide_xm` the same way in slots 49/50. In the ROM table, slots 23/24
+literally point back at the *same* `tick_fn` address as slot 6
+(`0x8048400`), with `init_fn` pointing at the same addresses as slots 20 and
+19 respectively (`0x80497E0`, `0x8048A48`) -- and slots 49/50 do the
+identical thing with slot 7's address (`0x8048578`) instead. That specific
+reuse pattern reproducing exactly, across 4 independent slots, is not
+something a coincidental table shape would produce. Also extracted and
+verified all 10 `effectsVC[]` (volume-column) entries the same way -- exact
+`inbet` match too, though those functions (`0x8049BAC`-`0x8049E14`) aren't
+seeded in `functions.<ver>.cfg` yet since they weren't part of the original
+41.
+
+Effect-column table (`0x08FA95B4`-`0x08FA980C`, ref. `effects[1..50]`,
+1-indexed to match the source comments -- index 0 and the three commented
+`(!)`/`(*)` slots are unused/all-zero and not real functions):
+
+| # | name (source) | `functions.us.cfg` name | tick addr | init addr |
+|---|---|---|---|---|
+| 1 | `eff_speed` | `kramEff_Speed` | `0x8049424` | |
+| 2 | `eff_bpm` | `kramEff_Bpm` | `0x804943C` | |
+| 3 | `eff_speedbpm` | `kramEff_SpeedBpm` | `0x804945C` | |
+| 4 | `eff_patt_jump` | `kramEff_PattJump` | `0x8049A58` | |
+| 5 | `eff_patt_break` | `kramEff_PattBreak` | `0x8049A64` | |
+| 6 | `eff_volslide_s3m` | `kramEff_VolSlideS3M` | `0x8048400` | |
+| 7 | `eff_volslide_xm` | `kramEff_VolSlideXM` | `0x8048578` | |
+| 8 | `eff_volslide_df` | `kramEff_VolSlideDownFine` | `0x80494A0` | |
+| 9 | `eff_volslide_uf` | `kramEff_VolSlideUpFine` | `0x80494F8` | |
+| 10 | `eff_portadown_xm` | `kramEff_PortaDownXM` | `0x80496B8` | |
+| 11 | `eff_portadown_s3m` | `kramEff_PortaDownS3M` | `0x8048998` | |
+| 12 | `eff_portadown_f` | `kramEff_PortaDownFine` | `0x804971C` | |
+| 13 | `eff_portadown_ef` | `kramEff_PortaDownExtraFine` | `0x8049780` | |
+| 14 | `eff_portaup_xm` | `kramEff_PortaUpXM` | `0x80495DC` | |
+| 15 | `eff_portaup_s3m` | `kramEff_PortaUpS3M` | `0x80488B4` | |
+| 16 | `eff_portaup_f` | `kramEff_PortaUpFine` | `0x8049628` | |
+| 17 | `eff_portaup_ef` | `kramEff_PortaUpExtraFine` | `0x8049670` | |
+| 18 | `eff_volume` | `kramEff_Volume` | `0x8049B7C` | |
+| 19 | `eff_portanote` | `kramEff_PortaNote` | `0x8048A48` | |
+| 20 | `eff_vibrato` | `kramEff_Vibrato` | `0x80497E0` | |
+| 21 | `eff_tremor` | `kramEff_Tremor` | `0x8048DC0` | |
+| 22 | `eff_arpeggio` | `kramEff_Arpeggio` | `0x8048FD0` | |
+| 23 | `eff_volslide_vibrato` | (reuses 6 + 20) | `0x8048400` | `0x80497E0` |
+| 24 | `eff_volslide_porta` | (reuses 6 + 19) | `0x8048400` | `0x8048A48` |
+| 25 | `eff_cvolume` | `kramEff_ChannelVolume` | `0x804959C` | |
+| 26 | `eff_cvolslide` | `kramEff_ChannelVolSlide` | `0x80486E8` | |
+| 27 | `eff_offset` | `kramEff_Offset` | `0x804989C` | |
+| 28 | `eff_panslide` | `kramEff_PanSlide` | `0x8048784` | |
+| 29 | `eff_retrig` | `kramEff_Retrig` | `0x8048E54` | |
+| 30 | `eff_tremolo` | `kramEff_Tremolo` | `0x8048C60` | |
+| 31 | `eff_fvibrato` | `kramEff_FineVibrato` | `0x8048B94` | |
+| 32 | `eff_gvolume` | `kramEff_GlobalVolume` | `0x8049550` | |
+| 33 | `eff_gvolslide` | `kramEff_GlobalVolSlide` | `0x8048630` | |
+| 34 | `eff_pan` | `kramEff_Pan` | `0x8049A0C` | |
+| 35 | `eff_panbrello` | `kramEff_PanBrello` | `0x8048D18` | |
+| 36 | `eff_mark` | `kramEff_Mark` | `0x8049484` | |
+| 37 | `eff_glissando` | `kramEff_Glissando` | `0x80498C8` | |
+| 38 | `eff_wave_vibr` | `kramEff_WaveVibrato` | `0x80498E0` | |
+| 39 | `eff_wave_trem` | `kramEff_WaveTremolo` | `0x8049944` | |
+| 40 | `eff_wave_panb` | `kramEff_WavePanBrello` | `0x80499A8` | |
+| 43 | `eff_patternloop` | `kramEff_PatternLoop` | `0x8049A7C` | |
+| 44 | `eff_notecut` | `kramEff_NoteCut` | `0x8049AC4` | |
+| 45 | `eff_notedelay` | `kramEff_NoteDelay` | `0x8049B00` | |
+| 49 | `eff_volslide_vibrato_xm` | (reuses 7 + 20) | `0x8048578` | `0x80497E0` |
+| 50 | `eff_volslide_porta_xm` | (reuses 7 + 19) | `0x8048578` | `0x8048A48` |
+
+Volume-column table (`0x08FA980C`-`0x08FA985C`, ref. `effectsVC[1..10]`) --
+**not yet seeded in `functions.<ver>.cfg`**, addresses given for reference:
+
+| # | name (source) | tick addr |
+|---|---|---|
+| 1 | `eff_VC_volslide_down` | `0x8049BAC` |
+| 2 | `eff_VC_volslide_up` | `0x8049BFC` |
+| 3 | `eff_VC_fvolslide_down` | `0x8049C50` |
+| 4 | `eff_VC_fvolslide_up` | `0x8049C9C` |
+| 5 | `eff_VC_vibrato_setspeed` | `0x8049CE8` |
+| 6 | `eff_VC_vibrato` | `0x80490CC` |
+| 7 | `eff_VC_pan` | `0x8049D04` |
+| 8 | `eff_VC_panslide_left` | `0x8049D60` |
+| 9 | `eff_VC_panslide_right` | `0x8049DB8` |
+| 10 | `eff_VC_portanote` | `0x8049E14` |
+
+All 41 effect-column functions renamed in `functions.us.cfg` accordingly;
+`just check-all` still passes (renaming a `functions.<ver>.cfg` seed can't
+change the produced bytes, but re-checked anyway per hard rule 4).
 
 ## Dynamic verification attempt — inconclusive, dropped for now
 
@@ -304,9 +414,13 @@ or a different debugging frontend.
       at `+2` (from `kramWorker_MixChannels`) vs. `+0x08`/`+0x18`/`+0x19`/
       `+0x24`/`+0x3C`/`+0x48` (from the effect-handler spot checks) — same
       struct from a different base, or two different structs.
-- [ ] Walk the effect-handler table at `0x08FA9568` to a confirmed end
-      (populated entries continue past `0x08FA97F0`) and identify individual
-      handlers against known XM effect semantics (Arpeggio, Vibrato,
-      Portamento, etc.) via behavioral analysis of the 41 seeded functions.
+- [x] Walked the effect-handler table at `0x08FA9568` to its confirmed end
+      (`0x08FA985C`, right where the volume-column table `effectsVC[]`
+      finishes) and named all 41 effect-column functions by matching the
+      table's `inbet`/`flags` sequence and dual-function reuse pattern
+      against `player.c`'s `effects[]`/`effectsVC[]` -- see "Naming the 41
+      effect handlers" above. The 10 volume-column (`effectsVC[]`) handler
+      addresses are identified but not yet seeded in `functions.<ver>.cfg`.
 - [ ] Once functions are named (via inference, not source diff), begin
-      populating `symbols.us.txt`.
+      populating `symbols.us.txt`. The 41 effect-handler names above are the
+      first real candidates for this.
