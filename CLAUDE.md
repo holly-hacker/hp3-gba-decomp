@@ -118,6 +118,10 @@ Bootstrap task order (status as of this writing):
    alternatives for its `arm_func`/`thumb_func` config support, needed since crt0, the
    division routines, and the Krawall driver are all confirmed ARM-mode). Feed
    newly-discovered functions back into `functions.<ver>.cfg` (committed) as they're found.
+   `just disasm-compare` reassembles that full disassembly and checks it's still
+   byte-identical to the donor ROM -- run it after touching `functions.<ver>.cfg` to catch
+   bad seeds (misaligned/duplicate function boundaries) that `gbadisasm` doesn't itself
+   reject. Secondary to `just compare` (see task 5), not a substitute for it.
 5. [x] First matching build, both versions -- `just compare` stitches `regions.<ver>.txt`
    into the actual build input, assembles, links, objcopys, and confirms byte-identical to
    the donor ROM. This is the permanent regression baseline; every future commit must keep
