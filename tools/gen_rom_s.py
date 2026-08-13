@@ -62,11 +62,11 @@ def emit_gap(
     split_points = sorted(a for a in labels if cur <= a < end)
     for point in split_points:
         if point > cur:
-            out.append(f'.incbin "{rom_path}", {hex(cur - base_addr)}, {hex(point - cur)}')
+            out.append(f'.incbin "{rom_path}", {hex(cur - base_addr)}, {hex(point - cur)}  @ unclaimed')
         out.append(f'{labels[point]}:')
         cur = point
     if cur < end:
-        out.append(f'.incbin "{rom_path}", {hex(cur - base_addr)}, {hex(end - cur)}')
+        out.append(f'.incbin "{rom_path}", {hex(cur - base_addr)}, {hex(end - cur)}  @ unclaimed')
 
 
 def main() -> None:
@@ -97,7 +97,13 @@ def main() -> None:
         elif start < addr:
             sys.exit(f"region {name} starts before current position, should be unreachable")
 
-        out.append(f'.include "{asmfile}"  @ {hex(start)}-{hex(end)} {name}')
+        if asmfile.endswith(".bin"):
+            # raw binary blob (e.g. extracted audio data) -- .incbin it
+            # directly rather than requiring a wrapper .s file
+            out.append(f'{name}:  @ {hex(start)}-{hex(end)}')
+            out.append(f'.incbin "{asmfile}"')
+        else:
+            out.append(f'.include "{asmfile}"  @ {hex(start)}-{hex(end)} {name}')
         addr = end
         i += 1
 

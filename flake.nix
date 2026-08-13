@@ -36,6 +36,27 @@
             cp gbadisasm $out/bin/
           '';
         };
+
+        # Locates Krawall module/sample/instrument data in a ROM (data-only
+        # heuristic scan, no code disassembly). Used for discovery only --
+        # tools/extract_krawall.py does its own precise byte-span math.
+        unkrawerter = pkgs.stdenv.mkDerivation {
+          pname = "unkrawerter";
+          version = "4.0";
+          src = pkgs.fetchFromGitHub {
+            owner = "MCJack123";
+            repo = "UnkrawerterGBA";
+            rev = "999e310fcc62a0d21e783549051a06a2a3fbd848";
+            hash = "sha256-1ohPQZ0FHxfVCKA/D6tFwbjPlzS64tJ8btulWvLNfG4=";
+          };
+          buildPhase = ''
+            g++ -std=c++11 -O2 -o unkrawerter unkrawerter.cpp
+          '';
+          installPhase = ''
+            mkdir -p $out/bin
+            cp unkrawerter $out/bin/
+          '';
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -45,6 +66,7 @@
             pkgs.just
             pkgs.mgba
             gbadisasm
+            unkrawerter
           ];
         };
       });
