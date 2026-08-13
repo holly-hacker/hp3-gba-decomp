@@ -11,7 +11,10 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ]);
+        # unicorn: CPU emulator, used by tools/decode_type6.py to run the
+        # game's own ARM-mode decompressor against real ROM bytes instead of
+        # a hand-reimplementation -- see docs/formats/graphics.md.
+        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.unicorn ]);
 
         # pret's matching GBA disassembler. Pinned to the last upstream
         # commit (inactive since 2020-01). Two heap bugs in disasm.c crash

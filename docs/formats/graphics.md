@@ -1,14 +1,17 @@
 # Graphics asset format
 
 Status: **PROVEN** for the type-6 codec's decode mechanism (verified by
-executing the real ROM code in an emulator, see below) and for one class
-of its output (BG tilemap/screen-entry data). **STRUCTURAL MATCH** for
-tile data location. **UNCONFIRMED** for palettes, the true tile data the
-level table's decoded tilemaps refer to, and (important caveat) the
-actual subject matter of any grayscale-rendered content -- everything
-rendered with a fake grayscale ramp palette should only be described
-structurally, not as depicting specific real-world content. No extractor
-is checked into the repo yet.
+executing the real ROM code in an emulator; `tools/decode_type6.py` is
+checked in) and for one class of its output (BG tilemap/screen-entry
+data). **PROVEN** that real, uncompressed, code-referenced palettes
+exist (three found, see below) -- but **UNCONFIRMED** which tile data
+any of them actually colors; every pairing tried so far renders as
+incoherent noise, not art. **STRUCTURAL MATCH** for tile data location
+(three candidate regions). Important caveat still applies to older
+findings in this doc: rendered content using a fake grayscale ramp
+palette should only be described structurally, never as depicting
+specific real-world content. No build-integrated extractor exists yet
+(no `regions.<ver>.txt` rows for graphics).
 
 ## What we know
 
@@ -256,25 +259,69 @@ hex/GIMP inspection of the compressed bytes won't show anything
 recognizable -- compressed streams don't look like their decoded
 content).
 
-**Not yet in the repo**: a `tools/decode_type6.py` wrapping the
-Unicorn-based execution (mirroring `tools/extract_krawall.py`'s style,
-callable both as a library function and a CLI) was recommended but not
-written/reviewed yet. It would need `unicorn` added as a tool dependency
-(e.g. via `pip`/`flake.nix`) -- flagging explicitly since adding a new
-dev-shell dependency is a repo-affecting decision, not something to do
-silently.
+`tools/decode_type6.py` is now checked into the repo, implementing
+exactly this (Unicorn-based execution, mirroring
+`tools/extract_krawall.py`'s CLI style). `unicorn` was added to
+`flake.nix`'s dev shell (`python3Packages.unicorn`). Verified against 4
+real level-table resource pointers, all matching declared sizes exactly
+(508, 6676, 3748, 6052 bytes). Not yet wired into `just build` or
+`regions.<ver>.txt` -- no confirmed, curated resource identities exist
+yet to extract (see "What's NOT yet known"), so there's nothing correct
+to commit as extracted output yet; it's a research/CLI tool for now.
+
+### Real, uncompressed palettes -- found via code tracing (PROVEN)
+
+Unlike everything above, these were found by tracing forward from
+actual code, not by scanning ROM bytes -- tracing where decompressed
+resource buffers get copied into VRAM (recommended next step 2) led
+instead to a **separate, uncompressed resource path** entirely, used by
+what looks like a generic object/sprite-spawn function,
+`sub_08001528(type, x, y, resource_ptr)` (called from e.g.
+`sub_0800E0CC` via `sub_080078A4`, and from `sub_0801BA54`). Three
+`resource_ptr` values found via direct literal-pool grep for `0x08a3`
+addresses (the same ROM neighborhood as the UI-panel candidate from the
+structural scan, `0x08a32800`-`0x08a3a000`):
+
+- `0x08A396A4`: copied via `CpuFastSet` (`svc 0xC`) straight to OBJ
+  palette RAM (`0x05000200 + bank*32`) in `sub_0800E0CC` and two
+  near-identical sibling functions (all reference the same source --
+  likely a shared flash/highlight-effect palette). 16 valid BGR555
+  colors (bit15=0 throughout), but low-diversity: one accent color
+  (`R120 G96 B120`) followed by 15 entries of solid white -- consistent
+  with a hit-flash/sparkle effect, not general art.
+- `0x08A38108`: passed as `resource_ptr` to `sub_08001528`. 16 valid,
+  genuinely diverse BGR555 colors (cyan/green/teal/blue progression,
+  then red/orange tones, black-filled tail) -- a real curated palette,
+  not a placeholder.
+- `0x08A38FE0`: same call pattern, different object. 16 valid, diverse
+  colors (blue, white, brown, cream, greens, warm oranges/reds) -- also
+  a real curated palette.
+
+**Not yet resolved**: pairing `0x08A38108`/`0x08A38FE0` against tile
+data -- both the earlier structural-scan candidates (filigree tileset,
+UI-panel region) and the bytes immediately following each palette in
+its own resource block (the natural "palette then tile data" struct
+layout guess) -- produced garish, incoherent-looking renders, not
+recognizable art. So either these two specific palettes don't belong to
+those specific tile candidates, the tile data needs a different
+width/bit-depth/offset than guessed, or `sub_08001528`'s resource
+struct has header fields between the palette and the tile data that
+weren't accounted for. `sub_08001528` itself hasn't been read yet --
+that's the obvious next step to get the struct layout right instead of
+guessing offsets.
 
 ## What's NOT yet known
 
-- **No real palette has been found anywhere.** Automated palette-window
-  scanning (16 consecutive bit15=0 halfwords, filtered for color
-  diversity/saturation) produced only false positives across the ROM.
-  One candidate (`0x08888dc0`) was rendered against tile data and
-  produced a uniform-red wash, confirming it's not real. The
-  level-table fields that were guessed to be palettes turned out, once
-  actually decoded, to be tilemap data instead (see above) -- so the
-  "decode type-6 and check the palette fields" plan didn't pan out as
-  expected. Where the real palette lives is still open.
+- **A real, working colored render.** Three real uncompressed palettes
+  are now confirmed to exist and be code-referenced (above), which
+  disproves the earlier "no real palette found anywhere" state -- but
+  none has yet been successfully paired with its actual tile data to
+  produce a coherent image. The level-table fields that were guessed to
+  be palettes turned out, once actually decoded, to be tilemap data
+  instead (see above) -- so the "decode type-6 and check the palette
+  fields" plan didn't pan out as expected, but tracing forward from
+  code (not that plan) found real palettes via a completely different,
+  uncompressed resource path.
 - **None of the three candidate art regions (`0x08933000` filigree
   tileset, `0x0888xxxx` region, `0x08a36800` UI panels) have a
   confirmed code reference.** A direct grep of `build/us/full_disasm.s`
@@ -308,23 +355,32 @@ silently.
 
 ## Recommended next steps
 
-1. **Land the type-6 decoder as a real repo tool** (`tools/decode_type6.py`,
-   Unicorn-based, mirroring `tools/extract_krawall.py`'s style). Needs
-   `unicorn` added as a dev-shell dependency -- flag for review before
-   touching `flake.nix`.
-2. **Trace forward from a decompression call site to its VRAM DMA/CpuSet
-   copy.** All observed decompression destinations are EWRAM heap
-   buffers, not VRAM -- the actual VRAM upload happens later, untraced.
-   Finding that copy would give a real VRAM palette/tile address, useful
-   for working backward to the true ROM palette source now that the
-   level-table palette guess is known to be wrong.
-3. **Connect the three candidate art regions to actual game code.**
-   Static literal-pool search came up empty (see above). Next step would
-   be dynamic analysis (breakpoint/watch on VRAM writes during actual
-   gameplay in mGBA) -- note `CLAUDE.md` already documents this exact
-   technique being unreliable when tried for Krawall function ID
-   (flaky breakpoint/continue sequencing, root cause never found), so
-   this is higher-risk/lower-confidence than steps 1-2.
+Steps 1 and 2 from an earlier version of this list (land the type-6
+decoder; trace a decompression call site forward to its VRAM copy) are
+done -- see "Real, uncompressed palettes" above for what step 2 actually
+found (a different, uncompressed resource path, not a VRAM copy of a
+type-6 decode). Remaining:
+
+1. **Read `sub_08001528`** (the object/sprite-spawn function both real
+   palettes are passed into) to get its resource-struct layout right,
+   instead of guessing "tile data immediately follows the palette" --
+   that guess didn't render coherently. This is the most promising open
+   thread: two real palettes, a known consuming function, just not yet
+   the right struct offsets for the tile data.
+2. **Connect the three structural-scan candidate art regions**
+   (`0x08933000` filigree tileset, `0x0888xxxx` region, `0x08a36800` UI
+   panels) **to actual game code.** Static literal-pool search came up
+   empty for two of the three. Next step would be dynamic analysis
+   (breakpoint/watch on VRAM writes during actual gameplay in mGBA) --
+   note `CLAUDE.md` already documents this exact technique being
+   unreliable when tried for Krawall function ID (flaky
+   breakpoint/continue sequencing, root cause never found), so this is
+   higher-risk/lower-confidence than step 1.
+3. Once real tile data is confidently paired with a real palette,
+   revisit the delta-coded tilemap fields decoded from the level table
+   (`docs/formats/graphics.md`'s "Level-table entry layout" section) to
+   see whether they arrange any of the now-colored tiles into an actual
+   on-screen scene.
 
 ## Confidence key
 
