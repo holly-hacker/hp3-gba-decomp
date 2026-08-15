@@ -17,7 +17,14 @@ Region = tuple[int, int, str, str]
 Labels = dict[int, str]
 
 
-def parse_manifest(path: str) -> tuple[list[Region], Labels]:
+# krawall-module/krawall-samples rows name their JSON/directory source
+# (data/audio/...) in column 3, not a directly includable file -- the
+# actual assembly gets packed to this fixed build/ path by pack_krawall.py
+# (see the `pack-krawall` recipe, which must run before `stitch`).
+KRAWALL_DIRECTIVES = {"krawall-module": "modules", "krawall-samples": "samples"}
+
+
+def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     """Returns (regions, labels): regions sorted and non-overlapping."""
     regions: list[Region] = []
     labels: Labels = {}
@@ -32,6 +39,17 @@ def parse_manifest(path: str) -> tuple[list[Region], Labels]:
                     sys.exit(f"{path}:{lineno}: expected 'label <addr> <name>'")
                 addr = int(parts[1], 16)
                 labels[addr] = parts[2]
+                continue
+            if parts[0] in KRAWALL_DIRECTIVES:
+                if len(parts) != 5:
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
+                _, start_s, end_s, _source, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                kind = KRAWALL_DIRECTIVES[parts[0]]
+                asmfile = f"build/{ver}/audio/{kind}/{name}.s"
+                regions.append((start, end, asmfile, name))
                 continue
             if len(parts) != 4:
                 sys.exit(f"{path}:{lineno}: expected 4 fields, got {len(parts)}")
@@ -78,7 +96,7 @@ def main() -> None:
     rom_size = os.path.getsize(rom_path)
     base_addr = 0x08000000
 
-    regions, labels = parse_manifest(f"regions.{ver}.txt")
+    regions, labels = parse_manifest(f"regions.{ver}.txt", ver)
 
     out: list[str] = []
     out.append(".syntax unified")

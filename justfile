@@ -40,15 +40,32 @@ stitch ver="us":
     mkdir -p build/{{ver}}
     python3 tools/gen_rom_s.py {{ver}} > build/{{ver}}/rom.s
 
-# Gitignored (game's actual copyrighted content, never committed). Re-run
-# after a baserom change; addresses/names are deterministic so the
-# committed manifest rows stay valid. See docs/formats/krawall.md.
-# Regenerate the extracted Krawall audio data.
+# Research/debugging aid only -- NOT used by the build anymore (see
+# `pack-krawall`). Re-derives the old raw asm/krawall/<ver>/*.bin dump
+# straight from the baserom; useful for diffing against pack-krawall's
+# output while touching tools/krawall_codec.py. See docs/formats/krawall.md.
+# Regenerate the old raw-binary Krawall dump (not build input).
 extract-krawall ver="us":
     python3 tools/extract_krawall.py {{ver}} > /dev/null
 
+# One-time per clone (see `migrate-krawall`), NOT run automatically by
+# `build` -- data/audio/ is gitignored (same footing as the baserom, see
+# CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
+# so it's never silently regenerated/overwritten on every build.
+# Bootstrap data/audio/ locally from baserom.us.gba.
+migrate-krawall:
+    python3 tools/krawall_migrate.py
+
+# Gitignored (build/), like everything else pack_krawall.py writes. Reads
+# local data/audio/ (run `migrate-krawall` first if missing -- version-
+# independent) plus this version's krawall-module/krawall-samples rows in
+# regions.<ver>.txt for addresses.
+# Pack data/audio/ into this version's Krawall assembly.
+pack-krawall ver="us":
+    python3 tools/pack_krawall.py {{ver}}
+
 # Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (extract-krawall ver)
+build ver="us": (stitch ver) (pack-krawall ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
     arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba

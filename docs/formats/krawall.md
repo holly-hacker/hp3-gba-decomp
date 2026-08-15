@@ -2,8 +2,11 @@
 
 Status: **PROVEN** for boundaries/addressing (deterministic struct parsing,
 zero overlaps across 733 regions in both ROMs, cross-version pattern-data
-byte-identity confirmed). Field-level semantics beyond what's needed for
-byte-accurate boundaries are not fully decoded yet -- see Open questions.
+byte-identity confirmed) and now also **PROVEN** for pattern-atom and
+module-header field semantics (see Pattern atom encoding and Module header
+fields below) -- verified against every atom in all 402 patterns and every
+module in both ROMs, not just spans. Remaining unknowns are narrower --
+see Open questions.
 
 ## Discovery
 
@@ -48,6 +51,20 @@ ROM bytes (see Confirmed stats and Trailing padding absorption) is what's
 trusted, not the public source -- it's used for API-shape/algorithm
 reference only, per `CLAUDE.md`.
 
+This matters beyond spans, too: `Pattern.cpp::compress()`'s *active* code
+path (byte-per-field: separate note byte, separate instrument byte, with
+an optional 3rd byte when `instrument > 255`) is the **later** revision's
+encoding, not ours -- confirmed by decoding real ROM bytes that way and
+finding the "note" byte's top bit set on a large, semantically nonsensical
+fraction of atoms. The same file has an *unused, commented-out* alternate
+encoding right next to it (a packed 16-bit word: `note_word = (note &
+0x7f) << 9 | (instrument & 0x1ff)`), which is what our confirmed
+2003-09-01 revision actually emits -- see Pattern atom encoding below.
+`unkrawerter.cpp`'s reader is byte-count-correct for our revision either
+way (its `use2003format` gate matches how many bytes to consume), which is
+why span/boundary validation never caught this; only decoding actual
+field *values* and checking they're sane did.
+
 ## Struct layouts (packed, little-endian)
 
 ```c
@@ -59,9 +76,13 @@ typedef struct PACKED {
     signed char   relativeNote;
     unsigned char volDefault;
     signed char   panDefault;
-    unsigned char loop;
-    unsigned char hq;
-    signed char   data[1];   // PCM sample data follows inline
+    unsigned char loop;       // 0 = none, 1 = forward loop, 2 = ping-pong
+    unsigned char hq;         // see "hq flag" below -- authoring artifact,
+                               // not a runtime format property
+    signed char   data[1];   // PCM sample data follows inline -- despite the
+                              // C type, actual bytes are offset-binary
+                              // (128=silence), confirmed empirically, see
+                              // "data/audio/samples" below
 } Sample;                     // 18-byte header + PCM
 
 typedef struct PACKED {
@@ -88,12 +109,20 @@ typedef struct PACKED {
     unsigned char channels;
     unsigned char numOrders;
     unsigned char songRestart;
-    unsigned char order[256];
-    signed char   channelPan[32];
-    unsigned char songIndex[64];
+    unsigned char order[256];    // pattern index per song position;
+                                  // 254 = skip marker (see Module header
+                                  // fields below); only order[0..numOrders)
+                                  // meaningful, rest zero-padded
+    signed char   channelPan[32]; // only channelPan[0..channels) meaningful
+    unsigned char songIndex[64];  // DERIVED from order[], not authored --
+                                   // see Module header fields below
     unsigned char volGlobal, initSpeed, initBPM;
-    unsigned char flagInstrumentBased, flagLinearSlides, flagVolSlides,
-                   flagVolOpt, flagAmigaLimits, ___padding;
+    unsigned char flagInstrumentBased, flagLinearSlides, flagVolSlides;
+    unsigned char ___unused0, ___unused1, ___unused2;  // always 0 in every
+                                  // module emitted by krawerter's
+                                  // outputFile() -- not real flags (earlier
+                                  // guessed names flagVolOpt/flagAmigaLimits
+                                  // retracted, see Module header fields)
     const Pattern* patterns[1];  // variable-length, one ptr per pattern used
 } Module;                     // 364-byte fixed header + 4 bytes/pattern
 ```
@@ -164,15 +193,96 @@ working across all 278 samples in both ROMs (zero overlaps).
 
 Not stored anywhere explicit. `data[]` is a compressed per-row stream:
 each row is a sequence of channel entries, each starting with a `follow`
-control byte (`0` terminates the row):
-- bit `0x20`: note+instrument follow (2 bytes; +1 more if `note & 0x80` and
-  not the old/2003 format -- not applicable to our confirmed version)
-- bit `0x40`: volume byte follows
-- bit `0x80`: effect+effectop follow (2 bytes)
+control byte (`0` terminates the row). The low bits of `follow` are the
+channel column index; the high bits say which fields come next:
+- bit `0x20`: note+instrument follow (2 bytes, see Pattern atom encoding --
+  never a 3rd byte in our confirmed revision, verified against
+  `unkrawerter.cpp`'s `use2003format`-gated reader)
+- bit `0x40`: volume byte follows (1 byte, raw)
+- bit `0x80`: effect+effectop follow (2 bytes, raw -- see Effect values)
 
 True pattern length is only knowable by walking this stream to its end
 (`rows` iterations of "read follow bytes until 0"). Ported directly in
 `extract_krawall.py::pattern_span`.
+
+### Pattern atom encoding (note/instrument)
+
+**PROVEN** -- decoded and sanity-checked against all 402 patterns / 30,566
+note+instrument atoms in the US ROM (every value lands in range, zero
+anomalies). The 2 bytes following a `0x20` `follow` bit are **one packed
+16-bit big-endian word**, not two independent byte fields:
+
+```
+word = (byte1 << 8) | byte2
+note       = word >> 9        // 7 bits: 1-96 = XM note, 127 = note-off/cut, 0 = none
+instrument = word & 0x1FF     // 9 bits: 1-based sample index (0 = no change), 0-511 range
+```
+
+This is `Pattern.cpp::compress()`'s *commented-out* alternate encoding
+(sitting right next to the active, byte-per-field code that the current
+public `krawall` repo actually uses) -- our confirmed 2003-09-01 revision
+emits this older packed form instead. Confirmed by decoding every atom in
+the US ROM this way: notes cluster sanely across 19-92 (real XM note
+range) with 3,753 occurrences of exactly `127`, matching `ModXM.cpp`'s
+confirmed note-off remap (`if (note==97) note=127`); instruments range
+0-278, exactly matching the ROM's real sample count, with `0` (no
+instrument change) the single most common value. No atom decodes outside
+sane range. `Mod::countReferences()` confirms `instrument - 1` indexes
+directly into the sample array when `flagInstrumentBased` is false (our
+case, per "No instrument list" above) -- so `instrument` is a plain,
+1-based sample reference, not indirected through anything.
+
+The active byte-per-field encoding (separate note byte + instrument byte +
+optional 3rd byte when `instrument > 255`) is the *later* krawerter
+revision's format and does **not** apply to this ROM -- decoding our real
+bytes that way produces a nonsensical, frequently-set "note high bit" with
+no format-level meaning. Not currently load-bearing for `extract_krawall.py`
+(span math only needs the byte *count*, which both encodings agree on: 2
+bytes, no extension), but load-bearing for any future work that decodes or
+regenerates pattern *content* (e.g. the JSON module/pattern format).
+
+### Effect values
+
+`effect` is a 1-byte enum (not a raw XM/S3M effect letter) with `effectop`
+as its 1-byte operand; 50 named constants are given in `krawall/krawerter/
+effects.h` (`EFF_SPEED`, `EFF_PORTA_UP_XM`, `EFF_RETRIG`, `EFF_NOTE_CUT`,
+etc). Not yet cross-checked against real ROM `effect` byte values (only
+note/instrument were verified this pass) -- treat the enum *values* as a
+naming reference, not yet confirmed to match this ROM's revision the way
+the note/instrument decode above was.
+
+### Module header fields
+
+**PROVEN**, from `Mod.cpp`'s `outputFile()`/`optimizePatterns()`:
+
+- **`order[]` sentinel**: `254` marks a skip/empty position.
+  `optimizePatterns()` actually treats `order[i] >= 254` as sentinel (not
+  just `== 254`), so `255` is presumably also reserved (standard XM
+  end-of-song marker), even though it was never observed in either ROM's
+  real order lists (only `254` occurs -- checked directly across all 52 US
+  modules). `extract_krawall.py::module_header_span`'s `max_pattern`
+  computation currently only excludes `== 254`; harmless today since `255`
+  never appears in practice, but worth guarding as `< 254` if this is ever
+  revisited, since a stray `255` would currently be mistaken for a real
+  pattern index.
+- **`songIndex[64]`** is *derived*, not independently authored: walk
+  `order[]`; every position immediately following a `254` marker gets
+  recorded into `songIndex[1]`, `songIndex[2]`, ... in order (index `0`
+  implicitly means "start of song" at order position 0). This lets game
+  code jump to sub-song boundaries (e.g. an intro/loop split, or multiple
+  jingles bundled into one module) without re-scanning `order[]`. Fully
+  regenerable from `order[]` alone -- doesn't need independent storage in
+  an editable format.
+- **Trailing 3 header bytes** (previously guessed as `flagVolOpt`/
+  `flagAmigaLimits`/padding): `outputFile()` emits these as a literal
+  `0, 0, 0` unconditionally. Only `flagInstrumentBased`, `flagLinearSlides`,
+  and `flagFastVolSlides` (our struct's `flagVolSlides`) are ever real,
+  non-zero flags for this format.
+- **`hq` flag** (`Sample` struct, not `Module`): `hq = (fileName[0] == '~')
+  ? 1 : 0` in `Sample.cpp::output()` -- a source-WAV-filename convention
+  from the original authoring pipeline, not a decodable runtime property.
+  No way to recover its original semantic meaning from ROM bytes alone;
+  round-trip it as an opaque bool.
 
 ### Module header+pointer-table size
 
@@ -196,22 +306,92 @@ regions, since multiple modules can reference the same pattern).
 
 ## Build integration
 
-`tools/extract_krawall.py` writes one raw binary file per region to
-`asm/krawall/<ver>/...` (gitignored -- this is the game's actual
-copyrighted audio content, same footing as `baserom.<ver>.gba`, never
-committed) and prints the corresponding manifest rows, which ARE committed
-into `regions.<ver>.txt` -- addresses and names are curated knowledge
-(confirmed via deterministic parsing) even though the underlying bytes
-aren't. `just build` depends on the `extract-krawall` recipe, so the `.bin`
-files are regenerated automatically before every build; addresses/names are
-deterministic given the same baserom, so the committed manifest rows stay
-valid across reruns. `gen_rom_s.py` `.incbin`s a `.bin`-suffixed asm-file
-directly (no wrapper `.s` needed) -- see its handling of that extension.
+**Superseded the old raw-`.bin` model** (kept below, in "Old model", for
+context) with a curated, editable JSON+WAV format under `data/audio/`.
+This exists to support a future moddable build (add/remove/edit tracks),
+which raw opaque binary can't. Per hard rule 2, `data/audio/` is
+**gitignored, same footing as the baserom, never committed**. Bootstrap
+it locally with `tools/krawall_migrate.py` before building -- see below.
+
+- **`data/audio/modules/<Name>.json`**: one module (song) plus its own
+  patterns inlined (patterns are never shared between modules in this
+  game, confirmed above, so no separate pattern files/references are
+  needed). Fields: `channels`, `songRestart`, `volGlobal`, `initSpeed`,
+  `initBPM`, the three real flags (`flagInstrumentBased`,
+  `flagLinearSlides`, `flagFastVolSlides`), `channelPan` (array, length
+  `channels`), `order` (array, `null` for the `254` skip marker), and
+  `patterns` (array, index `i` = the pattern `order` refers to as `i`).
+  Not stored: `songIndex` (derived from `order`, see Module header fields)
+  and the trailing 3 always-zero header bytes. Each pattern is
+  `{"rows": [...]}`, one entry per row, each row a sparse list of
+  `{channel, note?, instrument?, volume?, effect?, effectop?}` -- `note`
+  is `1-96` or `"off"`; `instrument` is a **sample name string**
+  (resolved to a 1-based index at pack time); fields are omitted when
+  absent, matching the sparse `follow`-byte format.
+- **`data/audio/samples/<Name>.json` + `<Name>.wav`**: `loopLength`,
+  `c2Freq`, `fineTune`, `relativeNote`, `volDefault`, `panDefault`,
+  `loop` (`"none"`/`"forward"`/`"pingpong"`), `hq` (opaque bool, see
+  Module header fields). PCM as a **standard playable WAV**, not raw
+  headerless PCM -- mono, **8-bit**, sample rate = `c2Freq`.
+  **Despite the struct field being C-declared `signed char data[1]`, the
+  actual stored bytes are offset-binary (128 = silence/zero-crossing, not
+  0)** -- confirmed empirically, not assumed: reading raw ROM bytes as
+  unsigned gives a 5-9x smoother waveform (far smaller consecutive-sample
+  deltas, checked across several samples) than reading them as two's
+  complement signed. This is *exactly* WAV's own native 8-bit PCM
+  convention (unsigned, 128=silence), so the raw bytes go in/out as-is, no
+  transform at all -- confirmed round-trip byte-identical against the ROM
+  via both `tools/pack_krawall.py`'s own decoder and independently via
+  `ffmpeg`. (An earlier revision of this format stored 16-bit instead, on
+  the theory that some players mishandle 8-bit WAV's unsigned convention
+  -- dropped for lack of a real source backing that claim; 8-bit is
+  spec-compliant and halves the local disk footprint.) See
+  `tools/krawall_migrate.py`/`tools/pack_krawall.py`.
+- Sample **index** (the 1-based number patterns reference via
+  `instrument`) is the numeric sort of `Sample<N>` filenames -- renaming a
+  sample later must not change this without also updating every pattern
+  that references it (not yet automated).
+- `regions.<ver>.txt` uses two directives instead of per-pattern/
+  per-sample/per-module rows: `krawall-module <start> <end> <json-file>
+  <name>` (one row per module -- covers that module's own patterns, which
+  are contiguous and immediately precede its header) and `krawall-samples
+  <start> <end> <dir> <name>` (one row for the *entire* sample set --
+  confirmed to be one contiguous run together with the pointer list, see
+  Confirmed stats). `tools/gen_krawall_regions.py <ver>` computes these
+  rows from the baserom and re-verifies both contiguity assumptions,
+  refusing to emit if a future baserom's layout doesn't match.
+- `tools/pack_krawall.py <ver>` (the `pack-krawall` recipe, which `just
+  build` depends on) reads `data/audio/` plus those manifest rows and
+  writes real assembly -- not raw bytes -- to `build/<ver>/audio/...`
+  (gitignored, like the rest of `build/`): real labels at the right
+  addresses (e.g. `Module0`, `Sample12`), with pointer fields (a module's
+  pattern table, the sample size field's copy of the address after
+  `Lsample_end`, the sample list) emitted as `.word <label>` and resolved
+  by the normal linker step, not precomputed. This means a matched game
+  function can eventually reference `Module0`/`Sample12` directly like
+  any other extracted symbol, and mirrors how `krawerter` itself emitted
+  `.S` text rather than raw binary. `tools/krawall_codec.py` holds the
+  shared encode/decode logic (pattern row compression, `songIndex`
+  derivation, sample trailing-buffer generation) used by both the packer
+  and the one-time `tools/krawall_migrate.py` bootstrap script (ROM ->
+  `data/audio/`, US only -- content is version-independent, see Confirmed
+  stats). Round-trip verified: both US and JP rebuild byte-identical to
+  their donor ROMs from this JSON, sourced from the US ROM alone.
+
+### Old model (superseded)
+
+`tools/extract_krawall.py` still exists (discovery/debugging aid only,
+not part of the build) -- it writes one raw binary file per region to
+`asm/krawall/<ver>/...` (gitignored -- game's actual copyrighted content)
+and prints the old per-pattern/per-sample/per-module manifest rows. Useful
+for diffing against `pack_krawall.py`'s output while touching
+`tools/krawall_codec.py`.
 
 `.xm` export (`just extract-music-xm`) is a completely separate,
 non-authoritative path for actually listening to/viewing the music --
 lossy (effect remapping, optional pattern-rewriting for playback accuracy),
-never touches the build.
+never touches the build, and still reads the baserom directly rather than
+`data/audio/`.
 
 ### Trailing padding absorption
 
@@ -252,9 +432,11 @@ sample/pattern trailing padding at all.
 
 ## Open questions
 
-- [ ] Field-level semantics beyond what's needed for boundaries (effect
-      byte meanings, exact `Instrument`/`Envelope` field interpretation)
-      aren't decoded -- only enough to compute accurate spans.
+- [ ] `effect`/`effectop` values (see Effect values) aren't cross-checked
+      against real ROM bytes yet -- only note/instrument were decoded and
+      verified this pass. `Instrument`/`Envelope` field interpretation is
+      also still undecoded (moot while "no instrument list" holds, see
+      below).
 - [ ] Whether `krawerter` (Krawall's own `.xm`-to-assembly compiler, in the
       LGPL `krawall` source, not this repo) can reproduce byte-identical
       output from an extracted `.xm` was investigated but never verified --
@@ -264,13 +446,25 @@ sample/pattern trailing padding at all.
 - [ ] The "no instrument list" finding is an absence, not a confirmed
       negative -- worth a second look if sample-only playback ever seems
       wrong.
+- [ ] `order[]` value `255` (see Module header fields) has never been
+      observed in either ROM -- `module_header_span`'s `!= 254` check is a
+      latent gap (should be `< 254`) but not yet known to matter in
+      practice.
 
 ## Future work
 
 Not started, just recorded so the reasoning behind it isn't lost:
 
-1. Let modules be given human-readable names (which `.xm` track they came
-   from), with patterns inheriting the parent module's name --
-   e.g. `BattleTheme` -> `BattleTheme_Pattern1`.
-2. Consider a higher-level storage format instead of raw `.bin` --
-   e.g. samples as `.wav` plus a JSON sidecar header.
+1. Let modules and samples be given human-readable names (which `.xm`
+   track/instrument they came from) via a shared `krawall_names.txt`
+   (`<index> <Name>` lines, version-independent). Not yet built: the
+   bootstrap script (`tools/krawall_migrate.py`) doesn't read it yet, and
+   there's no rename helper for already-migrated (JSON-backed) content
+   that renames the `.json`/`.wav` files and updates the `regions.<ver>.txt`
+   row's name column without clobbering hand-edited JSON.
+2. **Done**: the raw `.bin` extraction under `asm/krawall/` is replaced by
+   the curated, editable JSON+WAV format under `data/audio/`, packed back
+   to byte-identical ROM bytes at build time -- see Build integration.
+   Both US and JP verified byte-identical against their donor ROMs.
+3. `effect`/`effectop` values aren't decoded to symbolic names yet (see
+   Open questions) -- would make pattern JSON more readable.
