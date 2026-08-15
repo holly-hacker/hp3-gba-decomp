@@ -1,6 +1,6 @@
 .text
 
-sFamousWizardCardNames: @ 0x0804CEC4
+sFamousWizardCardNames: @ us:0x0804CEC4, jp:0x0804CDF0
 	.ascii "02 Fullbert The Fearful\000\000\000\000\000\000\000\000\000"
 	.ascii "03 Beatrix Bloxam\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"
 	.ascii "01 Merwyn The Malicious\000\000\000\000\000\000\000\000\000"
