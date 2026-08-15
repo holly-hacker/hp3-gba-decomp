@@ -40,9 +40,12 @@
           '';
         };
 
-        # Locates Krawall module/sample/instrument data in a ROM (data-only
-        # heuristic scan, no code disassembly). Used for discovery only --
-        # tools/extract_krawall.py does its own precise byte-span math.
+        # Krawall module/sample/instrument data extraction/export tool. No
+        # longer used for discovery by tools/extract_krawall.py (see its
+        # docstring), only for casual `.xm` listening exports
+        # (`just extract-music-xm`) and manual one-off `-m`/`-x` runs. A
+        # heap-corrupting out-of-bounds write in its XM writer is patched
+        # here -- see patches/unkrawerter/README.md.
         unkrawerter = pkgs.stdenv.mkDerivation {
           pname = "unkrawerter";
           version = "4.0";
@@ -52,6 +55,9 @@
             rev = "999e310fcc62a0d21e783549051a06a2a3fbd848";
             hash = "sha256-1ohPQZ0FHxfVCKA/D6tFwbjPlzS64tJ8btulWvLNfG4=";
           };
+          patches = [
+            ./patches/unkrawerter/0001-fix-oob-channel-memory-heap-corruption.patch
+          ];
           buildPhase = ''
             g++ -std=c++11 -O2 -o unkrawerter unkrawerter.cpp
           '';

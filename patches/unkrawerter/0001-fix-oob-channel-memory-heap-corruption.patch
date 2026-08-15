@@ -1,0 +1,84 @@
+diff --git a/unkrawerter.cpp b/unkrawerter.cpp
+index 79f9260..b364bfe 100644
+--- a/unkrawerter.cpp
++++ b/unkrawerter.cpp
+@@ -637,6 +637,14 @@ int unkrawerter_writeModuleToXM(FILE* fp, uint32_t moduleOffset, const std::vect
+                 if (!follow) break; // If it's 0, the row's done
+                 unsigned char xmflag = 0x80; // Stores the next byte types in XM format
+                 int channel = follow & 0x1f;
++                // channel is a 5-bit field (0-31) independent of this module's
++                // actual channel count, but memory[] below is only allocated
++                // with mod->channels entries -- the real bounds check further
++                // down (`if (channel >= mod->channels) continue;`) runs too
++                // late to protect the memory[channel] accesses in the S3M
++                // effect-memory block right below, which corrupts the heap
++                // for any module with a stray out-of-range channel index.
++                bool channelInBounds = channel < mod->channels;
+                 unsigned char note = 0, volume = 0, effect = 0, effectop = 0;
+                 unsigned short instrument = 0;
+                 if (follow & 0x20) { // Note & instrument follows
+@@ -668,8 +676,10 @@ int unkrawerter_writeModuleToXM(FILE* fp, uint32_t moduleOffset, const std::vect
+                         effect = 0;
+                         effectop = 0;
+                     } else if (effect == 6) { // S3M volume slide
+-                        if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
+-                        memory[channel].s3m = effectop;
++                        if (channelInBounds) {
++                            if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
++                            memory[channel].s3m = effectop;
++                        }
+                         if ((effectop & 0xF0) == 0xF0) { // fine decrease
+                             effect = 0x0E;
+                             effectop = 0xB0 | (effectop & 0x0F);
+@@ -680,8 +690,10 @@ int unkrawerter_writeModuleToXM(FILE* fp, uint32_t moduleOffset, const std::vect
+                             effect = 0x0A;
+                         }
+                     } else if (effect == 11) { // S3M porta down
+-                        if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
+-                        memory[channel].s3m = effectop;
++                        if (channelInBounds) {
++                            if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
++                            memory[channel].s3m = effectop;
++                        }
+                         if ((effectop & 0xF0) == 0xF0) { // fine
+                             effect = 0x0E;
+                             effectop = 0x20 | (effectop & 0x0F);
+@@ -692,8 +704,10 @@ int unkrawerter_writeModuleToXM(FILE* fp, uint32_t moduleOffset, const std::vect
+                             effect = 0x02;
+                         }
+                     } else if (effect == 15) { // S3M porta up
+-                        if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
+-                        memory[channel].s3m = effectop;
++                        if (channelInBounds) {
++                            if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
++                            memory[channel].s3m = effectop;
++                        }
+                         if ((effectop & 0xF0) == 0xF0) { // fine
+                             effect = 0x0E;
+                             effectop = 0x10 | (effectop & 0x0F);
+@@ -704,8 +718,10 @@ int unkrawerter_writeModuleToXM(FILE* fp, uint32_t moduleOffset, const std::vect
+                             effect = 0x01;
+                         }
+                     } else if (effect == 23) { // S3M volume slide + vibrato
+-                        if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
+-                        memory[channel].s3m = effectop;
++                        if (channelInBounds) {
++                            if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
++                            memory[channel].s3m = effectop;
++                        }
+                         // XM doesn't have a fine Vol+Vib command, so put the volume slide command in the volume column & vibrato in the effects column
+                         if ((effectop & 0xF0) == 0xF0) { // fine decrease
+                             if (!(xmflag & 0x04)) {xmflag |= 0x04; volume = 0x80 | (effectop & 0x0F);}
+@@ -719,8 +735,10 @@ int unkrawerter_writeModuleToXM(FILE* fp, uint32_t moduleOffset, const std::vect
+                             effect = 0x06;
+                         }
+                     } else if (effect == 24) { // S3M volume slide + porta
+-                        if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
+-                        memory[channel].s3m = effectop;
++                        if (channelInBounds) {
++                            if (effectop == 0 && memory[channel].s3m) effectop = memory[channel].s3m;
++                            memory[channel].s3m = effectop;
++                        }
+                         // XM doesn't have a fine Vol+Porta command, so put the volume slide command in the volume column & portamento in the effects column
+                         if ((effectop & 0xF0) == 0xF0) { // fine decrease
+                             if (!(xmflag & 0x04)) {xmflag |= 0x04; volume = 0x80 | (effectop & 0x0F);}
