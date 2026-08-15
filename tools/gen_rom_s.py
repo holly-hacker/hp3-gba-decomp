@@ -23,6 +23,12 @@ Labels = dict[int, str]
 # (see the `pack-krawall` recipe, which must run before `stitch`).
 KRAWALL_DIRECTIVES = {"krawall-module": "modules", "krawall-samples": "samples"}
 
+# dialog-text/dialog-text-table rows: same idea, but pack_text.py names
+# its build/<ver>/text/*.s output after the row's own <name> field
+# directly (no modules/samples-style subdirectory split needed, since
+# language files and the one pointer table all have distinct names).
+DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
+
 
 def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     """Returns (regions, labels): regions sorted and non-overlapping."""
@@ -49,6 +55,18 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 kind = KRAWALL_DIRECTIVES[parts[0]]
                 asmfile = f"build/{ver}/audio/{kind}/{name}.s"
+                regions.append((start, end, asmfile, name))
+                continue
+            if parts[0] in DIALOG_TEXT_DIRECTIVES:
+                expected_len = 5 if parts[0] == "dialog-text" else 4
+                if len(parts) != expected_len:
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end>"
+                              f"{' <json>' if parts[0] == 'dialog-text' else ''} <name>'")
+                start_s, end_s, name = parts[1], parts[2], parts[-1]
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                asmfile = f"build/{ver}/text/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
             if len(parts) != 4:

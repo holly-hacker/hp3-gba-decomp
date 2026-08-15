@@ -28,7 +28,8 @@ newer configure-based projects (kl-eod-decomp, dtk-template).
 
 - Developer Griptonite Games, publisher EA, released May 2004. Sole credited programmer
   (Michael Dorgan) — expect a small, single-author codebase.
-- **Two ROM versions**: USA/Europe cart (multi-language: En,Fr,De,Es,It,Nl,Da) and Japan
+- **Two ROM versions**: USA/Europe cart (multi-language: English US, English UK,
+  French, German, Spanish, Italian, Dutch, Danish -- 8 languages) and Japan
   ("Harry Potter to Azkaban no Shuujin"). Verify exact dumps against the No-Intro DAT.
   Long-term goal: one codebase builds both.
 - **Audio: Krawall engine (confirmed, located in both ROMs).** Krawall is an XM/S3M module

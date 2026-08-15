@@ -16,5 +16,10 @@ data/audio/modules/*
 data/audio/samples/*
 !data/audio/modules/.gitkeep
 !data/audio/samples/.gitkeep
+# Dialog/UI text content (tools/text_migrate.py bootstraps this locally
+# from the baserom) -- game's actual copyrighted text content, not
+# committed. See CLAUDE.md hard rule 2 and docs/formats/text.md.
+data/text/*
+!data/text/.gitkeep
 tools/__pycache__
 .claude/worktrees

@@ -110,3 +110,37 @@ krawall-module 0x08D22E4C 0x08D250B0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
+
+# --- Dialog/UI text data ---
+#
+# dialog-text <start> <end> <json-file> <name>
+#   One language's full string table (Huffman tree + offset table +
+#   2767 compressed strings, byte-aligned per string, 4-byte-aligned as
+#   a whole -- see docs/formats/text.md and tools/text_codec.py), packed
+#   from curated data/text/<lang>.json by tools/pack_text.py before
+#   `stitch` runs (see the `pack-text` recipe). US/EU cart only --
+#   dialog text has not been located in the JP ROM (very likely a
+#   different mechanism, not proven identical the way Krawall content
+#   is -- see docs/formats/text.md).
+#
+# dialog-text-table <start> <end> <name>
+#   The 8-entry per-language pointer table (sub_08042588's
+#   0x0806BD78) that all 8 dialog-text rows above are addressed from,
+#   in the fixed language order English US, English UK, French, German,
+#   Spanish, Italian, Dutch, Danish.
+#
+# data/text/ is curated, editable source (JSON), gitignored per hard
+# rule 2 (CLAUDE.md) -- game's real dialog/UI text content, same
+# footing as the baserom and data/audio/. Bootstrap it locally with
+# `just migrate-text` before building. tools/pack_text.py writes the
+# actual packed assembly to build/<ver>/text/ (also gitignored), which
+# is what gen_rom_s.py includes.
+dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
+dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
+dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb
+dialog-text 0x08ED3574 0x08EE88CC data/text/fr.json DialogTextFr
+dialog-text 0x08EE88CC 0x08EFC504 data/text/de.json DialogTextDe
+dialog-text 0x08EFC504 0x08F0FB84 data/text/es.json DialogTextEs
+dialog-text 0x08F0FB84 0x08F24704 data/text/it.json DialogTextIt
+dialog-text 0x08F24704 0x08F37D1C data/text/nl.json DialogTextNl
+dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa

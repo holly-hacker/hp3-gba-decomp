@@ -670,14 +670,48 @@ possible but not done.
 resources are confirmed at all (the spark `0x080BCDD8` and the wand's
 4 glow frames), both found via live tracing, not a repeatable static
 scan. Unlike the palette path, there's no confirmed single dispatcher
-argument convention to statically walk for tiles yet -- the wand's
-tile call didn't come from any of `sub_0801DE5C`'s 3 previously-known
-static callers (which are for level/BG graphics), so there's at least
-one more calling pattern for OBJ tiles that hasn't been found and
-enumerated. This is the next real unlock for reaching "extract
-everything" -- not more live-triggering of individual assets, but
-finding and statically walking whatever calls into the tile path the
-way `sub_08001528` calls into the palette path.
+argument convention to statically walk for tiles yet.
+
+**Correction, found this session**: an earlier version of this doc said
+the wand's tile call "didn't come from any of `sub_0801DE5C`'s 3
+previously-known static callers." That's wrong -- re-checked directly
+(`grep -c "bl sub_0801DE5C"` against `build/us/full_disasm.s`): there
+are **exactly 3** static call sites for `sub_0801DE5C`, and no indirect/
+literal-pool references to its address exist anywhere else in the
+disassembly, so the wand's live-traced call necessarily went through one
+of these same 3 -- there is no missing 4th caller. What was actually
+wrong was assuming all 3 are level/BG-only. Re-examined all 3 directly:
+
+- `sub_080454BC(objStruct, resourcePtr)` (`0x080454BC`): computes
+  `dest = 0x06010000 + tileIndexField(objStruct)*32` and calls
+  `sub_0801DE5C(resourcePtr, dest)` -- a **generic single-resource OBJ
+  tile loader**, keyed off a tile-index field read from the object
+  struct, not level-table data.
+- `sub_080454DC(resourcePtr, ...)` (`0x080454DC`): same shape, dest
+  computed from an argument rather than an object-struct field.
+- `sub_08045588(objStruct, ...)` (`0x08045588`): a **loop** over a
+  per-object sub-resource table (entries read at `objStruct[6]`'s
+  struct, fields include `w:u8, h:u8` tile-dimensions and a `u16`
+  source-blob offset), computing per-entry VRAM destinations
+  cumulatively and calling `sub_0801DE5C` once per entry -- i.e. a real,
+  generic **multi-tile sprite-sheet loader**, exactly the missing
+  "many tiles per object" mechanism.
+
+Both `sub_080454BC` and `sub_080454DC` are called from deep inside
+object-update/animation code (`build/us/full_disasm.s` around line 5156/
+5183, inside a large unnamed function reading per-object animation-frame
+fields) -- not the 124-byte level table at all. This is a genuine,
+reusable, generic OBJ tile-loading path, analogous to `sub_08001528` for
+palettes, but **the resource pointer's own source within that caller
+hasn't been traced back to a literal/statically-walkable form yet** --
+unlike the palette path where `sub_08001528`'s `resource_ptr` argument
+is always a clean literal at the call site. Doing that trace (find every
+caller of `sub_080454BC`/`sub_080454DC`/`sub_08045588`, and where each
+one's `resourcePtr` argument ultimately comes from -- likely an
+animation-frame table entry, given the surrounding code reads per-frame
+struct fields) is the next real unlock for reaching "extract everything"
+for tiles, replacing the earlier "find a missing calling pattern" framing
+-- the pattern is found; what's left is tracing its argument dataflow.
 
 ## What's NOT yet known
 
@@ -728,6 +762,18 @@ project, using mGBA's built-in debugger console driven interactively
 by the user -- notably *better* than the gdb-stub approach `CLAUDE.md`
 flags as unreliable for Krawall. Remaining, in rough priority order:
 
+0. **Trace `sub_080454BC`/`sub_080454DC`/`sub_08045588`'s callers**
+   (new this session -- see "Correction, found this session" above):
+   these are the real, generic, statically-confirmed OBJ tile-loading
+   functions (the missing piece analogous to `sub_08001528` for
+   palettes). Finding every caller and tracing each one's `resourcePtr`
+   argument back to its source (likely an animation-frame table, given
+   the surrounding object-update code) would let a scanner enumerate
+   real tile resources at scale the same way
+   `tools/find_object_palettes.py` does for palettes -- purely static,
+   no live triggering needed. This directly extends the same
+   "trace forward from a real, code-confirmed anchor" method that
+   resolved dialog text in `docs/formats/text.md` this session.
 1. **Decode the wand's other 3 animation frames** (`0x080BC9CC`,
    `0x080BCADC`, `0x080BCCD8` -- mechanically identical to the already-
    verified `0x080BCBD0`, just needs running) and its palette (bank 1's

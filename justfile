@@ -64,8 +64,25 @@ migrate-krawall:
 pack-krawall ver="us":
     python3 tools/pack_krawall.py {{ver}}
 
+# One-time per clone (see `migrate-text`), NOT run automatically by
+# `build` -- data/text/ is gitignored (same footing as the baserom, see
+# CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
+# so it's never silently regenerated/overwritten on every build. US only
+# -- dialog text hasn't been located in the JP ROM (see docs/formats/text.md).
+# Bootstrap data/text/ locally from baserom.us.gba.
+migrate-text:
+    python3 tools/text_migrate.py
+
+# Gitignored (build/), like everything else pack_text.py writes. Reads
+# local data/text/ (run `migrate-text` first if missing) plus this
+# version's dialog-text/dialog-text-table rows in regions.<ver>.txt for
+# addresses.
+# Pack data/text/ into this version's dialog-text assembly.
+pack-text ver="us":
+    python3 tools/pack_text.py {{ver}}
+
 # Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (pack-krawall ver)
+build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
     arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
