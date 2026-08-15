@@ -10,9 +10,74 @@ docs/formats/krawall.md's "Pattern atom encoding" and "Module header
 fields" sections for the verification behind each of these, including
 where it disagrees with the current public krawall repo's active (later
 revision) code paths.
+
+Also holds krawall_names.txt loading/resolution (module/sample naming),
+shared by tools/krawall_migrate.py and tools/gen_krawall_regions.py so
+both agree on the same name for a given index.
 """
+import re
+import sys
+from pathlib import Path
 
 NOTE_OFF = 127
+
+# A name becomes a real assembler label (pack_krawall.py emits it as
+# `<name>:`) sharing one flat symbol namespace with the rest of the
+# assembled ROM, so it must be a valid, unambiguous identifier.
+NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
+def load_krawall_names(path: str = "krawall_names.txt") -> tuple[dict[int, str], dict[int, str]]:
+    """Parse krawall_names.txt: '<module|sample> <index> <Name>' lines,
+    '#'-comments and blank lines skipped. Returns (module_names,
+    sample_names), each {index: Name}. Not every index needs an entry --
+    unmapped ones fall back to Module<N>/Sample<N>, see resolve_names.
+    Missing file is not an error (nothing named yet)."""
+    module_names: dict[int, str] = {}
+    sample_names: dict[int, str] = {}
+    if not Path(path).exists():
+        return module_names, sample_names
+    with open(path) as f:
+        for lineno, raw_line in enumerate(f, 1):
+            line = raw_line.split("#", 1)[0].strip()
+            if not line:
+                continue
+            parts = line.split()
+            if len(parts) != 3:
+                sys.exit(f"{path}:{lineno}: expected '<module|sample> <index> <Name>'")
+            kind, idx_s, name = parts
+            if kind not in ("module", "sample"):
+                sys.exit(f"{path}:{lineno}: kind must be 'module' or 'sample', got {kind!r}")
+            if not idx_s.isdigit():
+                sys.exit(f"{path}:{lineno}: index must be a non-negative integer")
+            if not NAME_RE.match(name):
+                sys.exit(f"{path}:{lineno}: name {name!r} must be a valid identifier "
+                          "(it becomes an assembly label) -- letters/digits/underscore, "
+                          "not starting with a digit")
+            idx = int(idx_s)
+            target = module_names if kind == "module" else sample_names
+            if idx in target:
+                sys.exit(f"{path}:{lineno}: duplicate {kind} entry for index {idx}")
+            if name in target.values():
+                sys.exit(f"{path}:{lineno}: name {name!r} already used for another {kind}")
+            target[idx] = name
+    return module_names, sample_names
+
+
+def resolve_names(kind: str, count: int, names: dict[int, str]) -> list[str]:
+    """Returns count names, index i named names.get(i, f"{Kind}{i}").
+    Exits if any two indices resolve to the same name (a custom name
+    colliding with another custom name, or with an unmapped index's
+    default Module<N>/Sample<N>)."""
+    default_prefix = kind.capitalize()
+    resolved = [names.get(i, f"{default_prefix}{i}") for i in range(count)]
+    seen: dict[str, int] = {}
+    for i, name in enumerate(resolved):
+        if name in seen:
+            sys.exit(f"name collision: {kind} {seen[name]} and {kind} {i} "
+                      f"both resolve to {name!r}")
+        seen[name] = i
+    return resolved
 
 # krawerter's Sample.cpp: fixed-size mixer overrun buffer appended after
 # every sample's real PCM data. See docs/formats/krawall.md's Trailing

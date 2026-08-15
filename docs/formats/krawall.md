@@ -331,7 +331,14 @@ it locally with `tools/krawall_migrate.py` before building -- see below.
 - **`data/audio/samples/<Name>.json` + `<Name>.wav`**: `loopLength`,
   `c2Freq`, `fineTune`, `relativeNote`, `volDefault`, `panDefault`,
   `loop` (`"none"`/`"forward"`/`"pingpong"`), `hq` (opaque bool, see
-  Module header fields). PCM as a **standard playable WAV**, not raw
+  Module header fields), and **`index`** -- the sample's 0-based position
+  in the ROM's global sample list, i.e. what `instrument` (minus one)
+  resolves to. This is the *authoritative* ordering `pack_krawall.py`
+  packs samples in (and thus each sample's real instrument-index/pointer-
+  table position) -- not the filename, since names are user-renamable
+  (see Future work) and needn't stay numeric or sorted. Every sample's
+  `index` must together cover exactly `0..count-1` with no gaps/dupes.
+  PCM as a **standard playable WAV**, not raw
   headerless PCM -- mono, **8-bit**, sample rate = `c2Freq`.
   **Despite the struct field being C-declared `signed char data[1]`, the
   actual stored bytes are offset-binary (128 = silence/zero-crossing, not
@@ -348,9 +355,10 @@ it locally with `tools/krawall_migrate.py` before building -- see below.
   spec-compliant and halves the local disk footprint.) See
   `tools/krawall_migrate.py`/`tools/pack_krawall.py`.
 - Sample **index** (the 1-based number patterns reference via
-  `instrument`) is the numeric sort of `Sample<N>` filenames -- renaming a
-  sample later must not change this without also updating every pattern
-  that references it (not yet automated).
+  `instrument`, before name resolution) comes from each sample JSON's own
+  `index` field (0-based there), not the filename -- see above. Patterns
+  reference samples by *name*, so renaming a sample (see Future work)
+  doesn't require touching any pattern.
 - `regions.<ver>.txt` uses two directives instead of per-pattern/
   per-sample/per-module rows: `krawall-module <start> <end> <json-file>
   <name>` (one row per module -- covers that module's own patterns, which
@@ -455,13 +463,22 @@ sample/pattern trailing padding at all.
 
 Not started, just recorded so the reasoning behind it isn't lost:
 
-1. Let modules and samples be given human-readable names (which `.xm`
-   track/instrument they came from) via a shared `krawall_names.txt`
-   (`<index> <Name>` lines, version-independent). Not yet built: the
-   bootstrap script (`tools/krawall_migrate.py`) doesn't read it yet, and
-   there's no rename helper for already-migrated (JSON-backed) content
-   that renames the `.json`/`.wav` files and updates the `regions.<ver>.txt`
-   row's name column without clobbering hand-edited JSON.
+1. **Done**: modules and samples can be given human-readable names (which
+   `.xm` track/instrument they came from) via a shared `krawall_names.txt`
+   at the repo root (`<module|sample> <index> <Name>` lines,
+   version-independent -- see `krawall_codec.py`'s `load_krawall_names`/
+   `resolve_names`). `tools/krawall_migrate.py` picks it up on re-run,
+   using the custom name for the `.json`/`.wav` filenames and (for
+   samples) the name patterns reference via `instrument`; it also removes
+   the superseded default-named `Module<N>`/`Sample<N>` file(s) from a
+   prior run. `tools/gen_krawall_regions.py` resolves module names the
+   same way, so its output rows can be spliced into `regions.<ver>.txt`
+   to match. Not automated: renaming *again* (custom name -> a different
+   custom name) doesn't clean up the now-stale previous name -- delete it
+   by hand; a dedicated rename helper that also patches
+   `regions.<ver>.txt` in place would close this. Names must be valid
+   assembler identifiers (letters/digits/underscore, not starting with a
+   digit) since `pack_krawall.py` emits them as real labels.
 2. **Done**: the raw `.bin` extraction under `asm/krawall/` is replaced by
    the curated, editable JSON+WAV format under `data/audio/`, packed back
    to byte-identical ROM bytes at build time -- see Build integration.

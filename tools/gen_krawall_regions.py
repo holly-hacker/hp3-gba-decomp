@@ -11,6 +11,12 @@ docs/formats/krawall.md) and a single row for the whole sample block
 there). Also double-checks those contiguity assumptions the packer relies
 on, refusing to emit if a future baserom's layout doesn't match.
 
+Module names come from krawall_names.txt (see krawall_codec.py's
+load_krawall_names) the same way tools/krawall_migrate.py resolves them --
+re-run this (and splice the output into regions.<ver>.txt) any time
+krawall_names.txt changes, so the row names/paths keep matching the
+renamed data/audio/modules/*.json files.
+
 Usage: gen_krawall_regions.py <ver>   (prints manifest rows to stdout)
 """
 import sys
@@ -21,6 +27,7 @@ from extract_krawall import (
     SAMPLE_LIST, MODULE_ADDRS, sample_span, module_header_span,
     align4, SAMPLES_ADD, u32,
 )
+from krawall_codec import load_krawall_names, resolve_names
 
 ROM_BASE = 0x08000000
 
@@ -29,8 +36,9 @@ def compute_samples_bounds(data: bytes, ver: str) -> tuple[int, int]:
     sample_list_addr, sample_count = SAMPLE_LIST[ver]
     addrs = [u32(data, sample_list_addr + i * 4) & 0x1FFFFFF for i in range(sample_count)]
     if sorted(addrs) != addrs:
-        sys.exit("sample index order doesn't match address order -- "
-                 "pack_krawall.py's numeric-sort packing order would be wrong")
+        sys.exit("sample index order doesn't match address order -- would "
+                 "make krawall_migrate.py's per-sample 'index' field disagree "
+                 "with the ROM's own instrument-reference numbering")
     cur = addrs[0]
     for a in addrs:
         if a != cur:
@@ -68,9 +76,11 @@ def main() -> None:
                  f"krawall-samples 0x{ROM_BASE+s_start:08X} 0x{ROM_BASE+s_end:08X} "
                  f"data/audio/samples KrawallSamples"))
 
+    module_names, _ = load_krawall_names()
+    resolved_names = resolve_names("module", len(MODULE_ADDRS[ver]), module_names)
     for m_i, m_addr in enumerate(MODULE_ADDRS[ver]):
         start, end = compute_module_bounds(data, m_addr)
-        name = f"Module{m_i}"
+        name = resolved_names[m_i]
         rows.append((start, end,
                      f"krawall-module 0x{ROM_BASE+start:08X} 0x{ROM_BASE+end:08X} "
                      f"data/audio/modules/{name}.json {name}"))

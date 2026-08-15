@@ -1,0 +1,63 @@
+# Human-readable name overrides for Krawall modules/samples, shared
+# across US/JP (content is version-independent -- see
+# docs/formats/krawall.md). Not every module/sample needs an entry;
+# unmapped ones keep their default Module<N>/Sample<N> name.
+#
+# Format: '<module|sample> <index> <Name>'
+#   - index: the module's position in tools/extract_krawall.py's
+#     MODULE_ADDRS list, or the sample's position in the ROM's global
+#     sample list (both 0-based) -- these are also each currently-unnamed
+#     entry's default Module<N>/Sample<N> number.
+#   - Name: must be a valid assembler identifier (letters/digits/
+#     underscore, not starting with a digit) -- it becomes a real .s
+#     label (see tools/pack_krawall.py).
+#
+# Example:
+# module 0 MusHogwarts
+# sample 12 PianoC4
+#
+# After editing this file, re-run `just migrate-krawall` to rename the
+# corresponding data/audio/ files, then regenerate and splice the
+# affected rows into regions.<ver>.txt:
+#   python3 tools/gen_krawall_regions.py us
+#   python3 tools/gen_krawall_regions.py jp
+# See docs/formats/krawall.md's Future work for current limitations
+# (renaming an already-custom-named entry again doesn't clean up the
+# previous name -- delete the stale file by hand).
+
+module 0 MusBattleBoss
+module 1 MusLeakyCauldronCellar
+module 2 MusBattle
+
+module 8 MusHogwartsClassroom
+module 9 MusHogwartsMiscRoom1
+
+module 18 SfxShortcutDown
+module 19 SfxShortcutUp
+
+module 22 SfxGetKeyItem
+module 23 SfxLevelUp
+
+module 25 SfxTimeSkip
+module 26 MusBattleVictory
+
+module 28 MusHogwartsExpressCreepy
+
+module 33 MusHogwartsGrounds
+module 34 MusHogwartsMiscRoom2
+
+module 38 MusHogwartsHall
+module 39 MusHogwartsExpress
+module 40 MusHogwartsHallways
+module 41 MusLeakyCauldron
+
+module 50 MusTitle
+module 51 MusPause
+
+sample 0 MenuClickDisabled
+sample 1 MenuCursorMove
+sample 2 MenuClick
+sample 3 MenuBack
+sample 4 Purchase
+
+sample 28 FieldSpellLumos

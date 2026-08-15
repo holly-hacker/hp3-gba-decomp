@@ -164,14 +164,28 @@ def pack_module(start_addr: int, end_addr: int, json_path: str, name: str,
 
 def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) -> tuple[str, dict[str, int]]:
     sdir = Path(samples_dir)
-    names = sorted((p.stem for p in sdir.glob("*.json")), key=lambda n: int(n[len("Sample"):]))
-    sample_index = {n: i + 1 for i, n in enumerate(names)}  # 1-based
+    # Sample order fixes each sample's 1-based instrument index -- the
+    # authoritative order is each JSON's own "index" field (written by
+    # krawall_migrate.py), NOT the filename, since names are user-renamable
+    # (see krawall_names.txt) and needn't stay numeric/sorted.
+    entries: list[tuple[int, str, dict]] = []
+    for p in sdir.glob("*.json"):
+        meta = json.loads(p.read_text())
+        if "index" not in meta:
+            sys.exit(f"{p}: missing required 'index' field")
+        entries.append((meta["index"], p.stem, meta))
+    entries.sort(key=lambda e: e[0])
+    got_indices = [e[0] for e in entries]
+    if got_indices != list(range(len(entries))):
+        sys.exit(f"sample 'index' fields must be exactly 0..{len(entries)-1} "
+                 f"with no gaps/duplicates, got {got_indices}")
+
+    sample_index = {stem: idx + 1 for idx, stem, _ in entries}  # 1-based
 
     lines: list[str] = []
     cursor = start_addr
     labels = []
-    for sname in names:
-        meta = json.loads((sdir / f"{sname}.json").read_text())
+    for _, sname, meta in entries:
         pcm = wav_to_pcm(sdir / f"{sname}.wav")
 
         labels.append(sname)
