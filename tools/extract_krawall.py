@@ -7,26 +7,75 @@ files are the game's actual copyrighted audio content and must never be
 committed (gitignored, like baserom.*.gba); regenerate them locally by
 running this script before building -- see the `extract-krawall` recipe.
 
-Uses the `unkrawerter` binary purely for discovery (its heuristic search
-for sample/module/instrument pointer lists -- see flake.nix), then computes
-exact byte spans itself using Krawall's struct layouts, ported from
-UnkrawerterGBA's readSampleFile/readModuleFile/readPatternFile:
+Pure deterministic parsing, no heuristic discovery tool involved: the
+sample list address and every module header address are hardcoded below
+(SAMPLE_LIST / MODULE_ADDRS) rather than located at runtime. This is
+deliberate, not a shortcut -- the donor ROMs are fixed, pinned binaries
+(rom.<ver>.sha1, hard rule 1), so there is nothing for a scan to adapt to;
+hardcoding the addresses we've already confirmed is simpler and more
+honest than re-deriving them via a heuristic scanner every run. Everything
+else -- sample/pattern/module byte spans -- is computed from those seed
+addresses using Krawall's struct layouts, ported from UnkrawerterGBA's
+readSampleFile/readModuleFile/readPatternFile:
   https://github.com/MCJack123/UnkrawerterGBA (unkrawerter.cpp)
+
+This used to shell out to the `unkrawerter` binary for discovery (a
+heuristic scan for runs of ROM pointers). That heuristic missed 21 modules
+per ROM -- short (1-3 pattern) ones whose pointer-table run falls below
+its default match threshold -- and lowering the threshold enough to find
+them segfaults on the JP ROM outright. All 52 module addresses per
+version (31 unkrawerter found + 21 found by hand) were confirmed by the
+same means every other region in this file already is: the parsing below
+accounts for every byte with zero overlaps and zero gaps. See
+docs/formats/krawall.md for the full writeup. `unkrawerter` is still used
+directly (not via this script) by `just extract-music-xm` for casual
+.xm listening exports.
 
 See docs/formats/krawall.md for what's confirmed and what's still open.
 
 Usage: extract_krawall.py <ver>   (writes asm/krawall/, prints manifest
                                     rows for regions.<ver>.txt to stdout)
 """
-import re
 import struct
-import subprocess
 import sys
-import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
 ROM_BASE = 0x08000000
+
+# Sample list address and count -- see docs/formats/krawall.md.
+SAMPLE_LIST = {
+    "us": (0x00D229F4, 278),
+    "jp": (0x00D22824, 278),
+}
+
+# Every Module header address, file offsets, in ROM order (ascending
+# address). Order matters: it fixes the KrawallModule<N> naming. US and JP
+# have the same number of modules in the same relative order.
+MODULE_ADDRS = {
+    "us": [
+        0x00AA08AC, 0x00AA4C64, 0x00AA63A0, 0x00AAA4C4, 0x00AABD4C, 0x00AAFDE8,
+        0x00AB0514, 0x00AB0A20, 0x00AB383C, 0x00AB5C50, 0x00ABA9B8, 0x00ABAF10,
+        0x00ABB508, 0x00ABB918, 0x00ABBB8C, 0x00ABC05C, 0x00ABC6C4, 0x00ABC9C8,
+        0x00ABCD34, 0x00ABD068, 0x00ABD5DC, 0x00ABDA50, 0x00ABDF40, 0x00ABE39C,
+        0x00ABE858, 0x00ABEE48, 0x00ABFBFC, 0x00ABFFBC, 0x00AC1980, 0x00AC26A4,
+        0x00AC4778, 0x00AC785C, 0x00ACA51C, 0x00ACC75C, 0x00AD1754, 0x00AD5644,
+        0x00AD6CB8, 0x00AD7D54, 0x00ADA7BC, 0x00AE051C, 0x00AE2FBC, 0x00AE53F8,
+        0x00AE7444, 0x00AE79C0, 0x00AEA150, 0x00AEAE04, 0x00AECE9C, 0x00AEF66C,
+        0x00D24F20, 0x00D2DAA4, 0x00D3C58C, 0x00D3EE6C,
+    ],
+    "jp": [
+        0x00AA06DC, 0x00AA4A94, 0x00AA61D0, 0x00AAA2F4, 0x00AABB7C, 0x00AAFC18,
+        0x00AB0344, 0x00AB0850, 0x00AB366C, 0x00AB5A80, 0x00ABA7E8, 0x00ABAD40,
+        0x00ABB338, 0x00ABB748, 0x00ABB9BC, 0x00ABBE8C, 0x00ABC4F4, 0x00ABC7F8,
+        0x00ABCB64, 0x00ABCE98, 0x00ABD40C, 0x00ABD880, 0x00ABDD70, 0x00ABE1CC,
+        0x00ABE688, 0x00ABEC78, 0x00ABFA2C, 0x00ABFDEC, 0x00AC17B0, 0x00AC24D4,
+        0x00AC45A8, 0x00AC768C, 0x00ACA34C, 0x00ACC58C, 0x00AD1584, 0x00AD5474,
+        0x00AD6AE8, 0x00AD7B84, 0x00ADA5EC, 0x00AE034C, 0x00AE2DEC, 0x00AE5228,
+        0x00AE7274, 0x00AE77F0, 0x00AE9F80, 0x00AEAC34, 0x00AECCCC, 0x00AEF49C,
+        0x00D24D50, 0x00D2D8D4, 0x00D3C3BC, 0x00D3EC9C,
+    ],
+}
 
 # krawerter's Sample.cpp: fixed-size mixer overrun buffer appended after
 # every sample's real PCM data ("17*4 cause the max inc in the mixer can be
@@ -66,33 +115,6 @@ class Region:
         sub = KIND_DIRS[self.kind]
         return f"asm/krawall/{self.ver}/{sub}/{self.name}.bin" if sub \
             else f"asm/krawall/{self.ver}/{self.name}.bin"
-
-
-def run_unkrawerter(rom_path: str) -> str:
-    with tempfile.TemporaryDirectory() as tmp:
-        result = subprocess.run(
-            ["unkrawerter", "-k", "-v", "-r", "-o", tmp, rom_path],
-            capture_output=True, text=True,
-        )
-        return result.stdout + result.stderr
-
-
-def parse_discovery(log: str) -> tuple[int, int, list[int]]:
-    """Returns (sample_list_addr, sample_count, module_addrs), all as file offsets."""
-    sample_addr = None
-    sample_count = None
-    modules = []
-    for line in log.splitlines():
-        m = re.match(r"Found (\d+) matches at ([0-9A-Fa-f]+) with type sample", line)
-        if m:
-            sample_count = int(m.group(1))
-            sample_addr = int(m.group(2), 16)
-        m = re.match(r"> Found module at address ([0-9A-Fa-f]+)", line)
-        if m:
-            modules.append(int(m.group(1), 16))
-    if sample_addr is None or sample_count is None:
-        sys.exit("could not find sample list in unkrawerter output")
-    return sample_addr, sample_count, modules
 
 
 def u8(data: bytes, off: int) -> int:
@@ -161,8 +183,8 @@ def find_regions(ver: str) -> tuple[bytes, list[Region]]:
     with open(rom_path, "rb") as f:
         data = f.read()
 
-    log = run_unkrawerter(rom_path)
-    sample_addr, sample_count, module_addrs = parse_discovery(log)
+    sample_addr, sample_count = SAMPLE_LIST[ver]
+    module_addrs = MODULE_ADDRS[ver]
 
     regions: list[Region] = []
     regions.append(Region(sample_addr, sample_addr + sample_count * 4,

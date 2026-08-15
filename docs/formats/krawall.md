@@ -1,7 +1,7 @@
 # Krawall audio data format
 
 Status: **PROVEN** for boundaries/addressing (deterministic struct parsing,
-zero overlaps across 688 regions in both ROMs, cross-version pattern-data
+zero overlaps across 733 regions in both ROMs, cross-version pattern-data
 byte-identity confirmed). Field-level semantics beyond what's needed for
 byte-accurate boundaries are not fully decoded yet -- see Open questions.
 
@@ -13,7 +13,9 @@ scans the ROM for runs of plausible `0x08xxxxxx`/`0x09xxxxxx` pointers, then
 classifies each run as a module/sample/instrument list by dereferencing and
 checking the target bytes against the struct shapes below. It does **not**
 look at code/instructions at all -- no function signatures were found or
-usable from it.
+usable from it. This heuristic misses any module whose own pattern-pointer
+run is shorter than its match threshold (default 4) -- see "Modules
+unkrawerter's heuristic misses" below.
 
 Krawall version matters: our confirmed CVS revision is `2003/09/01` (see
 `docs/compiler.md`), which matches `unkrawerter -k` (forces version
@@ -21,13 +23,19 @@ Krawall version matters: our confirmed CVS revision is `2003/09/01` (see
 count). The other option, `-K` (`0x20050421`), uses a 2-byte row count and
 will silently misparse this ROM -- always use `-k`.
 
-`tools/extract_krawall.py` uses `unkrawerter -v` purely for the coarse
-discovery pass (parses its stdout for sample-list/module addresses), then
-computes exact byte spans itself in pure Python, ported from
-`unkrawerter.cpp`'s `readSampleFile`/`readModuleFile`/`readPatternFile`.
-This keeps the precise, build-relevant math in our own auditable code
-rather than depending on scraping another tool's log format for anything
-load-bearing.
+`tools/extract_krawall.py` no longer calls `unkrawerter` at all. It was
+used early on for the coarse discovery pass (sample-list/module addresses,
+scraped from its stdout), with exact byte spans always computed separately
+in pure Python (ported from `unkrawerter.cpp`'s
+`readSampleFile`/`readModuleFile`/`readPatternFile`). Once discovery was
+complete for both ROMs, the confirmed addresses were hardcoded directly
+into the script (`SAMPLE_LIST`/`MODULE_ADDRS`) and the heuristic-scan step
+was deleted -- the donor ROMs are fixed, pinned binaries (hard rule 1), so
+there's nothing left for a scan to adapt to on later runs; hardcoding what's
+already been confirmed is simpler and more honest than re-deriving it. See
+"Modules unkrawerter's heuristic misses" for how the last 21 module
+addresses per ROM were found (`unkrawerter` itself is still used directly,
+outside this script, by `just extract-music-xm` for casual `.xm` exports).
 
 Cross-checked against `sebknzl/krawall`'s `krawerter/` (the original
 `.xm`-to-assembly compiler) for how it emits these structs -- but per the
@@ -99,17 +107,49 @@ typedef struct PACKED {
   instrument envelope mapping. Not fully confirmed; just an absence, not
   actively verified as "correctly absent."
 - Each **module** (song) is its own 364-byte header immediately followed by
-  a variable-length array of pattern pointers. Our ROMs: 31 modules each.
+  a variable-length array of pattern pointers. Our ROMs: 52 modules each
+  (see "Modules unkrawerter's heuristic misses" for where the last 21 came
+  from -- 31 is what `unkrawerter` itself finds).
 - **Patterns are NOT colocated with their module** -- they live in a
   separate region of the ROM, addressed only via the module's pointer
-  array. 378 unique patterns across both ROMs, each owned by exactly one
+  array (except for the 21 modules described below, whose patterns
+  precede rather than follow them, but are otherwise addressed the same
+  way). 402 unique patterns across both ROMs, each owned by exactly one
   module -- checked directly by counting every pattern-pointer reference
-  across all 31 modules' pointer tables: 378 references, 378 unique
+  across all 52 modules' pointer tables: 402 references, 402 unique
   addresses, zero collisions. Patterns are NOT shared/reused across
   modules in this game (an earlier version of this doc claimed otherwise;
   that was wrong -- `extract_krawall.py`'s `seen_patterns` dict-based dedup
   is a no-op safety net in practice, not something that ever actually
   triggers here).
+
+## Modules unkrawerter's heuristic misses
+
+`unkrawerter`'s discovery only recognizes a module by seeing its
+`patterns[]` array as a run of at least `-t`/threshold (default 4)
+consecutive ROM-pointer dwords immediately after a header-shaped preamble.
+21 modules per ROM fail that in two ways at once: they only have 1-3
+patterns (below the default threshold), and -- per krawerter's
+`Mod.cpp::outputFile()` -- a module writes its own patterns *before* its
+header, ending the header with a pointer table that points backward at
+them, so there's no forward-pointing pointer run at a module's start
+address to find in the first place; only modules with enough patterns to
+need their own dedicated storage break that pattern (no pun intended) and
+get a separate forward-referenced pattern block, which is what
+`unkrawerter`'s scan actually locates.
+
+Lowering the threshold (`-t`) surfaces some of them (`-t 2`/`-t 3` find
+the 2-3-pattern ones without incident), but `-t 1` -- needed for the
+1-pattern ones -- **segfaults on the JP ROM** partway through its scan and
+is not usable. All 21 addresses per ROM were instead found by direct
+structural validation: starting right after each already-known module's
+end address, checking whether a well-formed `[pattern...][364-byte
+header+pointer table]` chain starts there (rows ≤ 64, valid ROM pointers,
+plausible channel/order counts), and confirming the chain tiles the
+*entire* remaining gap with zero leftover bytes -- proven exactly, in both
+ROMs, at four addresses each (see git history for the working session that
+found these, and `tools/extract_krawall.py`'s `MODULE_ADDRS` for the
+addresses themselves).
 
 ### Sample size field
 
@@ -144,11 +184,12 @@ regions, since multiple modules can reference the same pattern).
 
 ## Confirmed stats (both ROMs, `-k` version)
 
-- 688 regions each (1 sample list + 278 samples + 31 module headers + 378
-  patterns), zero overlaps detected.
-- 2,733,308 bytes total each (~16% of the 16MB ROM) -- includes the absorbed
+- 733 regions each (1 sample list + 278 samples + 52 module headers + 402
+  patterns), zero overlaps detected, zero unexplained gaps -- every byte
+  of Krawall data in both ROMs is accounted for.
+- 2,763,052 bytes total each (~16% of the 16MB ROM) -- includes the absorbed
   trailing padding described below.
-- All 378 pattern regions are **byte-identical between US and JP** --
+- All 402 pattern regions are **byte-identical between US and JP** --
   confirms genuinely shared music content, not coincidence. Module headers
   and samples differ only in pointer-valued fields (which correctly reflect
   each version's own relocated addresses), not underlying content.
@@ -194,7 +235,7 @@ here) and then verifying byte-for-byte against both ROMs:
   struct.
 - **Patterns**: krawerter emits `.align` (GNU `as`, effectively 4-byte on
   this target) before every `Pattern` label. Verified the 0-3 byte gap
-  after every one of the 378 patterns in both ROMs is all-zero, consistent
+  after every one of the 402 patterns in both ROMs is all-zero, consistent
   with `.align`'s default zero-fill.
 
 `find_regions` computes each region's end directly from this: pattern end
@@ -223,51 +264,13 @@ sample/pattern trailing padding at all.
 - [ ] The "no instrument list" finding is an absence, not a confirmed
       negative -- worth a second look if sample-only playback ever seems
       wrong.
-- [ ] A few gaps between discovered regions are substantial (largest:
-      ~22KB, between `KrawallModule8` and `KrawallPattern111`; three more
-      in the 1-3KB range after other module headers) and are not covered
-      by the exact pattern/sample formulas above -- they stay as real
-      fallback `.incbin`. Likely explanation, from reading krawerter's
-      `Mod.cpp::outputFile()`: each module writes its own private patterns
-      *before* its header, ending the header with a pointer table that
-      points backward at them -- so the bytes right after one module's
-      header are plausibly the start of some other, separate module's
-      pattern data that `unkrawerter`'s own module-discovery heuristic
-      never surfaced (it apparently doesn't find every module in the ROM).
-      Consistent with what's actually in the 22KB gap: a well-formed,
-      previously-unseen `Pattern` (strictly-increasing `index[16]`,
-      plausible `rows`) sits exactly at `KrawallModule8`'s computed end,
-      and scanning further into the gap for dwords that point *backward*
-      to just before themselves (the shape of a module's own trailing
-      pointer table, not `Sample.size`'s forward-chaining shape) found 19
-      of them, chained end-to-end across the entire gap. This is
-      circumstantial, not a confirmed decode -- no attempt has been made to
-      actually locate/parse the module header(s) this data would belong
-      to. An earlier version of this note guessed "more sample data"
-      instead; that guess didn't hold up under closer inspection and has
-      been retracted. Doesn't affect correctness either way -- unclaimed
-      bytes stay as safe raw `.incbin` regardless.
 
 ## Future work
 
 Not started, just recorded so the reasoning behind it isn't lost:
 
-1. A more declarative extraction method: give the parsing script just the
-   start address of a module (== address of its first pattern) or of the
-   sample block (== address of its first sample), and let it walk forward
-   parsing structs (patterns/samples/header) until it hits the natural end
-   of the section -- still verifying structure and accounting for padding
-   as it goes, still emitting today's one-file-per-pattern/sample/module
-   output. Verified viable: for all 31 currently-known modules, a module's
-   own N patterns are contiguous with each other and the last one's end
-   lands exactly on its header start; the 278-sample block is one
-   uninterrupted run. Exactly how the script decides where a section
-   *ends* (vs. one more struct) is still TBD.
-2. Let modules be given human-readable names (which `.xm` track they came
+1. Let modules be given human-readable names (which `.xm` track they came
    from), with patterns inheriting the parent module's name --
    e.g. `BattleTheme` -> `BattleTheme_Pattern1`.
-3. Once (1) exists, manually declare module definitions at the addresses
-   that currently look like unrecognized/undiscovered modules (see Open
-   questions above -- e.g. the ~22KB gap after `KrawallModule8`).
-4. Consider a higher-level storage format instead of raw `.bin` --
+2. Consider a higher-level storage format instead of raw `.bin` --
    e.g. samples as `.wav` plus a JSON sidecar header.
