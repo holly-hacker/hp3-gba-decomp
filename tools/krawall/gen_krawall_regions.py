@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compute the krawall-module/krawall-samples rows for regions.<ver>.txt
 from the baserom, using the same address tables and span math as
-tools/extract_krawall.py. See docs/formats/krawall.md.
+tools/krawall/extract_krawall.py. See docs/formats/krawall.md.
 
 Unlike extract_krawall.py's per-pattern/per-sample rows, this emits one
 row per module (covering that module's own patterns, which are contiguous
@@ -12,7 +12,7 @@ there). Also double-checks those contiguity assumptions the packer relies
 on, refusing to emit if a future baserom's layout doesn't match.
 
 Module names come from krawall_names.txt (see krawall_codec.py's
-load_krawall_names) the same way tools/krawall_migrate.py resolves them --
+load_krawall_names) the same way tools/krawall/krawall_migrate.py resolves them --
 re-run this (and splice the output into regions.<ver>.txt) any time
 krawall_names.txt changes, so the row names/paths keep matching the
 renamed data/audio/modules/*.json files.

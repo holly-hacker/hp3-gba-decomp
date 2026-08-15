@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Decode a "type-4" compressed resource blob using the game's own
 decompressor -- executed via the Unicorn CPU emulator against the real
-ARM-mode ROM bytes, same approach as tools/decode_type6.py (not a
+ARM-mode ROM bytes, same approach as tools/graphics/decode_type6.py (not a
 hand-reimplementation -- the codec's halfword-aligned, parity-tracked
 copy logic is intricate enough that a hand port risks a subtle,
 plausible-looking bug, as already happened once this session with the

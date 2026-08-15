@@ -20,7 +20,7 @@
 # krawall-module/krawall-samples <start> <end> <source> <name>
 #   See the "Krawall audio data" section below for these two directives --
 #   curated JSON+WAV source under data/audio/, packed to real assembly by
-#   tools/pack_krawall.py before `stitch` (the `pack-krawall` recipe).
+#   tools/krawall/pack_krawall.py before `stitch` (the `pack-krawall` recipe).
 
 label 0x080000C0 _080000C0
 
@@ -39,7 +39,7 @@ label 0x080000C0 _080000C0
 # krawall-module <start> <end> <json-file> <name>
 #   A module (song) plus its own patterns, packed from curated
 #   data/audio/modules/<name>.json (+ the sample WAVs it references) by
-#   tools/pack_krawall.py before `stitch` runs (see the `pack-krawall`
+#   tools/krawall/pack_krawall.py before `stitch` runs (see the `pack-krawall`
 #   recipe). One row per module: a module's own patterns are contiguous
 #   with each other and immediately precede its header in ROM, so the
 #   whole [patterns][header] span is one region -- confirmed in
@@ -54,7 +54,7 @@ label 0x080000C0 _080000C0
 # content-identical between US/JP (see docs/formats/krawall.md's Confirmed
 # stats) -- only the addresses below are per-version. It's gitignored, same
 # footing as the baserom (see CLAUDE.md hard rule 2) -- bootstrap it
-# locally with `just migrate-krawall` before building. tools/pack_krawall.py
+# locally with `just migrate-krawall` before building. tools/krawall/pack_krawall.py
 # writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
 # like everything else in build/), which is what gen_rom_s.py includes.
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
@@ -116,8 +116,8 @@ krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 # dialog-text <start> <end> <json-file> <name>
 #   One language's full string table (Huffman tree + offset table +
 #   2767 compressed strings, byte-aligned per string, 4-byte-aligned as
-#   a whole -- see docs/formats/text.md and tools/text_codec.py), packed
-#   from curated data/text/<lang>.json by tools/pack_text.py before
+#   a whole -- see docs/formats/text.md and tools/text/text_codec.py), packed
+#   from curated data/text/<lang>.json by tools/text/pack_text.py before
 #   `stitch` runs (see the `pack-text` recipe). US/EU cart only --
 #   dialog text has not been located in the JP ROM (very likely a
 #   different mechanism, not proven identical the way Krawall content
@@ -132,7 +132,7 @@ krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 # data/text/ is curated, editable source (JSON), gitignored per hard
 # rule 2 (CLAUDE.md) -- game's real dialog/UI text content, same
 # footing as the baserom and data/audio/. Bootstrap it locally with
-# `just migrate-text` before building. tools/pack_text.py writes the
+# `just migrate-text` before building. tools/text/pack_text.py writes the
 # actual packed assembly to build/<ver>/text/ (also gitignored), which
 # is what gen_rom_s.py includes.
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable

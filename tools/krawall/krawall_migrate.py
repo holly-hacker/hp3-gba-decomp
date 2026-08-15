@@ -6,7 +6,7 @@ Module/pattern/sample *content* is proven byte-identical between US and JP
 (docs/formats/krawall.md's Confirmed stats), so this only ever needs to
 read the US ROM -- data/audio/ is version-independent. Per-version
 addresses live in regions.<ver>.txt's krawall-module/krawall-samples rows
-instead (see tools/gen_krawall_regions.py, which computes those from the
+instead (see tools/krawall/gen_krawall_regions.py, which computes those from the
 same address tables this script uses).
 
 Unlike the old asm/krawall/ raw-.bin extraction (regenerated on every

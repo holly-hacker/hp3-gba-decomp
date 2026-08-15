@@ -26,7 +26,7 @@ Krawall version matters: our confirmed CVS revision is `2003/09/01` (see
 count). The other option, `-K` (`0x20050421`), uses a 2-byte row count and
 will silently misparse this ROM -- always use `-k`.
 
-`tools/extract_krawall.py` no longer calls `unkrawerter` at all. It was
+`tools/krawall/extract_krawall.py` no longer calls `unkrawerter` at all. It was
 used early on for the coarse discovery pass (sample-list/module addresses,
 scraped from its stdout), with exact byte spans always computed separately
 in pure Python (ported from `unkrawerter.cpp`'s
@@ -177,7 +177,7 @@ header+pointer table]` chain starts there (rows ≤ 64, valid ROM pointers,
 plausible channel/order counts), and confirming the chain tiles the
 *entire* remaining gap with zero leftover bytes -- proven exactly, in both
 ROMs, at four addresses each (see git history for the working session that
-found these, and `tools/extract_krawall.py`'s `MODULE_ADDRS` for the
+found these, and `tools/krawall/extract_krawall.py`'s `MODULE_ADDRS` for the
 addresses themselves).
 
 ### Sample size field
@@ -311,7 +311,7 @@ context) with a curated, editable JSON+WAV format under `data/audio/`.
 This exists to support a future moddable build (add/remove/edit tracks),
 which raw opaque binary can't. Per hard rule 2, `data/audio/` is
 **gitignored, same footing as the baserom, never committed**. Bootstrap
-it locally with `tools/krawall_migrate.py` before building -- see below.
+it locally with `tools/krawall/krawall_migrate.py` before building -- see below.
 
 - **`data/audio/modules/<Name>.json`**: one module (song) plus its own
   patterns inlined (patterns are never shared between modules in this
@@ -348,12 +348,12 @@ it locally with `tools/krawall_migrate.py` before building -- see below.
   complement signed. This is *exactly* WAV's own native 8-bit PCM
   convention (unsigned, 128=silence), so the raw bytes go in/out as-is, no
   transform at all -- confirmed round-trip byte-identical against the ROM
-  via both `tools/pack_krawall.py`'s own decoder and independently via
+  via both `tools/krawall/pack_krawall.py`'s own decoder and independently via
   `ffmpeg`. (An earlier revision of this format stored 16-bit instead, on
   the theory that some players mishandle 8-bit WAV's unsigned convention
   -- dropped for lack of a real source backing that claim; 8-bit is
   spec-compliant and halves the local disk footprint.) See
-  `tools/krawall_migrate.py`/`tools/pack_krawall.py`.
+  `tools/krawall/krawall_migrate.py`/`tools/krawall/pack_krawall.py`.
 - Sample **index** (the 1-based number patterns reference via
   `instrument`, before name resolution) comes from each sample JSON's own
   `index` field (0-based there), not the filename -- see above. Patterns
@@ -365,10 +365,10 @@ it locally with `tools/krawall_migrate.py` before building -- see below.
   are contiguous and immediately precede its header) and `krawall-samples
   <start> <end> <dir> <name>` (one row for the *entire* sample set --
   confirmed to be one contiguous run together with the pointer list, see
-  Confirmed stats). `tools/gen_krawall_regions.py <ver>` computes these
+  Confirmed stats). `tools/krawall/gen_krawall_regions.py <ver>` computes these
   rows from the baserom and re-verifies both contiguity assumptions,
   refusing to emit if a future baserom's layout doesn't match.
-- `tools/pack_krawall.py <ver>` (the `pack-krawall` recipe, which `just
+- `tools/krawall/pack_krawall.py <ver>` (the `pack-krawall` recipe, which `just
   build` depends on) reads `data/audio/` plus those manifest rows and
   writes real assembly -- not raw bytes -- to `build/<ver>/audio/...`
   (gitignored, like the rest of `build/`): real labels at the right
@@ -378,22 +378,22 @@ it locally with `tools/krawall_migrate.py` before building -- see below.
   by the normal linker step, not precomputed. This means a matched game
   function can eventually reference `Module0`/`Sample12` directly like
   any other extracted symbol, and mirrors how `krawerter` itself emitted
-  `.S` text rather than raw binary. `tools/krawall_codec.py` holds the
+  `.S` text rather than raw binary. `tools/krawall/krawall_codec.py` holds the
   shared encode/decode logic (pattern row compression, `songIndex`
   derivation, sample trailing-buffer generation) used by both the packer
-  and the one-time `tools/krawall_migrate.py` bootstrap script (ROM ->
+  and the one-time `tools/krawall/krawall_migrate.py` bootstrap script (ROM ->
   `data/audio/`, US only -- content is version-independent, see Confirmed
   stats). Round-trip verified: both US and JP rebuild byte-identical to
   their donor ROMs from this JSON, sourced from the US ROM alone.
 
 ### Old model (superseded)
 
-`tools/extract_krawall.py` still exists (discovery/debugging aid only,
+`tools/krawall/extract_krawall.py` still exists (discovery/debugging aid only,
 not part of the build) -- it writes one raw binary file per region to
 `asm/krawall/<ver>/...` (gitignored -- game's actual copyrighted content)
 and prints the old per-pattern/per-sample/per-module manifest rows. Useful
 for diffing against `pack_krawall.py`'s output while touching
-`tools/krawall_codec.py`.
+`tools/krawall/krawall_codec.py`.
 
 `.xm` export (`just extract-music-xm`) is a completely separate,
 non-authoritative path for actually listening to/viewing the music --
@@ -467,11 +467,11 @@ Not started, just recorded so the reasoning behind it isn't lost:
    `.xm` track/instrument they came from) via a shared `krawall_names.txt`
    at the repo root (`<module|sample> <index> <Name>` lines,
    version-independent -- see `krawall_codec.py`'s `load_krawall_names`/
-   `resolve_names`). `tools/krawall_migrate.py` picks it up on re-run,
+   `resolve_names`). `tools/krawall/krawall_migrate.py` picks it up on re-run,
    using the custom name for the `.json`/`.wav` filenames and (for
    samples) the name patterns reference via `instrument`; it also removes
    the superseded default-named `Module<N>`/`Sample<N>` file(s) from a
-   prior run. `tools/gen_krawall_regions.py` resolves module names the
+   prior run. `tools/krawall/gen_krawall_regions.py` resolves module names the
    same way, so its output rows can be spliced into `regions.<ver>.txt`
    to match. Not automated: renaming *again* (custom name -> a different
    custom name) doesn't clean up the now-stale previous name -- delete it

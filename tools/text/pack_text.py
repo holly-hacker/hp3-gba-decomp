@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Pack data/text/ (curated, editable dialog-string JSON, currently
-US-only -- see tools/text_migrate.py) into per-version, byte-exact
+US-only -- see tools/text/text_migrate.py) into per-version, byte-exact
 assembly for regions.<ver>.txt's dialog-text/dialog-text-table rows. See
 docs/formats/text.md.
 
-Mirrors tools/pack_krawall.py's role for audio: emits real .s text with
+Mirrors tools/krawall/pack_krawall.py's role for audio: emits real .s text with
 real labels (so the language pointer table resolves through the normal
 assembler/linker), verified byte-exact against the real ROM this session
 (see docs/formats/text.md). Each language blob is padded to 4-byte

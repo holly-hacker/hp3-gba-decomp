@@ -5,14 +5,14 @@ wand cursor) -- ROM source, decompression codec, tile data, and palette
 all verified against live game memory, including two independent
 methods (live memory read and ROM decode) landing on byte-identical
 results. **PROVEN** for the type-6 codec's decode mechanism
-(`tools/decode_type6.py`) and now also the type-4 codec
-(`tools/decode_type4.py`), both executed via Unicorn against real ROM
+(`tools/graphics/decode_type6.py`) and now also the type-4 codec
+(`tools/graphics/decode_type4.py`), both executed via Unicorn against real ROM
 code rather than hand-ported. **PROVEN** that three other real palettes
 (`0x08A38108`, `0x08A38FE0`, `0x080BD344`) are genuine final color data
 for their objects, traced through a deferred per-frame queue to the
 vblank DMA that writes real hardware OBJ palette RAM. **PROVEN** that
 this palette mechanism is statically extractable at scale, not just
-one-at-a-time via live triggering: `tools/find_object_palettes.py`
+one-at-a-time via live triggering: `tools/graphics/find_object_palettes.py`
 found 14 real palettes (9 new) with zero gameplay. Tile data remains
 the bottleneck for "extract everything" -- only 2 tile resources are
 confirmed, both via live tracing, with no statically-walkable
@@ -274,9 +274,9 @@ hex/GIMP inspection of the compressed bytes won't show anything
 recognizable -- compressed streams don't look like their decoded
 content).
 
-`tools/decode_type6.py` is now checked into the repo, implementing
+`tools/graphics/decode_type6.py` is now checked into the repo, implementing
 exactly this (Unicorn-based execution, mirroring
-`tools/extract_krawall.py`'s CLI style). `unicorn` was added to
+`tools/krawall/extract_krawall.py`'s CLI style). `unicorn` was added to
 `flake.nix`'s dev shell (`python3Packages.unicorn`). Verified against 4
 real level-table resource pointers, all matching declared sizes exactly
 (508, 6676, 3748, 6052 bytes). Not yet wired into `just build` or
@@ -481,7 +481,7 @@ directly at a real BIOS RLE-compressed resource in ROM. Confirmed:
 0x080BCDD8: 30 20 00 00  -- byte0=0x30 -> type nibble 3 (RLUnComp), size=0x20 (32 bytes = one 4bpp tile)
 ```
 
-Decoded with a from-scratch RLUnComp implementation (`tools/decode_bios.py`,
+Decoded with a from-scratch RLUnComp implementation (`tools/graphics/decode_bios.py`,
 written this session -- see below), verified byte-for-byte against a
 hand-traced decode:
 
@@ -590,7 +590,7 @@ showed it's **not** the simple byte-token LZSS originally guessed in
 byte-parity tracking, structurally closer to the type-6 codec than to
 a textbook LZSS. Given the RLE decoder mistake earlier this session
 (a hand port that silently computed the wrong stream length), built
-**`tools/decode_type4.py`** the same way as `tools/decode_type6.py`:
+**`tools/graphics/decode_type4.py`** the same way as `tools/graphics/decode_type6.py`:
 executes the real ARM code via Unicorn rather than hand-porting the
 logic.
 
@@ -610,10 +610,10 @@ form" result as the tiles, so it's presumably also type-4 or type-6,
 findable the same way (live breakpoint on whatever writes OBJ palette
 bank 1, source register at entry) if wanted.
 
-**`tools/decode_bios.py`** (new, checked into the repo): decodes any of
+**`tools/graphics/decode_bios.py`** (new, checked into the repo): decodes any of
 the three standard BIOS formats (LZ77UnComp, HuffUnComp, RLUnComp) from
 a ROM address, dispatching on the header's type nibble exactly like the
-game's own dispatcher. Unlike `tools/decode_type6.py` (which had to
+game's own dispatcher. Unlike `tools/graphics/decode_type6.py` (which had to
 reverse-engineer an undocumented proprietary codec by executing real
 ROM code in an emulator), these are the public, well-documented GBA
 BIOS formats, reimplemented directly from spec -- verified against the
@@ -637,7 +637,7 @@ palette candidate, findable by walking each call site backward through
 its enclosing function for the last assignment to the argument
 register, without running the game at all.
 
-**`tools/find_object_palettes.py`** (new): finds every `bl
+**`tools/graphics/find_object_palettes.py`** (new): finds every `bl
 sub_08001528` in `build/us/full_disasm.s` (30 total), resolves each
 call's `resource_ptr` argument via backward literal-pool/register-copy
 tracing, and decodes+reports each resolved one's palette. Result:
@@ -734,7 +734,7 @@ for tiles, replacing the earlier "find a missing calling pattern" framing
   these three with the same skepticism -- structural plausibility alone
   has now been directly shown insufficient on this ROM, twice
   (see also the standing memory on this).
-- **Type-4 codec**: now decoded (`tools/decode_type4.py`, Unicorn-based,
+- **Type-4 codec**: now decoded (`tools/graphics/decode_type4.py`, Unicorn-based,
   verified byte-exact against live memory -- see "Finding the ROM
   source" above). Only tested against one resource family (the wand's
   animation frames); not yet tried against other type-4 resources
@@ -755,7 +755,7 @@ for tiles, replacing the earlier "find a missing calling pattern" framing
 The wand cursor sprite is fully resolved (ROM source, codec, tiles,
 palette, all verified against live game memory) -- see "The wand
 cursor sprite" above. That also delivered two reusable, verified tools
-(`tools/decode_type6.py`, `tools/decode_type4.py`) and confirmed the
+(`tools/graphics/decode_type6.py`, `tools/graphics/decode_type4.py`) and confirmed the
 general methodology (live mGBA breakpoints/watchpoints beat blind ROM
 scanning whenever a live trigger is available) works reliably for this
 project, using mGBA's built-in debugger console driven interactively
@@ -770,7 +770,7 @@ flags as unreliable for Krawall. Remaining, in rough priority order:
    argument back to its source (likely an animation-frame table, given
    the surrounding object-update code) would let a scanner enumerate
    real tile resources at scale the same way
-   `tools/find_object_palettes.py` does for palettes -- purely static,
+   `tools/graphics/find_object_palettes.py` does for palettes -- purely static,
    no live triggering needed. This directly extends the same
    "trace forward from a real, code-confirmed anchor" method that
    resolved dialog text in `docs/formats/text.md` this session.

@@ -4,13 +4,13 @@
 # unmapped ones keep their default Module<N>/Sample<N> name.
 #
 # Format: '<module|sample> <index> <Name>'
-#   - index: the module's position in tools/extract_krawall.py's
+#   - index: the module's position in tools/krawall/extract_krawall.py's
 #     MODULE_ADDRS list, or the sample's position in the ROM's global
 #     sample list (both 0-based) -- these are also each currently-unnamed
 #     entry's default Module<N>/Sample<N> number.
 #   - Name: must be a valid assembler identifier (letters/digits/
 #     underscore, not starting with a digit) -- it becomes a real .s
-#     label (see tools/pack_krawall.py).
+#     label (see tools/krawall/pack_krawall.py).
 #
 # Example:
 # module 0 MusHogwarts
@@ -19,8 +19,8 @@
 # After editing this file, re-run `just migrate-krawall` to rename the
 # corresponding data/audio/ files, then regenerate and splice the
 # affected rows into regions.<ver>.txt:
-#   python3 tools/gen_krawall_regions.py us
-#   python3 tools/gen_krawall_regions.py jp
+#   python3 tools/krawall/gen_krawall_regions.py us
+#   python3 tools/krawall/gen_krawall_regions.py jp
 # See docs/formats/krawall.md's Future work for current limitations
 # (renaming an already-custom-named entry again doesn't clean up the
 # previous name -- delete the stale file by hand).

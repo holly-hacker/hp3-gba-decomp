@@ -2,8 +2,8 @@
 """Shared encode/decode helpers for Krawall pattern-row compression, the
 module-header songIndex derivation, and sample trailing-buffer generation.
 
-Used by both tools/krawall_migrate.py (ROM -> data/audio/ JSON+WAV,
-one-time bootstrap) and tools/pack_krawall.py (data/audio/ -> per-version
+Used by both tools/krawall/krawall_migrate.py (ROM -> data/audio/ JSON+WAV,
+one-time bootstrap) and tools/krawall/pack_krawall.py (data/audio/ -> per-version
 assembly at build time). All formats here are confirmed against this
 game's actual embedded Krawall revision (2003-09-01) -- see
 docs/formats/krawall.md's "Pattern atom encoding" and "Module header
@@ -12,7 +12,7 @@ where it disagrees with the current public krawall repo's active (later
 revision) code paths.
 
 Also holds krawall_names.txt loading/resolution (module/sample naming),
-shared by tools/krawall_migrate.py and tools/gen_krawall_regions.py so
+shared by tools/krawall/krawall_migrate.py and tools/krawall/gen_krawall_regions.py so
 both agree on the same name for a given index.
 """
 import re

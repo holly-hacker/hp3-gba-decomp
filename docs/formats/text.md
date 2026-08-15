@@ -9,7 +9,7 @@ correct, grammatical text in the right language every time. Found by
 static tracing alone, starting from a real, already-known ASCII string
 table -- the dynamic-analysis approach previously recommended here was
 never needed. See "The real dialog string table, decoded" below for the
-full derivation, and `tools/decode_dialog_text.py` for a working
+full derivation, and `tools/text/decode_dialog_text.py` for a working
 decoder. The VWF text-*rendering* engine (glyph draw/word-wrap) was
 found first, as the path that led here -- see "The text engine, found".
 The full charmap (every code any real string actually uses, across all
@@ -382,7 +382,7 @@ locale-specific thousands-separator byte -- `' '` for French, `'.'` for
 Italian/Dutch, `','` otherwise -- ordinary number-formatting
 localization, unrelated to the glyph charmap.)
 
-**`tools/decode_dialog_text.py`** (new, checked into the repo):
+**`tools/text/decode_dialog_text.py`** (new, checked into the repo):
 reimplements this whole chain (language table lookup, blob init, tree
 walk) directly in Python from the ROM, verified byte-for-byte against
 manual disassembly tracing for several IDs across all 8 languages.
@@ -400,13 +400,13 @@ real, complete string count, not an arbitrary scan cutoff.
 
 ## The extraction pipeline, built and build-integrated (PROVEN -- full-ROM byte-exact)
 
-Mirrors Krawall's `data/audio/` + `tools/pack_krawall.py` model (see
+Mirrors Krawall's `data/audio/` + `tools/krawall/pack_krawall.py` model (see
 `CLAUDE.md`): curated, editable, gitignored source that a pack step
 turns into byte-exact assembly before `stitch`, verified by the same
 `just compare`/`just check-all` full-ROM sha1 oracle every other region
 already has to pass.
 
-**`tools/text_codec.py`**: the shared codec. Beyond decode (see above),
+**`tools/text/text_codec.py`**: the shared codec. Beyond decode (see above),
 it implements a real **encoder**, which needed one non-obvious fix to
 get byte-exact: the tree contains structurally-reachable **duplicate
 leaves** (the same output byte reachable via more than one bit path) --
@@ -436,7 +436,7 @@ bytes**, base to base, for all 8 languages -- checked directly against
 `baserom.us.gba`, not inferred. This is what makes the pipeline safe to
 wire into the actual build rather than just a research decoder.
 
-**`tools/text_migrate.py`** (the `migrate-text` recipe, one-time per
+**`tools/text/text_migrate.py`** (the `migrate-text` recipe, one-time per
 clone, like `migrate-krawall`): decodes all 8 languages from
 `baserom.us.gba` into `data/text/<lang>.json` (gitignored -- real game
 text content, same footing as the baserom and `data/audio/`, per hard
@@ -448,7 +448,7 @@ codes -- see "What's NOT yet known"). Each file also carries the raw
 Huffman tree and the empirically-captured encode map, so packing never
 needs the baserom again.
 
-**`tools/pack_text.py`** (the `pack-text` recipe, wired into `build` and
+**`tools/text/pack_text.py`** (the `pack-text` recipe, wired into `build` and
 therefore `compare`/`check-all`): reads `regions.<ver>.txt`'s
 `dialog-text`/`dialog-text-table` rows, rebuilds each language's blob
 from `data/text/`, and writes real labeled `.s` files to
@@ -473,7 +473,7 @@ them.
 start/end addresses and the `dialog-text-table` row were computed
 directly from the validated pipeline (language base from the 8-entry
 pointer table, end = base + aligned real blob length), not guessed --
-see `tools/pack_text.py`'s own validation (it would refuse to pack on a
+see `tools/text/pack_text.py`'s own validation (it would refuse to pack on a
 mismatch) as the standing check that they stay correct.
 
 ## The extended charmap, decoded (PROVEN -- cross-validated by structure and content)
@@ -488,7 +488,7 @@ using proper nouns repeated verbatim in the credits (`Hernández`,
 then language grammar/vocabulary for the rest (French `très`, `déjà`,
 `très fâché`; Italian `così`/`è`; Spanish `señor`/`añadido`; German
 `Überraschung`/`beißendes`; Danish/Dutch `spørgsmål`/`geïnformeerd`).
-`tools/text_codec.py`'s `CHARMAP` dict is the authoritative source;
+`tools/text/text_codec.py`'s `CHARMAP` dict is the authoritative source;
 summary:
 
 ```
@@ -568,13 +568,13 @@ actual content, not just closed.
   unsolved** -- see "The extended charmap, decoded" above: no real
   string in any of the 8 languages actually uses it, so there's nothing
   left to decode unless a future find (or a modded string) exercises
-  it. `tools/decode_dialog_text.py`'s raw output still prints `\xNN` for
+  it. `tools/text/decode_dialog_text.py`'s raw output still prints `\xNN` for
   it since that tool predates the charmap work and reads raw ROM bytes
   directly rather than going through `text_codec.py`'s `CHARMAP` --
-  `data/text/*.json` (via `tools/text_migrate.py`) is the place real
+  `data/text/*.json` (via `tools/text/text_migrate.py`) is the place real
   characters actually show up.
 - **Done, this session**: a curated content pipeline now exists,
-  mirroring Krawall's `data/audio/` + `tools/pack_krawall.py` model --
+  mirroring Krawall's `data/audio/` + `tools/krawall/pack_krawall.py` model --
   see "The extraction pipeline, built and build-integrated" below.
 - Whether the type-4/type-6 custom IWRAM codecs (see approach 6 above)
   are used anywhere outside the level-loading dispatcher's 14 known call

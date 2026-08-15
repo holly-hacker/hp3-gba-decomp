@@ -43,10 +43,10 @@ stitch ver="us":
 # Research/debugging aid only -- NOT used by the build anymore (see
 # `pack-krawall`). Re-derives the old raw asm/krawall/<ver>/*.bin dump
 # straight from the baserom; useful for diffing against pack-krawall's
-# output while touching tools/krawall_codec.py. See docs/formats/krawall.md.
+# output while touching tools/krawall/krawall_codec.py. See docs/formats/krawall.md.
 # Regenerate the old raw-binary Krawall dump (not build input).
 extract-krawall ver="us":
-    python3 tools/extract_krawall.py {{ver}} > /dev/null
+    python3 tools/krawall/extract_krawall.py {{ver}} > /dev/null
 
 # One-time per clone (see `migrate-krawall`), NOT run automatically by
 # `build` -- data/audio/ is gitignored (same footing as the baserom, see
@@ -54,7 +54,7 @@ extract-krawall ver="us":
 # so it's never silently regenerated/overwritten on every build.
 # Bootstrap data/audio/ locally from baserom.us.gba.
 migrate-krawall:
-    python3 tools/krawall_migrate.py
+    python3 tools/krawall/krawall_migrate.py
 
 # Gitignored (build/), like everything else pack_krawall.py writes. Reads
 # local data/audio/ (run `migrate-krawall` first if missing -- version-
@@ -62,7 +62,7 @@ migrate-krawall:
 # regions.<ver>.txt for addresses.
 # Pack data/audio/ into this version's Krawall assembly.
 pack-krawall ver="us":
-    python3 tools/pack_krawall.py {{ver}}
+    python3 tools/krawall/pack_krawall.py {{ver}}
 
 # One-time per clone (see `migrate-text`), NOT run automatically by
 # `build` -- data/text/ is gitignored (same footing as the baserom, see
@@ -71,7 +71,7 @@ pack-krawall ver="us":
 # -- dialog text hasn't been located in the JP ROM (see docs/formats/text.md).
 # Bootstrap data/text/ locally from baserom.us.gba.
 migrate-text:
-    python3 tools/text_migrate.py
+    python3 tools/text/text_migrate.py
 
 # Gitignored (build/), like everything else pack_text.py writes. Reads
 # local data/text/ (run `migrate-text` first if missing) plus this
@@ -79,7 +79,7 @@ migrate-text:
 # addresses.
 # Pack data/text/ into this version's dialog-text assembly.
 pack-text ver="us":
-    python3 tools/pack_text.py {{ver}}
+    python3 tools/text/pack_text.py {{ver}}
 
 # Assemble and link the stitched output into a ROM image.
 build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver)
