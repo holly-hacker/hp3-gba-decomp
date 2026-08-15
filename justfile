@@ -71,3 +71,9 @@ check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (com
 extract-music-xm ver="us":
     mkdir -p build/{{ver}}/music_xm
     unkrawerter -k -x -o build/{{ver}}/music_xm baserom.{{ver}}.gba
+
+# Proposes candidates only -- see the script's docstring for how to confirm
+# one before trusting it (e.g. copying a name into functions.jp.cfg).
+# Find US<->JP thumb_func address correspondences by instruction shape.
+match-functions *args:
+    python3 tools/match_functions.py {{args}}
