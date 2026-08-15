@@ -11,8 +11,28 @@ label 0x080000C0 _080000C0
 0x080002A4 0x080002E0 asm/rt/divmodsi4.s        divmodsi4
 0x080002E0 0x080005AC asm/rt/udivsi3.s          udivsi3
 
+# Thumb-mode division runtime
+0x0804A2BC 0x0804A2C0 asm/rt/div_zero_handler.s DivZeroHandler
+0x0804A390 0x0804A408 asm/rt/udivsi3_thumb.s    udivsi3_thumb
+0x0804A408 0x0804A4C8 asm/rt/umodsi3.s          umodsi3
+
 0x0804C422 0x0804C542 asm/data/playable_character_names.s sPlayableCharacterNames
 0x0804CDF0 0x0804D450 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
+
+# MT19937 PRNG, see docs/memory-map/rng.md
+0x0803B220 0x0803B37C asm/rng/mt19937_regenerate.s Mt19937Regenerate
+0x0803B398 0x0803B414 asm/rng/mt19937_auto_seed.s Mt19937AutoSeed
+0x0803B414 0x0803B448 asm/rng/mt19937_set_seed.s Mt19937SetSeed
+0x0803B448 0x0803B474 asm/rng/mt19937_rand_range.s Mt19937RandRange
+0x0803B474 0x0803B49C asm/rng/mt19937_rand_range2.s Mt19937RandRange2
+0x0803B49C 0x0803B4C0 asm/rng/mt19937_rand_max.s Mt19937RandMax
+0x0803B4C0 0x0803B4E4 asm/rng/mt19937_rand_max2.s Mt19937RandMax2
+0x0803B4E4 0x0803B510 asm/rng/mt19937_rand_signed.s Mt19937RandSigned
+0x0803B53C 0x0803B568 asm/rng/mt19937_chance.s Mt19937Chance
+0x0803B594 0x0803B5C8 asm/rng/mt19937_chance_noisy.s Mt19937ChanceNoisy
+0x0803B5C8 0x0803B600 asm/rng/mt19937_seed_array.s Mt19937SeedArray
+0x0803B600 0x0803B65C asm/rng/mt19937_next.s Mt19937Next
+0x0803B65C 0x0803B6B4 asm/rng/mt19937_next2.s Mt19937Next2
 
 # --- Krawall audio data ---
 #

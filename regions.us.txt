@@ -24,6 +24,9 @@
 
 label 0x080000C0 _080000C0
 
+# Still-unextracted helpers referenced from below
+label 0x080208B4 sub_080208B4
+
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
 
@@ -31,8 +34,39 @@ label 0x080000C0 _080000C0
 0x080002A4 0x080002E0 asm/rt/divmodsi4.s        divmodsi4
 0x080002E0 0x080005AC asm/rt/udivsi3.s          udivsi3
 
+# Thumb-mode division runtime
+0x0804A390 0x0804A394 asm/rt/div_zero_handler.s DivZeroHandler
+0x0804A464 0x0804A4DC asm/rt/udivsi3_thumb.s    udivsi3_thumb
+0x0804A4DC 0x0804A59C asm/rt/umodsi3.s          umodsi3
+
 0x0804C4F6 0x0804C616 asm/data/playable_character_names.s sPlayableCharacterNames
 0x0804CEC4 0x0804D524 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
+
+# MT19937 PRNG, see docs/memory-map/rng.md
+0x0803B1B8 0x0803B314 asm/rng/mt19937_regenerate.s Mt19937Regenerate
+0x0803B330 0x0803B3AC asm/rng/mt19937_auto_seed.s Mt19937AutoSeed
+0x0803B3AC 0x0803B3E0 asm/rng/mt19937_set_seed.s Mt19937SetSeed
+0x0803B3E0 0x0803B40C asm/rng/mt19937_rand_range.s Mt19937RandRange
+0x0803B40C 0x0803B434 asm/rng/mt19937_rand_range2.s Mt19937RandRange2
+0x0803B434 0x0803B458 asm/rng/mt19937_rand_max.s Mt19937RandMax
+0x0803B458 0x0803B47C asm/rng/mt19937_rand_max2.s Mt19937RandMax2
+0x0803B47C 0x0803B4A8 asm/rng/mt19937_rand_signed.s Mt19937RandSigned
+0x0803B4D4 0x0803B500 asm/rng/mt19937_chance.s Mt19937Chance
+0x0803B52C 0x0803B560 asm/rng/mt19937_chance_noisy.s Mt19937ChanceNoisy
+0x0803B560 0x0803B598 asm/rng/mt19937_seed_array.s Mt19937SeedArray
+0x0803B598 0x0803B5F4 asm/rng/mt19937_next.s Mt19937Next
+0x0803B5F4 0x0803B64C asm/rng/mt19937_next2.s Mt19937Next2
+
+# Dialog/UI text engine, see docs/formats/text.md
+0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
+0x08020E40 0x08020E9C asm/text/measure_macro_string.s MeasureMacroString
+0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
+0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
+0x08024DC8 0x08024EB8 asm/text/decompress_dialog_text.s DecompressDialogText
+0x08024EB8 0x08024EDC asm/text/init_dialog_text_table.s InitDialogTextTable
+0x08042588 0x080425D8 asm/text/set_language.s SetLanguage
+0x080425D8 0x080425E4 asm/text/get_language.s GetLanguage
+0x080425E4 0x08042608 asm/text/get_dialog_text.s GetDialogText
 
 # --- Krawall audio data ---
 #

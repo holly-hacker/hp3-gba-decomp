@@ -119,6 +119,7 @@ def main() -> None:
     out: list[str] = []
     out.append(".syntax unified")
     out.append('.include "macros.inc"')
+    out.append(f'.include "ram_symbols.{ver}.inc"')
     out.append("")
     out.append(".text")
     out.append("")
