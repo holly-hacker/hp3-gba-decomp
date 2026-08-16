@@ -29,6 +29,11 @@ KRAWALL_DIRECTIVES = {"krawall-module": "modules", "krawall-samples": "samples"}
 # language files and the one pointer table all have distinct names).
 DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 
+# monster-table rows: same idea as krawall-module/-samples, but there's
+# only ever one table and it's packed directly from data/monsters/*.json
+# by pack_monsters.py -- see docs/formats/folio_bruti.md.
+MONSTER_TABLE_DIRECTIVE = "monster-table"
+
 
 def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     """Returns (regions, labels): regions sorted and non-overlapping."""
@@ -55,6 +60,16 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 kind = KRAWALL_DIRECTIVES[parts[0]]
                 asmfile = f"build/{ver}/audio/{kind}/{name}.s"
+                regions.append((start, end, asmfile, name))
+                continue
+            if parts[0] == MONSTER_TABLE_DIRECTIVE:
+                if len(parts) != 5:
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
+                _, start_s, end_s, _source, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                asmfile = f"build/{ver}/monsters/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
             if parts[0] in DIALOG_TEXT_DIRECTIVES:

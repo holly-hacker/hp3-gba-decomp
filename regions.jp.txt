@@ -110,3 +110,11 @@ krawall-module 0x08D22C7C 0x08D24EE0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D24EE0 0x08D2DAAC data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DAAC 0x08D3C5B4 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C5B4 0x08D3EE2C data/audio/modules/MusPause.json MusPause
+
+# Folio Bruti monster stat table -- content proven byte-identical to the
+# US table (0x0804F410), just at a different address, same as Krawall
+# audio. See docs/formats/folio_bruti.md and tools/monsters/. Boundary
+# cross-checked: the table immediately after (icon-animation-speed
+# defaults, 0x00010000 constants) starts at exactly the expected offset
+# here too.
+monster-table 0x0804F33C 0x0804F9B4 data/monsters/monsters.json MonsterTable

@@ -21,5 +21,10 @@ data/audio/samples/*
 # committed. See CLAUDE.md hard rule 2 and docs/formats/text.md.
 data/text/*
 !data/text/.gitkeep
+# Folio Bruti monster stat data (tools/monsters/monster_migrate.py bootstraps
+# this locally from the baserom) -- extracted game data, not committed.
+# See CLAUDE.md hard rule 2 and docs/formats/folio_bruti.md.
+data/monsters/*
+!data/monsters/.gitkeep
 **/__pycache__
 .claude/worktrees

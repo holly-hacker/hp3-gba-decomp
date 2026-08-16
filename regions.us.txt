@@ -178,3 +178,24 @@ dialog-text 0x08EFC504 0x08F0FB84 data/text/es.json DialogTextEs
 dialog-text 0x08F0FB84 0x08F24704 data/text/it.json DialogTextIt
 dialog-text 0x08F24704 0x08F37D1C data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
+
+# --- Folio Bruti monster stat table ---
+#
+# monster-table <start> <end> <json-file> <name>
+#   The Folio Bruti (in-game bestiary) monster stat table: 69 24-byte
+#   records (HP, per-spell effectiveness against 6 of the 8 player
+#   spells, and several still-unidentified fields), read by
+#   sub_0801890C (the spell-effectiveness accessor, a genuine compiled
+#   switch/jump table) and by the battle-init HP-copy code -- see
+#   docs/formats/folio_bruti.md. Packed from curated
+#   data/monsters/monsters.json by tools/monsters/pack_monsters.py before
+#   `stitch` runs (see the `pack-monsters` recipe). End address confirmed
+#   two independent ways: 69 * 24 bytes lands exactly on the
+#   already-known table at 0x0804FA88, and matches the RAM state-array
+#   reset loop bound in sub_080370A0. US ROM only -- content not yet
+#   checked against JP.
+#
+# data/monsters/ is curated, editable source (JSON), gitignored per hard
+# rule 2 (CLAUDE.md) -- extracted game data, same footing as the baserom.
+# Bootstrap it locally with `just migrate-monsters` before building.
+monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable

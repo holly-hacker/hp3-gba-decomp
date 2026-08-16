@@ -81,8 +81,24 @@ migrate-text:
 pack-text ver="us":
     python3 tools/text/pack_text.py {{ver}}
 
+# One-time per clone (see `migrate-monsters`), NOT run automatically by
+# `build` -- data/monsters/ is gitignored (same footing as the baserom,
+# see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
+# silently regenerated/overwritten on every build. US only -- see
+# docs/formats/folio_bruti.md.
+# Bootstrap data/monsters/ locally from baserom.us.gba.
+migrate-monsters:
+    python3 tools/monsters/monster_migrate.py
+
+# Gitignored (build/), like everything else pack_monsters.py writes. Reads
+# local data/monsters/ (run `migrate-monsters` first if missing) plus
+# this version's monster-table row in regions.<ver>.txt for addresses.
+# Pack data/monsters/ into this version's monster-table assembly.
+pack-monsters ver="us":
+    python3 tools/monsters/pack_monsters.py {{ver}}
+
 # Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver)
+build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
     arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
