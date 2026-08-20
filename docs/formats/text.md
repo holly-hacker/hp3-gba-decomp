@@ -197,6 +197,13 @@ character -- loops `ldrb r0,[str]`, calls `sub_08020714` once per
 iteration, stops on a null byte. This is the string-consuming outer
 loop of a real text renderer.
 
+**`DrawTextLines_candidate`** (`0x08020F44`): a level above `PrintTextBox` --
+loops `DrawTextLine` directly, one call per line, advancing Y by
+`DAT_03003121` (line height) each iteration, until the string is
+null-terminated or out of vertical room. Multi-line box drawing built on
+the single-line primitive. Found via `ShowBattleMessage`'s `CriticalHit`
+case (`docs/memory-map/battle.md`).
+
 **`sub_08020714`** (`0x08020714`): the actual per-glyph decode loop.
 Reads one byte at a time and branches on its value:
 

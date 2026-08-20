@@ -744,6 +744,12 @@ or a different debugging frontend.
 
 ## Next steps
 
+- [ ] New lead from `battle.md`: `ShowBattleMessage`'s `SpellLevelUp` case
+      calls `PlaySoundEffect_candidate` (`0x0803FF70`), which forwards into
+      `0x08047DFC` -- a function inside this driver's cluster that
+      manipulates a full per-channel state array, looking closer to a
+      module-switch (`kramPlayModule`-equivalent) than a one-shot SFX
+      trigger. Not traced further from this doc's side yet.
 - [ ] Do NOT expect the public Krawall repo to resolve function identity by
       diffing — it's a different source revision. Naming these functions
       will require either behavioral/structural inference from disassembly,
