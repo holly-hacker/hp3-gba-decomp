@@ -71,7 +71,16 @@ because it discards the upper 17 bits of entropy entirely.
   - `+0xA` (u16 LE) -- current MP.
   - `+0x2B` (u8) -- accuracy stat, compared against
     `get_random_int_max(roll, 100)` to decide attack hit/miss (hit if
-    `roll100 >= acc`).
+    `roll100 >= acc`). **Confirmed correct, see
+    [`battle.md`](battle.md)**: `ResolveMeleeAttack` (`0x08017E44`, found
+    from an address contributed by jlun2) reads the attacker's `+0x2B` as
+    an accuracy stat and rolls `Mt19937RandMax(99)` against it for
+    hit/miss -- direction is hit if `roll < acc` (miss if `roll >= acc`),
+    the opposite framing from this note's `roll100 >= acc` but the same
+    field and the same mechanic. This *contradicts* an earlier guess in
+    `docs/formats/folio_bruti.md` that had labeled `+0x2B` as
+    `stat_magic_defense` (sourced from `MonsterTable+0x04`) -- that guess
+    was wrong and has been corrected there and in `battle.md`.
 
 ### Enemy name table (75 entries, script order = presumed in-game index order)
 

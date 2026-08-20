@@ -15,9 +15,11 @@ data that drives the 8 spell sliders on the Folio Bruti detail screen is
 located, its accessor function is fully understood via a decompiled jump
 table, and its result is traced end-to-end into the slider dot's pixel
 X-position (and into the animated "?" placeholder branch for
-unseen/unanalyzed monsters). The backing monster stat table (HP, level
-range, and other fields) is **STRUCTURAL MATCH / PROVEN for HP** (a live
-battle-init code path reads and stores it as HP). The stat table itself
+unseen/unanalyzed monsters). The backing monster stat table (HP, base
+damage range, accuracy, and other fields) is **STRUCTURAL MATCH overall,
+PROVEN for HP/accuracy/base-damage-range** (live code paths read and use
+each -- see "The monster stat table" below and `../memory-map/battle.md`).
+The stat table itself
 is now extracted end-to-end -- curated JSON under `data/monsters/`,
 packed byte-exact back into the ROM by `tools/monsters/pack_monsters.py`
 (`just compare us` passes) -- see "The extraction pipeline" below. The
@@ -38,7 +40,7 @@ the relocated `MonsterTable` literal landing at the same relative
 offset) since `tools/match_functions.py`'s signature matching doesn't
 catch either one on its own -- see "The extraction pipeline" below for
 why. `DrawFolioBrutiMonsterPanel`, `UpdateFolioBrutiGridCursor`, and the
-other functions found this session are still US-only; not yet matched
+other functions found alongside them are still US-only; not yet matched
 to JP.
 
 ## What we know
@@ -175,20 +177,20 @@ corroboration either way for those two.
 | Offset | Size | Field | Confidence |
 |---|---|---|---|
 | `0x00` | u16 | HP | **PROVEN** (battle-init code copies it into a live HP field, written to both a current-HP and a max-HP struct offset) |
-| `0x02` | u8 | unknown | boundary **PROVEN** (own `ldrb`, not part of a u16 with 0x03 as originally guessed); semantics UNCONFIRMED |
-| `0x03` | u8 | unknown | boundary **PROVEN** (own `ldrb`); semantics UNCONFIRMED |
-| `0x04` | u8 | unknown | boundary **PROVEN** (own `ldrb`); semantics UNCONFIRMED |
-| `0x05` | u8 | small discrete enum (observed values: 3, 5, 10; shared across variant/related-monster groups) -- candidate "species/family" or "element" tag | boundary **PROVEN**; semantics UNCONFIRMED, plausible |
-| `0x06` | u16 | level-range min | boundary **PROVEN** (own `ldrh`); semantics STRUCTURAL MATCH (always `<=` the 0x08 field; both small, monotonic with monster tier) |
-| `0x08` | u16 | level-range max | boundary **PROVEN**; semantics STRUCTURAL MATCH |
+| `0x02` | u8 | candidate "attack" | boundary **PROVEN** (own `ldrb`, not part of a u16 with 0x03 as originally guessed); semantics STRUCTURAL MATCH, weak -- see "Attack/defense/crit-chance, candidates only" below; **no confirmed reader found** (not used by `ResolveMeleeAttack`, see `../memory-map/battle.md`) |
+| `0x03` | u8 | candidate "defense" | boundary **PROVEN** (own `ldrb`); semantics STRUCTURAL MATCH, weak -- see below; **no confirmed reader found** |
+| `0x04` | u8 | **accuracy** | boundary **PROVEN** (own `ldrb`); semantics **PROVEN** -- read by `ResolveMeleeAttack` as the attacker's hit-chance stat in a `Mt19937RandMax(99)` roll, see `../memory-map/battle.md`. Corrects an earlier wrong guess ("magic defense") in this doc |
+| `0x05` | u8 | candidate "crit chance" | boundary **PROVEN**; semantics STRUCTURAL MATCH -- read by `ResolveMeleeAttack` as a bonus-damage roll threshold (see `../memory-map/battle.md`); still not a traced 1:1 "this IS crit chance" proof, but a real code-level candidate now, stronger than the old "species/family enum" guess. Observed values: 3, 5, 10, shared across variant/related-monster groups |
+| `0x06` | u16 | **base damage roll, min** | boundary **PROVEN** (own `ldrh`); semantics **PROVEN** -- fed directly into `Mt19937RandRange` as the attack's damage roll (see `../memory-map/battle.md`). Corrects an earlier wrong guess ("level-range min") in this doc; the old "monotonic with tier" observation still holds, it just supports a damage-range reading instead |
+| `0x08` | u16 | **base damage roll, max** | boundary **PROVEN**; semantics **PROVEN**, same correction as `0x06` |
 | `0x0A` | u8 | **Flipendo effectiveness (0-100)** | **PROVEN** (`sub_0801890C` case 0) |
 | `0x0B` | u8 | **Incendio effectiveness (0-100)** | **PROVEN** (case 2) |
 | `0x0C` | u8 | **Verdimillious effectiveness (0-100)** | **PROVEN** (case 1) |
 | `0x0D` | u8 | **Wingardium Leviosa effectiveness (0-100)** | **PROVEN** (case 4) |
 | `0x0E` | u8 | **Glacius effectiveness (0-100)** | **PROVEN** (case 7) |
 | `0x0F` | u8 | **Diffindo effectiveness (0-100)** | **PROVEN** (case 6) |
-| `0x10` | u16 | unknown (correlates roughly with HP magnitude; candidate "attack") | boundary **PROVEN** (own `ldrh`); semantics UNCONFIRMED |
-| `0x12` | u16 | unknown (same shape as 0x10; candidate "defense") | boundary **PROVEN**; semantics UNCONFIRMED |
+| `0x10` | u16 | unknown (correlates roughly with HP magnitude) | boundary **PROVEN** (own `ldrh`); semantics UNCONFIRMED -- an earlier "candidate attack" guess for this field is now RULED OUT, see below |
+| `0x12` | u16 | unknown (same shape as 0x10) | boundary **PROVEN**; semantics UNCONFIRMED -- earlier "candidate defense" guess likewise ruled out |
 | `0x14` | u8 | "secondary/default value" -- when the 0x14/0x15 pair is nonzero, this byte is almost always exactly `100` (36 of 69 records are `0x0000` for the pair, i.e. unused) | UNCONFIRMED, content-shape only -- NOT read by the battle-init routine at all |
 | `0x15` | u8 | "group/location id" -- a small integer (0-61) that clusters by monster family, e.g. all 3 Fire Crab color variants share `0`, Bat/Fruitbat/Mortis Bat share `16`, the two Skeletons share `59` -- but also a cross-species cluster (`27`) spanning every Spider variant plus Spitting Snake plus Wide-mouth Toad/Bullfrog, which doesn't fit a per-species tag; candidate encounter-location/chapter id instead | UNCONFIRMED, content-shape only |
 | `0x16` | u16 | always 0 in every record sampled (0-68) | STRUCTURAL MATCH (padding) -- also NOT read by battle-init |
@@ -206,6 +208,110 @@ plain integers and Q16.16 fixed-point (e.g. the icon-animation-speed table at
 
 No stored field is used for Petrificus Totalus or Spongify -- confirmed
 by `sub_0801890C` directly (see above), not an oversight in this table.
+
+### Attack/defense/crit-chance, candidates only -- weaker than previously stated
+
+**STRUCTURAL MATCH, weak.** This section originally claimed `0x02`/`0x03`/
+`0x04` were `stat_attack`/`stat_defense`/`stat_magic_defense`
+(`monster_codec.py` names), identified through statistical evidence plus
+one gameplay data point recalled from memory (Lupin Werewolf's known
+physical-vulnerable/magic-immune mechanic), not a traced code read. That
+gameplay data point was flagged by its source as "mostly a guess... not
+100% sure," and it is now known to be **wrong for `0x04`**:
+`../memory-map/battle.md` traces `0x04` (`BattleFighter+0x2B`) to a real
+code reader, `ResolveMeleeAttack`, which uses it as the attacker's
+**accuracy** stat, not magic defense. Since the original argument rested
+on `0x03` and `0x04` landing at opposite extremes as an asymmetric
+defense/magic-defense pair specifically *because* Lupin Werewolf's known
+mechanic is asymmetric, `0x04` turning out to be accuracy (an unrelated
+stat) removes half of that argument. `0x03` alone being Lupin's
+table-wide-lowest value is still a real, if much weaker, data point on
+its own.
+
+Current status:
+
+- `0x02` ("attack" candidate) still correlates with HP across the 53 real
+  Folio Bruti rows (Pearson r ~ 0.81), and the two highest values belong
+  to Draco (60) and Lupin Werewolf (55) -- unchanged. But
+  `../memory-map/battle.md` traced the actual melee damage formula
+  (`ResolveMeleeAttack`) end-to-end and it does **not** read this field
+  anywhere; only `BattleFighter+0x30`/`+0x32` (`MonsterTable+0x06`/`+0x08`,
+  now PROVEN as the base damage roll) feed the damage number. `0x02`
+  remains an unconfirmed content-shape guess, not the traced "attack"
+  stat.
+- `0x03` ("defense" candidate) similarly has no confirmed reader in
+  `ResolveMeleeAttack` -- the formula's actual defense-scaling input is
+  `BattleFighter+0x2E`, a field `InitMonsterBattleActor` never populates
+  from `MonsterTable` at all (see `../memory-map/battle.md`). Lupin
+  Werewolf's `0x03=20` (table-wide lowest) is still consistent with a
+  "defense" reading, just without a traced reader to back it and without
+  the (now-invalid) asymmetric-pair argument.
+- `0x04` -- see above: **not** magic defense, corrected to **accuracy**,
+  PROVEN via `ResolveMeleeAttack`.
+- `0x05` -- new candidate identity, **crit chance**: `ResolveMeleeAttack`
+  reads it as a bonus-damage roll threshold. See `../memory-map/battle.md`.
+  Observed values (3, 5, 10, shared across variant/related-monster
+  groups) are consistent with a small tiered crit-chance stat, though
+  this isn't a 1:1 proof either.
+
+**`0x10`/`0x12` also have a new candidate identity.** Previously ruled out
+only as "candidate attack/defense" (via the Lupin Werewolf asymmetry
+argument, which no longer carries the weight it used to -- see above).
+`../memory-map/battle.md` found `ApplyDamageToFighter` adds these two
+fields into separate running EWRAM accumulators when a fighter faints --
+a strong new candidate as an **XP/reward payout pair**, not attack/defense
+at all. Still UNCONFIRMED which accumulator is which or what consumes
+them; see that doc for detail.
+
+### Ghidra cross-check
+
+Re-verified independently against a Ghidra decompilation of `baserom.us.gba`
+(not just the project's own `gbadisasm` output), per the project's caution
+that either tool's auto-analysis can be wrong -- disassembly, not
+decompilation, was treated as ground truth whenever the two disagreed.
+
+- `InitMonsterBattleActor` (`0x08014C88`) and `GetMonsterSpellEffectiveness`
+  (`0x0801890C`) decompile **exactly** as this doc already describes them,
+  field-copy-by-field-copy and case-by-case -- independent confirmation,
+  not a re-derivation.
+- Ghidra's own auto-analysis had mis-split one nearby function
+  (`0x08014f1c`-`0x0801500e`, a fighter-select-marker sprite spawner
+  unrelated to Folio Bruti) into two, guessing a bogus second entry point
+  at `0x08014fb0` for what disassembly shows is really just the else-arm
+  of an `if`/`else` (only xref: a conditional branch from inside
+  `0x08014f1c`, no `bl`, no prologue, shared epilogue). Deleted and
+  re-merged in the Ghidra DB; **not added to `functions.us.cfg`** -- it
+  isn't a real function boundary and isn't relevant to this doc's subject
+  matter anyway.
+- Found and traced a new, previously-undocumented reader of record field
+  `0x14`: at US ROM `~0x08015020`, `MonsterTable[index].byte[0x14]` gates
+  a percent-chance branch (`Mt19937RandMax(99)` roll vs. the field value,
+  branch taken unconditionally if the field is exactly `100`) that leads
+  into what looks like a battle taunt/special-message display, not core
+  damage. This corroborates, with real code now, the existing observation
+  above that `0x14` is usually exactly `100` (always) or `0` (unused) in
+  the data.
+- The melee damage/hit-chance formula is now located and fully traced:
+  `ResolveMeleeAttack` (`0x08017E44`) and `ApplyDamageToFighter`
+  (`0x08017F98`), found from addresses contributed by jlun2 -- see
+  `../memory-map/battle.md` for the full formula. It reads
+  `BattleFighter+0x2B` (`MonsterTable+0x04`) as accuracy and
+  `BattleFighter+0x30`/`+0x32` (`MonsterTable+0x06`/`+0x08`) as the base
+  damage roll, correcting this doc's earlier `stat_magic_defense`/
+  `level_min`/`level_max` labels for those three fields (see the field
+  table above and "Attack/defense/crit-chance, candidates only" below).
+  It does **not** read `BattleFighter+0xE`/`+0x2A` (`MonsterTable+0x02`/
+  `+0x03`, this doc's `stat_attack`/`stat_defense` candidates) anywhere --
+  those two fields remain unconfirmed by any traced reader.
+
+**Checked and ruled out: no field encodes agility/speed.** The user
+raised Gytrash as a known-fast creature; checked it (and Dragonfly,
+Wasp, Bat -- all "fast" archetypes) against every field in the record,
+and none show any elevation at all relative to their tier peers (Gytrash:
+`0x02=11, 0x03=245, 0x04(accuracy)=85, 0x05=3` -- entirely unremarkable).
+If per-monster agility/speed exists at all, it
+isn't stored in this table -- possibly a playable-character-only stat,
+or derived some other way for monsters.
 
 Content sanity-check (not proof, but corroborating): index 0-2 are the
 three Fire Crab color variants (Ruby/Emerald/Sapphire, string IDs
@@ -243,7 +349,7 @@ is a monster graphics-pointer table (32-byte stride, ~106 rows -- more
 rows than the 69-monster stat table, see "What's NOT yet known"). This
 was independently found via the same `sub_08036D60` function (its icon
 rendering reads this table at `+0x08`/`+0x18` for palette-swap variant
-pointers) before this session; not re-derived here in detail.
+pointers) in an earlier pass; not re-derived here in detail.
 
 Immediately **after** the stat table, `0x0804FA88` (4-byte stride,
 referenced directly by `sub_08036D60`'s icon-silhouette-vs-real-sprite
@@ -420,7 +526,7 @@ the Krawall/dialog-text pipelines:
   unrelated). Given the finding above, both readings are consistent with
   68 being unused/padding at the very end of the table; whether it's a
   genuine reachable 4th "Monster Book of Monsters" fight is still
-  unconfirmed -- not investigated further this session.
+  unconfirmed -- not investigated further.
 
 - **The exact monster count discrepancy.** The stat table (and the
   `0x03003190` per-monster state array reset loop, `sub_080370A0`,
@@ -430,14 +536,22 @@ the Krawall/dialog-text pipelines:
   (a) the graphics table includes non-Folio-Bruti monsters (enemies
   that appear in combat but were never added to the bestiary grid), or
   (b) the break-detection heuristic used to find row 106 is simply
-  wrong about where that table really ends. Not resolved this session.
-- **Fields at record offsets `0x02`-`0x05`, `0x10`-`0x14`** -- no code
-  path reading these individually was found (unlike HP and the six
-  spell bytes, which both have confirmed readers). Labeled by shape/
-  plausibility only.
+  wrong about where that table really ends. Not resolved.
+- **Fields `0x02`/`0x03`** ("attack"/"defense" candidates) have an
+  identified destination (`BattleFighter+0xE`/`+0x2A`) but no confirmed
+  *consumer* -- `ResolveMeleeAttack`, the actual melee damage formula
+  (see `../memory-map/battle.md`), does not read either offset. `0x04`
+  is now PROVEN as accuracy and `0x06`/`0x08` as the base damage roll
+  (same doc). `0x05` has a new crit-chance candidate identity (same
+  doc), still UNCONFIRMED as a 1:1 proof. `0x10`/`0x12` have a new
+  XP/reward-payout candidate identity (same doc) in place of the earlier
+  ruled-out "attack/defense" guess. `0x14` has one confirmed reader (a
+  percent-chance taunt/message gate, see "Ghidra cross-check" above), but
+  its broader meaning as a "secondary/default value" is still
+  UNCONFIRMED.
 - **The graphics-pointer table's own fields** (`0x0804E6B4`, 32-byte
-  stride) beyond what a prior session already used (`+0x08`, `+0x18`)
-  -- not revisited here.
+  stride) beyond what was already used elsewhere (`+0x08`, `+0x18`) --
+  not revisited here.
 - **JP ROM** -- nothing in this document has been cross-checked against
   `baserom.jp.gba`. Given the Krawall and dialog-text precedent (see
   `CLAUDE.md`), the underlying data is likely to be content-identical

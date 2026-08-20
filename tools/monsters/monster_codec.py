@@ -11,15 +11,35 @@ import struct
 # (json field name, struct format char)
 FIELDS: list[tuple[str, str]] = [
     ("hp", "H"),                          # 0x00 u16 -- PROVEN, copied into battle HP fields
-    ("unk_0x02_u8", "B"),                 # 0x02 u8  -- UNCONFIRMED (PROVEN as its own byte field,
-                                           #   not a u16 with 0x03 -- battle-init reads it with a
-                                           #   separate ldrb, not one ldrh)
-    ("unk_0x03_u8", "B"),                 # 0x03 u8  -- UNCONFIRMED (same evidence as 0x02)
-    ("unk_0x04_u8", "B"),                 # 0x04 u8  -- UNCONFIRMED
-    ("unk_0x05_u8", "B"),                 # 0x05 u8  -- UNCONFIRMED (small enum, candidate species/family)
-    ("level_min", "H"),                   # 0x06 u16 -- STRUCTURAL MATCH (boundary PROVEN: battle-init
-                                           #   reads it with ldrh, i.e. a real u16 field, not guessed)
-    ("level_max", "H"),                   # 0x08 u16 -- STRUCTURAL MATCH (boundary PROVEN, see above)
+    ("stat_attack", "B"),                 # 0x02 u8  -- boundary PROVEN (own ldrb, not a u16 with 0x03).
+                                           #   Semantics STRUCTURAL MATCH, weak -- content-shape/statistical
+                                           #   guess only (correlates with HP/tier, r=0.81 across the 53
+                                           #   real Folio Bruti rows), no confirmed code reader:
+                                           #   ResolveMeleeAttack (0x08017E44) does not read this field --
+                                           #   see docs/formats/folio_bruti.md and docs/memory-map/battle.md.
+    ("stat_defense", "B"),                # 0x03 u8  -- boundary PROVEN, same caveat as 0x02: content-shape
+                                           #   guess only, no confirmed code reader. The gameplay-memory
+                                           #   argument this name was originally based on (Lupin Werewolf)
+                                           #   partly relied on 0x04 being "magic defense", which turned out
+                                           #   to be wrong (0x04 is accuracy) -- see
+                                           #   docs/formats/folio_bruti.md's retraction.
+    ("accuracy", "B"),                    # 0x04 u8  -- PROVEN (both boundary and semantics). Read by
+                                           #   ResolveMeleeAttack (0x08017E44) as the attacker's hit-chance
+                                           #   stat in a Mt19937RandMax(99) roll -- see
+                                           #   docs/memory-map/battle.md. Corrects an earlier wrong guess
+                                           #   in this file ("stat_magic_defense") -- see
+                                           #   docs/formats/folio_bruti.md for the retraction.
+    ("crit_chance_candidate", "B"),       # 0x05 u8  -- boundary PROVEN; semantics STRUCTURAL MATCH, not a
+                                           #   confirmed 1:1 identity. Read by ResolveMeleeAttack as a
+                                           #   bonus-damage roll threshold -- see docs/memory-map/battle.md.
+                                           #   Small discrete enum (observed values: 3, 5, 10), consistent
+                                           #   with a tiered crit-chance stat.
+    ("damage_min", "H"),                  # 0x06 u16 -- PROVEN (both boundary and semantics). Fed directly
+                                           #   into Mt19937RandRange as the attacker's base damage roll in
+                                           #   ResolveMeleeAttack -- see docs/memory-map/battle.md. Corrects
+                                           #   an earlier wrong guess in this file ("level_min").
+    ("damage_max", "H"),                  # 0x08 u16 -- PROVEN, same evidence as 0x06. Corrects an earlier
+                                           #   wrong guess in this file ("level_max").
     ("effectiveness_flipendo", "B"),      # 0x0A u8  -- PROVEN (sub_0801890C case 0)
     ("effectiveness_incendio", "B"),      # 0x0B u8  -- PROVEN (case 2)
     ("effectiveness_verdimillious", "B"), # 0x0C u8  -- PROVEN (case 1)
@@ -27,9 +47,15 @@ FIELDS: list[tuple[str, str]] = [
     ("effectiveness_glacius", "B"),       # 0x0E u8  -- PROVEN (case 7)
     ("effectiveness_diffindo", "B"),      # 0x0F u8  -- PROVEN (case 6)
     ("unk_0x10_u16", "H"),                # 0x10 u16 -- semantics UNCONFIRMED, but boundary PROVEN
-                                           #   (battle-init ldrh; candidate attack)
+                                           #   (battle-init ldrh). New candidate identity, not yet
+                                           #   confirmed enough to rename: ApplyDamageToFighter
+                                           #   (0x08017F98) adds this field into a running EWRAM
+                                           #   accumulator when a fighter faints, suggesting an XP/reward
+                                           #   payout rather than the earlier ruled-out "attack" guess --
+                                           #   see docs/memory-map/battle.md.
     ("unk_0x12_u16", "H"),                # 0x12 u16 -- semantics UNCONFIRMED, but boundary PROVEN
-                                           #   (battle-init ldrh; candidate defense)
+                                           #   (battle-init ldrh). Same candidate identity as 0x10 (a
+                                           #   second reward accumulator), see docs/memory-map/battle.md.
     ("unk_0x14_u8", "B"),                 # 0x14 u8  -- UNCONFIRMED (no confirmed reader; split from a
                                            #   u16 based on content shape only -- see docs/formats/folio_bruti.md.
                                            #   Usually exactly 100 (0x64) when nonzero; candidate

@@ -31,3 +31,8 @@ Findings in both documents below are marked:
   the MT19937 state layout, battle/fighter structs, and hit/crit formulas,
   plus the confirmed-in-disasm MT19937 function cluster and its two
   independent draw cursors.
+- [`memory-map/battle.md`](memory-map/battle.md) — the `BattleFighter`
+  struct and the traced attack-resolution/damage-application functions
+  (hit/miss, base damage, defense scaling, the "Be More Careful"-style
+  damage-halving flags, a crit-style bonus-damage roll), built from leads
+  contributed by jlun2 and cross-checked against our own disassembly.
