@@ -97,8 +97,24 @@ migrate-monsters:
 pack-monsters ver="us":
     python3 tools/monsters/pack_monsters.py {{ver}}
 
+# One-time per clone (see `migrate-objscript`), NOT run automatically by
+# `build` -- data/scripts/ is gitignored (same footing as the baserom,
+# see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
+# silently regenerated/overwritten on every build. US only -- see
+# docs/formats/object_script.md.
+# Bootstrap data/scripts/ locally from baserom.us.gba.
+migrate-objscript:
+    python3 tools/objscript/objscript_migrate.py
+
+# Gitignored (build/), like everything else pack_objscript.py writes. Reads
+# local data/scripts/ (run `migrate-objscript` first if missing) plus
+# this version's objscript-table row in regions.<ver>.txt for addresses.
+# Pack data/scripts/ into this version's objscript-table assembly.
+pack-objscript ver="us":
+    python3 tools/objscript/pack_objscript.py {{ver}}
+
 # Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver)
+build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
     arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba

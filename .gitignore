@@ -26,5 +26,10 @@ data/text/*
 # See CLAUDE.md hard rule 2 and docs/formats/folio_bruti.md.
 data/monsters/*
 !data/monsters/.gitkeep
+# Object/spell behavior-script bytecode (tools/objscript/objscript_migrate.py
+# bootstraps this locally from the baserom) -- extracted game data, not
+# committed. See CLAUDE.md hard rule 2 and docs/formats/object_script.md.
+data/scripts/*
+!data/scripts/.gitkeep
 **/__pycache__
 .claude/worktrees

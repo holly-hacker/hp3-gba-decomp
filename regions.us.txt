@@ -199,3 +199,24 @@ dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 # rule 2 (CLAUDE.md) -- extracted game data, same footing as the baserom.
 # Bootstrap it locally with `just migrate-monsters` before building.
 monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
+
+# --- Object/spell behavior-script bytecode ---
+#
+# objscript-table <start> <end> <dir> <name>
+#   The object/spell behavior-script bytecode interpreted by
+#   InterpretObjectScript (US 0x08018CC0) at one opcode/tick -- battle
+#   status effects (opcode 0x97), among other object behaviors, are
+#   driven by this. 65 scripts (effect ids 0-64), packed contiguously,
+#   followed immediately by g_apEffectScripts (65 pointers to them,
+#   indexed by effect id). See docs/formats/object_script.md. Packed
+#   from curated data/scripts/ (one text file per effect, ordered by
+#   data/scripts/index.json, not by filename -- see that doc) by
+#   tools/objscript/pack_objscript.py before `stitch` runs (see the
+#   `pack-objscript` recipe). Both the script bytes and the pointer
+#   table are emitted by that one packer -- the table itself isn't
+#   hand-curated, it's fully determined by script order/size.
+#
+# data/scripts/ is curated, editable source, gitignored per hard rule 2
+# (CLAUDE.md) -- extracted game data, same footing as the baserom.
+# Bootstrap it locally with `just migrate-objscript` before building.
+objscript-table 0x0805994C 0x0805BA7C data/scripts g_apEffectScripts
