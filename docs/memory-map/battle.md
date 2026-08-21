@@ -173,24 +173,20 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   (`data/scripts/SpellPetrificusTotalusUno.txt`/`SpellPetrificusTotalusDuo.txt`,
   see `docs/formats/object_script.md`): both unconditionally contain a
   `StatusEffect 10 0 0` instruction, so both apply the same
-  conditionally-gated paralysis -- correcting an earlier, unverified
-  claim in this doc that effect id `34` had no opcode `0x97` call at all.
-  The two scripts differ only in animation timing (effect id `34` has an
-  extra root-vs-spawned-copy branch skipping an initial flash animation,
-  and uses different animation-frame operand values) -- not in
-  whether/how paralysis is applied. Named `Uno`/`Duo` (the in-game names
-  for cast levels `0`/`1`) rather than `Duo`/`Tria`: castLevel `1`
-  (`Duo`) is uniquely effect id `34`, so that association is solid, but
-  castLevel `2` (`Tria`) reuses castLevel `0` (`Uno`)'s effect id `33`
-  verbatim -- and whether PetrificusTotalus even has a real, player-
-  reachable `Tria` cast is unconfirmed. `g_awSpellMpCost`'s row for this
-  spell (`10/15/20`) has a distinct nonzero value at the `Tria` slot,
-  suggestive but not proof; the community GameFAQs guide cross-check
-  above (see "External, unverified leads") only ever cited its `Uno`/
-  `Duo` costs, never a third value for `Tria`. So effect id `33` is named
-  `Uno` for its primary, definitely-real association, with the `Tria`
-  slot's reuse of the same script left as a documented fact here rather
-  than folded into the filename.
+  conditionally-gated paralysis. The two scripts differ only in animation
+  timing (effect id `34` has an extra root-vs-spawned-copy branch skipping
+  an initial flash animation, and uses different animation-frame operand
+  values), not in whether/how paralysis is applied.
+
+  Effect id `33` is `SpellPetrificusTotalusUno`, effect id `34` is
+  `SpellPetrificusTotalusDuo` (the in-game names for cast levels `0`/`1`):
+  castLevel `1` (`Duo`) is uniquely effect id `34`, while castLevel `2`
+  (`Tria`) reuses castLevel `0` (`Uno`)'s effect id `33` verbatim. Whether
+  PetrificusTotalus has a real, player-reachable `Tria` cast is
+  unconfirmed -- `g_awSpellMpCost`'s row for this spell (`10/15/20`) has a
+  distinct nonzero value at the `Tria` slot, suggestive but not proof; the
+  community GameFAQs guide cross-check above (see "External, unverified
+  leads") only ever cites `Uno`/`Duo` costs, not a third value for `Tria`.
   `PetrificusTotalus` and `Spongify` share
   `SpellId` values `6`/`1` in a way that isn't decidable from
   `ResolveSpellAttack`'s effectiveness switch alone (both spells are
@@ -662,16 +658,72 @@ callers looking for the player-spell damage formula.
 Case 21, **`HandleScriptedDamageEvent_candidate`** (`0x08016E64`), spans
 both `0x08016E64` and `0x0801732C` -- one function, not two (the
 `unaff_rX` shared-epilogue false-split pattern documented elsewhere in
-this codebase). Dispatches on a status byte (`Object+0x60`) into 5 sub-states
-(1-5), each calling `ApplyDamageToFighter` with a **fixed** damage
-constant (5, 20, 20, 45) -- no RNG roll. Looks like scripted/special-
-event damage (e.g. a cutscene or forced outcome), not the normal
-per-turn combat formula. No call to `Mt19937RandRange` (the RNG damage
-roll used by `ResolveMeleeAttack`) appears anywhere in this dispatcher's
-address range (`0x08016000`-`0x08017FFF`) -- the real player spell-damage
-formula, if randomized, is not in this function; the other case targets
-(`0x080160FC`, `0x08017A7C`, `0x080161A2`, `0x08017ADE`, `0x0801618A`,
-`0x080161FE`) haven't been walked yet.
+this codebase). Its *tail* (`Object+0x60` status byte, 5 sub-states 1-5)
+dispatches into fixed-damage crit/faint-sequence handling (`5`/`20`/`20`/
+`45`, no RNG roll) -- scripted/special-event damage, not the normal
+per-turn combat formula; no call to `Mt19937RandRange` appears anywhere
+in this dispatcher's address range (`0x08016000`-`0x08017FFF`). Its
+*head*, however (`Object+0xc` flag bits `0x40000`/`0x8000`), is the real
+**Special Move trigger** -- see below.
+
+#### Special Move dispatch (the same function's head)
+
+`HandleScriptedDamageEvent_candidate`'s `0x40000`-flag branch is what
+actually fires a character's Special Move script: for `Harry`, it reads
+`(&g_abHarryCardEffectId_candidate)[DAT_03003f44]` (the currently-selected
+Folio Universitas card slot) and calls `FUN_08018b70` on it -- **"Special
+Move" opens the Folio Universitas for Harry**. For `Hermione`, it reads
+`(&g_abHermioneLectureEffectId_candidate)[bSpellId]` (her lecture
+selection, stored in the same `bSpellId` field spells use) and does the
+same. **For any other fighter type (Ron, Buckbeak), this branch just
+calls `FUN_08015484(unaff_r7,0)` and returns -- no `g_ab*EffectId`-style
+table lookup happens here at all.** So Ron's Special Move (`Stink
+Pellet`/`Wizard Cracker`/`Stink Pellet 2`, string ids `2301`-`2303` in
+`data/text/en_us.json`) is **not** dispatched through this code path;
+which effect id(s) it uses is unconfirmed -- `FUN_08015484` not traced.
+There's a byte array right before `g_abHermioneLectureEffectId_candidate`
+in ROM, `DAT_0805150a` (`0x0805150a`, read at `0x08017226` in this same
+function's *separate* `0x8000`-flag branch, unconditional on fighter
+type): `[44, 46, 45, 49, 51, 50, 41]` -- entries `3`-`5` (`49,51,50`) are
+exactly `g_abHermioneLectureEffectId_candidate`'s 3 values, i.e.
+`DAT_0805150a` and `g_abHermioneLectureEffectId_candidate` are literally
+the same ROM bytes read through two differently-based pointers/branches,
+not two independent tables. Whether entries `0`-`2` (`44,46,45`) are
+Ron's 3 move effect ids (a tempting read, given they sit immediately
+before Hermione's slice and the in-game glossary lists Hermione's and
+Ron's Special Moves back-to-back) or unrelated data that happens to be
+adjacent is unconfirmed -- the `0x8000` branch fires unconditional of
+fighter type using `bSpellId` as the index, and whether Ron's UI ever
+sets `bSpellId` into this array's range is not traced. **Left unnamed
+pending that trace** -- do not assume `44`/`45`/`46` are Ron's moves
+without confirming the calling context. If entries `0`-`2` do turn out
+to be Ron's moves in the glossary's display order (`Stink Pellet`,
+`Wizard Cracker`, `Stink Pellet 2` -- string ids `2301`-`2303`), that
+would make effect id `46` `Wizard Cracker` specifically -- worth checking
+against the "XP/reward payout" section's live confirmation that
+`Wizard Cracker` is a 25% gold-drop multiplier, once this table's real
+meaning is traced.
+
+The other case targets (`0x080160FC`, `0x08017A7C`, `0x080161A2`,
+`0x08017ADE`, `0x0801618A`, `0x080161FE`) haven't been walked yet.
+
+### The top-level battle menu, PROVEN via `data/text/en_us.json`
+
+Decoding the dialog string table directly (see `../formats/text.md`)
+finds the real, un-truncated top-level battle menu labels as consecutive
+string ids `2288`-`2293`: **`Cast Spell`, `Special Move`, `Use Item`,
+`Flee`, `Folio Bruti`, `Help`**, with `Informus` (string id `2400`, also
+`2755`) a separate top-level entry not adjacent to this block.
+`Informus`'s own trigger/effect path is not traced -- see "`Informus`'s
+Folio Bruti write is unlocated" above; whether it goes through the
+object-script engine at all is unconfirmed (it may write
+`MonsterTable`/Folio Bruti data directly instead). String ids
+`2298`-`2300` (`Be More Careful`, `Good Study Habits`, `Proper Wand
+Technique`) exactly match Hermione's three named lecture scripts
+word-for-word, independently confirming that identification;
+`2301`-`2303` (`Stink Pellet`, `Wizard Cracker`, `Stink Pellet 2`) are
+Ron's three Special Move item names -- see above for their unconfirmed
+effect-id mapping.
 
 ## Player spell/action damage -- `ResolveSpellAttack` (`0x08017C24`)
 

@@ -392,10 +392,10 @@ above) does, three separate ways, all gated by bits of `Object+0x66`
 presumably set by whatever native code puts an object into one of these
 modes in the first place):
 
-- bit `0x40`: passes `bScriptLocalB` straight to `ShowMessageById` (US
-  `0x0803FC68`, named this session, previously `FUN_0803fc68` -- looks up
-  a message/dialog config row, dispatching to a fixed or
-  `Mt19937RandMax2`-randomized text variant).
+- bit `0x40`: passes `bScriptLocalB` straight to `PlaySoundById` (US
+  `0x0803FC68`) -- looks up a sound-effect config row, dispatching to a
+  fixed or `Mt19937RandMax2`-randomized (up to 7 variants) Krawall sample
+  via veneers into IWRAM-installed driver code (`FUN_08049e40`/`FUN_08049e54`).
 - bit `0x04`: if `bScriptLocalB != 0`, calls `SetAlphaBlendCoefficients`
   (US `0x0803D350`, named this session, previously `FUN_0803d350` --
   writes the GBA's hardware `BLDALPHA` register directly, confirming the

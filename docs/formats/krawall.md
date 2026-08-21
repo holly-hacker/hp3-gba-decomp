@@ -458,6 +458,28 @@ sample/pattern trailing padding at all.
       observed in either ROM -- `module_header_span`'s `!= 254` check is a
       latent gap (should be `< 254`) but not yet known to matter in
       practice.
+- [ ] **The `PlaySoundById` message-id -> sample lookup tables aren't fully
+      bounded yet.** `PlaySoundById` (US `0x0803FC68`, see
+      `../formats/object_script.md`) resolves a `stringId` through a 4-byte
+      config-row table at `0x08FB09F8` (`mode`, `resourceIndex`), then:
+      `mode == 1` looks up a 4-byte `(sampleIndex, param)` record in a table
+      at `0x08FB0588`; `mode == 2` rolls `Mt19937RandMax2(7)` to pick one of
+      several 4-byte variant records (32-byte stride per `resourceIndex`
+      row) in a table at `0x08FB0818`. Either way, `sampleIndex` indexes
+      `g_apKrawallSamples` (`0x08D229F4`, `void*[278]`, already typed in
+      Ghidra -- confirmed exactly 278 entries, matching "Confirmed stats"
+      below). The `0x08FB0588` table's real row count is unknown -- reading
+      its first 32 rows shows coherent, sensible data (small sample
+      indices paired with round hex params like `0x2000`/`0x3000`/`0x4000`,
+      plausibly a fixed-point volume/pitch scalar), so it's real, not
+      garbage, but its only known bound is that it must end before
+      `0x08FB0DB0` (`kramInstall`'s copied-to-IWRAM driver source, already
+      proven separately) -- the row count implied by the gap to
+      `0x08FB0818` (164) is not reliable, since a table of that size would
+      itself overlap `kramInstall`'s source. Needs either a bounds-check
+      constant found in the reading code or a real sentinel value in the
+      table itself before either table's true extent can be marked in
+      Ghidra.
 
 ## Future work
 
@@ -485,3 +507,10 @@ Not started, just recorded so the reasoning behind it isn't lost:
    Both US and JP verified byte-identical against their donor ROMs.
 3. `effect`/`effectop` values aren't decoded to symbolic names yet (see
    Open questions) -- would make pattern JSON more readable.
+4. Once the `PlaySoundById` lookup tables (`0x08FB09F8`/`0x08FB0588`/
+   `0x08FB0818`, see Open questions) and `g_apKrawallSamples` are fully
+   bounded, they're real curated game content (a message/event ->
+   sound-effect mapping) and should move to `data/audio/` under the same
+   curated, editable, gitignored model as modules/samples, packed back to
+   byte-identical bytes at build time -- not left as permanent raw
+   `.incbin`, per the project's general extraction convention.
