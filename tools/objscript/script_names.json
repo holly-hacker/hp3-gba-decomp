@@ -16,6 +16,10 @@
       "name": "SpecialHarryCrackerJinx",
       "description": "Heavy damage to all opponents, minor damage to the party."
     },
+    "11": {
+      "name": "SpellFumosUno",
+      "description": "Makes a party member harder to hit."
+    },
     "14": {
       "name": "SpecialHarryExtraExp",
       "description": "Grants the party bonus XP for winning the encounter."
@@ -71,6 +75,10 @@
     "31": {
       "name": "SpellGlaciusDuo",
       "description": "Plays the spell's cast animation."
+    },
+    "32": {
+      "name": "SpellFumosDuo",
+      "description": "Makes the whole party harder to hit."
     },
     "33": {
       "name": "SpellPetrificusTotalusUno",

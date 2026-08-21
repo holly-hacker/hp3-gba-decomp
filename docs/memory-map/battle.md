@@ -87,22 +87,19 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   *defender* in `ResolveMeleeAttack`: reduces the attacker's effective
   accuracy by 25, and gates the bonus-damage/crit check further down
   (must be clear for that check to run) -- consistent with "target is
-  hidden from view." **Confirmed spell: Fumos** -- Fumos makes a target
-  harder to hit (Uno: one ally, Duo: the whole party), matching bit
-  `0x01`'s accuracy-reduction effect exactly. The game's spell glossary
-  lists 10 named spells
-  (`Flipendo`, `Informus`, `Verdimillious`, `Diffindo`, `Incendio`,
-  `WingardiumLeviosa`, `PetrificusTotalus`, `Glacius`, `Fumos`,
-  `Spongify`), but `SpellId` only covers 8 values (`0`-`7`). `Informus`
-  is cast in battle too, but from the battle menu's top level (a sibling
-  entry to "Cast a Spell," not part of the spell submenu), so it
-  wouldn't set `bSpellId` at all -- the `bSpellId == 8` sentinel only
-  appears inside the spell-casting code path
-  (`TickPlayerActionState_candidate` case `0x1a`/`FUN_080161fe`), which is
-  reached from the spell submenu, leaving `Fumos` (a submenu spell) as
-  the sole candidate. Not traced to an opcode `0x97` case 8/9 call site
-  from that sentinel path -- the spell identity is confirmed by content,
-  the call site is not.
+  hidden from view." **Confirmed spell: Fumos**, a `bSpellId`-8 spell
+  exclusive to Hermione (`g_abSpellIdByCursor`'s Hermione row is the only
+  one containing `8`; see "Spell familiarity/leveling" below for the full
+  trace from her spell-cast menu through to its two scripts). Fumos makes
+  a target harder to hit (`Uno`: one ally, effect id `11`, script
+  `SpellFumosUno`; `Duo`: the whole party, effect id `32`, script
+  `SpellFumosDuo`), matching bit `0x01`'s accuracy-reduction effect
+  exactly -- `SpellFumosUno` applies `StatusEffect` case `9` (`Hidden_2`,
+  announced) directly; `SpellFumosDuo` applies the same case `9` on its
+  root cast and recursively spawns copies of itself (`SpawnEffect 32`)
+  for the rest of the party, each spawned copy taking case `8` (`Hidden`,
+  unannounced) instead via the `bScriptLocalA` root-vs-spawn idiom (see
+  "The script-local bytes" in `../formats/object_script.md`).
 - **bit `0x02`** = **Poisoned**. PROVEN: opcode `0x97` case 5
   (`0x0801a71c`), gated on `(bStatusFlags & 0x06) == 0` (i.e. not
   already `Poisoned` or `PoisonImmune`), sets the bit alongside
@@ -366,7 +363,7 @@ length is looked up in a 256-entry table at `0x08054f34`
 (`instruction length = table[opcode] + 1` bytes, including the opcode
 byte itself); walking a script from its pointer with that table finds
 every opcode `0x97` instance and its case (sub-case) byte. Spell/card
-effect-id tables (`g_abSpellEffectId_candidate` for the 8 real spells,
+effect-id tables (`g_abSpellEffectId_candidate` for the 9 real spells,
 `g_abHermioneLectureEffectId_candidate` for Hermione's 3 moves,
 `g_abHarryCardEffectId` for Harry's 16 cards) then map a
 specific spell/card to one of those effect ids.
@@ -975,28 +972,38 @@ Its companion byte array at the same index,
 animation/VFX id fed into `FUN_08018b70` (the same anim-trigger function
 used throughout this code) -- not a resource-type selector.
 
-**All 24 entries read and named** (`tools/objscript/script_names.json`):
+**All 27 entries read and named** (`tools/objscript/script_names.json`):
 `[2,3,21, 38,38,38, 19,20,26, 22,22,22, 23,24,25, 28,28,28, 33,34,33,
-30,31,30]`, confirming the spellId row order above (`Spongify`'s
+30,31,30, 11,32,32]`, confirming the spellId row order above (`Spongify`'s
 `[38,38,38]` and `PetrificusTotalus`'s `[33,34,33]` land exactly where
-expected). None of these 13 scripts (`SpellFlipendoUno`/
+expected). The table is 9 rows (`spellId` `0`-`8`), not 8 -- the 9th row,
+`[11,32,32]`, is `Fumos` (`SpellFumosUno`/`SpellFumosDuo`, `spellId` `8`;
+see the `Hidden` status bullet above). `g_awSpellMpCost` (the parallel
+MP-cost array documented just above) is likewise 27 `ushort` entries, not
+24; Fumos's row is `[8,30,0]` -- an MP cost for `Uno`/`Duo` and an unused
+`0` for the `Tria` slot it never reaches. None of the 13 non-`Fumos`
+scripts still described below (`SpellFlipendoUno`/
 `Duo`/`Tria`, `SpellVerdimilliousUno`/`Duo`/`Tria`, `SpellDiffindo`,
 `SpellIncendioUno`/`Duo`/`Tria`, `SpellWingardiumLeviosa`,
 `SpellGlaciusUno`/`Duo`) contain a `StatusEffect` (`0x97`) instruction --
 checked directly against the extracted script text -- so unlike
-`PetrificusTotalus`, these are purely cast-animation triggers; their
-actual damage is computed separately by `ResolveSpellAttack` above, not
-by this bytecode. `Flipendo`/`Verdimillious`/`Incendio` have three
-genuinely distinct scripts (one per cast level) -- real evidence that a
-spell's `Uno`/`Duo`/`Tria` levels *can* each carry distinct content, which
-is what makes `PetrificusTotalus`/`Glacius` reusing the same script for
-`Uno` and `Tria` notable rather than just "the table only has two real
-values." `Diffindo`/`WingardiumLeviosa` use one shared script for all
-three levels, like `Spongify` -- **now explained, not just noted**: all
-three (`SpellId` `1`/`3`/`5`) have `g_abSpellMaxLevel` `== 1` (see below),
+`PetrificusTotalus` (and `Fumos`), these are purely cast-animation
+triggers; their actual damage is computed separately by
+`ResolveSpellAttack` above, not by this bytecode. `Flipendo`/
+`Verdimillious`/`Incendio` have three genuinely distinct scripts (one per
+cast level) -- real evidence that a spell's `Uno`/`Duo`/`Tria` levels
+*can* each carry distinct content, which is what makes
+`PetrificusTotalus`/`Glacius` reusing the same script for `Uno` and `Tria`
+notable rather than just "the table only has two real values."
+`Diffindo`/`WingardiumLeviosa` use one shared script for all three
+levels, like `Spongify` -- **now explained, not just noted**: all three
+(`SpellId` `1`/`3`/`5`) have `g_abSpellMaxLevel` `== 1` (see below),
 meaning none of them can ever level past `Uno` in the first place, so a
 Duo/Tria-specific script would be genuinely unreachable content -- the
-engine simply doesn't need one.
+engine simply doesn't need one. `Fumos` fits the same pattern (`Duo` and
+`Tria` share effect id `32`), though it isn't in `g_abSpellMaxLevel`
+(an 8-entry table indexed `0`-`7`; `Fumos` at `spellId` `8` falls outside
+it, not traced further).
 
 ### Spell familiarity/leveling -- `TrackSpellFamiliarity` (`0x08010008`), PROVEN
 
@@ -1126,8 +1133,9 @@ Two findings of note:
   `g_nFolioUniversitasSlot` (the raw Folio Universitas card
   slot, `0`-`15`) purely so the announce message can index by it --
   `g_nFolioUniversitasSlot` is **not** itself a `SpellId`
-  despite the cast shown here (`SpellId` only spans `0`-`7`; card slots
-  go to `15`) -- this is the same field-reuse trick `Informus` uses
+  despite the cast shown here (real `SpellId` values only go up to `8`,
+  see `Fumos` in the `Hidden` status bullet above; card slots go to `15`,
+  well past that) -- this is the same field-reuse trick `Informus` uses
   below, just for display indexing rather than a safe-damage sentinel.
 - **`Informus` answers this doc's long-standing open question.** It is
   given *no* special-case branch here at all -- it shares the `None` case
@@ -1331,14 +1339,20 @@ genuinely two separate layers, not just two ends of one function).
 
 - **`field_0x1070==2`** (`FUN_08012e54`, confirm handler for the
   per-character spell list opened by `Cast Spell`): `bSpellId =
-  DAT_0804e084[fighterType*7 + cursor]` -- **`DAT_0804e084` is a
+  g_abSpellIdByCursor[fighterType*7 + cursor]` -- **`g_abSpellIdByCursor`
+  (`0x0804e084`, named this session, previously `DAT_0804e084`) is a
   per-character cursor-position -> real `SpellId` remap table** (already
   independently referenced by `FUN_08011520`'s label-draw code for this
   same screen), needed because not every character's spell list shows
-  the same 8 `SpellId`s in the same menu order/count. `bSpellLevel=0`,
-  `field_0x3b=0`. Then `FUN_080106ec(fighterIdx, cursor)` builds the next
-  screen's list before an (unrecovered, but structurally
-  `field_0x1070=5`) jump.
+  the same `SpellId`s in the same menu order/count -- Harry's row is
+  `[0,2,4,6,3,5,0]`, Ron's is `[0,2,4,6,9,5,0]`, and **Hermione's row,
+  `[0,2,4,8,6,7,5]`, is the only one containing `8`** (cursor `3`): this
+  is the actual `Fumos`-is-Hermione-only mechanism, confirmed at the
+  menu-selection level rather than inferred from spell content alone.
+  (Ron's row containing a `9` is a separate, unexplored loose end -- not
+  traced further here.) `bSpellLevel=0`, `field_0x3b=0`. Then
+  `FUN_080106ec(fighterIdx, cursor)` builds the next screen's list before
+  an (unrecovered, but structurally `field_0x1070=5`) jump.
 - **`field_0x1070==5`** (`FUN_08011fa0`, spell cast-level list --
   Uno/Duo/Tria): confirms the **spell cast-level list from the task
   description** and gates it on affordability --
@@ -1350,9 +1364,9 @@ genuinely two separate layers, not just two ends of one function).
   blocks Spongify specifically**, a new, concrete behavioral fact. Sets
   `bSpellLevel = cursor`; most spell/level combinations proceed to a
   target-select screen (`field_0x1070=6`), except a few that execute
-  immediately with `bSelectedActionIndex=0xfe` (self/no-target): the
-  `bSpellId==8` (the "no real spell" sentinel already seen for
-  `Informus`) + level-1 combination, `bSpellId==6`
+  immediately with `bSelectedActionIndex=0xfe` (self/no-target): `Fumos`
+  (`bSpellId==8`) at level-1 (`Duo`, its party-wide cast, effect id `32`
+  -- see the `Hidden` status bullet above), `bSpellId==6`
   (`PetrificusTotalus`) + level-1, and (generically) any spell's level-2
   (`Tria`) cast **except `Glacius`** (`bSpellId==4`) -- i.e. by default a
   `Tria` cast doesn't need a target, with `Glacius` special-cased back
