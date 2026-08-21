@@ -5,7 +5,7 @@
       "operand_length": 0
     },
     "1": {
-      "name": "opcode_01",
+      "name": "SetObjectAnim",
       "operand_length": 2
     },
     "2": {
@@ -25,7 +25,7 @@
       "operand_length": 1
     },
     "6": {
-      "name": "opcode_06",
+      "name": "PlaySound",
       "operand_length": 1
     },
     "7": {
@@ -57,11 +57,11 @@
       "operand_length": 0
     },
     "14": {
-      "name": "opcode_0E",
+      "name": "SpawnEffectDetached",
       "operand_length": 1
     },
     "15": {
-      "name": "opcode_0F",
+      "name": "SpawnEffect",
       "operand_length": 1
     },
     "16": {
@@ -93,7 +93,7 @@
       "operand_length": 1
     },
     "23": {
-      "name": "opcode_17",
+      "name": "ToggleObjectFlipX",
       "operand_length": 0
     },
     "24": {
@@ -113,7 +113,7 @@
       "operand_length": 1
     },
     "28": {
-      "name": "opcode_1C",
+      "name": "TeleportToSlotPosition",
       "operand_length": 1
     },
     "29": {
@@ -329,11 +329,11 @@
       "operand_length": 0
     },
     "82": {
-      "name": "opcode_52",
+      "name": "ClearObjectFlag1",
       "operand_length": 0
     },
     "83": {
-      "name": "opcode_53",
+      "name": "SetObjectFlag1",
       "operand_length": 0
     },
     "84": {
@@ -345,11 +345,11 @@
       "operand_length": 1
     },
     "86": {
-      "name": "opcode_56",
+      "name": "SetAllEnemiesFlagBits",
       "operand_length": 1
     },
     "87": {
-      "name": "opcode_57",
+      "name": "SetAllAlliesFlagBits",
       "operand_length": 1
     },
     "88": {
@@ -365,7 +365,7 @@
       "operand_length": 3
     },
     "91": {
-      "name": "opcode_5B",
+      "name": "JitterPosition",
       "operand_length": 2
     },
     "92": {
@@ -389,7 +389,7 @@
       "operand_length": 1
     },
     "97": {
-      "name": "opcode_61",
+      "name": "Goto",
       "operand_length": 1
     },
     "98": {
@@ -489,11 +489,11 @@
       "operand_length": 0
     },
     "122": {
-      "name": "opcode_7A",
+      "name": "MoveFighterTo",
       "operand_length": 3
     },
     "123": {
-      "name": "opcode_7B",
+      "name": "MoveFighterToSlotPosition",
       "operand_length": 1
     },
     "124": {
@@ -513,7 +513,7 @@
       "operand_length": 3
     },
     "128": {
-      "name": "opcode_80",
+      "name": "ShowCannedDialogBlock",
       "operand_length": 1
     },
     "129": {
@@ -521,7 +521,7 @@
       "operand_length": 1
     },
     "130": {
-      "name": "opcode_82",
+      "name": "TeleportTo",
       "operand_length": 2
     },
     "131": {
@@ -561,7 +561,7 @@
       "operand_length": 5
     },
     "140": {
-      "name": "opcode_8C",
+      "name": "SetBgPriority",
       "operand_length": 2
     },
     "141": {
@@ -691,15 +691,15 @@
       "operand_length": 0
     },
     "164": {
-      "name": "opcode_A4",
+      "name": "PlaySoundOrDefault",
       "operand_length": 1
     },
     "165": {
-      "name": "opcode_A5",
+      "name": "DarkenScreenPalette",
       "operand_length": 0
     },
     "166": {
-      "name": "opcode_A6",
+      "name": "RestoreScreenPalette",
       "operand_length": 0
     },
     "167": {

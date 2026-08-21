@@ -267,6 +267,37 @@ further; not obviously connected to the
 (see "XP/reward payout" above), which remains an alternative, untraced
 possibility.
 
+### `FightState+0x1054`/`+0x1058`: write-only, purpose unknown
+
+`FightState.field_0x1054` (`void*`) and `field_0x1058` (`byte`) -- kept
+unnamed/`field_`-prefixed rather than describing a purpose, since nothing
+below actually pins one down. Found via the object-script interpreter's
+opcode `0x30` (`opcode_30`, not confidently named either, see
+`../formats/object_script.md`): it increments a byte at its target
+`Object+0x60`, mirrors the result into `field_0x1058`, and latches the
+`Object` pointer into `field_0x1054` the first time it's called (guarded on
+that field being `0`). `TickFighterAttackAnimState_candidate` (`0x08015608`)
+reads and branches on the same `Object+0x60` byte as a small state value
+(checked against `1`/`2`/`4`) to steer attack-outcome handling, and zeroes
+`Object+0x60` together with both `FightState` fields once an attack
+sequence fully resolves.
+
+Every other site touching `+0x1054`/`+0x1058` (found by searching the ROM
+for their two literal-pool constants, `0x1054`/`0x1058`, and checking each
+hit) is the same reset-to-zero pattern, at a different start/end-of-attack
+transition point: `TriggerBattleEffect` (`0x08018B70`, right after it spawns
+the effect script object), `ShowItemUseResult` (`0x08015F50`, on entry), and
+several state transitions inside the spell-resolution state machine
+`FUN_080161FE` (`0x080161FE`-`0x08016E47`, the caster-side counterpart to
+`TickFighterAttackAnimState_candidate`). None of these sites, nor any other
+found this way, reads `field_0x1058`'s accumulated value or `field_0x1054`'s
+latched pointer for anything -- every occurrence is either `opcode_30`'s own
+increment/latch or one of these resets. Both fields appear to be write-only:
+tracked by the script interpreter and reset at attack boundaries, but with
+no confirmed consumer anywhere in the disassembly, so no known in-game
+effect. This is a search over every occurrence of the two literal constants,
+not a proof that no reader exists by some other addressing path.
+
 ### Harry's 16 Folio Universitas cards, PROVEN
 
 Found via the game's own **Card Combo Glossary** text
