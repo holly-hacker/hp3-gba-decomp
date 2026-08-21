@@ -52,7 +52,7 @@ monster's record from `MonsterTable`.
 | `0x2E` | u8 | defense scaling, percent (`damage = damage * this / 100`) | PROVEN as a formula input; **origin not traced** -- `InitMonsterBattleActor` never writes it from `MonsterTable`, so monster records may rely on a default/zero here, or it's set by a separate (player-only?) code path not yet found | jlun2 (led here) |
 | `0x30` | u16 | **base damage roll, min** (`MonsterTable+0x06`) | **PROVEN** -- fed directly into `Mt19937RandRange` as the attack's damage roll | jlun2 (led here) |
 | `0x32` | u16 | **base damage roll, max** (`MonsterTable+0x08`) | **PROVEN** | jlun2 (led here) |
-| `0x3A` | u8 | selected action/spell index for this turn | STRUCTURAL MATCH -- used across multiple AI/dispatch functions (e.g. `0x080100a0`) | -- |
+| `0x3A` | u8 | selected action/spell index for this turn | STRUCTURAL MATCH -- used across multiple AI/dispatch functions (e.g. `DispatchPendingAction`, `0x080100a0`) | -- |
 | `0x42` | u8 | status-flags bitfield | PROVEN as a formula input, bits below | jlun2 (led here) |
 
 ### `0x42` status-flags bits
@@ -116,7 +116,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   `Poisoned` itself, gates case 5 above (`& 0x06`) from applying poison
   again. This is a structural mirror of `Paralyzed`/`0x80` below (same
   "status bit + immunity bit blocks re-apply" shape). **PROVEN source:
-  Harry's card index `5`** in `g_abHarryCardEffectId_candidate`
+  Harry's card index `5`** in `g_abHarryCardEffectId`
   (`0x080514c8`) is effect id `18`, whose script contains opcode `0x97`
   case `7` three times -- a real traced call site (see the "Poison
   Immunity" writeup below), not just an effect-to-description match.
@@ -133,7 +133,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   and the `Poison Immunity`/XP writeup below for what those cases
   actually do). `AttackWeakened`'s real effect id (`29`) doesn't appear
   in `g_abSpellEffectId_candidate`, `g_abHermioneLectureEffectId_candidate`,
-  or `g_abHarryCardEffectId_candidate` -- Spongify's bStatusFlags write
+  or `g_abHarryCardEffectId` -- Spongify's bStatusFlags write
   is unlocated, same class of gap as `Informus`'s Folio Bruti write
   below. `Poisoned`'s source (effect id `27`) is equally unconfirmed.
 - **bit `0x10`** = **Paralyzed**. PROVEN: applied through a dedicated
@@ -181,12 +181,15 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   Effect id `33` is `SpellPetrificusTotalusUno`, effect id `34` is
   `SpellPetrificusTotalusDuo` (the in-game names for cast levels `0`/`1`):
   castLevel `1` (`Duo`) is uniquely effect id `34`, while castLevel `2`
-  (`Tria`) reuses castLevel `0` (`Uno`)'s effect id `33` verbatim. Whether
-  PetrificusTotalus has a real, player-reachable `Tria` cast is
-  unconfirmed -- `g_awSpellMpCost`'s row for this spell (`10/15/20`) has a
-  distinct nonzero value at the `Tria` slot, suggestive but not proof; the
-  community GameFAQs guide cross-check above (see "External, unverified
-  leads") only ever cites `Uno`/`Duo` costs, not a third value for `Tria`.
+  (`Tria`) reuses castLevel `0` (`Uno`)'s effect id `33` verbatim. **Now
+  resolved, PROVEN**: `PetrificusTotalus` has no player-reachable `Tria`
+  cast at all -- see `g_abSpellMaxLevel` in "Spell familiarity/leveling"
+  below, which caps this spell at level `2` (`Duo`); a player can never
+  reach `Tria` through normal leveling, so effect id `33`'s reuse at the
+  `Tria` slot is simply dead/unreachable table content, not evidence of
+  a real third cast. `g_awSpellMpCost`'s row for this spell (`10/15/20`)
+  having a distinct nonzero `Tria` value is table-completeness, not proof
+  of reachability.
   `PetrificusTotalus` and `Spongify` share
   `SpellId` values `6`/`1` in a way that isn't decidable from
   `ResolveSpellAttack`'s effectiveness switch alone (both spells are
@@ -195,12 +198,13 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   `10` (not case `0xc`/`0xd`, which is what `SpellId` `1` traces to
   instead) is the corroborating evidence: only the `6`/`10` pairing
   produces a paralysis effect, matching what `PetrificusTotalus` is
-  known to do. **Also candidate: Harry's Folio Universitas card index
-  13** (of 16, `bSlotParam` `13` in `g_abHarryCardEffectId_candidate`)
-  -- its effect script (effect id `47`) also contains opcode `0x97` case
-  `0x12`, another bare `FUN_0801b430()` call, this time the
-  unconditional-apply variant -- a plausible second source for "opponent
-  loses a turn," not traced to a specific card name.
+  known to do. **Second source, now PROVEN by name: Harry's `Snitch`
+  card** (index `13` of 16 in `g_abHarryCardEffectId`, effect
+  id `47`) -- its script also contains opcode `0x97` case `0x12`, another
+  bare `FUN_0801b430()` call, this time the unconditional-apply variant,
+  and matches the in-game Card Combo Glossary's own description word for
+  word: "Snitch causes opponent to lose a turn." See "Harry's 16 Folio
+  Universitas cards" below for how all 16 cards were named.
 - **bit `0x20`** = **DefenseBoost** (checked on the *defender* in
   `ResolveMeleeAttack`): independently contributes one halving of the
   computed damage. Set by opcode `0x97` case 0xb (`0x0801a8e4`), no
@@ -212,16 +216,18 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   (`0x0805150d`, 3 entries, one per lecture) index `0` is effect id `49`,
   whose script contains opcode `0x97` case `0xb` -- a real traced call
   site, not just an effect-to-description match. A second, independent
-  script (effect id `36`) also applies this same bit but doesn't match
-  any entry in the 16-slot `g_abHarryCardEffectId_candidate` table read
-  so far, so it's not yet pinned to a specific card; **Harry's "Girding
-  All"** (party-wide "Increases all party members' physical defense")
-  remains the leading candidate for it by elimination and effect match,
-  since no dedicated party-wide status-loop exists elsewhere in opcode
-  `0x97` (the only party-wide loops there, cases `0xd`/`0xe`, target
-  *enemies* via `Object+0x115`, not `bStatusFlags`) -- a card applying
-  this bit once per party member from its own script remains the natural
-  implementation. The two halving bits (attacker's `0x08`, defender's
+  script (effect id `36`) also applies this same bit -- **now confirmed
+  to genuinely not be any of Harry's 16 cards** (the real, complete
+  16-entry `g_abHarryCardEffectId` table, decoded below, simply
+  doesn't contain `36`), so this second source stays unattributed to any
+  specific card or spell; not investigated further. **Harry's
+  `Girding All`** card (index `7`, effect id `35`, "Increases all party
+  members' physical defense") was the leading candidate for this bit by
+  elimination, but its own script contains **no** opcode `0x97` call at
+  all -- it must apply its defense boost some other way (plausibly a
+  direct write to `BattleFighter+0x2E`,
+  `bDefenseFactorPercent_notFromMonsterTable`, rather than the
+  `bStatusFlags` bit), not traced further. The two halving bits (attacker's `0x08`, defender's
   `0x20`) stack multiplicatively: neither set -> no change; exactly one
   set -> damage `>>= 1`; both set -> damage `>>= 2` (quartered).
 - **bit `0x40`** = **SpellPowerBoost**: read by `ResolveSpellAttack` as
@@ -238,7 +244,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   natural guess by symmetry with `PoisonImmune`, but nothing else
   confirms it. UNCONFIRMED.
 
-**Poison Immunity, PROVEN source.** `g_abHarryCardEffectId_candidate`
+**Poison Immunity, PROVEN source.** `g_abHarryCardEffectId`
 (`0x080514c8`, 16 entries, one per Folio Universitas card, `bSlotParam`
 `0`-`15`) index `5` is effect id `18`, whose script contains opcode
 `0x97` case `7` (`PoisonImmune`) **three times** -- consistent with
@@ -250,15 +256,70 @@ card index `5`.
 to a different mechanism instead. Hermione's "Good Study Habits" is
 `g_abHermioneLectureEffectId_candidate` index `2`, effect id `50`; its
 script contains opcode `0x97` case `3` (`field_0x1480 = 2`, via
-`LAB_0801ab2a`), not a `bStatusFlags` write. `g_abHarryCardEffectId_candidate`
-index `11`, effect id `14`, uses the same family (case `2`,
-`field_0x1480 = 1`) -- the leading candidate for Harry's XP-bonus card,
-and if so it **does** share a mechanism with Hermione's move, just
-`field_0x1480` (an unidentified `FightState` field) rather than
-`bStatusFlags`. `field_0x1480` itself is not traced further; not
-obviously connected to the `g_nRewardAccum1`/`g_nRewardAccum2` payout in
-`ApplyDamageToFighter` (see "XP/reward payout" above), which remains an
-alternative, untraced possibility.
+`LAB_0801ab2a`), not a `bStatusFlags` write. Harry's **`Extra EXP`**
+card (index `11` of 16 in `g_abHarryCardEffectId`, effect id
+`14` -- name and mapping now PROVEN, see below) uses the same family
+(case `2`, `field_0x1480 = 1`) -- it **does** share a mechanism with
+Hermione's move, just `field_0x1480` (an unidentified `FightState`
+field) rather than `bStatusFlags`. `field_0x1480` itself is not traced
+further; not obviously connected to the
+`g_nRewardAccum1`/`g_nRewardAccum2` payout in `ApplyDamageToFighter`
+(see "XP/reward payout" above), which remains an alternative, untraced
+possibility.
+
+### Harry's 16 Folio Universitas cards, PROVEN
+
+Found via the game's own **Card Combo Glossary** text
+(`data/text/en_us.json`, decoded per `../formats/text.md`): string ids
+`1144`-`1159` are a 16-entry list of card-combo *names*, immediately
+followed by a matching 16-entry list of short *descriptions* at
+`1160`-`1175` -- both lists line up positionally, 1:1, with
+`g_abHarryCardEffectId`'s 16 real table entries (read directly
+from ROM at `0x080514c8`):
+
+| Index | Effect id | Card name | Description (in-game) |
+|---|---|---|---|
+| 0 | 15 | `Horklump Spores` | Horklump spores appear and blast opponent with pollen. |
+| 1 | 5 | `Tempest Jinx` | Causes a gust of wind to blow one opponent off-screen. |
+| 2 | 10 | `Cracker Jinx` | Causes Wizard Crackers to go off and give heavy damage to all opponents and some damage to player's party. |
+| 3 | 42 | `Poison Antidote` | Removes any poison affecting a party member. |
+| 4 | 52 | `Remove Jinx` | Removes any jinx affecting a party member. |
+| 5 | 18 | `Poison Immunity` | Gives all party members immunity to poison for one magical encounter. |
+| 6 | 37 | `Revive` | Revive an unconscious member of your party. |
+| 7 | 35 | `Girding All` | Increases all party members' physical defense. |
+| 8 | 53 | `Reparifors` | Cancels any magical ailments affecting the party. |
+| 9 | 48 | `Replenish MP` | Sets a party member's Magic Points (MP) to maximum. |
+| 10 | 40 | `Replenish SP` | Sets all party members' Stamina Points (SP) to maximum. |
+| 11 | 14 | `Extra EXP` | Gain bonus Experience (EXP) Points after successfully completing a magical encounter. |
+| 12 | 41 | `Bludgers` | Causes Bludgers to rain down on opponent for low damage. |
+| 13 | 47 | `Snitch` | Snitch flies around opponent's head, distracting them. Opponent loses a turn. |
+| 14 | 39 | `Sonorous Charm` | Creates a magnified roar that disrupts all in its path. |
+| 15 | 43 | `Ultimate MP` | Selected party member gains all spell abilities. |
+
+Confidence: **PROVEN** for the index<->effect-id<->name correspondence
+as a whole -- three of these (index `5`/`Poison Immunity`, index
+`11`/`Extra EXP`, index `13`/`Snitch`) were already independently
+confirmed by this doc through opcode-content tracing alone, *before*
+the glossary text was consulted, and all three land on the exact same
+slot the glossary gives them; that three-way agreement is what makes
+the positional correspondence trustworthy for the other 13 cards too,
+not just an assumption. Each script's content was additionally spot-
+checked against its description (e.g. `Poison Antidote`/`Remove Jinx`
+both call the not-yet-named opcode `0x97` cases `0xF`/`0x14`
+respectively on a single target, matching "a party member" in both
+descriptions; `Reparifors` calls case `0x14` three times, matching
+"the party" plural). The one exception is **`Girding All`** (index `7`),
+whose script has no `StatusEffect` opcode at all -- see the `DefenseBoost`
+bit writeup above; its mapping to effect id `35` is solid (by position
+and elimination) but its actual defense-boost mechanism is not.
+
+All 16 are now named in `tools/objscript/script_names.json` as
+`SpecialHarry<CardName>` (matching the `SpecialHermione*`/`SpecialRon*`
+convention already used for the other two characters' Special Moves),
+e.g. `SpecialHarryHorklumpSpores`, `SpecialHarrySnitch`,
+`SpecialHarryUltimateMp`. See `../formats/object_script.md`'s Future
+Work section (now marked done) for the prior open questions this
+resolved.
 
 **How the effect-id -> script trace works**, for reproducing/extending
 this: `FUN_08018b70(effectId, ...)` (the anim/effect trigger already
@@ -276,7 +337,7 @@ byte itself); walking a script from its pointer with that table finds
 every opcode `0x97` instance and its case (sub-case) byte. Spell/card
 effect-id tables (`g_abSpellEffectId_candidate` for the 8 real spells,
 `g_abHermioneLectureEffectId_candidate` for Hermione's 3 moves,
-`g_abHarryCardEffectId_candidate` for Harry's 16 cards) then map a
+`g_abHarryCardEffectId` for Harry's 16 cards) then map a
 specific spell/card to one of those effect ids.
 
 Note: opcode `0x97`'s case numbering above is the *inner* switch's case
@@ -380,10 +441,11 @@ if (fighter[?].fighterType == 0xFF &&           // acting fighter is an enemy
 ```
 
 `FightState+0x106C` (`activeFighterIndex` in the `FightState` struct) is
-the same field `FUN_080100a0` (the monster AI action dispatcher, US
-`0x080100A0`, not walked/named here) already reads as "whose turn it is"
--- two independent call sites agreeing is good corroboration for this
-field's role.
+the same field `DispatchPendingAction` (`0x080100a0`, walked in full
+below -- **not** monster-AI-specific despite this doc's earlier guess;
+it dispatches *any* active fighter's turn, player or monster) already
+reads as "whose turn it is" -- two independent call sites agreeing is
+good corroboration for this field's role.
 
 **`MonsterTable+0x14` reframed.** This call site only invokes
 `ResolveMeleeAttack` at all when the acting monster's `byte[0x14]` is
@@ -678,7 +740,7 @@ in this dispatcher's address range (`0x08016000`-`0x08017FFF`). Its
 
 `HandleScriptedDamageEvent_candidate`'s `0x40000`-flag branch is what
 actually fires a character's Special Move script: for `Harry`, it reads
-`(&g_abHarryCardEffectId_candidate)[DAT_03003f44]` (the currently-selected
+`(&g_abHarryCardEffectId)[DAT_03003f44]` (the currently-selected
 Folio Universitas card slot) and calls `FUN_08018b70` on it -- **"Special
 Move" opens the Folio Universitas for Harry**. For `Hermione`, it reads
 `(&g_abHermioneLectureEffectId_candidate)[bSpellId]` (her lecture
@@ -882,6 +944,179 @@ Its companion byte array at the same index,
 animation/VFX id fed into `FUN_08018b70` (the same anim-trigger function
 used throughout this code) -- not a resource-type selector.
 
+**All 24 entries read and named** (`tools/objscript/script_names.json`):
+`[2,3,21, 38,38,38, 19,20,26, 22,22,22, 23,24,25, 28,28,28, 33,34,33,
+30,31,30]`, confirming the spellId row order above (`Spongify`'s
+`[38,38,38]` and `PetrificusTotalus`'s `[33,34,33]` land exactly where
+expected). None of these 13 scripts (`SpellFlipendoUno`/
+`Duo`/`Tria`, `SpellVerdimilliousUno`/`Duo`/`Tria`, `SpellDiffindo`,
+`SpellIncendioUno`/`Duo`/`Tria`, `SpellWingardiumLeviosa`,
+`SpellGlaciusUno`/`Duo`) contain a `StatusEffect` (`0x97`) instruction --
+checked directly against the extracted script text -- so unlike
+`PetrificusTotalus`, these are purely cast-animation triggers; their
+actual damage is computed separately by `ResolveSpellAttack` above, not
+by this bytecode. `Flipendo`/`Verdimillious`/`Incendio` have three
+genuinely distinct scripts (one per cast level) -- real evidence that a
+spell's `Uno`/`Duo`/`Tria` levels *can* each carry distinct content, which
+is what makes `PetrificusTotalus`/`Glacius` reusing the same script for
+`Uno` and `Tria` notable rather than just "the table only has two real
+values." `Diffindo`/`WingardiumLeviosa` use one shared script for all
+three levels, like `Spongify` -- **now explained, not just noted**: all
+three (`SpellId` `1`/`3`/`5`) have `g_abSpellMaxLevel` `== 1` (see below),
+meaning none of them can ever level past `Uno` in the first place, so a
+Duo/Tria-specific script would be genuinely unreachable content -- the
+engine simply doesn't need one.
+
+### Spell familiarity/leveling -- `TrackSpellFamiliarity` (`0x08010008`), PROVEN
+
+Every time a fighter's pending action resolves through the normal
+action path (`DispatchPendingAction`, `0x080100a0`, cases `None` and
+`Informus` -- see below), it calls
+`TrackSpellFamiliarity(fighterType, spellId, spellLevel, pSpellProgress)`,
+which implements the "spells level up with use" mechanic:
+
+```c
+void TrackSpellFamiliarity(FighterType fighterType, SpellId spellId, char spellLevel,
+                            SpellProgressBlock *pSpellProgress)
+{
+  byte *pCastLevel = pSpellProgress->aSpellCastLevel + spellId;
+  if (*pCastLevel < g_abSpellMaxLevel[spellId] && fighterType != Buckbeak) {
+    byte *pUsageProgress = pSpellProgress->aSpellUsageProgress + spellId;
+    *pUsageProgress += spellLevel + 1;              // casting at a higher level earns more progress
+    int partySpellIndex = spellId + fighterType * 0x48;
+    g_abPartySpellUsage[partySpellIndex] += spellLevel + 1;
+    if (g_abSpellLevelUpThreshold[*pCastLevel] <= *pUsageProgress) {
+      ShowBattleMessage(SpellLevelUp, 0, 0);
+      (*pCastLevel)++;
+      *pUsageProgress = 0;
+      g_abPartySpellLevel[partySpellIndex]++;
+      g_abPartySpellUsage[partySpellIndex] = 0;
+    }
+  }
+}
+```
+
+**`SpellProgressBlock`** (26 bytes) is a standalone struct typed only for
+this function's 4th parameter -- it is *not* embedded into `BattleFighter`
+itself (that would force every other already-reviewed function's
+`fighter->wHp` into a longer field-access chain for no benefit). Its
+fields are `BattleFighter`'s own `wHp`/`wMp`/`bStat_attack`/`bUnk_0x0F`
+followed by two previously-unmapped embedded 8-entry (one per `SpellId`)
+byte arrays discovered here, now also added directly to `BattleFighter`
+itself at their real offsets: **`aSpellCastLevel`** (`+0x10`, the
+fighter's current mastered level *per spell*, distinct from `bSpellLevel`
+which is the level chosen for *this turn's* cast) and
+**`aSpellUsageProgress`** (`+0x1A`, progress toward that spell's next
+level-up). The call site passes `(SpellProgressBlock *)&fighter->wHp`,
+i.e. `BattleFighter+8` -- confirmed bounded on both sides: it starts
+exactly at `wHp` and its last field ends two bytes before `wHp_max`
+(`+0x24`), with `g_abPartySpellUsage`/`g_abPartySpellLevel`'s call-site
+math (`spellId + fighterType*0x48`) additionally confirming the `0x48`
+figure as `BattleFighter`'s own stride, reused for a separate persistent
+(likely save-data) tracking array, one `0x48`-strided block per
+`FighterType`, only the first 8 bytes of each block used (indexed by
+`SpellId`).
+
+Two small parallel tables, immediately adjacent in ROM (`g_abSpellMaxLevel`
+at `0x0804e5e0`, 8 bytes; `g_abSpellLevelUpThreshold` immediately after at
+`0x0804e5e9`, 3 bytes -- bounded on the far side by the already-documented
+`DAT_0804e5ec` used elsewhere in `ShowBattleMessage`'s dialog dispatch):
+
+- **`g_abSpellMaxLevel[8]`** (indexed by `SpellId`): `[3,1,3,1,3,1,2,2]` for
+  `Flipendo, Spongify, Verdimillious, Diffindo, Incendio,
+  WingardiumLeviosa, PetrificusTotalus, Glacius`. This is the real,
+  data-driven answer to two things this doc previously only inferred from
+  script content: `Spongify`/`Diffindo`/`WingardiumLeviosa` (max `1`) can
+  never level past `Uno`, and `PetrificusTotalus`/`Glacius` (max `2`) can
+  never reach `Tria` -- both now cross-checked against, and matching,
+  those spells' script-sharing patterns above.
+- **`g_abSpellLevelUpThreshold[3]`**: `[1, 25, 50]`, indexed by the
+  spell's *current* level. Leveling `Uno`->`Duo` takes just 1 use;
+  `Duo`->`Tria` takes a real 25. The third entry (`50`) is normally
+  unreachable, since `g_abSpellMaxLevel` gates the level-up check before
+  a maxed-out spell's usage counter can ever reach it -- not traced
+  further, flagged as likely-dead data rather than assumed meaningful.
+
+Also confirms `fighterType != Buckbeak` is an explicit, dedicated gate
+here (Buckbeak doesn't cast spells, so never tracks familiarity), not an
+incidental side effect of some other check.
+
+### `DispatchPendingAction` (`0x080100a0`), PROVEN -- and the answer to "does Informus have a script?"
+
+Reads `BattleFighter.bPendingActionKind_candidate` (`+0x3b`, enum `PendingActionKind_candidate`:
+`None=0, UseItem=1, SpecialMove=2, Flee=3, Informus=4`, written by the
+menu confirm handlers documented above) for the active fighter and starts
+the corresponding animation state on that fighter's `Object`:
+
+```c
+void DispatchPendingAction(void)
+{
+  BattleFighter *fighter = g_pFightState->pFighters + g_pFightState->bActiveFighterIndex;
+  switch (fighter->bPendingActionKind_candidate) {
+  case None:
+  case Informus:
+    ShowBattleMessage(ActionAnnounce, 0, 0);
+    TrackSpellFamiliarity(fighter->bFighterType, fighter->bSpellId, fighter->bSpellLevel, &fighter->wHp);
+    SetFighterAttackAnimState_candidate(fighter->pObject, 0x1a);   // same state HandleScriptedDamageEvent_candidate handles
+    break;
+  case UseItem:
+    ShowBattleMessage(ItemUseAnnounce, fighter->bSpellLevel, 0);
+    SetFighterAttackAnimState_candidate(fighter->pObject, 0x04);
+    break;
+  case SpecialMove:
+    if (fighter->bFighterType == Harry) fighter->bSpellId = (SpellId)g_nFolioUniversitasSlot;
+    ShowBattleMessage(SpecialMoveAnnounce, fighter->bSpellId, 0);
+    SetFighterAttackAnimState_candidate(fighter->pObject, 0x15);
+    if (fighter->bFighterType == Hermione) g_pFightState->nHermioneLecturesKnown_candidate = 1;
+    else if (fighter->bFighterType == Ron) g_pFightState->nRonMovesKnown_candidate = 1;
+    break;
+  case Flee:
+    if (Mt19937Chance(0x4b) == 0) {
+      ShowBattleMessage(EscapeBlocked, 0, 0);
+      SetFighterAttackAnimState_candidate(fighter->pObject, 0x05);
+    } else {
+      PlaySoundById(0x9d);
+      PushGameMode_candidate(8, 3, DAT_03003b50);
+    }
+  }
+}
+```
+
+Two findings of note:
+
+- **`SpecialMove` is not general spellcasting** -- this is exclusively the
+  Special Move path (`SpecialMoveAnnounce`, anim state `0x15`, and it's
+  what actually sets `nHermioneLecturesKnown_candidate`/
+  `nRonMovesKnown_candidate` to `1`, closing the loop with
+  `OpenBattleTopMenu`'s graying check documented above -- using a Special
+  Move once is literally what un-grays that menu entry for later turns).
+  A regular `Cast Spell` selection leaves `bPendingActionKind_candidate` at `None`.
+  For Harry specifically, `bSpellId` gets overwritten with
+  `g_nFolioUniversitasSlot` (the raw Folio Universitas card
+  slot, `0`-`15`) purely so the announce message can index by it --
+  `g_nFolioUniversitasSlot` is **not** itself a `SpellId`
+  despite the cast shown here (`SpellId` only spans `0`-`7`; card slots
+  go to `15`) -- this is the same field-reuse trick `Informus` uses
+  below, just for display indexing rather than a safe-damage sentinel.
+- **`Informus` answers this doc's long-standing open question.** It is
+  given *no* special-case branch here at all -- it shares the `None` case
+  outright, driving the exact same anim state (`0x1a`,
+  `HandleScriptedDamageEvent_candidate`'s state) and the exact same
+  `TrackSpellFamiliarity` call a completely ordinary action would. Since
+  `Informus`'s menu confirm handler (`ConfirmBattleTopMenu` case 2,
+  documented above) already sets `bSpellId = Spongify` specifically
+  because that's a guaranteed-zero-power slot, the practical upshot is:
+  **there is no dedicated Informus script** -- if anything scriptable
+  fires at all off this path, it would be `Spongify`'s own harmless
+  cast-animation script (effect id `38`, confirmed elsewhere in this doc
+  to be pure animation, no `StatusEffect`), reused as an incidental side
+  effect rather than a real Informus-specific trigger. A real, mildly
+  funny consequence: **casting Informus silently counts as a use of
+  Spongify** for `TrackSpellFamiliarity`'s leveling purposes. The actual
+  Informus effect (populating Folio Bruti data) is still not located --
+  it is not visible anywhere in this dispatcher, so it must happen via
+  some other, still-untraced trigger.
+
 ### Battle item/equipment database -- `g_pBattleItems_candidate` (`0x08060F08`)
 
 78-entry array of `BattleItemEntry_candidate` (0x34-stride: type, param,
@@ -928,3 +1163,307 @@ order.
 | 0x10 | `pFighters[arg3].fighterType + 0x991` (dynamic) | e.g. "Harry is hidden from view!" |
 | 0x11 | `0xa3e` (static) | "The opponent is immune to paralysis!" |
 | default | keyed on the *acting* fighter's `bFighterType`: `1` (Hermione) -> `arg2 + 0xa39`; `2` (Ron) -> `arg2 + 0xa36`; `0` (Harry) -> several sub-branches (`arg2==3`/`6`/`0xf` index different tables, e.g. `0xf` -> `... + 0xa2d`); else -> `0` | Hermione/Ron/Harry special-move descriptions, e.g. "Wow! Harry learned all possible spells!" |
+
+## The battle menu itself -- PROVEN
+
+Found by walking backward from the top-level menu label table (see below),
+not from `GetDialogText`'s callers directly (170+ call sites, mostly
+unrelated dialog text elsewhere in the ROM -- not a practical starting
+point on its own). The real entry point was a byte-pattern search for the
+raw bytes of `0x8f0` (`2288`, `Cast Spell`'s string id) as 32-bit literal
+data, which landed on a 7-entry table at `0x0804d808` referenced from
+`FUN_08011520` -- the menu's own label-drawing function.
+
+### Menu/UI state machine, `FightState` fields
+
+- **`field_0x1070`** (u8): which menu *screen* is currently active. Values
+  found: `1` = top-level 7-item menu, `2` = per-character spell list
+  (`Cast Spell`), `4` = 3-item Special Move/Lecture list (Hermione's 3
+  lectures and Ron's 3 moves share this one screen), `5` = spell
+  cast-level list (Uno/Duo/Tria, inferred from `FUN_080101d0`'s case 5
+  reading `pBVar6->aSpellEffectiveness[bSpellId-0x24]` as an item count,
+  not walked further), `6` = target-select/confirm screen, `7` = item
+  list, `8`/`9` = further submenus (not walked). `0` = no menu open.
+- **`field_0x147c`** (u8): the current menu cursor index within whichever
+  screen `field_0x1070` selects.
+- Both consumed by **`FUN_08011520`** (`0x08011520`), called after every
+  cursor move: draws the currently-highlighted entry's label (and, for
+  the spell-level screen, its MP cost) via `GetDialogText`/`DrawTextLines`
+  -- this is the menu's own label-draw routine, not a generic dialog
+  drawer.
+
+### Top-level menu, PROVEN
+
+**`0x0804d808`**, a 7-entry `int32[7]` table of dialog-text ids, read as
+`table[field_0x147c]` by `FUN_08011520`'s `field_0x1070==1` case:
+
+```
+[0x8f0, 0x8f1, 0x960, 0x8f2, 0x8f3, 0x8f4, 0x8f5]
+= [2288, 2289, 2400, 2290, 2291, 2292, 2293]
+= [Cast Spell, Special Move, Informus, Use Item, Flee, Folio Bruti, Help]
+```
+
+This directly settles where `Informus` (string id `2400`, not adjacent to
+the `2288`-`2293` block in the *string table*) actually sits in the *menu
+order*: index `2`, between `Special Move` and `Use Item` -- exactly the
+order the user-facing glossary lists it in. All 7 items the user asked
+about are accounted for by this one table.
+
+**`FUN_080104a0`** (`OpenBattleMenu_candidate`, `0x080104a0`) opens this
+screen for a given fighter: sets `field_0x1070=1`, builds a local 7-entry
+enabled/grayed array (all `1` by default), then:
+
+- grays index `1` (`Special Move`) if the active fighter is Hermione with
+  `field_0x148c==0` or Ron with `field_0x1488==0` -- these two fields are
+  the natural "lectures known" / "special moves known" counts (not
+  independently confirmed by name, but exactly gate the one menu item
+  that needs at least one unlocked move to be usable).
+- grays index `2` (`Informus`) **and** index `4` (`Flee`) together, in the
+  same branch, when `DAT_03003f24 == 0xff` -- matching the user's
+  "Informus/Flee grayed out for bosses" fact exactly; `DAT_03003f24` is
+  the natural "is this a boss fight" flag/index candidate (not
+  independently named further here).
+
+**`FUN_08011bec`** (`0x08011bec`) is the confirm (A-button) handler for
+this screen, `switch(field_0x147c)` with 7 cases matching the table above
+1:1:
+
+- **case 0, Cast Spell**: `field_0x1070 = 2` (spell-list screen), then
+  builds the list via `FUN_08011abc(1, i, fighterType, 1)` for
+  `i` in `[0, pFighter->bUnk_0x0F)` -- **`bUnk_0x0F` is the fighter's
+  known-spell count**, directly confirming "only unlocked spells for that
+  character" from the task description.
+- **case 1, Special Move**: if the active fighter is Harry, saves the
+  current mode-stack context and pushes game mode `0x26` via
+  `FUN_0802c7e0(0x26, 1, 0)` -- **this is the Folio Universitas**,
+  matching `DAT_03003f3c == 0x26` already read by `FUN_0800f5f0` earlier
+  in this doc (that function consumes the *result* of a completed card
+  selection, not the menu itself -- the two findings now connect).
+  Otherwise (Hermione/Ron) calls **`FUN_080105d8`** (see below) -- one
+  shared 3-item-list screen for both, not per-character screens.
+- **case 2, Informus**: gated by `DAT_03003f00 != 0xff` (a second,
+  independent boss-style check from the graying check above -- same
+  "boss" concept, different flag/slot). Sets the active fighter's
+  `bSelectedActionIndex=0`, **`bSpellId=1`**, `field_0x3b=4`,
+  `bSpellLevel=0`, then `field_0x1070=6` (the same target-select screen
+  spellcasting uses). This resolves this doc's earlier open question
+  ("`Informus`'s Folio Bruti write is unlocated... may not go through the
+  object-script engine at all") -- **Informus does enter the same
+  `bSpellId`-driven action pipeline as spellcasting**, reusing `SpellId`
+  `1` (`Spongify`'s already-zero-power slot, so it can't accidentally
+  deal damage) as a shared sentinel, distinguished from a real Spongify
+  cast by `field_0x3b==4`. What specifically reads `field_0x3b==4` to
+  perform the actual Folio Bruti unlock is not traced further.
+- **case 3, Use Item**: `field_0x1070 = 7` (item-list screen), calls
+  `FUN_08010660` to build the list.
+- **case 4, Flee**: gated by `DAT_03003f24 != 0xff` (the same flag
+  `FUN_080104a0` already used to gray this entry -- re-checked here
+  too), sets `field_0x1070=0` (closes the menu) and `field_0x3b=3`.
+- **case 5, Folio Bruti**: calls `FUN_0802c7c4(0x2d)` -- a mode-push,
+  presumably to the Folio Bruti screen (not walked further here; see
+  `../formats/folio_bruti.md`).
+- **case 6, Help**: saves mode-stack context and pushes game mode `0x44`
+  via `FUN_0802c800(0x44, ...)` -- matches `DAT_03003f3c == 0x44`, the
+  other mode value `FUN_0800f5f0` branches on, consistent with "opens a
+  menu similar to the pause menu" from the user's description (not
+  walked further).
+
+Cursor movement and A/B dispatch both live in **`FUN_080101d0`**
+(`0x080101d0`): reads a button-state bitmask `DAT_030034f0` (`0x10`=Down,
+`0x20`=Up move the cursor by +-1 with wraparound via `FUN_08012e38`;
+`0x01`=A/confirm, `0x02`=B/cancel dispatch through two 11-entry function-
+pointer tables indexed by `field_0x1070`: confirm table at `0x0804e2ec`,
+cancel table at `0x0804e318`). `field_0x1070`'s per-screen confirm
+handlers: `1`->`0x08011bec` (above), `2`->`0x08012e54`, `4`->`0x08011eb8`
+(below), `5`->`0x08011fa0`, `6`->`0x080120ec`, `7`->`0x08012eac`,
+`8`->`0x08012178`, `9`->`0x0801320c` (all now walked below except `9`,
+which has no function defined at that address at all -- `field_0x1070`
+is never observed being set to `9` anywhere in this whole tree, so this
+slot looks unreachable/dead from battle, not a tracing gap).
+
+### The rest of the menu tree, PROVEN, and where the effect calls actually live
+
+Walking every remaining `field_0x1070` confirm handler completes the
+picture -- and the headline result is structural: **none of the menu's
+own confirm handlers call the effect-trigger function
+(`FUN_08018b70`) directly.** Every screen in this tree does the same
+thing: write a handful of `BattleFighter` fields (`bSpellId`,
+`bSpellLevel`, `bSelectedActionIndex`, `field_0x3b`, `bSlotParam`) and
+set `field_0x1070 = 0` to close the menu. The actual effect calls all
+happen afterward, in the object-tick execution layer this doc already
+covers in depth (`TickPlayerActionState_candidate`'s case `0x1a` =
+`HandleScriptedDamageEvent_candidate`, and its `0x40000`/`0x8000`
+`Object+0xc` flag branches) -- the menu and the effect system are fully
+decoupled through these struct fields, confirming the split this doc
+warned about at the top (menu-construction vs. action-execution are
+genuinely two separate layers, not just two ends of one function).
+
+- **`field_0x1070==2`** (`FUN_08012e54`, confirm handler for the
+  per-character spell list opened by `Cast Spell`): `bSpellId =
+  DAT_0804e084[fighterType*7 + cursor]` -- **`DAT_0804e084` is a
+  per-character cursor-position -> real `SpellId` remap table** (already
+  independently referenced by `FUN_08011520`'s label-draw code for this
+  same screen), needed because not every character's spell list shows
+  the same 8 `SpellId`s in the same menu order/count. `bSpellLevel=0`,
+  `field_0x3b=0`. Then `FUN_080106ec(fighterIdx, cursor)` builds the next
+  screen's list before an (unrecovered, but structurally
+  `field_0x1070=5`) jump.
+- **`field_0x1070==5`** (`FUN_08011fa0`, spell cast-level list --
+  Uno/Duo/Tria): confirms the **spell cast-level list from the task
+  description** and gates it on affordability --
+  `fighter.wSp < g_awSpellMpCost[spellId*3+cursor]` beeps/refuses (SP,
+  not MP, despite the field name -- consistent with `ShowBattleMessage`'s
+  `SpCost`/`MpCost` case split elsewhere in this doc). Also refuses
+  casting `Spongify` (`bSpellId==1`) while `DAT_03003f24==0xff` (the same
+  boss-flag candidate used to gray `Informus`/`Flee`) -- **a boss fight
+  blocks Spongify specifically**, a new, concrete behavioral fact. Sets
+  `bSpellLevel = cursor`; most spell/level combinations proceed to a
+  target-select screen (`field_0x1070=6`), except a few that execute
+  immediately with `bSelectedActionIndex=0xfe` (self/no-target): the
+  `bSpellId==8` (the "no real spell" sentinel already seen for
+  `Informus`) + level-1 combination, `bSpellId==6`
+  (`PetrificusTotalus`) + level-1, and (generically) any spell's level-2
+  (`Tria`) cast **except `Glacius`** (`bSpellId==4`) -- i.e. by default a
+  `Tria` cast doesn't need a target, with `Glacius` special-cased back
+  into needing one. Not fully explained; flagged rather than
+  over-interpreted.
+- **`field_0x1070==6`** (`FUN_080120ec`, the enemy target-select
+  confirm): after a vsync wait and some UI cleanup calls, simply writes
+  `bSelectedActionIndex = cursor` and `field_0x1070 = 0`. Reads
+  `field_0x1059` elsewhere in this doc's other target-select code
+  (`g_pFightState->field_0x1059`, an array already used as an
+  enemy-roster-index list by `ResolveSpellAttack`'s callers) --
+  **this screen targets enemies.** Used by: `Informus`, Ron's `Stink
+  Pellet`/`Wizard Cracker`, the spell target-select path above, and
+  Hermione's non-self lectures.
+- **`field_0x1070==7`** (`FUN_08012eac`, item-list confirm): checks
+  `FUN_08026f34(cursor)` (item usable/available -- refuses with a beep if
+  not), then `field_0x3b=1`, `bSpellLevel = cursor + 0x38` (matches
+  `FUN_08011520`'s item-name text lookup, `FUN_08026b8c(cursor+0x38)`) --
+  **items are addressed by the same `bSpellLevel` field spell levels
+  use, offset by `0x38`** into `g_pBattleItems_candidate` (the 78-entry
+  item database documented above). Then calls `FUN_080107bc` (below) to
+  pick a target.
+- **`FUN_080107bc`** (`0x080107bc`), the shared **ally**-target-select
+  *opener*: sets `field_0x1070 = 8` and reads `field_0x105d` (a
+  different array from state 6's `field_0x1059`) for its list --
+  **`field_0x1070==8` targets allies, not enemies.** Called from three
+  places in this tree: `Use Item` (above), Hermione's non-"Proper Wand
+  Technique" lectures (`Be More Careful`, `Good Study Habits` --
+  consistent with them needing an ally target rather than an enemy), and
+  the `bSpellId==8` special case inside the spell-level confirm above.
+- **`field_0x1070==8`** (`FUN_08012178`, the ally target-select
+  confirm): same shape as state 6's confirm -- vsync wait, writes
+  `bSelectedActionIndex = cursor`, `field_0x1070 = 0` -- plus, if
+  `field_0x3b==1` (the `Use Item` marker set above), calls
+  `FUN_08026e2c(itemIndex, 1)` (presumably consumes/decrements the used
+  item; not traced further).
+
+`Use Item`'s actual effect resolution happens later, in
+`TickPlayerActionState_candidate`'s `Object+0x60` sub-state `2`
+(`FUN_08015f50`, `0x08015f50`): it only formats and shows the
+already-computed damage/heal number (`DAT_0300274a`) via
+`ShowBattleMessage`/`FUN_080181ac` -- **it does not itself call
+`FUN_08018b70` or compute an item's effect**, so an item's actual
+gameplay effect (heal amount, stat boost, etc.) is set by something else
+entirely, not walked here. This lines up with `g_pBattleItems_candidate`'s
+`dwType`/`dwParam` fields still being undecoded (noted above) -- item
+effects plausibly come from there rather than from the
+`g_apEffectScripts_candidate`/opcode-`0x97` system spells and Special
+Moves use.
+
+### Special Move submenu (Hermione's 3 Lectures / Ron's 3 Special Moves), PROVEN
+
+**`FUN_080105d8`** (`0x080105d8`) is the shared opener for both
+characters' 3-item Special Move list: sets `field_0x1070=4`, builds
+exactly 3 entries via `FUN_08011abc(3, i, fighterType, 1)` for `i` in
+`0..2`. `FUN_08011520`'s `field_0x1070==4` case picks the label text base
+by fighter type -- `fighterType==Hermione`: `textId = cursor + 0x8fa`
+(`2298`-`2300`, already known to be `Be More Careful`/`Good Study
+Habits`/`Proper Wand Technique`'s *string* ids in that order, per the
+`g_abHermioneLectureEffectId_candidate` table elsewhere in this doc);
+else (Ron): `textId = cursor + 0x8fd` (`2301`-`2303`, i.e. **cursor 0 =
+Stink Pellet, cursor 1 = Wizard Cracker, cursor 2 = Stink Pellet 2**,
+exactly the string-id order already on record).
+
+**`FUN_08011eb8`** (`0x08011eb8`), this screen's confirm handler:
+
+```c
+BattleFighter *f = ...;
+f->bSpellId = field_0x147c;   // the selected list index, 0-2
+f->field_0x3b = 2;
+if (fighterType == Hermione) {
+    if (f->bSpellId != 1)          // not "Proper Wand Technique"
+        goto target_select;         // FUN_080107bc
+} else /* Ron */ {
+    if (f->bSpellId != 2)          // not "Stink Pellet 2"
+        goto target_select;         // field_0x1070 = 6, same screen Informus uses
+}
+// self-cast, no target needed:
+f->bSelectedActionIndex = 0xfe;
+field_0x1070 = 0;                   // close menu, execute immediately
+```
+
+So **Ron's `bSpellId` is set directly from the menu cursor (0/1/2)**, the
+same field spells use, and **cursor index 2 (`Stink Pellet 2`) is the one
+self-cast/no-target move** -- `Stink Pellet`(0) and `Wizard Cracker`(1)
+both require picking a target first.
+
+### Ron's Special Move effect ids, resolved: `44`/`46`/`45`
+
+`HandleScriptedDamageEvent_candidate`'s separate `Object+0xc` bit-`0x8000`
+branch (already documented above as reading `DAT_0805150a[bSpellId]`
+"unconditional of fighter type") is the actual trigger: since the menu
+above proves `bSpellId` is set to the selected Special-Move cursor index
+(0-2) for Ron exactly as it is for Hermione's lectures, and
+`DAT_0805150a`'s entries `3`-`5` are already independently proven
+identical to `g_abHermioneLectureEffectId_candidate` (same array, two
+access paths), the natural reading of entries `0`-`2` -- previously left
+unnamed pending this trace -- is now backed by the same mechanism that
+resolves Hermione's:
+
+```
+DAT_0805150a = [44, 46, 45, 49, 51, 50, 41]
+                0    1   2  <- Ron, indexed by his menu cursor (bSpellId)
+```
+
+i.e. **`Stink Pellet` = effect id `44`, `Wizard Cracker` = effect id
+`46`, `Stink Pellet 2` = effect id `45`**.
+
+Cross-checked against the actual extracted script content
+(`data/scripts/Effect44.txt`/`Effect45.txt`/`Effect46.txt`, currently
+named `Effect44`/`45`/`46` in `tools/objscript/script_names.json`):
+
+- **Effect `44`**: a single unconditional `StatusEffect 17 0 0`
+  (opcode `0x97` case `0x11`, "Paralyzed", the *unconditional*-apply
+  variant per this doc's `bit 0x10` section) after a throw-style
+  animation -- matches a single-target "throws a stink pellet, paralyzes
+  them" move, consistent with `Stink Pellet` needing a chosen target.
+- **Effect `45`**: branches on a script-local parameter
+  (`GotoIfLocalANotEqual 0 50`) between the same simple throw-and-
+  paralyze sequence (label `50`, structurally identical to effect `44`)
+  and an extended sequence applying `StatusEffect 17 0 0` **three times**
+  in a loop -- consistent with `Stink Pellet 2` being an
+  enhanced/multi-target version of the same paralysis effect, and with it
+  being the one move that skips target selection (the multi-apply branch
+  presumably walks all enemies itself, script-side).
+- **Effect `46`**: fires only one `StatusEffect`, using **case `0x1B`
+  (`27`)** -- a case
+  number not otherwise documented in this file's opcode `0x97` table.
+  Mechanically distinct from both Stink Pellet variants (which both use
+  the paralysis case `0x11`), consistent with `Wizard Cracker` being an
+  economy effect (the already-live-confirmed 25% gold-drop multiplier)
+  rather than a status effect -- case `0x1B`'s actual semantics are not
+  traced further, but this is exactly the kind of "not paralysis" outlier
+  the ordering evidence predicts. The gold-multiplier's own application
+  site (presumably a `g_nGoldAccum` write triggered from case `0x1B`) is
+  still not traced.
+
+Confidence: the menu-order/mechanism chain above (7-item table ->
+confirm dispatch -> Special Move submenu -> `bSpellId` -> `0x8000`-branch
+table read) is **PROVEN**; the specific `44`/`45`/`46` <-> move-name
+assignment is **STRUCTURAL MATCH**, corroborated by both position
+(matches the string-id order exactly) and content (the mechanically odd
+one out, effect `46`, lands on `Wizard Cracker`, the mechanically odd one
+out by gameplay behavior) -- not yet a live/dynamic confirmation the way
+`ResolveMeleeAttack` got one.

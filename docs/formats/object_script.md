@@ -638,15 +638,24 @@ US only -- content not yet checked against JP.
   chunk of work: read one handler in `InterpretObjectScript`, name it
   and its operand layout in `tools/objscript/opcodes.json`, re-run
   `just migrate-objscript` to refresh `data/scripts/`'s text.
-- **Link effect scripts to Harry's Folio Universitas cards.**
-  `../memory-map/battle.md` maps most of Harry's 16 cards to an effect
-  id via `g_abHarryCardEffectId_candidate`, but several remain open: the
-  "opponent loses a turn" card (candidate effect id `47`, opcode `0x97`
-  sub-case `0x12`/`Paralyze_3`, not confirmed against a specific card
-  name), the extra-XP card (candidate effect id `14`, index `11`, not
-  confirmed), and "Girding All" (a second `DefenseBoost`-applying script
-  at effect id `36` that doesn't match any of the 16 known card slots).
-  Naming more of the opcodes above -- particularly whichever one turns
-  out to control the per-turn "which move did the player pick" text or
-  icon -- is the most likely way to pin these down from the script side
-  rather than from battle-message content alone.
+- ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
+  -- all 16 of Harry's cards are now named and mapped to their effect id
+  in `tools/objscript/script_names.json`, via the in-game Card Combo
+  Glossary text (`data/text/en_us.json` string ids `1144`-`1175`, a
+  16-entry name list immediately followed by a matching 16-entry
+  description list) lining up positionally with
+  `g_abHarryCardEffectId`'s 16 table entries -- see
+  `../memory-map/battle.md`'s "Harry's 16 Folio Universitas cards" section
+  for the full table and the corroborating evidence. This also resolved
+  the "opponent loses a turn" card (`Snitch`, effect id `47`) and the
+  extra-XP card (`Extra EXP`, effect id `14`). "Girding All" (index `7`,
+  effect id `35`) remains a partial exception: its script has no
+  `StatusEffect` (`0x97`) call at all, unlike every other card, so
+  whatever `DefenseBoost`-equivalent mechanism it uses (probably a direct
+  write to `BattleFighter+0x2E`, `bDefenseFactorPercent`, rather than the
+  `bStatusFlags` bit) is not confirmed -- the effect id 1:1 mapping is
+  solid (via card-list position and elimination), but its actual
+  in-engine mechanism is not. Effect id `36` (the second
+  `DefenseBoost`-applying script mentioned in the old version of this
+  note) is now confirmed to genuinely not be any of Harry's 16 cards --
+  it's simply absent from the real 16-entry table.

@@ -1,8 +1,76 @@
 {
   "scripts": {
+    "2": {
+      "name": "SpellFlipendoUno",
+      "description": "Plays the spell's cast animation."
+    },
+    "3": {
+      "name": "SpellFlipendoDuo",
+      "description": "Plays the spell's cast animation."
+    },
+    "5": {
+      "name": "SpecialHarryTempestJinx",
+      "description": "Blows one opponent off-screen."
+    },
+    "10": {
+      "name": "SpecialHarryCrackerJinx",
+      "description": "Heavy damage to all opponents, minor damage to the party."
+    },
+    "14": {
+      "name": "SpecialHarryExtraExp",
+      "description": "Grants the party bonus XP for winning the encounter."
+    },
+    "15": {
+      "name": "SpecialHarryHorklumpSpores",
+      "description": "Horklump spores appear and blast the opponent with pollen."
+    },
     "18": {
       "name": "SpecialHarryPoisonImmunity",
       "description": "Grants the party poison immunity for one encounter."
+    },
+    "19": {
+      "name": "SpellVerdimilliousUno",
+      "description": "Plays the spell's cast animation."
+    },
+    "20": {
+      "name": "SpellVerdimilliousDuo",
+      "description": "Plays the spell's cast animation."
+    },
+    "21": {
+      "name": "SpellFlipendoTria",
+      "description": "Plays the spell's cast animation."
+    },
+    "22": {
+      "name": "SpellDiffindo",
+      "description": "Plays the spell's cast animation."
+    },
+    "23": {
+      "name": "SpellIncendioUno",
+      "description": "Plays the spell's cast animation."
+    },
+    "24": {
+      "name": "SpellIncendioDuo",
+      "description": "Plays the spell's cast animation."
+    },
+    "25": {
+      "name": "SpellIncendioTria",
+      "description": "Plays the spell's cast animation."
+    },
+    "26": {
+      "name": "SpellVerdimilliousTria",
+      "description": "Plays the spell's cast animation."
+    },
+    "28": {
+      "name": "SpellWingardiumLeviosa",
+      "description": "Plays the spell's cast animation."
+    },
+    "30": {
+      "name": "SpellGlaciusUno",
+      "description": "Plays the spell's cast animation."
+    },
+    "31": {
+      "name": "SpellGlaciusDuo",
+      "description": "Plays the spell's cast animation."
     },
     "33": {
       "name": "SpellPetrificusTotalusUno",
@@ -12,9 +80,57 @@
       "name": "SpellPetrificusTotalusDuo",
       "description": "Randomly attempts to paralyze the target."
     },
+    "35": {
+      "name": "SpecialHarryGirdingAll",
+      "description": "Increases the whole party's physical defense."
+    },
+    "37": {
+      "name": "SpecialHarryRevive",
+      "description": "Revives an unconscious party member."
+    },
     "38": {
       "name": "SpellSpongify",
       "description": "Weakens one enemy's attacks."
+    },
+    "39": {
+      "name": "SpecialHarrySonorousCharm",
+      "description": "A magnified roar that disrupts everything in its path."
+    },
+    "40": {
+      "name": "SpecialHarryReplenishSp",
+      "description": "Restores the whole party's Stamina Points to maximum."
+    },
+    "41": {
+      "name": "SpecialHarryBludgers",
+      "description": "Bludgers rain down on all opponents for low damage."
+    },
+    "42": {
+      "name": "SpecialHarryPoisonAntidote",
+      "description": "Removes poison from one party member."
+    },
+    "43": {
+      "name": "SpecialHarryUltimateMp",
+      "description": "Grants one party member all spell abilities."
+    },
+    "44": {
+      "name": "SpecialRonStinkPellet",
+      "description": "Throws a stink pellet that paralyzes one enemy."
+    },
+    "45": {
+      "name": "SpecialRonStinkPellet2",
+      "description": "Enhanced Stink Pellet; paralyzes multiple targets."
+    },
+    "46": {
+      "name": "SpecialRonWizardCracker",
+      "description": "Boosts gold earned from battle by 25%."
+    },
+    "47": {
+      "name": "SpecialHarrySnitch",
+      "description": "Distracts an opponent, causing it to lose a turn."
+    },
+    "48": {
+      "name": "SpecialHarryReplenishMp",
+      "description": "Restores one party member's Magic Points to maximum."
     },
     "49": {
       "name": "SpecialHermioneBeMoreCareful",
@@ -27,6 +143,14 @@
     "51": {
       "name": "SpecialHermioneProperWandTechnique",
       "description": "Boosts the party's spell power."
+    },
+    "52": {
+      "name": "SpecialHarryRemoveJinx",
+      "description": "Removes any jinx affecting one party member."
+    },
+    "53": {
+      "name": "SpecialHarryReparifors",
+      "description": "Cancels any magical ailments affecting the party."
     }
   }
 }
