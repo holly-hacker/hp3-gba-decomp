@@ -104,7 +104,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   from that sentinel path -- the spell identity is confirmed by content,
   the call site is not.
 - **bit `0x02`** = **Poisoned**. PROVEN: opcode `0x97` case 5
-  (`0x0801a856`), gated on `(bStatusFlags & 0x06) == 0` (i.e. not
+  (`0x0801a71c`), gated on `(bStatusFlags & 0x06) == 0` (i.e. not
   already `Poisoned` or `PoisonImmune`), sets the bit alongside
   `FUN_0801b590` (a particle/VFX spawn) and `field_0x14a8 = 3` -- sub-case
   `3` of `ShowBattleMessage`'s case-5 dispatch is "Harry is poisoned."
