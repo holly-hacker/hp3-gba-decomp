@@ -150,12 +150,48 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   inside this function -- likely a duration or an already-resolved
   chance, not traced further. Not read by
   `ResolveMeleeAttack`/`ResolveSpellAttack` (paralysis presumably gates
-  action/turn selection elsewhere, not the damage formula). **PROVEN
-  source: PetrificusTotalus** -- `SpellId` `6`'s effect ids
-  (`g_abSpellEffectId_candidate` `[33,34,33]`) trace to opcode `0x97`
-  case `10` (level `1`, effect id `34`, has no opcode `0x97` call at
-  all -- consistent with the paralysis duration not varying by spell
-  level). `PetrificusTotalus` and `Spongify` share
+  action/turn selection elsewhere, not the damage formula).
+  **Case `10` is conditionally gated, cases `0x11`/`0x12` are not** --
+  confirmed by reading each call site's `param_2` (`FUN_0801b430`'s 2nd
+  arg): case `10` (`0x0801a818`) passes `0` (or `1` only if the target
+  fighter's roster byte reads `0xFF`, a sentinel case), while cases
+  `0x11`/`0x12` (`0x0801a83e`/`0x0801a84a`) hardcode `1`. Inside
+  `FUN_0801b430`, the whole apply-or-skip block is additionally gated by
+  `(DAT_0300276e != 0 && DAT_0300276e != 0x3e9) || param_2 != 0` -- i.e.
+  with `param_2 == 0` (case `10`'s normal path), paralysis only applies
+  when `DAT_0300276e` (written only by `FUN_08018b70`'s `param_6`, the
+  effect-trigger's caller-supplied 6th argument -- not traced further)
+  holds some other value; cases `0x11`/`0x12`'s `param_2 == 1`
+  unconditionally satisfies the `||`, skipping that check entirely. So
+  case `10` is genuinely conditional on external state (a real
+  "chance"/context gate) while `0x11`/`0x12` always apply (subject only
+  to the immunity-bit check both paths share). **PROVEN source:
+  PetrificusTotalus** -- `SpellId` `6`'s effect ids
+  (`g_abSpellEffectId_candidate` `[33,34,33]`, indexed `spellId*3 +
+  castLevel`) trace to opcode `0x97` case `10` -- **confirmed directly
+  against the extracted script text** for *both* effect ids `33` and `34`
+  (`data/scripts/SpellPetrificusTotalusUno.txt`/`SpellPetrificusTotalusDuo.txt`,
+  see `docs/formats/object_script.md`): both unconditionally contain a
+  `StatusEffect 10 0 0` instruction, so both apply the same
+  conditionally-gated paralysis -- correcting an earlier, unverified
+  claim in this doc that effect id `34` had no opcode `0x97` call at all.
+  The two scripts differ only in animation timing (effect id `34` has an
+  extra root-vs-spawned-copy branch skipping an initial flash animation,
+  and uses different animation-frame operand values) -- not in
+  whether/how paralysis is applied. Named `Uno`/`Duo` (the in-game names
+  for cast levels `0`/`1`) rather than `Duo`/`Tria`: castLevel `1`
+  (`Duo`) is uniquely effect id `34`, so that association is solid, but
+  castLevel `2` (`Tria`) reuses castLevel `0` (`Uno`)'s effect id `33`
+  verbatim -- and whether PetrificusTotalus even has a real, player-
+  reachable `Tria` cast is unconfirmed. `g_awSpellMpCost`'s row for this
+  spell (`10/15/20`) has a distinct nonzero value at the `Tria` slot,
+  suggestive but not proof; the community GameFAQs guide cross-check
+  above (see "External, unverified leads") only ever cited its `Uno`/
+  `Duo` costs, never a third value for `Tria`. So effect id `33` is named
+  `Uno` for its primary, definitely-real association, with the `Tria`
+  slot's reuse of the same script left as a documented fact here rather
+  than folded into the filename.
+  `PetrificusTotalus` and `Spongify` share
   `SpellId` values `6`/`1` in a way that isn't decidable from
   `ResolveSpellAttack`'s effectiveness switch alone (both spells are
   absent from it identically) -- `g_awSpellMpCost` below is what pins
@@ -166,8 +202,9 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   known to do. **Also candidate: Harry's Folio Universitas card index
   13** (of 16, `bSlotParam` `13` in `g_abHarryCardEffectId_candidate`)
   -- its effect script (effect id `47`) also contains opcode `0x97` case
-  `0x12`, another bare `FUN_0801b430()` call; a plausible second source
-  for "opponent loses a turn," not traced to a specific card name.
+  `0x12`, another bare `FUN_0801b430()` call, this time the
+  unconditional-apply variant -- a plausible second source for "opponent
+  loses a turn," not traced to a specific card name.
 - **bit `0x20`** = **DefenseBoost** (checked on the *defender* in
   `ResolveMeleeAttack`): independently contributes one halving of the
   computed damage. Set by opcode `0x97` case 0xb (`0x0801a8e4`), no

@@ -16,15 +16,27 @@ objscript_codec.format_script_text). Instruction names come from
 opcodes.json at extraction time, so re-running this after naming a new
 opcode there refreshes every script's text to use the new name.
 
+A script's filename (and, via pack_objscript.py, its assembly label)
+comes from script_names.json (effect id -> curated {"name",
+"description"}) when that effect id has an entry there, falling back to
+the default "EffectN" otherwise. script_names.json is committed (same
+footing as opcodes.json -- curated RE knowledge, not extracted content),
+so identifications made there survive re-running this bootstrap, unlike
+a plain filename rename (see "Renaming a script" in
+docs/formats/object_script.md). Each entry's "description", if present,
+is written as a leading "# ..." comment in the script's text --
+purely informational, ignored by parse_script_text/pack_objscript.py.
+
 Effect id -> filename order is recorded explicitly in
 data/scripts/index.json (a JSON array of filenames, position = effect
 id) rather than inferred from the filenames themselves, so a script's
 file can be freely renamed later (once its real purpose is identified)
 without disturbing build order -- pack_objscript.py reads this same
 index, never a directory listing. This bootstrap always (re)writes
-index.json with the default "EffectN.txt" names; if you've renamed
-files by hand, re-running this overwrites that -- same caveat as the
-rest of this file's content.
+index.json with the names derived from script_names.json (or the
+default "EffectN.txt" names where absent); if you've renamed files by
+hand instead of via script_names.json, re-running this overwrites that
+-- same caveat as the rest of this file's content.
 
 Content is not yet confirmed identical between US/JP (unlike
 Krawall/dialog text), so this only ever reads baserom.us.gba for now.
@@ -37,7 +49,15 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from objscript_codec import SCRIPT_COUNT, SCRIPT_DATA_START, SCRIPT_TABLE_ADDR, decode_script, format_script_text
+from objscript_codec import (
+    SCRIPT_COUNT,
+    SCRIPT_DATA_START,
+    SCRIPT_DESCRIPTION_BY_EFFECT_ID,
+    SCRIPT_NAME_BY_EFFECT_ID,
+    SCRIPT_TABLE_ADDR,
+    decode_script,
+    format_script_text,
+)
 
 ROM_BASE = 0x08000000
 
@@ -66,8 +86,9 @@ def main() -> None:
         end = pointers[i + 1] if i + 1 < SCRIPT_COUNT else SCRIPT_TABLE_ADDR
         raw = rom[off(start):off(end)]
         instructions = decode_script(raw)
-        filename = f"Effect{i}.txt"
-        (out_dir / filename).write_text(format_script_text(instructions))
+        filename = f"{SCRIPT_NAME_BY_EFFECT_ID.get(i, f'Effect{i}')}.txt"
+        text = format_script_text(instructions, SCRIPT_DESCRIPTION_BY_EFFECT_ID.get(i))
+        (out_dir / filename).write_text(text)
         filenames.append(filename)
 
     (out_dir / "index.json").write_text(json.dumps(filenames, indent=2) + "\n")

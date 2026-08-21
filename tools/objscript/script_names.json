@@ -1,0 +1,32 @@
+{
+  "scripts": {
+    "18": {
+      "name": "SpecialHarryPoisonImmunity",
+      "description": "Grants the party poison immunity for one encounter."
+    },
+    "33": {
+      "name": "SpellPetrificusTotalusUno",
+      "description": "Randomly attempts to paralyze the target."
+    },
+    "34": {
+      "name": "SpellPetrificusTotalusDuo",
+      "description": "Randomly attempts to paralyze the target."
+    },
+    "38": {
+      "name": "SpellSpongify",
+      "description": "Weakens one enemy's attacks."
+    },
+    "49": {
+      "name": "SpecialHermioneBeMoreCareful",
+      "description": "Boosts the party's defense."
+    },
+    "50": {
+      "name": "SpecialHermioneGoodStudyHabits",
+      "description": "Grants the party bonus XP."
+    },
+    "51": {
+      "name": "SpecialHermioneProperWandTechnique",
+      "description": "Boosts the party's spell power."
+    }
+  }
+}

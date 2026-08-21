@@ -21,6 +21,17 @@ addresses -- see that doc's "Why no addresses in opcodes.json" for why
 if opcode metadata pins a ROM address). Naming a new opcode means
 editing opcodes.json's "name" (or a StatusEffect sub-case's entry under
 "sub_dispatch"), nothing in this file.
+
+Per-script identification (which effect id is which spell/card/lecture)
+lives in script_names.json next to this file, same footing as
+opcodes.json: curated RE knowledge, not extracted game content, so it's
+committed rather than gitignored even though data/scripts/ itself isn't.
+Keyed by effect id (0-64), each entry optionally carries "name" (used as
+the script's filename/assembly label by objscript_migrate.py/
+pack_objscript.py) and "description" (emitted as a leading "# ..."
+comment by format_script_text -- purely informational, stripped by
+parse_script_text like any other comment, so it can never affect
+encode_script's output).
 """
 import json
 import re
@@ -52,6 +63,18 @@ OPCODE_OPERAND_LENGTH: dict[int, int] = {int(k): v["operand_length"] for k, v in
 # encode/decode.
 OPCODE_SUB_DISPATCH: dict[int, dict] = {
     int(k): v["sub_dispatch"] for k, v in _OPCODES_JSON.items() if "sub_dispatch" in v
+}
+
+_SCRIPT_NAMES_JSON = json.loads((Path(__file__).parent / "script_names.json").read_text())["scripts"]
+
+# effect id -> curated name/description, for the scripts we're confident
+# about the real-world identification of. Absent entries just mean
+# "not yet identified" -- objscript_migrate.py falls back to "EffectN".
+SCRIPT_NAME_BY_EFFECT_ID: dict[int, str] = {
+    int(k): v["name"] for k, v in _SCRIPT_NAMES_JSON.items() if "name" in v
+}
+SCRIPT_DESCRIPTION_BY_EFFECT_ID: dict[int, str] = {
+    int(k): v["description"] for k, v in _SCRIPT_NAMES_JSON.items() if "description" in v
 }
 
 _GENERIC_NAME_RE = re.compile(r"^opcode_([0-9A-Fa-f]{2})$")
@@ -100,15 +123,22 @@ def encode_script(instructions: list[tuple[int, bytes]]) -> bytes:
     return bytes(out)
 
 
-def format_script_text(instructions: list[tuple[int, bytes]]) -> str:
+def format_script_text(instructions: list[tuple[int, bytes]], description: str | None = None) -> str:
     """Renders instructions in the curated per-effect text format:
     one instruction per line, "<name> [operand operand ...]" (decimal
     operands), using each opcode's current name from opcodes.json. If
     the opcode has a named sub-dispatch case (StatusEffect's own
     sub-case byte, see OPCODE_SUB_DISPATCH) matching the relevant
     operand, appends "# <sub-case name>" as a read-only comment --
-    parse_script_text ignores it, same as any other trailing comment."""
+    parse_script_text ignores it, same as any other trailing comment.
+
+    If description is given (see SCRIPT_DESCRIPTION_BY_EFFECT_ID), it's
+    emitted as a leading "# <description>" comment line -- purely
+    informational, same round-trip guarantee as the sub-case comments
+    above."""
     lines = []
+    if description:
+        lines.append(f"# {description}")
     for opcode, operands in instructions:
         parts = [opcode_name(opcode)] + [str(b) for b in operands]
         line = " ".join(parts)
