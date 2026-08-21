@@ -17,6 +17,11 @@ before being trusted:
   resolution function documented below, specifically its damage-halving
   logic tied to the in-game "Be More Careful" skill). All three led
   directly to the findings in this document.
+- A community-written GameFAQs guide broke a symmetry `ResolveSpellAttack`
+  alone couldn't: `PetrificusTotalus` and `Spongify` are structurally
+  interchangeable in the disassembly (both absent from the effectiveness
+  switch, both zero-power), so which of `SpellId` `1`/`6` is which had
+  to be pinned down externally -- see `g_awSpellMpCost` below.
 
 Dynamic verification via mGBA's gdb stub (breakpoint at `0x08017E44`, run
 directly through mGBA's own debug console rather than scripted) worked
@@ -50,21 +55,201 @@ monster's record from `MonsterTable`.
 | `0x3A` | u8 | selected action/spell index for this turn | STRUCTURAL MATCH -- used across multiple AI/dispatch functions (e.g. `0x080100a0`) | -- |
 | `0x42` | u8 | status-flags bitfield | PROVEN as a formula input, bits below | jlun2 (led here) |
 
-### `0x42` status-flags bits (confirmed usage in `ResolveMeleeAttack`)
+### `0x42` status-flags bits
 
-- **bit `0x01`** (checked on the *defender*): if set, reduces the
-  *attacker's* effective accuracy by 25 before the hit roll. Also gates
-  the bonus-damage/crit-style check further down (must be clear for that
-  check to run at all). Candidate: an evasion/dodge stance.
-- **bit `0x08`** (checked on the *attacker*): independently contributes
-  one halving of the computed damage (see below). Meaning UNCONFIRMED --
-  possibly "this is a weakened/reduced-power strike."
-- **bit `0x20`** (checked on the *defender*): independently contributes
-  one halving of the computed damage. **Candidate: the in-game "Be More
-  Careful" skill** (per jlun2) -- a defensive action that halves incoming
-  damage. The two halving bits (attacker's `0x08`, defender's `0x20`)
-  stack multiplicatively: neither set -> no change; exactly one set ->
-  damage `>>= 1`; both set -> damage `>>= 2` (quartered).
+Two independent lines of evidence now cover this bitfield: how
+`ResolveMeleeAttack`/`ResolveSpellAttack` *read* it (below), and where
+it's actually *written* -- a status-effect sub-table (**opcode `0x97`**)
+inside the object/spell behavior-script bytecode interpreter at
+`FUN_08018cf8` (`0x08018cf8`). That interpreter runs one opcode per
+switch case against a per-object script buffer; it's the same engine
+`TickObject_candidate`'s callback dispatch reaches (see
+`ThumbInterworkVeneer_bx_r1` above) and is not battle-specific by
+itself -- opcode `0x97`'s cases are the ones spell/attack scripts call
+to apply named battle status effects. All 8 bits are claimed by a
+combat-mechanical effect below, several PROVEN via a `ShowBattleMessage`
+call immediately after the flag write.
+
+`FightState` field **`field_0x14a8`** is "which status to announce
+after the current damage number," consumed by
+`ShowBattleMessage(CriticalHit, 0, field_0x14a8)` calls throughout (case
+5's sub-dispatch; see the case-5 row in the dialog-text table below).
+Defaults to `0x12` (18, "none"). Opcode `0x97`'s status-applying cases
+set it to a specific sub-case value right where they set the
+corresponding bit -- this is the evidence behind bits `0x02`/`0x10`
+below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
+`ShowBattleMessage` call instead, not `field_0x14a8`).
+
+- **bit `0x01`** = **Hidden** status. PROVEN: opcode `0x97` cases 8/9
+  (`0x0801a7b6`/`0x0801a7e8`) OR this bit in, then call
+  `ShowBattleMessage(Hidden, ...)` (case 9 differs only in
+  `ShowBattleMessage`'s second argument, 0 vs 1). Read on the
+  *defender* in `ResolveMeleeAttack`: reduces the attacker's effective
+  accuracy by 25, and gates the bonus-damage/crit check further down
+  (must be clear for that check to run) -- consistent with "target is
+  hidden from view." **Confirmed spell: Fumos** -- Fumos makes a target
+  harder to hit (Uno: one ally, Duo: the whole party), matching bit
+  `0x01`'s accuracy-reduction effect exactly. The game's spell glossary
+  lists 10 named spells
+  (`Flipendo`, `Informus`, `Verdimillious`, `Diffindo`, `Incendio`,
+  `WingardiumLeviosa`, `PetrificusTotalus`, `Glacius`, `Fumos`,
+  `Spongify`), but `SpellId` only covers 8 values (`0`-`7`). `Informus`
+  is cast in battle too, but from the battle menu's top level (a sibling
+  entry to "Cast a Spell," not part of the spell submenu), so it
+  wouldn't set `bSpellId` at all -- the `bSpellId == 8` sentinel only
+  appears inside the spell-casting code path
+  (`TickPlayerActionState_candidate` case `0x1a`/`FUN_080161fe`), which is
+  reached from the spell submenu, leaving `Fumos` (a submenu spell) as
+  the sole candidate. Not traced to an opcode `0x97` case 8/9 call site
+  from that sentinel path -- the spell identity is confirmed by content,
+  the call site is not.
+- **bit `0x02`** = **Poisoned**. PROVEN: opcode `0x97` case 5
+  (`0x0801a856`), gated on `(bStatusFlags & 0x06) == 0` (i.e. not
+  already `Poisoned` or `PoisonImmune`), sets the bit alongside
+  `FUN_0801b590` (a particle/VFX spawn) and `field_0x14a8 = 3` -- sub-case
+  `3` of `ShowBattleMessage`'s case-5 dispatch is "Harry is poisoned."
+  (see the dialog-text table below). Not read by either damage-resolution
+  function (poison presumably applies its own per-turn damage elsewhere,
+  not traced).
+- **bit `0x04`** = **PoisonImmune**. Set by opcode `0x97` case 7
+  (`0x0801a7ac`), silently -- and it's exactly the bit that, alongside
+  `Poisoned` itself, gates case 5 above (`& 0x06`) from applying poison
+  again. This is a structural mirror of `Paralyzed`/`0x80` below (same
+  "status bit + immunity bit blocks re-apply" shape). **PROVEN source:
+  Harry's card index `5`** in `g_abHarryCardEffectId_candidate`
+  (`0x080514c8`) is effect id `18`, whose script contains opcode `0x97`
+  case `7` three times -- a real traced call site (see the "Poison
+  Immunity" writeup below), not just an effect-to-description match.
+- **bit `0x08`** (checked on the *attacker* in `ResolveMeleeAttack`):
+  independently contributes one halving of the computed damage (see
+  below). PROVEN as **Attack Weakened**: opcode `0x97` case 6
+  (`0x0801a790`) OR's this bit in, then calls
+  `ShowBattleMessage(AttackWeakened, 0, 0)` -- matches
+  `BattleMessageCode.AttackWeakened` (15, "The opponent's attacks are
+  weakened.") exactly. **Spongify weakens one enemy's attacks** --
+  matches this bit's effect exactly, but `Spongify` (`SpellId` `1`;
+  `g_abSpellEffectId_candidate` effect ids `[38,38,38]`) traces to opcode
+  `0x97` cases `0xc`/`0xd` instead, not case `6` (see the `0x10` bullet
+  and the `Poison Immunity`/XP writeup below for what those cases
+  actually do). `AttackWeakened`'s real effect id (`29`) doesn't appear
+  in `g_abSpellEffectId_candidate`, `g_abHermioneLectureEffectId_candidate`,
+  or `g_abHarryCardEffectId_candidate` -- Spongify's bStatusFlags write
+  is unlocated, same class of gap as `Informus`'s Folio Bruti write
+  below. `Poisoned`'s source (effect id `27`) is equally unconfirmed.
+- **bit `0x10`** = **Paralyzed**. PROVEN: applied through a dedicated
+  helper, `FUN_0801b430` (`0x0801b430`), called from several opcode
+  `0x97` cases (10, 0x11, 0x12, part of 0x16/0x17). It only sets the bit
+  if `bStatusFlags & 0x90 == 0` (i.e. not already paralyzed, nor bit
+  `0x80` set); otherwise it fires `ShowBattleMessage(ImmuneToParalysis,
+  ...)` when its `param_2` is nonzero. Case `0x16`'s call site sets
+  `field_0x14a8 = 4` on success -- sub-case `4` of `ShowBattleMessage`'s
+  case-5 dispatch is "Harry is paralyzed."/"The opponent is paralyzed!"
+  (same `field_0x14a8` mechanism as `Poisoned` above). A third parameter
+  to `FUN_0801b430` (varies per call site: `0x19`,
+  `0x63`, `0x50`, ...) is stored to `fighter+0x44`, not consumed by RNG
+  inside this function -- likely a duration or an already-resolved
+  chance, not traced further. Not read by
+  `ResolveMeleeAttack`/`ResolveSpellAttack` (paralysis presumably gates
+  action/turn selection elsewhere, not the damage formula). **PROVEN
+  source: PetrificusTotalus** -- `SpellId` `6`'s effect ids
+  (`g_abSpellEffectId_candidate` `[33,34,33]`) trace to opcode `0x97`
+  case `10` (level `1`, effect id `34`, has no opcode `0x97` call at
+  all -- consistent with the paralysis duration not varying by spell
+  level). `PetrificusTotalus` and `Spongify` share
+  `SpellId` values `6`/`1` in a way that isn't decidable from
+  `ResolveSpellAttack`'s effectiveness switch alone (both spells are
+  absent from it identically) -- `g_awSpellMpCost` below is what pins
+  `PetrificusTotalus=6` specifically, and this bit's opcode `0x97` case
+  `10` (not case `0xc`/`0xd`, which is what `SpellId` `1` traces to
+  instead) is the corroborating evidence: only the `6`/`10` pairing
+  produces a paralysis effect, matching what `PetrificusTotalus` is
+  known to do. **Also candidate: Harry's Folio Universitas card index
+  13** (of 16, `bSlotParam` `13` in `g_abHarryCardEffectId_candidate`)
+  -- its effect script (effect id `47`) also contains opcode `0x97` case
+  `0x12`, another bare `FUN_0801b430()` call; a plausible second source
+  for "opponent loses a turn," not traced to a specific card name.
+- **bit `0x20`** = **DefenseBoost** (checked on the *defender* in
+  `ResolveMeleeAttack`): independently contributes one halving of the
+  computed damage. Set by opcode `0x97` case 0xb (`0x0801a8e4`), no
+  message attached -- a silent status flag matching a passive
+  defense buff. Named for the effect rather than a specific spell/card
+  since it's confirmed generic (see below), matching the
+  effect-based naming of `Hidden`/`Poisoned`/etc. **PROVEN source:
+  Hermione's "Be More Careful"** -- `g_abHermioneLectureEffectId_candidate`
+  (`0x0805150d`, 3 entries, one per lecture) index `0` is effect id `49`,
+  whose script contains opcode `0x97` case `0xb` -- a real traced call
+  site, not just an effect-to-description match. A second, independent
+  script (effect id `36`) also applies this same bit but doesn't match
+  any entry in the 16-slot `g_abHarryCardEffectId_candidate` table read
+  so far, so it's not yet pinned to a specific card; **Harry's "Girding
+  All"** (party-wide "Increases all party members' physical defense")
+  remains the leading candidate for it by elimination and effect match,
+  since no dedicated party-wide status-loop exists elsewhere in opcode
+  `0x97` (the only party-wide loops there, cases `0xd`/`0xe`, target
+  *enemies* via `Object+0x115`, not `bStatusFlags`) -- a card applying
+  this bit once per party member from its own script remains the natural
+  implementation. The two halving bits (attacker's `0x08`, defender's
+  `0x20`) stack multiplicatively: neither set -> no change; exactly one
+  set -> damage `>>= 1`; both set -> damage `>>= 2` (quartered).
+- **bit `0x40`** = **SpellPowerBoost**: read by `ResolveSpellAttack` as
+  a `x4/3` power boost and a crit-chance boost (see below). Set by
+  opcode `0x97` case 0x13 (`0x0801aa0a`), no message attached -- same
+  shape as case 0xb. **PROVEN source: Hermione's "Proper Wand
+  Technique"** -- `g_abHermioneLectureEffectId_candidate` index `1` is
+  effect id `51`, whose script contains opcode `0x97` case `0x13`, a
+  real traced call site. No second source found sharing this bit.
+- **bit `0x80`**: only observed as part of `FUN_0801b430`'s `0x90` gate
+  mask (`0x80 | 0x10`) -- blocks (re-)applying `Paralyzed`, the same
+  structural role `PoisonImmune` (`0x04`) plays for `Poisoned` (`0x02`).
+  No spell/card identified; a generic "paralysis immunity" effect is the
+  natural guess by symmetry with `PoisonImmune`, but nothing else
+  confirms it. UNCONFIRMED.
+
+**Poison Immunity, PROVEN source.** `g_abHarryCardEffectId_candidate`
+(`0x080514c8`, 16 entries, one per Folio Universitas card, `bSlotParam`
+`0`-`15`) index `5` is effect id `18`, whose script contains opcode
+`0x97` case `7` (`PoisonImmune`) **three times** -- consistent with
+"Gives all party members immunity to poison for one magical encounter"
+applying the flag once per non-caster party member. This is Harry's
+card index `5`.
+
+**On the "extra XP" special move**: doesn't fit `bStatusFlags` -- traced
+to a different mechanism instead. Hermione's "Good Study Habits" is
+`g_abHermioneLectureEffectId_candidate` index `2`, effect id `50`; its
+script contains opcode `0x97` case `3` (`field_0x1480 = 2`, via
+`LAB_0801ab2a`), not a `bStatusFlags` write. `g_abHarryCardEffectId_candidate`
+index `11`, effect id `14`, uses the same family (case `2`,
+`field_0x1480 = 1`) -- the leading candidate for Harry's XP-bonus card,
+and if so it **does** share a mechanism with Hermione's move, just
+`field_0x1480` (an unidentified `FightState` field) rather than
+`bStatusFlags`. `field_0x1480` itself is not traced further; not
+obviously connected to the `g_nRewardAccum1`/`g_nRewardAccum2` payout in
+`ApplyDamageToFighter` (see "XP/reward payout" above), which remains an
+alternative, untraced possibility.
+
+**How the effect-id -> script trace works**, for reproducing/extending
+this: `FUN_08018b70(effectId, ...)` (the anim/effect trigger already
+documented above) calls `FUN_08018be0(effectId, ...)`, which spawns a
+new `Object` and sets `Object+0x62 = effectId` and `Object+0x98` to a
+generic dispatcher (`0x08018cc1`); `TickObject_candidate` then
+interprets that object's script every tick via `FUN_08018cf8`
+(`0x08018cf8`), which looks up the script buffer as
+`g_apEffectScripts_candidate[Object+0x62]` --
+`g_apEffectScripts_candidate` (`0x0805b978`) is an array of 60+ script
+pointers (at least `0`-`59` populated), one per effect id. Each opcode's
+length is looked up in a 256-entry table at `0x08054f34`
+(`instruction length = table[opcode] + 1` bytes, including the opcode
+byte itself); walking a script from its pointer with that table finds
+every opcode `0x97` instance and its case (sub-case) byte. Spell/card
+effect-id tables (`g_abSpellEffectId_candidate` for the 8 real spells,
+`g_abHermioneLectureEffectId_candidate` for Hermione's 3 moves,
+`g_abHarryCardEffectId_candidate` for Harry's 16 cards) then map a
+specific spell/card to one of those effect ids.
+
+Note: opcode `0x97`'s case numbering above is the *inner* switch's case
+index (the effect-type byte read from the script), distinct from
+`FUN_08018cf8`'s own outer opcode number (`0x97`) that selects this
+whole sub-table.
 
 ## Attack resolution -- `ResolveMeleeAttack` (`sub_08017E44`, US `0x08017E44`)
 
@@ -487,7 +672,7 @@ int ResolveSpellAttack(int attackerIndex, int targetIndex) {
         // Harry: no modifier
 
         if (power == 0) power = 1;
-        if (attacker->bStatusFlags & 0x40) power = power * 4 / 3;   // same buff bit as ResolveMeleeAttack's halving bits
+        if (attacker->bStatusFlags & 0x40) power = power * 4 / 3;   // 0x40 = ProperWandTechnique
     }
 
     if (power == 0) return 0;
@@ -536,12 +721,14 @@ field increments. `bSpellId`'s 8 values were derived from
 two values with **no case at all** (1 and 6) are exactly the two power
 tables' zero entries below, matching `folio_bruti.md`'s two "always 100%
 effective, not a per-monster stat" spells (Petrificus Totalus, Spongify)
--- `Flipendo=0, PetrificusTotalus=1, Verdimillious=2, Diffindo=3,
-Incendio=4, WingardiumLeviosa=5, Spongify=6, Glacius=7`. This is the
-game's own internal spell-ID ordering -- notably different from both
+-- `Flipendo=0, Spongify=1, Verdimillious=2, Diffindo=3, Incendio=4,
+WingardiumLeviosa=5, PetrificusTotalus=6, Glacius=7`. This is the game's
+own internal spell-ID ordering -- notably different from both
 `folio_bruti.md`'s spell-index order (used for the Folio Bruti UI) and
 `aSpellEffectiveness`'s storage order, so don't assume any of the three
-line up.
+line up. Which of values `1`/`6` is `PetrificusTotalus` vs. `Spongify`
+isn't decidable from the switch alone (both are absent from it
+identically) -- PROVEN via `g_awSpellMpCost` below instead.
 
 ### The two base-power tables, decoded
 
@@ -556,12 +743,12 @@ already-documented `__rt_divsi3`/`udivsi3_thumb`).
 | Spell | lvl0 base/scale | lvl1 base/scale | lvl2 base/scale |
 |---|---|---|---|
 | Flipendo | 10 / 4 | 20 / 8 | 15 / 10 |
-| PetrificusTotalus | 0 / 0 | 0 / 0 | 0 / 0 |
+| Spongify | 0 / 0 | 0 / 0 | 0 / 0 |
 | Verdimillious | 15 / 6 | 25 / 12 | 20 / 14 |
 | Diffindo | 30 / 18 | 30 / 19 | 40 / 20 |
 | Incendio | 23 / 8 | 35 / 16 | 45 / 18 |
 | WingardiumLeviosa | 35 / 20 | 45 / 21 | 55 / 22 |
-| Spongify | 0 / 0 | 0 / 0 | 0 / 0 |
+| PetrificusTotalus | 0 / 0 | 0 / 0 | 0 / 0 |
 | Glacius | 30 / 18 | 40 / 20 | 45 / 20 |
 
 Power generally grows with level as expected, though not always
@@ -575,19 +762,22 @@ that just happen to combine this way.
 `ushort[24]`, indexed `spellId*3+level`, same shape as the power tables.
 Deducted directly from `BattleFighter.wMp` in
 `TickPlayerActionState_candidate` case `0x1A` -- all spells share one MP
-pool, no separate per-spell resource type. Confirmed against real
-gameplay values (Flipendo lvl0=0, Verdimillious lvl0=3, Incendio
-lvl0=6):
+pool, no separate per-spell resource type. Confirmed against a
+community-written GameFAQs guide's real per-spell MP costs (see the
+attribution note near the top of this document): all 6 unambiguous
+spells match exactly, and `PetrificusTotalus`'s `Uno`/`Duo` costs
+(`10`/`15`) match `SpellId` value `6`'s row here, which is what proved
+`PetrificusTotalus=6`/`Spongify=1` rather than the reverse:
 
 | Spell | lvl0/1/2 cost |
 |---|---|
 | Flipendo | 0/10/20 |
-| PetrificusTotalus | 0/0/0 |
+| Spongify | 0/0/0 |
 | Verdimillious | 3/15/25 |
 | Diffindo | 10/0/0 |
 | Incendio | 6/20/30 |
 | WingardiumLeviosa | 20/30/40 |
-| Spongify | 10/15/20 |
+| PetrificusTotalus | 10/15/20 |
 | Glacius | 15/25/0 |
 
 Its companion byte array at the same index,
