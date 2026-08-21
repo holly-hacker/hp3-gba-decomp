@@ -443,8 +443,8 @@ void ApplyDamageToFighter(short damage, uchar fighterIndex) {
         g_anFaintedRosterIndices[slot] = f->bRosterIndex;
 
         // reward payout -- MonsterTable+0x10/+0x12, indexed by roster index
-        g_nRewardAccum1 += MonsterTable[f->bRosterIndex].u16[0x10];
-        g_nRewardAccum2 += MonsterTable[f->bRosterIndex].u16[0x12];
+        g_nXpAccum += MonsterTable[f->bRosterIndex].reward_xp;
+        g_nGoldAccum += MonsterTable[f->bRosterIndex].reward_gold;
 
         f->wHp = 0;
         f->nSelectedTargetIndex_candidate = -1;
@@ -458,24 +458,32 @@ void ApplyDamageToFighter(short damage, uchar fighterIndex) {
 decompiled; not yet reconciled with why the faint path shows a
 "critical hit" message code.
 
-### XP/reward payout -- new candidate identity for `MonsterTable+0x10`/`+0x12`
+### XP/reward payout -- `MonsterTable+0x10`/`+0x12`, PROVEN
 
 On a fighter fainting, `ApplyDamageToFighter` adds
-`MonsterTable[fighter.bRosterIndex].u16[0x10]` and
-`.u16[0x12]` into two separate running EWRAM accumulators
-(`g_nRewardAccum1` at `0x0300260E`, `g_nRewardAccum2` at `0x03002610`).
-The reads resolve to `0x0804F420`/`0x0804F422` with a `0x18`-byte stride,
-i.e. literally `MonsterTable + 0x10`/`+0x12` (`MonsterTable` itself is
-`0x0804F410`, stride `0x18`, per `../formats/folio_bruti.md`) --
-confirming the indexing is by roster/monster index directly into
-`MonsterTable`.
-`../formats/folio_bruti.md` previously left these two fields completely
-UNCONFIRMED (noting only that an earlier "candidate attack/defense" guess
-for them was ruled out). Being added into what look like per-battle reward
-accumulators on a kill is a strong new candidate: **XP and a second reward
-currency (e.g. gold), paid out per accumulator**. Not confirmed which
-accumulator is which, or what consumes them after battle; not investigated
-further.
+`MonsterTable[fighter.bRosterIndex].reward_xp` and `.reward_gold` into two
+separate running EWRAM accumulators (`g_nXpAccum` at `0x0300260E`,
+`g_nGoldAccum` at `0x03002610`). The reads resolve to
+`0x0804F420`/`0x0804F422` with a `0x18`-byte stride, i.e. literally
+`MonsterTable + 0x10`/`+0x12` (`MonsterTable` itself is `0x0804F410`,
+stride `0x18`, per `../formats/folio_bruti.md`) -- confirming the indexing
+is by roster/monster index directly into `MonsterTable`.
+
+**Live in-game confirmation:** defeating 2 Brown Recluse Spiders
+(`MonsterTable` index `16`, `reward_xp=8`, `reward_gold=42`) awarded
+exactly 16 XP -- `8*2`, matching `reward_xp` precisely. Gold was 105 with
+Ron's Special Move `Wizard Cracker` active; `42*2*1.25 = 105` exactly,
+consistent with `reward_gold` plus a 25% boost from that move -- **live
+confirmation that `Wizard Cracker` is (at least) a 25% gold-drop
+multiplier**, though the code applying that multiplier (presumably a
+write to `g_nGoldAccum` somewhere outside `ApplyDamageToFighter`'s plain
+accumulation) isn't traced. See the Special Move dispatch section above:
+this doesn't by itself confirm which of effect ids `44`/`45`/`46` is
+`Wizard Cracker`, since Ron's menu-selection code and this multiplier's
+own application site are both still untraced -- but it's a concrete
+behavioral fact to check candidate scripts against once that tracing
+happens. What consumes the two reward accumulators after battle isn't
+traced further either.
 
 ## Corrections to `../formats/folio_bruti.md`
 

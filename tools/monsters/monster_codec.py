@@ -46,16 +46,16 @@ FIELDS: list[tuple[str, str]] = [
     ("effectiveness_wingardium_leviosa", "B"),  # 0x0D u8 -- PROVEN (case 4)
     ("effectiveness_glacius", "B"),       # 0x0E u8  -- PROVEN (case 7)
     ("effectiveness_diffindo", "B"),      # 0x0F u8  -- PROVEN (case 6)
-    ("unk_0x10_u16", "H"),                # 0x10 u16 -- semantics UNCONFIRMED, but boundary PROVEN
-                                           #   (battle-init ldrh). New candidate identity, not yet
-                                           #   confirmed enough to rename: ApplyDamageToFighter
-                                           #   (0x08017F98) adds this field into a running EWRAM
-                                           #   accumulator when a fighter faints, suggesting an XP/reward
-                                           #   payout rather than the earlier ruled-out "attack" guess --
-                                           #   see docs/memory-map/battle.md.
-    ("unk_0x12_u16", "H"),                # 0x12 u16 -- semantics UNCONFIRMED, but boundary PROVEN
-                                           #   (battle-init ldrh). Same candidate identity as 0x10 (a
-                                           #   second reward accumulator), see docs/memory-map/battle.md.
+    ("reward_xp", "H"),                   # 0x10 u16 -- PROVEN. ApplyDamageToFighter (0x08017F98) adds
+                                           #   this field into g_nXpAccum on a fighter fainting. Live
+                                           #   in-game confirmation: 2 Brown Recluse Spiders (index 16,
+                                           #   reward_xp=8) awarded exactly 16 XP.
+    ("reward_gold", "H"),                 # 0x12 u16 -- PROVEN, same mechanism as reward_xp, into
+                                           #   g_nGoldAccum. Live in-game confirmation: 2 Brown Recluse
+                                           #   Spiders (reward_gold=42) awarded 105 sickles with Ron's
+                                           #   Special Move Wizard Cracker active (a 25% gold-drop
+                                           #   multiplier, see docs/memory-map/battle.md) --
+                                           #   42*2*1.25 = 105 exactly.
     ("unk_0x14_u8", "B"),                 # 0x14 u8  -- UNCONFIRMED (no confirmed reader; split from a
                                            #   u16 based on content shape only -- see docs/formats/folio_bruti.md.
                                            #   Usually exactly 100 (0x64) when nonzero; candidate

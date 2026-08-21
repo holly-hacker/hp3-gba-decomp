@@ -189,8 +189,8 @@ corroboration either way for those two.
 | `0x0D` | u8 | **Wingardium Leviosa effectiveness (0-100)** | **PROVEN** (case 4) |
 | `0x0E` | u8 | **Glacius effectiveness (0-100)** | **PROVEN** (case 7) |
 | `0x0F` | u8 | **Diffindo effectiveness (0-100)** | **PROVEN** (case 6) |
-| `0x10` | u16 | unknown (correlates roughly with HP magnitude) | boundary **PROVEN** (own `ldrh`); semantics UNCONFIRMED -- an earlier "candidate attack" guess for this field is now RULED OUT, see below |
-| `0x12` | u16 | unknown (same shape as 0x10) | boundary **PROVEN**; semantics UNCONFIRMED -- earlier "candidate defense" guess likewise ruled out |
+| `0x10` | u16 | **XP reward** (`reward_xp`), paid into `g_nXpAccum` on kill | **PROVEN** -- see `../memory-map/battle.md`'s XP/reward payout writeup for the code path and live in-game confirmation |
+| `0x12` | u16 | **gold reward** (`reward_gold`), paid into `g_nGoldAccum` on kill | **PROVEN**, same evidence as `0x10` |
 | `0x14` | u8 | "secondary/default value" -- when the 0x14/0x15 pair is nonzero, this byte is almost always exactly `100` (36 of 69 records are `0x0000` for the pair, i.e. unused) | UNCONFIRMED, content-shape only -- NOT read by the battle-init routine at all |
 | `0x15` | u8 | "group/location id" -- a small integer (0-61) that clusters by monster family, e.g. all 3 Fire Crab color variants share `0`, Bat/Fruitbat/Mortis Bat share `16`, the two Skeletons share `59` -- but also a cross-species cluster (`27`) spanning every Spider variant plus Spitting Snake plus Wide-mouth Toad/Bullfrog, which doesn't fit a per-species tag; candidate encounter-location/chapter id instead | UNCONFIRMED, content-shape only |
 | `0x16` | u16 | always 0 in every record sampled (0-68) | STRUCTURAL MATCH (padding) -- also NOT read by battle-init |
@@ -254,14 +254,12 @@ Current status:
   groups) are consistent with a small tiered crit-chance stat, though
   this isn't a 1:1 proof either.
 
-**`0x10`/`0x12` also have a new candidate identity.** Previously ruled out
-only as "candidate attack/defense" (via the Lupin Werewolf asymmetry
-argument, which no longer carries the weight it used to -- see above).
-`../memory-map/battle.md` found `ApplyDamageToFighter` adds these two
-fields into separate running EWRAM accumulators when a fighter faints --
-a strong new candidate as an **XP/reward payout pair**, not attack/defense
-at all. Still UNCONFIRMED which accumulator is which or what consumes
-them; see that doc for detail.
+**`0x10`/`0x12` are the XP/gold reward pair, PROVEN.** `ApplyDamageToFighter`
+adds these two fields into separate running EWRAM accumulators
+(`g_nXpAccum`/`g_nGoldAccum`) when a fighter faints, and live in-game
+testing confirmed the exact XP/gold payout -- see `../memory-map/battle.md`'s
+XP/reward payout writeup for detail. What consumes the two accumulators
+after battle isn't traced further.
 
 ### Ghidra cross-check
 
@@ -543,9 +541,8 @@ the Krawall/dialog-text pipelines:
   (see `../memory-map/battle.md`), does not read either offset. `0x04`
   is now PROVEN as accuracy and `0x06`/`0x08` as the base damage roll
   (same doc). `0x05` has a new crit-chance candidate identity (same
-  doc), still UNCONFIRMED as a 1:1 proof. `0x10`/`0x12` have a new
-  XP/reward-payout candidate identity (same doc) in place of the earlier
-  ruled-out "attack/defense" guess. `0x14` has one confirmed reader (a
+  doc), still UNCONFIRMED as a 1:1 proof. `0x10`/`0x12` are PROVEN as the
+  XP/gold reward pair (same doc). `0x14` has one confirmed reader (a
   percent-chance taunt/message gate, see "Ghidra cross-check" above), but
   its broader meaning as a "secondary/default value" is still
   UNCONFIRMED.
