@@ -23,6 +23,16 @@ newer configure-based projects (kl-eod-decomp, dtk-template).
    encode actual reverse-engineering knowledge or decisions: function-boundary configs,
    symbol names, hand-written/decompiled/matched code, manually converted assets, docs. Keep
    such config per-version (`functions.us.cfg` / `functions.jp.cfg`, not one shared file).
+6. **Docs, commit messages, and code comments describe current state only, never the
+   past.** No narrating what was tried, guessed, or gotten wrong before landing on the current
+   finding; no "was named X until now"/"renamed from Y" framing; no rebuttal phrasing ("not
+   X", "isn't Y") aimed at a hypothesis only a prior conversation knows about; no "this
+   session"/"this pass"/"just now"/"now confirmed"/"now identified"-style references to the
+   conversation in which the finding was made. State the fact and its rationale as true on
+   their own terms — write every sentence as if a reader with no memory of any prior
+   conversation is seeing it cold. A dead-end worth steering future work away from can stay,
+   but phrased as forward-looking guidance ("not located", "X is a dead end because Y"), not
+   as a correction to something the reader never saw.
 
 ## Game facts (researched, verified where noted)
 
