@@ -31,5 +31,10 @@ data/monsters/*
 # committed. See CLAUDE.md hard rule 2 and docs/formats/object_script.md.
 data/scripts/*
 !data/scripts/.gitkeep
+# Per-character level-up stat tables (tools/levels/level_migrate.py
+# bootstraps this locally from the baserom) -- extracted game data, not
+# committed. See CLAUDE.md hard rule 2 and docs/memory-map/battle.md.
+data/levels/*
+!data/levels/.gitkeep
 **/__pycache__
 .claude/worktrees

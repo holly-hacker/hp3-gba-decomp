@@ -11,29 +11,44 @@ import struct
 # (json field name, struct format char)
 FIELDS: list[tuple[str, str]] = [
     ("hp", "H"),                          # 0x00 u16 -- PROVEN, copied into battle HP fields
-    ("stat_attack", "B"),                 # 0x02 u8  -- boundary PROVEN (own ldrb, not a u16 with 0x03).
-                                           #   Semantics STRUCTURAL MATCH, weak -- content-shape/statistical
-                                           #   guess only (correlates with HP/tier, r=0.81 across the 53
-                                           #   real Folio Bruti rows), no confirmed code reader:
-                                           #   ResolveMeleeAttack (0x08017E44) does not read this field --
-                                           #   see docs/formats/folio_bruti.md and docs/memory-map/battle.md.
-    ("stat_defense", "B"),                # 0x03 u8  -- boundary PROVEN, same caveat as 0x02: content-shape
-                                           #   guess only, no confirmed code reader. The gameplay-memory
-                                           #   argument this name was originally based on (Lupin Werewolf)
-                                           #   partly relied on 0x04 being "magic defense", which turned out
-                                           #   to be wrong (0x04 is accuracy) -- see
-                                           #   docs/formats/folio_bruti.md's retraction.
+    ("level", "B"),                       # 0x02 u8  -- PROVEN. BattleFighter+0xE (bLevel): LevelUpFighter_candidate
+                                           #   (0x080151B0) increments it (capped 99) and uses it to index a
+                                           #   per-character level-up table (g_pHarryLevelTable_candidate etc.),
+                                           #   and ResolveSpellAttack (0x08017C24) reads it as the caster's
+                                           #   spell power scale term and spell crit-chance term. No monster
+                                           #   ever reaches either code path as the acting fighter (every
+                                           #   monster's Object is hardwired to the melee-only tick callback,
+                                           #   and ResolveMeleeAttack doesn't read this offset), so there's no
+                                           #   traced code reader for a monster's own value here -- but it's
+                                           #   the same field, at the same offset, filled in the same way as
+                                           #   every other confirmed field in this table. See
+                                           #   docs/memory-map/battle.md.
+    ("speed", "B"),                       # 0x03 u8  -- PROVEN. Turn-order/initiative value, lower = earlier
+                                           #   turn. BattleFighter+0x2A (bStat_speed): JitterEnemyTurnOrder_candidate
+                                           #   (0x0800E5B8) adds +/-16 random jitter to it (Enemy fighters
+                                           #   only, clamped [5,251]); BuildTurnOrder_candidate (0x0800E62C)
+                                           #   sorts all fighters ascending by it into the turn queue;
+                                           #   AdvanceTurnQueue_candidate (0x0800E890) re-sorts the remaining
+                                           #   queue by it each time a fighter's turn resolves, using 0xff as
+                                           #   an "already acted this round" sentinel. See
+                                           #   docs/memory-map/battle.md. Most common monsters have values
+                                           #   clustered near the u8 max (178-254, act late), while fast/
+                                           #   dangerous ones (Lupin Werewolf, Draco) have low values and
+                                           #   act early.
     ("accuracy", "B"),                    # 0x04 u8  -- PROVEN (both boundary and semantics). Read by
                                            #   ResolveMeleeAttack (0x08017E44) as the attacker's hit-chance
                                            #   stat in a Mt19937RandMax(99) roll -- see
                                            #   docs/memory-map/battle.md. Corrects an earlier wrong guess
                                            #   in this file ("stat_magic_defense") -- see
                                            #   docs/formats/folio_bruti.md for the retraction.
-    ("crit_chance_candidate", "B"),       # 0x05 u8  -- boundary PROVEN; semantics STRUCTURAL MATCH, not a
-                                           #   confirmed 1:1 identity. Read by ResolveMeleeAttack as a
-                                           #   bonus-damage roll threshold -- see docs/memory-map/battle.md.
-                                           #   Small discrete enum (observed values: 3, 5, 10), consistent
-                                           #   with a tiered crit-chance stat.
+    ("crit_chance", "B"),                 # 0x05 u8  -- PROVEN. ResolveMeleeAttack (0x08017E44): crit fires
+                                           #   when Mt19937RandMax(100) > 100-this (probability this/101),
+                                           #   doubling damage and adding the +999 sentinel that
+                                           #   ShowBattleMessage's case 5 displays as "Critical hit!" -- see
+                                           #   docs/memory-map/battle.md. Monster-only in practice:
+                                           #   InitPlayerBattleActor_candidate never populates this field for
+                                           #   players, and ResolveMeleeAttack only ever fires with an Enemy
+                                           #   attacker anyway. Observed values: 3, 5, 10.
     ("damage_min", "H"),                  # 0x06 u16 -- PROVEN (both boundary and semantics). Fed directly
                                            #   into Mt19937RandRange as the attacker's base damage roll in
                                            #   ResolveMeleeAttack -- see docs/memory-map/battle.md. Corrects

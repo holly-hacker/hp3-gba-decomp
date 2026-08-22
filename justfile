@@ -113,8 +113,23 @@ migrate-objscript:
 pack-objscript ver="us":
     python3 tools/objscript/pack_objscript.py {{ver}}
 
+# One-time per clone (see `migrate-monsters`), NOT run automatically by
+# `build` -- data/levels/ is gitignored (same footing as the baserom,
+# see CLAUDE.md hard rule 2) and meant to be user-editable. US only --
+# see docs/memory-map/battle.md.
+# Bootstrap data/levels/ locally from baserom.us.gba.
+migrate-levels:
+    python3 tools/levels/level_migrate.py
+
+# Gitignored (build/), like everything else pack_levels.py writes. Reads
+# local data/levels/ (run `migrate-levels` first if missing) plus this
+# version's level-table rows in regions.<ver>.txt for addresses.
+# Pack data/levels/ into this version's level-table assembly.
+pack-levels ver="us":
+    python3 tools/levels/pack_levels.py {{ver}}
+
 # Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver)
+build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
     arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba

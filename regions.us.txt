@@ -200,6 +200,28 @@ dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 # Bootstrap it locally with `just migrate-monsters` before building.
 monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
 
+# --- Per-character level-up stat tables ---
+#
+# level-table <start> <end> <json-file> <name>
+#   3 tables (Harry/Ron/Hermione), 100 12-byte records each (one per
+#   level, index 0 unused), indexed 0-based by LevelUpFighter_candidate
+#   (0x080151B0) -- displayed "Level N" is table row N-1. Verified
+#   exactly against real in-game data (HP/MP direct; agility =
+#   255-speed; XP-to-next-level = cumulative sum of each row's XP-delta
+#   field) -- see docs/memory-map/battle.md. Packed from curated
+#   data/levels/<name>.json by tools/levels/pack_levels.py before
+#   `stitch` runs (see the `pack-levels` recipe). Tables are contiguous
+#   in ROM in this order (Harry, Ron, Hermione), confirming the
+#   100-record/12-byte sizing independently. US ROM only -- content not
+#   yet checked against JP.
+#
+# data/levels/ is curated, editable source (JSON), gitignored per hard
+# rule 2 (CLAUDE.md). Bootstrap it locally with `just migrate-levels`
+# before building.
+level-table 0x0804FE50 0x08050300 data/levels/harry.json HarryLevelTable
+level-table 0x08050300 0x080507B0 data/levels/ron.json RonLevelTable
+level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
+
 # --- Object/spell behavior-script bytecode ---
 #
 # objscript-table <start> <end> <dir> <name>
