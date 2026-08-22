@@ -92,6 +92,10 @@
       "name": "SpellWingardiumLeviosa",
       "description": "Plays the spell's cast animation."
     },
+    "29": {
+      "name": "SpellSpongify",
+      "description": "Weakens one enemy's attacks."
+    },
     "30": {
       "name": "SpellGlaciusUno",
       "description": "Plays the spell's cast animation."
@@ -121,8 +125,8 @@
       "description": "Revives an unconscious party member."
     },
     "38": {
-      "name": "SpellSpongify",
-      "description": "Weakens one enemy's attacks."
+      "name": "SpellInformus",
+      "description": "Cast upon a creature to learn about its strengths and weaknesses."
     },
     "39": {
       "name": "SpecialHarrySonorousCharm",

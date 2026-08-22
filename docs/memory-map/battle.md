@@ -135,8 +135,18 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
 
 - **bit `0x01`** = **Hidden** status. PROVEN: opcode `0x97` cases 8/9
   (`0x0801a7b6`/`0x0801a7e8`) OR this bit in, then call
-  `ShowBattleMessage(Hidden, ...)` (case 9 differs only in
-  `ShowBattleMessage`'s second argument, 0 vs 1). Read on the
+  `ShowBattleMessage(Hidden, argA, targetIndex)` -- byte-for-byte
+  identical apart from `argA` (`0` for case `8`, `1` for case `9`).
+  Inside `ShowBattleMessage`'s `Hidden` case, `argA` gates a single
+  call: `argA == 1` calls `PrepareBattleMessageDisplay_candidate()`
+  (opens a fresh message box) before drawing "Harry is hidden from
+  view!"-style text; `argA == 0` skips it and draws straight into
+  whatever message box is already open. So case `9`/`HiddenMain`
+  opens its own box (a standalone announcement), while case
+  `8`/`HiddenSecondary` assumes one is already open and just appends to
+  it -- matching the
+  root-cast-opens-the-box / spawned-copies-append-to-it pattern below.
+  Read on the
   *defender* in `ResolveMeleeAttack`: reduces the attacker's effective
   accuracy by 25, and gates the bonus-damage/crit check further down
   (must be clear for that check to run) -- consistent with "target is
@@ -147,11 +157,12 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   a target harder to hit (`Uno`: one ally, effect id `11`, script
   `SpellFumosUno`; `Duo`: the whole party, effect id `32`, script
   `SpellFumosDuo`), matching bit `0x01`'s accuracy-reduction effect
-  exactly -- `SpellFumosUno` applies `StatusEffect` case `9` (`Hidden_2`,
-  announced) directly; `SpellFumosDuo` applies the same case `9` on its
-  root cast and recursively spawns copies of itself (`SpawnEffect 32`)
-  for the rest of the party, each spawned copy taking case `8` (`Hidden`,
-  unannounced) instead via the `bScriptLocalA` root-vs-spawn idiom (see
+  exactly -- `SpellFumosUno` applies `StatusEffect` case `9`
+  (`HiddenMain`) directly; `SpellFumosDuo` applies the same case `9`
+  on its root cast and recursively spawns copies of itself
+  (`SpawnEffect 32`) for the rest of the party, each spawned copy taking
+  case `8` (`HiddenSecondary`) instead via the `bScriptLocalA`
+  root-vs-spawn idiom (see
   "The script-local bytes" in `../formats/object_script.md`).
 - **bit `0x02`** = **Poisoned**. PROVEN: opcode `0x97` case 5
   (`0x0801a71c`), gated on `(bStatusFlags & 0x06) == 0` (i.e. not
@@ -228,49 +239,93 @@ the target's `Object` (`+0x2e`/`+0x32` offsets).
   (`0x0801a790`) OR's this bit in, then calls
   `ShowBattleMessage(AttackWeakened, 0, 0)` -- matches
   `BattleMessageCode.AttackWeakened` (15, "The opponent's attacks are
-  weakened.") exactly. **Spongify weakens one enemy's attacks** --
-  matches this bit's effect exactly, but `Spongify` (`SpellId` `1`;
-  `g_abSpellEffectId_candidate` effect ids `[38,38,38]`) traces to opcode
-  `0x97` cases `0xc`/`0xd` instead, not case `6` (see the `0x10` bullet
-  and the `Poison Immunity`/XP writeup below for what those cases
-  actually do). `AttackWeakened`'s real effect id (`29`) doesn't appear
-  in `g_abSpellEffectId_candidate`, `g_abHermioneLectureEffectId_candidate`,
-  or `g_abHarryCardEffectId` -- Spongify's bStatusFlags write
-  is unlocated, same class of gap as `Informus`'s Folio Bruti write
-  below. `Poisoned`'s source (effect id `27`) is equally unconfirmed.
+  weakened.") exactly. **`Spongify` causes this bit -- PROVEN,
+  `SpellId` `9`** (not `1`, see the `bSpellId` writeup above):
+  `g_abSpellEffectId_candidate[9*3+level]` is `[29,29,29]`
+  (`data/scripts/SpellSpongify.txt`, effect id `29`), whose only
+  gameplay opcode is exactly `StatusEffect 6 0 0`. This is the "6
+  unambiguous spells" identification this doc's `g_awSpellMpCost` writeup
+  already relied on, now traced all the way to the real applying case.
+  `Poisoned` has no `SpellId`/lecture/card source of its own -- its only
+  confirmed source is the monster-attack table (effect id `27`,
+  `SpecialMonsterPoisonBite`, see "Monster special-attack effects"
+  below).
 - **bit `0x10`** = **Paralyzed**. PROVEN: applied through a dedicated
-  helper, `FUN_0801b430` (`0x0801b430`), called from several opcode
-  `0x97` cases (`10`/`Paralyze`, `0x11`/`Paralyze_2`, `0x12`/`Paralyze_3`,
-  `0x16`/`Paralyze_4`, `0x17`/`Paralyze_5` -- the last confirmed via the
-  monster special-attack writeup below, gated by its own extra
+  helper, `FUN_0801b430` (`0x0801b430`), called from five opcode `0x97`
+  cases (`10`/`Paralyze25`, `0x11`/`Paralyze99`,
+  `0x12`/`Paralyze80`, `0x16`/`ParalyzeMonster`,
+  `0x17`/`ParalyzeMonsterChance` -- the last confirmed via the monster
+  special-attack writeup below, gated by its own extra
   `Mt19937ChanceNoisy` roll before calling this same helper). It only sets the bit
   if `bStatusFlags & 0x90 == 0` (i.e. not already paralyzed, nor bit
   `0x80` set); otherwise it fires `ShowBattleMessage(ImmuneToParalysis,
   ...)` when its `param_2` is nonzero. Case `0x16`'s call site sets
   `field_0x14a8 = 4` on success -- sub-case `4` of `ShowBattleMessage`'s
   case-5 dispatch is "Harry is paralyzed."/"The opponent is paralyzed!"
-  (same `field_0x14a8` mechanism as `Poisoned` above). A third parameter
-  to `FUN_0801b430` (varies per call site: `0x19`,
-  `0x63`, `0x50`, ...) is stored to `fighter+0x44`, not consumed by RNG
-  inside this function -- likely a duration or an already-resolved
-  chance, not traced further. Not read by
-  `ResolveMeleeAttack`/`ResolveSpellAttack` (paralysis presumably gates
-  action/turn selection elsewhere, not the damage formula).
-  **Case `10` is conditionally gated, cases `0x11`/`0x12` are not** --
+  (same `field_0x14a8` mechanism as `Poisoned` above). Not read by
+  `ResolveMeleeAttack`/`ResolveSpellAttack` (paralysis instead gates
+  action/turn selection, see the escape-chance mechanic just below).
+
+  **The third parameter to `FUN_0801b430` (`0x19`/`0x63`/`0x50`/... per
+  call site) is a starting escape-chance percentage, not a duration --
+  PROVEN.** It's stored into a new `BattleFighter` field,
+  `bParalysisEscapeChance_candidate` (`+0x44`, right after
+  `bPoisonDamage_candidate`). Every battle turn,
+  `TickBattleTurnStateMachine_candidate`'s menu-input/enemy-turn-start
+  cases (`3`/`4`) call `RollFighterParalysisEscape_candidate`
+  (`0x0800FFAC`) before letting a fighter act:
+
+  ```c
+  int RollFighterParalysisEscape_candidate(uint fighterIndex) {
+      BattleFighter *f = &g_pFightState->pFighters[fighterIndex];
+      if (!(f->bStatusFlags & Paralyzed)) return 0;               // not paralyzed, acts normally
+      if (!Mt19937ChanceNoisy(f->bParalysisEscapeChance_candidate)) {
+          f->bParalysisEscapeChance_candidate += 25;               // failed roll: chance goes up for next turn
+          return 1;                                                 // can't move this turn
+      }
+      ClearParalyzedFighter_candidate(fighterIndex);                 // broke free: clears Paralyzed, sets Unk_0x80
+      return 3;                                                       // "can move again"
+  }
+  ```
+
+  (`Mt19937ChanceNoisy(n)` succeeds when a `0-99` roll is `<= n`, i.e.
+  `n` is literally a percent-out-of-100 chance -- confirmed against its
+  own decompile.) So `bParalysisEscapeChance_candidate` is the *current*
+  per-turn chance to break free, re-rolled every turn the fighter would
+  otherwise act, ratcheting up by `25` on every failure until it
+  eventually succeeds -- not a countdown timer. `TickBattleTurnStateMachine_candidate`'s
+  caller shows `ShowBattleMessage(CanMoveAgain, ...)` on a `3` return and
+  `ShowBattleMessage(CantMove, ...)` on a `1` return, which is where
+  "Harry can move again!"/"Harry can't move." actually come from each
+  turn -- not from the `StatusEffect` case's own one-time message.
+  `ClearParalyzedFighter_candidate` is `FUN_0800ea68`, the same
+  `Paralyzed`-clearing half `CureAilments` (case `0x14`) calls -- so
+  breaking free naturally and being manually cured (Remove Jinx/
+  Reparifors) go through the identical cleanup path.
+
+  **Case `10`/`Paralyze25` is conditionally gated, cases
+  `0x11`/`0x12` (`Paralyze99`/`Paralyze80`) are not** --
   confirmed by reading each call site's `param_2` (`FUN_0801b430`'s 2nd
   arg): case `10` (`0x0801a818`) passes `0` (or `1` only if the target
   fighter's roster byte reads `0xFF`, a sentinel case), while cases
   `0x11`/`0x12` (`0x0801a83e`/`0x0801a84a`) hardcode `1`. Inside
   `FUN_0801b430`, the whole apply-or-skip block is additionally gated by
-  `(DAT_0300276e != 0 && DAT_0300276e != 0x3e9) || param_2 != 0` -- i.e.
+  `(g_wEffectContextValue != 0 && g_wEffectContextValue != 0x3e9) || param_2 != 0` -- i.e.
   with `param_2 == 0` (case `10`'s normal path), paralysis only applies
-  when `DAT_0300276e` (written only by `FUN_08018b70`'s `param_6`, the
+  when `g_wEffectContextValue` (written only by `FUN_08018b70`'s `param_6`, the
   effect-trigger's caller-supplied 6th argument -- not traced further)
   holds some other value; cases `0x11`/`0x12`'s `param_2 == 1`
   unconditionally satisfies the `||`, skipping that check entirely. So
   case `10` is genuinely conditional on external state (a real
   "chance"/context gate) while `0x11`/`0x12` always apply (subject only
-  to the immunity-bit check both paths share). **PROVEN source:
+  to the immunity-bit check both paths share). `Paralyze25`'s escape
+  chance starts at `0x19` (`25`, ratcheting up by 25 each failed turn --
+  free by the 4th attempt at the latest); `Paralyze99`/
+  `Paralyze80` start at `0x63`/`0x50` (`99`/`80`, both escaping on
+  the very next turn almost every time), matching their fire-and-forget,
+  no-message-and-no-VFX-on-success code shape: they're a much lighter
+  version of the status, mechanically closer to "skip one turn" than a
+  real lockout. **PROVEN source:
   PetrificusTotalus** -- `SpellId` `6`'s effect ids
   (`g_abSpellEffectId_candidate` `[33,34,33]`, indexed `spellId*3 +
   castLevel`) trace to opcode `0x97` case `10` -- **confirmed directly
@@ -305,11 +360,45 @@ the target's `Object` (`+0x2e`/`+0x32` offsets).
   produces a paralysis effect, matching what `PetrificusTotalus` is
   known to do. **Second source, now PROVEN by name: Harry's `Snitch`
   card** (index `13` of 16 in `g_abHarryCardEffectId`, effect
-  id `47`) -- its script also contains opcode `0x97` case `0x12`, another
-  bare `FUN_0801b430()` call, this time the unconditional-apply variant,
-  and matches the in-game Card Combo Glossary's own description word for
-  word: "Snitch causes opponent to lose a turn." See "Harry's 16 Folio
-  Universitas cards" below for how all 16 cards were named.
+  id `47`) -- its script also contains opcode `0x97` case `0x12`
+  (`Paralyze80`), another bare `FUN_0801b430()` call, this time
+  the unconditional-apply variant, and matches the in-game Card Combo
+  Glossary's own description word for word: "Snitch causes opponent to
+  lose a turn." See "Harry's 16 Folio Universitas cards" below for how
+  all 16 cards were named.
+
+  **Cases `0x16`/`ParalyzeMonster` and `0x17`/`ParalyzeMonsterChance`
+  (monster-attack only) add feedback on top of the same `FUN_0801b430`
+  call, and differ from each other and from
+  `10`/`0x11`/`0x12`:**
+  - Both pass a *script-supplied* `param_3` (the caller reads the
+    effect script's own operand `2` for the starting escape chance,
+    rather than one of the hardcoded constants `10`/`0x11`/`0x12` use).
+  - Both set `field_0x14a8 = 4` on a successful apply -- the
+    "Harry is paralyzed."/"The opponent is paralyzed!" sub-case of
+    `ShowBattleMessage`'s case-5 dispatch (same mechanism `Poisoned`
+    uses) -- which `10`/`0x11`/`0x12` never set.
+  - `0x16` reuses `10`'s `param_2` gate (`1` only when the target
+    fighter's roster byte reads `0xFF`) and, after a successful apply,
+    checks that same roster byte again: if it's `0xFF` it returns with
+    no further effect; otherwise it spawns the paralysis VFX
+    (`FUN_0801b590`) *and* fires `ShowBattleMessage(CriticalHit, 0, 4)`
+    (the field-`0x14a8`-driven text). `0x17` instead hardcodes
+    `param_2 = 0` (so it can never show `ImmuneToParalysis` on a failed
+    apply, unlike every other case), and on a successful apply always
+    spawns the VFX with no roster-byte check and never calls
+    `ShowBattleMessage` at all -- so `0x17`'s paralysis announcement is
+    silent (VFX only), while `0x16`'s is announced with text. `0x17`
+    also rolls its own `Mt19937ChanceNoisy(operand 3)` chance *before*
+    even calling `FUN_0801b430`, entirely separate from the
+    `g_wEffectContextValue` gate inside it *and* separate from the
+    per-turn escape-chance roll `bParalysisEscapeChance_candidate` drives
+    afterward -- three independent RNG layers stacked for this one
+    effect (whether the attack lands, whether paralysis takes at all,
+    then whether/when the target breaks free), matching its
+    monster-special-attack-only usage (Hinkypunk/Skeleton, which
+    additionally gate on `special_effect_chance`, see "Monster
+    special-attack effects" below).
 - **bit `0x20`** = **DefenseBoost** (checked on the *defender* in
   `ResolveMeleeAttack`): independently contributes one halving of the
   computed damage. Set by opcode `0x97` case 0xb (`0x0801a8e4`), no
@@ -364,13 +453,180 @@ script contains opcode `0x97` case `3` (`field_0x1480 = 2`, via
 `LAB_0801ab2a`), not a `bStatusFlags` write. Harry's **`Extra EXP`**
 card (index `11` of 16 in `g_abHarryCardEffectId`, effect id
 `14` -- name and mapping now PROVEN, see below) uses the same family
-(case `2`, `field_0x1480 = 1`) -- it **does** share a mechanism with
-Hermione's move, just `field_0x1480` (an unidentified `FightState`
-field) rather than `bStatusFlags`. `field_0x1480` itself is not traced
-further; not obviously connected to the
-`g_nRewardAccum1`/`g_nRewardAccum2` payout in `ApplyDamageToFighter`
-(see "XP/reward payout" above), which remains an alternative, untraced
-possibility.
+(case `2`, `ExtraExpBonus`, `field_0x1480 |= 1`) -- it **does**
+share a mechanism with Hermione's move, just `field_0x1480` (an
+unidentified `FightState` field) rather than `bStatusFlags`. A third case
+in the same family, `ForceItemDrop` (case `0x1B`/`27`, `field_0x1480 |=
+4`), is Ron's Wizard Cracker card (see "Ron's Special Move effect ids"
+below) -- per the move's own in-game description text (string ids
+`1725`/`2615` in `data/text/en_us.json`, both "...makes [the target]
+drop an item"), this bit's real effect is causing the target creature to
+drop an item, not a gold bonus. So `field_0x1480` is at least a 3-bit
+flag byte covering three different "bonus reward on this encounter" end
+effects: extra XP (two independent sources/bits), and an item drop.
+**`field_0x1480` has no reader among code either tool currently
+recognizes.** The three writes above (cases `2`/`3`/`0x1B`) generate the
+`0x1480` offset via a `movs Rd, #imm8; lsls Rd, Rd, #shift` pair rather
+than a literal-pool constant (saves a pool slot for a mid-size offset);
+`0x1480` has exactly three 8-bit-immediate/shift-amount pairs that
+produce it (`0xA4<<5`, `0x52<<6`, `0x29<<7`). Every occurrence of all
+three immediate values in `gbadisasm`'s on-disk US disassembly was
+checked (`0xA4`: 7 sites, `0x52`: 2 sites, `0x29`: 0 sites) -- the only
+ones followed by a matching shift and used as a `FightState`-relative
+offset are the three writes already covered above; the rest are
+unrelated immediates (a different struct's `+0x148`-ish offsets, or
+plain non-shifted arithmetic) at unrelated addresses. A direct `ldr Rd,
+=0x1480` literal-pool load (the encoding a one-off far-away read would
+more likely use) also doesn't appear. Ghidra's own auto-analysis was
+checked too, with the same result. Neither result is proof of absence:
+`gbadisasm`'s on-disk output only covers code reachable from the
+functions currently seeded in `functions.us.cfg`, and a reader living in
+still-unseeded territory (dumped as opaque bytes) wouldn't show up in
+either search -- this is the same class of gap as `FightState+0x1054`/
+`+0x1058` below, not a stronger claim than that one. So the in-game
+item-drop behind `Wizard Cracker` (and whatever separately consumes the
+two extra-XP bits) isn't confirmed to run through this byte; `case 0x1B`
+merely being the one `StatusEffect` call in `Wizard Cracker`'s effect
+script is the only evidence tying it to the item grant, not a traced
+code path to an actual item being added to the player's inventory.
+Where that inventory-add itself happens isn't located -- searching for
+named or callable "add item"/"inventory"-style functions in Ghidra
+turned up nothing beyond the existing, unrelated
+`g_pBattleItems_candidate` catalog and its *consumption* (not granting)
+functions `ConsumeBattleItemSlot`/`IsBattleItemSlotUsable`, subject to
+the same seeding/auto-analysis caveat.
+
+### `StatusEffect` sub-cases, full case-by-case writeup, PROVEN
+
+All 29 sub-cases of opcode `0x97` (`g_apScriptStatusEffectCaseTable`,
+US `0x0801A650`) are identified, cross-checked against every real script
+that reaches each case (`grep`-ing `StatusEffect <N> ` across all 65
+files in `data/scripts/`). `../formats/object_script.md` has the
+condensed table; this is the supporting detail for the cases not already
+covered by their own section above (`Poisoned`, `AttackWeakened`,
+`PoisonImmune`, `HiddenSecondary`/`HiddenMain`, `Paralyze25` and
+its `Paralyze99`/`Paralyze80`/`ParalyzeMonster`/
+`ParalyzeMonsterChance` siblings, `DefenseBoost`, `SpellPowerBoost`, `GrantExtraXp`/
+`ExtraExpBonus`/`ForceItemDrop`, `Revive` -- all documented in the
+sections above and below).
+
+`BattleFighter+0x8`/`+0x24` hold current/max SP (written by
+`ReplenishPartySp`), and `+0xA`/`+0x26` hold current/max MP (written by
+`ReplenishTargetMp`) -- both restored via a plain `strh currentField,
+[maxField]`-style copy, mirrored by fighter id into
+`g_pPartyMasterStats_candidate` (`0x030024EC`, see "Player fighters get
+`bLevel` from `g_pPartyMasterStats_candidate`" below) -- the persistent,
+`BattleFighter`-shaped per-character array that survives between
+battles, so the restored SP/MP carries over outside the current
+encounter, not just in the live roster copy.
+
+- **Case `0` (`SpawnEffectA`) and case `1` (`SpawnEffectB`)**: call
+  `sub_0801B204`/`sub_0801B2EC` respectively, then jump into a shared
+  tail (`_0801AA3C`) that stashes the returned `Object*` into a global
+  (`0x03002750`) and sets a byte at `+0x49` to `2`. Neither function
+  touches `bStatusFlags` or any other `BattleFighter` field -- pure
+  particle/VFX spawns, differing only in which canned effect they spawn.
+- **Case `0xC` (`BumpMonsterDocLevel`)**: `SpellInformus`'s only
+  `StatusEffect` case (effect id `38`, `SpellId` `1` -- `Informus`'s own
+  real ID, see the `bSpellId` writeup above). Reads `BattleFighter+1` (a
+  species/monster-id byte) and calls `sub_08037104(speciesId)`, which
+  does exactly:
+  `if (g_abMonsterDocLevel_candidate[speciesId] < 3) g_abMonsterDocLevel_candidate[speciesId] = 4;`
+  -- then mirrors the same byte into a global at `0x03002748`. **This is
+  `Informus`'s Folio Bruti write.** `Informus`'s own in-game description
+  (`data/text/en_us.json` string id `1494`) is "Cast upon a creature to
+  learn about its strengths and weaknesses" -- exactly this bump; it's
+  the *entire* gameplay payload `Informus` produces (zero base power,
+  zero MP cost -- see the base-power/MP-cost tables below).
+  `g_abMonsterDocLevel_candidate`
+  (`0x03003190`) is the exact same per-monster byte `../formats/folio_bruti.md`
+  already documented independently: the Folio Bruti detail screen's
+  spell-effectiveness slider loop shows a "?" placeholder instead of the
+  real dot whenever this byte is `<= 2`. So the threshold this bump
+  writes (`4`, only if currently `< 3`) is specifically what flips a
+  monster from "unanalyzed" to "analyzed" on that screen -- the two
+  findings, made independently in each doc, now confirm each other.
+- **Case `0xD`/`0xE` (`SetPostActionFlashFlag`/`ClearPostActionFlashFlag`)**:
+  a matched pair, both looping every fighter (`0 <= i <
+  FightState+0x106F`, the same active-fighter-count field the turn-order
+  code uses) and testing `field0 == 0xff` (per the turn-order section
+  above, "already acted this round"). The set side unconditionally ORs
+  `0x10` into that fighter's `Object+0x115` (the same byte `Hidden`
+  overwrites wholesale with `0x20`); the clear side ANDs it off, but only
+  for fighters that *don't* have `AttackWeakened` set. Both appear
+  back-to-back in Harry's Sonorous Charm script, bracketing the roar
+  animation -- read as a temporary "reacting to the roar" visual flag on
+  everyone who's already had their turn, not a gameplay status; the
+  `AttackWeakened` exception on the clear side is real in the
+  disassembly but not explained further.
+- **Case `0xF` (`CurePoison`)**: calls `sub_0800EB2C(g_bEffectTargetIndex)`
+  (`g_bEffectTargetIndex` = `0x03002750+0x22`, the same global
+  `Revive`/case `0x1C` reads). That function checks `bStatusFlags &
+  Poisoned`, and if set: clears just the `Poisoned` bit (masking down to
+  `Unk_0x80|SpellPowerBoost|DefenseBoost|Paralyzed|AttackWeakened|PoisonImmune|Hidden`),
+  zeroes `bPoisonDamage_candidate` and the Object's blink-flag halfword
+  (`Object+0x8A`), calls `FUN_08015484(Object,0)` (an anim-data-table
+  toggle, see case `0x10` below), tears down an active
+  particle/sound-channel pointer at `Object+0x24` if set, then refreshes
+  the fighter's palette via `FUN_0800d264` (undoing the poison
+  discoloration). Used by Harry's Poison Antidote.
+- **Case `0x10` (`ToggleUltimateVisual`)**: operand `[2]`-driven.
+  Operand `0` (called first in `SpecialHarryUltimateMp`, right before a
+  210-frame wait) reads `Object+8` (a species/character-id `u16`) and
+  calls `SetObjectAnimData` against an alternate table pair
+  (`0x08051288`/`0x08054FDC`, indexed `id*0xA0`/`id*` a second stride)
+  plus `sub_08001958(Object,0)` to reset the anim frame -- a visual-only
+  "glow" swap. Non-zero operand (called second, after the wait) instead
+  calls `sub_08015484(Object,0)` (which flips a toggle bit at `Object+0xC`
+  and restores the *normal* anim-data table for that same species/id) and
+  `sub_08012994(fighterIndex, BattleFighter+8)`, which sets all 10 of the
+  target's spell cast-level bytes (`BattleFighter+8`, mirrored into the
+  global `g_pPartyMasterStats_candidate` party-stats struct) to
+  `g_abSpellMaxLevel[i]` -- i.e. **grants every spell at max level**, the
+  actual "Grants one party member all spell abilities" effect of Harry's
+  `Ultimate MP` card. The first (operand-`0`) call is purely the
+  glow-in visual for the card's animation.
+- **Case `0x14` (`CureAilments`)**: calls both `sub_0800EB2C` (the
+  `CurePoison` function above) and `ClearParalyzedFighter_candidate` on
+  `g_bEffectTargetIndex`. The latter checks `bStatusFlags & Paralyzed`,
+  and if set: clears `Paralyzed`, then ORs in `Unk_0x80` (the same
+  "recently cured/briefly immune" bit `FUN_0801b430`'s own gate checks
+  for, `bStatusFlags & 0x90 == 0`), resets
+  `bParalysisEscapeChance_candidate` (`BattleFighter+0x44`) to `100`
+  (see the `Paralyzed` bit writeup above for what this field actually
+  is -- a per-turn escape-chance percentage, not a duration; why `100`
+  specifically, given `Unk_0x80` already blocks re-application, isn't
+  traced further), zeroes the Object blink halfword, and -- for
+  player fighters only (`bFighterType != Enemy`) -- runs the same
+  anim-data-toggle/particle-teardown/palette-refresh sequence
+  `CurePoison` does (enemies instead call `FUN_0801539c(Object,0)`, not
+  traced). So `CureAilments` is a superset of `CurePoison` that also
+  lifts paralysis -- used by Harry's Remove Jinx (single target) and
+  Reparifors (three calls, one per party member).
+- **Case `0x15` (`SpawnEffectC`)**: calls `sub_0801B348`, a third member
+  of the same VFX-spawn family as `SpawnEffectA`/`B` (spawns a particle
+  `Object`, sets its position/velocity/timing fields from
+  `g_bEffectScriptParam`-indexed tables, no `bStatusFlags`/other
+  gameplay write), then falls into the same shared tail as cases `0`/`1`.
+  Used three times in `SpecialMonsterHinkypunkParalyze`, once per
+  target slot, immediately before the script's own `ParalyzeMonsterChance` roll.
+- **Case `0x19`/`0x1A` (`ReplenishPartySp`/`ReplenishTargetMp`)**: see
+  the field note above. `ReplenishPartySp` loops every active,
+  non-fainted (`BattleFighter+8 != 0`) fighter and copies `+0x24` (max
+  SP) over `+8` (current SP), mirroring the write into
+  `g_pPartyMasterStats_candidate`; `ReplenishTargetMp` is the same copy
+  (`+0x26` -> `+0xA`) for just `g_bEffectTargetIndex`'s `BattleFighter`
+  (the current effect target, via `r8` directly rather than a re-lookup).
+  Matches Harry's Replenish SP (party-wide) and Replenish MP
+  (single-target) exactly.
+- **Case `4` (`UnusedWinoutWrite`)**: writes the literal halfword
+  `0x3F3D` to hardware register `0x0400004A` (GBA `WINOUT`, the
+  window-0/1/OBJ-outside layer-visibility register) and returns
+  immediately -- no `bStatusFlags`/other `BattleFighter` write. **No
+  script among the 65 real ones reaches this case** (confirmed: `grep
+  "StatusEffect 4 " data/scripts/*.txt` matches nothing), so it's
+  either dead code or reachable only through content not currently
+  extracted (e.g. an unused/cut effect id). Not traced further.
 
 ### `FightState+0x1054`/`+0x1058`: write-only, purpose unknown
 
@@ -471,7 +727,8 @@ length is looked up in a 256-entry table at `0x08054f34`
 (`instruction length = table[opcode] + 1` bytes, including the opcode
 byte itself); walking a script from its pointer with that table finds
 every opcode `0x97` instance and its case (sub-case) byte. Spell/card
-effect-id tables (`g_abSpellEffectId_candidate` for the 9 real spells,
+effect-id tables (`g_abSpellEffectId_candidate` for the 10 real `SpellId`
+values,
 `g_abHermioneLectureEffectId_candidate` for Hermione's 3 moves,
 `g_abHarryCardEffectId` for Harry's 16 cards) then map a
 specific spell/card to one of those effect ids.
@@ -624,16 +881,20 @@ Four ids carry a real, confirmed status-effect payload:
   exactly `StatusEffect 5 8 0` -- case `5`, confirmed `Poisoned`.
 - **id `60`** (`SpecialMonsterParalyzingBlow`): every Suit of Armor
   variant plus Lupin Werewolf. Script body is exactly
-  `StatusEffect 22 25 0` -- case `22`, confirmed `Paralyze_4`.
+  `StatusEffect 22 25 0` -- case `22`, confirmed `ParalyzeMonster`
+  (a `25`% starting escape chance, announced with text + VFX).
 - **id `57`** (`SpecialMonsterHinkypunkParalyze`) and **id `59`**
   (`SpecialMonsterSkeletonParalyze`): both call `StatusEffect 23 ...`,
-  case `23`. Newly identified as **`Paralyze_5`**: its handler
+  case `23` (`ParalyzeMonsterChance`). Its handler
   (`0x0801A8A4`) rolls its own extra `Mt19937ChanceNoisy` chance, then
   calls the same `FUN_0801b430` paralysis-application helper the other
-  `Paralyze_*` cases use, sets `field_0x14a8 = 4` (the same "Harry is
-  paralyzed." sub-case), and spawns a VFX via `FUN_0801b590` -- an exact
-  structural match to the other confirmed Paralyze cases, just gated by
-  its own additional roll on top of `special_effect_chance`.
+  `Paralyze*` cases use, sets `field_0x14a8 = 4` (the same "Harry is
+  paralyzed." sub-case) but -- unlike `ParalyzeMonster` -- never
+  actually shows that text (only `ParalyzeMonster`'s call site checks
+  `field_0x14a8` into a real `ShowBattleMessage` call), and spawns a VFX
+  via `FUN_0801b590` -- an exact structural match to the other confirmed
+  `Paralyze*` cases, just gated by its own additional roll on top of
+  `special_effect_chance`.
 
 The remaining ids (`0`, `4`, `13`, `16`, `17`, `54`-`56`, `58`, `61`)
 either have no `StatusEffect` opcode at all, or reference `StatusEffect`
@@ -720,21 +981,35 @@ separate running EWRAM accumulators (`g_nXpAccum` at `0x0300260E`,
 stride `0x18`, per `../formats/folio_bruti.md`) -- confirming the indexing
 is by roster/monster index directly into `MonsterTable`.
 
-**Live in-game confirmation:** defeating 2 Brown Recluse Spiders
+**Live in-game observation:** defeating 2 Brown Recluse Spiders
 (`MonsterTable` index `16`, `reward_xp=8`, `reward_gold=42`) awarded
 exactly 16 XP -- `8*2`, matching `reward_xp` precisely. Gold was 105 with
-Ron's Special Move `Wizard Cracker` active; `42*2*1.25 = 105` exactly,
-consistent with `reward_gold` plus a 25% boost from that move -- **live
-confirmation that `Wizard Cracker` is (at least) a 25% gold-drop
-multiplier**, though the code applying that multiplier (presumably a
-write to `g_nGoldAccum` somewhere outside `ApplyDamageToFighter`'s plain
-accumulation) isn't traced. See the Special Move dispatch section above:
-this doesn't by itself confirm which of effect ids `44`/`45`/`46` is
-`Wizard Cracker`, since Ron's menu-selection code and this multiplier's
-own application site are both still untraced -- but it's a concrete
-behavioral fact to check candidate scripts against once that tracing
-happens. What consumes the two reward accumulators after battle isn't
-traced further either.
+Ron's Special Move `Wizard Cracker` active; `42*2*1.25 = 105` exactly.
+`Wizard Cracker`'s own in-game move description (string ids `1725`/`2615`
+in `data/text/en_us.json`) states its effect as making the target
+creature drop an item, not a gold bonus -- see "`StatusEffect` sub-cases,
+full case-by-case writeup" above (`ForceItemDrop`, case `0x1B`) and
+"Ron's Special Move effect ids" below. The source of this particular
+25% gold figure is an open question: whether it's an unrelated factor
+that happened to coincide with this encounter, a second undocumented
+effect of `Wizard Cracker` beyond the item drop, or something else
+entirely isn't determined. What consumes the two reward accumulators
+after battle isn't traced further either.
+
+**A second, independent path into these same two accumulators exists:**
+`GrantMonsterKillReward` (opcode `0x83`, `../formats/object_script.md`,
+US `0x0801A254`) reads a species/monster-id byte and adds
+`MonsterTable[speciesId].wRewardXp`/`.wRewardGold` straight into
+`g_nXpAccum`/`g_nGoldAccum`, bypassing `ApplyDamageToFighter` entirely.
+Its only user is Harry's `Tempest Jinx` card (banishes a monster without
+damaging it to `0`, so it needs its own reward grant in place of the
+normal on-faint payout) -- not `Wizard Cracker` -- but it proves this
+kind of direct, script-triggered accumulator write is a real pattern in
+this codebase, not a hypothetical one. Whether `Wizard Cracker` goes
+through some other, not-yet-located function shaped like this one -- as
+opposed to `FightState+0x1480`'s bit `0x04`, which has no located reader
+(see the `StatusEffect` sub-cases section above) -- is the open
+question the 25% gold figure raises.
 
 ## Corrections to `../formats/folio_bruti.md`
 
@@ -959,10 +1234,10 @@ pending that trace** -- do not assume `44`/`45`/`46` are Ron's moves
 without confirming the calling context. If entries `0`-`2` do turn out
 to be Ron's moves in the glossary's display order (`Stink Pellet`,
 `Wizard Cracker`, `Stink Pellet 2` -- string ids `2301`-`2303`), that
-would make effect id `46` `Wizard Cracker` specifically -- worth checking
-against the "XP/reward payout" section's live confirmation that
-`Wizard Cracker` is a 25% gold-drop multiplier, once this table's real
-meaning is traced.
+would make effect id `46` `Wizard Cracker` specifically -- consistent
+with "Ron's Special Move effect ids" below, which resolves this
+independently via the effect scripts' own `StatusEffect` content, once
+this table's real meaning is traced.
 
 The other case targets (`0x080160FC`, `0x08017A7C`, `0x080161A2`,
 `0x08017ADE`, `0x0801618A`, `0x080161FE`) haven't been walked yet.
@@ -974,10 +1249,13 @@ finds the real, un-truncated top-level battle menu labels as consecutive
 string ids `2288`-`2293`: **`Cast Spell`, `Special Move`, `Use Item`,
 `Flee`, `Folio Bruti`, `Help`**, with `Informus` (string id `2400`, also
 `2755`) a separate top-level entry not adjacent to this block.
-`Informus`'s own trigger/effect path is not traced -- see "`Informus`'s
-Folio Bruti write is unlocated" above; whether it goes through the
-object-script engine at all is unconfirmed (it may write
-`MonsterTable`/Folio Bruti data directly instead). String ids
+`Informus`'s own trigger/effect path -- `SpellId` `1` is `Informus`'s own
+real ID (this string, `2400`, is exactly `spellId + 0x95F`'s formula for
+`SpellId` `1`, see the `bSpellId` writeup below), and its own effect
+script (id `38`)'s `StatusEffect` case `0xC` (`BumpMonsterDocLevel`) is
+the actual Folio Bruti write -- see "`DispatchPendingAction`... and the
+answer to 'does Informus have a script?'" below for the full trace.
+String ids
 `2298`-`2300` (`Be More Careful`, `Good Study Habits`, `Proper Wand
 Technique`) exactly match Hermione's three named lecture scripts
 word-for-word, independently confirming that identification;
@@ -1160,26 +1438,58 @@ Added to the struct at the offsets `ResolveSpellAttack` reads.
 `bSpellLevel` (0-2) explains `ShowBattleMessage`'s
 `SpellLevelUp` case -- spells have 3 power tiers, and that case's
 `FUN_0803FF70`-driven jingle is almost certainly what plays when this
-field increments. `bSpellId`'s 8 values were derived from
-`ResolveSpellAttack`'s own `aSpellEffectiveness` switch: the
-two values with **no case at all** (1 and 6) are exactly the two power
-tables' zero entries below, matching `folio_bruti.md`'s two "always 100%
-effective, not a per-monster stat" spells (Petrificus Totalus, Spongify)
--- `Flipendo=0, Spongify=1, Verdimillious=2, Diffindo=3, Incendio=4,
-WingardiumLeviosa=5, PetrificusTotalus=6, Glacius=7`. This is the game's
-own internal spell-ID ordering -- notably different from both
-`folio_bruti.md`'s spell-index order (used for the Folio Bruti UI) and
-`aSpellEffectiveness`'s storage order, so don't assume any of the three
-line up. Which of values `1`/`6` is `PetrificusTotalus` vs. `Spongify`
-isn't decidable from the switch alone (both are absent from it
-identically) -- PROVEN via `g_awSpellMpCost` below instead.
+field increments.
+
+**`SpellId` has 10 values (`0`-`9`), PROVEN directly from the Cast Spell
+menu's own name-lookup code, not inferred from `ResolveSpellAttack`'s
+switch.** `DrawBattleMenuText` (`0x08011520`), the function that draws
+every battle-menu screen's text, has a `bMenuScreen == 2` (spell list)
+case reading `GetDialogText(g_abSpellIdByCursor[...] + 0x95F)` -- i.e.
+**`spellId + 0x95F` is the real in-game name for that `SpellId`**, a
+direct display-time mapping, not an inference. Reading
+`data/text/en_us.json` string ids `2399`-`2408` against this formula
+gives the real enum, confirmed one-to-one:
+
+| `SpellId` | Text id (`+0x95F`) | Name |
+|---|---|---|
+| `0` | `2399` | `Flipendo` |
+| `1` | `2400` | **`Informus`** |
+| `2` | `2401` | `Verdimillious` |
+| `3` | `2402` | `Diffindo` |
+| `4` | `2403` | `Incendio` |
+| `5` | `2404` | `WingardiumLeviosa` |
+| `6` | `2405` | `PetrificusTotalus` |
+| `7` | `2406` | `Glacius` |
+| `8` | `2407` | `Fumos` |
+| `9` | `2408` | `Spongify` |
+
+**`Informus` is `SpellId` `1` in its own right, not a "borrowed"
+`Spongify` slot -- correction to this doc's own earlier framing.**
+`Informus`'s top-level menu action (see "the answer to 'does Informus
+have a script?'" below) sets `bSpellId = 1`, which really is `Informus`'s
+own real ID. **`Spongify` is `SpellId` `9`** -- previously assumed to be
+`1`, and previously the source of `g_abSpellIdByCursor`'s Ron row
+(`[0,2,4,6,9,5,0]`) showing an "unexplained `9`"; that `9` is real and is
+exactly `Spongify` (matches `data/text/en_us.json` string `937`: "Harry
+receives Diffindo, Ron receives Spongify, and Hermione receives
+Glacius!" -- `Spongify` is Ron's spell). `ResolveSpellAttack`'s own
+`aSpellEffectiveness` switch has no case for **four** values, not two:
+`1`/`6`/`8`/`9` (`Informus`, `PetrificusTotalus`, `Fumos`, `Spongify`) --
+all four are non-damage/status spells (documentation, paralysis, evasion,
+attack-weaken respectively), none compute a per-monster effectiveness
+roll. `PetrificusTotalus=6` is independently PROVEN via `g_awSpellMpCost`
+below; `folio_bruti.md`'s "always 100% effective" pair (Petrificus
+Totalus, Spongify) is that screen's own separate spell-index list (0-7,
+excluding `Informus`/`Fumos` entirely, since neither has a monster
+resistance stat to display) -- not the same ordering as `SpellId`, don't
+conflate the two.
 
 ### The two base-power tables, decoded
 
 `g_awSpellPowerBase` (`0x080538EC`) and
-`g_awSpellPowerScale` (`0x08053928`), both `ushort[24]`
-indexed `spellId*3 + spellLevel`. `g_awSpellPowerScale` is the
-term multiplied by the attacker's `bLevel` and divided
+`g_awSpellPowerScale` (`0x08053928`), both `ushort[30]`
+(`SpellId` `0`-`9`) indexed `spellId*3 + spellLevel`. `g_awSpellPowerScale`
+is the term multiplied by the attacker's `bLevel` and divided
 by 9 (via `divsi3_thumb`, the Thumb-mode signed-division runtime --
 **not** a spell-specific scaling helper, same algorithm shape as the
 already-documented `__rt_divsi3`/`udivsi3_thumb`).
@@ -1187,65 +1497,83 @@ already-documented `__rt_divsi3`/`udivsi3_thumb`).
 | Spell | lvl0 base/scale | lvl1 base/scale | lvl2 base/scale |
 |---|---|---|---|
 | Flipendo | 10 / 4 | 20 / 8 | 15 / 10 |
-| Spongify | 0 / 0 | 0 / 0 | 0 / 0 |
+| Informus | 0 / 0 | 0 / 0 | 0 / 0 |
 | Verdimillious | 15 / 6 | 25 / 12 | 20 / 14 |
 | Diffindo | 30 / 18 | 30 / 19 | 40 / 20 |
 | Incendio | 23 / 8 | 35 / 16 | 45 / 18 |
 | WingardiumLeviosa | 35 / 20 | 45 / 21 | 55 / 22 |
 | PetrificusTotalus | 0 / 0 | 0 / 0 | 0 / 0 |
 | Glacius | 30 / 18 | 40 / 20 | 45 / 20 |
+| Fumos | 0 / 0 | 0 / 0 | 0 / 0 |
+| Spongify | 0 / 0 | 0 / 0 | 0 / 0 |
 
 Power generally grows with level as expected, though not always
 monotonically (Flipendo's base term dips 20->15 from level 1 to 2,
 offset by its scale term still growing 8->10) -- not investigated
 further whether that's deliberate balancing or two independent curves
-that just happen to combine this way.
+that just happen to combine this way. All four non-damage/status spells
+(`Informus`, `PetrificusTotalus`, `Fumos`, `Spongify`) are `0`/`0` at
+every level -- consistent, since none of them compute damage via this
+path.
 
 ### Spell MP cost -- `g_awSpellMpCost` (`0x08053964`), PROVEN
 
-`ushort[24]`, indexed `spellId*3+level`, same shape as the power tables.
+`ushort[30]`, indexed `spellId*3+level`, same shape as the power tables.
 Deducted directly from `BattleFighter.wMp` in
 `TickPlayerActionState_candidate` case `0x1A` -- all spells share one MP
 pool, no separate per-spell resource type. Confirmed against a
 community-written GameFAQs guide's real per-spell MP costs (see the
 attribution note near the top of this document): all 6 unambiguous
 spells match exactly, and `PetrificusTotalus`'s `Uno`/`Duo` costs
-(`10`/`15`) match `SpellId` value `6`'s row here, which is what proved
-`PetrificusTotalus=6`/`Spongify=1` rather than the reverse:
+(`10`/`15`) match `SpellId` value `6`'s row here, independently PROVING
+`PetrificusTotalus=6`:
 
 | Spell | lvl0/1/2 cost |
 |---|---|
 | Flipendo | 0/10/20 |
-| Spongify | 0/0/0 |
+| Informus | 0/0/0 |
 | Verdimillious | 3/15/25 |
 | Diffindo | 10/0/0 |
 | Incendio | 6/20/30 |
 | WingardiumLeviosa | 20/30/40 |
 | PetrificusTotalus | 10/15/20 |
 | Glacius | 15/25/0 |
+| Fumos | 8/30/0 |
+| Spongify | 10/0/0 |
+
+`Informus` costing `0` MP at every level matches its in-game description
+having no MP-cost callout, unlike the other 9 spells (see the "The
+following list explains what each spell does" help text above). `Spongify`
+costing `10` MP at level `0` only (`Uno`) and `0`/`0` past that matches
+`Diffindo`'s identical shape (`10/0/0`) -- both single-level-only spells,
+see `g_abSpellMaxLevel` below.
 
 Its companion byte array at the same index,
 `g_abSpellEffectId_candidate` (`0x080538B0`), is a per-`(spellId,level)`
 animation/VFX id fed into `FUN_08018b70` (the same anim-trigger function
 used throughout this code) -- not a resource-type selector.
 
-**All 27 entries read and named** (`tools/objscript/script_names.json`):
+**All 30 entries read and named** (`tools/objscript/script_names.json`):
 `[2,3,21, 38,38,38, 19,20,26, 22,22,22, 23,24,25, 28,28,28, 33,34,33,
-30,31,30, 11,32,32]`, confirming the spellId row order above (`Spongify`'s
-`[38,38,38]` and `PetrificusTotalus`'s `[33,34,33]` land exactly where
-expected). The table is 9 rows (`spellId` `0`-`8`), not 8 -- the 9th row,
-`[11,32,32]`, is `Fumos` (`SpellFumosUno`/`SpellFumosDuo`, `spellId` `8`;
-see the `Hidden` status bullet above). `g_awSpellMpCost` (the parallel
-MP-cost array documented just above) is likewise 27 `ushort` entries, not
-24; Fumos's row is `[8,30,0]` -- an MP cost for `Uno`/`Duo` and an unused
-`0` for the `Tria` slot it never reaches. None of the 13 non-`Fumos`
-scripts still described below (`SpellFlipendoUno`/
+30,31,30, 11,32,32, 29,29,29]`, confirming the spellId row order above
+(`Informus`'s `[38,38,38]`, `PetrificusTotalus`'s `[33,34,33]`, and
+`Spongify`'s new `[29,29,29]` row all land exactly where expected). The
+table is 10 rows (`spellId` `0`-`9`) -- the last two rows, `[11,32,32]`
+and `[29,29,29]`, are `Fumos` (`SpellFumosUno`/`SpellFumosDuo`, `spellId`
+`8`; see the `Hidden` status bullet above) and `Spongify`
+(`data/scripts/SpellSpongify.txt`, effect id `29`, `spellId` `9`; see the
+`AttackWeakened` bit-`0x08` writeup above) respectively.
+`g_awSpellMpCost` (the parallel MP-cost array documented just above) is
+likewise 30 `ushort` entries; `Fumos`'s row is `[8,30,0]` -- an MP cost
+for `Uno`/`Duo` and an unused `0` for the `Tria` slot it never reaches.
+None of the 13 remaining scripts described below (`SpellFlipendoUno`/
 `Duo`/`Tria`, `SpellVerdimilliousUno`/`Duo`/`Tria`, `SpellDiffindo`,
 `SpellIncendioUno`/`Duo`/`Tria`, `SpellWingardiumLeviosa`,
 `SpellGlaciusUno`/`Duo`) contain a `StatusEffect` (`0x97`) instruction --
 checked directly against the extracted script text -- so unlike
-`PetrificusTotalus` (and `Fumos`), these are purely cast-animation
-triggers; their actual damage is computed separately by
+`PetrificusTotalus`, `Fumos`, `Informus`, and `Spongify` (all four of
+which do), these are purely cast-animation triggers; their actual
+damage is computed separately by
 `ResolveSpellAttack` above, not by this bytecode. `Flipendo`/
 `Verdimillious`/`Incendio` have three genuinely distinct scripts (one per
 cast level) -- real evidence that a spell's `Uno`/`Duo`/`Tria` levels
@@ -1253,14 +1581,17 @@ cast level) -- real evidence that a spell's `Uno`/`Duo`/`Tria` levels
 `PetrificusTotalus`/`Glacius` reusing the same script for `Uno` and `Tria`
 notable rather than just "the table only has two real values."
 `Diffindo`/`WingardiumLeviosa` use one shared script for all three
-levels, like `Spongify` -- **now explained, not just noted**: all three
-(`SpellId` `1`/`3`/`5`) have `g_abSpellMaxLevel` `== 1` (see below),
-meaning none of them can ever level past `Uno` in the first place, so a
-Duo/Tria-specific script would be genuinely unreachable content -- the
-engine simply doesn't need one. `Fumos` fits the same pattern (`Duo` and
-`Tria` share effect id `32`), though it isn't in `g_abSpellMaxLevel`
-(an 8-entry table indexed `0`-`7`; `Fumos` at `spellId` `8` falls outside
-it, not traced further).
+levels, like `Informus` and `Spongify` -- **explained**: `Informus`/
+`Diffindo`/`WingardiumLeviosa` (`SpellId` `1`/`3`/`5`) have
+`g_abSpellMaxLevel == 1` (see below), meaning none of them can ever level
+past `Uno` in the first place, so a Duo/Tria-specific script would be
+genuinely unreachable content -- the engine simply doesn't need one.
+`Spongify` fits the same pattern via its `g_abSpellMaxLevel` alias (see
+below). `Fumos` also fits (`Duo` and `Tria` share effect id `32`), and
+does have a real dedicated entry (`g_abSpellMaxLevel[8] == 2`, see
+below) despite capping at `2` rather than `1` -- its `Tria` slot is
+simply unreachable for the same "never levels that far" reason, one
+level later than the `== 1` group.
 
 ### Spell familiarity/leveling -- `TrackSpellFamiliarity` (`0x08010008`), PROVEN
 
@@ -1313,18 +1644,26 @@ figure as `BattleFighter`'s own stride, reused for a separate persistent
 `SpellId`).
 
 Two small parallel tables, immediately adjacent in ROM (`g_abSpellMaxLevel`
-at `0x0804e5e0`, 8 bytes; `g_abSpellLevelUpThreshold` immediately after at
+at `0x0804e5e0`, 9 bytes; `g_abSpellLevelUpThreshold` immediately after at
 `0x0804e5e9`, 3 bytes -- bounded on the far side by the already-documented
 `DAT_0804e5ec` used elsewhere in `ShowBattleMessage`'s dialog dispatch):
 
-- **`g_abSpellMaxLevel[8]`** (indexed by `SpellId`): `[3,1,3,1,3,1,2,2]` for
-  `Flipendo, Spongify, Verdimillious, Diffindo, Incendio,
-  WingardiumLeviosa, PetrificusTotalus, Glacius`. This is the real,
+- **`g_abSpellMaxLevel[9]`** (indexed by `SpellId`): `[3,1,3,1,3,1,2,2,2]`
+  for `Flipendo, Informus, Verdimillious, Diffindo, Incendio,
+  WingardiumLeviosa, PetrificusTotalus, Glacius, Fumos`. This is the real,
   data-driven answer to two things this doc previously only inferred from
-  script content: `Spongify`/`Diffindo`/`WingardiumLeviosa` (max `1`) can
+  script content: `Informus`/`Diffindo`/`WingardiumLeviosa` (max `1`) can
   never level past `Uno`, and `PetrificusTotalus`/`Glacius` (max `2`) can
   never reach `Tria` -- both now cross-checked against, and matching,
-  those spells' script-sharing patterns above.
+  those spells' script-sharing patterns above. The table has room for
+  exactly 9 entries (`SpellId` `0`-`8`) before `g_abSpellLevelUpThreshold`
+  starts -- `Spongify` (`SpellId` `9`) has no entry of its own;
+  `TrackSpellFamiliarity`'s `g_abSpellMaxLevel[9]` read for it actually
+  lands on `g_abSpellLevelUpThreshold[0]` (`1`), one byte past the real
+  table. That aliased value happens to be `1` -- the same cap `Spongify`'s
+  own single-level MP-cost shape (`10/0/0`, matching `Diffindo`'s) implies
+  it should have -- so this reads as harmless in practice, but it is a
+  genuine out-of-declared-bounds read, not a real dedicated entry.
 - **`g_abSpellLevelUpThreshold[3]`**: `[1, 25, 50]`, indexed by the
   spell's *current* level. Leveling `Uno`->`Duo` takes just 1 use;
   `Duo`->`Tria` takes a real 25. The third entry (`50`) is normally
@@ -1390,28 +1729,32 @@ Two findings of note:
   `g_nFolioUniversitasSlot` (the raw Folio Universitas card
   slot, `0`-`15`) purely so the announce message can index by it --
   `g_nFolioUniversitasSlot` is **not** itself a `SpellId`
-  despite the cast shown here (real `SpellId` values only go up to `8`,
-  see `Fumos` in the `Hidden` status bullet above; card slots go to `15`,
-  well past that) -- this is the same field-reuse trick `Informus` uses
-  below, just for display indexing rather than a safe-damage sentinel.
-- **`Informus` answers this doc's long-standing open question.** It is
-  given *no* special-case branch here at all -- it shares the `None` case
-  outright, driving the exact same anim state (`0x1a`,
-  `HandleScriptedDamageEvent_candidate`'s state) and the exact same
-  `TrackSpellFamiliarity` call a completely ordinary action would. Since
-  `Informus`'s menu confirm handler (`ConfirmBattleTopMenu` case 2,
-  documented above) already sets `bSpellId = Spongify` specifically
-  because that's a guaranteed-zero-power slot, the practical upshot is:
-  **there is no dedicated Informus script** -- if anything scriptable
-  fires at all off this path, it would be `Spongify`'s own harmless
-  cast-animation script (effect id `38`, confirmed elsewhere in this doc
-  to be pure animation, no `StatusEffect`), reused as an incidental side
-  effect rather than a real Informus-specific trigger. A real, mildly
-  funny consequence: **casting Informus silently counts as a use of
-  Spongify** for `TrackSpellFamiliarity`'s leveling purposes. The actual
-  Informus effect (populating Folio Bruti data) is still not located --
-  it is not visible anywhere in this dispatcher, so it must happen via
-  some other, still-untraced trigger.
+  despite the cast shown here (real `SpellId` values only go up to `9`,
+  see the `bSpellId` writeup above; card slots go to `15`, well past
+  that) -- a similar field-reuse trick to how `HandleScriptedDamageEvent_candidate`
+  reads this same overloaded `bSpellId` for display purposes elsewhere in
+  this doc, just for indexing rather than triggering an effect.
+- **`Informus`'s dispatch.** It is given *no* special-case branch here at
+  all -- it shares the `None` case outright, driving the exact same anim
+  state (`0x1a`, `HandleScriptedDamageEvent_candidate`'s state) and the
+  exact same `TrackSpellFamiliarity` call a completely ordinary spell
+  cast would. That's expected, not a repurposing: `Informus` **is** a
+  real, dedicated `SpellId` (`1`, see the `bSpellId` writeup above, PROVEN
+  via the Cast Spell menu's own `spellId + 0x95F` name-lookup formula),
+  so `Informus`'s menu confirm handler (`ConfirmBattleTopMenu` case 2,
+  documented above) setting `bSpellId = 1` is just setting `Informus`'s
+  own ID, the same way any other menu screen sets `bSpellId` to the
+  spell it selected -- not a "borrow a harmless slot" trick. Its effect
+  script is `g_abSpellEffectId_candidate[1]` = effect id `38`
+  (`data/scripts/SpellInformus.txt`), whose one real gameplay opcode,
+  `StatusEffect` case `0xC` (`BumpMonsterDocLevel`, see the sub-cases
+  writeup above), **is** the Folio Bruti populate action -- matching
+  `Informus`'s own in-game description ("Cast upon a creature to learn
+  about its strengths and weaknesses", string id `1494`) exactly. It
+  still has zero base power (`g_awSpellPowerBase[1] == 0` at every
+  level) and costs `0` MP, so it deals no damage and needs no resource --
+  both real properties of `Informus`'s own row in those tables, not
+  inherited from `Spongify`.
 
 ### Battle item/equipment database -- `g_pBattleItems_candidate` (`0x08060F08`)
 
@@ -1540,16 +1883,19 @@ this screen, `switch(field_0x147c)` with 7 cases matching the table above
 - **case 2, Informus**: gated by `DAT_03003f00 != 0xff` (a second,
   independent boss-style check from the graying check above -- same
   "boss" concept, different flag/slot). Sets the active fighter's
-  `bSelectedActionIndex=0`, **`bSpellId=1`**, `field_0x3b=4`,
-  `bSpellLevel=0`, then `field_0x1070=6` (the same target-select screen
-  spellcasting uses). This resolves this doc's earlier open question
-  ("`Informus`'s Folio Bruti write is unlocated... may not go through the
-  object-script engine at all") -- **Informus does enter the same
-  `bSpellId`-driven action pipeline as spellcasting**, reusing `SpellId`
-  `1` (`Spongify`'s already-zero-power slot, so it can't accidentally
-  deal damage) as a shared sentinel, distinguished from a real Spongify
-  cast by `field_0x3b==4`. What specifically reads `field_0x3b==4` to
-  perform the actual Folio Bruti unlock is not traced further.
+  `bSelectedActionIndex=0`, **`bSpellId=1`** (`Informus`'s own real
+  `SpellId`, see the `bSpellId` writeup above -- not borrowed from
+  `Spongify`), `field_0x3b=4`, `bSpellLevel=0`, then `field_0x1070=6`
+  (the same target-select screen spellcasting uses). `field_0x3b` is
+  `BattleFighter+0x3B`, i.e. **`bPendingActionKind_candidate`** itself
+  (`None`=`0`/`UseItem`=`1`/`SpecialMove`=`2`/`Flee`=`3`/`Informus`=`4`)
+  -- the same field `DispatchPendingAction`'s top-level switch reads --
+  so `field_0x3b=4` is simply this menu tagging the pending action as
+  `Informus`, exactly like `Flee`/`UseItem`/`SpecialMove` each tag their
+  own screens; a regular `Cast Spell` selection leaves it at `None` (`0`)
+  instead (see `field_0x1070==2` above). There is no `Spongify`-borrowing
+  or cast-disambiguation happening here at all -- `Informus` is a
+  first-class pending-action kind with its own real `SpellId`.
 - **case 3, Use Item**: `field_0x1070 = 7` (item-list screen), calls
   `FUN_08010660` to build the list.
 - **case 4, Flee**: gated by `DAT_03003f24 != 0xff` (the same flag
@@ -1606,8 +1952,11 @@ genuinely two separate layers, not just two ends of one function).
   `[0,2,4,8,6,7,5]`, is the only one containing `8`** (cursor `3`): this
   is the actual `Fumos`-is-Hermione-only mechanism, confirmed at the
   menu-selection level rather than inferred from spell content alone.
-  (Ron's row containing a `9` is a separate, unexplored loose end -- not
-  traced further here.) `bSpellLevel=0`, `field_0x3b=0`. Then
+  Ron's row is the only one containing `9` (cursor `4`) -- this is the
+  actual `Spongify`-is-Ron-only mechanism (see the `bSpellId` writeup
+  above), matching `data/text/en_us.json` string `937`: "Harry receives
+  Diffindo, Ron receives Spongify, and Hermione receives Glacius!".
+  `bSpellLevel=0`, `bPendingActionKind_candidate=None` (`field_0x3b=0`). Then
   `FUN_080106ec(fighterIdx, cursor)` builds the next screen's list before
   an (unrecovered, but structurally `field_0x1070=5`) jump.
 - **`field_0x1070==5`** (`FUN_08011fa0`, spell cast-level list --
@@ -1693,7 +2042,7 @@ exactly the string-id order already on record).
 ```c
 BattleFighter *f = ...;
 f->bSpellId = field_0x147c;   // the selected list index, 0-2
-f->field_0x3b = 2;
+f->bPendingActionKind_candidate = SpecialMove;   // field_0x3b = 2
 if (fighterType == Hermione) {
     if (f->bSpellId != 1)          // not "Proper Wand Technique"
         goto target_select;         // FUN_080107bc
@@ -1750,16 +2099,18 @@ named `Effect44`/`45`/`46` in `tools/objscript/script_names.json`):
   being the one move that skips target selection (the multi-apply branch
   presumably walks all enemies itself, script-side).
 - **Effect `46`**: fires only one `StatusEffect`, using **case `0x1B`
-  (`27`)** -- a case
-  number not otherwise documented in this file's opcode `0x97` table.
+  (`27`), `ForceItemDrop`** -- see the "`StatusEffect` sub-cases, full
+  case-by-case writeup" section below: it ORs bit `0x04` into
+  `FightState+0x1480`, the exact same byte/family `ExtraExpBonus`
+  (case `2`, bit `0x01`) and `GrantExtraXp` (case `3`, bit `0x02`) use.
   Mechanically distinct from both Stink Pellet variants (which both use
-  the paralysis case `0x11`), consistent with `Wizard Cracker` being an
-  economy effect (the already-live-confirmed 25% gold-drop multiplier)
-  rather than a status effect -- case `0x1B`'s actual semantics are not
-  traced further, but this is exactly the kind of "not paralysis" outlier
-  the ordering evidence predicts. The gold-multiplier's own application
-  site (presumably a `g_nGoldAccum` write triggered from case `0x1B`) is
-  still not traced.
+  the paralysis case `0x11`), confirming `Wizard Cracker` as a distinct,
+  non-paralysis effect -- exactly the kind of "not paralysis" outlier
+  the ordering evidence predicted. `Wizard Cracker`'s own move
+  description text (`data/text/en_us.json` string ids `1725`/`2615`)
+  states its effect as making the target creature drop an item; what
+  reads `FightState+0x1480`'s bit `0x04` to grant that item is not
+  traced.
 
 Confidence: the menu-order/mechanism chain above (7-item table ->
 confirm dispatch -> Special Move submenu -> `bSpellId` -> `0x8000`-branch

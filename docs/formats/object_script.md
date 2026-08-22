@@ -4,18 +4,19 @@ Status: **PROVEN** for the interpreter, the byte format, and the
 script/pointer-table layout (all confirmed live in Ghidra, matched
 against `gbadisasm`'s own independent disassembly, plus a built,
 byte-exact extraction/pack round-trip -- `just compare us` passes with
-the pipeline below wired in). Opcode *semantics* are worked out for 43 of
-the ~168 possible opcodes (`End`, `Label`, `StatusEffect` with 12 of its
-own 29 sub-cases named, the 3-opcode `Wait` family, `MoveTo`, `SetObjectAnim`,
+the pipeline below wired in). Opcode *semantics* are worked out for 44 of
+the ~168 possible opcodes (`End`, `Label`, `StatusEffect` with all 29 of its
+own sub-cases named, the 3-opcode `Wait` family, `MoveTo`, `SetObjectAnim`,
 `PlaySound`, `SpawnEffect`/`SpawnEffectDetached`, `ToggleObjectFlipX`,
 `TeleportToSlotPosition`, `ClearObjectFlag1`, `SetObjectFlag1`,
 `SetAllEnemiesFlagBits`/`SetAllAlliesFlagBits`, `JitterPosition`, `Goto`,
 `TeleportTo`, `ShowCannedDialogBlock`, `SetBgPriority`,
-`PlaySoundOrDefault`, `DarkenScreenPalette`, `RestoreScreenPalette`, the
+`PlaySoundOrDefault`, `DarkenScreenPalette`, `RestoreScreenPalette`,
+`GrantMonsterKillReward`, the
 `GotoIfFighterRosterMatches` pair, `MoveFighterTo`/`MoveFighterToSlotPosition`,
 plus 14 opcodes forming the
 `Local`-prefixed family below -- see "The Wait family" and "The
-script-local bytes"), 39 of which are actually exercised by the 65 real
+script-local bytes"), 40 of which are actually exercised by the 65 real
 scripts -- see "What's NOT yet known".
 
 ## What this is
@@ -182,6 +183,7 @@ in opcodes.json" below:
 | `0x7B` | `MoveFighterToSlotPosition` | 1 (duration) | Same target (`*(r8+4)`) and same `StartObjectMove` call as `MoveFighterTo`, but `x`/`y` are looked up rather than given as operands: `x` from the halfword table at `0x08053D2A` (2-byte stride, the same table `MoveTo`'s fallback and `TeleportToSlotPosition` read) and `y` from the byte table at `0x08053D38` (1-byte stride, ditto), both indexed by the byte at global `0x03002770` -- one byte before `DAT_03002771`, `MoveTo`'s "battle-phase/dialog-state indicator" candidate global (see the `MoveTo` row above); not confirmed further, but structurally reads like a companion fighter-slot-index byte in the same small global block. Handler at US `0x08019FFC`. |
 | `0x82` | `TeleportTo` | 2 (x, y) | Self-targeted immediate teleport to an absolute position: `SnapObjectPosition(self, x<<16, y<<16)` (see `JitterPosition`, `0x5B` above, for `SnapObjectPosition`). Handler at US `0x0801A240`. The `MoveTo`/`TeleportTo` naming split mirrors `MoveTo`/`MoveFighterTo`: animated-vs-immediate, not self-vs-fighter here -- both this and `MoveTo` target the running object. |
 | `0x80` | `ShowCannedDialogBlock` | 1 (block index) | Looks up a pointer and a length byte from two parallel tables (`0x08053B08`, 4-byte stride; `0x08053B14`, 1-byte stride, both indexed by the operand), then calls `QueueDialogRawBlock` (US `0x080450D4`, named this session, previously `FUN_080450d4`) with them: waits for any in-progress dialog advance to finish, resets the dialog state, `memcpy`s `length * 16` bytes from the table1 pointer into `g_szDialogTextBuffer + 0x250` (an already-named global), and sets three flag bytes near the end of that buffer. Handler at US `0x0801A208`. Reads like "queue a small canned block of raw dialog/portrait data by index" -- not confirmed further (table `0x08053B08`'s contents, and what the 3 flag bytes mean, aren't decoded here). |
+| `0x83` | `GrantMonsterKillReward` | 0 | Reads `BattleFighter+1` (a species/monster-id byte) and adds `MonsterTable[speciesId].wRewardXp`/`.wRewardGold` straight into `g_nXpAccum`/`g_nGoldAccum` -- the same two accumulators `ApplyDamageToFighter` fills on a normal faint (see `../memory-map/battle.md`'s "XP/reward payout" section), but reached independently of that function. Also zeroes the fighter's current SP (`+8`), sets `+0x48` to `0xFFFF`, sets the fighter's `Object+0x8D`/`+0x80` attack-state bytes, and sets `FightState+0x1494 = 1`. Handler spans US `0x0801A254`-`0x0801A2C3` (Ghidra mis-splits this into two functions at an internal loop branch, `0x0801A29A`; the real boundary is the whole range, confirmed against `full_disasm.s`). The only script using it, `SpecialHarryTempestJinx` ("Blows one opponent off-screen"), calls it right after teleporting a target off-screen -- consistent with granting that monster's normal kill reward to substitute for the on-faint payout a banished (not damaged-to-0) monster would otherwise never trigger. |
 | `0x86` | `GotoIfLocalAGreater` | 2 (compare value, label id) | `if (Object.bScriptLocalA > compareValue) goto Label(labelId)` (unsigned `bhi`). Handler at US `0x0801A344`. |
 | `0x87` | `GotoIfLocalALess` | 2 (compare value, label id) | `if (Object.bScriptLocalA < compareValue) goto Label(labelId)` (unsigned `blo`). Handler at US `0x0801A35C`. |
 | `0x88` | `GotoIfLocalAInRange` | 3 (low, high, label id) | `if (low < Object.bScriptLocalA < high) goto Label(labelId)` (both bounds exclusive). Handler at US `0x0801A374`, shares its final compare-and-jump tail with `0x89`. |
@@ -199,23 +201,40 @@ in opcodes.json" below:
 this cross-check found in `../memory-map/battle.md`'s `Poisoned` bullet,
 `0x0801A856` vs. the real `0x0801A71C`, has been fixed there):
 
+All 29 sub-cases are named -- see `../memory-map/battle.md`'s
+"`StatusEffect` sub-cases, full case-by-case writeup" section for the
+detailed evidence behind each. Summary:
+
 | Sub-case | Name | Notes |
 |---|---|---|
-| `3` | `GrantExtraXp` | `field_0x1480`, not `bStatusFlags` |
+| `0`, `1` | `SpawnEffectA`, `SpawnEffectB` | pure VFX/particle spawns (`sub_0801B204`/`sub_0801B2EC`), no `bStatusFlags`/other gameplay write |
+| `2` | `ExtraExpBonus` | ORs bit `0x01` into `FightState+0x1480` -- Harry's `Extra EXP` card |
+| `3` | `GrantExtraXp` | ORs bit `0x02` into the same `FightState+0x1480` byte -- `field_0x1480`, not `bStatusFlags`; Hermione's "Good Study Habits" |
+| `4` | `UnusedWinoutWrite` | writes `0x3F3D` to hardware reg `0x0400004A` (`WINOUT`) and returns; **not referenced by any of the 65 real scripts** -- dead/vestigial |
 | `5` | `Poisoned` | |
 | `6` | `AttackWeakened` | also ORs an unrelated `0x10` bit into a *different* byte first -- not `bStatusFlags`, not yet identified |
 | `7` | `PoisonImmune` | |
-| `8`, `9` | `Hidden`, `Hidden_2` | same bit, `ShowBattleMessage` arg differs |
-| `0xA` | `Paralyze` | via `FUN_0801B430` |
+| `8`, `9` | `HiddenSecondary`, `HiddenMain` | same bit; `ShowBattleMessage`'s `Hidden` case only opens a fresh message box for `HiddenMain` (the box-opening `argA` differs, see `../memory-map/battle.md`) |
+| `0xA` | `Paralyze25` | via `FUN_0801B430`, gated on `g_wEffectContextValue`/a per-fighter sentinel; see `../memory-map/battle.md` for the full `Paralyze*` family writeup, including the escape-chance mechanic all five share |
 | `0xB` | `DefenseBoost` | |
-| `0x11`, `0x12` | `Paralyze_2`, `Paralyze_3` | also via `FUN_0801B430` |
+| `0xC` | `BumpMonsterDocLevel` | calls `sub_08037104`, which bumps `g_abMonsterDocLevel_candidate[speciesId]` to `4` if currently below `3` -- `SpellInformus`'s only sub-case (effect id `38`, `SpellId` `1`) and `Informus`'s real Folio Bruti write, see `../memory-map/battle.md`; not a `bStatusFlags` write |
+| `0xD`, `0xE` | `SetPostActionFlashFlag`, `ClearPostActionFlashFlag` | paired: ORs/ANDs-off bit `0x10` of `Object+0x115` for every fighter that has already acted this round (`field0 == 0xff`); the clear side additionally skips fighters with `AttackWeakened` set. Both used back-to-back around Harry's Sonorous Charm roar animation -- visual only, not traced further |
+| `0xF` | `CurePoison` | calls `FUN_0800eb2c(g_bEffectTargetIndex)`, which clears only the `Poisoned` bit (checked against `BattleStatusFlags`) and its damage/blink state; Harry's Poison Antidote |
+| `0x10` | `ToggleUltimateVisual` | operand-driven: operand `0` swaps the target's `Object` to an alternate anim-data table (a visual-only "empowered" glow); non-zero calls `sub_08015484` to revert it and `sub_08012994` to set all 10 of the target's spell cast levels to `g_abSpellMaxLevel` -- the real effect of Harry's `Ultimate MP` card ("Grants one party member all spell abilities") |
+| `0x11`, `0x12` | `Paralyze99`, `Paralyze80` | also via `FUN_0801B430`, unconditional (bypasses the `Paralyze25` sentinel check); differ only in their starting escape-chance constant |
 | `0x13` | `SpellPowerBoost` | |
-| `0x16` | `Paralyze_4` | also via `FUN_0801B430`, operand-driven duration (not a fixed constant like the others) |
+| `0x14` | `CureAilments` | calls both `FUN_0800eb2c` (clears `Poisoned`) and `ClearParalyzedFighter_candidate` (clears `Paralyzed`, then sets `Unk_0x80`) on `g_bEffectTargetIndex` -- Harry's Remove Jinx and Reparifors |
+| `0x15` | `SpawnEffectC` | third VFX/particle spawn variant (`sub_0801B348`), same family as `SpawnEffectA`/`B`, pure visual -- used ahead of monster paralysis attacks |
+| `0x16` | `ParalyzeMonster` | also via `FUN_0801B430`, same sentinel gate as `Paralyze25` but with an operand-driven escape chance and a "X is paralyzed" message + VFX on success |
+| `0x17` | `ParalyzeMonsterChance` | rolls its own `Mt19937ChanceNoisy` chance on top of `special_effect_chance`, then the same `FUN_0801B430` paralysis path (VFX only, no message, no immunity announcement); monster-special-attack only (Hinkypunk/Skeleton) |
+| `0x18` | `PaletteFlash` | palette-flash VFX only, no `bStatusFlags`/other gameplay write |
+| `0x19` | `ReplenishPartySp` | loops every active, non-fainted fighter and restores `BattleFighter+8` (current SP) from `+0x24` (max SP), mirroring the write into the id-indexed `0x030024EC` fighter array; Harry's Replenish SP (party-wide) |
+| `0x1A` | `ReplenishTargetMp` | single-fighter version of the above for `+0xA`/`+0x26` (current/max MP); Harry's Replenish MP |
+| `0x1B` | `ForceItemDrop` | ORs bit `0x04` into the same `FightState+0x1480` byte as `ExtraExpBonus`/`GrantExtraXp` -- Ron's Wizard Cracker. Per the game's own move description text (`data/text/en_us.json` string ids `1725`/`2615`), Wizard Cracker's actual effect is making the target creature drop an item, not a gold bonus -- see `../memory-map/battle.md` |
+| `0x1C` | `Revive` | via `ReviveFighter_candidate` (`sub_0800E890`) |
 
-Everything else -- both other top-level opcodes and `StatusEffect`'s
-remaining 17 sub-cases -- is currently just `opcode_XX`/`sub_case_XX`
-(its hex value) in the extracted data, with the exception of the 14
-`Local`-prefixed opcodes documented below -- see "What's NOT yet known".
+Both other top-level opcodes and the 14 `Local`-prefixed opcodes are
+documented below -- see "What's NOT yet known".
 
 ### The Wait family, and how `InterpretObjectScript` actually returns
 
@@ -392,9 +411,10 @@ Two real, distinct usage patterns for `bScriptLocalA`, both present in the
    distinguishes "am I the original cast" from "am I a spawned copy of
    an earlier generation of this same effect" -- confirmed concretely at
    effect id 32: generation `0` falls through and applies `StatusEffect`'s
-   `Hidden_2` sub-case (9, the message-announcing variant) after a small
-   setup block, while a spawned copy jumps past it and applies plain
-   `Hidden` (8, no announcement) instead.
+   `HiddenMain` sub-case (9, opens its own message box) after a small
+   setup block, while a spawned copy jumps past it and applies
+   `HiddenSecondary` (8, appends to the box the root cast already opened)
+   instead.
 2. **A genuine multi-way state dispatch, unrelated to spawning at all**:
    effect id 19's script opens with ten consecutive `GotoIfLocalAEqual`
    checks -- values `1`-`10` against only four distinct target labels
@@ -616,12 +636,13 @@ US only -- content not yet checked against JP.
 
 ## What's NOT yet known
 
-- **Opcode semantics beyond the 43 named opcodes.** 75 of the 114
-  opcodes actually used across the 65 scripts are still just `opcode_XX`,
-  and `StatusEffect` itself still has 17 of 29 sub-cases unnamed. Working
-  these out means reading each of the 168 case handlers inside
-  `InterpretObjectScript`; the codec/extraction tooling above is designed
-  so that filling names in incrementally (via `opcodes.json`) is cheap.
+- **Opcode semantics beyond the 44 named opcodes.** 74 of the 114
+  opcodes actually used across the 65 scripts are still just `opcode_XX`.
+  `StatusEffect`'s own 29 sub-cases are all named (see the table
+  above). Working the rest out means reading each of the remaining case
+  handlers inside `InterpretObjectScript`; the codec/extraction tooling
+  above is designed so that filling names in incrementally (via
+  `opcodes.json`) is cheap.
 - **The `bl`-unwind subtlety around `ContinueObjectScript`.** Resolved:
   *which* cases return from `InterpretObjectScript` is now known -- the
   `Wait` family (see "The Wait family" above), the only ones that branch
@@ -664,12 +685,12 @@ US only -- content not yet checked against JP.
 
 ## Future work
 
-- **Reverse-engineer the remaining opcode handlers.** 75 of 114
-  used top-level opcodes and 17 of `StatusEffect`'s 29 sub-cases are
-  still unnamed (`opcode_XX`/`sub_case_XX`). Each is a real, bounded
-  chunk of work: read one handler in `InterpretObjectScript`, name it
-  and its operand layout in `tools/objscript/opcodes.json`, re-run
-  `just migrate-objscript` to refresh `data/scripts/`'s text.
+- **Reverse-engineer the remaining opcode handlers.** 74 of 114
+  used top-level opcodes are still unnamed (`opcode_XX`); `StatusEffect`'s
+  29 sub-cases are all named. Each is a real, bounded chunk of work:
+  read one handler in `InterpretObjectScript`, name it and its operand
+  layout in `tools/objscript/opcodes.json`, re-run `just migrate-objscript`
+  to refresh `data/scripts/`'s text.
 - ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
   -- all 16 of Harry's cards are now named and mapped to their effect id
   in `tools/objscript/script_names.json`, via the in-game Card Combo

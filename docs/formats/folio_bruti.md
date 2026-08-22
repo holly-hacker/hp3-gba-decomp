@@ -78,7 +78,9 @@ for spell_index in 0..7:
     sprite = per-slot sprite object (allocated once, OBJ template 0x080C2E78)
     effectiveness = sub_0801890C(monster_index, spell_index)   ; r0=r7, r1=r6
     if effectiveness == -1  OR  ram[0x03003190 + monster_index] <= 2:
-        ; monster not yet Informus-analyzed (or this spell has no data):
+        ; monster not yet Informus-analyzed (0x03003190 = g_abMonsterDocLevel_candidate,
+        ; bumped to 4 by casting Informus -- see ../memory-map/battle.md's
+        ; `BumpMonsterDocLevel` writeup) (or this spell has no data):
         ; draw the fixed/animated "?" placeholder graphic
         ; (gfx 0x0806959C, frame data 0x080695CE)
     else:
