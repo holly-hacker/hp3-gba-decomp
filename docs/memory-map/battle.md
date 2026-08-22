@@ -240,7 +240,10 @@ the target's `Object` (`+0x2e`/`+0x32` offsets).
   below. `Poisoned`'s source (effect id `27`) is equally unconfirmed.
 - **bit `0x10`** = **Paralyzed**. PROVEN: applied through a dedicated
   helper, `FUN_0801b430` (`0x0801b430`), called from several opcode
-  `0x97` cases (10, 0x11, 0x12, part of 0x16/0x17). It only sets the bit
+  `0x97` cases (`10`/`Paralyze`, `0x11`/`Paralyze_2`, `0x12`/`Paralyze_3`,
+  `0x16`/`Paralyze_4`, `0x17`/`Paralyze_5` -- the last confirmed via the
+  monster special-attack writeup below, gated by its own extra
+  `Mt19937ChanceNoisy` roll before calling this same helper). It only sets the bit
   if `bStatusFlags & 0x90 == 0` (i.e. not already paralyzed, nor bit
   `0x80` set); otherwise it fires `ShowBattleMessage(ImmuneToParalysis,
   ...)` when its `param_2` is nonzero. Case `0x16`'s call site sets
@@ -552,22 +555,31 @@ first, `r1`/`defenderIndex` second) against real execution, not just
 static inference.
 
 The call site is at US ROM `~0x08015BCE` (`bl 0x08017E44`), inside an
-unnamed function starting at `0x08015574` (per `gbadisasm`'s own
-disassembly; not independently seeded in `functions.us.cfg`, discovered
-via reachability from elsewhere; not walked/named here). Immediately
-before the call:
+`TickFighterAttackAnimState_candidate`, at two symmetric call sites
+(`0x08015B5C`/`0x08015BE0`) -- one per branch of a `byte[0x14]==100`
+check:
 
 ```c
-if (fighter[?].fighterType == 0xFF &&           // acting fighter is an enemy
-    someObjectState[0x60] == 1) {               // turn sub-state gate
-    if (MonsterTable[monsterIndex].byte[0x14] <= 99) {  // see below
-        int attackerIndex = g_pFightState->activeFighterIndex;  // FightState+0x106C
-        int defenderIndex = *(targetSelection + 0x3A);          // caller's local state
-        int damage = ResolveMeleeAttack(attackerIndex, defenderIndex);
-        g_nLastDamage = damage;  // 0x0300274A, a scratch result slot
-    }
+if (MonsterTable[monsterIndex].special_effect_chance == 100) {
+    int damage = ResolveMeleeAttack(activeFighterIndex, defenderIndex);
+    g_nLastDamage = damage;                              // 0x0300274A
+    RollMonsterSpecialEffect_candidate(monsterIndex, defenderIndex, damage);  // unconditional
+}
+... // unrelated status-flag housekeeping in between
+if (MonsterTable[monsterIndex].special_effect_chance <= 99) {
+    int damage = ResolveMeleeAttack(activeFighterIndex, defenderIndex);
+    g_nLastDamage = damage;
+    if (damage != 0)
+        RollMonsterSpecialEffect_candidate(monsterIndex, defenderIndex, damage);  // only on a hit
 }
 ```
+
+So every monster attack goes through `ResolveMeleeAttack` exactly once
+(the two branches are mutually exclusive on the same `==100` check, not
+two different attacks) -- `special_effect_chance` doesn't gate whether a
+normal attack happens at all, only whether `RollMonsterSpecialEffect_candidate`
+gets a chance to also fire afterward. See "Monster special-attack
+effects" below for what that function does.
 
 `FightState+0x106C` (`activeFighterIndex` in the `FightState` struct) is
 the same field `DispatchPendingAction` (`0x080100a0`, walked in full
@@ -576,17 +588,65 @@ it dispatches *any* active fighter's turn, player or monster) already
 reads as "whose turn it is" -- two independent call sites agreeing is
 good corroboration for this field's role.
 
-**`MonsterTable+0x14` reframed.** This call site only invokes
-`ResolveMeleeAttack` at all when the acting monster's `byte[0x14]` is
-`<= 99` -- i.e. **not** exactly `100`. Combined with the earlier finding
-(`../formats/folio_bruti.md`) that the same field also gates a
-`Mt19937RandMax(99)` roll into what looked like a standalone taunt/
-message branch, the fuller picture is: `0x14` is a per-monster chance
-that this turn's action is *something other than* a normal physical
-attack (always-something-else at `100`, never at `0`, otherwise a
-`0x14`% chance). "Taunt/special message" was this doc's earlier guess at
-what that something-else is; still not confirmed which specific action(s)
-it can be.
+### Monster special-attack effects -- `RollMonsterSpecialEffect_candidate` (`0x08015020`), PROVEN
+
+```c
+void RollMonsterSpecialEffect_candidate(byte monsterIndex, byte targetFighterIndex, ushort damage) {
+    MonsterTableEntry *m = &MonsterTable[monsterIndex];
+    if (m->special_effect_chance == 100 ||
+        Mt19937RandMax(99) < m->special_effect_chance) {
+        TriggerBattleEffect(m->special_effect_id,
+                             g_pFightState->pFighters[g_pFightState->bActiveFighterIndex].bSlotParam + 3,
+                             g_pFightState->pFighters[targetFighterIndex].bSlotParam,
+                             g_pFightState->bActiveFighterIndex, targetFighterIndex, damage);
+        g_pFightState->pFighters[g_pFightState->bActiveFighterIndex].bSpellId = Spongify;
+    }
+}
+```
+
+`special_effect_id` is fed directly into `TriggerBattleEffect` -- the
+same effect-script trigger player spells/cards use (see "How the
+effect-id -> script trace works" above) -- so it's literally a monster's
+own special-attack effect id, not a location/group tag as originally
+guessed. Setting `bSpellId = Spongify` afterward is the same
+"borrow a harmless zero-power spell ID for display purposes" trick
+`ConfirmBattleTopMenu`'s `Informus` case uses.
+
+Checked all 14 distinct `special_effect_id` values actually used across
+the 69 monster records (`0`, `4`, `13`, `16`, `17`, `27`, `54`-`61`)
+against their scripts (`tools/objscript/script_names.json`/
+`data/scripts/`), and every `StatusEffect` sub-case those scripts
+reference against `g_apScriptStatusEffectCaseTable` (`0x0801A650`).
+Four ids carry a real, confirmed status-effect payload:
+
+- **id `27`** (`SpecialMonsterPoisonBite`): every venomous
+  Spider/Spitting Snake/Wide-mouth Toad/Bullfrog record. Script body is
+  exactly `StatusEffect 5 8 0` -- case `5`, confirmed `Poisoned`.
+- **id `60`** (`SpecialMonsterParalyzingBlow`): every Suit of Armor
+  variant plus Lupin Werewolf. Script body is exactly
+  `StatusEffect 22 25 0` -- case `22`, confirmed `Paralyze_4`.
+- **id `57`** (`SpecialMonsterHinkypunkParalyze`) and **id `59`**
+  (`SpecialMonsterSkeletonParalyze`): both call `StatusEffect 23 ...`,
+  case `23`. Newly identified as **`Paralyze_5`**: its handler
+  (`0x0801A8A4`) rolls its own extra `Mt19937ChanceNoisy` chance, then
+  calls the same `FUN_0801b430` paralysis-application helper the other
+  `Paralyze_*` cases use, sets `field_0x14a8 = 4` (the same "Harry is
+  paralyzed." sub-case), and spawns a VFX via `FUN_0801b590` -- an exact
+  structural match to the other confirmed Paralyze cases, just gated by
+  its own additional roll on top of `special_effect_chance`.
+
+The remaining ids (`0`, `4`, `13`, `16`, `17`, `54`-`56`, `58`, `61`)
+either have no `StatusEffect` opcode at all, or reference `StatusEffect`
+sub-cases `0x00`/`0x01`/`0x18` (**not** `special_effect_id` values --
+these are indices into the unrelated, per-script
+`g_apScriptStatusEffectCaseTable` dispatch) confirmed to be pure
+VFX/particle spawns (`FUN_0801b204`/`FUN_0801b2ec`/`FUN_0801b348`, and
+case `0x18`'s own palette-flash calls -- none write `bStatusFlags` or
+any other `BattleFighter` field). So these monsters' special attacks
+are animation-only, not a hidden mechanic -- still named in
+`tools/objscript/script_names.json` (e.g. `SpecialMonsterFireCrabAttack`,
+`SpecialMonsterDragonflyAttack`) for completeness, just without a
+gameplay-mechanical payload.
 
 ### The attack-animation dispatcher (candidate, boundary confirmed, not fully walked)
 

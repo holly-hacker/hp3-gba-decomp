@@ -17,7 +17,7 @@ table, and its result is traced end-to-end into the slider dot's pixel
 X-position (and into the animated "?" placeholder branch for
 unseen/unanalyzed monsters). The backing monster stat table (HP, base
 damage range, accuracy, and other fields) is **STRUCTURAL MATCH overall,
-PROVEN for HP/accuracy/base-damage-range/speed/crit_chance** (live code paths
+PROVEN for HP/accuracy/base-damage-range/speed/crit_chance/special_effect_chance/special_effect_id** (live code paths
 read and use each -- see "The monster stat table" below and
 `../memory-map/battle.md`).
 The stat table itself
@@ -192,20 +192,13 @@ corroboration either way for those two.
 | `0x0F` | u8 | **Diffindo effectiveness (0-100)** | **PROVEN** (case 6) |
 | `0x10` | u16 | **XP reward** (`reward_xp`), paid into `g_nXpAccum` on kill | **PROVEN** -- see `../memory-map/battle.md`'s XP/reward payout writeup for the code path and live in-game confirmation |
 | `0x12` | u16 | **gold reward** (`reward_gold`), paid into `g_nGoldAccum` on kill | **PROVEN**, same evidence as `0x10` |
-| `0x14` | u8 | "secondary/default value" -- when the 0x14/0x15 pair is nonzero, this byte is almost always exactly `100` (36 of 69 records are `0x0000` for the pair, i.e. unused) | UNCONFIRMED, content-shape only -- NOT read by the battle-init routine at all |
-| `0x15` | u8 | "group/location id" -- a small integer (0-61) that clusters by monster family, e.g. all 3 Fire Crab color variants share `0`, Bat/Fruitbat/Mortis Bat share `16`, the two Skeletons share `59` -- but also a cross-species cluster (`27`) spanning every Spider variant plus Spitting Snake plus Wide-mouth Toad/Bullfrog, which doesn't fit a per-species tag; candidate encounter-location/chapter id instead | UNCONFIRMED, content-shape only |
+| `0x14` | u8 | **`special_effect_chance`** | **PROVEN** -- `RollMonsterSpecialEffect_candidate` (`0x08015020`) rolls this% chance (100 = guaranteed) after the monster's normal melee attack to also fire a scripted effect. See `../memory-map/battle.md` |
+| `0x15` | u8 | **`special_effect_id`** | **PROVEN** -- effect-script id passed to `TriggerBattleEffect` on a successful roll; real, confirmed entries in `tools/objscript/script_names.json` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family since variants/reskins share the same special attack |
 | `0x16` | u16 | always 0 in every record sampled (0-68) | STRUCTURAL MATCH (padding) -- also NOT read by battle-init |
 
-**Note on `0x14`/`0x15`:** originally guessed as one `u16` field; split into two `u8`
-fields after the same mistake found for `0x02`/`0x03` prompted a closer look. Unlike
-`0x02`/`0x03`, there is no confirmed code reader for this offset at all (battle-init
-skips it), so this split is content-shape evidence only, not a traced instruction
-width -- weaker confidence than every other boundary in this table. Ruled out as an
-IEEE-754 half-float: decoding the raw `u16` as float16 gives inconsistent magnitudes
-(mixing ~6e-6, ~0.0003-0.0035, and ~0.39-1.35 with no consistent unit), and the GBA's
-ARM7TDMI has no hardware FPU -- nothing else found in this ROM uses half-float, while
-plain integers and Q16.16 fixed-point (e.g. the icon-animation-speed table at
-`0x0804FA88`) are the codebase's actual established patterns for non-integer values.
+**Note on `0x14`/`0x15`:** originally guessed as one `u16` field; the two-`u8` split
+is now boundary-PROVEN -- `RollMonsterSpecialEffect_candidate` reads them with two
+separate `ldrb` instructions (`byte[0x14]`, `byte[0x15]`), not a `u16` read.
 
 No stored field is used for Petrificus Totalus or Spongify -- confirmed
 by `sub_0801890C` directly (see above), not an oversight in this table.
@@ -282,14 +275,13 @@ decompilation, was treated as ground truth whenever the two disagreed.
   re-merged in the Ghidra DB; **not added to `functions.us.cfg`** -- it
   isn't a real function boundary and isn't relevant to this doc's subject
   matter anyway.
-- Found and traced a new, previously-undocumented reader of record field
-  `0x14`: at US ROM `~0x08015020`, `MonsterTable[index].byte[0x14]` gates
-  a percent-chance branch (`Mt19937RandMax(99)` roll vs. the field value,
-  branch taken unconditionally if the field is exactly `100`) that leads
-  into what looks like a battle taunt/special-message display, not core
-  damage. This corroborates, with real code now, the existing observation
-  above that `0x14` is usually exactly `100` (always) or `0` (unused) in
-  the data.
+- `RollMonsterSpecialEffect_candidate` (`0x08015020`), called from
+  `TickFighterAttackAnimState_candidate` right after a monster's normal
+  `ResolveMeleeAttack`, is fully traced: it rolls `special_effect_chance`%
+  (unconditional at `100`) and on success calls
+  `TriggerBattleEffect(special_effect_id, ...)` -- the same mechanism
+  spells/cards use -- then sets the attacker's `bSpellId` to `Spongify`
+  (a harmless animation placeholder). See `../memory-map/battle.md`.
 - The melee damage/hit-chance formula is now located and fully traced:
   `ResolveMeleeAttack` (`0x08017E44`) and `ApplyDamageToFighter`
   (`0x08017F98`), found from addresses contributed by jlun2 -- see
@@ -535,10 +527,6 @@ the Krawall/dialog-text pipelines:
   that appear in combat but were never added to the bestiary grid), or
   (b) the break-detection heuristic used to find row 106 is simply
   wrong about where that table really ends. Not resolved.
-- `0x14` has one confirmed reader (a percent-chance taunt/message gate,
-  see "Ghidra cross-check" above), but its broader meaning as a
-  "secondary/default value" is still
-  UNCONFIRMED.
 - **The graphics-pointer table's own fields** (`0x0804E6B4`, 32-byte
   stride) beyond what was already used elsewhere (`+0x08`, `+0x18`) --
   not revisited here.

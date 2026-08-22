@@ -1,5 +1,9 @@
 {
   "scripts": {
+    "0": {
+      "name": "SpecialMonsterFireCrabAttack",
+      "description": "Fire Crab's special attack animation; no status effect."
+    },
     "2": {
       "name": "SpellFlipendoUno",
       "description": "Plays the spell's cast animation."
@@ -7,6 +11,10 @@
     "3": {
       "name": "SpellFlipendoDuo",
       "description": "Plays the spell's cast animation."
+    },
+    "4": {
+      "name": "SpecialMonsterPixieAttack",
+      "description": "Cornish Pixie's special attack animation; no status effect."
     },
     "5": {
       "name": "SpecialHarryTempestJinx",
@@ -24,9 +32,21 @@
       "name": "SpecialHarryExtraExp",
       "description": "Grants the party bonus XP for winning the encounter."
     },
+    "13": {
+      "name": "SpecialMonsterFlobberwormAttack",
+      "description": "Flobberworm's special attack animation; no status effect."
+    },
     "15": {
       "name": "SpecialHarryHorklumpSpores",
       "description": "Horklump spores appear and blast the opponent with pollen."
+    },
+    "16": {
+      "name": "SpecialMonsterBatAttack",
+      "description": "Bat/Fruitbat/Mortis Bat's special attack animation; no status effect."
+    },
+    "17": {
+      "name": "SpecialMonsterDragonflyAttack",
+      "description": "Dragonfly/Imperial Dragonfly's special attack animation; no status effect."
     },
     "18": {
       "name": "SpecialHarryPoisonImmunity",
@@ -63,6 +83,10 @@
     "26": {
       "name": "SpellVerdimilliousTria",
       "description": "Plays the spell's cast animation."
+    },
+    "27": {
+      "name": "SpecialMonsterPoisonBite",
+      "description": "Chance to poison the target on a successful attack (venomous spiders, snake, toads)."
     },
     "28": {
       "name": "SpellWingardiumLeviosa",
@@ -159,6 +183,38 @@
     "53": {
       "name": "SpecialHarryReparifors",
       "description": "Cancels any magical ailments affecting the party."
+    },
+    "54": {
+      "name": "SpecialMonsterCrabbeAttack",
+      "description": "Crabbe's special attack animation; no status effect."
+    },
+    "55": {
+      "name": "SpecialMonsterGoyleAttack",
+      "description": "Goyle's special attack animation; no status effect."
+    },
+    "56": {
+      "name": "SpecialMonsterDracoAttack",
+      "description": "Draco's special attack animation; no status effect."
+    },
+    "57": {
+      "name": "SpecialMonsterHinkypunkParalyze",
+      "description": "Chance to paralyze the target on a successful attack (Hinkypunk)."
+    },
+    "59": {
+      "name": "SpecialMonsterSkeletonParalyze",
+      "description": "Chance to paralyze the target on a successful attack (Charmed/Jinxed Skeleton)."
+    },
+    "58": {
+      "name": "SpecialMonsterSalamanderAttack",
+      "description": "Salamander's special attack animation; no status effect."
+    },
+    "60": {
+      "name": "SpecialMonsterParalyzingBlow",
+      "description": "Chance to paralyze the target on a successful attack (Suits of Armor, Lupin Werewolf)."
+    },
+    "61": {
+      "name": "SpecialMonsterWhompingWillowAttack",
+      "description": "Whomping Willow's special attack animation; no status effect."
     }
   }
 }

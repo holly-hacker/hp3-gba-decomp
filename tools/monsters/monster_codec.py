@@ -1,10 +1,11 @@
 """Shared record layout for the Folio Bruti monster stat table. See
 docs/formats/folio_bruti.md for how each field was identified/confirmed.
 
-24 bytes per record, no padding between fields -- (name, struct format
-char) pairs in on-disk order. Fields whose meaning isn't confirmed are
-named unk_<offset>_<type> per the project convention; offsets are into
-the 24-byte record.
+24 bytes per record -- (name, struct format char) pairs in on-disk
+order, followed by 2 bytes of always-0 trailing padding (not stored in
+JSON, see pack_record/unpack_record). Fields whose meaning isn't
+confirmed are named unk_<offset>_<type> per the project convention;
+offsets are into the 24-byte record.
 """
 import struct
 
@@ -71,24 +72,37 @@ FIELDS: list[tuple[str, str]] = [
                                            #   Special Move Wizard Cracker active (a 25% gold-drop
                                            #   multiplier, see docs/memory-map/battle.md) --
                                            #   42*2*1.25 = 105 exactly.
-    ("unk_0x14_u8", "B"),                 # 0x14 u8  -- UNCONFIRMED (no confirmed reader; split from a
-                                           #   u16 based on content shape only -- see docs/formats/folio_bruti.md.
-                                           #   Usually exactly 100 (0x64) when nonzero; candidate
-                                           #   "secondary/default value")
-    ("unk_0x15_u8", "B"),                 # 0x15 u8  -- UNCONFIRMED, same caveat as 0x14. Small integer
-                                           #   (0-61) that clusters by monster family/group; candidate
-                                           #   "group/location id"
-    ("unk_0x16_u16", "H"),                # 0x16 u16 -- always 0 in every real record (padding);
-                                           #   also NOT read by battle-init
+    ("special_effect_chance", "B"),       # 0x14 u8  -- PROVEN. RollMonsterSpecialEffect_candidate
+                                           #   (0x08015020), called from TickFighterAttackAnimState_candidate
+                                           #   after a monster's normal melee attack (always if this is 100,
+                                           #   else only when the attack hits): rolls this% chance
+                                           #   (Mt19937RandMax(99) < this, or unconditional at 100) to also
+                                           #   fire TriggerBattleEffect(special_effect_id, ...) -- the same
+                                           #   effect-script mechanism as player spells/cards. See
+                                           #   docs/memory-map/battle.md.
+    ("special_effect_id", "B"),           # 0x15 u8  -- PROVEN. Effect script id passed directly to
+                                           #   TriggerBattleEffect when special_effect_chance's roll
+                                           #   succeeds -- confirmed real entries in
+                                           #   tools/objscript/script_names.json's effect table (e.g. id 27
+                                           #   = SpecialMonsterPoisonBite, id 60 = SpecialMonsterParalyzingBlow).
+                                           #   Small integer (0-61) that clusters by monster family/group,
+                                           #   matching shared effects across variants (all Fire Crabs share
+                                           #   id 0, all Suits of Armor + Lupin Werewolf share id 60/Paralyze,
+                                           #   every venomous spider/snake/toad shares id 27/Poison).
 ]
+# 0x16 u16: always 0 in every real record, not read by battle-init at
+# all -- trailing padding, not a real field, so it's not stored in JSON
+# (see pack_record/unpack_record).
 
 # Petrificus Totalus and Spongius aren't stored per-monster at all --
 # sub_0801890C hardcodes both to always return 100. Not part of this
 # record layout; see docs/formats/folio_bruti.md.
 
-STRUCT_FORMAT = "<" + "".join(fmt for _, fmt in FIELDS)
-RECORD_SIZE = struct.calcsize(STRUCT_FORMAT)
-assert RECORD_SIZE == 24
+FIELD_STRUCT_FORMAT = "<" + "".join(fmt for _, fmt in FIELDS)
+FIELD_SIZE = struct.calcsize(FIELD_STRUCT_FORMAT)
+assert FIELD_SIZE == 22
+
+RECORD_SIZE = 24  # on-disk stride; last 2 bytes are the always-0 padding above
 
 MONSTER_TABLE_ADDR = 0x0804F410
 MONSTER_COUNT = 69
@@ -113,10 +127,13 @@ DESC_STRING_ID_BASE = 0x4E6
 
 
 def unpack_record(data: bytes) -> dict:
-    values = struct.unpack(STRUCT_FORMAT, data)
+    assert len(data) == RECORD_SIZE
+    pad = data[FIELD_SIZE:]
+    assert pad == b"\x00\x00", f"unexpected nonzero monster-table padding: {pad!r}"
+    values = struct.unpack(FIELD_STRUCT_FORMAT, data[:FIELD_SIZE])
     return {name: value for (name, _fmt), value in zip(FIELDS, values)}
 
 
 def pack_record(record: dict) -> bytes:
     values = [record[name] for name, _fmt in FIELDS]
-    return struct.pack(STRUCT_FORMAT, *values)
+    return struct.pack(FIELD_STRUCT_FORMAT, *values) + b"\x00\x00"
