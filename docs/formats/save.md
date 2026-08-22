@@ -91,17 +91,32 @@ Default contents at ROM `g_abDefaultSaveHeader` (`0x0806B80C`):
 | 0x9 | 1 | `bMusicVolume` | Options-menu **Music** volume, 0-10 scale (`0x0a` default). `g_bMusicVolume`/`SaveManager_03005598.aHeader[9]`, read by `ApplyAudioVolumeSettings` (`0x0803FF98`, scaled `*25`). Confirmed against a real save with Music set to off (`0x00`). |
 | 0xA | 1 | `bSoundVolume` | Options-menu **Sound** volume, 0-10 scale (`0x0a` default). `g_bSoundVolume`/`SaveManager_03005598.aHeader[0xa]`, read by `ApplyAudioVolumeSettings` (scaled `*12`). Confirmed against a real save with Sound set to off (`0x00`). |
 | 0xB-0xC | 2 | `abUnknown0` | `01 00` in both the ROM default and every real save sampled -- consistent with these bytes being unused, but not confirmed: no ROM-wide search for readers/writers of this offset has been done. |
-| 0xD | 1 | `flHeaderBit0` + `flMinigame1Unlocked`-`flMinigame4Unlocked` + `flHeaderBit5` + `flHeaderBit6` + `flGammaHigh` | Bitmask (`g_bHeaderFlags`/`SaveManager_03005598.aHeader[0xd]`), one JSON field per bit, LSB first. Bits `0x02`/`0x04`/`0x08`/`0x10` (**PROVEN**) gate the 4 minigame-select entries, confirmed against `DrawMinigameSelectMenu`/`ShowMinigameLockedMessageIfNeeded`/`HandleMinigameMenuSelection` (`0x0802D148`/`0x0802D1C8`/`0x0802D08C`) -- and against a real save, where bit `0x04` flipped `0->1` at the exact save the user unlocked their 2nd minigame, "Buckbeak's Hippogriff Glide". Bit `0x80` (`flGammaHigh`, **PROVEN**) is the options-menu **Gamma** setting (Normal/High), confirmed against a real save with Gamma=High; also read by a menu-graphics selector, `FUN_0800D1A4`. File-level (part of `SaveHeader`, shared across all 3 save slots -- unlike the per-slot `abQuestEventState`), matching that a minigame unlock isn't scoped to one save slot (`options.abUnknown0` stayed all-zero throughout, ruling that out as the location). Bit `0x01` (`flHeaderBit0`) is confirmed read by `FUN_08036038`, which -- when the bit is set -- picks one of two ROM tables (`0x08069474`/`0x0806948C`, chosen by a second flag, bit 0 of `DAT_0300321C`/the save's own `anUnknown15`) into a pointer (`DAT_03005208`) later indexed by `FUN_08035EB0`'s small state machine and fed into a game-mode-push call (`FUN_0802C7C4`). Real, load-bearing logic, but what specific menu/screen this belongs to and what the two tables differ by isn't traced -- see "Further work". Bits `0x20`/`0x40` (`flHeaderBit5`/`flHeaderBit6`) have no known reader at all yet. |
+| 0xD | 1 | `flHeaderBit0` + `flMinigame1Unlocked`-`flMinigame4Unlocked` + `flHeaderBit5` + `flHeaderBit6` + `flGammaHigh` | Bitmask (`g_bHeaderFlags`/`SaveManager_03005598.aHeader[0xd]`), one JSON field per bit, LSB first. Bits `0x02`/`0x04`/`0x08`/`0x10` (**PROVEN**) gate the 4 minigame-select entries -- confirmed via `DrawMinigameSelectMenu`/`ShowMinigameLockedMessageIfNeeded`/`HandleMinigameMenuSelection` (`0x0802D148`/`0x0802D1C8`/`0x0802D08C`), a real save where bit `0x04` flipped `0->1` at the exact save "Buckbeak's Hippogriff Glide" was unlocked, and the dialog strings each minigame reads its name from (`0xa4a`+index in `data/text/en_us.json`): index 0 = "Wizard Cracker Pop-it" (bit `0x02`), 1 = "Buckbeak's Hippogriff Glide" (bit `0x04`), 2 = "Riddikulus Boggart Challenge" (bit `0x08`), 3 = "Tea Leaf Divination" (bit `0x10`). Bit `0x80` (`flGammaHigh`, **PROVEN**) is the options-menu **Gamma** setting (Normal/High), confirmed against a real save with Gamma=High; also read by a menu-graphics selector, `FUN_0800D1A4`. File-level (part of `SaveHeader`, shared across all 3 save slots -- unlike the per-slot `abQuestEventState`), matching that a minigame unlock isn't scoped to one save slot (`options.abUnknown0` stayed all-zero throughout, ruling that out as the location). **Bit `0x01` (`flHeaderBit0`) resolved**: it's part of the minigame *launch* sequence itself (`InitMinigameLaunchSequence`/`TickMinigameLaunchSequence`, `0x08036038`/`0x08035EB0`, run after `HandleMinigameMenuSelection` sets `g_nSelectedMinigameIndex`), and only affects minigame index 0 ("Wizard Cracker Pop-it") specifically: when set, it points a pointer (`DAT_03005208`) at ROM `0x0806948C` instead of `0x08069474` (chosen by a second flag, bit 0 of `DAT_0300321C`/the save's own `anUnknown15`). These are **not two independent tables** -- confirmed byte-identical, `0x0806948C` is `0x08069474` shifted by exactly 2 records (24 bytes) -- so the bit just shifts, by +2, which row `TickMinigameLaunchSequence` reads (indexed by `DAT_03003F14`, a within-minigame round counter persisted across launches via `DAT_030052BC`/`FUN_080360DC`) before feeding one `u32` from that row into a game-mode-push call (`FUN_0802C7C4`). Row 0 and row 2 hold the identical value (`71`), so **this bit has no observable effect until the round counter reaches 1** -- confirmed in-game: no visible difference on a first playthrough, consistent with this. What rows 1 (`66`) vs. 3 (`41`) actually change isn't traced further. Bits `0x20`/`0x40` (`flHeaderBit5`/`flHeaderBit6`) have no known reader at all yet. |
 | 0xE | 2 | `wChecksum` | `u16`, `-Sum16(header, 16)`. |
 
 ### SaveOptions (40 bytes, blocks 2-6)
 
-Default is all zero (`g_abDefaultSaveOptions`, `0x0806B81C`), and
-`baserom.us.sav`'s copy is still all zero -- no field inside it has been
-identified yet. `ValidateSaveOptions`/`WriteDefaultSaveOptions` treat it
-with the same checksum-then-content-compare pattern as the header, with
-the checksum word at local offset 0x26 (global offset 0x36 within
-`g_SaveManager`).
+Default is all zero (`g_abDefaultSaveOptions`, `0x0806B81C`).
+`ValidateSaveOptions`/`WriteDefaultSaveOptions` treat it with the same
+checksum-then-content-compare pattern as the header, with the checksum
+word at local offset 0x26 (global offset 0x36 within `g_SaveManager`).
+
+**This is where minigame high scores live**, not per-slot data --
+file-level, loaded once at boot by `InitSaveSystem` regardless of which
+save slot (if any) is later picked, matching minigames being reachable
+straight from the main menu. The live RAM copy is `SaveManager+0x10`
+(`DAT_030055A8`), synced to EEPROM by `SyncSaveOptionsIfDirty` (called
+from minigame-exit cleanup paths, e.g. `FUN_08008AD0`/`FUN_080338A4`).
+
+| Offset | Size | JSON key | Notes |
+|---|---|---|---|
+| 0x0 | 4 | `dwWizardCrackerPopItEasyHighScore` | Wizard Cracker Pop-it's Easy-difficulty high score. Inferred from the confirmed field below by the same 3-consecutive-`u32`-per-minigame pattern `DrawDifficultySelectMenu` reads (`DAT_03003F88*0xC` selects a minigame's 12-byte block; within it, offsets 0/4/8 = Easy/Medium/Hard) -- not independently confirmed against a real save yet. |
+| 0x4 | 4 | `dwWizardCrackerPopItMediumHighScore` | **PROVEN**: confirmed byte-exact against two real saves differing only here (`0 -> 1080`) after setting a Medium-difficulty Wizard Cracker Pop-it high score. Stored as a `u32` (matching `FUN_08032534`'s `*(uint*)` writes), though only the low 16 bits were nonzero in the one sample seen. |
+| 0x8 | 4 | `dwWizardCrackerPopItHardHighScore` | Same inference as offset 0x0 (Hard difficulty). |
+| 0xC-0x17 | 12 | `dwBuckbeaksHippogriffGlideEasy/Medium/HardHighScore` | **PROVEN** in-game -- immediately follows Wizard Cracker Pop-it's block, in minigame-unlock-bit order. |
+| 0x18-0x23 | 12 | `dwRiddikulusBoggartChallengeEasy/Medium/HardHighScore` | **PROVEN** in-game -- next block in unlock-bit order. |
+| 0x24-0x25 | 2 | `abUnknown0` | Leftover/unaccounted for. Per the user, Tea Leaf Divination has no high scores at all, consistent with only 3 of the 4 minigames needing a 12-byte block here (3 x 3 difficulties x 4 bytes = 36 bytes, fitting the 38 available data bytes almost exactly). |
+| 0x26 | 2 | `wChecksum` | Same convention as the header/each slot. |
 
 ### Save slots (2712 bytes each)
 
@@ -130,7 +145,7 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | `0x03003180` | `dwMoney` | **money** (`u32`) |
 | `0x03003186` | `bPlaytimeHours` + `bPlaytimeMinutes` + `bPlaytimeSeconds` + `bPlaytimeFrames` | **playtime**, one byte each. Per the user, their save's in-game HH:MM display reads "05:13"; the decoded bytes are exactly `5, 13, 17, 14` -- the first two match the display exactly, and the third is a plausible seconds value (0-59) the HH:MM display doesn't show. The 4th byte (`bPlaytimeFrames`) stays in `0-28` across 26 real samples gathered since -- well under a 50/60fps rollover, consistent with a sub-second frame counter. No direct incrementer was found in the disassembly (likely reached via a computed offset, not a literal address static xrefs catch), so this is STRUCTURAL confidence, not PROVEN. |
 | `0x03003B50` | `bUnknown2` | unidentified |
-| `0x0300318C` | `bSaveFlags` | Per the user: bit 0 clear makes the slot unrecognized (invalid, presumably a redundant check alongside the checksum); bit 1 set loads to the start of the game. Other bits: no observed effect. |
+| `0x0300318C` | `bSaveFlags` | Bit 0 clear makes the slot unrecognized (invalid, presumably a redundant check alongside the checksum). Bit 1 (**PROVEN**): consumed one-shot (cleared on use) by `HandleSaveLoadContinuation` (`0x08043AF0`) at save-load -- if set, pushes game mode `0x38` (the fresh-start/intro sequence, via `HandleEndingSequenceTransition`); if clear, resumes normally. `HandleEndingSequenceTransition` (`0x0801D6DC`) sets bit 1 *and* bit 2 together (`\|= 6`) at game-mode `0x40` (game completion), the same instant it starts New Game+ (`ResetQuestStateForNewGame(1)`). Bit 2's own purpose is **unconfirmed**: `HandleSaveLoadContinuation` never checks it, and testing in-game (bit 2 set without bit 1) showed no observed effect -- so whatever it's for isn't consumed at this same load point, if it's consumed anywhere at all. Other bits: no observed effect. |
 | `0x030027B9` (`g_bMainMenuObjectiveIndex`) | `bMainMenuObjectiveIndex` | Index into the main-menu current-objective string table. Confirmed across 24 real saves to be the exact same live byte as `abQuestEventState[25]` below -- serialized twice. |
 | `g_pPartyMasterStats_candidate[0].bLevel + 1` | `bPartyLeaderDisplayLevel` | derived value (party leader's display level, not a raw field) |
 | `0x0300338C`-`0x0300338E` | `bOverworldSprite0`-`bOverworldSprite2` | Per the user: which overworld sprite each party slot's follower uses. Observed values: `3` = Harry (Lumos, headless -- likely rendered as a separate overlay), `4` = Harry (GBC), `5` = Harry, `7` = Ron, `8` = Buckbeak; `9` is out of bounds (severe graphical corruption, crashes the game). |
@@ -139,7 +154,7 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | `0x030037B0` (`g_abItemQuantities`), 152 bytes | `itemQuantities` + `equippedItems` | see "Item quantities and equipment" below |
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
 | **room-object state** (`PackRoomObjectStateToSaveStream`, `0x0802A570`), variable-length | `roomObjectState` | data-dependent, see below |
-| `0x03002240` | `abUnknown10` (32 bytes) | unidentified |
+| `0x03002240` | `abUnknown10` (32 bytes) | unidentified, but its containing reset function is now known -- see `ResetQuestStateForNewGame` below. |
 | `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 (and index 0, an unconfirmed story-stage counter candidate) didn't reset there. |
 | **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching `docs/formats/folio_bruti.md`'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
 | `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anFolioUniversitasCounts` (51 nibbles) | Per the user: Folio Universitas (Harry's card collection) per-card count, one nibble per card. A card is only shown in-game once its count reaches at least 1. |
@@ -411,25 +426,28 @@ a slot's content past its checksum.
 
 ## Further work
 
-- Trace what `flHeaderBit0` (`SaveHeader` byte `0xD` bit `0x01`) actually
-  controls. It's read by `FUN_08036038`, which picks between two ROM
-  tables (`0x08069474`/`0x0806948C`) based on a second flag (bit 0 of
-  the save's own `anUnknown15`), stores the choice into `DAT_03005208`,
-  and a separate state machine (`FUN_08035EB0`) later indexes that table
-  and feeds the result into a game-mode-push call (`FUN_0802C7C4`).
-  Real, load-bearing logic -- worth digging into what menu/screen this
-  belongs to and what the two tables represent (a strong candidate:
-  some kind of alternate/bonus content unlocked by save state).
+- Find `bSaveFlags` bit 2's actual reader (if any). It's set alongside
+  bit 1 at game completion (`HandleEndingSequenceTransition`), but
+  `HandleSaveLoadContinuation` -- the only located consumer of bit 1 --
+  never checks it, and setting it alone in-game showed no effect.
+- Decode what `flHeaderBit0`'s row-1-vs-row-3 game-mode values (`66`
+  vs `41`, read by `TickMinigameLaunchSequence` off a shared table at
+  ROM `0x08069474`) actually change in "Wizard Cracker Pop-it" --
+  resolved which minigame/code path and that it's a same-table row
+  shift rather than two distinct tables, but not what the values
+  themselves represent in game terms, nor when the round counter
+  (`DAT_03003F14`) actually reaches 1 during play.
 - Decode SaveOptions' 40 bytes (all-zero in the one real save sampled so
   far, so its field boundaries aren't visible from data alone).
 - Find `bPlaytimeFrames`' actual incrementer in the disassembly to move
   it from STRUCTURAL to PROVEN confidence.
 - Identify the remaining unlabeled globals `SerializeGameStateToSaveBuffer`
-  packs directly (`0x03003B50`, `0x0300318C`,
-  `0x030027B9`, `0x0300338C`-`0x0300338F`, `0x03002614`, `0x030037B0`,
-  `0x03002240`, `0x030027A0`, and the fields inside `FUN_08037FB8`/
-  `FUN_08022EA8` other than the Folio Universitas ones: `0x03003212`,
-  `0x0300321C`, `0x03003220`, `0x03003226`, `0x03003224`, `0x0300322C`).
+  packs directly: `0x03003B50` (`bUnknown2`), `0x03002240` (`abUnknown10`,
+  32 bytes), and the fields inside `FUN_08037FB8`/`FUN_08022EA8` other
+  than the Folio Universitas ones: `0x03003212` (`abUnknown14`),
+  `0x0300321C` (`anUnknown15`), `0x03003220` (`abUnknown16`),
+  `0x03003226` (`abUnknown17`), `0x03003224` (`abUnknown18`),
+  `0x0300322C` (`abUnknown19`).
 - Name the remaining `bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN` fields in the
   7 room-object-state tables (see "Room-object state" above) -- their
   byte offsets are traced precisely, but most still only carry their

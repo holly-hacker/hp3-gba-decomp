@@ -306,9 +306,40 @@ def encode_header(h: dict) -> bytes:
     return bytes(data)
 
 
+# SaveOptions holds minigame high scores (SaveManager+0x10, live RAM copy
+# at DAT_030055A8, synced to EEPROM by SyncSaveOptionsIfDirty). Confirmed
+# byte-exact against a real save: bytes 4-5 are Wizard Cracker Pop-it's
+# Medium-difficulty high score (0->1080 in the sample). The write code
+# (FUN_08032534, case 4/6) does `*(u32*)(&DAT_030055A8 + difficulty*4)`,
+# and the display/erase-check code (DrawDifficultySelectMenu) reads 3
+# consecutive u32s per minigame (`minigameIndex*0xC` outer stride) -- so
+# bytes 0-3/4-7/8-11 are very likely Wizard Cracker Pop-it's Easy/Medium/
+# Hard scores (a u32 slot per the code, even though only the low 16 bits
+# were nonzero in the one sample seen).
+#
+# Tea Leaf Divination has no high scores at all, so only 3 of the 4
+# minigames need storage: 3 x 3 difficulties x 4 bytes = 36 bytes, which
+# fits the 38 available data bytes almost exactly. Buckbeak's Hippogriff
+# Glide and Riddikulus Boggart Challenge's blocks (offsets 12-23/24-35)
+# are confirmed in-game: they immediately follow Wizard Cracker Pop-it's
+# block, in minigame-unlock-bit order. Bytes 36-37 are leftover/
+# unaccounted for.
+OPTIONS_MINIGAME_NAMES = [
+    "WizardCrackerPopIt",
+    "BuckbeaksHippogriffGlide",
+    "RiddikulusBoggartChallenge",
+]
+OPTIONS_DIFFICULTY_NAMES = ["Easy", "Medium", "Hard"]
+
+
 def parse_options(raw: bytes) -> dict:
     data = logical_bytes(raw, *OPTIONS_BLOCKS)
-    result = {"abUnknown0": data[0:38].hex()}
+    result = {}
+    for i, minigame in enumerate(OPTIONS_MINIGAME_NAMES):
+        for j, difficulty in enumerate(OPTIONS_DIFFICULTY_NAMES):
+            key = f"dw{minigame}{difficulty}HighScore"
+            result[key] = struct.unpack_from("<I", data, i * 12 + j * 4)[0]
+    result["abUnknown0"] = data[36:38].hex()
     if not checksum_ok(data):
         result["wChecksum"] = struct.unpack_from("<H", data, 38)[0]
     return result
@@ -316,7 +347,11 @@ def parse_options(raw: bytes) -> dict:
 
 def encode_options(o: dict) -> bytes:
     data = bytearray(40)
-    data[0:38] = bytes.fromhex(o["abUnknown0"])
+    for i, minigame in enumerate(OPTIONS_MINIGAME_NAMES):
+        for j, difficulty in enumerate(OPTIONS_DIFFICULTY_NAMES):
+            key = f"dw{minigame}{difficulty}HighScore"
+            struct.pack_into("<I", data, i * 12 + j * 4, o[key])
+    data[36:38] = bytes.fromhex(o["abUnknown0"])
     struct.pack_into("<H", data, 38, 0)
     struct.pack_into("<H", data, 38, (-sum16(bytes(data))) & 0xFFFF)
     return bytes(data)
