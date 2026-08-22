@@ -88,7 +88,10 @@ Default contents at ROM `g_abDefaultSaveHeader` (`0x0806B80C`):
 |---|---|---|---|
 | 0x0 | 8 | `szMagic` | ASCII `"HPPOA001"` (US) / `"HPPOA004"` (JP) -- confirmed against `baserom.us.sav`/`baserom.jp.sav`. `ValidateSaveHeader` checksum-checks the whole header, then byte-compares these 8 bytes against the ROM default; either check failing triggers `WriteDefaultSaveHeader`. |
 | 0x8 | 1 | `flLanguageConfigured` + `bLanguageIndex` | Both packed into one byte: bit 7 = `flLanguageConfigured` (set by `SetSaveLanguageFlag` via `GetLanguage()\|0x80`); bits 0-6 = `bLanguageIndex`, passed to `SetLanguage()` during `InitSaveSystem`. Default `0x00` (unconfigured, language 0). |
-| 0x9-0xD | 5 | `abUnknown0` | `0A 0A 01 00 00` in both the ROM default and the one real save sampled (`baserom.us.sav`) -- consistent with these bytes being unused, but not confirmed: `ValidateSaveHeader`/`WriteDefaultSaveHeader`/`InitSaveSystem` never read them as scalars, but no ROM-wide search for other readers/writers of this offset has been done. |
+| 0x9 | 1 | `bMusicVolume` | Options-menu **Music** volume, 0-10 scale (`0x0a` default). `g_bMusicVolume`/`SaveManager_03005598.aHeader[9]`, read by `ApplyAudioVolumeSettings` (`0x0803FF98`, scaled `*25`). Confirmed against a real save with Music set to off (`0x00`). |
+| 0xA | 1 | `bSoundVolume` | Options-menu **Sound** volume, 0-10 scale (`0x0a` default). `g_bSoundVolume`/`SaveManager_03005598.aHeader[0xa]`, read by `ApplyAudioVolumeSettings` (scaled `*12`). Confirmed against a real save with Sound set to off (`0x00`). |
+| 0xB-0xC | 2 | `abUnknown0` | `01 00` in both the ROM default and every real save sampled -- consistent with these bytes being unused, but not confirmed: no ROM-wide search for readers/writers of this offset has been done. |
+| 0xD | 1 | `flHeaderBit0` + `flMinigame1Unlocked`-`flMinigame4Unlocked` + `flHeaderBit5` + `flHeaderBit6` + `flGammaHigh` | Bitmask (`g_bHeaderFlags`/`SaveManager_03005598.aHeader[0xd]`), one JSON field per bit, LSB first. Bits `0x02`/`0x04`/`0x08`/`0x10` (**PROVEN**) gate the 4 minigame-select entries, confirmed against `DrawMinigameSelectMenu`/`ShowMinigameLockedMessageIfNeeded`/`HandleMinigameMenuSelection` (`0x0802D148`/`0x0802D1C8`/`0x0802D08C`) -- and against a real save, where bit `0x04` flipped `0->1` at the exact save the user unlocked their 2nd minigame, "Buckbeak's Hippogriff Glide". Bit `0x80` (`flGammaHigh`, **PROVEN**) is the options-menu **Gamma** setting (Normal/High), confirmed against a real save with Gamma=High; also read by a menu-graphics selector, `FUN_0800D1A4`. File-level (part of `SaveHeader`, shared across all 3 save slots -- unlike the per-slot `abQuestEventState`), matching that a minigame unlock isn't scoped to one save slot (`options.abUnknown0` stayed all-zero throughout, ruling that out as the location). Bit `0x01` (`flHeaderBit0`) is confirmed read by `FUN_08036038`, which -- when the bit is set -- picks one of two ROM tables (`0x08069474`/`0x0806948C`, chosen by a second flag, bit 0 of `DAT_0300321C`/the save's own `anUnknown15`) into a pointer (`DAT_03005208`) later indexed by `FUN_08035EB0`'s small state machine and fed into a game-mode-push call (`FUN_0802C7C4`). Real, load-bearing logic, but what specific menu/screen this belongs to and what the two tables differ by isn't traced -- see "Further work". Bits `0x20`/`0x40` (`flHeaderBit5`/`flHeaderBit6`) have no known reader at all yet. |
 | 0xE | 2 | `wChecksum` | `u16`, `-Sum16(header, 16)`. |
 
 ### SaveOptions (40 bytes, blocks 2-6)
@@ -125,19 +128,19 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | Source | JSON key | Contents |
 |---|---|---|
 | `0x03003180` | `dwMoney` | **money** (`u32`) |
-| `0x03003186` | `bPlaytimeHours` + `bPlaytimeMinutes` + `bPlaytimeSeconds` + `bUnknown1` | **playtime**, one byte each. Per the user, their save's in-game HH:MM display reads "05:13"; the decoded bytes are exactly `5, 13, 17, 14` -- the first two match the display exactly, and the third is a plausible seconds value (0-59) the HH:MM display doesn't show. The 4th byte (`bUnknown1`, also 0-59 in this one sample) isn't confirmed -- a frames/VBlank sub-second counter is plausible but unverified. |
+| `0x03003186` | `bPlaytimeHours` + `bPlaytimeMinutes` + `bPlaytimeSeconds` + `bPlaytimeFrames` | **playtime**, one byte each. Per the user, their save's in-game HH:MM display reads "05:13"; the decoded bytes are exactly `5, 13, 17, 14` -- the first two match the display exactly, and the third is a plausible seconds value (0-59) the HH:MM display doesn't show. The 4th byte (`bPlaytimeFrames`) stays in `0-28` across 26 real samples gathered since -- well under a 50/60fps rollover, consistent with a sub-second frame counter. No direct incrementer was found in the disassembly (likely reached via a computed offset, not a literal address static xrefs catch), so this is STRUCTURAL confidence, not PROVEN. |
 | `0x03003B50` | `bUnknown2` | unidentified |
 | `0x0300318C` | `bSaveFlags` | Per the user: bit 0 clear makes the slot unrecognized (invalid, presumably a redundant check alongside the checksum); bit 1 set loads to the start of the game. Other bits: no observed effect. |
-| `0x030027B9` | `bMainMenuObjectiveIndex` | Per the user: an index (with an offset) into the current-objective string table shown on the main menu. Editing it changes that main-menu text but not the pause menu's quest text, and gets overwritten back to its real value on the next save -- not confirmed to be the actual current-quest tracker, just something that feeds this one display. |
+| `0x030027B9` (`g_bMainMenuObjectiveIndex`) | `bMainMenuObjectiveIndex` | Index into the main-menu current-objective string table. Confirmed across 24 real saves to be the exact same live byte as `abQuestEventState[25]` below -- serialized twice. |
 | `g_pPartyMasterStats_candidate[0].bLevel + 1` | `bPartyLeaderDisplayLevel` | derived value (party leader's display level, not a raw field) |
 | `0x0300338C`-`0x0300338E` | `bOverworldSprite0`-`bOverworldSprite2` | Per the user: which overworld sprite each party slot's follower uses. Observed values: `3` = Harry (Lumos, headless -- likely rendered as a separate overlay), `4` = Harry (GBC), `5` = Harry, `7` = Ron, `8` = Buckbeak; `9` is out of bounds (severe graphical corruption, crashes the game). |
 | `0x03002614` | `flOverworldMonstersDisabled` | Per the user: disables overworld random encounters with regular monsters (bosses still trigger). Packed as a single bit, not a byte. |
 | `0x0300338F` | `bSelectedOverworldSpell` | Per the user: the currently-selected spell in the overworld (as opposed to in battle). |
-| `0x030037B0`, 38x4 bytes | `abUnknown9` (152 bytes) | unidentified table (`FUN_08026da0`'s loop is a signed `do {...} while (-1 < i)` counting `0x25` down to `-1` inclusive, i.e. 38 iterations) |
+| `0x030037B0` (`g_abItemQuantities`), 152 bytes | `itemQuantities` + `equippedItems` | see "Item quantities and equipment" below |
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
-| **inventory/quest data** (`0x0802A570`), variable-length | `inventoryQuestData` | data-dependent, see below |
+| **room-object state** (`PackRoomObjectStateToSaveStream`, `0x0802A570`), variable-length | `roomObjectState` | data-dependent, see below |
 | `0x03002240` | `abUnknown10` (32 bytes) | unidentified |
-| `0x030027A0` | `abUnknown11` (256 bytes) | unidentified |
+| `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 (and index 0, an unconfirmed story-stage counter candidate) didn't reset there. |
 | **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching `docs/formats/folio_bruti.md`'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
 | `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anFolioUniversitasCounts` (51 nibbles) | Per the user: Folio Universitas (Harry's card collection) per-card count, one nibble per card. A card is only shown in-game once its count reaches at least 1. |
 | `0x0300320B` | `a1FolioUniversitasUnlocked` (51 bits, stored as 7 bytes, LSB-first) | Per the user: parallel per-card unlocked/seen flag; all-unlocked is stored as `ffffffffffff07`. Confirmed against a real (non-test) save (`bak.sav`): `a1FolioUniversitasUnlocked[i] == 1` exactly where `anFolioUniversitasCounts[i] > 0`, for all 51 cards. |
@@ -185,14 +188,134 @@ defense are likewise not saved here, consistent with
 `ApplyEquipmentStatModifiers_candidate` recomputing them from
 equipped-item data at battle entry.
 
-**Inventory/quest data** (`0x0802A570`): reads a base pointer
-`DAT_03003B68` and, for up to 7 independent counts stored at
-`DAT_03003B68[0..7]` (skipping index 0), packs `count[i]` fixed-size
-records from 7 separate sub-tables (record sizes `0x6C`, `0xC`, `0x34`,
-`0xC`, `4`, `4`, `4`, at fixed offsets `0x14`, `0xD94`, `0xF14`, `0x1594`,
-`0x1714`, `0x1794`, `0x17D4` from the base pointer) -- the shape of a
-variable-length list-of-lists (inventory slots, quest/event flags, or
-similar), not decoded further.
+**Item quantities and equipment** (`g_abItemQuantities`, `0x030037B0`,
+152 bytes): a flat item-ID-indexed quantity array. **PROVEN**: item ID
+== index into `g_pBattleItemTable` (ROM `0x08060ED4`, `BattleItemEntry_candidate[78]`,
+stride `0x34`) == index into `g_abItemQuantities`. Each entry's
+`nNameTextId` field resolves through the decoded dialog/UI string table
+(`data/text/en_us.json`'s 2767 `strings`) to that item's real display
+name -- every one of 78 entries decodes to a real, sensible item name,
+and 6 of them were independently cross-checked against real-save
+evidence with an exact match every time (`bGrandWiggenweldPotion`
+going 3->4 for a picked-up Grand Wiggenweld Potion; `bMonsterBookOfMonsters`
+tracking boss-drop kills; `bPocketWatch` appearing at exactly the
+save a Pocket Watch was received; and the user's own listed
+Belt/Gloves/Boots/Cloak landing on indices 4/25/32/53 exactly). The
+JSON exposes one field per index in on-disk order (`itemQuantities`, a
+struct not a bare array -- see "Parsing"/"JSON shape" below); indices
+0-78 are contiguous (a plain ordered list in the tool, `ITEM_NAMES`, not
+an index->name map -- there's no gap to justify one) using their real
+names; the remainder (79-131, confirmed *not* a continuation of
+`g_pBattleItemTable` -- see below) are `bItemQuantityNNN`-style
+placeholders.
+
+Save/item-table order groups into contiguous per-equipment-slot/category
+runs (belts 0-7, misc/quest items 8-19, gloves 20-28, boots 29-37, caps
+38-46, robes/cloaks 47-55, potions 56-61, ingredients/quest items
+62-77, `bMonsterBookOfMonsters` alone at 78), each with its own local
+string-ID base rather than one single global offset across the whole
+table -- e.g. potions are `index + 1540`, while gloves/boots are
+`index + 1538` and belts/misc are `index + 1576`.
+
+**Index 79 is confirmed invalid, marking the real end of the table.**
+Per the user in-game: item 79 shows up under "all items" but not under
+any real category, uses the Rat Tonic sprite, and displays as "There you
+are, Harry!" -- and reading `g_pBattleItemTable[79].nNameTextId`
+directly from ROM gives exactly `0`, which decodes to that same string
+(the very first dialog line in the table). That's not a real item name,
+it's `g_pBattleItemTable` simply ending at 78 entries and index 79
+reading zeroed/unrelated memory past it. So indices 0-78 (79 entries)
+are the complete, real table; **79-131 are not a continuation of it**
+and shouldn't be assumed to hold real item data at all.
+
+Indices 132-149 are `g_abEquippedItemIds` (Ghidra: typed `EquippedItemSlots[3]`,
+though the global keeps its `ab`-prefixed name -- a known checker bug
+rejects `st`/struct-typed global names, same as `SaveManager`), an alias
+into this same array (not a separate allocation): 3 fighters x 6 equip
+slots, item ID or `0xff` (empty), exposed as `equippedItems.harry`/
+`.hermione`/`.ron`, each `{belt, charm, gloves, boots, hat, cloak}`.
+Fighter order confirmed from a real save with distinct per-character
+counts (Harry 0 items, Hermione 4, Ron 1 -- unambiguous). **Slot order
+confirmed**: belt, charm, gloves, boots, hat, cloak (slot 2 = gloves
+independently matches Ron's one equipped item). Trailing 2 bytes are
+always-zero padding so far (`abItemQuantitiesPadding`, omitted like
+other padding fields when zero).
+
+**Room-object state** (`roomObjectState`, packed by `PackRoomObjectStateToSaveStream`
+(`0x0802A570`), unpacked by `UnpackRoomObjectStateFromSaveStream` (`0x0802A3D4`)):
+this is **not an inventory list** -- it's a snapshot of every non-default
+object currently active in the room the player is standing in (spawned
+monsters, pickups, switches, chests, etc.), keyed by world-tile position,
+so re-entering a room restores it to how the player left it. **STRUCTURAL
+MATCH**: confirmed by finding the exact symmetric producer,
+`CaptureRoomObjectState` (`0x0802A70C`), which walks the live
+`sActiveObjectListHead` linked list of room objects and re-populates
+`g_pRoomObjectStateBuffer` (`0x03003B68`) every time the room state is
+captured (e.g. before a save or a room transition); `RestoreRoomObjectState`/
+`RestoreRoomObjectStateMinimal` (`0x0802AB34`/`0x0802AE64`) are the
+load-side counterparts that walk it back out, respawning each tile's
+default object via `RespawnRoomObjectAtTile` (`0x08005B70`, looks up the
+room's static per-tile object-type table and instantiates it) and then
+overwriting specific fields on top with the saved deltas.
+
+Fixed 17-byte header (packed in this exact, non-sequential field order):
+
+| Offset (from `g_pRoomObjectStateBuffer`) | Size | JSON key | Notes |
+|---|---|---|---|
+| 0x0 | 1 | `bPlayerFacing` | Read from/written to `g_pPlayerObject->field_0x12` on both the capture and restore side. Not a table count -- despite occupying the position a naive read of the packing order might suggest. Per the user: confirmed as an 8-direction facing enum -- `4` = facing down, `3` = facing down-right (consistent with a clockwise, 45-degrees-per-step enum covering all 8 directions). |
+| 0xC | 4 | `fxPlayerPosX` | **STRUCTURAL MATCH**: `g_pPlayerObject->nX` (per `docs/formats/object_script.md`'s already-identified `Object` layout), copied verbatim -- already in the engine's 16.16 fixed-point form, unlike the per-tile `u16` coordinates the tables below store (which get `<<0x10` on restore). Passed straight to `SnapObjectPosition` when restoring. Decoded as a JSON float (raw `/ 65536`); confirmed against a real save (`bak.sav`), whose raw values (`0x05D17900`/`0x01F4B980`) divide out to plausible, unremarkable-looking world coordinates (`1489.47`/`500.72`) rather than the odd-looking large integers the raw hex represents. |
+| 0x10 | 4 | `fxPlayerPosY` | Same as above, `g_pPlayerObject->nY`. |
+| 0x9 | 1 | `bSwitchState` | **STRUCTURAL MATCH**: not read from the player `Object` at all -- it's `g_bRoomSwitchState` (`0x03003B64`), get/set via `GetRoomSwitchState`/`SetRoomSwitchState` (`0x0802B12C`/`0x0802B110`). The setter is called from the room's tile-collision dispatcher (`0x0802D8F4`) for two specific trigger tile IDs (`0x23`/`0x24`) that set it to `0`/`1` respectively; only when the value actually *changes* does it call `ApplyRoomSwitchEffect` (`0x0802DF3C`), which plays a sound (`0x0803D338`, args `5,0x1f` for state 0 / `4,0x1f` for state 1) and swaps a tile graphic between two frames (effect IDs `0x19`/`0x18`) at a fixed screen position (`0xE0,0x220`) via `0x08020440`. Being a single scalar (not an array/table), this mechanic supports **at most one such lever/switch per room** -- a room needing several independently-stateful toggles instead uses the `kind5SwitchObjects` table below (kind-`5` objects with sub-kind `'3'`, up to 32 entries, one toggle bit each). |
+| remaining bytes (1, 2, 3, 4, 5, 6, 7) | 1 each | *(none)* | Entry counts for the 7 saved tables below -- not represented as their own JSON field, since each is exactly the corresponding table's list length (recomputed on encode). |
+
+7 variable-length record tables follow, each holding up to 32 entries
+(one table up to 570) of a fixed record size, at fixed offsets from the
+base pointer. Each is a plain JSON array of objects -- one field per
+named struct member (see below), no count/size/table-index metadata
+alongside it (that's implied by the key name and array length). Every
+record's field layout is traced byte-for-byte from the two symmetric
+producer/consumer functions (`CaptureRoomObjectState` capture; `RestoreRoomObjectState`/
+`RestoreRoomObjectStateMinimal` restore) and cross-checked against a real save (`bak.sav`);
+most fields are a straight copy of one fixed offset of the live `Object`
+struct (`docs/formats/object_script.md`) -- ones with no identified
+purpose keep that struct's own offset in their name (`bUnk_0xNN`/
+`wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing `bUnk_0x0F`-style
+convention for unnamed fields. A record's leftover bytes (confirmed
+always zero in practice, since the capture side memsets the whole
+buffer before writing) round-trip through an `abPadding` key, omitted
+like a slot's `abTailPadding` when all-zero.
+
+| JSON key | Offset | Record size | Max entries | Selected (capture side, `CaptureRoomObjectState`) for room-object "kind" (`*(short*)(obj+8)`) |
+|---|---|---|---|---|
+| `defaultKindObjects` | 0x14 | 0x6C (108) | 32 | the fallback/default case -- any kind not one of the values below. The richest record: full `Object` state, plus the tile positions of up to 3 linked sub-objects (`Object+0xa0`/`+0xa4`/`+0xa8`) -- captured but **never restored** (the load side reads no such fields for this table). |
+| `kind4Or7Objects` | 0xD94 | 0xC (12) | 32 | kinds `4`, `7`. Captures `Object+0xc` (flags) **unmasked** -- the only table that doesn't clear bit `0x00200000` before saving it. |
+| `kind5Objects` | 0xF14 | 0x34 (52) | 32 | kind `5`, when the object's byte at `+0x61` is *not* the ASCII char `'3'` |
+| `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Object` fields at all -- on restore, the respawned object's own tile position is used to look up an entry in a separate, static per-map item-drop table (`LookupFloorItemStateEntry`), and these two dwords overwrite that entry. Refreshes persistent floor-item state keyed by tile position, not the spawned object itself. |
+| `kind5SwitchObjects` | 0x1714 | 0x4 | 32 | kind `5`, when `+0x61 == '3'` -- structurally the per-object counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Object+0xc)`); a stored `1` makes restore call `MarkRoomObjectConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
+| `pickupMarkers` | 0x1794 | 0x4 | 32 | kind `0xB`. `bUnk_0x80` round-trips with a `+1` offset applied only on restore (`Object+0x80` becomes `bUnk_0x80 + 1`); captured verbatim (`Object+0x80`'s raw low byte) on save. `bUnk_0x8f`, when it equals `8` on restore, triggers an item-grant popup callback (`GrantPickupMarkerItem`). |
+| `presenceMarkers` | 0x17D4 | 0x4 | 570 (theoretical span; see below) | kinds `2`, `8`, `10` unconditionally, plus kind `5`/`6` under specific status-bit conditions -- just a tile position (`bTileX`/`bTileY`), no extra state: restore only respawns the tile's default object. |
+
+None of the numeric "kind" values above are tied to a named enum yet --
+the table names above describe which capture-side branch produces which
+JSON table, not what each kind represents in game terms.
+
+**Not part of the save.** `g_pRoomObjectStateBuffer[8]` (a byte the pack/unpack
+functions never touch) and the region at offset `0x19B4` (record size
+`0x24` = 36, inside the nominal span of `presenceMarkers`' table) form an
+eighth, purely in-memory table: captured only for room objects flagged
+`+0x10 == 0xFF` and kind `0x10` (`CaptureRoomObjectState`), and restored by both
+`RestoreRoomObjectState` and `RestoreRoomObjectStateMinimal` independent of any `Unpack*` call.
+`0x0802B0F4` (`memset`s the whole `0x20BC`-byte buffer to 0) runs after
+every restore, and the `Unpack*`-driven load path (`0x0802A3D4`) never
+populates this table at all -- so whatever it holds only survives a room
+transition within the same play session, never a save/reload. This means
+`presenceMarkers`' *effective* usable range is smaller than its
+570-entry span suggests, since the tail of that space doubles as this
+table's storage during normal (non-serialized) play.
+
+`0x0802B018` allocates the whole `0x20BC`-byte buffer once
+(`DAT_03003B68`) via the heap allocator also used elsewhere in save
+handling.
 
 ## `SaveManager` (IWRAM, `0x03005598`)
 
@@ -246,8 +369,8 @@ own writer, not that it replicates `UnpackBytesFromSaveStream` et al.
 line-for-line.
 
 **JSON shape.** Each field is a plain named key on its containing object
-(header, options, a slot, or `inventoryQuestData`'s `tables`), in
-on-disk order -- no separate index/wrapper object. Every non-struct
+(header, options, a slot, or `roomObjectState`), in on-disk order -- no
+separate index/wrapper object. Every non-struct
 field's key carries a Hungarian-notation type/size prefix, the same
 convention already used for this ROM's globals (`wHp`, `bLevel`,
 `g_abDefaultSaveHeader`):
@@ -257,6 +380,7 @@ convention already used for this ROM's globals (`wHp`, `bLevel`,
 | `b` | 1-byte scalar (JSON int) |
 | `w` | 2-byte scalar / u16 (JSON int) |
 | `dw` | 4-byte scalar / u32 (JSON int) |
+| `fx` | 4-byte 16.16 fixed-point scalar (JSON float -- dividing/multiplying by 65536 is exact in IEEE754 double, so this round-trips losslessly) |
 | `fl` | 1-bit flag (JSON bool) |
 | `sz` | fixed-length ASCII string |
 | `ab` | byte array/blob -- size given by its JSON length (hex string or list of ints) |
@@ -264,13 +388,15 @@ convention already used for this ROM's globals (`wHp`, `bLevel`,
 | `a3` | array of 3-bit values (each element 0-7) -- size given by list length |
 | `a1` | array of 1-bit values (each element 0/1), unpacked LSB-first from its packed byte storage -- size given by list length |
 
-Struct-shaped fields (`partyStats`, `inventoryQuestData`, `tables`)
-carry no prefix, since a single type/size doesn't describe them. Fields
-whose real name/meaning isn't identified are named `<prefix>UnknownN`,
-where `N` is that field's 0-based position among its immediate siblings
-sharing that prefix (top-level slot fields are indexed separately from,
-e.g., the inventory sub-tables nested inside `inventoryQuestData`) --
-not a global counter across the whole file.
+Struct-shaped fields (`partyStats`, `roomObjectState`) carry no prefix,
+since a single type/size doesn't describe them. Fields whose real
+name/meaning isn't identified are named `<prefix>UnknownN`, where `N` is
+that field's 0-based position among its immediate siblings sharing that
+prefix (top-level slot fields are indexed separately from, e.g.,
+`roomObjectState`'s own `unknownN` record tables, each a plain JSON
+array of fixed-size hex-encoded records with no prefix -- the array
+carries no single scalar type/size) -- not a global counter across the
+whole file.
 
 A region's `wChecksum` key is present only when that region is actually
 invalid (holding the bad stored value); a valid region has no checksum
@@ -285,19 +411,40 @@ a slot's content past its checksum.
 
 ## Further work
 
+- Trace what `flHeaderBit0` (`SaveHeader` byte `0xD` bit `0x01`) actually
+  controls. It's read by `FUN_08036038`, which picks between two ROM
+  tables (`0x08069474`/`0x0806948C`) based on a second flag (bit 0 of
+  the save's own `anUnknown15`), stores the choice into `DAT_03005208`,
+  and a separate state machine (`FUN_08035EB0`) later indexes that table
+  and feeds the result into a game-mode-push call (`FUN_0802C7C4`).
+  Real, load-bearing logic -- worth digging into what menu/screen this
+  belongs to and what the two tables represent (a strong candidate:
+  some kind of alternate/bonus content unlocked by save state).
 - Decode SaveOptions' 40 bytes (all-zero in the one real save sampled so
   far, so its field boundaries aren't visible from data alone).
-- Confirm `bUnknown1` (the 4th playtime-adjacent byte) against a save
-  with a nonzero, independently-known seconds/sub-second value.
+- Find `bPlaytimeFrames`' actual incrementer in the disassembly to move
+  it from STRUCTURAL to PROVEN confidence.
 - Identify the remaining unlabeled globals `SerializeGameStateToSaveBuffer`
   packs directly (`0x03003B50`, `0x0300318C`,
   `0x030027B9`, `0x0300338C`-`0x0300338F`, `0x03002614`, `0x030037B0`,
   `0x03002240`, `0x030027A0`, and the fields inside `FUN_08037FB8`/
   `FUN_08022EA8` other than the Folio Universitas ones: `0x03003212`,
   `0x0300321C`, `0x03003220`, `0x03003226`, `0x03003224`, `0x0300322C`).
-- Decode the variable-length inventory/quest-list structure read from
-  `DAT_03003B68` (`0x0802A570`) -- its 7 record tables' individual field
-  layouts aren't decoded, just their record sizes/counts.
+- Name the remaining `bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN` fields in the
+  7 room-object-state tables (see "Room-object state" above) -- their
+  byte offsets are traced precisely, but most still only carry their
+  raw `Object` struct offset rather than a real name; cross-referencing
+  `docs/formats/object_script.md` as more `Object` fields there get
+  identified should resolve several of these directly.
+- Identify the room-object "kind" enum (`*(short*)(obj+8)`) that
+  `0x0802A70C` switches on to pick a table -- would let each table above
+  get a real name instead of `unknownN`.
+- Confirm the full 8-direction `bPlayerFacing` enum beyond the two
+  values already confirmed by the user (`4` = down, `3` = down-right).
+- Find what else in a room reads `bSwitchState` (getter `0x0802B12C`) --
+  confirmed so far only drives its own sound/graphic-swap effect
+  (`0x0802DF3C`); whatever door/platform/gate a lever is meant to
+  control elsewhere in the room isn't traced yet.
 - Trace where `slotPreview` (`g_SaveManager+0x3C`) gets built from a
   loaded slot, for the save-select UI.
 - Locate the running XP accumulator that `ApplyPendingLevelUps_candidate`

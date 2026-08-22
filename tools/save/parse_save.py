@@ -32,6 +32,8 @@ same convention already used for this ROM's globals, e.g. `wHp`,
     b   1-byte scalar (JSON int)
     w   2-byte scalar / u16 (JSON int)
     dw  4-byte scalar / u32 (JSON int)
+    fx  4-byte 16.16 fixed-point scalar (JSON float -- dividing/multiplying
+        by 65536 is exact in IEEE754 double, so this round-trips losslessly)
     fl  1-bit flag (JSON bool or 0/1 int)
     sz  fixed-length ASCII string
     ab  byte array/blob, size given by its JSON length (hex string or
@@ -40,15 +42,17 @@ same convention already used for this ROM's globals, e.g. `wHp`,
     a3  array of 3-bit values (each element 0-7), size given by list
         length
 
-Struct-shaped fields (`partyStats`, `inventoryQuestData`, `tables`) carry
-no prefix -- a single type/size doesn't describe them. Fields whose real
-meaning isn't identified are named `<prefix>UnknownN`, where N is that
-field's 0-based index among its immediate siblings (not a global
-counter) -- e.g. the inventory sub-tables nested inside
-`inventoryQuestData` are indexed separately from the top-level slot
-fields. Each slot's fields are plain named keys on the slot object, in
-their on-disk order (JSON object order is preserved end to end); there
-is no separate index/name wrapper.
+Struct-shaped fields (`partyStats`, `roomObjectState`) carry no prefix --
+a single type/size doesn't describe them. Fields whose real meaning
+isn't identified are named `<prefix>UnknownN`, where N is that field's
+0-based index among its immediate siblings (not a global counter) --
+e.g. `roomObjectState`'s own `unknownN` record tables (see below) are
+indexed separately from the top-level slot fields, and carry no prefix
+since each is a list of fixed-size records, not a scalar/blob. Each
+slot's fields are plain named keys on the slot object, in their on-disk
+order (JSON object order is preserved end to end); there is no separate
+index/name wrapper. A table's entry count is never serialized on its
+own -- it's exactly the JSON list's length, recomputed on encode.
 
 Usage:
     parse_save.py decode <in.sav> [out.json]     (default: stdout)
@@ -230,6 +234,42 @@ class SaveReader:
 # Header / options
 # --------------------------------------------------------------------------
 
+# SaveHeader offset 0xD (SaveManager_03005598.aHeader[0xd] in Ghidra) is a
+# bitmask, confirmed field-by-field against the minigame-select screen
+# (FUN_0802d1c8/FUN_0802d148/FUN_0802d08c) and against a real save going
+# from the options menu's default to Gamma=High (bit 0x80 -- also read by
+# a menu-graphics selector, FUN_0800d1a4). File-level (part of SaveHeader,
+# shared across all 3 save slots), unlike the per-slot abQuestEventState --
+# also confirmed against a real save where this went from 0x00 to 0x04
+# (bit 0x04) at the exact save unlocking the 2nd minigame ("Buckbeak's
+# Hippogriff Glide").
+HEADER_FLAG_BITS = {
+    # bit 0 is confirmed read elsewhere (a menu-background selector,
+    # FUN_08036038) but its actual purpose isn't identified.
+    "flHeaderBit0": 0x01,
+    "flMinigame1Unlocked": 0x02,
+    "flMinigame2Unlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
+    "flMinigame3Unlocked": 0x08,
+    "flMinigame4Unlocked": 0x10,
+    # bits 5/6 have no known reader at all yet.
+    "flHeaderBit5": 0x20,
+    "flHeaderBit6": 0x40,
+    "flGammaHigh": 0x80,  # options menu: Gamma Normal/High
+}
+
+
+def decode_header_flags(byte_val: int) -> dict:
+    return {name: bool(byte_val & bit) for name, bit in HEADER_FLAG_BITS.items()}
+
+
+def encode_header_flags(h: dict) -> int:
+    value = 0
+    for name, bit in HEADER_FLAG_BITS.items():
+        if h[name]:
+            value |= bit
+    return value
+
+
 def parse_header(raw: bytes) -> dict:
     data = logical_bytes(raw, *HEADER_BLOCKS)
     magic = data[0:8]
@@ -237,9 +277,17 @@ def parse_header(raw: bytes) -> dict:
     result = {
         "szMagic": magic.decode("ascii", errors="replace"),
         "flLanguageConfigured": bool(lang_byte & 0x80),
+        # Options menu language selector (0=English US, 1=English UK, ...
+        # per CLAUDE.md's 8-language cart list); confirmed against a real
+        # save switching to English UK.
         "bLanguageIndex": lang_byte & 0x7F,
-        "abUnknown0": data[9:14].hex(),
+        # Options menu: Music/Sound volume (0-10 scale, 0x0a default).
+        # Confirmed against real saves with each set to 0 (off).
+        "bMusicVolume": data[9],
+        "bSoundVolume": data[10],
+        "abUnknown0": data[11:13].hex(),
     }
+    result.update(decode_header_flags(data[13]))
     if not checksum_ok(data):
         result["wChecksum"] = struct.unpack_from("<H", data, 14)[0]
     return result
@@ -249,7 +297,10 @@ def encode_header(h: dict) -> bytes:
     data = bytearray(16)
     data[0:8] = h["szMagic"].encode("ascii")
     data[8] = (0x80 if h["flLanguageConfigured"] else 0) | (h["bLanguageIndex"] & 0x7F)
-    data[9:14] = bytes.fromhex(h["abUnknown0"])
+    data[9] = h["bMusicVolume"]
+    data[10] = h["bSoundVolume"]
+    data[11:13] = bytes.fromhex(h["abUnknown0"])
+    data[13] = encode_header_flags(h)
     struct.pack_into("<H", data, 14, 0)
     struct.pack_into("<H", data, 14, (-sum16(bytes(data))) & 0xFFFF)
     return bytes(data)
@@ -269,6 +320,163 @@ def encode_options(o: dict) -> bytes:
     struct.pack_into("<H", data, 38, 0)
     struct.pack_into("<H", data, 38, (-sum16(bytes(data))) & 0xFFFF)
     return bytes(data)
+
+
+# --------------------------------------------------------------------------
+# Save slot: item quantities + equipped items (g_abItemQuantities, 152 bytes)
+#
+# Index 0-131 is a flat item-ID-indexed quantity array (0-78 confirmed as
+# battle items, per g_pBattleItemTable). Index 132-149 is
+# g_abEquippedItemIds, an alias into this same array (not a separate
+# allocation): 3 fighters x 6 equip slots, each an item ID or 0xff (empty).
+# Fighter order confirmed from a real save (Harry 0 items, Hermione 4,
+# Ron 1 -- all distinct counts, unambiguous). Slot order confirmed as
+# belt, charm, gloves, boots, hat, cloak (slot 2 = gloves matches Ron's
+# one equipped item independently). Trailing 2 bytes are always-zero
+# padding so far.
+# --------------------------------------------------------------------------
+
+EQUIPPED_FIGHTER_NAMES = ["harry", "hermione", "ron"]
+EQUIP_SLOT_NAMES = ["belt", "charm", "gloves", "boots", "hat", "cloak"]
+ITEM_QUANTITY_COUNT = 132
+
+# Item index == g_pBattleItemTable[index] (ROM 0x08060ED4, stride 0x34).
+# Each entry's +0x10 field is a text-string ID (nNameTextId);
+# resolving it through data/text/en_us.json's decoded string table gives
+# every one of these names directly -- PROVEN, cross-checked against 6
+# real-save-confirmed items (Grand Wiggenweld Potion, Monster Book of
+# Monsters, Pocket Watch, and a real save's own listed Belt/Gloves/Boots/
+# Cloak), every one landing exactly. Save order == item-ID order == the
+# order g_pBattleItemTable itself is laid out in ROM (which in turn
+# groups into per-equipment-slot/category runs, each with its own local
+# string-ID base -- not one single global offset across the whole table).
+# Contiguous from index 0, so a plain list (not an index->name map) is
+# all this needs. Confirmed to end here: index 79's nNameTextId reads
+# 0 from ROM (decoding to "There you are, Harry!", the table's first
+# dialog string) -- not a real item, just zeroed/unrelated memory past
+# the table's real end. Matches an in-game observation of item 79 as a
+# visibly broken entry (Rat Tonic sprite, wrong name, showing under "all
+# items" but no real category). Don't extend this list past index 78
+# without new evidence.
+ITEM_NAMES = [
+    "bOrdinaryBelt",
+    "bLeatherBelt",
+    "bRope",
+    "bSwedishShortsnoutDragonHideBelt",
+    "bCommonWelshGreenDragonHideBelt",
+    "bRomanianLonghornDragonHideBelt",
+    "bChineseFireballDragonHideBelt",
+    "bHungarianHorntailDragonHideBelt",
+    "bBracelet",
+    "bBeads",
+    "bPocketWatch",
+    "bQuidditchWristGuards",
+    "bHeadBand",
+    "bEagleFeatherQuill",
+    "bCrystalBall",
+    "bDragonLiver",
+    "bRabbitFurGloves",
+    "bRemembrall",
+    "bSpellotape",
+    "bGoldenSnitch",
+    "bMittens",
+    "bLeatherGloves",
+    "bQuidditchGloves",
+    "bPotionsGloves",
+    "bSwedishShortsnoutDragonHideGloves",
+    "bCommonWelshGreenDragonHideGloves",
+    "bRomanianLonghornDragonHideGloves",
+    "bChineseFireballDragonHideGloves",
+    "bHungarianHorntailDragonHideGloves",
+    "bSneakers",
+    "bLeatherBoots",
+    "bGaloshes",
+    "bQuidditchBoots",
+    "bSwedishShortsnoutDragonHideBoots",
+    "bCommonWelshGreenDragonHideBoots",
+    "bRomanianLonghornDragonHideBoots",
+    "bChineseFireballDragonHideBoots",
+    "bHungarianHorntailDragonHideBoots",
+    "bCap",
+    "bBlackPointedHat",
+    "bRearAdmiralsHat",
+    "bQuidditchHelmet",
+    "bSwedishShortsnoutDragonHideCap",
+    "bCommonWelshGreenDragonHideCap",
+    "bRomanianLonghornDragonHideCap",
+    "bChineseFireballDragonHideCap",
+    "bHungarianHorntailDragonHideCap",
+    "bSchoolRobe",
+    "bQuidditchRobe",
+    "bWinterCloak",
+    "bPotionsRobe",
+    "bSwedishShortsnoutDragonHideCloak",
+    "bCommonWelshGreenDragonHideCloak",
+    "bRomanianLonghornDragonHideCloak",
+    "bChineseFireballDragonHideCloak",
+    "bHungarianHorntailDragonHideCloak",
+    "bWiggenweldPotion",
+    "bGrandWiggenweldPotion",
+    "bPepperupPotion",
+    "bGrandPepperupPotion",
+    "bAntidoteToCommonPoisons",
+    "bAntiParalysisPotion",
+    "bRatTonic",
+    "bShrivelfig",
+    "bDaisyRoots",
+    "bRatSpleen",
+    "bLeechJuice",
+    "bFirebolt",
+    "bScabbers",
+    "bHedwig",
+    "bChocolateFrogs",
+    "bCrookshanks",
+    "bTimeTurner",
+    "bTrevor",
+    "bABookPage",
+    "bValveHandle",
+    "bChocolate",
+    "bDeadCaterpillar",
+    "bMonsterBookOfMonsters",
+]
+
+
+def _item_quantity_key(i: int) -> str:
+    if i < len(ITEM_NAMES):
+        return ITEM_NAMES[i]
+    return f"bItemQuantity{i:03d}"
+
+
+def decode_item_quantities(r: SaveReader) -> dict:
+    quantities = list(r.read_bytes(ITEM_QUANTITY_COUNT))
+    equipped = {}
+    for fighter in EQUIPPED_FIGHTER_NAMES:
+        slot_ids = r.read_bytes(len(EQUIP_SLOT_NAMES))
+        equipped[fighter] = dict(zip(EQUIP_SLOT_NAMES, slot_ids))
+    padding = r.read_bytes(2)
+
+    # One field per item, in on-disk order (item ID == save-file position);
+    # named ones use their real name, the rest a placeholder keyed by index.
+    item_quantities = {_item_quantity_key(i): q for i, q in enumerate(quantities)}
+
+    result = {"itemQuantities": item_quantities, "equippedItems": equipped}
+    if any(padding):
+        result["abItemQuantitiesPadding"] = padding.hex()
+    return result
+
+
+def encode_item_quantities(w: SaveWriter, item_data: dict):
+    item_quantities = item_data["itemQuantities"]
+    quantities = [item_quantities[_item_quantity_key(i)] for i in range(ITEM_QUANTITY_COUNT)]
+    w.write_bytes(bytes(quantities))
+    for fighter in EQUIPPED_FIGHTER_NAMES:
+        slots = item_data["equippedItems"][fighter]
+        w.write_bytes(bytes(slots[name] for name in EQUIP_SLOT_NAMES))
+    if "abItemQuantitiesPadding" in item_data:
+        padding = bytes.fromhex(item_data["abItemQuantitiesPadding"])
+    else:
+        padding = b"\x00\x00"
+    w.write_bytes(padding)
 
 
 # --------------------------------------------------------------------------
@@ -300,86 +508,248 @@ def encode_party_member(w: SaveWriter, m: dict):
 
 
 # --------------------------------------------------------------------------
-# Save slot: inventory/quest data (0x0802A570)
+# Save slot: room-object state (0x0802A570)
 #
-# Fixed 17-byte header (packed in this exact, non-sequential field order),
-# then 7 variable-length record tables, one per count in the header
-# (index 0's own count byte is packed but not used to drive a table).
+# A snapshot of every non-default object active in the player's current
+# room (spawned monsters, pickups, switches, chests, etc.), restored when
+# the room is re-entered -- not an inventory list, despite the shape of
+# the on-disk field order. See docs/formats/save.md's "Room-object state"
+# section.
+#
+# Fixed header (player position/facing, a room switch flag, and one
+# entry-count byte per table below, in this exact order), then the 7
+# tables' entries themselves, back to back in the same order. Each
+# table's count byte is redundant with its JSON list's length, so it's
+# not itself represented in JSON.
+#
+# Each table's record layout was traced byte-for-byte from the two
+# symmetric producer/consumer functions: 0x0802A70C (capture, walks the
+# live room-object list and picks a table per object per its "kind",
+# *(short*)(obj+8)) and 0x0802AB34/0x0802AE64 (restore, respawn each
+# tile's default object via 0x08005B70 then overlay these fields). Most
+# fields copy a byte/word/dword straight from a fixed offset of the live
+# `Object` struct (docs/formats/object_script.md); ones with no
+# identified meaning keep that struct's own offset in their name
+# (`bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing
+# `bUnk_0x0F`-style convention for unnamed fields. A record's leftover,
+# always-zero-in-practice padding bytes (confirmed zero because the
+# capture side memsets the whole buffer before writing) are round-tripped
+# via an `abPadding` key, omitted like `abTailPadding` when all-zero.
 # --------------------------------------------------------------------------
 
-INVENTORY_TABLES = [
-    # (count_key, record_size)
-    ("bCount1", 0x6C),
-    ("bCount2", 0x0C),
-    ("bCount3", 0x34),
-    ("bCount4", 0x0C),
-    ("bCount6", 0x04),
-    ("bCount7", 0x04),
-    ("bCount5", 0x04),
+# Field spec: (JSON key, byte offset within the record, struct format char).
+# Bytes not covered by any field are padding (see `abPadding` above).
+
+SPEC_DEFAULT_KIND = [
+    # kind: the fallback/default case (any kind not handled below). The
+    # richest record -- full Object state, plus 3 linked sub-objects'
+    # tile positions (captured but never restored -- see docs).
+    ("dwObjectFlags", 0x00, "I"),   # Object+0xc, capture masks off bit 0x00200000
+    ("dwUnk_0x28", 0x04, "I"),
+    ("dwUnk_0x80", 0x08, "I"),
+    ("wUnk_0x86", 0x0C, "H"),
+    ("wWaitTarget_0x8a", 0x0E, "H"),  # Object+0x8a, the WaitFrames/WaitForCounter target (object_script.md)
+    ("bSubObjectATileX", 0x10, "B"),  # tile position of Object+0xa0's linked object -- capture-only, never restored
+    ("bSubObjectATileY", 0x11, "B"),
+    ("bSubObjectBTileX", 0x12, "B"),  # Object+0xa4's linked object -- capture-only
+    ("bSubObjectBTileY", 0x13, "B"),
+    ("bSubObjectCTileX", 0x14, "B"),  # Object+0xa8's linked object -- capture-only
+    ("bSubObjectCTileY", 0x15, "B"),
+    ("bFacing", 0x16, "B"),          # Object+0x12
+    ("bUnk_0x8d", 0x17, "B"),
+    ("bUnk_0x8f", 0x18, "B"),
+    ("bUnk_0x8c", 0x19, "B"),
+    ("bUnk_0x91", 0x1A, "B"),
+    ("bTileX", 0x1B, "B"),           # spawn key, passed to 0x08005B70
+    ("bTileY", 0x1C, "B"),
+    ("dwUnk_0xd8", 0x20, "I"),
+    ("dwUnk_0xdc", 0x24, "I"),
+    ("dwUnk_0xe0", 0x28, "I"),
+    ("dwUnk_0xe4", 0x2C, "I"),
+    ("dwUnk_0xe8", 0x30, "I"),
+    ("dwUnk_0x60", 0x40, "I"),
+    ("dwUnk_0x64", 0x44, "I"),
+    ("dwUnk_0x68", 0x48, "I"),
+    ("dwUnk_0x6c", 0x4C, "I"),
+    ("dwUnk_0x70", 0x50, "I"),
+    ("dwUnk_0x74", 0x54, "I"),
+    ("dwUnk_0x78", 0x58, "I"),
+    ("wUnk_0x4cHi", 0x5C, "H"),      # Object+0x4c's high 16 bits only (integer/tile part)
+    ("wUnk_0x50Hi", 0x5E, "H"),      # Object+0x50's high 16 bits only
+    ("wPosXTile", 0x60, "H"),        # Object+0x2c's high 16 bits -- tile-level X, sub-tile part not saved
+    ("wPosYTile", 0x62, "H"),        # Object+0x30's high 16 bits
+    ("dwUnk_0x3c", 0x64, "I"),
+    ("dwUnk_0x40", 0x68, "I"),
 ]
 
+SPEC_KIND_4_OR_7 = [
+    ("bTileX", 0x0, "B"),
+    ("bTileY", 0x1, "B"),
+    ("bUnk_0x8d", 0x3, "B"),
+    ("dwObjectFlags", 0x4, "I"),     # Object+0xc, captured unmasked (unlike the other tables)
+    ("dwUnk_0x80", 0x8, "I"),
+]
 
-def decode_inventory(r: SaveReader) -> dict:
-    field_c = r.read_bytes(4).hex()
-    field_10 = r.read_bytes(4).hex()
-    count0 = r.read_bytes(1)[0]
-    count1 = r.read_bytes(1)[0]
-    count2 = r.read_bytes(1)[0]
-    count3 = r.read_bytes(1)[0]
-    count4 = r.read_bytes(1)[0]
-    count6 = r.read_bytes(1)[0]
-    count7 = r.read_bytes(1)[0]
-    count5 = r.read_bytes(1)[0]
-    field_9 = r.read_bytes(1)[0]
+SPEC_KIND_5 = [
+    ("bTileX", 0x0, "B"),
+    ("bTileY", 0x1, "B"),
+    ("bUnk_0x8f", 0x2, "B"),
+    ("bUnk_0x16", 0x3, "B"),
+    ("bUnk_0x67", 0x4, "B"),
+    ("bUnk_0x60", 0x5, "B"),
+    ("wUnk_0x86", 0x6, "H"),
+    ("dwObjectFlags", 0x8, "I"),     # Object+0xc, masked off bit 0x00200000
+    ("dwUnk_0xd8", 0xC, "I"),
+    ("dwUnk_0xdc", 0x10, "I"),
+    ("dwUnk_0xe0", 0x14, "I"),
+    ("dwUnk_0xe4", 0x18, "I"),
+    ("dwUnk_0xe8", 0x1C, "I"),
+    ("wPosXTile", 0x20, "H"),        # Object+0x2e (high half of current X) -- tile-level only
+    ("wPosYTile", 0x22, "H"),        # Object+0x32
+    ("dwUnk_0x3c", 0x24, "I"),
+    ("dwUnk_0x40", 0x28, "I"),
+    ("dwUnk_0x44", 0x2C, "I"),
+    ("dwUnk_0x48", 0x30, "I"),
+]
 
-    counts = {
-        "bCount1": count1, "bCount2": count2, "bCount3": count3,
-        "bCount4": count4, "bCount6": count6, "bCount7": count7,
-        "bCount5": count5,
+SPEC_FLOOR_ITEM = [
+    # kind 1. The two dwords aren't Object fields at all: on restore, the
+    # respawned object's own (tile-level) position is used to look up an
+    # entry in a separate, static per-map item-drop table (0x08020504),
+    # and these two dwords overwrite that table entry -- i.e. this
+    # refreshes persistent floor-item state keyed by tile position, not
+    # the spawned object itself.
+    ("bTileX", 0x0, "B"),
+    ("bTileY", 0x1, "B"),
+    ("dwItemTableField0", 0x4, "I"),
+    ("dwItemTableField1", 0x8, "I"),
+]
+
+SPEC_KIND_5_SWITCH = [
+    # kind 5, sub-kind '3' (Object+0x61 == ASCII '3') -- a per-object
+    # toggle, structurally the same idea as the single-instance
+    # `bSwitchState` room switch above but with up to 32 independent
+    # instances per room. `bTriggered` is encoded inverted: stored as
+    # NOT(bit 0x4 of Object+0xc); a stored `1` makes restore call
+    # 0x08046CA4, which plays a "consumed/vanish" animation and clears
+    # that same bit -- i.e. `1` means "already triggered, redisplay as such".
+    ("bTileX", 0x0, "B"),
+    ("bTileY", 0x1, "B"),
+    ("bTriggered", 0x2, "B"),
+]
+
+SPEC_PICKUP_MARKER = [
+    # kind 0xB. `bUnk_0x80` round-trips with a +1 offset applied only on
+    # restore (Object+0x80 becomes this value + 1); captured verbatim
+    # (Object+0x80's raw low byte) on save. `bUnk_0x8f`, when it equals
+    # `8` on restore, triggers an item-grant popup (0x08044A94).
+    ("bTileX", 0x0, "B"),
+    ("bTileY", 0x1, "B"),
+    ("bUnk_0x80", 0x2, "B"),
+    ("bUnk_0x8f", 0x3, "B"),
+]
+
+SPEC_PRESENCE_MARKER = [
+    # kinds 2, 8, 10 unconditionally, plus kind 5/6 under specific
+    # status-bit conditions (see docs/formats/save.md). Just a tile
+    # position -- restore only respawns the tile's default object, no
+    # further state applied.
+    ("bTileX", 0x0, "B"),
+    ("bTileY", 0x1, "B"),
+]
+
+ROOM_OBJECT_TABLES = [
+    # (JSON key, record size, field spec) -- order matches the on-disk
+    # count/table order.
+    ("defaultKindObjects", 0x6C, SPEC_DEFAULT_KIND),
+    ("kind4Or7Objects", 0x0C, SPEC_KIND_4_OR_7),
+    ("kind5Objects", 0x34, SPEC_KIND_5),
+    ("floorItemStates", 0x0C, SPEC_FLOOR_ITEM),
+    ("kind5SwitchObjects", 0x04, SPEC_KIND_5_SWITCH),
+    ("pickupMarkers", 0x04, SPEC_PICKUP_MARKER),
+    ("presenceMarkers", 0x04, SPEC_PRESENCE_MARKER),
+]
+
+_RECORD_FMT_SIZE = {"B": 1, "H": 2, "I": 4}
+
+
+def _record_padding_ranges(spec, record_size):
+    """Byte ranges of `record_size` not covered by any field in `spec`."""
+    covered = bytearray(record_size)
+    for _, offset, fmt in spec:
+        size = _RECORD_FMT_SIZE[fmt]
+        for i in range(offset, offset + size):
+            covered[i] = 1
+    ranges = []
+    i = 0
+    while i < record_size:
+        if not covered[i]:
+            start = i
+            while i < record_size and not covered[i]:
+                i += 1
+            ranges.append((start, i - start))
+        else:
+            i += 1
+    return ranges
+
+
+def decode_record(data: bytes, spec, record_size: int) -> dict:
+    result = {}
+    for name, offset, fmt in spec:
+        result[name] = struct.unpack_from("<" + fmt, data, offset)[0]
+    padding = b"".join(data[o:o + n] for o, n in _record_padding_ranges(spec, record_size))
+    if any(padding):
+        result["abPadding"] = padding.hex()
+    return result
+
+
+def encode_record(rec: dict, spec, record_size: int) -> bytes:
+    data = bytearray(record_size)  # padding bytes default to 0 and are left alone below
+    for name, offset, fmt in spec:
+        struct.pack_into("<" + fmt, data, offset, rec[name])
+    if "abPadding" in rec:
+        padding = bytes.fromhex(rec["abPadding"])
+        pos = 0
+        for offset, length in _record_padding_ranges(spec, record_size):
+            data[offset:offset + length] = padding[pos:pos + length]
+            pos += length
+    return bytes(data)
+
+
+FIXED_POINT_SHIFT = 65536.0  # 16.16 fixed point; division/multiplication by a
+                              # power of 2 is exact in IEEE754 double, so this
+                              # round-trips losslessly.
+
+
+def decode_room_object_state(r: SaveReader) -> dict:
+    pos_x = struct.unpack("<i", r.read_bytes(4))[0] / FIXED_POINT_SHIFT
+    pos_y = struct.unpack("<i", r.read_bytes(4))[0] / FIXED_POINT_SHIFT
+    facing = r.read_bytes(1)[0]
+    counts = [r.read_bytes(1)[0] for _ in ROOM_OBJECT_TABLES]
+    switch_state = r.read_bytes(1)[0]
+
+    result = {
+        "fxPlayerPosX": pos_x,
+        "fxPlayerPosY": pos_y,
+        "bPlayerFacing": facing,
+        "bSwitchState": switch_state,
     }
-
-    tables = {}
-    for i, (count_key, rec_size) in enumerate(INVENTORY_TABLES):
-        n = counts[count_key]
-        entries = [r.read_bytes(rec_size).hex() for _ in range(n)]
-        tables[f"unknown{i}"] = {
-            "controlledBy": count_key,
-            "bRecordSize": rec_size,
-            "entries": entries,
-        }
-
-    return {
-        "abUnknown0": field_c,
-        "abUnknown1": field_10,
-        "bCount0": count0,
-        "bCount1": count1,
-        "bCount2": count2,
-        "bCount3": count3,
-        "bCount4": count4,
-        "bCount6": count6,
-        "bCount7": count7,
-        "bCount5": count5,
-        "bUnknown2": field_9,
-        "tables": tables,
-    }
+    for (key, rec_size, spec), count in zip(ROOM_OBJECT_TABLES, counts):
+        result[key] = [decode_record(r.read_bytes(rec_size), spec, rec_size)
+                        for _ in range(count)]
+    return result
 
 
-def encode_inventory(w: SaveWriter, inv: dict):
-    w.write_bytes(bytes.fromhex(inv["abUnknown0"]))
-    w.write_bytes(bytes.fromhex(inv["abUnknown1"]))
-    w.write_bytes(bytes([inv["bCount0"]]))
-    w.write_bytes(bytes([inv["bCount1"]]))
-    w.write_bytes(bytes([inv["bCount2"]]))
-    w.write_bytes(bytes([inv["bCount3"]]))
-    w.write_bytes(bytes([inv["bCount4"]]))
-    w.write_bytes(bytes([inv["bCount6"]]))
-    w.write_bytes(bytes([inv["bCount7"]]))
-    w.write_bytes(bytes([inv["bCount5"]]))
-    w.write_bytes(bytes([inv["bUnknown2"]]))
-    for i in range(len(INVENTORY_TABLES)):
-        table = inv["tables"][f"unknown{i}"]
-        for entry in table["entries"]:
-            w.write_bytes(bytes.fromhex(entry))
+def encode_room_object_state(w: SaveWriter, state: dict):
+    w.write_bytes(struct.pack("<i", round(state["fxPlayerPosX"] * FIXED_POINT_SHIFT)))
+    w.write_bytes(struct.pack("<i", round(state["fxPlayerPosY"] * FIXED_POINT_SHIFT)))
+    w.write_bytes(bytes([state["bPlayerFacing"]]))
+    for key, _, _ in ROOM_OBJECT_TABLES:
+        w.write_bytes(bytes([len(state[key])]))
+    w.write_bytes(bytes([state["bSwitchState"]]))
+    for key, rec_size, spec in ROOM_OBJECT_TABLES:
+        for entry in state[key]:
+            w.write_bytes(encode_record(entry, spec, rec_size))
 
 
 # --------------------------------------------------------------------------
@@ -391,21 +761,22 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot = {}
 
     slot["dwMoney"] = struct.unpack("<I", r.read_bytes(4))[0]
-    # Playtime, one byte each: hours, minutes, seconds, and a 4th byte
-    # (also 0-59-range in the one sample seen) not shown by the in-game
-    # HH:MM display -- possibly frames/VBlanks, unconfirmed.
+    # Playtime, one byte each: hours, minutes, seconds, frames. The 4th
+    # byte stays 0-28 across 26 real samples -- well under a 50/60fps
+    # rollover, consistent with a sub-second frame counter, though no
+    # direct incrementer was found in the disassembly (likely accessed
+    # via computed offset, not a literal address Ghidra's xrefs catch).
     slot["bPlaytimeHours"] = r.read_bytes(1)[0]
     slot["bPlaytimeMinutes"] = r.read_bytes(1)[0]
     slot["bPlaytimeSeconds"] = r.read_bytes(1)[0]
-    slot["bUnknown1"] = r.read_bytes(1)[0]
+    slot["bPlaytimeFrames"] = r.read_bytes(1)[0]
     slot["bUnknown2"] = r.read_bytes(1)[0]
     # bit0 clear makes the slot unrecognized (invalid); bit1 set loads to
     # the start of the game. Other bits: no observed effect.
     slot["bSaveFlags"] = r.read_bytes(1)[0]
-    # Index into the main-menu current-objective string table (with an
-    # offset); editing it changes that main-menu text but not the pause
-    # menu's quest text, and gets reset on the next save -- not confirmed
-    # to be the actual current-quest tracker.
+    # Index into the main-menu current-objective string table (Ghidra:
+    # g_bMainMenuObjectiveIndex, 0x030027b9) -- the same live byte as
+    # abQuestEventState[25] below, serialized twice.
     slot["bMainMenuObjectiveIndex"] = r.read_bytes(1)[0]
     slot["bPartyLeaderDisplayLevel"] = r.read_bytes(1)[0]
     # Overworld follower sprite per party slot -- observed values: 3 =
@@ -419,13 +790,18 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot["flOverworldMonstersDisabled"] = bool(r.read_bit())
     # Currently-selected spell in the overworld.
     slot["bSelectedOverworldSpell"] = r.read_bytes(1)[0]
-    slot["abUnknown9"] = r.read_bytes(152).hex()
+    slot.update(decode_item_quantities(r))
 
     slot["partyStats"] = [decode_party_member(r) for _ in range(PARTY_MEMBER_COUNT)]
-    slot["inventoryQuestData"] = decode_inventory(r)
+    slot["roomObjectState"] = decode_room_object_state(r)
 
     slot["abUnknown10"] = r.read_bytes(32).hex()
-    slot["abUnknown11"] = r.read_bytes(256).hex()
+    # Ghidra: g_abQuestEventState (0x030027a0). Index 25 = bMainMenuObjectiveIndex
+    # above. Persistent global state, not per-room (confirmed unchanged
+    # across a real room-to-room crossing). Indices ~224-254 are
+    # flags/counters that reset to 0 together at a specific story
+    # checkpoint. See docs/formats/save.md for the per-index evidence.
+    slot["abQuestEventState"] = list(r.read_bytes(256))
 
     monster_dex = []
     for _ in range(MONSTER_DEX_COUNT):
@@ -478,7 +854,7 @@ def encode_slot_stream(slot: dict) -> bytes:
     w.write_bytes(bytes([slot["bPlaytimeHours"]]))
     w.write_bytes(bytes([slot["bPlaytimeMinutes"]]))
     w.write_bytes(bytes([slot["bPlaytimeSeconds"]]))
-    w.write_bytes(bytes([slot["bUnknown1"]]))
+    w.write_bytes(bytes([slot["bPlaytimeFrames"]]))
     w.write_bytes(bytes([slot["bUnknown2"]]))
     w.write_bytes(bytes([slot["bSaveFlags"]]))
     w.write_bytes(bytes([slot["bMainMenuObjectiveIndex"]]))
@@ -488,15 +864,15 @@ def encode_slot_stream(slot: dict) -> bytes:
     w.write_bytes(bytes([slot["bOverworldSprite2"]]))
     w.write_bit(int(slot["flOverworldMonstersDisabled"]))
     w.write_bytes(bytes([slot["bSelectedOverworldSpell"]]))
-    w.write_bytes(bytes.fromhex(slot["abUnknown9"]))  # 152 bytes (38 x 4)
+    encode_item_quantities(w, slot)
 
     for member in slot["partyStats"]:
         encode_party_member(w, member)
 
-    encode_inventory(w, slot["inventoryQuestData"])
+    encode_room_object_state(w, slot["roomObjectState"])
 
     w.write_bytes(bytes.fromhex(slot["abUnknown10"]))
-    w.write_bytes(bytes.fromhex(slot["abUnknown11"]))
+    w.write_bytes(bytes(slot["abQuestEventState"]))
 
     for level in slot["a3FolioBrutiLevels"] + slot["a3BossMonsterLevels"]:
         w.write_bit(level & 1)
