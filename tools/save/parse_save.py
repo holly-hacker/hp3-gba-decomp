@@ -251,9 +251,14 @@ HEADER_FLAG_BITS = {
     "flMinigame2Unlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
     "flMinigame3Unlocked": 0x08,
     "flMinigame4Unlocked": 0x10,
-    # bits 5/6 have no known reader at all yet.
+    # Exhaustive xref search on this byte's storage/base address finds no
+    # reader for bit 5 at all (every other bit's mask is accounted for).
     "flHeaderBit5": 0x20,
-    "flHeaderBit6": 0x40,
+    # Set the first time the player confirms Tea Leaf Divination (minigame
+    # index 3) from the minigame select menu (HandleMinigameSelectMenuConfirm,
+    # ROM 0x0802CF38): clear routes to a one-time intro/tutorial game mode
+    # and sets this bit; set routes straight to the normal launch.
+    "flTeaLeafDivinationIntroShown": 0x40,
     "flGammaHigh": 0x80,  # options menu: Gamma Normal/High
 }
 
@@ -266,6 +271,44 @@ def encode_header_flags(h: dict) -> int:
     value = 0
     for name, bit in HEADER_FLAG_BITS.items():
         if h[name]:
+            value |= bit
+    return value
+
+
+# Per-slot bSaveFlags (0x0300318C). Bit 0: set once, only when a new game is
+# started (never cleared again) -- gates the per-frame playtime-counter tick
+# (ProcessPlaytimeTick, 0x0802165C); not a slot-validity marker (ValidateSaveSlot,
+# 0x0803C0A8, checks only the checksum). Bit 1: consumed one-shot by
+# HandleSaveLoadContinuation (0x08043AF0) -- if set, continuing this save
+# restarts the intro/fresh-start sequence instead of resuming normally; set
+# together with bit 2 by HandleEndingSequenceTransition (0x0801D6DC) at game
+# completion, alongside starting New Game+. Bit 2: set at the same instant as
+# bit 1 but has no reader anywhere in the program -- an exhaustive xref search
+# on this byte's storage address accounts for all 10 accesses in the ROM and
+# none test bit 0x04; confirmed in-game to have no observed effect set alone.
+# Bits 3-7 have no code touching them at all -- if a real save is ever seen
+# with any of them set, that's new information worth chasing, so they're
+# surfaced as an extra field instead of silently dropped.
+SAVE_FLAG_BITS = {
+    "flPlaytimeCounterActive": 0x01,
+    "flContinueRestartsIntro": 0x02,
+    "flSaveFlagsBit2": 0x04,
+}
+SAVE_FLAG_KNOWN_MASK = 0x07
+
+
+def decode_save_flags(byte_val: int) -> dict:
+    result = {name: bool(byte_val & bit) for name, bit in SAVE_FLAG_BITS.items()}
+    leftover = byte_val & ~SAVE_FLAG_KNOWN_MASK
+    if leftover:
+        result["bSaveFlagsUnknownBits"] = leftover
+    return result
+
+
+def encode_save_flags(s: dict) -> int:
+    value = s.get("bSaveFlagsUnknownBits", 0)
+    for name, bit in SAVE_FLAG_BITS.items():
+        if s[name]:
             value |= bit
     return value
 
@@ -285,6 +328,11 @@ def parse_header(raw: bytes) -> dict:
         # Confirmed against real saves with each set to 0 (off).
         "bMusicVolume": data[9],
         "bSoundVolume": data[10],
+        # No reader/writer found for these 2 bytes individually -- an
+        # exhaustive xref search on this field's storage address and on
+        # the containing SaveManager base turns up nothing that touches
+        # it outside whole-header operations (checksum, memcpy, default
+        # compare). See docs/formats/save.md.
         "abUnknown0": data[11:13].hex(),
     }
     result.update(decode_header_flags(data[13]))
@@ -322,8 +370,11 @@ def encode_header(h: dict) -> bytes:
 # fits the 38 available data bytes almost exactly. Buckbeak's Hippogriff
 # Glide and Riddikulus Boggart Challenge's blocks (offsets 12-23/24-35)
 # are confirmed in-game: they immediately follow Wizard Cracker Pop-it's
-# block, in minigame-unlock-bit order. Bytes 36-37 are leftover/
-# unaccounted for.
+# block, in minigame-unlock-bit order. Bytes 36-37 (abOptionsPadding) are
+# unused padding -- every located accessor of this block (the high-score
+# writer, the high-score display, and the reset-all-3 handler) only ever
+# indexes the 9 u32 high-score slots (bytes 0-35), an exhaustive xref
+# search on bytes 36-37's own storage address finds nothing.
 OPTIONS_MINIGAME_NAMES = [
     "WizardCrackerPopIt",
     "BuckbeaksHippogriffGlide",
@@ -339,7 +390,9 @@ def parse_options(raw: bytes) -> dict:
         for j, difficulty in enumerate(OPTIONS_DIFFICULTY_NAMES):
             key = f"dw{minigame}{difficulty}HighScore"
             result[key] = struct.unpack_from("<I", data, i * 12 + j * 4)[0]
-    result["abUnknown0"] = data[36:38].hex()
+    padding = data[36:38]
+    if any(padding):
+        result["abOptionsPadding"] = padding.hex()
     if not checksum_ok(data):
         result["wChecksum"] = struct.unpack_from("<H", data, 38)[0]
     return result
@@ -351,7 +404,8 @@ def encode_options(o: dict) -> bytes:
         for j, difficulty in enumerate(OPTIONS_DIFFICULTY_NAMES):
             key = f"dw{minigame}{difficulty}HighScore"
             struct.pack_into("<I", data, i * 12 + j * 4, o[key])
-    data[36:38] = bytes.fromhex(o["abUnknown0"])
+    if "abOptionsPadding" in o:
+        data[36:38] = bytes.fromhex(o["abOptionsPadding"])
     struct.pack_into("<H", data, 38, 0)
     struct.pack_into("<H", data, 38, (-sum16(bytes(data))) & 0xFFFF)
     return bytes(data)
@@ -806,9 +860,7 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot["bPlaytimeSeconds"] = r.read_bytes(1)[0]
     slot["bPlaytimeFrames"] = r.read_bytes(1)[0]
     slot["bUnknown2"] = r.read_bytes(1)[0]
-    # bit0 clear makes the slot unrecognized (invalid); bit1 set loads to
-    # the start of the game. Other bits: no observed effect.
-    slot["bSaveFlags"] = r.read_bytes(1)[0]
+    slot.update(decode_save_flags(r.read_bytes(1)[0]))
     # Index into the main-menu current-objective string table (Ghidra:
     # g_bMainMenuObjectiveIndex, 0x030027b9) -- the same live byte as
     # abQuestEventState[25] below, serialized twice.
@@ -891,7 +943,7 @@ def encode_slot_stream(slot: dict) -> bytes:
     w.write_bytes(bytes([slot["bPlaytimeSeconds"]]))
     w.write_bytes(bytes([slot["bPlaytimeFrames"]]))
     w.write_bytes(bytes([slot["bUnknown2"]]))
-    w.write_bytes(bytes([slot["bSaveFlags"]]))
+    w.write_bytes(bytes([encode_save_flags(slot)]))
     w.write_bytes(bytes([slot["bMainMenuObjectiveIndex"]]))
     w.write_bytes(bytes([slot["bPartyLeaderDisplayLevel"]]))
     w.write_bytes(bytes([slot["bOverworldSprite0"]]))
