@@ -125,22 +125,22 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | Source | JSON key | Contents |
 |---|---|---|
 | `0x03003180` | `dwMoney` | **money** (`u32`) |
-| `0x03003186` | `abUnknown1` (4 bytes) | unidentified |
+| `0x03003186` | `bPlaytimeHours` + `bPlaytimeMinutes` + `bPlaytimeSeconds` + `bUnknown1` | **playtime**, one byte each. Per the user, their save's in-game HH:MM display reads "05:13"; the decoded bytes are exactly `5, 13, 17, 14` -- the first two match the display exactly, and the third is a plausible seconds value (0-59) the HH:MM display doesn't show. The 4th byte (`bUnknown1`, also 0-59 in this one sample) isn't confirmed -- a frames/VBlank sub-second counter is plausible but unverified. |
 | `0x03003B50` | `bUnknown2` | unidentified |
-| `0x0300318C` | `bUnknown3` | unidentified |
-| `0x030027B9` | `bUnknown4` | unidentified |
+| `0x0300318C` | `bSaveFlags` | Per the user: bit 0 clear makes the slot unrecognized (invalid, presumably a redundant check alongside the checksum); bit 1 set loads to the start of the game. Other bits: no observed effect. |
+| `0x030027B9` | `bMainMenuObjectiveIndex` | Per the user: an index (with an offset) into the current-objective string table shown on the main menu. Editing it changes that main-menu text but not the pause menu's quest text, and gets overwritten back to its real value on the next save -- not confirmed to be the actual current-quest tracker, just something that feeds this one display. |
 | `g_pPartyMasterStats_candidate[0].bLevel + 1` | `bPartyLeaderDisplayLevel` | derived value (party leader's display level, not a raw field) |
-| `0x0300338C`-`0x0300338E` | `bUnknown5`-`bUnknown7` | unidentified, 1 byte each |
-| `0x03002614` | `flUnknown0` | unidentified (packed as a single bit, not a byte) |
-| `0x0300338F` | `bUnknown8` | unidentified |
+| `0x0300338C`-`0x0300338E` | `bOverworldSprite0`-`bOverworldSprite2` | Per the user: which overworld sprite each party slot's follower uses. Observed values: `3` = Harry (Lumos, headless -- likely rendered as a separate overlay), `4` = Harry (GBC), `5` = Harry, `7` = Ron, `8` = Buckbeak; `9` is out of bounds (severe graphical corruption, crashes the game). |
+| `0x03002614` | `flOverworldMonstersDisabled` | Per the user: disables overworld random encounters with regular monsters (bosses still trigger). Packed as a single bit, not a byte. |
+| `0x0300338F` | `bSelectedOverworldSpell` | Per the user: the currently-selected spell in the overworld (as opposed to in battle). |
 | `0x030037B0`, 38x4 bytes | `abUnknown9` (152 bytes) | unidentified table (`FUN_08026da0`'s loop is a signed `do {...} while (-1 < i)` counting `0x25` down to `-1` inclusive, i.e. 38 iterations) |
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
 | **inventory/quest data** (`0x0802A570`), variable-length | `inventoryQuestData` | data-dependent, see below |
 | `0x03002240` | `abUnknown10` (32 bytes) | unidentified |
 | `0x030027A0` | `abUnknown11` (256 bytes) | unidentified |
 | **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching `docs/formats/folio_bruti.md`'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
-| `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anUnknown12` (51 nibbles) | unidentified |
-| `0x0300320B` | `abUnknown13` (7 bytes) | unidentified |
+| `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anFolioUniversitasCounts` (51 nibbles) | Per the user: Folio Universitas (Harry's card collection) per-card count, one nibble per card. A card is only shown in-game once its count reaches at least 1. |
+| `0x0300320B` | `a1FolioUniversitasUnlocked` (51 bits, stored as 7 bytes, LSB-first) | Per the user: parallel per-card unlocked/seen flag; all-unlocked is stored as `ffffffffffff07`. Confirmed against a real (non-test) save (`bak.sav`): `a1FolioUniversitasUnlocked[i] == 1` exactly where `anFolioUniversitasCounts[i] > 0`, for all 51 cards. |
 | `0x03003212` | `abUnknown14` (7 bytes) | unidentified |
 | `0x0300321C`, 4 nibbles (`FUN_08022EA8`) | `anUnknown15` (4 nibbles) | unidentified |
 | `0x03003220` | `abUnknown16` (3 bytes) | unidentified |
@@ -262,6 +262,7 @@ convention already used for this ROM's globals (`wHp`, `bLevel`,
 | `ab` | byte array/blob -- size given by its JSON length (hex string or list of ints) |
 | `an` | nibble array (each element 0-15) -- size given by list length |
 | `a3` | array of 3-bit values (each element 0-7) -- size given by list length |
+| `a1` | array of 1-bit values (each element 0/1), unpacked LSB-first from its packed byte storage -- size given by list length |
 
 Struct-shaped fields (`partyStats`, `inventoryQuestData`, `tables`)
 carry no prefix, since a single type/size doesn't describe them. Fields
@@ -286,12 +287,14 @@ a slot's content past its checksum.
 
 - Decode SaveOptions' 40 bytes (all-zero in the one real save sampled so
   far, so its field boundaries aren't visible from data alone).
+- Confirm `bUnknown1` (the 4th playtime-adjacent byte) against a save
+  with a nonzero, independently-known seconds/sub-second value.
 - Identify the remaining unlabeled globals `SerializeGameStateToSaveBuffer`
-  packs directly (`0x03003186`, `0x03003B50`, `0x0300318C`,
+  packs directly (`0x03003B50`, `0x0300318C`,
   `0x030027B9`, `0x0300338C`-`0x0300338F`, `0x03002614`, `0x030037B0`,
   `0x03002240`, `0x030027A0`, and the fields inside `FUN_08037FB8`/
-  `FUN_08022EA8`: `0x030031D8`, `0x0300320B`, `0x03003212`, `0x0300321C`,
-  `0x03003220`, `0x03003226`, `0x03003224`, `0x0300322C`).
+  `FUN_08022EA8` other than the Folio Universitas ones: `0x03003212`,
+  `0x0300321C`, `0x03003220`, `0x03003226`, `0x03003224`, `0x0300322C`).
 - Decode the variable-length inventory/quest-list structure read from
   `DAT_03003B68` (`0x0802A570`) -- its 7 record tables' individual field
   layouts aren't decoded, just their record sizes/counts.

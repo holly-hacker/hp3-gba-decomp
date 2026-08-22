@@ -108,6 +108,24 @@ def checksum_ok(data: bytes) -> bool:
     return sum16(data) == 0
 
 
+def bytes_to_bits(data: bytes, count: int):
+    """Unpack the low `count` bits of `data`, LSB-first per byte."""
+    bits = []
+    for byte in data:
+        for i in range(8):
+            bits.append((byte >> i) & 1)
+    return bits[:count]
+
+
+def bits_to_bytes(bits, byte_count: int) -> bytes:
+    """Inverse of bytes_to_bits; unused high bits zero-fill."""
+    out = bytearray(byte_count)
+    for i, bit in enumerate(bits):
+        if bit:
+            out[i // 8] |= 1 << (i % 8)
+    return bytes(out)
+
+
 # --------------------------------------------------------------------------
 # Save-slot bitstream engine
 #
@@ -373,16 +391,34 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot = {}
 
     slot["dwMoney"] = struct.unpack("<I", r.read_bytes(4))[0]
-    slot["abUnknown1"] = r.read_bytes(4).hex()
+    # Playtime, one byte each: hours, minutes, seconds, and a 4th byte
+    # (also 0-59-range in the one sample seen) not shown by the in-game
+    # HH:MM display -- possibly frames/VBlanks, unconfirmed.
+    slot["bPlaytimeHours"] = r.read_bytes(1)[0]
+    slot["bPlaytimeMinutes"] = r.read_bytes(1)[0]
+    slot["bPlaytimeSeconds"] = r.read_bytes(1)[0]
+    slot["bUnknown1"] = r.read_bytes(1)[0]
     slot["bUnknown2"] = r.read_bytes(1)[0]
-    slot["bUnknown3"] = r.read_bytes(1)[0]
-    slot["bUnknown4"] = r.read_bytes(1)[0]
+    # bit0 clear makes the slot unrecognized (invalid); bit1 set loads to
+    # the start of the game. Other bits: no observed effect.
+    slot["bSaveFlags"] = r.read_bytes(1)[0]
+    # Index into the main-menu current-objective string table (with an
+    # offset); editing it changes that main-menu text but not the pause
+    # menu's quest text, and gets reset on the next save -- not confirmed
+    # to be the actual current-quest tracker.
+    slot["bMainMenuObjectiveIndex"] = r.read_bytes(1)[0]
     slot["bPartyLeaderDisplayLevel"] = r.read_bytes(1)[0]
-    slot["bUnknown5"] = r.read_bytes(1)[0]
-    slot["bUnknown6"] = r.read_bytes(1)[0]
-    slot["bUnknown7"] = r.read_bytes(1)[0]
-    slot["flUnknown0"] = bool(r.read_bit())
-    slot["bUnknown8"] = r.read_bytes(1)[0]
+    # Overworld follower sprite per party slot -- observed values: 3 =
+    # Harry (Lumos, headless -- likely an overlay), 4 = Harry (GBC),
+    # 5 = Harry, 7 = Ron, 8 = Buckbeak; 9 is out of bounds (severe
+    # graphical glitches, crashes).
+    slot["bOverworldSprite0"] = r.read_bytes(1)[0]
+    slot["bOverworldSprite1"] = r.read_bytes(1)[0]
+    slot["bOverworldSprite2"] = r.read_bytes(1)[0]
+    # Disables overworld random encounters (bosses excepted).
+    slot["flOverworldMonstersDisabled"] = bool(r.read_bit())
+    # Currently-selected spell in the overworld.
+    slot["bSelectedOverworldSpell"] = r.read_bytes(1)[0]
     slot["abUnknown9"] = r.read_bytes(152).hex()
 
     slot["partyStats"] = [decode_party_member(r) for _ in range(PARTY_MEMBER_COUNT)]
@@ -406,8 +442,12 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot["a3FolioBrutiLevels"] = monster_dex[:FOLIO_BRUTI_COUNT]
     slot["a3BossMonsterLevels"] = monster_dex[FOLIO_BRUTI_COUNT:]
 
-    slot["anUnknown12"] = r.read_nibbles(0x33)
-    slot["abUnknown13"] = r.read_bytes(7).hex()
+    # Folio Universitas (Harry's card collection) card counts (one
+    # nibble per card; only cards received at least once are shown
+    # in-game) and a parallel 51-bit unlocked/seen flag per card (7
+    # bytes storage, LSB-first; all-unlocked = ffffffffffff07).
+    slot["anFolioUniversitasCounts"] = r.read_nibbles(0x33)
+    slot["a1FolioUniversitasUnlocked"] = bytes_to_bits(r.read_bytes(7), 51)
     slot["abUnknown14"] = r.read_bytes(7).hex()
     slot["anUnknown15"] = r.read_nibbles(4)
     slot["abUnknown16"] = r.read_bytes(3).hex()
@@ -435,16 +475,19 @@ def encode_slot_stream(slot: dict) -> bytes:
     w = SaveWriter()
 
     w.write_bytes(struct.pack("<I", slot["dwMoney"]))
-    w.write_bytes(bytes.fromhex(slot["abUnknown1"]))
+    w.write_bytes(bytes([slot["bPlaytimeHours"]]))
+    w.write_bytes(bytes([slot["bPlaytimeMinutes"]]))
+    w.write_bytes(bytes([slot["bPlaytimeSeconds"]]))
+    w.write_bytes(bytes([slot["bUnknown1"]]))
     w.write_bytes(bytes([slot["bUnknown2"]]))
-    w.write_bytes(bytes([slot["bUnknown3"]]))
-    w.write_bytes(bytes([slot["bUnknown4"]]))
+    w.write_bytes(bytes([slot["bSaveFlags"]]))
+    w.write_bytes(bytes([slot["bMainMenuObjectiveIndex"]]))
     w.write_bytes(bytes([slot["bPartyLeaderDisplayLevel"]]))
-    w.write_bytes(bytes([slot["bUnknown5"]]))
-    w.write_bytes(bytes([slot["bUnknown6"]]))
-    w.write_bytes(bytes([slot["bUnknown7"]]))
-    w.write_bit(int(slot["flUnknown0"]))
-    w.write_bytes(bytes([slot["bUnknown8"]]))
+    w.write_bytes(bytes([slot["bOverworldSprite0"]]))
+    w.write_bytes(bytes([slot["bOverworldSprite1"]]))
+    w.write_bytes(bytes([slot["bOverworldSprite2"]]))
+    w.write_bit(int(slot["flOverworldMonstersDisabled"]))
+    w.write_bytes(bytes([slot["bSelectedOverworldSpell"]]))
     w.write_bytes(bytes.fromhex(slot["abUnknown9"]))  # 152 bytes (38 x 4)
 
     for member in slot["partyStats"]:
@@ -460,8 +503,8 @@ def encode_slot_stream(slot: dict) -> bytes:
         w.write_bit((level >> 1) & 1)
         w.write_bit((level >> 2) & 1)
 
-    w.write_nibbles(slot["anUnknown12"])
-    w.write_bytes(bytes.fromhex(slot["abUnknown13"]))
+    w.write_nibbles(slot["anFolioUniversitasCounts"])
+    w.write_bytes(bits_to_bytes(slot["a1FolioUniversitasUnlocked"], 7))
     w.write_bytes(bytes.fromhex(slot["abUnknown14"]))
     w.write_nibbles(slot["anUnknown15"])
     w.write_bytes(bytes.fromhex(slot["abUnknown16"]))
