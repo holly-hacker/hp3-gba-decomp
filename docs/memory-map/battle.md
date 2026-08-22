@@ -1622,21 +1622,25 @@ void TrackSpellFamiliarity(FighterType fighterType, SpellId spellId, char spellL
 }
 ```
 
-**`SpellProgressBlock`** (26 bytes) is a standalone struct typed only for
+**`SpellProgressBlock`** (28 bytes) is a standalone struct typed only for
 this function's 4th parameter -- it is *not* embedded into `BattleFighter`
 itself (that would force every other already-reviewed function's
 `fighter->wHp` into a longer field-access chain for no benefit). Its
-fields are `BattleFighter`'s own `wHp`/`wMp`/`bLevel`/`bUnk_0x0F`
-followed by two previously-unmapped embedded 8-entry (one per `SpellId`)
-byte arrays discovered here, now also added directly to `BattleFighter`
-itself at their real offsets: **`aSpellCastLevel`** (`+0x10`, the
-fighter's current mastered level *per spell*, distinct from `bSpellLevel`
-which is the level chosen for *this turn's* cast) and
-**`aSpellUsageProgress`** (`+0x1A`, progress toward that spell's next
-level-up). The call site passes `(SpellProgressBlock *)&fighter->wHp`,
-i.e. `BattleFighter+8` -- confirmed bounded on both sides: it starts
-exactly at `wHp` and its last field ends two bytes before `wHp_max`
-(`+0x24`), with `g_abPartySpellUsage`/`g_abPartySpellLevel`'s call-site
+fields are `BattleFighter`'s own `wHp`/`wMp`/`wRewardXp`/`bLevel`/
+`bUnk_0x0F` followed by two embedded 10-entry (one per `SpellId`, `0`-`9`)
+byte arrays, added directly to `BattleFighter` itself at their real
+offsets: **`aSpellCastLevel`** (`+0x10`, the fighter's current mastered
+level *per spell*, distinct from `bSpellLevel` which is the level chosen
+for *this turn's* cast) and **`aSpellUsageProgress`** (`+0x1A`, progress
+toward that spell's next level-up). Both arrays are confirmed 10 bytes
+each by `docs/formats/save.md`'s save-slot serializer, which packs
+`BattleFighter+8`..`+0x23` as one contiguous 28-byte run per party
+member -- `aSpellCastLevel` and `aSpellUsageProgress` sit back-to-back
+with no gap between them or before `wHp_max`. The call site passes
+`(SpellProgressBlock *)&fighter->wHp`, i.e. `BattleFighter+8` -- confirmed
+bounded on both sides: it starts exactly at `wHp` and its last field ends
+exactly at `wHp_max` (`+0x24`), with `g_abPartySpellUsage`/
+`g_abPartySpellLevel`'s call-site
 math (`spellId + fighterType*0x48`) additionally confirming the `0x48`
 figure as `BattleFighter`'s own stride, reused for a separate persistent
 (likely save-data) tracking array, one `0x48`-strided block per
