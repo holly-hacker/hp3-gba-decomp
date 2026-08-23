@@ -208,7 +208,7 @@ genuinely two separate layers, not just two ends of one function).
   not), then `field_0x3b=1`, `bSpellLevel = cursor + 0x38` (matches
   `FUN_08011520`'s item-name text lookup, `FUN_08026b8c(cursor+0x38)`) --
   **items are addressed by the same `bSpellLevel` field spell levels
-  use, offset by `0x38`** into `g_pBattleItemTable` (the item database
+  use, offset by `0x38`** into `g_pItemTable` (the item database
   below). Then calls `FUN_080107bc` (below) to
   pick a target.
 - **`FUN_080107bc`** (`0x080107bc`), the shared **ally**-target-select
@@ -233,7 +233,7 @@ already-computed damage/heal number (`DAT_0300274a`) via
 `ShowBattleMessage`/`ShowFloatingDamageNumber_candidate` -- **it does not itself call
 `FUN_08018b70` or compute an item's effect**, so an item's actual
 gameplay effect (heal amount, stat boost, etc.) is set by something else
-entirely, not walked here. This lines up with `g_pBattleItemTable`'s
+entirely, not walked here. This lines up with `g_pItemTable`'s
 `dwType`/`dwParam` fields still being undecoded (noted above) -- item
 effects plausibly come from there rather than from the
 `g_apEffectScripts_candidate`/opcode-`0x97` system spells and Special
@@ -440,35 +440,20 @@ whole sub-table.
 
 ## Messages, dialog text, and the item catalog
 
-### Battle item/equipment database -- `g_pBattleItemTable` (`0x08060EE4`)
+### The item catalog the Use Item menu indexes
 
-`BattleItemEntry_candidate[132]`, stride `0x34`. Covers the game's full
-equipment catalog (belts, gloves, boots, hats/caps, robes/cloaks,
-potions) plus key items (Firebolt, Hedwig, Time-Turner, Trevor,
-Scabbers, Crookshanks, The Monster Book of Monsters). See
-[`../formats/save.md`](../formats/save.md) for the record layout, the
-per-category string-id bases, and the item-id/quantity-array
-correspondence.
+`g_pItemTable` (`0x08060EE4`) is the game's **general** item/equipment
+catalog, not a battle-specific one: 79 real entries covering belts,
+gloves, boots, caps, robes, potions, ingredients and key items, of which
+the battle Use Item menu reaches only the 6-entry potions run. That is
+why the menu's confirm handler offsets by `0x38` (56, the first potion
+index) rather than indexing from zero.
 
-**79 entries (`0`-`78`) are real**; index `79` is a dummy (its
-`nNameTextId` is `0` and its three sprite pointers are byte-identical
-clones of index `62`'s), and `80`-`131` are all zero. Both bounds are
-real checks in code: `FUN_08026F48` walks `0`-`78` (`cmp r1, #0x4e`),
-while `FUN_08026E58` walks the full `0`-`131` allocation (`cmp r3,
-#0x83`) -- which matches `g_abItemQuantities`' own 132 slots before
-`g_abEquippedItemIds` begins.
-
-Every accessor in the `0x08026754`-`0x08026F7E` cluster addresses this
-table as `0x08060EE4 + index*0x34 + fieldOffset`, selecting a field with
-an immediate add rather than a typed struct access -- e.g.
-`FUN_08026B8C` reads `+0x00` (`nNameTextId`), `FUN_08026CDC` reads
-`+0x24` (`nType`) and `FUN_08026CF0` reads `+0x28` (`nParam`).
-
-**Two nearby addresses are field pointers, not the table base**, and are
-easy to mistake for it: `0x08060ED4` is `base - 0x10`, and `0x08060F08`
-is `base + 0x24` (`&table[0].nType`), the literal `sub_08026870`'s
-equipment-stat loop loads at `0x080268DC` -- with `0x08060F14`
-(`base + 0x30`) used the same way right beside it.
+The table's address, record layout, category values and extraction
+pipeline are documented in
+[`../formats/save.md`](../formats/save.md)'s "Item quantities and
+equipment", which owns them -- the same item ids index the save
+format's `itemQuantities` and `equippedItems`.
 
 ### `ShowBattleMessage` -- case -> dialog text table
 

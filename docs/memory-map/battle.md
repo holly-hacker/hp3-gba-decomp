@@ -390,7 +390,7 @@ Consequently the in-game item drop is **not** traced to this byte --
 case `0x1B` merely being the one `StatusEffect` call in `Wizard
 Cracker`'s script is the whole of the evidence. Where an item actually
 gets added to inventory isn't located either; the only item functions
-found are `g_pBattleItemTable`'s *consumption* pair
+found are `g_pItemTable`'s *consumption* pair
 (`ConsumeBattleItemSlot`/`IsBattleItemSlotUsable`), subject to the same
 caveat.
 

@@ -417,7 +417,7 @@ def encode_options(o: dict) -> bytes:
 # Save slot: item quantities + equipped items (g_abItemQuantities, 152 bytes)
 #
 # Index 0-131 is a flat item-ID-indexed quantity array (0-78 confirmed as
-# battle items, per g_pBattleItemTable). Index 132-149 is
+# battle items, per g_pItemTable). Index 132-149 is
 # g_abEquippedItemIds, an alias into this same array (not a separate
 # allocation): 3 fighters x 6 equip slots, each an item ID or 0xff (empty).
 # Fighter order confirmed from a real save (Harry 0 items, Hermione 4,
@@ -431,14 +431,14 @@ EQUIPPED_FIGHTER_NAMES = ["harry", "hermione", "ron"]
 EQUIP_SLOT_NAMES = ["belt", "charm", "gloves", "boots", "hat", "cloak"]
 ITEM_QUANTITY_COUNT = 132
 
-# Item index == g_pBattleItemTable[index] (ROM 0x08060ED4, stride 0x34).
+# Item index == g_pItemTable[index] (ROM 0x08060EE4, stride 0x34).
 # Each entry's +0x10 field is a text-string ID (nNameTextId);
 # resolving it through data/text/en_us.json's decoded string table gives
 # every one of these names directly -- PROVEN, cross-checked against 6
 # real-save-confirmed items (Grand Wiggenweld Potion, Monster Book of
 # Monsters, Pocket Watch, and a real save's own listed Belt/Gloves/Boots/
 # Cloak), every one landing exactly. Save order == item-ID order == the
-# order g_pBattleItemTable itself is laid out in ROM (which in turn
+# order g_pItemTable itself is laid out in ROM (which in turn
 # groups into per-equipment-slot/category runs, each with its own local
 # string-ID base -- not one single global offset across the whole table).
 # Contiguous from index 0, so a plain list (not an index->name map) is

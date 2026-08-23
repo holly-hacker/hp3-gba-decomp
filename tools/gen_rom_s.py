@@ -39,6 +39,11 @@ MONSTER_TABLE_DIRECTIVE = "monster-table"
 # docs/formats/object_script.md.
 OBJSCRIPT_TABLE_DIRECTIVE = "objscript-table"
 
+# item-table rows: same idea as monster-table, but packed from
+# data/items/items.json by pack_items.py -- see docs/formats/save.md's
+# "Item quantities and equipment" section.
+ITEM_TABLE_DIRECTIVE = "item-table"
+
 # level-table rows: same idea as monster-table, but one row per
 # character (Harry/Ron/Hermione), each packed from its own
 # data/levels/<name>.json by pack_levels.py -- see
@@ -91,6 +96,16 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 if end <= start:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 asmfile = f"build/{ver}/objscript/{name}.s"
+                regions.append((start, end, asmfile, name))
+                continue
+            if parts[0] == ITEM_TABLE_DIRECTIVE:
+                if len(parts) != 5:
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
+                _, start_s, end_s, _source, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                asmfile = f"build/{ver}/items/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
             if parts[0] == LEVEL_TABLE_DIRECTIVE:

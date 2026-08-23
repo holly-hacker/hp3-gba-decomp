@@ -242,3 +242,26 @@ level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
 # (CLAUDE.md) -- extracted game data, same footing as the baserom.
 # Bootstrap it locally with `just extract-objscript` before building.
 objscript-table 0x0805994C 0x0805BA7C data/scripts g_apEffectScripts
+
+# --- Item/equipment table ---
+#
+# item-table <start> <end> <json-file> <name>
+#   g_pItemTable: 132 52-byte records (item name/icon references,
+#   owl-mail reward weight, category, and several still-unidentified
+#   fields), read by the 0x08026754-0x08026F7E accessor cluster --
+#   item ID == index into this table == index into the save format's
+#   g_abItemQuantities. Indices 0-78 are real items, 79 is a dummy
+#   record marking the end of the real items, and 80-131 are unused
+#   all-zero slots of the same allocation -- all 132 are packed here so
+#   the region round-trips byte-exact. See docs/formats/save.md's "Item
+#   quantities and equipment" section. Packed from curated
+#   data/items/items.json by tools/items/pack_items.py before `stitch`
+#   runs (see the `pack-items` recipe). End address confirmed: 132 *
+#   52 bytes lands exactly on the unrelated pointer table that follows
+#   at 0x080629B4. US ROM only -- content not yet checked against JP.
+#
+# data/items/ is curated, editable source (JSON), gitignored per hard
+# rule 2 (CLAUDE.md) -- extracted game data, same footing as the
+# baserom. Bootstrap it locally with `just extract-items` before
+# building.
+item-table 0x08060EE4 0x080629B4 data/items/items.json g_pItemTable

@@ -115,6 +115,22 @@ pack-objscript ver="us":
     python3 tools/objscript/pack_objscript.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
+# `build` -- data/items/ is gitignored (same footing as the baserom,
+# see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
+# silently regenerated/overwritten on every build. US only -- see
+# docs/formats/save.md.
+# Bootstrap data/items/ locally from baserom.us.gba.
+extract-items:
+    python3 tools/items/extract_items.py
+
+# Gitignored (build/), like everything else pack_items.py writes. Reads
+# local data/items/ (run `extract-items` first if missing) plus this
+# version's item-table row in regions.<ver>.txt for addresses.
+# Pack data/items/ into this version's item-table assembly.
+pack-items ver="us":
+    python3 tools/items/pack_items.py {{ver}}
+
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/levels/ is gitignored (same footing as the baserom,
 # see CLAUDE.md hard rule 2) and meant to be user-editable. US only --
 # see docs/memory-map/battle.md.
@@ -136,11 +152,11 @@ pack-levels ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels
+extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels extract-items
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver)
+build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
     arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba

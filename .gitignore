@@ -36,5 +36,10 @@ data/scripts/*
 # committed. See CLAUDE.md hard rule 2 and docs/memory-map/battle.md.
 data/levels/*
 !data/levels/.gitkeep
+# Battle item/equipment table (tools/items/extract_items.py bootstraps
+# this locally from the baserom) -- extracted game data, not committed.
+# See CLAUDE.md hard rule 2 and docs/formats/save.md.
+data/items/*
+!data/items/.gitkeep
 **/__pycache__
 .claude/worktrees
