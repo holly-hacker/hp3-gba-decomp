@@ -88,7 +88,7 @@ label 0x080208B4 sub_080208B4
 # content-identical between US/JP (see docs/formats/krawall.md's Confirmed
 # stats) -- only the addresses below are per-version. It's gitignored, same
 # footing as the baserom (see CLAUDE.md hard rule 2) -- bootstrap it
-# locally with `just migrate-krawall` before building. tools/krawall/pack_krawall.py
+# locally with `just extract-krawall` before building. tools/krawall/pack_krawall.py
 # writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
 # like everything else in build/), which is what gen_rom_s.py includes.
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
@@ -166,7 +166,7 @@ krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 # data/text/ is curated, editable source (JSON), gitignored per hard
 # rule 2 (CLAUDE.md) -- game's real dialog/UI text content, same
 # footing as the baserom and data/audio/. Bootstrap it locally with
-# `just migrate-text` before building. tools/text/pack_text.py writes the
+# `just extract-text` before building. tools/text/pack_text.py writes the
 # actual packed assembly to build/<ver>/text/ (also gitignored), which
 # is what gen_rom_s.py includes.
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
@@ -197,7 +197,7 @@ dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 #
 # data/monsters/ is curated, editable source (JSON), gitignored per hard
 # rule 2 (CLAUDE.md) -- extracted game data, same footing as the baserom.
-# Bootstrap it locally with `just migrate-monsters` before building.
+# Bootstrap it locally with `just extract-monsters` before building.
 monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
 
 # --- Per-character level-up stat tables ---
@@ -216,7 +216,7 @@ monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
 #   yet checked against JP.
 #
 # data/levels/ is curated, editable source (JSON), gitignored per hard
-# rule 2 (CLAUDE.md). Bootstrap it locally with `just migrate-levels`
+# rule 2 (CLAUDE.md). Bootstrap it locally with `just extract-levels`
 # before building.
 level-table 0x0804FE50 0x08050300 data/levels/harry.json HarryLevelTable
 level-table 0x08050300 0x080507B0 data/levels/ron.json RonLevelTable
@@ -240,5 +240,5 @@ level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
 #
 # data/scripts/ is curated, editable source, gitignored per hard rule 2
 # (CLAUDE.md) -- extracted game data, same footing as the baserom.
-# Bootstrap it locally with `just migrate-objscript` before building.
+# Bootstrap it locally with `just extract-objscript` before building.
 objscript-table 0x0805994C 0x0805BA7C data/scripts g_apEffectScripts

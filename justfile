@@ -46,88 +46,98 @@ stitch ver="us":
 # diffing against pack-krawall's output while touching
 # tools/krawall/krawall_codec.py. See docs/formats/krawall.md.
 # Dump the raw Krawall regions as .bin files (not build input).
-extract-krawall ver="us":
-    python3 tools/krawall/extract_krawall.py {{ver}} > /dev/null
+dump-krawall ver="us":
+    python3 tools/krawall/dump_krawall.py {{ver}} > /dev/null
 
-# One-time per clone (see `migrate-krawall`), NOT run automatically by
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/audio/ is gitignored (same footing as the baserom, see
 # CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
 # so it's never silently regenerated/overwritten on every build.
 # Bootstrap data/audio/ locally from baserom.us.gba.
-migrate-krawall:
-    python3 tools/krawall/krawall_migrate.py
+extract-krawall:
+    python3 tools/krawall/extract_krawall.py
 
 # Gitignored (build/), like everything else pack_krawall.py writes. Reads
-# local data/audio/ (run `migrate-krawall` first if missing -- version-
+# local data/audio/ (run `extract-krawall` first if missing -- version-
 # independent) plus this version's krawall-module/krawall-samples rows in
 # regions.<ver>.txt for addresses.
 # Pack data/audio/ into this version's Krawall assembly.
 pack-krawall ver="us":
     python3 tools/krawall/pack_krawall.py {{ver}}
 
-# One-time per clone (see `migrate-text`), NOT run automatically by
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/text/ is gitignored (same footing as the baserom, see
 # CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
 # so it's never silently regenerated/overwritten on every build. US only
 # -- dialog text hasn't been located in the JP ROM (see docs/formats/text.md).
 # Bootstrap data/text/ locally from baserom.us.gba.
-migrate-text:
-    python3 tools/text/text_migrate.py
+extract-text:
+    python3 tools/text/extract_text.py
 
 # Gitignored (build/), like everything else pack_text.py writes. Reads
-# local data/text/ (run `migrate-text` first if missing) plus this
+# local data/text/ (run `extract-text` first if missing) plus this
 # version's dialog-text/dialog-text-table rows in regions.<ver>.txt for
 # addresses.
 # Pack data/text/ into this version's dialog-text assembly.
 pack-text ver="us":
     python3 tools/text/pack_text.py {{ver}}
 
-# One-time per clone (see `migrate-monsters`), NOT run automatically by
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/monsters/ is gitignored (same footing as the baserom,
 # see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
 # silently regenerated/overwritten on every build. US only -- see
 # docs/formats/folio_bruti.md.
 # Bootstrap data/monsters/ locally from baserom.us.gba.
-migrate-monsters:
-    python3 tools/monsters/monster_migrate.py
+extract-monsters:
+    python3 tools/monsters/extract_monsters.py
 
 # Gitignored (build/), like everything else pack_monsters.py writes. Reads
-# local data/monsters/ (run `migrate-monsters` first if missing) plus
+# local data/monsters/ (run `extract-monsters` first if missing) plus
 # this version's monster-table row in regions.<ver>.txt for addresses.
 # Pack data/monsters/ into this version's monster-table assembly.
 pack-monsters ver="us":
     python3 tools/monsters/pack_monsters.py {{ver}}
 
-# One-time per clone (see `migrate-objscript`), NOT run automatically by
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/scripts/ is gitignored (same footing as the baserom,
 # see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
 # silently regenerated/overwritten on every build. US only -- see
 # docs/formats/object_script.md.
 # Bootstrap data/scripts/ locally from baserom.us.gba.
-migrate-objscript:
-    python3 tools/objscript/objscript_migrate.py
+extract-objscript:
+    python3 tools/objscript/extract_objscript.py
 
 # Gitignored (build/), like everything else pack_objscript.py writes. Reads
-# local data/scripts/ (run `migrate-objscript` first if missing) plus
+# local data/scripts/ (run `extract-objscript` first if missing) plus
 # this version's objscript-table row in regions.<ver>.txt for addresses.
 # Pack data/scripts/ into this version's objscript-table assembly.
 pack-objscript ver="us":
     python3 tools/objscript/pack_objscript.py {{ver}}
 
-# One-time per clone (see `migrate-monsters`), NOT run automatically by
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/levels/ is gitignored (same footing as the baserom,
 # see CLAUDE.md hard rule 2) and meant to be user-editable. US only --
 # see docs/memory-map/battle.md.
 # Bootstrap data/levels/ locally from baserom.us.gba.
-migrate-levels:
-    python3 tools/levels/level_migrate.py
+extract-levels:
+    python3 tools/levels/extract_levels.py
 
 # Gitignored (build/), like everything else pack_levels.py writes. Reads
-# local data/levels/ (run `migrate-levels` first if missing) plus this
+# local data/levels/ (run `extract-levels` first if missing) plus this
 # version's level-table rows in regions.<ver>.txt for addresses.
 # Pack data/levels/ into this version's level-table assembly.
 pack-levels ver="us":
     python3 tools/levels/pack_levels.py {{ver}}
+
+# Run this once per clone, after `setup`, before the first `build` --
+# every data/ subdirectory is gitignored (same footing as the baserom,
+# CLAUDE.md hard rule 2), so a fresh clone has none of it and the pack-*
+# steps have nothing to read. Re-running overwrites local hand-edits.
+# US-only: every extractor reads baserom.us.gba (content is either
+# version-independent or not yet located in the JP ROM).
+# Bootstrap every data/ subdirectory from the baserom. Run once per clone.
+extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels
+    @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Assemble and link the stitched output into a ROM image.
 build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver)
@@ -149,8 +159,8 @@ check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (com
 
 # Lossy (effect remapping, pattern rewrites for playback accuracy) and NOT
 # used by the build -- see docs/formats/krawall.md.
-# Export the game's music as .xm files for listening/viewing.
-extract-music-xm ver="us":
+# Dump the game's music as .xm files for listening/viewing.
+dump-music-xm ver="us":
     mkdir -p build/{{ver}}/music_xm
     unkrawerter -k -x -o build/{{ver}}/music_xm baserom.{{ver}}.gba
 

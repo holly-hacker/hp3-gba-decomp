@@ -558,7 +558,7 @@ gitignored):
   alphabetically. Committed, same footing as `opcodes.json` -- curated RE
   knowledge, not extracted content -- even though `data/scripts/` itself
   is gitignored. **To name a newly-identified script, add or edit its
-  entry here**, then re-run `just migrate-objscript`.
+  entry here**, then re-run `just extract-objscript`.
 - `tools/objscript/objscript_codec.py` -- loads `opcodes.json` and
   exposes `decode_script`/`encode_script` (raw bytes <-> `(opcode,
   operand_bytes)` pairs) and `format_script_text`/`parse_script_text`
@@ -572,7 +572,7 @@ gitignored):
   named (e.g. `StatusEffect 7 8 0  # PoisonImmune`) -- purely a
   readability aid; `parse_script_text` strips any trailing `#...` before
   parsing, so hand-written comments round-trip fine too.
-- `tools/objscript/objscript_migrate.py` (`just migrate-objscript`) --
+- `tools/objscript/extract_objscript.py` (`just extract-objscript`) --
   one-time bootstrap, reads `baserom.us.gba`, writes one text file per
   effect id (named from `script_names.json` when that effect id has an
   entry there, else the default `EffectN.txt`) plus
@@ -588,7 +588,7 @@ gitignored):
   (and overwrites the whole directory, including any *hand*-renamed
   files not driven by `script_names.json` -- re-run against a clean
   extraction, not hand-edited content, same caveat as
-  `monster_migrate.py`).
+  `extract_monsters.py`).
 - `tools/objscript/pack_objscript.py` (`just pack-objscript`, wired into
   `just build`) -- reads `data/scripts/index.json` plus the
   `objscript-table` row in `regions.<ver>.txt`, re-encodes each script
@@ -609,14 +609,14 @@ gitignored):
 
 The durable way to name a script, once its purpose is identified, is to
 add an entry to `tools/objscript/script_names.json` (effect id -> `name`
-+ optional `description`) and re-run `just migrate-objscript` -- this
++ optional `description`) and re-run `just extract-objscript` -- this
 is committed and survives every future re-run of the bootstrap, unlike a
 plain filesystem rename of a file under `data/scripts/` (which is
 gitignored and gets overwritten wholesale next time the bootstrap runs).
 `script_names.json` is the actual source of truth for
 `data/scripts/index.json`'s filenames; hand-editing `index.json`/renaming
 files directly still works for one-off local experimentation, but won't
-survive a re-migrate.
+survive a re-extract.
 
 Whichever way a rename happens, order comes from `index.json`'s array
 position, not from the filename or from sorting a directory listing, so
@@ -684,7 +684,7 @@ US only -- content not yet checked against JP.
   used top-level opcodes are still unnamed (`opcode_XX`); `StatusEffect`'s
   29 sub-cases are all named. Each is a real, bounded chunk of work:
   read one handler in `InterpretObjectScript`, name it and its operand
-  layout in `tools/objscript/opcodes.json`, re-run `just migrate-objscript`
+  layout in `tools/objscript/opcodes.json`, re-run `just extract-objscript`
   to refresh `data/scripts/`'s text.
 - ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
   -- all 16 of Harry's cards are now named and mapped to their effect id

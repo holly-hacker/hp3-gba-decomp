@@ -269,7 +269,7 @@ content).
 
 `tools/graphics/decode_type6.py` is now checked into the repo, implementing
 exactly this (Unicorn-based execution, mirroring
-`tools/krawall/extract_krawall.py`'s CLI style). `unicorn` was added to
+`tools/krawall/dump_krawall.py`'s CLI style). `unicorn` was added to
 `flake.nix`'s dev shell (`python3Packages.unicorn`). Verified against 4
 real level-table resource pointers, all matching declared sizes exactly
 (508, 6676, 3748, 6052 bytes). Not yet wired into `just build` or

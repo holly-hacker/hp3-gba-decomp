@@ -442,7 +442,7 @@ the Krawall/dialog-text pipelines:
 - `tools/monsters/monster_codec.py` -- shared record layout: field
   name/struct-format pairs in on-disk order, matching the table above
   exactly (unconfirmed fields named `unk_0x<offset>_u<bits>`).
-- `tools/monsters/monster_migrate.py` (`just migrate-monsters`) -- one-time
+- `tools/monsters/extract_monsters.py` (`just extract-monsters`) -- one-time
   bootstrap, reads `baserom.us.gba`, writes `data/monsters/monsters.json`
   (a plain JSON array, index = monster index, one object per record).
   Gitignored, same footing as the baserom, per hard rule 2 -- not
@@ -456,7 +456,7 @@ the Krawall/dialog-text pipelines:
   packed output into the stitched build the same way `krawall-module`
   rows do.
 - Each JSON record also gets leading `_name`/`_description` fields
-  (`monster_migrate.py`, `NAME_STRING_ID_BASE`/`DESC_STRING_ID_BASE` +
+  (`extract_monsters.py`, `NAME_STRING_ID_BASE`/`DESC_STRING_ID_BASE` +
   index decoded straight from the ROM's dialog text) purely as
   human-readable annotations -- `pack_monsters.py` ignores both
   entirely, so they round-trip fine, but neither is real extracted ROM
@@ -536,7 +536,7 @@ the Krawall/dialog-text pipelines:
 - The monster stat table itself is now extracted: `regions.us.txt` has a
   `monster-table` row for `0x0804F410`-`0x0804FA88`, curated source lives
   at `data/monsters/monsters.json` (gitignored, bootstrap with
-  `just migrate-monsters`), and `tools/monsters/pack_monsters.py` (run via
+  `just extract-monsters`), and `tools/monsters/pack_monsters.py` (run via
   the `pack-monsters` recipe, wired into `build`) packs it back
   byte-exact -- `just compare us` passes. `DrawFolioBrutiMonsterPanel`
   (0x08036D60), `GetMonsterSpellEffectiveness` (0x0801890C), and

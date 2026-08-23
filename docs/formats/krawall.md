@@ -26,7 +26,7 @@ Krawall version matters: our confirmed CVS revision is `2003/09/01` (see
 count). The other option, `-K` (`0x20050421`), uses a 2-byte row count and
 will silently misparse this ROM -- always use `-k`.
 
-`tools/krawall/extract_krawall.py` does not invoke `unkrawerter`. The
+`tools/krawall/dump_krawall.py` does not invoke `unkrawerter`. The
 confirmed sample-list and module addresses are hardcoded in the script
 (`SAMPLE_LIST`/`MODULE_ADDRS`) and exact byte spans are computed in pure
 Python (ported from `unkrawerter.cpp`'s
@@ -36,7 +36,7 @@ scan to adapt to on later runs; hardcoding confirmed addresses is simpler
 and more honest than re-deriving them every run. See "Modules
 unkrawerter's heuristic misses" for how the 21 addresses per ROM that
 `unkrawerter` cannot find were located. (`unkrawerter` itself is still
-used directly, outside this script, by `just extract-music-xm` for casual
+used directly, outside this script, by `just dump-music-xm` for casual
 `.xm` exports.)
 
 Cross-checked against `sebknzl/krawall`'s `krawerter/` (the original
@@ -145,7 +145,7 @@ typedef struct PACKED {
   module -- checked directly by counting every pattern-pointer reference
   across all 52 modules' pointer tables: 402 references, 402 unique
   addresses, zero collisions. Patterns are NOT shared/reused across
-  modules in this game -- `extract_krawall.py`'s `seen_patterns` dict-based
+  modules in this game -- `dump_krawall.py`'s `seen_patterns` dict-based
   dedup is a safety net that never triggers here.
 
 ## Modules unkrawerter's heuristic misses
@@ -172,7 +172,7 @@ end address, checking whether a well-formed `[pattern...][364-byte
 header+pointer table]` chain starts there (rows ≤ 64, valid ROM pointers,
 plausible channel/order counts), and confirming the chain tiles the
 *entire* remaining gap with zero leftover bytes -- proven exactly, in both
-ROMs, at four addresses each. `tools/krawall/extract_krawall.py`'s
+ROMs, at four addresses each. `tools/krawall/dump_krawall.py`'s
 `MODULE_ADDRS` holds the addresses themselves.
 
 ### Sample size field
@@ -198,7 +198,7 @@ channel column index; the high bits say which fields come next:
 
 True pattern length is only knowable by walking this stream to its end
 (`rows` iterations of "read follow bytes until 0"). Ported directly in
-`extract_krawall.py::pattern_span`.
+`dump_krawall.py::pattern_span`.
 
 ### Pattern atom encoding (note/instrument)
 
@@ -231,7 +231,7 @@ The active byte-per-field encoding (separate note byte + instrument byte +
 optional 3rd byte when `instrument > 255`) is the *later* krawerter
 revision's format and does **not** apply to this ROM -- decoding our real
 bytes that way produces a nonsensical, frequently-set "note high bit" with
-no format-level meaning. Not currently load-bearing for `extract_krawall.py`
+no format-level meaning. Not currently load-bearing for `dump_krawall.py`
 (span math only needs the byte *count*, which both encodings agree on: 2
 bytes, no extension), but load-bearing for any future work that decodes or
 regenerates pattern *content* (e.g. the JSON module/pattern format).
@@ -254,7 +254,7 @@ revision the way the note/instrument decode above is.
   just `== 254`), so `255` is presumably also reserved (standard XM
   end-of-song marker), even though it was never observed in either ROM's
   real order lists (only `254` occurs -- checked directly across all 52 US
-  modules). `extract_krawall.py::module_header_span`'s `max_pattern`
+  modules). `dump_krawall.py::module_header_span`'s `max_pattern`
   computation currently only excludes `== 254`; harmless today since `255`
   never appears in practice, but worth guarding as `< 254` if this is ever
   revisited, since a stray `255` would currently be mistaken for a real
@@ -305,7 +305,7 @@ The build's Krawall source is a curated, editable JSON+WAV format under
 future moddable build (add/remove/edit tracks). Per hard rule 2,
 `data/audio/` is **gitignored, same footing as the baserom, never
 committed**. Bootstrap
-it locally with `tools/krawall/krawall_migrate.py` before building -- see below.
+it locally with `tools/krawall/extract_krawall.py` before building -- see below.
 
 - **`data/audio/modules/<Name>.json`**: one module (song) plus its own
   patterns inlined (patterns are never shared between modules in this
@@ -347,7 +347,7 @@ it locally with `tools/krawall/krawall_migrate.py` before building -- see below.
   bit depth exactly, and halves the local disk footprint. (Widening to
   16-bit to dodge players that mishandle unsigned 8-bit WAV is not worth
   doing without a concrete player that actually does so.) See
-  `tools/krawall/krawall_migrate.py`/`tools/krawall/pack_krawall.py`.
+  `tools/krawall/extract_krawall.py`/`tools/krawall/pack_krawall.py`.
 - Sample **index** (the 1-based number patterns reference via
   `instrument`, before name resolution) comes from each sample JSON's own
   `index` field (0-based there), not the filename -- see above. Patterns
@@ -375,21 +375,21 @@ it locally with `tools/krawall/krawall_migrate.py` before building -- see below.
   `.S` text rather than raw binary. `tools/krawall/krawall_codec.py` holds the
   shared encode/decode logic (pattern row compression, `songIndex`
   derivation, sample trailing-buffer generation) used by both the packer
-  and the one-time `tools/krawall/krawall_migrate.py` bootstrap script (ROM ->
+  and the one-time `tools/krawall/extract_krawall.py` bootstrap script (ROM ->
   `data/audio/`, US only -- content is version-independent, see Confirmed
   stats). Round-trip verified: both US and JP rebuild byte-identical to
   their donor ROMs from this JSON, sourced from the US ROM alone.
 
 ### Paths that are not build input
 
-`tools/krawall/extract_krawall.py` is a discovery/debugging aid, not part
+`tools/krawall/dump_krawall.py` is a discovery/debugging aid, not part
 of the build -- it writes one raw binary file per region to
 `asm/krawall/<ver>/...` (gitignored -- game's actual copyrighted content)
 and prints per-pattern/per-sample/per-module manifest rows. Useful for
 diffing against `pack_krawall.py`'s output while touching
 `tools/krawall/krawall_codec.py`.
 
-`.xm` export (`just extract-music-xm`) is a completely separate,
+`.xm` export (`just dump-music-xm`) is a completely separate,
 non-authoritative path for actually listening to/viewing the music --
 lossy (effect remapping, optional pattern-rewriting for playback accuracy),
 never touches the build, and still reads the baserom directly rather than
@@ -480,7 +480,7 @@ Modules and samples can be given human-readable names (which `.xm`
 track/instrument they came from) via a shared `krawall_names.txt` at the
 repo root (`<module|sample> <index> <Name>` lines, version-independent --
 see `krawall_codec.py`'s `load_krawall_names`/`resolve_names`).
-`tools/krawall/krawall_migrate.py` picks it up on re-run, using the custom
+`tools/krawall/extract_krawall.py` picks it up on re-run, using the custom
 name for the `.json`/`.wav` filenames and (for samples) the name patterns
 reference via `instrument`; it also deletes the default-named
 `Module<N>`/`Sample<N>` file(s) a prior run wrote.

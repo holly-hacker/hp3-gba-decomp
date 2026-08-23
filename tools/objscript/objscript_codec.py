@@ -27,7 +27,7 @@ lives in script_names.json next to this file, same footing as
 opcodes.json: curated RE knowledge, not extracted game content, so it's
 committed rather than gitignored even though data/scripts/ itself isn't.
 Keyed by effect id (0-64), each entry optionally carries "name" (used as
-the script's filename/assembly label by objscript_migrate.py/
+the script's filename/assembly label by extract_objscript.py/
 pack_objscript.py) and "description" (emitted as a leading "# ..."
 comment by format_script_text -- purely informational, stripped by
 parse_script_text like any other comment, so it can never affect
@@ -69,7 +69,7 @@ _SCRIPT_NAMES_JSON = json.loads((Path(__file__).parent / "script_names.json").re
 
 # effect id -> curated name/description, for the scripts we're confident
 # about the real-world identification of. Absent entries just mean
-# "not yet identified" -- objscript_migrate.py falls back to "EffectN".
+# "not yet identified" -- extract_objscript.py falls back to "EffectN".
 SCRIPT_NAME_BY_EFFECT_ID: dict[int, str] = {
     int(k): v["name"] for k, v in _SCRIPT_NAMES_JSON.items() if "name" in v
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Pack data/levels/*.json (curated, editable per-character level-up
-stat JSON, see tools/levels/level_migrate.py) into per-version,
+stat JSON, see tools/levels/extract_levels.py) into per-version,
 byte-exact assembly for regions.<ver>.txt's level-table rows. See
 docs/memory-map/battle.md.
 

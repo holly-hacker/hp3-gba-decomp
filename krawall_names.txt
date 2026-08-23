@@ -4,7 +4,7 @@
 # unmapped ones keep their default Module<N>/Sample<N> name.
 #
 # Format: '<module|sample> <index> <Name>'
-#   - index: the module's position in tools/krawall/extract_krawall.py's
+#   - index: the module's position in tools/krawall/dump_krawall.py's
 #     MODULE_ADDRS list, or the sample's position in the ROM's global
 #     sample list (both 0-based) -- these are also each currently-unnamed
 #     entry's default Module<N>/Sample<N> number.
@@ -16,7 +16,7 @@
 # module 0 MusHogwarts
 # sample 12 PianoC4
 #
-# After editing this file, re-run `just migrate-krawall` to rename the
+# After editing this file, re-run `just extract-krawall` to rename the
 # corresponding data/audio/ files, then regenerate and splice the
 # affected rows into regions.<ver>.txt:
 #   python3 tools/krawall/gen_krawall_regions.py us

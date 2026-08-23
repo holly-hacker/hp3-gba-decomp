@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Pack data/monsters/monsters.json (curated, editable monster-stat JSON,
-see tools/monsters/monster_migrate.py) into per-version, byte-exact
+see tools/monsters/extract_monsters.py) into per-version, byte-exact
 assembly for regions.<ver>.txt's monster-table row. See
 docs/formats/folio_bruti.md.
 

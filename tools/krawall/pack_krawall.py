@@ -36,7 +36,7 @@ def wav_to_pcm(path: Path) -> bytes:
             sys.exit(f"{path}: expected mono 8-bit WAV")
         frames = w.readframes(w.getnframes())
     # WAV's native 8-bit PCM convention is unsigned, 128=silence -- exactly
-    # the ROM's own offset-binary convention (see krawall_migrate.py's
+    # the ROM's own offset-binary convention (see extract_krawall.py's
     # pcm_to_wav), so the raw bytes come back out as-is, no transform.
     return frames
 
@@ -166,7 +166,7 @@ def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) ->
     sdir = Path(samples_dir)
     # Sample order fixes each sample's 1-based instrument index -- the
     # authoritative order is each JSON's own "index" field (written by
-    # krawall_migrate.py), NOT the filename, since names are user-renamable
+    # extract_krawall.py), NOT the filename, since names are user-renamable
     # (see krawall_names.txt) and needn't stay numeric/sorted.
     entries: list[tuple[int, str, dict]] = []
     for p in sdir.glob("*.json"):

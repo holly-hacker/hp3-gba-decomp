@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Compute the krawall-module/krawall-samples rows for regions.<ver>.txt
 from the baserom, using the same address tables and span math as
-tools/krawall/extract_krawall.py. See docs/formats/krawall.md.
+tools/krawall/dump_krawall.py. See docs/formats/krawall.md.
 
-Unlike extract_krawall.py's per-pattern/per-sample rows, this emits one
+Unlike dump_krawall.py's per-pattern/per-sample rows, this emits one
 row per module (covering that module's own patterns, which are contiguous
 and immediately precede its header -- confirmed in
 docs/formats/krawall.md) and a single row for the whole sample block
@@ -12,7 +12,7 @@ there). Also double-checks those contiguity assumptions the packer relies
 on, refusing to emit if a future baserom's layout doesn't match.
 
 Module names come from krawall_names.txt (see krawall_codec.py's
-load_krawall_names) the same way tools/krawall/krawall_migrate.py resolves them --
+load_krawall_names) the same way tools/krawall/extract_krawall.py resolves them --
 re-run this (and splice the output into regions.<ver>.txt) any time
 krawall_names.txt changes, so the row names/paths keep matching the
 renamed data/audio/modules/*.json files.
@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from extract_krawall import (
+from dump_krawall import (
     SAMPLE_LIST, MODULE_ADDRS, sample_span, module_header_span,
     align4, SAMPLES_ADD, u32,
 )
@@ -37,7 +37,7 @@ def compute_samples_bounds(data: bytes, ver: str) -> tuple[int, int]:
     addrs = [u32(data, sample_list_addr + i * 4) & 0x1FFFFFF for i in range(sample_count)]
     if sorted(addrs) != addrs:
         sys.exit("sample index order doesn't match address order -- would "
-                 "make krawall_migrate.py's per-sample 'index' field disagree "
+                 "make extract_krawall.py's per-sample 'index' field disagree "
                  "with the ROM's own instrument-reference numbering")
     cur = addrs[0]
     for a in addrs:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Pack data/text/ (curated, editable dialog-string JSON, currently
-US-only -- see tools/text/text_migrate.py) into per-version, byte-exact
+US-only -- see tools/text/extract_text.py) into per-version, byte-exact
 assembly for regions.<ver>.txt's dialog-text/dialog-text-table rows. See
 docs/formats/text.md.
 

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Pack data/scripts/ (curated, editable object-script text, see
-objscript_migrate.py) into per-version, byte-exact assembly for
+extract_objscript.py) into per-version, byte-exact assembly for
 regions.<ver>.txt's objscript-table row. See docs/formats/object_script.md.
 
 Mirrors tools/monsters/pack_monsters.py's role for the Folio Bruti table.
 Effect id order comes from data/scripts/index.json (a JSON array of
 filenames, position = effect id) -- NOT from sorting the directory
 listing or parsing filenames -- so a script's file can be renamed freely
-(see objscript_migrate.py) without silently reordering the packed
+(see extract_objscript.py) without silently reordering the packed
 g_apEffectScripts table. The pointer table itself is not stored on disk
 at all -- it's fully determined by script order/size, so it's computed
 and emitted here.

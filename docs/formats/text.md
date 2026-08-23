@@ -438,8 +438,8 @@ bytes**, base to base, for all 8 languages -- checked directly against
 `baserom.us.gba`, not inferred. This is what makes the pipeline safe to
 wire into the actual build rather than just a research decoder.
 
-**`tools/text/text_migrate.py`** (the `migrate-text` recipe, one-time per
-clone, like `migrate-krawall`): decodes all 8 languages from
+**`tools/text/extract_text.py`** (the `extract-text` recipe, one-time per
+clone, like `extract-krawall`): decodes all 8 languages from
 `baserom.us.gba` into `data/text/<lang>.json` (gitignored -- real game
 text content, same footing as the baserom and `data/audio/`, per hard
 rule 2). Each string is stored via `text_codec.bytes_to_editable()`:
@@ -570,7 +570,7 @@ this ROM's actual content.
   it. `tools/text/decode_dialog_text.py`'s raw output prints `\xNN` for
   it, since that tool reads raw ROM bytes directly rather than going
   through `text_codec.py`'s `CHARMAP` -- `data/text/*.json` (via
-  `tools/text/text_migrate.py`) is where real characters show up.
+  `tools/text/extract_text.py`) is where real characters show up.
 - Whether the type-4/type-6 custom IWRAM codecs (see approach 6 above)
   are used anywhere outside the level-loading dispatcher's 14 known call
   sites remains unconfirmed either way -- moot for text specifically,
