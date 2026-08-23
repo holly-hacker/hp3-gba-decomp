@@ -17,19 +17,28 @@ for their objects, traced through a deferred per-frame queue to the
 vblank DMA that writes real hardware OBJ palette RAM. **PROVEN** that
 this palette mechanism is statically extractable at scale, not just
 one-at-a-time via live triggering: `tools/graphics/find_object_palettes.py`
-found 14 real palettes (9 new) with zero gameplay. Tile data remains
-the bottleneck for "extract everything" -- only 2 tile resources are
+found 14 real palettes (9 new) with zero gameplay. **PROVEN and
+extracted end-to-end for one whole tile-data-consuming resource class**:
+every real item's icon (`ItemEntry.pIcon1/pIcon2/pIcon3`, see "Item
+icons" below) is now statically decoded, extracted verbatim to
+`data/images/items/*.bin`, and packed into a real, byte-verified
+`regions.us.txt` region -- the first build-integrated
+(`just extract-item-icons`) image extractor in this repo, also
+rendered for viewing to `extracted/items/*.png`. Tile data otherwise
+remains the bottleneck for "extract everything" beyond items -- only 2
+non-item tile resources are
 confirmed, both via live tracing, with no statically-walkable
-dispatcher argument found for tiles yet (unlike palettes). **STRUCTURAL
-MATCH** for three earlier candidate art regions from static ROM
-scanning, none code-confirmed and one (`0x08933000`-area's sibling
-`0x080BCA24`) a **false positive** for the object it resembles -- see
-"The wand cursor sprite" for why pixel-shape plausibility isn't
+dispatcher argument found for the general case yet (unlike palettes).
+**STRUCTURAL MATCH** for three earlier candidate art regions from
+static ROM scanning, none code-confirmed and one (`0x08933000`-area's
+sibling `0x080BCA24`) a **false positive** for the object it resembles
+-- see "The wand cursor sprite" for why pixel-shape plausibility isn't
 sufficient evidence on its own. Standing caveat throughout this doc:
 rendered content using a fake grayscale ramp palette must only be
-described structurally, never as depicting specific real-world content.
-No build-integrated extractor exists yet (no `regions.<ver>.txt` rows for
-graphics).
+described structurally, never as depicting specific real-world content
+(item icons are the one exception -- their real, decoded palette makes
+identifying content legitimate). No build-integrated extractor exists
+yet for graphics data outside item icons.
 
 ## What we know
 
@@ -716,6 +725,110 @@ animation-frame table entry, given the surrounding code reads per-frame
 struct fields) is the next real unlock for reaching "extract everything"
 for tiles -- the calling pattern is found; what's left is tracing its
 argument dataflow.
+
+### Item icons (PROVEN, extracted)
+
+`ItemEntry.pIcon1/pIcon2/pIcon3` (`docs/formats/save.md`'s item table,
+`+0x04/+0x08/+0x0C`) is a second, fully statically-walkable instance of
+the OBJ tile-loading path described above -- found by decompiling
+`FUN_08026bcc` (`0x08026bcc`, called by `FUN_08027384`, an item-spawn
+function), which reads exactly these 3 fields and hands them to
+`SpawnObject` (`0x08001528`, the same generic pooled-object spawner
+documented above) as `resource_ptr`, then to `LoadObjTile`/
+`LoadObjTileSheet` (`0x080454BC`/`0x08045588`). Unlike the general case,
+every item's `resourcePtr` is a clean literal at its own table entry, so
+this closes out "extract everything" for this one resource class
+without needing a live trace:
+
+- **`pIcon1`: a 32-byte palette.** 2-byte header (unidentified, ignored)
+  + 15 BGR555 colors, exactly the `sub_08001528` convention already
+  proven above (`resource_ptr + 2` = 15 real colors; index 0 is the GBA
+  OBJ transparent color, not stored in the resource).
+- **`pIcon3`: a frame/layout header**, the same generic per-object
+  animation-frame format `LoadObjTileSheet`/`FUN_080023b4` (renders the
+  in-world sprite these items also spawn) read from `objStruct+0xe0`.
+  Fixed 12-byte part; `+0x06` is a `u16` frame count (every one of the
+  79 real items has exactly 1). One `u16` offset per frame follows at
+  `+0x0C`, relative to that same `+0x0C` base, pointing at a small
+  record: pixel width (`+0x02`, `u8`), height (`+0x03`, `u8`), and a
+  `u16` source offset (`+0x04`) into `pIcon2`.
+  - Corroborates open thread 1 below (`sub_08045588`'s per-object
+    sub-resource table): its `w:u8, h:u8, source-blob-offset:u16`
+    fields are exactly what's decoded here, now against 79 real,
+    named, concrete instances rather than one traced dataflow guess.
+- **`pIcon2`: the tile pixel data**, at `pIcon2 + source_offset`, header
+  -prefixed like any generic resource (`byte0`'s nibble = type,
+  `byte1..3` LE = decompressed size, matching `width*height/2` exactly
+  in all 79 real items -- an independent structural check that the
+  frame-header field identities above are right). Two nibbles appear:
+  type 3 (BIOS `RLUnComp`, 11 of 79) and type 7 -- `sub_0801DE5C`'s
+  *own* nibble for the type-4 proprietary codec (`0x0804a2cc` via the
+  `0x030028CC` IWRAM entry), distinct from `sub_0801DD90`'s nibble 4 for
+  that same codec (two different dispatchers, two different
+  nibble-to-codec mappings, same underlying decoder already proven
+  above under "The type-4 codec, decoded"). No other nibble appears
+  among the 79 real items.
+
+**Type 3's real stream starts 8 bytes past the outer header, not 4 --
+confirmed against raw disassembly, not just decompile.** `sub_0801DE5C`'s
+case-3 branch (disassembled directly: `add r0,r3,#0x4` then
+`bl sub_08049eb0`, which is a bare `svc 0x15` / `RLUnCompVram` wrapper)
+passes the resource address plus 4 straight into the real BIOS RLE
+routine -- but that BIOS call needs its *own* self-contained 4-byte
+type+size header at whatever address it's given, distinct from the
+generic dispatcher header `sub_0801DE5C` already consumed at
+`pIcon2 + source_offset + 0`. Every type-3 icon's data has that same
+header duplicated verbatim at `+ 0x4` (`icon_codec.py` asserts this on
+every decode, since it's a real invariant of the format, not an
+assumption), so the real token stream starts at `+ 0x8`. Skipping only
+the outer header (the correct convention for type 7, which has no such
+duplicate) is a dead end for type 3: it feeds the duplicate header's
+own bytes into the decoder as real tokens, visibly corrupting the
+rendered icon while still producing *a* plausible-sized image -- not
+something a byte-count or size check catches, only a look at the
+rendered PNG.
+
+**Verified by decoding and rendering real ROM data, not just reading
+the struct shape**: "Ordinary Belt" (32x32, type-7/type-4 tiles) decodes
+to a recognizable belt with a gold buckle; "Antidote to Common Poisons"
+(16x32, type-7) decodes to a recognizable potion bottle; "Wiggenweld
+Potion" and "Trevor" (both type-3, post-fix) decode to a recognizable
+potion bottle and toad respectively. All confirmed by direct visual
+inspection of the rendered PNG, matching their item names unambiguously.
+
+**Extraction and packing**: `tools/items/icon_codec.py` implements the
+decode (palette + frame-header parsing directly, tile data via
+`tools/graphics/decode_bios.py`/`tools/graphics/decode_type4.py`).
+`tools/items/extract_item_icons.py` (`just extract-item-icons`, part of
+`just extract-all`) verifies all 79 real items' icon data forms one
+fully contiguous ROM span with zero gaps between items, in table order
+-- confirmed by sorting every `pIcon1`/`pIcon2`/`pIcon3` address and
+checking each one's extent against the next, with the span's end
+independently corroborated by `FUN_08026bcc`'s own `id==0x86` literal
+(`&DAT_080ac6a0`, the next icon resource: an equip-slot placeholder
+outside this table). It then extracts each item's 3 pieces verbatim to
+`data/images/items/<Name>.{palette,tiles,frames}.bin` (3 separate
+files, not one concatenated blob -- the frame-header's length isn't a
+fixed format constant the way the palette's is, and nothing in the
+preceding compressed tile data declares its own compressed byte length,
+so only the filesystem boundary reliably separates them) and renders
+each to a human-viewable `extracted/items/<Name>.png` (gitignored,
+never build input -- see the justfile). `regions.us.txt`'s single
+`item-icon-data` row claims that whole span as one real, byte-verified
+extracted region -- like `item-table` and the Krawall rows, not
+anonymous `.incbin` from the baserom -- packed by
+`tools/items/pack_item_icons.py`, which just copies each `.bin`'s bytes
+back out under a label (`gItemIcon<Name>Palette/Tiles/Frames`). There
+is no re-encode step: no type-4 codec encoder exists (only the
+Unicorn-executed decoder), so packing is a literal copy-through, not a
+transformation -- editing these `.bin` files isn't meaningful, they
+exist so this region can be claimed and byte-verified rather than left
+as unclaimed `.incbin`. `tools/items/pack_items.py` (the item-table
+packer) references those same labels by name instead of packing
+literal addresses, so no ROM address is stored in `items.json` or
+`data/images/` at all -- only in `regions.us.txt`'s one `item-icon-data`
+row. See `docs/formats/save.md`'s item-table section for the JSON shape
+(`sIconPath` replacing the 3 raw pointers for real items).
 
 ## Open threads
 

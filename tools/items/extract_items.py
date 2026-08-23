@@ -27,6 +27,17 @@ padding at 80-131 aren't real items, and their nNameTextId (0 in every
 case) would otherwise decode to unrelated text (the first dialog string)
 rather than anything meaningful for that slot.
 
+Real items (index < REAL_ITEM_COUNT) also lose their raw pIcon1/pIcon2/
+pIcon3 fields, replaced by "sIconPath" (e.g. "items/ChocolateFrogs.png",
+see item_codec.icon_path) -- see tools/items/extract_item_icons.py for
+the actual extracted bytes/PNGs and tools/items/pack_item_icons.py for
+how those addresses get named instead of stored (regions.us.txt's
+single item-icon-data row). Non-real entries (>= 79) keep
+pIcon1/pIcon2/pIcon3 as literal integers and get "sIconPath": null --
+they have no display name to derive a path from, and (index 79 only)
+their icon pointers are a real, nonzero clone of index 62's, not
+extractable content of their own.
+
 Usage: extract_items.py   (reads baserom.us.gba, writes data/items/items.json)
 """
 import json
@@ -34,7 +45,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from item_codec import ITEM_COUNT, ITEM_TABLE_ADDR, REAL_ITEM_COUNT, RECORD_SIZE, unpack_record
+from item_codec import ITEM_COUNT, ITEM_TABLE_ADDR, REAL_ITEM_COUNT, RECORD_SIZE, icon_path, unpack_record
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "text"))
 from decode_dialog_text import decode_dialog_text
@@ -57,8 +68,16 @@ def main() -> None:
     for i in range(ITEM_COUNT):
         off = base + i * RECORD_SIZE
         record = unpack_record(rom[off:off + RECORD_SIZE])
-        out = {"_name": decode_string(rom, record["nNameTextId"]) if i < REAL_ITEM_COUNT else None}
-        out.update(record)
+        is_real = i < REAL_ITEM_COUNT
+        name = decode_string(rom, record["nNameTextId"]) if is_real else None
+        out = {"_name": name}
+        if is_real:
+            del record["pIcon1"], record["pIcon2"], record["pIcon3"]
+            out.update(record)
+            out["sIconPath"] = icon_path(name)
+        else:
+            out.update(record)
+            out["sIconPath"] = None
         records.append(out)
 
     out_dir = Path("data/items")

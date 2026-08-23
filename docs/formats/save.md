@@ -257,7 +257,7 @@ Record layout (`0x34` bytes), from the accessors in the
 | Offset | Field | Reader |
 |---|---|---|
 | `+0x00` | `nNameTextId` -- dialog string id for the display name | `FUN_08026B8C` |
-| `+0x04`, `+0x08`, `+0x0C` | three icon/sprite pointers | -- |
+| `+0x04`, `+0x08`, `+0x0C` | `pIcon1`/`pIcon2`/`pIcon3` -- palette, tile data, and frame/layout header for the item's icon. **PROVEN**, see [`graphics.md`](graphics.md)'s "Item icons" section. | `FUN_08026bcc` |
 | `+0x10` | `nOwlRewardWeight` -- owl-mail reward weight (see "Owl Care Kit" above) | `FUN_08026C38` |
 | `+0x14` | unidentified; nonzero gates membership of filter `0xB` | `FUN_08026C4C`, `FUN_08026E58` |
 | `+0x18` | `dwCategory` -- item category id, **PROVEN** (see below) | `FUN_08026E58`, `FUN_08026F48` |
@@ -340,14 +340,28 @@ through `tools/monsters/` -- see [`folio_bruti.md`](folio_bruti.md)'s
 `baserom.us.gba`, and `pack_items.py` (`just pack-items`, wired into
 `just build`) packs it back into `regions.us.txt`'s `item-table` row
 (`0x08060EE4`-`0x080629B4`). All 132 records are packed, real or not,
-since the row must round-trip exactly. `pIcon1`/`pIcon2`/`pIcon3` are
-stored as raw pointer integers only -- extracting the actual icon/sprite
-image assets behind them is future work. Each record also gets a
-leading `_name` annotation (the item's display name, decoded from its
-own `nNameTextId` via the dialog text table), ignored entirely by
+since the row must round-trip exactly. Each record also gets a leading
+`_name` annotation (the item's display name, decoded from its own
+`nNameTextId` via the dialog text table), ignored entirely by
 `pack_items.py`; it's `null` for indices `>= 79` (the dummy record and
-the zero padding), which aren't real items. US ROM only -- content not
-yet checked against JP.
+the zero padding), which aren't real items.
+
+For a real item (index `< 79`), `pIcon1`/`pIcon2`/`pIcon3` are not
+stored in `items.json` at all -- see [`graphics.md`](graphics.md)'s
+"Item icons" section for the confirmed format, and the module docstring
+of `tools/items/item_codec.py` for why: those 3 addresses are recorded
+nowhere but `regions.us.txt`'s single `item-icon-data` row (all 79
+items' icon data forms one contiguous region), and `pack_items.py`
+emits `.word` references to the labels `tools/items/pack_item_icons.py`
+names within it instead of packing literal integers. `sIconPath` (e.g.
+`"items/OrdinaryBelt.png"`) takes their place, naming both that label
+set and the human-viewable render `just extract-item-icons` writes to
+`extracted/items/` (the real extracted bytes live in
+`data/images/items/<Name>.{palette,tiles,frames}.bin`). Indices `>= 79`
+have no name to derive a path from (and index 79's icon pointers are a
+real, nonzero clone of index 62's, not content of their own), so they
+keep `pIcon1`/`pIcon2`/`pIcon3` as literal integers and get
+`"sIconPath": null`. US ROM only -- content not yet checked against JP.
 
 **Room-object state** (`roomObjectState`, packed by `PackRoomObjectStateToSaveStream`
 (`0x0802A570`), unpacked by `UnpackRoomObjectStateFromSaveStream` (`0x0802A3D4`)):

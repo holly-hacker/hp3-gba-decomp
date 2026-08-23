@@ -131,6 +131,24 @@ pack-items ver="us":
     python3 tools/items/pack_items.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
+# `build` -- data/images/ is gitignored (same footing as the baserom,
+# see CLAUDE.md hard rule 2). US only. Also writes viewable PNGs to
+# extracted/items/ (gitignored, never build input -- see
+# docs/formats/graphics.md's "Item icons" section).
+# Bootstrap data/images/items/*.bin and extracted/items/*.png from baserom.us.gba.
+extract-item-icons:
+    python3 tools/items/extract_item_icons.py
+
+# Gitignored (build/), like everything else pack_item_icons.py writes.
+# Reads local data/images/items/ (run `extract-item-icons` first if
+# missing) plus this version's item-icon-data row in regions.<ver>.txt
+# for addresses. Unlike pack-items, this is a literal copy-through --
+# no known encoder exists for the type-4 codec these icons use.
+# Pack data/images/items/ into this version's item-icon-data assembly.
+pack-item-icons ver="us":
+    python3 tools/items/pack_item_icons.py {{ver}}
+
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/levels/ is gitignored (same footing as the baserom,
 # see CLAUDE.md hard rule 2) and meant to be user-editable. US only --
 # see docs/memory-map/battle.md.
@@ -152,11 +170,11 @@ pack-levels ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels extract-items
+extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels extract-items extract-item-icons
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver)
+build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
     arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
@@ -174,11 +192,12 @@ check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (com
     @echo "us and jp: full disassembly and stitched build both match the donor ROM."
 
 # Lossy (effect remapping, pattern rewrites for playback accuracy) and NOT
-# used by the build -- see docs/formats/krawall.md.
+# used by the build -- see docs/formats/krawall.md. Writes to extracted/,
+# not build/ -- this is human-viewing output, not a build artifact.
 # Dump the game's music as .xm files for listening/viewing.
 dump-music-xm ver="us":
-    mkdir -p build/{{ver}}/music_xm
-    unkrawerter -k -x -o build/{{ver}}/music_xm baserom.{{ver}}.gba
+    mkdir -p extracted/{{ver}}/music_xm
+    unkrawerter -k -x -o extracted/{{ver}}/music_xm baserom.{{ver}}.gba
 
 # Proposes candidates only -- see the script's docstring for how to confirm
 # one before trusting it (e.g. copying a name into functions.jp.cfg).

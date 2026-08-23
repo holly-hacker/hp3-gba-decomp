@@ -265,3 +265,25 @@ objscript-table 0x0805994C 0x0805BA7C data/scripts g_apEffectScripts
 # baserom. Bootstrap it locally with `just extract-items` before
 # building.
 item-table 0x08060EE4 0x080629B4 data/items/items.json g_pItemTable
+
+# All 79 real items' icon data (palette+tiles+frame-header, see
+# docs/formats/graphics.md's "Item icons" section) sits in one
+# fully contiguous ROM span with zero gaps between items, in table
+# order -- confirmed by sorting every pIcon1/pIcon2/pIcon3 address
+# and checking each one's extent against the next. The end address
+# is independently corroborated: it's the literal address
+# (DAT_080ac6a0) FUN_08026bcc uses for the next icon resource (an
+# equip-slot placeholder, outside this table). Packed from curated
+# data/images/items/<Name>.palette.bin/.tiles.bin/.frames.bin (one
+# triple per real item, named via item_codec.icon_labels) by
+# tools/items/pack_item_icons.py (the `pack-item-icons` recipe).
+#
+# data/images/items/ is curated, editable source, gitignored per
+# hard rule 2 (CLAUDE.md) -- extracted game data, same footing as
+# the baserom. Bootstrap it locally with `just extract-item-icons`
+# before building. There is no re-encode step: these .bin files are
+# verbatim copies of the original compressed/raw bytes (no known
+# type-4 codec encoder exists), so editing them isn't meaningful --
+# they exist so this region can be a real, byte-verified extracted
+# region instead of anonymous .incbin from the baserom.
+item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons

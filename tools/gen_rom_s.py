@@ -50,6 +50,12 @@ ITEM_TABLE_DIRECTIVE = "item-table"
 # docs/memory-map/battle.md.
 LEVEL_TABLE_DIRECTIVE = "level-table"
 
+# item-icon-data rows: same shape as krawall-samples (a directory of
+# per-name files, not one JSON), packed by pack_item_icons.py from
+# data/images/items/<Name>.palette.bin/.tiles.bin/.frames.bin -- see
+# docs/formats/graphics.md's "Item icons" section.
+ITEM_ICON_DATA_DIRECTIVE = "item-icon-data"
+
 
 def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     """Returns (regions, labels): regions sorted and non-overlapping."""
@@ -116,6 +122,16 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 if end <= start:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 asmfile = f"build/{ver}/levels/{name}.s"
+                regions.append((start, end, asmfile, name))
+                continue
+            if parts[0] == ITEM_ICON_DATA_DIRECTIVE:
+                if len(parts) != 5:
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
+                _, start_s, end_s, _source, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                asmfile = f"build/{ver}/items/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
             if parts[0] in DIALOG_TEXT_DIRECTIVES:

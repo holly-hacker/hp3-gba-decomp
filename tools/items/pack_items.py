@@ -15,13 +15,30 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from item_codec import RECORD_SIZE, pack_record
+from item_codec import RECORD_SIZE, icon_labels, pack_head, pack_icons_literal, pack_tail
 
 
 def emit_bytes(lines: list[str], data: bytes) -> int:
     for i in range(0, len(data), 32):
         lines.append(".byte " + ", ".join(str(b) for b in data[i:i + 32]))
     return len(data)
+
+
+def emit_record(lines: list[str], record: dict) -> int:
+    """Emit one 52-byte record: literal bytes for every field except the
+    3 icon pointers, which for a real item (sIconPath set) become `.word`
+    references to regions.<ver>.txt's `label` rows instead of literal
+    addresses -- see item_codec module docstring."""
+    size = emit_bytes(lines, pack_head(record))
+    icon_path = record.get("sIconPath")
+    if icon_path is not None:
+        for label in icon_labels(icon_path):
+            lines.append(f".word {label}")
+        size += 12
+    else:
+        size += emit_bytes(lines, pack_icons_literal(record))
+    size += emit_bytes(lines, pack_tail(record))
+    return size
 
 
 def parse_item_table_row(ver: str):
@@ -60,7 +77,7 @@ def main() -> None:
     lines: list[str] = [f"{name}:"]
     cursor = start_addr
     for record in records:
-        cursor += emit_bytes(lines, pack_record(record))
+        cursor += emit_record(lines, record)
 
     if cursor != end_addr:
         sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X}, "

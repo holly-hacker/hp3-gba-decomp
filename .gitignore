@@ -41,5 +41,15 @@ data/levels/*
 # See CLAUDE.md hard rule 2 and docs/formats/save.md.
 data/items/*
 !data/items/.gitkeep
+# Item icon data (tools/items/extract_item_icons.py bootstraps this
+# locally from the baserom) -- extracted game art, not committed. See
+# CLAUDE.md hard rule 2 and docs/formats/graphics.md's "Item icons"
+# section.
+data/images/items/*
+!data/images/items/.gitkeep
+# Human-viewing dumps only (rendered PNGs, .xm exports, ...) -- never
+# build input, always fully regeneratable, never committed. See
+# `extract-item-icons`/`dump-music-xm` in the justfile.
+extracted/
 **/__pycache__
 .claude/worktrees
