@@ -1,5 +1,9 @@
 # Dialog/UI text format
 
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
+
 Status: **SOLVED end-to-end, PROVEN by direct content verification.** The
 real dialog/UI string table is located, its Huffman-style compression
 format is fully decoded, and it is confirmed genuinely per-language (all
@@ -124,52 +128,29 @@ resolved.**
 
 ### 6. Resource-decompression dispatcher call-site tracing
 
-Found the game's generic resource-decompression dispatcher,
-`sub_0801DD90` (`0x0801DD88`, with a near-twin `sub_0801DE5C`). It reads
-a 32-bit header word and jump-tables on `(byte0>>4) & 0x7` -- **PROVEN**,
-derived directly from the actual instructions. Note the `& 0x7`: bit 3 of
-that nibble (`byte0 & 0x80`) is a *separate* post-processing flag checked
-later, not part of the type selector -- see `docs/formats/graphics.md`'s
-"Compression: the level-resource table" section for the exact instruction
-sequence. Dispatch:
+The game's generic resource-decompression dispatcher (`sub_0801DD90` /
+`0x0801DD88`, near-twin `sub_0801DE5C`, and the four codecs it
+jump-tables into) is documented in
+[`graphics.md`](graphics.md)'s "The resource-decompression dispatcher".
 
-- type 0: raw `CpuSet` copy (uncompressed)
-- type 1: `svc 0x11` (BIOS `LZ77UnCompWram`)
-- type 2: `svc 0x13` (BIOS `HuffUnComp`)
-- type 3: `svc 0x14` (BIOS `RLUnCompWram`)
-- type 4 and 6: a **custom, non-BIOS decompressor**, installed into IWRAM
-  at runtime by a function at `0x0801DD40` (not statically reachable by
-  `gbadisasm`'s function discovery -- same invisibility issue as
-  `kramInstall`, see `docs/memory-map/krawall.md`). Two `CpuSet` (`svc
-  0xB`) copies install:
-  - type 4's codec from `0x08006108` (504 bytes) to IWRAM `0x030028D4`,
-    pointer stashed at `0x030028CC`: a byte-token LZSS-style decoder
-    (bit7-set token byte = back-reference with 5-bit length + distance
-    byte; bit7-clear = literal-run control).
-  - type 6's codec from `0x080005EC` (828 bytes) to IWRAM `0x03002ACC`,
-    pointer stashed at `0x030028D0`: a canonical-Huffman-shaped bitstream
-    reader (shift-with-carry / word-reload pattern, code-length-like
-    header table). This codec is fully decoded (PROVEN, verified by
-    executing the real ROM bytes in an emulator) -- see
-    `docs/formats/graphics.md`'s "The type-6 codec, decoded" section for
-    the algorithm and a working decoder. Every real resource decoded with
-    it so far has turned out to be BG tilemap data, not text -- but the
-    decoder itself is generic and could decode a text resource too, if
-    one is ever found using this compression type.
+It is **not** the text path: every one of its 14 static call sites
+traces to the level/graphics-loading subsystem, and every resource
+decoded through it so far has been BG tilemap or sprite tile data. Real
+dialog/UI text uses a third, distinct Huffman scheme of its own -- see
+"The real dialog string table, decoded" below.
 
-Both are real, previously-undocumented proprietary compressors -- **but
-every one of the dispatcher's 14 static call sites traces to the
-level/graphics-loading subsystem** (a 124-byte-stride room/level table at
-`0x0806BE38`), not text. `sub_0804A2CC`, which looked promising as a
-custom decompressor by name proximity, is actually an unrelated shared
-register-indirect-call trampoline (`bx r3`) -- the same interworking-veneer
-pattern documented in `docs/memory-map/krawall.md`, reused generically.
+Two dead ends worth not re-walking: `sub_0804A2CC`, which looks like a
+custom decompressor by name proximity, is a shared
+register-indirect-call trampoline (`bx r3`), one of the interworking
+veneers documented in
+[`../memory-map/krawall.md`](../memory-map/krawall.md); and the BIOS
+Huffman path (type 2) is ruled out for text content by approach 2 above.
 
 **Open door, not closed**: a text-loading caller could still exist
-elsewhere in the ~1.1M-line disassembly, reaching either of these two
-custom IWRAM codecs (or the BIOS Huffman path) through a call site the
-`bl sub_0801DD90` / `bl sub_0801DE5C` grep didn't catch (e.g. a dedicated
-text-specific wrapper that was never routed through this dispatcher at
+elsewhere in the ~1.1M-line disassembly, reaching either proprietary
+IWRAM codec (or the BIOS Huffman path) through a call site the
+`bl sub_0801DD90` / `bl sub_0801DE5C` grep didn't catch (e.g. a
+dedicated text-specific wrapper never routed through this dispatcher at
 all).
 
 ## The text engine, found (PROVEN for the encoding scheme; static tracing, no live session)
@@ -197,7 +178,7 @@ loops `DrawTextLine` directly, one call per line, advancing Y by
 `DAT_03003121` (line height) each iteration, until the string is
 null-terminated or out of vertical room. Multi-line box drawing built on
 the single-line primitive. Found via `ShowBattleMessage`'s `CriticalHit`
-case (`docs/memory-map/battle.md`).
+case ([`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)).
 
 **`sub_08020714`** (`0x08020714`): the actual per-glyph decode loop.
 Reads one byte at a time and branches on its value:
@@ -465,7 +446,7 @@ dialog text isn't located, see below).
 **`functions.us.cfg`**: named the whole chain (`DrawTextLine`,
 `GetGlyphWidth`, `PrintTextBox`, `DecompressDialogText`,
 `InitDialogTextTable`, `GetLanguage`, `GetDialogText`, `SetLanguage`),
-plus the three OBJ tile loaders from `docs/formats/graphics.md`
+plus the three OBJ tile loaders from [`graphics.md`](graphics.md)
 (`LoadObjTile`, `LoadObjTileAt`, `LoadObjTileSheet`) -- all were already
 reachable via ordinary `bl` spidering, so this is a pure rename, not a
 new seed; reconfirmed `just disasm-compare` still matches after adding
@@ -576,4 +557,4 @@ this ROM's actual content.
   sites remains unconfirmed either way -- moot for text specifically,
   since the real text codec is a third, distinct Huffman-style scheme,
   but still an open question for the graphics side (see
-  `docs/formats/graphics.md`).
+  [`graphics.md`](graphics.md)).

@@ -1,5 +1,9 @@
 # Object/spell behavior-script bytecode
 
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
+
 Status: **PROVEN** for the interpreter, the byte format, and the
 script/pointer-table layout (all confirmed live in Ghidra, matched
 against `gbadisasm`'s own independent disassembly, plus a built,
@@ -25,7 +29,8 @@ A small, generic bytecode VM that drives per-`Object` behavior scripts.
 It is not battle-specific: it's the same engine `TickObject_candidate`'s
 callback dispatch reaches for any object whose tick callback happens to
 be the script interpreter. Battle status effects
-(`BattleFighter.bStatusFlags`, see `../memory-map/battle.md`) are just
+(`BattleFighter.bStatusFlags`, see
+[`../memory-map/battle.md`](../memory-map/battle.md)) are just
 one consumer of it, via opcode `0x97`.
 
 ## The interpreter
@@ -42,7 +47,7 @@ two registers held for the rest of the call: `r8` and `sl` (`r10`), each
 `*(0x030024E8)[4] + slotByte*72` -- i.e. an entry in what's structurally
 a `BattleFighter fighters[]` array (72-byte stride), indexed by one of
 two adjacent global bytes (`0x03002750+0x22` for `r8`, `+0x23` for `sl`).
-Not otherwise documented in `../memory-map/battle.md`; which fighter role
+Not otherwise documented in [`../memory-map/battle.md`](../memory-map/battle.md); which fighter role
 (attacker/defender, caster/target) each corresponds to isn't confirmed,
 just that they're two distinct fighter slots available throughout the
 whole opcode dispatch. Consumed by at least two opcodes: `MoveTo`'s
@@ -166,14 +171,14 @@ in opcodes.json" below:
 | `0x28` | `GotoIfLocalAEqual_2` | 2 | Byte-for-byte identical handler body to `GotoIfLocalAEqual` (`0x24`) -- confirmed by direct comparison, not just similar shape. Handler at US `0x080195B4`. No functional difference found; kept as a separate name only because it's a genuinely separate opcode number/table entry. |
 | `0x2A` | `GotoIfLocalANotEqual_2` | 2 | Byte-for-byte identical handler body to `GotoIfLocalANotEqual` (`0x26`). Handler at US `0x080195EC`. |
 | `0x2B` | `GotoIfFighterRosterMatches_2` | 1 (label id) | Byte-for-byte identical handler body to `GotoIfFighterRosterMatches` (`0x27`) (register allocation differs -- `r1` vs `r5` for the loop temp -- but the logic is identical). Never used by any of the 65 real scripts. Handler at US `0x08019606`. |
-| `0x30` | `opcode_30` | 0 | The single most-used opcode across the 65 real scripts (190 occurrences), but not confidently named -- what it's for isn't known, only its mechanics. Reads `sl`'s linked `BattleFighter`'s `Object` (`*(sl+4)`, via the same `fighters[]` array/72-byte-stride lookup documented in "The interpreter" above), increments a byte at that `Object+0x60` by 1, then mirrors state into the global `FightState` (`*(0x030024E8)`, see `../memory-map/battle.md`): copies the `*(sl's Object)+0x60` byte (post-increment) into `FightState.field_0x1058`, and latches `*(sl+4)` (the `Object` pointer itself) into `FightState.field_0x1054`, guarded on that field being currently `0` (a "first writer wins" latch). No other effect -- tail-calls `ContinueObjectScript` immediately. Handler at US `0x08019698`. Real scripts call it in tight, `Wait`-free bursts (e.g. `SpellVerdimilliousUno.txt` calls it twice in a row, does other work, then three more times in a row). `TickFighterAttackAnimState_candidate` (US `0x08015608`, the per-tick attack-animation state machine for the currently-attacking fighter) reads and branches on the same `Object+0x60` byte as a small state value (checks against `1`/`2`/`4`) to steer attack-outcome handling, and zeroes `Object+0x60` together with `FightState.field_0x1054`/`field_0x1058` once an attack sequence fully resolves -- all three fields are managed as one unit across the script interpreter and the native attack-animation code, consistent with `sl` being the currently-attacking fighter's own object. Values `2`/`4` of `Object+0x60` are written directly by that native code (this opcode only ever adds `1`). See `../memory-map/battle.md`'s `FightState+0x1054`/`+0x1058` section for what happens (or doesn't) to the accumulated value. |
+| `0x30` | `opcode_30` | 0 | The single most-used opcode across the 65 real scripts (190 occurrences), but not confidently named -- what it's for isn't known, only its mechanics. Reads `sl`'s linked `BattleFighter`'s `Object` (`*(sl+4)`, via the same `fighters[]` array/72-byte-stride lookup documented in "The interpreter" above), increments a byte at that `Object+0x60` by 1, then mirrors state into the global `FightState` (`*(0x030024E8)`, see [`../memory-map/battle.md`](../memory-map/battle.md)): copies the `*(sl's Object)+0x60` byte (post-increment) into `FightState.field_0x1058`, and latches `*(sl+4)` (the `Object` pointer itself) into `FightState.field_0x1054`, guarded on that field being currently `0` (a "first writer wins" latch). No other effect -- tail-calls `ContinueObjectScript` immediately. Handler at US `0x08019698`. Real scripts call it in tight, `Wait`-free bursts (e.g. `SpellVerdimilliousUno.txt` calls it twice in a row, does other work, then three more times in a row). `TickFighterAttackAnimState_candidate` (US `0x08015608`, the per-tick attack-animation state machine for the currently-attacking fighter) reads and branches on the same `Object+0x60` byte as a small state value (checks against `1`/`2`/`4`) to steer attack-outcome handling, and zeroes `Object+0x60` together with `FightState.field_0x1054`/`field_0x1058` once an attack sequence fully resolves -- all three fields are managed as one unit across the script interpreter and the native attack-animation code, consistent with `sl` being the currently-attacking fighter's own object. Values `2`/`4` of `Object+0x60` are written directly by that native code (this opcode only ever adds `1`). See [`../memory-map/battle.md`](../memory-map/battle.md)'s `FightState+0x1054`/`+0x1058` section for what happens (or doesn't) to the accumulated value. |
 | `0x41` | `StartOrbitMotion` | 2 (index, angle tweak) | Copies a 3-dword `{angleX/Y, velX/Y, radiusX/Y}` row (into `Object+0x54`/`0x58`/`0x5c`) from a table at `0x08053C68` (12-byte stride, selected by operand 0) via `CopyOrbitParamsFromTable` (US `0x08003A20`), then tweaks `angleX` (`Object+0x54`'s low 16 bits) by `Object.bScriptLocalA * operand1` (shifted left 8, 8.8 fixed point) -- staggering each spawned generation's starting angle, e.g. to arrange copies evenly around a ring. Fully resolved: `ApplyObjectOrbitMotion` (US `0x08003980`, called every tick for every object by `TickObjectList_candidate`, independent of any opcode) advances `angleX`/`angleY` by `velX`/`velY`, looks up a sine table at `0x0806589C` (`angleX` read with a quarter-turn phase offset, i.e. cosine; `angleY` raw), scales by `radiusX`/`radiusY`, and adds the result into `Object+0x34`/`0x38` (`nXPrev`/`nYPrev`) -- i.e. this opcode **starts a 2D orbital motion** (circular or elliptical, per-axis-configurable) around the object's current position. Handler at US `0x0801990C`. |
 | `0x45` | `StartOrbitMotion_2` | 2 | Same computation as `StartOrbitMotion`, but targets a *different* object -- `*(sl+4)+0x54`, i.e. `sl`'s linked `Object` rather than the running `Object` itself (see "The interpreter" above for `r8`/`sl`) -- which fighter role `sl` is isn't confirmed. Handler at US `0x080199E0`. |
 | `0x52` | `ClearObjectFlag1` | 0 | `Object.dwUnk_0x0c &= ~1` on the running object itself (`r7`) -- reads the field, clears bit `0x1`, stores back, tail-calls `ContinueObjectScript`. Handler at US `0x08019BE8`. Complementary pair with `SetObjectFlag1` (`0x53`) immediately below it in the case table. Which behavior bit `0x1` of `Object+0xc` actually gates isn't identified -- other known bits of this field are `0x2` (checked at `TickFighterAttackAnimState_candidate`'s entry) and `0x40000` (`WaitForCounter`'s "AnimationDone", see "The Wait family" above); bit `0x1` is distinct from both. |
 | `0x53` | `SetObjectFlag1` | 0 | `Object.dwUnk_0x0c \|= 1` on the running object -- the complement of `ClearObjectFlag1` (`0x52`). Handler at US `0x08019BF6`. |
 | `0x54` | `opcode_54` | 1 | Sets a 2-bit field (bits `0x0C`, i.e. bits 2-3) of the byte at offset `0xD5` of the *running* `Object` (`r7`) to `(operand & 3) << 2`: `ldrb`, mask off `0x0C`, OR in the shifted operand, `strb` back -- then tail-calls `ContinueObjectScript`. Handler entry at US `0x08019C02`, which tail-jumps directly into `opcode_55`'s own body (both reach the same `adds r3, #0xD5` instruction, just with `r3` pre-loaded from a different source register) -- confirming this is the exact same operation as `0x55`, just targeting `r7` instead of `r8`'s linked `Object`. `Object+0xD5`'s *upper* nibble is a separate, already-documented graphics-cache slot index (see `graphics.md`'s `sub_08030978` note) -- these bits 2-3 don't overlap that nibble, but what they control isn't identified; not confidently named. Real scripts use values `0`, `1`, and `2` across this opcode and its `0x55`/`0x56`/`0x57` siblings (see those rows), so it's a genuine multi-value field, not a boolean flag. |
 | `0x55` | `opcode_55` | 1 | Same operation as `opcode_54`, but targets `r8`'s linked `Object` (`*(r8+4)`, see "The interpreter" above) instead of the running object. Handler at US `0x08019C0A`. |
-| `0x56` | `SetAllEnemiesFlagBits` | 1 | Broadcast form of `opcode_54`/`opcode_55`: loops over every entry in the `fighters[]` array (`*(0x030024E8)[4]`, 72-byte stride, up to the fighter count read from `FightState`), and for each one whose fighter-type-tag byte (offset `0x00`, per `../memory-map/battle.md`'s `BattleFighter` layout) equals `0xFF` -- i.e. every *enemy* -- applies the identical `Object+0xD5` bits-2-3 write (skipped if that fighter has no linked `Object`). Handler at US `0x08019C2A`. Which behavior the bits gate is still unidentified, same caveat as `0x54`/`0x55` -- this opcode only pins down *who* it's applied to, not *what* it does. |
+| `0x56` | `SetAllEnemiesFlagBits` | 1 | Broadcast form of `opcode_54`/`opcode_55`: loops over every entry in the `fighters[]` array (`*(0x030024E8)[4]`, 72-byte stride, up to the fighter count read from `FightState`), and for each one whose fighter-type-tag byte (offset `0x00`, per [`../memory-map/battle.md`](../memory-map/battle.md)'s `BattleFighter` layout) equals `0xFF` -- i.e. every *enemy* -- applies the identical `Object+0xD5` bits-2-3 write (skipped if that fighter has no linked `Object`). Handler at US `0x08019C2A`. Which behavior the bits gate is still unidentified, same caveat as `0x54`/`0x55` -- this opcode only pins down *who* it's applied to, not *what* it does. |
 | `0x57` | `SetAllAlliesFlagBits` | 1 | Identical loop and bit-write to `SetAllEnemiesFlagBits`, but the fighter-type-tag check is inverted (`!= 0xFF`) -- applies to every *non-enemy* (party) fighter instead. Handler at US `0x08019C8C`, sharing the same body shape as `0x56` one case entry later. Real call sites bracket a screen-darken effect: e.g. `SpecialHarryUltimateMp.txt` sets all enemies/allies to `2` right after `DarkenScreenPalette`, sets just the target fighter (`opcode_55`) to `1`, runs the visual effect, then resets all enemies/allies back to `1` right before `RestoreScreenPalette` -- suggestive of a per-object brightness/palette-variant selector tied to that darken effect, but not traced to an actual reader, so not folded into the name. |
 | `0x5B` | `JitterPosition` | 2 (x range, y range) | Adds a random offset to the running object's current position and applies it immediately: `x = Mt19937RandSigned(operand0)`, `y = Mt19937RandSigned(operand1)` (`Mt19937RandSigned`, US `0x0803B47C`, an already-named RNG function returning a signed value in range), added to `Object.nX`/`nY` (`+0x2c`/`0x30`), then passed to `SnapObjectPosition` (US `0x080019A4` -- takes already-shifted 16.16 fixed-point coordinates and writes both the current and previous position fields to the same value, i.e. a teleport with no interpolation, the same primitive `TeleportTo`/`TeleportToSlotPosition` use). Handler at US `0x08019D70`. A screen-space jitter/shake effect. |
 | `0x60` | `Label` | 1 (label id) | A branch target marker, consumed by `FindScriptLabelOffset` -- not itself an executable effect. |
@@ -183,55 +188,44 @@ in opcodes.json" below:
 | `0x7B` | `MoveFighterToSlotPosition` | 1 (duration) | Same target (`*(r8+4)`) and same `StartObjectMove` call as `MoveFighterTo`, but `x`/`y` are looked up rather than given as operands: `x` from the halfword table at `0x08053D2A` (2-byte stride, the same table `MoveTo`'s fallback and `TeleportToSlotPosition` read) and `y` from the byte table at `0x08053D38` (1-byte stride, ditto), both indexed by the byte at global `0x03002770` -- one byte before `DAT_03002771`, `MoveTo`'s "battle-phase/dialog-state indicator" candidate global (see the `MoveTo` row above); not confirmed further, but structurally reads like a companion fighter-slot-index byte in the same small global block. Handler at US `0x08019FFC`. |
 | `0x82` | `TeleportTo` | 2 (x, y) | Self-targeted immediate teleport to an absolute position: `SnapObjectPosition(self, x<<16, y<<16)` (see `JitterPosition`, `0x5B` above, for `SnapObjectPosition`). Handler at US `0x0801A240`. The `MoveTo`/`TeleportTo` naming split mirrors `MoveTo`/`MoveFighterTo`: animated-vs-immediate, not self-vs-fighter here -- both this and `MoveTo` target the running object. |
 | `0x80` | `ShowCannedDialogBlock` | 1 (block index) | Looks up a pointer and a length byte from two parallel tables (`0x08053B08`, 4-byte stride; `0x08053B14`, 1-byte stride, both indexed by the operand), then calls `QueueDialogRawBlock` (US `0x080450D4`) with them: waits for any in-progress dialog advance to finish, resets the dialog state, `memcpy`s `length * 16` bytes from the table1 pointer into `g_szDialogTextBuffer + 0x250` (an already-named global), and sets three flag bytes near the end of that buffer. Handler at US `0x0801A208`. Reads like "queue a small canned block of raw dialog/portrait data by index" -- not confirmed further (table `0x08053B08`'s contents, and what the 3 flag bytes mean, aren't decoded here). |
-| `0x83` | `GrantMonsterKillReward` | 0 | Reads `BattleFighter+1` (a species/monster-id byte) and adds `MonsterTable[speciesId].wRewardXp`/`.wRewardGold` straight into `g_nXpAccum`/`g_nGoldAccum` -- the same two accumulators `ApplyDamageToFighter` fills on a normal faint (see `../memory-map/battle.md`'s "XP/reward payout" section), but reached independently of that function. Also zeroes the fighter's current SP (`+8`), sets `+0x48` to `0xFFFF`, sets the fighter's `Object+0x8D`/`+0x80` attack-state bytes, and sets `FightState+0x1494 = 1`. Handler spans US `0x0801A254`-`0x0801A2C3` (Ghidra mis-splits this into two functions at an internal loop branch, `0x0801A29A`; the real boundary is the whole range, confirmed against `full_disasm.s`). The only script using it, `SpecialHarryTempestJinx` ("Blows one opponent off-screen"), calls it right after teleporting a target off-screen -- consistent with granting that monster's normal kill reward to substitute for the on-faint payout a banished (not damaged-to-0) monster would otherwise never trigger. |
+| `0x83` | `GrantMonsterKillReward` | 0 | Reads `BattleFighter+1` (a species/monster-id byte) and adds `MonsterTable[speciesId].wRewardXp`/`.wRewardGold` straight into `g_nXpAccum`/`g_nGoldAccum` -- the same two accumulators `ApplyDamageToFighter` fills on a normal faint (see [`../memory-map/battle.md`](../memory-map/battle.md)'s "XP/reward payout" section), but reached independently of that function. Also zeroes the fighter's current SP (`+8`), sets `+0x48` to `0xFFFF`, sets the fighter's `Object+0x8D`/`+0x80` attack-state bytes, and sets `FightState+0x1494 = 1`. Handler spans US `0x0801A254`-`0x0801A2C3` (Ghidra mis-splits this into two functions at an internal loop branch, `0x0801A29A`; the real boundary is the whole range, confirmed against `full_disasm.s`). The only script using it, `SpecialHarryTempestJinx` ("Blows one opponent off-screen"), calls it right after teleporting a target off-screen -- consistent with granting that monster's normal kill reward to substitute for the on-faint payout a banished (not damaged-to-0) monster would otherwise never trigger. |
 | `0x86` | `GotoIfLocalAGreater` | 2 (compare value, label id) | `if (Object.bScriptLocalA > compareValue) goto Label(labelId)` (unsigned `bhi`). Handler at US `0x0801A344`. |
 | `0x87` | `GotoIfLocalALess` | 2 (compare value, label id) | `if (Object.bScriptLocalA < compareValue) goto Label(labelId)` (unsigned `blo`). Handler at US `0x0801A35C`. |
 | `0x88` | `GotoIfLocalAInRange` | 3 (low, high, label id) | `if (low < Object.bScriptLocalA < high) goto Label(labelId)` (both bounds exclusive). Handler at US `0x0801A374`, shares its final compare-and-jump tail with `0x89`. |
 | `0x89` | `GotoIfLocalAOutOfRange` | 3 (low, high, label id) | `if (Object.bScriptLocalA <= low OR Object.bScriptLocalA >= high) goto Label(labelId)` -- the complement of `GotoIfLocalAInRange`. Handler at US `0x0801A394`. |
 | `0x8C` | `SetBgPriority` | 2 (bg layer, priority) | Calls `SetBgPriority` (US `0x08007EB8`): updates a per-background shadow-register struct (`&DAT_03001e84 + bgLayer*0x6c`) and writes the result straight into the real hardware register array `(&BG0CNT)[bgLayer]`, setting that background's priority field (bits 0-1) to `priority & 3` -- a real GBA `BGxCNT` priority write, not a script-only side effect. After that call, if `bgLayer == 1` it also stores `priority` into global `0x03002776`, and if `bgLayer == 0` into global `0x03002775` (both globals already referenced elsewhere as small object/battle-state scratch bytes) -- a secondary cache of the last-set priority per layer, not traced to a reader. Handler at US `0x0801A428`. |
-| `0x97` | `StatusEffect` | 3 | A sub-dispatch: the first operand byte selects one of 29 cases via `g_apScriptStatusEffectCaseTable` (US `0x0801A650`, `code*[29]`, sub-cases `0x00`-`0x1C`). This is the opcode battle status effects (`BattleFighter.bStatusFlags` bits, extra-XP tracking, etc.) run through -- **see `../memory-map/battle.md` for the full case-by-case writeup**, not duplicated here. It's the only opcode confirmed (so far) to build its own internal jump table -- see "Is `StatusEffect` unique?" below. |
+| `0x97` | `StatusEffect` | 3 | A sub-dispatch: the first operand byte selects one of 29 cases via `g_apScriptStatusEffectCaseTable` (US `0x0801A650`, `code*[29]`, sub-cases `0x00`-`0x1C`). This is the opcode battle status effects (`BattleFighter.bStatusFlags` bits, extra-XP tracking, etc.) run through -- **see [`../memory-map/battle.md`](../memory-map/battle.md) for the full case-by-case writeup**, not duplicated here. It's the only opcode confirmed (so far) to build its own internal jump table -- see "Is `StatusEffect` unique?" below. |
 | `0x99` | `opcode_99` | 0 | Reads global state at `0x03003EF4` (offsets `+0xc`/`+0x4`); if it matches a specific pattern, sets `Object.bScriptLocalA = 3`, otherwise sets it to `sub_080249FC()`'s return value. Handler at US `0x0801AB4A`. Not confidently named -- the global's meaning and `sub_080249FC` aren't identified yet, so this isn't folded into the `Local`-family naming despite writing the same field. |
 | `0xA2` | `SetLocalRandom` | 2 (index, max) | `Object.bScriptLocal<index> = Mt19937RandMax(max)` -- `Mt19937RandMax` is a real, already-named Mersenne Twister RNG function. Handler at US `0x0801ADA0`/`0x0801ADA8` (a `sub_08018CF8`-style split: `0x0801ADA8` gets its own `thumb_func_start` in `gbadisasm`'s output only because `0x0801ADA0` falls through into it with no intervening branch, same fallthrough-labeling artifact documented for `InterpretObjectScript` itself above). |
 | `0xA4` | `PlaySoundOrDefault` | 1 (sound id) | Reads a halfword at a fixed global address (`0x0300276E`, two bytes before the `0x03002770` slot-index byte `TeleportToSlotPosition`/`MoveFighterToSlotPosition` read -- not otherwise identified); if it's `0`, plays a fixed sound (`PlaySoundById(0x4B)`) and tail-calls `ContinueObjectScript` directly. Otherwise it falls straight through into `PlaySound`'s own handler body (`0x0801ADDC`), playing `PlaySoundById(operand)` instead. Handler at US `0x0801ADC8`. What condition the global tracks isn't identified, only the branch's two outcomes. |
 | `0xA5` | `DarkenScreenPalette` | 0 | Calls `DarkenScreenPalette` (US `0x0803C610`): halves every color's brightness in a screen palette buffer (BGR555 `(c & 0x7BDE) >> 1`, the standard channel-safe halving mask) and uploads it via the same palette-DMA-queue mechanism used elsewhere in the engine. Handler at US `0x0801ADE6`. Paired with `RestoreScreenPalette` (`0xA6`) -- a flash/dim visual effect. |
 | `0xA6` | `RestoreScreenPalette` | 0 | Calls `RestoreScreenPalette` (US `0x0803D434`): copies the original (undarkened) palette back and re-uploads it, undoing `DarkenScreenPalette` (`0xA5`). Handler at US `0x0801ADEC`. |
 
-`StatusEffect`'s sub-cases, matched against
-`g_apScriptStatusEffectCaseTable`'s real entries (an address discrepancy
-this cross-check found in `../memory-map/battle.md`'s `Poisoned` bullet,
-`0x0801A856` vs. the real `0x0801A71C`, has been fixed there):
+`StatusEffect`'s 29 sub-cases are all identified.
+[`../memory-map/battle.md`](../memory-map/battle.md)'s "`StatusEffect`
+sub-cases" section owns their semantics and the evidence behind each
+name; the names below are the ones `tools/objscript/opcodes.json`
+resolves, listed here only so a script's text reads without a second
+lookup.
 
-All 29 sub-cases are named -- see `../memory-map/battle.md`'s
-"`StatusEffect` sub-cases, full case-by-case writeup" section for the
-detailed evidence behind each. Summary:
-
-| Sub-case | Name | Notes |
+| Sub-case | Name | Touches |
 |---|---|---|
-| `0`, `1` | `SpawnEffectA`, `SpawnEffectB` | pure VFX/particle spawns (`sub_0801B204`/`sub_0801B2EC`), no `bStatusFlags`/other gameplay write |
-| `2` | `ExtraExpBonus` | ORs bit `0x01` into `FightState+0x1480` -- Harry's `Extra EXP` card |
-| `3` | `GrantExtraXp` | ORs bit `0x02` into the same `FightState+0x1480` byte -- `field_0x1480`, not `bStatusFlags`; Hermione's "Good Study Habits" |
-| `4` | `UnusedWinoutWrite` | writes `0x3F3D` to hardware reg `0x0400004A` (`WINOUT`) and returns; **not referenced by any of the 65 real scripts** -- dead/vestigial |
-| `5` | `Poisoned` | |
-| `6` | `AttackWeakened` | also ORs an unrelated `0x10` bit into a *different* byte first -- not `bStatusFlags`, not yet identified |
-| `7` | `PoisonImmune` | |
-| `8`, `9` | `HiddenSecondary`, `HiddenMain` | same bit; `ShowBattleMessage`'s `Hidden` case only opens a fresh message box for `HiddenMain` (the box-opening `argA` differs, see `../memory-map/battle.md`) |
-| `0xA` | `Paralyze25` | via `FUN_0801B430`, gated on `g_wEffectContextValue`/a per-fighter sentinel; see `../memory-map/battle.md` for the full `Paralyze*` family writeup, including the escape-chance mechanic all five share |
-| `0xB` | `DefenseBoost` | |
-| `0xC` | `BumpMonsterDocLevel` | calls `sub_08037104`, which bumps `g_abMonsterDocLevel_candidate[speciesId]` to `4` if currently below `3` -- `SpellInformus`'s only sub-case (effect id `38`, `SpellId` `1`) and `Informus`'s real Folio Bruti write, see `../memory-map/battle.md`; not a `bStatusFlags` write |
-| `0xD`, `0xE` | `SetPostActionFlashFlag`, `ClearPostActionFlashFlag` | paired: ORs/ANDs-off bit `0x10` of `Object+0x115` for every fighter that has already acted this round (`field0 == 0xff`); the clear side additionally skips fighters with `AttackWeakened` set. Both used back-to-back around Harry's Sonorous Charm roar animation -- visual only, not traced further |
-| `0xF` | `CurePoison` | calls `FUN_0800eb2c(g_bEffectTargetIndex)`, which clears only the `Poisoned` bit (checked against `BattleStatusFlags`) and its damage/blink state; Harry's Poison Antidote |
-| `0x10` | `ToggleUltimateVisual` | operand-driven: operand `0` swaps the target's `Object` to an alternate anim-data table (a visual-only "empowered" glow); non-zero calls `sub_08015484` to revert it and `sub_08012994` to set all 10 of the target's spell cast levels to `g_abSpellMaxLevel` -- the real effect of Harry's `Ultimate MP` card ("Grants one party member all spell abilities") |
-| `0x11`, `0x12` | `Paralyze99`, `Paralyze80` | also via `FUN_0801B430`, unconditional (bypasses the `Paralyze25` sentinel check); differ only in their starting escape-chance constant |
-| `0x13` | `SpellPowerBoost` | |
-| `0x14` | `CureAilments` | calls both `FUN_0800eb2c` (clears `Poisoned`) and `ClearParalyzedFighter_candidate` (clears `Paralyzed`, then sets `Unk_0x80`) on `g_bEffectTargetIndex` -- Harry's Remove Jinx and Reparifors |
-| `0x15` | `SpawnEffectC` | third VFX/particle spawn variant (`sub_0801B348`), same family as `SpawnEffectA`/`B`, pure visual -- used ahead of monster paralysis attacks |
-| `0x16` | `ParalyzeMonster` | also via `FUN_0801B430`, same sentinel gate as `Paralyze25` but with an operand-driven escape chance and a "X is paralyzed" message + VFX on success |
-| `0x17` | `ParalyzeMonsterChance` | rolls its own `Mt19937ChanceNoisy` chance on top of `special_effect_chance`, then the same `FUN_0801B430` paralysis path (VFX only, no message, no immunity announcement); monster-special-attack only (Hinkypunk/Skeleton) |
-| `0x18` | `PaletteFlash` | palette-flash VFX only, no `bStatusFlags`/other gameplay write |
-| `0x19` | `ReplenishPartySp` | loops every active, non-fainted fighter and restores `BattleFighter+8` (current SP) from `+0x24` (max SP), mirroring the write into the id-indexed `0x030024EC` fighter array; Harry's Replenish SP (party-wide) |
-| `0x1A` | `ReplenishTargetMp` | single-fighter version of the above for `+0xA`/`+0x26` (current/max MP); Harry's Replenish MP |
-| `0x1B` | `ForceItemDrop` | ORs bit `0x04` into the same `FightState+0x1480` byte as `ExtraExpBonus`/`GrantExtraXp` -- Ron's Wizard Cracker. Per the game's own move description text (`data/text/en_us.json` string ids `1725`/`2615`), Wizard Cracker's actual effect is making the target creature drop an item, not a gold bonus -- see `../memory-map/battle.md` |
-| `0x1C` | `Revive` | via `ReviveFighter_candidate` (`sub_0800E890`) |
+| `0`, `1`, `0x15` | `SpawnEffectA`, `SpawnEffectB`, `SpawnEffectC` | VFX only |
+| `2`, `3`, `0x1B` | `ExtraExpBonus`, `GrantExtraXp`, `ForceItemDrop` | `FightState+0x1480` bits `0x01`/`0x02`/`0x04` |
+| `4` | `UnusedWinoutWrite` | `WINOUT` hardware register; unreachable from any real script |
+| `5`, `7`, `0xF` | `Poisoned`, `PoisonImmune`, `CurePoison` | `bStatusFlags` bits `0x02`/`0x04` |
+| `6` | `AttackWeakened` | `bStatusFlags` bit `0x08` |
+| `8`, `9` | `HiddenSecondary`, `HiddenMain` | `bStatusFlags` bit `0x01` |
+| `0xA`, `0x11`, `0x12`, `0x16`, `0x17` | `Paralyze25`, `Paralyze99`, `Paralyze80`, `ParalyzeMonster`, `ParalyzeMonsterChance` | `bStatusFlags` bit `0x10`, via `FUN_0801B430` |
+| `0xB` | `DefenseBoost` | `bStatusFlags` bit `0x20` |
+| `0xC` | `BumpMonsterDocLevel` | `g_abMonsterDocLevel_candidate` (`Informus`'s Folio Bruti write) |
+| `0xD`, `0xE` | `SetPostActionFlashFlag`, `ClearPostActionFlashFlag` | `Object+0x115` bit `0x10`; visual only |
+| `0x10` | `ToggleUltimateVisual` | anim-data table swap, and grants all spells at max level |
+| `0x13` | `SpellPowerBoost` | `bStatusFlags` bit `0x40` |
+| `0x14` | `CureAilments` | clears `Poisoned` and `Paralyzed` |
+| `0x18` | `PaletteFlash` | VFX only |
+| `0x19`, `0x1A` | `ReplenishPartySp`, `ReplenishTargetMp` | `BattleFighter+8`/`+0xA` from `+0x24`/`+0x26` |
+| `0x1C` | `Revive` | `ReviveFighter_candidate` |
 
 Both other top-level opcodes and the 14 `Local`-prefixed opcodes are
 documented below -- see "What's NOT yet known".
@@ -526,7 +520,7 @@ consistent with a hard `effectId < 65` bounds check somewhere in the
 effect-dispatch path (not traced to a specific call site).
 
 An effect id is resolved to a script via `FUN_08018B70(effectId, ...)`
--> `FUN_08018BE0(effectId, ...)` (see `../memory-map/battle.md`'s "How
+-> `FUN_08018BE0(effectId, ...)` (see [`../memory-map/battle.md`](../memory-map/battle.md)'s "How
 the effect-id -> script trace works" for the full spell/card -> effect
 id -> script chain).
 
@@ -666,7 +660,7 @@ US only -- content not yet checked against JP.
 - **Operand semantics.** Even for named opcodes, individual operand
   bytes aren't broken out into named sub-fields (e.g. `StatusEffect`'s
   2nd/3rd operand bytes, which look related to the `field_0x14a8`
-  message-announcement mechanism documented in `../memory-map/battle.md`,
+  message-announcement mechanism documented in [`../memory-map/battle.md`](../memory-map/battle.md),
   are just raw bytes here).
 - **Control-flow opcodes.** Fully resolved: `InterpretObjectScript`
   contains exactly 3 direct calls to `FindScriptLabelOffset` in its
@@ -693,8 +687,8 @@ US only -- content not yet checked against JP.
   16-entry name list immediately followed by a matching 16-entry
   description list) lining up positionally with
   `g_abHarryCardEffectId`'s 16 table entries -- see
-  `../memory-map/battle.md`'s "Harry's 16 Folio Universitas cards" section
-  for the full table and the corroborating evidence. This also resolved
+  [`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)'s "Harry's 16 Folio
+  Universitas cards" for the full table and the corroborating evidence. This also resolved
   the "opponent loses a turn" card (`Snitch`, effect id `47`) and the
   extra-XP card (`Extra EXP`, effect id `14`). "Girding All" (index `7`,
   effect id `35`) remains a partial exception: its script has no

@@ -1,5 +1,9 @@
 # Compiler fingerprinting
 
+See [`README.md`](README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
+
 Status: **fairly confident, not yet fully proven** — two independent
 structural signals both point to ARM ADS/RVCT (armcc), not GCC/agbcc. Still
 short of a byte-level reference match, so treat as strong-but-not-final per

@@ -1,5 +1,9 @@
 # Krawall audio data format
 
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
+
 Status: **PROVEN** for boundaries/addressing (deterministic struct parsing,
 zero overlaps across 733 regions in both ROMs, cross-version pattern-data
 byte-identity confirmed) and **PROVEN** for pattern-atom and
@@ -50,19 +54,11 @@ ROM bytes (see Confirmed stats and Trailing padding absorption) is what's
 trusted, not the public source -- it's used for API-shape/algorithm
 reference only, per `CLAUDE.md`.
 
-This matters beyond spans, too: `Pattern.cpp::compress()`'s *active* code
-path (byte-per-field: separate note byte, separate instrument byte, with
-an optional 3rd byte when `instrument > 255`) is the **later** revision's
-encoding, not ours -- confirmed by decoding real ROM bytes that way and
-finding the "note" byte's top bit set on a large, semantically nonsensical
-fraction of atoms. The same file has an *unused, commented-out* alternate
-encoding right next to it (a packed 16-bit word: `note_word = (note &
-0x7f) << 9 | (instrument & 0x1ff)`), which is what our confirmed
-2003-09-01 revision actually emits -- see Pattern atom encoding below.
-`unkrawerter.cpp`'s reader is byte-count-correct for our revision either
-way (its `use2003format` gate matches how many bytes to consume), which is
-why span/boundary validation never caught this; only decoding actual
-field *values* and checking they're sane did.
+The revision gap reaches past struct spans into field *encoding* -- see
+"Pattern atom encoding" below, where the public source's active code path
+and this ROM's real bytes disagree. Span/boundary validation cannot catch
+that class of difference, since both encodings consume the same byte
+count; only decoding actual field values and checking they're sane does.
 
 ## Struct layouts (packed, little-endian)
 
@@ -436,8 +432,10 @@ sample/pattern trailing padding at all.
 
 - [ ] `effect`/`effectop` values (see Effect values) aren't cross-checked
       against real ROM bytes; only note/instrument are decoded and
-      verified. `Instrument`/`Envelope` field interpretation is also
-      undecoded (moot while "no instrument list" holds, see below).
+      verified. Decoding them to symbolic names would also make the
+      pattern JSON readable. `Instrument`/`Envelope` field
+      interpretation is likewise undecoded (moot while "no instrument
+      list" holds, see below).
 - [ ] Whether `krawerter` (Krawall's own `.xm`-to-assembly compiler, in the
       LGPL `krawall` source, not this repo) can reproduce byte-identical
       output from an extracted `.xm` was investigated but never verified --
@@ -472,7 +470,10 @@ sample/pattern trailing padding at all.
       itself overlap `kramInstall`'s source. Needs either a bounds-check
       constant found in the reading code or a real sentinel value in the
       table itself before either table's true extent can be marked in
-      Ghidra.
+      Ghidra. Once bounded, they are real curated game content (a
+      message/event -> sound-effect mapping) and belong in `data/audio/`
+      under the same editable, gitignored model as modules and samples,
+      rather than staying permanent `.incbin`.
 
 ## Naming modules and samples
 
@@ -492,15 +493,3 @@ starting with a digit) since `pack_krawall.py` emits them as real labels.
 Renaming *again* (custom name -> a different custom name) leaves the
 previous name's file behind -- delete it by hand. A dedicated rename
 helper that also patches `regions.<ver>.txt` in place would close that gap.
-
-## Future work
-
-1. `effect`/`effectop` values aren't decoded to symbolic names (see
-   Open questions) -- would make pattern JSON more readable.
-2. Once the `PlaySoundById` lookup tables (`0x08FB09F8`/`0x08FB0588`/
-   `0x08FB0818`, see Open questions) and `g_apKrawallSamples` are fully
-   bounded, they're real curated game content (a message/event ->
-   sound-effect mapping) and should move to `data/audio/` under the same
-   curated, editable, gitignored model as modules/samples, packed back to
-   byte-identical bytes at build time -- not left as permanent raw
-   `.incbin`, per the project's general extraction convention.

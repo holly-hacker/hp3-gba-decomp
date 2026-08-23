@@ -3,7 +3,7 @@
 The game's battery save lives on a GBA EEPROM chip (64Kbit / 8KB), not
 SRAM/Flash. This document covers the EEPROM transport, the fixed-size
 regions the game divides it into, and the per-block checksum scheme. See
-`docs/memory-map.md` for the confidence-key legend used below.
+[`../README.md`](../README.md) for the confidence-key legend used below.
 
 ## Backup type: 8KB EEPROM
 
@@ -154,9 +154,9 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | `0x030037B0` (`g_abItemQuantities`), 152 bytes | `itemQuantities` + `equippedItems` | see "Item quantities and equipment" below |
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
 | **room-object state** (`PackRoomObjectStateToSaveStream`, `0x0802A570`), variable-length | `roomObjectState` | data-dependent, see below |
-| `0x03002240` (`g_abTriggeredScriptFlags`) | `abTriggeredScriptFlags` (32 bytes) | **STRUCTURAL MATCH**. A 256-bit bitset, one bit per Object script entry-point value (`wScriptPC`, `docs/formats/object_script.md`). Consumed by `SpawnScriptedOneTimeObject` (`0x0800BC6C`, an `AllocObjectOfType(9)` spawner reached only via a function-pointer table -- not discovered by `gbadisasm`): after setting the newly-spawned object's `wScriptPC` from its spawn descriptor, checks the bit for that value here -- if already set, the object is given an alternate "already resolved" appearance/animation instead of its normal one. Reset to all-zero by `ResetQuestStateForNewGame` at new-game creation. Tracks which one-time scripted objects of this kind have already fired, persisting across room transitions (unlike the per-room `roomObjectState` snapshot). |
+| `0x03002240` (`g_abTriggeredScriptFlags`) | `abTriggeredScriptFlags` (32 bytes) | **STRUCTURAL MATCH**. A 256-bit bitset, one bit per Object script entry-point value (`wScriptPC`, [`object_script.md`](object_script.md)). Consumed by `SpawnScriptedOneTimeObject` (`0x0800BC6C`, an `AllocObjectOfType(9)` spawner reached only via a function-pointer table -- not discovered by `gbadisasm`): after setting the newly-spawned object's `wScriptPC` from its spawn descriptor, checks the bit for that value here -- if already set, the object is given an alternate "already resolved" appearance/animation instead of its normal one. Reset to all-zero by `ResetQuestStateForNewGame` at new-game creation. Tracks which one-time scripted objects of this kind have already fired, persisting across room transitions (unlike the per-room `roomObjectState` snapshot). |
 | `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 (and index 0, an unconfirmed story-stage counter candidate) didn't reset there. |
-| **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching `docs/formats/folio_bruti.md`'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
+| **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching [`folio_bruti.md`](folio_bruti.md)'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
 | `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anFolioUniversitasCounts` (51 nibbles) | Per the user: Folio Universitas (Harry's card collection) per-card count, one nibble per card. A card is only shown in-game once its count reaches at least 1. |
 | `0x0300320B` (`g_abFolioUniversitasUnlocked`) | `a1FolioUniversitasUnlocked` (51 bits, stored as 7 bytes, LSB-first) | Per the user: parallel per-card unlocked/seen flag; all-unlocked is stored as `ffffffffffff07`. Confirmed against a real (non-test) save (`bak.sav`): `a1FolioUniversitasUnlocked[i] == 1` exactly where `anFolioUniversitasCounts[i] > 0`, for all 51 cards. Gates whether a card's icon is drawn locked or owned at all (`FUN_08037800`, the card-grid icon draw function). |
 | `0x03003212` (`g_abFolioUniversitasCardIsNew`) | `a1FolioUniversitasCardIsNew` (51 bits, stored as 7 bytes, LSB-first) | **STRUCTURAL MATCH**, confirmed by the user: drives the "flashing" new-card indicator in the Folio Universitas interface. `FUN_08037800` reads this bit per card (via `IsFolioUniversitasCardNew`/`0x0800381F4`) and picks a distinct, separate icon variant when it's set, on top of the locked/owned check above. Set together with `a1FolioUniversitasUnlocked` by `IncrementFolioUniversitasCard` (`0x0803774C`) whenever a card's count transitions `0->1`; cleared together with it by `DecrementFolioUniversitasCard` (`0x080377A8`, called from battle code including `HandleScriptedDamageEvent_candidate`) when a card's count returns to `0`. No separate clear-on-view code path was found, so as coded this flag stays set for as long as the player holds at least one copy since the count last hit zero, not literally "until first viewed in the menu". |
@@ -180,7 +180,7 @@ Mode `0x29`'s init (`FUN_08021C08`) `memset`s a `0xE8`-byte object-state buffer,
 | `abStatMeters` | 3 bytes | The 3 on-screen status-bar icons, named directly in the in-game help text (dialog string `0x915`): "The three status bars ... Mind, Body and Spirit." **STRUCTURAL MATCH**: the 3-meter identity and their derivation from `careCounters` (a weighted average via a fixed ROM table, `FUN_080222F0`, smoothly interpolating toward the target by +-1/tick) are proven; this array's index-to-name order (assumed Mind/Body/Spirit, matching the help text's listing order) is not independently confirmed per-index. |
 | `careCounters.b<Action>Counter` (x6: Feed/Clean/Pet/Groom/Exercise/Teach) | 6 bytes | One "need" counter per care action, each capped at `0xFA`=250, lowered when that action is performed (`FUN_08022284`, halved or reduced by ~1/8 depending on how full it was) and regrown over time by `wElapsedTicks`' overflow. **PROVEN index order**: the care-screen's menu-drawing code and its confirm-button switch (`FUN_08022134`) both index off the same cursor variable (`g_dwCurrentGameMode_candidate+0x20`, i.e. `0x03003F14`) -- the drawer resolves each entry's label via `GetDialogText(0x669 + cursor)` (Feed, Clean, Pet, Groom, Exercise, Teach, Mail, Upload, confirmed against `data/text/en_us.json`), and the switch's cases `0`-`5` each call `FUN_08022284(case_index)` on the matching byte of this array -- proving case-index-for-array-index alignment directly, not just by plausible string adjacency. Case `6` ("Mail") checks all 6 counters are below `0xBB`=187 before letting the owl fly off (matches the help text, dialog string `0x91D`: "Mail - sends your owl off to fetch an item... check back in a few minutes"); case `7` ("Upload") pushes game mode `0x41`, the GameCube-link Owl Races screen (dialog string `0x91E`). |
 | `wElapsedTicks` | 2 bytes | Elapsed-tick counter driving `careCounters`' regrowth, capped at `0x95`=149; advances once per care-screen tick (`FUN_08021DF8`) while `flVisited` is set and only once `wMailTimer` (below) has counted down to `0`; overflowing it is what bumps all 6 `careCounters`. |
-| `wMailTimer` | 2 bytes | The Mail action's flight countdown -- **not padding**: a live timer, explicitly decremented once per tick by `FUN_08021DF8`, set to the literal `600` (~10 seconds at 60fps) when Mail is selected. While nonzero, gates `wElapsedTicks`' advance (so `careCounters` don't regrow while the owl is away). On expiry, `FUN_08021FE4` grants an item (weighted-random pick from up to 62 candidates, weighted by each `BattleItemEntry`'s own `nUnk20` field) and shows it via `GetDialogText(0xAC1)`, "The owl mail has arrived! You received @1." -- matching the user's in-game observation of Mail returning items like a Winter Cloak. The reward is always a battle item, never a Folio Universitas card. |
+| `wMailTimer` | 2 bytes | The Mail action's flight countdown -- **not padding**: a live timer, explicitly decremented once per tick by `FUN_08021DF8`, set to the literal `600` (~10 seconds at 60fps) when Mail is selected. While nonzero, gates `wElapsedTicks`' advance (so `careCounters` don't regrow while the owl is away). On expiry, `FUN_08021FE4` grants an item (weighted-random pick from up to 62 candidates, weighted by each entry's `nOwlRewardWeight` field, record offset `+0x10`) and shows it via `GetDialogText(0xAC1)`, "The owl mail has arrived! You received @1." -- matching the user's in-game observation of Mail returning items like a Winter Cloak. The reward is always a battle item, never a Folio Universitas card. |
 
 After this sequence, whatever bytes remain before the slot's trailing
 checksum are never written by any pack call -- leftover content from
@@ -198,7 +198,7 @@ first if the cursor isn't already on one.
 (`g_pPartyMasterStats_candidate[0..2]`, `BattleFighter`-shaped, `0x48`
 stride) and packs `BattleFighter+8`..`+0x23` (28 contiguous bytes) for
 each. This links `BattleFighter`'s already-documented fields
-(`docs/memory-map/battle.md`) directly to the save format, with the
+([`../memory-map/battle.md`](../memory-map/battle.md)) directly to the save format, with the
 following JSON keys per party member (each name below its `BattleFighter`
 field):
 
@@ -208,8 +208,8 @@ field):
 | `wMp` | `wMp` | current MP -- saved directly |
 | `wXpToNextLevel` | `wRewardXp` | per the user, the character's XP remaining until their next level, not a running total. `LevelUpFighter_candidate` overwrites it wholesale from the level table's delta column on every level-up, consistent with a to-next-level distance rather than an accumulator; whatever compares accumulated XP against that distance to trigger a level-up (`ApplyPendingLevelUps_candidate`, `0x0801D308`) still has no located caller in either disassembly. |
 | `bLevel` | `bLevel` | character level -- saved directly |
-| `bKnownSpellCount` | `bKnownSpellCount` | The fighter's known-spell count (**PROVEN**, already identified in `docs/memory-map/battle.md`'s battle-menu writeup, just not yet propagated to the save format doc or the `BattleFighter` struct field name in Ghidra -- both now match). The battle Cast Spell menu (`FUN_08011bec`) builds its spell list by iterating `i` in `[0, pFighter->bKnownSpellCount)`, i.e. this gates how many of the fighter's 10 `aSpellCastLevel` slots the spell-selection menu actually shows. |
-| `abSpellCastLevel` (10 bytes) | `aSpellCastLevel[10]` | per-spell mastered level -- **`aSpellUsageProgress`/`aSpellCastLevel`, the game's actual "spells level up with use" mechanic (see `docs/memory-map/battle.md`, `TrackSpellFamiliarity`), is the thing that actually gets saved as character progression** |
+| `bKnownSpellCount` | `bKnownSpellCount` | The fighter's known-spell count (**PROVEN**, already identified in [`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)'s Cast Spell menu writeup). The battle Cast Spell menu (`FUN_08011bec`) builds its spell list by iterating `i` in `[0, pFighter->bKnownSpellCount)`, i.e. this gates how many of the fighter's 10 `aSpellCastLevel` slots the spell-selection menu actually shows. |
+| `abSpellCastLevel` (10 bytes) | `aSpellCastLevel[10]` | per-spell mastered level -- **`aSpellUsageProgress`/`aSpellCastLevel`, the game's actual "spells level up with use" mechanic (see [`../memory-map/battle.md`](../memory-map/battle.md), `TrackSpellFamiliarity`), is the thing that actually gets saved as character progression** |
 | `abSpellUsageProgress` (10 bytes) | `aSpellUsageProgress[10]` | progress toward each spell's next level-up |
 
 `wHp_max` and `wMp_max` are *not* saved -- both are pure functions of
@@ -221,11 +221,12 @@ equipped-item data at battle entry.
 
 **Item quantities and equipment** (`g_abItemQuantities`, `0x030037B0`,
 152 bytes): a flat item-ID-indexed quantity array. **PROVEN**: item ID
-== index into `g_pBattleItemTable` (ROM `0x08060ED4`, `BattleItemEntry_candidate[78]`,
-stride `0x34`) == index into `g_abItemQuantities`. Each entry's
+== index into `g_pBattleItemTable` (ROM `0x08060EE4`,
+`BattleItemEntry_candidate[132]`, stride `0x34`, 79 of them populated)
+== index into `g_abItemQuantities`. Each entry's
 `nNameTextId` field resolves through the decoded dialog/UI string table
 (`data/text/en_us.json`'s 2767 `strings`) to that item's real display
-name -- every one of 78 entries decodes to a real, sensible item name,
+name -- every one of the 79 real entries decodes to a sensible item name,
 and 6 of them were independently cross-checked against real-save
 evidence with an exact match every time (`bGrandWiggenweldPotion`
 going 3->4 for a picked-up Grand Wiggenweld Potion; `bMonsterBookOfMonsters`
@@ -236,9 +237,29 @@ JSON exposes one field per index in on-disk order (`itemQuantities`, a
 struct not a bare array -- see "Parsing"/"JSON shape" below); indices
 0-78 are contiguous (a plain ordered list in the tool, `ITEM_NAMES`, not
 an index->name map -- there's no gap to justify one) using their real
-names; the remainder (79-131, confirmed *not* a continuation of
-`g_pBattleItemTable` -- see below) are `bItemQuantityNNN`-style
+names; the remainder (79-131, real slots of the same array but with no
+item data in them -- see below) are `bItemQuantityNNN`-style
 placeholders.
+
+Record layout (`0x34` bytes), from the accessors in the
+`0x08026754`-`0x08026F7E` cluster, each of which addresses the table as
+`0x08060EE4 + index*0x34 + fieldOffset`:
+
+| Offset | Field | Reader |
+|---|---|---|
+| `+0x00` | `nNameTextId` -- dialog string id for the display name | `FUN_08026B8C` |
+| `+0x04`, `+0x08`, `+0x0C` | three icon/sprite pointers | -- |
+| `+0x10` | `nOwlRewardWeight` -- owl-mail reward weight (see "Owl Care Kit" above) | `FUN_08026C38` |
+| `+0x14` | unidentified | `FUN_08026C4C` |
+| `+0x18` | category/slot selector | `FUN_08026E58`, `FUN_08026F48` |
+| `+0x1C` | unidentified | -- |
+| `+0x20` | flag byte (bit 2 tested) | `FUN_08026D34` |
+| `+0x24` | `nType` | `FUN_08026CDC` |
+| `+0x28` | `nParam` | `FUN_08026CF0` |
+| `+0x2C`, `+0x30` | unidentified | `sub_08026870` reads `+0x30` |
+
+`nType`/`nParam` are not decoded. Ghidra's `BattleItemEntry_candidate`
+struct carries these field *names* but its offsets are the ones above.
 
 Save/item-table order groups into contiguous per-equipment-slot/category
 runs (belts 0-7, misc/quest items 8-19, gloves 20-28, boots 29-37, caps
@@ -248,16 +269,22 @@ string-ID base rather than one single global offset across the whole
 table -- e.g. potions are `index + 1540`, while gloves/boots are
 `index + 1538` and belts/misc are `index + 1576`.
 
-**Index 79 is confirmed invalid, marking the real end of the table.**
-Per the user in-game: item 79 shows up under "all items" but not under
-any real category, uses the Rat Tonic sprite, and displays as "There you
-are, Harry!" -- and reading `g_pBattleItemTable[79].nNameTextId`
-directly from ROM gives exactly `0`, which decodes to that same string
-(the very first dialog line in the table). That's not a real item name,
-it's `g_pBattleItemTable` simply ending at 78 entries and index 79
-reading zeroed/unrelated memory past it. So indices 0-78 (79 entries)
-are the complete, real table; **79-131 are not a continuation of it**
-and shouldn't be assumed to hold real item data at all.
+**Index 79 is a dummy record, marking the end of the real items.** Per
+the user in-game: item 79 shows up under "all items" but not under any
+real category, uses the Rat Tonic sprite, and displays as "There you
+are, Harry!". The bytes explain it exactly: `[79].nNameTextId` is `0`
+(which decodes to that first dialog line) and its three sprite pointers
+are byte-identical clones of `[62]`'s, the Rat Tonic. Indices 80-131 are
+all zero, and the zero run ends precisely at `0x08060EE4 + 132*0x34 =
+0x080629B4`, where an unrelated pointer table begins.
+
+So **indices 0-78 (79 entries) are the real items**, inside a 132-entry
+allocation. Both bounds are real checks in code -- `FUN_08026F48` walks
+`0`-`78` (`cmp r1, #0x4e`), `FUN_08026E58` walks `0`-`131` (`cmp r3,
+#0x83`) -- and 132 is also exactly where `g_abItemQuantities` hands over
+to `g_abEquippedItemIds` (`0x030037B0 + 132 = 0x03003834`). Indices
+79-131 are genuine slots of the same array; they simply hold no item
+data.
 
 Indices 132-149 are `g_abEquippedItemIds` (Ghidra: typed `EquippedItemSlots[3]`,
 though the global keeps its `ab`-prefixed name -- a known checker bug
@@ -294,7 +321,7 @@ Fixed 17-byte header (packed in this exact, non-sequential field order):
 | Offset (from `g_pRoomObjectStateBuffer`) | Size | JSON key | Notes |
 |---|---|---|---|
 | 0x0 | 1 | `bPlayerFacing` | Read from/written to `g_pPlayerObject->field_0x12` on both the capture and restore side. Not a table count -- despite occupying the position a naive read of the packing order might suggest. Per the user: confirmed as an 8-direction facing enum -- `4` = facing down, `3` = facing down-right (consistent with a clockwise, 45-degrees-per-step enum covering all 8 directions). |
-| 0xC | 4 | `fxPlayerPosX` | **STRUCTURAL MATCH**: `g_pPlayerObject->nX` (per `docs/formats/object_script.md`'s already-identified `Object` layout), copied verbatim -- already in the engine's 16.16 fixed-point form, unlike the per-tile `u16` coordinates the tables below store (which get `<<0x10` on restore). Passed straight to `SnapObjectPosition` when restoring. Decoded as a JSON float (raw `/ 65536`); confirmed against a real save (`bak.sav`), whose raw values (`0x05D17900`/`0x01F4B980`) divide out to plausible, unremarkable-looking world coordinates (`1489.47`/`500.72`) rather than the odd-looking large integers the raw hex represents. |
+| 0xC | 4 | `fxPlayerPosX` | **STRUCTURAL MATCH**: `g_pPlayerObject->nX` (per [`object_script.md`](object_script.md)'s already-identified `Object` layout), copied verbatim -- already in the engine's 16.16 fixed-point form, unlike the per-tile `u16` coordinates the tables below store (which get `<<0x10` on restore). Passed straight to `SnapObjectPosition` when restoring. Decoded as a JSON float (raw `/ 65536`); confirmed against a real save (`bak.sav`), whose raw values (`0x05D17900`/`0x01F4B980`) divide out to plausible, unremarkable-looking world coordinates (`1489.47`/`500.72`) rather than the odd-looking large integers the raw hex represents. |
 | 0x10 | 4 | `fxPlayerPosY` | Same as above, `g_pPlayerObject->nY`. |
 | 0x9 | 1 | `bSwitchState` | **STRUCTURAL MATCH**: not read from the player `Object` at all -- it's `g_bRoomSwitchState` (`0x03003B64`), get/set via `GetRoomSwitchState`/`SetRoomSwitchState` (`0x0802B12C`/`0x0802B110`). The setter is called from the room's tile-collision dispatcher (`0x0802D8F4`) for two specific trigger tile IDs (`0x23`/`0x24`) that set it to `0`/`1` respectively; only when the value actually *changes* does it call `ApplyRoomSwitchEffect` (`0x0802DF3C`), which plays a sound (`0x0803D338`, args `5,0x1f` for state 0 / `4,0x1f` for state 1) and swaps a tile graphic between two frames (effect IDs `0x19`/`0x18`) at a fixed screen position (`0xE0,0x220`) via `0x08020440`. Being a single scalar (not an array/table), this mechanic supports **at most one such lever/switch per room** -- a room needing several independently-stateful toggles instead uses the `kind5SwitchObjects` table below (kind-`5` objects with sub-kind `'3'`, up to 32 entries, one toggle bit each). |
 | remaining bytes (1, 2, 3, 4, 5, 6, 7) | 1 each | *(none)* | Entry counts for the 7 saved tables below -- not represented as their own JSON field, since each is exactly the corresponding table's list length (recomputed on encode). |
@@ -308,7 +335,7 @@ record's field layout is traced byte-for-byte from the two symmetric
 producer/consumer functions (`CaptureRoomObjectState` capture; `RestoreRoomObjectState`/
 `RestoreRoomObjectStateMinimal` restore) and cross-checked against a real save (`bak.sav`);
 most fields are a straight copy of one fixed offset of the live `Object`
-struct (`docs/formats/object_script.md`) -- ones with no identified
+struct ([`object_script.md`](object_script.md)) -- ones with no identified
 purpose keep that struct's own offset in their name (`bUnk_0xNN`/
 `wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing `bUnk_0x0F`-style
 convention for unnamed fields. A record's leftover bytes (confirmed
@@ -453,7 +480,7 @@ a slot's content past its checksum.
   7 room-object-state tables (see "Room-object state" above) -- their
   byte offsets are traced precisely, but most still only carry their
   raw `Object` struct offset rather than a real name; cross-referencing
-  `docs/formats/object_script.md` as more `Object` fields there get
+  [`object_script.md`](object_script.md) as more `Object` fields there get
   identified should resolve several of these directly.
 - Identify the room-object "kind" enum (`*(short*)(obj+8)`) that
   `0x0802A70C` switches on to pick a table -- would let each table above

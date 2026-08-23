@@ -1,5 +1,9 @@
 # Graphics asset format
 
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
+
 Status: **PROVEN** end-to-end for a complete real sprite (the main-menu
 wand cursor) -- ROM source, decompression codec, tile data, and palette
 all verified against live game memory, including two independent
@@ -102,7 +106,7 @@ common bytes are exactly the 4bpp "flat" bytes where both nibbles match
 `0xEE`) -- adjacent-pixel-pairs sharing one palette index, the classic
 signature of flat-filled/outlined pixel art. This also explains an
 earlier, independent finding: a sliding-window entropy scan (see
-`docs/formats/text.md` approach 3) flagged `0x08937000`-`0x0896b000` as
+[`text.md`](text.md)'s approach 3) flagged `0x08937000`-`0x0896b000` as
 tile-shaped with dominant byte `0x33` while hunting for a font -- same
 underlying phenomenon, same tileset family, not a distinct font
 candidate.
@@ -129,13 +133,13 @@ traced so far -- whether it's compressed at all (and if so, with which
 scheme) hasn't been determined; it was found by scanning raw ROM bytes
 directly, not via a decompressed buffer.
 
-### Compression: the level-resource table (see also docs/formats/text.md §6)
+### The resource-decompression dispatcher
 
-The dispatcher documented in `docs/formats/text.md` (`sub_0801DD90` /
-`0x0801DD88`, near-twin `sub_0801DE5C`) is the game's generic
-resource-decompression entry point, reached via a **124-byte-stride
-level/room table at ROM `0x0806BE38`**. Its type-nibble dispatch logic,
-read directly off the instructions:
+**PROVEN.** `sub_0801DD90` (`0x0801DD88`, with a near-twin
+`sub_0801DE5C`) is the game's one generic resource-decompression entry
+point, used for BG/level graphics, OBJ sprite tiles, and anything else
+stored compressed. It reads a 4-byte wrapper header off the resource and
+jump-tables on the type nibble:
 
 ```
 lsls r1, r0, #0x18   ; keep header byte0
@@ -144,14 +148,39 @@ movs r1, #9 / rsbs r1, r1, #0   ; r1 = -9 = ~8
 ands r2, r1          ; r2 = nibble & ~8       (clears bit 3)
 ```
 
-**PROVEN**: the jump-table dispatch key is `(byte0>>4) & 0x7`, not the
-raw nibble -- bit 3 of the nibble (`byte0 & 0x80`) is a *separate*
-post-processing flag (checked later, routes through an extra pass via
-`sub_0801DF48` if set), not part of the type selector. This resolves
-header bytes that looked "out of range" for the 0-8 case table in
-earlier analysis (e.g. `0xE0` -> nibble `0xE` -> `&0x7`=6, with the
-extra-pass flag set; `0x70` -> nibble `7` -> case 7, which is an
-intentionally-empty/no-op jump-table slot, not a bug).
+The dispatch key is `(byte0 >> 4) & 0x7`, **not** the raw nibble: bit 3
+of the nibble (`byte0 & 0x80`) is a separate post-processing flag,
+checked later and routing through an extra pass via `sub_0801DF48`. So
+`0xE0` is type 6 with the extra pass set, and `0x70` is type 7, an
+intentionally-empty jump-table slot. The remaining 3 header bytes are
+the decompressed size (LE 24-bit).
+
+| Type | Codec |
+|---|---|
+| 0 | raw `CpuSet` copy (uncompressed) |
+| 1 | `svc 0x11`, BIOS `LZ77UnCompWram` |
+| 2 | `svc 0x13`, BIOS `HuffUnComp` |
+| 3 | `svc 0x14`, BIOS `RLUnCompWram` |
+| 4 | proprietary, IWRAM-installed -- see "the type-4 codec" below |
+| 6 | proprietary, IWRAM-installed -- see "The type-6 codec, decoded" below |
+
+Both proprietary codecs are installed into IWRAM at runtime by a
+function at `0x0801DD40` (not statically reachable by `gbadisasm`'s
+function discovery -- the same invisibility issue as `kramInstall`, see
+[`../memory-map/krawall.md`](../memory-map/krawall.md)), via two
+`CpuSet` (`svc 0xB`) copies:
+
+- type 4: ROM `0x08006108`, 504 bytes, to IWRAM `0x030028D4`; entry
+  pointer stashed at `0x030028CC`.
+- type 6: ROM `0x080005EC`, 828 bytes, to IWRAM `0x03002ACC`; entry
+  pointer stashed at `0x030028D0`.
+
+The dispatcher's 14 static call sites all sit in the level/graphics
+loading subsystem, reached via a **124-byte-stride level/room table at
+ROM `0x0806BE38`** (see the entry layout below); `sub_0801DE5C`'s 3 call
+sites are OBJ tile loaders (see "There is no missing 4th caller").
+Dialog/UI text does **not** go through this dispatcher -- it has its own
+separate Huffman scheme, see [`text.md`](text.md).
 
 ### Level-table entry layout (offsets confirmed for a 124-byte entry)
 
@@ -208,8 +237,8 @@ only decoding the payload settles it.
 ### The type-6 codec, decoded (PROVEN)
 
 Decoded by executing the *real* ARM-mode ROM bytes (`0x080005EC`, 828
-bytes, the exact code the game copies into IWRAM at runtime -- see
-`docs/formats/text.md` §6) in the Unicorn CPU emulator, rather than
+bytes, the exact code the game copies into IWRAM at runtime -- see the
+dispatcher section above) in the Unicorn CPU emulator, rather than
 hand-reimplementing the disassembly. This guarantees exact fidelity to
 the actual algorithm without risking a subtly-wrong-but-plausible manual
 port. Verified against 7 real level-table (`0x0806BE38` entry 0)
@@ -409,7 +438,7 @@ sub_0800DB58(struct_ptr):
 A live `bt` (mGBA's backtrace, off by default -- needs `stack trace-only`
 first) traced the full call chain that reaches this function every
 frame: `sub_08049EBC` (`svc 5`, `VBlankIntrWait`, already named in
-`docs/formats/text.md`'s BIOS wrapper table) -> BIOS vblank
+[`text.md`](text.md)'s BIOS wrapper table) -> BIOS vblank
 wait/dispatch -> an **IWRAM-resident interrupt handler at `0x030035A8`**
 (the game's own vblank ISR, copied to IWRAM for speed -- not yet
 otherwise documented) -> `0x08025E95` -> `0x0800D306` (the palette-flush
@@ -446,8 +475,8 @@ warm orange/red fading to white, gold, and a repeated gray-brown).
 **Update -- the tile source is now found, live, via the same technique.**
 See the next section: not the shared-tileset hypothesis originally
 guessed here, but real per-object BIOS-compressed tile data via the
-*same* generic dispatcher (`sub_0801DE5C`) documented back in
-`docs/formats/text.md` sec 6, which turns out to also be exercised for
+*same* generic dispatcher (`sub_0801DE5C`) documented above, which
+turns out to also be exercised for
 OBJ (sprite) tiles, not only BG/level graphics as first assumed.
 
 ### A real, confirmed sprite tile (PROVEN via mGBA debugger)
@@ -459,7 +488,7 @@ first, `old value == new value == 0`, harmless), a real hit landed with
 `LR = 0x0801DEDB`, immediately after a call to `sub_08049EB0` (the
 already-known `svc 0x15` / `RLUnCompVram` BIOS wrapper). `LR` falls
 inside **`sub_0801DE5C`** -- the same generic resource dispatcher
-documented in `docs/formats/text.md` sec 6, whose case-3 branch (RLE)
+documented above, whose case-3 branch (RLE)
 calls exactly this wrapper. A second hit shortly after, `LR =
 0x0801DEEB`, also fell inside the same function. This is a live,
 direct confirmation that `sub_0801DE5C` -- previously only traced
@@ -560,7 +589,7 @@ or in any standard BIOS format (LZ77/Huffman/RLE, scanned across the
 whole ROM) -- meaning it's compressed with one of the two proprietary
 codecs. Rather than guess further, caught it live: breakpointed the
 type-4 codec's IWRAM entry point (`0x030028D4`, installed from ROM
-`0x08006108` -- see `docs/formats/text.md` sec 6) and watched it fire
+`0x08006108` -- see the dispatcher section above) and watched it fire
 repeatedly while the wand's glow tiles loaded. `r0` at each hit is a
 clean, uncorrupted ROM source address (unlike watching the VRAM
 *write* destination, which catches the codec mid-stream with an
@@ -572,8 +601,7 @@ cycle (a fifth, unrelated destination, `0x06010100`/tile 8, is a
 different graphic loading in the same batch, not the wand).
 
 Disassembling the codec directly (`0x08006108`, 504 bytes, ARM mode)
-showed it's **not** the simple byte-token LZSS originally guessed in
-`docs/formats/text.md` sec 6 -- it's halfword-aligned with careful
+showed it is not a simple byte-token LZSS -- it's halfword-aligned with careful
 byte-parity tracking, structurally closer to the type-6 codec than to
 a textbook LZSS. **`tools/graphics/decode_type4.py`** therefore works the
 same way as `tools/graphics/decode_type6.py`: it executes the real ARM
@@ -589,13 +617,6 @@ an assumed cutoff, the real behavior. This is now the strongest
 evidence of any finding in this document: independently confirmed via
 two different methods (live memory read, and ROM decode) landing on
 identical bytes.
-
-**Not yet done**: decoding the other three animation-frame addresses
-(mechanically the same, just not run yet); locating the wand's own
-palette (bank 1) in ROM -- same "not in raw or standard-BIOS-compressed
-form" result as the tiles, so it's presumably also type-4 or type-6,
-findable the same way (live breakpoint on whatever writes OBJ palette
-bank 1, source register at entry) if wanted.
 
 **`tools/graphics/decode_bios.py`** (new, checked into the repo): decodes any of
 the three standard BIOS formats (LZ77UnComp, HuffUnComp, RLUnComp) from
@@ -696,90 +717,59 @@ struct fields) is the next real unlock for reaching "extract everything"
 for tiles -- the calling pattern is found; what's left is tracing its
 argument dataflow.
 
-## What's NOT yet known
+## Open threads
 
-- **A real, working colored render.** Done for the wand cursor -- see
-  "The wand cursor sprite." Still not done for the spark
-  (`0x080BCDD8`)/particle-effect family or the three earlier
-  structural-scan candidate regions.
-- **None of the three original candidate art regions (`0x08933000`
-  filigree tileset, `0x0888xxxx` region, `0x08a36800` UI panels) have a
-  confirmed code reference.** A direct grep of `build/us/full_disasm.s`
-  for PC-relative literal-pool loads of these exact addresses found
-  **zero** hits for the filigree tileset and the UI-panel region. The
-  `0x0888xxxx` region had 3 nearby hits (`0x08882CFC` referenced at
-  disasm lines 15979/20385, `0x08886004` at line 16074) but these don't
-  exactly match any of the 17 tile-shaped sub-runs identified earlier in
-  that region, so they're not confirmed to be the same data. Treat all three
-  with the skepticism `0x080BCA24` earns (found by the identical
-  structural-scan technique, in the same ROM neighborhood as real
-  confirmed sprite data, and demonstrably not the sprite it resembles):
-  structural plausibility alone is insufficient on this ROM (see also
-  the standing memory on this).
-- **Type-4 codec**: now decoded (`tools/graphics/decode_type4.py`, Unicorn-based,
-  verified byte-exact against live memory -- see "Finding the ROM
-  source" above). Only tested against one resource family (the wand's
-  animation frames); not yet tried against other type-4 resources
-  (there may be none confirmed elsewhere yet).
-- The wand's own palette (bank 1, live-read, distinct from the three
-  earlier known palettes) has no located ROM source yet -- same
-  "not raw, not standard-BIOS" result as its tiles, so presumably also
-  type-4 or type-6, findable the same way (live breakpoint on whatever
-  writes OBJ palette bank 1).
-- Standard BIOS LZ77 was explicitly ruled out as the compression for the
-  filigree tile blob at `0x08933000` (`/tmp/hp3gfx/lz77.py`, an
-  independent decoder: no valid LZ77 stream of length >100 bytes found
-  anywhere spanning that region) -- unrelated to the now-resolved wand
-  sprite, which lives at a different address and uses type-4.
+In rough priority order. The palette side of this subsystem is solved
+and statically enumerable; **tiles are the remaining gap**, and item 1
+is what unlocks them at scale.
 
-## Recommended next steps
-
-The wand cursor sprite is fully resolved (ROM source, codec, tiles,
-palette, all verified against live game memory) -- see "The wand
-cursor sprite" above. That also delivered two reusable, verified tools
-(`tools/graphics/decode_type6.py`, `tools/graphics/decode_type4.py`) and confirmed the
-general methodology (live mGBA breakpoints/watchpoints beat blind ROM
-scanning whenever a live trigger is available) works reliably for this
-project, using mGBA's built-in debugger console driven interactively
-by the user -- notably *better* than the gdb-stub approach `CLAUDE.md`
-flags as unreliable for Krawall. Remaining, in rough priority order:
-
-0. **Trace `sub_080454BC`/`sub_080454DC`/`sub_08045588`'s callers**
-   (see "There is no missing 4th caller" above): these are the real,
-   generic, statically-confirmed OBJ tile-loading functions (the missing
-   piece analogous to `sub_08001528` for
-   palettes). Finding every caller and tracing each one's `resourcePtr`
-   argument back to its source (likely an animation-frame table, given
-   the surrounding object-update code) would let a scanner enumerate
-   real tile resources at scale the same way
-   `tools/graphics/find_object_palettes.py` does for palettes -- purely static,
-   no live triggering needed. This directly extends the same
-   "trace forward from a real, code-confirmed anchor" method that
-   resolved dialog text in `docs/formats/text.md`.
-1. **Decode the wand's other 3 animation frames** (`0x080BC9CC`,
-   `0x080BCADC`, `0x080BCCD8` -- mechanically identical to the already-
-   verified `0x080BCBD0`, just needs running) and its palette (bank 1's
-   ROM source, not yet located -- same live-breakpoint technique,
-   pointed at whatever writes OBJ palette RAM `0x05000220`-`0x0500023F`).
-2. **Find the spark/particle effect's remaining tiles and correct
-   palette pairing.** One real tile is confirmed (`0x080BCDD8`) via
-   `sub_0801DE5C`'s RLE path; likely a multi-tile animation like the
-   wand's glow. Three real palettes exist (`0x08A38108`, `0x08A38FE0`,
-   `0x080BD344`) but which one (if any) pairs with this specific effect
-   isn't confirmed.
-3. **Re-examine the three original structural-scan candidate regions**
-   (`0x08933000` filigree tileset, `0x0888xxxx` region, `0x08a36800` UI
-   panels) given `0x080BCA24`'s false-positive result -- these need a
-   code-confirmed live trace (same OAM/VRAM-watchpoint technique) before
-   trusting them for anything, not just a literal-pool grep.
-4. Once more real tile data is paired with a real palette, revisit the
+1. **Trace `sub_080454BC`/`sub_080454DC`/`sub_08045588`'s callers** (see
+   "There is no missing 4th caller" above). These are the real, generic,
+   statically-confirmed OBJ tile loaders -- the tile-side analogue of
+   `sub_08001528` for palettes. Finding every caller and tracing each
+   one's `resourcePtr` argument back to its source (likely an
+   animation-frame table, given the surrounding object-update code)
+   would let a scanner enumerate real tile resources without running the
+   game, the way `tools/graphics/find_object_palettes.py` already does
+   for palettes.
+2. **The wand's remaining pieces**: its other 3 animation frames
+   (`0x080BC9CC`, `0x080BCADC`, `0x080BCCD8` -- mechanically identical
+   to the verified `0x080BCBD0`, just not run), and its own palette
+   (bank 1), which has no located ROM source. Bank 1 is neither raw nor
+   standard-BIOS-compressed, so it is presumably type-4 or type-6 and
+   findable by a live breakpoint on whatever writes OBJ palette RAM
+   `0x05000220`-`0x0500023F`, reading the source register at entry.
+3. **The spark/particle effect's remaining tiles and its palette
+   pairing.** One real tile is confirmed (`0x080BCDD8`, via
+   `sub_0801DE5C`'s RLE path); it is likely a multi-tile animation like
+   the wand's glow. Three real palettes exist (`0x08A38108`,
+   `0x08A38FE0`, `0x080BD344`); which one pairs with this effect isn't
+   confirmed.
+4. **The three structural-scan candidate regions** (`0x08933000`
+   filigree tileset, `0x0888xxxx` region, `0x08a36800` UI panels) have
+   **no confirmed code reference**. A grep of `build/us/full_disasm.s`
+   for PC-relative literal-pool loads of these addresses found zero hits
+   for the filigree tileset and the UI-panel region; the `0x0888xxxx`
+   region had 3 nearby hits (`0x08882CFC` at disasm lines 15979/20385,
+   `0x08886004` at line 16074) that don't match any of the 17
+   tile-shaped sub-runs identified there. All three need a code-confirmed
+   live trace (OAM/VRAM watchpoint) before being trusted -- a
+   literal-pool grep is not enough, and neither is pixel-shape
+   plausibility (see `0x080BCA24` under "The wand cursor sprite":
+   found by this same technique, in the same ROM neighbourhood, and
+   demonstrably not the sprite it resembles). Standard BIOS LZ77 is
+   ruled out for the filigree blob specifically -- no valid LZ77 stream
+   longer than 100 bytes exists anywhere spanning that region.
+5. **The type-4 codec is decoded but barely exercised**
+   (`tools/graphics/decode_type4.py`, verified byte-exact against live
+   memory). Only tested against the wand's animation frames; no other
+   type-4 resource is confirmed anywhere yet.
+6. Once more real tile data is paired with a real palette, revisit the
    delta-coded tilemap fields decoded from the level table
-   (`docs/formats/graphics.md`'s "Level-table entry layout" section) to
-   see whether they arrange any of it into an actual on-screen scene.
+   ("Level-table entry layout" above) to see whether they arrange any of
+   it into an actual on-screen scene.
 
-## Confidence key
-
-Same convention as the rest of `docs/`, see `docs/memory-map/krawall.md`:
-**PROVEN** (directly verifiable), **STRUCTURAL MATCH** (shape/behavior
-matches strongly but not byte-verified against a spec), **UNCONFIRMED**
-(plausible, no independent corroboration yet).
+The general methodology this subsystem settled on: **live mGBA
+breakpoints/watchpoints beat blind ROM scanning whenever a live trigger
+is available**, driven interactively through mGBA's built-in debugger
+console.

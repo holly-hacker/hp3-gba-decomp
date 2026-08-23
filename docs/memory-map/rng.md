@@ -1,8 +1,8 @@
 # RNG / MT19937 — memory map
 
-See [`../memory-map.md`](../memory-map.md) for the confidence-key legend
-(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the Krawall
-audio engine memory-map split out separately at [`krawall.md`](krawall.md).
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
 
 ## RNG and battle-fighter memory layout (external, unverified against our disasm)
 

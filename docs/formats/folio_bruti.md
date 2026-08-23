@@ -1,5 +1,9 @@
 # Folio Bruti (in-game bestiary) format
 
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
+
 **Naming note:** despite this doc's title, `MonsterTable` (`0x0804F410`)
 is NOT exclusively Folio Bruti bestiary data -- it's shared by every
 `InitMonsterBattleActor` battle participant, bestiary-tracked or not.
@@ -16,14 +20,13 @@ located, its accessor function is fully understood via a decompiled jump
 table, and its result is traced end-to-end into the slider dot's pixel
 X-position (and into the animated "?" placeholder branch for
 unseen/unanalyzed monsters). The backing monster stat table (HP, base
-damage range, accuracy, and other fields) is **STRUCTURAL MATCH overall,
-PROVEN for HP/accuracy/base-damage-range/speed/crit_chance/special_effect_chance/special_effect_id** (live code paths
-read and use each -- see "The monster stat table" below and
-`../memory-map/battle.md`).
-The stat table itself
-is now extracted end-to-end -- curated JSON under `data/monsters/`,
-packed byte-exact back into the ROM by `tools/monsters/pack_monsters.py`
-(`just compare us` passes) -- see "The extraction pipeline" below. The
+damage range, accuracy, and the rest) is **PROVEN field by field**,
+each from a live code path that reads it -- see "The monster stat table"
+below, and [`../memory-map/battle.md`](../memory-map/battle.md) for the
+readers themselves. The stat table is extracted end-to-end -- curated
+JSON under `data/monsters/`, packed byte-exact back into the ROM by
+`tools/monsters/pack_monsters.py` (`just compare us` passes) -- see "The
+extraction pipeline" below. The
 three functions that use the table (`DrawFolioBrutiMonsterPanel`,
 `GetMonsterSpellEffectiveness`, `InitMonsterBattleActor`) are named in
 `functions.us.cfg` but their own code is NOT extracted to `asm/*.s`; per
@@ -79,7 +82,7 @@ for spell_index in 0..7:
     effectiveness = sub_0801890C(monster_index, spell_index)   ; r0=r7, r1=r6
     if effectiveness == -1  OR  ram[0x03003190 + monster_index] <= 2:
         ; monster not yet Informus-analyzed (0x03003190 = g_abMonsterDocLevel_candidate,
-        ; bumped to 4 by casting Informus -- see ../memory-map/battle.md's
+        ; bumped to 4 by casting Informus -- see battle.md's
         ; `BumpMonsterDocLevel` writeup) (or this spell has no data):
         ; draw the fixed/animated "?" placeholder graphic
         ; (gfx 0x0806959C, frame data 0x080695CE)
@@ -137,7 +140,7 @@ real game-design fact, not a gap in the table.
 
 ### The monster stat table
 
-**STRUCTURAL MATCH overall, PROVEN for the HP field.** Table base
+**PROVEN.** Table base
 **`0x0804F410`**, US ROM, stride **24 (0x18) bytes**, **69 records**
 (monster index 0-68). The table's end lines up exactly with a
 previously-known table start (`0x0804FA88`, referenced directly by
@@ -176,26 +179,40 @@ corroboration either way for those two.
 - `+0x10` (u16) -> struct `+0xC`
 - `+0x12` (u16) -> struct `+0x28`
 
-| Offset | Size | Field | Confidence |
+| Offset | Size | Field | Confidence and reader |
 |---|---|---|---|
-| `0x00` | u16 | HP | **PROVEN** (battle-init code copies it into a live HP field, written to both a current-HP and a max-HP struct offset) |
-| `0x02` | u8 | **`level`** | **PROVEN** (own `ldrb`, not part of a u16 with 0x03). `BattleFighter+0xE` (`bLevel`) is a proven level counter for player fighters -- `LevelUpFighter_candidate` increments it (capped 99) and indexes a per-level stat table with it, and `ResolveSpellAttack` reads it as the caster's spell-power-scale and spell-crit-chance term (see `../memory-map/battle.md`). No monster ever reaches either code path as the acting fighter (every monster's `Object` is hardwired to the melee-only tick callback, and `ResolveMeleeAttack` doesn't read this offset), so there's no traced reader for a monster's own value here -- same field, same offset, filled in the same way as the rest of this table |
-| `0x03` | u8 | **`speed`** | **PROVEN** -- turn-order/initiative value, lower = earlier turn. See `../memory-map/battle.md`'s turn-order writeup (`JitterEnemyTurnOrder_candidate`, `BuildTurnOrder_candidate`, `ReviveFighter_candidate`). Common monsters cluster at `178-254` (act late); fast/dangerous ones (Lupin Werewolf, Draco) have low values (act early) |
-| `0x04` | u8 | **accuracy** | boundary **PROVEN** (own `ldrb`); semantics **PROVEN** -- read by `ResolveMeleeAttack` as the attacker's hit-chance stat in a `Mt19937RandMax(99)` roll, see `../memory-map/battle.md` |
-| `0x05` | u8 | **`crit_chance`** | **PROVEN** -- `ResolveMeleeAttack` crits when `Mt19937RandMax(100) > 100-this` (probability `this/101`), doubling damage and triggering the "Critical hit!" message (see `../memory-map/battle.md`). Monster-only in practice: never populated for player fighters, and `ResolveMeleeAttack` only ever fires with an `Enemy` attacker. Observed values: 3, 5, 10, shared across variant/related-monster groups |
-| `0x06` | u16 | **base damage roll, min** | boundary **PROVEN** (own `ldrh`); semantics **PROVEN** -- fed directly into `Mt19937RandRange` as the attack's damage roll (see `../memory-map/battle.md`). Values are monotonic with monster tier, consistent with a damage range |
-| `0x08` | u16 | **base damage roll, max** | boundary **PROVEN**; semantics **PROVEN**, same evidence as `0x06` |
-| `0x0A` | u8 | **Flipendo effectiveness (0-100)** | **PROVEN** (`sub_0801890C` case 0) |
-| `0x0B` | u8 | **Incendio effectiveness (0-100)** | **PROVEN** (case 2) |
-| `0x0C` | u8 | **Verdimillious effectiveness (0-100)** | **PROVEN** (case 1) |
-| `0x0D` | u8 | **Wingardium Leviosa effectiveness (0-100)** | **PROVEN** (case 4) |
-| `0x0E` | u8 | **Glacius effectiveness (0-100)** | **PROVEN** (case 7) |
-| `0x0F` | u8 | **Diffindo effectiveness (0-100)** | **PROVEN** (case 6) |
-| `0x10` | u16 | **XP reward** (`reward_xp`), paid into `g_nXpAccum` on kill | **PROVEN** -- see `../memory-map/battle.md`'s XP/reward payout writeup for the code path and live in-game confirmation |
-| `0x12` | u16 | **gold reward** (`reward_gold`), paid into `g_nGoldAccum` on kill | **PROVEN**, same evidence as `0x10` |
-| `0x14` | u8 | **`special_effect_chance`** | **PROVEN** -- `RollMonsterSpecialEffect_candidate` (`0x08015020`) rolls this% chance (100 = guaranteed) after the monster's normal melee attack to also fire a scripted effect. See `../memory-map/battle.md` |
-| `0x15` | u8 | **`special_effect_id`** | **PROVEN** -- effect-script id passed to `TriggerBattleEffect` on a successful roll; real, confirmed entries in `tools/objscript/script_names.json` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family since variants/reskins share the same special attack |
-| `0x16` | u16 | always 0 in every record sampled (0-68) | STRUCTURAL MATCH (padding) -- also NOT read by battle-init |
+| `0x00` | u16 | `hp` | **PROVEN** -- copied to both a current-HP and a max-HP struct offset, the classic battle-init idiom |
+| `0x02` | u8 | `level` | boundary **PROVEN** (own `ldrb`, not half of a u16 with `0x03`); a monster's own value has **no traced reader** -- see the `bLevel` note below |
+| `0x03` | u8 | `speed` | **PROVEN** -- turn order, lower = earlier. Common monsters cluster at `178-254` (act late); Lupin Werewolf `20` and Draco `60` act early |
+| `0x04` | u8 | `accuracy` | **PROVEN** -- the attacker's hit-chance stat in `ResolveMeleeAttack`'s `Mt19937RandMax(99)` roll |
+| `0x05` | u8 | `crit_chance` | **PROVEN** -- bonus-damage roll threshold (probability `this/101`). Monster-only in practice. Observed values: 3, 5, 10, shared within monster families |
+| `0x06` | u16 | `damage_min` | **PROVEN** -- fed straight into `ResolveMeleeAttack`'s damage roll. Monotonic with monster tier |
+| `0x08` | u16 | `damage_max` | **PROVEN**, same evidence |
+| `0x0A` | u8 | Flipendo effectiveness (0-100) | **PROVEN** (`GetMonsterSpellEffectiveness` case 0) |
+| `0x0B` | u8 | Incendio effectiveness | **PROVEN** (case 2) |
+| `0x0C` | u8 | Verdimillious effectiveness | **PROVEN** (case 1) |
+| `0x0D` | u8 | Wingardium Leviosa effectiveness | **PROVEN** (case 4) |
+| `0x0E` | u8 | Glacius effectiveness | **PROVEN** (case 7) |
+| `0x0F` | u8 | Diffindo effectiveness | **PROVEN** (case 6) |
+| `0x10` | u16 | `reward_xp` | **PROVEN** -- paid into `g_nXpAccum` on kill, confirmed live in-game |
+| `0x12` | u16 | `reward_gold` | **PROVEN** -- paid into `g_nGoldAccum`, same evidence |
+| `0x14` | u8 | `special_effect_chance` | **PROVEN** -- percent chance (100 = guaranteed) that a scripted effect also fires after the monster's melee attack |
+| `0x15` | u8 | `special_effect_id` | **PROVEN** -- effect-script id passed to `TriggerBattleEffect`; named entries in `tools/objscript/script_names.json` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family |
+| `0x16` | u16 | padding | STRUCTURAL MATCH -- always 0 across all 69 records, and not read by battle-init |
+
+Every reader named above lives in
+[`../memory-map/battle.md`](../memory-map/battle.md), which owns each
+field's semantics and the evidence behind it (turn order,
+`ResolveMeleeAttack`'s formula, `ResolveSpellAttack`'s effectiveness
+switch, the XP/gold payout, `RollMonsterSpecialEffect_candidate`).
+
+**The `bLevel` note.** `BattleFighter+0xE` is a proven level counter for
+*player* fighters. No monster ever reaches either code path that reads
+it (every monster's `Object` is wired to the melee-only tick callback,
+and `ResolveMeleeAttack` doesn't touch the offset), so a monster's own
+value at `+0x02` has no traced reader -- it is the same field at the
+same offset, filled the same way as every other column here, just never
+observed being consumed.
 
 **Note on `0x14`/`0x15`:** these are two `u8` fields, not one `u16` --
 boundary-PROVEN, `RollMonsterSpecialEffect_candidate` reads them with two
@@ -204,114 +221,61 @@ separate `ldrb` instructions (`byte[0x14]`, `byte[0x15]`).
 No stored field is used for Petrificus Totalus or Spongify -- confirmed
 by `sub_0801890C` directly (see above), not an oversight in this table.
 
-### Attack/speed/crit-chance
+### Statistical corroboration for the stat fields
 
-**STRUCTURAL MATCH, weak.** The field table above gives `0x03`/`0x04`
-their traced-reader labels (`speed`/`accuracy`). This section records the
-one piece of statistical/gameplay evidence bearing on these offsets,
-which is far weaker than a traced read and shouldn't be leaned on.
-
-Lupin Werewolf is physically vulnerable and magic-immune in real
-gameplay, and holds this table's lowest `0x03` value. That's a real data
-point, but a weak one -- it was contributed as "mostly a guess... not
-100% sure". It cannot support reading `0x03`/`0x04` as an asymmetric
-defense/magic-defense pair (on the grounds that they sit at opposite
-extremes, mirroring Lupin's asymmetric mechanic), because `0x04` has a
-traced reader: `ResolveMeleeAttack` uses it (`BattleFighter+0x2B`) as the
-attacker's **accuracy**, an unrelated stat. Treat a defense or
-magic-defense reading of any field here as unsupported until a real
-reader turns up.
-
-Current status:
+The field table above gives every one of these offsets a traced reader,
+which is the authority. This section records the separate statistical /
+gameplay observations that bear on them -- much weaker evidence, worth
+knowing about mainly so nobody re-derives a wrong reading from content
+shape alone.
 
 - `0x02` (`level`) correlates with HP across the 53 real Folio Bruti
-  rows (Pearson r ~ 0.81), and the two highest values belong to Draco
-  (60) and Lupin Werewolf (55). `BattleFighter+0xE` (`bLevel`) is a
-  proven level counter for player fighters (see
-  `../memory-map/battle.md`: `LevelUpFighter_candidate` increments it
-  and indexes a per-level stat table with it, and `ResolveSpellAttack`
-  reads it as the caster's spell power scale/crit-chance term) -- every
-  monster's `Object` is hardwired to the melee-only tick callback, so a
-  monster never becomes `ResolveSpellAttack`'s attacker, and
-  `ResolveMeleeAttack` doesn't read this offset either, so there's no
-  traced reader for a monster's own value here.
-- `0x03` (`speed`, **PROVEN**) is a turn-order/initiative value, lower =
-  earlier turn. See `../memory-map/battle.md`'s turn-order writeup.
-  Lupin Werewolf's `0x03=20` (table-wide lowest) fits a boss that acts
-  first.
-- `0x04` -- see above: **not** magic defense, corrected to **accuracy**,
-  PROVEN via `ResolveMeleeAttack`.
-- `0x05` (`crit_chance`, **PROVEN**): `ResolveMeleeAttack` reads it as a
-  bonus-damage roll threshold, gating the confirmed "Critical hit!"
-  message path. See `../memory-map/battle.md`. Observed values: 3, 5,
-  10, shared across variant/related-monster groups.
-
-**`0x10`/`0x12` are the XP/gold reward pair, PROVEN.** `ApplyDamageToFighter`
-adds these two fields into separate running EWRAM accumulators
-(`g_nXpAccum`/`g_nGoldAccum`) when a fighter faints, and live in-game
-testing confirmed the exact XP/gold payout -- see `../memory-map/battle.md`'s
-XP/reward payout writeup for detail. What consumes the two accumulators
-after battle isn't traced further.
+  rows (Pearson r ~ 0.81), and its two highest values belong to Draco
+  (60) and Lupin Werewolf (55).
+- `0x03` (`speed`): Lupin Werewolf holds the table-wide lowest value
+  (`20`), fitting a boss that acts first. The correlation is not
+  reliable in general, though -- Gytrash is a known-fast creature in
+  play but sits at `245`, i.e. a late turn (`0x02=11, 0x03=245,
+  0x04=85, 0x05=3`).
+- **A defense / magic-defense reading of any field here is
+  unsupported.** Lupin Werewolf being physically vulnerable and
+  magic-immune, while `0x03`/`0x04` sit at opposite extremes, invites
+  reading them as an asymmetric defense pair; `0x04` has a traced
+  reader making it accuracy, an unrelated stat. Treat any
+  defense-flavoured reading as unsupported until a real reader turns
+  up.
 
 ### Ghidra cross-check
 
-Re-verified independently against a Ghidra decompilation of `baserom.us.gba`
-(not just the project's own `gbadisasm` output), per the project's caution
-that either tool's auto-analysis can be wrong -- disassembly, not
-decompilation, was treated as ground truth whenever the two disagreed.
+Re-verified independently against a Ghidra decompilation of
+`baserom.us.gba` (not just the project's own `gbadisasm` output), per the
+project's caution that either tool's auto-analysis can be wrong --
+disassembly, not decompilation, was treated as ground truth wherever the
+two disagreed.
 
-- `InitMonsterBattleActor` (`0x08014C88`) and `GetMonsterSpellEffectiveness`
-  (`0x0801890C`) decompile **exactly** as this doc already describes them,
-  field-copy-by-field-copy and case-by-case -- independent confirmation,
-  not a re-derivation.
-- Ghidra's own auto-analysis had mis-split one nearby function
-  (`0x08014f1c`-`0x0801500e`, a fighter-select-marker sprite spawner
-  unrelated to Folio Bruti) into two, guessing a bogus second entry point
-  at `0x08014fb0` for what disassembly shows is really just the else-arm
-  of an `if`/`else` (only xref: a conditional branch from inside
-  `SpawnTurnOrderIcon_candidate`, `0x08014f1c`, no `bl`, no prologue,
-  shared epilogue -- see `../memory-map/battle.md`'s turn-order writeup
-  for this function's own role). Deleted and
-  re-merged in the Ghidra DB; **not added to `functions.us.cfg`** -- it
-  isn't a real function boundary and isn't relevant to this doc's subject
-  matter anyway.
-- `RollMonsterSpecialEffect_candidate` (`0x08015020`), called from
-  `TickFighterAttackAnimState_candidate` right after a monster's normal
-  `ResolveMeleeAttack`, is fully traced: it rolls `special_effect_chance`%
-  (unconditional at `100`) and on success calls
-  `TriggerBattleEffect(special_effect_id, ...)` -- the same mechanism
-  spells/cards use -- then sets the attacker's `bSpellId` to `Spongify`
-  (a harmless animation placeholder). See `../memory-map/battle.md`.
-- The melee damage/hit-chance formula is now located and fully traced:
-  `ResolveMeleeAttack` (`0x08017E44`) and `ApplyDamageToFighter`
-  (`0x08017F98`), found from addresses contributed by jlun2 -- see
-  `../memory-map/battle.md` for the full formula. It reads
-  `BattleFighter+0x2B` (`MonsterTable+0x04`) as accuracy and
-  `BattleFighter+0x30`/`+0x32` (`MonsterTable+0x06`/`+0x08`) as the base
-  damage roll -- the traced readers behind those three fields' labels
-  in the field table above (see also "Attack/defense/crit-chance,
-  candidates only" below).
-  It does **not** read `BattleFighter+0xE` (`MonsterTable+0x02`,
-  `stat_attack` candidate) anywhere -- see the field table above.
-  `BattleFighter+0x2A` (`MonsterTable+0x03`) is `bStat_speed`, read by
-  the turn-order functions instead (`../memory-map/battle.md`), not by
-  `ResolveMeleeAttack`.
+`InitMonsterBattleActor` (`0x08014C88`) and `GetMonsterSpellEffectiveness`
+(`0x0801890C`) decompile exactly as described above, field-copy by
+field-copy and case by case.
 
-**`0x03` is the turn-order field (`bStat_speed`), see above.** The user
-raised Gytrash as a known-fast creature; its value there (`245`) is near
-the u8 max, i.e. a late turn, not an early one -- so this field doesn't
-track real-world "fast monster" reputation for every entry (Gytrash:
-`0x02=11, 0x03=245, 0x04(accuracy)=85, 0x05=3`).
+One Ghidra-side boundary error worth knowing about: its auto-analysis
+mis-split a nearby, unrelated function (`0x08014f1c`-`0x0801500e`, the
+fighter-select-marker sprite spawner
+`SpawnTurnOrderIcon_candidate`) into two, guessing a bogus second entry
+point at `0x08014fb0` for what disassembly shows is the else-arm of an
+`if`/`else` (its only xref is a conditional branch from inside the same
+function, no `bl`, no prologue, shared epilogue). Re-merged in the
+Ghidra DB; deliberately **not** added to `functions.us.cfg`, since it
+isn't a real function boundary.
 
-Content sanity-check (not proof, but corroborating): index 0-2 are the
-three Fire Crab color variants (Ruby/Emerald/Sapphire, string IDs
-1186-1188) with HP 36/50/120 (rarer variant = tougher, as expected), and
-their Incendio (fire) effectiveness values are 10/?/? -- a fire-crab
-being highly *resistant* to a fire spell (low effectiveness number) and
-conversely showing 100 for Glacius (ice) on index 0 is exactly the kind
-of type-matchup a bestiary would encode. Index 4-6 are Rat/Albino
-Rat/Plague Rat (string IDs 1190-1192) with HP 18/25/35, again increasing
-with tier.
+Content sanity-check (not proof, but corroborating): indices 0-2 are the
+three Fire Crab colour variants (Ruby/Emerald/Sapphire, string ids
+1186-1188) with HP 36/50/120 -- rarer variant, tougher monster -- and all
+three carry Incendio effectiveness `10` against Glacius `100`: a fire
+crab is near-immune to a fire spell and maximally vulnerable to ice,
+exactly the type-matchup a bestiary would encode. Indices 4-6 are
+Rat/Albino Rat/Plague Rat (string ids 1190-1192) with HP 18/25/35,
+again increasing with tier and sharing one effectiveness row across the
+family. (Values read from `data/monsters/monsters.json`.)
 
 Verification snippet:
 
@@ -515,7 +479,6 @@ the Krawall/dialog-text pipelines:
   68 being unused/padding at the very end of the table; whether it's a
   genuine reachable 4th "Monster Book of Monsters" fight is still
   unconfirmed -- not investigated further.
-
 - **The exact monster count discrepancy.** The stat table (and the
   `0x03003190` per-monster state array reset loop, `sub_080370A0`,
   bound `0..0x44` inclusive = 69) both agree on **69** monsters. But the
@@ -533,18 +496,12 @@ the Krawall/dialog-text pipelines:
   `CLAUDE.md`), the underlying data is likely to be content-identical
   but at a different address; do not assume the addresses above apply
   to JP without verifying.
-- The monster stat table itself is now extracted: `regions.us.txt` has a
-  `monster-table` row for `0x0804F410`-`0x0804FA88`, curated source lives
-  at `data/monsters/monsters.json` (gitignored, bootstrap with
-  `just extract-monsters`), and `tools/monsters/pack_monsters.py` (run via
-  the `pack-monsters` recipe, wired into `build`) packs it back
-  byte-exact -- `just compare us` passes. `DrawFolioBrutiMonsterPanel`
-  (0x08036D60), `GetMonsterSpellEffectiveness` (0x0801890C), and
-  `InitMonsterBattleActor` (0x08014C88) were named in `functions.us.cfg`
-  so the full disassembly reads clearly, but none of their own code has
-  been extracted to `asm/*.s` -- `sub_08036D60`/`InitMonsterBattleActor`
-  in particular are large and were only partially walked in this
-  investigation, so their boundaries don't meet hard rule 5's bar yet.
+- **Neither of the three named functions' code is extracted to
+  `asm/*.s`.** `DrawFolioBrutiMonsterPanel` (`0x08036D60`) and
+  `InitMonsterBattleActor` (`0x08014C88`) are large and only partially
+  walked, so their boundaries don't meet hard rule 5's bar; they are
+  named in `functions.us.cfg` so the disassembly reads clearly, and
+  nothing more.
 - The graphics-pointer table (`0x0804E6B4`) was NOT extracted -- its own
   fields are still unconfirmed (see above) and its row-count discrepancy
   with the stat table is unresolved.

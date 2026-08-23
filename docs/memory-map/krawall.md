@@ -1,8 +1,9 @@
 # Krawall audio engine — memory map
 
-See [`../memory-map.md`](../memory-map.md) for the confidence-key legend
-(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the RNG
-memory-map split out separately at [`rng.md`](rng.md).
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index. The on-ROM module/pattern/sample struct layouts are in
+[`../formats/krawall.md`](../formats/krawall.md).
 
 ## Krawall audio engine — confirmed, located
 
@@ -340,11 +341,9 @@ static const effectStructVC effectsVC[] = { ... 10 entries ... };
 
 `{func1, func2, inbet1}` is exactly our `{tick_fn, init_fn, flags}` shape
 (`func2`/`init_fn` only set for the 4 "dual" entries that combine a
-volume-slide with vibrato or tone-porta). This is the same "API-shape
-reference, not a byte-level source match" use of the public repo that
-identified `kramWorker`'s naming conventions (see above) -- CLAUDE.md's
-caution that the public repo is a different revision than what's compiled
-into the ROM still applies; nothing here is a compiled-code diff.
+volume-slide with vibrato or tone-porta). API-shape reference only, per
+"Public Krawall source pulled for reference" above -- nothing here is a
+compiled-code diff.
 
 **Verification**: extracted the `inbet`/`flags` bit for all 50 `effects[]`
 slots (including the unused all-zero ones) directly from ROM and diffed
@@ -609,12 +608,9 @@ verification answers it in two hits.
 
 ## Cross-referencing everything above against the public Krawall source [STRUCTURAL MATCH, unusually strong]
 
-CLAUDE.md's standing caution applies as always: the public repo
-(`github.com/sebknzl/krawall`) is a different source revision than what's
-compiled into this ROM (no `$Id` tags, git history starts 2013), so
-nothing here is a byte-level match -- but as an API-shape/naming
-reference it confirms nearly everything mapped in this document by
-inference, field for field. Compared against `lib/mixer.c`,
+Same API-shape-only footing as above, and on that footing the public
+source confirms nearly everything mapped in this document by inference,
+field for field. Compared against `lib/mixer.c`,
 `lib/mixer.h`, `lib/mixer_private.h`, `lib/mixer.arm.c`,
 `lib/mixer_private.arm.c`, `lib/directsound.c`, `lib/general.c`,
 `lib/types.h`.
@@ -733,93 +729,44 @@ candidate identifications above remain at their stated confidence level
 Worth revisiting later, possibly with an interactive (non-batch) gdb session
 or a different debugging frontend.
 
-## Next steps
+## Open threads
 
-- [ ] New lead from `battle.md`: `ShowBattleMessage`'s `SpellLevelUp` case
-      calls `PlaySoundEffect_candidate` (`0x0803FF70`), which forwards into
-      `0x08047DFC` -- a function inside this driver's cluster that
-      manipulates a full per-channel state array, looking closer to a
-      module-switch (`kramPlayModule`-equivalent) than a one-shot SFX
-      trigger. Not traced further from this doc's side yet.
-- [ ] Do NOT expect the public Krawall repo to resolve function identity by
-      diffing — it's a different source revision. Naming these functions
-      will require either behavioral/structural inference from disassembly,
-      or finding an actual 2003-era Krawall source snapshot if one exists
-      (unlikely to be publicly available).
-- [x] Trace the Thumb "query free space" callback at `0x08046E0C` -- it's
-      called directly from `kramWorker` (see "Searching for where IWRAM
-      code gets installed" below); not yet disassembled itself, just its
-      call site and role confirmed.
-- [x] Confirmed there's no global startup copy into IWRAM (see "No bulk
-      startup copy" above) — dropped as a dead end. `0x03000AB4` is still
-      un-disassembled; if it's installed at all rather than statically
-      linked there, it must happen inside Krawall's own init path, not
-      crt0. Worth revisiting only if a driver-local copy loop turns up.
-- [x] Walked the effect-handler table at `0x08FA9568` to its confirmed end
-      (`0x08FA985C`, right where the volume-column table `effectsVC[]`
-      finishes) and named all 41 effect-column + 10 volume-column functions
-      by matching the tables' `inbet`/`flags` sequences and dual-function
-      reuse pattern against `player.c`'s `effects[]`/`effectsVC[]` -- see
-      "Naming the 41 effect handlers" above, all seeded in
-      `functions.us.cfg`.
-- [x] Mapped many more `KramChannel` fields by cross-referencing all 51
-      named handlers (see "`KramChannel` field offsets" above) and resolved
-      the "two offset pictures" question: they're two different structs,
-      not one -- `mixReal`' 44-byte-stride array is a
-      compact hot-path mixer-channel struct, separate from this larger
-      per-track effect-state struct (fields run to at least `+0x5D`).
-- [ ] Map more fields of the candidate `KramEngineState` (EWRAM
-      `0x02001638`-`0x0200163E`); confirmed `+0x1D`/`+0x1E` there are
-      Global Volume's value/raw-slide-param (via `eff_gvolslide`).
-- [ ] Pin down what sets `KramChannel+0x4D` (the third factor in the
-      volume-combine formula, candidate: baked-in panning or instrument
-      default volume) and what `+0x18`/`+0x08` mean (compared against small
-      constants like `0x14`/`0x17`/`0x31` in several handlers).
-- [x] Found the 44-byte-stride compact mixer-channel struct's own fields by
-      fully disassembling `mixReal` with `objdump` (gbadisasm
-      stops early on its mid-function indirect `bx`) -- see "Full
-      disassembly of `mixReal`" above, which also establishes all 5 IWRAM
-      pointer-table addresses as PROVEN and pins down the `0x08FA9568`
-      table's indexing mechanism.
-- [x] Found where the ~10 confirmed IWRAM code addresses get installed --
-      **solved**, see "Where IWRAM code gets installed" above. Live write
-      watchpoint (mGBA's own debugger console, not the gdb stub) on
-      `0x03000090` from cold reset caught the exact `memcpy` call:
-      `kramInstall` (`0x0803FDB0`) does two back-to-back `memcpy`s from one
-      contiguous ROM image at `0x08FB0DB0`-`0x08FB4B40` -- one to IWRAM
-      `0x03000000` (`0x1598` bytes), one to EWRAM `0x02000000` (`0x27F8`
-      bytes). Both named in `functions.us.cfg`.
-- [ ] Check whether `KramEngineState` (`0x02001638`+) and the
-      `0x020008B4` channel-array base actually fall inside the EWRAM
-      install range (`0x02000000`-`0x02002800`) -- if so, they're
-      copied-image contents, not independently-linked globals, which may
-      change how confidently their exact addresses can be trusted across
-      a JP-vs-US comparison (worth checking whether `functions.jp.cfg`'s
-      equivalent copy uses the same addresses).
-- [ ] Disassemble the ~10 IWRAM functions themselves (accumulator
-      clear/finalize passes, the `kramMixChannel`-family functions reached
-      through the `0x08FA9568` table, etc.) -- now unblocked, since the
-      source bytes are known to live at `0x08FB0DB0`+ in ROM (offset by
-      `installed_addr - 0x03000000` for IWRAM ones, `installed_addr -
-      0x02000000 + 0x1598` for EWRAM ones).
-- [x] Cross-referenced the whole session's findings against the public
-      Krawall source (`mixer.c`/`mixer.h`/`mixer_private.h`/`mixer.arm.c`/
-      `mixer_private.arm.c`/`directsound.c`/`general.c`) -- see
-      "Cross-referencing everything above against the public Krawall
-      source" above. Confirmed `struct MixChannel` field-for-field
-      (`status`@`+2`, `loop`@`+3`, `inc`@`+0x14` exact), named
-      `getDmaAddress` (`0x08046E0C`), found this ROM was built with
-      Krawall's `IWRAM_USAGE_SMALL` config (channel array in EWRAM, not
-      IWRAM -- new finding), and refined (not yet finished) the
-      `0x08FA9568` table read via `mixPanTable[]`'s 16-entry shape.
-- [ ] Re-derive the `0x08FA9568` table's real shape now that
-      `mixPanTable[]` gives a concrete 16-entry, 4-byte-stride model
-      (indexed by `hq<<3 | mixFunc`) to check against, instead of the
-      probably-wrong "32-byte descriptor bank" reading from earlier in
-      this document.
-- [ ] Resolve the 4-byte size discrepancy between the public source's
-      computed `MixChannel` size (`0x28`) and this ROM's observed stride
-      (`0x2C`) -- compiler padding difference or a real extra field.
-- [ ] Once functions are named (via inference, not source diff), begin
-      populating `symbols.us.txt`. The 41 effect-handler names above are the
-      first real candidates for this.
+- `ShowBattleMessage`'s `SpellLevelUp` case calls
+  `PlaySoundEffect_candidate` (`0x0803FF70`), which forwards into
+  `0x08047DFC` -- a function inside this driver's cluster that
+  manipulates a full per-channel state array, closer in shape to a
+  module switch (`kramPlayModule`-equivalent) than a one-shot SFX
+  trigger. Not traced from this document's side; see
+  [`battle-ui.md`](battle-ui.md) for the call site.
+- Check whether `KramEngineState` (`0x02001638`+) and the `0x020008B4`
+  channel-array base fall inside `kramInstall`'s EWRAM copy range
+  (`0x02000000`-`0x02002800`). If they do, they're copied-image
+  contents rather than independently-linked globals, which changes how
+  far their exact addresses can be trusted across a US/JP comparison
+  (worth checking whether the JP build's copy uses the same addresses).
+- Disassemble the ~10 IWRAM functions themselves (the accumulator
+  clear/finalize passes, the `kramMixChannel`-family functions reached
+  through the `0x08FA9568` table). Unblocked: their source bytes are at
+  `0x08FB0DB0`+ in ROM, offset by `installed_addr - 0x03000000` for the
+  IWRAM ones and `installed_addr - 0x02000000 + 0x1598` for the EWRAM
+  ones.
+- Re-derive the `0x08FA9568` table's real shape against
+  `mixPanTable[]`'s concrete 16-entry, 4-byte-stride model (indexed by
+  `hq<<3 | mixFunc`), rather than the "32-byte descriptor bank" reading
+  earlier in this document.
+- Resolve the 4-byte gap between the public source's computed
+  `MixChannel` size (`0x28`) and this ROM's observed stride (`0x2C`) --
+  compiler padding or a real extra field.
+- Map more `KramEngineState` fields (EWRAM `0x02001638`-`0x0200163E`);
+  `+0x1D`/`+0x1E` are Global Volume's value and raw slide param.
+- Pin down what sets `KramChannel+0x4D` (the third factor in the
+  volume-combine formula -- candidate: baked-in panning, or instrument
+  default volume) and what `+0x18`/`+0x08` mean (compared against small
+  constants like `0x14`/`0x17`/`0x31` in several handlers).
+- Naming further driver functions needs behavioural/structural
+  inference from disassembly, or an actual 2003-era Krawall source
+  snapshot; the public repo is a different revision and will not
+  resolve identity by diffing (see "Public Krawall source pulled for
+  reference" above).
+- Once more functions are named, start populating `symbols.us.txt`. The
+  51 effect handlers above are the first real candidates.
