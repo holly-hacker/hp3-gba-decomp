@@ -15,7 +15,11 @@ newer configure-based projects (kl-eod-decomp, dtk-template).
 3. **The compiler and its flags are fixed by matching.** Never "upgrade" or reflag the target
    compiler once identified. Modernize build orchestration only.
 4. **Verify, don't assume.** Any claim about the ROM (compiler, formats, offsets) must be
-   confirmed against the actual binary before being encoded in configs or docs.
+   confirmed against the actual binary before being encoded in configs or docs. Compute any
+   address/offset/hex arithmetic (table bases, struct offsets, `addr - base`, index*stride,
+   etc.) via an actual calculator (e.g. `python3 -c "..."`), never by hand or mentally — manual
+   arithmetic on addresses is a routine, easy-to-miss source of off-by-N errors that silently
+   invalidate everything built on top of them.
 5. **Never commit deterministically generated content.** If a script can regenerate a file
    byte-for-byte from the baserom plus already-tracked inputs (raw disassembly dumps,
    objcopy'd ROM images, extracted-but-unconverted assets), it belongs in `build/` (gitignored)

@@ -244,9 +244,11 @@ class SaveReader:
 # (bit 0x04) at the exact save unlocking the 2nd minigame ("Buckbeak's
 # Hippogriff Glide").
 HEADER_FLAG_BITS = {
-    # bit 0 is confirmed read elsewhere (a menu-background selector,
-    # FUN_08036038) but its actual purpose isn't identified.
-    "flHeaderBit0": 0x01,
+    # Gates whether the Owl Care Kit menu entry (pause menu -> Connectivity)
+    # is available at all -- delivered via a GameCube link event, per the
+    # dialog string "Owl Care Kit received!". Read by InitializeConnectivityMenu
+    # (0x08036038), which picks the Connectivity submenu's list variant.
+    "flOwlCareKitUnlocked": 0x01,
     "flMinigame1Unlocked": 0x02,
     "flMinigame2Unlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
     "flMinigame3Unlocked": 0x08,
@@ -575,7 +577,12 @@ def encode_item_quantities(w: SaveWriter, item_data: dict):
 def decode_party_member(r: SaveReader) -> dict:
     hp, mp, reward_xp = struct.unpack("<HHH", r.read_bytes(6))
     level = r.read_bytes(1)[0]
-    unk_0f = r.read_bytes(1)[0]
+    # BattleFighter's known-spell count -- gates how many of the 10
+    # aSpellCastLevel slots below the battle Cast Spell menu shows
+    # (FUN_08011bec iterates i in [0, bKnownSpellCount)). Identified in
+    # docs/memory-map/battle.md; propagated here and to the Ghidra
+    # struct field name.
+    known_spell_count = r.read_bytes(1)[0]
     spell_cast_level = list(r.read_bytes(10))
     spell_usage_progress = list(r.read_bytes(10))
     return {
@@ -583,7 +590,7 @@ def decode_party_member(r: SaveReader) -> dict:
         "wMp": mp,
         "wXpToNextLevel": reward_xp,
         "bLevel": level,
-        "bUnknown0": unk_0f,
+        "bKnownSpellCount": known_spell_count,
         "abSpellCastLevel": spell_cast_level,
         "abSpellUsageProgress": spell_usage_progress,
     }
@@ -591,7 +598,7 @@ def decode_party_member(r: SaveReader) -> dict:
 
 def encode_party_member(w: SaveWriter, m: dict):
     w.write_bytes(struct.pack("<HHH", m["wHp"], m["wMp"], m["wXpToNextLevel"]))
-    w.write_bytes(bytes([m["bLevel"], m["bUnknown0"]]))
+    w.write_bytes(bytes([m["bLevel"], m["bKnownSpellCount"]]))
     w.write_bytes(bytes(m["abSpellCastLevel"]))
     w.write_bytes(bytes(m["abSpellUsageProgress"]))
 
@@ -842,6 +849,95 @@ def encode_room_object_state(w: SaveWriter, state: dict):
 
 
 # --------------------------------------------------------------------------
+# Save slot: Owl Care Kit (0x0300321C-0x0300322D)
+#
+# A persistent virtual-pet-owl feature, reached from the pause menu's
+# Connectivity submenu ("Trade Cards" / "Owl Care Kit"). PROVEN, confirmed
+# end-to-end: the pause menu's "Connectivity" entry reaches a generic
+# list-menu mode (0x16) whose 2-entry list is one of three ROM variants
+# selected by g_bHeaderFlags bit 0x01 (flOwlCareKitUnlocked) -- gates
+# whether Owl Care Kit is unlocked at all, delivered via a GameCube link
+# event per the dialog string "Owl Care Kit received!". "Owl Care Kit"
+# routes to game mode 0x42 (owl name/type picker) the first time, or
+# straight to mode 0x29 (the care screen) afterward -- gated by the same
+# bit this struct's own flVisited flag tracks, confirmed via disassembly
+# of the mode-0x29 init (memsets state, checks flVisited, only
+# (re)initializes careCounters to 125 each on a still-clear flag).
+#
+# Field layout in the save stream: 4 nibbles (each nibble is the low
+# nibble of one RAM byte at 0x0300321C-0x0300321F), then 3 bytes, then 6
+# bytes, then 2 bytes, then 2 bytes -- matching FUN_08022EA8's pack-call
+# sequence exactly.
+# --------------------------------------------------------------------------
+
+OWL_CARE_ACTIONS = ["Feed", "Clean", "Pet", "Groom", "Exercise", "Teach"]
+
+
+def decode_owl_care_kit(r: SaveReader) -> dict:
+    flags_nibble, name_index, type_index, unk3 = r.read_nibbles(4)
+    stat_meters = list(r.read_bytes(3))
+    care_counters = list(r.read_bytes(6))
+    elapsed_ticks = struct.unpack("<H", r.read_bytes(2))[0]
+    mail_timer = struct.unpack("<H", r.read_bytes(2))[0]
+    result = {
+        # Set the first time the player confirms Owl Care Kit from the
+        # Connectivity menu; while clear, the mode-0x29 init (re)resets
+        # careCounters to 125 each instead of keeping their existing
+        # values -- PROVEN via FUN_08021C08/FUN_08023188.
+        "flVisited": bool(flags_nibble & 1),
+        # Remaining 3 bits of the flags nibble -- no confirmed meaning.
+        "bFlagsUnknown": flags_nibble >> 1,
+        # 0-13, into the 14-name owl-name list (Fiddletick..Dumpy) --
+        # PROVEN via the exact dialog text at GetDialogText base 0x676.
+        "bNameIndex": name_index,
+        # 0-2, into the 3-entry owl-type list (White/Brown/Gray Owl) --
+        # PROVEN via dialog text at GetDialogText base 0x673 (prompted by
+        # "Select Owl Type").
+        "bTypeIndex": type_index,
+        # No evidence at all -- not even known to be meaningful.
+        "nUnknown3": unk3,
+        # The 3 on-screen status bars, labeled "Mind, Body and Spirit" in
+        # the in-game help text (dialog string 0x915) and computed from
+        # careCounters below via a weighted average (FUN_080222F0).
+        # STRUCTURAL MATCH: the 3-meter identity and the derivation from
+        # careCounters are proven; this index order (Mind/Body/Spirit)
+        # matches the help text's listing order but isn't independently
+        # confirmed per-index.
+        "abStatMeters": stat_meters,
+        # One counter per care action, PROVEN index order via the menu
+        # drawer and the switch dispatch both indexing off the same
+        # cursor variable (DAT_03003F14): case 0=Feed .. 5=Teach, each
+        # calling FUN_08022284(index) to lower that action's counter.
+        # Regrows toward 0xFA (250) over time when neglected.
+        "careCounters": dict(zip(
+            (f"b{name}Counter" for name in OWL_CARE_ACTIONS), care_counters)),
+        # Elapsed-tick counter driving careCounters' regrowth -- advances
+        # once per care-screen tick while flVisited is set and
+        # wMailTimer is 0 (FUN_08021DF8).
+        "wElapsedTicks": elapsed_ticks,
+        # The "Mail" action's (case 6, dialog string 0x66F) flight
+        # countdown: set to 600 (~10s at 60fps) when the owl is sent off,
+        # explicitly decremented once per tick, gates careCounters'
+        # regrowth while nonzero. Matches the in-game help text ("sends
+        # your owl off to fetch an item... check back in a few
+        # minutes") and the mail-return item grant (FUN_08021FE4,
+        # GetDialogText 0xAC1 "The owl mail has arrived!").
+        "wMailTimer": mail_timer,
+    }
+    return result
+
+
+def encode_owl_care_kit(w: SaveWriter, o: dict):
+    flags_nibble = (1 if o["flVisited"] else 0) | ((o["bFlagsUnknown"] & 7) << 1)
+    w.write_nibbles([flags_nibble, o["bNameIndex"], o["bTypeIndex"], o["nUnknown3"]])
+    w.write_bytes(bytes(o["abStatMeters"]))
+    care_counters = o["careCounters"]
+    w.write_bytes(bytes(care_counters[f"b{name}Counter"] for name in OWL_CARE_ACTIONS))
+    w.write_bytes(struct.pack("<H", o["wElapsedTicks"]))
+    w.write_bytes(struct.pack("<H", o["wMailTimer"]))
+
+
+# --------------------------------------------------------------------------
 # Save slot: full field sequence (SerializeGameStateToSaveBuffer, 0x08021498)
 # --------------------------------------------------------------------------
 
@@ -850,16 +946,21 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot = {}
 
     slot["dwMoney"] = struct.unpack("<I", r.read_bytes(4))[0]
-    # Playtime, one byte each: hours, minutes, seconds, frames. The 4th
-    # byte stays 0-28 across 26 real samples -- well under a 50/60fps
-    # rollover, consistent with a sub-second frame counter, though no
-    # direct incrementer was found in the disassembly (likely accessed
-    # via computed offset, not a literal address Ghidra's xrefs catch).
+    # Playtime, one byte each: hours, minutes, seconds, frames. Incremented
+    # by 1 frame per call to ProcessPlaytimeTick (0x0802165C, called
+    # unconditionally every frame from main), capped once Hours reaches 99
+    # rather than rolling over. The 4th byte stays 0-28 across 26 real
+    # samples -- well under a 50/60fps rollover, consistent with this.
     slot["bPlaytimeHours"] = r.read_bytes(1)[0]
     slot["bPlaytimeMinutes"] = r.read_bytes(1)[0]
     slot["bPlaytimeSeconds"] = r.read_bytes(1)[0]
     slot["bPlaytimeFrames"] = r.read_bytes(1)[0]
-    slot["bUnknown2"] = r.read_bytes(1)[0]
+    # Current room/map ID. Single write site is InitializeRoomMode
+    # (0x08029848, game mode 8's entry point, storing its incoming
+    # room-id parameter) -- every room transition funnels through
+    # pushing game mode 8 with a room-id parameter. Reset to 0x2A (the
+    # starting room) on new-game creation.
+    slot["bCurrentRoomId"] = r.read_bytes(1)[0]
     slot.update(decode_save_flags(r.read_bytes(1)[0]))
     # Index into the main-menu current-objective string table (Ghidra:
     # g_bMainMenuObjectiveIndex, 0x030027b9) -- the same live byte as
@@ -882,7 +983,11 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot["partyStats"] = [decode_party_member(r) for _ in range(PARTY_MEMBER_COUNT)]
     slot["roomObjectState"] = decode_room_object_state(r)
 
-    slot["abUnknown10"] = r.read_bytes(32).hex()
+    # 256-bit bitset (one bit per Object script entry-point/wScriptPC value)
+    # tracking which one-time scripted objects have already fired, checked
+    # by SpawnScriptedOneTimeObject (0x0800BC6C) when respawning them --
+    # persists across room transitions, unlike roomObjectState above.
+    slot["abTriggeredScriptFlags"] = r.read_bytes(32).hex()
     # Ghidra: g_abQuestEventState (0x030027a0). Index 25 = bMainMenuObjectiveIndex
     # above. Persistent global state, not per-room (confirmed unchanged
     # across a real room-to-room crossing). Indices ~224-254 are
@@ -907,16 +1012,16 @@ def decode_slot_stream(payload: bytes) -> dict:
 
     # Folio Universitas (Harry's card collection) card counts (one
     # nibble per card; only cards received at least once are shown
-    # in-game) and a parallel 51-bit unlocked/seen flag per card (7
+    # in-game) and a parallel 51-bit unlocked/owned flag per card (7
     # bytes storage, LSB-first; all-unlocked = ffffffffffff07).
     slot["anFolioUniversitasCounts"] = r.read_nibbles(0x33)
     slot["a1FolioUniversitasUnlocked"] = bytes_to_bits(r.read_bytes(7), 51)
-    slot["abUnknown14"] = r.read_bytes(7).hex()
-    slot["anUnknown15"] = r.read_nibbles(4)
-    slot["abUnknown16"] = r.read_bytes(3).hex()
-    slot["abUnknown17"] = r.read_bytes(6).hex()
-    slot["abUnknown18"] = r.read_bytes(2).hex()
-    slot["abUnknown19"] = r.read_bytes(2).hex()
+    # A second 51-bit flag per card, same layout: drives the "flashing new
+    # card" indicator in the Folio Universitas UI (confirmed by the user).
+    # Set/cleared in lockstep with a1FolioUniversitasUnlocked whenever a
+    # card's count transitions to/from 0 -- see docs/formats/save.md.
+    slot["a1FolioUniversitasCardIsNew"] = bytes_to_bits(r.read_bytes(7), 51)
+    slot["owlCareKit"] = decode_owl_care_kit(r)
 
     stream_end = r.tell()
     # Bytes between the end of the known pack-call sequence and the
@@ -942,7 +1047,7 @@ def encode_slot_stream(slot: dict) -> bytes:
     w.write_bytes(bytes([slot["bPlaytimeMinutes"]]))
     w.write_bytes(bytes([slot["bPlaytimeSeconds"]]))
     w.write_bytes(bytes([slot["bPlaytimeFrames"]]))
-    w.write_bytes(bytes([slot["bUnknown2"]]))
+    w.write_bytes(bytes([slot["bCurrentRoomId"]]))
     w.write_bytes(bytes([encode_save_flags(slot)]))
     w.write_bytes(bytes([slot["bMainMenuObjectiveIndex"]]))
     w.write_bytes(bytes([slot["bPartyLeaderDisplayLevel"]]))
@@ -958,7 +1063,7 @@ def encode_slot_stream(slot: dict) -> bytes:
 
     encode_room_object_state(w, slot["roomObjectState"])
 
-    w.write_bytes(bytes.fromhex(slot["abUnknown10"]))
+    w.write_bytes(bytes.fromhex(slot["abTriggeredScriptFlags"]))
     w.write_bytes(bytes(slot["abQuestEventState"]))
 
     for level in slot["a3FolioBrutiLevels"] + slot["a3BossMonsterLevels"]:
@@ -968,12 +1073,8 @@ def encode_slot_stream(slot: dict) -> bytes:
 
     w.write_nibbles(slot["anFolioUniversitasCounts"])
     w.write_bytes(bits_to_bytes(slot["a1FolioUniversitasUnlocked"], 7))
-    w.write_bytes(bytes.fromhex(slot["abUnknown14"]))
-    w.write_nibbles(slot["anUnknown15"])
-    w.write_bytes(bytes.fromhex(slot["abUnknown16"]))
-    w.write_bytes(bytes.fromhex(slot["abUnknown17"]))
-    w.write_bytes(bytes.fromhex(slot["abUnknown18"]))
-    w.write_bytes(bytes.fromhex(slot["abUnknown19"]))
+    w.write_bytes(bits_to_bytes(slot["a1FolioUniversitasCardIsNew"], 7))
+    encode_owl_care_kit(w, slot["owlCareKit"])
 
     payload = bytearray(w.buf)
     if "abTailPadding" in slot:
