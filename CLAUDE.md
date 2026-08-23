@@ -57,21 +57,11 @@ newer configure-based projects (kl-eod-decomp, dtk-template).
     (e.g. `kramStop`, `kramSetVol`, `kramSetPan`, `kramWorker`). See
     `docs/memory-map/krawall.md` for full findings, candidate function addresses, and their
     confidence levels.
-  - Music/sample content lives as curated JSON+WAV under `data/audio/` (modules with inline
-    pattern data referencing samples by name; samples as WAV + a JSON metadata sidecar) --
-    per hard rule 2, `data/audio/` is gitignored, same footing as the baserom, never
-    committed. `tools/krawall/extract_krawall.py` bootstraps it locally
-    from `baserom.us.gba` (a one-time step per clone, not run on every build -- re-running it
-    overwrites any local hand-edits, since content is meant to be user-editable for future
-    modding). `tools/krawall/pack_krawall.py` then packs this local, version-independent source
-    (content proven byte-identical between US/JP, see `docs/formats/krawall.md`) into
-    per-version, byte-exact assembly before each build, driven by `regions.<ver>.txt`'s
-    `krawall-module`/`krawall-samples` rows (addresses only -- the content itself doesn't
-    vary per version). `tools/krawall/dump_krawall.py` (raw ROM -> `asm/krawall/<ver>/*.bin`,
-    also gitignored) is not build input -- it's a discovery/debugging aid. See
-    `docs/formats/krawall.md` for the full format writeup, including the pattern/module field
-    decoding this packing relies on. A separate, lossy `.xm` export exists for actually
-    listening to/viewing the music (`just dump-music-xm`), never used by the build.
+  - Music/sample content is curated JSON+WAV under `data/audio/`, extracted once per clone
+    and packed to byte-exact assembly on every build, like every other `data/` subsystem
+    (see Build principles). Content is version-independent -- proven byte-identical between
+    US/JP -- so only addresses differ per version. `docs/formats/krawall.md` has the format
+    writeup and the field decoding the packing relies on.
   - License note: LGPL — do not vendor Krawall source into the repo without resolving
     license compatibility; document in CONTRIBUTING.
 - **Compiler: preliminary working hypothesis is ARM ADS/RVCT (`armcc`), NOT GCC/agbcc.**
@@ -92,56 +82,55 @@ newer configure-based projects (kl-eod-decomp, dtk-template).
 - No existing decomp of this game. Related-but-empty: SimsAdvanceRet/UrbzGBADecomp (same
   studio/era; watch for shared engine code).
 
-## Current phase: bootstrap (keep it simple)
+## Current phase: reverse-engineering and asset extraction
 
-Get a minimal workflow going first; expand tooling later (see "Target toolchain" below).
+The bootstrap is done: both versions build byte-identical from a manifest, and five asset
+subsystems round-trip through curated `data/` source.
+
+Day-to-day work is **understanding the game's data and getting it out of the ROM** -- locating
+a table or format, proving its layout against the actual bytes, writing it up in `docs/`, and
+where it's real content, giving it an `extract`/`pack` pipeline into `data/` so it becomes
+editable source instead of opaque `.incbin`. Typical subjects: level/map tables and their
+bounding boxes, image and tile assets, story/quest progression state, item and chest
+placement.
+
+**Do not extract code into `asm/*.s` unless explicitly asked to** -- not a priority, not
+required. Read functions freely (that's how formats get confirmed), then record what they do
+in `docs/`, name them in `functions.<ver>.cfg`, and leave their bytes as `.incbin`.
+
+New asset subsystem: follow the existing pattern rather than inventing one -- format
+documented in `docs/formats/`, `extract_<x>.py`/`pack_<x>.py`/`<x>_codec.py` under
+`tools/<x>/`, a `regions.<ver>.txt` directive taught to `gen_rom_s.py`, both recipes in the
+justfile and `extract-all`, `data/<x>/` gitignored, round-trip proven by `just compare`.
 
 Actual layout so far (both ROM versions supported throughout, not just US):
 
 ```
-├── flake.nix              # dev shell (toolchain, gbadisasm built from source + patched,
-│                           #   capstone, just, mgba). flake.lock is committed.
-├── patches/gbadisasm/      # patches for unmaintained upstream gbadisasm bugs
-├── justfile                # task runner; recipes take ver="us"|"jp"
-├── .gitignore              # baserom*.gba, gba_bios.*, *.sav, build/, *.o, *.elf
-├── baserom.us.gba          # user-supplied (gitignored)
-├── baserom.jp.gba          # user-supplied (gitignored)
-├── gba_bios.bin            # user-supplied (gitignored), optional -- only needed for mGBA/gdb
-│                           #   dynamic debugging, not for the matching build
-├── rom.us.sha1, rom.jp.sha1 # pinned donor-ROM hashes
-├── ld_script.us.ld, ld_script.jp.ld  # fixed-address layout, per version
-├── functions.us.cfg, functions.jp.cfg  # curated gbadisasm arm_func/thumb_func seed lists --
-│                           #   gbadisasm has no function discovery of its own, see below
-├── regions.us.txt, regions.jp.txt  # curated manifest of EXTRACTED byte ranges: address, end,
-│                           #   asm file, name -- plus `label` lines for symbols inside
-│                           #   still-raw territory that extracted code needs to reference
-├── macros.inc              # pret-convention function macros that asm/*.s files depend on
-├── krawall_names.txt       # human-readable module/sample name overrides, shared US/JP
-├── ram_symbols.us.inc, ram_symbols.jp.inc  # named RAM/ROM addresses asm/*.s refers to by
-│                           #   meaning; per-version values let one .s assemble for both
-├── asm/                    # hand-verified extracted regions (regions.<ver>.txt rows),
-│                           #   organized into subdirectories by category:
-│                           #   rt/ (compiler runtime builtins), rng/ (MT19937 cluster),
-│                           #   text/ (dialog-text engine), data/ (ASCII name tables).
-│                           #   asm/krawall/ is NOT this -- it's the gitignored raw .bin
-│                           #   dump from `just dump-krawall`, not build input
+├── flake.nix               # dev shell (arm-none-eabi, patched gbadisasm, unkrawerter,
+│                           #   python+capstone/unicorn, just, mgba). flake.lock committed.
+├── patches/                # local fixes for unmaintained gbadisasm / unkrawerter bugs
+├── justfile                # task runner; most recipes take ver="us"|"jp" (default us)
+├── baserom.{us,jp}.gba     # user-supplied, gitignored. gba_bios.bin too (mGBA debugging only)
+├── rom.{us,jp}.sha1        # pinned donor-ROM hashes
+├── ld_script.{us,jp}.ld    # fixed-address layout, per version
+├── functions.{us,jp}.cfg   # curated gbadisasm arm_func/thumb_func seeds -- it has no
+│                           #   function discovery of its own
+├── regions.{us,jp}.txt     # the manifest: extracted byte ranges (address, end, source,
+│                           #   name), plus `label` lines naming addresses inside still-raw
+│                           #   territory. Directive rows (krawall-module, dialog-text,
+│                           #   monster-table, ...) point at data/ instead of a file.
+├── macros.inc, ram_symbols.{us,jp}.inc, krawall_names.txt  # asm macros; named addresses;
+│                           #   module/sample name overrides
+├── asm/                    # committed regions the manifest points at. asm/krawall/ is NOT
+│                           #   one -- it's the gitignored dump from `just dump-krawall`.
 ├── data/                   # curated, editable asset source -- ALL gitignored, same footing
-│                           #   as the baserom (hard rule 2). audio/ (Krawall JSON+WAV),
-│                           #   text/ (dialog strings), monsters/ (Folio Bruti table),
-│                           #   scripts/ (object-script bytecode), levels/ (level-up tables).
-│                           #   Each is bootstrapped once per clone by `just extract-<x>` (or `just extract-all`) and
-│                           #   packed to per-version assembly by `just pack-<x>`.
-├── build/                  # gitignored, fully regenerated by `just` -- raw reference
-│                           #   disassembly, the stitched build input, and build artifacts
-├── tools/                  # per-subsystem scripts (krawall/, text/, monsters/, objscript/,
-│                           #   levels/, graphics/, save/) plus gen_rom_s.py (the
-│                           #   regions.<ver>.txt -> build input generator) and
-│                           #   match_functions.py (US<->JP address matching)
-└── docs/                   # compiler.md; memory-map.md + memory-map/{krawall,rng,battle}.md;
-                            #   formats/{krawall,text,graphics,folio_bruti,object_script,
-                            #   save}.md -- notes with explicit confidence levels
-                            #   (PROVEN / STRUCTURAL MATCH / UNCONFIRMED), keep using that
-                            #   convention for new findings
+│                           #   as the baserom (hard rule 2). One subdir per subsystem,
+│                           #   bootstrapped by `just extract-all`, packed by `just pack-<x>`.
+├── build/                  # gitignored, fully regenerated by `just`
+├── tools/                  # one dir per subsystem, plus gen_rom_s.py (manifest -> build
+│                           #   input) and match_functions.py (US<->JP address matching)
+└── docs/                   # compiler.md, memory-map*.md, formats/*.md -- every finding
+                            #   marked PROVEN / STRUCTURAL MATCH / UNCONFIRMED; keep doing that
 ```
 
 Bootstrap task order:
@@ -164,27 +153,22 @@ Bootstrap task order:
    into the actual build input, assembles, links, objcopys, and confirms byte-identical to
    the donor ROM. This is the permanent regression baseline; every future commit must keep
    both passing.
-6. [~] In progress: real function extraction, manifest-driven via `regions.<ver>.txt` --
-   everything not in the manifest stays raw `.incbin`; everything in it is a real, curated,
-   committed `asm/*.s` file, an `asm/nonmatchings/`-style layout grown a region at a time
-   rather than split all at once. See Conventions for the extraction rule. Extracted as
-   real `asm/*.s` so far: the GBA header and per-version header tail, the division-routine
-   builtins (`asm/rt/`, see `docs/compiler.md`), the MT19937 RNG cluster (`asm/rng/`), the
-   dialog-text engine (`asm/text/`), and the two ASCII name tables (`asm/data/`). Packed
-   from curated `data/` source instead of `asm/*.s`: Krawall audio, the 8 dialog-text
-   language blobs and their pointer table, the monster table, the object-script table, and
-   the 3 level-up tables. The Krawall *driver code* is not extracted -- boundaries
-   unconfirmed, see `docs/memory-map/krawall.md`.
+6. [~] Ongoing (no end state): asset/data extraction into `data/`, manifest-driven via
+   `regions.<ver>.txt` -- see the phase note above for what this involves and how a new
+   subsystem gets added. Everything not in the manifest stays raw `.incbin`, which is a
+   fine resting state, not a debt to pay down.
 
-Ghidra (language `ARM:LE:32:v4t`) for analysis/labeling alongside; sync names into
-`functions.<ver>.cfg`/`regions.<ver>.txt`.
 
-Dynamic verification: use **mGBA's own built-in debugger console** (`watch`/`break`/
-`continue`/backtrace), driven interactively by the user. It works reliably and has resolved
-questions static tracing could not -- where Krawall's IWRAM/EWRAM code is installed
-(`docs/memory-map/krawall.md`), and the OBJ palette queue processor plus a real sprite's ROM
-source (`docs/formats/graphics.md`). It also finds real code `gbadisasm` never split into a
-function, and functions mis-marked ARM/Thumb.
+Ghidra (`ARM:LE:32:v4t`) carries most analysis/labeling; sync confirmed names into
+`functions.<ver>.cfg`. It can mis-mark data as code and get ARM/Thumb wrong -- on any
+disagreement `build/<ver>/full_disasm.s` is ground truth -- and a negative search in both it
+and `gbadisasm` isn't proof code doesn't exist. The `.gpr` isn't in git and has no rollback:
+single-address edits are fine, confirm before wide-reaching or scripted ones.
+
+Dynamic verification: use **mGBA's own debugger console** (`watch`/`break`/`continue`/
+backtrace), driven interactively by the user. It works reliably and answers what static
+tracing can't -- see the IWRAM-install and palette-queue findings in
+`docs/memory-map/krawall.md` and `docs/formats/graphics.md`.
 
 Do **not** use mGBA's `--gdb` remote stub: its breakpoint/continue sequencing proved
 unreliable across many attempts and the root cause was never identified -- see
@@ -193,22 +177,19 @@ on that path. `gba_bios.bin` is required either way.
 
 ## Build principles
 
-- Donor-ROM flow: clone → `nix develop` → place `baserom.us.gba` + `baserom.jp.gba` →
-  `just setup` → **`just extract-all`** → `just compare us` / `just compare jp`.
-  `extract-all` is not optional and not a one-off convenience: every `data/` subdirectory is
-  gitignored, so a fresh clone has none of it and the `pack-*` steps have nothing to read --
-  skipping it fails in `pack-krawall` with a size mismatch, not a useful message. It only
-  needs running once per clone (it overwrites, so don't re-run it over local hand-edits).
-  All `just` recipes take `ver="us"|"jp"` (default `us`) and are already wired for both
-  versions today, not "later."
-- Tool verbs are consistent: **extract** = ROM → curated `data/` source (once per clone),
-  **pack** = `data/` → per-version assembly (every build), **dump** = ROM → files for
-  reading/debugging only, never build input (`dump-krawall`, `dump-music-xm`).
+- Donor-ROM flow: clone → `nix develop` → place both baseroms → `just setup` →
+  **`just extract-all`** → `just compare us` / `just compare jp`. `extract-all` is required,
+  not a convenience: `data/` is gitignored, so a fresh clone has none of it and `pack-*`
+  fails with a size mismatch rather than a useful message. Once per clone; it overwrites, so
+  don't re-run it over local hand-edits.
+- Verbs: **extract** = ROM → `data/` (once per clone), **pack** = `data/` → assembly (every
+  build), **dump** = ROM → files for reading only, never build input.
 - Fixed-address linker script per version; every object placed at its original address, so
   per-object matches compose into a whole-ROM match.
 - Unmapped regions: raw `.incbin` from the baserom, generated by `tools/gen_rom_s.py` for
-  whatever `regions.<ver>.txt` doesn't cover. Progress = adding rows to `regions.<ver>.txt`
-  and committing the corresponding `asm/*.s` file (see Conventions for the extraction rule).
+  whatever `regions.<ver>.txt` doesn't cover. Progress is measured in understanding written
+  down in `docs/` and content moved into curated `data/` source -- not in how much of the
+  ROM has left `.incbin`.
 - Asset pipeline: same manifest-driven model as code, not a separate system -- extractors
   run against the user's local ROM. Krawall audio is the first real case (see above): unlike
   code, the manifest rows are machine-generated (deterministic struct parsing, not human
@@ -257,17 +238,25 @@ on that path. `gba_bios.bin` is required either way.
 - asm style: pret-convention macros (`macros.inc`, from `pret/pokeemerald`'s
   `asm/macros/function.inc`); Thumb default, ARM marked explicitly.
 - Document every reverse-engineered format in `docs/formats/` before writing an extractor.
-- Commit messages: state what region/function was matched or symbolized.
-- Don't add a row to `regions.<ver>.txt` until a function's true, complete extent is
-  confirmed (every reachable branch walked to genuine termination) -- `just compare`'s sha1
-  check can't catch a truncated-but-plausible boundary, since the unclaimed remainder just
-  becomes opaque `.incbin` bytes next door. If unsure, leave it as `.incbin` and track it as
-  a candidate in `docs/` instead.
+- `just check-all` is the gate for hard rule 1: it verifies both donor sha1s, then the full
+  disassembly and the stitched build for both versions. Run it before proposing a commit.
+  (`just check` is a different, not-yet-built thing -- see "Target toolchain".)
+- Commit messages: state what region/function was matched or symbolized. No `Claude-Session:`
+  trailer; keep `Co-Authored-By`.
+- **The user commits and pushes; you don't.** Never run `git commit` without being told to,
+  in words, for that specific commit -- an instruction to do work, or approval of an earlier
+  commit, is not approval for the next one. Never run `git push` at all.
+- Don't add a row to `regions.<ver>.txt` until the region's true, complete extent is
+  confirmed (for a function: every reachable branch walked to genuine termination; for a
+  table: its real row count and stride) -- `just compare`'s sha1 check can't catch a
+  truncated-but-plausible boundary, since the unclaimed remainder just becomes opaque
+  `.incbin` bytes next door. If unsure, leave it as `.incbin` and track it as a candidate
+  in `docs/` instead.
 
 ## Reference projects & tools
 
 - pret pokeemerald / pokeruby / pmd-red — canonical GBA layout; pmd-red = asm-first model.
 - Dream-Atelier/kl-eod-decomp — modern small-game template with AI integration.
 - camthesaxman/gbadisasm — matching disassembler (patched, see `patches/gbadisasm/`).
-  decomp.wiki/platforms/game-boy-advance — scene hub.
+- decomp.wiki/platforms/game-boy-advance — scene hub.
 - GBATEK (https://www.problemkaputt.de/gbatek.htm) — hardware reference.
