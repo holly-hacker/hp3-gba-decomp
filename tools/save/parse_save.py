@@ -1012,15 +1012,15 @@ def decode_slot_stream(payload: bytes) -> dict:
 
     # Folio Universitas (Harry's card collection) card counts (one
     # nibble per card; only cards received at least once are shown
-    # in-game) and a parallel 51-bit unlocked/owned flag per card (7
-    # bytes storage, LSB-first; all-unlocked = ffffffffffff07).
+    # in-game) and a parallel 51-bit seen/owned flag per card (7
+    # bytes storage, LSB-first; all-seen = ffffffffffff07).
     slot["anFolioUniversitasCounts"] = r.read_nibbles(0x33)
-    slot["a1FolioUniversitasUnlocked"] = bytes_to_bits(r.read_bytes(7), 51)
+    slot["a1FolioUniversitasSeen"] = [bool(b) for b in bytes_to_bits(r.read_bytes(7), 51)]
     # A second 51-bit flag per card, same layout: drives the "flashing new
     # card" indicator in the Folio Universitas UI (confirmed by the user).
-    # Set/cleared in lockstep with a1FolioUniversitasUnlocked whenever a
+    # Set/cleared in lockstep with a1FolioUniversitasSeen whenever a
     # card's count transitions to/from 0 -- see docs/formats/save.md.
-    slot["a1FolioUniversitasCardIsNew"] = bytes_to_bits(r.read_bytes(7), 51)
+    slot["a1FolioUniversitasCardIsNew"] = [bool(b) for b in bytes_to_bits(r.read_bytes(7), 51)]
     slot["owlCareKit"] = decode_owl_care_kit(r)
 
     stream_end = r.tell()
@@ -1072,7 +1072,7 @@ def encode_slot_stream(slot: dict) -> bytes:
         w.write_bit((level >> 2) & 1)
 
     w.write_nibbles(slot["anFolioUniversitasCounts"])
-    w.write_bytes(bits_to_bytes(slot["a1FolioUniversitasUnlocked"], 7))
+    w.write_bytes(bits_to_bytes(slot["a1FolioUniversitasSeen"], 7))
     w.write_bytes(bits_to_bytes(slot["a1FolioUniversitasCardIsNew"], 7))
     encode_owl_care_kit(w, slot["owlCareKit"])
 
