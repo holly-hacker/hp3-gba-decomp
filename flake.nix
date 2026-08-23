@@ -40,10 +40,10 @@
           '';
         };
 
-        # Krawall module/sample/instrument data extraction/export tool. No
-        # longer used for discovery by tools/extract_krawall.py (see its
-        # docstring), only for casual `.xm` listening exports
-        # (`just extract-music-xm`) and manual one-off `-m`/`-x` runs. A
+        # Krawall module/sample/instrument data extraction/export tool.
+        # Used only for casual `.xm` listening exports
+        # (`just extract-music-xm`) and manual one-off `-m`/`-x` runs --
+        # not for discovery (see tools/krawall/extract_krawall.py). A
         # heap-corrupting out-of-bounds write in its XM writer is patched
         # here -- see patches/unkrawerter/README.md.
         unkrawerter = pkgs.stdenv.mkDerivation {

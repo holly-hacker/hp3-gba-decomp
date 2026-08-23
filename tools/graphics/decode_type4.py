@@ -4,8 +4,8 @@ decompressor -- executed via the Unicorn CPU emulator against the real
 ARM-mode ROM bytes, same approach as tools/graphics/decode_type6.py (not a
 hand-reimplementation -- the codec's halfword-aligned, parity-tracked
 copy logic is intricate enough that a hand port risks a subtle,
-plausible-looking bug, as already happened once this session with the
-standard-BIOS RLE decoder).
+plausible-looking bug; cf. the mid-token cutoff that a hand-written
+standard-BIOS RLE decoder gets wrong, in tools/graphics/decode_bios.py).
 
 Unlike type-6, this resource's outer-header convention (if any) isn't
 independently understood -- the source address used here is exactly

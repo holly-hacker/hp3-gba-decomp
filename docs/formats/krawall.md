@@ -2,7 +2,7 @@
 
 Status: **PROVEN** for boundaries/addressing (deterministic struct parsing,
 zero overlaps across 733 regions in both ROMs, cross-version pattern-data
-byte-identity confirmed) and now also **PROVEN** for pattern-atom and
+byte-identity confirmed) and **PROVEN** for pattern-atom and
 module-header field semantics (see Pattern atom encoding and Module header
 fields below) -- verified against every atom in all 402 patterns and every
 module in both ROMs, not just spans. Remaining unknowns are narrower --
@@ -26,19 +26,18 @@ Krawall version matters: our confirmed CVS revision is `2003/09/01` (see
 count). The other option, `-K` (`0x20050421`), uses a 2-byte row count and
 will silently misparse this ROM -- always use `-k`.
 
-`tools/krawall/extract_krawall.py` no longer calls `unkrawerter` at all. It was
-used early on for the coarse discovery pass (sample-list/module addresses,
-scraped from its stdout), with exact byte spans always computed separately
-in pure Python (ported from `unkrawerter.cpp`'s
-`readSampleFile`/`readModuleFile`/`readPatternFile`). Once discovery was
-complete for both ROMs, the confirmed addresses were hardcoded directly
-into the script (`SAMPLE_LIST`/`MODULE_ADDRS`) and the heuristic-scan step
-was deleted -- the donor ROMs are fixed, pinned binaries (hard rule 1), so
-there's nothing left for a scan to adapt to on later runs; hardcoding what's
-already been confirmed is simpler and more honest than re-deriving it. See
-"Modules unkrawerter's heuristic misses" for how the last 21 module
-addresses per ROM were found (`unkrawerter` itself is still used directly,
-outside this script, by `just extract-music-xm` for casual `.xm` exports).
+`tools/krawall/extract_krawall.py` does not invoke `unkrawerter`. The
+confirmed sample-list and module addresses are hardcoded in the script
+(`SAMPLE_LIST`/`MODULE_ADDRS`) and exact byte spans are computed in pure
+Python (ported from `unkrawerter.cpp`'s
+`readSampleFile`/`readModuleFile`/`readPatternFile`). The donor ROMs are
+fixed, pinned binaries (hard rule 1), so there is nothing for a heuristic
+scan to adapt to on later runs; hardcoding confirmed addresses is simpler
+and more honest than re-deriving them every run. See "Modules
+unkrawerter's heuristic misses" for how the 21 addresses per ROM that
+`unkrawerter` cannot find were located. (`unkrawerter` itself is still
+used directly, outside this script, by `just extract-music-xm` for casual
+`.xm` exports.)
 
 Cross-checked against `sebknzl/krawall`'s `krawerter/` (the original
 `.xm`-to-assembly compiler) for how it emits these structs -- but per the
@@ -120,9 +119,8 @@ typedef struct PACKED {
     unsigned char flagInstrumentBased, flagLinearSlides, flagVolSlides;
     unsigned char ___unused0, ___unused1, ___unused2;  // always 0 in every
                                   // module emitted by krawerter's
-                                  // outputFile() -- not real flags (earlier
-                                  // guessed names flagVolOpt/flagAmigaLimits
-                                  // retracted, see Module header fields)
+                                  // outputFile() -- padding, not flags;
+                                  // see Module header fields
     const Pattern* patterns[1];  // variable-length, one ptr per pattern used
 } Module;                     // 364-byte fixed header + 4 bytes/pattern
 ```
@@ -147,10 +145,8 @@ typedef struct PACKED {
   module -- checked directly by counting every pattern-pointer reference
   across all 52 modules' pointer tables: 402 references, 402 unique
   addresses, zero collisions. Patterns are NOT shared/reused across
-  modules in this game (an earlier version of this doc claimed otherwise;
-  that was wrong -- `extract_krawall.py`'s `seen_patterns` dict-based dedup
-  is a no-op safety net in practice, not something that ever actually
-  triggers here).
+  modules in this game -- `extract_krawall.py`'s `seen_patterns` dict-based
+  dedup is a safety net that never triggers here.
 
 ## Modules unkrawerter's heuristic misses
 
@@ -176,9 +172,8 @@ end address, checking whether a well-formed `[pattern...][364-byte
 header+pointer table]` chain starts there (rows ≤ 64, valid ROM pointers,
 plausible channel/order counts), and confirming the chain tiles the
 *entire* remaining gap with zero leftover bytes -- proven exactly, in both
-ROMs, at four addresses each (see git history for the working session that
-found these, and `tools/krawall/extract_krawall.py`'s `MODULE_ADDRS` for the
-addresses themselves).
+ROMs, at four addresses each. `tools/krawall/extract_krawall.py`'s
+`MODULE_ADDRS` holds the addresses themselves.
 
 ### Sample size field
 
@@ -246,10 +241,9 @@ regenerates pattern *content* (e.g. the JSON module/pattern format).
 `effect` is a 1-byte enum (not a raw XM/S3M effect letter) with `effectop`
 as its 1-byte operand; 50 named constants are given in `krawall/krawerter/
 effects.h` (`EFF_SPEED`, `EFF_PORTA_UP_XM`, `EFF_RETRIG`, `EFF_NOTE_CUT`,
-etc). Not yet cross-checked against real ROM `effect` byte values (only
-note/instrument were verified this pass) -- treat the enum *values* as a
-naming reference, not yet confirmed to match this ROM's revision the way
-the note/instrument decode above was.
+etc). Not cross-checked against real ROM `effect` byte values -- treat the
+enum *values* as a naming reference, not as confirmed to match this ROM's
+revision the way the note/instrument decode above is.
 
 ### Module header fields
 
@@ -273,9 +267,9 @@ the note/instrument decode above was.
   jingles bundled into one module) without re-scanning `order[]`. Fully
   regenerable from `order[]` alone -- doesn't need independent storage in
   an editable format.
-- **Trailing 3 header bytes** (previously guessed as `flagVolOpt`/
-  `flagAmigaLimits`/padding): `outputFile()` emits these as a literal
-  `0, 0, 0` unconditionally. Only `flagInstrumentBased`, `flagLinearSlides`,
+- **Trailing 3 header bytes** are padding, not flags: `outputFile()` emits
+  them as a literal `0, 0, 0` unconditionally. Only
+  `flagInstrumentBased`, `flagLinearSlides`,
   and `flagFastVolSlides` (our struct's `flagVolSlides`) are ever real,
   non-zero flags for this format.
 - **`hq` flag** (`Sample` struct, not `Module`): `hq = (fileName[0] == '~')
@@ -306,11 +300,11 @@ regions, since multiple modules can reference the same pattern).
 
 ## Build integration
 
-**Superseded the old raw-`.bin` model** (kept below, in "Old model", for
-context) with a curated, editable JSON+WAV format under `data/audio/`.
-This exists to support a future moddable build (add/remove/edit tracks),
-which raw opaque binary can't. Per hard rule 2, `data/audio/` is
-**gitignored, same footing as the baserom, never committed**. Bootstrap
+The build's Krawall source is a curated, editable JSON+WAV format under
+`data/audio/`. It's in that form rather than opaque binary to support a
+future moddable build (add/remove/edit tracks). Per hard rule 2,
+`data/audio/` is **gitignored, same footing as the baserom, never
+committed**. Bootstrap
 it locally with `tools/krawall/krawall_migrate.py` before building -- see below.
 
 - **`data/audio/modules/<Name>.json`**: one module (song) plus its own
@@ -349,10 +343,10 @@ it locally with `tools/krawall/krawall_migrate.py` before building -- see below.
   convention (unsigned, 128=silence), so the raw bytes go in/out as-is, no
   transform at all -- confirmed round-trip byte-identical against the ROM
   via both `tools/krawall/pack_krawall.py`'s own decoder and independently via
-  `ffmpeg`. (An earlier revision of this format stored 16-bit instead, on
-  the theory that some players mishandle 8-bit WAV's unsigned convention
-  -- dropped for lack of a real source backing that claim; 8-bit is
-  spec-compliant and halves the local disk footprint.) See
+  `ffmpeg`. 8-bit is deliberate: it's spec-compliant, matches the ROM's own
+  bit depth exactly, and halves the local disk footprint. (Widening to
+  16-bit to dodge players that mishandle unsigned 8-bit WAV is not worth
+  doing without a concrete player that actually does so.) See
   `tools/krawall/krawall_migrate.py`/`tools/krawall/pack_krawall.py`.
 - Sample **index** (the 1-based number patterns reference via
   `instrument`, before name resolution) comes from each sample JSON's own
@@ -386,13 +380,13 @@ it locally with `tools/krawall/krawall_migrate.py` before building -- see below.
   stats). Round-trip verified: both US and JP rebuild byte-identical to
   their donor ROMs from this JSON, sourced from the US ROM alone.
 
-### Old model (superseded)
+### Paths that are not build input
 
-`tools/krawall/extract_krawall.py` still exists (discovery/debugging aid only,
-not part of the build) -- it writes one raw binary file per region to
+`tools/krawall/extract_krawall.py` is a discovery/debugging aid, not part
+of the build -- it writes one raw binary file per region to
 `asm/krawall/<ver>/...` (gitignored -- game's actual copyrighted content)
-and prints the old per-pattern/per-sample/per-module manifest rows. Useful
-for diffing against `pack_krawall.py`'s output while touching
+and prints per-pattern/per-sample/per-module manifest rows. Useful for
+diffing against `pack_krawall.py`'s output while touching
 `tools/krawall/krawall_codec.py`.
 
 `.xm` export (`just extract-music-xm`) is a completely separate,
@@ -441,10 +435,9 @@ sample/pattern trailing padding at all.
 ## Open questions
 
 - [ ] `effect`/`effectop` values (see Effect values) aren't cross-checked
-      against real ROM bytes yet -- only note/instrument were decoded and
-      verified this pass. `Instrument`/`Envelope` field interpretation is
-      also still undecoded (moot while "no instrument list" holds, see
-      below).
+      against real ROM bytes; only note/instrument are decoded and
+      verified. `Instrument`/`Envelope` field interpretation is also
+      undecoded (moot while "no instrument list" holds, see below).
 - [ ] Whether `krawerter` (Krawall's own `.xm`-to-assembly compiler, in the
       LGPL `krawall` source, not this repo) can reproduce byte-identical
       output from an extracted `.xm` was investigated but never verified --
@@ -481,33 +474,30 @@ sample/pattern trailing padding at all.
       table itself before either table's true extent can be marked in
       Ghidra.
 
+## Naming modules and samples
+
+Modules and samples can be given human-readable names (which `.xm`
+track/instrument they came from) via a shared `krawall_names.txt` at the
+repo root (`<module|sample> <index> <Name>` lines, version-independent --
+see `krawall_codec.py`'s `load_krawall_names`/`resolve_names`).
+`tools/krawall/krawall_migrate.py` picks it up on re-run, using the custom
+name for the `.json`/`.wav` filenames and (for samples) the name patterns
+reference via `instrument`; it also deletes the default-named
+`Module<N>`/`Sample<N>` file(s) a prior run wrote.
+`tools/krawall/gen_krawall_regions.py` resolves module names the same way,
+so its output rows can be spliced into `regions.<ver>.txt` to match.
+
+Names must be valid assembler identifiers (letters/digits/underscore, not
+starting with a digit) since `pack_krawall.py` emits them as real labels.
+Renaming *again* (custom name -> a different custom name) leaves the
+previous name's file behind -- delete it by hand. A dedicated rename
+helper that also patches `regions.<ver>.txt` in place would close that gap.
+
 ## Future work
 
-Not started, just recorded so the reasoning behind it isn't lost:
-
-1. **Done**: modules and samples can be given human-readable names (which
-   `.xm` track/instrument they came from) via a shared `krawall_names.txt`
-   at the repo root (`<module|sample> <index> <Name>` lines,
-   version-independent -- see `krawall_codec.py`'s `load_krawall_names`/
-   `resolve_names`). `tools/krawall/krawall_migrate.py` picks it up on re-run,
-   using the custom name for the `.json`/`.wav` filenames and (for
-   samples) the name patterns reference via `instrument`; it also removes
-   the superseded default-named `Module<N>`/`Sample<N>` file(s) from a
-   prior run. `tools/krawall/gen_krawall_regions.py` resolves module names the
-   same way, so its output rows can be spliced into `regions.<ver>.txt`
-   to match. Not automated: renaming *again* (custom name -> a different
-   custom name) doesn't clean up the now-stale previous name -- delete it
-   by hand; a dedicated rename helper that also patches
-   `regions.<ver>.txt` in place would close this. Names must be valid
-   assembler identifiers (letters/digits/underscore, not starting with a
-   digit) since `pack_krawall.py` emits them as real labels.
-2. **Done**: the raw `.bin` extraction under `asm/krawall/` is replaced by
-   the curated, editable JSON+WAV format under `data/audio/`, packed back
-   to byte-identical ROM bytes at build time -- see Build integration.
-   Both US and JP verified byte-identical against their donor ROMs.
-3. `effect`/`effectop` values aren't decoded to symbolic names yet (see
+1. `effect`/`effectop` values aren't decoded to symbolic names (see
    Open questions) -- would make pattern JSON more readable.
-4. Once the `PlaySoundById` lookup tables (`0x08FB09F8`/`0x08FB0588`/
+2. Once the `PlaySoundById` lookup tables (`0x08FB09F8`/`0x08FB0588`/
    `0x08FB0818`, see Open questions) and `g_apKrawallSamples` are fully
    bounded, they're real curated game content (a message/event ->
    sound-effect mapping) and should move to `data/audio/` under the same

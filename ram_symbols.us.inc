@@ -26,10 +26,10 @@
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked
-@ against our own disassembly there. Cursor 1 is the one that script
-@ tracks; cursor 2 was found independently this session and is
-@ undocumented by the script (see rng.md for what's confirmed and
-@ what's still open about it).
+@ against our own disassembly there. That script tracks cursor 1 only;
+@ cursor 2 is undocumented by it and comes from this project's own
+@ disassembly (see rng.md for what's confirmed and what's still open
+@ about it).
 .set gMt19937StatePtr,           0x0300557C  @ base of the 624-word MT state array
 .set gMt19937CurPtr,             0x03005580  @ cursor 1: pointer into the state array
 .set gMt19937RemainingIndices,   0x03005584  @ cursor 1: untempered words left before regenerating

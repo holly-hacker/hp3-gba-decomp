@@ -40,11 +40,12 @@ stitch ver="us":
     mkdir -p build/{{ver}}
     python3 tools/gen_rom_s.py {{ver}} > build/{{ver}}/rom.s
 
-# Research/debugging aid only -- NOT used by the build anymore (see
-# `pack-krawall`). Re-derives the old raw asm/krawall/<ver>/*.bin dump
-# straight from the baserom; useful for diffing against pack-krawall's
-# output while touching tools/krawall/krawall_codec.py. See docs/formats/krawall.md.
-# Regenerate the old raw-binary Krawall dump (not build input).
+# Research/debugging aid only -- NOT build input (the build gets its
+# Krawall assembly from `pack-krawall`). Dumps each Krawall region as a
+# raw asm/krawall/<ver>/*.bin file straight from the baserom; useful for
+# diffing against pack-krawall's output while touching
+# tools/krawall/krawall_codec.py. See docs/formats/krawall.md.
+# Dump the raw Krawall regions as .bin files (not build input).
 extract-krawall ver="us":
     python3 tools/krawall/extract_krawall.py {{ver}} > /dev/null
 

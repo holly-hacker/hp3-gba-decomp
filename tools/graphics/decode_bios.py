@@ -58,9 +58,10 @@ def lz77_uncomp(rom: bytes, addr: int) -> bytes:
 
 def rl_uncomp(rom: bytes, addr: int) -> bytes:
     """Stops exactly at the declared size, even mid-token -- matches real
-    BIOS behavior (confirmed against the live-traced 0x080BCDD8 example;
-    an earlier draft that consumed whole tokens regardless of `size`
-    computed the wrong stream length)."""
+    BIOS behavior (confirmed against the live-traced 0x080BCDD8 example).
+    Consuming whole tokens regardless of `size` computes the wrong stream
+    length, so the mid-token cutoff is load-bearing, not a rounding
+    detail."""
     off = addr - ROM_BASE
     size = rom[off + 1] | (rom[off + 2] << 8) | (rom[off + 3] << 16)
     pos = off + 4

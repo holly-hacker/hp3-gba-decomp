@@ -77,10 +77,9 @@ because it discards the upper 17 bits of entropy entirely.
     an accuracy stat and rolls `Mt19937RandMax(99)` against it for
     hit/miss -- direction is hit if `roll < acc` (miss if `roll >= acc`),
     the opposite framing from this note's `roll100 >= acc` but the same
-    field and the same mechanic. This *contradicts* an earlier guess in
-    `docs/formats/folio_bruti.md` that had labeled `+0x2B` as
-    `stat_magic_defense` (sourced from `MonsterTable+0x04`) -- that guess
-    was wrong and has been corrected there and in `battle.md`.
+    field and the same mechanic. `MonsterTable+0x04`, the table field this
+    stat is loaded from, is documented as `accuracy` in
+    [`../formats/folio_bruti.md`](../formats/folio_bruti.md).
 
 ### Enemy name table (75 entries, script order = presumed in-game index order)
 

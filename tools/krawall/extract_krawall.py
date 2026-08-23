@@ -19,14 +19,13 @@ addresses using Krawall's struct layouts, ported from UnkrawerterGBA's
 readSampleFile/readModuleFile/readPatternFile:
   https://github.com/MCJack123/UnkrawerterGBA (unkrawerter.cpp)
 
-This used to shell out to the `unkrawerter` binary for discovery (a
-heuristic scan for runs of ROM pointers). That heuristic missed 21 modules
-per ROM -- short (1-3 pattern) ones whose pointer-table run falls below
-its default match threshold -- and lowering the threshold enough to find
-them segfaults on the JP ROM outright. All 52 module addresses per
-version (31 unkrawerter found + 21 found by hand) were confirmed by the
-same means every other region in this file already is: the parsing below
-accounts for every byte with zero overlaps and zero gaps. See
+`unkrawerter`'s heuristic pointer-run scan is not a usable discovery path
+here: it misses 21 modules per ROM -- short (1-3 pattern) ones whose
+pointer-table run falls below its default match threshold -- and lowering
+the threshold enough to find them segfaults on the JP ROM outright. All 52
+module addresses per version are confirmed by the same means every other
+region in this file is: the parsing below accounts for every byte with
+zero overlaps and zero gaps. See
 docs/formats/krawall.md for the full writeup. `unkrawerter` is still used
 directly (not via this script) by `just extract-music-xm` for casual
 .xm listening exports.

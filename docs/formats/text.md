@@ -3,22 +3,21 @@
 Status: **SOLVED end-to-end, PROVEN by direct content verification.** The
 real dialog/UI string table is located, its Huffman-style compression
 format is fully decoded, and it is confirmed genuinely per-language (all
-8 languages, not the previously-assumed 7 -- see `CLAUDE.md`): decoding
-the same string ID from each of the 8 language blobs produces distinct,
-correct, grammatical text in the right language every time. Found by
-static tracing alone, starting from a real, already-known ASCII string
-table -- the dynamic-analysis approach previously recommended here was
-never needed. See "The real dialog string table, decoded" below for the
-full derivation, and `tools/text/decode_dialog_text.py` for a working
-decoder. The VWF text-*rendering* engine (glyph draw/word-wrap) was
-found first, as the path that led here -- see "The text engine, found".
-The full charmap (every code any real string actually uses, across all
-8 languages, including several repurposed printable-ASCII positions) is
-also decoded -- see "The extended charmap, decoded". A curated,
-build-integrated extraction pipeline exists too -- see "The extraction
-pipeline, built and build-integrated". Remaining gaps (the macro/escape
-code system, the font-descriptor per-language question) are listed
-under "What's NOT yet known".
+8 languages -- see `CLAUDE.md`): decoding the same string ID from each of
+the 8 language blobs produces distinct, correct, grammatical text in the
+right language every time. Static tracing from a real, already-known
+ASCII string table is sufficient for all of it; no dynamic analysis is
+needed. See "The real dialog string table, decoded" for the full
+derivation, and `tools/text/decode_dialog_text.py` for a working decoder.
+The VWF text-*rendering* engine (glyph draw/word-wrap) is the path that
+leads there -- see "The text engine, found". The full charmap (every code any
+real string actually uses, across all 8 languages, including several
+repurposed printable-ASCII positions) is also decoded -- see "The
+extended charmap, decoded" -- and a curated, build-integrated extraction
+pipeline exists, see "The extraction pipeline, built and
+build-integrated". Remaining gaps (the macro/escape code system, the
+font-descriptor per-language question) are listed under "What's NOT yet
+known".
 
 ## What we know
 
@@ -39,19 +38,17 @@ under "What's NOT yet known".
     names, quest text, etc.) -- that's confirmed absent as plain ASCII.
 - This is a US/EU multi-language cart (English US, English UK, French,
   German, Spanish, Italian, Dutch, Danish -- 8 languages in one ROM image,
-  see `CLAUDE.md`), which is the leading theory for *why* text isn't
-  plain ASCII even in English: a common design for single-ROM
-  multi-language GBA games is to encode text as indices into a **custom,
-  per-language-swappable glyph/character table**, not literal ASCII
-  codepoints. If true, even a correctly-located and correctly-decompressed
-  text blob won't look like readable ASCII without also knowing the
-  charmap -- printable-ASCII-ratio filtering is the wrong test to find it.
-  **Update**: the "indices into a swappable table" half of this is now
-  PROVEN (see "The text engine, found" below) -- glyph codes are looked
-  up through a RAM-resident font-descriptor pointer, not a fixed ROM
-  table. The "per-language" half is still unconfirmed -- the pointer
-  being RAM-resident doesn't by itself prove it changes per language;
-  see that section's "What this actually proves, and what it doesn't."
+  see `CLAUDE.md`), which explains *why* text isn't plain ASCII even in
+  English: text is encoded as indices into a **custom glyph/character
+  table**, not as literal ASCII codepoints, so even a correctly-located
+  and correctly-decompressed text blob won't look like readable ASCII
+  without the charmap -- printable-ASCII-ratio filtering is the wrong
+  test to find it. The "indices into a swappable table" part is **PROVEN**
+  (see "The text engine, found" below): glyph codes are looked up through a
+  RAM-resident font-descriptor pointer, not a fixed ROM table. Whether
+  that descriptor is itself per-language is unconfirmed -- the pointer
+  being RAM-resident doesn't by itself prove it changes per language; see
+  that section's "What this actually proves, and what it doesn't."
 
 ## Approaches tried and ruled out
 
@@ -130,12 +127,11 @@ resolved.**
 Found the game's generic resource-decompression dispatcher,
 `sub_0801DD90` (`0x0801DD88`, with a near-twin `sub_0801DE5C`). It reads
 a 32-bit header word and jump-tables on `(byte0>>4) & 0x7` -- **PROVEN**,
-re-derived directly from the actual instructions (a paraphrase in an
-earlier version of this doc said "low byte's high nibble", which is
-imprecise: bit 3 of that nibble, i.e. `byte0 & 0x80`, is a *separate*
-post-processing flag checked later, not part of the type selector --
-see `docs/formats/graphics.md`'s "Compression: the level-resource
-table" section for the exact instruction sequence). Dispatch:
+derived directly from the actual instructions. Note the `& 0x7`: bit 3 of
+that nibble (`byte0 & 0x80`) is a *separate* post-processing flag checked
+later, not part of the type selector -- see `docs/formats/graphics.md`'s
+"Compression: the level-resource table" section for the exact instruction
+sequence. Dispatch:
 
 - type 0: raw `CpuSet` copy (uncompressed)
 - type 1: `svc 0x11` (BIOS `LZ77UnCompWram`)
@@ -153,13 +149,13 @@ table" section for the exact instruction sequence). Dispatch:
   - type 6's codec from `0x080005EC` (828 bytes) to IWRAM `0x03002ACC`,
     pointer stashed at `0x030028D0`: a canonical-Huffman-shaped bitstream
     reader (shift-with-carry / word-reload pattern, code-length-like
-    header table). **Update**: this codec has since been fully decoded
-    (PROVEN, verified by executing the real ROM bytes in an emulator) --
-    see `docs/formats/graphics.md`'s "The type-6 codec, decoded"
-    section for the algorithm and a working decoder. Every real resource
-    decoded with it so far has turned out to be BG tilemap data, not
-    text -- but the decoder itself is generic and could decode a text
-    resource too, if/when one is found using this compression type.
+    header table). This codec is fully decoded (PROVEN, verified by
+    executing the real ROM bytes in an emulator) -- see
+    `docs/formats/graphics.md`'s "The type-6 codec, decoded" section for
+    the algorithm and a working decoder. Every real resource decoded with
+    it so far has turned out to be BG tilemap data, not text -- but the
+    decoder itself is generic and could decode a text resource too, if
+    one is ever found using this compression type.
 
 Both are real, previously-undocumented proprietary compressors -- **but
 every one of the dispatcher's 14 static call sites traces to the
@@ -178,10 +174,9 @@ all).
 
 ## The text engine, found (PROVEN for the encoding scheme; static tracing, no live session)
 
-Superseded the "dynamic analysis only" conclusion above: static tracing
-*forward* from the one piece of ground truth this doc already had (a
+Static tracing *forward* from the one available piece of ground truth (a
 real ASCII string genuinely read by code, not just present in the ROM)
-led directly to the VWF engine, without needing mGBA at all.
+reaches the VWF engine without needing mGBA at all.
 
 **Anchor**: of the two known plaintext tables, `sFamousWizardCardNames`
 (`0x0804CEC4`) is actually read by code -- `0x0800BBEC` in
@@ -519,10 +514,10 @@ Two findings worth flagging explicitly:
   PESADILLA!` -> `¡No fue una pesadilla!`); `{` only appears in the one
   shared legal-disclaimer string, at `"trademarks of and { Warner
   Bros."` -> `(c) Warner Bros.`; `|` only appears in French, in `d'|il`
-  -> `d'œil` (a glance). This means `bytes_to_editable()`'s earlier
-  "0x20-0x7E passes through as itself" rule was wrong for these four
-  values specifically -- now handled via `CHARMAP` taking priority over
-  the plain-ASCII passthrough range (narrowed to `0x20-0x7A`).
+  -> `d'œil` (a glance). `bytes_to_editable()` therefore gives `CHARMAP`
+  priority over its plain-ASCII passthrough range, and that range stops
+  at `0x7A` -- a blanket `0x20-0x7E` passthrough would be wrong for these
+  four values.
 - **The whole `0x9B-0xB5` accented-letter run's relative ordering
   matches ISO-8859-1/Latin-1's own layout exactly** (a-grave, a-acute,
   a-circumflex, [ã skipped], a-diaeresis, a-ring, ae, c-cedilla,
@@ -542,12 +537,11 @@ Two findings worth flagging explicitly:
   it's ever worth double-checking.
 
 **Confirmed empirically, not just structurally**: the `>0xEF` two-byte
-extended-code path described in "The text engine, found" above is
-real engine functionality, but **no real string in any of the 8
-languages actually uses it** -- every character any real dialog/UI
-string needs fits in the single-byte `0x00-0xEF` range. This makes the
-earlier "extended charmap not yet decoded" gap moot for this ROM's
-actual content, not just closed.
+extended-code path described in "The text engine, found" above is real engine
+functionality, but **no real string in any of the 8 languages actually
+uses it** -- every character any real dialog/UI string needs fits in the
+single-byte `0x00-0xEF` range. Decoding that path is therefore moot for
+this ROM's actual content.
 
 ## What's NOT yet known
 
@@ -559,14 +553,12 @@ actual content, not just closed.
   be only one shared font whose extended range simply covers every
   accented glyph any of the 8 languages need. Don't assume either
   answer without finding the actual write site.
-- **The `0x080205F8` 6-case dispatch table's purpose is still
-  unconfirmed** -- given the language-select mechanism is now fully
-  understood and doesn't involve this table at all, its earlier framing
-  as a "likely per-language dispatch table" was speculative and is now
-  the weaker of the two theories; more likely it's dispatching on
-  something else entirely (a dialog window style/variant, a font size
-  class, etc.). Not worth pursuing further unless a concrete reason to
-  revisit comes up.
+- **The `0x080205F8` 6-case dispatch table's purpose is unconfirmed.**
+  It is not part of language selection -- that mechanism is fully
+  understood (see "The real dialog string table, decoded") and doesn't
+  touch this table. It most likely dispatches on something else entirely
+  (a dialog window style/variant, a font size class, etc.). Low value to
+  pursue without a concrete reason.
 - **The `0x40`-prefixed escape/macro system** (macro table at
   `0x03003170`, format/insert codes) is identified as existing but not
   individually decoded -- what each macro code actually does (insert
@@ -575,17 +567,13 @@ actual content, not just closed.
   unsolved** -- see "The extended charmap, decoded" above: no real
   string in any of the 8 languages actually uses it, so there's nothing
   left to decode unless a future find (or a modded string) exercises
-  it. `tools/text/decode_dialog_text.py`'s raw output still prints `\xNN` for
-  it since that tool predates the charmap work and reads raw ROM bytes
-  directly rather than going through `text_codec.py`'s `CHARMAP` --
-  `data/text/*.json` (via `tools/text/text_migrate.py`) is the place real
-  characters actually show up.
-- **Done, this session**: a curated content pipeline now exists,
-  mirroring Krawall's `data/audio/` + `tools/krawall/pack_krawall.py` model --
-  see "The extraction pipeline, built and build-integrated" below.
+  it. `tools/text/decode_dialog_text.py`'s raw output prints `\xNN` for
+  it, since that tool reads raw ROM bytes directly rather than going
+  through `text_codec.py`'s `CHARMAP` -- `data/text/*.json` (via
+  `tools/text/text_migrate.py`) is where real characters show up.
 - Whether the type-4/type-6 custom IWRAM codecs (see approach 6 above)
   are used anywhere outside the level-loading dispatcher's 14 known call
-  sites remains unconfirmed either way -- moot for text specifically now
-  that the real text codec (a third, distinct Huffman-style scheme) has
-  been found, but still an open question for the graphics side (see
+  sites remains unconfirmed either way -- moot for text specifically,
+  since the real text codec is a third, distinct Huffman-style scheme,
+  but still an open question for the graphics side (see
   `docs/formats/graphics.md`).

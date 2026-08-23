@@ -39,9 +39,7 @@ FIELDS: list[tuple[str, str]] = [
     ("accuracy", "B"),                    # 0x04 u8  -- PROVEN (both boundary and semantics). Read by
                                            #   ResolveMeleeAttack (0x08017E44) as the attacker's hit-chance
                                            #   stat in a Mt19937RandMax(99) roll -- see
-                                           #   docs/memory-map/battle.md. Corrects an earlier wrong guess
-                                           #   in this file ("stat_magic_defense") -- see
-                                           #   docs/formats/folio_bruti.md for the retraction.
+                                           #   docs/memory-map/battle.md.
     ("crit_chance", "B"),                 # 0x05 u8  -- PROVEN. ResolveMeleeAttack (0x08017E44): crit fires
                                            #   when Mt19937RandMax(100) > 100-this (probability this/101),
                                            #   doubling damage and adding the +999 sentinel that
@@ -52,10 +50,8 @@ FIELDS: list[tuple[str, str]] = [
                                            #   attacker anyway. Observed values: 3, 5, 10.
     ("damage_min", "H"),                  # 0x06 u16 -- PROVEN (both boundary and semantics). Fed directly
                                            #   into Mt19937RandRange as the attacker's base damage roll in
-                                           #   ResolveMeleeAttack -- see docs/memory-map/battle.md. Corrects
-                                           #   an earlier wrong guess in this file ("level_min").
-    ("damage_max", "H"),                  # 0x08 u16 -- PROVEN, same evidence as 0x06. Corrects an earlier
-                                           #   wrong guess in this file ("level_max").
+                                           #   ResolveMeleeAttack -- see docs/memory-map/battle.md.
+    ("damage_max", "H"),                  # 0x08 u16 -- PROVEN, same evidence as 0x06.
     ("effectiveness_flipendo", "B"),      # 0x0A u8  -- PROVEN (sub_0801890C case 0)
     ("effectiveness_incendio", "B"),      # 0x0B u8  -- PROVEN (case 2)
     ("effectiveness_verdimillious", "B"), # 0x0C u8  -- PROVEN (case 1)

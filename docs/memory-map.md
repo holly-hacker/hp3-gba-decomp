@@ -1,8 +1,7 @@
 # Memory map / binary layout notes
 
-This used to be one long document; it's now split by subsystem so each part
-stays a manageable size. This file is just the shared confidence-key
-legend and an index.
+These notes are split by subsystem so each part stays a manageable size.
+This file holds the shared confidence-key legend and an index.
 
 ## Confidence key
 

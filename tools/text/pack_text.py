@@ -6,8 +6,8 @@ docs/formats/text.md.
 
 Mirrors tools/krawall/pack_krawall.py's role for audio: emits real .s text with
 real labels (so the language pointer table resolves through the normal
-assembler/linker), verified byte-exact against the real ROM this session
-(see docs/formats/text.md). Each language blob is padded to 4-byte
+assembler/linker), byte-exact against the real ROM (see
+docs/formats/text.md). Each language blob is padded to 4-byte
 alignment to match the real ROM layout (verified: the padding is always
 zero bytes, and its length is exactly what closes the gap to the next
 language's real base address).

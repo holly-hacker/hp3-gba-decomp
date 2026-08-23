@@ -156,10 +156,9 @@ no arithmetic in between. That gives two independent things for free:
 the destination offsets prove the source's HP field really is used as
 HP (below), and the specific instruction used for each source read
 (`ldrb` vs `ldrh`) **proves each field's exact width/boundary**, even
-for fields whose semantic meaning is still unknown. One correction from
-an earlier pass of this doc: offsets `0x02`/`0x03` were originally
-guessed to be a single `u16`; the trace shows two separate `ldrb`
-reads at `+2` and `+3`, so they're two independent `u8` fields instead.
+for fields whose semantic meaning is still unknown. Note that offsets
+`0x02`/`0x03` are two independent `u8` fields, not one `u16`: the trace
+shows two separate `ldrb` reads, at `+2` and `+3`.
 Offsets `0x14`/`0x16` are not touched by this routine at all -- no
 corroboration either way for those two.
 
@@ -182,10 +181,10 @@ corroboration either way for those two.
 | `0x00` | u16 | HP | **PROVEN** (battle-init code copies it into a live HP field, written to both a current-HP and a max-HP struct offset) |
 | `0x02` | u8 | **`level`** | **PROVEN** (own `ldrb`, not part of a u16 with 0x03). `BattleFighter+0xE` (`bLevel`) is a proven level counter for player fighters -- `LevelUpFighter_candidate` increments it (capped 99) and indexes a per-level stat table with it, and `ResolveSpellAttack` reads it as the caster's spell-power-scale and spell-crit-chance term (see `../memory-map/battle.md`). No monster ever reaches either code path as the acting fighter (every monster's `Object` is hardwired to the melee-only tick callback, and `ResolveMeleeAttack` doesn't read this offset), so there's no traced reader for a monster's own value here -- same field, same offset, filled in the same way as the rest of this table |
 | `0x03` | u8 | **`speed`** | **PROVEN** -- turn-order/initiative value, lower = earlier turn. See `../memory-map/battle.md`'s turn-order writeup (`JitterEnemyTurnOrder_candidate`, `BuildTurnOrder_candidate`, `ReviveFighter_candidate`). Common monsters cluster at `178-254` (act late); fast/dangerous ones (Lupin Werewolf, Draco) have low values (act early) |
-| `0x04` | u8 | **accuracy** | boundary **PROVEN** (own `ldrb`); semantics **PROVEN** -- read by `ResolveMeleeAttack` as the attacker's hit-chance stat in a `Mt19937RandMax(99)` roll, see `../memory-map/battle.md`. Corrects an earlier wrong guess ("magic defense") in this doc |
+| `0x04` | u8 | **accuracy** | boundary **PROVEN** (own `ldrb`); semantics **PROVEN** -- read by `ResolveMeleeAttack` as the attacker's hit-chance stat in a `Mt19937RandMax(99)` roll, see `../memory-map/battle.md` |
 | `0x05` | u8 | **`crit_chance`** | **PROVEN** -- `ResolveMeleeAttack` crits when `Mt19937RandMax(100) > 100-this` (probability `this/101`), doubling damage and triggering the "Critical hit!" message (see `../memory-map/battle.md`). Monster-only in practice: never populated for player fighters, and `ResolveMeleeAttack` only ever fires with an `Enemy` attacker. Observed values: 3, 5, 10, shared across variant/related-monster groups |
-| `0x06` | u16 | **base damage roll, min** | boundary **PROVEN** (own `ldrh`); semantics **PROVEN** -- fed directly into `Mt19937RandRange` as the attack's damage roll (see `../memory-map/battle.md`). Corrects an earlier wrong guess ("level-range min") in this doc; the old "monotonic with tier" observation still holds, it just supports a damage-range reading instead |
-| `0x08` | u16 | **base damage roll, max** | boundary **PROVEN**; semantics **PROVEN**, same correction as `0x06` |
+| `0x06` | u16 | **base damage roll, min** | boundary **PROVEN** (own `ldrh`); semantics **PROVEN** -- fed directly into `Mt19937RandRange` as the attack's damage roll (see `../memory-map/battle.md`). Values are monotonic with monster tier, consistent with a damage range |
+| `0x08` | u16 | **base damage roll, max** | boundary **PROVEN**; semantics **PROVEN**, same evidence as `0x06` |
 | `0x0A` | u8 | **Flipendo effectiveness (0-100)** | **PROVEN** (`sub_0801890C` case 0) |
 | `0x0B` | u8 | **Incendio effectiveness (0-100)** | **PROVEN** (case 2) |
 | `0x0C` | u8 | **Verdimillious effectiveness (0-100)** | **PROVEN** (case 1) |
@@ -198,31 +197,30 @@ corroboration either way for those two.
 | `0x15` | u8 | **`special_effect_id`** | **PROVEN** -- effect-script id passed to `TriggerBattleEffect` on a successful roll; real, confirmed entries in `tools/objscript/script_names.json` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family since variants/reskins share the same special attack |
 | `0x16` | u16 | always 0 in every record sampled (0-68) | STRUCTURAL MATCH (padding) -- also NOT read by battle-init |
 
-**Note on `0x14`/`0x15`:** originally guessed as one `u16` field; the two-`u8` split
-is now boundary-PROVEN -- `RollMonsterSpecialEffect_candidate` reads them with two
-separate `ldrb` instructions (`byte[0x14]`, `byte[0x15]`), not a `u16` read.
+**Note on `0x14`/`0x15`:** these are two `u8` fields, not one `u16` --
+boundary-PROVEN, `RollMonsterSpecialEffect_candidate` reads them with two
+separate `ldrb` instructions (`byte[0x14]`, `byte[0x15]`).
 
 No stored field is used for Petrificus Totalus or Spongify -- confirmed
 by `sub_0801890C` directly (see above), not an oversight in this table.
 
 ### Attack/speed/crit-chance
 
-**STRUCTURAL MATCH, weak.** This section originally claimed `0x02`/`0x03`/
-`0x04` were `stat_attack`/`stat_defense`/`stat_magic_defense`
-(`monster_codec.py` names), identified through statistical evidence plus
-one gameplay data point recalled from memory (Lupin Werewolf's known
-physical-vulnerable/magic-immune mechanic), not a traced code read. That
-gameplay data point was flagged by its source as "mostly a guess... not
-100% sure," and it is now known to be **wrong for `0x04`**:
-`../memory-map/battle.md` traces `0x04` (`BattleFighter+0x2B`) to a real
-code reader, `ResolveMeleeAttack`, which uses it as the attacker's
-**accuracy** stat, not magic defense. Since the original argument rested
-on `0x03` and `0x04` landing at opposite extremes as an asymmetric
-defense/magic-defense pair specifically *because* Lupin Werewolf's known
-mechanic is asymmetric, `0x04` turning out to be accuracy (an unrelated
-stat) removes half of that argument. `0x03` alone being Lupin's
-table-wide-lowest value is still a real, if much weaker, data point on
-its own.
+**STRUCTURAL MATCH, weak.** The field table above gives `0x03`/`0x04`
+their traced-reader labels (`speed`/`accuracy`). This section records the
+one piece of statistical/gameplay evidence bearing on these offsets,
+which is far weaker than a traced read and shouldn't be leaned on.
+
+Lupin Werewolf is physically vulnerable and magic-immune in real
+gameplay, and holds this table's lowest `0x03` value. That's a real data
+point, but a weak one -- it was contributed as "mostly a guess... not
+100% sure". It cannot support reading `0x03`/`0x04` as an asymmetric
+defense/magic-defense pair (on the grounds that they sit at opposite
+extremes, mirroring Lupin's asymmetric mechanic), because `0x04` has a
+traced reader: `ResolveMeleeAttack` uses it (`BattleFighter+0x2B`) as the
+attacker's **accuracy**, an unrelated stat. Treat a defense or
+magic-defense reading of any field here as unsupported until a real
+reader turns up.
 
 Current status:
 
@@ -290,9 +288,9 @@ decompilation, was treated as ground truth whenever the two disagreed.
   `../memory-map/battle.md` for the full formula. It reads
   `BattleFighter+0x2B` (`MonsterTable+0x04`) as accuracy and
   `BattleFighter+0x30`/`+0x32` (`MonsterTable+0x06`/`+0x08`) as the base
-  damage roll, correcting this doc's earlier `stat_magic_defense`/
-  `level_min`/`level_max` labels for those three fields (see the field
-  table above and "Attack/defense/crit-chance, candidates only" below).
+  damage roll -- the traced readers behind those three fields' labels
+  in the field table above (see also "Attack/defense/crit-chance,
+  candidates only" below).
   It does **not** read `BattleFighter+0xE` (`MonsterTable+0x02`,
   `stat_attack` candidate) anywhere -- see the field table above.
   `BattleFighter+0x2A` (`MonsterTable+0x03`) is `bStat_speed`, read by
@@ -341,7 +339,7 @@ is a monster graphics-pointer table (32-byte stride, ~106 rows -- more
 rows than the 69-monster stat table, see "What's NOT yet known"). This
 was independently found via the same `sub_08036D60` function (its icon
 rendering reads this table at `+0x08`/`+0x18` for palette-swap variant
-pointers) in an earlier pass; not re-derived here in detail.
+pointers); not re-derived here in detail.
 
 Immediately **after** the stat table, `0x0804FA88` (4-byte stride,
 referenced directly by `sub_08036D60`'s icon-silhouette-vs-real-sprite
@@ -406,9 +404,8 @@ whole stretch (`0x08035F7C`-`0x08036D60`, reached only via indirect
 dispatch, same as everything else on this screen) and had dumped all of
 it as unclaimed raw `.byte` data despite it being real, live-executing
 code. That one gap turned out to contain **18 separate undetected
-functions**, all now seeded in `functions.us.cfg` and verified to
-still assemble byte-exact (`just disasm-compare`/`just check-all` both
-pass).
+functions**, all seeded in `functions.us.cfg` and verified to assemble
+byte-exact (`just disasm-compare`/`just check-all` both pass).
 
 Reads the held-key bitmask at `0x030034F0` (bits `0x10`/`0x20` = D-pad
 Right/Left, `0x40`/`0x80` = Up/Down -- inferred from which axis of
@@ -487,12 +484,11 @@ the Krawall/dialog-text pipelines:
   (e.g. `+0xA` for Flipendo) after skipping past the jump table itself
   (which capstone, lacking boundary info, decodes as garbage
   instructions -- expected and harmless, same as gbadisasm would do
-  before a function is seeded). One initial guess in this process
-  (`0x08014F08` for `InitMonsterBattleActor`) turned out to be a false
-  positive -- a coincidentally-identical prologue on a real but
-  unrelated function -- caught by checking the function's *interior*
-  (the field-copy sequence), not just its first few bytes; corrected to
-  `0x08014C74` before committing to it.
+  before a function is seeded). Match a candidate on its *interior* (the
+  field-copy sequence), not just its prologue: `0x08014F08` carries a
+  prologue identical to `InitMonsterBattleActor`'s while being an
+  unrelated function, and only the interior check separates it from the
+  real one at `0x08014C74`.
 
 ## What's NOT yet known
 

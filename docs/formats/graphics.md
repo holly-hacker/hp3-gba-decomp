@@ -19,13 +19,12 @@ confirmed, both via live tracing, with no statically-walkable
 dispatcher argument found for tiles yet (unlike palettes). **STRUCTURAL
 MATCH** for three earlier candidate art regions from static ROM
 scanning, none code-confirmed and one (`0x08933000`-area's sibling
-`0x080BCA24`) since shown to be a **false positive** for the specific
-object it was guessed to belong to -- see "The wand cursor sprite"
-for why pixel-shape plausibility isn't sufficient evidence on its own.
-Important caveat still applies to older findings in this doc: rendered
-content using a fake grayscale ramp palette should only be described
-structurally, never as depicting specific real-world content. No
-build-integrated extractor exists yet (no `regions.<ver>.txt` rows for
+`0x080BCA24`) a **false positive** for the object it resembles -- see
+"The wand cursor sprite" for why pixel-shape plausibility isn't
+sufficient evidence on its own. Standing caveat throughout this doc:
+rendered content using a fake grayscale ramp palette must only be
+described structurally, never as depicting specific real-world content.
+No build-integrated extractor exists yet (no `regions.<ver>.txt` rows for
 graphics).
 
 ## What we know
@@ -43,12 +42,11 @@ rendering done so far uses a synthetic grayscale ramp palette (palette
 index x17 as gray value) because the real palette hasn't been decoded
 yet (blocked on the type-6 codec, see below). Under a fake palette,
 smooth gradients and shapes are easy to over-interpret as specific
-real-world content (sky, hills, etc.) -- an earlier version of this doc
-described one region as a "sky gradient / hill silhouette / fence /
-ground-water-texture" outdoor scene; that specific reading was walked
-back after review, since a grayscale ramp with no ground-truth colors
-can't actually support identifying subject matter. What holds up: this
-region contains a repeating fence/lattice pattern and some
+real-world content (sky, hills, etc.). A grayscale ramp with no
+ground-truth colors cannot support identifying subject matter at all --
+readings like "sky gradient / hill silhouette / fence /
+ground-water-texture" are not defensible from these renders. What holds
+up: this region contains a repeating fence/lattice pattern and some
 curling/scrollwork shapes with clean edges and bilateral symmetry, and
 a separate area with smooth gradient bands -- real structure, not noise,
 but "what it depicts" stays unconfirmed until it's rendered with the
@@ -71,10 +69,10 @@ unrelated bytes at the coarser scan's resolution):
 The run at `0x0888b400`-`0x0888f000` renders (grayscale) as smooth
 gradient bands plus a fence/lattice band, distinct from the
 scrollwork/fence tileset at `0x08933000`+ -- but see the subject-matter
-caveat above; "outdoor background scene" was an earlier, overreaching
-read of this that's been retracted. What's left as a defensible claim:
-non-random, tile-shaped data with a different visual character than the
-`0x08933000` region. UNCONFIRMED beyond that.
+caveat above: calling this an "outdoor background scene" overreaches what
+a grayscale render can show. The defensible claim is non-random,
+tile-shaped data with a different visual character than the `0x08933000`
+region. UNCONFIRMED beyond that.
 
 Found by a structural scanner (not statistics on raw bytes, but on
 decoded pixels): every 4-byte-aligned 32-byte window across the full 16MB
@@ -136,10 +134,8 @@ directly, not via a decompressed buffer.
 The dispatcher documented in `docs/formats/text.md` (`sub_0801DD90` /
 `0x0801DD88`, near-twin `sub_0801DE5C`) is the game's generic
 resource-decompression entry point, reached via a **124-byte-stride
-level/room table at ROM `0x0806BE38`**. Its type-nibble dispatch logic
-was re-verified against the actual instructions this session (the
-earlier paraphrase in `docs/formats/text.md` was imprecise -- corrected
-here):
+level/room table at ROM `0x0806BE38`**. Its type-nibble dispatch logic,
+read directly off the instructions:
 
 ```
 lsls r1, r0, #0x18   ; keep header byte0
@@ -159,29 +155,26 @@ intentionally-empty/no-op jump-table slot, not a bug).
 
 ### Level-table entry layout (offsets confirmed for a 124-byte entry)
 
-**Correction**: an earlier version of this doc guessed `+0x00/+0x10/
-+0x20/+0x30` = BG palettes and `+0x04/+0x14/+0x24/+0x34` = paired BG
-tilesets, based on the destination-buffer access pattern alone (no
-length header read vs. a leading tile-count header read). Now that the
-type-6 codec is actually decoded (see below), that guess is **wrong**:
-decoding `+0x04` (508 bytes) and `+0x14` (3748 bytes) -- two different
-entries' worth of data -- both produced the exact same recognizable
-shape: runs of 4 consecutive `u16` values with small ascending low-10-bit
-fields and only 2 distinct values in the high bits across the whole
-buffer. That's the canonical **GBA BG screen-entry (tilemap) format**
-(10-bit tile index + hflip/vflip/palette-bank bits in the top bits), not
-pixel or color data. Corrected findings:
+These offsets hold **decompressed payloads, not palettes or tilesets**.
+Decoding `+0x04` (508 bytes) and `+0x14` (3748 bytes) with the type-6
+codec (see below) -- two different entries' worth of data -- both produce
+the same recognizable shape: runs of 4 consecutive `u16` values with
+small ascending low-10-bit fields and only 2 distinct values in the high
+bits across the whole buffer. That's the canonical **GBA BG screen-entry
+(tilemap) format** (10-bit tile index + hflip/vflip/palette-bank bits in
+the top bits), not pixel or color data. Note that the destination-buffer
+access pattern alone (no length header read vs. a leading tile-count
+header read) does *not* distinguish a palette/tileset pair from this --
+only decoding the payload settles it.
 
 - `+0x04 / +0x14 / +0x24 / +0x34` (and very likely `+0x00/+0x10/+0x20/
-  +0x30` too, not yet individually re-checked post-correction): **BG
-  tilemap/screen-entry data**, one per background layer. PROVEN for
-  `+0x04`/`+0x14` (decoded and pattern-matched against the known GBA
-  format), STRUCTURAL MATCH by inference for the others until each is
-  individually re-verified.
-- The internal "leading count-word" behavior noted in the earlier
-  version of this doc (`count << 5` before advancing) needs
-  re-interpretation now that the payload is understood to be tilemap
-  data, not a tileset with a tile-count header -- not yet redone.
+  +0x30` too, not individually checked): **BG tilemap/screen-entry
+  data**, one per background layer. PROVEN for `+0x04`/`+0x14` (decoded
+  and pattern-matched against the known GBA format), STRUCTURAL MATCH by
+  inference for the others until each is individually verified.
+- The internal "leading count-word" behavior (`count << 5` before
+  advancing) is undecoded against a tilemap payload -- it is not a
+  tileset tile-count header, since the payload isn't a tileset.
 - `+0x08/0x0c`, `+0x18/0x1c`, `+0x28/0x2c`, `+0x38/0x3c`: always zero in
   the one entry inspected so far -- padding/reserved, unconfirmed as a
   general rule.
@@ -367,10 +360,10 @@ decompile, which was independently cross-checked and matched exactly):
   pointer, not a literal load) -- static literal-pool tracing stops
   being effective here.
 
-**What this changes about the earlier guess**: `val2 = 0xF` (15) and the
-`resource_ptr + 2` skip strongly suggest this queued request is a
-**palette-only upload** -- 15 colors (GBA convention: OBJ palette index
-0 is transparent/unused, so a real palette often only needs to supply
+`val2 = 0xF` (15) and the `resource_ptr + 2` skip strongly suggest this
+queued request is a **palette-only upload** -- 15 colors (GBA convention:
+OBJ palette index 0 is transparent/unused, so a real palette often only
+needs to supply
 the other 15), starting 2 bytes into the resource (a 2-byte header
 before the color data, consistent with our palette decode being
 *approximately* right, just off by one index). `val1 = slotIndex*16+1`
@@ -481,9 +474,9 @@ directly at a real BIOS RLE-compressed resource in ROM. Confirmed:
 0x080BCDD8: 30 20 00 00  -- byte0=0x30 -> type nibble 3 (RLUnComp), size=0x20 (32 bytes = one 4bpp tile)
 ```
 
-Decoded with a from-scratch RLUnComp implementation (`tools/graphics/decode_bios.py`,
-written this session -- see below), verified byte-for-byte against a
-hand-traced decode:
+Decoded with a from-scratch RLUnComp implementation
+(`tools/graphics/decode_bios.py`, see below), verified byte-for-byte
+against a hand-traced decode:
 
 ```
 20 00 00 0d 80 97 00 00 60 87 09 00 69 76 09 00
@@ -513,27 +506,21 @@ done -- see next section.
 positive; corrected below, then resolved for real via live memory
 reads and a newly-built, verified proprietary-codec decoder.
 
-#### False start: `0x080BCA24`
+#### `0x080BCA24` is NOT the cursor sprite
 
-Searching the same ROM neighborhood as the confirmed spark tile
-(`0x080BCDD8`, +/- `0x4000`) for other structurally-valid small BIOS
-resources (try every offset, keep only ones that decode cleanly to the
-declared size, score by tile-adjacency coherence) turned up
-`0x080BCA24`, a 224-byte (7-tile) RLUnComp resource. The user
-recognized its rendered shape as "the wand sprite used as a cursor,"
-and after two wrong arrangement guesses (see git history of this doc
-for the methodology lesson about not asserting "confirmed" on
-pixel-shape plausibility alone), a 3x3-grid-with-hflip layout produced
-a clean, recognizable wand silhouette.
+`0x080BCA24` is a 224-byte (7-tile) RLUnComp resource in the same ROM
+neighborhood as the confirmed spark tile (`0x080BCDD8`), found by
+scanning for structurally-valid small BIOS resources (try every offset,
+keep only ones that decode cleanly to the declared size, score by
+tile-adjacency coherence). Rendered in a 3x3-grid-with-hflip layout it
+gives a clean, recognizable wand silhouette -- real wand-shaped art, not
+coincidence-from-noise -- so it is easy to mistake for the cursor.
 
-**This turned out to be a false positive.** Once the *real* wand data
-was captured live (below), byte comparison showed zero match with
-`0x080BCA24`'s decoded tiles. It's real wand-shaped art (the resemblance
-wasn't coincidence-from-noise), but not what's actually loaded for this
-cursor -- likely used elsewhere, or by a different context. This is a
-concrete demonstration of why the standing lesson (don't trust
-pixel-shape plausibility without real ground truth) matters: a
-*correct-looking* result was still wrong.
+It is not: its decoded tiles have **zero byte match** against the wand
+data captured live from VRAM (below). Whatever `0x080BCA24` is used for,
+it isn't this cursor. Treat it as a worked example of why pixel-shape
+plausibility is not evidence without ground truth -- a correct-*looking*
+result here was still the wrong resource.
 
 #### The real sprite: OAM, live VRAM, and live palette
 
@@ -554,14 +541,14 @@ Read the real tile data directly from OBJ tile VRAM (`0x06010080`,
 128 bytes = 4 tiles) and the real palette directly from OBJ palette
 RAM (`0x05000200 + 1*32 = 0x05000220`, 16 colors). Rendered with the
 correct whole-sprite hflip (tile *positions* mirror, AND each tile's
-pixel content mirrors -- not per-tile-in-place, an earlier attempt got
-this wrong too): a genuine, complete wand -- teal/cyan ornate tip
-blending into a dark reddish-brown wooden shaft, tapering to a handle.
+pixel content mirrors -- not per-tile-in-place): a genuine, complete
+wand -- teal/cyan ornate tip blending into a dark reddish-brown wooden
+shaft, tapering to a handle.
 **Confirmed correct by the user against the actual running game.**
 
-The live palette bank 2 (the falling particles) turned out to be
-byte-identical to the already-known ROM palette `0x080BD344` -- a nice
-independent cross-check of that earlier finding. The wand's own
+The live palette bank 2 (the falling particles) is byte-identical to the
+statically-extracted ROM palette `0x080BD344` -- an independent live
+cross-check of that palette. The wand's own
 palette (bank 1) is a new, distinct real palette: warm red/orange
 (shared with bank 2's first half) transitioning into cool teals/greens
 instead of gold. Its ROM source hasn't been located.
@@ -588,11 +575,11 @@ Disassembling the codec directly (`0x08006108`, 504 bytes, ARM mode)
 showed it's **not** the simple byte-token LZSS originally guessed in
 `docs/formats/text.md` sec 6 -- it's halfword-aligned with careful
 byte-parity tracking, structurally closer to the type-6 codec than to
-a textbook LZSS. Given the RLE decoder mistake earlier this session
-(a hand port that silently computed the wrong stream length), built
-**`tools/graphics/decode_type4.py`** the same way as `tools/graphics/decode_type6.py`:
-executes the real ARM code via Unicorn rather than hand-porting the
-logic.
+a textbook LZSS. **`tools/graphics/decode_type4.py`** therefore works the
+same way as `tools/graphics/decode_type6.py`: it executes the real ARM
+code via Unicorn rather than hand-porting the logic, which is what a
+codec this fiddly needs (cf. the hand-ported RLE decoder below, where a
+mid-token cutoff detail silently produced the wrong stream length).
 
 **Verification: `0x080BCBD0` decodes to a 128-byte output that is a
 byte-for-byte exact match against all four wand tiles read live from
@@ -619,9 +606,9 @@ ROM code in an emulator), these are the public, well-documented GBA
 BIOS formats, reimplemented directly from spec -- verified against the
 live-confirmed `0x080BCDD8` example above. The RLE decoder specifically
 had to be written to stop exactly at the declared byte count even
-mid-token (matching real BIOS behavior) -- an earlier draft that
-consumed whole literal-run tokens regardless of remaining size computed
-the wrong stream length and corrupted the next-resource offset.
+mid-token (matching real BIOS behavior). Consuming whole literal-run
+tokens regardless of remaining size computes the wrong stream length and
+corrupts the next-resource offset.
 
 ### Static palette extraction at scale (PROVEN, 14 real palettes found with zero gameplay)
 
@@ -672,15 +659,11 @@ resources are confirmed at all (the spark `0x080BCDD8` and the wand's
 scan. Unlike the palette path, there's no confirmed single dispatcher
 argument convention to statically walk for tiles yet.
 
-**Correction, found this session**: an earlier version of this doc said
-the wand's tile call "didn't come from any of `sub_0801DE5C`'s 3
-previously-known static callers." That's wrong -- re-checked directly
-(`grep -c "bl sub_0801DE5C"` against `build/us/full_disasm.s`): there
-are **exactly 3** static call sites for `sub_0801DE5C`, and no indirect/
-literal-pool references to its address exist anywhere else in the
-disassembly, so the wand's live-traced call necessarily went through one
-of these same 3 -- there is no missing 4th caller. What was actually
-wrong was assuming all 3 are level/BG-only. Re-examined all 3 directly:
+**There is no missing 4th caller.** `grep -c "bl sub_0801DE5C"` against
+`build/us/full_disasm.s` gives **exactly 3** static call sites, and no
+indirect/literal-pool references to its address exist anywhere else in
+the disassembly, so the wand's live-traced call necessarily went through
+one of these 3. They are not all level/BG-only:
 
 - `sub_080454BC(objStruct, resourcePtr)` (`0x080454BC`): computes
   `dest = 0x06010000 + tileIndexField(objStruct)*32` and calls
@@ -710,8 +693,8 @@ caller of `sub_080454BC`/`sub_080454DC`/`sub_08045588`, and where each
 one's `resourcePtr` argument ultimately comes from -- likely an
 animation-frame table entry, given the surrounding code reads per-frame
 struct fields) is the next real unlock for reaching "extract everything"
-for tiles, replacing the earlier "find a missing calling pattern" framing
--- the pattern is found; what's left is tracing its argument dataflow.
+for tiles -- the calling pattern is found; what's left is tracing its
+argument dataflow.
 
 ## What's NOT yet known
 
@@ -727,13 +710,12 @@ for tiles, replacing the earlier "find a missing calling pattern" framing
   `0x0888xxxx` region had 3 nearby hits (`0x08882CFC` referenced at
   disasm lines 15979/20385, `0x08886004` at line 16074) but these don't
   exactly match any of the 17 tile-shaped sub-runs identified earlier in
-  that region, so they're not confirmed to be the same data. Given
-  `0x080BCA24` (found by the identical structural-scan technique, in the
-  same ROM neighborhood as real confirmed sprite data) turned out to be
-  a false positive for the object it was guessed to belong to, treat
-  these three with the same skepticism -- structural plausibility alone
-  has now been directly shown insufficient on this ROM, twice
-  (see also the standing memory on this).
+  that region, so they're not confirmed to be the same data. Treat all three
+  with the skepticism `0x080BCA24` earns (found by the identical
+  structural-scan technique, in the same ROM neighborhood as real
+  confirmed sprite data, and demonstrably not the sprite it resembles):
+  structural plausibility alone is insufficient on this ROM (see also
+  the standing memory on this).
 - **Type-4 codec**: now decoded (`tools/graphics/decode_type4.py`, Unicorn-based,
   verified byte-exact against live memory -- see "Finding the ROM
   source" above). Only tested against one resource family (the wand's
@@ -763,9 +745,9 @@ by the user -- notably *better* than the gdb-stub approach `CLAUDE.md`
 flags as unreliable for Krawall. Remaining, in rough priority order:
 
 0. **Trace `sub_080454BC`/`sub_080454DC`/`sub_08045588`'s callers**
-   (new this session -- see "Correction, found this session" above):
-   these are the real, generic, statically-confirmed OBJ tile-loading
-   functions (the missing piece analogous to `sub_08001528` for
+   (see "There is no missing 4th caller" above): these are the real,
+   generic, statically-confirmed OBJ tile-loading functions (the missing
+   piece analogous to `sub_08001528` for
    palettes). Finding every caller and tracing each one's `resourcePtr`
    argument back to its source (likely an animation-frame table, given
    the surrounding object-update code) would let a scanner enumerate
@@ -773,7 +755,7 @@ flags as unreliable for Krawall. Remaining, in rough priority order:
    `tools/graphics/find_object_palettes.py` does for palettes -- purely static,
    no live triggering needed. This directly extends the same
    "trace forward from a real, code-confirmed anchor" method that
-   resolved dialog text in `docs/formats/text.md` this session.
+   resolved dialog text in `docs/formats/text.md`.
 1. **Decode the wand's other 3 animation frames** (`0x080BC9CC`,
    `0x080BCADC`, `0x080BCCD8` -- mechanically identical to the already-
    verified `0x080BCBD0`, just needs running) and its palette (bank 1's

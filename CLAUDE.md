@@ -67,13 +67,11 @@ newer configure-based projects (kl-eod-decomp, dtk-template).
     (content proven byte-identical between US/JP, see `docs/formats/krawall.md`) into
     per-version, byte-exact assembly before each build, driven by `regions.<ver>.txt`'s
     `krawall-module`/`krawall-samples` rows (addresses only -- the content itself doesn't
-    vary per version). `tools/krawall/extract_krawall.py` (the old raw ROM -> `asm/krawall/<ver>/*.bin`
-    path, also gitignored) is no longer part of the build; kept only as a discovery/debugging
-    aid. See `docs/formats/krawall.md` for the full format writeup (including the
-    pattern/module field decoding this packing relies on) and its Future work section for how
-    this replaced the earlier raw-`.bin` model. A separate, lossy `.xm` export still exists
-    for actually listening to/viewing the music (`just extract-music-xm`), never used by the
-    build.
+    vary per version). `tools/krawall/extract_krawall.py` (raw ROM -> `asm/krawall/<ver>/*.bin`,
+    also gitignored) is not build input -- it's a discovery/debugging aid. See
+    `docs/formats/krawall.md` for the full format writeup, including the pattern/module field
+    decoding this packing relies on. A separate, lossy `.xm` export exists for actually
+    listening to/viewing the music (`just extract-music-xm`), never used by the build.
   - License note: LGPL — do not vendor Krawall source into the repo without resolving
     license compatibility; document in CONTRIBUTING.
 - **Compiler: preliminary working hypothesis is ARM ADS/RVCT (`armcc`), NOT GCC/agbcc.**
@@ -134,7 +132,7 @@ Actual layout so far (both ROM versions supported throughout, not just US):
                             #   convention for new findings
 ```
 
-Bootstrap task order (status as of this writing):
+Bootstrap task order:
 
 1. [x] `flake.nix` + `justfile` + `.gitignore`; `just setup` verifies both baserom sha1s.
 2. [x] (preliminary) Fingerprinted the compiler -- working hypothesis is ARM ADS/RVCT, not
@@ -154,11 +152,10 @@ Bootstrap task order (status as of this writing):
    into the actual build input, assembles, links, objcopys, and confirms byte-identical to
    the donor ROM. This is the permanent regression baseline; every future commit must keep
    both passing.
-6. [~] In progress: real function extraction, manifest-driven via `regions.<ver>.txt`,
-   replacing the old "one giant regenerated disassembly" model -- everything not in the
-   manifest stays raw `.incbin`; everything in it is a real, curated, committed `asm/*.s`
-   file. This is the actual `asm/nonmatchings/`-style layout the original plan wanted, just
-   not framed as "split the whole ROM at once." See Conventions for the extraction rule.
+6. [~] In progress: real function extraction, manifest-driven via `regions.<ver>.txt` --
+   everything not in the manifest stays raw `.incbin`; everything in it is a real, curated,
+   committed `asm/*.s` file, an `asm/nonmatchings/`-style layout grown a region at a time
+   rather than split all at once. See Conventions for the extraction rule.
    The GBA header and the compiler's division-routine builtins (see `docs/compiler.md`) are
    extracted so far; the Krawall driver candidates are not (boundaries still unconfirmed --
    see `docs/memory-map/krawall.md`).
@@ -187,10 +184,9 @@ unreliable across many attempts and the root cause was never identified.
   judgement), but they're still committed -- addresses/names are curated knowledge either
   way. What's NOT committed is the asset content itself -- actual game assets (art, audio,
   etc.) sit on the same footing as the baserom under hard rule 2, regardless of how
-  mechanically they were located. Krawall audio moved from raw-`.bin` extraction
-  (regenerated on every build) to curated, editable JSON+WAV under `data/audio/`
-  (bootstrapped once locally, not regenerated automatically -- see above), but both stay
-  gitignored either way. Round-trips are enforced by the final sha1 compare regardless.
+  mechanically they were located. Krawall audio lives as curated, editable JSON+WAV under
+  `data/audio/` (bootstrapped once locally, not regenerated automatically -- see above),
+  gitignored. Round-trips are enforced by the final sha1 compare regardless.
 - `-DVERSION_JP`-style C-level version switching is still "later" -- not relevant yet since
   no C code exists; today's per-version handling is entirely at the asm/linker-script/config
   layer (see hard rule 5 and the layout above).

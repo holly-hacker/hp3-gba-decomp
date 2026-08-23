@@ -166,10 +166,10 @@ def build_encode_map_from_corpus(blob: "TextBlob") -> dict[int, list[int]]:
     """Builds {byte_value: [bit, bit, ...]} empirically, from the actual
     bit paths real strings in this blob use -- NOT a structural DFS over
     the tree. The tree contains structurally-reachable duplicate leaves
-    (the same byte value reachable via more than one path), verified
-    (this session) to never actually be exercised more than one way by
-    real content (zero path conflicts across every string in every
-    language). Using the tree structurally instead of empirically picks
+    (the same byte value reachable via more than one path), but real
+    content never exercises one more than one way (verified: zero path
+    conflicts across every string in every language). Using the tree
+    structurally instead of empirically picks
     an arbitrary one of the duplicate paths, which breaks byte-exact
     re-encoding whenever it disagrees with the one the original data
     actually used -- this function avoids that by construction. Raises
@@ -213,7 +213,7 @@ def encode_string(encode_map: dict[int, list[int]], data: bytes) -> bytes:
 
 
 # Real character assignments for glyph codes outside the plain-ASCII
-# passthrough range (0x20-0x7A), decoded this session by cross-reading
+# passthrough range (0x20-0x7A), decoded by cross-reading
 # every real string containing them across all 8 languages (proper
 # nouns shared verbatim in the credits -- "Hernández", "Gómez",
 # "Börjel" -- pin several codes at once; French/Spanish/Italian
@@ -293,8 +293,8 @@ def bytes_to_editable(data: bytes) -> str:
     JSON. `data` must NOT include the trailing 0x00 terminator (strip it
     first -- decode() includes it, encode_string() expects it back).
     Plain-ASCII glyph codes (0x20-0x7A) round-trip as themselves. Codes
-    with a real character identified this session (CHARMAP, above)
-    round-trip as that real Unicode character. Anything still
+    with an identified real character (CHARMAP, above) round-trip as
+    that real Unicode character. Anything still
     unresolved (control bytes, and the >0xEF two-byte extended codes --
     none of which any real string in this ROM actually uses, see
     docs/formats/text.md) falls back to a Unicode Private Use Area

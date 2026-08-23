@@ -60,7 +60,7 @@ monster's record from `MonsterTable`.
 | `0x3E` | u8 | `bUnk_0x3E`, set to `0xff` on init | UNCONFIRMED, no reader traced | `InitMonsterBattleActor` |
 
 `InitMonsterBattleActor` also spawns and wires the fighter's sprite
-`Object`(s); several previously-unnamed `Object` fields are now typed
+`Object`(s); several `Object` fields are typed
 (`pfnTick` retyped to a real `ObjectTickFn *`, plus `pAnimTable`/
 `pAnimFrameCursor`/`pAnimFrameBase`, `bAnimFrameDelay`/`bAnimFrameCounter`/
 `bAnimFrameIndex_candidate`/`bLastAnimFrameValue`, `pShadowObject`/
@@ -410,8 +410,8 @@ the target's `Object` (`+0x2e`/`+0x32` offsets).
   (`0x0805150d`, 3 entries, one per lecture) index `0` is effect id `49`,
   whose script contains opcode `0x97` case `0xb` -- a real traced call
   site, not just an effect-to-description match. A second, independent
-  script (effect id `36`) also applies this same bit -- **now confirmed
-  to genuinely not be any of Harry's 16 cards** (the real, complete
+  script (effect id `36`) also applies this same bit -- it is **none of
+  Harry's 16 cards** (the real, complete
   16-entry `g_abHarryCardEffectId` table, decoded below, simply
   doesn't contain `36`), so this second source stays unattributed to any
   specific card or spell; not investigated further. **Harry's
@@ -840,9 +840,9 @@ effects" below for what that function does.
 
 `FightState+0x106C` (`activeFighterIndex` in the `FightState` struct) is
 the same field `DispatchPendingAction` (`0x080100a0`, walked in full
-below -- **not** monster-AI-specific despite this doc's earlier guess;
-it dispatches *any* active fighter's turn, player or monster) already
-reads as "whose turn it is" -- two independent call sites agreeing is
+below -- it dispatches *any* active fighter's turn, player or monster,
+and is not monster-AI-specific) already reads as "whose turn it is" --
+two independent call sites agreeing is
 good corroboration for this field's role.
 
 ### Monster special-attack effects -- `RollMonsterSpecialEffect_candidate` (`0x08015020`), PROVEN
@@ -912,9 +912,9 @@ gameplay-mechanical payload.
 ### The attack-animation dispatcher (candidate, boundary confirmed, not fully walked)
 
 Found by walking the live call stack (mGBA gdb backtrace) up from
-`ResolveMeleeAttack`. Two small functions, newly seeded in
-`functions.us.cfg` (previously undiscovered by either `gbadisasm` or
-Ghidra -- the whole region was raw, un-analyzed bytes):
+`ResolveMeleeAttack`. Two small functions, seeded in `functions.us.cfg`
+(neither `gbadisasm` nor Ghidra discovers them -- the whole region reads
+as raw, un-analyzed bytes):
 
 - `TickFighterAttackAnimState_candidate` (US `0x08015608`-`0x08015643`):
   reads a per-fighter-`Object` state byte (`param_1+0x8D`) and dispatches
@@ -1011,34 +1011,24 @@ opposed to `FightState+0x1480`'s bit `0x04`, which has no located reader
 (see the `StatusEffect` sub-cases section above) -- is the open
 question the 25% gold figure raises.
 
-## Corrections to `../formats/folio_bruti.md`
+## `MonsterTable` -> `BattleFighter` field correspondence
 
-The formulas above directly read several `BattleFighter` fields that
-`../formats/folio_bruti.md` had labeled from `MonsterTable` content shape
-and (weak, self-described-as-a-guess) player memory of one boss fight, not
-from a traced reader. Now that a real reader exists, those labels are
-corrected:
+The formulas above read `BattleFighter` fields that a monster inherits
+verbatim from its `MonsterTable` record (see
+[`../formats/folio_bruti.md`](../formats/folio_bruti.md)). Each of these
+labels comes from a traced reader in this document, not from the table's
+content shape, so the reader is the authority when the two disagree:
 
-- `MonsterTable+0x04` (`BattleFighter+0x2B`): relabel **`accuracy`**,
-  PROVEN (see "Attack resolution" below).
-- `MonsterTable+0x03` (`BattleFighter+0x2A`): relabel **`bStat_speed`**,
-  PROVEN -- see "Turn order" above.
-- `MonsterTable+0x02` (`BattleFighter+0xE`, `bLevel`): see the
-  `BattleFighter+0xE` section above -- the field is a confirmed level
-  counter for player-sourced values, but a monster's own value here has
-  no confirmed reader.
-- `MonsterTable+0x06`/`+0x08` (`BattleFighter+0x30`/`+0x32`): **not**
-  "level-range min/max" -- relabel **`damage_min`/`damage_max`**, PROVEN
-  (fed directly into the damage roll). The old "monotonic with tier"
-  evidence for a level-range reading is equally consistent with a
-  damage-range reading, so this isn't a contradiction, just a correction
-  now that a real reader settles it.
-- `MonsterTable+0x05` (`BattleFighter+0x2C`): relabel **`bCritChance`**,
-  PROVEN -- bonus-damage roll threshold gating the confirmed "Critical
-  hit!" message path.
+| `MonsterTable` | `BattleFighter` | Label | Traced reader |
+| --- | --- | --- | --- |
+| `+0x02` | `+0x0E` | `bLevel` | Confirmed level counter for player-sourced values; a monster's own value here has no located reader (see the `BattleFighter+0x0E` section) |
+| `+0x03` | `+0x2A` | `bStat_speed` | Turn order, PROVEN -- see "Turn order" above |
+| `+0x04` | `+0x2B` | `accuracy` | `ResolveMeleeAttack` hit/miss roll, PROVEN -- see "Attack resolution" |
+| `+0x05` | `+0x2C` | `bCritChance` | Bonus-damage roll threshold gating the "Critical hit!" message path, PROVEN |
+| `+0x06`/`+0x08` | `+0x30`/`+0x32` | `damage_min`/`damage_max` | Fed directly into the damage roll, PROVEN |
 
-`tools/monsters/monster_codec.py` and `docs/formats/folio_bruti.md`'s
-field table match these corrected labels.
+`tools/monsters/monster_codec.py` and `../formats/folio_bruti.md`'s field
+table use these same labels.
 
 ## The attack-animation state dispatcher -- `TickFighterAttackAnimState_candidate` (`0x08015608`)
 
@@ -1111,7 +1101,7 @@ variable; specific mode values (including `0x18`) not identified --
 would need tracing the broader top-level state machine, out of scope
 here.
 
-**`FightState` struct corrections/additions**, from decompiling
+**`FightState` struct fields**, from decompiling
 `TickFighterAttackAnimState_candidate` and `ShowBattleMessage`:
 
 - `+0x147E` -> **`bActionDelayCounter_candidate`** (u8): decremented once
@@ -1464,13 +1454,11 @@ gives the real enum, confirmed one-to-one:
 | `9` | `2408` | `Spongify` |
 
 **`Informus` is `SpellId` `1` in its own right, not a "borrowed"
-`Spongify` slot -- correction to this doc's own earlier framing.**
-`Informus`'s top-level menu action (see "the answer to 'does Informus
-have a script?'" below) sets `bSpellId = 1`, which really is `Informus`'s
-own real ID. **`Spongify` is `SpellId` `9`** -- previously assumed to be
-`1`, and previously the source of `g_abSpellIdByCursor`'s Ron row
-(`[0,2,4,6,9,5,0]`) showing an "unexplained `9`"; that `9` is real and is
-exactly `Spongify` (matches `data/text/en_us.json` string `937`: "Harry
+`Spongify` slot.** `Informus`'s top-level menu action (see "the answer to
+'does Informus have a script?'" below) sets `bSpellId = 1`, which really
+is `Informus`'s own real ID. **`Spongify` is `SpellId` `9`** -- that's
+what the `9` in `g_abSpellIdByCursor`'s Ron row (`[0,2,4,6,9,5,0]`) is
+(matching `data/text/en_us.json` string `937`: "Harry
 receives Diffindo, Ron receives Spongify, and Hermione receives
 Glacius!" -- `Spongify` is Ron's spell). `ResolveSpellAttack`'s own
 `aSpellEffectiveness` switch has no case for **four** values, not two:
@@ -1655,11 +1643,11 @@ at `0x0804e5e0`, 9 bytes; `g_abSpellLevelUpThreshold` immediately after at
 - **`g_abSpellMaxLevel[9]`** (indexed by `SpellId`): `[3,1,3,1,3,1,2,2,2]`
   for `Flipendo, Informus, Verdimillious, Diffindo, Incendio,
   WingardiumLeviosa, PetrificusTotalus, Glacius, Fumos`. This is the real,
-  data-driven answer to two things this doc previously only inferred from
-  script content: `Informus`/`Diffindo`/`WingardiumLeviosa` (max `1`) can
-  never level past `Uno`, and `PetrificusTotalus`/`Glacius` (max `2`) can
-  never reach `Tria` -- both now cross-checked against, and matching,
-  those spells' script-sharing patterns above. The table has room for
+  data-driven answer to two things script content alone only implies:
+  `Informus`/`Diffindo`/`WingardiumLeviosa` (max `1`) can never level
+  past `Uno`, and `PetrificusTotalus`/`Glacius` (max `2`) can never reach
+  `Tria` -- both cross-checked against, and matching, those spells'
+  script-sharing patterns above. The table has room for
   exactly 9 entries (`SpellId` `0`-`8`) before `g_abSpellLevelUpThreshold`
   starts -- `Spongify` (`SpellId` `9`) has no entry of its own;
   `TrackSpellFamiliarity`'s `g_abSpellMaxLevel[9]` read for it actually
@@ -1947,8 +1935,8 @@ genuinely two separate layers, not just two ends of one function).
 - **`field_0x1070==2`** (`FUN_08012e54`, confirm handler for the
   per-character spell list opened by `Cast Spell`): `bSpellId =
   g_abSpellIdByCursor[fighterType*7 + cursor]` -- **`g_abSpellIdByCursor`
-  (`0x0804e084`, named this session, previously `DAT_0804e084`) is a
-  per-character cursor-position -> real `SpellId` remap table** (already
+  (`0x0804e084`) is a per-character cursor-position -> real `SpellId`
+  remap table** (already
   independently referenced by `FUN_08011520`'s label-draw code for this
   same screen), needed because not every character's spell list shows
   the same `SpellId`s in the same menu order/count -- Harry's row is
@@ -2073,8 +2061,7 @@ above proves `bSpellId` is set to the selected Special-Move cursor index
 (0-2) for Ron exactly as it is for Hermione's lectures, and
 `DAT_0805150a`'s entries `3`-`5` are already independently proven
 identical to `g_abHermioneLectureEffectId_candidate` (same array, two
-access paths), the natural reading of entries `0`-`2` -- previously left
-unnamed pending this trace -- is now backed by the same mechanism that
+access paths), entries `0`-`2` are backed by the same mechanism that
 resolves Hermione's:
 
 ```
