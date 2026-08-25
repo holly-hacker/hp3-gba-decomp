@@ -197,8 +197,8 @@ genuinely two separate layers, not just two ends of one function).
 - **`field_0x1070==6`** (`FUN_080120ec`, the enemy target-select
   confirm): after a vsync wait and some UI cleanup calls, simply writes
   `bSelectedActionIndex = cursor` and `field_0x1070 = 0`. Reads
-  `field_0x1059` elsewhere in the target-select code in [`battle.md`](battle.md)
-  (`g_pFightState->field_0x1059`, an array already used as an
+  `aEnemySlotTurnOrderIndex` elsewhere in the target-select code in [`battle.md`](battle.md)
+  (`g_pFightState->aEnemySlotTurnOrderIndex`, an array already used as an
   enemy-roster-index list by `ResolvePlayerAttack`'s callers) --
   **this screen targets enemies.** Used by: `Informus`, Ron's `Stink
   Pellet`/`Wizard Cracker`, the spell target-select path above, and
@@ -212,8 +212,8 @@ genuinely two separate layers, not just two ends of one function).
   below). Then calls `FUN_080107bc` (below) to
   pick a target.
 - **`FUN_080107bc`** (`0x080107bc`), the shared **ally**-target-select
-  *opener*: sets `field_0x1070 = 8` and reads `field_0x105d` (a
-  different array from state 6's `field_0x1059`) for its list --
+  *opener*: sets `field_0x1070 = 8` and reads `aAllySlotTurnOrderIndex` (a
+  different array from state 6's `aEnemySlotTurnOrderIndex`) for its list --
   **`field_0x1070==8` targets allies, not enemies.** Called from three
   places in this tree: `Use Item` (above), Hermione's non-"Proper Wand
   Technique" lectures (`Be More Careful`, `Good Study Habits` --
@@ -355,6 +355,157 @@ word-for-word, independently confirming that identification;
 `2301`-`2303` (`Stink Pellet`, `Wizard Cracker`, `Stink Pellet 2`) are
 Ron's three Special Move item names -- see above for their unconfirmed
 effect-id mapping.
+
+## Attack/action animation-state dispatchers
+
+The two functions that actually drive a fighter's turn frame-by-frame
+once [`battle.md`](battle.md)'s damage formulas are ready to fire. Both
+are registered as a fighter's sprite `Object->pfnTick` callback at init
+(see battle.md's "The NPC-vs-PC split") and share one structural idiom: a
+per-fighter-`Object` state byte (`Object+0x8D`) drives a large jump table
+of case-bodies, each of which branches into a shared tail
+(`bl`-as-branch, not `bx lr`) instead of returning normally.
+
+### `TickFighterAttackAnimState_candidate` (`0x08015608`) -- enemy side
+
+**PROVEN and fully walked**: all 27 case bodies trace to genuine
+termination, matching `gbadisasm`'s own single-function span
+(`0x08015608`-`0x08015F4F`, confirmed against `build/us/full_disasm.s`;
+no `thumb_func_start` in between). The shared epilogue at `0x08015F16`
+decompiles cleanly once its `bl 0x08015F16` call sites and the epilogue's
+own `pop {r0}; bx r0` (`0x08015F24`) get Ghidra instruction-level flow
+overrides (`Call-Return`/`Return`) -- Ghidra can't infer these are
+non-returning on its own since the epilogue manually pops the *caller's*
+return address instead of using `pop {..., pc}`/`bx lr`.
+
+Case `0` (`0x080156B4`) leads into the code that calls `ResolveEnemyAttack`
+(see battle.md) at two symmetric call sites (`0x08015B5C`/`0x08015BE0`,
+one per branch of a `MonsterTable.special_effect_chance == 100` check).
+
+Three callees, all `_candidate` (structurally strong, not proven
+identities):
+
+- **`ShowBattleMessage`** (`0x08010864`) -- dispatches on a message code
+  plus two context args; every case ends by picking a dialog text id and
+  tail-calling `GetDialogText`. Case 6 handles fainted messages; case 5
+  handles damage-number text and the `param_2 < 1000` check matching the
+  `+999` crit sentinel (see the case-5 table below).
+- **`ShowDamageNumber_candidate`** (`0x08017B5C`) -- stores a damage
+  value onto the target's sprite `Object+0x62` and triggers a state
+  change via `SetFighterAttackAnimState_candidate`.
+- **`SetFighterAttackAnimState_candidate`** (`0x08001E7C`) -- writes
+  directly to `Object+0x8D` (the byte this dispatcher switches on) and
+  sets the `+0x90` bit-`0x01` flag several case bodies check -- the
+  dispatcher's own state-transition setter.
+
+**The "Tick" call chain is PROVEN:**
+`InitMonsterBattleActor` (`0x08014C88`) writes this function's address
+into `Object+0x98` (a callback-registration slot, not a direct call).
+**`TickObject_candidate`** (`0x08001FDA`) is a per-object per-update-pass
+function: it reads `Object+0x98`, and if non-null (and a gating check,
+`FUN_0800359c`, passes), calls **`ThumbInterworkVeneer_bx_r1`**
+(`0x0804A2C4`, see `krawall.md`) to invoke it. **`TickObjectList_candidate`**
+(`0x0800091A`) walks the linked list of all active objects, calling
+`TickObject_candidate` once per object per call. So the chain is
+`TickObjectList_candidate` -> (per object) `TickObject_candidate` ->
+`ThumbInterworkVeneer_bx_r1` -> `TickFighterAttackAnimState_candidate`, a
+generic per-object-per-frame callback dispatch -- "AttackAnimState" is
+arguably too narrow given case `0x1a`'s broader turn/action-execution
+content (target selection, `ResolveEnemyAttack`, message/reward
+dispatch), not renamed further.
+
+**`FUN_0800359C`** (the `TickObject_candidate` gate) returns true iff
+`g_dwCurrentGameMode_candidate` (`0x03003EF4`) `!= 0x18` AND it equals
+`g_dwPendingGameMode_candidate` (`0x03003F18`) -- "no mode transition in
+flight, and not in mode `0x18`". `g_dwCurrentGameMode_candidate` has 80+
+xrefs ROM-wide, consistent with being the central game-mode/scene state
+variable; specific mode values aren't identified.
+
+**`FightState` fields**, from decompiling this dispatcher and
+`ShowBattleMessage`:
+
+- `+0x147E` -> `bActionDelayCounter_candidate` (u8): decremented once per
+  tick call (bits `0x20`/`0x40` of a per-fighter status byte each drive
+  one decrement path), gates further action once it hits 0. Set to
+  5/10/20 depending on branch -- frames-remaining delay before an
+  action/animation actually fires.
+- `+0x14AC`..`+0x14C4` -> `aFaintMessages_candidate`, a 6-entry
+  `FaintMessageEntry_candidate[6]` array (`{u16 wDamage; u8 bEffectId; u8
+  bFlag;}`, 4 bytes/entry -- the count falls out exactly from
+  `(0x14C4 - 0x14AC) / 4`). One entry per queued fainted-fighter message.
+- `+0x14C4` -> `bFaintMessageCount_candidate`: an incrementing
+  write-cursor/count into `aFaintMessages_candidate`. The `== 0` gate in
+  `ApplyDamageToFighter` (battle.md) means "no messages queued yet".
+
+Found by walking the live call stack (mGBA gdb backtrace) up from
+`ResolveEnemyAttack`; a sibling function, `UpdateFighterFlashEffect_candidate`
+(`0x08015574`-`0x08015607`), toggles a sprite flash/blink effect and is
+called from within this dispatcher (boundary PROVEN, semantics
+STRUCTURAL MATCH only). Deeper call-stack frames above this dispatcher
+(through `0x08001FDA`, `0x0800091A`, `0x0802C822`, `0x0802C6B6`, into
+`main` at `0x08029690`) are low-address, high-xref generic engine
+dispatch, not investigated further.
+
+### `TickPlayerActionState_candidate` (`0x0801602C`) -- player/Buckbeak side
+
+Same structural pattern: reads `Object+0x8D`, 27-entry jump table
+(`PTR_FUN_08016090`), shared epilogue reached via `bl`-as-branch
+(`0x08017B42`). `TickPlayerActionState_candidate` itself is only the tiny
+head (`0x0801602C`-`0x0801608B`) that reads `Object+0x8D` and branches
+through the table; found while tracing `ShowBattleMessage`'s callers
+looking for the player-spell damage formula.
+
+Read directly from ROM rather than inferred from decompiler output,
+every entry resolves to a genuinely separate, cleanly-bounded function:
+
+| Case | Address | Function |
+|---|---|---|
+| `0` | `0x080160FC` | `PlayActionWindupFlash` -- queues a palette-flash cue via `FUN_0800d264` (the same palette-refresh/fade queue used to undo poison discoloration), keyed by an anim-table entry and `Object+0xd5`'s high nibble, plus an anim-data-table switch via `FUN_08015484` -- the windup flash before the swing/cast animation starts |
+| `1` | `0x08017A7C` | `PlayFighterImpactSound` -- per-fighter-type sound (`Object+8`) plus a shared impact sound, the moment the attack/spell visually connects |
+| `2` | `0x080161A2` | `ApplyDamageNumberAnimState` -- commits a damage number previously staged at `Object+0x62` by `ShowDamageNumber_candidate`: sound, a HUD refresh, then (once flag `0x40000` is set) resets the anim state and applies the damage via `ApplyStatusDamageToFighter_candidate` |
+| `3`, `6`-`14`, `16`-`20`, `22`-`25` | `0x08017B42` | `TickPlayerActionStateNoOp` -- shared no-op default, also every other case's own tail branch target |
+| `4` | `0x080177D8` | `ApplyStatusRestoreItemEffect` -- resolves a restorative-item/status-cure effect: `FUN_08026cdc(bSpellLevel)` selects among MP restore, SP restore, a cure call, or lifting `Paralyzed`, each with its own `TriggerBattleEffect` id and cost/message |
+| `5` | `0x08017ADE` | `ReturnFighterToPosition` -- post-action wait/return-to-formation state: flips the sprite and arms a 30-frame counter on entry, then on expiry clears `bSelectedActionIndex`, un-flips, and resets the anim state |
+| `15` (`0xF`) | `0x0801618A` | `WaitForMoveThenApplyDamageNumber` -- gated on `Object+0x3c`/`+0x40` both being zero (the velocity fields a `MoveTo` zeroes on completion, per [`../formats/object_script.md`](../formats/object_script.md)) -- waits for the fighter's current move to finish, then falls straight through into `ApplyDamageNumberAnimState`'s body (case `2`) with no branch in between |
+| `21` (`0x15`) | `0x08016E64` | `HandleScriptedDamageEvent_candidate` (spans `0x08016E64`-`0x0801732C`, one function despite the address gap -- the shared-epilogue false-split pattern documented elsewhere in this codebase). Its *tail* (`Object+0x60` status byte, 5 sub-states) dispatches fixed-damage crit/faint-sequence handling (scripted/special-event damage, no RNG, no `Mt19937RandRange` call anywhere in this dispatcher's range). Its *head* (`Object+0xc` flag bits `0x40000`/`0x8000`) is the Special Move trigger -- see below |
+| `26` (`0x1A`) | `0x080161FE` | `ExecutePlayerAttackSequence` -- the player-side turn resolver, see [`battle.md`](battle.md)'s consolidated pseudocode |
+
+All nine target functions sit back-to-back in ROM
+(`0x080160fc`-`0x08017b51`, one ~28-byte gap before
+`HandleScriptedDamageEvent_candidate` aside) and each branches into the
+shared tail `TickPlayerActionStateNoOp` rather than using `bx lr`. Case
+`2` and case `0xF` share one body outright: `0x080161a1` (the last byte
+of `WaitForMoveThenApplyDamageNumber`) falls straight into `0x080161a2`
+(`ApplyDamageNumberAnimState`'s first byte).
+
+`ExecutePlayerAttackSequence` (case `0x1A`) is confirmed as its own real
+function, not a fragment: a data xref from `0x080160F8` (a slot in the
+same jump table) lands directly on it.
+
+#### Special Move dispatch (`HandleScriptedDamageEvent_candidate`'s head)
+
+The `0x40000`-flag branch is what actually fires a character's Special
+Move script: for Harry, it reads `(&g_abHarryCardEffectId)[DAT_03003f44]`
+(the currently-selected Folio Universitas card slot) and calls
+`FUN_08018b70` on it -- "Special Move" opens the Folio Universitas for
+Harry. For Hermione, it reads
+`(&g_abHermioneLectureEffectId_candidate)[bSpellId]` (her lecture
+selection, stored in the same `bSpellId` field spells use) and does the
+same. For Ron/Buckbeak, this branch just calls `FUN_08015484(unaff_r7,0)`
+and returns -- no `g_ab*EffectId`-style table lookup happens here at all.
+
+A separate, unconditional-of-fighter-type `0x8000`-flag branch reads
+`DAT_0805150a[bSpellId]` (`0x0805150a`, `[44, 46, 45, 49, 51, 50, 41]`) --
+entries `3`-`5` are the exact same bytes as
+`g_abHermioneLectureEffectId_candidate`'s 3 values, read through a
+differently-based pointer; entries `0`-`2` are Ron's own 3 Special Move
+effect ids, resolved in "Ron's Special Move effect ids" above
+(`44`=`Stink Pellet`, `46`=`Wizard Cracker`, `45`=`Stink Pellet 2`).
+
+The jump table's per-case `PTR_FUN_08016090` addresses above are read
+directly from ROM, not decompiler-inferred, and every entry lands on a
+genuinely separate, cleanly-bounded function -- none of these are Ghidra
+mis-boundaries.
 
 ## Special Move and card content
 
