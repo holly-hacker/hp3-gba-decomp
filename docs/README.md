@@ -58,6 +58,9 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 - [`formats/graphics.md`](formats/graphics.md) — the generic
   resource-decompression dispatcher and its four codecs, the room
   resource table, OBJ palette and tile loading. No pipeline yet.
+- [`formats/items.md`](formats/items.md) — `g_pItemTable`, the item
+  record layout, equipment stats, per-character equip eligibility, and
+  categories. Pipeline: `tools/items/`, `data/items/`.
 - [`formats/krawall.md`](formats/krawall.md) — the Krawall module /
   pattern / sample on-ROM structs. Pipeline: `tools/krawall/`,
   `data/audio/`.

@@ -731,10 +731,13 @@ Row layout (12 bytes, last 2 always-zero padding): `wHp_max` (u16),
 `bMagicDefensePercent` (last two both dead in damage math -- see below).
 
 `ApplyEquipmentStatModifiers_candidate` walks each party member's 6
-equipped-item slots (`DAT_03003834`) and subtracts each item's `nType/2`
-from defense%, `ItemEntry.dwMagicDefenseReduction` from
-`bMagicDefensePercent`, and `nParam` from `bStat_speed` (clamped) --
-heavier gear trades speed for defense.
+equipped-item slots (`DAT_03003834`) and subtracts each item's
+`nDefenseX2/2` (Def) from defense%, `dwMagicDefense` (M.Def)
+from `bMagicDefensePercent`, and `nAgility` (Agi, signed) from
+`bStat_speed` (clamped) -- heavier gear trades speed for defense. See
+[`../formats/items.md`](../formats/items.md)'s "Equipment stats" section
+for the full item-record field layout, including `nCharacterMask`, the
+per-character equip-eligibility mask `CanFighterEquipItem` reads.
 
 **Verified against real in-game data** (Harry Lvl7, Hermione Lvl8, Ron
 Lvl5, no equipment):

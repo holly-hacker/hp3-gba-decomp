@@ -1,50 +1,39 @@
-"""Shared record layout for the item/equipment table
-(g_pItemTable). See docs/formats/save.md's "Item quantities and
-equipment" section for how the table's address/stride/count and each
-field were identified.
+"""Shared record layout for the item/equipment table (g_pItemTable).
+See docs/formats/items.md for field semantics and how they were
+identified.
 
 52 bytes per record, all fields 4-byte little-endian, in on-disk order.
 Fields whose meaning isn't confirmed keep the project's Ghidra-matching
-unk names (nUnk14, nUnk1C, dwUnk20, dwUnk2C, dwUnk30) rather than an
-offset-derived placeholder, since those are the actual database names.
+unk names (dwUnk20, dwUnk2C) rather than an offset-derived placeholder,
+since those are the actual database names.
 
-pIcon1/pIcon2/pIcon3 point respectively at a palette, type-4-codec
-compressed tile data, and a frame/layout header -- see
-docs/formats/graphics.md's "Item icons" section. A real item's record
-carries no icon pointers in JSON at all: its icon is referenced by
-`sIconPath` (e.g. "items/OrdinaryBelt.png", the viewable render at
-`extracted/items/OrdinaryBelt.png`; the actual build input is the 3
-files `data/images/items/OrdinaryBelt.{palette,tiles,frames}.bin`), and
-packing emits `.word` references to `icon_labels()`-named symbols
-instead of literal addresses. Those symbols come from
-regions.<ver>.txt's `item-icon-data` row -- a single region covering
-all 79 real items' icon data at once (they sit in one contiguous ROM
-span, see that row's comment), packed by
-tools/items/pack_item_icons.py. No ROM address is stored in items.json
-or in data/images/items/ -- only in that one region row. Entries with
-no real icon (`sIconPath` is null: the dummy record and the all-zero
-padding past REAL_ITEM_COUNT) keep pIcon1/pIcon2/pIcon3 as literal
-packed integers instead, since there is no label/PNG to name.
+A real item's record carries no icon pointers in JSON: its icon is
+referenced by `sIconPath` (e.g. "items/OrdinaryBelt.png"), and packing
+emits `.word` references to `icon_labels()`-named symbols instead of
+literal addresses -- see regions.<ver>.txt's `item-icon-data` row. Entries
+with no real icon (`sIconPath` is null) keep pPalette/pTileData/pFrameData
+as literal packed integers instead, since there is no label/PNG to name.
 """
 import re
 import struct
 from pathlib import Path
 
-# (json field name, struct format char)
+# (json field name, struct format char). "n"-prefixed fields are Ghidra's
+# `int` (signed); "dw"/pointer fields are `undefined4`/pointer (unsigned).
 FIELDS: list[tuple[str, str]] = [
-    ("nNameTextId", "I"),        # 0x00 -- dialog string id for the display name
-    ("pIcon1", "I"),             # 0x04 -- palette pointer, see module docstring
-    ("pIcon2", "I"),             # 0x08 -- compressed tile-data pointer, see module docstring
-    ("pIcon3", "I"),             # 0x0C -- frame/layout header pointer, see module docstring
-    ("nOwlRewardWeight", "I"),   # 0x10 -- owl-mail reward weighting
-    ("nUnk14", "I"),             # 0x14 -- unidentified; nonzero gates membership of item-list filter 0xB
+    ("nNameTextId", "i"),        # 0x00 -- dialog string id for the display name
+    ("pPalette", "I"),           # 0x04 -- palette pointer
+    ("pTileData", "I"),          # 0x08 -- compressed tile-data pointer
+    ("pFrameData", "I"),         # 0x0C -- frame/layout header pointer
+    ("nBuyPrice", "i"),          # 0x10 -- shop buy price (Sickles)
+    ("nSellPrice", "i"),         # 0x14 -- shop sell price (Sickles)
     ("dwCategory", "I"),         # 0x18 -- item category id (0x0-0x6, 0x8 used; 0x7 unused; 0xC on the dummy)
-    ("nUnk1C", "I"),             # 0x1C -- unidentified
+    ("nCharacterMask", "i"),     # 0x1C -- per-character equip mask
     ("dwUnk20", "I"),            # 0x20 -- flag word, bit 2 tested
-    ("nType", "I"),              # 0x24 -- not decoded
-    ("nParam", "I"),             # 0x28 -- not decoded
+    ("nDefenseX2", "i"),         # 0x24 -- Def stat, pre-doubled
+    ("nAgility", "i"),           # 0x28 -- Agi stat, signed
     ("dwUnk2C", "I"),            # 0x2C -- unidentified
-    ("dwUnk30", "I"),            # 0x30 -- unidentified
+    ("dwMagicDefense", "I"),     # 0x30 -- M.Def stat
 ]
 
 FIELD_STRUCT_FORMAT = "<" + "".join(fmt for _, fmt in FIELDS)
@@ -95,8 +84,8 @@ def pack_tail(record: dict) -> bytes:
 
 
 def pack_icons_literal(record: dict) -> bytes:
-    """Pack pIcon1/pIcon2/pIcon3 as literal integers, for records with no
-    sIconPath (see module docstring)."""
+    """Pack pPalette/pTileData/pFrameData as literal integers, for records
+    with no sIconPath (see module docstring)."""
     return struct.pack("<3I", *(record[name] for name in _ICON_FIELD_NAMES))
 
 

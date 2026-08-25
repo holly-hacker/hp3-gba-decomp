@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """One-time bootstrap: extract every real item's icon data
-(g_pItemTable's pIcon1/pIcon2/pIcon3, see tools/items/icon_codec.py)
-verbatim to data/images/items/, and render each to a viewable PNG
-under extracted/items/ for humans -- see docs/formats/graphics.md's
-"Item icons" section.
+(g_pItemTable's pPalette/pTileData/pFrameData, see
+tools/items/icon_codec.py) verbatim to data/images/items/, and render
+each to a viewable PNG under extracted/items/ for humans -- see
+docs/formats/graphics.md's "Item icons" section.
 
 Reads baserom.us.gba directly rather than data/items/items.json --
-real items no longer carry pIcon1/pIcon2/pIcon3 in that JSON at all
-(see item_codec module docstring); those addresses are recorded
+real items no longer carry pPalette/pTileData/pFrameData in that JSON
+at all (see item_codec module docstring); those addresses are recorded
 nowhere but regions.us.txt's single `item-icon-data` row, so this
 script re-derives them from the ROM the same way extract_items.py
 does, purely to locate and copy bytes -- nothing from this pass gets
@@ -81,11 +81,11 @@ def main() -> None:
     # -- see module docstring. Fails loudly rather than silently extracting
     # a wrong/truncated byte range.
     for i, (name, record) in enumerate(records):
-        pIcon1, pIcon2, pIcon3 = record["pIcon1"], record["pIcon2"], record["pIcon3"]
-        if pIcon2 - pIcon1 != PALETTE_SIZE:
-            sys.exit(f"{name!r} (index {i}): palette is {pIcon2 - pIcon1:#x} bytes, expected {PALETTE_SIZE:#x}")
-        frames_end = pIcon3 + FRAMES_SIZE
-        next_addr = records[i + 1][1]["pIcon1"] if i + 1 < len(records) else NEXT_RESOURCE_ADDR
+        pPalette, pTileData, pFrameData = record["pPalette"], record["pTileData"], record["pFrameData"]
+        if pTileData - pPalette != PALETTE_SIZE:
+            sys.exit(f"{name!r} (index {i}): palette is {pTileData - pPalette:#x} bytes, expected {PALETTE_SIZE:#x}")
+        frames_end = pFrameData + FRAMES_SIZE
+        next_addr = records[i + 1][1]["pPalette"] if i + 1 < len(records) else NEXT_RESOURCE_ADDR
         if frames_end != next_addr:
             sys.exit(f"{name!r} (index {i}): frame-header ends at {frames_end:#010x}, "
                       f"expected the next resource to start there ({next_addr:#010x}) -- "
@@ -97,17 +97,17 @@ def main() -> None:
     extracted_dir.mkdir(parents=True, exist_ok=True)
 
     for i, (name, record) in enumerate(records):
-        pIcon1, pIcon2, pIcon3 = record["pIcon1"], record["pIcon2"], record["pIcon3"]
+        pPalette, pTileData, pFrameData = record["pPalette"], record["pTileData"], record["pFrameData"]
         slug = icon_slug(name)
 
-        palette_bytes = rom[pIcon1 - ROM_BASE:pIcon2 - ROM_BASE]
-        tiles_bytes = rom[pIcon2 - ROM_BASE:pIcon3 - ROM_BASE]
-        frames_bytes = rom[pIcon3 - ROM_BASE:pIcon3 - ROM_BASE + FRAMES_SIZE]
+        palette_bytes = rom[pPalette - ROM_BASE:pTileData - ROM_BASE]
+        tiles_bytes = rom[pTileData - ROM_BASE:pFrameData - ROM_BASE]
+        frames_bytes = rom[pFrameData - ROM_BASE:pFrameData - ROM_BASE + FRAMES_SIZE]
         (images_dir / f"{slug}.palette.bin").write_bytes(palette_bytes)
         (images_dir / f"{slug}.tiles.bin").write_bytes(tiles_bytes)
         (images_dir / f"{slug}.frames.bin").write_bytes(frames_bytes)
 
-        width, height, pixels = decode_icon(rom, VER, pIcon1, pIcon2, pIcon3)
+        width, height, pixels = decode_icon(rom, VER, pPalette, pTileData, pFrameData)
         img = Image.new("RGBA", (width, height))
         img.putdata(pixels)
         img.save(extracted_dir / f"{slug}.png")

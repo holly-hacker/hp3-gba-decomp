@@ -1,20 +1,20 @@
-"""Decode a real item's icon (pIcon1/pIcon2/pIcon3) into RGBA pixels.
+"""Decode a real item's icon (pPalette/pTileData/pFrameData) into RGBA pixels.
 See docs/formats/graphics.md's "Item icons" section for how this format
 was identified and verified (rendered and visually confirmed against
 two items -- a belt and a potion bottle -- via Ghidra call-graph tracing
-from ItemEntry.pIcon1/2/3 into SpawnObject/LoadObjTileSheet).
+from ItemEntry.pPalette/pTileData/pFrameData into SpawnObject/LoadObjTileSheet).
 
-- pIcon1: a 32-byte palette -- 2-byte header (unidentified, ignored) +
+- pPalette: a 32-byte palette -- 2-byte header (unidentified, ignored) +
   15 BGR555 colors. Index 0 is always transparent (GBA OBJ palette
   convention, not stored in the resource itself).
-- pIcon3: a frame/layout header. Fixed 12-byte part: +0x06 is a u16
+- pFrameData: a frame/layout header. Fixed 12-byte part: +0x06 is a u16
   frame count. Followed by one u16 offset per frame (relative to the
   header's own +0x0C), each pointing at a small record with pixel width
   (+0x02, u8), height (+0x03, u8), and a u16 source offset (+0x04) into
-  pIcon2. Every real item has exactly 1 frame -- see
+  pTileData. Every real item has exactly 1 frame -- see
   tools/items/extract_item_icons.py; this module errors out if that
   ever isn't true rather than silently picking frame 0.
-- pIcon2: the tile pixel data the frame record's source offset points
+- pTileData: the tile pixel data the frame record's source offset points
   into, header-prefixed like any generic resource (byte0's nibble is
   the type, byte1..3 LE the decompressed size): type 3 (BIOS RLUnComp,
   11 of 79 real items) or type 7, which is FUN_0801de5c's *own* nibble
@@ -50,13 +50,13 @@ def decode_palette(rom: bytes, addr: int) -> list[tuple[int, int, int, int]]:
     return colors
 
 
-def read_frame(rom: bytes, pIcon3: int) -> tuple[int, int, int]:
+def read_frame(rom: bytes, pFrameData: int) -> tuple[int, int, int]:
     """Returns (width, height, source_offset) for the single frame every
     real item has -- see module docstring."""
-    off = pIcon3 - ROM_BASE
+    off = pFrameData - ROM_BASE
     frame_count = struct.unpack_from("<H", rom, off + 0x06)[0]
     if frame_count != 1:
-        raise ValueError(f"pIcon3 {pIcon3:#010x}: expected exactly 1 frame, got {frame_count}")
+        raise ValueError(f"pFrameData {pFrameData:#010x}: expected exactly 1 frame, got {frame_count}")
     table_base = off + 0x0C
     frame_off = struct.unpack_from("<H", rom, table_base)[0]
     record = table_base + frame_off
@@ -66,8 +66,8 @@ def read_frame(rom: bytes, pIcon3: int) -> tuple[int, int, int]:
     return width, height, source_offset
 
 
-def decode_tiles(rom: bytes, ver: str, pIcon2: int, source_offset: int, decoded_size: int) -> bytes:
-    header_addr = pIcon2 + source_offset
+def decode_tiles(rom: bytes, ver: str, pTileData: int, source_offset: int, decoded_size: int) -> bytes:
+    header_addr = pTileData + source_offset
     header = struct.unpack_from("<I", rom, header_addr - ROM_BASE)[0]
     type_nibble = (header & 0xFF) >> 4
     size = header >> 8
@@ -119,11 +119,11 @@ def tiles_to_rgba(tile_data: bytes, width: int, height: int,
     return pixels
 
 
-def decode_icon(rom: bytes, ver: str, pIcon1: int, pIcon2: int, pIcon3: int
+def decode_icon(rom: bytes, ver: str, pPalette: int, pTileData: int, pFrameData: int
                  ) -> tuple[int, int, list[tuple[int, int, int, int]]]:
     """Returns (width, height, rgba_pixels)."""
-    palette = decode_palette(rom, pIcon1)
-    width, height, source_offset = read_frame(rom, pIcon3)
-    tile_data = decode_tiles(rom, ver, pIcon2, source_offset, width * height // 2)
+    palette = decode_palette(rom, pPalette)
+    width, height, source_offset = read_frame(rom, pFrameData)
+    tile_data = decode_tiles(rom, ver, pTileData, source_offset, width * height // 2)
     pixels = tiles_to_rgba(tile_data, width, height, palette)
     return width, height, pixels

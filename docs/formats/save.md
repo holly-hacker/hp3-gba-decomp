@@ -180,7 +180,7 @@ Mode `0x29`'s init (`FUN_08021C08`) `memset`s a `0xE8`-byte object-state buffer,
 | `abStatMeters` | 3 bytes | The 3 on-screen status-bar icons, named directly in the in-game help text (dialog string `0x915`): "The three status bars ... Mind, Body and Spirit." **STRUCTURAL MATCH**: the 3-meter identity and their derivation from `careCounters` (a weighted average via a fixed ROM table, `FUN_080222F0`, smoothly interpolating toward the target by +-1/tick) are proven; this array's index-to-name order (assumed Mind/Body/Spirit, matching the help text's listing order) is not independently confirmed per-index. |
 | `careCounters.b<Action>Counter` (x6: Feed/Clean/Pet/Groom/Exercise/Teach) | 6 bytes | One "need" counter per care action, each capped at `0xFA`=250, lowered when that action is performed (`FUN_08022284`, halved or reduced by ~1/8 depending on how full it was) and regrown over time by `wElapsedTicks`' overflow. **PROVEN index order**: the care-screen's menu-drawing code and its confirm-button switch (`FUN_08022134`) both index off the same cursor variable (`g_dwCurrentGameMode_candidate+0x20`, i.e. `0x03003F14`) -- the drawer resolves each entry's label via `GetDialogText(0x669 + cursor)` (Feed, Clean, Pet, Groom, Exercise, Teach, Mail, Upload, confirmed against `data/text/en_us.json`), and the switch's cases `0`-`5` each call `FUN_08022284(case_index)` on the matching byte of this array -- proving case-index-for-array-index alignment directly, not just by plausible string adjacency. Case `6` ("Mail") checks all 6 counters are below `0xBB`=187 before letting the owl fly off (matches the help text, dialog string `0x91D`: "Mail - sends your owl off to fetch an item... check back in a few minutes"); case `7` ("Upload") pushes game mode `0x41`, the GameCube-link Owl Races screen (dialog string `0x91E`). |
 | `wElapsedTicks` | 2 bytes | Elapsed-tick counter driving `careCounters`' regrowth, capped at `0x95`=149; advances once per care-screen tick (`FUN_08021DF8`) while `flVisited` is set and only once `wMailTimer` (below) has counted down to `0`; overflowing it is what bumps all 6 `careCounters`. |
-| `wMailTimer` | 2 bytes | The Mail action's flight countdown -- **not padding**: a live timer, explicitly decremented once per tick by `FUN_08021DF8`, set to the literal `600` (~10 seconds at 60fps) when Mail is selected. While nonzero, gates `wElapsedTicks`' advance (so `careCounters` don't regrow while the owl is away). On expiry, `FUN_08021FE4` grants an item (weighted-random pick from up to 62 candidates, weighted by each entry's `nOwlRewardWeight` field, record offset `+0x10`) and shows it via `GetDialogText(0xAC1)`, "The owl mail has arrived! You received @1." -- matching the user's in-game observation of Mail returning items like a Winter Cloak. The reward is always an item from this table, never a Folio Universitas card. |
+| `wMailTimer` | 2 bytes | The Mail action's flight countdown -- **not padding**: a live timer, explicitly decremented once per tick by `FUN_08021DF8`, set to the literal `600` (~10 seconds at 60fps) when Mail is selected. While nonzero, gates `wElapsedTicks`' advance (so `careCounters` don't regrow while the owl is away). On expiry, `ProcessOwlMailReward` (`0x08021FE4`) grants an item (weighted-random pick from up to 62 candidates via `SelectWeightedOwlRewardItem`, weighted by each entry's `nBuyPrice` field -- its shop buy price, record offset `+0x10`, see [`items.md`](items.md)'s "Shop prices" section) and shows it via `GetDialogText(0xAC1)`, "The owl mail has arrived! You received @1." -- matching the user's in-game observation of Mail returning items like a Winter Cloak. The reward is always an item from this table, never a Folio Universitas card. |
 
 After this sequence, whatever bytes remain before the slot's trailing
 checksum are never written by any pack call -- leftover content from
@@ -221,100 +221,25 @@ equipped-item data at battle entry.
 
 **Item quantities and equipment** (`g_abItemQuantities`, `0x030037B0`,
 152 bytes): a flat item-ID-indexed quantity array. **PROVEN**: item ID
-== index into `g_pItemTable` (ROM `0x08060EE4`,
-`ItemEntry[132]`, stride `0x34`, 79 of them populated)
-== index into `g_abItemQuantities`. Each entry's
-`nNameTextId` field resolves through the decoded dialog/UI string table
-(`data/text/en_us.json`'s 2767 `strings`) to that item's real display
-name -- every one of the 79 real entries decodes to a sensible item name,
-and 6 of them were independently cross-checked against real-save
-evidence with an exact match every time (`bGrandWiggenweldPotion`
-going 3->4 for a picked-up Grand Wiggenweld Potion; `bMonsterBookOfMonsters`
-tracking boss-drop kills; `bPocketWatch` appearing at exactly the
-save a Pocket Watch was received; and the user's own listed
-Belt/Gloves/Boots/Cloak landing on indices 4/25/32/53 exactly). The
-JSON exposes one field per index in on-disk order (`itemQuantities`, a
-struct not a bare array -- see "Parsing"/"JSON shape" below); indices
-0-78 are contiguous (a plain ordered list in the tool, `ITEM_NAMES`, not
-an index->name map -- there's no gap to justify one) using their real
-names; the remainder (79-131, real slots of the same array but with no
-item data in them -- see below) are `bItemQuantityNNN`-style
-placeholders.
-
-The accessors all live in the `0x08026754`-`0x08026F7E` cluster and
-address the table as `0x08060EE4 + index*0x34 + fieldOffset`, selecting
-a field with an immediate add rather than a typed struct access.
-**Two nearby addresses are field pointers, not the table base**, and are
-easy to mistake for it: `0x08060ED4` is `base - 0x10`, and `0x08060F08`
-is `base + 0x24` (`&table[0].nType`), the literal `sub_08026870`'s
-equipment-stat loop loads at `0x080268DC` -- with `0x08060F14`
-(`base + 0x30`) used the same way beside it.
-
-Record layout (`0x34` bytes), from the accessors in the
-`0x08026754`-`0x08026F7E` cluster, each of which addresses the table as
-`0x08060EE4 + index*0x34 + fieldOffset`:
-
-| Offset | Field | Reader |
-|---|---|---|
-| `+0x00` | `nNameTextId` -- dialog string id for the display name | `FUN_08026B8C` |
-| `+0x04`, `+0x08`, `+0x0C` | `pIcon1`/`pIcon2`/`pIcon3` -- palette, tile data, and frame/layout header for the item's icon. **PROVEN**, see [`graphics.md`](graphics.md)'s "Item icons" section. | `FUN_08026bcc` |
-| `+0x10` | `nOwlRewardWeight` -- owl-mail reward weight (see "Owl Care Kit" above) | `FUN_08026C38` |
-| `+0x14` | unidentified; nonzero gates membership of filter `0xB` | `FUN_08026C4C`, `FUN_08026E58` |
-| `+0x18` | `dwCategory` -- item category id, **PROVEN** (see below) | `FUN_08026E58`, `FUN_08026F48` |
-| `+0x1C` | unidentified | -- |
-| `+0x20` | flag byte (bit 2 tested) | `FUN_08026D34` |
-| `+0x24` | `nType` | `FUN_08026CDC` |
-| `+0x28` | `nParam` | `FUN_08026CF0` |
-| `+0x2C`, `+0x30` | unidentified | `sub_08026870` reads `+0x30` |
-
-`nType`/`nParam` are not decoded. Ghidra's `ItemEntry`
-struct carries these field *names* but its offsets are the ones above.
-
-**Item categories -- `dwCategory` (`+0x18`), PROVEN.** The table is
-ordered in contiguous per-category runs, and each run's `dwCategory`
-value is what the two filter functions actually match on:
-
-| `dwCategory` | Indices | Category |
-|---|---|---|
-| `0x0` | 0-7 | belts |
-| `0x1` | 8-19 | misc/quest items |
-| `0x2` | 20-28 | gloves |
-| `0x3` | 29-37 | boots |
-| `0x4` | 38-46 | caps/hats |
-| `0x5` | 47-55 | robes/cloaks |
-| `0x6` | 56-61 | potions |
-| `0x8` | 62-78 | ingredients/quest items, plus `bMonsterBookOfMonsters` at 78 |
-
-`0x7` is unused. `FUN_08026F48(category)` reports whether the player owns
-any item of a given category (walking indices 0-78);
-`FUN_08026E58(filter, out, ...)` builds a filtered item list, where
-`filter == 0xA` means "all items" (matching any `dwCategory > 5`) and
-`filter == 0xB` selects on a nonzero `+0x14` instead of on the category.
-
-Each run carries its own local string-ID base rather than one global
-offset -- e.g. potions are `index + 1540`, while gloves/boots are
-`index + 1538` and belts/misc are `index + 1576`.
-
-**Index 79 is a dummy record, marking the end of the real items.** Per
-the user in-game: item 79 shows up under "all items" but not under any
-real category, uses the Rat Tonic sprite, and displays as "There you
-are, Harry!". Every part of that is accounted for by the record's own
-bytes. Its `nNameTextId` is `0`, which decodes to the first dialog line
-("There you are, Harry!"), and its three sprite pointers are
-byte-identical clones of `[62]`'s, the Rat Tonic. Its `dwCategory` is
-`0xC`, which is `> 5` and so passes `FUN_08026E58`'s "all items" filter,
-while matching no real category value -- so it is listed under All Items
-and under nothing else. Indices 80-131 are all zero, and the zero run
-ends precisely at `0x08060EE4 + 132*0x34 = 0x080629B4`, where an
-unrelated pointer table begins.
-
-So **indices 0-78 (79 entries) are the real items**, inside a 132-entry
-allocation. Both bounds are real checks in code -- `FUN_08026F48` walks
-`0`-`78` (`cmp r1, #0x4e`), `FUN_08026E58` walks `0`-`131` (`cmp r3,
-#0x83`) -- and 132 is also exactly where `g_abItemQuantities` hands over
-to `g_abEquippedItemIds` (`0x030037B0 + 132 = 0x03003834`). Indices
-79-131 are genuine slots of the same array; they simply hold no item
-data.
+== index into `g_pItemTable` (the ROM-resident item/equipment database
+-- record layout, equip stats, categories, and the extraction pipeline
+are all covered in [`items.md`](items.md), not here) == index into
+`g_abItemQuantities`. Each entry's `nNameTextId` field resolves through
+the decoded dialog/UI string table (`data/text/en_us.json`'s 2767
+`strings`) to that item's real display name -- every one of the 79 real
+entries decodes to a sensible item name, and 6 of them were
+independently cross-checked against real-save evidence with an exact
+match every time (`bGrandWiggenweldPotion` going 3->4 for a picked-up
+Grand Wiggenweld Potion; `bMonsterBookOfMonsters` tracking boss-drop
+kills; `bPocketWatch` appearing at exactly the save a Pocket Watch was
+received; and the user's own listed Belt/Gloves/Boots/Cloak landing on
+indices 4/25/32/53 exactly). The JSON exposes one field per index in
+on-disk order (`itemQuantities`, a struct not a bare array -- see
+"Parsing"/"JSON shape" below); indices 0-78 are contiguous (a plain
+ordered list in the tool, `ITEM_NAMES`, not an index->name map --
+there's no gap to justify one) using their real names; the remainder
+(79-131, real slots of the same array but with no item data in them --
+see [`items.md`](items.md)) are `bItemQuantityNNN`-style placeholders.
 
 Indices 132-149 are `g_abEquippedItemIds` (Ghidra: typed `EquippedItemSlots[3]`,
 though the global keeps its `ab`-prefixed name -- a known checker bug
@@ -329,39 +254,9 @@ independently matches Ron's one equipped item). Trailing 2 bytes are
 always-zero padding so far (`abItemQuantitiesPadding`, omitted like
 other padding fields when zero).
 
-**The extraction pipeline.** `g_pItemTable` itself (the 132-record,
-`0x34`-byte-stride table this section describes, not the save-format
-`itemQuantities`/`equippedItems` fields above) round-trips byte-exact
-through `tools/items/` the same way the Folio Bruti monster table does
-through `tools/monsters/` -- see [`folio_bruti.md`](folio_bruti.md)'s
-"The extraction pipeline" for the shape this mirrors.
-`tools/items/item_codec.py` holds the field layout, `extract_items.py`
-(`just extract-items`) bootstraps `data/items/items.json` from
-`baserom.us.gba`, and `pack_items.py` (`just pack-items`, wired into
-`just build`) packs it back into `regions.us.txt`'s `item-table` row
-(`0x08060EE4`-`0x080629B4`). All 132 records are packed, real or not,
-since the row must round-trip exactly. Each record also gets a leading
-`_name` annotation (the item's display name, decoded from its own
-`nNameTextId` via the dialog text table), ignored entirely by
-`pack_items.py`; it's `null` for indices `>= 79` (the dummy record and
-the zero padding), which aren't real items.
-
-For a real item (index `< 79`), `pIcon1`/`pIcon2`/`pIcon3` are not
-stored in `items.json` at all -- see [`graphics.md`](graphics.md)'s
-"Item icons" section for the confirmed format, and the module docstring
-of `tools/items/item_codec.py` for why: those 3 addresses are recorded
-nowhere but `regions.us.txt`'s single `item-icon-data` row (all 79
-items' icon data forms one contiguous region), and `pack_items.py`
-emits `.word` references to the labels `tools/items/pack_item_icons.py`
-names within it instead of packing literal integers. `sIconPath` (e.g.
-`"items/OrdinaryBelt.png"`) takes their place, naming both that label
-set and the human-viewable render `just extract-item-icons` writes to
-`extracted/items/` (the real extracted bytes live in
-`data/images/items/<Name>.{palette,tiles,frames}.bin`). Indices `>= 79`
-have no name to derive a path from (and index 79's icon pointers are a
-real, nonzero clone of index 62's, not content of their own), so they
-keep `pIcon1`/`pIcon2`/`pIcon3` as literal integers and get
-`"sIconPath": null`. US ROM only -- content not yet checked against JP.
+See [`items.md`](items.md)'s "The extraction pipeline" and "Item icons"
+sections for how `g_pItemTable` itself (not the `itemQuantities`/
+`equippedItems` save fields above) round-trips through `tools/items/`.
 
 **Room-object state** (`roomObjectState`, packed by `PackRoomObjectStateToSaveStream`
 (`0x0802A570`), unpacked by `UnpackRoomObjectStateFromSaveStream` (`0x0802A3D4`)):

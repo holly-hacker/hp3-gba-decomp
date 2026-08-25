@@ -297,3 +297,7 @@ item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
 # TrackSpellFamiliarity -- see docs/memory-map/battle.md's "Spell
 # familiarity/leveling" section.
 0x0804E5E0 0x0804E5EC asm/data/spell_leveling.s g_abSpellMaxLevel
+
+# Shop tab stock lists -- see docs/formats/items.md's "Shop prices" section.
+0x0806B944 0x0806BA4C asm/data/shop_stock.s g_aShopStockMisc
+0x08FB0D94 0x08FB0DB0 asm/data/shop_stock_lists.s g_apShopStockLists
