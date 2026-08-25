@@ -57,7 +57,8 @@ monster's record from `MonsterTable`.
 | `0xE` | u8 | **`bLevel`** | **PROVEN as a struct field** -- read by `ResolveSpellAttack` as the caster's spell power scale term and spell crit-chance term (see below), sourced from `g_pPartyMasterStats_candidate` for player casters. For monster records (`MonsterTable+0x02`), **UNCONFIRMED** -- monsters never reach `ResolveSpellAttack` as attacker, and `ResolveMeleeAttack` doesn't read this offset | -- |
 | `0x2B` | u8 | **accuracy** | **PROVEN** -- see "Attack resolution" below | jlun2 (led here) |
 | `0x2C` | u8 | **`bCritChance`** (`MonsterTable+0x05`) | **PROVEN** -- read as a roll threshold in the bonus-damage check, see below. Monster-only: never populated for player fighters | jlun2 (led here) |
-| `0x2E` | u8 | defense scaling, percent (`damage = damage * this / 100`) | PROVEN as a formula input; **origin not traced** -- `InitMonsterBattleActor` never writes it from `MonsterTable`, so monster records may rely on a default/zero here, or it's set by a separate (player-only?) code path not yet found | jlun2 (led here) |
+| `0x2E` | u8 | **`bDefenseFactorPercent`**, percent (`damage = damage * this / 100`) | **PROVEN**, player-only -- `InitMonsterBattleActor` never writes it from `MonsterTable`; `InitPlayerBattleActor_candidate` copies it from `g_pPartyMasterStats`, see "Player fighters get `bLevel`..." below | jlun2 (led here) |
+| `0x2F` | u8 | **`bMagicDefensePercent`** -- same shape as `0x2E` (reset/reduced identically) but **no damage formula reads it** | PROVEN as UI-displayed ("Magic Def"), UNCONFIRMED as a formula input | -- |
 | `0x30` | u16 | **base damage roll, min** (`MonsterTable+0x06`) | **PROVEN** -- fed directly into `Mt19937RandRange` as the attack's damage roll | jlun2 (led here) |
 | `0x32` | u16 | **base damage roll, max** (`MonsterTable+0x08`) | **PROVEN** | jlun2 (led here) |
 | `0x3A` | u8 | selected action/spell index for this turn | STRUCTURAL MATCH -- used across multiple AI/dispatch functions (e.g. `DispatchPendingAction`, `0x080100a0`) | -- |
@@ -93,7 +94,7 @@ roster then calls the two functions below):
   `Mt19937RandSigned(0x10)` jitter to each *Enemy* fighter's
   `bStat_speed`, clamped to `[5, 251]`. Player fighters are untouched --
   their `bStat_speed` source isn't located (no `InitPlayerBattleActor`
-  analog found yet, same gap as `bDefenseFactorPercent_notFromMonsterTable`).
+  analog found yet, same gap as `bDefenseFactorPercent`).
 - **`BuildTurnOrder_candidate`** (`0x0800E62C`) selection-sorts
   `pStagingFighters_candidate` into `pFighters` ascending by
   `bStat_speed` (with a tie-breaking bump so equal values still order
@@ -221,7 +222,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   elimination, but its own script contains **no** opcode `0x97` call at
   all -- it must apply its defense boost some other way (plausibly a
   direct write to `BattleFighter+0x2E`,
-  `bDefenseFactorPercent_notFromMonsterTable`, rather than the
+  `bDefenseFactorPercent`, rather than the
   `bStatusFlags` bit), not traced further. The two halving bits (attacker's `0x08`, defender's
   `0x20`) stack multiplicatively: neither set -> no change; exactly one
   set -> damage `>>= 1`; both set -> damage `>>= 2` (quartered).
@@ -251,15 +252,15 @@ and checks `bStatusFlags & 0x02` (`Poisoned`):
 ```c
 for (i = 0; i < fainted_candidate; i++) {   // "fainted_candidate" here really iterates every active fighter slot
     if (fighters[i].bStatusFlags & Poisoned) {
-        ShowFloatingDamageNumber_candidate(fighters[i].bPoisonDamage_candidate, 4, i, 0);   // floating damage-number popup
-        ApplyStatusDamageToFighter_candidate(fighters[i].bPoisonDamage_candidate, i);        // apply the damage
+        ShowFloatingDamageNumber_candidate(fighters[i].bPoisonDamage, 4, i, 0);   // floating damage-number popup
+        ApplyStatusDamageToFighter_candidate(fighters[i].bPoisonDamage, i);        // apply the damage
         field_0x1068 = 0x3c;   // (re-)arm a delay timer
     }
 }
 ```
 
 Both calls read a newly-identified field, **`BattleFighter+0x43`
-(`bPoisonDamage_candidate`)**, immediately after `bStatusFlags` -- not
+(`bPoisonDamage`)**, immediately after `bStatusFlags` -- not
 copied from `MonsterTable` by `InitMonsterBattleActor` (which never
 touches this offset), so its value's origin for monster fighters is
 still unknown; likely written by the same status-effect opcode that sets
@@ -309,7 +310,7 @@ always apply. `ParalyzeMonsterChance` uniquely passes `param_2 = 0`, so
 it can never show `ImmuneToParalysis`.
 
 **The third parameter is a starting escape chance, not a duration.** It
-lands in `BattleFighter+0x44` (`bParalysisEscapeChance_candidate`).
+lands in `BattleFighter+0x44` (`bParalysisEscapeChance`).
 Every turn a paralyzed fighter would act,
 `TickBattleTurnStateMachine_candidate`'s cases `3`/`4` call
 `RollFighterParalysisEscape_candidate` (`0x0800FFAC`) first:
@@ -318,8 +319,8 @@ Every turn a paralyzed fighter would act,
 int RollFighterParalysisEscape_candidate(uint fighterIndex) {
     BattleFighter *f = &g_pFightState->pFighters[fighterIndex];
     if (!(f->bStatusFlags & Paralyzed)) return 0;               // acts normally
-    if (!Mt19937ChanceNoisy(f->bParalysisEscapeChance_candidate)) {
-        f->bParalysisEscapeChance_candidate += 25;               // ratchet up
+    if (!Mt19937ChanceNoisy(f->bParalysisEscapeChance)) {
+        f->bParalysisEscapeChance += 25;               // ratchet up
         return 1;                                                // can't move this turn
     }
     ClearParalyzedFighter_candidate(fighterIndex);               // clears Paralyzed, sets Unk_0x80
@@ -462,7 +463,7 @@ encounter, not just in the live roster copy.
   `Revive`/case `0x1C` reads). That function checks `bStatusFlags &
   Poisoned`, and if set: clears just the `Poisoned` bit (masking down to
   `Unk_0x80|SpellPowerBoost|DefenseBoost|Paralyzed|AttackWeakened|PoisonImmune|Hidden`),
-  zeroes `bPoisonDamage_candidate` and the Object's blink-flag halfword
+  zeroes `bPoisonDamage` and the Object's blink-flag halfword
   (`Object+0x8A`), calls `FUN_08015484(Object,0)` (an anim-data-table
   toggle, see case `0x10` below), tears down an active
   particle/sound-channel pointer at `Object+0x24` if set, then refreshes
@@ -490,7 +491,7 @@ encounter, not just in the live roster copy.
   and if set: clears `Paralyzed`, then ORs in `Unk_0x80` (the same
   "recently cured/briefly immune" bit `FUN_0801b430`'s own gate checks
   for, `bStatusFlags & 0x90 == 0`), resets
-  `bParalysisEscapeChance_candidate` (`BattleFighter+0x44`) to `100`
+  `bParalysisEscapeChance` (`BattleFighter+0x44`) to `100`
   (see "The paralysis mechanic" above for what this field actually
   is -- a per-turn escape-chance percentage, not a duration; why `100`
   specifically, given `Unk_0x80` already blocks re-application, isn't
@@ -572,7 +573,7 @@ int ResolveMeleeAttack(int attackerIndex, int defenderIndex) {
 
     // base damage, scaled by defender's defense factor
     int damage = Mt19937RandRange(attacker->wDamageRollMin, attacker->wDamageRollMax);
-    damage = damage * defender->bDefenseFactorPercent_notFromMonsterTable / 100;
+    damage = damage * defender->bDefenseFactorPercent / 100;
 
     // halving (attacker bit 0x08 and defender bit 0x20 each independently halve)
     if (attacker->bStatusFlags & 0x08)
@@ -770,7 +771,7 @@ void ApplyDamageToFighter(short damage, uchar fighterIndex) {
         g_nGoldAccum += MonsterTable[f->bRosterIndex].reward_gold;
 
         f->wHp = 0;
-        f->nSelectedTargetIndex_candidate = -1;
+        f->nSelectedTargetIndex = -1;
         SetFighterAttackAnimState_candidate(f->pObject, 1);
     }
 }
@@ -1021,7 +1022,7 @@ routine.
 `TickBattleTurnStateMachine_candidate`'s case 4** (see "Poison's per-turn
 damage tick" above for that function's overview): non-`Enemy` fighters
 call `DispatchPendingAction()` directly (menu-driven action resolution,
-which for a normal spell cast leaves `bPendingActionKind_candidate ==
+which for a normal spell cast leaves `bPendingActionKind ==
 None` and sets anim state `0x1a` -- reaching `ResolveSpellAttack` via
 `TickPlayerActionState_candidate`'s own case `0x1A`), while `Enemy`
 fighters skip `DispatchPendingAction()` entirely and set anim state
@@ -1140,13 +1141,25 @@ Row layout (12 bytes, the last 2 always-zero padding): `wHp_max` (u16),
 Related functions: `RecomputeBaseStatsFromLevel_candidate`
 (`0x080150B4`) does the same lookup for `bStat_speed`/defense without
 incrementing the level, used when only reapplying equipment (it resets
-defense/`bUnk_0x2F` to `100` first).
+defense/`bMagicDefensePercent` to `100` first).
 `ApplyEquipmentStatModifiers_candidate` walks each of the 3 party
 members' 6 equipped-item slots (`DAT_03003834`) and subtracts each
-item's `nType/2` from defense%, `dwUnk0C` from `bUnk_0x2F`, and `nParam`
-from `bStat_speed` (clamped) -- heavier gear trades speed for defense.
+item's `nType/2` from defense%, `ItemEntry.dwMagicDefenseReduction` from
+`bMagicDefensePercent`, and `nParam` from `bStat_speed` (clamped) --
+heavier gear trades speed for defense.
 `ApplyPendingLevelUps_candidate` (`0x0801D308`) runs
 `LevelUpFighter_candidate` for all 3 party members, `N` times.
+
+**`bMagicDefensePercent` is display-only -- PROVEN dead in damage math,
+UNCONFIRMED elsewhere.** It's tracked identically to `bDefenseFactorPercent`
+(reset to `100`, reduced by gear, shown as `100 - value`) and read by two
+Status/Equip-screen functions -- `DrawStatusEquipStatsPanel` (`0x0803A0F0`,
+the stat-list panel) and `DrawEquipItemStatComparison` (`0x080364A8`, the
+equipment change screen's before/after comparison) -- both confirming the
+in-game "Magic Def" label. But neither `ResolveMeleeAttack` nor
+`ResolveSpellAttack` reads it anywhere; unlike `bDefenseFactorPercent`
+(consumed by `ResolveMeleeAttack`'s `damage * value / 100`), no damage
+formula found so far applies this stat.
 
 **Verified against real in-game data** (Harry Lvl7, Hermione Lvl8, Ron
 Lvl5, no equipment):
@@ -1172,7 +1185,7 @@ persistent, `BattleFighter`-shaped 3-entry array (one per
 Harry/Hermione/Ron) into the live roster at matching offsets: `bLevel`
 (`+0xE`), `wHp`/`wHp_max` (`+8`/`+0x24`), `wMp`/`wMp_max`
 (`+0xA`/`+0x26`), `bStat_speed` (`+0x2A`), `bAccuracy` (`+0x2B`), and
-`bDefenseFactorPercent_notFromMonsterTable` (`+0x2E`) -- which settles
+`bDefenseFactorPercent` (`+0x2E`) -- which settles
 that last field's origin: it is a player-only stat, never populated for
 monsters. Buckbeak (`fighterType == 3`, outside the 3-entry array) gets
 hardcoded defaults: `wHp`/`wMp_max` 400/999, `bLevel` `0x32`,
@@ -1414,7 +1427,7 @@ incidental side effect of some other check.
 
 ### `DispatchPendingAction` (`0x080100a0`), PROVEN
 
-Reads `BattleFighter.bPendingActionKind_candidate` (`+0x3b`, enum `PendingActionKind_candidate`:
+Reads `BattleFighter.bPendingActionKind` (`+0x3b`, enum `PendingActionKind`:
 `None=0, UseItem=1, SpecialMove=2, Flee=3, Informus=4`, written by the
 menu confirm handlers, see [`battle-ui.md`](battle-ui.md)) for the active fighter and starts
 the corresponding animation state on that fighter's `Object`:
@@ -1423,7 +1436,7 @@ the corresponding animation state on that fighter's `Object`:
 void DispatchPendingAction(void)
 {
   BattleFighter *fighter = g_pFightState->pFighters + g_pFightState->bActiveFighterIndex;
-  switch (fighter->bPendingActionKind_candidate) {
+  switch (fighter->bPendingActionKind) {
   case None:
   case Informus:
     ShowBattleMessage(ActionAnnounce, 0, 0);
@@ -1461,7 +1474,7 @@ Two findings of note:
   `nRonMovesKnown_candidate` to `1`, closing the loop with
   the top-level menu's graying check in [`battle-ui.md`](battle-ui.md) -- using a Special
   Move once is literally what un-grays that menu entry for later turns).
-  A regular `Cast Spell` selection leaves `bPendingActionKind_candidate` at `None`.
+  A regular `Cast Spell` selection leaves `bPendingActionKind` at `None`.
   For Harry specifically, `bSpellId` is overwritten with
   `g_nFolioUniversitasSlot` (the raw card slot, `0`-`15`) purely so the
   announce message can index by it. That value is **not** a `SpellId`
