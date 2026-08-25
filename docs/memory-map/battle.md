@@ -303,7 +303,7 @@ void TrackSpellFamiliarity(FighterType fighterType, SpellId spellId, char spellL
         byte *pUsage = p->aSpellUsageProgress + spellId;
         *pUsage += spellLevel + 1;
         g_abPartySpellUsage[spellId + fighterType * 0x48] += spellLevel + 1;
-        if (g_abSpellLevelUpThreshold[*pCastLevel] <= *pUsage) {
+        if (g_abSpellLevelUpThreshold[*pCastLevel - 1] <= *pUsage) {
             ShowBattleMessage(SpellLevelUp, 0, 0);
             (*pCastLevel)++;
             *pUsage = 0;
@@ -868,7 +868,7 @@ Its companion byte array at the same index, `g_abSpellEffectId_candidate`
 | `6` | PetrificusTotalus | 33 / 34 / 33 | 2 | yes (`Paralyze25`) |
 | `7` | Glacius | 30 / 31 / 30 | 2 | no |
 | `8` | Fumos | 11 / 32 / 32 | 2 | yes (`HiddenMain`/`Secondary`) |
-| `9` | Spongify | 29 / 29 / 29 | 1 (aliased, see below) | yes (`AttackWeakened`) |
+| `9` | Spongify | 29 / 29 / 29 | 1 (see below) | yes (`AttackWeakened`) |
 
 A spell can never be cast above its `g_abSpellMaxLevel`, so every effect
 id at or past that level is dead table content: `Informus`/`Diffindo`/
@@ -889,22 +889,22 @@ persistent (save-data) tracking array, one `0x48`-strided block (matching
 `BattleFighter`'s own stride) per `FighterType`, only the first 8 bytes
 of each block used (indexed by `SpellId`).
 
-Two small tables, adjacent in ROM (`g_abSpellMaxLevel` at `0x0804e5e0`, 9
-bytes; `g_abSpellLevelUpThreshold` immediately after at `0x0804e5e9`, 3
-bytes):
+Two adjacent, non-overlapping tables in ROM: `g_abSpellMaxLevel` at
+`0x0804e5e0`, 10 bytes; `g_abSpellLevelUpThreshold` immediately after at
+`0x0804e5ea`, 2 bytes.
 
-- **`g_abSpellMaxLevel[9]`** (indexed by `SpellId`):
-  `[3,1,3,1,3,1,2,2,2]`. Only 9 entries exist (`SpellId` `0`-`8`) --
-  **`Spongify` (`SpellId` `9`) has no entry of its own**; the lookup for
-  it lands one byte past the table, aliasing
-  `g_abSpellLevelUpThreshold[0]` (`1`), which happens to match the cap
-  its MP-cost shape (`10/0/0`) implies -- a genuine out-of-bounds read
-  that's harmless in practice.
-- **`g_abSpellLevelUpThreshold[3]`**: `[1, 25, 50]`, indexed by the
-  spell's *current* level. `Uno`->`Duo` takes 1 use; `Duo`->`Tria` takes
-  25. The third entry (`50`) is normally unreachable since
-  `g_abSpellMaxLevel` gates the check before a maxed spell's usage
-  counter can reach it.
+- **`g_abSpellMaxLevel[10]`** (indexed by `SpellId`):
+  `[3,1,3,1,3,1,2,2,2,1]`. All 10 spells have a real entry, including
+  `Spongify` (`SpellId` `9`, cap `1`, matching the single-level shape its
+  MP cost implies -- `10/0/0`). `FUN_08012994` (the Ultimate MP
+  unlock-all-spells payload) loops `spellId` `0`-`9` reading this table
+  to populate every `aSpellCastLevel` entry at once.
+- **`g_abSpellLevelUpThreshold[2]`**: `[25, 50]`, indexed by
+  `aSpellCastLevel[spellId] - 1` (`TrackSpellFamiliarity`'s disassembly
+  subtracts 1 from `*pCastLevel` before the table-base add). A spell
+  starts at cast level `1` (Uno) automatically, no threshold needed to
+  reach it; `Uno`->`Duo` takes 25
+  uses, `Duo`->`Tria` takes 50.
 
 `fighterType != Buckbeak` is an explicit gate in `TrackSpellFamiliarity`
 -- Buckbeak never casts spells, so never tracks familiarity.

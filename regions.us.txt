@@ -287,3 +287,13 @@ item-table 0x08060EE4 0x080629B4 data/items/items.json g_pItemTable
 # they exist so this region can be a real, byte-verified extracted
 # region instead of anonymous .incbin from the baserom.
 item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
+
+# g_awSpellPowerBase/g_awSpellPowerScale/g_awSpellMpCost, each ushort[30]
+# indexed spellId*3 + spellLevel -- see docs/memory-map/battle.md's
+# "Spell power tables, decoded" and "Spell MP cost" sections.
+0x080538EC 0x080539A0 asm/data/spell_power.s g_awSpellPowerBase
+
+# g_abSpellMaxLevel[10]/g_abSpellLevelUpThreshold[2], read by
+# TrackSpellFamiliarity -- see docs/memory-map/battle.md's "Spell
+# familiarity/leveling" section.
+0x0804E5E0 0x0804E5EC asm/data/spell_leveling.s g_abSpellMaxLevel
