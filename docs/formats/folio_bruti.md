@@ -184,9 +184,9 @@ corroboration either way for those two.
 | `0x00` | u16 | `hp` | **PROVEN** -- copied to both a current-HP and a max-HP struct offset, the classic battle-init idiom |
 | `0x02` | u8 | `level` | boundary **PROVEN** (own `ldrb`, not half of a u16 with `0x03`); a monster's own value has **no traced reader** -- see the `bLevel` note below |
 | `0x03` | u8 | `speed` | **PROVEN** -- turn order, lower = earlier. Common monsters cluster at `178-254` (act late); Lupin Werewolf `20` and Draco `60` act early |
-| `0x04` | u8 | `accuracy` | **PROVEN** -- the attacker's hit-chance stat in `ResolveMeleeAttack`'s `Mt19937RandMax(99)` roll |
+| `0x04` | u8 | `accuracy` | **PROVEN** -- the attacker's hit-chance stat in `ResolveEnemyAttack`'s `Mt19937RandMax(99)` roll |
 | `0x05` | u8 | `crit_chance` | **PROVEN** -- bonus-damage roll threshold (probability `this/101`). Monster-only in practice. Observed values: 3, 5, 10, shared within monster families |
-| `0x06` | u16 | `damage_min` | **PROVEN** -- fed straight into `ResolveMeleeAttack`'s damage roll. Monotonic with monster tier |
+| `0x06` | u16 | `damage_min` | **PROVEN** -- fed straight into `ResolveEnemyAttack`'s damage roll. Monotonic with monster tier |
 | `0x08` | u16 | `damage_max` | **PROVEN**, same evidence |
 | `0x0A` | u8 | Flipendo effectiveness (0-100) | **PROVEN** (`GetMonsterSpellEffectiveness` case 0) |
 | `0x0B` | u8 | Incendio effectiveness | **PROVEN** (case 2) |
@@ -203,13 +203,13 @@ corroboration either way for those two.
 Every reader named above lives in
 [`../memory-map/battle.md`](../memory-map/battle.md), which owns each
 field's semantics and the evidence behind it (turn order,
-`ResolveMeleeAttack`'s formula, `ResolveSpellAttack`'s effectiveness
+`ResolveEnemyAttack`'s formula, `ResolvePlayerAttack`'s effectiveness
 switch, the XP/gold payout, `RollMonsterSpecialEffect_candidate`).
 
 **The `bLevel` note.** `BattleFighter+0xE` is a proven level counter for
 *player* fighters. No monster ever reaches either code path that reads
 it (every monster's `Object` is wired to the melee-only tick callback,
-and `ResolveMeleeAttack` doesn't touch the offset), so a monster's own
+and `ResolveEnemyAttack` doesn't touch the offset), so a monster's own
 value at `+0x02` has no traced reader -- it is the same field at the
 same offset, filled the same way as every other column here, just never
 observed being consumed.

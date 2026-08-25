@@ -24,7 +24,7 @@ before being trusted:
   resolution function documented below, specifically its damage-halving
   logic tied to the in-game "Be More Careful" skill). All three led
   directly to the findings in this document.
-- A community-written GameFAQs guide broke a symmetry `ResolveSpellAttack`
+- A community-written GameFAQs guide broke a symmetry `ResolvePlayerAttack`
   alone couldn't: `PetrificusTotalus` and `Spongify` are structurally
   interchangeable in the disassembly (both absent from the effectiveness
   switch, both zero-power), so which of `SpellId` `1`/`6` is which had
@@ -54,13 +54,14 @@ monster's record from `MonsterTable`.
 | `0x08` | u16 | current HP | PROVEN | `InitMonsterBattleActor`, `ApplyDamageToFighter` |
 | `0x24` | u16 | max HP | PROVEN | `InitMonsterBattleActor`, `ApplyDamageToFighter` |
 | `0x2A` | u8 | **`bStat_speed`** (`MonsterTable+0x03`) | **PROVEN** -- turn-order/initiative value, not defense; see "Turn order" below | -- |
-| `0xE` | u8 | **`bLevel`** | **PROVEN as a struct field** -- read by `ResolveSpellAttack` as the caster's spell power scale term and spell crit-chance term (see below), sourced from `g_pPartyMasterStats_candidate` for player casters. For monster records (`MonsterTable+0x02`), **UNCONFIRMED** -- monsters never reach `ResolveSpellAttack` as attacker, and `ResolveMeleeAttack` doesn't read this offset | -- |
+| `0xE` | u8 | **`bLevel`** | **PROVEN as a struct field** -- read by `ResolvePlayerAttack` as the caster's spell power scale term and spell crit-chance term (see below), sourced from `g_pPartyMasterStats_candidate` for player casters. For monster records (`MonsterTable+0x02`), **UNCONFIRMED** -- monsters never reach `ResolvePlayerAttack` as attacker, and `ResolveEnemyAttack` doesn't read this offset | -- |
 | `0x2B` | u8 | **accuracy** | **PROVEN** -- see "Attack resolution" below | jlun2 (led here) |
 | `0x2C` | u8 | **`bCritChance`** (`MonsterTable+0x05`) | **PROVEN** -- read as a roll threshold in the bonus-damage check, see below. Monster-only: never populated for player fighters | jlun2 (led here) |
 | `0x2E` | u8 | **`bDefenseFactorPercent`**, percent (`damage = damage * this / 100`) | **PROVEN**, player-only -- `InitMonsterBattleActor` never writes it from `MonsterTable`; `InitPlayerBattleActor_candidate` copies it from `g_pPartyMasterStats`, see "Player fighters get `bLevel`..." below | jlun2 (led here) |
 | `0x2F` | u8 | **`bMagicDefensePercent`** -- same shape as `0x2E` (reset/reduced identically) but **no damage formula reads it** | PROVEN as UI-displayed ("Magic Def"), UNCONFIRMED as a formula input | -- |
 | `0x30` | u16 | **base damage roll, min** (`MonsterTable+0x06`) | **PROVEN** -- fed directly into `Mt19937RandRange` as the attack's damage roll | jlun2 (led here) |
 | `0x32` | u16 | **base damage roll, max** (`MonsterTable+0x08`) | **PROVEN** | jlun2 (led here) |
+| `0x03` | u8 | **`bSlotParam`** -- this fighter's fixed UI slot number (enemy slot `0-3` or ally slot `0-2`, separate numbering spaces) | **PROVEN** -- `BuildTurnOrder_candidate`'s raw disasm reads it (`ldrb r1, [r1, #3]`) as the key into `field_0x1059`/`field_0x105d`, see "Turn order" below | -- |
 | `0x3A` | u8 | selected action/spell index for this turn | STRUCTURAL MATCH -- used across multiple AI/dispatch functions (e.g. `DispatchPendingAction`, `0x080100a0`) | -- |
 | `0x42` | u8 | status-flags bitfield | PROVEN as a formula input, bits below | jlun2 (led here) |
 | `0xC` | u16 | `wRewardXp` (`MonsterTable+0x10`) | PROVEN | `InitMonsterBattleActor` |
@@ -74,8 +75,8 @@ monster's record from `MonsterTable`.
 `bAnimFrameIndex_candidate`/`bLastAnimFrameValue`, `pShadowObject`/
 `pOwnerObject`, `bFlagsAndEffectSlot_0xD5`). It hardwires `pfnTick` to
 `TickFighterAttackAnimState_candidate` -- the concrete reason every
-`Enemy` fighter resolves via `ResolveMeleeAttack` rather than
-`ResolveSpellAttack` (see the NPC-vs-PC dispatch note above). Its
+`Enemy` fighter resolves via `ResolveEnemyAttack` rather than
+`ResolvePlayerAttack` (see the NPC-vs-PC dispatch note above). Its
 graphics-table reads are now typed too: `g_pMonsterGraphicsTable`
 (`0x0804E6B4`, `MonsterGraphicsEntry_candidate[69]`, 32-byte stride --
 row base is the anim table, `+0x08` an effect pointer registered via the
@@ -93,14 +94,36 @@ roster then calls the two functions below):
 - **`JitterEnemyTurnOrder_candidate`** (`0x0800E5B8`) adds
   `Mt19937RandSigned(0x10)` jitter to each *Enemy* fighter's
   `bStat_speed`, clamped to `[5, 251]`. Player fighters are untouched --
-  their `bStat_speed` source isn't located (no `InitPlayerBattleActor`
-  analog found yet, same gap as `bDefenseFactorPercent`).
+  **`InitPlayerBattleActor_candidate`** (`0x080149C4`, see the
+  `ResolveEnemyAttack`/`ResolvePlayerAttack` split above) copies
+  `bStat_speed` straight from `g_pPartyMasterStats[fighterType]` for
+  Harry/Hermione/Ron, unjittered; Buckbeak gets a hardcoded `bStat_speed
+  = 10` (alongside his other hardcoded stats: `bLevel 50`, `wHp`/`wHp_max
+  400`, `wMp`/`wMp_max 999`, `bAccuracy 101`, `bDefenseFactorPercent`/
+  `bMagicDefensePercent 100`) in the same function's `fighterType >= 3`
+  branch.
 - **`BuildTurnOrder_candidate`** (`0x0800E62C`) selection-sorts
   `pStagingFighters_candidate` into `pFighters` ascending by
   `bStat_speed` (with a tie-breaking bump so equal values still order
-  stably), then spawns each fighter's queue-position icon via
-  **`SpawnTurnOrderIcon_candidate`** (`0x08014F1C`, boundary only --
-  ends in an unrecovered indirect jump table).
+  stably), then, in a final pass over the now-sorted `pFighters`, spawns
+  each fighter's queue-position icon via **`SpawnTurnOrderIcon_candidate`**
+  (`0x08014F1C`, boundary only -- ends in an unrecovered indirect jump
+  table) and populates two small per-round lookup tables, confirmed at
+  the raw-disassembly level (`ldrb r1, [r1, #3]` reads `bSlotParam`
+  immediately before the store):
+  `field_0x1059[fighter.bSlotParam] = turnOrderIndex` for every `Enemy`
+  fighter (a 4-byte array, one slot per possible enemy seat), and
+  `field_0x105d[fighter.bSlotParam] = turnOrderIndex` for every
+  non-`Enemy` fighter (3 bytes, one slot per possible ally seat) --
+  both arrays 0xFF-initialized per-slot at roster setup
+  (`SetupBattleRoster_candidate`) and only ever holding *turn-order
+  positions* keyed by *UI slot number*, two genuinely different
+  quantities. Every menu-driven target confirm (`ConfirmEnemyTargetMenu`/
+  `ConfirmAllyTargetMenu`) writes a UI slot number (the menu cursor) into
+  `bSelectedActionIndex`, which attack resolution later maps back to a
+  real fighter via exactly one of these two tables -- see "Buckbeak's
+  targeting" below for what happens when `bSelectedActionIndex` holds
+  something else instead.
 - **`ReviveFighter_candidate`** (`0x0800E890`) restores
   `FightState.pTurnQueueFighters_candidate[fighterIndex]`'s `wHp`/`wMp`
   to max, then re-sorts the queue by `bStat_speed` to reinsert that
@@ -119,7 +142,7 @@ dangerous ones act early (Lupin Werewolf `=20`, Draco `=60`).
 ### `0x42` status-flags bits
 
 Two independent lines of evidence now cover this bitfield: how
-`ResolveMeleeAttack`/`ResolveSpellAttack` *read* it (below), and where
+`ResolveEnemyAttack`/`ResolvePlayerAttack` *read* it (below), and where
 it's actually *written* -- a status-effect sub-table (**opcode `0x97`**)
 inside the object/spell behavior-script bytecode interpreter at
 `FUN_08018cf8` (`0x08018cf8`). That interpreter runs one opcode per
@@ -142,7 +165,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
 `ShowBattleMessage` call instead, not `field_0x14a8`).
 
 - **bit `0x01`** = **Hidden** status. PROVEN. Read on the *defender* in
-  `ResolveMeleeAttack`: reduces the attacker's effective accuracy by 25
+  `ResolveEnemyAttack`: reduces the attacker's effective accuracy by 25
   and gates the bonus-damage/crit check (which only runs while this bit
   is clear) -- consistent with "target is hidden from view".
 
@@ -178,7 +201,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   (`0x080514c8`) is effect id `18`, whose script contains opcode `0x97`
   case `7` three times -- a real traced call site (see the "Poison
   Immunity" writeup below), not just an effect-to-description match.
-- **bit `0x08`** (checked on the *attacker* in `ResolveMeleeAttack`):
+- **bit `0x08`** (checked on the *attacker* in `ResolveEnemyAttack`):
   independently contributes one halving of the computed damage (see
   below). PROVEN as **Attack Weakened**: opcode `0x97` case 6
   (`0x0801a790`) OR's this bit in, then calls
@@ -198,11 +221,11 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   `SpecialMonsterPoisonBite`, see "Monster special-attack effects"
   below).
 - **bit `0x10`** = **Paralyzed**. PROVEN. Not read by
-  `ResolveMeleeAttack`/`ResolveSpellAttack` at all -- paralysis gates
+  `ResolveEnemyAttack`/`ResolvePlayerAttack` at all -- paralysis gates
   *action selection*, not damage. See "The paralysis mechanic" below for
   the whole family.
 - **bit `0x20`** = **DefenseBoost** (checked on the *defender* in
-  `ResolveMeleeAttack`): independently contributes one halving of the
+  `ResolveEnemyAttack`): independently contributes one halving of the
   computed damage. Set by opcode `0x97` case 0xb (`0x0801a8e4`), no
   message attached -- a silent status flag matching a passive
   defense buff. Named for the effect rather than a specific spell/card
@@ -226,7 +249,7 @@ below (`0x04`/`0x08`/`0x01` are PROVEN via a direct adjacent
   `bStatusFlags` bit), not traced further. The two halving bits (attacker's `0x08`, defender's
   `0x20`) stack multiplicatively: neither set -> no change; exactly one
   set -> damage `>>= 1`; both set -> damage `>>= 2` (quartered).
-- **bit `0x40`** = **SpellPowerBoost**: read by `ResolveSpellAttack` as
+- **bit `0x40`** = **SpellPowerBoost**: read by `ResolvePlayerAttack` as
   a `x4/3` power boost and a crit-chance boost (see below). Set by
   opcode `0x97` case 0x13 (`0x0801aa0a`), no message attached -- same
   shape as case 0xb. **PROVEN source: Hermione's "Proper Wand
@@ -550,16 +573,16 @@ no confirmed consumer and no known in-game effect. Found by checking
 every occurrence of the two literal constants `0x1054`/`0x1058`, which
 is not a proof that no reader exists by some other addressing path.
 
-## Attack resolution -- `ResolveMeleeAttack` (`sub_08017E44`, US `0x08017E44`)
+## Attack resolution -- `ResolveEnemyAttack` (`sub_08017E44`, US `0x08017E44`)
 
 **PROVEN**, traced end-to-end from the on-disk `gbadisasm` output
 (`build/us/full_disasm.s`) and confirmed via Ghidra decompilation
 against the typed `BattleFighter` struct.
 
-Signature: `int ResolveMeleeAttack(int attackerIndex, int defenderIndex)`.
+Signature: `int ResolveEnemyAttack(int attackerIndex, int defenderIndex)`.
 
 ```c
-int ResolveMeleeAttack(int attackerIndex, int defenderIndex) {
+int ResolveEnemyAttack(int attackerIndex, int defenderIndex) {
     BattleFighter *fighters = g_pFightState->pFighters;
     BattleFighter *attacker = &fighters[attackerIndex];
     BattleFighter *defender = &fighters[defenderIndex];
@@ -607,18 +630,19 @@ Notes:
   "Critical hit!" path above, at probability `bCritChance/101`
   (`Mt19937RandMax(100)` is 0-100 inclusive). Monster-only in practice --
   `InitPlayerBattleActor_candidate` never populates it for player
-  fighters, and `ResolveMeleeAttack` only ever fires with an `Enemy`
+  fighters, and `ResolveEnemyAttack` only ever fires with an `Enemy`
   attacker. Observed values: 3, 5, 10.
 - This function only resolves **one** attacker-vs-defender exchange.
-  **PROVEN melee-only**: live mGBA gdb-stub testing (breakpoint at
+  **PROVEN enemy-only**: live mGBA gdb-stub testing (breakpoint at
   `0x08017E44`) hit on an enemy's physical attack but did not hit when the
-  player cast a spell -- spell/magic damage goes through separate,
-  not-yet-traced code.
+  player cast a spell -- player damage goes through the separate
+  `ResolvePlayerAttack`, documented below (Buckbeak's own damage uses
+  neither function -- see "Buckbeak's turn" under "Turn order" above).
 
 ### The caller, and `activeFighterIndex`
 
 **PROVEN**, from the same live debugging session. Breaking at
-`ResolveMeleeAttack` during an enemy-attacks-player exchange captured
+`ResolveEnemyAttack` during an enemy-attacks-player exchange captured
 `r0=1, r1=0` -- confirming the parameter roles above (`r0`/`attackerIndex`
 first, `r1`/`defenderIndex` second) against real execution, not just
 static inference.
@@ -630,20 +654,20 @@ check:
 
 ```c
 if (MonsterTable[monsterIndex].special_effect_chance == 100) {
-    int damage = ResolveMeleeAttack(activeFighterIndex, defenderIndex);
+    int damage = ResolveEnemyAttack(activeFighterIndex, defenderIndex);
     g_nLastDamage = damage;                              // 0x0300274A
     RollMonsterSpecialEffect_candidate(monsterIndex, defenderIndex, damage);  // unconditional
 }
 ... // unrelated status-flag housekeeping in between
 if (MonsterTable[monsterIndex].special_effect_chance <= 99) {
-    int damage = ResolveMeleeAttack(activeFighterIndex, defenderIndex);
+    int damage = ResolveEnemyAttack(activeFighterIndex, defenderIndex);
     g_nLastDamage = damage;
     if (damage != 0)
         RollMonsterSpecialEffect_candidate(monsterIndex, defenderIndex, damage);  // only on a hit
 }
 ```
 
-So every monster attack goes through `ResolveMeleeAttack` exactly once
+So every monster attack goes through `ResolveEnemyAttack` exactly once
 (the two branches are mutually exclusive on the same `==100` check, not
 two different attacks) -- `special_effect_chance` doesn't gate whether a
 normal attack happens at all, only whether `RollMonsterSpecialEffect_candidate`
@@ -724,7 +748,7 @@ gameplay-mechanical payload.
 ### The attack-animation dispatcher (candidate, boundary confirmed, not fully walked)
 
 Found by walking the live call stack (mGBA gdb backtrace) up from
-`ResolveMeleeAttack`. Two small functions, seeded in `functions.us.cfg`
+`ResolveEnemyAttack`. Two small functions, seeded in `functions.us.cfg`
 (neither `gbadisasm` nor Ghidra discovers them -- the whole region reads
 as raw, un-analyzed bytes):
 
@@ -739,7 +763,7 @@ as raw, un-analyzed bytes):
 
 All 27 case bodies are traced to genuine termination -- see "The
 attack-animation state dispatcher" section below. Case 0 (`0x080156B4`)
-leads into the code that calls `ResolveMeleeAttack` at `0x08015BCE`.
+leads into the code that calls `ResolveEnemyAttack` at `0x08015BCE`.
 Deeper call-stack frames above this (through
 `0x08001FDA`, `0x0800091A`, `0x0802C822`, `0x0802C6B6`, into `main` at
 `0x08029690`) were captured in the same backtrace but not investigated --
@@ -838,10 +862,10 @@ the two ever disagree).
 | `+0x00` | `+0x08`, `+0x24` | `wHp`, `wHp_max` | `ApplyDamageToFighter` |
 | `+0x02` | `+0x0E` | `bLevel` | none for a monster's own value -- see "`BattleFighter+0xE`" below |
 | `+0x03` | `+0x2A` | `bStat_speed` | `BuildTurnOrder_candidate` -- see "Turn order" |
-| `+0x04` | `+0x2B` | `bAccuracy` | `ResolveMeleeAttack` hit/miss roll |
-| `+0x05` | `+0x2C` | `bCritChance` | `ResolveMeleeAttack` bonus-damage roll |
-| `+0x06`, `+0x08` | `+0x30`, `+0x32` | `wDamageRollMin`, `wDamageRollMax` | `ResolveMeleeAttack` damage roll |
-| `+0x0A`-`+0x0F` | `+0x34`-`+0x39` | `aSpellEffectiveness[6]` | `ResolveSpellAttack` |
+| `+0x04` | `+0x2B` | `bAccuracy` | `ResolveEnemyAttack` hit/miss roll |
+| `+0x05` | `+0x2C` | `bCritChance` | `ResolveEnemyAttack` bonus-damage roll |
+| `+0x06`, `+0x08` | `+0x30`, `+0x32` | `wDamageRollMin`, `wDamageRollMax` | `ResolveEnemyAttack` damage roll |
+| `+0x0A`-`+0x0F` | `+0x34`-`+0x39` | `aSpellEffectiveness[6]` | `ResolvePlayerAttack` |
 | `+0x10`, `+0x12` | `+0x0C`, `+0x28` | `wRewardXp`, `wRewardGold` | `ApplyDamageToFighter`, `GrantMonsterKillReward` |
 | `+0x14`, `+0x15` | -- | `special_effect_chance`, `special_effect_id` | `RollMonsterSpecialEffect_candidate` (read from the table directly, not copied into the fighter) |
 
@@ -873,7 +897,7 @@ Three callees identified from decompiling the dispatcher body (all
   `GetDialogText`. **Case 6** handles fainted messages (checks
   `bFaintMessageCount_candidate`), while case 5 handles damage-number
   text and does the `param_2 < 1000` check matching the `+999` sentinel
-  documented in `ResolveMeleeAttack` above.
+  documented in `ResolveEnemyAttack` above.
 - **`ShowDamageNumber_candidate`** (`0x08017B5C`) -- stores a damage
   value onto the target's sprite `Object+0x62` and triggers a state
   change via `SetFighterAttackAnimState_candidate`.
@@ -904,7 +928,7 @@ The call chain is `TickObjectList_candidate` -> (per object)
 `TickFighterAttackAnimState_candidate`, a generic
 per-object-per-frame callback dispatch. "AttackAnimState" is arguably
 too narrow given case `0x1a`'s broader turn/action-execution content
-(target selection, `ResolveMeleeAttack`, message/reward dispatch) -- not
+(target selection, `ResolveEnemyAttack`, message/reward dispatch) -- not
 renamed further here, flagged as a scope question rather than a naming
 error.
 
@@ -1004,26 +1028,118 @@ with [`battle-ui.md`](battle-ui.md)'s "Ron's Special Move effect ids", which res
 independently via the effect scripts' own `StatusEffect` content, once
 this table's real meaning is traced.
 
-The other case targets (`0x080160FC`, `0x08017A7C`, `0x080161A2`,
-`0x08017ADE`, `0x0801618A`, `0x080161FE`) haven't been walked yet.
+The dispatcher's jump table is **`PTR_FUN_08016090`** (27 entries, 4
+bytes each -- `TickPlayerActionState_candidate` itself is only its tiny
+head, `0x0801602C`-`0x0801608B`, which reads `Object+0x8D` and branches
+through this table). Read directly from ROM rather than inferred from
+decompiler output, every entry resolves to a genuinely separate,
+cleanly-bounded function -- unlike the spurious splits flagged elsewhere
+in this codebase, none of these are Ghidra mis-boundaries:
 
-## Player spell/action damage -- `ResolveSpellAttack` (`0x08017C24`)
+| Case | Address | Function |
+|---|---|---|
+| `0` | `0x080160FC` | `PlayActionWindupFlash` (`0x080160fc`-`0x08016189`) -- queues a palette-flash cue via `FUN_0800d264` (documented above as a palette-refresh/fade queue, e.g. undoing poison discoloration) keyed by an anim-table entry (`DAT_080512c0`/`DAT_080512b0`, indexed by `Object+0x8a`) and the high nibble of `Object+0xd5`, plus an anim-data-table switch via `FUN_08015484` (also documented above) -- the windup flash before the swing/cast animation starts |
+| `1` | `0x08017A7C` | `PlayFighterImpactSound` (`0x08017a7c`-`0x08017adb`) -- per-fighter-type sound (`Object+8`) plus a shared impact sound (`0x9c`), the moment the attack/spell visually connects |
+| `2` | `0x080161A2` | `ApplyDamageNumberAnimState` (`0x080161a2`-`0x080161fd`) -- commits a damage number previously staged at `Object+0x62` by `ShowDamageNumber_candidate`: sound `0x9b`, a HUD refresh (`FUN_08018b14`), then (once flag `0x40000` is set) resets the anim state and applies the damage via `ApplyStatusDamageToFighter_candidate` |
+| `3`, `6`-`14`, `16`-`20`, `22`-`25` | `0x08017B42` | `TickPlayerActionStateNoOp` (`0x08017b42`-`0x08017b51`) -- shared no-op default, also every other case's own tail branch target |
+| `4` | `0x080177D8` | `ApplyStatusRestoreItemEffect` (`0x080177d8`-`0x08017a71`) -- resolves a restorative-item/status-cure effect: `FUN_08026cdc(bSpellLevel)` selects among MP restore, SP restore, a cure call (`FUN_0800eb2c`), or `ClearParalyzedFighter_candidate`, each with its own `TriggerBattleEffect` id and `MpCost`/`SpCost`/`StatusRestore` message |
+| `5` | `0x08017ADE` | `ReturnFighterToPosition` (`0x08017ade`-`0x08017b41`) -- post-action wait/return-to-formation state: flips the sprite and arms a 30-frame counter on entry, then on expiry clears `bSelectedActionIndex`, un-flips, and resets the anim state |
+| `15` (`0xF`) | `0x0801618A` | `WaitForMoveThenApplyDamageNumber` (`0x0801618a`-`0x080161a1`) -- gated on `Object+0x3c`/`+0x40` both being zero -- the velocity fields `TickObjectMove` zeroes when a `MoveTo` finishes, per [`../formats/object_script.md`](../formats/object_script.md) -- i.e. waits for the fighter's current move to finish, calls the small unlabeled helper at `0x080177b2`, then falls straight through into `ApplyDamageNumberAnimState`'s body (case `2`) |
+| `21` (`0x15`) | `0x08016E64` | `HandleScriptedDamageEvent_candidate` (`0x08016e64`-`0x080177b1`) |
+| `26` (`0x1A`) | `0x080161FE` | `ExecutePlayerAttackSequence` (`0x080161fe`-`0x08016e47`) -- see below |
+
+All nine target functions sit back-to-back in ROM (`0x080160fc`
+through `0x08017b51`, one ~28-byte gap before
+`HandleScriptedDamageEvent_candidate` aside) and each branches into the
+shared tail `TickPlayerActionStateNoOp` rather than using
+`bx lr` -- the same `bl`-as-branch idiom already documented for
+`TickFighterAttackAnimState_candidate`'s own tail, just spread across
+real, independent functions here instead of case bodies inside one.
+Case `2` and case `0xF` share one body outright: `0x080161a1` (the last
+byte of `WaitForMoveThenApplyDamageNumber`) falls straight into
+`0x080161a2` (`ApplyDamageNumberAnimState`'s first byte) with
+no branch in between.
+
+Every name above except `HandleScriptedDamageEvent_candidate` (already
+named) and `ExecutePlayerAttackSequence` (see below) drops the
+`_candidate` suffix: each is confirmed by a concrete, independently
+corroborated mechanism (a direct `ShowBattleMessage`/`TriggerBattleEffect`
+call with a named code, a callee already documented elsewhere in this
+file or in `object_script.md`, or -- for `TickPlayerActionStateNoOp` --
+by simply reading its two-instruction body), not by shape alone.
+
+### Case `0x1A` (`ExecutePlayerAttackSequence`, `0x080161FE`) -- the player-side turn resolver, PROVEN
+
+**PROVEN**, per the table above: `0x080161FE` is case `0x1A` (26) of
+`TickPlayerActionState_candidate`'s jump table, and its own real
+function (`0x080161fe`-`0x08016e47`), not a fragment split off from
+anything else. A data xref from `0x080160F8` -- a slot in the same
+jump table -- lands directly on it, matching the table read above.
+
+This case is the player-side structural mirror of
+`TickFighterAttackAnimState_candidate`'s own case `0x1A` for enemies (see
+"The caller, and `activeFighterIndex`" above): it drives the whole
+attack/spell-cast sequence for a PC or Buckbeak turn end to end --
+
+- opens with the same `0x21`/`0x41` sub-state pair
+  (`TriggerBattleEffect`-adjacent camera/position setup, differing from
+  the enemy version only in using `g_pFightState->field_0x104c`/
+  `field_0x1050` positions and the `Fumos`/`SpellId==8` early-out, which
+  skips straight to the item-use tail since Fumos has no attack
+  animation of its own),
+- deducts `wMp` for the cast spell (`g_awSpellMpCost`) and mirrors it
+  into `g_pPartyMasterStats`,
+- calls **`ResolvePlayerAttack`** exactly twice: once for a single-target
+  cast (guarded by `bSelectedActionIndex != 0xFE`), once more inside the
+  `bField_0x60 == 4` sub-state for a party-wide spell (looped over every
+  `Enemy` fighter) -- the same `0x60`-byte 1-6 sub-state dispatch
+  `HandleScriptedDamageEvent_candidate`'s tail already documents for
+  fixed-damage scripted events, reused here for the real per-turn spell
+  formula's result,
+- fires **`TriggerBattleEffect`** for the cast spell/special-move's
+  effect script (`g_abSpellEffectId_candidate`-indexed), the same call
+  `RollMonsterSpecialEffect_candidate` makes on the enemy side,
+- and dispatches the `ResolvePlayerAttack` result through
+  `ShowDamageNumber_candidate`/`ApplyDamageToFighter`/
+  `ShowFloatingDamageNumber_candidate`/`ShowBattleMessage(FaintResult, ...)`,
+  identically shaped to enemy case `0x1A`'s own damage-application tail.
+
+So the two damage-resolution functions this document opens with are each
+reached from a symmetric pair of case-`0x1A` handlers, one per `pfnTick`
+callback: `TickFighterAttackAnimState_candidate` (`ResolveEnemyAttack`,
+enemies) and `TickPlayerActionState_candidate` (`ResolvePlayerAttack`,
+Harry/Hermione/Ron -- **not** Buckbeak, see "Buckbeak's turn" above,
+which uses neither function) -- the NPC-vs-PC split documented above as
+"which `pfnTick` callback got registered... at init" determines which
+*state machine* a fighter's turn runs through, but within
+`TickPlayerActionState_candidate`'s own case `0x1A`, Buckbeak is
+special-cased (`Object+8 == 3`) into a third, dedicated damage path of
+his own, bypassing `ResolvePlayerAttack` entirely.
+
+## Player spell/action damage -- `ResolvePlayerAttack` (`0x08017C24`)
 
 Found via `TickPlayerActionState_candidate`'s case `0x1A`, which calls it
-as `ResolveSpellAttack(attackerIndex, targetIndex)` and stores
+as `ResolvePlayerAttack(attackerIndex, targetIndex)` and stores
 the result into `DAT_0300274a` -- the same scratch slot
-`ResolveMeleeAttack`'s caller uses. This is the Harry/Hermione/Ron
-damage path (`ResolveMeleeAttack` is proven melee-only and covers
-enemies/Buckbeak instead); structurally similar in shape to
-`ResolveMeleeAttack` but a genuinely different formula, not a shared
-routine.
+`ResolveEnemyAttack`'s caller uses. This is the Harry/Hermione/Ron
+damage path (`ResolveEnemyAttack` is proven enemy-only, see below);
+structurally similar in shape to `ResolveEnemyAttack` but a genuinely
+different formula, not a shared routine. Named for the attacker side
+rather than the attack's own shape (all three are spell casts, keyed
+off `bSpellId`/`bSpellLevel`) since that's the split actually enforced
+in code (this is `TickPlayerActionState_candidate`'s case `0x1A`'s
+*general* single-target/party-wide dispatch, distinct from the
+Buckbeak-only sub-state at `Object+0x60==6` documented above, which
+never calls this function) -- not "melee vs. spell", which is what the
+prior name (`ResolveSpellAttack`) implied without capturing the
+enemy/PC split that's actually enforced.
 
 **The NPC-vs-PC split itself is now traced, PROVEN, in
 `TickBattleTurnStateMachine_candidate`'s case 4** (see "Poison's per-turn
 damage tick" above for that function's overview): non-`Enemy` fighters
 call `DispatchPendingAction()` directly (menu-driven action resolution,
 which for a normal spell cast leaves `bPendingActionKind ==
-None` and sets anim state `0x1a` -- reaching `ResolveSpellAttack` via
+None` and sets anim state `0x1a` -- reaching `ResolvePlayerAttack` via
 `TickPlayerActionState_candidate`'s own case `0x1A`), while `Enemy`
 fighters skip `DispatchPendingAction()` entirely and set anim state
 `0x1a` directly after an AI/target-select call
@@ -1034,19 +1150,94 @@ which `pfnTick` callback got registered on the fighter's `Object` once,
 at init -- `InitMonsterBattleActor` hardcodes
 `TickFighterAttackAnimState_candidate` (`0x08015608`) into every enemy
 Object's `+0x98` slot, and that dispatcher's case 0 is what calls
-`ResolveMeleeAttack` (itself additionally gated on `fighterType==0xFF`
-at its call site). Whatever initializes party members' Objects (not yet
-found -- no "InitPlayerBattleActor" analog located) must instead wire
-them to `TickPlayerActionState_candidate` (`0x0801602C`). Buckbeak
-(`fighterType==3`, non-`Enemy`) is the one wrinkle worth flagging: he
-goes through the same `DispatchPendingAction()`/`None` path as a normal
-spellcaster (`TrackSpellFamiliarity` explicitly excludes him via
-`fighterType != Buckbeak`, but the anim-state dispatch itself doesn't
-special-case him) -- whether he actually reaches `ResolveSpellAttack` in
-practice, or whether some other gate prevents it, isn't traced.
+`ResolveEnemyAttack` (itself additionally gated on `fighterType==0xFF`
+at its call site). **`InitPlayerBattleActor_candidate`** (`0x080149C4`)
+is that init function's party-side counterpart: it hardwires
+`pObject->pfnTick = TickPlayerActionState_candidate` (`0x0801602D`,
+thumb bit set) unconditionally, in the shared code above its own
+`fighterType < 3` (Harry/Hermione/Ron, stats copied from
+`g_pPartyMasterStats`) vs. `>= 3` (Buckbeak, hardcoded stats: `bLevel
+50`, `wHp`/`wHp_max 400`, `wMp`/`wMp_max 999`, `bAccuracy 101`,
+`bDefenseFactorPercent`/`bMagicDefensePercent 100`, `bStat_speed 10`)
+branch -- **PROVEN**: Buckbeak gets no separate `pfnTick` assignment of
+his own, so his turn is driven by the same `TickPlayerActionState_candidate`
+state machine as the three spellcasters, never `TickFighterAttackAnimState_candidate`.
+His damage itself, however, does **not** go through `ResolvePlayerAttack`
+-- see "Buckbeak's turn" immediately below, confirmed against raw
+disassembly, not decompiler inference.
+
+### Buckbeak's turn: target selection and damage, both PROVEN against raw disassembly
+
+`OpenBattleTopMenu` (`0x080104A0`) special-cases `bFighterType == Buckbeak`
+before any of its normal menu setup: it forces `bPendingActionKind = None`
+(the same value a confirmed spell cast leaves) and rejection-samples
+`Mt19937RandMax(6)` until it lands on a **living, non-`Enemy`** fighter's
+raw `pFighters` index, storing that raw index into `bSelectedActionIndex`.
+He never opens the real battle menu, so `TickBattleMenuInput` never runs
+for him.
+
+That raw index is **not** itself his target. Confirmed directly in
+`ExecutePlayerAttackSequence`'s raw disassembly
+(`build/us/full_disasm.s:37099-37136`): before resolving any single-target
+action, the same code path every spellcaster goes through checks
+`field_0x1059[bSelectedActionIndex]` -- and if it reads the `0xFF`
+sentinel (not a populated *enemy UI slot*, which is the only kind of
+value `field_0x1059` ever holds, see "Turn order" above), it linearly
+scans `field_0x1059` from index `0` for the first non-`0xFF` entry and
+**overwrites** `bSelectedActionIndex` with that slot's index:
+
+```asm
+ldrb r0, [r0]              ; field_0x1059[bSelectedActionIndex]
+cmp r0, #0xff
+bne _08016882                ; already valid -- skip the redirect
+movs r6, #0                   ; else scan forward...
+_08016864:
+    ldrb r0, [r0]
+    cmp r0, #0xff
+    beq _0801685C                ; ...while == 0xFF...
+_0801687E:
+    strb r6, [r0+0x3a]            ; ...then overwrite bSelectedActionIndex
+```
+
+Because Buckbeak's roll is a raw turn-order position (0-6) rather than a
+real enemy-slot number (0-3), it essentially never coincides with a
+populated `field_0x1059` entry, so this redirect fires and reassigns him
+to a real, currently-alive enemy every time -- `field_0x1059` never holds
+anything but enemy slot mappings, so the redirect **can only ever land
+on an enemy**, regardless of what his own roll produced. This is the
+actual mechanism behind "Buckbeak attacks a random enemy": his own roll
+functions as noise that gets discarded, and the redirect -- a generic
+stale-target safety net every caster shares -- is what picks his real
+target. (The identical pattern exists once more in this same function,
+`full_disasm.s:37040-37098`, scanning `field_0x105d` instead -- that's
+the mechanism behind Fumos needing a living ally target.)
+
+His damage formula is also confirmed skipping `ResolvePlayerAttack`
+entirely, at the raw-disassembly level (`full_disasm.s:37180-37182`):
+
+```asm
+ldrh r0, [r7, #8]     ; Object+8, species/fighter-type id
+cmp r0, #3
+beq _080169A4           ; == Buckbeak: branch clean past the MP-deduction
+                         ; + bl ResolvePlayerAttack block
+```
+
+Instead he lands in a separate, hardcoded-damage sub-state (`Object+0x60
+== 6`) shared by no other fighter type: `damage = (Harry's own bLevel >>
+1) + 30`, boosted `x4/3` if *his own* `SpellPowerBoost` status flag is
+set -- not `ResolvePlayerAttack`'s spell-table-driven formula at all.
+So despite reaching `TickPlayerActionState_candidate` like every other
+non-`Enemy` fighter, and despite his action being displayed as "Buckbeak
+attacks!" rather than "casts a spell:" (see
+[`battle-ui.md`](battle-ui.md)'s case-4 table), his actual damage
+formula is neither `ResolveEnemyAttack` nor `ResolvePlayerAttack` -- a
+third, Buckbeak-only path. `TrackSpellFamiliarity`'s separate
+`fighterType != Buckbeak` gate (see below) is consistent with this: he
+was never going to call a spell-progress-tracked formula in the first
+place.
 
 ```c
-int ResolveSpellAttack(int attackerIndex, int targetIndex) {
+int ResolvePlayerAttack(int attackerIndex, int targetIndex) {
     BattleFighter *attacker = &g_pFightState->pFighters[attackerIndex];
 
     // miss check -- skipped entirely (guaranteed hit) once
@@ -1103,18 +1294,18 @@ int ResolveSpellAttack(int attackerIndex, int targetIndex) {
     if (crit) power *= 2;
 
     int damage = (effectiveness * power) / 100 + 1;
-    if (crit) damage += 0x3E9;   // 1001 -- sentinel, same convention as ResolveMeleeAttack's +999
+    if (crit) damage += 0x3E9;   // 1001 -- sentinel, same convention as ResolveEnemyAttack's +999
     return damage;
 }
 ```
 
 ### `BattleFighter+0xE` (`bLevel`) -- PROVEN
 
-`ResolveSpellAttack` reads `bLevel` twice: as the term multiplying
+`ResolvePlayerAttack` reads `bLevel` twice: as the term multiplying
 `g_awSpellPowerScale[idx]` (divided by 9) into base power, and
 independently (`>>1`, capped at 12) as the spell crit-chance scale.
-`ResolveMeleeAttack` never reads it, and no monster ever becomes
-`ResolveSpellAttack`'s attacker, so a monster's own value has no
+`ResolveEnemyAttack` never reads it, and no monster ever becomes
+`ResolvePlayerAttack`'s attacker, so a monster's own value has no
 confirmed reader -- see the `MonsterTable` correspondence table above.
 
 **`bLevel` is a level counter.** `LevelUpFighter_candidate`
@@ -1156,9 +1347,9 @@ UNCONFIRMED elsewhere.** It's tracked identically to `bDefenseFactorPercent`
 Status/Equip-screen functions -- `DrawStatusEquipStatsPanel` (`0x0803A0F0`,
 the stat-list panel) and `DrawEquipItemStatComparison` (`0x080364A8`, the
 equipment change screen's before/after comparison) -- both confirming the
-in-game "Magic Def" label. But neither `ResolveMeleeAttack` nor
-`ResolveSpellAttack` reads it anywhere; unlike `bDefenseFactorPercent`
-(consumed by `ResolveMeleeAttack`'s `damage * value / 100`), no damage
+in-game "Magic Def" label. But neither `ResolveEnemyAttack` nor
+`ResolvePlayerAttack` reads it anywhere; unlike `bDefenseFactorPercent`
+(consumed by `ResolveEnemyAttack`'s `damage * value / 100`), no damage
 formula found so far applies this stat.
 
 **Verified against real in-game data** (Harry Lvl7, Hermione Lvl8, Ron
@@ -1193,14 +1384,14 @@ hardcoded defaults: `wHp`/`wMp_max` 400/999, `bLevel` `0x32`,
 
 ### `BattleFighter+0x3C`/`+0x3D` -- `bSpellId` (enum `SpellId`) / `bSpellLevel`
 
-Added to the struct at the offsets `ResolveSpellAttack` reads.
+Added to the struct at the offsets `ResolvePlayerAttack` reads.
 `bSpellLevel` (0-2) explains `ShowBattleMessage`'s
 `SpellLevelUp` case -- spells have 3 power tiers, and that case's
 `FUN_0803FF70`-driven jingle is almost certainly what plays when this
 field increments.
 
 **`SpellId` has 10 values (`0`-`9`), PROVEN directly from the Cast Spell
-menu's own name-lookup code, not inferred from `ResolveSpellAttack`'s
+menu's own name-lookup code, not inferred from `ResolvePlayerAttack`'s
 switch.** `DrawBattleMenuText` (`0x08011520`), the function that draws
 every battle-menu screen's text, has a `bMenuScreen == 2` (spell list)
 case reading `GetDialogText(g_abSpellIdByCursor[...] + 0x95F)` -- i.e.
@@ -1228,7 +1419,7 @@ gives the real enum, confirmed one-to-one:
 Glacius!". `PetrificusTotalus = 6` is independently PROVEN via
 `g_awSpellMpCost` below.
 
-`ResolveSpellAttack`'s `aSpellEffectiveness` switch has no case for
+`ResolvePlayerAttack`'s `aSpellEffectiveness` switch has no case for
 **four** of these ids -- `1`/`6`/`8`/`9` (`Informus`,
 `PetrificusTotalus`, `Fumos`, `Spongify`), all non-damage status spells
 (documentation, paralysis, evasion, attack-weaken), none of which
@@ -1338,7 +1529,7 @@ together:
   capability the engine uses where it's reachable.
 - **Only the four non-damage spells carry a `StatusEffect` opcode.**
   The other 13 scripts are pure cast animation; their damage comes from
-  `ResolveSpellAttack` above, not from the bytecode. Verified directly
+  `ResolvePlayerAttack` above, not from the bytecode. Verified directly
   against the extracted script text.
 
 `g_awSpellMpCost` follows the same shape -- `Fumos`'s `[8,30,0]` has a

@@ -72,7 +72,7 @@ because it discards the upper 17 bits of entropy entirely.
   - `+0x2B` (u8) -- accuracy stat, compared against
     `get_random_int_max(roll, 100)` to decide attack hit/miss (hit if
     `roll100 >= acc`). **Confirmed correct, see
-    [`battle.md`](battle.md)**: `ResolveMeleeAttack` (`0x08017E44`, found
+    [`battle.md`](battle.md)**: `ResolveEnemyAttack` (`0x08017E44`, found
     from an address contributed by jlun2) reads the attacker's `+0x2B` as
     an accuracy stat and rolls `Mt19937RandMax(99)` against it for
     hit/miss -- direction is hit if `roll < acc` (miss if `roll >= acc`),

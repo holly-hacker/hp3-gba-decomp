@@ -199,7 +199,7 @@ genuinely two separate layers, not just two ends of one function).
   `bSelectedActionIndex = cursor` and `field_0x1070 = 0`. Reads
   `field_0x1059` elsewhere in the target-select code in [`battle.md`](battle.md)
   (`g_pFightState->field_0x1059`, an array already used as an
-  enemy-roster-index list by `ResolveSpellAttack`'s callers) --
+  enemy-roster-index list by `ResolvePlayerAttack`'s callers) --
   **this screen targets enemies.** Used by: `Informus`, Ron's `Stink
   Pellet`/`Wizard Cracker`, the spell target-select path above, and
   Hermione's non-self lectures.
@@ -334,7 +334,7 @@ assignment is **STRUCTURAL MATCH**, corroborated by both position
 (matches the string-id order exactly) and content (the mechanically odd
 one out, effect `46`, lands on `Wizard Cracker`, the mechanically odd one
 out by gameplay behavior) -- not yet a live/dynamic confirmation the way
-`ResolveMeleeAttack` got one.
+`ResolveEnemyAttack` got one.
 
 ### The top-level battle menu, PROVEN via `data/text/en_us.json`
 
