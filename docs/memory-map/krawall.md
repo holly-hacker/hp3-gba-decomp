@@ -544,6 +544,41 @@ target etc. are installed rather than statically linked" from multiple
 sections above: they're installed, via this one `kramInstall` call, not
 per-function.
 
+## IWRAM mixer functions — identified [PROVEN]
+
+The 10 IWRAM-resident functions flagged throughout this document
+identify cleanly against public krawall's `lib/mixer.arm.c` /
+`lib/mixer_private.arm.c` / `lib/mixer_private.h` -- struct offsets,
+branch shapes, and constants (e.g. `kramStop`'s `vol > 5` ramp-out
+threshold, `mixFunc = 7`) match verbatim. ROM address `X` maps to IWRAM
+runtime address `0x03000000 + (X - 0x08FB0DB0)`, per `kramInstall`'s copy.
+
+`kramInstall`'s IWRAM+EWRAM source blob is byte-identical between US
+(`0x08FB0DB0`+) and JP (`0x08F44240`+) except for two unrelated absolute
+addresses in a data table past `mixReal` (`0x08FB1E10`, `0x08FB1EE4`) --
+none of the 10 functions differ, so the JP addresses below are a direct
+offset match, not a structural guess.
+
+| name | US ROM | US IWRAM | JP ROM | source |
+|---|---|---|---|---|
+| `kramPlayExt` | `0x08FB0E44` | `0x03000094` | `0x08F442D4` | `mixer.arm.c` |
+| `kramStop` | `0x08FB10D0` | `0x03000320` | `0x08F44560` | `mixer.arm.c` |
+| `kramSetFreq` | `0x08FB1198` | `0x030003E8` | `0x08F44628` | `mixer.arm.c` |
+| `kramSetVol` | `0x08FB11E4` | `0x03000434` | `0x08F44674` | `mixer.arm.c` |
+| `kramSetPan` | `0x08FB1264` | `0x030004B4` | `0x08F446F4` | `mixer.arm.c` |
+| `kramSetPos` | `0x08FB1328` | `0x03000578` | `0x08F447B8` | `mixer.arm.c` |
+| `mixBias` | `0x08FB1864` | `0x03000AB4` | `0x08F44CF4` | `mixer_private.arm.c` |
+| `mixClear` | `0x08FB18AC` | `0x03000AFC` | `0x08F44D3C` | `mixer_private.arm.c` |
+| `mix16to8` | `0x08FB18E8` | `0x03000B38` | `0x08F44D78` | `mixer_private.arm.c` |
+| `mix16to8_patch` | `0x08FB19A0` | `0x03000BF0` | `0x08F44E30` | `mixer_private.h` |
+
+`kramPlayExt`'s IWRAM entry is `0x03000094`. `0x03000090` (the "Where
+IWRAM code gets installed" watchpoint address above) sits 4 bytes into
+the previous function's literal pool.
+
+Named in `functions.us.cfg` and `functions.jp.cfg`, and labeled at their
+IWRAM addresses in the US Ghidra database.
+
 ### How this was tracked down: static search first, then dynamic
 
 "No bulk startup copy into IWRAM/EWRAM" (above) already ruled out a
@@ -744,12 +779,6 @@ or a different debugging frontend.
   contents rather than independently-linked globals, which changes how
   far their exact addresses can be trusted across a US/JP comparison
   (worth checking whether the JP build's copy uses the same addresses).
-- Disassemble the ~10 IWRAM functions themselves (the accumulator
-  clear/finalize passes, the `kramMixChannel`-family functions reached
-  through the `0x08FA9568` table). Unblocked: their source bytes are at
-  `0x08FB0DB0`+ in ROM, offset by `installed_addr - 0x03000000` for the
-  IWRAM ones and `installed_addr - 0x02000000 + 0x1598` for the EWRAM
-  ones.
 - Re-derive the `0x08FA9568` table's real shape against
   `mixPanTable[]`'s concrete 16-entry, 4-byte-stride model (indexed by
   `hq<<3 | mixFunc`), rather than the "32-byte descriptor bank" reading
