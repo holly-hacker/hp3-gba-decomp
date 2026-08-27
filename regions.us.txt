@@ -200,6 +200,13 @@ dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 # Bootstrap it locally with `just extract-monsters` before building.
 monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
 
+# g_pMonsterDropTable[69], indexed by MonsterTable roster index, 8 bytes/row:
+# 2 (chance:u16, itemId:u16) slots. Read by RollBattleItemDrops -- see
+# docs/memory-map/battle.md's "FightState->bBonusRewardFlags" section.
+# End address confirmed: 69 * 8 bytes lands exactly where the byte pattern
+# (every value's high byte 0) breaks.
+0x0804FC28 0x0804FE50 asm/data/monster_drop_table.s g_pMonsterDropTable
+
 # --- Per-character level-up stat tables ---
 #
 # level-table <start> <end> <json-file> <name>

@@ -580,8 +580,8 @@ opcode format itself.
 | Case | Name | Effect |
 |---|---|---|
 | `0x00`, `0x01`, `0x15` | `SpawnEffectA/B/C` | particle/VFX spawn only, no `BattleFighter` write |
-| `0x02` | `ExtraExpBonus` | sets `FightState+0x1480` bit `0x01` -- Harry's `Extra EXP` |
-| `0x03` | `GrantExtraXp` | sets `FightState+0x1480` bit `0x02` -- Hermione's "Good Study Habits" |
+| `0x02` | `ExtraExpBonus` | sets `FightState->bBonusRewardFlags` bit `0x01` -- Harry's `Extra EXP` |
+| `0x03` | `GrantExtraXp` | sets `FightState->bBonusRewardFlags` bit `0x02` -- Hermione's "Good Study Habits" |
 | `0x04` | `UnusedWinoutWrite` | writes GBA `WINOUT` directly; no real script reaches it |
 | `0x05` | `Poisoned` | see bitfield table above |
 | `0x06` | `AttackWeakened` | see bitfield table above |
@@ -602,20 +602,27 @@ opcode format itself.
 | `0x18` | (unnamed) | palette-flash calls only, no `BattleFighter` write |
 | `0x19` | `ReplenishPartySp` | every active non-fainted fighter: `wSp = wSp_max` |
 | `0x1A` | `ReplenishTargetMp` | `g_bEffectTargetIndex`'s fighter: `wMp = wMp_max` |
-| `0x1B` | `ForceItemDrop` | sets `FightState+0x1480` bit `0x04` -- Ron's `Wizard Cracker`. No located reader (see below) |
+| `0x1B` | `ForceItemDrop` | sets `FightState->bBonusRewardFlags` bit `0x04` -- Ron's `Wizard Cracker`. PROVEN, see below |
 | `0x1C` | `Revive` | `ReviveFighter_candidate`, see "Turn order" above |
 
-### `FightState+0x1480` -- bonus-reward flags, no located reader
+### `FightState->bBonusRewardFlags` -- bonus-reward flags, PROVEN
 
 A 3-bit "bonus reward for this encounter" byte, written by the three
-cases above and read nowhere in code either tool currently recognizes
-(every literal/shift-pair combination that can produce `0x1480` was
-checked, as was a direct `ldr =0x1480` and Ghidra's own analysis). Not
-proof of absence -- `gbadisasm`'s coverage is limited to
-`functions.us.cfg`-seeded territory, so a reader in unseeded code
-wouldn't appear. `Wizard Cracker`'s own description text confirms its
-effect is an item drop, not a gold bonus, but where an item actually gets
-added to inventory isn't located either.
+cases above. `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler in
+`GameModeDispatchEntry_ARRAY_08065cbc`) snapshots it into
+`g_dwBattleRewardFlagsSnapshot` right before `FightState` is freed. Bits
+`0x01`/`0x02` (`ExtraExpBonus`/`GrantExtraXp`) scale the XP shown by
+`InitializeVictoryXpScreen` (x3/x1.5). Bit `0x04` (`ForceItemDrop`) is
+read in `InitializeVictoryDropScreen` (`0x0801456C`, the victory
+screen's second phase) for a `25%` gold bonus (`gold += gold >> 2`,
+matching the `42*2*1.25 = 105` figure recorded earlier), and again in
+`RollBattleItemDrops` (`0x080147C0`): normally each fainted monster
+rolls `0`-`99` against `g_pMonsterDropTable[rosterIndex]`'s two
+`(chance, itemId)` slots, but this bit forces the roll to `0`, guaranteeing
+a hit on any slot with nonzero chance -- Ron's `Wizard Cracker` really
+does force an item drop, via a rigged roll rather than a stored `100%`
+value. Granted rewards (gold, items, Folio Universitas cards) go through
+`GrantBattleReward` (`0x08026DE0`).
 
 ### `FightState+0x1054`/`+0x1058`: write-only, purpose unknown
 
@@ -681,14 +688,45 @@ Spiders (`reward_xp=8`, `reward_gold=42`) awarded exactly `16` XP
 (`8*2`). Gold was `105` with Ron's `Wizard Cracker` active
 (`42*2*1.25 = 105` exactly) -- the source of that `25%` gold figure isn't
 determined (`Wizard Cracker`'s own description states an item-drop
-effect, not a gold bonus; see `FightState+0x1480` above). What consumes
-the two accumulators after battle isn't traced.
+effect, not a gold bonus; see `FightState->bBonusRewardFlags` above).
+`g_nXpAccum` is consumed by `InitializeVictoryScreen` (see "End-of-battle
+flow" below); what consumes `g_nGoldAccum` isn't traced.
 
 A second, independent path exists: `GrantMonsterKillReward` (object-script
 opcode `0x83`, `0x0801A254`) adds a species' `wRewardXp`/`wRewardGold`
 straight into the same accumulators, bypassing `ApplyDamageToFighter`
 entirely -- used by Harry's `Tempest Jinx` (banishes a monster without
 dealing damage, so it needs its own reward grant).
+
+## End-of-battle flow, PROVEN
+
+`TickBattleTurnStateMachine` (`0x0800F794`) drives `FightState->bBattleState`
+via `PushBattleState` (`0x08012AFC`; no-ops once already in end states
+`6`/`7`). `CheckBattleVictory` (`0x080186E0`, from the enemy attack-anim
+tick) pushes state `7` once every `Enemy` fighter's HP is `0`.
+`CheckBattleDefeat` (`0x08018304`, from `PostActionBattleCheck`
+(`0x08018ACC`), run after every HP-affecting action) pushes state `6`
+once every non-`Enemy` fighter's HP is `0` (Buckbeak-only encounters
+check only Buckbeak). Defeat also fully heals the party and sets
+`FightState->bDefeatWarpTarget` from a table indexed by
+`g_abQuestEventState[0x10]`, resetting index `0` to `0x1F` -- new
+territory for [`../formats/save.md`](../formats/save.md)'s
+`abQuestEventState`, which so far only covers index `25` and `~224`-`254`.
+
+State `6` calls `PushGameMode_2(Overworld, 0, bDefeatWarpTarget)`; state
+`7` calls `PushGameMode(VictoryScreen)`. `VictoryScreen` (`GameMode`
+`0x2C`) is an INIT/TICK/EXIT mode-dispatch entry
+(`GameModeDispatchEntry_ARRAY_08065cbc`, stride `0xC`) with two internal
+phases, both driven by `UpdateVictoryScreen`'s (`0x080138F4`) own state
+byte: an XP phase (`InitializeVictoryXpScreen`/`TickVictoryXpCounter`,
+rolling XP counter with level-up sound/animation) then a drop phase
+(`InitializeVictoryDropScreen`, "The fleeing enemy dropped:" plus up to
+2 items from `RollBattleItemDrops` and the gold total, see
+`bBonusRewardFlags` above). `ExitVictoryScreen` (`0x080148A8`) returns
+to `Battle` mode. `g_dwBattleRewardFlagsSnapshot` is set by `ExitBattle`
+(`0x0800DE50`, `Battle`'s mode-EXIT handler, previously misidentified as
+a draw function), which tears down `g_pFightState`. Reward granting
+itself goes through `GrantBattleReward` (`0x08026DE0`).
 
 ## Player spell/action damage -- `ResolvePlayerAttack` (`0x08017C24`)
 

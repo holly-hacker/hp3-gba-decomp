@@ -316,7 +316,7 @@ named `Effect44`/`45`/`46` in `tools/objscript/script_names.json`):
 - **Effect `46`**: fires only one `StatusEffect`, using **case `0x1B`
   (`27`), `ForceItemDrop`** -- see the "`StatusEffect` sub-cases, full
   case-by-case writeup" section below: it ORs bit `0x04` into
-  `FightState+0x1480`, the exact same byte/family `ExtraExpBonus`
+  `FightState->bBonusRewardFlags`, the exact same byte/family `ExtraExpBonus`
   (case `2`, bit `0x01`) and `GrantExtraXp` (case `3`, bit `0x02`) use.
   Mechanically distinct from both Stink Pellet variants (which both use
   the paralysis case `0x11`), confirming `Wizard Cracker` as a distinct,
@@ -324,7 +324,7 @@ named `Effect44`/`45`/`46` in `tools/objscript/script_names.json`):
   the ordering evidence predicted. `Wizard Cracker`'s own move
   description text (`data/text/en_us.json` string ids `1725`/`2615`)
   states its effect as making the target creature drop an item; what
-  reads `FightState+0x1480`'s bit `0x04` to grant that item is not
+  reads `FightState->bBonusRewardFlags`'s bit `0x04` to grant that item is not
   traced.
 
 Confidence: the menu-order/mechanism chain above (7-item table ->
