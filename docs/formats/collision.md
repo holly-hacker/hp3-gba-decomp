@@ -1,0 +1,155 @@
+# Room collision map
+
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED). This document adds a fourth,
+explicitly-labeled category: **user-verified**, meaning confirmed by a
+human playing the real game and matching what they saw against a
+rendered visualization of the data below -- strong empirical evidence,
+but not a code-level proof, and kept distinct from the other three for
+that reason.
+
+## Format
+
+**STRUCTURAL MATCH.** `LoadRoomSharedTileset_candidate` (`0x0802DD58`,
+consumer of the level table's `dwSharedTileset`/`dwSharedTilemap`
+fields, see [`levels.md`](levels.md)) decompresses two resources:
+
+- `g_pRoomCollisionBehaviorTable`: 16 tile-type bytes per metatile
+  pattern (a 4x4 grid, one byte per 8x8-px cell).
+- `g_pRoomCollisionTilemap`: a 4-byte header (first `u16` = pattern
+  count into `DAT_03003FB8`; second `u16` unconfirmed) followed by a
+  `u16` pattern-ID grid, one entry per 32x32-px block, over a room
+  `g_wRoomWidthPixels` x `g_wRoomHeightPixels` in size. The 4-byte
+  header size is ground-truth confirmed (`sub_0802DD58`: `adds r0, r1,
+  #4`, raw byte arithmetic on the buffer pointer, not a 2-byte skip).
+
+`GetCollisionTypeAtPixel_candidate` (`0x0802D7A0`) resolves a pixel to
+its tile-type byte (out-of-bounds = solid, type 1). The **low 6 bits**
+of that byte are the tile type (below); the **top 2 bits** are a
+separate value ("layer"), read by a different function
+(`0x0802E030`) and written into the player object's own state
+(`Object+0xD5` bits 2-3) once per frame -- **user-verified: layer=1 is
+an occlusion flag** (the player sprite draws behind that tile, e.g.
+walking under a roof overhang). Layers 2 and 3 are unconfirmed.
+
+## Movement blocking (PROVEN, via `FUN_0802DA20`)
+
+Only types **1-25** trigger the actual position-revert/blocking
+response in the movement-resolution function. **Types 26+ are passable
+by default** -- `ApplyTileCollisionEffect_candidate` (`0x0802D8F4`,
+dispatched from `CheckObjectTileCollision_candidate`/
+`ScanCollisionEdge_candidate`, `0x0802D868`/`0x0802DC3C`, which walk an
+object's swept movement box in 4px steps) only force-blocks two of
+them, and only conditionally:
+
+- `0x1F`: blocks unless a spell-effect object is currently active
+  (`DAT_03003FD4`, set by the generic effect-spawner `0x0802E090`) AND
+  the player object's `field_0x91` is set.
+- `0x29`: blocks every object except ones with `wObjectType==0xF`.
+
+`0x22` force-blocks objects with `wObjectType==0` specifically (exempts
+everything else, with an extra 4-corner pushable-adjacent check for
+`wObjectType==5`) -- code doesn't independently confirm what game-object
+class `wObjectType==0` is, but user-verified "0x22 is unwalkable water"
+is consistent with it being the player/common-character type.
+
+## Slope geometry (types 2-25, PROVEN)
+
+Each type indexes a 2-point line segment in `g_aSlopeLineSegments`
+(`0x080660A4`, 24 entries, 4-bit `(x0,y0)-(x1,y1)` local to the 8x8
+cell); a cross-product test decides which side of the line is solid, so
+solidity varies by position within the tile, not just tile identity.
+22/24 are a vertical midline (x=4), 23/25 a horizontal midline (y=4) --
+straight half-tile cuts, not diagonal.
+
+| Type | Segment | Type | Segment |
+|---|---|---|---|
+| 2 | (0,8)-(8,4) | 14 | (8,8)-(0,0) |
+| 3 | (0,4)-(8,0) | 15 | (4,8)-(0,0) |
+| 4 | (0,8)-(8,0) | 16 | (8,8)-(4,0) |
+| 5 | (0,8)-(4,0) | 17 | (4,0)-(0,8) |
+| 6 | (4,8)-(8,0) | 18 | (8,0)-(4,8) |
+| 7 | (0,0)-(4,8) | 19 | (8,0)-(0,8) |
+| 8 | (4,0)-(8,8) | 20 | (8,4)-(0,8) |
+| 9 | (0,0)-(8,8) | 21 | (8,0)-(0,4) |
+| 10 | (0,0)-(8,4) | 22 | (4,8)-(4,0) |
+| 11 | (0,4)-(8,8) | 23 | (0,4)-(8,4) |
+| 12 | (8,4)-(0,0) | 24 | (4,0)-(4,8) |
+| 13 | (8,8)-(0,4) | 25 | (8,4)-(0,4) |
+
+**Open bug, user-verified as real, widespread, and not room-specific**:
+room 25 ("Rooftop") shows more slope corners rendering wrong than right
+against actual gameplay -- a majority, not a rare edge case. Room 29
+("Gryffindor Common Room") shows the same kind of error in one area, and
+the user confirmed other rooms beyond just these two are also affected
+(not yet enumerated). This spread across multiple, unrelated rooms rules
+out "quirk in a couple of hand-placed tiles" and points at something
+systematic in this document's format understanding, not room-specific
+bad data. The types involved so far are all internally-consistent
+members of one ramp-direction family (not a mix that would suggest a
+simple table mis-transcription).
+
+The per-cell "layer" corner marker (see above) does not explain this:
+room 25's wrong corners are unchanged regardless of that marker's size.
+The bug is in the slope data/geometry understanding itself, not the
+visualization.
+
+**Untraced lead**: `FUN_0802DB20` is a second, separate consumer of
+`g_aSlopeLineSegments` (found via its Ghidra xref, not yet decompiled in
+depth) that also reads a small adjacent 4-entry table at `0x0806609C`
+(same nibble-packed segment format, indexed by a per-object facing value
+`obj+0x12 >> 1`) and computes large fixed-point deltas from the segment
+-- shaped like slope-slide/traversal-direction resolution (relevant to
+the ice/Glacius sliding-puzzle mechanic, `collision.md`'s type `0x2D`).
+This function was not involved in the extractor/renderer at all, so if
+it reveals a different slope-orientation convention than
+`GetCollisionTypeAtPixel_candidate` uses, that would explain a
+systematic mismatch. Best next step before more guessing.
+
+## Special types 26+ (passable terrain, effects)
+
+Code-confirmed meanings:
+
+| Type | Meaning |
+|---|---|
+| `0x22` (34) | Force-blocks `wObjectType==0`; pushable-block check for `wObjectType==5` |
+| `0x23` (35) | Room switch-state toggle A |
+| `0x24` (36) | Room switch-state toggle B |
+| `0x29` (41) | Blocks everything except `wObjectType==0xF` |
+| `0x2D` (45) | Sets a flag bit on the player object |
+
+User-verified (live gameplay against the rendered collision maps):
+
+| Type | Meaning |
+|---|---|
+| `0x1F` (31) | Lumos crossing -- Harry must cast Lumos to cross |
+| `0x2D` (45) | Ice -- Hermione's Glacius turns it into a sliding puzzle surface |
+| `0x2B` (43) | Stairs repairable by Hermione's Reparo |
+| `0x1B` (27) | Horizontal stairs, bottom-left/top-right |
+| `0x1C` (28) | Horizontal stairs, bottom-right/top-left |
+| `0x1E` (30) | Vertical stairs, bottom-at-bottom |
+| `0x25` (37) | Diagonal stairs, bottom-left to top-right |
+| `0x27` (39) | Diagonal stairs, bottom-top-right to top-bottom-left (tentative) |
+| `0x28` (40) | Diagonal stairs, bottom-right to top-left |
+
+Remaining observed-but-unidentified types: `0x1A` (26, by far the most
+common -- may just be a generic alternate wall/ground variant, not
+necessarily special), `0x1D` (29), `0x20` (32), `0x21` (33), `0x26`
+(38), `0x2A` (42), `0x2C` (44).
+
+## Extraction
+
+`just dump-collision` (`tools/collision/dump_collision.py`) renders
+every room to `extracted/collision/us/` for visual inspection: a plain
+walkability PNG and one annotated with per-type color/pattern + layer
+markers (`TYPE_LEGEND.png` in the same directory). Research/debugging
+aid only, not build input -- see the script's docstring for why there's
+no corresponding `pack` step yet.
+
+## Not yet located
+
+- Which game-object class `wObjectType==0` and `wObjectType==0xF` are.
+- Layer values 2 and 3's meaning.
+- The room 29/25 slope-orientation discrepancy -- see `FUN_0802DB20`
+  lead above.
+- JP-ROM addresses; everything above is US-only.

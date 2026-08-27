@@ -49,6 +49,16 @@ stitch ver="us":
 dump-krawall ver="us":
     python3 tools/krawall/dump_krawall.py {{ver}} > /dev/null
 
+# Research/debugging aid only -- NOT build input (no pack-collision
+# exists; the room-table collision fields aren't proven complete enough
+# for a regions.<ver>.txt row yet, see docs/formats/collision.md).
+# Renders each room's collision map as walkability + tile-type PNGs
+# straight from the baserom, for checking against real gameplay. US only
+# (JP room-table address not yet located).
+# Render every room's collision map to extracted/collision/<ver>/ PNGs.
+dump-collision ver="us":
+    python3 tools/collision/dump_collision.py {{ver}}
+
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/audio/ is gitignored (same footing as the baserom, see
 # CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
