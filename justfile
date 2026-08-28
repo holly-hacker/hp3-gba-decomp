@@ -195,6 +195,12 @@ build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-monster
     python3 tools/check_sections.py {{ver}}
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
+# For matching work: `just compare` only reports a byte offset, this says
+# which instructions differ.
+# Disassemble one region side by side against the donor ROM.
+diff-region name ver="us": (build ver)
+    python3 tools/diff_region.py {{ver}} {{name}}
+
 # Build and check the result matches the donor ROM byte-for-byte.
 compare ver="us": (build ver)
     cmp baserom.{{ver}}.gba build/{{ver}}/rom.gba && echo "MATCH"

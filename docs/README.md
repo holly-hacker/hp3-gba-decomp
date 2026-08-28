@@ -30,6 +30,9 @@ Engine and toolchain:
 - [`compiler.md`](compiler.md) — the toolchain: GCC `2.9-arm-000512`
   (agbcc) + binutils + newlib, the byte-exact libgcc/libc block that
   proves it, and the flags each half of the ROM was built with.
+- [`c.md`](c.md) — adding a `c-file` region: the pipeline, what agbcc
+  accepts, the constraints that affect matching, and `just diff-region`
+  for iterating on one that doesn't.
 
 Memory map (live RAM layout and the code that drives it):
 
