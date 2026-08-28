@@ -12,7 +12,7 @@ setup:
     sha1sum -c rom.us.sha1
     sha1sum -c rom.jp.sha1
 
-# Discovery/reference aid only -- NOT used by the build (see `stitch`).
+# Discovery/reference aid only -- NOT used by the build (see `gen-link`).
 # Regenerate the full-ROM disassembly from the baserom + function config.
 disasm ver="us":
     mkdir -p build/{{ver}}
@@ -33,12 +33,12 @@ disasm-compare ver="us": (disasm ver)
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/full_disasm.elf build/{{ver}}/full_disasm.gba
     cmp baserom.{{ver}}.gba build/{{ver}}/full_disasm.gba && echo "MATCH"
 
-# Everything not yet extracted becomes .incbin, everything in the manifest
-# an .include of its curated asm/data file.
-# Generate the actual build input from regions.<ver>.txt.
-stitch ver="us":
+# One object per region, gaps .incbin'd from the baserom, and a linker
+# script placing each at its manifest address.
+# Generate the build inputs from regions.<ver>.txt.
+gen-link ver="us":
     mkdir -p build/{{ver}}
-    python3 tools/gen_rom_s.py {{ver}} > build/{{ver}}/rom.s
+    python3 tools/gen_link.py {{ver}}
 
 # Research/debugging aid only -- NOT build input (the build gets its
 # Krawall assembly from `pack-krawall`). Dumps each Krawall region as a
@@ -183,10 +183,11 @@ pack-levels ver="us":
 extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels extract-items extract-item-icons
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
-# Assemble and link the stitched output into a ROM image.
-build ver="us": (stitch ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver)
-    arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/rom.s -o build/{{ver}}/rom.o
-    arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/rom.o -o build/{{ver}}/rom.elf
+# Assemble every region and link them at their manifest addresses.
+build ver="us": (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
+    for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
+    arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
+    python3 tools/check_sections.py {{ver}}
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
 # Build and check the result matches the donor ROM byte-for-byte.
@@ -195,11 +196,11 @@ compare ver="us": (build ver)
 
 # Not `check` -- that name's reserved for the fancier configure.py+ninja+
 # objdiff version described in CLAUDE.md's "Target toolchain", not built
-# yet. Verifies donor ROMs, then the full disassembly and the stitched
+# yet. Verifies donor ROMs, then the full disassembly and the linked
 # build for both versions.
 # Full sanity sweep: run everything, confirm it all still matches. Run before committing.
 check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (compare "jp")
-    @echo "us and jp: full disassembly and stitched build both match the donor ROM."
+    @echo "us and jp: full disassembly and linked build both match the donor ROM."
 
 # Lossy (effect remapping, pattern rewrites for playback accuracy) and NOT
 # used by the build -- see docs/formats/krawall.md. Writes to extracted/,

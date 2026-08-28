@@ -596,8 +596,8 @@ gitignored):
   the packer computes and emits it directly, labeled `g_apEffectScripts`
   to match the ROM.
 - `regions.us.txt`'s `objscript-table` row (`0x0805994C`-`0x0805BA7C`)
-  and `tools/gen_rom_s.py`'s `objscript-table` directive wire the packed
-  output into the stitched build the same way `monster-table` does.
+  and `tools/manifest.py`'s `objscript-table` directive wire the packed
+  output into the build the same way `monster-table` does.
 
 ### Renaming a script
 

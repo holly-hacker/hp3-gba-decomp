@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Locate and precisely bound all Krawall audio data in a ROM, and write
 each region out as a raw binary asm/krawall/<kind>/<name>.bin file plus
-the corresponding regions.<ver>.txt row (gen_rom_s.py .incbin's these
+the corresponding regions.<ver>.txt row (gen_link.py .incbin's these
 directly -- see its handling of a .bin asm-file extension). The .bin
 files are the game's actual copyrighted audio content and must never be
 committed (gitignored, like baserom.*.gba); regenerate them locally by
@@ -250,7 +250,7 @@ def find_regions(ver: str) -> tuple[bytes, list[Region]]:
 def write_region_file(data: bytes, region: Region) -> None:
     """Raw binary, not a hex-text .s dump -- this is the game's actual
     copyrighted audio content, so it must never be committed (see
-    asm/krawall/ in .gitignore). gen_rom_s.py .incbin's it directly."""
+    asm/krawall/ in .gitignore). gen_link.py .incbin's it directly."""
     path = Path(region.path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data[region.start:region.end])

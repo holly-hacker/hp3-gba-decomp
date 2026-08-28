@@ -39,7 +39,7 @@ label 0x080000C0 _080000C0
 # krawall-module <start> <end> <json-file> <name>
 #   A module (song) plus its own patterns, packed from curated
 #   data/audio/modules/<name>.json (+ the sample WAVs it references) by
-#   tools/krawall/pack_krawall.py before `stitch` runs (see the `pack-krawall`
+#   tools/krawall/pack_krawall.py before `gen-link` runs (see the `pack-krawall`
 #   recipe). One row per module: a module's own patterns are contiguous
 #   with each other and immediately precede its header in ROM, so the
 #   whole [patterns][header] span is one region -- confirmed in
@@ -56,7 +56,7 @@ label 0x080000C0 _080000C0
 # footing as the baserom (see CLAUDE.md hard rule 2) -- bootstrap it
 # locally with `just extract-krawall` before building. tools/krawall/pack_krawall.py
 # writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
-# like everything else in build/), which is what gen_rom_s.py includes.
+# like everything else in build/), which is what gen_link.py includes.
 krawall-module 0x08A9C500 0x08AA0884 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0884 0x08AA4C38 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4C38 0x08AA6368 data/audio/modules/MusBattle.json MusBattle

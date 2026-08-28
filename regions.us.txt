@@ -10,8 +10,8 @@
 #   a function earns a row here -- see docs/ for how each was confirmed.
 #
 # Everything not covered by a region stays as raw .incbin from
-# baserom.us.gba, filled in by tools/gen_rom_s.py. The file it generates
-# (build/us/rom.s) is never committed, same as everything else in build/.
+# baserom.us.gba, emitted as gap sections by tools/gen_link.py. Nothing
+# it generates is committed, same as everything else in build/.
 #
 # A row whose asm-file is also listed in regions.jp.txt at the same
 # address must be byte-identical in both ROMs at that address (verified,
@@ -20,7 +20,7 @@
 # krawall-module/krawall-samples <start> <end> <source> <name>
 #   See the "Krawall audio data" section below for these two directives --
 #   curated JSON+WAV source under data/audio/, packed to real assembly by
-#   tools/krawall/pack_krawall.py before `stitch` (the `pack-krawall` recipe).
+#   tools/krawall/pack_krawall.py before `gen-link` (the `pack-krawall` recipe).
 
 label 0x080000C0 _080000C0
 
@@ -73,7 +73,7 @@ label 0x080208B4 sub_080208B4
 # krawall-module <start> <end> <json-file> <name>
 #   A module (song) plus its own patterns, packed from curated
 #   data/audio/modules/<name>.json (+ the sample WAVs it references) by
-#   tools/krawall/pack_krawall.py before `stitch` runs (see the `pack-krawall`
+#   tools/krawall/pack_krawall.py before `gen-link` runs (see the `pack-krawall`
 #   recipe). One row per module: a module's own patterns are contiguous
 #   with each other and immediately precede its header in ROM, so the
 #   whole [patterns][header] span is one region -- confirmed in
@@ -90,7 +90,7 @@ label 0x080208B4 sub_080208B4
 # footing as the baserom (see CLAUDE.md hard rule 2) -- bootstrap it
 # locally with `just extract-krawall` before building. tools/krawall/pack_krawall.py
 # writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
-# like everything else in build/), which is what gen_rom_s.py includes.
+# like everything else in build/), which is what gen_link.py includes.
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 0x08AA6538 data/audio/modules/MusBattle.json MusBattle
@@ -152,7 +152,7 @@ krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 #   2767 compressed strings, byte-aligned per string, 4-byte-aligned as
 #   a whole -- see docs/formats/text.md and tools/text/text_codec.py), packed
 #   from curated data/text/<lang>.json by tools/text/pack_text.py before
-#   `stitch` runs (see the `pack-text` recipe). US/EU cart only --
+#   `gen-link` runs (see the `pack-text` recipe). US/EU cart only --
 #   dialog text has not been located in the JP ROM (very likely a
 #   different mechanism, not proven identical the way Krawall content
 #   is -- see docs/formats/text.md).
@@ -168,7 +168,7 @@ krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 # footing as the baserom and data/audio/. Bootstrap it locally with
 # `just extract-text` before building. tools/text/pack_text.py writes the
 # actual packed assembly to build/<ver>/text/ (also gitignored), which
-# is what gen_rom_s.py includes.
+# is what gen_link.py includes.
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb
@@ -189,7 +189,7 @@ dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 #   switch/jump table) and by the battle-init HP-copy code -- see
 #   docs/formats/folio_bruti.md. Packed from curated
 #   data/monsters/monsters.json by tools/monsters/pack_monsters.py before
-#   `stitch` runs (see the `pack-monsters` recipe). End address confirmed
+#   `gen-link` runs (see the `pack-monsters` recipe). End address confirmed
 #   two independent ways: 69 * 24 bytes lands exactly on the
 #   already-known table at 0x0804FA88, and matches the RAM state-array
 #   reset loop bound in sub_080370A0. US ROM only -- content not yet
@@ -217,7 +217,7 @@ monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
 #   255-speed; XP-to-next-level = cumulative sum of each row's XP-delta
 #   field) -- see docs/memory-map/battle.md. Packed from curated
 #   data/levels/<name>.json by tools/levels/pack_levels.py before
-#   `stitch` runs (see the `pack-levels` recipe). Tables are contiguous
+#   `gen-link` runs (see the `pack-levels` recipe). Tables are contiguous
 #   in ROM in this order (Harry, Ron, Hermione), confirming the
 #   100-record/12-byte sizing independently. US ROM only -- content not
 #   yet checked against JP.
@@ -240,7 +240,7 @@ level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
 #   indexed by effect id). See docs/formats/object_script.md. Packed
 #   from curated data/scripts/ (one text file per effect, ordered by
 #   data/scripts/index.json, not by filename -- see that doc) by
-#   tools/objscript/pack_objscript.py before `stitch` runs (see the
+#   tools/objscript/pack_objscript.py before `gen-link` runs (see the
 #   `pack-objscript` recipe). Both the script bytes and the pointer
 #   table are emitted by that one packer -- the table itself isn't
 #   hand-curated, it's fully determined by script order/size.
@@ -262,7 +262,7 @@ objscript-table 0x0805994C 0x0805BA7C data/scripts g_apEffectScripts
 #   all-zero slots of the same allocation -- all 132 are packed here so
 #   the region round-trips byte-exact. See docs/formats/save.md's "Item
 #   quantities and equipment" section. Packed from curated
-#   data/items/items.json by tools/items/pack_items.py before `stitch`
+#   data/items/items.json by tools/items/pack_items.py before `gen-link`
 #   runs (see the `pack-items` recipe). End address confirmed: 132 *
 #   52 bytes lands exactly on the unrelated pointer table that follows
 #   at 0x080629B4. US ROM only -- content not yet checked against JP.

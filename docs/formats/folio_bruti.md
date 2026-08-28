@@ -416,8 +416,8 @@ the Krawall/dialog-text pipelines:
   `monster-table` row in `regions.<ver>.txt`, re-packs each record with
   `monster_codec.pack_record` and writes `build/<ver>/monsters/*.s`.
 - `regions.us.txt`'s new `monster-table` row (`0x0804F410`-`0x0804FA88`)
-  and `tools/gen_rom_s.py`'s new `monster-table` directive wire the
-  packed output into the stitched build the same way `krawall-module`
+  and `tools/manifest.py`'s `monster-table` directive wire the
+  packed output into the build the same way `krawall-module`
   rows do.
 - Each JSON record also gets leading `_name`/`_description` fields
   (`extract_monsters.py`, `NAME_STRING_ID_BASE`/`DESC_STRING_ID_BASE` +

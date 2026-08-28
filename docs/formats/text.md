@@ -385,7 +385,7 @@ real, complete string count, not an arbitrary scan cutoff.
 
 Mirrors Krawall's `data/audio/` + `tools/krawall/pack_krawall.py` model (see
 `CLAUDE.md`): curated, editable, gitignored source that a pack step
-turns into byte-exact assembly before `stitch`, verified by the same
+turns into byte-exact assembly before `gen-link`, verified by the same
 `just compare`/`just check-all` full-ROM sha1 oracle every other region
 already has to pass.
 
