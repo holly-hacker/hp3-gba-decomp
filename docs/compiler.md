@@ -20,7 +20,7 @@ object padding appears as `0000` linker fill in the ROM):
 
 | US | JP | object | bytes |
 |---|---|---|---|
-| `0804A2C0` | `0804A1EC` | `_call_via_rX` | 58 |
+| `0804A2C0` | `0804A1EC` | `_call_via_rX` | 60 |
 | `0804A2FC` | `0804A228` | `_divsi3` | 148 |
 | `0804A390` | `0804A2BC` | `_dvmd_tls` (`__div0`) | 4 |
 | `0804A394` | `0804A2C0` | `_modsi3` | 208 |

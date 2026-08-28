@@ -12,6 +12,8 @@ label 0x080000C0 _080000C0
 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
 
 # Thumb-mode division runtime
+0x0804A1EC 0x0804A228 asm/rt/call_via_rX.s              _call_via_r0
+0x0804A228 0x0804A2BC asm/rt/divsi3.s                   __divsi3
 0x0804A2BC 0x0804A2C0 asm/rt/div0.s                    __div0
 0x0804A390 0x0804A408 asm/rt/udivsi3.s                 __udivsi3
 0x0804A408 0x0804A4C8 asm/rt/umodsi3.s                 __umodsi3
