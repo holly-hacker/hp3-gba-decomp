@@ -77,34 +77,32 @@ straight half-tile cuts, not diagonal.
 | 12 | (8,4)-(0,0) | 24 | (4,0)-(4,8) |
 | 13 | (8,8)-(0,4) | 25 | (8,4)-(0,4) |
 
-**Open bug, user-verified as real, widespread, and not room-specific**:
-room 25 ("Rooftop") shows more slope corners rendering wrong than right
-against actual gameplay -- a majority, not a rare edge case. Room 29
-("Gryffindor Common Room") shows the same kind of error in one area, and
-the user confirmed other rooms beyond just these two are also affected
-(not yet enumerated). This spread across multiple, unrelated rooms rules
-out "quirk in a couple of hand-placed tiles" and points at something
-systematic in this document's format understanding, not room-specific
-bad data. The types involved so far are all internally-consistent
-members of one ramp-direction family (not a mix that would suggest a
-simple table mis-transcription).
+**Resolved: this is a real in-game bug, not an extraction error.**
+Room 25 ("Rooftop") and room 29 ("Gryffindor Common Room"), among others,
+have slope corners where the rendered collision map disagrees with naive
+expectation -- but user-verified live play gets stuck on those exact
+corners the same way the map predicts. The game's own slope data/logic is
+buggy or incomplete at these corners; the extraction is correct.
 
-The per-cell "layer" corner marker (see above) does not explain this:
-room 25's wrong corners are unchanged regardless of that marker's size.
-The bug is in the slope data/geometry understanding itself, not the
-visualization.
+Confirmed byte-exact against the ROM along the way (geometry, indexing,
+table data, pattern bounds), which is what let the live-play check settle
+this as a game bug rather than a modeling error:
 
-**Untraced lead**: `FUN_0802DB20` is a second, separate consumer of
-`g_aSlopeLineSegments` (found via its Ghidra xref, not yet decompiled in
-depth) that also reads a small adjacent 4-entry table at `0x0806609C`
-(same nibble-packed segment format, indexed by a per-object facing value
-`obj+0x12 >> 1`) and computes large fixed-point deltas from the segment
--- shaped like slope-slide/traversal-direction resolution (relevant to
-the ice/Glacius sliding-puzzle mechanic, `collision.md`'s type `0x2D`).
-This function was not involved in the extractor/renderer at all, so if
-it reveals a different slope-orientation convention than
-`GetCollisionTypeAtPixel_candidate` uses, that would explain a
-systematic mismatch. Best next step before more guessing.
+- `FUN_0802DB20` is the per-object slope-slide/direction-reversal state
+  machine behind the ice/Glacius puzzle (type `0x2D`), driven by
+  `FUN_0802DA20`'s `Object.bUnk_0x7C` states 1/2/4/5 -- not a second
+  geometry consumer; it indexes `g_aSlopeLineSegments` the same way the
+  real solidity test does.
+- `GetCollisionTypeAtPixel_candidate` (`0x0802D7A0`) is the real per-pixel
+  solidity test, and `tools/collision/dump_collision.py` matches its
+  cross product, nibble decode, and per-cell index exactly.
+- The 24 raw table entries read from `baserom.us.gba` match the table
+  above exactly.
+- `FUN_0802E030` (layer accessor) is just `(byte>>6)+1`, no geometry
+  feedback.
+- Rooms 25/29's tilemap header pattern counts match their behavior
+  tables' actual pattern counts exactly (307/307, 80/80), no
+  out-of-range pattern IDs.
 
 ## Special types 26+ (passable terrain, effects)
 
@@ -122,20 +120,26 @@ User-verified (live gameplay against the rendered collision maps):
 
 | Type | Meaning |
 |---|---|
-| `0x1F` (31) | Lumos crossing -- Harry must cast Lumos to cross |
-| `0x2D` (45) | Ice -- Hermione's Glacius turns it into a sliding puzzle surface |
-| `0x2B` (43) | Stairs repairable by Hermione's Reparo |
 | `0x1B` (27) | Horizontal stairs, bottom-left/top-right |
 | `0x1C` (28) | Horizontal stairs, bottom-right/top-left |
+| `0x1D` (29) | Vertical stairs, bottom-at-bottom, top-at-top |
 | `0x1E` (30) | Vertical stairs, bottom-at-bottom |
+| `0x1F` (31) | Lumos crossing -- Harry must cast Lumos to cross |
 | `0x25` (37) | Diagonal stairs, bottom-left to top-right |
+| `0x26` (38) | Diagonal stairs, bottom-top-left to top-bottom-right |
 | `0x27` (39) | Diagonal stairs, bottom-top-right to top-bottom-left (tentative) |
 | `0x28` (40) | Diagonal stairs, bottom-right to top-left |
+| `0x2B` (43) | Stairs repairable by Hermione's Reparo |
+| `0x2D` (45) | Ice -- Hermione's Glacius turns it into a sliding puzzle surface |
 
 Remaining observed-but-unidentified types: `0x1A` (26, by far the most
 common -- may just be a generic alternate wall/ground variant, not
-necessarily special), `0x1D` (29), `0x20` (32), `0x21` (33), `0x26`
-(38), `0x2A` (42), `0x2C` (44).
+necessarily special), `0x20` (32), `0x21` (33, seen only in Potions
+Classroom Maze/Path to Hagrid's Hut/Shrieking Shack Path -- no visible
+in-game effect found so far, possibly a marker tied to a specific
+playable character's action), `0x2A` (42), `0x2C` (44, likely stairs --
+vertical bottom-at-top, or diagonal bottom-at-top-right -- not
+distinguishable yet).
 
 ## Extraction
 
@@ -150,6 +154,4 @@ no corresponding `pack` step yet.
 
 - Which game-object class `wObjectType==0` and `wObjectType==0xF` are.
 - Layer values 2 and 3's meaning.
-- The room 29/25 slope-orientation discrepancy -- see `FUN_0802DB20`
-  lead above.
 - JP-ROM addresses; everything above is US-only.
