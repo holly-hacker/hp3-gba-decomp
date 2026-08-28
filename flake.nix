@@ -67,6 +67,42 @@
             cp unkrawerter $out/bin/
           '';
         };
+
+        # The compiler the ROM was built with (docs/compiler.md). agbcc_arm
+        # isn't built -- it doesn't configure on a modern host.
+        agbcc = pkgs.stdenv.mkDerivation {
+          pname = "agbcc";
+          version = "unstable-2026-01-20";
+          src = pkgs.fetchFromGitHub {
+            owner = "pret";
+            repo = "agbcc";
+            rev = "da598c1d918402c42c0c0d7128ba14567f3175e9";
+            hash = "sha256-/7SM2bRuz44WQiomMYqkf4pXge0ypSNViVu26FnEi2Q=";
+          };
+          nativeBuildInputs = [ pkgs.gcc-arm-embedded ];
+          # gcc/Makefile races on its generated headers, hence -j1.
+          buildPhase = ''
+            runHook preBuild
+            make -C gcc old -j1
+            mv gcc/old_agbcc .
+            make -C gcc clean
+            make -C gcc -j1
+            mv gcc/agbcc .
+            make -C libgcc -j$NIX_BUILD_CORES
+            make -C libc -j$NIX_BUILD_CORES
+            runHook postBuild
+          '';
+          # Layout follows agbcc's install.sh.
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out/bin $out/lib
+            cp agbcc old_agbcc $out/bin/
+            cp libgcc/libgcc.a libc/libc.a $out/lib/
+            cp -R libc/include $out/include
+            cp ginclude/* $out/include/
+            runHook postInstall
+          '';
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -77,6 +113,7 @@
             pkgs.mgba
             gbadisasm
             unkrawerter
+            agbcc
           ];
         };
       });

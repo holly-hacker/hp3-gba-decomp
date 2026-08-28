@@ -89,10 +89,7 @@ compiler's own division helpers are the Thumb `_divsi3`/`_modsi3`/
 
 ## Reproducing
 
-```sh
-git clone https://github.com/pret/agbcc && cd agbcc
-nix develop /path/to/hp3-gba-decomp --command ./build.sh   # needs arm-none-eabi-as/ar
-```
-
-`make -C gcc` must run with `-j1`; parallel builds race on generated
-headers. Then compare any object's `.text` against the addresses above.
+`nix develop` provides `agbcc` and `old_agbcc`; `flake.nix` pins the
+source. Compare any object's `.text` from its `libgcc.a`/`libc.a` against
+the addresses above, or read `tools/c/compile_c.py` for the flags each
+half of the ROM was built with.
