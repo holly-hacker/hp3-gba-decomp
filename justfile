@@ -188,6 +188,12 @@ extract-all: extract-krawall extract-text extract-monsters extract-objscript ext
 compile-c ver="us":
     python3 tools/c/compile_c.py {{ver}}
 
+# Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def
+# only -- not a build input). Re-run after a flake update, since the agbcc
+# include path lives in the Nix store.
+gen-compile-commands:
+    python3 tools/c/gen_compile_commands.py
+
 # Assemble every region and link them at their manifest addresses.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
     for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
