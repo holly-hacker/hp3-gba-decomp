@@ -183,8 +183,13 @@ pack-levels ver="us":
 extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels extract-items extract-item-icons
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
+# Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
+# Compile the c-file rows of regions.<ver>.txt to assembly.
+compile-c ver="us":
+    python3 tools/c/compile_c.py {{ver}}
+
 # Assemble every region and link them at their manifest addresses.
-build ver="us": (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
+build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
     for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}

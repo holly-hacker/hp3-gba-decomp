@@ -16,6 +16,10 @@ label 0x080000C0 _080000C0
 0x0804A390 0x0804A408 asm/rt/udivsi3.s                 __udivsi3
 0x0804A408 0x0804A4C8 asm/rt/umodsi3.s                 __umodsi3
 
+# newlib, compiled from source by `just compile-c` (docs/compiler.md)
+c-file 0x0804BC6C 0x0804BC88 src/libc/bzero.c  bzero
+c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
+
 0x0804C422 0x0804C542 asm/data/playable_character_names.s sPlayableCharacterNames
 0x0804CDF0 0x0804D450 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
 

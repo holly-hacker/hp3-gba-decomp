@@ -117,6 +117,8 @@ Actual layout so far (both ROM versions supported throughout, not just US):
 │                           #   module/sample name overrides
 ├── asm/                    # committed regions the manifest points at. asm/krawall/ is NOT
 │                           #   one -- it's the gitignored dump from `just dump-krawall`.
+├── src/                    # C the `c-file` manifest rows compile with agbcc. src/libc/ is
+│                           #   vendored newlib, built with old_agbcc (see docs/compiler.md).
 ├── data/                   # curated, editable asset source -- ALL gitignored, same footing
 │                           #   as the baserom (hard rule 2). One subdir per subsystem,
 │                           #   bootstrapped by `just extract-all`, packed by `just pack-<x>`.

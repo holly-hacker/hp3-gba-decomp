@@ -17,6 +17,12 @@
 # address must be byte-identical in both ROMs at that address (verified,
 # not assumed -- see the file itself for how).
 #
+# c-file <start> <end> <source.c> <name>
+#   A region compiled from C by tools/c/compile_c.py (the `compile-c`
+#   recipe) with agbcc, the compiler the ROM was built with -- see
+#   docs/compiler.md. Column 3 is the .c under src/; the assembly it
+#   produces lands in build/<ver>/c/<name>.s.
+#
 # krawall-module/krawall-samples <start> <end> <source> <name>
 #   See the "Krawall audio data" section below for these two directives --
 #   curated JSON+WAV source under data/audio/, packed to real assembly by
@@ -38,6 +44,10 @@ label 0x080208B4 sub_080208B4
 0x0804A390 0x0804A394 asm/rt/div0.s                    __div0
 0x0804A464 0x0804A4DC asm/rt/udivsi3.s                 __udivsi3
 0x0804A4DC 0x0804A59C asm/rt/umodsi3.s                 __umodsi3
+
+# newlib, compiled from source by `just compile-c` (docs/compiler.md)
+c-file 0x0804BD40 0x0804BD5C src/libc/bzero.c  bzero
+c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 
 0x0804C4F6 0x0804C616 asm/data/playable_character_names.s sPlayableCharacterNames
 0x0804CEC4 0x0804D524 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
@@ -298,7 +308,7 @@ item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
 # g_awSpellPowerBase/g_awSpellPowerScale/g_awSpellMpCost, each ushort[30]
 # indexed spellId*3 + spellLevel -- see docs/memory-map/battle.md's
 # "Spell power tables, decoded" and "Spell MP cost" sections.
-0x080538EC 0x080539A0 asm/data/spell_power.s g_awSpellPowerBase
+c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
 
 # g_abSpellMaxLevel[10]/g_abSpellLevelUpThreshold[2], read by
 # TrackSpellFamiliarity -- see docs/memory-map/battle.md's "Spell
