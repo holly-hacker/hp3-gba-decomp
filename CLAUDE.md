@@ -64,21 +64,14 @@ newer configure-based projects (kl-eod-decomp, dtk-template).
     writeup and the field decoding the packing relies on.
   - License note: LGPL — do not vendor Krawall source into the repo without resolving
     license compatibility; document in CONTRIBUTING.
-- **Compiler: preliminary working hypothesis is ARM ADS/RVCT (`armcc`), NOT GCC/agbcc.**
-  Two independent structural signals found directly in the ROM (see `docs/compiler.md` for
-  full detail, confidence levels, and remaining confirmation steps):
-  - The unsigned-divide routine at `0x080002E0` uses a 32-way binary-search branch tree
-    (`cmp r1, r0, lsr #N` cascade) -- armcc's division algorithm shape, not GCC's compact
-    shift-subtract `__udivsi3` loop.
-  - The div/mod wrapper at `0x080002A4` returns its remainder through a pointer parameter
-    (passed in r2), matching armcc's `__rt_sdiv`-family calling convention. GCC never does
-    this -- it has flatly separate `__divsi3`/`__modsi3`/`__udivmodsi4` functions.
-  - **Not yet a byte-level proof.** Still needs either a reference armcc/ADS-compiled binary
-    to diff against, or an IDA/Ghidra RVCT signature pack. Until confirmed, do not commit to
-    the agbcc-fork tooling path (cf. kl-eod-decomp's `-ftst` fork) -- an ADS/RVCT-oriented
-    toolchain may be required instead. Krawall shipping with GCC-oriented build scripts
-    upstream is not proof of the game's own compiler; the driver code can be (and evidently
-    was) linked into a non-GCC binary.
+- **Compiler: GCC `2.9-arm-000512` (PROVEN), the AGB SDK compiler, source packaged as
+  [pret/agbcc](https://github.com/pret/agbcc).** With GNU binutils and newlib. Game code is
+  Thumb `-O2 -mthumb-interwork`; the bundled libgcc/libc are Thumb `-O2 -fno-builtin`
+  without interworking. A contiguous ~6.9 KB libgcc/libc block near the end of the code
+  region (US `0x0804A2C0`-`0x0804BDBC`, JP `0x0804A1EC`-`0x0804BCE8`) reproduces byte for
+  byte from a locally built agbcc, and every Thumb switch site in the game's own code uses
+  agbcc's dispatch form. ARM-mode compiled C is UNCONFIRMED -- consistent in shape, not
+  byte-verified. See `docs/compiler.md`.
 - No existing decomp of this game. Related-but-empty: SimsAdvanceRet/UrbzGBADecomp (same
   studio/era; watch for shared engine code).
 
@@ -136,9 +129,8 @@ Actual layout so far (both ROM versions supported throughout, not just US):
 Bootstrap task order:
 
 1. [x] `flake.nix` + `justfile` + `.gitignore`; `just setup` verifies both baserom sha1s.
-2. [x] (preliminary) Fingerprinted the compiler -- working hypothesis is ARM ADS/RVCT, not
-   GCC/agbcc. See `docs/compiler.md` for the two structural signals found and what's still
-   needed for a byte-level proof.
+2. [x] Identified the compiler as agbcc (`2.9-arm-000512`), byte-proven against the ROM's
+   own libgcc/libc block. See `docs/compiler.md`.
 3. [x] Located Krawall in both ROMs (embedded `$Id` revision tag) and found candidate driver
    functions. See `docs/memory-map/krawall.md` for addresses and confidence levels.
 4. [x] Full-ROM matching disassembly, for both versions, via `gbadisasm` (chosen over
@@ -209,11 +201,9 @@ on that path. `gba_bios.bin` is required either way.
   → `configure.py` + Ninja (build graph). Single source of truth: per-version YAML segment
   config + `symbols.<ver>.txt`; configure.py generates ninja rules, linker scripts,
   extraction/conversion rules, objdiff config, decomp.me context.
-- **Compiler**: whatever fingerprinting fully confirms. Current working hypothesis is ARM
-  ADS/RVCT (`armcc`), not agbcc/GCC (see Game facts above and `docs/compiler.md`) -- if that
-  holds up, the objdiff/m2c/decomp-permuter-agbcc/decomp.me tooling below (all GCC/agbcc
-  -oriented) will need ADS/RVCT-compatible equivalents, not just an agbcc fork. Don't build
-  out this layer until the compiler question has a byte-level answer.
+- **Compiler**: agbcc (`2.9-arm-000512`), built from source in the dev shell -- the same
+  compiler pokeemerald/pokeruby match against, so the objdiff/m2c/decomp-permuter-agbcc/
+  decomp.me tooling below applies directly with their GBA/agbcc presets.
 - **Matching workflow**: objdiff / objdiff-cli for per-object verification and JSON
   progress reports; m2c for initial C drafts; decomp-permuter-agbcc for fishing matches;
   decomp.me for collaborative scratches (GBA/agbcc presets).

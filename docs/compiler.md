@@ -1,106 +1,98 @@
-# Compiler fingerprinting
+# Compiler
 
 See [`README.md`](README.md) for the confidence-key legend
-(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
-document index.
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED).
 
-Status: **fairly confident, not yet fully proven** — two independent
-structural signals both point to ARM ADS/RVCT (armcc), not GCC/agbcc. Still
-short of a byte-level reference match, so treat as strong-but-not-final per
-CLAUDE.md hard rule 4 (verify, don't assume) until a reference binary or
-signature database confirms it.
+**Thumb code — PROVEN.** Both ROMs are built with GCC `2.9-arm-000512`
+(the ARM/Cygnus snapshot Nintendo shipped as the AGB SDK compiler; its
+source is packaged as [pret/agbcc](https://github.com/pret/agbcc)), GNU
+binutils, and newlib.
 
-## Method
+- Game code: Thumb, `-O2`, `-mthumb-interwork`.
+- Bundled libgcc/libc: Thumb, `-O2 -fno-builtin`, no interworking.
 
-ROM entry point (US, `baserom.us.gba`, sha1 `5be308501f0cfe0c30c60ef1fbf886707cdacd29`):
+## Proof: the library block
 
-- Header branch at `0x08000000` targets `0x080000C0`.
-- `0x080000C0`–`0x08000268`: mode/stack setup (IRQ/SVC/System) then an
-  `IntrMain`-style interrupt dispatcher that walks `IE`/`IF` bit-by-bit,
-  incrementing a jump-table pointer per flag. This pattern is shared
-  boilerplate seen across many licensed GBA titles regardless of compiler
-  (likely derived from Nintendo SDK sample code), so it is **not** diagnostic
-  on its own.
-- `0x0800027C`–`0x080002E0`: signed division wrapper — computes abs(r0),
-  abs(r1), xors the sign bits, calls the unsigned divide at `0x080002E0`,
-  then negates the result if signs differed. This sign-handling wrapper
-  pattern is common to many runtimes and also not diagnostic alone.
-- `0x080002E0` onward: the unsigned divide itself. This **is** diagnostic.
+A contiguous run of libgcc and libc objects near the end of the code
+region reproduces **byte for byte** from a locally built agbcc
+`libgcc.a`/`libc.a` (only relocated bytes masked out; trailing `c046`
+object padding appears as `0000` linker fill in the ROM):
 
-## Finding: unsigned divide routine at 0x080002E0
+| US | JP | object | bytes |
+|---|---|---|---|
+| `0804A2C0` | `0804A1EC` | `_call_via_rX` | 58 |
+| `0804A2FC` | `0804A228` | `_divsi3` | 148 |
+| `0804A390` | `0804A2BC` | `_dvmd_tls` (`__div0`) | 4 |
+| `0804A394` | `0804A2C0` | `_modsi3` | 208 |
+| `0804A464` | `0804A390` | `_udivsi3` | 120 |
+| `0804A4DC` | `0804A408` | `_umodsi3` | 192 |
+| `0804A59C` | `0804A4C8` | `dp-bit` | 3484 |
+| `0804B338` | `0804B264` | `fp-bit` | 2380 |
+| `0804BC84` | `0804BBB0` | `_lshrdi3` | 52 |
+| `0804BCB8` | `0804BBE4` | `_muldi3` | 112 |
+| `0804BD28` | `0804BC54` | `_negdi2` | 24 |
+| `0804BD40` | `0804BC6C` | libc `bzero` | 28 |
+| `0804BD5C` | `0804BC88` | libc `memcpy` | 96 |
 
-Disassembly is a **32-way binary-search branch tree**: a cascade of
-`cmp r1, r0, lsr #N` / `bhi` instructions, one per bit position (starting
-`lsr #15`, then `lsr #23`, `#27`, `#29`, `#30`... narrowing down to the exact
-bit-length of the dividend before dispatching to a bit-specific division
-handler). This costs several hundred bytes of code for a routine that in
-agbcc/GCC (`__udivsi3`) is normally a compact ~15-20 instruction
-shift-and-subtract loop.
+`dp-bit` and `fp-bit` are ~5.8 KB of compiler-generated Thumb from C, so
+the match pins the code generator, not just the library source.
 
-This binary-search-tree division shape matches **ARM's own compiler runtime
-library** (ADS / RVCT `armcc`, i.e. `_uidiv`/`__rt_udiv`-family routines),
-**not** GCC's `__udivsi3`.
+Control: the same matcher run over 393 objects from devkitARM r5's
+gcc-3.3.3 thumb multilib finds 3 matches — `_call_via_rX`, `_divsi3`,
+`_udivsi3`, the hand-written assembly whose Thumb text is unchanged
+between the two versions. Every compiler-generated object fails.
 
-## Finding: paired div/mod wrappers at 0x0800027C and 0x080002A4
+`_call_via_rX` is live: game code `bl`s into it 169 times.
 
-Immediately before the unsigned divide, there are two back-to-back signed
-wrapper functions, both computing `abs(r0)`, `abs(r1)`, and a sign-xor, then
-calling the shared unsigned divide at `0x080002E0`.
+## Proof: game code
 
-- `0x0800027C`: plain signed divide. Negates r0 (quotient) per the sign flag,
-  returns quotient only in r0.
-- `0x080002A4`: signed **divide-and-modulo**. Before calling, it
-  `stmdb sp!, {r2}` — i.e. the caller passes a pointer to a remainder cell
-  *in r2*. After the divide call it negates both the quotient (r0) and the
-  remainder (r1) per their respective sign bits, then `str r1, [r2]` —
-  writing the remainder out through that pointer parameter, returning only
-  the quotient in r0.
+Thumb switch dispatch is the fingerprint that separates the game's own
+code from a linked-in prebuilt library.
 
-Returning the remainder via an out-parameter pointer (rather than in a
-register, and rather than as a wholly separate `__modsi3`-style function) is
-the classic **ARM ADS/RVCT `__rt_sdiv`-family calling convention**. GCC's
-`__divsi3`/`__modsi3`/`__udivmodsi4` never use a pointer-out-parameter for
-the remainder. This is a second, structurally independent signal (distinct
-from the branch-tree divide algorithm) and it agrees with the first.
+```
+    gcc 3.3.3                        2.9-arm-000512 / this ROM (0x08003A8E)
+    ldr  r2, [pc, #N]                  lsls r0, r0, #2
+    lsls r3, r3, #2                    ldr  r1, [pc, #4]
+    ldr  r3, [r3, r2]                  adds r0, r0, r1
+    mov  pc, r3                        ldr  r0, [r0]
+                                       mov  pc, r0
+```
 
-All three routines (`divsi3`, `divmodsi4`, `udivsi3`) have confirmed, fully
-traced boundaries and are extracted as real source at `asm/rt/`, shared
-between the US and JP builds (byte-identical in both). `udivsi3` in
-particular is a complete, classic binary long-division algorithm: a
-binary-search dispatch (the branch-tree bit-length lookup) into one of 32
-straight-line `cmp`/`adc`/`subhs` bit-position handlers that fall through to
-a shared return.
+All 99 switch sites in the code region use the second form, in both
+ROMs. A whole-image sweep finds 138 of the second form and one apparent
+instance of the first, at `0x0841996C` (US) / `0x0841979C` (JP) --
+inside compressed asset data, not code. One `_call_via_rX` table exists
+in the image. There is no second toolchain.
 
-## Working hypothesis
+## Version bracket, independent of agbcc
 
-**This ROM was compiled with ARM ADS/RVCT (`armcc`), not GCC/agbcc.** Two
-independent structural signatures (binary-search division algorithm;
-pointer-out-parameter div/mod calling convention) both point this direction.
-This changes the toolchain plan in CLAUDE.md's "Target toolchain" section —
-the agbcc-fork path (à la kl-eod-decomp) likely does not apply; we'd instead
-be looking at ADS/RVCT-compatible tooling or a modern Clang/`armclang`-based
-matching approach.
+The ROM's `__modsi3`/`__umodsi3` lack the `mov curbit, ip` / `mov
+work, #0x7` / `tst` / `beq` guard that GCC trunk added in r35888
+(2000-08-22), and Thumb `lib1funcs` exist at all only after the
+merged-arm-thumb-backend merge (2000-04-08). No FSF release ever shipped
+that window — 3.0 already carries the fix.
 
-## Things checked that were inconclusive (not contradicting)
+## ARM-mode code — UNCONFIRMED
 
-- **Scatterload search**: traced the ARM-mode crt0 (`0x080000C0`–`0x08000268`,
-  mode/stack setup + IRQ vector install) through its Thumb-mode entry
-  trampoline (`0x080000EC`), which loads a function pointer from a literal
-  pool (`0x08029691`, i.e. `0x08029690` + Thumb bit) and calls it directly.
-  That target looks like game-specific init code (masking IRQ bits, then
-  ~30 `bl`s into subsystem-init functions) with no visible RW-data-copy or
-  BSS-zero loop beforehand. Could mean scatterloading happens elsewhere, or
-  isn't needed the way expected — inconclusive either way, not worth
-  chasing further given the two solid confirmations above.
+Compiled ARM-mode C exists (e.g. `0x08FB11E4` in the Krawall region) and
+is shaped like interworking old-GCC output, but is not byte-verified.
+The SDK's ARM compiler is a separate binary; pret's `gcc_arm/` does not
+build on a modern x86_64 host (`make cc1` fails with `FATAL_EXIT_CODE`
+undeclared in `rtl.c`), so it has not been tested against.
 
-## Next steps to fully confirm
+The ARM routines at `0x0800027C`, `0x080002A4` and `0x080002E0` are
+hand-written assembly, not compiler runtime: `0x080002E0` is a 32-way
+binary-search dispatch into unrolled restoring division, and the two
+wrappers above it return the remainder through a pointer in `r2`. The
+compiler's own division helpers are the Thumb `_divsi3`/`_modsi3`/
+`_udivsi3`/`_umodsi3` objects listed above.
 
-- [ ] Byte-level comparison against a known ADS/RVCT-compiled reference
-      binary's division routine, if one can be sourced (e.g. another
-      EA-published GBA title with a documented compiler, or a from-scratch
-      armcc-compiled test binary). This is the actual proof step — current
-      evidence is strong on algorithm/convention shape but not a byte match.
-- [ ] IDA/Ghidra RVCT/ADS runtime-library signature packs (FLIRT-style), if
-      available, would auto-confirm.
-- [ ] Re-run the same checks against `baserom.jp.gba` to confirm both
-      versions share a toolchain (expected, but verify).
+## Reproducing
+
+```sh
+git clone https://github.com/pret/agbcc && cd agbcc
+nix develop /path/to/hp3-gba-decomp --command ./build.sh   # needs arm-none-eabi-as/ar
+```
+
+`make -C gcc` must run with `-j1`; parallel builds race on generated
+headers. Then compare any object's `.text` against the addresses above.

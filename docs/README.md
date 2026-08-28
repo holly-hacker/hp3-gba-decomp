@@ -27,9 +27,9 @@ like in `functions.<ver>.cfg` and in Ghidra.
 
 Engine and toolchain:
 
-- [`compiler.md`](compiler.md) — compiler fingerprinting: the division
-  routines that point at ARM ADS/RVCT (`armcc`) rather than GCC/agbcc,
-  and what a byte-level proof would still need.
+- [`compiler.md`](compiler.md) — the toolchain: GCC `2.9-arm-000512`
+  (agbcc) + binutils + newlib, the byte-exact libgcc/libc block that
+  proves it, and the flags each half of the ROM was built with.
 
 Memory map (live RAM layout and the code that drives it):
 
