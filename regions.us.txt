@@ -30,14 +30,14 @@ label 0x080208B4 sub_080208B4
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
 
-0x0800027C 0x080002A4 asm/rt/divsi3.s           divsi3
-0x080002A4 0x080002E0 asm/rt/divmodsi4.s        divmodsi4
-0x080002E0 0x080005AC asm/rt/udivsi3.s          udivsi3
+0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
+0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
+0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
 
 # Thumb-mode division runtime
-0x0804A390 0x0804A394 asm/rt/div_zero_handler.s DivZeroHandler
-0x0804A464 0x0804A4DC asm/rt/udivsi3_thumb.s    udivsi3_thumb
-0x0804A4DC 0x0804A59C asm/rt/umodsi3.s          umodsi3
+0x0804A390 0x0804A394 asm/rt/div0.s                    __div0
+0x0804A464 0x0804A4DC asm/rt/udivsi3.s                 __udivsi3
+0x0804A4DC 0x0804A59C asm/rt/umodsi3.s                 __umodsi3
 
 0x0804C4F6 0x0804C616 asm/data/playable_character_names.s sPlayableCharacterNames
 0x0804CEC4 0x0804D524 asm/data/famous_wizard_card_names.s sFamousWizardCardNames

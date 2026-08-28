@@ -223,7 +223,7 @@ mixer, not a stub. Confident findings:
 - **Uses the GBA BIOS division SWI (`swi 0x06`, `Div`) directly**, twice
   (mirrored in both the forward and the `0x08FB1C50` alternate branch), for
   position/step math -- notable since it's a different division path than
-  the compiled `__rt_sdiv`-family routines documented in `docs/compiler.md`;
+  the linked-in division routines documented in `docs/compiler.md`;
   the hot mixer path apparently prefers the BIOS call over the linked-in
   compiler runtime.
 
@@ -498,15 +498,16 @@ itself zero-clears IWRAM early in boot, before any game code runs -- PC
 still inside the BIOS ROM, `0x000003xx`, at that point). The second hit
 landed at PC `0x0802C4FC`, deep in game code, mid-loop, with register
 state pointing at a plain word-copy loop (`ldmia`/`stmia` + tail byte
-copy) -- i.e. a compiled `memcpy`. Register values at the trap
+copy) -- i.e. a compiled copy routine. Register values at the trap
 (`r4`/length, `r5`-`r6`/src, `r7`/dest, `lr`/caller) plus reading the
 caller statically nail down the whole picture:
 
-- **`0x0802C4BC`** is a general-purpose compiled `memcpy(dest, src, len)`
+- **`0x0802C4BC`** is a general-purpose compiled `CopyMemory(dest, src, len)`
   -- standard word-copy-with-alignment-check shape, confirmed independently
   by a Ghidra decompilation of the same address matching byte-for-byte in
-  structure (unaligned fallback + word loop + tail bytes). Named `memcpy`
-  in `functions.us.cfg`.
+  structure (unaligned fallback + word loop + tail bytes). It is the game's
+  own routine, distinct from the linked-in libc `memcpy` at `0x0804BD5C`.
+  Named `CopyMemory` in `functions.us.cfg`.
 - **`0x0803FDB0`** is the actual installer, called once from the game's
   top-level init sequence at `0x08029690` (`bl 0x0803FDB0` at `0x08029734`
   -- this is the same init-call chain traced all the way back in "No bulk
@@ -515,12 +516,12 @@ caller statically nail down the whole picture:
   `EntryPoint` only via an indirect `bx`, which is exactly why
   `gbadisasm`'s direct-branch-only spidering never reached any of this
   code on its own). Named `kramInstall` in `functions.us.cfg`. It does
-  two back-to-back `memcpy` calls, source/dest/length all literal:
-  - `memcpy(dest=0x03000000, src=0x08FB0DB0, len=0x1598)` -- the IWRAM
+  two back-to-back `CopyMemory` calls, source/dest/length all literal:
+  - `CopyMemory(dest=0x03000000, src=0x08FB0DB0, len=0x1598)` -- the IWRAM
     install. `0x1598` = 5528 bytes, comfortably covering every IWRAM
     address flagged throughout this document (`0x03000090` through
     `0x03001144`+).
-  - `memcpy(dest=0x02000000, src=0x08FB2348, len=0x27F8)` -- and
+  - `CopyMemory(dest=0x02000000, src=0x08FB2348, len=0x27F8)` -- and
     immediately after, an **EWRAM install**.
     `0x08FB2348` is exactly where the first copy's source region ends
     (`0x08FB0DB0 + 0x1598`), so the ROM stores one contiguous
@@ -724,7 +725,7 @@ mode-select mechanism.
 
 **`kragInit()` (`general.c`, the public source's top-level init) shows
 no explicit IWRAM copy** -- consistent with the hypothesis that
-`kramInstall`'s explicit `memcpy`-based install (found above) is
+`kramInstall`'s explicit `CopyMemory`-based install (found above) is
 specific to *this* armcc/RVCT-compiled build. The public source relies on
 GCC/devkitARM's `IWRAM`/`IWRAM_CODE` section attributes plus
 devkitARM's crt0 auto-copying `.iwram`-attributed data at startup; ADS/

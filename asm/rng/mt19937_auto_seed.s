@@ -25,7 +25,7 @@ Mt19937AutoSeed: @ us:0x0803B330, jp:0x0803B398
 	bne _Mt19937AutoSeed_L10
 	bl Mt19937Next
 	ldr r1, _Mt19937AutoSeed_L6 @ =0x000FFF1F
-	bl umodsi3
+	bl __umodsi3
 	adds r0, #1
 	str r0, [r4]
 _Mt19937AutoSeed_L10:

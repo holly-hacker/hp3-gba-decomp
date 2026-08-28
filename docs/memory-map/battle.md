@@ -261,7 +261,7 @@ int ResolvePlayerAttack(int attackerIndex, int targetIndex) {    // 0x08017C24
         g_bSpellMissStreak = 0;
         int idx = attacker->bSpellId * 3 + attacker->bSpellLevel;
         power = g_awSpellPowerBase[idx]
-              + divsi3(g_awSpellPowerScale[idx] * attacker->bLevel, 9);
+              + __divsi3(g_awSpellPowerScale[idx] * attacker->bLevel, 9);
 
         if (attacker->bFighterType == Hermione) power = power * 17 / 16;
         else if (attacker->bFighterType == Ron)  power = power * 15 / 16;

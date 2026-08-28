@@ -88,7 +88,7 @@ for spell_index in 0..7:
         ; (gfx 0x0806959C, frame data 0x080695CE)
     else:
         ; analyzed: draw the "dot" graphic, palette/frame picked via
-        ; a small LUT at 0x080695DC indexed by divsi3_thumb(effectiveness, 0x21)
+        ; a small LUT at 0x080695DC indexed by __divsi3(effectiveness, 0x21)
         x = sub_0802BF14(effectiveness << 16, 0xc8 << 15) * 0x1a + 0x9000
     place sprite at (x, y);  y += fixed row spacing
 ```
