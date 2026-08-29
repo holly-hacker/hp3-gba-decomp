@@ -1,7 +1,7 @@
 #pragma once
 
-// g_pItemTable has 132 slots; only 0-78 are real items (79 is a dummy
-// end-of-list marker, 80-131 are zero padding). See docs/formats/items.md.
+// g_pItemTable has 132 slots; only 0-78 are normal items, 79 is a dummy
+// end-of-list marker, 80-131 are folio universitas cards. See docs/formats/items.md.
 #define ITEM_COUNT 132
 
 #define ITEM_ORDINARY_BELT                            0
@@ -83,3 +83,5 @@
 #define ITEM_CHOCOLATE                                76
 #define ITEM_DEAD_CATERPILLAR                         77
 #define ITEM_THE_MONSTER_BOOK_OF_MONSTERS             78
+
+// TODO: define 79-131

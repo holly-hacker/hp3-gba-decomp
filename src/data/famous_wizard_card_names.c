@@ -1,6 +1,6 @@
 #include "types.h"
 
-const char sFamousWizardCardNames[51][32] = {
+const u8 sFamousWizardCardNames[51][32] = {
     "02 Fullbert The Fearful",
     "03 Beatrix Bloxam",
     "01 Merwyn The Malicious",

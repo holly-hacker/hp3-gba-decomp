@@ -10,12 +10,8 @@ typedef struct {
     MonsterDropSlot slot[2];
 } MonsterDropEntry;
 
-// Indexed by MonsterTable roster index (same order as data/monsters/monsters.json).
-// chance is normally rolled 0-99 by RollBattleItemDrops; chance 100 rows are
-// unconditional drops, chance 0 slots are unreachable. itemId is a
-// GrantBattleReward id: <0x50 indexes g_pItemTable (docs/formats/items.md);
-// 0x50-0x82 is a Folio Universitas card (id - 0x50).
-// See docs/memory-map/battle.md's "FightState->bBonusRewardFlags" section.
+// Monster drop table, following the standard monster order (see data/monsters/monsters.json).
+// See docs/memory-map/battle.md.
 const MonsterDropEntry g_pMonsterDropTable[69] = {
     { { { 30, ITEM_GRAND_WIGGENWELD_POTION }, { 10, ITEM_PEPPERUP_POTION } } },    // Ruby Fire Crab
     { { { 30, ITEM_GRAND_PEPPERUP_POTION }, { 10, ITEM_GRAND_PEPPERUP_POTION } } },    // Emerald Fire Crab

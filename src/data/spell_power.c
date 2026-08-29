@@ -1,10 +1,6 @@
 #include "types.h"
 #include "constants/spells.h"
 
-// Read by ResolvePlayerAttack as
-//   power = Base[idx] + (Scale[idx] * attacker.level / 9).
-// See docs/memory-map/battle.md.
-
 const u16 g_awSpellPowerBase[SPELL_COUNT][SPELL_LEVELS] = {
     { 10, 20, 15 },  // Flipendo
     {  0,  0,  0 },  // Informus

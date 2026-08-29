@@ -957,8 +957,8 @@ note:
 
 - **`SpecialMove` is not general spellcasting** -- it's exclusively the
   Special Move path (anim state `0x15`), and it's what sets
-  `nHermioneLecturesKnown_candidate`/`nRonMovesKnown_candidate` to `1`,
-  un-graying that menu entry for later turns (see
+  `nHermioneSpecialMoveUsed`/`nRonSpecialMoveUsed` to `1`,
+  disabling that menu entry for later turns (see
   [`battle-ui.md`](battle-ui.md)). A regular `Cast Spell` selection
   leaves `bPendingActionKind` at `None`. For Harry, `bSpellId` is
   overwritten with `g_nFolioUniversitasSlot` (the raw card slot, `0`-`15`)

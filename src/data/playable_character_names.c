@@ -1,6 +1,6 @@
 #include "types.h"
 
-const char sPlayableCharacterNames[9][32] = {
+const u8 sPlayableCharacterNames[9][32] = {
     "Muggle Harry",
     "Muggle Hermione",
     "Muggle Ron",
