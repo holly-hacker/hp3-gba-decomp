@@ -55,19 +55,19 @@ c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 0x0804CEC4 0x0804D524 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
 
 # MT19937 PRNG, see docs/memory-map/rng.md
-0x0803B1B8 0x0803B314 asm/rng/mt19937_regenerate.s Mt19937Regenerate
-0x0803B330 0x0803B3AC asm/rng/mt19937_auto_seed.s Mt19937AutoSeed
-0x0803B3AC 0x0803B3E0 asm/rng/mt19937_set_seed.s Mt19937SetSeed
-0x0803B3E0 0x0803B40C asm/rng/mt19937_rand_range.s Mt19937RandRange
-0x0803B40C 0x0803B434 asm/rng/mt19937_rand_range2.s Mt19937RandRange2
-0x0803B434 0x0803B458 asm/rng/mt19937_rand_max.s Mt19937RandMax
-0x0803B458 0x0803B47C asm/rng/mt19937_rand_max2.s Mt19937RandMax2
-0x0803B47C 0x0803B4A8 asm/rng/mt19937_rand_signed.s Mt19937RandSigned
-0x0803B4D4 0x0803B500 asm/rng/mt19937_chance.s Mt19937Chance
-0x0803B52C 0x0803B560 asm/rng/mt19937_chance_noisy.s Mt19937ChanceNoisy
-0x0803B560 0x0803B598 asm/rng/mt19937_seed_array.s Mt19937SeedArray
-0x0803B598 0x0803B5F4 asm/rng/mt19937_next.s Mt19937Next
-0x0803B5F4 0x0803B64C asm/rng/mt19937_next2.s Mt19937Next2
+c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate
+c-file 0x0803B330 0x0803B3AC src/rng/auto_seed.c Mt19937AutoSeed
+c-file 0x0803B3AC 0x0803B3E0 src/rng/set_seed.c Mt19937SetSeed
+c-file 0x0803B3E0 0x0803B40C src/rng/rand_range.c Mt19937RandRange
+c-file 0x0803B40C 0x0803B434 src/rng/rand_range2.c Mt19937RandRange2
+c-file 0x0803B434 0x0803B458 src/rng/rand_max.c Mt19937RandMax
+c-file 0x0803B458 0x0803B47C src/rng/rand_max2.c Mt19937RandMax2
+c-file 0x0803B47C 0x0803B4A8 src/rng/rand_signed.c Mt19937RandSigned
+c-file 0x0803B4D4 0x0803B500 src/rng/chance.c Mt19937Chance
+c-file 0x0803B52C 0x0803B560 src/rng/chance_noisy.c Mt19937ChanceNoisy
+c-file 0x0803B560 0x0803B598 src/rng/seed_array.c Mt19937SeedArray
+c-file 0x0803B598 0x0803B5F4 src/rng/next.c Mt19937Next
+c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 
 # Dialog/UI text engine, see docs/formats/text.md
 0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
@@ -77,7 +77,7 @@ c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 0x08024DC8 0x08024EB8 asm/text/decompress_dialog_text.s DecompressDialogText
 0x08024EB8 0x08024EDC asm/text/init_dialog_text_table.s InitDialogTextTable
 0x08042588 0x080425D8 asm/text/set_language.s SetLanguage
-0x080425D8 0x080425E4 asm/text/get_language.s GetLanguage
+c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
 0x080425E4 0x08042608 asm/text/get_dialog_text.s GetDialogText
 
 # --- Krawall audio data ---

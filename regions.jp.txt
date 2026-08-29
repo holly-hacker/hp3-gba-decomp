@@ -26,19 +26,19 @@ c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
 0x0804CDF0 0x0804D450 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
 
 # MT19937 PRNG, see docs/memory-map/rng.md
-0x0803B220 0x0803B37C asm/rng/mt19937_regenerate.s Mt19937Regenerate
-0x0803B398 0x0803B414 asm/rng/mt19937_auto_seed.s Mt19937AutoSeed
-0x0803B414 0x0803B448 asm/rng/mt19937_set_seed.s Mt19937SetSeed
-0x0803B448 0x0803B474 asm/rng/mt19937_rand_range.s Mt19937RandRange
-0x0803B474 0x0803B49C asm/rng/mt19937_rand_range2.s Mt19937RandRange2
-0x0803B49C 0x0803B4C0 asm/rng/mt19937_rand_max.s Mt19937RandMax
-0x0803B4C0 0x0803B4E4 asm/rng/mt19937_rand_max2.s Mt19937RandMax2
-0x0803B4E4 0x0803B510 asm/rng/mt19937_rand_signed.s Mt19937RandSigned
-0x0803B53C 0x0803B568 asm/rng/mt19937_chance.s Mt19937Chance
-0x0803B594 0x0803B5C8 asm/rng/mt19937_chance_noisy.s Mt19937ChanceNoisy
-0x0803B5C8 0x0803B600 asm/rng/mt19937_seed_array.s Mt19937SeedArray
-0x0803B600 0x0803B65C asm/rng/mt19937_next.s Mt19937Next
-0x0803B65C 0x0803B6B4 asm/rng/mt19937_next2.s Mt19937Next2
+c-file 0x0803B220 0x0803B37C src/rng/regenerate.c Mt19937Regenerate
+c-file 0x0803B398 0x0803B414 src/rng/auto_seed.c Mt19937AutoSeed
+c-file 0x0803B414 0x0803B448 src/rng/set_seed.c Mt19937SetSeed
+c-file 0x0803B448 0x0803B474 src/rng/rand_range.c Mt19937RandRange
+c-file 0x0803B474 0x0803B49C src/rng/rand_range2.c Mt19937RandRange2
+c-file 0x0803B49C 0x0803B4C0 src/rng/rand_max.c Mt19937RandMax
+c-file 0x0803B4C0 0x0803B4E4 src/rng/rand_max2.c Mt19937RandMax2
+c-file 0x0803B4E4 0x0803B510 src/rng/rand_signed.c Mt19937RandSigned
+c-file 0x0803B53C 0x0803B568 src/rng/chance.c Mt19937Chance
+c-file 0x0803B594 0x0803B5C8 src/rng/chance_noisy.c Mt19937ChanceNoisy
+c-file 0x0803B5C8 0x0803B600 src/rng/seed_array.c Mt19937SeedArray
+c-file 0x0803B600 0x0803B65C src/rng/next.c Mt19937Next
+c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
 
 # --- Krawall audio data ---
 #
