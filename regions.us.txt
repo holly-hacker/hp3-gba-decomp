@@ -317,6 +317,8 @@ c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
 # familiarity/leveling" section.
 c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
 
+c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
+
 # Shop tab stock lists -- see docs/formats/items.md's "Shop prices" section.
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

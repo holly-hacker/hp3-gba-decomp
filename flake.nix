@@ -15,7 +15,8 @@
         # game's own ARM-mode decompressor against real ROM bytes instead of
         # a hand-reimplementation -- see docs/formats/graphics.md.
         # pillow: writes the extracted PNGs in tools/items/extract_item_icons.py.
-        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.unicorn ps.pillow ]);
+        # toml: decomp-permuter's settings/weights files below.
+        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.unicorn ps.pillow ps.toml ]);
 
         # pret's matching GBA disassembler. Pinned to the last upstream
         # commit (inactive since 2020-01). Two heap bugs in disasm.c crash
@@ -68,6 +69,33 @@
           '';
         };
 
+        # Randomized/exhaustive AST-level rewriter that scores candidate C
+        # against a target .o via objdump diffing -- used to close small
+        # (few-instruction) gaps in an otherwise-matching function that
+        # resist hand fishing. Pure Python (pycparser is vendored in-repo
+        # as perm_pycparser), so this just wraps permuter.py/import.py with
+        # pythonEnv on PATH.
+        decompPermuter = pkgs.stdenv.mkDerivation {
+          pname = "decomp-permuter";
+          version = "unstable-2024-01-01";
+          src = pkgs.fetchFromGitHub {
+            owner = "simonlindholm";
+            repo = "decomp-permuter";
+            rev = "fb516c435c6f362fbced66e171545324306b607b";
+            hash = "sha256-xD7/9vizoALBpQR0l8ZVq8pVOOja1tq1+F1LhQgL45k=";
+          };
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          dontBuild = true;
+          installPhase = ''
+            mkdir -p $out/share/decomp-permuter $out/bin
+            cp -r . $out/share/decomp-permuter
+            makeWrapper ${pythonEnv}/bin/python3 $out/bin/permuter.py \
+              --add-flags $out/share/decomp-permuter/permuter.py
+            makeWrapper ${pythonEnv}/bin/python3 $out/bin/import.py \
+              --add-flags $out/share/decomp-permuter/import.py
+          '';
+        };
+
         # The compiler the ROM was built with (docs/compiler.md). agbcc_arm
         # isn't built -- it doesn't configure on a modern host.
         agbcc = pkgs.stdenv.mkDerivation {
@@ -114,6 +142,7 @@
             gbadisasm
             unkrawerter
             agbcc
+            decompPermuter
           ];
         };
       });

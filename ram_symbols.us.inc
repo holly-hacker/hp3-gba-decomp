@@ -42,3 +42,7 @@
 .set gMt19937SeedSourceStruct,   0x0300356C  @ external struct AutoSeed reads timing/frame data from
                                               @ for auto-seeding (subsystem unconfirmed)
 .set gMt19937SeedSourceCounter,  0x030034EC  @ external halfword counter AutoSeed also reads
+
+@ --- Battle system (see docs/memory-map/battle.md) ---
+.set g_pFightState,      0x030024E8  @ FightState *, the active battle's state
+.set g_bSpellMissStreak, 0x03002749  @ byte: consecutive-miss streak breaker
