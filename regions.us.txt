@@ -51,8 +51,8 @@ label 0x080208B4 sub_080208B4
 c-file 0x0804BD40 0x0804BD5C src/libc/bzero.c  bzero
 c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 
-0x0804C4F6 0x0804C616 asm/data/playable_character_names.s sPlayableCharacterNames
-0x0804CEC4 0x0804D524 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
+c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
+c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate
@@ -217,7 +217,7 @@ monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
 # docs/memory-map/battle.md's "FightState->bBonusRewardFlags" section.
 # End address confirmed: 69 * 8 bytes lands exactly where the byte pattern
 # (every value's high byte 0) breaks.
-0x0804FC28 0x0804FE50 asm/data/monster_drop_table.s g_pMonsterDropTable
+c-file 0x0804FC28 0x0804FE50 src/data/monster_drop_table.c g_pMonsterDropTable
 
 # --- Per-character level-up stat tables ---
 #
@@ -315,8 +315,8 @@ c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
 # g_abSpellMaxLevel[10]/g_abSpellLevelUpThreshold[2], read by
 # TrackSpellFamiliarity -- see docs/memory-map/battle.md's "Spell
 # familiarity/leveling" section.
-0x0804E5E0 0x0804E5EC asm/data/spell_leveling.s g_abSpellMaxLevel
+c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
 
 # Shop tab stock lists -- see docs/formats/items.md's "Shop prices" section.
-0x0806B944 0x0806BA4C asm/data/shop_stock.s g_aShopStockMisc
-0x08FB0D94 0x08FB0DB0 asm/data/shop_stock_lists.s g_apShopStockLists
+c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
+c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

@@ -22,8 +22,8 @@ label 0x080000C0 _080000C0
 c-file 0x0804BC6C 0x0804BC88 src/libc/bzero.c  bzero
 c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
 
-0x0804C422 0x0804C542 asm/data/playable_character_names.s sPlayableCharacterNames
-0x0804CDF0 0x0804D450 asm/data/famous_wizard_card_names.s sFamousWizardCardNames
+c-file 0x0804C422 0x0804C542 src/data/playable_character_names.c sPlayableCharacterNames
+c-file 0x0804CDF0 0x0804D450 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B220 0x0803B37C src/rng/regenerate.c Mt19937Regenerate

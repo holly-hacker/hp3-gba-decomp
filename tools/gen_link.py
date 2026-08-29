@@ -124,7 +124,13 @@ def main() -> None:
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write("SECTIONS\n{\n")
         for address, section, stem in placements:
-            f.write(f"    {section} {hex(address)} : "
+            # SUBALIGN(1): a compiled region's .text carries a 4-byte
+            # section-alignment attribute (from compile_c.py's trailing
+            # `.align 2, 0`) even when it adds no actual padding. Without
+            # this, ld pads its LMA to that alignment for overlap checking
+            # and falsely reports it overlapping the next region whenever
+            # its real ROM address isn't itself 4-aligned.
+            f.write(f"    {section} {hex(address)} : SUBALIGN(1) "
                     f"{{ {objdir}/{stem}.o({section if stem == 'gaps' else '.text'}) }}\n")
         f.write("    /DISCARD/ : { *(.comment) *(.ARM.attributes) *(.note*) }\n")
         f.write("}\n")
