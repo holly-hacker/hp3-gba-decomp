@@ -1,7 +1,8 @@
 #pragma once
 
 // g_pItemTable has 132 slots; only 0-78 are normal items, 79 is a dummy
-// end-of-list marker, 80-131 are folio universitas cards. See docs/formats/items.md.
+// end-of-list marker, 80-130 are the 51 famous wizard cards (order matches
+// sFamousWizardCardNames), 131 is unused padding. See docs/formats/items.md.
 #define ITEM_COUNT 132
 
 #define ITEM_ORDINARY_BELT                            0
@@ -84,4 +85,58 @@
 #define ITEM_DEAD_CATERPILLAR                         77
 #define ITEM_THE_MONSTER_BOOK_OF_MONSTERS             78
 
-// TODO: define 79-131
+#define SIMPLE_ITEMS_END                              79
+
+#define ITEM_CARD_FULLBERT_THE_FEARFUL                80
+#define ITEM_CARD_BEATRIX_BLOXAM                      81
+#define ITEM_CARD_MERWYN_THE_MALICIOUS                82
+#define ITEM_CARD_HUNGARIAN_HORNTAIL_DRAGON           83
+#define ITEM_CARD_HEBRIDEAN_BLACK_DRAGON              84
+#define ITEM_CARD_NORWEGIAN_RIDGEBACK_DRAGON          85
+#define ITEM_CARD_XAVIER_RASTRICK                     86
+#define ITEM_CARD_DYMPHNA_FURMAGE                     87
+#define ITEM_CARD_YARDLEY_PLATT                       88
+#define ITEM_CARD_MORGAN_LE_FEY                       89
+#define ITEM_CARD_WENDELIN_THE_WEIRD                  90
+#define ITEM_CARD_HONORIA_NUTCOMBE                    91
+#define ITEM_CARD_JOCUNDA_SYKES                       92
+#define ITEM_CARD_JUSTUS_PILLIWICKLE                  93
+#define ITEM_CARD_ADALBERT_WAFFLING                   94
+#define ITEM_CARD_EDGAR_STROULGER                     95
+#define ITEM_CARD_MALODORA_GRYMM                      96
+#define ITEM_CARD_LETICIA_SOMNOLENS                   97
+#define ITEM_CARD_CORDELIA_MISERICORDIA               98
+#define ITEM_CARD_CARLOTTA_PINKSTONE                  99
+#define ITEM_CARD_UNICORN                             100
+#define ITEM_CARD_MANTICORE                           101
+#define ITEM_CARD_PHOENIX                             102
+#define ITEM_CARD_BURDOCK_MULDOON                     103
+#define ITEM_CARD_GONDOLINE_OLIPHANT                  104
+#define ITEM_CARD_ALMERICK_SAWBRIDGE                  105
+#define ITEM_CARD_MONTAGUE_KNIGHTLY                   106
+#define ITEM_CARD_GLANMORE_PEAKES                     107
+#define ITEM_CARD_ARTEMISA_LUFKIN                     108
+#define ITEM_CARD_MERLIN                              109
+#define ITEM_CARD_SIR_HERBERT_VARNEY                  110
+#define ITEM_CARD_AMARILLO_LESTOAT                    111
+#define ITEM_CARD_LADY_CARMILLA_SANGUINA              112
+#define ITEM_CARD_DUMBLEDORE                          113
+#define ITEM_CARD_QUEEN_MAEVE                         114
+#define ITEM_CARD_HELGA_HUFFLEPUFF                    115
+#define ITEM_CARD_BRIDGET_WENLOCK                     116
+#define ITEM_CARD_MIRANDA_GOSHAWK                     117
+#define ITEM_CARD_ROWENA_RAVENCLAW                    118
+#define ITEM_CARD_GODRIC_GRYFFINDOR                   119
+#define ITEM_CARD_ROLAND_KEGG                         120
+#define ITEM_CARD_GWENOG_JONES                        121
+#define ITEM_CARD_JOSCELIND_WADOCK                    122
+#define ITEM_CARD_DUNBAR_OGLETHORPE                   123
+#define ITEM_CARD_DEVLIN_WHITEHORN                    124
+#define ITEM_CARD_CYPRIAN_YOUDLE                      125
+#define ITEM_CARD_LEOPOLDINA_SMETHWYCK                126
+#define ITEM_CARD_FELIX_SUMERBEE                      127
+#define ITEM_CARD_RODERIC_PLUMPTON                    128
+#define ITEM_CARD_BOWMAN_WRIGHT                       129
+#define ITEM_CARD_HARRY_POTTER                        130
+
+// 131 is unused padding

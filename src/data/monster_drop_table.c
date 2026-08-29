@@ -74,11 +74,11 @@ const MonsterDropEntry g_pMonsterDropTable[69] = {
     { { { 100, ITEM_SCHOOL_ROBE }, { 0, ITEM_PEPPERUP_POTION } } },    // 'The Monster Book of Monsters'
     { { { 100, ITEM_ORDINARY_BELT }, { 0, ITEM_PEPPERUP_POTION } } },    // Giant Rat
     { { { 100, ITEM_QUIDDITCH_BOOTS }, { 0, ITEM_WIGGENWELD_POTION } } },    // Crabbe
-    { { { 100, 130 }, { 0, ITEM_PEPPERUP_POTION } } },    // Draco
+    { { { 100, ITEM_CARD_HARRY_POTTER }, { 0, ITEM_PEPPERUP_POTION } } },    // Draco
     { { { 100, ITEM_BLACK_POINTED_HAT }, { 0, ITEM_PEPPERUP_POTION } } },    // Goyle
     { { { 100, ITEM_HUNGARIAN_HORNTAIL_DRAGON_HIDE_BOOTS }, { 0, ITEM_PEPPERUP_POTION } } },    // Lupin Werewolf
-    { { { 100, 102 }, { 0, ITEM_PEPPERUP_POTION } } },    // Snake
-    { { { 100, 112 }, { 0, ITEM_PEPPERUP_POTION } } },    // Brown Recluse Spider
+    { { { 100, ITEM_CARD_PHOENIX }, { 0, ITEM_PEPPERUP_POTION } } },    // Snake
+    { { { 100, ITEM_CARD_LADY_CARMILLA_SANGUINA }, { 0, ITEM_PEPPERUP_POTION } } },    // Brown Recluse Spider
     { { { 100, ITEM_THE_MONSTER_BOOK_OF_MONSTERS }, { 0, ITEM_GRAND_WIGGENWELD_POTION } } },    // 'The Monster Book of Monsters'
     { { { 100, ITEM_SWEDISH_SHORTSNOUT_DRAGON_HIDE_GLOVES }, { 0, ITEM_PEPPERUP_POTION } } },    // 'The Monster Book of Monsters'
     { { { 100, ITEM_THE_MONSTER_BOOK_OF_MONSTERS }, { 0, ITEM_PEPPERUP_POTION } } },    // roster 68 (name unresolved in monsters.json)
