@@ -478,6 +478,24 @@ shared tail `TickPlayerActionStateNoOp` rather than using `bx lr`. Case
 of `WaitForMoveThenApplyDamageNumber`) falls straight into `0x080161a2`
 (`ApplyDamageNumberAnimState`'s first byte).
 
+The dispatch itself (`0x08016082`-`0x0801608A`) is a real `mov pc, r0`
+jump table, not a `bl` call -- so none of the case targets get their own
+stack frame or register set; they all run inside the one frame
+`TickPlayerActionState_candidate`'s own prologue (`0x0801602C`-`0x08016038`)
+allocates: `push {r4-r7,lr}` + spilled `r8`/`sb`/`sl` + `sub sp, #0x10`,
+with its incoming `Object*` parameter moved into `r7` right there and
+never reloaded. Every local Ghidra reports as `unaff_r7` or
+`in_stack_00000008`/`in_stack_0000000c` when a case address (e.g.
+`0x080161FE`) is decompiled on its own is really `r7`/`sp+8`/`sp+0xc`
+from that same shared frame -- Ghidra just can't see the connection
+because each case target is a separate `Function` in its database.
+Ghidra's own switch-table recovery (`Decompiler Switch Analysis`) does
+resolve the `mov pc, r0` dispatch correctly when decompiling from the
+true entry point `0x0801602C` directly, producing one clean `switch`
+covering every case with no `unaff_r7`/`in_stack_*` noise -- prefer
+that over decompiling an individual case address when reading this
+dispatcher in Ghidra.
+
 `ExecutePlayerAttackSequence` (case `0x1A`) is confirmed as its own real
 function, not a fragment: a data xref from `0x080160F8` (a slot in the
 same jump table) lands directly on it.
