@@ -144,8 +144,7 @@ int ResolveEnemyAttack(int attackerIndex, int defenderIndex) {   // 0x08017E44
         }
     }
 
-    ApplyDamageToFighter(damage, defenderIndex);
-    return damage;
+    return damage;                 // caller applies it, e.g. via ApplyDamageToFighter
 }
 
 void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort damage) {  // 0x08015020

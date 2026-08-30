@@ -24,33 +24,33 @@ to untangle from compiler-quirk noise.
 Total object size is not monotonic with correctness: a structurally-wrong
 candidate can hit the target byte count by coincidence, and a genuine fix can
 move the byte count *away* from the target while making the candidate strictly
-closer in every real sense. Build the opcode-only diff harness immediately,
-before your first real iteration, and use it as the actual metric instead:
+closer in every real sense. Use `tools/opcode_diff.py <ver> <function-name>
+<object-file>` as the actual metric instead of size, from your very first
+build:
 
 ```bash
-# real side, once per function: extract + strip labels/directives, keep opcodes only
-sed -n '<start>,<end>p' build/us/full_disasm.s | grep -vE '^_|\.align|\.4byte|thumb_func|^$' \
-  | sed -E 's/^\s+//' | awk '{print $1}' > real_op.txt
-# candidate side, per iteration: same idea from objdump -dr output
-arm-none-eabi-objdump -dr cand.o | grep -E '^\s*[0-9a-f]+:' \
-  | sed -E 's/^\s*[0-9a-f]+:\s+[0-9a-f ]+\t//' | grep -vE 'R_ARM|^\s*\.\.\.|\.word' \
-  | awk '{print $1}' > cand_op.txt
+nix develop -c python3 tools/opcode_diff.py us ResolveEnemyAttack build/us/obj/r006_ResolveEnemyAttack.o
 ```
 
-Diff with Python's `difflib.SequenceMatcher` (not raw `diff`) so insertions/
-deletions realign instead of cascading into a wall of noise, and **normalize
-cosmetic-only differences before counting groups**:
-- a trailing `.n` on any mnemonic (narrow-encoding annotation some
-  disassemblers print and others don't)
-- ARM condition-code mnemonic aliases: `bhs`≡`bcs`, `blo`≡`bcc` (literally the
-  same encoded condition, different assembler convention — verify by decoding
-  the condition field of the halfword by hand once if unsure, don't guess)
-- `.short`/`.word` alignment padding, *unless* it's the specific diff you're
-  chasing
+It pulls the real function's extent straight out of `build/<ver>/full_disasm.s`
+(between its `thumb_func_start`/`arm_func_start` label and the next one), diffs
+mnemonic sequences against the candidate object with Python's
+`difflib.SequenceMatcher` (so insertions/deletions realign instead of
+cascading into a wall of noise), and normalizes cosmetic-only differences
+before counting groups: a trailing `.n` on any mnemonic (narrow-encoding
+annotation some disassemblers print and others don't), and the ARM
+condition-code mnemonic aliases `bhs`≡`bcs`/`blo`≡`bcc` (literally the same
+encoded condition, different assembler convention).
 
-Report "N real (non-cosmetic) opcode-diff groups", not "N bytes off". Recount
-after every change — a fix can trade one group for a different one at the same
-total, which is easy to mistake for "no progress" if you're only watching size.
+It reports "N real (non-cosmetic) opcode-diff groups", not "N bytes off".
+Recount after every change — a fix can trade one group for a different one at
+the same total, which is easy to mistake for "no progress" if you're only
+watching size. Note it's mnemonic-level only: two operands of the same
+mnemonic using different registers show as "equal" even though the bytes
+differ — a 0-group report is necessary but not sufficient for a real match,
+so still confirm with `just compare <ver>` (whole-ROM `cmp`) or
+`tools/diff_region.py <ver> <name>` (byte-level, single region, works once the
+region is the right size) before calling a function done.
 
 Also check for an unwanted stack spill after every change (`sub sp`/
 `str .*\[sp` in the disassembly) — a spilled variable that shouldn't be is a
@@ -101,6 +101,52 @@ mechanically understandable (and thus how worth attacking directly) they are:
    is decomp-permuter (step 4), which is unreasonably good at finding the
    "add one more competing pseudo-register" perturbation that changes who
    wins.
+7. **A redundant check real keeps but your candidate optimizes away** (e.g. a
+   branch sets a variable to a compile-time-known value, then jumps to a test
+   of that same variable that real still emits in full but your candidate
+   collapses to an unconditional jump). This is `jump_optimize`
+   (`gcc/jump.c`) folding a conditional whose target label has
+   `LABEL_NUSES == 1` — see step 3's worked example. Restructure so both
+   branches reach the shared check via a real control-flow edge (each an
+   explicit `goto`/fallthrough into the same label, so the label has two
+   incoming edges) rather than one path being a bare early `return`/dead-end
+   assignment — swapping which side is the `if`-body vs. `else`-body of the
+   *outer* branch (which one is the syntactically-first, fallthrough-first
+   arm) changes which side needs the explicit jump into the shared label, and
+   that's what flips `LABEL_NUSES`. Confirmed to *not* respond to inverting
+   the condition alone, or to swapping `if (cond) X; else Y;` for
+   `if (cond) { X; goto L; } Y; L:` — both compiled identically; only the
+   fallthrough-order swap moved it.
+8. **Two source-level locals sharing one real register.** If real reuses a
+   single register across what your draft treats as two different variables
+   (e.g. an intermediate scaled value and the final return value), merge them
+   into one C variable reused in place, rather than introducing a second
+   local — a second local competes for register allocation instead of
+   matching real's reuse, and won't fix the diff.
+9. **A shared tail block reached by two different paths — don't reach for
+   `goto` first.** This compiler has no cross-jumping/tail-merging pass, so
+   two *textually duplicated* copies of the same check in different branches
+   never get merged back into one block by the compiler (confirmed: costs
+   real bytes, doesn't reproduce the target). A `goto` into a shared label is
+   one legitimate way to get one physical block with two incoming edges, but
+   before reaching for it, check whether re-picking *which case is the outer
+   split* makes the shared code fall out as plain fallthrough instead: if
+   real's 3-way outcome is "special case A" vs. "B and C both run the same
+   tail", write the *complement of A* as the outer `if`/`else` split (so both
+   B and C are naturally inside the same `else` block, each individually
+   gated) rather than putting one of B/C as a first-checked branch that has
+   to jump forward into the other's tail. `ResolveEnemyAttack`'s
+   `AttackWeakened`/`DefenseBoost` halving looked exactly like bucket 7's
+   shared-join shape and initially got a `goto`-based fix that byte-matched
+   — but was later found unnecessary: the three outcomes are "both flags set
+   → quarter" (the only case skipping the `DefenseBoost` recheck) vs. "either
+   other combination → run the (redundant, harmless) `DefenseBoost` check".
+   Splitting on `AttackWeakened && DefenseBoost` as the outer condition, with
+   both remaining cases falling through the same `if (DefenseBoost) …` inside
+   one `else` block, reproduced the byte-identical shared block with no
+   `goto` at all. Don't assume a `goto` is structurally required just because
+   duplicating the check failed — try re-deriving which condition is the
+   *true* outer split first.
 
 After any fix, re-run the opcode-diff (step 1) before deciding whether to keep
 it — a change can fix the thing you were chasing while quietly introducing a
@@ -147,6 +193,23 @@ of new code, compile with and without that chunk and `cmp` the two `.o` files
 — if they differ, it is *not* actually inert no matter how it reads, and needs
 its own honest accounting.
 
+**Worked example — bucket 7's redundant-check collapse.** `ResolveEnemyAttack`
+(0x08017E44, US) had a miss-path/hit-path branch where real kept a redundant
+`if (damage != 0 && ...)` check on both paths but a from-scratch draft
+collapsed it away on the miss path alone. `gcc/jump.c`'s `jump_optimize`
+(around `thread_jumps`, gated on `LABEL_NUSES(...) == 1`) only folds a
+conditional into an unconditional jump when its target label has exactly one
+incoming edge. The draft's `if (cond) { damage = 0; } else { <hit path> }`
+put the miss arm first — a straight-line block with no other predecessor for
+its copy of the check, trivially collapsible. Real's compiled shape has the
+*hit* path fallthrough-first, so it must explicitly branch forward into the
+shared check, giving that label two predecessors and blocking the fold.
+Swapping which arm goes first (`if (hitPathCond) { <hit path> } else {
+damage = 0; }`) reproduced real exactly; inverting the condition alone, or
+swapping `goto`-to-shared-label for `if`/`else`, both left it unchanged —
+confirming it's genuinely the fallthrough-order/edge-count property, not
+surface phrasing.
+
 ## 4. decomp-permuter — set up scoring correctly or don't bother
 
 Comparing an unlinked candidate object against bytes cut directly from the
@@ -154,15 +217,25 @@ linked ROM is close to useless: the score plateaus on relocation-vs-resolved-
 address noise regardless of candidate quality. Fix: build `target.o` by
 assembling a *relocatable* copy of the real disassembly for just this
 function (wrap the extracted `full_disasm.s` lines in
-`thumb_func_start`/`_end` from `macros.inc`, `.syntax unified` at the top),
-with the literal-pool `.4byte 0x0300....`-style constants swapped for
+`thumb_func_start`/`_end`, `.syntax unified` at the top), with the
+literal-pool `.4byte 0x0300....`-style constants swapped for
 `.extern`-declared symbol names matching the real project globals — left
 *undefined* so they show up as relocations on both sides, not resolved on one
 side and symbolic on the other. This alone reproduces the real function's
-exact byte size when assembled standalone, and (optionally, to sanity-check
-the whole setup once) can be linked against the real addresses with tiny
-`.thumb_func` stub objects for any called functions, to confirm it reproduces
-the donor ROM's bytes exactly before trusting it as `target.o`.
+exact byte size when assembled standalone.
+
+`tools/make_permuter_target.py <ver> <function-name> <out-dir>` automates all
+of this: it slices the function out of `build/<ver>/full_disasm.s`, resolves
+literal-pool RAM addresses against `ram_symbols.<ver>.inc` and externs them,
+assembles `target.o`, preprocesses the function's actual `.c` source (read
+straight from the `c-file` row's source column in `regions.<ver>.txt` — not
+`manifest.py`'s parsed `Region`, whose 3rd field is the *generated*
+`build/<ver>/c/<name>.s` path, not the original `.c`) into `base.c`, and
+writes a `compile.sh`/`settings.toml` pair using the project's real agbcc
+flags (mirroring `tools/c/compile_c.py`'s game-code profile). It prints the
+`tools/opcode_diff.py` command to sanity-check the result — run that (and
+check `arm-none-eabi-size target.o`'s `.text` figure against the real
+function's byte count) before trusting `target.o` for permuter scoring.
 
 ```bash
 permuter.py <dir> --debug          # sanity: prints a base score, doesn't crash
