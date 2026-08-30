@@ -2,7 +2,7 @@
 
 	arm_func_start EntryPoint
 EntryPoint: @ 0x08000000
-	b _080000C0
+	b crt0
 	arm_func_end EntryPoint
 
 NintendoLogo: @ 0x08000004

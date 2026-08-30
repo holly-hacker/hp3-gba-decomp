@@ -1,34 +1,16 @@
 # Extracted-region manifest for the US ROM.
 #
+# Syntax:
 # label <address> <name>
-#   Declares a symbol at an address that isn't extracted yet (still raw
-#   .incbin) but needs to be referenced from code that IS extracted.
+#   A symbol that can be addressed by other code, see also ram_symbols.us.inc.
 #
 # <start> <end> <asm-file> <name>
-#   A curated, hand-verified extracted region. Boundaries must be fully
-#   confirmed (all reachable code walked to genuine termination) before
-#   a function earns a row here -- see docs/ for how each was confirmed.
-#
-# Everything not covered by a region stays as raw .incbin from
-# baserom.us.gba, emitted as gap sections by tools/gen_link.py. Nothing
-# it generates is committed, same as everything else in build/.
-#
-# A row whose asm-file is also listed in regions.jp.txt at the same
-# address must be byte-identical in both ROMs at that address (verified,
-# not assumed -- see the file itself for how).
+#   A region of assembly code.
 #
 # c-file <start> <end> <source.c> <name>
-#   A region compiled from C by tools/c/compile_c.py (the `compile-c`
-#   recipe) with agbcc, the compiler the ROM was built with -- see
-#   docs/compiler.md. Column 3 is the .c under src/; the assembly it
-#   produces lands in build/<ver>/c/<name>.s.
-#
-# krawall-module/krawall-samples <start> <end> <source> <name>
-#   See the "Krawall audio data" section below for these two directives --
-#   curated JSON+WAV source under data/audio/, packed to real assembly by
-#   tools/krawall/pack_krawall.py before `gen-link` (the `pack-krawall` recipe).
+#   A region for a compiled C file.
 
-label 0x080000C0 _080000C0
+label 0x080000C0 crt0
 
 # Still-unextracted helpers referenced from below
 label 0x080208B4 sub_080208B4
@@ -80,29 +62,11 @@ c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTab
 c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
 c-file 0x080425E4 0x08042608 src/text/get_dialog_text.c GetDialogText
 
-# --- Krawall audio data ---
-#
-# krawall-module <start> <end> <json-file> <name>
-#   A module (song) plus its own patterns, packed from curated
-#   data/audio/modules/<name>.json (+ the sample WAVs it references) by
-#   tools/krawall/pack_krawall.py before `gen-link` runs (see the `pack-krawall`
-#   recipe). One row per module: a module's own patterns are contiguous
-#   with each other and immediately precede its header in ROM, so the
-#   whole [patterns][header] span is one region -- confirmed in
-#   docs/formats/krawall.md.
-#
-# krawall-samples <start> <end> <dir> <name>
-#   The entire sample set (all Sample<N> structs + PCM, then the sample
-#   pointer list) as one region -- also one contiguous run, confirmed in
-#   docs/formats/krawall.md. Packed from curated data/audio/samples/.
-#
-# data/audio/ is curated, editable source (JSON metadata + WAV PCM),
-# content-identical between US/JP (see docs/formats/krawall.md's Confirmed
-# stats) -- only the addresses below are per-version. It's gitignored, same
-# footing as the baserom (see CLAUDE.md hard rule 2) -- bootstrap it
-# locally with `just extract-krawall` before building. tools/krawall/pack_krawall.py
-# writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
-# like everything else in build/), which is what gen_link.py includes.
+# Krawall audio data
+# krawall-module <start> <end> <source> <name>
+#   A single Krawall audio module
+# krawall-samples <start> <end> <source> <name>
+#   The Krawall sample set
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 0x08AA6538 data/audio/modules/MusBattle.json MusBattle
@@ -157,30 +121,8 @@ krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 
-# --- Dialog/UI text data ---
-#
+# Dialog/UI text data
 # dialog-text <start> <end> <json-file> <name>
-#   One language's full string table (Huffman tree + offset table +
-#   2767 compressed strings, byte-aligned per string, 4-byte-aligned as
-#   a whole -- see docs/formats/text.md and tools/text/text_codec.py), packed
-#   from curated data/text/<lang>.json by tools/text/pack_text.py before
-#   `gen-link` runs (see the `pack-text` recipe). US/EU cart only --
-#   dialog text has not been located in the JP ROM (very likely a
-#   different mechanism, not proven identical the way Krawall content
-#   is -- see docs/formats/text.md).
-#
-# dialog-text-table <start> <end> <name>
-#   The 8-entry per-language pointer table (sub_08042588's
-#   0x0806BD78) that all 8 dialog-text rows above are addressed from,
-#   in the fixed language order English US, English UK, French, German,
-#   Spanish, Italian, Dutch, Danish.
-#
-# data/text/ is curated, editable source (JSON), gitignored per hard
-# rule 2 (CLAUDE.md) -- game's real dialog/UI text content, same
-# footing as the baserom and data/audio/. Bootstrap it locally with
-# `just extract-text` before building. tools/text/pack_text.py writes the
-# actual packed assembly to build/<ver>/text/ (also gitignored), which
-# is what gen_link.py includes.
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb
@@ -191,135 +133,36 @@ dialog-text 0x08F0FB84 0x08F24704 data/text/it.json DialogTextIt
 dialog-text 0x08F24704 0x08F37D1C data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 
-# --- Folio Bruti monster stat table ---
-#
+# Folio Bruti monster stat table
 # monster-table <start> <end> <json-file> <name>
-#   The Folio Bruti (in-game bestiary) monster stat table: 69 24-byte
-#   records (HP, per-spell effectiveness against 6 of the 8 player
-#   spells, and several still-unidentified fields), read by
-#   sub_0801890C (the spell-effectiveness accessor, a genuine compiled
-#   switch/jump table) and by the battle-init HP-copy code -- see
-#   docs/formats/folio_bruti.md. Packed from curated
-#   data/monsters/monsters.json by tools/monsters/pack_monsters.py before
-#   `gen-link` runs (see the `pack-monsters` recipe). End address confirmed
-#   two independent ways: 69 * 24 bytes lands exactly on the
-#   already-known table at 0x0804FA88, and matches the RAM state-array
-#   reset loop bound in sub_080370A0. US ROM only -- content not yet
-#   checked against JP.
-#
-# data/monsters/ is curated, editable source (JSON), gitignored per hard
-# rule 2 (CLAUDE.md) -- extracted game data, same footing as the baserom.
-# Bootstrap it locally with `just extract-monsters` before building.
 monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
 
-# g_pMonsterDropTable[69], indexed by MonsterTable roster index, 8 bytes/row:
-# 2 (chance:u16, itemId:u16) slots. Read by RollBattleItemDrops -- see
-# docs/memory-map/battle.md's "FightState->bBonusRewardFlags" section.
-# End address confirmed: 69 * 8 bytes lands exactly where the byte pattern
-# (every value's high byte 0) breaks.
+# g_pMonsterDropTable[69]
 c-file 0x0804FC28 0x0804FE50 src/data/monster_drop_table.c g_pMonsterDropTable
 
-# --- Per-character level-up stat tables ---
-#
+# Per-character level-up stat tables
 # level-table <start> <end> <json-file> <name>
-#   3 tables (Harry/Ron/Hermione), 100 12-byte records each (one per
-#   level, index 0 unused), indexed 0-based by LevelUpFighter_candidate
-#   (0x080151B0) -- displayed "Level N" is table row N-1. Verified
-#   exactly against real in-game data (HP/MP direct; agility =
-#   255-speed; XP-to-next-level = cumulative sum of each row's XP-delta
-#   field) -- see docs/memory-map/battle.md. Packed from curated
-#   data/levels/<name>.json by tools/levels/pack_levels.py before
-#   `gen-link` runs (see the `pack-levels` recipe). Tables are contiguous
-#   in ROM in this order (Harry, Ron, Hermione), confirming the
-#   100-record/12-byte sizing independently. US ROM only -- content not
-#   yet checked against JP.
-#
-# data/levels/ is curated, editable source (JSON), gitignored per hard
-# rule 2 (CLAUDE.md). Bootstrap it locally with `just extract-levels`
-# before building.
 level-table 0x0804FE50 0x08050300 data/levels/harry.json HarryLevelTable
 level-table 0x08050300 0x080507B0 data/levels/ron.json RonLevelTable
 level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
 
-# --- Object/spell behavior-script bytecode ---
-#
+# Object/spell behavior-script bytecode
 # objscript-table <start> <end> <dir> <name>
-#   The object/spell behavior-script bytecode interpreted by
-#   InterpretObjectScript (US 0x08018CC0) at one opcode/tick -- battle
-#   status effects (opcode 0x97), among other object behaviors, are
-#   driven by this. 65 scripts (effect ids 0-64), packed contiguously,
-#   followed immediately by g_apEffectScripts (65 pointers to them,
-#   indexed by effect id). See docs/formats/object_script.md. Packed
-#   from curated data/scripts/ (one text file per effect, ordered by
-#   data/scripts/index.json, not by filename -- see that doc) by
-#   tools/objscript/pack_objscript.py before `gen-link` runs (see the
-#   `pack-objscript` recipe). Both the script bytes and the pointer
-#   table are emitted by that one packer -- the table itself isn't
-#   hand-curated, it's fully determined by script order/size.
-#
-# data/scripts/ is curated, editable source, gitignored per hard rule 2
-# (CLAUDE.md) -- extracted game data, same footing as the baserom.
-# Bootstrap it locally with `just extract-objscript` before building.
 objscript-table 0x0805994C 0x0805BA7C data/scripts g_apEffectScripts
 
-# --- Item/equipment table ---
-#
+# Item/equipment table
 # item-table <start> <end> <json-file> <name>
-#   g_pItemTable: 132 52-byte records (item name/icon references,
-#   owl-mail reward weight, category, and several still-unidentified
-#   fields), read by the 0x08026754-0x08026F7E accessor cluster --
-#   item ID == index into this table == index into the save format's
-#   g_abItemQuantities. Indices 0-78 are real items, 79 is a dummy
-#   record marking the end of the real items, and 80-131 are unused
-#   all-zero slots of the same allocation -- all 132 are packed here so
-#   the region round-trips byte-exact. See docs/formats/save.md's "Item
-#   quantities and equipment" section. Packed from curated
-#   data/items/items.json by tools/items/pack_items.py before `gen-link`
-#   runs (see the `pack-items` recipe). End address confirmed: 132 *
-#   52 bytes lands exactly on the unrelated pointer table that follows
-#   at 0x080629B4. US ROM only -- content not yet checked against JP.
-#
-# data/items/ is curated, editable source (JSON), gitignored per hard
-# rule 2 (CLAUDE.md) -- extracted game data, same footing as the
-# baserom. Bootstrap it locally with `just extract-items` before
-# building.
 item-table 0x08060EE4 0x080629B4 data/items/items.json g_pItemTable
 
-# All 79 real items' icon data (palette+tiles+frame-header, see
-# docs/formats/graphics.md's "Item icons" section) sits in one
-# fully contiguous ROM span with zero gaps between items, in table
-# order -- confirmed by sorting every pIcon1/pIcon2/pIcon3 address
-# and checking each one's extent against the next. The end address
-# is independently corroborated: it's the literal address
-# (DAT_080ac6a0) FUN_08026bcc uses for the next icon resource (an
-# equip-slot placeholder, outside this table). Packed from curated
-# data/images/items/<Name>.palette.bin/.tiles.bin/.frames.bin (one
-# triple per real item, named via item_codec.icon_labels) by
-# tools/items/pack_item_icons.py (the `pack-item-icons` recipe).
-#
-# data/images/items/ is curated, editable source, gitignored per
-# hard rule 2 (CLAUDE.md) -- extracted game data, same footing as
-# the baserom. Bootstrap it locally with `just extract-item-icons`
-# before building. There is no re-encode step: these .bin files are
-# verbatim copies of the original compressed/raw bytes (no known
-# type-4 codec encoder exists), so editing them isn't meaningful --
-# they exist so this region can be a real, byte-verified extracted
-# region instead of anonymous .incbin from the baserom.
+# Item icon data
 item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
 
-# g_awSpellPowerBase/g_awSpellPowerScale/g_awSpellMpCost, each ushort[30]
-# indexed spellId*3 + spellLevel -- see docs/memory-map/battle.md's
-# "Spell power tables, decoded" and "Spell MP cost" sections.
 c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
 
-# g_abSpellMaxLevel[10]/g_abSpellLevelUpThreshold[2], read by
-# TrackSpellFamiliarity -- see docs/memory-map/battle.md's "Spell
-# familiarity/leveling" section.
 c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
 
 c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
 
-# Shop tab stock lists -- see docs/formats/items.md's "Shop prices" section.
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

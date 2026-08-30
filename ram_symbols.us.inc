@@ -11,18 +11,22 @@
 @ The dialog-text-engine symbols have no JP counterpart at all (that
 @ engine isn't present in the JP ROM -- see docs/formats/text.md).
 
+@ --- Battle system (see docs/memory-map/battle.md) ---
+.set g_pFightState,      0x030024E8  @ FightState *, the active battle's state
+.set g_bSpellMissStreak, 0x03002749  @ byte: consecutive-miss streak breaker
+
 @ --- Dialog/UI text engine (US only) ---
-.set gCurrentLanguage,       0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
-.set gLocaleThousandsSep,    0x03005D0D  @ byte: locale-specific number-formatting separator
-.set sDialogLanguageTable,   0x0806BD78  @ ROM: 8 x u32, one string-table blob pointer per language
+.set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
+                                         @ text-rendering fields (e.g. +0x11 = line height); not
+                                         @ fully mapped, see draw_text_line.s/print_text_box.s
+.set sTextMacroTable,        0x03003170  @ ROM: pointer table for 0x40-prefixed escape/macro codes
 .set gDialogTextBlobBase,    0x030033C0  @ active language blob's base pointer (0 = none installed)
 .set gDialogTextOffsetTable, 0x030033C4  @ pointer to the active blob's per-string-ID u32[] offset table
 .set gDialogTextTreeNodes,   0x030033C8  @ pointer to the active blob's Huffman tree node table
 .set gDialogTextScratchBuf,  0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
-.set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
-                                          @ text-rendering fields (e.g. +0x11 = line height); not
-                                          @ fully mapped, see draw_text_line.s/print_text_box.s
-.set sTextMacroTable,        0x03003170  @ ROM: pointer table for 0x40-prefixed escape/macro codes
+.set gCurrentLanguage,       0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
+.set gLocaleThousandsSep,    0x03005D0D  @ byte: locale-specific number-formatting separator
+.set sDialogLanguageTable,   0x0806BD78  @ ROM: 8 x u32, one string-table blob pointer per language
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked
@@ -30,19 +34,15 @@
 @ cursor 2 is undocumented by it and comes from this project's own
 @ disassembly (see rng.md for what's confirmed and what's still open
 @ about it).
+.set gMt19937SeedSourceCounter,  0x030034EC  @ external halfword counter AutoSeed also reads
+.set gMt19937SeedSourceStruct,   0x0300356C  @ external struct AutoSeed reads timing/frame data from
+                                             @ for auto-seeding (subsystem unconfirmed)
+.set gMt19937LastRollByte,       0x03005574  @ low byte of the last tempered value (purpose unconfirmed)
+.set gMt19937DrawIndex,          0x03005578  @ cursor 1: running count of numbers drawn
 .set gMt19937StatePtr,           0x0300557C  @ base of the 624-word MT state array
 .set gMt19937CurPtr,             0x03005580  @ cursor 1: pointer into the state array
 .set gMt19937RemainingIndices,   0x03005584  @ cursor 1: untempered words left before regenerating
 .set gMt19937CurPtr2,            0x03005588  @ cursor 2: pointer into the state array
 .set gMt19937RemainingIndices2,  0x0300558C  @ cursor 2: untempered words left before regenerating
-.set gMt19937DrawIndex,          0x03005578  @ cursor 1: running count of numbers drawn
-.set gMt19937LastRollByte,       0x03005574  @ low byte of the last tempered value (purpose unconfirmed)
-.set gMt19937SeedValue,          0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 .set gMt19937AutoSeedCallCount,  0x03005590  @ increments each AutoSeed call (purpose unconfirmed)
-.set gMt19937SeedSourceStruct,   0x0300356C  @ external struct AutoSeed reads timing/frame data from
-                                              @ for auto-seeding (subsystem unconfirmed)
-.set gMt19937SeedSourceCounter,  0x030034EC  @ external halfword counter AutoSeed also reads
-
-@ --- Battle system (see docs/memory-map/battle.md) ---
-.set g_pFightState,      0x030024E8  @ FightState *, the active battle's state
-.set g_bSpellMissStreak, 0x03002749  @ byte: consecutive-miss streak breaker
+.set gMt19937SeedValue,          0x03005594  @ accumulating seed value (SetSeed/AutoSeed)

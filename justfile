@@ -29,7 +29,7 @@ disasm ver="us":
 # Assemble the full-ROM disassembly and confirm it's still byte-perfect.
 disasm-compare ver="us": (disasm ver)
     arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/full_disasm.s -o build/{{ver}}/full_disasm.o
-    arm-none-eabi-ld -T ld_script.{{ver}}.ld build/{{ver}}/full_disasm.o -o build/{{ver}}/full_disasm.elf
+    arm-none-eabi-ld -T ld_script.ld build/{{ver}}/full_disasm.o -o build/{{ver}}/full_disasm.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/full_disasm.elf build/{{ver}}/full_disasm.gba
     cmp baserom.{{ver}}.gba build/{{ver}}/full_disasm.gba && echo "MATCH"
 

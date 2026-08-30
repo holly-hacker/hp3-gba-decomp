@@ -105,7 +105,7 @@ Actual layout so far (both ROM versions supported throughout, not just US):
 ├── justfile                # task runner; most recipes take ver="us"|"jp" (default us)
 ├── baserom.{us,jp}.gba     # user-supplied, gitignored. gba_bios.bin too (mGBA debugging only)
 ├── rom.{us,jp}.sha1        # pinned donor-ROM hashes
-├── ld_script.{us,jp}.ld    # for `disasm-compare` only; the real build's linker script
+├── ld_script.ld            # for `disasm-compare` only; the real build's linker script
 │                           #   is generated per version by tools/gen_link.py
 ├── functions.{us,jp}.cfg   # curated gbadisasm arm_func/thumb_func seeds -- it has no
 │                           #   function discovery of its own

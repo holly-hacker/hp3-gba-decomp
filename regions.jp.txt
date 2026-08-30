@@ -2,7 +2,7 @@
 # the sharing convention, and a note on known gaps in the Krawall audio
 # data rows below.
 
-label 0x080000C0 _080000C0
+label 0x080000C0 crt0
 
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail

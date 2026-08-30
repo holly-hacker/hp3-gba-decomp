@@ -5,14 +5,14 @@
 @ the JP ROM).
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
+.set gMt19937SeedSourceCounter,  0x0300354C
+.set gMt19937SeedSourceStruct,   0x030035CC
+.set gMt19937LastRollByte,       0x030055D4
+.set gMt19937DrawIndex,          0x030055D8
 .set gMt19937StatePtr,           0x030055DC
 .set gMt19937CurPtr,             0x030055E0
 .set gMt19937RemainingIndices,   0x030055E4
 .set gMt19937CurPtr2,            0x030055E8
 .set gMt19937RemainingIndices2,  0x030055EC
-.set gMt19937DrawIndex,          0x030055D8
-.set gMt19937LastRollByte,       0x030055D4
-.set gMt19937SeedValue,          0x030055F4
 .set gMt19937AutoSeedCallCount,  0x030055F0
-.set gMt19937SeedSourceStruct,   0x030035CC
-.set gMt19937SeedSourceCounter,  0x0300354C
+.set gMt19937SeedValue,          0x030055F4
