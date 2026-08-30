@@ -87,6 +87,48 @@ wrappers above it return the remainder through a pointer in `r2`. The
 compiler's own division helpers are the Thumb `_divsi3`/`_modsi3`/
 `_udivsi3`/`_umodsi3` objects listed above.
 
+## Optimizer quirk: cross-branch loop-invariant merging
+
+`gcc/loop.c`'s `-O2` invariant-hoisting pass can merge two textually-separate
+loads in a loop's `if`/`else` branches into one value hoisted above the loop
+and cached in a register, even though only one branch executes per
+iteration -- e.g. a global-pointer address that the real ROM instead
+reloads via a fresh literal-pool load in each branch, uncached.
+
+Mechanism (checked against the pinned agbcc revision, see "Reproducing"
+below): `find_and_verify_loops` records each invariant-looking `set` as a
+`struct movable`. `combine_movables` unifies two movables whenever
+`n_times_set[regno] == 1` for both and `rtx_equal_for_loop_p` finds their
+generated RTL identical -- true for any two branches loading the same
+global through the same addressing mode, regardless of C-level phrasing, so
+renaming variables or splitting the expression differently does not defeat
+the merge itself. `move_movables` then hoists the merged pair only if
+`threshold * savings * lifetime >= insn_count` (`threshold` is a
+target-wide constant from `regclass.c`; `savings`/`lifetime`/`insn_count`
+are specific to the loop's actual instruction sequence, and merging roughly
+doubles the first two). A residual "extra register-cached global" diff is
+therefore still closable by hand: match real's exact statement and branch
+order (not just its logic) so the surrounding loop's cost numbers drop the
+merged candidate back under threshold. `DecompressDialogText`
+(`src/text/decompress_dialog_text.c`) is a worked example -- initializing
+`pending`/`pendingFlag` before the null check, and writing the
+pending/pendingFlag update as `if (decodedByte > 0xef && !pendingFlag)
+{...} else if (pendingFlag) {...} else {...}` (matching real's exact
+fallthrough/branch-target layout, no `goto`) both push the hoist back below
+threshold. decomp-permuter is worth a run if manual restructuring doesn't
+converge -- a mutation that raises `n_times_set[regno]` for one side, or
+changes `insn_count`, can also break the merge or its hoist.
+
+A separate quirk: at a block with two predecessors, GCC 2.9's `cse.c` can
+eliminate a redundant sub-expression (e.g. a repeated `x << 24`) but still
+re-derive the final value at the join point instead of reusing either
+predecessor's already-computed copy, when that value is exposed only
+through a persistent named local rather than repeated inline expressions.
+Re-deriving the expression at each use site instead of caching it in a
+local lets CSE find (or not find) the sharing the way real's compiler did,
+when a residual diff looks like a register/recompute choice rather than a
+wrong value.
+
 ## Reproducing
 
 `nix develop` provides `agbcc` and `old_agbcc`; `flake.nix` pins the
