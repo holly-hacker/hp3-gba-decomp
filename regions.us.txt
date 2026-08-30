@@ -10,13 +10,12 @@
 # c-file <start> <end> <source.c> <name>
 #   A region for a compiled C file.
 
-label 0x080000C0 crt0
-
 # Still-unextracted helpers referenced from below
 label 0x080208B4 sub_080208B4
 
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
+0x080000C0 0x08000104 asm/crt0.s                crt0
 
 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder

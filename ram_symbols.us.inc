@@ -11,6 +11,12 @@
 @ The dialog-text-engine symbols have no JP counterpart at all (that
 @ engine isn't present in the JP ROM -- see docs/formats/text.md).
 
+@ --- crt0 (see asm/crt0.s) ---
+.set gSystemStackTop,  0x03007EA0  @ top of the AGB system-mode stack
+.set gIrqStackTop,     0x03007FA0  @ top of the AGB IRQ-mode stack
+.set gIntrVectorPtr,   0x03007FFC  @ BIOS-called user interrupt handler pointer
+.set gMainEntryPoint,  0x08029691  @ thumb-bit-set address of main, called from crt0
+
 @ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_pFightState,      0x030024E8  @ FightState *, the active battle's state
 .set g_bSpellMissStreak, 0x03002749  @ byte: consecutive-miss streak breaker

@@ -4,6 +4,12 @@
 @ symbols aren't defined here at all -- that engine isn't present in
 @ the JP ROM).
 
+@ --- crt0 (see asm/crt0.s) ---
+.set gSystemStackTop,  0x03007EA0
+.set gIrqStackTop,     0x03007FA0
+.set gIntrVectorPtr,   0x03007FFC
+.set gMainEntryPoint,  0x080296ED
+
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 .set gMt19937SeedSourceCounter,  0x0300354C
 .set gMt19937SeedSourceStruct,   0x030035CC
