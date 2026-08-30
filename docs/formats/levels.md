@@ -4,14 +4,16 @@ See [`../README.md`](../README.md) for the confidence-key legend
 (PROVEN / STRUCTURAL MATCH / UNCONFIRMED).
 
 Status: the per-room table's location, entry count, stride, and the map
-name lookup are **PROVEN**. About half of the 124-byte record is
-identified field-by-field (scroll bounds, default music, overworld
-monster-encounter counts, room-resource-blob pointer); the BG-layer
-resource pointers are STRUCTURAL MATCH via the shared decompression
-dispatcher (see [`graphics.md`](graphics.md)) but not confirmed by
-content. A Ghidra structure type, `RoomTableEntry`, is applied as
-`g_pRoomTable[55]` at the table's address with every field named and
-commented per the layout below.
+name lookup are **PROVEN**. Most of the 124-byte record is identified
+field-by-field. The BG-layer fields (`+0x00`-`+0x3c`, `+0x54`, `+0x5c`)
+are **PROVEN**: a two-level block-index-map/block-contents tilemap
+format plus a raw uncompressed palette (`+0x58`) were used together to
+render real rooms and confirmed tile-for-tile against actual gameplay --
+see [`graphics.md`](graphics.md)'s "On-demand per-tile BG streaming"
+section for the full format and which level-table layer maps to which
+hardware BG register. A Ghidra structure type, `RoomTableEntry`, is
+applied as `g_pRoomTable[55]` at the table's address with every field
+named and commented per the layout below.
 
 ## The table
 
@@ -111,15 +113,17 @@ guessed from zero-valued samples.
 
 | Offset | Field | Meaning | Confidence |
 |---|---|---|---|
-| 0x00/0x10/0x20/0x30 | `dwBgTilemapN` | BG layer N tilemap resource, decoded via the shared dispatcher (`sub_0801DD88`/`sub_0801DD90`, see [`graphics.md`](graphics.md)) by `LoadRoomBgTilemapN_candidate` | STRUCTURAL MATCH |
-| 0x04/0x14/0x24/0x34 | `dwBgLayerNExtra` | BG layer N secondary resource (also tilemap-shaped per `graphics.md`'s decode of the twin table), decoded by `LoadRoomBgLayerNExtra_candidate` | STRUCTURAL MATCH |
+| 0x00/0x10/0x20/0x30 | `dwBgTilemapN` | BG layer N **block-index map**: a `width:u16, height:u16` header (in 4-tile block units) followed by `width*height` block-index entries, decoded via the shared dispatcher (`sub_0801DD88`/`sub_0801DD90`) by `LoadRoomBgTilemapN_candidate`. Each entry selects a block from `dwBgLayerNExtra`, not a final tile -- see [`graphics.md`](graphics.md)'s "On-demand per-tile BG streaming" section for the full two-level format and layer-to-hardware-BG mapping | PROVEN (rendered and confirmed against real gameplay for 4 rooms, all 4 layers) |
+| 0x04/0x14/0x24/0x34 | `dwBgLayerNExtra` | BG layer N **block contents**: a `blockCount:u32` header, then `blockCount*32` bytes of 4x4 tile-ID entries (`u16` each) and `blockCount*16` bytes of per-tile palette/flip bytes, decoded by `LoadRoomBgLayerNExtra_candidate`. Tile IDs index into `dwBgTilesetA`/`B` (`+0x54`/`+0x5c`); the palette byte packs `bit0`=hflip, `bit1`=vflip, `bits2-5`=palette bank | PROVEN |
 | 0x08-0x0c / 0x18-0x1c / 0x28-0x2c / 0x38-0x3c | `dwUnusedN_8`/`dwUnusedN_c` | Passed to `LoadRoomBgLayerNExtra_candidate` but not read by it | UNCONFIRMED |
 | 0x40 | `dwCollisionBehaviorTable` | Collision behavior-table pointer (NOT graphics, despite `LoadRoomSharedTileset_candidate`'s name; decodes into `g_pRoomCollisionBehaviorTable`), see [`collision.md`](collision.md) | PROVEN |
 | 0x44 | `dwCollisionTilemap` | Collision tilemap pointer (same caveat), decodes into `g_pRoomCollisionTilemap`; its first u16 is read back as a pattern count into `DAT_03003FB8` | PROVEN |
 | 0x48/0x4c | `dwUnused_48`/`dwUnused_4c` | Not read by any traced consumer | UNCONFIRMED |
 | 0x50 | `dwRoomResourceBlob` | ROM pointer to a per-room resource blob, parsed by `ParseRoomResourceBlob_candidate` (`0x08005A78`) into the room's default object/chest layout, incl. a quest-stage-gated variant sub-table indexed by `g_abQuestEventState[0]` -- see [`rooms.md`](rooms.md) | STRUCTURAL MATCH |
-| 0x54/0x58 | `dwWindowLayoutA`/`A2` | Header + selector consumed by `DecodeRoomWindowLayout_candidate` (`0x0803EBA8`): decodes a run-length offset table into a fixed 0x124-byte buffer. Asset class not pinned down (candidate: window/screen-transition layout) | UNCONFIRMED |
-| 0x5c/0x60 | `dwWindowLayoutB`/`B2` | Second, independent instance of the same mechanism | UNCONFIRMED |
+| 0x54 | `dwBgTilesetA` | BG tileset resource pointer, consumed by `DecodeBgTilesetOffsetTable_candidate` (`0x0803EBA8`). Shared by BG layers 0 and 3 (level-table layer index, see `graphics.md`) | PROVEN |
+| 0x58 | `dwPaletteData` | Raw, uncompressed 256-color (16 banks x 16, BGR555) BG palette array, copied verbatim by `SetupRoomBgControlAndWindows_candidate` -- confirmed byte-exact against a live mGBA memory dump. Index 0 is force-overwritten to black (backdrop color) by a second, separate 1-color copy right after | PROVEN |
+| 0x5c | `dwBgTilesetB` | Second BG tileset resource pointer, same mechanism. Shared by BG layers 1 and 2 | PROVEN |
+| 0x60 | `dwUnused_60` | Passed to `DecodeBgTilesetOffsetTable_candidate` as an argument but never read inside it -- dead | UNCONFIRMED |
 | 0x64 | `dwBgControlOverrideA` | Pointer to a byte selector (0-3) consumed by `ApplyRoomBgControlOverride_candidate` (`0x0802B174`) to pick a BG-control-word override; for room ids 5-7 with `g_abQuestEventState[0x1d]==1` it substitutes `g_pBgControlWords` instead. Not a graphics/tileset pointer (corrects an earlier "seasonal overlay" guess: the fallback targets are plain BG-control constants, `0x1d03`/`0x1e09`/`0x1f0a`/`0x1c02`, not compressed resources) | STRUCTURAL MATCH |
 | 0x68 | `dwBgControlOverrideB` | Second selector, same mechanism | STRUCTURAL MATCH |
 | 0x6c | `wScrollBoundMinX` | Camera/scroll clamp min X. `SetRoomScrollBounds`/`GetRoomScrollBounds` (`0x0800A4E8`/`0x0800A4A4`) read/write offsets 0x6c-0x72 as `(minX,minY)`/`(maxX,maxY)`, falling back to `(0,0)`/`(defaultW,defaultH)` when all four are zero. This is the per-room bounding box | PROVEN |
@@ -168,13 +172,12 @@ about how room content is placed.
 ## Not yet located
 
 - No `regions.us.txt` rows are ready for this table yet: several field
-  offsets (window-layout pointers, BG-control-override targets) aren't
-  fully walked to genuine termination, and multiple `Unused` byte ranges
-  aren't confirmed padding vs. simply unread by the traced call sites
-  (CLAUDE.md hard rule on region-extent confirmation).
-- The BG-layer resource pointers are STRUCTURAL MATCH only -- decoded
-  via the known dispatcher, but not individually confirmed as "which BG
-  layer" (background/midground/foreground/UI) by content.
+  offsets (BG tileset pointers, BG-control-override targets) aren't
+  fully walked to genuine termination -- the BG tileset codec
+  (`BgTileCodec_candidate`, `0x08006300`) and its per-tile offset-table
+  packing aren't decoded yet, see graphics.md -- and multiple `Unused`
+  byte ranges aren't confirmed padding vs. simply unread by the traced
+  call sites (CLAUDE.md hard rule on region-extent confirmation).
 - The `(tag, value)` byte run immediately preceding `g_pRoomTable`
   (`~0x0806307C`-`0x08063C88`) has no identified consumer; worth a
   dynamic (mGBA watchpoint) pass rather than further static guessing.

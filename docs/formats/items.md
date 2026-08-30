@@ -135,7 +135,7 @@ Real items' `pPalette`/`pTileData`/`pFrameData` aren't stored in
 `items.json` -- see [`graphics.md`](graphics.md)'s "Item icons" section
 for the format. `sIconPath` names both the label set `pack_items.py`
 emits (from `regions.us.txt`'s `item-icon-data` row) and the PNG under
-`extracted/items/`; non-real entries get `sIconPath: null` and keep
+`extracted/graphics/items/`; non-real entries get `sIconPath: null` and keep
 literal icon pointers.
 
 ## What's NOT yet known

@@ -2,7 +2,7 @@
 """One-time bootstrap: extract every real item's icon data
 (g_pItemTable's pPalette/pTileData/pFrameData, see
 tools/items/icon_codec.py) verbatim to data/images/items/, and render
-each to a viewable PNG under extracted/items/ for humans -- see
+each to a viewable PNG under extracted/graphics/items/ for humans -- see
 docs/formats/graphics.md's "Item icons" section.
 
 Reads baserom.us.gba directly rather than data/items/items.json --
@@ -35,7 +35,7 @@ PNGs there are never build input (see justfile).
 
 Usage: extract_item_icons.py   (reads baserom.us.gba, writes
                                  data/images/items/*.bin and
-                                 extracted/items/*.png)
+                                 extracted/graphics/items/*.png)
 """
 import sys
 from pathlib import Path
@@ -93,7 +93,7 @@ def main() -> None:
 
     images_dir = Path("data/images/items")
     images_dir.mkdir(parents=True, exist_ok=True)
-    extracted_dir = Path("extracted/items")
+    extracted_dir = Path("extracted/graphics/items")
     extracted_dir.mkdir(parents=True, exist_ok=True)
 
     for i, (name, record) in enumerate(records):

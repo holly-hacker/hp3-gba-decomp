@@ -143,9 +143,9 @@ pack-items ver="us":
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/images/ is gitignored (same footing as the baserom,
 # see CLAUDE.md hard rule 2). US only. Also writes viewable PNGs to
-# extracted/items/ (gitignored, never build input -- see
+# extracted/graphics/items/ (gitignored, never build input -- see
 # docs/formats/graphics.md's "Item icons" section).
-# Bootstrap data/images/items/*.bin and extracted/items/*.png from baserom.us.gba.
+# Bootstrap data/images/items/*.bin and extracted/graphics/items/*.png from baserom.us.gba.
 extract-item-icons:
     python3 tools/items/extract_item_icons.py
 

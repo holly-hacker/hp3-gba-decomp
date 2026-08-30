@@ -24,11 +24,26 @@ icons" below) is now statically decoded, extracted verbatim to
 `data/images/items/*.bin`, and packed into a real, byte-verified
 `regions.us.txt` region -- the first build-integrated
 (`just extract-item-icons`) image extractor in this repo, also
-rendered for viewing to `extracted/items/*.png`. Tile data otherwise
-remains the bottleneck for "extract everything" beyond items -- only 2
-non-item tile resources are
-confirmed, both via live tracing, with no statically-walkable
-dispatcher argument found for the general case yet (unlike palettes).
+rendered for viewing to `extracted/graphics/items/*.png`. **PROVEN end-to-end for
+level/room BG graphics, fully static, and extracted**: the two-level
+tilemap format (block-index map + per-block tile-ID/palette data), the
+per-tile streaming codec (`BgTileCodec_candidate`, `0x08006300`), and the
+BG palette (level-table `+0x58`, raw uncompressed, no codec) are all
+statically ROM-derived and wired into `tools/graphics/dump_bg_tiles.py`,
+which renders all 55 rooms' 4 BG layers (`extracted/graphics/rooms/layers/`)
+plus an alpha-composited merged view per room (`extracted/graphics/rooms/`,
+naming matches `dump_collision.py`'s convention) in ~1 minute total. Index
+0 within any bank is transparent (GBA convention, not an opaque color);
+merge stacking order is level-table layer `0,2,1,3` bottom-to-top, not
+literal index order (see "On-demand per-tile BG streaming" for why).
+User-confirmed against actual gameplay for 4 rooms (`0x28`, `0x26`,
+`0x27`, `0x24`) and structurally checked for the rest, including which
+level-table layer maps to which hardware BG register. Not yet wired into
+`just`/`regions.us.txt` (currently a research tool like
+`dump_collision.py`, not build input). Tile data otherwise remains the
+bottleneck for "extract everything" beyond items and these rooms -- only
+2 further non-BG tile resources are confirmed (the spark and the wand),
+both via live tracing.
 **STRUCTURAL MATCH** for three earlier candidate art regions from
 static ROM scanning, none code-confirmed and one (`0x08933000`-area's
 sibling `0x080BCA24`) a **false positive** for the object it resembles
@@ -719,21 +734,183 @@ one of these 3. They are not all level/BG-only:
   generic **multi-tile sprite-sheet loader**, exactly the missing
   "many tiles per object" mechanism.
 
-Both `sub_080454BC` and `sub_080454DC` are called from deep inside
-object-update/animation code (`build/us/full_disasm.s` around line 5156/
-5183, inside a large unnamed function reading per-object animation-frame
-fields) -- not the 124-byte level table at all. This is a genuine,
-reusable, generic OBJ tile-loading path, analogous to `sub_08001528` for
-palettes, but **the resource pointer's own source within that caller
-hasn't been traced back to a literal/statically-walkable form yet** --
-unlike the palette path where `sub_08001528`'s `resource_ptr` argument
-is always a clean literal at the call site. Doing that trace (find every
-caller of `sub_080454BC`/`sub_080454DC`/`sub_08045588`, and where each
-one's `resourcePtr` argument ultimately comes from -- likely an
-animation-frame table entry, given the surrounding code reads per-frame
-struct fields) is the next real unlock for reaching "extract everything"
-for tiles -- the calling pattern is found; what's left is tracing its
-argument dataflow.
+Both `sub_080454BC` (`LoadObjTile`) and `sub_080454DC` (`LoadObjTileAt`)
+are called from deep inside object-update/animation code
+(`build/us/full_disasm.s` around line 5156/5183, inside a large unnamed
+function reading per-object animation-frame fields) -- not the 124-byte
+level table at all. This is a genuine, reusable, generic OBJ tile-loading
+path, analogous to `sub_08001528` for palettes, but **the resource
+pointer's own source within that caller hasn't been traced back to a
+literal/statically-walkable form yet** -- unlike the palette path where
+`sub_08001528`'s `resource_ptr` argument is always a clean literal at the
+call site. This path is confirmed OBJ-only (destinations are
+`0x06010000`-relative, sprite tile VRAM); it is not the mechanism behind
+BG/level tile graphics -- see the next section for that.
+
+### On-demand per-tile BG streaming (PROVEN -- rendered and confirmed against real gameplay)
+
+BG character tiles are decompressed **one tile at a time, on demand, as
+the room's tilemap reveals them**, through a small LRU-cached streaming
+system, independent of the `sub_0801DD90`/`sub_0801DE5C` dispatcher
+documented above. Found via a live mGBA write watchpoint on BG character
+VRAM (`0x06000000`, length `0x8000`) during a real room load and while
+walking around -- every hit landed inside the same function pair,
+confirming it's exercised for real gameplay, not a rare/unused path.
+
+**Status: the full pipeline -- tilemap format, tile decompression, and
+palette -- renders all 4 BG layers of a room via `tools/graphics/dump_bg_tiles.py`,
+confirmed tile-for-tile against actual gameplay by the user for `0x28`
+("Leaky Cauldron - Hallway"), `0x26`/`0x27` ("Cellar 1"/"2"), and `0x24`
+("Fred and George's Shop"), including which level-table layer index maps
+to which hardware BG register.** The tilemap format is a two-level
+block-index-map-plus-block-contents structure, detailed below -- it is
+not raw pixel data at the tileset's `blob_base`, and not a flat
+one-`u16`-per-tile screen-entry array.
+
+#### Layer index -> hardware BG register (PROVEN, user-confirmed in mGBA)
+
+The level table's 4 BG layer slots (`dwBgTilemapN`/`dwBgLayerNExtra`,
+`N=0..3`) do not correspond 1:1 to hardware `BG0`-`BG3` by index. Verified
+against room `0x28`'s real rendered output compared to mGBA's own
+background-layer viewer:
+
+| Level-table layer | Hardware BG | Role |
+|---|---|---|
+| 0 | BG3 | Main background (floor/walls) |
+| 1 | BG1 | Foreground -- tiles drawn over the player character, matching the collision map's separate "foreground" layer (see [`collision.md`](collision.md)) |
+| 2 | BG2 | Overlay props/decorations |
+| 3 | BG0 | Unused in this room (a single, all-zero block, i.e. one repeating tile) |
+
+Whether this mapping is fixed across all rooms or configured per-room
+(e.g. via `dwBgControlOverrideA`/`B`, `+0x64`/`+0x68`) isn't confirmed --
+only checked for this one room. Since GBA composites lower-priority BG
+numbers over higher ones, a merged render must stack in **hardware**
+order (BG3, BG2, BG1, BG0 bottom-to-top), i.e. level-table layers
+`0, 2, 1, 3` -- literal level-table index order puts BG1 and BG2 in the
+wrong relative order.
+
+**The dispatcher's delta-decode post-pass applies to every compression
+type, not just type 6 (PROVEN, from real disassembly).** `sub_0801DD90`'s
+tail (`0x0801DE36`-`0x0801DE4C`) checks byte0 bit 7 and, if set, calls the
+delta-decode pass (`sub_0801DF48`) unconditionally after every dispatch
+type 0-8 -- the bit is independent of compression type, not specific to
+type 6. `tools/graphics/decode_type6.py` applies this pass internally
+for type-6 resources; `dump_bg_tiles.py`'s `decode_resource()` applies
+the same `_apply_delta_pass` (imported from `decode_type6.py`) to every
+other type after dispatch, since `decode_bios.py`'s raw
+LZ77/Huffman/RLE/type-0 decoders have no way to know about a
+dispatcher-level flag on their own. Confirmed against room `0x24`
+("Fred and George's Shop"), whose type-1 (LZ77) block-map has this bit
+set and only decodes to a sane `10x8` grid with the pass applied --
+verified against real gameplay via mGBA's background viewer.
+`decode_bios.py`'s own standalone CLI does not apply this pass, since it
+has no dispatcher-header context to check the bit against -- callers
+using it directly for a resource with the bit set need to apply
+`_apply_delta_pass` themselves.
+
+#### The tilemap format: two levels, not one (PROVEN, from real disassembly)
+
+`LoadBgTileOnDemand_candidate` (`0x0803E220`) reads from two separate
+decoded resources per layer, not one flat screen-entry array. Derived
+directly from its disassembly -- the decompiler's pseudocode obscures the
+exact bit widths involved, so the real algorithm below is read from the
+raw instructions, not the decompile summary:
+
+- **`dwBgTilemapN` (`+0x00`/`+0x10`/`+0x20`/`+0x30`) decodes to a coarse
+  block-index map**: a 4-byte header (`width:u16, height:u16`, in 4-tile
+  **block** units, not raw tiles) followed by `width*height` block-index
+  entries (`u16` each, one per 32x32-pixel block). `LoadRoomBgLayerNExtra_candidate`
+  reads this header directly (`DAT_030058dc = *DAT_03005954`, etc.) to
+  set up per-layer stride constants -- not inferred, read straight out of
+  the decompile. A block index of `0` is a normal, real block like any
+  other, the same way tile index `0` in the level below is a normal
+  tile, not a sentinel for "empty" -- a block-index array that's mostly
+  `0` is not evidence a layer is unused.
+- **`dwBgLayerNExtra` (`+0x04`/`+0x14`/`+0x24`/`+0x34`) decodes to the
+  block contents**: a 4-byte header (`blockCount:u32`), then
+  `blockCount*32` bytes of per-block tile data (16 `u16` tile IDs per
+  block, a 4x4 arrangement) immediately followed by `blockCount*16` bytes
+  of per-tile palette/flip bytes (1 byte per tile, same 4x4 order).
+  Verified byte-exact for all 4 layers of room `0x28`: `header == blockCount`
+  and `total_decoded_size - 4 == blockCount*48` held with zero slack for
+  every layer (`blockCount` `106`/`46`/`11`/`1`).
+- **Per-tile lookup**, for absolute tile position `(tileX, tileY)`:
+  `blockX, subX = divmod(tileX, 4)`; `blockY, subY = divmod(tileY, 4)`;
+  `blk = block_map[blockY*width + blockX]`; `subIndex = subY*4 + subX`;
+  `tileID = tile_id_array[blk*16 + subIndex]` (u16); `paletteByte =
+  palette_array[blk*16 + subIndex]` (byte). Confirmed against the real
+  disassembly's exact shift/mask sequence, not the decompiler's summary.
+- **`paletteByte` packs `bit0`=hflip, `bit1`=vflip, `bits2-5`=palette
+  bank** (4 bits, matching the standard GBA screen-entry's hflip/vflip/
+  bank fields, just pre-shifted into a byte instead of packed into the
+  final `u16` directly -- the runtime OR's `paletteByte << 10` onto the
+  cache-slot index to build the real VRAM screen-entry).
+- **`tileID` indexes into `dwBgTilesetA`/`B`** (`+0x54`/`+0x5c`, see
+  below) via the same generic per-tile offset table already documented --
+  layers 0 and 3 share tileset A, layers 1 and 2 share tileset B (from
+  `DecompressBgTileToVram_candidate`'s `sizeClass = ((layer+1) & 2) >> 1`).
+
+An offline extractor needs to resolve the two-level block-map ->
+block-contents lookup above to get each screen position's tile ID and
+palette/flip byte (`tools/graphics/dump_bg_tiles.py`'s `decode_layer`/
+`render_layer` do exactly this), but does not need the LRU cache or
+VRAM-streaming machinery below -- that exists purely to support the
+*runtime's* on-demand loading, and is irrelevant once tile pixel data is
+decoded directly from `dwBgTilesetA`/`B` by tile ID.
+
+#### The runtime streaming/caching path (confirmed live)
+
+- **`LoadBgTileOnDemand_candidate`** (`0x0803E220`): for each of the 4 BG
+  layers, walks the two-level tilemap above for the 4x4 block of tiles
+  currently needed, and for each one calls
+  `DecompressBgTileToVram_candidate` with the resolved tile ID.
+- **`DecompressBgTileToVram_candidate`** (`0x0803E34C`): a small hash-map
+  cache keyed by tile ID (open addressing via a linked-list-in-array
+  scheme, capacity `0x400`/`0x200` entries for two separate BG size
+  classes). On a cache hit it just bumps a refcount; on a miss it evicts
+  the LRU entry and calls `BgTileCodec_candidate` to decompress exactly
+  one 32-byte tile (`0x20` = one 4bpp 8x8 tile) directly into BG
+  character VRAM at `dest = 0x06000000 + (cacheSlot + sizeClass*0x400) *
+  0x20`. Verified live: every watchpoint hit's call chain matched this
+  function exactly.
+- **`dwBgTilesetA`/`B`** (`+0x54`/`+0x5c`): `size:u16, tileCount:u16`
+  header, then at `+4` a type-6-compressed per-tile offset table
+  (`tileCount` entries), decoded by `DecodeBgTilesetOffsetTable_candidate`
+  (`0x0803EBA8`). Each decoded entry is a packed value: `real_addr =
+  0x08000000 + (entry >> 3)` is that tile's real ROM address (confirmed
+  by tracing the codec's actual ROM reads, and independently by the last
+  tile's computed address landing on the next resource's address).
+  `resource_ptr + size + 8` is a 292-byte context table (16 flat-nibble
+  byte values plus sorted 2-nibble ones -- a symbol/frequency table for
+  the codec, not pixel data) that gets copied to IWRAM and passed as
+  `BgTileCodec_candidate`'s `r3` on every call.
+- **`BgTileCodec_candidate`** (`0x08006300`, 256 bytes, ARM): a third
+  proprietary, IWRAM-installed codec, alongside the already-documented
+  type-4 and type-6 codecs. Installed once at boot into IWRAM
+  `0x030033CC` by **`InstallBgTileCodec_candidate`** (`0x080250B8`,
+  called from `main` at `0x0802971E`) via
+  `CPUSet(0x08006300, 0x030033CC, ...)`. `DecompressBgTileToVram_candidate`
+  reaches it through the standard libgcc `_call_via_r5` interworking
+  stub (`0x0804A2D4`, confirmed by disassembly to be a bare `bx r5`
+  inside the known agbcc libc/libgcc block), with `r5` loaded from a
+  fixed literal -- not a per-tile function-pointer table; the
+  decompiler's pseudocode for this call is misleading about which
+  argument is the call target. Decompresses one tile per call
+  (`r0`=offset-table entry, `r1`=dest, `r2`=`0x20`, `r3`=context table).
+  Unicorn-executed the same way as `decode_type6.py`/`decode_type4.py`;
+  produces real, structured 4bpp output, confirmed by rendering and by
+  the user matching it to real gameplay (see status above).
+
+**The BG palette (PROVEN, static).** Level-table `+0x58` (`dwPaletteData`
+in `levels.md`) is a raw, uncompressed 256-color BGR555 array -- no
+codec, straight `CPUSet` copy via `SetupRoomBgControlAndWindows_candidate`
+(`SetPaletteColorsThunk_candidate`/`SetPaletteColors_candidate`). Index 0 is force-overwritten to black
+(the GBA backdrop color) by a separate 1-color copy right after the bulk
+one. Confirmed byte-exact against a live mGBA memory dump for room
+`0x28`. `tools/graphics/dump_bg_tiles.py` reads it straight from ROM.
+
+**Not yet done**: the very last tile's true compressed length (offset
+table gives each tile's start, not the last one's end).
 
 ### Item icons (PROVEN, extracted)
 
@@ -821,7 +998,7 @@ files, not one concatenated blob -- the frame-header's length isn't a
 fixed format constant the way the palette's is, and nothing in the
 preceding compressed tile data declares its own compressed byte length,
 so only the filesystem boundary reliably separates them) and renders
-each to a human-viewable `extracted/items/<Name>.png` (gitignored,
+each to a human-viewable `extracted/graphics/items/<Name>.png` (gitignored,
 never build input -- see the justfile). `regions.us.txt`'s single
 `item-icon-data` row claims that whole span as one real, byte-verified
 extracted region -- like `item-table` and the Krawall rows, not
@@ -841,33 +1018,43 @@ replacing the 3 raw pointers for real items).
 
 ## Open threads
 
-In rough priority order. The palette side of this subsystem is solved
-and statically enumerable; **tiles are the remaining gap**, and item 1
-is what unlocks them at scale.
+In rough priority order. BG/level tile graphics are PROVEN end-to-end,
+confirmed against real gameplay across multiple rooms (see "On-demand
+per-tile BG streaming" above); OBJ tiles still lack a statically-walkable
+resource-pointer trace.
 
-1. **Trace `sub_080454BC`/`sub_080454DC`/`sub_08045588`'s callers** (see
+1. **`BgTileCodec_candidate`'s algorithm isn't decoded, only
+   Unicorn-executed.** Works correctly (`tools/graphics/dump_bg_tiles.py`
+   renders all 55 rooms end to end in about a minute, confirmed by the
+   user against actual gameplay for `0x28`/`0x26`/`0x27`/`0x24`), but
+   nobody has read the 256-byte codec's actual algorithm the way
+   type-6/type-4 were reverse-engineered -- doing so would allow a native
+   (non-Unicorn) decoder. Also unresolved: the very last tile's true
+   compressed length (offset table gives each tile's start, not the last
+   one's end), and the 292-byte context table's exact role as a
+   symbol/frequency table.
+3. **Trace `sub_080454BC`/`sub_080454DC`/`sub_08045588`'s callers** (see
    "There is no missing 4th caller" above). These are the real, generic,
-   statically-confirmed OBJ tile loaders -- the tile-side analogue of
-   `sub_08001528` for palettes. Finding every caller and tracing each
-   one's `resourcePtr` argument back to its source (likely an
-   animation-frame table, given the surrounding object-update code)
-   would let a scanner enumerate real tile resources without running the
-   game, the way `tools/graphics/find_object_palettes.py` already does
-   for palettes.
-2. **The wand's remaining pieces**: its other 3 animation frames
+   statically-confirmed OBJ tile loaders -- confirmed OBJ-only, not a
+   BG/level mechanism. Finding every caller and tracing each one's
+   `resourcePtr` argument back to its source (likely an animation-frame
+   table, given the surrounding object-update code) would let a scanner
+   enumerate real OBJ tile resources without running the game, the way
+   `tools/graphics/find_object_palettes.py` already does for palettes.
+4. **The wand's remaining pieces**: its other 3 animation frames
    (`0x080BC9CC`, `0x080BCADC`, `0x080BCCD8` -- mechanically identical
    to the verified `0x080BCBD0`, just not run), and its own palette
    (bank 1), which has no located ROM source. Bank 1 is neither raw nor
    standard-BIOS-compressed, so it is presumably type-4 or type-6 and
    findable by a live breakpoint on whatever writes OBJ palette RAM
    `0x05000220`-`0x0500023F`, reading the source register at entry.
-3. **The spark/particle effect's remaining tiles and its palette
+5. **The spark/particle effect's remaining tiles and its palette
    pairing.** One real tile is confirmed (`0x080BCDD8`, via
    `sub_0801DE5C`'s RLE path); it is likely a multi-tile animation like
    the wand's glow. Three real palettes exist (`0x08A38108`,
    `0x08A38FE0`, `0x080BD344`); which one pairs with this effect isn't
    confirmed.
-4. **The three structural-scan candidate regions** (`0x08933000`
+6. **The three structural-scan candidate regions** (`0x08933000`
    filigree tileset, `0x0888xxxx` region, `0x08a36800` UI panels) have
    **no confirmed code reference**. A grep of `build/us/full_disasm.s`
    for PC-relative literal-pool loads of these addresses found zero hits
@@ -882,14 +1069,10 @@ is what unlocks them at scale.
    demonstrably not the sprite it resembles). Standard BIOS LZ77 is
    ruled out for the filigree blob specifically -- no valid LZ77 stream
    longer than 100 bytes exists anywhere spanning that region.
-5. **The type-4 codec is decoded but barely exercised**
+7. **The type-4 codec is decoded but barely exercised**
    (`tools/graphics/decode_type4.py`, verified byte-exact against live
    memory). Only tested against the wand's animation frames; no other
    type-4 resource is confirmed anywhere yet.
-6. Once more real tile data is paired with a real palette, revisit the
-   delta-coded tilemap fields decoded from the level table
-   ("Level-table entry layout" above) to see whether they arrange any of
-   it into an actual on-screen scene.
 
 The general methodology this subsystem settled on: **live mGBA
 breakpoints/watchpoints beat blind ROM scanning whenever a live trigger
