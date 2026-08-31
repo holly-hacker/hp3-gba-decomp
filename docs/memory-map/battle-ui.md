@@ -297,8 +297,8 @@ i.e. **`Stink Pellet` = effect id `44`, `Wizard Cracker` = effect id
 `46`, `Stink Pellet 2` = effect id `45`**.
 
 Cross-checked against the actual extracted script content
-(`data/scripts/Effect44.txt`/`Effect45.txt`/`Effect46.txt`, currently
-named `Effect44`/`45`/`46` in `tools/objscript/script_names.json`):
+(`data/battle_scripts/Effect44.txt`/`Effect45.txt`/`Effect46.txt`, currently
+named `Effect44`/`45`/`46` in `tools/battle_scripts/script_names.json`):
 
 - **Effect `44`**: a single unconditional `StatusEffect 17 0 0`
   (opcode `0x97` case `0x11`, "Paralyzed", the *unconditional*-apply
@@ -466,7 +466,7 @@ every entry resolves to a genuinely separate, cleanly-bounded function:
 | `3`, `6`-`14`, `16`-`20`, `22`-`25` | `0x08017B42` | `TickPlayerActionStateNoOp` -- shared no-op default, also every other case's own tail branch target |
 | `4` | `0x080177D8` | `ApplyStatusRestoreItemEffect` -- resolves a restorative-item/status-cure effect: `FUN_08026cdc(bSpellLevel)` selects among MP restore, SP restore, a cure call, or lifting `Paralyzed`, each with its own `TriggerBattleEffect` id and cost/message |
 | `5` | `0x08017ADE` | `ReturnFighterToPosition` -- post-action wait/return-to-formation state: flips the sprite and arms a 30-frame counter on entry, then on expiry clears `bSelectedActionIndex`, un-flips, and resets the anim state |
-| `15` (`0xF`) | `0x0801618A` | `WaitForMoveThenApplyDamageNumber` -- gated on `Object+0x3c`/`+0x40` both being zero (the velocity fields a `MoveTo` zeroes on completion, per [`../formats/object_script.md`](../formats/object_script.md)) -- waits for the fighter's current move to finish, then falls straight through into `ApplyDamageNumberAnimState`'s body (case `2`) with no branch in between |
+| `15` (`0xF`) | `0x0801618A` | `WaitForMoveThenApplyDamageNumber` -- gated on `Object+0x3c`/`+0x40` both being zero (the velocity fields a `MoveTo` zeroes on completion, per [`../formats/battle_scripts.md`](../formats/battle_scripts.md)) -- waits for the fighter's current move to finish, then falls straight through into `ApplyDamageNumberAnimState`'s body (case `2`) with no branch in between |
 | `21` (`0x15`) | `0x08016E64` | `HandleScriptedDamageEvent_candidate` (spans `0x08016E64`-`0x0801732C`, one function despite the address gap -- the shared-epilogue false-split pattern documented elsewhere in this codebase). Its *tail* (`Object+0x60` status byte, 5 sub-states) dispatches fixed-damage crit/faint-sequence handling (scripted/special-event damage, no RNG, no `Mt19937RandRange` call anywhere in this dispatcher's range). Its *head* (`Object+0xc` flag bits `0x40000`/`0x8000`) is the Special Move trigger -- see below |
 | `26` (`0x1A`) | `0x080161FE` | `ExecutePlayerAttackSequence` -- the player-side turn resolver, see [`battle.md`](battle.md)'s consolidated pseudocode |
 
@@ -574,11 +574,11 @@ whose script has no `StatusEffect` opcode at all -- see the `DefenseBoost`
 bit writeup in [`battle.md`](battle.md); its mapping to effect id `35` is solid (by position
 and elimination) but its actual defense-boost mechanism is not.
 
-All 16 are now named in `tools/objscript/script_names.json` as
+All 16 are now named in `tools/battle_scripts/script_names.json` as
 `SpecialHarry<CardName>` (matching the `SpecialHermione*`/`SpecialRon*`
 convention already used for the other two characters' Special Moves),
 e.g. `SpecialHarryHorklumpSpores`, `SpecialHarrySnitch`,
-`SpecialHarryUltimateMp`. See `../formats/object_script.md`'s Future
+`SpecialHarryUltimateMp`. See `../formats/battle_scripts.md`'s Future
 Work section (now marked done) for the prior open questions this
 resolved.
 

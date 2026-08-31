@@ -145,9 +145,9 @@ level-table 0x0804FE50 0x08050300 data/levels/harry.json HarryLevelTable
 level-table 0x08050300 0x080507B0 data/levels/ron.json RonLevelTable
 level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
 
-# Object/spell behavior-script bytecode
-# objscript-table <start> <end> <dir> <name>
-objscript-table 0x0805994C 0x0805BA7C data/scripts g_apEffectScripts
+# Battle-script bytecode
+# battle-script-table <start> <end> <dir> <name>
+battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 
 # Item/equipment table
 # item-table <start> <end> <json-file> <name>

@@ -25,10 +25,13 @@ indexing are real, not a decompiler artifact; (2) the record at index
 55 lands exactly on a second, independently-known table
 (`g_pRoomQuestMusicOverride`, the quest-override music table below),
 which only happens if the stride and count are both right. Indexed by
-the current room/map index, i.e. `_g_bCurrentRoomId` (the same value
-`InitializeOverworld`/`InitializeRoomMode` read out of an internal
-`_g_bHermioneLevel`-named alias -- that name is legacy and does not mean
-"Hermione"; it is the current room index, full stop). Consumed by
+the current room/map index, i.e. `g_bCurrentRoomId` (the same value
+`InitializeOverworld`/`InitializeRoomMode` read out of
+`g_bCurrentGameModeArg2`, RAM `0x03003EFC` -- the current game mode's
+second argument slot, mirroring `g_dwPendingGameModeArg2`
+(`docs/memory-map/game_modes.md`); for `Overworld`/`RoomMode` that
+argument is the room index, but the slot's meaning is mode-dependent in
+general, so it is not itself a room-id symbol). Consumed by
 `InitializeOverworld` (`0x080297A0`) and `InitializeRoomMode`
 (`0x08029848`, near-duplicate tail of the same setup).
 
@@ -162,7 +165,7 @@ original task; it isn't a field of this 124-byte table.
 
 Per-room scripted behavior (quest triggers, NPC scripts) runs through
 the generic object bytecode VM documented in
-[`object_script.md`](object_script.md) -- `InterpretObjectScript`
+[`battle_scripts.md`](battle_scripts.md) -- `InterpretObjectScript`
 (`0x08018CC0`) driven by each `Object`'s `pfnTick`. Nothing in this
 table links a script pointer directly into a room record; script
 assignment is per-`Object` (placed by room setup code), not a per-room

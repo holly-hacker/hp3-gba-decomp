@@ -624,7 +624,7 @@ def encode_party_member(w: SaveWriter, m: dict):
 # *(short*)(obj+8)) and 0x0802AB34/0x0802AE64 (restore, respawn each
 # tile's default object via 0x08005B70 then overlay these fields). Most
 # fields copy a byte/word/dword straight from a fixed offset of the live
-# `Object` struct (docs/formats/object_script.md); ones with no
+# `Object` struct (docs/formats/battle_scripts.md); ones with no
 # identified meaning keep that struct's own offset in their name
 # (`bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing
 # `bUnk_0x0F`-style convention for unnamed fields. A record's leftover,
@@ -644,7 +644,7 @@ SPEC_DEFAULT_KIND = [
     ("dwUnk_0x28", 0x04, "I"),
     ("dwUnk_0x80", 0x08, "I"),
     ("wUnk_0x86", 0x0C, "H"),
-    ("wWaitTarget_0x8a", 0x0E, "H"),  # Object+0x8a, the WaitFrames/WaitForCounter target (object_script.md)
+    ("wWaitTarget_0x8a", 0x0E, "H"),  # Object+0x8a, the WaitFrames/WaitForCounter target (battle_scripts.md)
     ("bSubObjectATileX", 0x10, "B"),  # tile position of Object+0xa0's linked object -- capture-only, never restored
     ("bSubObjectATileY", 0x11, "B"),
     ("bSubObjectBTileX", 0x12, "B"),  # Object+0xa4's linked object -- capture-only

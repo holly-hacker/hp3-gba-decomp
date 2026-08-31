@@ -15,7 +15,7 @@ data/images/items/*
 data/items/*
 data/levels/*
 data/monsters/*
-data/scripts/*
+data/battle_scripts/*
 data/text/*
 extracted/
 

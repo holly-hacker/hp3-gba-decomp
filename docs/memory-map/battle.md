@@ -472,7 +472,7 @@ hardcoded to `10`.
 All 8 bits are claimed by a combat-mechanical effect, each set by one of
 opcode `0x97`'s (`StatusEffect`) sub-cases, run by the object/spell
 behavior-script interpreter (`0x08018cf8`, see
-[`../formats/object_script.md`](../formats/object_script.md)).
+[`../formats/battle_scripts.md`](../formats/battle_scripts.md)).
 
 | Bit | Name | Read by | Effect |
 |---|---|---|---|
@@ -573,7 +573,7 @@ All 29 sub-cases (`g_apScriptStatusEffectCaseTable`, `0x0801A650`) are
 identified, cross-checked against every real script that reaches each
 case. The mechanically-live ones (status-flag-setting, resource-restoring,
 reward-flag) are below; see
-[`../formats/object_script.md`](../formats/object_script.md) for the
+[`../formats/battle_scripts.md`](../formats/battle_scripts.md) for the
 opcode format itself.
 
 | Case | Name | Effect |
@@ -895,7 +895,7 @@ below).
 Its companion byte array at the same index, `g_abSpellEffectId_candidate`
 (`0x080538B0`), holds a per-`(spellId, level)` effect-script id fed into
 `TriggerBattleEffect`. All 30 entries are named in
-`tools/objscript/script_names.json`:
+`tools/battle_scripts/script_names.json`:
 
 | `SpellId` | Spell | Effect ids (Uno/Duo/Tria) | Max level | Has `StatusEffect`? |
 |---|---|---|---|---|

@@ -1,6 +1,6 @@
-"""Shared format knowledge for the object/spell behavior-script bytecode
+"""Shared format knowledge for the battle-script bytecode
 interpreter (`InterpretObjectScript`, US `0x08018CC0`). See
-docs/formats/object_script.md for how each constant below was identified.
+docs/formats/battle_scripts.md for how each constant below was identified.
 
 Byte format: a script is a flat sequence of instructions, each an opcode
 byte followed by `opcode_operand_length(opcode)` operand bytes. No length
@@ -14,8 +14,8 @@ StatusEffect, which reads its own first operand byte as a second-level
 case selector -- named sub-cases) lives in opcodes.json next to this
 file, not here. It's interpreter/ISA knowledge (like a CPU's mnemonic
 table), not extracted game content or ROM addresses, so unlike
-data/scripts/ it's committed rather than gitignored, and unlike
-docs/formats/object_script.md's prose it deliberately carries NO
+data/battle_scripts/ it's committed rather than gitignored, and unlike
+docs/formats/battle_scripts.md's prose it deliberately carries NO
 addresses -- see that doc's "Why no addresses in opcodes.json" for why
 (shiftable-build/moddability and US-vs-JP offset differences both break
 if opcode metadata pins a ROM address). Naming a new opcode means
@@ -25,10 +25,10 @@ editing opcodes.json's "name" (or a StatusEffect sub-case's entry under
 Per-script identification (which effect id is which spell/card/lecture)
 lives in script_names.json next to this file, same footing as
 opcodes.json: curated RE knowledge, not extracted game content, so it's
-committed rather than gitignored even though data/scripts/ itself isn't.
+committed rather than gitignored even though data/battle_scripts/ itself isn't.
 Keyed by effect id (0-64), each entry optionally carries "name" (used as
-the script's filename/assembly label by extract_objscript.py/
-pack_objscript.py) and "description" (emitted as a leading "# ..."
+the script's filename/assembly label by extract_battle_scripts.py/
+pack_battle_scripts.py) and "description" (emitted as a leading "# ..."
 comment by format_script_text -- purely informational, stripped by
 parse_script_text like any other comment, so it can never affect
 encode_script's output).
@@ -45,7 +45,7 @@ SCRIPT_DATA_START = 0x0805994C  # first script's pointer; scripts are
                                  # packed contiguously right up to SCRIPT_TABLE_ADDR
 
 # A script's file gets included as a real assembler label
-# (pack_objscript.py emits it as `<name>:`), so its name must be a
+# (pack_battle_scripts.py emits it as `<name>:`), so its name must be a
 # valid, unambiguous identifier.
 NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
@@ -69,7 +69,7 @@ _SCRIPT_NAMES_JSON = json.loads((Path(__file__).parent / "script_names.json").re
 
 # effect id -> curated name/description, for the scripts we're confident
 # about the real-world identification of. Absent entries just mean
-# "not yet identified" -- extract_objscript.py falls back to "EffectN".
+# "not yet identified" -- extract_battle_scripts.py falls back to "EffectN".
 SCRIPT_NAME_BY_EFFECT_ID: dict[int, str] = {
     int(k): v["name"] for k, v in _SCRIPT_NAMES_JSON.items() if "name" in v
 }

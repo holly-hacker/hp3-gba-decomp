@@ -1,4 +1,4 @@
-# Object/spell behavior-script bytecode
+# Battle-script bytecode
 
 See [`../README.md`](../README.md) for the confidence-key legend
 (PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
@@ -25,13 +25,26 @@ scripts -- see "What's NOT yet known".
 
 ## What this is
 
-A small, generic bytecode VM that drives per-`Object` behavior scripts.
-It is not battle-specific: it's the same engine `TickObject_candidate`'s
-callback dispatch reaches for any object whose tick callback happens to
-be the script interpreter. Battle status effects
-(`BattleFighter.bStatusFlags`, see
-[`../memory-map/battle.md`](../memory-map/battle.md)) are just
-one consumer of it, via opcode `0x97`.
+A bytecode VM that drives per-`Object` behavior scripts, reached via
+`TickObject_candidate`'s generic callback dispatch for any object whose
+tick callback happens to be the script interpreter.
+
+**Battle-only, structurally.** `CreateEffectScriptObject` (`0x08018BE0`)
+is the only function that points a new object's `pfnTick` at
+`InterpretObjectScript`, and it directly indexes `g_pFightState->
+pFighters[...]`. Its only caller, `TriggerBattleEffect` (`0x08018B70`),
+is called exclusively from the documented battle range `0x08015000`-
+`0x08018000` (`RollMonsterSpecialEffect`, `ExecutePlayerAttackSequence`,
+`ResolvePlayerAttack`; see
+[`../memory-map/battle.md`](../memory-map/battle.md)). The only other
+xrefs to the interpreter's entry address are `WaitFramesTick`/
+`WaitForCounterTick`/`WaitForFieldClearTick` restoring `pfnTick` on an
+already-running script object, not new spawns. Consistent with
+`data/battle_scripts/`'s 65 effects all reading as combat content (spells,
+monster attacks, `SpecialHarry`/`SpecialRon` abilities). Static xref
+trace, exhaustive for direct references but not a runtime trace -- see
+`docs/README.md`'s confidence-key legend. Status-effect opcode `0x97`
+is one in-battle consumer among the rest.
 
 ## The interpreter
 
@@ -147,7 +160,7 @@ Only a few of the ~168 possible opcodes are semantically identified so
 far. Addresses below (`g_apScriptOpcodeCaseTable`'s literal jump
 targets, read directly from ROM) are cited here in prose, for
 US-ROM-specific reference only -- they are **not** stored anywhere in
-`tools/objscript/opcodes.json` or `data/scripts/`, see "Why no addresses
+`tools/battle_scripts/opcodes.json` or `data/battle_scripts/`, see "Why no addresses
 in opcodes.json" below:
 
 | Opcode | Name | Operand bytes | Meaning |
@@ -204,7 +217,7 @@ in opcodes.json" below:
 `StatusEffect`'s 29 sub-cases are all identified.
 [`../memory-map/battle.md`](../memory-map/battle.md)'s "`StatusEffect`
 sub-cases" section owns their semantics and the evidence behind each
-name; the names below are the ones `tools/objscript/opcodes.json`
+name; the names below are the ones `tools/battle_scripts/opcodes.json`
 resolves, listed here only so a script's text reads without a second
 lookup.
 
@@ -380,7 +393,7 @@ What's actually confirmed:
   independent of spawning: `SetLocal` stores an arbitrary operand value
   into either byte; `IncrementLocal` increments either byte **on the
   currently-executing object**, not a spawned child -- e.g. effect id 19's
-  script (`data/scripts/Effect19.txt`, not committed, see "US only" note
+  script (`data/battle_scripts/Effect19.txt`, not committed, see "US only" note
   below) calls `IncrementLocal 0` twice in a row, twice, in its own body,
   well before any spawn happens. `SetLocalRandom` stores a Mersenne
   Twister roll into either byte.
@@ -533,14 +546,14 @@ JSON blob, and opcode naming lives in its own small JSON file (ISA-level
 format knowledge, not game content, so it's committed rather than
 gitignored):
 
-- `tools/objscript/opcodes.json` -- **the** opcode table: for each of
+- `tools/battle_scripts/opcodes.json` -- **the** opcode table: for each of
   the 168 opcodes, its current `name` (`opcode_XX` until identified) and
   `operand_length`; opcode `0x97` additionally carries a `sub_dispatch`
   object (`{"operand_index": 0, "cases": {sub-case value: name}}`)
   naming `StatusEffect`'s own sub-cases. **Deliberately carries no
   addresses** -- see "Why no addresses in opcodes.json" above. **To name
   a new opcode (or `StatusEffect` sub-case), edit this file.**
-- `tools/objscript/script_names.json` -- the per-*script* counterpart:
+- `tools/battle_scripts/script_names.json` -- the per-*script* counterpart:
   keyed by effect id (`"0"`-`"64"`), each entry optionally carries
   `name` (the script's real-world identification, e.g.
   `SpecialHarryPoisonImmunity`) and `description` (a short, single-line
@@ -550,10 +563,10 @@ gitignored):
   Names are prefixed by category (`Spell`, `SpecialHarry`,
   `SpecialHermione`, ...) so they group sensibly when listed
   alphabetically. Committed, same footing as `opcodes.json` -- curated RE
-  knowledge, not extracted content -- even though `data/scripts/` itself
+  knowledge, not extracted content -- even though `data/battle_scripts/` itself
   is gitignored. **To name a newly-identified script, add or edit its
-  entry here**, then re-run `just extract-objscript`.
-- `tools/objscript/objscript_codec.py` -- loads `opcodes.json` and
+  entry here**, then re-run `just extract-battle-scripts`.
+- `tools/battle_scripts/battle_scripts_codec.py` -- loads `opcodes.json` and
   exposes `decode_script`/`encode_script` (raw bytes <-> `(opcode,
   operand_bytes)` pairs) and `format_script_text`/`parse_script_text`
   (that <-> the curated text format, one instruction per line:
@@ -566,11 +579,11 @@ gitignored):
   named (e.g. `StatusEffect 7 8 0  # PoisonImmune`) -- purely a
   readability aid; `parse_script_text` strips any trailing `#...` before
   parsing, so hand-written comments round-trip fine too.
-- `tools/objscript/extract_objscript.py` (`just extract-objscript`) --
+- `tools/battle_scripts/extract_battle_scripts.py` (`just extract-battle-scripts`) --
   one-time bootstrap, reads `baserom.us.gba`, writes one text file per
   effect id (named from `script_names.json` when that effect id has an
   entry there, else the default `EffectN.txt`) plus
-  `data/scripts/index.json` (a JSON array of 65 filenames, position =
+  `data/battle_scripts/index.json` (a JSON array of 65 filenames, position =
   effect id -- see "Renaming a script" below). Gitignored, same footing
   as the baserom, per hard rule 2 -- not regenerated by `just build`,
   meant to be user-editable. Each named script's text also gets a
@@ -583,39 +596,39 @@ gitignored):
   files not driven by `script_names.json` -- re-run against a clean
   extraction, not hand-edited content, same caveat as
   `extract_monsters.py`).
-- `tools/objscript/pack_objscript.py` (`just pack-objscript`, wired into
-  `just build`) -- reads `data/scripts/index.json` plus the
-  `objscript-table` row in `regions.<ver>.txt`, re-encodes each script
+- `tools/battle_scripts/pack_battle_scripts.py` (`just pack-battle-scripts`, wired into
+  `just build`) -- reads `data/battle_scripts/index.json` plus the
+  `battle-script-table` row in `regions.<ver>.txt`, re-encodes each script
   (in `index.json`'s order) with `encode_script`, and emits
-  `build/<ver>/objscript/*.s`. Naming an opcode is purely
+  `build/<ver>/battle_scripts/*.s`. Naming an opcode is purely
   cosmetic/annotation -- `parse_script_text` resolves either the curated
   name or the raw `opcode_XX` form to the same opcode number, so it
   never changes `encode_script`'s output and can't affect the build's
   byte-exactness. The pointer table itself is **not** stored in
-  `data/scripts/` -- it's fully determined by script order and size, so
+  `data/battle_scripts/` -- it's fully determined by script order and size, so
   the packer computes and emits it directly, labeled `g_apEffectScripts`
   to match the ROM.
-- `regions.us.txt`'s `objscript-table` row (`0x0805994C`-`0x0805BA7C`)
-  and `tools/manifest.py`'s `objscript-table` directive wire the packed
+- `regions.us.txt`'s `battle-script-table` row (`0x0805994C`-`0x0805BA7C`)
+  and `tools/manifest.py`'s `battle-script-table` directive wire the packed
   output into the build the same way `monster-table` does.
 
 ### Renaming a script
 
 The durable way to name a script, once its purpose is identified, is to
-add an entry to `tools/objscript/script_names.json` (effect id -> `name`
-+ optional `description`) and re-run `just extract-objscript` -- this
+add an entry to `tools/battle_scripts/script_names.json` (effect id -> `name`
++ optional `description`) and re-run `just extract-battle-scripts` -- this
 is committed and survives every future re-run of the bootstrap, unlike a
-plain filesystem rename of a file under `data/scripts/` (which is
+plain filesystem rename of a file under `data/battle_scripts/` (which is
 gitignored and gets overwritten wholesale next time the bootstrap runs).
 `script_names.json` is the actual source of truth for
-`data/scripts/index.json`'s filenames; hand-editing `index.json`/renaming
+`data/battle_scripts/index.json`'s filenames; hand-editing `index.json`/renaming
 files directly still works for one-off local experimentation, but won't
 survive a re-extract.
 
 Whichever way a rename happens, order comes from `index.json`'s array
 position, not from the filename or from sorting a directory listing, so
 a rename never reshuffles which script lands at which effect id in the
-packed `g_apEffectScripts` table. `pack_objscript.py` also uses each
+packed `g_apEffectScripts` table. `pack_battle_scripts.py` also uses each
 script's file name (minus `.txt`) directly as its assembly label, so the
 name must be a valid identifier (letters/digits/underscore, not starting
 with a digit) and unique across all 65 entries -- both checked at pack
@@ -670,7 +683,7 @@ US only -- content not yet checked against JP.
   two standalone ones (`GotoIfFighterRosterMatches`/`_2`, added to the
   opcode table above). No other opcode can jump `wScriptPC`.
 - **Whether any script content differs between US/JP** -- not checked;
-  `regions.jp.txt` has no `objscript-table` row yet.
+  `regions.jp.txt` has no `battle-script-table` row yet.
 
 ## Future work
 
@@ -678,11 +691,11 @@ US only -- content not yet checked against JP.
   used top-level opcodes are still unnamed (`opcode_XX`); `StatusEffect`'s
   29 sub-cases are all named. Each is a real, bounded chunk of work:
   read one handler in `InterpretObjectScript`, name it and its operand
-  layout in `tools/objscript/opcodes.json`, re-run `just extract-objscript`
-  to refresh `data/scripts/`'s text.
+  layout in `tools/battle_scripts/opcodes.json`, re-run `just extract-battle-scripts`
+  to refresh `data/battle_scripts/`'s text.
 - ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
   -- all 16 of Harry's cards are now named and mapped to their effect id
-  in `tools/objscript/script_names.json`, via the in-game Card Combo
+  in `tools/battle_scripts/script_names.json`, via the in-game Card Combo
   Glossary text (`data/text/en_us.json` string ids `1144`-`1175`, a
   16-entry name list immediately followed by a matching 16-entry
   description list) lining up positionally with

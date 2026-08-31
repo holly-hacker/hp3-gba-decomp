@@ -111,7 +111,7 @@ switch-state index, a chain of variable-length opcodes walked by
 indexes an opcode-length table at `0x0805EB34` and a handler
 function-pointer table at `0x0805BA8C`, invoked through
 `ThumbInterworkVeneer_bx_r1`. These tables are **not** the ones
-[`object_script.md`](object_script.md) documents for
+[`battle_scripts.md`](battle_scripts.md) documents for
 `InterpretObjectScript` -- this is a separate, parallel interpreter
 specific to room switch/lever state, not a reuse of the per-`Object`
 script VM. Individual opcode semantics are undecoded.

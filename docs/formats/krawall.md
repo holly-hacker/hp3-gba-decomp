@@ -451,7 +451,7 @@ sample/pattern trailing padding at all.
       practice.
 - [ ] **The `PlaySoundById` message-id -> sample lookup tables aren't fully
       bounded yet.** `PlaySoundById` (US `0x0803FC68`, see
-      `../formats/object_script.md`) resolves a `stringId` through a 4-byte
+      `../formats/battle_scripts.md`) resolves a `stringId` through a 4-byte
       config-row table at `0x08FB09F8` (`mode`, `resourceIndex`), then:
       `mode == 1` looks up a 4-byte `(sampleIndex, param)` record in a table
       at `0x08FB0588`; `mode == 2` rolls `Mt19937RandMax2(7)` to pick one of

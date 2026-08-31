@@ -67,10 +67,9 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 - [`formats/krawall.md`](formats/krawall.md) — the Krawall module /
   pattern / sample on-ROM structs. Pipeline: `tools/krawall/`,
   `data/audio/`.
-- [`formats/object_script.md`](formats/object_script.md) — the
-  per-`Object` behavior-script bytecode VM, its opcode table, and the
-  effect-script pointer table. Pipeline: `tools/objscript/`,
-  `data/scripts/`.
+- [`formats/battle_scripts.md`](formats/battle_scripts.md) — the
+  battle-script bytecode VM, its opcode table, and the effect-script
+  pointer table. Pipeline: `tools/battle_scripts/`, `data/battle_scripts/`.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

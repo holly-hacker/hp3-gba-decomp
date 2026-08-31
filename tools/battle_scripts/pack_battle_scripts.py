@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
-"""Pack data/scripts/ (curated, editable object-script text, see
-extract_objscript.py) into per-version, byte-exact assembly for
-regions.<ver>.txt's objscript-table row. See docs/formats/object_script.md.
+"""Pack data/battle_scripts/ (curated, editable object-script text, see
+extract_battle_scripts.py) into per-version, byte-exact assembly for
+regions.<ver>.txt's battle-script-table row. See docs/formats/battle_scripts.md.
 
 Mirrors tools/monsters/pack_monsters.py's role for the Folio Bruti table.
-Effect id order comes from data/scripts/index.json (a JSON array of
+Effect id order comes from data/battle_scripts/index.json (a JSON array of
 filenames, position = effect id) -- NOT from sorting the directory
 listing or parsing filenames -- so a script's file can be renamed freely
-(see extract_objscript.py) without silently reordering the packed
+(see extract_battle_scripts.py) without silently reordering the packed
 g_apEffectScripts table. The pointer table itself is not stored on disk
 at all -- it's fully determined by script order/size, so it's computed
 and emitted here.
 
-Writes to build/<ver>/objscript/ -- gitignored, like the rest of build/.
-data/scripts/ itself is never touched by this script.
+Writes to build/<ver>/battle_scripts/ -- gitignored, like the rest of build/.
+data/battle_scripts/ itself is never touched by this script.
 
-Usage: pack_objscript.py <ver>
+Usage: pack_battle_scripts.py <ver>
 """
 import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from objscript_codec import NAME_RE, SCRIPT_COUNT, encode_script, parse_script_text
+from battle_scripts_codec import NAME_RE, SCRIPT_COUNT, encode_script, parse_script_text
 
 
 def emit_bytes(lines: list[str], data: bytes) -> int:
@@ -40,7 +40,7 @@ def emit_pad_to_align4(lines: list[str], cursor: int) -> int:
     return pad
 
 
-def parse_objscript_table_row(ver: str):
+def parse_battle_script_table_row(ver: str):
     """Returns (start, end, dir_path, name), or None if not present yet."""
     row = None
     with open(f"regions.{ver}.txt") as f:
@@ -49,12 +49,12 @@ def parse_objscript_table_row(ver: str):
             if not line:
                 continue
             parts = line.split()
-            if parts[0] != "objscript-table":
+            if parts[0] != "battle-script-table":
                 continue
             if len(parts) != 5:
-                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'objscript-table <start> <end> <dir> <name>'")
+                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'battle-script-table <start> <end> <dir> <name>'")
             if row is not None:
-                sys.exit(f"regions.{ver}.txt:{lineno}: duplicate objscript-table row")
+                sys.exit(f"regions.{ver}.txt:{lineno}: duplicate battle-script-table row")
             _, start_s, end_s, dir_path, name = parts
             row = (int(start_s, 16), int(end_s, 16), dir_path, name)
     return row
@@ -65,9 +65,9 @@ def main() -> None:
         sys.exit(f"usage: {sys.argv[0]} <ver>")
     ver = sys.argv[1]
 
-    row = parse_objscript_table_row(ver)
+    row = parse_battle_script_table_row(ver)
     if row is None:
-        print(f"no objscript-table row in regions.{ver}.txt -- nothing to pack", file=sys.stderr)
+        print(f"no battle-script-table row in regions.{ver}.txt -- nothing to pack", file=sys.stderr)
         return
     start_addr, end_addr, dir_path, name = row
 
@@ -102,10 +102,10 @@ def main() -> None:
     if cursor != end_addr:
         sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X}, regions file declares end 0x{end_addr:X}")
 
-    out_dir = Path(f"build/{ver}/objscript")
+    out_dir = Path(f"build/{ver}/battle_scripts")
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / f"{name}.s").write_text("\n".join(lines) + "\n")
-    print(f"packed {len(filenames)} object scripts for {ver}", file=sys.stderr)
+    print(f"packed {len(filenames)} battle scripts for {ver}", file=sys.stderr)
 
 
 if __name__ == "__main__":

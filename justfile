@@ -109,20 +109,21 @@ pack-monsters ver="us":
     python3 tools/monsters/pack_monsters.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
-# `build` -- data/scripts/ is gitignored (same footing as the baserom,
-# see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
-# silently regenerated/overwritten on every build. US only -- see
-# docs/formats/object_script.md.
-# Bootstrap data/scripts/ locally from baserom.us.gba.
-extract-objscript:
-    python3 tools/objscript/extract_objscript.py
+# `build` -- data/battle_scripts/ is gitignored (same footing as the
+# baserom, see CLAUDE.md hard rule 2) and meant to be user-editable, so
+# it's never silently regenerated/overwritten on every build. US only --
+# see docs/formats/battle_scripts.md.
+# Bootstrap data/battle_scripts/ locally from baserom.us.gba.
+extract-battle-scripts:
+    python3 tools/battle_scripts/extract_battle_scripts.py
 
-# Gitignored (build/), like everything else pack_objscript.py writes. Reads
-# local data/scripts/ (run `extract-objscript` first if missing) plus
-# this version's objscript-table row in regions.<ver>.txt for addresses.
-# Pack data/scripts/ into this version's objscript-table assembly.
-pack-objscript ver="us":
-    python3 tools/objscript/pack_objscript.py {{ver}}
+# Gitignored (build/), like everything else pack_battle_scripts.py writes.
+# Reads local data/battle_scripts/ (run `extract-battle-scripts` first if
+# missing) plus this version's battle-script-table row in
+# regions.<ver>.txt for addresses.
+# Pack data/battle_scripts/ into this version's battle-script-table assembly.
+pack-battle-scripts ver="us":
+    python3 tools/battle_scripts/pack_battle_scripts.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/items/ is gitignored (same footing as the baserom,
@@ -180,7 +181,7 @@ pack-levels ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-monsters extract-objscript extract-levels extract-items extract-item-icons
+extract-all: extract-krawall extract-text extract-monsters extract-battle-scripts extract-levels extract-items extract-item-icons
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
@@ -195,7 +196,7 @@ gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
 # Assemble every region and link them at their manifest addresses.
-build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-objscript ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
+build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-battle-scripts ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
     for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}

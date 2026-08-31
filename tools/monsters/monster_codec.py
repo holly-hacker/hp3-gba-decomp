@@ -79,7 +79,7 @@ FIELDS: list[tuple[str, str]] = [
     ("special_effect_id", "B"),           # 0x15 u8  -- PROVEN. Effect script id passed directly to
                                            #   TriggerBattleEffect when special_effect_chance's roll
                                            #   succeeds -- confirmed real entries in
-                                           #   tools/objscript/script_names.json's effect table (e.g. id 27
+                                           #   tools/battle_scripts/script_names.json's effect table (e.g. id 27
                                            #   = SpecialMonsterPoisonBite, id 60 = SpecialMonsterParalyzingBlow).
                                            #   Small integer (0-61) that clusters by monster family/group,
                                            #   matching shared effects across variants (all Fire Crabs share
