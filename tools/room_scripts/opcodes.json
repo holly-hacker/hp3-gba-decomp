@@ -109,28 +109,92 @@
       ]
     },
     "9": {
-      "name": "opcode_09",
-      "operand_length": 4
+      "name": "PlayRoomSoundEffect",
+      "operand_length": 4,
+      "operand_names": [
+        "soundId",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "10": {
-      "name": "opcode_0A",
-      "operand_length": 4
+      "name": "PlaySoundByIdCommand",
+      "operand_length": 4,
+      "operand_names": [
+        "soundId",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "11": {
-      "name": "opcode_0B",
-      "operand_length": 4
+      "name": "SetRoomMusicVolume",
+      "operand_length": 4,
+      "operand_names": [
+        "volume",
+        "unknown",
+        "unknown",
+        "unknown"
+      ]
     },
     "12": {
-      "name": "opcode_0C",
-      "operand_length": 4
+      "name": "SetSoundEffectVolume",
+      "operand_length": 4,
+      "operand_names": [
+        "volume",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "13": {
-      "name": "opcode_0D",
-      "operand_length": 4
+      "name": "SetCameraPanSpeedOrRunRowChain",
+      "operand_length": 4,
+      "operand_names": [
+        "speed",
+        "row",
+        "chainRow"
+      ],
+      "operand_widths": [
+        2,
+        1,
+        1
+      ]
     },
     "14": {
-      "name": "opcode_0E",
-      "operand_length": 4
+      "name": "SetStoryStage",
+      "operand_length": 4,
+      "operand_names": [
+        "value",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "15": {
       "name": "SetTileObjectAnimState",
@@ -150,35 +214,133 @@
     },
     "16": {
       "operand_length": 8,
-      "name": "opcode_10"
+      "name": "QueueTileObjectMove",
+      "operand_names": [
+        "x",
+        "y",
+        "byte1",
+        "byte2",
+        "speed",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        2
+      ]
     },
     "17": {
-      "name": "opcode_11",
-      "operand_length": 4
+      "name": "ReturnToOverworld",
+      "operand_length": 4,
+      "operand_names": [
+        "exitId",
+        "param",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
     },
     "18": {
-      "name": "opcode_12",
-      "operand_length": 8
+      "name": "SetAllQueuedMoveParams",
+      "operand_length": 8,
+      "operand_names": [
+        "speed",
+        "posX",
+        "byte1",
+        "byte2",
+        "unknown"
+      ],
+      "operand_widths": [
+        2,
+        2,
+        1,
+        1,
+        2
+      ]
     },
     "19": {
-      "name": "opcode_13",
-      "operand_length": 0
+      "name": "ClearAllQueuedMoves",
+      "operand_length": 0,
+      "operand_names": [],
+      "operand_widths": []
     },
     "20": {
-      "name": "opcode_14",
-      "operand_length": 8
+      "name": "SetTileObjectPosition",
+      "operand_length": 8,
+      "operand_widths": [
+        2,
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_names": [
+        "posX",
+        "posY",
+        "tileX",
+        "tileY",
+        "facing",
+        "unknown"
+      ]
     },
     "21": {
-      "name": "opcode_15",
-      "operand_length": 4
+      "name": "PlayCutscene",
+      "operand_length": 4,
+      "operand_names": [
+        "cutsceneId",
+        "pendingRow",
+        "pendingChain",
+        "unknown"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
     },
     "22": {
-      "name": "opcode_16",
+      "name": "CloseRoomDialog",
       "operand_length": 4
     },
     "23": {
-      "name": "opcode_17",
-      "operand_length": 8
+      "name": "SetTileObjectShadow",
+      "operand_length": 8,
+      "operand_names": [
+        "x",
+        "y",
+        "shadowX",
+        "shadowY",
+        "useShadowTile",
+        "field65",
+        "field68",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "24": {
       "name": "StartObjectAnimSequence",
@@ -213,15 +375,41 @@
       ]
     },
     "25": {
-      "name": "opcode_19",
-      "operand_length": 12
+      "name": "StartTileObjectScript",
+      "operand_length": 12,
+      "operand_names": [
+        "scriptPC",
+        "effectId",
+        "localA",
+        "unk65",
+        "unk66",
+        "unknown"
+      ],
+      "operand_widths": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        6
+      ]
     },
     "26": {
-      "name": "opcode_1A",
-      "operand_length": 4
+      "name": "PlayTileObjectAnimation",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "animId"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        2
+      ]
     },
     "27": {
-      "name": "opcode_1B",
+      "name": "OpenMainMenu",
       "operand_length": 0
     },
     "28": {
@@ -265,8 +453,28 @@
       ]
     },
     "30": {
-      "name": "opcode_1E",
-      "operand_length": 8
+      "name": "GotoIfQuestStatePairCompare",
+      "operand_length": 8,
+      "operand_names": [
+        "indexA",
+        "cmpOp",
+        "indexB",
+        "trueChain",
+        "falseChain",
+        "trueRespawnRow",
+        "falseRespawnRow",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        255
+      ]
     },
     "31": {
       "name": "SetQuestState",
@@ -285,8 +493,14 @@
       ]
     },
     "32": {
-      "name": "opcode_20",
-      "operand_length": 4
+      "name": "CopyQuestState",
+      "operand_length": 4,
+      "operand_names": [
+        "srcIndex",
+        "unknown",
+        "unknown",
+        "dstIndex"
+      ]
     },
     "33": {
       "name": "CancelObjectAnimSequence",
@@ -321,15 +535,29 @@
       ]
     },
     "35": {
-      "name": "opcode_23",
-      "operand_length": 8
+      "name": "PatchRoomBackgroundTile",
+      "operand_length": 8,
+      "operand_names": [
+        "x",
+        "y",
+        "tileId",
+        "layer",
+        "unknown"
+      ],
+      "operand_widths": [
+        2,
+        2,
+        2,
+        1,
+        1
+      ]
     },
     "36": {
-      "name": "opcode_24",
+      "name": "ShowBlackScreenTransition",
       "operand_length": 4
     },
     "37": {
-      "name": "opcode_25",
+      "name": "PlayScreenTransitionEffect2",
       "operand_length": 0
     },
     "38": {
@@ -337,64 +565,236 @@
       "operand_length": 0
     },
     "39": {
-      "name": "opcode_27",
-      "operand_length": 4
+      "name": "RecruitPartyFollower",
+      "operand_length": 4,
+      "operand_names": [
+        "characterId",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "40": {
-      "name": "opcode_28",
-      "operand_length": 4
+      "name": "RemovePartyFollower",
+      "operand_length": 4,
+      "operand_names": [
+        "characterId",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "41": {
-      "name": "opcode_29",
-      "operand_length": 4
+      "name": "SpawnPartyFollowerAtTile",
+      "operand_length": 4,
+      "operand_names": [
+        "characterId",
+        "x",
+        "y",
+        "unused"
+      ]
     },
     "42": {
       "name": "opcode_2A",
       "operand_length": 4
     },
     "43": {
-      "name": "opcode_2B",
-      "operand_length": 4
+      "name": "StartBattle",
+      "operand_length": 4,
+      "operand_names": [
+        "battleId",
+        "pendingRow",
+        "pendingChain",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
     },
     "44": {
-      "name": "opcode_2C",
-      "operand_length": 4
+      "name": "SetTileObjectAnimStateValue",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "animState",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
     },
     "45": {
-      "name": "opcode_2D",
-      "operand_length": 4
+      "name": "GrantRoomReward",
+      "operand_length": 4,
+      "operand_names": [
+        "rewardId",
+        "variant",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
     },
     "46": {
-      "name": "opcode_2E",
-      "operand_length": 4
+      "name": "SetBackgroundBlendLayers",
+      "operand_length": 4,
+      "operand_names": [
+        "flagA",
+        "flagB",
+        "flagC",
+        "flagD"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "47": {
-      "name": "opcode_2F",
-      "operand_length": 4
+      "name": "ShowBackgroundLayer",
+      "operand_length": 4,
+      "operand_names": [
+        "layer",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "48": {
-      "name": "opcode_30",
-      "operand_length": 4
+      "name": "HideBackgroundLayer",
+      "operand_length": 4,
+      "operand_names": [
+        "layer",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "49": {
-      "name": "opcode_31",
-      "operand_length": 4
+      "name": "SetBackgroundPriority",
+      "operand_length": 4,
+      "operand_names": [
+        "bg",
+        "priority",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "50": {
       "name": "opcode_32",
       "operand_length": 4
     },
     "51": {
-      "name": "opcode_33",
-      "operand_length": 4
+      "name": "PlaySpecialSceneEffect",
+      "operand_length": 4,
+      "operand_names": [
+        "mode",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "52": {
-      "name": "opcode_34",
-      "operand_length": 4
+      "name": "SetCameraPanSpeedOrRunRowChainAlt",
+      "operand_length": 4,
+      "operand_names": [
+        "speed",
+        "row",
+        "chainRow"
+      ],
+      "operand_widths": [
+        2,
+        1,
+        1
+      ]
     },
     "53": {
-      "name": "opcode_35",
-      "operand_length": 4
+      "name": "SetTileObjectAndLinkedActiveBit",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "bool",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "54": {
       "name": "GotoIfStoryStageCompare",
@@ -421,40 +821,154 @@
       ]
     },
     "55": {
-      "name": "opcode_37",
-      "operand_length": 8
+      "name": "SetRandomQuestState",
+      "operand_length": 8,
+      "operand_names": [
+        "min",
+        "max",
+        "index",
+        "unknown"
+      ],
+      "operand_widths": [
+        2,
+        2,
+        1,
+        3
+      ]
     },
     "56": {
-      "name": "opcode_38",
-      "operand_length": 4
+      "name": "NoOp",
+      "operand_length": 4,
+      "operand_names": [
+        "unknown"
+      ],
+      "operand_widths": [
+        4
+      ]
     },
     "57": {
-      "name": "opcode_39",
-      "operand_length": 16
+      "name": "SetScreenWindow",
+      "operand_length": 16,
+      "operand_names": [
+        "windowId",
+        "unused",
+        "x0",
+        "y0",
+        "x1",
+        "y1",
+        "winIn",
+        "winOut",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        4
+      ]
     },
     "58": {
-      "name": "opcode_3A",
-      "operand_length": 4
+      "name": "HideScreenWindow",
+      "operand_length": 4,
+      "operand_names": [
+        "windowId",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "59": {
-      "name": "opcode_3B",
-      "operand_length": 4
+      "name": "SetTileObjectFacing",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "facing",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
     },
     "60": {
-      "name": "opcode_3C",
-      "operand_length": 4
+      "name": "AddQuestState",
+      "operand_length": 4,
+      "operand_names": [
+        "delta",
+        "index",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
     },
     "61": {
-      "name": "opcode_3D",
-      "operand_length": 4
+      "name": "SubtractQuestState",
+      "operand_length": 4,
+      "operand_names": [
+        "delta",
+        "index",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
     },
     "62": {
-      "name": "opcode_3E",
-      "operand_length": 0
+      "name": "ClearQuestStateUpperHalf",
+      "operand_length": 0,
+      "operand_names": [],
+      "operand_widths": []
     },
     "63": {
-      "name": "opcode_3F",
-      "operand_length": 4
+      "name": "NoOpAlt",
+      "operand_length": 4,
+      "operand_names": [
+        "unknown"
+      ],
+      "operand_widths": [
+        4
+      ]
     },
     "64": {
       "name": "InvokeChainIfEnabled",
@@ -473,16 +987,46 @@
       ]
     },
     "65": {
-      "name": "opcode_41",
-      "operand_length": 4
+      "name": "GrantPartyExperience",
+      "operand_length": 4,
+      "operand_names": [
+        "xpAmount",
+        "unknown"
+      ],
+      "operand_widths": [
+        2,
+        2
+      ],
+      "operand_defaults": [
+        null,
+        0
+      ]
     },
     "66": {
-      "name": "opcode_42",
-      "operand_length": 4
+      "name": "SetBattleDefeatState",
+      "operand_length": 4,
+      "operand_names": [
+        "value",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "67": {
-      "name": "opcode_43",
-      "operand_length": 4
+      "name": "SetTileObjectEffectSlot",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "slot",
+        "unused"
+      ]
     },
     "68": {
       "name": "EnterFredAndGeorgesShop",
@@ -501,76 +1045,302 @@
       ]
     },
     "69": {
-      "name": "opcode_45",
+      "name": "FullHealParty",
       "operand_length": 0
     },
     "70": {
-      "name": "opcode_46",
-      "operand_length": 4
+      "name": "RespawnRowAndRunChainCommand",
+      "operand_length": 4,
+      "operand_names": [
+        "respawnRow",
+        "chainRow",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
     },
     "71": {
-      "name": "opcode_47",
-      "operand_length": 8
+      "name": "StartMinigame",
+      "operand_length": 8,
+      "operand_names": [
+        "minigameId",
+        "param",
+        "showHelp",
+        "pendingRow",
+        "pendingChain",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "72": {
-      "name": "opcode_48",
-      "operand_length": 4
+      "name": "SetRoomRowObjectFlags",
+      "operand_length": 4,
+      "operand_names": [
+        "row",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "73": {
-      "name": "opcode_49",
-      "operand_length": 4
+      "name": "GrantPartySpell",
+      "operand_length": 4,
+      "operand_names": [
+        "characterId",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "74": {
-      "name": "MarkRoomObjectStateDirty",
+      "name": "SetOverworldMonstersDisabled",
       "operand_length": 0
     },
     "75": {
-      "name": "opcode_4B",
+      "name": "ClearOverworldMonstersDisabled",
       "operand_length": 0
     },
     "76": {
-      "name": "opcode_4C",
-      "operand_length": 4
+      "name": "SetTileObjectFacingAndScriptPage",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "facing",
+        "scriptPageHigh"
+      ]
     },
     "77": {
-      "name": "opcode_4D",
-      "operand_length": 4
+      "name": "SetTileObjectSpecialFlag",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "bool",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
     },
     "78": {
-      "name": "opcode_4E",
-      "operand_length": 4
+      "name": "SetHeaderFlag",
+      "operand_length": 4,
+      "operand_names": [
+        "index",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "79": {
-      "name": "opcode_4F",
-      "operand_length": 4
+      "name": "ShowRewardPickupMessage",
+      "operand_length": 4,
+      "operand_names": [
+        "cardId",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        0,
+        0,
+        255
+      ]
     },
     "80": {
-      "name": "opcode_50",
-      "operand_length": 4
+      "name": "ShowItemRemovedMessage",
+      "operand_length": 4,
+      "operand_names": [
+        "id",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        0,
+        0,
+        255
+      ]
     },
     "81": {
-      "name": "opcode_51",
-      "operand_length": 4
+      "name": "ShowSpellLearnedMessage",
+      "operand_length": 4,
+      "operand_names": [
+        "id",
+        "gate",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        0,
+        0
+      ]
     },
     "82": {
-      "name": "opcode_52",
-      "operand_length": 4
+      "name": "SetPauseMenuLocked",
+      "operand_length": 4,
+      "operand_names": [
+        "value",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "83": {
-      "name": "opcode_53",
-      "operand_length": 8
+      "name": "GotoIfFolioPageGroupComplete",
+      "operand_length": 8,
+      "operand_names": [
+        "pageGroupId",
+        "rowIfTrue",
+        "chainIfTrue",
+        "rowIfFalse",
+        "chainAlways",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "84": {
-      "name": "opcode_54",
-      "operand_length": 4
+      "name": "ShowFolioCategoryStatusMessage",
+      "operand_length": 4,
+      "operand_names": [
+        "id",
+        "bool",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        0,
+        0
+      ]
     },
     "85": {
-      "name": "opcode_55",
-      "operand_length": 4
+      "name": "ShowMinigameUnlockedMessage",
+      "operand_length": 4,
+      "operand_names": [
+        "id",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        0,
+        0,
+        255
+      ]
     },
     "86": {
-      "name": "opcode_56",
-      "operand_length": 4
+      "name": "ShowPartyLevelUpMessage",
+      "operand_length": 4,
+      "operand_names": [
+        "id",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        0,
+        0,
+        255
+      ]
     },
     "87": {
       "name": "GrantPartyLevelUps",
@@ -589,24 +1359,70 @@
       ]
     },
     "88": {
-      "name": "opcode_58",
-      "operand_length": 0
+      "name": "UnmuteAllMusicChannels",
+      "operand_length": 0,
+      "operand_names": [],
+      "operand_widths": []
     },
     "89": {
-      "name": "opcode_59",
-      "operand_length": 4
+      "name": "ConsumeRoomItem",
+      "operand_length": 4,
+      "operand_names": [
+        "itemId",
+        "unknown",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
     },
     "90": {
-      "name": "opcode_5A",
-      "operand_length": 0
+      "name": "ResetPartyLeaderSelection",
+      "operand_length": 0,
+      "operand_names": [],
+      "operand_widths": []
     },
     "91": {
-      "name": "opcode_5B",
-      "operand_length": 4
+      "name": "GotoIfAllQuestFlagsSet",
+      "operand_length": 4,
+      "operand_names": [
+        "chainIfTrue",
+        "rowIfTrue",
+        "rowIfFalse",
+        "chainAlways"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     },
     "92": {
-      "name": "opcode_5C",
-      "operand_length": 4
+      "name": "SetPendingChainFromOverworldExitFlag",
+      "operand_length": 4,
+      "operand_names": [
+        "chainIfExit1",
+        "chainIfExit0",
+        "unknown",
+        "unknown"
+      ],
+      "operand_widths": [
+        1,
+        1,
+        1,
+        1
+      ]
     }
   }
 }
