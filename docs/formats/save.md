@@ -206,7 +206,7 @@ field):
 |---|---|---|
 | `wHp` | `wHp` | current HP -- saved directly |
 | `wMp` | `wMp` | current MP -- saved directly |
-| `wXpToNextLevel` | `wRewardXp` | per the user, the character's XP remaining until their next level, not a running total. `LevelUpFighter_candidate` overwrites it wholesale from the level table's delta column on every level-up, consistent with a to-next-level distance rather than an accumulator; whatever compares accumulated XP against that distance to trigger a level-up (`ApplyPendingLevelUps_candidate`, `0x0801D308`) still has no located caller in either disassembly. |
+| `wXpToNextLevel` | `wRewardXp` | per the user, the character's XP remaining until their next level, not a running total. `LevelUpFighter_candidate` overwrites it wholesale from the level table's delta column on every level-up, consistent with a to-next-level distance rather than an accumulator. `GrantPartyLevelUps` (`0x0801D308`) is triggered explicitly by a room-script opcode (`0x57`, see [`room_scripts.md`](room_scripts.md)) with an operand-supplied level count -- not an automatic comparison against accumulated XP. |
 | `bLevel` | `bLevel` | character level -- saved directly |
 | `bKnownSpellCount` | `bKnownSpellCount` | The fighter's known-spell count (**PROVEN**, already identified in [`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)'s Cast Spell menu writeup). The battle Cast Spell menu (`FUN_08011bec`) builds its spell list by iterating `i` in `[0, pFighter->bKnownSpellCount)`, i.e. this gates how many of the fighter's 10 `aSpellCastLevel` slots the spell-selection menu actually shows. |
 | `abSpellCastLevel` (10 bytes) | `aSpellCastLevel[10]` | per-spell mastered level -- **`aSpellUsageProgress`/`aSpellCastLevel`, the game's actual "spells level up with use" mechanic (see [`../memory-map/battle.md`](../memory-map/battle.md), `TrackSpellFamiliarity`), is the thing that actually gets saved as character progression** |
@@ -452,8 +452,5 @@ a slot's content past its checksum.
   control elsewhere in the room isn't traced yet.
 - Trace where `slotPreview` (`g_SaveManager+0x3C`) gets built from a
   loaded slot, for the save-select UI.
-- Locate the running XP accumulator that `ApplyPendingLevelUps_candidate`
-  (`0x0801D308`) is presumably driven by against `wXpToNextLevel` --
-  neither disassembly currently shows a caller for it.
 - JP-side addresses are not yet matched from these US ones (see
   `tools/match_functions.py` / `just match-functions`).

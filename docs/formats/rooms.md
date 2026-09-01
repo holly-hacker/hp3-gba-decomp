@@ -105,16 +105,16 @@ exact stride and the meaning of offsets `+0`-`+3` are **UNCONFIRMED**.
 
 **STRUCTURAL MATCH, and a second bytecode VM distinct from
 `InterpretObjectScript`.** `g_pRoomSwitchStateObjectTable` holds, per
-switch-state index, a chain of variable-length opcodes walked by
-`WalkRoomSwitchStateChain_candidate` (`0x08005410`) and
-`ResumeRoomSwitchStateChain_candidate` (`0x080055C0`): each opcode byte
-indexes an opcode-length table at `0x0805EB34` and a handler
-function-pointer table at `0x0805BA8C`, invoked through
-`ThumbInterworkVeneer_bx_r1`. These tables are **not** the ones
-[`battle_scripts.md`](battle_scripts.md) documents for
-`InterpretObjectScript` -- this is a separate, parallel interpreter
-specific to room switch/lever state, not a reuse of the per-`Object`
-script VM. Individual opcode semantics are undecoded.
+switch-state index, a chain walked by `WalkRoomSwitchStateChain_candidate`
+(`0x08005410`) and `ResumeRoomSwitchStateChain_candidate` (`0x080055C0`).
+This is the room-script bytecode VM: the interpreter, its byte format,
+its opcode table, and the known opcodes (tile-object flag bits, dialog
+boxes, music control, chained calls between chains) are documented in
+full in [`room_scripts.md`](room_scripts.md) -- not duplicated here.
+That VM is reached far more broadly than just switch-state/warp tiles
+(room load itself runs chains `0`/`1`), so "switch-state chain" names
+where a chain index is *found* here, while `room_scripts.md` owns the
+VM that *runs* it.
 
 ## Relationship to the object-script bytecode VM
 
@@ -123,9 +123,9 @@ per-tile object table nor the warp-trigger table stores a pointer into
 `InterpretObjectScript`'s opcode format. The one concrete script-like
 field found (`SpawnScriptedOneTimeObject`'s `wScriptPC`) feeds a custom
 tick handler (`0x0800BDCC`), not `InterpretObjectScript` directly. The
-room switch-state chains use their own, separate bytecode format (see
-above). "Scripts that run in each area" is better described by these
-two room-local systems than by the per-`Object` VM.
+room-script VM ([`room_scripts.md`](room_scripts.md)) uses its own,
+separate bytecode format. "Scripts that run in each area" is better
+described by these two room-local systems than by the per-`Object` VM.
 
 ## Further work
 
@@ -133,8 +133,9 @@ two room-local systems than by the per-`Object` VM.
   consumer found).
 - Decode `g_apRoomObjectConstructors` entries 0-1, 3, 5, 7-8, 10-13, and
   differentiate types 2/4/6 by actual in-game content.
-- Decode `0x0800BDCC` (type-9 tick handler) and the room switch-state
-  opcode table (`0x0805EB34`/`0x0805BA8C`).
+- Decode `0x0800BDCC` (type-9 tick handler). See
+  [`room_scripts.md`](room_scripts.md)'s own "Further work" for the
+  room-script opcode table's open items.
 - Confirm `g_pRoomWarpTriggerTable`'s full row stride and offsets
   `+0`-`+3`.
 - Cross-check against a live mGBA session for any of the above --

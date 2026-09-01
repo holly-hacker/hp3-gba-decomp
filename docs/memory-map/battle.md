@@ -750,8 +750,12 @@ fields, full-heals HP/MP, then calls
 `RecomputeBaseStatsFromLevel_candidate` (`0x080150B4`) does the same
 lookup for `bStat_speed`/defense without incrementing level (used when
 only reapplying equipment; resets defense/`bMagicDefensePercent` to `100`
-first). `ApplyPendingLevelUps_candidate` (`0x0801D308`) runs
-`LevelUpFighter_candidate` for all 3 party members, `N` times.
+first). `GrantPartyLevelUps` (`0x0801D308`, PROVEN: its one caller is
+identified) runs `LevelUpFighter_candidate` for all 3 party members,
+`N` times, where `N` is a room-script opcode operand -- see
+[`../formats/room_scripts.md`](../formats/room_scripts.md)'s opcode
+`0x57`. A room script triggers party level-ups explicitly (e.g. a story
+event), not an automatic threshold check against accumulated XP.
 
 Three `CharacterLevelEntry_candidate[100]` tables, 12-byte rows,
 extracted to `data/levels/` (`tools/levels/level_codec.py`):

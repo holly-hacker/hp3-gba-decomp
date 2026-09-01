@@ -70,6 +70,10 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 - [`formats/battle_scripts.md`](formats/battle_scripts.md) — the
   battle-script bytecode VM, its opcode table, and the effect-script
   pointer table. Pipeline: `tools/battle_scripts/`, `data/battle_scripts/`.
+- [`formats/room_scripts.md`](formats/room_scripts.md) — the room-script
+  bytecode VM (a second, unrelated interpreter): its byte format,
+  pause/resume/nested-call state machine, and known opcodes. Dump only
+  (no pack yet): `tools/room_scripts/`, `extracted/room_scripts/`.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

@@ -1,0 +1,49 @@
+{
+  "scripts": {
+    "25": {
+      "16": {
+        "name": "TalkMalfoy",
+        "description": "Talking to Malfoy before the final battle"
+      }
+    },
+    "36": {
+      "0": {
+        "name": "Noop"
+      }
+    },
+    "42": {
+      "1": {
+        "name": "TalkFudge1",
+        "description": "First conversation with Fudge"
+      },
+      "2": {
+        "name": "TalkPatronBar",
+        "description": "Talk to person at the bar"
+      },
+      "4": {
+        "name": "TryVisitCellar",
+        "description": "Try to go to the cellar before the relevant quest is active"
+      },
+      "6": {
+        "name": "TalkPatronTopLeft",
+        "description": "Talk to the bored-looking patron in blue"
+      },
+      "7": {
+        "name": "TalkPatronBottom1",
+        "description": "Talk to the patron on the top of the bottom table"
+      },
+      "8": {
+        "name": "TalkPatronBottom2",
+        "description": "Talk to the patron on the right of the bottom table"
+      },
+      "9": {
+        "name": "TalkTom",
+        "description": "Talk to Tom the barman"
+      },
+      "10": {
+        "name": "LockedDoorEntrance",
+        "description": "The locked entrance door"
+      }
+    }
+  }
+}

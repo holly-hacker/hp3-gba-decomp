@@ -60,6 +60,24 @@ dump-collision ver="us":
     python3 tools/collision/dump_collision.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
+# `build` -- data/room_scripts/ is gitignored (same footing as the
+# baserom, see CLAUDE.md hard rule 2). Disassembles each room's
+# quest-stage-0 room-script chains into data/room_scripts/<ver>/<room>/,
+# one file per chain, named after a curated entry in
+# tools/room_scripts/script_names.json or "chain<N>" by default. US
+# only (JP room-table address not yet located).
+extract-room-scripts ver="us":
+    python3 tools/room_scripts/extract_room_scripts.py {{ver}}
+
+# Verification only -- NOT a real pack step yet (no regions.<ver>.txt
+# row exists for the room table, so there's nowhere in the real build to
+# place packed chains, see docs/formats/room_scripts.md). Re-encodes
+# data/room_scripts/<ver>/ and confirms it reproduces the baserom's
+# bytes exactly.
+pack-room-scripts ver="us":
+    python3 tools/room_scripts/pack_room_scripts.py {{ver}}
+
+# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/audio/ is gitignored (same footing as the baserom, see
 # CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
 # so it's never silently regenerated/overwritten on every build.

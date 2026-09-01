@@ -1,0 +1,612 @@
+{
+  "opcodes": {
+    "0": {
+      "name": "End",
+      "operand_length": 0
+    },
+    "1": {
+      "name": "SetTileObjectFlagsPair",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "2": {
+      "name": "opcode_02",
+      "operand_length": 4,
+      "operand_widths": [
+        1,
+        1,
+        2
+      ]
+    },
+    "3": {
+      "name": "SetTileObjectFlagBit",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "bit",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
+    },
+    "4": {
+      "name": "ClearTileObjectFlagBit",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "bit",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
+    },
+    "5": {
+      "name": "ShowRoomDialog",
+      "operand_length": 4,
+      "operand_widths": [
+        2,
+        1,
+        1
+      ],
+      "comment_source": {
+        "type": "dialog_text",
+        "value_index": 0
+      },
+      "operand_names": [
+        "blockId",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        0,
+        0
+      ]
+    },
+    "6": {
+      "name": "PauseMusic",
+      "operand_length": 0
+    },
+    "7": {
+      "name": "ResumeMusic",
+      "operand_length": 0
+    },
+    "8": {
+      "name": "PlayMusicModuleAndFlagIfChain1",
+      "operand_length": 4,
+      "operand_names": [
+        "moduleId",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
+    },
+    "9": {
+      "name": "opcode_09",
+      "operand_length": 4
+    },
+    "10": {
+      "name": "opcode_0A",
+      "operand_length": 4
+    },
+    "11": {
+      "name": "opcode_0B",
+      "operand_length": 4
+    },
+    "12": {
+      "name": "opcode_0C",
+      "operand_length": 4
+    },
+    "13": {
+      "name": "opcode_0D",
+      "operand_length": 4
+    },
+    "14": {
+      "name": "opcode_0E",
+      "operand_length": 4
+    },
+    "15": {
+      "name": "SetTileObjectAnimState",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "16": {
+      "operand_length": 8,
+      "name": "opcode_10"
+    },
+    "17": {
+      "name": "opcode_11",
+      "operand_length": 4
+    },
+    "18": {
+      "name": "opcode_12",
+      "operand_length": 8
+    },
+    "19": {
+      "name": "opcode_13",
+      "operand_length": 0
+    },
+    "20": {
+      "name": "opcode_14",
+      "operand_length": 8
+    },
+    "21": {
+      "name": "opcode_15",
+      "operand_length": 4
+    },
+    "22": {
+      "name": "opcode_16",
+      "operand_length": 4
+    },
+    "23": {
+      "name": "opcode_17",
+      "operand_length": 8
+    },
+    "24": {
+      "name": "StartObjectAnimSequence",
+      "operand_length": 12,
+      "operand_names": [
+        "x",
+        "y",
+        "effectId",
+        "localA",
+        "localB",
+        "unk65",
+        "animStateSelector",
+        "stateByte0x60",
+        "flagsA",
+        "flagsB",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "25": {
+      "name": "opcode_19",
+      "operand_length": 12
+    },
+    "26": {
+      "name": "opcode_1A",
+      "operand_length": 4
+    },
+    "27": {
+      "name": "opcode_1B",
+      "operand_length": 0
+    },
+    "28": {
+      "name": "ArmChainYield",
+      "operand_length": 4,
+      "operand_names": [
+        "active",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
+    },
+    "29": {
+      "name": "GotoIfQuestStateCompare",
+      "operand_length": 8,
+      "operand_names": [
+        "questStateIndex",
+        "cmpOp",
+        "compareValue",
+        "trueChain",
+        "falseChain",
+        "trueRespawnRow",
+        "falseRespawnRow",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        255
+      ]
+    },
+    "30": {
+      "name": "opcode_1E",
+      "operand_length": 8
+    },
+    "31": {
+      "name": "SetQuestState",
+      "operand_length": 4,
+      "operand_names": [
+        "value",
+        "index",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "32": {
+      "name": "opcode_20",
+      "operand_length": 4
+    },
+    "33": {
+      "name": "CancelObjectAnimSequence",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "34": {
+      "name": "SetTileObjectAnimStateWithSpeed",
+      "operand_length": 4,
+      "operand_names": [
+        "x",
+        "y",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "35": {
+      "name": "opcode_23",
+      "operand_length": 8
+    },
+    "36": {
+      "name": "opcode_24",
+      "operand_length": 4
+    },
+    "37": {
+      "name": "opcode_25",
+      "operand_length": 0
+    },
+    "38": {
+      "name": "PlayScreenTransitionEffect",
+      "operand_length": 0
+    },
+    "39": {
+      "name": "opcode_27",
+      "operand_length": 4
+    },
+    "40": {
+      "name": "opcode_28",
+      "operand_length": 4
+    },
+    "41": {
+      "name": "opcode_29",
+      "operand_length": 4
+    },
+    "42": {
+      "name": "opcode_2A",
+      "operand_length": 4
+    },
+    "43": {
+      "name": "opcode_2B",
+      "operand_length": 4
+    },
+    "44": {
+      "name": "opcode_2C",
+      "operand_length": 4
+    },
+    "45": {
+      "name": "opcode_2D",
+      "operand_length": 4
+    },
+    "46": {
+      "name": "opcode_2E",
+      "operand_length": 4
+    },
+    "47": {
+      "name": "opcode_2F",
+      "operand_length": 4
+    },
+    "48": {
+      "name": "opcode_30",
+      "operand_length": 4
+    },
+    "49": {
+      "name": "opcode_31",
+      "operand_length": 4
+    },
+    "50": {
+      "name": "opcode_32",
+      "operand_length": 4
+    },
+    "51": {
+      "name": "opcode_33",
+      "operand_length": 4
+    },
+    "52": {
+      "name": "opcode_34",
+      "operand_length": 4
+    },
+    "53": {
+      "name": "opcode_35",
+      "operand_length": 4
+    },
+    "54": {
+      "name": "GotoIfStoryStageCompare",
+      "operand_length": 8,
+      "operand_names": [
+        "cmpOp",
+        "compareValue",
+        "trueChain",
+        "falseChain",
+        "trueRespawnRow",
+        "falseRespawnRow",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "55": {
+      "name": "opcode_37",
+      "operand_length": 8
+    },
+    "56": {
+      "name": "opcode_38",
+      "operand_length": 4
+    },
+    "57": {
+      "name": "opcode_39",
+      "operand_length": 16
+    },
+    "58": {
+      "name": "opcode_3A",
+      "operand_length": 4
+    },
+    "59": {
+      "name": "opcode_3B",
+      "operand_length": 4
+    },
+    "60": {
+      "name": "opcode_3C",
+      "operand_length": 4
+    },
+    "61": {
+      "name": "opcode_3D",
+      "operand_length": 4
+    },
+    "62": {
+      "name": "opcode_3E",
+      "operand_length": 0
+    },
+    "63": {
+      "name": "opcode_3F",
+      "operand_length": 4
+    },
+    "64": {
+      "name": "InvokeChainIfEnabled",
+      "operand_length": 4,
+      "operand_names": [
+        "respawnRow",
+        "targetChain",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        255,
+        255
+      ]
+    },
+    "65": {
+      "name": "opcode_41",
+      "operand_length": 4
+    },
+    "66": {
+      "name": "opcode_42",
+      "operand_length": 4
+    },
+    "67": {
+      "name": "opcode_43",
+      "operand_length": 4
+    },
+    "68": {
+      "name": "EnterFredAndGeorgesShop",
+      "operand_length": 4,
+      "operand_names": [
+        "modeArg2",
+        "respawnRow",
+        "targetChain",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        null,
+        null,
+        255
+      ]
+    },
+    "69": {
+      "name": "opcode_45",
+      "operand_length": 0
+    },
+    "70": {
+      "name": "opcode_46",
+      "operand_length": 4
+    },
+    "71": {
+      "name": "opcode_47",
+      "operand_length": 8
+    },
+    "72": {
+      "name": "opcode_48",
+      "operand_length": 4
+    },
+    "73": {
+      "name": "opcode_49",
+      "operand_length": 4
+    },
+    "74": {
+      "name": "MarkRoomObjectStateDirty",
+      "operand_length": 0
+    },
+    "75": {
+      "name": "opcode_4B",
+      "operand_length": 0
+    },
+    "76": {
+      "name": "opcode_4C",
+      "operand_length": 4
+    },
+    "77": {
+      "name": "opcode_4D",
+      "operand_length": 4
+    },
+    "78": {
+      "name": "opcode_4E",
+      "operand_length": 4
+    },
+    "79": {
+      "name": "opcode_4F",
+      "operand_length": 4
+    },
+    "80": {
+      "name": "opcode_50",
+      "operand_length": 4
+    },
+    "81": {
+      "name": "opcode_51",
+      "operand_length": 4
+    },
+    "82": {
+      "name": "opcode_52",
+      "operand_length": 4
+    },
+    "83": {
+      "name": "opcode_53",
+      "operand_length": 8
+    },
+    "84": {
+      "name": "opcode_54",
+      "operand_length": 4
+    },
+    "85": {
+      "name": "opcode_55",
+      "operand_length": 4
+    },
+    "86": {
+      "name": "opcode_56",
+      "operand_length": 4
+    },
+    "87": {
+      "name": "GrantPartyLevelUps",
+      "operand_length": 4,
+      "operand_names": [
+        "levelCount",
+        "unused",
+        "unused",
+        "unused"
+      ],
+      "operand_defaults": [
+        null,
+        255,
+        255,
+        255
+      ]
+    },
+    "88": {
+      "name": "opcode_58",
+      "operand_length": 0
+    },
+    "89": {
+      "name": "opcode_59",
+      "operand_length": 4
+    },
+    "90": {
+      "name": "opcode_5A",
+      "operand_length": 0
+    },
+    "91": {
+      "name": "opcode_5B",
+      "operand_length": 4
+    },
+    "92": {
+      "name": "opcode_5C",
+      "operand_length": 4
+    }
+  }
+}
