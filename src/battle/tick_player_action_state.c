@@ -139,7 +139,7 @@ void TickPlayerActionState(Object *obj)
      * order, not numeric case-value order, so this switch's case labels are
      * deliberately listed in the same order their bodies appear in the real
      * ROM (0, 0xf, 2, 0x1a, 0x15, 4, 1, 5), not ascending by value. */
-    case 0:
+    case 0: // PlayActionWindupFlash?
     {
         void *ptr;
         s32 slot;
@@ -149,28 +149,26 @@ void TickPlayerActionState(Object *obj)
             sub_08015484(obj, 7);
             slot = obj->bGfxSlotAndFlags >> 4;
             ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceA + 2;
-            goto case0_call;
-        }
-        if (obj->wActionVariant == 2) {
+            sub_0800D264(ptr, (slot << 4) + 1, 0xf);
+        } else if (obj->wActionVariant == 2) {
             sub_08015484(obj, 6);
             slot = obj->bGfxSlotAndFlags >> 4;
             ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceB + 2;
-        case0_call:
             sub_0800D264(ptr, (slot << 4) + 1, 0xf);
-            goto case0_tail;
+        } else {
+            sub_08015484(obj, 0);
         }
-        sub_08015484(obj, 0);
-    case0_tail:
         obj->bActionFlags &= 0xfe;
         return;
     }
-    case 0xf:
+    case 0xf: // WaitForMoveThenApplyDamageNumber?
         if (obj->nVelX != 0)
             return;
         if (obj->nVelY != 0)
             return;
-        goto sharedTail_080177B2;
-    case 2:
+        SetFighterAttackAnimState_candidate(obj, 0);
+        return;
+    case 2: // ApplyDamageNumberAnimState?
         if (obj->bActionFlags & 1) {
             sub_08018B14(obj->wStagedDamage, (u8)obj->wFighterType);
             PlaySoundById(0x9b);
@@ -182,7 +180,7 @@ void TickPlayerActionState(Object *obj)
         SetFighterAttackAnimState_candidate(obj, 0);
         ApplyStatusDamageToFighter_candidate(obj->wStagedDamage, obj->bFighterIndex);
         return;
-    case 0x1a:
+    case 0x1a: // ExecutePlayerAttackSequence?
     {
         s16 flags;
         u8 phase, delay, i;
@@ -476,7 +474,7 @@ void TickPlayerActionState(Object *obj)
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
         return;
     }
-    case 0x15:
+    case 0x15: // HandleScriptedDamageEvent_candidate?
     {
         FighterType fighterType;
         u8 activeIdx, cardMeta, effectId, slotParam, selActionIdx, targetIdx;
@@ -491,16 +489,15 @@ void TickPlayerActionState(Object *obj)
             else
                 obj->dwStateTimer = 0x28;
         }
-        if (obj->dwStateTimer == 0)
-            goto skip_08016F0E;
-        obj->dwStateTimer -= 1;
-        if (obj->dwStateTimer != 0)
-            goto skip_08016F0E;
-        if (ACTIVE_FIGHTER.bFighterType == Harry)
-            ShowBattleMessage(3, g_nFolioUniversitasSlot & 0xffff, 0);
-        else
-            ShowBattleMessage(3, ACTIVE_FIGHTER.bSpellId, 0);
-    skip_08016F0E:
+        if (obj->dwStateTimer != 0) {
+            obj->dwStateTimer -= 1;
+            if (obj->dwStateTimer == 0) {
+                if (ACTIVE_FIGHTER.bFighterType == Harry)
+                    ShowBattleMessage(3, g_nFolioUniversitasSlot & 0xffff, 0);
+                else
+                    ShowBattleMessage(3, ACTIVE_FIGHTER.bSpellId, 0);
+            }
+        }
         if (obj->dwFlags & 0x40000) {
             obj->dwFlags &= 0xfffbffff;
             fighterType = ACTIVE_FIGHTER.bFighterType;
@@ -531,31 +528,29 @@ void TickPlayerActionState(Object *obj)
                                          g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                                          0);
                     activeIdx = g_pFightState->bActiveFighterIndex;
-                    goto tail_08017190;
-                }
-                if (cardMeta == 3) {
+                } else if (cardMeta == 3) {
                     TriggerBattleEffect(g_abHarryCardEffectId[g_nFolioUniversitasSlot],
                                          ACTIVE_FIGHTER.bSlotParam,
                                          g_pFightState->pPendingFighters_candidate[ACTIVE_FIGHTER.bSelectedActionIndex].bSlotParam,
                                          g_pFightState->bActiveFighterIndex,
                                          ACTIVE_FIGHTER.bSelectedActionIndex, 0);
-                    goto tail_08017190;
-                }
-                if (cardMeta != 0) {
-                    activeIdx = g_pFightState->bActiveFighterIndex;
-                    selActionIdx = g_pFightState->pFighters[activeIdx].bSelectedActionIndex;
-                    if (g_pFightState->aEnemySlotTurnOrderIndex[selActionIdx] == 0xff) {
-                        i = 0;
-                        while (g_pFightState->aEnemySlotTurnOrderIndex[i] == 0xff)
-                            i++;
-                        ACTIVE_FIGHTER.bSelectedActionIndex = i;
+                } else {
+                    if (cardMeta != 0) {
+                        activeIdx = g_pFightState->bActiveFighterIndex;
+                        selActionIdx = g_pFightState->pFighters[activeIdx].bSelectedActionIndex;
+                        if (g_pFightState->aEnemySlotTurnOrderIndex[selActionIdx] == 0xff) {
+                            i = 0;
+                            while (g_pFightState->aEnemySlotTurnOrderIndex[i] == 0xff)
+                                i++;
+                            ACTIVE_FIGHTER.bSelectedActionIndex = i;
+                        }
                     }
+                    effectId = g_abHarryCardEffectId[g_nFolioUniversitasSlot];
+                    slotParam = ACTIVE_FIGHTER.bSlotParam;
+                    TriggerBattleEffect(effectId, slotParam, (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
+                                         g_pFightState->bActiveFighterIndex,
+                                         g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
                 }
-                effectId = g_abHarryCardEffectId[g_nFolioUniversitasSlot];
-                slotParam = ACTIVE_FIGHTER.bSlotParam;
-                TriggerBattleEffect(effectId, slotParam, (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
-                                     g_pFightState->bActiveFighterIndex,
-                                     g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
             } else if (fighterType == Hermione) {
                 activeIdx = g_pFightState->bActiveFighterIndex;
                 selActionIdx = g_pFightState->pFighters[activeIdx].bSelectedActionIndex;
@@ -573,10 +568,8 @@ void TickPlayerActionState(Object *obj)
                                      0);
             } else {
                 sub_08015484(obj, 0);
-                goto tail_08017190;
             }
         }
-    tail_08017190:
         if (obj->dwFlags & 0x8000) {
             selActionIdx = ACTIVE_FIGHTER.bSelectedActionIndex;
             if (g_pFightState->aEnemySlotTurnOrderIndex[selActionIdx] == 0xff) {
@@ -706,11 +699,10 @@ void TickPlayerActionState(Object *obj)
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
         if (obj->bActionState != 0x15)
             return;
-sharedTail_080177B2:
         SetFighterAttackAnimState_candidate(obj, 0);
         return;
     }
-    case 4:
+    case 4: // ApplyStatusRestoreItemEffect?
     {
         u32 result;
         s32 targetIdx, code;
@@ -762,14 +754,14 @@ sharedTail_080177B2:
                 amount = sub_080152CC(x, fighterIndex);
                 ShowFloatingDamageNumber_candidate(amount, 0xd, fighterIndex, 1);
                 code = 9;
-                goto showCostMsg;
+                ShowBattleMessage(code, amount, 0);
+                break;
             }
             case 2: {
                 s32 x = sub_08026CF0(spellLevel);
                 amount = sub_08015334(x, fighterIndex);
                 ShowFloatingDamageNumber_candidate(amount, 6, fighterIndex, 1);
                 code = 0xa;
-            showCostMsg:
                 ShowBattleMessage(code, amount, 0);
                 break;
             }
@@ -790,7 +782,7 @@ sharedTail_080177B2:
         obj->bActionFlags &= 0xfe;
         return;
     }
-    case 1:
+    case 1: // PlayFighterImpactSound?
         if ((obj->bActionFlags & 1) == 0)
             return;
         switch (obj->wFighterType) {
@@ -803,7 +795,7 @@ sharedTail_080177B2:
         obj->bActionFlags &= 0xfe;
         PlaySoundById(0x9c);
         return;
-    case 5:
+    case 5: // ReturnFighterToPosition?
         if (obj->bActionFlags & 1) {
             obj->bActionFlags &= 0xfe;
             obj->dwStateTimer = 0x1e;
