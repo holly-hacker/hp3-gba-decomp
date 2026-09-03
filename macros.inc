@@ -20,3 +20,15 @@
 	.macro thumb_func_end name
 	.size \name, .-\name
 	.endm
+
+	@ Names a Thumb function entry point inside still-raw incbin territory
+	@ (the `thumb-func` manifest directive), so its address carries the low
+	@ bit real Thumb function pointers always have when taken directly
+	@ (e.g. stored in a function-pointer table) rather than only reached
+	@ via `bl`. Unlike thumb_func_start, byte-free -- no `.align`, since
+	@ this sits immediately before raw incbin bytes that must not shift.
+	.macro thumb_func_label name
+	.thumb_func
+	.global \name
+	.type \name, %function
+	.endm

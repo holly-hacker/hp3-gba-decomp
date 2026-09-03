@@ -72,7 +72,7 @@ def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> list[str]:
     """Writes one section per unclaimed range, with any declared labels
     defined inside it so extracted code can reference raw territory."""
     rom = f"baserom.{ver}.gba"
-    out = [".syntax unified"]
+    out = [".syntax unified", '.include "macros.inc"']
     names = []
     for i, (start, end) in enumerate(gaps):
         section = f".gap{i:03d}"
@@ -82,7 +82,12 @@ def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> list[str]:
         for point in sorted(a for a in labels if start <= a < end):
             if point > cur:
                 out.append(f'.incbin "{rom}", {hex(cur - BASE_ADDR)}, {hex(point - cur)}')
-            out += [f".global {labels[point]}", f"{labels[point]}:"]
+            name, is_thumb = labels[point]
+            if is_thumb:
+                out.append(f"thumb_func_label {name}")
+            else:
+                out.append(f".global {name}")
+            out.append(f"{name}:")
             cur = point
         if cur < end:
             out.append(f'.incbin "{rom}", {hex(cur - BASE_ADDR)}, {hex(end - cur)}')

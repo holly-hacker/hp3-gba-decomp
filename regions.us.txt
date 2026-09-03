@@ -4,6 +4,12 @@
 # label <address> <name>
 #   A symbol that can be addressed by other code, see also ram_symbols.us.inc.
 #
+# thumb-func <address> <name>
+#   Same as `label`, but for a Thumb code entry point whose address is taken
+#   directly (e.g. stored in a function-pointer table) rather than only
+#   reached via `bl` -- marks the symbol `.thumb_func` so its value carries
+#   the low bit real Thumb function pointers always have.
+#
 # <start> <end> <asm-file> <name>
 #   A region of assembly code.
 #
@@ -58,6 +64,193 @@ label 0x0805150A g_abSpecialMoveEffectId
 label 0x080538B0 g_abSpellEffectScriptId
 label 0x08053964 g_awSpellMpCost
 
+# Game-mode dispatch table callees (src/data/game_mode_dispatch_table.c),
+# still raw incbin territory. See docs/memory-map/game_modes.md.
+thumb-func 0x08008050 InitializeRiddikulusMinigame
+thumb-func 0x080080F4 UpdateRiddikulusMinigame
+thumb-func 0x08008AD0 ExitRiddikulusMinigame
+thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
+thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
+thumb-func 0x08009C54 ExitHippogriffGlideMinigame
+thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
+thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
+thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
+thumb-func 0x0800A950 InitializeDebugMenuMain
+thumb-func 0x0800AA54 HandleDebugTestMenuSelect
+thumb-func 0x0800AB88 ExitDebugMenuMain
+thumb-func 0x0800ABD8 InitializeDebugLevelAndQuestSelectMenu
+thumb-func 0x0800ACE4 UpdateDebugLevelAndQuestSelectMenu
+thumb-func 0x0800AE50 ExitDebugLevelAndQuestSelectMenu
+thumb-func 0x0800AED8 InitializeDebugMapSelectMenu
+thumb-func 0x0800AFB4 UpdateDebugMapSelectMenu
+thumb-func 0x0800B108 ExitDebugMapSelectMenu
+thumb-func 0x0800B198 InitializeDebugCharacterSelectMenu
+thumb-func 0x0800B2C8 UpdateDebugCharacterSelectMenu
+thumb-func 0x0800B494 ExitDebugCharacterSelectMenu
+thumb-func 0x0800B5A8 InitializeDebugPortraitsMenu
+thumb-func 0x0800B620 UpdateDebugPortraitsMenu
+thumb-func 0x0800B684 ExitDebugPortraitsMenu
+thumb-func 0x0800B69C InitializeDebugSoundTestMenu
+thumb-func 0x0800B7A8 UpdateDebugSoundTestMenu
+thumb-func 0x0800B9A0 ExitDebugSoundTestMenu
+thumb-func 0x0800BA2C InitializeDebugCollectorCardsMenu
+thumb-func 0x0800BBF0 UpdateDebugCollectorCardsMenu
+thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
+thumb-func 0x0800C0FC InitializeBlackScreen
+thumb-func 0x0800C248 UpdateBlackScreen
+thumb-func 0x0800C590 ExitBlackScreen
+thumb-func 0x0800DBAC InitializeBattle
+thumb-func 0x0800DDB0 UpdateBattle
+thumb-func 0x0800DE50 ExitBattle
+thumb-func 0x080134BC InitializeVictoryScreen
+thumb-func 0x080138F4 UpdateVictoryScreen
+thumb-func 0x080148A8 ExitVictoryScreen
+thumb-func 0x0801BD0C InitializeCardComboDescription
+thumb-func 0x0801BEA8 UpdateCardComboDescription
+thumb-func 0x0801BEDC ExitCardComboDescription
+thumb-func 0x0801D518 InitializeCredits
+thumb-func 0x0801D5C8 UpdateCredits
+thumb-func 0x0801D858 ExitLinearCutscene
+thumb-func 0x0801D888 InitializeLinearCutscene
+thumb-func 0x0801D8C0 UpdateLinearCutscene
+thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
+thumb-func 0x0801E280 UpdateHarryVsDementorsMinigame
+thumb-func 0x0801EE1C ExitHarryVsDementorsMinigame
+thumb-func 0x0801F264 InitializeStartup
+thumb-func 0x0801F36C UpdateStartup
+thumb-func 0x0801F524 ExitStartup
+thumb-func 0x0801F534 InitializeDialogue
+thumb-func 0x0801F654 UpdateDialogueBox
+thumb-func 0x0801FAF4 ExitDialogue
+thumb-func 0x0801FDE8 InitializeHippogriffFliesIntoAirCutscene
+thumb-func 0x0801FED4 UpdateHippogriffFliesIntoAirCutscene
+thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
+thumb-func 0x08021C08 InitializeOwlCareKitScreen
+thumb-func 0x08021D6C HandleOwlCareKitScreenTick
+thumb-func 0x08022D98 HandleOwlCareKitScreenExit
+thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
+thumb-func 0x080251EC UpdateHighScoreNameEntry
+thumb-func 0x08025368 ExitHighScoreNameEntry
+thumb-func 0x08025D28 InitializeWizardCrackerPopItHelp
+thumb-func 0x08025E18 UpdateWizardCrackerPopItHelp
+thumb-func 0x08025E84 ExitWizardCrackerPopItHelp
+thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
+thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
+thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
+thumb-func 0x08028314 InitializeLanguageSelect
+thumb-func 0x08028408 UpdateLanguageSelect
+thumb-func 0x08028524 ExitLanguageSelect
+thumb-func 0x0802878C InitializeLupinPotionCutscene
+thumb-func 0x0802887C UpdateLupinPotionCutscene
+thumb-func 0x08029528 ExitLupinPotionCutscene
+thumb-func 0x080297A0 InitializeOverworld
+thumb-func 0x0802A14C ExitOverworldScreen
+thumb-func 0x0802B058 UpdateOverworld
+thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
+thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
+thumb-func 0x0802CD88 ExitWizardCrackerPopItDifficultySelect
+thumb-func 0x0802CF38 HandleMinigameSelectMenuConfirm
+thumb-func 0x0802D264 InitializeMinigameMenu
+thumb-func 0x0802D2F0 ExitMinigameMenu
+thumb-func 0x08030274 InitializeOwlNameSelect
+thumb-func 0x0803031C UpdateOwlNameSelect
+thumb-func 0x08030568 ExitOwlNameSelect
+thumb-func 0x080319FC InitializeHarryPatronusCutscene
+thumb-func 0x08031B4C UpdateHarryPatronusCutscene
+thumb-func 0x08031CA8 ExitHarryPatronusCutscene
+thumb-func 0x08031D30 UpdateInGameMenu
+thumb-func 0x08031F6C InitializeInGameMenu
+thumb-func 0x08031FF4 InitializeInGameMenuFadeIn
+thumb-func 0x08032054 ExitInGameMenu
+thumb-func 0x080323B4 InitializeWizardCrackerPopItMinigame
+thumb-func 0x08032534 UpdateWizardCrackerPopItMinigame
+thumb-func 0x080338A4 ExitWizardCrackerPopItMinigame
+thumb-func 0x08033DA4 InitializeUnusedServePumpkinJuiceMinigame
+thumb-func 0x08033EE0 UpdateUnusedServePumpkinJuiceMinigame
+thumb-func 0x08035240 ExitUnusedServePumpkinJuiceMinigame
+thumb-func 0x08035764 UpdateStatusEquipCharacterSelect
+thumb-func 0x08035D08 InitializeStatusEquipCharacterSelectC
+thumb-func 0x08035D20 InitializeStatusEquipCharacterSelectD
+thumb-func 0x08035D64 ExitStatusEquipCharacterSelect
+thumb-func 0x08035EB0 HandleConnectivityMenuTick
+thumb-func 0x08035F7C UpdateCreditsAgain
+thumb-func 0x08036038 InitializeConnectivityMenu
+thumb-func 0x080360DC ExitConnectivity
+thumb-func 0x08036120 InitializeCreditsAgain
+thumb-func 0x08036178 ExitCreditsAgain
+thumb-func 0x080361AC InitializeStatusEquipHarryItemSelect
+thumb-func 0x08036214 UpdateStatusEquipHarryItemSelect
+thumb-func 0x08036890 ExitStatusEquipHarryItemSelect
+thumb-func 0x0803693C UpdateFolios
+thumb-func 0x080369CC InitializeFolios
+thumb-func 0x08036A20 ExitFolios
+thumb-func 0x08036A64 InitializeFolioBruti
+thumb-func 0x08036BB8 UpdateFolioBrutiGridCursor
+thumb-func 0x08037048 ExitFolioBruti
+thumb-func 0x080372B0 InitializeFolioUniversitas
+thumb-func 0x080373D4 UpdateFolioUniversitas
+thumb-func 0x08037F48 ExitFolioUniversitas
+thumb-func 0x08038290 InitializeLastMenuScreen
+thumb-func 0x08038320 UpdateLastMenuScreen
+thumb-func 0x0803860C ExitLastMenuScreen
+thumb-func 0x08038970 UpdateHelp
+thumb-func 0x080390A0 InitializeHelp
+thumb-func 0x080390C0 ExitHelpScreen
+thumb-func 0x08039370 UpdateQuantitySelectScreen
+thumb-func 0x080394EC InitializeQuantitySelectScreen
+thumb-func 0x08039508 ExitQuantitySelectScreen
+thumb-func 0x0803957C UpdateItemsItemSelect
+thumb-func 0x08039690 InitializeItemsItemSelect
+thumb-func 0x08039728 ExitItemsItemSelect
+thumb-func 0x08039854 UpdateItemsSectionSelect
+thumb-func 0x08039904 InitializeItemsSectionSelect
+thumb-func 0x08039930 ExitItemsSectionSelect
+thumb-func 0x08039974 InitializeItemUseScreen
+thumb-func 0x080399A8 UpdateItemUseScreen
+thumb-func 0x08039A04 ExitItemUseScreen
+thumb-func 0x08039A74 InitializeGameSave
+thumb-func 0x08039B0C UpdateGameSave
+thumb-func 0x08039CD8 ExitGameSave
+thumb-func 0x08039DD8 UpdateStatusEquipHarry
+thumb-func 0x0803A4AC InitializeStatusEquipHarry
+thumb-func 0x0803A524 ExitStatusEquipHarryScreen
+thumb-func 0x0803A6D0 InitializeCardTrade
+thumb-func 0x0803A780 UpdateCardTrade
+thumb-func 0x0803ABBC ExitCardTrade
+thumb-func 0x0803AEA0 InitializeFolioCardDetailScreen
+thumb-func 0x0803AFA0 HandleFolioCardDetailScreenTick
+thumb-func 0x0803AFCC ExitFolioCardDetailScreen
+thumb-func 0x0804115C InitializeFredAndGeorgesShop
+thumb-func 0x080411E0 UpdateFredAndGeorgesShop
+thumb-func 0x0804126C ExitFredAndGeorgesShop
+thumb-func 0x080418EC InitializeDivinationTeaMinigame
+thumb-func 0x08041A60 UpdateDivinationTeaMinigame
+thumb-func 0x0804223C ExitDivinationTeaMinigame
+thumb-func 0x08042AC8 InitializeClockSkipCutscene
+thumb-func 0x08042B90 InitializeHogwartsUpNightCutscene
+thumb-func 0x08042C74 UpdateHogwartsUpNightCutscene
+thumb-func 0x08042D10 UpdateClockSkipCutscene
+thumb-func 0x08042D74 ExitClockSkipCutscene
+thumb-func 0x08042D90 ExitHogwartsUpNightCutscene
+thumb-func 0x08042F08 InitializeHarryHermionePortInTimeCutscene
+thumb-func 0x08042FC0 UpdateHarryHermionePortInTimeCutscene
+thumb-func 0x08043450 ExitHarryHermionePortInTimeCutscene
+thumb-func 0x08043470 InitializeMainMenu
+thumb-func 0x08043580 UpdateMainMenu
+thumb-func 0x08043870 ExitMainMenuScreen
+thumb-func 0x08043AF0 HandleSaveLoadContinuation
+thumb-func 0x08043EC8 InitializeLoadGame
+thumb-func 0x08043ED8 UpdateLoadGame
+thumb-func 0x08043EEC InitializeNewGameMenu
+thumb-func 0x08043EFC UpdateNewGameMenu
+thumb-func 0x08043F5C ExitNewGameMenu
+thumb-func 0x08044134 InitializeOptions
+thumb-func 0x08044240 UpdateOptions
+thumb-func 0x08044774 ExitOptions
+thumb-func 0x08044B00 InitializeCoolTrainCutscene
+thumb-func 0x08044B7C UpdateCoolTrainCutscene
+thumb-func 0x08044BF0 ExitCoolTrainCutscene
+
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
 0x080000C0 0x08000104 asm/crt0.s                crt0
@@ -79,6 +272,11 @@ c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 
 c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
 c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
+
+c-file 0x0802C984 0x0802C988 src/game_modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
+
+# Game-mode dispatch table, see docs/memory-map/game_modes.md
+c-file 0x08065CBC 0x0806601C src/data/game_mode_dispatch_table.c g_pGameModeDispatchTable
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate

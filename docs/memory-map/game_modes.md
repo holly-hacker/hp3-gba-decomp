@@ -50,8 +50,31 @@ Full enum (71 values, `Startup`=1 through `CreditsAgain`=0x47) is in
 Ghidra's `GameMode` data type -- not reproduced in full here since it
 covers every screen/cutscene in the game, not just debug menus.
 
+## Dispatch table
+
+`g_pGameModeDispatchTable` (US `0x08065CBC`, extracted to
+`src/data/game_mode_dispatch_table.c`), 72 entries (`GameMode` 0-0x47;
+index 0 unused/reserved, all three fields point at `HandleGameModeNoneNoOp`,
+matched in `src/game_modes/handle_game_mode_none_noop.c` -- a no-op,
+single `bx lr`).
+Each entry is 3 function pointers, `pInitFn`/`pUpdateFn`/`pDestroyFn`:
+`pInitFn` runs once right after the mode variable updates to the new mode,
+`pUpdateFn` every frame, `pDestroyFn` once on the *old* mode right before the
+mode variable updates (see `save.md`'s "Owl Care Kit" section for the
+dispatcher call sites this was cross-checked against). All 216 slots (185
+distinct functions) are still raw incbin, named in `regions.us.txt` via
+`thumb-func` rows and referenced from the table by address only -- not
+decompiled.
+
+`pDestroyFn`'s functions were previously misnamed `DrawXxx` in Ghidra (a
+stale guess from before this dispatch timing was established) and have been
+renamed `ExitXxx` to match; spot-checked `ExitStartup`, which calls the same
+palette-teardown primitive `ExitBattle`'s cleanup path calls, not anything
+drawing-related.
+
 ## Not yet located
 
 - Whether `DebugMenuMain` is reachable/meaningful from every game state,
   or only from specific ones (e.g. title screen) -- untested.
-- JP addresses for `g_dwPendingGameMode`/`g_dwCurrentGameMode`.
+- JP addresses for `g_dwPendingGameMode`/`g_dwCurrentGameMode`, and the JP
+  address of `g_pGameModeDispatchTable`.

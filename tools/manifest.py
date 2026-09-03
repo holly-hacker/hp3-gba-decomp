@@ -9,9 +9,13 @@ import sys
 
 # (start, end, asmfile, name)
 Region = tuple[int, int, str, str]
-# address -> name, for symbols inside not-yet-extracted (still-incbin)
-# territory that extracted code needs to reference
-Labels = dict[int, str]
+# address -> (name, is_thumb), for symbols inside not-yet-extracted
+# (still-incbin) territory that extracted code needs to reference.
+# is_thumb marks a Thumb code entry point so the assembler sets the
+# symbol's low address bit (`thumb-func` rows) -- plain `label` rows
+# (data, or code only ever reached via `bl`, which doesn't need the bit)
+# leave it unset.
+Labels = dict[int, tuple[str, bool]]
 
 
 # krawall-module/krawall-samples rows name their JSON/directory source
@@ -70,11 +74,11 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if not line:
                 continue
             parts = line.split()
-            if parts[0] == "label":
+            if parts[0] in ("label", "thumb-func"):
                 if len(parts) != 3:
-                    sys.exit(f"{path}:{lineno}: expected 'label <addr> <name>'")
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <addr> <name>'")
                 addr = int(parts[1], 16)
-                labels[addr] = parts[2]
+                labels[addr] = (parts[2], parts[0] == "thumb-func")
                 continue
             if parts[0] in KRAWALL_DIRECTIVES:
                 if len(parts) != 5:
