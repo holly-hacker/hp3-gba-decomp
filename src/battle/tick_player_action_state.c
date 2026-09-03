@@ -7,38 +7,6 @@ typedef struct Vec2 {
     u32 x, y;
 } Vec2;
 
-typedef struct Object {
-    u8 pad_00[0x08];
-    u16 wFighterType;       // 0x08
-    u8 pad_0A[0x02];        // -> 0x0C
-    u32 dwFlags;            // 0x0C, bit 0x40000 = action-animation-done, bit 0x8000 = special-move trigger
-    u8 pad_10[0x04];        // -> 0x14
-    u16 wMoveDuration;      // 0x14
-    u8 pad_16[0x16];        // -> 0x2C
-    u32 nX;                 // 0x2C, 16.16
-    u32 nY;                 // 0x30, 16.16
-    u8 pad_34[0x08];        // -> 0x3C
-    u32 nVelX;              // 0x3C
-    u32 nVelY;              // 0x40
-    u8 pad_44[0x1C];        // -> 0x60
-    u8 bAttackOutcomeState; // 0x60
-    u8 pad_61[0x01];        // -> 0x62
-    u16 wStagedDamage;      // 0x62
-    u8 pad_64[0x1C];        // -> 0x80
-    u32 dwStateTimer;       // 0x80
-    u8 pad_84[0x02];        // -> 0x86
-    u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
-    u8 pad_88[0x02];        // -> 0x8a
-    u16 wActionVariant;     // 0x8A
-    u8 pad_8C[0x01];        // -> 0x8D
-    u8 bActionState;        // 0x8D, the dispatch key
-    u8 pad_8E[0x02];        // -> 0x90
-    u8 bActionFlags;        // 0x90
-    u8 bFighterIndex;       // 0x91
-    u8 pad_92[0x43];        // -> 0xD5
-    u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot
-} Object;
-
 // per-wFighterType windup-flash resource pointer row, stride 0xA0
 typedef struct AnimFlashRow {
     u8 pad_00[0x68];
@@ -51,7 +19,6 @@ typedef struct AnimFlashRow {
 extern AnimFlashRow g_aFighterAnimTable[];  // 0x08051248, UNCONFIRMED row count
 
 extern void SetObjectFlippedX(Object *obj, s32 flip);
-extern void sub_080039E8(Object *obj);
 extern void sub_08015484(Object *obj, s32 state);
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void PlaySoundById(s32 id);
@@ -70,20 +37,6 @@ extern void ClearParalyzedFighter_candidate(s32 fighterIndex);
 extern void PostActionBattleCheck(void);
 extern void PushBattleState(s32 state);
 extern void DecrementFolioUniversitasCard(s32 slot);
-// The Folio Universitas card slot lives at +8 in the previous-mode
-// GameModeContext (0x03003F3C; PushGameMode_2's own arg2 write, see
-// docs/memory-map/game_modes.md): PushGameMode_0(0x26, slot, 0) stages the
-// chosen card in the pending context's nParam1, TickGameModeStack shifts
-// pending -> current -> previous on pop, and battle code here reads it back
-// out of g_PrevGameModeCtx once the Folio Universitas screen has returned.
-typedef struct GameModeContext {
-    u32 dwMode;    // 0x00; high bit 0x80 marks pending
-    s32 nParam0;   // 0x04
-    s32 nParam1;   // 0x08; push arg2 / mode result slot
-    u8 pad_0C[0x24 - 0x0C];
-} GameModeContext;
-extern GameModeContext g_PrevGameModeCtx;  // 0x03003F3C
-#define g_nFolioUniversitasSlot g_PrevGameModeCtx.nParam1
 extern u8 g_abHarryCardEffectId[16];            // 0x080514C8
 extern u8 g_aCardTargetingMeta[][2];            // 0x080514DE, stride 2
 extern u8 g_abHermioneLectureEffectId[3];       // 0x0805150D
@@ -96,7 +49,6 @@ extern void sub_08012B40(void);
 // --- case 0x1a additions ---
 extern void sub_080019C0(void *obj, s32 x, s32 y);  // sets Object+0x3c/+0x40, i.e. nVelX/nVelY directly
 extern void sub_08003A30(void *obj, s16 a, s16 b, s16 c);  // a is stored pre-shifted << 8 into a 16-bit field
-extern void sub_0802D640(u8 priority);
 extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);
 extern void sub_0800E0CC(s32 fighterType, s32 arg2);
@@ -113,11 +65,6 @@ extern u8 g_abSpellEffectScriptId[][3];         // 0x080538B0, [spellId][level]
 extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
-// Accessed only as base+offset in the real code (the byte/word offsets are out
-// of Thumb's load-immediate range), so these are declared as the containing
-// blocks rather than as scalars at the final address.
-extern u32 g_aBgScrollState[];                  // 0x03001E80; [0x25] == 0x03001F14
-extern u8 g_abBgPriority[];                     // 0x03003F8C; [4] == 0x03003F90
 
 void TickPlayerActionState(Object *obj)
 {

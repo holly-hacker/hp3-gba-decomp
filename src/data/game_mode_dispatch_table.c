@@ -60,7 +60,7 @@ extern void ExitStatusEquipHarryItemSelect();
 extern void ExitUnusedHogwartsMapScreen();
 extern void ExitUnusedServePumpkinJuiceMinigame();
 extern void ExitWizardCrackerPopItDifficultySelect();
-extern void ExitWizardCrackerPopItHelp();
+extern void ExitTopicScreen();
 extern void ExitWizardCrackerPopItMinigame();
 extern void ExitBattle();
 extern void ExitVictoryScreen();
@@ -134,7 +134,7 @@ extern void InitializeUnusedHogwartsMapScreen();
 extern void InitializeUnusedServePumpkinJuiceMinigame();
 extern void InitializeVictoryScreen();
 extern void InitializeWizardCrackerPopItDifficultySelect();
-extern void InitializeWizardCrackerPopItHelp();
+extern void InitializeTopicScreen();
 extern void InitializeWizardCrackerPopItMinigame();
 extern void UpdateBattle();
 extern void UpdateBlackScreen();
@@ -189,7 +189,7 @@ extern void UpdateStatusEquipHarryItemSelect();
 extern void UpdateUnusedHogwartsMapScreen();
 extern void UpdateUnusedServePumpkinJuiceMinigame();
 extern void UpdateVictoryScreen();
-extern void UpdateWizardCrackerPopItHelp();
+extern void UpdateTopicScreen();
 extern void UpdateWizardCrackerPopItMinigame();
 
 // Indexed by GameMode (0 unused/reserved). See docs/memory-map/game_modes.md.
@@ -262,7 +262,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { (void *)InitializeLastMenuScreen, (void *)UpdateLastMenuScreen, (void *)ExitLastMenuScreen },
     { (void *)InitializeOwlNameSelect, (void *)UpdateOwlNameSelect, (void *)ExitOwlNameSelect },
     { (void *)InitializeQuantitySelectScreen, (void *)UpdateQuantitySelectScreen, (void *)ExitQuantitySelectScreen },
-    { (void *)InitializeWizardCrackerPopItHelp, (void *)UpdateWizardCrackerPopItHelp, (void *)ExitWizardCrackerPopItHelp },
+    { (void *)InitializeTopicScreen, (void *)UpdateTopicScreen, (void *)ExitTopicScreen },
     { (void *)InitializeHippogriffFliesIntoAirCutscene, (void *)UpdateHippogriffFliesIntoAirCutscene, (void *)ExitHippogriffFliesIntoAirCutscene },
     { (void *)InitializeCardComboDescription, (void *)UpdateCardComboDescription, (void *)ExitCardComboDescription },
     { (void *)InitializeCreditsAgain, (void *)UpdateCreditsAgain, (void *)ExitCreditsAgain },

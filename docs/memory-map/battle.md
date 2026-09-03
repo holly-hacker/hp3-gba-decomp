@@ -427,7 +427,7 @@ spellcasters, but his damage bypasses `ResolvePlayerAttack` entirely (see
 a fully separate, hardcoded-damage sub-state (`Object+0x60 == 6`) no
 other fighter type reaches.
 
-**`TickBattleTurnStateMachine_candidate`'s case 4** confirms this at the
+**`TickBattleTurnStateMachine`'s case 4** confirms this at the
 dispatch level: non-`Enemy` fighters call `DispatchPendingAction()`
 directly (menu-driven), while `Enemy` fighters skip it and set anim state
 `0x1a` directly after `SelectAiTarget`/a can't-move check
@@ -558,7 +558,7 @@ caps it at level `2`.
 
 ### Poison's per-turn tick, PROVEN
 
-`TickBattleTurnStateMachine_candidate`'s state-2 handler
+`TickBattleTurnStateMachine`'s state-2 handler
 (`EndOfRoundStatusTick` above) is end-of-round processing. Both reads
 (`bPoisonDamage`) and the HP write go through
 `ApplyStatusDamageToFighter_candidate` (`0x08018094`) --
@@ -608,8 +608,8 @@ opcode format itself.
 ### `FightState->bBonusRewardFlags` -- bonus-reward flags, PROVEN
 
 A 3-bit "bonus reward for this encounter" byte, written by the three
-cases above. `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler in
-`GameModeDispatchEntry_ARRAY_08065cbc`) snapshots it into
+cases above. `ExitBattle` (`0x0800DE50`, `Battle`'s `pDestroyFn` in
+`g_pGameModeDispatchTable`) snapshots it into
 `g_dwBattleRewardFlagsSnapshot` right before `FightState` is freed. Bits
 `0x01`/`0x02` (`ExtraExpBonus`/`GrantExtraXp`) scale the XP shown by
 `InitializeVictoryXpScreen` (x3/x1.5). Bit `0x04` (`ForceItemDrop`) is
@@ -707,7 +707,18 @@ dealing damage, so it needs its own reward grant).
 
 ## End-of-battle flow, PROVEN
 
-`TickBattleTurnStateMachine` (`0x0800F794`) drives `FightState->bBattleState`
+`UpdateBattle` (`0x0800DDB0`, `Battle`'s `pUpdateFn`, matched in
+`src/battle/update_battle.c`) is the per-frame entry into all of this:
+unless the previous mode was `FolioUniversitas` or
+`HelpTopicScreen` (returning from a card-detail/help screen
+opened mid-battle), it decrements `FightState->bScreenShakeTimer_candidate`
+while nonzero (nudging the BG scroll/priority each tick via `sub_0802D640`
+and `g_aBgScrollState[0x25]`), and the tick that timer reaches `0` it
+resets every fighter's `Object` (`sub_080039E8`) instead of ticking the
+turn state machine that frame. Every other case (timer already `0`, or the
+previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).
+
+`TickBattleTurnStateMachine` drives `FightState->bBattleState`
 via `PushBattleState` (`0x08012AFC`; no-ops once already in end states
 `6`/`7`). `CheckBattleVictory` (`0x080186E0`, from the enemy attack-anim
 tick) pushes state `7` once every `Enemy` fighter's HP is `0`.

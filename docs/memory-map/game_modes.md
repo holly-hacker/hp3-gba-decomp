@@ -47,8 +47,9 @@ Values for the debug-menu modes (`GameMode` enum, US ROM):
 | `DebugMenuCharacterSelect` | `0x2A` |
 
 Full enum (71 values, `Startup`=1 through `CreditsAgain`=0x47) is in
-Ghidra's `GameMode` data type -- not reproduced in full here since it
-covers every screen/cutscene in the game, not just debug menus.
+`include/game_modes.h`, mirroring Ghidra's `GameMode` data type -- not
+reproduced in full here since it covers every screen/cutscene in the
+game, not just debug menus.
 
 ## Dispatch table
 

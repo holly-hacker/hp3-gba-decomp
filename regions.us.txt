@@ -56,6 +56,8 @@ label 0x08015F50 ShowItemUseResult
 label 0x0802C7C4 PushGameMode_2
 label 0x0802C7E0 PushGameMode_0
 label 0x08017F98 ApplyDamageToFighter
+label 0x0802D3BC sub_0802D3BC
+label 0x0800F794 TickBattleTurnStateMachine
 label 0x08051248 g_aFighterAnimTable
 label 0x080514C8 g_abHarryCardEffectId
 label 0x080514DE g_aCardTargetingMeta
@@ -100,7 +102,6 @@ thumb-func 0x0800C0FC InitializeBlackScreen
 thumb-func 0x0800C248 UpdateBlackScreen
 thumb-func 0x0800C590 ExitBlackScreen
 thumb-func 0x0800DBAC InitializeBattle
-thumb-func 0x0800DDB0 UpdateBattle
 thumb-func 0x0800DE50 ExitBattle
 thumb-func 0x080134BC InitializeVictoryScreen
 thumb-func 0x080138F4 UpdateVictoryScreen
@@ -131,9 +132,9 @@ thumb-func 0x08022D98 HandleOwlCareKitScreenExit
 thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
 thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
-thumb-func 0x08025D28 InitializeWizardCrackerPopItHelp
-thumb-func 0x08025E18 UpdateWizardCrackerPopItHelp
-thumb-func 0x08025E84 ExitWizardCrackerPopItHelp
+thumb-func 0x08025D28 InitializeTopicScreen
+thumb-func 0x08025E18 UpdateTopicScreen
+thumb-func 0x08025E84 ExitTopicScreen
 thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
@@ -407,6 +408,8 @@ c-file 0x0801602C 0x08017B5C src/battle/tick_player_action_state.c TickPlayerAct
 
 c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
+
+c-file 0x0800DDB0 0x0800DE50 src/battle/update_battle.c UpdateBattle
 
 c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
 

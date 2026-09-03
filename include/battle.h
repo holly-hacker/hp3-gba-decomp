@@ -131,3 +131,59 @@ typedef enum {
 
 extern u32 g_dwBattleRewardFlagsSnapshot;
 extern s32 g_anFaintedRosterIndices[4];
+
+// A fighter's sprite/animation object. Only the fields touched by
+// UpdateBattle/TickPlayerActionState are named; see those files' plate
+// comments for the rest.
+typedef struct Object {
+    u8 pad_00[0x08];
+    u16 wFighterType;       // 0x08
+    u8 pad_0A[0x02];        // -> 0x0C
+    u32 dwFlags;            // 0x0C, bit 0x40000 = action-animation-done, bit 0x8000 = special-move trigger
+    u8 pad_10[0x04];        // -> 0x14
+    u16 wMoveDuration;      // 0x14
+    u8 pad_16[0x16];        // -> 0x2C
+    u32 nX;                 // 0x2C, 16.16
+    u32 nY;                 // 0x30, 16.16
+    u8 pad_34[0x08];        // -> 0x3C
+    u32 nVelX;              // 0x3C
+    u32 nVelY;              // 0x40
+    u8 pad_44[0x1C];        // -> 0x60
+    u8 bAttackOutcomeState; // 0x60
+    u8 pad_61[0x01];        // -> 0x62
+    u16 wStagedDamage;      // 0x62
+    u8 pad_64[0x1C];        // -> 0x80
+    u32 dwStateTimer;       // 0x80
+    u8 pad_84[0x02];        // -> 0x86
+    u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
+    u8 pad_88[0x02];        // -> 0x8a
+    u16 wActionVariant;     // 0x8A
+    u8 pad_8C[0x01];        // -> 0x8D
+    u8 bActionState;        // 0x8D, the dispatch key
+    u8 pad_8E[0x02];        // -> 0x90
+    u8 bActionFlags;        // 0x90
+    u8 bFighterIndex;       // 0x91
+    u8 pad_92[0x43];        // -> 0xD5
+    u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot
+} Object;
+
+extern void sub_080039E8(Object *obj);
+extern void sub_0802D640(u8 priority);
+
+// The Folio Universitas card slot lives at +8 in the previous-mode
+// GameModeContext (0x03003F3C; PushGameMode_2's own arg2 write, see
+// docs/memory-map/game_modes.md): PushGameMode_0(0x26, slot, 0) stages the
+// chosen card in the pending context's nParam1, TickGameModeStack shifts
+// pending -> current -> previous on pop, and battle code reads it back out
+// of g_PrevGameModeCtx once the Folio Universitas screen has returned.
+typedef struct GameModeContext {
+    u32 dwMode;    // 0x00; high bit 0x80 marks pending
+    s32 nParam0;   // 0x04
+    s32 nParam1;   // 0x08; push arg2 / mode result slot
+    u8 pad_0C[0x24 - 0x0C];
+} GameModeContext;
+extern GameModeContext g_PrevGameModeCtx;  // 0x03003F3C
+#define g_nFolioUniversitasSlot g_PrevGameModeCtx.nParam1
+
+extern u32 g_aBgScrollState[];  // 0x03001E80; [0x25] == 0x03001F14
+extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
