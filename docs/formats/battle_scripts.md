@@ -82,6 +82,13 @@ Per opcode:
 
 1. Reads the opcode byte from `g_apEffectScripts[obj->bScriptEffectId]`
    at offset `obj->wScriptPC` (`Object` fields `0x62`/`0x60`).
+   `wScriptPC`'s low byte (`Object+0x60`) is reused for an unrelated purpose
+   once script execution for that object finishes: the same byte is what
+   `TickPlayerActionState` and `TickFighterAttackAnimState_candidate`
+   read/write as a small attack-outcome state counter (see `opcode_30` below
+   and [`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)'s
+   `TickPlayerActionState` writeup) -- a real, storage-reuse
+   overlap confirmed from both sides, not a struct-offset error.
 2. Copies the opcode byte plus its operand bytes (count from
    `g_abScriptOpcodeLengths`, see below) into a stack buffer.
 3. Advances `obj->wScriptPC` past the instruction.

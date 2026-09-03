@@ -13,6 +13,51 @@
 # Still-unextracted helpers referenced from below
 label 0x080208B4 sub_080208B4
 
+# TickPlayerActionState (src/battle/tick_player_action_state.c) callees
+# and data tables still raw incbin territory.
+label 0x08003708 SetObjectFlippedX
+label 0x080039E8 sub_080039E8
+label 0x08015484 sub_08015484
+label 0x0800D264 sub_0800D264
+label 0x0803FC68 PlaySoundById
+label 0x08018B14 sub_08018B14
+label 0x08001E7C SetFighterAttackAnimState_candidate
+label 0x08018094 ApplyStatusDamageToFighter_candidate
+label 0x08018B70 TriggerBattleEffect
+label 0x08026CDC sub_08026CDC
+label 0x08026CF0 sub_08026CF0
+label 0x08015334 sub_08015334
+label 0x080152CC sub_080152CC
+label 0x080181AC ShowFloatingDamageNumber_candidate
+label 0x08010864 ShowBattleMessage
+label 0x0800EB2C sub_0800EB2C
+label 0x0800EA68 ClearParalyzedFighter_candidate
+label 0x08018ACC PostActionBattleCheck
+label 0x08012AFC PushBattleState
+label 0x080377A8 DecrementFolioUniversitasCard
+label 0x080129F4 sub_080129F4
+label 0x08012B40 sub_08012B40
+label 0x080019C0 sub_080019C0
+label 0x08003A30 sub_08003A30
+label 0x0802D640 sub_0802D640
+label 0x0802D64C sub_0802D64C
+label 0x08012A38 sub_08012A38
+label 0x0800E0CC sub_0800E0CC
+label 0x08017B5C ShowDamageNumber_candidate
+label 0x080019A4 SnapObjectPosition
+label 0x08001A84 StartObjectMove
+label 0x08015F50 ShowItemUseResult
+label 0x0802C7C4 PushGameMode_2
+label 0x0802C7E0 PushGameMode_0
+label 0x08017F98 ApplyDamageToFighter
+label 0x08051248 g_aFighterAnimTable
+label 0x080514C8 g_abHarryCardEffectId
+label 0x080514DE g_aCardTargetingMeta
+label 0x0805150D g_abHermioneLectureEffectId
+label 0x0805150A g_abSpecialMoveEffectId
+label 0x080538B0 g_abSpellEffectScriptId
+label 0x08053964 g_awSpellMpCost
+
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
 0x080000C0 0x08000104 asm/crt0.s                crt0
@@ -159,6 +204,8 @@ item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
 c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
 
 c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
+
+c-file 0x0801602C 0x08017B5C src/battle/tick_player_action_state.c TickPlayerActionState
 
 c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack

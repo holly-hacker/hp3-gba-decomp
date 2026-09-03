@@ -9,7 +9,7 @@ order, the melee and spell damage formulas, the status-effect system, and
 the spell/level tables. The menu tree that selects an action, the
 `ShowBattleMessage` dialog-text dispatcher, the item catalog, the
 animation-state dispatchers (`TickFighterAttackAnimState_candidate`,
-`TickPlayerActionState_candidate`), and the per-character Special Move
+`TickPlayerActionState`), and the per-character Special Move
 content are in [`battle-ui.md`](battle-ui.md).
 
 ## Attribution
@@ -27,10 +27,11 @@ before being trusted:
   (inside `ResolveEnemyAttack`'s damage-halving logic, tied to
   Hermione's "Be More Careful"). All three led directly to findings in
   this document.
-- A community-written GameFAQs guide pins which of `SpellId` `1`/`6` is
-  `PetrificusTotalus` vs. `Spongify` -- structurally interchangeable in
-  the disassembly (both absent from the effectiveness switch, both
-  zero-power) -- see `g_awSpellMpCost` below.
+- A community-written GameFAQs guide's real per-spell MP costs independently
+  confirm `SpellId 6 = PetrificusTotalus` (its `Uno`/`Duo` costs match
+  exactly) -- see `g_awSpellMpCost` below. `SpellId`'s full 10-value
+  ordering, including `1 = Informus`, is PROVEN directly from
+  `DrawBattleMenuText`'s own dialog-text lookup -- see `bSpellId` below.
 
 Dynamic verification via mGBA's gdb stub (breakpoint at `0x08017E44`, run
 through mGBA's own debug console) confirmed several findings below live
@@ -206,7 +207,7 @@ void DispatchPendingAction(int fighterIndex) {                  // 0x080100a0
     }
 }
 
-// case 0x1A of TickPlayerActionState_candidate's jump table, see battle-ui.md.
+// case 0x1A of TickPlayerActionState's jump table, see battle-ui.md.
 // A camera windup/approach-and-return pan (a separate sub-state machine on
 // Object+0x90, not modeled here) runs before this for every spell except
 // Fumos. Fumos skips only that camera pan, not the cast itself -- MP
@@ -351,7 +352,7 @@ Notes on pieces the pseudocode above elides:
   branch that skips straight past the MP-deduction/`ResolvePlayerAttack`
   block into his own hardcoded-damage sub-state, `Object+0x60 == 6`).
 - `SelectAiTarget` (`FUN_0800e39c`) and item-use resolution
-  (`TickPlayerActionState_candidate`'s sub-state `2`,
+  (`TickPlayerActionState`'s sub-state `2`,
   `ApplyStatusRestoreItemEffect` at sub-state `4`) are not decoded --
   see `battle-ui.md` for what's known about the item path.
 
@@ -418,7 +419,7 @@ the fighter's `Object` at init. `InitMonsterBattleActor` hardcodes
 `TickFighterAttackAnimState_candidate` (`0x08015608`) into every enemy
 `Object`; its case `0x1A` calls `ResolveEnemyAttack` (additionally gated
 on `bFighterType == 0xFF` at the call site). `InitPlayerBattleActor_candidate`
-(`0x080149C4`) hardwires `pObject->pfnTick = TickPlayerActionState_candidate`
+(`0x080149C4`) hardwires `pObject->pfnTick = TickPlayerActionState`
 (`0x0801602D`) unconditionally for every non-enemy fighter, including
 Buckbeak -- so Buckbeak's turn runs the same state machine as the three
 spellcasters, but his damage bypasses `ResolvePlayerAttack` entirely (see
@@ -433,7 +434,7 @@ directly (menu-driven), while `Enemy` fighters skip it and set anim state
 (`RollFighterParalysisEscape`).
 
 Both `TickFighterAttackAnimState_candidate` (enemy) and
-`TickPlayerActionState_candidate` (player) are 27-case animation-state
+`TickPlayerActionState` (player) are 27-case animation-state
 dispatchers with a shared-tail `bl`-as-branch idiom; their full case
 tables and every non-mechanical callee live in
 [`battle-ui.md`](battle-ui.md), since they're orchestration/animation,

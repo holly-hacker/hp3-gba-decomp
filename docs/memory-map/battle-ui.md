@@ -148,7 +148,7 @@ thing: write a handful of `BattleFighter` fields (`bSpellId`,
 `bSpellLevel`, `bSelectedActionIndex`, `field_0x3b`, `bSlotParam`) and
 set `field_0x1070 = 0` to close the menu. The actual effect calls all
 happen afterward, in the object-tick execution layer
-[`battle.md`](battle.md) covers (`TickPlayerActionState_candidate`'s
+[`battle.md`](battle.md) covers (`TickPlayerActionState`'s
 case `0x1a` =
 `HandleScriptedDamageEvent_candidate`, and its `0x40000`/`0x8000`
 `Object+0xc` flag branches) -- the menu and the effect system are fully
@@ -227,7 +227,7 @@ genuinely two separate layers, not just two ends of one function).
   item; not traced further).
 
 `Use Item`'s actual effect resolution happens later, in
-`TickPlayerActionState_candidate`'s `Object+0x60` sub-state `2`
+`TickPlayerActionState`'s `Object+0x60` sub-state `2`
 (`FUN_08015f50`, `0x08015f50`): it only formats and shows the
 already-computed damage/heal number (`DAT_0300274a`) via
 `ShowBattleMessage`/`ShowFloatingDamageNumber_candidate` -- **it does not itself call
@@ -446,14 +446,14 @@ STRUCTURAL MATCH only). Deeper call-stack frames above this dispatcher
 `main` at `0x08029690`) are low-address, high-xref generic engine
 dispatch, not investigated further.
 
-### `TickPlayerActionState_candidate` (`0x0801602C`) -- player/Buckbeak side
+### `TickPlayerActionState` (`0x0801602C`) -- player/Buckbeak side
 
-Same structural pattern: reads `Object+0x8D`, 27-entry jump table
-(`PTR_FUN_08016090`), shared epilogue reached via `bl`-as-branch
-(`0x08017B42`). `TickPlayerActionState_candidate` itself is only the tiny
-head (`0x0801602C`-`0x0801608B`) that reads `Object+0x8D` and branches
-through the table; found while tracing `ShowBattleMessage`'s callers
-looking for the player-spell damage formula.
+Matched byte-exact by `src/battle/tick_player_action_state.c`
+(`0x0801602C`-`0x08017B5C`): reads `Object+0x8D`, dispatches a 27-entry
+`switch` over the table at `0x08016090` (case labels in source order `0`,
+`0xf`, `2`, `0x1a`, `0x15`, `4`, `1`, `5`, matching agbcc's
+source-order emission), and every case tail-branches into the shared
+epilogue at `0x08017B42` via `bl`-as-branch.
 
 Read directly from ROM rather than inferred from decompiler output,
 every entry resolves to a genuinely separate, cleanly-bounded function:
@@ -470,6 +470,37 @@ every entry resolves to a genuinely separate, cleanly-bounded function:
 | `21` (`0x15`) | `0x08016E64` | `HandleScriptedDamageEvent_candidate` (spans `0x08016E64`-`0x0801732C`, one function despite the address gap -- the shared-epilogue false-split pattern documented elsewhere in this codebase). Its *tail* (`Object+0x60` status byte, 5 sub-states) dispatches fixed-damage crit/faint-sequence handling (scripted/special-event damage, no RNG, no `Mt19937RandRange` call anywhere in this dispatcher's range). Its *head* (`Object+0xc` flag bits `0x40000`/`0x8000`) is the Special Move trigger -- see below |
 | `26` (`0x1A`) | `0x080161FE` | `ExecutePlayerAttackSequence` -- the player-side turn resolver, see [`battle.md`](battle.md)'s consolidated pseudocode |
 
+`Object+0x60`, referred to as `bAttackOutcomeState` in the case-0x15
+(`HandleScriptedDamageEvent_candidate`) matching source, is the low byte of
+`wScriptPC` (see [`../formats/battle_scripts.md`](../formats/battle_scripts.md)'s
+"The interpreter" section) -- a real storage-reuse overlap, not two
+conflicting offset claims: the byte holds the object's script bytecode
+position while a behavior script is running, then gets reused as a small
+attack-outcome state counter (values `0`-`6`) once native code takes over
+for that tick. `TickPlayerActionState` never reads the high byte
+(`Object+0x61`), consistent with treating it as a byte-sized state value
+rather than the full `wScriptPC` word.
+
+Same pattern one field over: case `2` (`ApplyDamageNumberAnimState`) reads
+and writes a `u16` `wStagedDamage` at `Object+0x62` (`ldrh`/`strh`,
+real-bytes confirmed), which is the low byte of the script interpreter's
+`bScriptEffectId` (`Object+0x62`, 1 byte) plus the low byte of
+`bScriptLocalA` (`Object+0x63`, 1 byte) taken together -- the whole
+`0x60`-`0x64` span is native tick code's post-script scratch area, reused
+byte-for-byte with different types/meanings once a script for that object
+finishes running.
+
+Only `TickPlayerActionState` (`0x0801602C`) and
+`TickPlayerActionStateNoOp` (`0x08017B42`) are named in `functions.us.cfg`
+-- the other eight are reached exclusively through the raw `.4byte` jump
+table at `0x08016090`, and gbadisasm doesn't rewrite a table's pointer
+operands to a target's symbolic name when that target gets one in the
+config, so naming any of them there breaks `just disasm-compare` with
+`undefined reference to '_0x...'` (the table literal still emits the old
+bare-address label, which no longer exists once the target is named).
+Their names above are real and citable, just not yet synced into
+`functions.us.cfg`.
+
 All nine target functions sit back-to-back in ROM
 (`0x080160fc`-`0x08017b51`, one ~28-byte gap before
 `HandleScriptedDamageEvent_candidate` aside) and each branches into the
@@ -481,7 +512,7 @@ of `WaitForMoveThenApplyDamageNumber`) falls straight into `0x080161a2`
 The dispatch itself (`0x08016082`-`0x0801608A`) is a real `mov pc, r0`
 jump table, not a `bl` call -- so none of the case targets get their own
 stack frame or register set; they all run inside the one frame
-`TickPlayerActionState_candidate`'s own prologue (`0x0801602C`-`0x08016038`)
+`TickPlayerActionState`'s own prologue (`0x0801602C`-`0x08016038`)
 allocates: `push {r4-r7,lr}` + spilled `r8`/`sb`/`sl` + `sub sp, #0x10`,
 with its incoming `Object*` parameter moved into `r7` right there and
 never reloaded. Every local Ghidra reports as `unaff_r7` or

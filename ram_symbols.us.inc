@@ -19,7 +19,14 @@
 
 @ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_pFightState,      0x030024E8  @ FightState *, the active battle's state
+.set g_aPartyMasterStats,0x030024EC  @ BattleFighter[], 0x48 stride, by FighterType
+.set g_bDefeatWarpParam, 0x03002748  @ byte
 .set g_bSpellMissStreak, 0x03002749  @ byte: consecutive-miss streak breaker
+.set g_nLastDamage,      0x0300274A  @ u16: last computed attack/status damage
+.set g_bLastTargetIndex, 0x0300274C  @ byte: last attack's target fighter index
+.set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
+.set g_PrevGameModeCtx, 0x03003F3C  @ GameModeContext, 0x24 bytes; see docs/memory-map/game_modes.md
+.set g_abBgPriority,     0x03003F8C  @ u8[]; [4] == 0x03003F90
 
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other

@@ -78,11 +78,45 @@ typedef struct BattleFighter {
     /*0x44*/ u8 bParalysisEscapeChance;
 } BattleFighter;
 
-// Battle-round state, 0x14C8 bytes. Only the fields ResolvePlayerAttack
-// touches are laid out here; see docs/memory-map/battle.md for the rest.
+// Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
+// ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate;
+// see docs/memory-map/battle.md for the rest.
 typedef struct FightState {
     /*0x00*/ void *pStagingFighters;
     /*0x04*/ BattleFighter *pFighters;
+    /*0x08*/ BattleFighter *pPendingFighters_candidate;  // front-popped reinforcement queue, count at +0x1491
+    /*0x0C*/ u8 pad_0C[0x104C - 0x0C];
+    /*0x104C*/ u32 nSavedPosX;      // 16.16, from Object+0x2C
+    /*0x1050*/ u32 nSavedPosY;      // 16.16, from Object+0x30
+    /*0x1054*/ void *pAttackAnimObject_candidate;
+    /*0x1058*/ u8 bAttackAnimState_candidate;
+    /*0x1059*/ u8 aEnemySlotTurnOrderIndex[4];
+    /*0x105D*/ u8 aAllySlotTurnOrderIndex[3];
+    /*0x1060*/ u8 bScreenShakeTimer_candidate;
+    /*0x1061*/ u8 pad_1061[0x106C - 0x1061];
+    /*0x106C*/ u8 bActiveFighterIndex;
+    /*0x106D*/ u8 bMenuFighterIndex;
+    /*0x106E*/ u8 pad_106E;
+    /*0x106F*/ u8 bFighterCount;
+    /*0x1070*/ u8 pad_1070[0x147E - 0x1070];
+    /*0x147E*/ u8 bActionDelayCounter_candidate;
+    /*0x147F*/ u8 bCameraZoomStep_candidate;
+    /*0x1480*/ u8 pad_1480[0x1491 - 0x1480];
+    /*0x1491*/ u8 bPendingFighterCount_candidate;
+    /*0x1492*/ u8 pad_1492[0x149C - 0x1492];
+    /*0x149C*/ u32 dwBattleResultPending;
+    /*0x14A0*/ u32 dwPlayerActionActive_candidate;
+    /*0x14A4*/ u8 pad_14A4[0x14A8 - 0x14A4];
+    /*0x14A8*/ u8 bPendingStatusMessageVariant_candidate;
+    /*0x14A9*/ u8 pad_14A9[0x14AC - 0x14A9];
+    /*0x14AC*/ struct {
+        u16 wDamage;
+        u8 bEffectId;
+        u8 bFlag;
+    } aFaintMessages_candidate[6];
+    /*0x14C4*/ u8 bFaintMessageCount_candidate;
+    /*0x14C5*/ u8 pad_14C5;
+    /*0x14C6*/ u8 bAttackVfxId_candidate;
 } FightState;
 
 extern FightState *g_pFightState;
