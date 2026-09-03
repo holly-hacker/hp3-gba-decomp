@@ -121,3 +121,13 @@ typedef struct FightState {
 
 extern FightState *g_pFightState;
 extern u8 g_bSpellMissStreak;
+
+// FightState->bBonusRewardFlags bits, see docs/memory-map/battle.md.
+typedef enum {
+    ExtraExpBonus  = 0x01,
+    GrantExtraXp   = 0x02,
+    ForceItemDrop  = 0x04,
+} BattleRewardFlags;
+
+extern u32 g_dwBattleRewardFlagsSnapshot;
+extern s32 g_anFaintedRosterIndices[4];

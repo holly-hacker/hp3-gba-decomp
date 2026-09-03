@@ -1,14 +1,5 @@
-#include "types.h"
 #include "constants/items.h"
-
-typedef struct {
-    u16 chance;
-    u16 itemId;
-} MonsterDropSlot;
-
-typedef struct {
-    MonsterDropSlot slot[2];
-} MonsterDropEntry;
+#include "monster_drop_table.h"
 
 // Monster drop table, following the standard monster order (see data/monsters/monsters.json).
 // See docs/memory-map/battle.md.

@@ -616,12 +616,19 @@ cases above. `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler in
 read in `InitializeVictoryDropScreen` (`0x0801456C`, the victory
 screen's second phase) for a `25%` gold bonus (`gold += gold >> 2`,
 matching the `42*2*1.25 = 105` figure recorded earlier), and again in
-`RollBattleItemDrops` (`0x080147C0`): normally each fainted monster
-rolls `0`-`99` against `g_pMonsterDropTable[rosterIndex]`'s two
-`(chance, itemId)` slots, but this bit forces the roll to `0`, guaranteeing
+`RollBattleItemDrops` (`0x080147C0`, matched in
+`src/battle/roll_battle_item_drops.c`): for up to 4 fainted monsters
+(`g_anFaintedRosterIndices`, sentinel `-1`), one roll per monster, each
+rolling `0`-`99` against `g_pMonsterDropTable[rosterIndex]`'s two
+`(chance, itemId)` slots (adjacent ranges on the same roll, mutually
+exclusive -- `chance` is a single byte, not the `u16` its own table's
+authoring type declares), but this bit forces the roll to `0`, guaranteeing
 a hit on any slot with nonzero chance -- Ron's `Wizard Cracker` really
 does force an item drop, via a rigged roll rather than a stored `100%`
-value. Granted rewards (gold, items, Folio Universitas cards) go through
+value (and always lands on slot0, since slot0's chance is never 0 --
+slot1 is unreachable while the bit is set). The first two hits across the
+4 monsters are written to the caller's two output item ids; a 3rd+ hit is
+discarded. Granted rewards (gold, items, Folio Universitas cards) go through
 `GrantBattleReward` (`0x08026DE0`).
 
 ### `FightState+0x1054`/`+0x1058`: write-only, purpose unknown
