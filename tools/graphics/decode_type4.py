@@ -45,11 +45,10 @@ CODEC_LEN = 504
 
 SCRATCH_BASE = 0x03000000
 STACK_ADDR = 0x03000400
-R2_SCRATCH_ADDR = 0x03000800  # role not yet confirmed -- mirrors type-6's
-# &out_size convention (also passed via r2 at the same calling convention
-# position), unverified for type-4.
+R2_SCRATCH_ADDR = 0x03000800  # &out_size -- confirmed: DecompressType4
+# stores the decoded byte count here on return (`str r3,[r8,#0]`).
 OUT_BUF_ADDR = 0x03010000
-OUT_CAP = 0x1000  # 4KB, generous for a handful of tiles
+OUT_CAP = 0x4000  # 16KB; largest known real resource is 5120 bytes
 
 
 def decode_type4(rom: bytes, src_addr: int, codec_addr: int) -> bytes:

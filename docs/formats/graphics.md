@@ -40,10 +40,14 @@ User-confirmed against actual gameplay for 4 rooms (`0x28`, `0x26`,
 `0x27`, `0x24`) and structurally checked for the rest, including which
 level-table layer maps to which hardware BG register. Not yet wired into
 `just`/`regions.us.txt` (currently a research tool like
-`dump_collision.py`, not build input). Tile data otherwise remains the
-bottleneck for "extract everything" beyond items and these rooms -- only
-2 further non-BG tile resources are confirmed (the spark and the wand),
-both via live tracing.
+`dump_collision.py`, not build input). **PROVEN and extracted for a third resource class**: the game's dialog
+portraits (`g_apPortraitTable`, `0x0804C61C`, 72 records -- see
+"Character portraits" below), all 72 decoded and rendered
+transparent-background via `tools/graphics/extract_portraits.py`
+(research tool, not yet build-integrated). Tile data otherwise remains
+the bottleneck for "extract everything" beyond items, rooms, and
+portraits -- only 2 further non-BG tile resources are confirmed (the
+spark and the wand), both via live tracing.
 **STRUCTURAL MATCH** for three earlier candidate art regions from
 static ROM scanning, none code-confirmed and one (`0x08933000`-area's
 sibling `0x080BCA24`) a **false positive** for the object it resembles
@@ -51,9 +55,9 @@ sibling `0x080BCA24`) a **false positive** for the object it resembles
 sufficient evidence on its own. Standing caveat throughout this doc:
 rendered content using a fake grayscale ramp palette must only be
 described structurally, never as depicting specific real-world content
-(item icons are the one exception -- their real, decoded palette makes
-identifying content legitimate). No build-integrated extractor exists
-yet for graphics data outside item icons.
+(item icons and portraits are the exceptions -- their real, decoded
+palettes make identifying content legitimate). No build-integrated
+extractor exists yet for graphics data outside item icons.
 
 ## What we know
 
@@ -1016,6 +1020,76 @@ literal addresses, so no ROM address is stored in `items.json` or
 row. See `docs/formats/items.md` for the JSON shape (`sIconPath`
 replacing the 3 raw pointers for real items).
 
+### Character portraits (PROVEN, extracted)
+
+`g_apPortraitTable` (US `0x0804C61C`, 72 `PortraitRecord` entries, 16
+bytes each: `{pTileGfx, pFrameData, pPalette, reserved(0)}`) holds the
+game's dialog-portrait art. It's reachable from
+`InitializeDebugPortraitsMenu` (`0x0800B5A8`), a debug menu for paging
+through them, but the records themselves are ordinary dialog assets --
+"debug" describes the viewer, not the data.
+
+- **`pTileGfx`**: type-4-compressed 8bpp OBJ tile data. Consumed via
+  `SetObjectAssetRecord` (`0x0800187C`, stores `&PortraitRecord` into
+  `Object+0xE0`) -> `UpdateObjectSpriteFrame` (`0x08002F28`) ->
+  `LoadObjTile` -> `DecompressObjResource` (`0x0801DE5C`), whose nibble-7
+  case is the type-4 codec (`DecompressType4`, `0x08006108` --
+  **ARM-mode**; `functions.us.cfg` had it mis-seeded as `thumb_func`,
+  now corrected). `DecompressType4`'s own docstring/callers previously
+  covered only the wand cursor and item icons; this closes it out
+  against a third, much larger corpus (71 real images).
+- **`pFrameData`**: an uncompressed per-object frame/OAM-cell
+  descriptor, read directly -- despite `pTileGfx`'s neighboring header
+  superficially inviting the same treatment, this pointer is never
+  routed through either decompression dispatcher. Layout (byte offsets
+  from `pFrameData`):
+  - `+0xA` (`u8`): unused in every observed record (`0`).
+  - `+0xB` (`u8`): attached-part count (`0` in every observed record --
+    the separate mechanism `UpdateObjectSpriteFrame`'s sibling path
+    reads via `Object+0x120`, not exercised by any portrait).
+  - `+0xC + frame*2` (`u16`): per-frame offset, added to `pFrameData +
+    0xC` to get that frame's descriptor base. Only frame 0 has been
+    exercised.
+  - Frame descriptor base `+0x0` (`u8`, low 5 bits): cell count.
+  - Cell table starts at frame-descriptor-base `+ 0xA` (no attached
+    parts observed, so this is `+0xA` in practice; the general formula
+    adds `n_at_0xA*2 + part_count*6`). Each cell is 4 bytes
+    `{b0, b1, b2, b3}`:
+    - size = `(b2 & 0xF) >> 2`, shape = `(b2 & 0x3F) >> 4` (2 bits
+      each) -- the standard GBA OAM shape/size pair, decoding to
+      `{1x1,2x2,4x4,8x8}` square / `{2x1,4x1,4x2,8x4}` wide /
+      `{1x2,1x4,2x4,4x8}` tall tiles.
+    - relative tile offset = `((b3 << 2) | (b2 >> 6)) * 2` (8bpp tiles,
+      hardware-doubled) into `pTileGfx`'s decompressed stream. Cells
+      are stored back-to-back with no padding: cell *n*'s offset always
+      equals the sum of every earlier cell's own `w*h` tile count.
+    - X = `sign9((b1 & 1) << 8 | b0)`, Y = `sign9((b2 & 3) << 7 | (b1
+      >> 1))` -- signed 9-bit pixel offsets relative to the object's own
+      on-screen anchor. Same bytes `WriteObjectOamCells` (`0x08002C18`)
+      decodes into a live OAM entry's position/shape/tile fields (its
+      `uVar2`/`uVar3` locals are shape/size, in that order -- easy to
+      transpose, since a swap is invisible whenever shape==size).
+  - Confirmed against real hardware, not just the struct shape: for
+    record 1, a live mGBA OAM dump (`x/4 0x07000000 20`) and OBJ-VRAM
+    dump (`x/4 0x06010E00 784`) matched this decode's shape/size/tile
+    numbers and X/Y deltas exactly, and the decompressed tile bytes
+    matched real VRAM byte-for-byte across all 3136 bytes.
+- **`pPalette`**: a raw, unheadered 256-entry BGR555 table (no 2-byte
+  header, unlike the 15-color `sub_08001528` convention above). Index 0
+  is the hardware-fixed OBJ transparent index for 8bpp sprites, not
+  user-selectable -- rendered as alpha 0.
+- **Duplicates**: 18 of the 72 records point at only 5 distinct
+  underlying images (`23=19`, `46=24`, `47=25`, `48=26`, and
+  `42/44/50/51/53/62/63/64/65/66/67/69/70/71=40`).
+- **Extraction**: `tools/graphics/extract_portraits.py`, a
+  research tool like `dump_bg_tiles.py` above -- not wired into
+  `just`/`regions.us.txt`. Extracts all 72 records to transparent-background
+  PNGs. One record (5120 decompressed bytes, the largest in the table)
+  needed `tools/graphics/decode_type4.py`'s Unicorn output buffer
+  (`OUT_CAP`) raised from 4KB to 16KB -- not a data or codec issue,
+  just a limit sized for smaller resources (item icons, the wand) that
+  this table's largest portrait exceeded.
+
 ## Open threads
 
 In rough priority order. BG/level tile graphics are PROVEN end-to-end,
@@ -1033,14 +1107,14 @@ resource-pointer trace.
    compressed length (offset table gives each tile's start, not the last
    one's end), and the 292-byte context table's exact role as a
    symbol/frequency table.
-3. **Trace `sub_080454BC`/`sub_080454DC`/`sub_08045588`'s callers** (see
-   "There is no missing 4th caller" above). These are the real, generic,
-   statically-confirmed OBJ tile loaders -- confirmed OBJ-only, not a
-   BG/level mechanism. Finding every caller and tracing each one's
-   `resourcePtr` argument back to its source (likely an animation-frame
-   table, given the surrounding object-update code) would let a scanner
-   enumerate real OBJ tile resources without running the game, the way
-   `tools/graphics/find_object_palettes.py` already does for palettes.
+3. **Trace `LoadObjTile`/`LoadObjTileAt`/`LoadObjTileSheet`'s
+   (`0x080454BC`/`0x080454DC`/`0x08045588`) remaining callers.** Two
+   real call chains are now closed out this way: item icons (see below)
+   and the character-portrait table (`g_apPortraitTable`, see
+   "Character portraits" below) -- both confirmed by tracing
+   `resourcePtr` back to a table with named fields, not just
+   dataflow. Other object types spawned outside those two tables (most
+   world/battle objects) still aren't enumerated this way.
 4. **The wand's remaining pieces**: its other 3 animation frames
    (`0x080BC9CC`, `0x080BCADC`, `0x080BCCD8` -- mechanically identical
    to the verified `0x080BCBD0`, just not run), and its own palette
@@ -1069,10 +1143,6 @@ resource-pointer trace.
    demonstrably not the sprite it resembles). Standard BIOS LZ77 is
    ruled out for the filigree blob specifically -- no valid LZ77 stream
    longer than 100 bytes exists anywhere spanning that region.
-7. **The type-4 codec is decoded but barely exercised**
-   (`tools/graphics/decode_type4.py`, verified byte-exact against live
-   memory). Only tested against the wand's animation frames; no other
-   type-4 resource is confirmed anywhere yet.
 
 The general methodology this subsystem settled on: **live mGBA
 breakpoints/watchpoints beat blind ROM scanning whenever a live trigger
