@@ -1,10 +1,8 @@
-#include "types.h"
 #include "vblank.h"
-
-#define REG_WAITCNT (*(volatile u16 *)0x04000204)
+#include "interrupts.h"
+#include "io_regs.h"
 
 extern void ClearSystemMemory(void);
-extern void InitInterruptSystem(void);
 extern void InitHeap(void);
 extern void InstallIwramDivideRoutines(void);
 extern void sub_080453B4(void);

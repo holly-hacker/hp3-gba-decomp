@@ -79,11 +79,15 @@ label 0x0805150A g_abSpecialMoveEffectId
 label 0x080538B0 g_abSpellEffectScriptId
 label 0x08053964 g_awSpellMpCost
 
+# InitInterruptSystem/InstallInterruptHandler (src/interrupts/) callees,
+# still raw incbin territory.
+label 0x08000134 IntrMain
+label 0x08060E8C gIntrTableTemplate
+
 # main (src/main.c) callees, still raw incbin territory.
 thumb-func 0x08026244 sub_08026244
 label 0x0803D310 SetFadeToWhite
 label 0x0803B0C0 ClearSystemMemory
-label 0x08026068 InitInterruptSystem
 label 0x0802C254 InitHeap
 label 0x0802BDEC InstallIwramDivideRoutines
 label 0x080453B4 sub_080453B4
@@ -308,10 +312,15 @@ thumb-func 0x08044BF0 ExitCoolTrainCutscene
 0x080000C0 0x08000104 asm/crt0.s                crt0
 
 c-file 0x08029690 0x08029770 src/main.c AgbMain
+c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterruptSystem
+c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
 
 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
+
+# Thumb wrappers around BIOS SWI calls
+0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
 
 # Thumb-mode division runtime
 0x0804A2C0 0x0804A2FC asm/rt/call_via_rX.s              _call_via_r0

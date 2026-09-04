@@ -24,6 +24,14 @@
 @ also reads its dwVBlankCount field for entropy, but that's a secondary
 @ consumer, not what the struct is for.
 .set g_pVBlankState, 0x0300356C
+.set g_VBlankState, 0x03003530  @ the object g_pVBlankState is set to point at
+
+@ --- Interrupt dispatch (see src/interrupts/) ---
+.set gIntrTable, 0x03003570  @ 13 x u32 function-pointer slots, refreshed from a ROM
+                              @ template by InitInterruptSystem; dispatched by IntrMain
+.set gIntrHandlerIwram, 0x030035A4  @ 0x200-byte IWRAM buffer InstallInterruptHandler
+                                     @ CpuSets the live handler code into; gIntrVectorPtr
+                                     @ points here
 
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_dwGameModeFlags,   0x03003B44  @ u32: broad flags word read/written across

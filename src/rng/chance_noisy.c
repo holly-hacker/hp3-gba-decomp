@@ -1,8 +1,5 @@
 #include "mt19937.h"
-
-// contains the current vertical scanline, range 0..227
-// See: https://problemkaputt.de/gbatek.htm#lcdiointerruptsandstatus
-#define REG_VCOUNT (*(volatile u16 *)0x04000006)
+#include "io_regs.h"
 
 // Return a random bool of roughly `percent` chance, adding extra entropy from VCOUNT.
 s32 Mt19937ChanceNoisy(u16 percent)
