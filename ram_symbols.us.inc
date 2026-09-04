@@ -15,7 +15,23 @@
 .set gSystemStackTop,  0x03007EA0  @ top of the AGB system-mode stack
 .set gIrqStackTop,     0x03007FA0  @ top of the AGB IRQ-mode stack
 .set gIntrVectorPtr,   0x03007FFC  @ BIOS-called user interrupt handler pointer
-.set gMainEntryPoint,  0x08029691  @ thumb-bit-set address of main, called from crt0
+
+@ --- Interrupts / VBlank state (see include/vblank.h) ---
+@ Set by InitInterruptSystem to &g_VBlankState; read by every interrupt
+@ handler (HandleVBlankInterrupt, HandleHBlankInterrupt,
+@ HandleTimer0Interrupt, HandleTimer3OrSerialInterrupt,
+@ HandleVCountInterrupt), not just vblank-related code -- Mt19937AutoSeed
+@ also reads its dwVBlankCount field for entropy, but that's a secondary
+@ consumer, not what the struct is for.
+.set g_pVBlankState, 0x0300356C
+
+@ --- main / game-mode stack (see src/main.c) ---
+.set g_dwGameModeFlags,   0x03003B44  @ u32: broad flags word read/written across
+                                       @ overworld/room/cutscene transitions and
+                                       @ TickGameModeStack_candidate; individual bits
+                                       @ unconfirmed
+.set g_dwFrameSyncTarget, 0x03003B48  @ u32: frame-pacing target set once by AgbMain,
+                                       @ consumed only by WaitForVBlank
 
 @ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_pFightState,      0x030024E8  @ FightState *, the active battle's state
@@ -58,8 +74,6 @@
 @ disassembly (see rng.md for what's confirmed and what's still open
 @ about it).
 .set gMt19937SeedSourceCounter,  0x030034EC  @ external halfword counter AutoSeed also reads
-.set gMt19937SeedSourceStruct,   0x0300356C  @ external struct AutoSeed reads timing/frame data from
-                                             @ for auto-seeding (subsystem unconfirmed)
 .set gMt19937LastRollByte,       0x03005574  @ low byte of the last tempered value (purpose unconfirmed)
 .set gMt19937DrawIndex,          0x03005578  @ cursor 1: running count of numbers drawn
 .set gMt19937StatePtr,           0x0300557C  @ base of the 624-word MT state array

@@ -8,11 +8,12 @@
 .set gSystemStackTop,  0x03007EA0
 .set gIrqStackTop,     0x03007FA0
 .set gIntrVectorPtr,   0x03007FFC
-.set gMainEntryPoint,  0x080296ED
+
+@ --- Interrupts / VBlank state (see include/vblank.h) ---
+.set g_pVBlankState, 0x030035CC
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 .set gMt19937SeedSourceCounter,  0x0300354C
-.set gMt19937SeedSourceStruct,   0x030035CC
 .set gMt19937LastRollByte,       0x030055D4
 .set gMt19937DrawIndex,          0x030055D8
 .set gMt19937StatePtr,           0x030055DC

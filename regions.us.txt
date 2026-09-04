@@ -79,6 +79,45 @@ label 0x0805150A g_abSpecialMoveEffectId
 label 0x080538B0 g_abSpellEffectScriptId
 label 0x08053964 g_awSpellMpCost
 
+# main (src/main.c) callees, still raw incbin territory.
+thumb-func 0x08026244 sub_08026244
+label 0x0803D310 SetFadeToWhite
+label 0x0803B0C0 ClearSystemMemory
+label 0x08026068 InitInterruptSystem
+label 0x0802C254 InitHeap
+label 0x0802BDEC InstallIwramDivideRoutines
+label 0x080453B4 sub_080453B4
+label 0x0801DD40 sub_0801DD40
+label 0x0803B314 sub_0803B314
+label 0x08020D30 sub_08020D30
+label 0x08042568 InitDialogTextEngine
+label 0x0803BC9C InitSaveSystem
+label 0x0802C750 InitGameModeStack
+label 0x0800143C InitObjectPool
+label 0x0800D1A4 sub_0800D1A4
+label 0x08021560 sub_08021560
+label 0x0802FF2C InitOamSystem
+label 0x080315A4 sub_080315A4
+label 0x0803D2C8 sub_0803D2C8
+label 0x0803E4FC sub_0803E4FC
+label 0x0802DD54 sub_0802DD54
+label 0x080258E8 sub_080258E8
+label 0x08042E2C sub_08042E2C
+label 0x0801FDA0 InitDisplayControl
+label 0x08005A44 sub_08005A44
+label 0x0802D544 sub_0802D544
+label 0x0801FB78 sub_0801FB78
+label 0x080203A8 sub_080203A8
+label 0x0802B018 InitRoomState
+label 0x080250B8 InstallBgTileCodec_candidate
+label 0x08026158 SetVBlankCallback
+label 0x0803FDB0 kramInstall
+label 0x080260A8 EnableInterrupts
+label 0x08045094 sub_08045094
+label 0x0802C6B4 TickGameModeStack_candidate
+label 0x0802165C ProcessPlaytimeTick
+label 0x08029770 WaitForVBlank
+
 # Game-mode dispatch table callees (src/data/game_mode_dispatch_table.c),
 # still raw incbin territory. See docs/memory-map/game_modes.md.
 thumb-func 0x08008050 InitializeRiddikulusMinigame
@@ -267,6 +306,8 @@ thumb-func 0x08044BF0 ExitCoolTrainCutscene
 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
 0x080000C0 0x08000104 asm/crt0.s                crt0
+
+c-file 0x08029690 0x08029770 src/main.c AgbMain
 
 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder

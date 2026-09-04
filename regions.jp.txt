@@ -6,6 +6,11 @@
 0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail
 0x080000C0 0x08000104 asm/crt0.s                crt0
 
+# crt0 callee, still raw incbin territory (see src/main.c for the
+# US-side extraction, named AgbMain there; JP's main isn't confirmed
+# identical yet).
+thumb-func 0x080296EC AgbMain
+
 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker

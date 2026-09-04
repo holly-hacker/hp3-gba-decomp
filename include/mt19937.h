@@ -2,11 +2,6 @@
 
 #include "types.h"
 
-typedef struct {
-    u8 unk00[0x1c];
-    u32 unk1c;
-} Mt19937SeedSource;
-
 extern u32 *gMt19937StatePtr;
 extern u32 *gMt19937CurPtr;
 extern s32 gMt19937RemainingIndices;
@@ -16,7 +11,6 @@ extern u32 gMt19937DrawIndex;
 extern u8 gMt19937LastRollByte;
 extern u32 gMt19937SeedValue;
 extern u32 gMt19937AutoSeedCallCount;
-extern Mt19937SeedSource *gMt19937SeedSourceStruct;
 extern u16 gMt19937SeedSourceCounter;
 
 u32 Mt19937Regenerate(void);

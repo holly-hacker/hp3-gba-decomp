@@ -24,7 +24,7 @@ crt0: @ 0x080000C0
 
 	thumb_func_start crt0_CallMain
 crt0_CallMain: @ 0x080000EC
-	ldr r1, _08000100 @ =gMainEntryPoint
+	ldr r1, _08000100 @ =AgbMain
 	mov lr, pc
 	bx r1
 	b crt0
@@ -32,5 +32,5 @@ crt0_CallMain: @ 0x080000EC
 _080000F4: .4byte gSystemStackTop
 _080000F8: .4byte gIrqStackTop
 _080000FC: .4byte gIntrVectorPtr
-_08000100: .4byte gMainEntryPoint
+_08000100: .4byte AgbMain
 	thumb_func_end crt0_CallMain
