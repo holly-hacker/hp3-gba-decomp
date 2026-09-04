@@ -123,7 +123,26 @@ mechanically understandable (and thus how worth attacking directly) they are:
    into one C variable reused in place, rather than introducing a second
    local — a second local competes for register allocation instead of
    matching real's reuse, and won't fix the diff.
-9. **A shared tail block reached by two different paths — don't reach for
+9. **A tie among several equal-`refs` constants for who gets which hard
+   register (r7 vs r8 vs r9, etc.)**, when total instruction count already
+   matches and the only diff is which value lands in which register. This is
+   `allocno_compare` (`gcc/global.c`) sorting purely by `live_length` when
+   `refs`/`size` are equal — shortest first, first-allocated wins the
+   lowest-numbered free register; ties fall through to allocno number. Don't
+   guess-and-check statement order (it moves several live_lengths at once and
+   rarely lands the exact needed values) — dump the real numbers instead, see
+   step 3's `-dg`/`-df` addition. One concrete lever once you have real
+   numbers: a **dead insn that never reaches the output can still inflate
+   `live_length`**, because it's measured on the pre-`combine` stream and
+   never recomputed. A struct bit-field assignment expands through GCC's
+   bit-field store path (read/AND-mask/OR), and the AND-mask insn survives
+   into `flow` even though `combine` deletes it later — if that dead insn
+   sits between two of your tied constants' uses, it can produce an exact
+   tie that a plain read/write of the same field wouldn't. Writing that one
+   store through a pointer cast (`*((u8 *)p + off) = v;`) instead of the
+   struct field skips the bit-field path and can break the tie.
+
+10. **A shared tail block reached by two different paths — don't reach for
    `goto` first.** This compiler has no cross-jumping/tail-merging pass, so
    two *textually duplicated* copies of the same check in different branches
    never get merged back into one block by the compiler (confirmed: costs
@@ -185,6 +204,18 @@ names for its claim, and to say plainly "this isn't reachable by a source
 rewrite, here's the specific pass/ordering that decides it" if that's what it
 finds — that's as useful an answer as a working fix, and much more useful than
 another untested guess.
+
+**For a register-allocation tie (bucket 9), don't theorize — dump the real
+numbers.** `agbcc <flags> -dg -o out.s in.i` (after `cpp`-preprocessing) makes
+`global.c` print `Register N, refs = R, live_length = L, size = S` for every
+pseudo, sorted in allocation order, straight into `in.i.greg` alongside the
+post-allocation RTL (hard-reg-numbered, so you can grep `(const_int
+<your-value>))` there to see which allocno is which and which hard register
+it landed on). This is ground truth, not inference — iterate by editing a
+throwaway `.c` copy, re-running `cpp`+`-dg`, and grepping the dump; only apply
+a change to the real source once the dump confirms it. Cross-check with `-df`
+(the same figures at `flow` time) if the numbers look off. Much faster than
+rebuilding the whole project per guess.
 
 **Always independently re-verify anything an agent (or yourself, tired) claims
 fixed something:** rebuild it, re-run the opcode-diff yourself, check for

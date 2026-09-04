@@ -96,12 +96,14 @@ typedef struct FightState {
     /*0x1061*/ u8 pad_1061[0x106C - 0x1061];
     /*0x106C*/ u8 bActiveFighterIndex;
     /*0x106D*/ u8 bMenuFighterIndex;
-    /*0x106E*/ u8 pad_106E;
+    /*0x106E*/ u8 bUnk106E;    // zeroed by InitializeBattle, only on a fresh (non-resumed) battle
     /*0x106F*/ u8 bFighterCount;
     /*0x1070*/ u8 pad_1070[0x147E - 0x1070];
     /*0x147E*/ u8 bActionDelayCounter_candidate;
     /*0x147F*/ u8 bCameraZoomStep_candidate;
-    /*0x1480*/ u8 pad_1480[0x1491 - 0x1480];
+    /*0x1480*/ u8 pad_1480;
+    /*0x1481*/ u8 bEnemyScalePercent_candidate;  // set by InitializeBattle from Harry's level: 0x40/0x30/0x20 for level 0/1/2+
+    /*0x1482*/ u8 pad_1482[0x1491 - 0x1482];
     /*0x1491*/ u8 bPendingFighterCount_candidate;
     /*0x1492*/ u8 pad_1492[0x149C - 0x1492];
     /*0x149C*/ u32 dwBattleResultPending;
@@ -142,7 +144,8 @@ typedef struct Object {
     u32 dwFlags;            // 0x0C, bit 0x40000 = action-animation-done, bit 0x8000 = special-move trigger
     u8 pad_10[0x04];        // -> 0x14
     u16 wMoveDuration;      // 0x14
-    u8 pad_16[0x16];        // -> 0x2C
+    u8 bUnk16;              // 0x16
+    u8 pad_17[0x15];        // -> 0x2C
     u32 nX;                 // 0x2C, 16.16
     u32 nY;                 // 0x30, 16.16
     u8 pad_34[0x08];        // -> 0x3C
@@ -163,12 +166,17 @@ typedef struct Object {
     u8 pad_8E[0x02];        // -> 0x90
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
-    u8 pad_92[0x43];        // -> 0xD5
+    u8 pad_92[0x3F];        // -> 0xD1
+    u8 bFlags_0xD1;         // 0xD1, bit 0x20 set / bits 0x0C cleared by InitializeBattle
+    u8 pad_D2[0x03];        // -> 0xD5
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot
 } Object;
 
 extern void sub_080039E8(Object *obj);
 extern void sub_0802D640(u8 priority);
+
+// One slot per active BattleFighter -- see docs/formats/battle-ui.md.
+extern Object *g_apFighterObjects_candidate[7];
 
 // The Folio Universitas card slot lives at +8 in the previous-mode
 // GameModeContext (0x03003F3C; PushGameMode_2's own arg2 write, see

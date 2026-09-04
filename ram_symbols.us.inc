@@ -29,6 +29,14 @@
 .set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
 .set g_PrevGameModeCtx, 0x03003F3C  @ GameModeContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_abBgPriority,     0x03003F8C  @ u8[]; [4] == 0x03003F90
+.set g_nXpAccum,         0x0300260E  @ u16: running XP-reward accumulator
+.set g_nGoldAccum,       0x03002610  @ u16: running gold-reward accumulator
+.set g_bSelectedFighterSlot_candidate, 0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
+.set g_apFighterObjects_candidate, 0x03002668  @ Object*[7]; one slot per active BattleFighter
+.set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text
+.set g_BattleMessageIconState_candidate, 0x03002688  @ {byte bIndex (sentinel 0xFF=none), pad[3], u32 dwParam}
+.set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id
+.set g_GameModeStackContext_candidate, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, pad[4], dwStoryStageCache}
 
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
