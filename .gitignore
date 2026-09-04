@@ -33,3 +33,6 @@ asm/krawall/
 
 # Generated clang commands to improve editor experience
 compile_commands.json
+
+# Work in progress data/handoff notes
+wip/

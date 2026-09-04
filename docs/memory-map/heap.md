@@ -20,7 +20,9 @@ registered (by `InitHeap`, spanning ~all of EWRAM):
 - `InitMemoryPool`, `GetFreeBlockSize`, `LinkBlockByAddress`,
   `LinkFreeBlock`, `UnlinkFreeBlock`, `List_PushHead`, `memset`,
   `BuildFreeList`, `AllocBlock`, `AllocZeroed` are all matched in
-  `src/mem/`. Types in `include/mem.h`.
+  `src/mem/`. Types in `include/mem.h`. See also "Generic intrusive list
+  / active-object list" below for `List_PopHead`/`List_Remove`/
+  `List_MoveToHead`/`AllocObjectFromFreeList`.
 
 `memset` (`0x0802C450`) is **not** the vendored newlib copy in `src/libc/`,
 despite being the classic newlib shape (byte-fill to alignment, word-fill
@@ -58,7 +60,7 @@ by flag changes:
 `InitObjectPool` (matched, `src/mem/init_object_pool.c`) carves a second,
 fixed-size-slot pool out of the heap:
 
-- `g_pObjectPoolBuffer`/`sFreeObjectListHead` are adjacent words
+- `g_ObjectPoolState.pBuffer`/`.pFreeListHead` are adjacent words
   (`0x03001C08`/`0x03001C0C`, modeled as one `ObjectPoolState` struct in
   `include/mem.h` since the real code reaches the second through the
   first at `+4`) — a 0x7968-byte `AllocZeroed`'d buffer (0x69 objects *
@@ -78,6 +80,37 @@ fixed-size-slot pool out of the heap:
   `WriteObjectOamCells` as what looks like a fixed-point rounding/scale
   constant, unrelated to the pool itself; not enough evidence for a real
   name yet.
+
+## Generic intrusive list / active-object list — PROVEN
+
+The object pool's free list is built on a small generic doubly-linked-list
+library (`ListNode` in `include/mem.h`) that a *second* list, the active
+object list, also uses. All four matched in `src/mem/`.
+
+- `List_PopHead` (`0x08028728`) — `ListNode *List_PopHead(ListNode
+  **listHead)`. Pops and returns the head node, fixing up the new head's
+  `pPrev` and clearing the popped node's own `pNext`.
+- `List_Remove` (`0x08028760`) — `void List_Remove(ListNode **listHead,
+  ListNode *node)`. Unlinks `node` from wherever it sits in the list:
+  patches `*listHead` if `node` was first, patches both neighbors, clears
+  `node`'s own `pNext`/`pPrev`. `listHead` reads as a bare `ListNode*` in
+  a naive decompile (`param_1->pNext`) because dereferencing a
+  `ListNode**` and reading a `ListNode`'s first field are the same
+  memory access; it's genuinely `ListNode**`, same as `List_PushHead`.
+- `List_MoveToHead` (`0x0802870C`) — `void List_MoveToHead(ListNode
+  **destListHead, ListNode **srcListHead, ListNode *node)`. `List_Remove`
+  then `List_PushHead` — moves `node` from one list to the front of
+  another (or the same list twice, a requeue/MRU pattern).
+- `AllocObjectFromFreeList` (`0x080286D8`) — `void
+  *AllocObjectFromFreeList(ListNode **freeListHead, ListNode
+  **activeListHead, uint size)`. Pops a node off `freeListHead`, zeroes
+  it, pushes it onto `activeListHead`, returns it (`NULL` if the free
+  list was empty). Called by `AllocDefaultObject`/`SpawnObject` (still
+  `.incbin`) with `&g_ObjectPoolState.pFreeListHead` and
+  `&sActiveObjectListHead` — the real "allocate an object" entry point,
+  one level above `AllocObjectOfType`/`AllocDefaultObject`.
+- `sActiveObjectListHead` (`0x030015B0`) — `ListNode *`, head of the
+  active-object list objects join via `AllocObjectFromFreeList`.
 
 ## `SortObjectsByDepth_candidate` / `CheckObjectCollisions_candidate` — ARM-mode, blocked on toolchain
 

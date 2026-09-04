@@ -342,7 +342,9 @@ c-file 0x0802C984 0x0802C988 src/game_modes/handle_game_mode_none_noop.c HandleG
 c-file 0x08065CBC 0x0806601C src/data/game_mode_dispatch_table.c g_pGameModeDispatchTable
 
 # Heap allocator / object pool, see docs/memory-map/heap.md
+c-file 0x08028728 0x08028748 src/mem/list_pop_head.c List_PopHead
 c-file 0x08028748 0x08028760 src/mem/list_push_head.c List_PushHead
+c-file 0x08028760 0x0802878C src/mem/list_remove.c List_Remove
 c-file 0x0802C450 0x0802C4BC src/mem/memset.c memset
 c-file 0x0802C528 0x0802C570 src/mem/init_memory_pool.c InitMemoryPool
 c-file 0x0802C570 0x0802C590 src/mem/get_free_block_size.c GetFreeBlockSize
@@ -350,6 +352,8 @@ c-file 0x0802C590 0x0802C5A4 src/mem/link_block_by_address.c LinkBlockByAddress
 c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
 c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
 c-file 0x080286A0 0x080286D8 src/mem/build_free_list.c BuildFreeList
+c-file 0x080286D8 0x0802870C src/mem/alloc_object_from_free_list.c AllocObjectFromFreeList
+c-file 0x0802870C 0x08028728 src/mem/list_move_to_head.c List_MoveToHead
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed

@@ -54,6 +54,9 @@ typedef struct ListNode {
 } ListNode;
 
 void List_PushHead(ListNode **listHead, ListNode *node);
+ListNode *List_PopHead(ListNode **listHead);
+void List_Remove(ListNode **listHead, ListNode *node);
+void List_MoveToHead(ListNode **destListHead, ListNode **srcListHead, ListNode *node);
 
 // Ordinary game code, not the vendored newlib copy in src/libc/ -- see
 // docs/memory-map/heap.md.
@@ -82,6 +85,12 @@ extern u32 g_dwObjectListActive_candidate;
 // like a fixed-point rounding/scale constant, unrelated to the pool
 // itself. Not enough evidence yet for a real name.
 extern u32 g_dwUnk03001DC4;
+
+// Head of the active-object list; objects join it via
+// AllocObjectFromFreeList and List_MoveToHead.
+extern ListNode *sActiveObjectListHead;
+
+void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
 
 void SortObjectsByDepth_candidate(void);
 void CheckObjectCollisions_candidate(void);

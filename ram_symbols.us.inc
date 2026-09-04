@@ -89,6 +89,7 @@
 .set sFreeObjectListHead,            0x03001C0C
 .set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
+.set sActiveObjectListHead,          0x030015B0  @ ListNode *: head of the active-object list
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked
