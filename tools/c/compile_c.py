@@ -39,8 +39,13 @@ def profile(src: str, prefix: str) -> tuple[str, list[str], list[str]]:
     return (
         os.path.join(prefix, "bin", "agbcc"),
         ["-I", "include", "-I", inc, "-nostdinc", "-undef", "-std=gnu89"],
-        ["-O2", "-mthumb-interwork", "-Wimplicit", "-Wparentheses", "-Werror",
-         "-fhex-asm"],
+        # -fno-builtin: without it, agbcc treats any declaration/definition
+        # of a reserved name (memset, ...) as conflicting with its own
+        # builtin prototype. Applies to every game-code file, not just the
+        # ones that currently reference such a name, so this doesn't need
+        # to grow a list as more of them show up.
+        ["-O2", "-mthumb-interwork", "-Wimplicit", "-Wparentheses",
+         "-Werror", "-fhex-asm", "-fno-builtin"],
     )
 
 

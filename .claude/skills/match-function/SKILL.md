@@ -167,6 +167,60 @@ mechanically understandable (and thus how worth attacking directly) they are:
    duplicating the check failed — try re-deriving which condition is the
    *true* outer split first.
 
+11. **A derived-pointer loop-init sitting before the zero-trip guard when
+   real has it after (or vice versa) — write the loop as indexed, not
+   walking.** `for (aligned = p; i < n; i++) *aligned++ = x;` expands the
+   pointer as a user variable, placed wherever the source's `for`-init
+   is (typically *before* the guard test). Real instead often has it
+   *after* the guard, in the loop preheader — that's `loop.c`'s
+   strength-reduction (`strength_reduce`, `emit_iv_add_mult`) turning the
+   *array-indexed* form `for (i = 0; i < n; i++) p[i] = x;` into a giv
+   (general induction variable) whose init this compiler places at
+   `loop_start`, which is itself already positioned after the zero-trip
+   test duplicated forward by `jump.c`'s `duplicate_loop_exit_test`. Index
+   instead of walking and let `loop.c` do the strength reduction itself —
+   don't hand-write the pointer walk. (`memset`, US `0x0802C450`.)
+
+12. **A value that should out-preserve a call sequence isn't reaching the
+   preserved register your operand-count math says it should.** Two
+   compounding effects, both real and independently checkable via `-dg`:
+   - **`reload_cse_move2add`** (`gcc/reload1.c`) rewrites a second
+     `(set REGX (const_int B))` into `(set REGX (plus REGX (const_int
+     B-A)))` when a same-hard-reg `(set REGX (const_int A))` is still
+     live and the rewrite is cheaper — e.g. a stray `mov r0,#0xf` earlier
+     in the block lets a later `& ~0xf` mask materialize as `sub
+     r0,r0,#0x1f` (15-31=-16) instead of a fresh `mov r0,#0x10; neg
+     r0,r0`. This only fires post-reload, on literal hard registers, so
+     it only shows up when the earlier constant load is still genuinely
+     the same instruction stream — i.e. when the round-up is written as
+     *one* combined expression (`(x + 0xf) & ~0xf`), the compiler is free
+     to route the intermediate through a scratch register and this
+     rewrite never gets the chance. Write the round-up as separate
+     in-place statements on one pseudo (`len = x; len += 0xf; len &=
+     ~0xf;`) instead of one expression — keeping it one pseudo modified
+     in place is what lets the `+0xf` land in the exact register the mask
+     step reuses.
+   - **Loop-depth-weighted `REG_N_REFS`** (`gcc/flow.c`, `REG_N_REFS
+     (regno) += loop_depth`, driven by `NOTE_INSN_LOOP_BEG`/`_END`) feeds
+     `global.c`'s `allocno_compare` priority (`floor_log2(refs)*refs/
+     live_length`, bucket 9 above) — a variable's references *inside a
+     loop* count extra, but only for a loop the compiler actually
+     recognizes as one. A `goto`-flattened loop emits no
+     `NOTE_INSN_LOOP_BEG`, so every reference inside it is weighted as
+     depth 1 like straight-line code, which can make a short-lived local
+     that should lose the register-allocation tie (bucket 9) win it
+     instead, starving the value that actually needs to survive a run of
+     calls (memset, a big call sequence, etc.) of the safe register it
+     needs. Write the loop as a real `for`/`do`-`while` (an `if` guard
+     wrapping a `do { … goto found; … } while (cond);` is fine — the
+     `goto`s inside are irrelevant, only the *loop construct itself*
+     needs to be real) rather than flattening the whole thing to labels
+     and `goto`. (`AllocZeroed`, US `0x0802C2EC`: writing the round-up
+     stepwise got `0xf` into a register at all; turning the pool-walk
+     `goto`-loop into a real `do`/`while` is what let the pre-existing
+     `len` pseudo win r8 over `pFreeListHeadSlot` once that register was
+     worth winning.)
+
 After any fix, re-run the opcode-diff (step 1) before deciding whether to keep
 it — a change can fix the thing you were chasing while quietly introducing a
 same-sized new diff elsewhere; only the opcode-diff count tells you which.

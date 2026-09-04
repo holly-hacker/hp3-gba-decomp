@@ -75,6 +75,21 @@
 .set gLocaleThousandsSep,    0x03005D0D  @ byte: locale-specific number-formatting separator
 .set sDialogLanguageTable,   0x0806BD78  @ ROM: 8 x u32, one string-table blob pointer per language
 
+@ --- Heap allocator (see docs/memory-map/heap.md and include/mem.h) ---
+.set gMemPool,      0x03003EE0  @ MemPool[]; only pool 0 (index 0) is ever registered
+.set gMemPoolCount, 0x03003EF0  @ u32: live pool count, incremented by InitMemoryPool
+
+@ --- Object pool (see docs/memory-map/heap.md and include/mem.h) ---
+.set g_dwObjectListActive_candidate, 0x030017A0
+.set g_pSortObjectsIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth_candidate
+.set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions_candidate
+.set g_ObjectPoolState,               0x03001C08  @ {void *pBuffer; void *pFreeListHead;}; pBuffer is the
+                                                    @ 0x7968-byte AllocZeroed'd buffer BuildFreeList carves up
+.set g_pObjectPoolBuffer,            0x03001C08
+.set sFreeObjectListHead,            0x03001C0C
+.set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
+.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
+
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked
 @ against our own disassembly there. That script tracks cursor 1 only;

@@ -45,6 +45,10 @@ Memory map (live RAM layout and the code that drives it):
   menu tree (`FightState`'s menu state machine, every screen's confirm
   handler), `ShowBattleMessage`'s case→dialog-text table, Harry's 16
   Folio Universitas cards, and Hermione's/Ron's Special Moves.
+- [`memory-map/heap.md`](memory-map/heap.md) — the heap allocator
+  (`MemPool`/`MemBlock`, first-fit alloc/free) and the object pool built
+  on top of it; the two ARM-mode object-list functions and why they're
+  blocked on the toolchain, not on matching difficulty.
 - [`memory-map/krawall.md`](memory-map/krawall.md) — the Krawall audio
   engine: locating it in the ROM, the mixer/effect-handler driver code,
   the `MixChannel`/effect-state struct fields, and the IWRAM/EWRAM

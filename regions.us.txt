@@ -60,7 +60,6 @@ label 0x0802D3BC sub_0802D3BC
 label 0x0800F794 TickBattleTurnStateMachine
 label 0x080014B4 AllocObjectOfType
 label 0x080019B0 SetObjectPosition
-label 0x0802C2EC AllocZeroed
 label 0x08030824 sub_08030824
 label 0x0800EBAC sub_0800EBAC
 label 0x0800F16C sub_0800F16C
@@ -97,7 +96,8 @@ label 0x08020D30 sub_08020D30
 label 0x08042568 InitDialogTextEngine
 label 0x0803BC9C InitSaveSystem
 label 0x0802C750 InitGameModeStack
-label 0x0800143C InitObjectPool
+label 0x08006440 SortObjectsByDepth_candidate
+label 0x08005F10 CheckObjectCollisions_candidate
 label 0x0800D1A4 sub_0800D1A4
 label 0x08021560 sub_08021560
 label 0x0802FF2C InitOamSystem
@@ -340,6 +340,19 @@ c-file 0x0802C984 0x0802C988 src/game_modes/handle_game_mode_none_noop.c HandleG
 
 # Game-mode dispatch table, see docs/memory-map/game_modes.md
 c-file 0x08065CBC 0x0806601C src/data/game_mode_dispatch_table.c g_pGameModeDispatchTable
+
+# Heap allocator / object pool, see docs/memory-map/heap.md
+c-file 0x08028748 0x08028760 src/mem/list_push_head.c List_PushHead
+c-file 0x0802C450 0x0802C4BC src/mem/memset.c memset
+c-file 0x0802C528 0x0802C570 src/mem/init_memory_pool.c InitMemoryPool
+c-file 0x0802C570 0x0802C590 src/mem/get_free_block_size.c GetFreeBlockSize
+c-file 0x0802C590 0x0802C5A4 src/mem/link_block_by_address.c LinkBlockByAddress
+c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
+c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
+c-file 0x080286A0 0x080286D8 src/mem/build_free_list.c BuildFreeList
+c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
+c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
+c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate

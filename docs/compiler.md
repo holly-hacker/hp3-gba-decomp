@@ -80,6 +80,16 @@ The SDK's ARM compiler is a separate binary; pret's `gcc_arm/` does not
 build on a modern x86_64 host (`make cc1` fails with `FATAL_EXIT_CODE`
 undeclared in `rtl.c`), so it has not been tested against.
 
+Confirmed practically: the `agbcc`/`old_agbcc` binaries `nix develop` provides
+are Thumb-only regardless of flags -- `-O2 -mthumb-interwork` still emits
+`.code 16`/`.thumb_func` output, and `-marm` is rejected outright
+(`agbcc: Invalid option 'arm'`). `SortObjectsByDepth_candidate`
+(`0x08006440`) and `CheckObjectCollisions_candidate` (`0x08005F10`), both
+confirmed ARM-mode by disassembly (see `docs/memory-map/heap.md`), can't be
+matched via `match-function` until `gcc_arm` (or an equivalent) builds in
+this dev shell -- that's a toolchain project of its own, not a per-function
+matching difficulty.
+
 The ARM routines at `0x0800027C`, `0x080002A4` and `0x080002E0` are
 hand-written assembly, not compiler runtime: `0x080002E0` is a 32-way
 binary-search dispatch into unrolled restoring division, and the two

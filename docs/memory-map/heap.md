@@ -1,0 +1,109 @@
+# Heap allocator / object pool — memory map
+
+See [`../README.md`](../README.md) for the confidence-key legend
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
+document index.
+
+## Heap allocator — PROVEN
+
+A small first-fit allocator over one or more pools, only pool 0 ever
+registered (by `InitHeap`, spanning ~all of EWRAM):
+
+- `gMemPool` (`0x03003EE0`) — `MemPool[]`, one 0x10-byte record per pool
+  (`pBase`, `pFreeListHead`, `dwCapacity`, `pEnd`); `gMemPoolCount`
+  (`0x03003EF0`) is the live count.
+- Every block carries a 0x10-byte `MemBlock` header immediately before its
+  payload: `pNextByAddr`/`pPrevByAddr` thread every block (free or
+  allocated) in address order; `pNextFree`/`pPrevFree` thread only the
+  free ones. An allocated block repurposes the free-list fields: `+8`
+  becomes the owning pool index, `+0xC` becomes `-1` as a live marker.
+- `InitMemoryPool`, `GetFreeBlockSize`, `LinkBlockByAddress`,
+  `LinkFreeBlock`, `UnlinkFreeBlock`, `List_PushHead`, `memset`,
+  `BuildFreeList`, `AllocBlock`, `AllocZeroed` are all matched in
+  `src/mem/`. Types in `include/mem.h`.
+
+`memset` (`0x0802C450`) is **not** the vendored newlib copy in `src/libc/`,
+despite being the classic newlib shape (byte-fill to alignment, word-fill
+the middle, byte-fill the remainder): it sits nowhere near the confirmed
+libgcc/libc block (`0x0804A2C0`-`0x0804BDBC`, see `../compiler.md`), and
+its return sequence (`pop {r4-r7}; pop {r1}; bx r1`) is the interworking
+form `-mthumb-interwork` game code uses, not the plain `pop {...,pc}`
+newlib compiles to without interworking (confirmed against the matched
+`memcpy`/`bzero` in `src/libc/`) — compiling it under the libc profile
+produces the wrong return sequence and doesn't match.
+
+Two agbcc codegen quirks needed for `memset`/`AllocZeroed` to match
+byte-exact, both requiring specific C shapes rather than being reachable
+by flag changes:
+
+- `memset`'s word-fill loop must be written as indexed
+  (`((u32*)ptr)[i] = pattern`), not a walking `*aligned++`. Written as
+  indexed, `loop.c`'s strength-reduction pass derives the walking
+  pointer itself and places its init in the loop preheader, after the
+  zero-trip guard — matching real. Written as an explicit walking
+  pointer, the same init lands before the guard instead.
+- `AllocZeroed`'s round-up-to-16 (`len = (size+0xf) & ~0xf`) must be
+  written as three in-place statements on one variable (`len = size;
+  len += 0xf; len &= ~0xf;`), and its pool-walk loop must be a real
+  `do`/`while`, not flattened `goto`s. The stepwise form is what gets
+  the constant `0xf` into a register agbcc's reload pass then derives
+  the `~0xf` mask from directly (`sub r0, r0, #0x1f` instead of loading
+  `-0x10` fresh); the real loop is what gives `len` enough
+  loop-depth-weighted references to win a callee-saved register over
+  `pFreeListHeadSlot` — a `goto`-flattened loop weighs every reference
+  as depth 1 and loses that tie.
+
+## Object pool — STRUCTURAL MATCH
+
+`InitObjectPool` (matched, `src/mem/init_object_pool.c`) carves a second,
+fixed-size-slot pool out of the heap:
+
+- `g_pObjectPoolBuffer`/`sFreeObjectListHead` are adjacent words
+  (`0x03001C08`/`0x03001C0C`, modeled as one `ObjectPoolState` struct in
+  `include/mem.h` since the real code reaches the second through the
+  first at `+4`) — a 0x7968-byte `AllocZeroed`'d buffer (0x69 objects *
+  0x128-byte stride), carved into a free list by `BuildFreeList`.
+- `g_pObjectPoolAuxBuffer` (`0x03001DBC`) — a second, 0x104-byte
+  `AllocZeroed`'d buffer; `InitObjectPool`'s only write to it. Read in
+  `FUN_08001300` as a 0x34-byte-stride, 5-record array — record
+  layout/purpose unconfirmed, out of scope here.
+- `g_pSortObjectsIwram`/`g_pCheckObjectCollisionsIwram` (`0x0300194C`/
+  `0x03001A10`) — `SortObjectsByDepth_candidate`/
+  `CheckObjectCollisions_candidate` relocated into IWRAM via
+  `bios_CPUSet`, the standard GBA hot-loop-in-IWRAM pattern.
+- `g_dwObjectListActive_candidate` (`0x030017A0`) — set to 1 by
+  `InitObjectPool`, also written by `FUN_08001d90`; read by
+  `TickObjectList_candidate`.
+- `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. Read in
+  `WriteObjectOamCells` as what looks like a fixed-point rounding/scale
+  constant, unrelated to the pool itself; not enough evidence for a real
+  name yet.
+
+## `SortObjectsByDepth_candidate` / `CheckObjectCollisions_candidate` — ARM-mode, blocked on toolchain
+
+Both are **confirmed ARM-mode** by disassembly (`arm_func` seeds in
+`functions.us.cfg`, byte-verified via `just disasm-compare`):
+`SortObjectsByDepth_candidate` (`0x08006440`-`0x08006508`) and
+`CheckObjectCollisions_candidate` (`0x08005F10`-ends within the same
+`0x08005EE8`-`0x08006508` span, alongside two other unnamed ARM/Thumb
+functions in between that aren't part of this pair). Neither is reachable
+via `bl` anywhere in the ROM -- they're only ever taken by address
+(`InitObjectPool` passes both to `bios_CPUSet` to relocate into IWRAM),
+which is why `gbadisasm`'s branch-following never found their boundaries
+on its own; they needed explicit seeding.
+
+`SortObjectsByDepth_candidate` is a Shell sort (gap sequence 21/7/3/1,
+packed byte-wise into one `0x15070301` constant) over an array of object
+pointers, keyed by a combined 16-bit value built from each object's
+`+0xD5`/`+0x16`/`+0x3A` fields -- likely a per-frame depth/draw-order
+sort. `CheckObjectCollisions_candidate` does the per-frame pairwise
+collision pass, dispatching through object callback pointers rather than
+direct calls.
+
+**Neither can be matched via `match-function` right now**: this dev
+shell's `agbcc`/`old_agbcc` are Thumb-only regardless of flags (see
+"ARM-mode code" in [`../compiler.md`](../compiler.md)), and the ARM-mode
+SDK compiler (`gcc_arm`) doesn't build on a modern host. Getting a working
+ARM-mode agbcc into the dev shell is a toolchain project of its own, not a
+per-function matching difficulty -- both stay `.incbin` (named via
+`label` rows in `regions.us.txt`) until that's solved.
