@@ -2,7 +2,9 @@
 
 Two GBAs trading Famous Wizard Cards (game mode `0x15`, reached from the
 pause menu's Connectivity submenu). All addresses are US-ROM unless noted.
-See [`../README.md`](../README.md) for the confidence key.
+See [`../README.md`](../README.md) for the confidence key. The GameCube
+(JOYBUS slave) side is documented separately in
+[`gcn-link.md`](gcn-link.md).
 
 ## Link layer (PROVEN)
 

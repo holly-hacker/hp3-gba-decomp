@@ -256,9 +256,9 @@ thumb-func 0x08037048 ExitFolioBruti
 thumb-func 0x080372B0 InitializeFolioUniversitas
 thumb-func 0x080373D4 UpdateFolioUniversitas
 thumb-func 0x08037F48 ExitFolioUniversitas
-thumb-func 0x08038290 InitializeLastMenuScreen
-thumb-func 0x08038320 UpdateLastMenuScreen
-thumb-func 0x0803860C ExitLastMenuScreen
+thumb-func 0x08038290 InitializeGameCubeLink
+thumb-func 0x08038320 UpdateGameCubeLink
+thumb-func 0x0803860C ExitGameCubeLink
 thumb-func 0x08038970 UpdateHelp
 thumb-func 0x080390A0 InitializeHelp
 thumb-func 0x080390C0 ExitHelpScreen

@@ -59,6 +59,9 @@ Memory map (live RAM layout and the code that drives it):
 - [`memory-map/link.md`](memory-map/link.md) — the link-cable layer
   (multiplayer SIO, Timer3 ISR pump, handshake) and the card-trade
   session (mode `0x15`, `CardTradeState`, offer/lock/compare/commit).
+- [`memory-map/gcn-link.md`](memory-map/gcn-link.md) — the GameCube link
+  (JOYBUS slave for owl races, mode `0x41`, `JoybusLinkState`, wire
+  protocol and link commands).
 
 Data formats (each with its `data/` extraction pipeline, where one exists):
 

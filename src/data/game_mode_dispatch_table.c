@@ -41,7 +41,7 @@ extern void ExitItemUseScreen();
 extern void ExitItemsItemSelect();
 extern void ExitItemsSectionSelect();
 extern void ExitLanguageSelect();
-extern void ExitLastMenuScreen();
+extern void ExitGameCubeLink();
 extern void ExitLinearCutscene();
 extern void ExitLupinPotionCutscene();
 extern void ExitMainMenuScreen();
@@ -111,7 +111,7 @@ extern void InitializeItemUseScreen();
 extern void InitializeItemsItemSelect();
 extern void InitializeItemsSectionSelect();
 extern void InitializeLanguageSelect();
-extern void InitializeLastMenuScreen();
+extern void InitializeGameCubeLink();
 extern void InitializeLinearCutscene();
 extern void InitializeLoadGame();
 extern void InitializeLupinPotionCutscene();
@@ -170,7 +170,7 @@ extern void UpdateItemUseScreen();
 extern void UpdateItemsItemSelect();
 extern void UpdateItemsSectionSelect();
 extern void UpdateLanguageSelect();
-extern void UpdateLastMenuScreen();
+extern void UpdateGameCubeLink();
 extern void UpdateLinearCutscene();
 extern void UpdateLoadGame();
 extern void UpdateLupinPotionCutscene();
@@ -259,7 +259,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { (void *)InitializeLinearCutscene, (void *)UpdateLinearCutscene, (void *)ExitLinearCutscene },
     { (void *)InitializeLinearCutscene, (void *)UpdateLinearCutscene, (void *)ExitLinearCutscene },
     { (void *)InitializeLinearCutscene, (void *)UpdateLinearCutscene, (void *)ExitLinearCutscene },
-    { (void *)InitializeLastMenuScreen, (void *)UpdateLastMenuScreen, (void *)ExitLastMenuScreen },
+    { (void *)InitializeGameCubeLink, (void *)UpdateGameCubeLink, (void *)ExitGameCubeLink },
     { (void *)InitializeOwlNameSelect, (void *)UpdateOwlNameSelect, (void *)ExitOwlNameSelect },
     { (void *)InitializeQuantitySelectScreen, (void *)UpdateQuantitySelectScreen, (void *)ExitQuantitySelectScreen },
     { (void *)InitializeTopicScreen, (void *)UpdateTopicScreen, (void *)ExitTopicScreen },

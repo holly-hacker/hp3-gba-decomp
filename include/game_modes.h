@@ -69,7 +69,7 @@ typedef enum {
     TimeTurnerPermissionCutscene     = 0x3E,
     HippogriffTookToAirCutscene      = 0x3F,
     GameCompletedReplayCutscene      = 0x40,
-    LastMenuScreen                   = 0x41,
+    GameCubeLink                     = 0x41,
     OwlNameSelect                    = 0x42,
     QuantitySelectScreen             = 0x43,
     HelpTopicScreen                  = 0x44,
