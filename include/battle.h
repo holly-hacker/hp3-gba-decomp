@@ -284,7 +284,7 @@ typedef struct AnimFlashRow {
 } AnimFlashRow;
 extern AnimFlashRow g_aFighterAnimTable[];  // 0x08051248, UNCONFIRMED row count
 
-extern void sub_08030824(void);
+extern void ClearResourceCacheSlots(void);
 extern Object *AllocObjectOfType(s32 type);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void sub_0800EBAC(void);

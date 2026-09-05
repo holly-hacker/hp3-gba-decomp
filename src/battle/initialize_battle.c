@@ -14,7 +14,7 @@ void InitializeBattle(void)
     s32 flagsBeforeClear;
     s32 clearMask;
 
-    sub_08030824();
+    ClearResourceCacheSlots();
     g_BattleMessageIconState_candidate.bIndex = 0xFF;
     g_BattleMessageIconState_candidate.dwParam = 0;
     g_dwBattleRewardFlagsSnapshot = 0;

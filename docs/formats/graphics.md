@@ -192,8 +192,8 @@ the decompressed size (LE 24-bit).
 | 4 | proprietary, IWRAM-installed -- see "the type-4 codec" below |
 | 6 | proprietary, IWRAM-installed -- see "The type-6 codec, decoded" below |
 
-Both proprietary codecs are installed into IWRAM at runtime by a
-function at `0x0801DD40` (not statically reachable by `gbadisasm`'s
+Both proprietary codecs are installed into IWRAM at runtime by
+`InstallIwramDecompressCodecs` (`0x0801DD40`, not statically reachable by `gbadisasm`'s
 function discovery -- the same invisibility issue as `kramInstall`, see
 [`../memory-map/krawall.md`](../memory-map/krawall.md)), via two
 `CpuSet` (`svc 0xB`) copies:
