@@ -718,33 +718,78 @@ resets every fighter's `Object` (`sub_080039E8`) instead of ticking the
 turn state machine that frame. Every other case (timer already `0`, or the
 previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).
 
-`TickBattleTurnStateMachine` drives `FightState->bBattleState`
-via `PushBattleState` (`0x08012AFC`; no-ops once already in end states
-`6`/`7`). `CheckBattleVictory` (`0x080186E0`, from the enemy attack-anim
-tick) pushes state `7` once every `Enemy` fighter's HP is `0`.
-`CheckBattleDefeat` (`0x08018304`, from `PostActionBattleCheck`
-(`0x08018ACC`), run after every HP-affecting action) pushes state `6`
-once every non-`Enemy` fighter's HP is `0` (Buckbeak-only encounters
-check only Buckbeak). Defeat also fully heals the party and sets
-`FightState->bDefeatWarpTarget` from a table indexed by
-`g_abQuestEventState[0x10]`, resetting index `0` to `0x1F` -- new
+`TickBattleTurnStateMachine`, matched in
+`src/battle/tick_battle_turn_state_machine.c`, drives
+`FightState->bBattleState` (0x1061, an 8-case dispatch) directly:
+every state transition inlines the same guard (refuse to leave states
+`6`/`7`, stash the state being left into `bSavedBattleState`) rather than
+calling through a shared helper. `CheckBattleVictory` (`0x080186E0`,
+from the enemy attack-anim tick) pushes state `7` once every `Enemy`
+fighter's HP is `0`. `CheckBattleDefeat` (`0x08018304`, from
+`PostActionBattleCheck` (`0x08018ACC`), run after every HP-affecting
+action, and also called directly from state `2`'s post-poison-tick
+check) pushes state `6` once every non-`Enemy` fighter's HP is `0`
+(Buckbeak-only encounters check only Buckbeak). Defeat also fully heals
+the party and sets `FightState->bDefeatWarpTarget` from a table indexed
+by `g_abQuestEventState[0x10]`, resetting index `0` to `0x1F` -- new
 territory for [`../formats/save.md`](../formats/save.md)'s
 `abQuestEventState`, which so far only covers index `25` and `~224`-`254`.
 
-State `6` calls `PushGameMode_2(Overworld, 0, bDefeatWarpTarget)`; state
-`7` calls `PushGameMode(VictoryScreen)`. `VictoryScreen` (`GameMode`
-`0x2C`) is an INIT/TICK/EXIT mode-dispatch entry
-(`GameModeDispatchEntry_ARRAY_08065cbc`, stride `0xC`) with two internal
-phases, both driven by `UpdateVictoryScreen`'s (`0x080138F4`) own state
-byte: an XP phase (`InitializeVictoryXpScreen`/`TickVictoryXpCounter`,
-rolling XP counter with level-up sound/animation) then a drop phase
-(`InitializeVictoryDropScreen`, "The fleeing enemy dropped:" plus up to
-2 items from `RollBattleItemDrops` and the gold total, see
-`bBonusRewardFlags` above). `ExitVictoryScreen` (`0x080148A8`) returns
-to `Battle` mode. `g_dwBattleRewardFlagsSnapshot` is set by `ExitBattle`
-(`0x0800DE50`, `Battle`'s mode-EXIT handler, previously misidentified as
-a draw function), which tears down `g_pFightState`. Reward granting
-itself goes through `GrantBattleReward` (`0x08026DE0`).
+State `6` calls `PushGameMode_2(Overworld, 0, bDefeatWarpTarget)` after a
+150-tick delay; state `7` calls `PushGameMode(VictoryScreen)` after a
+30-tick delay. `VictoryScreen` (`GameMode` `0x2C`) is an INIT/TICK/EXIT
+mode-dispatch entry (`GameModeDispatchEntry_ARRAY_08065cbc`, stride
+`0xC`) with two internal phases, both driven by `UpdateVictoryScreen`'s
+(`0x080138F4`) own state byte: an XP phase (`InitializeVictoryXpScreen`/
+`TickVictoryXpCounter`, rolling XP counter with level-up sound/animation)
+then a drop phase (`InitializeVictoryDropScreen`, "The fleeing enemy
+dropped:" plus up to 2 items from `RollBattleItemDrops` and the gold
+total, see `bBonusRewardFlags` above). `ExitVictoryScreen`
+(`0x080148A8`) returns to `Battle` mode. `g_dwBattleRewardFlagsSnapshot`
+is set by `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler,
+previously misidentified as a draw function), which tears down
+`g_pFightState`. Reward granting itself goes through `GrantBattleReward`
+(`0x08026DE0`).
+
+### `TickBattleTurnStateMachine`'s 8 states
+
+Each state's own handler follows the same one-shot-entry idiom: a
+`dwStateJustEntered` flag (0x1064) is consumed on the tick a state is
+first reached, and `wBattleStateTimer` (0x1068, u16) is a per-state
+countdown whose meaning is local to that state.
+
+- **0 -- idle.** Clears `dwStateJustEntered` and returns; a resting
+  state with no timer of its own.
+- **1 -- per-fighter turn-order advance.** On entry, calls
+  `sub_080130B4(bActiveFighterIndex)`, advances
+  `bActiveFighterIndex`, and starts a 16-tick timer; once it expires,
+  waits for every fighter's `Object+0xA4` (UNCONFIRMED field) to clear,
+  then transitions to state `2` once every fighter has acted, otherwise
+  to state `4` (`Enemy`) or `3` (player) for the next active fighter.
+- **2 -- end-of-round status tick, PROVEN as `EndOfRoundStatusTick`**
+  (see "Poison's per-turn tick" below): on entry, ticks poison damage for
+  every `Poisoned` fighter and starts a delay timer; once expired,
+  resets `bActiveFighterIndex` to `0` and transitions to state `4`
+  (`Enemy`) or `3` (player) for the round's first fighter.
+- **3 -- player turn.** On entry, calls `RollFighterParalysisEscape`;
+  if the fighter can't act, shows the escape/still-paralyzed message and
+  transitions to state `5`, otherwise opens the battle menu
+  (`OpenBattleTopMenu`). Once `TickBattleMenuInput` reports the menu
+  selection resolved (`bMenuInputPending_candidate` clears), transitions
+  to state `4`.
+- **4 -- resolve the active fighter's action.** `Enemy` fighters call
+  `SelectAiTarget` and `RollFighterParalysisEscape` (paralysis failure
+  shows a message and transitions to state `5`), then set the fighter's
+  animation state to `0x1a` (attack windup, see `TickPlayerActionState`'s
+  own case `0x1a`); non-`Enemy` fighters call
+  `DispatchPendingAction(bFighterType)` directly. Both paths transition
+  to state `0`.
+- **5 -- message-wait.** Waits 30 ticks (or until a bit in `0x030034F0`
+  is set, a fast-forward/skip input), then swaps `bBattleState` with
+  `bSavedBattleState` -- resuming whichever state transitioned here.
+- **6 -- defeat.** After a 150-tick delay, pushes `PushGameMode_2(Overworld,
+  0, bDefeatWarpTarget)`.
+- **7 -- victory.** After a 30-tick delay, pushes `PushGameMode(VictoryScreen)`.
 
 ## Player spell/action damage -- `ResolvePlayerAttack` (`0x08017C24`)
 

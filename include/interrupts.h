@@ -22,3 +22,4 @@ extern void IntrMain(void);
 
 void InstallInterruptHandler(void *handlerCode);
 void InitInterruptSystem(void);
+void EnableInterrupts(void);

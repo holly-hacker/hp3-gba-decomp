@@ -21,3 +21,10 @@ typedef struct {
 } VBlankState;
 
 extern VBlankState *g_pVBlankState;
+extern VBlankState g_VBlankState;
+extern void WaitForVBlank(void);
+extern void SetVBlankCallback(void *callback);
+
+// See ram_symbols.us.inc: 0x03003B48, read only by WaitForVBlank and
+// written only by AgbMain -- the frame-pacing target WaitForVBlank busy-waits up to.
+extern u32 g_dwFrameSyncTarget;

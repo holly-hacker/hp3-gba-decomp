@@ -1,5 +1,7 @@
 #pragma once
 
+#include "types.h"
+
 // See docs/memory-map/game_modes.md. Index 0 into g_pGameModeDispatchTable
 // is unused/reserved -- there is no GameMode value 0.
 typedef enum {
@@ -75,3 +77,24 @@ typedef enum {
     CardComboDescription             = 0x46,
     CreditsAgain                     = 0x47,
 } GameMode;
+
+extern void PushGameMode_2(GameMode mode, s32 arg1, s32 arg2);
+extern void PushGameMode(GameMode mode);
+
+// dwCurrentGameModeArg1_candidate (+4) and dwStoryStageCache_candidate (+0xC)
+// are accessed through one shared base register in the real code, hence one
+// struct here rather than two standalone globals.
+typedef struct {
+    u32 dwCurrentGameMode;               // 0x00 (0x03003EF4)
+    u32 dwCurrentGameModeArg1_candidate; // 0x04
+    u8 pad_08[0x0C - 0x08];
+    u32 dwStoryStageCache_candidate;     // 0x0C; see docs/formats/save.md's abQuestEventState index 0
+} GameModeStackContext_candidate;
+extern GameModeStackContext_candidate g_GameModeStackContext_candidate;  // 0x03003EF4
+
+extern void InitGameModeStack(void);
+extern void TickGameModeStack_candidate(void);
+
+// See ram_symbols.us.inc: 0x03003B44, a broad game-mode-state flags word
+// touched by dozens of functions across overworld/room/cutscene transitions.
+extern u32 g_dwGameModeFlags;

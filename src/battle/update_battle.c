@@ -2,9 +2,6 @@
 #include "battle.h"
 #include "game_modes.h"
 
-extern void sub_0802D3BC(void);
-extern void TickBattleTurnStateMachine(void);
-
 // Battle mode's pUpdateFn (per-frame tick). See docs/memory-map/battle.md.
 void UpdateBattle(void)
 {

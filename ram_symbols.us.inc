@@ -57,6 +57,10 @@
 .set g_nGoldAccum,       0x03002610  @ u16: running gold-reward accumulator
 .set g_bSelectedFighterSlot_candidate, 0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
 .set g_apFighterObjects_candidate, 0x03002668  @ Object*[7]; one slot per active BattleFighter
+.set g_wHeldKeysBitmask_candidate, 0x030034F0  @ u16: held-button bitmask; bit 0x01 tested by
+                                       @ TickBattleTurnStateMachine's message-wait fast-forward
+                                       @ check, bits 0x10/0x20 (D-pad) read elsewhere -- see
+                                       @ docs/formats/folio_bruti.md, docs/memory-map/battle-ui.md
 .set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate, 0x03002688  @ {byte bIndex (sentinel 0xFF=none), pad[3], u32 dwParam}
 .set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id

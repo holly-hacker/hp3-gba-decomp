@@ -1,5 +1,6 @@
 #include "types.h"
 #include "constants/items.h"
+#include "shop.h"
 
 // Shop tab stock lists, terminated by ITEM_COUNT. See docs/formats/items.md's
 // "Shop prices" section.

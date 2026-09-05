@@ -3,9 +3,6 @@
 #include "mt19937.h"
 #include "constants/spells.h"
 
-extern const u16 g_awSpellPowerBase[SPELL_COUNT][SPELL_LEVELS];
-extern const u16 g_awSpellPowerScale[SPELL_COUNT][SPELL_LEVELS];
-
 #define ATTACKER (g_pFightState->pFighters[attackerIndex])
 #define TARGET (g_pFightState->pFighters[targetIndex])
 

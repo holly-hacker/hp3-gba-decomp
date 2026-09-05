@@ -143,10 +143,14 @@ mechanically understandable (and thus how worth attacking directly) they are:
    struct field skips the bit-field path and can break the tie.
 
 10. **A shared tail block reached by two different paths — don't reach for
-   `goto` first.** This compiler has no cross-jumping/tail-merging pass, so
-   two *textually duplicated* copies of the same check in different branches
-   never get merged back into one block by the compiler (confirmed: costs
-   real bytes, doesn't reproduce the target). A `goto` into a shared label is
+   `goto` first.** This compiler does have a cross-jumping pass
+   (`gcc/jump.c`'s `find_cross_jump`/`do_cross_jump`, run under
+   `JUMP_CROSS_JUMP` from `gcc/toplev.c`), but it only merges two blocks that
+   already end in an unconditional jump to a shared point — it does not
+   retroactively merge two *textually duplicated* copies of the same check
+   sitting in different straight-line branches (confirmed: costs real bytes,
+   doesn't reproduce the target, in the case below). A `goto` into a shared
+   label is
    one legitimate way to get one physical block with two incoming edges, but
    before reaching for it, check whether re-picking *which case is the outer
    split* makes the shared code fall out as plain fallthrough instead: if
@@ -167,7 +171,27 @@ mechanically understandable (and thus how worth attacking directly) they are:
    duplicating the check failed — try re-deriving which condition is the
    *true* outer split first.
 
-11. **A derived-pointer loop-init sitting before the zero-trip guard when
+11. **A guard macro wrapped in `do { … } while (0)` can block a shared tail
+   from forming at all, even when cross-jumping (bucket 10) would otherwise
+   apply.** `gcc/cse.c`'s `cse_end_of_basic_block` decides whether to follow
+   a conditional jump's taken edge by scanning backward from the target
+   label to a `BARRIER`, and that scan explicitly bails out on
+   `NOTE_INSN_LOOP_END`. Wrapping a macro's body in `do { … } while (0)`
+   emits exactly that note right after the macro's expansion, so every call
+   site using the macro stops CSE from recognizing a shared tail across the
+   sites — the taken-branch path looks like a dead end to CSE even though
+   the real ROM merges many of these sites into one physical block. Writing
+   the macro as a bare, unwrapped block (accepting that it can't safely be
+   used where `if (cond) MACRO(x); else other();` needs the trailing
+   semicolon to bind correctly) let a genuinely-shared multi-site tail
+   materialize on rebuild, matching the ROM's shared block byte-for-byte.
+   (`TickBattleTurnStateMachine`'s `TRANSITION_TO` macro, US
+   `0x0800F794`: this single change took 34 opcode-diff groups down to 22.)
+   If a macro used across several call sites is suspected of hiding a real
+   shared tail, try de-sugaring it (drop `do/while(0)`) before reaching for
+   an explicit `goto`-based rewrite (bucket 10).
+
+12. **A derived-pointer loop-init sitting before the zero-trip guard when
    real has it after (or vice versa) — write the loop as indexed, not
    walking.** `for (aligned = p; i < n; i++) *aligned++ = x;` expands the
    pointer as a user variable, placed wherever the source's `for`-init
@@ -181,7 +205,7 @@ mechanically understandable (and thus how worth attacking directly) they are:
    instead of walking and let `loop.c` do the strength reduction itself —
    don't hand-write the pointer walk. (`memset`, US `0x0802C450`.)
 
-12. **A value that should out-preserve a call sequence isn't reaching the
+13. **A value that should out-preserve a call sequence isn't reaching the
    preserved register your operand-count math says it should.** Two
    compounding effects, both real and independently checkable via `-dg`:
    - **`reload_cse_move2add`** (`gcc/reload1.c`) rewrites a second
@@ -224,6 +248,40 @@ mechanically understandable (and thus how worth attacking directly) they are:
 After any fix, re-run the opcode-diff (step 1) before deciding whether to keep
 it — a change can fix the thing you were chasing while quietly introducing a
 same-sized new diff elsewhere; only the opcode-diff count tells you which.
+
+**A working register-allocation lever still needs to look like plausible
+source — and "reuses an existing local" is not automatically enough to
+clear that bar.** A single-purpose `static inline` wrapper function around
+one field access (e.g. `dwStateJustEnteredHelper(FightState *fs) { return
+fs->dwStateJustEntered; }`) can be a real, fully-inlined, verified fix for a
+bucket-9 tie — but if it's only applied at some of the several
+identical-looking call sites (because the others regress with it), that's a
+strong sign it's a register-allocator proxy wearing a function's clothes,
+and it should be reverted even though it measurably works. The instinct to
+"just reuse a local instead of inventing a function" doesn't dodge this: if
+a function has an established set of locals each with one consistent
+meaning throughout (a loop counter, a specific cached result, a
+save-and-restore scratch), repurposing one of them for an unrelated value
+in just the one case that needs the tie broken is the *same* proxy, one
+level down — a plain `i = someUnrelatedFlag; if (i) { ... }` where `i` is
+otherwise only ever a loop index is exactly as implausible as the wrapper
+function, and should be reverted on sight even if `tools/opcode_diff.py`
+confirms it works and it's UB-free. (`TickBattleTurnStateMachine`, US
+`0x0800F794`: four such reuses — the wrapper, `i` holding a boolean flag in
+two unrelated cases, `savedState` holding a timer value instead of a saved
+battle state, and `i = 0; field = i;` in place of `field = 0;` — were all
+real, verified, independently-rebuilt improvements, and all four were
+reverted once examined for plausibility rather than just effect.) A
+legitimate reuse looks like: the same variable, for the same purpose it
+already has, one statement earlier or later than you first wrote it — not
+a different field's value borrowed into a variable whose name and every
+other use describes something else. If no such natural reuse exists at a
+site, that site may simply not have a source-level lever at all (see bucket
+9); accept the higher diff count rather than manufacture one. When a reuse
+does look natural, still check the local's *type* matches the field's width
+— a `u8` local caching a wider read forces a narrower load instruction than
+the ROM's, and the ROM disassembly's mnemonic (`ldr` vs `ldrb`) will tell
+you outright if you check.
 
 ## 3. When you're guessing blind, go read the actual compiler source instead
 

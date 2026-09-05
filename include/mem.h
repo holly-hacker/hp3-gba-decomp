@@ -38,6 +38,7 @@ extern MemPool gMemPool[];
 extern u32 gMemPoolCount;
 
 void InitMemoryPool(u32 poolIndex, void *start, void *end);
+void InitHeap(void);
 u32 GetFreeBlockSize(MemBlock *block, u32 poolIndex);
 void LinkBlockByAddress(MemBlock *afterBlock, MemBlock *newBlock);
 void LinkFreeBlock(MemBlock *afterBlock, MemBlock *newBlock);

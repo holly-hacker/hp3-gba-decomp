@@ -2,8 +2,6 @@
 #include "interrupts.h"
 #include "dma.h"
 
-extern VBlankState g_VBlankState;
-
 void InitInterruptSystem(void)
 {
     g_pVBlankState = &g_VBlankState;

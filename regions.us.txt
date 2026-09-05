@@ -53,11 +53,22 @@ label 0x08017B5C ShowDamageNumber_candidate
 label 0x080019A4 SnapObjectPosition
 label 0x08001A84 StartObjectMove
 label 0x08015F50 ShowItemUseResult
-label 0x0802C7C4 PushGameMode_2
-label 0x0802C7E0 PushGameMode_0
+label 0x0802C7C4 PushGameMode
+label 0x0802C7E0 PushGameMode_2
 label 0x08017F98 ApplyDamageToFighter
 label 0x0802D3BC sub_0802D3BC
-label 0x0800F794 TickBattleTurnStateMachine
+# TickBattleTurnStateMachine callees
+label 0x080130B4 sub_080130B4
+label 0x0800FEE0 sub_0800FEE0
+label 0x08013108 sub_08013108
+label 0x08018304 sub_08018304
+label 0x08018460 sub_08018460
+label 0x0800FFAC RollFighterParalysisEscape
+label 0x080104A0 OpenBattleTopMenu
+label 0x080101D0 TickBattleMenuInput
+label 0x080100A0 DispatchPendingAction
+label 0x0800E39C SelectAiTarget
+c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
 label 0x080014B4 AllocObjectOfType
 label 0x080019B0 SetObjectPosition
 label 0x08030824 sub_08030824

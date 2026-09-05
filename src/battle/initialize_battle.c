@@ -1,52 +1,7 @@
 #include "types.h"
 #include "battle.h"
 #include "game_modes.h"
-
-extern void sub_08030824(void);
-extern Object *AllocObjectOfType(s32 type);
-extern void SetObjectPosition(Object *obj, s32 x, s32 y);
-extern void *AllocZeroed(u32 size);
-extern void sub_0800EBAC(void);
-extern void sub_0800F16C(void);
-extern void SetupBattleRoster_candidate(void);
-extern u8 *sub_08012AC0(void);
-extern void sub_08007800(u8 *a, s32 b, s32 c);
-extern void sub_0800F5F0(void);
-extern void PlayMusicModule(u8 moduleId);
-
-// Battle-message icon object (shown alongside ShowBattleMessage's text),
-// distinct from the 7 per-fighter Objects in g_apFighterObjects_candidate.
-extern Object *g_pBattleMessageIconObject_candidate;  // 0x03002684
-extern u32 g_bSelectedFighterSlot_candidate;          // 0x03002660
-
-// bIndex/dwParam are adjacent globals (0x03002688/0x0300268C) accessed
-// through one base address in the real code, hence one struct here.
-typedef struct {
-    u8 bIndex;    // sentinel 0xFF = none pending
-    u8 pad[3];
-    u32 dwParam;
-} BattleMessageIconState;
-extern BattleMessageIconState g_BattleMessageIconState_candidate;  // 0x03002688
-
-extern u8 g_abBattleMusicByRoom[];          // 0x0804E254, indexed by g_bCurrentRoomId
-extern u8 g_abBattleMusicByOverworldSlot[]; // 0x0804E28B, indexed by dwCurrentGameModeArg1_candidate
-// Read here as a full word, not the byte docs/memory-map/game_modes.md's
-// plate comment describes elsewhere -- real source likely declares it int.
-extern u32 g_bCurrentRoomId;                // 0x03003B50
-
-// dwCurrentGameModeArg1_candidate (+4) and dwStoryStageCache_candidate (+0xC)
-// are accessed through one shared base register in the real code, hence one
-// struct here rather than two standalone globals.
-typedef struct {
-    u32 dwCurrentGameMode;               // 0x00 (0x03003EF4)
-    u32 dwCurrentGameModeArg1_candidate; // 0x04
-    u8 pad_08[0x0C - 0x08];
-    u32 dwStoryStageCache_candidate;     // 0x0C; see docs/formats/save.md's abQuestEventState index 0
-} GameModeStackContext_candidate;
-extern GameModeStackContext_candidate g_GameModeStackContext_candidate;  // 0x03003EF4
-extern BattleFighter g_aPartyMasterStats[]; // 0x030024EC, 0x48 stride, by FighterType
-extern u16 g_nXpAccum;   // 0x0300260E
-extern u16 g_nGoldAccum; // 0x03002610
+#include "mem.h"
 
 // Battle mode's pInitFn. See docs/memory-map/battle.md.
 void InitializeBattle(void)

@@ -1,70 +1,10 @@
 #include "types.h"
 #include "battle.h"
-
-#define ACTIVE_FIGHTER (g_pFightState->pFighters[g_pFightState->bActiveFighterIndex])
+#include "game_modes.h"
 
 typedef struct Vec2 {
     u32 x, y;
 } Vec2;
-
-// per-wFighterType windup-flash resource pointer row, stride 0xA0
-typedef struct AnimFlashRow {
-    u8 pad_00[0x68];
-    void *pWindupResourceB;  // 0x68
-    u8 pad_6C[0x0C];         // -> 0x78
-    void *pWindupResourceA;  // 0x78
-    u8 pad_7C[0xA0 - 0x7C];
-} AnimFlashRow;
-
-extern AnimFlashRow g_aFighterAnimTable[];  // 0x08051248, UNCONFIRMED row count
-
-extern void SetObjectFlippedX(Object *obj, s32 flip);
-extern void sub_08015484(Object *obj, s32 state);
-extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
-extern void PlaySoundById(s32 id);
-extern void sub_08018B14(u16 damage, s32 fighterIndex);
-extern void SetFighterAttackAnimState_candidate(Object *obj, s32 state);
-extern void ApplyStatusDamageToFighter_candidate(s32 damage, s32 fighterIndex);
-extern void TriggerBattleEffect(s32 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, s32 damage);
-extern s32 sub_08026CDC(s32 spellLevel);
-extern s32 sub_08026CF0(s32 spellLevel);
-extern u16 sub_08015334(s32 x, s32 fighterIndex);
-extern u16 sub_080152CC(s32 x, s32 fighterIndex);
-extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighterIndex, s32 flag);
-extern void ShowBattleMessage(s32 code, s32 arg2, s32 arg3);
-extern void sub_0800EB2C(s32 fighterIndex);
-extern void ClearParalyzedFighter_candidate(s32 fighterIndex);
-extern void PostActionBattleCheck(void);
-extern void PushBattleState(s32 state);
-extern void DecrementFolioUniversitasCard(s32 slot);
-extern u8 g_abHarryCardEffectId[16];            // 0x080514C8
-extern u8 g_aCardTargetingMeta[][2];            // 0x080514DE, stride 2
-extern u8 g_abHermioneLectureEffectId[3];       // 0x0805150D
-extern u8 g_abSpecialMoveEffectId[7];           // 0x0805150A
-extern u16 g_nLastDamage;                       // 0x0300274A
-extern u8 g_bLastTargetIndex;                   // 0x0300274C
-extern void sub_080129F4(void);
-extern void sub_08012B40(void);
-
-// --- case 0x1a additions ---
-extern void sub_080019C0(void *obj, s32 x, s32 y);  // sets Object+0x3c/+0x40, i.e. nVelX/nVelY directly
-extern void sub_08003A30(void *obj, s16 a, s16 b, s16 c);  // a is stored pre-shifted << 8 into a 16-bit field
-extern void sub_0802D64C(s16 delta);
-extern void sub_08012A38(void);
-extern void sub_0800E0CC(s32 fighterType, s32 arg2);
-extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void SnapObjectPosition(Object *obj, u32 x, u32 y);
-extern void StartObjectMove(Object *obj, u32 x, u32 y, s16 mode);
-extern void ShowItemUseResult(Object *obj, s32 targetIndex);
-extern void PushGameMode_2(s32 mode, s32 arg2, s32 arg3);
-extern void PushGameMode_0(s32 mode, s32 arg2, s32 arg3);
-extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
-// 0x08017F98; draft.c also refers to it as sub_08017F98 in case 0x15.
-extern void ApplyDamageToFighter(u16 damage, u8 fighterIndex);
-extern u8 g_abSpellEffectScriptId[][3];         // 0x080538B0, [spellId][level]
-extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
-extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
-extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
 void TickPlayerActionState(Object *obj)
 {
@@ -247,7 +187,7 @@ void TickPlayerActionState(Object *obj)
                 obj->bActionFlags |= 1;
                 PostActionBattleCheck();
                 if (ACTIVE_FIGHTER.bSpellId == Informus)
-                    PushGameMode_0(0x2d, 0, g_bDefeatWarpParam);
+                    PushGameMode_2(FolioBruti, 0, g_bDefeatWarpParam);
                 ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
                 return;
             }
