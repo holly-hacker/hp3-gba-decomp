@@ -6,13 +6,13 @@ typedef struct {
     void *pDestroyFn;
 } GameModeDispatchEntry;
 
-extern void ExitBlackScreen();
+extern void ExitLoadingScreen();
 extern void ExitCardComboDescription();
 extern void ExitCardTrade();
 extern void ExitClockSkipCutscene();
 extern void ExitConnectivity();
 extern void ExitCoolTrainCutscene();
-extern void ExitCreditsAgain();
+extern void ExitConfirmTradeScreen();
 extern void ExitDebugCharacterSelectMenu();
 extern void ExitDebugCollectorCardsMenu();
 extern void ExitDebugLevelAndQuestSelectMenu();
@@ -74,14 +74,14 @@ extern void HandleOwlCareKitScreenExit();
 extern void HandleOwlCareKitScreenTick();
 extern void HandleSaveLoadContinuation();
 extern void InitializeBattle();
-extern void InitializeBlackScreen();
+extern void InitializeLoadingScreen();
 extern void InitializeCardComboDescription();
 extern void InitializeCardTrade();
 extern void InitializeClockSkipCutscene();
 extern void InitializeConnectivityMenu();
 extern void InitializeCoolTrainCutscene();
 extern void InitializeCredits();
-extern void InitializeCreditsAgain();
+extern void InitializeConfirmTradeScreen();
 extern void InitializeDebugCharacterSelectMenu();
 extern void InitializeDebugCollectorCardsMenu();
 extern void InitializeDebugLevelAndQuestSelectMenu();
@@ -137,13 +137,13 @@ extern void InitializeWizardCrackerPopItDifficultySelect();
 extern void InitializeTopicScreen();
 extern void InitializeWizardCrackerPopItMinigame();
 extern void UpdateBattle();
-extern void UpdateBlackScreen();
+extern void UpdateLoadingScreen();
 extern void UpdateCardComboDescription();
 extern void UpdateCardTrade();
 extern void UpdateClockSkipCutscene();
 extern void UpdateCoolTrainCutscene();
 extern void UpdateCredits();
-extern void UpdateCreditsAgain();
+extern void UpdateConfirmTradeScreen();
 extern void UpdateDebugCharacterSelectMenu();
 extern void UpdateDebugCollectorCardsMenu();
 extern void UpdateDebugLevelAndQuestSelectMenu();
@@ -220,7 +220,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { (void *)InitializeHelp, (void *)UpdateHelp, (void *)ExitHelpScreen },
     { (void *)InitializeDialogue, (void *)UpdateDialogueBox, (void *)ExitDialogue },
     { (void *)InitializeDebugMenuMain, (void *)HandleDebugTestMenuSelect, (void *)ExitDebugMenuMain },
-    { (void *)InitializeBlackScreen, (void *)UpdateBlackScreen, (void *)ExitBlackScreen },
+    { (void *)InitializeLoadingScreen, (void *)UpdateLoadingScreen, (void *)ExitLoadingScreen },
     { (void *)InitializeWizardCrackerPopItMinigame, (void *)UpdateWizardCrackerPopItMinigame, (void *)ExitWizardCrackerPopItMinigame },
     { (void *)InitializeDivinationTeaMinigame, (void *)UpdateDivinationTeaMinigame, (void *)ExitDivinationTeaMinigame },
     { (void *)InitializeHighScoreNameEntryScreen, (void *)UpdateHighScoreNameEntry, (void *)ExitHighScoreNameEntry },
@@ -265,5 +265,5 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { (void *)InitializeTopicScreen, (void *)UpdateTopicScreen, (void *)ExitTopicScreen },
     { (void *)InitializeHippogriffFliesIntoAirCutscene, (void *)UpdateHippogriffFliesIntoAirCutscene, (void *)ExitHippogriffFliesIntoAirCutscene },
     { (void *)InitializeCardComboDescription, (void *)UpdateCardComboDescription, (void *)ExitCardComboDescription },
-    { (void *)InitializeCreditsAgain, (void *)UpdateCreditsAgain, (void *)ExitCreditsAgain },
+    { (void *)InitializeConfirmTradeScreen, (void *)UpdateConfirmTradeScreen, (void *)ExitConfirmTradeScreen },
 };

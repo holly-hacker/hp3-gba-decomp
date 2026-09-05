@@ -83,7 +83,7 @@ void TickBattleTurnStateMachine(void)
 
             sub_08018304();
 
-            if (g_GameModeStackContext_candidate.dwStoryStageCache_candidate == 0xfe)
+            if (g_GameModeStackContext_candidate.dwCurrentGameModeArg3_candidate == 0xfe)
                 break;
 
             sub_08018460(0);

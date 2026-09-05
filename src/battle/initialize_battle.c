@@ -90,7 +90,7 @@ void InitializeBattle(void)
         sub_0800F5F0();
     }
 
-    if (g_GameModeStackContext_candidate.dwStoryStageCache_candidate == 0xFF)
+    if (g_GameModeStackContext_candidate.dwCurrentGameModeArg3_candidate == 0xFF)
         PlayMusicModule(g_abBattleMusicByOverworldSlot[g_GameModeStackContext_candidate.dwCurrentGameModeArg1_candidate]);
     else
         PlayMusicModule(g_abBattleMusicByRoom[g_bCurrentRoomId]);

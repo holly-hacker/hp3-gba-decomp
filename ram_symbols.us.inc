@@ -64,7 +64,7 @@
 .set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate, 0x03002688  @ {byte bIndex (sentinel 0xFF=none), pad[3], u32 dwParam}
 .set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id
-.set g_GameModeStackContext_candidate, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, pad[4], dwStoryStageCache}
+.set g_GameModeStackContext_candidate, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
 
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other

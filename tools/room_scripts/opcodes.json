@@ -553,7 +553,7 @@
       ]
     },
     "36": {
-      "name": "ShowBlackScreenTransition",
+      "name": "ShowLoadingScreenTransition",
       "operand_length": 4
     },
     "37": {

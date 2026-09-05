@@ -164,9 +164,9 @@ thumb-func 0x0800B9A0 ExitDebugSoundTestMenu
 thumb-func 0x0800BA2C InitializeDebugCollectorCardsMenu
 thumb-func 0x0800BBF0 UpdateDebugCollectorCardsMenu
 thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
-thumb-func 0x0800C0FC InitializeBlackScreen
-thumb-func 0x0800C248 UpdateBlackScreen
-thumb-func 0x0800C590 ExitBlackScreen
+thumb-func 0x0800C0FC InitializeLoadingScreen
+thumb-func 0x0800C248 UpdateLoadingScreen
+thumb-func 0x0800C590 ExitLoadingScreen
 thumb-func 0x0800DE50 ExitBattle
 thumb-func 0x080134BC InitializeVictoryScreen
 thumb-func 0x080138F4 UpdateVictoryScreen
@@ -239,11 +239,11 @@ thumb-func 0x08035D08 InitializeStatusEquipCharacterSelectC
 thumb-func 0x08035D20 InitializeStatusEquipCharacterSelectD
 thumb-func 0x08035D64 ExitStatusEquipCharacterSelect
 thumb-func 0x08035EB0 HandleConnectivityMenuTick
-thumb-func 0x08035F7C UpdateCreditsAgain
+thumb-func 0x08035F7C UpdateConfirmTradeScreen
 thumb-func 0x08036038 InitializeConnectivityMenu
 thumb-func 0x080360DC ExitConnectivity
-thumb-func 0x08036120 InitializeCreditsAgain
-thumb-func 0x08036178 ExitCreditsAgain
+thumb-func 0x08036120 InitializeConfirmTradeScreen
+thumb-func 0x08036178 ExitConfirmTradeScreen
 thumb-func 0x080361AC InitializeStatusEquipHarryItemSelect
 thumb-func 0x08036214 UpdateStatusEquipHarryItemSelect
 thumb-func 0x08036890 ExitStatusEquipHarryItemSelect

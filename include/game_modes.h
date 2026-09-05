@@ -30,7 +30,7 @@ typedef enum {
     Help                             = 0x17,
     Dialogue                         = 0x18,
     DebugMenuMain                    = 0x19,
-    BlackScreen                      = 0x1A,
+    LoadingScreen                      = 0x1A,
     WizardCrackerPopItMinigame       = 0x1B,
     DivinationTeaMinigame            = 0x1C,
     HighScoreNameEntryUnused         = 0x1D,
@@ -75,20 +75,27 @@ typedef enum {
     HelpTopicScreen                  = 0x44,
     HippogriffFliesIntoAirCutscene   = 0x45,
     CardComboDescription             = 0x46,
-    CreditsAgain                     = 0x47,
+    ConfirmTradeScreen               = 0x47,
 } GameMode;
 
 extern void PushGameMode_2(GameMode mode, s32 arg1, s32 arg2);
 extern void PushGameMode(GameMode mode);
 
-// dwCurrentGameModeArg1_candidate (+4) and dwStoryStageCache_candidate (+0xC)
-// are accessed through one shared base register in the real code, hence one
-// struct here rather than two standalone globals.
+// The three arg words (+4/+8/+0xC) are generic per-mode parameters, set by
+// PushGameMode_2/PushGameMode_3 and read by the mode's own init -- e.g.
+// battle reads arg1 as the overworld slot. Accessed through one shared
+// base register in the real code, hence one struct here rather than
+// standalone globals.
 typedef struct {
     u32 dwCurrentGameMode;               // 0x00 (0x03003EF4)
     u32 dwCurrentGameModeArg1_candidate; // 0x04
-    u8 pad_08[0x0C - 0x08];
-    u32 dwStoryStageCache_candidate;     // 0x0C; see docs/formats/save.md's abQuestEventState index 0
+    u32 dwCurrentGameModeArg2_candidate; // 0x08
+    u32 dwCurrentGameModeArg3_candidate; // 0x0C
+    u32 dwModeState_candidate;           // 0x10; per-mode state machine, cleared on push
+    u8 pad_14[0x18 - 0x14];              // 0x14; copied by InitGameModeStack, no writers found
+    u32 dwModeTimer_candidate;           // 0x18; per-mode countdown, cleared on push
+    u32 dwModeSubState_candidate;        // 0x1C; second per-mode state word
+    u32 unk_20_candidate;                // 0x20; copied by InitGameModeStack, no writers found
 } GameModeStackContext_candidate;
 extern GameModeStackContext_candidate g_GameModeStackContext_candidate;  // 0x03003EF4
 
