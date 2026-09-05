@@ -2,6 +2,9 @@
 
 #include "types.h"
 
+#define MT_N 624
+#define MT_STATE_WORDS (MT_N + 1)
+
 extern u32 *gMt19937StatePtr;
 extern u32 *gMt19937CurPtr;
 extern s32 gMt19937RemainingIndices;
@@ -13,6 +16,7 @@ extern u32 gMt19937SeedValue;
 extern u32 gMt19937AutoSeedCallCount;
 extern u16 gMt19937SeedSourceCounter;
 
+void Mt19937AllocState(void);
 u32 Mt19937Regenerate(void);
 void Mt19937AutoSeed(void);
 void Mt19937SetSeed(u32 seed);

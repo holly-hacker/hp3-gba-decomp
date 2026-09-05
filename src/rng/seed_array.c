@@ -9,7 +9,7 @@ void Mt19937SeedArray(u32 seed)
     state = gMt19937StatePtr;
     gMt19937RemainingIndices = 0;
     *state++ = seed;
-    for (i = 0x26F; i != 0; i--) {
+    for (i = MT_N - 1; i != 0; i--) {
         seed = 0x10DCD * seed;
         *state++ = seed;
     }

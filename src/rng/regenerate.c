@@ -1,6 +1,5 @@
 #include "mt19937.h"
 
-#define MT_N 624
 #define MT_M 397
 #define MATRIX_A   0x9908B0DFu
 #define UPPER_MASK 0x80000000u
@@ -23,13 +22,13 @@ u32 Mt19937Regenerate(void)
         s32 i;
         gMt19937RemainingIndices = 0;
         *state++ = seed;
-        for (i = 0x26F; i != 0; i--) {
+        for (i = MT_N - 1; i != 0; i--) {
             seed = 0x10DCD * seed;
             *state++ = seed;
         }
     }
 
-    gMt19937RemainingIndices = 0x26F;
+    gMt19937RemainingIndices = MT_N - 1;
     gMt19937CurPtr = gMt19937StatePtr + 1;
 
     lo = gMt19937StatePtr[0];

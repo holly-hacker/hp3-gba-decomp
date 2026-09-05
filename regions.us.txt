@@ -102,7 +102,6 @@ label 0x0802C254 InitHeap
 label 0x0802BDEC InstallIwramDivideRoutines
 label 0x080453B4 InstallIwramObjTileAllocRoutine
 label 0x0801DD40 InstallIwramDecompressCodecs
-label 0x0803B314 Mt19937AllocState
 label 0x08020D30 InitTextMacroTable
 label 0x08042568 InitDialogTextEngine
 label 0x0803BC9C InitSaveSystem
@@ -371,6 +370,7 @@ c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate
+c-file 0x0803B314 0x0803B330 src/rng/alloc_state.c Mt19937AllocState
 c-file 0x0803B330 0x0803B3AC src/rng/auto_seed.c Mt19937AutoSeed
 c-file 0x0803B3AC 0x0803B3E0 src/rng/set_seed.c Mt19937SetSeed
 c-file 0x0803B3E0 0x0803B40C src/rng/rand_range.c Mt19937RandRange

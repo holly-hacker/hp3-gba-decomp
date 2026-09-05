@@ -147,7 +147,7 @@ all three appear together, giving a **PROVEN** structural match to the
 Matsumoto/Nishimura reference algorithm (not a reimplementation guess: the
 twist loop is split into the textbook two passes of `N-M` (227) and `M-1`
 (396) iterations plus the wraparound word, `N=624`/`M=397`, with the
-canonical upper/lower masks `0x80000000`/`0x7FFFFFFF`). A 13-function
+canonical upper/lower masks `0x80000000`/`0x7FFFFFFF`). A 14-function
 cluster was identified this way, named in `functions.us.cfg`/
 `functions.jp.cfg` (verified with `just disasm-compare` -- both versions
 still byte-identical to their donor ROMs after seeding these names):
@@ -155,6 +155,7 @@ still byte-identical to their donor ROMs after seeding these names):
 | Name | US addr | JP addr | What it does |
 |---|---|---|---|
 | `Mt19937Regenerate` | `0x0803B1B8` | `0x0803B220` | Regenerates all 624 state words (the "twist"), tempers and returns the most recently generated word. Called only when the draw cursor is exhausted. Also contains a defensive re-seed path (LCG multiplier `0x10DCD` = 69069, the classic 1998 Matsumoto/Nishimura `sgenrand` multiplier) gated on an unusual "remaining < -1" sentinel, not yet understood. |
+| `Mt19937AllocState` | `0x0803B314` | `0x0803B37C` | Allocates the 625-word state block (`AllocBlock(0x9C4)`) into `gMt19937StatePtr` at boot; sole caller `AgbMain`. Only words 0-623 are used (word 624 is never read or written). |
 | `Mt19937AutoSeed` | `0x0803B330` | `0x0803B398` | Derives a seed from `g_pVBlankState->dwVBlankCount` (see `include/vblank.h` -- a general interrupt-state struct, not RNG-specific), a `0x030034EC` halfword counter, and an accumulating `0x03005594` global, then calls `Mt19937SetSeed`. Likely the startup auto-seed path. |
 | `Mt19937SetSeed` | `0x0803B3AC` | `0x0803B414` | Takes an explicit seed parameter, calls `Mt19937SeedArray`, then immediately marks the full 624-word block as available (`remainingIndices = 0x26F`) and resets the draw cursor to `stateptr + 4` -- state[0] (raw seed OR'd with 1) is skipped as internal-only. |
 | `Mt19937RandRange` / `Mt19937RandRange2` | `0x0803B3E0` / `0x0803B40C` | `0x0803B448` / `0x0803B474` | `min + ((draw & 0x7FFF) * (max-min+1)) >> 15` -- matches the script's `get_random_int_range`. `2` variants read from the second draw cursor (see below). |
