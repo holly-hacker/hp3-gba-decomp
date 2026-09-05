@@ -415,9 +415,9 @@ content (target selection, `ResolveEnemyAttack`, message/reward
 dispatch), not renamed further.
 
 **`FUN_0800359C`** (the `TickObject_candidate` gate) returns true iff
-`g_dwCurrentGameMode_candidate` (`0x03003EF4`) `!= 0x18` AND it equals
-`g_dwPendingGameMode_candidate` (`0x03003F18`) -- "no mode transition in
-flight, and not in mode `0x18`". `g_dwCurrentGameMode_candidate` has 80+
+`g_GameModeStackContext_candidate.dwCurrentGameMode` (`0x03003EF4`) `!=
+0x18` AND it equals `g_dwPendingGameMode_candidate` (`0x03003F18`) -- "no
+mode transition in flight, and not in mode `0x18`". The mode word has 80+
 xrefs ROM-wide, consistent with being the central game-mode/scene state
 variable; specific mode values aren't identified.
 
