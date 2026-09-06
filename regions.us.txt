@@ -88,6 +88,15 @@ label 0x0805150D g_abHermioneLectureEffectId
 label 0x0805150A g_abSpecialMoveEffectId
 label 0x080538B0 g_abSpellEffectScriptId
 label 0x08053964 g_awSpellMpCost
+# InitPlayerBattleActor (src/battle/init_player_battle_actor.c) callees
+# and data tables still raw incbin territory.
+label 0x080014D4 AllocDefaultObject
+label 0x08003A44 sub_08003A44
+label 0x08001958 sub_08001958
+label 0x080308A8 AttachObjectEffectSlot_candidate
+label 0x0800187C SetObjectAssetRecord
+label 0x080018D8 SetObjectAnimData
+label 0x08051560 g_aFighterAnimDataTable
 
 # InitInterruptSystem/InstallInterruptHandler (src/interrupts/) callees,
 # still raw incbin territory.
@@ -503,6 +512,8 @@ c-file 0x0800DBAC 0x0800DDB0 src/battle/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 0x0800DE50 src/battle/update_battle.c UpdateBattle
 
 c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
+
+c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
 
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

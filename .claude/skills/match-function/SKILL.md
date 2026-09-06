@@ -245,6 +245,23 @@ mechanically understandable (and thus how worth attacking directly) they are:
      `len` pseudo win r8 over `pFreeListHeadSlot` once that register was
      worth winning.)
 
+14. **A `(value & mask) | bits` flag update where real puts the mask in the
+   lower register — fold through the mask temp itself, not a fresh dest.**
+   CSE's `fold_rtx` epilogue (`gcc/cse.c`) places the const-holding operand
+   of a commutative op second *regardless of source spelling or decl order*,
+   so the AND always reads (value, mask) and `regmove` ties the two-address
+   dest to the first source (the value), ballooning it past the mask
+   (observed: refs=6/pri 2.0 vs refs=2/pri 0.5, so the value wins `r0`).
+   Writing `mask &= value` with the reload first makes the dest *be* the
+   mask from the start: the commutative better-match check (`regmove.c`)
+   sees the second source already matching the dest and skips the rewrite
+   entirely — no ballooning, and the mask's extra mention as dest wins it
+   `r0`. Both operand orders × both decl orders were built and all four
+   converge to the same RTL, so don't burn time respelling; the house idiom
+   already exists in matched `InitializeBattle`
+   (`clearMask &= flagsBeforeClear`, reload before the mask is
+   materialized). (`InitPlayerBattleActor`, US `0x080149C4`.)
+
 After any fix, re-run the opcode-diff (step 1) before deciding whether to keep
 it — a change can fix the thing you were chasing while quietly introducing a
 same-sized new diff elsewhere; only the opcode-diff count tells you which.
@@ -424,6 +441,19 @@ original source, and that the bar for replacing it later is reproducing the
 byte sequence, not preserving the specific token. Don't present a proxy fix as
 if it were understood, and don't let a growing pile of them substitute for
 actually finding the mechanism (step 3) when there's still budget to look.
+
+Matched code can still be cleaned up, but only with rewrites proven
+byte-neutral by rebuild + re-diff — never by reasoning alone. Safe in
+practice: renaming locals (pseudo numbering follows decl *order*, not
+names); replacing a magic hex offset with an equal constant expression
+(`0xD8` → `3 * sizeof(BattleFighter)` — const arithmetic folds before RTL,
+so any two spellings folding to the same constant are interchangeable);
+retyping a temp within the same mode (`s32` → `u8 *`, the casts being
+mode-preserving NOPs that vanish in expand). Not safe even when it looks
+local: removing a temp (one fewer live pseudo recolors distant code — a
+second live-branch temp's removal recolored sites hundreds of bytes
+earlier), or restructuring the statement around it (extra `mov`, shifted
+`adds` pairs). (`InitPlayerBattleActor`, US `0x080149C4`.)
 
 Never claim a fix is verified without independently rebuilding and re-checking
 yourself — an agent's (or your own) summary describes intent, not

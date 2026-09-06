@@ -401,9 +401,9 @@ monster's record from `MonsterTable`; `InitPlayerBattleActor_candidate`
 | `0x30` | u16 | `wDamageRollMin` (`MonsterTable+0x06`) | PROVEN |
 | `0x32` | u16 | `wDamageRollMax` (`MonsterTable+0x08`) | PROVEN |
 | `0x34`-`0x39` | u8[6] | `aSpellEffectiveness[6]` (`MonsterTable+0x0A`-`+0x0F`) | PROVEN |
-| `0x3A` | u8 | `bSpellId` (enum `SpellId`, `0`-`9`) | PROVEN |
+| `0x3A` | u8 | `bSelectedActionIndex` -- UI slot the target-confirm menu wrote, later resolved to a real fighter (see "Target redirect" above) | STRUCTURAL MATCH |
 | `0x3B` | u8 | `bPendingActionKind` (enum, `None=0/UseItem=1/SpecialMove=2/Flee=3/Informus=4`) | PROVEN |
-| `0x3C` | u8 | `bSelectedActionIndex` -- UI slot the target-confirm menu wrote, later resolved to a real fighter (see "Target redirect" above) | STRUCTURAL MATCH |
+| `0x3C` | u8 | `bSpellId` (enum `SpellId`, `0`-`9`) | PROVEN |
 | `0x3D` | u8 | `bSpellLevel` (0-2, Uno/Duo/Tria) | PROVEN |
 | `0x3E` | u8 | `bUnk_0x3E`, set to `0xff` on init | UNCONFIRMED, no reader traced |
 | `0x42` | u8 | `bStatusFlags` bitfield, see below | PROVEN |
@@ -450,6 +450,31 @@ dispatchers with a shared-tail `bl`-as-branch idiom; their full case
 tables and every non-mechanical callee live in
 [`battle-ui.md`](battle-ui.md), since they're orchestration/animation,
 not combat math.
+
+### `InitPlayerBattleActor` (`0x080149C4`), PROVEN
+
+`(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex)` returns the
+fighter's new `Object *`. Allocates via `AllocDefaultObject`, records
+`wFighterType`/`bUnk_0x7C = 0`, sets `bGfxSlotAndFlags = (v & ~0xC) | 4`,
+positions with `SnapObjectPosition`/`StartObjectMove` at
+`(0xD4 - slot*36) << 16`, `slot*0x40000 + 0x6E0000`, then
+`sub_08003A44(pObject, 0, 0x400, 0xC)`, `bUnk16 = 0x40`, `dwUnk_0x28 = 1`,
+`dwFlags = 0x20006011`, attack-anim state `0xF`, `bAnimFrameDelay = 1`,
+`pfnTick = TickPlayerActionState`. Copies the 10 spell slots
+(`i <= 9`) and, outside Folio Universitas returns, the party stats from
+`g_pPartyMasterStats_candidate` for `type < 3` (Buckbeak gets `bLevel 50`,
+`wHp 400`, `wMp/wMp_max 999`, `bStat_speed 10`, `bAccuracy 101`, both
+defenses `100`) plus a backup `memcpy` of the record into slot 3
+(`0x030025C4`). `wHp == 0` takes the faint branch (fainted anim table,
+`dwFlags &= ~0x10`, re-snap, `nSelectedTargetIndex = -1`), else the live
+branch (anim data row `type * 0x244`, cursor `base + slot*4 + 2`).
+`bSelectedActionIndex` inits to `0xFF` at `+0x3A`, which is why that offset
+is the action index and `+0x3C` the spell id. The decompilation
+(`src/battle/init_player_battle_actor.c`, byte-identical) folds the flag
+update through the mask temp itself (`mask &= maskVal`); a separate dest
+pseudo would tie to the loaded value in regmove and steal `r0` from the
+mask. No JP row exists for this range, so the JP bytes here are unverified
+against that source.
 
 ## Turn order -- `bStat_speed`, PROVEN
 
@@ -888,7 +913,7 @@ Buckbeak (`fighterType == 3`, outside the 3-entry array) gets hardcoded
 defaults: `wHp`/`wMp_max` 400/999, `bLevel 0x32`, `bStat_speed 10`,
 `bAccuracy 0x65`, `bDefenseFactorPercent 100`.
 
-### `BattleFighter+0x3A`/`+0x3D` -- `bSpellId` (enum `SpellId`) / `bSpellLevel`
+### `BattleFighter+0x3C`/`+0x3D` -- `bSpellId` (enum `SpellId`) / `bSpellLevel`
 
 `bSpellLevel` (0-2) explains `ShowBattleMessage`'s `SpellLevelUp` case --
 spells have 3 power tiers.

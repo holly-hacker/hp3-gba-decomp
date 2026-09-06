@@ -157,7 +157,8 @@ struct Object {
     u8 pad_10[0x04];        // -> 0x14
     u16 wMoveDuration;      // 0x14
     u8 bUnk16;              // 0x16
-    u8 pad_17[0x15];        // -> 0x2C
+    u8 pad_17[0x11];        // -> 0x28
+    u32 dwUnk_0x28;         // 0x28, set to 1 by InitPlayerBattleActor_candidate
     u32 nX;                 // 0x2C, 16.16
     u32 nY;                 // 0x30, 16.16
     u8 pad_34[0x08];        // -> 0x3C
@@ -167,7 +168,9 @@ struct Object {
     u8 bAttackOutcomeState; // 0x60
     u8 pad_61[0x01];        // -> 0x62
     u16 wStagedDamage;      // 0x62
-    u8 pad_64[0x1C];        // -> 0x80
+    u8 pad_64[0x18];        // -> 0x7C
+    u8 bUnk_0x7C;           // 0x7C, zeroed by InitPlayerBattleActor_candidate
+    u8 pad_7D[0x03];        // -> 0x80
     u32 dwStateTimer;       // 0x80
     u8 pad_84[0x02];        // -> 0x86
     u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
@@ -178,14 +181,19 @@ struct Object {
     u8 pad_8E[0x02];        // -> 0x90
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
-    u8 pad_92[0x12];        // -> 0xA4
+    u8 pad_92[0x06];        // -> 0x98
+    void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
+    u8 pad_9C[0x08];        // -> 0xA4
     void *pLinkedObject_candidate;  // 0xA4; see docs/formats/room_scripts.md and
-                                     // docs/formats/save.md's per-object save table
-                                     // (Object+0xa0/+0xa4/+0xa8, three linked-object slots)
     u8 pad_A8[0x29];        // -> 0xD1
     u8 bFlags_0xD1;         // 0xD1, bit 0x20 set / bits 0x0C cleared by InitializeBattle
     u8 pad_D2[0x03];        // -> 0xD5
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot
+    u8 pad_D6[0x03];        // -> 0xD9
+    u8 bAnimFrameDelay;     // 0xD9
+    u8 pad_DA[0x0A];        // -> 0xE4
+    u8 *pAnimFrameCursor;   // 0xE4
+    u8 *pAnimFrameBase;     // 0xE8
 };
 
 extern void sub_080039E8(Object *obj);
@@ -308,16 +316,31 @@ extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
 // per-wFighterType windup-flash resource pointer row, stride 0xA0
 typedef struct AnimFlashRow {
-    u8 pad_00[0x68];
-    void *pWindupResourceB;  // 0x68
-    u8 pad_6C[0x0C];         // -> 0x78
-    void *pWindupResourceA;  // 0x78
-    u8 pad_7C[0xA0 - 0x7C];
+    u8 pad_00[0x08];
+    s32 nEffectSlotLive;        // 0x08, AttachObjectEffectSlot arg when the fighter is alive
+    u8 pad_0C[0x5C];           // -> 0x68
+    void *pWindupResourceB;    // 0x68
+    u8 pad_6C[0x0C];           // -> 0x78
+    void *pWindupResourceA;    // 0x78
+    u8 pad_7C[0x04];           // -> 0x80
+    void *pAssetRecordFainted; // 0x80, SetObjectAssetRecord arg when wHp == 0
+    u8 pad_84[0x04];           // -> 0x88
+    s32 nEffectSlotFainted;    // 0x88, AttachObjectEffectSlot arg when wHp == 0
+    u8 pad_8C[0x14];           // -> 0xA0
 } AnimFlashRow;
 extern AnimFlashRow g_aFighterAnimTable[];  // 0x08051248, UNCONFIRMED row count
+extern u8 g_aFighterAnimDataTable[];        // 0x08051560, stride 0x244, contents undecoded
 
 extern void ClearResourceCacheSlots(void);
 extern Object *AllocObjectOfType(s32 type);
+extern Object *AllocDefaultObject(void);
+extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
+extern void SetObjectAssetRecord(Object *obj, void *rec);
+extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
+extern void TickPlayerActionState(Object *obj);
+extern void sub_08001958(Object *obj, s32 v);
+extern void sub_08003A44(Object *obj, s32 a, s32 b, s32 c);
+extern void *memcpy(void *dst, const void *src, u32 n);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void sub_0800EBAC(void);
 extern void sub_0800F16C(void);
