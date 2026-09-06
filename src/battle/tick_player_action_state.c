@@ -6,6 +6,13 @@ typedef struct Vec2 {
     u32 x, y;
 } Vec2;
 
+// Certain bAttackOutcomeState (Object+0x60) values. States 1-5 stay numeric:
+// their tails differ between cases 0x1a and 0x15, so no one name fits both.
+typedef enum {
+    AttackOutcome_None = 0,    // idle/reset: nothing pending
+    AttackOutcome_Buckbeak = 6, // Buckbeak's level-scaled damage tail
+} AttackOutcomeState;
+
 void TickPlayerActionState(Object *obj)
 {
     u8 state;
@@ -69,6 +76,13 @@ void TickPlayerActionState(Object *obj)
         return;
     case 0x1a: // ExecutePlayerAttackSequence?
     {
+        // bAttackOutcomeState tails, checked in order below: 1 shows the
+        // damage number, 2 resolves item use, 3 applies staged damage,
+        // 4 sweeps faints and victory, 5 latches the target and finishes.
+        // Buckbeak rides this same dispatch but bypasses the spell machinery
+        // at four carve-outs (marked below): no special-move effect, state
+        // Buckbeak instead of ResolvePlayerAttack, no cast VFX trigger, and
+        // level-scaled damage in the state-Buckbeak tail.
         s16 flags;
         u8 phase, delay, i;
         // Real loads *g_pFightState once before testing bActionFlags and uses
@@ -221,6 +235,8 @@ void TickPlayerActionState(Object *obj)
 
     zoomJoin_08016882:
         if (obj->dwFlags & 0x8000) {
+            // Buckbeak carve-out 1/4: skips the special-move effect; the flag
+            // clear below still runs.
             if (obj->wFighterType != Buckbeak)
                 TriggerBattleEffect(1, ACTIVE_FIGHTER.bSlotParam,
                                     0, g_pFightState->bActiveFighterIndex, 0, 0);
@@ -228,19 +244,19 @@ void TickPlayerActionState(Object *obj)
         }
         if (obj->dwFlags & 0x40000) {
             obj->dwFlags &= 0xfffbffff;
+            // Buckbeak carve-out 2/4: takes state Buckbeak below instead of
+            // resolving a spell.
             if (obj->wFighterType != Buckbeak) {
                 var_8 = g_abSpellEffectScriptId[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 ACTIVE_FIGHTER.wMp -= g_awSpellMpCost[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
-                g_aPartyMasterStats[ACTIVE_FIGHTER.bFighterType].wMp =
-                    ACTIVE_FIGHTER.wMp;
+                g_aPartyMasterStats[ACTIVE_FIGHTER.bFighterType].wMp = ACTIVE_FIGHTER.wMp;
                 if (ACTIVE_FIGHTER.bSelectedActionIndex != 0xfe)
                     g_nLastDamage = ResolvePlayerAttack(
                         g_pFightState->bActiveFighterIndex,
-                        g_pFightState->aEnemySlotTurnOrderIndex[
-                            ACTIVE_FIGHTER.bSelectedActionIndex]);
+                        g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
                 sub_0800E0CC(g_pFightState->pFighters[g_pFightState->bMenuFighterIndex].bFighterType, 0);
             } else {
-                obj->bAttackOutcomeState = 6;
+                obj->bAttackOutcomeState = AttackOutcome_Buckbeak;
             }
 
             // Real reuses one r4/r6 pair across all three call sites, but that
@@ -248,6 +264,8 @@ void TickPlayerActionState(Object *obj)
             // not from a source-level cached pointer: introducing a local here
             // makes the address expand as a plain PLUS (base first) instead of
             // an EXPAND_SUM address (mult term sorted last), which real uses.
+            // Buckbeak carve-out 3/4: Fumos has no fighter check, so it still
+            // triggers; every other spell skips the cast VFX for Buckbeak.
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
                 TriggerBattleEffect((u8)var_8, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex,
                                     g_pFightState->bActiveFighterIndex,
@@ -270,7 +288,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->bAttackOutcomeState == 1) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             if (g_nLastDamage == 0)
                 return;
             ShowDamageNumber_candidate(g_pFightState->aEnemySlotTurnOrderIndex[
@@ -286,7 +304,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->bAttackOutcomeState == 3) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             obj->bActionFlags = 0x41;
             ApplyDamageToFighter(g_nLastDamage,
                                  g_pFightState->aEnemySlotTurnOrderIndex[
@@ -319,46 +337,55 @@ void TickPlayerActionState(Object *obj)
                 }
                 ApplyDamageToFighter(g_nLastDamage, i);
             }
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             obj->bActionFlags = 0x41;
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             if (g_pFightState->dwBattleResultPending != 0)
                 return;
-            ShowBattleMessage(6, 0, 0);
+            ShowBattleMessage(FaintResult, 0, 0);
             return;
         }
         if (obj->bAttackOutcomeState == 5) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             obj->bActionFlags = 0x41;
             g_bLastTargetIndex = ACTIVE_FIGHTER.bSelectedActionIndex;
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             return;
         }
-        if (obj->bAttackOutcomeState != 6)
-            return;
-        PlaySoundById(0x37);
-        obj->bAttackOutcomeState = 0;
-        g_nLastDamage = (g_aPartyMasterStats[0].bLevel >> 1) + 0x1e;
-        if (ACTIVE_FIGHTER.bStatusFlags & SpellPowerBoost)
-            g_nLastDamage = (g_nLastDamage * 4) / 3;
-        SetFighterAttackAnimState_candidate(g_pFightState->pFighters[
-                         g_pFightState->aEnemySlotTurnOrderIndex[
-                             ACTIVE_FIGHTER.bSelectedActionIndex]].pObject,
-                     2);
-        ShowBattleMessage(5, g_nLastDamage, 0);
-        if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
-            ShowBattleMessage(5, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
-        ShowFloatingDamageNumber_candidate(g_nLastDamage, 0,
-                     g_pFightState->aEnemySlotTurnOrderIndex[
-                         ACTIVE_FIGHTER.bSelectedActionIndex], 0);
-        obj->bActionFlags = 0x41;
-        ApplyDamageToFighter(g_nLastDamage,
-                             g_pFightState->aEnemySlotTurnOrderIndex[
-                                 ACTIVE_FIGHTER.bSelectedActionIndex]);
-        g_bLastTargetIndex = ACTIVE_FIGHTER.bSelectedActionIndex;
-        ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
+        // Buckbeak carve-out 4/4: level-scaled damage, computed here rather
+        // than in ResolvePlayerAttack: (HarryLevel >> 1) + 30, x4/3 under
+        // SpellPowerBoost. Presented via the attack-result message plus a
+        // floating number, never ShowDamageNumber.
+        if (obj->bAttackOutcomeState == AttackOutcome_Buckbeak) {
+            PlaySoundById(0x37);
+            obj->bAttackOutcomeState = AttackOutcome_None;
+
+            g_nLastDamage = (g_aPartyMasterStats[Harry].bLevel >> 1) + 30;
+            if (ACTIVE_FIGHTER.bStatusFlags & SpellPowerBoost)
+                g_nLastDamage = (g_nLastDamage * 4) / 3;
+
+            SetFighterAttackAnimState_candidate(
+                g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject,
+                2);
+
+            ShowBattleMessage(AttackResult, g_nLastDamage, 0);
+
+            if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
+                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+
+            ShowFloatingDamageNumber_candidate(g_nLastDamage, 0,
+                         g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
+
+            obj->bActionFlags = 0x41;
+
+            ApplyDamageToFighter(g_nLastDamage,
+                                 g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
+
+            g_bLastTargetIndex = ACTIVE_FIGHTER.bSelectedActionIndex;
+            ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
+        }
         return;
     }
     case 0x15: // HandleScriptedDamageEvent_candidate?
@@ -370,7 +397,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->bActionFlags & 1) {
             sub_08015484(obj, 2);
             obj->bActionFlags &= 0xfe;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             if (ACTIVE_FIGHTER.bFighterType == Harry)
                 obj->dwStateTimer = 0x3c;
             else
@@ -380,9 +407,9 @@ void TickPlayerActionState(Object *obj)
             obj->dwStateTimer -= 1;
             if (obj->dwStateTimer == 0) {
                 if (ACTIVE_FIGHTER.bFighterType == Harry)
-                    ShowBattleMessage(3, g_nFolioUniversitasSlot & 0xffff, 0);
+                    ShowBattleMessage(SpecialAbilityText, g_nFolioUniversitasSlot & 0xffff, 0);
                 else
-                    ShowBattleMessage(3, ACTIVE_FIGHTER.bSpellId, 0);
+                    ShowBattleMessage(SpecialAbilityText, ACTIVE_FIGHTER.bSpellId, 0);
             }
         }
         if (obj->dwFlags & 0x40000) {
@@ -475,7 +502,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->bAttackOutcomeState == 1) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             if (ACTIVE_FIGHTER.bFighterType == Harry &&
                 g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
@@ -488,15 +515,15 @@ void TickPlayerActionState(Object *obj)
         if (obj->bAttackOutcomeState == 2) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
             sub_08012B40();
             g_nLastDamage = 5;
             SetFighterAttackAnimState_candidate(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
-            ShowBattleMessage(5, g_nLastDamage, 0);
-            if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
-                ShowBattleMessage(5, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+            ShowBattleMessage(AttackResult, g_nLastDamage, 0);
+            if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
+                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
             ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
             ApplyDamageToFighter(g_nLastDamage, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
             PostActionBattleCheck();
@@ -506,15 +533,15 @@ void TickPlayerActionState(Object *obj)
         if (obj->bAttackOutcomeState == 3) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
             sub_08012B40();
             g_nLastDamage = 0x14;
             SetFighterAttackAnimState_candidate(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
-            ShowBattleMessage(5, g_nLastDamage, 0);
-            if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
-                ShowBattleMessage(5, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+            ShowBattleMessage(AttackResult, g_nLastDamage, 0);
+            if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
+                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
             ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
             ApplyDamageToFighter(g_nLastDamage, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
             PostActionBattleCheck();
@@ -524,7 +551,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->bAttackOutcomeState == 4) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
             sub_08012B40();
@@ -544,8 +571,8 @@ void TickPlayerActionState(Object *obj)
             /* Re-stored after the loop: real emits the store twice, and the
              * intervening calls make obj->bAttackOutcomeState unprovably
              * unchanged, so neither store folds away. */
-            obj->bAttackOutcomeState = 0;
-            ShowBattleMessage(6, 0, 0);
+            obj->bAttackOutcomeState = AttackOutcome_None;
+            ShowBattleMessage(FaintResult, 0, 0);
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             if (obj->bActionState == 0x15)
@@ -580,8 +607,8 @@ void TickPlayerActionState(Object *obj)
         }
         g_pFightState->pAttackAnimObject_candidate = 0;
         g_pFightState->bAttackAnimState_candidate = 0;
-        obj->bAttackOutcomeState = 0;
-        ShowBattleMessage(6, 0, 0);
+        obj->bAttackOutcomeState = AttackOutcome_None;
+        ShowBattleMessage(FaintResult, 0, 0);
         PostActionBattleCheck();
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
         if (obj->bActionState != 0x15)
@@ -596,7 +623,7 @@ void TickPlayerActionState(Object *obj)
         u16 amount;
 
         if (obj->bActionFlags & 1) {
-            obj->bAttackOutcomeState = 0;
+            obj->bAttackOutcomeState = AttackOutcome_None;
             sub_08015484(obj, 3);
             obj->bActionFlags &= 0xfe;
             obj->dwStateTimer = 0x1e;
@@ -621,14 +648,14 @@ void TickPlayerActionState(Object *obj)
         }
         obj->dwStateTimer -= 1;
         if (obj->dwStateTimer == 0) {
-            ShowBattleMessage(8, ACTIVE_FIGHTER.bSpellLevel, 0);
+            ShowBattleMessage(StatusRestore, ACTIVE_FIGHTER.bSpellLevel, 0);
         }
-        if (obj->bAttackOutcomeState == 0)
+        if (obj->bAttackOutcomeState == AttackOutcome_None)
             return;
 
         g_pFightState->pAttackAnimObject_candidate = 0;
         g_pFightState->bAttackAnimState_candidate = 0;
-        obj->bAttackOutcomeState = 0;
+        obj->bAttackOutcomeState = AttackOutcome_None;
 
         {
             u8 spellLevel = ACTIVE_FIGHTER.bSpellLevel;

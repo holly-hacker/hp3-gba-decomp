@@ -165,7 +165,7 @@ void ApplyDamageToFighter(short damage, uchar fighterIndex) {   // 0x08017F98
     Fighter *f = &pFighters[fighterIndex];
     f->wHp -= damage;
     if (f->wHp == 0 || f->wHp > f->wHp_max) {   // fainted, or underflowed past 0
-        if (bFaintMessageCount == 0) ShowBattleMessage(CriticalHit, fighterIndex, 2);
+        if (bFaintMessageCount == 0) ShowBattleMessage(AttackResult, fighterIndex, 2);
         g_anFaintedRosterIndices[firstFreeSlot] = f->bRosterIndex;
         g_nXpAccum   += MonsterTable[f->bRosterIndex].reward_xp;
         g_nGoldAccum += MonsterTable[f->bRosterIndex].reward_gold;
@@ -219,13 +219,24 @@ void DispatchPendingAction(int fighterIndex) {                  // 0x080100a0
 void ExecutePlayerAttackSequence(int attackerIndex) {            // 0x080161FE
     Fighter *f = &pFighters[attackerIndex];
 
+    // Buckbeak: the bAttackOutcomeState == 6 tail of this same case (ROM
+    // 0x08016D34). No ResolvePlayerAttack, no TriggerBattleEffect, no
+    // ShowDamageNumber -- and no target-resolution call here either: the
+    // slot was resolved at selection time, so this tail just reads
+    // aEnemySlotTurnOrderIndex[bSelectedActionIndex] (scan-to-first-live
+    // in "Target redirect" below already ran for it).
     if (f->bFighterType == Buckbeak) {
-        int target = ResolveBuckbeakTarget(attackerIndex);
-        int damage = (pFighters[HarryIndex].bLevel >> 1) + 30;
-        if (f->bStatusFlags & SpellPowerBoost) damage = damage * 4 / 3;
-        ShowDamageNumber(target, damage);
-        ApplyDamageToFighter(damage, target);
-        return;                        // Buckbeak never reaches TriggerBattleEffect below
+        PlaySoundById(0x37);
+        // Master stats, not the live pFighters copy (g_aPartyMasterStats
+        // is 0x030024EC; bLevel sits at BattleFighter+0x0E).
+        g_nLastDamage = (g_aPartyMasterStats[Harry].bLevel >> 1) + 30;
+        SetFighterAttackAnimState(targetObject, 2);
+        ShowBattleMessage(AttackResult, g_nLastDamage, 0);
+        if (bPendingStatusMessageVariant != NO_PENDING_STATUS_MESSAGE_VARIANT)
+            ShowBattleMessage(AttackResult, 0, bPendingStatusMessageVariant);
+        ShowFloatingDamageNumber(g_nLastDamage, 0, targetSlot, 0);
+        ApplyDamageToFighter(g_nLastDamage, targetSlot);
+        return;
     }
 
     f->wMp -= g_awSpellMpCost[f->bSpellId * 3 + f->bSpellLevel];
@@ -424,7 +435,7 @@ on `bFighterType == 0xFF` at the call site). `InitPlayerBattleActor_candidate`
 Buckbeak -- so Buckbeak's turn runs the same state machine as the three
 spellcasters, but his damage bypasses `ResolvePlayerAttack` entirely (see
 "Buckbeak" above): he's driven by the shared player dispatcher, but with
-a fully separate, hardcoded-damage sub-state (`Object+0x60 == 6`) no
+a fully separate, level-scaled damage sub-state (`Object+0x60 == 6`) no
 other fighter type reaches.
 
 **`TickBattleTurnStateMachine`'s case 4** confirms this at the

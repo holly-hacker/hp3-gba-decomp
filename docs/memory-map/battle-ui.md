@@ -710,7 +710,7 @@ multi-line text-box drawer, see
 Applied to `ShowBattleMessage`'s first parameter, named from
 the case table below: `SpellLevelUp=0, EscapeBlocked=1,
 SpecialMoveAnnounce=2, SpecialAbilityText=3, ActionAnnounce=4,
-CriticalHit=5, FaintResult=6, ItemUseAnnounce=7, StatusRestore=8,
+AttackResult=5, FaintResult=6, ItemUseAnnounce=7, StatusRestore=8,
 SpCost=9, MpCost=10, Victory=11, Defeat=12, CantMove=13,
 CanMoveAgain=14, AttackWeakened=15, Hidden=16, ImmuneToParalysis=17`.
 `SpecialAbilityText` (3) doesn't get its own visible `case` label in the

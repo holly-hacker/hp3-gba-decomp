@@ -177,7 +177,7 @@ loop of a real text renderer.
 loops `DrawTextLine` directly, one call per line, advancing Y by
 `DAT_03003121` (line height) each iteration, until the string is
 null-terminated or out of vertical room. Multi-line box drawing built on
-the single-line primitive. Found via `ShowBattleMessage`'s `CriticalHit`
+the single-line primitive. Found via `ShowBattleMessage`'s `AttackResult`
 case ([`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)).
 
 **`sub_08020714`** (`0x08020714`): the actual per-glyph decode loop.

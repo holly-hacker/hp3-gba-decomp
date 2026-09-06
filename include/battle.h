@@ -227,6 +227,38 @@ extern void sub_08018304(void);
 extern void sub_08018460(s32 arg0);
 extern u8 RollFighterParalysisEscape(s32 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
 extern void sub_0800E0CC(s32 fighterType, s32 arg1);
+// ShowBattleMessage's first parameter; what each case renders is in
+// docs/memory-map/battle-ui.md's "ShowBattleMessage -- case -> dialog text
+// table". SpecialAbilityText (3) shares the switch's trailing default body.
+// Case 5 covers the whole attack-result dispatch, not just crits.
+typedef enum {
+    SpellLevelUp      = 0,
+    EscapeBlocked     = 1,
+    SpecialMoveAnnounce = 2,
+    SpecialAbilityText = 3,
+    ActionAnnounce    = 4,
+    AttackResult      = 5,
+    FaintResult       = 6,
+    ItemUseAnnounce   = 7,
+    StatusRestore     = 8,
+    SpCost            = 9,
+    MpCost            = 10,
+    Victory           = 11,
+    Defeat            = 12,
+    CantMove          = 13,
+    CanMoveAgain      = 14,
+    // battle-ui.md calls this case AttackWeakened; renamed because
+    // BattleStatusFlags already owns that name.
+    AttackWeakenedMessage = 15,
+    // battle-ui.md calls this case Hidden; renamed for the same reason.
+    HiddenFromView    = 16,
+    ImmuneToParalysis = 17,
+} BattleMessageCode;
+// bPendingStatusMessageVariant_candidate's "none" value, written at battle
+// init: the guard at each ShowBattleMessage(AttackResult, 0, variant) site
+// skips the second message while it holds.
+#define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
+
 extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void TickBattleMenuInput(void);
