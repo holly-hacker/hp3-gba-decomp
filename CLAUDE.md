@@ -112,7 +112,7 @@ Actual layout so far (both ROM versions supported throughout, not just US):
 ├── regions.{us,jp}.txt     # the manifest: extracted byte ranges (address, end, source,
 │                           #   name), plus `label` lines naming addresses inside still-raw
 │                           #   territory. Directive rows (krawall-module, dialog-text,
-│                           #   monster-table, ...) point at data/ instead of a file.
+│                           #   battle-script-table, ...) point at data/ instead of a file.
 ├── macros.inc, ram_symbols.{us,jp}.inc, krawall_names.txt  # asm macros; named addresses;
 │                           #   module/sample name overrides
 ├── asm/                    # committed regions the manifest points at. asm/krawall/ is NOT

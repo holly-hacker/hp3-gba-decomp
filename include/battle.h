@@ -80,6 +80,40 @@ typedef struct BattleFighter {
     /*0x44*/ u8 bParalysisEscapeChance;
 } BattleFighter;
 
+// One MonsterTable record, 0x18 bytes; see docs/formats/folio_bruti.md.
+typedef struct MonsterTableRow {
+    u16 wHp;                 // 0x00
+    u8 bLevel;               // 0x02
+    u8 bSpeed;               // 0x03
+    u8 bAccuracy;            // 0x04
+    u8 bCritChance;          // 0x05
+    u16 wDamageMin;          // 0x06
+    u16 wDamageMax;          // 0x08
+    u8 abEffectiveness[6];   // 0x0A
+    u16 wRewardXp;           // 0x10
+    u16 wRewardGold;         // 0x12
+    u8 bSpecialChance;       // 0x14, not copied to BattleFighter
+    u8 bSpecialId;           // 0x15, not copied to BattleFighter
+    u16 wPad_0x16;           // 0x16
+} MonsterTableRow;
+extern const MonsterTableRow MonsterTable[];  // 0x0804F410, src/data/monsters.c
+
+// One graphics-pointer table row, 0x20 bytes; only +0x08 is used here.
+typedef struct MonsterGfxRow {
+    u8 pad_00[0x08];
+    s32 nEffectSlot_candidate;  // 0x08, AttachObjectEffectSlot arg
+    u8 pad_0C[0x14];            // -> 0x20
+} MonsterGfxRow;
+extern MonsterGfxRow g_pMonsterGraphicsTable[];  // 0x0804E6B4
+extern u8 g_pMonsterAnimFrameTable[];            // 0x08051E70, stride 0x60
+// Shadow-companion graphics row; only +0x08 is used here.
+typedef struct ShadowGfxRow {
+    u8 pad_00[0x08];
+    void *pEffectData;  // 0x08, AttachEffectOwner arg (compared by address)
+} ShadowGfxRow;
+extern ShadowGfxRow g_MonsterShadowGfxRow;       // 0x0804EF54, single row
+extern u8 g_MonsterShadowAnimData[];             // 0x08053850
+
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
 // ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate;
 // see docs/memory-map/battle.md for the rest.
@@ -183,9 +217,13 @@ struct Object {
     u8 bFighterIndex;       // 0x91
     u8 pad_92[0x06];        // -> 0x98
     void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
-    u8 pad_9C[0x08];        // -> 0xA4
+    u8 pad_9C[0x04];        // -> 0xA0
+    struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow)
     void *pLinkedObject_candidate;  // 0xA4; see docs/formats/room_scripts.md and
-    u8 pad_A8[0x29];        // -> 0xD1
+                                     // docs/formats/save.md's per-object save table
+                                     // (Object+0xa0/+0xa4/+0xa8, three linked-object slots)
+    struct Object *pOwnerObject;   // 0xA8, back-link (shadow -> main)
+    u8 pad_AC[0x25];        // -> 0xD1
     u8 bFlags_0xD1;         // 0xD1, bit 0x20 set / bits 0x0C cleared by InitializeBattle
     u8 pad_D2[0x03];        // -> 0xD5
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot
@@ -300,7 +338,7 @@ extern u8 g_bLastTargetIndex;                   // 0x0300274C
 extern void sub_080129F4(void);
 extern void sub_08012B40(void);
 extern void sub_080019C0(void *obj, s32 x, s32 y);  // sets Object+0x3c/+0x40, i.e. nVelX/nVelY directly
-extern void sub_08003A30(void *obj, s16 a, s16 b, s16 c);  // a is stored pre-shifted << 8 into a 16-bit field
+extern void sub_08003A30(void *obj, s32 a, s16 b, s16 c);  // a is shifted << 8 inside and stored to a 16-bit field
 extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
@@ -338,6 +376,8 @@ extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
 extern void SetObjectAssetRecord(Object *obj, void *rec);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
 extern void TickPlayerActionState(Object *obj);
+extern void TickFighterAttackAnimState_candidate(Object *obj);  // 0x08015608
+extern void AttachEffectOwner_candidate(Object *obj, void *pEffectData);  // 0x08030878
 extern void sub_08001958(Object *obj, s32 v);
 extern void sub_08003A44(Object *obj, s32 a, s32 b, s32 c);
 extern void *memcpy(void *dst, const void *src, u32 n);

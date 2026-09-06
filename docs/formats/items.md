@@ -120,9 +120,8 @@ real category but passes the `0xA` "all items" filter, clones index
 
 ## The extraction pipeline
 
-`g_pItemTable` round-trips byte-exact through `tools/items/`, mirroring
-`tools/monsters/`'s pattern -- see [`folio_bruti.md`](folio_bruti.md)'s
-"The extraction pipeline". `item_codec.py` holds the field layout,
+`g_pItemTable` round-trips byte-exact through `tools/items/`.
+`item_codec.py` holds the field layout,
 `extract_items.py` (`just extract-items`) bootstraps
 `data/items/items.json`, `pack_items.py` (`just pack-items`) packs it
 back into `regions.us.txt`'s `item-table` row. All 132 records are

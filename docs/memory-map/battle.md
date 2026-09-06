@@ -476,7 +476,28 @@ pseudo would tie to the loaded value in regmove and steal `r0` from the
 mask. No JP row exists for this range, so the JP bytes here are unverified
 against that source.
 
+### `InitMonsterBattleActor` (`0x08014C88`), PROVEN
+
+`(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex)` returns
+the fighter's main `Object *` (despite the `void` prototype floating
+around: the ROM ends in `adds r0,r6,#0`, same as the player counterpart).
+`wFighterType` is `monsterIndex + 4`; positioning is `(slot*36 + 0xCC)` /
+`(0x4E - slot*4)` with a `+0x18` restructure for the move; `dwFlags` is
+`0x20006019` (`0x6019` for the companion) and `bUnk16` is `-0x40`. Types
+3/29/26 get extra `sub_08003A30`/`sub_08003A44` calls on the main object;
+types 45-47 additionally spawn a shadow `Object` (own anim tables at
+`0x0804EF54`/`0x08053850`) cross-linked at `+0xA0`/`+0xA8`. The
+`BattleFighter` is filled field-for-field from `MonsterTable` (stride
+`0x18`); `wHp`/`wHp_max` share one load, `bRosterIndex` is the monster
+index, `bFighterType` is `Enemy`, `unk3E` is assigned `-1` directly (no
+read-modify-write), and there is no faint branch. The decompilation
+(`src/battle/init_monster_battle_actor.c`, byte-identical) holds the
+cursor addresses in two temps to reproduce ROM's computation order, and
+writes the slot doubling as `slot + slot` (`slot * 2` splits the copy and
+shift across `r3`/`r0`).
+
 ## Turn order -- `bStat_speed`, PROVEN
+
 
 `MonsterTable+0x03` / `BattleFighter+0x2A` is a turn-order/initiative
 value, lower = earlier turn. `bStat_speed` clusters `178-254` across the
@@ -719,7 +740,7 @@ field (the reader is what gives the field its name).
 | `+0x10`, `+0x12` | `+0x0C`, `+0x28` | `wRewardXp`, `wRewardGold` | `ApplyDamageToFighter`, `GrantMonsterKillReward` |
 | `+0x14`, `+0x15` | -- | `special_effect_chance`, `special_effect_id` | `RollMonsterSpecialEffect_candidate` (read from the table directly, not copied) |
 
-`tools/monsters/monster_codec.py` uses these same labels.
+`MonsterTableRow` (`include/battle.h`) uses these same labels.
 
 ## XP/reward payout -- `MonsterTable+0x10`/`+0x12`, PROVEN
 

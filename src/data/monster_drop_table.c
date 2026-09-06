@@ -1,7 +1,7 @@
 #include "constants/items.h"
 #include "monster_drop_table.h"
 
-// Monster drop table, following the standard monster order (see data/monsters/monsters.json).
+// Monster drop table, following the standard monster order (see src/data/monsters.c).
 // See docs/memory-map/battle.md.
 const MonsterDropEntry g_pMonsterDropTable[69] = {
     { { { 30, ITEM_GRAND_WIGGENWELD_POTION }, { 10, ITEM_PEPPERUP_POTION } } },    // Ruby Fire Crab
@@ -72,5 +72,5 @@ const MonsterDropEntry g_pMonsterDropTable[69] = {
     { { { 100, ITEM_CARD_LADY_CARMILLA_SANGUINA }, { 0, ITEM_PEPPERUP_POTION } } },    // Brown Recluse Spider
     { { { 100, ITEM_THE_MONSTER_BOOK_OF_MONSTERS }, { 0, ITEM_GRAND_WIGGENWELD_POTION } } },    // 'The Monster Book of Monsters'
     { { { 100, ITEM_SWEDISH_SHORTSNOUT_DRAGON_HIDE_GLOVES }, { 0, ITEM_PEPPERUP_POTION } } },    // 'The Monster Book of Monsters'
-    { { { 100, ITEM_THE_MONSTER_BOOK_OF_MONSTERS }, { 0, ITEM_PEPPERUP_POTION } } },    // roster 68 (name unresolved in monsters.json)
+    { { { 100, ITEM_THE_MONSTER_BOOK_OF_MONSTERS }, { 0, ITEM_PEPPERUP_POTION } } },    // roster 68 (past the bestiary grid; no name)
 };

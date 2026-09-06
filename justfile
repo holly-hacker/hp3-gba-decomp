@@ -111,22 +111,6 @@ pack-text ver="us":
     python3 tools/text/pack_text.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
-# `build` -- data/monsters/ is gitignored (same footing as the baserom,
-# see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
-# silently regenerated/overwritten on every build. US only -- see
-# docs/formats/folio_bruti.md.
-# Bootstrap data/monsters/ locally from baserom.us.gba.
-extract-monsters:
-    python3 tools/monsters/extract_monsters.py
-
-# Gitignored (build/), like everything else pack_monsters.py writes. Reads
-# local data/monsters/ (run `extract-monsters` first if missing) plus
-# this version's monster-table row in regions.<ver>.txt for addresses.
-# Pack data/monsters/ into this version's monster-table assembly.
-pack-monsters ver="us":
-    python3 tools/monsters/pack_monsters.py {{ver}}
-
-# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/battle_scripts/ is gitignored (same footing as the
 # baserom, see CLAUDE.md hard rule 2) and meant to be user-editable, so
 # it's never silently regenerated/overwritten on every build. US only --
@@ -199,7 +183,7 @@ pack-levels ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-monsters extract-battle-scripts extract-levels extract-items extract-item-icons
+extract-all: extract-krawall extract-text extract-battle-scripts extract-levels extract-items extract-item-icons
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
@@ -214,7 +198,7 @@ gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
 # Assemble every region and link them at their manifest addresses.
-build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-monsters ver) (pack-battle-scripts ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
+build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-scripts ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
     for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}
@@ -230,7 +214,6 @@ diff-region name ver="us": (build ver)
 compare ver="us": (build ver)
     cmp baserom.{{ver}}.gba build/{{ver}}/rom.gba && echo "MATCH"
 
-# Not `check` -- that name's reserved for the fancier configure.py+ninja+
 # objdiff version described in CLAUDE.md's "Target toolchain", not built
 # yet. Verifies donor ROMs, then the full disassembly and the linked
 # build for both versions.

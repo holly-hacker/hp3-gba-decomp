@@ -67,7 +67,7 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 
 - [`formats/folio_bruti.md`](formats/folio_bruti.md) — `MonsterTable`,
   the 24-byte monster stat record, per-spell effectiveness, and the
-  bestiary grid. Pipeline: `tools/monsters/`, `data/monsters/`.
+  bestiary grid. Table lives as committed C in `src/data/monsters.c`.
 - [`formats/graphics.md`](formats/graphics.md) — the generic
   resource-decompression dispatcher and its four codecs, the room
   resource table, OBJ palette and tile loading. No pipeline yet.

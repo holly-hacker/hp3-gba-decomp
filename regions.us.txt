@@ -97,6 +97,14 @@ label 0x080308A8 AttachObjectEffectSlot_candidate
 label 0x0800187C SetObjectAssetRecord
 label 0x080018D8 SetObjectAnimData
 label 0x08051560 g_aFighterAnimDataTable
+# InitMonsterBattleActor (src/battle/init_monster_battle_actor.c) callees
+# and data tables still raw incbin territory.
+thumb-func 0x08015608 TickFighterAttackAnimState_candidate
+label 0x08030878 AttachEffectOwner_candidate
+label 0x0804E6B4 g_pMonsterGraphicsTable
+label 0x08051E70 g_pMonsterAnimFrameTable
+label 0x0804EF54 g_MonsterShadowGfxRow
+label 0x08053850 g_MonsterShadowAnimData
 
 # InitInterruptSystem/InstallInterruptHandler (src/interrupts/) callees,
 # still raw incbin territory.
@@ -475,9 +483,8 @@ dialog-text 0x08F0FB84 0x08F24704 data/text/it.json DialogTextIt
 dialog-text 0x08F24704 0x08F37D1C data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 
-# Folio Bruti monster stat table
-# monster-table <start> <end> <json-file> <name>
-monster-table 0x0804F410 0x0804FA88 data/monsters/monsters.json MonsterTable
+# Folio Bruti monster stat table, decompiled to C
+c-file 0x0804F410 0x0804FA88 src/data/monsters.c MonsterTable
 
 # g_pMonsterDropTable[69]
 c-file 0x0804FC28 0x0804FE50 src/data/monster_drop_table.c g_pMonsterDropTable
@@ -514,6 +521,8 @@ c-file 0x0800DDB0 0x0800DE50 src/battle/update_battle.c UpdateBattle
 c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
 
 c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
+
+c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
 
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

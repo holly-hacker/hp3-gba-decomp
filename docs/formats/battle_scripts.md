@@ -547,7 +547,7 @@ id -> script chain).
 ## The extraction pipeline, built and build-integrated
 
 **PROVEN** (round-trips byte-exact, `just compare us` passes). Mirrors
-the Krawall/monster-table pipelines, with one difference from both:
+the Krawall pipeline, with one difference:
 the curated source is one plain-text file per script, not a single
 JSON blob, and opcode naming lives in its own small JSON file (ISA-level
 format knowledge, not game content, so it's committed rather than
@@ -617,7 +617,7 @@ gitignored):
   to match the ROM.
 - `regions.us.txt`'s `battle-script-table` row (`0x0805994C`-`0x0805BA7C`)
   and `tools/manifest.py`'s `battle-script-table` directive wire the packed
-  output into the build the same way `monster-table` does.
+  output into the build the same way `krawall-module` rows do.
 
 ### Renaming a script
 
