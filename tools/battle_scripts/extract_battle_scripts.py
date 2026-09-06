@@ -79,7 +79,7 @@ def main() -> None:
         sys.exit(f"script 0 pointer {pointers[0]:#x} != expected SCRIPT_DATA_START {SCRIPT_DATA_START:#x} "
                   "-- baserom.us.gba doesn't match the layout this tool was built against")
 
-    out_dir = Path(__file__).parent.parent.parent / "data" / "scripts"
+    out_dir = Path(__file__).parent.parent.parent / "data" / "battle_scripts"
     out_dir.mkdir(parents=True, exist_ok=True)
     for stale in out_dir.glob("*.txt"):
         stale.unlink()
