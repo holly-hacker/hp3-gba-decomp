@@ -125,3 +125,7 @@ krawall-module 0x08D3C5B4 0x08D3EE2C data/audio/modules/MusPause.json MusPause
 # US table (0x0804F410), just at a different address; one C source serves
 # both. See docs/formats/folio_bruti.md.
 c-file 0x0804F33C 0x0804F9B4 src/data/monsters.c MonsterTable
+
+# Encounter roster tables, see docs/formats/encounters.md
+c-file 0x08050B98 0x08051138 src/data/random_encounters.c g_aRandomEncounters
+c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounters

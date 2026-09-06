@@ -495,6 +495,10 @@ level-table 0x0804FE50 0x08050300 data/levels/harry.json HarryLevelTable
 level-table 0x08050300 0x080507B0 data/levels/ron.json RonLevelTable
 level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
 
+# Encounter roster tables, see docs/formats/encounters.md
+c-file 0x08050C6C 0x0805120C src/data/random_encounters.c g_aRandomEncounters
+c-file 0x0805120C 0x08051248 src/data/scripted_encounters.c g_aScriptedEncounters
+
 # Battle-script bytecode
 # battle-script-table <start> <end> <dir> <name>
 battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
