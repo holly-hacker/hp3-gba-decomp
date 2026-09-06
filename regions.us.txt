@@ -530,3 +530,12 @@ c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterB
 
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists
+
+# SpawnOverworldMonsterEncounters (src/overworld/) callees, still raw
+# incbin territory.
+label 0x0802BA0C GetEncounterKindTerrainType
+label 0x0802BA1C FindWanderingMonsterSpawnPosition
+label 0x0802BAD0 PickMaxDamageMonster
+label 0x0802B41C SpawnWanderingMonsterObject
+label 0x0802C390 FreeBlock
+c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters

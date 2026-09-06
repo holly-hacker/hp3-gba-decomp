@@ -45,7 +45,7 @@ OUTPUT="$1"
 TMPASM=$(mktemp --suffix=.s)
 trap 'rm -f "$TMPASM" "$TMPASM.fixed"' EXIT
 
-"$CC1" -O2 -mthumb-interwork -Wimplicit -Wparentheses -Werror -fhex-asm \\
+"$CC1" -O2 -mthumb-interwork -Wimplicit -Wparentheses -Werror -fhex-asm -fno-builtin \\
     -o "$TMPASM" "$INPUT"
 
 {{

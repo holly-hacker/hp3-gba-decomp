@@ -23,3 +23,8 @@
 .set gMt19937RemainingIndices2,  0x030055EC
 .set gMt19937AutoSeedCallCount,  0x030055F0
 .set gMt19937SeedValue,          0x030055F4
+
+@ --- Overworld wandering monsters (see include/overworld.h) ---
+.set g_bTouchedMonsterRecordCount, 0x03003BD0  @ byte: queued (encounter id, kind) pair count
+.set g_abTouchedMonsterRecords,    0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
+.set g_pTouchedWanderingMonster,    0x03003BE8  @ Object *: armed wandering-monster object

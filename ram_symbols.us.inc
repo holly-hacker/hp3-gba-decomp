@@ -66,6 +66,11 @@
 .set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id
 .set g_GameModeStackContext_candidate, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
 
+@ --- Overworld wandering monsters (see include/overworld.h) ---
+.set g_bTouchedMonsterRecordCount, 0x03003B70  @ byte: queued (encounter id, kind) pair count
+.set g_abTouchedMonsterRecords,    0x03003B74  @ u8[20]: 5 x 4-byte touched-monster records
+.set g_pTouchedWanderingMonster,    0x03003B88  @ Object *: armed wandering-monster object
+
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
                                          @ text-rendering fields (e.g. +0x11 = line height); not

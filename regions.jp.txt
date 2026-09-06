@@ -129,3 +129,14 @@ c-file 0x0804F33C 0x0804F9B4 src/data/monsters.c MonsterTable
 # Encounter roster tables, see docs/formats/encounters.md
 c-file 0x08050B98 0x08051138 src/data/random_encounters.c g_aRandomEncounters
 c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounters
+
+# SpawnOverworldMonsterEncounters (src/overworld/) callees, still raw
+# incbin territory.
+label 0x0802BA68 GetEncounterKindTerrainType
+label 0x0802BA78 FindWanderingMonsterSpawnPosition
+label 0x0802BB2C PickMaxDamageMonster
+label 0x0802B478 SpawnWanderingMonsterObject
+label 0x0802C348 AllocZeroed
+label 0x0802C3EC FreeBlock
+label 0x0802C4AC memset
+c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters

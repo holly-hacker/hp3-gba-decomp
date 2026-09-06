@@ -45,6 +45,7 @@ void LinkFreeBlock(MemBlock *afterBlock, MemBlock *newBlock);
 void UnlinkFreeBlock(MemBlock *block, u32 poolIndex);
 void *AllocBlock(u32 size);
 void *AllocZeroed(u32 size);
+void FreeBlock(void *ptr);
 void *BuildFreeList(void *buffer, u32 count, s32 stride);
 
 // Generic intrusive doubly-linked-list node: List_PushHead's `node`
