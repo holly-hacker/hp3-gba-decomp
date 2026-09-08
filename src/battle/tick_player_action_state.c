@@ -93,7 +93,7 @@ void TickPlayerActionState(Object *obj)
         if (flags == 0x21) {
             if (fs->dwPlayerActionActive_candidate == 0)
                 sub_08012A38();
-            sub_0800E0CC(ACTIVE_FIGHTER.bFighterType, 0);
+            DrawFighterStatsUi_candidate(ACTIVE_FIGHTER.bFighterType, 0);
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
                 obj->bActionFlags = 1;
                 return;
@@ -254,7 +254,7 @@ void TickPlayerActionState(Object *obj)
                     g_nLastDamage = ResolvePlayerAttack(
                         g_pFightState->bActiveFighterIndex,
                         g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
-                sub_0800E0CC(g_pFightState->pFighters[g_pFightState->bMenuFighterIndex].bFighterType, 0);
+                DrawFighterStatsUi_candidate(g_pFightState->pFighters[g_pFightState->bMenuFighterIndex].bFighterType, 0);
             } else {
                 obj->bAttackOutcomeState = AttackOutcome_Buckbeak;
             }

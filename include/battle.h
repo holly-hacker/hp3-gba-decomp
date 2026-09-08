@@ -272,7 +272,7 @@ extern void ApplyStatusDamageToFighter_candidate(s32 damage, s32 fighterIndex);
 extern void sub_08018304(void);
 extern void sub_08018460(s32 arg0);
 extern u8 RollFighterParalysisEscape(s32 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
-extern void sub_0800E0CC(s32 fighterType, s32 arg1);
+extern void DrawFighterStatsUi_candidate(s32 fighterType, s32 panelSlot);
 // ShowBattleMessage's first parameter; what each case renders is in
 // docs/memory-map/battle-ui.md's "ShowBattleMessage -- case -> dialog text
 // table". SpecialAbilityText (3) shares the switch's trailing default body.
@@ -309,7 +309,7 @@ extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
-extern void SelectAiTarget(s32 fighterIndex, s32 arg1);  // return value unused
+extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
 extern void SetFighterAttackAnimState_candidate(Object *obj, s32 state);
 
 extern u16 g_wHeldKeysBitmask_candidate;  // 0x030034F0, see ram_symbols.us.inc

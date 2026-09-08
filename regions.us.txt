@@ -49,7 +49,7 @@ label 0x08003A30 sub_08003A30
 label 0x0802D640 sub_0802D640
 label 0x0802D64C sub_0802D64C
 label 0x08012A38 sub_08012A38
-label 0x0800E0CC sub_0800E0CC
+label 0x0800E0CC DrawFighterStatsUi_candidate
 label 0x08017B5C ShowDamageNumber_candidate
 label 0x080019A4 SnapObjectPosition
 label 0x08001A84 StartObjectMove
@@ -68,7 +68,7 @@ label 0x0800FFAC RollFighterParalysisEscape
 label 0x080104A0 OpenBattleTopMenu
 label 0x080101D0 TickBattleMenuInput
 label 0x080100A0 DispatchPendingAction
-label 0x0800E39C SelectAiTarget
+label 0x0800E39C DrawEnemyStatsUi_candidate
 c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
 label 0x080014B4 AllocObjectOfType
 label 0x080019B0 SetObjectPosition

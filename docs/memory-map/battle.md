@@ -96,7 +96,8 @@ void RunFighterTurn(int fighterIndex) {
     }
 
     if (f->bFighterType == Enemy) {
-        int target = SelectAiTarget(fighterIndex);          // FUN_0800e39c, undecoded
+        DrawEnemyStatsUi_candidate(fighterIndex, 0);      // 0x0800e39c: portrait, HP bar, name, HP/MaxHP, level
+        int target = EnemyTargetSelection_undecoded;      // selection step not decoded; feeds ResolveEnemyAttack below
         MonsterTableEntry *m = &MonsterTable[f->bRosterIndex];
         int damage = ResolveEnemyAttack(fighterIndex, target);   // 0x08017E44
         g_nLastDamage = damage;
@@ -371,10 +372,10 @@ Notes on pieces the pseudocode above elides:
   (`build/us/full_disasm.s:37180-37182` confirms the `Object+8 == 3`
   branch that skips straight past the MP-deduction/`ResolvePlayerAttack`
   block into his own hardcoded-damage sub-state, `Object+0x60 == 6`).
-- `SelectAiTarget` (`FUN_0800e39c`) and item-use resolution
+- Enemy target selection (the `target` in `RunFighterTurn` above -- the
+  `0x0800e39c` call there is the now-decoded `DrawEnemyStatsUi_candidate`
+  panel draw, not the selection) and item-use resolution
   (`TickPlayerActionState`'s sub-state `2`,
-  `ApplyStatusRestoreItemEffect` at sub-state `4`) are not decoded --
-  see `battle-ui.md` for what's known about the item path.
 
 ## `BattleFighter` struct (0x48-byte stride)
 
@@ -450,7 +451,7 @@ other fighter type reaches.
 **`TickBattleTurnStateMachine`'s case 4** confirms this at the
 dispatch level: non-`Enemy` fighters call `DispatchPendingAction()`
 directly (menu-driven), while `Enemy` fighters skip it and set anim state
-`0x1a` directly after `SelectAiTarget`/a can't-move check
+`0x1a` directly after `DrawEnemyStatsUi_candidate`/a can't-move check
 (`RollFighterParalysisEscape`).
 
 Both `TickFighterAttackAnimState_candidate` (enemy) and
@@ -843,8 +844,8 @@ countdown whose meaning is local to that state.
   (`OpenBattleTopMenu`). Once `TickBattleMenuInput` reports the menu
   selection resolved (`bMenuInputPending_candidate` clears), transitions
   to state `4`.
-- **4 -- resolve the active fighter's action.** `Enemy` fighters call
-  `SelectAiTarget` and `RollFighterParalysisEscape` (paralysis failure
+- **4 -- resolve the active fighter's action.** `Enemy` fighters draw the
+  enemy panel (`DrawEnemyStatsUi_candidate`) and call `RollFighterParalysisEscape` (paralysis failure
   shows a message and transitions to state `5`), then set the fighter's
   animation state to `0x1a` (attack windup, see `TickPlayerActionState`'s
   own case `0x1a`); non-`Enemy` fighters call
