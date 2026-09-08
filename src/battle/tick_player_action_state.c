@@ -680,7 +680,7 @@ void TickPlayerActionState(Object *obj)
                 break;
             }
             case 3:
-                sub_0800EB2C(fighterIndex);
+                ClearPoisonedFighter_candidate(fighterIndex);
                 break;
             case 4:
                 ClearParalyzedFighter_candidate(fighterIndex);

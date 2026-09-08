@@ -24,19 +24,22 @@ label 0x080208B4 sub_080208B4
 label 0x08003708 SetObjectFlippedX
 label 0x080039E8 sub_080039E8
 label 0x08015484 SetPlayerObjectAnim
+label 0x0801539C SetMonsterObjectAnim
 label 0x0800D264 sub_0800D264
 label 0x0803FC68 PlaySoundById
 label 0x08018B14 sub_08018B14
-label 0x08001E7C SetFighterAttackAnimState_candidate
-label 0x08018094 ApplyStatusDamageToFighter_candidate
+c-file 0x08001E7C 0x08001EA0 src/battle/set_fighter_attack_anim_state.c SetFighterAttackAnimState_candidate
+c-file 0x08018094 0x080181AC src/battle/apply_status_damage_to_fighter.c ApplyStatusDamageToFighter_candidate
 label 0x08026CDC sub_08026CDC
 label 0x08026CF0 sub_08026CF0
 label 0x08015334 sub_08015334
 label 0x080152CC sub_080152CC
 label 0x080181AC ShowFloatingDamageNumber_candidate
 label 0x08010864 ShowBattleMessage
-label 0x0800EB2C sub_0800EB2C
-label 0x0800EA68 ClearParalyzedFighter_candidate
+c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
+c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
+c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleaseParticleEmitter_candidate
+c-file 0x0800EA68 0x0800EB2C src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
 label 0x08018ACC PostActionBattleCheck
 c-file 0x08018B70 0x08018BE0 src/battle/trigger_battle_effect.c TriggerBattleEffect
 label 0x08018BE0 CreateEffectScriptObject
@@ -64,7 +67,7 @@ label 0x0800FEE0 sub_0800FEE0
 label 0x08013108 sub_08013108
 label 0x08018304 sub_08018304
 label 0x08018460 sub_08018460
-label 0x0800FFAC RollFighterParalysisEscape
+c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
 label 0x080104A0 OpenBattleTopMenu
 label 0x080101D0 TickBattleMenuInput
 label 0x080100A0 DispatchPendingAction

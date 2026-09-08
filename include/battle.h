@@ -1,6 +1,8 @@
 #pragma once
 
 #include "types.h"
+#include "mem.h"
+#include "graphics.h"
 
 // See docs/memory-map/battle.md.
 
@@ -191,7 +193,10 @@ struct Object {
     u8 pad_10[0x04];        // -> 0x14
     u16 wMoveDuration;      // 0x14
     u8 bUnk16;              // 0x16
-    u8 pad_17[0x11];        // -> 0x28
+    u8 pad_17[0x0D];        // -> 0x24
+    ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
+                             // ReleaseParticleEmitter_candidate and zeroed
+                             // when nonzero (see ClearParalyzedFighter_candidate)
     u32 dwUnk_0x28;         // 0x28, set to 1 by InitPlayerBattleActor_candidate
     u32 nX;                 // 0x2C, 16.16
     u32 nY;                 // 0x30, 16.16
@@ -271,7 +276,7 @@ extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighter
 extern void ApplyStatusDamageToFighter_candidate(s32 damage, s32 fighterIndex);
 extern void sub_08018304(void);
 extern void sub_08018460(s32 arg0);
-extern u8 RollFighterParalysisEscape(s32 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
+extern u8 RollFighterParalysisEscape(u8 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
 extern void DrawFighterStatsUi_candidate(s32 fighterType, s32 panelSlot);
 // ShowBattleMessage's first parameter; what each case renders is in
 // docs/memory-map/battle-ui.md's "ShowBattleMessage -- case -> dialog text
@@ -310,7 +315,7 @@ extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
-extern void SetFighterAttackAnimState_candidate(Object *obj, s32 state);
+extern void SetFighterAttackAnimState_candidate(Object *obj, u8 state);
 
 extern u16 g_wHeldKeysBitmask_candidate;  // 0x030034F0, see ram_symbols.us.inc
 
@@ -325,8 +330,8 @@ extern s32 sub_08026CDC(s32 spellLevel);
 extern s32 sub_08026CF0(s32 spellLevel);
 extern u16 sub_08015334(s32 x, s32 fighterIndex);
 extern u16 sub_080152CC(s32 x, s32 fighterIndex);
-extern void sub_0800EB2C(s32 fighterIndex);
-extern void ClearParalyzedFighter_candidate(s32 fighterIndex);
+extern void ClearPoisonedFighter_candidate(u8 fighterIndex);  // clears Poisoned, zeroes bPoisonDamage; CurePoison's shared helper
+extern void ClearParalyzedFighter_candidate(u8 fighterIndex);
 extern void PostActionBattleCheck(void);
 extern void PushBattleState(s32 state);
 extern void DecrementFolioUniversitasCard(s32 slot);

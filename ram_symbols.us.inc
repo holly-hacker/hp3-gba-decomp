@@ -102,6 +102,13 @@
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
 .set sActiveObjectListHead,          0x030015B0  @ ListNode *: head of the active-object list
 
+@ --- Resource cache / particle emitters (see docs/formats/graphics.md and
+@ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
+.set g_aResourceCache,                    0x03005114  @ ResourceCacheSlot[15]
+.set g_pParticleEmitterFreeListHead,      0x030051B0  @ ListNode *
+.set g_wActiveParticleEmitterCount,       0x030051A0  @ u16
+.set g_pParticleEmitterActiveListHead,    0x03005198  @ ListNode *
+
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked
 @ against our own disassembly there. That script tracks cursor 1 only;
