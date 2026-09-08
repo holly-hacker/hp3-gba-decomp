@@ -33,6 +33,6 @@ u32 GetEncounterKindTerrainType(u32 kind);
 // attempts.
 s32 FindWanderingMonsterSpawnPosition(u32 *pOutPos, u32 terrainType, SpawnPosition *pPlacedPositions, u32 placedCount);
 // Strongest-damage monster id among one variant cell's slots 0-2.
-u32 PickMaxDamageMonster(const EncounterSlots *pSlots);
+u32 PickMaxDamageMonster(const u8 *pSlots);
 // Create one wandering-monster object.
 void SpawnWanderingMonsterObject(u8 monsterId, u16 x, u16 y, u8 encounterId, u8 variant, u8 kind);

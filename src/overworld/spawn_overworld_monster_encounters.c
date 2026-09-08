@@ -55,7 +55,7 @@ void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 enc
 
                 // 48 bytes per encounter id, kindOffset for the kind, 4 per variant.
                 // Idiomatic form: &g_aRandomEncounters[encounterId].aKinds[kind].aVariants[variant].
-                monsterId = PickMaxDamageMonster((const EncounterSlots *)((const u8 *)&g_aRandomEncounters[encounterId] + kindOffset + (variant << 2)));
+                monsterId = PickMaxDamageMonster((const u8 *)&g_aRandomEncounters[encounterId] + kindOffset + (variant << 2));
 
                 if (FindWanderingMonsterSpawnPosition((u32 *)&pos, terrainType, pPositions, placedCount)) {
                     pEntry->x = pos.x;
