@@ -147,7 +147,7 @@ all three appear together, giving a **PROVEN** structural match to the
 Matsumoto/Nishimura reference algorithm (not a reimplementation guess: the
 twist loop is split into the textbook two passes of `N-M` (227) and `M-1`
 (396) iterations plus the wraparound word, `N=624`/`M=397`, with the
-canonical upper/lower masks `0x80000000`/`0x7FFFFFFF`). A 14-function
+canonical upper/lower masks `0x80000000`/`0x7FFFFFFF`). A 16-function
 cluster was identified this way, named in `functions.us.cfg`/
 `functions.jp.cfg` (verified with `just disasm-compare` -- both versions
 still byte-identical to their donor ROMs after seeding these names):
@@ -160,8 +160,8 @@ still byte-identical to their donor ROMs after seeding these names):
 | `Mt19937SetSeed` | `0x0803B3AC` | `0x0803B414` | Takes an explicit seed parameter, calls `Mt19937SeedArray`, then immediately marks the full 624-word block as available (`remainingIndices = 0x26F`) and resets the draw cursor to `stateptr + 4` -- state[0] (raw seed OR'd with 1) is skipped as internal-only. |
 | `Mt19937RandRange` / `Mt19937RandRange2` | `0x0803B3E0` / `0x0803B40C` | `0x0803B448` / `0x0803B474` | `min + ((draw & 0x7FFF) * (max-min+1)) >> 15` -- matches the script's `get_random_int_range`. `2` variants read from the second draw cursor (see below). |
 | `Mt19937RandMax` / `Mt19937RandMax2` | `0x0803B434` / `0x0803B458` | `0x0803B49C` / `0x0803B4C0` | `(2 * (draw & 0x7FFF) * (max+1)) >> 16` -- matches the script's `get_random_int_max`. |
-| `Mt19937RandSigned` | `0x0803B47C` | `0x0803B4E4` | Symmetric variant returning a value in `[-max, max]`; not represented in either version of jogotu's script. |
-| `Mt19937Chance` | `0x0803B4D4` | `0x0803B53C` | Boolean percent-chance check: `(draw & 0x7FFF) * 101 >> 15` compared against a caller-supplied percent threshold. |
+| `Mt19937RandSigned` / `Mt19937RandSigned2` | `0x0803B47C` / `0x0803B4A8` | `0x0803B4E4` / `0x0803B510` | Symmetric variant returning a value in `[-max, max]`; not represented in either version of jogotu's script. `2` variant reads from the second draw cursor. No callers found yet. |
+| `Mt19937Chance` / `Mt19937Chance2` | `0x0803B4D4` / `0x0803B500` | `0x0803B53C` / `0x0803B568` | Boolean percent-chance check: `(draw & 0x7FFF) * 101 >> 15` compared against a caller-supplied percent threshold. `2` variant reads from the second draw cursor. No callers found yet. |
 | `Mt19937ChanceNoisy` | `0x0803B52C` | `0x0803B594` | Same as `Mt19937Chance` but adds the live VCOUNT hardware register (`0x04000006`) into the draw before masking -- an extra hardware-timing-noise source layered on top of the PRNG, not represented in the script either. |
 | `Mt19937SeedArray` | `0x0803B560` | `0x0803B5C8` | Low-level: fills `state[0]` with `seed \| 1`, then `state[i] = 0x10DCD * state[i-1]` for the rest -- the actual LCG-based initial fill (called by both seeding entry points). |
 | `Mt19937Next` / `Mt19937Next2` | `0x0803B598` / `0x0803B5F4` | `0x0803B600` / `0x0803B65C` | "Get next tempered value" -- decrements the remaining-count, calls `Mt19937Regenerate` when exhausted, otherwise tempers the current state word inline and advances the cursor. Equivalent to the reference `genrand_int32()`. |

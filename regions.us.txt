@@ -395,7 +395,9 @@ c-file 0x0803B40C 0x0803B434 src/rng/rand_range2.c Mt19937RandRange2
 c-file 0x0803B434 0x0803B458 src/rng/rand_max.c Mt19937RandMax
 c-file 0x0803B458 0x0803B47C src/rng/rand_max2.c Mt19937RandMax2
 c-file 0x0803B47C 0x0803B4A8 src/rng/rand_signed.c Mt19937RandSigned
+c-file 0x0803B4A8 0x0803B4D4 src/rng/rand_signed2.c Mt19937RandSigned2
 c-file 0x0803B4D4 0x0803B500 src/rng/chance.c Mt19937Chance
+c-file 0x0803B500 0x0803B52C src/rng/chance2.c Mt19937Chance2
 c-file 0x0803B52C 0x0803B560 src/rng/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B560 0x0803B598 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B598 0x0803B5F4 src/rng/next.c Mt19937Next
