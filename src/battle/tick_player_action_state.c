@@ -40,17 +40,17 @@ void TickPlayerActionState(Object *obj)
         if ((obj->bActionFlags & 1) == 0)
             return;
         if (obj->wActionVariant == 1) {
-            sub_08015484(obj, 7);
+            SetPlayerObjectAnim(obj, 7);
             slot = obj->bGfxSlotAndFlags >> 4;
             ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceA + 2;
             sub_0800D264(ptr, (slot << 4) + 1, 0xf);
         } else if (obj->wActionVariant == 2) {
-            sub_08015484(obj, 6);
+            SetPlayerObjectAnim(obj, 6);
             slot = obj->bGfxSlotAndFlags >> 4;
             ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceB + 2;
             sub_0800D264(ptr, (slot << 4) + 1, 0xf);
         } else {
-            sub_08015484(obj, 0);
+            SetPlayerObjectAnim(obj, 0);
         }
         obj->bActionFlags &= 0xfe;
         return;
@@ -66,7 +66,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->bActionFlags & 1) {
             sub_08018B14(obj->wStagedDamage, (u8)obj->wFighterType);
             PlaySoundById(0x9b);
-            sub_08015484(obj, 4);
+            SetPlayerObjectAnim(obj, 4);
             obj->bActionFlags &= 0xfe;
         }
         if ((obj->dwFlags & 0x40000) == 0)
@@ -211,7 +211,7 @@ void TickPlayerActionState(Object *obj)
             goto zoomJoin_08016882;
         }
         if (flags & 1) {
-            sub_08015484(obj, 1);
+            SetPlayerObjectAnim(obj, 1);
             obj->bActionFlags &= 0xfe;
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
                 if (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[
@@ -395,7 +395,7 @@ void TickPlayerActionState(Object *obj)
         u8 i;
 
         if (obj->bActionFlags & 1) {
-            sub_08015484(obj, 2);
+            SetPlayerObjectAnim(obj, 2);
             obj->bActionFlags &= 0xfe;
             obj->bAttackOutcomeState = AttackOutcome_None;
             if (ACTIVE_FIGHTER.bFighterType == Harry)
@@ -420,7 +420,7 @@ void TickPlayerActionState(Object *obj)
                     DecrementFolioUniversitasCard(g_pFightState->bAttackVfxId_candidate);
                     DecrementFolioUniversitasCard(g_pFightState->bAttackVfxId_candidate + 1);
                 }
-                sub_08015484(obj, 0);
+                SetPlayerObjectAnim(obj, 0);
                 /* Throughout this case: the real code re-reads
                  * g_pFightState->bActiveFighterIndex (and the fighter fields
                  * indexed by it) at each use instead of caching the index in a
@@ -481,7 +481,7 @@ void TickPlayerActionState(Object *obj)
                                      g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                                      0);
             } else {
-                sub_08015484(obj, 0);
+                SetPlayerObjectAnim(obj, 0);
             }
         }
         if (obj->dwFlags & 0x8000) {
@@ -624,7 +624,7 @@ void TickPlayerActionState(Object *obj)
 
         if (obj->bActionFlags & 1) {
             obj->bAttackOutcomeState = AttackOutcome_None;
-            sub_08015484(obj, 3);
+            SetPlayerObjectAnim(obj, 3);
             obj->bActionFlags &= 0xfe;
             obj->dwStateTimer = 0x1e;
         }
@@ -690,7 +690,7 @@ void TickPlayerActionState(Object *obj)
 
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
         SetFighterAttackAnimState_candidate(obj, 0);
-        sub_08015484(obj, 0);
+        SetPlayerObjectAnim(obj, 0);
         PostActionBattleCheck();
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
         obj->bActionFlags &= 0xfe;
@@ -705,7 +705,7 @@ void TickPlayerActionState(Object *obj)
         case 2: PlaySoundById(0xa4); break;
         case 3: PlaySoundById(0x39); break;
         }
-        sub_08015484(obj, 8);
+        SetPlayerObjectAnim(obj, 8);
         obj->bActionFlags &= 0xfe;
         PlaySoundById(0x9c);
         return;

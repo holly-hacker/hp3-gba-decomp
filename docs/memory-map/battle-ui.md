@@ -460,7 +460,7 @@ every entry resolves to a genuinely separate, cleanly-bounded function:
 
 | Case | Address | Function |
 |---|---|---|
-| `0` | `0x080160FC` | `PlayActionWindupFlash` -- queues a palette-flash cue via `FUN_0800d264` (the same palette-refresh/fade queue used to undo poison discoloration), keyed by an anim-table entry and `Object+0xd5`'s high nibble, plus an anim-data-table switch via `FUN_08015484` -- the windup flash before the swing/cast animation starts |
+| `0` | `0x080160FC` | `PlayActionWindupFlash` -- queues a palette-flash cue via `FUN_0800d264` (the same palette-refresh/fade queue used to undo poison discoloration), keyed by an anim-table entry and `Object+0xd5`'s high nibble, plus an anim-data-table switch via `SetPlayerObjectAnim` (`0x08015484`) -- the windup flash before the swing/cast animation starts |
 | `1` | `0x08017A7C` | `PlayFighterImpactSound` -- per-fighter-type sound (`Object+8`) plus a shared impact sound, the moment the attack/spell visually connects |
 | `2` | `0x080161A2` | `ApplyDamageNumberAnimState` -- commits a damage number previously staged at `Object+0x62` by `ShowDamageNumber_candidate`: sound, a HUD refresh, then (once flag `0x40000` is set) resets the anim state and applies the damage via `ApplyStatusDamageToFighter_candidate` |
 | `3`, `6`-`14`, `16`-`20`, `22`-`25` | `0x08017B42` | `TickPlayerActionStateNoOp` -- shared no-op default, also every other case's own tail branch target |
@@ -540,7 +540,7 @@ Move script: for Harry, it reads `(&g_abHarryCardEffectId)[DAT_03003f44]`
 Harry. For Hermione, it reads
 `(&g_abHermioneLectureEffectId_candidate)[bSpellId]` (her lecture
 selection, stored in the same `bSpellId` field spells use) and does the
-same. For Ron/Buckbeak, this branch just calls `FUN_08015484(unaff_r7,0)`
+same. For Ron/Buckbeak, this branch just calls `SetPlayerObjectAnim(unaff_r7,0)` (`0x08015484`)
 and returns -- no `g_ab*EffectId`-style table lookup happens here at all.
 
 A separate, unconditional-of-fighter-type `0x8000`-flag branch reads

@@ -23,7 +23,7 @@ label 0x080208B4 sub_080208B4
 # and data tables still raw incbin territory.
 label 0x08003708 SetObjectFlippedX
 label 0x080039E8 sub_080039E8
-label 0x08015484 sub_08015484
+label 0x08015484 SetPlayerObjectAnim
 label 0x0800D264 sub_0800D264
 label 0x0803FC68 PlaySoundById
 label 0x08018B14 sub_08018B14

@@ -315,7 +315,8 @@ extern void SetFighterAttackAnimState_candidate(Object *obj, s32 state);
 extern u16 g_wHeldKeysBitmask_candidate;  // 0x030034F0, see ram_symbols.us.inc
 
 extern void SetObjectFlippedX(Object *obj, s32 flip);
-extern void sub_08015484(Object *obj, s32 state);
+extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables
+extern void SetMonsterObjectAnim(Object *obj, s32 state);  // 0x0801539C, monster gfx tables + shadow
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void PlaySoundById(s32 id);
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
