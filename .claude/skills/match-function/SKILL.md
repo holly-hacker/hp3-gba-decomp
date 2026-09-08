@@ -262,6 +262,18 @@ mechanically understandable (and thus how worth attacking directly) they are:
    (`clearMask &= flagsBeforeClear`, reload before the mask is
    materialized). (`InitPlayerBattleActor`, US `0x080149C4`.)
 
+15. **Merging two same-purpose locals can win a tie on a *third*, unrelated
+   pseudo (extends bucket 8).** Bucket 8 covers real directly reusing one
+   register for two values. Here the merge's effect is indirect: two
+   decompiler-invented counters with the same role at disjoint points in the
+   function (never simultaneously live) merge into one bucket-9 allocno with
+   combined `refs`/`live_length`, shifting its allocation priority into
+   conflict with some other pseudo that the split locals never touched.
+   Losing that conflict pushes the merge into the register the ROM uses —
+   fixing a tie that looked unrelated to either original counter. Confirm
+   with real `-dg` numbers, not guessing. Legitimate only when the two sites
+   truly share meaning (one real counter) — check that first.
+
 After any fix, re-run the opcode-diff (step 1) before deciding whether to keep
 it — a change can fix the thing you were chasing while quietly introducing a
 same-sized new diff elsewhere; only the opcode-diff count tells you which.
@@ -333,6 +345,13 @@ names for its claim, and to say plainly "this isn't reachable by a source
 rewrite, here's the specific pass/ordering that decides it" if that's what it
 finds — that's as useful an answer as a working fix, and much more useful than
 another untested guess.
+
+**A named pass is a hypothesis, not a fact, until you falsify it.** A
+citation-backed theory ("this is `gcse.c`'s PRE") can be wrong even when it
+sounds right and yields no fix. Before spending more budget on fixes
+premised on a suspected pass, recompile the unmodified candidate with
+`-fno-<pass>` — one build. If the diff doesn't change, that pass isn't
+involved and the real mechanism is still unfound.
 
 **For a register-allocation tie (bucket 9), don't theorize — dump the real
 numbers.** `agbcc <flags> -dg -o out.s in.i` (after `cpp`-preprocessing) makes
@@ -441,6 +460,16 @@ original source, and that the bar for replacing it later is reproducing the
 byte sequence, not preserving the specific token. Don't present a proxy fix as
 if it were understood, and don't let a growing pile of them substitute for
 actually finding the mechanism (step 3) when there's still budget to look.
+
+**The first byte-exact candidate is optimized for reaching byte-exact
+fastest, not for looking like real source — its ugliness is a to-do list.**
+A hand-computed flat byte offset is often real multi-dimensional array
+indexing; a same-type-field struct addressed and pointer-indexed is often
+really an array field; a `void *` cast at every call site is often really
+typed as whatever it's cast to; a shift-add sequence is often just `x * N`.
+Verify each rewrite by rebuild + re-diff — some need an operand-order retry
+(bucket 15) — but a person wrote the real source, and not like this. Sweep
+for this once a function matches, not just when it's pointed out.
 
 Matched code can still be cleaned up, but only with rewrites proven
 byte-neutral by rebuild + re-diff — never by reasoning alone. Safe in
