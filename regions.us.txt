@@ -529,6 +529,7 @@ c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemD
 c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
 
 c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
+c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
 
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

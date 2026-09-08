@@ -267,18 +267,18 @@ void TickPlayerActionState(Object *obj)
             // Buckbeak carve-out 3/4: Fumos has no fighter check, so it still
             // triggers; every other spell skips the cast VFX for Buckbeak.
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
-                TriggerBattleEffect((u8)var_8, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex,
+                TriggerBattleEffect(var_8, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex,
                                     g_pFightState->bActiveFighterIndex,
                                     g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                                     g_nLastDamage);
             } else if (obj->wFighterType != Buckbeak) {
                 if (ACTIVE_FIGHTER.bSelectedActionIndex != 0xfe)
-                    TriggerBattleEffect((u8)var_8, ACTIVE_FIGHTER.bSlotParam, (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
+                    TriggerBattleEffect(var_8, ACTIVE_FIGHTER.bSlotParam, (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
                                         g_pFightState->bActiveFighterIndex,
                                         g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                                         g_nLastDamage);
                 else
-                    TriggerBattleEffect((u8)var_8, ACTIVE_FIGHTER.bSlotParam, (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
+                    TriggerBattleEffect(var_8, ACTIVE_FIGHTER.bSlotParam, (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
                                         g_pFightState->bActiveFighterIndex, 0, 0);
             }
         }

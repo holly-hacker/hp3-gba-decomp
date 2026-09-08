@@ -320,7 +320,7 @@ extern void SetMonsterObjectAnim(Object *obj, s32 state);  // 0x0801539C, monste
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void PlaySoundById(s32 id);
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
-extern void TriggerBattleEffect(s32 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, s32 damage);
+extern void TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
 extern s32 sub_08026CDC(s32 spellLevel);
 extern s32 sub_08026CF0(s32 spellLevel);
 extern u16 sub_08015334(s32 x, s32 fighterIndex);

@@ -155,7 +155,7 @@ void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort
                              pFighters[bActiveFighterIndex].bSlotParam + 3,
                              pFighters[targetFighterIndex].bSlotParam,
                              bActiveFighterIndex, targetFighterIndex, damage);
-        pFighters[bActiveFighterIndex].bSpellId = Spongify;  // borrowed zero-power id, display only
+        pFighters[bActiveFighterIndex].bSpellId = Informus;  // borrowed zero-power id, display only
     }
 }
 
