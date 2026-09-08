@@ -87,17 +87,17 @@ extern void PushGameMode(GameMode mode);
 // base register in the real code, hence one struct here rather than
 // standalone globals.
 typedef struct {
-    u32 dwCurrentGameMode;               // 0x00 (0x03003EF4)
-    u32 dwCurrentGameModeArg1_candidate; // 0x04
-    u32 dwCurrentGameModeArg2_candidate; // 0x08
-    u32 dwCurrentGameModeArg3_candidate; // 0x0C
-    u32 dwModeState_candidate;           // 0x10; per-mode state machine, cleared on push
-    u8 pad_14[0x18 - 0x14];              // 0x14; copied by InitGameModeStack, no writers found
-    u32 dwModeTimer_candidate;           // 0x18; per-mode countdown, cleared on push
-    u32 dwModeSubState_candidate;        // 0x1C; second per-mode state word
-    u32 unk_20_candidate;                // 0x20; copied by InitGameModeStack, no writers found
-} GameModeStackContext_candidate;
-extern GameModeStackContext_candidate g_GameModeStackContext_candidate;  // 0x03003EF4
+    u32 dwCurrentGameMode;         // 0x00 (0x03003EF4)
+    u32 dwCurrentGameModeArg1;     // 0x04
+    u32 dwCurrentGameModeArg2;     // 0x08
+    u32 dwCurrentGameModeArg3;     // 0x0C
+    u32 dwModeState_candidate;     // 0x10; per-mode state machine, cleared on push
+    u8 pad_14[0x18 - 0x14];        // 0x14; copied by InitGameModeStack, no writers found
+    u32 dwModeTimer_candidate;     // 0x18; per-mode countdown, cleared on push
+    u32 dwModeSubState_candidate;  // 0x1C; second per-mode state word
+    u32 unk_20_candidate;          // 0x20; copied by InitGameModeStack, no writers found
+} GameModeStackContext;
+extern GameModeStackContext g_GameModeStackContext;  // 0x03003EF4
 
 extern void InitGameModeStack(void);
 extern void TickGameModeStack_candidate(void);

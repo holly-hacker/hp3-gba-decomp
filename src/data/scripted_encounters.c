@@ -4,7 +4,7 @@
 // when g_dwCurrentGameModeArg3 == 0xFF. Trigger rooms from quest-stage-0
 // room scripts (opcode StartBattle); all quest stages 0-34 were scanned.
 // See docs/formats/encounters.md.
-const EncounterSlots g_aScriptedEncounters[15] = {
+const u8 g_aScriptedEncounters[15][4] = {
     { 255,  58, 255, 255 },  // fight 0: slot1 'The Monster Book of Monsters'; room 41 (Leaky Cauldron - Harry's Room)
     { 255,  59, 255, 255 },  // fight 1: slot1 Giant Rat; room 38 (Leaky Cauldron - Cellar 1)
     { 255,  54, 255, 255 },  // fight 2: slot1 Whomping Willow; room 15 (Hogwarts Grounds - Whomping Willow)

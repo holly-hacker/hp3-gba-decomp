@@ -74,7 +74,11 @@ label 0x080019B0 SetObjectPosition
 label 0x08030824 ClearResourceCacheSlots
 label 0x0800EBAC sub_0800EBAC
 label 0x0800F16C sub_0800F16C
-label 0x0800EDD8 SetupBattleRoster_candidate
+c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
+label 0x080249C8 GetPartyPresenceMask
+label 0x080249FC GetPartySize
+label 0x0800E5B8 JitterEnemyTurnOrder_candidate
+label 0x0800E62C BuildTurnOrder_candidate
 label 0x08012AC0 sub_08012AC0
 label 0x08007800 sub_08007800
 label 0x0800F5F0 sub_0800F5F0

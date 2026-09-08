@@ -50,6 +50,7 @@
 .set g_bLastTargetIndex, 0x0300274C  @ byte: last attack's target fighter index
 .set g_dwBattleRewardFlagsSnapshot, 0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 .set g_anFaintedRosterIndices, 0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
+.set g_saveStateBlock, 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
 .set g_PrevGameModeCtx, 0x03003F3C  @ GameModeContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_abBgPriority,     0x03003F8C  @ u8[]; [4] == 0x03003F90
@@ -62,9 +63,9 @@
                                        @ check, bits 0x10/0x20 (D-pad) read elsewhere -- see
                                        @ docs/formats/folio_bruti.md, docs/memory-map/battle-ui.md
 .set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text
-.set g_BattleMessageIconState_candidate, 0x03002688  @ {byte bIndex (sentinel 0xFF=none), pad[3], u32 dwParam}
+.set g_BattleMessageIconState_candidate, 0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id
-.set g_GameModeStackContext_candidate, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
+.set g_GameModeStackContext, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
 
 @ --- Overworld wandering monsters (see include/overworld.h) ---
 .set g_bTouchedMonsterRecordCount, 0x03003B70  @ byte: queued (encounter id, kind) pair count

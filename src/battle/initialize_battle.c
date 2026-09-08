@@ -75,7 +75,7 @@ void InitializeBattle(void)
 
         g_pFightState->bUnk106E = 0;
         sub_0800EBAC();
-        SetupBattleRoster_candidate();
+        SetupBattleRoster();
         uVar7 = sub_08012AC0();
         sub_08007800(uVar7, 0, 0x10);
         sub_0800F5F0();
@@ -90,8 +90,8 @@ void InitializeBattle(void)
         sub_0800F5F0();
     }
 
-    if (g_GameModeStackContext_candidate.dwCurrentGameModeArg3_candidate == 0xFF)
-        PlayMusicModule(g_abBattleMusicByOverworldSlot[g_GameModeStackContext_candidate.dwCurrentGameModeArg1_candidate]);
+    if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF)
+        PlayMusicModule(g_abBattleMusicByOverworldSlot[g_GameModeStackContext.dwCurrentGameModeArg1]);
     else
         PlayMusicModule(g_abBattleMusicByRoom[g_bCurrentRoomId]);
 

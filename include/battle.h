@@ -118,7 +118,7 @@ extern u8 g_MonsterShadowAnimData[];             // 0x08053850
 // ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate;
 // see docs/memory-map/battle.md for the rest.
 typedef struct FightState {
-    /*0x00*/ void *pStagingFighters;
+    /*0x00*/ BattleFighter *pStagingFighters;
     /*0x04*/ BattleFighter *pFighters;
     /*0x08*/ BattleFighter *pPendingFighters_candidate;  // front-popped reinforcement queue, count at +0x1491
     /*0x0C*/ u8 pad_0C[0x104C - 0x0C];
@@ -385,7 +385,23 @@ extern void *memcpy(void *dst, const void *src, u32 n);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void sub_0800EBAC(void);
 extern void sub_0800F16C(void);
-extern void SetupBattleRoster_candidate(void);
+extern void SetupBattleRoster(void);
+extern u32 GetPartyPresenceMask(void);
+extern u8 GetPartySize(void);
+extern void JitterEnemyTurnOrder_candidate(void);
+extern void BuildTurnOrder_candidate(void);
+extern Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
+extern Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
+// Live save-adjacent state block at 0x03003180 (money, playtime, save flags,
+// ...); only the doc-level array's +0x10 offset is pinned here, the rest
+// stays padding until another reader needs it. See docs/formats/save.md.
+// Member (not direct-symbol) access reproduces the ROM's base+0x10 address
+// shape, shared by three code sites.
+typedef struct {
+    u8 pad_00[0x10];
+    u8 abMonsterDocLevel[69];
+} SaveStateBlock;
+extern SaveStateBlock g_saveStateBlock;  // 0x03003180
 extern u8 *sub_08012AC0(void);
 extern void sub_08007800(u8 *a, s32 b, s32 c);
 extern void sub_0800F5F0(void);
@@ -406,7 +422,7 @@ typedef struct {
 extern BattleMessageIconState g_BattleMessageIconState_candidate;  // 0x03002688
 
 extern u8 g_abBattleMusicByRoom[];          // 0x0804E254, indexed by g_bCurrentRoomId
-extern u8 g_abBattleMusicByOverworldSlot[]; // 0x0804E28B, indexed by dwCurrentGameModeArg1_candidate
+extern u8 g_abBattleMusicByOverworldSlot[]; // 0x0804E28B, indexed by dwCurrentGameModeArg1
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
 // plate comment describes elsewhere -- real source likely declares it int.
 extern u32 g_bCurrentRoomId;                // 0x03003B50
