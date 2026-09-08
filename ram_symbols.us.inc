@@ -48,6 +48,7 @@
 .set g_bSpellMissStreak, 0x03002749  @ byte: consecutive-miss streak breaker
 .set g_nLastDamage,      0x0300274A  @ u16: last computed attack/status damage
 .set g_bLastTargetIndex, 0x0300274C  @ byte: last attack's target fighter index
+.set g_effectStaging,        0x03002750  @ EffectStaging: battle-effect staging area, see TriggerBattleEffect
 .set g_dwBattleRewardFlagsSnapshot, 0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 .set g_anFaintedRosterIndices, 0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
 .set g_saveStateBlock, 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10

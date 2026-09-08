@@ -29,7 +29,6 @@ label 0x0803FC68 PlaySoundById
 label 0x08018B14 sub_08018B14
 label 0x08001E7C SetFighterAttackAnimState_candidate
 label 0x08018094 ApplyStatusDamageToFighter_candidate
-label 0x08018B70 TriggerBattleEffect
 label 0x08026CDC sub_08026CDC
 label 0x08026CF0 sub_08026CF0
 label 0x08015334 sub_08015334
@@ -39,6 +38,8 @@ label 0x08010864 ShowBattleMessage
 label 0x0800EB2C sub_0800EB2C
 label 0x0800EA68 ClearParalyzedFighter_candidate
 label 0x08018ACC PostActionBattleCheck
+c-file 0x08018B70 0x08018BE0 src/battle/trigger_battle_effect.c TriggerBattleEffect
+label 0x08018BE0 CreateEffectScriptObject
 label 0x08012AFC PushBattleState
 label 0x080377A8 DecrementFolioUniversitasCard
 label 0x080129F4 sub_080129F4

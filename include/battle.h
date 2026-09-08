@@ -320,7 +320,7 @@ extern void SetMonsterObjectAnim(Object *obj, s32 state);  // 0x0801539C, monste
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void PlaySoundById(s32 id);
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
-extern void TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
+extern Object *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
 extern s32 sub_08026CDC(s32 spellLevel);
 extern s32 sub_08026CF0(s32 spellLevel);
 extern u16 sub_08015334(s32 x, s32 fighterIndex);
@@ -336,6 +336,25 @@ extern u8 g_abHermioneLectureEffectId[3];       // 0x0805150D
 extern u8 g_abSpecialMoveEffectId[7];           // 0x0805150A
 extern u16 g_nLastDamage;                       // 0x0300274A
 extern u8 g_bLastTargetIndex;                   // 0x0300274C
+// Battle-effect staging area at 0x03002750. TriggerBattleEffect fills the
+// fields below before spawning the effect object; the low bytes belong to
+// other battle state (see docs/memory-map/battle.md).
+typedef struct EffectStaging {
+    u8 pad_00[0x1A];
+    u16 wTimer_candidate;
+    u16 wTimerMax_candidate;
+    u16 wContextValue;
+    u8 bScriptParam;
+    u8 bSlotParam;
+    u8 bTargetIndex;
+    u8 bCasterIndex;
+    u8 pad_24;
+    u8 bStateA_candidate;
+    u8 bStateB_candidate;
+    u8 bIdStaged_candidate;
+} EffectStaging;
+extern EffectStaging g_effectStaging;                 // 0x03002750
+extern Object *CreateEffectScriptObject(s32 effectId, s32 kind);  // 0x08018BE0
 extern void sub_080129F4(void);
 extern void sub_08012B40(void);
 extern void sub_080019C0(void *obj, s32 x, s32 y);  // sets Object+0x3c/+0x40, i.e. nVelX/nVelY directly

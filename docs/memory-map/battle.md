@@ -159,6 +159,15 @@ void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort
     }
 }
 
+// Every effect call funnels through TriggerBattleEffect (0x08018B70), which
+// stages its args into the 0x03002750 area (`EffectStaging` in
+// include/battle.h), spawns the effect object via CreateEffectScriptObject,
+// then clears the attacker's anim state in FightState. Signature PROVEN by
+// caller/callee codegen -- (u8 effectId, s32 x4, u16 damage): effectId is
+// the only narrow param (u8 entry extend at 0x08018B74; params 2-4 have
+// none), damage is u16 (callers extend with lsl/lsr #0x10). Returns the
+// spawned Object*; no call site uses it.
+
 // ---- Damage application (shared by both attack paths) ----
 
 void ApplyDamageToFighter(short damage, uchar fighterIndex) {   // 0x08017F98
