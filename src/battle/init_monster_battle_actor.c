@@ -45,7 +45,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     SetFighterAttackAnimState_candidate(pObject, 0xF);
 
     pObject->bAnimFrameDelay = 1;
-    pObject->pfnTick = TickFighterAttackAnimState_candidate;
+    pObject->pfnTick = TickFighterAttackAnimState_candidate; // contains `Mt19937RandMax` call every enemy turn to determine target
 
     AttachObjectEffectSlot_candidate(pObject, g_pMonsterGraphicsTable[type].nEffectSlot_candidate);
     SetObjectAnimData(pObject, &g_pMonsterGraphicsTable[type], &g_pMonsterAnimFrameTable[type * 0x60], 0);

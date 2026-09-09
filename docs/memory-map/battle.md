@@ -372,10 +372,40 @@ Notes on pieces the pseudocode above elides:
   (`build/us/full_disasm.s:37180-37182` confirms the `Object+8 == 3`
   branch that skips straight past the MP-deduction/`ResolvePlayerAttack`
   block into his own hardcoded-damage sub-state, `Object+0x60 == 6`).
-- Enemy target selection (the `target` in `RunFighterTurn` above -- the
-  `0x0800e39c` call there is the now-decoded `DrawEnemyStatsUi_candidate`
-  panel draw, not the selection) and item-use resolution
-  (`TickPlayerActionState`'s sub-state `2`,
+- **Enemy target selection**, matched in `src/battle/tick_fighter_attack_anim_state.c`
+  (`TickFighterAttackAnimState_candidate` case `0x1A`, `Object+0x90 == 0x21`
+  sub-branch -- not case `0`, which is just the post-hit flash-clear tail):
+  ```c
+  if (attacker->bRosterIndex == 0x3F) {   // Lupin Werewolf only
+      target = 0xFF;
+      for (i = 0; i < g_pFightState->bFighterCount; i++)
+          if (g_pFightState->pFighters[i].bFighterType == Buckbeak)
+              target = i;
+  } else {
+      do {
+          roll = Mt19937RandMax(g_pFightState->bFighterCount - 1);
+          candidate = &g_pFightState->pFighters[roll];
+      } while (candidate->bFighterType == Enemy
+                || candidate->pObject == NULL
+                || candidate->nSelectedTargetIndex == -1);
+      target = roll;
+  }
+  attacker->bSelectedActionIndex = target;
+  ```
+  The general case is a uniform rejection sample over the whole `pFighters`
+  array (allies and enemies together, `Mt19937RandMax(bFighterCount - 1)`)
+  until it lands on a living ally slot -- confirmed against a live trace
+  where `bFighterCount == 2` (Harry vs. a single enemy) produced
+  `Mt19937RandMax(1)`. Roster index `0x3F` (Lupin Werewolf) skips the RNG
+  entirely and always singles out Buckbeak when he's in the party (falling
+  back to `0xFF`, i.e. no valid target, if he isn't) -- a plausible-looking
+  `aSpellCastLevel[i - 0x10]` read in an earlier decompile of this same
+  logic was pointer arithmetic that Ghidra couldn't resolve back to its
+  real field; the byte it actually reads is `BattleFighter+0x00`
+  (`bFighterType`), confirmed against `full_disasm.s` and reproduced
+  byte-exact.
+- Item-use resolution is `TickPlayerActionState`'s sub-state `2` (matched
+  byte-exact); no `Mt19937*` calls there.
 
 ## `BattleFighter` struct (0x48-byte stride)
 

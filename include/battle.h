@@ -234,7 +234,11 @@ struct Object {
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot
     u8 pad_D6[0x03];        // -> 0xD9
     u8 bAnimFrameDelay;     // 0xD9
-    u8 pad_DA[0x0A];        // -> 0xE4
+    u8 pad_DA[0x02];        // -> 0xDC
+    u8 bEnemyAttackPhase_candidate;  // 0xDC, TickFighterAttackAnimState_candidate's own
+                             // multi-step sentinel: 0xff idle, 0/2/3/4 successive phases
+                             // -- real compares it unsigned against 0xff, not as a signed -1
+    u8 pad_DD[0x07];        // -> 0xE4
     u8 *pAnimFrameCursor;   // 0xE4
     u8 *pAnimFrameBase;     // 0xE8
 };
@@ -316,6 +320,18 @@ extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
 extern void SetFighterAttackAnimState_candidate(Object *obj, u8 state);
+extern void UpdateFighterFlashEffect_candidate(Object *obj);  // 0x08015574
+extern void CheckBattleVictory(Object *obj);                  // 0x080186E0
+extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
+extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s32 damage);
+extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
+extern void sub_080039F8(Object *obj);
+extern void sub_08003A0C(Object *obj);
+extern void sub_0801BCB0(void *linkedObject);
+extern void sub_08000C48(Object *shadowObject);
+extern void sub_08003808(Object *obj);
+extern void sub_0800366C(Object *obj, u32 arg1, u32 arg2, s32 arg3, s32 arg4);
+extern void sub_08003848(Object *obj, u32 arg1, u32 arg2, s32 mode);
 
 extern u16 g_wHeldKeysBitmask_candidate;  // 0x030034F0, see ram_symbols.us.inc
 
@@ -374,6 +390,17 @@ extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
 extern void ApplyDamageToFighter(u16 damage, u8 fighterIndex);  // 0x08017F98
 extern u8 g_abSpellEffectScriptId[][3];         // 0x080538B0, [spellId][level]
 extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
+// 16.16 position pair. Object+0x2C and FightState+0x104C hold one each, and
+// the battle code copies between them as a single 8-byte unit.
+typedef struct Point1616 {
+    u32 nX;
+    u32 nY;
+} Point1616;
+// Screen anchor an attacker walks to, per target's BattleFighter.bSlotParam,
+// as {x, y} in whole pixels; the monster's own {x, y} extent in
+// g_aMonsterAttackOffset_candidate is subtracted off to get the destination.
+extern u8 g_aBattleSlotAnchorPos_candidate[][2];  // 0x080539A0, [bSlotParam]
+extern u8 g_aMonsterAttackOffset_candidate[][2];  // 0x0804FB9C, [rosterIndex]
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 

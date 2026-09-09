@@ -96,6 +96,8 @@ label 0x0805150D g_abHermioneLectureEffectId
 label 0x0805150A g_abSpecialMoveEffectId
 label 0x080538B0 g_abSpellEffectScriptId
 label 0x08053964 g_awSpellMpCost
+label 0x080539A0 g_aBattleSlotAnchorPos_candidate
+label 0x0804FB9C g_aMonsterAttackOffset_candidate
 # InitPlayerBattleActor (src/battle/init_player_battle_actor.c) callees
 # and data tables still raw incbin territory.
 label 0x080014D4 AllocDefaultObject
@@ -107,7 +109,6 @@ label 0x080018D8 SetObjectAnimData
 label 0x08051560 g_aFighterAnimDataTable
 # InitMonsterBattleActor (src/battle/init_monster_battle_actor.c) callees
 # and data tables still raw incbin territory.
-thumb-func 0x08015608 TickFighterAttackAnimState_candidate
 label 0x08030878 AttachEffectOwner_candidate
 label 0x0804E6B4 g_pMonsterGraphicsTable
 label 0x08051E70 g_pMonsterAnimFrameTable
@@ -538,6 +539,16 @@ c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBat
 
 c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
 c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
+c-file 0x08015608 0x08015F50 src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
+label 0x08000C48 sub_08000C48
+label 0x080039F8 sub_080039F8
+label 0x08003808 sub_08003808
+label 0x08003848 sub_08003848
+label 0x08003A0C sub_08003A0C
+label 0x0800366C sub_0800366C
+label 0x08015574 UpdateFighterFlashEffect_candidate
+label 0x080186E0 CheckBattleVictory
+label 0x0801BCB0 sub_0801BCB0
 
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

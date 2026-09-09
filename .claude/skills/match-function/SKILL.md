@@ -357,13 +357,41 @@ involved and the real mechanism is still unfound.
 numbers.** `agbcc <flags> -dg -o out.s in.i` (after `cpp`-preprocessing) makes
 `global.c` print `Register N, refs = R, live_length = L, size = S` for every
 pseudo, sorted in allocation order, straight into `in.i.greg` alongside the
-post-allocation RTL (hard-reg-numbered, so you can grep `(const_int
-<your-value>))` there to see which allocno is which and which hard register
-it landed on). This is ground truth, not inference — iterate by editing a
-throwaway `.c` copy, re-running `cpp`+`-dg`, and grepping the dump; only apply
-a change to the real source once the dump confirms it. Cross-check with `-df`
-(the same figures at `flow` time) if the numbers look off. Much faster than
-rebuilding the whole project per guess.
+post-allocation RTL and a `;; Register dispositions:` table (`N in H` = pseudo
+`N` got hard register `H`). This is ground truth, not inference — iterate by
+editing a throwaway `.c` copy, re-running `cpp`+`-dg`, and grepping the dump;
+only apply a change to the real source once the dump confirms it. Cross-check
+with `-df` (the same figures at `flow` time) if the numbers look off. Much
+faster than rebuilding the whole project per guess.
+
+**`.greg`'s own RTL section is already hard-reg-substituted** — you cannot
+grep it for `(reg:SI <pseudo-N>)` to find a specific value's pseudo number,
+only for the *final* hard register. Add `l` to get `-dlg`: `-dl` makes
+`local_alloc` dump `in.i.lreg` *before* global hard-reg substitution, with
+real pseudo numbers still in the RTL (a pseudo crossing many blocks/calls —
+the ones worth investigating — is left untouched by `local_alloc` for
+`global_alloc` to handle, so it still shows its number here). Find the
+`(insn N ...)` that computes your value of interest in `.lreg` (grep for a
+distinctive operand, e.g. a struct-offset constant), read off its
+destination `(reg/v:SI <pseudo>)`, then grep `Register <pseudo>\b` in both
+`.lreg` (pre-global priority/preference: `refs`, `live_length`, `crosses N
+calls`, `pref LO_REGS`/`STACK_REG`/etc — driven by *how* the value is used,
+e.g. an immediate `cmp` forces `LO_REGS` since Thumb needs a low register
+for that) and `.greg`'s disposition table (its actual assigned hard
+register). Insn numbers are stable across both dumps, so this is how you
+correlate a pseudo across passes even though the RTL text itself changes.
+
+**A `pref LO_REGS`-vs-actually-got-a-high-register outcome for a long-lived
+pseudo isn't a contradiction** — a value compared against a literal
+anywhere gets `pref LO_REGS` regardless of how long it lives; a long
+`live_length`/many calls-crossed pseudo still routes to a high register if
+enough other, comparably-preferring pseudos already hold the low registers
+by the time the allocator reaches it, paying an extra `mov` out of the high
+register at each literal-compare site. The `.greg`/`.lreg` dumps only show
+the *outcome* of `global_alloc`'s processing order, not a step-by-step
+trace of why one long-lived pseudo loses a low-register slot to another —
+confirming the exact mechanism needs reading `global.c`'s
+`global_conflicts`/`find_reg` directly, not just the dumps.
 
 **Always independently re-verify anything an agent (or yourself, tired) claims
 fixed something:** rebuild it, re-run the opcode-diff yourself, check for

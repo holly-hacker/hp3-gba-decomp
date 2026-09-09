@@ -173,12 +173,14 @@ draw cursors sharing one 624-word state array --
   `0x03005580`, remaining count `0x03005584` (US); `0x030055D8`/
   `0x030055E0`/`0x030055E4` (JP).
 - Cursor 2 (undocumented by the script): index/remaining at `0x0300558C`,
-  cursor pointer `0x03005588` (US); `0x030055EC`/`0x030055E8` (JP). Notably,
-  cursor 2's own regeneration path never calls `Mt19937Regenerate` itself --
-  it just wraps back to `stateptr + 4` on exhaustion, relying on cursor 1
-  having already regenerated fresh state words. Order-of-calls between the
-  two cursors could therefore matter for exact reproduction; not yet
-  investigated.
+  cursor pointer `0x03005588` (US); `0x030055EC`/`0x030055E8` (JP). Its
+  regeneration path never calls `Mt19937Regenerate` -- it only wraps to
+  `stateptr + 4` on exhaustion, so it can read but never regenerate the
+  shared state array; it can't affect cursor 1's outputs. No callers found
+  yet for any `*2` helper. Working hypothesis: cursor 2 is a read-only tap
+  for non-gameplay/cosmetic rolls, not something a battle simulator needs
+  to keep in lockstep with cursor 1. Unconfirmed -- needs an actual `*2`
+  call site to verify.
 
 `Mt19937Next` also writes the temper result's low byte to a single-byte
 global (`0x03005574` US / `0x030055D4` JP) as a side effect on every call --
