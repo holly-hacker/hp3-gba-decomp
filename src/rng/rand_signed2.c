@@ -1,6 +1,6 @@
 #include "mt19937.h"
 
-s16 Mt19937RandSigned2(u16 max)
+s16 Mt19937RandSigned2(s16 max)
 {
     u32 temp;
     u32 draw;
@@ -9,7 +9,7 @@ s16 Mt19937RandSigned2(u16 max)
 
     temp = Mt19937Next2();
     draw = temp & 0x7FFFu;
-    smax = (s16)max;
+    smax = max;
     range = smax << 1;
     range += 1;
     range *= draw;

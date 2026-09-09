@@ -131,7 +131,7 @@ case2SharedTail:
                 BattleFighter *candidate;
                 BattleFighter *fighters;
                 do {
-                    roll = (u16)Mt19937RandMax(g_pFightState->bFighterCount - 1);
+                    roll = Mt19937RandMax(g_pFightState->bFighterCount - 1);
                     fighters = g_pFightState->pFighters;
                     // Register-pressure proxy: integer form, not
                     // `&fighters[roll]`, reproduces the ROM's
