@@ -371,11 +371,10 @@ code. That one gap turned out to contain **18 separate undetected
 functions**, all seeded in `functions.us.cfg` and verified to assemble
 byte-exact (`just disasm-compare`/`just check-all` both pass).
 
-Reads the held-key bitmask at `0x030034F0` (bits `0x10`/`0x20` = D-pad
-Right/Left, `0x40`/`0x80` = Up/Down -- inferred from which axis of
-`0x03005300+0xC`/`+0x10` each one updates, matching standard GBA
-`KEYINPUT` bit order) and updates the cursor's row (`+0xC`) and column
-(`+0x10`) fields directly in the screen-state struct. All four
+Reads `g_wKeysPressed` (`0x030034F0`, standard GBA KEYINPUT bit order,
+see `docs/memory-map/input.md`; bits `0x10`/`0x20` = D-pad
+Right/Left, `0x40`/`0x80` = Up/Down) and updates the cursor's row (`+0xC`)
+and column (`+0x10`) fields directly in the screen-state struct. All four
 directions share the identical guard, run as a do-while after applying
 one step:
 

@@ -3,6 +3,7 @@
 #include "types.h"
 #include "mem.h"
 #include "graphics.h"
+#include "input.h"
 
 // See docs/memory-map/battle.md.
 
@@ -332,8 +333,6 @@ extern void sub_08000C48(Object *shadowObject);
 extern void sub_08003808(Object *obj);
 extern void sub_0800366C(Object *obj, u32 arg1, u32 arg2, s32 arg3, s32 arg4);
 extern void sub_08003848(Object *obj, u32 arg1, u32 arg2, s32 mode);
-
-extern u16 g_wHeldKeysBitmask_candidate;  // 0x030034F0, see ram_symbols.us.inc
 
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables

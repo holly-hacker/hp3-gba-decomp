@@ -59,14 +59,32 @@
 .set g_nGoldAccum,       0x03002610  @ u16: running gold-reward accumulator
 .set g_bSelectedFighterSlot_candidate, 0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
 .set g_apFighterObjects_candidate, 0x03002668  @ Object*[7]; one slot per active BattleFighter
-.set g_wHeldKeysBitmask_candidate, 0x030034F0  @ u16: held-button bitmask; bit 0x01 tested by
-                                       @ TickBattleTurnStateMachine's message-wait fast-forward
-                                       @ check, bits 0x10/0x20 (D-pad) read elsewhere -- see
-                                       @ docs/formats/folio_bruti.md, docs/memory-map/battle-ui.md
 .set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate, 0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id
 .set g_GameModeStackContext, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
+
+@ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
+@ ResetKeyInput, 0x080254A8/0x080258F8) ---
+.set g_wKeysHeld,         0x030034EC  @ u16: current held-key bitmask (standard GBA KEYINPUT bit
+                                       @ order), updated once per frame by UpdateKeyInput; also
+                                       @ folded into Mt19937AutoSeed's seed as a cheap entropy
+                                       @ source (see docs/memory-map/rng.md) -- that's not what the
+                                       @ address is for
+.set g_wKeysHeldPrevious, 0x030034EE  @ u16: g_wKeysHeld from the previous frame's update
+.set g_wKeysPressed,      0x030034F0  @ u16: keys newly pressed this frame (currentHeld &
+                                       @ ~previousHeld); bit 0x01 (A) tested by
+                                       @ TickBattleTurnStateMachine's message-wait fast-forward
+                                       @ check, bits 0x10/0x20 (Right/Left) read elsewhere -- see
+                                       @ docs/memory-map/input.md, docs/formats/folio_bruti.md,
+                                       @ docs/memory-map/battle-ui.md
+.set g_wKeysReleased,     0x030034F2  @ u16: keys newly released this frame (previousHeld & ~currentHeld)
+.set g_wInputDisabled,    0x030034F4  @ u16: nonzero forces all key state above (and the per-player
+                                       @ arrays below) to 0 every frame instead of reading KEYINPUT
+.set g_awPlayerKeysHeld,          0x030034F6  @ u16[2]: per-player held-key masks, serial-link input path
+.set g_awPlayerKeysHeldPrevious,  0x030034FA  @ u16[2]: previous-frame counterpart of the above
+.set g_awPlayerKeysPressed,       0x030034FE  @ u16[2]: per-player newly-pressed masks
+.set g_awPlayerKeysReleased,      0x03003502  @ u16[2]: per-player newly-released masks
 
 @ --- Overworld wandering monsters (see include/overworld.h) ---
 .set g_bTouchedMonsterRecordCount, 0x03003B70  @ byte: queued (encounter id, kind) pair count
@@ -115,7 +133,6 @@
 @ cursor 2 is undocumented by it and comes from this project's own
 @ disassembly (see rng.md for what's confirmed and what's still open
 @ about it).
-.set gMt19937SeedSourceCounter,  0x030034EC  @ external halfword counter AutoSeed also reads
 .set gMt19937LastRollByte,       0x03005574  @ low byte of the last tempered value (purpose unconfirmed)
 .set gMt19937DrawIndex,          0x03005578  @ cursor 1: running count of numbers drawn
 .set gMt19937StatePtr,           0x0300557C  @ base of the 624-word MT state array

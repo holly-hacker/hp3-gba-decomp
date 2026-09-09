@@ -125,9 +125,11 @@ this screen, `switch(field_0x147c)` with 7 cases matching the table above
   menu similar to the pause menu" from the user's description (not
   walked further).
 
-Cursor movement and A/B dispatch both live in **`FUN_080101d0`**
-(`0x080101d0`): reads a button-state bitmask `DAT_030034f0` (`0x10`=Down,
-`0x20`=Up move the cursor by +-1 with wraparound via `FUN_08012e38`;
+Cursor movement and A/B dispatch both live in **`TickBattleMenuInput`**
+(`0x080101d0`): reads the newly-pressed-key bitmask `g_wKeysPressed`
+(`0x030034F0`, standard GBA KEYINPUT bit order -- see
+`docs/memory-map/input.md`; `0x10`=Right advances the list cursor by +1,
+`0x20`=Left moves it back by -1, both with wraparound via `FUN_08012e38`);
 `0x01`=A/confirm, `0x02`=B/cancel dispatch through two 11-entry function-
 pointer tables indexed by `field_0x1070`: confirm table at `0x0804e2ec`,
 cancel table at `0x0804e318`). `field_0x1070`'s per-screen confirm

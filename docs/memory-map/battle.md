@@ -881,8 +881,9 @@ countdown whose meaning is local to that state.
   own case `0x1a`); non-`Enemy` fighters call
   `DispatchPendingAction(bFighterType)` directly. Both paths transition
   to state `0`.
-- **5 -- message-wait.** Waits 30 ticks (or until a bit in `0x030034F0`
-  is set, a fast-forward/skip input), then swaps `bBattleState` with
+- **5 -- message-wait.** Waits 30 ticks (or until `0x01` (A) is set in
+  `g_wKeysPressed`, `0x030034F0`, a fast-forward/skip input -- see
+  `docs/memory-map/input.md`), then swaps `bBattleState` with
   `bSavedBattleState` -- resuming whichever state transitioned here.
 - **6 -- defeat.** After a 150-tick delay, pushes `PushGameMode_2(Overworld,
   0, bDefeatWarpTarget)`.

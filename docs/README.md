@@ -56,6 +56,10 @@ Memory map (live RAM layout and the code that drives it):
 - [`memory-map/rng.md`](memory-map/rng.md) — the MT19937 PRNG function
   cluster, its two independent draw cursors, and the bounded-random
   helpers gameplay code rolls against.
+- [`memory-map/input.md`](memory-map/input.md) — controller input:
+  `UpdateKeyInput`/`ResetKeyInput`, the held/pressed/released key masks
+  and their standard GBA `KEYINPUT` bit layout, and the serial-link
+  per-player input path.
 - [`memory-map/link.md`](memory-map/link.md) — the link-cable layer
   (multiplayer SIO, Timer3 ISR pump, handshake) and the card-trade
   session (mode `0x15`, `CardTradeState`, offer/lock/compare/commit).

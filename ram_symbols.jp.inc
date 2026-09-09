@@ -12,8 +12,11 @@
 @ --- Interrupts / VBlank state (see include/vblank.h) ---
 .set g_pVBlankState, 0x030035CC
 
+@ --- Controller input (see docs/memory-map/input.md) ---
+.set g_wKeysHeld,  0x0300354C  @ u16: current held-key bitmask, see
+                                @ ram_symbols.us.inc/docs/memory-map/input.md
+
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
-.set gMt19937SeedSourceCounter,  0x0300354C
 .set gMt19937LastRollByte,       0x030055D4
 .set gMt19937DrawIndex,          0x030055D8
 .set gMt19937StatePtr,           0x030055DC

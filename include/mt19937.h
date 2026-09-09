@@ -14,7 +14,6 @@ extern u32 gMt19937DrawIndex;
 extern u8 gMt19937LastRollByte;
 extern u32 gMt19937SeedValue;
 extern u32 gMt19937AutoSeedCallCount;
-extern u16 gMt19937SeedSourceCounter;
 
 void Mt19937AllocState(void);
 u32 Mt19937Regenerate(void);
