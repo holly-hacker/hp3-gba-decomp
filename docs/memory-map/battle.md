@@ -56,7 +56,7 @@ void SetupBattleRoster() {            // 0x0800EDD8
 }
 
 void JitterEnemyTurnOrder() {
-    for (Fighter f : pFighters)
+    for (Fighter f : pStagingFighters)
         if (f.bFighterType == Enemy)
             f.bStat_speed = clamp(f.bStat_speed + Mt19937RandSigned(0x10), 5, 251);
     // player fighters are untouched -- speed comes straight from
@@ -545,11 +545,13 @@ value, lower = earlier turn. `bStat_speed` clusters `178-254` across the
 dangerous ones act early (Lupin Werewolf `=20`, Draco `=60`). Buckbeak is
 hardcoded to `10`.
 
-- **`JitterEnemyTurnOrder_candidate`** (`0x0800E5B8`) adds
-  `Mt19937RandSigned(0x10)` to each `Enemy`'s `bStat_speed`, clamped to
-  `[5, 251]`. Player fighters are untouched -- `bStat_speed` comes
-  straight from `g_pPartyMasterStats[fighterType]` for Harry/
-  Hermione/Ron.
+- **`JitterEnemyTurnOrder`** (`0x0800E5B8`, matched byte-exact,
+  `src/battle/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
+  each `Enemy`'s `bStat_speed`, clamped to `[5, 251]`. Player fighters are
+  untouched -- `bStat_speed` comes straight from
+  `g_pPartyMasterStats[fighterType]` for Harry/Hermione/Ron. Runs on
+  `pStagingFighters`, ahead of `SetupBattleRoster`'s compaction/copy into
+  `pFighters`.
 - **`BuildTurnOrder_candidate`** (`0x0800E62C`) selection-sorts the
   roster into `pFighters` ascending by `bStat_speed` (tie-broken to stay
   stable), spawns each fighter's turn-order icon

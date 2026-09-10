@@ -148,6 +148,6 @@ void SetupBattleRoster(void)
         }
     }
 
-    JitterEnemyTurnOrder_candidate();
+    JitterEnemyTurnOrder();
     BuildTurnOrder_candidate();
 }

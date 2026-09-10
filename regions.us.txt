@@ -81,7 +81,7 @@ label 0x0800F16C sub_0800F16C
 c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
 label 0x080249C8 GetPartyPresenceMask
 label 0x080249FC GetPartySize
-label 0x0800E5B8 JitterEnemyTurnOrder_candidate
+c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
 label 0x0800E62C BuildTurnOrder_candidate
 label 0x08012AC0 sub_08012AC0
 label 0x08007800 sub_08007800

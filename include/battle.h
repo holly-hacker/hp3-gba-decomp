@@ -438,7 +438,7 @@ extern void sub_0800F16C(void);
 extern void SetupBattleRoster(void);
 extern u32 GetPartyPresenceMask(void);
 extern u8 GetPartySize(void);
-extern void JitterEnemyTurnOrder_candidate(void);
+extern void JitterEnemyTurnOrder(void);
 extern void BuildTurnOrder_candidate(void);
 extern Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
 extern Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
