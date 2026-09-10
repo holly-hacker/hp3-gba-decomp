@@ -348,8 +348,18 @@ thumb-func 0x08044BF0 ExitCoolTrainCutscene
 0x080000C0 0x08000104 asm/crt0.s                crt0
 
 c-file 0x08029690 0x08029770 src/main.c AgbMain
+c-file 0x08025E90 0x08026068 src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
+
+# HandleVBlankInterrupt (src/interrupts/) callees, still raw incbin territory.
+label 0x08007130 sub_08007130
+label 0x0800D354 sub_0800D354
+label 0x08045260 sub_08045260
+label 0x0801FBBC sub_0801FBBC
+label 0x08045988 sub_08045988
+label 0x0800D304 sub_0800D304
+label 0x08049E3C sub_08049E3C
 
 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder

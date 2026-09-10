@@ -26,6 +26,25 @@
 .set g_pVBlankState, 0x0300356C
 .set g_VBlankState, 0x03003530  @ the object g_pVBlankState is set to point at
 
+@ Sticky software copy of acked hardware IF bits, ORed by every interrupt
+@ handler after acking its own bit in IF. See include/vblank.h.
+.set g_wPendingIntrFlags, 0x030037A4
+@ Reentrancy guard for HandleVBlankInterrupt; body only runs while this
+@ reads back as 1. See include/vblank.h.
+.set g_dwVBlankIntrNestCount, 0x030037A8
+@ OAM DMA half-toggle; see include/vblank.h.
+.set g_bOamDmaHalfToggle, 0x030037AC
+@ Forces one extra sub_08007130 call this vblank; see include/vblank.h.
+.set g_bForcePendingBgWritesFlush, 0x03002038
+
+@ --- OAM shadow buffer, see include/oam.h ---
+.set g_pOamShadowBuffer, 0x03003FE8
+.set g_pOamDmaShadowBuffer, 0x03003FEC
+.set g_aOamShadowBufferA, 0x03003FF0
+.set g_aOamShadowBufferB, 0x030047F0
+.set g_bOamEntryCount, 0x03004FF0
+.set g_bOamEntryCountPrev, 0x03004FF1
+
 @ --- Interrupt dispatch (see src/interrupts/) ---
 .set gIntrTable, 0x03003570  @ 13 x u32 function-pointer slots, refreshed from a ROM
                               @ template by InitInterruptSystem; dispatched by IntrMain
