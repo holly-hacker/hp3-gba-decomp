@@ -562,11 +562,13 @@ hardcoded to `10`.
   `bStat_speed` nudged up by 1, breaking ties deterministically. A final pass
   moves whichever staging entry is still unpicked (`nSelectedTargetIndex ==
   0`) into the last `pFighters` slot, or marks it faint if `wHp == 0`. Each
-  placed fighter's `nSelectedTargetIndex` is set to
-  `bEnemyScalePercent_candidate * (turnPosition + 2)` -- a stagger value for
-  its turn-order icon's entrance animation, reusing the same field
-  `InitializeBattle` writes the enemy visual-scale percent into (`0x40`/
-  `0x30`/`0x20`). A last pass over `pFighters` writes each `Object`'s
+  placed fighter's `nSelectedTargetIndex` is overwritten with
+  `bEnemyScalePercent_candidate * (turnPosition + 2)`, reusing the same
+  field `InitializeBattle` writes the enemy visual-scale percent into
+  (`0x40`/`0x30`/`0x20`) -- PROVEN as written, but no reader of this
+  numeric value (as opposed to the `-1`/fainted sentinel value, which
+  `TickFighterAttackAnimState` does read) has been traced; its purpose is
+  UNCONFIRMED. A last pass over `pFighters` writes each `Object`'s
   `bFighterIndex`, spawns its turn-order icon (`SpawnTurnOrderIcon`,
   `0x08014F1C`, UI only, still raw incbin), and populates
   `aEnemySlotTurnOrderIndex[bSlotParam] = turnOrderIndex` for every `Enemy`
@@ -934,18 +936,19 @@ identified) runs `LevelUpFighter_candidate` for all 3 party members,
 `0x57`. A room script triggers party level-ups explicitly (e.g. a story
 event), not an automatic threshold check against accumulated XP.
 
-Three `CharacterLevelEntry_candidate[100]` tables, 12-byte rows,
-extracted to `data/levels/` (`tools/levels/level_codec.py`):
+Three `CharacterLevelEntry[100]` tables, 12-byte rows, matched
+byte-exact as curated C source (`src/data/harry_levels.c`,
+`src/data/ron_levels.c`, `src/data/hermione_levels.c`):
 
 | Table | US address |
 |---|---|
-| `g_pHarryLevelTable_candidate` | `0x0804FE50` |
-| `g_pRonLevelTable_candidate` | `0x08050300` |
-| `g_pHermioneLevelTable_candidate` | `0x080507B0` |
+| `g_pHarryLevelTable` | `0x0804FE50` |
+| `g_pRonLevelTable` | `0x08050300` |
+| `g_pHermioneLevelTable` | `0x080507B0` |
 
 Row layout (12 bytes, last 2 always-zero padding): `wHp_max` (u16),
-`wMp_max` (u16), `wXpDeltaForLevel_candidate` (u16), `bStat_speed`,
-`bAccuracy`, `bDefenseFactorPercent_candidate`,
+`wMp_max` (u16), `wXpDeltaForLevel` (u16), `bSpeed`,
+`bAccuracy`, `bDefenseFactorPercent`,
 `bMagicDefensePercent` (last two both dead in damage math -- see below).
 
 `ApplyEquipmentStatModifiers_candidate` walks each party member's 6
@@ -968,7 +971,7 @@ Lvl5, no equipment):
   `100` immediately after `LevelUpFighter_candidate` sets them from the
   table -- both table columns never take effect.
 - Displayed next-level XP is the *cumulative* sum of
-  `wXpDeltaForLevel_candidate` across rows `0..bLevel`, not any single
+  `wXpDeltaForLevel` across rows `0..bLevel`, not any single
   row and not what `LevelUpFighter_candidate` writes into `wRewardXp` (a
   plain overwrite with the new row's delta alone). What compares real XP
   against that cumulative threshold isn't located.

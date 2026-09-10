@@ -101,6 +101,26 @@ typedef struct MonsterTableRow {
 } MonsterTableRow;
 extern const MonsterTableRow MonsterTable[];  // 0x0804F410, src/data/monsters.c
 
+// One per-level row of Harry/Ron/Hermione's level-up stat tables, 12 bytes
+// (last 2 always zero, not a real field). LevelUpFighter_candidate indexes
+// these 0-based -- displayed Level N is row N-1; row 0 is never read back
+// (a fresh Level-1 character never "levels up" into it). bDefenseFactorPercent
+// is dead: RecomputeBaseStatsFromLevel_candidate resets it to 100 right after
+// LevelUpFighter_candidate applies it. See docs/memory-map/battle.md.
+typedef struct CharacterLevelEntry {
+    u16 wHp_max;
+    u16 wMp_max;
+    u16 wXpDeltaForLevel;
+    u8 bSpeed;
+    u8 bAccuracy;
+    u8 bDefenseFactorPercent;
+    u8 bMagicDefensePercent;
+    u8 pad_0A[2];
+} CharacterLevelEntry;
+extern const CharacterLevelEntry g_pHarryLevelTable[];     // 0x0804FE50, src/data/harry_levels.c
+extern const CharacterLevelEntry g_pRonLevelTable[];       // 0x08050300, src/data/ron_levels.c
+extern const CharacterLevelEntry g_pHermioneLevelTable[];  // 0x080507B0, src/data/hermione_levels.c
+
 // One graphics-pointer table row, 0x20 bytes; only +0x08 is used here.
 typedef struct MonsterGfxRow {
     u8 pad_00[0x08];

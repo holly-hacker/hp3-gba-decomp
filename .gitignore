@@ -13,7 +13,6 @@ data/audio/modules/*
 data/audio/samples/*
 data/images/items/*
 data/items/*
-data/levels/*
 data/battle_scripts/*
 data/room_scripts/*
 data/text/*

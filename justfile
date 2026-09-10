@@ -161,21 +161,6 @@ extract-item-icons:
 pack-item-icons ver="us":
     python3 tools/items/pack_item_icons.py {{ver}}
 
-# One-time per clone (see `extract-all`), NOT run automatically by
-# `build` -- data/levels/ is gitignored (same footing as the baserom,
-# see CLAUDE.md hard rule 2) and meant to be user-editable. US only --
-# see docs/memory-map/battle.md.
-# Bootstrap data/levels/ locally from baserom.us.gba.
-extract-levels:
-    python3 tools/levels/extract_levels.py
-
-# Gitignored (build/), like everything else pack_levels.py writes. Reads
-# local data/levels/ (run `extract-levels` first if missing) plus this
-# version's level-table rows in regions.<ver>.txt for addresses.
-# Pack data/levels/ into this version's level-table assembly.
-pack-levels ver="us":
-    python3 tools/levels/pack_levels.py {{ver}}
-
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
 # CLAUDE.md hard rule 2), so a fresh clone has none of it and the pack-*
@@ -183,7 +168,7 @@ pack-levels ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-battle-scripts extract-levels extract-items extract-item-icons
+extract-all: extract-krawall extract-text extract-battle-scripts extract-items extract-item-icons
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
@@ -198,7 +183,7 @@ gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
 # Assemble every region and link them at their manifest addresses.
-build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-scripts ver) (pack-levels ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
+build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-scripts ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
     for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}

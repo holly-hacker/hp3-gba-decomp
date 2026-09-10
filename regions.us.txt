@@ -512,10 +512,9 @@ c-file 0x0804F410 0x0804FA88 src/data/monsters.c MonsterTable
 c-file 0x0804FC28 0x0804FE50 src/data/monster_drop_table.c g_pMonsterDropTable
 
 # Per-character level-up stat tables
-# level-table <start> <end> <json-file> <name>
-level-table 0x0804FE50 0x08050300 data/levels/harry.json HarryLevelTable
-level-table 0x08050300 0x080507B0 data/levels/ron.json RonLevelTable
-level-table 0x080507B0 0x08050C60 data/levels/hermione.json HermioneLevelTable
+c-file 0x0804FE50 0x08050300 src/data/harry_levels.c g_pHarryLevelTable
+c-file 0x08050300 0x080507B0 src/data/ron_levels.c g_pRonLevelTable
+c-file 0x080507B0 0x08050C60 src/data/hermione_levels.c g_pHermioneLevelTable
 
 # Encounter roster tables, see docs/formats/encounters.md
 c-file 0x08050C6C 0x0805120C src/data/random_encounters.c g_aRandomEncounters
