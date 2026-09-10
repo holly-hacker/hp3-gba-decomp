@@ -8,9 +8,8 @@
 // InitMonsterBattleActor's pObject->pfnTick. See docs/memory-map/battle.md.
 void TickFighterAttackAnimState_candidate(Object *obj)
 {
-    u8 state;
     u8 *pFlags;
-    s32 timer;
+    s32 fighterType;
     BattleFighter *active;
     u8 monsterIndex;
     u32 i;
@@ -20,28 +19,26 @@ void TickFighterAttackAnimState_candidate(Object *obj)
 
     UpdateFighterFlashEffect_candidate(obj);
 
-    state = obj->bActionState;
-    switch (state) {
-    /* physical ROM order: agbcc emits case bodies in source order, not
-     * numeric case-value order -- listed here as 0, 0xf, 2, 1, 0x1a to
-     * match TickPlayerActionState's convention. */
+    switch (obj->bActionState) {
     case 0:
     {
         pFlags = &obj->bActionFlags;
         if ((*pFlags & 1) == 0)
             return;
+
         if (obj->wActionVariant != 2)
             SetMonsterObjectAnim(obj, 0);
+
         *pFlags &= 0xfe;
         return;
     }
 
     case 0xf:
-        if (obj->nVelX != 0)
+        if (obj->nVelX != 0 || obj->nVelY != 0)
             return;
-        if (obj->nVelY != 0)
-            return;
-        goto case2SharedTail;
+
+        SetFighterAttackAnimState_candidate(obj, 0);
+        return;
 
     case 2:
     {
@@ -50,12 +47,13 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             SetMonsterObjectAnim(obj, 7);
             *pFlags &= 0xfe;
         }
+
         if ((obj->dwFlags & 0x40000) == 0)
             return;
-    }
-case2SharedTail:
+
         SetFighterAttackAnimState_candidate(obj, 0);
         return;
+    }
 
     case 1:
     {
@@ -69,19 +67,19 @@ case2SharedTail:
             obj->dwStateTimer = 0x14;
             obj->bActionFlags &= 0xfe;
         }
+
         if (obj->wFighterType != 0x3a) {
             sub_080039F8(obj);
             sub_08003A0C(obj);
             sub_080019C0(obj, 0xfffa0000, 0);
         }
 
-        timer = obj->dwStateTimer - 1;
-        obj->dwStateTimer = timer;
-        if (timer != 0)
+        if (--obj->dwStateTimer != 0)
             return;
 
         if (obj->pLinkedObject_candidate != 0)
             sub_0801BCB0(obj->pLinkedObject_candidate);
+
         if (obj->pShadowObject != 0)
             obj->pShadowObject->dwFlags |= 0x82;
 
@@ -94,15 +92,15 @@ case2SharedTail:
             obj->dwFlags &= 0xfffffffe;
             return;
         }
-        // Register-pressure proxy, not real source: routing this compare
-        // through `timer` (dead here) is what reproduces the ROM's register
-        // choices. Bar for replacing it is the byte sequence, not the token.
-        timer = 0x3a;
-        if (obj->wFighterType == timer)
+
+        if (obj->wFighterType == (fighterType = 0x3a))
             return;
+
         obj->dwFlags |= 0x82;
+
         if ((u16)(obj->wFighterType - 0x31) > 2)
             return;
+
         sub_08000C48(obj->pShadowObject);
         return;
     }
@@ -113,21 +111,18 @@ case2SharedTail:
         monsterIndex = active->bRosterIndex;
 
         if (obj->bActionFlags == 0x21) {
-            if (monsterIndex == 0x3f) {
-                // Lupin Werewolf: hardcoded target, no RNG -- always singles
-                // out Buckbeak if he's present (else 0xFF, no target). Real
-                // re-reads g_pFightState->pFighters/bFighterCount fresh every
-                // iteration -- no local caches either, to match.
+            if (monsterIndex == 0x3f) { // Lupin Werewolf
                 active->bSelectedActionIndex = 0xff;
+
+                // Lupin Werewolf always attacks buckbeak (if available)
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     if (g_pFightState->pFighters[i].bFighterType == Buckbeak)
-                        active->bSelectedActionIndex = (u8)i;
+                        active->bSelectedActionIndex = i;
                 }
             } else {
                 // Every other enemy: uniform rejection sample over the
-                // whole fighter array until a living ally is hit. Same
-                // no-caching shape as the loop above.
-                u32 roll;
+                // whole fighter array until a living ally is hit.
+                u16 roll;
                 BattleFighter *candidate;
                 BattleFighter *fighters;
                 do {
@@ -140,7 +135,7 @@ case2SharedTail:
                 } while (candidate->bFighterType == Enemy
                          || candidate->pObject == 0
                          || (u16)candidate->nSelectedTargetIndex == 0xffff);
-                active->bSelectedActionIndex = (u8)roll;
+                active->bSelectedActionIndex = roll;
             }
 
             *(Point1616 *)&g_pFightState->nSavedPosX = *(Point1616 *)&obj->nX;
@@ -148,44 +143,50 @@ case2SharedTail:
             if (MonsterTable[active->bRosterIndex].bSpecialChance == 100) {
                 g_pFightState->bActionDelayCounter_candidate = 5;
                 if (active->bRosterIndex != 0x36) {
-                    void *destX, *destY;
+                    u32 destX, destY;
                     if ((u8)(active->bRosterIndex - 0x1a) < 3) {
-                        destX = (void *)0x380000;
-                        destY = (void *)0x2c0000;
+                        destX = 0x380000;
+                        destY = 0x2c0000;
                     } else {
-                        destX = (void *)0x480000;
-                        destY = (void *)0x540000;
+                        destX = 0x480000;
+                        destY = 0x540000;
                     }
-                    StartObjectMove(obj, (u32)destX, (u32)destY, 3);
+
+                    StartObjectMove(obj, destX, destY, 3);
                 }
             } else {
-                {
-                    u32 roster;
-                    u8 targetSlot;
-                    g_pFightState->bActionDelayCounter_candidate = 10;
-                    roster = active->bRosterIndex;
-                    targetSlot = g_pFightState->pFighters[active->bSelectedActionIndex].bSlotParam;
-                    StartObjectMove(obj,
-                        (g_aBattleSlotAnchorPos_candidate[targetSlot][0]
-                         - g_aMonsterAttackOffset_candidate[roster][0]) << 16,
-                        (g_aBattleSlotAnchorPos_candidate[targetSlot][1]
-                         - g_aMonsterAttackOffset_candidate[roster][1]) << 16,
-                        8);
-                }
+
+                u32 roster;
+                u8 targetSlot;
+                g_pFightState->bActionDelayCounter_candidate = 10;
+                roster = active->bRosterIndex;
+                targetSlot = g_pFightState->pFighters[active->bSelectedActionIndex].bSlotParam;
+                StartObjectMove(obj,
+                    (g_aBattleSlotAnchorPos_candidate[targetSlot][0] - g_aMonsterAttackOffset_candidate[roster][0]) << 16,
+                    (g_aBattleSlotAnchorPos_candidate[targetSlot][1] - g_aMonsterAttackOffset_candidate[roster][1]) << 16,
+                    8);
+
+
                 sub_0800366C(obj, 0x10000, 0x10000, 0, 3);
+
                 if ((u8)(active->bRosterIndex - 0x37) <= 1) {
                     sub_08003848(obj, 0x13333, 0x13333, 8);
                 } else {
                     sub_08003848(obj, 0x18000, 0x18000, 8);
                 }
             }
+
             obj->bActionFlags &= 0xfe;
         } else if (obj->bActionFlags == 0x41) {
             SetMonsterObjectAnim(obj, 0);
+
             g_pFightState->bActionDelayCounter_candidate = 0x14;
+
             StartObjectMove(obj, g_pFightState->nSavedPosX, g_pFightState->nSavedPosY, 3);
+
             if (MonsterTable[active->bRosterIndex].bSpecialChance != 100)
                 sub_08003848(obj, 0x10000, 0x10000, 3);
+
             obj->bActionFlags &= 0xfe;
         }
 
@@ -193,6 +194,7 @@ case2SharedTail:
             g_pFightState->bActionDelayCounter_candidate--;
             if (g_pFightState->bActionDelayCounter_candidate != 0)
                 return;
+
             obj->wUnk86 = 0;
             sub_080019C0(obj, 0, 0);
             obj->bActionFlags = 1;
@@ -202,17 +204,21 @@ case2SharedTail:
             g_pFightState->bActionDelayCounter_candidate--;
             if (g_pFightState->bActionDelayCounter_candidate != 0)
                 return;
+
             obj->wMoveDuration = 0;
             obj->bActionState = 0;
             obj->bActionFlags |= 1;
+
             PostActionBattleCheck();
             // Low two bits only: the ROM extracts them with a shift pair,
             // the way a 2-bit unsigned bitfield read compiles.
             if ((((u32)obj->bFlags_0xD1 << 30) >> 30) != 3)
                 return;
+
             sub_08003808(obj);
             return;
         }
+
         if (obj->bActionFlags & 1) {
             SetMonsterObjectAnim(obj, 0xc);
             obj->bActionFlags &= 0xfe;
@@ -223,16 +229,19 @@ case2SharedTail:
                 g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, active->bSelectedActionIndex);
                 RollMonsterSpecialEffect(monsterIndex, active->bSelectedActionIndex, g_nLastDamage);
             }
+
             if (obj->wFighterType == 0x3e) {
                 obj->bEnemyAttackPhase_candidate = 0xff;
                 obj->bAttackOutcomeState = 2;
             }
+
             obj->dwFlags &= 0xffff7fff;
         }
 
         if (((obj->dwFlags & 0x40000) == 0) || (obj->bEnemyAttackPhase_candidate == 0xff)) {
             if (obj->bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
+
             if (obj->bAttackOutcomeState != 1)
                 goto phase2;
         }
@@ -243,34 +252,45 @@ case2SharedTail:
             // attack (bSpecialChance==100 there, <=99 here), and this tail
             // always reads whichever one just ran.
             obj->bEnemyAttackPhase_candidate = 0;
+
             if (MonsterTable[monsterIndex].bSpecialChance <= 99) {
                 g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, active->bSelectedActionIndex);
                 if (g_nLastDamage != 0)
                     RollMonsterSpecialEffect(monsterIndex, active->bSelectedActionIndex, g_nLastDamage);
             }
+
             if (g_nLastDamage != 0) {
                 ShowDamageNumber_candidate(active->bSelectedActionIndex, g_nLastDamage);
             } else {
                 PlaySoundById(0x4b);
             }
+
             obj->bActionFlags = 0x41;
             obj->dwFlags &= 0xfffbffff;
+
             ShowItemUseResult(obj, active->bSelectedActionIndex);
-        phase2:
+
+            phase2:
             if (obj->bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
+
             if (obj->bAttackOutcomeState == 2) {
                 if (MonsterTable[monsterIndex].bSpecialChance <= 99) {
-                    g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex,
+                    g_nLastDamage = (u16)ResolveEnemyAttack(
+                        g_pFightState->bActiveFighterIndex,
                         g_pFightState->pFighters[g_pFightState->bActiveFighterIndex].bSelectedActionIndex);
                 }
+
                 if (g_nLastDamage != 0)
                     ShowDamageNumber_candidate(active->bSelectedActionIndex, g_nLastDamage);
+
                 active->bSpellId = Flipendo;
                 ShowItemUseResult(obj, active->bSelectedActionIndex);
             }
+
             if (obj->bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
+
             if (obj->bAttackOutcomeState == 4) {
                 // Fainted-message sweep: every living non-enemy fighter
                 // resolves once more and queues a faint/HP message.
@@ -315,7 +335,7 @@ case2SharedTail:
                     }
                 }
                 if (g_pFightState->dwBattleResultPending == 0)
-                    ShowBattleMessage(6 /* FaintResult */, 0, 0);
+                    ShowBattleMessage(FaintResult, 0, 0);
             }
             if (obj->bEnemyAttackPhase_candidate != 0xff || obj->bAttackOutcomeState != 3)
                 goto skipPhase0;
