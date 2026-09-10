@@ -439,7 +439,8 @@ extern void SetupBattleRoster(void);
 extern u32 GetPartyPresenceMask(void);
 extern u8 GetPartySize(void);
 extern void JitterEnemyTurnOrder(void);
-extern void BuildTurnOrder_candidate(void);
+extern void BuildTurnOrder(void);
+extern void SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
 extern Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
 extern Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
 // Live save-adjacent state block at 0x03003180 (money, playtime, save flags,

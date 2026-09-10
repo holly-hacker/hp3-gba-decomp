@@ -149,5 +149,5 @@ void SetupBattleRoster(void)
     }
 
     JitterEnemyTurnOrder();
-    BuildTurnOrder_candidate();
+    BuildTurnOrder();
 }

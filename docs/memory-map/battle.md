@@ -552,10 +552,23 @@ hardcoded to `10`.
   `g_pPartyMasterStats[fighterType]` for Harry/Hermione/Ron. Runs on
   `pStagingFighters`, ahead of `SetupBattleRoster`'s compaction/copy into
   `pFighters`.
-- **`BuildTurnOrder_candidate`** (`0x0800E62C`) selection-sorts the
-  roster into `pFighters` ascending by `bStat_speed` (tie-broken to stay
-  stable), spawns each fighter's turn-order icon
-  (`SpawnTurnOrderIcon_candidate`, `0x08014F1C`, UI only), and populates
+- **`BuildTurnOrder`** (`0x0800E62C`, matched byte-exact,
+  `src/battle/build_turn_order.c`) selection-sorts `pStagingFighters` into
+  `pFighters` ascending by `bStat_speed`. Each of the first `bFighterCount-1`
+  passes scans the whole staging array for the lowest `bStat_speed` still
+  above the previous pick (a fainted fighter, `wHp == 0`, is marked
+  `nSelectedTargetIndex = -1` and skipped); a fighter tying the running-best
+  speed that hasn't been picked yet (`nSelectedTargetIndex == 0`) has its own
+  `bStat_speed` nudged up by 1, breaking ties deterministically. A final pass
+  moves whichever staging entry is still unpicked (`nSelectedTargetIndex ==
+  0`) into the last `pFighters` slot, or marks it faint if `wHp == 0`. Each
+  placed fighter's `nSelectedTargetIndex` is set to
+  `bEnemyScalePercent_candidate * (turnPosition + 2)` -- a stagger value for
+  its turn-order icon's entrance animation, reusing the same field
+  `InitializeBattle` writes the enemy visual-scale percent into (`0x40`/
+  `0x30`/`0x20`). A last pass over `pFighters` writes each `Object`'s
+  `bFighterIndex`, spawns its turn-order icon (`SpawnTurnOrderIcon`,
+  `0x08014F1C`, UI only, still raw incbin), and populates
   `aEnemySlotTurnOrderIndex[bSlotParam] = turnOrderIndex` for every `Enemy`
   (4-byte array, one per enemy seat) and `aAllySlotTurnOrderIndex[bSlotParam] =
   turnOrderIndex` for every ally (3-byte array) -- both `0xFF`-initialized
@@ -774,7 +787,7 @@ field (the reader is what gives the field its name).
 | --- | --- | --- | --- |
 | `+0x00` | `+0x08`, `+0x24` | `wHp`, `wHp_max` | `ApplyDamageToFighter` |
 | `+0x02` | `+0x0E` | `bLevel` | none for a monster's own value |
-| `+0x03` | `+0x2A` | `bStat_speed` | `BuildTurnOrder_candidate` |
+| `+0x03` | `+0x2A` | `bStat_speed` | `BuildTurnOrder` |
 | `+0x04` | `+0x2B` | `bAccuracy` | `ResolveEnemyAttack` |
 | `+0x05` | `+0x2C` | `bCritChance` | `ResolveEnemyAttack` |
 | `+0x06`, `+0x08` | `+0x30`, `+0x32` | `wDamageRollMin`, `wDamageRollMax` | `ResolveEnemyAttack` |
