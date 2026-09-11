@@ -15,7 +15,7 @@ the main loop picks it up next frame. PROVEN: read directly from
 
 The per-frame dispatcher (`TickGameModeStack`, `0x0802C6B4`)
 gates a transition on a single check
-(`IsGameModeTransitionPending_candidate`, `0x0802C860`):
+(`IsGameModeTransitionPending`, `0x0802C860`):
 `g_dwCurrentGameMode != g_dwPendingGameMode`,
 nothing else -- PROVEN by decompile, a sign-bit `(-(x)|x)>>31` idiom for
 "not equal". **The `0x80` bit real code sets on every push is not
@@ -77,6 +77,20 @@ single-purpose fields, same as `dwModeState_candidate`/`dwModeTimer_candidate`/
 (`TickLinkCommIfActive_candidate`, `0x0803EF5C`) when a link session is
 active (`g_dwGameModeFlags` bit `0x20`) -- see `link.md` for that subsystem.
 
+`InitGameModeStack` (`0x0802C750`, matched: `src/gamemode/init_game_mode_stack.c`)
+zeroes the current mode, seeds pending/previous from it, then pushes
+`Startup` or `LanguageSelect` depending on `g_saveHeader.bLanguageByte` bit `0x80`
+(`flLanguageConfigured`, see `docs/formats/save.md`) -- language already
+chosen skips straight to `Startup`.
+
+Two small, previously-unlabeled functions sit between `InitGameModeStack`
+and `PushGameMode` (found while bounding `InitGameModeStack`'s extent, not
+yet matched): `GetCurrentGameMode_candidate` (`0x0802C7A8`, returns
+`g_GameModeStackContext.dwCurrentGameMode`; no confirmed callers -- not
+reached by any `bl` in the ROM) and `GetPendingGameMode_candidate`
+(`0x0802C7B4`, returns `g_dwPendingGameMode.dwCurrentGameMode & ~0x80`;
+called by `ExitCardTrade`/`ExitGameCubeLink`/`ExitInGameMenu`).
+
 ## Dispatch table
 
 `g_pGameModeDispatchTable` (US `0x08065CBC`, extracted to
@@ -92,6 +106,13 @@ dispatcher call sites this was cross-checked against). All 216 slots (185
 distinct functions) are still raw incbin, named in `regions.us.txt` via
 `thumb-func` rows and referenced from the table by address only -- not
 decompiled.
+
+The three dispatchers (`DispatchGameModeInit`/`Update`/`Destroy`,
+`0x0802C87C`/`0x0802C8A8`/`0x0802C8D0`, all matched in `src/gamemode/`)
+index this table by `g_GameModeStackContext.dwCurrentGameMode`, call the
+selected slot's function pointer if non-NULL, and are otherwise identical
+except: `Init`/`Destroy` additionally call `ResetKeyInput` first, and
+`Destroy` additionally requires `g_dwGameModeFlags` bit `0x1` clear.
 
 `pDestroyFn`'s functions were previously misnamed `DrawXxx` in Ghidra (a
 stale guess from before this dispatch timing was established) and have been

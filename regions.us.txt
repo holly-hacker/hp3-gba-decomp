@@ -205,6 +205,7 @@ thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
 label 0x080254A8 UpdateKeyInput
 label 0x080258E8 sub_080258E8
+label 0x080258F8 ResetKeyInput
 thumb-func 0x08025D28 InitializeTopicScreen
 thumb-func 0x08025E18 UpdateTopicScreen
 thumb-func 0x08025E84 ExitTopicScreen
@@ -265,14 +266,17 @@ c-file 0x0802C590 0x0802C5A4 src/mem/link_block_by_address.c LinkBlockByAddress
 c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
 c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
 c-file 0x0802C6B4 0x0802C750 src/gamemode/tick_game_mode_stack.c TickGameModeStack
-label 0x0802C750 InitGameModeStack
-label 0x0802C7C4 PushGameMode
-label 0x0802C7E0 PushGameMode_2
+c-file 0x0802C750 0x0802C7A8 src/gamemode/init_game_mode_stack.c InitGameModeStack
+label 0x0802C7A8 GetCurrentGameMode_candidate
+label 0x0802C7B4 GetPendingGameMode_candidate
+c-file 0x0802C7C4 0x0802C7E0 src/gamemode/push_game_mode.c PushGameMode
+c-file 0x0802C7E0 0x0802C800 src/gamemode/push_game_mode_2.c PushGameMode_2
+c-file 0x0802C800 0x0802C820 src/gamemode/push_game_mode_3.c PushGameMode_3
 label 0x0802C820 TickFrameSystems
-label 0x0802C860 IsGameModeTransitionPending_candidate
-label 0x0802C87C DispatchGameModeInit
-label 0x0802C8A8 DispatchGameModeUpdate
-label 0x0802C8D0 DispatchGameModeDestroy
+c-file 0x0802C860 0x0802C87C src/gamemode/is_game_mode_transition_pending.c IsGameModeTransitionPending
+c-file 0x0802C87C 0x0802C8A8 src/gamemode/dispatch_game_mode_init.c DispatchGameModeInit
+c-file 0x0802C8A8 0x0802C8D0 src/gamemode/dispatch_game_mode_update.c DispatchGameModeUpdate
+c-file 0x0802C8D0 0x0802C90C src/gamemode/dispatch_game_mode_destroy.c DispatchGameModeDestroy
 c-file 0x0802C984 0x0802C988 src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect

@@ -12,3 +12,4 @@ extern u16 g_wKeysHeld;      // 0x030034EC: current held-key bitmask
 extern u16 g_wKeysPressed;   // 0x030034F0: keys newly pressed this frame
 
 extern void UpdateKeyInput(void);
+extern void ResetKeyInput(void);

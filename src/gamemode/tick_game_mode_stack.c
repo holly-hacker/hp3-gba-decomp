@@ -8,7 +8,7 @@ void TickGameModeStack(void)
     TickLinkCommIfActive_candidate();
     g_dwTickCount++;
 
-    if (IsGameModeTransitionPending_candidate())
+    if (IsGameModeTransitionPending())
     {
         g_dwGameModeFlags |= 0x10;
         DispatchGameModeDestroy();

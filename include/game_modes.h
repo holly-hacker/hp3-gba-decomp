@@ -78,6 +78,7 @@ typedef enum {
     ConfirmTradeScreen               = 0x47,
 } GameMode;
 
+extern void PushGameMode_3(GameMode mode, s32 arg1, s32 arg2, s32 arg3);
 extern void PushGameMode_2(GameMode mode, s32 arg1, s32 arg2);
 extern void PushGameMode(GameMode mode);
 
@@ -116,18 +117,27 @@ extern GameModeStackContext g_PrevGameModeCtx;  // 0x03003F3C
 extern void InitGameModeStack(void);
 extern void TickGameModeStack(void);
 
+// One dispatch-table entry per GameMode; see g_pGameModeDispatchTable below.
+typedef struct {
+    void (*pInitFn)(void);
+    void (*pUpdateFn)(void);
+    void (*pDestroyFn)(void);
+} GameModeDispatchEntry;
+
+// 72 entries (GameMode 0-0x47), see docs/memory-map/game_modes.md.
+extern const GameModeDispatchEntry g_pGameModeDispatchTable[72];  // src/gamemode/game_mode_dispatch_table.c
+
 // Runs the current mode's pInitFn/pUpdateFn/pDestroyFn slot out of
-// g_pGameModeDispatchTable (src/gamemode/game_mode_dispatch_table.c).
-// DispatchGameModeInit additionally calls ResetKeyInput first;
-// DispatchGameModeDestroy additionally checks g_dwGameModeFlags bit 0x1
-// before dispatching.
+// g_pGameModeDispatchTable. DispatchGameModeInit additionally calls
+// ResetKeyInput first; DispatchGameModeDestroy additionally checks
+// g_dwGameModeFlags bit 0x1 before dispatching.
 extern void DispatchGameModeInit(void);
 extern void DispatchGameModeUpdate(void);
 extern void DispatchGameModeDestroy(void);
 
 // g_dwCurrentGameMode != g_dwPendingGameMode.dwCurrentGameMode, i.e. whether
 // TickGameModeStack has a mode change to apply this frame.
-extern s32 IsGameModeTransitionPending_candidate(void);
+extern s32 IsGameModeTransitionPending(void);
 
 // See ram_symbols.us.inc: 0x03003B44, a broad game-mode-state flags word
 // touched by dozens of functions across overworld/room/cutscene transitions.

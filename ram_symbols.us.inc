@@ -165,3 +165,4 @@
 .set gMt19937RemainingIndices2,  0x0300558C  @ cursor 2: untempered words left before regenerating
 .set gMt19937AutoSeedCallCount,  0x03005590  @ increments each AutoSeed call (purpose unconfirmed)
 .set gMt19937SeedValue,          0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
+.set g_saveHeader,               0x03005598  @ SaveHeader; the live RAM copy, SaveManager.header; see docs/formats/save.md
