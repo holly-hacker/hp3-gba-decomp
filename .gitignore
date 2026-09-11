@@ -34,3 +34,4 @@ compile_commands.json
 
 # Work in progress data/handoff notes
 wip/
+debug_source.c
