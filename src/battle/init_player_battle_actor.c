@@ -59,7 +59,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
 
     fighter->pObject = pObject;
 
-    if (g_PrevGameModeCtx.dwMode != FolioUniversitas)
+    if (g_PrevGameModeCtx.dwCurrentGameMode != FolioUniversitas)
     {
         fighter->bSlotParam = slot;
         fighter->bSelectedActionIndex = 0xFF;

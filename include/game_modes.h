@@ -91,11 +91,14 @@ typedef struct {
     u32 dwCurrentGameModeArg1;     // 0x04
     u32 dwCurrentGameModeArg2;     // 0x08
     u32 dwCurrentGameModeArg3;     // 0x0C
-    u32 dwModeState_candidate;     // 0x10; per-mode state machine, cleared on push
-    u8 pad_14[0x18 - 0x14];        // 0x14; copied by InitGameModeStack, no writers found
-    u32 dwModeTimer_candidate;     // 0x18; per-mode countdown, cleared on push
-    u32 dwModeSubState_candidate;  // 0x1C; second per-mode state word
-    u32 unk_20_candidate;          // 0x20; copied by InitGameModeStack, no writers found
+    u32 dwModeState_candidate;      // 0x10; per-mode state machine, cleared on push
+    u32 dwModeScratchA_candidate;   // 0x14; generic per-mode scratch word, e.g. a
+                                     // confirm/cancel flag in OwlNameSelect, a
+                                     // just-cancelled marker in CardTrade
+    u32 dwModeTimer_candidate;      // 0x18; per-mode countdown, cleared on push
+    u32 dwModeSubState_candidate;   // 0x1C; second per-mode state word
+    u32 dwModeScratchB_candidate;   // 0x20; generic per-mode scratch word, same
+                                     // reuse pattern as dwModeScratchA_candidate
 } GameModeStackContext;
 extern GameModeStackContext g_GameModeStackContext;  // 0x03003EF4
 
@@ -105,9 +108,41 @@ extern GameModeStackContext g_GameModeStackContext;  // 0x03003EF4
 // touches are named; see docs/memory-map/game_modes.md for the rest.
 extern GameModeStackContext g_dwPendingGameMode;  // 0x03003F18
 
+// The third of three identical 0x24-byte blocks (current/pending/previous)
+// TickGameModeStack shifts through on every mode transition: the mode
+// g_GameModeStackContext held just before this frame's pop.
+extern GameModeStackContext g_PrevGameModeCtx;  // 0x03003F3C
+
 extern void InitGameModeStack(void);
 extern void TickGameModeStack(void);
+
+// Runs the current mode's pInitFn/pUpdateFn/pDestroyFn slot out of
+// g_pGameModeDispatchTable (src/gamemode/game_mode_dispatch_table.c).
+// DispatchGameModeInit additionally calls ResetKeyInput first;
+// DispatchGameModeDestroy additionally checks g_dwGameModeFlags bit 0x1
+// before dispatching.
+extern void DispatchGameModeInit(void);
+extern void DispatchGameModeUpdate(void);
+extern void DispatchGameModeDestroy(void);
+
+// g_dwCurrentGameMode != g_dwPendingGameMode.dwCurrentGameMode, i.e. whether
+// TickGameModeStack has a mode change to apply this frame.
+extern s32 IsGameModeTransitionPending_candidate(void);
 
 // See ram_symbols.us.inc: 0x03003B44, a broad game-mode-state flags word
 // touched by dozens of functions across overworld/room/cutscene transitions.
 extern u32 g_dwGameModeFlags;
+
+// u32: incremented once per TickGameModeStack call, before mode dispatch.
+// Also used by UpdateObjectSpriteFrame as a per-tick generation stamp for
+// its shared VRAM tile allocation cache.
+extern u32 g_dwTickCount;
+
+// Ticks active objects, particle emitters, and several other per-frame
+// subsystems; called once/frame from TickGameModeStack after
+// DispatchGameModeUpdate. See docs/memory-map/game_modes.md.
+extern void TickFrameSystems(void);
+
+// Pumps the link-cable comm packet when a link session is active
+// (g_dwGameModeFlags bit 0x20); see docs/memory-map/link.md.
+extern void TickLinkCommIfActive_candidate(void);

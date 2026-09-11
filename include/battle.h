@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "graphics.h"
 #include "input.h"
+#include "game_modes.h"
 
 // See docs/memory-map/battle.md.
 
@@ -214,20 +215,12 @@ extern void sub_0802D3BC(void);
 // One slot per active BattleFighter -- see docs/formats/battle-ui.md.
 extern Object *g_apFighterObjects_candidate[7];
 
-// The Folio Universitas card slot lives at +8 in the previous-mode
-// GameModeContext (0x03003F3C; PushGameMode_2's own arg2 write, see
-// docs/memory-map/game_modes.md): PushGameMode_2(0x26, slot, 0) stages the
-// chosen card in the pending context's nParam1, TickGameModeStack shifts
+// The Folio Universitas card slot lives at +8 (dwCurrentGameModeArg2) in
+// g_PrevGameModeCtx (see game_modes.h): PushGameMode_2(0x26, slot, 0) stages
+// the chosen card in the pending context's arg2, TickGameModeStack shifts
 // pending -> current -> previous on pop, and battle code reads it back out
 // of g_PrevGameModeCtx once the Folio Universitas screen has returned.
-typedef struct GameModeContext {
-    u32 dwMode;    // 0x00; high bit 0x80 marks pending
-    s32 nParam0;   // 0x04
-    s32 nParam1;   // 0x08; push arg2 / mode result slot
-    u8 pad_0C[0x24 - 0x0C];
-} GameModeContext;
-extern GameModeContext g_PrevGameModeCtx;  // 0x03003F3C
-#define g_nFolioUniversitasSlot g_PrevGameModeCtx.nParam1
+#define g_nFolioUniversitasSlot g_PrevGameModeCtx.dwCurrentGameModeArg2
 
 extern u32 g_aBgScrollState[];  // 0x03001E80; [0x25] == 0x03001F14
 extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90

@@ -56,7 +56,7 @@ void InitializeBattle(void)
     for (i = 0; i < 4; i++)
         g_anFaintedRosterIndices[i] = -1;
 
-    if (g_PrevGameModeCtx.dwMode != FolioUniversitas && g_PrevGameModeCtx.dwMode != HelpTopicScreen)
+    if (g_PrevGameModeCtx.dwCurrentGameMode != FolioUniversitas && g_PrevGameModeCtx.dwCurrentGameMode != HelpTopicScreen)
     {
         // entered new battle
         g_nXpAccum = 0;

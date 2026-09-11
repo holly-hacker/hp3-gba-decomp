@@ -72,7 +72,7 @@
 .set g_anFaintedRosterIndices, 0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
 .set g_saveStateBlock, 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
-.set g_PrevGameModeCtx, 0x03003F3C  @ GameModeContext, 0x24 bytes; see docs/memory-map/game_modes.md
+.set g_PrevGameModeCtx, 0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_abBgPriority,     0x03003F8C  @ u8[]; [4] == 0x03003F90
 .set g_nXpAccum,         0x0300260E  @ u16: running XP-reward accumulator
 .set g_nGoldAccum,       0x03002610  @ u16: running gold-reward accumulator
@@ -85,6 +85,7 @@
 .set g_dwPendingGameMode, 0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
 .set g_dwPendingGameModeArg1, 0x03003F1C  @ u32: g_dwPendingGameMode's arg1, i.e. dwCurrentGameModeArg1's pending counterpart
 .set g_dwPendingGameModeArg3, 0x03003F24  @ u32: g_dwPendingGameMode's arg3, i.e. dwCurrentGameModeArg3's pending counterpart
+.set g_dwTickCount, 0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
 
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
 @ ResetKeyInput, 0x080254A8/0x080258F8) ---

@@ -51,12 +51,38 @@ Full enum (71 values, `Startup`=1 through `ConfirmTradeScreen`=0x47) is in
 reproduced in full here since it covers every screen/cutscene in the
 game, not just debug menus.
 
+## Mode-transition shift
+
+`TickGameModeStack` (`0x0802C6B4`, US, matched: `src/gamemode/tick_game_mode_stack.c`)
+is the per-frame dispatcher. On a pending transition it shifts three
+identical 0x24-byte `GameModeStackContext` blocks -- current
+(`g_GameModeStackContext`, `0x03003EF4`), pending (`g_dwPendingGameMode`,
+`0x03003F18`), previous (`g_PrevGameModeCtx`, `0x03003F3C`) -- with two plain
+struct assignments (`g_PrevGameModeCtx = g_GameModeStackContext;
+g_GameModeStackContext = g_dwPendingGameMode;`), confirmed to compile to the
+real ROM's `ldmia`/`stmia` block copies. `g_dwTickCount` (`0x03003F60`,
+right after the three blocks) increments once per call, before dispatch;
+`UpdateObjectSpriteFrame` also reads/writes it as a per-tick generation
+stamp for a shared VRAM tile allocation cache.
+
+`GameModeStackContext`'s two scratch words (`dwModeScratchA_candidate` at
++0x14, `dwModeScratchB_candidate` at +0x20) are genuinely generic --
+confirmed with real, unrelated per-mode uses: a confirm/cancel flag in
+`OwlNameSelect` (0/1 on KEY_A/KEY_B), and a "just cancelled" marker in the
+card-trade mode's own state machine (`CancelCardTradeOffer`). Not fixed
+single-purpose fields, same as `dwModeState_candidate`/`dwModeTimer_candidate`/
+`dwModeSubState_candidate`.
+
+`TickGameModeStack` also pumps the link-cable comm packet
+(`TickLinkCommIfActive_candidate`, `0x0803EF5C`) when a link session is
+active (`g_dwGameModeFlags` bit `0x20`) -- see `link.md` for that subsystem.
+
 ## Dispatch table
 
 `g_pGameModeDispatchTable` (US `0x08065CBC`, extracted to
-`src/data/game_mode_dispatch_table.c`), 72 entries (`GameMode` 0-0x47;
+`src/gamemode/game_mode_dispatch_table.c`), 72 entries (`GameMode` 0-0x47;
 index 0 unused/reserved, all three fields point at `HandleGameModeNoneNoOp`,
-matched in `src/game_modes/handle_game_mode_none_noop.c` -- a no-op,
+matched in `src/gamemode/handle_game_mode_none_noop.c` -- a no-op,
 single `bx lr`).
 Each entry is 3 function pointers, `pInitFn`/`pUpdateFn`/`pDestroyFn`:
 `pInitFn` runs once right after the mode variable updates to the new mode,

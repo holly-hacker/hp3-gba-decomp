@@ -203,6 +203,7 @@ label 0x080250B8 InstallBgTileCodec_candidate
 thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
 thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
+label 0x080254A8 UpdateKeyInput
 label 0x080258E8 sub_080258E8
 thumb-func 0x08025D28 InitializeTopicScreen
 thumb-func 0x08025E18 UpdateTopicScreen
@@ -263,11 +264,16 @@ c-file 0x0802C570 0x0802C590 src/mem/get_free_block_size.c GetFreeBlockSize
 c-file 0x0802C590 0x0802C5A4 src/mem/link_block_by_address.c LinkBlockByAddress
 c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
 c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
-label 0x0802C6B4 TickGameModeStack
+c-file 0x0802C6B4 0x0802C750 src/gamemode/tick_game_mode_stack.c TickGameModeStack
 label 0x0802C750 InitGameModeStack
 label 0x0802C7C4 PushGameMode
 label 0x0802C7E0 PushGameMode_2
-c-file 0x0802C984 0x0802C988 src/game_modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
+label 0x0802C820 TickFrameSystems
+label 0x0802C860 IsGameModeTransitionPending_candidate
+label 0x0802C87C DispatchGameModeInit
+label 0x0802C8A8 DispatchGameModeUpdate
+label 0x0802C8D0 DispatchGameModeDestroy
+c-file 0x0802C984 0x0802C988 src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CD88 ExitWizardCrackerPopItDifficultySelect
@@ -386,6 +392,7 @@ label 0x0803D2C8 sub_0803D2C8
 label 0x0803D310 SetFadeToWhite
 label 0x0803D3E8 sub_0803D3E8
 label 0x0803E4FC sub_0803E4FC
+label 0x0803EF5C TickLinkCommIfActive_candidate
 label 0x0803FC68 PlaySoundById
 label 0x0803FDB0 kramInstall
 label 0x0803FEB4 PlayMusicModule
@@ -491,7 +498,7 @@ label 0x08060E8C gIntrTableTemplate
 c-file 0x08060EE4 0x080629B4 src/data/items.c g_pItemTable
 
 # Game-mode dispatch table, see docs/memory-map/game_modes.md
-c-file 0x08065CBC 0x0806601C src/data/game_mode_dispatch_table.c g_pGameModeDispatchTable
+c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 
 # Dialog/UI text data

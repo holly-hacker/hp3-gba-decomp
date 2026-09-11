@@ -10,7 +10,7 @@ void UpdateBattle(void)
 
     sub_0802D3BC();
 
-    if (g_PrevGameModeCtx.dwMode != FolioUniversitas && g_PrevGameModeCtx.dwMode != HelpTopicScreen)
+    if (g_PrevGameModeCtx.dwCurrentGameMode != FolioUniversitas && g_PrevGameModeCtx.dwCurrentGameMode != HelpTopicScreen)
     {
         timer = g_pFightState->bScreenShakeTimer_candidate;
         if (timer != 0)
