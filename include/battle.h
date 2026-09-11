@@ -57,7 +57,7 @@ typedef struct BattleFighter {
     /*0x24*/ u16 wHp_max;
     /*0x26*/ u16 wMp_max;
     /*0x28*/ u16 wRewardGold;
-    /*0x2A*/ u8 bStat_speed;
+    /*0x2A*/ u8 bSpeed;
     /*0x2B*/ u8 bAccuracy;
     /*0x2C*/ u8 bCritChance;
     /*0x2D*/ u8 unk2D;
@@ -76,7 +76,10 @@ typedef struct BattleFighter {
     /*0x3C*/ u8 bSpellId;
     /*0x3D*/ u8 bSpellLevel;
     /*0x3E*/ u8 unk3E;
-    /*0x40*/ s16 nSelectedTargetIndex;
+    // -1 when fainted (wHp == 0); 0 while alive; BuildTurnOrder also reuses
+    // this as scratch space, temporarily overwriting it with a nonzero
+    // "already placed in turn order" marker during its sort.
+    /*0x40*/ s16 nFaintedFlag;
     /*0x42*/ u8 bStatusFlags;
     /*0x43*/ u8 bPoisonDamage;
     /*0x44*/ u8 bParalysisEscapeChance;

@@ -34,16 +34,14 @@ void SetupBattleRoster(void)
     g_pFightState->bFighterCount = GetPartySize();
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF && g_GameModeStackContext.dwCurrentGameModeArg1 == 3) {
+        // scripted fight at index 3 is against lupin
         InitPlayerBattleActor(&g_pFightState->pStagingFighters[0], Buckbeak, 1);
         InitPlayerBattleActor(&g_pFightState->pStagingFighters[1], Harry, 2);
         InitPlayerBattleActor(&g_pFightState->pStagingFighters[2], Hermione, 0);
         g_pFightState->bFighterCount = 3;
     } else {
-        u32 bCount;
-        bCount = g_pFightState->bFighterCount;
-
-        if (bCount == 1) {
-            if ((bCount & presence) != 0)
+        if (g_pFightState->bFighterCount == 1) {
+            if ((presence & 1) != 0)
                 InitPlayerBattleActor(&g_pFightState->pStagingFighters[0], Harry, 1);
             else if ((presence & 4) != 0)
                 InitPlayerBattleActor(&g_pFightState->pStagingFighters[0], Hermione, 1);
@@ -51,7 +49,7 @@ void SetupBattleRoster(void)
                 InitPlayerBattleActor(&g_pFightState->pStagingFighters[0], Ron, 1);
 
             g_pFightState->bFighterCount = 1;
-        } else if (bCount == 2) {
+        } else if (g_pFightState->bFighterCount == 2) {
             if ((presence & 1) != 0) {
                 InitPlayerBattleActor(&g_pFightState->pStagingFighters[0], Harry, 1);
                 if ((presence & 4) != 0)
@@ -79,6 +77,7 @@ void SetupBattleRoster(void)
     count = g_pFightState->bFighterCount;
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF) {
+        // scripted encounter
         slot = 0;
         idx = 0;
         for (; slot <= 3; slot = (u8)(slot + 1)) {
@@ -91,6 +90,7 @@ void SetupBattleRoster(void)
             g_pFightState->aEnemySlotTurnOrderIndex[slot] = 0xFF;
         }
     } else {
+        // random encounter
         u8 monsterIndex;
         slot = 0;
         idx = 0;
@@ -111,21 +111,23 @@ void SetupBattleRoster(void)
 
     idx = 0;
     count = g_pFightState->bFighterCount;
-    slot = 0;
 
+    // copy starging fighters into fighters
+    slot = 0;
     if (slot < count) {
         for (; slot < g_pFightState->bFighterCount; slot = (u8)(slot + 1))
             g_pFightState->pFighters[slot] = g_pFightState->pStagingFighters[slot];
     }
 
+    // copy alive (hp != 0) fighters back into staging fighters (meaning they are first), and set bFighterCount
     slot = 0;
     if (slot < count) {
         for (; slot < count; slot = (u8)(slot + 1)) {
             if (g_pFightState->pFighters[slot].wHp != 0) {
                 BattleFighter *stage = g_pFightState->pStagingFighters;
-                BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage);
+                BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage); // dst = g_pFightState->pStagingFighters[idx]
                 memcpy(dst, g_pFightState->pFighters + slot, sizeof(BattleFighter));
-                g_pFightState->pStagingFighters[idx].nSelectedTargetIndex = 0;
+                g_pFightState->pStagingFighters[idx].nFaintedFlag = 0;
                 idx++;
             } else {
                 g_pFightState->bFighterCount--;
@@ -133,6 +135,7 @@ void SetupBattleRoster(void)
         }
     }
 
+    // copy the remaining fainted fighters to the end of the staging fighters
     slot = 0;
     if (slot < count) {
         u16 hp;
@@ -140,14 +143,19 @@ void SetupBattleRoster(void)
             hp = g_pFightState->pFighters[slot].wHp;
             if (hp == 0) {
                 BattleFighter *stage = g_pFightState->pStagingFighters;
-                BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage);
+                BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage); // dst = g_pFightState->pStagingFighters[idx]
                 memcpy(dst, g_pFightState->pFighters + slot, sizeof(BattleFighter));
-                g_pFightState->pStagingFighters[idx].nSelectedTargetIndex = hp;
+                g_pFightState->pStagingFighters[idx].nFaintedFlag = hp;
                 idx++;
             }
         }
     }
 
+    // `pStagingFighters` is now sorted so that fainted enemies (and unitialized/missing ones) are at the back
+
+    // randomly shift enemy speed values
     JitterEnemyTurnOrder();
+
+    // build actual turn order
     BuildTurnOrder();
 }

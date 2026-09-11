@@ -39,7 +39,7 @@ party member's 6 equipped items as:
 ```c
 bDefenseFactorPercent -= item.nDefenseX2 / 2;   // displayed Def = 100 - value
 bMagicDefensePercent  -= item.dwMagicDefense;   // displayed M.Def = 100 - value
-bStat_speed            -= item.nAgility;         // displayed Agi = 255 - value
+bSpeed                -= item.nAgility;         // displayed Agi = 255 - value
 ```
 
 ## Equip eligibility -- `nCharacterMask` (`+0x1C`)

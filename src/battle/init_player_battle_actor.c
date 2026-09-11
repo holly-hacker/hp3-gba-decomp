@@ -71,13 +71,13 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
             fighter->wHp_max = g_aPartyMasterStats[type].wHp_max;
             fighter->wMp = g_aPartyMasterStats[type].wMp;
             fighter->wMp_max = g_aPartyMasterStats[type].wMp_max;
-            fighter->bStat_speed = g_aPartyMasterStats[type].bStat_speed;
+            fighter->bSpeed = g_aPartyMasterStats[type].bSpeed;
             fighter->bAccuracy = g_aPartyMasterStats[type].bAccuracy;
             fighter->bDefenseFactorPercent = g_aPartyMasterStats[type].bDefenseFactorPercent;
             fighter->bMagicDefensePercent = g_aPartyMasterStats[type].bMagicDefensePercent;
             fighter->wRewardXp = g_aPartyMasterStats[type].wRewardXp;
             fighter->bStatusFlags = StatusNone;
-            fighter->nSelectedTargetIndex = 0;
+            fighter->nFaintedFlag = 0;
             fighter->unk3E |= 0xFF;
         }
         else
@@ -90,13 +90,13 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
             fighter->wHp_max = 400;
             fighter->wMp = 999;
             fighter->wMp_max = 999;
-            fighter->bStat_speed = 10;
+            fighter->bSpeed = 10;
             fighter->bAccuracy = 101;
             fighter->bDefenseFactorPercent = 100;
             fighter->bMagicDefensePercent = 100;
             fighter->wRewardXp = 0;
             fighter->bStatusFlags = StatusNone;
-            fighter->nSelectedTargetIndex = 0;
+            fighter->nFaintedFlag = 0;
             fighter->unk3E |= 0xFF;
 
             // Back up into slot 3, past the three party entries; via a
@@ -117,7 +117,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
         pObject->bActionFlags = hp;  // hp == 0 on this path; keeps hp in sb
         pObject->dwFlags &= ~0x10;
         SnapObjectPosition(pObject, (0xD4 - slot * 9 * 4) << 16, slot * 0x40000 + 0x6E0000);
-        fighter->nSelectedTargetIndex = -1;
+        fighter->nFaintedFlag = -1;
     }
     else
     {

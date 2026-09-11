@@ -134,7 +134,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                     candidate = (BattleFighter *)(roll * sizeof(BattleFighter) + (u32)fighters);
                 } while (candidate->bFighterType == Enemy
                          || candidate->pObject == 0
-                         || (u16)candidate->nSelectedTargetIndex == 0xffff);
+                         || (u16)candidate->nFaintedFlag == 0xffff);
                 active->bSelectedActionIndex = roll;
             }
 

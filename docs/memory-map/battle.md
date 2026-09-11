@@ -58,14 +58,14 @@ void SetupBattleRoster() {            // 0x0800EDD8
 void JitterEnemyTurnOrder() {
     for (Fighter f : pStagingFighters)
         if (f.bFighterType == Enemy)
-            f.bStat_speed = clamp(f.bStat_speed + Mt19937RandSigned(0x10), 5, 251);
+            f.bSpeed = clamp(f.bSpeed + Mt19937RandSigned(0x10), 5, 251);
     // player fighters are untouched -- speed comes straight from
     // g_pPartyMasterStats (Buckbeak: hardcoded 10)
 }
 
 void BuildTurnOrder() {
     // selection-sort pStagingFighters into pFighters ascending by
-    // bStat_speed (tie-broken so equal values stay stable)
+    // bSpeed (tie-broken so equal values stay stable)
     for (Fighter f : pFighters) {
         if (f.bFighterType == Enemy) aEnemySlotTurnOrderIndex[f.bSlotParam] = f.turnOrderIndex;
         else                         aAllySlotTurnOrderIndex[f.bSlotParam] = f.turnOrderIndex;
@@ -180,7 +180,7 @@ void ApplyDamageToFighter(short damage, uchar fighterIndex) {   // 0x08017F98
         g_nXpAccum   += MonsterTable[f->bRosterIndex].reward_xp;
         g_nGoldAccum += MonsterTable[f->bRosterIndex].reward_gold;
         f->wHp = 0;
-        f->nSelectedTargetIndex = -1;
+        f->nFaintedFlag = -1;
         SetFighterAttackAnimState(f->pObject, 1);
     }
 }
@@ -387,7 +387,7 @@ Notes on pieces the pseudocode above elides:
           candidate = &g_pFightState->pFighters[roll];
       } while (candidate->bFighterType == Enemy
                 || candidate->pObject == NULL
-                || candidate->nSelectedTargetIndex == -1);
+                || candidate->nFaintedFlag == -1);
       target = roll;
   }
   attacker->bSelectedActionIndex = target;
@@ -433,7 +433,7 @@ monster's record from `MonsterTable`; `InitPlayerBattleActor_candidate`
 | `0x24` | u16 | `wHp_max` | PROVEN |
 | `0x26` | u16 | `wMp_max` | PROVEN |
 | `0x28` | u16 | `wRewardGold` (`MonsterTable+0x12`) | PROVEN |
-| `0x2A` | u8 | `bStat_speed` -- turn-order/initiative, lower = earlier (`MonsterTable+0x03`) | PROVEN |
+| `0x2A` | u8 | `bSpeed` -- turn-order/initiative, lower = earlier (`MonsterTable+0x03`) | PROVEN |
 | `0x2B` | u8 | `bAccuracy` | PROVEN |
 | `0x2C` | u8 | `bCritChance` (`MonsterTable+0x05`) -- monster-only, never populated for player fighters | PROVEN |
 | `0x2E` | u8 | `bDefenseFactorPercent`, percent (`damage = damage * this / 100`) -- player-only | PROVEN |
@@ -503,10 +503,10 @@ positions with `SnapObjectPosition`/`StartObjectMove` at
 `pfnTick = TickPlayerActionState`. Copies the 10 spell slots
 (`i <= 9`) and, outside Folio Universitas returns, the party stats from
 `g_pPartyMasterStats_candidate` for `type < 3` (Buckbeak gets `bLevel 50`,
-`wHp 400`, `wMp/wMp_max 999`, `bStat_speed 10`, `bAccuracy 101`, both
+`wHp 400`, `wMp/wMp_max 999`, `bSpeed 10`, `bAccuracy 101`, both
 defenses `100`) plus a backup `memcpy` of the record into slot 3
 (`0x030025C4`). `wHp == 0` takes the faint branch (fainted anim table,
-`dwFlags &= ~0x10`, re-snap, `nSelectedTargetIndex = -1`), else the live
+`dwFlags &= ~0x10`, re-snap, `nFaintedFlag = -1`), else the live
 branch (anim data row `type * 0x244`, cursor `base + slot*4 + 2`).
 `bSelectedActionIndex` inits to `0xFF` at `+0x3A`, which is why that offset
 is the action index and `+0x3C` the spell id. The decompilation
@@ -655,33 +655,33 @@ narratively (a held-in-reserve ally, most plausibly) is still
 UNCONFIRMED -- but that it is a live, targetable, on-screen fighter pool,
 not a placeholder concept, is now PROVEN via this matched call.
 
-## Turn order -- `bStat_speed`, PROVEN
+## Turn order -- `bSpeed`, PROVEN
 
 
 `MonsterTable+0x03` / `BattleFighter+0x2A` is a turn-order/initiative
-value, lower = earlier turn. `bStat_speed` clusters `178-254` across the
+value, lower = earlier turn. `bSpeed` clusters `178-254` across the
 53 real Folio Bruti monster rows (mostly act after the player), while
 dangerous ones act early (Lupin Werewolf `=20`, Draco `=60`). Buckbeak is
 hardcoded to `10`.
 
 - **`JitterEnemyTurnOrder`** (`0x0800E5B8`, matched byte-exact,
   `src/battle/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
-  each `Enemy`'s `bStat_speed`, clamped to `[5, 251]`. Player fighters are
-  untouched -- `bStat_speed` comes straight from
+  each `Enemy`'s `bSpeed`, clamped to `[5, 251]`. Player fighters are
+  untouched -- `bSpeed` comes straight from
   `g_pPartyMasterStats[fighterType]` for Harry/Hermione/Ron. Runs on
   `pStagingFighters`, ahead of `SetupBattleRoster`'s compaction/copy into
   `pFighters`.
 - **`BuildTurnOrder`** (`0x0800E62C`, matched byte-exact,
   `src/battle/build_turn_order.c`) selection-sorts `pStagingFighters` into
-  `pFighters` ascending by `bStat_speed`. Each of the first `bFighterCount-1`
-  passes scans the whole staging array for the lowest `bStat_speed` still
+  `pFighters` ascending by `bSpeed`. Each of the first `bFighterCount-1`
+  passes scans the whole staging array for the lowest `bSpeed` still
   above the previous pick (a fainted fighter, `wHp == 0`, is marked
-  `nSelectedTargetIndex = -1` and skipped); a fighter tying the running-best
-  speed that hasn't been picked yet (`nSelectedTargetIndex == 0`) has its own
-  `bStat_speed` nudged up by 1, breaking ties deterministically. A final pass
-  moves whichever staging entry is still unpicked (`nSelectedTargetIndex ==
+  `nFaintedFlag = -1` and skipped); a fighter tying the running-best
+  speed that hasn't been picked yet (`nFaintedFlag == 0`) has its own
+  `bSpeed` nudged up by 1, breaking ties deterministically. A final pass
+  moves whichever staging entry is still unpicked (`nFaintedFlag ==
   0`) into the last `pFighters` slot, or marks it faint if `wHp == 0`. Each
-  placed fighter's `nSelectedTargetIndex` is overwritten with
+  placed fighter's `nFaintedFlag` is overwritten with
   `bEnemyScalePercent_candidate * (turnPosition + 2)`, reusing the same
   field `InitializeBattle` writes the enemy visual-scale percent into
   (`0x40`/`0x30`/`0x20`) -- PROVEN as written, but no reader of this
@@ -696,7 +696,7 @@ hardcoded to `10`.
   at roster setup, both later read by target resolution (see "Target
   redirect" above).
 - **`ReviveFighter_candidate`** (`0x0800E890`) restores a revived
-  fighter's `wHp`/`wMp` to max and re-sorts the queue by `bStat_speed` to
+  fighter's `wHp`/`wMp` to max and re-sorts the queue by `bSpeed` to
   reinsert them (`0xff` marks "already acted this round"). Called by
   opcode `0x97` sub-case `0x1C` (`Revive`) with `g_bEffectTargetIndex` as
   the target -- Harry's `Revive` card is the only script using it.
@@ -908,7 +908,7 @@ field (the reader is what gives the field its name).
 | --- | --- | --- | --- |
 | `+0x00` | `+0x08`, `+0x24` | `wHp`, `wHp_max` | `ApplyDamageToFighter` |
 | `+0x02` | `+0x0E` | `bLevel` | none for a monster's own value |
-| `+0x03` | `+0x2A` | `bStat_speed` | `BuildTurnOrder` |
+| `+0x03` | `+0x2A` | `bSpeed` | `BuildTurnOrder` |
 | `+0x04` | `+0x2B` | `bAccuracy` | `ResolveEnemyAttack` |
 | `+0x05` | `+0x2C` | `bCritChance` | `ResolveEnemyAttack` |
 | `+0x06`, `+0x08` | `+0x30`, `+0x32` | `wDamageRollMin`, `wDamageRollMax` | `ResolveEnemyAttack` |
@@ -1046,7 +1046,7 @@ with the new value, writes each row into the matching `BattleFighter`
 fields, full-heals HP/MP, then calls
 `ApplyEquipmentStatModifiers_candidate` (`0x08026870`) to reapply gear.
 `RecomputeBaseStatsFromLevel_candidate` (`0x080150B4`) does the same
-lookup for `bStat_speed`/defense without incrementing level (used when
+lookup for `bSpeed`/defense without incrementing level (used when
 only reapplying equipment; resets defense/`bMagicDefensePercent` to `100`
 first). `GrantPartyLevelUps` (`0x0801D308`, PROVEN: its one caller is
 identified) runs `LevelUpFighter_candidate` for all 3 party members,
@@ -1074,7 +1074,7 @@ Row layout (12 bytes, last 2 always-zero padding): `wHp_max` (u16),
 equipped-item slots (`DAT_03003834`) and subtracts each item's
 `nDefenseX2/2` (Def) from defense%, `dwMagicDefense` (M.Def)
 from `bMagicDefensePercent`, and `nAgility` (Agi, signed) from
-`bStat_speed` (clamped) -- heavier gear trades speed for defense. See
+`bSpeed` (clamped) -- heavier gear trades speed for defense. See
 [`../formats/items.md`](../formats/items.md)'s "Equipment stats" section
 for the full item-record field layout, including `nCharacterMask`, the
 per-character equip-eligibility mask `CanFighterEquipItem` reads.
@@ -1084,7 +1084,7 @@ Lvl5, no equipment):
 
 - `bLevel` is 0-indexed -- displayed Level `N` is table row `N-1`.
 - `wHp_max`/`wMp_max` match the row directly; displayed agility is
-  `255 - bStat_speed`.
+  `255 - bSpeed`.
 - **Displayed defense and magic-defense always read `0`**
   (`100 - 100`): `RecomputeBaseStatsFromLevel_candidate` resets both to
   `100` immediately after `LevelUpFighter_candidate` sets them from the
@@ -1106,10 +1106,10 @@ shown as `100 - value`) and read by `DrawStatusEquipStatsPanel`
 (`0x030024EC`), not `MonsterTable`.** `InitPlayerBattleActor_candidate`
 copies a persistent, `BattleFighter`-shaped 3-entry array (Harry/
 Hermione/Ron) into the live roster: `bLevel`, `wHp`/`wHp_max`,
-`wMp`/`wMp_max`, `bStat_speed`, `bAccuracy`, `bDefenseFactorPercent` --
+`wMp`/`wMp_max`, `bSpeed`, `bAccuracy`, `bDefenseFactorPercent` --
 settling that last field as player-only, never populated for monsters.
 Buckbeak (`fighterType == 3`, outside the 3-entry array) gets hardcoded
-defaults: `wHp`/`wMp_max` 400/999, `bLevel 0x32`, `bStat_speed 10`,
+defaults: `wHp`/`wMp_max` 400/999, `bLevel 0x32`, `bSpeed 10`,
 `bAccuracy 0x65`, `bDefenseFactorPercent 100`.
 
 ### `BattleFighter+0x3C`/`+0x3D` -- `bSpellId` (enum `SpellId`) / `bSpellLevel`

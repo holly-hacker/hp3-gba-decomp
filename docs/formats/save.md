@@ -214,7 +214,7 @@ field):
 
 `wHp_max` and `wMp_max` are *not* saved -- both are pure functions of
 `bLevel` (recomputed from the per-character level table on load), so
-persisting them would be redundant. Equipment/`bStat_speed`/`bAccuracy`/
+persisting them would be redundant. Equipment/`bSpeed`/`bAccuracy`/
 defense are likewise not saved here, consistent with
 `ApplyEquipmentStatModifiers_candidate` recomputing them from
 equipped-item data at battle entry.

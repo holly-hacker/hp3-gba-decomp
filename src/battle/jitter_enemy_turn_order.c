@@ -2,7 +2,7 @@
 #include "battle.h"
 #include "mt19937.h"
 
-// Adds +/-16 random jitter to each Enemy fighter's bStat_speed (clamped
+// Adds +/-16 random jitter to each Enemy fighter's bSpeed (clamped
 // [5,251]) before BuildTurnOrder sorts by it. Runs on pStagingFighters,
 // ahead of the roster compaction/copy into pFighters.
 void JitterEnemyTurnOrder(void)
@@ -13,7 +13,8 @@ void JitterEnemyTurnOrder(void)
     i = 0;
     if (i < g_pFightState->bFighterCount) {
         do {
-            speed = g_pFightState->pStagingFighters[i].bStat_speed + Mt19937RandSigned(0x10);
+            // NOTE: RNG is still advanced for party fighters, but result is discarded
+            speed = g_pFightState->pStagingFighters[i].bSpeed + Mt19937RandSigned(0x10);
 
             if (speed > 250)
                 speed = 251;
@@ -21,7 +22,7 @@ void JitterEnemyTurnOrder(void)
                 speed = 5;
 
             if (g_pFightState->pStagingFighters[i].bFighterType == Enemy)
-                g_pFightState->pStagingFighters[i].bStat_speed = speed;
+                g_pFightState->pStagingFighters[i].bSpeed = speed;
 
             i++;
         } while (i < g_pFightState->bFighterCount);

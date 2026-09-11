@@ -66,7 +66,8 @@ void InitializeBattle(void)
         g_pFightState->pStagingFighters = AllocZeroed(0x1F8);
         g_pFightState->pPendingFighters_candidate = AllocZeroed(0xD8);
 
-        if (g_aPartyMasterStats[0].bLevel == 0)
+        // set turn order multiplier, see BuildTurnOrder
+        if (g_aPartyMasterStats[0].bLevel < 1)
             g_pFightState->bEnemyScalePercent_candidate = 0x40;
         else if (g_aPartyMasterStats[0].bLevel < 2)
             g_pFightState->bEnemyScalePercent_candidate = 0x30;

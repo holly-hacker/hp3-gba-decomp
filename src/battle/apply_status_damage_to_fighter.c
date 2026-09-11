@@ -20,7 +20,7 @@ void ApplyStatusDamageToFighter_candidate(s32 damage, s32 fighterIndex)
 
         g_pFightState->dwDefeatCheckPending_candidate = 1;
         g_pFightState->pFighters[fighterIndex].wHp = 0;
-        g_pFightState->pFighters[fighterIndex].nSelectedTargetIndex = -1;
+        g_pFightState->pFighters[fighterIndex].nFaintedFlag = -1;
 
         {
             u8 idx = fighterIndex;

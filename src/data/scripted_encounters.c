@@ -8,7 +8,7 @@ const u8 g_aScriptedEncounters[15][4] = {
     { 255,  58, 255, 255 },  // fight 0: slot1 'The Monster Book of Monsters'; room 41 (Leaky Cauldron - Harry's Room)
     { 255,  59, 255, 255 },  // fight 1: slot1 Giant Rat; room 38 (Leaky Cauldron - Cellar 1)
     { 255,  54, 255, 255 },  // fight 2: slot1 Whomping Willow; room 15 (Hogwarts Grounds - Whomping Willow)
-    { 255,  63, 255, 255 },  // fight 3: slot1 Lupin Werewolf; room 13 (Hogwarts Grounds - Lake)
+    { 255,  63, 255, 255 },  // fight 3: slot1 Lupin Werewolf; room 13 (Hogwarts Grounds - Lake), forces Buckbeak+Harry+Hermione party
     {  60,  62, 255, 255 },  // fight 4: slot0 Crabbe, slot1 Goyle; room 4 (Transfiguration Classroom Maze)
     { 255,  61, 255, 255 },  // fight 5: slot1 Draco; room 25 (Rooftop)
     { 255,  66, 255, 255 },  // fight 6: slot1 'The Monster Book of Monsters'; room 12 (Hagrid's Garden Maze)

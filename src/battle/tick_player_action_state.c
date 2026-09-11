@@ -214,8 +214,7 @@ void TickPlayerActionState(Object *obj)
             SetPlayerObjectAnim(obj, 1);
             obj->bActionFlags &= 0xfe;
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
-                if (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[
-                        ACTIVE_FIGHTER.bSelectedActionIndex]].wHp == 0) {
+                if (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].wHp == 0) {
                     i = 0;
                     while (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[i]].wHp == 0 ||
                            g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[i]].bFighterType == Enemy)
@@ -291,14 +290,12 @@ void TickPlayerActionState(Object *obj)
             obj->bAttackOutcomeState = AttackOutcome_None;
             if (g_nLastDamage == 0)
                 return;
-            ShowDamageNumber_candidate(g_pFightState->aEnemySlotTurnOrderIndex[
-                             ACTIVE_FIGHTER.bSelectedActionIndex],
+            ShowDamageNumber_candidate(g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                          g_nLastDamage);
             return;
         }
         if (obj->bAttackOutcomeState == 2) {
-            ShowItemUseResult(obj, g_pFightState->aEnemySlotTurnOrderIndex[
-                                       ACTIVE_FIGHTER.bSelectedActionIndex]);
+            ShowItemUseResult(obj, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
             return;
         }
         if (obj->bAttackOutcomeState == 3) {
@@ -307,8 +304,7 @@ void TickPlayerActionState(Object *obj)
             obj->bAttackOutcomeState = AttackOutcome_None;
             obj->bActionFlags = 0x41;
             ApplyDamageToFighter(g_nLastDamage,
-                                 g_pFightState->aEnemySlotTurnOrderIndex[
-                                     ACTIVE_FIGHTER.bSelectedActionIndex]);
+                                 g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
             g_bLastTargetIndex = ACTIVE_FIGHTER.bSelectedActionIndex;
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             return;
@@ -322,18 +318,17 @@ void TickPlayerActionState(Object *obj)
                     continue;
                 g_nLastDamage = ResolvePlayerAttack(g_pFightState->bActiveFighterIndex, i);
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId =
-                    (u8)((Object *)g_pFightState->pFighters[i].pObject)->wFighterType;
+                g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = (u8)((Object *)g_pFightState->pFighters[i].pObject)->wFighterType;
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                 g_pFightState->bFaintMessageCount_candidate += 1;
                 SetFighterAttackAnimState_candidate(g_pFightState->pFighters[i].pObject, 2);
                 if (g_nLastDamage > 999) {
                     g_nLastDamage -= 999;
-                    ShowFloatingDamageNumber_candidate(g_nLastDamage, 3, i, 0);
+                    ShowFloatingDamageNumber_candidate(g_nLastDamage, 3, i, 0); // crit
                 } else if (g_nLastDamage != 0) {
-                    ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, i, 0);
+                    ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, i, 0); // normal
                 } else {
-                    ShowFloatingDamageNumber_candidate(g_nLastDamage, 2, i, 0);
+                    ShowFloatingDamageNumber_candidate(g_nLastDamage, 2, i, 0); // miss
                 }
                 ApplyDamageToFighter(g_nLastDamage, i);
             }

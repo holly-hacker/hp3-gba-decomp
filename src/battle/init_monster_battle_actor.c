@@ -63,12 +63,14 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
 
     sub_08001958(pObject, **ppAnimCursor);
 
+    // certain flying monsters? Cornish Pixie, Bat, Dragonfly
     if (type == 3 || type == 0x1D || type == 0x1A)
     {
         s32 slot64 = slot * 64;
         sub_08003A30(pObject, slot64, 0x800, 2);
         sub_08003A44(pObject, slot64, 0x800, 2);
     }
+    // fire effect monsters? Salamander, Amazonian Salamander, Peruvian Salamander
     else if ((u8)(type - 0x2D) <= 2)
     {
         pShadowObject = AllocDefaultObject();
@@ -104,7 +106,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     fighter->pObject = pObject;
     fighter->wHp = MonsterTable[type].wHp;
     fighter->wHp_max = MonsterTable[type].wHp;
-    fighter->bStat_speed = MonsterTable[type].bSpeed;
+    fighter->bSpeed = MonsterTable[type].bSpeed;
     fighter->bAccuracy = MonsterTable[type].bAccuracy;
     fighter->bCritChance = MonsterTable[type].bCritChance;
     fighter->wDamageRollMin = MonsterTable[type].wDamageMin;
@@ -121,7 +123,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     fighter->bLevel = MonsterTable[type].bLevel;
     fighter->wRewardGold = MonsterTable[type].wRewardGold;
     fighter->bStatusFlags = StatusNone;
-    fighter->nSelectedTargetIndex = 0;
+    fighter->nFaintedFlag = 0;
     fighter->bRosterIndex = type;
     fighter->unk3E = -1;
     fighter->bSlotParam = slot;

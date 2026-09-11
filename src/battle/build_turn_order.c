@@ -4,10 +4,10 @@
 #define STAGING(i) (g_pFightState->pStagingFighters[i])
 #define SLOT(i) (g_pFightState->pFighters[i])
 
-// Selection-sorts pStagingFighters into pFighters ascending by bStat_speed
+// Selection-sorts pStagingFighters into pFighters ascending by bSpeed
 // (lower = earlier turn), then spawns each fighter's turn-order icon and
 // populates aEnemySlotTurnOrderIndex[bSlotParam]/aAllySlotTurnOrderIndex[bSlotParam].
-// Duplicate bStat_speed values are broken by nudging the loser's stored
+// Duplicate bSpeed values are broken by nudging the loser's stored
 // speed up by 1 the first time it ties an already-found winner, keeping the
 // sort stable/deterministic. See docs/memory-map/battle.md.
 void BuildTurnOrder(void)
@@ -30,37 +30,43 @@ void BuildTurnOrder(void)
 
         while (innerIdx < g_pFightState->bFighterCount) {
             if (STAGING(innerIdx).wHp == 0) {
-                STAGING(innerIdx).nSelectedTargetIndex = -1;
-            } else if (STAGING(innerIdx).bStat_speed < bestSpeed && STAGING(innerIdx).bStat_speed > prevWinnerSpeed) {
-                bestSpeed = STAGING(innerIdx).bStat_speed;
+                STAGING(innerIdx).nFaintedFlag = -1;
+            } else if (STAGING(innerIdx).bSpeed < bestSpeed && STAGING(innerIdx).bSpeed > prevWinnerSpeed) {
+                bestSpeed = STAGING(innerIdx).bSpeed;
                 winnerIdx = innerIdx;
-            } else if (STAGING(innerIdx).bStat_speed == bestSpeed && (u16)STAGING(innerIdx).nSelectedTargetIndex == 0) {
+            } else if (STAGING(innerIdx).bSpeed == bestSpeed && (u16)STAGING(innerIdx).nFaintedFlag == 0) {
                 // Tie with the current best: bump this fighter's speed by 1
                 // so it sorts after its twin instead of being picked again.
-                STAGING(innerIdx).bStat_speed = STAGING(innerIdx).bStat_speed + 1;
+                STAGING(innerIdx).bSpeed = STAGING(innerIdx).bSpeed + 1;
             }
 
             innerIdx = innerIdx + 1;
         }
 
+        // place the lowest speed at the start
         SLOT(outerIdx) = STAGING(winnerIdx);
-        SLOT(outerIdx).nSelectedTargetIndex = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
-        prevWinnerSpeed = STAGING(winnerIdx).bStat_speed;
-        STAGING(winnerIdx).nSelectedTargetIndex = SLOT(outerIdx).nSelectedTargetIndex;
+
+        // Use nFaintedFlag to mark the enemy as placed
+        // TODO: unsure what this multiply does. nFaintedFlag is only used to indicate placement so this multiplication
+        // by a static value doesn't accomplish anything.
+        SLOT(outerIdx).nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
+
+        prevWinnerSpeed = STAGING(winnerIdx).bSpeed;
+        STAGING(winnerIdx).nFaintedFlag = SLOT(outerIdx).nFaintedFlag;
 
         outerIdx = outerIdx + 1;
     }
 
-    // Leftover pass: the one fighter never picked above (nSelectedTargetIndex
+    // Leftover pass: the one fighter never picked above (nFaintedFlag
     // still 0) goes into the last pFighters slot, unless it's fainted.
     innerIdx = 0;
     while (innerIdx < g_pFightState->bFighterCount) {
-        if ((u16)STAGING(innerIdx).nSelectedTargetIndex == 0
+        if ((u16)STAGING(innerIdx).nFaintedFlag == 0
             && STAGING(innerIdx).wHp != 0) {
             SLOT(outerIdx) = STAGING(innerIdx);
-            SLOT(outerIdx).nSelectedTargetIndex = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
+            SLOT(outerIdx).nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
         } else if (STAGING(innerIdx).wHp == 0) {
-            STAGING(innerIdx).nSelectedTargetIndex = -1;
+            STAGING(innerIdx).nFaintedFlag = -1;
         }
 
         innerIdx = innerIdx + 1;
