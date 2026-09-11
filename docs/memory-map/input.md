@@ -15,7 +15,7 @@ for both versions after seeding).
 | Name | US addr | JP addr | Called from |
 |---|---|---|---|
 | `UpdateKeyInput` | `0x080254A8` | `0x08025504` | Once per game-loop iteration, from `TickGameModeStack` (`0x0802C6B4`), immediately before dispatching the current game mode's update function. |
-| `ResetKeyInput` | `0x080258F8` | `0x08025954` | `InitializeOverworld` and the two Select/Start consume-and-push-mode paths in `0x0802AEF8` (see below). |
+| `ResetKeyInput` | `0x080258F8` | `0x08025954` | `InitializeOverworld` and the two Select/Start consume-and-push-mode paths in `HandleOverworldPauseMenuInput (0x0802AEF8)` (see below). |
 
 `UpdateKeyInput` maintains the frame's held/pressed/released key state:
 
@@ -69,7 +69,7 @@ All `u16`, standard GBA `KEYINPUT` bit order (active-high once XORed, as
 |---|---|---|
 | `g_wKeysHeld` | `0x030034EC` | Current held-key mask. Also folded into `Mt19937AutoSeed`'s seed as a cheap entropy source (see `docs/memory-map/rng.md`) -- that's not what the address is *for*. |
 | `g_wKeysHeldPrevious` | `0x030034EE` | Held-key mask from the previous frame's update. |
-| `g_wKeysPressed` | `0x030034F0` | Keys newly pressed this frame: `currentHeld & ~previousHeld`. By far the most-read of these globals (144 cross-references) -- menu, battle, cutscene, and minigame update functions across the ROM test it for edge-triggered button presses. Some consumers clear it to `0` after handling a press, consuming the event for the rest of the frame (e.g. `0x0802AEF8`'s Select/Start dispatch). |
+| `g_wKeysPressed` | `0x030034F0` | Keys newly pressed this frame: `currentHeld & ~previousHeld`. By far the most-read of these globals (144 cross-references) -- menu, battle, cutscene, and minigame update functions across the ROM test it for edge-triggered button presses. Some consumers clear it to `0` after handling a press, consuming the event for the rest of the frame (e.g. `HandleOverworldPauseMenuInput (0x0802AEF8)`'s Select/Start dispatch). |
 | `g_wKeysReleased` | `0x030034F2` | Keys newly released this frame: `previousHeld & ~currentHeld`. No confirmed readers yet. |
 | `g_wInputDisabled` | `0x030034F4` | Nonzero forces `UpdateKeyInput` to clear all key state instead of reading input. Set/cleared by two small helper functions at `0x08025954`/`0x08025978` (US) that also fill a small unrelated block at `0x030034D0`-`0x030034D7` -- not yet identified as one of the globals in this table (four bytes, purpose unconfirmed). |
 | `g_awPlayerKeysHeld` | `0x030034F6` | `u16[2]`, per-player held-key masks, serial-link input path only. |
@@ -92,7 +92,7 @@ shared `Mt19937AutoSeed` source.
 - `UpdateFolioBrutiGridCursor` (`0x08036BB8`) -- `0x10`/`0x20`/`0x40`/`0x80`
   (Right/Left/Up/Down) move the bestiary grid cursor, with a one-cell skip
   at the grid's dead final slot. See `docs/formats/folio_bruti.md`.
-- `0x0802AEF8` -- overworld pause-menu entry: `0x08` (Start) opens
+- `HandleOverworldPauseMenuInput (0x0802AEF8)` -- overworld pause-menu entry: `0x08` (Start) opens
   `InGameMenu`, `0x04` (Select) opens `Options`, each consuming the press
   (`g_wKeysPressed = 0`) before pushing the mode.
 - `UpdateMainMenu` (`0x08043646`-area) -- `0x08` (Start) advances the

@@ -106,7 +106,7 @@ extern GameModeStackContext g_GameModeStackContext;  // 0x03003EF4
 extern GameModeStackContext g_dwPendingGameMode;  // 0x03003F18
 
 extern void InitGameModeStack(void);
-extern void TickGameModeStack_candidate(void);
+extern void TickGameModeStack(void);
 
 // See ram_symbols.us.inc: 0x03003B44, a broad game-mode-state flags word
 // touched by dozens of functions across overworld/room/cutscene transitions.

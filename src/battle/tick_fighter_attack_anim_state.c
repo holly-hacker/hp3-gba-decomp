@@ -101,7 +101,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         if ((u16)(obj->wFighterType - 0x31) > 2)
             return;
 
-        sub_08000C48(obj->pShadowObject);
+        FreeObject(obj->pShadowObject);
         return;
     }
 
@@ -167,12 +167,12 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                     8);
 
 
-                sub_0800366C(obj, 0x10000, 0x10000, 0, 3);
+                SetObjectAffineTransform(obj, 0x10000, 0x10000, 0, 3);
 
                 if ((u8)(active->bRosterIndex - 0x37) <= 1) {
-                    sub_08003848(obj, 0x13333, 0x13333, 8);
+                    StartObjectAffineScaleTween(obj, 0x13333, 0x13333, 8);
                 } else {
-                    sub_08003848(obj, 0x18000, 0x18000, 8);
+                    StartObjectAffineScaleTween(obj, 0x18000, 0x18000, 8);
                 }
             }
 
@@ -185,7 +185,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             StartObjectMove(obj, g_pFightState->nSavedPosX, g_pFightState->nSavedPosY, 3);
 
             if (MonsterTable[active->bRosterIndex].bSpecialChance != 100)
-                sub_08003848(obj, 0x10000, 0x10000, 3);
+                StartObjectAffineScaleTween(obj, 0x10000, 0x10000, 3);
 
             obj->bActionFlags &= 0xfe;
         }
@@ -215,7 +215,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             if ((((u32)obj->bFlags_0xD1 << 30) >> 30) != 3)
                 return;
 
-            sub_08003808(obj);
+            ReleaseObjectAffineSlot(obj);
             return;
         }
 

@@ -26,7 +26,7 @@ scripts -- see "What's NOT yet known".
 ## What this is
 
 A bytecode VM that drives per-`Object` behavior scripts, reached via
-`TickObject_candidate`'s generic callback dispatch for any object whose
+`TickObject`'s generic callback dispatch for any object whose
 tick callback happens to be the script interpreter.
 
 **Battle-only, structurally.** `CreateEffectScriptObject` (`0x08018BE0`)
@@ -53,7 +53,7 @@ is one in-battle consumer among the rest.
 `pfnTick`), a generic per-tick callback pointer set by `FUN_08018be0`
 (US `0x08018BE0`) when it spawns a script object
 (`Object+0x62 = effectId`, `Object+0x98 = InterpretObjectScript`).
-`TickObject_candidate` calls that pointer every tick.
+`TickObject` calls that pointer every tick.
 
 Before its first opcode fetch, the real entry (`0x08018CC0`) also sets up
 two registers held for the rest of the call: `r8` and `sl` (`r10`), each
@@ -192,7 +192,7 @@ in opcodes.json" below:
 | `0x2A` | `GotoIfLocalANotEqual_2` | 2 | Byte-for-byte identical handler body to `GotoIfLocalANotEqual` (`0x26`). Handler at US `0x080195EC`. |
 | `0x2B` | `GotoIfFighterRosterMatches_2` | 1 (label id) | Byte-for-byte identical handler body to `GotoIfFighterRosterMatches` (`0x27`) (register allocation differs -- `r1` vs `r5` for the loop temp -- but the logic is identical). Never used by any of the 65 real scripts. Handler at US `0x08019606`. |
 | `0x30` | `opcode_30` | 0 | The single most-used opcode across the 65 real scripts (190 occurrences), but not confidently named -- what it's for isn't known, only its mechanics. Reads `sl`'s linked `BattleFighter`'s `Object` (`*(sl+4)`, via the same `fighters[]` array/72-byte-stride lookup documented in "The interpreter" above), increments a byte at that `Object+0x60` by 1, then mirrors state into the global `FightState` (`*(0x030024E8)`, see [`../memory-map/battle.md`](../memory-map/battle.md)): copies the `*(sl's Object)+0x60` byte (post-increment) into `FightState.field_0x1058`, and latches `*(sl+4)` (the `Object` pointer itself) into `FightState.field_0x1054`, guarded on that field being currently `0` (a "first writer wins" latch). No other effect -- tail-calls `ContinueObjectScript` immediately. Handler at US `0x08019698`. Real scripts call it in tight, `Wait`-free bursts (e.g. `SpellVerdimilliousUno.txt` calls it twice in a row, does other work, then three more times in a row). `TickFighterAttackAnimState_candidate` (US `0x08015608`, the per-tick attack-animation state machine for the currently-attacking fighter) reads and branches on the same `Object+0x60` byte as a small state value (checks against `1`/`2`/`4`) to steer attack-outcome handling, and zeroes `Object+0x60` together with `FightState.field_0x1054`/`field_0x1058` once an attack sequence fully resolves -- all three fields are managed as one unit across the script interpreter and the native attack-animation code, consistent with `sl` being the currently-attacking fighter's own object. Values `2`/`4` of `Object+0x60` are written directly by that native code (this opcode only ever adds `1`). See [`../memory-map/battle.md`](../memory-map/battle.md)'s `FightState+0x1054`/`+0x1058` section for what happens (or doesn't) to the accumulated value. |
-| `0x41` | `StartOrbitMotion` | 2 (index, angle tweak) | Copies a 3-dword `{angleX/Y, velX/Y, radiusX/Y}` row (into `Object+0x54`/`0x58`/`0x5c`) from a table at `0x08053C68` (12-byte stride, selected by operand 0) via `CopyOrbitParamsFromTable` (US `0x08003A20`), then tweaks `angleX` (`Object+0x54`'s low 16 bits) by `Object.bScriptLocalA * operand1` (shifted left 8, 8.8 fixed point) -- staggering each spawned generation's starting angle, e.g. to arrange copies evenly around a ring. Fully resolved: `ApplyObjectOrbitMotion` (US `0x08003980`, called every tick for every object by `TickObjectList_candidate`, independent of any opcode) advances `angleX`/`angleY` by `velX`/`velY`, looks up a sine table at `0x0806589C` (`angleX` read with a quarter-turn phase offset, i.e. cosine; `angleY` raw), scales by `radiusX`/`radiusY`, and adds the result into `Object+0x34`/`0x38` (`nXPrev`/`nYPrev`) -- i.e. this opcode **starts a 2D orbital motion** (circular or elliptical, per-axis-configurable) around the object's current position. Handler at US `0x0801990C`. |
+| `0x41` | `StartOrbitMotion` | 2 (index, angle tweak) | Copies a 3-dword `{angleX/Y, velX/Y, radiusX/Y}` row (into `Object+0x54`/`0x58`/`0x5c`) from a table at `0x08053C68` (12-byte stride, selected by operand 0) via `CopyOrbitParamsFromTable` (US `0x08003A20`), then tweaks `angleX` (`Object+0x54`'s low 16 bits) by `Object.bScriptLocalA * operand1` (shifted left 8, 8.8 fixed point) -- staggering each spawned generation's starting angle, e.g. to arrange copies evenly around a ring. Fully resolved: `ApplyObjectOrbitMotion` (US `0x08003980`, called every tick for every object by `TickObjectList`, independent of any opcode) advances `angleX`/`angleY` by `velX`/`velY`, looks up a sine table at `0x0806589C` (`angleX` read with a quarter-turn phase offset, i.e. cosine; `angleY` raw), scales by `radiusX`/`radiusY`, and adds the result into `Object+0x34`/`0x38` (`nXPrev`/`nYPrev`) -- i.e. this opcode **starts a 2D orbital motion** (circular or elliptical, per-axis-configurable) around the object's current position. Handler at US `0x0801990C`. |
 | `0x45` | `StartOrbitMotion_2` | 2 | Same computation as `StartOrbitMotion`, but targets a *different* object -- `*(sl+4)+0x54`, i.e. `sl`'s linked `Object` rather than the running `Object` itself (see "The interpreter" above for `r8`/`sl`) -- which fighter role `sl` is isn't confirmed. Handler at US `0x080199E0`. |
 | `0x52` | `ClearObjectFlag1` | 0 | `Object.dwUnk_0x0c &= ~1` on the running object itself (`r7`) -- reads the field, clears bit `0x1`, stores back, tail-calls `ContinueObjectScript`. Handler at US `0x08019BE8`. Complementary pair with `SetObjectFlag1` (`0x53`) immediately below it in the case table. Which behavior bit `0x1` of `Object+0xc` actually gates isn't identified -- other known bits of this field are `0x2` (checked at `TickFighterAttackAnimState_candidate`'s entry) and `0x40000` (`WaitForCounter`'s "AnimationDone", see "The Wait family" above); bit `0x1` is distinct from both. |
 | `0x53` | `SetObjectFlag1` | 0 | `Object.dwUnk_0x0c \|= 1` on the running object -- the complement of `ClearObjectFlag1` (`0x52`). Handler at US `0x08019BF6`. |
@@ -263,7 +263,7 @@ loops back into dispatch. The only way out is to branch straight to
 
 Each swaps `Object.pfnTick` away from `InterpretObjectScript` to a small
 dedicated tick handler, then returns -- deferring further script
-execution to whenever `TickObject_candidate` next calls that handler and
+execution to whenever `TickObject` next calls that handler and
 it decides to swap `pfnTick` back. **None of these three handler
 addresses (`0x0801B650`/`0x0801B684`/`0x0801B6D0`) were disassembled by
 `gbadisasm`** (real code sitting in what looked like an unclaimed gap --
@@ -351,7 +351,7 @@ The three termination conditions:
   optionally offset per `bScriptLocalA` generation, then calls
   `StartObjectMove`). `TickObjectMove` (US `0x0800351C`) is the
   counterpart that ticks it
-  down: **called directly by `TickObject_candidate`**, the generic
+  down: **called directly by `TickObject`**, the generic
   per-object tick loop -- independent of whatever `Object.pfnTick`
   currently is, confirming it keeps running while a script object is
   parked in a `Wait`-family handler. At `0`, it zeroes the velocity

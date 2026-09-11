@@ -403,25 +403,24 @@ identities):
 **The "Tick" call chain is PROVEN:**
 `InitMonsterBattleActor` (`0x08014C88`) writes this function's address
 into `Object+0x98` (a callback-registration slot, not a direct call).
-**`TickObject_candidate`** (`0x08001FDA`) is a per-object per-update-pass
+**`TickObject`** (`0x08001FDA`) is a per-object per-update-pass
 function: it reads `Object+0x98`, and if non-null (and a gating check,
-`FUN_0800359c`, passes), calls **`ThumbInterworkVeneer_bx_r1`**
-(`0x0804A2C4`, see `krawall.md`) to invoke it. **`TickObjectList_candidate`**
+`IsObjectTickAllowed`, passes), calls **`ThumbInterworkVeneer_bx_r1`**
+(`0x0804A2C4`, see `krawall.md`) to invoke it. **`TickObjectList`**
 (`0x0800091A`) walks the linked list of all active objects, calling
-`TickObject_candidate` once per object per call. So the chain is
-`TickObjectList_candidate` -> (per object) `TickObject_candidate` ->
+`TickObject` once per object per call. So the chain is
+`TickObjectList` -> (per object) `TickObject` ->
 `ThumbInterworkVeneer_bx_r1` -> `TickFighterAttackAnimState_candidate`, a
 generic per-object-per-frame callback dispatch -- "AttackAnimState" is
 arguably too narrow given case `0x1a`'s broader turn/action-execution
 content (target selection, `ResolveEnemyAttack`, message/reward
 dispatch), not renamed further.
 
-**`FUN_0800359C`** (the `TickObject_candidate` gate) returns true iff
-`g_GameModeStackContext_candidate.dwCurrentGameMode` (`0x03003EF4`) `!=
-0x18` AND it equals `g_dwPendingGameMode_candidate` (`0x03003F18`) -- "no
-mode transition in flight, and not in mode `0x18`". The mode word has 80+
-xrefs ROM-wide, consistent with being the central game-mode/scene state
-variable; specific mode values aren't identified.
+**`IsObjectTickAllowed`** (the `TickObject` gate) returns true iff
+`g_GameModeStackContext.dwCurrentGameMode` (`0x03003EF4`) `!= Dialogue`
+(`0x18`) AND it equals `g_dwPendingGameMode` (`0x03003F18`) -- "no mode
+transition in flight, and not in Dialogue mode". See
+[`game_modes.md`](game_modes.md) for the full `GameMode` enum.
 
 **`FightState` fields**, from decompiling this dispatcher and
 `ShowBattleMessage`:
@@ -619,7 +618,7 @@ resolved.
 this: `FUN_08018b70(effectId, ...)` (the anim/effect trigger already
 documented above) calls `FUN_08018be0(effectId, ...)`, which spawns a
 new `Object` and sets `Object+0x62 = effectId` and `Object+0x98` to a
-generic dispatcher (`0x08018cc1`); `TickObject_candidate` then
+generic dispatcher (`0x08018cc1`); `TickObject` then
 interprets that object's script every tick via `FUN_08018cf8`
 (`0x08018cf8`), which looks up the script buffer as
 `g_apEffectScripts_candidate[Object+0x62]` --
@@ -740,7 +739,7 @@ via the real jump table, see below).
   generic ARMv4T-Thumb interworking veneers (`0x0804A2C0`-`0x0804A2E4`,
   one `bx rN` stub per register -- Thumb has no `blx reg`), documented
   in `krawall.md`; Krawall's mixer uses the same family. Reached from
-  `TickObject_candidate`'s callback dispatch.
+  `TickObject`'s callback dispatch.
 
 No `_candidate` suffix: every one of the 18 cases has real, verified
 dialog text (case table below), including all 5 of case 5's inner

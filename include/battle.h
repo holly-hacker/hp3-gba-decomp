@@ -292,10 +292,10 @@ extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void sub_080039F8(Object *obj);
 extern void sub_08003A0C(Object *obj);
 extern void sub_0801BCB0(void *linkedObject);
-extern void sub_08000C48(Object *shadowObject);
-extern void sub_08003808(Object *obj);
-extern void sub_0800366C(Object *obj, u32 arg1, u32 arg2, s32 arg3, s32 arg4);
-extern void sub_08003848(Object *obj, u32 arg1, u32 arg2, s32 mode);
+extern void FreeObject(Object *obj);
+extern void ReleaseObjectAffineSlot(Object *obj);
+extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s32 wAngle, s32 bMode);
+extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables

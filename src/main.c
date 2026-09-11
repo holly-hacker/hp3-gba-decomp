@@ -88,7 +88,7 @@ void AgbMain(void)
 
     while (1)
     {
-        TickGameModeStack_candidate();
+        TickGameModeStack();
         ProcessPlaytimeTick();
         WaitForVBlank();
     }

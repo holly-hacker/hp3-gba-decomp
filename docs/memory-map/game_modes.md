@@ -13,7 +13,7 @@ the main loop picks it up next frame. PROVEN: read directly from
 
 ## Live debugging: force a mode transition
 
-The per-frame dispatcher (`TickGameModeStack_candidate`, `0x0802C6B4`)
+The per-frame dispatcher (`TickGameModeStack`, `0x0802C6B4`)
 gates a transition on a single check
 (`IsGameModeTransitionPending_candidate`, `0x0802C860`):
 `g_dwCurrentGameMode != g_dwPendingGameMode`,

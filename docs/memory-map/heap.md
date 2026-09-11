@@ -67,15 +67,18 @@ fixed-size-slot pool out of the heap:
   0x128-byte stride), carved into a free list by `BuildFreeList`.
 - `g_pObjectPoolAuxBuffer` (`0x03001DBC`) — a second, 0x104-byte
   `AllocZeroed`'d buffer; `InitObjectPool`'s only write to it. Read in
-  `FUN_08001300` as a 0x34-byte-stride, 5-record array — record
-  layout/purpose unconfirmed, out of scope here.
+  `ReleaseObjectOffscreenVramTiles` as a 0x34-byte-stride, 5-record array,
+  indexed by `Object.bObjectPoolAuxSlot`: a per-row `u8` refcount at
+  `+0x20 + frameIndex` is decremented, and the corresponding VRAM tile
+  range is freed via `FreeObjectVramTileAllocation` once it hits 0 — full
+  record layout still otherwise unconfirmed.
 - `g_pSortObjectsIwram`/`g_pCheckObjectCollisionsIwram` (`0x0300194C`/
   `0x03001A10`) — `SortObjectsByDepth_candidate`/
   `CheckObjectCollisions_candidate` relocated into IWRAM via
   `bios_CPUSet`, the standard GBA hot-loop-in-IWRAM pattern.
 - `g_dwObjectListActive_candidate` (`0x030017A0`) — set to 1 by
   `InitObjectPool`, also written by `FUN_08001d90`; read by
-  `TickObjectList_candidate`.
+  `TickObjectList`.
 - `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. Read in
   `WriteObjectOamCells` as what looks like a fixed-point rounding/scale
   constant, unrelated to the pool itself; not enough evidence for a real

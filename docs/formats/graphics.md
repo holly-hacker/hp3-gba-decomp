@@ -412,7 +412,7 @@ decompile, which was independently cross-checked and matched exactly):
   and calls `sub_0800D264(resource_ptr + 2, slotIndex*16 + 1, 0xF)`.
   Also stores `slotIndex` into the upper nibble of the object's
   `+0xD5` byte (matches the `>>4` read of that same field seen
-  elsewhere, e.g. `sub_080308D8` -- consistent cross-reference, good
+  elsewhere, e.g. `ClaimObjectEffectResource` -- consistent cross-reference, good
   sign the slot-index tracking is understood correctly).
 - `sub_0800D264(ptr, val1, val2)`: **not a decoder** -- a deferred
   request queue. Appends `{val1: u16, val2: u16, ptr: void*}` (8-byte
@@ -935,7 +935,7 @@ without needing a live trace:
   proven above (`resource_ptr + 2` = 15 real colors; index 0 is the GBA
   OBJ transparent color, not stored in the resource).
 - **`pFrameData`: a frame/layout header**, the same generic per-object
-  animation-frame format `LoadObjTileSheet`/`FUN_080023b4` (renders the
+  animation-frame format `LoadObjTileSheet`/`LoadObjectAnimFrameCells` (renders the
   in-world sprite these items also spawn) read from `objStruct+0xe0`.
   Fixed 12-byte part; `+0x06` is a `u16` frame count (every one of the
   79 real items has exactly 1). One `u16` offset per frame follows at

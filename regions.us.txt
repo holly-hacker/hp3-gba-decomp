@@ -24,7 +24,7 @@ label 0x08000134 IntrMain
 asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
-label 0x08000C48 sub_08000C48
+label 0x08000C48 FreeObject
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 label 0x080014B4 AllocObjectOfType
 
@@ -38,11 +38,11 @@ label 0x080019B0 SetObjectPosition
 label 0x080019C0 sub_080019C0
 label 0x08001A84 StartObjectMove
 c-file 0x08001E7C 0x08001EA0 src/battle/set_fighter_attack_anim_state.c SetFighterAttackAnimState_candidate
-label 0x0800366C sub_0800366C
+label 0x0800366C SetObjectAffineTransform
 
 label 0x08003708 SetObjectFlippedX
-label 0x08003808 sub_08003808
-label 0x08003848 sub_08003848
+label 0x08003808 ReleaseObjectAffineSlot
+label 0x08003848 StartObjectAffineScaleTween
 label 0x080039E8 sub_080039E8
 label 0x080039F8 sub_080039F8
 label 0x08003A0C sub_08003A0C
@@ -263,7 +263,7 @@ c-file 0x0802C570 0x0802C590 src/mem/get_free_block_size.c GetFreeBlockSize
 c-file 0x0802C590 0x0802C5A4 src/mem/link_block_by_address.c LinkBlockByAddress
 c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
 c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
-label 0x0802C6B4 TickGameModeStack_candidate
+label 0x0802C6B4 TickGameModeStack
 label 0x0802C750 InitGameModeStack
 label 0x0802C7C4 PushGameMode
 label 0x0802C7E0 PushGameMode_2

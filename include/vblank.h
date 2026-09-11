@@ -15,7 +15,7 @@ typedef struct {
     u32   dwVBlankConsumed;   // 0x20: last dwVBlankCount value WaitForVBlank consumed
     u8    unk24[0x8];         // 0x24: unconfirmed
     u32   dwSecondTick;       // 0x2C: counts 0-59 real vblanks, then rolls over
-    u32   dwFrameCounter;     // 0x30: incremented once per logic tick by TickGameModeStack_candidate
+    u32   dwFrameCounter;     // 0x30: incremented once per logic tick by TickGameModeStack
     u32   dwFramesLastSecond; // 0x34: dwFrameCounter snapshot on dwSecondTick rollover; no reader found
     u16   wSuppressOamSwap;   // 0x38: nonzero makes HandleVBlankInterrupt swap OAM shadow buffers
                                //       this vblank instead of just re-flushing the current one

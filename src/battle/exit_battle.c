@@ -76,9 +76,9 @@ void ExitBattle(void)
         for (fighterIndex = 0; fighterIndex < g_pFightState->bFighterCount; fighterIndex++)
         {
             if ((u32)g_pFightState->pFighters[fighterIndex].pObject->bFlags_0xD1 << 30)
-                sub_08003808(g_pFightState->pFighters[fighterIndex].pObject);
+                ReleaseObjectAffineSlot(g_pFightState->pFighters[fighterIndex].pObject);
 
-            g_pFightState->pFighters[fighterIndex].pObject->wUnk_112 = 0xFFFF;
+            g_pFightState->pFighters[fighterIndex].pObject->wVramTileAllocId = 0xFFFF;
 
             memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Object) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
                    g_pFightState->pFighters[fighterIndex].pObject, sizeof(Object));
@@ -89,9 +89,9 @@ void ExitBattle(void)
              pendingIndex++, fighterIndex++)
         {
             if ((u32)g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->bFlags_0xD1 << 30)
-                sub_08003808(g_pFightState->pPendingFighters_candidate[pendingIndex].pObject);
+                ReleaseObjectAffineSlot(g_pFightState->pPendingFighters_candidate[pendingIndex].pObject);
 
-            g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->wUnk_112 = 0xFFFF;
+            g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->wVramTileAllocId = 0xFFFF;
 
             memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Object) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
                    g_pFightState->pPendingFighters_candidate[pendingIndex].pObject, sizeof(Object));
