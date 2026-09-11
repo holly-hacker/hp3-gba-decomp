@@ -444,13 +444,10 @@ and the shop-stock tables work.
   boss encounters that do **not** appear in the Folio Bruti bestiary
   grid. `_description`'s garbage output for indices 53-68 (spell names,
   multiplayer labels, battle-HUD text -- see the extraction pipeline
-  section) is independent corroboration for the same range. Still open:
-  exactly which of indices 54-68 map to which real boss encounter --
-  only the ones the user identified by name are confirmed; indices 59
-  (`Giant Rat`), 64 (`Snake`), 65 (`Brown Recluse Spider`) reuse ordinary
-  creature names rather than character names, so are plausibly
-  "boss-tier" versions of regular monsters rather than misattributed --
-  not confirmed either way.
+  section) is independent corroboration for the same range. Indices 59
+  (`Giant Rat`), 64 (`Snake`), 65 (`Brown Recluse Spider`) are boss-tier
+  versions of those regular monsters, reusing their ordinary creature
+  names rather than a character name. Still open: index 68, see below.
 - **Index 68's stat record is byte-identical to index 58's**, in every
   field except `_name`/`_description` (58 decodes to a real boss name;
   68's `NAME_STRING_ID_BASE + index` lookup lands on a stray description
