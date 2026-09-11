@@ -35,11 +35,6 @@ DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 # docs/formats/battle_scripts.md.
 BATTLE_SCRIPT_TABLE_DIRECTIVE = "battle-script-table"
 
-# item-table rows: same idea as krawall-module, but packed from
-# data/items/items.json by pack_items.py -- see docs/formats/save.md's
-# "Item quantities and equipment" section.
-ITEM_TABLE_DIRECTIVE = "item-table"
-
 # item-icon-data rows: same shape as krawall-samples (a directory of
 # per-name files, not one JSON), packed by pack_item_icons.py from
 # data/images/items/<Name>.palette.bin/.tiles.bin/.frames.bin -- see
@@ -92,16 +87,6 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 if end <= start:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 asmfile = f"build/{ver}/battle_scripts/{name}.s"
-                regions.append((start, end, asmfile, name))
-                continue
-            if parts[0] == ITEM_TABLE_DIRECTIVE:
-                if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
-                _, start_s, end_s, _source, name = parts
-                start, end = int(start_s, 16), int(end_s, 16)
-                if end <= start:
-                    sys.exit(f"{path}:{lineno}: end must be after start")
-                asmfile = f"build/{ver}/items/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
             if parts[0] == C_FILE_DIRECTIVE:

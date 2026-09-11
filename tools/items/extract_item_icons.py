@@ -5,13 +5,12 @@ tools/items/icon_codec.py) verbatim to data/images/items/, and render
 each to a viewable PNG under extracted/graphics/items/ for humans -- see
 docs/formats/graphics.md's "Item icons" section.
 
-Reads baserom.us.gba directly rather than data/items/items.json --
-real items no longer carry pPalette/pTileData/pFrameData in that JSON
-at all (see item_codec module docstring); those addresses are recorded
-nowhere but regions.us.txt's single `item-icon-data` row, so this
-script re-derives them from the ROM the same way extract_items.py
-does, purely to locate and copy bytes -- nothing from this pass gets
-written back into JSON.
+Reads baserom.us.gba directly -- real items' pPalette/pTileData/
+pFrameData addresses are recorded nowhere but regions.us.txt's single
+`item-icon-data` row (src/data/items.c references the packed labels by
+name, not by address), so this script locates them straight from the
+ROM's own g_pItemTable, purely to copy bytes out; nothing from this
+pass gets written back into src/.
 
 All 79 real items' icon data is one fully contiguous ROM span with
 zero gaps between items, in table order -- this is verified below

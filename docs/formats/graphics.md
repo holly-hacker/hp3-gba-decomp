@@ -1005,20 +1005,19 @@ so only the filesystem boundary reliably separates them) and renders
 each to a human-viewable `extracted/graphics/items/<Name>.png` (gitignored,
 never build input -- see the justfile). `regions.us.txt`'s single
 `item-icon-data` row claims that whole span as one real, byte-verified
-extracted region -- like `item-table` and the Krawall rows, not
-anonymous `.incbin` from the baserom -- packed by
-`tools/items/pack_item_icons.py`, which just copies each `.bin`'s bytes
-back out under a label (`gItemIcon<Name>Palette/Tiles/Frames`). There
-is no re-encode step: no type-4 codec encoder exists (only the
-Unicorn-executed decoder), so packing is a literal copy-through, not a
-transformation -- editing these `.bin` files isn't meaningful, they
-exist so this region can be claimed and byte-verified rather than left
-as unclaimed `.incbin`. `tools/items/pack_items.py` (the item-table
-packer) references those same labels by name instead of packing
-literal addresses, so no ROM address is stored in `items.json` or
-`data/images/` at all -- only in `regions.us.txt`'s one `item-icon-data`
-row. See `docs/formats/items.md` for the JSON shape (`sIconPath`
-replacing the 3 raw pointers for real items).
+extracted region -- like the Krawall rows, not anonymous `.incbin` from
+the baserom -- packed by `tools/items/pack_item_icons.py`, which just
+copies each `.bin`'s bytes back out under a label
+(`gItemIcon<Name>Palette/Tiles/Frames`). There is no re-encode step: no
+type-4 codec encoder exists (only the Unicorn-executed decoder), so
+packing is a literal copy-through, not a transformation -- editing
+these `.bin` files isn't meaningful, they exist so this region can be
+claimed and byte-verified rather than left as unclaimed `.incbin`.
+`src/data/items.c`'s `ItemEntry` initializers for real items reference
+those same labels by name (`extern` declarations) instead of literal
+addresses, so no ROM address is stored in the C source or
+`data/images/` at all -- only in `regions.us.txt`'s one
+`item-icon-data` row. See `docs/formats/items.md`.
 
 ### Character portraits (PROVEN, extracted)
 

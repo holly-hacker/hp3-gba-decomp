@@ -77,7 +77,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   resource table, OBJ palette and tile loading. No pipeline yet.
 - [`formats/items.md`](formats/items.md) — `g_pItemTable`, the item
   record layout, equipment stats, per-character equip eligibility, and
-  categories. Pipeline: `tools/items/`, `data/items/`.
+  categories. Committed as `src/data/items.c`; icon pipeline only:
+  `tools/items/`, `data/images/items/`.
 - [`formats/krawall.md`](formats/krawall.md) — the Krawall module /
   pattern / sample on-ROM structs. Pipeline: `tools/krawall/`,
   `data/audio/`.

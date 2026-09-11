@@ -118,24 +118,34 @@ real category but passes the `0xA` "all items" filter, clones index
 `g_abItemQuantities` hands over to `g_abEquippedItemIds` (see
 [`save.md`](save.md)).
 
-## The extraction pipeline
+## The table as committed C source
 
-`g_pItemTable` round-trips byte-exact through `tools/items/`.
-`item_codec.py` holds the field layout,
-`extract_items.py` (`just extract-items`) bootstraps
-`data/items/items.json`, `pack_items.py` (`just pack-items`) packs it
-back into `regions.us.txt`'s `item-table` row. All 132 records are
-packed, real or not. Each record gets a leading `_name` annotation
-(decoded from `nNameTextId`), ignored by `pack_items.py`.
+**PROVEN** (byte-exact, `just check-all` passes). `g_pItemTable` is
+committed as `src/data/items.c`, all 132 `ItemEntry` initializers in
+on-disk order, each with a leading `// <index>: <name>` comment for the
+79 real entries. Placed for the US ROM only by a `c-file` row in
+`regions.us.txt` -- table content is not yet confirmed identical to JP
+(see "What's NOT yet known" below). Real items' `pPalette`/`pTileData`/
+`pFrameData` fields reference `extern` icon-label symbols
+(`gItemIcon<Name>Palette`/`Tiles`/`Frames`) instead of literal
+addresses; non-real entries (indices 79-131) keep literal pointer
+values. `tools/items/item_codec.py` still holds the record layout and
+`icon_slug()` naming convention, now serving only the icon pipeline
+below (`extract_item_icons.py`/`pack_item_icons.py`) -- neither reads
+or writes `src/data/items.c`.
 
 ## Item icons
 
-Real items' `pPalette`/`pTileData`/`pFrameData` aren't stored in
-`items.json` -- see [`graphics.md`](graphics.md)'s "Item icons" section
-for the format. `sIconPath` names both the label set `pack_items.py`
-emits (from `regions.us.txt`'s `item-icon-data` row) and the PNG under
-`extracted/graphics/items/`; non-real entries get `sIconPath: null` and keep
-literal icon pointers.
+Real items' `pPalette`/`pTileData`/`pFrameData` aren't stored as
+literal integers in `src/data/items.c` -- see [`graphics.md`](graphics.md)'s
+"Item icons" section for the format. `icon_slug()` (derived from the
+item's display name) names both the icon-label symbols `src/data/items.c`
+references and `pack_item_icons.py` emits (into `regions.us.txt`'s
+`item-icon-data` row), and the PNG under `extracted/graphics/items/`.
+`pack_item_icons.py` re-derives each real item's name (and so its
+slug) directly from `baserom.us.gba`, the same way
+`extract_item_icons.py` does, rather than depending on
+`src/data/items.c`.
 
 ## What's NOT yet known
 

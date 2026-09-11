@@ -4,24 +4,52 @@ data, see tools/items/extract_item_icons.py) into byte-exact assembly
 for regions.<ver>.txt's `item-icon-data` row. See
 docs/formats/graphics.md's "Item icons" section.
 
-Unlike tools/items/pack_items.py, this is a literal copy-through, not a
-re-encode: no known encoder exists for the type-4 codec these icons
-use, so data/images/items/<Name>.{palette,tiles,frames}.bin are exactly
-the original ROM bytes, and packing just emits them back with labels
-(gItemIcon<Name>Palette/Tiles/Frames) that pack_items.py's `.word`
-references resolve against.
+Unlike a JSON-driven pack step, this is a literal copy-through: no
+known encoder exists for the type-4 codec these icons use, so
+data/images/items/<Name>.{palette,tiles,frames}.bin are exactly the
+original ROM bytes, and packing just emits them back with labels
+(gItemIcon<Name>Palette/Tiles/Frames) that src/data/items.c's `extern`
+declarations resolve against.
+
+The real items' names/order (needed to derive each one's icon_slug())
+are re-decoded directly from baserom.us.gba, the same way
+extract_item_icons.py does -- not read from src/data/items.c, so this
+script has no C-parsing dependency.
 
 Writes to build/<ver>/items/ -- gitignored, like the rest of build/.
 data/images/items/ itself is never touched by this script.
 
 Usage: pack_item_icons.py <ver>
 """
-import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from item_codec import icon_bin_paths, icon_labels
+from item_codec import ITEM_TABLE_ADDR, REAL_ITEM_COUNT, RECORD_SIZE, icon_bin_paths, icon_labels, icon_slug, unpack_record
+
+sys.path.insert(0, str(Path(__file__).parent.parent / "text"))
+from decode_dialog_text import decode_dialog_text
+
+ROM_BASE = 0x08000000
+
+
+def decode_name(rom: bytes, string_id: int) -> str:
+    data = decode_dialog_text(rom, 0, string_id).rstrip(b"\x00")  # lang 0 = English US
+    return data.decode("latin-1")
+
+
+def real_item_icon_slugs() -> list[str]:
+    """The 79 real items' icon_slug()s, in table order -- re-derived from
+    baserom.us.gba rather than stored anywhere, see module docstring."""
+    with open("baserom.us.gba", "rb") as f:
+        rom = f.read()
+    base = ITEM_TABLE_ADDR - ROM_BASE
+    slugs = []
+    for i in range(REAL_ITEM_COUNT):
+        off = base + i * RECORD_SIZE
+        record = unpack_record(rom[off:off + RECORD_SIZE])
+        slugs.append(icon_slug(decode_name(rom, record["nNameTextId"])))
+    return slugs
 
 
 def emit_bytes(lines: list[str], data: bytes) -> int:
@@ -61,15 +89,14 @@ def main() -> None:
         return
     start_addr, end_addr, source_dir, name = row
 
-    items = json.loads(Path("data/items/items.json").read_text())
-    icon_paths = [item["sIconPath"] for item in items if item.get("sIconPath") is not None]
+    slugs = real_item_icon_slugs()
 
     lines: list[str] = []
     cursor = start_addr
     count = 0
-    for icon_path in icon_paths:
-        palette_label, tiles_label, frames_label = icon_labels(icon_path)
-        palette_bin, tiles_bin, frames_bin = icon_bin_paths(source_dir, icon_path)
+    for slug in slugs:
+        palette_label, tiles_label, frames_label = icon_labels(slug)
+        palette_bin, tiles_bin, frames_bin = icon_bin_paths(source_dir, slug)
 
         lines.append(f"{palette_label}:")
         cursor += emit_bytes(lines, palette_bin.read_bytes())

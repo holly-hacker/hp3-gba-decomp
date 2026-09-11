@@ -487,9 +487,8 @@ label 0x08060544 g_stPlaytimeFrameDelta
 label 0x0806054C g_stPlaytimeHourLimit
 label 0x08060E8C gIntrTableTemplate
 
-# Item/equipment table
-# item-table <start> <end> <json-file> <name>
-item-table 0x08060EE4 0x080629B4 data/items/items.json g_pItemTable
+# Item/equipment table, see docs/formats/items.md
+c-file 0x08060EE4 0x080629B4 src/data/items.c g_pItemTable
 
 # Game-mode dispatch table, see docs/memory-map/game_modes.md
 c-file 0x08065CBC 0x0806601C src/data/game_mode_dispatch_table.c g_pGameModeDispatchTable

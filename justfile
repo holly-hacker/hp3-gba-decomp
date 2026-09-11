@@ -128,22 +128,6 @@ pack-battle-scripts ver="us":
     python3 tools/battle_scripts/pack_battle_scripts.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
-# `build` -- data/items/ is gitignored (same footing as the baserom,
-# see CLAUDE.md hard rule 2) and meant to be user-editable, so it's never
-# silently regenerated/overwritten on every build. US only -- see
-# docs/formats/save.md.
-# Bootstrap data/items/ locally from baserom.us.gba.
-extract-items:
-    python3 tools/items/extract_items.py
-
-# Gitignored (build/), like everything else pack_items.py writes. Reads
-# local data/items/ (run `extract-items` first if missing) plus this
-# version's item-table row in regions.<ver>.txt for addresses.
-# Pack data/items/ into this version's item-table assembly.
-pack-items ver="us":
-    python3 tools/items/pack_items.py {{ver}}
-
-# One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/images/ is gitignored (same footing as the baserom,
 # see CLAUDE.md hard rule 2). US only. Also writes viewable PNGs to
 # extracted/graphics/items/ (gitignored, never build input -- see
@@ -155,8 +139,8 @@ extract-item-icons:
 # Gitignored (build/), like everything else pack_item_icons.py writes.
 # Reads local data/images/items/ (run `extract-item-icons` first if
 # missing) plus this version's item-icon-data row in regions.<ver>.txt
-# for addresses. Unlike pack-items, this is a literal copy-through --
-# no known encoder exists for the type-4 codec these icons use.
+# for addresses. A literal copy-through -- no known encoder exists for
+# the type-4 codec these icons use.
 # Pack data/images/items/ into this version's item-icon-data assembly.
 pack-item-icons ver="us":
     python3 tools/items/pack_item_icons.py {{ver}}
@@ -168,7 +152,7 @@ pack-item-icons ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-battle-scripts extract-items extract-item-icons
+extract-all: extract-krawall extract-text extract-battle-scripts extract-item-icons
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
@@ -183,7 +167,7 @@ gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
 # Assemble every region and link them at their manifest addresses.
-build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-scripts ver) (pack-items ver) (pack-item-icons ver) (gen-link ver)
+build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-scripts ver) (pack-item-icons ver) (gen-link ver)
     for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}
