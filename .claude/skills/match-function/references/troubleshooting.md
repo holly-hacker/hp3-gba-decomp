@@ -1,0 +1,142 @@
+# Mismatch troubleshooting
+
+These are scoped hypotheses for the pinned agbcc, distilled from existing matches. Confirm
+that the mechanism applies in the current dumps and rebuild. Example names point into `src/`
+and `functions.us.cfg`; they are evidence to inspect, not templates to copy blindly.
+Entry numbers correspond to the symptom routing table in SKILL.md.
+
+## 1. Wrong semantics or field access
+
+Trace operators, constants, offsets, loads/stores and call signatures against ROM assembly.
+Fix known C-level errors before allocator experiments. Mnemonic equality does not establish
+operand equality. Ghidra types can be stale; check headers and callers too.
+
+## 2. Signedness and width
+
+Extra `cmp #0`/`bge`/add/shift around division by a power of two can be signed rounding.
+An unsigned value may remove it. Sub-word locals can introduce masks because Thumb
+`PROMOTE_MODE` promotes them; prefer s32/u32 arithmetic and truncate at a genuine boundary.
+Do not narrow merely to save a register. Inspect `ldr` versus `ldrb`/`ldrh`.
+
+## 3. Cached field/address
+
+Repeated use of one loaded register can suggest a cached field; repeated address formation
+can suggest direct access. Test a meaningful local versus direct field use. Compiler
+optimization means neither observation uniquely identifies the original source.
+
+## 4. Branch layout and expression order
+
+Try the complementary outer condition with arms exchanged when fallthrough differs.
+Check operand evaluation order and separate an embedded assignment from its comparison;
+a comma expression is another diagnostic form. Negating a condition alone may canonicalize
+back to identical output. Example: ResolveEnemyAttack.
+
+## 5. Switch shape
+
+For linear compares versus range checks/jump tables, inspect explicit case coverage and
+source case order. Enumerating adjacent enum values can expose a dense range; the final
+case may affect fallthrough. Keep behavior for default/out-of-range inputs faithful.
+Investigate tail merging separately from dispatch. Do not add cases without semantic grounds.
+
+## 6. Unexpected spill
+
+Inspect lreg/greg allocation priorities and live ranges before random statement ordering.
+A competing pseudo can change the winner, but artificial competition is not acceptable
+source. Use a short permuter experiment only to discover a lead, then seek a natural rewrite.
+
+## 7. Redundant check disappears
+
+`jump.c` threading can fold a conditional reached through a single-use label. Shared incoming
+edges and fallthrough order can preserve the check. ResolveEnemyAttack's hit/miss split is a
+worked example: swapping the outer arms mattered; condition inversion alone and one explicit
+shared-label rewrite did not. Verify label use counts in the current RTL.
+
+## 8. Two locals, one register
+
+Try merging same-purpose temporaries with disjoint lifetimes when the ROM reuses a register.
+Do not infer source identity solely from register reuse. Keep unrelated semantic roles separate.
+A second local can change allocation even when it seems to be a harmless copy.
+
+## 9. Constant allocation ties
+
+Inspect `global.c:allocno_compare`: refs, size, live_length and allocno order affect priority.
+For equal refs/size, shorter live_length can win; tied ordering matters. Measure in lreg/greg.
+A bit-field store's expanded mask can affect flow-time liveness even if combine removes it;
+a byte-pointer store takes another expansion path. Use this to investigate types, not to
+justify unexplained casts. See compiler-investigation for pseudo-to-hard-register mapping.
+
+## 10. Shared tail / apparent need for goto
+
+`jump.c:find_cross_jump/do_cross_jump` can merge suitable jump-ending blocks; duplicated
+source does not guarantee merging. Re-derive the true outer split first. In ResolveEnemyAttack,
+“both flags” versus the remaining combinations permits a shared DefenseBoost recheck inside
+one else arm. A goto matched too, but structured control flow expressed the same join.
+
+## 11. Guard macro prevents merging
+
+`do { ... } while (0)` emits loop notes. `cse.c:cse_end_of_basic_block` can stop at
+`NOTE_INSN_LOOP_END`, preventing traversal needed for a shared tail. Desugar an existing macro
+as an experiment; a bare block has different semicolon/if-else safety. Example:
+TickBattleTurnStateMachine's TRANSITION_TO. This does not justify adding inert wrappers.
+
+## 12. Pointer initialization on wrong side of zero-trip guard
+
+An indexed loop lets `loop.c:strength_reduce/emit_iv_add_mult` synthesize a pointer induction
+variable in the preheader, after a duplicated exit test. A handwritten walking pointer may
+initialize before the guard. Test `p[i]` versus `*p++` based on the target. Example: memset,
+US 0x0802C450. Let the compiler perform strength reduction when that matches the pattern.
+
+## 13. Value fails to survive calls
+
+Two distinct mechanisms can interact. `reload1.c:reload_cse_move2add` can reuse a hard-register
+constant; stepwise `len += 0xf; len &= ~0xf;` may expose reuse that a combined expression
+does not. Separately, `flow.c` weights refs by loop depth. A label/goto loop lacks the loop
+notes of a for/do loop and can change priority. Inspect both before combining fixes.
+Example: AllocZeroed, US 0x0802C2EC; a real do loop allowed len to win r8.
+
+## 14. Mask/value get opposite registers
+
+CSE canonicalizes commutative operands, so swapping spelling/declaration order can converge
+to the same RTL. `mask &= value` makes the mask the destination and can change regmove's
+two-address choice. Verify priorities and reload order. Examples: InitPlayerBattleActor and
+InitializeBattle's `clearMask &= flagsBeforeClear`; four simple order permutations converged.
+
+## 15. Merging locals changes an unrelated tie
+
+Merging same-role counters at disjoint sites combines refs/live_length and can affect a third
+pseudo's conflicts. Inspect measured allocation before and after. The merge is legitimate
+only if the roles fit; borrowing a counter for a boolean or timer is not a natural solution.
+
+## 16. Expected loop copy collapses
+
+`gcse.c` copy propagation may merge identical preheader/body assignments. Separate meaningful
+carried/next values can preserve copy-in/copy-out. Inspect `COPY-PROP` messages in the gcse
+dump; disabling gcse is a diagnostic probe. Different source expressions alone are not proof
+of different RTL. Example context: AddPlaytimeDelta's loop investigations.
+
+## 17. Copy fix triggers unrelated strength reduction
+
+A clean `plus carried -30` may become a basic induction variable and pull another expression
+into an unwanted accumulator. Test `nextValue = carried; nextValue -= 30;` and inspect
+`loop.c:basic_induction_var`. Combine may merge a small +1 differently from -30 due to Thumb
+immediate constraints; confirm the observed asymmetry in dumps instead of generalizing it.
+
+## 18. Invariant load lands across the wrong loop boundary
+
+A preheader statement can give gcse PRE an insertion point for another load. Inlining a
+constant may remove that block; later `loop.c:move_movables` can place the load differently.
+Example: AddPlaytimeDelta, US 0x0800C6EC; overflow and borrow loops used different forms.
+Inspect each loop separately even when source looks symmetric.
+
+## Candidate acceptance and cleanup
+
+A diff improvement is evidence, not permission to land a proxy. Selective one-field inline
+wrappers, unrelated-local reuse, empty conditions and dummy loops need a natural explanation
+or replacement. Keep useful experimental evidence outside production C. Compare output with
+and without suspicious constructs; compare text/relocations rather than whole object metadata.
+
+After matching, try real arrays, typed fields, multiplication and necessary casts only.
+Renames usually preserve output; removing locals or changing types/statement structure can
+recolor distant code. Same machine mode does not prove two C types are interchangeable.
+Always rebuild. Zero mnemonic groups, equal size and a permuter score are all insufficient
+as exact-byte or semantic acceptance criteria.

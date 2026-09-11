@@ -1,24 +1,17 @@
 #!/usr/bin/env python3
-"""Disassemble one region side by side against the donor ROM.
+"""Compare an existing linked ROM region against the donor bytes.
 
-check_sections.py catches a region of the wrong size or at the wrong
-address. A region that is the right size but the wrong bytes -- the usual
-state of a function being decompiled -- shows up only as a whole-ROM cmp
-failure, which says nothing about where or why. This diffs a single
-region.
-
-Instruction mode comes from functions.<ver>.cfg where the region's start
-is listed, else Thumb; --arm and --thumb override.
-
-Usage: diff_region.py <ver> <name> [--arm|--thumb]
+Does not rebuild: use just diff-region NAME VERSION for a fresh build.
+Instruction mode comes from the function seed or defaults to Thumb;
+--arm/--thumb override it. Byte equality includes literal pools and padding.
 """
+import argparse
 import os
 import sys
 
 import capstone
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from manifest import parse_manifest  # noqa: E402
+from tools.manifest import parse_manifest  # noqa: E402
 
 CONTEXT = 4
 
@@ -56,11 +49,14 @@ def disasm(data: bytes, address: int, mode: str) -> list[str]:
 
 
 def main() -> None:
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    flags = [a for a in sys.argv[1:] if a.startswith("--")]
-    if len(args) != 2:
-        sys.exit(f"usage: {sys.argv[0]} <ver> <name> [--arm|--thumb]")
-    ver, name = args
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('version', choices=['us', 'jp'])
+    parser.add_argument('name')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--arm', action='store_true')
+    mode.add_argument('--thumb', action='store_true')
+    args = parser.parse_args()
+    ver, name = args.version, args.name
 
     regions, _ = parse_manifest(f"regions.{ver}.txt", ver)
     match = [r for r in regions if r[3] == name]
@@ -81,8 +77,8 @@ def main() -> None:
         print("MATCH")
         return
 
-    mode = ("arm" if "--arm" in flags else
-            "thumb" if "--thumb" in flags else mode_for(ver, start))
+    mode = ("arm" if args.arm else
+            "thumb" if args.thumb else mode_for(ver, start))
     a, b = disasm(want, start, mode), disasm(got, start, mode)
     print(f"{mode} mode; ROM on the left, build on the right\n")
     differing = [i for i in range(max(len(a), len(b)))

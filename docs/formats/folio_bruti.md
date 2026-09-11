@@ -41,7 +41,7 @@ three functions are matched and named in `functions.jp.cfg`:
 `InitMonsterBattleActor` (`0x08014C74`) and `GetMonsterSpellEffectiveness`
 (`0x080188F8`), both content-verified (matching instruction shapes plus
 the relocated `MonsterTable` literal landing at the same relative
-offset) since `tools/match_functions.py`'s signature matching doesn't
+offset) since `python3 -m tools.matching match-versions`'s signature matching doesn't
 catch either one on its own -- see "The extraction pipeline" below for
 why. `DrawFolioBrutiMonsterPanel`, `UpdateFolioBrutiGridCursor`, and the
 other functions found alongside them are still US-only; not yet matched
@@ -415,7 +415,7 @@ and the shop-stock tables work.
   too: `InitMonsterBattleActor` (JP `0x08014C74`) and
   `GetMonsterSpellEffectiveness` (JP `0x080188F8`), plus the JP
   `MonsterTable` address itself (`0x0804F33C`, content byte-identical to
-  US). `tools/match_functions.py`'s automated signature matching does
+  US). `python3 -m tools.matching match-versions`'s automated signature matching does
   NOT find either function on its own -- its `bl`/`blx`-target masking
   doesn't cover the plain `ldr =literal` absolute addresses these two
   rely on heavily (the jump table pointer, the `MonsterTable` address

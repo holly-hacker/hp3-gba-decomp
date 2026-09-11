@@ -453,4 +453,4 @@ a slot's content past its checksum.
 - Trace where `slotPreview` (`g_SaveManager+0x3C`) gets built from a
   loaded slot, for the save-select UI.
 - JP-side addresses are not yet matched from these US ones (see
-  `tools/match_functions.py` / `just match-functions`).
+  `python3 -m tools.matching match-versions` / `just match-functions`).

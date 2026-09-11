@@ -1,25 +1,11 @@
 #!/usr/bin/env python3
-"""Opcode-only diff between a real function's ground-truth disassembly and a
-candidate object file, for iterating on a match.
+"""Mnemonic-only structural diagnostic for a selected function in an object.
 
-Byte/instruction-count size is not monotonic with correctness while matching
-a function (see .claude/skills/match-function/SKILL.md): a structurally
-wrong candidate can hit the target byte count by coincidence, and a genuine
-fix can move the byte count away from the target while making the candidate
-strictly closer in every real sense. This compares mnemonic sequences with
-difflib so insertions/deletions realign instead of cascading into a wall of
-noise, and normalizes purely cosmetic differences (a disassembler's `.n`
-narrow-encoding suffix, and the `bhs`/`bcs`, `blo`/`bcc` condition-code
-aliases) before counting diff groups.
-
-Usage: opcode_diff.py <ver> <function-name> <object-file>
-
-<function-name> must appear as a `thumb_func_start`/`arm_func_start` label in
-build/<ver>/full_disasm.s (run `just disasm-compare` first if that's stale).
-The real function's extent is taken as everything between that label and the
-next function-start label. <object-file> is disassembled with
-arm-none-eabi-objdump -dr.
+Ignores operands, relocations and literal data: zero groups does not prove a match.
+Reference extent runs to the next function label; prefer workspace compare for
+validated boundaries and exact bytes. Requires build/VERSION/full_disasm.s.
 """
+import argparse
 import difflib
 import re
 import subprocess
@@ -56,9 +42,9 @@ def real_ops(ver: str, name: str) -> list[str]:
     return ops
 
 
-def candidate_ops(obj_path: str) -> list[str]:
+def candidate_ops(obj_path: str, name: str) -> list[str]:
     out = subprocess.run(
-        ["arm-none-eabi-objdump", "-dr", obj_path],
+        ["arm-none-eabi-objdump", "-dr", "--disassemble=" + name, obj_path],
         check=True, capture_output=True, text=True,
     ).stdout
     ops = []
@@ -74,12 +60,15 @@ def candidate_ops(obj_path: str) -> list[str]:
 
 
 def main() -> None:
-    if len(sys.argv) != 4:
-        sys.exit(f"usage: {sys.argv[0]} <ver> <function-name> <object-file>")
-    ver, name, obj_path = sys.argv[1:]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('version', choices=['us', 'jp'])
+    parser.add_argument('name')
+    parser.add_argument('object')
+    args = parser.parse_args()
+    ver, name, obj_path = args.version, args.name, args.object
 
     real = real_ops(ver, name)
-    cand = candidate_ops(obj_path)
+    cand = candidate_ops(obj_path, name)
 
     sm = difflib.SequenceMatcher(None, real, cand, autojunk=False)
     groups = 0

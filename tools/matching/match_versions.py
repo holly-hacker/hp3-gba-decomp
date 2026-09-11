@@ -35,10 +35,10 @@ everything after it by a fixed amount until the next such gap. A
 match whose delta doesn't fit its neighbors' cluster is worth double
 -checking.
 
-Usage: match_functions.py [--min-insns N]
+Usage: python3 -m tools.matching match-versions [--min-insns N]
   Requires baserom.us.gba and baserom.jp.gba in the repo root.
   Prints one line per unique match to stdout, tab-separated:
-    kind  us_addr  jp_addr  delta  name  byte_length  insn_count
+    kind  us_addr  jp_addr  delta  name  byte_length  insn_count  coverage
   (name is only ever populated for matches involving an already-named
   US function -- most matches are between anonymous functions.)
 """
@@ -49,7 +49,7 @@ from pathlib import Path
 
 from capstone import CS_ARCH_ARM, CS_MODE_ARM, CS_MODE_THUMB, Cs
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parents[2]
 ROM_BASE = 0x08000000
 
 
@@ -108,6 +108,8 @@ def main():
     ap.add_argument("--min-insns", type=int, default=3, help="skip functions shorter than this (default 3)")
     ap.add_argument("--cap", type=lambda s: int(s, 0), default=0x400, help="max bytes to disassemble per function (default 0x400)")
     args = ap.parse_args()
+    if args.cap <= 0 or args.min_insns <= 0:
+        ap.error("--cap and --min-insns must be positive")
 
     us_rom = load_rom(REPO_ROOT / "baserom.us.gba")
     jp_rom = load_rom(REPO_ROOT / "baserom.jp.gba")
@@ -144,9 +146,9 @@ def main():
     matches.sort(key=lambda m: m[0])
     print(f"Unique 1:1 matches: {len(matches)}  (ambiguous US funcs skipped: {ambiguous})", file=sys.stderr)
 
-    print("kind\tus_addr\tjp_addr\tdelta\tname\tlength\tinsn_count")
+    print("kind\tus_addr\tjp_addr\tdelta\tname\tlength\tinsn_count\tcoverage")
     for us_addr, jp_addr, kind, name, length, ninsn in matches:
-        print(f"{kind}\t0x{us_addr:08X}\t0x{jp_addr:08X}\t{jp_addr - us_addr:+d}\t{name or ''}\t{length}\t{ninsn}")
+        print(f"{kind}\t0x{us_addr:08X}\t0x{jp_addr:08X}\t{jp_addr - us_addr:+d}\t{name or ''}\t{length}\t{ninsn}\t{'capped-prefix' if length >= args.cap else 'decoded-prefix; verify extent'}")
 
 
 if __name__ == "__main__":

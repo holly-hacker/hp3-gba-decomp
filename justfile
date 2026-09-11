@@ -193,7 +193,7 @@ build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-
 # which instructions differ.
 # Disassemble one region side by side against the donor ROM.
 diff-region name ver="us": (build ver)
-    python3 tools/diff_region.py {{ver}} {{name}}
+    python3 -m tools.matching diff-region {{ver}} {{name}}
 
 # Build and check the result matches the donor ROM byte-for-byte.
 compare ver="us": (build ver)
@@ -218,4 +218,4 @@ dump-music-xm ver="us":
 # one before trusting it (e.g. copying a name into functions.jp.cfg).
 # Find US<->JP thumb_func address correspondences by instruction shape.
 match-functions *args:
-    python3 tools/match_functions.py {{args}}
+    python3 -m tools.matching match-versions {{args}}
