@@ -157,7 +157,12 @@ label 0x0803FDB0 kramInstall
 label 0x080260A8 EnableInterrupts
 label 0x08045094 sub_08045094
 label 0x0802C6B4 TickGameModeStack_candidate
-label 0x0802165C ProcessPlaytimeTick
+# Playtime counters, shared with JP at the same helper addresses.
+label 0x08060544 g_stPlaytimeFrameDelta
+label 0x0806054C g_stPlaytimeHourLimit
+c-file 0x0800C6EC 0x0800C844 src/playtime/add_playtime_delta.c AddPlaytimeDelta
+c-file 0x0800CA70 0x0800CAE8 src/playtime/compare_playtime_field.c ComparePlaytimeField
+c-file 0x0802165C 0x08021694 src/playtime/process_playtime_tick.c ProcessPlaytimeTick
 label 0x08029770 WaitForVBlank
 
 # Game-mode dispatch table callees (src/data/game_mode_dispatch_table.c),

@@ -16,6 +16,9 @@
 .set g_wKeysHeld,  0x0300354C  @ u16: current held-key bitmask, see
                                 @ ram_symbols.us.inc/docs/memory-map/input.md
 
+
+@ --- Save state / playtime ---
+.set g_saveStateBlock, 0x030031E0
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 .set gMt19937LastRollByte,       0x030055D4
 .set gMt19937DrawIndex,          0x030055D8

@@ -56,6 +56,13 @@ Also check for an unwanted stack spill after every change (`sub sp`/
 `str .*\[sp` in the disassembly) — a spilled variable that shouldn't be is a
 strong, cheap correctness-adjacent signal that something regressed.
 
+Once opcode-diff sits at 0 groups but a byte mismatch remains, it's pure
+register choice — diff raw bytes instead: `arm-none-eabi-objcopy -O binary
+--only-section=.text <obj> <out.bin>` on both the candidate and a real-bytes
+reference (e.g. `make_permuter_target.py`'s `target.o`), then `cmp -l`. If
+reading `objdump -d` by eye instead, never filter out lines containing a
+`<label>` — it can hide a whole differing block, not just the label text.
+
 ## 2. Fix gaps one class at a time, cheapest first
 
 In practice these fell into recognizable buckets, roughly in order of how
@@ -69,7 +76,11 @@ mechanically understandable (and thus how worth attacking directly) they are:
    unsigned forces agbcc to conservatively emit a sign-correction/rounding
    sequence before a shift, that a real unsigned type doesn't need at all.
    Spot this by looking for a `cmp #0`/`bge`/`adds`/shift correction sequence
-   the real disasm doesn't have around a division-by-power-of-2.
+   the real disasm doesn't have around a division-by-power-of-2. Narrowing a
+   loop counter/accumulator to `s8`/`u8` doesn't help here: `thumb.h`'s
+   `PROMOTE_MODE` promotes sub-word ints to `SImode` unsigned regardless of
+   declared signedness, adding mask instructions the ROM doesn't have. Keep
+   such locals `s32`/`u32`; truncate only via cast at the actual struct store.
 3. **A local variable caching a field that real also caches** (proven by the
    real disasm reusing one register across multiple field reads instead of
    re-deriving the address each time) — a legitimate optimization to mirror,
@@ -273,6 +284,46 @@ mechanically understandable (and thus how worth attacking directly) they are:
    fixing a tie that looked unrelated to either original counter. Confirm
    with real `-dg` numbers, not guessing. Legitimate only when the two sites
    truly share meaning (one real counter) — check that first.
+
+16. **A loop that should carry its value through two registers (copy-in/
+   copy-out: `adds r1,r5,#0 / subs r1,#N / adds r5,r1,#0`) collapses to one
+   — split it into two differently-assigned locals.** `gcse.c` copy
+   propagation folds a preheader `v = value` and an in-loop `v = value`
+   into one register when they're the *same* expression (available on
+   every path). A single variable updated in place (`value -= 30;`)
+   produces exactly that identical pair. Using a third local so the
+   preheader and loop-body assignments are never textually identical
+   (`carried = value;` vs. `carried = nextValue;`) blocks the fold.
+   `agbcc -da` RTL dumps show which pass causes the collapse (a `gcse`
+   dump line `COPY-PROP: Replacing reg A in insn N with reg B` names it);
+   `-fno-gcse` on the unmodified candidate is the one-build falsification
+   test from step 3.
+
+17. **Fixing bucket 16 can trip `loop.c` into strength-reducing something
+   unrelated.** Once the loop update is one clean `(plus carried -30)`
+   insn, `basic_induction_var` may treat it as an induction variable and
+   pull an unrelated computation (e.g. a sign-extend in the loop test)
+   into an accumulator the ROM lacks. **Fix:** split the update into two
+   statements (`nextValue = carried; nextValue -= 30;`) so the backward
+   walk doesn't chain through a single insn. `combine` may still re-merge
+   a small step (`+1`, fits a 3-bit Thumb immediate) but not a larger one
+   (`-30`, needs the two-address form) — if the ROM itself shows that
+   exact asymmetry, that's corroboration, not an inconsistency.
+
+18. **Whether an invariant constant load lands before or after a loop
+   depends on whether the loop has a preheader block at gcse time —an
+   unrelated preheader statement can pull something else across the loop
+   too.** `gcse.c` PRE inserts hoisted invariants at the end of the block
+   preceding a loop. A stray preheader statement (e.g. a `bit = N;` local)
+   gives PRE an insertion point it wouldn't otherwise have, and it can use
+   that point for a different load the ROM keeps inside/after the loop.
+   Removing the stray statement (inlining `carry |= 1;` as a literal
+   instead) removes that preheader; `loop.c`'s own `move_movables` then
+   builds one later, landing the load where the ROM has it. Check each
+   loop against its own disasm — sibling loops in the same function can
+   legitimately want opposite treatment (`AddPlaytimeDelta`, US
+   `0x0800C6EC`: overflow loops keep the `bit` local, borrow loops use the
+   inline literal).
 
 After any fix, re-run the opcode-diff (step 1) before deciding whether to keep
 it — a change can fix the thing you were chasing while quietly introducing a
@@ -515,3 +566,26 @@ earlier), or restructuring the statement around it (extra `mov`, shifted
 Never claim a fix is verified without independently rebuilding and re-checking
 yourself — an agent's (or your own) summary describes intent, not
 necessarily what actually landed in the file.
+
+**A syntactically-inert construct with no real control-flow meaning (a bare
+`do { stmt; } while (0);` around a single statement, an always-true `if` with
+an empty arm, a dummy variable that's read but never meaningfully used) does
+not belong in code that gets committed as matched, even labeled as a proxy.**
+It is never what the original authors wrote, and because global register
+allocation is a whole-function pass, a construct like this can look like it
+fixes one tie while actually being a local minimum — masking a genuine,
+findable mechanism (step 3) rather than reproducing it, and creating a
+trap for later edits (removing it can silently reopen the tie it was
+covering, or an unrelated one). If exhausting step 3 (real compiler-source
+analysis, `-dlg` dumps, and permuter) still leaves no explicable fix, do not
+paper over the gap with an inert wrapper — leave the function's affected
+region unmatched (out of `regions.<ver>.txt`, still `.incbin`) and record
+the concrete byte-level tie in a docs/ note or the function's own comment as
+a known gap, rather than landing a fabricated construct. Before reusing any
+previously-documented bucket as justification for a new instance, re-verify
+by rebuild + re-diff that its actual mechanism (not just its shape) applies
+here — a `do/while(0)` wrapper is bucket 11 material ONLY when it's an
+existing macro whose removal unblocks real cross-jump tail-merging across
+multiple call sites; wrapping a single unrelated increment to nudge a
+register tie is not the same mechanism and citing bucket 11 for it is a
+false citation.
