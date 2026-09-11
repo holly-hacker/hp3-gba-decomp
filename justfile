@@ -203,8 +203,13 @@ compare ver="us": (build ver)
 # yet. Verifies donor ROMs, then the full disassembly and the linked
 # build for both versions.
 # Full sanity sweep: run everything, confirm it all still matches. Run before committing.
-check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (compare "jp")
+check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (compare "jp") check-sorted
     @echo "us and jp: full disassembly and linked build both match the donor ROM."
+
+# Confirm regions.<ver>.txt and functions.<ver>.cfg stay sorted by address.
+check-sorted:
+    python3 tools/check_sorted_regions.py
+    python3 tools/check_sorted_functions.py
 
 # Lossy (effect remapping, pattern rewrites for playback accuracy) and NOT
 # used by the build -- see docs/formats/krawall.md. Writes to extracted/,

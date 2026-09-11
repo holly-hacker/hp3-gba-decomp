@@ -2,32 +2,31 @@
 # the sharing convention, and a note on known gaps in the Krawall audio
 # data rows below.
 
-0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
-0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail
-0x080000C0 0x08000104 asm/crt0.s                crt0
+asm-file 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
+asm-file 0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail
+asm-file 0x080000C0 0x08000104 asm/crt0.s                crt0
+asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
+asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
+asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
+c-file 0x0800C6EC 0x0800C844 src/playtime/add_playtime_delta.c AddPlaytimeDelta
+c-file 0x0800CA70 0x0800CAE8 src/playtime/compare_playtime_field.c ComparePlaytimeField
+c-file 0x080216B8 0x080216F0 src/playtime/process_playtime_tick.c ProcessPlaytimeTick
 
 # crt0 callee, still raw incbin territory (see src/main.c for the
 # US-side extraction, named AgbMain there; JP's main isn't confirmed
 # identical yet).
 thumb-func 0x080296EC AgbMain
+c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
+label 0x0802B478 SpawnWanderingMonsterObject
 
-0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
-0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
-0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
-
-# Thumb-mode division runtime
-0x0804A1EC 0x0804A228 asm/rt/call_via_rX.s              _call_via_r0
-0x0804A228 0x0804A2BC asm/rt/divsi3.s                   __divsi3
-0x0804A2BC 0x0804A2C0 asm/rt/div0.s                    __div0
-0x0804A390 0x0804A408 asm/rt/udivsi3.s                 __udivsi3
-0x0804A408 0x0804A4C8 asm/rt/umodsi3.s                 __umodsi3
-
-# newlib, compiled from source by `just compile-c` (docs/compiler.md)
-c-file 0x0804BC6C 0x0804BC88 src/libc/bzero.c  bzero
-c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
-
-c-file 0x0804C422 0x0804C542 src/data/playable_character_names.c sPlayableCharacterNames
-c-file 0x0804CDF0 0x0804D450 src/data/famous_wizard_card_names.c sFamousWizardCardNames
+# SpawnOverworldMonsterEncounters (src/overworld/) callees, still raw
+# incbin territory.
+label 0x0802BA68 GetEncounterKindTerrainType
+label 0x0802BA78 FindWanderingMonsterSpawnPosition
+label 0x0802BB2C PickMaxDamageMonster
+label 0x0802C348 AllocZeroed
+label 0x0802C3EC FreeBlock
+label 0x0802C4AC memset
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B220 0x0803B37C src/rng/regenerate.c Mt19937Regenerate
@@ -45,6 +44,33 @@ c-file 0x0803B594 0x0803B5C8 src/rng/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B5C8 0x0803B600 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 0x0803B65C src/rng/next.c Mt19937Next
 c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
+
+# Thumb-mode division runtime
+asm-file 0x0804A1EC 0x0804A228 asm/rt/call_via_rX.s              _call_via_r0
+asm-file 0x0804A228 0x0804A2BC asm/rt/divsi3.s                   __divsi3
+asm-file 0x0804A2BC 0x0804A2C0 asm/rt/div0.s                    __div0
+asm-file 0x0804A390 0x0804A408 asm/rt/udivsi3.s                 __udivsi3
+asm-file 0x0804A408 0x0804A4C8 asm/rt/umodsi3.s                 __umodsi3
+
+# newlib, compiled from source by `just compile-c` (docs/compiler.md)
+c-file 0x0804BC6C 0x0804BC88 src/libc/bzero.c  bzero
+c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
+c-file 0x0804C422 0x0804C542 src/data/playable_character_names.c sPlayableCharacterNames
+c-file 0x0804CDF0 0x0804D450 src/data/famous_wizard_card_names.c sFamousWizardCardNames
+
+# Folio Bruti monster stat table -- content proven byte-identical to the
+# US table (0x0804F410), just at a different address; one C source serves
+# both. See docs/formats/folio_bruti.md.
+c-file 0x0804F33C 0x0804F9B4 src/data/monsters.c MonsterTable
+
+# Encounter roster tables, see docs/formats/encounters.md
+c-file 0x08050B98 0x08051138 src/data/random_encounters.c g_aRandomEncounters
+c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounters
+
+# Playtime counters, shared source with US. The main-loop function and
+# constants follow JP's save-state layout.
+label 0x080604D0 g_stPlaytimeFrameDelta
+label 0x080604D8 g_stPlaytimeHourLimit
 
 # --- Krawall audio data ---
 #
@@ -122,31 +148,3 @@ krawall-module 0x08D22C7C 0x08D24EE0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D24EE0 0x08D2DAAC data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DAAC 0x08D3C5B4 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C5B4 0x08D3EE2C data/audio/modules/MusPause.json MusPause
-
-# Folio Bruti monster stat table -- content proven byte-identical to the
-# US table (0x0804F410), just at a different address; one C source serves
-# both. See docs/formats/folio_bruti.md.
-c-file 0x0804F33C 0x0804F9B4 src/data/monsters.c MonsterTable
-
-# Encounter roster tables, see docs/formats/encounters.md
-c-file 0x08050B98 0x08051138 src/data/random_encounters.c g_aRandomEncounters
-c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounters
-
-# SpawnOverworldMonsterEncounters (src/overworld/) callees, still raw
-# incbin territory.
-label 0x0802BA68 GetEncounterKindTerrainType
-label 0x0802BA78 FindWanderingMonsterSpawnPosition
-label 0x0802BB2C PickMaxDamageMonster
-label 0x0802B478 SpawnWanderingMonsterObject
-label 0x0802C348 AllocZeroed
-label 0x0802C3EC FreeBlock
-label 0x0802C4AC memset
-c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
-
-# Playtime counters, shared source with US. The main-loop function and
-# constants follow JP's save-state layout.
-label 0x080604D0 g_stPlaytimeFrameDelta
-label 0x080604D8 g_stPlaytimeHourLimit
-c-file 0x0800C6EC 0x0800C844 src/playtime/add_playtime_delta.c AddPlaytimeDelta
-c-file 0x0800CA70 0x0800CAE8 src/playtime/compare_playtime_field.c ComparePlaytimeField
-c-file 0x080216B8 0x080216F0 src/playtime/process_playtime_tick.c ProcessPlaytimeTick

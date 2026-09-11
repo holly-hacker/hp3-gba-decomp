@@ -52,6 +52,10 @@ ITEM_ICON_DATA_DIRECTIVE = "item-icon-data"
 # docs/compiler.md.
 C_FILE_DIRECTIVE = "c-file"
 
+# asm-file rows name a committed .s under asm/ directly -- no packing or
+# compiling step, the file is already the region's assembly.
+ASM_FILE_DIRECTIVE = "asm-file"
+
 
 def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     """Returns (regions, labels): regions sorted and non-overlapping."""
@@ -132,13 +136,16 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 asmfile = f"build/{ver}/text/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
-            if len(parts) != 4:
-                sys.exit(f"{path}:{lineno}: expected 4 fields, got {len(parts)}")
-            start_s, end_s, asmfile, name = parts
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
-            regions.append((start, end, asmfile, name))
+            if parts[0] == ASM_FILE_DIRECTIVE:
+                if len(parts) != 5:
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <asm-file> <name>'")
+                _, start_s, end_s, asmfile, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                regions.append((start, end, asmfile, name))
+                continue
+            sys.exit(f"{path}:{lineno}: unrecognized directive '{parts[0]}'")
     regions.sort(key=lambda r: r[0])
     for i in range(1, len(regions)):
         if regions[i][0] < regions[i - 1][1]:

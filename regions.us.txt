@@ -10,180 +10,52 @@
 #   reached via `bl` -- marks the symbol `.thumb_func` so its value carries
 #   the low bit real Thumb function pointers always have.
 #
-# <start> <end> <asm-file> <name>
-#   A region of assembly code.
+# asm-file <start> <end> <path.s> <name>
+#   A region of committed assembly code.
 #
 # c-file <start> <end> <source.c> <name>
 #   A region for a compiled C file.
 
-# Still-unextracted helpers referenced from below
-label 0x080208B4 sub_080208B4
+asm-file 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
+asm-file 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
+asm-file 0x080000C0 0x08000104 asm/crt0.s                crt0
 
-# TickPlayerActionState (src/battle/tick_player_action_state.c) callees
-# and data tables still raw incbin territory.
-label 0x08003708 SetObjectFlippedX
-label 0x080039E8 sub_080039E8
-label 0x08015484 SetPlayerObjectAnim
-label 0x0801539C SetMonsterObjectAnim
-label 0x0800D264 sub_0800D264
-label 0x0803FC68 PlaySoundById
-label 0x08018B14 sub_08018B14
-c-file 0x08001E7C 0x08001EA0 src/battle/set_fighter_attack_anim_state.c SetFighterAttackAnimState_candidate
-c-file 0x08018094 0x080181AC src/battle/apply_status_damage_to_fighter.c ApplyStatusDamageToFighter_candidate
-label 0x08026CDC sub_08026CDC
-label 0x08026CF0 sub_08026CF0
-label 0x08015334 sub_08015334
-label 0x080152CC sub_080152CC
-label 0x080181AC ShowFloatingDamageNumber_candidate
-label 0x08010864 ShowBattleMessage
-c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
-c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
-c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleaseParticleEmitter_candidate
-c-file 0x0800EA68 0x0800EB2C src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
-label 0x08018ACC PostActionBattleCheck
-c-file 0x08018B70 0x08018BE0 src/battle/trigger_battle_effect.c TriggerBattleEffect
-label 0x08018BE0 CreateEffectScriptObject
-label 0x08012AFC PushBattleState
-label 0x080377A8 DecrementFolioUniversitasCard
-
-c-file 0x0800DE50 0x0800E0CC src/battle/exit_battle.c ExitBattle
-
-label 0x0800D39C ClearPaletteRam
-label 0x080015D4 sub_080015D4
-label 0x080316D4 sub_080316D4
-label 0x08012CB4 ClearFighterObjectFlag_candidate
-label 0x08030960 sub_08030960
-label 0x0803171C sub_0803171C
-label 0x0800D2DC sub_0800D2DC
-label 0x08031668 sub_08031668
-label 0x0803D3E8 sub_0803D3E8
-label 0x08026254 sub_08026254
-label 0x0802D6B8 sub_0802D6B8
-label 0x08007A90 sub_08007A90
-label 0x0804542C sub_0804542C
-label 0x0802B0F4 sub_0802B0F4
-label 0x080129F4 sub_080129F4
-label 0x08012B40 sub_08012B40
-label 0x080019C0 sub_080019C0
-label 0x08003A30 sub_08003A30
-label 0x0802D640 sub_0802D640
-label 0x0802D64C sub_0802D64C
-label 0x08012A38 sub_08012A38
-label 0x0800E0CC DrawFighterStatsUi_candidate
-label 0x08017B5C ShowDamageNumber_candidate
-label 0x080019A4 SnapObjectPosition
-label 0x08001A84 StartObjectMove
-label 0x08015F50 ShowItemUseResult
-label 0x0802C7C4 PushGameMode
-label 0x0802C7E0 PushGameMode_2
-label 0x08017F98 ApplyDamageToFighter
-label 0x0802D3BC sub_0802D3BC
-# TickBattleTurnStateMachine callees
-label 0x080130B4 sub_080130B4
-label 0x0800FEE0 sub_0800FEE0
-label 0x08013108 sub_08013108
-label 0x08018304 sub_08018304
-label 0x08018460 sub_08018460
-c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
-label 0x080104A0 OpenBattleTopMenu
-label 0x080101D0 TickBattleMenuInput
-label 0x080100A0 DispatchPendingAction
-label 0x0800E39C DrawEnemyStatsUi_candidate
-c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
+label 0x08000134 IntrMain
+asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
+asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
+asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
+label 0x08000C48 sub_08000C48
+c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 label 0x080014B4 AllocObjectOfType
-label 0x080019B0 SetObjectPosition
-label 0x08030824 ClearResourceCacheSlots
-label 0x0800EBAC InitBattleBackground_candidate
-label 0x0800F16C RestoreFighterObjects_candidate
-c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
-label 0x080249C8 GetPartyPresenceMask
-label 0x080249FC GetPartySize
-c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
-c-file 0x0800E62C 0x0800E890 src/battle/build_turn_order.c BuildTurnOrder
-label 0x08014F1C SpawnTurnOrderIcon
-label 0x08012AC0 GetBattleBackgroundData_candidate
-label 0x08007800 LoadEmbeddedPalette_candidate
-label 0x0800F5F0 ResumeBattleAfterSubmode_candidate
-label 0x0801319C OpenPendingFighterMenu_candidate
-label 0x0803FEB4 PlayMusicModule
-label 0x0804E254 g_abBattleMusicByRoom
-label 0x0804E28B g_abBattleMusicByOverworldSlot
-label 0x08051248 g_aFighterAnimTable
-label 0x080514C8 g_abHarryCardEffectId
-label 0x080514DE g_aCardTargetingMeta
-label 0x0805150D g_abHermioneLectureEffectId
-label 0x0805150A g_abSpecialMoveEffectId
-label 0x080538B0 g_abSpellEffectScriptId
-label 0x08053964 g_awSpellMpCost
-label 0x080539A0 g_aBattleSlotAnchorPos_candidate
-label 0x0804FB9C g_aMonsterAttackOffset_candidate
-# InitPlayerBattleActor (src/battle/init_player_battle_actor.c) callees
-# and data tables still raw incbin territory.
+
 label 0x080014D4 AllocDefaultObject
-label 0x08003A44 sub_08003A44
-label 0x08001958 sub_08001958
-label 0x080308A8 AttachObjectEffectSlot_candidate
+label 0x080015D4 sub_080015D4
 label 0x0800187C SetObjectAssetRecord
 label 0x080018D8 SetObjectAnimData
-label 0x08051560 g_aFighterAnimDataTable
-# InitMonsterBattleActor (src/battle/init_monster_battle_actor.c) callees
-# and data tables still raw incbin territory.
-label 0x08030878 AttachEffectOwner_candidate
-label 0x0804E6B4 g_pMonsterGraphicsTable
-label 0x08051E70 g_pMonsterAnimFrameTable
-label 0x0804EF54 g_MonsterShadowGfxRow
-label 0x08053850 g_MonsterShadowAnimData
+label 0x08001958 sub_08001958
+label 0x080019A4 SnapObjectPosition
+label 0x080019B0 SetObjectPosition
+label 0x080019C0 sub_080019C0
+label 0x08001A84 StartObjectMove
+c-file 0x08001E7C 0x08001EA0 src/battle/set_fighter_attack_anim_state.c SetFighterAttackAnimState_candidate
+label 0x0800366C sub_0800366C
 
-# InitInterruptSystem/InstallInterruptHandler (src/interrupts/) callees,
-# still raw incbin territory.
-label 0x08000134 IntrMain
-label 0x08060E8C gIntrTableTemplate
-
-# main (src/main.c) callees, still raw incbin territory.
-thumb-func 0x08026244 sub_08026244
-label 0x0803D310 SetFadeToWhite
-label 0x0803B0C0 ClearSystemMemory
-label 0x0802C254 InitHeap
-label 0x0802BDEC InstallIwramDivideRoutines
-label 0x080453B4 InstallIwramObjTileAllocRoutine
-label 0x0801DD40 InstallIwramDecompressCodecs
-label 0x08020D30 InitTextMacroTable
-label 0x08042568 InitDialogTextEngine
-label 0x0803BC9C InitSaveSystem
-label 0x0802C750 InitGameModeStack
-label 0x08006440 SortObjectsByDepth_candidate
-label 0x08005F10 CheckObjectCollisions_candidate
-label 0x0800D1A4 InitGammaPalette
-label 0x08021560 NoopInit
-label 0x0802FF2C InitOamSystem
-label 0x080315A4 InitResourceCachePools
-label 0x0803D2C8 sub_0803D2C8
-label 0x0803E4FC sub_0803E4FC
-label 0x0802DD54 NoopInit2
-label 0x080258E8 sub_080258E8
-label 0x08042E2C sub_08042E2C
-label 0x0801FDA0 InitDisplayControl
+label 0x08003708 SetObjectFlippedX
+label 0x08003808 sub_08003808
+label 0x08003848 sub_08003848
+label 0x080039E8 sub_080039E8
+label 0x080039F8 sub_080039F8
+label 0x08003A0C sub_08003A0C
+label 0x08003A30 sub_08003A30
+label 0x08003A44 sub_08003A44
 label 0x08005A44 sub_08005A44
-label 0x0802D544 NoopInit3
-label 0x0801FB78 sub_0801FB78
-label 0x080203A8 sub_080203A8
-label 0x0802B018 InitRoomState
-label 0x080250B8 InstallBgTileCodec_candidate
-label 0x08026158 SetVBlankCallback
-label 0x0803FDB0 kramInstall
-label 0x080260A8 EnableInterrupts
-label 0x08045094 sub_08045094
-label 0x0802C6B4 TickGameModeStack_candidate
-# Playtime counters, shared with JP at the same helper addresses.
-label 0x08060544 g_stPlaytimeFrameDelta
-label 0x0806054C g_stPlaytimeHourLimit
-c-file 0x0800C6EC 0x0800C844 src/playtime/add_playtime_delta.c AddPlaytimeDelta
-c-file 0x0800CA70 0x0800CAE8 src/playtime/compare_playtime_field.c ComparePlaytimeField
-c-file 0x0802165C 0x08021694 src/playtime/process_playtime_tick.c ProcessPlaytimeTick
-label 0x08029770 WaitForVBlank
+label 0x08005F10 CheckObjectCollisions_candidate
+label 0x08006440 SortObjectsByDepth_candidate
 
-# Game-mode dispatch table callees (src/data/game_mode_dispatch_table.c),
-# still raw incbin territory. See docs/memory-map/game_modes.md.
+label 0x08007130 sub_08007130
+label 0x08007800 LoadEmbeddedPalette_candidate
+label 0x08007A90 sub_08007A90
+
 thumb-func 0x08008050 InitializeRiddikulusMinigame
 thumb-func 0x080080F4 UpdateRiddikulusMinigame
 thumb-func 0x08008AD0 ExitRiddikulusMinigame
@@ -217,9 +89,74 @@ thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
 thumb-func 0x0800C0FC InitializeLoadingScreen
 thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
+c-file 0x0800C6EC 0x0800C844 src/playtime/add_playtime_delta.c AddPlaytimeDelta
+c-file 0x0800CA70 0x0800CAE8 src/playtime/compare_playtime_field.c ComparePlaytimeField
+label 0x0800D1A4 InitGammaPalette
+label 0x0800D264 sub_0800D264
+label 0x0800D2DC sub_0800D2DC
+label 0x0800D304 sub_0800D304
+label 0x0800D354 sub_0800D354
+label 0x0800D39C ClearPaletteRam
+c-file 0x0800DBAC 0x0800DDB0 src/battle/initialize_battle.c InitializeBattle
+c-file 0x0800DDB0 0x0800DE50 src/battle/update_battle.c UpdateBattle
+c-file 0x0800DE50 0x0800E0CC src/battle/exit_battle.c ExitBattle
+label 0x0800E0CC DrawFighterStatsUi_candidate
+label 0x0800E39C DrawEnemyStatsUi_candidate
+c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
+c-file 0x0800E62C 0x0800E890 src/battle/build_turn_order.c BuildTurnOrder
+c-file 0x0800EA68 0x0800EB2C src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
+c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
+label 0x0800EBAC InitBattleBackground_candidate
+c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
+label 0x0800F16C RestoreFighterObjects_candidate
+label 0x0800F5F0 ResumeBattleAfterSubmode_candidate
+c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
+label 0x0800FEE0 sub_0800FEE0
+c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
+label 0x080100A0 DispatchPendingAction
+label 0x080101D0 TickBattleMenuInput
+label 0x080104A0 OpenBattleTopMenu
+label 0x08010864 ShowBattleMessage
+label 0x080129F4 sub_080129F4
+label 0x08012A38 sub_08012A38
+label 0x08012AC0 GetBattleBackgroundData_candidate
+label 0x08012AFC PushBattleState
+label 0x08012B40 sub_08012B40
+label 0x08012CB4 ClearFighterObjectFlag_candidate
+
+label 0x080130B4 sub_080130B4
+label 0x08013108 sub_08013108
+label 0x0801319C OpenPendingFighterMenu_candidate
 thumb-func 0x080134BC InitializeVictoryScreen
 thumb-func 0x080138F4 UpdateVictoryScreen
+c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
 thumb-func 0x080148A8 ExitVictoryScreen
+c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
+c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
+label 0x08014F1C SpawnTurnOrderIcon
+c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
+label 0x080152CC sub_080152CC
+label 0x08015334 sub_08015334
+label 0x0801539C SetMonsterObjectAnim
+label 0x08015484 SetPlayerObjectAnim
+label 0x08015574 UpdateFighterFlashEffect_candidate
+c-file 0x08015608 0x08015F50 src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
+label 0x08015F50 ShowItemUseResult
+c-file 0x0801602C 0x08017B5C src/battle/tick_player_action_state.c TickPlayerActionState
+label 0x08017B5C ShowDamageNumber_candidate
+c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
+c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
+label 0x08017F98 ApplyDamageToFighter
+c-file 0x08018094 0x080181AC src/battle/apply_status_damage_to_fighter.c ApplyStatusDamageToFighter_candidate
+label 0x080181AC ShowFloatingDamageNumber_candidate
+label 0x08018304 sub_08018304
+label 0x08018460 sub_08018460
+label 0x080186E0 CheckBattleVictory
+label 0x08018ACC PostActionBattleCheck
+label 0x08018B14 sub_08018B14
+c-file 0x08018B70 0x08018BE0 src/battle/trigger_battle_effect.c TriggerBattleEffect
+label 0x08018BE0 CreateEffectScriptObject
+label 0x0801BCB0 sub_0801BCB0
 thumb-func 0x0801BD0C InitializeCardComboDescription
 thumb-func 0x0801BEA8 UpdateCardComboDescription
 thumb-func 0x0801BEDC ExitCardComboDescription
@@ -228,6 +165,7 @@ thumb-func 0x0801D5C8 UpdateCredits
 thumb-func 0x0801D858 ExitLinearCutscene
 thumb-func 0x0801D888 InitializeLinearCutscene
 thumb-func 0x0801D8C0 UpdateLinearCutscene
+label 0x0801DD40 InstallIwramDecompressCodecs
 thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
 thumb-func 0x0801E280 UpdateHarryVsDementorsMinigame
 thumb-func 0x0801EE1C ExitHarryVsDementorsMinigame
@@ -237,39 +175,126 @@ thumb-func 0x0801F524 ExitStartup
 thumb-func 0x0801F534 InitializeDialogue
 thumb-func 0x0801F654 UpdateDialogueBox
 thumb-func 0x0801FAF4 ExitDialogue
+label 0x0801FB78 sub_0801FB78
+label 0x0801FBBC sub_0801FBBC
+label 0x0801FDA0 InitDisplayControl
 thumb-func 0x0801FDE8 InitializeHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FED4 UpdateHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
+label 0x080203A8 sub_080203A8
+
+asm-file 0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
+
+label 0x080208B4 sub_080208B4
+label 0x08020D30 InitTextMacroTable
+asm-file 0x08020E40 0x08020E9C asm/text/measure_macro_string.s MeasureMacroString
+asm-file 0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
+asm-file 0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
+label 0x08021560 NoopInit
+c-file 0x0802165C 0x08021694 src/playtime/process_playtime_tick.c ProcessPlaytimeTick
 thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
 thumb-func 0x08022D98 HandleOwlCareKitScreenExit
+label 0x080249C8 GetPartyPresenceMask
+label 0x080249FC GetPartySize
+c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
+c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTable
+label 0x080250B8 InstallBgTileCodec_candidate
 thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
 thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
+label 0x080258E8 sub_080258E8
 thumb-func 0x08025D28 InitializeTopicScreen
 thumb-func 0x08025E18 UpdateTopicScreen
 thumb-func 0x08025E84 ExitTopicScreen
+c-file 0x08025E90 0x08026068 src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
+c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterruptSystem
+label 0x080260A8 EnableInterrupts
+c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
+label 0x08026158 SetVBlankCallback
+
+thumb-func 0x08026244 sub_08026244
+label 0x08026254 sub_08026254
+label 0x08026CDC sub_08026CDC
+label 0x08026CF0 sub_08026CF0
+
 thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
+
 thumb-func 0x08028314 InitializeLanguageSelect
 thumb-func 0x08028408 UpdateLanguageSelect
 thumb-func 0x08028524 ExitLanguageSelect
+
+# Heap allocator / object pool, see docs/memory-map/heap.md
+c-file 0x080286A0 0x080286D8 src/mem/build_free_list.c BuildFreeList
+c-file 0x080286D8 0x0802870C src/mem/alloc_object_from_free_list.c AllocObjectFromFreeList
+c-file 0x0802870C 0x08028728 src/mem/list_move_to_head.c List_MoveToHead
+c-file 0x08028728 0x08028748 src/mem/list_pop_head.c List_PopHead
+c-file 0x08028748 0x08028760 src/mem/list_push_head.c List_PushHead
+c-file 0x08028760 0x0802878C src/mem/list_remove.c List_Remove
+
 thumb-func 0x0802878C InitializeLupinPotionCutscene
 thumb-func 0x0802887C UpdateLupinPotionCutscene
 thumb-func 0x08029528 ExitLupinPotionCutscene
+
+c-file 0x08029690 0x08029770 src/main.c AgbMain
+label 0x08029770 WaitForVBlank
+
 thumb-func 0x080297A0 InitializeOverworld
 thumb-func 0x0802A14C ExitOverworldScreen
+label 0x0802B018 InitRoomState
 thumb-func 0x0802B058 UpdateOverworld
+label 0x0802B0F4 sub_0802B0F4
+c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
+label 0x0802B41C SpawnWanderingMonsterObject
+
+label 0x0802BA0C GetEncounterKindTerrainType
+label 0x0802BA1C FindWanderingMonsterSpawnPosition
+label 0x0802BAD0 PickMaxDamageMonster
+label 0x0802BDEC InstallIwramDivideRoutines
+label 0x0802C254 InitHeap
+c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
+c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
+label 0x0802C390 FreeBlock
+c-file 0x0802C450 0x0802C4BC src/mem/memset.c memset
+c-file 0x0802C528 0x0802C570 src/mem/init_memory_pool.c InitMemoryPool
+c-file 0x0802C570 0x0802C590 src/mem/get_free_block_size.c GetFreeBlockSize
+c-file 0x0802C590 0x0802C5A4 src/mem/link_block_by_address.c LinkBlockByAddress
+c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
+c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
+label 0x0802C6B4 TickGameModeStack_candidate
+label 0x0802C750 InitGameModeStack
+label 0x0802C7C4 PushGameMode
+label 0x0802C7E0 PushGameMode_2
+c-file 0x0802C984 0x0802C988 src/game_modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CD88 ExitWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CF38 HandleMinigameSelectMenuConfirm
 thumb-func 0x0802D264 InitializeMinigameMenu
 thumb-func 0x0802D2F0 ExitMinigameMenu
+label 0x0802D3BC sub_0802D3BC
+label 0x0802D544 NoopInit3
+label 0x0802D640 sub_0802D640
+label 0x0802D64C sub_0802D64C
+label 0x0802D6B8 sub_0802D6B8
+label 0x0802DD54 NoopInit2
+label 0x0802FF2C InitOamSystem
 thumb-func 0x08030274 InitializeOwlNameSelect
 thumb-func 0x0803031C UpdateOwlNameSelect
 thumb-func 0x08030568 ExitOwlNameSelect
+label 0x08030824 ClearResourceCacheSlots
+
+label 0x08030878 AttachEffectOwner_candidate
+label 0x080308A8 AttachObjectEffectSlot_candidate
+c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
+label 0x08030960 sub_08030960
+label 0x080315A4 InitResourceCachePools
+label 0x08031668 sub_08031668
+c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleaseParticleEmitter_candidate
+label 0x080316D4 sub_080316D4
+label 0x0803171C sub_0803171C
 thumb-func 0x080319FC InitializeHarryPatronusCutscene
 thumb-func 0x08031B4C UpdateHarryPatronusCutscene
 thumb-func 0x08031CA8 ExitHarryPatronusCutscene
@@ -304,6 +329,7 @@ thumb-func 0x08036BB8 UpdateFolioBrutiGridCursor
 thumb-func 0x08037048 ExitFolioBruti
 thumb-func 0x080372B0 InitializeFolioUniversitas
 thumb-func 0x080373D4 UpdateFolioUniversitas
+label 0x080377A8 DecrementFolioUniversitasCard
 thumb-func 0x08037F48 ExitFolioUniversitas
 thumb-func 0x08038290 InitializeGameCubeLink
 thumb-func 0x08038320 UpdateGameCubeLink
@@ -335,97 +361,7 @@ thumb-func 0x0803ABBC ExitCardTrade
 thumb-func 0x0803AEA0 InitializeFolioCardDetailScreen
 thumb-func 0x0803AFA0 HandleFolioCardDetailScreenTick
 thumb-func 0x0803AFCC ExitFolioCardDetailScreen
-thumb-func 0x0804115C InitializeFredAndGeorgesShop
-thumb-func 0x080411E0 UpdateFredAndGeorgesShop
-thumb-func 0x0804126C ExitFredAndGeorgesShop
-thumb-func 0x080418EC InitializeDivinationTeaMinigame
-thumb-func 0x08041A60 UpdateDivinationTeaMinigame
-thumb-func 0x0804223C ExitDivinationTeaMinigame
-thumb-func 0x08042AC8 InitializeClockSkipCutscene
-thumb-func 0x08042B90 InitializeHogwartsUpNightCutscene
-thumb-func 0x08042C74 UpdateHogwartsUpNightCutscene
-thumb-func 0x08042D10 UpdateClockSkipCutscene
-thumb-func 0x08042D74 ExitClockSkipCutscene
-thumb-func 0x08042D90 ExitHogwartsUpNightCutscene
-thumb-func 0x08042F08 InitializeHarryHermionePortInTimeCutscene
-thumb-func 0x08042FC0 UpdateHarryHermionePortInTimeCutscene
-thumb-func 0x08043450 ExitHarryHermionePortInTimeCutscene
-thumb-func 0x08043470 InitializeMainMenu
-thumb-func 0x08043580 UpdateMainMenu
-thumb-func 0x08043870 ExitMainMenuScreen
-thumb-func 0x08043AF0 HandleSaveLoadContinuation
-thumb-func 0x08043EC8 InitializeLoadGame
-thumb-func 0x08043ED8 UpdateLoadGame
-thumb-func 0x08043EEC InitializeNewGameMenu
-thumb-func 0x08043EFC UpdateNewGameMenu
-thumb-func 0x08043F5C ExitNewGameMenu
-thumb-func 0x08044134 InitializeOptions
-thumb-func 0x08044240 UpdateOptions
-thumb-func 0x08044774 ExitOptions
-thumb-func 0x08044B00 InitializeCoolTrainCutscene
-thumb-func 0x08044B7C UpdateCoolTrainCutscene
-thumb-func 0x08044BF0 ExitCoolTrainCutscene
-
-0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
-0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
-0x080000C0 0x08000104 asm/crt0.s                crt0
-
-c-file 0x08029690 0x08029770 src/main.c AgbMain
-c-file 0x08025E90 0x08026068 src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
-c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterruptSystem
-c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
-
-# HandleVBlankInterrupt (src/interrupts/) callees, still raw incbin territory.
-label 0x08007130 sub_08007130
-label 0x0800D354 sub_0800D354
-label 0x08045260 sub_08045260
-label 0x0801FBBC sub_0801FBBC
-label 0x08045988 sub_08045988
-label 0x0800D304 sub_0800D304
-label 0x08049E3C sub_08049E3C
-
-0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
-0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
-0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
-
-# Thumb wrappers around BIOS SWI calls
-0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
-
-# Thumb-mode division runtime
-0x0804A2C0 0x0804A2FC asm/rt/call_via_rX.s              _call_via_r0
-0x0804A2FC 0x0804A390 asm/rt/divsi3.s                   __divsi3
-0x0804A390 0x0804A394 asm/rt/div0.s                    __div0
-0x0804A464 0x0804A4DC asm/rt/udivsi3.s                 __udivsi3
-0x0804A4DC 0x0804A59C asm/rt/umodsi3.s                 __umodsi3
-
-# newlib, compiled from source by `just compile-c` (docs/compiler.md)
-c-file 0x0804BD40 0x0804BD5C src/libc/bzero.c  bzero
-c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
-
-c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
-c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
-
-c-file 0x0802C984 0x0802C988 src/game_modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
-
-# Game-mode dispatch table, see docs/memory-map/game_modes.md
-c-file 0x08065CBC 0x0806601C src/data/game_mode_dispatch_table.c g_pGameModeDispatchTable
-
-# Heap allocator / object pool, see docs/memory-map/heap.md
-c-file 0x08028728 0x08028748 src/mem/list_pop_head.c List_PopHead
-c-file 0x08028748 0x08028760 src/mem/list_push_head.c List_PushHead
-c-file 0x08028760 0x0802878C src/mem/list_remove.c List_Remove
-c-file 0x0802C450 0x0802C4BC src/mem/memset.c memset
-c-file 0x0802C528 0x0802C570 src/mem/init_memory_pool.c InitMemoryPool
-c-file 0x0802C570 0x0802C590 src/mem/get_free_block_size.c GetFreeBlockSize
-c-file 0x0802C590 0x0802C5A4 src/mem/link_block_by_address.c LinkBlockByAddress
-c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
-c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
-c-file 0x080286A0 0x080286D8 src/mem/build_free_list.c BuildFreeList
-c-file 0x080286D8 0x0802870C src/mem/alloc_object_from_free_list.c AllocObjectFromFreeList
-c-file 0x0802870C 0x08028728 src/mem/list_move_to_head.c List_MoveToHead
-c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
-c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
-c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
+label 0x0803B0C0 ClearSystemMemory
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate
@@ -445,22 +381,128 @@ c-file 0x0803B560 0x0803B598 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B598 0x0803B5F4 src/rng/next.c Mt19937Next
 c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 
-# Dialog/UI text engine, see docs/formats/text.md
-0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
-0x08020E40 0x08020E9C asm/text/measure_macro_string.s MeasureMacroString
-0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
-0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
-c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
-c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTable
-0x08042588 0x080425D8 asm/text/set_language.s SetLanguage
+label 0x0803BC9C InitSaveSystem
+label 0x0803D2C8 sub_0803D2C8
+label 0x0803D310 SetFadeToWhite
+label 0x0803D3E8 sub_0803D3E8
+label 0x0803E4FC sub_0803E4FC
+label 0x0803FC68 PlaySoundById
+label 0x0803FDB0 kramInstall
+label 0x0803FEB4 PlayMusicModule
+
+thumb-func 0x0804115C InitializeFredAndGeorgesShop
+thumb-func 0x080411E0 UpdateFredAndGeorgesShop
+thumb-func 0x0804126C ExitFredAndGeorgesShop
+thumb-func 0x080418EC InitializeDivinationTeaMinigame
+thumb-func 0x08041A60 UpdateDivinationTeaMinigame
+thumb-func 0x0804223C ExitDivinationTeaMinigame
+label 0x08042568 InitDialogTextEngine
+asm-file 0x08042588 0x080425D8 asm/text/set_language.s SetLanguage
 c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
 c-file 0x080425E4 0x08042608 src/text/get_dialog_text.c GetDialogText
+thumb-func 0x08042AC8 InitializeClockSkipCutscene
+thumb-func 0x08042B90 InitializeHogwartsUpNightCutscene
+thumb-func 0x08042C74 UpdateHogwartsUpNightCutscene
+thumb-func 0x08042D10 UpdateClockSkipCutscene
+thumb-func 0x08042D74 ExitClockSkipCutscene
+thumb-func 0x08042D90 ExitHogwartsUpNightCutscene
+label 0x08042E2C sub_08042E2C
+thumb-func 0x08042F08 InitializeHarryHermionePortInTimeCutscene
+thumb-func 0x08042FC0 UpdateHarryHermionePortInTimeCutscene
+thumb-func 0x08043450 ExitHarryHermionePortInTimeCutscene
+thumb-func 0x08043470 InitializeMainMenu
+thumb-func 0x08043580 UpdateMainMenu
+thumb-func 0x08043870 ExitMainMenuScreen
+thumb-func 0x08043AF0 HandleSaveLoadContinuation
+thumb-func 0x08043EC8 InitializeLoadGame
+thumb-func 0x08043ED8 UpdateLoadGame
+thumb-func 0x08043EEC InitializeNewGameMenu
+thumb-func 0x08043EFC UpdateNewGameMenu
+thumb-func 0x08043F5C ExitNewGameMenu
+thumb-func 0x08044134 InitializeOptions
+thumb-func 0x08044240 UpdateOptions
+thumb-func 0x08044774 ExitOptions
+thumb-func 0x08044B00 InitializeCoolTrainCutscene
+thumb-func 0x08044B7C UpdateCoolTrainCutscene
+thumb-func 0x08044BF0 ExitCoolTrainCutscene
+label 0x08045094 sub_08045094
+label 0x08045260 sub_08045260
+label 0x080453B4 InstallIwramObjTileAllocRoutine
+label 0x0804542C sub_0804542C
+label 0x08045988 sub_08045988
+label 0x08049E3C sub_08049E3C
+
+# Thumb wrappers around BIOS SWI calls
+asm-file 0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
+
+# Thumb-mode division runtime
+asm-file 0x0804A2C0 0x0804A2FC asm/rt/call_via_rX.s              _call_via_r0
+asm-file 0x0804A2FC 0x0804A390 asm/rt/divsi3.s                   __divsi3
+asm-file 0x0804A390 0x0804A394 asm/rt/div0.s                    __div0
+asm-file 0x0804A464 0x0804A4DC asm/rt/udivsi3.s                 __udivsi3
+asm-file 0x0804A4DC 0x0804A59C asm/rt/umodsi3.s                 __umodsi3
+
+# newlib, compiled from source by `just compile-c` (docs/compiler.md)
+c-file 0x0804BD40 0x0804BD5C src/libc/bzero.c  bzero
+c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
+c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
+c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
+label 0x0804E254 g_abBattleMusicByRoom
+label 0x0804E28B g_abBattleMusicByOverworldSlot
+c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
+label 0x0804E6B4 g_pMonsterGraphicsTable
+label 0x0804EF54 g_MonsterShadowGfxRow
+
+# Folio Bruti monster stat table, decompiled to C
+c-file 0x0804F410 0x0804FA88 src/data/monsters.c MonsterTable
+label 0x0804FB9C g_aMonsterAttackOffset_candidate
+
+c-file 0x0804FC28 0x0804FE50 src/data/monster_drop_table.c g_pMonsterDropTable
+c-file 0x0804FE50 0x08050300 src/data/harry_levels.c g_pHarryLevelTable
+c-file 0x08050300 0x080507B0 src/data/ron_levels.c g_pRonLevelTable
+c-file 0x080507B0 0x08050C60 src/data/hermione_levels.c g_pHermioneLevelTable
+
+# Encounter roster tables, see docs/formats/encounters.md
+c-file 0x08050C6C 0x0805120C src/data/random_encounters.c g_aRandomEncounters
+c-file 0x0805120C 0x08051248 src/data/scripted_encounters.c g_aScriptedEncounters
+label 0x08051248 g_aFighterAnimTable
+label 0x080514C8 g_abHarryCardEffectId
+label 0x080514DE g_aCardTargetingMeta
+label 0x0805150A g_abSpecialMoveEffectId
+label 0x0805150D g_abHermioneLectureEffectId
+label 0x08051560 g_aFighterAnimDataTable
+label 0x08051E70 g_pMonsterAnimFrameTable
+label 0x08053850 g_MonsterShadowAnimData
+label 0x080538B0 g_abSpellEffectScriptId
+c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
+label 0x08053964 g_awSpellMpCost
+label 0x080539A0 g_aBattleSlotAnchorPos_candidate
+
+# Battle-script bytecode
+# battle-script-table <start> <end> <dir> <name>
+battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
+
+# Playtime counters, shared with JP at the same helper addresses.
+label 0x08060544 g_stPlaytimeFrameDelta
+label 0x0806054C g_stPlaytimeHourLimit
+label 0x08060E8C gIntrTableTemplate
+
+# Item/equipment table
+# item-table <start> <end> <json-file> <name>
+item-table 0x08060EE4 0x080629B4 data/items/items.json g_pItemTable
+
+# Game-mode dispatch table, see docs/memory-map/game_modes.md
+c-file 0x08065CBC 0x0806601C src/data/game_mode_dispatch_table.c g_pGameModeDispatchTable
+c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
+
+# Dialog/UI text data
+# dialog-text <start> <end> <json-file> <name>
+dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
+
+# Item icon data
+item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
 
 # Krawall audio data
-# krawall-module <start> <end> <source> <name>
-#   A single Krawall audio module
-# krawall-samples <start> <end> <source> <name>
-#   The Krawall sample set
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 0x08AA6538 data/audio/modules/MusBattle.json MusBattle
@@ -515,9 +557,6 @@ krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 
-# Dialog/UI text data
-# dialog-text <start> <end> <json-file> <name>
-dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb
 dialog-text 0x08ED3574 0x08EE88CC data/text/fr.json DialogTextFr
@@ -527,69 +566,4 @@ dialog-text 0x08F0FB84 0x08F24704 data/text/it.json DialogTextIt
 dialog-text 0x08F24704 0x08F37D1C data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 
-# Folio Bruti monster stat table, decompiled to C
-c-file 0x0804F410 0x0804FA88 src/data/monsters.c MonsterTable
-
-# g_pMonsterDropTable[69]
-c-file 0x0804FC28 0x0804FE50 src/data/monster_drop_table.c g_pMonsterDropTable
-
-# Per-character level-up stat tables
-c-file 0x0804FE50 0x08050300 src/data/harry_levels.c g_pHarryLevelTable
-c-file 0x08050300 0x080507B0 src/data/ron_levels.c g_pRonLevelTable
-c-file 0x080507B0 0x08050C60 src/data/hermione_levels.c g_pHermioneLevelTable
-
-# Encounter roster tables, see docs/formats/encounters.md
-c-file 0x08050C6C 0x0805120C src/data/random_encounters.c g_aRandomEncounters
-c-file 0x0805120C 0x08051248 src/data/scripted_encounters.c g_aScriptedEncounters
-
-# Battle-script bytecode
-# battle-script-table <start> <end> <dir> <name>
-battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
-
-# Item/equipment table
-# item-table <start> <end> <json-file> <name>
-item-table 0x08060EE4 0x080629B4 data/items/items.json g_pItemTable
-
-# Item icon data
-item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
-
-c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
-
-c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
-
-c-file 0x0801602C 0x08017B5C src/battle/tick_player_action_state.c TickPlayerActionState
-
-c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
-c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
-
-c-file 0x0800DBAC 0x0800DDB0 src/battle/initialize_battle.c InitializeBattle
-c-file 0x0800DDB0 0x0800DE50 src/battle/update_battle.c UpdateBattle
-
-c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
-
-c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
-
-c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
-c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
-c-file 0x08015608 0x08015F50 src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
-label 0x08000C48 sub_08000C48
-label 0x080039F8 sub_080039F8
-label 0x08003808 sub_08003808
-label 0x08003848 sub_08003848
-label 0x08003A0C sub_08003A0C
-label 0x0800366C sub_0800366C
-label 0x08015574 UpdateFighterFlashEffect_candidate
-label 0x080186E0 CheckBattleVictory
-label 0x0801BCB0 sub_0801BCB0
-
-c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists
-
-# SpawnOverworldMonsterEncounters (src/overworld/) callees, still raw
-# incbin territory.
-label 0x0802BA0C GetEncounterKindTerrainType
-label 0x0802BA1C FindWanderingMonsterSpawnPosition
-label 0x0802BAD0 PickMaxDamageMonster
-label 0x0802B41C SpawnWanderingMonsterObject
-label 0x0802C390 FreeBlock
-c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
