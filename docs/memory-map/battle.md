@@ -536,6 +536,125 @@ cursor addresses in two temps to reproduce ROM's computation order, and
 writes the slot doubling as `slot + slot` (`slot * 2` splits the copy and
 shift across `r3`/`r0`).
 
+## `ResumeBattleAfterSubmode_candidate` (`0x0800F5F0`), PROVEN
+
+Called unconditionally at the tail of both `InitializeBattle` branches
+(fresh battle and submode-return), immediately after the room's battle
+background/palette load. Three cases on `g_PrevGameModeCtx`:
+
+- **`FolioUniversitas`** (a Special Move card was just selected there,
+  `g_GameModeArg2 < 0xff`): tags the active fighter's
+  `bPendingActionKind = SpecialMove`, then dispatches on
+  `g_aCardTargetingMeta[g_GameModeArg2][0]` -- **already a named, matched
+  global** (`extern u8 g_aCardTargetingMeta[][2]`, `0x080514DE`,
+  `include/battle.h:374`), used from `TickPlayerActionState`'s own
+  Special-Move-resolution case in `src/battle/tick_player_action_state.c`.
+  Indexed by the raw Folio Universitas card slot `0`-`15`; `[0]` is the
+  target-type byte this function reads, `[1]` is a second, independently
+  read boolean -- gates an extra `sub_080129F4()` cleanup call across
+  several post-hit `bAttackOutcomeState` cases in
+  `TickPlayerActionState`, not yet named/understood further. `[0]`'s
+  values: `0` = no target menu -- immediate self/party cast,
+  `bSelectedActionIndex = 0x2a`, `bMenuScreen = 0`; `1` =
+  `OpenEnemyTargetMenu_candidate` (`0x08012B98`, `bMenuScreen = 6`,
+  confirm handler `ConfirmEnemyTargetMenu`) -- matches
+  `TickPlayerActionState`'s own `cardMeta != 0` branch, which resolves an
+  enemy target the same way; `2` = `OpenAllyTargetMenu` (`0x080107BC`,
+  `bMenuScreen = 8`) -- matches its `cardMeta == 2` branch; `3` =
+  `OpenPendingFighterMenu_candidate` (`0x0801319C`, `bMenuScreen = 9`,
+  confirm handler `ConfirmPendingFighterMenu_candidate` -- see
+  "`bMenuScreen = 9`" below) -- matches its `cardMeta == 3` branch, which
+  indexes `pPendingFighters_candidate[ACTIVE_FIGHTER.bSelectedActionIndex]`
+  directly, the same field this menu's confirm handler writes. Every case
+  but `0` also sets `bBattleState = 3`.
+- **fresh battle** (neither `FolioUniversitas` nor `HelpTopicScreen`):
+  resets per-round state -- `wBattleStateTimer = 0`, `bActiveFighterIndex
+  = 0xff`, `bMenuFighterIndex = 0xff` unless a fighter with a live pending
+  spell cast is found by scanning `aSpellCastLevel`/`aSpellUsageProgress`
+  -- pushes battle state `2`, and sets `bScreenShakeTimer_candidate =
+  0x1e` (the screen-shake `UpdateBattle` ticks down before the turn state
+  machine gets its first tick).
+- **`HelpTopicScreen`**: falls straight into the shared tail below.
+
+Shared tail (`FolioUniversitas`'s branch returns before reaching it; the
+fresh-battle branch also returns before it): if `bMenuScreen == 1`,
+reopens the top battle menu -- `OpenBattleTopMenu(idx, 6)` when returning
+from `HelpTopicScreen`, `OpenBattleTopMenu(idx, 1)` when the active
+fighter had a pending `SpecialMove` (cleared back to `None` here), else
+`OpenBattleTopMenu(idx, 5)`.
+
+### `InitializeBattle`'s scene-setup helpers, PROVEN
+
+Called from `InitializeBattle` (`0x0800DBAC`, matched in
+`src/battle/initialize_battle.c`) ahead of `ResumeBattleAfterSubmode_candidate`
+above; all four are visual/Object plumbing, no combat-mechanical state:
+
+- **`InitBattleBackground_candidate`** (`0x0800EBAC`): VBlank callback,
+  VRAM clear, loads both battle background layers (room-indexed table at
+  `0x0804E09C`, with a fixed boss-room blob substituted when
+  `g_abQuestEventState[0x1a]` is set and the room id is `8`-`15`), camera/BG
+  scroll init, and the battle dialog-box palette block.
+- **`RestoreFighterObjects_candidate`** (`0x0800F16C`): only called on the
+  submode-return path, not for a fresh battle. Rebuilds every fighter's
+  sprite `Object` from the `0x128`-byte backup image `FightState` stashed
+  at `+0x834` per fighter (Battle's own `Object`s get torn down while
+  `FolioUniversitas`/`HelpTopicScreen` is active), spawns/links animated
+  shadow `Object`s for monster types `>= 4` that have one, and re-applies
+  the `Paralyzed`/`Poisoned` visual pose and status-particle attachment
+  from each `BattleFighter.bStatusFlags`.
+- **`GetBattleBackgroundData_candidate`** (`0x08012AC0`): the same
+  room -> background-blob selection `InitBattleBackground_candidate`
+  inlines for its first layer, factored out standalone so
+  `InitializeBattle` can also feed the blob into
+  `LoadEmbeddedPalette_candidate` to pull its embedded palette.
+- **`LoadEmbeddedPalette_candidate`** (`0x08007800`, `(u8 *blob, s32
+  paletteRowOffset, s32 rowCount)`): reads `blob[0]` as a flags byte --
+  bit `0` set means `blob` holds a raw palette block starting at
+  `blob+2`, loaded via `SetPaletteColorsThunk_candidate`; bit `1` (with
+  bit `0` clear) loads one fixed 16-color row instead; neither bit is a
+  no-op. Not battle-specific -- also called from
+  `InitializeLupinPotionCutscene`, `InitializeFolioCardDetailScreen`,
+  `InitializeDebugCollectorCardsMenu`, `PlaySpecialSceneEffect`, and
+  three other non-battle sites, confirming it as a general graphics-blob
+  palette loader, not something written for `InitializeBattle`.
+
+### `bMenuScreen = 9` -- the pending-fighter target menu, PROVEN
+
+`OpenPendingFighterMenu_candidate` (`0x0801319C`) is structurally
+parallel to `OpenEnemyTargetMenu_candidate`/`OpenAllyTargetMenu` (same
+8-frame screen-wipe-transition preamble, same `DrawFighterStatsUi_candidate`
+call, same `bMenuCursor = 0` reset) but targets a third, separate fighter
+pool: `FightState->pPendingFighters_candidate` (`+8`, up to 3 slots,
+`bPendingFighterCount_candidate` at `+0x1491`), not `pFighters`. Its
+cursor-move handler, `TogglePendingFighterCursor_candidate`
+(`0x0801310C`, `TickBattleMenuInput` case `9`), only ever offers a binary
+choice: `bMenuCursor ^= 1` when `bPendingFighterCount_candidate != 1`,
+else forced to `0`. Its confirm handler,
+`ConfirmPendingFighterMenu_candidate` (`0x0801320C`), writes
+`bSelectedActionIndex = bMenuCursor` directly -- unlike the enemy/ally
+menus, with no `aEnemySlotTurnOrderIndex`/`aAllySlotTurnOrderIndex`
+translation, consistent with indexing straight into the separate pending
+pool. `RestoreFighterObjects_candidate` (`0x0800F16C`) spawns this pool's
+`Object`s the same way it does for `pFighters`, and `TickPlayerActionState`
+(matched, `src/battle/tick_player_action_state.c`) pans every
+`pPendingFighters_candidate[i].pObject` alongside the regular roster
+during the Special Move windup/return camera move (`bActionState == 0x1a`,
+`bActionFlags == 0x21`/`0x40` cases) -- pending fighters are real,
+on-screen `Object`s, not placeholder data.
+
+`TickPlayerActionState`'s own Special-Move-resolution case confirms
+`bMenuScreen = 9` is reached exactly when `g_aCardTargetingMeta[slot][0]
+== 3`, and on confirm it calls `TriggerBattleEffect` with
+`pPendingFighters_candidate[ACTIVE_FIGHTER.bSelectedActionIndex].bSlotParam`
+as the target slot -- i.e. this menu really does let the player pick
+which pending fighter a card's effect targets. What populates
+`pPendingFighters_candidate`/`bPendingFighterCount_candidate` in the first
+place is not yet traced (not `SetupBattleRoster`), so which specific
+card(s) use `cardMeta[0] == 3` and what a "pending fighter" represents
+narratively (a held-in-reserve ally, most plausibly) is still
+UNCONFIRMED -- but that it is a live, targetable, on-screen fighter pool,
+not a placeholder concept, is now PROVEN via this matched call.
+
 ## Turn order -- `bStat_speed`, PROVEN
 
 

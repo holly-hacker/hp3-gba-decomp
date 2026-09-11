@@ -90,7 +90,7 @@ this screen, `switch(field_0x147c)` with 7 cases matching the table above
 - **case 1, Special Move**: if the active fighter is Harry, saves the
   current mode-stack context and pushes game mode `0x26` via
   `FUN_0802c7e0(0x26, 1, 0)` -- **this is the Folio Universitas**,
-  matching `DAT_03003f3c == 0x26` already read by `FUN_0800f5f0` earlier
+  matching `DAT_03003f3c == 0x26` already read by `ResumeBattleAfterSubmode_candidate` earlier
   in [`battle.md`](battle.md) (that function consumes the *result* of a completed card
   selection, not the menu itself -- the two findings now connect).
   Otherwise (Hermione/Ron) calls **`FUN_080105d8`** (see below) -- one
@@ -121,7 +121,7 @@ this screen, `switch(field_0x147c)` with 7 cases matching the table above
   [`../formats/folio_bruti.md`](../formats/folio_bruti.md)).
 - **case 6, Help**: saves mode-stack context and pushes game mode `0x44`
   via `FUN_0802c800(0x44, ...)` -- matches `DAT_03003f3c == 0x44`, the
-  other mode value `FUN_0800f5f0` branches on, consistent with "opens a
+  other mode value `ResumeBattleAfterSubmode_candidate` branches on, consistent with "opens a
   menu similar to the pause menu" from the user's description (not
   walked further).
 

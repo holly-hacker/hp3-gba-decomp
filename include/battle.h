@@ -453,8 +453,8 @@ extern void sub_08001958(Object *obj, s32 v);
 extern void sub_08003A44(Object *obj, s32 a, s32 b, s32 c);
 extern void *memcpy(void *dst, const void *src, u32 n);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
-extern void sub_0800EBAC(void);
-extern void sub_0800F16C(void);
+extern void InitBattleBackground_candidate(void);
+extern void RestoreFighterObjects_candidate(void);
 extern void SetupBattleRoster(void);
 extern u32 GetPartyPresenceMask(void);
 extern u8 GetPartySize(void);
@@ -473,9 +473,9 @@ typedef struct {
     u8 abMonsterDocLevel[69];
 } SaveStateBlock;
 extern SaveStateBlock g_saveStateBlock;  // 0x03003180
-extern u8 *sub_08012AC0(void);
-extern void sub_08007800(u8 *a, s32 b, s32 c);
-extern void sub_0800F5F0(void);
+extern u8 *GetBattleBackgroundData_candidate(void);
+extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
+extern void ResumeBattleAfterSubmode_candidate(void);
 extern void PlayMusicModule(u8 moduleId);
 
 // Battle-message icon object (shown alongside ShowBattleMessage's text),

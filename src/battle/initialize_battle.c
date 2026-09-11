@@ -74,20 +74,20 @@ void InitializeBattle(void)
             g_pFightState->bEnemyScalePercent_candidate = 0x20;
 
         g_pFightState->bUnk106E = 0;
-        sub_0800EBAC();
+        InitBattleBackground_candidate();
         SetupBattleRoster();
-        uVar7 = sub_08012AC0();
-        sub_08007800(uVar7, 0, 0x10);
-        sub_0800F5F0();
+        uVar7 = GetBattleBackgroundData_candidate();
+        LoadEmbeddedPalette_candidate(uVar7, 0, 0x10);
+        ResumeBattleAfterSubmode_candidate();
     }
     else
     {
         // entered battle mode by exiting Folio Universitas or the Help screen, ie. this is not a new battle
-        sub_0800EBAC();
-        sub_0800F16C();
-        uVar7 = sub_08012AC0();
-        sub_08007800(uVar7, 0, 0x10);
-        sub_0800F5F0();
+        InitBattleBackground_candidate();
+        RestoreFighterObjects_candidate();
+        uVar7 = GetBattleBackgroundData_candidate();
+        LoadEmbeddedPalette_candidate(uVar7, 0, 0x10);
+        ResumeBattleAfterSubmode_candidate();
     }
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF)

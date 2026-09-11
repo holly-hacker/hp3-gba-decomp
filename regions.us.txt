@@ -76,17 +76,18 @@ c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBat
 label 0x080014B4 AllocObjectOfType
 label 0x080019B0 SetObjectPosition
 label 0x08030824 ClearResourceCacheSlots
-label 0x0800EBAC sub_0800EBAC
-label 0x0800F16C sub_0800F16C
+label 0x0800EBAC InitBattleBackground_candidate
+label 0x0800F16C RestoreFighterObjects_candidate
 c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
 label 0x080249C8 GetPartyPresenceMask
 label 0x080249FC GetPartySize
 c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
 c-file 0x0800E62C 0x0800E890 src/battle/build_turn_order.c BuildTurnOrder
 label 0x08014F1C SpawnTurnOrderIcon
-label 0x08012AC0 sub_08012AC0
-label 0x08007800 sub_08007800
-label 0x0800F5F0 sub_0800F5F0
+label 0x08012AC0 GetBattleBackgroundData_candidate
+label 0x08007800 LoadEmbeddedPalette_candidate
+label 0x0800F5F0 ResumeBattleAfterSubmode_candidate
+label 0x0801319C OpenPendingFighterMenu_candidate
 label 0x0803FEB4 PlayMusicModule
 label 0x0804E254 g_abBattleMusicByRoom
 label 0x0804E28B g_abBattleMusicByOverworldSlot
