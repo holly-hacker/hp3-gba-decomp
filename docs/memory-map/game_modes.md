@@ -29,7 +29,7 @@ w/1 0x03003F18 <mode>
 ```
 
 **Compute any bitwise combination (e.g. if reproducing `mode | 0x80`
-exactly) with an actual calculator, not by hand** (CLAUDE.md hard rule
+exactly) with an actual calculator, not by hand** (AGENTS.md hard rule
 4) -- a wrong hand computation of `mode | 0x80` lands on a different
 mode's pending value entirely, not a malformed one, so a mistake here
 fails silently rather than erroring.

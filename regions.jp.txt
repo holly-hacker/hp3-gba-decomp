@@ -91,7 +91,7 @@ label 0x080604D8 g_stPlaytimeHourLimit
 # data/audio/ is curated, editable source (JSON metadata + WAV PCM),
 # content-identical between US/JP (see docs/formats/krawall.md's Confirmed
 # stats) -- only the addresses below are per-version. It's gitignored, same
-# footing as the baserom (see CLAUDE.md hard rule 2) -- bootstrap it
+# footing as the baserom (see AGENTS.md hard rule 2) -- bootstrap it
 # locally with `just extract-krawall` before building. tools/krawall/pack_krawall.py
 # writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
 # like everything else in build/), which is what gen_link.py includes.

@@ -469,10 +469,8 @@ and the shop-stock tables work.
   stride) beyond what was already used elsewhere (`+0x08`, `+0x18`) --
   not revisited here.
 - **JP ROM** -- nothing in this document has been cross-checked against
-  `baserom.jp.gba`. Given the Krawall and dialog-text precedent (see
-  `CLAUDE.md`), the underlying data is likely to be content-identical
-  but at a different address; do not assume the addresses above apply
-  to JP without verifying.
+  `baserom.jp.gba`. Verify both content and addresses independently before
+  applying these findings to JP.
 - **`DrawFolioBrutiMonsterPanel` (`0x08036D60`) is not decompiled.** It is
   large and only partially walked, so its boundaries don't meet hard rule
   5's bar; it is named in `functions.us.cfg` so the disassembly reads

@@ -5,8 +5,8 @@ See [`../README.md`](../README.md) for the confidence-key legend
 
 ## `UpdateKeyInput` / `ResetKeyInput`, PROVEN
 
-Named in `functions.us.cfg`/`functions.jp.cfg`, currently `.incbin` (not
-extracted to `asm/` -- see `CLAUDE.md`, "code stays `.incbin` unless asked").
+Named in `functions.us.cfg`/`functions.jp.cfg`; their bytes remain in
+raw `.incbin` regions.
 Read directly from `full_disasm.s` for both versions; JP required adding a
 `functions.jp.cfg` seed for `UpdateKeyInput` since `gbadisasm` did not
 auto-detect its boundary there (`just disasm-compare` confirmed byte-exact

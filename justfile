@@ -61,7 +61,7 @@ dump-collision ver="us":
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/room_scripts/ is gitignored (same footing as the
-# baserom, see CLAUDE.md hard rule 2). Disassembles each room's
+# baserom, see AGENTS.md hard rule 2). Disassembles each room's
 # quest-stage-0 room-script chains into data/room_scripts/<ver>/<room>/,
 # one file per chain, named after a curated entry in
 # tools/room_scripts/script_names.json or "chain<N>" by default. US
@@ -79,7 +79,7 @@ pack-room-scripts ver="us":
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/audio/ is gitignored (same footing as the baserom, see
-# CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
+# AGENTS.md hard rule 2) and meant to be user-editable for future modding,
 # so it's never silently regenerated/overwritten on every build.
 # Bootstrap data/audio/ locally from baserom.us.gba.
 extract-krawall:
@@ -95,7 +95,7 @@ pack-krawall ver="us":
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/text/ is gitignored (same footing as the baserom, see
-# CLAUDE.md hard rule 2) and meant to be user-editable for future modding,
+# AGENTS.md hard rule 2) and meant to be user-editable for future modding,
 # so it's never silently regenerated/overwritten on every build. US only
 # -- dialog text hasn't been located in the JP ROM (see docs/formats/text.md).
 # Bootstrap data/text/ locally from baserom.us.gba.
@@ -112,7 +112,7 @@ pack-text ver="us":
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/battle_scripts/ is gitignored (same footing as the
-# baserom, see CLAUDE.md hard rule 2) and meant to be user-editable, so
+# baserom, see AGENTS.md hard rule 2) and meant to be user-editable, so
 # it's never silently regenerated/overwritten on every build. US only --
 # see docs/formats/battle_scripts.md.
 # Bootstrap data/battle_scripts/ locally from baserom.us.gba.
@@ -129,7 +129,7 @@ pack-battle-scripts ver="us":
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/images/ is gitignored (same footing as the baserom,
-# see CLAUDE.md hard rule 2). US only. Also writes viewable PNGs to
+# see AGENTS.md hard rule 2). US only. Also writes viewable PNGs to
 # extracted/graphics/items/ (gitignored, never build input -- see
 # docs/formats/graphics.md's "Item icons" section).
 # Bootstrap data/images/items/*.bin and extracted/graphics/items/*.png from baserom.us.gba.
@@ -147,7 +147,7 @@ pack-item-icons ver="us":
 
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
-# CLAUDE.md hard rule 2), so a fresh clone has none of it and the pack-*
+# AGENTS.md hard rule 2), so a fresh clone has none of it and the pack-*
 # steps have nothing to read. Re-running overwrites local hand-edits.
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
@@ -183,9 +183,8 @@ diff-region name ver="us": (build ver)
 compare ver="us": (build ver)
     cmp baserom.{{ver}}.gba build/{{ver}}/rom.gba && echo "MATCH"
 
-# objdiff version described in CLAUDE.md's "Target toolchain", not built
-# yet. Verifies donor ROMs, then the full disassembly and the linked
-# build for both versions.
+# Verifies donor ROMs, full disassembly, linked builds for both versions,
+# and manifest/function-config ordering.
 # Full sanity sweep: run everything, confirm it all still matches. Run before committing.
 check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (compare "jp") check-sorted
     @echo "us and jp: full disassembly and linked build both match the donor ROM."

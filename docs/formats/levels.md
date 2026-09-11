@@ -180,7 +180,7 @@ about how room content is placed.
   (`BgTileCodec_candidate`, `0x08006300`) and its per-tile offset-table
   packing aren't decoded yet, see graphics.md -- and multiple `Unused`
   byte ranges aren't confirmed padding vs. simply unread by the traced
-  call sites (CLAUDE.md hard rule on region-extent confirmation).
+  call sites (AGENTS.md hard rule on region-extent confirmation).
 - The `(tag, value)` byte run immediately preceding `g_pRoomTable`
   (`~0x0806307C`-`0x08063C88`) has no identified consumer; worth a
   dynamic (mGBA watchpoint) pass rather than further static guessing.

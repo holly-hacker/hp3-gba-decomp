@@ -21,7 +21,7 @@ verifies it reproduces the baserom's bytes exactly, the same codec
 round-trip a real pack step would rely on later.
 
 data/room_scripts/ is gitignored, same footing as the baserom (hard
-rule 2, CLAUDE.md) -- every clone needs to run this once (see the
+rule 2, AGENTS.md) -- every clone needs to run this once (see the
 `extract-room-scripts` recipe). Clears every room directory first, so a
 chain whose name changes (via script_names.json) doesn't leave its old
 filename behind as a stale orphan; do not run it against already

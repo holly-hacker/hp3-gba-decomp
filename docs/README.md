@@ -107,6 +107,6 @@ record layout is in [`memory-map/battle.md`](memory-map/battle.md)'s
   struct, the document that traced the *reader* owns the semantics and
   the other links to it rather than restating them.
 - Document a format here before writing its extractor
-  (`CLAUDE.md`, Conventions).
+  (`AGENTS.md`, Assets).
 - Cross-document links are relative (`../formats/text.md`), and a
   reference to another document's section names that section in quotes.

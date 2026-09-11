@@ -52,7 +52,7 @@ pattern `rows` field as `.short`, 2 bytes, unconditionally -- not the
 disagree, our own zero-overlap/zero-mismatch validation against the actual
 ROM bytes (see Confirmed stats and Trailing padding absorption) is what's
 trusted, not the public source -- it's used for API-shape/algorithm
-reference only, per `CLAUDE.md`.
+reference only; see `../memory-map/krawall.md` for the source comparison.
 
 The revision gap reaches past struct spans into field *encoding* -- see
 "Pattern atom encoding" below, where the public source's active code path

@@ -7,7 +7,7 @@ document index.
 Status: **SOLVED end-to-end, PROVEN by direct content verification.** The
 real dialog/UI string table is located, its Huffman-style compression
 format is fully decoded, and it is confirmed genuinely per-language (all
-8 languages -- see `CLAUDE.md`): decoding the same string ID from each of
+8 languages): decoding the same string ID from each of
 the 8 language blobs produces distinct, correct, grammatical text in the
 right language every time. Static tracing from a real, already-known
 ASCII string table is sufficient for all of it; no dynamic analysis is
@@ -41,8 +41,8 @@ known".
   - None of the above are dialog or menu text (character select, item
     names, quest text, etc.) -- that's confirmed absent as plain ASCII.
 - This is a US/EU multi-language cart (English US, English UK, French,
-  German, Spanish, Italian, Dutch, Danish -- 8 languages in one ROM image,
-  see `CLAUDE.md`), which explains *why* text isn't plain ASCII even in
+  German, Spanish, Italian, Dutch, Danish -- 8 languages in one ROM image),
+  which explains *why* text isn't plain ASCII even in
   English: text is encoded as indices into a **custom glyph/character
   table**, not as literal ASCII codepoints, so even a correctly-located
   and correctly-decompressed text blob won't look like readable ASCII
@@ -348,8 +348,8 @@ sub_08024EB8(blobBase)                                // switch the active strin
 `0x0806BD78` was read directly: **exactly 8 valid ROM pointers**
 (`0x08EAC798, 0x08EBFE84, 0x08ED3574, 0x08EE88CC, 0x08EFC504,
 0x08F0FB84, 0x08F24704, 0x08F37D1C`), followed by non-pointer garbage at
-index 8 -- matching the cart's 8 languages exactly (not 7; corrected in
-`CLAUDE.md`: English US, English UK, French, German, Spanish, Italian,
+index 8 -- matching the cart's 8 languages exactly (English US,
+English UK, French, German, Spanish, Italian,
 Dutch, Danish). Decoding the same string IDs from each of the 8 blobs
 produces genuinely distinct, real, grammatically correct text in what
 reads as the right language for each slot in order -- e.g. id `0x12D`:
@@ -370,7 +370,7 @@ reimplements this whole chain (language table lookup, blob init, tree
 walk) directly in Python from the ROM, verified byte-for-byte against
 manual disassembly tracing for several IDs across all 8 languages.
 Usage: `decode_dialog_text.py us <lang 0-7> <string id>`. Note this
-decodes *content* (real dialog/UI text) -- per `CLAUDE.md` hard rule 2,
+decodes *content* (real dialog/UI text) -- per `AGENTS.md` hard rule 2,
 that content itself must never be committed to the repo (same footing as
 Krawall audio); only the format knowledge and this decoder tool are
 committed.
@@ -384,7 +384,7 @@ real, complete string count, not an arbitrary scan cutoff.
 ## The extraction pipeline, built and build-integrated (PROVEN -- full-ROM byte-exact)
 
 Mirrors Krawall's `data/audio/` + `tools/krawall/pack_krawall.py` model (see
-`CLAUDE.md`): curated, editable, gitignored source that a pack step
+`AGENTS.md`): curated, editable, gitignored source that a pack step
 turns into byte-exact assembly before `gen-link`, verified by the same
 `just compare`/`just check-all` full-ROM sha1 oracle every other region
 already has to pass.

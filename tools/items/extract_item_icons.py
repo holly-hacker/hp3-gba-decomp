@@ -27,7 +27,7 @@ one's own length is its boundary; no offset/length has to be stored
 anywhere to parse them back apart.
 
 data/images/items/ is gitignored, same footing as the baserom (hard
-rule 2, CLAUDE.md) -- every clone needs to run this once (see the
+rule 2, AGENTS.md) -- every clone needs to run this once (see the
 `extract-item-icons` recipe) before building. extracted/ is a
 different, fully gitignored tree for human-viewing output only -- the
 PNGs there are never build input (see justfile).

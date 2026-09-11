@@ -514,8 +514,7 @@ opcode than as an `opcodes.json` `sub_dispatch` entry (not yet added).
 
 Addresses are ROM-build-specific: they differ between the US and JP
 ROMs (not confirmed to even share this table's content at all), and a
-future shiftable/moddable build (see CLAUDE.md's "Moddability roadmap")
-is explicitly meant to relocate code freely -- a fixed address baked
+future shiftable build would relocate code freely -- a fixed address baked
 into what's supposed to be portable bytecode format knowledge would
 silently break both. `opcodes.json` carries only opcode number, name,
 operand length, and (for `StatusEffect`) named sub-cases -- nothing that

@@ -7,8 +7,8 @@ document index. The on-ROM module/pattern/sample struct layouts are in
 
 ## Krawall audio engine — confirmed, located
 
-CLAUDE.md already assumed Krawall (LGPL, https://github.com/sebknzl/krawall)
-based on general knowledge of this game. Confirmed directly in the ROM:
+Krawall (LGPL, https://github.com/sebknzl/krawall) is confirmed directly
+in both ROMs by the embedded version string below.
 
 ### Version string (proof of direct source use, not a reimplementation)
 
@@ -62,7 +62,7 @@ match.
 ### Public Krawall source pulled for reference — NOT a byte-level match
 
 Cloned https://github.com/sebknzl/krawall (LGPL, kept in scratch space only,
-never vendored into this repo per the licensing note in CLAUDE.md). Findings
+never vendored into this repo per the licensing note in AGENTS.md). Findings
 that matter for how we can use it:
 
 - The repo's git history starts at commit `878a821` / `9a2b869`, dated
