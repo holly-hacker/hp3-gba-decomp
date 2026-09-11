@@ -99,6 +99,12 @@ typedef struct {
 } GameModeStackContext;
 extern GameModeStackContext g_GameModeStackContext;  // 0x03003EF4
 
+// Mirrors g_GameModeStackContext's layout for the not-yet-applied mode --
+// PushGameMode/PushGameMode_2/PushGameMode_3 stage here, TickGameModeStack
+// shifts it into g_GameModeStackContext on pop. Only the two fields ExitBattle
+// touches are named; see docs/memory-map/game_modes.md for the rest.
+extern GameModeStackContext g_dwPendingGameMode;  // 0x03003F18
+
 extern void InitGameModeStack(void);
 extern void TickGameModeStack_candidate(void);
 

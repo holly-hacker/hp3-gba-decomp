@@ -93,6 +93,7 @@ extern u32 g_dwUnk03001DC4;
 extern ListNode *sActiveObjectListHead;
 
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
+extern void sub_080015D4(ListNode **listHead);  // called by ExitBattle with &sActiveObjectListHead
 
 void SortObjectsByDepth_candidate(void);
 void CheckObjectCollisions_candidate(void);

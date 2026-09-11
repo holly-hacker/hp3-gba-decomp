@@ -82,6 +82,9 @@
 .set g_BattleMessageIconState_candidate, 0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id
 .set g_GameModeStackContext, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
+.set g_dwPendingGameMode, 0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
+.set g_dwPendingGameModeArg1, 0x03003F1C  @ u32: g_dwPendingGameMode's arg1, i.e. dwCurrentGameModeArg1's pending counterpart
+.set g_dwPendingGameModeArg3, 0x03003F24  @ u32: g_dwPendingGameMode's arg3, i.e. dwCurrentGameModeArg3's pending counterpart
 
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
 @ ResetKeyInput, 0x080254A8/0x080258F8) ---

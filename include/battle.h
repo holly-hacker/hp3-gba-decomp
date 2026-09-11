@@ -39,8 +39,6 @@ typedef enum {
     SpellPowerBoost  = 0x40,
 } BattleStatusFlags;
 
-typedef struct Object Object;
-
 // Live, in-battle per-fighter record, 0x48 bytes.
 typedef struct BattleFighter {
     /*0x00*/ u8 bFighterType;   // FighterType
@@ -144,7 +142,13 @@ typedef struct FightState {
     /*0x00*/ BattleFighter *pStagingFighters;
     /*0x04*/ BattleFighter *pFighters;
     /*0x08*/ BattleFighter *pPendingFighters_candidate;  // front-popped reinforcement queue, count at +0x1491
-    /*0x0C*/ u8 pad_0C[0x104C - 0x0C];
+    /*0x0C*/ u8 pad_0C[0x834 - 0x0C];
+    // ExitBattle's Folio Universitas/Help resume path snapshots every live
+    // (0-bFighterCount) then pending (0-bPendingFighterCount_candidate)
+    // fighter's Object here, densely packed, before the real Objects are
+    // torn down -- exactly 7 slots (the same total as g_apFighterObjects_candidate)
+    // fill this to FightState's 0x104C boundary.
+    /*0x834*/ Object aSuspendedFighterObjects_candidate[7];
     /*0x104C*/ u32 nSavedPosX;      // 16.16, from Object+0x2C
     /*0x1050*/ u32 nSavedPosY;      // 16.16, from Object+0x30
     /*0x1054*/ void *pAttackAnimObject_candidate;
@@ -166,7 +170,7 @@ typedef struct FightState {
     /*0x1071*/ u8 pad_1071[0x147E - 0x1071];
     /*0x147E*/ u8 bActionDelayCounter_candidate;
     /*0x147F*/ u8 bCameraZoomStep_candidate;
-    /*0x1480*/ u8 pad_1480;
+    /*0x1480*/ u8 bBonusRewardFlags;  // BattleRewardFlags; snapshotted to g_dwBattleRewardFlagsSnapshot by ExitBattle
     /*0x1481*/ u8 bEnemyScalePercent_candidate;  // set by InitializeBattle from Harry's level: 0x40/0x30/0x20 for level 0/1/2+
     /*0x1482*/ u8 pad_1482[0x1491 - 0x1482];
     /*0x1491*/ u8 bPendingFighterCount_candidate;
@@ -202,67 +206,6 @@ typedef enum {
 
 extern u32 g_dwBattleRewardFlagsSnapshot;
 extern s32 g_anFaintedRosterIndices[4];
-
-// A fighter's sprite/animation object. Only the fields touched by
-// UpdateBattle/TickPlayerActionState are named; see those files' plate
-// comments for the rest.
-struct Object {
-    u8 pad_00[0x08];
-    u16 wFighterType;       // 0x08
-    u8 pad_0A[0x02];        // -> 0x0C
-    u32 dwFlags;            // 0x0C, bit 0x40000 = action-animation-done, bit 0x8000 = special-move trigger
-    u8 pad_10[0x04];        // -> 0x14
-    u16 wMoveDuration;      // 0x14
-    u8 bUnk16;              // 0x16
-    u8 pad_17[0x0D];        // -> 0x24
-    ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
-                             // ReleaseParticleEmitter_candidate and zeroed
-                             // when nonzero (see ClearParalyzedFighter_candidate)
-    u32 dwUnk_0x28;         // 0x28, set to 1 by InitPlayerBattleActor_candidate
-    u32 nX;                 // 0x2C, 16.16
-    u32 nY;                 // 0x30, 16.16
-    u8 pad_34[0x08];        // -> 0x3C
-    u32 nVelX;              // 0x3C
-    u32 nVelY;              // 0x40
-    u8 pad_44[0x1C];        // -> 0x60
-    u8 bAttackOutcomeState; // 0x60
-    u8 pad_61[0x01];        // -> 0x62
-    u16 wStagedDamage;      // 0x62
-    u8 pad_64[0x18];        // -> 0x7C
-    u8 bUnk_0x7C;           // 0x7C, zeroed by InitPlayerBattleActor_candidate
-    u8 pad_7D[0x03];        // -> 0x80
-    u32 dwStateTimer;       // 0x80
-    u8 pad_84[0x02];        // -> 0x86
-    u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
-    u8 pad_88[0x02];        // -> 0x8a
-    u16 wActionVariant;     // 0x8A
-    u8 pad_8C[0x01];        // -> 0x8D
-    u8 bActionState;        // 0x8D, the dispatch key
-    u8 pad_8E[0x02];        // -> 0x90
-    u8 bActionFlags;        // 0x90
-    u8 bFighterIndex;       // 0x91
-    u8 pad_92[0x06];        // -> 0x98
-    void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
-    u8 pad_9C[0x04];        // -> 0xA0
-    struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow)
-    void *pLinkedObject_candidate;  // 0xA4; see docs/formats/room_scripts.md and
-                                     // docs/formats/save.md's per-object save table
-                                     // (Object+0xa0/+0xa4/+0xa8, three linked-object slots)
-    struct Object *pOwnerObject;   // 0xA8, back-link (shadow -> main)
-    u8 pad_AC[0x25];        // -> 0xD1
-    u8 bFlags_0xD1;         // 0xD1, bit 0x20 set / bits 0x0C cleared by InitializeBattle
-    u8 pad_D2[0x03];        // -> 0xD5
-    u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot
-    u8 pad_D6[0x03];        // -> 0xD9
-    u8 bAnimFrameDelay;     // 0xD9
-    u8 pad_DA[0x02];        // -> 0xDC
-    u8 bEnemyAttackPhase_candidate;  // 0xDC, TickFighterAttackAnimState_candidate's own
-                             // multi-step sentinel: 0xff idle, 0/2/3/4 successive phases
-                             // -- real compares it unsigned against 0xff, not as a signed -1
-    u8 pad_DD[0x07];        // -> 0xE4
-    u8 *pAnimFrameCursor;   // 0xE4
-    u8 *pAnimFrameBase;     // 0xE8
-};
 
 extern void sub_080039E8(Object *obj);
 extern void sub_0802D640(u8 priority);
@@ -477,6 +420,21 @@ extern u8 *GetBattleBackgroundData_candidate(void);
 extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
 extern void ResumeBattleAfterSubmode_candidate(void);
 extern void PlayMusicModule(u8 moduleId);
+
+// ExitBattle's remaining callees -- generic engine/graphics teardown run on
+// every battle exit, not battle logic; not otherwise analyzed.
+extern void sub_08030960(s32 arg0);
+extern void sub_080316D4(void);
+extern void sub_0803171C(void);
+extern void sub_0800D2DC(void);
+extern void sub_08031668(s32 arg0, s32 arg1);
+extern void sub_0803D3E8(s32 arg0, s32 arg1);
+extern void sub_08026254(void);
+extern void sub_0802D6B8(void);
+extern void sub_08007A90(void);
+extern void sub_0804542C(void);
+extern void ClearFighterObjectFlag_candidate(u8 fighterIndex);  // 0x08012CB4
+extern void sub_0802B0F4(void);  // Folio Universitas exit-arg3 teardown
 
 // Battle-message icon object (shown alongside ShowBattleMessage's text),
 // distinct from the 7 per-fighter Objects in g_apFighterObjects_candidate.

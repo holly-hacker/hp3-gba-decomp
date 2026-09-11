@@ -106,7 +106,7 @@ Read the relevant entries in [troubleshooting.md](references/troubleshooting.md)
 | Extra masks, shifts, wrong field accesses | 1–3 |
 | Branch layout, switch shape, duplicated/shared checks | 4–5, 7, 10–11 |
 | Spills, wrong registers, unexpected local reuse | 6, 8–9, 13–15 |
-| Loop initialization, copies, hoisted loads | 12, 16–18 |
+| Loop initialization, copies, hoisted loads | 12, 16–19 |
 
 After several experiments fail to explain the same difference, stop respelling blindly.
 Revisit the outer control-flow split, types, caching, loop form and compiler context.

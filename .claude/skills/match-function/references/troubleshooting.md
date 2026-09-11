@@ -79,12 +79,15 @@ one else arm. A goto matched too, but structured control flow expressed the same
 as an experiment; a bare block has different semicolon/if-else safety. Example:
 TickBattleTurnStateMachine's TRANSITION_TO. This does not justify adding inert wrappers.
 
-## 12. Pointer initialization on wrong side of zero-trip guard
+## 12. Indexed-loop giv synthesis: pointer placement or a folded constant
 
 An indexed loop lets `loop.c:strength_reduce/emit_iv_add_mult` synthesize a pointer induction
 variable in the preheader, after a duplicated exit test. A handwritten walking pointer may
-initialize before the guard. Test `p[i]` versus `*p++` based on the target. Example: memset,
-US 0x0802C450. Let the compiler perform strength reduction when that matches the pattern.
+initialize before the guard -- test `p[i]` vs `*p++` based on the target (memset, US
+0x0802C450). Or it may fold a field-offset constant into the giv's initial value, leaving
+candidate short a per-iteration reload+add the ROM repeats (`.loop`: `mult STRIDE add CONST`)
+-- try adding the constant to an already-formed `base+i*stride` sum so the giv reads `add 0`
+(ExitBattle, US 0x0800DE50). Let strength reduction happen when the target's shape matches it.
 
 ## 13. Value fails to survive calls
 
@@ -127,6 +130,14 @@ A preheader statement can give gcse PRE an insertion point for another load. Inl
 constant may remove that block; later `loop.c:move_movables` can place the load differently.
 Example: AddPlaytimeDelta, US 0x0800C6EC; overflow and borrow loops used different forms.
 Inspect each loop separately even when source looks symmetric.
+
+## 19. Byte count matches but a loop-carried update is out of order
+
+Two loop-carried values share a step (e.g. a destination counter and a second loop's own
+index) and the update sequence is swapped relative to the ROM despite equal size. `loop.c` may
+attach each giv's update to whichever biv's increment it follows in source; test moving the
+shared counter into that loop's increment clause (`pendingI++, i++`) instead of the body or an
+index sum (`[i + pendingI]`). Example: ExitBattle, US 0x0800DE50 loop 2.
 
 ## Candidate acceptance and cleanup
 

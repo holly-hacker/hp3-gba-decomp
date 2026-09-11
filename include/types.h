@@ -8,3 +8,4 @@ typedef signed short   s16;
 typedef signed int     s32;
 
 #define NULL ((void *)0)
+#define OFFSETOF(type, member) ((u32)&((type *)0)->member)

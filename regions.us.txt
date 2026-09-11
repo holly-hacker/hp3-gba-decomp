@@ -45,6 +45,23 @@ c-file 0x08018B70 0x08018BE0 src/battle/trigger_battle_effect.c TriggerBattleEff
 label 0x08018BE0 CreateEffectScriptObject
 label 0x08012AFC PushBattleState
 label 0x080377A8 DecrementFolioUniversitasCard
+
+c-file 0x0800DE50 0x0800E0CC src/battle/exit_battle.c ExitBattle
+
+label 0x0800D39C ClearPaletteRam
+label 0x080015D4 sub_080015D4
+label 0x080316D4 sub_080316D4
+label 0x08012CB4 ClearFighterObjectFlag_candidate
+label 0x08030960 sub_08030960
+label 0x0803171C sub_0803171C
+label 0x0800D2DC sub_0800D2DC
+label 0x08031668 sub_08031668
+label 0x0803D3E8 sub_0803D3E8
+label 0x08026254 sub_08026254
+label 0x0802D6B8 sub_0802D6B8
+label 0x08007A90 sub_08007A90
+label 0x0804542C sub_0804542C
+label 0x0802B0F4 sub_0802B0F4
 label 0x080129F4 sub_080129F4
 label 0x08012B40 sub_08012B40
 label 0x080019C0 sub_080019C0
@@ -200,7 +217,6 @@ thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
 thumb-func 0x0800C0FC InitializeLoadingScreen
 thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
-thumb-func 0x0800DE50 ExitBattle
 thumb-func 0x080134BC InitializeVictoryScreen
 thumb-func 0x080138F4 UpdateVictoryScreen
 thumb-func 0x080148A8 ExitVictoryScreen
