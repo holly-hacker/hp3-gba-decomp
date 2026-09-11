@@ -203,9 +203,9 @@ label 0x080250B8 InstallBgTileCodec_candidate
 thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
 thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
-label 0x080254A8 UpdateKeyInput
+c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
 label 0x080258E8 sub_080258E8
-label 0x080258F8 ResetKeyInput
+c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
 thumb-func 0x08025D28 InitializeTopicScreen
 thumb-func 0x08025E18 UpdateTopicScreen
 thumb-func 0x08025E84 ExitTopicScreen
@@ -397,6 +397,7 @@ label 0x0803D310 SetFadeToWhite
 label 0x0803D3E8 sub_0803D3E8
 label 0x0803E4FC sub_0803E4FC
 label 0x0803EF5C TickLinkCommIfActive_candidate
+label 0x0803FA94 GetLocalPlayerLinkIndex_candidate
 label 0x0803FC68 PlaySoundById
 label 0x0803FDB0 kramInstall
 label 0x0803FEB4 PlayMusicModule

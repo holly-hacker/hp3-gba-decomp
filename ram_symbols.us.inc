@@ -108,6 +108,7 @@
 .set g_awPlayerKeysHeldPrevious,  0x030034FA  @ u16[2]: previous-frame counterpart of the above
 .set g_awPlayerKeysPressed,       0x030034FE  @ u16[2]: per-player newly-pressed masks
 .set g_awPlayerKeysReleased,      0x03003502  @ u16[2]: per-player newly-released masks
+.set g_awLinkKeysReceived,        0x03005A0C  @ u16[2]: per-player key masks received over the link cable
 
 @ --- Overworld wandering monsters (see include/overworld.h) ---
 .set g_bTouchedMonsterRecordCount, 0x03003B70  @ byte: queued (encounter id, kind) pair count

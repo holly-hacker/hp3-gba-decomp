@@ -18,6 +18,11 @@ An unsigned value may remove it. Sub-word locals can introduce masks because Thu
 `PROMOTE_MODE` promotes them; prefer s32/u32 arithmetic and truncate at a genuine boundary.
 Do not narrow merely to save a register. Inspect `ldr` versus `ldrb`/`ldrh`.
 
+Promotion can also let `combine` fold `(a^b)&a` into one `bicsi3` when `a` is a named
+sub-word local, where the same expression over array re-reads (HImode, `subreg`-wrapped)
+doesn't fold. An unwanted `bic` versus a reference's `eors`+`ands` pair: drop the local,
+re-read the array. Example: UpdateKeyInput, US `0x080254A8`.
+
 ## 3. Cached field/address
 
 Repeated use of one loaded register can suggest a cached field; repeated address formation
@@ -65,12 +70,22 @@ A bit-field store's expanded mask can affect flow-time liveness even if combine 
 a byte-pointer store takes another expansion path. Use this to investigate types, not to
 justify unexplained casts. See compiler-investigation for pseudo-to-hard-register mapping.
 
+For an equal-refs tie between two same-shaped pseudos, the one whose last use comes first
+in source wins the shorter live_length and the preferred hard register. Reorder the two
+independent statements that consume them (not the loop). Example: UpdateKeyInput's
+loop-setup registers, US `0x080254A8`.
+
 ## 10. Shared tail / apparent need for goto
 
 `jump.c:find_cross_jump/do_cross_jump` can merge suitable jump-ending blocks; duplicated
 source does not guarantee merging. Re-derive the true outer split first. In ResolveEnemyAttack,
 “both flags” versus the remaining combinations permits a shared DefenseBoost recheck inside
 one else arm. A goto matched too, but structured control flow expressed the same join.
+
+A merged tail's register convention is set by whichever branch reaches it needing zero
+fixup moves; the other branch pays the reconciling `adds`. Fix that branch's own tie
+(entry 9) first -- the tail's ordering won't resolve in isolation. Example: UpdateKeyInput,
+US `0x080254A8`.
 
 ## 11. Guard macro prevents merging
 

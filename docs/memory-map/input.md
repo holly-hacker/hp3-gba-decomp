@@ -5,12 +5,10 @@ See [`../README.md`](../README.md) for the confidence-key legend
 
 ## `UpdateKeyInput` / `ResetKeyInput`, PROVEN
 
-Named in `functions.us.cfg`/`functions.jp.cfg`; their bytes remain in
-raw `.incbin` regions.
-Read directly from `full_disasm.s` for both versions; JP required adding a
-`functions.jp.cfg` seed for `UpdateKeyInput` since `gbadisasm` did not
-auto-detect its boundary there (`just disasm-compare` confirmed byte-exact
-for both versions after seeding).
+Matched (US): `src/input/update_key_input.c`, `src/input/reset_key_input.c`.
+JP required adding a `functions.jp.cfg` seed for `UpdateKeyInput` since
+`gbadisasm` did not auto-detect its boundary there (`just disasm-compare`
+confirmed byte-exact for both versions after seeding); JP is not yet matched.
 
 | Name | US addr | JP addr | Called from |
 |---|---|---|---|
@@ -20,25 +18,31 @@ for both versions after seeding).
 `UpdateKeyInput` maintains the frame's held/pressed/released key state:
 
 ```c
+if (g_wInputDisabled != 0) {
+    // clears g_wKeysHeld/g_wKeysHeldPrevious/g_wKeysPressed/g_wKeysReleased
+    // and all four per-player arrays to 0, then returns
+} else if ((g_dwGameModeFlags & 0x20) != 0) {
+    // serial-link input: update both players' masks from the link
+    // input buffer (g_awLinkKeysReceived, 0x03005A0C, see
+    // docs/memory-map/link.md), then select the local player's slot
+    // (GetLocalPlayerLinkIndex_candidate, 0x0803FA94)
+    ...
+    g_wKeysHeldPrevious = g_awPlayerKeysHeldPrevious[localPlayer];
+    g_wKeysHeld = g_awPlayerKeysHeld[localPlayer];
+} else {
+    // local input
+    g_wKeysHeldPrevious = g_wKeysHeld;
+    g_wKeysHeld = REG_KEYINPUT ^ 0x3FF;  // active-low -> active-high
+    // ALSO mirrors into slot 0 of the per-player arrays -- easy to miss,
+    // this is not dead code the link branch alone reaches
+    g_awPlayerKeysHeldPrevious[0] = g_wKeysHeldPrevious;
+    g_awPlayerKeysHeld[0] = g_wKeysHeld;
+    g_awPlayerKeysPressed[0] = (g_wKeysHeld ^ g_wKeysHeldPrevious) & g_wKeysHeld;
+    g_awPlayerKeysReleased[0] = (g_wKeysHeld ^ g_wKeysHeldPrevious) & g_wKeysHeldPrevious;
+}
 if (g_wInputDisabled == 0) {
-    if ((g_dwGameModeFlags & 0x20) == 0) {
-        // local input
-        g_wKeysHeldPrevious = g_wKeysHeld;
-        g_wKeysHeld = KEYINPUT ^ 0x3FF;  // active-low -> active-high
-    } else {
-        // serial-link input: update both players' masks from the link
-        // input buffer (0x03005A0C, see docs/memory-map/link.md), then
-        // select the local player's slot (index from FUN_0803FA94,
-        // which returns gLinkCtxPlayerCount's local-player index)
-        ...
-        g_wKeysHeldPrevious = g_awPlayerKeysHeldPrevious[localPlayer];
-        g_wKeysHeld = g_awPlayerKeysHeld[localPlayer];
-    }
     g_wKeysPressed  = g_wKeysHeld & ~g_wKeysHeldPrevious;
     g_wKeysReleased = g_wKeysHeldPrevious & ~g_wKeysHeld;
-} else {
-    // clears g_wKeysHeld/g_wKeysHeldPrevious/g_wKeysPressed/g_wKeysReleased
-    // and all four per-player arrays to 0
 }
 ```
 
