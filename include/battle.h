@@ -362,7 +362,7 @@ extern u8 g_aMonsterAttackOffset_candidate[][2];  // 0x0804FB9C, [rosterIndex]
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
-// per-wFighterType windup-flash resource pointer row, stride 0xA0
+// per-wObjectType windup-flash resource pointer row, stride 0xA0
 typedef struct AnimFlashRow {
     u8 pad_00[0x08];
     s32 nEffectSlotLive;        // 0x08, AttachObjectEffectSlot arg when the fighter is alive

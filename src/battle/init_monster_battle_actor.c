@@ -24,7 +24,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
 
     pObject = AllocDefaultObject();
     objType = type + 4;
-    pObject->wFighterType = objType;
+    pObject->wObjectType = objType;
     pObject->bUnk_0x7C = 0;
 
     // Slot anchor in pixels, stored 16.16; the move target reuses X + 24.
@@ -74,7 +74,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     else if ((u8)(type - 0x2D) <= 2)
     {
         pShadowObject = AllocDefaultObject();
-        pShadowObject->wFighterType = objType;
+        pShadowObject->wObjectType = objType;
         pShadowObject->bUnk_0x7C = 0;
 
         sub_08003A44(pShadowObject, 0, 0x400, -0xC);

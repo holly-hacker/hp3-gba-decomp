@@ -138,7 +138,7 @@ c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonste
 label 0x080152CC sub_080152CC
 label 0x08015334 sub_08015334
 label 0x0801539C SetMonsterObjectAnim
-label 0x08015484 SetPlayerObjectAnim
+c-file 0x08015484 0x08015574 src/battle/set_player_object_anim.c SetPlayerObjectAnim
 label 0x08015574 UpdateFighterFlashEffect_candidate
 c-file 0x08015608 0x08015F50 src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
 label 0x08015F50 ShowItemUseResult

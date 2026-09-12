@@ -58,7 +58,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
     case 1:
     {
         if (obj->bActionFlags & 1) {
-            if (obj->wFighterType != 0x3a) {
+            if (obj->wObjectType != 0x3a) {
                 SetObjectFlippedX(obj, 1);
                 PlaySoundById(0x9d);
             } else {
@@ -68,7 +68,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             obj->bActionFlags &= 0xfe;
         }
 
-        if (obj->wFighterType != 0x3a) {
+        if (obj->wObjectType != 0x3a) {
             sub_080039F8(obj);
             sub_08003A0C(obj);
             sub_080019C0(obj, 0xfffa0000, 0);
@@ -87,18 +87,18 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             CheckBattleVictory(obj);
 
         if (g_pFightState->dwBattleResultPending != 0) {
-            if (obj->wFighterType == 0x3a)
+            if (obj->wObjectType == 0x3a)
                 return;
             obj->dwFlags &= 0xfffffffe;
             return;
         }
 
-        if (obj->wFighterType == (fighterType = 0x3a))
+        if (obj->wObjectType == (fighterType = 0x3a))
             return;
 
         obj->dwFlags |= 0x82;
 
-        if ((u16)(obj->wFighterType - 0x31) > 2)
+        if ((u16)(obj->wObjectType - 0x31) > 2)
             return;
 
         FreeObject(obj->pShadowObject);
@@ -230,7 +230,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 RollMonsterSpecialEffect(monsterIndex, active->bSelectedActionIndex, g_nLastDamage);
             }
 
-            if (obj->wFighterType == 0x3e) {
+            if (obj->wObjectType == 0x3e) {
                 obj->bEnemyAttackPhase_candidate = 0xff;
                 obj->bAttackOutcomeState = 2;
             }
@@ -307,7 +307,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                             // Overkill: the message carries the excess over
                             // 999 and g_nLastDamage is rewritten in place.
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wFighterType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wObjectType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -315,7 +315,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                             ShowFloatingDamageNumber_candidate(g_nLastDamage, 3, i, 0);
                         } else if (g_nLastDamage != 0) {
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wFighterType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wObjectType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -325,7 +325,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                             // the compiler already holds a register known to
                             // be 0 and reuses it, which is what the ROM does.
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = 0;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wFighterType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wObjectType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 1;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -343,7 +343,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         }
 
     skipPhase0:
-        if (obj->wFighterType != 0x3e)
+        if (obj->wObjectType != 0x3e)
             return;
         if ((obj->dwFlags & 0x40000) == 0)
             return;

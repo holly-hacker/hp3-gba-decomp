@@ -68,7 +68,10 @@ extern void ClearPaletteRam(void);
 // named; see those files' plate comments for the rest.
 typedef struct Object {
     u8 pad_00[0x08];
-    u16 wFighterType;       // 0x08
+    u16 wObjectType;       // 0x08, AllocObjectOfType's type param; meaning is
+                             // caller-defined. In the battle subsystem, values are
+                             // a small per-kind index (player fighter 0-3, monster
+                             // type id) -- see InitPlayerBattleActor/InitMonsterBattleActor
     u8 pad_0A[0x02];        // -> 0x0C
     ObjectFlags dwFlags;    // 0x0C
     u8 pad_10[0x04];        // -> 0x14

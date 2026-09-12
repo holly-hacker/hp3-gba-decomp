@@ -19,7 +19,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     u8 **ppAnimCursor;
 
     pObject = AllocDefaultObject();
-    pObject->wFighterType = type;
+    pObject->wObjectType = type;
     pObject->bUnk_0x7C = 0;
 
     // Reload before the mask is materialized, and fold through the mask

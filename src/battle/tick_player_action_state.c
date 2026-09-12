@@ -22,12 +22,12 @@ static inline void PlayActionWindupFlash(Object *obj)
     if (obj->wActionVariant == 1) {
         SetPlayerObjectAnim(obj, 7);
         slot = obj->bGfxSlotAndFlags >> 4;
-        ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceA + 2;
+        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceA + 2;
         sub_0800D264(ptr, (slot << 4) + 1, 0xf);
     } else if (obj->wActionVariant == 2) {
         SetPlayerObjectAnim(obj, 6);
         slot = obj->bGfxSlotAndFlags >> 4;
-        ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceB + 2;
+        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceB + 2;
         sub_0800D264(ptr, (slot << 4) + 1, 0xf);
     } else {
         SetPlayerObjectAnim(obj, 0);
@@ -47,7 +47,7 @@ static inline void WaitForMoveThenApplyDamageNumber(Object *obj)
 static inline void ApplyDamageNumberAnimState(Object *obj)
 {
     if (obj->bActionFlags & 1) {
-        sub_08018B14(obj->wStagedDamage, (u8)obj->wFighterType);
+        sub_08018B14(obj->wStagedDamage, (u8)obj->wObjectType);
         PlaySoundById(0x9b);
         SetPlayerObjectAnim(obj, 4);
         obj->bActionFlags &= 0xfe;
@@ -62,7 +62,7 @@ static inline void PlayFighterImpactSound(Object *obj)
 {
     if ((obj->bActionFlags & 1) == 0)
         return;
-    switch (obj->wFighterType) {
+    switch (obj->wObjectType) {
     case 0: PlaySoundById(0xa1); break;
     case 1: PlaySoundById(0xa7); break;
     case 2: PlaySoundById(0xa4); break;
@@ -273,14 +273,14 @@ void TickPlayerActionState(Object *obj)
         if (obj->dwFlags & 0x8000) {
             // Buckbeak carve-out 1/4: skips the special-move effect; the flag
             // clear below still runs.
-            if (obj->wFighterType != Buckbeak)
+            if (obj->wObjectType != Buckbeak)
                 TriggerBattleEffect(1, ACTIVE_FIGHTER.bSlotParam,
                                     0, g_pFightState->bActiveFighterIndex, 0, 0);
             obj->dwFlags &= 0xffff7fff;
         }
         if (obj->dwFlags & 0x40000) {
             obj->dwFlags &= 0xfffbffff;
-            if (obj->wFighterType != Buckbeak) {
+            if (obj->wObjectType != Buckbeak) {
                 var_8 = g_abSpellEffectScriptId[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 ACTIVE_FIGHTER.wMp -= g_awSpellMpCost[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 g_aPartyMasterStats[ACTIVE_FIGHTER.bFighterType].wMp = ACTIVE_FIGHTER.wMp;
@@ -300,7 +300,7 @@ void TickPlayerActionState(Object *obj)
                                     g_pFightState->bActiveFighterIndex,
                                     g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                                     g_nLastDamage);
-            } else if (obj->wFighterType != Buckbeak) {
+            } else if (obj->wObjectType != Buckbeak) {
                 // Buckbeak carve-out 3/4: Fumos has no fighter check, so it still
                 // triggers; every other spell skips the cast VFX for Buckbeak.
                 if (ACTIVE_FIGHTER.bSelectedActionIndex != 0xfe)
@@ -350,7 +350,7 @@ void TickPlayerActionState(Object *obj)
                     continue;
                 g_nLastDamage = ResolvePlayerAttack(g_pFightState->bActiveFighterIndex, i);
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = (u8)((Object *)g_pFightState->pFighters[i].pObject)->wFighterType;
+                g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = (u8)((Object *)g_pFightState->pFighters[i].pObject)->wObjectType;
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                 g_pFightState->bFaintMessageCount_candidate += 1;
                 SetFighterAttackAnimState_candidate(g_pFightState->pFighters[i].pObject, 2);
@@ -587,7 +587,7 @@ void TickPlayerActionState(Object *obj)
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
                 if (g_pFightState->pFighters[i].bFighterType == Enemy) {
                     SetFighterAttackAnimState_candidate(g_pFightState->pFighters[i].pObject, 2);
-                    g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Object *)g_pFightState->pFighters[i].pObject)->wFighterType;
+                    g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Object *)g_pFightState->pFighters[i].pObject)->wObjectType;
                     g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                     g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
                     ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, i, 0);
@@ -613,7 +613,7 @@ void TickPlayerActionState(Object *obj)
         g_pFightState->bFaintMessageCount_candidate = 0;
         for (i = 0; i < g_pFightState->bFighterCount; i++) {
             g_nLastDamage = 0x2d;
-            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Object *)g_pFightState->pFighters[i].pObject)->wFighterType;
+            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Object *)g_pFightState->pFighters[i].pObject)->wObjectType;
             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
             if (g_pFightState->pFighters[i].bFighterType == Enemy) {
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
