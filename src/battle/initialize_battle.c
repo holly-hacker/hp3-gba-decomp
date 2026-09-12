@@ -22,7 +22,7 @@ void InitializeBattle(void)
     // Allocate all 6 fighter objects (3 on the player side, 3 on the enemy side)
     for (i = 0, slot = 0x90; i <= 6; i++)
     {
-        g_apFighterObjects_candidate[i] = AllocObjectOfType(i + 0xE);
+        g_apFighterObjects_candidate[i] = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
         SetObjectPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
         g_apFighterObjects_candidate[i]->dwFlags = 0x20000008;
         g_apFighterObjects_candidate[i]->bUnk16 = 0x80;
@@ -31,7 +31,7 @@ void InitializeBattle(void)
         slot += 0x10;
     }
 
-    g_pBattleMessageIconObject_candidate = AllocObjectOfType(i + 0xE);
+    g_pBattleMessageIconObject_candidate = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
     g_bSelectedFighterSlot_candidate = 0;
     SetObjectPosition(g_pBattleMessageIconObject_candidate, i * 0x16 + 0x60, 0x8A);
     pIconObj = g_pBattleMessageIconObject_candidate;

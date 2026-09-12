@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "mem.h"
-#include "graphics.h"
+#include "object.h"
 #include "input.h"
 #include "game_modes.h"
 
@@ -211,7 +211,6 @@ typedef enum {
 extern u32 g_dwBattleRewardFlagsSnapshot;
 extern s32 g_anFaintedRosterIndices[4];
 
-extern void sub_080039E8(Object *obj);
 extern void sub_0802D640(u8 priority);
 extern void sub_0802D3BC(void);
 
@@ -285,15 +284,6 @@ extern void CheckBattleVictory(Object *obj);                  // 0x080186E0
 extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
 extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s32 damage);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void sub_080039F8(Object *obj);
-extern void sub_08003A0C(Object *obj);
-extern void sub_0801BCB0(void *linkedObject);
-extern void FreeObject(Object *obj);
-extern void ReleaseObjectAffineSlot(Object *obj);
-extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s32 wAngle, s32 bMode);
-extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
-
-extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables
 extern void SetMonsterObjectAnim(Object *obj, s32 state);  // 0x0801539C, monster gfx tables + shadow
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
@@ -333,7 +323,6 @@ typedef struct EffectStaging {
     u8 bIdStaged_candidate;
 } EffectStaging;
 extern EffectStaging g_effectStaging;                 // 0x03002750
-extern Object *CreateEffectScriptObject(s32 effectId, s32 kind);  // 0x08018BE0
 extern void sub_080129F4(void);
 extern void sub_08012B40(void);
 extern void sub_080019C0(void *obj, s32 x, s32 y);  // sets Object+0x3c/+0x40, i.e. nVelX/nVelY directly
@@ -341,8 +330,6 @@ extern void sub_08003A30(void *obj, s32 a, s16 b, s16 c);  // a is shifted << 8 
 extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void SnapObjectPosition(Object *obj, u32 x, u32 y);
-extern void StartObjectMove(Object *obj, u32 x, u32 y, s16 mode);
 extern void ShowItemUseResult(Object *obj, s32 targetIndex);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
 extern void ApplyDamageToFighter(u16 damage, u8 fighterIndex);  // 0x08017F98
@@ -379,19 +366,9 @@ typedef struct AnimFlashRow {
 extern AnimFlashRow g_aFighterAnimTable[];  // 0x08051248, UNCONFIRMED row count
 extern u8 g_aFighterAnimDataTable[];        // 0x08051560, stride 0x244, contents undecoded
 
-extern void ClearResourceCacheSlots(void);
-extern Object *AllocObjectOfType(s32 type);
-extern Object *AllocDefaultObject(void);
-extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
-extern void SetObjectAssetRecord(Object *obj, void *rec);
-extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
 extern void TickPlayerActionState(Object *obj);
 extern void TickFighterAttackAnimState_candidate(Object *obj);  // 0x08015608
-extern void AttachEffectOwner_candidate(Object *obj, void *pEffectData);  // 0x08030878
-extern void sub_08001958(Object *obj, s32 v);
-extern void sub_08003A44(Object *obj, s32 a, s32 b, s32 c);
 extern void *memcpy(void *dst, const void *src, u32 n);
-extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void InitBattleBackground_candidate(void);
 extern void RestoreFighterObjects_candidate(void);
 extern void SetupBattleRoster(void);
