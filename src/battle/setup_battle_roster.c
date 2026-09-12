@@ -81,7 +81,8 @@ void SetupBattleRoster(void)
         slot = 0;
         idx = 0;
         for (; slot <= 3; slot = (u8)(slot + 1)) {
-            if (SCRIPTED_ENCOUNTER_CELL(slot) <= 0xFE) {
+            // copy over non-empty slots
+            if (SCRIPTED_ENCOUNTER_CELL(slot) < 0xFF) {
                 InitMonsterBattleActor(&g_pFightState->pStagingFighters[count + idx], SCRIPTED_ENCOUNTER_CELL(slot), slot);
                 g_pFightState->bFighterCount++;
                 idx++;
@@ -95,12 +96,14 @@ void SetupBattleRoster(void)
         slot = 0;
         idx = 0;
         for (; slot <= 3; slot = (u8)(slot + 1)) {
-            if (RANDOM_ENCOUNTER_CELL(slot) <= 0xFE) {
+            // copy over non-empty slots
+            if (RANDOM_ENCOUNTER_CELL(slot) < 0xFF) {
                 monsterIndex = RANDOM_ENCOUNTER_CELL(slot);
                 InitMonsterBattleActor(&g_pFightState->pStagingFighters[count + idx], monsterIndex, slot);
                 g_pFightState->bFighterCount++;
                 idx++;
 
+                // mark monster as seen in folio bruti
                 if (g_saveStateBlock.abMonsterDocLevel[monsterIndex] == 0)
                     g_saveStateBlock.abMonsterDocLevel[monsterIndex] = 2;
             }
@@ -112,7 +115,7 @@ void SetupBattleRoster(void)
     idx = 0;
     count = g_pFightState->bFighterCount;
 
-    // copy starging fighters into fighters
+    // copy staging fighters into fighters
     slot = 0;
     if (slot < count) {
         for (; slot < g_pFightState->bFighterCount; slot = (u8)(slot + 1))
@@ -153,9 +156,11 @@ void SetupBattleRoster(void)
 
     // `pStagingFighters` is now sorted so that fainted enemies (and unitialized/missing ones) are at the back
 
-    // randomly shift enemy speed values
+    // randomly shift enemy speed values, clamp everyone's speed to [5, 251]
+    // this still advances the RNG for players, but the value is unused
     JitterEnemyTurnOrder();
 
-    // build actual turn order
+    // build actual turn order based on speed (low to high)
+    // ties get resolved by index
     BuildTurnOrder();
 }

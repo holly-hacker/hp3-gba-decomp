@@ -243,34 +243,29 @@ void TickPlayerActionState(Object *obj)
         }
         if (obj->dwFlags & 0x40000) {
             obj->dwFlags &= 0xfffbffff;
-            // Buckbeak carve-out 2/4: takes state Buckbeak below instead of
-            // resolving a spell.
             if (obj->wFighterType != Buckbeak) {
                 var_8 = g_abSpellEffectScriptId[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 ACTIVE_FIGHTER.wMp -= g_awSpellMpCost[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 g_aPartyMasterStats[ACTIVE_FIGHTER.bFighterType].wMp = ACTIVE_FIGHTER.wMp;
                 if (ACTIVE_FIGHTER.bSelectedActionIndex != 0xfe)
+                    // apply player attack
                     g_nLastDamage = ResolvePlayerAttack(
                         g_pFightState->bActiveFighterIndex,
                         g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
                 DrawFighterStatsUi_candidate(g_pFightState->pFighters[g_pFightState->bMenuFighterIndex].bFighterType, 0);
             } else {
+                // Buckbeak carve-out 2/4: Buckbeak does not roll the normal damage formula
                 obj->bAttackOutcomeState = AttackOutcome_Buckbeak;
             }
 
-            // Real reuses one r4/r6 pair across all three call sites, but that
-            // sharing comes from CSE on the repeated ACTIVE_FIGHTER expression,
-            // not from a source-level cached pointer: introducing a local here
-            // makes the address expand as a plain PLUS (base first) instead of
-            // an EXPAND_SUM address (mult term sorted last), which real uses.
-            // Buckbeak carve-out 3/4: Fumos has no fighter check, so it still
-            // triggers; every other spell skips the cast VFX for Buckbeak.
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
                 TriggerBattleEffect(var_8, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex,
                                     g_pFightState->bActiveFighterIndex,
                                     g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                                     g_nLastDamage);
             } else if (obj->wFighterType != Buckbeak) {
+                // Buckbeak carve-out 3/4: Fumos has no fighter check, so it still
+                // triggers; every other spell skips the cast VFX for Buckbeak.
                 if (ACTIVE_FIGHTER.bSelectedActionIndex != 0xfe)
                     TriggerBattleEffect(var_8, ACTIVE_FIGHTER.bSlotParam, (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
                                         g_pFightState->bActiveFighterIndex,
