@@ -77,8 +77,6 @@ typedef struct ObjectPoolState {
     void *pFreeListHead;
 } ObjectPoolState;
 extern ObjectPoolState g_ObjectPoolState;
-#define g_pObjectPoolBuffer g_ObjectPoolState.pBuffer
-#define sFreeObjectListHead g_ObjectPoolState.pFreeListHead
 extern void *g_pObjectPoolAuxBuffer;
 extern u8 g_pSortObjectsIwram[0xC4];
 extern u8 g_pCheckObjectCollisionsIwram[0x1F4];
@@ -87,13 +85,23 @@ extern u32 g_dwObjectListActive_candidate;
 // like a fixed-point rounding/scale constant, unrelated to the pool
 // itself. Not enough evidence yet for a real name.
 extern u32 g_dwUnk03001DC4;
+// FreeObject calls ReleaseObjectOffscreenVramTiles on the freed object when
+// this is 1. Not enough evidence yet for a real name.
+extern u32 g_dwUnk03001DC0;
 
-// Head of the active-object list; objects join it via
-// AllocObjectFromFreeList and List_MoveToHead.
-extern ListNode *sActiveObjectListHead;
+// pHead/pUnk4 are adjacent words (0x030015B0/0x030015B4) -- FreeObject loads
+// the base address once and reaches pUnk4 through it at +4, so this stays
+// one struct rather than two independent globals (see ObjectPoolState for
+// the same pattern).
+typedef struct ActiveObjectListState {
+    ListNode *pHead;  // objects join it via AllocObjectFromFreeList and List_MoveToHead
+    ListNode *pUnk4;  // FreeObject advances this to the freed object's pPrev when
+                       // it points at that object. Not enough evidence yet for a real name.
+} ActiveObjectListState;
+extern ActiveObjectListState g_ActiveObjectListState;
 
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
-extern void sub_080015D4(ListNode **listHead);  // called by ExitBattle with &sActiveObjectListHead
+extern void sub_080015D4(ListNode **listHead);  // called by ExitBattle with &g_ActiveObjectListState.pHead
 
 void SortObjectsByDepth_candidate(void);
 void CheckObjectCollisions_candidate(void);

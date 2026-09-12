@@ -24,7 +24,8 @@ label 0x08000134 IntrMain
 asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
-label 0x08000C48 FreeObject
+c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
+label 0x08001300 ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 label 0x080014B4 AllocObjectOfType
 
@@ -49,6 +50,7 @@ label 0x08003A0C sub_08003A0C
 label 0x08003A30 sub_08003A30
 label 0x08003A44 sub_08003A44
 label 0x08005A44 sub_08005A44
+label 0x08005CAC SetRoomObjectRecordPtr_candidate
 label 0x08005F10 CheckObjectCollisions_candidate
 label 0x08006440 SortObjectsByDepth_candidate
 
@@ -298,6 +300,7 @@ label 0x08030824 ClearResourceCacheSlots
 
 label 0x08030878 AttachEffectOwner_candidate
 label 0x080308A8 AttachObjectEffectSlot_candidate
+label 0x080308D8 ClaimObjectEffectResource
 c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
 label 0x08030960 sub_08030960
 label 0x080315A4 InitResourceCachePools

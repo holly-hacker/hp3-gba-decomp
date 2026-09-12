@@ -13,7 +13,10 @@ def ram_symbols(ver: str) -> dict[int, str]:
     for line in path.read_text().splitlines():
         m = re.match(r"^\.set\s+(\S+?),\s*(0[xX][0-9a-fA-F]+)", line)
         if m:
-            out[int(m.group(2), 16)] = m.group(1)
+            address, name = int(m.group(2), 16), m.group(1)
+            if address in out and out[address] != name:
+                raise ValueError(f"{path}: duplicate .set for {address:#x}: {out[address]}, {name}")
+            out[address] = name
     return out
 
 

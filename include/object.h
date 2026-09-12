@@ -39,14 +39,17 @@ typedef enum {
 // the fields touched by UpdateBattle/TickPlayerActionState/ExitBattle are
 // named; see those files' plate comments for the rest.
 typedef struct Object {
-    u8 pad_00[0x08];
+    ListNode node;          // 0x00, active/free object-pool list link (see
+                             // FreeObject/List_MoveToHead); pNext/pPrev
     u16 wObjectType;       // 0x08, AllocObjectOfType's type param; meaning is
                              // caller-defined. In the battle subsystem, values are
                              // a small per-kind index (player fighter 0-3, monster
                              // type id) -- see InitPlayerBattleActor/InitMonsterBattleActor
     u8 pad_0A[0x02];        // -> 0x0C
     ObjectFlags dwFlags;    // 0x0C
-    u8 pad_10[0x04];        // -> 0x14
+    u8 bRoomTileCol_candidate;  // 0x10, SetRoomObjectRecordPtr_candidate's column arg
+    u8 bRoomTileRow_candidate;  // 0x11, SetRoomObjectRecordPtr_candidate's row arg
+    u8 pad_12[0x02];        // -> 0x14
     u16 wMoveDuration;      // 0x14
     u8 bUnk16;              // 0x16
     u8 pad_17[0x0D];        // -> 0x24
@@ -78,7 +81,7 @@ typedef struct Object {
     u8 bFighterIndex;       // 0x91
     u8 pad_92[0x06];        // -> 0x98
     void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
-    u8 pad_9C[0x04];        // -> 0xA0
+    void (*pfnDestructor)(struct Object *obj);  // 0x9C, called by FreeObject if non-null
     struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow)
     void *pLinkedObject_candidate;  // 0xA4; see docs/formats/room_scripts.md and
                                      // docs/formats/save.md's per-object save table
@@ -175,6 +178,9 @@ typedef enum {
 extern Object *AllocObjectOfType(s32 type);
 extern Object *AllocDefaultObject(void);
 extern void FreeObject(Object *obj);
+extern void ReleaseObjectOffscreenVramTiles(Object *obj);
+extern void ClaimObjectEffectResource(Object *obj);
+extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void SnapObjectPosition(Object *obj, u32 x, u32 y);
 extern void StartObjectMove(Object *obj, u32 x, u32 y, s16 mode);

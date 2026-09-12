@@ -138,11 +138,11 @@
 .set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions_candidate
 .set g_ObjectPoolState,               0x03001C08  @ {void *pBuffer; void *pFreeListHead;}; pBuffer is the
                                                     @ 0x7968-byte AllocZeroed'd buffer BuildFreeList carves up
-.set g_pObjectPoolBuffer,            0x03001C08
 .set sFreeObjectListHead,            0x03001C0C
 .set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
+.set g_dwUnk03001DC0,                0x03001DC0  @ FreeObject calls ReleaseObjectOffscreenVramTiles when this == 1
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
-.set sActiveObjectListHead,          0x030015B0  @ ListNode *: head of the active-object list
+.set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/mem.h
 
 @ --- Resource cache / particle emitters (see docs/formats/graphics.md and
 @ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
