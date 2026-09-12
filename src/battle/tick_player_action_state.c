@@ -13,6 +13,83 @@ typedef enum {
     AttackOutcome_Buckbeak = 6, // Buckbeak's level-scaled damage tail
 } AttackOutcomeState;
 
+static inline void PlayActionWindupFlash(Object *obj)
+{
+    void *ptr;
+    s32 slot;
+    if ((obj->bActionFlags & 1) == 0)
+        return;
+    if (obj->wActionVariant == 1) {
+        SetPlayerObjectAnim(obj, 7);
+        slot = obj->bGfxSlotAndFlags >> 4;
+        ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceA + 2;
+        sub_0800D264(ptr, (slot << 4) + 1, 0xf);
+    } else if (obj->wActionVariant == 2) {
+        SetPlayerObjectAnim(obj, 6);
+        slot = obj->bGfxSlotAndFlags >> 4;
+        ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceB + 2;
+        sub_0800D264(ptr, (slot << 4) + 1, 0xf);
+    } else {
+        SetPlayerObjectAnim(obj, 0);
+    }
+    obj->bActionFlags &= 0xfe;
+}
+
+static inline void WaitForMoveThenApplyDamageNumber(Object *obj)
+{
+    if (obj->nVelX != 0)
+        return;
+    if (obj->nVelY != 0)
+        return;
+    SetFighterAttackAnimState_candidate(obj, 0);
+}
+
+static inline void ApplyDamageNumberAnimState(Object *obj)
+{
+    if (obj->bActionFlags & 1) {
+        sub_08018B14(obj->wStagedDamage, (u8)obj->wFighterType);
+        PlaySoundById(0x9b);
+        SetPlayerObjectAnim(obj, 4);
+        obj->bActionFlags &= 0xfe;
+    }
+    if ((obj->dwFlags & 0x40000) == 0)
+        return;
+    SetFighterAttackAnimState_candidate(obj, 0);
+    ApplyStatusDamageToFighter_candidate(obj->wStagedDamage, obj->bFighterIndex);
+}
+
+static inline void PlayFighterImpactSound(Object *obj)
+{
+    if ((obj->bActionFlags & 1) == 0)
+        return;
+    switch (obj->wFighterType) {
+    case 0: PlaySoundById(0xa1); break;
+    case 1: PlaySoundById(0xa7); break;
+    case 2: PlaySoundById(0xa4); break;
+    case 3: PlaySoundById(0x39); break;
+    }
+    SetPlayerObjectAnim(obj, 8);
+    obj->bActionFlags &= 0xfe;
+    PlaySoundById(0x9c);
+}
+
+static inline void ReturnFighterToPosition(Object *obj)
+{
+    if (obj->bActionFlags & 1) {
+        obj->bActionFlags &= 0xfe;
+        obj->dwStateTimer = 0x1e;
+        SetObjectFlippedX(obj, 1);
+        return;
+    }
+    obj->dwStateTimer -= 1;
+    if (obj->dwStateTimer != 0)
+        return;
+    ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
+    SetObjectFlippedX(obj, 0);
+    SetFighterAttackAnimState_candidate(obj, 0);
+    PushBattleState(1);
+}
+
 void TickPlayerActionState(Object *obj)
 {
     u8 state;
@@ -33,46 +110,14 @@ void TickPlayerActionState(Object *obj)
      * order, not numeric case-value order, so this switch's case labels are
      * deliberately listed in the same order their bodies appear in the real
      * ROM (0, 0xf, 2, 0x1a, 0x15, 4, 1, 5), not ascending by value. */
-    case 0: // PlayActionWindupFlash?
-    {
-        void *ptr;
-        s32 slot;
-        if ((obj->bActionFlags & 1) == 0)
-            return;
-        if (obj->wActionVariant == 1) {
-            SetPlayerObjectAnim(obj, 7);
-            slot = obj->bGfxSlotAndFlags >> 4;
-            ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceA + 2;
-            sub_0800D264(ptr, (slot << 4) + 1, 0xf);
-        } else if (obj->wActionVariant == 2) {
-            SetPlayerObjectAnim(obj, 6);
-            slot = obj->bGfxSlotAndFlags >> 4;
-            ptr = (u8 *)g_aFighterAnimTable[obj->wFighterType].pWindupResourceB + 2;
-            sub_0800D264(ptr, (slot << 4) + 1, 0xf);
-        } else {
-            SetPlayerObjectAnim(obj, 0);
-        }
-        obj->bActionFlags &= 0xfe;
+    case 0:
+        PlayActionWindupFlash(obj);
         return;
-    }
-    case 0xf: // WaitForMoveThenApplyDamageNumber?
-        if (obj->nVelX != 0)
-            return;
-        if (obj->nVelY != 0)
-            return;
-        SetFighterAttackAnimState_candidate(obj, 0);
+    case 0xf:
+        WaitForMoveThenApplyDamageNumber(obj);
         return;
-    case 2: // ApplyDamageNumberAnimState?
-        if (obj->bActionFlags & 1) {
-            sub_08018B14(obj->wStagedDamage, (u8)obj->wFighterType);
-            PlaySoundById(0x9b);
-            SetPlayerObjectAnim(obj, 4);
-            obj->bActionFlags &= 0xfe;
-        }
-        if ((obj->dwFlags & 0x40000) == 0)
-            return;
-        SetFighterAttackAnimState_candidate(obj, 0);
-        ApplyStatusDamageToFighter_candidate(obj->wStagedDamage, obj->bFighterIndex);
+    case 2:
+        ApplyDamageNumberAnimState(obj);
         return;
     case 0x1a: // ExecutePlayerAttackSequence?
     {
@@ -134,13 +179,9 @@ void TickPlayerActionState(Object *obj)
                 sub_0802D640((u8)(g_abBgPriority[4] - 1));
                 g_aBgScrollState[0x25] += 0xFFFD0000;
                 g_pFightState->bCameraZoomStep_candidate += 1;
-                goto zoomJoin_08016882;
-            }
-            if (g_pFightState->bActionDelayCounter_candidate == 4) {
+            } else if (g_pFightState->bActionDelayCounter_candidate == 4) {
                 sub_0802D64C(0);
-                goto zoomJoin_08016882;
-            }
-            if (g_pFightState->bActionDelayCounter_candidate == 3) {
+            } else if (g_pFightState->bActionDelayCounter_candidate == 3) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     sub_080019C0(g_pFightState->pFighters[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pFighters[i].pObject);
@@ -154,19 +195,19 @@ void TickPlayerActionState(Object *obj)
                 *(Vec2 *)&g_pFightState->nSavedPosX = *(Vec2 *)&obj->nX;
                 StartObjectMove(obj, 0xb00000, 0x720000, 3);
                 return;
-            }
-            if (g_pFightState->bActionDelayCounter_candidate != 0)
+            } else if (g_pFightState->bActionDelayCounter_candidate != 0) {
                 return;
-            sub_080019C0(obj, 0, 0);
-            obj->bActionFlags = 1;
-            return;
-        }
-        if (flags & 0x40) {
+            } else {
+                sub_080019C0(obj, 0, 0);
+                obj->bActionFlags = 1;
+                return;
+            }
+        } else if (flags & 0x40) {
             g_pFightState->bActionDelayCounter_candidate -= 1;
             delay = g_pFightState->bActionDelayCounter_candidate;
-            if (delay > 0xe)
+            if (delay > 0xe) {
                 return;
-            if (delay == 0xe) {
+            } else if (delay == 0xe) {
                 SnapObjectPosition(obj, g_pFightState->nSavedPosX, g_pFightState->nSavedPosY);
                 obj->wMoveDuration = 0;
                 obj->wUnk86 = 0;
@@ -185,9 +226,7 @@ void TickPlayerActionState(Object *obj)
                 }
                 sub_0802D64C((s16)0xFFFFFDB0);
                 obj->bActionFlags &= 0xfe;
-                goto zoomJoin_08016882;
-            }
-            if (delay == 0) {
+            } else if (delay == 0) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     sub_080019C0(g_pFightState->pFighters[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pFighters[i].pObject);
@@ -204,13 +243,12 @@ void TickPlayerActionState(Object *obj)
                     PushGameMode_2(FolioBruti, 0, g_bDefeatWarpParam);
                 ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
                 return;
+            } else {
+                sub_0802D640((u8)(g_abBgPriority[4] + 1));
+                g_aBgScrollState[0x25] += 0x30000;
+                g_pFightState->bCameraZoomStep_candidate -= 1;
             }
-            sub_0802D640((u8)(g_abBgPriority[4] + 1));
-            g_aBgScrollState[0x25] += 0x30000;
-            g_pFightState->bCameraZoomStep_candidate -= 1;
-            goto zoomJoin_08016882;
-        }
-        if (flags & 1) {
+        } else if (flags & 1) {
             SetPlayerObjectAnim(obj, 1);
             obj->bActionFlags &= 0xfe;
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
@@ -232,7 +270,6 @@ void TickPlayerActionState(Object *obj)
             }
         }
 
-    zoomJoin_08016882:
         if (obj->dwFlags & 0x8000) {
             // Buckbeak carve-out 1/4: skips the special-move effect; the flag
             // clear below still runs.
@@ -686,33 +723,11 @@ void TickPlayerActionState(Object *obj)
         obj->bActionFlags &= 0xfe;
         return;
     }
-    case 1: // PlayFighterImpactSound?
-        if ((obj->bActionFlags & 1) == 0)
-            return;
-        switch (obj->wFighterType) {
-        case 0: PlaySoundById(0xa1); break;
-        case 1: PlaySoundById(0xa7); break;
-        case 2: PlaySoundById(0xa4); break;
-        case 3: PlaySoundById(0x39); break;
-        }
-        SetPlayerObjectAnim(obj, 8);
-        obj->bActionFlags &= 0xfe;
-        PlaySoundById(0x9c);
+    case 1:
+        PlayFighterImpactSound(obj);
         return;
-    case 5: // ReturnFighterToPosition?
-        if (obj->bActionFlags & 1) {
-            obj->bActionFlags &= 0xfe;
-            obj->dwStateTimer = 0x1e;
-            SetObjectFlippedX(obj, 1);
-            return;
-        }
-        obj->dwStateTimer -= 1;
-        if (obj->dwStateTimer != 0)
-            return;
-        ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
-        SetObjectFlippedX(obj, 0);
-        SetFighterAttackAnimState_candidate(obj, 0);
-        PushBattleState(1);
+    case 5:
+        ReturnFighterToPosition(obj);
         return;
     case 3:
     case 6:
