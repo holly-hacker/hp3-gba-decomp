@@ -5,6 +5,20 @@
 
 // See docs/formats/graphics.md.
 
+// bios_ObjAffineSet's input struct (see include/bios.h): reciprocal
+// scale (8.8 fixed) plus rotation angle; the trailing pad word gives
+// each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage
+// g_abAffineSlotUsed/g_bAffineSlotHighWaterMark (see ram_symbols.us.inc);
+// GetObjectAffineSlotId/SetObjectAffineSlotId read/write the allocated
+// index out of Object.wAffineSlotIndexPacked.
+typedef struct ObjAffineSource {
+    s16 sx;
+    s16 sy;
+    u16 theta;
+    u16 pad6;
+} ObjAffineSource;
+extern ObjAffineSource g_aObjAffineSetSource[32];  // 0x03005014
+
 // The 15-slot resource cache.
 typedef struct ResourceCacheSlot {
     void *pData;

@@ -27,23 +27,25 @@ asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWo
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 label 0x08001300 ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
-label 0x080014B4 AllocObjectOfType
-
-label 0x080014D4 AllocDefaultObject
+c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
+c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
 label 0x080015D4 sub_080015D4
 label 0x0800187C SetObjectAssetRecord
 label 0x080018D8 SetObjectAnimData
 label 0x08001958 sub_08001958
-label 0x080019A4 SnapObjectPosition
-label 0x080019B0 SetObjectPosition
-label 0x080019C0 sub_080019C0
-label 0x08001A84 StartObjectMove
+c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
+c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
+c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
+c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
+c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
 c-file 0x08001E7C 0x08001EA0 src/battle/set_fighter_attack_anim_state.c SetFighterAttackAnimState_candidate
-label 0x0800366C SetObjectAffineTransform
+c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
+c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectAffineTransform
 
 label 0x08003708 SetObjectFlippedX
 label 0x08003808 ReleaseObjectAffineSlot
 label 0x08003848 StartObjectAffineScaleTween
+label 0x080038EC AllocObjectAffineSlot
 label 0x080039E8 sub_080039E8
 label 0x080039F8 sub_080039F8
 label 0x08003A0C sub_08003A0C
@@ -293,6 +295,10 @@ label 0x0802D64C sub_0802D64C
 label 0x0802D6B8 sub_0802D6B8
 label 0x0802DD54 NoopInit2
 label 0x0802FF2C InitOamSystem
+label 0x08030094 GetObjectAffineSlotId
+label 0x080300A0 SetObjectAffineSlotId
+label 0x080300B4 AllocAffineSlot
+label 0x080300F8 FreeAffineSlot
 thumb-func 0x08030274 InitializeOwlNameSelect
 thumb-func 0x0803031C UpdateOwlNameSelect
 thumb-func 0x08030568 ExitOwlNameSelect

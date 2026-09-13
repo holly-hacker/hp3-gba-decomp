@@ -71,7 +71,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         if (obj->wObjectType != 0x3a) {
             sub_080039F8(obj);
             sub_08003A0C(obj);
-            sub_080019C0(obj, 0xfffa0000, 0);
+            SetObjectVelocity(obj, 0xfffa0000, 0);
         }
 
         if (--obj->dwStateTimer != 0)
@@ -196,7 +196,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 return;
 
             obj->wUnk86 = 0;
-            sub_080019C0(obj, 0, 0);
+            SetObjectVelocity(obj, 0, 0);
             obj->bActionFlags = 1;
             return;
         }

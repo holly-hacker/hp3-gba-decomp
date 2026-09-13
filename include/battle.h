@@ -325,7 +325,6 @@ typedef struct EffectStaging {
 extern EffectStaging g_effectStaging;                 // 0x03002750
 extern void sub_080129F4(void);
 extern void sub_08012B40(void);
-extern void sub_080019C0(void *obj, s32 x, s32 y);  // sets Object+0x3c/+0x40, i.e. nVelX/nVelY directly
 extern void sub_08003A30(void *obj, s32 a, s16 b, s16 c);  // a is shifted << 8 inside and stored to a 16-bit field
 extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);

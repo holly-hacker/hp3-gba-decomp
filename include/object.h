@@ -33,6 +33,18 @@ typedef enum {
     ObjectFlagSuppressEffectBinding    = 0x20000000, // TickObject skips Claim/BindObjectEffect entirely
 } ObjectFlags;
 
+// Object.bFlags_0xD1's low 2 bits, overlaid on that byte. The real code
+// writes them via a genuine C bitfield (confirmed by matching
+// SetObjectAffineTransform: a bitfield store is the only way agbcc emits
+// `movs r0,#4; negs r0,r0` to build the ~3 clear-mask, instead of folding
+// it down to the equivalent 8-bit immediate 0xFC an ordinary `&`/`|`
+// expression gets optimized to) -- see ReleaseObjectAffineSlot/FreeObject's
+// plain-byte (bFlags_0xD1 & 3) reads for the same bits.
+typedef struct {
+    u8 bAffineSlotState : 2;  // 0 = free, 1/3 = allocated
+    u8 pad : 6;
+} ObjectFlagsD1;
+
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
 // into FightState.aSuspendedFighterObjects_candidate -- see battle.h). Only
@@ -59,15 +71,23 @@ typedef struct Object {
     u32 dwUnk_0x28;         // 0x28, set to 1 by InitPlayerBattleActor_candidate
     u32 nX;                 // 0x2C, 16.16
     u32 nY;                 // 0x30, 16.16
-    u8 pad_34[0x08];        // -> 0x3C
+    u32 nXPrev;             // 0x34, 16.16; see docs/formats/battle_scripts.md's
+                             // StartOrbitMotion/ApplyObjectOrbitMotion writeup.
+                             // SetObjectPosition/SnapObjectPosition also set this
+                             // equal to nX (no interpolation pending after a teleport)
+    u32 nYPrev;              // 0x38, see nXPrev
     u32 nVelX;              // 0x3C
     u32 nVelY;              // 0x40
-    u8 pad_44[0x1C];        // -> 0x60
+    u8 pad_44[0x08];        // -> 0x4C
+    u32 nMoveTargetX;       // 0x4C, 16.16; set by SetObjectMoveTarget/StartObjectMove
+    u32 nMoveTargetY;       // 0x50
+    u8 pad_54[0x0C];        // -> 0x60
     u8 bAttackOutcomeState; // 0x60
     u8 pad_61[0x01];        // -> 0x62
     u16 wStagedDamage;      // 0x62
     u8 pad_64[0x18];        // -> 0x7C
-    u8 bUnk_0x7C;           // 0x7C, zeroed by InitPlayerBattleActor_candidate
+    u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocObjectOfType, zeroed by
+                             // InitPlayerBattleActor_candidate
     u8 pad_7D[0x03];        // -> 0x80
     u32 dwStateTimer;       // 0x80
     u8 pad_84[0x02];        // -> 0x86
@@ -87,7 +107,10 @@ typedef struct Object {
                                      // docs/formats/save.md's per-object save table
                                      // (Object+0xa0/+0xa4/+0xa8, three linked-object slots)
     struct Object *pOwnerObject;   // 0xA8, back-link (shadow -> main)
-    u8 pad_AC[0x25];        // -> 0xD1
+    u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultObject; also read by
+                             // sub_08001F40 as one of several "movement stopped"
+                             // conditions. Not enough evidence yet for a real name.
+    u8 pad_AE[0x23];        // -> 0xD1
     u8 bFlags_0xD1;         // 0xD1: bits 0-1 = affine-transform slot allocation state (0 = free,
                              // 1/3 = allocated -- see ReleaseObjectAffineSlot/FreeObject's
                              // (bFlags_0xD1 & 3) checks), bit 0x20 = large/8bpp-sprite flag
@@ -183,9 +206,14 @@ extern void ClaimObjectEffectResource(Object *obj);
 extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void SnapObjectPosition(Object *obj, u32 x, u32 y);
-extern void StartObjectMove(Object *obj, u32 x, u32 y, s16 mode);
+extern void SetObjectVelocity(Object *obj, u32 velX, u32 velY);
+extern void SetObjectMoveTarget(Object *obj, u32 x, u32 y);
+extern void StartObjectMove(Object *obj, u32 x, u32 y, u16 mode);
 extern void ReleaseObjectAffineSlot(Object *obj);
-extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s32 wAngle, s32 bMode);
+extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the already-allocated slot
+                             // id from wAffineSlotIndexPacked if bFlags_0xD1's low 2 bits are
+                             // set (1 or 3), else calls AllocAffineSlot and stores the result
+extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, u16 wAngle, u8 bMode);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);

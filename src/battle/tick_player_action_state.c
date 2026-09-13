@@ -146,12 +146,12 @@ void TickPlayerActionState(Object *obj)
             g_pFightState->bActionDelayCounter_candidate = 0x12;
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
                 if (g_pFightState->pFighters[i].bFighterType != Enemy)
-                    sub_080019C0(g_pFightState->pFighters[i].pObject, 0xFFFF0000, 0x25000);
+                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0xFFFF0000, 0x25000);
                 else
-                    sub_080019C0(g_pFightState->pFighters[i].pObject, 0x8000, 0x15000);
+                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0x8000, 0x15000);
             }
             for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++)
-                sub_080019C0(g_pFightState->pPendingFighters_candidate[i].pObject, 0xFFFF0000, 0x25000);
+                SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0xFFFF0000, 0x25000);
             obj->bActionFlags &= 0xfe;
             sub_0802D64C(0x250);
         } else if (flags == 0x41) {
@@ -183,11 +183,11 @@ void TickPlayerActionState(Object *obj)
                 sub_0802D64C(0);
             } else if (g_pFightState->bActionDelayCounter_candidate == 3) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
-                    sub_080019C0(g_pFightState->pFighters[i].pObject, 0, 0);
+                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pFighters[i].pObject);
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    sub_080019C0(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
+                    SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pPendingFighters_candidate[i].pObject);
                 }
                 // Real emits an 8-byte block move (ldr/ldr/str/str off one
@@ -198,7 +198,7 @@ void TickPlayerActionState(Object *obj)
             } else if (g_pFightState->bActionDelayCounter_candidate != 0) {
                 return;
             } else {
-                sub_080019C0(obj, 0, 0);
+                SetObjectVelocity(obj, 0, 0);
                 obj->bActionFlags = 1;
                 return;
             }
@@ -213,26 +213,26 @@ void TickPlayerActionState(Object *obj)
                 obj->wUnk86 = 0;
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     if (g_pFightState->pFighters[i].bFighterType != Enemy) {
-                        sub_080019C0(g_pFightState->pFighters[i].pObject, 0x10000, 0xFFFDB000);
+                        SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0x10000, 0xFFFDB000);
                         sub_08003A30(g_pFightState->pFighters[i].pObject, 0, (s16)0xFFFFFC00, 0xc);
                     } else {
-                        sub_080019C0(g_pFightState->pFighters[i].pObject, 0xFFFF8000, 0xFFFEB000);
+                        SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0xFFFF8000, 0xFFFEB000);
                         sub_08003A30(g_pFightState->pFighters[i].pObject, 0, (s16)0xFFFFFC00, 0xc);
                     }
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    sub_080019C0(g_pFightState->pPendingFighters_candidate[i].pObject, 0x10000, 0xFFFDB000);
+                    SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0x10000, 0xFFFDB000);
                     sub_08003A30(g_pFightState->pPendingFighters_candidate[i].pObject, 0, (s16)0xFFFFFC00, 0xc);
                 }
                 sub_0802D64C((s16)0xFFFFFDB0);
                 obj->bActionFlags &= 0xfe;
             } else if (delay == 0) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
-                    sub_080019C0(g_pFightState->pFighters[i].pObject, 0, 0);
+                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pFighters[i].pObject);
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    sub_080019C0(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
+                    SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pPendingFighters_candidate[i].pObject);
                 }
                 sub_0802D64C(0);

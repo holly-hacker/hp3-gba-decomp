@@ -70,6 +70,11 @@ A bit-field store's expanded mask can affect flow-time liveness even if combine 
 a byte-pointer store takes another expansion path. Use this to investigate types, not to
 justify unexplained casts. See compiler-investigation for pseudo-to-hard-register mapping.
 
+A plain `(x & ~3) | (y & 3)` also narrows `~3` to `movs r0, #0xfc`; a real bitfield store never
+narrows and always builds it as `movs r0, #4` + `negs r0, r0`. The latter in the ROM means a
+real C bitfield -- overlay one on the byte via a local pointer cast. Example:
+SetObjectAffineTransform, US `0x0800366C`.
+
 For an equal-refs tie between two same-shaped pseudos, the one whose last use comes first
 in source wins the shorter live_length and the preferred hard register. Reorder the two
 independent statements that consume them (not the loop). Example: UpdateKeyInput's

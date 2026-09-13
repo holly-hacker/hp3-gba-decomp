@@ -44,6 +44,9 @@
 .set g_aOamShadowBufferB, 0x030047F0
 .set g_bOamEntryCount, 0x03004FF0
 .set g_bOamEntryCountPrev, 0x03004FF1
+.set g_bAffineSlotHighWaterMark, 0x03004FF2  @ highest allocated affine slot index + 1; see AllocAffineSlot
+.set g_abAffineSlotUsed, 0x03004FF3          @ u8[32], one per affine hardware slot; see AllocAffineSlot/FreeAffineSlot
+.set g_aObjAffineSetSource, 0x03005014       @ ObjAffineSource[32] (8-byte stride), fed to bios_ObjAffineSet by sub_08030140
 
 @ --- Interrupt dispatch (see src/interrupts/) ---
 .set gIntrTable, 0x03003570  @ 13 x u32 function-pointer slots, refreshed from a ROM
