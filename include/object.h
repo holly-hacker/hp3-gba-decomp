@@ -114,8 +114,7 @@ typedef struct Object {
     void (*pfnDestructor)(struct Object *obj);  // 0x9C, called by FreeObject if non-null
     struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow)
     struct Object *pLinkedObject_candidate;  // 0xA4, one of three linked-object slots
-                                     // (see docs/formats/room_scripts.md); a fighter's
-                                     // turn-order icon Object, see docs/memory-map/battle.md
+                                     // (see docs/formats/room_scripts.md); caller-defined
     struct Object *pOwnerObject;   // 0xA8, back-link (shadow -> main)
     u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultObject; also read by
                              // sub_08001F40 as one of several "movement stopped"

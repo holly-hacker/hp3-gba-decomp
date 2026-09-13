@@ -146,7 +146,12 @@ typedef struct FightState {
     /*0x00*/ BattleFighter *pStagingFighters;
     /*0x04*/ BattleFighter *pFighters;
     /*0x08*/ BattleFighter *pPendingFighters_candidate;  // front-popped reinforcement queue, count at +0x1491
-    /*0x0C*/ u8 pad_0C[0x834 - 0x0C];
+    /*0x0C*/ u8 pad_0C[0x818 - 0x0C];
+    // One turn-order-icon container Object* per active fighter slot,
+    // allocated by SpawnTurnOrderIcon; each container's pLinkedObject_candidate
+    // is its portrait sprite, which SetObjectAnimFrame/SetFighterTurnOrderIconDone
+    // actually animate. See docs/memory-map/battle.md.
+    /*0x818*/ Object *apTurnOrderIconObjects[7];
     // ExitBattle's Folio Universitas/Help resume path snapshots every live
     // (0-bFighterCount) then pending (0-bPendingFighterCount_candidate)
     // fighter's Object here, densely packed, before the real Objects are
@@ -237,8 +242,8 @@ extern void sub_0800FEE0(s32 fighterIndex);
 extern void sub_08013108(u8 fighterIndex);        // cursor/highlight-to-fighter
 extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighterIndex, s32 flag);
 extern void ApplyStatusDamageToFighter_candidate(s32 damage, s32 fighterIndex);
-extern void sub_08018304(void);
-extern void sub_08018460(s32 arg0);
+extern void CheckBattleDefeat(void);
+extern void PruneFaintedAndRebuildTurnOrder_candidate(s32 arg0);
 extern u8 RollFighterParalysisEscape(u8 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
 extern void DrawFighterStatsUi_candidate(s32 fighterType, s32 panelSlot);
 // ShowBattleMessage's first parameter; what each case renders is in

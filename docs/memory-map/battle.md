@@ -996,17 +996,21 @@ countdown whose meaning is local to that state.
 - **1 -- per-fighter turn-order advance.** On entry, calls
   `SetFighterTurnOrderIconDone(bActiveFighterIndex)`, advances
   `bActiveFighterIndex`, and starts a 16-tick timer; once it expires,
-  waits for every fighter's turn-order icon
-  (`pFighters[i].pObject->pLinkedObject_candidate`, `Object+0xA4`) to clear,
-  then transitions to state `2` once every fighter has acted, otherwise
-  to state `4` (`Enemy`) or `3` (player) for the next active fighter.
+  waits for every fighter's own `pObject->pLinkedObject_candidate`
+  (`Object+0xA4`, not yet identified -- distinct from the turn-order icon
+  below) to clear, then transitions to state `2` once every fighter has
+  acted, otherwise to state `4` (`Enemy`) or `3` (player) for the next
+  active fighter.
 
   `SetFighterTurnOrderIconDone` sets the ending fighter's turn-order icon to
   its idle frame (`0` ally/`1` enemy) via `SetObjectAnimFrame`; `sub_0800FEE0`
   sets the next fighter's icon to its highlighted frame (`2`/`3`) the same
   way. Both also restack `bDepthSortBias` across all icons through
-  `FightState+0x818` (UNCONFIRMED array, write site unknown; lines up with
-  `pFighters[i].pObject` at every read).
+  `apTurnOrderIconObjects` (`FightState+0x818`), a 7-entry array of the icon
+  *container* Objects `SpawnTurnOrderIcon` allocates, one per active fighter
+  slot -- distinct from each fighter's own `pObject`. Each container's
+  `pLinkedObject_candidate` is its portrait sprite, which is what
+  `SetObjectAnimFrame` actually animates.
 - **2 -- end-of-round status tick, PROVEN as `EndOfRoundStatusTick`**
   (see "Poison's per-turn tick" below): on entry, ticks poison damage for
   every `Poisoned` fighter and starts a delay timer; once expired,

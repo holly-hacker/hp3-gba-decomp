@@ -160,8 +160,8 @@ c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttac
 label 0x08017F98 ApplyDamageToFighter
 c-file 0x08018094 0x080181AC src/battle/apply_status_damage_to_fighter.c ApplyStatusDamageToFighter_candidate
 label 0x080181AC ShowFloatingDamageNumber_candidate
-label 0x08018304 sub_08018304
-label 0x08018460 sub_08018460
+label 0x08018304 CheckBattleDefeat
+label 0x08018460 PruneFaintedAndRebuildTurnOrder_candidate
 label 0x080186E0 CheckBattleVictory
 label 0x08018ACC PostActionBattleCheck
 label 0x08018B14 sub_08018B14

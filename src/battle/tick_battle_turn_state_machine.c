@@ -81,12 +81,12 @@ void TickBattleTurnStateMachine(void)
             if (g_pFightState->dwDefeatCheckPending_candidate == 0)
                 break;
 
-            sub_08018304();
+            CheckBattleDefeat();
 
             if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xfe)
                 break;
 
-            sub_08018460(0);
+            PruneFaintedAndRebuildTurnOrder_candidate(0);
 
             g_pFightState->wBattleStateTimer = 0x5a;
             break;
