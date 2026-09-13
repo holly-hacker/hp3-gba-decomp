@@ -42,7 +42,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     pObject->dwUnk_0x28 = 1;
     pObject->dwFlags = 0x20006019;
 
-    SetFighterAttackAnimState_candidate(pObject, 0xF);
+    SetObjectActionState(pObject, 0xF);
 
     pObject->bAnimFrameDelay = 1;
     pObject->pfnTick = TickFighterAttackAnimState_candidate; // contains `Mt19937RandMax` call every enemy turn to determine target

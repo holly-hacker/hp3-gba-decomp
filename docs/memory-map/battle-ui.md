@@ -394,11 +394,13 @@ identities):
   `+999` crit sentinel (see the case-5 table below).
 - **`ShowDamageNumber_candidate`** (`0x08017B5C`) -- stores a damage
   value onto the target's sprite `Object+0x62` and triggers a state
-  change via `SetFighterAttackAnimState_candidate`.
-- **`SetFighterAttackAnimState_candidate`** (`0x08001E7C`) -- writes
-  directly to `Object+0x8D` (the byte this dispatcher switches on) and
-  sets the `+0x90` bit-`0x01` flag several case bodies check -- the
-  dispatcher's own state-transition setter.
+  change via `SetObjectActionState`.
+- **`SetObjectActionState`** (`0x08001E7C`) -- writes directly to
+  `Object.bActionState` (`+0x8D`, the byte this dispatcher switches on)
+  and sets the `bActionFlags` bit-`0x01` flag several case bodies check.
+  This is a generic per-`Object` setter, not battle-specific -- see
+  `docs/formats/rooms.md` and `docs/formats/room_scripts.md` for its
+  non-battle uses.
 
 **The "Tick" call chain is PROVEN:**
 `InitMonsterBattleActor` (`0x08014C88`) writes this function's address

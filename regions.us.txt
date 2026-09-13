@@ -38,7 +38,7 @@ c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPositio
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
-c-file 0x08001E7C 0x08001EA0 src/battle/set_fighter_attack_anim_state.c SetFighterAttackAnimState_candidate
+c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
 c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
 c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectAffineTransform
 

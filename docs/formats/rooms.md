@@ -79,7 +79,7 @@ like. Its tick handler is a distinct function at `0x0800BDCC`, function-
 boundaried but not yet cleanly decompilable -- needs a proper
 re-analysis pass. Types 2/4/6 (`0x0802BB00`/`0x08026414`/`0x08026348`)
 are structurally similar constructors (same `SnapObjectPosition`/
-`SetFighterAttackAnimState_candidate` shape) for other placed-sprite
+`SetObjectActionState` shape) for other placed-sprite
 kinds, not differentiated by content. Types 0-1, 3, 5, 7-8, 10-13 are
 undecompiled.
 

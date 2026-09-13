@@ -96,7 +96,12 @@ typedef struct Object {
     u16 wActionVariant;     // 0x8A
     u8 pad_8C[0x01];        // -> 0x8D
     u8 bActionState;        // 0x8D, the dispatch key
-    u8 pad_8E[0x02];        // -> 0x90
+    u8 pad_8E[0x01];        // -> 0x8F
+    u8 bActionSubState;     // 0x8F, secondary per-object state byte set by
+                             // SetObjectActionSubState; used across battle,
+                             // room-script, and wandering-monster code for a
+                             // mix of movement-waypoint gating and animation
+                             // selection, not a single fixed meaning
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
     u8 pad_92[0x06];        // -> 0x98
@@ -217,6 +222,7 @@ extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, u16 
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
+extern void SetObjectActionState(Object *obj, u8 state);
 extern void SetObjectAssetRecord(Object *obj, void *rec);
 extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
 extern void AttachEffectOwner_candidate(Object *obj, void *pEffectData);  // 0x08030878

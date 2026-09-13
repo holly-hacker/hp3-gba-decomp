@@ -39,7 +39,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     pObject->dwUnk_0x28 = 1;
     pObject->dwFlags = 0x20006011;
 
-    SetFighterAttackAnimState_candidate(pObject, 0xF);
+    SetObjectActionState(pObject, 0xF);
 
     pObject->bAnimFrameDelay = 1;
     pObject->pfnTick = TickPlayerActionState;
@@ -113,7 +113,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
         AttachObjectEffectSlot_candidate(pObject, g_aFighterAnimTable[type].nEffectSlotFainted);
         SetObjectAssetRecord(pObject, &g_aFighterAnimTable[type].pAssetRecordFainted);
         sub_08001958(pObject, 8);
-        SetFighterAttackAnimState_candidate(pObject, 0);
+        SetObjectActionState(pObject, 0);
         pObject->bActionFlags = hp;  // hp == 0 on this path; keeps hp in sb
         pObject->dwFlags &= ~0x10;
         SnapObjectPosition(pObject, (0xD4 - slot * 9 * 4) << 16, slot * 0x40000 + 0x6E0000);

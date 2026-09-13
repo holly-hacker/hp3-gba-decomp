@@ -162,7 +162,7 @@ void TickBattleTurnStateMachine(void)
                 break;
             }
             ShowBattleMessage(4, 0, 0);
-            SetFighterAttackAnimState_candidate(ACTIVE_FIGHTER.pObject, 0x1a);
+            SetObjectActionState(ACTIVE_FIGHTER.pObject, 0x1a);
             ACTIVE_FIGHTER.pObject->bActionFlags = 0x21;
             TransitionBattleState(0);
         } else {

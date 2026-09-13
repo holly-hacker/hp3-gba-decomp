@@ -37,7 +37,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         if (obj->nVelX != 0 || obj->nVelY != 0)
             return;
 
-        SetFighterAttackAnimState_candidate(obj, 0);
+        SetObjectActionState(obj, 0);
         return;
 
     case 2:
@@ -51,7 +51,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         if ((obj->dwFlags & 0x40000) == 0)
             return;
 
-        SetFighterAttackAnimState_candidate(obj, 0);
+        SetObjectActionState(obj, 0);
         return;
     }
 

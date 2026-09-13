@@ -278,7 +278,6 @@ extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
-extern void SetFighterAttackAnimState_candidate(Object *obj, u8 state);
 extern void UpdateFighterFlashEffect_candidate(Object *obj);  // 0x08015574
 extern void CheckBattleVictory(Object *obj);                  // 0x080186E0
 extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
