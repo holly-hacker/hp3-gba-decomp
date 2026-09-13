@@ -232,7 +232,7 @@ extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 #define ACTIVE_FIGHTER (g_pFightState->pFighters[g_pFightState->bActiveFighterIndex])
 
 extern void TickBattleTurnStateMachine(void);
-extern void sub_080130B4(s32 fighterIndex);
+extern void SetFighterTurnOrderIconDone(s32 fighterIndex);  // sets fighterIndex's turn-order icon to its idle frame
 extern void sub_0800FEE0(s32 fighterIndex);
 extern void sub_08013108(u8 fighterIndex);        // cursor/highlight-to-fighter
 extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighterIndex, s32 flag);

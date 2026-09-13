@@ -61,7 +61,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     if (slot > 4)
         *ppAnimCursor = *ppBase + 2;
 
-    sub_08001958(pObject, **ppAnimCursor);
+    SetObjectAnimFrame(pObject, **ppAnimCursor);
 
     // certain flying monsters? Cornish Pixie, Bat, Dragonfly
     if (type == 3 || type == 0x1D || type == 0x1A)
@@ -97,7 +97,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
         if (slot > 4)
             pShadowObject->pAnimFrameCursor = pShadowObject->pAnimFrameBase + 2;
 
-        sub_08001958(pShadowObject, pShadowObject->pAnimFrameCursor[0]);
+        SetObjectAnimFrame(pShadowObject, pShadowObject->pAnimFrameCursor[0]);
 
         pShadowObject->pOwnerObject = pObject;
         pObject->pShadowObject = pShadowObject;

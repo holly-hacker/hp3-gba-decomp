@@ -994,11 +994,19 @@ countdown whose meaning is local to that state.
 - **0 -- idle.** Clears `dwStateJustEntered` and returns; a resting
   state with no timer of its own.
 - **1 -- per-fighter turn-order advance.** On entry, calls
-  `sub_080130B4(bActiveFighterIndex)`, advances
+  `SetFighterTurnOrderIconDone(bActiveFighterIndex)`, advances
   `bActiveFighterIndex`, and starts a 16-tick timer; once it expires,
-  waits for every fighter's `Object+0xA4` (UNCONFIRMED field) to clear,
+  waits for every fighter's turn-order icon
+  (`pFighters[i].pObject->pLinkedObject_candidate`, `Object+0xA4`) to clear,
   then transitions to state `2` once every fighter has acted, otherwise
   to state `4` (`Enemy`) or `3` (player) for the next active fighter.
+
+  `SetFighterTurnOrderIconDone` sets the ending fighter's turn-order icon to
+  its idle frame (`0` ally/`1` enemy) via `SetObjectAnimFrame`; `sub_0800FEE0`
+  sets the next fighter's icon to its highlighted frame (`2`/`3`) the same
+  way. Both also restack `bDepthSortBias` across all icons through
+  `FightState+0x818` (UNCONFIRMED array, write site unknown; lines up with
+  `pFighters[i].pObject` at every read).
 - **2 -- end-of-round status tick, PROVEN as `EndOfRoundStatusTick`**
   (see "Poison's per-turn tick" below): on entry, ticks poison damage for
   every `Poisoned` fighter and starts a delay timer; once expired,

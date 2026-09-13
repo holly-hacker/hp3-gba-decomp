@@ -32,7 +32,7 @@ c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
 label 0x080015D4 sub_080015D4
 label 0x0800187C SetObjectAssetRecord
 label 0x080018D8 SetObjectAnimData
-label 0x08001958 sub_08001958
+label 0x08001958 SetObjectAnimFrame
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
@@ -135,7 +135,7 @@ label 0x08012AFC PushBattleState
 label 0x08012B40 sub_08012B40
 label 0x08012CB4 ClearFighterObjectFlag_candidate
 
-label 0x080130B4 sub_080130B4
+label 0x080130B4 SetFighterTurnOrderIconDone
 label 0x08013108 sub_08013108
 label 0x0801319C OpenPendingFighterMenu_candidate
 thumb-func 0x080134BC InitializeVictoryScreen

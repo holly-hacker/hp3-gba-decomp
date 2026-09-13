@@ -113,9 +113,9 @@ typedef struct Object {
     void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
     void (*pfnDestructor)(struct Object *obj);  // 0x9C, called by FreeObject if non-null
     struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow)
-    void *pLinkedObject_candidate;  // 0xA4; see docs/formats/room_scripts.md and
-                                     // docs/formats/save.md's per-object save table
-                                     // (Object+0xa0/+0xa4/+0xa8, three linked-object slots)
+    struct Object *pLinkedObject_candidate;  // 0xA4, one of three linked-object slots
+                                     // (see docs/formats/room_scripts.md); a fighter's
+                                     // turn-order icon Object, see docs/memory-map/battle.md
     struct Object *pOwnerObject;   // 0xA8, back-link (shadow -> main)
     u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultObject; also read by
                              // sub_08001F40 as one of several "movement stopped"
@@ -228,11 +228,11 @@ extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, u16 
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
+extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
 extern void SetObjectActionState(Object *obj, u8 state);
 extern void SetObjectAssetRecord(Object *obj, void *rec);
 extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
 extern void AttachEffectOwner_candidate(Object *obj, void *pEffectData);  // 0x08030878
-extern void sub_08001958(Object *obj, s32 v);
 extern void sub_080039E8(Object *obj);
 extern void sub_080039F8(Object *obj);
 extern void sub_08003A0C(Object *obj);

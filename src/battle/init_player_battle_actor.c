@@ -112,7 +112,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     {
         AttachObjectEffectSlot_candidate(pObject, g_aFighterAnimTable[type].nEffectSlotFainted);
         SetObjectAssetRecord(pObject, &g_aFighterAnimTable[type].pAssetRecordFainted);
-        sub_08001958(pObject, 8);
+        SetObjectAnimFrame(pObject, 8);
         SetObjectActionState(pObject, 0);
         pObject->bActionFlags = hp;  // hp == 0 on this path; keeps hp in sb
         pObject->dwFlags &= ~0x10;
@@ -127,7 +127,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
         // The [0] reload folds back onto the base register, no extra move.
         ppAnimCursor = &pObject->pAnimFrameCursor;
         *ppAnimCursor = pObject->pAnimFrameBase + slot * 4 + 2;
-        sub_08001958(pObject, (*ppAnimCursor)[0]);
+        SetObjectAnimFrame(pObject, (*ppAnimCursor)[0]);
     }
     return pObject;
 }
