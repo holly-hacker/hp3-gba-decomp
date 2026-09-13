@@ -986,6 +986,43 @@ previously misidentified as a draw function), which tears down
 
 ### `TickBattleTurnStateMachine`'s 8 states
 
+```mermaid
+stateDiagram-v2
+    [*] --> S0
+    S0 --> S1 : external -- PostActionBattleCheck,\nfrom the acting Object's own pfnTick
+    S1 --> S1 : icon(s) still active / 16-tick timer running
+    S1 --> S2 : bActiveFighterIndex >= bFighterCount
+    S1 --> S3 : next fighter != Enemy
+    S1 --> S4 : next fighter == Enemy
+    S2 --> S2 : poison/defeat delay running
+    S2 --> S3 : delay expires, next fighter != Enemy
+    S2 --> S4 : delay expires, next fighter == Enemy
+    S2 --> S6 : CheckBattleDefeat fires
+    S3 --> S3 : menu open
+    S3 --> S4 : not paralyzed / escaped, menu resolved
+    S3 --> S5 : still paralyzed -- stash resume=S1
+    S4 --> S0 : action dispatched
+    S4 --> S5 : Enemy still paralyzed -- stash resume=S1
+    S5 --> S1 : timer/A press, resumes bSavedBattleState
+    S6 --> S6 : terminal
+    S7 --> S7 : terminal
+    note right of S0
+        S0: idle
+        S1: turn-order advance
+        S2: end-of-round status tick
+        S3: player menu
+        S4: resolve active fighter's action
+        S5: message wait
+        S6: defeat
+        S7: victory
+    end note
+    note right of S2
+        External: CheckBattleVictory runs from the
+        enemy's own attack-anim tick (any state,
+        not just S2) and can push S7 at any time.
+    end note
+```
+
 Each state's own handler follows the same one-shot-entry idiom: a
 `dwStateJustEntered` flag (0x1064) is consumed on the tick a state is
 first reached, and `wBattleStateTimer` (0x1068, u16) is a per-state
@@ -1036,6 +1073,70 @@ countdown whose meaning is local to that state.
 - **6 -- defeat.** After a 150-tick delay, pushes `PushGameMode_2(Overworld,
   0, bDefeatWarpTarget)`.
 - **7 -- victory.** After a 30-tick delay, pushes `PushGameMode(VictoryScreen)`.
+
+### Fighter `Object.bActionState` machines
+
+Each fighter's own `Object` runs a second, per-object state machine via its
+`pfnTick` -- `TickPlayerActionState` for player-side fighters,
+`TickFighterAttackAnimState_candidate` for enemies. Case *numbers* are not
+semantically aligned between the two: player state `1` is a lightweight
+sound+pose reaction, while enemy state `1` is a much larger
+return-to-position/victory-check/free-on-faint tail. Confirmed per-frame
+ordering: `TickBattleTurnStateMachine` runs before these object ticks each
+frame (`TickFrameSystems` calls `TickActiveObjects` *after*
+`DispatchGameModeUpdate`), so an object's own state changes this frame are
+only visible to the turn state machine on the next.
+
+```mermaid
+stateDiagram-v2
+    [*] --> F : InitPlayerBattleActor, entrance slide (wHp != 0)
+    [*] --> Idle : InitPlayerBattleActor, spawns fainted (wHp == 0)
+    F --> Idle : velocity reaches (0,0)
+    Idle --> Attack : DispatchPendingAction: None/Informus
+    Idle --> Item : DispatchPendingAction: UseItem
+    Idle --> Special : DispatchPendingAction: SpecialMove
+    Idle --> Flee : DispatchPendingAction: Flee, Mt19937Chance(75) fails
+    Attack --> Idle : delay==0 / Fumos early exit -- PostActionBattleCheck()
+    Special --> Idle : outcome tail -- PostActionBattleCheck()
+    Item --> Idle : status-restore resolve tail -- PostActionBattleCheck()
+    Flee --> Idle : 30-tick timer expires -- PushBattleState(1)
+    Idle --> Impact : faint branch only (ApplyDamageToFighter /\nApplyStatusDamageToFighter_candidate)
+    Impact --> Idle : ReviveFighter_candidate
+    Idle --> Dmg : set externally by the attacker's own resolve code\n(this fighter is the defender)
+    Dmg --> Idle : dwFlags & ObjectFlagActionAnimDone observed
+    note right of Impact
+        Player Impact = PlayFighterImpactSound
+        (sound+pose only; Object is never freed --
+        fainted party members stay visible)
+    end note
+```
+
+```mermaid
+stateDiagram-v2
+    [*] --> F : InitMonsterBattleActor, entrance slide
+    F --> Idle : velocity reaches (0,0)
+    Idle --> Attack : TickBattleTurnStateMachine S4 (Enemy),\nparalysis roll ok
+    Attack --> Idle : return-flight tail, delay==0 -- PostActionBattleCheck()
+    Idle --> Settle : faint branch only (ApplyStatusDamageToFighter_candidate)
+    Idle --> Hit : set externally by the attacker's own resolve code\n(this enemy is the defender)
+    Hit --> Idle : dwFlags & ObjectFlagActionAnimDone observed
+    note right of Settle
+        Settle = faint reaction: return to position,
+        CheckBattleVictory, free shadow object, then
+        ObjectFlagPendingDestroy -- terminal, the
+        Object is freed, no exit edge exists.
+    end note
+```
+
+`Attack`'s internal phases (target selection, `dwFlags`/`bAttackOutcomeState`
+gating, `ResolveEnemyAttack`/`ResolvePlayerAttack` timing) are content-driven
+by each fighter's own animation data and attack-effect script, not further
+control flow: `Object+0xDC`'s (`bEnemyAttackPhase_candidate`) and `dwFlags`
+bit `0x8000`/`0x40000` transitions come from the fighter's own windup/attack
+animation's command stream (opcodes `0xFF`/`0xF0`); `Object+0x60`'s
+(`bAttackOutcomeState`) increments come from the attack-effect script's own
+opcode `0x30`, run on the *caster's* object (see
+[`../formats/battle_scripts.md`](../formats/battle_scripts.md)).
 
 ## Player spell/action damage -- `ResolvePlayerAttack` (`0x08017C24`)
 
