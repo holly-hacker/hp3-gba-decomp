@@ -39,6 +39,13 @@ c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
+c-file 0x08001EA8 0x08001EC8 src/object/set_object_facing.c SetObjectFacing
+c-file 0x08001EC8 0x08001EE8 src/object/set_object_facing_unused.c SetObjectFacing_unused
+c-file 0x08001EE8 0x08001EF0 src/object/set_object_flags.c SetObjectFlags
+c-file 0x08001EF0 0x08001EF8 src/object/clear_object_flags.c ClearObjectFlags
+c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
+c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
+c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
 c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
 c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectAffineTransform
 

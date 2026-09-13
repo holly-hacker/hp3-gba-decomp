@@ -45,6 +45,14 @@ typedef struct {
     u8 pad : 6;
 } ObjectFlagsD1;
 
+// Object.bGfxSlotAndFlags's bits 2-3 (draw layer); same bitfield-store
+// evidence as ObjectFlagsD1 above. See SetObjectDrawLayer.
+typedef struct {
+    u8 pad0 : 2;
+    u8 bDrawLayer : 2;
+    u8 pad1 : 4;
+} ObjectFlagsD5;
+
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
 // into FightState.aSuspendedFighterObjects_candidate -- see battle.h). Only
@@ -61,9 +69,10 @@ typedef struct Object {
     ObjectFlags dwFlags;    // 0x0C
     u8 bRoomTileCol_candidate;  // 0x10, SetRoomObjectRecordPtr_candidate's column arg
     u8 bRoomTileRow_candidate;  // 0x11, SetRoomObjectRecordPtr_candidate's row arg
-    u8 pad_12[0x02];        // -> 0x14
+    u8 bFacing;             // 0x12, direction/facing index; see SetObjectFacing
+    u8 pad_13[0x01];        // -> 0x14
     u16 wMoveDuration;      // 0x14
-    u8 bUnk16;              // 0x16
+    u8 bDepthSortBias;      // 0x16, draw-order bias; see SortObjectsByDepth_candidate
     u8 pad_17[0x0D];        // -> 0x24
     ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
                              // ReleaseParticleEmitter_candidate and zeroed
@@ -97,11 +106,7 @@ typedef struct Object {
     u8 pad_8C[0x01];        // -> 0x8D
     u8 bActionState;        // 0x8D, the dispatch key
     u8 pad_8E[0x01];        // -> 0x8F
-    u8 bActionSubState;     // 0x8F, secondary per-object state byte set by
-                             // SetObjectActionSubState; used across battle,
-                             // room-script, and wandering-monster code for a
-                             // mix of movement-waypoint gating and animation
-                             // selection, not a single fixed meaning
+    u8 bActionSubState;     // 0x8F, secondary per-object state; see SetObjectActionSubState
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
     u8 pad_92[0x06];        // -> 0x98
@@ -127,8 +132,9 @@ typedef struct Object {
     u8 pad_D4;               // -> 0xD5
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot (see
                              // ClaimObjectEffectResource/AllocEffectChannelSlot_candidate/
-                             // BindEffectChannelSlot_candidate), bits 2-3 = terrain type written
-                             // by UpdateObjectTileCollisionState
+                             // BindEffectChannelSlot_candidate), bits 2-3 = draw layer (see
+                             // SetObjectDrawLayer/SortObjectsByDepth_candidate/TickObjectList),
+                             // written by UpdateObjectTileCollisionState
     u8 pad_D6[0x02];        // -> 0xD8
     u8 bAnimFrameCounter;   // 0xD8, frames-remaining countdown reloaded from bAnimFrameDelay
                              // each time it hits 0; see TickObjectAnimation

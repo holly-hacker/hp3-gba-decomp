@@ -26,11 +26,14 @@ fields, see [`levels.md`](levels.md)) decompresses two resources:
 `GetCollisionTypeAtPixel_candidate` (`0x0802D7A0`) resolves a pixel to
 its tile-type byte (out-of-bounds = solid, type 1). The **low 6 bits**
 of that byte are the tile type (below); the **top 2 bits** are a
-separate value ("layer"), read by a different function
-(`0x0802E030`) and written into the player object's own state
-(`Object+0xD5` bits 2-3) once per frame -- **user-verified: layer=1 is
-an occlusion flag** (the player sprite draws behind that tile, e.g.
-walking under a roof overhang). Layers 2 and 3 are unconfirmed.
+separate value, read by `0x0802E030` and written into `bDrawLayer`
+(`Object+0xD5` bits 2-3, see `SetObjectDrawLayer`). STRUCTURAL MATCH:
+`SortObjectsByDepth_candidate` folds it into the draw-order sort key,
+and `TickObjectList` flushes a per-layer queued particle list
+(`FUN_080317ec`/`FUN_08031358`) as it crosses each layer boundary while
+walking the depth-sorted object list. UNCONFIRMED: the previously
+recorded "user-verified: layer=1 is an occlusion flag" claim has no
+evidence trail here and wasn't reproduced by the above.
 
 ## Movement blocking (PROVEN, via `FUN_0802DA20`)
 

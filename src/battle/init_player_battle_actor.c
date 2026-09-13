@@ -35,7 +35,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     StartObjectMove(pObject, (0xD4 - slot * 9 * 4) << 16, posY, 0x19);
     sub_08003A44(pObject, 0, 0x400, 0xC);
 
-    pObject->bUnk16 = 0x40;
+    pObject->bDepthSortBias = 0x40;
     pObject->dwUnk_0x28 = 1;
     pObject->dwFlags = 0x20006011;
 

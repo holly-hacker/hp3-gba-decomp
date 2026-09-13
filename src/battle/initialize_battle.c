@@ -25,7 +25,7 @@ void InitializeBattle(void)
         g_apFighterObjects_candidate[i] = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
         SetObjectPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
         g_apFighterObjects_candidate[i]->dwFlags = 0x20000008;
-        g_apFighterObjects_candidate[i]->bUnk16 = 0x80;
+        g_apFighterObjects_candidate[i]->bDepthSortBias = 0x80;
         g_apFighterObjects_candidate[i]->bGfxSlotAndFlags =
             (g_apFighterObjects_candidate[i]->bGfxSlotAndFlags & 0xF) | slot;
         slot += 0x10;
@@ -39,7 +39,7 @@ void InitializeBattle(void)
     // Via a u8 *, not the struct field -- avoids a dead bit-field-store insn
     // that ties this constant's live range with dwFlags' in agbcc's register
     // allocator (see match-function skill, bucket 9).
-    *(u8 *)&pIconObj->bUnk16 = 0x80;
+    *(u8 *)&pIconObj->bDepthSortBias = 0x80;
 
     flagsBeforeSet = g_pBattleMessageIconObject_candidate->bFlags_0xD1;
     g_pBattleMessageIconObject_candidate->bFlags_0xD1 = flagsBeforeSet | 0x20;

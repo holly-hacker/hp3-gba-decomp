@@ -498,7 +498,7 @@ fighter's new `Object *`. Allocates via `AllocDefaultObject`, records
 `wFighterType`/`bUnk_0x7C = 0`, sets `bGfxSlotAndFlags = (v & ~0xC) | 4`,
 positions with `SnapObjectPosition`/`StartObjectMove` at
 `(0xD4 - slot*36) << 16`, `slot*0x40000 + 0x6E0000`, then
-`sub_08003A44(pObject, 0, 0x400, 0xC)`, `bUnk16 = 0x40`, `dwUnk_0x28 = 1`,
+`sub_08003A44(pObject, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `dwUnk_0x28 = 1`,
 `dwFlags = 0x20006011`, attack-anim state `0xF`, `bAnimFrameDelay = 1`,
 `pfnTick = TickPlayerActionState`. Copies the 10 spell slots
 (`i <= 9`) and, outside Folio Universitas returns, the party stats from
@@ -523,7 +523,7 @@ the fighter's main `Object *` (despite the `void` prototype floating
 around: the ROM ends in `adds r0,r6,#0`, same as the player counterpart).
 `wFighterType` is `monsterIndex + 4`; positioning is `(slot*36 + 0xCC)` /
 `(0x4E - slot*4)` with a `+0x18` restructure for the move; `dwFlags` is
-`0x20006019` (`0x6019` for the companion) and `bUnk16` is `-0x40`. Types
+`0x20006019` (`0x6019` for the companion) and `bDepthSortBias` is `-0x40`. Types
 3/29/26 get extra `sub_08003A30`/`sub_08003A44` calls on the main object;
 types 45-47 additionally spawn a shadow `Object` (own anim tables at
 `0x0804EF54`/`0x08053850`) cross-linked at `+0xA0`/`+0xA8`. The
