@@ -29,6 +29,7 @@ typedef enum {
                                                        // together by UpdateObjectOnscreenFlags);
                                                        // gates ReleaseObjectOffscreenVramTiles
     ObjectFlagRoomRecordBound          = 0x800000,   // FreeObject clears the object's room record
+    ObjectFlagRoomScriptYield          = 0x8000000,  // set by a room script that yielded on this object
     ObjectFlagAnimPaused               = 0x10000000, // TickObjectAnimation's frame counter freezes
     ObjectFlagSuppressEffectBinding    = 0x20000000, // TickObject skips Claim/BindObjectEffect entirely
 } ObjectFlags;
@@ -65,7 +66,7 @@ typedef struct Object {
                              // caller-defined. In the battle subsystem, values are
                              // a small per-kind index (player fighter 0-3, monster
                              // type id) -- see InitPlayerBattleActor/InitMonsterBattleActor
-    u8 pad_0A[0x02];        // -> 0x0C
+    u16 wCharacterId_candidate;  // 0x0A, party members' character id (compared against a script's character operand)
     ObjectFlags dwFlags;    // 0x0C
     u8 bRoomTileCol_candidate;  // 0x10, SetRoomObjectRecordPtr_candidate's column arg
     u8 bRoomTileRow_candidate;  // 0x11, SetRoomObjectRecordPtr_candidate's row arg
@@ -92,7 +93,7 @@ typedef struct Object {
     u32 nMoveTargetY;       // 0x50
     u8 pad_54[0x0C];        // -> 0x60
     u8 bAttackOutcomeState; // 0x60
-    u8 pad_61[0x01];        // -> 0x62
+    u8 bScriptPageHigh_candidate;  // 0x61, written by a room script
     u16 wStagedDamage;      // 0x62
     u8 pad_64[0x18];        // -> 0x7C
     u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocObjectOfType, zeroed by
@@ -109,7 +110,9 @@ typedef struct Object {
     u8 bActionSubState;     // 0x8F, secondary per-object state; see SetObjectActionSubState
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
-    u8 pad_92[0x06];        // -> 0x98
+    u8 pad_92[0x02];        // -> 0x94
+    u8 bFlags_0x94_candidate;  // 0x94, bit 0x4 set by a room script; meaning unconfirmed
+    u8 pad_95[0x03];        // -> 0x98
     void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
     void (*pfnDestructor)(struct Object *obj);  // 0x9C, called by FreeObject if non-null
     struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow)
@@ -229,6 +232,12 @@ extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
 extern void SetObjectActionState(Object *obj, u8 state);
+// Starts animation `animId` from the object's animation table.
+extern void SetObjectAnimData_candidate(Object *obj, u32 animId);
+extern void SetObjectActionSubState(Object *obj, u8 state);
+extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
+// Clears the object's queued move (Object+0x3C..0x48).
+extern void CancelObjectMove_candidate(Object *obj);
 extern void SetObjectAssetRecord(Object *obj, void *rec);
 extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
 extern void AttachEffectOwner_candidate(Object *obj, void *pEffectData);  // 0x08030878

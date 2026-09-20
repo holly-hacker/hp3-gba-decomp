@@ -187,7 +187,27 @@
 .set g_dwOverworldMonstersDisabled,   0x03002614  @ u32: nonzero suppresses wandering-monster spawns
 .set g_bPendingRoomScriptChain,       0x0300260C  @ u8: switch-state chain to walk on a resume transition
 .set g_bPendingRoomScriptRow,         0x0300260D  @ u8: object row to respawn on a resume transition
-.set g_bPartyCharId0,                 0x0300338C  @ u8: character id of party slot 0
 .set g_bPendingQuestStateOverride_candidate, 0x03003B5A  @ u8: 0xFF = none; else copied into quest state 0 on room entry
 .set g_dwRoomBgFlag_candidate,        0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by sub_0802E6FC
 .set g_dwPendingCameraFocusFlag,      0x03003FD4  @ u32: cleared on room entry
+
+@ --- Room-script VM (see include/room_script.h) ---
+.set g_bRoomScriptCurrentRow,          0x03001DDE  @ u8: chain the VM is walking
+.set g_pRoomScriptYieldContinuation,   0x03001DE0  @ u32 *: record to resume at after a yield, or 0
+.set g_pRoomScriptNextRecord,          0x03001DE4  @ u32 *: record following the one being dispatched
+.set g_bRoomScriptCallStackDepth,      0x03001DE8  @ u8: nested chain calls in flight
+.set g_pRoomSwitchStateObjectTable,    0x03001DFC  @ RoomScriptTable *: current room's chain offset table
+.set g_aRoomScriptCallStack,           0x03001E00  @ RoomScriptCallFrame[]: saved callers, indexed by depth
+.set g_bRoomScriptPendingChain,         0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none
+
+@ --- Overworld object tracking (see include/overworld.h) ---
+.set g_pPlayerObject,        0x03003380  @ Object *: the player's overworld object
+.set g_aQueuedObjectMoves,   0x03002090  @ QueuedObjectMove[]: one 0x2C-byte record per control slot
+.set g_pPendingCameraFocus_candidate, 0x03003FD8  @ void *: argument RestorePendingCameraFocus_candidate is called with
+.set g_pFollowerObject0, 0x03003384  @ Object *: first party follower, NULL while empty
+.set g_pFollowerObject1, 0x03003388  @ Object *: second party follower, NULL while empty
+.set g_bPartyCharId0, 0x0300338C  @ u8: character id of the party leader
+.set g_bPartyCharId1, 0x0300338D  @ u8: character id of the first follower
+.set g_bPartyCharId2, 0x0300338E  @ u8: character id of the second follower
+.set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
+.set g_DialogState_candidate, 0x03002E88  @ DialogState; see include/dialog.h

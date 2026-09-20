@@ -16,10 +16,15 @@ typedef enum {
     ContinueRestartsIntro = 0x02,
     Unknown_0x04 = 0x04,
 } SaveFlags;
+// Live save-adjacent state block at 0x03003180 (money, playtime, save flags,
+// ...); see docs/formats/save.md. abMonsterDocLevel is accessed as a member
+// to reproduce the ROM's base+0x10 address shape shared by three code sites.
 typedef struct {
     u32 dwMoney;
     Playtime stPlaytime;
     u8 bSaveFlags;
+    u8 pad_0D[0x03];
+    u8 abMonsterDocLevel[69];
 } SaveStateBlock;
 
 extern SaveStateBlock g_saveStateBlock;

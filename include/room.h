@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "object.h"
+#include "room_script.h"
 
 // A BG tileset and its palette. Tileset A (layers 0 and 3) and tileset B
 // (layers 1 and 2) each pair with one; the second pair's palette is not
@@ -90,21 +91,13 @@ extern const ScanlineBandTable g_ScanlineBandsRoom12;
 extern void SetupScanlineBands_candidate(const ScanlineBandTable *pTable);
 extern u32 g_dwScanlineBandActiveMask;
 
-extern u32 g_dwRoomScriptRunState;
-extern u8 g_bRoomScriptYieldOpcode;
 extern u16 g_wRoomResourceFlags_candidate;
 extern u8 g_abQuestEventState[];
 extern u32 g_dwOverworldMonstersDisabled;
-extern u8 g_bPendingRoomScriptChain;
-extern u8 g_bPendingRoomScriptRow;
-extern u8 g_bPartyCharId0;
 extern u8 g_bPendingQuestStateOverride_candidate;
 extern u32 g_dwRoomBgFlag_candidate;
 extern u32 g_dwPendingCameraFocusFlag;
 
-extern void ResumeRoomSwitchStateChain_candidate(void);
-extern void RespawnRoomObjectsInRow_candidate(u32 row);
-extern void WalkRoomSwitchStateChain_candidate(u32 chain, u32 arg);
 extern void RestoreRoomObjectState(void);
 extern void RestoreRoomObjectStateMinimal(void);
 extern u8 sub_08005DC0(u32 questState, const void *pRoomResourceBlob);

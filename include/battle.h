@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "playtime.h"
 #include "mem.h"
 #include "object.h"
 #include "input.h"
@@ -287,7 +288,6 @@ extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables
 extern void SetMonsterObjectAnim(Object *obj, s32 state);  // 0x0801539C, monster gfx tables + shadow
-extern void PlaySoundById(s32 id);
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
 extern Object *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
 extern s32 sub_08026CDC(s32 spellLevel);
@@ -378,19 +378,8 @@ extern void BuildTurnOrder(void);
 extern void SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
 extern Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
 extern Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
-// Live save-adjacent state block at 0x03003180 (money, playtime, save flags,
-// ...); only the doc-level array's +0x10 offset is pinned here, the rest
-// stays padding until another reader needs it. See docs/formats/save.md.
-// Member (not direct-symbol) access reproduces the ROM's base+0x10 address
-// shape, shared by three code sites.
-typedef struct {
-    u8 pad_00[0x10];
-    u8 abMonsterDocLevel[69];
-} SaveStateBlock;
-extern SaveStateBlock g_saveStateBlock;  // 0x03003180
 extern u8 *GetBattleBackgroundData_candidate(void);
 extern void ResumeBattleAfterSubmode_candidate(void);
-extern void PlayMusicModule(u8 moduleId);
 
 // ExitBattle's remaining callees -- generic engine/graphics teardown run on
 // every battle exit, not battle logic; not otherwise analyzed.
@@ -399,7 +388,6 @@ extern void sub_080316D4(void);
 extern void sub_0803171C(void);
 extern void sub_0800D2DC(void);
 extern void sub_08031668(s32 arg0, s32 arg1);
-extern void sub_0803D3E8(s32 arg0, s32 arg1);
 extern void sub_08026254(void);
 extern void sub_0802D6B8(void);
 extern void sub_08007A90(void);

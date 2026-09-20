@@ -1,4 +1,5 @@
 #include "types.h"
+#include "audio.h"
 #include "battle.h"
 #include "display.h"
 #include "graphics.h"
@@ -390,7 +391,7 @@ void InitializeOverworld(void)
             g_bPendingQuestStateOverride_candidate = 0xff;
         }
 
-        PlayScreenTransitionByIndex_candidate(0x3f, 2);
+        PlayScreenTransitionInByIndex_candidate(0x3f, 2);
         if (g_bCurrentRoomId != 0x20)
             ShowMapNamePopup();
 

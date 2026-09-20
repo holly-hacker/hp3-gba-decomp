@@ -5,7 +5,7 @@
       "operand_length": 0
     },
     "1": {
-      "name": "SetTileObjectFlagsPair",
+      "name": "DespawnTileObject",
       "operand_length": 4,
       "operand_names": [
         "x",
@@ -125,7 +125,7 @@
       ]
     },
     "10": {
-      "name": "PlaySoundByIdCommand",
+      "name": "PlaySoundById",
       "operand_length": 4,
       "operand_names": [
         "soundId",
@@ -557,11 +557,11 @@
       "operand_length": 4
     },
     "37": {
-      "name": "PlayScreenTransitionEffect2",
+      "name": "PlayScreenTransitionOut",
       "operand_length": 0
     },
     "38": {
-      "name": "PlayScreenTransitionEffect",
+      "name": "PlayScreenTransitionIn",
       "operand_length": 0
     },
     "39": {
@@ -781,7 +781,7 @@
       ]
     },
     "53": {
-      "name": "SetTileObjectAndLinkedActiveBit",
+      "name": "SetTileObjectAndLinkedVisible",
       "operand_length": 4,
       "operand_names": [
         "x",
@@ -1019,12 +1019,12 @@
       ]
     },
     "67": {
-      "name": "SetTileObjectEffectSlot",
+      "name": "SetTileObjectDrawLayer",
       "operand_length": 4,
       "operand_names": [
         "x",
         "y",
-        "slot",
+        "layer",
         "unused"
       ]
     },
@@ -1049,7 +1049,7 @@
       "operand_length": 0
     },
     "70": {
-      "name": "RespawnRowAndRunChainCommand",
+      "name": "RespawnRowAndRunChain",
       "operand_length": 4,
       "operand_names": [
         "respawnRow",
@@ -1089,7 +1089,7 @@
       ]
     },
     "72": {
-      "name": "SetRoomRowObjectFlags",
+      "name": "DespawnRoomRowObjects",
       "operand_length": 4,
       "operand_names": [
         "row",
@@ -1161,7 +1161,7 @@
       ]
     },
     "78": {
-      "name": "SetHeaderFlag",
+      "name": "UnlockMinigame",
       "operand_length": 4,
       "operand_names": [
         "index",
@@ -1409,7 +1409,7 @@
       ]
     },
     "92": {
-      "name": "SetPendingChainFromOverworldExitFlag",
+      "name": "SetPendingChainFromExitParam",
       "operand_length": 4,
       "operand_names": [
         "chainIfExit1",

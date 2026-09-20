@@ -1,4 +1,5 @@
 #include "types.h"
+#include "audio.h"
 #include "battle.h"
 #include "display.h"
 #include "game_modes.h"

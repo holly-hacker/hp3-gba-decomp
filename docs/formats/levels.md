@@ -26,14 +26,15 @@ indexing are real, not a decompiler artifact; (2) the record at index
 (`g_pRoomQuestMusicOverride`, the quest-override music table below),
 which only happens if the stride and count are both right. Indexed by
 the current room/map index, i.e. `g_bCurrentRoomId` (the same value
-`InitializeOverworld`/`InitializeRoomMode` read out of
+`InitializeOverworld` reads out of
 `g_bCurrentGameModeArg2`, RAM `0x03003EFC` -- the current game mode's
 second argument slot, mirroring `g_dwPendingGameModeArg2`
 (`docs/memory-map/game_modes.md`); for `Overworld`/`RoomMode` that
 argument is the room index, but the slot's meaning is mode-dependent in
 general, so it is not itself a room-id symbol). Consumed by
-`InitializeOverworld` (`0x080297A0`) and `InitializeRoomMode`
-(`0x08029848`, near-duplicate tail of the same setup).
+`InitializeOverworld` (`0x080297A0`), which is one function through `0x0802A14B`
+(Ghidra's separate function entries inside that range, such as one at `0x08029848`,
+are artifacts).
 
 `0x08063C8C` sits in ordinary ROM rodata, not shared/scratch RAM --
 GBA `0x08xxxxxx` is cartridge ROM throughout, and this exact address is
@@ -45,8 +46,10 @@ in tag-constant sub-blocks (tags observed: 1, 2, 4); no code anywhere in
 itself a table walked by an index loop with a fixed base -- most likely
 raw/intermediate data belonging to another already-packed resource
 whose consumer is unidentified. `0x08063064`-`0x08063070`
-immediately before *that* (`g_pBgControlWords`) is real and identified
-(see `dwBgControlOverrideA`/`B` below).
+immediately before *that* are four separate BGxCNT constants, `g_dwBg2Control`,
+`g_dwBg1Control`, `g_dwBg3Control` and `g_dwBg0Control` (`0x1F0A`, `0x1E09`,
+`0x1D03`, `0x1C02`), which `InitializeOverworld` writes to BG2, BG1, BG3 and BG0.
+`0x08063074` is a BG animation descriptor (see `dwBgControlOverrideA` below).
 
 ## A second, structurally-identical table exists for one cutscene
 
@@ -81,7 +84,7 @@ selections -- the same field layout, reused at small scale.
 
 The bottom-of-screen popup shown on entering a room is
 **`ShowMapNamePopup`** (US `0x080238D8`), called from the tail of
-`InitializeOverworld`/`InitializeRoomMode` whenever `_g_bCurrentRoomId
+`InitializeOverworld` whenever `_g_bCurrentRoomId
 != DebugMenuLevelAndQuestSelect`. It computes `stringId =
 _g_bCurrentRoomId + 0x54A`, decodes it via `GetDialogText` (see
 [`text.md`](text.md)), and spawns a text object at screen position
@@ -127,8 +130,8 @@ guessed from zero-valued samples.
 | 0x58 | `dwPaletteData` | Raw, uncompressed 256-color (16 banks x 16, BGR555) BG palette array, copied verbatim by `SetupRoomBgControlAndWindows_candidate` -- confirmed byte-exact against a live mGBA memory dump. Index 0 is force-overwritten to black (backdrop color) by a second, separate 1-color copy right after | PROVEN |
 | 0x5c | `dwBgTilesetB` | Second BG tileset resource pointer, same mechanism. Shared by BG layers 1 and 2 | PROVEN |
 | 0x60 | `dwUnused_60` | Passed to `DecodeBgTilesetOffsetTable_candidate` as an argument but never read inside it -- dead | UNCONFIRMED |
-| 0x64 | `dwBgControlOverrideA` | Pointer to a byte selector (0-3) consumed by `ApplyRoomBgControlOverride_candidate` (`0x0802B174`) to pick a BG-control-word override; for room ids 5-7 with `g_abQuestEventState[0x1d]==1` it substitutes `g_pBgControlWords` instead. Not a graphics/tileset pointer (corrects an earlier "seasonal overlay" guess: the fallback targets are plain BG-control constants, `0x1d03`/`0x1e09`/`0x1f0a`/`0x1c02`, not compressed resources) | STRUCTURAL MATCH |
-| 0x68 | `dwBgControlOverrideB` | Second selector, same mechanism | STRUCTURAL MATCH |
+| 0x64 | `dwBgControlOverrideA` | Zero in every room except 5, 6 and 7, where it points at `0x08063074`, a BG animation descriptor: `u16 0x8003`, `u16 0`, `u32 0x500` (buffer size), then `(frame pointer, 1)` pairs, registered by `sub_0800A598` together with the BG3 control word. `ApplyRoomBgControlOverride_candidate` (`0x0802B174`) hardcodes that descriptor (or the one at `0x0806347C` when `g_abQuestEventState[0x1d]==1`) for rooms 5-7. For other non-null values it would treat the pointer as a byte selector 0-3 into the four BG control words; no shipped room reaches that path | PROVEN (field values), STRUCTURAL MATCH (consumer) |
+| 0x68 | `dwBgControlOverrideB` | Zero in every room; same consumer | PROVEN (field values) |
 | 0x6c | `wScrollBoundMinX` | Camera/scroll clamp min X. `SetRoomScrollBounds`/`GetRoomScrollBounds` (`0x0800A4E8`/`0x0800A4A4`) read/write offsets 0x6c-0x72 as `(minX,minY)`/`(maxX,maxY)`, falling back to `(0,0)`/`(defaultW,defaultH)` when all four are zero. This is the per-room bounding box | PROVEN |
 | 0x6e | `wScrollBoundMinY` | See above | PROVEN |
 | 0x70 | `wScrollBoundMaxX` | See above | PROVEN |
@@ -157,7 +160,7 @@ UNCONFIRMED.
 Chest/pickup/switch state per room and the default per-room object
 layout are documented in [`rooms.md`](rooms.md) -- `ParseRoomResourceBlob_candidate`
 (reached from `dwRoomResourceBlob` above) plus the save-state cluster
-(`InitializeRoomMode`, `CaptureRoomObjectState`/`RestoreRoomObjectState`/
+(`InitializeOverworld`, `CaptureRoomObjectState`/`RestoreRoomObjectState`/
 etc.) This is the "chests spawn" / per-room switch-state half of the
 original task; it isn't a field of this 124-byte table.
 
@@ -171,6 +174,17 @@ table links a script pointer directly into a room record; script
 assignment is per-`Object` (placed by room setup code), not a per-room
 table field. See [`rooms.md`](rooms.md) for what is and isn't confirmed
 about how room content is placed.
+
+## Other tables read by room load
+
+- `g_PlayerCameraFocusOffset` (`0x08060884`): two words `(0x18, 0x23)`, the `(x, y)`
+  offset `InitializeOverworld` passes to `SetCameraFollowTarget_candidate` for the player.
+- `g_ScanlineBandsDefault` (`0x0806580C`) and `g_ScanlineBandsRoom12` (`0x08065814`): 8-byte
+  tables, `u16` band count (1), `u16` padding, then a 4-byte band `{start line, line count,
+  param, flags}` (`{8, 8, 3, 1}` and `{0x68, 8, 3, 1}`). `SetupScanlineBands_candidate`
+  copies them into the 12-slot record array at `0x03002280`; room 12 uses its own table and
+  every room without a switch arm uses the default. The `param` byte's meaning is unconfirmed.
+- `g_pRoomQuestMusicOverride` is 55 words, ending exactly at `0x0806580C`.
 
 ## Not yet located
 

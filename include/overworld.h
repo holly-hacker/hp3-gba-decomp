@@ -53,6 +53,24 @@ typedef struct OverworldControlState {
 } OverworldControlState;
 
 extern OverworldControlState g_OverworldControlState;
+
+extern Object *g_pPlayerObject;
+// The two party followers' objects; NULL while the slot is empty.
+extern Object *g_pFollowerObject0;
+extern Object *g_pFollowerObject1;
+// Character ids of the leader and the two follower slots.
+extern u8 g_bPartyCharId0;
+extern u8 g_bPartyCharId1;
+extern u8 g_bPartyCharId2;
+
+// Per-slot queued object move, driven by room scripts. Only the state byte is
+// known; the array has one record per control slot.
+typedef struct QueuedObjectMove {
+    u8 pad_00[0x25];
+    u8 bState;  // 0 = idle
+    u8 pad_26[0x06];
+} QueuedObjectMove;
+extern QueuedObjectMove g_aQueuedObjectMoves[];
 extern u8 g_bControlSlotTicks_candidate;
 
 // Nonzero blocks the overworld Start/Select menus (SetPauseMenuLocked).

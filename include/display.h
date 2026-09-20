@@ -12,7 +12,8 @@ extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
-extern void PlayScreenTransitionByIndex_candidate(u32 index, u32 arg);
+extern void PlayScreenTransitionInByIndex_candidate(u32 index, u32 arg);
+extern void PlayScreenTransitionOutByIndex_candidate(s32 arg0, s32 arg1);
 
 // ORs into / clears DISPCNT bits.
 extern void SetDispcntFlag(u32 flags);
@@ -23,8 +24,13 @@ extern void DisableBg(u32 bg);
 extern void SetBgPriority(u32 bg, u32 priority);
 extern void SetAlphaBlendCoefficients(u32 eva, u32 evb);
 
+// Hardware windows: layer masks, rectangle (16.16 coordinates), and hiding one.
+extern void SetScreenWindowLayers_candidate(u32 windowId, u32 winIn, u32 winOut);
+extern void SetScreenWindowRect_candidate(u32 windowId, s32 x0, s32 y0, s32 x1, s32 y1);
+extern void HideScreenWindow_candidate(u32 windowId);
+
 extern void sub_080073BC(u32 arg);
-extern void sub_0803D338(u32 arg0, u32 arg1);
+extern void sub_0803D338(u8 arg0, u32 arg1);
 extern void sub_0803DA4C(u32 arg);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);

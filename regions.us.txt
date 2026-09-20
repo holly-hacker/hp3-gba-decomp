@@ -37,9 +37,12 @@ c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTa
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
+label 0x08001A78 CancelObjectMove_candidate
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
 label 0x08001D90 sub_08001D90
+label 0x08001E58 SetObjectActionSubState
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
+label 0x08001EA0 SetObjectAnimSubState_candidate
 c-file 0x08001EA8 0x08001EC8 src/object/set_object_facing.c SetObjectFacing
 c-file 0x08001EC8 0x08001EE8 src/object/set_object_facing_unused.c SetObjectFacing_unused
 c-file 0x08001EE8 0x08001EF0 src/object/set_object_flags.c SetObjectFlags
@@ -60,10 +63,14 @@ label 0x08003A0C sub_08003A0C
 label 0x08003A30 sub_08003A30
 label 0x08003A44 sub_08003A44
 label 0x0800539C RespawnRoomObjectsInRow_candidate
-label 0x08005410 WalkRoomSwitchStateChain_candidate
-label 0x080055C0 ResumeRoomSwitchStateChain_candidate
+c-file 0x08005410 0x080055C0 src/room/walk_room_switch_state_chain.c WalkRoomSwitchStateChain_candidate
+c-file 0x080055C0 0x0800572C src/room/resume_room_switch_state_chain.c ResumeRoomSwitchStateChain_candidate
 label 0x08005A44 sub_08005A44
 label 0x08005A78 ParseRoomResourceBlob_candidate
+label 0x08005B00 RespawnRowAndRunChain_candidate
+label 0x08005B44 ShouldRunRoomScriptRow_candidate
+label 0x08005BCC GetRoomRowColumnCount_candidate
+label 0x08005C60 GetRoomObjectField_candidate
 label 0x08005CAC SetRoomObjectRecordPtr_candidate
 label 0x08005DC0 sub_08005DC0
 label 0x08005F10 CheckObjectCollisions_candidate
@@ -164,6 +171,7 @@ c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBat
 c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
 label 0x08014F1C SpawnTurnOrderIcon
 c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
+label 0x080151B0 LevelUpPartyMember_candidate
 label 0x080152CC sub_080152CC
 label 0x08015334 sub_08015334
 label 0x0801539C SetMonsterObjectAnim
@@ -189,6 +197,77 @@ label 0x0801BCB0 sub_0801BCB0
 thumb-func 0x0801BD0C InitializeCardComboDescription
 thumb-func 0x0801BEA8 UpdateCardComboDescription
 thumb-func 0x0801BEDC ExitCardComboDescription
+c-file 0x0801C634 0x0801C654 src/room/opcodes/room_script_op_set_tile_object_flag_bit.c RoomScriptOpSetTileObjectFlagBit
+c-file 0x0801C654 0x0801C674 src/room/opcodes/room_script_op_clear_tile_object_flag_bit.c RoomScriptOpClearTileObjectFlagBit
+c-file 0x0801C6BC 0x0801C6C8 src/room/opcodes/room_script_op_pause_music.c RoomScriptOpPauseMusic
+c-file 0x0801C6C8 0x0801C6D4 src/room/opcodes/room_script_op_resume_music.c RoomScriptOpResumeMusic
+c-file 0x0801C6D4 0x0801C700 src/room/opcodes/room_script_op_play_music_module_and_flag_if_chain1.c RoomScriptOpPlayMusicModuleAndFlagIfChain1
+c-file 0x0801C700 0x0801C72C src/room/opcodes/room_script_op_play_room_sound_effect.c RoomScriptOpPlayRoomSoundEffect
+c-file 0x0801C72C 0x0801C738 src/room/opcodes/room_script_op_play_sound_by_id.c RoomScriptOpPlaySoundById
+c-file 0x0801C738 0x0801C748 src/room/opcodes/room_script_op_set_room_music_volume.c RoomScriptOpSetRoomMusicVolume
+c-file 0x0801C748 0x0801C754 src/room/opcodes/room_script_op_set_sound_effect_volume.c RoomScriptOpSetSoundEffectVolume
+c-file 0x0801C7B0 0x0801C7BC src/room/opcodes/room_script_op_set_story_stage.c RoomScriptOpSetStoryStage
+c-file 0x0801C7BC 0x0801C7D4 src/room/opcodes/room_script_op_set_tile_object_anim_state.c RoomScriptOpSetTileObjectAnimState
+c-file 0x0801C7D4 0x0801C810 src/room/opcodes/room_script_op_return_to_overworld.c RoomScriptOpReturnToOverworld
+c-file 0x0801C810 0x0801C84C src/room/opcodes/room_script_op_clear_all_queued_moves.c RoomScriptOpClearAllQueuedMoves
+c-file 0x0801C974 0x0801C9B0 src/room/opcodes/room_script_op_close_room_dialog.c RoomScriptOpCloseRoomDialog
+c-file 0x0801CA08 0x0801CA4C src/room/opcodes/room_script_op_play_tile_object_animation.c RoomScriptOpPlayTileObjectAnimation
+c-file 0x0801CA4C 0x0801CA68 src/room/opcodes/room_script_op_open_main_menu.c RoomScriptOpOpenMainMenu
+c-file 0x0801CA68 0x0801CA88 src/room/opcodes/room_script_op_arm_chain_yield.c RoomScriptOpArmChainYield
+c-file 0x0801CA88 0x0801CAB8 src/room/opcodes/room_script_op_goto_if_quest_state_compare.c RoomScriptOpGotoIfQuestStateCompare
+c-file 0x0801CAB8 0x0801CAEC src/room/opcodes/room_script_op_goto_if_quest_state_pair_compare.c RoomScriptOpGotoIfQuestStatePairCompare
+c-file 0x0801CAEC 0x0801CAFC src/room/opcodes/room_script_op_set_quest_state.c RoomScriptOpSetQuestState
+c-file 0x0801CAFC 0x0801CB10 src/room/opcodes/room_script_op_copy_quest_state.c RoomScriptOpCopyQuestState
+c-file 0x0801CB10 0x0801CB70 src/room/opcodes/room_script_op_cancel_object_anim_sequence.c RoomScriptOpCancelObjectAnimSequence
+c-file 0x0801CB70 0x0801CB9C src/room/opcodes/room_script_op_set_tile_object_anim_state_with_speed.c RoomScriptOpSetTileObjectAnimStateWithSpeed
+c-file 0x0801CB9C 0x0801CBB4 src/room/opcodes/room_script_op_patch_room_background_tile.c RoomScriptOpPatchRoomBackgroundTile
+c-file 0x0801CBB4 0x0801CBE8 src/room/opcodes/room_script_op_show_loading_screen_transition.c RoomScriptOpShowLoadingScreenTransition
+c-file 0x0801CBE8 0x0801CBF8 src/room/opcodes/room_script_op_play_screen_transition_out.c RoomScriptOpPlayScreenTransitionOut
+c-file 0x0801CBF8 0x0801CC08 src/room/opcodes/room_script_op_play_screen_transition_in.c RoomScriptOpPlayScreenTransitionIn
+c-file 0x0801CC08 0x0801CC50 src/room/opcodes/room_script_op_recruit_party_follower.c RoomScriptOpRecruitPartyFollower
+c-file 0x0801CC50 0x0801CC5C src/room/opcodes/room_script_op_remove_party_follower.c RoomScriptOpRemovePartyFollower
+c-file 0x0801CC5C 0x0801CC80 src/room/opcodes/room_script_op_spawn_party_follower_at_tile.c RoomScriptOpSpawnPartyFollowerAtTile
+c-file 0x0801CC80 0x0801CC8C src/room/opcodes/room_script_op42.c RoomScriptOp42
+c-file 0x0801CC8C 0x0801CCC8 src/room/opcodes/room_script_op_start_battle.c RoomScriptOpStartBattle
+c-file 0x0801CCC8 0x0801CCEC src/room/opcodes/room_script_op_set_tile_object_anim_state_value.c RoomScriptOpSetTileObjectAnimStateValue
+c-file 0x0801CCEC 0x0801CD08 src/room/opcodes/room_script_op_grant_room_reward.c RoomScriptOpGrantRoomReward
+c-file 0x0801CD08 0x0801CD30 src/room/opcodes/room_script_op_set_background_blend_layers.c RoomScriptOpSetBackgroundBlendLayers
+c-file 0x0801CD30 0x0801CD3C src/room/opcodes/room_script_op_show_background_layer.c RoomScriptOpShowBackgroundLayer
+c-file 0x0801CD3C 0x0801CD48 src/room/opcodes/room_script_op_hide_background_layer.c RoomScriptOpHideBackgroundLayer
+c-file 0x0801CD48 0x0801CD58 src/room/opcodes/room_script_op_set_background_priority.c RoomScriptOpSetBackgroundPriority
+c-file 0x0801CDCC 0x0801CE18 src/room/opcodes/room_script_op_set_tile_object_and_linked_visible.c RoomScriptOpSetTileObjectAndLinkedVisible
+c-file 0x0801CE18 0x0801CE44 src/room/opcodes/room_script_op_goto_if_story_stage_compare.c RoomScriptOpGotoIfStoryStageCompare
+c-file 0x0801CE44 0x0801CE68 src/room/opcodes/room_script_op_set_random_quest_state.c RoomScriptOpSetRandomQuestState
+c-file 0x0801CE68 0x0801CE6C src/room/opcodes/room_script_op_no_op.c RoomScriptOpNoOp
+c-file 0x0801CE6C 0x0801CEA4 src/room/opcodes/room_script_op_set_screen_window.c RoomScriptOpSetScreenWindow
+c-file 0x0801CEA4 0x0801CEB0 src/room/opcodes/room_script_op_hide_screen_window.c RoomScriptOpHideScreenWindow
+c-file 0x0801CEB0 0x0801CEE0 src/room/opcodes/room_script_op_set_tile_object_facing.c RoomScriptOpSetTileObjectFacing
+c-file 0x0801CEE0 0x0801CEF4 src/room/opcodes/room_script_op_add_quest_state.c RoomScriptOpAddQuestState
+c-file 0x0801CEF4 0x0801CF08 src/room/opcodes/room_script_op_subtract_quest_state.c RoomScriptOpSubtractQuestState
+c-file 0x0801CF08 0x0801CF24 src/room/opcodes/room_script_op_clear_quest_state_upper_half.c RoomScriptOpClearQuestStateUpperHalf
+c-file 0x0801CF24 0x0801CF28 src/room/opcodes/room_script_op_no_op_alt.c RoomScriptOpNoOpAlt
+c-file 0x0801CF28 0x0801CF4C src/room/opcodes/room_script_op_invoke_chain_if_enabled.c RoomScriptOpInvokeChainIfEnabled
+c-file 0x0801CF4C 0x0801CF58 src/room/opcodes/room_script_op_grant_party_experience.c RoomScriptOpGrantPartyExperience
+c-file 0x0801CF58 0x0801CF64 src/room/opcodes/room_script_op_set_battle_defeat_state.c RoomScriptOpSetBattleDefeatState
+c-file 0x0801CFBC 0x0801CFCC src/room/opcodes/room_script_op_respawn_row_and_run_chain.c RoomScriptOpRespawnRowAndRunChain
+c-file 0x0801CFCC 0x0801D020 src/room/opcodes/room_script_op_despawn_room_row_objects.c RoomScriptOpDespawnRoomRowObjects
+c-file 0x0801D020 0x0801D04C src/room/opcodes/room_script_op_grant_party_spell.c RoomScriptOpGrantPartySpell
+c-file 0x0801D04C 0x0801D058 src/room/opcodes/room_script_op_set_overworld_monsters_disabled.c RoomScriptOpSetOverworldMonstersDisabled
+c-file 0x0801D058 0x0801D064 src/room/opcodes/room_script_op_clear_overworld_monsters_disabled.c RoomScriptOpClearOverworldMonstersDisabled
+c-file 0x0801D064 0x0801D0A4 src/room/opcodes/room_script_op_set_tile_object_facing_and_script_page.c RoomScriptOpSetTileObjectFacingAndScriptPage
+c-file 0x0801D0A4 0x0801D0C8 src/room/opcodes/room_script_op_set_tile_object_special_flag.c RoomScriptOpSetTileObjectSpecialFlag
+c-file 0x0801D138 0x0801D1A0 src/room/opcodes/room_script_op_show_reward_pickup_message.c RoomScriptOpShowRewardPickupMessage
+c-file 0x0801D1A0 0x0801D1F0 src/room/opcodes/room_script_op_show_item_removed_message.c RoomScriptOpShowItemRemovedMessage
+c-file 0x0801D1F0 0x0801D25C src/room/opcodes/room_script_op_show_spell_learned_message.c RoomScriptOpShowSpellLearnedMessage
+c-file 0x0801D25C 0x0801D268 src/room/opcodes/room_script_op_set_pause_menu_locked.c RoomScriptOpSetPauseMenuLocked
+c-file 0x0801D268 0x0801D2C8 src/room/opcodes/room_script_op_show_folio_category_status_message.c RoomScriptOpShowFolioCategoryStatusMessage
+c-file 0x0801D2C8 0x0801D308 src/room/opcodes/room_script_op_show_party_level_up_message.c RoomScriptOpShowPartyLevelUpMessage
+c-file 0x0801D308 0x0801D330 src/room/opcodes/room_script_op_grant_party_level_ups.c RoomScriptOpGrantPartyLevelUps
+c-file 0x0801D330 0x0801D33C src/room/opcodes/room_script_op_unmute_all_music_channels.c RoomScriptOpUnmuteAllMusicChannels
+c-file 0x0801D33C 0x0801D34C src/room/opcodes/room_script_op_consume_room_item.c RoomScriptOpConsumeRoomItem
+c-file 0x0801D34C 0x0801D360 src/room/opcodes/room_script_op_reset_party_leader_selection.c RoomScriptOpResetPartyLeaderSelection
+c-file 0x0801D360 0x0801D390 src/room/opcodes/room_script_op_set_pending_chain_from_exit_param.c RoomScriptOpSetPendingChainFromExitParam
+label 0x0801D390 CompareAndBranchRoomScript_candidate
 thumb-func 0x0801D518 InitializeCredits
 thumb-func 0x0801D5C8 UpdateCredits
 thumb-func 0x0801D858 ExitLinearCutscene
@@ -205,6 +284,7 @@ thumb-func 0x0801F534 InitializeDialogue
 thumb-func 0x0801F654 UpdateDialogueBox
 label 0x0801FA9C sub_0801FA9C
 thumb-func 0x0801FAF4 ExitDialogue
+label 0x0801FB54 ShowRoomDialogBox_candidate
 label 0x0801FB78 sub_0801FB78
 label 0x0801FBBC sub_0801FBBC
 label 0x0801FDA0 InitDisplayControl
@@ -219,6 +299,10 @@ label 0x080208B4 sub_080208B4
 label 0x08020D30 InitTextMacroTable
 asm-file 0x08020E40 0x08020E9C asm/text/measure_macro_string.s MeasureMacroString
 asm-file 0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
+label 0x08021100 SetDialogMacroString0_candidate
+label 0x08021148 SetDialogMacroString1_candidate
+label 0x08021184 SetDialogMacroNumber0_candidate
+label 0x080211AC SetDialogMacroNumber1_candidate
 asm-file 0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
 label 0x08021560 NoopInit
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
@@ -229,10 +313,19 @@ thumb-func 0x08021D6C HandleOwlCareKitScreenTick
 label 0x08021DF8 ProcessOwlCareKitTick
 thumb-func 0x08022D98 HandleOwlCareKitScreenExit
 label 0x080233E4 SpawnPlayerObject_candidate
+label 0x08023644 SyncFollowerLevelToLeader_candidate
+label 0x080236DC sub_080236DC
+label 0x080237D0 sub_080237D0
 label 0x080238D8 ShowMapNamePopup
+label 0x08024234 CyclePartyLeaderSelection_candidate
 label 0x080248E8 sub_080248E8
+label 0x08024980 sub_08024980
+label 0x080249A4 sub_080249A4
 label 0x080249C8 GetPartyPresenceMask
 label 0x080249FC GetPartySize
+label 0x08024A30 sub_08024A30
+label 0x08024A88 sub_08024A88
+label 0x08024AEC GetPartyMasterStatsSlot_candidate
 c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTable
 label 0x080250B8 InstallBgTileCodec_candidate
@@ -254,10 +347,13 @@ label 0x08026158 SetVBlankCallback
 thumb-func 0x08026244 sub_08026244
 label 0x08026254 sub_08026254
 c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
+label 0x08026B8C GetRewardNameStringId_candidate
 label 0x08026CDC sub_08026CDC
 label 0x08026CF0 sub_08026CF0
 c-file 0x08026DE0 0x08026E2C src/items/grant_reward.c GrantReward
 
+label 0x08026E2C ConsumeBattleItemSlot
+label 0x08026F9C IsFolioPageGroupUnlocked_candidate
 thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
@@ -300,6 +396,7 @@ label 0x0802B41C SpawnWanderingMonsterObject
 label 0x0802BA0C GetEncounterKindTerrainType
 label 0x0802BA1C FindWanderingMonsterSpawnPosition
 label 0x0802BAD0 PickMaxDamageMonster
+label 0x0802BC94 GrantPartyExperience_candidate
 label 0x0802BDEC InstallIwramDivideRoutines
 label 0x0802C254 InitHeap
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
@@ -338,6 +435,9 @@ label 0x0802D6B8 sub_0802D6B8
 label 0x0802DD54 NoopInit2
 label 0x0802DD58 LoadRoomSharedTileset_candidate
 label 0x0802DF3C ApplyRoomSwitchEffect
+label 0x0802E6FC RestorePendingCameraFocus_candidate
+label 0x0802F6C0 sub_0802F6C0
+label 0x0802FE04 SetObjectAnimData_candidate
 label 0x0802FF2C InitOamSystem
 label 0x08030094 GetObjectAffineSlotId
 label 0x080300A0 SetObjectAffineSlotId
@@ -452,12 +552,13 @@ label 0x0803D2C8 sub_0803D2C8
 label 0x0803D310 SetFadeToWhite
 label 0x0803D338 sub_0803D338
 label 0x0803D350 SetAlphaBlendCoefficients
-label 0x0803D3B0 PlayScreenTransitionByIndex_candidate
-label 0x0803D3E8 sub_0803D3E8
+label 0x0803D3B0 PlayScreenTransitionInByIndex_candidate
+label 0x0803D3E8 PlayScreenTransitionOutByIndex_candidate
 label 0x0803DA4C sub_0803DA4C
 label 0x0803DB68 sub_0803DB68
 label 0x0803DC44 sub_0803DC44
 label 0x0803DCDC LoadRoomBgLayer0Extra_candidate
+label 0x0803DD7C WriteRoomBgTile_candidate
 label 0x0803E4FC sub_0803E4FC
 label 0x0803E588 SetupRoomBgControlAndWindows_candidate
 label 0x0803E664 LoadRoomBgTilemap1_candidate
@@ -471,8 +572,14 @@ label 0x0803EF5C TickLinkCommIfActive_candidate
 label 0x0803FA94 GetLocalPlayerLinkIndex_candidate
 label 0x0803FC68 PlaySoundById
 label 0x0803FDB0 kramInstall
+label 0x0803FE78 SetSoundEffectVolume
+label 0x0803FE88 SetMusicVolume
+label 0x0803FEA4 UnmuteAllMusicChannels
 label 0x0803FEB4 PlayMusicModule
 
+label 0x0803FF1C PauseMusic
+label 0x0803FF40 ResumeMusic
+label 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0804115C InitializeFredAndGeorgesShop
 thumb-func 0x080411E0 UpdateFredAndGeorgesShop
 thumb-func 0x0804126C ExitFredAndGeorgesShop
@@ -514,6 +621,9 @@ label 0x080452A8 sub_080452A8
 label 0x080453B4 InstallIwramObjTileAllocRoutine
 label 0x080453D8 InitObjTileAllocBitmaps
 label 0x0804542C sub_0804542C
+label 0x08045808 HideScreenWindow_candidate
+label 0x08045838 SetScreenWindowLayers_candidate
+label 0x080458A8 SetScreenWindowRect_candidate
 label 0x08045988 sub_08045988
 label 0x08049E3C sub_08049E3C
 
@@ -568,6 +678,8 @@ label 0x080539A0 g_aBattleSlotAnchorPos_candidate
 battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 
 # Playtime counters, shared with JP at the same helper addresses.
+label 0x0805BA8C g_apRoomScriptOpcodeHandlers
+label 0x0805EB34 g_abRoomScriptOpcodeLengths
 label 0x08060544 g_stPlaytimeFrameDelta
 label 0x0806054C g_stPlaytimeHourLimit
 label 0x08060884 g_PlayerCameraFocusOffset
