@@ -203,8 +203,21 @@ label 0x0801BCB0 sub_0801BCB0
 thumb-func 0x0801BD0C InitializeCardComboDescription
 thumb-func 0x0801BEA8 UpdateCardComboDescription
 thumb-func 0x0801BEDC ExitCardComboDescription
+thumb-func 0x0801BEF8 RoomScriptOpShowMinigameUnlockedMessage
+thumb-func 0x0801BF58 RoomScriptOpQueueTileObjectMove
+thumb-func 0x0801C04C RoomScriptOpSetAllQueuedMoveParams
+thumb-func 0x0801C0E8 RoomScriptOpStartObjectAnimSequence
+thumb-func 0x0801C1D8 RoomScriptOpStartTileObjectScript
+thumb-func 0x0801C280 RoomScriptOpPlaySpecialSceneEffect
+thumb-func 0x0801C3EC RoomScriptOpFullHealParty
+thumb-func 0x0801C440 RoomScriptOpStartMinigame
+thumb-func 0x0801C50C RoomScriptOpGotoIfFolioPageGroupComplete
+thumb-func 0x0801C564 RoomScriptOpGotoIfAllQuestFlagsSet
+thumb-func 0x0801C5CC RoomScriptOpDespawnTileObject
+thumb-func 0x0801C5FC RoomScriptOp2
 c-file 0x0801C634 0x0801C654 src/room/opcodes/room_script_op_set_tile_object_flag_bit.c RoomScriptOpSetTileObjectFlagBit
 c-file 0x0801C654 0x0801C674 src/room/opcodes/room_script_op_clear_tile_object_flag_bit.c RoomScriptOpClearTileObjectFlagBit
+thumb-func 0x0801C674 RoomScriptOpShowRoomDialog
 c-file 0x0801C6BC 0x0801C6C8 src/room/opcodes/room_script_op_pause_music.c RoomScriptOpPauseMusic
 c-file 0x0801C6C8 0x0801C6D4 src/room/opcodes/room_script_op_resume_music.c RoomScriptOpResumeMusic
 c-file 0x0801C6D4 0x0801C700 src/room/opcodes/room_script_op_play_music_module_and_flag_if_chain1.c RoomScriptOpPlayMusicModuleAndFlagIfChain1
@@ -212,11 +225,15 @@ c-file 0x0801C700 0x0801C72C src/room/opcodes/room_script_op_play_room_sound_eff
 c-file 0x0801C72C 0x0801C738 src/room/opcodes/room_script_op_play_sound_by_id.c RoomScriptOpPlaySoundById
 c-file 0x0801C738 0x0801C748 src/room/opcodes/room_script_op_set_room_music_volume.c RoomScriptOpSetRoomMusicVolume
 c-file 0x0801C748 0x0801C754 src/room/opcodes/room_script_op_set_sound_effect_volume.c RoomScriptOpSetSoundEffectVolume
+thumb-func 0x0801C754 RoomScriptOpSetCameraPanSpeedOrRunRowChain
 c-file 0x0801C7B0 0x0801C7BC src/room/opcodes/room_script_op_set_story_stage.c RoomScriptOpSetStoryStage
 c-file 0x0801C7BC 0x0801C7D4 src/room/opcodes/room_script_op_set_tile_object_anim_state.c RoomScriptOpSetTileObjectAnimState
 c-file 0x0801C7D4 0x0801C810 src/room/opcodes/room_script_op_return_to_overworld.c RoomScriptOpReturnToOverworld
 c-file 0x0801C810 0x0801C84C src/room/opcodes/room_script_op_clear_all_queued_moves.c RoomScriptOpClearAllQueuedMoves
+thumb-func 0x0801C84C RoomScriptOpSetTileObjectPosition
+thumb-func 0x0801C87C RoomScriptOpPlayCutscene
 c-file 0x0801C974 0x0801C9B0 src/room/opcodes/room_script_op_close_room_dialog.c RoomScriptOpCloseRoomDialog
+thumb-func 0x0801C9B0 RoomScriptOpSetTileObjectShadow
 c-file 0x0801CA08 0x0801CA4C src/room/opcodes/room_script_op_play_tile_object_animation.c RoomScriptOpPlayTileObjectAnimation
 c-file 0x0801CA4C 0x0801CA68 src/room/opcodes/room_script_op_open_main_menu.c RoomScriptOpOpenMainMenu
 c-file 0x0801CA68 0x0801CA88 src/room/opcodes/room_script_op_arm_chain_yield.c RoomScriptOpArmChainYield
@@ -241,6 +258,8 @@ c-file 0x0801CD08 0x0801CD30 src/room/opcodes/room_script_op_set_background_blen
 c-file 0x0801CD30 0x0801CD3C src/room/opcodes/room_script_op_show_background_layer.c RoomScriptOpShowBackgroundLayer
 c-file 0x0801CD3C 0x0801CD48 src/room/opcodes/room_script_op_hide_background_layer.c RoomScriptOpHideBackgroundLayer
 c-file 0x0801CD48 0x0801CD58 src/room/opcodes/room_script_op_set_background_priority.c RoomScriptOpSetBackgroundPriority
+thumb-func 0x0801CD58 RoomScriptOp50
+thumb-func 0x0801CD74 RoomScriptOpSetCameraPanSpeedOrRunRowChainAlt
 c-file 0x0801CDCC 0x0801CE18 src/room/opcodes/room_script_op_set_tile_object_and_linked_visible.c RoomScriptOpSetTileObjectAndLinkedVisible
 c-file 0x0801CE18 0x0801CE44 src/room/opcodes/room_script_op_goto_if_story_stage_compare.c RoomScriptOpGotoIfStoryStageCompare
 c-file 0x0801CE44 0x0801CE68 src/room/opcodes/room_script_op_set_random_quest_state.c RoomScriptOpSetRandomQuestState
@@ -255,6 +274,8 @@ c-file 0x0801CF24 0x0801CF28 src/room/opcodes/room_script_op_no_op_alt.c RoomScr
 c-file 0x0801CF28 0x0801CF4C src/room/opcodes/room_script_op_invoke_chain_if_enabled.c RoomScriptOpInvokeChainIfEnabled
 c-file 0x0801CF4C 0x0801CF58 src/room/opcodes/room_script_op_grant_party_experience.c RoomScriptOpGrantPartyExperience
 c-file 0x0801CF58 0x0801CF64 src/room/opcodes/room_script_op_set_battle_defeat_state.c RoomScriptOpSetBattleDefeatState
+thumb-func 0x0801CF64 RoomScriptOpSetTileObjectDrawLayer
+thumb-func 0x0801CF94 RoomScriptOpEnterFredAndGeorgesShop
 c-file 0x0801CFBC 0x0801CFCC src/room/opcodes/room_script_op_respawn_row_and_run_chain.c RoomScriptOpRespawnRowAndRunChain
 c-file 0x0801CFCC 0x0801D020 src/room/opcodes/room_script_op_despawn_room_row_objects.c RoomScriptOpDespawnRoomRowObjects
 c-file 0x0801D020 0x0801D04C src/room/opcodes/room_script_op_grant_party_spell.c RoomScriptOpGrantPartySpell
@@ -262,6 +283,7 @@ c-file 0x0801D04C 0x0801D058 src/room/opcodes/room_script_op_set_overworld_monst
 c-file 0x0801D058 0x0801D064 src/room/opcodes/room_script_op_clear_overworld_monsters_disabled.c RoomScriptOpClearOverworldMonstersDisabled
 c-file 0x0801D064 0x0801D0A4 src/room/opcodes/room_script_op_set_tile_object_facing_and_script_page.c RoomScriptOpSetTileObjectFacingAndScriptPage
 c-file 0x0801D0A4 0x0801D0C8 src/room/opcodes/room_script_op_set_tile_object_special_flag.c RoomScriptOpSetTileObjectSpecialFlag
+thumb-func 0x0801D0C8 RoomScriptOpUnlockMinigame
 c-file 0x0801D138 0x0801D1A0 src/room/opcodes/room_script_op_show_reward_pickup_message.c RoomScriptOpShowRewardPickupMessage
 c-file 0x0801D1A0 0x0801D1F0 src/room/opcodes/room_script_op_show_item_removed_message.c RoomScriptOpShowItemRemovedMessage
 c-file 0x0801D1F0 0x0801D25C src/room/opcodes/room_script_op_show_spell_learned_message.c RoomScriptOpShowSpellLearnedMessage
@@ -684,7 +706,7 @@ label 0x080539A0 g_aBattleSlotAnchorPos_candidate
 battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 
 # Playtime counters, shared with JP at the same helper addresses.
-label 0x0805BA8C g_apRoomScriptOpcodeHandlers
+c-file 0x0805BA8C 0x0805BC00 src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 label 0x0805EB34 g_abRoomScriptOpcodeLengths
 label 0x08060544 g_stPlaytimeFrameDelta
 label 0x0806054C g_stPlaytimeHourLimit
