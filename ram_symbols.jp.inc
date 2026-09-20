@@ -12,6 +12,7 @@
 @ --- Interrupts / VBlank state (see include/vblank.h) ---
 .set g_pVBlankState, 0x030035CC
 .set gIntrTable,      0x030035D0  @ 13 x u32 handler slots dispatched by IntrMain
+.set g_wPendingIntrFlags, 0x03003804  @ see ram_symbols.us.inc
 .set g_pTimer2DebugPc, 0x030015A0  @ see ram_symbols.us.inc
 
 @ --- Object pool and active-object list (see include/mem.h) ---
@@ -23,6 +24,10 @@
 .set g_pObjectPoolAuxBuffer,  0x03001DBC
 .set g_dwUnk03001DC0,         0x03001DC0
 .set g_dwUnk03001DC4,         0x03001DC4
+
+@ --- main / game-mode stack (see src/main.c) ---
+.set g_dwGameModeFlags,   0x03003BA4  @ see ram_symbols.us.inc
+.set g_dwFrameSyncTarget, 0x03003BA8  @ see ram_symbols.us.inc
 
 @ --- Battle state (see include/battle.h) ---
 .set g_pFightState,   0x030024E8

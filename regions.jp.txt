@@ -34,28 +34,43 @@ c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
 c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
 c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
 label 0x08003808 ReleaseObjectAffineSlot
+label 0x08005A44 sub_08005A44
 label 0x08005CAC SetRoomObjectRecordPtr_candidate
 label 0x08005F10 CheckObjectCollisions_candidate
 label 0x08006440 SortObjectsByDepth_candidate
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
+label 0x0800D1A4 InitGammaPalette
 label 0x0800D254 sub_0800D254
 label 0x0800D264 sub_0800D264
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 label 0x08018BCC CreateEffectScriptObject
+label 0x0801DD3C InstallIwramDecompressCodecs
+label 0x0801FB60 sub_0801FB78
+label 0x0801FD88 InitDisplayControl
+label 0x08020390 sub_080203A8
+label 0x08020D3C InitTextMacroTable
+label 0x080215BC NoopInit
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
 label 0x08021E54 ProcessOwlCareKitTick
+label 0x08025114 InstallBgTileCodec_candidate
+label 0x08025944 sub_080258E8
+label 0x080260C4 InitInterruptSystem
+label 0x08026104 EnableInterrupts
+label 0x080261B4 SetVBlankCallback
+c-file 0x08026238 0x08026254 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
+thumb-func 0x080262A0 sub_08026244
 label 0x080286FC BuildFreeList
 label 0x08028734 AllocObjectFromFreeList
 c-file 0x08028768 0x08028784 src/mem/list_move_to_head.c List_MoveToHead
 c-file 0x080287A4 0x080287BC src/mem/list_push_head.c List_PushHead
 c-file 0x080287BC 0x080287E8 src/mem/list_remove.c List_Remove
 
-# crt0 callee, still raw incbin territory (see src/main.c for the
-# US-side extraction, named AgbMain there; JP's main isn't confirmed
-# identical yet).
-thumb-func 0x080296EC AgbMain
+# AgbMain's callees are labeled with their US names so shared C links; a
+# sub_<ADDR> label carries the US address, not the JP one.
+c-file 0x080296EC 0x080297FC src/main.c AgbMain
+label 0x0802B074 InitRoomState
 c-file 0x0802B0B4 0x0802B0E8 src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0FC 0x0802B138 src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
@@ -66,13 +81,24 @@ label 0x0802B478 SpawnWanderingMonsterObject
 label 0x0802BA68 GetEncounterKindTerrainType
 label 0x0802BA78 FindWanderingMonsterSpawnPosition
 label 0x0802BB2C PickMaxDamageMonster
+label 0x0802BE48 InstallIwramDivideRoutines
+label 0x0802C2B0 InitHeap
 label 0x0802C348 AllocZeroed
 label 0x0802C3EC FreeBlock
 label 0x0802C4AC memset
+label 0x0802C710 TickGameModeStack
+label 0x0802C7AC InitGameModeStack
+label 0x0802D588 NoopInit3
+label 0x0802DD98 NoopInit2
+label 0x0802FF70 InitOamSystem
+label 0x08030868 ClearResourceCacheSlots
 label 0x0803091C ClaimObjectEffectResource
+label 0x080315E8 InitResourceCachePools
+label 0x0803B128 ClearSystemMemory
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B220 0x0803B37C src/rng/regenerate.c Mt19937Regenerate
+label 0x0803B37C Mt19937AllocState
 c-file 0x0803B398 0x0803B414 src/rng/auto_seed.c Mt19937AutoSeed
 c-file 0x0803B414 0x0803B448 src/rng/set_seed.c Mt19937SetSeed
 c-file 0x0803B448 0x0803B474 src/rng/rand_range.c Mt19937RandRange
@@ -87,8 +113,18 @@ c-file 0x0803B594 0x0803B5C8 src/rng/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B5C8 0x0803B600 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 0x0803B65C src/rng/next.c Mt19937Next
 c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
+label 0x0803BD04 InitSaveSystem
+label 0x0803D330 sub_0803D2C8
+label 0x0803D378 SetFadeToWhite
+label 0x0803E564 sub_0803E4FC
+label 0x0803FE18 kramInstall
+label 0x080425D0 InitDialogTextEngine
+label 0x08042E6C sub_08042E2C
+label 0x08044FC0 InitScanlineEffects
+label 0x080452E0 InstallIwramObjTileAllocRoutine
 label 0x08045440 FreeObjectVramTileAllocation
 label 0x08049DBC bios_CPUSet
+label 0x08049DE8 bios_VBlankIntrWait
 
 # Thumb-mode division runtime
 asm-file 0x0804A1EC 0x0804A228 asm/rt/call_via_rX.s              _call_via_r0

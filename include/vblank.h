@@ -24,6 +24,7 @@ typedef struct {
 extern VBlankState *g_pVBlankState;
 extern VBlankState g_VBlankState;
 extern void WaitForVBlank(void);
+extern void WaitForVBlankIntr(void);
 extern void SetVBlankCallback(void *callback);
 extern void HandleVBlankInterrupt(void);
 

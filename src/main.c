@@ -93,3 +93,23 @@ void AgbMain(void)
         WaitForVBlank();
     }
 }
+
+// Frame limiter: blocks until at least g_dwFrameSyncTarget vblanks have
+// elapsed since the last frame, then records the current vblank count.
+void WaitForVBlank(void)
+{
+    u32 vblankCount;
+    u32 elapsed;
+    s32 delta;
+
+    do {
+        WaitForVBlankIntr();
+        vblankCount = g_pVBlankState->dwVBlankCount;
+        delta = vblankCount - g_pVBlankState->dwVBlankConsumed;
+        elapsed = g_pVBlankState->dwVBlankConsumed - vblankCount;
+        if (delta >= 0)
+            elapsed = delta;
+    } while (elapsed < g_dwFrameSyncTarget);
+
+    g_pVBlankState->dwVBlankConsumed = vblankCount;
+}

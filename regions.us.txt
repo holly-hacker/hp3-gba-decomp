@@ -371,6 +371,7 @@ c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterrup
 label 0x080260A8 EnableInterrupts
 c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
 label 0x08026158 SetVBlankCallback
+c-file 0x080261DC 0x080261F8 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 
 thumb-func 0x08026244 sub_08026244
 label 0x08026254 sub_08026254
@@ -402,8 +403,7 @@ thumb-func 0x0802878C InitializeLupinPotionCutscene
 thumb-func 0x0802887C UpdateLupinPotionCutscene
 thumb-func 0x08029528 ExitLupinPotionCutscene
 
-c-file 0x08029690 0x08029770 src/main.c AgbMain
-label 0x08029770 WaitForVBlank
+c-file 0x08029690 0x080297A0 src/main.c AgbMain
 
 c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
 thumb-func 0x0802A14C ExitOverworldScreen
