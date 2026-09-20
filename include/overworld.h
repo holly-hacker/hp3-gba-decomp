@@ -74,6 +74,13 @@ extern QueuedObjectMove g_aQueuedObjectMoves[];
 extern u8 g_bControlSlotTicks_candidate;
 extern void TickOverworldBeforeObjects_candidate(void);
 extern void HandleOverworldPauseMenuInput(void);
+// Set by the room chain runner while it processes a chain; consumed (cleared)
+// once per frame by HandleOverworldPauseMenuInput.
+extern u32 g_dwRoomChainRanThisFrame_candidate;
+extern u8 g_bUnk03005E18;
+// Records wandering-monster touches and respawns replacements; see the
+// wandering-monster notes above.
+extern void HandleWanderingMonsterTouch(void);
 
 // Nonzero blocks the overworld Start/Select menus (SetPauseMenuLocked).
 extern u32 g_dwPauseMenuLocked;

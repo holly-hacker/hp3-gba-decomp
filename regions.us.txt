@@ -413,7 +413,7 @@ c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c
 thumb-func 0x0802A14C ExitOverworldScreen
 label 0x0802AB34 RestoreRoomObjectState
 label 0x0802AE64 RestoreRoomObjectStateMinimal
-label 0x0802AEF8 HandleOverworldPauseMenuInput
+c-file 0x0802AEF8 0x0802B018 src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
 label 0x0802B018 InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
@@ -426,6 +426,7 @@ label 0x0802B174 ApplyRoomBgControlOverride_candidate
 label 0x0802B20C sub_0802B20C
 c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 label 0x0802B41C SpawnWanderingMonsterObject
+label 0x0802B58C HandleWanderingMonsterTouch
 
 label 0x0802BA0C GetEncounterKindTerrainType
 label 0x0802BA1C FindWanderingMonsterSpawnPosition

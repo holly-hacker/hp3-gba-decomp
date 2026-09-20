@@ -47,6 +47,26 @@ function. Calls, in order:
   and a list of 8-byte countdown entries that write room BG tiles when they expire
   (`0x08020228`/`0x08020278`).
 
+## `HandleOverworldPauseMenuInput` (`0x0802AEF8`, JP `0x0802AF54`), PROVEN
+
+Runs last in the overworld frame. It first calls `HandleWanderingMonsterTouch`, then
+opens a menu only when every gate passes: the controlled object's `bActionSubState`
+is not 5, `g_dwRoomChainRanThisFrame_candidate` (`0x03001DF0`) is clear, no game mode
+transition is pending, the slot's queued object move is not active (`bState != 1`),
+`g_dwGameModeFlags & 0x80000811` is clear, the player object is not
+`ObjectFlagAnimPaused`, and its `bActionState` is `0x21`. Then:
+
+- Start (`0x8` in `g_wKeysPressed`) pushes `InGameMenu` (`0x0A`); Select (`0x4`)
+  pushes `Options` (`0x05`).
+- While `g_dwPauseMenuLocked` is set, either key only plays sound 3.
+- Otherwise, when `g_dwPauseMenuCooldown` is 0: consume the key, zero the player's
+  velocity, set the cooldown to 4, play sound 1, push the mode and set `g_bUnk03005E18`.
+
+`g_dwRoomChainRanThisFrame_candidate` is set to 1 by `RespawnRowAndRunChain_candidate`
+(and `sub_08005D30`) around a room chain and cleared unconditionally at the end of
+this function every frame. `g_bUnk03005E18` is also set to 1 on entry to
+`RestoreRoomObjectState` and cleared on exit; no reader was found.
+
 ## UNCONFIRMED
 
 The exact in-game effects each tick drives (which BG layers wobble, which windows

@@ -128,6 +128,9 @@
 .set g_bControlSlotTicks_candidate, 0x03003B58  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
 .set g_dwPauseMenuLocked,          0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
 .set g_dwPauseMenuCooldown,        0x03003B6C  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
+.set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ u32: set to 1 by RespawnRowAndRunChain_candidate while it runs a room chain; cleared by
+                                                       @ HandleOverworldPauseMenuInput each frame, which skips the menu check while it is set
+.set g_bUnk03005E18, 0x03005E18  @ u8: set to 1 when the overworld pushes a pause menu; RestoreRoomObjectState sets it to 1 at entry and 0 at exit
 
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other

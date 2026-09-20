@@ -76,13 +76,14 @@ c-file 0x080287BC 0x080287E8 src/mem/list_remove.c List_Remove
 # AgbMain's callees are labeled with their US names so shared C links; a
 # sub_<ADDR> label carries the US address, not the JP one.
 c-file 0x080296EC 0x080297FC src/main.c AgbMain
-label 0x0802AF54 HandleOverworldPauseMenuInput
+c-file 0x0802AF54 0x0802B074 src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
 label 0x0802B074 InitRoomState
 c-file 0x0802B0B4 0x0802B0E8 src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0FC 0x0802B138 src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 label 0x0802B138 TickOverworldBeforeObjects_candidate
 c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 label 0x0802B478 SpawnWanderingMonsterObject
+label 0x0802B5E8 HandleWanderingMonsterTouch
 
 # SpawnOverworldMonsterEncounters (src/overworld/) callees, still raw
 # incbin territory.
@@ -96,7 +97,9 @@ label 0x0802C3EC FreeBlock
 label 0x0802C4AC memset
 label 0x0802C710 TickGameModeStack
 label 0x0802C7AC InitGameModeStack
+label 0x0802C808 PushGameMode
 c-file 0x0802C864 0x0802C8A4 src/gamemode/tick_frame_systems.c TickFrameSystems
+label 0x0802C8A4 IsGameModeTransitionPending
 label 0x0802D588 NoopInit3
 label 0x0802DD98 NoopInit2
 label 0x0802FF70 InitOamSystem
@@ -129,6 +132,7 @@ label 0x0803D330 sub_0803D2C8
 label 0x0803D378 SetFadeToWhite
 label 0x0803E564 sub_0803E4FC
 c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId
+label 0x0803FCD0 PlaySoundById
 label 0x0803FE18 kramInstall
 label 0x080425D0 InitDialogTextEngine
 label 0x08042E6C sub_08042E2C

@@ -27,7 +27,6 @@
 
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_GameModeStackContext, 0x03003F54  @ see ram_symbols.us.inc
-.set g_dwGameModeFlags,   0x03003BA4  @ see ram_symbols.us.inc
 .set g_dwFrameSyncTarget, 0x03003BA8  @ see ram_symbols.us.inc
 
 @ --- Battle state (see include/battle.h) ---
@@ -73,3 +72,7 @@
 .set g_bControlSlotTicks_candidate, 0x03003BB8  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
 .set g_dwPauseMenuLocked,          0x03003BC0  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
 .set g_dwPauseMenuCooldown,        0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
+.set g_aQueuedObjectMoves,           0x03002090  @ see ram_symbols.us.inc
+.set g_pPlayerObject,                0x030033E0  @ see ram_symbols.us.inc
+.set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ see ram_symbols.us.inc
+.set g_bUnk03005E18,                 0x03005E68  @ see ram_symbols.us.inc
