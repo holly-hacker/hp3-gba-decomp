@@ -6,7 +6,7 @@
 // into IWRAM for speed.
 void InitObjectPool(void)
 {
-    void **pAux;
+    ObjectPoolAuxRecord **pAux;
 
     g_ObjectPoolState.pBuffer = AllocZeroed(0x7968);
 

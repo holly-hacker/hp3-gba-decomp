@@ -15,7 +15,7 @@ asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2I
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
-label 0x08001300 ReleaseObjectOffscreenVramTiles
+c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
@@ -87,6 +87,7 @@ c-file 0x0803B594 0x0803B5C8 src/rng/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B5C8 0x0803B600 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 0x0803B65C src/rng/next.c Mt19937Next
 c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
+label 0x08045440 FreeObjectVramTileAllocation
 label 0x08049DBC bios_CPUSet
 
 # Thumb-mode division runtime

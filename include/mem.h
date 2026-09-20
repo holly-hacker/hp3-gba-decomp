@@ -77,7 +77,18 @@ typedef struct ObjectPoolState {
     void *pFreeListHead;
 } ObjectPoolState;
 extern ObjectPoolState g_ObjectPoolState;
-extern void *g_pObjectPoolAuxBuffer;
+
+// One 0x34-byte record of g_pObjectPoolAuxBuffer (5 records), selected by
+// Object.bObjectPoolAuxSlot. Tracks VRAM tile allocations shared between
+// objects: abRefCounts[i] counts the objects holding the allocation whose id
+// is in awTileAllocIds[i] (0xFFFF = none). Field extents past the ones
+// ReleaseObjectOffscreenVramTiles touches are unconfirmed.
+typedef struct ObjectPoolAuxRecord {
+    u8 pad_00[0x08];
+    u16 awTileAllocIds[12];  // 0x08
+    u8 abRefCounts[0x14];    // 0x20
+} ObjectPoolAuxRecord;
+extern ObjectPoolAuxRecord *g_pObjectPoolAuxBuffer;
 extern u8 g_pSortObjectsIwram[0xC4];
 extern u8 g_pCheckObjectCollisionsIwram[0x1F4];
 extern u32 g_dwObjectListActive_candidate;

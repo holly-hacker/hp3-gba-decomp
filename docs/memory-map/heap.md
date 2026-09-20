@@ -66,12 +66,15 @@ fixed-size-slot pool out of the heap:
   first at `+4`) — a 0x7968-byte `AllocZeroed`'d buffer (0x69 objects *
   0x128-byte stride), carved into a free list by `BuildFreeList`.
 - `g_pObjectPoolAuxBuffer` (`0x03001DBC`) — a second, 0x104-byte
-  `AllocZeroed`'d buffer; `InitObjectPool`'s only write to it. Read in
-  `ReleaseObjectOffscreenVramTiles` as a 0x34-byte-stride, 5-record array,
-  indexed by `Object.bObjectPoolAuxSlot`: a per-row `u8` refcount at
-  `+0x20 + frameIndex` is decremented, and the corresponding VRAM tile
-  range is freed via `FreeObjectVramTileAllocation` once it hits 0 — full
-  record layout still otherwise unconfirmed.
+  `AllocZeroed`'d buffer; `InitObjectPool`'s only write to it. Five
+  `ObjectPoolAuxRecord`s of 0x34 bytes, indexed by `Object.bObjectPoolAuxSlot`:
+  `awTileAllocIds[12]` at `+8` and `abRefCounts[20]` at `+0x20`. Objects whose
+  `bFlags_0x115 & 3` is nonzero share VRAM tiles through a record;
+  `ReleaseObjectOffscreenVramTiles` (matched, `src/object/`) decrements the
+  refcount and calls `FreeObjectVramTileAllocation` (`0x08045514`) when it
+  reaches 0. Objects with `bFlags_0x115 & 3 == 0` free their own allocation and
+  the variant slot's (when bit `0x40` is set) directly. Record fields beyond
+  those two arrays are unconfirmed.
 - `g_pSortObjectsIwram`/`g_pCheckObjectCollisionsIwram` (`0x0300194C`/
   `0x03001A10`) — `SortObjectsByDepth_candidate`/
   `CheckObjectCollisions_candidate` relocated into IWRAM via

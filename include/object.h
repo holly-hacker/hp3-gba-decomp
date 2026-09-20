@@ -26,8 +26,7 @@ typedef enum {
     ObjectFlagActionAnimDone           = 0x40000,    // set by TickObjectAnimation on a non-looping
                                                        // animation's last frame
     ObjectFlagOnscreenForTileAlloc     = 0x400000,   // mirrors ObjectFlagOnscreen (set/cleared
-                                                       // together by UpdateObjectOnscreenFlags);
-                                                       // gates ReleaseObjectOffscreenVramTiles
+                                                       // together by UpdateObjectOnscreenFlags)
     ObjectFlagRoomRecordBound          = 0x800000,   // FreeObject clears the object's room record
     ObjectFlagRoomScriptYield          = 0x8000000,  // set by a room script that yielded on this object
     ObjectFlagAnimPaused               = 0x10000000, // TickObjectAnimation's frame counter freezes
@@ -70,6 +69,18 @@ typedef struct ObjectAssetRecord {
     u8 bAnimFrameDelay;
     u8 pad_D[3];
 } ObjectAssetRecord;
+
+// One sprite-variant slot embedded in Object: the tile allocation for the
+// slot's current variant plus the selection state SetObjectSpriteVariant
+// maintains. Only slot 0 exists in the 0x128-byte Object.
+typedef struct ObjectVariantSlot {
+    u16 wVramTileRow;       // 0x00, second argument to FreeObjectVramTileAllocation
+    u16 wVramTileAllocId;   // 0x02, 0xFFFF = none
+    ObjectAssetRecord **pSpriteVariantTables;  // 0x04, outer table selected by +0x08
+    u8 bSpriteVariantTableIndex;  // 0x08
+    u8 bSpriteVariantIndex;       // 0x09
+    u8 pad_A[0x02];         // -> 0x0C
+} ObjectVariantSlot;
 
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
@@ -158,7 +169,9 @@ typedef struct Object {
     u8 bAnimFrameCounter;   // 0xD8, frames-remaining countdown reloaded from bAnimFrameDelay
                              // each time it hits 0; see TickObjectAnimation
     u8 bAnimFrameDelay;     // 0xD9
-    u8 pad_DA;               // -> 0xDB
+    u8 bAnimFrameIndex_candidate;  // 0xDA, selects the per-frame tile refcount in the object pool's
+                             // aux record when bFlags_0x115 bit 0x1 is clear; see
+                             // ReleaseObjectOffscreenVramTiles
     u8 bLastAnimFrameValue; // 0xDB, current cycling frame index for non-scripted (cursor-less)
                              // animations; see TickObjectAnimation
     u8 bEnemyAttackPhase_candidate;  // 0xDC, TickFighterAttackAnimState_candidate's own
@@ -194,14 +207,15 @@ typedef struct Object {
                              // ExitBattle when suspending a fighter for the Folio Universitas/
                              // Help resume path
     u8 bForceOnscreen_candidate;  // 0x114, value 1 prevents visibility flags being cleared
-    u8 pad_115;             // -> 0x116
+    u8 bFlags_0x115;        // 0x115: bits 0-1 = tile sharing mode (0 = the object owns its VRAM
+                             // tiles, nonzero = refcounted in its aux slot; bit 0x1 pins the
+                             // refcount index to 0), bit 0x10 = post-action flash (see
+                             // docs/formats/battle_scripts.md), bit 0x40 = aVariantSlots hold
+                             // their own tile allocations
     u8 bObjectPoolAuxSlot;  // 0x116, index into g_pObjectPoolAuxBuffer's 0x34-byte-stride
                              // records; see ReleaseObjectOffscreenVramTiles
-    u8 pad_117[0x09];       // -> 0x120
-    ObjectAssetRecord **pSpriteVariantTables;  // 0x120, outer table selected by +0x124
-    u8 bSpriteVariantTableIndex;  // 0x124
-    u8 bSpriteVariantIndex;       // 0x125
-    u8 pad_126[0x02];       // -> 0x128
+    u8 pad_117[0x05];       // -> 0x11C
+    ObjectVariantSlot aVariantSlots[1];  // 0x11C
 } Object;
 
 // wObjectType values used by room/overworld object spawners (room-tile
@@ -237,7 +251,8 @@ extern Object *AllocDefaultObject(void);
 extern void FreeObject(Object *obj);
 extern s32 UpdateObjectOnscreenFlags(Object *obj);
 extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
-extern void ReleaseObjectOffscreenVramTiles(Object *obj);
+extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
+extern void FreeObjectVramTileAllocation(u16 allocId, u16 tileRow, u8 is8bpp);  // 0x08045514
 extern void ClaimObjectEffectResource(Object *obj);
 extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);

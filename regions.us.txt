@@ -30,7 +30,7 @@ asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2I
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
-label 0x08001300 ReleaseObjectOffscreenVramTiles
+c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
@@ -649,6 +649,7 @@ label 0x080452A8 sub_080452A8
 label 0x080453B4 InstallIwramObjTileAllocRoutine
 label 0x080453D8 InitObjTileAllocBitmaps
 label 0x0804542C sub_0804542C
+label 0x08045514 FreeObjectVramTileAllocation
 label 0x08045808 HideScreenWindow_candidate
 label 0x08045838 SetScreenWindowLayers_candidate
 label 0x080458A8 SetScreenWindowRect_candidate
