@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle.h"
+#include "display.h"
 
 // CurePoison's shared helper -- clears Poisoned, zeroes the per-turn tick
 // damage, and refreshes the sprite (undoes the poison discoloration/anim).

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle.h"
+#include "display.h"
 #include "game_modes.h"
 
 typedef struct Vec2 {

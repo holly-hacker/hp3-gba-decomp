@@ -177,3 +177,17 @@
 .set gMt19937AutoSeedCallCount,  0x03005590  @ increments each AutoSeed call (purpose unconfirmed)
 .set gMt19937SeedValue,          0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 .set g_saveHeader,               0x03005598  @ SaveHeader; the live RAM copy, SaveManager.header; see docs/formats/save.md
+
+@ --- Room load / room script state (see include/room.h) ---
+.set g_bRoomScriptYieldOpcode,        0x03001DE9  @ u8: opcode a running room script yielded on
+.set g_wRoomResourceFlags_candidate,  0x03001DDC  @ u16: bit 0 = the room also has a second object/switch row
+.set g_dwScanlineBandActiveMask,      0x030022E0  @ u32: bit n set = scanline band slot n is active
+.set g_dwRoomScriptRunState,          0x0300279C  @ u32: room script run state; InitializeOverworld resets 4 to 0 and only resumes a chain in state 2
+.set g_abQuestEventState,             0x030027A0  @ u8[]: quest event state bytes, see docs/formats/save.md
+.set g_dwOverworldMonstersDisabled,   0x03002614  @ u32: nonzero suppresses wandering-monster spawns
+.set g_bPendingRoomScriptChain,       0x0300260C  @ u8: switch-state chain to walk on a resume transition
+.set g_bPendingRoomScriptRow,         0x0300260D  @ u8: object row to respawn on a resume transition
+.set g_bPartyCharId0,                 0x0300338C  @ u8: character id of party slot 0
+.set g_bPendingQuestStateOverride_candidate, 0x03003B5A  @ u8: 0xFF = none; else copied into quest state 0 on room entry
+.set g_dwRoomBgFlag_candidate,        0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by sub_0802E6FC
+.set g_dwPendingCameraFocusFlag,      0x03003FD4  @ u32: cleared on room entry

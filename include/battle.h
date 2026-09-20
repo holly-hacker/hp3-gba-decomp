@@ -229,9 +229,6 @@ extern Object *g_apFighterObjects_candidate[7];
 // of g_PrevGameModeCtx once the Folio Universitas screen has returned.
 #define g_nFolioUniversitasSlot g_PrevGameModeCtx.dwCurrentGameModeArg2
 
-extern u32 g_aBgScrollState[];  // 0x03001E80; [0x25] == 0x03001F14
-extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
-
 // The currently-acting fighter's record. Shared by the turn state machine
 // and the action-state tick.
 #define ACTIVE_FIGHTER (g_pFightState->pFighters[g_pFightState->bActiveFighterIndex])
@@ -290,7 +287,6 @@ extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables
 extern void SetMonsterObjectAnim(Object *obj, s32 state);  // 0x0801539C, monster gfx tables + shadow
-extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void PlaySoundById(s32 id);
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
 extern Object *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
@@ -393,7 +389,6 @@ typedef struct {
 } SaveStateBlock;
 extern SaveStateBlock g_saveStateBlock;  // 0x03003180
 extern u8 *GetBattleBackgroundData_candidate(void);
-extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
 extern void ResumeBattleAfterSubmode_candidate(void);
 extern void PlayMusicModule(u8 moduleId);
 

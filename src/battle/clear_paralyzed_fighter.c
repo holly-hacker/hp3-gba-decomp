@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle.h"
+#include "display.h"
 
 // Shared cleanup for a fighter escaping Paralyzed, both on a successful
 // escape roll (RollFighterParalysisEscape) and from CureAilments. Clears

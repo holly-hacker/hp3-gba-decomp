@@ -47,4 +47,3 @@ extern ListNode *g_pParticleEmitterActiveListHead;  // 0x03005198
 
 extern void DecrementResourceCacheRefcount(s32 slotIndex);
 extern void ReleaseParticleEmitter_candidate(ParticleEmitter *emitter);
-extern void ClearPaletteRam(void);

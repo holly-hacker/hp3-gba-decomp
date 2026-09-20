@@ -38,6 +38,7 @@ c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPositio
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
+label 0x08001D90 sub_08001D90
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
 c-file 0x08001EA8 0x08001EC8 src/object/set_object_facing.c SetObjectFacing
 c-file 0x08001EC8 0x08001EE8 src/object/set_object_facing_unused.c SetObjectFacing_unused
@@ -58,24 +59,40 @@ label 0x080039F8 sub_080039F8
 label 0x08003A0C sub_08003A0C
 label 0x08003A30 sub_08003A30
 label 0x08003A44 sub_08003A44
+label 0x0800539C RespawnRoomObjectsInRow_candidate
+label 0x08005410 WalkRoomSwitchStateChain_candidate
+label 0x080055C0 ResumeRoomSwitchStateChain_candidate
 label 0x08005A44 sub_08005A44
+label 0x08005A78 ParseRoomResourceBlob_candidate
 label 0x08005CAC SetRoomObjectRecordPtr_candidate
+label 0x08005DC0 sub_08005DC0
 label 0x08005F10 CheckObjectCollisions_candidate
 label 0x08006440 SortObjectsByDepth_candidate
 
 label 0x08007130 sub_08007130
+label 0x080072D0 SetBgControl_candidate
+label 0x08007334 EnableBg
+label 0x08007348 DisableBg
+label 0x080073BC sub_080073BC
+label 0x08007444 SetDispcntFlag
 label 0x08007800 LoadEmbeddedPalette_candidate
 label 0x08007A90 sub_08007A90
 
+label 0x08007EB8 SetBgPriority
 thumb-func 0x08008050 InitializeRiddikulusMinigame
 thumb-func 0x080080F4 UpdateRiddikulusMinigame
 thumb-func 0x08008AD0 ExitRiddikulusMinigame
 thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
 thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
 thumb-func 0x08009C54 ExitHippogriffGlideMinigame
+label 0x0800A03C sub_0800A03C
+label 0x0800A348 sub_0800A348
+label 0x0800A3AC SetCameraFollowTarget_candidate
+label 0x0800A4E8 SetRoomScrollBounds
 thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
 thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
 thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
+label 0x0800A914 sub_0800A914
 thumb-func 0x0800A950 InitializeDebugMenuMain
 thumb-func 0x0800AA54 HandleDebugTestMenuSelect
 thumb-func 0x0800AB88 ExitDebugMenuMain
@@ -102,6 +119,7 @@ thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
 c-file 0x0800C6EC 0x0800C844 src/playtime/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/playtime/compare_playtime_field.c ComparePlaytimeField
+label 0x0800D0A0 SetupScanlineBands_candidate
 label 0x0800D1A4 InitGammaPalette
 label 0x0800D264 sub_0800D264
 label 0x0800D2DC sub_0800D2DC
@@ -185,6 +203,7 @@ thumb-func 0x0801F36C UpdateStartup
 thumb-func 0x0801F524 ExitStartup
 thumb-func 0x0801F534 InitializeDialogue
 thumb-func 0x0801F654 UpdateDialogueBox
+label 0x0801FA9C sub_0801FA9C
 thumb-func 0x0801FAF4 ExitDialogue
 label 0x0801FB78 sub_0801FB78
 label 0x0801FBBC sub_0801FBBC
@@ -209,6 +228,9 @@ thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
 label 0x08021DF8 ProcessOwlCareKitTick
 thumb-func 0x08022D98 HandleOwlCareKitScreenExit
+label 0x080233E4 SpawnPlayerObject_candidate
+label 0x080238D8 ShowMapNamePopup
+label 0x080248E8 sub_080248E8
 label 0x080249C8 GetPartyPresenceMask
 label 0x080249FC GetPartySize
 c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
@@ -259,12 +281,19 @@ thumb-func 0x08029528 ExitLupinPotionCutscene
 c-file 0x08029690 0x08029770 src/main.c AgbMain
 label 0x08029770 WaitForVBlank
 
-thumb-func 0x080297A0 InitializeOverworld
+c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
 thumb-func 0x0802A14C ExitOverworldScreen
+label 0x0802AB34 RestoreRoomObjectState
+label 0x0802AE64 RestoreRoomObjectStateMinimal
 label 0x0802B018 InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 label 0x0802B0F4 sub_0802B0F4
+label 0x0802B110 SetRoomSwitchState
+label 0x0802B12C GetRoomSwitchState
+thumb-func 0x0802B164 OverworldVBlankCallback
+label 0x0802B174 ApplyRoomBgControlOverride_candidate
+label 0x0802B20C sub_0802B20C
 c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 label 0x0802B41C SpawnWanderingMonsterObject
 
@@ -307,6 +336,8 @@ label 0x0802D640 sub_0802D640
 label 0x0802D64C sub_0802D64C
 label 0x0802D6B8 sub_0802D6B8
 label 0x0802DD54 NoopInit2
+label 0x0802DD58 LoadRoomSharedTileset_candidate
+label 0x0802DF3C ApplyRoomSwitchEffect
 label 0x0802FF2C InitOamSystem
 label 0x08030094 GetObjectAffineSlotId
 label 0x080300A0 SetObjectAffineSlotId
@@ -321,6 +352,7 @@ label 0x08030878 AttachEffectOwner_candidate
 label 0x080308A8 AttachObjectEffectSlot_candidate
 label 0x080308D8 ClaimObjectEffectResource
 c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
+label 0x0803094C sub_0803094C
 label 0x08030960 sub_08030960
 label 0x080315A4 InitResourceCachePools
 label 0x08031668 sub_08031668
@@ -397,6 +429,7 @@ thumb-func 0x0803AFCC ExitFolioCardDetailScreen
 label 0x0803B0C0 ClearSystemMemory
 
 # MT19937 PRNG, see docs/memory-map/rng.md
+label 0x0803B158 ClearVram
 c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate
 c-file 0x0803B314 0x0803B330 src/rng/alloc_state.c Mt19937AllocState
 c-file 0x0803B330 0x0803B3AC src/rng/auto_seed.c Mt19937AutoSeed
@@ -417,8 +450,23 @@ c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 label 0x0803BC9C InitSaveSystem
 label 0x0803D2C8 sub_0803D2C8
 label 0x0803D310 SetFadeToWhite
+label 0x0803D338 sub_0803D338
+label 0x0803D350 SetAlphaBlendCoefficients
+label 0x0803D3B0 PlayScreenTransitionByIndex_candidate
 label 0x0803D3E8 sub_0803D3E8
+label 0x0803DA4C sub_0803DA4C
+label 0x0803DB68 sub_0803DB68
+label 0x0803DC44 sub_0803DC44
+label 0x0803DCDC LoadRoomBgLayer0Extra_candidate
 label 0x0803E4FC sub_0803E4FC
+label 0x0803E588 SetupRoomBgControlAndWindows_candidate
+label 0x0803E664 LoadRoomBgTilemap1_candidate
+label 0x0803E6A0 LoadRoomBgTilemap0_candidate
+label 0x0803E6F0 LoadRoomBgTilemap2_candidate
+label 0x0803E72C LoadRoomBgTilemap3_candidate
+label 0x0803E768 LoadRoomBgLayer1Extra_candidate
+label 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
+label 0x0803E880 LoadRoomBgLayer3Extra_candidate
 label 0x0803EF5C TickLinkCommIfActive_candidate
 label 0x0803FA94 GetLocalPlayerLinkIndex_candidate
 label 0x0803FC68 PlaySoundById
@@ -462,7 +510,9 @@ thumb-func 0x08044B7C UpdateCoolTrainCutscene
 thumb-func 0x08044BF0 ExitCoolTrainCutscene
 label 0x08045094 sub_08045094
 label 0x08045260 sub_08045260
+label 0x080452A8 sub_080452A8
 label 0x080453B4 InstallIwramObjTileAllocRoutine
+label 0x080453D8 InitObjTileAllocBitmaps
 label 0x0804542C sub_0804542C
 label 0x08045988 sub_08045988
 label 0x08049E3C sub_08049E3C
@@ -520,12 +570,21 @@ battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 # Playtime counters, shared with JP at the same helper addresses.
 label 0x08060544 g_stPlaytimeFrameDelta
 label 0x0806054C g_stPlaytimeHourLimit
+label 0x08060884 g_PlayerCameraFocusOffset
 label 0x08060E8C gIntrTableTemplate
 
 # Item/equipment table, see docs/formats/items.md
 c-file 0x08060EE4 0x080629B4 src/data/items.c g_pItemTable
 
 # Game-mode dispatch table, see docs/memory-map/game_modes.md
+label 0x08063064 g_dwBg2Control
+label 0x08063068 g_dwBg1Control
+label 0x0806306C g_dwBg3Control
+label 0x08063070 g_dwBg0Control
+label 0x08063C8C g_aRoomTable
+label 0x08065730 g_adwRoomQuestMusicOverride
+label 0x0806580C g_ScanlineBandsDefault
+label 0x08065814 g_ScanlineBandsRoom12
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 
