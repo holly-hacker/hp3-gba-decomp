@@ -586,7 +586,7 @@ fighter had a pending `SpecialMove` (cleared back to `None` here), else
 ### `InitializeBattle`'s scene-setup helpers, PROVEN
 
 Called from `InitializeBattle` (`0x0800DBAC`, matched in
-`src/battle/initialize_battle.c`) ahead of `ResumeBattleAfterSubmode_candidate`
+`src/gamemode/modes/battle/initialize_battle.c`) ahead of `ResumeBattleAfterSubmode_candidate`
 above; all four are visual/Object plumbing, no combat-mechanical state:
 
 - **`InitBattleBackground_candidate`** (`0x0800EBAC`): VBlank callback,
@@ -941,7 +941,7 @@ dealing damage, so it needs its own reward grant).
 ## End-of-battle flow, PROVEN
 
 `UpdateBattle` (`0x0800DDB0`, `Battle`'s `pUpdateFn`, matched in
-`src/battle/update_battle.c`) is the per-frame entry into all of this:
+`src/gamemode/modes/battle/update_battle.c`) is the per-frame entry into all of this:
 unless the previous mode was `FolioUniversitas` or
 `HelpTopicScreen` (returning from a card-detail/help screen
 opened mid-battle), it decrements `FightState->bScreenShakeTimer_candidate`

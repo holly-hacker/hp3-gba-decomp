@@ -108,9 +108,9 @@ label 0x0800D2DC sub_0800D2DC
 label 0x0800D304 sub_0800D304
 label 0x0800D354 sub_0800D354
 label 0x0800D39C ClearPaletteRam
-c-file 0x0800DBAC 0x0800DDB0 src/battle/initialize_battle.c InitializeBattle
-c-file 0x0800DDB0 0x0800DE50 src/battle/update_battle.c UpdateBattle
-c-file 0x0800DE50 0x0800E0CC src/battle/exit_battle.c ExitBattle
+c-file 0x0800DBAC 0x0800DDB0 src/gamemode/modes/battle/initialize_battle.c InitializeBattle
+c-file 0x0800DDB0 0x0800DE50 src/gamemode/modes/battle/update_battle.c UpdateBattle
+c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
 label 0x0800E0CC DrawFighterStatsUi_candidate
 label 0x0800E39C DrawEnemyStatsUi_candidate
 c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
