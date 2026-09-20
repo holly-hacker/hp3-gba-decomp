@@ -194,8 +194,8 @@ corroboration either way for those two.
 | `0x0D` | u8 | Wingardium Leviosa effectiveness | **PROVEN** (case 4) |
 | `0x0E` | u8 | Glacius effectiveness | **PROVEN** (case 7) |
 | `0x0F` | u8 | Diffindo effectiveness | **PROVEN** (case 6) |
-| `0x10` | u16 | `reward_xp` | **PROVEN** -- paid into `g_nXpAccum` on kill, confirmed live in-game |
-| `0x12` | u16 | `reward_gold` | **PROVEN** -- paid into `g_nGoldAccum`, same evidence |
+| `0x10` | u16 | `reward_xp` | **PROVEN** -- paid into `g_nBattleXpReward` on kill, confirmed live in-game |
+| `0x12` | u16 | `reward_gold` | **PROVEN** -- paid into `g_nBattleGoldReward`, same evidence |
 | `0x14` | u8 | `special_effect_chance` | **PROVEN** -- percent chance (100 = guaranteed) that a scripted effect also fires after the monster's melee attack |
 | `0x15` | u8 | `special_effect_id` | **PROVEN** -- effect-script id passed to `TriggerBattleEffect`; named entries in `tools/battle_scripts/script_names.json` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family |
 | `0x16` | u16 | padding | STRUCTURAL MATCH -- always 0 across all 69 records, and not read by battle-init |

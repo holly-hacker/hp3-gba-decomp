@@ -46,3 +46,7 @@ typedef struct ItemEntry {
     u32 dwMagicDefense;      // 0x30 -- M.Def stat
 } ItemEntry;
 extern const ItemEntry g_pItemTable[132];  // 0x08060EE4, US only, src/data/items.c
+
+// Owned count per item id, indexed by reward id (see rewards.h), which extends
+// past the last real item. See docs/formats/save.md.
+extern u8 g_abItemQuantities[];  // 0x030037B0

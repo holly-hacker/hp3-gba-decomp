@@ -203,6 +203,7 @@ asm-file 0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
 asm-file 0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
 label 0x08021560 NoopInit
 c-file 0x0802165C 0x08021694 src/playtime/process_playtime_tick.c ProcessPlaytimeTick
+label 0x080216A0 AddSickles
 thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
 thumb-func 0x08022D98 HandleOwlCareKitScreenExit
@@ -228,8 +229,10 @@ label 0x08026158 SetVBlankCallback
 
 thumb-func 0x08026244 sub_08026244
 label 0x08026254 sub_08026254
+c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 label 0x08026CDC sub_08026CDC
 label 0x08026CF0 sub_08026CF0
+c-file 0x08026DE0 0x08026E2C src/items/grant_reward.c GrantReward
 
 thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
@@ -355,6 +358,7 @@ thumb-func 0x08036BB8 UpdateFolioBrutiGridCursor
 thumb-func 0x08037048 ExitFolioBruti
 thumb-func 0x080372B0 InitializeFolioUniversitas
 thumb-func 0x080373D4 UpdateFolioUniversitas
+label 0x0803774C IncrementFolioUniversitasCard
 label 0x080377A8 DecrementFolioUniversitasCard
 thumb-func 0x08037F48 ExitFolioUniversitas
 thumb-func 0x08038290 InitializeGameCubeLink

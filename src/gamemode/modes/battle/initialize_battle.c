@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle.h"
 #include "game_modes.h"
+#include "rewards.h"
 #include "mem.h"
 
 // Battle mode's pInitFn. See docs/memory-map/battle.md.
@@ -59,8 +60,8 @@ void InitializeBattle(void)
     if (g_PrevGameModeCtx.dwCurrentGameMode != FolioUniversitas && g_PrevGameModeCtx.dwCurrentGameMode != HelpTopicScreen)
     {
         // entered new battle
-        g_nXpAccum = 0;
-        g_nGoldAccum = 0;
+        g_nBattleXpReward = 0;
+        g_nBattleGoldReward = 0;
         g_pFightState = AllocZeroed(0x14C8);
         g_pFightState->pFighters = AllocZeroed(0x1F8);
         g_pFightState->pStagingFighters = AllocZeroed(0x1F8);

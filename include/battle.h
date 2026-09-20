@@ -431,6 +431,3 @@ extern u8 g_abBattleMusicByOverworldSlot[]; // 0x0804E28B, indexed by dwCurrentG
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
 // plate comment describes elsewhere -- real source likely declares it int.
 extern u32 g_bCurrentRoomId;                // 0x03003B50
-
-extern u16 g_nXpAccum;   // 0x0300260E
-extern u16 g_nGoldAccum; // 0x03002610

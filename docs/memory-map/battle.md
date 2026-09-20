@@ -177,8 +177,8 @@ void ApplyDamageToFighter(short damage, uchar fighterIndex) {   // 0x08017F98
     if (f->wHp == 0 || f->wHp > f->wHp_max) {   // fainted, or underflowed past 0
         if (bFaintMessageCount == 0) ShowBattleMessage(AttackResult, fighterIndex, 2);
         g_anFaintedRosterIndices[firstFreeSlot] = f->bRosterIndex;
-        g_nXpAccum   += MonsterTable[f->bRosterIndex].reward_xp;
-        g_nGoldAccum += MonsterTable[f->bRosterIndex].reward_gold;
+        g_nBattleXpReward   += MonsterTable[f->bRosterIndex].reward_xp;
+        g_nBattleGoldReward += MonsterTable[f->bRosterIndex].reward_gold;
         f->wHp = 0;
         f->nFaintedFlag = -1;
         SetFighterAttackAnimState(f->pObject, 1);
@@ -862,7 +862,7 @@ value (and always lands on slot0, since slot0's chance is never 0 --
 slot1 is unreachable while the bit is set). The first two hits across the
 4 monsters are written to the caller's two output item ids; a 3rd+ hit is
 discarded. Granted rewards (gold, items, Folio Universitas cards) go through
-`GrantBattleReward` (`0x08026DE0`).
+`GrantReward` (`0x08026DE0`).
 
 ### `FightState+0x1054`/`+0x1058`: write-only, purpose unknown
 
@@ -922,15 +922,15 @@ field (the reader is what gives the field its name).
 
 On a fighter fainting, `ApplyDamageToFighter` adds
 `MonsterTable[fighter.bRosterIndex].reward_xp`/`.reward_gold` into two
-running EWRAM accumulators, `g_nXpAccum` (`0x0300260E`) and
-`g_nGoldAccum` (`0x03002610`). Confirmed live: defeating 2 Brown Recluse
+running EWRAM accumulators, `g_nBattleXpReward` (`0x0300260E`) and
+`g_nBattleGoldReward` (`0x03002610`). Confirmed live: defeating 2 Brown Recluse
 Spiders (`reward_xp=8`, `reward_gold=42`) awarded exactly `16` XP
 (`8*2`). Gold was `105` with Ron's `Wizard Cracker` active
 (`42*2*1.25 = 105` exactly) -- the source of that `25%` gold figure isn't
 determined (`Wizard Cracker`'s own description states an item-drop
 effect, not a gold bonus; see `FightState->bBonusRewardFlags` above).
-`g_nXpAccum` is consumed by `InitializeVictoryScreen` (see "End-of-battle
-flow" below); what consumes `g_nGoldAccum` isn't traced.
+`g_nBattleXpReward` is consumed by `InitializeVictoryScreen` (see "End-of-battle
+flow" below); what consumes `g_nBattleGoldReward` isn't traced.
 
 A second, independent path exists: `GrantMonsterKillReward` (object-script
 opcode `0x83`, `0x0801A254`) adds a species' `wRewardXp`/`wRewardGold`
@@ -981,7 +981,7 @@ total, see `bBonusRewardFlags` above). `ExitVictoryScreen`
 (`0x080148A8`) returns to `Battle` mode. `g_dwBattleRewardFlagsSnapshot`
 is set by `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler,
 previously misidentified as a draw function), which tears down
-`g_pFightState`. Reward granting itself goes through `GrantBattleReward`
+`g_pFightState`. Reward granting itself goes through `GrantReward`
 (`0x08026DE0`).
 
 ### `TickBattleTurnStateMachine`'s 8 states

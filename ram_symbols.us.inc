@@ -77,8 +77,9 @@
 .set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
 .set g_PrevGameModeCtx, 0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_abBgPriority,     0x03003F8C  @ u8[]; [4] == 0x03003F90
-.set g_nXpAccum,         0x0300260E  @ u16: running XP-reward accumulator
-.set g_nGoldAccum,       0x03002610  @ u16: running gold-reward accumulator
+.set g_nBattleXpReward, 0x0300260E  @ u16: XP earned this battle, one pool shared by the whole party
+.set g_nBattleGoldReward, 0x03002610  @ u16: Sickles earned this battle; also the scratch amount for gold reward grants
+.set g_abItemQuantities, 0x030037B0  @ u8[132]: owned count per item id, see docs/formats/save.md
 .set g_bSelectedFighterSlot_candidate, 0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
 .set g_apFighterObjects_candidate, 0x03002668  @ Object*[7]; one slot per active BattleFighter
 .set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text

@@ -27,3 +27,7 @@ typedef enum {
 } HeaderFlags;
 
 extern SaveHeader g_saveHeader;  // 0x03005598
+
+// Adds a signed amount of Sickles to the player's money, clamped to
+// 0..999999, and returns the new total.
+u32 AddSickles(s32 amount);
