@@ -14,6 +14,20 @@
 .set gIntrTable,      0x030035D0  @ 13 x u32 handler slots dispatched by IntrMain
 .set g_pTimer2DebugPc, 0x030015A0  @ see ram_symbols.us.inc
 
+@ --- Object pool and active-object list (see include/mem.h) ---
+.set g_dwObjectListActive_candidate, 0x030017A0
+.set g_pSortObjectsIwram,            0x0300194C
+.set g_pCheckObjectCollisionsIwram,  0x03001A10
+.set g_ActiveObjectListState, 0x030015B0
+.set g_ObjectPoolState,       0x03001C08
+.set g_pObjectPoolAuxBuffer,  0x03001DBC
+.set g_dwUnk03001DC0,         0x03001DC0
+.set g_dwUnk03001DC4,         0x03001DC4
+
+@ --- Battle state (see include/battle.h) ---
+.set g_pFightState,   0x030024E8
+.set g_effectStaging, 0x03002750
+
 @ --- Controller input (see docs/memory-map/input.md) ---
 .set g_wKeysHeld,  0x0300354C  @ u16: current held-key bitmask, see
                                 @ ram_symbols.us.inc/docs/memory-map/input.md
