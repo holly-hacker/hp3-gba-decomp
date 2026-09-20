@@ -643,9 +643,9 @@ thumb-func 0x08044774 ExitOptions
 thumb-func 0x08044B00 InitializeCoolTrainCutscene
 thumb-func 0x08044B7C UpdateCoolTrainCutscene
 thumb-func 0x08044BF0 ExitCoolTrainCutscene
-label 0x08045094 sub_08045094
-label 0x08045260 sub_08045260
-label 0x080452A8 sub_080452A8
+label 0x08045094 InitScanlineEffects
+label 0x08045260 CommitScanlineEffects
+label 0x080452A8 StopScanlineEffects
 label 0x080453B4 InstallIwramObjTileAllocRoutine
 label 0x080453D8 InitObjTileAllocBitmaps
 label 0x0804542C sub_0804542C

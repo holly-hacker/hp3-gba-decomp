@@ -28,7 +28,7 @@ void InitializeOverworld(void)
     // Entry: block the pause menu briefly and drop a stale script run state.
     prevRoomId = g_bCurrentRoomId;
     g_dwPauseMenuCooldown = 4;
-    sub_080452A8();
+    StopScanlineEffects();
 
     if (g_dwRoomScriptRunState == 4)
         g_dwRoomScriptRunState = 0;

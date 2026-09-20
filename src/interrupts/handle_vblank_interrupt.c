@@ -6,7 +6,7 @@
 
 extern void sub_08007130(void);
 extern void sub_0800D354(void);
-extern void sub_08045260(void);
+extern void CommitScanlineEffects(void);
 extern void sub_0801FBBC(void);
 extern void sub_08045988(void);
 extern void sub_0800D304(void);
@@ -73,7 +73,7 @@ void HandleVBlankInterrupt(void)
             }
         }
 
-        sub_08045260();
+        CommitScanlineEffects();
         sub_0801FBBC();
         sub_08045988();
 

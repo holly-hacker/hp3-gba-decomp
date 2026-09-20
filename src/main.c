@@ -32,7 +32,7 @@ extern void ClearResourceCacheSlots(void);
 extern void InstallBgTileCodec_candidate(void);
 extern void SetFadeToWhite(u16 layerMask, u16 amount);
 extern void kramInstall(void);
-extern void sub_08045094(void);
+extern void InitScanlineEffects(void);
 extern void ProcessPlaytimeTick(void);
 
 // Thumb function entry point in still-raw territory, taken by address as
@@ -83,7 +83,7 @@ void AgbMain(void)
     SetVBlankCallback(sub_08026244);
     kramInstall();
     EnableInterrupts();
-    sub_08045094();
+    InitScanlineEffects();
     g_dwFrameSyncTarget = 2;
 
     while (1)

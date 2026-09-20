@@ -125,7 +125,7 @@ extern void SetCameraFollowTarget_candidate(Object *pTarget, s32 nOffsetX, s32 n
 extern void sub_0800A348(u32 arg0, u32 arg1);
 extern void sub_080248E8(void);
 extern void sub_0801FA9C(void);
-extern void sub_080452A8(void);
+extern void StopScanlineEffects(void);
 extern void sub_0802B20C(void);
 extern void InitObjTileAllocBitmaps(u32 arg);
 extern void ShowMapNamePopup(void);

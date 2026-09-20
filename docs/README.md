@@ -60,6 +60,9 @@ Memory map (live RAM layout and the code that drives it):
   `UpdateKeyInput`/`ResetKeyInput`, the held/pressed/released key masks
   and their standard GBA `KEYINPUT` bit layout, and the serial-link
   per-player input path.
+- [`memory-map/scanline_effects.md`](memory-map/scanline_effects.md) — the
+  VCount-interrupt callback list: entry format, live/staging tables, and the
+  `InitScanlineEffects`/`QueueScanlineEffectTable`/`CommitScanlineEffects` API.
 - [`memory-map/link.md`](memory-map/link.md) — the link-cable layer
   (multiplayer SIO, Timer3 ISR pump, handshake) and the card-trade
   session (mode `0x15`, `CardTradeState`, offer/lock/compare/commit).
