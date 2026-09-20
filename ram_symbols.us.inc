@@ -54,6 +54,9 @@
 .set gIntrHandlerIwram, 0x030035A4  @ 0x200-byte IWRAM buffer InstallInterruptHandler
                                      @ CpuSets the live handler code into; gIntrVectorPtr
                                      @ points here
+.set g_pTimer2DebugPc, 0x030015A0  @ code ptr: IntrMain stores [sp,#0x14] here on a Timer 2 IRQ
+                                     @ (saved lr per the BIOS IRQ frame, unverified); read by
+                                     @ HandleTimer2Interrupt
 
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_dwGameModeFlags,   0x03003B44  @ u32: broad flags word read/written across

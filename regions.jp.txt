@@ -5,9 +5,13 @@
 asm-file 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 asm-file 0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail
 asm-file 0x080000C0 0x08000104 asm/crt0.s                crt0
+asm-file 0x08000104 0x0800011C asm/rt/enable_irq.s        EnableIrq
+asm-file 0x0800011C 0x08000134 asm/rt/disable_irq.s       DisableIrq
+asm-file 0x08000134 0x0800027C asm/rt/intr_main.s        IntrMain
 asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
+asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld

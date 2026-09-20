@@ -11,6 +11,8 @@
 
 @ --- Interrupts / VBlank state (see include/vblank.h) ---
 .set g_pVBlankState, 0x030035CC
+.set gIntrTable,      0x030035D0  @ 13 x u32 handler slots dispatched by IntrMain
+.set g_pTimer2DebugPc, 0x030015A0  @ see ram_symbols.us.inc
 
 @ --- Controller input (see docs/memory-map/input.md) ---
 .set g_wKeysHeld,  0x0300354C  @ u16: current held-key bitmask, see
