@@ -41,11 +41,13 @@ function. Calls, in order:
   `0x0300216C`; steps a frame index and counter, then re-uploads the tiles with
   `0x08007F20` (a copy/RLE/LZ77 VRAM loader chosen by header bits) to the VRAM
   address in `0x030021AC[i]`.
-- **`TickOverworldBeforeObjects_candidate`**: slot 0's queued object move
-  (`0x0800A03C`, `g_aQueuedObjectMoves`), the camera and BG streaming update
-  (`0x0803DA4C`, writes `g_CameraPosition_candidate`, loads BG tiles on demand),
-  and a list of 8-byte countdown entries that write room BG tiles when they expire
-  (`0x08020228`/`0x08020278`).
+- **`TickOverworldBeforeObjects_candidate`**: three calls. `TickQueuedObjectMove_candidate`
+  (`0x0800A03C`, JP `0x0800A03C`) runs slot 0's `g_aQueuedObjectMoves` state machine and,
+  on completion, its follow-up room chain. `UpdateOverworldCamera_candidate`
+  (`0x0803DA4C`, JP `0x0803DAB4`) writes `g_CameraPosition_candidate` from the followed
+  object and loads BG tiles on demand as it crosses tile boundaries.
+  `TickRoomTileAnimations_candidate` (`0x08020228`, JP `0x08020210`) counts down a list
+  of 8-byte entries that write room BG tiles when they expire.
 
 ## `HandleOverworldPauseMenuInput` (`0x0802AEF8`, JP `0x0802AF54`), PROVEN
 

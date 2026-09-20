@@ -99,7 +99,7 @@ thumb-func 0x08008AD0 ExitRiddikulusMinigame
 thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
 thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
 thumb-func 0x08009C54 ExitHippogriffGlideMinigame
-label 0x0800A03C sub_0800A03C
+label 0x0800A03C TickQueuedObjectMove_candidate
 label 0x0800A348 sub_0800A348
 label 0x0800A3AC SetCameraFollowTarget_candidate
 label 0x0800A4E8 SetRoomScrollBounds
@@ -323,6 +323,7 @@ label 0x0801FDA0 InitDisplayControl
 thumb-func 0x0801FDE8 InitializeHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FED4 UpdateHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
+label 0x08020228 TickRoomTileAnimations_candidate
 label 0x080203A8 sub_080203A8
 
 asm-file 0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
@@ -417,7 +418,7 @@ c-file 0x0802AEF8 0x0802B018 src/overworld/handle_overworld_pause_menu_input.c H
 label 0x0802B018 InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
-label 0x0802B0DC TickOverworldBeforeObjects_candidate
+c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
 label 0x0802B0F4 sub_0802B0F4
 label 0x0802B110 SetRoomSwitchState
 label 0x0802B12C GetRoomSwitchState
@@ -591,7 +592,7 @@ label 0x0803D338 sub_0803D338
 label 0x0803D350 SetAlphaBlendCoefficients
 label 0x0803D3B0 PlayScreenTransitionInByIndex_candidate
 label 0x0803D3E8 PlayScreenTransitionOutByIndex_candidate
-label 0x0803DA4C sub_0803DA4C
+label 0x0803DA4C UpdateOverworldCamera_candidate
 label 0x0803DB68 sub_0803DB68
 label 0x0803DC44 sub_0803DC44
 label 0x0803DCDC LoadRoomBgLayer0Extra_candidate

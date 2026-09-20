@@ -73,6 +73,13 @@ typedef struct QueuedObjectMove {
 extern QueuedObjectMove g_aQueuedObjectMoves[];
 extern u8 g_bControlSlotTicks_candidate;
 extern void TickOverworldBeforeObjects_candidate(void);
+// Advances slot's queued object move and runs its completion chain.
+extern void TickQueuedObjectMove_candidate(u8 slot);
+// Updates g_CameraPosition_candidate from the followed object and streams BG
+// tiles on demand as it crosses tile boundaries.
+extern void UpdateOverworldCamera_candidate(u32 mode);
+// Counts down the room's timed tile-change entries and applies each one when it expires.
+extern void TickRoomTileAnimations_candidate(void);
 extern void HandleOverworldPauseMenuInput(void);
 // Set by the room chain runner while it processes a chain; consumed (cleared)
 // once per frame by HandleOverworldPauseMenuInput.

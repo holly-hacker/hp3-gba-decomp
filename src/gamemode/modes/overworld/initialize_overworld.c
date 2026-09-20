@@ -208,10 +208,10 @@ void InitializeOverworld(void)
 
         // Display flags and the room's BG control overrides.
         g_dwGameModeFlags &= ~0x400000;
-        sub_0803DA4C(1);
+        UpdateOverworldCamera_candidate(1);
         sub_0803DB68();
         if ((g_dwGameModeFlags & 0x100020) != 0x100020)
-            sub_0800A03C(0);
+            TickQueuedObjectMove_candidate(0);
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideA);
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideB);
 

@@ -38,10 +38,8 @@ extern void HideScreenWindow_candidate(u32 windowId);
 
 extern void sub_080073BC(u32 arg);
 extern void sub_0803D338(u8 arg0, u32 arg1);
-extern void sub_0803DA4C(u32 arg);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);
-extern void sub_0800A03C(u32 arg);
 extern void sub_0800A914(void);
 extern void sub_0803094C(u32 arg);
 extern void sub_08001D90(u32 arg);
