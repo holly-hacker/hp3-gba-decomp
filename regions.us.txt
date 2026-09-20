@@ -597,7 +597,7 @@ label 0x0803E768 LoadRoomBgLayer1Extra_candidate
 label 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
 label 0x0803E880 LoadRoomBgLayer3Extra_candidate
 label 0x0803EF5C TickLinkCommIfActive_candidate
-label 0x0803FA94 GetLocalPlayerLinkIndex_candidate
+c-file 0x0803FA94 0x0803FAA4 src/link/get_link_player_id.c GetLinkPlayerId
 label 0x0803FC68 PlaySoundById
 label 0x0803FDB0 kramInstall
 label 0x0803FE78 SetSoundEffectVolume

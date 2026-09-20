@@ -55,7 +55,9 @@ c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c Ti
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
 label 0x08021E54 ProcessOwlCareKitTick
 label 0x08025114 InstallBgTileCodec_candidate
+c-file 0x08025504 0x0802566C src/input/update_key_input.c UpdateKeyInput
 label 0x08025944 sub_080258E8
+c-file 0x08025954 0x080259B0 src/input/reset_key_input.c ResetKeyInput
 label 0x080260C4 InitInterruptSystem
 label 0x08026104 EnableInterrupts
 label 0x080261B4 SetVBlankCallback
@@ -117,6 +119,7 @@ label 0x0803BD04 InitSaveSystem
 label 0x0803D330 sub_0803D2C8
 label 0x0803D378 SetFadeToWhite
 label 0x0803E564 sub_0803E4FC
+c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId
 label 0x0803FE18 kramInstall
 label 0x080425D0 InitDialogTextEngine
 label 0x08042E6C sub_08042E2C

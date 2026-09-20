@@ -23,4 +23,3 @@ extern void UpdateKeyInput(void);
 extern void ResetKeyInput(void);
 
 extern u16 g_awLinkKeysReceived[2];  // 0x03005A0C: per-player key masks received over the link cable
-extern s32 GetLocalPlayerLinkIndex_candidate(void);  // which of the two link slots is local

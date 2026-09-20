@@ -34,8 +34,17 @@
 .set g_effectStaging, 0x03002750
 
 @ --- Controller input (see docs/memory-map/input.md) ---
-.set g_wKeysHeld,  0x0300354C  @ u16: current held-key bitmask, see
-                                @ ram_symbols.us.inc/docs/memory-map/input.md
+.set g_wKeysHeld,          0x0300354C  @ see ram_symbols.us.inc/docs/memory-map/input.md
+.set g_wKeysHeldPrevious,  0x0300354E
+.set g_wKeysPressed,       0x03003550
+.set g_wKeysReleased,      0x03003552
+.set g_wInputDisabled,     0x03003554
+.set g_awPlayerKeysHeld,          0x03003556
+.set g_awPlayerKeysHeldPrevious,  0x0300355A
+.set g_awPlayerKeysPressed,       0x0300355E
+.set g_awPlayerKeysReleased,      0x03003562
+.set g_awLinkKeysReceived, 0x03005A6C
+.set g_LinkPlayerState,    0x03005A84  @ see include/link.h
 
 
 @ --- Save state / playtime ---

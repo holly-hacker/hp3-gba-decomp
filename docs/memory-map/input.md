@@ -5,10 +5,7 @@ See [`../README.md`](../README.md) for the confidence-key legend
 
 ## `UpdateKeyInput` / `ResetKeyInput`, PROVEN
 
-Matched (US): `src/input/update_key_input.c`, `src/input/reset_key_input.c`.
-JP required adding a `functions.jp.cfg` seed for `UpdateKeyInput` since
-`gbadisasm` did not auto-detect its boundary there (`just disasm-compare`
-confirmed byte-exact for both versions after seeding); JP is not yet matched.
+Matched (US and JP): `src/input/update_key_input.c`, `src/input/reset_key_input.c`.
 
 | Name | US addr | JP addr | Called from |
 |---|---|---|---|
@@ -25,7 +22,8 @@ if (g_wInputDisabled != 0) {
     // serial-link input: update both players' masks from the link
     // input buffer (g_awLinkKeysReceived, 0x03005A0C, see
     // docs/memory-map/link.md), then select the local player's slot
-    // (GetLocalPlayerLinkIndex_candidate, 0x0803FA94)
+    // (`GetLinkPlayerId`, US `0x0803FA94`, JP `0x0803FAFC`: the local
+    // multiplayer terminal ID, see link.md)
     ...
     g_wKeysHeldPrevious = g_awPlayerKeysHeldPrevious[localPlayer];
     g_wKeysHeld = g_awPlayerKeysHeld[localPlayer];
@@ -81,10 +79,10 @@ All `u16`, standard GBA `KEYINPUT` bit order (active-high once XORed, as
 | `g_awPlayerKeysPressed` | `0x030034FE` | `u16[2]`, per-player newly-pressed masks. |
 | `g_awPlayerKeysReleased` | `0x03003502` | `u16[2]`, per-player newly-released masks. |
 
-JP addresses for the per-player/edge globals are not yet mapped (no matched
-C source currently reads them on the JP side); `g_wKeysHeld` is the one
-exception, already named in `ram_symbols.jp.inc` at `0x0300354C` for the
-shared `Mt19937AutoSeed` source.
+JP addresses (`ram_symbols.jp.inc`): every key-state global sits `0x60` higher
+than its US address, from `g_wKeysHeld` (`0x0300354C`) through
+`g_awPlayerKeysReleased` (`0x03003562`), and `g_awLinkKeysReceived` is
+`0x03005A6C`.
 
 ## Known readers
 

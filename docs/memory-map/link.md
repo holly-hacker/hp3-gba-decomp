@@ -21,6 +21,12 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
   linked, 5 error) and `g_bLinkChildMask` (`0x03005A22`, one bit per
   connected child). `IsLinkUp` (`0x0803FB78`) is exactly
   "state == 2 and mask == 3" — a two-player session ready.
+- `g_LinkPlayerState` (`0x03005A24`, `include/link.h`) holds the session's
+  local terminal ID at `+5` (`bPlayerId`, `s8`): `LinkSerialTimer3Intr` stores
+  `(SIOCNT >> 4) & 3` there while `g_dwLinkState != 0` (0 = parent, 1-3 =
+  child), and init/teardown reset it to `0xFF` (-1, no session).
+  `GetLinkPlayerId` (`0x0803FA94`) returns it; `UpdateKeyInput` uses it to
+  pick the local player's key slot. A value above 1 tears the session down.
 - A 9-entry error vocabulary (`Error: Send Overrun`, `Recv CRC`, `Timeout`,
   `Game Code Recv/Send`, …) sits at `0x08060554` but is currently
   unreferenced — dead debug strings, reached by computed index if at all.

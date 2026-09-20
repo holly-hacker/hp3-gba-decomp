@@ -1,5 +1,6 @@
 #include "types.h"
 #include "input.h"
+#include "link.h"
 #include "io_regs.h"
 #include "game_modes.h"
 
@@ -27,7 +28,7 @@ void UpdateKeyInput(void)
     if ((g_dwGameModeFlags & 0x20) != 0)
     {
         s32 i;
-        s32 localPlayer = GetLocalPlayerLinkIndex_candidate();
+        s32 localPlayer = GetLinkPlayerId();
 
         for (i = 0; i < 2; i++)
         {
