@@ -143,6 +143,10 @@ extern s32 IsGameModeTransitionPending(void);
 // touched by dozens of functions across overworld/room/cutscene transitions.
 extern u32 g_dwGameModeFlags;
 
+typedef enum {
+    LinkSessionActive = 0x20,
+} GameModeFlags;
+
 // u32: incremented once per TickGameModeStack call, before mode dispatch.
 // Also used by UpdateObjectSpriteFrame as a per-tick generation stamp for
 // its shared VRAM tile allocation cache.

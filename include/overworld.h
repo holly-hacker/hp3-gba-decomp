@@ -36,3 +36,33 @@ s32 FindWanderingMonsterSpawnPosition(u32 *pOutPos, u32 terrainType, SpawnPositi
 u32 PickMaxDamageMonster(const u8 *pSlots);
 // Create one wandering-monster object.
 void SpawnWanderingMonsterObject(u8 monsterId, u16 x, u16 y, u8 encounterId, u8 variant, u8 kind);
+
+// Controllable-character slots: each 16-byte entry starts with the Object the
+// player steers; only slot 0 is ever populated.
+typedef struct OverworldControlSlot {
+    Object *pObject;
+    u8 aUnknown4[12];
+} OverworldControlSlot;
+
+typedef struct OverworldControlState {
+    OverworldControlSlot aSlots[2];
+    // Set to 1 by InitializeOverworld; no other writer found.
+    u8 bSlotCount;
+    // Active entry of aSlots.
+    u8 bSlotIndex;
+} OverworldControlState;
+
+extern OverworldControlState g_OverworldControlState;
+extern u8 g_bControlSlotTicks_candidate;
+
+// Nonzero blocks the overworld Start/Select menus (SetPauseMenuLocked).
+extern u32 g_dwPauseMenuLocked;
+// Frames until Start/Select may open a menu again; 4 after room init and
+// each menu open, counted down by UpdateOverworld.
+extern u32 g_dwPauseMenuCooldown;
+
+// Multi-slot bookkeeping that only acts when the slot count exceeds 1.
+// Always returns 0.
+s32 TickOverworldControlSlots_candidate(void);
+// Advances the Owl Care Kit's timers and need counters while walking around.
+void TickOwlCareKitFromOverworld(void);

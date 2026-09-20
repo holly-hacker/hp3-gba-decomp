@@ -119,6 +119,12 @@
 .set g_abTouchedMonsterRecords,    0x03003B74  @ u8[20]: 5 x 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,    0x03003B88  @ Object *: armed wandering-monster object
 
+@ --- Overworld control slots and pause menu (see include/overworld.h) ---
+.set g_OverworldControlState,     0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
+.set g_bControlSlotTicks_candidate, 0x03003B58  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
+.set g_dwPauseMenuLocked,          0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
+.set g_dwPauseMenuCooldown,        0x03003B6C  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
+
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
                                          @ text-rendering fields (e.g. +0x11 = line height); not

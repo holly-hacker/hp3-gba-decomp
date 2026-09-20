@@ -34,3 +34,10 @@
 .set g_bTouchedMonsterRecordCount, 0x03003BD0  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,    0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,    0x03003BE8  @ Object *: armed wandering-monster object
+
+@ --- Overworld control slots and pause menu (see include/overworld.h) ---
+.set g_dwGameModeFlags,            0x03003BA4  @ u32: broad game-mode flags word
+.set g_OverworldControlState,     0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
+.set g_bControlSlotTicks_candidate, 0x03003BB8  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
+.set g_dwPauseMenuLocked,          0x03003BC0  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
+.set g_dwPauseMenuCooldown,        0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open

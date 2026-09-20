@@ -202,10 +202,12 @@ asm-file 0x08020E40 0x08020E9C asm/text/measure_macro_string.s MeasureMacroStrin
 asm-file 0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
 asm-file 0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
 label 0x08021560 NoopInit
+c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x0802165C 0x08021694 src/playtime/process_playtime_tick.c ProcessPlaytimeTick
 label 0x080216A0 AddSickles
 thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
+label 0x08021DF8 ProcessOwlCareKitTick
 thumb-func 0x08022D98 HandleOwlCareKitScreenExit
 label 0x080249C8 GetPartyPresenceMask
 label 0x080249FC GetPartySize
@@ -260,7 +262,8 @@ label 0x08029770 WaitForVBlank
 thumb-func 0x080297A0 InitializeOverworld
 thumb-func 0x0802A14C ExitOverworldScreen
 label 0x0802B018 InitRoomState
-thumb-func 0x0802B058 UpdateOverworld
+c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
+c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 label 0x0802B0F4 sub_0802B0F4
 c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 label 0x0802B41C SpawnWanderingMonsterObject
