@@ -56,8 +56,9 @@ s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex)
     if (power == 0)
         goto done;
 
-    // Crit chance is 50% of the player's level, or 75% if using PWT, capped to 12.
-    // You hit max crit chance at lv24, or lv16 with PWT.
+    // Calculate extra crit chance, on top of the 2% base chance.
+    // Extra crit chance is 50% of the player's level, or 75% if using PWT, capped to 12.
+    // You hit max extra crit chance at lv24, or lv16 with PWT.
     attackerLevel = ATTACKER.bLevel;
     if (attackerLevel >= 2)
     {
@@ -72,7 +73,7 @@ s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex)
     }
     else
     {
-        // never crit at level 1. This branch is useless, since 1 >> 1 is 0 anyway.
+        // No extra crit chance at level 1. This branch is useless, since 1 >> 1 is 0 anyway.
         critChance = 0;
     }
 

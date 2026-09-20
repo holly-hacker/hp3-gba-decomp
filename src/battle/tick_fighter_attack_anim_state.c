@@ -304,8 +304,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                         if (g_nLastDamage != 0)
                             ShowDamageNumber_candidate((u8)i, g_nLastDamage);
                         if (g_nLastDamage > 999) {
-                            // Overkill: the message carries the excess over
-                            // 999 and g_nLastDamage is rewritten in place.
+                            // Handle crit damage
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wObjectType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
