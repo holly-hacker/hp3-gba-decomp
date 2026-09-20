@@ -71,6 +71,7 @@ typedef struct CameraFocusOffset {
     s32 nY;
 } CameraFocusOffset;
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
+extern CameraFocusOffset g_CameraPosition_candidate;
 
 // One band of scanlines for SetupScanlineBands_candidate.
 typedef struct ScanlineBand {

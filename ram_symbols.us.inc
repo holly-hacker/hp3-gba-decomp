@@ -180,6 +180,7 @@
 .set gMt19937AutoSeedCallCount,  0x03005590  @ increments each AutoSeed call (purpose unconfirmed)
 .set gMt19937SeedValue,          0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 .set g_saveHeader,               0x03005598  @ SaveHeader; the live RAM copy, SaveManager.header; see docs/formats/save.md
+.set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for object visibility
 
 @ --- Room load / room script state (see include/room.h) ---
 .set g_bRoomScriptYieldOpcode,        0x03001DE9  @ u8: opcode a running room script yielded on

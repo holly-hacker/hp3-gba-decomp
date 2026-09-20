@@ -11,6 +11,7 @@ extern u32 g_aBgScrollState[];  // 0x03001E80; [0x25] == 0x03001F14
 extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
+extern void sub_0800D254(void *ptr, s16 val1, s16 val2);
 extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
 extern void PlayScreenTransitionInByIndex_candidate(u32 index, u32 arg);
 extern void PlayScreenTransitionOutByIndex_candidate(s32 arg0, s32 arg1);

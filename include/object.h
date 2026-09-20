@@ -54,6 +54,23 @@ typedef struct {
     u8 pad1 : 4;
 } ObjectFlagsD5;
 
+// Signed sprite extents packed as {low s16, high s16} for each axis.
+// UpdateObjectOnscreenFlags copies both words together before unpacking them.
+typedef struct ObjectSpriteBounds {
+    u32 packedX;
+    u32 packedY;
+} ObjectSpriteBounds;
+
+// One selectable 16-byte sprite resource record. The first two pointers feed
+// SetObjectAssetRecord's tile/frame pipeline; pPalette is uploaded separately.
+typedef struct ObjectAssetRecord {
+    void *pTileGfx;
+    void *pFrameData;
+    void *pPalette;
+    u8 bAnimFrameDelay;
+    u8 pad_D[3];
+} ObjectAssetRecord;
+
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
 // into FightState.aSuspendedFighterObjects_candidate -- see battle.h). Only
@@ -166,8 +183,7 @@ typedef struct Object {
     u8 bAffineEffectTimer;  // 0xFE, ticks remaining for the current scale tween; nonzero keeps
                              // TickObjectAffineEffect running
     u8 bAffineMode;         // 0xFF, mirrors bFlags_0xD1's low 2 bits (affine slot state)
-    u8 pad_100[0x08];       // -> 0x108, two u16 pairs read by UpdateObjectOnscreenFlags as an
-                             // onscreen bounding box; not yet decoded
+    ObjectSpriteBounds spriteBounds;  // 0x100, signed X/Y extent pairs used for visibility
     void *pEffectData;      // 0x108, direct pointer form of the same graphics-cache resource
                              // bGfxSlotAndFlags's upper nibble indexes (mutually exclusive with
                              // it -- see ClaimObjectEffectResource/BindEffectChannelSlot_candidate)
@@ -177,10 +193,15 @@ typedef struct Object {
                              // FreeObjectVramTileAllocation (0xFFFF = none); set to 0xFFFF by
                              // ExitBattle when suspending a fighter for the Folio Universitas/
                              // Help resume path
-    u8 pad_114[0x02];       // -> 0x116
+    u8 bForceOnscreen_candidate;  // 0x114, value 1 prevents visibility flags being cleared
+    u8 pad_115;             // -> 0x116
     u8 bObjectPoolAuxSlot;  // 0x116, index into g_pObjectPoolAuxBuffer's 0x34-byte-stride
                              // records; see ReleaseObjectOffscreenVramTiles
-    u8 pad_117[0x11];       // -> 0x128
+    u8 pad_117[0x09];       // -> 0x120
+    ObjectAssetRecord **pSpriteVariantTables;  // 0x120, outer table selected by +0x124
+    u8 bSpriteVariantTableIndex;  // 0x124
+    u8 bSpriteVariantIndex;       // 0x125
+    u8 pad_126[0x02];       // -> 0x128
 } Object;
 
 // wObjectType values used by room/overworld object spawners (room-tile
@@ -214,6 +235,8 @@ typedef enum {
 extern Object *AllocObjectOfType(s32 type);
 extern Object *AllocDefaultObject(void);
 extern void FreeObject(Object *obj);
+extern s32 UpdateObjectOnscreenFlags(Object *obj);
+extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
 extern void ReleaseObjectOffscreenVramTiles(Object *obj);
 extern void ClaimObjectEffectResource(Object *obj);
 extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);

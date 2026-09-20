@@ -28,6 +28,8 @@ asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRema
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
 asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
+c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
+c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
 label 0x08001300 ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
@@ -131,6 +133,7 @@ c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
 label 0x0800D0A0 SetupScanlineBands_candidate
 label 0x0800D1A4 InitGammaPalette
+label 0x0800D254 sub_0800D254
 label 0x0800D264 sub_0800D264
 label 0x0800D2DC sub_0800D2DC
 label 0x0800D304 sub_0800D304

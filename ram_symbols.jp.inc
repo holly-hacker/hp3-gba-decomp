@@ -45,6 +45,7 @@
 .set gMt19937RemainingIndices2,  0x030055EC
 .set gMt19937AutoSeedCallCount,  0x030055F0
 .set gMt19937SeedValue,          0x030055F4
+.set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for object visibility
 
 @ --- Overworld wandering monsters (see include/overworld.h) ---
 .set g_bTouchedMonsterRecordCount, 0x03003BD0  @ byte: queued (encounter id, kind) pair count
