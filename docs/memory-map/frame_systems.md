@@ -41,13 +41,50 @@ function. Calls, in order:
   `0x0300216C`; steps a frame index and counter, then re-uploads the tiles with
   `0x08007F20` (a copy/RLE/LZ77 VRAM loader chosen by header bits) to the VRAM
   address in `0x030021AC[i]`.
-- **`TickOverworldBeforeObjects_candidate`**: three calls. `TickQueuedObjectMove_candidate`
-  (`0x0800A03C`, JP `0x0800A03C`) runs slot 0's `g_aQueuedObjectMoves` state machine and,
-  on completion, its follow-up room chain. `UpdateOverworldCamera_candidate`
-  (`0x0803DA4C`, JP `0x0803DAB4`) writes `g_CameraPosition_candidate` from the followed
-  object and loads BG tiles on demand as it crosses tile boundaries.
-  `TickRoomTileAnimations_candidate` (`0x08020228`, JP `0x08020210`) counts down a list
-  of 8-byte entries that write room BG tiles when they expire.
+- **`TickOverworldBeforeObjects_candidate`**: three calls. `TickCameraFocus_candidate`
+  (`0x0800A03C`, JP `0x0800A03C`) runs slot 0's camera focus and any scripted camera
+  effect. `UpdateOverworldCamera_candidate` (`0x0803DA4C`, JP `0x0803DAB4`) turns the
+  focus point into `g_CameraPosition_candidate` (focus minus the half screen, clamped to
+  the room) and loads BG tiles on demand as it crosses tile boundaries.
+  `TickRoomTileAnimations_candidate` (`0x08020228`, JP `0x08020210`) steps the room's
+  animated tiles: 8-byte entries `{set, step, delay, flags, x, y}` at `0x03002F24`
+  (count at `0x03002F28`) added by `AddRoomTileAnimation_candidate` (`0x080201C8`, JP
+  `0x080201B0`). When an entry's delay hits 0, `0x08020278` copies the frame's tiles
+  (frame lists come from the sets at `0x08060400`; delay `0xFF` loops, `0xFE` halts) to
+  the entry's tile position on the BG layers in the frame's mask.
+  `FindRoomTileAnimation_candidate` (`0x08020504`, JP `0x080204EC`) looks an entry up by
+  tile; room object capture/restore saves and restores its state that way, and
+  `SpawnRoomTileAnimationObject_candidate` (`0x08020490`, JP `0x08020478`) creates the
+  room object that owns one.
+
+## Camera focus (`TickCameraFocus_candidate`), STRUCTURAL MATCH
+
+Two slots (the control slots), all three arrays adjacent in IWRAM:
+
+| Array | Addr | Layout |
+|---|---|---|
+| `g_aCameraEffects_candidate` | `0x03002090` | `CameraEffect`, `0x2C` bytes |
+| `g_aCameraFocusSlots` | `0x030020E8` | `CameraFocusSlot`, `0x38` bytes: focus `nX/nY` (16.16), latched copy, `pTarget`, `wPinned` |
+| `g_aCameraFollowOffsets` | `0x03002158` | per-slot `(X, Y)` offset set by `SetCameraFollowTarget_candidate` |
+
+The focus follows `pTarget` unless `wPinned` is set. `CameraEffect.bState` selects a
+scripted effect started by room script opcodes `0x10` and `0x12`:
+
+- **1, pan**: `MoveCameraFocusToward_candidate` (`0x0800A1F0`) steps the focus toward
+  the target by `nStep` along the angle and returns 8 on arrival. Until `wCounter`
+  reaches 0 the focus just holds on the target. On arrival, if the target is the
+  controlled object the effect ends and its velocity and `bActionSubState` are
+  restored. Once, `RespawnRowAndRunChain_candidate(bRespawnRow, bChainRow)` runs, and a
+  pending script yield (`dwResumeScript`) resumes through
+  `ResumeRoomSwitchStateChain_candidate`. Opcode `0x10` freezes the controlled object
+  (velocity saved and zeroed) while the pan runs.
+- **3, shake**: the focus follows the target with a `±nStep` offset on Y (vertical) every other frame for
+  `dwFramesLeft` frames (forever when `dwRunForever` is set). At the end it runs the
+  row/chain and calls `sub_0803FE98`, an unidentified wrapper around `0x08049E50`.
+- **0, idle**: only the follow behavior.
+
+Whether state 3 is visibly a shake in play, and what `sub_0803FE98` does, are
+UNCONFIRMED.
 
 ## `HandleOverworldPauseMenuInput` (`0x0802AEF8`, JP `0x0802AF54`), PROVEN
 

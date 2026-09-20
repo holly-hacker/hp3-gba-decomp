@@ -63,18 +63,49 @@ extern u8 g_bPartyCharId0;
 extern u8 g_bPartyCharId1;
 extern u8 g_bPartyCharId2;
 
-// Per-slot queued object move, driven by room scripts. Only the state byte is
-// known; the array has one record per control slot.
-typedef struct QueuedObjectMove {
-    u8 pad_00[0x25];
-    u8 bState;  // 0 = idle
-    u8 pad_26[0x06];
-} QueuedObjectMove;
-extern QueuedObjectMove g_aQueuedObjectMoves[];
+// Per-slot scripted camera effect, started by room script opcodes 0x10
+// (QueueTileObjectMove: pan the camera focus to an object) and 0x12
+// (SetAllQueuedMoveParams: shake). One 0x2C-byte record per control slot,
+// ticked by TickCameraFocus_candidate. See docs/memory-map/frame_systems.md.
+typedef struct CameraEffect {
+    Object *pTarget;           // 0x00, pan target
+    u32 nSavedVelX;            // 0x04, the controlled object's velocity, restored when the pan ends
+    u32 nSavedVelY;            // 0x08
+    u8 pad_0C[0x08];           // -> 0x14
+    s32 nStep;                 // 0x14, pan speed; shake amplitude (posX << 16) in state 3
+    u32 dwFramesLeft;          // 0x18, shake duration in frames
+    u32 dwRunForever;          // 0x1C, shake: nonzero when the duration operand was 0
+    u16 wCounter;              // 0x20, pan: frames to wait; shake: 0/1 toggle
+    u8 pad_22;                 // -> 0x23
+    u8 bRespawnRow;            // 0x23, first argument to RespawnRowAndRunChain_candidate
+    u8 bChainRow;              // 0x24, second argument to RespawnRowAndRunChain_candidate
+    u8 bState;                 // 0x25, 0 = idle, 1 = pan, 3 = shake
+    u8 bSavedActionSubState;   // 0x26, controlled object's bActionSubState when the pan began
+    u8 bChainRan;              // 0x27, set once the pan's chain has run
+    u32 dwResumeScript;        // 0x28, nonzero: resume the yielded room script when the pan ends
+} CameraEffect;
+extern CameraEffect g_aCameraEffects_candidate[];
+
+// Per-slot camera focus point: what UpdateOverworldCamera_candidate centres the
+// screen on (16.16 world coordinates). Follows pTarget unless wPinned is nonzero.
+typedef struct CameraFocusSlot {
+    s32 nX;                    // 0x00
+    s32 nY;                    // 0x04
+    u8 pad_08[0x10];           // -> 0x18
+    s32 nLatchedX;             // 0x18, copy of the focus point; see SetCameraFollowTarget_candidate
+    s32 nLatchedY;             // 0x1C
+    u8 pad_20[0x10];           // -> 0x30
+    Object *pTarget;           // 0x30, object the focus follows
+    u16 wPinned;               // 0x34, 0 = follow pTarget every frame, 1 = hold
+    u8 pad_36[0x02];           // -> 0x38
+} CameraFocusSlot;
+extern CameraFocusSlot g_aCameraFocusSlots[];
+
 extern u8 g_bControlSlotTicks_candidate;
 extern void TickOverworldBeforeObjects_candidate(void);
-// Advances slot's queued object move and runs its completion chain.
-extern void TickQueuedObjectMove_candidate(u8 slot);
+// Ticks slot's camera focus: follows the target object, or runs the active pan/shake
+// effect and its completion chain.
+extern void TickCameraFocus_candidate(u8 slot);
 // Updates g_CameraPosition_candidate from the followed object and streams BG
 // tiles on demand as it crosses tile boundaries.
 extern void UpdateOverworldCamera_candidate(u32 mode);

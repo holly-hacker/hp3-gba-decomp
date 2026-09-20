@@ -15,7 +15,7 @@ void HandleOverworldPauseMenuInput(void)
     if (controlled->bActionSubState != 5
         && g_dwRoomChainRanThisFrame_candidate == 0
         && IsGameModeTransitionPending() == 0
-        && g_aQueuedObjectMoves[g_OverworldControlState.bSlotIndex].bState != 1
+        && g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bState != 1
         && (g_dwGameModeFlags & 0x80000811) == 0
         && (g_pPlayerObject->dwFlags & ObjectFlagAnimPaused) == 0
         && g_pPlayerObject->bActionState == 0x21) {

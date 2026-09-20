@@ -7,5 +7,5 @@ void RoomScriptOpClearAllQueuedMoves(RoomScriptRecord *pRecord)
     u8 i;
 
     for (i = 0; i < g_OverworldControlState.bSlotCount; i++)
-        g_aQueuedObjectMoves[i].bState = 0;
+        g_aCameraEffects_candidate[i].bState = 0;
 }

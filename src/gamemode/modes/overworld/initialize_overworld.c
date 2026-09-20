@@ -211,7 +211,7 @@ void InitializeOverworld(void)
         UpdateOverworldCamera_candidate(1);
         sub_0803DB68();
         if ((g_dwGameModeFlags & 0x100020) != 0x100020)
-            TickQueuedObjectMove_candidate(0);
+            TickCameraFocus_candidate(0);
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideA);
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideB);
 

@@ -99,7 +99,8 @@ thumb-func 0x08008AD0 ExitRiddikulusMinigame
 thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
 thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
 thumb-func 0x08009C54 ExitHippogriffGlideMinigame
-label 0x0800A03C TickQueuedObjectMove_candidate
+label 0x0800A03C TickCameraFocus_candidate
+label 0x0800A1F0 MoveCameraFocusToward_candidate
 label 0x0800A348 sub_0800A348
 label 0x0800A3AC SetCameraFollowTarget_candidate
 label 0x0800A4E8 SetRoomScrollBounds

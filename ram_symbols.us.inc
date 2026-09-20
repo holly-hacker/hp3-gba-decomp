@@ -212,7 +212,9 @@
 
 @ --- Overworld object tracking (see include/overworld.h) ---
 .set g_pPlayerObject,        0x03003380  @ Object *: the player's overworld object
-.set g_aQueuedObjectMoves,   0x03002090  @ QueuedObjectMove[]: one 0x2C-byte record per control slot
+.set g_aCameraEffects_candidate, 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot
+.set g_aCameraFocusSlots,    0x030020E8  @ CameraFocusSlot[2]: 0x38 bytes each
+.set g_aCameraFollowOffsets, 0x03002158  @ s32[2][2]: per-slot (X, Y) offset set by SetCameraFollowTarget_candidate
 .set g_pPendingCameraFocus_candidate, 0x03003FD8  @ void *: argument RestorePendingCameraFocus_candidate is called with
 .set g_pFollowerObject0, 0x03003384  @ Object *: first party follower, NULL while empty
 .set g_pFollowerObject1, 0x03003388  @ Object *: second party follower, NULL while empty

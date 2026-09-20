@@ -40,7 +40,8 @@ label 0x08005CAC SetRoomObjectRecordPtr_candidate
 label 0x08005F10 CheckObjectCollisions_candidate
 label 0x08006440 SortObjectsByDepth_candidate
 label 0x08006EF4 TickBgLayers_candidate
-label 0x0800A03C TickQueuedObjectMove_candidate
+label 0x0800A03C TickCameraFocus_candidate
+label 0x0800A1F0 MoveCameraFocusToward_candidate
 label 0x0800A610 TickBgTileAnimations_candidate
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
