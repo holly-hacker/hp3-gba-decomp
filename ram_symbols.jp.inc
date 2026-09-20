@@ -26,6 +26,7 @@
 .set g_dwUnk03001DC4,         0x03001DC4
 
 @ --- main / game-mode stack (see src/main.c) ---
+.set g_GameModeStackContext, 0x03003F54  @ see ram_symbols.us.inc
 .set g_dwGameModeFlags,   0x03003BA4  @ see ram_symbols.us.inc
 .set g_dwFrameSyncTarget, 0x03003BA8  @ see ram_symbols.us.inc
 

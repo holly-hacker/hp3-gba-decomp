@@ -7,6 +7,12 @@
 extern void ClearVram(void);
 extern void ClearPaletteRam(void);
 
+// Per-frame ticks run by TickFrameSystems; see docs/memory-map/frame_systems.md.
+extern void TickBgLayers_candidate(void);
+extern void TickScreenWindows_candidate(void);
+extern void TickPaletteAnimations_candidate(void);
+extern void TickBgTileAnimations_candidate(void);
+
 extern u32 g_aBgScrollState[];  // 0x03001E80; [0x25] == 0x03001F14
 extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 

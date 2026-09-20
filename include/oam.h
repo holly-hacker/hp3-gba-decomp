@@ -25,3 +25,5 @@ extern u8 g_bOamEntryCount;
 // Snapshot of g_bOamEntryCount taken just before it's reset -- the queued
 // entry count from the frame that's now being DMA-flushed.
 extern u8 g_bOamEntryCountPrev;
+
+extern void HideUnusedOamEntries(void);

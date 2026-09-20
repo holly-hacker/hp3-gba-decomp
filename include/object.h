@@ -249,6 +249,7 @@ typedef enum {
 extern Object *AllocObjectOfType(s32 type);
 extern Object *AllocDefaultObject(void);
 extern void FreeObject(Object *obj);
+extern void TickActiveObjects(void);
 extern s32 UpdateObjectOnscreenFlags(Object *obj);
 extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
 extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300

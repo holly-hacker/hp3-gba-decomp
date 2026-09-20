@@ -34,6 +34,7 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
+label 0x080015B8 TickActiveObjects
 label 0x080015D4 sub_080015D4
 label 0x0800187C SetObjectAssetRecord
 label 0x080018D8 SetObjectAnimData
@@ -80,6 +81,7 @@ label 0x08005CAC SetRoomObjectRecordPtr_candidate
 label 0x08005DC0 sub_08005DC0
 label 0x08005F10 CheckObjectCollisions_candidate
 label 0x08006440 SortObjectsByDepth_candidate
+label 0x08006EF4 TickBgLayers_candidate
 
 label 0x08007130 sub_08007130
 label 0x080072D0 SetBgControl_candidate
@@ -104,6 +106,7 @@ label 0x0800A4E8 SetRoomScrollBounds
 thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
 thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
 thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
+label 0x0800A610 TickBgTileAnimations_candidate
 label 0x0800A914 sub_0800A914
 thumb-func 0x0800A950 InitializeDebugMenuMain
 thumb-func 0x0800AA54 HandleDebugTestMenuSelect
@@ -136,6 +139,7 @@ label 0x0800D1A4 InitGammaPalette
 label 0x0800D254 sub_0800D254
 label 0x0800D264 sub_0800D264
 label 0x0800D2DC sub_0800D2DC
+label 0x0800D2F4 TickPaletteAnimations_candidate
 label 0x0800D304 sub_0800D304
 label 0x0800D354 sub_0800D354
 label 0x0800D39C ClearPaletteRam
@@ -409,9 +413,11 @@ c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c
 thumb-func 0x0802A14C ExitOverworldScreen
 label 0x0802AB34 RestoreRoomObjectState
 label 0x0802AE64 RestoreRoomObjectStateMinimal
+label 0x0802AEF8 HandleOverworldPauseMenuInput
 label 0x0802B018 InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
+label 0x0802B0DC TickOverworldBeforeObjects_candidate
 label 0x0802B0F4 sub_0802B0F4
 label 0x0802B110 SetRoomSwitchState
 label 0x0802B12C GetRoomSwitchState
@@ -443,7 +449,7 @@ label 0x0802C7B4 GetPendingGameMode_candidate
 c-file 0x0802C7C4 0x0802C7E0 src/gamemode/push_game_mode.c PushGameMode
 c-file 0x0802C7E0 0x0802C800 src/gamemode/push_game_mode_2.c PushGameMode_2
 c-file 0x0802C800 0x0802C820 src/gamemode/push_game_mode_3.c PushGameMode_3
-label 0x0802C820 TickFrameSystems
+c-file 0x0802C820 0x0802C860 src/gamemode/tick_frame_systems.c TickFrameSystems
 c-file 0x0802C860 0x0802C87C src/gamemode/is_game_mode_transition_pending.c IsGameModeTransitionPending
 c-file 0x0802C87C 0x0802C8A8 src/gamemode/dispatch_game_mode_init.c DispatchGameModeInit
 c-file 0x0802C8A8 0x0802C8D0 src/gamemode/dispatch_game_mode_update.c DispatchGameModeUpdate
@@ -471,6 +477,7 @@ label 0x08030094 GetObjectAffineSlotId
 label 0x080300A0 SetObjectAffineSlotId
 label 0x080300B4 AllocAffineSlot
 label 0x080300F8 FreeAffineSlot
+label 0x08030184 HideUnusedOamEntries
 thumb-func 0x08030274 InitializeOwlNameSelect
 thumb-func 0x0803031C UpdateOwlNameSelect
 thumb-func 0x08030568 ExitOwlNameSelect
@@ -487,6 +494,7 @@ label 0x08031668 sub_08031668
 c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleaseParticleEmitter_candidate
 label 0x080316D4 sub_080316D4
 label 0x0803171C sub_0803171C
+label 0x08031748 TickParticleEmitters
 thumb-func 0x080319FC InitializeHarryPatronusCutscene
 thumb-func 0x08031B4C UpdateHarryPatronusCutscene
 thumb-func 0x08031CA8 ExitHarryPatronusCutscene
@@ -653,6 +661,7 @@ label 0x08045514 FreeObjectVramTileAllocation
 label 0x08045808 HideScreenWindow_candidate
 label 0x08045838 SetScreenWindowLayers_candidate
 label 0x080458A8 SetScreenWindowRect_candidate
+label 0x08045970 TickScreenWindows_candidate
 label 0x08045988 sub_08045988
 label 0x08049E3C sub_08049E3C
 

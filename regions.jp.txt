@@ -19,6 +19,7 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
+label 0x080015B8 TickActiveObjects
 label 0x0800187C SetObjectAssetRecord
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
@@ -38,11 +39,14 @@ label 0x08005A44 sub_08005A44
 label 0x08005CAC SetRoomObjectRecordPtr_candidate
 label 0x08005F10 CheckObjectCollisions_candidate
 label 0x08006440 SortObjectsByDepth_candidate
+label 0x08006EF4 TickBgLayers_candidate
+label 0x0800A610 TickBgTileAnimations_candidate
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
 label 0x0800D1A4 InitGammaPalette
 label 0x0800D254 sub_0800D254
 label 0x0800D264 sub_0800D264
+label 0x0800D2F4 TickPaletteAnimations_candidate
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 label 0x08018BCC CreateEffectScriptObject
 label 0x0801DD3C InstallIwramDecompressCodecs
@@ -72,9 +76,11 @@ c-file 0x080287BC 0x080287E8 src/mem/list_remove.c List_Remove
 # AgbMain's callees are labeled with their US names so shared C links; a
 # sub_<ADDR> label carries the US address, not the JP one.
 c-file 0x080296EC 0x080297FC src/main.c AgbMain
+label 0x0802AF54 HandleOverworldPauseMenuInput
 label 0x0802B074 InitRoomState
 c-file 0x0802B0B4 0x0802B0E8 src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0FC 0x0802B138 src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
+label 0x0802B138 TickOverworldBeforeObjects_candidate
 c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 label 0x0802B478 SpawnWanderingMonsterObject
 
@@ -90,12 +96,15 @@ label 0x0802C3EC FreeBlock
 label 0x0802C4AC memset
 label 0x0802C710 TickGameModeStack
 label 0x0802C7AC InitGameModeStack
+c-file 0x0802C864 0x0802C8A4 src/gamemode/tick_frame_systems.c TickFrameSystems
 label 0x0802D588 NoopInit3
 label 0x0802DD98 NoopInit2
 label 0x0802FF70 InitOamSystem
+label 0x080301C8 HideUnusedOamEntries
 label 0x08030868 ClearResourceCacheSlots
 label 0x0803091C ClaimObjectEffectResource
 label 0x080315E8 InitResourceCachePools
+label 0x0803178C TickParticleEmitters
 label 0x0803B128 ClearSystemMemory
 
 # MT19937 PRNG, see docs/memory-map/rng.md
@@ -126,6 +135,7 @@ label 0x08042E6C sub_08042E2C
 label 0x08044FC0 InitScanlineEffects
 label 0x080452E0 InstallIwramObjTileAllocRoutine
 label 0x08045440 FreeObjectVramTileAllocation
+label 0x0804589C TickScreenWindows_candidate
 label 0x08049DBC bios_CPUSet
 label 0x08049DE8 bios_VBlankIntrWait
 

@@ -63,6 +63,9 @@ Memory map (live RAM layout and the code that drives it):
 - [`memory-map/scanline_effects.md`](memory-map/scanline_effects.md) — the
   VCount-interrupt callback list: entry format, live/staging tables, and the
   `InitScanlineEffects`/`QueueScanlineEffectTable`/`CommitScanlineEffects` API.
+- [`memory-map/frame_systems.md`](memory-map/frame_systems.md) — the
+  per-frame `TickFrameSystems` sequence and the BG-layer, window, palette
+  and tile-animation ticks it runs.
 - [`memory-map/link.md`](memory-map/link.md) — the link-cable layer
   (multiplayer SIO, Timer3 ISR pump, handshake) and the card-trade
   session (mode `0x15`, `CardTradeState`, offer/lock/compare/commit).

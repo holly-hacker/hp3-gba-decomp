@@ -154,7 +154,7 @@ extern u32 g_dwTickCount;
 
 // Ticks active objects, particle emitters, and several other per-frame
 // subsystems; called once/frame from TickGameModeStack after
-// DispatchGameModeUpdate. See docs/memory-map/game_modes.md.
+// DispatchGameModeUpdate. See docs/memory-map/frame_systems.md.
 extern void TickFrameSystems(void);
 
 // Pumps the link-cable comm packet when a link session is active

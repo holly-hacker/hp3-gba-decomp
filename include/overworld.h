@@ -72,6 +72,8 @@ typedef struct QueuedObjectMove {
 } QueuedObjectMove;
 extern QueuedObjectMove g_aQueuedObjectMoves[];
 extern u8 g_bControlSlotTicks_candidate;
+extern void TickOverworldBeforeObjects_candidate(void);
+extern void HandleOverworldPauseMenuInput(void);
 
 // Nonzero blocks the overworld Start/Select menus (SetPauseMenuLocked).
 extern u32 g_dwPauseMenuLocked;

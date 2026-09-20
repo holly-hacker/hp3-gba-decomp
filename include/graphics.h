@@ -44,6 +44,7 @@ typedef struct ParticleEmitter {
 extern ListNode *g_pParticleEmitterFreeListHead;    // 0x030051B0
 extern u16 g_wActiveParticleEmitterCount;           // 0x030051A0
 extern ListNode *g_pParticleEmitterActiveListHead;  // 0x03005198
+extern void TickParticleEmitters(void);
 
 extern void DecrementResourceCacheRefcount(s32 slotIndex);
 extern void ReleaseParticleEmitter_candidate(ParticleEmitter *emitter);
