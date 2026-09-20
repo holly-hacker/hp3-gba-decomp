@@ -124,8 +124,8 @@ thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
 thumb-func 0x0800C0FC InitializeLoadingScreen
 thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
-c-file 0x0800C6EC 0x0800C844 src/playtime/add_playtime_delta.c AddPlaytimeDelta
-c-file 0x0800CA70 0x0800CAE8 src/playtime/compare_playtime_field.c ComparePlaytimeField
+c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
+c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
 label 0x0800D0A0 SetupScanlineBands_candidate
 label 0x0800D1A4 InitGammaPalette
 label 0x0800D264 sub_0800D264
@@ -306,7 +306,7 @@ label 0x080211AC SetDialogMacroNumber1_candidate
 asm-file 0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
 label 0x08021560 NoopInit
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
-c-file 0x0802165C 0x08021694 src/playtime/process_playtime_tick.c ProcessPlaytimeTick
+c-file 0x0802165C 0x08021694 src/save/process_playtime_tick.c ProcessPlaytimeTick
 label 0x080216A0 AddSickles
 thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
