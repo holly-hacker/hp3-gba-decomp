@@ -178,7 +178,7 @@ void TickBattleTurnStateMachine(void)
             break;
         }
 
-        if (--g_pFightState->wBattleStateTimer == 0xffff || (g_wKeysPressed & 1) != 0) {
+        if (--g_pFightState->wBattleStateTimer == 0xffff || (g_wKeysPressed & KeyA) != 0) {
             savedState = g_pFightState->bSavedBattleState;
             TransitionBattleState(savedState);
 

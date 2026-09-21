@@ -66,3 +66,6 @@ void ProcessPlaytimeTick(void);
 // Adds a signed amount of Sickles to the player's money, clamped to
 // 0..999999, and returns the new total.
 u32 AddSickles(s32 amount);
+
+extern s32 SetSaveLanguageFlag(void);
+extern s32 SyncSaveHeaderIfDirty(void);

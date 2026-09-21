@@ -8,6 +8,20 @@
 // bit layout, and known readers -- only the fields an existing matched
 // c-file actually reads are declared here.
 
+// g_wKeys* bits (KEYINPUT layout).
+enum {
+    KeyA      = 0x001,
+    KeyB      = 0x002,
+    KeySelect = 0x004,
+    KeyStart  = 0x008,
+    KeyRight  = 0x010,
+    KeyLeft   = 0x020,
+    KeyUp     = 0x040,
+    KeyDown   = 0x080,
+    KeyR      = 0x100,
+    KeyL      = 0x200,
+};
+
 extern u16 g_wKeysHeld;             // 0x030034EC: current held-key bitmask
 extern u16 g_wKeysHeldPrevious;     // 0x030034EE: g_wKeysHeld from the previous frame
 extern u16 g_wKeysPressed;          // 0x030034F0: keys newly pressed this frame

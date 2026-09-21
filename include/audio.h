@@ -14,3 +14,5 @@ extern void SetMusicVolume(u32 volume, u32 arg);
 extern void PauseMusic(void);
 extern void ResumeMusic(void);
 extern void SetSoundEffectVolume(u32 volume);
+extern void DisableKrawall(void);
+extern void EnableKrawall(void);

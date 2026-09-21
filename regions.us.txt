@@ -92,11 +92,14 @@ label 0x08007348 DisableBg
 label 0x080073BC ResetDisplayState_candidate
 label 0x08007444 SetDispcntFlag
 label 0x08007454 ClearBgTilemap_candidate
+label 0x08007464 sub_08007464
 label 0x08007474 FillBgTilemap_candidate
 label 0x080074F4 FillBgTile_candidate
 label 0x0800778C LoadBgGraphic_candidate
 label 0x08007800 LoadEmbeddedPalette_candidate
+label 0x080079AC CopyBgTilemapRect_candidate
 label 0x08007A90 sub_08007A90
+label 0x08007B88 sub_08007B88
 
 label 0x08007EB8 SetBgPriority
 thumb-func 0x08008050 InitializeRiddikulusMinigame
@@ -402,9 +405,12 @@ thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
 
-thumb-func 0x08028314 InitializeLanguageSelect
-thumb-func 0x08028408 UpdateLanguageSelect
-thumb-func 0x08028524 ExitLanguageSelect
+c-file 0x08028314 0x08028408 src/gamemode/modes/language_select/initialize_language_select.c InitializeLanguageSelect
+c-file 0x08028408 0x08028524 src/gamemode/modes/language_select/update_language_select.c UpdateLanguageSelect
+c-file 0x08028524 0x08028534 src/gamemode/modes/language_select/exit_language_select.c ExitLanguageSelect
+label 0x08028534 DrawLanguageSelectPicture_candidate
+label 0x08028568 DrawLanguageSelectEntries_candidate
+label 0x08028588 DrawLanguageSelectEntry_candidate
 
 # Heap allocator / object pool, see docs/memory-map/heap.md
 c-file 0x080286A0 0x080286D8 src/mem/build_free_list.c BuildFreeList
@@ -596,6 +602,8 @@ c-file 0x0803B598 0x0803B5F4 src/rng/next.c Mt19937Next
 c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 
 label 0x0803BC9C InitSaveSystem
+label 0x0803BD04 SetSaveLanguageFlag
+label 0x0803C114 SyncSaveHeaderIfDirty
 label 0x0803D2C8 sub_0803D2C8
 label 0x0803D310 SetFadeToWhite
 label 0x0803D338 SetAlphaBlendTargets
@@ -620,6 +628,8 @@ label 0x0803EF5C TickLinkCommIfActive_candidate
 c-file 0x0803FA94 0x0803FAA4 src/link/get_link_player_id.c GetLinkPlayerId
 label 0x0803FC68 PlaySoundById
 label 0x0803FDB0 kramInstall
+label 0x0803FE54 DisableKrawall
+label 0x0803FE60 EnableKrawall
 label 0x0803FE78 SetSoundEffectVolume
 label 0x0803FE88 SetMusicVolume
 label 0x0803FEA4 UnmuteAllMusicChannels
@@ -740,6 +750,9 @@ label 0x08060E8C gIntrTableTemplate
 
 # Item/equipment table, see docs/formats/items.md
 c-file 0x08060EE4 0x080629B4 src/data/items.c g_pItemTable
+label 0x080629F4 g_dwLanguageSelectBg3Control
+label 0x080629F8 g_dwLanguageSelectBg2Control
+label 0x080629FC g_dwLanguageSelectBg1Control
 
 # Game-mode dispatch table, see docs/memory-map/game_modes.md
 label 0x08063064 g_dwBg2Control
@@ -814,9 +827,12 @@ krawall-module 0x08D22E4C 0x08D250B0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
+label 0x08DBF920 g_LanguageSelectBg3Graphic
 label 0x08DC456C g_StartupBg3Graphic
 label 0x08DC5AD8 g_StartupBg2Graphic
 label 0x08DC6B7C g_StartupNoticeGraphic
+label 0x08DDB23C g_LanguageSelectBg2Graphic
+label 0x08DDCE1C g_LanguageSelectBg1Graphic
 
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb

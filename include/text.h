@@ -41,3 +41,4 @@ extern void SelectTextFont_candidate(u32 fontId, u32 color, s32 arg2);
 extern u32 DrawTextLines_candidate(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, u8 **ppText, u32 align);
 
 extern u32 GetLanguage(void);
+extern void SetLanguage(u32 languageId);

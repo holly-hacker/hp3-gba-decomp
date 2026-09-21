@@ -19,7 +19,7 @@ void HandleOverworldPauseMenuInput(void)
         && (g_dwGameModeFlags & 0x80000811) == 0
         && (g_pPlayerObject->dwFlags & ObjectFlagAnimPaused) == 0
         && g_pPlayerObject->bActionState == 0x21) {
-        if (g_wKeysPressed & 8) {
+        if (g_wKeysPressed & KeyStart) {
             if (g_dwPauseMenuLocked != 0) {
                 PlaySoundById(3);
             }
@@ -32,7 +32,7 @@ void HandleOverworldPauseMenuInput(void)
                 g_bUnk03005E18 = 1;
             }
         }
-        else if (g_wKeysPressed & 4) {
+        else if (g_wKeysPressed & KeySelect) {
             if (g_dwPauseMenuLocked != 0) {
                 PlaySoundById(3);
             }
