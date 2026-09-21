@@ -526,12 +526,22 @@ label 0x08031748 TickParticleEmitters
 thumb-func 0x080319FC InitializeHarryPatronusCutscene
 thumb-func 0x08031B4C UpdateHarryPatronusCutscene
 thumb-func 0x08031CA8 ExitHarryPatronusCutscene
-thumb-func 0x08031D30 UpdateInGameMenu
-thumb-func 0x08031F6C InitializeInGameMenu
-thumb-func 0x08031FF4 InitializeInGameMenuFadeIn
-thumb-func 0x08032054 ExitInGameMenu
+c-file 0x08031D30 0x08031E7C src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
+label 0x08031E7C BuildListMenu_candidate
+c-file 0x08031F6C 0x08031FB8 src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
+label 0x08031FB8 sub_08031FB8
+c-file 0x08031FF4 0x08032030 src/gamemode/modes/in_game_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
+c-file 0x08032054 0x080320A4 src/gamemode/modes/in_game_menu/exit_in_game_menu.c ExitInGameMenu
+label 0x080320A4 sub_080320A4
 label 0x08032114 TickBlendFadeOut_candidate
+label 0x0803217C sub_0803217C
+label 0x080321A8 sub_080321A8
+label 0x08032204 SelectInGameMenuEntry_candidate
 label 0x0803227C sub_0803227C
+label 0x0803232C sub_0803232C
+label 0x0803233C sub_0803233C
+label 0x080323AC sub_080323AC
+label 0x080323B0 sub_080323B0
 thumb-func 0x080323B4 InitializeWizardCrackerPopItMinigame
 thumb-func 0x08032534 UpdateWizardCrackerPopItMinigame
 thumb-func 0x080338A4 ExitWizardCrackerPopItMinigame
@@ -804,6 +814,8 @@ label 0x08065730 g_adwRoomQuestMusicOverride
 label 0x0806580C g_ScanlineBandsDefault
 label 0x08065814 g_ScanlineBandsRoom12
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
+label 0x08068C38 g_aInGameMenuEntries
+label 0x08068CE0 g_InGameMenuDefinition
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 
 # Dialog/UI text data

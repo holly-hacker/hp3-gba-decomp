@@ -66,3 +66,4 @@ extern void DrawLanguageSelectEntry_candidate(u32 index, u32 selectedIndex);
 extern void DrawLanguageSelectPicture_candidate(u32 selectedIndex);
 extern void sub_080072EC(u32 bg, u32 control);
 extern void sub_08007B30(u32 bg, s32 position);
+extern void sub_0803D420(u32 arg0, u32 arg1);

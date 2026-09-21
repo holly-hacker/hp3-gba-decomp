@@ -81,6 +81,7 @@ typedef enum {
 extern void PushGameMode_3(GameMode mode, s32 arg1, s32 arg2, s32 arg3);
 extern void PushGameMode_2(GameMode mode, s32 arg1, s32 arg2);
 extern void PushGameMode(GameMode mode);
+extern u32 GetPendingGameMode_candidate(void);
 
 // The three arg words (+4/+8/+0xC) are generic per-mode parameters, set by
 // PushGameMode_2/PushGameMode_3 and read by the mode's own init -- e.g.
