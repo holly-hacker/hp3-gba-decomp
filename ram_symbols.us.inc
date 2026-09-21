@@ -155,6 +155,7 @@
 .set g_bInGameMenuCursor, 0x03005220  @ u8: pause menu cursor row saved by ExitInGameMenu
 .set g_dwInGameMenuReturnMode, 0x03005298  @ u32: GameMode (InGameMenu or InGameMenuFadeIn) a pause menu submode returns to
 .set g_dwInGameMenuSubModeArg, 0x0300529C  @ u32: argument set alongside g_dwInGameMenuReturnMode; 0xE for the first row, else 0
+.set g_dwSelectedMinigame, 0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
 .set g_bSaveSlotScreenResult, 0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
 .set g_MainMenuState,       0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot_candidate}; see include/main_menu.h
 .set g_ScanlineEffectState,  0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md

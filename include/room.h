@@ -130,3 +130,4 @@ extern void sub_0802B20C(void);
 extern void InitObjTileAllocBitmaps(u32 arg);
 extern void ShowMapNamePopup(void);
 extern void OverworldVBlankCallback(void);
+extern void ClearScanlineEffects(void);

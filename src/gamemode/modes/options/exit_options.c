@@ -12,7 +12,7 @@ void ExitOptions(void)
 
     PlayScreenTransitionOutByIndex_candidate(0x3F, 2);
 
-    if (!g_saveManager.header.bHeaderFlags.bGammaHigh)
+    if (!g_saveManager.header.bHeaderFlags.bits.bGammaHigh)
         ApplyGammaRemapTable(g_abGammaNormalRemap);
     else
         ApplyGammaRemapTable(g_abGammaHighRemap);

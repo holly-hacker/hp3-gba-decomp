@@ -14,6 +14,12 @@ typedef struct {
     u8 bGammaHigh : 1;
 } __attribute__((packed)) HeaderFlagsBits;
 
+// The flags byte, viewed as a whole (with the HeaderFlags masks) or as bit-fields.
+typedef union {
+    u8 all;
+    HeaderFlagsBits bits;
+} __attribute__((packed)) SaveHeaderFlags;
+
 // See docs/formats/save.md. File-level header, shared across all 3 save
 // slots -- the live RAM copy is SaveManager.header (0x03005598, IWRAM).
 typedef struct {
@@ -22,7 +28,7 @@ typedef struct {
     u8 bMusicVolume;      // 0x9: options-menu Music volume, 0-10
     u8 bSoundVolume;      // 0xA: options-menu Sound volume, 0-10
     u8 abUnknown0[2];     // 0xB-0xC: unused padding (ValidateSaveHeader doesn't check it)
-    HeaderFlagsBits bHeaderFlags;  // 0xD
+    SaveHeaderFlags bHeaderFlags;  // 0xD
     u16 wChecksum;        // 0xE-0xF: -Sum16(header, 16)
 } SaveHeader;
 

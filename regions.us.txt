@@ -45,6 +45,7 @@ c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
 label 0x08001A78 CancelObjectMove_candidate
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
+label 0x08001A94 SetObjectMoveTargetWithDuration_candidate
 label 0x08001D90 sub_08001D90
 label 0x08001E58 SetObjectActionSubState
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
@@ -391,6 +392,7 @@ thumb-func 0x08025368 ExitHighScoreNameEntry
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
 label 0x080258E8 sub_080258E8
 c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
+label 0x08025B2C StepWrappedSelection_candidate
 thumb-func 0x08025D28 InitializeTopicScreen
 thumb-func 0x08025E18 UpdateTopicScreen
 thumb-func 0x08025E84 ExitTopicScreen
@@ -486,9 +488,15 @@ c-file 0x0802C984 0x0802C988 src/gamemode/handle_game_mode_none_noop.c HandleGam
 thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CD88 ExitWizardCrackerPopItDifficultySelect
-thumb-func 0x0802CF38 HandleMinigameSelectMenuConfirm
-thumb-func 0x0802D264 InitializeMinigameMenu
-thumb-func 0x0802D2F0 ExitMinigameMenu
+c-file 0x0802CF38 0x0802D08C src/gamemode/modes/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
+label 0x0802D08C HandleMinigameMenuSelection
+label 0x0802D148 DrawMinigameSelectMenu
+c-file 0x0802D264 0x0802D2F0 src/gamemode/modes/minigame_menu/initialize_minigame_menu.c InitializeMinigameMenu
+c-file 0x0802D2F0 0x0802D314 src/gamemode/modes/minigame_menu/exit_minigame_menu.c ExitMinigameMenu
+label 0x0802D314 BeginMinigameSwitchFade_candidate
+label 0x0802D334 TickMinigameSwitchFadeOut_candidate
+label 0x0802D368 SwapMinigameSelection_candidate
+label 0x0802D384 TickMinigameSwitchFadeIn_candidate
 label 0x0802D3BC sub_0802D3BC
 label 0x0802D544 NoopInit3
 label 0x0802D640 sub_0802D640
@@ -724,6 +732,7 @@ thumb-func 0x08044BF0 ExitCoolTrainCutscene
 label 0x08045094 InitScanlineEffects
 label 0x08045260 CommitScanlineEffects
 label 0x080452A8 StopScanlineEffects
+label 0x080452D4 ClearScanlineEffects
 label 0x080453B4 InstallIwramObjTileAllocRoutine
 label 0x080453D8 InitObjTileAllocBitmaps
 label 0x0804542C sub_0804542C
@@ -814,6 +823,8 @@ label 0x08065730 g_adwRoomQuestMusicOverride
 label 0x0806580C g_ScanlineBandsDefault
 label 0x08065814 g_ScanlineBandsRoom12
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
+label 0x0806605C g_dwMinigameMenuBg3Control
+label 0x08066060 g_dwMinigameMenuBg1Control
 label 0x08068C38 g_aInGameMenuEntries
 label 0x08068CE0 g_InGameMenuDefinition
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc

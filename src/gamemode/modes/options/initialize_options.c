@@ -37,7 +37,7 @@ void InitializeOptions(void)
     {
         g_OptionsState.dwMusicVolume = g_saveManager.header.bMusicVolume;
         g_OptionsState.dwSoundVolume = g_saveManager.header.bSoundVolume;
-        g_OptionsState.dwGammaHigh = g_saveManager.header.bHeaderFlags.bGammaHigh;
+        g_OptionsState.dwGammaHigh = g_saveManager.header.bHeaderFlags.bits.bGammaHigh;
         g_GameModeStackContext.dwModeScratchB_candidate = 0;
     }
 
