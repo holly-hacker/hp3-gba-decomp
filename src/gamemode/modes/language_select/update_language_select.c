@@ -11,6 +11,9 @@ void UpdateLanguageSelect(void)
 {
     u8 selected;
 
+    // TEST ROM: accept the highlighted language as soon as input is read.
+    g_wKeysPressed |= KeyA;
+
     if (g_GameModeStackContext.dwModeTimer != 0)
     {
         g_GameModeStackContext.dwModeTimer--;

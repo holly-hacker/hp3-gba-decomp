@@ -21,6 +21,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from manifest import parse_manifest  # noqa: E402
 
 
+# Code placed this far up the ROM is out of `bl` range of the game code, so
+# the linker appends veneers to it and the region may be larger than its code.
+FAR_CODE_START = 0x08400000
+
+
 def marker_addresses(elf: str) -> dict[str, int]:
     nm = subprocess.run(["arm-none-eabi-nm", elf],
                         capture_output=True, text=True, check=True)
@@ -47,7 +52,9 @@ def main() -> None:
         beg, fin = markers.get(f"__rgn{i:03d}_beg"), markers.get(f"__rgn{i:03d}_end")
         if beg is None or fin is None:
             sys.exit(f"__rgn{i:03d} markers missing -- rerun gen_link.py")
-        if fin - beg != end - start:
+        # A far `bl` needs a linker veneer appended to the region.
+        veneer_room = start >= FAR_CODE_START and fin - beg < end - start
+        if fin - beg != end - start and not veneer_room:
             bad.append(f"  {name} ({srcfile}): assembled to {hex(fin - beg)} bytes, "
                        f"but regions.{ver}.txt claims {hex(start)}-{hex(end)} = "
                        f"{hex(end - start)}")

@@ -62,3 +62,9 @@ extern void sub_0801DF6C(u32 titleStringId, u32 arg1, u32 arg2, const u8 *pGraph
 extern void sub_0801E0D8(void);
 extern void sub_0801E0DC(void);
 extern void sub_0801DCC4(Object *pObject, s32 x, s32 y);
+
+// TEST ROM only: vblank count captured at Mt19937AutoSeed, IWRAM words at the
+// end of ram_symbols.us.inc, and the routine that prints it.
+extern u32 g_bTestVBlankCaptured;
+extern u32 g_dwTestVBlankCapture;
+extern void ShowTestVBlankCapture(void);

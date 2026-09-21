@@ -238,3 +238,7 @@
 .set g_bPartyCharId2, 0x0300338E  @ u8: character id of the second follower
 .set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
 .set g_DialogState_candidate, 0x03002E88  @ DialogState; see include/dialog.h
+
+@ TEST ROM only: IWRAM words no ROM code references.
+.set g_bTestVBlankCaptured, 0x03007800  @ u32: nonzero once the vblank count is captured
+.set g_dwTestVBlankCapture, 0x03007804  @ u32: dwVBlankCount as read by Mt19937AutoSeed

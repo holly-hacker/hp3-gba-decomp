@@ -3,14 +3,21 @@
 #include "display.h"
 #include "game_modes.h"
 #include "input.h"
+#include "io_regs.h"
 #include "main_menu.h"
 #include "mt19937.h"
 #include "text.h"
+#include "vblank.h"
 
 void UpdateMainMenu(void)
 {
     u32 timeout;
     u8 *pText;
+    u16 ime;
+
+    // TEST ROM: the menu is frozen once the vblank count has been shown.
+    if (g_bTestVBlankCaptured)
+        return;
 
     timeout = g_adwMainMenuStateTimeouts[g_GameModeStackContext.dwModeState];
     if (timeout != 0)
@@ -82,13 +89,20 @@ void UpdateMainMenu(void)
                 DrawTextLines_candidate(g_dwMainMenuTextCursor, 0x78, 0x8D, 0xB4, 0x10, &pText, 1);
             }
         }
-        else if (g_wKeysPressed & KeyStart)
+        else
         {
-            // Seeds the RNG. This reads the active keys and will always include START as a key.
+            // TEST ROM: START is pressed for us. The count is read with
+            // interrupts off so it is the value Mt19937AutoSeed reads.
+            ime = REG_IME;
+            REG_IME = 0;
+            g_dwTestVBlankCapture = g_pVBlankState->dwVBlankCount;
             Mt19937AutoSeed();
+            REG_IME = ime;
             PlaySoundById(1);
             g_GameModeStackContext.dwModeState = 5;
             g_GameModeStackContext.dwModeSubState = 0x10;
+            ShowTestVBlankCapture();
+            g_bTestVBlankCaptured = 1;
         }
         break;
 
