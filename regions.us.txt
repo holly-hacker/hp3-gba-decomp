@@ -87,6 +87,7 @@ label 0x08006EF4 TickBgLayers_candidate
 
 label 0x08007130 sub_08007130
 label 0x080072D0 SetBgControl_candidate
+label 0x080072EC sub_080072EC
 label 0x08007334 EnableBg
 label 0x08007348 DisableBg
 label 0x080073BC ResetDisplayState_candidate
@@ -99,6 +100,7 @@ label 0x0800778C LoadBgGraphic_candidate
 label 0x08007800 LoadEmbeddedPalette_candidate
 label 0x080079AC CopyBgTilemapRect_candidate
 label 0x08007A90 sub_08007A90
+label 0x08007B30 sub_08007B30
 label 0x08007B88 sub_08007B88
 
 label 0x08007EB8 SetBgPriority
@@ -315,6 +317,7 @@ thumb-func 0x0801D5C8 UpdateCredits
 thumb-func 0x0801D858 ExitLinearCutscene
 thumb-func 0x0801D888 InitializeLinearCutscene
 thumb-func 0x0801D8C0 UpdateLinearCutscene
+label 0x0801DC6C sub_0801DC6C
 label 0x0801DD40 InstallIwramDecompressCodecs
 thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
 thumb-func 0x0801E280 UpdateHarryVsDementorsMinigame
@@ -351,6 +354,7 @@ label 0x08021184 SetDialogMacroNumber0_candidate
 label 0x080211AC SetDialogMacroNumber1_candidate
 asm-file 0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
 label 0x08021560 NoopInit
+label 0x08021564 ResetSaveStateForNewGame_candidate
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x0802165C 0x08021694 src/save/process_playtime_tick.c ProcessPlaytimeTick
 label 0x080216A0 AddSickles
@@ -658,9 +662,15 @@ label 0x08042E2C sub_08042E2C
 thumb-func 0x08042F08 InitializeHarryHermionePortInTimeCutscene
 thumb-func 0x08042FC0 UpdateHarryHermionePortInTimeCutscene
 thumb-func 0x08043450 ExitHarryHermionePortInTimeCutscene
-thumb-func 0x08043470 InitializeMainMenu
-thumb-func 0x08043580 UpdateMainMenu
-thumb-func 0x08043870 ExitMainMenuScreen
+c-file 0x08043470 0x08043580 src/gamemode/modes/main_menu/initialize_main_menu.c InitializeMainMenu
+c-file 0x08043580 0x08043730 src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
+label 0x08043730 MoveMainMenuCursor_candidate
+c-file 0x08043870 0x080438B4 src/gamemode/modes/main_menu/exit_main_menu_screen.c ExitMainMenuScreen
+label 0x080438B4 sub_080438B4
+label 0x080438E4 ShowMainMenuEntries_candidate
+label 0x080439AC DrawMainMenuCopyright_candidate
+label 0x08043A20 SelectMainMenuEntry_candidate
+label 0x08043A68 HasLoadableSaveSlot_candidate
 thumb-func 0x08043AF0 HandleSaveLoadContinuation
 thumb-func 0x08043EC8 InitializeLoadGame
 thumb-func 0x08043ED8 UpdateLoadGame
@@ -769,9 +779,15 @@ c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 # Dialog/UI text data
 # dialog-text <start> <end> <json-file> <name>
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
+label 0x0806BFD0 g_dwMainMenuBg3Control
+label 0x0806BFD4 g_dwMainMenuBg2Control
+label 0x0806BFD8 g_dwMainMenuBg1Control
+label 0x0806BFDC g_adwMainMenuStateTimeouts
+label 0x0806BFF4 g_apMainMenuTitleGraphic
 
 # Item icon data
 item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
+label 0x080BC1C4 g_MainMenuPalette
 
 # Krawall audio data
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
@@ -827,12 +843,13 @@ krawall-module 0x08D22E4C 0x08D250B0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
-label 0x08DBF920 g_LanguageSelectBg3Graphic
+label 0x08DBF920 g_MenuBg3Graphic
 label 0x08DC456C g_StartupBg3Graphic
 label 0x08DC5AD8 g_StartupBg2Graphic
 label 0x08DC6B7C g_StartupNoticeGraphic
 label 0x08DDB23C g_LanguageSelectBg2Graphic
 label 0x08DDCE1C g_LanguageSelectBg1Graphic
+label 0x08E349CC g_MainMenuBg2Graphic
 
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb

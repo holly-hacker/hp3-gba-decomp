@@ -55,7 +55,7 @@ extern const u8 g_StartupNoticeGraphic[];
 extern const u32 g_dwLanguageSelectBg3Control;
 extern const u32 g_dwLanguageSelectBg2Control;
 extern const u32 g_dwLanguageSelectBg1Control;
-extern const u8 g_LanguageSelectBg3Graphic[];
+extern const u8 g_MenuBg3Graphic[];
 extern const u8 g_LanguageSelectBg2Graphic[];
 extern const u8 g_LanguageSelectBg1Graphic[];
 
@@ -64,3 +64,5 @@ extern void sub_08007464(u32 bg, u16 tile);
 extern void DrawLanguageSelectEntries_candidate(void);
 extern void DrawLanguageSelectEntry_candidate(u32 index, u32 selectedIndex);
 extern void DrawLanguageSelectPicture_candidate(u32 selectedIndex);
+extern void sub_080072EC(u32 bg, u32 control);
+extern void sub_08007B30(u32 bg, s32 position);

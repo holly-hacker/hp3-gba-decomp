@@ -143,6 +143,8 @@
 .set gDialogTextScratchBuf,  0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,       0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,    0x03005D0D  @ byte: locale-specific number-formatting separator
+.set g_dwMainMenuTextCursor, 0x03005DB0  @ u32: text tile cursor returned by the main menu's copyright text; see include/main_menu.h
+.set g_MainMenuState,       0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable}; see include/main_menu.h
 .set g_ScanlineEffectState,  0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging, 0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
 .set sDialogLanguageTable,   0x0806BD78  @ ROM: 8 x u32, one string-table blob pointer per language

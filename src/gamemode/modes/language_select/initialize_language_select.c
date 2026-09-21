@@ -12,7 +12,7 @@ void InitializeLanguageSelect(void)
     SetBgControl_candidate(2, g_dwLanguageSelectBg2Control);
     SetBgControl_candidate(1, g_dwLanguageSelectBg1Control);
 
-    LoadBgGraphic_candidate(3, g_LanguageSelectBg3Graphic, 1, 0, 0, 0);
+    LoadBgGraphic_candidate(3, g_MenuBg3Graphic, 1, 0, 0, 0);
     sub_08007B88(3, 8, 0);
     sub_08007464(2, 0x78);
     LoadBgGraphic_candidate(2, g_LanguageSelectBg2Graphic, 0x79, 0, 0, 10);
