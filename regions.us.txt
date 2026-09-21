@@ -530,6 +530,7 @@ thumb-func 0x08031D30 UpdateInGameMenu
 thumb-func 0x08031F6C InitializeInGameMenu
 thumb-func 0x08031FF4 InitializeInGameMenuFadeIn
 thumb-func 0x08032054 ExitInGameMenu
+label 0x08032114 TickBlendFadeOut_candidate
 label 0x0803227C sub_0803227C
 thumb-func 0x080323B4 InitializeWizardCrackerPopItMinigame
 thumb-func 0x08032534 UpdateWizardCrackerPopItMinigame
@@ -579,9 +580,13 @@ thumb-func 0x08039930 ExitItemsSectionSelect
 thumb-func 0x08039974 InitializeItemUseScreen
 thumb-func 0x080399A8 UpdateItemUseScreen
 thumb-func 0x08039A04 ExitItemUseScreen
-thumb-func 0x08039A74 InitializeGameSave
-thumb-func 0x08039B0C UpdateGameSave
-thumb-func 0x08039CD8 ExitGameSave
+c-file 0x08039A74 0x08039B0C src/gamemode/modes/game_save/initialize_game_save.c InitializeGameSave
+c-file 0x08039B0C 0x08039C30 src/gamemode/modes/game_save/update_game_save.c UpdateGameSave
+label 0x08039C30 ResolveSaveConfirmation_candidate
+c-file 0x08039CD8 0x08039D08 src/gamemode/modes/game_save/exit_game_save.c ExitGameSave
+label 0x08039D08 ShowSaveConfirmationPrompt_candidate
+label 0x08039D44 ShowSavingMessage_candidate
+label 0x08039D78 ShowGameSavedMessage_candidate
 thumb-func 0x08039DD8 UpdateStatusEquipHarry
 thumb-func 0x0803A4AC InitializeStatusEquipHarry
 thumb-func 0x0803A524 ExitStatusEquipHarryScreen
@@ -615,6 +620,7 @@ c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 label 0x0803BC9C InitSaveSystem
 label 0x0803BD04 SetSaveLanguageFlag
 label 0x0803BD48 sub_0803BD48
+label 0x0803BF20 SaveGameToSlot
 label 0x0803C0A8 ValidateSaveSlot
 label 0x0803C0DC LoadSaveSlot
 label 0x0803C114 SyncSaveHeaderIfDirty
@@ -624,6 +630,7 @@ label 0x0803D338 SetAlphaBlendTargets
 label 0x0803D350 SetAlphaBlendCoefficients
 label 0x0803D3B0 PlayScreenTransitionInByIndex_candidate
 label 0x0803D3E8 PlayScreenTransitionOutByIndex_candidate
+label 0x0803D420 sub_0803D420
 label 0x0803DA4C UpdateOverworldCamera_candidate
 label 0x0803DB68 sub_0803DB68
 label 0x0803DC44 sub_0803DC44
@@ -874,6 +881,7 @@ label 0x08DC6B7C g_StartupNoticeGraphic
 label 0x08DDB23C g_LanguageSelectBg2Graphic
 label 0x08DDCE1C g_LanguageSelectBg1Graphic
 label 0x08DE5214 g_MenuScreenGraphic
+label 0x08DF2664 g_SaveMenuBg1Graphic
 label 0x08E349CC g_MainMenuBg2Graphic
 
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs

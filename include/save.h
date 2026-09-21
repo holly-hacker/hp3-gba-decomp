@@ -38,10 +38,19 @@ typedef enum {
     flGammaHigh                    = 0x80,
 } HeaderFlags;
 
+// One 12-byte slot summary record; only the flags byte is mapped.
+typedef struct {
+    u8 abUnmapped_0[9];
+    u8 bFlags;  // bit 0 is set when the slot holds a save
+    u8 abUnmapped_A[2];
+} SaveSlotPreview;
+
 // The live save manager at 0x03005598; only the mapped members are declared.
 typedef struct {
     SaveHeader header;
-    u8 abUnmapped_10[0x5C];
+    u8 abUnmapped_10[0x2C];
+    SaveSlotPreview aSlotPreview[3];  // 0x3C
+    u32 adwSlotValid[3];      // 0x60: ValidateSaveSlot's result per slot, 1 when the checksum is good
     u32 dwActiveSlot;  // 0x6C: slot last loaded or saved
 } SaveManager;
 

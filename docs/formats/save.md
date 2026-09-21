@@ -346,7 +346,7 @@ applied at the address even though the label is still `DAT_03005598`):
 | 0x10 | `options` | RAM copy of SaveOptions (40 bytes) |
 | 0x38 | `pSlotBuffer` | heap pointer, the 0xA98-byte slot-transfer buffer |
 | 0x3C | `slotPreview` | 3x 12-byte per-slot preview/summary records (cleared via `memset` when a slot fails validation) |
-| 0x60 | `slotInvalid[3]` | `u32` per slot, set by `ValidateSaveSlot` (0 = valid) |
+| 0x60 | `slotValid[3]` | `u32` per slot, set by `ValidateSaveSlot` (1 = checksum good, 0 = bad) |
 | 0x6C | `activeSlot` | `u32`, set by `SaveGameToSlot` |
 | 0x70-0x83 | stream state | cursor pointer, bit position, and progress-percent fields driving the bit/nibble/byte pack-unpack helpers (`UnpackBytesFromSaveStream`/`UnpackNibblesFromSaveStream`/`UnpackBitsFromSaveStream`/`PackBytesToSaveStream`/`PackBitsToSaveStream`, `0x0803BDDC`-`0x0803C094`). This is the general-purpose stream used to serialize the entire save-slot payload (see "Save slots" above), not just a save-select preview. |
 
