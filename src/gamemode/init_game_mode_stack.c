@@ -8,7 +8,7 @@ void InitGameModeStack(void)
     g_dwPendingGameMode = g_GameModeStackContext;
     g_PrevGameModeCtx = g_GameModeStackContext;
 
-    if ((g_saveHeader.bLanguageByte & 0x80) == 0)
+    if ((g_saveManager.header.bLanguageByte & 0x80) == 0)
         PushGameMode(LanguageSelect);
     else
         PushGameMode(Startup);

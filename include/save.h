@@ -2,6 +2,18 @@
 
 #include "types.h"
 
+// SaveHeader.bHeaderFlags, one field per HeaderFlags bit (LSB first).
+typedef struct {
+    u8 bOwlCareKitUnlocked : 1;
+    u8 bMinigame1Unlocked : 1;
+    u8 bMinigame2Unlocked : 1;
+    u8 bMinigame3Unlocked : 1;
+    u8 bMinigame4Unlocked : 1;
+    u8 bHeaderBit5 : 1;
+    u8 bTeaLeafDivinationIntroShown : 1;
+    u8 bGammaHigh : 1;
+} __attribute__((packed)) HeaderFlagsBits;
+
 // See docs/formats/save.md. File-level header, shared across all 3 save
 // slots -- the live RAM copy is SaveManager.header (0x03005598, IWRAM).
 typedef struct {
@@ -10,7 +22,7 @@ typedef struct {
     u8 bMusicVolume;      // 0x9: options-menu Music volume, 0-10
     u8 bSoundVolume;      // 0xA: options-menu Sound volume, 0-10
     u8 abUnknown0[2];     // 0xB-0xC: unused padding (ValidateSaveHeader doesn't check it)
-    u8 bHeaderFlags;      // 0xD: HeaderFlags bitmask
+    HeaderFlagsBits bHeaderFlags;  // 0xD
     u16 wChecksum;        // 0xE-0xF: -Sum16(header, 16)
 } SaveHeader;
 
@@ -25,8 +37,6 @@ typedef enum {
     flTeaLeafDivinationIntroShown  = 0x40,
     flGammaHigh                    = 0x80,
 } HeaderFlags;
-
-extern SaveHeader g_saveHeader;  // 0x03005598
 
 // The live save manager at 0x03005598; only the mapped members are declared.
 typedef struct {

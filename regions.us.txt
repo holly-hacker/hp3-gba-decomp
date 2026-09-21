@@ -146,6 +146,7 @@ thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
+label 0x0800D008 ApplyGammaRemapTable
 label 0x0800D0A0 SetupScanlineBands_candidate
 label 0x0800D1A4 InitGammaPalette
 label 0x0800D254 sub_0800D254
@@ -319,7 +320,11 @@ thumb-func 0x0801D888 InitializeLinearCutscene
 thumb-func 0x0801D8C0 UpdateLinearCutscene
 label 0x0801D940 sub_0801D940
 label 0x0801DC6C sub_0801DC6C
+label 0x0801DCC4 sub_0801DCC4
 label 0x0801DD40 InstallIwramDecompressCodecs
+label 0x0801DF6C sub_0801DF6C
+label 0x0801E0D8 sub_0801E0D8
+label 0x0801E0DC sub_0801E0DC
 thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
 thumb-func 0x0801E280 UpdateHarryVsDementorsMinigame
 thumb-func 0x0801EE1C ExitHarryVsDementorsMinigame
@@ -690,9 +695,12 @@ label 0x08043F68 InitializeSaveSlotScreen_candidate
 label 0x08043FA4 HandleSaveSlotInput_candidate
 label 0x08044010 ExitSaveSlotScreen_candidate
 label 0x08044080 ConfirmLoadGameSlot_candidate
-thumb-func 0x08044134 InitializeOptions
-thumb-func 0x08044240 UpdateOptions
-thumb-func 0x08044774 ExitOptions
+c-file 0x08044134 0x08044240 src/gamemode/modes/options/initialize_options.c InitializeOptions
+c-file 0x08044240 0x0804439C src/gamemode/modes/options/update_options.c UpdateOptions
+label 0x0804439C BuildOptionsScreen_candidate
+label 0x080445C0 MoveOptionsCursor_candidate
+label 0x080446A8 AdjustOptionValue_candidate
+c-file 0x08044774 0x080447E0 src/gamemode/modes/options/exit_options.c ExitOptions
 thumb-func 0x08044B00 InitializeCoolTrainCutscene
 thumb-func 0x08044B7C UpdateCoolTrainCutscene
 thumb-func 0x08044BF0 ExitCoolTrainCutscene
@@ -725,6 +733,8 @@ c-file 0x0804BD40 0x0804BD5C src/libc/bzero.c  bzero
 c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
 c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
+label 0x0804D798 g_abGammaNormalRemap
+label 0x0804D7B8 g_abGammaHighRemap
 label 0x0804E254 g_abBattleMusicByRoom
 label 0x0804E28B g_abBattleMusicByOverworldSlot
 c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
@@ -797,6 +807,7 @@ label 0x0806BFD4 g_dwMainMenuBg2Control
 label 0x0806BFD8 g_dwMainMenuBg1Control
 label 0x0806BFDC g_adwMainMenuStateTimeouts
 label 0x0806BFF4 g_apMainMenuTitleGraphic
+label 0x0806C048 g_aOptionsMenuItems
 
 # Item icon data
 item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
@@ -862,6 +873,7 @@ label 0x08DC5AD8 g_StartupBg2Graphic
 label 0x08DC6B7C g_StartupNoticeGraphic
 label 0x08DDB23C g_LanguageSelectBg2Graphic
 label 0x08DDCE1C g_LanguageSelectBg1Graphic
+label 0x08DE5214 g_MenuScreenGraphic
 label 0x08E349CC g_MainMenuBg2Graphic
 
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs

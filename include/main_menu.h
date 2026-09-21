@@ -56,3 +56,9 @@ extern void sub_0803227C(void);
 extern void ExitSaveSlotScreen_candidate(void);
 extern void ConfirmLoadGameSlot_candidate(void);
 extern void InitRoomState(void);
+
+extern Object *g_pMenuCursorObject;  // 0x03002E08
+extern void sub_0801DF6C(u32 titleStringId, u32 arg1, u32 arg2, const u8 *pGraphic, u32 arg4, u32 arg5);
+extern void sub_0801E0D8(void);
+extern void sub_0801E0DC(void);
+extern void sub_0801DCC4(Object *pObject, s32 x, s32 y);

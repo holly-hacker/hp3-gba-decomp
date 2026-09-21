@@ -20,7 +20,7 @@ void InitializeLanguageSelect(void)
     LoadBgGraphic_candidate(1, g_LanguageSelectBg1Graphic, 1, 0, 0, 0x14);
 
     g_GameModeStackContext.dwModeScratchB_candidate =
-        (g_saveHeader.bLanguageByte & 0x80) ? GetLanguage() : 0;
+        (g_saveManager.header.bLanguageByte & 0x80) ? GetLanguage() : 0;
 
     DrawLanguageSelectEntries_candidate();
     DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB_candidate);

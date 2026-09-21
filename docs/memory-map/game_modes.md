@@ -79,7 +79,7 @@ active (`g_dwGameModeFlags` bit `0x20`) -- see `link.md` for that subsystem.
 
 `InitGameModeStack` (`0x0802C750`, matched: `src/gamemode/init_game_mode_stack.c`)
 zeroes the current mode, seeds pending/previous from it, then pushes
-`Startup` or `LanguageSelect` depending on `g_saveHeader.bLanguageByte` bit `0x80`
+`Startup` or `LanguageSelect` depending on `g_saveManager.header.bLanguageByte` bit `0x80`
 (`flLanguageConfigured`, see `docs/formats/save.md`) -- language already
 chosen skips straight to `Startup`.
 
