@@ -29,17 +29,26 @@ extern void SetBgControl_candidate(u32 bg, u32 control);
 extern void EnableBg(u32 bg);
 extern void DisableBg(u32 bg);
 extern void SetBgPriority(u32 bg, u32 priority);
-extern void SetAlphaBlendCoefficients(u32 eva, u32 evb);
+extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
 
 // Hardware windows: layer masks, rectangle (16.16 coordinates), and hiding one.
 extern void SetScreenWindowLayers_candidate(u32 windowId, u32 winIn, u32 winOut);
 extern void SetScreenWindowRect_candidate(u32 windowId, s32 x0, s32 y0, s32 x1, s32 y1);
 extern void HideScreenWindow_candidate(u32 windowId);
 
-extern void sub_080073BC(u32 arg);
-extern void sub_0803D338(u8 arg0, u32 arg1);
+extern void ResetDisplayState_candidate(u32 arg);
+extern void ClearBgTilemap_candidate(u32 bg);
+extern void *LoadBgGraphic_candidate(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
+extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);
 extern void sub_0800A914(void);
 extern void sub_0803094C(u32 arg);
 extern void sub_08001D90(u32 arg);
+
+extern const u32 g_dwStartupBg3Control;
+extern const u32 g_dwStartupBg2Control;
+extern const u32 g_dwStartupBg1Control;
+extern const u8 g_StartupBg3Graphic[];
+extern const u8 g_StartupBg2Graphic[];
+extern const u8 g_StartupNoticeGraphic[];

@@ -81,14 +81,20 @@ label 0x08005CAC SetRoomObjectRecordPtr_candidate
 label 0x08005DC0 sub_08005DC0
 label 0x08005F10 CheckObjectCollisions_candidate
 label 0x08006440 SortObjectsByDepth_candidate
+label 0x08006508 LoadBgGraphicTiles_candidate
+label 0x08006788 WriteBgGraphicTilemap_candidate
 label 0x08006EF4 TickBgLayers_candidate
 
 label 0x08007130 sub_08007130
 label 0x080072D0 SetBgControl_candidate
 label 0x08007334 EnableBg
 label 0x08007348 DisableBg
-label 0x080073BC sub_080073BC
+label 0x080073BC ResetDisplayState_candidate
 label 0x08007444 SetDispcntFlag
+label 0x08007454 ClearBgTilemap_candidate
+label 0x08007474 FillBgTilemap_candidate
+label 0x080074F4 FillBgTile_candidate
+label 0x0800778C LoadBgGraphic_candidate
 label 0x08007800 LoadEmbeddedPalette_candidate
 label 0x08007A90 sub_08007A90
 
@@ -310,9 +316,9 @@ label 0x0801DD40 InstallIwramDecompressCodecs
 thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
 thumb-func 0x0801E280 UpdateHarryVsDementorsMinigame
 thumb-func 0x0801EE1C ExitHarryVsDementorsMinigame
-thumb-func 0x0801F264 InitializeStartup
-thumb-func 0x0801F36C UpdateStartup
-thumb-func 0x0801F524 ExitStartup
+c-file 0x0801F264 0x0801F36C src/gamemode/modes/startup/initialize_startup.c InitializeStartup
+c-file 0x0801F36C 0x0801F524 src/gamemode/modes/startup/update_startup.c UpdateStartup
+c-file 0x0801F524 0x0801F534 src/gamemode/modes/startup/exit_startup.c ExitStartup
 thumb-func 0x0801F534 InitializeDialogue
 thumb-func 0x0801F654 UpdateDialogueBox
 label 0x0801FA9C sub_0801FA9C
@@ -331,7 +337,10 @@ asm-file 0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
 
 label 0x080208B4 sub_080208B4
 label 0x08020D30 InitTextMacroTable
+label 0x08020D60 SetTextTargetFromBgControl_candidate
+label 0x08020DF0 SelectTextFont_candidate
 asm-file 0x08020E40 0x08020E9C asm/text/measure_macro_string.s MeasureMacroString
+label 0x08020F44 DrawTextLines_candidate
 asm-file 0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
 label 0x08021100 SetDialogMacroString0_candidate
 label 0x08021148 SetDialogMacroString1_candidate
@@ -589,7 +598,7 @@ c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 label 0x0803BC9C InitSaveSystem
 label 0x0803D2C8 sub_0803D2C8
 label 0x0803D310 SetFadeToWhite
-label 0x0803D338 sub_0803D338
+label 0x0803D338 SetAlphaBlendTargets
 label 0x0803D350 SetAlphaBlendCoefficients
 label 0x0803D3B0 PlayScreenTransitionInByIndex_candidate
 label 0x0803D3E8 PlayScreenTransitionOutByIndex_candidate
@@ -720,6 +729,9 @@ battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 
 # Playtime counters, shared with JP at the same helper addresses.
 c-file 0x0805BA8C 0x0805BC00 src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
+label 0x0805E280 g_dwStartupBg3Control
+label 0x0805E284 g_dwStartupBg2Control
+label 0x0805E288 g_dwStartupBg1Control
 label 0x0805EB34 g_abRoomScriptOpcodeLengths
 label 0x08060544 g_stPlaytimeFrameDelta
 label 0x0806054C g_stPlaytimeHourLimit
@@ -802,6 +814,9 @@ krawall-module 0x08D22E4C 0x08D250B0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
+label 0x08DC456C g_StartupBg3Graphic
+label 0x08DC5AD8 g_StartupBg2Graphic
+label 0x08DC6B7C g_StartupNoticeGraphic
 
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb

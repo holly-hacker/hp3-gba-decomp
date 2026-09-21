@@ -1,7 +1,7 @@
 #include "types.h"
 #include "text.h"
 
-u8 GetLanguage(void)
+u32 GetLanguage(void)
 {
     return gCurrentLanguage;
 }

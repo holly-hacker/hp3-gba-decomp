@@ -56,7 +56,7 @@ void InitializeOverworld(void)
         sub_0803094C(1);
         sub_0803094C(2);
         SetVBlankCallback(OverworldVBlankCallback);
-        sub_080073BC(0);
+        ResetDisplayState_candidate(0);
         SetDispcntFlag(0x1000);
 
         // BG control registers.
@@ -107,7 +107,7 @@ void InitializeOverworld(void)
             CURRENT_ROOM.dwUnused3_c);
 
         // Alpha blending.
-        sub_0803D338(0, 0x1f);
+        SetAlphaBlendTargets(0, 0x1f);
         SetAlphaBlendCoefficients(9, 10);
 
         // Room object blob, player, camera and scroll bounds.
@@ -224,7 +224,7 @@ void InitializeOverworld(void)
             EnableBg(0);
             SetBgPriority(0, 0);
             SetBgPriority(2, 0);
-            sub_0803D338(4, 0x1f);
+            SetAlphaBlendTargets(4, 0x1f);
             break;
         case 0x14:
         case 0x29:
@@ -232,7 +232,7 @@ void InitializeOverworld(void)
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
-            sub_0803D338(4, 0x1f);
+            SetAlphaBlendTargets(4, 0x1f);
             break;
         case 6:
             g_dwRoomBgFlag_candidate = 1;
@@ -240,7 +240,7 @@ void InitializeOverworld(void)
             SetBgPriority(0, 1);
             SetBgPriority(1, 0);
             SetBgPriority(2, 0);
-            sub_0803D338(4, 0x1f);
+            SetAlphaBlendTargets(4, 0x1f);
             break;
         case 0x16:
         case 0x2d:
@@ -334,7 +334,7 @@ void InitializeOverworld(void)
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 0);
-            sub_0803D338(5, 0x1f);
+            SetAlphaBlendTargets(5, 0x1f);
             SetAlphaBlendCoefficients(0xd, 7);
             break;
         case 0x24:
