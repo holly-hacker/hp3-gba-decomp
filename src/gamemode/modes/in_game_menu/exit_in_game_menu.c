@@ -8,7 +8,7 @@
 
 void ExitInGameMenu(void)
 {
-    g_bInGameMenuCursor = g_GameModeStackContext.dwModeScratchB_candidate;
+    g_bInGameMenuCursor = g_GameModeStackContext.dwModeScratchB;
 
     if (GetPendingGameMode_candidate() == Overworld)
     {

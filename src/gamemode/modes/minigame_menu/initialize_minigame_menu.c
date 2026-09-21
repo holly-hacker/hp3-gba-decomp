@@ -23,5 +23,5 @@ void InitializeMinigameMenu(void)
     DrawMinigameSelectMenu();
     HandleMinigameMenuSelection(g_GameModeStackContext.dwCurrentGameModeArg2);
     PlayScreenTransitionInByIndex_candidate(0x3F, 2);
-    g_GameModeStackContext.dwModeState_candidate = 0;
+    g_GameModeStackContext.dwModeState = 0;
 }

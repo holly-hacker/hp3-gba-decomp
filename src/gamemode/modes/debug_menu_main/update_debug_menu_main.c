@@ -7,7 +7,7 @@
 
 void UpdateDebugMenuMain(void)
 {
-    if (g_GameModeStackContext.dwModeState_candidate != 0)
+    if (g_GameModeStackContext.dwModeState != 0)
         return;
 
     if (StepWrappedSelectionVertical_candidate(&g_DebugMenuMainState.dwSelection, 0, 5, 1, 0))

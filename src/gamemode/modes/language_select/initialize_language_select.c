@@ -19,16 +19,16 @@ void InitializeLanguageSelect(void)
     ClearBgTilemap_candidate(1);
     LoadBgGraphic_candidate(1, g_LanguageSelectBg1Graphic, 1, 0, 0, 0x14);
 
-    g_GameModeStackContext.dwModeScratchB_candidate =
+    g_GameModeStackContext.dwModeScratchB =
         (g_saveManager.header.bLanguageByte & 0x80) ? GetLanguage() : 0;
 
     DrawLanguageSelectEntries_candidate();
-    DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB_candidate);
+    DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB);
 
     if (g_PrevGameModeCtx.dwCurrentGameMode == 0)
         PlayScreenTransitionInByIndex_candidate(0x3F, 1);
     else
         PlayScreenTransitionInByIndex_candidate(0x3F, 2);
 
-    g_GameModeStackContext.dwModeTimer_candidate = 3;
+    g_GameModeStackContext.dwModeTimer = 3;
 }

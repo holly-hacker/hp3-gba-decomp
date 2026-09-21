@@ -5,9 +5,9 @@
 
 void UpdateNewGameMenu(void)
 {
-    g_GameModeStackContext.dwModeSubState_candidate += 2;
+    g_GameModeStackContext.dwModeSubState += 2;
 
-    switch (g_GameModeStackContext.dwModeState_candidate)
+    switch (g_GameModeStackContext.dwModeState)
     {
     case 0:
         if (HandleSaveSlotInput_candidate())
@@ -21,7 +21,7 @@ void UpdateNewGameMenu(void)
         }
         else if (g_wKeysPressed & KeyB)
         {
-            g_GameModeStackContext.dwModeScratchB_candidate = 0;
+            g_GameModeStackContext.dwModeScratchB = 0;
             ResolveOverwriteConfirmation_candidate();
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))

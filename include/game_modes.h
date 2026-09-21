@@ -93,14 +93,14 @@ typedef struct {
     u32 dwCurrentGameModeArg1;     // 0x04
     u32 dwCurrentGameModeArg2;     // 0x08
     u32 dwCurrentGameModeArg3;     // 0x0C
-    u32 dwModeState_candidate;      // 0x10; per-mode state machine, cleared on push
-    u32 dwModeScratchA_candidate;   // 0x14; generic per-mode scratch word, e.g. a
-                                     // confirm/cancel flag in OwlNameSelect, a
-                                     // just-cancelled marker in CardTrade
-    u32 dwModeTimer_candidate;      // 0x18; per-mode countdown, cleared on push
-    u32 dwModeSubState_candidate;   // 0x1C; second per-mode state word
-    u32 dwModeScratchB_candidate;   // 0x20; generic per-mode scratch word, same
-                                     // reuse pattern as dwModeScratchA_candidate
+    u32 dwModeState;               // 0x10; per-mode state machine, cleared on push
+    u32 dwModeScratchA;            // 0x14; generic per-mode scratch word, e.g. a
+                                   // confirm/cancel flag in OwlNameSelect, a
+                                   // just-cancelled marker in CardTrade
+    u32 dwModeTimer;               // 0x18; per-mode countdown, cleared on push
+    u32 dwModeSubState;            // 0x1C; second per-mode state word
+    u32 dwModeScratchB;            // 0x20; generic per-mode scratch word, same
+                                   // reuse pattern as dwModeScratchA
 } GameModeStackContext;
 extern GameModeStackContext g_GameModeStackContext;  // 0x03003EF4
 

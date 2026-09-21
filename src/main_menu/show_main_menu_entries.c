@@ -20,6 +20,6 @@ void ShowMainMenuEntries_candidate(void)
     {
         if (entry == MainMenuLoadGame && !g_MainMenuState.dwLoadGameAvailable)
             continue;
-        DrawMainMenuEntry_candidate(entry, g_GameModeStackContext.dwModeScratchB_candidate);
+        DrawMainMenuEntry_candidate(entry, g_GameModeStackContext.dwModeScratchB);
     }
 }

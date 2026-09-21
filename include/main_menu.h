@@ -3,7 +3,7 @@
 #include "types.h"
 #include "object.h"
 
-// Entry indices of the menu; also the cursor position in dwModeScratchB_candidate.
+// Entry indices of the menu; also the cursor position in dwModeScratchB.
 typedef enum {
     MainMenuNewGame   = 0,
     MainMenuLoadGame  = 1,

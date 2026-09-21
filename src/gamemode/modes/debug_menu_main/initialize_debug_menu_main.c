@@ -39,7 +39,7 @@ void InitializeDebugMenuMain(void)
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
     SetObjectAnimData(pObject, (void *)g_DebugMenuMainAnimFrames, (void *)g_DebugMenuMainAnimData, 0);
 
-    g_GameModeStackContext.dwModeState_candidate = 0;
+    g_GameModeStackContext.dwModeState = 0;
     DrawDebugMenuMainEntries_candidate();
     ResetDebugPartyFromArgs_candidate();
     g_dwOverworldMonstersDisabled = 0;

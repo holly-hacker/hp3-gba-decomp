@@ -11,7 +11,7 @@ void HandleSaveLoadContinuation(void)
 
     if (g_bSaveSlotScreenResult != SaveSlotResultCancelled)
     {
-        g_saveManager.dwActiveSlot = g_GameModeStackContext.dwModeScratchB_candidate;
+        g_saveManager.dwActiveSlot = g_GameModeStackContext.dwModeScratchB;
         DisableKrawall();
         LoadSaveSlot(g_saveManager.dwActiveSlot);
         EnableKrawall();

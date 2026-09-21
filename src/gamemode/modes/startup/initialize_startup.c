@@ -34,7 +34,7 @@ void InitializeStartup(void)
     else
         PlayScreenTransitionInByIndex_candidate(0x3F, 2);
 
-    g_GameModeStackContext.dwModeTimer_candidate = 0;
-    g_GameModeStackContext.dwModeState_candidate = 0;
+    g_GameModeStackContext.dwModeTimer = 0;
+    g_GameModeStackContext.dwModeState = 0;
     PlayMusicModule(0x21);
 }

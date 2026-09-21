@@ -19,14 +19,14 @@ void InitializeGameSave(void)
         // "Do you want to overwrite this saved game?" / "Do you want to save your current progress?"
         stringId = (g_PrevGameModeCtx.dwCurrentGameMode == GameCompletedReplayCutscene) ? 0x8E4 : 0x8E3;
         ShowSaveConfirmationPrompt_candidate(stringId);
-        g_GameModeStackContext.dwModeState_candidate = 8;
-        g_GameModeStackContext.dwModeScratchB_candidate = 0;
+        g_GameModeStackContext.dwModeState = 8;
+        g_GameModeStackContext.dwModeScratchB = 0;
     }
     else
     {
         ShowSavingMessage_candidate();
-        g_GameModeStackContext.dwModeTimer_candidate = 1;
-        g_GameModeStackContext.dwModeState_candidate = 2;
+        g_GameModeStackContext.dwModeTimer = 1;
+        g_GameModeStackContext.dwModeState = 2;
     }
 
     PlayScreenTransitionInByIndex_candidate(0x3F, 2);

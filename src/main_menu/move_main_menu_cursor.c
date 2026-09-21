@@ -28,29 +28,29 @@ void MoveMainMenuCursor_candidate(void)
 {
     u32 previous;
 
-    previous = g_GameModeStackContext.dwModeScratchB_candidate;
+    previous = g_GameModeStackContext.dwModeScratchB;
     PlaySoundById(0);
 
     if (g_wKeysPressed & KeyUp)
     {
-        g_GameModeStackContext.dwModeScratchB_candidate--;
-        if (g_GameModeStackContext.dwModeScratchB_candidate == MainMenuLoadGame
+        g_GameModeStackContext.dwModeScratchB--;
+        if (g_GameModeStackContext.dwModeScratchB == MainMenuLoadGame
             && !g_MainMenuState.dwLoadGameAvailable)
-            g_GameModeStackContext.dwModeScratchB_candidate--;
-        if (g_GameModeStackContext.dwModeScratchB_candidate > 3)
-            g_GameModeStackContext.dwModeScratchB_candidate = 3;
+            g_GameModeStackContext.dwModeScratchB--;
+        if (g_GameModeStackContext.dwModeScratchB > 3)
+            g_GameModeStackContext.dwModeScratchB = 3;
     }
     else if (g_wKeysPressed & KeyDown)
     {
-        g_GameModeStackContext.dwModeScratchB_candidate++;
-        if (g_GameModeStackContext.dwModeScratchB_candidate == MainMenuLoadGame
+        g_GameModeStackContext.dwModeScratchB++;
+        if (g_GameModeStackContext.dwModeScratchB == MainMenuLoadGame
             && !g_MainMenuState.dwLoadGameAvailable)
-            g_GameModeStackContext.dwModeScratchB_candidate = MainMenuOptions;
-        if (g_GameModeStackContext.dwModeScratchB_candidate > 3)
-            g_GameModeStackContext.dwModeScratchB_candidate = 0;
+            g_GameModeStackContext.dwModeScratchB = MainMenuOptions;
+        if (g_GameModeStackContext.dwModeScratchB > 3)
+            g_GameModeStackContext.dwModeScratchB = 0;
     }
 
-    DrawEntry(previous, g_GameModeStackContext.dwModeScratchB_candidate);
-    DrawEntry(g_GameModeStackContext.dwModeScratchB_candidate, g_GameModeStackContext.dwModeScratchB_candidate);
+    DrawEntry(previous, g_GameModeStackContext.dwModeScratchB);
+    DrawEntry(g_GameModeStackContext.dwModeScratchB, g_GameModeStackContext.dwModeScratchB);
     PositionMainMenuCursorObject_candidate(1);
 }

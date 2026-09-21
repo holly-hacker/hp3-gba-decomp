@@ -65,13 +65,13 @@ right after the three blocks) increments once per call, before dispatch;
 `UpdateObjectSpriteFrame` also reads/writes it as a per-tick generation
 stamp for a shared VRAM tile allocation cache.
 
-`GameModeStackContext`'s two scratch words (`dwModeScratchA_candidate` at
-+0x14, `dwModeScratchB_candidate` at +0x20) are genuinely generic --
+`GameModeStackContext`'s two scratch words (`dwModeScratchA` at
++0x14, `dwModeScratchB` at +0x20) are genuinely generic --
 confirmed with real, unrelated per-mode uses: a confirm/cancel flag in
 `OwlNameSelect` (0/1 on KEY_A/KEY_B), and a "just cancelled" marker in the
 card-trade mode's own state machine (`CancelCardTradeOffer`). Not fixed
-single-purpose fields, same as `dwModeState_candidate`/`dwModeTimer_candidate`/
-`dwModeSubState_candidate`.
+single-purpose fields, same as `dwModeState`/`dwModeTimer`/
+`dwModeSubState`.
 
 `TickGameModeStack` also pumps the link-cable comm packet
 (`TickLinkCommIfActive_candidate`, `0x0803EF5C`) when a link session is

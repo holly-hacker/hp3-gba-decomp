@@ -10,7 +10,7 @@ void HandleMinigameSelectMenuConfirm(void)
 {
     sub_0801E0D8();
 
-    switch (g_GameModeStackContext.dwModeState_candidate)
+    switch (g_GameModeStackContext.dwModeState)
     {
     case 1:
         if (TickMinigameSwitchFadeOut_candidate())
@@ -27,7 +27,7 @@ void HandleMinigameSelectMenuConfirm(void)
             SetObjectMoveTargetWithDuration_candidate(g_pMenuCursorObject,
                                                       g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70, 8);
             BeginMinigameSwitchFade_candidate();
-            g_GameModeStackContext.dwModeState_candidate = 1;
+            g_GameModeStackContext.dwModeState = 1;
             PlaySoundById(0);
             break;
         }

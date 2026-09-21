@@ -10,15 +10,15 @@
 
 void UpdateOptions(void)
 {
-    if (g_GameModeStackContext.dwModeTimer_candidate != 0)
+    if (g_GameModeStackContext.dwModeTimer != 0)
     {
-        g_GameModeStackContext.dwModeTimer_candidate--;
+        g_GameModeStackContext.dwModeTimer--;
         return;
     }
 
     sub_0801E0D8();
 
-    if (g_GameModeStackContext.dwModeState_candidate != 0)
+    if (g_GameModeStackContext.dwModeState != 0)
         return;
 
     if (g_wKeysPressed & (KeyB | KeySelect | KeyStart))
@@ -52,14 +52,14 @@ void UpdateOptions(void)
             PushGameMode_2(Overworld, 2, g_bCurrentRoomId);
             break;
         case MainMenu:
-            PushGameMode_2(MainMenu, 0, g_PrevGameModeCtx.dwModeScratchB_candidate);
+            PushGameMode_2(MainMenu, 0, g_PrevGameModeCtx.dwModeScratchB);
             g_dwPendingGameMode.dwCurrentGameModeArg2 = MainMenuOptions;
             break;
         }
     }
     else if (g_wKeysPressed & KeyA)
     {
-        switch (g_GameModeStackContext.dwModeScratchB_candidate)
+        switch (g_GameModeStackContext.dwModeScratchB)
         {
         case 0:
         case 1:

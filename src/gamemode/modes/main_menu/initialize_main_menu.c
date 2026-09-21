@@ -13,10 +13,10 @@ void InitializeMainMenu(void)
     sub_0802B0F4();
 
     // Arg2 is the entry to highlight first.
-    g_GameModeStackContext.dwModeState_candidate = 0;
-    g_GameModeStackContext.dwModeScratchB_candidate = g_GameModeStackContext.dwCurrentGameModeArg2;
-    g_GameModeStackContext.dwModeSubState_candidate = 0;
-    g_GameModeStackContext.dwModeTimer_candidate = 0;
+    g_GameModeStackContext.dwModeState = 0;
+    g_GameModeStackContext.dwModeScratchB = g_GameModeStackContext.dwCurrentGameModeArg2;
+    g_GameModeStackContext.dwModeSubState = 0;
+    g_GameModeStackContext.dwModeTimer = 0;
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
     g_MainMenuState.dwLoadGameAvailable = HasLoadableSaveSlot_candidate();
 

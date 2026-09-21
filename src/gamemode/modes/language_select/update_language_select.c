@@ -11,14 +11,14 @@ void UpdateLanguageSelect(void)
 {
     u8 selected;
 
-    if (g_GameModeStackContext.dwModeTimer_candidate != 0)
+    if (g_GameModeStackContext.dwModeTimer != 0)
     {
-        g_GameModeStackContext.dwModeTimer_candidate--;
+        g_GameModeStackContext.dwModeTimer--;
     }
     else if (g_wKeysPressed & (KeyRight | KeyLeft | KeyUp | KeyDown))
     {
         PlaySoundById(0);
-        selected = g_GameModeStackContext.dwModeScratchB_candidate;
+        selected = g_GameModeStackContext.dwModeScratchB;
 
         if (g_wKeysPressed & (KeyRight | KeyLeft))
             selected = selected < 4 ? selected + 4 : selected - 4;
@@ -29,10 +29,10 @@ void UpdateLanguageSelect(void)
         if (g_wKeysPressed & KeyDown)
             selected = (selected & 3) == 3 ? selected - 3 : selected + 1;
 
-        DrawLanguageSelectEntry_candidate(g_GameModeStackContext.dwModeScratchB_candidate, selected);
-        g_GameModeStackContext.dwModeScratchB_candidate = selected;
+        DrawLanguageSelectEntry_candidate(g_GameModeStackContext.dwModeScratchB, selected);
+        g_GameModeStackContext.dwModeScratchB = selected;
         DrawLanguageSelectEntry_candidate(selected, selected);
-        DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB_candidate);
+        DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB);
     }
     else if ((g_wKeysPressed & KeyA)
              || ((g_wKeysPressed & KeyB) && g_PrevGameModeCtx.dwCurrentGameMode != 0))
@@ -40,7 +40,7 @@ void UpdateLanguageSelect(void)
         if (g_wKeysPressed & (KeyStart | KeyA))
         {
             PlaySoundById(1);
-            SetLanguage(g_GameModeStackContext.dwModeScratchB_candidate);
+            SetLanguage(g_GameModeStackContext.dwModeScratchB);
             SetSaveLanguageFlag();
             DisableKrawall();
             SyncSaveHeaderIfDirty();

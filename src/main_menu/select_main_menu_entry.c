@@ -5,7 +5,7 @@
 
 void SelectMainMenuEntry_candidate(void)
 {
-    switch (g_GameModeStackContext.dwModeScratchB_candidate)
+    switch (g_GameModeStackContext.dwModeScratchB)
     {
     case MainMenuNewGame:
         PushGameMode(NewGameMenu);
