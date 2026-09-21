@@ -351,20 +351,20 @@ thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
 label 0x08020228 TickRoomTileAnimations_candidate
 label 0x080203A8 sub_080203A8
 
-asm-file 0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
+c-file 0x08020714 0x080208B4 src/text/draw_text_line.c DrawTextLine
 
 label 0x080208B4 DrawStringAligned
 label 0x08020D30 InitTextMacroTable
 label 0x08020D60 SetTextTargetFromBgControl_candidate
 label 0x08020DF0 SelectTextFont_candidate
-asm-file 0x08020E40 0x08020E9C asm/text/measure_macro_string.s MeasureMacroString
+c-file 0x08020E40 0x08020E9C src/text/measure_macro_string.c MeasureMacroString
 label 0x08020F44 DrawTextLines_candidate
-asm-file 0x08020FF8 0x08021048 asm/text/print_text_box.s PrintTextBox
+c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
 label 0x08021100 SetDialogMacroString0_candidate
 label 0x08021148 SetDialogMacroString1_candidate
 label 0x08021184 SetDialogMacroNumber0_candidate
 label 0x080211AC SetDialogMacroNumber1_candidate
-asm-file 0x0802136C 0x0802139C asm/text/get_glyph_width.s GetGlyphWidth
+c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
 label 0x08021560 NoopInit
 label 0x08021564 ResetSaveStateForNewGame_candidate
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
@@ -690,7 +690,7 @@ thumb-func 0x080418EC InitializeDivinationTeaMinigame
 thumb-func 0x08041A60 UpdateDivinationTeaMinigame
 thumb-func 0x0804223C ExitDivinationTeaMinigame
 label 0x08042568 InitDialogTextEngine
-asm-file 0x08042588 0x080425D8 asm/text/set_language.s SetLanguage
+c-file 0x08042588 0x080425D8 src/text/set_language.c SetLanguage
 c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
 c-file 0x080425E4 0x08042608 src/text/get_dialog_text.c GetDialogText
 thumb-func 0x08042AC8 InitializeClockSkipCutscene

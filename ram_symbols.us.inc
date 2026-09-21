@@ -136,8 +136,8 @@
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
                                          @ text-rendering fields (e.g. +0x11 = line height); not
-                                         @ fully mapped, see draw_text_line.s/print_text_box.s
-.set sTextMacroTable,        0x03003170  @ ROM: pointer table for 0x40-prefixed escape/macro codes
+                                         @ fully mapped, see include/text.h
+.set sTextMacroTable,        0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by sub_08020D30) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
 .set gDialogTextBlobBase,    0x030033C0  @ active language blob's base pointer (0 = none installed)
 .set gDialogTextOffsetTable, 0x030033C4  @ pointer to the active blob's per-string-ID u32[] offset table
 .set gDialogTextTreeNodes,   0x030033C8  @ pointer to the active blob's Huffman tree node table
