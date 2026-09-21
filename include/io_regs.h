@@ -15,3 +15,6 @@
 // BIOS-owned RAM mirror of acked interrupt flags (GBATEK "Interrupt Check
 // Flag"), not an MMIO register -- SWI IntrWait/VBlankIntrWait poll it.
 #define REG_IFBIOS  (*(volatile u16 *)0x03007FF8)
+
+// Start of video RAM.
+#define VRAM_BASE ((void *)0x06000000)

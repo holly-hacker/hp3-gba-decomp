@@ -34,6 +34,7 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
+label 0x08001528 SpawnObject
 label 0x080015B8 TickActiveObjects
 label 0x080015D4 sub_080015D4
 label 0x0800187C SetObjectAssetRecord
@@ -121,9 +122,11 @@ thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
 thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
 label 0x0800A610 TickBgTileAnimations_candidate
 label 0x0800A914 sub_0800A914
-thumb-func 0x0800A950 InitializeDebugMenuMain
-thumb-func 0x0800AA54 HandleDebugTestMenuSelect
-thumb-func 0x0800AB88 ExitDebugMenuMain
+c-file 0x0800A950 0x0800AA54 src/gamemode/modes/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
+c-file 0x0800AA54 0x0800AB34 src/gamemode/modes/debug_menu_main/update_debug_menu_main.c UpdateDebugMenuMain
+label 0x0800AB34 ResetDebugPartyFromArgs_candidate
+c-file 0x0800AB88 0x0800ABA0 src/gamemode/modes/debug_menu_main/exit_debug_menu_main.c ExitDebugMenuMain
+label 0x0800ABA0 DrawDebugMenuMainEntries_candidate
 thumb-func 0x0800ABD8 InitializeDebugLevelAndQuestSelectMenu
 thumb-func 0x0800ACE4 UpdateDebugLevelAndQuestSelectMenu
 thumb-func 0x0800AE50 ExitDebugLevelAndQuestSelectMenu
@@ -177,6 +180,7 @@ label 0x080100A0 DispatchPendingAction
 label 0x080101D0 TickBattleMenuInput
 label 0x080104A0 OpenBattleTopMenu
 label 0x08010864 ShowBattleMessage
+label 0x08012994 InitCharacterSpells_candidate
 label 0x080129F4 sub_080129F4
 label 0x08012A38 sub_08012A38
 label 0x08012AC0 GetBattleBackgroundData_candidate
@@ -191,6 +195,7 @@ thumb-func 0x080134BC InitializeVictoryScreen
 thumb-func 0x080138F4 UpdateVictoryScreen
 c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
 thumb-func 0x080148A8 ExitVictoryScreen
+label 0x08014964 ResetCharacterToLevel
 c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
 c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
 label 0x08014F1C SpawnTurnOrderIcon
@@ -392,7 +397,8 @@ thumb-func 0x08025368 ExitHighScoreNameEntry
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
 label 0x080258E8 sub_080258E8
 c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
-label 0x08025B2C StepWrappedSelection_candidate
+label 0x08025A74 StepWrappedSelectionVertical_candidate
+label 0x08025B2C StepWrappedSelectionHorizontal_candidate
 thumb-func 0x08025D28 InitializeTopicScreen
 thumb-func 0x08025E18 UpdateTopicScreen
 thumb-func 0x08025E84 ExitTopicScreen
@@ -757,6 +763,10 @@ asm-file 0x0804A4DC 0x0804A59C asm/rt/umodsi3.s                 __umodsi3
 # newlib, compiled from source by `just compile-c` (docs/compiler.md)
 c-file 0x0804BD40 0x0804BD5C src/libc/bzero.c  bzero
 c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
+label 0x0804C444 g_dwDebugMenuMainBg0Control
+label 0x0804C448 g_dwDebugMenuMainBg1Control
+label 0x0804C44C g_DebugMenuMainAnimFrames
+label 0x0804C45C g_DebugMenuMainAnimData
 c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
 c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 label 0x0804D798 g_abGammaNormalRemap
@@ -842,6 +852,7 @@ label 0x0806C048 g_aOptionsMenuItems
 # Item icon data
 item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
 label 0x080BC1C4 g_MainMenuPalette
+label 0x080BC538 g_DebugMenuCursorSpawnData
 
 # Krawall audio data
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
@@ -897,6 +908,7 @@ krawall-module 0x08D22E4C 0x08D250B0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
+label 0x08D9A360 g_DebugMenuGraphic
 label 0x08DBF920 g_MenuBg3Graphic
 label 0x08DC456C g_StartupBg3Graphic
 label 0x08DC5AD8 g_StartupBg2Graphic

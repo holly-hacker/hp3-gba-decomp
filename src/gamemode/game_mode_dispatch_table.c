@@ -60,7 +60,6 @@ extern void ExitWizardCrackerPopItMinigame();
 extern void ExitBattle();
 extern void ExitVictoryScreen();
 extern void HandleConnectivityMenuTick();
-extern void HandleDebugTestMenuSelect();
 extern void HandleFolioCardDetailScreenTick();
 extern void HandleGameModeNoneNoOp();
 extern void HandleHighScoreDifficultyMenuTick();
@@ -143,6 +142,7 @@ extern void UpdateDebugCharacterSelectMenu();
 extern void UpdateDebugCollectorCardsMenu();
 extern void UpdateDebugLevelAndQuestSelectMenu();
 extern void UpdateDebugMapSelectMenu();
+extern void UpdateDebugMenuMain();
 extern void UpdateDebugPortraitsMenu();
 extern void UpdateDebugSoundTestMenu();
 extern void UpdateDialogueBox();
@@ -214,7 +214,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeConnectivityMenu, HandleConnectivityMenuTick, ExitConnectivity },
     { InitializeHelp, UpdateHelp, ExitHelpScreen },
     { InitializeDialogue, UpdateDialogueBox, ExitDialogue },
-    { InitializeDebugMenuMain, HandleDebugTestMenuSelect, ExitDebugMenuMain },
+    { InitializeDebugMenuMain, UpdateDebugMenuMain, ExitDebugMenuMain },
     { InitializeLoadingScreen, UpdateLoadingScreen, ExitLoadingScreen },
     { InitializeWizardCrackerPopItMinigame, UpdateWizardCrackerPopItMinigame, ExitWizardCrackerPopItMinigame },
     { InitializeDivinationTeaMinigame, UpdateDivinationTeaMinigame, ExitDivinationTeaMinigame },

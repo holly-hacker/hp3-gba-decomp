@@ -22,7 +22,7 @@ void HandleMinigameSelectMenuConfirm(void)
         break;
 
     case 0:
-        if (StepWrappedSelection_candidate(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 3, 1, 0))
+        if (StepWrappedSelectionHorizontal_candidate(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 3, 1, 0))
         {
             SetObjectMoveTargetWithDuration_candidate(g_pMenuCursorObject,
                                                       g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70, 8);
