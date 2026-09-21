@@ -76,6 +76,7 @@
 .set g_effectStaging,        0x03002750  @ EffectStaging: battle-effect staging area, see TriggerBattleEffect
 .set g_dwBattleRewardFlagsSnapshot, 0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 .set g_anFaintedRosterIndices, 0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
+.set g_saveManager, 0x03005598  @ SaveManager: same address as g_saveHeader (its first member); see include/save.h
 .set g_saveStateBlock, 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
 .set g_PrevGameModeCtx, 0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
@@ -144,6 +145,7 @@
 .set gCurrentLanguage,       0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,    0x03005D0D  @ byte: locale-specific number-formatting separator
 .set g_dwMainMenuTextCursor, 0x03005DB0  @ u32: text tile cursor returned by the main menu's copyright text; see include/main_menu.h
+.set g_bSaveSlotScreenResult, 0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
 .set g_MainMenuState,       0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot_candidate}; see include/main_menu.h
 .set g_ScanlineEffectState,  0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging, 0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects

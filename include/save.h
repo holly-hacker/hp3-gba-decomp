@@ -28,6 +28,15 @@ typedef enum {
 
 extern SaveHeader g_saveHeader;  // 0x03005598
 
+// The live save manager at 0x03005598; only the mapped members are declared.
+typedef struct {
+    SaveHeader header;
+    u8 abUnmapped_10[0x5C];
+    u32 dwActiveSlot;  // 0x6C: slot last loaded or saved
+} SaveManager;
+
+extern SaveManager g_saveManager;  // 0x03005598
+
 typedef struct {
     s16 wHourCarry;
     s8 bHours;
@@ -69,3 +78,6 @@ u32 AddSickles(s32 amount);
 
 extern s32 SetSaveLanguageFlag(void);
 extern s32 SyncSaveHeaderIfDirty(void);
+extern void LoadSaveSlot(u32 slot);
+extern u32 ValidateSaveSlot(u32 slot);
+extern void sub_0803BD48(u32 slot);

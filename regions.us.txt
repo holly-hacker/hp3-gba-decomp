@@ -609,6 +609,9 @@ c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 
 label 0x0803BC9C InitSaveSystem
 label 0x0803BD04 SetSaveLanguageFlag
+label 0x0803BD48 sub_0803BD48
+label 0x0803C0A8 ValidateSaveSlot
+label 0x0803C0DC LoadSaveSlot
 label 0x0803C114 SyncSaveHeaderIfDirty
 label 0x0803D2C8 sub_0803D2C8
 label 0x0803D310 SetFadeToWhite
@@ -675,17 +678,18 @@ label 0x080439AC DrawMainMenuCopyright_candidate
 c-file 0x08043A20 0x08043A68 src/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
 label 0x08043A68 HasLoadableSaveSlot_candidate
 label 0x08043AA4 PositionMainMenuCursorObject_candidate
-thumb-func 0x08043AF0 HandleSaveLoadContinuation
+c-file 0x08043AF0 0x08043B70 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
 label 0x08043D40 SelectNewGameSlot_candidate
 label 0x08043E18 ResolveOverwriteConfirmation_candidate
-thumb-func 0x08043EC8 InitializeLoadGame
-thumb-func 0x08043ED8 UpdateLoadGame
+c-file 0x08043EC8 0x08043ED8 src/gamemode/modes/load_game/initialize_load_game.c InitializeLoadGame
+c-file 0x08043ED8 0x08043EEC src/gamemode/modes/load_game/update_load_game.c UpdateLoadGame
 c-file 0x08043EEC 0x08043EFC src/gamemode/modes/new_game_menu/initialize_new_game_menu.c InitializeNewGameMenu
 c-file 0x08043EFC 0x08043F5C src/gamemode/modes/new_game_menu/update_new_game_menu.c UpdateNewGameMenu
 c-file 0x08043F5C 0x08043F68 src/gamemode/modes/new_game_menu/exit_new_game_menu.c ExitNewGameMenu
 label 0x08043F68 InitializeSaveSlotScreen_candidate
 label 0x08043FA4 HandleSaveSlotInput_candidate
-label 0x08044010 sub_08044010
+label 0x08044010 ExitSaveSlotScreen_candidate
+label 0x08044080 ConfirmLoadGameSlot_candidate
 thumb-func 0x08044134 InitializeOptions
 thumb-func 0x08044240 UpdateOptions
 thumb-func 0x08044774 ExitOptions

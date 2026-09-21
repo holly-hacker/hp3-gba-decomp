@@ -17,6 +17,13 @@ typedef struct {
     s32 nPaletteEffectSlot_candidate;  // 0x08: handle from sub_0800D57C, set by sub_080438B4
 } MainMenuState;
 
+// Result of the save slot screen, set by HandleSaveSlotInput_candidate.
+typedef enum {
+    SaveSlotResultConfirmed = 1,
+    SaveSlotResultCancelled = 2,
+} SaveSlotScreenResult;
+
+extern u8 g_bSaveSlotScreenResult;  // 0x03005DC4
 extern MainMenuState g_MainMenuState;  // 0x03005DB8
 extern u32 g_dwMainMenuTextCursor;     // 0x03005DB0: next free text tile, after the copyright lines
 
@@ -46,4 +53,6 @@ extern u32 HandleSaveSlotInput_candidate(void);
 extern void SelectNewGameSlot_candidate(void);
 extern void ResolveOverwriteConfirmation_candidate(void);
 extern void sub_0803227C(void);
-extern void sub_08044010(void);
+extern void ExitSaveSlotScreen_candidate(void);
+extern void ConfirmLoadGameSlot_candidate(void);
+extern void InitRoomState(void);
