@@ -26,6 +26,18 @@ typedef struct {
     DialogTextTreeNode nodes[1]; // variable-length
 } DialogTextBlob;
 
+// Language ids, as stored in gCurrentLanguage and used to index sDialogTextTable.
+typedef enum {
+    LanguageEnglishUS = 0,
+    LanguageEnglishGB = 1,
+    LanguageFrench    = 2,
+    LanguageGerman    = 3,
+    LanguageSpanish   = 4,
+    LanguageItalian   = 5,
+    LanguageDutch     = 6,
+    LanguageDanish    = 7,
+} Language;
+
 extern u8 *gDialogTextBlobBase;
 extern u32 *gDialogTextOffsetTable;
 extern DialogTextTreeNode *gDialogTextTreeNodes;
@@ -36,6 +48,7 @@ s32 DecompressDialogText(s32 stringId, u8 *outBuf, s32 maxSize);
 void InitDialogTextEngine(void);
 u8 *GetDialogText(s32 stringId);
 
+extern void DrawStringAligned(u32 tileCursor, s32 x, s32 y, const u8 *pText, u32 align);
 extern void SetTextTargetFromBgControl_candidate(u32 bgControl);
 extern void SelectTextFont_candidate(u32 fontId, u32 color, s32 arg2);
 extern u32 DrawTextLines_candidate(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, u8 **ppText, u32 align);

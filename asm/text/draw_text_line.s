@@ -1,7 +1,7 @@
 .text
 
 @ DrawTextLine(arg0, arg1, arg2, maxWidth) -> value forwarded from
-@ sub_080208B4 (the actual glyph-blit routine this hands off to; arg0/
+@ DrawStringAligned (the actual glyph-blit routine this hands off to; arg0/
 @ arg1/arg2 are stored untouched and passed straight through to it, so
 @ they're very likely pixel/attribute arguments for that routine
 @ rather than anything DrawTextLine itself interprets -- not
@@ -19,7 +19,7 @@
 @     escape pair as one atomic 2-byte unit rather than splitting it.
 @  2. Writes the wrap point back through the caller's position
 @     variable, so the next call resumes exactly there.
-@  3. Calls sub_080208B4 with that buffer to actually draw the glyphs.
+@  3. Calls DrawStringAligned with that buffer to actually draw the glyphs.
 @  4. Skips a single trailing 0x0a and any run of spaces at the new
 @     position, so the next line doesn't start with leftover
 @     whitespace/the line-break marker itself.
@@ -30,7 +30,7 @@
 @ which is itself walked (its own bytes can contain nested 0x40
 @ escapes or >0xEF codes, recursing into MeasureMacroString) purely to
 @ accumulate total pixel width -- the actual drawing happens later, in
-@ sub_080208B4, once the whole line is finalized.
+@ DrawStringAligned, once the whole line is finalized.
 @ Outside of an escape, a byte >0xEF starts a two-byte extended glyph
 @ code (combined as (byte0<<8)|byte1); either way, GetGlyphWidth(font,
 @ glyphCode) gives the pixel width to accumulate, with the two font
@@ -44,7 +44,7 @@ DrawTextLine: @ 0x08020714
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x58
-	str r0, [sp, #0x44]  @ save arg0 (forwarded to sub_080208B4 at the end)
+	str r0, [sp, #0x44]  @ save arg0 (forwarded to DrawStringAligned at the end)
 	str r1, [sp, #0x48]  @ save arg1 (forwarded)
 	str r2, [sp, #0x4c]  @ save arg2 (forwarded)
 	mov sl, r3            @ sl = maxWidth, checked against r3 throughout
@@ -227,7 +227,7 @@ _0802085A:
 	ldr r1, [sp, #0x48]
 	ldr r2, [sp, #0x4c]
 	add r3, sp, #4                       @ &(the local, null-terminated line buffer)
-	bl sub_080208B4                       @ the actual glyph-blit routine
+	bl DrawStringAligned                       @ the actual glyph-blit routine
 	str r0, [sp, #0x44]
 	ldr r2, [sp, #0x78]
 	ldr r1, [r2]

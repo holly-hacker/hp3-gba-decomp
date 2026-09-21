@@ -42,8 +42,16 @@ typedef enum {
 // plain-byte (bFlags_0xD1 & 3) reads for the same bits.
 typedef struct {
     u8 bAffineSlotState : 2;  // 0 = free, 1/3 = allocated
-    u8 pad : 6;
+    u8 bField2To3_candidate : 2;  // set to 1 for the main menu cursor; cleared by InitializeBattle
+    u8 pad : 4;
 } ObjectFlagsD1;
+
+// Object byte 0xD3, the high byte of the packed affine slot word.
+typedef struct {
+    u8 pad0 : 4;
+    u8 bXFlip : 1;  // non-affine X-flip, read by UpdateObjectOnscreenFlags
+    u8 pad1 : 3;
+} ObjectFlagsD3;
 
 // Object.bGfxSlotAndFlags's bits 2-3 (draw layer); same bitfield-store
 // evidence as ObjectFlagsD1 above. See SetObjectDrawLayer.
@@ -156,9 +164,11 @@ typedef struct Object {
                              // (bFlags_0xD1 & 3) checks), bit 0x20 = large/8bpp-sprite flag
                              // consumed by FreeObjectVramTileAllocation; bit 0x20 set / bits
                              // 0x0C cleared by InitializeBattle
-    u16 wAffineSlotIndexPacked;  // 0xD2, bits 9-13 = allocated hardware affine parameter-set
-                             // index (0-31); see GetObjectAffineSlotId/SetObjectAffineSlotId/
+    u8 bAffineSlotIndexLow;  // 0xD2, low byte of the packed word: bits 9-13 of the u16 at
+                             // 0xD2 = allocated hardware affine parameter-set index (0-31);
+                             // see GetObjectAffineSlotId/SetObjectAffineSlotId/
                              // AllocAffineSlot/FreeAffineSlot
+    u8 bAffineFlagsHigh;     // 0xD3, high byte of the packed word; see ObjectFlagsD3
     u8 pad_D4;               // -> 0xD5
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot (see
                              // ClaimObjectEffectResource/AllocEffectChannelSlot_candidate/

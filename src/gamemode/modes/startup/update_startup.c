@@ -52,8 +52,8 @@ void UpdateStartup(void)
     case 3:
         if (g_GameModeStackContext.dwModeTimer_candidate == 0x84)
         {
-            // French (language 2) shows the English notice after its translation.
-            if (GetLanguage() == 2)
+            // French shows the English notice after its translation.
+            if (GetLanguage() == LanguageFrench)
             {
                 g_GameModeStackContext.dwModeTimer_candidate = 0;
                 g_GameModeStackContext.dwModeState_candidate = 4;

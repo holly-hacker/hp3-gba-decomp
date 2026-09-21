@@ -317,6 +317,7 @@ thumb-func 0x0801D5C8 UpdateCredits
 thumb-func 0x0801D858 ExitLinearCutscene
 thumb-func 0x0801D888 InitializeLinearCutscene
 thumb-func 0x0801D8C0 UpdateLinearCutscene
+label 0x0801D940 sub_0801D940
 label 0x0801DC6C sub_0801DC6C
 label 0x0801DD40 InstallIwramDecompressCodecs
 thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
@@ -341,7 +342,7 @@ label 0x080203A8 sub_080203A8
 
 asm-file 0x08020714 0x080208B4 asm/text/draw_text_line.s DrawTextLine
 
-label 0x080208B4 sub_080208B4
+label 0x080208B4 DrawStringAligned
 label 0x08020D30 InitTextMacroTable
 label 0x08020D60 SetTextTargetFromBgControl_candidate
 label 0x08020DF0 SelectTextFont_candidate
@@ -664,13 +665,15 @@ thumb-func 0x08042FC0 UpdateHarryHermionePortInTimeCutscene
 thumb-func 0x08043450 ExitHarryHermionePortInTimeCutscene
 c-file 0x08043470 0x08043580 src/gamemode/modes/main_menu/initialize_main_menu.c InitializeMainMenu
 c-file 0x08043580 0x08043730 src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
-label 0x08043730 MoveMainMenuCursor_candidate
+c-file 0x08043730 0x08043870 src/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
 c-file 0x08043870 0x080438B4 src/gamemode/modes/main_menu/exit_main_menu_screen.c ExitMainMenuScreen
 label 0x080438B4 sub_080438B4
-label 0x080438E4 ShowMainMenuEntries_candidate
+c-file 0x080438E4 0x08043940 src/main_menu/show_main_menu_entries.c ShowMainMenuEntries_candidate
+label 0x08043940 DrawMainMenuEntry_candidate
 label 0x080439AC DrawMainMenuCopyright_candidate
-label 0x08043A20 SelectMainMenuEntry_candidate
+c-file 0x08043A20 0x08043A68 src/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
 label 0x08043A68 HasLoadableSaveSlot_candidate
+label 0x08043AA4 PositionMainMenuCursorObject_candidate
 thumb-func 0x08043AF0 HandleSaveLoadContinuation
 thumb-func 0x08043EC8 InitializeLoadGame
 thumb-func 0x08043ED8 UpdateLoadGame

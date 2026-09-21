@@ -5,7 +5,7 @@
 @ MeasureMacroString itself for nested 0x40-prefixed macro codes (via
 @ sTextMacroTable) exactly like DrawTextLine's own inline glyph loop --
 @ this is the same measuring logic factored out for reuse by
-@ sub_080208B4 (the actual glyph-blit routine DrawTextLine hands off
+@ DrawStringAligned (the actual glyph-blit routine DrawTextLine hands off
 @ to once a line is finalized). Measures only -- it draws nothing
 @ itself, despite being called from inside the drawing path.
 	thumb_func_start MeasureMacroString
