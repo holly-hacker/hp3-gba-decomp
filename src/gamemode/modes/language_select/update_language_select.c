@@ -35,7 +35,7 @@ void UpdateLanguageSelect(void)
         DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB);
     }
     else if ((g_wKeysPressed & KeyA)
-             || ((g_wKeysPressed & KeyB) && g_PrevGameModeCtx.dwCurrentGameMode != 0))
+             || ((g_wKeysPressed & KeyB) && g_PrevGameModeStackContext.dwCurrentGameMode != 0))
     {
         if (g_wKeysPressed & (KeyStart | KeyA))
         {
@@ -49,7 +49,7 @@ void UpdateLanguageSelect(void)
         else
             PlaySoundById(2);
 
-        if (g_PrevGameModeCtx.dwCurrentGameMode == 0)
+        if (g_PrevGameModeStackContext.dwCurrentGameMode == 0)
             PushGameMode(Startup);
         else
             PushGameMode(Options);

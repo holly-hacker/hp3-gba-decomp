@@ -17,7 +17,7 @@ void InitializeGameSave(void)
         && (g_saveManager.aSlotPreview[g_saveManager.dwActiveSlot].bFlags & 1))
     {
         // "Do you want to overwrite this saved game?" / "Do you want to save your current progress?"
-        stringId = (g_PrevGameModeCtx.dwCurrentGameMode == GameCompletedReplayCutscene) ? 0x8E4 : 0x8E3;
+        stringId = (g_PrevGameModeStackContext.dwCurrentGameMode == GameCompletedReplayCutscene) ? 0x8E4 : 0x8E3;
         ShowSaveConfirmationPrompt_candidate(stringId);
         g_GameModeStackContext.dwModeState = 8;
         g_GameModeStackContext.dwModeScratchB = 0;

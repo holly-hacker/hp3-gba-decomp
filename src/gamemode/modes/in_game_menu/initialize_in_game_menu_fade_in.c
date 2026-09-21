@@ -4,7 +4,7 @@
 
 void InitializeInGameMenuFadeIn(void)
 {
-    if (g_PrevGameModeCtx.dwCurrentGameMode == StatusEquipCharacterSelect_0xC)
+    if (g_PrevGameModeStackContext.dwCurrentGameMode == StatusEquipCharacterSelect_0xC)
         sub_080323B0();
 
     g_GameModeStackContext.dwModeState = 1;

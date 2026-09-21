@@ -540,7 +540,7 @@ shift across `r3`/`r0`).
 
 Called unconditionally at the tail of both `InitializeBattle` branches
 (fresh battle and submode-return), immediately after the room's battle
-background/palette load. Three cases on `g_PrevGameModeCtx`:
+background/palette load. Three cases on `g_PrevGameModeStackContext`:
 
 - **`FolioUniversitas`** (a Special Move card was just selected there,
   `g_GameModeArg2 < 0xff`): tags the active fighter's

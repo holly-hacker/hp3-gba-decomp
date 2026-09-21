@@ -15,7 +15,7 @@ void TickGameModeStack(void)
         g_dwPendingGameMode.dwCurrentGameMode &= ~0x80;
         g_dwGameModeFlags &= ~0x80000000;
 
-        g_PrevGameModeCtx = g_GameModeStackContext;
+        g_PrevGameModeStackContext = g_GameModeStackContext;
         g_GameModeStackContext = g_dwPendingGameMode;
 
         DispatchGameModeInit();

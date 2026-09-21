@@ -44,8 +44,8 @@ void UpdateGameSave(void)
         if (g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart | KeyR | KeyL))
         {
             PlaySoundById(1);
-            if (g_PrevGameModeCtx.dwCurrentGameMode == InGameMenu
-                || g_PrevGameModeCtx.dwCurrentGameMode == InGameMenuFadeIn)
+            if (g_PrevGameModeStackContext.dwCurrentGameMode == InGameMenu
+                || g_PrevGameModeStackContext.dwCurrentGameMode == InGameMenuFadeIn)
                 PushGameMode(InGameMenu);
             else
                 PushGameMode(MainMenu);

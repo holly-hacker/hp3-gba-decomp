@@ -57,8 +57,8 @@ game, not just debug menus.
 is the per-frame dispatcher. On a pending transition it shifts three
 identical 0x24-byte `GameModeStackContext` blocks -- current
 (`g_GameModeStackContext`, `0x03003EF4`), pending (`g_dwPendingGameMode`,
-`0x03003F18`), previous (`g_PrevGameModeCtx`, `0x03003F3C`) -- with two plain
-struct assignments (`g_PrevGameModeCtx = g_GameModeStackContext;
+`0x03003F18`), previous (`g_PrevGameModeStackContext`, `0x03003F3C`) -- with two plain
+struct assignments (`g_PrevGameModeStackContext = g_GameModeStackContext;
 g_GameModeStackContext = g_dwPendingGameMode;`), confirmed to compile to the
 real ROM's `ldmia`/`stmia` block copies. `g_dwTickCount` (`0x03003F60`,
 right after the three blocks) increments once per call, before dispatch;

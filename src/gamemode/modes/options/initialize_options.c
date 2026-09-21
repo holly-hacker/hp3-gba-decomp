@@ -16,17 +16,17 @@ void InitializeOptions(void)
     SetAlphaBlendTargets(0, 0);
     ClearResourceCacheSlots();
 
-    if (g_PrevGameModeCtx.dwCurrentGameMode != LanguageSelect)
+    if (g_PrevGameModeStackContext.dwCurrentGameMode != LanguageSelect)
     {
         g_dwOptionsEntryLanguage = GetLanguage();
-        if (g_PrevGameModeCtx.dwCurrentGameMode != LanguageSelect)
-            g_dwOptionsReturnMode = g_PrevGameModeCtx.dwCurrentGameMode;
+        if (g_PrevGameModeStackContext.dwCurrentGameMode != LanguageSelect)
+            g_dwOptionsReturnMode = g_PrevGameModeStackContext.dwCurrentGameMode;
     }
 
     g_GameModeStackContext.dwModeState = 0;
     g_GameModeStackContext.dwModeTimer = 3;
 
-    if (g_PrevGameModeCtx.dwCurrentGameMode == LanguageSelect)
+    if (g_PrevGameModeStackContext.dwCurrentGameMode == LanguageSelect)
     {
         g_OptionsState.dwMusicVolume = g_bOptionsSavedMusicVolume;
         g_OptionsState.dwSoundVolume = g_bOptionsSavedSoundVolume;

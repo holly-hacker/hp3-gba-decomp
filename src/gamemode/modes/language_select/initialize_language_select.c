@@ -25,7 +25,7 @@ void InitializeLanguageSelect(void)
     DrawLanguageSelectEntries_candidate();
     DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB);
 
-    if (g_PrevGameModeCtx.dwCurrentGameMode == 0)
+    if (g_PrevGameModeStackContext.dwCurrentGameMode == 0)
         PlayScreenTransitionInByIndex_candidate(0x3F, 1);
     else
         PlayScreenTransitionInByIndex_candidate(0x3F, 2);

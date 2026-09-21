@@ -52,7 +52,7 @@ void UpdateOptions(void)
             PushGameMode_2(Overworld, 2, g_bCurrentRoomId);
             break;
         case MainMenu:
-            PushGameMode_2(MainMenu, 0, g_PrevGameModeCtx.dwModeScratchB);
+            PushGameMode_2(MainMenu, 0, g_PrevGameModeStackContext.dwModeScratchB);
             g_dwPendingGameMode.dwCurrentGameModeArg2 = MainMenuOptions;
             break;
         }

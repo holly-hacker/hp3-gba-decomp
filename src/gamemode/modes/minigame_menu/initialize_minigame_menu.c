@@ -17,7 +17,7 @@ void InitializeMinigameMenu(void)
     SetBgControl_candidate(1, g_dwMinigameMenuBg1Control);
     SetBgControl_candidate(3, g_dwMinigameMenuBg3Control);
 
-    if (g_PrevGameModeCtx.dwCurrentGameMode == DivinationTeaMinigame)
+    if (g_PrevGameModeStackContext.dwCurrentGameMode == DivinationTeaMinigame)
         PlayMusicModule(0x21);
 
     DrawMinigameSelectMenu();

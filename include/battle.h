@@ -224,11 +224,11 @@ extern void sub_0802D3BC(void);
 extern Object *g_apFighterObjects_candidate[7];
 
 // The Folio Universitas card slot lives at +8 (dwCurrentGameModeArg2) in
-// g_PrevGameModeCtx (see game_modes.h): PushGameMode_2(0x26, slot, 0) stages
+// g_PrevGameModeStackContext (see game_modes.h): PushGameMode_2(0x26, slot, 0) stages
 // the chosen card in the pending context's arg2, TickGameModeStack shifts
 // pending -> current -> previous on pop, and battle code reads it back out
-// of g_PrevGameModeCtx once the Folio Universitas screen has returned.
-#define g_nFolioUniversitasSlot g_PrevGameModeCtx.dwCurrentGameModeArg2
+// of g_PrevGameModeStackContext once the Folio Universitas screen has returned.
+#define g_nFolioUniversitasSlot g_PrevGameModeStackContext.dwCurrentGameModeArg2
 
 // The currently-acting fighter's record. Shared by the turn state machine
 // and the action-state tick.

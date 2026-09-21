@@ -29,7 +29,7 @@ void InitializeStartup(void)
     pText = GetDialogText(0xA48);  // "EA GAMES™ is an Electronic Arts™ Brand."
     DrawTextLines_candidate(cursor, 0x78, 0x80, 0xE0, 0x10, &pText, 1);
 
-    if (g_PrevGameModeCtx.dwCurrentGameMode == 0)
+    if (g_PrevGameModeStackContext.dwCurrentGameMode == 0)
         PlayScreenTransitionInByIndex_candidate(0x3F, 1);
     else
         PlayScreenTransitionInByIndex_candidate(0x3F, 2);

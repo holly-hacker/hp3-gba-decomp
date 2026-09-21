@@ -113,7 +113,7 @@ extern GameModeStackContext g_dwPendingGameMode;  // 0x03003F18
 // The third of three identical 0x24-byte blocks (current/pending/previous)
 // TickGameModeStack shifts through on every mode transition: the mode
 // g_GameModeStackContext held just before this frame's pop.
-extern GameModeStackContext g_PrevGameModeCtx;  // 0x03003F3C
+extern GameModeStackContext g_PrevGameModeStackContext;  // 0x03003F3C
 
 extern void InitGameModeStack(void);
 extern void TickGameModeStack(void);

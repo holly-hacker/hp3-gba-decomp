@@ -32,7 +32,7 @@ void UpdateMainMenu(void)
             SetAlphaBlendCoefficients(0, 0x10);
             g_GameModeStackContext.dwModeSubState = 0;
             EnableBg(1);
-            if (g_PrevGameModeCtx.dwCurrentGameMode == Startup)
+            if (g_PrevGameModeStackContext.dwCurrentGameMode == Startup)
             {
                 DrawMainMenuCopyright_candidate();
                 g_GameModeStackContext.dwModeState = 3;

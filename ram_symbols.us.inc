@@ -79,7 +79,7 @@
 .set g_saveManager, 0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/save.h and docs/formats/save.md
 .set g_saveStateBlock, 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
-.set g_PrevGameModeCtx, 0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
+.set g_PrevGameModeStackContext, 0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_abBgPriority,     0x03003F8C  @ u8[]; [4] == 0x03003F90
 .set g_nBattleXpReward, 0x0300260E  @ u16: XP earned this battle, one pool shared by the whole party
 .set g_nBattleGoldReward, 0x03002610  @ u16: Sickles earned this battle; also the scratch amount for gold reward grants
