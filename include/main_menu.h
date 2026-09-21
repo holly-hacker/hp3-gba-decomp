@@ -40,3 +40,10 @@ extern void SelectMainMenuEntry_candidate(void);
 extern void MoveMainMenuCursor_candidate(void);
 extern void DrawMainMenuEntry_candidate(u32 entry, u32 selectedEntry);
 extern void PositionMainMenuCursorObject_candidate(u32 tween);
+
+extern void InitializeSaveSlotScreen_candidate(u32 titleStringId);
+extern u32 HandleSaveSlotInput_candidate(void);
+extern void SelectNewGameSlot_candidate(void);
+extern void ResolveOverwriteConfirmation_candidate(void);
+extern void sub_0803227C(void);
+extern void sub_08044010(void);

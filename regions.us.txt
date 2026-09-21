@@ -525,6 +525,7 @@ thumb-func 0x08031D30 UpdateInGameMenu
 thumb-func 0x08031F6C InitializeInGameMenu
 thumb-func 0x08031FF4 InitializeInGameMenuFadeIn
 thumb-func 0x08032054 ExitInGameMenu
+label 0x0803227C sub_0803227C
 thumb-func 0x080323B4 InitializeWizardCrackerPopItMinigame
 thumb-func 0x08032534 UpdateWizardCrackerPopItMinigame
 thumb-func 0x080338A4 ExitWizardCrackerPopItMinigame
@@ -675,11 +676,16 @@ c-file 0x08043A20 0x08043A68 src/main_menu/select_main_menu_entry.c SelectMainMe
 label 0x08043A68 HasLoadableSaveSlot_candidate
 label 0x08043AA4 PositionMainMenuCursorObject_candidate
 thumb-func 0x08043AF0 HandleSaveLoadContinuation
+label 0x08043D40 SelectNewGameSlot_candidate
+label 0x08043E18 ResolveOverwriteConfirmation_candidate
 thumb-func 0x08043EC8 InitializeLoadGame
 thumb-func 0x08043ED8 UpdateLoadGame
-thumb-func 0x08043EEC InitializeNewGameMenu
-thumb-func 0x08043EFC UpdateNewGameMenu
-thumb-func 0x08043F5C ExitNewGameMenu
+c-file 0x08043EEC 0x08043EFC src/gamemode/modes/new_game_menu/initialize_new_game_menu.c InitializeNewGameMenu
+c-file 0x08043EFC 0x08043F5C src/gamemode/modes/new_game_menu/update_new_game_menu.c UpdateNewGameMenu
+c-file 0x08043F5C 0x08043F68 src/gamemode/modes/new_game_menu/exit_new_game_menu.c ExitNewGameMenu
+label 0x08043F68 InitializeSaveSlotScreen_candidate
+label 0x08043FA4 HandleSaveSlotInput_candidate
+label 0x08044010 sub_08044010
 thumb-func 0x08044134 InitializeOptions
 thumb-func 0x08044240 UpdateOptions
 thumb-func 0x08044774 ExitOptions
