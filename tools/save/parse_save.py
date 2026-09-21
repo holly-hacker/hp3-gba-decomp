@@ -253,9 +253,10 @@ HEADER_FLAG_BITS = {
     "flMinigame2Unlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
     "flMinigame3Unlocked": 0x08,
     "flMinigame4Unlocked": 0x10,
-    # Exhaustive xref search on this byte's storage/base address finds no
-    # reader for bit 5 at all (every other bit's mask is accounted for).
-    "flHeaderBit5": 0x20,
+    # The unused fifth minigame: UnlockMinigame index 4 sets it, and the
+    # minigame's code exists but is unreachable. An exhaustive xref search on
+    # this byte's storage/base address finds no reader.
+    "flMinigame5Unlocked": 0x20,
     # Set the first time the player confirms Tea Leaf Divination (minigame
     # index 3) from the minigame select menu (HandleMinigameSelectMenuConfirm,
     # ROM 0x0802CF38): clear routes to a one-time intro/tutorial game mode

@@ -9,7 +9,7 @@ typedef struct {
     u8 bMinigame2Unlocked : 1;
     u8 bMinigame3Unlocked : 1;
     u8 bMinigame4Unlocked : 1;
-    u8 bHeaderBit5 : 1;
+    u8 bMinigame5Unlocked : 1;
     u8 bTeaLeafDivinationIntroShown : 1;
     u8 bGammaHigh : 1;
 } __attribute__((packed)) HeaderFlagsBits;
@@ -33,7 +33,7 @@ typedef enum {
     flMinigame2Unlocked            = 0x04,
     flMinigame3Unlocked            = 0x08,
     flMinigame4Unlocked            = 0x10,
-    flHeaderBit5                   = 0x20,  // unidentified
+    flMinigame5Unlocked            = 0x20,  // unused fifth minigame; set by UnlockMinigame index 4
     flTeaLeafDivinationIntroShown  = 0x40,
     flGammaHigh                    = 0x80,
 } HeaderFlags;
