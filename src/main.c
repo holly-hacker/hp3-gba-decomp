@@ -5,12 +5,15 @@
 #include "text.h"
 #include "game_modes.h"
 #include "battle.h"
+#include "mt19937.h"
+#include "save.h"
+#include "graphics.h"
+#include "main_menu.h"
 
 extern void ClearSystemMemory(void);
 extern void InstallIwramDivideRoutines(void);
 extern void InstallIwramObjTileAllocRoutine(void);
 extern void InstallIwramDecompressCodecs(void);
-extern void Mt19937AllocState(void);
 extern void InitTextMacroTable(void);
 extern void InitSaveSystem(void);
 extern void InitGammaPalette(void);
@@ -27,13 +30,10 @@ extern void InitRoomScriptState_candidate(void);
 extern void NoopInit3(void);
 extern void sub_0801FB78(void);
 extern void InitRoomTileAnimationTable_candidate(void);
-extern void InitRoomState(void);
-extern void ClearResourceCacheSlots(void);
 extern void InstallBgTileCodec(void);
 extern void SetFadeToWhite(u16 layerMask, u16 amount);
 extern void kramInstall(void);
 extern void InitScanlineEffects(void);
-extern void ProcessPlaytimeTick(void);
 
 // Thumb function entry point in still-raw territory, taken by address as
 // the VBlank callback -- see `thumb-func 0x08026244` in regions.us.txt.
