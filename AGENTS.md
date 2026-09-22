@@ -153,8 +153,6 @@ required local assets. Do not repeat extraction over hand-edited assets.
 - `just check-sorted`: validate manifest and function-config ordering.
 - `just check-all`: verify donor hashes, full disassembly and production builds
   for both versions, and config ordering. Run before proposing a commit.
-- `python3 -m unittest discover -s tools/matching/tests -v`: regression tests
-  for changes to matching tools.
 
 Use checks appropriate to the files changed; documentation-only edits need
 reference and diff checks. Report what was verified and any unavailable checks
