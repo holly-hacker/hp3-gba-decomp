@@ -76,8 +76,8 @@ fixed-size-slot pool out of the heap:
   the variant slot's (when bit `0x40` is set) directly. Record fields beyond
   those two arrays are unconfirmed.
 - `g_pSortObjectsIwram`/`g_pCheckObjectCollisionsIwram` (`0x0300194C`/
-  `0x03001A10`) — `SortObjectsByDepth_candidate`/
-  `CheckObjectCollisions_candidate` relocated into IWRAM via
+  `0x03001A10`) — `SortObjectsByDepth`/
+  `CheckObjectCollisions` relocated into IWRAM via
   `bios_CPUSet`, the standard GBA hot-loop-in-IWRAM pattern.
 - `g_dwObjectListActive_candidate` (`0x030017A0`) — set to 1 by
   `InitObjectPool`, also written by `FUN_08001d90`; read by
@@ -118,12 +118,12 @@ object list, also uses. All four matched in `src/mem/`.
 - `sActiveObjectListHead` (`0x030015B0`) — `ListNode *`, head of the
   active-object list objects join via `AllocObjectFromFreeList`.
 
-## `SortObjectsByDepth_candidate` / `CheckObjectCollisions_candidate` — ARM-mode, blocked on toolchain
+## `SortObjectsByDepth` / `CheckObjectCollisions` — ARM-mode, blocked on toolchain
 
 Both are **confirmed ARM-mode** by disassembly (`arm_func` seeds in
 `functions.us.cfg`, byte-verified via `just disasm-compare`):
-`SortObjectsByDepth_candidate` (`0x08006440`-`0x08006508`) and
-`CheckObjectCollisions_candidate` (`0x08005F10`-ends within the same
+`SortObjectsByDepth` (`0x08006440`-`0x08006508`) and
+`CheckObjectCollisions` (`0x08005F10`-ends within the same
 `0x08005EE8`-`0x08006508` span, alongside two other unnamed ARM/Thumb
 functions in between that aren't part of this pair). Neither is reachable
 via `bl` anywhere in the ROM -- they're only ever taken by address
@@ -131,13 +131,19 @@ via `bl` anywhere in the ROM -- they're only ever taken by address
 which is why `gbadisasm`'s branch-following never found their boundaries
 on its own; they needed explicit seeding.
 
-`SortObjectsByDepth_candidate` is a Shell sort (gap sequence 21/7/3/1,
-packed byte-wise into one `0x15070301` constant) over an array of object
-pointers, keyed by a combined 16-bit value built from each object's
-`+0xD5`/`+0x16`/`+0x3A` fields -- likely a per-frame depth/draw-order
-sort. `CheckObjectCollisions_candidate` does the per-frame pairwise
-collision pass, dispatching through object callback pointers rather than
-direct calls.
+`SortObjectsByDepth` is a Shell sort (gap sequence 21/7/3/1, packed
+byte-wise into one `0x15070301` constant) over an array of object
+pointers. **PROVEN** by decompile: the key is `((bGfxSlotAndFlags & 0xC)
+<< 22) | (bDepthSortBias << 16) - Y` (`+0x3A`) -- draw layer, then bias,
+then descending screen Y.
+
+`CheckObjectCollisions` does the per-frame pairwise collision pass.
+**PROVEN** by decompile: each object has two `ObjectCollisionBox` slots
+(`Object.aCollisionBoxes`, `include/object.h`) and a matching 2-entry
+callback array (`Object.apfnCollisionCallback`). On AABB overlap, gated
+on `g_GameModeStackContext.dwCurrentGameMode == Overworld`, it calls
+each object's callback for the overlapping box slot with the other
+object as the argument.
 
 **Neither can be matched via `match-function` right now**: this dev
 shell's `agbcc`/`old_agbcc` are Thumb-only regardless of flags (see

@@ -14,8 +14,8 @@ void InitObjectPool(void)
     *pAux = AllocZeroed(0x104);
     g_ObjectPoolState.pFreeListHead = BuildFreeList(g_ObjectPoolState.pBuffer, 0x69, 0x128);
 
-    bios_CPUSet(SortObjectsByDepth_candidate, g_pSortObjectsIwram, 0x4000031);
-    bios_CPUSet(CheckObjectCollisions_candidate, g_pCheckObjectCollisionsIwram, 0x400007D);
+    bios_CPUSet(SortObjectsByDepth, g_pSortObjectsIwram, 0x4000031);
+    bios_CPUSet(CheckObjectCollisions, g_pCheckObjectCollisionsIwram, 0x400007D);
 
     g_dwObjectListActive_candidate = 1;
     g_dwUnk03001DC4 = 0;

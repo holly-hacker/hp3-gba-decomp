@@ -1,7 +1,7 @@
 #include "types.h"
 #include "object.h"
 
-// See SortObjectsByDepth_candidate and TickObjectList's per-layer particle flush.
+// See SortObjectsByDepth and TickObjectList's per-layer particle flush.
 void SetObjectDrawLayer(Object *obj, u8 layer)
 {
     ObjectFlagsD5 *pFlags;

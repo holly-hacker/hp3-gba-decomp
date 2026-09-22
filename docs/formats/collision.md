@@ -28,7 +28,7 @@ its tile-type byte (out-of-bounds = solid, type 1). The **low 6 bits**
 of that byte are the tile type (below); the **top 2 bits** are a
 separate value, read by `0x0802E030` and written into `bDrawLayer`
 (`Object+0xD5` bits 2-3, see `SetObjectDrawLayer`). STRUCTURAL MATCH:
-`SortObjectsByDepth_candidate` folds it into the draw-order sort key,
+`SortObjectsByDepth` folds it into the draw-order sort key,
 and `TickObjectList` flushes a per-layer queued particle list
 (`FUN_080317ec`/`FUN_08031358`) as it crosses each layer boundary while
 walking the depth-sorted object list. UNCONFIRMED: the previously

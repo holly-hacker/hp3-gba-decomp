@@ -84,9 +84,9 @@ thumb-func 0x08005BCC GetRoomRowColumnCount_candidate
 thumb-func 0x08005C60 GetRoomObjectField_candidate
 thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
 thumb-func 0x08005DC0 sub_08005DC0
-arm-func 0x08005F10 CheckObjectCollisions_candidate
+asm-file 0x08005F10 0x08006108 asm/check_object_collisions.s  CheckObjectCollisions
 asm-file 0x08006108 0x08006300 asm/decompress_type4.s      DecompressType4
-arm-func 0x08006440 SortObjectsByDepth_candidate
+asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
 thumb-func 0x08006EF4 TickBgLayers_candidate

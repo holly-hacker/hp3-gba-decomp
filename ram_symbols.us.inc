@@ -169,8 +169,8 @@
 
 @ --- Object pool (see docs/memory-map/heap.md and include/mem.h) ---
 .set g_dwObjectListActive_candidate, 0x030017A0
-.set g_pSortObjectsIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth_candidate
-.set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions_candidate
+.set g_pSortObjectsIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth
+.set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions
 .set g_ObjectPoolState,               0x03001C08  @ {void *pBuffer; void *pFreeListHead;}; pBuffer is the
                                                     @ 0x7968-byte AllocZeroed'd buffer BuildFreeList carves up
 .set sFreeObjectListHead,            0x03001C0C

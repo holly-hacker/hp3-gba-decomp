@@ -83,8 +83,8 @@ undeclared in `rtl.c`), so it has not been tested against.
 Confirmed practically: the `agbcc`/`old_agbcc` binaries `nix develop` provides
 are Thumb-only regardless of flags -- `-O2 -mthumb-interwork` still emits
 `.code 16`/`.thumb_func` output, and `-marm` is rejected outright
-(`agbcc: Invalid option 'arm'`). `SortObjectsByDepth_candidate`
-(`0x08006440`) and `CheckObjectCollisions_candidate` (`0x08005F10`), both
+(`agbcc: Invalid option 'arm'`). `SortObjectsByDepth`
+(`0x08006440`) and `CheckObjectCollisions` (`0x08005F10`), both
 confirmed ARM-mode by disassembly (see `docs/memory-map/heap.md`), can't be
 matched via `match-function` until `gcc_arm` (or an equivalent) builds in
 this dev shell -- that's a toolchain project of its own, not a per-function

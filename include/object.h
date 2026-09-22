@@ -68,6 +68,18 @@ typedef struct ObjectSpriteBounds {
     u32 packedY;
 } ObjectSpriteBounds;
 
+// One of Object's two collision-box slots, tested by CheckObjectCollisions.
+// dwPackedOffsets is 4 signed bytes -- byte3/byte2 = Y offsets, byte1/byte0 =
+// X offsets from the object's integer position (+0x36/+0x3A), sign-extended
+// per byte and swapped by bAffineFlagsHigh's X/Y-flip bits (0x10/0x20) --
+// added to the position to form the box's edges. bState is compared == 1 to
+// take part in the pairwise overlap test; other values are unconfirmed.
+typedef struct ObjectCollisionBox {
+    u32 dwPackedOffsets;  // 0x00
+    u8 bState;            // 0x04
+    u8 pad_5[3];          // -> 0x08
+} ObjectCollisionBox;
+
 // One selectable 16-byte sprite resource record. The first two pointers feed
 // SetObjectAssetRecord's tile/frame pipeline; pPalette is uploaded separately.
 typedef struct ObjectAssetRecord {
@@ -109,7 +121,7 @@ typedef struct Object {
     u8 bFacing;             // 0x12, direction/facing index; see SetObjectFacing
     u8 pad_13[0x01];        // -> 0x14
     u16 wMoveDuration;      // 0x14
-    u8 bDepthSortBias;      // 0x16, draw-order bias; see SortObjectsByDepth_candidate
+    u8 bDepthSortBias;      // 0x16, draw-order bias; see SortObjectsByDepth
     u8 pad_17[0x0D];        // -> 0x24
     ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
                              // ReleaseParticleEmitter_candidate and zeroed
@@ -158,7 +170,14 @@ typedef struct Object {
     u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultObject; also read by
                              // sub_08001F40 as one of several "movement stopped"
                              // conditions. Not enough evidence yet for a real name.
-    u8 pad_AE[0x23];        // -> 0xD1
+    u8 pad_AE[0x02];        // -> 0xB0
+    ObjectCollisionBox aCollisionBoxes[2];  // 0xB0, see CheckObjectCollisions;
+                             // slot 0 at 0xB0, slot 1 at 0xB8
+    u8 pad_C0[0x08];        // -> 0xC8
+    void (*apfnCollisionCallback[2])(struct Object *self, struct Object *other);
+                             // 0xC8, called by CheckObjectCollisions on an
+                             // overlap of the matching-index box, per object
+    u8 pad_D0;               // -> 0xD1
     u8 bFlags_0xD1;         // 0xD1: bits 0-1 = affine-transform slot allocation state (0 = free,
                              // 1/3 = allocated -- see ReleaseObjectAffineSlot/FreeObject's
                              // (bFlags_0xD1 & 3) checks), bit 0x20 = large/8bpp-sprite flag
@@ -173,7 +192,7 @@ typedef struct Object {
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot (see
                              // ClaimObjectEffectResource/AllocEffectChannelSlot_candidate/
                              // BindEffectChannelSlot_candidate), bits 2-3 = draw layer (see
-                             // SetObjectDrawLayer/SortObjectsByDepth_candidate/TickObjectList),
+                             // SetObjectDrawLayer/SortObjectsByDepth/TickObjectList),
                              // written by UpdateObjectTileCollisionState
     u8 pad_D6[0x02];        // -> 0xD8
     u8 bAnimFrameCounter;   // 0xD8, frames-remaining countdown reloaded from bAnimFrameDelay

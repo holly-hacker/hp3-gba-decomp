@@ -114,6 +114,6 @@ extern ActiveObjectListState g_ActiveObjectListState;
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
 extern void sub_080015D4(ListNode **listHead);  // called by ExitBattle with &g_ActiveObjectListState.pHead
 
-void SortObjectsByDepth_candidate(void);
-void CheckObjectCollisions_candidate(void);
+void SortObjectsByDepth(void);
+void CheckObjectCollisions(void);
 void InitObjectPool(void);
