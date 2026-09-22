@@ -73,7 +73,7 @@ label 0x08003A44 sub_08003A44
 label 0x0800539C RespawnRoomObjectsInRow_candidate
 c-file 0x08005410 0x080055C0 src/room/walk_room_switch_state_chain.c WalkRoomSwitchStateChain_candidate
 c-file 0x080055C0 0x0800572C src/room/resume_room_switch_state_chain.c ResumeRoomSwitchStateChain_candidate
-label 0x08005A44 sub_08005A44
+label 0x08005A44 InitRoomScriptState_candidate
 label 0x08005A78 ParseRoomResourceBlob_candidate
 label 0x08005B00 RespawnRowAndRunChain_candidate
 label 0x08005B44 ShouldRunRoomScriptRow_candidate
@@ -88,22 +88,22 @@ label 0x08006788 WriteBgGraphicTilemap_candidate
 label 0x08006EF4 TickBgLayers_candidate
 
 label 0x08007130 sub_08007130
-label 0x080072D0 SetBgControl_candidate
-label 0x080072EC sub_080072EC
+label 0x080072D0 SetBgControl
+label 0x080072EC SetBgControlRegister_candidate
 label 0x08007334 EnableBg
 label 0x08007348 DisableBg
-label 0x080073BC ResetDisplayState_candidate
+label 0x080073BC ResetDisplayState
 label 0x08007444 SetDispcntFlag
-label 0x08007454 ClearBgTilemap_candidate
+label 0x08007454 ClearBgTilemap
 label 0x08007464 sub_08007464
 label 0x08007474 FillBgTilemap_candidate
 label 0x080074F4 FillBgTile_candidate
-label 0x0800778C LoadBgGraphic_candidate
+label 0x0800778C LoadBgGraphic
 label 0x08007800 LoadEmbeddedPalette_candidate
 label 0x080079AC CopyBgTilemapRect_candidate
 label 0x08007A90 sub_08007A90
-label 0x08007B30 sub_08007B30
-label 0x08007B88 sub_08007B88
+label 0x08007B30 SetBgScrollX_candidate
+label 0x08007B88 SetBgScroll_candidate
 
 label 0x08007EB8 SetBgPriority
 thumb-func 0x08008050 InitializeRiddikulusMinigame
@@ -349,16 +349,16 @@ thumb-func 0x0801FDE8 InitializeHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FED4 UpdateHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
 label 0x08020228 TickRoomTileAnimations_candidate
-label 0x080203A8 sub_080203A8
+label 0x080203A8 InitRoomTileAnimationTable_candidate
 
 c-file 0x08020714 0x080208B4 src/text/draw_text_line.c DrawTextLine
 
 label 0x080208B4 DrawStringAligned
 label 0x08020D30 InitTextMacroTable
-label 0x08020D60 SetTextTargetFromBgControl_candidate
-label 0x08020DF0 SelectTextFont_candidate
+label 0x08020D60 SetTextTargetFromBgControl
+label 0x08020DF0 SelectTextFont
 c-file 0x08020E40 0x08020E9C src/text/measure_macro_string.c MeasureMacroString
-label 0x08020F44 DrawTextLines_candidate
+label 0x08020F44 DrawTextLines
 c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
 label 0x08021100 SetDialogMacroString0_candidate
 label 0x08021148 SetDialogMacroString1_candidate
@@ -366,7 +366,7 @@ label 0x08021184 SetDialogMacroNumber0_candidate
 label 0x080211AC SetDialogMacroNumber1_candidate
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
 label 0x08021560 NoopInit
-label 0x08021564 ResetSaveStateForNewGame_candidate
+label 0x08021564 ResetSaveStateForNewGame
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x0802165C 0x08021694 src/save/process_playtime_tick.c ProcessPlaytimeTick
 label 0x080216A0 AddSickles
@@ -390,12 +390,12 @@ label 0x08024A88 sub_08024A88
 label 0x08024AEC GetPartyMasterStatsSlot_candidate
 c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTable
-label 0x080250B8 InstallBgTileCodec_candidate
+label 0x080250B8 InstallBgTileCodec
 thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
 thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
-label 0x080258E8 sub_080258E8
+label 0x080258E8 InitInputSystem_candidate
 c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
 label 0x08025A74 StepWrappedSelectionVertical_candidate
 label 0x08025B2C StepWrappedSelectionHorizontal_candidate
@@ -409,7 +409,7 @@ c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallI
 label 0x08026158 SetVBlankCallback
 c-file 0x080261DC 0x080261F8 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 
-thumb-func 0x08026244 sub_08026244
+thumb-func 0x08026244 VBlankCallback_candidate
 label 0x08026254 sub_08026254
 c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 label 0x08026B8C GetRewardNameStringId_candidate
@@ -453,7 +453,7 @@ label 0x0802B018 InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
-label 0x0802B0F4 sub_0802B0F4
+label 0x0802B0F4 ClearRoomObjectStateBuffer
 label 0x0802B110 SetRoomSwitchState
 label 0x0802B12C GetRoomSwitchState
 thumb-func 0x0802B164 OverworldVBlankCallback
@@ -648,12 +648,12 @@ label 0x0803BF20 SaveGameToSlot
 label 0x0803C0A8 ValidateSaveSlot
 label 0x0803C0DC LoadSaveSlot
 label 0x0803C114 SyncSaveHeaderIfDirty
-label 0x0803D2C8 sub_0803D2C8
+label 0x0803D2C8 InitScreenTransitionState_candidate
 label 0x0803D310 SetFadeToWhite
 label 0x0803D338 SetAlphaBlendTargets
 label 0x0803D350 SetAlphaBlendCoefficients
-label 0x0803D3B0 PlayScreenTransitionInByIndex_candidate
-label 0x0803D3E8 PlayScreenTransitionOutByIndex_candidate
+label 0x0803D3B0 PlayScreenTransitionInByIndex
+label 0x0803D3E8 PlayScreenTransitionOutByIndex
 label 0x0803D420 sub_0803D420
 label 0x0803DA4C UpdateOverworldCamera_candidate
 label 0x0803DB68 sub_0803DB68
@@ -712,7 +712,7 @@ c-file 0x080438E4 0x08043940 src/main_menu/show_main_menu_entries.c ShowMainMenu
 label 0x08043940 DrawMainMenuEntry_candidate
 label 0x080439AC DrawMainMenuCopyright_candidate
 c-file 0x08043A20 0x08043A68 src/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
-label 0x08043A68 HasLoadableSaveSlot_candidate
+label 0x08043A68 HasLoadableSaveSlot
 label 0x08043AA4 PositionMainMenuCursorObject_candidate
 c-file 0x08043AF0 0x08043B70 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
 label 0x08043D40 SelectNewGameSlot_candidate

@@ -4,5 +4,5 @@
 
 void RoomScriptOpPlayScreenTransitionIn(RoomScriptRecord *pRecord)
 {
-    PlayScreenTransitionInByIndex_candidate(0x3f, 2);
+    PlayScreenTransitionInByIndex(0x3f, 2);
 }

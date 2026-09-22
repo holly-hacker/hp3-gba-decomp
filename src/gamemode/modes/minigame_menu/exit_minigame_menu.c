@@ -7,7 +7,7 @@
 
 void ExitMinigameMenu(void)
 {
-    PlayScreenTransitionOutByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionOutByIndex(0x3F, 2);
     sub_0801E0DC();
     sub_080015D4(&g_ActiveObjectListState.pHead);
     sub_0803171C();

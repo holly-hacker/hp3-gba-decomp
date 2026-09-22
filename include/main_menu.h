@@ -38,8 +38,8 @@ extern const u8 *const g_apMainMenuTitleGraphic[8];
 extern const u16 g_MainMenuPalette[];
 extern const u32 g_adwMainMenuStateTimeouts[6];
 
-extern void ResetSaveStateForNewGame_candidate(void);
-extern u32 HasLoadableSaveSlot_candidate(void);
+extern void ResetSaveStateForNewGame(void);
+extern u32 HasLoadableSaveSlot(void);
 extern void sub_080438B4(void);
 extern void DrawMainMenuCopyright_candidate(void);
 extern void ShowMainMenuEntries_candidate(void);

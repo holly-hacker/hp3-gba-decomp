@@ -14,14 +14,14 @@ void InitializeMinigameMenu(void)
     pFlagsD3 = (ObjectFlagsD3 *)&g_pMenuCursorObject->bAffineFlagsHigh;
     pFlagsD3->bXFlip = 1;
     sub_0801DCC4(g_pMenuCursorObject, g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70);
-    SetBgControl_candidate(1, g_dwMinigameMenuBg1Control);
-    SetBgControl_candidate(3, g_dwMinigameMenuBg3Control);
+    SetBgControl(1, g_dwMinigameMenuBg1Control);
+    SetBgControl(3, g_dwMinigameMenuBg3Control);
 
     if (g_PrevGameModeStackContext.dwCurrentGameMode == DivinationTeaMinigame)
         PlayMusicModule(0x21);
 
     DrawMinigameSelectMenu();
     HandleMinigameMenuSelection(g_GameModeStackContext.dwCurrentGameModeArg2);
-    PlayScreenTransitionInByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionInByIndex(0x3F, 2);
     g_GameModeStackContext.dwModeState = 0;
 }

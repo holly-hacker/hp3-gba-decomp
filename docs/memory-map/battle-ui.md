@@ -695,7 +695,7 @@ order.
 | default | keyed on the *acting* fighter's `bFighterType`: `1` (Hermione) -> `arg2 + 0xa39`; `2` (Ron) -> `arg2 + 0xa36`; `0` (Harry) -> several sub-branches (`arg2==3`/`6`/`0xf` index different tables, e.g. `0xf` -> `... + 0xa2d`); else -> `0` | Hermione/Ron/Harry special-move descriptions, e.g. "Wow! Harry learned all possible spells!" |
 
 Case 5 is the busiest of these and carries its own inner dispatch. Each
-variant is rendered through `DrawTextLines_candidate` (`0x08020F44`, the
+variant is rendered through `DrawTextLines` (`0x08020F44`, the
 multi-line text-box drawer, see
 [`../formats/text.md`](../formats/text.md)):
 

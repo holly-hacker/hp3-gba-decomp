@@ -19,8 +19,8 @@ static inline void DrawEntry(u32 entry, u32 selectedEntry)
     if (entry == selectedEntry)
         color = 6;
 
-    SetTextTargetFromBgControl_candidate(g_dwMainMenuBg1Control);
-    SelectTextFont_candidate(2, color, -1);
+    SetTextTargetFromBgControl(g_dwMainMenuBg1Control);
+    SelectTextFont(2, color, -1);
     DrawStringAligned(slot * 0x30 + 0x118, 0x20, slot * 0xC + 0x58, GetDialogText(entry + 0x8CD), 0);
 }
 

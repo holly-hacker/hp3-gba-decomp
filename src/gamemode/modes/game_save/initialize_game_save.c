@@ -29,5 +29,5 @@ void InitializeGameSave(void)
         g_GameModeStackContext.dwModeState = 2;
     }
 
-    PlayScreenTransitionInByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionInByIndex(0x3F, 2);
 }

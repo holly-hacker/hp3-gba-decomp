@@ -393,7 +393,7 @@ extern void sub_0802D6B8(void);
 extern void sub_08007A90(void);
 extern void sub_0804542C(void);
 extern void ClearFighterObjectFlag_candidate(u8 fighterIndex);  // 0x08012CB4
-extern void sub_0802B0F4(void);  // Folio Universitas exit-arg3 teardown
+extern void ClearRoomObjectStateBuffer(void);  // memsets g_pRoomObjectStateBuffer (0x20BC bytes); see docs/formats/save.md
 
 // Battle-message icon object (shown alongside ShowBattleMessage's text),
 // distinct from the 7 per-fighter Objects in g_apFighterObjects_candidate.

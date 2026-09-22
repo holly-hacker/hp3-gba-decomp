@@ -27,13 +27,13 @@ void UpdateStartup(void)
                                   g_GameModeStackContext.dwModeSubState);
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
-            ClearBgTilemap_candidate(2);
-            ClearBgTilemap_candidate(1);
-            LoadBgGraphic_candidate(2, g_StartupNoticeGraphic, 1, 0, 8, 1);
-            SetTextTargetFromBgControl_candidate(g_dwStartupBg1Control);
-            SelectTextFont_candidate(8, 0, -1);
+            ClearBgTilemap(2);
+            ClearBgTilemap(1);
+            LoadBgGraphic(2, g_StartupNoticeGraphic, 1, 0, 8, 1);
+            SetTextTargetFromBgControl(g_dwStartupBg1Control);
+            SelectTextFont(8, 0, -1);
             pText = GetDialogText(0x8E5);  // Harry Potter / WBIE trademark and copyright notice
-            DrawTextLines_candidate(0xE0, 0x78, 0x67, 0xE0, 0x50, &pText, 1);
+            DrawTextLines(0xE0, 0x78, 0x67, 0xE0, 0x50, &pText, 1);
             g_GameModeStackContext.dwModeState = 2;
             g_GameModeStackContext.dwModeSubState = 0;
         }
@@ -70,9 +70,9 @@ void UpdateStartup(void)
                                   g_GameModeStackContext.dwModeSubState);
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
-            ClearBgTilemap_candidate(1);
+            ClearBgTilemap(1);
             pText = GetDialogText(0x8E9);  // same notice, English text in every language
-            DrawTextLines_candidate(0xE0, 0x78, 0x67, 0xE0, 0x50, &pText, 1);
+            DrawTextLines(0xE0, 0x78, 0x67, 0xE0, 0x50, &pText, 1);
             g_GameModeStackContext.dwModeState = 5;
             g_GameModeStackContext.dwModeSubState = 0;
         }

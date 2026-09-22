@@ -891,7 +891,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
 - **`BgTileCodec_candidate`** (`0x08006300`, 256 bytes, ARM): a third
   proprietary, IWRAM-installed codec, alongside the already-documented
   type-4 and type-6 codecs. Installed once at boot into IWRAM
-  `0x030033CC` by **`InstallBgTileCodec_candidate`** (`0x080250B8`,
+  `0x030033CC` by **`InstallBgTileCodec`** (`0x080250B8`,
   called from `main` at `0x0802971E`) via
   `CPUSet(0x08006300, 0x030033CC, ...)`. `DecompressBgTileToVram_candidate`
   reaches it through the standard libgcc `_call_via_r5` interworking

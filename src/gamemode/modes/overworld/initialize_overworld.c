@@ -56,18 +56,18 @@ void InitializeOverworld(void)
         sub_0803094C(1);
         sub_0803094C(2);
         SetVBlankCallback(OverworldVBlankCallback);
-        ResetDisplayState_candidate(0);
+        ResetDisplayState(0);
         SetDispcntFlag(0x1000);
 
         // BG control registers.
         bgCtrl3 = g_dwBg3Control;
-        SetBgControl_candidate(3, bgCtrl3);
+        SetBgControl(3, bgCtrl3);
         bgCtrl2 = g_dwBg2Control;
-        SetBgControl_candidate(2, bgCtrl2);
+        SetBgControl(2, bgCtrl2);
         bgCtrl1 = g_dwBg1Control;
-        SetBgControl_candidate(1, bgCtrl1);
+        SetBgControl(1, bgCtrl1);
         bgCtrl0 = g_dwBg0Control;
-        SetBgControl_candidate(0, bgCtrl0);
+        SetBgControl(0, bgCtrl0);
         DisableBg(0);
 
         // Make the requested room current.
@@ -391,7 +391,7 @@ void InitializeOverworld(void)
             g_bPendingQuestStateOverride_candidate = 0xff;
         }
 
-        PlayScreenTransitionInByIndex_candidate(0x3f, 2);
+        PlayScreenTransitionInByIndex(0x3f, 2);
         if (g_bCurrentRoomId != 0x20)
             ShowMapNamePopup();
 

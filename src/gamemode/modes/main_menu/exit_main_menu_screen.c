@@ -8,7 +8,7 @@
 
 void ExitMainMenuScreen(void)
 {
-    PlayScreenTransitionOutByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionOutByIndex(0x3F, 2);
     sub_0801DC6C(g_MainMenuState.pCursorObject);
     sub_080316D4();
     sub_0803171C();

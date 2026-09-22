@@ -3,5 +3,5 @@
 
 void ExitLanguageSelect(void)
 {
-    PlayScreenTransitionOutByIndex_candidate(0x3f, 2);
+    PlayScreenTransitionOutByIndex(0x3f, 2);
 }

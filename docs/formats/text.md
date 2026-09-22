@@ -173,7 +173,7 @@ character -- loops `ldrb r0,[str]`, calls `sub_08020714` once per
 iteration, stops on a null byte. This is the string-consuming outer
 loop of a real text renderer.
 
-**`DrawTextLines_candidate`** (`0x08020F44`): a level above `PrintTextBox` --
+**`DrawTextLines`** (`0x08020F44`): a level above `PrintTextBox` --
 loops `DrawTextLine` directly, one call per line, advancing Y by
 `DAT_03003121` (line height) each iteration, until the string is
 null-terminated or out of vertical room. Multi-line box drawing built on

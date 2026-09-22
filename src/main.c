@@ -17,19 +17,19 @@ extern void InitGammaPalette(void);
 extern void NoopInit(void);
 extern void InitOamSystem(void);
 extern void InitResourceCachePools(void);
-extern void sub_0803D2C8(void);
+extern void InitScreenTransitionState_candidate(void);
 extern void sub_0803E4FC(void);
 extern void NoopInit2(void);
-extern void sub_080258E8(void);
+extern void InitInputSystem_candidate(void);
 extern void sub_08042E2C(void);
 extern void InitDisplayControl(void);
-extern void sub_08005A44(void);
+extern void InitRoomScriptState_candidate(void);
 extern void NoopInit3(void);
 extern void sub_0801FB78(void);
-extern void sub_080203A8(void);
+extern void InitRoomTileAnimationTable_candidate(void);
 extern void InitRoomState(void);
 extern void ClearResourceCacheSlots(void);
-extern void InstallBgTileCodec_candidate(void);
+extern void InstallBgTileCodec(void);
 extern void SetFadeToWhite(u16 layerMask, u16 amount);
 extern void kramInstall(void);
 extern void InitScanlineEffects(void);
@@ -37,7 +37,7 @@ extern void ProcessPlaytimeTick(void);
 
 // Thumb function entry point in still-raw territory, taken by address as
 // the VBlank callback -- see `thumb-func 0x08026244` in regions.us.txt.
-extern void sub_08026244(void);
+extern void VBlankCallback_candidate(void);
 
 // agbcc special-cases a C function literally named `main`, inserting an
 // implicit call to `__gccmain` at entry that the real ROM code doesn't
@@ -63,24 +63,24 @@ void AgbMain(void)
     NoopInit();
     InitOamSystem();
     InitResourceCachePools();
-    sub_0803D2C8();
+    InitScreenTransitionState_candidate();
     sub_0803E4FC();
     NoopInit2();
-    sub_080258E8();
+    InitInputSystem_candidate();
     sub_08042E2C();
     InitDisplayControl();
-    sub_08005A44();
+    InitRoomScriptState_candidate();
     NoopInit3();
     sub_0801FB78();
-    sub_080203A8();
+    InitRoomTileAnimationTable_candidate();
     InitRoomState();
     ClearResourceCacheSlots();
-    InstallBgTileCodec_candidate();
+    InstallBgTileCodec();
 
     g_dwGameModeFlags = 0;
     g_pVBlankState->wSuppressOamSwap = 0;
 
-    SetVBlankCallback(sub_08026244);
+    SetVBlankCallback(VBlankCallback_candidate);
     kramInstall();
     EnableInterrupts();
     InitScanlineEffects();

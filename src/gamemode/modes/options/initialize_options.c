@@ -50,5 +50,5 @@ void InitializeOptions(void)
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nX - 0xE,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nY + 8);
     BuildOptionsScreen_candidate();
-    PlayScreenTransitionInByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionInByIndex(0x3F, 2);
 }

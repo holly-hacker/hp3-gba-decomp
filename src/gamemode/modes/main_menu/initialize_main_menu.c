@@ -9,8 +9,8 @@
 
 void InitializeMainMenu(void)
 {
-    ResetSaveStateForNewGame_candidate();
-    sub_0802B0F4();
+    ResetSaveStateForNewGame();
+    ClearRoomObjectStateBuffer();
 
     // Arg2 is the entry to highlight first.
     g_GameModeStackContext.dwModeState = 0;
@@ -18,26 +18,26 @@ void InitializeMainMenu(void)
     g_GameModeStackContext.dwModeSubState = 0;
     g_GameModeStackContext.dwModeTimer = 0;
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
-    g_MainMenuState.dwLoadGameAvailable = HasLoadableSaveSlot_candidate();
+    g_MainMenuState.dwLoadGameAvailable = HasLoadableSaveSlot();
 
-    ResetDisplayState_candidate(0);
+    ResetDisplayState(0);
     SetDispcntFlag(0x1000);
-    SetBgControl_candidate(3, g_dwMainMenuBg3Control);
-    LoadBgGraphic_candidate(3, g_MenuBg3Graphic, 0, 0, 0, 0);
-    sub_08007B30(3, 0x80000);
-    sub_080072EC(2, g_dwMainMenuBg2Control);
-    ClearBgTilemap_candidate(2);
-    LoadBgGraphic_candidate(2, g_MainMenuBg2Graphic, 1, 0, 1, 1);
-    LoadBgGraphic_candidate(2, g_apMainMenuTitleGraphic[GetLanguage()], 0xC8, 0, 0xF, 9);
-    sub_080072EC(1, g_dwMainMenuBg1Control);
-    ClearBgTilemap_candidate(1);
+    SetBgControl(3, g_dwMainMenuBg3Control);
+    LoadBgGraphic(3, g_MenuBg3Graphic, 0, 0, 0, 0);
+    SetBgScrollX_candidate(3, 0x80000);
+    SetBgControlRegister_candidate(2, g_dwMainMenuBg2Control);
+    ClearBgTilemap(2);
+    LoadBgGraphic(2, g_MainMenuBg2Graphic, 1, 0, 1, 1);
+    LoadBgGraphic(2, g_apMainMenuTitleGraphic[GetLanguage()], 0xC8, 0, 0xF, 9);
+    SetBgControlRegister_candidate(1, g_dwMainMenuBg1Control);
+    ClearBgTilemap(1);
     ClearResourceCacheSlots();
     sub_0803094C(0);
     sub_0800D264((void *)g_MainMenuPalette, 0, 0x10);
     sub_080438B4();
 
     PlayMusicModule(0x21);
-    PlayScreenTransitionInByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionInByIndex(0x3F, 2);
     SetAlphaBlendTargets(4, 8);
     SetAlphaBlendCoefficients(0, 0x10);
     EnableBg(2);

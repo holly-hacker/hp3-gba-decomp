@@ -77,9 +77,9 @@ void UpdateMainMenu(void)
             g_GameModeStackContext.dwModeTimer++;
             if (g_GameModeStackContext.dwModeTimer == 0x3C)
             {
-                SelectTextFont_candidate(2, 6, -1);
+                SelectTextFont(2, 6, -1);
                 pText = GetDialogText(0x8E8);  // "Press START"
-                DrawTextLines_candidate(g_dwMainMenuTextCursor, 0x78, 0x8D, 0xB4, 0x10, &pText, 1);
+                DrawTextLines(g_dwMainMenuTextCursor, 0x78, 0x8D, 0xB4, 0x10, &pText, 1);
             }
         }
         else if (g_wKeysPressed & KeyStart)
@@ -98,7 +98,7 @@ void UpdateMainMenu(void)
                                   0x10 - g_GameModeStackContext.dwModeSubState);
         if (g_GameModeStackContext.dwModeSubState == 0)
         {
-            ClearBgTilemap_candidate(1);
+            ClearBgTilemap(1);
             ShowMainMenuEntries_candidate();
             g_GameModeStackContext.dwModeState = 1;
         }

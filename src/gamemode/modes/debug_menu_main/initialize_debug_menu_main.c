@@ -21,17 +21,17 @@ void InitializeDebugMenuMain(void)
     pFillValue = &fillValue;
     *pFillValue = 0;
     bios_CPUSet(pFillValue, VRAM_BASE, 0x01008000);
-    ResetDisplayState_candidate(0);
+    ResetDisplayState(0);
     SetDispcntFlag(0x1000);
-    SetBgControl_candidate(0, g_dwDebugMenuMainBg0Control);
+    SetBgControl(0, g_dwDebugMenuMainBg0Control);
     bgCtrl1 = g_dwDebugMenuMainBg1Control;
-    SetBgControl_candidate(1, bgCtrl1);
-    LoadBgGraphic_candidate(0, g_DebugMenuGraphic, 0, 0, 0, 0);
-    ClearBgTilemap_candidate(1);
-    SetTextTargetFromBgControl_candidate(bgCtrl1);
-    SelectTextFont_candidate(7, 0, -1);
-    sub_08007B88(0, 0, 0);
-    sub_08007B88(1, 0, 0);
+    SetBgControl(1, bgCtrl1);
+    LoadBgGraphic(0, g_DebugMenuGraphic, 0, 0, 0, 0);
+    ClearBgTilemap(1);
+    SetTextTargetFromBgControl(bgCtrl1);
+    SelectTextFont(7, 0, -1);
+    SetBgScroll_candidate(0, 0, 0);
+    SetBgScroll_candidate(1, 0, 0);
 
     g_DebugMenuMainState.dwSelection = 0;
     pObject = SpawnObject(10, 0x78, 0x2D, g_DebugMenuCursorSpawnData);
@@ -47,5 +47,5 @@ void InitializeDebugMenuMain(void)
     for (i = 0; i < 3; i++)
         InitCharacterSpells_candidate(i, &g_aPartyMasterStats[i].wHp);
 
-    PlayScreenTransitionInByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionInByIndex(0x3F, 2);
 }

@@ -75,9 +75,9 @@ extern u32 MeasureMacroString(const u8 *pStr);
 extern u32 DrawTextLine(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 **ppText, u32 align, s32 *pCharBudget);
 extern u32 PrintTextBox(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 *pText, u32 align);
 extern u32 DrawStringAligned(u32 tileCursor, s32 x, s32 y, const u8 *pText, u32 align);
-extern void SetTextTargetFromBgControl_candidate(u32 bgControl);
-extern void SelectTextFont_candidate(u32 fontId, u32 color, s32 arg2);
-extern u32 DrawTextLines_candidate(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, u8 **ppText, u32 align);
+extern void SetTextTargetFromBgControl(u32 bgControl);
+extern void SelectTextFont(u32 fontId, u32 color, s32 arg2);
+extern u32 DrawTextLines(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, u8 **ppText, u32 align);
 
 extern u32 GetLanguage(void);
 extern void SetLanguage(u32 languageId);

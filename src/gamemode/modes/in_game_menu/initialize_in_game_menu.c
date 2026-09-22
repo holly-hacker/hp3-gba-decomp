@@ -11,5 +11,5 @@ void InitializeInGameMenu(void)
         (g_PrevGameModeStackContext.dwCurrentGameMode == GameSave) ? g_bInGameMenuCursor : 0;
     sub_08031FB8(1);
     BuildListMenu_candidate(g_InGameMenuDefinition);
-    PlayScreenTransitionInByIndex_candidate(0x3F, 2);
+    PlayScreenTransitionInByIndex(0x3F, 2);
 }
