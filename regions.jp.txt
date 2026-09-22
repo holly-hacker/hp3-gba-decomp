@@ -54,7 +54,7 @@ thumb-func 0x0800D264 sub_0800D264
 thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptObject
-thumb-func 0x0801DD3C InstallIwramDecompressCodecs
+c-file 0x0801DD3C 0x0801DD84 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 thumb-func 0x0801FB60 sub_0801FB78
 thumb-func 0x0801FD88 InitDisplayControl
 thumb-func 0x08020210 TickRoomTileAnimations_candidate

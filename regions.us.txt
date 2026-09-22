@@ -331,7 +331,7 @@ thumb-func 0x0801D8C0 UpdateLinearCutscene
 thumb-func 0x0801D940 sub_0801D940
 thumb-func 0x0801DC6C sub_0801DC6C
 thumb-func 0x0801DCC4 sub_0801DCC4
-thumb-func 0x0801DD40 InstallIwramDecompressCodecs
+c-file 0x0801DD40 0x0801DD88 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 thumb-func 0x0801DF6C sub_0801DF6C
 thumb-func 0x0801E0D8 sub_0801E0D8
 thumb-func 0x0801E0DC sub_0801E0DC

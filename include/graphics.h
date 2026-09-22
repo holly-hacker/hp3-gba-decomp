@@ -5,6 +5,21 @@
 
 // See docs/formats/graphics.md.
 
+// The two proprietary resource-compression codecs (dispatch types 4/6;
+// not the real BIOS LZ77/Huffman/RLE). InstallIwramDecompressCodecs
+// copies both into IWRAM at startup for speed and records each copy's
+// address in the matching g_pDecompressType*Entry global; the
+// resource-decompression dispatcher calls through those, not the ROM
+// copies directly.
+typedef void (*DecompressFunc)(const void *src, void *dst, u32 *pSize);
+void DecompressType4(const void *src, void *dst, u32 *pSize);
+void DecompressType6(const void *src, void *dst, u32 *pSize);
+void InstallIwramDecompressCodecs(void);
+extern DecompressFunc g_pDecompressType4Entry;
+extern DecompressFunc g_pDecompressType6Entry;
+extern u8 g_pDecompressType4Iwram[0x1F8];
+extern u8 g_pDecompressType6Iwram[0x33C];
+
 // bios_ObjAffineSet's input struct (see include/bios.h): reciprocal
 // scale (8.8 fixed) plus rotation angle; the trailing pad word gives
 // each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage

@@ -25,6 +25,12 @@
 .set g_dwUnk03001DC0,         0x03001DC0
 .set g_dwUnk03001DC4,         0x03001DC4
 
+@ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md) ---
+.set g_pDecompressType4Entry, 0x030028CC
+.set g_pDecompressType6Entry, 0x030028D0
+.set g_pDecompressType4Iwram, 0x030028D4
+.set g_pDecompressType6Iwram, 0x03002ACC
+
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_GameModeStackContext, 0x03003F54  @ see ram_symbols.us.inc
 .set g_dwFrameSyncTarget, 0x03003BA8  @ see ram_symbols.us.inc

@@ -179,6 +179,13 @@
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
 .set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/mem.h
 
+@ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
+@ "resource-decompression dispatcher") ---
+.set g_pDecompressType4Entry, 0x030028CC  @ DecompressFunc: = g_pDecompressType4Iwram
+.set g_pDecompressType6Entry, 0x030028D0  @ DecompressFunc: = g_pDecompressType6Iwram
+.set g_pDecompressType4Iwram, 0x030028D4  @ u8[0x1F8]: IWRAM copy of DecompressType4
+.set g_pDecompressType6Iwram, 0x03002ACC  @ u8[0x33C]: IWRAM copy of DecompressType6
+
 @ --- Resource cache / particle emitters (see docs/formats/graphics.md and
 @ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
 .set g_aResourceCache,                    0x03005114  @ ResourceCacheSlot[15]
