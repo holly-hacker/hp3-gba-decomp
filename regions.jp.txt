@@ -7,6 +7,7 @@ asm-file 0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail
 asm-file 0x080000C0 0x08000104 asm/crt0.s                crt0
 asm-file 0x08000104 0x0800011C asm/rt/enable_irq.s        EnableIrq
 asm-file 0x0800011C 0x08000134 asm/rt/disable_irq.s       DisableIrq
+
 asm-file 0x08000134 0x0800027C asm/rt/intr_main.s        IntrMain
 asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
@@ -21,14 +22,23 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
+thumb-func 0x08001528 SpawnObject
 thumb-func 0x080015B8 TickActiveObjects
+thumb-func 0x080015D4 sub_080015D4
 thumb-func 0x0800187C SetObjectAssetRecord
+thumb-func 0x080018D8 SetObjectAnimData
+thumb-func 0x08001958 SetObjectAnimFrame
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
+thumb-func 0x08001A78 CancelObjectMove_candidate
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
+thumb-func 0x08001A94 SetObjectMoveTargetWithDuration_candidate
+thumb-func 0x08001D90 sub_08001D90
+thumb-func 0x08001E58 SetObjectActionSubState
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
+thumb-func 0x08001EA0 SetObjectAnimSubState_candidate
 c-file 0x08001EA8 0x08001EC8 src/object/set_object_facing.c SetObjectFacing
 c-file 0x08001EC8 0x08001EE8 src/object/set_object_facing_unused.c SetObjectFacing_unused
 c-file 0x08001EE8 0x08001EF0 src/object/set_object_flags.c SetObjectFlags
@@ -36,22 +46,112 @@ c-file 0x08001EF0 0x08001EF8 src/object/clear_object_flags.c ClearObjectFlags
 c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
 c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
 c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
+
+thumb-func 0x08003708 SetObjectFlippedX
 thumb-func 0x08003808 ReleaseObjectAffineSlot
+thumb-func 0x08003848 StartObjectAffineScaleTween
+thumb-func 0x080038EC AllocObjectAffineSlot
+thumb-func 0x080039E8 sub_080039E8
+thumb-func 0x080039F8 sub_080039F8
+thumb-func 0x08003A0C sub_08003A0C
+thumb-func 0x08003A30 sub_08003A30
+thumb-func 0x08003A44 sub_08003A44
+thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
 thumb-func 0x08005A44 InitRoomScriptState_candidate
+thumb-func 0x08005A78 ParseRoomResourceBlob_candidate
+thumb-func 0x08005B00 RespawnRowAndRunChain_candidate
+thumb-func 0x08005B44 ShouldRunRoomScriptRow_candidate
+thumb-func 0x08005BCC GetRoomRowColumnCount_candidate
+thumb-func 0x08005C60 GetRoomObjectField_candidate
 thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
+thumb-func 0x08005DC0 sub_08005DC0
 arm-func 0x08005F10 CheckObjectCollisions_candidate
 asm-file 0x08006108 0x08006300 asm/decompress_type4.s      DecompressType4
 arm-func 0x08006440 SortObjectsByDepth_candidate
+thumb-func 0x08006508 LoadBgGraphicTiles_candidate
+thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
 thumb-func 0x08006EF4 TickBgLayers_candidate
+
+thumb-func 0x08007130 sub_08007130
+thumb-func 0x080072D0 SetBgControl
+thumb-func 0x080072EC SetBgControlRegister_candidate
+thumb-func 0x08007334 EnableBg
+thumb-func 0x08007348 DisableBg
+thumb-func 0x080073BC ResetDisplayState
+thumb-func 0x08007444 SetDispcntFlag
+thumb-func 0x08007454 ClearBgTilemap
+thumb-func 0x08007464 sub_08007464
+thumb-func 0x08007474 FillBgTilemap_candidate
+thumb-func 0x080074F4 FillBgTile_candidate
+thumb-func 0x0800778C LoadBgGraphic
+thumb-func 0x08007800 LoadEmbeddedPalette_candidate
+thumb-func 0x080079AC CopyBgTilemapRect_candidate
+thumb-func 0x08007A90 sub_08007A90
+thumb-func 0x08007B30 SetBgScrollX_candidate
+thumb-func 0x08007B88 SetBgScroll_candidate
+
+thumb-func 0x08007EB8 SetBgPriority
+thumb-func 0x08008050 InitializeRiddikulusMinigame
+thumb-func 0x080080F4 UpdateRiddikulusMinigame
+thumb-func 0x08008AD0 ExitRiddikulusMinigame
+thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
+thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
+thumb-func 0x08009C54 ExitHippogriffGlideMinigame
 thumb-func 0x0800A03C TickCameraFocus_candidate
 thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
+thumb-func 0x0800A348 sub_0800A348
+thumb-func 0x0800A3AC SetCameraFollowTarget_candidate
+thumb-func 0x0800A4E8 SetRoomScrollBounds
+thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
+thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
+thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
 thumb-func 0x0800A610 TickBgTileAnimations_candidate
+thumb-func 0x0800A914 sub_0800A914
+thumb-func 0x0800AB34 ResetDebugPartyFromArgs_candidate
+thumb-func 0x0800ABA0 DrawDebugMenuMainEntries_candidate
+thumb-func 0x0800ABD8 InitializeDebugLevelAndQuestSelectMenu
+thumb-func 0x0800ACE4 UpdateDebugLevelAndQuestSelectMenu
+thumb-func 0x0800AE50 ExitDebugLevelAndQuestSelectMenu
+thumb-func 0x0800AED8 InitializeDebugMapSelectMenu
+thumb-func 0x0800AFB4 UpdateDebugMapSelectMenu
+thumb-func 0x0800B108 ExitDebugMapSelectMenu
+thumb-func 0x0800B198 InitializeDebugCharacterSelectMenu
+thumb-func 0x0800B2C8 UpdateDebugCharacterSelectMenu
+thumb-func 0x0800B494 ExitDebugCharacterSelectMenu
+thumb-func 0x0800B5A8 InitializeDebugPortraitsMenu
+thumb-func 0x0800B620 UpdateDebugPortraitsMenu
+thumb-func 0x0800B684 ExitDebugPortraitsMenu
+thumb-func 0x0800B69C InitializeDebugSoundTestMenu
+thumb-func 0x0800B7A8 UpdateDebugSoundTestMenu
+thumb-func 0x0800B9A0 ExitDebugSoundTestMenu
+thumb-func 0x0800BA2C InitializeDebugCollectorCardsMenu
+thumb-func 0x0800BBF0 UpdateDebugCollectorCardsMenu
+thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
+thumb-func 0x0800C0FC InitializeLoadingScreen
+thumb-func 0x0800C248 UpdateLoadingScreen
+thumb-func 0x0800C590 ExitLoadingScreen
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
+thumb-func 0x0800D008 ApplyGammaRemapTable
+thumb-func 0x0800D0A0 SetupScanlineBands_candidate
 thumb-func 0x0800D1A4 InitGammaPalette
 thumb-func 0x0800D254 sub_0800D254
 thumb-func 0x0800D264 sub_0800D264
+thumb-func 0x0800D2DC sub_0800D2DC
 thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
+thumb-func 0x0800D304 sub_0800D304
+thumb-func 0x0800D354 sub_0800D354
+thumb-func 0x0800D39C ClearPaletteRam
+thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
+thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
+thumb-func 0x0800EBAC InitBattleBackground_candidate
+thumb-func 0x0800F16C RestoreFighterObjects_candidate
+thumb-func 0x0800F5F0 ResumeBattleAfterSubmode_candidate
+thumb-func 0x0800FEE0 sub_0800FEE0
+thumb-func 0x080100A0 DispatchPendingAction
+thumb-func 0x080101D0 TickBattleMenuInput
+thumb-func 0x080104A0 OpenBattleTopMenu
+thumb-func 0x08010864 ShowBattleMessage
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptObject
 c-file 0x0801DD3C 0x0801DD84 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
