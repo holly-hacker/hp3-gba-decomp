@@ -28,6 +28,8 @@ asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuot
 asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
 asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
+asm-file 0x080005EC 0x08000918 asm/decompress_type6.s      DecompressType6
+
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
@@ -83,6 +85,7 @@ thumb-func 0x08005C60 GetRoomObjectField_candidate
 thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
 thumb-func 0x08005DC0 sub_08005DC0
 arm-func 0x08005F10 CheckObjectCollisions_candidate
+asm-file 0x08006108 0x08006300 asm/decompress_type4.s      DecompressType4
 arm-func 0x08006440 SortObjectsByDepth_candidate
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate

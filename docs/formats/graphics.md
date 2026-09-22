@@ -292,11 +292,17 @@ Algorithm, bit-level:
   `extra_pass = (byte0>>4)&8`; `byte1..3` (LE 24-bit): decompressed size.
 - **Codec's own internal header** (4 bytes, right after the outer
   header): `byte0` = byte count (always a multiple of 4) of a small
-  table copied onto the stack, used later as literal-length lookup
-  values; `byte1` = an escape marker compared against a raw-bit-read
-  value each iteration (match => LZ back-reference path, no match =>
-  literal path); `byte2/byte3` packed into a control word used as
-  raw-bit-field widths.
+  table copied onto the stack, indexed as `table[code-1]` for short
+  run-length codes (`code < 0x20`); `byte1` = an escape/sentinel value,
+  initially compared against a `byte3`-bit prefix read each iteration
+  (match => coded token, no match => the remaining `8-byte3` bits
+  complete a literal byte); `byte2` = bit-width of an extra
+  distance-extension field for long back-references; `byte3` = the
+  literal-prefix bit-width above, also reused directly as a raw-bit
+  field width elsewhere. **The sentinel is mutable, not a fixed
+  constant**: one specific token (gamma code 1, lookahead bits `01`)
+  swaps it to 0 for the rest of the stream, so a later prefix match
+  tests against 0, not the header's `byte1`.
 - **Bit reader**: 32-bit MSB-first shift register with a
   sentinel-refill idiom (`r8 <<= 1; if r8==0: r8 = next_word(); r8 =
   (r8<<1)|carry`).
@@ -304,16 +310,19 @@ Algorithm, bit-level:
   `0x8000634`): count leading 1-bits (up to 7) via `GetBit`, then read
   that many more raw bits and OR them onto `1<<ones`; result in `[1,255]`.
 - **Main loop** (`0x800072C`+): reads a raw field via the packed
-  control word; if it matches the escape marker, it's an LZ-style
-  back-reference (distance/length built from the gamma code, copying
-  from `dst + pos - distance`); otherwise literal bytes are emitted,
-  packed two-at-a-time into `u16` halfword stores via a toggling parity
-  flag. The exact byte/halfword/run copy sub-cases in the final ~250
-  bytes of the codec (`0x8000814`-`0x80008F8`) are LZSS-shaped but were
-  not hand-verified branch-by-branch -- covered anyway by the
-  emulator-execution approach, so not a blocker for correctness, just
-  for someone wanting to hand-port it to non-Python/non-emulated code
-  later.
+  control word; on a sentinel match it's a coded token, further split
+  by a gamma code into three kinds -- an LZ-style back-reference
+  (distance/length built from the gamma code, copying from
+  `dst + pos - distance`, with the classic gap-0/gap-1/gap>1
+  self-overlap handling for RLE-style short-distance repeats), the
+  sentinel-swap literal noted above, or a byte-fill run (length + fill
+  byte, both gamma-coded); a non-match instead completes and emits a
+  literal byte. All emitted bytes are packed two-at-a-time into `u16`
+  halfword stores via a toggling parity flag. The byte/halfword/run
+  copy sub-cases in the final ~250 bytes of the codec
+  (`0x8000814`-`0x80008F8`) are now hand-verified branch-by-branch (see
+  `asm/decompress_type6.s`'s comments), not just covered indirectly by
+  the emulator-execution approach.
 - **Companion post-pass** (separate functions `sub_0801DF48`/
   `sub_0801DF6C`, run by the *caller* only when `extra_pass` is set, not
   part of the codec itself): an in-place running sum over the decoded
@@ -321,6 +330,14 @@ Algorithm, bit-level:
   delta-coded in this mode, and this pass integrates it back to
   absolute values. This is exactly the delta-decode step needed to get
   the ascending-tile-index tilemap runs described above to make sense.
+
+**Naming note**: despite the LZ-back-reference-plus-bit-reader shape
+inviting comparison to libgba/devkitPro's `HuffUnComp`-style routines,
+this is not that. The real BIOS Huffman codec is already covered by
+dispatcher type 2 (`svc 0x13`); type 6 is a separate, proprietary
+LZ77/Elias-gamma hybrid with no known public spec or confirmed Nintendo
+SDK symbol to name it after, hence the type-number-based `DecompressType6`
+naming (matching `DecompressType4`, also proprietary -- see below).
 
 **Worked example** (a concrete resource pointer, for manual
 inspection): ROM `0x08658a6c` (level-table entry 0's `+0x00` field,
