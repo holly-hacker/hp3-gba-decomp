@@ -12,9 +12,10 @@ Region = tuple[int, int, str, str]
 # address -> (name, is_thumb), for symbols inside not-yet-extracted
 # (still-incbin) territory that extracted code needs to reference.
 # is_thumb marks a Thumb code entry point so the assembler sets the
-# symbol's low address bit (`thumb-func` rows) -- plain `label` rows
-# (data, or code only ever reached via `bl`, which doesn't need the bit)
-# leave it unset.
+# symbol's low address bit (`thumb-func` rows). `arm-func` rows are a
+# confirmed ARM entry point; plain `label` rows are data, or an address
+# whose code/data status or instruction mode hasn't been confirmed.
+# Neither `arm-func` nor `label` sets the bit.
 Labels = dict[int, tuple[str, bool]]
 
 
@@ -62,7 +63,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if not line:
                 continue
             parts = line.split()
-            if parts[0] in ("label", "thumb-func"):
+            if parts[0] in ("label", "thumb-func", "arm-func"):
                 if len(parts) != 3:
                     sys.exit(f"{path}:{lineno}: expected '{parts[0]} <addr> <name>'")
                 addr = int(parts[1], 16)

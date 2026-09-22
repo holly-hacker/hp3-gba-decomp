@@ -3,6 +3,7 @@
 # Syntax:
 # label <address> <name>
 #   A symbol that can be addressed by other code, see also ram_symbols.us.inc.
+#   Not intended for code, use `thumb-func` or `arm-func` instead.
 #
 # thumb-func <address> <name>
 #   Same as `label`, but for a Thumb code entry point whose address is taken
@@ -34,23 +35,23 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
-label 0x08001528 SpawnObject
-label 0x080015B8 TickActiveObjects
-label 0x080015D4 sub_080015D4
-label 0x0800187C SetObjectAssetRecord
-label 0x080018D8 SetObjectAnimData
-label 0x08001958 SetObjectAnimFrame
+thumb-func 0x08001528 SpawnObject
+thumb-func 0x080015B8 TickActiveObjects
+thumb-func 0x080015D4 sub_080015D4
+thumb-func 0x0800187C SetObjectAssetRecord
+thumb-func 0x080018D8 SetObjectAnimData
+thumb-func 0x08001958 SetObjectAnimFrame
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
-label 0x08001A78 CancelObjectMove_candidate
+thumb-func 0x08001A78 CancelObjectMove_candidate
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
-label 0x08001A94 SetObjectMoveTargetWithDuration_candidate
-label 0x08001D90 sub_08001D90
-label 0x08001E58 SetObjectActionSubState
+thumb-func 0x08001A94 SetObjectMoveTargetWithDuration_candidate
+thumb-func 0x08001D90 sub_08001D90
+thumb-func 0x08001E58 SetObjectActionSubState
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
-label 0x08001EA0 SetObjectAnimSubState_candidate
+thumb-func 0x08001EA0 SetObjectAnimSubState_candidate
 c-file 0x08001EA8 0x08001EC8 src/object/set_object_facing.c SetObjectFacing
 c-file 0x08001EC8 0x08001EE8 src/object/set_object_facing_unused.c SetObjectFacing_unused
 c-file 0x08001EE8 0x08001EF0 src/object/set_object_flags.c SetObjectFlags
@@ -61,72 +62,72 @@ c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDe
 c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
 c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectAffineTransform
 
-label 0x08003708 SetObjectFlippedX
-label 0x08003808 ReleaseObjectAffineSlot
-label 0x08003848 StartObjectAffineScaleTween
-label 0x080038EC AllocObjectAffineSlot
-label 0x080039E8 sub_080039E8
-label 0x080039F8 sub_080039F8
-label 0x08003A0C sub_08003A0C
-label 0x08003A30 sub_08003A30
-label 0x08003A44 sub_08003A44
-label 0x0800539C RespawnRoomObjectsInRow_candidate
+thumb-func 0x08003708 SetObjectFlippedX
+thumb-func 0x08003808 ReleaseObjectAffineSlot
+thumb-func 0x08003848 StartObjectAffineScaleTween
+thumb-func 0x080038EC AllocObjectAffineSlot
+thumb-func 0x080039E8 sub_080039E8
+thumb-func 0x080039F8 sub_080039F8
+thumb-func 0x08003A0C sub_08003A0C
+thumb-func 0x08003A30 sub_08003A30
+thumb-func 0x08003A44 sub_08003A44
+thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
 c-file 0x08005410 0x080055C0 src/room/walk_room_switch_state_chain.c WalkRoomSwitchStateChain_candidate
 c-file 0x080055C0 0x0800572C src/room/resume_room_switch_state_chain.c ResumeRoomSwitchStateChain_candidate
-label 0x08005A44 InitRoomScriptState_candidate
-label 0x08005A78 ParseRoomResourceBlob_candidate
-label 0x08005B00 RespawnRowAndRunChain_candidate
-label 0x08005B44 ShouldRunRoomScriptRow_candidate
-label 0x08005BCC GetRoomRowColumnCount_candidate
-label 0x08005C60 GetRoomObjectField_candidate
-label 0x08005CAC SetRoomObjectRecordPtr_candidate
-label 0x08005DC0 sub_08005DC0
-label 0x08005F10 CheckObjectCollisions_candidate
-label 0x08006440 SortObjectsByDepth_candidate
-label 0x08006508 LoadBgGraphicTiles_candidate
-label 0x08006788 WriteBgGraphicTilemap_candidate
-label 0x08006EF4 TickBgLayers_candidate
+thumb-func 0x08005A44 InitRoomScriptState_candidate
+thumb-func 0x08005A78 ParseRoomResourceBlob_candidate
+thumb-func 0x08005B00 RespawnRowAndRunChain_candidate
+thumb-func 0x08005B44 ShouldRunRoomScriptRow_candidate
+thumb-func 0x08005BCC GetRoomRowColumnCount_candidate
+thumb-func 0x08005C60 GetRoomObjectField_candidate
+thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
+thumb-func 0x08005DC0 sub_08005DC0
+arm-func 0x08005F10 CheckObjectCollisions_candidate
+arm-func 0x08006440 SortObjectsByDepth_candidate
+thumb-func 0x08006508 LoadBgGraphicTiles_candidate
+thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
+thumb-func 0x08006EF4 TickBgLayers_candidate
 
-label 0x08007130 sub_08007130
-label 0x080072D0 SetBgControl
-label 0x080072EC SetBgControlRegister_candidate
-label 0x08007334 EnableBg
-label 0x08007348 DisableBg
-label 0x080073BC ResetDisplayState
-label 0x08007444 SetDispcntFlag
-label 0x08007454 ClearBgTilemap
-label 0x08007464 sub_08007464
-label 0x08007474 FillBgTilemap_candidate
-label 0x080074F4 FillBgTile_candidate
-label 0x0800778C LoadBgGraphic
-label 0x08007800 LoadEmbeddedPalette_candidate
-label 0x080079AC CopyBgTilemapRect_candidate
-label 0x08007A90 sub_08007A90
-label 0x08007B30 SetBgScrollX_candidate
-label 0x08007B88 SetBgScroll_candidate
+thumb-func 0x08007130 sub_08007130
+thumb-func 0x080072D0 SetBgControl
+thumb-func 0x080072EC SetBgControlRegister_candidate
+thumb-func 0x08007334 EnableBg
+thumb-func 0x08007348 DisableBg
+thumb-func 0x080073BC ResetDisplayState
+thumb-func 0x08007444 SetDispcntFlag
+thumb-func 0x08007454 ClearBgTilemap
+thumb-func 0x08007464 sub_08007464
+thumb-func 0x08007474 FillBgTilemap_candidate
+thumb-func 0x080074F4 FillBgTile_candidate
+thumb-func 0x0800778C LoadBgGraphic
+thumb-func 0x08007800 LoadEmbeddedPalette_candidate
+thumb-func 0x080079AC CopyBgTilemapRect_candidate
+thumb-func 0x08007A90 sub_08007A90
+thumb-func 0x08007B30 SetBgScrollX_candidate
+thumb-func 0x08007B88 SetBgScroll_candidate
 
-label 0x08007EB8 SetBgPriority
+thumb-func 0x08007EB8 SetBgPriority
 thumb-func 0x08008050 InitializeRiddikulusMinigame
 thumb-func 0x080080F4 UpdateRiddikulusMinigame
 thumb-func 0x08008AD0 ExitRiddikulusMinigame
 thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
 thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
 thumb-func 0x08009C54 ExitHippogriffGlideMinigame
-label 0x0800A03C TickCameraFocus_candidate
-label 0x0800A1F0 MoveCameraFocusToward_candidate
-label 0x0800A348 sub_0800A348
-label 0x0800A3AC SetCameraFollowTarget_candidate
-label 0x0800A4E8 SetRoomScrollBounds
+thumb-func 0x0800A03C TickCameraFocus_candidate
+thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
+thumb-func 0x0800A348 sub_0800A348
+thumb-func 0x0800A3AC SetCameraFollowTarget_candidate
+thumb-func 0x0800A4E8 SetRoomScrollBounds
 thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
 thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
 thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
-label 0x0800A610 TickBgTileAnimations_candidate
-label 0x0800A914 sub_0800A914
+thumb-func 0x0800A610 TickBgTileAnimations_candidate
+thumb-func 0x0800A914 sub_0800A914
 c-file 0x0800A950 0x0800AA54 src/gamemode/modes/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
 c-file 0x0800AA54 0x0800AB34 src/gamemode/modes/debug_menu_main/update_debug_menu_main.c UpdateDebugMenuMain
-label 0x0800AB34 ResetDebugPartyFromArgs_candidate
+thumb-func 0x0800AB34 ResetDebugPartyFromArgs_candidate
 c-file 0x0800AB88 0x0800ABA0 src/gamemode/modes/debug_menu_main/exit_debug_menu_main.c ExitDebugMenuMain
-label 0x0800ABA0 DrawDebugMenuMainEntries_candidate
+thumb-func 0x0800ABA0 DrawDebugMenuMainEntries_candidate
 thumb-func 0x0800ABD8 InitializeDebugLevelAndQuestSelectMenu
 thumb-func 0x0800ACE4 UpdateDebugLevelAndQuestSelectMenu
 thumb-func 0x0800AE50 ExitDebugLevelAndQuestSelectMenu
@@ -150,79 +151,79 @@ thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
-label 0x0800D008 ApplyGammaRemapTable
-label 0x0800D0A0 SetupScanlineBands_candidate
-label 0x0800D1A4 InitGammaPalette
-label 0x0800D254 sub_0800D254
-label 0x0800D264 sub_0800D264
-label 0x0800D2DC sub_0800D2DC
-label 0x0800D2F4 TickPaletteAnimations_candidate
-label 0x0800D304 sub_0800D304
-label 0x0800D354 sub_0800D354
-label 0x0800D39C ClearPaletteRam
+thumb-func 0x0800D008 ApplyGammaRemapTable
+thumb-func 0x0800D0A0 SetupScanlineBands_candidate
+thumb-func 0x0800D1A4 InitGammaPalette
+thumb-func 0x0800D254 sub_0800D254
+thumb-func 0x0800D264 sub_0800D264
+thumb-func 0x0800D2DC sub_0800D2DC
+thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
+thumb-func 0x0800D304 sub_0800D304
+thumb-func 0x0800D354 sub_0800D354
+thumb-func 0x0800D39C ClearPaletteRam
 c-file 0x0800DBAC 0x0800DDB0 src/gamemode/modes/battle/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 0x0800DE50 src/gamemode/modes/battle/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
-label 0x0800E0CC DrawFighterStatsUi_candidate
-label 0x0800E39C DrawEnemyStatsUi_candidate
+thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
+thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
 c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
 c-file 0x0800E62C 0x0800E890 src/battle/build_turn_order.c BuildTurnOrder
 c-file 0x0800EA68 0x0800EB2C src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
 c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
-label 0x0800EBAC InitBattleBackground_candidate
+thumb-func 0x0800EBAC InitBattleBackground_candidate
 c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
-label 0x0800F16C RestoreFighterObjects_candidate
-label 0x0800F5F0 ResumeBattleAfterSubmode_candidate
+thumb-func 0x0800F16C RestoreFighterObjects_candidate
+thumb-func 0x0800F5F0 ResumeBattleAfterSubmode_candidate
 c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
-label 0x0800FEE0 sub_0800FEE0
+thumb-func 0x0800FEE0 sub_0800FEE0
 c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
-label 0x080100A0 DispatchPendingAction
-label 0x080101D0 TickBattleMenuInput
-label 0x080104A0 OpenBattleTopMenu
-label 0x08010864 ShowBattleMessage
-label 0x08012994 InitCharacterSpells_candidate
-label 0x080129F4 sub_080129F4
-label 0x08012A38 sub_08012A38
-label 0x08012AC0 GetBattleBackgroundData_candidate
-label 0x08012AFC PushBattleState
-label 0x08012B40 sub_08012B40
-label 0x08012CB4 ClearFighterObjectFlag_candidate
+thumb-func 0x080100A0 DispatchPendingAction
+thumb-func 0x080101D0 TickBattleMenuInput
+thumb-func 0x080104A0 OpenBattleTopMenu
+thumb-func 0x08010864 ShowBattleMessage
+thumb-func 0x08012994 InitCharacterSpells_candidate
+thumb-func 0x080129F4 sub_080129F4
+thumb-func 0x08012A38 sub_08012A38
+thumb-func 0x08012AC0 GetBattleBackgroundData_candidate
+thumb-func 0x08012AFC PushBattleState
+thumb-func 0x08012B40 sub_08012B40
+thumb-func 0x08012CB4 ClearFighterObjectFlag_candidate
 
-label 0x080130B4 SetFighterTurnOrderIconDone
-label 0x08013108 sub_08013108
-label 0x0801319C OpenPendingFighterMenu_candidate
+thumb-func 0x080130B4 SetFighterTurnOrderIconDone
+thumb-func 0x08013108 sub_08013108
+thumb-func 0x0801319C OpenPendingFighterMenu_candidate
 thumb-func 0x080134BC InitializeVictoryScreen
 thumb-func 0x080138F4 UpdateVictoryScreen
 c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
 thumb-func 0x080148A8 ExitVictoryScreen
-label 0x08014964 ResetCharacterToLevel
+thumb-func 0x08014964 ResetCharacterToLevel
 c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
 c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
-label 0x08014F1C SpawnTurnOrderIcon
+thumb-func 0x08014F1C SpawnTurnOrderIcon
 c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
-label 0x080151B0 LevelUpPartyMember_candidate
-label 0x080152CC sub_080152CC
-label 0x08015334 sub_08015334
-label 0x0801539C SetMonsterObjectAnim
+thumb-func 0x080151B0 LevelUpPartyMember_candidate
+thumb-func 0x080152CC sub_080152CC
+thumb-func 0x08015334 sub_08015334
+thumb-func 0x0801539C SetMonsterObjectAnim
 c-file 0x08015484 0x08015574 src/battle/set_player_object_anim.c SetPlayerObjectAnim
-label 0x08015574 UpdateFighterFlashEffect_candidate
+thumb-func 0x08015574 UpdateFighterFlashEffect_candidate
 c-file 0x08015608 0x08015F50 src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
-label 0x08015F50 ShowItemUseResult
+thumb-func 0x08015F50 ShowItemUseResult
 c-file 0x0801602C 0x08017B5C src/battle/tick_player_action_state.c TickPlayerActionState
-label 0x08017B5C ShowDamageNumber_candidate
+thumb-func 0x08017B5C ShowDamageNumber_candidate
 c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
-label 0x08017F98 ApplyDamageToFighter
+thumb-func 0x08017F98 ApplyDamageToFighter
 c-file 0x08018094 0x080181AC src/battle/apply_status_damage_to_fighter.c ApplyStatusDamageToFighter_candidate
-label 0x080181AC ShowFloatingDamageNumber_candidate
-label 0x08018304 CheckBattleDefeat
-label 0x08018460 PruneFaintedAndRebuildTurnOrder_candidate
-label 0x080186E0 CheckBattleVictory
-label 0x08018ACC PostActionBattleCheck
-label 0x08018B14 sub_08018B14
+thumb-func 0x080181AC ShowFloatingDamageNumber_candidate
+thumb-func 0x08018304 CheckBattleDefeat
+thumb-func 0x08018460 PruneFaintedAndRebuildTurnOrder_candidate
+thumb-func 0x080186E0 CheckBattleVictory
+thumb-func 0x08018ACC PostActionBattleCheck
+thumb-func 0x08018B14 sub_08018B14
 c-file 0x08018B70 0x08018BE0 src/battle/trigger_battle_effect.c TriggerBattleEffect
-label 0x08018BE0 CreateEffectScriptObject
-label 0x0801BCB0 sub_0801BCB0
+thumb-func 0x08018BE0 CreateEffectScriptObject
+thumb-func 0x0801BCB0 sub_0801BCB0
 thumb-func 0x0801BD0C InitializeCardComboDescription
 thumb-func 0x0801BEA8 UpdateCardComboDescription
 thumb-func 0x0801BEDC ExitCardComboDescription
@@ -318,19 +319,19 @@ c-file 0x0801D330 0x0801D33C src/room/opcodes/room_script_op_unmute_all_music_ch
 c-file 0x0801D33C 0x0801D34C src/room/opcodes/room_script_op_consume_room_item.c RoomScriptOpConsumeRoomItem
 c-file 0x0801D34C 0x0801D360 src/room/opcodes/room_script_op_reset_party_leader_selection.c RoomScriptOpResetPartyLeaderSelection
 c-file 0x0801D360 0x0801D390 src/room/opcodes/room_script_op_set_pending_chain_from_exit_param.c RoomScriptOpSetPendingChainFromExitParam
-label 0x0801D390 CompareAndBranchRoomScript_candidate
+thumb-func 0x0801D390 CompareAndBranchRoomScript_candidate
 thumb-func 0x0801D518 InitializeCredits
 thumb-func 0x0801D5C8 UpdateCredits
 thumb-func 0x0801D858 ExitLinearCutscene
 thumb-func 0x0801D888 InitializeLinearCutscene
 thumb-func 0x0801D8C0 UpdateLinearCutscene
-label 0x0801D940 sub_0801D940
-label 0x0801DC6C sub_0801DC6C
-label 0x0801DCC4 sub_0801DCC4
-label 0x0801DD40 InstallIwramDecompressCodecs
-label 0x0801DF6C sub_0801DF6C
-label 0x0801E0D8 sub_0801E0D8
-label 0x0801E0DC sub_0801E0DC
+thumb-func 0x0801D940 sub_0801D940
+thumb-func 0x0801DC6C sub_0801DC6C
+thumb-func 0x0801DCC4 sub_0801DCC4
+thumb-func 0x0801DD40 InstallIwramDecompressCodecs
+thumb-func 0x0801DF6C sub_0801DF6C
+thumb-func 0x0801E0D8 sub_0801E0D8
+thumb-func 0x0801E0DC sub_0801E0DC
 thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
 thumb-func 0x0801E280 UpdateHarryVsDementorsMinigame
 thumb-func 0x0801EE1C ExitHarryVsDementorsMinigame
@@ -339,86 +340,86 @@ c-file 0x0801F36C 0x0801F524 src/gamemode/modes/startup/update_startup.c UpdateS
 c-file 0x0801F524 0x0801F534 src/gamemode/modes/startup/exit_startup.c ExitStartup
 thumb-func 0x0801F534 InitializeDialogue
 thumb-func 0x0801F654 UpdateDialogueBox
-label 0x0801FA9C sub_0801FA9C
+thumb-func 0x0801FA9C sub_0801FA9C
 thumb-func 0x0801FAF4 ExitDialogue
-label 0x0801FB54 ShowRoomDialogBox_candidate
-label 0x0801FB78 sub_0801FB78
-label 0x0801FBBC sub_0801FBBC
-label 0x0801FDA0 InitDisplayControl
+thumb-func 0x0801FB54 ShowRoomDialogBox_candidate
+thumb-func 0x0801FB78 sub_0801FB78
+thumb-func 0x0801FBBC sub_0801FBBC
+thumb-func 0x0801FDA0 InitDisplayControl
 thumb-func 0x0801FDE8 InitializeHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FED4 UpdateHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
-label 0x08020228 TickRoomTileAnimations_candidate
-label 0x080203A8 InitRoomTileAnimationTable_candidate
+thumb-func 0x08020228 TickRoomTileAnimations_candidate
+thumb-func 0x080203A8 InitRoomTileAnimationTable_candidate
 
 c-file 0x08020714 0x080208B4 src/text/draw_text_line.c DrawTextLine
 
-label 0x080208B4 DrawStringAligned
-label 0x08020D30 InitTextMacroTable
-label 0x08020D60 SetTextTargetFromBgControl
-label 0x08020DF0 SelectTextFont
+thumb-func 0x080208B4 DrawStringAligned
+thumb-func 0x08020D30 InitTextMacroTable
+thumb-func 0x08020D60 SetTextTargetFromBgControl
+thumb-func 0x08020DF0 SelectTextFont
 c-file 0x08020E40 0x08020E9C src/text/measure_macro_string.c MeasureMacroString
-label 0x08020F44 DrawTextLines
+thumb-func 0x08020F44 DrawTextLines
 c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
-label 0x08021100 SetDialogMacroString0_candidate
-label 0x08021148 SetDialogMacroString1_candidate
-label 0x08021184 SetDialogMacroNumber0_candidate
-label 0x080211AC SetDialogMacroNumber1_candidate
+thumb-func 0x08021100 SetDialogMacroString0_candidate
+thumb-func 0x08021148 SetDialogMacroString1_candidate
+thumb-func 0x08021184 SetDialogMacroNumber0_candidate
+thumb-func 0x080211AC SetDialogMacroNumber1_candidate
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
-label 0x08021560 NoopInit
-label 0x08021564 ResetSaveStateForNewGame
+thumb-func 0x08021560 NoopInit
+thumb-func 0x08021564 ResetSaveStateForNewGame
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x0802165C 0x08021694 src/save/process_playtime_tick.c ProcessPlaytimeTick
-label 0x080216A0 AddSickles
+thumb-func 0x080216A0 AddSickles
 thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
-label 0x08021DF8 ProcessOwlCareKitTick
+thumb-func 0x08021DF8 ProcessOwlCareKitTick
 thumb-func 0x08022D98 HandleOwlCareKitScreenExit
-label 0x080233E4 SpawnPlayerObject_candidate
-label 0x08023644 SyncFollowerLevelToLeader_candidate
-label 0x080236DC sub_080236DC
-label 0x080237D0 sub_080237D0
-label 0x080238D8 ShowMapNamePopup
-label 0x08024234 CyclePartyLeaderSelection_candidate
-label 0x080248E8 sub_080248E8
-label 0x08024980 sub_08024980
-label 0x080249A4 sub_080249A4
-label 0x080249C8 GetPartyPresenceMask
-label 0x080249FC GetPartySize
-label 0x08024A30 sub_08024A30
-label 0x08024A88 sub_08024A88
-label 0x08024AEC GetPartyMasterStatsSlot_candidate
+thumb-func 0x080233E4 SpawnPlayerObject_candidate
+thumb-func 0x08023644 SyncFollowerLevelToLeader_candidate
+thumb-func 0x080236DC sub_080236DC
+thumb-func 0x080237D0 sub_080237D0
+thumb-func 0x080238D8 ShowMapNamePopup
+thumb-func 0x08024234 CyclePartyLeaderSelection_candidate
+thumb-func 0x080248E8 sub_080248E8
+thumb-func 0x08024980 sub_08024980
+thumb-func 0x080249A4 sub_080249A4
+thumb-func 0x080249C8 GetPartyPresenceMask
+thumb-func 0x080249FC GetPartySize
+thumb-func 0x08024A30 sub_08024A30
+thumb-func 0x08024A88 sub_08024A88
+thumb-func 0x08024AEC GetPartyMasterStatsSlot_candidate
 c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTable
-label 0x080250B8 InstallBgTileCodec
+thumb-func 0x080250B8 InstallBgTileCodec
 thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
 thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
-label 0x080258E8 InitInputSystem_candidate
+thumb-func 0x080258E8 InitInputSystem_candidate
 c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
-label 0x08025A74 StepWrappedSelectionVertical_candidate
-label 0x08025B2C StepWrappedSelectionHorizontal_candidate
+thumb-func 0x08025A74 StepWrappedSelectionVertical_candidate
+thumb-func 0x08025B2C StepWrappedSelectionHorizontal_candidate
 thumb-func 0x08025D28 InitializeTopicScreen
 thumb-func 0x08025E18 UpdateTopicScreen
 thumb-func 0x08025E84 ExitTopicScreen
 c-file 0x08025E90 0x08026068 src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterruptSystem
-label 0x080260A8 EnableInterrupts
+thumb-func 0x080260A8 EnableInterrupts
 c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
-label 0x08026158 SetVBlankCallback
+thumb-func 0x08026158 SetVBlankCallback
 c-file 0x080261DC 0x080261F8 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 
 thumb-func 0x08026244 VBlankCallback_candidate
-label 0x08026254 sub_08026254
+thumb-func 0x08026254 sub_08026254
 c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
-label 0x08026B8C GetRewardNameStringId_candidate
-label 0x08026CDC sub_08026CDC
-label 0x08026CF0 sub_08026CF0
+thumb-func 0x08026B8C GetRewardNameStringId_candidate
+thumb-func 0x08026CDC sub_08026CDC
+thumb-func 0x08026CF0 sub_08026CF0
 c-file 0x08026DE0 0x08026E2C src/items/grant_reward.c GrantReward
 
-label 0x08026E2C ConsumeBattleItemSlot
-label 0x08026F9C IsFolioPageGroupUnlocked_candidate
+thumb-func 0x08026E2C ConsumeBattleItemSlot
+thumb-func 0x08026F9C IsFolioPageGroupUnlocked_candidate
 thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
@@ -426,9 +427,9 @@ thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
 c-file 0x08028314 0x08028408 src/gamemode/modes/language_select/initialize_language_select.c InitializeLanguageSelect
 c-file 0x08028408 0x08028524 src/gamemode/modes/language_select/update_language_select.c UpdateLanguageSelect
 c-file 0x08028524 0x08028534 src/gamemode/modes/language_select/exit_language_select.c ExitLanguageSelect
-label 0x08028534 DrawLanguageSelectPicture_candidate
-label 0x08028568 DrawLanguageSelectEntries_candidate
-label 0x08028588 DrawLanguageSelectEntry_candidate
+thumb-func 0x08028534 DrawLanguageSelectPicture_candidate
+thumb-func 0x08028568 DrawLanguageSelectEntries_candidate
+thumb-func 0x08028588 DrawLanguageSelectEntry_candidate
 
 # Heap allocator / object pool, see docs/memory-map/heap.md
 c-file 0x080286A0 0x080286D8 src/mem/build_free_list.c BuildFreeList
@@ -446,32 +447,32 @@ c-file 0x08029690 0x080297A0 src/main.c AgbMain
 
 c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
 thumb-func 0x0802A14C ExitOverworldScreen
-label 0x0802AB34 RestoreRoomObjectState
-label 0x0802AE64 RestoreRoomObjectStateMinimal
+thumb-func 0x0802AB34 RestoreRoomObjectState
+thumb-func 0x0802AE64 RestoreRoomObjectStateMinimal
 c-file 0x0802AEF8 0x0802B018 src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
-label 0x0802B018 InitRoomState
+thumb-func 0x0802B018 InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
-label 0x0802B0F4 ClearRoomObjectStateBuffer
-label 0x0802B110 SetRoomSwitchState
-label 0x0802B12C GetRoomSwitchState
+thumb-func 0x0802B0F4 ClearRoomObjectStateBuffer
+thumb-func 0x0802B110 SetRoomSwitchState
+thumb-func 0x0802B12C GetRoomSwitchState
 thumb-func 0x0802B164 OverworldVBlankCallback
-label 0x0802B174 ApplyRoomBgControlOverride_candidate
-label 0x0802B20C sub_0802B20C
+thumb-func 0x0802B174 ApplyRoomBgControlOverride_candidate
+thumb-func 0x0802B20C sub_0802B20C
 c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
-label 0x0802B41C SpawnWanderingMonsterObject
-label 0x0802B58C HandleWanderingMonsterTouch
+thumb-func 0x0802B41C SpawnWanderingMonsterObject
+thumb-func 0x0802B58C HandleWanderingMonsterTouch
 
-label 0x0802BA0C GetEncounterKindTerrainType
-label 0x0802BA1C FindWanderingMonsterSpawnPosition
-label 0x0802BAD0 PickMaxDamageMonster
-label 0x0802BC94 GrantPartyExperience_candidate
-label 0x0802BDEC InstallIwramDivideRoutines
-label 0x0802C254 InitHeap
+thumb-func 0x0802BA0C GetEncounterKindTerrainType
+thumb-func 0x0802BA1C FindWanderingMonsterSpawnPosition
+thumb-func 0x0802BAD0 PickMaxDamageMonster
+thumb-func 0x0802BC94 GrantPartyExperience_candidate
+thumb-func 0x0802BDEC InstallIwramDivideRoutines
+thumb-func 0x0802C254 InitHeap
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
 c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
-label 0x0802C390 FreeBlock
+thumb-func 0x0802C390 FreeBlock
 c-file 0x0802C450 0x0802C4BC src/mem/memset.c memset
 c-file 0x0802C528 0x0802C570 src/mem/init_memory_pool.c InitMemoryPool
 c-file 0x0802C570 0x0802C590 src/mem/get_free_block_size.c GetFreeBlockSize
@@ -480,8 +481,8 @@ c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
 c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
 c-file 0x0802C6B4 0x0802C750 src/gamemode/tick_game_mode_stack.c TickGameModeStack
 c-file 0x0802C750 0x0802C7A8 src/gamemode/init_game_mode_stack.c InitGameModeStack
-label 0x0802C7A8 GetCurrentGameMode_candidate
-label 0x0802C7B4 GetPendingGameMode_candidate
+thumb-func 0x0802C7A8 GetCurrentGameMode_candidate
+thumb-func 0x0802C7B4 GetPendingGameMode_candidate
 c-file 0x0802C7C4 0x0802C7E0 src/gamemode/push_game_mode.c PushGameMode
 c-file 0x0802C7E0 0x0802C800 src/gamemode/push_game_mode_2.c PushGameMode_2
 c-file 0x0802C800 0x0802C820 src/gamemode/push_game_mode_3.c PushGameMode_3
@@ -495,67 +496,67 @@ thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CD88 ExitWizardCrackerPopItDifficultySelect
 c-file 0x0802CF38 0x0802D08C src/gamemode/modes/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
-label 0x0802D08C HandleMinigameMenuSelection
-label 0x0802D148 DrawMinigameSelectMenu
+thumb-func 0x0802D08C HandleMinigameMenuSelection
+thumb-func 0x0802D148 DrawMinigameSelectMenu
 c-file 0x0802D264 0x0802D2F0 src/gamemode/modes/minigame_menu/initialize_minigame_menu.c InitializeMinigameMenu
 c-file 0x0802D2F0 0x0802D314 src/gamemode/modes/minigame_menu/exit_minigame_menu.c ExitMinigameMenu
-label 0x0802D314 BeginMinigameSwitchFade_candidate
-label 0x0802D334 TickMinigameSwitchFadeOut_candidate
-label 0x0802D368 SwapMinigameSelection_candidate
-label 0x0802D384 TickMinigameSwitchFadeIn_candidate
-label 0x0802D3BC sub_0802D3BC
-label 0x0802D544 NoopInit3
-label 0x0802D640 sub_0802D640
-label 0x0802D64C sub_0802D64C
-label 0x0802D6B8 sub_0802D6B8
-label 0x0802DD54 NoopInit2
-label 0x0802DD58 LoadRoomSharedTileset_candidate
-label 0x0802DF3C ApplyRoomSwitchEffect
-label 0x0802E6FC RestorePendingCameraFocus_candidate
-label 0x0802F6C0 sub_0802F6C0
-label 0x0802FE04 SetObjectAnimData_candidate
-label 0x0802FF2C InitOamSystem
-label 0x08030094 GetObjectAffineSlotId
-label 0x080300A0 SetObjectAffineSlotId
-label 0x080300B4 AllocAffineSlot
-label 0x080300F8 FreeAffineSlot
-label 0x08030184 HideUnusedOamEntries
+thumb-func 0x0802D314 BeginMinigameSwitchFade_candidate
+thumb-func 0x0802D334 TickMinigameSwitchFadeOut_candidate
+thumb-func 0x0802D368 SwapMinigameSelection_candidate
+thumb-func 0x0802D384 TickMinigameSwitchFadeIn_candidate
+thumb-func 0x0802D3BC sub_0802D3BC
+thumb-func 0x0802D544 NoopInit3
+thumb-func 0x0802D640 sub_0802D640
+thumb-func 0x0802D64C sub_0802D64C
+thumb-func 0x0802D6B8 sub_0802D6B8
+thumb-func 0x0802DD54 NoopInit2
+thumb-func 0x0802DD58 LoadRoomSharedTileset_candidate
+thumb-func 0x0802DF3C ApplyRoomSwitchEffect
+thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
+thumb-func 0x0802F6C0 sub_0802F6C0
+thumb-func 0x0802FE04 SetObjectAnimData_candidate
+thumb-func 0x0802FF2C InitOamSystem
+thumb-func 0x08030094 GetObjectAffineSlotId
+thumb-func 0x080300A0 SetObjectAffineSlotId
+thumb-func 0x080300B4 AllocAffineSlot
+thumb-func 0x080300F8 FreeAffineSlot
+thumb-func 0x08030184 HideUnusedOamEntries
 thumb-func 0x08030274 InitializeOwlNameSelect
 thumb-func 0x0803031C UpdateOwlNameSelect
 thumb-func 0x08030568 ExitOwlNameSelect
-label 0x08030824 ClearResourceCacheSlots
+thumb-func 0x08030824 ClearResourceCacheSlots
 
-label 0x08030878 AttachEffectOwner_candidate
-label 0x080308A8 AttachObjectEffectSlot_candidate
-label 0x080308D8 ClaimObjectEffectResource
+thumb-func 0x08030878 AttachEffectOwner_candidate
+thumb-func 0x080308A8 AttachObjectEffectSlot_candidate
+thumb-func 0x080308D8 ClaimObjectEffectResource
 c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
-label 0x0803094C sub_0803094C
-label 0x08030960 sub_08030960
-label 0x080315A4 InitResourceCachePools
-label 0x08031668 sub_08031668
+thumb-func 0x0803094C sub_0803094C
+thumb-func 0x08030960 sub_08030960
+thumb-func 0x080315A4 InitResourceCachePools
+thumb-func 0x08031668 sub_08031668
 c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleaseParticleEmitter_candidate
-label 0x080316D4 sub_080316D4
-label 0x0803171C sub_0803171C
-label 0x08031748 TickParticleEmitters
+thumb-func 0x080316D4 sub_080316D4
+thumb-func 0x0803171C sub_0803171C
+thumb-func 0x08031748 TickParticleEmitters
 thumb-func 0x080319FC InitializeHarryPatronusCutscene
 thumb-func 0x08031B4C UpdateHarryPatronusCutscene
 thumb-func 0x08031CA8 ExitHarryPatronusCutscene
 c-file 0x08031D30 0x08031E7C src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
-label 0x08031E7C BuildListMenu_candidate
+thumb-func 0x08031E7C BuildListMenu_candidate
 c-file 0x08031F6C 0x08031FB8 src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
-label 0x08031FB8 sub_08031FB8
+thumb-func 0x08031FB8 sub_08031FB8
 c-file 0x08031FF4 0x08032030 src/gamemode/modes/in_game_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
 c-file 0x08032054 0x080320A4 src/gamemode/modes/in_game_menu/exit_in_game_menu.c ExitInGameMenu
-label 0x080320A4 sub_080320A4
-label 0x08032114 TickBlendFadeOut_candidate
-label 0x0803217C sub_0803217C
-label 0x080321A8 sub_080321A8
-label 0x08032204 SelectInGameMenuEntry_candidate
-label 0x0803227C sub_0803227C
-label 0x0803232C sub_0803232C
-label 0x0803233C sub_0803233C
-label 0x080323AC sub_080323AC
-label 0x080323B0 sub_080323B0
+thumb-func 0x080320A4 sub_080320A4
+thumb-func 0x08032114 TickBlendFadeOut_candidate
+thumb-func 0x0803217C sub_0803217C
+thumb-func 0x080321A8 sub_080321A8
+thumb-func 0x08032204 SelectInGameMenuEntry_candidate
+thumb-func 0x0803227C sub_0803227C
+thumb-func 0x0803232C sub_0803232C
+thumb-func 0x0803233C sub_0803233C
+thumb-func 0x080323AC sub_080323AC
+thumb-func 0x080323B0 sub_080323B0
 thumb-func 0x080323B4 InitializeWizardCrackerPopItMinigame
 thumb-func 0x08032534 UpdateWizardCrackerPopItMinigame
 thumb-func 0x080338A4 ExitWizardCrackerPopItMinigame
@@ -583,8 +584,8 @@ thumb-func 0x08036BB8 UpdateFolioBrutiGridCursor
 thumb-func 0x08037048 ExitFolioBruti
 thumb-func 0x080372B0 InitializeFolioUniversitas
 thumb-func 0x080373D4 UpdateFolioUniversitas
-label 0x0803774C IncrementFolioUniversitasCard
-label 0x080377A8 DecrementFolioUniversitasCard
+thumb-func 0x0803774C IncrementFolioUniversitasCard
+thumb-func 0x080377A8 DecrementFolioUniversitasCard
 thumb-func 0x08037F48 ExitFolioUniversitas
 thumb-func 0x08038290 InitializeGameCubeLink
 thumb-func 0x08038320 UpdateGameCubeLink
@@ -606,11 +607,11 @@ thumb-func 0x080399A8 UpdateItemUseScreen
 thumb-func 0x08039A04 ExitItemUseScreen
 c-file 0x08039A74 0x08039B0C src/gamemode/modes/game_save/initialize_game_save.c InitializeGameSave
 c-file 0x08039B0C 0x08039C30 src/gamemode/modes/game_save/update_game_save.c UpdateGameSave
-label 0x08039C30 ResolveSaveConfirmation_candidate
+thumb-func 0x08039C30 ResolveSaveConfirmation_candidate
 c-file 0x08039CD8 0x08039D08 src/gamemode/modes/game_save/exit_game_save.c ExitGameSave
-label 0x08039D08 ShowSaveConfirmationPrompt_candidate
-label 0x08039D44 ShowSavingMessage_candidate
-label 0x08039D78 ShowGameSavedMessage_candidate
+thumb-func 0x08039D08 ShowSaveConfirmationPrompt_candidate
+thumb-func 0x08039D44 ShowSavingMessage_candidate
+thumb-func 0x08039D78 ShowGameSavedMessage_candidate
 thumb-func 0x08039DD8 UpdateStatusEquipHarry
 thumb-func 0x0803A4AC InitializeStatusEquipHarry
 thumb-func 0x0803A524 ExitStatusEquipHarryScreen
@@ -620,10 +621,10 @@ thumb-func 0x0803ABBC ExitCardTrade
 thumb-func 0x0803AEA0 InitializeFolioCardDetailScreen
 thumb-func 0x0803AFA0 HandleFolioCardDetailScreenTick
 thumb-func 0x0803AFCC ExitFolioCardDetailScreen
-label 0x0803B0C0 ClearSystemMemory
+thumb-func 0x0803B0C0 ClearSystemMemory
 
 # MT19937 PRNG, see docs/memory-map/rng.md
-label 0x0803B158 ClearVram
+thumb-func 0x0803B158 ClearVram
 c-file 0x0803B1B8 0x0803B314 src/rng/regenerate.c Mt19937Regenerate
 c-file 0x0803B314 0x0803B330 src/rng/alloc_state.c Mt19937AllocState
 c-file 0x0803B330 0x0803B3AC src/rng/auto_seed.c Mt19937AutoSeed
@@ -641,55 +642,55 @@ c-file 0x0803B560 0x0803B598 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B598 0x0803B5F4 src/rng/next.c Mt19937Next
 c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 
-label 0x0803BC9C InitSaveSystem
-label 0x0803BD04 SetSaveLanguageFlag
-label 0x0803BD48 sub_0803BD48
-label 0x0803BF20 SaveGameToSlot
-label 0x0803C0A8 ValidateSaveSlot
-label 0x0803C0DC LoadSaveSlot
-label 0x0803C114 SyncSaveHeaderIfDirty
-label 0x0803D2C8 InitScreenTransitionState_candidate
-label 0x0803D310 SetFadeToWhite
-label 0x0803D338 SetAlphaBlendTargets
-label 0x0803D350 SetAlphaBlendCoefficients
-label 0x0803D3B0 PlayScreenTransitionInByIndex
-label 0x0803D3E8 PlayScreenTransitionOutByIndex
-label 0x0803D420 sub_0803D420
-label 0x0803DA4C UpdateOverworldCamera_candidate
-label 0x0803DB68 sub_0803DB68
-label 0x0803DC44 sub_0803DC44
-label 0x0803DCDC LoadRoomBgLayer0Extra_candidate
-label 0x0803DD7C WriteRoomBgTile_candidate
-label 0x0803E4FC sub_0803E4FC
-label 0x0803E588 SetupRoomBgControlAndWindows_candidate
-label 0x0803E664 LoadRoomBgTilemap1_candidate
-label 0x0803E6A0 LoadRoomBgTilemap0_candidate
-label 0x0803E6F0 LoadRoomBgTilemap2_candidate
-label 0x0803E72C LoadRoomBgTilemap3_candidate
-label 0x0803E768 LoadRoomBgLayer1Extra_candidate
-label 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
-label 0x0803E880 LoadRoomBgLayer3Extra_candidate
-label 0x0803EF5C TickLinkCommIfActive_candidate
+thumb-func 0x0803BC9C InitSaveSystem
+thumb-func 0x0803BD04 SetSaveLanguageFlag
+thumb-func 0x0803BD48 sub_0803BD48
+thumb-func 0x0803BF20 SaveGameToSlot
+thumb-func 0x0803C0A8 ValidateSaveSlot
+thumb-func 0x0803C0DC LoadSaveSlot
+thumb-func 0x0803C114 SyncSaveHeaderIfDirty
+thumb-func 0x0803D2C8 InitScreenTransitionState_candidate
+thumb-func 0x0803D310 SetFadeToWhite
+thumb-func 0x0803D338 SetAlphaBlendTargets
+thumb-func 0x0803D350 SetAlphaBlendCoefficients
+thumb-func 0x0803D3B0 PlayScreenTransitionInByIndex
+thumb-func 0x0803D3E8 PlayScreenTransitionOutByIndex
+thumb-func 0x0803D420 sub_0803D420
+thumb-func 0x0803DA4C UpdateOverworldCamera_candidate
+thumb-func 0x0803DB68 sub_0803DB68
+thumb-func 0x0803DC44 sub_0803DC44
+thumb-func 0x0803DCDC LoadRoomBgLayer0Extra_candidate
+thumb-func 0x0803DD7C WriteRoomBgTile_candidate
+thumb-func 0x0803E4FC sub_0803E4FC
+thumb-func 0x0803E588 SetupRoomBgControlAndWindows_candidate
+thumb-func 0x0803E664 LoadRoomBgTilemap1_candidate
+thumb-func 0x0803E6A0 LoadRoomBgTilemap0_candidate
+thumb-func 0x0803E6F0 LoadRoomBgTilemap2_candidate
+thumb-func 0x0803E72C LoadRoomBgTilemap3_candidate
+thumb-func 0x0803E768 LoadRoomBgLayer1Extra_candidate
+thumb-func 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
+thumb-func 0x0803E880 LoadRoomBgLayer3Extra_candidate
+thumb-func 0x0803EF5C TickLinkCommIfActive_candidate
 c-file 0x0803FA94 0x0803FAA4 src/link/get_link_player_id.c GetLinkPlayerId
-label 0x0803FC68 PlaySoundById
-label 0x0803FDB0 kramInstall
-label 0x0803FE54 DisableKrawall
-label 0x0803FE60 EnableKrawall
-label 0x0803FE78 SetSoundEffectVolume
-label 0x0803FE88 SetMusicVolume
-label 0x0803FEA4 UnmuteAllMusicChannels
-label 0x0803FEB4 PlayMusicModule
+thumb-func 0x0803FC68 PlaySoundById
+thumb-func 0x0803FDB0 kramInstall
+thumb-func 0x0803FE54 DisableKrawall
+thumb-func 0x0803FE60 EnableKrawall
+thumb-func 0x0803FE78 SetSoundEffectVolume
+thumb-func 0x0803FE88 SetMusicVolume
+thumb-func 0x0803FEA4 UnmuteAllMusicChannels
+thumb-func 0x0803FEB4 PlayMusicModule
 
-label 0x0803FF1C PauseMusic
-label 0x0803FF40 ResumeMusic
-label 0x0803FF70 PlaySoundEffect_candidate
+thumb-func 0x0803FF1C PauseMusic
+thumb-func 0x0803FF40 ResumeMusic
+thumb-func 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0804115C InitializeFredAndGeorgesShop
 thumb-func 0x080411E0 UpdateFredAndGeorgesShop
 thumb-func 0x0804126C ExitFredAndGeorgesShop
 thumb-func 0x080418EC InitializeDivinationTeaMinigame
 thumb-func 0x08041A60 UpdateDivinationTeaMinigame
 thumb-func 0x0804223C ExitDivinationTeaMinigame
-label 0x08042568 InitDialogTextEngine
+thumb-func 0x08042568 InitDialogTextEngine
 c-file 0x08042588 0x080425D8 src/text/set_language.c SetLanguage
 c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
 c-file 0x080425E4 0x08042608 src/text/get_dialog_text.c GetDialogText
@@ -699,7 +700,7 @@ thumb-func 0x08042C74 UpdateHogwartsUpNightCutscene
 thumb-func 0x08042D10 UpdateClockSkipCutscene
 thumb-func 0x08042D74 ExitClockSkipCutscene
 thumb-func 0x08042D90 ExitHogwartsUpNightCutscene
-label 0x08042E2C sub_08042E2C
+thumb-func 0x08042E2C sub_08042E2C
 thumb-func 0x08042F08 InitializeHarryHermionePortInTimeCutscene
 thumb-func 0x08042FC0 UpdateHarryHermionePortInTimeCutscene
 thumb-func 0x08043450 ExitHarryHermionePortInTimeCutscene
@@ -707,48 +708,48 @@ c-file 0x08043470 0x08043580 src/gamemode/modes/main_menu/initialize_main_menu.c
 c-file 0x08043580 0x08043730 src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
 c-file 0x08043730 0x08043870 src/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
 c-file 0x08043870 0x080438B4 src/gamemode/modes/main_menu/exit_main_menu_screen.c ExitMainMenuScreen
-label 0x080438B4 sub_080438B4
+thumb-func 0x080438B4 sub_080438B4
 c-file 0x080438E4 0x08043940 src/main_menu/show_main_menu_entries.c ShowMainMenuEntries_candidate
-label 0x08043940 DrawMainMenuEntry_candidate
-label 0x080439AC DrawMainMenuCopyright_candidate
+thumb-func 0x08043940 DrawMainMenuEntry_candidate
+thumb-func 0x080439AC DrawMainMenuCopyright_candidate
 c-file 0x08043A20 0x08043A68 src/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
-label 0x08043A68 HasLoadableSaveSlot
-label 0x08043AA4 PositionMainMenuCursorObject_candidate
+thumb-func 0x08043A68 HasLoadableSaveSlot
+thumb-func 0x08043AA4 PositionMainMenuCursorObject_candidate
 c-file 0x08043AF0 0x08043B70 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
-label 0x08043D40 SelectNewGameSlot_candidate
-label 0x08043E18 ResolveOverwriteConfirmation_candidate
+thumb-func 0x08043D40 SelectNewGameSlot_candidate
+thumb-func 0x08043E18 ResolveOverwriteConfirmation_candidate
 c-file 0x08043EC8 0x08043ED8 src/gamemode/modes/load_game/initialize_load_game.c InitializeLoadGame
 c-file 0x08043ED8 0x08043EEC src/gamemode/modes/load_game/update_load_game.c UpdateLoadGame
 c-file 0x08043EEC 0x08043EFC src/gamemode/modes/new_game_menu/initialize_new_game_menu.c InitializeNewGameMenu
 c-file 0x08043EFC 0x08043F5C src/gamemode/modes/new_game_menu/update_new_game_menu.c UpdateNewGameMenu
 c-file 0x08043F5C 0x08043F68 src/gamemode/modes/new_game_menu/exit_new_game_menu.c ExitNewGameMenu
-label 0x08043F68 InitializeSaveSlotScreen_candidate
-label 0x08043FA4 HandleSaveSlotInput_candidate
-label 0x08044010 ExitSaveSlotScreen_candidate
-label 0x08044080 ConfirmLoadGameSlot_candidate
+thumb-func 0x08043F68 InitializeSaveSlotScreen_candidate
+thumb-func 0x08043FA4 HandleSaveSlotInput_candidate
+thumb-func 0x08044010 ExitSaveSlotScreen_candidate
+thumb-func 0x08044080 ConfirmLoadGameSlot_candidate
 c-file 0x08044134 0x08044240 src/gamemode/modes/options/initialize_options.c InitializeOptions
 c-file 0x08044240 0x0804439C src/gamemode/modes/options/update_options.c UpdateOptions
-label 0x0804439C BuildOptionsScreen_candidate
-label 0x080445C0 MoveOptionsCursor_candidate
-label 0x080446A8 AdjustOptionValue_candidate
+thumb-func 0x0804439C BuildOptionsScreen_candidate
+thumb-func 0x080445C0 MoveOptionsCursor_candidate
+thumb-func 0x080446A8 AdjustOptionValue_candidate
 c-file 0x08044774 0x080447E0 src/gamemode/modes/options/exit_options.c ExitOptions
 thumb-func 0x08044B00 InitializeCoolTrainCutscene
 thumb-func 0x08044B7C UpdateCoolTrainCutscene
 thumb-func 0x08044BF0 ExitCoolTrainCutscene
-label 0x08045094 InitScanlineEffects
-label 0x08045260 CommitScanlineEffects
-label 0x080452A8 StopScanlineEffects
-label 0x080452D4 ClearScanlineEffects
-label 0x080453B4 InstallIwramObjTileAllocRoutine
-label 0x080453D8 InitObjTileAllocBitmaps
-label 0x0804542C sub_0804542C
-label 0x08045514 FreeObjectVramTileAllocation
-label 0x08045808 HideScreenWindow_candidate
-label 0x08045838 SetScreenWindowLayers_candidate
-label 0x080458A8 SetScreenWindowRect_candidate
-label 0x08045970 TickScreenWindows_candidate
-label 0x08045988 sub_08045988
-label 0x08049E3C sub_08049E3C
+thumb-func 0x08045094 InitScanlineEffects
+thumb-func 0x08045260 CommitScanlineEffects
+thumb-func 0x080452A8 StopScanlineEffects
+thumb-func 0x080452D4 ClearScanlineEffects
+thumb-func 0x080453B4 InstallIwramObjTileAllocRoutine
+thumb-func 0x080453D8 InitObjTileAllocBitmaps
+thumb-func 0x0804542C sub_0804542C
+thumb-func 0x08045514 FreeObjectVramTileAllocation
+thumb-func 0x08045808 HideScreenWindow_candidate
+thumb-func 0x08045838 SetScreenWindowLayers_candidate
+thumb-func 0x080458A8 SetScreenWindowRect_candidate
+thumb-func 0x08045970 TickScreenWindows_candidate
+thumb-func 0x08045988 sub_08045988
+thumb-func 0x08049E3C sub_08049E3C
 
 # Thumb wrappers around BIOS SWI calls
 asm-file 0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
@@ -763,6 +764,9 @@ asm-file 0x0804A4DC 0x0804A59C asm/rt/umodsi3.s                 __umodsi3
 # newlib, compiled from source by `just compile-c` (docs/compiler.md)
 c-file 0x0804BD40 0x0804BD5C src/libc/bzero.c  bzero
 c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
+
+# End of main code section, start of data section
+
 label 0x0804C444 g_dwDebugMenuMainBg0Control
 label 0x0804C448 g_dwDebugMenuMainBg1Control
 label 0x0804C44C g_DebugMenuMainAnimFrames

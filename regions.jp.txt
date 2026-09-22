@@ -19,8 +19,8 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
-label 0x080015B8 TickActiveObjects
-label 0x0800187C SetObjectAssetRecord
+thumb-func 0x080015B8 TickActiveObjects
+thumb-func 0x0800187C SetObjectAssetRecord
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
@@ -34,44 +34,44 @@ c-file 0x08001EF0 0x08001EF8 src/object/clear_object_flags.c ClearObjectFlags
 c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
 c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
 c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
-label 0x08003808 ReleaseObjectAffineSlot
-label 0x08005A44 InitRoomScriptState_candidate
-label 0x08005CAC SetRoomObjectRecordPtr_candidate
-label 0x08005F10 CheckObjectCollisions_candidate
-label 0x08006440 SortObjectsByDepth_candidate
-label 0x08006EF4 TickBgLayers_candidate
-label 0x0800A03C TickCameraFocus_candidate
-label 0x0800A1F0 MoveCameraFocusToward_candidate
-label 0x0800A610 TickBgTileAnimations_candidate
+thumb-func 0x08003808 ReleaseObjectAffineSlot
+thumb-func 0x08005A44 InitRoomScriptState_candidate
+thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
+arm-func 0x08005F10 CheckObjectCollisions_candidate
+arm-func 0x08006440 SortObjectsByDepth_candidate
+thumb-func 0x08006EF4 TickBgLayers_candidate
+thumb-func 0x0800A03C TickCameraFocus_candidate
+thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
+thumb-func 0x0800A610 TickBgTileAnimations_candidate
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
-label 0x0800D1A4 InitGammaPalette
-label 0x0800D254 sub_0800D254
-label 0x0800D264 sub_0800D264
-label 0x0800D2F4 TickPaletteAnimations_candidate
+thumb-func 0x0800D1A4 InitGammaPalette
+thumb-func 0x0800D254 sub_0800D254
+thumb-func 0x0800D264 sub_0800D264
+thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
-label 0x08018BCC CreateEffectScriptObject
-label 0x0801DD3C InstallIwramDecompressCodecs
-label 0x0801FB60 sub_0801FB78
-label 0x0801FD88 InitDisplayControl
-label 0x08020210 TickRoomTileAnimations_candidate
-label 0x08020390 InitRoomTileAnimationTable_candidate
-label 0x08020D3C InitTextMacroTable
-label 0x080215BC NoopInit
+thumb-func 0x08018BCC CreateEffectScriptObject
+thumb-func 0x0801DD3C InstallIwramDecompressCodecs
+thumb-func 0x0801FB60 sub_0801FB78
+thumb-func 0x0801FD88 InitDisplayControl
+thumb-func 0x08020210 TickRoomTileAnimations_candidate
+thumb-func 0x08020390 InitRoomTileAnimationTable_candidate
+thumb-func 0x08020D3C InitTextMacroTable
+thumb-func 0x080215BC NoopInit
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
-label 0x08021E54 ProcessOwlCareKitTick
-label 0x08025114 InstallBgTileCodec
+thumb-func 0x08021E54 ProcessOwlCareKitTick
+thumb-func 0x08025114 InstallBgTileCodec
 c-file 0x08025504 0x0802566C src/input/update_key_input.c UpdateKeyInput
-label 0x08025944 InitInputSystem_candidate
+thumb-func 0x08025944 InitInputSystem_candidate
 c-file 0x08025954 0x080259B0 src/input/reset_key_input.c ResetKeyInput
-label 0x080260C4 InitInterruptSystem
-label 0x08026104 EnableInterrupts
-label 0x080261B4 SetVBlankCallback
+thumb-func 0x080260C4 InitInterruptSystem
+thumb-func 0x08026104 EnableInterrupts
+thumb-func 0x080261B4 SetVBlankCallback
 c-file 0x08026238 0x08026254 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 thumb-func 0x080262A0 VBlankCallback_candidate
-label 0x080286FC BuildFreeList
-label 0x08028734 AllocObjectFromFreeList
+thumb-func 0x080286FC BuildFreeList
+thumb-func 0x08028734 AllocObjectFromFreeList
 c-file 0x08028768 0x08028784 src/mem/list_move_to_head.c List_MoveToHead
 c-file 0x080287A4 0x080287BC src/mem/list_push_head.c List_PushHead
 c-file 0x080287BC 0x080287E8 src/mem/list_remove.c List_Remove
@@ -80,42 +80,42 @@ c-file 0x080287BC 0x080287E8 src/mem/list_remove.c List_Remove
 # sub_<ADDR> label carries the US address, not the JP one.
 c-file 0x080296EC 0x080297FC src/main.c AgbMain
 c-file 0x0802AF54 0x0802B074 src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
-label 0x0802B074 InitRoomState
+thumb-func 0x0802B074 InitRoomState
 c-file 0x0802B0B4 0x0802B0E8 src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 c-file 0x0802B0FC 0x0802B138 src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 c-file 0x0802B138 0x0802B150 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
 c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
-label 0x0802B478 SpawnWanderingMonsterObject
-label 0x0802B5E8 HandleWanderingMonsterTouch
+thumb-func 0x0802B478 SpawnWanderingMonsterObject
+thumb-func 0x0802B5E8 HandleWanderingMonsterTouch
 
 # SpawnOverworldMonsterEncounters (src/overworld/) callees, still raw
 # incbin territory.
-label 0x0802BA68 GetEncounterKindTerrainType
-label 0x0802BA78 FindWanderingMonsterSpawnPosition
-label 0x0802BB2C PickMaxDamageMonster
-label 0x0802BE48 InstallIwramDivideRoutines
-label 0x0802C2B0 InitHeap
-label 0x0802C348 AllocZeroed
-label 0x0802C3EC FreeBlock
-label 0x0802C4AC memset
-label 0x0802C710 TickGameModeStack
-label 0x0802C7AC InitGameModeStack
-label 0x0802C808 PushGameMode
+thumb-func 0x0802BA68 GetEncounterKindTerrainType
+thumb-func 0x0802BA78 FindWanderingMonsterSpawnPosition
+thumb-func 0x0802BB2C PickMaxDamageMonster
+thumb-func 0x0802BE48 InstallIwramDivideRoutines
+thumb-func 0x0802C2B0 InitHeap
+thumb-func 0x0802C348 AllocZeroed
+thumb-func 0x0802C3EC FreeBlock
+thumb-func 0x0802C4AC memset
+thumb-func 0x0802C710 TickGameModeStack
+thumb-func 0x0802C7AC InitGameModeStack
+thumb-func 0x0802C808 PushGameMode
 c-file 0x0802C864 0x0802C8A4 src/gamemode/tick_frame_systems.c TickFrameSystems
-label 0x0802C8A4 IsGameModeTransitionPending
-label 0x0802D588 NoopInit3
-label 0x0802DD98 NoopInit2
-label 0x0802FF70 InitOamSystem
-label 0x080301C8 HideUnusedOamEntries
-label 0x08030868 ClearResourceCacheSlots
-label 0x0803091C ClaimObjectEffectResource
-label 0x080315E8 InitResourceCachePools
-label 0x0803178C TickParticleEmitters
-label 0x0803B128 ClearSystemMemory
+thumb-func 0x0802C8A4 IsGameModeTransitionPending
+thumb-func 0x0802D588 NoopInit3
+thumb-func 0x0802DD98 NoopInit2
+thumb-func 0x0802FF70 InitOamSystem
+thumb-func 0x080301C8 HideUnusedOamEntries
+thumb-func 0x08030868 ClearResourceCacheSlots
+thumb-func 0x0803091C ClaimObjectEffectResource
+thumb-func 0x080315E8 InitResourceCachePools
+thumb-func 0x0803178C TickParticleEmitters
+thumb-func 0x0803B128 ClearSystemMemory
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B220 0x0803B37C src/rng/regenerate.c Mt19937Regenerate
-label 0x0803B37C Mt19937AllocState
+thumb-func 0x0803B37C Mt19937AllocState
 c-file 0x0803B398 0x0803B414 src/rng/auto_seed.c Mt19937AutoSeed
 c-file 0x0803B414 0x0803B448 src/rng/set_seed.c Mt19937SetSeed
 c-file 0x0803B448 0x0803B474 src/rng/rand_range.c Mt19937RandRange
@@ -130,22 +130,22 @@ c-file 0x0803B594 0x0803B5C8 src/rng/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B5C8 0x0803B600 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 0x0803B65C src/rng/next.c Mt19937Next
 c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
-label 0x0803BD04 InitSaveSystem
-label 0x0803D330 InitScreenTransitionState_candidate
-label 0x0803D378 SetFadeToWhite
-label 0x0803DAB4 UpdateOverworldCamera_candidate
-label 0x0803E564 sub_0803E4FC
+thumb-func 0x0803BD04 InitSaveSystem
+thumb-func 0x0803D330 InitScreenTransitionState_candidate
+thumb-func 0x0803D378 SetFadeToWhite
+thumb-func 0x0803DAB4 UpdateOverworldCamera_candidate
+thumb-func 0x0803E564 sub_0803E4FC
 c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId
-label 0x0803FCD0 PlaySoundById
-label 0x0803FE18 kramInstall
-label 0x080425D0 InitDialogTextEngine
-label 0x08042E6C sub_08042E2C
-label 0x08044FC0 InitScanlineEffects
-label 0x080452E0 InstallIwramObjTileAllocRoutine
-label 0x08045440 FreeObjectVramTileAllocation
-label 0x0804589C TickScreenWindows_candidate
-label 0x08049DBC bios_CPUSet
-label 0x08049DE8 bios_VBlankIntrWait
+thumb-func 0x0803FCD0 PlaySoundById
+thumb-func 0x0803FE18 kramInstall
+thumb-func 0x080425D0 InitDialogTextEngine
+thumb-func 0x08042E6C sub_08042E2C
+thumb-func 0x08044FC0 InitScanlineEffects
+thumb-func 0x080452E0 InstallIwramObjTileAllocRoutine
+thumb-func 0x08045440 FreeObjectVramTileAllocation
+thumb-func 0x0804589C TickScreenWindows_candidate
+thumb-func 0x08049DBC bios_CPUSet
+thumb-func 0x08049DE8 bios_VBlankIntrWait
 
 # Thumb-mode division runtime
 asm-file 0x0804A1EC 0x0804A228 asm/rt/call_via_rX.s              _call_via_r0
@@ -157,6 +157,9 @@ asm-file 0x0804A408 0x0804A4C8 asm/rt/umodsi3.s                 __umodsi3
 # newlib, compiled from source by `just compile-c` (docs/compiler.md)
 c-file 0x0804BC6C 0x0804BC88 src/libc/bzero.c  bzero
 c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
+
+# End of main code section, start of data section
+
 c-file 0x0804C422 0x0804C542 src/data/playable_character_names.c sPlayableCharacterNames
 c-file 0x0804CDF0 0x0804D450 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 

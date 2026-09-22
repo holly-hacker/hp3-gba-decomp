@@ -23,7 +23,7 @@ US_AREAS = [
 
 KINDS = ["c-file", "asm-file", "data", "raw"]
 COLUMNS = ["c-file", "asm-file", "data", "matched", "raw"]
-NON_REGION = {"label", "thumb-func"}
+NON_REGION = {"label", "thumb-func", "arm-func"}
 
 
 def kind_of(directive: str) -> str:
