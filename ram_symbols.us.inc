@@ -245,3 +245,6 @@
 .set g_bPartyCharId2, 0x0300338E  @ u8: character id of the second follower
 .set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
 .set g_DialogState_candidate, 0x03002E88  @ DialogState; see include/dialog.h
+
+@ --- EEPROM save driver (see include/eeprom.h, docs/formats/save.md) ---
+.set g_pEepromInterface, 0x030062C8  @ EepromInterface *: chosen by EepromSelectInterface

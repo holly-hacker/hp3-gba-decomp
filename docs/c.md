@@ -15,6 +15,14 @@ the region's object. Two flag profiles, by directory:
 | `src/libc/` | `old_agbcc` | `-O2 -fno-builtin`, no interworking |
 | everything else | `agbcc` | `-O2 -mthumb-interwork -fhex-asm -Werror` |
 
+A `c-file-O1` row uses the same compiler and flags with `-O1` in place of
+`-O2`. The EEPROM driver (`src/eeprom/`) matches only under `-O1`.
+
+A C file's `.rodata` is normally folded into its own region. A
+`c-rodata <start> <end> <name>` row instead places the `.rodata` of the
+C row named `<name>` at its own address, for an object whose read-only
+data the ROM keeps apart from its code (the EEPROM library objects).
+
 `-fhex-asm` is agbcc-only and prints immediates as hex; it changes no
 bytes. A trailing `.align 2, 0` is appended to every compiled region,
 supplying the zero fill the ROM has -- without it the assembler pads Thumb

@@ -26,7 +26,7 @@ def prepare(ver, name, source=None, end=None, profile_source=None, reference_nam
     if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', name):
         raise ValueError('expected a C function name')
     rows = [line.split('#', 1)[0].split() for line in (ROOT / f'regions.{ver}.txt').read_text().splitlines()]
-    row = next((r for r in rows if len(r) == 5 and r[0] == 'c-file' and r[4] == name), None)
+    row = next((r for r in rows if len(r) == 5 and r[0] in {'c-file', 'c-file-O1'} and r[4] == name), None)
     if not source and row:
         source = row[3]
     if not source:
@@ -84,6 +84,7 @@ def prepare(ver, name, source=None, end=None, profile_source=None, reference_nam
         pass
     meta = dict(version=ver, name=name, start=start, end=end, mode=mode,
                 profile_source=profile_source, reference_name=reference_name, source=str(Path(source).resolve()),
+                o1=bool(row and row[0] == 'c-file-O1'),
                 boundary='manifest' if row else 'user-specified',
                 reference_verified=True)
     (path / 'workspace.json').write_text(json.dumps(meta, indent=2) + '\n')

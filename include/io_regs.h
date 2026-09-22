@@ -12,6 +12,16 @@
 #define REG_WAITCNT (*(volatile u16 *)0x04000204)
 #define REG_IME     (*(volatile u16 *)0x04000208)
 
+#define REG_DMA3SAD   (*(volatile u32 *)0x040000D4)
+#define REG_DMA3DAD   (*(volatile u32 *)0x040000D8)
+#define REG_DMA3CNT   (*(volatile u32 *)0x040000DC)
+#define REG_DMA3CNT_H (*(volatile u16 *)0x040000DE)
+
+// Serial EEPROM bus, memory-mapped over the SRAM-area mirror while a
+// game-pak DMA is in flight; only the low bit of each transferred
+// halfword is wired to the chip. See EepromDma3Transfer.
+#define EEPROM_PORT ((void *)0x0D000000)
+
 // BIOS-owned RAM mirror of acked interrupt flags (GBATEK "Interrupt Check
 // Flag"), not an MMIO register -- SWI IntrWait/VBlankIntrWait poll it.
 #define REG_IFBIOS  (*(volatile u16 *)0x03007FF8)

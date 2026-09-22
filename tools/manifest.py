@@ -42,11 +42,17 @@ BATTLE_SCRIPT_TABLE_DIRECTIVE = "battle-script-table"
 # docs/formats/graphics.md's "Item icons" section.
 ITEM_ICON_DATA_DIRECTIVE = "item-icon-data"
 
-# c-file rows name a .c under src/, compiled to assembly by
+# c-file and c-file-O1 rows name a .c under src/, compiled to assembly by
 # tools/c/compile_c.py (the `compile-c` recipe, which must run before
 # `gen-link`) with the compiler the ROM was built with -- see
 # docs/compiler.md.
-C_FILE_DIRECTIVE = "c-file"
+C_FILE_DIRECTIVES = {"c-file", "c-file-O1"}
+
+# c-rodata rows place the .rodata of the c-file/c-file-O1 row named <name>
+# at their own address, for a C object whose read-only data the ROM keeps
+# apart from its code. The region is named <name> + RODATA_SUFFIX.
+C_RODATA_DIRECTIVE = "c-rodata"
+RODATA_SUFFIX = ".rodata"
 
 # asm-file rows name a committed .s under asm/ directly -- no packing or
 # compiling step, the file is already the region's assembly.
@@ -90,7 +96,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 asmfile = f"build/{ver}/battle_scripts/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
-            if parts[0] == C_FILE_DIRECTIVE:
+            if parts[0] in C_FILE_DIRECTIVES:
                 if len(parts) != 5:
                     sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
                 _, start_s, end_s, _source, name = parts
@@ -99,6 +105,16 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 asmfile = f"build/{ver}/c/{name}.s"
                 regions.append((start, end, asmfile, name))
+                continue
+            if parts[0] == C_RODATA_DIRECTIVE:
+                if len(parts) != 4:
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <name>'")
+                _, start_s, end_s, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                asmfile = f"build/{ver}/c/{name}.s"
+                regions.append((start, end, asmfile, name + RODATA_SUFFIX))
                 continue
             if parts[0] == ITEM_ICON_DATA_DIRECTIVE:
                 if len(parts) != 5:
@@ -132,6 +148,10 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 regions.append((start, end, asmfile, name))
                 continue
             sys.exit(f"{path}:{lineno}: unrecognized directive '{parts[0]}'")
+    names = {r[3] for r in regions}
+    for r in regions:
+        if r[3].endswith(RODATA_SUFFIX) and r[3][:-len(RODATA_SUFFIX)] not in names:
+            sys.exit(f"{path}: c-rodata row {r[3][:-len(RODATA_SUFFIX)]} has no c-file row")
     regions.sort(key=lambda r: r[0])
     for i in range(1, len(regions)):
         if regions[i][0] < regions[i - 1][1]:

@@ -8,11 +8,10 @@ regions the game divides it into, and the per-block checksum scheme. See
 ## Backup type: 8KB EEPROM
 
 **PROVEN.** `baserom.us.sav` (and `baserom.jp.sav`) are exactly 8192 bytes,
-matching the 64Kbit EEPROM variant exactly (1024 blocks of 8 bytes). No
-`SRAM_V`/`FLASH_V`/`EEPROM_V`-style Nintendo backup-ID string is present in
-either ROM (`search_strings` over both found nothing), so this game doesn't
-use the standard SDK auto-probe convention -- the backup type has to be
-read out of the driver code itself, not a string.
+matching the 64Kbit EEPROM variant exactly (1024 blocks of 8 bytes). The US
+ROM contains `EEPROM_V124` at `0x08FAA7D0`, immediately before the two
+geometry records. The game's transfer path selects the 8KB geometry directly;
+the string is not its runtime size probe.
 
 EEPROM is accessed at `0x0D000000` via DMA3, one 16-bit serial-protocol word
 at a time. The driver never loads that address from a literal pool; it's
@@ -23,24 +22,42 @@ which is why a literal-pool search for the constant doesn't find it.
 
 | Function | Address | Role |
 |---|---|---|
-| `EepromDma3Transfer` | `0x08049F0C` | Generic DMA3 word transfer (`src`, `dst`, `ctrl`). Used only by the two functions below. |
+| `EepromDma3Transfer` | `0x08049F0C` | Generic DMA3 word transfer (`src`, `dst`, `count`). Used only by the two functions below. |
 | `EepromReadBlock` | `0x08049F8C` | Reads one 8-byte block: sends a 2-bit READ opcode + address bits, clocks 64 data bits back via DMA. |
 | `EepromWriteBlockRaw` | `0x0804A050` | Writes one 8-byte block: sends a 2-bit WRITE opcode + address bits + 64 data bits + a stop bit, then busy-waits (polling `VCOUNT`, `0x04000006`, as a timeout clock) for the EEPROM's internal write cycle. |
 | `EepromVerifyBlock` | `0x0804A1B0` | Reads a block back and compares it against a caller-supplied 8-byte buffer. |
 | `EepromWriteBlockGuarded` | `0x0804A248` | Refuses to write if the selected geometry table is the 512B one (dead code path in practice -- see below); otherwise calls `EepromWriteBlockRaw`. |
 | `EepromWriteBlockVerified` | `0x0804A280` | Write-guarded, then verify; retries up to 3 times total. |
-| `EepromSelectInterface` | `0x08049EC4` | Sets `g_pEepromInterface` to `g_stEepromInterface512B` (size class 4) or `g_stEepromInterface8KB` (size class 0x40), based on its argument. |
+| `EepromSelectInterface` | `0x08049EC4` | Sets `g_pEepromInterface` to `sEepromInterface4K` (size class 4) or `sEepromInterface64K` (size class 0x40), based on its argument. |
 | `EepromTransferBegin` / `EepromTransferEnd` | `0x0803C378` / `0x0803C3A8` | Save/clear `DISPSTAT`+`IF`, enable only the VBlank IRQ (needed by the write busy-wait), always select the 8KB interface; restore `DISPSTAT` afterward. |
 | `EepromReadBlocks` | `0x0803C318` | `(startBlock, count, dst)` -- `EepromTransferBegin`, loop `EepromReadBlock` per 8-byte block, `EepromTransferEnd`. |
 | `EepromWriteBlocks` | `0x0803C348` | Same shape, writing via `EepromWriteBlockVerified`. |
 
 `EepromTransferBegin` always requests the 8KB geometry
 (`EepromSelectInterface(0x40)`); there is no runtime size probe in this
-call path. `g_stEepromInterface512B`/`g_stEepromInterface8KB`
-(`EepromInterface { u32 totalBytes; u16 blockCount; u16 unused; u8
-addrBits; }`, at ROM `0x08FAA7DC`/`0x08FAA7E8`) hold `{512, 64, ?, 6}` and
-`{8192, 1024, ?, 14}` respectively -- the 512B table exists in the driver
-but this game only ever selects the 8KB one.
+call path. `sEepromInterface4K`/`sEepromInterface64K`
+(`EepromInterface { u32 size; u16 blockCount; u16 waitcntBits; u8
+addressBits; }`, at ROM `0x08FAA7DC`/`0x08FAA7E8`) hold
+`{0x200, 0x40, 0x300, 6}` and `{0x2000, 0x400, 0x300, 14}` respectively.
+The 512-byte table exists in the driver, but this game only ever selects
+the 8KB one.
+
+The driver is two library objects, identified by the strings at the start
+of their read-only data, and is built from one source file per object:
+
+| Object | Source | Code | Read-only data |
+|---|---|---|---|
+| `EEPROM_V124` | `src/eeprom/eeprom_v124.c` | `EepromSelectInterface`-`EepromWriteBlockRetryLoop`, `0x08049EC4`-`0x0804A248` | `0x08FAA7D0`-`0x08FAA810` |
+| `EEPROM_NOWAIT` | `src/eeprom/eeprom_nowait.c` | `EepromWriteBlockGuarded`, `EepromWriteBlockVerified`, `0x0804A248`-`0x0804A2C0` | `0x08FAA810`-`0x08FAA824` |
+
+Each object's read-only data is its ID string, then (for `EEPROM_V124`)
+the two geometry tables, then one unused address word per global each
+function loads. agbcc emits those words at `-O1` and never references
+them; the functions use their own literal pools. `c-rodata` rows place
+each object's `.rodata` at its ROM address (see [`../c.md`](../c.md)).
+
+**PROVEN for the US build.** Both objects are byte-exact C matches, code
+and read-only data, under the `c-file-O1` profile.
 
 ## Byte order in `.sav` files
 

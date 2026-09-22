@@ -2,7 +2,7 @@
 """Report how much of the ROM the manifest has claimed, by area and kind.
 
 Reads regions.<ver>.txt and buckets every region-bearing row into:
-  c-file  -- compiled C (matched decompilation / reconstructed tables)
+  c-file  -- compiled C (c-file, c-file-O1 and c-rodata directives)
   asm-file -- committed hand assembly
   data    -- extracted-asset directives (krawall, dialog-text, ...)
   raw     -- unclaimed, filled from the baserom with .incbin
@@ -27,7 +27,7 @@ NON_REGION = {"label", "thumb-func", "arm-func"}
 
 
 def kind_of(directive: str) -> str:
-    if directive == "c-file":
+    if directive in {"c-file", "c-file-O1", "c-rodata"}:
         return "c-file"
     if directive == "asm-file":
         return "asm-file"

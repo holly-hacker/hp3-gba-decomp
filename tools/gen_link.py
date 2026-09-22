@@ -21,7 +21,7 @@ import shutil
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from manifest import Labels, parse_manifest  # noqa: E402
+from manifest import RODATA_SUFFIX, Labels, parse_manifest  # noqa: E402
 
 BASE_ADDR = 0x08000000
 
@@ -48,20 +48,29 @@ def exported_labels(srcfile: str) -> list[str]:
         return re.findall(r"^([A-Za-z_][A-Za-z0-9_]*):", f.read(), re.M)
 
 
-def write_region(objdir: str, ver: str, idx: int, region) -> tuple[str, str]:
-    """Writes the wrapper .s for one region; returns (section, stem)."""
+def write_region(objdir: str, ver: str, idx: int, region,
+                 rodata_idx: int | None = None) -> tuple[str, str]:
+    """Writes the wrapper .s for one region; returns (section, stem).
+
+    rodata_idx is the index of the region holding this C object's .rodata
+    (a c-rodata row); that region's markers bracket the object's .rodata.
+    """
     start, end, srcfile, name = region
     stem = f"r{idx:03d}_{name}"
     out = prelude(ver)
     # ld rounds an output section's size up to its alignment, so a region
     # that came out a couple of bytes short still measures full there.
     # These bracket the real content for tools/check_sections.py.
+    if rodata_idx is not None:
+        out += [".section .rodata", f"__rgn{rodata_idx:03d}_beg:", ".text"]
     out.append(f"__rgn{idx:03d}_beg:")
     if srcfile.endswith(".bin"):
         out += [f".global {name}", f"{name}:", f'.incbin "{srcfile}"']
     else:
         out += [f".global {label}" for label in exported_labels(srcfile)]
         out += [f'.include "{srcfile}"']
+    if rodata_idx is not None:
+        out += [".section .rodata", f"__rgn{rodata_idx:03d}_end:", ".text"]
     out.append(f"__rgn{idx:03d}_end:")
     with open(os.path.join(objdir, f"{stem}.s"), "w") as f:
         f.write("\n".join(out) + "\n")
@@ -108,27 +117,35 @@ def main() -> None:
     shutil.rmtree(objdir, ignore_errors=True)
     os.makedirs(objdir)
 
-    # placements: (address, section, object stem)
+    index = {region[3]: i for i, region in enumerate(regions)}
+
+    # placements: (address, output section, object stem, input section)
     placements = []
     gaps = []
     addr = BASE_ADDR
     for i, region in enumerate(regions):
-        start, end = region[0], region[1]
+        start, end, _, name = region
         if start > addr:
             gaps.append((addr, start))
-        section, stem = write_region(objdir, ver, i, region)
-        placements.append((start, section, stem))
         addr = end
+        if name.endswith(RODATA_SUFFIX):
+            owner = index[name[:-len(RODATA_SUFFIX)]]
+            placements.append((start, f".rgn{i:03d}",
+                               f"r{owner:03d}_{regions[owner][3]}", ".rodata"))
+            continue
+        section, stem = write_region(objdir, ver, i, region,
+                                     index.get(name + RODATA_SUFFIX))
+        placements.append((start, section, stem, ".text"))
     if addr < BASE_ADDR + rom_size:
         gaps.append((addr, BASE_ADDR + rom_size))
 
     gap_sections = write_gaps(objdir, ver, gaps, labels)
-    placements += [(g[0], s, "gaps") for g, s in zip(gaps, gap_sections)]
+    placements += [(g[0], s, "gaps", s) for g, s in zip(gaps, gap_sections)]
     placements.sort()
 
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write("SECTIONS\n{\n")
-        for address, section, stem in placements:
+        for address, section, stem, input_section in placements:
             # SUBALIGN(1): a compiled region's .text carries a 4-byte
             # section-alignment attribute (from compile_c.py's trailing
             # `.align 2, 0`) even when it adds no actual padding. Without
@@ -136,7 +153,7 @@ def main() -> None:
             # and falsely reports it overlapping the next region whenever
             # its real ROM address isn't itself 4-aligned.
             f.write(f"    {section} {hex(address)} : SUBALIGN(1) "
-                    f"{{ {objdir}/{stem}.o({section if stem == 'gaps' else '.text'}) }}\n")
+                    f"{{ {objdir}/{stem}.o({input_section}) }}\n")
         f.write("    /DISCARD/ : { *(.comment) *(.ARM.attributes) *(.note*) }\n")
         f.write("}\n")
 

@@ -16,6 +16,15 @@
 #
 # c-file <start> <end> <source.c> <name>
 #   A region for a compiled C file.
+#
+# c-file-O1 <start> <end> <source.c> <name>
+#   Same as `c-file`, but compiled with -O1 instead of -O2.
+#
+# c-rodata <start> <end> <name>
+#   Places the .rodata of the `c-file`/`c-file-O1` row named <name> at its
+#   own address, for an object whose read-only data the ROM keeps apart
+#   from its code. Without such a row, a C file's .rodata is part of its
+#   own region.
 
 asm-file 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 asm-file 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
@@ -757,6 +766,10 @@ thumb-func 0x08049E3C sub_08049E3C
 # Thumb wrappers around BIOS SWI calls
 asm-file 0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
 
+# EEPROM save driver -- see docs/formats/save.md
+c-file-O1 0x08049EC4 0x0804A248 src/eeprom/eeprom_v124.c EepromV124
+c-file-O1 0x0804A248 0x0804A2C0 src/eeprom/eeprom_nowait.c EepromNoWait
+
 # Thumb-mode division runtime
 asm-file 0x0804A2C0 0x0804A2FC asm/rt/call_via_rX.s              _call_via_r0
 asm-file 0x0804A2FC 0x0804A390 asm/rt/divsi3.s                   __divsi3
@@ -934,5 +947,8 @@ dialog-text 0x08EFC504 0x08F0FB84 data/text/es.json DialogTextEs
 dialog-text 0x08F0FB84 0x08F24704 data/text/it.json DialogTextIt
 dialog-text 0x08F24704 0x08F37D1C data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
+
+c-rodata 0x08FAA7D0 0x08FAA810 EepromV124
+c-rodata 0x08FAA810 0x08FAA824 EepromNoWait
 
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists
