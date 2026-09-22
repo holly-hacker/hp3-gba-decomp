@@ -52,6 +52,8 @@ editing it. Preserve unrelated work and local asset edits.
 - `tools/c/`, `tools/matching/`: production compilation and candidate matching.
 - `tools/manifest.py`, `tools/gen_link.py`, `tools/check_sections.py`: manifest
   parsing, fixed-address linking, and region size/address validation.
+- `tools/coverage.py`: manifest claim coverage by ROM area/kind, using the
+  US code/data areas below (JP has no default areas, pass `--area`).
 - `tools/<subsystem>/`, `data/`: asset codecs and local editable asset source.
 - `build/<ver>/`: generated disassembly, assembly, objects, linker script, and
   ROM. Unclaimed manifest ranges are filled from the baserom with `.incbin`.
@@ -60,6 +62,9 @@ editing it. Preserve unrelated work and local asset edits.
 - `flake.nix`, `flake.lock`, `justfile`: pinned development tools and commands.
 
 ## ROM mapping
+
+US ROM areas (see `tools/coverage.py`): code 0x08000000-0x0804BDBC, data
+0x0804BDBC-0x08F9FBF6, code 0x08F9FBF6-0x08FB4B40. JP's areas are unknown.
 
 Read the relevant subsystem documentation and existing symbols before tracing
 new code. Record findings in the owning document and link to it from related
