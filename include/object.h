@@ -25,6 +25,8 @@ typedef enum {
                                                        // from the OAM/priority-sort queue
     ObjectFlagActionAnimDone           = 0x40000,    // set by TickObjectAnimation on a non-looping
                                                        // animation's last frame
+    ObjectFlagHasPaletteSlot           = 0x200000,   // AttachObjectPalette bound a palette cache slot;
+                                                       // ReleaseObjectPalette clears it
     ObjectFlagOnscreenForTileAlloc     = 0x400000,   // mirrors ObjectFlagOnscreen (set/cleared
                                                        // together by UpdateObjectOnscreenFlags)
     ObjectFlagRoomRecordBound          = 0x800000,   // FreeObject clears the object's room record
@@ -192,7 +194,7 @@ typedef struct Object {
     u8 bAffineFlagsHigh;     // 0xD3, high byte of the packed word; see ObjectFlagsD3
     u8 pad_D4;               // -> 0xD5
     u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot (see
-                             // ClaimObjectEffectResource/AllocEffectChannelSlot_candidate/
+                             // ReleaseObjectPalette/AllocEffectChannelSlot_candidate/
                              // BindEffectChannelSlot_candidate), bits 2-3 = draw layer (see
                              // SetObjectDrawLayer/SortObjectsByDepth/TickObjectList),
                              // written by UpdateObjectTileCollisionState
@@ -230,7 +232,7 @@ typedef struct Object {
     ObjectSpriteBounds spriteBounds;  // 0x100, signed X/Y extent pairs used for visibility
     void *pEffectData;      // 0x108, direct pointer form of the same graphics-cache resource
                              // bGfxSlotAndFlags's upper nibble indexes (mutually exclusive with
-                             // it -- see ClaimObjectEffectResource/BindEffectChannelSlot_candidate)
+                             // it -- see ReleaseObjectPalette/BindEffectChannelSlot_candidate)
     u32 dwEffectFlags;      // 0x10C
     u16 wVramTileRow;       // 0x110, row passed to FreeObjectVramTileAllocation
     u16 wVramTileAllocId;   // 0x112, VRAM tile allocation id passed to
@@ -285,9 +287,9 @@ extern s32 UpdateObjectOnscreenFlags(Object *obj);
 extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
 extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
 extern void FreeObjectVramTileAllocation(u16 allocId, u16 tileRow, u8 is8bpp);  // 0x08045514
-extern void ClaimObjectEffectResource(Object *obj);
+extern void ReleaseObjectPalette(Object *obj);  // 0x080308D8
 extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);
-extern Object *SpawnObject(u32 type, s32 x, s32 y, const void *pData);
+extern Object *SpawnObject(u32 type, s32 x, s32 y, const ObjPalette *pPalette);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void SnapObjectPosition(Object *obj, u32 x, u32 y);
 extern void SetObjectVelocity(Object *obj, u32 velX, u32 velY);
@@ -313,7 +315,8 @@ extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
 extern void CancelObjectMove_candidate(Object *obj);
 extern void SetObjectAssetRecord(Object *obj, void *rec);
 extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
-extern void AttachEffectOwner_candidate(Object *obj, void *pEffectData);  // 0x08030878
+extern u32 AttachObjectPalette(Object *obj, const ObjPalette *pPalette);  // 0x08030878
+extern void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette *pPalette);
 extern void sub_080039E8(Object *obj);
 extern void sub_080039F8(Object *obj);
 extern void sub_08003A0C(Object *obj);

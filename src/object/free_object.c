@@ -14,7 +14,7 @@ void FreeObject(Object *obj)
     if (obj->pfnDestructor)
         obj->pfnDestructor(obj);
 
-    ClaimObjectEffectResource(obj);
+    ReleaseObjectPalette(obj);
 
     if (obj->dwFlags & ObjectFlagRoomRecordBound)
         SetRoomObjectRecordPtr_candidate(0, obj->bRoomTileCol_candidate, obj->bRoomTileRow_candidate);

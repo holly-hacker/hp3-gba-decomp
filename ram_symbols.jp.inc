@@ -131,3 +131,4 @@
 .set g_pHippogriffFliesIntoAirObject2, 0x03002F1C
 .set g_LupinPotionCutscene,          0x03003AE4  @ see ram_symbols.us.inc
 .set g_aLupinPotionBg2Scroll,        0x03003B9C
+.set g_aResourceCache,               0x03005174  @ see ram_symbols.us.inc

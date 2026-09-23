@@ -23,7 +23,7 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
-thumb-func 0x08001528 SpawnObject
+c-file 0x08001528 0x080015B8 src/object/spawn_object.c SpawnObject
 thumb-func 0x080015B8 TickActiveObjects
 c-file 0x080015D4 0x080015F8 src/object/free_all_objects.c FreeAllObjects
 thumb-func 0x08001690 sub_08001690
@@ -324,10 +324,15 @@ thumb-func 0x0802DDF0 sub_0802DDAC
 thumb-func 0x0802E740 RestorePendingCameraFocus_candidate
 thumb-func 0x0802FF70 InitOamSystem
 thumb-func 0x080301C8 HideUnusedOamEntries
+thumb-func 0x080307D8 AllocResourceCacheSlot
 thumb-func 0x08030868 ClearResourceCacheSlots
-thumb-func 0x0803091C ClaimObjectEffectResource
+c-file 0x080308BC 0x080308EC src/object/attach_object_palette.c AttachObjectPalette
+c-file 0x0803091C 0x08030968 src/object/release_object_palette.c ReleaseObjectPalette
+c-file 0x08030968 0x08030990 src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
 thumb-func 0x08030990 sub_0803094C
 thumb-func 0x080309A4 sub_08030960
+thumb-func 0x080309BC BindObjectToResourceCacheSlot
+thumb-func 0x08030A2C FindResourceCacheSlot
 thumb-func 0x080315E8 InitResourceCachePools
 thumb-func 0x08031718 sub_080316D4
 thumb-func 0x08031760 sub_0803171C

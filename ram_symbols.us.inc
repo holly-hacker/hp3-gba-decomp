@@ -208,7 +208,7 @@
 
 @ --- Resource cache / particle emitters (see docs/formats/graphics.md and
 @ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
-.set g_aResourceCache,                    0x03005114  @ ResourceCacheSlot[15]
+.set g_aResourceCache,                    0x03005114  @ ResourceCacheSlot[16]
 .set g_pParticleEmitterFreeListHead,      0x030051B0  @ ListNode *
 .set g_wActiveParticleEmitterCount,       0x030051A0  @ u16
 .set g_pParticleEmitterActiveListHead,    0x03005198  @ ListNode *

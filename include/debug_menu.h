@@ -88,7 +88,7 @@ extern const u32 g_dwDebugCharacterSelectBg1Control;  // 0x0804C4D0
 extern const u8 g_DebugCharacterSelectAnimFrames[];   // 0x0804C4D4
 extern const u8 g_DebugCharacterSelectAnimData[];     // 0x0804C4E4
 extern const u8 g_DebugMenuGraphic[];          // 0x08D9A360
-extern const u8 g_DebugMenuCursorSpawnData[];  // 0x080BC538
+extern const ObjPalette g_DebugMenuCursorSpawnData[];  // 0x080BC538
 extern const u8 g_DebugMenuMainAnimFrames[];   // 0x0804C44C
 extern const u8 g_DebugMenuMainAnimData[];     // 0x0804C45C
 

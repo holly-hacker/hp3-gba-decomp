@@ -38,8 +38,8 @@ extern const u32 g_dwHarryVsDementorsBg0Control;  // 0x0805E174
 extern const u32 g_dwHarryVsDementorsBg3Control;  // 0x0805E178
 extern const u8 g_HarryVsDementorsBgGraphicA[];   // 0x08E5EB80: levels 0 and 1
 extern const u8 g_HarryVsDementorsBgGraphicB[];   // 0x08E62538: level 2
-extern const u8 g_HarryVsDementorsObject18SpawnData[];  // 0x080BD710
-extern const u8 g_HarryVsDementorsObject1CSpawnData[];  // 0x080BF5E4
+extern const ObjPalette g_HarryVsDementorsObject18SpawnData[];  // 0x080BD710
+extern const ObjPalette g_HarryVsDementorsObject1CSpawnData[];  // 0x080BF5E4
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

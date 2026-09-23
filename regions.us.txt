@@ -47,7 +47,7 @@ c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c Re
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
-thumb-func 0x08001528 SpawnObject
+c-file 0x08001528 0x080015B8 src/object/spawn_object.c SpawnObject
 thumb-func 0x080015B8 TickActiveObjects
 c-file 0x080015D4 0x080015F8 src/object/free_all_objects.c FreeAllObjects
 thumb-func 0x08001690 sub_08001690
@@ -634,14 +634,17 @@ thumb-func 0x08030184 HideUnusedOamEntries
 thumb-func 0x08030274 InitializeOwlNameSelect
 thumb-func 0x0803031C UpdateOwlNameSelect
 thumb-func 0x08030568 ExitOwlNameSelect
+thumb-func 0x08030794 AllocResourceCacheSlot
 thumb-func 0x08030824 ClearResourceCacheSlots
 
-thumb-func 0x08030878 AttachEffectOwner_candidate
+c-file 0x08030878 0x080308A8 src/object/attach_object_palette.c AttachObjectPalette
 thumb-func 0x080308A8 AttachObjectEffectSlot_candidate
-thumb-func 0x080308D8 ClaimObjectEffectResource
+c-file 0x080308D8 0x08030924 src/object/release_object_palette.c ReleaseObjectPalette
 c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
 thumb-func 0x0803094C sub_0803094C
 thumb-func 0x08030960 sub_08030960
+thumb-func 0x08030978 BindObjectToResourceCacheSlot
+thumb-func 0x080309E8 FindResourceCacheSlot
 thumb-func 0x080315A4 InitResourceCachePools
 thumb-func 0x08031668 sub_08031668
 c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleaseParticleEmitter_candidate

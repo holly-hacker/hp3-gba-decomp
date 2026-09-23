@@ -34,14 +34,23 @@ typedef struct ObjAffineSource {
 } ObjAffineSource;
 extern ObjAffineSource g_aObjAffineSetSource[32];  // 0x03005014
 
-// The 15-slot resource cache.
+// OBJ palette resource: 16 BGR555 entries. Entry 0 is the transparent color and is
+// not uploaded; entries 1-15 fill the OBJ palette bank (see AttachObjectPalette).
+typedef struct ObjPalette {
+    u16 aColors[16];
+} ObjPalette;
+
+// The 16-slot OBJ palette bank cache (slot index = OBJ palette bank; see
+// AttachObjectPalette).
 typedef struct ResourceCacheSlot {
     void *pData;
     u16 wRefcount;
     u16 wFlags;  // bit 0x1 = in-use; cleared when wRefcount reaches 0
 } ResourceCacheSlot;
-extern ResourceCacheSlot g_aResourceCache[15];  // 0x03005114
+extern ResourceCacheSlot g_aResourceCache[16];  // 0x03005114
 extern void ClearResourceCacheSlots(void);
+extern u32 FindResourceCacheSlot(const ObjPalette *pPalette);
+extern u32 AllocResourceCacheSlot(void);
 
 // Node in the particle-emitter active/free lists (see below). ListNode
 // must be the first member -- List_MoveToHead/List_Remove address a

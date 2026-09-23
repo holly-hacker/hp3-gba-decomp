@@ -429,7 +429,7 @@ decompile, which was independently cross-checked and matched exactly):
   and calls `sub_0800D264(resource_ptr + 2, slotIndex*16 + 1, 0xF)`.
   Also stores `slotIndex` into the upper nibble of the object's
   `+0xD5` byte (matches the `>>4` read of that same field seen
-  elsewhere, e.g. `ClaimObjectEffectResource` -- consistent cross-reference, good
+  elsewhere, e.g. `ReleaseObjectPalette` -- consistent cross-reference, good
   sign the slot-index tracking is understood correctly).
 - `sub_0800D264(ptr, val1, val2)`: **not a decoder** -- a deferred
   request queue. Appends `{val1: u16, val2: u16, ptr: void*}` (8-byte

@@ -135,7 +135,7 @@ extern u8 g_pMonsterAnimFrameTable[];            // 0x08051E70, stride 0x60
 // Shadow-companion graphics row; only +0x08 is used here.
 typedef struct ShadowGfxRow {
     u8 pad_00[0x08];
-    void *pEffectData;  // 0x08, AttachEffectOwner arg (compared by address)
+    const ObjPalette *pPalette;  // 0x08, AttachObjectPalette arg (OBJ palette resource)
 } ShadowGfxRow;
 extern ShadowGfxRow g_MonsterShadowGfxRow;       // 0x0804EF54, single row
 extern u8 g_MonsterShadowAnimData[];             // 0x08053850

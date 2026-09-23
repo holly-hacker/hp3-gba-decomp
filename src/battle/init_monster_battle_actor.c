@@ -89,7 +89,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
         pShadowObject->dwFlags = 0x6019;
         pShadowObject->bAnimFrameDelay = 1;
 
-        AttachEffectOwner_candidate(pShadowObject, g_MonsterShadowGfxRow.pEffectData);
+        AttachObjectPalette(pShadowObject, g_MonsterShadowGfxRow.pPalette);
         SetObjectAnimData(pShadowObject, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, 0);
 
         pShadowObject->pAnimFrameCursor = pShadowObject->pAnimFrameBase + slotX2 + 2;
