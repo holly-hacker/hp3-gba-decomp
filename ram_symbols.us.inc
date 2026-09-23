@@ -287,3 +287,15 @@
 .set g_dwCreditsScrollRow,             0x030028A8  @ u32: last credits text row the scroll reached
 .set g_dwCreditsLine,                  0x030028AC  @ u32: next credits text line to draw
 .set g_dwCreditsTileCursor,            0x030028B0  @ u32: next free credits text tile
+.set g_wCoolTrainTimer,                0x03005E14  @ u16: frames left in the Cool Train cutscene
+.set g_HarryHermionePortInTime,        0x03005D98  @ HarryHermionePortInTimeState
+.set g_dwPatronusBgFront,              0x030051E4  @ u32; see include/harry_patronus_cutscene.h
+.set g_dwPatronusBgBack,               0x030051E8  @ u32
+.set g_dwPatronusSwapPending,          0x030051EC  @ u32
+.set g_bPatronusGraphicIndex,          0x030051F0  @ u8
+.set g_swPatronusBgParam,              0x030051F2  @ s16
+.set g_nPatronusBgOffset,              0x030051F4  @ s32, 16.16
+.set g_pHippogriffFliesIntoAirObject,  0x03002F18  @ Object *; see include/hippogriff_flies_into_air_cutscene.h
+.set g_pHippogriffFliesIntoAirObject2, 0x03002F1C  @ Object *
+.set g_LupinPotionCutscene,            0x03003A84  @ LupinPotionCutsceneState
+.set g_aLupinPotionBg2Scroll,          0x03003B3C  @ s32[2]

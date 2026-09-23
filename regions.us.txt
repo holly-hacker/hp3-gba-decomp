@@ -39,6 +39,7 @@ asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWo
 asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 asm-file 0x080005EC 0x08000918 asm/decompress_type6.s      DecompressType6
 
+thumb-func 0x08000BC0 sub_08000BC0
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
@@ -49,6 +50,7 @@ c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
 thumb-func 0x08001528 SpawnObject
 thumb-func 0x080015B8 TickActiveObjects
 thumb-func 0x080015D4 sub_080015D4
+thumb-func 0x08001690 sub_08001690
 thumb-func 0x0800187C SetObjectAssetRecord
 thumb-func 0x080018D8 SetObjectAnimData
 thumb-func 0x08001958 SetObjectAnimFrame
@@ -124,9 +126,12 @@ thumb-func 0x08007B30 SetBgScrollX_candidate
 thumb-func 0x08007B88 SetBgScroll_candidate
 
 thumb-func 0x08007C2C sub_08007C2C
+thumb-func 0x08007C94 sub_08007C94
 thumb-func 0x08007CB4 sub_08007CB4
 thumb-func 0x08007CD4 sub_08007CD4
+thumb-func 0x08007CF4 sub_08007CF4
 thumb-func 0x08007D14 sub_08007D14
+thumb-func 0x08007D60 sub_08007D60
 thumb-func 0x08007EB8 SetBgPriority
 thumb-func 0x08007F84 sub_08007F84
 c-file 0x08008050 0x080080F4 src/gamemode/modes/minigame/riddikulus/initialize_riddikulus_minigame.c InitializeRiddikulusMinigame
@@ -159,10 +164,14 @@ c-file 0x08009C54 0x08009CA4 src/gamemode/modes/minigame/hippogriff_glide/exit_h
 thumb-func 0x08009D8C sub_08009D8C
 thumb-func 0x08009E1C sub_08009E1C
 thumb-func 0x08009F80 HandleHippogriffGlideExitSelect
+thumb-func 0x08009FD8 sub_08009FD8
 thumb-func 0x0800A03C TickCameraFocus_candidate
 thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
 thumb-func 0x0800A348 sub_0800A348
+thumb-func 0x0800A38C sub_0800A38C
 thumb-func 0x0800A3AC SetCameraFollowTarget_candidate
+thumb-func 0x0800A3EC sub_0800A3EC
+thumb-func 0x0800A420 sub_0800A420
 thumb-func 0x0800A4E8 SetRoomScrollBounds
 thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
 thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
@@ -209,6 +218,7 @@ thumb-func 0x0800D304 sub_0800D304
 thumb-func 0x0800D354 sub_0800D354
 thumb-func 0x0800D39C ClearPaletteRam
 thumb-func 0x0800D57C sub_0800D57C
+thumb-func 0x0800D5DC sub_0800D5DC
 c-file 0x0800DBAC 0x0800DDB0 src/gamemode/modes/battle/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 0x0800DE50 src/gamemode/modes/battle/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
@@ -368,13 +378,13 @@ c-file 0x0801D33C 0x0801D34C src/room/opcodes/room_script_op_consume_room_item.c
 c-file 0x0801D34C 0x0801D360 src/room/opcodes/room_script_op_reset_party_leader_selection.c RoomScriptOpResetPartyLeaderSelection
 c-file 0x0801D360 0x0801D390 src/room/opcodes/room_script_op_set_pending_chain_from_exit_param.c RoomScriptOpSetPendingChainFromExitParam
 thumb-func 0x0801D390 CompareAndBranchRoomScript_candidate
-c-file 0x0801D518 0x0801D5C8 src/gamemode/modes/credits/initialize_credits.c InitializeCredits
-c-file 0x0801D5C8 0x0801D6DC src/gamemode/modes/credits/update_credits.c UpdateCredits
+c-file 0x0801D518 0x0801D5C8 src/gamemode/modes/cutscene/credits/initialize_credits.c InitializeCredits
+c-file 0x0801D5C8 0x0801D6DC src/gamemode/modes/cutscene/credits/update_credits.c UpdateCredits
 thumb-func 0x0801D6DC sub_0801D6DC
 thumb-func 0x0801D77C sub_0801D77C
-c-file 0x0801D858 0x0801D888 src/gamemode/modes/linear_cutscene/exit_linear_cutscene.c ExitLinearCutscene
-c-file 0x0801D888 0x0801D8C0 src/gamemode/modes/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
-c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
+c-file 0x0801D858 0x0801D888 src/gamemode/modes/cutscene/linear_cutscene/exit_linear_cutscene.c ExitLinearCutscene
+c-file 0x0801D888 0x0801D8C0 src/gamemode/modes/cutscene/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
+c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 thumb-func 0x0801D940 sub_0801D940
 thumb-func 0x0801DC6C sub_0801DC6C
 thumb-func 0x0801DCC4 sub_0801DCC4
@@ -407,11 +417,12 @@ thumb-func 0x0801FA9C sub_0801FA9C
 thumb-func 0x0801FAF4 ExitDialogue
 thumb-func 0x0801FB54 ShowRoomDialogBox_candidate
 thumb-func 0x0801FB78 sub_0801FB78
+thumb-func 0x0801FBA4 sub_0801FBA4
 thumb-func 0x0801FBBC sub_0801FBBC
 thumb-func 0x0801FDA0 InitDisplayControl
-thumb-func 0x0801FDE8 InitializeHippogriffFliesIntoAirCutscene
-thumb-func 0x0801FED4 UpdateHippogriffFliesIntoAirCutscene
-thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
+c-file 0x0801FDE8 0x0801FED4 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
+c-file 0x0801FED4 0x0801FF14 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
+c-file 0x0801FF14 0x0801FF30 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
 thumb-func 0x08020228 TickRoomTileAnimations_candidate
 thumb-func 0x080203A8 InitRoomTileAnimationTable_candidate
 
@@ -512,10 +523,17 @@ c-file 0x08028728 0x08028748 src/mem/list_pop_head.c List_PopHead
 c-file 0x08028748 0x08028760 src/mem/list_push_head.c List_PushHead
 c-file 0x08028760 0x0802878C src/mem/list_remove.c List_Remove
 
-thumb-func 0x0802878C InitializeLupinPotionCutscene
-thumb-func 0x0802887C UpdateLupinPotionCutscene
-thumb-func 0x08029528 ExitLupinPotionCutscene
+c-file 0x0802878C 0x0802887C src/gamemode/modes/cutscene/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene
+c-file 0x0802887C 0x08028AD4 src/gamemode/modes/cutscene/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
+thumb-func 0x08028AD4 sub_08028AD4
+thumb-func 0x08028F7C sub_08028F7C
+thumb-func 0x08028FD8 sub_08028FD8
+thumb-func 0x08029144 sub_08029144
+thumb-func 0x08029260 sub_08029260
+thumb-func 0x08029380 sub_08029380
+c-file 0x08029528 0x08029558 src/gamemode/modes/cutscene/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
 
+thumb-func 0x08029558 sub_08029558
 c-file 0x08029690 0x080297A0 src/main.c AgbMain
 
 c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
@@ -616,9 +634,10 @@ c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleasePart
 thumb-func 0x080316D4 sub_080316D4
 thumb-func 0x0803171C sub_0803171C
 thumb-func 0x08031748 TickParticleEmitters
-thumb-func 0x080319FC InitializeHarryPatronusCutscene
-thumb-func 0x08031B4C UpdateHarryPatronusCutscene
-thumb-func 0x08031CA8 ExitHarryPatronusCutscene
+c-file 0x080319FC 0x08031B4C src/gamemode/modes/cutscene/harry_patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
+c-file 0x08031B4C 0x08031CA8 src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
+c-file 0x08031CA8 0x08031CC4 src/gamemode/modes/cutscene/harry_patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
+c-file 0x08031CC4 0x08031D30 src/gamemode/modes/cutscene/harry_patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
 c-file 0x08031D30 0x08031E7C src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
 thumb-func 0x08031E7C BuildListMenu_candidate
 c-file 0x08031F6C 0x08031FB8 src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
@@ -778,6 +797,7 @@ thumb-func 0x0803C0A8 ValidateSaveSlot
 thumb-func 0x0803C0DC LoadSaveSlot
 thumb-func 0x0803C114 SyncSaveHeaderIfDirty
 thumb-func 0x0803D2C8 InitScreenTransitionState_candidate
+thumb-func 0x0803D2E8 SetFadeToBlack
 thumb-func 0x0803D310 SetFadeToWhite
 thumb-func 0x0803D338 SetAlphaBlendTargets
 thumb-func 0x0803D350 SetAlphaBlendCoefficients
@@ -791,6 +811,7 @@ thumb-func 0x0803DCDC LoadRoomBgLayer0Extra_candidate
 thumb-func 0x0803DD7C WriteRoomBgTile_candidate
 thumb-func 0x0803E4FC sub_0803E4FC
 thumb-func 0x0803E588 SetupRoomBgControlAndWindows_candidate
+thumb-func 0x0803E628 sub_0803E628
 thumb-func 0x0803E664 LoadRoomBgTilemap1_candidate
 thumb-func 0x0803E6A0 LoadRoomBgTilemap0_candidate
 thumb-func 0x0803E6F0 LoadRoomBgTilemap2_candidate
@@ -798,6 +819,7 @@ thumb-func 0x0803E72C LoadRoomBgTilemap3_candidate
 thumb-func 0x0803E768 LoadRoomBgLayer1Extra_candidate
 thumb-func 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
 thumb-func 0x0803E880 LoadRoomBgLayer3Extra_candidate
+thumb-func 0x0803EA3C sub_0803EA3C
 thumb-func 0x0803EF5C TickLinkCommIfActive_candidate
 c-file 0x0803FA94 0x0803FAA4 src/link/get_link_player_id.c GetLinkPlayerId
 thumb-func 0x0803FC68 PlaySoundById
@@ -829,16 +851,18 @@ thumb-func 0x08042568 InitDialogTextEngine
 c-file 0x08042588 0x080425D8 src/text/set_language.c SetLanguage
 c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
 c-file 0x080425E4 0x08042608 src/text/get_dialog_text.c GetDialogText
-thumb-func 0x08042AC8 InitializeClockSkipCutscene
-thumb-func 0x08042B90 InitializeHogwartsUpNightCutscene
-thumb-func 0x08042C74 UpdateHogwartsUpNightCutscene
-thumb-func 0x08042D10 UpdateClockSkipCutscene
-thumb-func 0x08042D74 ExitClockSkipCutscene
-thumb-func 0x08042D90 ExitHogwartsUpNightCutscene
+c-file 0x08042AC8 0x08042B90 src/gamemode/modes/cutscene/clock_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene
+c-file 0x08042B90 0x08042C74 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/initialize_hogwarts_up_night_cutscene.c InitializeHogwartsUpNightCutscene
+c-file 0x08042C74 0x08042D10 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/update_hogwarts_up_night_cutscene.c UpdateHogwartsUpNightCutscene
+c-file 0x08042D10 0x08042D74 src/gamemode/modes/cutscene/clock_skip_cutscene/update_clock_skip_cutscene.c UpdateClockSkipCutscene
+c-file 0x08042D74 0x08042D90 src/gamemode/modes/cutscene/clock_skip_cutscene/exit_clock_skip_cutscene.c ExitClockSkipCutscene
+c-file 0x08042D90 0x08042DC8 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/exit_hogwarts_up_night_cutscene.c ExitHogwartsUpNightCutscene
 thumb-func 0x08042E2C sub_08042E2C
-thumb-func 0x08042F08 InitializeHarryHermionePortInTimeCutscene
-thumb-func 0x08042FC0 UpdateHarryHermionePortInTimeCutscene
-thumb-func 0x08043450 ExitHarryHermionePortInTimeCutscene
+c-file 0x08042F08 0x08042FC0 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
+c-file 0x08042FC0 0x08043114 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
+thumb-func 0x08043114 sub_08043114
+thumb-func 0x08043308 sub_08043308
+c-file 0x08043450 0x08043470 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
 c-file 0x08043470 0x08043580 src/gamemode/modes/main_menu/initialize_main_menu.c InitializeMainMenu
 c-file 0x08043580 0x08043730 src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
 c-file 0x08043730 0x08043870 src/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
@@ -868,13 +892,16 @@ thumb-func 0x0804439C BuildOptionsScreen_candidate
 thumb-func 0x080445C0 MoveOptionsCursor_candidate
 thumb-func 0x080446A8 AdjustOptionValue_candidate
 c-file 0x08044774 0x080447E0 src/gamemode/modes/options/exit_options.c ExitOptions
-thumb-func 0x08044B00 InitializeCoolTrainCutscene
-thumb-func 0x08044B7C UpdateCoolTrainCutscene
-thumb-func 0x08044BF0 ExitCoolTrainCutscene
+c-file 0x08044B00 0x08044B7C src/gamemode/modes/cutscene/cool_train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
+c-file 0x08044B7C 0x08044BF0 src/gamemode/modes/cutscene/cool_train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
+c-file 0x08044BF0 0x08044C00 src/gamemode/modes/cutscene/cool_train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
 thumb-func 0x08045094 InitScanlineEffects
+thumb-func 0x080450D4 QueueScanlineEffectTable
 thumb-func 0x08045260 CommitScanlineEffects
+thumb-func 0x0804528C StartScanlineEffects
 thumb-func 0x080452A8 StopScanlineEffects
 thumb-func 0x080452D4 ClearScanlineEffects
+thumb-func 0x080452EC IsScanlineEffectQueueIdle
 thumb-func 0x080453B4 InstallIwramObjTileAllocRoutine
 thumb-func 0x080453D8 InitObjTileAllocBitmaps
 thumb-func 0x0804542C sub_0804542C
@@ -961,6 +988,9 @@ label 0x0805E178 g_dwHarryVsDementorsBg3Control
 label 0x0805E280 g_dwStartupBg3Control
 label 0x0805E284 g_dwStartupBg2Control
 label 0x0805E288 g_dwStartupBg1Control
+label 0x0805EB10 g_dwHippogriffFliesIntoAirBg0Control
+label 0x0805EB14 g_HippogriffFliesIntoAirAsset
+label 0x0805EB24 g_HippogriffFliesIntoAirAsset2
 label 0x0805EB34 g_abRoomScriptOpcodeLengths
 label 0x08060544 g_stPlaytimeFrameDelta
 label 0x0806054C g_stPlaytimeHourLimit
@@ -974,6 +1004,8 @@ label 0x080629F8 g_dwLanguageSelectBg2Control
 label 0x080629FC g_dwLanguageSelectBg1Control
 
 # Game-mode dispatch table, see docs/memory-map/game_modes.md
+label 0x08062A08 g_aLupinPotionScanlineTable
+label 0x08062A30 g_dwLupinPotionTextBgControl
 label 0x08063064 g_dwBg2Control
 label 0x08063068 g_dwBg1Control
 label 0x0806306C g_dwBg3Control
@@ -985,6 +1017,8 @@ label 0x08065814 g_ScanlineBandsRoom12
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 label 0x0806605C g_dwMinigameMenuBg3Control
 label 0x08066060 g_dwMinigameMenuBg1Control
+label 0x08068C30 g_dwPatronusBg2Control
+label 0x08068C34 g_dwPatronusBg3Control
 label 0x08068C38 g_aInGameMenuEntries
 label 0x08068CE0 g_InGameMenuDefinition
 label 0x08068D04 g_dwWizardCrackerPopItBg1Control
@@ -1013,12 +1047,20 @@ label 0x0806BB4C g_dwDivinationTeaBg1Control
 label 0x0806BB58 g_DivinationTeaCupAnimA
 label 0x0806BB70 g_DivinationTeaTable
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
+label 0x0806BD98 g_dwUpNightBg0Control
+label 0x0806BD9C g_dwUpNightBg1Control
+label 0x0806BDA0 g_dwUpNightBg2Control
+label 0x0806BDA4 g_ClockSkipObject1Asset
+label 0x0806BDB4 g_ClockSkipObject2Asset
+label 0x0806BDC4 g_ClockSkipAnimData
+label 0x0806BF40 g_aHarryHermionePortInTimeObjectPos
 label 0x0806BFD0 g_dwMainMenuBg3Control
 label 0x0806BFD4 g_dwMainMenuBg2Control
 label 0x0806BFD8 g_dwMainMenuBg1Control
 label 0x0806BFDC g_adwMainMenuStateTimeouts
 label 0x0806BFF4 g_apMainMenuTitleGraphic
 label 0x0806C048 g_aOptionsMenuItems
+label 0x0806C174 g_dwCoolTrainBg0Control
 
 # Item icon data
 item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
@@ -1029,6 +1071,8 @@ label 0x080BC538 g_DebugMenuCursorSpawnData
 label 0x080BD710 g_HarryVsDementorsObject18SpawnData
 label 0x080BF5E4 g_HarryVsDementorsObject1CSpawnData
 label 0x080CD814 g_StatusEquipSlotCursorSpawnData
+label 0x080CF804 g_ClockSkipObject1SpawnData
+label 0x080D03E4 g_ClockSkipObject2SpawnData
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 0x08AA6538 data/audio/modules/MusBattle.json MusBattle
@@ -1094,13 +1138,23 @@ label 0x08DBF920 g_MenuBg3Graphic
 label 0x08DC456C g_StartupBg3Graphic
 label 0x08DC5AD8 g_StartupBg2Graphic
 label 0x08DC6B7C g_StartupNoticeGraphic
+label 0x08DC7A90 g_LupinPotionEmbeddedPalette
+label 0x08DC8084 g_HippogriffFliesIntoAirGraphic
 label 0x08DDB23C g_LanguageSelectBg2Graphic
 label 0x08DDCE1C g_LanguageSelectBg1Graphic
 label 0x08DE5214 g_MenuScreenGraphic
 label 0x08DF2664 g_SaveMenuBg1Graphic
+label 0x08E20FFC g_ClockSkipGraphic
+label 0x08E28804 g_HogwartsUpNightBg0Graphic
+label 0x08E2F80C g_HogwartsUpNightBg1Graphic
+label 0x08E30E6C g_HogwartsUpNightBg2Graphic
+label 0x08E32322 g_HogwartsUpNightPaletteData
 label 0x08E349CC g_MainMenuBg2Graphic
+label 0x08E359C0 g_CoolTrainGraphic
 label 0x08E3849C g_DivinationTeaBg2Graphic
 label 0x08E39AA4 g_DivinationTeaBg1Graphic
+label 0x08E54788 g_HippogriffFliesIntoAirSpawnData
+label 0x08E54DC8 g_HippogriffFliesIntoAirSpawnData2
 label 0x08E5B4AC g_RiddikulusBgGraphic
 label 0x08E5EB80 g_HarryVsDementorsBgGraphicA
 label 0x08E62538 g_HarryVsDementorsBgGraphicB
@@ -1117,4 +1171,5 @@ dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 c-rodata 0x08FAA7D0 0x08FAA810 EepromV124
 c-rodata 0x08FAA810 0x08FAA824 EepromNoWait
 
+label 0x08FAAEF8 g_apPatronusGraphics
 c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists

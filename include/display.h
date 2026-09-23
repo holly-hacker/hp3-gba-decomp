@@ -32,6 +32,9 @@ extern void EnableBg(u32 bg);
 extern void DisableBg(u32 bg);
 extern void SetBgPriority(u32 bg, u32 priority);
 extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
+// Sets BLDCNT (layer mask | fade mode) and BLDY (amount, at most 0x10).
+extern void SetFadeToWhite(u16 layerMask, u16 amount);
+extern void SetFadeToBlack(u16 layerMask, u16 amount);
 
 // Hardware windows: layer masks, rectangle (16.16 coordinates), and hiding one.
 extern void SetScreenWindowLayers_candidate(u32 windowId, u32 winIn, u32 winOut);

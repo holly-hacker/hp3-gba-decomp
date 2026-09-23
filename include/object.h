@@ -300,6 +300,7 @@ extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
+extern void sub_08001690(Object *obj, const void *pAssetRecord);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
 extern void SetObjectActionState(Object *obj, u8 state);
 // Starts animation `animId` from the object's animation table.

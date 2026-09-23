@@ -120,6 +120,8 @@ extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctr
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
 extern void SetRoomScrollBounds(u32 minX, u32 minY, u32 maxX, u32 maxY);
+extern void sub_0800A3EC(s32 *pPosition, u32 arg1);  // writes the camera focus as two 16.16 words
+extern void sub_0800A420(u32 arg0, s32 progress, u32 arg2);
 extern Object *SpawnPlayerObject_candidate(u32 charId);
 extern void SetCameraFollowTarget_candidate(Object *pTarget, s32 nOffsetX, s32 nOffsetY, u32 slot);
 extern void sub_0800A348(u32 arg0, u32 arg1);

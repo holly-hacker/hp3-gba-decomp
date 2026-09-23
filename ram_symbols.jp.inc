@@ -117,3 +117,17 @@
 .set g_dwCreditsScrollRow,           0x030028A8  @ see ram_symbols.us.inc
 .set g_dwCreditsLine,                0x030028AC  @ see ram_symbols.us.inc
 .set g_dwCreditsTileCursor,          0x030028B0  @ see ram_symbols.us.inc
+.set g_wCoolTrainTimer,                 0x03005E64  @ u16: frames left in the Cool Train cutscene
+.set g_bCurrentRoomId,               0x03003BB0  @ see ram_symbols.us.inc
+.set g_abRoomScriptExitParams_candidate, 0x030033DD  @ see ram_symbols.us.inc
+.set g_HarryHermionePortInTime,        0x03005DF8  @ see ram_symbols.us.inc
+.set g_dwPatronusBgFront,            0x03005244  @ see ram_symbols.us.inc
+.set g_dwPatronusBgBack,             0x03005248
+.set g_dwPatronusSwapPending,        0x0300524C
+.set g_bPatronusGraphicIndex,        0x03005250
+.set g_swPatronusBgParam,            0x03005252
+.set g_nPatronusBgOffset,            0x03005254
+.set g_pHippogriffFliesIntoAirObject, 0x03002F18  @ see ram_symbols.us.inc
+.set g_pHippogriffFliesIntoAirObject2, 0x03002F1C
+.set g_LupinPotionCutscene,          0x03003AE4  @ see ram_symbols.us.inc
+.set g_aLupinPotionBg2Scroll,        0x03003B9C
