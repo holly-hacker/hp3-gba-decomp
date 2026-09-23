@@ -153,8 +153,8 @@
 .set g_bOptionsSavedGammaHigh, 0x03005E0A  @ u8
 .set g_dwOptionsEntryLanguage, 0x03005E0C  @ u32: language when the options screen was entered
 .set g_bInGameMenuCursor, 0x03005220  @ u8: pause menu cursor row saved by ExitInGameMenu
-.set g_dwInGameMenuReturnMode, 0x03005298  @ u32: GameMode (InGameMenu or InGameMenuFadeIn) a pause menu submode returns to
-.set g_dwInGameMenuSubModeArg, 0x0300529C  @ u32: argument set alongside g_dwInGameMenuReturnMode; 0xE for the first row, else 0
+.set g_StatusEquipReturnMode, 0x03005298  @ GameMode: StatusEquipCharacterSelect returns to on B (InGameMenu, InGameMenuFadeIn or ItemsItemSelect)
+.set g_StatusEquipNextMode, 0x0300529C  @ GameMode: StatusEquipCharacterSelect advances to on A (StatusEquipSlotSelect or QuantitySelectScreen)
 .set g_dwSelectedMinigame, 0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
 .set g_DebugMenuMainState, 0x030021C0  @ DebugMenuMainState: {Object *pCursorObject; u32 dwSelection}; see include/debug_menu.h
 .set g_bSaveSlotScreenResult, 0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate

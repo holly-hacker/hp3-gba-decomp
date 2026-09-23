@@ -13,9 +13,9 @@ typedef struct {
 extern const InGameMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38
 extern const u8 g_InGameMenuDefinition[];              // 0x08068CE0
 
-extern u8 g_bInGameMenuCursor;         // 0x03005220: cursor row saved on exit
-extern u32 g_dwInGameMenuReturnMode;   // 0x03005298: InGameMenu or InGameMenuFadeIn
-extern u32 g_dwInGameMenuSubModeArg;   // 0x0300529C
+extern u8 g_bInGameMenuCursor;            // 0x03005220: cursor row saved on exit
+extern GameMode g_StatusEquipReturnMode;  // 0x03005298: StatusEquipCharacterSelect's B target
+extern GameMode g_StatusEquipNextMode;    // 0x0300529C: StatusEquipCharacterSelect's A target
 
 extern void sub_08031FB8(u32 arg);
 extern void BuildListMenu_candidate(const u8 *pDefinition);

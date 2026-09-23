@@ -50,8 +50,8 @@ extern void ExitQuantitySelectScreen();
 extern void ExitRiddikulusMinigame();
 extern void ExitStartup();
 extern void ExitStatusEquipCharacterSelect();
-extern void ExitStatusEquipHarryScreen();
-extern void ExitStatusEquipHarryItemSelect();
+extern void ExitStatusEquipSlotSelect();
+extern void ExitStatusEquipItemSelect();
 extern void ExitUnusedHogwartsMapScreen();
 extern void ExitUnusedServePumpkinJuiceMinigame();
 extern void ExitWizardCrackerPopItDifficultySelect();
@@ -120,10 +120,10 @@ extern void InitializePurpleScreenReturnToMenu();
 extern void InitializeQuantitySelectScreen();
 extern void InitializeRiddikulusMinigame();
 extern void InitializeStartup();
-extern void InitializeStatusEquipCharacterSelectC();
-extern void InitializeStatusEquipCharacterSelectD();
-extern void InitializeStatusEquipHarry();
-extern void InitializeStatusEquipHarryItemSelect();
+extern void InitializeStatusEquipCharacterSelect();
+extern void InitializeStatusEquipCharacterSelectLastCursor();
+extern void InitializeStatusEquipSlotSelect();
+extern void InitializeStatusEquipItemSelect();
 extern void InitializeUnusedHogwartsMapScreen();
 extern void InitializeUnusedServePumpkinJuiceMinigame();
 extern void InitializeVictoryScreen();
@@ -179,8 +179,8 @@ extern void UpdateQuantitySelectScreen();
 extern void UpdateRiddikulusMinigame();
 extern void UpdateStartup();
 extern void UpdateStatusEquipCharacterSelect();
-extern void UpdateStatusEquipHarry();
-extern void UpdateStatusEquipHarryItemSelect();
+extern void UpdateStatusEquipSlotSelect();
+extern void UpdateStatusEquipItemSelect();
 extern void UpdateUnusedHogwartsMapScreen();
 extern void UpdateUnusedServePumpkinJuiceMinigame();
 extern void UpdateVictoryScreen();
@@ -201,10 +201,10 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeBattle, UpdateBattle, ExitBattle },
     { InitializeInGameMenu, UpdateInGameMenu, ExitInGameMenu },
     { InitializeInGameMenuFadeIn, UpdateInGameMenu, ExitInGameMenu },
-    { InitializeStatusEquipCharacterSelectC, UpdateStatusEquipCharacterSelect, ExitStatusEquipCharacterSelect },
-    { InitializeStatusEquipCharacterSelectD, UpdateStatusEquipCharacterSelect, ExitStatusEquipCharacterSelect },
-    { InitializeStatusEquipHarry, UpdateStatusEquipHarry, ExitStatusEquipHarryScreen },
-    { InitializeStatusEquipHarryItemSelect, UpdateStatusEquipHarryItemSelect, ExitStatusEquipHarryItemSelect },
+    { InitializeStatusEquipCharacterSelect, UpdateStatusEquipCharacterSelect, ExitStatusEquipCharacterSelect },
+    { InitializeStatusEquipCharacterSelectLastCursor, UpdateStatusEquipCharacterSelect, ExitStatusEquipCharacterSelect },
+    { InitializeStatusEquipSlotSelect, UpdateStatusEquipSlotSelect, ExitStatusEquipSlotSelect },
+    { InitializeStatusEquipItemSelect, UpdateStatusEquipItemSelect, ExitStatusEquipItemSelect },
     { InitializeItemsSectionSelect, UpdateItemsSectionSelect, ExitItemsSectionSelect },
     { InitializeItemsItemSelect, UpdateItemsItemSelect, ExitItemsItemSelect },
     { InitializeItemUseScreen, UpdateItemUseScreen, ExitItemUseScreen },

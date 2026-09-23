@@ -214,6 +214,16 @@ thumb-func 0x08030868 ClearResourceCacheSlots
 thumb-func 0x0803091C ClaimObjectEffectResource
 thumb-func 0x080315E8 InitResourceCachePools
 thumb-func 0x0803178C TickParticleEmitters
+thumb-func 0x080357A8 UpdateStatusEquipCharacterSelect
+thumb-func 0x08035D4C InitializeStatusEquipCharacterSelect
+thumb-func 0x08035D64 InitializeStatusEquipCharacterSelectLastCursor
+thumb-func 0x08035DA8 ExitStatusEquipCharacterSelect
+thumb-func 0x080361F0 InitializeStatusEquipItemSelect
+thumb-func 0x08036258 UpdateStatusEquipItemSelect
+thumb-func 0x080368D4 ExitStatusEquipItemSelect
+thumb-func 0x08039E2C UpdateStatusEquipSlotSelect
+thumb-func 0x0803A50C InitializeStatusEquipSlotSelect
+thumb-func 0x0803A584 ExitStatusEquipSlotSelect
 thumb-func 0x0803B128 ClearSystemMemory
 
 # MT19937 PRNG, see docs/memory-map/rng.md

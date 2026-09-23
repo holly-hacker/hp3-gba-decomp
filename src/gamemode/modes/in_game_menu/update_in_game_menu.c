@@ -62,14 +62,14 @@ void UpdateInGameMenu(void)
             else
             {
                 if (g_aInGameMenuEntries[g_GameModeStackContext.dwModeScratchB].dwImmediate != 0)
-                    g_dwInGameMenuReturnMode = InGameMenu;
+                    g_StatusEquipReturnMode = InGameMenu;
                 else
-                    g_dwInGameMenuReturnMode = InGameMenuFadeIn;
+                    g_StatusEquipReturnMode = InGameMenuFadeIn;
 
                 if (g_GameModeStackContext.dwModeScratchB == 0)
-                    g_dwInGameMenuSubModeArg = 0xE;
+                    g_StatusEquipNextMode = StatusEquipSlotSelect;
                 else
-                    g_dwInGameMenuSubModeArg = 0;
+                    g_StatusEquipNextMode = 0;
 
                 PushGameMode(g_aInGameMenuEntries[g_GameModeStackContext.dwModeScratchB].mode);
             }

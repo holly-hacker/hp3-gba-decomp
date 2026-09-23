@@ -93,7 +93,7 @@ called by `ExitCardTrade`/`ExitGameCubeLink`/`ExitInGameMenu`).
 
 ## Dispatch table
 
-`g_pGameModeDispatchTable` (US `0x08065CBC`, extracted to
+`g_pGameModeDispatchTable` (US `0x08065CBC`, JP `0x08065C48`, extracted to
 `src/gamemode/game_mode_dispatch_table.c`), 72 entries (`GameMode` 0-0x47;
 index 0 unused/reserved, all three fields point at `HandleGameModeNoneNoOp`,
 matched in `src/gamemode/handle_game_mode_none_noop.c` -- a no-op,
@@ -117,9 +117,44 @@ renamed `ExitXxx` to match; spot-checked `ExitStartup`, which calls the same
 palette-teardown primitive `ExitBattle`'s cleanup path calls, not anything
 drawing-related.
 
+## Status/Equip (0x0C-0x0F)
+
+PROVEN from US decompiles and ROM tables.
+
+- `StatusEquipCharacterSelect` (0x0C) and
+  `StatusEquipCharacterSelectLastCursor` (0x0D) share
+  `UpdateStatusEquipCharacterSelect`. A pushes `g_StatusEquipNextMode`,
+  B pushes `g_StatusEquipReturnMode`, both set by the caller:
+  - Pause menu row 0 (`g_aInGameMenuEntries[0]`, text 0x530 "Status/Equip"):
+    next `StatusEquipSlotSelect`, return `InGameMenu`/`InGameMenuFadeIn`.
+  - `UpdateItemsItemSelect`, for items with `dwUnk20` bit 2: next
+    `QuantitySelectScreen` (whose A leads to `ItemUseScreen`), return
+    `ItemsItemSelect`. The header shows text 0x531 "Items" instead.
+
+  0x0C places the cursor on Harry (or the first present member); 0x0D
+  restores it to the last chosen member and is entered by B from 0x0E.
+  A stores the chosen member id (0 Harry, 1 Hermione, 2 Ron; names at
+  `0x0806944C`) at `0x030052A0`, which 0x0E, 0x0F and `ItemUseScreen` read.
+- `StatusEquipSlotSelect` (0x0E): the chosen member's stats panel
+  (`DrawStatusEquipStatsPanel`) and a 2x3 grid of equipment slots. The
+  slot table at `0x0806B2FC` is 6 entries of 16 bytes: x/y (`s16` each),
+  slot type (`u32`, 0-5), then up/down/left/right neighbour indices. A goes
+  to 0x0F, B to 0x0D.
+- `StatusEquipItemSelect` (0x0F): lists items for the chosen slot type
+  (text `0x3F7 + type`: Change Belt/Charm/Gloves/Boots/Hat/Cloak) with a
+  Def/Agi/M.Def comparison (`DrawEquipItemStatComparison`); A equips,
+  A or B returns to 0x0E.
+
+JP handlers (STRUCTURAL MATCH: taken from JP's dispatch table, whose 216
+pointers all lie within 0x1000 of their US counterparts; each handler's
+instructions match US, differing only in `bl` offsets and pool literals,
+where RAM addresses are shifted by +0x60):
+0x0C/0x0D update `0x080357A8`, init `0x08035D4C`/`0x08035D64`, exit
+`0x08035DA8`; 0x0E `0x0803A50C`/`0x08039E2C`/`0x0803A584`; 0x0F
+`0x080361F0`/`0x08036258`/`0x080368D4` (init/update/exit).
+
 ## Not yet located
 
 - Whether `DebugMenuMain` is reachable/meaningful from every game state,
   or only from specific ones (e.g. title screen) -- untested.
-- JP addresses for `g_dwPendingGameMode`/`g_dwCurrentGameMode`, and the JP
-  address of `g_pGameModeDispatchTable`.
+- JP addresses for `g_dwPendingGameMode`/`g_dwCurrentGameMode`.

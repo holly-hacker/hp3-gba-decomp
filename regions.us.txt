@@ -576,8 +576,8 @@ thumb-func 0x08033DA4 InitializeUnusedServePumpkinJuiceMinigame
 thumb-func 0x08033EE0 UpdateUnusedServePumpkinJuiceMinigame
 thumb-func 0x08035240 ExitUnusedServePumpkinJuiceMinigame
 thumb-func 0x08035764 UpdateStatusEquipCharacterSelect
-thumb-func 0x08035D08 InitializeStatusEquipCharacterSelectC
-thumb-func 0x08035D20 InitializeStatusEquipCharacterSelectD
+thumb-func 0x08035D08 InitializeStatusEquipCharacterSelect
+thumb-func 0x08035D20 InitializeStatusEquipCharacterSelectLastCursor
 thumb-func 0x08035D64 ExitStatusEquipCharacterSelect
 thumb-func 0x08035EB0 HandleConnectivityMenuTick
 thumb-func 0x08035F7C UpdateConfirmTradeScreen
@@ -585,9 +585,9 @@ thumb-func 0x08036038 InitializeConnectivityMenu
 thumb-func 0x080360DC ExitConnectivity
 thumb-func 0x08036120 InitializeConfirmTradeScreen
 thumb-func 0x08036178 ExitConfirmTradeScreen
-thumb-func 0x080361AC InitializeStatusEquipHarryItemSelect
-thumb-func 0x08036214 UpdateStatusEquipHarryItemSelect
-thumb-func 0x08036890 ExitStatusEquipHarryItemSelect
+thumb-func 0x080361AC InitializeStatusEquipItemSelect
+thumb-func 0x08036214 UpdateStatusEquipItemSelect
+thumb-func 0x08036890 ExitStatusEquipItemSelect
 thumb-func 0x0803693C UpdateFolios
 thumb-func 0x080369CC InitializeFolios
 thumb-func 0x08036A20 ExitFolios
@@ -624,9 +624,9 @@ c-file 0x08039CD8 0x08039D08 src/gamemode/modes/game_save/exit_game_save.c ExitG
 thumb-func 0x08039D08 ShowSaveConfirmationPrompt_candidate
 thumb-func 0x08039D44 ShowSavingMessage_candidate
 thumb-func 0x08039D78 ShowGameSavedMessage_candidate
-thumb-func 0x08039DD8 UpdateStatusEquipHarry
-thumb-func 0x0803A4AC InitializeStatusEquipHarry
-thumb-func 0x0803A524 ExitStatusEquipHarryScreen
+thumb-func 0x08039DD8 UpdateStatusEquipSlotSelect
+thumb-func 0x0803A4AC InitializeStatusEquipSlotSelect
+thumb-func 0x0803A524 ExitStatusEquipSlotSelect
 thumb-func 0x0803A6D0 InitializeCardTrade
 thumb-func 0x0803A780 UpdateCardTrade
 thumb-func 0x0803ABBC ExitCardTrade
