@@ -1,6 +1,5 @@
 #include "types.h"
 #include "audio.h"
-#include "debug_menu.h"
 #include "display.h"
 #include "hippogriff_flies_into_air_cutscene.h"
 #include "object.h"

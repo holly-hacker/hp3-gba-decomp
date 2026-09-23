@@ -109,4 +109,6 @@ extern s32 SetSaveLanguageFlag(void);
 extern s32 SyncSaveHeaderIfDirty(void);
 extern void LoadSaveSlot(u32 slot);
 extern u32 ValidateSaveSlot(u32 slot);
+extern void ResetCharacterToLevel(u32 character, u32 level);  // sets a party member's saved level and stats from the level table
+extern void InitCharacterSpells_candidate(u32 index, u16 *pStats);
 extern void sub_0803BD48(u32 slot);

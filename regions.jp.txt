@@ -156,22 +156,22 @@ thumb-func 0x0800AB34 ResetDebugPartyFromArgs_candidate
 thumb-func 0x0800ABA0 DrawDebugMenuMainEntries_candidate
 thumb-func 0x0800ABD8 InitializeDebugLevelAndQuestSelectMenu
 thumb-func 0x0800ACE4 UpdateDebugLevelAndQuestSelectMenu
-thumb-func 0x0800AE50 ExitDebugLevelAndQuestSelectMenu
+c-file 0x0800AE50 0x0800AE68 src/gamemode/modes/debug/debug_level_and_quest_select_menu/exit_debug_level_and_quest_select_menu.c ExitDebugLevelAndQuestSelectMenu
 thumb-func 0x0800AED8 InitializeDebugMapSelectMenu
 thumb-func 0x0800AFB4 UpdateDebugMapSelectMenu
-thumb-func 0x0800B108 ExitDebugMapSelectMenu
+c-file 0x0800B108 0x0800B120 src/gamemode/modes/debug/debug_map_select_menu/exit_debug_map_select_menu.c ExitDebugMapSelectMenu
 thumb-func 0x0800B198 InitializeDebugCharacterSelectMenu
 thumb-func 0x0800B2C8 UpdateDebugCharacterSelectMenu
 thumb-func 0x0800B494 ExitDebugCharacterSelectMenu
 thumb-func 0x0800B5A8 InitializeDebugPortraitsMenu
 thumb-func 0x0800B620 UpdateDebugPortraitsMenu
-thumb-func 0x0800B684 ExitDebugPortraitsMenu
+c-file 0x0800B684 0x0800B69C src/gamemode/modes/debug/debug_portraits_menu/exit_debug_portraits_menu.c ExitDebugPortraitsMenu
 thumb-func 0x0800B69C InitializeDebugSoundTestMenu
 thumb-func 0x0800B7A8 UpdateDebugSoundTestMenu
-thumb-func 0x0800B9A0 ExitDebugSoundTestMenu
+c-file 0x0800B9A0 0x0800B9BC src/gamemode/modes/debug/debug_sound_test_menu/exit_debug_sound_test_menu.c ExitDebugSoundTestMenu
 thumb-func 0x0800BA2C InitializeDebugCollectorCardsMenu
 thumb-func 0x0800BBF0 UpdateDebugCollectorCardsMenu
-thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
+c-file 0x0800BC54 0x0800BC6C src/gamemode/modes/debug/debug_collector_cards_menu/exit_debug_collector_cards_menu.c ExitDebugCollectorCardsMenu
 thumb-func 0x0800C0FC InitializeLoadingScreen
 thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen

@@ -169,6 +169,14 @@
 .set g_StatusEquipItemSelect, 0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/status_equip.h
 .set g_dwSelectedMinigame, 0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
 .set g_DebugMenuMainState, 0x030021C0  @ DebugMenuMainState: {Object *pCursorObject; u32 dwSelection}; see include/debug_menu.h
+.set g_DebugPortraitsState, 0x03002210  @ DebugPortraitsState: {Object *pPortraitObject; u32 dwSelection}; see include/debug_menu.h
+.set g_DebugCollectorCardsState, 0x03002238  @ DebugCollectorCardsState: {Object *pCardObject; u32 dwSelection}; see include/debug_menu.h
+.set g_DebugSoundTestState, 0x03002218  @ DebugSoundTestState; see include/debug_menu.h
+.set g_DebugLevelAndQuestSelectState, 0x030021C8  @ DebugLevelAndQuestSelectState; see include/debug_menu.h
+.set g_DebugMapSelectState, 0x030021E8  @ DebugMapSelectState; see include/debug_menu.h
+.set g_DebugCharacterSelectState, 0x030021F8  @ DebugCharacterSelectState; see include/debug_menu.h
+.set g_bMusicPaused, 0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
+.set g_bCurrentMusicModule, 0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
 .set g_bSaveSlotScreenResult, 0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
 .set g_MainMenuState,       0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot_candidate}; see include/main_menu.h
 .set g_ScanlineEffectState,  0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md

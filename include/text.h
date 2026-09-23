@@ -68,6 +68,8 @@ extern const u8 *sTextMacroTable[4];
 s32 DecompressDialogText(s32 stringId, u8 *outBuf, s32 maxSize);
 void InitDialogTextEngine(void);
 u8 *GetDialogText(s32 stringId);
+extern u32 GetTextLineHeight(void);
+extern void SetTextLineHeight(u32 lineHeight);
 
 s32 InitDialogTextTable(DialogTextBlob *blob);
 extern u32 GetGlyphWidth(FontDescriptor *font, u16 glyphCode);

@@ -179,29 +179,40 @@ thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
 thumb-func 0x0800A598 sub_0800A598
 thumb-func 0x0800A610 TickBgTileAnimations_candidate
 thumb-func 0x0800A914 sub_0800A914
-c-file 0x0800A950 0x0800AA54 src/gamemode/modes/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
-c-file 0x0800AA54 0x0800AB34 src/gamemode/modes/debug_menu_main/update_debug_menu_main.c UpdateDebugMenuMain
+c-file 0x0800A950 0x0800AA54 src/gamemode/modes/debug/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
+c-file 0x0800AA54 0x0800AB34 src/gamemode/modes/debug/debug_menu_main/update_debug_menu_main.c UpdateDebugMenuMain
 thumb-func 0x0800AB34 ResetDebugPartyFromArgs_candidate
-c-file 0x0800AB88 0x0800ABA0 src/gamemode/modes/debug_menu_main/exit_debug_menu_main.c ExitDebugMenuMain
+c-file 0x0800AB88 0x0800ABA0 src/gamemode/modes/debug/debug_menu_main/exit_debug_menu_main.c ExitDebugMenuMain
 thumb-func 0x0800ABA0 DrawDebugMenuMainEntries_candidate
-thumb-func 0x0800ABD8 InitializeDebugLevelAndQuestSelectMenu
-thumb-func 0x0800ACE4 UpdateDebugLevelAndQuestSelectMenu
-thumb-func 0x0800AE50 ExitDebugLevelAndQuestSelectMenu
-thumb-func 0x0800AED8 InitializeDebugMapSelectMenu
-thumb-func 0x0800AFB4 UpdateDebugMapSelectMenu
-thumb-func 0x0800B108 ExitDebugMapSelectMenu
-thumb-func 0x0800B198 InitializeDebugCharacterSelectMenu
-thumb-func 0x0800B2C8 UpdateDebugCharacterSelectMenu
-thumb-func 0x0800B494 ExitDebugCharacterSelectMenu
-thumb-func 0x0800B5A8 InitializeDebugPortraitsMenu
-thumb-func 0x0800B620 UpdateDebugPortraitsMenu
-thumb-func 0x0800B684 ExitDebugPortraitsMenu
-thumb-func 0x0800B69C InitializeDebugSoundTestMenu
-thumb-func 0x0800B7A8 UpdateDebugSoundTestMenu
-thumb-func 0x0800B9A0 ExitDebugSoundTestMenu
-thumb-func 0x0800BA2C InitializeDebugCollectorCardsMenu
-thumb-func 0x0800BBF0 UpdateDebugCollectorCardsMenu
-thumb-func 0x0800BC54 ExitDebugCollectorCardsMenu
+c-file 0x0800ABD8 0x0800ACE4 src/gamemode/modes/debug/debug_level_and_quest_select_menu/initialize_debug_level_and_quest_select_menu.c InitializeDebugLevelAndQuestSelectMenu
+c-file 0x0800ACE4 0x0800AD94 src/gamemode/modes/debug/debug_level_and_quest_select_menu/update_debug_level_and_quest_select_menu.c UpdateDebugLevelAndQuestSelectMenu
+thumb-func 0x0800AD94 sub_0800AD94
+c-file 0x0800AE50 0x0800AE68 src/gamemode/modes/debug/debug_level_and_quest_select_menu/exit_debug_level_and_quest_select_menu.c ExitDebugLevelAndQuestSelectMenu
+thumb-func 0x0800AE68 sub_0800AE68
+c-file 0x0800AED8 0x0800AFB4 src/gamemode/modes/debug/debug_map_select_menu/initialize_debug_map_select_menu.c InitializeDebugMapSelectMenu
+c-file 0x0800AFB4 0x0800B108 src/gamemode/modes/debug/debug_map_select_menu/update_debug_map_select_menu.c UpdateDebugMapSelectMenu
+c-file 0x0800B108 0x0800B120 src/gamemode/modes/debug/debug_map_select_menu/exit_debug_map_select_menu.c ExitDebugMapSelectMenu
+thumb-func 0x0800B120 sub_0800B120
+thumb-func 0x0800B158 sub_0800B158
+c-file 0x0800B198 0x0800B2C8 src/gamemode/modes/debug/debug_character_select_menu/initialize_debug_character_select_menu.c InitializeDebugCharacterSelectMenu
+c-file 0x0800B2C8 0x0800B344 src/gamemode/modes/debug/debug_character_select_menu/update_debug_character_select_menu.c UpdateDebugCharacterSelectMenu
+thumb-func 0x0800B344 sub_0800B344
+thumb-func 0x0800B40C sub_0800B40C
+c-file 0x0800B494 0x0800B4B0 src/gamemode/modes/debug/debug_character_select_menu/exit_debug_character_select_menu.c ExitDebugCharacterSelectMenu
+thumb-func 0x0800B4B0 sub_0800B4B0
+thumb-func 0x0800B52C sub_0800B52C
+c-file 0x0800B5A8 0x0800B620 src/gamemode/modes/debug/debug_portraits_menu/initialize_debug_portraits_menu.c InitializeDebugPortraitsMenu
+c-file 0x0800B620 0x0800B684 src/gamemode/modes/debug/debug_portraits_menu/update_debug_portraits_menu.c UpdateDebugPortraitsMenu
+c-file 0x0800B684 0x0800B69C src/gamemode/modes/debug/debug_portraits_menu/exit_debug_portraits_menu.c ExitDebugPortraitsMenu
+c-file 0x0800B69C 0x0800B7A8 src/gamemode/modes/debug/debug_sound_test_menu/initialize_debug_sound_test_menu.c InitializeDebugSoundTestMenu
+c-file 0x0800B7A8 0x0800B8F0 src/gamemode/modes/debug/debug_sound_test_menu/update_debug_sound_test_menu.c UpdateDebugSoundTestMenu
+thumb-func 0x0800B8F0 sub_0800B8F0
+c-file 0x0800B9A0 0x0800B9BC src/gamemode/modes/debug/debug_sound_test_menu/exit_debug_sound_test_menu.c ExitDebugSoundTestMenu
+thumb-func 0x0800B9BC sub_0800B9BC
+c-file 0x0800BA2C 0x0800BAF8 src/gamemode/modes/debug/debug_collector_cards_menu/initialize_debug_collector_cards_menu.c InitializeDebugCollectorCardsMenu
+thumb-func 0x0800BAF8 sub_0800BAF8
+c-file 0x0800BBF0 0x0800BC54 src/gamemode/modes/debug/debug_collector_cards_menu/update_debug_collector_cards_menu.c UpdateDebugCollectorCardsMenu
+c-file 0x0800BC54 0x0800BC6C src/gamemode/modes/debug/debug_collector_cards_menu/exit_debug_collector_cards_menu.c ExitDebugCollectorCardsMenu
 thumb-func 0x0800C0FC InitializeLoadingScreen
 thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
@@ -433,6 +444,7 @@ thumb-func 0x080208B4 DrawStringAligned
 thumb-func 0x08020D30 InitTextMacroTable
 thumb-func 0x08020D60 SetTextTargetFromBgControl
 thumb-func 0x08020DF0 SelectTextFont
+thumb-func 0x08020E34 SetTextLineHeight
 c-file 0x08020E40 0x08020E9C src/text/measure_macro_string.c MeasureMacroString
 thumb-func 0x08020F44 DrawTextLines
 c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
@@ -440,6 +452,7 @@ thumb-func 0x08021100 SetDialogMacroString0_candidate
 thumb-func 0x08021148 SetDialogMacroString1_candidate
 thumb-func 0x08021184 SetDialogMacroNumber0_candidate
 thumb-func 0x080211AC SetDialogMacroNumber1_candidate
+thumb-func 0x080211C0 GetTextLineHeight
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
 thumb-func 0x08021560 NoopInit
 thumb-func 0x08021564 ResetSaveStateForNewGame
@@ -474,6 +487,7 @@ thumb-func 0x08025368 ExitHighScoreNameEntry
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
 thumb-func 0x080258E8 InitInputSystem_candidate
 c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
+thumb-func 0x08025A18 sub_08025A18
 thumb-func 0x08025A74 StepWrappedSelectionVertical_candidate
 thumb-func 0x08025B2C StepWrappedSelectionHorizontal_candidate
 thumb-func 0x08025D28 InitializeTopicScreen
@@ -828,12 +842,14 @@ thumb-func 0x0803FE54 DisableKrawall
 thumb-func 0x0803FE60 EnableKrawall
 thumb-func 0x0803FE78 SetSoundEffectVolume
 thumb-func 0x0803FE88 SetMusicVolume
+thumb-func 0x0803FE98 StopSoundEffect
 thumb-func 0x0803FEA4 UnmuteAllMusicChannels
 thumb-func 0x0803FEB4 PlayMusicModule
 
 thumb-func 0x0803FF04 sub_0803FF04
 thumb-func 0x0803FF1C PauseMusic
 thumb-func 0x0803FF40 ResumeMusic
+thumb-func 0x0803FF5C StopMusic
 thumb-func 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0804115C InitializeFredAndGeorgesShop
 thumb-func 0x080411E0 UpdateFredAndGeorgesShop
@@ -939,7 +955,28 @@ label 0x0804C444 g_dwDebugMenuMainBg0Control
 label 0x0804C448 g_dwDebugMenuMainBg1Control
 label 0x0804C44C g_DebugMenuMainAnimFrames
 label 0x0804C45C g_DebugMenuMainAnimData
+label 0x0804C470 g_abDebugLevelAndQuestMax
+label 0x0804C474 g_dwDebugLevelAndQuestBg0Control
+label 0x0804C478 g_dwDebugLevelAndQuestBg1Control
+label 0x0804C47C g_DebugLevelAndQuestAnimFrames
+label 0x0804C48C g_DebugLevelAndQuestAnimData
+label 0x0804C4A0 g_dwDebugMapSelectBg0Control
+label 0x0804C4A4 g_dwDebugMapSelectBg1Control
+label 0x0804C4A8 g_DebugMapSelectAnimFrames
+label 0x0804C4B8 g_DebugMapSelectAnimData
+label 0x0804C4CC g_dwDebugCharacterSelectBg0Control
+label 0x0804C4D0 g_dwDebugCharacterSelectBg1Control
+label 0x0804C4D4 g_DebugCharacterSelectAnimFrames
+label 0x0804C4E4 g_DebugCharacterSelectAnimData
 c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
+label 0x0804C618 g_dwDebugPortraitsBg1Control
+label 0x0804CE8C g_dwDebugSoundTestBg0Control
+label 0x0804CE90 g_dwDebugSoundTestBg1Control
+label 0x0804CE94 g_DebugSoundTestAnimFrames
+label 0x0804CEA4 g_DebugSoundTestAnimData
+label 0x0804CEB8 g_dwDebugCollectorCardsBg2Control
+label 0x0804CEBC g_dwDebugCollectorCardsBg1Control
+label 0x0804CEC0 g_dwDebugCollectorCardsBg0Control
 c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 label 0x0804D798 g_abGammaNormalRemap
 label 0x0804D7B8 g_abGammaHighRemap
@@ -1133,6 +1170,7 @@ label 0x08D97428 g_ServePumpkinJuiceBg0Graphic
 label 0x08D989F4 g_ServePumpkinJuiceBg1Graphic
 label 0x08D99900 g_ServePumpkinJuiceBg2Graphic
 label 0x08D9A360 g_DebugMenuGraphic
+label 0x08D9AAD0 g_DebugCollectorCardsBg0Graphic
 label 0x08DA08BE g_ServePumpkinJuicePanelData
 label 0x08DBF920 g_MenuBg3Graphic
 label 0x08DC456C g_StartupBg3Graphic

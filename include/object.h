@@ -287,6 +287,7 @@ extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
 extern void FreeObjectVramTileAllocation(u16 allocId, u16 tileRow, u8 is8bpp);  // 0x08045514
 extern void ClaimObjectEffectResource(Object *obj);
 extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);
+extern Object *SpawnObject(u32 type, s32 x, s32 y, const void *pData);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
 extern void SnapObjectPosition(Object *obj, u32 x, u32 y);
 extern void SetObjectVelocity(Object *obj, u32 velX, u32 velY);

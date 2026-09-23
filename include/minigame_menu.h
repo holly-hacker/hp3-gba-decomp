@@ -26,5 +26,7 @@ extern void BeginMinigameSwitchFade_candidate(void);
 extern u32 TickMinigameSwitchFadeOut_candidate(void);
 extern void SwapMinigameSelection_candidate(void);
 extern void TickMinigameSwitchFadeIn_candidate(void);
+extern u32 StepWrappedSelectionVertical_candidate(u32 *pValue, u32 min, u32 max, s32 wrap, u32 player);
+extern u32 sub_08025A18(u32 *pValue, u32 min, u32 max, s32 wrap, u32 player);
 extern u32 StepWrappedSelectionHorizontal_candidate(u32 *pValue, u32 min, u32 max, s32 wrap, u32 player);
 extern void SetObjectMoveTargetWithDuration_candidate(Object *pObject, s32 x, s32 y, s32 duration);

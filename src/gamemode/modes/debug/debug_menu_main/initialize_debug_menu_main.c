@@ -7,6 +7,7 @@
 #include "io_regs.h"
 #include "object.h"
 #include "room.h"
+#include "save.h"
 #include "text.h"
 
 void InitializeDebugMenuMain(void)

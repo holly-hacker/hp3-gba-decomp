@@ -3,7 +3,7 @@
 #include "bios.h"
 #include "clock_skip_cutscene.h"
 #include "hogwarts_up_night_cutscene.h"
-#include "debug_menu.h"
+#include "object.h"
 #include "display.h"
 #include "game_modes.h"
 #include "io_regs.h"
