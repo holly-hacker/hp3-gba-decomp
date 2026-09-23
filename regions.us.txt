@@ -432,6 +432,9 @@ c-file 0x08026DE0 0x08026E2C src/items/grant_reward.c GrantReward
 
 thumb-func 0x08026E2C ConsumeBattleItemSlot
 thumb-func 0x08026F9C IsFolioPageGroupUnlocked_candidate
+thumb-func 0x08026FE0 sub_08026FE0
+thumb-func 0x08027048 sub_08027048
+thumb-func 0x08027BA4 sub_08027BA4
 thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
@@ -561,6 +564,7 @@ c-file 0x08031FF4 0x08032030 src/gamemode/modes/in_game_menu/initialize_in_game_
 c-file 0x08032054 0x080320A4 src/gamemode/modes/in_game_menu/exit_in_game_menu.c ExitInGameMenu
 thumb-func 0x080320A4 sub_080320A4
 thumb-func 0x08032114 TickBlendFadeOut_candidate
+thumb-func 0x08032138 sub_08032138
 thumb-func 0x0803217C sub_0803217C
 thumb-func 0x080321A8 sub_080321A8
 thumb-func 0x08032204 SelectInGameMenuEntry_candidate
@@ -575,19 +579,28 @@ thumb-func 0x080338A4 ExitWizardCrackerPopItMinigame
 thumb-func 0x08033DA4 InitializeUnusedServePumpkinJuiceMinigame
 thumb-func 0x08033EE0 UpdateUnusedServePumpkinJuiceMinigame
 thumb-func 0x08035240 ExitUnusedServePumpkinJuiceMinigame
-thumb-func 0x08035764 UpdateStatusEquipCharacterSelect
-thumb-func 0x08035D08 InitializeStatusEquipCharacterSelect
-thumb-func 0x08035D20 InitializeStatusEquipCharacterSelectLastCursor
-thumb-func 0x08035D64 ExitStatusEquipCharacterSelect
+c-file 0x08035764 0x08035898 src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
+thumb-func 0x08035A34 sub_08035A34
+c-file 0x08035D08 0x08035D20 src/gamemode/modes/status_equip/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
+c-file 0x08035D20 0x08035D64 src/gamemode/modes/status_equip/initialize_status_equip_character_select_last_cursor.c InitializeStatusEquipCharacterSelectLastCursor
+c-file 0x08035D64 0x08035D68 src/gamemode/modes/status_equip/exit_status_equip_character_select.c ExitStatusEquipCharacterSelect
+thumb-func 0x08035D98 sub_08035D98
+thumb-func 0x08035DC0 sub_08035DC0
+thumb-func 0x08035DEC StatusEquipSlotToCharacter
+thumb-func 0x08035E1C StatusEquipCharacterToSlot
 thumb-func 0x08035EB0 HandleConnectivityMenuTick
 thumb-func 0x08035F7C UpdateConfirmTradeScreen
 thumb-func 0x08036038 InitializeConnectivityMenu
 thumb-func 0x080360DC ExitConnectivity
 thumb-func 0x08036120 InitializeConfirmTradeScreen
 thumb-func 0x08036178 ExitConfirmTradeScreen
-thumb-func 0x080361AC InitializeStatusEquipItemSelect
-thumb-func 0x08036214 UpdateStatusEquipItemSelect
-thumb-func 0x08036890 ExitStatusEquipItemSelect
+c-file 0x080361AC 0x08036214 src/gamemode/modes/status_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
+c-file 0x08036214 0x080362D8 src/gamemode/modes/status_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
+thumb-func 0x080362D8 sub_080362D8
+thumb-func 0x080364A8 DrawEquipItemStatComparison
+c-file 0x08036890 0x080368CC src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
+thumb-func 0x080368CC sub_080368CC
+thumb-func 0x080368E4 sub_080368E4
 thumb-func 0x0803693C UpdateFolios
 thumb-func 0x080369CC InitializeFolios
 thumb-func 0x08036A20 ExitFolios
@@ -624,9 +637,18 @@ c-file 0x08039CD8 0x08039D08 src/gamemode/modes/game_save/exit_game_save.c ExitG
 thumb-func 0x08039D08 ShowSaveConfirmationPrompt_candidate
 thumb-func 0x08039D44 ShowSavingMessage_candidate
 thumb-func 0x08039D78 ShowGameSavedMessage_candidate
-thumb-func 0x08039DD8 UpdateStatusEquipSlotSelect
-thumb-func 0x0803A4AC InitializeStatusEquipSlotSelect
-thumb-func 0x0803A524 ExitStatusEquipSlotSelect
+c-file 0x08039DD8 0x0803A030 src/gamemode/modes/status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
+thumb-func 0x0803A030 sub_0803A030
+thumb-func 0x0803A0F0 DrawStatusEquipStatsPanel
+thumb-func 0x0803A3A0 sub_0803A3A0
+c-file 0x0803A4AC 0x0803A524 src/gamemode/modes/status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
+c-file 0x0803A524 0x0803A528 src/gamemode/modes/status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
+thumb-func 0x0803A534 sub_0803A534
+thumb-func 0x0803A568 TickStatusEquipSlotCursor
+thumb-func 0x0803A590 sub_0803A590
+thumb-func 0x0803A604 sub_0803A604
+thumb-func 0x0803A630 sub_0803A630
+thumb-func 0x0803A678 sub_0803A678
 thumb-func 0x0803A6D0 InitializeCardTrade
 thumb-func 0x0803A780 UpdateCardTrade
 thumb-func 0x0803ABBC ExitCardTrade
@@ -857,6 +879,7 @@ label 0x0806605C g_dwMinigameMenuBg3Control
 label 0x08066060 g_dwMinigameMenuBg1Control
 label 0x08068C38 g_aInGameMenuEntries
 label 0x08068CE0 g_InGameMenuDefinition
+label 0x0806B2FC g_aStatusEquipSlots
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 
 # Dialog/UI text data
@@ -875,6 +898,7 @@ label 0x080BC1C4 g_MainMenuPalette
 label 0x080BC538 g_DebugMenuCursorSpawnData
 
 # Krawall audio data
+label 0x080CD814 g_StatusEquipSlotCursorSpawnData
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 0x08AA6538 data/audio/modules/MusBattle.json MusBattle

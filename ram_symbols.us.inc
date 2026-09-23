@@ -155,6 +155,13 @@
 .set g_bInGameMenuCursor, 0x03005220  @ u8: pause menu cursor row saved by ExitInGameMenu
 .set g_StatusEquipReturnMode, 0x03005298  @ GameMode: StatusEquipCharacterSelect returns to on B (InGameMenu, InGameMenuFadeIn or ItemsItemSelect)
 .set g_StatusEquipNextMode, 0x0300529C  @ GameMode: StatusEquipCharacterSelect advances to on A (StatusEquipSlotSelect or QuantitySelectScreen)
+.set g_dwStatusEquipCharacter, 0x030052A0  @ u32: FighterType chosen in StatusEquipCharacterSelect, read by the slot/item screens and ItemUseScreen
+.set g_StatusEquipCharacterSelect, 0x030052A8  @ StatusEquipCharacterSelectState: slot presence flags and pending mode; see include/status_equip.h
+.set g_bStatusEquipCharacterSlot, 0x030052B8  @ u8: StatusEquipCharacterSelect cursor slot
+.set g_StatusEquipSlotSelect, 0x030054F8  @ StatusEquipSlotSelectState: slot select screen objects and pending mode; see include/status_equip.h
+.set g_bStatusEquipSlot, 0x03005564  @ s8: selected equipment slot in StatusEquipSlotSelect
+.set g_dwStatusEquipSlotType, 0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect
+.set g_StatusEquipItemSelect, 0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/status_equip.h
 .set g_dwSelectedMinigame, 0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
 .set g_DebugMenuMainState, 0x030021C0  @ DebugMenuMainState: {Object *pCursorObject; u32 dwSelection}; see include/debug_menu.h
 .set g_bSaveSlotScreenResult, 0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate

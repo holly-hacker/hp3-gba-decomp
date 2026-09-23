@@ -28,3 +28,6 @@
 
 // Start of video RAM.
 #define VRAM_BASE ((void *)0x06000000)
+
+// Background palette RAM, 256 colors.
+#define BG_PLTT ((volatile u16 *)0x05000000)

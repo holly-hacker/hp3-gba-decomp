@@ -84,3 +84,12 @@
 .set g_pPlayerObject,                0x030033E0  @ see ram_symbols.us.inc
 .set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ see ram_symbols.us.inc
 .set g_bUnk03005E18,                 0x03005E68  @ see ram_symbols.us.inc
+.set g_bStatusEquipCharacterSlot,     0x03005318  @ see ram_symbols.us.inc
+.set g_bStatusEquipSlot,              0x030055C4  @ see ram_symbols.us.inc
+.set g_dwStatusEquipCharacter,        0x03005300  @ see ram_symbols.us.inc
+.set g_pMenuCursorObject,             0x03002E08  @ see ram_symbols.us.inc
+.set g_StatusEquipCharacterSelect,    0x03005308  @ see ram_symbols.us.inc
+.set g_StatusEquipItemSelect,         0x03005328  @ see ram_symbols.us.inc
+.set g_StatusEquipNextMode,           0x030052FC  @ see ram_symbols.us.inc
+.set g_StatusEquipReturnMode,         0x030052F8  @ see ram_symbols.us.inc
+.set g_StatusEquipSlotSelect,         0x03005558  @ see ram_symbols.us.inc

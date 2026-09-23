@@ -133,22 +133,33 @@ PROVEN from US decompiles and ROM tables.
 
   0x0C places the cursor on Harry (or the first present member); 0x0D
   restores it to the last chosen member and is entered by B from 0x0E.
-  A stores the chosen member id (0 Harry, 1 Hermione, 2 Ron; names at
-  `0x0806944C`) at `0x030052A0`, which 0x0E, 0x0F and `ItemUseScreen` read.
+  The three slots show Hermione, Harry and Ron, left to right
+  (`StatusEquipSlotToCharacter`/`StatusEquipCharacterToSlot`); left/right
+  wrap and skip absent members. A stores the chosen `FighterType` (0 Harry,
+  1 Hermione, 2 Ron; names at `0x0806944C`) in `g_dwStatusEquipCharacter`,
+  which 0x0E, 0x0F and `ItemUseScreen` read.
 - `StatusEquipSlotSelect` (0x0E): the chosen member's stats panel
-  (`DrawStatusEquipStatsPanel`) and a 2x3 grid of equipment slots. The
-  slot table at `0x0806B2FC` is 6 entries of 16 bytes: x/y (`s16` each),
-  slot type (`u32`, 0-5), then up/down/left/right neighbour indices. A goes
-  to 0x0F, B to 0x0D.
+  (`DrawStatusEquipStatsPanel`) and a 2x3 grid of equipment slots,
+  `g_aStatusEquipSlots` (`0x0806B2FC`, 6 `StatusEquipSlot` entries of 16
+  bytes: x/y (`s16` each), slot type (`u32`, 0-5), slot name text id
+  (`0x5A0 + type`), then up/down/left/right neighbour indices). The slot
+  items fade in over 8 frames. A goes to 0x0F when `sub_0803A678` accepts
+  the slot (otherwise sound 3 plays), B to 0x0D.
 - `StatusEquipItemSelect` (0x0F): lists items for the chosen slot type
   (text `0x3F7 + type`: Change Belt/Charm/Gloves/Boots/Hat/Cloak) with a
   Def/Agi/M.Def comparison (`DrawEquipItemStatComparison`); A equips,
-  A or B returns to 0x0E.
+  A or B returns to 0x0E. It overrides BG palette colors 4-6 while open
+  and restores them on exit.
 
-JP handlers (STRUCTURAL MATCH: taken from JP's dispatch table, whose 216
-pointers all lie within 0x1000 of their US counterparts; each handler's
-instructions match US, differing only in `bl` offsets and pool literals,
-where RAM addresses are shifted by +0x60):
+Screen state lives in `g_StatusEquipCharacterSelect`,
+`g_StatusEquipSlotSelect` and `g_StatusEquipItemSelect`; each holds the
+mode it pushes after its fade-out. Types are in `include/status_equip.h`;
+the init/update/exit handlers are matched in
+`src/gamemode/modes/status_equip/` for both versions.
+
+JP handlers (PROVEN: taken from JP's dispatch table at `0x08065C48` and
+built byte-identically from the US source; the Status/Equip RAM globals
+sit +0x60 from US):
 0x0C/0x0D update `0x080357A8`, init `0x08035D4C`/`0x08035D64`, exit
 `0x08035DA8`; 0x0E `0x0803A50C`/`0x08039E2C`/`0x0803A584`; 0x0F
 `0x080361F0`/`0x08036258`/`0x080368D4` (init/update/exit).
