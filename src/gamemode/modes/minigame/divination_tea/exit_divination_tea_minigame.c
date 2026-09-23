@@ -19,6 +19,6 @@ void ExitDivinationTeaMinigame(void)
     }
 
     sub_0800D2DC();
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800A914();
 }

@@ -19,6 +19,6 @@ void ExitInGameMenu(void)
 
     sub_0801E0DC();
     sub_08007464(1, 0x6F);
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800D2DC();
 }

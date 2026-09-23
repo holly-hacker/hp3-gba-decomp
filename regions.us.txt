@@ -49,7 +49,7 @@ c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
 thumb-func 0x08001528 SpawnObject
 thumb-func 0x080015B8 TickActiveObjects
-thumb-func 0x080015D4 sub_080015D4
+c-file 0x080015D4 0x080015F8 src/object/free_all_objects.c FreeAllObjects
 thumb-func 0x08001690 sub_08001690
 thumb-func 0x0800187C SetObjectAssetRecord
 thumb-func 0x080018D8 SetObjectAnimData

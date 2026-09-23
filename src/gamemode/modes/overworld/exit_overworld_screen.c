@@ -74,7 +74,7 @@ void ExitOverworldScreen(void)
     sub_0803171C();
     sub_08030960(1);
     sub_08030960(2);
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800D2DC();
     sub_08007AA8(0);
     sub_080203CC();

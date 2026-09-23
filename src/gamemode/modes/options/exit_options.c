@@ -25,7 +25,7 @@ void ExitOptions(void)
         g_OptionsState.apObjects[i] = NULL;
     }
 
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     DisableKrawall();
     SyncSaveHeaderIfDirty();
     EnableKrawall();

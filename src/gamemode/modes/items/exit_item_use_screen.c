@@ -3,5 +3,5 @@
 
 void ExitItemUseScreen(void)
 {
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
 }

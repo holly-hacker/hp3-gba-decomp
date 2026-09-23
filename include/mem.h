@@ -112,7 +112,7 @@ typedef struct ActiveObjectListState {
 extern ActiveObjectListState g_ActiveObjectListState;
 
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
-extern void sub_080015D4(ListNode **listHead);  // called by ExitBattle with &g_ActiveObjectListState.pHead
+void FreeAllObjects(ListNode **activeListHead);
 
 void SortObjectsByDepth(void);
 void CheckObjectCollisions(void);

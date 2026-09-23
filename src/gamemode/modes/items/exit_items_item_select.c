@@ -9,6 +9,6 @@ void ExitItemsItemSelect(void)
     if (g_ItemsItemSelect.dwHasItems != 0)
         sub_08027BA4();
 
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     ClearBgTilemap(2);
 }

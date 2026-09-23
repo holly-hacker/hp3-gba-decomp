@@ -23,7 +23,7 @@ void ExitBattle(void)
         sub_08030960(0);
         sub_080316D4();
         sub_0803171C();
-        sub_080015D4(&g_ActiveObjectListState.pHead);
+        FreeAllObjects(&g_ActiveObjectListState.pHead);
         sub_0800D2DC();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
@@ -105,7 +105,7 @@ void ExitBattle(void)
         sub_08030960(0);
         sub_080316D4();
         sub_0803171C();
-        sub_080015D4(&g_ActiveObjectListState.pHead);
+        FreeAllObjects(&g_ActiveObjectListState.pHead);
         sub_0800D2DC();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);

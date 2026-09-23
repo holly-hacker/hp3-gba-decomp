@@ -13,7 +13,7 @@ void ExitMainMenuScreen(void)
     sub_080316D4();
     sub_0803171C();
     sub_08030960(0);
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_08007A90();
     sub_0800D2DC();
     g_dwPendingGameMode.dwCurrentGameModeArg1 = 0;

@@ -20,6 +20,6 @@ void ExitHarryVsDementorsMinigame(void)
     sub_0802CEE4(g_HarryVsDementors.pObjectGroup20);
     sub_0802CEE4(g_HarryVsDementors.pObjectGroup24);
     sub_0802CEE4(g_HarryVsDementors.pObjectGroup28);
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0803FF04();
 }

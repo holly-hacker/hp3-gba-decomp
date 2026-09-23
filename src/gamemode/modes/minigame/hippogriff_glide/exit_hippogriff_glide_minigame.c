@@ -11,7 +11,7 @@ void ExitHippogriffGlideMinigame(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     sub_08030960(0);
     sub_0802D6B8();
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800A914();
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 != 2)

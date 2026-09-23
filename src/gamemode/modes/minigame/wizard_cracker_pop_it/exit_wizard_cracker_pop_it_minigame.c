@@ -27,7 +27,7 @@ void ExitWizardCrackerPopItMinigame(void)
 
     sub_0800D2DC();
     sub_0801DC6C(g_pWizardCrackerPopIt->pObject0);
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 1;
     sub_0803171C();
     FreeBlock(g_pWizardCrackerPopIt);

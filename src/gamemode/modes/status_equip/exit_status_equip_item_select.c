@@ -15,5 +15,5 @@ void ExitStatusEquipItemSelect(void)
         sub_08027BA4();
 
     sub_0801E0DC();
-    sub_080015D4(&g_ActiveObjectListState.pHead);
+    FreeAllObjects(&g_ActiveObjectListState.pHead);
 }
