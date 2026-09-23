@@ -159,6 +159,29 @@ attach each giv's update to whichever biv's increment it follows in source; test
 shared counter into that loop's increment clause (`pendingI++, i++`) instead of the body or an
 index sum (`[i + pendingI]`). Example: ExitBattle, US 0x0800DE50 loop 2.
 
+## 20. Global member address is pooled as `sym+const` instead of `adds #const`
+
+`p = &g.array[i]` folds the member offset into the literal pool (`.word g+0x1c`). Reading and
+writing `g.array[i]` directly, in both the compare and the store, keeps the plain symbol in the
+pool and emits `adds rX, #offset` after the index shift. Example: UpdateHippogriffGlideMinigame,
+US 0x08009BE0.
+
+## 21. Switch layout
+
+- Case bodies are emitted in source order. A jump table whose targets are out of numeric order
+  means the source cases were written in that order (Wizard Cracker Pop-it update: 5, 0, 1, 6,
+  7, 2, 3, 4).
+- `case 0: X; break; case 1: X; break;` gives `cmp #1; beq; cmp #1; blo` (Harry vs Dementors
+  init). `case 0: case 1:` merges into one range test (`bls`).
+- A chain of `if / else if / else` on one value is not a `switch`, and swapping `== 0` for
+  `!= 0` swaps which block falls through (Wizard Cracker Pop-it pause and results menus).
+
+## 22. Argument extension follows the callee's declared type
+
+Passing an `s16` field as an argument loads with `ldrh` when the parameter is `u16` and with
+`ldrsh` (no extension) when it is `s16`; a cast at the call site does not change this. The
+SetObjectAffineTransform angle parameter is `s16` for that reason.
+
 ## Candidate acceptance and cleanup
 
 A diff improvement is evidence, not permission to land a proxy. Selective one-field inline

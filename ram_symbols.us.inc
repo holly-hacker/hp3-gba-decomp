@@ -260,3 +260,24 @@
 
 @ --- EEPROM save driver (see include/eeprom.h, docs/formats/save.md) ---
 .set g_pEepromInterface, 0x030062C8  @ EepromInterface *: chosen by EepromSelectInterface
+
+@ --- Hippogriff Glide minigame (see include/hippogriff_glide.h) ---
+.set g_pHippogriffGlide, 0x03002088  @ HippogriffGlideState *: allocated for the minigame's duration
+.set g_adwHippogriffGlideUnk, 0x03005D10  @ u32[3]: cleared on init, meaning not yet established
+
+@ --- Riddikulus minigame (see include/riddikulus.h) ---
+.set g_Riddikulus, 0x03002048  @ RiddikulusState
+.set g_dwListMenuSelection, 0x03003F14  @ u32: selected row of the current list menu; see include/minigame_menu.h
+
+@ --- Harry vs Dementors minigame (see include/harry_vs_dementors.h) ---
+.set g_HarryVsDementors, 0x03002E18  @ HarryVsDementorsState
+
+@ --- Wizard Cracker Pop-it minigame (see include/wizard_cracker_pop_it.h) ---
+.set g_pWizardCrackerPopIt, 0x03005230  @ WizardCrackerPopItState *: allocated for the minigame's duration
+.set g_dwWizardCrackerPopItForceOverworldExit, 0x03005228  @ u32: set by the StartMinigame room script opcode
+
+@ --- Tea Leaf Divination minigame (see include/divination_tea.h) ---
+.set g_DivinationTea, 0x03005B28  @ DivinationTeaState
+
+@ --- Serve Pumpkin Juice minigame (see include/serve_pumpkin_juice.h) ---
+.set g_ServePumpkinJuice, 0x03005238  @ ServePumpkinJuiceState

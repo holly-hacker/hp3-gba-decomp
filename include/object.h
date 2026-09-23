@@ -139,7 +139,9 @@ typedef struct Object {
     u8 pad_44[0x08];        // -> 0x4C
     u32 nMoveTargetX;       // 0x4C, 16.16; set by SetObjectMoveTarget/StartObjectMove
     u32 nMoveTargetY;       // 0x50
-    u8 pad_54[0x0C];        // -> 0x60
+    u8 pad_54[0x04];        // -> 0x58
+    s16 wUnk58;             // 0x58, scaled (>> 7) by DivinationTea's leaf drift
+    u8 pad_5A[0x06];        // -> 0x60
     u8 bAttackOutcomeState; // 0x60
     u8 bScriptPageHigh_candidate;  // 0x61, written by a room script
     u16 wStagedDamage;      // 0x62
@@ -294,7 +296,7 @@ extern void ReleaseObjectAffineSlot(Object *obj);
 extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the already-allocated slot
                              // id from wAffineSlotIndexPacked if bFlags_0xD1's low 2 bits are
                              // set (1 or 3), else calls AllocAffineSlot and stores the result
-extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, u16 wAngle, u8 bMode);
+extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);

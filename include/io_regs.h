@@ -31,3 +31,12 @@
 
 // Background palette RAM, 256 colors.
 #define BG_PLTT ((volatile u16 *)0x05000000)
+
+// BG2 affine parameters (fixed-point 8.8) and reference point. The reference
+// point registers are 32-bit; only the low halves are written here.
+#define REG_BG2PA   (*(volatile u16 *)0x04000020)
+#define REG_BG2PB   (*(volatile u16 *)0x04000022)
+#define REG_BG2PC   (*(volatile u16 *)0x04000024)
+#define REG_BG2PD   (*(volatile u16 *)0x04000026)
+#define REG_BG2X_L  (*(volatile u16 *)0x04000028)
+#define REG_BG2Y_L  (*(volatile u16 *)0x0400002C)

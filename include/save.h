@@ -54,7 +54,11 @@ typedef struct {
 // The live save manager at 0x03005598; only the mapped members are declared.
 typedef struct {
     SaveHeader header;
-    u8 abUnmapped_10[0x2C];
+    // Minigame high scores, indexed by difficulty (Easy/Medium/Hard).
+    u32 adwWizardCrackerPopItHighScores[3];  // 0x10
+    u32 adwHippogriffGlideHighScores[3];     // 0x1C
+    u32 adwRiddikulusHighScores[3];          // 0x28
+    u8 abUnmapped_34[8];
     SaveSlotPreview aSlotPreview[3];  // 0x3C
     u32 adwSlotValid[3];      // 0x60: ValidateSaveSlot's result per slot, 1 when the checksum is good
     u32 dwActiveSlot;  // 0x6C: slot last loaded or saved

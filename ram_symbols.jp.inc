@@ -98,3 +98,14 @@
 .set g_bItemsSectionCursor,          0x03005548  @ see ram_symbols.us.inc
 .set g_dwItemUseItem,                0x0300554C  @ see ram_symbols.us.inc
 .set g_dwItemUseQuantity,            0x03005550  @ see ram_symbols.us.inc
+.set g_pHippogriffGlide,             0x03002088  @ see ram_symbols.us.inc
+.set g_adwHippogriffGlideUnk,        0x03005D70  @ see ram_symbols.us.inc
+.set g_saveManager,                  0x030055F8  @ see ram_symbols.us.inc
+.set g_dwPendingGameMode,            0x03003F78  @ see ram_symbols.us.inc
+.set g_Riddikulus,                   0x03002048  @ see ram_symbols.us.inc
+.set g_dwListMenuSelection,          0x03003F74  @ see ram_symbols.us.inc
+.set g_HarryVsDementors,             0x03002E18  @ see ram_symbols.us.inc
+.set g_pWizardCrackerPopIt,          0x03005290  @ see ram_symbols.us.inc
+.set g_dwWizardCrackerPopItForceOverworldExit, 0x03005288  @ see ram_symbols.us.inc
+.set g_DivinationTea,                0x03005B88  @ see ram_symbols.us.inc
+.set g_ServePumpkinJuice,            0x03005298  @ see ram_symbols.us.inc

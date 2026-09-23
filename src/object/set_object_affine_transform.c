@@ -1,7 +1,7 @@
 #include "object.h"
 #include "graphics.h"
 
-void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, u16 wAngle, u8 bMode)
+void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode)
 {
     s16 sx, sy;
     u16 slotId;

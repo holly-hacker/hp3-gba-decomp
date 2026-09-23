@@ -111,20 +111,51 @@ thumb-func 0x08007454 ClearBgTilemap
 thumb-func 0x08007464 sub_08007464
 thumb-func 0x08007474 FillBgTilemap_candidate
 thumb-func 0x080074F4 FillBgTile_candidate
+thumb-func 0x080075C0 sub_080075C0
 thumb-func 0x0800778C LoadBgGraphic
+thumb-func 0x080077C8 sub_080077C8
 thumb-func 0x08007800 LoadEmbeddedPalette_candidate
 thumb-func 0x080079AC CopyBgTilemapRect_candidate
 thumb-func 0x08007A90 sub_08007A90
+thumb-func 0x08007AF0 sub_08007AF0
 thumb-func 0x08007B30 SetBgScrollX_candidate
 thumb-func 0x08007B88 SetBgScroll_candidate
 
+thumb-func 0x08007C2C sub_08007C2C
+thumb-func 0x08007CB4 sub_08007CB4
+thumb-func 0x08007CD4 sub_08007CD4
+thumb-func 0x08007D14 sub_08007D14
 thumb-func 0x08007EB8 SetBgPriority
-thumb-func 0x08008050 InitializeRiddikulusMinigame
-thumb-func 0x080080F4 UpdateRiddikulusMinigame
-thumb-func 0x08008AD0 ExitRiddikulusMinigame
-thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
-thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
-thumb-func 0x08009C54 ExitHippogriffGlideMinigame
+c-file 0x08008050 0x080080F4 src/gamemode/modes/minigame/riddikulus/initialize_riddikulus_minigame.c InitializeRiddikulusMinigame
+c-file 0x080080F4 0x08008360 src/gamemode/modes/minigame/riddikulus/update_riddikulus_minigame.c UpdateRiddikulusMinigame
+thumb-func 0x08008360 sub_08008360
+thumb-func 0x08008404 sub_08008404
+thumb-func 0x08008604 sub_08008604
+thumb-func 0x08008698 sub_08008698
+thumb-func 0x08008968 sub_08008968
+thumb-func 0x08008A18 sub_08008A18
+c-file 0x08008AD0 0x08008B2C src/gamemode/modes/minigame/riddikulus/exit_riddikulus_minigame.c ExitRiddikulusMinigame
+thumb-func 0x08008B2C sub_08008B2C
+thumb-func 0x08008B84 sub_08008B84
+thumb-func 0x08008BD8 sub_08008BD8
+thumb-func 0x08008C4C sub_08008C4C
+thumb-func 0x08008CA8 sub_08008CA8
+thumb-func 0x08008D4C sub_08008D4C
+thumb-func 0x08008D80 sub_08008D80
+thumb-func 0x08008DFC sub_08008DFC
+thumb-func 0x08008E48 sub_08008E48
+thumb-func 0x08008E88 sub_08008E88
+thumb-func 0x0800907C sub_0800907C
+thumb-func 0x08009144 ProcessHippogriffGlideMinigameFrame
+thumb-func 0x080094C8 InitializeHippogriffGlideResultsMenu
+thumb-func 0x080096A0 HandleHippogriffGlideResultsMenuSelect
+thumb-func 0x0800975C sub_0800975C
+c-file 0x08009B70 0x08009BE0 src/gamemode/modes/minigame/hippogriff_glide/initialize_hippogriff_glide_minigame.c InitializeHippogriffGlideMinigame
+c-file 0x08009BE0 0x08009C54 src/gamemode/modes/minigame/hippogriff_glide/update_hippogriff_glide_minigame.c UpdateHippogriffGlideMinigame
+c-file 0x08009C54 0x08009CA4 src/gamemode/modes/minigame/hippogriff_glide/exit_hippogriff_glide_minigame.c ExitHippogriffGlideMinigame
+thumb-func 0x08009D8C sub_08009D8C
+thumb-func 0x08009E1C sub_08009E1C
+thumb-func 0x08009F80 HandleHippogriffGlideExitSelect
 thumb-func 0x0800A03C TickCameraFocus_candidate
 thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
 thumb-func 0x0800A348 sub_0800A348
@@ -133,6 +164,7 @@ thumb-func 0x0800A4E8 SetRoomScrollBounds
 thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
 thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
 thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
+thumb-func 0x0800A598 sub_0800A598
 thumb-func 0x0800A610 TickBgTileAnimations_candidate
 thumb-func 0x0800A914 sub_0800A914
 c-file 0x0800A950 0x0800AA54 src/gamemode/modes/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
@@ -173,6 +205,7 @@ thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
 thumb-func 0x0800D354 sub_0800D354
 thumb-func 0x0800D39C ClearPaletteRam
+thumb-func 0x0800D57C sub_0800D57C
 c-file 0x0800DBAC 0x0800DDB0 src/gamemode/modes/battle/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 0x0800DE50 src/gamemode/modes/battle/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
@@ -345,9 +378,21 @@ thumb-func 0x0801DF6C sub_0801DF6C
 thumb-func 0x0801E05C sub_0801E05C
 thumb-func 0x0801E0D8 sub_0801E0D8
 thumb-func 0x0801E0DC sub_0801E0DC
-thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
-thumb-func 0x0801E280 UpdateHarryVsDementorsMinigame
-thumb-func 0x0801EE1C ExitHarryVsDementorsMinigame
+c-file 0x0801E174 0x0801E280 src/gamemode/modes/minigame/harry_vs_dementors/initialize_harry_vs_dementors_minigame.c InitializeHarryVsDementorsMinigame
+c-file 0x0801E280 0x0801E414 src/gamemode/modes/minigame/harry_vs_dementors/update_harry_vs_dementors_minigame.c UpdateHarryVsDementorsMinigame
+thumb-func 0x0801E414 sub_0801E414
+thumb-func 0x0801E564 sub_0801E564
+thumb-func 0x0801E5F4 sub_0801E5F4
+thumb-func 0x0801E6A0 sub_0801E6A0
+thumb-func 0x0801E8CC sub_0801E8CC
+thumb-func 0x0801EAF8 sub_0801EAF8
+thumb-func 0x0801ED48 sub_0801ED48
+c-file 0x0801EE1C 0x0801EE64 src/gamemode/modes/minigame/harry_vs_dementors/exit_harry_vs_dementors_minigame.c ExitHarryVsDementorsMinigame
+thumb-func 0x0801EE64 sub_0801EE64
+thumb-func 0x0801EF48 sub_0801EF48
+thumb-func 0x0801EFA0 sub_0801EFA0
+thumb-func 0x0801EFF4 sub_0801EFF4
+thumb-func 0x0801F108 sub_0801F108
 c-file 0x0801F264 0x0801F36C src/gamemode/modes/startup/initialize_startup.c InitializeStartup
 c-file 0x0801F36C 0x0801F524 src/gamemode/modes/startup/update_startup.c UpdateStartup
 c-file 0x0801F524 0x0801F534 src/gamemode/modes/startup/exit_startup.c ExitStartup
@@ -516,6 +561,8 @@ c-file 0x0802C984 0x0802C988 src/gamemode/handle_game_mode_none_noop.c HandleGam
 thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CD88 ExitWizardCrackerPopItDifficultySelect
+thumb-func 0x0802CDB8 sub_0802CDB8
+thumb-func 0x0802CEE4 sub_0802CEE4
 c-file 0x0802CF38 0x0802D08C src/gamemode/modes/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
 thumb-func 0x0802D08C HandleMinigameMenuSelection
 thumb-func 0x0802D148 DrawMinigameSelectMenu
@@ -579,12 +626,37 @@ thumb-func 0x0803232C sub_0803232C
 thumb-func 0x0803233C sub_0803233C
 thumb-func 0x080323AC sub_080323AC
 thumb-func 0x080323B0 sub_080323B0
-thumb-func 0x080323B4 InitializeWizardCrackerPopItMinigame
-thumb-func 0x08032534 UpdateWizardCrackerPopItMinigame
-thumb-func 0x080338A4 ExitWizardCrackerPopItMinigame
-thumb-func 0x08033DA4 InitializeUnusedServePumpkinJuiceMinigame
-thumb-func 0x08033EE0 UpdateUnusedServePumpkinJuiceMinigame
-thumb-func 0x08035240 ExitUnusedServePumpkinJuiceMinigame
+c-file 0x080323B4 0x08032534 src/gamemode/modes/minigame/wizard_cracker_pop_it/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
+c-file 0x08032534 0x08032894 src/gamemode/modes/minigame/wizard_cracker_pop_it/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
+thumb-func 0x08032894 sub_08032894
+thumb-func 0x080328FC sub_080328FC
+thumb-func 0x0803296C sub_0803296C
+thumb-func 0x08032AA8 sub_08032AA8
+thumb-func 0x08032B88 sub_08032B88
+thumb-func 0x08032CFC sub_08032CFC
+thumb-func 0x08032E5C sub_08032E5C
+thumb-func 0x080330C8 sub_080330C8
+thumb-func 0x080331D4 sub_080331D4
+thumb-func 0x08033710 sub_08033710
+c-file 0x080338A4 0x08033920 src/gamemode/modes/minigame/wizard_cracker_pop_it/exit_wizard_cracker_pop_it_minigame.c ExitWizardCrackerPopItMinigame
+thumb-func 0x08033B28 sub_08033B28
+thumb-func 0x08033B74 sub_08033B74
+thumb-func 0x08033BE4 sub_08033BE4
+thumb-func 0x08033C30 sub_08033C30
+thumb-func 0x08033CA0 sub_08033CA0
+thumb-func 0x08033CE0 sub_08033CE0
+thumb-func 0x08033D34 sub_08033D34
+thumb-func 0x08033D6C sub_08033D6C
+c-file 0x08033DA4 0x08033EE0 src/gamemode/modes/minigame/serve_pumpkin_juice/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
+c-file 0x08033EE0 0x08034174 src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
+thumb-func 0x08034F20 sub_08034F20
+thumb-func 0x0803518C sub_0803518C
+c-file 0x08035240 0x0803526C src/gamemode/modes/minigame/serve_pumpkin_juice/exit_serve_pumpkin_juice_minigame.c ExitUnusedServePumpkinJuiceMinigame
+thumb-func 0x0803526C sub_0803526C
+thumb-func 0x08035330 sub_08035330
+thumb-func 0x0803539C sub_0803539C
+thumb-func 0x08035418 sub_08035418
+thumb-func 0x08035474 sub_08035474
 c-file 0x08035764 0x08035898 src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 thumb-func 0x08035A34 sub_08035A34
 c-file 0x08035D08 0x08035D20 src/gamemode/modes/status_equip/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
@@ -727,15 +799,22 @@ thumb-func 0x0803FE88 SetMusicVolume
 thumb-func 0x0803FEA4 UnmuteAllMusicChannels
 thumb-func 0x0803FEB4 PlayMusicModule
 
+thumb-func 0x0803FF04 sub_0803FF04
 thumb-func 0x0803FF1C PauseMusic
 thumb-func 0x0803FF40 ResumeMusic
 thumb-func 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0804115C InitializeFredAndGeorgesShop
 thumb-func 0x080411E0 UpdateFredAndGeorgesShop
 thumb-func 0x0804126C ExitFredAndGeorgesShop
-thumb-func 0x080418EC InitializeDivinationTeaMinigame
-thumb-func 0x08041A60 UpdateDivinationTeaMinigame
-thumb-func 0x0804223C ExitDivinationTeaMinigame
+c-file 0x080418EC 0x08041A60 src/gamemode/modes/minigame/divination_tea/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
+c-file 0x08041A60 0x08041D84 src/gamemode/modes/minigame/divination_tea/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
+thumb-func 0x08041D84 sub_08041D84
+thumb-func 0x08041FA0 sub_08041FA0
+thumb-func 0x0804200C sub_0804200C
+thumb-func 0x080421B8 sub_080421B8
+c-file 0x0804223C 0x08042288 src/gamemode/modes/minigame/divination_tea/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
+thumb-func 0x08042288 sub_08042288
+thumb-func 0x080422D0 sub_080422D0
 thumb-func 0x08042568 InitDialogTextEngine
 c-file 0x08042588 0x080425D8 src/text/set_language.c SetLanguage
 c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
@@ -817,6 +896,8 @@ c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 
 # End of main code section, start of data section
 
+label 0x0804C1B0 g_dwRiddikulusBg0Control
+label 0x0804C1B4 g_dwRiddikulusBg3Control
 label 0x0804C444 g_dwDebugMenuMainBg0Control
 label 0x0804C448 g_dwDebugMenuMainBg1Control
 label 0x0804C44C g_DebugMenuMainAnimFrames
@@ -862,6 +943,8 @@ battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 
 # Playtime counters, shared with JP at the same helper addresses.
 c-file 0x0805BA8C 0x0805BC00 src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
+label 0x0805E174 g_dwHarryVsDementorsBg0Control
+label 0x0805E178 g_dwHarryVsDementorsBg3Control
 label 0x0805E280 g_dwStartupBg3Control
 label 0x0805E284 g_dwStartupBg2Control
 label 0x0805E288 g_dwStartupBg1Control
@@ -891,6 +974,18 @@ label 0x0806605C g_dwMinigameMenuBg3Control
 label 0x08066060 g_dwMinigameMenuBg1Control
 label 0x08068C38 g_aInGameMenuEntries
 label 0x08068CE0 g_InGameMenuDefinition
+label 0x08068D04 g_dwWizardCrackerPopItBg1Control
+label 0x08068D08 g_dwWizardCrackerPopItBg2Control
+label 0x08068D0C g_dwWizardCrackerPopItBg0Control
+label 0x08068D10 g_dwWizardCrackerPopItBg3Control
+label 0x08068D14 g_aWizardCrackerPopItPalettes
+label 0x08069184 g_dwServePumpkinJuiceBg0Control
+label 0x08069188 g_dwServePumpkinJuiceBg1Control
+label 0x0806918C g_dwServePumpkinJuiceBg2Control
+label 0x08069190 g_dwServePumpkinJuiceBg3Control
+label 0x08069328 g_ServePumpkinJuiceTable
+label 0x080693B0 g_ServePumpkinJuicePauseText
+label 0x080693C0 g_ServePumpkinJuiceResultsText
 label 0x0806B1B4 g_aItemsSectionFilters
 label 0x0806B1F0 g_ItemsSectionMenuDefinition
 label 0x0806B2FC g_aStatusEquipSlots
@@ -898,6 +993,12 @@ c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 
 # Dialog/UI text data
 # dialog-text <start> <end> <json-file> <name>
+label 0x0806BB00 g_DivinationTeaCupAnimB
+label 0x0806BB44 g_dwDivinationTeaBg2Control
+label 0x0806BB48 g_dwDivinationTeaBg0Control
+label 0x0806BB4C g_dwDivinationTeaBg1Control
+label 0x0806BB58 g_DivinationTeaCupAnimA
+label 0x0806BB70 g_DivinationTeaTable
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable
 label 0x0806BFD0 g_dwMainMenuBg3Control
 label 0x0806BFD4 g_dwMainMenuBg2Control
@@ -912,6 +1013,8 @@ label 0x080BC1C4 g_MainMenuPalette
 label 0x080BC538 g_DebugMenuCursorSpawnData
 
 # Krawall audio data
+label 0x080BD710 g_HarryVsDementorsObject18SpawnData
+label 0x080BF5E4 g_HarryVsDementorsObject1CSpawnData
 label 0x080CD814 g_StatusEquipSlotCursorSpawnData
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
@@ -966,7 +1069,14 @@ krawall-module 0x08D22E4C 0x08D250B0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
+label 0x08D7E528 g_WizardCrackerPopItBg1Graphic
+label 0x08D7FF44 g_WizardCrackerPopItBg0Graphic
+label 0x08D8CDD4 g_WizardCrackerPopItBg2Graphic
+label 0x08D97428 g_ServePumpkinJuiceBg0Graphic
+label 0x08D989F4 g_ServePumpkinJuiceBg1Graphic
+label 0x08D99900 g_ServePumpkinJuiceBg2Graphic
 label 0x08D9A360 g_DebugMenuGraphic
+label 0x08DA08BE g_ServePumpkinJuicePanelData
 label 0x08DBF920 g_MenuBg3Graphic
 label 0x08DC456C g_StartupBg3Graphic
 label 0x08DC5AD8 g_StartupBg2Graphic
@@ -976,6 +1086,11 @@ label 0x08DDCE1C g_LanguageSelectBg1Graphic
 label 0x08DE5214 g_MenuScreenGraphic
 label 0x08DF2664 g_SaveMenuBg1Graphic
 label 0x08E349CC g_MainMenuBg2Graphic
+label 0x08E3849C g_DivinationTeaBg2Graphic
+label 0x08E39AA4 g_DivinationTeaBg1Graphic
+label 0x08E5B4AC g_RiddikulusBgGraphic
+label 0x08E5EB80 g_HarryVsDementorsBgGraphicA
+label 0x08E62538 g_HarryVsDementorsBgGraphicB
 
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb

@@ -191,6 +191,52 @@ US (0x11 `0x080395D0`-`0x080397A4`, 0x10 `0x080398A8`-`0x080399C8`, 0x12
 `0x080399C8`-`0x08039A68`), taken from JP's dispatch table; the RAM
 globals sit +0x60 from US.
 
+## Minigames (0x1B, 0x1C, 0x24, 0x2B, 0x2F, 0x33)
+
+PROVEN from US decompiles; the state names in the headers are provisional.
+
+| Mode | Screen state (US) | Header | High scores (`g_saveManager`) |
+|---|---|---|---|
+| 0x1B `WizardCrackerPopItMinigame` | `*g_pWizardCrackerPopIt` (`0x03005230`, allocated 0x1AC bytes) | `include/wizard_cracker_pop_it.h` | `adwWizardCrackerPopItHighScores` |
+| 0x1C `DivinationTeaMinigame` | `g_DivinationTea` (`0x03005B28`) | `include/divination_tea.h` | none |
+| 0x24 `UnusedServePumpkinJuiceMinigame` | `g_ServePumpkinJuice` (`0x03005238`) | `include/serve_pumpkin_juice.h` | none |
+| 0x2B `HippogriffGlideMinigame` | `*g_pHippogriffGlide` (`0x03002088`, allocated 0x1F0 bytes) | `include/hippogriff_glide.h` | `adwHippogriffGlideHighScores` |
+| 0x2F `RiddikulusMinigame` | `g_Riddikulus` (`0x03002048`) | `include/riddikulus.h` | `adwRiddikulusHighScores` |
+| 0x33 `HarryVsDementorsMinigame` | `g_HarryVsDementors` (`0x03002E18`) | `include/harry_vs_dementors.h` | none |
+
+- Each update handler is a `switch` on `dwModeState`; the handlers only
+  drive the state machine and call the screen's own helpers, which are not
+  decompiled yet (`sub_` names in the headers).
+- The three-entry high score arrays are indexed by the difficulty, which
+  the minigame menu passes in `dwCurrentGameModeArg3`, and sit at
+  `SaveManager+0x10`/`+0x1C`/`+0x28` (`docs/formats/save.md`). Wizard
+  Cracker Pop-it raises its entry in its results state and when a round is
+  won, Riddikulus on A/Start in its results state, Hippogriff Glide in its
+  finish state.
+- Riddikulus and Harry vs Dementors share a results/pause menu shape:
+  `dwModeScratchB` (the word at `0x03003F14`, which Riddikulus and Wizard
+  Cracker Pop-it name separately as `g_dwListMenuSelection`) is the
+  selected row, advanced by `StepWrappedSelectionVertical_candidate`; A
+  either restarts the minigame with `PushGameMode_3(<mode>, 6, arg2, arg3)`
+  or calls the screen's exit helper.
+- `UnusedServePumpkinJuiceMinigame` has handlers in the dispatch table but
+  no known pusher; its menu rows leave through
+  `PushGameMode_2(MinigameDifficultySelect, 6, arg2)`.
+- `DivinationTeaMinigame` writes BG2's affine parameters directly, drives
+  16 leaf objects through `SetObjectAffineTransform` (scale words have 8
+  fractional bits) and shows a random fortune: dialog text `0xA5F` plus
+  `Mt19937RandRange(0, 0x5A)`. Its final state pushes `MinigameMenu` with cursor entry 3.
+
+Handlers are matched in `src/gamemode/modes/minigame/<minigame>/` for both versions.
+JP handlers (init/update/exit, from JP's dispatch table): 0x1B
+`0x080323F8`/`0x08032578`/`0x080338E8`, 0x1C
+`0x08041954`/`0x08041AC8`/`0x080422A4`, 0x24
+`0x08033DE8`/`0x08033F24`/`0x08035284`, 0x33
+`0x0801E170`/`0x0801E27C`/`0x0801EE18`; 0x2B and 0x2F sit at the US
+addresses. The screen state addresses match US except Wizard Cracker
+Pop-it (`0x03005290`), Divination Tea (`0x03005B88`) and Serve Pumpkin
+Juice (`0x03005298`).
+
 ## Not yet located
 
 - Whether `DebugMenuMain` is reachable/meaningful from every game state,

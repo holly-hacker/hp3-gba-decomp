@@ -47,6 +47,7 @@ c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
 c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
 c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
 
+thumb-func 0x0800366C SetObjectAffineTransform
 thumb-func 0x08003708 SetObjectFlippedX
 thumb-func 0x08003808 ReleaseObjectAffineSlot
 thumb-func 0x08003848 StartObjectAffineScaleTween
@@ -83,20 +84,51 @@ thumb-func 0x08007454 ClearBgTilemap
 thumb-func 0x08007464 sub_08007464
 thumb-func 0x08007474 FillBgTilemap_candidate
 thumb-func 0x080074F4 FillBgTile_candidate
+thumb-func 0x080075C0 sub_080075C0
 thumb-func 0x0800778C LoadBgGraphic
+thumb-func 0x080077C8 sub_080077C8
 thumb-func 0x08007800 LoadEmbeddedPalette_candidate
 thumb-func 0x080079AC CopyBgTilemapRect_candidate
 thumb-func 0x08007A90 sub_08007A90
+thumb-func 0x08007AF0 sub_08007AF0
 thumb-func 0x08007B30 SetBgScrollX_candidate
 thumb-func 0x08007B88 SetBgScroll_candidate
 
+thumb-func 0x08007C2C sub_08007C2C
+thumb-func 0x08007CB4 sub_08007CB4
+thumb-func 0x08007CD4 sub_08007CD4
+thumb-func 0x08007D14 sub_08007D14
 thumb-func 0x08007EB8 SetBgPriority
-thumb-func 0x08008050 InitializeRiddikulusMinigame
-thumb-func 0x080080F4 UpdateRiddikulusMinigame
-thumb-func 0x08008AD0 ExitRiddikulusMinigame
-thumb-func 0x08009B70 InitializeHippogriffGlideMinigame
-thumb-func 0x08009BE0 UpdateHippogriffGlideMinigame
-thumb-func 0x08009C54 ExitHippogriffGlideMinigame
+c-file 0x08008050 0x080080F4 src/gamemode/modes/minigame/riddikulus/initialize_riddikulus_minigame.c InitializeRiddikulusMinigame
+c-file 0x080080F4 0x08008360 src/gamemode/modes/minigame/riddikulus/update_riddikulus_minigame.c UpdateRiddikulusMinigame
+thumb-func 0x08008360 sub_08008360
+thumb-func 0x08008404 sub_08008404
+thumb-func 0x08008604 sub_08008604
+thumb-func 0x08008698 sub_08008698
+thumb-func 0x08008968 sub_08008968
+thumb-func 0x08008A18 sub_08008A18
+c-file 0x08008AD0 0x08008B2C src/gamemode/modes/minigame/riddikulus/exit_riddikulus_minigame.c ExitRiddikulusMinigame
+thumb-func 0x08008B2C sub_08008B2C
+thumb-func 0x08008B84 sub_08008B84
+thumb-func 0x08008BD8 sub_08008BD8
+thumb-func 0x08008C4C sub_08008C4C
+thumb-func 0x08008CA8 sub_08008CA8
+thumb-func 0x08008D4C sub_08008D4C
+thumb-func 0x08008D80 sub_08008D80
+thumb-func 0x08008DFC sub_08008DFC
+thumb-func 0x08008E48 sub_08008E48
+thumb-func 0x08008E88 sub_08008E88
+thumb-func 0x0800907C sub_0800907C
+thumb-func 0x08009144 ProcessHippogriffGlideMinigameFrame
+thumb-func 0x080094C8 InitializeHippogriffGlideResultsMenu
+thumb-func 0x080096A0 HandleHippogriffGlideResultsMenuSelect
+thumb-func 0x0800975C sub_0800975C
+c-file 0x08009B70 0x08009BE0 src/gamemode/modes/minigame/hippogriff_glide/initialize_hippogriff_glide_minigame.c InitializeHippogriffGlideMinigame
+c-file 0x08009BE0 0x08009C54 src/gamemode/modes/minigame/hippogriff_glide/update_hippogriff_glide_minigame.c UpdateHippogriffGlideMinigame
+c-file 0x08009C54 0x08009CA4 src/gamemode/modes/minigame/hippogriff_glide/exit_hippogriff_glide_minigame.c ExitHippogriffGlideMinigame
+thumb-func 0x08009D8C sub_08009D8C
+thumb-func 0x08009E1C sub_08009E1C
+thumb-func 0x08009F80 HandleHippogriffGlideExitSelect
 thumb-func 0x0800A03C TickCameraFocus_candidate
 thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
 thumb-func 0x0800A348 sub_0800A348
@@ -105,6 +137,7 @@ thumb-func 0x0800A4E8 SetRoomScrollBounds
 thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
 thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
 thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
+thumb-func 0x0800A598 sub_0800A598
 thumb-func 0x0800A610 TickBgTileAnimations_candidate
 thumb-func 0x0800A914 sub_0800A914
 thumb-func 0x0800AB34 ResetDebugPartyFromArgs_candidate
@@ -142,6 +175,7 @@ thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
 thumb-func 0x0800D354 sub_0800D354
 thumb-func 0x0800D39C ClearPaletteRam
+thumb-func 0x0800D57C sub_0800D57C
 thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
 thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate
@@ -158,13 +192,31 @@ thumb-func 0x0801DC68 sub_0801DC6C
 c-file 0x0801DD3C 0x0801DD84 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 thumb-func 0x0801E058 sub_0801E05C
 thumb-func 0x0801E0D8 sub_0801E0DC
+c-file 0x0801E170 0x0801E27C src/gamemode/modes/minigame/harry_vs_dementors/initialize_harry_vs_dementors_minigame.c InitializeHarryVsDementorsMinigame
+c-file 0x0801E27C 0x0801E410 src/gamemode/modes/minigame/harry_vs_dementors/update_harry_vs_dementors_minigame.c UpdateHarryVsDementorsMinigame
+thumb-func 0x0801E410 sub_0801E414
+thumb-func 0x0801E560 sub_0801E564
+thumb-func 0x0801E5F0 sub_0801E5F4
+thumb-func 0x0801E69C sub_0801E6A0
+thumb-func 0x0801E8C8 sub_0801E8CC
+thumb-func 0x0801EAF4 sub_0801EAF8
+thumb-func 0x0801ED44 sub_0801ED48
+c-file 0x0801EE18 0x0801EE60 src/gamemode/modes/minigame/harry_vs_dementors/exit_harry_vs_dementors_minigame.c ExitHarryVsDementorsMinigame
+thumb-func 0x0801EE60 sub_0801EE64
+thumb-func 0x0801EF44 sub_0801EF48
+thumb-func 0x0801EF9C sub_0801EFA0
+thumb-func 0x0801EFF0 sub_0801EFF4
+thumb-func 0x0801F104 sub_0801F108
 thumb-func 0x0801FB60 sub_0801FB78
 thumb-func 0x0801FD88 InitDisplayControl
 thumb-func 0x08020210 TickRoomTileAnimations_candidate
 thumb-func 0x08020390 InitRoomTileAnimationTable_candidate
+thumb-func 0x0802086C DrawStringAligned
 thumb-func 0x08020D3C InitTextMacroTable
+thumb-func 0x08020D74 SetTextTargetFromBgControl
 thumb-func 0x08020E04 SelectTextFont
 thumb-func 0x08020F64 DrawTextLines
+thumb-func 0x08021018 PrintTextBox
 thumb-func 0x080215BC NoopInit
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
@@ -173,6 +225,7 @@ thumb-func 0x08025114 InstallBgTileCodec
 c-file 0x08025504 0x0802566C src/input/update_key_input.c UpdateKeyInput
 thumb-func 0x08025944 InitInputSystem_candidate
 c-file 0x08025954 0x080259B0 src/input/reset_key_input.c ResetKeyInput
+thumb-func 0x08025AD0 StepWrappedSelectionVertical_candidate
 thumb-func 0x080260C4 InitInterruptSystem
 thumb-func 0x08026104 EnableInterrupts
 thumb-func 0x080261B4 SetVBlankCallback
@@ -217,15 +270,21 @@ thumb-func 0x0802C4AC memset
 thumb-func 0x0802C710 TickGameModeStack
 thumb-func 0x0802C7AC InitGameModeStack
 thumb-func 0x0802C808 PushGameMode
+thumb-func 0x0802C824 PushGameMode_2
+thumb-func 0x0802C844 PushGameMode_3
 c-file 0x0802C864 0x0802C8A4 src/gamemode/tick_frame_systems.c TickFrameSystems
 thumb-func 0x0802C8A4 IsGameModeTransitionPending
+thumb-func 0x0802CDFC sub_0802CDB8
+thumb-func 0x0802CF28 sub_0802CEE4
 thumb-func 0x0802D588 NoopInit3
+thumb-func 0x0802D6FC sub_0802D6B8
 thumb-func 0x0802DD98 NoopInit2
 thumb-func 0x0802FF70 InitOamSystem
 thumb-func 0x080301C8 HideUnusedOamEntries
 thumb-func 0x08030868 ClearResourceCacheSlots
 thumb-func 0x0803091C ClaimObjectEffectResource
 thumb-func 0x08030990 sub_0803094C
+thumb-func 0x080309A4 sub_08030960
 thumb-func 0x080315E8 InitResourceCachePools
 thumb-func 0x08031718 sub_080316D4
 thumb-func 0x08031760 sub_0803171C
@@ -236,6 +295,37 @@ thumb-func 0x08032158 TickBlendFadeOut_candidate
 thumb-func 0x0803217C sub_08032138
 thumb-func 0x080321EC sub_080321A8
 thumb-func 0x080322C0 sub_0803227C
+c-file 0x080323F8 0x08032578 src/gamemode/modes/minigame/wizard_cracker_pop_it/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
+c-file 0x08032578 0x080328D8 src/gamemode/modes/minigame/wizard_cracker_pop_it/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
+thumb-func 0x080328D8 sub_08032894
+thumb-func 0x08032940 sub_080328FC
+thumb-func 0x080329B0 sub_0803296C
+thumb-func 0x08032AEC sub_08032AA8
+thumb-func 0x08032BCC sub_08032B88
+thumb-func 0x08032D40 sub_08032CFC
+thumb-func 0x08032EA0 sub_08032E5C
+thumb-func 0x0803310C sub_080330C8
+thumb-func 0x08033218 sub_080331D4
+thumb-func 0x08033754 sub_08033710
+c-file 0x080338E8 0x08033964 src/gamemode/modes/minigame/wizard_cracker_pop_it/exit_wizard_cracker_pop_it_minigame.c ExitWizardCrackerPopItMinigame
+thumb-func 0x08033B6C sub_08033B28
+thumb-func 0x08033BB8 sub_08033B74
+thumb-func 0x08033C28 sub_08033BE4
+thumb-func 0x08033C74 sub_08033C30
+thumb-func 0x08033CE4 sub_08033CA0
+thumb-func 0x08033D24 sub_08033CE0
+thumb-func 0x08033D78 sub_08033D34
+thumb-func 0x08033DB0 sub_08033D6C
+c-file 0x08033DE8 0x08033F24 src/gamemode/modes/minigame/serve_pumpkin_juice/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
+c-file 0x08033F24 0x080341B8 src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
+thumb-func 0x08034F64 sub_08034F20
+thumb-func 0x080351D0 sub_0803518C
+c-file 0x08035284 0x080352B0 src/gamemode/modes/minigame/serve_pumpkin_juice/exit_serve_pumpkin_juice_minigame.c ExitUnusedServePumpkinJuiceMinigame
+thumb-func 0x080352B0 sub_0803526C
+thumb-func 0x08035374 sub_08035330
+thumb-func 0x080353E0 sub_0803539C
+thumb-func 0x0803545C sub_08035418
+thumb-func 0x080354B8 sub_08035474
 c-file 0x080357A8 0x080358DC src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 thumb-func 0x08035A78 sub_08035A34
 c-file 0x08035D4C 0x08035D64 src/gamemode/modes/status_equip/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
@@ -302,16 +392,31 @@ thumb-func 0x0803D330 InitScreenTransitionState_candidate
 thumb-func 0x0803D378 SetFadeToWhite
 thumb-func 0x0803D3A0 SetAlphaBlendTargets
 thumb-func 0x0803D3B8 SetAlphaBlendCoefficients
+thumb-func 0x0803D418 PlayScreenTransitionInByIndex
+thumb-func 0x0803D450 PlayScreenTransitionOutByIndex
 thumb-func 0x0803DAB4 UpdateOverworldCamera_candidate
 thumb-func 0x0803E564 sub_0803E4FC
 c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId
 thumb-func 0x0803FCD0 PlaySoundById
 thumb-func 0x0803FE18 kramInstall
+thumb-func 0x0803FF1C PlayMusicModule
+thumb-func 0x0803FF6C sub_0803FF04
+thumb-func 0x0803FFD8 PlaySoundEffect_candidate
+c-file 0x08041954 0x08041AC8 src/gamemode/modes/minigame/divination_tea/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
+c-file 0x08041AC8 0x08041DEC src/gamemode/modes/minigame/divination_tea/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
+thumb-func 0x08041DEC sub_08041D84
+thumb-func 0x08042008 sub_08041FA0
+thumb-func 0x08042074 sub_0804200C
+thumb-func 0x08042220 sub_080421B8
+c-file 0x080422A4 0x080422F0 src/gamemode/modes/minigame/divination_tea/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
+thumb-func 0x080422F0 sub_08042288
+thumb-func 0x08042338 sub_080422D0
 thumb-func 0x080425D0 InitDialogTextEngine
 thumb-func 0x08042624 GetDialogText
 thumb-func 0x08042E6C sub_08042E2C
 thumb-func 0x08044FC0 InitScanlineEffects
 thumb-func 0x080452E0 InstallIwramObjTileAllocRoutine
+thumb-func 0x08045304 InitObjTileAllocBitmaps
 thumb-func 0x08045440 FreeObjectVramTileAllocation
 thumb-func 0x0804589C TickScreenWindows_candidate
 thumb-func 0x08049DBC bios_CPUSet
@@ -330,6 +435,8 @@ c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
 
 # End of main code section, start of data section
 
+label 0x0804C0DC g_dwRiddikulusBg0Control
+label 0x0804C0E0 g_dwRiddikulusBg3Control
 c-file 0x0804C422 0x0804C542 src/data/playable_character_names.c sPlayableCharacterNames
 c-file 0x0804CDF0 0x0804D450 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 
@@ -344,6 +451,8 @@ c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounter
 
 # Playtime counters, shared source with US. The main-loop function and
 # constants follow JP's save-state layout.
+label 0x0805E0A0 g_dwHarryVsDementorsBg0Control
+label 0x0805E0A4 g_dwHarryVsDementorsBg3Control
 label 0x080604D0 g_stPlaytimeFrameDelta
 label 0x080604D8 g_stPlaytimeHourLimit
 
@@ -370,9 +479,30 @@ label 0x080604D8 g_stPlaytimeHourLimit
 # locally with `just extract-krawall` before building. tools/krawall/pack_krawall.py
 # writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
 # like everything else in build/), which is what gen_link.py includes.
+label 0x08068C90 g_dwWizardCrackerPopItBg1Control
+label 0x08068C94 g_dwWizardCrackerPopItBg2Control
+label 0x08068C98 g_dwWizardCrackerPopItBg0Control
+label 0x08068C9C g_dwWizardCrackerPopItBg3Control
+label 0x08068CA0 g_aWizardCrackerPopItPalettes
+label 0x08069110 g_dwServePumpkinJuiceBg0Control
+label 0x08069114 g_dwServePumpkinJuiceBg1Control
+label 0x08069118 g_dwServePumpkinJuiceBg2Control
+label 0x0806911C g_dwServePumpkinJuiceBg3Control
+label 0x080692B4 g_ServePumpkinJuiceTable
+label 0x0806933C g_ServePumpkinJuicePauseText
+label 0x0806934C g_ServePumpkinJuiceResultsText
 label 0x0806B140 g_aItemsSectionFilters
 label 0x0806B17C g_ItemsSectionMenuDefinition
 label 0x0806B288 g_aStatusEquipSlots
+label 0x0806BA8C g_DivinationTeaCupAnimB
+label 0x0806BAD0 g_dwDivinationTeaBg2Control
+label 0x0806BAD4 g_dwDivinationTeaBg0Control
+label 0x0806BAD8 g_dwDivinationTeaBg1Control
+label 0x0806BAE4 g_DivinationTeaCupAnimA
+label 0x0806BAFC g_DivinationTeaTable
+label 0x080BC100 g_MainMenuPalette
+label 0x080BD64C g_HarryVsDementorsObject18SpawnData
+label 0x080BF520 g_HarryVsDementorsObject1CSpawnData
 label 0x080CD750 g_StatusEquipSlotCursorSpawnData
 krawall-module 0x08A9C500 0x08AA0884 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0884 0x08AA4C38 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
@@ -427,3 +557,15 @@ krawall-module 0x08D22C7C 0x08D24EE0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D24EE0 0x08D2DAAC data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DAAC 0x08D3C5B4 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C5B4 0x08D3EE2C data/audio/modules/MusPause.json MusPause
+label 0x08D7E358 g_WizardCrackerPopItBg1Graphic
+label 0x08D7FD74 g_WizardCrackerPopItBg0Graphic
+label 0x08D8CC04 g_WizardCrackerPopItBg2Graphic
+label 0x08D97258 g_ServePumpkinJuiceBg0Graphic
+label 0x08D98824 g_ServePumpkinJuiceBg1Graphic
+label 0x08D99730 g_ServePumpkinJuiceBg2Graphic
+label 0x08DA06EE g_ServePumpkinJuicePanelData
+label 0x08E36480 g_DivinationTeaBg2Graphic
+label 0x08E37A88 g_DivinationTeaBg1Graphic
+label 0x08E59490 g_RiddikulusBgGraphic
+label 0x08E5CB64 g_HarryVsDementorsBgGraphicA
+label 0x08E6051C g_HarryVsDementorsBgGraphicB
