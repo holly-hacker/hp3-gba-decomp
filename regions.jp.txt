@@ -101,6 +101,7 @@ thumb-func 0x08007CB4 sub_08007CB4
 thumb-func 0x08007CD4 sub_08007CD4
 thumb-func 0x08007D14 sub_08007D14
 thumb-func 0x08007EB8 SetBgPriority
+thumb-func 0x08007F84 sub_08007F84
 c-file 0x08008050 0x080080F4 src/gamemode/modes/minigame/riddikulus/initialize_riddikulus_minigame.c InitializeRiddikulusMinigame
 c-file 0x080080F4 0x08008360 src/gamemode/modes/minigame/riddikulus/update_riddikulus_minigame.c UpdateRiddikulusMinigame
 thumb-func 0x08008360 sub_08008360
@@ -190,6 +191,14 @@ thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x08010864 ShowBattleMessage
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptObject
+c-file 0x0801D514 0x0801D5C4 src/gamemode/modes/credits/initialize_credits.c InitializeCredits
+c-file 0x0801D5C4 0x0801D6D8 src/gamemode/modes/credits/update_credits.c UpdateCredits
+thumb-func 0x0801D6D8 sub_0801D6DC
+thumb-func 0x0801D778 sub_0801D77C
+c-file 0x0801D854 0x0801D884 src/gamemode/modes/linear_cutscene/exit_linear_cutscene.c ExitLinearCutscene
+c-file 0x0801D884 0x0801D8BC src/gamemode/modes/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
+c-file 0x0801D8BC 0x0801D93C src/gamemode/modes/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
+thumb-func 0x0801D93C sub_0801D940
 thumb-func 0x0801DC68 sub_0801DC6C
 c-file 0x0801DD3C 0x0801DD84 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 thumb-func 0x0801E058 sub_0801E05C
@@ -462,6 +471,9 @@ c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounter
 
 # Playtime counters, shared source with US. The main-loop function and
 # constants follow JP's save-state layout.
+label 0x0805DF4C g_dwLinearCutsceneBg0Control
+label 0x0805DF50 g_dwLinearCutsceneBg1Control
+label 0x0805DF54 g_aLinearCutsceneTable
 label 0x0805E0A0 g_dwHarryVsDementorsBg0Control
 label 0x0805E0A4 g_dwHarryVsDementorsBg3Control
 label 0x080604D0 g_stPlaytimeFrameDelta

@@ -111,3 +111,9 @@
 .set g_ServePumpkinJuice,            0x03005298  @ see ram_symbols.us.inc
 .set g_dwPendingCameraFocusFlag,     0x03004034  @ see ram_symbols.us.inc
 .set g_pPendingCameraFocus_candidate, 0x03004038  @ see ram_symbols.us.inc
+.set g_pLinearCutsceneText,          0x030028B4  @ see ram_symbols.us.inc
+.set g_pLinearCutsceneObject,        0x030028B8  @ see ram_symbols.us.inc
+.set g_dwLinearCutsceneIndex,        0x030028BC  @ see ram_symbols.us.inc
+.set g_dwCreditsScrollRow,           0x030028A8  @ see ram_symbols.us.inc
+.set g_dwCreditsLine,                0x030028AC  @ see ram_symbols.us.inc
+.set g_dwCreditsTileCursor,          0x030028B0  @ see ram_symbols.us.inc

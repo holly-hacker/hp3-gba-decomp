@@ -281,3 +281,9 @@
 
 @ --- Serve Pumpkin Juice minigame (see include/serve_pumpkin_juice.h) ---
 .set g_ServePumpkinJuice, 0x03005238  @ ServePumpkinJuiceState
+.set g_pLinearCutsceneText,            0x030028B4  @ u8 *: unread remainder of the cutscene's text
+.set g_pLinearCutsceneObject,          0x030028B8  @ Object *; see include/linear_cutscene.h
+.set g_dwLinearCutsceneIndex,          0x030028BC  @ u32: GameMode - Credits
+.set g_dwCreditsScrollRow,             0x030028A8  @ u32: last credits text row the scroll reached
+.set g_dwCreditsLine,                  0x030028AC  @ u32: next credits text line to draw
+.set g_dwCreditsTileCursor,            0x030028B0  @ u32: next free credits text tile

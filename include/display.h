@@ -39,6 +39,7 @@ extern void SetScreenWindowRect_candidate(u32 windowId, s32 x0, s32 y0, s32 x1, 
 extern void HideScreenWindow_candidate(u32 windowId);
 
 extern void ResetDisplayState(u32 arg);
+extern void FillBgTilemap_candidate(u32 bg, u32 arg1, u32 arg2);
 extern void ClearBgTilemap(u32 bg);
 extern void *LoadBgGraphic(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
