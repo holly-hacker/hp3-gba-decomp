@@ -111,14 +111,13 @@ object list, also uses. All four matched in `src/mem/`.
   *AllocObjectFromFreeList(ListNode **freeListHead, ListNode
   **activeListHead, uint size)`. Pops a node off `freeListHead`, zeroes
   it, pushes it onto `activeListHead`, returns it (`NULL` if the free
-  list was empty). Called by `AllocDefaultObject`/`SpawnObject` (still
-  `.incbin`) with `&g_ObjectPoolState.pFreeListHead` and
+  list was empty). Called by `AllocDefaultObject`/`SpawnObject` with `&g_ObjectPoolState.pFreeListHead` and
   `&sActiveObjectListHead` — the real "allocate an object" entry point,
   one level above `AllocObjectOfType`/`AllocDefaultObject`.
 - `sActiveObjectListHead` (`0x030015B0`) — `ListNode *`, head of the
   active-object list objects join via `AllocObjectFromFreeList`.
 
-## `SortObjectsByDepth` / `CheckObjectCollisions` — ARM-mode, blocked on toolchain
+## `SortObjectsByDepth` / `CheckObjectCollisions` — ARM-mode
 
 Both are **confirmed ARM-mode** by disassembly (`arm_func` seeds in
 `functions.us.cfg`, byte-verified via `just disasm-compare`):
@@ -145,10 +144,6 @@ on `g_GameModeStackContext.dwCurrentGameMode == Overworld`, it calls
 each object's callback for the overlapping box slot with the other
 object as the argument.
 
-**Neither can be matched via `match-function` right now**: this dev
-shell's `agbcc`/`old_agbcc` are Thumb-only regardless of flags (see
-"ARM-mode code" in [`../compiler.md`](../compiler.md)), and the ARM-mode
-SDK compiler (`gcc_arm`) doesn't build on a modern host. Getting a working
-ARM-mode agbcc into the dev shell is a toolchain project of its own, not a
-per-function matching difficulty -- both stay `.incbin` (named via
-`label` rows in `regions.us.txt`) until that's solved.
+Both are kept as assembly (`asm/check_object_collisions.s`,
+`asm/sort_objects_by_depth.s`): the available compilers are Thumb-only (see
+"ARM-mode code" in [`../compiler.md`](../compiler.md)).

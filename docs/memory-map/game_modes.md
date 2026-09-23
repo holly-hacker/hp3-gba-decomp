@@ -102,10 +102,7 @@ Each entry is 3 function pointers, `pInitFn`/`pUpdateFn`/`pDestroyFn`:
 `pInitFn` runs once right after the mode variable updates to the new mode,
 `pUpdateFn` every frame, `pDestroyFn` once on the *old* mode right before the
 mode variable updates (see `save.md`'s "Owl Care Kit" section for the
-dispatcher call sites this was cross-checked against). All 216 slots (185
-distinct functions) are still raw incbin, named in `regions.us.txt` via
-`thumb-func` rows and referenced from the table by address only -- not
-decompiled.
+dispatcher call sites this was cross-checked against).
 
 The three dispatchers (`DispatchGameModeInit`/`Update`/`Destroy`,
 `0x0802C87C`/`0x0802C8A8`/`0x0802C8D0`, all matched in `src/gamemode/`)

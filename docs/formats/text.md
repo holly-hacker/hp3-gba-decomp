@@ -438,8 +438,7 @@ from `data/text/`, and writes real labeled `.s` files to
 `build/<ver>/text/` (gitignored), erroring loudly on any size mismatch
 against the row's declared end address -- same discipline as
 `pack_krawall.py`. Confirmed end-to-end: `just check-all` passes for
-both US (dialog text now genuinely part of the assembled ROM, not just
-`.incbin`) and JP (`pack_text.py` no-ops cleanly when a version's
+both US and JP (`pack_text.py` no-ops cleanly when a version's
 manifest has no `dialog-text` rows yet, rather than erroring -- JP
 dialog text isn't located, see below).
 

@@ -689,7 +689,7 @@ hardcoded to `10`.
   `TickFighterAttackAnimState` does read) has been traced; its purpose is
   UNCONFIRMED. A last pass over `pFighters` writes each `Object`'s
   `bFighterIndex`, spawns its turn-order icon (`SpawnTurnOrderIcon`,
-  `0x08014F1C`, UI only, still raw incbin), and populates
+  `0x08014F1C`, UI only), and populates
   `aEnemySlotTurnOrderIndex[bSlotParam] = turnOrderIndex` for every `Enemy`
   (4-byte array, one per enemy seat) and `aAllySlotTurnOrderIndex[bSlotParam] =
   turnOrderIndex` for every ally (3-byte array) -- both `0xFF`-initialized
