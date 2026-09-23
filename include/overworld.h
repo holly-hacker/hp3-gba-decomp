@@ -131,3 +131,12 @@ extern u32 g_dwPauseMenuCooldown;
 s32 TickOverworldControlSlots_candidate(void);
 // Advances the Owl Care Kit's timers and need counters while walking around.
 void TickOwlCareKitFromOverworld(void);
+
+// Overworld teardown helpers called by ExitOverworldScreen.
+extern void sub_08005D88(void);
+extern void sub_0802DDAC(void);
+extern void sub_0802B210(void);
+extern void sub_0802B08C(void);
+extern void sub_08024918(void);
+extern void sub_08007AA8(u32 arg0);
+extern void sub_080203CC(void);

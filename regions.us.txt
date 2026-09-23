@@ -92,6 +92,7 @@ thumb-func 0x08005B44 ShouldRunRoomScriptRow_candidate
 thumb-func 0x08005BCC GetRoomRowColumnCount_candidate
 thumb-func 0x08005C60 GetRoomObjectField_candidate
 thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
+thumb-func 0x08005D88 sub_08005D88
 thumb-func 0x08005DC0 sub_08005DC0
 asm-file 0x08005F10 0x08006108 asm/check_object_collisions.s  CheckObjectCollisions
 asm-file 0x08006108 0x08006300 asm/decompress_type4.s      DecompressType4
@@ -117,6 +118,7 @@ thumb-func 0x080077C8 sub_080077C8
 thumb-func 0x08007800 LoadEmbeddedPalette_candidate
 thumb-func 0x080079AC CopyBgTilemapRect_candidate
 thumb-func 0x08007A90 sub_08007A90
+thumb-func 0x08007AA8 sub_08007AA8
 thumb-func 0x08007AF0 sub_08007AF0
 thumb-func 0x08007B30 SetBgScrollX_candidate
 thumb-func 0x08007B88 SetBgScroll_candidate
@@ -410,6 +412,7 @@ thumb-func 0x0801FF14 ExitHippogriffFliesIntoAirCutscene
 thumb-func 0x08020228 TickRoomTileAnimations_candidate
 thumb-func 0x080203A8 InitRoomTileAnimationTable_candidate
 
+thumb-func 0x080203CC sub_080203CC
 c-file 0x08020714 0x080208B4 src/text/draw_text_line.c DrawTextLine
 
 thumb-func 0x080208B4 DrawStringAligned
@@ -440,6 +443,7 @@ thumb-func 0x080237D0 sub_080237D0
 thumb-func 0x080238D8 ShowMapNamePopup
 thumb-func 0x08024234 CyclePartyLeaderSelection_candidate
 thumb-func 0x080248E8 sub_080248E8
+thumb-func 0x08024918 sub_08024918
 thumb-func 0x08024980 sub_08024980
 thumb-func 0x080249A4 sub_080249A4
 thumb-func 0x080249C8 GetPartyPresenceMask
@@ -512,12 +516,13 @@ thumb-func 0x08029528 ExitLupinPotionCutscene
 c-file 0x08029690 0x080297A0 src/main.c AgbMain
 
 c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
-thumb-func 0x0802A14C ExitOverworldScreen
+c-file 0x0802A14C 0x0802A2A4 src/gamemode/modes/overworld/exit_overworld_screen.c ExitOverworldScreen
 thumb-func 0x0802AB34 RestoreRoomObjectState
 thumb-func 0x0802AE64 RestoreRoomObjectStateMinimal
 c-file 0x0802AEF8 0x0802B018 src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
 thumb-func 0x0802B018 InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
+thumb-func 0x0802B08C sub_0802B08C
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
 thumb-func 0x0802B0F4 ClearRoomObjectStateBuffer
@@ -526,6 +531,7 @@ thumb-func 0x0802B12C GetRoomSwitchState
 thumb-func 0x0802B164 OverworldVBlankCallback
 thumb-func 0x0802B174 ApplyRoomBgControlOverride_candidate
 thumb-func 0x0802B20C sub_0802B20C
+thumb-func 0x0802B210 sub_0802B210
 c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 thumb-func 0x0802B41C SpawnWanderingMonsterObject
 thumb-func 0x0802B58C HandleWanderingMonsterTouch
@@ -579,6 +585,7 @@ thumb-func 0x0802D64C sub_0802D64C
 thumb-func 0x0802D6B8 sub_0802D6B8
 thumb-func 0x0802DD54 NoopInit2
 thumb-func 0x0802DD58 LoadRoomSharedTileset_candidate
+thumb-func 0x0802DDAC sub_0802DDAC
 thumb-func 0x0802DF3C ApplyRoomSwitchEffect
 thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
 thumb-func 0x0802F6C0 sub_0802F6C0

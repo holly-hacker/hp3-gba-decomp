@@ -109,3 +109,5 @@
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005288  @ see ram_symbols.us.inc
 .set g_DivinationTea,                0x03005B88  @ see ram_symbols.us.inc
 .set g_ServePumpkinJuice,            0x03005298  @ see ram_symbols.us.inc
+.set g_dwPendingCameraFocusFlag,     0x03004034  @ see ram_symbols.us.inc
+.set g_pPendingCameraFocus_candidate, 0x03004038  @ see ram_symbols.us.inc
