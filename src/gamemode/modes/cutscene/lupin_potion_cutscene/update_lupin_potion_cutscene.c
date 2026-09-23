@@ -2,11 +2,10 @@
 #include "display.h"
 #include "game_modes.h"
 #include "input.h"
-#include "linear_cutscene.h"
 #include "lupin_potion_cutscene.h"
+#include "overworld.h"
 #include "room_script.h"
 #include "room.h"
-#include "wizard_cracker_pop_it.h"
 
 // The panel slides in (state 1), waits for input (2), slides back out (3) and then runs the
 // idle state (0); any of A/B/Select/Start in state 0, or Select/Start elsewhere, ends the

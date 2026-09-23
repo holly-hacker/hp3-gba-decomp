@@ -7,6 +7,7 @@
 #include "in_game_menu.h"
 #include "input.h"
 #include "main_menu.h"
+#include "room.h"
 
 void UpdateInGameMenu(void)
 {

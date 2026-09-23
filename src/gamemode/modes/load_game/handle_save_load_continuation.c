@@ -3,6 +3,7 @@
 #include "battle.h"
 #include "game_modes.h"
 #include "main_menu.h"
+#include "room.h"
 #include "save.h"
 
 void HandleSaveLoadContinuation(void)

@@ -22,3 +22,5 @@ extern void SetDialogMacroNumber1_candidate(u32 value);
 extern u32 GetRewardNameStringId_candidate(u32 rewardId);
 // Sets the dialog block to show and pushes the dialog game mode.
 extern void ShowRoomDialogBox_candidate(u32 blockId);
+
+extern void sub_0801FBA4(u32 arg);  // stores a byte at DialogState + 0x18

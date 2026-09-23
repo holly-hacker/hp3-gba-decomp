@@ -31,4 +31,3 @@ extern u32 g_dwCreditsScrollRow;   // 0x030028A8: last text row the scroll reach
 extern u32 g_dwCreditsLine;        // 0x030028AC: next text line to draw
 extern u32 g_dwCreditsTileCursor;  // 0x030028B0: next free text tile
 
-extern void sub_08007F84(u32 bg, s32 *pOut0, s32 *pOut1);

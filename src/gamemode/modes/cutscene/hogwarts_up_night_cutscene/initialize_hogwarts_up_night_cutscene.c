@@ -4,7 +4,6 @@
 #include "game_modes.h"
 #include "hogwarts_up_night_cutscene.h"
 #include "io_regs.h"
-#include "serve_pumpkin_juice.h"
 
 void InitializeHogwartsUpNightCutscene(void)
 {

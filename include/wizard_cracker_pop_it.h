@@ -63,7 +63,6 @@ typedef enum {
 } WizardCrackerPopItMode;
 
 extern void *sub_080077C8(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
-extern void sub_08007D14(u32 bg, u32 arg1, u32 arg2);
 extern void sub_08032894(void);
 extern void sub_080328FC(void);
 extern u32 sub_0803296C(void);

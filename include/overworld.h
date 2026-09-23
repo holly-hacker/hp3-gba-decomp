@@ -101,6 +101,17 @@ typedef struct CameraFocusSlot {
 } CameraFocusSlot;
 extern CameraFocusSlot g_aCameraFocusSlots[];
 
+typedef struct {
+    s32 aCoordinates[2];  // 16.16 X and Y
+} CameraFocusPosition;
+
+// Resets a camera focus slot and its effect state; the focus then holds (wPinned = 1).
+extern void sub_08009FD8(u32 slot);
+// Stores a position into a slot's focus point.
+extern void sub_0800A38C(CameraFocusPosition position, u8 slot);
+extern void sub_0800A3EC(s32 *pPosition, u32 arg1);  // writes the camera focus as two 16.16 words
+extern void sub_0800A420(u32 arg0, s32 progress, u32 arg2);
+
 extern u8 g_bControlSlotTicks_candidate;
 extern void TickOverworldBeforeObjects_candidate(void);
 // Ticks slot's camera focus: follows the target object, or runs the active pan/shake

@@ -1,8 +1,6 @@
 #include "types.h"
 #include "display.h"
 #include "linear_cutscene.h"
-#include "mem.h"
-#include "wizard_cracker_pop_it.h"
 
 void ExitLinearCutscene(void)
 {

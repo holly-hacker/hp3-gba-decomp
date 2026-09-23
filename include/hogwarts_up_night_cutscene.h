@@ -12,4 +12,3 @@ extern const u8 g_HogwartsUpNightBg1Graphic[];  // 0x08E2F80C
 extern const u8 g_HogwartsUpNightBg2Graphic[];  // 0x08E30E6C
 extern const u8 g_HogwartsUpNightPaletteData[];  // 0x08E32322
 
-extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData);

@@ -28,4 +28,3 @@ extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeObjectPos
 
 extern void sub_08043114(u32 arg);
 extern void sub_08043308(u32 arg);
-extern void sub_0803EA3C(void);

@@ -1,12 +1,9 @@
 #include "types.h"
-#include "battle.h"
 #include "bios.h"
 #include "display.h"
-#include "divination_tea.h"
 #include "game_modes.h"
 #include "harry_patronus_cutscene.h"
 #include "io_regs.h"
-#include "serve_pumpkin_juice.h"
 #include "vblank.h"
 
 void InitializeHarryPatronusCutscene(void)

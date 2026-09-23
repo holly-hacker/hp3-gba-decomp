@@ -1,16 +1,17 @@
 #include "types.h"
 #include "audio.h"
 #include "bios.h"
+#include "dialog.h"
 #include "display.h"
 #include "game_modes.h"
 #include "io_regs.h"
 #include "lupin_potion_cutscene.h"
 #include "main_menu.h"
+#include "overworld.h"
+#include "room.h"
 #include "scanline_effects.h"
 #include "text.h"
 #include "graphics.h"
-#include "battle.h"
-#include "wizard_cracker_pop_it.h"
 
 void InitializeLupinPotionCutscene(void)
 {

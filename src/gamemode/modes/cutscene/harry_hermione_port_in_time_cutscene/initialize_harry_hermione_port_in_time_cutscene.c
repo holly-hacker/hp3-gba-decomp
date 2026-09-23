@@ -5,6 +5,7 @@
 #include "graphics.h"
 #include "harry_hermione_port_in_time_cutscene.h"
 #include "io_regs.h"
+#include "overworld.h"
 #include "room.h"
 
 void InitializeHarryHermionePortInTimeCutscene(void)

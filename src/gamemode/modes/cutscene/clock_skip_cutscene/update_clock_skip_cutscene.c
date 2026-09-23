@@ -1,7 +1,7 @@
 #include "types.h"
-#include "battle.h"
 #include "game_modes.h"
 #include "input.h"
+#include "room.h"
 #include "room_script.h"
 
 // Arg2 counts frames. After 0x85 frames, or on A/B/Select/Start, leaves for the

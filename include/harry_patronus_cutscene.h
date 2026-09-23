@@ -16,6 +16,3 @@ extern const u32 g_dwPatronusBg3Control;             // 0x08068C34
 extern const u8 *const g_apPatronusGraphics[6];      // 0x08FAAEF8
 
 extern void HandleHarryPatronusCutsceneVBlank(void);
-extern void sub_08000BC0(void);
-extern void sub_08007C94(u32 bg, s32 arg1, u32 arg2);
-extern void sub_08007CF4(u32 bg, s32 arg1);

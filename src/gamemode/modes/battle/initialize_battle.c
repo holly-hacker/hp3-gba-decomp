@@ -5,6 +5,7 @@
 #include "game_modes.h"
 #include "rewards.h"
 #include "mem.h"
+#include "room.h"
 
 // Battle mode's pInitFn. See docs/memory-map/battle.md.
 void InitializeBattle(void)

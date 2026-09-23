@@ -1,4 +1,5 @@
 #include "types.h"
+#include "display.h"
 #include "game_modes.h"
 #include "input.h"
 #include "linear_cutscene.h"

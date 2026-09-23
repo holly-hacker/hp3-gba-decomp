@@ -1,6 +1,7 @@
 #include "types.h"
 #include "display.h"
 #include "harry_patronus_cutscene.h"
+#include "object.h"
 
 void HandleHarryPatronusCutsceneVBlank(void)
 {

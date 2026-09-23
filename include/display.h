@@ -44,6 +44,18 @@ extern void HideScreenWindow_candidate(u32 windowId);
 extern void ResetDisplayState(u32 arg);
 extern void FillBgTilemap_candidate(u32 bg, u32 arg1, u32 arg2);
 extern void ClearBgTilemap(u32 bg);
+
+// Per-BG scroll/affine state, one 0x6C-byte record per BG starting at g_aBgScrollState.
+extern void sub_08007AF0(u32 bg, u32 arg1, u32 arg2);
+extern void sub_08007C2C(u32 bg, u32 arg1, u32 arg2);
+extern void sub_08007C94(u32 bg, s32 arg1, u32 arg2);
+extern void sub_08007CF4(u32 bg, s32 arg1);
+extern void sub_08007D14(u32 bg, u32 arg1, u32 arg2);
+extern void sub_08007D60(u32 bg, s32 arg1);
+extern void sub_08007F84(u32 bg, s32 *pOut0, s32 *pOut1);
+
+// Allocates a slot in the palette-effect table at 0x030022F8.
+extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData);
 extern void *LoadBgGraphic(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);

@@ -72,6 +72,11 @@ typedef struct CameraFocusOffset {
 } CameraFocusOffset;
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 extern CameraFocusOffset g_CameraPosition_candidate;
+// Read here as a full word, not the byte docs/memory-map/game_modes.md's
+// plate comment describes elsewhere -- real source likely declares it int.
+extern u32 g_bCurrentRoomId;                // 0x03003B50
+extern void sub_0803E628(s32 *pPosition);  // copies a two-word position into g_CameraPosition_candidate
+extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
 
 // One band of scanlines for SetupScanlineBands_candidate.
 typedef struct ScanlineBand {
@@ -120,8 +125,6 @@ extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctr
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
 extern void SetRoomScrollBounds(u32 minX, u32 minY, u32 maxX, u32 maxY);
-extern void sub_0800A3EC(s32 *pPosition, u32 arg1);  // writes the camera focus as two 16.16 words
-extern void sub_0800A420(u32 arg0, s32 progress, u32 arg2);
 extern Object *SpawnPlayerObject_candidate(u32 charId);
 extern void SetCameraFollowTarget_candidate(Object *pTarget, s32 nOffsetX, s32 nOffsetY, u32 slot);
 extern void sub_0800A348(u32 arg0, u32 arg1);

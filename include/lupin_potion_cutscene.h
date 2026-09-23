@@ -3,10 +3,6 @@
 #include "types.h"
 #include "object.h"
 
-typedef struct {
-    s32 aCoordinates[2];  // 16.16 X and Y
-} CameraFocusPosition;
-
 // The mode's screen state at 0x03003A84. Only the fields the mode handlers use are named.
 typedef struct {
     u8 abUnk00[0x88];
@@ -31,8 +27,3 @@ extern void sub_08029144(void);
 extern u32 sub_08029260(void);
 extern void sub_08029380(void);
 extern void sub_08029558(void);
-extern void sub_08009FD8(u32 arg);
-extern void sub_0800A38C(CameraFocusPosition position, u8 slot);
-extern void sub_0803E628(s32 *pPosition);
-extern void sub_0801FBA4(u32 arg);
-extern void sub_08007D60(u32 bg, s32 arg1);

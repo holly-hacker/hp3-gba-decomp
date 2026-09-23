@@ -5,6 +5,7 @@
 #include "input.h"
 #include "main_menu.h"
 #include "options.h"
+#include "room.h"
 #include "save.h"
 #include "text.h"
 
