@@ -164,6 +164,33 @@ sit +0x60 from US):
 `0x08035DA8`; 0x0E `0x0803A50C`/`0x08039E2C`/`0x0803A584`; 0x0F
 `0x080361F0`/`0x08036258`/`0x080368D4` (init/update/exit).
 
+## Items (0x10-0x12)
+
+PROVEN from US decompiles, ROM tables and dialog text.
+
+- `ItemsSectionSelect` (0x10): pause menu row "Items" (text 0x531). A list
+  menu (`g_ItemsSectionMenuDefinition`) whose rows pick a list filter from
+  `g_aItemsSectionFilters` (`0x0806B1B4`: 0xA all non-equipment items,
+  6 potions, 8 ingredients; see `docs/formats/items.md`). A goes to 0x11,
+  B to `InGameMenuFadeIn`. The row is kept in `g_bItemsSectionCursor`.
+- `ItemsItemSelect` (0x11): the filtered item list, with the description
+  of the item under the cursor ("Restores @1 Stamina/Magic Points." or
+  "You can't use this item now..."). An empty list shows text 0x667 and
+  any of A/B returns to 0x10. A on a Stamina/Magic item (item field `+0x24`
+  1 or 2) stores it in `g_dwItemUseItem`; items with `dwUnk20` bit 2 go
+  through `StatusEquipCharacterSelect` and `QuantitySelectScreen` (which
+  sets `g_dwItemUseQuantity`) first, others go straight to 0x12. Other
+  items play sound 3.
+- `ItemUseScreen` (0x12): applies the item to the member in
+  `g_dwStatusEquipCharacter` and shows the result (text 0x400/0x401/0x403);
+  A or B returns to 0x11.
+
+Types are in `include/items_menu.h`; the handlers are matched in
+`src/gamemode/modes/items/` for both versions. JP handlers sit +0x54 from
+US (0x11 `0x080395D0`-`0x080397A4`, 0x10 `0x080398A8`-`0x080399C8`, 0x12
+`0x080399C8`-`0x08039A68`), taken from JP's dispatch table; the RAM
+globals sit +0x60 from US.
+
 ## Not yet located
 
 - Whether `DebugMenuMain` is reachable/meaningful from every game state,

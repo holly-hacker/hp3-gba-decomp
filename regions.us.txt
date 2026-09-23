@@ -342,6 +342,7 @@ thumb-func 0x0801DC6C sub_0801DC6C
 thumb-func 0x0801DCC4 sub_0801DCC4
 c-file 0x0801DD40 0x0801DD88 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 thumb-func 0x0801DF6C sub_0801DF6C
+thumb-func 0x0801E05C sub_0801E05C
 thumb-func 0x0801E0D8 sub_0801E0D8
 thumb-func 0x0801E0DC sub_0801E0DC
 thumb-func 0x0801E174 InitializeHarryVsDementorsMinigame
@@ -425,16 +426,21 @@ c-file 0x080261DC 0x080261F8 src/interrupts/wait_for_vblank_intr.c WaitForVBlank
 thumb-func 0x08026244 VBlankCallback_candidate
 thumb-func 0x08026254 sub_08026254
 c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
+thumb-func 0x080269E0 sub_080269E0
 thumb-func 0x08026B8C GetRewardNameStringId_candidate
 thumb-func 0x08026CDC sub_08026CDC
 thumb-func 0x08026CF0 sub_08026CF0
+thumb-func 0x08026D34 sub_08026D34
 c-file 0x08026DE0 0x08026E2C src/items/grant_reward.c GrantReward
 
 thumb-func 0x08026E2C ConsumeBattleItemSlot
 thumb-func 0x08026F9C IsFolioPageGroupUnlocked_candidate
 thumb-func 0x08026FE0 sub_08026FE0
 thumb-func 0x08027048 sub_08027048
+thumb-func 0x08027AF4 sub_08027AF4
 thumb-func 0x08027BA4 sub_08027BA4
+thumb-func 0x08027BDC sub_08027BDC
+thumb-func 0x08027C08 sub_08027C08
 thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
 thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
@@ -621,15 +627,21 @@ thumb-func 0x080390C0 ExitHelpScreen
 thumb-func 0x08039370 UpdateQuantitySelectScreen
 thumb-func 0x080394EC InitializeQuantitySelectScreen
 thumb-func 0x08039508 ExitQuantitySelectScreen
-thumb-func 0x0803957C UpdateItemsItemSelect
-thumb-func 0x08039690 InitializeItemsItemSelect
-thumb-func 0x08039728 ExitItemsItemSelect
-thumb-func 0x08039854 UpdateItemsSectionSelect
-thumb-func 0x08039904 InitializeItemsSectionSelect
-thumb-func 0x08039930 ExitItemsSectionSelect
-thumb-func 0x08039974 InitializeItemUseScreen
-thumb-func 0x080399A8 UpdateItemUseScreen
-thumb-func 0x08039A04 ExitItemUseScreen
+c-file 0x0803957C 0x08039690 src/gamemode/modes/items/update_items_item_select.c UpdateItemsItemSelect
+c-file 0x08039690 0x08039728 src/gamemode/modes/items/initialize_items_item_select.c InitializeItemsItemSelect
+c-file 0x08039728 0x08039750 src/gamemode/modes/items/exit_items_item_select.c ExitItemsItemSelect
+thumb-func 0x08039750 SetItemsItemSelectFilter
+thumb-func 0x0803975C sub_0803975C
+thumb-func 0x080397FC sub_080397FC
+thumb-func 0x08039818 sub_08039818
+c-file 0x08039854 0x08039904 src/gamemode/modes/items/update_items_section_select.c UpdateItemsSectionSelect
+c-file 0x08039904 0x08039930 src/gamemode/modes/items/initialize_items_section_select.c InitializeItemsSectionSelect
+c-file 0x08039930 0x08039974 src/gamemode/modes/items/exit_items_section_select.c ExitItemsSectionSelect
+c-file 0x08039974 0x080399A8 src/gamemode/modes/items/initialize_item_use_screen.c InitializeItemUseScreen
+c-file 0x080399A8 0x08039A04 src/gamemode/modes/items/update_item_use_screen.c UpdateItemUseScreen
+c-file 0x08039A04 0x08039A14 src/gamemode/modes/items/exit_item_use_screen.c ExitItemUseScreen
+thumb-func 0x08039A14 SetItemUseItem
+thumb-func 0x08039A20 sub_08039A20
 c-file 0x08039A74 0x08039B0C src/gamemode/modes/game_save/initialize_game_save.c InitializeGameSave
 c-file 0x08039B0C 0x08039C30 src/gamemode/modes/game_save/update_game_save.c UpdateGameSave
 thumb-func 0x08039C30 ResolveSaveConfirmation_candidate
@@ -879,6 +891,8 @@ label 0x0806605C g_dwMinigameMenuBg3Control
 label 0x08066060 g_dwMinigameMenuBg1Control
 label 0x08068C38 g_aInGameMenuEntries
 label 0x08068CE0 g_InGameMenuDefinition
+label 0x0806B1B4 g_aItemsSectionFilters
+label 0x0806B1F0 g_ItemsSectionMenuDefinition
 label 0x0806B2FC g_aStatusEquipSlots
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 

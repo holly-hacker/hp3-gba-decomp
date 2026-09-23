@@ -158,6 +158,11 @@
 .set g_dwStatusEquipCharacter, 0x030052A0  @ u32: FighterType chosen in StatusEquipCharacterSelect, read by the slot/item screens and ItemUseScreen
 .set g_StatusEquipCharacterSelect, 0x030052A8  @ StatusEquipCharacterSelectState: slot presence flags and pending mode; see include/status_equip.h
 .set g_bStatusEquipCharacterSlot, 0x030052B8  @ u8: StatusEquipCharacterSelect cursor slot
+.set g_ItemsItemSelect, 0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/items_menu.h
+.set g_ItemsSectionSelectNextMode, 0x030054E4  @ GameMode: pushed once the Items section select fades out
+.set g_bItemsSectionCursor, 0x030054E8  @ s8: Items section select row saved on exit
+.set g_dwItemUseItem, 0x030054EC  @ u32: item chosen in ItemsItemSelect, used by ItemUseScreen
+.set g_dwItemUseQuantity, 0x030054F0  @ u32: quantity chosen in QuantitySelectScreen, used by ItemUseScreen
 .set g_StatusEquipSlotSelect, 0x030054F8  @ StatusEquipSlotSelectState: slot select screen objects and pending mode; see include/status_equip.h
 .set g_bStatusEquipSlot, 0x03005564  @ s8: selected equipment slot in StatusEquipSlotSelect
 .set g_dwStatusEquipSlotType, 0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect

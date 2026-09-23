@@ -154,13 +154,17 @@ thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x08010864 ShowBattleMessage
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptObject
+thumb-func 0x0801DC68 sub_0801DC6C
 c-file 0x0801DD3C 0x0801DD84 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
+thumb-func 0x0801E058 sub_0801E05C
 thumb-func 0x0801E0D8 sub_0801E0DC
 thumb-func 0x0801FB60 sub_0801FB78
 thumb-func 0x0801FD88 InitDisplayControl
 thumb-func 0x08020210 TickRoomTileAnimations_candidate
 thumb-func 0x08020390 InitRoomTileAnimationTable_candidate
 thumb-func 0x08020D3C InitTextMacroTable
+thumb-func 0x08020E04 SelectTextFont
+thumb-func 0x08020F64 DrawTextLines
 thumb-func 0x080215BC NoopInit
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
@@ -174,9 +178,14 @@ thumb-func 0x08026104 EnableInterrupts
 thumb-func 0x080261B4 SetVBlankCallback
 c-file 0x08026238 0x08026254 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 thumb-func 0x080262A0 VBlankCallback_candidate
+thumb-func 0x08026A3C sub_080269E0
+thumb-func 0x08026D90 sub_08026D34
 thumb-func 0x0802703C sub_08026FE0
 thumb-func 0x080270A4 sub_08027048
+thumb-func 0x08027B50 sub_08027AF4
 thumb-func 0x08027C00 sub_08027BA4
+thumb-func 0x08027C38 sub_08027BDC
+thumb-func 0x08027C64 sub_08027C08
 thumb-func 0x080286FC BuildFreeList
 thumb-func 0x08028734 AllocObjectFromFreeList
 c-file 0x08028768 0x08028784 src/mem/list_move_to_head.c List_MoveToHead
@@ -218,11 +227,15 @@ thumb-func 0x08030868 ClearResourceCacheSlots
 thumb-func 0x0803091C ClaimObjectEffectResource
 thumb-func 0x08030990 sub_0803094C
 thumb-func 0x080315E8 InitResourceCachePools
+thumb-func 0x08031718 sub_080316D4
+thumb-func 0x08031760 sub_0803171C
 thumb-func 0x0803178C TickParticleEmitters
+thumb-func 0x08031EC0 BuildListMenu_candidate
 thumb-func 0x080320E8 sub_080320A4
 thumb-func 0x08032158 TickBlendFadeOut_candidate
 thumb-func 0x0803217C sub_08032138
 thumb-func 0x080321EC sub_080321A8
+thumb-func 0x080322C0 sub_0803227C
 c-file 0x080357A8 0x080358DC src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 thumb-func 0x08035A78 sub_08035A34
 c-file 0x08035D4C 0x08035D64 src/gamemode/modes/status_equip/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
@@ -238,6 +251,21 @@ thumb-func 0x0803631C sub_080362D8
 c-file 0x080368D4 0x08036910 src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x08036910 sub_080368CC
 thumb-func 0x08036928 sub_080368E4
+c-file 0x080395D0 0x080396E4 src/gamemode/modes/items/update_items_item_select.c UpdateItemsItemSelect
+c-file 0x080396E4 0x0803977C src/gamemode/modes/items/initialize_items_item_select.c InitializeItemsItemSelect
+c-file 0x0803977C 0x080397A4 src/gamemode/modes/items/exit_items_item_select.c ExitItemsItemSelect
+thumb-func 0x080397A4 SetItemsItemSelectFilter
+thumb-func 0x080397B0 sub_0803975C
+thumb-func 0x08039850 sub_080397FC
+thumb-func 0x0803986C sub_08039818
+c-file 0x080398A8 0x08039958 src/gamemode/modes/items/update_items_section_select.c UpdateItemsSectionSelect
+c-file 0x08039958 0x08039984 src/gamemode/modes/items/initialize_items_section_select.c InitializeItemsSectionSelect
+c-file 0x08039984 0x080399C8 src/gamemode/modes/items/exit_items_section_select.c ExitItemsSectionSelect
+c-file 0x080399C8 0x080399FC src/gamemode/modes/items/initialize_item_use_screen.c InitializeItemUseScreen
+c-file 0x080399FC 0x08039A58 src/gamemode/modes/items/update_item_use_screen.c UpdateItemUseScreen
+c-file 0x08039A58 0x08039A68 src/gamemode/modes/items/exit_item_use_screen.c ExitItemUseScreen
+thumb-func 0x08039A68 SetItemUseItem
+thumb-func 0x08039A74 sub_08039A20
 c-file 0x08039E2C 0x0803A084 src/gamemode/modes/status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
 thumb-func 0x0803A084 sub_0803A030
 thumb-func 0x0803A144 DrawStatusEquipStatsPanel
@@ -280,6 +308,7 @@ c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId
 thumb-func 0x0803FCD0 PlaySoundById
 thumb-func 0x0803FE18 kramInstall
 thumb-func 0x080425D0 InitDialogTextEngine
+thumb-func 0x08042624 GetDialogText
 thumb-func 0x08042E6C sub_08042E2C
 thumb-func 0x08044FC0 InitScanlineEffects
 thumb-func 0x080452E0 InstallIwramObjTileAllocRoutine
@@ -341,6 +370,8 @@ label 0x080604D8 g_stPlaytimeHourLimit
 # locally with `just extract-krawall` before building. tools/krawall/pack_krawall.py
 # writes the actual packed assembly to build/<ver>/audio/ (also gitignored,
 # like everything else in build/), which is what gen_link.py includes.
+label 0x0806B140 g_aItemsSectionFilters
+label 0x0806B17C g_ItemsSectionMenuDefinition
 label 0x0806B288 g_aStatusEquipSlots
 label 0x080CD750 g_StatusEquipSlotCursorSpawnData
 krawall-module 0x08A9C500 0x08AA0884 data/audio/modules/MusBattleBoss.json MusBattleBoss
