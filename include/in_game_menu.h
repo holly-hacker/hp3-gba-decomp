@@ -2,23 +2,15 @@
 
 #include "types.h"
 #include "game_modes.h"
+#include "menu.h"
 
-// One row of the pause menu, 12 bytes each.
-typedef struct {
-    GameMode mode;     // 0x00: mode pushed when the row is chosen
-    u32 dwStringId;    // 0x04: row label
-    u32 dwImmediate;   // 0x08: nonzero pushes the mode right away with a screen transition
-} InGameMenuEntry;
+extern const ListMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38
+extern const ListMenuDefinition g_InGameMenuDefinition;  // 0x08068CE0
 
-extern const InGameMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38
-extern const u8 g_InGameMenuDefinition[];              // 0x08068CE0
-
-extern u8 g_bInGameMenuCursor;            // 0x03005220: cursor row saved on exit
 extern GameMode g_StatusEquipReturnMode;  // 0x03005298: StatusEquipCharacterSelect's B target
 extern GameMode g_StatusEquipNextMode;    // 0x0300529C: StatusEquipCharacterSelect's A target
 
 extern void sub_08031FB8(u32 arg);
-extern void BuildListMenu_candidate(const u8 *pDefinition);
 extern void sub_080320A4(void);
 extern void sub_0803217C(void);
 extern void sub_080321A8(void);

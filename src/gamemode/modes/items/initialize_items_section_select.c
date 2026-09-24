@@ -8,5 +8,5 @@ void InitializeItemsSectionSelect(void)
     g_GameModeStackContext.dwModeState = 1;
     g_GameModeStackContext.dwModeScratchB = g_bItemsSectionCursor;
     sub_080320A4();
-    BuildListMenu_candidate(g_ItemsSectionMenuDefinition);
+    BuildListMenu(&g_ItemsSectionMenuDefinition);
 }

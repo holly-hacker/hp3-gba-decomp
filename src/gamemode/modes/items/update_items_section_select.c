@@ -33,7 +33,7 @@ void UpdateItemsSectionSelect(void)
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))
         {
-            sub_0803227C();
+            MoveListMenuCursor();
         }
         break;
 

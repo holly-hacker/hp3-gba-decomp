@@ -315,6 +315,7 @@ extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
 extern void CancelObjectMove_candidate(Object *obj);
 extern void SetObjectAssetRecord(Object *obj, void *rec);
 extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
+extern Object *sub_0802C90C(u32 slot, u32 arg1);  // allocs a type 0x13 object and files it under slot
 extern u32 AttachObjectPalette(Object *obj, const ObjPalette *pPalette);  // 0x08030878
 extern void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette *pPalette);
 extern void sub_080039E8(Object *obj);

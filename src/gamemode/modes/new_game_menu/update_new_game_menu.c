@@ -2,6 +2,7 @@
 #include "game_modes.h"
 #include "input.h"
 #include "main_menu.h"
+#include "menu.h"
 
 void UpdateNewGameMenu(void)
 {
@@ -26,7 +27,7 @@ void UpdateNewGameMenu(void)
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))
         {
-            sub_0803227C();
+            MoveListMenuCursor();
         }
         break;
     }

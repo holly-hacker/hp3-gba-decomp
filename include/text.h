@@ -76,6 +76,7 @@ extern u32 GetGlyphWidth(FontDescriptor *font, u16 glyphCode);
 extern u32 MeasureMacroString(const u8 *pStr);
 extern u32 DrawTextLine(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 **ppText, u32 align, s32 *pCharBudget);
 extern u32 PrintTextBox(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 *pText, u32 align);
+extern u32 DrawString(u32 tileCursor, s32 x, s32 y, const u8 *pText);
 extern u32 DrawStringAligned(u32 tileCursor, s32 x, s32 y, const u8 *pText, u32 align);
 extern void SetTextTargetFromBgControl(u32 bgControl);
 extern void SelectTextFont(u32 fontId, u32 color, s32 arg2);

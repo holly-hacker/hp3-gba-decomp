@@ -24,7 +24,7 @@ void UpdateInGameMenu(void)
             {
                 g_GameModeStackContext.dwModeState = 1;
                 sub_080320A4();
-                BuildListMenu_candidate(g_InGameMenuDefinition);
+                BuildListMenu(&g_InGameMenuDefinition);
             }
             else
                 g_GameModeStackContext.dwModeState = 2;
@@ -40,7 +40,7 @@ void UpdateInGameMenu(void)
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))
         {
-            sub_0803227C();
+            MoveListMenuCursor();
         }
         else if (g_wKeysPressed & (KeyB | KeyStart))
         {

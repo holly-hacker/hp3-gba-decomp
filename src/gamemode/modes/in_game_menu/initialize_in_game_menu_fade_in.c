@@ -8,8 +8,8 @@ void InitializeInGameMenuFadeIn(void)
         sub_080323B0();
 
     g_GameModeStackContext.dwModeState = 1;
-    g_GameModeStackContext.dwModeScratchB = g_bInGameMenuCursor;
+    g_GameModeStackContext.dwModeScratchB = g_ListMenuState.bInGameMenuCursor;
     sub_080320A4();
-    BuildListMenu_candidate(g_InGameMenuDefinition);
+    BuildListMenu(&g_InGameMenuDefinition);
     sub_0803233C();
 }

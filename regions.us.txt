@@ -441,6 +441,7 @@ thumb-func 0x080203CC sub_080203CC
 c-file 0x08020714 0x080208B4 src/text/draw_text_line.c DrawTextLine
 
 thumb-func 0x080208B4 DrawStringAligned
+thumb-func 0x080209F0 DrawString
 thumb-func 0x08020D30 InitTextMacroTable
 thumb-func 0x08020D60 SetTextTargetFromBgControl
 thumb-func 0x08020DF0 SelectTextFont
@@ -598,6 +599,7 @@ c-file 0x0802C860 0x0802C87C src/gamemode/is_game_mode_transition_pending.c IsGa
 c-file 0x0802C87C 0x0802C8A8 src/gamemode/dispatch_game_mode_init.c DispatchGameModeInit
 c-file 0x0802C8A8 0x0802C8D0 src/gamemode/dispatch_game_mode_update.c DispatchGameModeUpdate
 c-file 0x0802C8D0 0x0802C90C src/gamemode/dispatch_game_mode_destroy.c DispatchGameModeDestroy
+thumb-func 0x0802C90C sub_0802C90C
 c-file 0x0802C984 0x0802C988 src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
@@ -656,7 +658,7 @@ c-file 0x08031B4C 0x08031CA8 src/gamemode/modes/cutscene/harry_patronus_cutscene
 c-file 0x08031CA8 0x08031CC4 src/gamemode/modes/cutscene/harry_patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
 c-file 0x08031CC4 0x08031D30 src/gamemode/modes/cutscene/harry_patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
 c-file 0x08031D30 0x08031E7C src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
-thumb-func 0x08031E7C BuildListMenu_candidate
+c-file 0x08031E7C 0x08031F6C src/menu/build_list_menu.c BuildListMenu
 c-file 0x08031F6C 0x08031FB8 src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
 thumb-func 0x08031FB8 sub_08031FB8
 c-file 0x08031FF4 0x08032030 src/gamemode/modes/in_game_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
@@ -666,8 +668,10 @@ thumb-func 0x08032114 TickBlendFadeOut_candidate
 thumb-func 0x08032138 sub_08032138
 thumb-func 0x0803217C sub_0803217C
 thumb-func 0x080321A8 sub_080321A8
+thumb-func 0x080321CC ListMenuCursorTick_candidate
 thumb-func 0x08032204 SelectInGameMenuEntry_candidate
-thumb-func 0x0803227C sub_0803227C
+c-file 0x0803227C 0x080322BC src/menu/move_list_menu_cursor.c MoveListMenuCursor
+c-file 0x080322BC 0x0803232C src/menu/draw_list_menu_row.c DrawListMenuRow
 thumb-func 0x0803232C sub_0803232C
 thumb-func 0x0803233C sub_0803233C
 thumb-func 0x080323AC sub_080323AC
@@ -1023,6 +1027,7 @@ c-file 0x0805BA8C 0x0805BC00 src/room/room_script_opcode_handlers.c g_apRoomScri
 label 0x0805E020 g_dwLinearCutsceneBg0Control
 label 0x0805E024 g_dwLinearCutsceneBg1Control
 label 0x0805E028 g_aLinearCutsceneTable
+label 0x0805E10C g_dwCommonBg2Control
 label 0x0805E174 g_dwHarryVsDementorsBg0Control
 label 0x0805E178 g_dwHarryVsDementorsBg3Control
 label 0x0805E280 g_dwStartupBg3Control

@@ -341,12 +341,12 @@ c-file 0x08031A40 0x08031B90 src/gamemode/modes/cutscene/harry_patronus_cutscene
 c-file 0x08031B90 0x08031CEC src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
 c-file 0x08031CEC 0x08031D08 src/gamemode/modes/cutscene/harry_patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
 c-file 0x08031D08 0x08031D74 src/gamemode/modes/cutscene/harry_patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
-thumb-func 0x08031EC0 BuildListMenu_candidate
+thumb-func 0x08031EC0 BuildListMenu
 thumb-func 0x080320E8 sub_080320A4
 thumb-func 0x08032158 TickBlendFadeOut_candidate
 thumb-func 0x0803217C sub_08032138
 thumb-func 0x080321EC sub_080321A8
-thumb-func 0x080322C0 sub_0803227C
+thumb-func 0x080322C0 MoveListMenuCursor
 c-file 0x080323F8 0x08032578 src/gamemode/modes/minigame/wizard_cracker_pop_it/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
 c-file 0x08032578 0x080328D8 src/gamemode/modes/minigame/wizard_cracker_pop_it/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
 thumb-func 0x080328D8 sub_08032894

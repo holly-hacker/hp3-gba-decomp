@@ -152,7 +152,7 @@
 .set g_bOptionsSavedSoundVolume, 0x03005E09  @ u8
 .set g_bOptionsSavedGammaHigh, 0x03005E0A  @ u8
 .set g_dwOptionsEntryLanguage, 0x03005E0C  @ u32: language when the options screen was entered
-.set g_bInGameMenuCursor, 0x03005220  @ u8: pause menu cursor row saved by ExitInGameMenu
+.set g_ListMenuState, 0x03005220  @ ListMenuState: pause menu cursor row saved by ExitInGameMenu, definition of the list menu on screen
 .set g_StatusEquipReturnMode, 0x03005298  @ GameMode: StatusEquipCharacterSelect returns to on B (InGameMenu, InGameMenuFadeIn or ItemsItemSelect)
 .set g_StatusEquipNextMode, 0x0300529C  @ GameMode: StatusEquipCharacterSelect advances to on A (StatusEquipSlotSelect or QuantitySelectScreen)
 .set g_dwStatusEquipCharacter, 0x030052A0  @ u32: FighterType chosen in StatusEquipCharacterSelect, read by the slot/item screens and ItemUseScreen

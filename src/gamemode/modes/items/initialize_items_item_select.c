@@ -2,6 +2,7 @@
 #include "game_modes.h"
 #include "in_game_menu.h"
 #include "items_menu.h"
+#include "main_menu.h"
 #include "text.h"
 
 void InitializeItemsItemSelect(void)
