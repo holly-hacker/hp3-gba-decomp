@@ -12,7 +12,7 @@
 
 extern void ClearSystemMemory(void);
 extern void InstallIwramDivideRoutines(void);
-extern void InstallIwramObjTileAllocRoutine(void);
+extern void InstallIwramFindFreeObjTileRun(void);
 extern void InstallIwramDecompressCodecs(void);
 extern void InitTextMacroTable(void);
 extern void InitSaveSystem(void);
@@ -51,7 +51,7 @@ void AgbMain(void)
     InitInterruptSystem();
     InitHeap();
     InstallIwramDivideRoutines();
-    InstallIwramObjTileAllocRoutine();
+    InstallIwramFindFreeObjTileRun();
     InstallIwramDecompressCodecs();
     Mt19937AllocState();
     InitTextMacroTable();

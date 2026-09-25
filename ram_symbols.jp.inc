@@ -31,6 +31,9 @@
 .set g_pDecompressType4Iwram, 0x030028D4
 .set g_pDecompressType6Iwram, 0x03002ACC
 
+@ --- OBJ tile allocator ---
+.set g_pFindFreeObjTileRunIwram, 0x030060D8
+
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_GameModeStackContext, 0x03003F54  @ see ram_symbols.us.inc
 .set g_dwFrameSyncTarget, 0x03003BA8  @ see ram_symbols.us.inc

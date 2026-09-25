@@ -99,6 +99,7 @@ thumb-func 0x08005DC0 sub_08005DC0
 asm-file 0x08005F10 0x08006108 asm/check_object_collisions.s  CheckObjectCollisions
 asm-file 0x08006108 0x08006300 asm/decompress_type4.s      DecompressType4
 asm-file 0x08006300 0x080063B4 asm/decompress_bg_tile.s       DecompressBgTile
+asm-file 0x080063B4 0x08006440 asm/find_free_obj_tile_run.s    FindFreeObjTileRun
 asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
@@ -926,7 +927,7 @@ thumb-func 0x0804528C StartScanlineEffects
 thumb-func 0x080452A8 StopScanlineEffects
 thumb-func 0x080452D4 ClearScanlineEffects
 thumb-func 0x080452EC IsScanlineEffectQueueIdle
-thumb-func 0x080453B4 InstallIwramObjTileAllocRoutine
+c-file 0x080453B4 0x080453D8 src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 thumb-func 0x080453D8 InitObjTileAllocBitmaps
 thumb-func 0x0804542C sub_0804542C
 thumb-func 0x08045514 FreeObjectVramTileAllocation

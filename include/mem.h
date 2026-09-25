@@ -91,6 +91,8 @@ typedef struct ObjectPoolAuxRecord {
 extern ObjectPoolAuxRecord *g_pObjectPoolAuxBuffer;
 extern u8 g_pSortObjectsIwram[0xC4];
 extern u8 g_pCheckObjectCollisionsIwram[0x1F4];
+extern u8 g_pFindFreeObjTileRunIwram[0x9C];
+u32 FindFreeObjTileRun(const u8 *pBitmap, u32 runLength, u32 startBit);
 extern u32 g_dwObjectListActive_candidate;
 // Zeroed by InitObjectPool; read in WriteObjectOamCells as what looks
 // like a fixed-point rounding/scale constant, unrelated to the pool

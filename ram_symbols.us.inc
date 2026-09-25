@@ -199,6 +199,9 @@
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
 .set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/mem.h
 
+@ --- OBJ tile allocator ---
+.set g_pFindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun
+
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
 @ "resource-decompression dispatcher") ---
 .set g_pDecompressType4Entry, 0x030028CC  @ DecompressFunc: = g_pDecompressType4Iwram
