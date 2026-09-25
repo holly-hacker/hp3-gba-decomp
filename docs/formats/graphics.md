@@ -27,7 +27,7 @@ icons" below) is now statically decoded, extracted verbatim to
 rendered for viewing to `extracted/graphics/items/*.png`. **PROVEN end-to-end for
 level/room BG graphics, fully static, and extracted**: the two-level
 tilemap format (block-index map + per-block tile-ID/palette data), the
-per-tile streaming codec (`BgTileCodec_candidate`, `0x08006300`), and the
+per-tile streaming codec (`DecompressBgTile`, `0x08006300`), and the
 BG palette (level-table `+0x58`, raw uncompressed, no codec) are all
 statically ROM-derived and wired into `tools/graphics/dump_bg_tiles.py`,
 which renders all 55 rooms' 4 BG layers (`extracted/graphics/rooms/layers/`)
@@ -889,7 +889,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   cache keyed by tile ID (open addressing via a linked-list-in-array
   scheme, capacity `0x400`/`0x200` entries for two separate BG size
   classes). On a cache hit it just bumps a refcount; on a miss it evicts
-  the LRU entry and calls `BgTileCodec_candidate` to decompress exactly
+  the LRU entry and calls `DecompressBgTile` to decompress exactly
   one 32-byte tile (`0x20` = one 4bpp 8x8 tile) directly into BG
   character VRAM at `dest = 0x06000000 + (cacheSlot + sizeClass*0x400) *
   0x20`. Verified live: every watchpoint hit's call chain matched this
@@ -901,13 +901,11 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   0x08000000 + (entry >> 3)` is that tile's real ROM address (confirmed
   by tracing the codec's actual ROM reads, and independently by the last
   tile's computed address landing on the next resource's address).
-  `resource_ptr + size + 8` is a 292-byte context table (16 flat-nibble
-  byte values plus sorted 2-nibble ones -- a symbol/frequency table for
-  the codec, not pixel data) that gets copied to IWRAM and passed as
-  `BgTileCodec_candidate`'s `r3` on every call.
-- **`BgTileCodec_candidate`** (`0x08006300`, 256 bytes, ARM): a third
-  proprietary, IWRAM-installed codec, alongside the already-documented
-  type-4 and type-6 codecs. Installed once at boot into IWRAM
+  `resource_ptr + size + 8` is a 292-byte Huffman code table, copied to
+  IWRAM and passed as `DecompressBgTile`'s `r3` on every call.
+- **`DecompressBgTile`** (`0x08006300`, 180 bytes, ARM,
+  `asm/decompress_bg_tile.s`): a canonical Huffman decoder, IWRAM-installed
+  like type-4 and type-6. Installed once at boot into IWRAM
   `0x030033CC` by **`InstallBgTileCodec`** (`0x080250B8`,
   called from `main` at `0x0802971E`) via
   `CPUSet(0x08006300, 0x030033CC, ...)`. `DecompressBgTileToVram_candidate`
@@ -917,9 +915,10 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   fixed literal -- not a per-tile function-pointer table; the
   decompiler's pseudocode for this call is misleading about which
   argument is the call target. Decompresses one tile per call
-  (`r0`=offset-table entry, `r1`=dest, `r2`=`0x20`, `r3`=context table).
-  Unicorn-executed the same way as `decode_type6.py`/`decode_type4.py`;
-  produces real, structured 4bpp output, confirmed by rendering and by
+  (`r0`=ROM bit offset from the offset-table entry, `r1`=dest,
+  `r2`=`0x20`, `r3`=table: `count[18]` at +0, `base[18]` at +0x12,
+  `symbol[256]` at +0x24). Bits are read LSB-first; symbol pairs form
+  halfwords (first = low byte). Output confirmed by rendering and by
   the user matching it to real gameplay (see status above).
 
 **The BG palette (PROVEN, static).** Level-table `+0x58` (`dwPaletteData`
@@ -1113,16 +1112,11 @@ confirmed against real gameplay across multiple rooms (see "On-demand
 per-tile BG streaming" above); OBJ tiles still lack a statically-walkable
 resource-pointer trace.
 
-1. **`BgTileCodec_candidate`'s algorithm isn't decoded, only
-   Unicorn-executed.** Works correctly (`tools/graphics/dump_bg_tiles.py`
-   renders all 55 rooms end to end in about a minute, confirmed by the
-   user against actual gameplay for `0x28`/`0x26`/`0x27`/`0x24`), but
-   nobody has read the 256-byte codec's actual algorithm the way
-   type-6/type-4 were reverse-engineered -- doing so would allow a native
-   (non-Unicorn) decoder. Also unresolved: the very last tile's true
-   compressed length (offset table gives each tile's start, not the last
-   one's end), and the 292-byte context table's exact role as a
-   symbol/frequency table.
+1. **`DecompressBgTile` has no native decoder.** `dump_bg_tiles.py`
+   still runs the ROM code under Unicorn (all 55 rooms in about a
+   minute, confirmed against gameplay for `0x28`/`0x26`/`0x27`/`0x24`).
+   Also unresolved: the very last tile's true compressed length (the
+   offset table gives only each tile's start).
 3. **Trace `LoadObjTile`/`LoadObjTileAt`/`LoadObjTileSheet`'s
    (`0x080454BC`/`0x080454DC`/`0x08045588`) remaining callers.** Two
    real call chains are now closed out this way: item icons (see below)

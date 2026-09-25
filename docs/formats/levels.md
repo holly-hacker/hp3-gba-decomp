@@ -191,7 +191,7 @@ about how room content is placed.
 - No `regions.us.txt` rows are ready for this table yet: several field
   offsets (BG tileset pointers, BG-control-override targets) aren't
   fully walked to genuine termination -- the BG tileset codec
-  (`BgTileCodec_candidate`, `0x08006300`) and its per-tile offset-table
+  (`DecompressBgTile`, `0x08006300`) and its per-tile offset-table
   packing aren't decoded yet, see graphics.md -- and multiple `Unused`
   byte ranges aren't confirmed padding vs. simply unread by the traced
   call sites (AGENTS.md hard rule on region-extent confirmation).

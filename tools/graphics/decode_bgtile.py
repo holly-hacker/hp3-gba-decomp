@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Decode BG character tiles via BgTileCodec_candidate (0x08006300),
+"""Decode BG character tiles via DecompressBgTile (0x08006300),
 executed via Unicorn against the real ARM-mode ROM bytes, same approach
 as decode_type6.py/decode_type4.py. See docs/formats/graphics.md's
 "On-demand per-tile BG streaming" section.
