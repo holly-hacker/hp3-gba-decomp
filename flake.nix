@@ -12,7 +12,7 @@
         pkgs = import nixpkgs { inherit system; };
 
         # pillow: writes the extracted PNGs in tools/items/extract_item_icons.py.
-        # numpy: renders collision maps in tools/collision/dump_collision.py.
+        # numpy: collision maps (tools/collision) and GammaLz match search (tools/graphics).
         # toml: decomp-permuter's settings/weights files below.
         pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.numpy ps.pillow ps.toml ]);
 

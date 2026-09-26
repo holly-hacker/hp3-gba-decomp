@@ -13,7 +13,10 @@ import re
 import sys
 from pathlib import Path
 
-from sprite import COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, build, image_files
+from itertools import repeat
+
+from sprite import (COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, PADDED_COMPRESSIONS, build, image_files,
+                    map_images)
 
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 BANK_KEYS = {"format", "bpp", "componentOrder", "images"}
@@ -23,6 +26,7 @@ ENTRY_KEYS = [
     {"name", "paletteOnly"},
 ]
 FRAME_KEYS = {"offset", "compression", "cells", "parts", "extra"}
+OPTIONAL_FRAME_KEYS = {"padding"}
 
 
 def image_banks(ver: str):
@@ -70,9 +74,14 @@ def check_entry(image: dict) -> None:
     if not isinstance(frames, list) or not frames:
         raise ValueError("frames must be a nonempty list")
     for frame in frames:
-        if not isinstance(frame, dict) or set(frame) != FRAME_KEYS:
-            raise ValueError(f"each frame needs {', '.join(sorted(FRAME_KEYS))}")
+        if not isinstance(frame, dict) or not FRAME_KEYS <= set(frame) <= FRAME_KEYS | OPTIONAL_FRAME_KEYS:
+            raise ValueError(f"each frame needs {', '.join(sorted(FRAME_KEYS))} "
+                             f"(optionally {', '.join(sorted(OPTIONAL_FRAME_KEYS))})")
         check_compression(frame["compression"])
+        if "padding" in frame:
+            _ints(frame["padding"], 4, "padding")
+            if frame["compression"] not in PADDED_COMPRESSIONS or not all(0 <= b <= 0xFF for b in frame["padding"]):
+                raise ValueError(f"padding must be 4 bytes on a {' or '.join(PADDED_COMPRESSIONS)} frame")
         _ints(frame["offset"], 2, "frame offset")
         for cell in frame["cells"]:
             _ints(cell, 4, "cell")
@@ -116,6 +125,14 @@ def load_index(source: Path) -> dict:
     return index
 
 
+def _build(source: Path, image: dict, bpp: int) -> dict[str, bytes] | str:
+    """build(), with a failure returned as its message."""
+    try:
+        return build(source, image, bpp)
+    except (OSError, ValueError) as exc:
+        return f"{source / image['name']}: {exc}"
+
+
 def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
     index = load_index(source)
     out = Path(f"build/{ver}/images")
@@ -130,11 +147,12 @@ def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
         "",
     ]
     cursor = start
-    for image in index["images"]:
-        try:
-            components = build(source, image, index["bpp"])
-        except (OSError, ValueError) as exc:
-            raise ValueError(f"{source / image['name']}: {exc}") from None
+    images = index["images"]
+    gamma_lz = any(f["compression"] == "gammalz" for image in images for f in image.get("frames", []))
+    built = map_images(_build, repeat(source), images, repeat(index["bpp"]), gamma_lz=gamma_lz)
+    for image, components in zip(images, built):
+        if isinstance(components, str):
+            raise ValueError(components)
         missing = set(components) - set(index["componentOrder"])
         if missing:
             raise ValueError(f"{name}: {image['name']} has {', '.join(sorted(missing))} "

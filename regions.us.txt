@@ -1148,6 +1148,10 @@ label 0x0806BFF4 g_apMainMenuTitleGraphic
 label 0x0806C048 g_aOptionsMenuItems
 label 0x0806C174 g_dwCoolTrainBg0Control
 
+# Ally head rotations, g_aAllyTurnOrderIconAssets records 0-2 (tiles and frames);
+# SpawnTurnOrderIcon shows frame 0, other users unconfirmed
+image-bank 0x080781A4 0x0807E7F8 data/images/ally_heads AllyHeads
+
 # Item icon image bank
 image-bank 0x080a6d54 0x080AC7B8 data/images/items ItemIcons
 
@@ -1168,6 +1172,12 @@ label 0x080BF5E4 g_HarryVsDementorsObject1CSpawnData
 label 0x080CD814 g_StatusEquipSlotCursorSpawnData
 label 0x080CF804 g_ClockSkipObject1SpawnData
 label 0x080D03E4 g_ClockSkipObject2SpawnData
+
+# Monster battle sprites, g_pMonsterGraphicsTable battle records
+image-bank 0x089AE030 0x089F1DD4 data/images/monster_battle MonsterBattleSprites
+
+# Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
+image-bank 0x089F1DD4 0x089F46DC data/images/battle_icons BattleIcons
 
 # Turn-order icon container and the gauge sprites sub_0801BA54 shows
 image-bank 0x08A37DA4 0x08A39000 data/images/unnamed2 UnnamedSprites2

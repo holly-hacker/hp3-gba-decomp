@@ -215,7 +215,7 @@ layout is untested.
 | BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python); RLE encoder `encode_bios_rle.py` |
 | `DecompressHuffTree` | Thumb, ROM | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `sub_08024DC8` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (STRUCTURAL MATCH, disassembly only; no resource seen) | none |
 | `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py`; encoder `encode_lz_rle.py` (see "Sprite images") |
-| `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | proprietary (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Python) |
+| `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | Pucrunch 1.11 token format in a proprietary container (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Python); encoder `encode_gamma_lz.py` |
 | `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Python) |
 
 `InstallIwramDecompressCodecs` (`0x0801DD40`) copies `DecompressLzRle` and
@@ -361,10 +361,44 @@ content).
 
 `tools/graphics/decode_gamma_lz.py` implements this bitstream in Python.
 It checks the decoded length against the resource header and applies the
-delta pass when requested. It is not wired into `just build` or
-`regions.<ver>.txt` -- no confirmed, curated resource identities exist
-yet to extract (see "What's NOT yet known"), so there's nothing correct
-to commit as extracted output yet; it's a research/CLI tool for now.
+delta pass when requested. The image-bank pipeline uses it for sprite
+tiles (see "Sprite images"); room resources are not extracted yet.
+
+#### Encoder: Pucrunch 1.11 (PROVEN)
+
+The token stream is the format of [Pucrunch](https://a1bert.kapsi.fi/Dev/pucrunch/)
+1.11 (30-Jan-2000), a C64 compressor by Pasi Ojala, and the ROM's token
+choices are exactly Pucrunch 1.11's with its default options. The 1.11
+DOS build (`pucrunch_x86_old.zip` on the author's site, run in DOSBox
+with `-d -c0`) produces, for the pre-delta data of all 1,605 GammaLz
+resources found in the US ROM, the same tokens, escape and LZ distance
+widths, initial escape, and rank table. The 1.11 source survives only in
+Internet Archive snapshots of `www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c`
+(2001-2006); later releases differ (1.14 adds an all-lengths search in
+`OptimizeLength`, drops the RESCAN condition `lzlen > rle`, and cuts the
+fill ranks from 31 to 15).
+
+`tools/graphics/pucrunch_gammalz.py` translates 1.11's token-choosing
+passes (LGPL v2.1, see its header); `tools/graphics/encode_gamma_lz.py`
+writes the game's container around them. Together they reproduce all
+1,605 decodable GammaLz resources in each ROM byte for byte. The
+container differs from Pucrunch's own output:
+
+- the 8 header bytes above instead of Pucrunch's C64 header;
+- the fill table is `rleValues[1..]` rounded up to a multiple of 4 bytes
+  (`min(32, 4*(rleUsed/4+1))`), so ranks beyond those used keep their
+  initial run-count ranking; every 32-byte table ends in `0x45`
+  (**UNCONFIRMED** cause: one entry past the 31 ranks);
+- distance low bytes are stored as is, not XORed with `0xFF`;
+- bits are packed MSB-first into little-endian 32-bit words, the last
+  zero-padded;
+- a resource is also compressed after u16 delta coding and flagged
+  `0x80` when that stream is strictly shorter.
+
+The match search compares each position against all earlier ones with
+numpy (O(n^2)), so encoding the largest (63 KB) resource takes about 15 s. The image-bank pipeline caches encoded streams under
+`build/cache/gammalz/` by input hash and encodes a bank's sprites in
+parallel.
 
 ### Real, uncompressed palettes -- found via code tracing (PROVEN)
 
@@ -977,8 +1011,8 @@ Images are named by prefix and one-based position (`Item001`,
 
 ### Sprite images
 
-**PROVEN** as a build pipeline: the extractor rebuilds every image in the
-three banks from its PNGs and requires byte-identical components before
+**PROVEN** as a build pipeline: the extractor rebuilds every image in
+every bank from its PNGs and requires byte-identical components before
 writing an index, and all banks pass the whole-ROM comparison. Each frame
 is one indexed PNG plus a few settings; `tools/images/sprite.py` derives
 everything else.
@@ -991,9 +1025,13 @@ everything else.
 - **`offset`**: the canvas's top-left pixel relative to the object's
   anchor; it becomes the frame descriptor's `+0x6`/`+0x8` and each cell's
   X/Y.
-- **`compression`**: `lzrle` (`DecompressResourceVram` type 7) or `rle`
-  (type 3, BIOS `RLUnComp` with the duplicated header), chosen per frame
-  (one overworld sprite mixes both). Item icons use both with no
+- **`compression`**: `lzrle` (`DecompressResourceVram` type 7), `rle`
+  (type 3, BIOS `RLUnComp` with the duplicated header), `gammalz`
+  (type 6), or `raw` (type 0, uncompressed), chosen per frame (one
+  overworld sprite mixes `lzrle` and `rle`; one ally head sprite
+  mixes `lzrle`, `rle`, and `raw`).
+- **`padding`** (stored-cells frames only, optional): the word after a
+  `raw` or `gammalz` stream when it is nonzero (see "Tile streams"). Item icons use both with no
   size-based rule: every `rle` icon would be 2-5 bytes smaller as
   `lzrle`, so it is a per-asset setting.
 
@@ -1022,15 +1060,16 @@ descriptor offset per frame, then per frame in order the descriptor
 decoded), and one 4-byte `ObjectFrameCell` per cell, then zero bytes to a word
 boundary (records with 6-byte parts can end on a halfword). `tileOffset` is the
 frame's stream position within the sprite's tiles. Bits 5-7 of
-`bCellCount` are `0x40` on every `lzrle` frame and `0x20` on every `rle`
-frame in the three banks; the packer derives them from `compression`.
+`bCellCount` are `0x40` on every `lzrle` frame, `0x20` on every `rle`
+frame, and `0` on every `raw` and `gammalz` frame, whose codec comes from
+the stream's resource header; the packer derives them from `compression`.
 **UNCONFIRMED:** no reader of these bits has been found.
 
 **Tile streams** are the 4-byte resource header, the compressed stream,
 then zero bytes to a word boundary at least five bytes past the last
 token (the LzRle end token is the first of them).
 `tools/graphics/encode_lz_rle.py` reproduces every LzRle stream in the
-three banks (264): it takes a byte run of at least 3 (up to 1089) when no
+image banks: it takes a byte run of at least 3 (up to 1089) when no
 back-reference is longer; otherwise the longest non-overlapping
 back-reference of at least 3 (length <= distance, up to 33), preferring
 the farthest on ties within the 1023-byte window; it defers a copy as a
@@ -1038,6 +1077,14 @@ literal when the run starting at the next byte is longer than the copy;
 literals group in chunks of up to 63. `tools/graphics/encode_bios_rle.py`
 reproduces all 37 RLE streams with runs of at least 3 and both token kinds
 capped at 127 bytes.
+
+`raw` and `gammalz` streams instead end on a word boundary followed by
+one padding word. It is zero in every sprite stream but one battle-sprite
+frame (`00 14 33 00`); two GammaLz resources outside the sprite banks
+hold similar values (`0x00xx1400` read as a word). **UNCONFIRMED**: these
+look like leftover pointers from the original tool. A nonzero word is
+kept as the frame's `padding`. GammaLz streams are encoded as described
+in "Encoder: Pucrunch 1.11".
 
 ### Overworld monster sprites (PROVEN, extracted)
 
@@ -1083,6 +1130,35 @@ with the palette at `0x08A38FE0`, stored after the second gauge. The
 `UnnamedSprites2` `image-bank` row claims the range as `Unnamed2_001`-
 `Unnamed2_003` (stored cells, `tiles`, `frames`, `palette` order; the
 shared palette is `Unnamed2_003`'s).
+
+### Battle sprites, turn-order icons, and ally heads (PROVEN, extracted)
+
+Three `image-bank` rows claim the sprites `g_pMonsterGraphicsTable`'s
+battle records, `g_MonsterShadowGfxRow`, `g_aEnemyTurnOrderIconAssets`,
+and `g_aAllyTurnOrderIconAssets` point to (stored cells, `tiles`,
+`frames`, `palette` order). The byte ranges are identical in both ROMs at
+different addresses, so both manifests share one `data/images/` folder
+per bank:
+
+| Bank | US | JP | Contents |
+|---|---|---|---|
+| `AllyHeads` | `0x080781A4`-`0x0807E7F8` | `0x080780E0`-`0x0807E734` | ally records 0-2: head rotations (32, 127, 32 frames; `rle`, `lzrle`, and six `raw` frames), no palettes |
+| `MonsterBattleSprites` | `0x089AE030`-`0x089F1DD4` | `0x089ADE60`-`0x089F1C04` | 35 battle sprites, 652 `gammalz` frames, 25 own palettes, plus `MonsterBattle026`, a recolor palette for `MonsterBattle003` |
+| `BattleIcons` | `0x089F1DD4`-`0x089F46DC` | `0x089F1C04`-`0x089F450C` | the shadow sprite (`BattleIcon001`), 35 enemy turn-order icons, the palettes of ally records 0-1 and 2 (`BattleIcon037`, `BattleIcon038`), and ally record 3 with its palette |
+
+The ally records' frames are full head rotations. The only code found
+that loads the records is `SpawnTurnOrderIcon`, which shows frame 0 as
+the turn-order icon; **UNCONFIRMED** whether other code (for example an
+overworld head display) uses the remaining frames. The records follow
+`g_aEnemyTurnOrderIconAssets` directly, so a computed index could reach
+them without a literal pointer.
+
+A palette after a sprite's frames is normally that sprite's own. The
+extractor's `noPalette` setting marks the two sprites whose following
+palette belongs to other records (`MonsterBattle025` and
+`BattleIcon036`, checked against every record's palette pointer), so it
+becomes its own palette-only entry. After `0x089F46DC`, further LzRle
+sprites with palettes continue; they are not claimed yet.
 
 ### Item icons (PROVEN, extracted)
 

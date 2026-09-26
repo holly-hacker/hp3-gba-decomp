@@ -39,6 +39,12 @@ class _BitReader:
 
 def decode_gamma_lz(rom: bytes, hdr_addr: int) -> bytes:
     """Decode the resource at hdr_addr, including its optional delta pass."""
+    return decode_gamma_lz_with_end(rom, hdr_addr)[0]
+
+
+def decode_gamma_lz_with_end(rom: bytes, hdr_addr: int) -> tuple[bytes, int]:
+    """Decode as decode_gamma_lz; also return the ROM address just past the
+    stream's last 32-bit word."""
     pos = hdr_addr - ROM_BASE
     header = rom[pos:pos + 4]
     extra_pass = bool(header[0] & 0x80)
@@ -106,7 +112,8 @@ def decode_gamma_lz(rom: bytes, hdr_addr: int) -> bytes:
     if len(output) != expected_size:
         raise ValueError(f"{hdr_addr:#x}: decoded {len(output)} bytes, expected {expected_size}")
     result = bytes(output)
-    return _apply_delta_pass(result) if extra_pass else result
+    end = ROM_BASE + reader.pos
+    return (_apply_delta_pass(result) if extra_pass else result), end
 
 
 def _apply_delta_pass(buf: bytes) -> bytes:

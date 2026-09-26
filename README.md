@@ -28,6 +28,9 @@ To be documented. See `flake.nix` and `Justfile`.
 TL;DR: place your roms at `rom.us.gba` and `rom.jp.gba`, start a dev shell with `nix develop` (this will build/fetch
 required tools) and run `just check-all` to execute the entire extraction and build process.
 
+Note that the first build may take a while as it will try to re-compress extracted resources. Subsequent builds will be
+faster.
+
 ## Attribution
 
 This project was bootstrapped on knowledge found by jogotu and jlun2 from the Harry Potter Handheld Speedrunning
@@ -39,6 +42,9 @@ code from open source libraries:
 in this folder should be licensed under a BSD-like license.
 - the [Krawall](https://github.com/sebknzl/krawall) audio engine, licensed under the LGPL v2.1 license
   - This code is currently not included in this repo, but may be in the future
+- the [Pucrunch](https://a1bert.kapsi.fi/Dev/pucrunch/) compression tool, licensed under the LGPL v2.1 license. The code
+referenced was pulled from [the Internet Archive](http://web.archive.org/web/20060925155413id_/http://www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c).
+  - `tools/graphics/pucrunch_gammalz.py` implements parts of its compression algorithm
 
 Most other code assets in this repo are based on the rom of Harry Potter and the Prisoner of Azkaban, as part of a clean
 room reverse engineering effort. Raw art assets are currently not included in this repo.

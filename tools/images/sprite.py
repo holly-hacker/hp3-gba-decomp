@@ -15,17 +15,23 @@ Components: palette (2**bpp BGR555 entries from the PNG palette), tiles
 (each frame's cell tiles, compressed, one stream per frame), and frames
 (an ObjectFrameData record).
 """
+import hashlib
 import json
+import os
 import struct
 import sys
+from concurrent.futures import ProcessPoolExecutor
+from itertools import repeat
 from pathlib import Path
 
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "graphics"))
 from decode_bios import rl_uncomp  # noqa: E402
+from decode_gamma_lz import decode_gamma_lz_with_end  # noqa: E402
 from decode_lz_rle import decode_lz_rle  # noqa: E402
 from encode_bios_rle import encode_bios_rle  # noqa: E402
+from encode_gamma_lz import encode_gamma_lz  # noqa: E402
 from encode_lz_rle import encode_lz_rle  # noqa: E402
 
 ROM_BASE = 0x08000000
@@ -33,8 +39,16 @@ COMPONENT_KINDS = ("palette", "tiles", "frames")
 
 # DecompressResourceVram type per codec, and the value of the frame
 # descriptor's bCellCount bits 5-7 that accompanies it in every ROM sprite.
-COMPRESSION_TYPES = {"rle": 3, "lzrle": 7}
-CELL_COUNT_FLAGS = {"rle": 0x20, "lzrle": 0x40}
+# bCellCount bits 5-7 are 0 for both raw and GammaLz frames; their codec
+# comes from the tile stream's resource header.
+COMPRESSION_TYPES = {"raw": 0, "rle": 3, "gammalz": 6, "lzrle": 7}
+CELL_COUNT_FLAGS = {"raw": 0x00, "rle": 0x20, "gammalz": 0x00, "lzrle": 0x40}
+# Raw and GammaLz tile streams end on a word boundary followed by one
+# padding word. It is usually zero; the few nonzero values are not derived
+# from the data and are stored in the frame's "padding" setting.
+PADDED_COMPRESSIONS = ("raw", "gammalz")
+PADDING_BYTES = 4
+GAMMA_LZ_CACHE = Path("build/cache/gammalz")
 
 # (width, height) in tiles -> (OAM shape, OAM size)
 OAM_SHAPES = {
@@ -141,13 +155,38 @@ def unpack_pixels(data: bytes, width: int, height: int, cells, bpp: int) -> list
     return pixels
 
 
-def compress_tiles(raw: bytes, compression: str) -> bytes:
+def _gamma_lz(raw: bytes) -> bytes:
+    """encode_gamma_lz, cached by input hash under build/ (it is slow)."""
+    path = GAMMA_LZ_CACHE / f"{hashlib.sha256(raw).hexdigest()}.bin"
+    try:
+        return path.read_bytes()
+    except FileNotFoundError:
+        pass
+    encoded = encode_gamma_lz(raw)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(f".{os.getpid()}.tmp")
+    tmp.write_bytes(encoded)
+    tmp.replace(path)
+    return encoded
+
+
+def compress_tiles(raw: bytes, compression: str, padding: list[int] | None = None) -> bytes:
     """Resource header, compressed stream, then at least five zero bytes
-    ending on a word boundary (LzRle's end token counts as the first)."""
+    ending on a word boundary (LzRle's end token counts as the first).
+    Raw and GammaLz streams are instead followed by one padding word
+    (zero unless given); GammaLz writes its own header."""
     if compression not in COMPRESSION_TYPES:
         raise ValueError(f"unknown compression {compression!r}")
+    if padding is not None and compression not in PADDED_COMPRESSIONS:
+        raise ValueError(f"{compression} tiles take no padding setting")
+    padding = bytes(padding or [0] * PADDING_BYTES)
     size = len(raw)
     header = struct.pack("<I", COMPRESSION_TYPES[compression] << 4 | size << 8)
+    if compression == "gammalz":
+        return _gamma_lz(raw) + padding
+    if compression == "raw":
+        body = header + raw
+        return body.ljust(_align4(len(body)), b"\0") + padding
     if compression == "lzrle":
         body = header + encode_lz_rle(raw)
         return body.ljust(_align4(len(body) + 4), b"\0")
@@ -157,12 +196,26 @@ def compress_tiles(raw: bytes, compression: str) -> bytes:
     return body.ljust(_align4(len(body) + 5), b"\0")
 
 
+def _decompress_gamma_lz(data: bytes) -> tuple[bytes, int]:
+    """Decoded tiles and the stream length, excluding the padding word."""
+    raw, end = decode_gamma_lz_with_end(data, ROM_BASE)
+    return raw, end - ROM_BASE
+
+
 def decompress_tiles(data: bytes) -> tuple[bytes, str]:
     header = struct.unpack_from("<I", data)[0]
     size = header >> 8
     by_type = {t: name for name, t in COMPRESSION_TYPES.items()}
     compression = by_type.get(header >> 4 & 0xF) if header & 0x8F == 0 else None
-    if compression == "lzrle":
+    if header & 0xFF in (0x60, 0xE0):  # GammaLz carries its delta flag in bit 7
+        compression = "gammalz"
+    if compression == "gammalz":
+        raw = _decompress_gamma_lz(data)[0]
+    elif compression == "raw":
+        if not size or size % 32 or 4 + size > len(data):
+            raise ValueError(f"raw tiles of {size} bytes do not fit")
+        raw = data[4:4 + size]
+    elif compression == "lzrle":
         raw = decode_lz_rle(data, ROM_BASE + 4)
     elif compression == "rle":
         if struct.unpack_from("<I", data, 4)[0] != header:
@@ -179,6 +232,11 @@ def tile_stream_length(data: bytes) -> int | None:
     """Length of the tile stream starting `data`, or None if none starts there."""
     try:
         raw, compression = decompress_tiles(data)
+        if compression in PADDED_COMPRESSIONS:
+            # The padding word is free; the rebuilt sprite is compared later.
+            end = _decompress_gamma_lz(data)[1] if compression == "gammalz" else _align4(4 + len(raw))
+            length = end + PADDING_BYTES
+            return length if length <= len(data) else None
     except (ValueError, IndexError, struct.error):
         return None
     encoded = compress_tiles(raw, compression)
@@ -240,7 +298,8 @@ def decode_frames(data: bytes) -> dict:
     header = list(struct.unpack_from("<4b", data, 2))
     frame_count, tile_bytes, extra_count, part_count = struct.unpack_from("<HHBB", data, 6)
     offsets = struct.unpack_from(f"<{frame_count}H", data, FRAME_HEADER_SIZE)
-    by_flag = {flag: name for name, flag in CELL_COUNT_FLAGS.items()}
+    # Flag 0 leaves the codec to the tile stream header (see resolve_compressions).
+    by_flag = {0x00: None, 0x20: "rle", 0x40: "lzrle"}
     frames = []
     end = FRAME_HEADER_SIZE + 2 * frame_count
     for offset in offsets:
@@ -355,7 +414,7 @@ def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
         width, height, cells, raw, colors = _frame_tiles(source / path_name, frame_cells, bpp)
         if palette is None:
             palette = colors
-        stream = compress_tiles(raw, spec["compression"])
+        stream = compress_tiles(raw, spec["compression"], spec.get("padding"))
         streams.append(stream)
         frames.append({"width": width, "height": height, "offset": spec["offset"],
                        "compression": spec["compression"],
@@ -367,15 +426,45 @@ def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
     return components
 
 
+def resolve_compressions(record: dict, tiles: bytes) -> dict:
+    """Fill in the codec of flag-0 frames from their stream headers."""
+    for frame in record["frames"]:
+        if frame["compression"] is None:
+            compression = decompress_tiles(tiles[frame["tile_offset"]:])[1]
+            if CELL_COUNT_FLAGS[compression]:
+                raise ValueError(f"{compression} tiles in a frame with cell-count flags 0")
+            frame["compression"] = compression
+    return record
+
+
+def _stream_paddings(tiles: bytes, frames: list[dict]) -> list[list[int] | None]:
+    """Each frame's nonzero padding word, else None."""
+    ends = [f["tile_offset"] for f in frames[1:]] + [len(tiles)]
+    paddings = []
+    for frame, end in zip(frames, ends):
+        word = tiles[end - PADDING_BYTES:end]
+        padded = frame["compression"] in PADDED_COMPRESSIONS
+        paddings.append(list(word) if padded and any(word) else None)
+    return paddings
+
+
 def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool) -> dict:
     """The bank.json entry for ROM components, without writing any PNG."""
     if "tiles" not in components:
         return {"name": name, "paletteOnly": True}
-    record = decode_frames(components["frames"])
+    record = resolve_compressions(decode_frames(components["frames"]), components["tiles"])
+    paddings = _stream_paddings(components["tiles"], record["frames"])
     if stored_cells:
         keys = ("offset", "compression", "cells", "parts", "extra")
+        frames = []
+        for frame, padding in zip(record["frames"], paddings):
+            frames.append({k: frame[k] for k in keys})
+            if padding:
+                frames[-1]["padding"] = padding
         return {"name": name, "palette": "palette" in components, "header": record["header"],
-                "frames": [{k: f[k] for k in keys} for f in record["frames"]]}
+                "frames": frames}
+    if any(paddings):
+        raise ValueError(f"{name}: needs stored cells (nonzero GammaLz padding)")
     if len(record["frames"]) != 1 or any(record["header"]) or "palette" not in components:
         raise ValueError(f"{name}: needs stored cells (multi-frame, header data, or no palette)")
     frame = record["frames"][0]
@@ -415,21 +504,39 @@ def _entry_json(image: dict) -> str:
     return f'    {head}, "frames": [\n{frames}\n    ]}}'
 
 
+def map_images(fn, *args, gamma_lz: bool):
+    """map(fn, *args), across processes when GammaLz encoding is involved."""
+    if not gamma_lz:
+        return list(map(fn, *args))
+    with ProcessPoolExecutor() as pool:
+        return list(pool.map(fn, *args))
+
+
+def _uses_gamma_lz(components: dict[str, bytes]) -> bool:
+    if "frames" not in components:
+        return False
+    record = resolve_compressions(decode_frames(components["frames"]), components["tiles"])
+    return any(f["compression"] == "gammalz" for f in record["frames"])
+
+
 def extract_bank(source: Path, bpp: int, order: tuple[str, ...], entries: list[tuple[str, dict[str, bytes]]],
                  stored_cells: bool = False, index_only: bool = False) -> None:
     """Write each image's PNGs and the bank's bank.json. With index_only,
     keep existing PNGs and regenerate only the index."""
     source.mkdir(parents=True, exist_ok=True)
-    images = []
-    for name, components in entries:
-        if index_only:
+    if index_only:
+        images = []
+        for name, components in entries:
             entry = entry_settings(name, components, stored_cells)
             missing = [f for f in image_files(entry) if not (source / f).is_file()]
             if missing:
                 raise ValueError(f"missing {source / missing[0]}; extract the bank first")
-        else:
-            entry = extract(source, name, components, bpp, stored_cells)
-        images.append(entry)
+            images.append(entry)
+    else:
+        names = [name for name, _ in entries]
+        components = [c for _, c in entries]
+        images = map_images(extract, repeat(source), names, components, repeat(bpp), repeat(stored_cells),
+                            gamma_lz=any(map(_uses_gamma_lz, components)))
     lines = ",\n".join(_entry_json(image) for image in images)
     (source / "bank.json").write_text(
         f'{{\n  "format": 2,\n  "bpp": {bpp},\n  "componentOrder": {json.dumps(list(order))},\n'

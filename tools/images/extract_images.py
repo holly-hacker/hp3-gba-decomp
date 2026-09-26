@@ -27,6 +27,8 @@ ROM_BASE = 0x08000000
 # Version-independent settings of each bank; ROM ranges live in the manifest.
 # storedCells banks keep each frame's OAM cells in bank.json; their palette
 # is optional per sprite, and a palette not followed by tiles is its own entry.
+# noPalette lists sprites whose following palette belongs to other records
+# (so it becomes the next, palette-only entry).
 BANKS = {
     "ItemIcons": {"prefix": "Item", "bpp": 4, "componentOrder": ("palette", "tiles", "frames")},
     "HelpSprites": {"prefix": "Help", "bpp": 4, "componentOrder": ("tiles", "frames", "palette")},
@@ -38,6 +40,14 @@ BANKS = {
     "UnnamedSprites2": {"prefix": "Unnamed2_", "bpp": 4,
                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "MonsterPalettes": {"prefix": "MonsterPalette", "bpp": 4, "componentOrder": ("palette",)},
+    "AllyHeads": {"prefix": "AllyHead", "bpp": 4,
+                  "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "MonsterBattleSprites": {"prefix": "MonsterBattle", "bpp": 4,
+                             "componentOrder": ("tiles", "frames", "palette"), "storedCells": True,
+                             "noPalette": ("MonsterBattle025",)},
+    "BattleIcons": {"prefix": "BattleIcon", "bpp": 4,
+                    "componentOrder": ("tiles", "frames", "palette"), "storedCells": True,
+                    "noPalette": ("BattleIcon036",)},
 }
 
 
@@ -64,7 +74,8 @@ def split_bank(rom: bytes, start: int, end: int, name: str) -> list[tuple[str, d
                     if cursor == start_at:
                         raise ValueError("no tile stream starts here")
                 elif kind == "palette" and stored and (
-                        cursor >= limit or tile_stream_length(rom[cursor:limit]) is not None):
+                        cursor >= limit or entry_name in settings.get("noPalette", ())
+                        or tile_stream_length(rom[cursor:limit]) is not None):
                     continue
                 else:
                     cursor += component_length(kind, rom[cursor:limit], bpp)
