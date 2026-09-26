@@ -129,10 +129,13 @@ typedef struct MonsterGfxRow {
     ObjectAssetRecord battle;     // 0x00, battle and Folio Bruti sprite
     ObjectAssetRecord overworld;  // 0x10, wandering-monster sprite
 } MonsterGfxRow;
-extern MonsterGfxRow g_pMonsterGraphicsTable[69];  // 0x0804E6B4
+extern const MonsterGfxRow g_pMonsterGraphicsTable[69];  // 0x0804E6B4, src/data/monster_graphics_table.c
 extern u8 g_pMonsterAnimFrameTable[];              // 0x08051E70, stride 0x60
 // Companion sprite InitMonsterBattleActor spawns for monsters 45-47.
-extern ObjectAssetRecord g_MonsterShadowGfxRow;    // 0x0804EF54
+extern const ObjectAssetRecord g_MonsterShadowGfxRow;               // 0x0804EF54
+extern const ObjectAssetRecord g_aEnemyTurnOrderIconAssets[69];     // 0x0804EF64
+extern const ObjectAssetRecord g_aAllyTurnOrderIconAssets[4];       // 0x0804F3B4
+extern const ObjectAssetRecord g_TurnOrderIconContainerAsset;       // 0x0804F3F4
 extern u8 g_MonsterShadowAnimData[];             // 0x08053850
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by

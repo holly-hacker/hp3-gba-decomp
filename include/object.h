@@ -152,7 +152,6 @@ typedef struct ObjectAssetRecord {
     void *pFrameData;
     void *pPalette;
     u8 bAnimFrameDelay;
-    u8 pad_D[3];
 } ObjectAssetRecord;
 
 extern const ObjectAssetRecord g_apPortraitTable[72];  // US 0x0804C61C
@@ -393,7 +392,7 @@ extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the already
 extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
-extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
+extern void SetObjectAnimData(Object *obj, const void *a, void *b, s32 c);
 extern u32 TickObjectList(ActiveObjectListState *list, u8 mode);
 extern void TickObject(Object *obj, u32 mode);
 extern s32 IsObjectTickAllowed(void);

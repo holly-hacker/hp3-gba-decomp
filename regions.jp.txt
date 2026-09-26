@@ -555,6 +555,8 @@ label 0x0804C0E0 g_dwRiddikulusBg3Control
 c-file 0x0804C422 0x0804C542 src/data/playable_character_names.c sPlayableCharacterNames
 c-file 0x0804CDF0 0x0804D450 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 
+c-file 0x0804E5E0 0x0804F330 src/data/monster_graphics_table.c g_pMonsterGraphicsTable
+
 # Folio Bruti monster stat table -- content proven byte-identical to the
 # US table (0x0804F410), just at a different address; one C source serves
 # both. See docs/formats/folio_bruti.md.
@@ -638,6 +640,9 @@ label 0x0806C0B0 g_dwCoolTrainBg0Control
 # SpawnTurnOrderIcon shows frame 0, other users unconfirmed
 image-bank 0x080780E0 0x0807E734 data/images/ally_heads AllyHeads
 
+# Overworld (wandering) monster sprites, g_pMonsterGraphicsTable +0x10 records
+image-bank 0x080AC808 0x080B99C0 data/images/monster_overworld MonsterOverworldSprites
+
 label 0x080BC100 g_MainMenuPalette
 label 0x080BD64C g_HarryVsDementorsObject18SpawnData
 label 0x080BF520 g_HarryVsDementorsObject1CSpawnData
@@ -650,6 +655,12 @@ image-bank 0x089ADE60 0x089F1C04 data/images/monster_battle MonsterBattleSprites
 
 # Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
 image-bank 0x089F1C04 0x089F450C data/images/battle_icons BattleIcons
+
+# Turn-order icon container and the gauge sprites sub_0801BA54 shows
+image-bank 0x08A37BD4 0x08A38E30 data/images/unnamed2 UnnamedSprites2
+
+# Monster recolor palettes, g_pMonsterGraphicsTable and turn-order icon records
+image-bank 0x08A38E30 0x08A39330 data/images/monster_palettes MonsterPalettes
 
 krawall-module 0x08A9C500 0x08AA0884 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0884 0x08AA4C38 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar

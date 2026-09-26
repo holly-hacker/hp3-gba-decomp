@@ -1025,11 +1025,7 @@ label 0x0804D7B8 g_abGammaHighRemap
 label 0x0804E254 g_abBattleMusicByRoom
 label 0x0804E28B g_abBattleMusicByOverworldSlot
 c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
-label 0x0804E6B4 g_pMonsterGraphicsTable
-label 0x0804EF54 g_MonsterShadowGfxRow
-label 0x0804EF64 g_aEnemyTurnOrderIconAssets
-label 0x0804F3B4 g_aAllyTurnOrderIconAssets
-label 0x0804F3F4 g_TurnOrderIconContainerAsset
+c-file 0x0804E6B4 0x0804F404 src/data/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table, decompiled to C
 c-file 0x0804F410 0x0804FA88 src/data/monsters.c MonsterTable

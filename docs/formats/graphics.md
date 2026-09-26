@@ -1138,7 +1138,10 @@ battle records, `g_MonsterShadowGfxRow`, `g_aEnemyTurnOrderIconAssets`,
 and `g_aAllyTurnOrderIconAssets` point to (stored cells, `tiles`,
 `frames`, `palette` order). The byte ranges are identical in both ROMs at
 different addresses, so both manifests share one `data/images/` folder
-per bank:
+per bank. The same holds for `MonsterOverworldSprites`
+(JP `0x080AC808`-`0x080B99C0`), `UnnamedSprites2` (JP
+`0x08A37BD4`-`0x08A38E30`), and `MonsterPalettes` (JP
+`0x08A38E30`-`0x08A39330`), which the records also point into.
 
 | Bank | US | JP | Contents |
 |---|---|---|---|
