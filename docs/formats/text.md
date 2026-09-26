@@ -366,11 +366,8 @@ localization, unrelated to the glyph charmap.)
 reimplements this whole chain (language table lookup, blob init, tree
 walk) directly in Python from the ROM, verified byte-for-byte against
 manual disassembly tracing for several IDs across all 8 languages.
-Usage: `decode_dialog_text.py us <lang 0-7> <string id>`. Note this
-decodes *content* (real dialog/UI text) -- per `AGENTS.md` hard rule 2,
-that content itself must never be committed to the repo (same footing as
-Krawall audio); only the format knowledge and this decoder tool are
-committed.
+Usage: `decode_dialog_text.py us <lang 0-7> <string id>`. Decoded strings
+are maintained locally in the gitignored `data/text/*.json` resources.
 
 **String ID scale**: scanning the English (lang 0) offset table for
 sequentially-valid entries found **2767 entries** (IDs `0`-`0xACE`) --
@@ -380,25 +377,35 @@ real, complete string count, not an arbitrary scan cutoff.
 
 ## The extraction pipeline, built and build-integrated (PROVEN -- full-ROM byte-exact)
 
-Mirrors Krawall's `data/audio/` + `tools/krawall/pack_krawall.py` model (see
-`AGENTS.md`): curated, editable, gitignored source that a pack step
-turns into byte-exact assembly before `gen-link`, verified by the same
+Uses local, gitignored, editable string-only JSON that a pack step turns into
+byte-exact assembly before `gen-link`, verified by the same
 `just compare`/`just check-all` full-ROM sha1 oracle every other region
 already has to pass.
 
-**`tools/text/text_codec.py`**: the shared codec. Beyond decode (see above),
-it implements a real **encoder**, which needed one non-obvious fix to
-get byte-exact: the tree contains structurally-reachable **duplicate
-leaves** (the same output byte reachable via more than one bit path) --
-confirmed real, not a decode bug, by walking the tree naively (raised on
-the very first duplicate, e.g. byte `0x65` = `'e'`). Re-deriving the
-encode table *empirically* from real decode traces (capturing the exact
-bit path each symbol actually used, across every string in a language)
-instead of a structural tree walk found **zero path conflicts** across
-all 8 languages' full string sets -- i.e. each symbol has exactly one
-real path in practice, just not a structurally-unique one, so an
-encoder has to learn it from data rather than the tree alone. See
-`build_encode_map_from_corpus()`'s docstring.
+**`tools/text/text_codec.py`**: the shared codec. Its tree builder
+reconstructs every language's tree and bit paths from decoded glyph bytes
+alone (**STRUCTURAL MATCH**, with exact tree bytes verified for all eight
+languages). The construction is:
+
+1. Count every byte in every string, including its `0x00` terminator.
+   Let `scale = ceil(max_count / 255)`. Assign each present byte weight
+   `max(1, count // scale)`; add a special value `0x100` with weight 1.
+2. Repeatedly combine the two lowest-weight items. Break weight ties by
+   ascending item ID: byte values and `0x100` are initial IDs, and merged
+   nodes receive IDs `0x101`, `0x102`, ... in creation order. The first
+   item popped is the zero-bit child, the second the one-bit child.
+3. Serialize the root at tree index 0, then the remaining internal nodes
+   in descending depth order, breaking depth ties by creation order.
+   Store each child as its byte/special value or `0x100 + node_index`.
+   Walk this tree to obtain the encode paths; pack bits LSB-first.
+
+The special value `0x100` is a leaf in the construction, but the game
+decoder interprets it as tree index 0 (the root). That branch is never
+used by the shipped strings. Its original intended purpose is
+**UNCONFIRMED**. The formula above reproduces the complete serialized
+tree, not just code lengths, for all eight shipped languages. The
+behavior of the original authoring tool on unobserved edge cases (for
+example a maximum count exactly divisible by 255) is not proven.
 
 Also empirically confirmed (not assumed) before trusting the encoder:
 each string's compressed bitstream is **byte-aligned** -- `offset[id+1]
@@ -409,29 +416,26 @@ alignment** with zero bytes to reach the next language's base address
 consecutive pairs, and the actual pad bytes present in the ROM are all
 `0x00`).
 
-**Full validation**: re-encoding every real string (unmodified) in all 8
-languages and reassembling the blob (header + tree + offset table +
-bitstreams + alignment padding) reproduces the **exact original ROM
+**Full validation**: generating each tree and code map from only its
+decoded strings, then reassembling the blob (header + tree + offset table
++ bitstreams + alignment padding) reproduces the **exact original ROM
 bytes**, base to base, for all 8 languages -- checked directly against
-`baserom.us.gba`, not inferred. This is what makes the pipeline safe to
-wire into the actual build rather than just a research decoder.
+`baserom.us.gba`. Packing does not read the donor ROM.
 
-**`tools/text/extract_text.py`** (the `extract-text` recipe, one-time per
-clone, like `extract-krawall`): decodes all 8 languages from
-`baserom.us.gba` into `data/text/<lang>.json` (gitignored -- real game
-text content, same footing as the baserom and `data/audio/`, per hard
-rule 2). Each string is stored via `text_codec.bytes_to_editable()`:
+**`tools/text/extract_text.py`** (the `extract-text` recipe): decodes all 8
+languages from `baserom.us.gba` into gitignored `data/text/<lang>.json`
+when a file is missing. Run it once on a fresh checkout before building
+US. Existing files are kept unless `--force` is passed. Each
+string is stored via `text_codec.bytes_to_editable()`:
 plain, directly-editable ASCII for the common case, Private-Use-Area
 placeholder characters for anything not yet mapped to a real character
-(control codes, and the not-yet-decoded extended/accented two-byte
-codes -- see "What's NOT yet known"). Each file also carries the raw
-Huffman tree and the empirically-captured encode map, so packing never
-needs the baserom again.
+(control codes and unused two-byte extended codes). The JSON contains
+only a top-level string array, with its index equal to the string ID.
 
 **`tools/text/pack_text.py`** (the `pack-text` recipe, wired into `build` and
 therefore `compare`/`check-all`): reads `regions.<ver>.txt`'s
-`dialog-text`/`dialog-text-table` rows, rebuilds each language's blob
-from `data/text/`, and writes real labeled `.s` files to
+`dialog-text`/`dialog-text-table` rows, builds each language's tree and
+symbol paths from `data/text/`, and writes real labeled `.s` files to
 `build/<ver>/text/` (gitignored), erroring loudly on any size mismatch
 against the row's declared end address -- same discipline as
 `pack_krawall.py`. Confirmed end-to-end: `just check-all` passes for

@@ -36,6 +36,8 @@ charmap itself. This codec operates on the raw glyph-code byte stream,
 not on any character mapping.
 """
 import struct
+import heapq
+from collections import Counter
 
 ROM_BASE = 0x08000000
 LANG_TABLE = 0x0806BD78
@@ -60,7 +62,7 @@ def lang_base(rom: bytes, lang_index: int) -> int:
 
 class TextBlob:
     """Wraps one language's blob, either read live from ROM bytes at
-    `base`, or reconstructed from a captured tree (for encoding)."""
+    `base`, or reconstructed from a generated tree (for encoding)."""
 
     def __init__(self, tree_bytes: bytes, offsets: list[int] | None = None):
         self.tree_bytes = tree_bytes
@@ -132,50 +134,21 @@ class TextBlob:
     def decode_with_paths(self, string_id: int) -> tuple[bytes, list[tuple[int, tuple[int, ...]]]]:
         """Like decode(), but also returns, per emitted symbol, the
         exact bit path taken through the tree -- needed to build an
-        encode map, since the tree has structurally-reachable duplicate
-        leaves (multiple paths can decode to the same byte value) that
-        real content never actually exercises through more than one of
-        them. See build_encode_map_from_corpus()."""
+        encode map, since a 0x100 child can loop back to the root and
+        make multiple paths decode to the same byte. Real content uses
+        only one path per byte. See build_encode_map_from_corpus()."""
         return self._decode_impl(string_id, want_paths=True)
 
     def decode_all(self) -> dict[int, bytes]:
         return {i: self.decode(i) for i in range(self.count)}
 
 
-def path_to_int(path: list[int]) -> int:
-    """Packs a bit path into a single self-describing integer, via the
-    standard leading-1-sentinel trick: value = (1 << len(path)) | code,
-    with path[0] as the MSB (right after the sentinel bit). Max real
-    depth is 11 bits (see docs/formats/text.md), so this always fits
-    comfortably in a plain JSON integer/small int -- used so
-    data/text/*.json stores one compact number per symbol instead of a
-    nested array of 0/1s."""
-    value = 1
-    for bit in path:
-        value = (value << 1) | bit
-    return value
-
-
-def int_to_path(value: int) -> list[int]:
-    """Inverse of path_to_int()."""
-    length = value.bit_length() - 1
-    return [(value >> (length - 1 - i)) & 1 for i in range(length)]
-
-
 def build_encode_map_from_corpus(blob: "TextBlob") -> dict[int, list[int]]:
-    """Builds {byte_value: [bit, bit, ...]} empirically, from the actual
-    bit paths real strings in this blob use -- NOT a structural DFS over
-    the tree. The tree contains structurally-reachable duplicate leaves
-    (the same byte value reachable via more than one path), but real
-    content never exercises one more than one way (verified: zero path
-    conflicts across every string in every language). Using the tree
-    structurally instead of empirically picks
-    an arbitrary one of the duplicate paths, which breaks byte-exact
-    re-encoding whenever it disagrees with the one the original data
-    actually used -- this function avoids that by construction. Raises
-    if a real conflict is ever found (would mean this blob's content
-    doesn't fit the "each symbol has one real path" property verified
-    for the shipped ROM)."""
+    """Read observed paths from a donor blob for independent validation.
+
+    Packing uses build_tree_from_strings instead. A structural walk over
+    the ROM table would mistake the dummy 0x100 leaf for the root index;
+    decode traces avoid that ambiguity. Raises on conflicting paths."""
     encode_map: dict[int, list[int]] = {}
     for sid in range(blob.count):
         _, paths = blob.decode_with_paths(sid)
@@ -210,6 +183,68 @@ def encode_string(encode_map: dict[int, list[int]], data: bytes) -> bytes:
     if nbits:
         out.append(cur)
     return bytes(out)
+
+
+def build_tree_from_strings(strings: list[bytes]) -> tuple[bytes, dict[int, list[int]]]:
+    """Rebuild the language's tree and symbol codes from decoded strings.
+
+    Counts include each string's 0x00 terminator. Frequencies are divided
+    by the smallest integer that brings the largest count to 255 or less,
+    then clamped to at least one. A dummy symbol 0x100 has weight one.
+    The Huffman queue resolves equal weights by symbol/node ID; merged
+    nodes receive ascending IDs starting at 0x101. The serialized table
+    puts the root at index 0, then other nodes deepest first and, within
+    each depth, in creation order. This reproduces the original tree
+    bytes for all eight US/EU languages."""
+    if not strings:
+        raise ValueError("cannot build a text tree without strings")
+    counts = Counter(b for string in strings for b in string)
+    divisor = max(1, (max(counts.values()) + 254) // 255)
+    weights = {sym: max(1, count // divisor) for sym, count in counts.items()}
+    weights[0x100] = 1
+
+    queue = [(weight, sym, sym) for sym, weight in weights.items()]
+    heapq.heapify(queue)
+    children: dict[int, tuple[int, int]] = {}
+    next_node = 0x101
+    while len(queue) > 1:
+        left = heapq.heappop(queue)
+        right = heapq.heappop(queue)
+        children[next_node] = (left[2], right[2])
+        heapq.heappush(queue, (left[0] + right[0], next_node, next_node))
+        next_node += 1
+    root = queue[0][2]
+
+    depths = {root: 0}
+    pending = [root]
+    while pending:
+        node = pending.pop()
+        for child in children[node]:
+            if child in children:
+                depths[child] = depths[node] + 1
+                pending.append(child)
+    nodes = [root] + sorted(
+        (node for node in children if node != root),
+        key=lambda node: (-depths[node], node),
+    )
+    indices = {node: 0x100 + i for i, node in enumerate(nodes)}
+    tree = b"".join(
+        struct.pack("<HH", *(indices.get(child, child) for child in children[node]))
+        for node in nodes
+    )
+
+    paths: dict[int, list[int]] = {}
+
+    def visit(node: int, path: list[int]) -> None:
+        if node not in children:
+            if node != 0x100:
+                paths[node] = path
+            return
+        for bit, child in enumerate(children[node]):
+            visit(child, path + [bit])
+
+    visit(root, [])
+    return tree, paths
 
 
 # Real character assignments for glyph codes outside the plain-ASCII

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Pack data/text/ (curated, editable dialog-string JSON, currently
 US-only -- see tools/text/extract_text.py) into per-version, byte-exact
-assembly for regions.<ver>.txt's dialog-text/dialog-text-table rows. See
+assembly for regions.<ver>.txt's dialog-text/dialog-text-table rows. The
+tree and symbol paths are reconstructed from the strings during packing;
+each JSON file is a string array. See
 docs/formats/text.md.
 
 Mirrors tools/krawall/pack_krawall.py's role for audio: emits real .s text with
@@ -22,7 +24,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from text_codec import LANGS, build_blob, editable_to_bytes, encode_string, int_to_path
+from text_codec import (
+    LANGS, build_blob, build_tree_from_strings, editable_to_bytes,
+)
 
 
 def emit_bytes(lines: list[str], data: bytes) -> int:
@@ -80,11 +84,11 @@ def parse_text_rows(ver: str):
 
 def pack_language(lang: str, start_addr: int, end_addr: int, json_path: str, name: str) -> str:
     payload = json.loads(Path(json_path).read_text())
-    tree_bytes = bytes.fromhex(payload["tree_hex"])
-    encode_map = {int(k): int_to_path(v) for k, v in payload["encode_map"].items()}
-    strings = [editable_to_bytes(s) + b"\x00" for s in payload["strings"]]
-
-    blob = build_blob(tree_bytes, strings, encode_map)
+    if not isinstance(payload, list) or not all(isinstance(s, str) for s in payload):
+        sys.exit(f"{json_path}: expected an array of strings")
+    strings = [editable_to_bytes(s) + b"\x00" for s in payload]
+    tree, encode_map = build_tree_from_strings(strings)
+    blob = build_blob(tree, strings, encode_map)
 
     lines: list[str] = [f"{name}:"]
     cursor = start_addr
@@ -121,7 +125,6 @@ def main() -> None:
         print(f"no dialog-text rows in regions.{ver}.txt -- nothing to pack", file=sys.stderr)
         return
     t_start, t_end, t_name = table_row
-
     out_dir = Path(f"build/{ver}/text")
     out_dir.mkdir(parents=True, exist_ok=True)
 
