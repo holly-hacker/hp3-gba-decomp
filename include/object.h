@@ -428,7 +428,10 @@ extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
 // Clears the object's queued move (Object+0x3C..0x48).
 extern void CancelObjectMove_candidate(Object *obj);
 extern void SetObjectAssetRecord(Object *obj, void *rec);
-extern u8 AttachObjectEffectSlot_candidate(Object *obj, s32 effectPtr);
+// Like AttachObjectPalette, but always binds a newly allocated cache slot
+// instead of sharing one already holding pPalette, then sets bit 0 of the
+// slot's +6 flags (meaning unknown). Returns the slot index.
+extern u8 AttachObjectPaletteUnshared_candidate(Object *obj, const ObjPalette *pPalette);
 extern Object *sub_0802C90C(u32 slot, u32 arg1);  // allocs a type 0x13 object and files it under slot
 extern u32 AttachObjectPalette(Object *obj, const ObjPalette *pPalette);  // 0x08030878
 extern void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette *pPalette);

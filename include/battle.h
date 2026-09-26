@@ -124,20 +124,15 @@ extern const CharacterLevelEntry g_pHarryLevelTable[];     // 0x0804FE50, src/da
 extern const CharacterLevelEntry g_pRonLevelTable[];       // 0x08050300, src/data/ron_levels.c
 extern const CharacterLevelEntry g_pHermioneLevelTable[];  // 0x080507B0, src/data/hermione_levels.c
 
-// One graphics-pointer table row, 0x20 bytes; only +0x08 is used here.
+// One row per MonsterTable entry; see docs/formats/folio_bruti.md.
 typedef struct MonsterGfxRow {
-    u8 pad_00[0x08];
-    s32 nEffectSlot_candidate;  // 0x08, AttachObjectEffectSlot arg
-    u8 pad_0C[0x14];            // -> 0x20
+    ObjectAssetRecord battle;     // 0x00, battle and Folio Bruti sprite
+    ObjectAssetRecord overworld;  // 0x10, wandering-monster sprite
 } MonsterGfxRow;
-extern MonsterGfxRow g_pMonsterGraphicsTable[];  // 0x0804E6B4
-extern u8 g_pMonsterAnimFrameTable[];            // 0x08051E70, stride 0x60
-// Shadow-companion graphics row; only +0x08 is used here.
-typedef struct ShadowGfxRow {
-    u8 pad_00[0x08];
-    const ObjPalette *pPalette;  // 0x08, AttachObjectPalette arg (OBJ palette resource)
-} ShadowGfxRow;
-extern ShadowGfxRow g_MonsterShadowGfxRow;       // 0x0804EF54, single row
+extern MonsterGfxRow g_pMonsterGraphicsTable[69];  // 0x0804E6B4
+extern u8 g_pMonsterAnimFrameTable[];              // 0x08051E70, stride 0x60
+// Companion sprite InitMonsterBattleActor spawns for monsters 45-47.
+extern ObjectAssetRecord g_MonsterShadowGfxRow;    // 0x0804EF54
 extern u8 g_MonsterShadowAnimData[];             // 0x08053850
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
@@ -351,7 +346,7 @@ extern u8 g_bDefeatWarpParam;                   // 0x03002748
 // per-wObjectType windup-flash resource pointer row, stride 0xA0
 typedef struct AnimFlashRow {
     u8 pad_00[0x08];
-    s32 nEffectSlotLive;        // 0x08, AttachObjectEffectSlot arg when the fighter is alive
+    const ObjPalette *pPaletteLive;     // 0x08, palette of the live sprite record at 0x00
     u8 pad_0C[0x5C];           // -> 0x68
     void *pWindupResourceB;    // 0x68
     u8 pad_6C[0x0C];           // -> 0x78
@@ -359,7 +354,7 @@ typedef struct AnimFlashRow {
     u8 pad_7C[0x04];           // -> 0x80
     void *pAssetRecordFainted; // 0x80, SetObjectAssetRecord arg when wHp == 0
     u8 pad_84[0x04];           // -> 0x88
-    s32 nEffectSlotFainted;    // 0x88, AttachObjectEffectSlot arg when wHp == 0
+    const ObjPalette *pPaletteFainted;  // 0x88, palette of pAssetRecordFainted
     u8 pad_8C[0x14];           // -> 0xA0
 } AnimFlashRow;
 extern AnimFlashRow g_aFighterAnimTable[];  // 0x08051248, UNCONFIRMED row count

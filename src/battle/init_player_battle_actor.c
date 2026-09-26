@@ -101,7 +101,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
 
     if (hp == 0)
     {
-        AttachObjectEffectSlot_candidate(pObject, g_aFighterAnimTable[type].nEffectSlotFainted);
+        AttachObjectPaletteUnshared_candidate(pObject, g_aFighterAnimTable[type].pPaletteFainted);
         SetObjectAssetRecord(pObject, &g_aFighterAnimTable[type].pAssetRecordFainted);
         SetObjectAnimFrame(pObject, 8);
         SetObjectActionState(pObject, 0);
@@ -112,7 +112,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     }
     else
     {
-        AttachObjectEffectSlot_candidate(pObject, g_aFighterAnimTable[type].nEffectSlotLive);
+        AttachObjectPaletteUnshared_candidate(pObject, g_aFighterAnimTable[type].pPaletteLive);
         SetObjectAnimData(pObject, &g_aFighterAnimTable[type], &g_aFighterAnimDataTable[type * 0x244], 0);
         // Via a temp: storing the field directly recolors the function.
         // The [0] reload folds back onto the base register, no extra move.

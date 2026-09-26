@@ -128,8 +128,8 @@ on-disk order, each with a leading `// <index>: <name>` comment for the
 (see "What's NOT yet known" below). Real items' `pPalette`/`pTileData`/
 `pFrameData` fields reference `extern` icon-label symbols
 (`gItemNNNPalette`/`Tiles`/`Frames`) instead of literal
-addresses; non-real entries (indices 79-131) keep literal pointer
-values.
+addresses; the dummy record 79 reuses item 63's labels, and records
+80-131 are all zero.
 
 ## Item icons
 

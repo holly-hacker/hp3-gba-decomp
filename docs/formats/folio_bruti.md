@@ -298,12 +298,8 @@ print(hp, effectiveness(0, 2))  # Ruby Fire Crab HP, Incendio effectiveness -> 3
 
 ### Adjoining tables (found, not decoded)
 
-Immediately **before** the stat table, ROM `0x0804E6B4`-`~0x0804F400`,
-is a monster graphics-pointer table (32-byte stride, ~106 rows -- more
-rows than the 69-monster stat table, see "What's NOT yet known"). This
-was independently found via the same `sub_08036D60` function (its icon
-rendering reads this table at `+0x08`/`+0x18` for palette-swap variant
-pointers); not re-derived here in detail.
+Immediately **before** the stat table are the monster sprite records,
+described in "Monster graphics table" below.
 
 Immediately **after** the stat table, `0x0804FA88` (4-byte stride,
 referenced directly by `sub_08036D60`'s icon-silhouette-vs-real-sprite
@@ -319,6 +315,47 @@ scanning past the end of the stat table's padding region. **Address not
 pinned down, structure not verified, completely out of scope for Folio
 Bruti** -- flagged here only so a future session doesn't reinvestigate
 from scratch and mistake it for bestiary data.
+
+### Monster graphics table (PROVEN)
+
+`g_pMonsterGraphicsTable` (`0x0804E6B4`-`0x0804EF54`) has **69** 32-byte
+rows, one per `MonsterTable` index. Each row is two `ObjectAssetRecord`s
+(`{pTileGfx, pFrameData, pPalette, 0}`, see
+[`graphics.md`](graphics.md)'s "Character portraits"):
+
+| Offset | Record | Readers |
+|---|---|---|
+| `+0x00` | battle sprite | `InitMonsterBattleActor` (`SetObjectAnimData` with `g_pMonsterAnimFrameTable[index * 0x60]`); `DrawFolioBrutiMonsterPanel` (same record and animation table); `RestoreFighterObjects_candidate` (`wObjectType - 4` as index) |
+| `+0x10` | overworld sprite | `SpawnWanderingMonsterObject` (`sub_08030844` with `+0x18`, then `SetObjectAnimData` with `0x0806584C`) |
+
+The battle palette (`+0x08`) goes to `AttachObjectPaletteUnshared_candidate`,
+which binds it to a newly allocated, unshared palette cache slot.
+`DrawFolioBrutiMonsterPanel` uses it for monsters already seen and a
+silhouette palette (`0x08069574`) otherwise.
+
+The row count is fixed three ways: `DrawFolioBrutiMonsterPanel` bounds
+the index at `0x44`; `g_pMonsterAnimFrameTable` (`0x08051E70`, 69 x
+`0x60`) ends exactly at `g_MonsterShadowAnimData` (`0x08053850`); and row
+68 is followed directly by a different record type.
+
+Palette-swap variants share tile and frame data and differ only in
+palette; 85 of the 138 palette pointers use 40 consecutive 32-byte
+palettes at `0x08A39000`-`0x08A39500`. 39 rows use the same palette for both records. Rows 45 and
+46 swap their battle and overworld palettes (`0x08A393E0`/`0x08A39400`),
+and rows 66-68 repeat row 58 exactly. The other pointers fall in
+`0x089AE030`-`0x089F1DB4` (battle) and `0x080AC8CC`-`0x080B9A64`
+(overworld).
+
+The 16-byte `ObjectAssetRecord`s that follow, up to `0x0804F404`:
+
+| Address | Label | Contents |
+|---|---|---|
+| `0x0804EF54` | `g_MonsterShadowGfxRow` | companion sprite `InitMonsterBattleActor` spawns for monsters 45-47 |
+| `0x0804EF64` | `g_aEnemyTurnOrderIconAssets` | 69 records, indexed by `bRosterIndex` in `SpawnTurnOrderIcon`; 62 reuse the battle palette |
+| `0x0804F3B4` | `g_aAllyTurnOrderIconAssets` | 4 records, indexed by `FighterType` (Harry, Hermione, Ron, Buckbeak) |
+| `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `sub_08001690`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnObject` palette |
+
+The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table.
 
 ### The grid boundary: 53 real entries, not 69 -- PROVEN via live mGBA debugging
 
@@ -456,18 +493,6 @@ and the shop-stock tables work.
   68 being unused/padding at the very end of the table; whether it's a
   genuine reachable 4th "Monster Book of Monsters" fight is still
   unconfirmed -- not investigated further.
-- **The exact monster count discrepancy.** The stat table (and the
-  `0x03003190` per-monster state array reset loop, `sub_080370A0`,
-  bound `0..0x44` inclusive = 69) both agree on **69** monsters. But the
-  graphics-pointer table at `0x0804E6B4` structurally continues for
-  ~106 rows before its pattern breaks. Two options, neither confirmed:
-  (a) the graphics table includes non-Folio-Bruti monsters (enemies
-  that appear in combat but were never added to the bestiary grid), or
-  (b) the break-detection heuristic used to find row 106 is simply
-  wrong about where that table really ends. Not resolved.
-- **The graphics-pointer table's own fields** (`0x0804E6B4`, 32-byte
-  stride) beyond what was already used elsewhere (`+0x08`, `+0x18`) --
-  not revisited here.
 - **JP ROM** -- nothing in this document has been cross-checked against
   `baserom.jp.gba`. Verify both content and addresses independently before
   applying these findings to JP.
@@ -476,6 +501,6 @@ and the shop-stock tables work.
   5's bar; it is named in `functions.us.cfg` so the disassembly reads
   clearly, and nothing more. (`InitMonsterBattleActor`, `0x08014C88`-
   `0x08014F1C`, is fully matched in `src/battle/`.)
-- The graphics-pointer table (`0x0804E6B4`) was NOT extracted -- its own
-  fields are still unconfirmed (see above) and its row-count discrepancy
-  with the stat table is unresolved.
+- `g_pMonsterGraphicsTable` and the records after it are decoded (see
+  "Monster graphics table") but not yet reconstructed as C, and their
+  sprites are not extracted.

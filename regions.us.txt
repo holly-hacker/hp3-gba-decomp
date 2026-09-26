@@ -669,7 +669,7 @@ thumb-func 0x08030794 AllocResourceCacheSlot
 thumb-func 0x08030824 ClearResourceCacheSlots
 
 c-file 0x08030878 0x080308A8 src/object/attach_object_palette.c AttachObjectPalette
-thumb-func 0x080308A8 AttachObjectEffectSlot_candidate
+thumb-func 0x080308A8 AttachObjectPaletteUnshared_candidate
 c-file 0x080308D8 0x08030924 src/object/release_object_palette.c ReleaseObjectPalette
 c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
 thumb-func 0x0803094C sub_0803094C
@@ -1027,6 +1027,9 @@ label 0x0804E28B g_abBattleMusicByOverworldSlot
 c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
 label 0x0804E6B4 g_pMonsterGraphicsTable
 label 0x0804EF54 g_MonsterShadowGfxRow
+label 0x0804EF64 g_aEnemyTurnOrderIconAssets
+label 0x0804F3B4 g_aAllyTurnOrderIconAssets
+label 0x0804F3F4 g_TurnOrderIconContainerAsset
 
 # Folio Bruti monster stat table, decompiled to C
 c-file 0x0804F410 0x0804FA88 src/data/monsters.c MonsterTable
