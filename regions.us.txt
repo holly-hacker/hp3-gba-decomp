@@ -40,7 +40,7 @@ asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2I
 asm-file 0x080005EC 0x08000918 asm/decompress_type6.s      DecompressType6
 
 c-file 0x08000918 0x08000BC0 src/object/tick_object_list.c TickObjectList
-thumb-func 0x08000BC0 sub_08000BC0
+c-file 0x08000BC0 0x08000C48 src/object/commit_queued_object_tile_updates.c CommitQueuedObjectTileUpdates
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
@@ -940,6 +940,7 @@ c-file 0x080453B4 0x080453D8 src/object/install_iwram_find_free_obj_tile_run.c I
 thumb-func 0x080453D8 InitObjTileAllocBitmaps
 thumb-func 0x0804542C sub_0804542C
 thumb-func 0x08045514 FreeObjectVramTileAllocation
+c-file 0x0804555C 0x08045588 src/object/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
 thumb-func 0x08045808 HideScreenWindow_candidate
 thumb-func 0x08045838 SetScreenWindowLayers_candidate
 thumb-func 0x080458A8 SetScreenWindowRect_candidate

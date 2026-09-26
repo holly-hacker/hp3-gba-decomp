@@ -17,8 +17,9 @@ typedef struct {
     u32   dwSecondTick;       // 0x2C: counts 0-59 real vblanks, then rolls over
     u32   dwFrameCounter;     // 0x30: incremented once per logic tick by TickGameModeStack
     u32   dwFramesLastSecond; // 0x34: dwFrameCounter snapshot on dwSecondTick rollover; no reader found
-    u16   wSuppressOamSwap;   // 0x38: nonzero makes HandleVBlankInterrupt swap OAM shadow buffers
-                               //       this vblank instead of just re-flushing the current one
+    u16   wOamFrameReady;     // 0x38: set by HideUnusedOamEntries once a frame's OAM is built; nonzero
+                               //       makes HandleVBlankInterrupt swap the OAM shadow buffers this
+                               //       vblank instead of re-flushing the current one, then clear it
 } VBlankState;
 
 extern VBlankState *g_pVBlankState;

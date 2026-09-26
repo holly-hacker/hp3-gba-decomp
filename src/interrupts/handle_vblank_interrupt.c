@@ -20,13 +20,13 @@ void HandleVBlankInterrupt(void)
     {
         g_bOamDmaHalfToggle ^= 1;
 
-        if (g_pVBlankState->wSuppressOamSwap != 0 || g_bForcePendingBgWritesFlush != 0)
+        if (g_pVBlankState->wOamFrameReady != 0 || g_bForcePendingBgWritesFlush != 0)
         {
             sub_08007130();
             g_bForcePendingBgWritesFlush = 0;
         }
 
-        if (g_pVBlankState->wSuppressOamSwap != 0)
+        if (g_pVBlankState->wOamFrameReady != 0)
         {
             // swap: flush the buffer NOT currently marked as the DMA source
             if (g_pOamDmaShadowBuffer == g_aOamShadowBufferA)
@@ -82,7 +82,7 @@ void HandleVBlankInterrupt(void)
 
         sub_0800D304();
 
-        g_pVBlankState->wSuppressOamSwap = 0;
+        g_pVBlankState->wOamFrameReady = 0;
         g_pVBlankState->dwVBlankCount++;
         g_pVBlankState->dwSecondTick++;
         if (g_pVBlankState->dwSecondTick > 59)

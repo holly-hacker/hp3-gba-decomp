@@ -5,7 +5,7 @@
 
 void HandleHarryPatronusCutsceneVBlank(void)
 {
-    sub_08000BC0();
+    CommitQueuedObjectTileUpdates();
     sub_08007C94(2, g_nPatronusBgOffset >> 16, 0);
     sub_08007C94(3, g_nPatronusBgOffset >> 16, 0);
     sub_08007CF4(2, g_swPatronusBgParam);

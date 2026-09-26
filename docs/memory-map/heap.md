@@ -84,7 +84,8 @@ fixed-size-slot pool out of the heap:
   `TickObjectList`.
 - `ObjectPoolState` continues past the two pointers: `+0x08` is the count
   byte and `+0x0C` the 0x69-entry queue of objects whose
-  `UpdateObjectOamCells` result was 2 (consumed and reset by `sub_08000BC0`);
+  `UpdateObjectOamCells` result was 2, drained by
+  `CommitQueuedObjectTileUpdates` on vblanks that swap the OAM buffers;
   `+0x1B0` (`0x03001DB8`) is a byte enabling `TickObjectList`'s extra OAM pass.
   The queue is a struct member: `TickObjectList` (matched,
   `src/object/tick_object_list.c`) indexes it through the struct.

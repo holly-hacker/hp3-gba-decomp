@@ -79,9 +79,9 @@ void *memset(void *dst, int val, u32 len);
 typedef struct ObjectPoolState {
     void *pBuffer;
     void *pFreeListHead;
-    u8 bTileUpdateQueueCount_candidate;  // 0x08, consumed and reset by sub_08000BC0
-    u8 pad_9[0x03];                      // -> 0x0C
-    struct Object *apTileUpdateQueue_candidate[0x69];  // 0x0C, objects whose OAM update returned 2
+    u8 bTileUpdateQueueCount;  // 0x08, consumed and reset by CommitQueuedObjectTileUpdates
+    u8 pad_9[0x03];            // -> 0x0C
+    struct Object *apTileUpdateQueue[0x69];  // 0x0C, objects whose OAM update returned 2
     u8 bExtraOamPassEnabled_candidate;   // 0x1B0, nonzero enables TickObjectList's extra pass
     u8 pad_1B1[0x03];
 } ObjectPoolState;
@@ -102,6 +102,13 @@ extern u8 g_pSortObjectsIwram[0xC4];
 extern u8 g_pCheckObjectCollisionsIwram[0x1F4];
 extern u8 g_pFindFreeObjTileRunIwram[0x9C];
 u32 FindFreeObjTileRun(const u8 *pBitmap, u32 runLength, u32 startBit);
+// OBJ VRAM tile allocator bitmaps, one bit per 32-byte tile (1024 tiles).
+// A set bit in g_adwObjTileAllocBitmap marks a tile in use. Freeing a run
+// clears its bits in g_adwObjTileFreeMask only; ApplyDeferredObjTileFrees
+// folds the mask into the bitmap on a vblank that swaps the OAM buffers.
+extern u32 g_adwObjTileAllocBitmap[32];
+extern u32 g_adwObjTileFreeMask[32];
+void ApplyDeferredObjTileFrees(void);
 extern u32 g_dwObjectListActive_candidate;
 // Zeroed by InitObjectPool; read in WriteObjectOamCells as what looks
 // like a fixed-point rounding/scale constant, unrelated to the pool

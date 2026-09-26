@@ -25,7 +25,7 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
     anyOamWork = 0;
     g_bSpriteFrameQueueCount = 0;
     g_dwOamQueueCount = 0;
-    g_ObjectPoolState.bTileUpdateQueueCount_candidate = 0;
+    g_ObjectPoolState.bTileUpdateQueueCount = 0;
     g_dwCollisionQueueCount = 0;
     layer = 0;
 
@@ -76,7 +76,7 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
             if (oamResult != 0) {
                 anyOamWork = 1;
                 if (oamResult == 2)
-                    g_ObjectPoolState.apTileUpdateQueue_candidate[g_ObjectPoolState.bTileUpdateQueueCount_candidate++] = obj;
+                    g_ObjectPoolState.apTileUpdateQueue[g_ObjectPoolState.bTileUpdateQueueCount++] = obj;
             }
         }
     }
@@ -99,7 +99,7 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
             if (oamResult != 0) {
                 anyOamWork = 1;
                 if (oamResult == 2)
-                    g_ObjectPoolState.apTileUpdateQueue_candidate[g_ObjectPoolState.bTileUpdateQueueCount_candidate++] = obj;
+                    g_ObjectPoolState.apTileUpdateQueue[g_ObjectPoolState.bTileUpdateQueueCount++] = obj;
             }
         }
     }

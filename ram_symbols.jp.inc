@@ -41,6 +41,8 @@
 
 @ --- OBJ tile allocator ---
 .set g_pFindFreeObjTileRunIwram, 0x030060D8
+.set g_adwObjTileAllocBitmap,    0x03006178
+.set g_adwObjTileFreeMask,       0x030061F8
 
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_GameModeStackContext, 0x03003F54  @ see ram_symbols.us.inc

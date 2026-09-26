@@ -16,7 +16,7 @@ asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2I
 asm-file 0x080005EC 0x08000918 asm/decompress_type6.s      DecompressType6
 
 c-file 0x08000918 0x08000BC0 src/object/tick_object_list.c TickObjectList
-thumb-func 0x08000BC0 sub_08000BC0
+c-file 0x08000BC0 0x08000C48 src/object/commit_queued_object_tile_updates.c CommitQueuedObjectTileUpdates
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
@@ -505,6 +505,7 @@ thumb-func 0x08045218 IsScanlineEffectQueueIdle
 c-file 0x080452E0 0x08045304 src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 thumb-func 0x08045304 InitObjTileAllocBitmaps
 thumb-func 0x08045440 FreeObjectVramTileAllocation
+c-file 0x08045488 0x080454B4 src/object/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
 thumb-func 0x0804589C TickScreenWindows_candidate
 thumb-func 0x08049DBC bios_CPUSet
 thumb-func 0x08049DE8 bios_VBlankIntrWait

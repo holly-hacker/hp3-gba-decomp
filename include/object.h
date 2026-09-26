@@ -156,10 +156,10 @@ typedef struct Object {
                              // 0xC8, called by CheckObjectCollisions on an
                              // overlap of the matching-index box, per object
     u8 pad_D0;               // -> 0xD1
-    // Bytes 0xD1, 0xD3 and 0xD5 are bitfields. Those in 0xD0-0xD3 have base
-    // type u32 and those in 0xD5 u8: single-use compares of a u8 field fold to
-    // `ands` (TickFighterAttackAnimState keeps the shift pair), while 0xD5's
-    // draw-layer read in TickObjectList needs u8.
+    // Bytes 0xD1 and 0xD3-0xD5 are bitfields. Those in 0xD0-0xD3 have base
+    // type u32, the 10-bit field at 0xD4 u16, and those in 0xD5 u8: single-use
+    // compares of a u8 field fold to `ands` (TickFighterAttackAnimState keeps
+    // the shift pair), while 0xD5's draw-layer read in TickObjectList needs u8.
     u32 bAffineSlotState : 2;  // 0xD1 bits 0-1: affine-transform slot allocation state
                              // (0 = free, 1/3 = allocated); see ReleaseObjectAffineSlot/FreeObject
     u32 bField2To3_candidate : 2;  // 0xD1 bits 2-3: set to 1 for menu cursors; cleared by
@@ -176,8 +176,8 @@ typedef struct Object {
     u32 bXFlip : 1;          // 0xD3 bit 4: non-affine X-flip, read by UpdateObjectOnscreenFlags
     u32 bYFlip : 1;          // 0xD3 bit 5: non-affine Y-flip (see ObjectCollisionBox)
     u32 bD3High_unk : 2;     // 0xD3 bits 6-7
-    u8 pad_D4;               // -> 0xD5
-    u8 bGfxLowBits_unk : 2; // 0xD5 bits 0-1
+    u16 wOamTileIndex : 10;  // 0xD4 bits 0-9: first OBJ VRAM tile; CommitQueuedObjectTileUpdates
+                             // copies it from wVramTileAllocId once a queued tile load is visible
     u8 bDrawLayer : 2;      // 0xD5 bits 2-3, see SetObjectDrawLayer/SortObjectsByDepth/
                              // TickObjectList; written by UpdateObjectTileCollisionState
     u8 bGfxSlot : 4;        // 0xD5 bits 4-7, graphics-cache slot (see ReleaseObjectPalette/
@@ -296,7 +296,7 @@ extern void sub_080034B8(Object *obj);
 extern void sub_08030C00(void);
 extern void sub_080317EC(u8 layer);  // flushes the particles queued for one draw layer
 extern void sub_08030140(void);
-extern void sub_08000BC0(void);  // VBlank-time object housekeeping (also OverworldVBlankCallback)
+extern void CommitQueuedObjectTileUpdates(void);  // run from vblank callbacks
 extern void sub_08001690(Object *obj, const void *pAssetRecord);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
 extern void SetObjectActionState(Object *obj, u8 state);

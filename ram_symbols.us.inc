@@ -207,6 +207,8 @@
 
 @ --- OBJ tile allocator ---
 .set g_pFindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun
+.set g_adwObjTileAllocBitmap,    0x03006128  @ u32[32]: set bit = tile in use
+.set g_adwObjTileFreeMask,       0x030061A8  @ u32[32]: clear bit = free pending the next OAM swap
 
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
 @ "resource-decompression dispatcher") ---

@@ -78,7 +78,7 @@ void AgbMain(void)
     InstallBgTileCodec();
 
     g_dwGameModeFlags = 0;
-    g_pVBlankState->wSuppressOamSwap = 0;
+    g_pVBlankState->wOamFrameReady = 0;
 
     SetVBlankCallback(VBlankCallback_candidate);
     kramInstall();
