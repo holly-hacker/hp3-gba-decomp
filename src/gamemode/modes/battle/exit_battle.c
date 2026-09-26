@@ -76,7 +76,7 @@ void ExitBattle(void)
 
         for (fighterIndex = 0; fighterIndex < g_pFightState->bFighterCount; fighterIndex++)
         {
-            if ((u32)g_pFightState->pFighters[fighterIndex].pObject->bFlags_0xD1 << 30)
+            if (g_pFightState->pFighters[fighterIndex].pObject->bAffineSlotState)
                 ReleaseObjectAffineSlot(g_pFightState->pFighters[fighterIndex].pObject);
 
             g_pFightState->pFighters[fighterIndex].pObject->wVramTileAllocId = 0xFFFF;
@@ -89,7 +89,7 @@ void ExitBattle(void)
              pendingIndex < g_pFightState->bPendingFighterCount_candidate;
              pendingIndex++, fighterIndex++)
         {
-            if ((u32)g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->bFlags_0xD1 << 30)
+            if (g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->bAffineSlotState)
                 ReleaseObjectAffineSlot(g_pFightState->pPendingFighters_candidate[pendingIndex].pObject);
 
             g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->wVramTileAllocId = 0xFFFF;

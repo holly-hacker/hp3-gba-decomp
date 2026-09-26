@@ -6,18 +6,14 @@
 
 void BuildListMenu(const ListMenuDefinition *pDefinition)
 {
-    ObjectFlagsD1 *pFlags;
-    ObjectFlagsD3 *pFlagsD3;
     Object *pObject;
     u32 row;
 
     g_ListMenuState.pDefinition = pDefinition;
 
     sub_0801E05C(pDefinition->wTitleStringId, 4, 1);
-    pFlags = (ObjectFlagsD1 *)&g_pMenuCursorObject->bFlags_0xD1;
-    pFlags->bField2To3_candidate = 1;
-    pFlagsD3 = (ObjectFlagsD3 *)&g_pMenuCursorObject->bAffineFlagsHigh;
-    pFlagsD3->bXFlip = 1;
+    g_pMenuCursorObject->bField2To3_candidate = 1;
+    g_pMenuCursorObject->bXFlip = 1;
     g_pMenuCursorObject->pfnTick = ListMenuCursorTick_candidate;
     sub_0801DCC4(g_pMenuCursorObject,
                  g_ListMenuState.pDefinition->wStrideX * g_GameModeStackContext.dwModeScratchB

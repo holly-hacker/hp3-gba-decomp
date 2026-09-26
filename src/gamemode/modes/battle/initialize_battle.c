@@ -13,9 +13,6 @@ void InitializeBattle(void)
     s32 i;
     u8 *uVar7;
     Object *pIconObj;
-    u8 flagsBeforeSet;
-    s32 flagsBeforeClear;
-    s32 clearMask;
 
     ClearResourceCacheSlots();
     g_BattleMessageIconState_candidate.bIndex = 0xFF;
@@ -37,20 +34,10 @@ void InitializeBattle(void)
     SetObjectPosition(g_pBattleMessageIconObject_candidate, i * 0x16 + 0x60, 0x8A);
     pIconObj = g_pBattleMessageIconObject_candidate;
     pIconObj->dwFlags = 0x20000008;
-    // Via a u8 *, not the struct field -- avoids a dead bit-field-store insn
-    // that ties this constant's live range with dwFlags' in agbcc's register
-    // allocator (see match-function skill, bucket 9).
-    *(u8 *)&pIconObj->bDepthSortBias = 0x80;
+    pIconObj->bDepthSortBias = 0x80;
 
-    flagsBeforeSet = g_pBattleMessageIconObject_candidate->bFlags_0xD1;
-    g_pBattleMessageIconObject_candidate->bFlags_0xD1 = flagsBeforeSet | 0x20;
-
-    // The reload must come before clearMask is materialized -- picks the same
-    // register pairing the ROM uses.
-    flagsBeforeClear = g_pBattleMessageIconObject_candidate->bFlags_0xD1;
-    clearMask = ~0xC;
-    clearMask &= flagsBeforeClear;
-    g_pBattleMessageIconObject_candidate->bFlags_0xD1 = clearMask;
+    g_pBattleMessageIconObject_candidate->bLargeSprite_candidate = 1;
+    g_pBattleMessageIconObject_candidate->bField2To3_candidate = 0;
 
     SetObjectPosition(g_pBattleMessageIconObject_candidate, 2, 0x75);
 

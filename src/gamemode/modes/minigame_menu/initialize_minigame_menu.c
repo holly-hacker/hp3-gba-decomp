@@ -8,11 +8,9 @@
 
 void InitializeMinigameMenu(void)
 {
-    ObjectFlagsD3 *pFlagsD3;
 
     sub_0801DF6C(0xA4A, 4, 0, NULL, 0, 0);
-    pFlagsD3 = (ObjectFlagsD3 *)&g_pMenuCursorObject->bAffineFlagsHigh;
-    pFlagsD3->bXFlip = 1;
+    g_pMenuCursorObject->bXFlip = 1;
     sub_0801DCC4(g_pMenuCursorObject, g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70);
     SetBgControl(1, g_dwMinigameMenuBg1Control);
     SetBgControl(3, g_dwMinigameMenuBg3Control);

@@ -211,9 +211,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             obj->bActionFlags |= 1;
 
             PostActionBattleCheck();
-            // Low two bits only: the ROM extracts them with a shift pair,
-            // the way a 2-bit unsigned bitfield read compiles.
-            if ((((u32)obj->bFlags_0xD1 << 30) >> 30) != 3)
+            if (obj->bAffineSlotState != 3)
                 return;
 
             ReleaseObjectAffineSlot(obj);

@@ -10,8 +10,6 @@
 
 void InitializeOptions(void)
 {
-    ObjectFlagsD1 *pFlags;
-    ObjectFlagsD3 *pFlagsD3;
 
     SetAlphaBlendTargets(0, 0);
     ClearResourceCacheSlots();
@@ -42,10 +40,8 @@ void InitializeOptions(void)
     }
 
     sub_0801DF6C(0x8CF, 4, 1, g_MenuScreenGraphic, 0, 1);  // "Options"
-    pFlags = (ObjectFlagsD1 *)&g_pMenuCursorObject->bFlags_0xD1;
-    pFlags->bField2To3_candidate = 1;
-    pFlagsD3 = (ObjectFlagsD3 *)&g_pMenuCursorObject->bAffineFlagsHigh;
-    pFlagsD3->bXFlip = 1;
+    g_pMenuCursorObject->bField2To3_candidate = 1;
+    g_pMenuCursorObject->bXFlip = 1;
     sub_0801DCC4(g_pMenuCursorObject,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nX - 0xE,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nY + 8);

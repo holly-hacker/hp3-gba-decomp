@@ -5,8 +5,6 @@ void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle,
 {
     s16 sx, sy;
     u16 slotId;
-    u32 nMode;
-    ObjectFlagsD1 *pFlags;
 
     obj->nAffineScaleX = nScaleX;
     obj->nAffineScaleY = nScaleY;
@@ -28,7 +26,5 @@ void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle,
     g_aObjAffineSetSource[slotId].sy = sy;
     g_aObjAffineSetSource[slotId].theta = wAngle;
 
-    nMode = bMode;
-    pFlags = (ObjectFlagsD1 *)&obj->bFlags_0xD1;
-    pFlags->bAffineSlotState = nMode & 3;
+    obj->bAffineSlotState = bMode;
 }

@@ -98,7 +98,7 @@ void UpdateDivinationTeaMinigame(void)
         if (g_DivinationTea.dwFadeStep == 0x10)
         {
             for (i = 0; i < 8; i++)
-                ((ObjectFlagsD1 *)&g_DivinationTea.apFadeObjects[i]->bFlags_0xD1)->bField2To3_candidate = 0;
+                g_DivinationTea.apFadeObjects[i]->bField2To3_candidate = 0;
 
             g_GameModeStackContext.dwModeState = DivinationTeaStateReveal;
         }

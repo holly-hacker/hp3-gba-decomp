@@ -20,8 +20,7 @@ s32 UpdateObjectOnscreenFlags(Object *obj)
     position[1] = (s16)(obj->nY >> 16);
     bounds = obj->spriteBounds;
 
-    // The high byte of packed affine slot word (Object 0xD2) also holds the non-affine X-flip flag.
-    if ((s8)(obj->bAffineFlagsHigh << 3) < 0) {
+    if (obj->bXFlip) {
         left = position[0] - (s16)bounds.packedX + 9;
         right = position[0] - (s16)(bounds.packedX >> 16) - 249;
     }

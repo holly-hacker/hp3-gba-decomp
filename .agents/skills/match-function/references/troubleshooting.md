@@ -193,8 +193,11 @@ exit-test duplication. Example: TickObjectList, US 0x08000918.
 ## 24. Bitfield read emits `ldr` instead of `ldrb`
 
 Casting a byte to a bitfield struct (`((Bits *)&obj->b)->f`) reads in SImode because agbcc
-structs are word-aligned. A `u8 f : n` member declared directly in the containing struct reads
-with `ldrb` and writes with `ldrb`/`strb`. Example: `Object.bDrawLayer` in TickObjectList.
+structs are word-aligned. A bitfield member declared directly in the containing struct reads
+with `ldrb` and writes with `ldrb`/`strb`. The base type still matters: a single-use compare of
+a `u8` field at bit 0 folds to `ands`, a `u32` field keeps the ROM's `lsl`/`lsr` pair. Test both.
+Examples: `Object.bDrawLayer` (u8, TickObjectList), `Object.bAffineSlotState` (u32,
+TickFighterAttackAnimState).
 
 ## Candidate acceptance and cleanup
 

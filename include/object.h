@@ -36,26 +36,6 @@ typedef enum {
     ObjectFlagExtraOamPass             = 0x80000000, // TickObjectList's extra UpdateObjectOamCells pass
 } ObjectFlags;
 
-// Object.bFlags_0xD1's low 2 bits, overlaid on that byte. The real code
-// writes them via a genuine C bitfield (confirmed by matching
-// SetObjectAffineTransform: a bitfield store is the only way agbcc emits
-// `movs r0,#4; negs r0,r0` to build the ~3 clear-mask, instead of folding
-// it down to the equivalent 8-bit immediate 0xFC an ordinary `&`/`|`
-// expression gets optimized to) -- see ReleaseObjectAffineSlot/FreeObject's
-// plain-byte (bFlags_0xD1 & 3) reads for the same bits.
-typedef struct {
-    u8 bAffineSlotState : 2;  // 0 = free, 1/3 = allocated
-    u8 bField2To3_candidate : 2;  // set to 1 for the main menu cursor; cleared by InitializeBattle
-    u8 pad : 4;
-} ObjectFlagsD1;
-
-// Object byte 0xD3, the high byte of the packed affine slot word.
-typedef struct {
-    u8 pad0 : 4;
-    u8 bXFlip : 1;  // non-affine X-flip, read by UpdateObjectOnscreenFlags
-    u8 pad1 : 3;
-} ObjectFlagsD3;
-
 // Signed sprite extents packed as {low s16, high s16} for each axis.
 // UpdateObjectOnscreenFlags copies both words together before unpacking them.
 typedef struct ObjectSpriteBounds {
@@ -66,7 +46,7 @@ typedef struct ObjectSpriteBounds {
 // One of Object's two collision-box slots, tested by CheckObjectCollisions.
 // dwPackedOffsets is 4 signed bytes -- byte3/byte2 = Y offsets, byte1/byte0 =
 // X offsets from the object's integer position (+0x36/+0x3A), sign-extended
-// per byte and swapped by bAffineFlagsHigh's X/Y-flip bits (0x10/0x20) --
+// per byte and swapped by Object.bXFlip/bYFlip (byte 0xD3 bits 4/5) --
 // added to the position to form the box's edges. bState is compared == 1 to
 // take part in the pairwise overlap test; other values are unconfirmed.
 typedef struct ObjectCollisionBox {
@@ -176,19 +156,27 @@ typedef struct Object {
                              // 0xC8, called by CheckObjectCollisions on an
                              // overlap of the matching-index box, per object
     u8 pad_D0;               // -> 0xD1
-    u8 bFlags_0xD1;         // 0xD1: bits 0-1 = affine-transform slot allocation state (0 = free,
-                             // 1/3 = allocated -- see ReleaseObjectAffineSlot/FreeObject's
-                             // (bFlags_0xD1 & 3) checks), bit 0x20 = large/8bpp-sprite flag
-                             // consumed by FreeObjectVramTileAllocation; bit 0x20 set / bits
-                             // 0x0C cleared by InitializeBattle
+    // Bytes 0xD1, 0xD3 and 0xD5 are bitfields. Those in 0xD0-0xD3 have base
+    // type u32 and those in 0xD5 u8: single-use compares of a u8 field fold to
+    // `ands` (TickFighterAttackAnimState keeps the shift pair), while 0xD5's
+    // draw-layer read in TickObjectList needs u8.
+    u32 bAffineSlotState : 2;  // 0xD1 bits 0-1: affine-transform slot allocation state
+                             // (0 = free, 1/3 = allocated); see ReleaseObjectAffineSlot/FreeObject
+    u32 bField2To3_candidate : 2;  // 0xD1 bits 2-3: set to 1 for menu cursors; cleared by
+                             // InitializeBattle and DivinationTea's fade
+    u32 bD1Bit4_unk : 1;     // 0xD1 bit 4
+    u32 bLargeSprite_candidate : 1;  // 0xD1 bit 5: large/8bpp-sprite flag passed to
+                             // FreeObjectVramTileAllocation; set by InitializeBattle
+    u32 bD1Bits6To7_unk : 2; // 0xD1 bits 6-7
     u8 bAffineSlotIndexLow;  // 0xD2, low byte of the packed word: bits 9-13 of the u16 at
                              // 0xD2 = allocated hardware affine parameter-set index (0-31);
                              // see GetObjectAffineSlotId/SetObjectAffineSlotId/
                              // AllocAffineSlot/FreeAffineSlot
-    u8 bAffineFlagsHigh;     // 0xD3, high byte of the packed word; see ObjectFlagsD3
+    u32 bD3Low_unk : 4;      // 0xD3 bits 0-3, high byte of the packed word at 0xD2
+    u32 bXFlip : 1;          // 0xD3 bit 4: non-affine X-flip, read by UpdateObjectOnscreenFlags
+    u32 bYFlip : 1;          // 0xD3 bit 5: non-affine Y-flip (see ObjectCollisionBox)
+    u32 bD3High_unk : 2;     // 0xD3 bits 6-7
     u8 pad_D4;               // -> 0xD5
-    // Byte 0xD5 is declared as bitfields: TickObjectList's draw-layer read
-    // (ldrb, lsl #28, lsr #30) only matches as a u8 bitfield member here.
     u8 bGfxLowBits_unk : 2; // 0xD5 bits 0-1
     u8 bDrawLayer : 2;      // 0xD5 bits 2-3, see SetObjectDrawLayer/SortObjectsByDepth/
                              // TickObjectList; written by UpdateObjectTileCollisionState
@@ -224,7 +212,7 @@ typedef struct Object {
     u16 wAffineAngle;       // 0xFC
     u8 bAffineEffectTimer;  // 0xFE, ticks remaining for the current scale tween; nonzero keeps
                              // TickObjectAffineEffect running
-    u8 bAffineMode;         // 0xFF, mirrors bFlags_0xD1's low 2 bits (affine slot state)
+    u8 bAffineMode;         // 0xFF, mirrors bAffineSlotState
     ObjectSpriteBounds spriteBounds;  // 0x100, signed X/Y extent pairs used for visibility
     void *pEffectData;      // 0x108, direct pointer form of the same graphics-cache resource
                              // bGfxSlot indexes (mutually exclusive with
@@ -293,7 +281,7 @@ extern void SetObjectMoveTarget(Object *obj, u32 x, u32 y);
 extern void StartObjectMove(Object *obj, u32 x, u32 y, u16 mode);
 extern void ReleaseObjectAffineSlot(Object *obj);
 extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the already-allocated slot
-                             // id from wAffineSlotIndexPacked if bFlags_0xD1's low 2 bits are
+                             // id from wAffineSlotIndexPacked if bAffineSlotState is
                              // set (1 or 3), else calls AllocAffineSlot and stores the result
 extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)

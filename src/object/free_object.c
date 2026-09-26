@@ -21,7 +21,7 @@ void FreeObject(Object *obj)
 
     obj->wObjectType = 0xFFFF;
 
-    affineSlotState = ((u32)obj->bFlags_0xD1 << 30) >> 30;
+    affineSlotState = obj->bAffineSlotState;
     if (affineSlotState == 1 || affineSlotState == 3)
         ReleaseObjectAffineSlot(obj);
 
