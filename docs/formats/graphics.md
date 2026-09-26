@@ -1091,8 +1091,11 @@ through them, but the records themselves are ordinary dialog assets --
       equals the sum of every earlier cell's own `w*h` tile count.
     - X = `sign9((b1 & 1) << 8 | b0)`, Y = `sign9((b2 & 3) << 7 | (b1
       >> 1))` -- signed 9-bit pixel offsets relative to the object's own
-      on-screen anchor. Same bytes `WriteObjectOamCells` (`0x08002C18`)
-      decodes into a live OAM entry's position/shape/tile fields (its
+      on-screen anchor, doubled for a double-size affine object. C type
+      `ObjectFrameCell`, a packed bitfield word, decoded by
+      `UpdateObjectOamCells` (`0x08002618`, matched). `WriteObjectOamCells`
+      (`0x08002C18`) decodes the same bytes into a live OAM entry's
+      position/shape/tile fields (its
       `uVar2`/`uVar3` locals are shape/size, in that order -- easy to
       transpose, since a swap is invisible whenever shape==size).
   - Confirmed against real hardware, not just the struct shape: for

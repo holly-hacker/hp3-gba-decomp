@@ -18,19 +18,19 @@ typedef enum {
 static inline void PlayActionWindupFlash(Object *obj)
 {
     void *ptr;
-    s32 slot;
+    s32 paletteBank;
     if ((obj->bActionFlags & 1) == 0)
         return;
     if (obj->wActionVariant == 1) {
         SetPlayerObjectAnim(obj, 7);
-        slot = obj->bGfxSlot;
+        paletteBank = obj->oam.paletteNum;
         ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceA + 2;
-        sub_0800D264(ptr, (slot << 4) + 1, 0xf);
+        sub_0800D264(ptr, (paletteBank << 4) + 1, 0xf);
     } else if (obj->wActionVariant == 2) {
         SetPlayerObjectAnim(obj, 6);
-        slot = obj->bGfxSlot;
+        paletteBank = obj->oam.paletteNum;
         ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceB + 2;
-        sub_0800D264(ptr, (slot << 4) + 1, 0xf);
+        sub_0800D264(ptr, (paletteBank << 4) + 1, 0xf);
     } else {
         SetPlayerObjectAnim(obj, 0);
     }

@@ -495,7 +495,7 @@ not combat math.
 
 `(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex)` returns the
 fighter's new `Object *`. Allocates via `AllocDefaultObject`, records
-`wFighterType`/`bUnk_0x7C = 0`, sets `bDrawLayer = 1`,
+`wFighterType`/`bUnk_0x7C = 0`, sets `oam.priority = 1`,
 positions with `SnapObjectPosition`/`StartObjectMove` at
 `(0xD4 - slot*36) << 16`, `slot*0x40000 + 0x6E0000`, then
 `sub_08003A44(pObject, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `dwUnk_0x28 = 1`,

@@ -26,7 +26,7 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
             if (--g_pObjectPoolAuxBuffer[auxSlot].abRefCounts[index] == 0) {
                 g_pObjectPoolAuxBuffer[auxSlot].awTileAllocIds[index] = 0xFFFF;
                 FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramTileRow,
-                                             obj->bLargeSprite_candidate);
+                                             obj->oam.bpp8);
             }
 
             obj->wVramTileAllocId = 0xFFFF;
@@ -36,7 +36,7 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
     else {
         if (obj->wVramTileAllocId != 0xFFFF) {
             FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramTileRow,
-                                         obj->bLargeSprite_candidate);
+                                         obj->oam.bpp8);
             obj->wVramTileAllocId = 0xFFFF;
             obj->wVramTileRow = 0;
         }
@@ -46,7 +46,7 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
                 variantSlot = &obj->aVariantSlots[i];
                 if (variantSlot->wVramTileAllocId != 0xFFFF) {
                     FreeObjectVramTileAllocation(variantSlot->wVramTileAllocId, variantSlot->wVramTileRow,
-                                                 obj->bLargeSprite_candidate);
+                                                 obj->oam.bpp8);
                     variantSlot->wVramTileAllocId = 0xFFFF;
                     variantSlot->wVramTileRow = 0;
                 }

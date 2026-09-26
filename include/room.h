@@ -84,6 +84,7 @@ extern CameraFocusOffset g_CameraPosition_candidate;
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
 // plate comment describes elsewhere -- real source likely declares it int.
 extern u32 g_bCurrentRoomId;                // 0x03003B50
+extern void GetCameraPosition(s32 *pPosition);  // copies g_CameraPosition_candidate out
 extern void sub_0803E628(s32 *pPosition);  // copies a two-word position into g_CameraPosition_candidate
 extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
 

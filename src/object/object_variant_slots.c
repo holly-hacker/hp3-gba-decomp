@@ -12,7 +12,7 @@ void EnableObjectVariantSlots(Object *obj)
     obj->bDrawFlags |= ObjectDrawFlagVariantSlots;
     for (i = 0; i < 1; i++) {
         obj->aVariantSlots[i].wVramTileAllocId |= 0xFFFF;
-        obj->aVariantSlots[i].bPaletteBank = obj->bGfxSlot;
+        obj->aVariantSlots[i].bPaletteBank = obj->oam.paletteNum;
         obj->aVariantSlots[i].pSpriteVariantTables = NULL;
     }
 }

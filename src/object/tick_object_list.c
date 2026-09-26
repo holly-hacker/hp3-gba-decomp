@@ -90,8 +90,8 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
 
         if (mode == 1) {
             oamResult = UpdateObjectOamCells(obj);
-            if (obj->bDrawLayer != layer)
-                while (layer < obj->bDrawLayer) {
+            if (obj->oam.priority != layer)
+                while (layer < obj->oam.priority) {
                     sub_080317EC(layer);
                     layer++;
                 }

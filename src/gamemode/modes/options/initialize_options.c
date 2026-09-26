@@ -40,8 +40,8 @@ void InitializeOptions(void)
     }
 
     sub_0801DF6C(0x8CF, 4, 1, g_MenuScreenGraphic, 0, 1);  // "Options"
-    g_pMenuCursorObject->bField2To3_candidate = 1;
-    g_pMenuCursorObject->bXFlip = 1;
+    g_pMenuCursorObject->oam.objMode = 1;
+    g_pMenuCursorObject->oam.hFlip = 1;
     sub_0801DCC4(g_pMenuCursorObject,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nX - 0xE,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nY + 8);

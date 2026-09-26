@@ -12,7 +12,7 @@ ObjectRect GetObjectCollisionBoxRect(Object *obj, s32 boxIndex)
     offsets = (obj->aCollisionBoxes + boxIndex)->dwPackedOffsets;
 
     origin = (s16)(obj->nYPrev >> 16);
-    if (obj->bYFlip) {
+    if (obj->oam.vFlip) {
         rect.top = origin - (offsets >> 24);
         offsets <<= 8;
         rect.bottom = origin - (offsets >> 24);
@@ -25,7 +25,7 @@ ObjectRect GetObjectCollisionBoxRect(Object *obj, s32 boxIndex)
     offsets <<= 8;
 
     origin = (s16)(obj->nXPrev >> 16);
-    if (obj->bXFlip) {
+    if (obj->oam.hFlip) {
         rect.left = origin - (offsets >> 24);
         offsets <<= 8;
         rect.right = origin - (offsets >> 24);

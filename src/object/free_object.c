@@ -21,7 +21,7 @@ void FreeObject(Object *obj)
 
     obj->wObjectType = 0xFFFF;
 
-    affineSlotState = obj->bAffineSlotState;
+    affineSlotState = obj->oam.affineMode;
     if (affineSlotState == 1 || affineSlotState == 3)
         ReleaseObjectAffineSlot(obj);
 

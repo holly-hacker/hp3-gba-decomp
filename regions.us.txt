@@ -86,7 +86,8 @@ thumb-func 0x08001F40 CheckObjectTerrainCollision
 c-file 0x08001FD8 0x08002154 src/object/tick_object.c TickObject
 thumb-func 0x08002154 TickObjectAnimation
 thumb-func 0x080025F8 IntegrateObjectVelocity
-thumb-func 0x08002618 UpdateObjectOamCells
+c-file 0x08002618 0x08002C18 src/object/update_object_oam_cells.c UpdateObjectOamCells
+thumb-func 0x08002C18 WriteObjectOamCells
 thumb-func 0x08002F28 UpdateObjectSpriteFrame
 thumb-func 0x080034B8 sub_080034B8
 thumb-func 0x0800351C TickObjectMove
@@ -104,6 +105,7 @@ thumb-func 0x080039F8 sub_080039F8
 thumb-func 0x08003A0C sub_08003A0C
 thumb-func 0x08003A30 sub_08003A30
 thumb-func 0x08003A44 sub_08003A44
+thumb-func 0x08005384 GetOamShapeSizeDims
 thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
 c-file 0x08005410 0x080055C0 src/room/walk_room_switch_state_chain.c WalkRoomSwitchStateChain_candidate
 c-file 0x080055C0 0x0800572C src/room/resume_room_switch_state_chain.c ResumeRoomSwitchStateChain_candidate
@@ -651,7 +653,10 @@ thumb-func 0x0802DF3C ApplyRoomSwitchEffect
 thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
 thumb-func 0x0802F6C0 sub_0802F6C0
 thumb-func 0x0802FE04 SetObjectAnimData_candidate
+thumb-func 0x0802FEAC SubmitOamAttrsNudged
 thumb-func 0x0802FF2C InitOamSystem
+thumb-func 0x0802FFA0 QueueOamEntry
+thumb-func 0x0802FFF0 HideOamEntryOnAlternateVblanks
 thumb-func 0x08030094 GetObjectAffineSlotId
 thumb-func 0x080300A0 SetObjectAffineSlotId
 thumb-func 0x080300B4 AllocAffineSlot
@@ -860,6 +865,7 @@ thumb-func 0x0803DCDC LoadRoomBgLayer0Extra_candidate
 thumb-func 0x0803DD7C WriteRoomBgTile_candidate
 thumb-func 0x0803E4FC sub_0803E4FC
 thumb-func 0x0803E588 SetupRoomBgControlAndWindows_candidate
+thumb-func 0x0803E618 GetCameraPosition
 thumb-func 0x0803E628 sub_0803E628
 thumb-func 0x0803E664 LoadRoomBgTilemap1_candidate
 thumb-func 0x0803E6A0 LoadRoomBgTilemap0_candidate

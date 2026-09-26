@@ -26,7 +26,7 @@ void InitializeBattle(void)
         SetObjectPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
         g_apFighterObjects_candidate[i]->dwFlags = 0x20000008;
         g_apFighterObjects_candidate[i]->bDepthSortBias = 0x80;
-        g_apFighterObjects_candidate[i]->bGfxSlot = i + 9;
+        g_apFighterObjects_candidate[i]->oam.paletteNum = i + 9;
     }
 
     g_pBattleMessageIconObject_candidate = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
@@ -36,8 +36,8 @@ void InitializeBattle(void)
     pIconObj->dwFlags = 0x20000008;
     pIconObj->bDepthSortBias = 0x80;
 
-    g_pBattleMessageIconObject_candidate->bLargeSprite_candidate = 1;
-    g_pBattleMessageIconObject_candidate->bField2To3_candidate = 0;
+    g_pBattleMessageIconObject_candidate->oam.bpp8 = 1;
+    g_pBattleMessageIconObject_candidate->oam.objMode = 0;
 
     SetObjectPosition(g_pBattleMessageIconObject_candidate, 2, 0x75);
 

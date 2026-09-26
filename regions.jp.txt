@@ -63,7 +63,8 @@ thumb-func 0x08001F40 CheckObjectTerrainCollision
 c-file 0x08001FD8 0x08002154 src/object/tick_object.c TickObject
 thumb-func 0x08002154 TickObjectAnimation
 thumb-func 0x080025F8 IntegrateObjectVelocity
-thumb-func 0x08002618 UpdateObjectOamCells
+c-file 0x08002618 0x08002C18 src/object/update_object_oam_cells.c UpdateObjectOamCells
+thumb-func 0x08002C18 WriteObjectOamCells
 thumb-func 0x08002F28 UpdateObjectSpriteFrame
 thumb-func 0x080034B8 sub_080034B8
 thumb-func 0x0800351C TickObjectMove
@@ -80,6 +81,7 @@ thumb-func 0x080039F8 sub_080039F8
 thumb-func 0x08003A0C sub_08003A0C
 thumb-func 0x08003A30 sub_08003A30
 thumb-func 0x08003A44 sub_08003A44
+thumb-func 0x08005384 GetOamShapeSizeDims
 thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
 thumb-func 0x08005A44 InitRoomScriptState_candidate
 thumb-func 0x08005A78 ParseRoomResourceBlob_candidate
@@ -347,7 +349,10 @@ thumb-func 0x0802DD98 NoopInit2
 thumb-func 0x0802DDF0 sub_0802DDAC
 thumb-func 0x0802DF6C IsBlockingCollisionType
 thumb-func 0x0802E740 RestorePendingCameraFocus_candidate
+thumb-func 0x0802FEF0 SubmitOamAttrsNudged
 thumb-func 0x0802FF70 InitOamSystem
+thumb-func 0x0802FFE4 QueueOamEntry
+thumb-func 0x08030034 HideOamEntryOnAlternateVblanks
 thumb-func 0x08030184 sub_08030140
 thumb-func 0x080301C8 HideUnusedOamEntries
 thumb-func 0x08030760 BindObjectEffectData
@@ -479,6 +484,7 @@ thumb-func 0x0803D450 PlayScreenTransitionOutByIndex
 thumb-func 0x0803D488 sub_0803D420
 thumb-func 0x0803DAB4 UpdateOverworldCamera_candidate
 thumb-func 0x0803E564 sub_0803E4FC
+thumb-func 0x0803E680 GetCameraPosition
 thumb-func 0x0803E690 sub_0803E628
 thumb-func 0x0803EAA4 sub_0803EA3C
 c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId

@@ -8,8 +8,8 @@ void ShowMainMenuEntries_candidate(void)
     u32 entry;
 
     g_MainMenuState.pCursorObject = sub_0801D940(4);
-    g_MainMenuState.pCursorObject->bField2To3_candidate = 1;
-    g_MainMenuState.pCursorObject->bXFlip = 1;
+    g_MainMenuState.pCursorObject->oam.objMode = 1;
+    g_MainMenuState.pCursorObject->oam.hFlip = 1;
     PositionMainMenuCursorObject_candidate(0);
 
     for (entry = 0; entry < 4; entry++)

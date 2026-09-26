@@ -211,7 +211,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             obj->bActionFlags |= 1;
 
             PostActionBattleCheck();
-            if (obj->bAffineSlotState != 3)
+            if (obj->oam.affineMode != 3)
                 return;
 
             ReleaseObjectAffineSlot(obj);
@@ -230,15 +230,15 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             }
 
             if (obj->wObjectType == 0x3e) {
-                obj->bEnemyAttackPhase_candidate = 0xff;
+                obj->unk_DC.bEnemyAttackPhase_candidate = 0xff;
                 obj->bAttackOutcomeState = 2;
             }
 
             obj->dwFlags &= 0xffff7fff;
         }
 
-        if (((obj->dwFlags & 0x40000) == 0) || (obj->bEnemyAttackPhase_candidate == 0xff)) {
-            if (obj->bEnemyAttackPhase_candidate != 0xff)
+        if (((obj->dwFlags & 0x40000) == 0) || (obj->unk_DC.bEnemyAttackPhase_candidate == 0xff)) {
+            if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
             if (obj->bAttackOutcomeState != 1)
@@ -250,7 +250,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             // exactly one of the two ResolveEnemyAttack calls fires per
             // attack (bSpecialChance==100 there, <=99 here), and this tail
             // always reads whichever one just ran.
-            obj->bEnemyAttackPhase_candidate = 0;
+            obj->unk_DC.bEnemyAttackPhase_candidate = 0;
 
             if (MonsterTable[monsterIndex].bSpecialChance <= 99) {
                 g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, active->bSelectedActionIndex);
@@ -270,7 +270,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             ShowItemUseResult(obj, active->bSelectedActionIndex);
 
             phase2:
-            if (obj->bEnemyAttackPhase_candidate != 0xff)
+            if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
             if (obj->bAttackOutcomeState == 2) {
@@ -287,7 +287,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 ShowItemUseResult(obj, active->bSelectedActionIndex);
             }
 
-            if (obj->bEnemyAttackPhase_candidate != 0xff)
+            if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
             if (obj->bAttackOutcomeState == 4) {
@@ -335,7 +335,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 if (g_pFightState->dwBattleResultPending == 0)
                     ShowBattleMessage(FaintResult, 0, 0);
             }
-            if (obj->bEnemyAttackPhase_candidate != 0xff || obj->bAttackOutcomeState != 3)
+            if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff || obj->bAttackOutcomeState != 3)
                 goto skipPhase0;
             goto finish;
         }
@@ -350,7 +350,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         g_pFightState->bAttackAnimState_candidate = 0;
         obj->bAttackOutcomeState = 0;
         active->bSpellId = Flipendo;
-        obj->bEnemyAttackPhase_candidate = 0;
+        obj->unk_DC.bEnemyAttackPhase_candidate = 0;
         obj->bActionFlags = 0x41;
         obj->dwFlags &= 0xfffbffff;
         return;

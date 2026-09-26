@@ -10,7 +10,7 @@ void InitializeMinigameMenu(void)
 {
 
     sub_0801DF6C(0xA4A, 4, 0, NULL, 0, 0);
-    g_pMenuCursorObject->bXFlip = 1;
+    g_pMenuCursorObject->oam.hFlip = 1;
     sub_0801DCC4(g_pMenuCursorObject, g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70);
     SetBgControl(1, g_dwMinigameMenuBg1Control);
     SetBgControl(3, g_dwMinigameMenuBg3Control);

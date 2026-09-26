@@ -26,5 +26,5 @@ void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle,
     g_aObjAffineSetSource[slotId].sy = sy;
     g_aObjAffineSetSource[slotId].theta = wAngle;
 
-    obj->bAffineSlotState = bMode;
+    obj->oam.affineMode = bMode;
 }

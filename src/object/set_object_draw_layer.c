@@ -10,5 +10,5 @@ void SetObjectDrawLayer(Object *obj, u8 layer)
         return;
 
     type = layer;
-    obj->bDrawLayer = type;
+    obj->oam.priority = type;
 }

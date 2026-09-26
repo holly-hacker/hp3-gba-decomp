@@ -3,6 +3,7 @@
 #include "types.h"
 #include "mem.h"
 #include "graphics.h"
+#include "oam.h"
 
 // See docs/formats/graphics.md.
 
@@ -39,13 +40,16 @@ typedef enum {
 
 // Object.bDrawFlags. With neither tile-sharing bit set, the object owns
 // its VRAM tiles; otherwise they are refcounted in its object pool aux record
-// (see ReleaseObjectOffscreenVramTiles). UpdateObjectOamCells also tests bit
-// 0x20; its meaning is unconfirmed.
+// (see ReleaseObjectOffscreenVramTiles).
 typedef enum {
     ObjectDrawFlagShareTiles      = 0x1,   // one shared allocation, refcount index 0
     ObjectDrawFlagShareFrameTiles = 0x2,   // shared per animation frame, refcount index
                                             // bAnimFrameIndex_candidate
-    ObjectDrawFlagPostActionFlash = 0x10,  // see docs/formats/battle_scripts.md
+    ObjectDrawFlagPostActionFlash = 0x10,  // see docs/formats/battle_scripts.md; queues the
+                                            // object's OAM entries with SubmitOamAttrsNudged
+    ObjectDrawFlagBlink           = 0x20,  // WriteObjectOamCells hides the entries on alternate
+                                            // vblanks. UpdateObjectOamCells's own entries are
+                                            // queued into the slot it just hid, so they stay visible
     ObjectDrawFlagVariantSlots    = 0x40,  // draw from aVariantSlots, which then own their
                                             // tile allocations (see EnableObjectVariantSlots)
     ObjectDrawFlagExtraOamPass    = 0x80,  // set while TickObjectList's extra pass draws it
@@ -90,7 +94,7 @@ typedef enum {
 // One of Object's two collision-box slots, tested by CheckObjectCollisions.
 // dwPackedOffsets is 4 signed bytes: left (byte 0), right (1), top (2) and
 // bottom (3) edge offsets from the integer part of nXPrev/nYPrev (+0x36/+0x3A).
-// Object.bXFlip/bYFlip mirror an axis: its edges become position minus the
+// Object.oam.hFlip/vFlip mirror an axis: its edges become position minus the
 // opposite offset. GetObjectCollisionBoxRect resolves a slot to an ObjectRect;
 // CheckObjectCollisions does the same math inline. bState is compared == 1 to
 // take part in the pairwise overlap test; other values are unconfirmed.
@@ -114,7 +118,9 @@ typedef struct ObjectRect {
 typedef struct ObjectFrameData {
     u8 unk_0[6];
     u16 wFrameCount;        // 0x06
-    u8 unk_8[4];            // -> 0x0C
+    u8 unk_8[2];            // -> 0x0A
+    u8 bFrameHeaderExtra;   // 0x0A, count of extra u16s after each ObjectFrameDesc
+    u8 bFramePartCount;     // 0x0B, count of extra 6-byte parts after each ObjectFrameDesc
     u16 awFrameOffsets[1];  // 0x0C, wFrameCount entries
 } ObjectFrameData;
 
@@ -124,7 +130,20 @@ typedef struct ObjectFrameDesc {
     u8 bWidth;              // 0x02, pixels
     u8 bHeight;             // 0x03, pixels
     u16 wTileGfxOffset;     // 0x04, byte offset of this frame's tiles from pTileGfx
+    u8 unk_6[4];            // 0x06; the frame's ObjectFrameCells start at 0x0A, after
+                             // ObjectFrameData.bFramePartCount parts and bFrameHeaderExtra u16s
 } ObjectFrameDesc;
+
+// One OAM cell of an animation frame, positioned relative to the object. x/y are
+// pixel offsets (doubled for a double-size affine object); size/shape are the OAM
+// attributes; tileOffset is the cell's first tile relative to the frame's tiles.
+typedef struct ObjectFrameCell {
+    s32 x : 9;
+    s32 y : 9;
+    u32 size : 2;
+    u32 shape : 2;
+    u32 tileOffset : 10;
+} __attribute__((packed)) ObjectFrameCell;
 
 // One selectable 16-byte sprite resource record. The first two pointers feed
 // SetObjectAssetRecord's tile/frame pipeline; pPalette is uploaded separately.
@@ -254,34 +273,15 @@ typedef struct Object {
     void (*apfnCollisionCallback[2])(struct Object *self, struct Object *other);
                              // 0xC8, called by CheckObjectCollisions on an
                              // overlap of the matching-index box, per object
-    u8 pad_D0;               // -> 0xD1
-    // Bytes 0xD1 and 0xD3-0xD5 are bitfields. Those in 0xD0-0xD3 have base
-    // type u32, the 10-bit field at 0xD4 u16, and those in 0xD5 u8: single-use
-    // compares of a u8 field fold to `ands` (TickFighterAttackAnimState keeps
-    // the shift pair), while 0xD5's draw-layer read in TickObjectList needs u8.
-    u32 bAffineSlotState : 2;  // 0xD1 bits 0-1: affine-transform slot allocation state
-                             // (0 = free, 1/3 = allocated); see ReleaseObjectAffineSlot/FreeObject
-    u32 bField2To3_candidate : 2;  // 0xD1 bits 2-3: set to 1 for menu cursors; cleared by
-                             // InitializeBattle and DivinationTea's fade
-    u32 bD1Bit4_unk : 1;     // 0xD1 bit 4
-    u32 bLargeSprite_candidate : 1;  // 0xD1 bit 5: large/8bpp-sprite flag passed to
-                             // FreeObjectVramTileAllocation; set by InitializeBattle
-    u32 bD1Bits6To7_unk : 2; // 0xD1 bits 6-7
-    u8 bAffineSlotIndexLow;  // 0xD2, low byte of the packed word: bits 9-13 of the u16 at
-                             // 0xD2 = allocated hardware affine parameter-set index (0-31);
-                             // see GetObjectAffineSlotId/SetObjectAffineSlotId/
-                             // AllocAffineSlot/FreeAffineSlot
-    u32 bD3Low_unk : 4;      // 0xD3 bits 0-3, high byte of the packed word at 0xD2
-    u32 bXFlip : 1;          // 0xD3 bit 4: non-affine X-flip, read by UpdateObjectOnscreenFlags
-    u32 bYFlip : 1;          // 0xD3 bit 5: non-affine Y-flip (see ObjectCollisionBox)
-    u32 bD3High_unk : 2;     // 0xD3 bits 6-7
-    u16 wOamTileIndex : 10;  // 0xD4 bits 0-9: first OBJ VRAM tile; CommitQueuedObjectTileUpdates
-                             // copies it from wVramTileAllocId once a queued tile load is visible
-    u8 bDrawLayer : 2;      // 0xD5 bits 2-3, see SetObjectDrawLayer/SortObjectsByDepth/
-                             // TickObjectList; written by UpdateObjectTileCollisionState
-    u8 bGfxSlot : 4;        // 0xD5 bits 4-7, graphics-cache slot (see ReleaseObjectPalette/
-                             // AllocEffectChannelSlot_candidate/BindEffectChannelSlot_candidate)
-    u8 pad_D6[0x02];        // -> 0xD8
+    OamEntry oam;           // 0xD0, the object's base OAM attributes. affineMode holds the
+                             // affine-slot allocation state (see ReleaseObjectAffineSlot/
+                             // FreeObject); objMode is 1 for menu cursors; bpp8 is passed to
+                             // FreeObjectVramTileAllocation; tileNum is copied from
+                             // wVramTileAllocId by CommitQueuedObjectTileUpdates; priority is
+                             // the draw layer (see SetObjectDrawLayer/SortObjectsByDepth/
+                             // TickObjectList); paletteNum is the graphics-cache slot (see
+                             // ReleaseObjectPalette/BindEffectChannelSlot_candidate).
+                             // UpdateObjectOamCells fills in x/y each frame
     u8 bAnimFrameCounter;   // 0xD8, frames-remaining countdown reloaded from bAnimFrameDelay
                              // each time it hits 0; see TickObjectAnimation
     u8 bAnimFrameDelay;     // 0xD9
@@ -290,14 +290,15 @@ typedef struct Object {
                              // ReleaseObjectOffscreenVramTiles
     u8 bLastAnimFrameValue; // 0xDB, current cycling frame index for non-scripted (cursor-less)
                              // animations; see TickObjectAnimation
-    u8 bEnemyAttackPhase_candidate;  // 0xDC, TickFighterAttackAnimState_candidate's own
+    union {
+        u8 bEnemyAttackPhase_candidate;  // TickFighterAttackAnimState_candidate's own
                              // multi-step sentinel: 0xff idle, 0/2/3/4 successive phases
                              // -- real compares it unsigned against 0xff, not as a signed -1
-    u8 pad_DD[0x03];        // -> 0xE0
-    void *pAnimTable;       // 0xE0, animation-frame table; the dword at +4 points to a
-                             // per-frame entry array (frame count in its own +6 field). Same
-                             // format as `LoadObjTileSheet`/LoadObjectAnimFrameCells's
-                             // `pFrameData` -- see docs/formats/graphics.md
+        u16 wOamStripCount;  // copies of oam UpdateObjectOamCells queues, each 32 pixels
+                             // right of the last, while bForceOnscreen_candidate is set
+    } unk_DC;               // 0xDC, agbcc rounds the union to 4 bytes (-> 0xE0)
+    ObjectAssetRecord *pAnimTable;  // 0xE0, set by SetObjectAssetRecord; its pFrameData
+                             // holds the animation frames -- see docs/formats/graphics.md
     u8 *pAnimFrameCursor;   // 0xE4
     u8 *pAnimFrameBase;     // 0xE8
     s32 nAffineScaleX;      // 0xEC, 16.16 fixed-point affine scale X (0x10000 = 1.0x); see
@@ -311,10 +312,10 @@ typedef struct Object {
     u16 wAffineAngle;       // 0xFC
     u8 bAffineEffectTimer;  // 0xFE, ticks remaining for the current scale tween; nonzero keeps
                              // TickObjectAffineEffect running
-    u8 bAffineMode;         // 0xFF, mirrors bAffineSlotState
+    u8 bAffineMode;         // 0xFF, mirrors oam.affineMode
     ObjectSpriteBounds spriteBounds;  // 0x100, signed X/Y extent pairs used for visibility
     void *pEffectData;      // 0x108, direct pointer form of the same graphics-cache resource
-                             // bGfxSlot indexes (mutually exclusive with
+                             // oam.paletteNum indexes (mutually exclusive with
                              // it -- see ReleaseObjectPalette/BindEffectChannelSlot_candidate)
     u32 dwEffectFlags;      // 0x10C
     u16 wVramTileRow;       // 0x110, row passed to FreeObjectVramTileAllocation
@@ -385,7 +386,7 @@ extern void SetObjectMoveTarget(Object *obj, u32 x, u32 y);
 extern void StartObjectMove(Object *obj, u32 x, u32 y, u16 mode);
 extern void ReleaseObjectAffineSlot(Object *obj);
 extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the already-allocated slot
-                             // id from wAffineSlotIndexPacked if bAffineSlotState is
+                             // id from wAffineSlotIndexPacked if oam.affineMode is
                              // set (1 or 3), else calls AllocAffineSlot and stores the result
 extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
@@ -402,6 +403,12 @@ extern void IntegrateObjectVelocity(Object *obj);  // adds +0x44/+0x48 to the ve
                              // nXPrev/nYPrev to the position plus velocity
 extern void BindObjectEffectData(Object *obj);  // binds pEffectData to a resource-cache slot, then clears it
 extern u8 UpdateObjectOamCells(Object *obj);
+// Queues the OAM cells of one frame of frameData, copying the other attributes
+// from pTemplate and placing them relative to the screen position pos[0]/pos[1].
+// cellFlags bit 0 hides the cells on alternate vblanks; bit 1 is set for
+// TickObjectList's extra OAM pass (see docs/memory-map/heap.md).
+extern void WriteObjectOamCells(ObjectFrameData *frameData, u16 frame, u8 cellFlags, s32 *pos,
+                                u16 tileBase, OamEntry *pTemplate, Object *obj);
 extern void UpdateObjectSpriteFrame(Object *obj, u8 mode);
 extern void ApplyObjectOrbitMotion(Object *obj);
 extern void sub_080034B8(Object *obj);

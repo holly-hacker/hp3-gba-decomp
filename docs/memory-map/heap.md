@@ -111,7 +111,7 @@ them. `mode == 1` is the full pass that also updates OAM.
 | Collision | `g_apCollisionQueue` `0x030017A4`[0x69] | u32 `0x03001948` | `CheckObjectCollisions(count, array)`, active list only, skipped when game-mode flag `0x800` is set |
 
 While draining the sorted OAM queue, `TickObjectList` calls `sub_080317EC(n)`
-for each draw layer `n` (`Object.bDrawLayer`) the sort has passed, then for the
+for each draw layer `n` (`Object.oam.priority`) the sort has passed, then for the
 remaining layers up to 3. It returns 1 if any queue-drain `UpdateObjectOamCells`
 call returned nonzero.
 
@@ -161,7 +161,7 @@ on its own; they needed explicit seeding.
 
 `SortObjectsByDepth` is a Shell sort (gap sequence 21/7/3/1, packed
 byte-wise into one `0x15070301` constant) over an array of object
-pointers. **PROVEN** by decompile: the key is `(bDrawLayer << 24)`
+pointers. **PROVEN** by decompile: the key is `(oam.priority << 24)`
 (byte `0xD5`'s bits 2-3, read as `(byte & 0xC) << 22`) | (bDepthSortBias << 16) - Y` (`+0x3A`) -- draw layer, then bias,
 then descending screen Y.
 

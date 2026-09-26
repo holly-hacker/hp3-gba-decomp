@@ -44,6 +44,9 @@
 .set g_adwObjTileAllocBitmap,    0x03006178
 .set g_adwObjTileFreeMask,       0x030061F8
 
+@ --- OAM shadow buffer, see include/oam.h ---
+.set g_bOamEntryCount, 0x03005050
+
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_GameModeStackContext, 0x03003F54  @ see ram_symbols.us.inc
 .set g_dwFrameSyncTarget, 0x03003BA8  @ see ram_symbols.us.inc

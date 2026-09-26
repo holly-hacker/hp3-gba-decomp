@@ -32,7 +32,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
 
     sub_08003A44(pObject, 0, 0x400, -0xC);
 
-    pObject->bDrawLayer = 1;
+    pObject->oam.priority = 1;
     pObject->bDepthSortBias = -0x40;
     pObject->dwUnk_0x28 = 1;
     pObject->dwFlags = 0x20006019;
@@ -74,7 +74,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
 
         sub_08003A44(pShadowObject, 0, 0x400, -0xC);
 
-        pShadowObject->bDrawLayer = 1;
+        pShadowObject->oam.priority = 1;
         pShadowObject->bDepthSortBias = -0x40;
         pShadowObject->dwUnk_0x28 = 1;
         pShadowObject->dwFlags = 0x6019;

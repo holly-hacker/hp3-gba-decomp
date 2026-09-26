@@ -18,7 +18,7 @@ void CommitQueuedObjectTileUpdates(void)
                 ReleaseObjectOffscreenVramTiles(obj);
             } else if (obj->dwFlags & ObjectFlagAnimFrameLoaded) {
                 obj->dwFlags &= ~ObjectFlagAnimFrameLoaded;
-                obj->wOamTileIndex = obj->wVramTileAllocId;
+                obj->oam.tileNum = obj->wVramTileAllocId;
             }
         }
         g_ObjectPoolState.bTileUpdateQueueCount = 0;

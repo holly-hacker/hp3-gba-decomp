@@ -80,11 +80,11 @@ void BuildTurnOrder(void)
 
         if (SLOT(innerIdx).bFighterType != Enemy) {
             SpawnTurnOrderIcon(SLOT(innerIdx).bFighterType, 1, innerIdx,
-                               SLOT(innerIdx).pObject->bGfxSlot);
+                               SLOT(innerIdx).pObject->oam.paletteNum);
             g_pFightState->aAllySlotTurnOrderIndex[SLOT(innerIdx).bSlotParam] = innerIdx;
         } else {
             SpawnTurnOrderIcon(SLOT(innerIdx).bRosterIndex, 0, innerIdx,
-                               SLOT(innerIdx).pObject->bGfxSlot);
+                               SLOT(innerIdx).pObject->oam.paletteNum);
             g_pFightState->aEnemySlotTurnOrderIndex[SLOT(innerIdx).bSlotParam] = innerIdx;
         }
 

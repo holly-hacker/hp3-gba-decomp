@@ -26,7 +26,7 @@ fields, see [`levels.md`](levels.md)) decompresses two resources:
 `GetCollisionTypeAtPixel_candidate` (`0x0802D7A0`) resolves a pixel to
 its tile-type byte (out-of-bounds = solid, type 1). The **low 6 bits**
 of that byte are the tile type (below); the **top 2 bits** are a
-separate value, read by `0x0802E030` and written into `bDrawLayer`
+separate value, read by `0x0802E030` and written into `oam.priority` (the draw layer)
 (`Object+0xD5` bits 2-3, see `SetObjectDrawLayer`). STRUCTURAL MATCH:
 `SortObjectsByDepth` folds it into the draw-order sort key,
 and `TickObjectList` flushes a per-layer queued particle list

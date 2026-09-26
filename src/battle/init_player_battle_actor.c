@@ -20,7 +20,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     pObject->wObjectType = type;
     pObject->bUnk_0x7C = 0;
 
-    pObject->bDrawLayer = 1;
+    pObject->oam.priority = 1;
     posY = slot * 0x40000 + 0x6E0000;
     SnapObjectPosition(pObject, 0, posY);
     StartObjectMove(pObject, (0xD4 - slot * 9 * 4) << 16, posY, 0x19);

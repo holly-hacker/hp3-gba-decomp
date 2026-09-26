@@ -31,9 +31,9 @@ void ClearParalyzedFighter_candidate(u8 fighterIndex)
             object = g_pFightState->pFighters[fighterIndex].pObject;
             {
                 u8 fighterType = *(u8 *)&object->wObjectType;
-                u8 gfxSlot = object->bGfxSlot;
+                u8 paletteBank = object->oam.paletteNum;
                 sub_0800D264((u8 *)g_aFighterAnimTable[fighterType].nEffectSlotLive + 2,
-                    (gfxSlot << 4) + 1, 0xf);
+                    (paletteBank << 4) + 1, 0xf);
             }
         }
         else
