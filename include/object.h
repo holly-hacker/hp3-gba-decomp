@@ -341,6 +341,7 @@ extern void TickActiveObjects(void);
 extern s32 UpdateObjectOnscreenFlags(Object *obj);
 extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
 extern void GetObjectVariantFrameSize(Object *obj, u32 *dims, u8 slot);
+extern void *GetObjectVariantFrameTileGfx(Object *obj, u8 slot);
 extern u8 GetDirectionToTarget(u32 objectFlags, FixedPoint pos, FixedPoint target, s32 tolerance);
 extern u8 GetUnblockedDirectionToTarget(Object *obj, FixedPoint pos, FixedPoint target, s32 tolerance);
 extern ObjectRect GetObjectCollisionBoxRect(Object *obj, s32 boxIndex);
