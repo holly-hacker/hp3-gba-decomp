@@ -25,6 +25,7 @@ typedef enum {
                                                        // from the OAM/priority-sort queue
     ObjectFlagActionAnimDone           = 0x40000,    // set by TickObjectAnimation on a non-looping
                                                        // animation's last frame
+    ObjectFlagFourWayDirections_candidate = 0x100000, // GetDirectionToTarget returns a Direction4
     ObjectFlagHasPaletteSlot           = 0x200000,   // AttachObjectPalette bound a palette cache slot;
                                                        // ReleaseObjectPalette clears it
     ObjectFlagOnscreenForTileAlloc     = 0x400000,   // mirrors ObjectFlagOnscreen (set/cleared
@@ -42,6 +43,35 @@ typedef struct ObjectSpriteBounds {
     u32 packedX;
     u32 packedY;
 } ObjectSpriteBounds;
+
+// A 16.16 fixed-point position, passed by value.
+typedef struct FixedPoint {
+    s32 x;
+    s32 y;
+} FixedPoint;
+
+// Eight-way direction, clockwise from up (screen y grows downward). Odd
+// values are diagonals. DirectionAtTarget: within tolerance on both axes.
+typedef enum {
+    DirectionUp,
+    DirectionUpRight,
+    DirectionRight,
+    DirectionDownRight,
+    DirectionDown,
+    DirectionDownLeft,
+    DirectionLeft,
+    DirectionUpLeft,
+    DirectionAtTarget,
+} Direction;
+
+// Four-way direction returned for ObjectFlagFourWayDirections_candidate.
+typedef enum {
+    Direction4Up,
+    Direction4Right,
+    Direction4Down,
+    Direction4Left,
+    Direction4AtTarget,
+} Direction4;
 
 // One of Object's two collision-box slots, tested by CheckObjectCollisions.
 // dwPackedOffsets is 4 signed bytes -- byte3/byte2 = Y offsets, byte1/byte0 =
@@ -172,7 +202,15 @@ typedef struct Object {
     u8 pad_AE[0x02];        // -> 0xB0
     ObjectCollisionBox aCollisionBoxes[2];  // 0xB0, see CheckObjectCollisions;
                              // slot 0 at 0xB0, slot 1 at 0xB8
-    u8 pad_C0[0x08];        // -> 0xC8
+    // 0xC0-0xC3: terrain bounding box, signed pixel offsets from the object's
+    // integer position, copied from the current animation frame (sub_080023B4).
+    // Terrain probes (GetUnblockedDirectionToTarget, sub_0802D868) test pixels
+    // at these edges.
+    s8 bTerrainBoxLeft;     // 0xC0
+    s8 bTerrainBoxRight;    // 0xC1
+    s8 bTerrainBoxTop;      // 0xC2
+    s8 bTerrainBoxBottom;   // 0xC3
+    u8 pad_C4[0x04];        // -> 0xC8
     void (*apfnCollisionCallback[2])(struct Object *self, struct Object *other);
                              // 0xC8, called by CheckObjectCollisions on an
                              // overlap of the matching-index box, per object
@@ -294,6 +332,8 @@ extern void TickActiveObjects(void);
 extern s32 UpdateObjectOnscreenFlags(Object *obj);
 extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
 extern void GetObjectVariantFrameSize(Object *obj, u32 *dims, u8 slot);
+extern u8 GetDirectionToTarget(u32 objectFlags, FixedPoint pos, FixedPoint target, s32 tolerance);
+extern u8 GetUnblockedDirectionToTarget(Object *obj, FixedPoint pos, FixedPoint target, s32 tolerance);
 extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
 extern void FreeObjectVramTileAllocation(u16 allocId, u16 tileRow, u8 is8bpp);  // 0x08045514
 extern void ReleaseObjectPalette(Object *obj);  // 0x080308D8

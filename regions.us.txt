@@ -45,6 +45,8 @@ c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
 c-file 0x08000E28 0x08000EC0 src/object/get_object_variant_frame_size.c GetObjectVariantFrameSize
+c-file 0x08000F50 0x08000FF0 src/object/get_direction_to_target.c GetDirectionToTarget
+c-file 0x08000FF0 0x08001238 src/object/get_unblocked_direction_to_target.c GetUnblockedDirectionToTarget
 c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
@@ -629,9 +631,11 @@ thumb-func 0x0802D544 NoopInit3
 thumb-func 0x0802D640 sub_0802D640
 thumb-func 0x0802D64C sub_0802D64C
 thumb-func 0x0802D6B8 sub_0802D6B8
+thumb-func 0x0802D7A0 GetCollisionTypeAtPixel_candidate
 thumb-func 0x0802DD54 NoopInit2
 thumb-func 0x0802DD58 LoadRoomSharedTileset_candidate
 thumb-func 0x0802DDAC sub_0802DDAC
+thumb-func 0x0802DF28 IsBlockingCollisionType
 thumb-func 0x0802DF3C ApplyRoomSwitchEffect
 thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
 thumb-func 0x0802F6C0 sub_0802F6C0

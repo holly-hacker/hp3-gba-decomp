@@ -4,6 +4,15 @@
 #include "object.h"
 #include "room_script.h"
 
+// A pixel coordinate in room space, passed by value.
+typedef struct PixelPoint {
+    u32 x;
+    u32 y;
+} PixelPoint;
+
+extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
+extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
+
 // A BG tileset and its palette. Tileset A (layers 0 and 3) and tileset B
 // (layers 1 and 2) each pair with one; the second pair's palette is not
 // confirmed to be read.

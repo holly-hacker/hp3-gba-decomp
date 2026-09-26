@@ -45,6 +45,12 @@ dispatched from `CheckObjectTileCollision_candidate`/
 object's swept movement box in 4px steps) only force-blocks two of
 them, and only conditionally:
 
+`IsBlockingCollisionType` (`0x0802DF28`) is the shared 1-25 test.
+`GetUnblockedDirectionToTarget` (`0x08000FF0`) uses it to steer an object
+toward a target: it probes the pixel ahead of the object's terrain box
+(`Object` bytes `0xC0`-`0xC3`) and, when a diagonal is blocked, falls back
+to the horizontal and then the vertical direction.
+
 - `0x1F`: blocks unless a spell-effect object is currently active
   (`DAT_03003FD4`, set by the generic effect-spawner `0x0802E090`) AND
   the player object's `field_0x91` is set.
