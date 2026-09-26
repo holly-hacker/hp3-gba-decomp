@@ -12,8 +12,8 @@ void RoomScriptOpShowSpellLearnedMessage(RoomScriptRecord *pRecord)
         if (g_dwRoomScriptRunState == 1)
             g_dwRoomScriptRunState = 2;
         PlaySoundEffect_candidate(0x1a);
-        SetDialogMacroString0_candidate(GetDialogText(pRecord->operand.ab[0] + 0xac2));
-        SetDialogMacroString1_candidate(GetDialogText(pRecord->operand.ab[0] + 0xac2));
+        SetTextMacro1String(GetDialogText(pRecord->operand.ab[0] + 0xac2));
+        SetTextMacro3String(GetDialogText(pRecord->operand.ab[0] + 0xac2));
         ShowRoomDialogBox_candidate(0x28f);
         g_DialogState_candidate.bArg1C = pRecord->operand.ab[2];
         g_DialogState_candidate.bArg1D = pRecord->operand.ab[3];

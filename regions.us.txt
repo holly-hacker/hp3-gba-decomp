@@ -320,7 +320,7 @@ thumb-func 0x0801BCB0 sub_0801BCB0
 thumb-func 0x0801BD0C InitializeCardComboDescription
 thumb-func 0x0801BEA8 UpdateCardComboDescription
 thumb-func 0x0801BEDC ExitCardComboDescription
-thumb-func 0x0801BEF8 RoomScriptOpShowMinigameUnlockedMessage
+c-file 0x0801BEF8 0x0801BF58 src/room/opcodes/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
 thumb-func 0x0801BF58 RoomScriptOpQueueTileObjectMove
 thumb-func 0x0801C04C RoomScriptOpSetAllQueuedMoveParams
 thumb-func 0x0801C0E8 RoomScriptOpStartObjectAnimSequence
@@ -473,10 +473,10 @@ thumb-func 0x08020E34 SetTextLineHeight
 c-file 0x08020E40 0x08020E9C src/text/measure_macro_string.c MeasureMacroString
 thumb-func 0x08020F44 DrawTextLines
 c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
-thumb-func 0x08021100 SetDialogMacroString0_candidate
-thumb-func 0x08021148 SetDialogMacroString1_candidate
-thumb-func 0x08021184 SetDialogMacroNumber0_candidate
-thumb-func 0x080211AC SetDialogMacroNumber1_candidate
+thumb-func 0x08021100 SetTextMacro1String
+thumb-func 0x08021148 SetTextMacro3String
+thumb-func 0x08021184 SetTextMacro1Number
+thumb-func 0x080211AC SetTextMacro3Number
 thumb-func 0x080211C0 GetTextLineHeight
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
 thumb-func 0x08021560 NoopInit

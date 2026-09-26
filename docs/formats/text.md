@@ -183,14 +183,11 @@ case ([`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)).
 **`sub_08020714`** (`0x08020714`): the actual per-glyph decode loop.
 Reads one byte at a time and branches on its value:
 
-- `byte == 0x40`: **escape/macro prefix**. The next byte (`code - 0x31`,
-  `*4`) indexes a table of pointers at `0x03003170` (RAM -- runtime
-  content, not yet traced to its ROM source) to a macro/format string,
-  which is itself walked char-by-char and recursed into (nested escapes
-  inside a macro are handled: same `0x40` check, same `0xef`-threshold
-  glyph split, calling `sub_08020E40`/`sub_0802136C` for width). Plausibly
-  something like "insert player name" / inline icon / color-code macros
-  -- not yet individually decoded.
+- `byte == 0x40`: **macro prefix**. `@1`-`@4` (next byte `0x31`-`0x34`)
+  select slot `code - 0x31` of `sTextMacroTable` (`0x03003170`, four RAM
+  string buffers), which is drawn in place, nested macros included. Game
+  text uses `@1`-`@3`. Callers fill them first with `SetTextMacroNString`
+  or `SetTextMacroNNumber` (signed decimal), `N` = 1-3.
 - `byte <= 0xef`: **direct single-byte glyph code** -- looked up via
   `[0x03003110]` (a RAM pointer to a "font descriptor", see below).
 - `byte > 0xef`: **two-byte glyph code** -- combined as `(byte0<<8)|byte1`
@@ -539,10 +536,8 @@ this ROM's actual content.
   touch this table. It most likely dispatches on something else entirely
   (a dialog window style/variant, a font size class, etc.). Low value to
   pursue without a concrete reason.
-- **The `0x40`-prefixed escape/macro system** (macro table at
-  `0x03003170`, format/insert codes) is identified as existing but not
-  individually decoded -- what each macro code actually does (insert
-  player name, color change, icon, etc.) is unknown.
+- **String 1670, `@hh:@mm`**, is the only other `@` sequence in game text;
+  its consumer (likely a playtime display) is not traced.
 - **The two-byte (`>0xEF`) extended glyph charmap is moot, not
   unsolved** -- see "The extended charmap, decoded" above: no real
   string in any of the 8 languages actually uses it, so there's nothing
