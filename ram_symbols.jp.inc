@@ -25,6 +25,14 @@
 .set g_dwUnk03001DC0,         0x03001DC0
 .set g_dwUnk03001DC4,         0x03001DC4
 
+@ --- Per-tick object queues (see include/mem.h) ---
+.set g_apOamQueue,            0x030015B8
+.set g_dwOamQueueCount,       0x0300175C
+.set g_apSpriteFrameQueue,    0x03001760
+.set g_bSpriteFrameQueueCount, 0x0300179C
+.set g_apCollisionQueue,      0x030017A4
+.set g_dwCollisionQueueCount, 0x03001948
+
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md) ---
 .set g_pDecompressType4Entry, 0x030028CC
 .set g_pDecompressType6Entry, 0x030028D0

@@ -283,7 +283,7 @@ monsters, pickups, switches, chests, etc.), keyed by world-tile position,
 so re-entering a room restores it to how the player left it. **STRUCTURAL
 MATCH**: confirmed by finding the exact symmetric producer,
 `CaptureRoomObjectState` (`0x0802A70C`), which walks the live
-`sActiveObjectListHead` linked list of room objects and re-populates
+`g_ActiveObjectListState` linked list of room objects and re-populates
 `g_pRoomObjectStateBuffer` (`0x03003B68`) every time the room state is
 captured (e.g. before a save or a room transition); `RestoreRoomObjectState`/
 `RestoreRoomObjectStateMinimal` (`0x0802AB34`/`0x0802AE64`) are the

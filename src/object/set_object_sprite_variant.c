@@ -17,8 +17,8 @@ void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex)
     palette = record->pPalette;
     if (palette != 0) {
         if (g_dwGameModeFlags & 0x10)
-            sub_0800D254(palette, obj->bGfxSlotAndFlags >> 4 << 4, 0x10);
+            sub_0800D254(palette, obj->bGfxSlot << 4, 0x10);
         else
-            sub_0800D264(palette, obj->bGfxSlotAndFlags >> 4 << 4, 0x10);
+            sub_0800D264(palette, obj->bGfxSlot << 4, 0x10);
     }
 }

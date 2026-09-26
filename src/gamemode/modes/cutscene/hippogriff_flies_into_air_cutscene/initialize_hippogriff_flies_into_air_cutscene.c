@@ -12,11 +12,11 @@ void InitializeHippogriffFliesIntoAirCutscene(void)
     LoadBgGraphic(0, g_HippogriffFliesIntoAirGraphic, 0, 0, 0, 0);
 
     g_pHippogriffFliesIntoAirObject2 = SpawnObject(0, 0x30, 0xA8, g_HippogriffFliesIntoAirSpawnData2);
-    ((ObjectFlagsD5 *)&g_pHippogriffFliesIntoAirObject2->bGfxSlotAndFlags)->bDrawLayer = 2;
+    g_pHippogriffFliesIntoAirObject2->bDrawLayer = 2;
     sub_08001690(g_pHippogriffFliesIntoAirObject2, g_HippogriffFliesIntoAirAsset2);
 
     g_pHippogriffFliesIntoAirObject = SpawnObject(0, 0x78, 0x3C, g_HippogriffFliesIntoAirSpawnData);
-    ((ObjectFlagsD5 *)&g_pHippogriffFliesIntoAirObject->bGfxSlotAndFlags)->bDrawLayer = 2;
+    g_pHippogriffFliesIntoAirObject->bDrawLayer = 2;
     sub_08001690(g_pHippogriffFliesIntoAirObject, g_HippogriffFliesIntoAirAsset);
     SetObjectAffineTransform(g_pHippogriffFliesIntoAirObject, 0x18000, 0x18000, 0, 3);
     StartObjectAffineScaleTween(g_pHippogriffFliesIntoAirObject, 0x10000, 0x10000, 0x64);

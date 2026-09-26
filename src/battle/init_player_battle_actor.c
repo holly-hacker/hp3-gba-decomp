@@ -13,8 +13,6 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     u8 slot = battleSlotIndex;
     u8 i;
     u16 hp;
-    s32 clearMask;
-    s32 flagsBeforeClear;
     s32 posY;
     u8 **ppAnimCursor;
 
@@ -22,14 +20,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     pObject->wObjectType = type;
     pObject->bUnk_0x7C = 0;
 
-    // Reload before the mask is materialized, and fold through the mask
-    // itself: a separate dest pseudo ties to the loaded value in regmove
-    // and steals r0 from the mask (same idiom as InitializeBattle).
-    flagsBeforeClear = pObject->bGfxSlotAndFlags;
-    clearMask = ~0xC;
-    clearMask &= flagsBeforeClear;
-
-    pObject->bGfxSlotAndFlags = clearMask | 4;
+    pObject->bDrawLayer = 1;
     posY = slot * 0x40000 + 0x6E0000;
     SnapObjectPosition(pObject, 0, posY);
     StartObjectMove(pObject, (0xD4 - slot * 9 * 4) << 16, posY, 0x19);

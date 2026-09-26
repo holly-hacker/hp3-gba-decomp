@@ -33,6 +33,7 @@ typedef enum {
     ObjectFlagRoomScriptYield          = 0x8000000,  // set by a room script that yielded on this object
     ObjectFlagAnimPaused               = 0x10000000, // TickObjectAnimation's frame counter freezes
     ObjectFlagSuppressEffectBinding    = 0x20000000, // TickObject skips Claim/BindObjectEffect entirely
+    ObjectFlagExtraOamPass             = 0x80000000, // TickObjectList's extra UpdateObjectOamCells pass
 } ObjectFlags;
 
 // Object.bFlags_0xD1's low 2 bits, overlaid on that byte. The real code
@@ -54,14 +55,6 @@ typedef struct {
     u8 bXFlip : 1;  // non-affine X-flip, read by UpdateObjectOnscreenFlags
     u8 pad1 : 3;
 } ObjectFlagsD3;
-
-// Object.bGfxSlotAndFlags's bits 2-3 (draw layer); same bitfield-store
-// evidence as ObjectFlagsD1 above. See SetObjectDrawLayer.
-typedef struct {
-    u8 pad0 : 2;
-    u8 bDrawLayer : 2;
-    u8 pad1 : 4;
-} ObjectFlagsD5;
 
 // Signed sprite extents packed as {low s16, high s16} for each axis.
 // UpdateObjectOnscreenFlags copies both words together before unpacking them.
@@ -143,7 +136,8 @@ typedef struct Object {
     u32 nMoveTargetY;       // 0x50
     u8 pad_54[0x04];        // -> 0x58
     s16 wUnk58;             // 0x58, scaled (>> 7) by DivinationTea's leaf drift
-    u8 pad_5A[0x06];        // -> 0x60
+    u8 pad_5A[0x02];        // -> 0x5C
+    u32 dwOrbitRadii;       // 0x5C, packed radiusX/radiusY; nonzero runs ApplyObjectOrbitMotion
     u8 bAttackOutcomeState; // 0x60
     u8 bScriptPageHigh_candidate;  // 0x61, written by a room script
     u16 wStagedDamage;      // 0x62
@@ -193,11 +187,13 @@ typedef struct Object {
                              // AllocAffineSlot/FreeAffineSlot
     u8 bAffineFlagsHigh;     // 0xD3, high byte of the packed word; see ObjectFlagsD3
     u8 pad_D4;               // -> 0xD5
-    u8 bGfxSlotAndFlags;    // 0xD5, upper nibble = graphics-cache slot (see
-                             // ReleaseObjectPalette/AllocEffectChannelSlot_candidate/
-                             // BindEffectChannelSlot_candidate), bits 2-3 = draw layer (see
-                             // SetObjectDrawLayer/SortObjectsByDepth/TickObjectList),
-                             // written by UpdateObjectTileCollisionState
+    // Byte 0xD5 is declared as bitfields: TickObjectList's draw-layer read
+    // (ldrb, lsl #28, lsr #30) only matches as a u8 bitfield member here.
+    u8 bGfxLowBits_unk : 2; // 0xD5 bits 0-1
+    u8 bDrawLayer : 2;      // 0xD5 bits 2-3, see SetObjectDrawLayer/SortObjectsByDepth/
+                             // TickObjectList; written by UpdateObjectTileCollisionState
+    u8 bGfxSlot : 4;        // 0xD5 bits 4-7, graphics-cache slot (see ReleaseObjectPalette/
+                             // AllocEffectChannelSlot_candidate/BindEffectChannelSlot_candidate)
     u8 pad_D6[0x02];        // -> 0xD8
     u8 bAnimFrameCounter;   // 0xD8, frames-remaining countdown reloaded from bAnimFrameDelay
                              // each time it hits 0; see TickObjectAnimation
@@ -231,7 +227,7 @@ typedef struct Object {
     u8 bAffineMode;         // 0xFF, mirrors bFlags_0xD1's low 2 bits (affine slot state)
     ObjectSpriteBounds spriteBounds;  // 0x100, signed X/Y extent pairs used for visibility
     void *pEffectData;      // 0x108, direct pointer form of the same graphics-cache resource
-                             // bGfxSlotAndFlags's upper nibble indexes (mutually exclusive with
+                             // bGfxSlot indexes (mutually exclusive with
                              // it -- see ReleaseObjectPalette/BindEffectChannelSlot_candidate)
     u32 dwEffectFlags;      // 0x10C
     u16 wVramTileRow;       // 0x110, row passed to FreeObjectVramTileAllocation
@@ -303,6 +299,15 @@ extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
+extern u32 TickObjectList(ActiveObjectListState *list, u8 mode);
+extern void TickObject(Object *obj, u8 mode);
+extern u8 UpdateObjectOamCells(Object *obj);
+extern void UpdateObjectSpriteFrame(Object *obj, u8 mode);
+extern void ApplyObjectOrbitMotion(Object *obj);
+extern void sub_080034B8(Object *obj);
+extern void sub_08030C00(void);
+extern void sub_080317EC(u8 layer);  // flushes the particles queued for one draw layer
+extern void sub_08030140(void);
 extern void sub_08000BC0(void);  // VBlank-time object housekeeping (also OverworldVBlankCallback)
 extern void sub_08001690(Object *obj, const void *pAssetRecord);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed

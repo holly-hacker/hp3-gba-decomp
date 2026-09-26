@@ -6,7 +6,7 @@
 // pointer and flags are saved in the object before the refcount is decremented.
 void ReleaseObjectPalette(Object *obj)
 {
-    u32 slot = obj->bGfxSlotAndFlags >> 4;
+    u32 slot = obj->bGfxSlot;
 
     if (obj->dwFlags & ObjectFlagHasPaletteSlot)
     {

@@ -13,8 +13,6 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     Object *pObject;
     u8 type = monsterIndex;
     u8 slot = battleSlotIndex;
-    s32 clearMask;
-    s32 flagsBeforeClear;
     s32 xBase;
     s32 objType;
     s32 slotX2;
@@ -34,10 +32,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
 
     sub_08003A44(pObject, 0, 0x400, -0xC);
 
-    flagsBeforeClear = pObject->bGfxSlotAndFlags;
-    clearMask = ~0xC;
-    clearMask &= flagsBeforeClear;
-    pObject->bGfxSlotAndFlags = clearMask | 4;
+    pObject->bDrawLayer = 1;
     pObject->bDepthSortBias = -0x40;
     pObject->dwUnk_0x28 = 1;
     pObject->dwFlags = 0x20006019;
@@ -79,11 +74,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
 
         sub_08003A44(pShadowObject, 0, 0x400, -0xC);
 
-        flagsBeforeClear = pShadowObject->bGfxSlotAndFlags;
-        clearMask = ~0xC;
-        clearMask &= flagsBeforeClear;
-
-        pShadowObject->bGfxSlotAndFlags = clearMask | 4;
+        pShadowObject->bDrawLayer = 1;
         pShadowObject->bDepthSortBias = -0x40;
         pShadowObject->dwUnk_0x28 = 1;
         pShadowObject->dwFlags = 0x6019;

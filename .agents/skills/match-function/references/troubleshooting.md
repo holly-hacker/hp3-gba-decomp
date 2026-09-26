@@ -182,6 +182,20 @@ Passing an `s16` field as an argument loads with `ldrh` when the parameter is `u
 `ldrsh` (no extension) when it is `s16`; a cast at the call site does not change this. The
 SetObjectAffineTransform angle parameter is `s16` for that reason.
 
+## 23. Array base loaded early and hoisted instead of a neighboring constant
+
+`arr[s.count++] = x` with `arr` a separate symbol loads `arr` before the count update, so
+`loop.c` hoists it (longer lifetime) and the struct base stays in the loop. If the ROM loads the
+array literal after the count store, the array is likely a member of the same struct
+(`s.arr[s.count++]`, pooled as `s+offset`). The hoisted base then changes global allocation and
+exit-test duplication. Example: TickObjectList, US 0x08000918.
+
+## 24. Bitfield read emits `ldr` instead of `ldrb`
+
+Casting a byte to a bitfield struct (`((Bits *)&obj->b)->f`) reads in SImode because agbcc
+structs are word-aligned. A `u8 f : n` member declared directly in the containing struct reads
+with `ldrb` and writes with `ldrb`/`strb`. Example: `Object.bDrawLayer` in TickObjectList.
+
 ## Candidate acceptance and cleanup
 
 A diff improvement is evidence, not permission to land a proxy. Selective one-field inline

@@ -23,12 +23,12 @@ static inline void PlayActionWindupFlash(Object *obj)
         return;
     if (obj->wActionVariant == 1) {
         SetPlayerObjectAnim(obj, 7);
-        slot = obj->bGfxSlotAndFlags >> 4;
+        slot = obj->bGfxSlot;
         ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceA + 2;
         sub_0800D264(ptr, (slot << 4) + 1, 0xf);
     } else if (obj->wActionVariant == 2) {
         SetPlayerObjectAnim(obj, 6);
-        slot = obj->bGfxSlotAndFlags >> 4;
+        slot = obj->bGfxSlot;
         ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceB + 2;
         sub_0800D264(ptr, (slot << 4) + 1, 0xf);
     } else {

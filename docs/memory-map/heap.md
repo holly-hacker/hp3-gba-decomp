@@ -82,10 +82,33 @@ fixed-size-slot pool out of the heap:
 - `g_dwObjectListActive_candidate` (`0x030017A0`) — set to 1 by
   `InitObjectPool`, also written by `FUN_08001d90`; read by
   `TickObjectList`.
+- `ObjectPoolState` continues past the two pointers: `+0x08` is the count
+  byte and `+0x0C` the 0x69-entry queue of objects whose
+  `UpdateObjectOamCells` result was 2 (consumed and reset by `sub_08000BC0`);
+  `+0x1B0` (`0x03001DB8`) is a byte enabling `TickObjectList`'s extra OAM pass.
+  The queue is a struct member: `TickObjectList` (matched,
+  `src/object/tick_object_list.c`) indexes it through the struct.
 - `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. Read in
   `WriteObjectOamCells` as what looks like a fixed-point rounding/scale
   constant, unrelated to the pool itself; not enough evidence for a real
   name yet.
+
+## Per-tick object queues — PROVEN
+
+`TickObjectList(list, mode)` (US/JP `0x08000918`, matched) resets these
+counts, runs `TickObject` over the list (which fills the queues), then drains
+them. `mode == 1` is the full pass that also updates OAM.
+
+| Queue | Array | Count | Drained by |
+| --- | --- | --- | --- |
+| OAM (depth-sorted) | `g_apOamQueue` `0x030015B8`[0x69] | u32 `0x0300175C` | `SortObjectsByDepth` (mode 1, `g_dwObjectListActive_candidate` set, count > 1), then `UpdateObjectSpriteFrame` + `UpdateObjectOamCells` per object |
+| Sprite frame | `g_apSpriteFrameQueue` `0x03001760`[15] | u8 `0x0300179C` | same per-object updates, walked tail to head before the OAM queue |
+| Collision | `g_apCollisionQueue` `0x030017A4`[0x69] | u32 `0x03001948` | `CheckObjectCollisions(count, array)`, active list only, skipped when game-mode flag `0x800` is set |
+
+While draining the sorted OAM queue, `TickObjectList` calls `sub_080317EC(n)`
+for each draw layer `n` (`Object.bDrawLayer`) the sort has passed, then for the
+remaining layers up to 3. It returns 1 if any queue-drain `UpdateObjectOamCells`
+call returned nonzero.
 
 ## Generic intrusive list / active-object list — PROVEN
 
@@ -112,10 +135,11 @@ object list, also uses. All four matched in `src/mem/`.
   **activeListHead, uint size)`. Pops a node off `freeListHead`, zeroes
   it, pushes it onto `activeListHead`, returns it (`NULL` if the free
   list was empty). Called by `AllocDefaultObject`/`SpawnObject` with `&g_ObjectPoolState.pFreeListHead` and
-  `&sActiveObjectListHead` — the real "allocate an object" entry point,
+  `&g_ActiveObjectListState.pHead` — the real "allocate an object" entry point,
   one level above `AllocObjectOfType`/`AllocDefaultObject`.
-- `sActiveObjectListHead` (`0x030015B0`) — `ListNode *`, head of the
-  active-object list objects join via `AllocObjectFromFreeList`.
+- `g_ActiveObjectListState` (`0x030015B0`) — `pHead` is the head of the
+  active-object list objects join via `AllocObjectFromFreeList`; `TickObjectList`
+  walks `pUnk4` (`+4`) backwards via `pPrev`, so it is likely the tail.
 
 ## `SortObjectsByDepth` / `CheckObjectCollisions` — ARM-mode
 
@@ -132,8 +156,8 @@ on its own; they needed explicit seeding.
 
 `SortObjectsByDepth` is a Shell sort (gap sequence 21/7/3/1, packed
 byte-wise into one `0x15070301` constant) over an array of object
-pointers. **PROVEN** by decompile: the key is `((bGfxSlotAndFlags & 0xC)
-<< 22) | (bDepthSortBias << 16) - Y` (`+0x3A`) -- draw layer, then bias,
+pointers. **PROVEN** by decompile: the key is `(bDrawLayer << 24)`
+(byte `0xD5`'s bits 2-3, read as `(byte & 0xC) << 22`) | (bDepthSortBias << 16) - Y` (`+0x3A`) -- draw layer, then bias,
 then descending screen Y.
 
 `CheckObjectCollisions` does the per-frame pairwise collision pass.

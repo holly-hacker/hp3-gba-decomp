@@ -72,9 +72,18 @@ void *memset(void *dst, int val, u32 len);
 // InitObjectPool's real code loads pBuffer's address once and reaches
 // pFreeListHead through it at +4, so this stays one struct rather than
 // two independent globals.
+//
+// The rest of the state follows: a queue that TickObjectList fills with the
+// objects whose UpdateObjectOamCells result was 2, and a byte that gates its
+// extra OAM pass (see docs/memory-map/heap.md).
 typedef struct ObjectPoolState {
     void *pBuffer;
     void *pFreeListHead;
+    u8 bTileUpdateQueueCount_candidate;  // 0x08, consumed and reset by sub_08000BC0
+    u8 pad_9[0x03];                      // -> 0x0C
+    struct Object *apTileUpdateQueue_candidate[0x69];  // 0x0C, objects whose OAM update returned 2
+    u8 bExtraOamPassEnabled_candidate;   // 0x1B0, nonzero enables TickObjectList's extra pass
+    u8 pad_1B1[0x03];
 } ObjectPoolState;
 extern ObjectPoolState g_ObjectPoolState;
 
@@ -112,6 +121,15 @@ typedef struct ActiveObjectListState {
                        // it points at that object. Not enough evidence yet for a real name.
 } ActiveObjectListState;
 extern ActiveObjectListState g_ActiveObjectListState;
+
+// Per-tick queues TickObject fills from the active list and TickObjectList drains.
+// Counts are reset at the start of every TickObjectList call.
+extern struct Object *g_apSpriteFrameQueue[15];  // 0x03001760, visible objects with sprite cells
+extern u8 g_bSpriteFrameQueueCount;              // 0x0300179C
+extern struct Object *g_apOamQueue[0x69];        // 0x030015B8, onscreen objects drawn by depth order
+extern u32 g_dwOamQueueCount;                    // 0x0300175C
+extern struct Object *g_apCollisionQueue[0x69];  // 0x030017A4, objects awaiting the pairwise check
+extern u32 g_dwCollisionQueueCount;              // 0x03001948
 
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
 void FreeAllObjects(ListNode **activeListHead);

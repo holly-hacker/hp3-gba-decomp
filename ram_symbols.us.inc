@@ -191,13 +191,19 @@
 .set g_dwObjectListActive_candidate, 0x030017A0
 .set g_pSortObjectsIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth
 .set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions
-.set g_ObjectPoolState,               0x03001C08  @ {void *pBuffer; void *pFreeListHead;}; pBuffer is the
-                                                    @ 0x7968-byte AllocZeroed'd buffer BuildFreeList carves up
-.set sFreeObjectListHead,            0x03001C0C
+.set g_ObjectPoolState,               0x03001C08  @ ObjectPoolState, 0x1B4 bytes; see include/mem.h
 .set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwUnk03001DC0,                0x03001DC0  @ FreeObject calls ReleaseObjectOffscreenVramTiles when this == 1
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
 .set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/mem.h
+
+@ --- Per-tick object queues (see include/mem.h and TickObjectList) ---
+.set g_apOamQueue,            0x030015B8  @ Object *[0x69]: onscreen objects drawn in depth order
+.set g_dwOamQueueCount,       0x0300175C
+.set g_apSpriteFrameQueue,    0x03001760  @ Object *[15]: visible objects with sprite cells
+.set g_bSpriteFrameQueueCount, 0x0300179C @ u8
+.set g_apCollisionQueue,      0x030017A4  @ Object *[0x69]: objects awaiting the pairwise check
+.set g_dwCollisionQueueCount, 0x03001948
 
 @ --- OBJ tile allocator ---
 .set g_pFindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun

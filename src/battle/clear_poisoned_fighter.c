@@ -27,7 +27,7 @@ void ClearPoisonedFighter_candidate(u8 fighterIndex)
         }
 
         {
-            u8 gfxSlot = object->bGfxSlotAndFlags >> 4;
+            u8 gfxSlot = object->bGfxSlot;
             u8 fighterType = *(u8 *)&object->wObjectType;
             sub_0800D264((u8 *)g_aFighterAnimTable[fighterType].nEffectSlotLive + 2,
                 (gfxSlot << 4) + 1, 0xf);

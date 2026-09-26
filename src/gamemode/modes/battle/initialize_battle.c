@@ -12,7 +12,6 @@ void InitializeBattle(void)
 {
     s32 i;
     u8 *uVar7;
-    s32 slot;
     Object *pIconObj;
     u8 flagsBeforeSet;
     s32 flagsBeforeClear;
@@ -24,15 +23,13 @@ void InitializeBattle(void)
     g_dwBattleRewardFlagsSnapshot = 0;
 
     // Allocate all 6 fighter objects (3 on the player side, 3 on the enemy side)
-    for (i = 0, slot = 0x90; i <= 6; i++)
+    for (i = 0; i <= 6; i++)
     {
         g_apFighterObjects_candidate[i] = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
         SetObjectPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
         g_apFighterObjects_candidate[i]->dwFlags = 0x20000008;
         g_apFighterObjects_candidate[i]->bDepthSortBias = 0x80;
-        g_apFighterObjects_candidate[i]->bGfxSlotAndFlags =
-            (g_apFighterObjects_candidate[i]->bGfxSlotAndFlags & 0xF) | slot;
-        slot += 0x10;
+        g_apFighterObjects_candidate[i]->bGfxSlot = i + 9;
     }
 
     g_pBattleMessageIconObject_candidate = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
