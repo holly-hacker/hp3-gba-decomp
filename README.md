@@ -16,7 +16,7 @@ Note that while this project contains mostly AI-generated assets, this README is
 All code under `src/` and `include/` is at the very least checked over by a human. Files under `doc/` and `tools/` will
 almost exclusively be AI-generated and not meant for human consumption.
 
-Currently, between 15% to 20% of the game's code has been decompiled.
+Currently, between 20% and 25% of the game's code has been decompiled.
 
 ## Setup
 
