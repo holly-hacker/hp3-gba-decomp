@@ -23,7 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "graphics"))
 sys.path.insert(0, str(Path(__file__).parent.parent / "text"))
-from decode_gamma_lz import decode_gamma_lz, CODEC_ADDR, _apply_delta_pass
+from decode_gamma_lz import decode_gamma_lz, _apply_delta_pass
 from decode_bios import DECODERS
 from decode_dialog_text import decode_dialog_text
 
@@ -79,7 +79,7 @@ def decode_resource(rom, addr):
     typ = (b0 >> 4) & 7
     extra_pass = bool(b0 & 0x80)
     if typ == 6:
-        return decode_gamma_lz(rom, addr, CODEC_ADDR["us"])
+        return decode_gamma_lz(rom, addr)
     if typ in (1, 2, 3):
         out = DECODERS[typ](rom, addr)
     elif typ == 0:

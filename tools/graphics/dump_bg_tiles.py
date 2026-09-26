@@ -23,14 +23,18 @@ Usage: dump_bg_tiles.py <ver>   (renders all 55 rooms)
   (name comes last-ish deliberately -- sorts each room's layers/merged
   file together, rather than grouping all layer0s across every room)
 """
+import os
 import re
 import struct
 import sys
+from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import get_all_start_methods, get_context
 from pathlib import Path
+from typing import TypeAlias
 
 sys.path.insert(0, str(Path(__file__).parent))
-from decode_bgtile import BgTileDecoder, build_tile_offsets, CODEC_ADDR
-from decode_gamma_lz import decode_gamma_lz, CODEC_ADDR as GAMMA_LZ_CODEC_ADDR, _apply_delta_pass
+from decode_bgtile import decode_bgtile, build_tile_offsets
+from decode_gamma_lz import decode_gamma_lz, _apply_delta_pass
 from decode_bios import DECODERS
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "text"))
@@ -42,6 +46,12 @@ ROM_BASE = 0x08000000
 TABLE_BASE = {"us": 0x08063C8C}
 STRIDE = 0x7C
 ROOM_COUNT = 55
+TileRows: TypeAlias = tuple[bytes, ...]
+Tileset: TypeAlias = tuple[list[int], bytes, dict[int, bytes], dict[tuple[int, int], TileRows]]
+PaletteBanks: TypeAlias = list[list[bytes]]
+RoomTask: TypeAlias = tuple[str, int, str, Path]
+
+_worker_rom: bytes | None = None
 
 
 def read_palette(rom: bytes, palette_ptr: int) -> list[int]:
@@ -69,7 +79,7 @@ def decode_resource(rom: bytes, ver: str, hdr_addr: int) -> bytes:
     if type_nibble == 0:
         out = rom[off + 4: off + 4 + size]
     elif type_nibble == 6:
-        return decode_gamma_lz(rom, hdr_addr, GAMMA_LZ_CODEC_ADDR[ver])  # applies its own extra_pass
+        return decode_gamma_lz(rom, hdr_addr)  # applies its own extra_pass
     else:
         decoder = DECODERS.get(type_nibble)
         if decoder is None:
@@ -78,7 +88,7 @@ def decode_resource(rom: bytes, ver: str, hdr_addr: int) -> bytes:
     return _apply_delta_pass(out) if extra_pass else out
 
 
-def decode_tileset(rom: bytes, ver: str, resource_ptr: int):
+def decode_tileset(rom: bytes, ver: str, resource_ptr: int) -> tuple[list[int], bytes]:
     """Returns (offsets, context_bytes) for a dwBgTilesetA/B resource."""
     off = resource_ptr - ROM_BASE
     size_field, tile_count = struct.unpack_from("<HH", rom, off)
@@ -89,7 +99,8 @@ def decode_tileset(rom: bytes, ver: str, resource_ptr: int):
     return offsets, context
 
 
-def decode_layer(rom: bytes, ver: str, entry_addr: int, layer: int):
+def decode_layer(rom: bytes, ver: str, entry_addr: int, layer: int
+                 ) -> tuple[tuple[int, ...], int, int, bytes, bytes]:
     """Returns (block_map, W_blocks, H_blocks, tile_id_array, pal_array)."""
     off = entry_addr - ROM_BASE + layer * 0x10
     block_ptr, extra_ptr = struct.unpack_from("<II", rom, off)
@@ -105,26 +116,25 @@ def decode_layer(rom: bytes, ver: str, entry_addr: int, layer: int):
     return block_map, W_blocks, H_blocks, tile_id_array, pal_array
 
 
-def bgr555_to_rgb(v: int):
+def bgr555_to_rgb(v: int) -> tuple[int, int, int]:
     r = (v & 0x1F) * 255 // 31
     g = ((v >> 5) & 0x1F) * 255 // 31
     b = ((v >> 10) & 0x1F) * 255 // 31
     return (r, g, b)
 
 
-def render_layer(rom: bytes, ver: str, entry_addr: int, layer: int, offsetsA, contextA, decoderA, offsetsB, contextB, decoderB, palette_raw):
+def render_layer(rom: bytes, ver: str, entry_addr: int, layer: int,
+                 tilesets: tuple[Tileset, Tileset], palettes: PaletteBanks) -> Image.Image:
     block_map, W_blocks, H_blocks, tile_id_array, pal_array = decode_layer(rom, ver, entry_addr, layer)
-    tileset = "A" if layer in (0, 3) else "B"
-    offsets, context, decoder = (offsetsA, contextA, decoderA) if tileset == "A" else (offsetsB, contextB, decoderB)
-
-    palettes = [[bgr555_to_rgb(palette_raw[bank * 16 + i]) for i in range(16)] for bank in range(16)]
+    offsets, context, tile_cache, paint_cache = tilesets[0 if layer in (0, 3) else 1]
 
     # RGBA: palette index 0 is the GBA "see-through" convention for BG
     # tiles (regardless of what color is stored there) -- transparent,
     # not opaque, so lower layers/backdrop show through.
     W_tiles, H_tiles = W_blocks * 4, H_blocks * 4
-    img = Image.new("RGBA", (W_tiles * 8, H_tiles * 8), (0, 0, 0, 0))
-    tile_cache = {}
+    width, height = W_tiles * 8, H_tiles * 8
+    rgba = bytearray(width * height * 4)
+    row_stride = width * 4
 
     for ty in range(H_tiles):
         blockY, subY = divmod(ty, 4)
@@ -134,27 +144,34 @@ def render_layer(rom: bytes, ver: str, entry_addr: int, layer: int, offsetsA, co
             sub_index = subY * 4 + subX
             tile_id = struct.unpack_from("<H", tile_id_array, (blk * 16 + sub_index) * 2)[0]
             pal_byte = pal_array[blk * 16 + sub_index]
-            hflip, vflip, bank = pal_byte & 1, (pal_byte >> 1) & 1, (pal_byte >> 2) & 0xF
+            key = tile_id, pal_byte & 0x3F
+            rows = paint_cache.get(key)
+            if rows is None:
+                tb = tile_cache.get(tile_id)
+                if tb is None:
+                    tb = decode_bgtile(rom, offsets[tile_id], context)
+                    tile_cache[tile_id] = tb
+                hflip, vflip, bank = pal_byte & 1, (pal_byte >> 1) & 1, (pal_byte >> 2) & 0xF
+                pal = palettes[bank]
+                tile_rgba = bytearray(8 * 8 * 4)
+                for y in range(8):
+                    dest_y = 7 - y if vflip else y
+                    for pair in range(4):
+                        value = tb[y * 4 + pair]
+                        x = pair * 2
+                        for source_x, color in ((x, value & 0xF), (x + 1, value >> 4)):
+                            if color:
+                                dest_x = 7 - source_x if hflip else source_x
+                                dest = (dest_y * 8 + dest_x) * 4
+                                tile_rgba[dest:dest + 4] = pal[color]
+                rows = tuple(bytes(tile_rgba[y * 32:y * 32 + 32]) for y in range(8))
+                paint_cache[key] = rows
 
-            if tile_id not in tile_cache:
-                tile_cache[tile_id] = decoder.decode(offsets[tile_id], context)
-            tb = tile_cache[tile_id]
-            pal = palettes[bank]
-            px, py = tx * 8, ty * 8
-            idxb = 0
-            for y in range(8):
-                for xp in range(0, 8, 2):
-                    byte = tb[idxb]
-                    idxb += 1
-                    lo, hi = byte & 0xF, (byte >> 4) & 0xF
-                    px0 = xp if not hflip else 7 - xp
-                    px1 = xp + 1 if not hflip else 6 - xp
-                    py_ = y if not vflip else 7 - y
-                    if lo:
-                        img.putpixel((px + px0, py + py_), (*pal[lo], 255))
-                    if hi:
-                        img.putpixel((px + px1, py + py_), (*pal[hi], 255))
-    return img
+            dest = ty * 8 * row_stride + tx * 8 * 4
+            for row in rows:
+                rgba[dest:dest + 32] = row
+                dest += row_stride
+    return Image.frombytes("RGBA", (width, height), rgba)
 
 
 # Stacking order bottom-to-top, per the user-confirmed hardware mapping
@@ -164,7 +181,7 @@ def render_layer(rom: bytes, ver: str, entry_addr: int, layer: int, offsetsA, co
 MERGE_ORDER = [0, 2, 1, 3]
 
 
-def dump_room(rom: bytes, ver: str, room_index: int, name: str, out_dir: Path):
+def dump_room(rom: bytes, ver: str, room_index: int, name: str, out_dir: Path) -> None:
     """out_dir is extracted/graphics/rooms; per-layer PNGs go in its
     layers/ subdirectory, the merged composite directly in out_dir."""
     entry_addr = TABLE_BASE[ver] + room_index * STRIDE
@@ -175,18 +192,18 @@ def dump_room(rom: bytes, ver: str, room_index: int, name: str, out_dir: Path):
     offsetsB, contextB = decode_tileset(rom, ver, tileset_b_ptr)
     palette_ptr = struct.unpack_from("<I", rom, off + 0x58)[0]
     palette_raw = read_palette(rom, palette_ptr)
-
-    # One Unicorn instance per tileset, reused across every tile in every
-    # layer -- re-mapping/re-writing the ~16MB ROM per tile (the original
-    # approach) made whole-room extraction extremely slow for no benefit.
-    decoderA = BgTileDecoder(rom, CODEC_ADDR[ver])
-    decoderB = BgTileDecoder(rom, CODEC_ADDR[ver])
+    palettes = [[bytes((*bgr555_to_rgb(palette_raw[bank * 16 + i]), 255)) for i in range(16)]
+                for bank in range(16)]
+    # Each tileset is used by two layers. Share decoded tiles and painted
+    # tile variants between them instead of repeating those conversions.
+    tilesets: tuple[Tileset, Tileset] = ((offsetsA, contextA, {}, {}),
+                                        (offsetsB, contextB, {}, {}))
 
     layers_dir = out_dir / "layers"
     layers_dir.mkdir(parents=True, exist_ok=True)
-    layer_imgs = {}
+    layer_imgs: dict[int, Image.Image] = {}
     for layer in range(4):
-        img = render_layer(rom, ver, entry_addr, layer, offsetsA, contextA, decoderA, offsetsB, contextB, decoderB, palette_raw)
+        img = render_layer(rom, ver, entry_addr, layer, tilesets, palettes)
         layer_imgs[layer] = img
         out = img.resize((img.width * 2, img.height * 2), Image.NEAREST)
         out.save(layers_dir / f"bg_{name}_layer{layer}.png")
@@ -205,6 +222,22 @@ def sanitize(name: str, idx: int) -> str:
     -- keep filenames consistent across subsystems."""
     s = re.sub(r"[^A-Za-z0-9]+", "_", name).strip("_")
     return f"{idx:02d}_{s or 'room'}"
+
+
+def _init_worker(rom: bytes) -> None:
+    global _worker_rom
+    _worker_rom = rom
+
+
+def _dump_room_task(task: RoomTask) -> tuple[int, str | None]:
+    ver, idx, name, out_dir = task
+    try:
+        if _worker_rom is None:
+            raise RuntimeError("room worker not initialized")
+        dump_room(_worker_rom, ver, idx, name, out_dir)
+        return idx, None
+    except Exception as exc:
+        return idx, str(exc)
 
 
 def main() -> None:
@@ -228,16 +261,18 @@ def main() -> None:
     out_dir = Path("extracted/graphics/rooms")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ok, failed = 0, []
-    for idx in range(ROOM_COUNT):
-        name = sanitize(room_names[idx], idx)
-        try:
-            dump_room(rom, ver, idx, name, out_dir)
-        except Exception as e:
-            print(f"[{idx:02d}] FAILED: {e}", file=sys.stderr)
-            failed.append((idx, str(e)))
-            continue
-        ok += 1
+    tasks = [(ver, idx, sanitize(room_names[idx], idx), out_dir) for idx in range(ROOM_COUNT)]
+    workers = min(16, os.cpu_count() or 1)
+    # Fork shares the ROM's pages between workers on platforms that support
+    # it. Other platforms pass one copy to each worker at initialization.
+    context = get_context("fork") if "fork" in get_all_start_methods() else None
+    with ProcessPoolExecutor(max_workers=workers, mp_context=context,
+                             initializer=_init_worker, initargs=(rom,)) as pool:
+        results = list(pool.map(_dump_room_task, tasks))
+    failed = [(idx, err) for idx, err in results if err is not None]
+    ok = ROOM_COUNT - len(failed)
+    for idx, err in failed:
+        print(f"[{idx:02d}] FAILED: {err}", file=sys.stderr)
     print(f"{ok}/{ROOM_COUNT} rendered, {len(failed)} failed -> {out_dir}/", file=sys.stderr)
     for idx, err in failed:
         print(f"  room {idx}: {err}", file=sys.stderr)

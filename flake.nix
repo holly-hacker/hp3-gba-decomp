@@ -11,12 +11,10 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        # unicorn: CPU emulator, used by tools/graphics/decode_gamma_lz.py to run the
-        # game's own ARM-mode decompressor against real ROM bytes instead of
-        # a hand-reimplementation -- see docs/formats/graphics.md.
         # pillow: writes the extracted PNGs in tools/items/extract_item_icons.py.
+        # numpy: renders collision maps in tools/collision/dump_collision.py.
         # toml: decomp-permuter's settings/weights files below.
-        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.unicorn ps.pillow ps.toml ]);
+        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.numpy ps.pillow ps.toml ]);
 
         # pret's matching GBA disassembler. Pinned to the last upstream
         # commit (inactive since 2020-01). Two heap bugs in disasm.c crash

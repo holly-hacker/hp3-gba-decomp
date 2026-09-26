@@ -42,7 +42,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
-from decode_lz_rle import decode_lz_rle, CODEC_ADDR, CODEC_LEN  # noqa: E402
+from decode_lz_rle import decode_lz_rle  # noqa: E402
 
 ROM_BASE = 0x08000000
 TABLE_BASE = {"us": 0x0804C61C}
@@ -117,7 +117,7 @@ def read_cells(rom: bytes, ptr2: int, frame: int = 0):
     return cells, rel_tile
 
 
-def extract_one(rom: bytes, ptr1: int, ptr2: int, ptr3: int, codec_addr: int):
+def extract_one(rom: bytes, ptr1: int, ptr2: int, ptr3: int):
     hdr = u32(rom, ptr1)
     if (hdr & 0xFF) >> 4 != 7:
         raise ValueError(f"ptr1 {ptr1:#x} header nibble != 7 (DecompressLzRle)")
@@ -127,7 +127,9 @@ def extract_one(rom: bytes, ptr1: int, ptr2: int, ptr3: int, codec_addr: int):
     if not cells:
         raise ValueError("no valid cells")
 
-    tiledata = decode_lz_rle(rom, ptr1 + 4, codec_addr)[:decl_size]
+    tiledata = decode_lz_rle(rom, ptr1 + 4)
+    if len(tiledata) != decl_size:
+        raise ValueError(f"ptr1 {ptr1:#x}: decoded {len(tiledata)} bytes, expected {decl_size}")
     if total_tiles_needed * 64 > len(tiledata):
         raise ValueError(f"cells need {total_tiles_needed} tiles but only "
                           f"{len(tiledata) // 64} decoded")
@@ -164,7 +166,6 @@ def main() -> None:
         rom = f.read()
 
     table_base = TABLE_BASE[ver]
-    codec_addr = CODEC_ADDR[ver]
 
     ok, failed = 0, 0
     for i in range(RECORD_COUNT):
@@ -173,7 +174,7 @@ def main() -> None:
         try:
             if zero != 0 or not all(ROM_BASE <= p < 0x0A000000 for p in (ptr1, ptr2, ptr3)):
                 raise ValueError("bad pointers")
-            img = extract_one(rom, ptr1, ptr2, ptr3, codec_addr)
+            img = extract_one(rom, ptr1, ptr2, ptr3)
             img.save(out_dir / f"portrait_{i:02d}.png")
             ok += 1
         except Exception as e:  # noqa: BLE001 -- report and keep going

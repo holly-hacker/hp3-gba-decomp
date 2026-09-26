@@ -9,9 +9,10 @@ wand cursor) -- ROM source, decompression codec, tile data, and palette
 all verified against live game memory, including two independent
 methods (live memory read and ROM decode) landing on byte-identical
 results. **PROVEN** for the `DecompressGammaLz` codec's decode mechanism
-(`tools/graphics/decode_gamma_lz.py`) and now also the `DecompressLzRle` codec
-(`tools/graphics/decode_lz_rle.py`), both executed via Unicorn against real ROM
-code rather than hand-ported. **PROVEN** that three other real palettes
+(`tools/graphics/decode_gamma_lz.py`) and the `DecompressLzRle` codec
+(`tools/graphics/decode_lz_rle.py`), both decoded in Python and checked
+byte-for-byte against the ROM implementations on real resources.
+**PROVEN** that three other real palettes
 (`0x08A38108`, `0x08A38FE0`, `0x080BD344`) are genuine final color data
 for their objects, traced through a deferred per-frame queue to the
 vblank DMA that writes real hardware OBJ palette RAM. **PROVEN** that
@@ -32,7 +33,9 @@ BG palette (level-table `+0x58`, raw uncompressed, no codec) are all
 statically ROM-derived and wired into `tools/graphics/dump_bg_tiles.py`,
 which renders all 55 rooms' 4 BG layers (`extracted/graphics/rooms/layers/`)
 plus an alpha-composited merged view per room (`extracted/graphics/rooms/`,
-naming matches `dump_collision.py`'s convention) in ~1 minute total. Index
+naming matches `dump_collision.py`'s convention). Its Python tile decoder
+was byte-compared against the ARM codec for all 234,979 tiles in the 110
+tilesets reachable from the room and Time-Turner tables. Index
 0 within any bank is transparent (GBA convention, not an opaque color);
 merge stacking order is level-table layer `0,2,1,3` bottom-to-top, not
 literal index order (see "On-demand per-tile BG streaming" for why).
@@ -212,9 +215,9 @@ layout is untested.
 |---|---|---|---|
 | BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python) |
 | `DecompressHuffTree` | Thumb, ROM | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `sub_08024DC8` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (STRUCTURAL MATCH, disassembly only; no resource seen) | none |
-| `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py` (Unicorn) |
-| `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | proprietary (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Unicorn) |
-| `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Unicorn) |
+| `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py` (Python) |
+| `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | proprietary (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Python) |
+| `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Python) |
 
 `InstallIwramDecompressCodecs` (`0x0801DD40`) copies `DecompressLzRle` and
 `DecompressGammaLz` with `CpuSet`; `InstallBgTileCodec` (`0x080250B8`)
@@ -289,17 +292,12 @@ only decoding the payload settles it.
 
 ### The `DecompressGammaLz` codec, decoded (PROVEN)
 
-Decoded by executing the *real* ARM-mode ROM bytes (`0x080005EC`, 828
-bytes, the exact code the game copies into IWRAM at runtime -- see the
-dispatcher section above) in the Unicorn CPU emulator, rather than
-hand-reimplementing the disassembly. This guarantees exact fidelity to
-the actual algorithm without risking a subtly-wrong-but-plausible manual
-port. Verified against 7 real level-table (`0x0806BE38` entry 0)
-resource pointers (`+0x00/0x04/0x10/0x14/0x20/0x24/0x30/0x34/0x40/0x44`,
-all type 6): every decode produced exactly the byte count declared in
-the outer 24-bit size field (508, 6676, 508, 3748, 7636, 6052, 800, 508
-bytes) -- strong evidence the stream-termination logic is right, not an
-artificial cutoff.
+The Python decoder follows the ARM-mode ROM implementation (`0x080005EC`,
+828 bytes, copied into IWRAM at runtime; see the dispatcher section above).
+It was byte-compared against that implementation for 508 distinct type-6
+resources from the room and Time-Turner tables, including tileset offset
+tables. Every decoded length also matches the outer 24-bit size field;
+the worked example below produces 508 bytes.
 
 Algorithm, bit-level:
 
@@ -336,9 +334,8 @@ Algorithm, bit-level:
   literal byte. All emitted bytes are packed two-at-a-time into `u16`
   halfword stores via a toggling parity flag. The byte/halfword/run
   copy sub-cases in the final ~250 bytes of the codec
-  (`0x8000814`-`0x80008F8`) are now hand-verified branch-by-branch (see
-  `asm/decompress_gamma_lz.s`'s comments), not just covered indirectly by
-  the emulator-execution approach.
+  (`0x8000814`-`0x80008F8`) are documented branch-by-branch in
+  `asm/decompress_gamma_lz.s`; the Python decoder emits bytes directly.
 - **Companion post-pass** (separate functions `sub_0801DF48`/
   `sub_0801DF6C`, run by the *caller* only when `extra_pass` is set, not
   part of the codec itself): an in-place running sum over the decoded
@@ -363,12 +360,9 @@ hex/GIMP inspection of the compressed bytes won't show anything
 recognizable -- compressed streams don't look like their decoded
 content).
 
-`tools/graphics/decode_gamma_lz.py` is now checked into the repo, implementing
-exactly this (Unicorn-based execution, mirroring
-`tools/krawall/dump_krawall.py`'s CLI style). `unicorn` was added to
-`flake.nix`'s dev shell (`python3Packages.unicorn`). Verified against 4
-real level-table resource pointers, all matching declared sizes exactly
-(508, 6676, 3748, 6052 bytes). Not yet wired into `just build` or
+`tools/graphics/decode_gamma_lz.py` implements this bitstream in Python.
+It checks the decoded length against the resource header and applies the
+delta pass when requested. It is not wired into `just build` or
 `regions.<ver>.txt` -- no confirmed, curated resource identities exist
 yet to extract (see "What's NOT yet known"), so there's nothing correct
 to commit as extracted output yet; it's a research/CLI tool for now.
@@ -668,13 +662,11 @@ cycle (a fifth, unrelated destination, `0x06010100`/tile 8, is a
 different graphic loading in the same batch, not the wand).
 
 Disassembling the codec directly (`0x08006108`, 504 bytes, ARM mode)
-showed it is not a simple byte-token LZSS -- it's halfword-aligned with careful
-byte-parity tracking, structurally closer to the `DecompressGammaLz` codec than to
-a textbook LZSS. **`tools/graphics/decode_lz_rle.py`** therefore works the
-same way as `tools/graphics/decode_gamma_lz.py`: it executes the real ARM
-code via Unicorn rather than hand-porting the logic, which is what a
-codec this fiddly needs (cf. the hand-ported RLE decoder below, where a
-mid-token cutoff detail silently produced the wrong stream length).
+shows halfword-aligned stores with byte-parity tracking. The parity only
+controls write width: `tools/graphics/decode_lz_rle.py` appends the same
+bytes directly and returns the actual decoded length. Its output was
+byte-compared against the ARM implementation for 126 distinct item-icon,
+portrait, and wand-glow streams.
 
 **Verification: `0x080BCBD0` decodes to a 128-byte output that is a
 byte-for-byte exact match against all four wand tiles read live from
@@ -1038,7 +1030,7 @@ extracted region -- like the Krawall rows, not anonymous `.incbin` from
 the baserom -- packed by `tools/items/pack_item_icons.py`, which just
 copies each `.bin`'s bytes back out under a label
 (`gItemIcon<Name>Palette/Tiles/Frames`). There is no re-encode step: no
-`DecompressLzRle` codec encoder exists (only the Unicorn-executed decoder), so
+`DecompressLzRle` codec encoder exists (only a decoder), so
 packing is a literal copy-through, not a transformation -- editing
 these `.bin` files isn't meaningful, they exist so this region can be
 claimed and byte-verified rather than left as unclaimed `.incbin`.
@@ -1123,11 +1115,8 @@ through them, but the records themselves are ordinary dialog assets --
 - **Extraction**: `tools/graphics/extract_portraits.py`, a
   research tool like `dump_bg_tiles.py` above -- not wired into
   `just`/`regions.us.txt`. Extracts all 72 records to transparent-background
-  PNGs. One record (5120 decompressed bytes, the largest in the table)
-  needed `tools/graphics/decode_lz_rle.py`'s Unicorn output buffer
-  (`OUT_CAP`) raised from 4KB to 16KB -- not a data or codec issue,
-  just a limit sized for smaller resources (item icons, the wand) that
-  this table's largest portrait exceeded.
+  PNGs. The largest portrait decodes to 5120 bytes; the Python decoder
+  grows its output buffer to the stream's actual length.
 
 ## Open threads
 
@@ -1136,12 +1125,10 @@ confirmed against real gameplay across multiple rooms (see "On-demand
 per-tile BG streaming" above); OBJ tiles still lack a statically-walkable
 resource-pointer trace.
 
-1. **`DecompressBgTile` has no native decoder.** `dump_bg_tiles.py`
-   still runs the ROM code under Unicorn (all 55 rooms in about a
-   minute, confirmed against gameplay for `0x28`/`0x26`/`0x27`/`0x24`).
-   Also unresolved: the very last tile's true compressed length (the
-   offset table gives only each tile's start).
-3. **Trace `LoadObjTile`/`LoadObjTileAt`/`LoadObjTileSheet`'s
+1. **The last BG tile's compressed length is unknown.** The offset
+   table gives tile starts only. `decode_bgtile.py` decodes the requested
+   32-byte tile without needing its compressed byte length.
+2. **Trace `LoadObjTile`/`LoadObjTileAt`/`LoadObjTileSheet`'s
    (`0x080454BC`/`0x080454DC`/`0x08045588`) remaining callers.** Two
    real call chains are now closed out this way: item icons (see below)
    and the character-portrait table (`g_apPortraitTable`, see
@@ -1149,20 +1136,20 @@ resource-pointer trace.
    `resourcePtr` back to a table with named fields, not just
    dataflow. Other object types spawned outside those two tables (most
    world/battle objects) still aren't enumerated this way.
-4. **The wand's remaining pieces**: its other 3 animation frames
-   (`0x080BC9CC`, `0x080BCADC`, `0x080BCCD8` -- mechanically identical
-   to the verified `0x080BCBD0`, just not run), and its own palette
-   (bank 1), which has no located ROM source. Bank 1 is neither raw nor
+3. **The wand's palette** (bank 1) has no located ROM source. All four
+   glow-frame streams (`0x080BC9CC`, `0x080BCADC`, `0x080BCBD0`,
+   `0x080BCCD8`) decode to 128 bytes and match the ARM codec output.
+   Bank 1 is neither raw nor
    standard-BIOS-compressed, so it presumably uses `DecompressLzRle` or `DecompressGammaLz` and
    findable by a live breakpoint on whatever writes OBJ palette RAM
    `0x05000220`-`0x0500023F`, reading the source register at entry.
-5. **The spark/particle effect's remaining tiles and its palette
+4. **The spark/particle effect's remaining tiles and its palette
    pairing.** One real tile is confirmed (`0x080BCDD8`, via
    `DecompressResourceVram`'s RLE path); it is likely a multi-tile animation like
    the wand's glow. Three real palettes exist (`0x08A38108`,
    `0x08A38FE0`, `0x080BD344`); which one pairs with this effect isn't
    confirmed.
-6. **The three structural-scan candidate regions** (`0x08933000`
+5. **The three structural-scan candidate regions** (`0x08933000`
    filigree tileset, `0x0888xxxx` region, `0x08a36800` UI panels) have
    **no confirmed code reference**. A grep of `build/us/full_disasm.s`
    for PC-relative literal-pool loads of these addresses found zero hits

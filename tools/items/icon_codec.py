@@ -29,7 +29,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "graphics"))
 from decode_bios import decode_bios
-from decode_lz_rle import CODEC_ADDR, decode_lz_rle
+from decode_lz_rle import decode_lz_rle
 
 ROM_BASE = 0x08000000
 
@@ -92,10 +92,10 @@ def decode_tiles(rom: bytes, ver: str, pTileData: int, source_offset: int, decod
                               f"for type 3, got {inner_header:#010x} != {header:#010x}")
         return decode_bios(rom, header_addr + 4)[:decoded_size]
     if type_nibble == 7:
-        codec_addr = CODEC_ADDR.get(ver)
-        if codec_addr is None:
-            raise ValueError(f"DecompressLzRle codec address not confirmed for ver={ver!r}")
-        return decode_lz_rle(rom, header_addr + 4, codec_addr)[:decoded_size]
+        out = decode_lz_rle(rom, header_addr + 4)
+        if len(out) != decoded_size:
+            raise ValueError(f"{header_addr:#010x}: decoded {len(out)} bytes, expected {decoded_size}")
+        return out
     raise ValueError(f"{header_addr:#010x}: unhandled icon tile-data type nibble {type_nibble:#x}")
 
 
