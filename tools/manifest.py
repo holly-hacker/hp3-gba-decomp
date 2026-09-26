@@ -36,8 +36,9 @@ DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 # docs/formats/battle_scripts.md.
 BATTLE_SCRIPT_TABLE_DIRECTIVE = "battle-script-table"
 
-# image-bank rows name a directory containing bank.json and its ordered
-# encoded components. pack_images.py emits the assembly and C declarations.
+# image-bank rows name a directory containing bank.json and its PNG
+# sprites. pack_images.py encodes them and emits the assembly and C
+# declarations.
 IMAGE_BANK_DIRECTIVE = "image-bank"
 
 # c-file and c-file-O1 rows name a .c under src/, compiled to assembly by

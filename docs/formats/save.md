@@ -271,9 +271,9 @@ independently matches Ron's one equipped item). Trailing 2 bytes are
 always-zero padding so far (`abItemQuantitiesPadding`, omitted like
 other padding fields when zero).
 
-See [`items.md`](items.md)'s "The extraction pipeline" and "Item icons"
+See [`items.md`](items.md)'s "The table as committed C source" and "Item icons"
 sections for how `g_pItemTable` itself (not the `itemQuantities`/
-`equippedItems` save fields above) round-trips through `tools/items/`.
+`equippedItems` save fields above) and its icons are built.
 
 **Room-object state** (`roomObjectState`, packed by `PackRoomObjectStateToSaveStream`
 (`0x0802A570`), unpacked by `UnpackRoomObjectStateFromSaveStream` (`0x0802A3D4`)):

@@ -21,11 +21,10 @@ one-at-a-time via live triggering: `tools/graphics/find_object_palettes.py`
 found 14 real palettes (9 new) with zero gameplay. **PROVEN and
 extracted end-to-end for one whole tile-data-consuming resource class**:
 every real item's icon (`ItemEntry.pPalette/pTileData/pFrameData`, see "Item
-icons" below) is now statically decoded, extracted verbatim to
-`data/images/items/*.bin`, and packed into a real, byte-verified
-`regions.us.txt` region -- the first build-integrated
-(`just extract-item-icons`) image extractor in this repo, also
-rendered for viewing to `extracted/graphics/items/*.png`. **PROVEN end-to-end for
+icons" below) is now statically decoded, extracted to editable indexed
+PNGs under `data/images/items/`, and rebuilt from them into a byte-verified
+`regions.us.txt` region (`just extract-images`; see "Sprite
+images"). **PROVEN end-to-end for
 level/room BG graphics, fully static, and extracted**: the two-level
 tilemap format (block-index map + per-block tile-ID/palette data), the
 per-tile streaming codec (`DecompressBgTile`, `0x08006300`), and the
@@ -45,9 +44,8 @@ level-table layer maps to which hardware BG register. Not yet wired into
 `just`/`regions.us.txt` (currently a research tool like
 `dump_collision.py`, not build input). **PROVEN and extracted for a third resource class**: the game's dialog
 portraits (`g_apPortraitTable`, `0x0804C61C`, 72 records -- see
-"Character portraits" below), all 72 decoded and rendered
-transparent-background via `tools/graphics/extract_portraits.py`
-(54 unique encoded images are packed through an `image-bank` region).
+"Character portraits" below), whose 54 unique images are extracted to
+editable PNGs and rebuilt from them through an `image-bank` region.
 Tile data otherwise remains
 the bottleneck for "extract everything" beyond items, rooms, and
 portraits -- only 2 further non-BG tile resources are confirmed (the
@@ -214,9 +212,9 @@ layout is untested.
 
 | Codec | Where | Format | Repo decoder |
 |---|---|---|---|
-| BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python) |
+| BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python); RLE encoder `encode_bios_rle.py` |
 | `DecompressHuffTree` | Thumb, ROM | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `sub_08024DC8` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (STRUCTURAL MATCH, disassembly only; no resource seen) | none |
-| `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py` (Python) |
+| `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py`; encoder `encode_lz_rle.py` (see "Sprite images") |
 | `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | proprietary (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Python) |
 | `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Python) |
 
@@ -941,17 +939,77 @@ table gives each tile's start, not the last one's end).
 ### Image-bank build format
 
 An `image-bank <start> <end> <dir> <name>` manifest row claims one
-contiguous range. `<dir>/bank.json` has `format: 1` and an ordered
-`components` list of `{file, symbol}` entries. Files hold encoded ROM
-bytes, including any palette or frame metadata the extractor split out;
-the index contains no per-component addresses. `just pack-images` writes
-`build/<ver>/images/<name>.s` with labels and `.incbin` directives, plus
-`include/gen/<ver>/<name>.h` with C declarations and a generated-file
-notice. Packing fails if a component
-is missing, an unlisted `.bin` remains, or the total size differs from
-the manifest range. An extractor must establish the complete range and
-the byte order before adding a bank. The US item-icon and portrait banks
-use this format; room BG tiles remain outside it.
+contiguous range of sprites. `<dir>/bank.json` holds `format: 2`, the
+bank's `bpp` (4 or 8), `componentOrder` (the ROM order of each sprite's
+`palette`/`tiles`/`frames` components), and an ordered `images` list of
+`{name, offset, compression}` entries; `<dir>/<name>.png` is each sprite's
+source. The index contains no addresses: components are laid out
+back-to-back in list order. `just pack-images` rebuilds every component
+under `build/<ver>/images/<bank>/`, writes `build/<ver>/images/<bank>.s`
+with `g<Name><Component>` labels, and writes `include/gen/<ver>/<bank>.h`
+with their C declarations. Packing fails on a PNG that is not indexed,
+a pixel index or palette outside the bank's bit depth, an unlisted PNG, or
+a total size that differs from the manifest range. The US item-icon and
+portrait banks use this format; room BG tiles remain outside it.
+
+`just extract-images` (`tools/images/extract_images.py`) creates the PNGs
+and indexes from the baserom without reading any pointer table. Each
+bank's `bpp`, `componentOrder`, and name prefix are fixed in the
+extractor; it walks the manifest range from its start, taking each
+component's length from the component itself (palette `2 << bpp` bytes,
+tile resource header and stream, frame record counts). The walk must end
+exactly at the range's end, and every sprite must rebuild from its PNG
+byte for byte. Sprites are named by prefix and one-based position
+(`Item001`, `Portrait001`), the names `src/` tables reference.
+
+### Sprite images
+
+**PROVEN** as a build pipeline: the item-icon and portrait extractors
+rebuild all 133 sprites from their PNGs and require byte-identical
+palette, tile, and frame components before writing an index, and both
+banks pass the whole-ROM comparison. Each sprite is one indexed PNG plus
+two settings; `tools/images/sprite.py` derives everything else.
+
+- **PNG**: the frame's full pixel canvas, 4-bit (`bpp: 4`) or 8-bit
+  indexed. Its `PLTE` is the ROM palette in order, including entry 0's
+  stored color (usually `0x7C1F` magenta); `tRNS` marks index 0
+  transparent for viewing. Channels convert as `c5 << 3 | c5 >> 2` on
+  extraction and `c8 >> 3` on packing. Short palettes pad with black.
+- **`offset`**: the canvas's top-left pixel relative to the object's
+  anchor; it becomes the frame descriptor's `+0x6`/`+0x8` and each cell's
+  X/Y.
+- **`compression`**: `lzrle` (`DecompressResourceVram` type 7) or `rle`
+  (type 3, BIOS `RLUnComp` with the duplicated header). Item icons use
+  both with no size-based rule: every `rle` icon would be 2-5 bytes
+  smaller as `lzrle`, so it is a per-asset setting.
+
+**Cell cutting** (every ROM sprite matches): each canvas dimension, in
+tiles, splits into power-of-two strips, smallest first (7 -> 1, 2, 4;
+10 -> 2, 8). Cells are emitted row strip by row strip, column strips left
+to right. A strip intersection with no OAM shape is halved along its
+longer side (8x1 -> two 4x1, 1x8 -> two 1x4, top/left first). Each cell's
+tile offset is the running tile count at the sprite's bit depth; tile data
+is the cells' 8x8 tiles, row-major within each cell, low nibble first at
+4bpp.
+
+**Frame record**: `{width, height, 0 x4, frameCount = 1, tileBytes, 0, 0,
+frameOffset = 2}`, then the descriptor `{cellCount | flags, 0, width,
+height, 0, offsetX, offsetY}` and one 4-byte `ObjectFrameCell` per cell.
+Bits 5-7 of `bCellCount` are `0x40` on every `lzrle` sprite and `0x20` on
+every `rle` sprite (133 of 133); the packer derives them from
+`compression`. **UNCONFIRMED:** no reader of these bits has been found.
+
+**Tile streams** are the 4-byte resource header, the compressed stream,
+then zero bytes to a word boundary at least five bytes past the last
+token (the LzRle end token is the first of them).
+`tools/graphics/encode_lz_rle.py` reproduces all 122 ROM LzRle streams:
+it takes a byte run of at least 3 (up to 1089) when no back-reference is
+longer; otherwise the longest non-overlapping back-reference of at least
+3 (length <= distance, up to 33), preferring the farthest on ties within
+the 1023-byte window; it defers a copy as a literal when the run starting
+at the next byte is longer than the copy; literals group in chunks of up
+to 63. `tools/graphics/encode_bios_rle.py` reproduces all 11 RLE streams
+with runs of at least 3 and both token kinds capped at 127 bytes.
 
 ### Item icons (PROVEN, extracted)
 
@@ -967,10 +1025,11 @@ every item's `resourcePtr` is a clean literal at its own table entry, so
 this closes out "extract everything" for this one resource class
 without needing a live trace:
 
-- **`pPalette`: a 32-byte palette.** 2-byte header (unidentified, ignored)
-  + 15 BGR555 colors, exactly the `sub_08001528` convention already
-  proven above (`resource_ptr + 2` = 15 real colors; index 0 is the GBA
-  OBJ transparent color, not stored in the resource).
+- **`pPalette`: a 32-byte, 16-entry BGR555 palette.** The game uploads
+  only entries 1-15, exactly the `sub_08001528` convention already proven
+  above (`resource_ptr + 2` = 15 real colors; index 0 is the GBA OBJ
+  transparent color). Entry 0 stores a transparent-key color instead,
+  `0x7C1F` in 60 of 79 icons.
 - **`pFrameData`: a frame/layout header**, the same generic per-object
   animation-frame format `LoadObjTileSheet`/`LoadObjectAnimFrameCells` (renders the
   in-world sprite these items also spawn) read from `objStruct+0xe0`.
@@ -1005,8 +1064,8 @@ routine -- but that BIOS call needs its *own* self-contained 4-byte
 type+size header at whatever address it's given, distinct from the
 generic dispatcher header `DecompressResourceVram` already consumed at
 `pTileData + source_offset + 0`. Every type-3 icon's data has that same
-header duplicated verbatim at `+ 0x4` (`icon_codec.py` asserts this on
-every decode, since it's a real invariant of the format, not an
+header duplicated verbatim at `+ 0x4` (`tools/images/sprite.py` requires
+this on every decode, since it's a real invariant of the format, not an
 assumption), so the real token stream starts at `+ 0x8`. Skipping only
 the outer header (the correct convention for type 7, which has no such
 duplicate) is a dead end for type 3: it feeds the duplicate header's
@@ -1023,39 +1082,17 @@ Potion" and "Trevor" (both type-3, post-fix) decode to a recognizable
 potion bottle and toad respectively. All confirmed by direct visual
 inspection of the rendered PNG, matching their item names unambiguously.
 
-**Extraction and packing**: `tools/items/icon_codec.py` implements the
-decode (palette + frame-header parsing directly, tile data via
-`tools/graphics/decode_bios.py`/`tools/graphics/decode_lz_rle.py`).
-`tools/items/extract_item_icons.py` (`just extract-item-icons`, part of
-`just extract-all`) verifies all 79 real items' icon data forms one
-fully contiguous ROM span with zero gaps between items, in table order
--- confirmed by sorting every `pPalette`/`pTileData`/`pFrameData` address and
-checking each one's extent against the next, with the span's end
-independently corroborated by `FUN_08026bcc`'s own `id==0x86` literal
-(`&DAT_080ac6a0`, the next icon resource: an equip-slot placeholder
-outside this table). It then extracts each item's 3 pieces verbatim to
-`data/images/items/ItemNNN.{palette,tiles,frames}.bin` (3 separate
-files, not one concatenated blob -- the frame-header's length isn't a
-fixed format constant the way the palette's is, and nothing in the
-preceding compressed tile data declares its own compressed byte length,
-so only the filesystem boundary reliably separates them) and renders
-each to a human-viewable `extracted/graphics/items/ItemNNN.png` (gitignored,
-never build input -- see the justfile). The extractor also writes
-`data/images/items/bank.json`, an ordered list of encoded component
-filenames and symbols without per-image ROM addresses. `regions.us.txt`'s
-single `image-bank` row claims the whole span as one byte-verified region.
-The shared `tools/images/pack_images.py` emits each `.bin` under its label
-(`gItemNNNPalette/Tiles/Frames`). There is no re-encode step: no
-`DecompressLzRle` codec encoder exists (only a decoder), so
-packing is a literal copy-through, not a transformation -- editing
-these `.bin` files isn't meaningful, they exist so this region can be
-claimed and byte-verified rather than left as unclaimed `.incbin`.
-The packer generates `build/us/images/ItemIcons.s` and
-`include/gen/us/ItemIcons.h`. `src/data/items.c` includes the generated
-declarations and references those labels instead of
-literal addresses. Only the one `image-bank` row stores the bank's ROM
-range. The packer checks its final byte count against that range; within
-it, component positions follow file order and encoded size. See
+**Extent**: all 79 real items' icon data forms one fully contiguous ROM
+span with zero gaps between items, in table order -- confirmed by checking
+each `pPalette`/`pTileData`/`pFrameData` extent against the next, with the
+span's end independently corroborated by `FUN_08026bcc`'s own `id==0x86`
+literal (`&DAT_080ac6a0`, the next icon resource: an equip-slot
+placeholder outside this table). `regions.us.txt`'s `ItemIcons`
+`image-bank` row claims that span as 4-bit `ItemNNN.png` sprites in
+`palette`, `tiles`, `frames` order (see "Image-bank build format"); 11
+icons use `rle`, the rest `lzrle`. `src/data/items.c` includes the
+generated `include/gen/us/ItemIcons.h` and references the
+`gItemNNNPalette/Tiles/Frames` labels instead of literal addresses. See
 `docs/formats/items.md`.
 
 ### Character portraits (PROVEN, extracted)
@@ -1130,16 +1167,13 @@ through them, but the records themselves are ordinary dialog assets --
 - **Duplicates**: 18 of the 72 records point at only 5 distinct
   underlying images (`23=19`, `46=24`, `47=25`, `48=26`, and
   `42/44/50/51/53/62/63/64/65/66/67/69/70/71=40`).
-- **Extraction**: `tools/graphics/extract_portraits.py` renders all 72
-  table entries, including duplicates, to transparent-background PNGs.
-  The largest portrait decodes to 5120 bytes; the Python decoder grows
-  its output buffer to the stream's actual length. `just extract-portraits`
-  instead extracts the 54 unique encoded resources to
-  `data/images/portraits/` and writes an ordered `bank.json`. It verifies
-  the resources fill `0x08E6D438`-`0x08E8D630`: table pointers delimit
-  each tile and frame component, and each 512-byte palette ends at the
-  next resource. The one `image-bank` row claims
-  all 131,576 bytes. `src/data/portrait_table.c` reconstructs the 72
+- **Extraction**: the largest portrait decodes to 5120 bytes; the Python
+  decoder grows its output buffer to the stream's actual length.
+  The 54 unique resources fill `0x08E6D438`-`0x08E8D630` in first-use
+  table order: table pointers delimit each tile and frame component, and
+  each 512-byte palette ends at the next resource. The `Portraits`
+  `image-bank` row claims all 131,576 bytes as 8-bit `PortraitNNN.png`
+  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/data/portrait_table.c` reconstructs the 72
   records at `0x0804C61C`-`0x0804CA9C`, referencing generated labels so
   repeated records share their original image. Both regions are
   verified by the whole-ROM comparison; JP addresses are not yet mapped.

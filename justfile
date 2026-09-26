@@ -129,23 +129,17 @@ pack-battle-scripts ver="us":
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/images/ is gitignored (same footing as the baserom,
-# see AGENTS.md hard rule 2). US only. Also writes viewable PNGs to
-# extracted/graphics/items/ (gitignored, never build input -- see
-# docs/formats/graphics.md's "Item icons" section).
-# Bootstrap data/images/items/*.bin and extracted/graphics/items/*.png from baserom.us.gba.
-extract-item-icons:
-    python3 tools/items/extract_item_icons.py
+# see AGENTS.md hard rule 2). Walks each image-bank row of
+# regions.<ver>.txt; see docs/formats/graphics.md's "Image-bank build
+# format". Re-running overwrites local PNG edits.
+# Bootstrap data/images/ PNGs and bank.json files from the baserom.
+extract-images ver="us":
+    python3 tools/images/extract_images.py {{ver}}
 
-# One-time US extraction of the contiguous portrait resource bank. The
-# 72 table entries share 54 encoded images; local source is gitignored.
-# Bootstrap data/images/portraits/ from baserom.us.gba.
-extract-portraits:
-    python3 tools/graphics/extract_portrait_bank.py
-
-# The image-bank rows each name a directory of ordered encoded components.
-# This emits assembly under build/<ver>/images/ and matching generated
-# C declarations under include/gen/<ver>/.
-# The item bank currently copies original compressed bytes; no encoder exists.
+# The image-bank rows each name a directory of PNG sprites and bank.json.
+# This re-encodes each sprite's palette, tiles, and frame data, and emits
+# assembly under build/<ver>/images/ and matching generated C declarations
+# under include/gen/<ver>/.
 # Pack all image banks for this version.
 pack-images ver="us":
     python3 tools/images/pack_images.py {{ver}}
@@ -157,7 +151,7 @@ pack-images ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-battle-scripts extract-item-icons extract-portraits
+extract-all: extract-krawall extract-text extract-battle-scripts extract-images
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.

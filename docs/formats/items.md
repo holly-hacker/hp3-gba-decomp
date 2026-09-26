@@ -129,21 +129,20 @@ on-disk order, each with a leading `// <index>: <name>` comment for the
 `pFrameData` fields reference `extern` icon-label symbols
 (`gItemNNNPalette`/`Tiles`/`Frames`) instead of literal
 addresses; non-real entries (indices 79-131) keep literal pointer
-values. `tools/items/item_codec.py` holds the record layout and
-one-based `ItemNNN` naming rule for the icon extractor below
-(`extract_item_icons.py`), which neither reads nor writes `src/data/items.c`.
+values.
 
 ## Item icons
 
 Real items' `pPalette`/`pTileData`/`pFrameData` aren't stored as
 literal integers in `src/data/items.c` -- see [`graphics.md`](graphics.md)'s
 "Item icons" section for the format. File stems follow item-table order:
-index 0 becomes `Item001`, independent of display text. The same stem
-names the PNG under `extracted/graphics/items/`. `extract_item_icons.py`
-writes `data/images/items/bank.json` in ROM order. The shared
-`tools/images/pack_images.py` reads that index to emit assembly labels
-and a matching C header for the single `image-bank` region; it does
-not need to parse `src/data/items.c` or know item-specific formats.
+index 0 becomes `Item001`, independent of display text, and names the
+editable `data/images/items/Item001.png`. `just extract-images` writes
+the PNGs and `data/images/items/bank.json` in ROM order. The shared
+`tools/images/pack_images.py` rebuilds each icon from its PNG and emits
+assembly labels and a matching C header for the single `image-bank`
+region; it does not need to parse `src/data/items.c` or know
+item-specific formats.
 
 ## What's NOT yet known
 
