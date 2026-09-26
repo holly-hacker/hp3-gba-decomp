@@ -25,6 +25,7 @@ result-*
 # Tooling
 **/__pycache__
 .claude/worktrees
+.codex/
 
 # Ignore LGPL code for now
 asm/krawall/
@@ -35,3 +36,4 @@ compile_commands.json
 # Work in progress data/handoff notes
 wip/
 debug_source.c
+
