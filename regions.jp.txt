@@ -32,7 +32,10 @@ c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
 c-file 0x08001528 0x080015B8 src/object/spawn_object.c SpawnObject
 c-file 0x080015B8 0x080015D4 src/object/tick_active_objects.c TickActiveObjects
 c-file 0x080015D4 0x080015F8 src/object/free_all_objects.c FreeAllObjects
+c-file 0x080015F8 0x0800163C src/object/active_object_flags.c SetActiveObjectsFlags
+c-file 0x0800163C 0x08001664 src/object/object_pool_settings.c ClearObjectPoolAuxBuffer
 thumb-func 0x08001690 sub_08001690
+c-file 0x080016E8 0x0800187C src/object/object_variant_slots.c EnableObjectVariantSlots
 thumb-func 0x0800187C SetObjectAssetRecord
 thumb-func 0x080018D8 SetObjectAnimData
 thumb-func 0x08001958 SetObjectAnimFrame

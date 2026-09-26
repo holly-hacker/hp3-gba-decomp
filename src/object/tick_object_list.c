@@ -109,9 +109,9 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
             for (queueIndex = 0; queueIndex < g_dwOamQueueCount; queueIndex++) {
                 obj = g_apOamQueue[queueIndex];
                 if (obj->dwFlags & ObjectFlagExtraOamPass) {
-                    obj->bFlags_0x115 |= 0x80;
+                    obj->bDrawFlags |= ObjectDrawFlagExtraOamPass;
                     UpdateObjectOamCells(obj);
-                    obj->bFlags_0x115 &= 0x7F;
+                    obj->bDrawFlags &= ~ObjectDrawFlagExtraOamPass;
                 }
             }
         }

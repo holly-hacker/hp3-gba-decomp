@@ -69,10 +69,10 @@ fixed-size-slot pool out of the heap:
   `AllocZeroed`'d buffer; `InitObjectPool`'s only write to it. Five
   `ObjectPoolAuxRecord`s of 0x34 bytes, indexed by `Object.bObjectPoolAuxSlot`:
   `awTileAllocIds[12]` at `+8` and `abRefCounts[20]` at `+0x20`. Objects whose
-  `bFlags_0x115 & 3` is nonzero share VRAM tiles through a record;
+  `bDrawFlags & 3` is nonzero share VRAM tiles through a record;
   `ReleaseObjectOffscreenVramTiles` (matched, `src/object/`) decrements the
   refcount and calls `FreeObjectVramTileAllocation` (`0x08045514`) when it
-  reaches 0. Objects with `bFlags_0x115 & 3 == 0` free their own allocation and
+  reaches 0. Objects with `bDrawFlags & 3 == 0` free their own allocation and
   the variant slot's (when bit `0x40` is set) directly. Record fields beyond
   those two arrays are unconfirmed.
 - `g_pSortObjectsIwram`/`g_pCheckObjectCollisionsIwram` (`0x0300194C`/
@@ -87,6 +87,10 @@ fixed-size-slot pool out of the heap:
   `UpdateObjectOamCells` result was 2, drained by
   `CommitQueuedObjectTileUpdates` on vblanks that swap the OAM buffers;
   `+0x1B0` (`0x03001DB8`) is a byte enabling `TickObjectList`'s extra OAM pass.
+  Its low two bits set the OAM priority of the pass's copies, which
+  `WriteObjectOamCells` mirrors vertically and hides on alternate vblanks
+  (`SetExtraOamPassPriority`, unused). `ClearObjectPoolAuxBuffer` (unused)
+  zeroes `g_pObjectPoolAuxBuffer`.
   The queue is a struct member: `TickObjectList` (matched,
   `src/object/tick_object_list.c`) indexes it through the struct.
 - `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. Read in

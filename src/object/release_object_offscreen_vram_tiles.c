@@ -15,10 +15,10 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
     if (obj->dwFlags & ObjectFlagSkipSpriteFrameUpdate)
         return;
 
-    if (obj->bFlags_0x115 & 3) {
+    if (obj->bDrawFlags & (ObjectDrawFlagShareTiles | ObjectDrawFlagShareFrameTiles)) {
         if (obj->wVramTileAllocId != 0xFFFF) {
             auxSlot = obj->bObjectPoolAuxSlot;
-            if (obj->bFlags_0x115 & 1)
+            if (obj->bDrawFlags & ObjectDrawFlagShareTiles)
                 index = 0;
             else
                 index = obj->bAnimFrameIndex_candidate;
@@ -41,7 +41,7 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
             obj->wVramTileRow = 0;
         }
 
-        if (obj->bFlags_0x115 & 0x40) {
+        if (obj->bDrawFlags & ObjectDrawFlagVariantSlots) {
             for (i = 0; i < 1; i++) {
                 variantSlot = &obj->aVariantSlots[i];
                 if (variantSlot->wVramTileAllocId != 0xFFFF) {

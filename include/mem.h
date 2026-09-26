@@ -82,7 +82,9 @@ typedef struct ObjectPoolState {
     u8 bTileUpdateQueueCount;  // 0x08, consumed and reset by CommitQueuedObjectTileUpdates
     u8 pad_9[0x03];            // -> 0x0C
     struct Object *apTileUpdateQueue[0x69];  // 0x0C, objects whose OAM update returned 2
-    u8 bExtraOamPassEnabled_candidate;   // 0x1B0, nonzero enables TickObjectList's extra pass
+    u8 bExtraOamPassEnabled_candidate;   // 0x1B0, nonzero enables TickObjectList's extra pass;
+                                         // bits 0-1 are the OAM priority of the vertically
+                                         // mirrored, alternate-vblank copies it draws
     u8 pad_1B1[0x03];
 } ObjectPoolState;
 extern ObjectPoolState g_ObjectPoolState;

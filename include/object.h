@@ -37,6 +37,20 @@ typedef enum {
     ObjectFlagExtraOamPass             = 0x80000000, // TickObjectList's extra UpdateObjectOamCells pass
 } ObjectFlags;
 
+// Object.bDrawFlags. With neither tile-sharing bit set, the object owns
+// its VRAM tiles; otherwise they are refcounted in its object pool aux record
+// (see ReleaseObjectOffscreenVramTiles). UpdateObjectOamCells also tests bit
+// 0x20; its meaning is unconfirmed.
+typedef enum {
+    ObjectDrawFlagShareTiles      = 0x1,   // one shared allocation, refcount index 0
+    ObjectDrawFlagShareFrameTiles = 0x2,   // shared per animation frame, refcount index
+                                            // bAnimFrameIndex_candidate
+    ObjectDrawFlagPostActionFlash = 0x10,  // see docs/formats/battle_scripts.md
+    ObjectDrawFlagVariantSlots    = 0x40,  // draw from aVariantSlots, which then own their
+                                            // tile allocations (see EnableObjectVariantSlots)
+    ObjectDrawFlagExtraOamPass    = 0x80,  // set while TickObjectList's extra pass draws it
+} ObjectDrawFlags;
+
 // Signed sprite extents packed as {low s16, high s16} for each axis.
 // UpdateObjectOnscreenFlags copies both words together before unpacking them.
 typedef struct ObjectSpriteBounds {
@@ -122,15 +136,32 @@ typedef struct ObjectAssetRecord {
     u8 pad_D[3];
 } ObjectAssetRecord;
 
+// ObjectVariantSlot.bFrameFlags.
+typedef enum {
+    ObjectVariantSlotFlagBlink          = 0x1,  // entries are hidden in the second half of the
+                                                 // OAM shadow buffer, so the slot shows on
+                                                 // alternate vblanks
+    ObjectVariantSlotFlagBounds         = 0x2,  // sub_080024B0 takes the object's terrain box,
+                                                 // sprite bounds and collision boxes from slot 0
+    ObjectVariantSlotFlagPrevFrameWrap  = 0x4,  // draw the frame before bLastAnimFrameValue,
+                                                 // wrapping to the last frame
+    ObjectVariantSlotFlagPrevFrameClamp = 0x8,  // draw the frame before bLastAnimFrameValue,
+                                                 // clamping to frame 0
+} ObjectVariantSlotFlags;
+
 // One 12-byte sprite-variant slot embedded in Object: the tile allocation
 // for the slot's current variant and the variant tables it selects from.
+// While Object.bDrawFlags has ObjectDrawFlagVariantSlots, UpdateObjectOamCells
+// draws the object from its variant slots (those with non-null tables) instead of
+// pAnimTable; see src/object/object_variant_slots.c.
 // Code indexes slots by this stride, but only slot 0 exists in the
 // 0x128-byte Object and every caller loops over exactly one slot.
 typedef struct ObjectVariantSlot {
-    u8 bFrameFlags;         // 0x00, bits 0x4/0x8 select the frame before bLastAnimFrameValue
-                             // (0x4 wraps to the last frame, 0x8 clamps to 0); see
-                             // GetObjectVariantFrameSize. Bit 0x2 is tested by sub_080024B0
-    u8 pad_1[0x03];         // -> 0x04
+    u8 bFrameFlags;         // 0x00, ObjectVariantSlotFlags
+    u8 bPaletteBank;        // 0x01, OBJ palette bank written to the slot's OAM entries
+    u8 bDrawOrder;          // 0x02, UpdateObjectOamCells queues slots from 7 down to 0;
+                             // values above 7 are never drawn
+    u8 pad_3[0x01];         // -> 0x04
     u16 wVramTileRow;       // 0x04, second argument to FreeObjectVramTileAllocation
     u16 wVramTileAllocId;   // 0x06, 0xFFFF = none
     ObjectAssetRecord **pSpriteVariantTables;  // 0x08, outer table selected by
@@ -255,7 +286,7 @@ typedef struct Object {
                              // each time it hits 0; see TickObjectAnimation
     u8 bAnimFrameDelay;     // 0xD9
     u8 bAnimFrameIndex_candidate;  // 0xDA, selects the per-frame tile refcount in the object pool's
-                             // aux record when bFlags_0x115 bit 0x1 is clear; see
+                             // aux record when ObjectDrawFlagShareTiles is clear; see
                              // ReleaseObjectOffscreenVramTiles
     u8 bLastAnimFrameValue; // 0xDB, current cycling frame index for non-scripted (cursor-less)
                              // animations; see TickObjectAnimation
@@ -292,11 +323,7 @@ typedef struct Object {
                              // ExitBattle when suspending a fighter for the Folio Universitas/
                              // Help resume path
     u8 bForceOnscreen_candidate;  // 0x114, value 1 prevents visibility flags being cleared
-    u8 bFlags_0x115;        // 0x115: bits 0-1 = tile sharing mode (0 = the object owns its VRAM
-                             // tiles, nonzero = refcounted in its aux slot; bit 0x1 pins the
-                             // refcount index to 0), bit 0x10 = post-action flash (see
-                             // docs/formats/battle_scripts.md), bit 0x40 = aVariantSlots hold
-                             // their own tile allocations
+    u8 bDrawFlags;          // 0x115, ObjectDrawFlags
     u8 bObjectPoolAuxSlot;  // 0x116, index into g_pObjectPoolAuxBuffer's 0x34-byte-stride
                              // records; see ReleaseObjectOffscreenVramTiles
     u8 pad_117[0x01];       // -> 0x118

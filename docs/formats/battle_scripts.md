@@ -239,7 +239,7 @@ lookup.
 | `0xA`, `0x11`, `0x12`, `0x16`, `0x17` | `Paralyze25`, `Paralyze99`, `Paralyze80`, `ParalyzeMonster`, `ParalyzeMonsterChance` | `bStatusFlags` bit `0x10`, via `FUN_0801B430` |
 | `0xB` | `DefenseBoost` | `bStatusFlags` bit `0x20` |
 | `0xC` | `BumpMonsterDocLevel` | `g_abMonsterDocLevel_candidate` (`Informus`'s Folio Bruti write) |
-| `0xD`, `0xE` | `SetPostActionFlashFlag`, `ClearPostActionFlashFlag` | `Object+0x115` bit `0x10`; visual only |
+| `0xD`, `0xE` | `SetPostActionFlashFlag`, `ClearPostActionFlashFlag` | `Object.bDrawFlags` bit `0x10` (`ObjectDrawFlagPostActionFlash`); visual only |
 | `0x10` | `ToggleUltimateVisual` | anim-data table swap, and grants all spells at max level |
 | `0x13` | `SpellPowerBoost` | `bStatusFlags` bit `0x40` |
 | `0x14` | `CureAilments` | clears `Poisoned` and `Paralyzed` |
