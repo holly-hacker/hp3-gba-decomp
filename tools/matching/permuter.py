@@ -16,7 +16,7 @@ def setup(path):
     dest.mkdir(exist_ok=False)
     shutil.copy2(path / 'reference/target.o', dest / 'target.o')
     source = path / 'current/candidate.c'
-    _, flags, _ = profile(meta['profile_source'], agbcc_prefix())
+    _, flags, _ = profile(meta['profile_source'], agbcc_prefix(), ver=meta['version'])
     pre = run(['cpp', *flags, '-iquote', str(Path(meta['source']).parent), source], cwd=ROOT, capture_output=True, text=True).stdout
     (dest / 'base.c').write_text(pre)
     command = ['python3', '-m', 'tools.matching', 'compile-object',

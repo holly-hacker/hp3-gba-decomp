@@ -268,6 +268,7 @@ thumb-func 0x08020D74 SetTextTargetFromBgControl
 thumb-func 0x08020E04 SelectTextFont
 thumb-func 0x08020F64 DrawTextLines
 thumb-func 0x08021018 PrintTextBox
+c-file 0x080210F8 0x08021210 src/text/text_macro.c SetTextMacroString
 thumb-func 0x080215BC NoopInit
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
@@ -329,6 +330,7 @@ thumb-func 0x0802BA68 GetEncounterKindTerrainType
 thumb-func 0x0802BA78 FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BB2C PickMaxDamageMonster
 thumb-func 0x0802BE48 InstallIwramDivideRoutines
+thumb-func 0x0802BE9C iwramDivideSignedRemainder
 thumb-func 0x0802C2B0 InitHeap
 thumb-func 0x0802C348 AllocZeroed
 thumb-func 0x0802C3EC FreeBlock
@@ -504,6 +506,7 @@ thumb-func 0x08042220 sub_080421B8
 c-file 0x080422A4 0x080422F0 src/gamemode/modes/minigame/divination_tea/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
 thumb-func 0x080422F0 sub_08042288
 thumb-func 0x08042338 sub_080422D0
+c-file 0x08042428 0x080425D0 src/text/format_decimal.c FormatDecimal
 thumb-func 0x080425D0 InitDialogTextEngine
 thumb-func 0x08042624 GetDialogText
 c-file 0x08042B08 0x08042BD0 src/gamemode/modes/cutscene/clock_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene

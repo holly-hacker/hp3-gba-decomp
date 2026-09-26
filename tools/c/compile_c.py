@@ -24,8 +24,13 @@ def agbcc_prefix() -> str:
     return os.path.dirname(os.path.dirname(os.path.realpath(exe)))
 
 
-def profile(src: str, prefix: str, o1: bool = False) -> tuple[str, list[str], list[str]]:
-    """Returns (cc1, cppflags, cflags) for a source file."""
+def profile(src: str, prefix: str, o1: bool = False,
+            ver: str | None = None) -> tuple[str, list[str], list[str]]:
+    """Returns (cc1, cppflags, cflags) for a source file.
+
+    ver defines VERSION_US or VERSION_JP for game code whose source differs
+    between the two ROMs.
+    """
     inc = os.path.join(prefix, "include")
     optimization = "-O1" if o1 else "-O2"
     if src.startswith("src/libc/"):
@@ -38,7 +43,8 @@ def profile(src: str, prefix: str, o1: bool = False) -> tuple[str, list[str], li
         )
     return (
         os.path.join(prefix, "bin", "agbcc"),
-        ["-I", "include", "-I", inc, "-nostdinc", "-undef", "-std=gnu89"],
+        ["-I", "include", "-I", inc, "-nostdinc", "-undef", "-std=gnu89",
+         *([f"-DVERSION_{ver.upper()}"] if ver else [])],
         # -fno-builtin: without it, agbcc treats any declaration/definition
         # of a reserved name (memset, ...) as conflicting with its own
         # builtin prototype. Applies to every game-code file, not just the
@@ -74,9 +80,9 @@ def place_in_text(asm: str, src: str, keep_rodata: bool = False) -> str:
     return asm
 
 
-def compile_one(src: str, out: str, prefix: str, o1: bool = False,
+def compile_one(src: str, out: str, prefix: str, ver: str, o1: bool = False,
                 keep_rodata: bool = False) -> None:
-    cc1, cppflags, cflags = profile(src, prefix, o1)
+    cc1, cppflags, cflags = profile(src, prefix, o1, ver)
     pre = subprocess.run(["cpp", *cppflags, src],
                          capture_output=True, text=True)
     if pre.returncode:
@@ -116,7 +122,7 @@ def main() -> None:
 
     prefix = agbcc_prefix()
     for directive, _, _, src, name in rows:
-        compile_one(src, f"build/{ver}/c/{name}.s", prefix,
+        compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver,
                     o1=directive == "c-file-O1",
                     keep_rodata=name in separate_rodata)
     print(f"compiled {len(rows)} C file(s) for {ver}")

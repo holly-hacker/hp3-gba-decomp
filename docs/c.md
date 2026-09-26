@@ -45,6 +45,9 @@ Modern `cpp` will also accept constructs the original toolchain could not
 have -- variadic macros, `_Pragma`. Those still match, but they make the
 source something the 2003 developer could not have written.
 
+Game code is compiled with `VERSION_US` or `VERSION_JP` defined. Share one
+source between the versions and wrap only the differing code in `#ifdef`.
+
 ## Constraints that affect matching
 
 **One region per file, and a file is either all data or all code.**

@@ -11,11 +11,12 @@ def run(args, **kwargs):
     return subprocess.run([str(x) for x in args], check=True, **kwargs)
 
 
-def compile_source(source, output, profile_source, dumps=None, preprocessed=False, quote_dir=None, o1=False):
+def compile_source(source, output, profile_source, dumps=None, preprocessed=False, quote_dir=None, o1=False,
+                   version=None):
     source, output = Path(source).resolve(), Path(output).resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     output.unlink(missing_ok=True)  # A failed compile must not leave a stale candidate object.
-    cc, cppflags, flags = profile(profile_source, agbcc_prefix(), o1)
+    cc, cppflags, flags = profile(profile_source, agbcc_prefix(), o1, version)
     pre = source.read_text() if preprocessed else run(
         ['cpp', *cppflags, '-iquote', str(quote_dir or source.parent), source],
         cwd=ROOT, capture_output=True, text=True).stdout
@@ -40,7 +41,7 @@ def compile_workspace(path, source=None, dumps=None):
         shutil.copy2(source, current / 'candidate.c')
     output = compile_source(current / 'candidate.c', current / 'candidate.o',
                             meta['profile_source'], dumps, quote_dir=Path(meta['source']).parent,
-                            o1=meta.get('o1', False))
+                            o1=meta.get('o1', False), version=meta['version'])
     (current / 'compiled.json').write_text(json.dumps({
         'source_sha256': hashlib.sha256((current / 'candidate.c').read_bytes()).hexdigest(),
         'object_sha256': hashlib.sha256(output.read_bytes()).hexdigest(),

@@ -184,10 +184,11 @@ case ([`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)).
 Reads one byte at a time and branches on its value:
 
 - `byte == 0x40`: **macro prefix**. `@1`-`@4` (next byte `0x31`-`0x34`)
-  select slot `code - 0x31` of `sTextMacroTable` (`0x03003170`, four RAM
+  select slot `code - 0x31` of `sTextMacroTable` (US `0x03003170`, four RAM
   string buffers), which is drawn in place, nested macros included. Game
   text uses `@1`-`@3`. Callers fill them first with `SetTextMacroNString`
-  or `SetTextMacroNNumber` (signed decimal), `N` = 1-3.
+  or `SetTextMacroNNumber` (signed decimal via `FormatDecimal`), `N` = 1-3;
+  JP's string setters copy a two-byte glyph as a unit.
 - `byte <= 0xef`: **direct single-byte glyph code** -- looked up via
   `[0x03003110]` (a RAM pointer to a "font descriptor", see below).
 - `byte > 0xef`: **two-byte glyph code** -- combined as `(byte0<<8)|byte1`

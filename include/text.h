@@ -64,10 +64,11 @@ extern u8 *gDialogTextScratchBuf;
 extern u8 gCurrentLanguage;
 extern u8 gLocaleThousandsSep;
 extern TextRenderState gTextRenderState;
-extern const u8 *sTextMacroTable[4];
+extern u8 *sTextMacroTable[4];
 s32 DecompressDialogText(s32 stringId, u8 *outBuf, s32 maxSize);
 void InitDialogTextEngine(void);
 u8 *GetDialogText(s32 stringId);
+u8 *FormatDecimal(s32 value, u8 *pBuf);
 extern u32 GetTextLineHeight(void);
 extern void SetTextLineHeight(u32 lineHeight);
 

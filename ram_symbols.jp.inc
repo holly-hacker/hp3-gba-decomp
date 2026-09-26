@@ -149,3 +149,5 @@
 .set g_LupinPotionCutscene,          0x03003AE4  @ see ram_symbols.us.inc
 .set g_aLupinPotionBg2Scroll,        0x03003B9C
 .set g_aResourceCache,               0x03005174  @ see ram_symbols.us.inc
+.set sTextMacroTable,               0x030031D0  @ see ram_symbols.us.inc
+.set gLocaleThousandsSep,           0x03005D6D  @ see ram_symbols.us.inc

@@ -473,10 +473,7 @@ thumb-func 0x08020E34 SetTextLineHeight
 c-file 0x08020E40 0x08020E9C src/text/measure_macro_string.c MeasureMacroString
 thumb-func 0x08020F44 DrawTextLines
 c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
-thumb-func 0x08021100 SetTextMacro1String
-thumb-func 0x08021148 SetTextMacro3String
-thumb-func 0x08021184 SetTextMacro1Number
-thumb-func 0x080211AC SetTextMacro3Number
+c-file 0x080210D8 0x080211C0 src/text/text_macro.c SetTextMacroString
 thumb-func 0x080211C0 GetTextLineHeight
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
 thumb-func 0x08021560 NoopInit
@@ -601,6 +598,7 @@ thumb-func 0x0802BA1C FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BAD0 PickMaxDamageMonster
 thumb-func 0x0802BC94 GrantPartyExperience_candidate
 thumb-func 0x0802BDEC InstallIwramDivideRoutines
+thumb-func 0x0802BE40 iwramDivideSignedRemainder
 thumb-func 0x0802C254 InitHeap
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
 c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
@@ -904,6 +902,7 @@ thumb-func 0x080421B8 sub_080421B8
 c-file 0x0804223C 0x08042288 src/gamemode/modes/minigame/divination_tea/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
 thumb-func 0x08042288 sub_08042288
 thumb-func 0x080422D0 sub_080422D0
+c-file 0x080423C0 0x08042568 src/text/format_decimal.c FormatDecimal
 thumb-func 0x08042568 InitDialogTextEngine
 c-file 0x08042588 0x080425D8 src/text/set_language.c SetLanguage
 c-file 0x080425D8 0x080425E4 src/text/get_language.c GetLanguage
