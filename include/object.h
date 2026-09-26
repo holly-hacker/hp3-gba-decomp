@@ -55,6 +55,24 @@ typedef struct ObjectCollisionBox {
     u8 pad_5[3];          // -> 0x08
 } ObjectCollisionBox;
 
+// Header of an ObjectAssetRecord.pFrameData block; see docs/formats/graphics.md.
+// Each awFrameOffsets entry is a byte offset from awFrameOffsets itself to
+// that frame's ObjectFrameDesc.
+typedef struct ObjectFrameData {
+    u8 unk_0[6];
+    u16 wFrameCount;        // 0x06
+    u8 unk_8[4];            // -> 0x0C
+    u16 awFrameOffsets[1];  // 0x0C, wFrameCount entries
+} ObjectFrameData;
+
+typedef struct ObjectFrameDesc {
+    u8 bCellCount;          // 0x00, low 5 bits
+    u8 unk_1;
+    u8 bWidth;              // 0x02, pixels
+    u8 bHeight;             // 0x03, pixels
+    u16 wTileGfxOffset;     // 0x04, byte offset of this frame's tiles from pTileGfx
+} ObjectFrameDesc;
+
 // One selectable 16-byte sprite resource record. The first two pointers feed
 // SetObjectAssetRecord's tile/frame pipeline; pPalette is uploaded separately.
 typedef struct ObjectAssetRecord {
@@ -65,16 +83,19 @@ typedef struct ObjectAssetRecord {
     u8 pad_D[3];
 } ObjectAssetRecord;
 
-// One sprite-variant slot embedded in Object: the tile allocation for the
-// slot's current variant plus the selection state SetObjectSpriteVariant
-// maintains. Only slot 0 exists in the 0x128-byte Object.
+// One 12-byte sprite-variant slot embedded in Object: the tile allocation
+// for the slot's current variant and the variant tables it selects from.
+// Code indexes slots by this stride, but only slot 0 exists in the
+// 0x128-byte Object and every caller loops over exactly one slot.
 typedef struct ObjectVariantSlot {
-    u16 wVramTileRow;       // 0x00, second argument to FreeObjectVramTileAllocation
-    u16 wVramTileAllocId;   // 0x02, 0xFFFF = none
-    ObjectAssetRecord **pSpriteVariantTables;  // 0x04, outer table selected by +0x08
-    u8 bSpriteVariantTableIndex;  // 0x08
-    u8 bSpriteVariantIndex;       // 0x09
-    u8 pad_A[0x02];         // -> 0x0C
+    u8 bFrameFlags;         // 0x00, bits 0x4/0x8 select the frame before bLastAnimFrameValue
+                             // (0x4 wraps to the last frame, 0x8 clamps to 0); see
+                             // GetObjectVariantFrameSize. Bit 0x2 is tested by sub_080024B0
+    u8 pad_1[0x03];         // -> 0x04
+    u16 wVramTileRow;       // 0x04, second argument to FreeObjectVramTileAllocation
+    u16 wVramTileAllocId;   // 0x06, 0xFFFF = none
+    ObjectAssetRecord **pSpriteVariantTables;  // 0x08, outer table selected by
+                             // Object.bSpriteVariantTableIndex
 } ObjectVariantSlot;
 
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
@@ -231,8 +252,11 @@ typedef struct Object {
                              // their own tile allocations
     u8 bObjectPoolAuxSlot;  // 0x116, index into g_pObjectPoolAuxBuffer's 0x34-byte-stride
                              // records; see ReleaseObjectOffscreenVramTiles
-    u8 pad_117[0x05];       // -> 0x11C
-    ObjectVariantSlot aVariantSlots[1];  // 0x11C
+    u8 pad_117[0x01];       // -> 0x118
+    ObjectVariantSlot aVariantSlots[1];  // 0x118
+    s8 bSpriteVariantTableIndex;  // 0x124, shared by every variant slot
+    s8 bSpriteVariantIndex;       // 0x125
+    u8 pad_126[0x02];       // -> 0x128
 } Object;
 
 // wObjectType values used by room/overworld object spawners (room-tile
@@ -269,6 +293,7 @@ extern void FreeObject(Object *obj);
 extern void TickActiveObjects(void);
 extern s32 UpdateObjectOnscreenFlags(Object *obj);
 extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
+extern void GetObjectVariantFrameSize(Object *obj, u32 *dims, u8 slot);
 extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
 extern void FreeObjectVramTileAllocation(u16 allocId, u16 tileRow, u8 is8bpp);  // 0x08045514
 extern void ReleaseObjectPalette(Object *obj);  // 0x080308D8

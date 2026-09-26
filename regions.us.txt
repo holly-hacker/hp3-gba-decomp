@@ -44,6 +44,7 @@ c-file 0x08000BC0 0x08000C48 src/object/commit_queued_object_tile_updates.c Comm
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
 c-file 0x08000CD8 0x08000DA4 src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
 c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpriteVariant
+c-file 0x08000E28 0x08000EC0 src/object/get_object_variant_frame_size.c GetObjectVariantFrameSize
 c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType

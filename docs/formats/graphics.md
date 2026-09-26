@@ -1057,7 +1057,10 @@ through them, but the records themselves are ordinary dialog assets --
   descriptor, read directly -- despite `pTileGfx`'s neighboring header
   superficially inviting the same treatment, this pointer is never
   routed through either decompression dispatcher. Layout (byte offsets
-  from `pFrameData`):
+  from `pFrameData`; C types `ObjectFrameData`/`ObjectFrameDesc` in
+  `include/object.h`):
+  - `+0x6` (`u16`): frame count. `GetObjectVariantFrameSize`
+    (`0x08000E28`) wraps a frame index of -1 to `count - 1`.
   - `+0xA` (`u8`): unused in every observed record (`0`).
   - `+0xB` (`u8`): attached-part count (`0` in every observed record --
     the separate mechanism `UpdateObjectSpriteFrame`'s sibling path
@@ -1066,6 +1069,14 @@ through them, but the records themselves are ordinary dialog assets --
     0xC` to get that frame's descriptor base. Only frame 0 has been
     exercised.
   - Frame descriptor base `+0x0` (`u8`, low 5 bits): cell count.
+  - Frame descriptor base `+0x2`/`+0x3` (`u8`): frame width/height in
+    pixels. `UpdateObjectSpriteFrame` passes `width*height` to the OBJ
+    tile allocator (`0x08045450`), which divides it by 64 (4bpp) or 32
+    (8bpp, 32-byte units); every item icon's values are `32x32` or
+    `16x32`, matching their decoded sizes.
+  - Frame descriptor base `+0x4` (`u16`): byte offset of the frame's
+    tile data from `pTileGfx` (`GetObjectVariantFrameTileGfx`,
+    `0x08000EC0`, and `UpdateObjectSpriteFrame`'s `LoadObjTile` path).
   - Cell table starts at frame-descriptor-base `+ 0xA` (no attached
     parts observed, so this is `+0xA` in practice; the general formula
     adds `n_at_0xA*2 + part_count*6`). Each cell is 4 bytes
