@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Decode a "type-4" compressed resource blob using the game's own
+"""Decode a DecompressLzRle-compressed resource blob using the game's own
 decompressor -- executed via the Unicorn CPU emulator against the real
-ARM-mode ROM bytes, same approach as tools/graphics/decode_type6.py (not a
+ARM-mode ROM bytes, same approach as tools/graphics/decode_gamma_lz.py (not a
 hand-reimplementation -- the codec's halfword-aligned, parity-tracked
 copy logic is intricate enough that a hand port risks a subtle,
 plausible-looking bug; cf. the mid-token cutoff that a hand-written
 standard-BIOS RLE decoder gets wrong, in tools/graphics/decode_bios.py).
 
-Unlike type-6, this resource's outer-header convention (if any) isn't
+Unlike DecompressGammaLz, this resource's outer-header convention (if any) isn't
 independently understood -- the source address used here is exactly
 what the game's own code passes to the codec at its entry point (r0),
 captured live via an mGBA breakpoint on the codec's IWRAM entry
@@ -21,11 +21,11 @@ exactly that 128-byte boundary (everything past it in the output
 buffer is untouched scratch/zero), so the true output length is
 self-evident from the result, not assumed.
 
-Usage: decode_type4.py <ver> <hex addr>
+Usage: decode_lz_rle.py <ver> <hex addr>
   <hex addr> is the exact ROM source address the game passes in r0 at
   the codec's entry point -- e.g. 0x080bcbd0 (one of the wand glow's
   animation-frame sources). NOT a "+4 skip a header" address like
-  decode_type6.py -- no outer-header handling is done here at all.
+  decode_gamma_lz.py -- no outer-header handling is done here at all.
 Writes raw decoded bytes to stdout (fixed-size buffer, see OUT_CAP;
 trailing bytes past the codec's real output are whatever was in the
 scratch buffer, i.e. zero -- inspect the output for a plausible stop
@@ -45,13 +45,13 @@ CODEC_LEN = 504
 
 SCRATCH_BASE = 0x03000000
 STACK_ADDR = 0x03000400
-R2_SCRATCH_ADDR = 0x03000800  # &out_size -- confirmed: DecompressType4
+R2_SCRATCH_ADDR = 0x03000800  # &out_size -- confirmed: DecompressLzRle
 # stores the decoded byte count here on return (`str r3,[r8,#0]`).
 OUT_BUF_ADDR = 0x03010000
 OUT_CAP = 0x4000  # 16KB; largest known real resource is 5120 bytes
 
 
-def decode_type4(rom: bytes, src_addr: int, codec_addr: int) -> bytes:
+def decode_lz_rle(rom: bytes, src_addr: int, codec_addr: int) -> bytes:
     mu = Uc(UC_ARCH_ARM, UC_MODE_ARM)
     mu.mem_map(ROM_BASE, 0x01000000, UC_PROT_READ | UC_PROT_EXEC)
     mu.mem_write(ROM_BASE, rom)
@@ -81,7 +81,7 @@ def main() -> None:
     addr = int(addr_s, 16)
     with open(f"baserom.{ver}.gba", "rb") as f:
         rom = f.read()
-    out = decode_type4(rom, addr, CODEC_ADDR[ver])
+    out = decode_lz_rle(rom, addr, CODEC_ADDR[ver])
     sys.stdout.buffer.write(out)
 
 

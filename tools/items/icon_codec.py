@@ -17,8 +17,8 @@ from ItemEntry.pPalette/pTileData/pFrameData into SpawnObject/LoadObjTileSheet).
 - pTileData: the tile pixel data the frame record's source offset points
   into, header-prefixed like any generic resource (byte0's nibble is
   the type, byte1..3 LE the decompressed size): type 3 (BIOS RLUnComp,
-  11 of 79 real items) or type 7, which is FUN_0801de5c's *own* nibble
-  for the type-4 proprietary codec (distinct from sub_0801DD90's nibble
+  11 of 79 real items) or type 7, which is DecompressResourceVram's *own* nibble
+  for the DecompressLzRle codec (distinct from DecompressResource's nibble
   4 for the same codec -- two different dispatchers, two different
   nibble->codec mappings, same underlying codec). No other nibble
   appears among the 79 real items.
@@ -29,7 +29,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "graphics"))
 from decode_bios import decode_bios
-from decode_type4 import CODEC_ADDR, decode_type4
+from decode_lz_rle import CODEC_ADDR, decode_lz_rle
 
 ROM_BASE = 0x08000000
 
@@ -75,7 +75,7 @@ def decode_tiles(rom: bytes, ver: str, pTileData: int, source_offset: int, decod
         raise ValueError(f"{header_addr:#010x}: header declares {size} decoded bytes, "
                           f"frame record expects {decoded_size} (width*height/2)")
     if type_nibble == 3:
-        # sub_0801DE5C's case-3 branch passes header_addr+4 (past this
+        # DecompressResourceVram's case-3 branch passes header_addr+4 (past this
         # generic dispatcher header) straight into svc 0x15
         # (RLUnCompVram), which reads its OWN mandatory 4-byte
         # type+size header from wherever it's given -- so a second,
@@ -94,8 +94,8 @@ def decode_tiles(rom: bytes, ver: str, pTileData: int, source_offset: int, decod
     if type_nibble == 7:
         codec_addr = CODEC_ADDR.get(ver)
         if codec_addr is None:
-            raise ValueError(f"type-4 codec address not confirmed for ver={ver!r}")
-        return decode_type4(rom, header_addr + 4, codec_addr)[:decoded_size]
+            raise ValueError(f"DecompressLzRle codec address not confirmed for ver={ver!r}")
+        return decode_lz_rle(rom, header_addr + 4, codec_addr)[:decoded_size]
     raise ValueError(f"{header_addr:#010x}: unhandled icon tile-data type nibble {type_nibble:#x}")
 
 

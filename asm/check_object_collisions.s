@@ -159,7 +159,7 @@ CheckObjectCollisions:              @ 0x08005F10
 	bx lr
 	arm_func_end CheckObjectCollisions
 
-	@ Unexplained trailing word before the next region (DecompressType4 at
+	@ Unexplained trailing word before the next region (DecompressLzRle at
 	@ 0x08006108); identical bytes recur before SortObjectsByDepth's own
 	@ next region. Ghidra's own function-boundary analysis excludes it from
 	@ CheckObjectCollisions. Kept as raw data rather than reinterpreted as

@@ -11,7 +11,7 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        # unicorn: CPU emulator, used by tools/decode_type6.py to run the
+        # unicorn: CPU emulator, used by tools/graphics/decode_gamma_lz.py to run the
         # game's own ARM-mode decompressor against real ROM bytes instead of
         # a hand-reimplementation -- see docs/formats/graphics.md.
         # pillow: writes the extracted PNGs in tools/items/extract_item_icons.py.

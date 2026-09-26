@@ -5,7 +5,7 @@ InitializeDebugPortraitsMenu/0x0800B5A8, but the records themselves are
 the game's normal dialog portraits) as a transparent-background PNG.
 
 Each 16-byte record is {pTileGfx, pFrameData, pPalette, 0}. pTileGfx is
-type-4-compressed OBJ tile data (see tools/graphics/decode_type4.py);
+DecompressLzRle-compressed OBJ tile data (see tools/graphics/decode_lz_rle.py);
 pFrameData is an uncompressed per-object animation/frame-and-cell
 descriptor, read directly (never routed through the resource-compression
 dispatcher despite superficially looking like it could be); pPalette is
@@ -33,7 +33,7 @@ transparent index for 8bpp sprites and is rendered as alpha 0.
 Usage: extract_portraits.py <ver> <out_dir>
 Writes one <out_dir>/portrait_<NN>.png per record (RGBA, index 0 =
 transparent), skipping (with a warning on stderr) any record whose
-pointers or type-4 header don't validate.
+pointers or type-7 (DecompressLzRle) header don't validate.
 """
 import struct
 import sys
@@ -42,7 +42,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
-from decode_type4 import decode_type4, CODEC_ADDR, CODEC_LEN  # noqa: E402
+from decode_lz_rle import decode_lz_rle, CODEC_ADDR, CODEC_LEN  # noqa: E402
 
 ROM_BASE = 0x08000000
 TABLE_BASE = {"us": 0x0804C61C}
@@ -120,14 +120,14 @@ def read_cells(rom: bytes, ptr2: int, frame: int = 0):
 def extract_one(rom: bytes, ptr1: int, ptr2: int, ptr3: int, codec_addr: int):
     hdr = u32(rom, ptr1)
     if (hdr & 0xFF) >> 4 != 7:
-        raise ValueError(f"ptr1 {ptr1:#x} header nibble != 7 (type-4)")
+        raise ValueError(f"ptr1 {ptr1:#x} header nibble != 7 (DecompressLzRle)")
     decl_size = hdr >> 8
 
     cells, total_tiles_needed = read_cells(rom, ptr2)
     if not cells:
         raise ValueError("no valid cells")
 
-    tiledata = decode_type4(rom, ptr1 + 4, codec_addr)[:decl_size]
+    tiledata = decode_lz_rle(rom, ptr1 + 4, codec_addr)[:decl_size]
     if total_tiles_needed * 64 > len(tiledata):
         raise ValueError(f"cells need {total_tiles_needed} tiles but only "
                           f"{len(tiledata) // 64} decoded")

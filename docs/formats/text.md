@@ -128,15 +128,14 @@ resolved.**
 
 ### 6. Resource-decompression dispatcher call-site tracing
 
-The game's generic resource-decompression dispatcher (`sub_0801DD90` /
-`0x0801DD88`, near-twin `sub_0801DE5C`, and the four codecs it
-jump-tables into) is documented in
-[`graphics.md`](graphics.md)'s "The resource-decompression dispatcher".
+The game's resource-decompression dispatchers (`DecompressResource` and
+`DecompressResourceVram`) and their codecs are documented in
+[`graphics.md`](graphics.md)'s "The resource-decompression dispatchers".
 
-It is **not** the text path: every one of its 14 static call sites
+They are **not** the text path: every one of their 14 static call sites
 traces to the level/graphics-loading subsystem, and every resource
-decoded through it so far has been BG tilemap or sprite tile data. Real
-dialog/UI text uses a third, distinct Huffman scheme of its own -- see
+decoded through them so far has been BG tilemap or sprite tile data. Real
+dialog/UI text uses its own non-BIOS Huffman decoder -- see
 "The real dialog string table, decoded" below.
 
 Two dead ends worth not re-walking: `sub_0804A2CC`, which looks like a
@@ -149,7 +148,7 @@ Huffman path (type 2) is ruled out for text content by approach 2 above.
 **Open door, not closed**: a text-loading caller could still exist
 elsewhere in the ~1.1M-line disassembly, reaching either proprietary
 IWRAM codec (or the BIOS Huffman path) through a call site the
-`bl sub_0801DD90` / `bl sub_0801DE5C` grep didn't catch (e.g. a
+`bl DecompressResource` / `bl DecompressResourceVram` grep didn't catch (e.g. a
 dedicated text-specific wrapper never routed through this dispatcher at
 all).
 
@@ -547,7 +546,7 @@ this ROM's actual content.
   it, since that tool reads raw ROM bytes directly rather than going
   through `text_codec.py`'s `CHARMAP` -- `data/text/*.json` (via
   `tools/text/extract_text.py`) is where real characters show up.
-- Whether the type-4/type-6 custom IWRAM codecs (see approach 6 above)
+- Whether the custom IWRAM codecs (`DecompressLzRle`/`DecompressGammaLz`) (see approach 6 above)
   are used anywhere outside the level-loading dispatcher's 14 known call
   sites remains unconfirmed either way -- moot for text specifically,
   since the real text codec is a third, distinct Huffman-style scheme,

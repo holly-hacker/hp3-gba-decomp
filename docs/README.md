@@ -79,7 +79,7 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   the 24-byte monster stat record, per-spell effectiveness, and the
   bestiary grid. Table lives as committed C in `src/data/monsters.c`.
 - [`formats/graphics.md`](formats/graphics.md) — the generic
-  resource-decompression dispatcher and its four codecs, the room
+  resource-decompression dispatchers and codec inventory, the room
   resource table, OBJ palette and tile loading. No pipeline yet.
 - [`formats/items.md`](formats/items.md) — `g_pItemTable`, the item
   record layout, equipment stats, per-character equip eligibility, and

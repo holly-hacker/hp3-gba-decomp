@@ -14,8 +14,8 @@
 @ r5==1. Every token's tail flushes or re-arms this pair, hence each
 @ copy/fill/literal case below has a fast (aligned) and slow (repacking)
 @ loop. r7 is the destination start, for the final size = r0-r7.
-	arm_func_start DecompressType4
-DecompressType4:              @ 0x08006108
+	arm_func_start DecompressLzRle
+DecompressLzRle:              @ 0x08006108
 	push {r4, r5, r6, r7, r8, lr}
 	mov r6, r0                @ r6 = source cursor, r0 = destination cursor
 	mov r0, r1
@@ -174,4 +174,4 @@ DecompressType4:              @ 0x08006108
 	str r3, [r8]
 	pop {r4, r5, r6, r7, r8, lr}
 	bx lr
-	arm_func_end DecompressType4
+	arm_func_end DecompressLzRle

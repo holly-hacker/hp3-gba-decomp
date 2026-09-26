@@ -34,10 +34,10 @@
 .set g_dwCollisionQueueCount, 0x03001948
 
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md) ---
-.set g_pDecompressType4Entry, 0x030028CC
-.set g_pDecompressType6Entry, 0x030028D0
-.set g_pDecompressType4Iwram, 0x030028D4
-.set g_pDecompressType6Iwram, 0x03002ACC
+.set g_pDecompressLzRleEntry, 0x030028CC
+.set g_pDecompressGammaLzEntry, 0x030028D0
+.set g_pDecompressLzRleIwram, 0x030028D4
+.set g_pDecompressGammaLzIwram, 0x03002ACC
 
 @ --- OBJ tile allocator ---
 .set g_pFindFreeObjTileRunIwram, 0x030060D8

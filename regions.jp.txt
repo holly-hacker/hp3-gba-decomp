@@ -13,7 +13,7 @@ asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuot
 asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
 asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
-asm-file 0x080005EC 0x08000918 asm/decompress_type6.s      DecompressType6
+asm-file 0x080005EC 0x08000918 asm/decompress_gamma_lz.s      DecompressGammaLz
 
 c-file 0x08000918 0x08000BC0 src/object/tick_object_list.c TickObjectList
 c-file 0x08000BC0 0x08000C48 src/object/commit_queued_object_tile_updates.c CommitQueuedObjectTileUpdates
@@ -93,7 +93,7 @@ thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
 thumb-func 0x08005D88 sub_08005D88
 thumb-func 0x08005DC0 sub_08005DC0
 asm-file 0x08005F10 0x08006108 asm/check_object_collisions.s  CheckObjectCollisions
-asm-file 0x08006108 0x08006300 asm/decompress_type4.s      DecompressType4
+asm-file 0x08006108 0x08006300 asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 0x080063B4 asm/decompress_bg_tile.s       DecompressBgTile
 asm-file 0x080063B4 0x08006440 asm/find_free_obj_tile_run.s    FindFreeObjTileRun
 asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth

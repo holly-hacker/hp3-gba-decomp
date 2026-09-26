@@ -16,8 +16,8 @@
 @ reused as a raw field width elsewhere. r2 packs
 @ byte3:byte2:(8-byte3) into bits[23:16]:[15:8]:[7:0] once, so callers
 @ pull either width out with a plain mask/shift.
-	arm_func_start DecompressType6
-DecompressType6:                     @ 0x080005EC
+	arm_func_start DecompressGammaLz
+DecompressGammaLz:                     @ 0x080005EC
 	push {r1, r2, r4, r5, r6, r7, r8, sb, sl, fp, ip, lr}
 	sub sp, sp, #0x24                @ scratch: sp+0 unused pad, sp+4.. holds the copied length table
 	ldr fp, [r0], #4                 @ fp = codec header word (LE byte0..3)
@@ -35,7 +35,7 @@ DecompressType6:                     @ 0x080005EC
 	subs r3, r3, #4
 	bne .Ltable_copy_loop
 	mov r8, #-0x80000000             @ bit-buffer sentinel: top bit set forces a refill on the first GetBit
-	mov ip, #0                       @ ip = output halfword-pack parity flag, like DecompressType4's r5
+	mov ip, #0                       @ ip = output halfword-pack parity flag, like DecompressLzRle's r5
 	b .Ldispatch
 
 @ --- bitstream primitives (all operate on r8 = 32-bit MSB-first shift
@@ -141,7 +141,7 @@ ReadByteSlow:                        @ 0x080006E0
 @
 @ All emitted bytes go out via `strh` in pairs, packed through `ip`
 @ (0/1 parity) and `sl` (pending halfword) -- same mechanism as
-@ DecompressType4's parity pair, different register assignment.
+@ DecompressLzRle's parity pair, different register assignment.
 .Lliteral_via_swap:                  @ 0x08000700
 	lsrs sb, r2, #0x10
 	blne ReadBits
@@ -295,4 +295,4 @@ ReadByteSlow:                        @ 0x080006E0
 	subs r1, r1, r0                  @ decompressed size = dst cursor - dst start (r0 is the original r1)
 	str r1, [r2]
 	bx lr
-	arm_func_end DecompressType6
+	arm_func_end DecompressGammaLz

@@ -2,10 +2,10 @@
 """Decode a GBA BIOS-compressed resource blob (LZ77UnComp, HuffUnComp, or
 RLUnComp) directly from a ROM address, matching the well-documented public
 BIOS compression formats (GBATEK) that the game's generic resource
-dispatcher (sub_0801DD90/sub_0801DE5C, see docs/formats/text.md sec 6 and
+dispatcher (DecompressResource/DecompressResourceVram, see docs/formats/text.md sec 6 and
 docs/formats/graphics.md) calls via svc 0x11/0x13/0x14 for types 1/2/3.
 
-Unlike tools/graphics/decode_type6.py (a proprietary, undocumented codec that had to
+Unlike tools/graphics/decode_gamma_lz.py (a proprietary, undocumented codec that had to
 be reverse-engineered), these are standard formats -- reimplemented
 directly from the public spec, not by executing ROM code.
 

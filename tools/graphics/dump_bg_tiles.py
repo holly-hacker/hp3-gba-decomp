@@ -30,7 +30,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from decode_bgtile import BgTileDecoder, build_tile_offsets, CODEC_ADDR
-from decode_type6 import decode_type6, CODEC_ADDR as TYPE6_CODEC_ADDR, _apply_delta_pass
+from decode_gamma_lz import decode_gamma_lz, CODEC_ADDR as GAMMA_LZ_CODEC_ADDR, _apply_delta_pass
 from decode_bios import DECODERS
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "text"))
@@ -53,13 +53,13 @@ def read_palette(rom: bytes, palette_ptr: int) -> list[int]:
 
 def decode_resource(rom: bytes, ver: str, hdr_addr: int) -> bytes:
     """Generic dispatcher-header decode: hdr_addr is the resource's own
-    4-byte type/size header (sub_0801DD90's convention).
+    4-byte type/size header (DecompressResource's convention).
 
     The dispatcher applies a delta-decode post-pass (sub_0801DF48,
     in-place running sum over the output as u16[]) whenever byte0 bit 7
-    is set -- confirmed from sub_0801DD90's real disassembly to run
+    is set -- confirmed from DecompressResource's real disassembly to run
     unconditionally after every type (0-8), not just type 6. Type 6 gets
-    this from decode_type6() internally; every other type needs it
+    this from decode_gamma_lz() internally; every other type needs it
     applied here, since decode_bios.py's raw decoders have no dispatcher
     context to check the bit against."""
     off = hdr_addr - ROM_BASE
@@ -69,7 +69,7 @@ def decode_resource(rom: bytes, ver: str, hdr_addr: int) -> bytes:
     if type_nibble == 0:
         out = rom[off + 4: off + 4 + size]
     elif type_nibble == 6:
-        return decode_type6(rom, hdr_addr, TYPE6_CODEC_ADDR[ver])  # applies its own extra_pass
+        return decode_gamma_lz(rom, hdr_addr, GAMMA_LZ_CODEC_ADDR[ver])  # applies its own extra_pass
     else:
         decoder = DECODERS.get(type_nibble)
         if decoder is None:

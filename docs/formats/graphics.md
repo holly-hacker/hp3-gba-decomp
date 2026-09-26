@@ -8,9 +8,9 @@ Status: **PROVEN** end-to-end for a complete real sprite (the main-menu
 wand cursor) -- ROM source, decompression codec, tile data, and palette
 all verified against live game memory, including two independent
 methods (live memory read and ROM decode) landing on byte-identical
-results. **PROVEN** for the type-6 codec's decode mechanism
-(`tools/graphics/decode_type6.py`) and now also the type-4 codec
-(`tools/graphics/decode_type4.py`), both executed via Unicorn against real ROM
+results. **PROVEN** for the `DecompressGammaLz` codec's decode mechanism
+(`tools/graphics/decode_gamma_lz.py`) and now also the `DecompressLzRle` codec
+(`tools/graphics/decode_lz_rle.py`), both executed via Unicorn against real ROM
 code rather than hand-ported. **PROVEN** that three other real palettes
 (`0x08A38108`, `0x08A38FE0`, `0x080BD344`) are genuine final color data
 for their objects, traced through a deferred per-frame queue to the
@@ -72,7 +72,7 @@ before it at **`0x08880000`-`0x08933000`**.
 evidence (below), not on recognizing specific subject matter. All
 rendering done so far uses a synthetic grayscale ramp palette (palette
 index x17 as gray value) because the real palette hasn't been decoded
-yet (blocked on the type-6 codec, see below). Under a fake palette,
+yet (blocked on the `DecompressGammaLz` codec, see below). Under a fake palette,
 smooth gradients and shapes are easy to over-interpret as specific
 real-world content (sky, hills, etc.). A grayscale ramp with no
 ground-truth colors cannot support identifying subject matter at all --
@@ -156,59 +156,75 @@ button/panel/inventory-slot art. STRUCTURAL MATCH -- not yet PROVEN
 (no palette, and not yet cross-referenced against any code that
 consumes it).
 
-Note this region sits outside the level-table/type-6-codec call graph
+Note this region sits outside the level-table/`DecompressGammaLz` call graph
 traced so far -- whether it's compressed at all (and if so, with which
 scheme) hasn't been determined; it was found by scanning raw ROM bytes
 directly, not via a decompressed buffer.
 
-### The resource-decompression dispatcher
+### The resource-decompression dispatchers
 
-**PROVEN.** `sub_0801DD90` (`0x0801DD88`, with a near-twin
-`sub_0801DE5C`) is the game's one generic resource-decompression entry
-point, used for BG/level graphics, OBJ sprite tiles, and anything else
-stored compressed. It reads a 4-byte wrapper header off the resource and
-jump-tables on the type nibble:
+**PROVEN** from disassembly unless marked otherwise.
 
-```
-lsls r1, r0, #0x18   ; keep header byte0
-lsrs r2, r1, #0x1c   ; r2 = byte0 >> 4        (4-bit nibble)
-movs r1, #9 / rsbs r1, r1, #0   ; r1 = -9 = ~8
-ands r2, r1          ; r2 = nibble & ~8       (clears bit 3)
-```
+Compressed resources start with a 4-byte header: byte 0 bits 4-6 are
+the **type** (the jump-table index), byte 0 bit 7 requests a delta
+post-pass (`sub_0801DF48`, an in-place running sum over `u16`s, applied
+after any type), and bytes 1-3 are the decompressed size (LE 24-bit).
+So `0xE0` is type 6 with the post-pass. `GetResourceDecompressedSize`
+(`0x0801DD88`) only returns `header >> 8`, the decompressed size.
 
-The dispatch key is `(byte0 >> 4) & 0x7`, **not** the raw nibble: bit 3
-of the nibble (`byte0 & 0x80`) is a separate post-processing flag,
-checked later and routing through an extra pass via `sub_0801DF48`. So
-`0xE0` is type 6 with the extra pass set, and `0x70` is type 7, an
-intentionally-empty jump-table slot. The remaining 3 header bytes are
-the decompressed size (LE 24-bit).
+A type number means nothing on its own: two dispatchers read the same
+header shape but map types to codecs differently.
 
-| Type | Codec |
-|---|---|
-| 0 | raw `CpuSet` copy (uncompressed) |
-| 1 | `svc 0x11`, BIOS `LZ77UnCompWram` |
-| 2 | `svc 0x13`, BIOS `HuffUnComp` |
-| 3 | `svc 0x14`, BIOS `RLUnCompWram` |
-| 4 | proprietary, IWRAM-installed -- see "the type-4 codec" below |
-| 6 | proprietary, IWRAM-installed -- see "The type-6 codec, decoded" below |
+- **`DecompressResource`**: level/room resources, 11 direct `bl` call sites,
+  all in the level/graphics loaders reached via the room tables (see
+  the entry layout below).
+- **`DecompressResourceVram`** (`0x0801DE5C`): OBJ tile data, 3 call
+  sites (see "There is no missing 4th caller"), including item icons
+  and portraits.
 
-Both proprietary codecs are installed into IWRAM at runtime by
-`InstallIwramDecompressCodecs` (`0x0801DD40`, not statically reachable by `gbadisasm`'s
-function discovery -- the same invisibility issue as `kramInstall`, see
-[`../memory-map/krawall.md`](../memory-map/krawall.md)), via two
-`CpuSet` (`svc 0xB`) copies:
+| Type | `DecompressResource` | `DecompressResourceVram` |
+|---|---|---|
+| 0 | `CpuSet` copy of `hdr+4` | `CpuFastSet` copy of `hdr+4` |
+| 1 | BIOS LZ77 (WRAM), `hdr` | BIOS LZ77 (VRAM), `hdr` |
+| 2 | BIOS Huffman, `hdr` | `DecompressHuffTree`, `hdr+4` |
+| 3 | BIOS RLE (WRAM), `hdr` | BIOS RLE (VRAM), `hdr+4` |
+| 4 | `DecompressLzRle`, `hdr` | -- |
+| 5 | -- | -- |
+| 6 | `DecompressGammaLz`, `hdr+4` | `DecompressGammaLz`, `hdr+4` |
+| 7 | -- | `DecompressLzRle`, `hdr+4` |
 
-- type 4: ROM `0x08006108`, 504 bytes, to IWRAM `0x030028D4`; entry
-  pointer stashed at `0x030028CC`.
-- type 6: ROM `0x080005EC`, 828 bytes, to IWRAM `0x03002ACC`; entry
-  pointer stashed at `0x030028D0`.
+`--` slots do nothing but the delta-pass check. The second column of
+each cell is the source address passed to the codec. Where it is
+`hdr`, the dispatcher header doubles as the BIOS header; where a BIOS
+call gets `hdr+4`, the resource carries a second, duplicate header at
+`+4` (see "Item icons").
 
-The dispatcher's 14 static call sites all sit in the level/graphics
-loading subsystem, reached via a **124-byte-stride level/room table at
-ROM `0x0806BE38`** (see the entry layout below); `sub_0801DE5C`'s 3 call
-sites are OBJ tile loaders (see "There is no missing 4th caller").
-Dialog/UI text does **not** go through this dispatcher -- it has its own
-separate Huffman scheme, see [`text.md`](text.md).
+`DecompressLzRle` is type 4 in `DecompressResource` but type 7 in
+`DecompressResourceVram`; every resource decoded with it so far (wand
+glow, item icons, portraits) came through the latter as type 7.
+**UNCONFIRMED:** `DecompressResource`'s type 4 passes `hdr` rather than
+`hdr+4`; no type-4 resource on that path has been seen, so its stream
+layout is untested.
+
+#### Codec inventory
+
+| Codec | Where | Format | Repo decoder |
+|---|---|---|---|
+| BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python) |
+| `DecompressHuffTree` | Thumb, ROM | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `sub_08024DC8` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (STRUCTURAL MATCH, disassembly only; no resource seen) | none |
+| `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py` (Unicorn) |
+| `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | proprietary (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Unicorn) |
+| `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Unicorn) |
+
+`InstallIwramDecompressCodecs` (`0x0801DD40`) copies `DecompressLzRle` and
+`DecompressGammaLz` with `CpuSet`; `InstallBgTileCodec` (`0x080250B8`)
+copies `DecompressBgTile`. `InstallIwramDecompressCodecs` is not
+statically reachable by `gbadisasm`'s function discovery (same issue
+as `kramInstall`, see
+[`../memory-map/krawall.md`](../memory-map/krawall.md)).
+
+Dialog/UI text uses neither dispatcher; its Huffman scheme is in
+[`text.md`](text.md).
 
 `0x0806BE38` (`g_pTimeTurnerCutsceneRoomTable`) is a compact, purpose-
 built 2-entry table using this same `RoomTableEntry` layout, reached
@@ -222,8 +238,8 @@ evidence distinguishing the two tables.
 ### Level-table entry layout (offsets confirmed for a 124-byte entry)
 
 These offsets hold **decompressed payloads, not palettes or tilesets**.
-Decoding `+0x04` (508 bytes) and `+0x14` (3748 bytes) with the type-6
-codec (see below) -- two different entries' worth of data -- both produce
+Decoding `+0x04` (508 bytes) and `+0x14` (3748 bytes) with
+`DecompressGammaLz` (see below) -- two different entries' worth of data -- both produce
 the same recognizable shape: runs of 4 consecutive `u16` values with
 small ascending low-10-bit fields and only 2 distinct values in the high
 bits across the whole buffer. That's the canonical **GBA BG screen-entry
@@ -245,7 +261,7 @@ only decoding the payload settles it.
   the one entry inspected so far -- padding/reserved, unconfirmed as a
   general rule.
 - `+0x40/+0x44`: two more real resource pointers, same decompression
-  path and same type-6 codec; also decoded to the ascending-index/
+  path and same `DecompressGammaLz` codec; also decoded to the ascending-index/
   mostly-zero tilemap shape rather than plausible BGR555 colors. Asset
   class still not pinned down beyond "also a tilemap-shaped decode",
   which itself is a bit surprising for what were guessed to be a 5th
@@ -271,7 +287,7 @@ only decoding the payload settles it.
   somewhere else (or the palette/tileset guess mapped to the wrong
   offsets entirely; not yet determined).
 
-### The type-6 codec, decoded (PROVEN)
+### The `DecompressGammaLz` codec, decoded (PROVEN)
 
 Decoded by executing the *real* ARM-mode ROM bytes (`0x080005EC`, 828
 bytes, the exact code the game copies into IWRAM at runtime -- see the
@@ -287,7 +303,7 @@ artificial cutoff.
 
 Algorithm, bit-level:
 
-- **Outer wrapper header** (4 bytes, read by `sub_0801DD90`, not the
+- **Outer wrapper header** (4 bytes, read by `DecompressResource`, not the
   codec itself): `byte0`: `type = (byte0>>4)&7` (6 = this codec),
   `extra_pass = (byte0>>4)&8`; `byte1..3` (LE 24-bit): decompressed size.
 - **Codec's own internal header** (4 bytes, right after the outer
@@ -321,7 +337,7 @@ Algorithm, bit-level:
   halfword stores via a toggling parity flag. The byte/halfword/run
   copy sub-cases in the final ~250 bytes of the codec
   (`0x8000814`-`0x80008F8`) are now hand-verified branch-by-branch (see
-  `asm/decompress_type6.s`'s comments), not just covered indirectly by
+  `asm/decompress_gamma_lz.s`'s comments), not just covered indirectly by
   the emulator-execution approach.
 - **Companion post-pass** (separate functions `sub_0801DF48`/
   `sub_0801DF6C`, run by the *caller* only when `extra_pass` is set, not
@@ -331,26 +347,23 @@ Algorithm, bit-level:
   absolute values. This is exactly the delta-decode step needed to get
   the ascending-tile-index tilemap runs described above to make sense.
 
-**Naming note**: despite the LZ-back-reference-plus-bit-reader shape
-inviting comparison to libgba/devkitPro's `HuffUnComp`-style routines,
-this is not that. The real BIOS Huffman codec is already covered by
-dispatcher type 2 (`svc 0x13`); type 6 is a separate, proprietary
-LZ77/Elias-gamma hybrid with no known public spec or confirmed Nintendo
-SDK symbol to name it after, hence the type-number-based `DecompressType6`
-naming (matching `DecompressType4`, also proprietary -- see below).
+**Naming note**: this is not a Huffman codec (BIOS Huffman is
+dispatcher type 2, `svc 0x13`). It is a proprietary LZ77/Elias-gamma
+hybrid with no known public spec or SDK symbol, so `DecompressGammaLz`
+is named after its format.
 
 **Worked example** (a concrete resource pointer, for manual
 inspection): ROM `0x08658a6c` (level-table entry 0's `+0x00` field,
 file offset `0x658a6c` / decimal `6654572`). First 4 bytes:
 `e0 fc 01 00` -- byte0 `0xe0` decodes to type 6 with the extra-pass
 delta flag set; bytes 1-3 (`fc 01 00` LE) give a declared decompressed
-size of 508 bytes. Everything after that 4-byte header is the type-6
-compressed stream itself, consumable only via the decoder above (raw
+size of 508 bytes. Everything after that 4-byte header is the
+`DecompressGammaLz` stream itself, consumable only via the decoder above (raw
 hex/GIMP inspection of the compressed bytes won't show anything
 recognizable -- compressed streams don't look like their decoded
 content).
 
-`tools/graphics/decode_type6.py` is now checked into the repo, implementing
+`tools/graphics/decode_gamma_lz.py` is now checked into the repo, implementing
 exactly this (Unicorn-based execution, mirroring
 `tools/krawall/dump_krawall.py`'s CLI style). `unicorn` was added to
 `flake.nix`'s dev shell (`python3Packages.unicorn`). Verified against 4
@@ -529,7 +542,7 @@ warm orange/red fading to white, gold, and a repeated gray-brown).
 **Update -- the tile source is now found, live, via the same technique.**
 See the next section: not the shared-tileset hypothesis originally
 guessed here, but real per-object BIOS-compressed tile data via the
-*same* generic dispatcher (`sub_0801DE5C`) documented above, which
+*same* generic dispatcher (`DecompressResourceVram`) documented above, which
 turns out to also be exercised for
 OBJ (sprite) tiles, not only BG/level graphics as first assumed.
 
@@ -541,11 +554,11 @@ After skipping past the expected boot-time full-VRAM zero-clear (fires
 first, `old value == new value == 0`, harmless), a real hit landed with
 `LR = 0x0801DEDB`, immediately after a call to `sub_08049EB0` (the
 already-known `svc 0x15` / `RLUnCompVram` BIOS wrapper). `LR` falls
-inside **`sub_0801DE5C`** -- the same generic resource dispatcher
+inside **`DecompressResourceVram`** -- the same generic resource dispatcher
 documented above, whose case-3 branch (RLE)
 calls exactly this wrapper. A second hit shortly after, `LR =
 0x0801DEEB`, also fell inside the same function. This is a live,
-direct confirmation that `sub_0801DE5C` -- previously only traced
+direct confirmation that `DecompressResourceVram` -- previously only traced
 statically to BG/level-graphics call sites -- is *also* used for OBJ
 sprite tiles during real gameplay, not a separate, still-unfound
 mechanism.
@@ -636,13 +649,13 @@ palette (bank 1) is a new, distinct real palette: warm red/orange
 (shared with bank 2's first half) transitioning into cool teals/greens
 instead of gold. Its ROM source hasn't been located.
 
-#### Finding the ROM source: the type-4 codec, decoded
+#### Finding the ROM source: the `DecompressLzRle` codec, decoded
 
 No match for the live tile/palette bytes in the ROM raw (uncompressed)
 or in any standard BIOS format (LZ77/Huffman/RLE, scanned across the
 whole ROM) -- meaning it's compressed with one of the two proprietary
 codecs. Rather than guess further, caught it live: breakpointed the
-type-4 codec's IWRAM entry point (`0x030028D4`, installed from ROM
+`DecompressLzRle` codec's IWRAM entry point (`0x030028D4`, installed from ROM
 `0x08006108` -- see the dispatcher section above) and watched it fire
 repeatedly while the wand's glow tiles loaded. `r0` at each hit is a
 clean, uncorrupted ROM source address (unlike watching the VRAM
@@ -656,9 +669,9 @@ different graphic loading in the same batch, not the wand).
 
 Disassembling the codec directly (`0x08006108`, 504 bytes, ARM mode)
 showed it is not a simple byte-token LZSS -- it's halfword-aligned with careful
-byte-parity tracking, structurally closer to the type-6 codec than to
-a textbook LZSS. **`tools/graphics/decode_type4.py`** therefore works the
-same way as `tools/graphics/decode_type6.py`: it executes the real ARM
+byte-parity tracking, structurally closer to the `DecompressGammaLz` codec than to
+a textbook LZSS. **`tools/graphics/decode_lz_rle.py`** therefore works the
+same way as `tools/graphics/decode_gamma_lz.py`: it executes the real ARM
 code via Unicorn rather than hand-porting the logic, which is what a
 codec this fiddly needs (cf. the hand-ported RLE decoder below, where a
 mid-token cutoff detail silently produced the wrong stream length).
@@ -675,7 +688,7 @@ identical bytes.
 **`tools/graphics/decode_bios.py`** (new, checked into the repo): decodes any of
 the three standard BIOS formats (LZ77UnComp, HuffUnComp, RLUnComp) from
 a ROM address, dispatching on the header's type nibble exactly like the
-game's own dispatcher. Unlike `tools/graphics/decode_type6.py` (which had to
+game's own dispatcher. Unlike `tools/graphics/decode_gamma_lz.py` (which had to
 reverse-engineer an undocumented proprietary codec by executing real
 ROM code in an emulator), these are the public, well-documented GBA
 BIOS formats, reimplemented directly from spec -- verified against the
@@ -734,7 +747,7 @@ resources are confirmed at all (the spark `0x080BCDD8` and the wand's
 scan. Unlike the palette path, there's no confirmed single dispatcher
 argument convention to statically walk for tiles yet.
 
-**There is no missing 4th caller.** `grep -c "bl sub_0801DE5C"` against
+**There is no missing 4th caller.** `grep -c "bl DecompressResourceVram"` against
 `build/us/full_disasm.s` gives **exactly 3** static call sites, and no
 indirect/literal-pool references to its address exist anywhere else in
 the disassembly, so the wand's live-traced call necessarily went through
@@ -742,7 +755,7 @@ one of these 3. They are not all level/BG-only:
 
 - `sub_080454BC(objStruct, resourcePtr)` (`0x080454BC`): computes
   `dest = 0x06010000 + tileIndexField(objStruct)*32` and calls
-  `sub_0801DE5C(resourcePtr, dest)` -- a **generic single-resource OBJ
+  `DecompressResourceVram(resourcePtr, dest)` -- a **generic single-resource OBJ
   tile loader**, keyed off a tile-index field read from the object
   struct, not level-table data.
 - `sub_080454DC(resourcePtr, ...)` (`0x080454DC`): same shape, dest
@@ -751,7 +764,7 @@ one of these 3. They are not all level/BG-only:
   per-object sub-resource table (entries read at `objStruct[6]`'s
   struct, fields include `w:u8, h:u8` tile-dimensions and a `u16`
   source-blob offset), computing per-entry VRAM destinations
-  cumulatively and calling `sub_0801DE5C` once per entry -- i.e. a real,
+  cumulatively and calling `DecompressResourceVram` once per entry -- i.e. a real,
   generic **multi-tile sprite-sheet loader**, exactly the missing
   "many tiles per object" mechanism.
 
@@ -772,7 +785,7 @@ BG/level tile graphics -- see the next section for that.
 
 BG character tiles are decompressed **one tile at a time, on demand, as
 the room's tilemap reveals them**, through a small LRU-cached streaming
-system, independent of the `sub_0801DD90`/`sub_0801DE5C` dispatcher
+system, independent of the `DecompressResource`/`DecompressResourceVram` dispatcher
 documented above. Found via a live mGBA write watchpoint on BG character
 VRAM (`0x06000000`, length `0x8000`) during a real room load and while
 walking around -- every hit landed inside the same function pair,
@@ -811,13 +824,13 @@ order (BG3, BG2, BG1, BG0 bottom-to-top), i.e. level-table layers
 wrong relative order.
 
 **The dispatcher's delta-decode post-pass applies to every compression
-type, not just type 6 (PROVEN, from real disassembly).** `sub_0801DD90`'s
+type, not just type 6 (PROVEN, from real disassembly).** `DecompressResource`'s
 tail (`0x0801DE36`-`0x0801DE4C`) checks byte0 bit 7 and, if set, calls the
 delta-decode pass (`sub_0801DF48`) unconditionally after every dispatch
 type 0-8 -- the bit is independent of compression type, not specific to
-type 6. `tools/graphics/decode_type6.py` applies this pass internally
+type 6. `tools/graphics/decode_gamma_lz.py` applies this pass internally
 for type-6 resources; `dump_bg_tiles.py`'s `decode_resource()` applies
-the same `_apply_delta_pass` (imported from `decode_type6.py`) to every
+the same `_apply_delta_pass` (imported from `decode_gamma_lz.py`) to every
 other type after dispatch, since `decode_bios.py`'s raw
 LZ77/Huffman/RLE/type-0 decoders have no way to know about a
 dispatcher-level flag on their own. Confirmed against room `0x24`
@@ -895,7 +908,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   0x20`. Verified live: every watchpoint hit's call chain matched this
   function exactly.
 - **`dwBgTilesetA`/`B`** (`+0x54`/`+0x5c`): `size:u16, tileCount:u16`
-  header, then at `+4` a type-6-compressed per-tile offset table
+  header, then at `+4` a `DecompressGammaLz`-compressed per-tile offset table
   (`tileCount` entries), decoded by `DecodeBgTilesetOffsetTable_candidate`
   (`0x0803EBA8`). Each decoded entry is a packed value: `real_addr =
   0x08000000 + (entry >> 3)` is that tile's real ROM address (confirmed
@@ -905,7 +918,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   IWRAM and passed as `DecompressBgTile`'s `r3` on every call.
 - **`DecompressBgTile`** (`0x08006300`, 180 bytes, ARM,
   `asm/decompress_bg_tile.s`): a canonical Huffman decoder, IWRAM-installed
-  like type-4 and type-6. Installed once at boot into IWRAM
+  like `DecompressLzRle` and `DecompressGammaLz`. Installed once at boot into IWRAM
   `0x030033CC` by **`InstallBgTileCodec`** (`0x080250B8`,
   called from `main` at `0x0802971E`) via
   `CPUSet(0x08006300, 0x030033CC, ...)`. `DecompressBgTileToVram_candidate`
@@ -967,22 +980,22 @@ without needing a live trace:
   `byte1..3` LE = decompressed size, matching `width*height/2` exactly
   in all 79 real items -- an independent structural check that the
   frame-header field identities above are right). Two nibbles appear:
-  type 3 (BIOS `RLUnComp`, 11 of 79) and type 7 -- `sub_0801DE5C`'s
-  *own* nibble for the type-4 proprietary codec (`0x0804a2cc` via the
-  `0x030028CC` IWRAM entry), distinct from `sub_0801DD90`'s nibble 4 for
+  type 3 (BIOS `RLUnComp`, 11 of 79) and type 7 -- `DecompressResourceVram`'s
+  *own* nibble for the `DecompressLzRle` codec (`0x0804a2cc` via the
+  `0x030028CC` IWRAM entry), distinct from `DecompressResource`'s nibble 4 for
   that same codec (two different dispatchers, two different
   nibble-to-codec mappings, same underlying decoder already proven
-  above under "The type-4 codec, decoded"). No other nibble appears
+  above under "The `DecompressLzRle` codec, decoded"). No other nibble appears
   among the 79 real items.
 
 **Type 3's real stream starts 8 bytes past the outer header, not 4 --
-confirmed against raw disassembly, not just decompile.** `sub_0801DE5C`'s
+confirmed against raw disassembly, not just decompile.** `DecompressResourceVram`'s
 case-3 branch (disassembled directly: `add r0,r3,#0x4` then
 `bl sub_08049eb0`, which is a bare `svc 0x15` / `RLUnCompVram` wrapper)
 passes the resource address plus 4 straight into the real BIOS RLE
 routine -- but that BIOS call needs its *own* self-contained 4-byte
 type+size header at whatever address it's given, distinct from the
-generic dispatcher header `sub_0801DE5C` already consumed at
+generic dispatcher header `DecompressResourceVram` already consumed at
 `pTileData + source_offset + 0`. Every type-3 icon's data has that same
 header duplicated verbatim at `+ 0x4` (`icon_codec.py` asserts this on
 every decode, since it's a real invariant of the format, not an
@@ -995,7 +1008,7 @@ something a byte-count or size check catches, only a look at the
 rendered PNG.
 
 **Verified by decoding and rendering real ROM data, not just reading
-the struct shape**: "Ordinary Belt" (32x32, type-7/type-4 tiles) decodes
+the struct shape**: "Ordinary Belt" (32x32, type-7 / `DecompressLzRle` tiles) decodes
 to a recognizable belt with a gold buckle; "Antidote to Common Poisons"
 (16x32, type-7) decodes to a recognizable potion bottle; "Wiggenweld
 Potion" and "Trevor" (both type-3, post-fix) decode to a recognizable
@@ -1004,7 +1017,7 @@ inspection of the rendered PNG, matching their item names unambiguously.
 
 **Extraction and packing**: `tools/items/icon_codec.py` implements the
 decode (palette + frame-header parsing directly, tile data via
-`tools/graphics/decode_bios.py`/`tools/graphics/decode_type4.py`).
+`tools/graphics/decode_bios.py`/`tools/graphics/decode_lz_rle.py`).
 `tools/items/extract_item_icons.py` (`just extract-item-icons`, part of
 `just extract-all`) verifies all 79 real items' icon data forms one
 fully contiguous ROM span with zero gaps between items, in table order
@@ -1025,7 +1038,7 @@ extracted region -- like the Krawall rows, not anonymous `.incbin` from
 the baserom -- packed by `tools/items/pack_item_icons.py`, which just
 copies each `.bin`'s bytes back out under a label
 (`gItemIcon<Name>Palette/Tiles/Frames`). There is no re-encode step: no
-type-4 codec encoder exists (only the Unicorn-executed decoder), so
+`DecompressLzRle` codec encoder exists (only the Unicorn-executed decoder), so
 packing is a literal copy-through, not a transformation -- editing
 these `.bin` files isn't meaningful, they exist so this region can be
 claimed and byte-verified rather than left as unclaimed `.incbin`.
@@ -1044,15 +1057,12 @@ game's dialog-portrait art. It's reachable from
 through them, but the records themselves are ordinary dialog assets --
 "debug" describes the viewer, not the data.
 
-- **`pTileGfx`**: type-4-compressed 8bpp OBJ tile data. Consumed via
+- **`pTileGfx`**: 8bpp OBJ tile data, header type 7. Consumed via
   `SetObjectAssetRecord` (`0x0800187C`, stores `&PortraitRecord` into
   `Object+0xE0`) -> `UpdateObjectSpriteFrame` (`0x08002F28`) ->
-  `LoadObjTile` -> `DecompressObjResource` (`0x0801DE5C`), whose nibble-7
-  case is the type-4 codec (`DecompressType4`, `0x08006108` --
-  **ARM-mode**; `functions.us.cfg` had it mis-seeded as `thumb_func`,
-  now corrected). `DecompressType4`'s own docstring/callers previously
-  covered only the wand cursor and item icons; this closes it out
-  against a third, much larger corpus (71 real images).
+  `LoadObjTile` -> `DecompressResourceVram` (`0x0801DE5C`), whose type 7
+  is the `DecompressLzRle` codec (`DecompressLzRle`, ARM, `0x08006108`; see "The
+  resource-decompression dispatchers"). Verified against 71 real images.
 - **`pFrameData`**: an uncompressed per-object frame/OAM-cell
   descriptor, read directly -- despite `pTileGfx`'s neighboring header
   superficially inviting the same treatment, this pointer is never
@@ -1114,7 +1124,7 @@ through them, but the records themselves are ordinary dialog assets --
   research tool like `dump_bg_tiles.py` above -- not wired into
   `just`/`regions.us.txt`. Extracts all 72 records to transparent-background
   PNGs. One record (5120 decompressed bytes, the largest in the table)
-  needed `tools/graphics/decode_type4.py`'s Unicorn output buffer
+  needed `tools/graphics/decode_lz_rle.py`'s Unicorn output buffer
   (`OUT_CAP`) raised from 4KB to 16KB -- not a data or codec issue,
   just a limit sized for smaller resources (item icons, the wand) that
   this table's largest portrait exceeded.
@@ -1143,12 +1153,12 @@ resource-pointer trace.
    (`0x080BC9CC`, `0x080BCADC`, `0x080BCCD8` -- mechanically identical
    to the verified `0x080BCBD0`, just not run), and its own palette
    (bank 1), which has no located ROM source. Bank 1 is neither raw nor
-   standard-BIOS-compressed, so it is presumably type-4 or type-6 and
+   standard-BIOS-compressed, so it presumably uses `DecompressLzRle` or `DecompressGammaLz` and
    findable by a live breakpoint on whatever writes OBJ palette RAM
    `0x05000220`-`0x0500023F`, reading the source register at entry.
 5. **The spark/particle effect's remaining tiles and its palette
    pairing.** One real tile is confirmed (`0x080BCDD8`, via
-   `sub_0801DE5C`'s RLE path); it is likely a multi-tile animation like
+   `DecompressResourceVram`'s RLE path); it is likely a multi-tile animation like
    the wand's glow. Three real palettes exist (`0x08A38108`,
    `0x08A38FE0`, `0x080BD344`); which one pairs with this effect isn't
    confirmed.

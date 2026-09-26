@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Decode a "type-6" compressed resource blob using the game's own
+"""Decode a DecompressGammaLz-compressed resource blob using the game's own
 decompressor -- executed via the Unicorn CPU emulator against the real
 ARM-mode ROM bytes, rather than a hand-reimplementation, so it can't
 silently drift from actual game behavior. See docs/formats/graphics.md's
-"The type-6 codec, decoded" section for the full bit-level algorithm
+"The DecompressGammaLz codec, decoded" section for the full bit-level algorithm
 writeup and how this was verified (exact size match against 7 real
 level-table resource pointers).
 
-Every real type-6 resource decoded so far has turned out to be GBA BG
+Every real DecompressGammaLz resource decoded so far has turned out to be GBA BG
 tilemap/screen-entry data, not text or pixel data -- see
 docs/formats/graphics.md and docs/formats/text.md for what that does
 and doesn't tell us about where dialog text or real palettes live.
 
-Usage: decode_type6.py <ver> <hex addr>
+Usage: decode_gamma_lz.py <ver> <hex addr>
   <hex addr> is the ROM address of the resource's 4-byte outer header
   (type/size word) -- e.g. a level-table pointer field, such as
   0x08658a6c (level-table entry 0's +0x00 field, see graphics.md).
@@ -39,7 +39,7 @@ OUT_SIZE_ADDR = 0x03000800
 OUT_BUF_ADDR = 0x03010000
 
 
-def decode_type6(rom: bytes, hdr_addr: int, codec_addr: int) -> bytes:
+def decode_gamma_lz(rom: bytes, hdr_addr: int, codec_addr: int) -> bytes:
     """hdr_addr is the ROM address of the resource's 4-byte outer header
     (type nibble + 24-bit decompressed size), same shape as a level-table
     pointer field."""
@@ -94,7 +94,7 @@ def main() -> None:
     addr = int(addr_s, 16)
     with open(f"baserom.{ver}.gba", "rb") as f:
         rom = f.read()
-    out = decode_type6(rom, addr, CODEC_ADDR[ver])
+    out = decode_gamma_lz(rom, addr, CODEC_ADDR[ver])
     sys.stdout.buffer.write(out)
 
 

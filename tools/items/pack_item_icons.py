@@ -5,7 +5,7 @@ for regions.<ver>.txt's `item-icon-data` row. See
 docs/formats/graphics.md's "Item icons" section.
 
 Unlike a JSON-driven pack step, this is a literal copy-through: no
-known encoder exists for the type-4 codec these icons use, so
+known encoder exists for the DecompressLzRle codec these icons use, so
 data/images/items/<Name>.{palette,tiles,frames}.bin are exactly the
 original ROM bytes, and packing just emits them back with labels
 (gItemIcon<Name>Palette/Tiles/Frames) that src/data/items.c's `extern`

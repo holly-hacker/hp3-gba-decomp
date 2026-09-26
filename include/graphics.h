@@ -12,13 +12,13 @@
 // resource-decompression dispatcher calls through those, not the ROM
 // copies directly.
 typedef void (*DecompressFunc)(const void *src, void *dst, u32 *pSize);
-void DecompressType4(const void *src, void *dst, u32 *pSize);
-void DecompressType6(const void *src, void *dst, u32 *pSize);
+void DecompressLzRle(const void *src, void *dst, u32 *pSize);
+void DecompressGammaLz(const void *src, void *dst, u32 *pSize);
 void InstallIwramDecompressCodecs(void);
-extern DecompressFunc g_pDecompressType4Entry;
-extern DecompressFunc g_pDecompressType6Entry;
-extern u8 g_pDecompressType4Iwram[0x1F8];
-extern u8 g_pDecompressType6Iwram[0x33C];
+extern DecompressFunc g_pDecompressLzRleEntry;
+extern DecompressFunc g_pDecompressGammaLzEntry;
+extern u8 g_pDecompressLzRleIwram[0x1F8];
+extern u8 g_pDecompressGammaLzIwram[0x33C];
 
 // bios_ObjAffineSet's input struct (see include/bios.h): reciprocal
 // scale (8.8 fixed) plus rotation angle; the trailing pad word gives

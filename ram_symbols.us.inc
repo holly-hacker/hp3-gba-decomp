@@ -213,10 +213,10 @@
 
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
 @ "resource-decompression dispatcher") ---
-.set g_pDecompressType4Entry, 0x030028CC  @ DecompressFunc: = g_pDecompressType4Iwram
-.set g_pDecompressType6Entry, 0x030028D0  @ DecompressFunc: = g_pDecompressType6Iwram
-.set g_pDecompressType4Iwram, 0x030028D4  @ u8[0x1F8]: IWRAM copy of DecompressType4
-.set g_pDecompressType6Iwram, 0x03002ACC  @ u8[0x33C]: IWRAM copy of DecompressType6
+.set g_pDecompressLzRleEntry, 0x030028CC  @ DecompressFunc: = g_pDecompressLzRleIwram
+.set g_pDecompressGammaLzEntry, 0x030028D0  @ DecompressFunc: = g_pDecompressGammaLzIwram
+.set g_pDecompressLzRleIwram, 0x030028D4  @ u8[0x1F8]: IWRAM copy of DecompressLzRle
+.set g_pDecompressGammaLzIwram, 0x03002ACC  @ u8[0x33C]: IWRAM copy of DecompressGammaLz
 
 @ --- Resource cache / particle emitters (see docs/formats/graphics.md and
 @ docs/formats/battle_scripts.md's TickParticleEmitters note) ---

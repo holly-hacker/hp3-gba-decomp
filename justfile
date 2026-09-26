@@ -140,7 +140,7 @@ extract-item-icons:
 # Reads local data/images/items/ (run `extract-item-icons` first if
 # missing) plus this version's item-icon-data row in regions.<ver>.txt
 # for addresses. A literal copy-through -- no known encoder exists for
-# the type-4 codec these icons use.
+# the DecompressLzRle codec these icons use.
 # Pack data/images/items/ into this version's item-icon-data assembly.
 pack-item-icons ver="us":
     python3 tools/items/pack_item_icons.py {{ver}}
