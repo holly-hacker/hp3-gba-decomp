@@ -22,7 +22,7 @@
 .set g_ActiveObjectListState, 0x030015B0
 .set g_ObjectPoolState,       0x03001C08
 .set g_pObjectPoolAuxBuffer,  0x03001DBC
-.set g_dwUnk03001DC0,         0x03001DC0
+.set g_dwObjectListTicked_candidate,         0x03001DC0
 .set g_dwUnk03001DC4,         0x03001DC4
 
 @ --- Per-tick object queues (see include/mem.h) ---

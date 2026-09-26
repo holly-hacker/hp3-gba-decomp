@@ -25,7 +25,7 @@ void FreeObject(Object *obj)
     if (affineSlotState == 1 || affineSlotState == 3)
         ReleaseObjectAffineSlot(obj);
 
-    if (g_dwUnk03001DC0 == 1)
+    if (g_dwObjectListTicked_candidate == 1)
         ReleaseObjectOffscreenVramTiles(obj);
 
     if (g_ActiveObjectListState.pUnk4 == (ListNode *)obj)

@@ -114,9 +114,11 @@ extern u32 g_dwObjectListActive_candidate;
 // like a fixed-point rounding/scale constant, unrelated to the pool
 // itself. Not enough evidence yet for a real name.
 extern u32 g_dwUnk03001DC4;
-// FreeObject calls ReleaseObjectOffscreenVramTiles on the freed object when
-// this is 1. Not enough evidence yet for a real name.
-extern u32 g_dwUnk03001DC0;
+// Set to 1 by every TickActiveObjects call and never cleared, so it is 0
+// only until the active list's first tick. FreeObject releases the object's
+// shared VRAM tile allocation (ReleaseObjectOffscreenVramTiles) only when it
+// is 1; those allocations are made by UpdateObjectSpriteFrame during a tick.
+extern u32 g_dwObjectListTicked_candidate;
 
 // pHead/pUnk4 are adjacent words (0x030015B0/0x030015B4) -- FreeObject loads
 // the base address once and reaches pUnk4 through it at +4, so this stays

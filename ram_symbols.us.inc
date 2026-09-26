@@ -193,7 +193,7 @@
 .set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions
 .set g_ObjectPoolState,               0x03001C08  @ ObjectPoolState, 0x1B4 bytes; see include/mem.h
 .set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
-.set g_dwUnk03001DC0,                0x03001DC0  @ FreeObject calls ReleaseObjectOffscreenVramTiles when this == 1
+.set g_dwObjectListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveObjects, never cleared; gates FreeObject's VRAM tile release
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
 .set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/mem.h
 

@@ -54,7 +54,7 @@ c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
 c-file 0x080014D4 0x08001528 src/mem/alloc_default_object.c AllocDefaultObject
 c-file 0x08001528 0x080015B8 src/object/spawn_object.c SpawnObject
-thumb-func 0x080015B8 TickActiveObjects
+c-file 0x080015B8 0x080015D4 src/object/tick_active_objects.c TickActiveObjects
 c-file 0x080015D4 0x080015F8 src/object/free_all_objects.c FreeAllObjects
 thumb-func 0x08001690 sub_08001690
 thumb-func 0x0800187C SetObjectAssetRecord
