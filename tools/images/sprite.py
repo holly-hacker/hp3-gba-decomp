@@ -225,7 +225,7 @@ def encode_frames(frames: list[dict], header: list[int]) -> bytes:
             out += struct.pack("<I", (x & 0x1FF) | (y & 0x1FF) << 9 | size << 18 | shape << 20 | tile << 22)
             tile += cw * ch
         tile_offset += f["stream_bytes"]
-    return bytes(out)
+    return bytes(out).ljust(_align4(len(out)), b"\0")
 
 
 def _sign9(value: int) -> int:
@@ -234,7 +234,8 @@ def _sign9(value: int) -> int:
 
 
 def decode_frames(data: bytes) -> dict:
-    """Parse an ObjectFrameData record; returns its fields and byte length."""
+    """Parse an ObjectFrameData record; returns its fields and byte length,
+    including the zero padding to a word boundary."""
     width, height = data[0], data[1]
     header = list(struct.unpack_from("<4b", data, 2))
     frame_count, tile_bytes, extra_count, part_count = struct.unpack_from("<HHBB", data, 6)
@@ -268,6 +269,9 @@ def decode_frames(data: bytes) -> dict:
         end = pos + 4 * len(cells)
         frames.append({"width": fw, "height": fh, "tile_offset": tile_offset, "offset": [ox, oy],
                        "compression": by_flag[flags], "extra": extra, "parts": parts, "cells": cells})
+    if any(data[end:_align4(end)]):
+        raise ValueError("frame record padding is not zero")
+    end = _align4(end)
     return {"width": width, "height": height, "header": header, "tile_bytes": tile_bytes,
             "frames": frames, "length": end}
 

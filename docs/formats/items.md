@@ -20,7 +20,7 @@ and equipment" section.
 | Offset | Field | Reader |
 |---|---|---|
 | `+0x00` | `nNameTextId` -- dialog string id for the display name | `FUN_08026B8C` |
-| `+0x04`, `+0x08`, `+0x0C` | `pPalette`/`pTileData`/`pFrameData` -- icon data, see [`graphics.md`](graphics.md)'s "Item icons" section | `FUN_08026bcc` |
+| `+0x04`, `+0x08`, `+0x0C` | `pPalette`/`pTileData`/`pFrameData` -- icon data, see [`graphics.md`](graphics.md)'s "Item icons" section | `GetItemImageData` |
 | `+0x10` | `nBuyPrice` -- shop buy price (Sickles), see "Shop prices" below | `GetItemBuyPrice` |
 | `+0x14` | `nSellPrice` -- shop sell price (Sickles) | `GetItemSellPrice`, `FUN_08026E58` |
 | `+0x18` | `dwCategory` -- item category id, see below | `FUN_08026E58`, `FUN_08026F48` |

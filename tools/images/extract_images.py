@@ -29,9 +29,14 @@ ROM_BASE = 0x08000000
 # is optional per sprite, and a palette not followed by tiles is its own entry.
 BANKS = {
     "ItemIcons": {"prefix": "Item", "bpp": 4, "componentOrder": ("palette", "tiles", "frames")},
+    "HelpSprites": {"prefix": "Help", "bpp": 4, "componentOrder": ("tiles", "frames", "palette")},
     "Portraits": {"prefix": "Portrait", "bpp": 8, "componentOrder": ("tiles", "frames", "palette")},
     "MonsterOverworldSprites": {"prefix": "MonsterOverworld", "bpp": 4,
                                 "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "UnnamedSprites": {"prefix": "Unnamed", "bpp": 4,
+                       "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "UnnamedSprites2": {"prefix": "Unnamed2_", "bpp": 4,
+                        "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "MonsterPalettes": {"prefix": "MonsterPalette", "bpp": 4, "componentOrder": ("palette",)},
 }
 

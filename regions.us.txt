@@ -1100,6 +1100,7 @@ label 0x08065814 g_ScanlineBandsRoom12
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 label 0x0806605C g_dwMinigameMenuBg3Control
 label 0x08066060 g_dwMinigameMenuBg1Control
+label 0x08066FFC g_aObjectTypeAssets
 label 0x08068C30 g_dwPatronusBg2Control
 label 0x08068C34 g_dwPatronusBg3Control
 label 0x08068C38 g_aInGameMenuEntries
@@ -1116,6 +1117,8 @@ label 0x08069190 g_dwServePumpkinJuiceBg3Control
 label 0x08069328 g_ServePumpkinJuiceTable
 label 0x080693B0 g_ServePumpkinJuicePauseText
 label 0x080693C0 g_ServePumpkinJuiceResultsText
+label 0x08069AB8 g_aHelpSpriteAssets
+label 0x08069C18 g_apHelpSpritePalettes
 label 0x0806B1B4 g_aItemsSectionFilters
 label 0x0806B1F0 g_ItemsSectionMenuDefinition
 label 0x0806B2FC g_aStatusEquipSlots
@@ -1146,10 +1149,16 @@ label 0x0806C048 g_aOptionsMenuItems
 label 0x0806C174 g_dwCoolTrainBg0Control
 
 # Item icon image bank
-image-bank 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
+image-bank 0x080a6d54 0x080AC7B8 data/images/items ItemIcons
+
+# Help screen sprite, g_aHelpSpriteAssets[14]
+image-bank 0x080AC7B8 0x080AC8CC data/images/help HelpSprites
 
 # Overworld (wandering) monster sprites, g_pMonsterGraphicsTable +0x10 records
 image-bank 0x080AC8CC 0x080B9A84 data/images/monster_overworld MonsterOverworldSprites
+
+# Scabbers, a recolor palette, the Giant Rat transformation, and the coin icon
+image-bank 0x080B9A84 0x080BC1C4 data/images/unnamed UnnamedSprites
 label 0x080BC1C4 g_MainMenuPalette
 label 0x080BC538 g_DebugMenuCursorSpawnData
 
@@ -1159,6 +1168,9 @@ label 0x080BF5E4 g_HarryVsDementorsObject1CSpawnData
 label 0x080CD814 g_StatusEquipSlotCursorSpawnData
 label 0x080CF804 g_ClockSkipObject1SpawnData
 label 0x080D03E4 g_ClockSkipObject2SpawnData
+
+# Turn-order icon container and the gauge sprites sub_0801BA54 shows
+image-bank 0x08A37DA4 0x08A39000 data/images/unnamed2 UnnamedSprites2
 
 # Monster recolor palettes, g_pMonsterGraphicsTable and turn-order icon records
 image-bank 0x08A39000 0x08A39500 data/images/monster_palettes MonsterPalettes

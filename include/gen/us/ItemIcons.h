@@ -240,3 +240,6 @@ extern const u8 gItem078Frames[];
 extern const u8 gItem079Palette[];
 extern const u8 gItem079Tiles[];
 extern const u8 gItem079Frames[];
+extern const u8 gItem080Palette[];
+extern const u8 gItem080Tiles[];
+extern const u8 gItem080Frames[];

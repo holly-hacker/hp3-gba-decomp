@@ -399,12 +399,9 @@ structural scan, `0x08a32800`-`0x08a3a000`):
   repeated gray-brown) -- also real, plausibly a title-screen sparkle/
   particle effect given the trigger.
 
-**Not yet resolved**: pairing `0x08A38108`/`0x08A38FE0` against tile
-data -- both the earlier structural-scan candidates (filigree tileset,
-UI-panel region) and the bytes immediately following each palette in
-its own resource block (the natural "palette then tile data" struct
-layout guess) -- produced garish, incoherent-looking renders, not
-recognizable art.
+`0x08A38108` is the turn-order container's palette and `0x08A38FE0` the
+gauges' palette; both are claimed by the `UnnamedSprites2` bank (see
+"Turn-order container and gauge sprites").
 
 ### `sub_08001528`'s call chain, traced (PROVEN through several hops)
 
@@ -961,9 +958,9 @@ rebuilds every component under `build/<ver>/images/<bank>/`, writes
 `include/gen/<ver>/<bank>.h` with their C declarations. Packing fails on
 a PNG that is not indexed, a pixel index or palette outside the bank's bit
 depth, a drawn pixel outside every cell, an unlisted PNG, or a total size
-that differs from the manifest range. The US item-icon, portrait, and
-overworld monster sprite and palette banks use this format; room BG tiles
-remain outside it.
+that differs from the manifest range. The US item-icon, Help, portrait,
+overworld monster sprite and palette, and both unnamed banks use this
+format; room BG tiles remain outside it.
 
 `just extract-images` (`tools/images/extract_images.py`) creates the PNGs
 and indexes from the baserom without reading any pointer table. Each
@@ -1022,7 +1019,8 @@ frames; `header` is signed bytes, zero for derived sprites), one `u16`
 descriptor offset per frame, then per frame in order the descriptor
 `{cellCount | flags, 0, width, height, tileOffset, offsetX, offsetY}`,
 `extraCount` `u16`s, `partCount` 6-byte parts (signed bytes; meaning not
-decoded), and one 4-byte `ObjectFrameCell` per cell. `tileOffset` is the
+decoded), and one 4-byte `ObjectFrameCell` per cell, then zero bytes to a word
+boundary (records with 6-byte parts can end on a halfword). `tileOffset` is the
 frame's stream position within the sprite's tiles. Bits 5-7 of
 `bCellCount` are `0x40` on every `lzrle` frame and `0x20` on every `rle`
 frame in the three banks; the packer derives them from `compression`.
@@ -1054,15 +1052,44 @@ order). Sprites without their own palette use the recolor palettes at
 `0x08A39000`-`0x08A39500`: 40 consecutive 32-byte palettes, all referenced
 by `g_pMonsterGraphicsTable` or the turn-order icon records, claimed by
 the palette-only `MonsterPalettes` bank as `MonsterPaletteNNN.png`
-swatches. The palette at `0x08A38FE0` just before them belongs to a
-different object and a tile stream follows them.
+swatches. The gauge palette at `0x08A38FE0` just before them belongs to
+`UnnamedSprites2`, and a tile stream follows them.
+
+### Object-type sprites and coin icon (PROVEN, extracted)
+
+`g_aObjectTypeAssets` (137 `ObjectAssetRecord`s, ending at the next table
+`sub_0802F6C0` reads) holds sprites for spawned objects: `sub_0802F6C0`
+indexes it through a per-type byte table, and `SetObjectAnimData_candidate`
+uses its records from 110 on. `0x080B9A84`-`0x080BC1C4`, directly after
+the overworld monster sprites, holds, in order: a 21-frame rat (Scabbers)
+with its palette (records 0, 4, 112), a standalone palette (record 107
+pairs it with an overworld monster sprite), a 25-frame rat growing into the
+Giant Rat (first mission, second boss fight) with no palette of its own
+(records 110, 111), and a one-frame coin
+icon with its palette, referenced from two other records
+(read by `sub_0801456C` and code at `0x08003F20`). The `UnnamedSprites`
+`image-bank` row claims the range as `Unnamed001`-`Unnamed004` (stored cells,
+`tiles`, `frames`, `palette` order).
+
+### Turn-order container and gauge sprites (PROVEN, extracted)
+
+`0x08A37DA4`-`0x08A39000`, directly before the recolor palettes, holds
+`g_TurnOrderIconContainerAsset`'s sprite (four 24x24 frames: green and red
+boxes, plain and highlighted) with its palette, then two gauges draining
+from green to red (25 frames at 16x32 and 17 frames at 8x24). The two
+gauges are the records `sub_0801BA54` passes to `SetObjectAssetRecord`
+(the four words after `g_apEffectScripts`), and it spawns their object
+with the palette at `0x08A38FE0`, stored after the second gauge. The
+`UnnamedSprites2` `image-bank` row claims the range as `Unnamed2_001`-
+`Unnamed2_003` (stored cells, `tiles`, `frames`, `palette` order; the
+shared palette is `Unnamed2_003`'s).
 
 ### Item icons (PROVEN, extracted)
 
 `ItemEntry.pPalette/pTileData/pFrameData` (`docs/formats/items.md`'s item
 table, `+0x04/+0x08/+0x0C`) is a second, fully statically-walkable instance of
 the OBJ tile-loading path described above -- found by decompiling
-`FUN_08026bcc` (`0x08026bcc`, called by `FUN_08027384`, an item-spawn
+`GetItemImageData` (`0x08026bcc`, called by `FUN_08027384`, an item-spawn
 function), which reads exactly these 3 fields and hands them to
 `SpawnObject` (`0x08001528`, the same generic pooled-object spawner
 documented above) as `resource_ptr`, then to `LoadObjTile`/
@@ -1130,16 +1157,31 @@ inspection of the rendered PNG, matching their item names unambiguously.
 
 **Extent**: all 79 real items' icon data forms one fully contiguous ROM
 span with zero gaps between items, in table order -- confirmed by checking
-each `pPalette`/`pTileData`/`pFrameData` extent against the next, with the
-span's end independently corroborated by `FUN_08026bcc`'s own `id==0x86`
-literal (`&DAT_080ac6a0`, the next icon resource: an equip-slot
-placeholder outside this table). `regions.us.txt`'s `ItemIcons`
-`image-bank` row claims that span as 4-bit `ItemNNN.png` sprites in
-`palette`, `tiles`, `frames` order (see "Image-bank build format"); 11
-icons use `rle`, the rest `lzrle`. `src/data/items.c` includes the
-generated `include/gen/us/ItemIcons.h` and references the
-`gItemNNNPalette/Tiles/Frames` labels instead of literal addresses. See
-`docs/formats/items.md`.
+each `pPalette`/`pTileData`/`pFrameData` extent against the next. One more
+icon in the same format follows directly: `GetItemImageData` returns it for
+the pseudo-item id `0x86` instead of reading the item table (a 24x24 gold
+curved arrow, requested from the status/equip screen code). `regions.us.txt`'s `ItemIcons`
+`image-bank` row claims the 80 icons as 4-bit `ItemNNN.png` sprites in
+`palette`, `tiles`, `frames` order (see "Image-bank build format"), the
+id-`0x86` icon last as `Item080`; 11 icons use `rle`, the rest `lzrle`.
+`src/data/items.c` includes the generated `include/gen/us/ItemIcons.h` and
+references the `gItemNNNPalette/Tiles/Frames` labels instead of literal
+addresses. See `docs/formats/items.md`.
+
+### Help screen sprites (PROVEN, partly extracted)
+
+`g_aHelpSpriteAssets` (22 `ObjectAssetRecord`s) and
+`g_apHelpSpritePalettes` (22 palette pointers, directly after it) are read
+by `sub_08039020(x, y, index)`, which spawns object type `index` with
+palette `g_apHelpSpritePalettes[index]` and then passes
+`&g_aHelpSpriteAssets[index]` to `sub_08001690`. Twenty records reuse item
+icons. Record 14 is a 32x32 `lzrle` sprite in `tiles`, `frames`, `palette`
+order stored directly after the item icons; the `HelpSprites`
+`image-bank` row claims it as `Help001.png`. Page commands (opcode 8:
+draw sprite `byte1` at `byte2`, `byte3`) in the page data after
+`g_apHelpSpritePalettes` never draw indices 3-6, 8, or 14, so record 14 is
+likely unused (UNCONFIRMED: pages outside that area were not searched). Record 0 points into the
+main-menu graphics after `g_MainMenuPalette` (not extracted).
 
 ### Character portraits (PROVEN, extracted)
 
