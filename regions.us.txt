@@ -1147,6 +1147,9 @@ label 0x0806C174 g_dwCoolTrainBg0Control
 
 # Item icon image bank
 image-bank 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
+
+# Overworld (wandering) monster sprites, g_pMonsterGraphicsTable +0x10 records
+image-bank 0x080AC8CC 0x080B9A84 data/images/monster_overworld MonsterOverworldSprites
 label 0x080BC1C4 g_MainMenuPalette
 label 0x080BC538 g_DebugMenuCursorSpawnData
 
@@ -1156,6 +1159,10 @@ label 0x080BF5E4 g_HarryVsDementorsObject1CSpawnData
 label 0x080CD814 g_StatusEquipSlotCursorSpawnData
 label 0x080CF804 g_ClockSkipObject1SpawnData
 label 0x080D03E4 g_ClockSkipObject2SpawnData
+
+# Monster recolor palettes, g_pMonsterGraphicsTable and turn-order icon records
+image-bank 0x08A39000 0x08A39500 data/images/monster_palettes MonsterPalettes
+
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 0x08AA6538 data/audio/modules/MusBattle.json MusBattle

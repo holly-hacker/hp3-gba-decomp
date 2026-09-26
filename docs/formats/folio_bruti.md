@@ -344,7 +344,9 @@ palettes at `0x08A39000`-`0x08A39500`. 39 rows use the same palette for both rec
 46 swap their battle and overworld palettes (`0x08A393E0`/`0x08A39400`),
 and rows 66-68 repeat row 58 exactly. The other pointers fall in
 `0x089AE030`-`0x089F1DB4` (battle) and `0x080AC8CC`-`0x080B9A64`
-(overworld).
+(overworld). The overworld sprites are extracted as an image bank (see
+[`graphics.md`](graphics.md)'s "Overworld monster sprites"); the battle
+sprites need a `DecompressGammaLz` encoder first.
 
 The 16-byte `ObjectAssetRecord`s that follow, up to `0x0804F404`:
 
@@ -502,5 +504,5 @@ and the shop-stock tables work.
   clearly, and nothing more. (`InitMonsterBattleActor`, `0x08014C88`-
   `0x08014F1C`, is fully matched in `src/battle/`.)
 - `g_pMonsterGraphicsTable` and the records after it are decoded (see
-  "Monster graphics table") but not yet reconstructed as C, and their
-  sprites are not extracted.
+  "Monster graphics table") but not yet reconstructed as C: the battle
+  sprites have no labels yet.

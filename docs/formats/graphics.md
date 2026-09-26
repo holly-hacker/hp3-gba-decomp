@@ -939,36 +939,52 @@ table gives each tile's start, not the last one's end).
 ### Image-bank build format
 
 An `image-bank <start> <end> <dir> <name>` manifest row claims one
-contiguous range of sprites. `<dir>/bank.json` holds `format: 2`, the
-bank's `bpp` (4 or 8), `componentOrder` (the ROM order of each sprite's
-`palette`/`tiles`/`frames` components), and an ordered `images` list of
-`{name, offset, compression}` entries; `<dir>/<name>.png` is each sprite's
-source. The index contains no addresses: components are laid out
-back-to-back in list order. `just pack-images` rebuilds every component
-under `build/<ver>/images/<bank>/`, writes `build/<ver>/images/<bank>.s`
-with `g<Name><Component>` labels, and writes `include/gen/<ver>/<bank>.h`
-with their C declarations. Packing fails on a PNG that is not indexed,
-a pixel index or palette outside the bank's bit depth, an unlisted PNG, or
-a total size that differs from the manifest range. The US item-icon and
-portrait banks use this format; room BG tiles remain outside it.
+contiguous range of images. `<dir>/bank.json` holds `format: 2`, the
+bank's `bpp` (4 or 8), `componentOrder` (the ROM order of each image's
+`palette`/`tiles`/`frames` components), and an ordered `images` list. An
+entry is one of:
+
+- a **derived sprite**, `{name, offset, compression}`: one frame,
+  `<name>.png`, cells cut from the image size (see "Sprite images");
+- a **stored-layout sprite**, `{name, palette, header, frames}`:
+  `<name>.<i>.png` per frame, each frame listing `offset`, `compression`,
+  `cells` (`[x, y, w, h]` in tiles), `parts`, and `extra`; `palette:
+  false` means the sprite's palette lives outside the bank and its PNGs
+  carry a gray display palette that packing ignores;
+- a **palette**, `{name, paletteOnly: true}`: `<name>.png`, a one-row
+  swatch whose PNG palette is the data.
+
+The index contains no addresses: components are laid out back-to-back in
+list order, skipping components an entry lacks. `just pack-images`
+rebuilds every component under `build/<ver>/images/<bank>/`, writes
+`build/<ver>/images/<bank>.s` with `g<Name><Component>` labels, and writes
+`include/gen/<ver>/<bank>.h` with their C declarations. Packing fails on
+a PNG that is not indexed, a pixel index or palette outside the bank's bit
+depth, a drawn pixel outside every cell, an unlisted PNG, or a total size
+that differs from the manifest range. The US item-icon, portrait, and
+overworld monster sprite and palette banks use this format; room BG tiles
+remain outside it.
 
 `just extract-images` (`tools/images/extract_images.py`) creates the PNGs
 and indexes from the baserom without reading any pointer table. Each
-bank's `bpp`, `componentOrder`, and name prefix are fixed in the
-extractor; it walks the manifest range from its start, taking each
+bank's `bpp`, `componentOrder`, name prefix, and cell mode are fixed in
+the extractor; it walks the manifest range from its start, taking each
 component's length from the component itself (palette `2 << bpp` bytes,
-tile resource header and stream, frame record counts). The walk must end
-exactly at the range's end, and every sprite must rebuild from its PNG
-byte for byte. Sprites are named by prefix and one-based position
-(`Item001`, `Portrait001`), the names `src/` tables reference.
+tile resource header and stream, frame record counts). In a stored-layout
+bank, a sprite's tiles are its back-to-back frame streams, its palette is
+present only when the next data is not a tile stream, and a palette not
+followed by tiles is its own entry. The walk must end exactly at the
+range's end, and every image must rebuild from its PNGs byte for byte.
+Images are named by prefix and one-based position (`Item001`,
+`Portrait001`, `MonsterOverworld001`), the names `src/` tables reference.
 
 ### Sprite images
 
-**PROVEN** as a build pipeline: the item-icon and portrait extractors
-rebuild all 133 sprites from their PNGs and require byte-identical
-palette, tile, and frame components before writing an index, and both
-banks pass the whole-ROM comparison. Each sprite is one indexed PNG plus
-two settings; `tools/images/sprite.py` derives everything else.
+**PROVEN** as a build pipeline: the extractor rebuilds every image in the
+three banks from its PNGs and requires byte-identical components before
+writing an index, and all banks pass the whole-ROM comparison. Each frame
+is one indexed PNG plus a few settings; `tools/images/sprite.py` derives
+everything else.
 
 - **PNG**: the frame's full pixel canvas, 4-bit (`bpp: 4`) or 8-bit
   indexed. Its `PLTE` is the ROM palette in order, including entry 0's
@@ -979,37 +995,67 @@ two settings; `tools/images/sprite.py` derives everything else.
   anchor; it becomes the frame descriptor's `+0x6`/`+0x8` and each cell's
   X/Y.
 - **`compression`**: `lzrle` (`DecompressResourceVram` type 7) or `rle`
-  (type 3, BIOS `RLUnComp` with the duplicated header). Item icons use
-  both with no size-based rule: every `rle` icon would be 2-5 bytes
-  smaller as `lzrle`, so it is a per-asset setting.
+  (type 3, BIOS `RLUnComp` with the duplicated header), chosen per frame
+  (one overworld sprite mixes both). Item icons use both with no
+  size-based rule: every `rle` icon would be 2-5 bytes smaller as
+  `lzrle`, so it is a per-asset setting.
 
-**Cell cutting** (every ROM sprite matches): each canvas dimension, in
-tiles, splits into power-of-two strips, smallest first (7 -> 1, 2, 4;
-10 -> 2, 8). Cells are emitted row strip by row strip, column strips left
-to right. A strip intersection with no OAM shape is halved along its
-longer side (8x1 -> two 4x1, 1x8 -> two 1x4, top/left first). Each cell's
-tile offset is the running tile count at the sprite's bit depth; tile data
-is the cells' 8x8 tiles, row-major within each cell, low nibble first at
-4bpp.
+**Cell cutting** for derived sprites (every item icon and portrait
+matches): each canvas dimension, in tiles, splits into power-of-two
+strips, smallest first (7 -> 1, 2, 4; 10 -> 2, 8). Cells are emitted row
+strip by row strip, column strips left to right. A strip intersection with
+no OAM shape is halved along its longer side (8x1 -> two 4x1, 1x8 -> two
+1x4, top/left first). Each cell's tile offset is the running tile count at
+the sprite's bit depth; tile data is the cells' 8x8 tiles, row-major
+within each cell, low nibble first at 4bpp.
 
-**Frame record**: `{width, height, 0 x4, frameCount = 1, tileBytes, 0, 0,
-frameOffset = 2}`, then the descriptor `{cellCount | flags, 0, width,
-height, 0, offsetX, offsetY}` and one 4-byte `ObjectFrameCell` per cell.
-Bits 5-7 of `bCellCount` are `0x40` on every `lzrle` sprite and `0x20` on
-every `rle` sprite (133 of 133); the packer derives them from
-`compression`. **UNCONFIRMED:** no reader of these bits has been found.
+**Stored cells**: the overworld monster sprites (and the battle sprites)
+fit their cells to the drawing, skipping empty areas and shifting cells
+to cover the art, and frames of one sprite with similar content can get
+different layouts. No rule reproducing every layout is known, so these
+banks keep each frame's cells. Across 820 monster frames, cells are
+tile-aligned, inside the canvas, and never overlap.
+
+**Frame record**: `{width, height, header[4], frameCount, tileBytes,
+extraCount, partCount}` (width, height, and tileBytes are the maxima over
+frames; `header` is signed bytes, zero for derived sprites), one `u16`
+descriptor offset per frame, then per frame in order the descriptor
+`{cellCount | flags, 0, width, height, tileOffset, offsetX, offsetY}`,
+`extraCount` `u16`s, `partCount` 6-byte parts (signed bytes; meaning not
+decoded), and one 4-byte `ObjectFrameCell` per cell. `tileOffset` is the
+frame's stream position within the sprite's tiles. Bits 5-7 of
+`bCellCount` are `0x40` on every `lzrle` frame and `0x20` on every `rle`
+frame in the three banks; the packer derives them from `compression`.
+**UNCONFIRMED:** no reader of these bits has been found.
 
 **Tile streams** are the 4-byte resource header, the compressed stream,
 then zero bytes to a word boundary at least five bytes past the last
 token (the LzRle end token is the first of them).
-`tools/graphics/encode_lz_rle.py` reproduces all 122 ROM LzRle streams:
-it takes a byte run of at least 3 (up to 1089) when no back-reference is
-longer; otherwise the longest non-overlapping back-reference of at least
-3 (length <= distance, up to 33), preferring the farthest on ties within
-the 1023-byte window; it defers a copy as a literal when the run starting
-at the next byte is longer than the copy; literals group in chunks of up
-to 63. `tools/graphics/encode_bios_rle.py` reproduces all 11 RLE streams
-with runs of at least 3 and both token kinds capped at 127 bytes.
+`tools/graphics/encode_lz_rle.py` reproduces every LzRle stream in the
+three banks (264): it takes a byte run of at least 3 (up to 1089) when no
+back-reference is longer; otherwise the longest non-overlapping
+back-reference of at least 3 (length <= distance, up to 33), preferring
+the farthest on ties within the 1023-byte window; it defers a copy as a
+literal when the run starting at the next byte is longer than the copy;
+literals group in chunks of up to 63. `tools/graphics/encode_bios_rle.py`
+reproduces all 37 RLE streams with runs of at least 3 and both token kinds
+capped at 127 bytes.
+
+### Overworld monster sprites (PROVEN, extracted)
+
+`g_pMonsterGraphicsTable`'s second records (see
+[`folio_bruti.md`](folio_bruti.md)'s "Monster graphics table") point into
+`0x080AC8CC`-`0x080B9A84`: 28 sprites in first-use table order, each six
+frame streams, its frame record, and (for 17) its own 32-byte palette,
+followed by one standalone palette used as a recolor by rows 59-62. The
+`MonsterOverworldSprites` `image-bank` row claims the range as
+`MonsterOverworldNNN` entries (stored cells, `tiles`, `frames`, `palette`
+order). Sprites without their own palette use the recolor palettes at
+`0x08A39000`-`0x08A39500`: 40 consecutive 32-byte palettes, all referenced
+by `g_pMonsterGraphicsTable` or the turn-order icon records, claimed by
+the palette-only `MonsterPalettes` bank as `MonsterPaletteNNN.png`
+swatches. The palette at `0x08A38FE0` just before them belongs to a
+different object and a tile stream follows them.
 
 ### Item icons (PROVEN, extracted)
 

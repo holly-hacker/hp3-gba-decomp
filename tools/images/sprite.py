@@ -1,14 +1,19 @@
 """Convert between indexed PNG sprites and their ROM tile, frame, and palette data.
 
-A sprite is one indexed-color PNG plus two settings: `offset`, the pixel
-position of the image's top-left corner relative to the object's anchor, and
-`compression`, the tile-data codec. Everything else follows from the image;
-see docs/formats/graphics.md ("Sprite images").
+See docs/formats/graphics.md ("Sprite images"). A bank.json image entry is
+one of:
 
-- palette: 2**bpp little-endian BGR555 entries, taken from the PNG palette.
-- tiles: the image cut into OAM cells (see cut_cells), each cell's 8x8 tiles
-  row-major, compressed and followed by zero padding.
-- frames: a one-frame ObjectFrameData record describing those cells.
+- a derived sprite, {name, offset, compression}: one frame, <name>.png,
+  OAM cells cut from the image size (cut_cells);
+- a stored-layout sprite, {name, palette, header, frames}: <name>.<i>.png
+  per frame, each frame listing its offset, compression, OAM cells (in
+  tiles), attached parts, and extra halfwords;
+- a palette, {name, paletteOnly}: <name>.png, a swatch whose PNG palette
+  is the data.
+
+Components: palette (2**bpp BGR555 entries from the PNG palette), tiles
+(each frame's cell tiles, compressed, one stream per frame), and frames
+(an ObjectFrameData record).
 """
 import json
 import struct
@@ -37,7 +42,11 @@ OAM_SHAPES = {
     (2, 1): (1, 0), (4, 1): (1, 1), (4, 2): (1, 2), (8, 4): (1, 3),
     (1, 2): (2, 0), (1, 4): (2, 1), (2, 4): (2, 2), (4, 8): (2, 3),
 }
+SHAPE_TILES = {code: wh for wh, code in OAM_SHAPES.items()}
 MAX_TILES_PER_SIDE = 15
+FRAME_HEADER_SIZE = 0xC
+FRAME_DESC_SIZE = 0xA
+PART_SIZE = 6
 
 
 def _align4(n: int) -> int:
@@ -98,9 +107,15 @@ def decode_palette(data: bytes, bpp: int) -> list[tuple[int, int, int]]:
     return colors
 
 
-def _cell_pixels(width: int, height: int):
+def gray_palette(bpp: int) -> list[tuple[int, int, int]]:
+    """Display palette for a sprite whose palette lives outside its bank."""
+    count = 1 << bpp
+    return [(v, v, v) for v in (i * 255 // (count - 1) for i in range(count))]
+
+
+def _cell_pixels(cells):
     """Yield (x, y) for every pixel in tile-data order."""
-    for cx, cy, cw, ch in cut_cells(width // 8, height // 8):
+    for cx, cy, cw, ch in cells:
         for ty in range(cy, cy + ch):
             for tx in range(cx, cx + cw):
                 for y in range(ty * 8, ty * 8 + 8):
@@ -108,20 +123,20 @@ def _cell_pixels(width: int, height: int):
                         yield x, y
 
 
-def pack_pixels(pixels: list[int], width: int, height: int, bpp: int) -> bytes:
-    ordered = [pixels[y * width + x] for x, y in _cell_pixels(width, height)]
+def pack_pixels(pixels: list[int], width: int, cells, bpp: int) -> bytes:
+    ordered = [pixels[y * width + x] for x, y in _cell_pixels(cells)]
     if bpp == 8:
         return bytes(ordered)
     return bytes(lo | hi << 4 for lo, hi in zip(ordered[0::2], ordered[1::2]))
 
 
-def unpack_pixels(data: bytes, width: int, height: int, bpp: int) -> list[int]:
+def unpack_pixels(data: bytes, width: int, height: int, cells, bpp: int) -> list[int]:
     if bpp == 8:
         values = list(data)
     else:
         values = [v for byte in data for v in (byte & 0xF, byte >> 4)]
     pixels = [0] * (width * height)
-    for value, (x, y) in zip(values, _cell_pixels(width, height)):
+    for value, (x, y) in zip(values, _cell_pixels(cells)):
         pixels[y * width + x] = value
     return pixels
 
@@ -160,52 +175,115 @@ def decompress_tiles(data: bytes) -> tuple[bytes, str]:
     return raw, compression
 
 
-def encode_frames(width: int, height: int, offset: tuple[int, int], compression: str, bpp: int) -> bytes:
-    cells = cut_cells(width // 8, height // 8)
-    tile_bytes = width * height * bpp // 8
-    ox, oy = offset
+def tile_stream_length(data: bytes) -> int | None:
+    """Length of the tile stream starting `data`, or None if none starts there."""
+    try:
+        raw, compression = decompress_tiles(data)
+    except (ValueError, IndexError, struct.error):
+        return None
+    encoded = compress_tiles(raw, compression)
+    return len(encoded) if data[:len(encoded)] == encoded else None
+
+
+def encode_frames(frames: list[dict], header: list[int]) -> bytes:
+    """ObjectFrameData for frames of {width, height, offset, compression, cells, parts, extra},
+    each frame's tiles being its own stream of the given byte lengths."""
+    extra_count = len(frames[0]["extra"])
+    part_count = len(frames[0]["parts"])
+    width = max(f["width"] for f in frames)
+    height = max(f["height"] for f in frames)
+    tile_bytes = max(f["tile_bytes"] for f in frames)
     if tile_bytes > 0xFFFF or width > 0xFF or height > 0xFF:
         raise ValueError(f"{width}x{height} sprite exceeds the frame record's fields")
-    out = bytearray(struct.pack("<BB4xHHBBH", width, height, 1, tile_bytes, 0, 0, 2))
-    out += struct.pack("<BBBBHhh", len(cells) | CELL_COUNT_FLAGS[compression], 0, width, height, 0, ox, oy)
-    tile = 0
-    for cx, cy, cw, ch in cells:
-        x, y = ox + cx * 8, oy + cy * 8
-        if not (-256 <= x < 256 and -256 <= y < 256):
-            raise ValueError(f"cell position ({x}, {y}) exceeds the 9-bit OAM range")
-        if tile >= 1 << 10:
-            raise ValueError(f"cell tile offset {tile} exceeds 10 bits")
-        shape, size = OAM_SHAPES[(cw, ch)]
-        word = (x & 0x1FF) | (y & 0x1FF) << 9 | size << 18 | shape << 20 | tile << 22
-        out += struct.pack("<I", word)
-        tile += cw * ch
+    out = bytearray(struct.pack("<BB4bHHBB", width, height, *header, len(frames),
+                                tile_bytes, extra_count, part_count))
+    desc_size = FRAME_DESC_SIZE + extra_count * 2 + part_count * PART_SIZE
+    offset = 2 * len(frames)
+    for f in frames:
+        out += struct.pack("<H", offset)
+        offset += desc_size + 4 * len(f["cells"])
+    tile_offset = 0
+    for f in frames:
+        if len(f["extra"]) != extra_count or len(f["parts"]) != part_count:
+            raise ValueError("every frame needs the same number of extra halfwords and parts")
+        if len(f["cells"]) > 0x1F:
+            raise ValueError(f"{len(f['cells'])} cells exceed the 5-bit cell count")
+        ox, oy = f["offset"]
+        out += struct.pack("<BBBBHhh", len(f["cells"]) | CELL_COUNT_FLAGS[f["compression"]], 0,
+                           f["width"], f["height"], tile_offset, ox, oy)
+        out += struct.pack(f"<{extra_count}H", *f["extra"])
+        for part in f["parts"]:
+            out += struct.pack("<6b", *part)
+        tile = 0
+        for cx, cy, cw, ch in f["cells"]:
+            x, y = ox + cx * 8, oy + cy * 8
+            if not (-256 <= x < 256 and -256 <= y < 256):
+                raise ValueError(f"cell position ({x}, {y}) exceeds the 9-bit OAM range")
+            if tile >= 1 << 10:
+                raise ValueError(f"cell tile offset {tile} exceeds 10 bits")
+            shape, size = OAM_SHAPES[(cw, ch)]
+            out += struct.pack("<I", (x & 0x1FF) | (y & 0x1FF) << 9 | size << 18 | shape << 20 | tile << 22)
+            tile += cw * ch
+        tile_offset += f["stream_bytes"]
     return bytes(out)
 
 
-def decode_frames(data: bytes) -> tuple[int, int, tuple[int, int], str]:
+def _sign9(value: int) -> int:
+    value &= 0x1FF
+    return value - 0x200 if value & 0x100 else value
+
+
+def decode_frames(data: bytes) -> dict:
+    """Parse an ObjectFrameData record; returns its fields and byte length."""
     width, height = data[0], data[1]
-    flags = data[0xE] & 0xE0
-    offset = struct.unpack_from("<hh", data, 0x14)
+    header = list(struct.unpack_from("<4b", data, 2))
+    frame_count, tile_bytes, extra_count, part_count = struct.unpack_from("<HHBB", data, 6)
+    offsets = struct.unpack_from(f"<{frame_count}H", data, FRAME_HEADER_SIZE)
     by_flag = {flag: name for name, flag in CELL_COUNT_FLAGS.items()}
-    if flags not in by_flag:
-        raise ValueError(f"unknown cell-count flags {flags:#04x}")
-    return width, height, offset, by_flag[flags]
+    frames = []
+    end = FRAME_HEADER_SIZE + 2 * frame_count
+    for offset in offsets:
+        base = FRAME_HEADER_SIZE + offset
+        if base != end:
+            raise ValueError("frame descriptors are not stored in order")
+        count_flags, unused, fw, fh, tile_offset, ox, oy = struct.unpack_from("<BBBBHhh", data, base)
+        flags = count_flags & 0xE0
+        if flags not in by_flag or unused:
+            raise ValueError(f"unsupported frame descriptor flags {count_flags:#04x}/{unused:#04x}")
+        pos = base + FRAME_DESC_SIZE
+        extra = list(struct.unpack_from(f"<{extra_count}H", data, pos))
+        pos += 2 * extra_count
+        parts = [list(struct.unpack_from("<6b", data, pos + PART_SIZE * i)) for i in range(part_count)]
+        pos += PART_SIZE * part_count
+        cells = []
+        tile = 0
+        for i in range(count_flags & 0x1F):
+            word = struct.unpack_from("<I", data, pos + 4 * i)[0]
+            x, y = _sign9(word) - ox, _sign9(word >> 9) - oy
+            cw, ch = SHAPE_TILES[((word >> 20) & 3, (word >> 18) & 3)]
+            if x % 8 or y % 8 or word >> 22 != tile:
+                raise ValueError("cell is not tile-aligned or out of tile order")
+            cells.append([x // 8, y // 8, cw, ch])
+            tile += cw * ch
+        end = pos + 4 * len(cells)
+        frames.append({"width": fw, "height": fh, "tile_offset": tile_offset, "offset": [ox, oy],
+                       "compression": by_flag[flags], "extra": extra, "parts": parts, "cells": cells})
+    return {"width": width, "height": height, "header": header, "tile_bytes": tile_bytes,
+            "frames": frames, "length": end}
 
 
 def component_length(kind: str, data: bytes, bpp: int) -> int:
     """Byte length of the component that starts `data`, read from the
-    component itself."""
+    component itself. Tiles here means a single frame's stream."""
     if kind == "palette":
         return 2 << bpp
     if kind == "tiles":
-        raw, compression = decompress_tiles(data)
-        return len(compress_tiles(raw, compression))
+        length = tile_stream_length(data)
+        if length is None:
+            raise ValueError("no tile stream starts here")
+        return length
     if kind == "frames":
-        frame_count, header_extra, part_count = struct.unpack_from("<H2xBB", data, 6)
-        if frame_count != 1:
-            raise ValueError(f"frame record has {frame_count} frames; only 1 is supported")
-        cell_count = data[0xE] & 0x1F
-        return 0xE + 0xA + header_extra * 2 + part_count * 6 + cell_count * 4
+        return decode_frames(data)["length"]
     raise ValueError(f"unknown component kind {kind!r}")
 
 
@@ -214,8 +292,6 @@ def read_png(path: Path, bpp: int) -> tuple[int, int, list[int], list[tuple[int,
         if image.mode != "P":
             raise ValueError(f"expected an indexed-color PNG, got mode {image.mode}")
         width, height = image.size
-        if width % 8 or height % 8:
-            raise ValueError(f"{width}x{height} is not a multiple of 8 pixels")
         flat = image.getpalette() or []
         colors = [tuple(flat[i:i + 3]) for i in range(0, len(flat), 3)]
         pixels = list(image.get_flattened_data())
@@ -234,50 +310,123 @@ def write_png(path: Path, width: int, height: int, pixels: list[int],
     image.save(path, bits=bpp, transparency=0)
 
 
-def build(path: Path, offset: tuple[int, int], compression: str, bpp: int) -> dict[str, bytes]:
+def image_files(entry: dict) -> list[str]:
+    """PNG file names an image entry uses."""
+    if "frames" in entry:
+        return [f"{entry['name']}.{i}.png" for i in range(len(entry["frames"]))]
+    return [f"{entry['name']}.png"]
+
+
+def _frame_tiles(path: Path, frame_cells, bpp: int):
     width, height, pixels, colors = read_png(path, bpp)
-    return {
-        "palette": encode_palette(colors, bpp),
-        "tiles": compress_tiles(pack_pixels(pixels, width, height, bpp), compression),
-        "frames": encode_frames(width, height, offset, compression, bpp),
-    }
+    if width % 8 or height % 8:
+        raise ValueError(f"{path.name}: {width}x{height} is not a multiple of 8 pixels")
+    cells = frame_cells(width // 8, height // 8)
+    covered = set(_cell_pixels(cells))
+    stray = [(x, y) for y in range(height) for x in range(width)
+             if pixels[y * width + x] and (x, y) not in covered]
+    if stray:
+        raise ValueError(f"{path.name}: pixel {stray[0]} lies outside every OAM cell")
+    return width, height, cells, pack_pixels(pixels, width, cells, bpp), colors
 
 
-def extract(components: dict[str, bytes], path: Path, bpp: int) -> dict:
-    """Write one sprite PNG and return its settings. Fails unless rebuilding
-    from the PNG reproduces every component byte for byte."""
-    raw, compression = decompress_tiles(components["tiles"])
-    width, height, offset, frame_compression = decode_frames(components["frames"])
-    if frame_compression != compression:
-        raise ValueError(f"{path.name}: frame flags imply {frame_compression}, tiles use {compression}")
-    if len(raw) != width * height * bpp // 8:
-        raise ValueError(f"{path.name}: {len(raw)} tile bytes do not fill {width}x{height} at {bpp}bpp")
-    colors = decode_palette(components["palette"], bpp)
-    write_png(path, width, height, unpack_pixels(raw, width, height, bpp), colors, bpp)
-    rebuilt = build(path, offset, compression, bpp)
-    for kind in COMPONENT_KINDS:
-        if rebuilt[kind] != components[kind]:
-            raise ValueError(f"{path.name}: rebuilt {kind} differs from the ROM")
-    return {"offset": list(offset), "compression": compression}
+def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
+    """Encode one bank.json image entry into its ROM components."""
+    if entry.get("paletteOnly"):
+        _, _, _, colors = read_png(source / f"{entry['name']}.png", bpp)
+        return {"palette": encode_palette(colors, bpp)}
+    if "frames" in entry:
+        specs = entry["frames"]
+        header = entry["header"]
+        own_palette = entry["palette"]
+    else:
+        specs = [{"offset": entry["offset"], "compression": entry["compression"],
+                  "cells": None, "parts": [], "extra": []}]
+        header = [0, 0, 0, 0]
+        own_palette = True
+    frames, streams, palette = [], [], None
+    for path_name, spec in zip(image_files(entry), specs):
+        stored = spec["cells"]
+        frame_cells = (lambda w, h: [tuple(c) for c in stored]) if stored is not None else cut_cells
+        width, height, cells, raw, colors = _frame_tiles(source / path_name, frame_cells, bpp)
+        if palette is None:
+            palette = colors
+        stream = compress_tiles(raw, spec["compression"])
+        streams.append(stream)
+        frames.append({"width": width, "height": height, "offset": spec["offset"],
+                       "compression": spec["compression"],
+                       "cells": cells, "parts": spec["parts"], "extra": spec["extra"],
+                       "tile_bytes": len(raw), "stream_bytes": len(stream)})
+    components = {"tiles": b"".join(streams), "frames": encode_frames(frames, header)}
+    if own_palette:
+        components["palette"] = encode_palette(palette, bpp)
+    return components
 
 
-def extract_bank(source: Path, bpp: int, order: tuple[str, ...],
-                 sprites: list[tuple[str, dict[str, bytes]]], index_only: bool = False) -> None:
-    """Write each sprite's PNG and the bank's bank.json. With index_only,
+def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool) -> dict:
+    """The bank.json entry for ROM components, without writing any PNG."""
+    if "tiles" not in components:
+        return {"name": name, "paletteOnly": True}
+    record = decode_frames(components["frames"])
+    if stored_cells:
+        keys = ("offset", "compression", "cells", "parts", "extra")
+        return {"name": name, "palette": "palette" in components, "header": record["header"],
+                "frames": [{k: f[k] for k in keys} for f in record["frames"]]}
+    if len(record["frames"]) != 1 or any(record["header"]) or "palette" not in components:
+        raise ValueError(f"{name}: needs stored cells (multi-frame, header data, or no palette)")
+    frame = record["frames"][0]
+    return {"name": name, "offset": frame["offset"], "compression": frame["compression"]}
+
+
+def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, stored_cells: bool) -> dict:
+    """Write one image entry's PNGs and return its bank.json entry. Fails
+    unless rebuilding from the PNGs reproduces every component byte for byte."""
+    entry = entry_settings(name, components, stored_cells)
+    if entry.get("paletteOnly"):
+        count = 1 << bpp
+        write_png(source / f"{name}.png", count, 1, list(range(count)),
+                  decode_palette(components["palette"], bpp), bpp)
+    else:
+        record = decode_frames(components["frames"])
+        colors = (decode_palette(components["palette"], bpp) if "palette" in components
+                  else gray_palette(bpp))
+        for path_name, frame in zip(image_files(entry), record["frames"]):
+            raw, _ = decompress_tiles(components["tiles"][frame["tile_offset"]:])
+            w, h = frame["width"], frame["height"]
+            cells = [tuple(c) for c in frame["cells"]] if stored_cells else cut_cells(w // 8, h // 8)
+            write_png(source / path_name, w, h, unpack_pixels(raw, w, h, cells, bpp), colors, bpp)
+    rebuilt = build(source, entry, bpp)
+    if rebuilt != components:
+        diff = sorted(set(rebuilt) ^ set(components)) or [k for k in components if rebuilt[k] != components[k]]
+        raise ValueError(f"{name}: rebuilt {', '.join(diff)} differs from the ROM")
+    return entry
+
+
+def _entry_json(image: dict) -> str:
+    """One line per image, or per frame for stored-layout sprites."""
+    if "frames" not in image:
+        return f"    {json.dumps(image)}"
+    head = json.dumps({k: v for k, v in image.items() if k != "frames"})[:-1]
+    frames = ",\n".join(f"      {json.dumps(frame)}" for frame in image["frames"])
+    return f'    {head}, "frames": [\n{frames}\n    ]}}'
+
+
+def extract_bank(source: Path, bpp: int, order: tuple[str, ...], entries: list[tuple[str, dict[str, bytes]]],
+                 stored_cells: bool = False, index_only: bool = False) -> None:
+    """Write each image's PNGs and the bank's bank.json. With index_only,
     keep existing PNGs and regenerate only the index."""
     source.mkdir(parents=True, exist_ok=True)
     images = []
-    for name, components in sprites:
-        path = source / f"{name}.png"
+    for name, components in entries:
         if index_only:
-            if not path.is_file():
-                raise ValueError(f"missing {path}; extract the bank first")
-            _, _, offset, compression = decode_frames(components["frames"])
-            settings = {"offset": list(offset), "compression": compression}
+            entry = entry_settings(name, components, stored_cells)
+            missing = [f for f in image_files(entry) if not (source / f).is_file()]
+            if missing:
+                raise ValueError(f"missing {source / missing[0]}; extract the bank first")
         else:
-            settings = extract(components, path, bpp)
-        images.append({"name": name, **settings})
-    lines = ",\n".join(f"    {json.dumps(image)}" for image in images)
+            entry = extract(source, name, components, bpp, stored_cells)
+        images.append(entry)
+    lines = ",\n".join(_entry_json(image) for image in images)
     (source / "bank.json").write_text(
         f'{{\n  "format": 2,\n  "bpp": {bpp},\n  "componentOrder": {json.dumps(list(order))},\n'
         f'  "images": [\n{lines}\n  ]\n}}\n')

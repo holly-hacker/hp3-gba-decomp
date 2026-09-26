@@ -15,40 +15,61 @@ rule 2); extraction overwrites local PNG edits.
 Usage: extract_images.py <ver> [--index-only] [bank ...]
   --index-only keeps existing PNGs and regenerates only bank.json.
 """
+import struct
 import sys
 from pathlib import Path
 
 from pack_images import image_banks
-from sprite import extract_bank, component_length
+from sprite import component_length, extract_bank, tile_stream_length
 
 ROM_BASE = 0x08000000
 
 # Version-independent settings of each bank; ROM ranges live in the manifest.
+# storedCells banks keep each frame's OAM cells in bank.json; their palette
+# is optional per sprite, and a palette not followed by tiles is its own entry.
 BANKS = {
     "ItemIcons": {"prefix": "Item", "bpp": 4, "componentOrder": ("palette", "tiles", "frames")},
     "Portraits": {"prefix": "Portrait", "bpp": 8, "componentOrder": ("tiles", "frames", "palette")},
+    "MonsterOverworldSprites": {"prefix": "MonsterOverworld", "bpp": 4,
+                                "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "MonsterPalettes": {"prefix": "MonsterPalette", "bpp": 4, "componentOrder": ("palette",)},
 }
 
 
 def split_bank(rom: bytes, start: int, end: int, name: str) -> list[tuple[str, dict[str, bytes]]]:
     settings = BANKS[name]
-    sprites = []
-    cursor = start - ROM_BASE
-    while cursor < end - ROM_BASE:
-        sprite_name = f"{settings['prefix']}{len(sprites) + 1:03d}"
+    bpp, stored = settings["bpp"], settings.get("storedCells", False)
+    entries = []
+    cursor, limit = start - ROM_BASE, end - ROM_BASE
+    while cursor < limit:
+        entry_name = f"{settings['prefix']}{len(entries) + 1:03d}"
         components = {}
+        if stored and tile_stream_length(rom[cursor:limit]) is None:
+            components["palette"] = rom[cursor:cursor + (2 << bpp)]
+            cursor += 2 << bpp
+            entries.append((entry_name, components))
+            continue
         for kind in settings["componentOrder"]:
-            data = rom[cursor:end - ROM_BASE]
+            start_at = cursor
             try:
-                length = component_length(kind, data, settings["bpp"])
-            except (ValueError, IndexError) as exc:
-                raise ValueError(f"{name}: {sprite_name} {kind} at {cursor + ROM_BASE:#010x}: {exc}") from None
-            components[kind] = data[:length]
-            cursor += length
-        sprites.append((sprite_name, components))
-    if cursor != end - ROM_BASE:
+                if kind == "tiles":
+                    # One stream per frame, back to back.
+                    while cursor < limit and (length := tile_stream_length(rom[cursor:limit])):
+                        cursor += length
+                    if cursor == start_at:
+                        raise ValueError("no tile stream starts here")
+                elif kind == "palette" and stored and (
+                        cursor >= limit or tile_stream_length(rom[cursor:limit]) is not None):
+                    continue
+                else:
+                    cursor += component_length(kind, rom[cursor:limit], bpp)
+            except (ValueError, IndexError, struct.error) as exc:
+                raise ValueError(f"{name}: {entry_name} {kind} at {start_at + ROM_BASE:#010x}: {exc}") from None
+            components[kind] = rom[start_at:cursor]
+        entries.append((entry_name, components))
+    if cursor != limit:
         raise ValueError(f"{name}: walk ends at {cursor + ROM_BASE:#010x}, past the bank end {end:#010x}")
-    return sprites
+    return entries
 
 
 def main() -> None:
@@ -69,7 +90,8 @@ def main() -> None:
                 raise ValueError(f"no extraction settings for image bank {name}")
             settings = BANKS[name]
             sprites = split_bank(rom, start, end, name)
-            extract_bank(source, settings["bpp"], settings["componentOrder"], sprites, index_only)
+            extract_bank(source, settings["bpp"], settings["componentOrder"], sprites,
+                         settings.get("storedCells", False), index_only)
             print(f"{ver}: {'indexed' if index_only else 'extracted'} {name}: {len(sprites)} images in {source}")
         if not banks:
             print(f"{ver}: no image-bank regions")
