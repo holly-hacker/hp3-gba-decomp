@@ -1,19 +1,17 @@
-"""Shared record layout for the item/equipment table (g_pItemTable) and
-its icon-naming convention. See docs/formats/items.md for field
+"""Shared record layout for the item/equipment table (g_pItemTable).
+See docs/formats/items.md for field
 semantics and how they were identified.
 
 The table itself is committed as matched C source, src/data/items.c --
 see docs/formats/items.md's "The extraction pipeline" section. This
-module now serves only the item-icon extraction/pack pipeline
-(extract_item_icons.py, pack_item_icons.py), which still needs to
-locate each real item's record in the raw ROM and derive its icon's
-label names.
+module serves item-icon extraction (extract_item_icons.py), which locates
+each real item's record in the raw ROM and assigns a numbered file stem.
+The shared
+tools/images/pack_images.py consumes the extracted bank.json index.
 
 52 bytes per record, all fields 4-byte little-endian, in on-disk order.
 """
-import re
 import struct
-from pathlib import Path
 
 # (field name, struct format char). "n"-prefixed fields are Ghidra's
 # `int` (signed); "dw"/pointer fields are `undefined4`/pointer (unsigned).
@@ -55,27 +53,12 @@ def unpack_record(data: bytes) -> dict:
     return {name: value for (name, _fmt), value in zip(FIELDS, values)}
 
 
-def icon_slug(name: str) -> str:
-    """PascalCase identifier derived from an item's display name, e.g.
-    "Chocolate Frogs" -> "ChocolateFrogs". Used for the extracted PNG's
-    filename, the data/images/items/*.bin filenames, and the
-    icon_labels() symbol names, so all three stay in lockstep without
-    being stored anywhere."""
-    words = re.findall(r"[A-Za-z0-9]+", name)
-    return "".join(word[0].upper() + word[1:] for word in words)
+def icon_stem(index: int) -> str:
+    """One-based, stable file stem in item-table order (Item001, ...)."""
+    return f"Item{index + 1:03d}"
 
 
-def icon_labels(slug: str) -> tuple[str, str, str]:
-    """(palette, tiles, frames) label names for an item's icon_slug(),
-    matching both src/data/items.c's `extern` declarations and the
-    labels tools/items/pack_item_icons.py emits inside the
-    `item-icon-data` region."""
-    return (f"gItemIcon{slug}Palette", f"gItemIcon{slug}Tiles", f"gItemIcon{slug}Frames")
-
-
-def icon_bin_paths(images_dir, slug: str):
-    """(palette, tiles, frames) file paths for an item's icon_slug(),
-    under the data/images/items/ directory `images_dir` -- e.g.
-    data/images/items/OrdinaryBelt.palette.bin. Each file's own length is
-    its data's boundary; no separate offset/length needs to be stored."""
-    return tuple(Path(images_dir) / f"{slug}.{kind}.bin" for kind in ("palette", "tiles", "frames"))
+def icon_labels(index: int) -> tuple[str, str, str]:
+    """Assembly labels matching the three components of one item icon."""
+    stem = icon_stem(index)
+    return (f"g{stem}Palette", f"g{stem}Tiles", f"g{stem}Frames")

@@ -11,7 +11,7 @@ save.json
 build/
 data/audio/modules/*
 data/audio/samples/*
-data/images/items/*
+data/images/
 data/items/*
 data/battle_scripts/*
 data/room_scripts/*
@@ -36,4 +36,3 @@ compile_commands.json
 # Work in progress data/handoff notes
 wip/
 debug_source.c
-

@@ -47,7 +47,8 @@ level-table layer maps to which hardware BG register. Not yet wired into
 portraits (`g_apPortraitTable`, `0x0804C61C`, 72 records -- see
 "Character portraits" below), all 72 decoded and rendered
 transparent-background via `tools/graphics/extract_portraits.py`
-(research tool, not yet build-integrated). Tile data otherwise remains
+(54 unique encoded images are packed through an `image-bank` region).
+Tile data otherwise remains
 the bottleneck for "extract everything" beyond items, rooms, and
 portraits -- only 2 further non-BG tile resources are confirmed (the
 spark and the wand), both via live tracing.
@@ -60,7 +61,7 @@ rendered content using a fake grayscale ramp palette must only be
 described structurally, never as depicting specific real-world content
 (item icons and portraits are the exceptions -- their real, decoded
 palettes make identifying content legitimate). No build-integrated
-extractor exists yet for graphics data outside item icons.
+extractor exists yet for graphics data outside item icons and portraits.
 
 ## What we know
 
@@ -937,6 +938,21 @@ one. Confirmed byte-exact against a live mGBA memory dump for room
 **Not yet done**: the very last tile's true compressed length (offset
 table gives each tile's start, not the last one's end).
 
+### Image-bank build format
+
+An `image-bank <start> <end> <dir> <name>` manifest row claims one
+contiguous range. `<dir>/bank.json` has `format: 1` and an ordered
+`components` list of `{file, symbol}` entries. Files hold encoded ROM
+bytes, including any palette or frame metadata the extractor split out;
+the index contains no per-component addresses. `just pack-images` writes
+`build/<ver>/images/<name>.s` with labels and `.incbin` directives, plus
+`include/gen/<ver>/<name>.h` with C declarations and a generated-file
+notice. Packing fails if a component
+is missing, an unlisted `.bin` remains, or the total size differs from
+the manifest range. An extractor must establish the complete range and
+the byte order before adding a bank. The US item-icon and portrait banks
+use this format; room BG tiles remain outside it.
+
 ### Item icons (PROVEN, extracted)
 
 `ItemEntry.pPalette/pTileData/pFrameData` (`docs/formats/items.md`'s item
@@ -1018,31 +1034,33 @@ checking each one's extent against the next, with the span's end
 independently corroborated by `FUN_08026bcc`'s own `id==0x86` literal
 (`&DAT_080ac6a0`, the next icon resource: an equip-slot placeholder
 outside this table). It then extracts each item's 3 pieces verbatim to
-`data/images/items/<Name>.{palette,tiles,frames}.bin` (3 separate
+`data/images/items/ItemNNN.{palette,tiles,frames}.bin` (3 separate
 files, not one concatenated blob -- the frame-header's length isn't a
 fixed format constant the way the palette's is, and nothing in the
 preceding compressed tile data declares its own compressed byte length,
 so only the filesystem boundary reliably separates them) and renders
-each to a human-viewable `extracted/graphics/items/<Name>.png` (gitignored,
-never build input -- see the justfile). `regions.us.txt`'s single
-`item-icon-data` row claims that whole span as one real, byte-verified
-extracted region -- like the Krawall rows, not anonymous `.incbin` from
-the baserom -- packed by `tools/items/pack_item_icons.py`, which just
-copies each `.bin`'s bytes back out under a label
-(`gItemIcon<Name>Palette/Tiles/Frames`). There is no re-encode step: no
+each to a human-viewable `extracted/graphics/items/ItemNNN.png` (gitignored,
+never build input -- see the justfile). The extractor also writes
+`data/images/items/bank.json`, an ordered list of encoded component
+filenames and symbols without per-image ROM addresses. `regions.us.txt`'s
+single `image-bank` row claims the whole span as one byte-verified region.
+The shared `tools/images/pack_images.py` emits each `.bin` under its label
+(`gItemNNNPalette/Tiles/Frames`). There is no re-encode step: no
 `DecompressLzRle` codec encoder exists (only a decoder), so
 packing is a literal copy-through, not a transformation -- editing
 these `.bin` files isn't meaningful, they exist so this region can be
 claimed and byte-verified rather than left as unclaimed `.incbin`.
-`src/data/items.c`'s `ItemEntry` initializers for real items reference
-those same labels by name (`extern` declarations) instead of literal
-addresses, so no ROM address is stored in the C source or
-`data/images/` at all -- only in `regions.us.txt`'s one
-`item-icon-data` row. See `docs/formats/items.md`.
+The packer generates `build/us/images/ItemIcons.s` and
+`include/gen/us/ItemIcons.h`. `src/data/items.c` includes the generated
+declarations and references those labels instead of
+literal addresses. Only the one `image-bank` row stores the bank's ROM
+range. The packer checks its final byte count against that range; within
+it, component positions follow file order and encoded size. See
+`docs/formats/items.md`.
 
 ### Character portraits (PROVEN, extracted)
 
-`g_apPortraitTable` (US `0x0804C61C`, 72 `PortraitRecord` entries, 16
+`g_apPortraitTable` (US `0x0804C61C`, 72 `ObjectAssetRecord` entries, 16
 bytes each: `{pTileGfx, pFrameData, pPalette, reserved(0)}`) holds the
 game's dialog-portrait art. It's reachable from
 `InitializeDebugPortraitsMenu` (`0x0800B5A8`), a debug menu for paging
@@ -1112,11 +1130,19 @@ through them, but the records themselves are ordinary dialog assets --
 - **Duplicates**: 18 of the 72 records point at only 5 distinct
   underlying images (`23=19`, `46=24`, `47=25`, `48=26`, and
   `42/44/50/51/53/62/63/64/65/66/67/69/70/71=40`).
-- **Extraction**: `tools/graphics/extract_portraits.py`, a
-  research tool like `dump_bg_tiles.py` above -- not wired into
-  `just`/`regions.us.txt`. Extracts all 72 records to transparent-background
-  PNGs. The largest portrait decodes to 5120 bytes; the Python decoder
-  grows its output buffer to the stream's actual length.
+- **Extraction**: `tools/graphics/extract_portraits.py` renders all 72
+  table entries, including duplicates, to transparent-background PNGs.
+  The largest portrait decodes to 5120 bytes; the Python decoder grows
+  its output buffer to the stream's actual length. `just extract-portraits`
+  instead extracts the 54 unique encoded resources to
+  `data/images/portraits/` and writes an ordered `bank.json`. It verifies
+  the resources fill `0x08E6D438`-`0x08E8D630`: table pointers delimit
+  each tile and frame component, and each 512-byte palette ends at the
+  next resource. The one `image-bank` row claims
+  all 131,576 bytes. `src/data/portrait_table.c` reconstructs the 72
+  records at `0x0804C61C`-`0x0804CA9C`, referencing generated labels so
+  repeated records share their original image. Both regions are
+  verified by the whole-ROM comparison; JP addresses are not yet mapped.
 
 ## Open threads
 

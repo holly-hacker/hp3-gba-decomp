@@ -36,7 +36,7 @@ disasm-compare ver="us": (disasm ver)
 # One object per region, gaps .incbin'd from the baserom, and a linker
 # script placing each at its manifest address.
 # Generate the build inputs from regions.<ver>.txt.
-gen-link ver="us":
+gen-link ver="us": (pack-images ver)
     mkdir -p build/{{ver}}
     python3 tools/gen_link.py {{ver}}
 
@@ -136,14 +136,19 @@ pack-battle-scripts ver="us":
 extract-item-icons:
     python3 tools/items/extract_item_icons.py
 
-# Gitignored (build/), like everything else pack_item_icons.py writes.
-# Reads local data/images/items/ (run `extract-item-icons` first if
-# missing) plus this version's item-icon-data row in regions.<ver>.txt
-# for addresses. A literal copy-through -- no known encoder exists for
-# the DecompressLzRle codec these icons use.
-# Pack data/images/items/ into this version's item-icon-data assembly.
-pack-item-icons ver="us":
-    python3 tools/items/pack_item_icons.py {{ver}}
+# One-time US extraction of the contiguous portrait resource bank. The
+# 72 table entries share 54 encoded images; local source is gitignored.
+# Bootstrap data/images/portraits/ from baserom.us.gba.
+extract-portraits:
+    python3 tools/graphics/extract_portrait_bank.py
+
+# The image-bank rows each name a directory of ordered encoded components.
+# This emits assembly under build/<ver>/images/ and matching generated
+# C declarations under include/gen/<ver>/.
+# The item bank currently copies original compressed bytes; no encoder exists.
+# Pack all image banks for this version.
+pack-images ver="us":
+    python3 tools/images/pack_images.py {{ver}}
 
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
@@ -152,12 +157,12 @@ pack-item-icons ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-battle-scripts extract-item-icons
+extract-all: extract-krawall extract-text extract-battle-scripts extract-item-icons extract-portraits
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
 # Compile the c-file rows of regions.<ver>.txt to assembly.
-compile-c ver="us":
+compile-c ver="us": (pack-images ver)
     python3 tools/c/compile_c.py {{ver}}
 
 # Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def
@@ -167,7 +172,7 @@ gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
 # Assemble every region and link them at their manifest addresses.
-build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-scripts ver) (pack-item-icons ver) (gen-link ver)
+build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (pack-battle-scripts ver) (gen-link ver)
     for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}

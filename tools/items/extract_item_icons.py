@@ -5,18 +5,17 @@ tools/items/icon_codec.py) verbatim to data/images/items/, and render
 each to a viewable PNG under extracted/graphics/items/ for humans -- see
 docs/formats/graphics.md's "Item icons" section.
 
-Reads baserom.us.gba directly -- real items' pPalette/pTileData/
-pFrameData addresses are recorded nowhere but regions.us.txt's single
-`item-icon-data` row (src/data/items.c references the packed labels by
-name, not by address), so this script locates them straight from the
-ROM's own g_pItemTable, purely to copy bytes out; nothing from this
-pass gets written back into src/.
+Reads baserom.us.gba directly -- src/data/items.c references the packed
+labels by name, not by address. The ROM's g_pItemTable identifies each
+component. The extractor also writes bank.json in component order for the
+shared image-bank packer. --index-only regenerates that index without
+overwriting existing local assets.
 
 All 79 real items' icon data is one fully contiguous ROM span with
 zero gaps between items, in table order -- this is verified below
 (the extraction fails loudly if a future baserom ever breaks that),
 not assumed. Each item's 3 pieces are written as 3 SEPARATE files
-(<Name>.palette.bin/.tiles.bin/.frames.bin), not one concatenated
+(Item001.palette.bin/.tiles.bin/.frames.bin, etc.), not one concatenated
 blob: palette is a fixed 32 bytes by format (2-byte header + 15
 colors, a convention hard-coded in the consuming code, see
 graphics.md), but the frame-header's length is not -- it depends on
@@ -32,10 +31,11 @@ rule 2, AGENTS.md) -- every clone needs to run this once (see the
 different, fully gitignored tree for human-viewing output only -- the
 PNGs there are never build input (see justfile).
 
-Usage: extract_item_icons.py   (reads baserom.us.gba, writes
-                                 data/images/items/*.bin and
-                                 extracted/graphics/items/*.png)
+Usage: extract_item_icons.py [--index-only]
+  Without the flag, reads baserom.us.gba and writes local .bin files,
+  bank.json, and viewable PNGs. --index-only writes only bank.json.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -43,10 +43,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
 from icon_codec import decode_icon
-from item_codec import ITEM_TABLE_ADDR, REAL_ITEM_COUNT, RECORD_SIZE, icon_slug, unpack_record
-
-sys.path.insert(0, str(Path(__file__).parent.parent / "text"))
-from decode_dialog_text import decode_dialog_text
+from item_codec import ITEM_TABLE_ADDR, REAL_ITEM_COUNT, RECORD_SIZE, icon_labels, icon_stem, unpack_record
 
 ROM_BASE = 0x08000000
 VER = "us"
@@ -60,12 +57,10 @@ FRAMES_SIZE = 0x1C
 NEXT_RESOURCE_ADDR = 0x080AC6A0
 
 
-def decode_name(rom: bytes, string_id: int) -> str:
-    data = decode_dialog_text(rom, 0, string_id).rstrip(b"\x00")  # lang 0 = English US
-    return data.decode("latin-1")
-
-
 def main() -> None:
+    if sys.argv[1:] not in ([], ["--index-only"]):
+        sys.exit(f"usage: {sys.argv[0]} [--index-only]")
+    index_only = sys.argv[1:] == ["--index-only"]
     with open(f"baserom.{VER}.gba", "rb") as f:
         rom = f.read()
 
@@ -74,44 +69,58 @@ def main() -> None:
     for i in range(REAL_ITEM_COUNT):
         off = base + i * RECORD_SIZE
         record = unpack_record(rom[off:off + RECORD_SIZE])
-        records.append((decode_name(rom, record["nNameTextId"]), record))
+        records.append(record)
 
     # Verify the whole span is one contiguous run before extracting anything
     # -- see module docstring. Fails loudly rather than silently extracting
     # a wrong/truncated byte range.
-    for i, (name, record) in enumerate(records):
+    for i, record in enumerate(records):
         pPalette, pTileData, pFrameData = record["pPalette"], record["pTileData"], record["pFrameData"]
         if pTileData - pPalette != PALETTE_SIZE:
-            sys.exit(f"{name!r} (index {i}): palette is {pTileData - pPalette:#x} bytes, expected {PALETTE_SIZE:#x}")
+            sys.exit(f"item {i + 1}: palette is {pTileData - pPalette:#x} bytes, expected {PALETTE_SIZE:#x}")
         frames_end = pFrameData + FRAMES_SIZE
-        next_addr = records[i + 1][1]["pPalette"] if i + 1 < len(records) else NEXT_RESOURCE_ADDR
+        next_addr = records[i + 1]["pPalette"] if i + 1 < len(records) else NEXT_RESOURCE_ADDR
         if frames_end != next_addr:
-            sys.exit(f"{name!r} (index {i}): frame-header ends at {frames_end:#010x}, "
+            sys.exit(f"item {i + 1}: frame-header ends at {frames_end:#010x}, "
                       f"expected the next resource to start there ({next_addr:#010x}) -- "
                       f"icon data is not contiguous, extraction assumptions are wrong")
 
     images_dir = Path("data/images/items")
     images_dir.mkdir(parents=True, exist_ok=True)
     extracted_dir = Path("extracted/graphics/items")
-    extracted_dir.mkdir(parents=True, exist_ok=True)
+    if not index_only:
+        extracted_dir.mkdir(parents=True, exist_ok=True)
 
-    for i, (name, record) in enumerate(records):
+    components = []
+    for i, record in enumerate(records):
         pPalette, pTileData, pFrameData = record["pPalette"], record["pTileData"], record["pFrameData"]
-        slug = icon_slug(name)
+        stem = icon_stem(i)
+        for kind, symbol in zip(("palette", "tiles", "frames"), icon_labels(i)):
+            component = f"{stem}.{kind}.bin"
+            if index_only and not (images_dir / component).is_file():
+                sys.exit(f"missing {images_dir / component}; run extract-item-icons first")
+            components.append({"file": component, "symbol": symbol})
+
+        if index_only:
+            continue
 
         palette_bytes = rom[pPalette - ROM_BASE:pTileData - ROM_BASE]
         tiles_bytes = rom[pTileData - ROM_BASE:pFrameData - ROM_BASE]
         frames_bytes = rom[pFrameData - ROM_BASE:pFrameData - ROM_BASE + FRAMES_SIZE]
-        (images_dir / f"{slug}.palette.bin").write_bytes(palette_bytes)
-        (images_dir / f"{slug}.tiles.bin").write_bytes(tiles_bytes)
-        (images_dir / f"{slug}.frames.bin").write_bytes(frames_bytes)
+        (images_dir / f"{stem}.palette.bin").write_bytes(palette_bytes)
+        (images_dir / f"{stem}.tiles.bin").write_bytes(tiles_bytes)
+        (images_dir / f"{stem}.frames.bin").write_bytes(frames_bytes)
 
         width, height, pixels = decode_icon(rom, VER, pPalette, pTileData, pFrameData)
         img = Image.new("RGBA", (width, height))
         img.putdata(pixels)
-        img.save(extracted_dir / f"{slug}.png")
+        img.save(extracted_dir / f"{stem}.png")
 
-    print(f"{REAL_ITEM_COUNT} item icons -> {images_dir}/*.bin, {extracted_dir}/*.png", file=sys.stderr)
+    (images_dir / "bank.json").write_text(json.dumps({"format": 1, "components": components}, indent=2) + "\n")
+    if index_only:
+        print(f"indexed {REAL_ITEM_COUNT} existing item icons in {images_dir / 'bank.json'}", file=sys.stderr)
+    else:
+        print(f"{REAL_ITEM_COUNT} item icons -> {images_dir}/*.bin, {extracted_dir}/*.png", file=sys.stderr)
 
 
 if __name__ == "__main__":

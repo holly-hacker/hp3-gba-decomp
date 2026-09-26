@@ -1,0 +1,79 @@
+#include "object.h"
+#include "gen/us/Portraits.h"
+
+// 72 portrait records; repeated entries share the same image resource.
+// The generated symbols track component positions within the portrait bank.
+const ObjectAssetRecord g_apPortraitTable[72] = {
+    { (void *)gPortrait001Tiles, (void *)gPortrait001Frames, (void *)gPortrait001Palette, 0, { 0, 0, 0 } }, // 0
+    { (void *)gPortrait002Tiles, (void *)gPortrait002Frames, (void *)gPortrait002Palette, 0, { 0, 0, 0 } }, // 1
+    { (void *)gPortrait003Tiles, (void *)gPortrait003Frames, (void *)gPortrait003Palette, 0, { 0, 0, 0 } }, // 2
+    { (void *)gPortrait004Tiles, (void *)gPortrait004Frames, (void *)gPortrait004Palette, 0, { 0, 0, 0 } }, // 3
+    { (void *)gPortrait005Tiles, (void *)gPortrait005Frames, (void *)gPortrait005Palette, 0, { 0, 0, 0 } }, // 4
+    { (void *)gPortrait006Tiles, (void *)gPortrait006Frames, (void *)gPortrait006Palette, 0, { 0, 0, 0 } }, // 5
+    { (void *)gPortrait007Tiles, (void *)gPortrait007Frames, (void *)gPortrait007Palette, 0, { 0, 0, 0 } }, // 6
+    { (void *)gPortrait008Tiles, (void *)gPortrait008Frames, (void *)gPortrait008Palette, 0, { 0, 0, 0 } }, // 7
+    { (void *)gPortrait009Tiles, (void *)gPortrait009Frames, (void *)gPortrait009Palette, 0, { 0, 0, 0 } }, // 8
+    { (void *)gPortrait010Tiles, (void *)gPortrait010Frames, (void *)gPortrait010Palette, 0, { 0, 0, 0 } }, // 9
+    { (void *)gPortrait011Tiles, (void *)gPortrait011Frames, (void *)gPortrait011Palette, 0, { 0, 0, 0 } }, // 10
+    { (void *)gPortrait012Tiles, (void *)gPortrait012Frames, (void *)gPortrait012Palette, 0, { 0, 0, 0 } }, // 11
+    { (void *)gPortrait013Tiles, (void *)gPortrait013Frames, (void *)gPortrait013Palette, 0, { 0, 0, 0 } }, // 12
+    { (void *)gPortrait014Tiles, (void *)gPortrait014Frames, (void *)gPortrait014Palette, 0, { 0, 0, 0 } }, // 13
+    { (void *)gPortrait015Tiles, (void *)gPortrait015Frames, (void *)gPortrait015Palette, 0, { 0, 0, 0 } }, // 14
+    { (void *)gPortrait016Tiles, (void *)gPortrait016Frames, (void *)gPortrait016Palette, 0, { 0, 0, 0 } }, // 15
+    { (void *)gPortrait017Tiles, (void *)gPortrait017Frames, (void *)gPortrait017Palette, 0, { 0, 0, 0 } }, // 16
+    { (void *)gPortrait018Tiles, (void *)gPortrait018Frames, (void *)gPortrait018Palette, 0, { 0, 0, 0 } }, // 17
+    { (void *)gPortrait019Tiles, (void *)gPortrait019Frames, (void *)gPortrait019Palette, 0, { 0, 0, 0 } }, // 18
+    { (void *)gPortrait020Tiles, (void *)gPortrait020Frames, (void *)gPortrait020Palette, 0, { 0, 0, 0 } }, // 19
+    { (void *)gPortrait021Tiles, (void *)gPortrait021Frames, (void *)gPortrait021Palette, 0, { 0, 0, 0 } }, // 20
+    { (void *)gPortrait022Tiles, (void *)gPortrait022Frames, (void *)gPortrait022Palette, 0, { 0, 0, 0 } }, // 21
+    { (void *)gPortrait023Tiles, (void *)gPortrait023Frames, (void *)gPortrait023Palette, 0, { 0, 0, 0 } }, // 22
+    { (void *)gPortrait020Tiles, (void *)gPortrait020Frames, (void *)gPortrait020Palette, 0, { 0, 0, 0 } }, // 23
+    { (void *)gPortrait024Tiles, (void *)gPortrait024Frames, (void *)gPortrait024Palette, 0, { 0, 0, 0 } }, // 24
+    { (void *)gPortrait025Tiles, (void *)gPortrait025Frames, (void *)gPortrait025Palette, 0, { 0, 0, 0 } }, // 25
+    { (void *)gPortrait026Tiles, (void *)gPortrait026Frames, (void *)gPortrait026Palette, 0, { 0, 0, 0 } }, // 26
+    { (void *)gPortrait027Tiles, (void *)gPortrait027Frames, (void *)gPortrait027Palette, 0, { 0, 0, 0 } }, // 27
+    { (void *)gPortrait028Tiles, (void *)gPortrait028Frames, (void *)gPortrait028Palette, 0, { 0, 0, 0 } }, // 28
+    { (void *)gPortrait029Tiles, (void *)gPortrait029Frames, (void *)gPortrait029Palette, 0, { 0, 0, 0 } }, // 29
+    { (void *)gPortrait030Tiles, (void *)gPortrait030Frames, (void *)gPortrait030Palette, 0, { 0, 0, 0 } }, // 30
+    { (void *)gPortrait031Tiles, (void *)gPortrait031Frames, (void *)gPortrait031Palette, 0, { 0, 0, 0 } }, // 31
+    { (void *)gPortrait032Tiles, (void *)gPortrait032Frames, (void *)gPortrait032Palette, 0, { 0, 0, 0 } }, // 32
+    { (void *)gPortrait033Tiles, (void *)gPortrait033Frames, (void *)gPortrait033Palette, 0, { 0, 0, 0 } }, // 33
+    { (void *)gPortrait034Tiles, (void *)gPortrait034Frames, (void *)gPortrait034Palette, 0, { 0, 0, 0 } }, // 34
+    { (void *)gPortrait035Tiles, (void *)gPortrait035Frames, (void *)gPortrait035Palette, 0, { 0, 0, 0 } }, // 35
+    { (void *)gPortrait036Tiles, (void *)gPortrait036Frames, (void *)gPortrait036Palette, 0, { 0, 0, 0 } }, // 36
+    { (void *)gPortrait037Tiles, (void *)gPortrait037Frames, (void *)gPortrait037Palette, 0, { 0, 0, 0 } }, // 37
+    { (void *)gPortrait038Tiles, (void *)gPortrait038Frames, (void *)gPortrait038Palette, 0, { 0, 0, 0 } }, // 38
+    { (void *)gPortrait039Tiles, (void *)gPortrait039Frames, (void *)gPortrait039Palette, 0, { 0, 0, 0 } }, // 39
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 40
+    { (void *)gPortrait041Tiles, (void *)gPortrait041Frames, (void *)gPortrait041Palette, 0, { 0, 0, 0 } }, // 41
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 42
+    { (void *)gPortrait042Tiles, (void *)gPortrait042Frames, (void *)gPortrait042Palette, 0, { 0, 0, 0 } }, // 43
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 44
+    { (void *)gPortrait043Tiles, (void *)gPortrait043Frames, (void *)gPortrait043Palette, 0, { 0, 0, 0 } }, // 45
+    { (void *)gPortrait024Tiles, (void *)gPortrait024Frames, (void *)gPortrait024Palette, 0, { 0, 0, 0 } }, // 46
+    { (void *)gPortrait025Tiles, (void *)gPortrait025Frames, (void *)gPortrait025Palette, 0, { 0, 0, 0 } }, // 47
+    { (void *)gPortrait026Tiles, (void *)gPortrait026Frames, (void *)gPortrait026Palette, 0, { 0, 0, 0 } }, // 48
+    { (void *)gPortrait044Tiles, (void *)gPortrait044Frames, (void *)gPortrait044Palette, 0, { 0, 0, 0 } }, // 49
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 50
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 51
+    { (void *)gPortrait045Tiles, (void *)gPortrait045Frames, (void *)gPortrait045Palette, 0, { 0, 0, 0 } }, // 52
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 53
+    { (void *)gPortrait046Tiles, (void *)gPortrait046Frames, (void *)gPortrait046Palette, 0, { 0, 0, 0 } }, // 54
+    { (void *)gPortrait047Tiles, (void *)gPortrait047Frames, (void *)gPortrait047Palette, 0, { 0, 0, 0 } }, // 55
+    { (void *)gPortrait048Tiles, (void *)gPortrait048Frames, (void *)gPortrait048Palette, 0, { 0, 0, 0 } }, // 56
+    { (void *)gPortrait049Tiles, (void *)gPortrait049Frames, (void *)gPortrait049Palette, 0, { 0, 0, 0 } }, // 57
+    { (void *)gPortrait050Tiles, (void *)gPortrait050Frames, (void *)gPortrait050Palette, 0, { 0, 0, 0 } }, // 58
+    { (void *)gPortrait051Tiles, (void *)gPortrait051Frames, (void *)gPortrait051Palette, 0, { 0, 0, 0 } }, // 59
+    { (void *)gPortrait052Tiles, (void *)gPortrait052Frames, (void *)gPortrait052Palette, 0, { 0, 0, 0 } }, // 60
+    { (void *)gPortrait053Tiles, (void *)gPortrait053Frames, (void *)gPortrait053Palette, 0, { 0, 0, 0 } }, // 61
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 62
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 63
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 64
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 65
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 66
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 67
+    { (void *)gPortrait054Tiles, (void *)gPortrait054Frames, (void *)gPortrait054Palette, 0, { 0, 0, 0 } }, // 68
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 69
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 70
+    { (void *)gPortrait040Tiles, (void *)gPortrait040Frames, (void *)gPortrait040Palette, 0, { 0, 0, 0 } }, // 71
+};

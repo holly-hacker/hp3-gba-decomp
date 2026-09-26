@@ -155,6 +155,8 @@ typedef struct ObjectAssetRecord {
     u8 pad_D[3];
 } ObjectAssetRecord;
 
+extern const ObjectAssetRecord g_apPortraitTable[72];  // US 0x0804C61C
+
 // ObjectVariantSlot.bFrameFlags.
 typedef enum {
     ObjectVariantSlotFlagBlink          = 0x1,  // entries are hidden in the second half of the

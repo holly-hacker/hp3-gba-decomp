@@ -127,25 +127,23 @@ on-disk order, each with a leading `// <index>: <name>` comment for the
 `regions.us.txt` -- table content is not yet confirmed identical to JP
 (see "What's NOT yet known" below). Real items' `pPalette`/`pTileData`/
 `pFrameData` fields reference `extern` icon-label symbols
-(`gItemIcon<Name>Palette`/`Tiles`/`Frames`) instead of literal
+(`gItemNNNPalette`/`Tiles`/`Frames`) instead of literal
 addresses; non-real entries (indices 79-131) keep literal pointer
-values. `tools/items/item_codec.py` still holds the record layout and
-`icon_slug()` naming convention, now serving only the icon pipeline
-below (`extract_item_icons.py`/`pack_item_icons.py`) -- neither reads
-or writes `src/data/items.c`.
+values. `tools/items/item_codec.py` holds the record layout and
+one-based `ItemNNN` naming rule for the icon extractor below
+(`extract_item_icons.py`), which neither reads nor writes `src/data/items.c`.
 
 ## Item icons
 
 Real items' `pPalette`/`pTileData`/`pFrameData` aren't stored as
 literal integers in `src/data/items.c` -- see [`graphics.md`](graphics.md)'s
-"Item icons" section for the format. `icon_slug()` (derived from the
-item's display name) names both the icon-label symbols `src/data/items.c`
-references and `pack_item_icons.py` emits (into `regions.us.txt`'s
-`item-icon-data` row), and the PNG under `extracted/graphics/items/`.
-`pack_item_icons.py` re-derives each real item's name (and so its
-slug) directly from `baserom.us.gba`, the same way
-`extract_item_icons.py` does, rather than depending on
-`src/data/items.c`.
+"Item icons" section for the format. File stems follow item-table order:
+index 0 becomes `Item001`, independent of display text. The same stem
+names the PNG under `extracted/graphics/items/`. `extract_item_icons.py`
+writes `data/images/items/bank.json` in ROM order. The shared
+`tools/images/pack_images.py` reads that index to emit assembly labels
+and a matching C header for the single `image-bank` region; it does
+not need to parse `src/data/items.c` or know item-specific formats.
 
 ## What's NOT yet known
 

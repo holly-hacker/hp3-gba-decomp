@@ -1011,6 +1011,7 @@ label 0x0804C4D4 g_DebugCharacterSelectAnimFrames
 label 0x0804C4E4 g_DebugCharacterSelectAnimData
 c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
 label 0x0804C618 g_dwDebugPortraitsBg1Control
+c-file 0x0804C61C 0x0804CA9C src/data/portrait_table.c g_apPortraitTable
 label 0x0804CE8C g_dwDebugSoundTestBg0Control
 label 0x0804CE90 g_dwDebugSoundTestBg1Control
 label 0x0804CE94 g_DebugSoundTestAnimFrames
@@ -1141,8 +1142,8 @@ label 0x0806BFF4 g_apMainMenuTitleGraphic
 label 0x0806C048 g_aOptionsMenuItems
 label 0x0806C174 g_dwCoolTrainBg0Control
 
-# Item icon data
-item-icon-data 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
+# Item icon image bank
+image-bank 0x080a6d54 0x080ac6a0 data/images/items ItemIcons
 label 0x080BC1C4 g_MainMenuPalette
 label 0x080BC538 g_DebugMenuCursorSpawnData
 
@@ -1238,6 +1239,7 @@ label 0x08E54DC8 g_HippogriffFliesIntoAirSpawnData2
 label 0x08E5B4AC g_RiddikulusBgGraphic
 label 0x08E5EB80 g_HarryVsDementorsBgGraphicA
 label 0x08E62538 g_HarryVsDementorsBgGraphicB
+image-bank 0x08E6D438 0x08E8D630 data/images/portraits Portraits
 
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb
