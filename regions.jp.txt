@@ -23,6 +23,7 @@ c-file 0x08000DA4 0x08000E28 src/object/set_object_sprite_variant.c SetObjectSpr
 c-file 0x08000E28 0x08000EC0 src/object/get_object_variant_frame_size.c GetObjectVariantFrameSize
 c-file 0x08000F50 0x08000FF0 src/object/get_direction_to_target.c GetDirectionToTarget
 c-file 0x08000FF0 0x08001238 src/object/get_unblocked_direction_to_target.c GetUnblockedDirectionToTarget
+c-file 0x08001238 0x08001300 src/object/get_object_collision_box_rect.c GetObjectCollisionBoxRect
 c-file 0x08001300 0x0800143C src/object/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
 c-file 0x0800143C 0x080014B4 src/mem/init_object_pool.c InitObjectPool
 c-file 0x080014B4 0x080014D4 src/mem/alloc_object_of_type.c AllocObjectOfType
@@ -42,6 +43,7 @@ thumb-func 0x08001A78 CancelObjectMove_candidate
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
 thumb-func 0x08001A94 SetObjectMoveTargetWithDuration_candidate
 thumb-func 0x08001D90 sub_08001D90
+c-file 0x08001D9C 0x08001DF8 src/object/do_objects_overlap.c DoObjectsOverlap
 thumb-func 0x08001E58 SetObjectActionSubState
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
 thumb-func 0x08001EA0 SetObjectAnimSubState_candidate

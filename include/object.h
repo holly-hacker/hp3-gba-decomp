@@ -74,16 +74,25 @@ typedef enum {
 } Direction4;
 
 // One of Object's two collision-box slots, tested by CheckObjectCollisions.
-// dwPackedOffsets is 4 signed bytes -- byte3/byte2 = Y offsets, byte1/byte0 =
-// X offsets from the object's integer position (+0x36/+0x3A), sign-extended
-// per byte and swapped by Object.bXFlip/bYFlip (byte 0xD3 bits 4/5) --
-// added to the position to form the box's edges. bState is compared == 1 to
+// dwPackedOffsets is 4 signed bytes: left (byte 0), right (1), top (2) and
+// bottom (3) edge offsets from the integer part of nXPrev/nYPrev (+0x36/+0x3A).
+// Object.bXFlip/bYFlip mirror an axis: its edges become position minus the
+// opposite offset. GetObjectCollisionBoxRect resolves a slot to an ObjectRect;
+// CheckObjectCollisions does the same math inline. bState is compared == 1 to
 // take part in the pairwise overlap test; other values are unconfirmed.
 typedef struct ObjectCollisionBox {
     u32 dwPackedOffsets;  // 0x00
     u8 bState;            // 0x04
     u8 pad_5[3];          // -> 0x08
 } ObjectCollisionBox;
+
+// A collision box resolved to pixel edges; see GetObjectCollisionBoxRect.
+typedef struct ObjectRect {
+    s16 left;
+    s16 right;
+    s16 top;
+    s16 bottom;
+} ObjectRect;
 
 // Header of an ObjectAssetRecord.pFrameData block; see docs/formats/graphics.md.
 // Each awFrameOffsets entry is a byte offset from awFrameOffsets itself to
@@ -334,6 +343,8 @@ extern void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex);
 extern void GetObjectVariantFrameSize(Object *obj, u32 *dims, u8 slot);
 extern u8 GetDirectionToTarget(u32 objectFlags, FixedPoint pos, FixedPoint target, s32 tolerance);
 extern u8 GetUnblockedDirectionToTarget(Object *obj, FixedPoint pos, FixedPoint target, s32 tolerance);
+extern ObjectRect GetObjectCollisionBoxRect(Object *obj, s32 boxIndex);
+extern s32 DoObjectsOverlap(Object *a, Object *b);  // tests collision box 0 of each
 extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
 extern void FreeObjectVramTileAllocation(u16 allocId, u16 tileRow, u8 is8bpp);  // 0x08045514
 extern void ReleaseObjectPalette(Object *obj);  // 0x080308D8
