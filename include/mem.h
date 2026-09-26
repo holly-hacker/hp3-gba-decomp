@@ -141,6 +141,9 @@ extern struct Object *g_apOamQueue[0x69];        // 0x030015B8, onscreen objects
 extern u32 g_dwOamQueueCount;                    // 0x0300175C
 extern struct Object *g_apCollisionQueue[0x69];  // 0x030017A4, objects awaiting the pairwise check
 extern u32 g_dwCollisionQueueCount;              // 0x03001948
+// Cleared by the next TickObject pass that ticks an object's movement; that
+// object plays sound 0x47 if its position changed. Its writer is unidentified.
+extern u32 g_dwUnk03003234;
 
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
 void FreeAllObjects(ListNode **activeListHead);

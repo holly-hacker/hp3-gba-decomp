@@ -59,14 +59,20 @@ c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
 c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
 c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
 
-thumb-func 0x08001FD8 TickObject
+thumb-func 0x08001F40 CheckObjectTerrainCollision
+c-file 0x08001FD8 0x08002154 src/object/tick_object.c TickObject
+thumb-func 0x08002154 TickObjectAnimation
+thumb-func 0x080025F8 IntegrateObjectVelocity
 thumb-func 0x08002618 UpdateObjectOamCells
 thumb-func 0x08002F28 UpdateObjectSpriteFrame
 thumb-func 0x080034B8 sub_080034B8
+thumb-func 0x0800351C TickObjectMove
+thumb-func 0x0800359C IsObjectTickAllowed
 thumb-func 0x0800366C SetObjectAffineTransform
 thumb-func 0x08003708 SetObjectFlippedX
 thumb-func 0x08003808 ReleaseObjectAffineSlot
 thumb-func 0x08003848 StartObjectAffineScaleTween
+thumb-func 0x080038A0 TickObjectAffineEffect
 thumb-func 0x080038EC AllocObjectAffineSlot
 thumb-func 0x08003980 ApplyObjectOrbitMotion
 thumb-func 0x080039E8 sub_080039E8
@@ -344,6 +350,7 @@ thumb-func 0x0802E740 RestorePendingCameraFocus_candidate
 thumb-func 0x0802FF70 InitOamSystem
 thumb-func 0x08030184 sub_08030140
 thumb-func 0x080301C8 HideUnusedOamEntries
+thumb-func 0x08030760 BindObjectEffectData
 thumb-func 0x080307D8 AllocResourceCacheSlot
 thumb-func 0x08030868 ClearResourceCacheSlots
 c-file 0x080308BC 0x080308EC src/object/attach_object_palette.c AttachObjectPalette

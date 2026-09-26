@@ -392,7 +392,15 @@ extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTar
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 extern void SetObjectAnimData(Object *obj, void *a, void *b, s32 c);
 extern u32 TickObjectList(ActiveObjectListState *list, u8 mode);
-extern void TickObject(Object *obj, u8 mode);
+extern void TickObject(Object *obj, u32 mode);
+extern s32 IsObjectTickAllowed(void);
+extern void CheckObjectTerrainCollision(Object *obj);
+extern void TickObjectMove(Object *obj);
+extern void TickObjectAnimation(Object *obj);
+extern void TickObjectAffineEffect(Object *obj);  // steps the scale tween while bAffineEffectTimer runs
+extern void IntegrateObjectVelocity(Object *obj);  // adds +0x44/+0x48 to the velocity, then sets
+                             // nXPrev/nYPrev to the position plus velocity
+extern void BindObjectEffectData(Object *obj);  // binds pEffectData to a resource-cache slot, then clears it
 extern u8 UpdateObjectOamCells(Object *obj);
 extern void UpdateObjectSpriteFrame(Object *obj, u8 mode);
 extern void ApplyObjectOrbitMotion(Object *obj);

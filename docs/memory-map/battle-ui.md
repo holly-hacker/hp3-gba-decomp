@@ -405,11 +405,11 @@ identities):
 **The "Tick" call chain is PROVEN:**
 `InitMonsterBattleActor` (`0x08014C88`) writes this function's address
 into `Object+0x98` (a callback-registration slot, not a direct call).
-**`TickObject`** (`0x08001FDA`) is a per-object per-update-pass
+**`TickObject`** (`0x08001FD8`) is a per-object per-update-pass
 function: it reads `Object+0x98`, and if non-null (and a gating check,
 `IsObjectTickAllowed`, passes), calls **`ThumbInterworkVeneer_bx_r1`**
 (`0x0804A2C4`, see `krawall.md`) to invoke it. **`TickObjectList`**
-(`0x0800091A`) walks the linked list of all active objects, calling
+(`0x08000918`) walks the linked list of all active objects, calling
 `TickObject` once per object per call. So the chain is
 `TickObjectList` -> (per object) `TickObject` ->
 `ThumbInterworkVeneer_bx_r1` -> `TickFighterAttackAnimState_candidate`, a

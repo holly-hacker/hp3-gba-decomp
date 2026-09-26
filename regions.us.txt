@@ -82,16 +82,21 @@ c-file 0x08001EF0 0x08001EF8 src/object/clear_object_flags.c ClearObjectFlags
 c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
 c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
 c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
-thumb-func 0x08001FD8 TickObject
+thumb-func 0x08001F40 CheckObjectTerrainCollision
+c-file 0x08001FD8 0x08002154 src/object/tick_object.c TickObject
+thumb-func 0x08002154 TickObjectAnimation
+thumb-func 0x080025F8 IntegrateObjectVelocity
 thumb-func 0x08002618 UpdateObjectOamCells
 thumb-func 0x08002F28 UpdateObjectSpriteFrame
 thumb-func 0x080034B8 sub_080034B8
+thumb-func 0x0800351C TickObjectMove
 c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
 c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectAffineTransform
 
 thumb-func 0x08003708 SetObjectFlippedX
 thumb-func 0x08003808 ReleaseObjectAffineSlot
 thumb-func 0x08003848 StartObjectAffineScaleTween
+thumb-func 0x080038A0 TickObjectAffineEffect
 thumb-func 0x080038EC AllocObjectAffineSlot
 thumb-func 0x08003980 ApplyObjectOrbitMotion
 thumb-func 0x080039E8 sub_080039E8
@@ -656,6 +661,7 @@ thumb-func 0x08030184 HideUnusedOamEntries
 thumb-func 0x08030274 InitializeOwlNameSelect
 thumb-func 0x0803031C UpdateOwlNameSelect
 thumb-func 0x08030568 ExitOwlNameSelect
+thumb-func 0x0803071C BindObjectEffectData
 thumb-func 0x08030794 AllocResourceCacheSlot
 thumb-func 0x08030824 ClearResourceCacheSlots
 
