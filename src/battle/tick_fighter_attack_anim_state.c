@@ -231,7 +231,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
 
             if (obj->wObjectType == 0x3e) {
                 obj->unk_DC.bEnemyAttackPhase_candidate = 0xff;
-                obj->bAttackOutcomeState = 2;
+                obj->scriptState.bytes.bAttackOutcomeState = 2;
             }
 
             obj->dwFlags &= 0xffff7fff;
@@ -241,7 +241,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
-            if (obj->bAttackOutcomeState != 1)
+            if (obj->scriptState.bytes.bAttackOutcomeState != 1)
                 goto phase2;
         }
         {
@@ -273,7 +273,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
-            if (obj->bAttackOutcomeState == 2) {
+            if (obj->scriptState.bytes.bAttackOutcomeState == 2) {
                 if (MonsterTable[monsterIndex].bSpecialChance <= 99) {
                     g_nLastDamage = (u16)ResolveEnemyAttack(
                         g_pFightState->bActiveFighterIndex,
@@ -290,10 +290,10 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
-            if (obj->bAttackOutcomeState == 4) {
+            if (obj->scriptState.bytes.bAttackOutcomeState == 4) {
                 // Fainted-message sweep: every living non-enemy fighter
                 // resolves once more and queues a faint/HP message.
-                obj->bAttackOutcomeState = 0;
+                obj->scriptState.bytes.bAttackOutcomeState = 0;
                 g_pFightState->pAttackAnimObject_candidate = 0;
                 g_pFightState->bAttackAnimState_candidate = 0;
                 g_pFightState->bFaintMessageCount_candidate = 0;
@@ -335,7 +335,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 if (g_pFightState->dwBattleResultPending == 0)
                     ShowBattleMessage(FaintResult, 0, 0);
             }
-            if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff || obj->bAttackOutcomeState != 3)
+            if (obj->unk_DC.bEnemyAttackPhase_candidate != 0xff || obj->scriptState.bytes.bAttackOutcomeState != 3)
                 goto skipPhase0;
             goto finish;
         }
@@ -348,7 +348,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
     finish:
         g_pFightState->pAttackAnimObject_candidate = 0;
         g_pFightState->bAttackAnimState_candidate = 0;
-        obj->bAttackOutcomeState = 0;
+        obj->scriptState.bytes.bAttackOutcomeState = 0;
         active->bSpellId = Flipendo;
         obj->unk_DC.bEnemyAttackPhase_candidate = 0;
         obj->bActionFlags = 0x41;

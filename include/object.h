@@ -188,6 +188,14 @@ typedef struct ObjectVariantSlot {
                              // Object.bSpriteVariantTableIndex
 } ObjectVariantSlot;
 
+typedef union __attribute__((packed)) ObjectScriptState {
+    u16 wScriptPc;
+    struct __attribute__((packed)) {
+        u8 bAttackOutcomeState;
+        u8 bScriptPageHigh_candidate;
+    } bytes;
+} ObjectScriptState;
+
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
 // into FightState.aSuspendedFighterObjects_candidate -- see battle.h). Only
@@ -229,14 +237,16 @@ typedef struct Object {
     s16 wUnk58;             // 0x58, scaled (>> 7) by DivinationTea's leaf drift
     u8 pad_5A[0x02];        // -> 0x5C
     u32 dwOrbitRadii;       // 0x5C, packed radiusX/radiusY; nonzero runs ApplyObjectOrbitMotion
-    u8 bAttackOutcomeState; // 0x60
-    u8 bScriptPageHigh_candidate;  // 0x61, written by a room script
+    ObjectScriptState scriptState;  // 0x60: object script PC or battle outcome/page bytes
     u16 wStagedDamage;      // 0x62
-    u8 pad_64[0x01];        // -> 0x65
+    u8 bRoomScriptArg64_candidate;  // 0x64, set by room script animation handlers
     u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
-    u8 pad_66[0x02];        // -> 0x68
+    u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileObjectScript
+    u8 pad_67;              // -> 0x68
     u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
-    u8 pad_69[0x03];        // -> 0x6C
+    u8 pad_69;
+    u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartObjectAnimSequence
+    u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartObjectAnimSequence
     u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
     u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
     u8 pad_6E[0x0E];        // -> 0x7C
@@ -428,6 +438,7 @@ extern void CommitQueuedObjectTileUpdates(void);  // run from vblank callbacks
 extern void sub_08001690(Object *obj, const void *pAssetRecord);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
 extern void SetObjectActionState(Object *obj, u8 state);
+extern void SetObjectFlags(Object *obj, ObjectFlags flags);
 // Starts animation `animId` from the object's animation table.
 extern void SetObjectAnimData_candidate(Object *obj, u32 animId);
 extern void SetObjectActionSubState(Object *obj, u8 state);

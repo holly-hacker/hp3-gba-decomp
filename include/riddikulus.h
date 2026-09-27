@@ -3,6 +3,8 @@
 #include "types.h"
 #include "object.h"
 
+extern u32 g_dwRiddikulusMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame
+
 // Riddikulus Boggart Challenge, game mode 0x2F (RiddikulusMinigame).
 
 // The mode's screen state at 0x03002048, driven by g_GameModeStackContext.dwModeState.

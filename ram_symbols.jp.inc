@@ -71,6 +71,11 @@
 
 @ --- Save state / playtime ---
 .set g_saveStateBlock, 0x030031E0
+.set g_aPartyMasterStats, 0x030024EC  @ BattleFighter[], 0x48 stride
+.set g_abQuestEventState, 0x030027A0  @ quest event state bytes
+.set g_bPendingRoomScriptChain, 0x0300260C  @ chain resumed after a game mode
+.set g_bPendingRoomScriptRow, 0x0300260D  @ object row resumed after a game mode
+.set g_dwRoomScriptRunState, 0x0300279C  @ room script run state
 .set g_dwUnk03003234, 0x03003294  @ see ram_symbols.us.inc
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 .set gMt19937LastRollByte,       0x030055D4
@@ -116,12 +121,15 @@
 .set g_dwItemUseItem,                0x0300554C  @ see ram_symbols.us.inc
 .set g_dwItemUseQuantity,            0x03005550  @ see ram_symbols.us.inc
 .set g_pHippogriffGlide,             0x03002088  @ see ram_symbols.us.inc
+.set g_dwHippogriffForceOverworldExit, 0x03002084  @ set by StartMinigame
 .set g_adwHippogriffGlideUnk,        0x03005D70  @ see ram_symbols.us.inc
 .set g_saveManager,                  0x030055F8  @ see ram_symbols.us.inc
 .set g_dwPendingGameMode,            0x03003F78  @ see ram_symbols.us.inc
 .set g_Riddikulus,                   0x03002048  @ see ram_symbols.us.inc
+.set g_dwRiddikulusMinigameScriptFlag_candidate, 0x03002040  @ set by StartMinigame
 .set g_dwListMenuSelection,          0x03003F74  @ see ram_symbols.us.inc
 .set g_HarryVsDementors,             0x03002E18  @ see ram_symbols.us.inc
+.set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ set by StartMinigame
 .set g_pWizardCrackerPopIt,          0x03005290  @ see ram_symbols.us.inc
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005288  @ see ram_symbols.us.inc
 .set g_DivinationTea,                0x03005B88  @ see ram_symbols.us.inc

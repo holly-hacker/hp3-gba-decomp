@@ -74,5 +74,5 @@ void UpdateHarryHermionePortInTimeCutscene(void)
                       g_aHarryHermionePortInTimeObjectPos[g_HarryHermionePortInTime.dwPositionIndex].nObjectBX,
                       (aPosition[1] >> 16) + 0x20);
     UpdateOverworldCamera_candidate(0);
-    SetFadeToWhite(0x2F, fade);
+    SetFadeToWhite(0x2F, (u16)fade);
 }

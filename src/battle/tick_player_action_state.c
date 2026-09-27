@@ -294,7 +294,7 @@ void TickPlayerActionState(Object *obj)
                 DrawFighterStatsUi_candidate(g_pFightState->pFighters[g_pFightState->bMenuFighterIndex].bFighterType, 0);
             } else {
                 // Buckbeak carve-out 2/4: Buckbeak does not roll the normal damage formula
-                obj->bAttackOutcomeState = AttackOutcome_Buckbeak;
+                obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_Buckbeak;
             }
 
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
@@ -316,26 +316,26 @@ void TickPlayerActionState(Object *obj)
             }
         }
 
-        // Real re-reads obj->bAttackOutcomeState at every test rather than
+        // Real re-reads the attack outcome byte at every test rather than
         // caching it in one register, so this chain must not use a local.
-        if (obj->bAttackOutcomeState == 1) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 1) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_nLastDamage == 0)
                 return;
             ShowDamageNumber_candidate(g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                          g_nLastDamage);
             return;
         }
-        if (obj->bAttackOutcomeState == 2) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 2) {
             ShowItemUseResult(obj, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
             return;
         }
-        if (obj->bAttackOutcomeState == 3) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 3) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             obj->bActionFlags = 0x41;
             ApplyDamageToFighter(g_nLastDamage,
                                  g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
@@ -343,7 +343,7 @@ void TickPlayerActionState(Object *obj)
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             return;
         }
-        if (obj->bAttackOutcomeState == 4) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 4) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
             g_pFightState->bFaintMessageCount_candidate = 0;
@@ -366,7 +366,7 @@ void TickPlayerActionState(Object *obj)
                 }
                 ApplyDamageToFighter(g_nLastDamage, i);
             }
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             obj->bActionFlags = 0x41;
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             if (g_pFightState->dwBattleResultPending != 0)
@@ -374,10 +374,10 @@ void TickPlayerActionState(Object *obj)
             ShowBattleMessage(FaintResult, 0, 0);
             return;
         }
-        if (obj->bAttackOutcomeState == 5) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 5) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             obj->bActionFlags = 0x41;
             g_bLastTargetIndex = ACTIVE_FIGHTER.bSelectedActionIndex;
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
@@ -387,9 +387,9 @@ void TickPlayerActionState(Object *obj)
         // than in ResolvePlayerAttack: (HarryLevel >> 1) + 30, x4/3 under
         // SpellPowerBoost. Presented via the attack-result message plus a
         // floating number, never ShowDamageNumber.
-        if (obj->bAttackOutcomeState == AttackOutcome_Buckbeak) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == AttackOutcome_Buckbeak) {
             PlaySoundById(0x37);
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
 
             g_nLastDamage = (g_aPartyMasterStats[Harry].bLevel >> 1) + 30;
             if (ACTIVE_FIGHTER.bStatusFlags & SpellPowerBoost)
@@ -426,7 +426,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->bActionFlags & 1) {
             SetPlayerObjectAnim(obj, 2);
             obj->bActionFlags &= 0xfe;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (ACTIVE_FIGHTER.bFighterType == Harry)
                 obj->dwStateTimer = 0x3c;
             else
@@ -528,10 +528,10 @@ void TickPlayerActionState(Object *obj)
                                  g_pFightState->bActiveFighterIndex,
                                  g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
         }
-        if (obj->bAttackOutcomeState == 1) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 1) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (ACTIVE_FIGHTER.bFighterType == Harry &&
                 g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
@@ -541,10 +541,10 @@ void TickPlayerActionState(Object *obj)
             SetObjectActionState(obj, 0);
             PostActionBattleCheck();
         }
-        if (obj->bAttackOutcomeState == 2) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 2) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
             sub_08012B40();
@@ -559,10 +559,10 @@ void TickPlayerActionState(Object *obj)
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             SetObjectActionState(obj, 0);
         }
-        if (obj->bAttackOutcomeState == 3) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 3) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
             sub_08012B40();
@@ -577,10 +577,10 @@ void TickPlayerActionState(Object *obj)
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             SetObjectActionState(obj, 0);
         }
-        if (obj->bAttackOutcomeState == 4) {
+        if (obj->scriptState.bytes.bAttackOutcomeState == 4) {
             g_pFightState->pAttackAnimObject_candidate = 0;
             g_pFightState->bAttackAnimState_candidate = 0;
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
                 sub_080129F4();
             sub_08012B40();
@@ -598,16 +598,16 @@ void TickPlayerActionState(Object *obj)
                 }
             }
             /* Re-stored after the loop: real emits the store twice, and the
-             * intervening calls make obj->bAttackOutcomeState unprovably
+             * intervening calls make obj->scriptState.bytes.bAttackOutcomeState unprovably
              * unchanged, so neither store folds away. */
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             ShowBattleMessage(FaintResult, 0, 0);
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             if (obj->bActionState == 0x15)
                 SetObjectActionState(obj, 0);
         }
-        if (obj->bAttackOutcomeState != 5)
+        if (obj->scriptState.bytes.bAttackOutcomeState != 5)
             return;
         if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
             sub_080129F4();
@@ -636,7 +636,7 @@ void TickPlayerActionState(Object *obj)
         }
         g_pFightState->pAttackAnimObject_candidate = 0;
         g_pFightState->bAttackAnimState_candidate = 0;
-        obj->bAttackOutcomeState = AttackOutcome_None;
+        obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
         ShowBattleMessage(FaintResult, 0, 0);
         PostActionBattleCheck();
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
@@ -652,7 +652,7 @@ void TickPlayerActionState(Object *obj)
         u16 amount;
 
         if (obj->bActionFlags & 1) {
-            obj->bAttackOutcomeState = AttackOutcome_None;
+            obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             SetPlayerObjectAnim(obj, 3);
             obj->bActionFlags &= 0xfe;
             obj->dwStateTimer = 0x1e;
@@ -679,12 +679,12 @@ void TickPlayerActionState(Object *obj)
         if (obj->dwStateTimer == 0) {
             ShowBattleMessage(StatusRestore, ACTIVE_FIGHTER.bSpellLevel, 0);
         }
-        if (obj->bAttackOutcomeState == AttackOutcome_None)
+        if (obj->scriptState.bytes.bAttackOutcomeState == AttackOutcome_None)
             return;
 
         g_pFightState->pAttackAnimObject_candidate = 0;
         g_pFightState->bAttackAnimState_candidate = 0;
-        obj->bAttackOutcomeState = AttackOutcome_None;
+        obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
 
         {
             u8 spellLevel = ACTIVE_FIGHTER.bSpellLevel;

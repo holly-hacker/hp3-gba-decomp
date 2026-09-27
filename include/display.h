@@ -33,7 +33,7 @@ extern void DisableBg(u32 bg);
 extern void SetBgPriority(u32 bg, u32 priority);
 extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
 // Sets BLDCNT (layer mask | fade mode) and BLDY (amount, at most 0x10).
-extern void SetFadeToWhite(u16 layerMask, u16 amount);
+extern void SetFadeToWhite(u16 layerMask, u32 amount);
 extern void SetFadeToBlack(u16 layerMask, u16 amount);
 
 // Hardware windows: layer masks, rectangle (16.16 coordinates), and hiding one.
@@ -61,6 +61,12 @@ extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);
 extern void sub_0800A914(void);
+// Scene-effect resources selected by room-script opcode 0x33.
+extern const u8 g_aSpecialSceneBg0[];
+extern const u8 g_aSpecialSceneBg1[];
+extern const u8 g_aSpecialSceneBg2[];
+extern const u8 g_aSpecialSceneBgControls[];
+extern u8 g_aSpecialScenePalette[];
 extern void sub_0803094C(u32 arg);
 extern void sub_08001D90(u32 arg);
 

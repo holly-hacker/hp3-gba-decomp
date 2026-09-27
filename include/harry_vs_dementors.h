@@ -3,6 +3,8 @@
 #include "types.h"
 #include "object.h"
 
+extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
+
 // Harry vs Dementors, game mode 0x33 (HarryVsDementorsMinigame).
 
 // The mode's screen state at 0x03002E18, driven by g_GameModeStackContext.dwModeState.

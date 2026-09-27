@@ -19,5 +19,5 @@ void RoomScriptOpSetTileObjectFacingAndScriptPage(SetTileObjectFacingAndScriptPa
         pObject->bFacing = pRecord->bFacing >> 1;
     else
         pObject->bFacing = pRecord->bFacing;
-    pObject->bScriptPageHigh_candidate = pRecord->bScriptPageHigh;
+    pObject->scriptState.bytes.bScriptPageHigh_candidate = pRecord->bScriptPageHigh;
 }

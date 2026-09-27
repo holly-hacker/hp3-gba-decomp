@@ -24,14 +24,14 @@ const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectAnimState,  // 15
     RoomScriptOpQueueTileObjectMove,  // 16
     (RoomScriptOpcodeHandler)RoomScriptOpReturnToOverworld,  // 17
-    RoomScriptOpSetAllQueuedMoveParams,  // 18
+    (RoomScriptOpcodeHandler)RoomScriptOpSetAllQueuedMoveParams,  // 18
     RoomScriptOpClearAllQueuedMoves,  // 19
     (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectPosition,  // 20
-    RoomScriptOpPlayCutscene,  // 21
+    (RoomScriptOpcodeHandler)RoomScriptOpPlayCutscene,  // 21
     (RoomScriptOpcodeHandler)RoomScriptOpCloseRoomDialog,  // 22
     (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectFollowTarget,  // 23
-    RoomScriptOpStartObjectAnimSequence,  // 24
-    RoomScriptOpStartTileObjectScript,  // 25
+    (RoomScriptOpcodeHandler)RoomScriptOpStartObjectAnimSequence,  // 24
+    (RoomScriptOpcodeHandler)RoomScriptOpStartTileObjectScript,  // 25
     (RoomScriptOpcodeHandler)RoomScriptOpPlayTileObjectAnimation,  // 26
     RoomScriptOpOpenMainMenu,  // 27
     (RoomScriptOpcodeHandler)RoomScriptOpArmChainYield,  // 28
@@ -77,7 +77,7 @@ const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     (RoomScriptOpcodeHandler)RoomScriptOpEnterFredAndGeorgesShop,  // 68
     RoomScriptOpFullHealParty,  // 69
     (RoomScriptOpcodeHandler)RoomScriptOpRespawnRowAndRunChain,  // 70
-    RoomScriptOpStartMinigame,  // 71
+    (RoomScriptOpcodeHandler)RoomScriptOpStartMinigame,  // 71
     (RoomScriptOpcodeHandler)RoomScriptOpDespawnRoomRowObjects,  // 72
     (RoomScriptOpcodeHandler)RoomScriptOpGrantPartySpell,  // 73
     RoomScriptOpSetOverworldMonstersDisabled,  // 74

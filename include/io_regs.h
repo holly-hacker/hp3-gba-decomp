@@ -19,6 +19,10 @@
 #define REG_BG2X_L  (*(volatile u16 *)0x04000028)
 #define REG_BG2Y_L  (*(volatile u16 *)0x0400002C)
 
+// Color effects: blend control and brightness coefficient.
+#define REG_BLDCNT (*(volatile u16 *)0x04000050)
+#define REG_BLDY   (*(volatile u16 *)0x04000054)
+
 #define REG_DMA3SAD   (*(volatile u32 *)0x040000D4)
 #define REG_DMA3DAD   (*(volatile u32 *)0x040000D8)
 #define REG_DMA3CNT   (*(volatile u32 *)0x040000DC)

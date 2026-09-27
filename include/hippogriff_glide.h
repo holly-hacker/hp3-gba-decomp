@@ -2,6 +2,8 @@
 
 #include "types.h"
 
+extern u32 g_dwHippogriffForceOverworldExit;  // 0x03002084; set by StartMinigame
+
 // Buckbeak's Hippogriff Glide, game mode 0x2B (HippogriffGlideMinigame).
 
 // Allocated by InitializeHippogriffGlideMinigame, freed by

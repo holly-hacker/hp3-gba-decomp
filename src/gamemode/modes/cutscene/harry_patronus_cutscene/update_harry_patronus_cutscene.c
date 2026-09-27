@@ -57,7 +57,7 @@ void UpdateHarryPatronusCutscene(void)
             g_GameModeStackContext.dwModeState = 4;
             g_GameModeStackContext.dwCurrentGameModeArg3 = 0x10;
         }
-        SetFadeToWhite(0x3F, g_GameModeStackContext.dwCurrentGameModeArg3);
+        SetFadeToWhite(0x3F, (u16)g_GameModeStackContext.dwCurrentGameModeArg3);
         g_GameModeStackContext.dwCurrentGameModeArg3++;
         break;
     case 4:

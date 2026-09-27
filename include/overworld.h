@@ -85,6 +85,8 @@ typedef struct CameraEffect {
     u32 dwResumeScript;        // 0x28, nonzero: resume the yielded room script when the pan ends
 } CameraEffect;
 extern CameraEffect g_aCameraEffects_candidate[];
+// Starts the first slot's camera-shake effect and plays its cue.
+extern void sub_0802B138(void);
 
 // Per-slot camera focus point: what UpdateOverworldCamera_candidate centres the
 // screen on (16.16 world coordinates). Follows pTarget unless wPinned is nonzero.

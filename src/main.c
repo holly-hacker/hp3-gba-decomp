@@ -1,4 +1,5 @@
 #include "vblank.h"
+#include "display.h"
 #include "interrupts.h"
 #include "io_regs.h"
 #include "mem.h"
@@ -31,7 +32,6 @@ extern void NoopInit3(void);
 extern void sub_0801FB78(void);
 extern void InitRoomTileAnimationTable_candidate(void);
 extern void InstallBgTileCodec(void);
-extern void SetFadeToWhite(u16 layerMask, u16 amount);
 extern void kramInstall(void);
 extern void InitScanlineEffects(void);
 

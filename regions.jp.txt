@@ -226,6 +226,13 @@ thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x08010864 ShowBattleMessage
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptObject
+c-file 0x0801C048 0x0801C0E4 src/room/opcodes/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
+c-file 0x0801C0E4 0x0801C1D4 src/room/opcodes/room_script_op_start_object_anim_sequence.c RoomScriptOpStartObjectAnimSequence
+c-file 0x0801C1D4 0x0801C27C src/room/opcodes/room_script_op_start_tile_object_script.c RoomScriptOpStartTileObjectScript
+c-file 0x0801C27C 0x0801C3E8 src/room/opcodes/room_script_op_play_special_scene_effect.c RoomScriptOpPlaySpecialSceneEffect
+c-file 0x0801C3E8 0x0801C43C src/room/opcodes/room_script_op_full_heal_party.c RoomScriptOpFullHealParty
+c-file 0x0801C43C 0x0801C508 src/room/opcodes/room_script_op_start_minigame.c RoomScriptOpStartMinigame
+c-file 0x0801C878 0x0801C970 src/room/opcodes/room_script_op_play_cutscene.c RoomScriptOpPlayCutscene
 c-file 0x0801D514 0x0801D5C4 src/gamemode/modes/cutscene/credits/initialize_credits.c InitializeCredits
 c-file 0x0801D5C4 0x0801D6D8 src/gamemode/modes/cutscene/credits/update_credits.c UpdateCredits
 thumb-func 0x0801D6D8 sub_0801D6DC
@@ -273,6 +280,7 @@ thumb-func 0x080215BC NoopInit
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
 thumb-func 0x08021E54 ProcessOwlCareKitTick
+thumb-func 0x08024574 sub_08024518
 thumb-func 0x08024974 sub_08024918
 thumb-func 0x08025114 InstallBgTileCodec
 c-file 0x08025504 0x0802566C src/input/update_key_input.c UpdateKeyInput
@@ -319,6 +327,7 @@ c-file 0x0802B0B4 0x0802B0E8 src/gamemode/modes/overworld/update_overworld.c Upd
 thumb-func 0x0802B0E8 sub_0802B08C
 c-file 0x0802B0FC 0x0802B138 src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 c-file 0x0802B138 0x0802B150 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
+thumb-func 0x0802B194 sub_0802B138
 thumb-func 0x0802B26C sub_0802B210
 c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 thumb-func 0x0802B478 SpawnWanderingMonsterObject
@@ -331,6 +340,7 @@ thumb-func 0x0802BA78 FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BB2C PickMaxDamageMonster
 thumb-func 0x0802BE48 InstallIwramDivideRoutines
 thumb-func 0x0802BE9C iwramDivideSignedRemainder
+thumb-func 0x0802C1A4 sub_0802C148
 thumb-func 0x0802C2B0 InitHeap
 thumb-func 0x0802C348 AllocZeroed
 thumb-func 0x0802C3EC FreeBlock
@@ -571,6 +581,7 @@ c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounter
 # constants follow JP's save-state layout.
 c-file 0x08051174 0x080513F4 src/data/fighter_anim_table.c g_aFighterAnimTable
 c-file 0x08053C6C 0x08054400 src/data/effect_assets.c g_aEffectObjectAssets
+label 0x0805BB2C g_aSpecialSceneBgControls
 label 0x0805DF4C g_dwLinearCutsceneBg0Control
 label 0x0805DF50 g_dwLinearCutsceneBg1Control
 label 0x0805DF54 g_aLinearCutsceneTable
@@ -607,6 +618,9 @@ label 0x080604D8 g_stPlaytimeHourLimit
 # like everything else in build/), which is what gen_link.py includes.
 label 0x08062994 g_aLupinPotionScanlineTable
 label 0x080629BC g_dwLupinPotionTextBgControl
+label 0x08063000 g_aSpecialSceneBg2
+label 0x08063408 g_aSpecialSceneBg0
+label 0x08063810 g_aSpecialSceneBg1
 label 0x08068BBC g_dwPatronusBg2Control
 label 0x08068BC0 g_dwPatronusBg3Control
 label 0x08068C90 g_dwWizardCrackerPopItBg1Control
@@ -664,6 +678,7 @@ image-bank 0x080D0A90 0x08195AA0 data/images/object_sprites2 ObjectSprites2
 
 # Object palettes, the table at 0x0806C62C
 image-bank 0x08195AA0 0x08196260 data/images/object_palettes ObjectPalettes
+label 0x081B2CC8 g_aSpecialScenePalette
 
 # Monster battle sprites, g_pMonsterGraphicsTable battle records
 image-bank 0x089ADE60 0x089F1C04 data/images/monster_battle MonsterBattleSprites
