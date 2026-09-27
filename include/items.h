@@ -13,7 +13,7 @@ typedef enum {
     ItemCategoryCap        = 4,
     ItemCategoryRobe       = 5,
     ItemCategoryPotion     = 6,
-    ItemCategoryIngredient = 8,
+    ItemCategoryMisc       = 8,
     ItemCategoryDummyEnd   = 12,
 } ItemCategory;
 
