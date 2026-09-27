@@ -2,7 +2,13 @@
 #include "display.h"
 #include "room_script.h"
 
-void RoomScriptOpSetBackgroundPriority(RoomScriptRecord *pRecord)
+typedef struct SetBackgroundPriorityRecord {
+    u32 dwOpcode;
+    u8 bBg;
+    u8 bPriority;
+} SetBackgroundPriorityRecord;
+
+void RoomScriptOpSetBackgroundPriority(SetBackgroundPriorityRecord *pRecord)
 {
-    SetBgPriority(pRecord->operand.ab[0], pRecord->operand.ab[1]);
+    SetBgPriority(pRecord->bBg, pRecord->bPriority);
 }

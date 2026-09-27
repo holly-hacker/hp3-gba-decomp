@@ -1,7 +1,13 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpRespawnRowAndRunChain(RoomScriptRecord *pRecord)
+typedef struct RespawnRowAndRunChainRecord {
+    u32 dwOpcode;
+    u8 bRespawnRow;
+    u8 bChainRow;
+} RespawnRowAndRunChainRecord;
+
+void RoomScriptOpRespawnRowAndRunChain(RespawnRowAndRunChainRecord *pRecord)
 {
-    RespawnRowAndRunChain_candidate(pRecord->operand.ab[0], pRecord->operand.ab[1]);
+    RespawnRowAndRunChain_candidate(pRecord->bRespawnRow, pRecord->bChainRow);
 }

@@ -1,15 +1,22 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpPlayTileObjectAnimation(RoomScriptRecord *pRecord)
+typedef struct PlayTileObjectAnimationRecord {
+    u32 dwOpcode;
+    u8 bTileX;
+    u8 bTileY;
+    u16 wAnimId;
+} PlayTileObjectAnimationRecord;
+
+void RoomScriptOpPlayTileObjectAnimation(PlayTileObjectAnimationRecord *pRecord)
 {
     Object *pObject;
 
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    pObject = GetRoomObjectField_candidate(pRecord->operand.ab[0], pRecord->operand.ab[1]);
+    pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
     if (g_dwRoomScriptRunState == 2)
         pObject->dwFlags |= ObjectFlagRoomScriptYield;
-    SetObjectAnimData_candidate(pObject, pRecord->operand.aw[1]);
+    SetObjectAnimData_candidate(pObject, pRecord->wAnimId);
     pObject->dwFlags |= ObjectFlagHasAnimation;
 }

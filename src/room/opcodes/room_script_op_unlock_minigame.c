@@ -2,9 +2,14 @@
 #include "save.h"
 #include "room_script.h"
 
-void RoomScriptOpUnlockMinigame(RoomScriptRecord *pRecord)
+typedef struct UnlockMinigameRecord {
+    u32 dwOpcode;
+    u8 bMinigameId;
+} UnlockMinigameRecord;
+
+void RoomScriptOpUnlockMinigame(UnlockMinigameRecord *pRecord)
 {
-    switch (pRecord->operand.ab[0])
+    switch (pRecord->bMinigameId)
     {
     case 0:
         g_saveManager.header.bHeaderFlags.bits.bMinigame1Unlocked = 1;

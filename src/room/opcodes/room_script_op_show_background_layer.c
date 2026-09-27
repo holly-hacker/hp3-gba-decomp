@@ -2,7 +2,12 @@
 #include "display.h"
 #include "room_script.h"
 
-void RoomScriptOpShowBackgroundLayer(RoomScriptRecord *pRecord)
+typedef struct ShowBackgroundLayerRecord {
+    u32 dwOpcode;
+    u8 bBg;
+} ShowBackgroundLayerRecord;
+
+void RoomScriptOpShowBackgroundLayer(ShowBackgroundLayerRecord *pRecord)
 {
-    EnableBg(pRecord->operand.ab[0]);
+    EnableBg(pRecord->bBg);
 }

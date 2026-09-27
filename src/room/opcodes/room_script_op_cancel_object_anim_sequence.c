@@ -3,9 +3,15 @@
 #include "room.h"
 #include "room_script.h"
 
-void RoomScriptOpCancelObjectAnimSequence(RoomScriptRecord *pRecord)
+typedef struct CancelObjectAnimSequenceRecord {
+    u32 dwOpcode;
+    u8 bTileX;
+    u8 bTileY;
+} CancelObjectAnimSequenceRecord;
+
+void RoomScriptOpCancelObjectAnimSequence(CancelObjectAnimSequenceRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->operand.ab[0], pRecord->operand.ab[1]);
+    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pObject != NULL)
     {

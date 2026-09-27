@@ -1,9 +1,15 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpInvokeChainIfEnabled(RoomScriptRecord *pRecord)
+typedef struct InvokeChainIfEnabledRecord {
+    u32 dwOpcode;
+    u8 bRow;
+    u8 bChain;
+} InvokeChainIfEnabledRecord;
+
+void RoomScriptOpInvokeChainIfEnabled(InvokeChainIfEnabledRecord *pRecord)
 {
-    g_bRoomScriptPendingChain = pRecord->operand.ab[1];
-    if (ShouldRunRoomScriptRow_candidate(pRecord->operand.ab[0]))
-        RespawnRoomObjectsInRow_candidate(pRecord->operand.ab[0]);
+    g_bRoomScriptPendingChain = pRecord->bChain;
+    if (ShouldRunRoomScriptRow_candidate(pRecord->bRow))
+        RespawnRoomObjectsInRow_candidate(pRecord->bRow);
 }

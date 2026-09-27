@@ -2,7 +2,12 @@
 #include "room.h"
 #include "room_script.h"
 
-void RoomScriptOpSetBattleDefeatState(RoomScriptRecord *pRecord)
+typedef struct SetBattleDefeatStateRecord {
+    u32 dwOpcode;
+    u8 bValue;
+} SetBattleDefeatStateRecord;
+
+void RoomScriptOpSetBattleDefeatState(SetBattleDefeatStateRecord *pRecord)
 {
-    g_abQuestEventState[0x10] = pRecord->operand.ab[0];
+    g_abQuestEventState[0x10] = pRecord->bValue;
 }

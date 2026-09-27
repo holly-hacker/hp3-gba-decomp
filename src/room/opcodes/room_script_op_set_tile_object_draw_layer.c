@@ -1,10 +1,17 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpSetTileObjectDrawLayer(RoomScriptRecord *pRecord)
+typedef struct SetTileObjectDrawLayerRecord {
+    u32 dwOpcode;
+    u8 bTileX;
+    u8 bTileY;
+    u8 bPriority;
+} SetTileObjectDrawLayerRecord;
+
+void RoomScriptOpSetTileObjectDrawLayer(SetTileObjectDrawLayerRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->operand.ab[0], pRecord->operand.ab[1]);
+    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pObject != NULL)
-        pObject->oam.priority = pRecord->operand.ab[2];
+        pObject->oam.priority = pRecord->bPriority;
 }

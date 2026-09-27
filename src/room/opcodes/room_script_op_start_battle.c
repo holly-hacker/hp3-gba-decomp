@@ -3,11 +3,18 @@
 #include "game_modes.h"
 #include "room_script.h"
 
-void RoomScriptOpStartBattle(RoomScriptRecord *pRecord)
+typedef struct StartBattleRecord {
+    u32 dwOpcode;
+    u8 bBattleId;
+    u8 bPendingRow;
+    u8 bPendingChain;
+} StartBattleRecord;
+
+void RoomScriptOpStartBattle(StartBattleRecord *pRecord)
 {
     g_bRoomScriptCallStackDepth = 0;
-    g_bPendingRoomScriptChain = pRecord->operand.ab[2];
-    g_bPendingRoomScriptRow = pRecord->operand.ab[1];
+    g_bPendingRoomScriptChain = pRecord->bPendingChain;
+    g_bPendingRoomScriptRow = pRecord->bPendingRow;
     PlaySoundById(6);
-    PushGameMode_3(Battle, pRecord->operand.ab[0], 0, 0xff);
+    PushGameMode_3(Battle, pRecord->bBattleId, 0, 0xff);
 }

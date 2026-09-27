@@ -1,7 +1,12 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpRemovePartyFollower(RoomScriptRecord *pRecord)
+typedef struct RemovePartyFollowerRecord {
+    u32 dwOpcode;
+    u8 bCharacterId;
+} RemovePartyFollowerRecord;
+
+void RoomScriptOpRemovePartyFollower(RemovePartyFollowerRecord *pRecord)
 {
-    sub_080236DC(pRecord->operand.ab[0]);
+    sub_080236DC(pRecord->bCharacterId);
 }

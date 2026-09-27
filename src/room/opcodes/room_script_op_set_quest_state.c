@@ -2,7 +2,13 @@
 #include "room.h"
 #include "room_script.h"
 
-void RoomScriptOpSetQuestState(RoomScriptRecord *pRecord)
+typedef struct SetQuestStateRecord {
+    u32 dwOpcode;
+    u8 bValue;
+    u8 bIndex;
+} SetQuestStateRecord;
+
+void RoomScriptOpSetQuestState(SetQuestStateRecord *pRecord)
 {
-    g_abQuestEventState[pRecord->operand.ab[1]] = pRecord->operand.ab[0];
+    g_abQuestEventState[pRecord->bIndex] = pRecord->bValue;
 }

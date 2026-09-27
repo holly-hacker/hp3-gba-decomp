@@ -2,7 +2,13 @@
 #include "room.h"
 #include "room_script.h"
 
-void RoomScriptOpSubtractQuestState(RoomScriptRecord *pRecord)
+typedef struct SubtractQuestStateRecord {
+    u32 dwOpcode;
+    u8 bAmount;
+    u8 bIndex;
+} SubtractQuestStateRecord;
+
+void RoomScriptOpSubtractQuestState(SubtractQuestStateRecord *pRecord)
 {
-    g_abQuestEventState[pRecord->operand.ab[1]] -= pRecord->operand.ab[0];
+    g_abQuestEventState[pRecord->bIndex] -= pRecord->bAmount;
 }

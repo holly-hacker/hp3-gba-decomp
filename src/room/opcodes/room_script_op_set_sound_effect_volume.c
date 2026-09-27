@@ -2,7 +2,12 @@
 #include "audio.h"
 #include "room_script.h"
 
-void RoomScriptOpSetSoundEffectVolume(RoomScriptRecord *pRecord)
+typedef struct SetSoundEffectVolumeRecord {
+    u32 dwOpcode;
+    u8 bVolume;
+} SetSoundEffectVolumeRecord;
+
+void RoomScriptOpSetSoundEffectVolume(SetSoundEffectVolumeRecord *pRecord)
 {
-    SetSoundEffectVolume(pRecord->operand.ab[0]);
+    SetSoundEffectVolume(pRecord->bVolume);
 }

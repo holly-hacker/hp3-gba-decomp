@@ -2,9 +2,18 @@
 #include "room.h"
 #include "room_script.h"
 
-void RoomScriptOpGotoIfStoryStageCompare(RoomScriptRecord *pRecord)
+typedef struct GotoIfStoryStageCompareRecord {
+    u32 dwOpcode;
+    u8 bCmpOp;
+    u8 bValue;
+    u8 bTrueChain;
+    u8 bFalseChain;
+    u8 bTrueRow;
+    u8 bFalseRow;
+} GotoIfStoryStageCompareRecord;
+
+void RoomScriptOpGotoIfStoryStageCompare(GotoIfStoryStageCompareRecord *pRecord)
 {
-    CompareAndBranchRoomScript(g_abQuestEventState[0], pRecord->operand.ab[0], pRecord->operand.ab[1],
-                               pRecord->operand.ab[2], pRecord->operand.ab[3], pRecord->operand.ab[4],
-                               pRecord->operand.ab[5]);
+    CompareAndBranchRoomScript(g_abQuestEventState[0], pRecord->bCmpOp, pRecord->bValue, pRecord->bTrueChain,
+                               pRecord->bFalseChain, pRecord->bTrueRow, pRecord->bFalseRow);
 }

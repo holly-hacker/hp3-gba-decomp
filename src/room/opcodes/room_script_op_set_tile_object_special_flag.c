@@ -1,10 +1,17 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpSetTileObjectSpecialFlag(RoomScriptRecord *pRecord)
-{
-    Object *pObject = GetRoomObjectField_candidate(pRecord->operand.ab[0], pRecord->operand.ab[1]);
+typedef struct SetTileObjectSpecialFlagRecord {
+    u32 dwOpcode;
+    u8 bTileX;
+    u8 bTileY;
+    u8 bSet;
+} SetTileObjectSpecialFlagRecord;
 
-    if (pRecord->operand.ab[2] != 0)
+void RoomScriptOpSetTileObjectSpecialFlag(SetTileObjectSpecialFlagRecord *pRecord)
+{
+    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+
+    if (pRecord->bSet != 0)
         pObject->bFlags_0x94_candidate |= 4;
 }

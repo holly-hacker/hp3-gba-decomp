@@ -2,9 +2,14 @@
 #include "battle.h"
 #include "room_script.h"
 
-void RoomScriptOpGrantPartySpell(RoomScriptRecord *pRecord)
+typedef struct GrantPartySpellRecord {
+    u32 dwOpcode;
+    u8 bCharacterId;
+} GrantPartySpellRecord;
+
+void RoomScriptOpGrantPartySpell(GrantPartySpellRecord *pRecord)
 {
-    u32 slot = GetPartyMasterStatsSlot_candidate(pRecord->operand.ab[0]);
+    u32 slot = GetPartyMasterStatsSlot_candidate(pRecord->bCharacterId);
     u32 count = g_aPartyMasterStats[slot].bKnownSpellCount;
     u32 next = count;
 

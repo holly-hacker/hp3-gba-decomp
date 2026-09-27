@@ -2,7 +2,12 @@
 #include "room.h"
 #include "room_script.h"
 
-void RoomScriptOpSetStoryStage(RoomScriptRecord *pRecord)
+typedef struct SetStoryStageRecord {
+    u32 dwOpcode;
+    u8 bStage;
+} SetStoryStageRecord;
+
+void RoomScriptOpSetStoryStage(SetStoryStageRecord *pRecord)
 {
-    g_abQuestEventState[0] = pRecord->operand.ab[0];
+    g_abQuestEventState[0] = pRecord->bStage;
 }

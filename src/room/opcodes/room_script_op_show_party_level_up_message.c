@@ -2,13 +2,20 @@
 #include "dialog.h"
 #include "room_script.h"
 
-void RoomScriptOpShowPartyLevelUpMessage(RoomScriptRecord *pRecord)
+typedef struct ShowPartyLevelUpMessageRecord {
+    u32 dwOpcode;
+    u8 bLevelCount;
+    u8 bDialogArg1C;
+    u8 bDialogArg1D;
+} ShowPartyLevelUpMessageRecord;
+
+void RoomScriptOpShowPartyLevelUpMessage(ShowPartyLevelUpMessageRecord *pRecord)
 {
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    SetTextMacro1Number(pRecord->operand.ab[0]);
-    SetTextMacro3Number(pRecord->operand.ab[0]);
+    SetTextMacro1Number(pRecord->bLevelCount);
+    SetTextMacro3Number(pRecord->bLevelCount);
     ShowRoomDialogBox_candidate(0x293);
-    g_DialogState_candidate.bArg1C = pRecord->operand.ab[1];
-    g_DialogState_candidate.bArg1D = pRecord->operand.ab[2];
+    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
 }

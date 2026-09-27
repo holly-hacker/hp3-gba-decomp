@@ -1,7 +1,12 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpGrantPartyExperience(RoomScriptRecord *pRecord)
+typedef struct GrantPartyExperienceRecord {
+    u32 dwOpcode;
+    u16 wExperience;
+} GrantPartyExperienceRecord;
+
+void RoomScriptOpGrantPartyExperience(GrantPartyExperienceRecord *pRecord)
 {
-    GrantPartyExperience_candidate(pRecord->operand.aw[0]);
+    GrantPartyExperience_candidate(pRecord->wExperience);
 }

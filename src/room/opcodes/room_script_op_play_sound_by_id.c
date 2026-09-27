@@ -2,7 +2,12 @@
 #include "audio.h"
 #include "room_script.h"
 
-void RoomScriptOpPlaySoundById(RoomScriptRecord *pRecord)
+typedef struct PlaySoundByIdRecord {
+    u32 dwOpcode;
+    u8 bSoundId;
+} PlaySoundByIdRecord;
+
+void RoomScriptOpPlaySoundById(PlaySoundByIdRecord *pRecord)
 {
-    PlaySoundById(pRecord->operand.ab[0]);
+    PlaySoundById(pRecord->bSoundId);
 }

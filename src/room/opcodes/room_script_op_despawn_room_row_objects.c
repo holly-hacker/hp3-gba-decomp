@@ -1,9 +1,14 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpDespawnRoomRowObjects(RoomScriptRecord *pRecord)
+typedef struct DespawnRoomRowObjectsRecord {
+    u32 dwOpcode;
+    u8 bRow;
+} DespawnRoomRowObjectsRecord;
+
+void RoomScriptOpDespawnRoomRowObjects(DespawnRoomRowObjectsRecord *pRecord)
 {
-    u8 row = pRecord->operand.ab[0];
+    u8 row = pRecord->bRow;
     u16 columnCount;
     u8 col;
     Object *pObject;

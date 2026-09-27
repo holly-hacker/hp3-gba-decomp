@@ -1,12 +1,21 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpSetTileObjectPosition(RoomScriptRecord *pRecord)
-{
-    Object *pObject = GetRoomObjectField_candidate(pRecord->operand.ab[4], pRecord->operand.ab[5]);
+typedef struct SetTileObjectPositionRecord {
+    u32 dwOpcode;
+    s16 nX;  // pixels
+    s16 nY;
+    u8 bTileX;
+    u8 bTileY;
+    u8 bFacing;
+} SetTileObjectPositionRecord;
 
-    pObject->nX = pRecord->operand.asw[0] << 16;
-    pObject->nY = pRecord->operand.asw[1] << 16;
-    pObject->bFacing = pRecord->operand.ab[6];
+void RoomScriptOpSetTileObjectPosition(SetTileObjectPositionRecord *pRecord)
+{
+    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+
+    pObject->nX = pRecord->nX << 16;
+    pObject->nY = pRecord->nY << 16;
+    pObject->bFacing = pRecord->bFacing;
     pObject->bActionFlags |= 0x10;
 }

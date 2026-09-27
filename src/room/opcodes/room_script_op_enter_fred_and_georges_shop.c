@@ -2,9 +2,16 @@
 #include "game_modes.h"
 #include "room_script.h"
 
-void RoomScriptOpEnterFredAndGeorgesShop(RoomScriptRecord *pRecord)
+typedef struct EnterFredAndGeorgesShopRecord {
+    u32 dwOpcode;
+    u8 bModeArg;
+    u8 bPendingRow;
+    u8 bPendingChain;
+} EnterFredAndGeorgesShopRecord;
+
+void RoomScriptOpEnterFredAndGeorgesShop(EnterFredAndGeorgesShopRecord *pRecord)
 {
-    g_bPendingRoomScriptChain = pRecord->operand.ab[2];
-    g_bPendingRoomScriptRow = pRecord->operand.ab[1];
-    PushGameMode_3(FredAndGeorgesShop, 0, pRecord->operand.ab[0], 0);
+    g_bPendingRoomScriptChain = pRecord->bPendingChain;
+    g_bPendingRoomScriptRow = pRecord->bPendingRow;
+    PushGameMode_3(FredAndGeorgesShop, 0, pRecord->bModeArg, 0);
 }

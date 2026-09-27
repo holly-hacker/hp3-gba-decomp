@@ -1,7 +1,12 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpConsumeRoomItem(RoomScriptRecord *pRecord)
+typedef struct ConsumeRoomItemRecord {
+    u32 dwOpcode;
+    u8 bItemId;
+} ConsumeRoomItemRecord;
+
+void RoomScriptOpConsumeRoomItem(ConsumeRoomItemRecord *pRecord)
 {
-    ConsumeBattleItemSlot(pRecord->operand.ab[0], 1);
+    ConsumeBattleItemSlot(pRecord->bItemId, 1);
 }

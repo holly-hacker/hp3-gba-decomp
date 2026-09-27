@@ -1,8 +1,15 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpPatchRoomBackgroundTile(RoomScriptRecord *pRecord)
+typedef struct PatchRoomBackgroundTileRecord {
+    u32 dwOpcode;
+    u16 wX;
+    u16 wY;
+    u16 wTileId;
+    u8 bLayer;
+} PatchRoomBackgroundTileRecord;
+
+void RoomScriptOpPatchRoomBackgroundTile(PatchRoomBackgroundTileRecord *pRecord)
 {
-    WriteRoomBgTile_candidate(pRecord->operand.aw[0], pRecord->operand.aw[1], pRecord->operand.aw[2],
-                              pRecord->operand.ab[6]);
+    WriteRoomBgTile_candidate(pRecord->wX, pRecord->wY, pRecord->wTileId, pRecord->bLayer);
 }

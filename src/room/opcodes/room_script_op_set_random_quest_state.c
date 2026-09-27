@@ -3,7 +3,14 @@
 #include "room.h"
 #include "room_script.h"
 
-void RoomScriptOpSetRandomQuestState(RoomScriptRecord *pRecord)
+typedef struct SetRandomQuestStateRecord {
+    u32 dwOpcode;
+    s16 nMin;
+    s16 nMax;
+    u8 bIndex;
+} SetRandomQuestStateRecord;
+
+void RoomScriptOpSetRandomQuestState(SetRandomQuestStateRecord *pRecord)
 {
-    g_abQuestEventState[pRecord->operand.ab[4]] = Mt19937RandRange(pRecord->operand.asw[0], pRecord->operand.asw[1]);
+    g_abQuestEventState[pRecord->bIndex] = Mt19937RandRange(pRecord->nMin, pRecord->nMax);
 }

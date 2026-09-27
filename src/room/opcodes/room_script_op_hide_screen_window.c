@@ -2,7 +2,12 @@
 #include "display.h"
 #include "room_script.h"
 
-void RoomScriptOpHideScreenWindow(RoomScriptRecord *pRecord)
+typedef struct HideScreenWindowRecord {
+    u32 dwOpcode;
+    u8 bWindowId;
+} HideScreenWindowRecord;
+
+void RoomScriptOpHideScreenWindow(HideScreenWindowRecord *pRecord)
 {
-    HideScreenWindow_candidate(pRecord->operand.ab[0]);
+    HideScreenWindow_candidate(pRecord->bWindowId);
 }

@@ -7,96 +7,96 @@
 
 const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     0,  // 0: chain terminator
-    RoomScriptOpDespawnTileObject,  // 1
-    RoomScriptOp2,  // 2
-    RoomScriptOpSetTileObjectFlagBit,  // 3
-    RoomScriptOpClearTileObjectFlagBit,  // 4
-    RoomScriptOpShowRoomDialog,  // 5
+    (RoomScriptOpcodeHandler)RoomScriptOpDespawnTileObject,  // 1
+    (RoomScriptOpcodeHandler)RoomScriptOp2,  // 2
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectFlagBit,  // 3
+    (RoomScriptOpcodeHandler)RoomScriptOpClearTileObjectFlagBit,  // 4
+    (RoomScriptOpcodeHandler)RoomScriptOpShowRoomDialog,  // 5
     RoomScriptOpPauseMusic,  // 6
     RoomScriptOpResumeMusic,  // 7
-    RoomScriptOpPlayMusicModuleAndFlagIfChain1,  // 8
-    RoomScriptOpPlayRoomSoundEffect,  // 9
-    RoomScriptOpPlaySoundById,  // 10
-    RoomScriptOpSetRoomMusicVolume,  // 11
-    RoomScriptOpSetSoundEffectVolume,  // 12
-    RoomScriptOpDelayedRespawnRowAndRunChain,  // 13
-    RoomScriptOpSetStoryStage,  // 14
-    RoomScriptOpSetTileObjectAnimState,  // 15
+    (RoomScriptOpcodeHandler)RoomScriptOpPlayMusicModuleAndFlagIfChain1,  // 8
+    (RoomScriptOpcodeHandler)RoomScriptOpPlayRoomSoundEffect,  // 9
+    (RoomScriptOpcodeHandler)RoomScriptOpPlaySoundById,  // 10
+    (RoomScriptOpcodeHandler)RoomScriptOpSetRoomMusicVolume,  // 11
+    (RoomScriptOpcodeHandler)RoomScriptOpSetSoundEffectVolume,  // 12
+    (RoomScriptOpcodeHandler)RoomScriptOpDelayedRespawnRowAndRunChain,  // 13
+    (RoomScriptOpcodeHandler)RoomScriptOpSetStoryStage,  // 14
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectAnimState,  // 15
     RoomScriptOpQueueTileObjectMove,  // 16
-    RoomScriptOpReturnToOverworld,  // 17
+    (RoomScriptOpcodeHandler)RoomScriptOpReturnToOverworld,  // 17
     RoomScriptOpSetAllQueuedMoveParams,  // 18
     RoomScriptOpClearAllQueuedMoves,  // 19
-    RoomScriptOpSetTileObjectPosition,  // 20
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectPosition,  // 20
     RoomScriptOpPlayCutscene,  // 21
-    RoomScriptOpCloseRoomDialog,  // 22
+    (RoomScriptOpcodeHandler)RoomScriptOpCloseRoomDialog,  // 22
     RoomScriptOpSetTileObjectFollowTarget,  // 23
     RoomScriptOpStartObjectAnimSequence,  // 24
     RoomScriptOpStartTileObjectScript,  // 25
-    RoomScriptOpPlayTileObjectAnimation,  // 26
+    (RoomScriptOpcodeHandler)RoomScriptOpPlayTileObjectAnimation,  // 26
     RoomScriptOpOpenMainMenu,  // 27
-    RoomScriptOpArmChainYield,  // 28
-    RoomScriptOpGotoIfQuestStateCompare,  // 29
-    RoomScriptOpGotoIfQuestStatePairCompare,  // 30
-    RoomScriptOpSetQuestState,  // 31
-    RoomScriptOpCopyQuestState,  // 32
-    RoomScriptOpCancelObjectAnimSequence,  // 33
-    RoomScriptOpSetTileObjectAnimStateWithSpeed,  // 34
-    RoomScriptOpPatchRoomBackgroundTile,  // 35
-    RoomScriptOpShowLoadingScreenTransition,  // 36
+    (RoomScriptOpcodeHandler)RoomScriptOpArmChainYield,  // 28
+    (RoomScriptOpcodeHandler)RoomScriptOpGotoIfQuestStateCompare,  // 29
+    (RoomScriptOpcodeHandler)RoomScriptOpGotoIfQuestStatePairCompare,  // 30
+    (RoomScriptOpcodeHandler)RoomScriptOpSetQuestState,  // 31
+    (RoomScriptOpcodeHandler)RoomScriptOpCopyQuestState,  // 32
+    (RoomScriptOpcodeHandler)RoomScriptOpCancelObjectAnimSequence,  // 33
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectAnimStateWithSpeed,  // 34
+    (RoomScriptOpcodeHandler)RoomScriptOpPatchRoomBackgroundTile,  // 35
+    (RoomScriptOpcodeHandler)RoomScriptOpShowLoadingScreenTransition,  // 36
     RoomScriptOpPlayScreenTransitionOut,  // 37
     RoomScriptOpPlayScreenTransitionIn,  // 38
-    RoomScriptOpRecruitPartyFollower,  // 39
-    RoomScriptOpRemovePartyFollower,  // 40
-    RoomScriptOpSpawnPartyFollowerAtTile,  // 41
-    RoomScriptOp42,  // 42
-    RoomScriptOpStartBattle,  // 43
-    RoomScriptOpSetTileObjectAnimStateValue,  // 44
-    RoomScriptOpGrantRoomReward,  // 45
-    RoomScriptOpSetBackgroundBlendLayers,  // 46
-    RoomScriptOpShowBackgroundLayer,  // 47
-    RoomScriptOpHideBackgroundLayer,  // 48
-    RoomScriptOpSetBackgroundPriority,  // 49
+    (RoomScriptOpcodeHandler)RoomScriptOpRecruitPartyFollower,  // 39
+    (RoomScriptOpcodeHandler)RoomScriptOpRemovePartyFollower,  // 40
+    (RoomScriptOpcodeHandler)RoomScriptOpSpawnPartyFollowerAtTile,  // 41
+    (RoomScriptOpcodeHandler)RoomScriptOp42,  // 42
+    (RoomScriptOpcodeHandler)RoomScriptOpStartBattle,  // 43
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectAnimStateValue,  // 44
+    (RoomScriptOpcodeHandler)RoomScriptOpGrantRoomReward,  // 45
+    (RoomScriptOpcodeHandler)RoomScriptOpSetBackgroundBlendLayers,  // 46
+    (RoomScriptOpcodeHandler)RoomScriptOpShowBackgroundLayer,  // 47
+    (RoomScriptOpcodeHandler)RoomScriptOpHideBackgroundLayer,  // 48
+    (RoomScriptOpcodeHandler)RoomScriptOpSetBackgroundPriority,  // 49
     RoomScriptOp50,  // 50
     RoomScriptOpPlaySpecialSceneEffect,  // 51
-    RoomScriptOpDelayedRespawnRowAndRunChainFrames,  // 52
-    RoomScriptOpSetTileObjectAndLinkedVisible,  // 53
-    RoomScriptOpGotoIfStoryStageCompare,  // 54
-    RoomScriptOpSetRandomQuestState,  // 55
+    (RoomScriptOpcodeHandler)RoomScriptOpDelayedRespawnRowAndRunChainFrames,  // 52
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectAndLinkedVisible,  // 53
+    (RoomScriptOpcodeHandler)RoomScriptOpGotoIfStoryStageCompare,  // 54
+    (RoomScriptOpcodeHandler)RoomScriptOpSetRandomQuestState,  // 55
     RoomScriptOpNoOp,  // 56
-    RoomScriptOpSetScreenWindow,  // 57
-    RoomScriptOpHideScreenWindow,  // 58
-    RoomScriptOpSetTileObjectFacing,  // 59
-    RoomScriptOpAddQuestState,  // 60
-    RoomScriptOpSubtractQuestState,  // 61
+    (RoomScriptOpcodeHandler)RoomScriptOpSetScreenWindow,  // 57
+    (RoomScriptOpcodeHandler)RoomScriptOpHideScreenWindow,  // 58
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectFacing,  // 59
+    (RoomScriptOpcodeHandler)RoomScriptOpAddQuestState,  // 60
+    (RoomScriptOpcodeHandler)RoomScriptOpSubtractQuestState,  // 61
     RoomScriptOpClearQuestStateUpperHalf,  // 62
     RoomScriptOpNoOpAlt,  // 63
-    RoomScriptOpInvokeChainIfEnabled,  // 64
-    RoomScriptOpGrantPartyExperience,  // 65
-    RoomScriptOpSetBattleDefeatState,  // 66
-    RoomScriptOpSetTileObjectDrawLayer,  // 67
-    RoomScriptOpEnterFredAndGeorgesShop,  // 68
+    (RoomScriptOpcodeHandler)RoomScriptOpInvokeChainIfEnabled,  // 64
+    (RoomScriptOpcodeHandler)RoomScriptOpGrantPartyExperience,  // 65
+    (RoomScriptOpcodeHandler)RoomScriptOpSetBattleDefeatState,  // 66
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectDrawLayer,  // 67
+    (RoomScriptOpcodeHandler)RoomScriptOpEnterFredAndGeorgesShop,  // 68
     RoomScriptOpFullHealParty,  // 69
-    RoomScriptOpRespawnRowAndRunChain,  // 70
+    (RoomScriptOpcodeHandler)RoomScriptOpRespawnRowAndRunChain,  // 70
     RoomScriptOpStartMinigame,  // 71
-    RoomScriptOpDespawnRoomRowObjects,  // 72
-    RoomScriptOpGrantPartySpell,  // 73
+    (RoomScriptOpcodeHandler)RoomScriptOpDespawnRoomRowObjects,  // 72
+    (RoomScriptOpcodeHandler)RoomScriptOpGrantPartySpell,  // 73
     RoomScriptOpSetOverworldMonstersDisabled,  // 74
     RoomScriptOpClearOverworldMonstersDisabled,  // 75
-    RoomScriptOpSetTileObjectFacingAndScriptPage,  // 76
-    RoomScriptOpSetTileObjectSpecialFlag,  // 77
-    RoomScriptOpUnlockMinigame,  // 78
-    RoomScriptOpShowRewardPickupMessage,  // 79
-    RoomScriptOpShowItemRemovedMessage,  // 80
-    RoomScriptOpShowSpellLearnedMessage,  // 81
-    RoomScriptOpSetPauseMenuLocked,  // 82
-    RoomScriptOpGotoIfFolioPageGroupComplete,  // 83
-    RoomScriptOpShowFolioCategoryStatusMessage,  // 84
-    RoomScriptOpShowMinigameUnlockedMessage,  // 85
-    RoomScriptOpShowPartyLevelUpMessage,  // 86
-    RoomScriptOpGrantPartyLevelUps,  // 87
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectFacingAndScriptPage,  // 76
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectSpecialFlag,  // 77
+    (RoomScriptOpcodeHandler)RoomScriptOpUnlockMinigame,  // 78
+    (RoomScriptOpcodeHandler)RoomScriptOpShowRewardPickupMessage,  // 79
+    (RoomScriptOpcodeHandler)RoomScriptOpShowItemRemovedMessage,  // 80
+    (RoomScriptOpcodeHandler)RoomScriptOpShowSpellLearnedMessage,  // 81
+    (RoomScriptOpcodeHandler)RoomScriptOpSetPauseMenuLocked,  // 82
+    (RoomScriptOpcodeHandler)RoomScriptOpGotoIfFolioPageGroupComplete,  // 83
+    (RoomScriptOpcodeHandler)RoomScriptOpShowFolioCategoryStatusMessage,  // 84
+    (RoomScriptOpcodeHandler)RoomScriptOpShowMinigameUnlockedMessage,  // 85
+    (RoomScriptOpcodeHandler)RoomScriptOpShowPartyLevelUpMessage,  // 86
+    (RoomScriptOpcodeHandler)RoomScriptOpGrantPartyLevelUps,  // 87
     RoomScriptOpUnmuteAllMusicChannels,  // 88
-    RoomScriptOpConsumeRoomItem,  // 89
+    (RoomScriptOpcodeHandler)RoomScriptOpConsumeRoomItem,  // 89
     RoomScriptOpResetPartyLeaderSelection,  // 90
-    RoomScriptOpGotoIfAllQuestFlagsSet,  // 91
-    RoomScriptOpSetPendingChainFromExitParam,  // 92
+    (RoomScriptOpcodeHandler)RoomScriptOpGotoIfAllQuestFlagsSet,  // 91
+    (RoomScriptOpcodeHandler)RoomScriptOpSetPendingChainFromExitParam,  // 92
 };

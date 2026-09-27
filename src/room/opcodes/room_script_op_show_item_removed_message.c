@@ -3,13 +3,20 @@
 #include "text.h"
 #include "room_script.h"
 
-void RoomScriptOpShowItemRemovedMessage(RoomScriptRecord *pRecord)
+typedef struct ShowItemRemovedMessageRecord {
+    u32 dwOpcode;
+    u8 bRewardId;
+    u8 bDialogArg1C;
+    u8 bDialogArg1D;
+} ShowItemRemovedMessageRecord;
+
+void RoomScriptOpShowItemRemovedMessage(ShowItemRemovedMessageRecord *pRecord)
 {
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(pRecord->operand.ab[0])));
-    SetTextMacro3String(GetDialogText(GetRewardNameStringId_candidate(pRecord->operand.ab[0])));
+    SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
+    SetTextMacro3String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
     ShowRoomDialogBox_candidate(0x28e);
-    g_DialogState_candidate.bArg1C = pRecord->operand.ab[1];
-    g_DialogState_candidate.bArg1D = pRecord->operand.ab[2];
+    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
 }

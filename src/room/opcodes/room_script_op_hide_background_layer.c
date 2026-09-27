@@ -2,7 +2,12 @@
 #include "display.h"
 #include "room_script.h"
 
-void RoomScriptOpHideBackgroundLayer(RoomScriptRecord *pRecord)
+typedef struct HideBackgroundLayerRecord {
+    u32 dwOpcode;
+    u8 bBg;
+} HideBackgroundLayerRecord;
+
+void RoomScriptOpHideBackgroundLayer(HideBackgroundLayerRecord *pRecord)
 {
-    DisableBg(pRecord->operand.ab[0]);
+    DisableBg(pRecord->bBg);
 }

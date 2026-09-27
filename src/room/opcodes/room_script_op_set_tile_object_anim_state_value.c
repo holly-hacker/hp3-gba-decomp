@@ -1,10 +1,17 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpSetTileObjectAnimStateValue(RoomScriptRecord *pRecord)
-{
-    Object *pObject = GetRoomObjectField_candidate(pRecord->operand.ab[0], pRecord->operand.ab[1]);
+typedef struct SetTileObjectAnimStateValueRecord {
+    u32 dwOpcode;
+    u8 bTileX;
+    u8 bTileY;
+    u8 bActionState;
+} SetTileObjectAnimStateValueRecord;
 
-    SetObjectActionState(pObject, pRecord->operand.ab[2]);
+void RoomScriptOpSetTileObjectAnimStateValue(SetTileObjectAnimStateValueRecord *pRecord)
+{
+    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+
+    SetObjectActionState(pObject, pRecord->bActionState);
     SetObjectActionSubState(pObject, 0);
 }

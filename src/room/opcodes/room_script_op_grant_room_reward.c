@@ -1,10 +1,16 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpGrantRoomReward(RoomScriptRecord *pRecord)
+typedef struct GrantRoomRewardRecord {
+    u32 dwOpcode;
+    u8 bRewardId;
+    u8 bVariant;
+} GrantRoomRewardRecord;
+
+void RoomScriptOpGrantRoomReward(GrantRoomRewardRecord *pRecord)
 {
-    if (pRecord->operand.ab[1] != 0)
-        sub_08024A88(pRecord->operand.ab[0]);
+    if (pRecord->bVariant != 0)
+        sub_08024A88(pRecord->bRewardId);
     else
-        sub_08024A30(pRecord->operand.ab[0]);
+        sub_08024A30(pRecord->bRewardId);
 }

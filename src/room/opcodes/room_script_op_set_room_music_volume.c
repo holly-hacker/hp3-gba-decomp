@@ -2,7 +2,12 @@
 #include "audio.h"
 #include "room_script.h"
 
-void RoomScriptOpSetRoomMusicVolume(RoomScriptRecord *pRecord)
+typedef struct SetRoomMusicVolumeRecord {
+    u32 dwOpcode;
+    u8 bVolume;
+} SetRoomMusicVolumeRecord;
+
+void RoomScriptOpSetRoomMusicVolume(SetRoomMusicVolumeRecord *pRecord)
 {
-    SetMusicVolume(pRecord->operand.ab[0], 1);
+    SetMusicVolume(pRecord->bVolume, 1);
 }

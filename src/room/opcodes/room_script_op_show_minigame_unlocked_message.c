@@ -3,7 +3,14 @@
 #include "text.h"
 #include "room_script.h"
 
-void RoomScriptOpShowMinigameUnlockedMessage(RoomScriptRecord *pRecord)
+typedef struct ShowMinigameUnlockedMessageRecord {
+    u32 dwOpcode;
+    u8 bMinigameId;
+    u8 bDialogArg1C;
+    u8 bDialogArg1D;
+} ShowMinigameUnlockedMessageRecord;
+
+void RoomScriptOpShowMinigameUnlockedMessage(ShowMinigameUnlockedMessageRecord *pRecord)
 {
     s16 blockId;
 
@@ -11,18 +18,18 @@ void RoomScriptOpShowMinigameUnlockedMessage(RoomScriptRecord *pRecord)
         g_dwRoomScriptRunState = 2;
     // Tea Leaf Divination (3) gets its own message: "Tea Leaf Divination can now be accessed
     // from the Mini-Games menu found on the Title Screen."
-    if (pRecord->operand.ab[0] == 3)
+    if (pRecord->bMinigameId == 3)
         blockId = 0x299;
     else
     {
         // Minigame names from 0xa4a: "Wizard Cracker Pop-it", "Buckbeak's Hippogriff Glide",
         // "Riddikulus Boggart Challenge", "Tea Leaf Divination", "Dementor Challenge".
-        SetTextMacro1String(GetDialogText(pRecord->operand.ab[0] + 0xa4a));
-        SetTextMacro3String(GetDialogText(pRecord->operand.ab[0] + 0xa4a));
+        SetTextMacro1String(GetDialogText(pRecord->bMinigameId + 0xa4a));
+        SetTextMacro3String(GetDialogText(pRecord->bMinigameId + 0xa4a));
         // "You've unlocked: @3."
         blockId = 0x292;
     }
     ShowRoomDialogBox_candidate(blockId);
-    g_DialogState_candidate.bArg1C = pRecord->operand.ab[1];
-    g_DialogState_candidate.bArg1D = pRecord->operand.ab[2];
+    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
 }

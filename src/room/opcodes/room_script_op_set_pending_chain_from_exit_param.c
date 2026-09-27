@@ -1,15 +1,21 @@
 #include "types.h"
 #include "room_script.h"
 
-void RoomScriptOpSetPendingChainFromExitParam(RoomScriptRecord *pRecord)
+typedef struct SetPendingChainFromExitParamRecord {
+    u32 dwOpcode;
+    u8 bChainIfExit1;
+    u8 bChainIfExit0;
+} SetPendingChainFromExitParamRecord;
+
+void RoomScriptOpSetPendingChainFromExitParam(SetPendingChainFromExitParamRecord *pRecord)
 {
     u8 exit = g_abRoomScriptExitParams_candidate[0];
 
     if (exit != 0)
     {
         if (exit == 1)
-            g_bRoomScriptPendingChain = pRecord->operand.ab[0];
+            g_bRoomScriptPendingChain = pRecord->bChainIfExit1;
     }
     else
-        g_bRoomScriptPendingChain = pRecord->operand.ab[1];
+        g_bRoomScriptPendingChain = pRecord->bChainIfExit0;
 }

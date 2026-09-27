@@ -3,16 +3,24 @@
 #include "text.h"
 #include "room_script.h"
 
-void RoomScriptOpShowFolioCategoryStatusMessage(RoomScriptRecord *pRecord)
+typedef struct ShowFolioCategoryStatusMessageRecord {
+    u32 dwOpcode;
+    u8 bCategory;
+    u8 bComplete;
+    u8 bDialogArg1C;
+    u8 bDialogArg1D;
+} ShowFolioCategoryStatusMessageRecord;
+
+void RoomScriptOpShowFolioCategoryStatusMessage(ShowFolioCategoryStatusMessageRecord *pRecord)
 {
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    SetTextMacro1String(GetDialogText(pRecord->operand.ab[0] + 0x405));
-    SetTextMacro3String(GetDialogText(pRecord->operand.ab[0] + 0x405));
-    if (pRecord->operand.ab[1] != 0)
+    SetTextMacro1String(GetDialogText(pRecord->bCategory + 0x405));
+    SetTextMacro3String(GetDialogText(pRecord->bCategory + 0x405));
+    if (pRecord->bComplete != 0)
         ShowRoomDialogBox_candidate(0x291);
     else
         ShowRoomDialogBox_candidate(0x290);
-    g_DialogState_candidate.bArg1C = pRecord->operand.ab[2];
-    g_DialogState_candidate.bArg1D = pRecord->operand.ab[3];
+    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
 }
