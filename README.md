@@ -17,9 +17,13 @@ All code under `src/` and `include/` is at the very least checked over by a huma
 almost exclusively be AI-generated and not meant for human consumption.
 
 Current progress:
-- Game code: between 20% and 25%
-- Game assets: between 40% and 45%
-- Krawall code/assets: 0%
+
+|        | Game Code | Game Assets | Krawall |
+| ------ | --------: | ----------: | ------: |
+| **US** | 20-25%    | 40-45%      | 0%      |
+| **JP** | 5-10%     | 35-40%      | 0%      |
+
+Note that JP matching may run behind somewhat as it is not the primary focus.
 
 ## Setup
 

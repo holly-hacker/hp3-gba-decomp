@@ -14,13 +14,20 @@ fall inside it; a region straddling an area boundary is split at the boundary.
 import argparse
 import sys
 
-# Area boundaries for the US ROM: [start, end) each.
+# Area boundaries for the ROMs: [start, end) each.
 US_AREAS = [
     ("code (start)", 0x08000000, 0x0804BDBC),
     ("data", 0x0804BDBC, 0x08FB0DB0),
     ("code (krawall)", 0x08FB0DB0, 0x08FB2348),
     ("data (krawall)", 0x08FB2348, 0x08FB4B40),
     # ("empty", 0x08FB4B40, 0x09000000),
+]
+JP_AREAS = [
+    ("code (start)", 0x08000000, 0x0804BCE8),
+    ("data", 0x0804BCE8, 0x8F44244),
+    ("code (krawall)", 0x8F44244, 0x8F457DC),
+    ("data (krawall)", 0x8F457DC, 0x8F46A3C),
+    # ("empty", 0x8F46A3C, 0x09000000),
 ]
 KINDS = ["c-file", "asm-file", "data", "raw"]
 COLUMNS = ["c-file", "asm-file", "data", "matched", "raw"]
@@ -96,43 +103,43 @@ def main() -> None:
                     help="also list the largest unclaimed gaps in each area")
     args = ap.parse_args()
 
-    areas = US_AREAS
-    if args.area:
-        areas = []
-        for spec in args.area:
-            name, s, e = spec.split(":")
-            areas.append((name, int(s, 16), int(e, 16)))
-    elif args.ver != "us":
-        sys.exit("default areas are US-only; pass --area NAME:START:END")
+    for (areas, ver) in [(US_AREAS, "us"), (JP_AREAS, "jp")]:
+        if args.area:
+            areas = []
+            for spec in args.area:
+                name, s, e = spec.split(":")
+                areas.append((name, int(s, 16), int(e, 16)))
 
-    regions = read_regions(f"regions.{args.ver}.txt")
+        regions = read_regions(f"regions.{ver}.txt")
 
-    print(fmt_header())
-    total = {k: 0 for k in KINDS}
-    span = 0
-    for name, lo, hi in areas:
-        sizes = measure(regions, lo, hi)
-        print(fmt_row(name, f"{lo:08X}-{hi:08X}", hi - lo, sizes))
-        for k in KINDS:
-            total[k] += sizes[k]
-        span += hi - lo
-    print(fmt_row("total", "", span, total))
-
-    if args.list_raw:
+        print(fmt_header())
+        total = {k: 0 for k in KINDS}
+        span = 0
         for name, lo, hi in areas:
-            gaps, cur = [], lo
-            for start, end, _, _ in regions:
-                if end <= lo or start >= hi:
-                    continue
-                if start > cur:
-                    gaps.append((start - cur, cur, start))
-                cur = max(cur, end)
-            if cur < hi:
-                gaps.append((hi - cur, cur, hi))
-            gaps.sort(reverse=True)
-            print(f"\nlargest raw gaps in {name}:")
-            for size, s, e in gaps[:10]:
-                print(f"  {s:08X}-{e:08X} {size:>9,}")
+            sizes = measure(regions, lo, hi)
+            print(fmt_row(name, f"{lo:08X}-{hi:08X}", hi - lo, sizes))
+            for k in KINDS:
+                total[k] += sizes[k]
+            span += hi - lo
+        print(fmt_row("total", "", span, total))
+
+        if args.list_raw:
+            for name, lo, hi in areas:
+                gaps, cur = [], lo
+                for start, end, _, _ in regions:
+                    if end <= lo or start >= hi:
+                        continue
+                    if start > cur:
+                        gaps.append((start - cur, cur, start))
+                    cur = max(cur, end)
+                if cur < hi:
+                    gaps.append((hi - cur, cur, hi))
+                gaps.sort(reverse=True)
+                print(f"\nlargest raw gaps in {name}:")
+                for size, s, e in gaps[:10]:
+                    print(f"  {s:08X}-{e:08X} {size:>9,}")
+
+        print()
 
 
 if __name__ == "__main__":
