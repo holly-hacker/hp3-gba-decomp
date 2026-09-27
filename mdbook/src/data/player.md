@@ -17,7 +17,7 @@ SP
 : The player's maximum stamina points
 
 MP
-: The player's maxiumum magic points, used
+: The player's maximum magic points
 
 Exp.
 : The _additional_ experience required to reach the next level.
@@ -141,7 +141,8 @@ MDef%
 
 ## Hermione
 
-Note that Hermione gets a 1/16 attack **buff**, which is not shown in this table.
+> [!NOTE]
+> Hermione gets a 1/16 attack **buff**, which is not shown in this table.
 
 | Lvl |  SP |  MP | Exp. | Speed | Acc. | Def% | MDef% |
 | --: | --: | --: | ---: | ----: | ---: | ---: | ----: |
@@ -248,7 +249,8 @@ Note that Hermione gets a 1/16 attack **buff**, which is not shown in this table
 
 ## Ron
 
-Note that Ron gets a 1/16 attack **debuff**, which is not shown in this table.
+> [!NOTE]
+> Ron gets a 1/16 attack **debuff**, which is not shown in this table.
 
 | Lvl |  SP |  MP | Exp. | Speed | Acc. | Def% | MDef% |
 | --: | --: | --: | ---: | ----: | ---: | ---: | ----: |

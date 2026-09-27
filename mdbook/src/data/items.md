@@ -26,11 +26,13 @@ Magic Defense
 
 ### Charms
 
-Note: The following items cannot be bought from the shop:
-- Bracelet
-- Beads
-- Head band
-- Remembrall
+> [!NOTE]
+> The following items cannot be bought from the shop:
+>
+> - Bracelet
+> - Beads
+> - Head Band
+> - Remembrall
 
 | Id  | Name                   | Buy Price | Sell Price | Character | Defense | Speed | Magic Defense |
 | --- | ---------------------- | --------- | ---------- | --------- | ------- | ----- | ------------- |
@@ -116,7 +118,8 @@ Note: The following items cannot be bought from the shop:
 
 ## Miscellaneous Items
 
-Note: Chocolate Frogs can be bought from the shop and will randomly give the first or second card of a 3-piece set.
+> [!NOTE]
+> Chocolate Frogs can be bought from the shop and will randomly give the first or second card of a 3-piece set.
 
 | Id  | Name                           | Buy Price | Sell Price |
 | --- | ------------------------------ | --------- | ---------- |

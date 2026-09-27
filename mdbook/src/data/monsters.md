@@ -1,6 +1,7 @@
 # Monsters
 
-Note that the monsters with IDs 53 and 68 are not a real monsters encounterable in the game.
+> [!NOTE]
+> The monsters with IDs 53 and 68 are not a real monsters encounterable in the game.
 
 ## Stats
 

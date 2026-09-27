@@ -14,9 +14,8 @@ How many casts are needed of a specific spell before it levels up. Note that eac
 
 Individual stats for each spell.
 
-Damage dealt by the player is calculated as \\( P_{base} + \frac{P_{scale}*{lvl}}{9} \\). This is later scaled by
+Damage dealt by the player is calculated as \\(P_\text{base} + \frac{P_\text{scale}\times\text{lvl}}{9} \\). This is later scaled by
 character modifiers, buffs, enemy resistences and critical hits.
-
 
 | Spell              | Level | MP Cost | Base power | Power scale | Note         |
 | ------------------ | ----- | ------- | ---------- | ----------- | ------------ |
