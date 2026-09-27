@@ -3,6 +3,14 @@ This file is *not* to be edited by AI agents, it may only be edited by humans.
 If changed need to be made to this file, it should be proposed to a human so they can choose what and how to edit it.
 --->
 
+> [!IMPORTANT]
+> If you are in any way (considering) contributing to The Cutting Room Floor, turn back now.
+> 
+> TCRF has a very clear policy on AI: If AI was used at any point during your reverse engineering process, you may not
+> contribute to their wiki. This seems to include *any* kind of AI usage, which means all information in this repo is
+> effectively poisoned. Their wiki page on HP3-GBA containing calls for contribution, missing information or straight-up
+> errors does not change this.
+
 # hp3-gba-decomp
 
 This repo holds a heavily AI-assisted decompilation of Harry Potter and the Prisoner of Azkaban for the Gameboy Advance.
