@@ -717,7 +717,7 @@ behavior-script interpreter (`0x08018cf8`, see
 | `0x10` | `Paralyzed` | `RunFighterTurn` / `RollFighterParalysisEscape` | skips the fighter's turn until an escape roll succeeds -- gates action selection, not damage |
 | `0x20` | `DefenseBoost` | `ResolveEnemyAttack` (on defender) | halves computed damage (stacks with `0x08`) |
 | `0x40` | `SpellPowerBoost` | `ResolvePlayerAttack` | `x4/3` power, plus a crit-chance boost |
-| `0x80` | (unnamed) | `FUN_0801b430`'s `0x90` gate | blocks (re-)applying `Paralyzed`, mirroring `PoisonImmune`'s role for `Poisoned`. UNCONFIRMED source |
+| `0x80` | (unnamed) | `TryApplyParalysis`'s `0x90` gate | blocks (re-)applying `Paralyzed`, mirroring `PoisonImmune`'s role for `Poisoned`. UNCONFIRMED source |
 
 The two halving bits stack multiplicatively: neither set -> no change;
 exactly one set -> `damage >>= 1`; both set -> `damage >>= 2`.
@@ -753,10 +753,21 @@ Sources, where identified:
 
 ### The paralysis mechanic, PROVEN
 
-Every source of `Paralyzed` goes through one helper, `FUN_0801b430`,
+Every source of `Paralyzed` goes through one helper, `TryApplyParalysis`
+(US `0x0801B430`, JP `0x0801B42C`),
 called from five `StatusEffect` sub-cases. It sets the bit only when
 `bStatusFlags & 0x90 == 0` (not already paralyzed, bit `0x80` clear);
-otherwise it may announce `ImmuneToParalysis`.
+for an enemy monster already protected by either bit, it announces
+`ImmuneToParalysis`.
+
+The helper also sets the target object's `wActionVariant` to `2`, stores
+the starting escape chance at `BattleFighter+0x44`, and resets the
+object's animation frame counter (including its shadow for object types
+`0x31`-`0x33`). A zero or `1001` effect-context value prevents the
+attempt when `isEnemyMonster` is false. On success the
+monster-paralysis case can call `SpawnParalysisEffect` (US `0x0801B590`,
+JP `0x0801B58C`), which creates a particle emitter and sets its byte
+at `+0x49` to `1`; that byte's further effect is not yet traced.
 
 | Sub-case | Name | Start escape % | Gated on `g_wEffectContextValue`? | Feedback on success |
 |---|---|---|---|---|

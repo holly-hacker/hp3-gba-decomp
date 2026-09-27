@@ -54,13 +54,14 @@ extern u32 AllocResourceCacheSlot(void);
 
 // Node in the particle-emitter active/free lists (see below). ListNode
 // must be the first member -- List_MoveToHead/List_Remove address a
-// ParticleEmitter* directly as a ListNode*. Only `node` and the
-// resource-cache-slot byte are confirmed; the rest of the struct's shape
-// (spawn params) isn't decoded.
+// ParticleEmitter* directly as a ListNode*. Most spawn parameters remain
+// undecoded.
 typedef struct ParticleEmitter {
     ListNode node;           // 0x00
     u8 pad_08[0x3E - 0x08];
     u8 bResourceCacheSlot;   // 0x3E, index into g_aResourceCache
+    u8 pad_3F[0x49 - 0x3F];
+    u8 bParalysisEffectFlag_candidate;  // 0x49, set on the emitter spawned by SpawnParalysisEffect
 } ParticleEmitter;
 
 // See docs/formats/battle_scripts.md's TickParticleEmitters note --

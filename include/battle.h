@@ -275,6 +275,8 @@ typedef enum {
 #define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
 
 extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
+extern s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance);
+extern void SpawnParalysisEffect(Object *obj);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);

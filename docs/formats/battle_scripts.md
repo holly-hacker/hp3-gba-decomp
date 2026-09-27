@@ -236,7 +236,7 @@ lookup.
 | `5`, `7`, `0xF` | `Poisoned`, `PoisonImmune`, `CurePoison` | `bStatusFlags` bits `0x02`/`0x04` |
 | `6` | `AttackWeakened` | `bStatusFlags` bit `0x08` |
 | `8`, `9` | `HiddenSecondary`, `HiddenMain` | `bStatusFlags` bit `0x01` |
-| `0xA`, `0x11`, `0x12`, `0x16`, `0x17` | `Paralyze25`, `Paralyze99`, `Paralyze80`, `ParalyzeMonster`, `ParalyzeMonsterChance` | `bStatusFlags` bit `0x10`, via `FUN_0801B430` |
+| `0xA`, `0x11`, `0x12`, `0x16`, `0x17` | `Paralyze25`, `Paralyze99`, `Paralyze80`, `ParalyzeMonster`, `ParalyzeMonsterChance` | `bStatusFlags` bit `0x10`, via `TryApplyParalysis` |
 | `0xB` | `DefenseBoost` | `bStatusFlags` bit `0x20` |
 | `0xC` | `BumpMonsterDocLevel` | `g_abMonsterDocLevel_candidate` (`Informus`'s Folio Bruti write) |
 | `0xD`, `0xE` | `SetPostActionFlashFlag`, `ClearPostActionFlashFlag` | `Object.bDrawFlags` bit `0x10` (`ObjectDrawFlagPostActionFlash`); visual only |
