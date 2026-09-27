@@ -1175,9 +1175,9 @@ are identical in both ROMs and claimed as three stored-cells banks:
 | `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 portraits shown in battle when that fighter attacks, 8bpp (512-byte palettes) |
 | `ActionIcons` | `0x08A2DCC4`-`0x08A30814` | `0x08A2DAF4`-`0x08A30644` | 42 one-frame 24x32 icons for choosing a player action in the battle menu, 4bpp |
 
-`BattleFaces` and `ActionIcons` are records 0-71 and 72-132 of an
-unlabeled 133-record `ObjectAssetRecord` table at `0x0804D824` (JP
-`0x0804D750`), which `sub_08012CE4` and `sub_08012D2C` index. Their uses
+`BattleFaces` and `ActionIcons` are records 0-71 and 72-132 of the
+133-record `g_aBattleHudAssets` at `0x0804D824` (JP `0x0804D750`), which
+`sub_08012CE4` and `sub_08012D2C` index. Their uses
 come from observing the game, not from tracing those functions. Every
 sprite's palette in these banks is the one its records use.
 
@@ -1199,6 +1199,13 @@ at `0x080117F4` and `0x0801B2D8`) reference directly. `noPalette` marks
 `BattleEffect020`, whose following palette is one of the five loose ones.
 The status/equip screen's `sub_0803A030` reads the three
 `StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
+
+These record tables are C with generated labels: `g_aBattleHudAssets`
+(`src/data/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
+fighter, `src/data/fighter_anim_table.c`), `g_aEffectObjectAssets`,
+`g_apEffectPalettes`, and `g_aEffectAnimAssets`
+(`src/data/effect_assets.c`), and `g_aStatusCharacterAssets`
+(`src/data/status_character_assets.c`).
 
 ### Item icons (PROVEN, extracted)
 

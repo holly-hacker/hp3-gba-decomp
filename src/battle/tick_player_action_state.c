@@ -24,12 +24,12 @@ static inline void PlayActionWindupFlash(Object *obj)
     if (obj->wActionVariant == 1) {
         SetPlayerObjectAnim(obj, 7);
         paletteBank = obj->oam.paletteNum;
-        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceA + 2;
+        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].aRecords[7].pPalette + 2;
         sub_0800D264(ptr, (paletteBank << 4) + 1, 0xf);
     } else if (obj->wActionVariant == 2) {
         SetPlayerObjectAnim(obj, 6);
         paletteBank = obj->oam.paletteNum;
-        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].pWindupResourceB + 2;
+        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].aRecords[6].pPalette + 2;
         sub_0800D264(ptr, (paletteBank << 4) + 1, 0xf);
     } else {
         SetPlayerObjectAnim(obj, 0);

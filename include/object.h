@@ -426,7 +426,7 @@ extern void SetObjectActionSubState(Object *obj, u8 state);
 extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
 // Clears the object's queued move (Object+0x3C..0x48).
 extern void CancelObjectMove_candidate(Object *obj);
-extern void SetObjectAssetRecord(Object *obj, void *rec);
+extern void SetObjectAssetRecord(Object *obj, const void *rec);
 // Like AttachObjectPalette, but always binds a newly allocated cache slot
 // instead of sharing one already holding pPalette, then sets bit 0 of the
 // slot's +6 flags (meaning unknown). Returns the slot index.

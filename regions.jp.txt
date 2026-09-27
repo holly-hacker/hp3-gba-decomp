@@ -555,6 +555,7 @@ label 0x0804C0E0 g_dwRiddikulusBg3Control
 c-file 0x0804C422 0x0804C542 src/data/playable_character_names.c sPlayableCharacterNames
 c-file 0x0804CDF0 0x0804D450 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 
+c-file 0x0804D750 0x0804DFA0 src/data/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804E5E0 0x0804F330 src/data/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table -- content proven byte-identical to the
@@ -568,6 +569,8 @@ c-file 0x08051138 0x08051174 src/data/scripted_encounters.c g_aScriptedEncounter
 
 # Playtime counters, shared source with US. The main-loop function and
 # constants follow JP's save-state layout.
+c-file 0x08051174 0x080513F4 src/data/fighter_anim_table.c g_aFighterAnimTable
+c-file 0x08053C6C 0x08054400 src/data/effect_assets.c g_aEffectObjectAssets
 label 0x0805DF4C g_dwLinearCutsceneBg0Control
 label 0x0805DF50 g_dwLinearCutsceneBg1Control
 label 0x0805DF54 g_aLinearCutsceneTable
@@ -620,6 +623,7 @@ label 0x0806933C g_ServePumpkinJuicePauseText
 label 0x0806934C g_ServePumpkinJuiceResultsText
 label 0x0806B140 g_aItemsSectionFilters
 label 0x0806B17C g_ItemsSectionMenuDefinition
+c-file 0x0806B1DC 0x0806B20C src/data/status_character_assets.c g_aStatusCharacterAssets
 label 0x0806B288 g_aStatusEquipSlots
 label 0x0806BA8C g_DivinationTeaCupAnimB
 label 0x0806BAD0 g_dwDivinationTeaBg2Control

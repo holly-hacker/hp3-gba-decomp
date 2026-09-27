@@ -347,20 +347,13 @@ extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by F
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
 // per-wObjectType windup-flash resource pointer row, stride 0xA0
-typedef struct AnimFlashRow {
-    u8 pad_00[0x08];
-    const ObjPalette *pPaletteLive;     // 0x08, palette of the live sprite record at 0x00
-    u8 pad_0C[0x5C];           // -> 0x68
-    void *pWindupResourceB;    // 0x68
-    u8 pad_6C[0x0C];           // -> 0x78
-    void *pWindupResourceA;    // 0x78
-    u8 pad_7C[0x04];           // -> 0x80
-    void *pAssetRecordFainted; // 0x80, SetObjectAssetRecord arg when wHp == 0
-    u8 pad_84[0x04];           // -> 0x88
-    const ObjPalette *pPaletteFainted;  // 0x88, palette of pAssetRecordFainted
-    u8 pad_8C[0x14];           // -> 0xA0
-} AnimFlashRow;
-extern AnimFlashRow g_aFighterAnimTable[];  // 0x08051248, UNCONFIRMED row count
+// One row per FighterType: sprite records selected by animation state
+// (SetPlayerObjectAnim). Record 0 is the live sprite, 6 and 7 carry the
+// windup flash palettes, 8 is the fainted sprite.
+typedef struct FighterAnimRow {
+    ObjectAssetRecord aRecords[10];
+} FighterAnimRow;
+extern const FighterAnimRow g_aFighterAnimTable[4];  // 0x08051248, src/data/fighter_anim_table.c
 extern u8 g_aFighterAnimDataTable[];        // 0x08051560, stride 0x244, contents undecoded
 
 extern void TickPlayerActionState(Object *obj);

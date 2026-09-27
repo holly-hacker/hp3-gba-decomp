@@ -1022,6 +1022,7 @@ label 0x0804CEC0 g_dwDebugCollectorCardsBg0Control
 c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
 label 0x0804D798 g_abGammaNormalRemap
 label 0x0804D7B8 g_abGammaHighRemap
+c-file 0x0804D824 0x0804E074 src/data/battle_hud_assets.c g_aBattleHudAssets
 label 0x0804E254 g_abBattleMusicByRoom
 label 0x0804E28B g_abBattleMusicByOverworldSlot
 c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
@@ -1039,7 +1040,7 @@ c-file 0x080507B0 0x08050C60 src/data/hermione_levels.c g_pHermioneLevelTable
 # Encounter roster tables, see docs/formats/encounters.md
 c-file 0x08050C6C 0x0805120C src/data/random_encounters.c g_aRandomEncounters
 c-file 0x0805120C 0x08051248 src/data/scripted_encounters.c g_aScriptedEncounters
-label 0x08051248 g_aFighterAnimTable
+c-file 0x08051248 0x080514C8 src/data/fighter_anim_table.c g_aFighterAnimTable
 label 0x080514C8 g_abHarryCardEffectId
 label 0x080514DE g_aCardTargetingMeta
 label 0x0805150A g_abSpecialMoveEffectId
@@ -1054,6 +1055,7 @@ label 0x080539A0 g_aBattleSlotAnchorPos_candidate
 
 # Battle-script bytecode
 # battle-script-table <start> <end> <dir> <name>
+c-file 0x08053D40 0x080544D4 src/data/effect_assets.c g_aEffectObjectAssets
 battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 
 # Playtime counters, shared with JP at the same helper addresses.
@@ -1117,6 +1119,7 @@ label 0x08069AB8 g_aHelpSpriteAssets
 label 0x08069C18 g_apHelpSpritePalettes
 label 0x0806B1B4 g_aItemsSectionFilters
 label 0x0806B1F0 g_ItemsSectionMenuDefinition
+c-file 0x0806B250 0x0806B280 src/data/status_character_assets.c g_aStatusCharacterAssets
 label 0x0806B2FC g_aStatusEquipSlots
 c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
 
