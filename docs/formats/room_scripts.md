@@ -158,6 +158,7 @@ ever varies them this way.
 | `0x2F` (47) | `ShowBackgroundLayer` | 1 (layer index) | Calls `SetDispcntFlag` to enable the DISPCNT display bit for the given BG/OBJ layer index. Complementary pair with `HideBackgroundLayer` (opcode `0x30`). Handler at US `0x0801CD30`. |
 | `0x30` (48) | `HideBackgroundLayer` | 1 (layer index) | Calls `FUN_08007434` (US `0x08007434`: `DISPCNT &= ~param_1`, a direct DISPCNT-bit clear) with the same bit shift `ShowBackgroundLayer` uses -- the disable counterpart to opcode `0x2f`. Handler at US `0x0801CD3C`. |
 | `0x31` (49) | `SetBackgroundPriority` | 2 (bg, priority) | Thin wrapper over the already-named `SetBgPriority(bg, priority)`. Handler at US `0x0801CD48`. |
+| `0x32` (50) | `SetCameraFollowTileObject` | 4 (tileX, tileY, unused, unused) | Calls `SetCameraFollowTarget_candidate(GetRoomObjectField_candidate(tileX, tileY), offset, 0)` with a never-initialized `CameraFocusOffset` passed by value: the offset is whatever `r4`/`r5` hold, which both dispatch loops leave equal to the current record's address, so the camera offset is nonsense. Unused by every script. Handler at US `0x0801CD58`. |
 | `0x33` (51) | `PlaySpecialSceneEffect` | 1 (mode 0-5) | Multi-mode scene-effect dispatcher: modes `0`/`1` install a BG control override (`InstallBgControlOverride_candidate`) and set `g_abQuestEventState[0x1d]`; mode `2` removes the override and clears that state; mode `3` runs a full fade-to-white/module-9-swap/fade-back sequence and sets `g_abQuestEventState[0x1a]`; modes `4`/`5` set the player object's facing (`field_0x12`) and a hardcoded velocity (`field_0x3c`/`0x40`). The narrative context tying these modes to a specific story beat is not identified. Handler at US `0x0801C280`. |
 | `0x34` (52) | `DelayedRespawnRowAndRunChainFrames` | 4 (delay u16, row, chainRow) | Same as `DelayedRespawnRowAndRunChain` (opcode `0x0d`), but `delay` is in frames (no `* 30`). Handler at US `0x0801CD74`. |
 | `0x35` (53) | `SetTileObjectAndLinkedVisible` | 3 (x, y, bool) | Resolves the tile object and sets/clears `Object+0xc` bit `0x1` per the `bool` operand, propagating the same set/clear to its linked object's (`field_0xa4`) `Object+0xc` bit `0x1` if present. Handler at US `0x0801CDCC`. |
@@ -201,26 +202,16 @@ ever varies them this way.
 | `0x5B` (91) | `GotoIfAllQuestFlagsSet` | 4 (chainIfTrue, rowIfTrue, rowIfFalse, chainAlways) | Checks whether `g_abQuestEventState[0x14..0x18]` (5 slots) are all non-zero and branches like `GotoIfQuestStateCompare` -- the hardcoded-range sibling of that family, analogous to how `GotoIfStoryStageCompare` hardcodes index `0`. Handler at US `0x0801C564`. |
 | `0x5C` (92) | `SetPendingChainFromExitParam` | 2 (chainIfExit1, chainIfExit0) | Reads `DAT_0300337D` (the 2-entry table `ReturnToOverworld`/`CloseRoomDialog` fill) and sets `g_bRoomScriptPendingChain` to `chainIfExit0` or `chainIfExit1` depending on its value -- selects a follow-up chain based on which overworld exit path was taken. Handler at US `0x0801D360`. |
 
-Only 3 opcodes remain unidentified: `0x2`, `0x2A`, `0x32` (93 total,
+Only 2 opcodes remain unidentified: `0x2` and `0x2A` (93 total,
 0-indexed to `0x5C`; computed from `opcodes.json` directly, not
 hand-counted). `0x2A` occurs 6 times in the extracted (quest-stage-0)
-scripts; `0x32` occurs in none of the 1603 chains of any room and
-quest-stage variant (scanned read-only from the ROM, variant blocks 0-16
-per room), so it is unused content. Both are confirmed from raw
-disassembly to call a callee with argument registers that the handler
-itself never assigns: `0x2A`'s handler
-(`0x0801CC80`) sets only `r0` before calling `FUN_080237D0`, which
-itself also reads `r7` without ever setting it -- so this opcode's real
-behavior depends on two registers' worth of caller-context state (`r1`
-`r3`, plus `FUN_080237D0`'s own unassigned `r7`); `0x32`'s handler
-(`0x0801CD58`) similarly never assigns `r4`/`r5` before its call to
-`FUN_0800A3AC` (`SetCameraFollowTarget_candidate`, whose offset
-arguments are those two registers). The interpreter keeps the record
-pointer and the next-record pointer in `r4`/`r5`, so `0x32` most likely
-passes two record pointers as camera offsets, an original bug with no
-effect since no script uses it (inference, not traced). Neither register chain has been traced into a stable,
-opcode-independent value, so naming either opcode would be a guess
-rather than a finding.
+scripts. Its handler (`0x0801CC80`) sets only `r0` before calling
+`FUN_080237D0`, which itself also reads `r7` without ever setting it --
+so this opcode's real behavior depends on caller-context registers
+(`r1`-`r3`, plus `FUN_080237D0`'s own unassigned `r7`). That register
+chain has not been traced into a stable, opcode-independent value, so
+naming it would be a guess rather than a finding. `0x32`'s similar
+unassigned-register call is explained above (`SetCameraFollowTileObject`).
 
 Opcodes with no occurrence in any chain of any room or quest-stage variant
 (same scan, 1603 chains): `0xB`, `0xC`, `0x14`, `0x16`, `0x17`, `0x1B`, `0x1E`,

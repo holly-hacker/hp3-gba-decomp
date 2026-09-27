@@ -136,7 +136,7 @@ extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable,
 extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
 extern void SetRoomScrollBounds(u32 minX, u32 minY, u32 maxX, u32 maxY);
 extern Object *SpawnPlayerObject_candidate(u32 charId);
-extern void SetCameraFollowTarget_candidate(Object *pTarget, s32 nOffsetX, s32 nOffsetY, u32 slot);
+extern void SetCameraFollowTarget_candidate(Object *pTarget, CameraFocusOffset offset, u32 slot);
 extern void sub_0800A348(u32 arg0, u32 arg1);
 extern void sub_080248E8(void);
 extern void sub_0801FA9C(void);

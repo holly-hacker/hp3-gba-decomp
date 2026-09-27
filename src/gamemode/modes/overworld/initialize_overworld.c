@@ -117,7 +117,7 @@ void InitializeOverworld(void)
         pPlayer = SpawnPlayerObject_candidate(g_bPartyCharId0);
         sub_080248E8();
         sub_0800A348(0, 0);
-        SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset.nX, g_PlayerCameraFocusOffset.nY, 0);
+        SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
         SetRoomScrollBounds(
             CURRENT_ROOM.wScrollBoundMinX,
             CURRENT_ROOM.wScrollBoundMinY,
@@ -150,13 +150,13 @@ void InitializeOverworld(void)
                     g_GameModeStackContext.dwCurrentGameModeArg3 = 0;
                     RestoreRoomObjectState();
                     sub_0800A348(0, 0);
-                    SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset.nX, g_PlayerCameraFocusOffset.nY, 0);
+                    SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
                 }
                 else
                 {
                     RestoreRoomObjectStateMinimal();
                     sub_0800A348(0, 0);
-                    SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset.nX, g_PlayerCameraFocusOffset.nY, 0);
+                    SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
                     RespawnRoomObjectsInRow_candidate(0);
                     WalkRoomSwitchStateChain_candidate(0, 0);
                     if (g_wRoomResourceFlags_candidate & 1)
@@ -179,13 +179,13 @@ void InitializeOverworld(void)
             {
                 RestoreRoomObjectState();
                 sub_0800A348(0, 0);
-                SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset.nX, g_PlayerCameraFocusOffset.nY, 0);
+                SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
             }
             else
             {
                 RestoreRoomObjectStateMinimal();
                 sub_0800A348(0, 0);
-                SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset.nX, g_PlayerCameraFocusOffset.nY, 0);
+                SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
                 RespawnRoomObjectsInRow_candidate(0);
                 WalkRoomSwitchStateChain_candidate(0, 0);
                 if (g_wRoomResourceFlags_candidate & 1)

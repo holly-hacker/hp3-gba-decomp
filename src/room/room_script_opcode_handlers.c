@@ -56,7 +56,7 @@ const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     (RoomScriptOpcodeHandler)RoomScriptOpShowBackgroundLayer,  // 47
     (RoomScriptOpcodeHandler)RoomScriptOpHideBackgroundLayer,  // 48
     (RoomScriptOpcodeHandler)RoomScriptOpSetBackgroundPriority,  // 49
-    RoomScriptOp50,  // 50
+    (RoomScriptOpcodeHandler)RoomScriptOpSetCameraFollowTileObject,  // 50
     RoomScriptOpPlaySpecialSceneEffect,  // 51
     (RoomScriptOpcodeHandler)RoomScriptOpDelayedRespawnRowAndRunChainFrames,  // 52
     (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectAndLinkedVisible,  // 53

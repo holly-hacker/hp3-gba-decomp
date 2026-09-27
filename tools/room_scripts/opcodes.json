@@ -764,8 +764,14 @@
       ]
     },
     "50": {
-      "name": "opcode_32",
-      "operand_length": 4
+      "name": "SetCameraFollowTileObject",
+      "operand_length": 4,
+      "operand_names": [
+        "tileX",
+        "tileY",
+        "unused",
+        "unused"
+      ]
     },
     "51": {
       "name": "PlaySpecialSceneEffect",
