@@ -350,7 +350,7 @@ c-file 0x0801C810 0x0801C84C src/room/opcodes/room_script_op_clear_all_queued_mo
 c-file 0x0801C84C 0x0801C87C src/room/opcodes/room_script_op_set_tile_object_position.c RoomScriptOpSetTileObjectPosition
 thumb-func 0x0801C87C RoomScriptOpPlayCutscene
 c-file 0x0801C974 0x0801C9B0 src/room/opcodes/room_script_op_close_room_dialog.c RoomScriptOpCloseRoomDialog
-thumb-func 0x0801C9B0 RoomScriptOpSetTileObjectFollowTarget
+c-file 0x0801C9B0 0x0801CA08 src/room/opcodes/room_script_op_set_tile_object_follow_target.c RoomScriptOpSetTileObjectFollowTarget
 c-file 0x0801CA08 0x0801CA4C src/room/opcodes/room_script_op_play_tile_object_animation.c RoomScriptOpPlayTileObjectAnimation
 c-file 0x0801CA4C 0x0801CA68 src/room/opcodes/room_script_op_open_main_menu.c RoomScriptOpOpenMainMenu
 c-file 0x0801CA68 0x0801CA88 src/room/opcodes/room_script_op_arm_chain_yield.c RoomScriptOpArmChainYield

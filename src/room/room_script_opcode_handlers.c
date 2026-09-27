@@ -29,7 +29,7 @@ const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectPosition,  // 20
     RoomScriptOpPlayCutscene,  // 21
     (RoomScriptOpcodeHandler)RoomScriptOpCloseRoomDialog,  // 22
-    RoomScriptOpSetTileObjectFollowTarget,  // 23
+    (RoomScriptOpcodeHandler)RoomScriptOpSetTileObjectFollowTarget,  // 23
     RoomScriptOpStartObjectAnimSequence,  // 24
     RoomScriptOpStartTileObjectScript,  // 25
     (RoomScriptOpcodeHandler)RoomScriptOpPlayTileObjectAnimation,  // 26

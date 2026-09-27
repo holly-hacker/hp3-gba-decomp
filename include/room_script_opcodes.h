@@ -41,7 +41,8 @@ void RoomScriptOpSetTileObjectPosition(struct SetTileObjectPositionRecord *pReco
 extern void RoomScriptOpPlayCutscene(RoomScriptRecord *pRecord);
 struct CloseRoomDialogRecord;
 void RoomScriptOpCloseRoomDialog(struct CloseRoomDialogRecord *pRecord);
-extern void RoomScriptOpSetTileObjectFollowTarget(RoomScriptRecord *pRecord);
+struct SetTileObjectFollowTargetRecord;
+void RoomScriptOpSetTileObjectFollowTarget(struct SetTileObjectFollowTargetRecord *pRecord);
 extern void RoomScriptOpStartObjectAnimSequence(RoomScriptRecord *pRecord);
 extern void RoomScriptOpStartTileObjectScript(RoomScriptRecord *pRecord);
 struct PlayTileObjectAnimationRecord;
