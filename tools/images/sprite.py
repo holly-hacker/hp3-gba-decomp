@@ -43,11 +43,10 @@ COMPONENT_KINDS = ("palette", "tiles", "frames")
 # comes from the tile stream's resource header.
 COMPRESSION_TYPES = {"raw": 0, "rle": 3, "gammalz": 6, "lzrle": 7}
 CELL_COUNT_FLAGS = {"raw": 0x00, "rle": 0x20, "gammalz": 0x00, "lzrle": 0x40}
-# Raw and GammaLz tile streams end on a word boundary followed by one
-# padding word. It is usually zero; the few nonzero values are not derived
-# from the data and are stored in the frame's "padding" setting.
-PADDED_COMPRESSIONS = ("raw", "gammalz")
-PADDING_BYTES = 4
+# Every tile stream ends with padding bytes. They are usually zero; the few
+# nonzero values are not derived from the data and are stored in the
+# frame's "padding" setting.
+PADDING_WORD = 4
 GAMMA_LZ_CACHE = Path("build/cache/gammalz")
 
 # (width, height) in tiles -> (OAM shape, OAM size)
@@ -170,30 +169,39 @@ def _gamma_lz(raw: bytes) -> bytes:
     return encoded
 
 
-def compress_tiles(raw: bytes, compression: str, padding: list[int] | None = None) -> bytes:
-    """Resource header, compressed stream, then at least five zero bytes
-    ending on a word boundary (LzRle's end token counts as the first).
-    Raw and GammaLz streams are instead followed by one padding word
-    (zero unless given); GammaLz writes its own header."""
+def _stream_body(raw: bytes, compression: str) -> tuple[bytes, int]:
+    """A tile stream without its trailing padding, and the padding length.
+
+    LzRle and RLE streams end with zero bytes to a word boundary at least
+    four or five bytes past the header and tokens (LzRle's end token counts
+    as the first); raw and GammaLz streams end on a word boundary followed
+    by one padding word. GammaLz writes its own header."""
     if compression not in COMPRESSION_TYPES:
         raise ValueError(f"unknown compression {compression!r}")
-    if padding is not None and compression not in PADDED_COMPRESSIONS:
-        raise ValueError(f"{compression} tiles take no padding setting")
-    padding = bytes(padding or [0] * PADDING_BYTES)
-    size = len(raw)
-    header = struct.pack("<I", COMPRESSION_TYPES[compression] << 4 | size << 8)
+    header = struct.pack("<I", COMPRESSION_TYPES[compression] << 4 | len(raw) << 8)
     if compression == "gammalz":
-        return _gamma_lz(raw) + padding
+        body = _gamma_lz(raw)
+        return body, PADDING_WORD
     if compression == "raw":
-        body = header + raw
-        return body.ljust(_align4(len(body)), b"\0") + padding
+        body = (header + raw).ljust(_align4(4 + len(raw)), b"\0")
+        return body, PADDING_WORD
     if compression == "lzrle":
         body = header + encode_lz_rle(raw)
-        return body.ljust(_align4(len(body) + 4), b"\0")
+        return body, _align4(len(body) + 4) - len(body)
     # DecompressResourceVram passes header+4 to the BIOS, which reads its
     # own copy of the header there.
     body = header + encode_bios_rle(raw)
-    return body.ljust(_align4(len(body) + 5), b"\0")
+    return body, _align4(len(body) + 5) - len(body)
+
+
+def compress_tiles(raw: bytes, compression: str, padding: list[int] | None = None) -> bytes:
+    """Resource header, compressed stream, and padding (zero unless given)."""
+    body, length = _stream_body(raw, compression)
+    if padding is None:
+        padding = [0] * length
+    elif len(padding) != length:
+        raise ValueError(f"{compression} stream needs {length} padding bytes, not {len(padding)}")
+    return body + bytes(padding)
 
 
 def _decompress_gamma_lz(data: bytes) -> tuple[bytes, int]:
@@ -232,15 +240,24 @@ def tile_stream_length(data: bytes) -> int | None:
     """Length of the tile stream starting `data`, or None if none starts there."""
     try:
         raw, compression = decompress_tiles(data)
-        if compression in PADDED_COMPRESSIONS:
-            # The padding word is free; the rebuilt sprite is compared later.
-            end = _decompress_gamma_lz(data)[1] if compression == "gammalz" else _align4(4 + len(raw))
-            length = end + PADDING_BYTES
+        if compression in ("raw", "gammalz"):
+            # Not re-encoded here; the rebuilt sprite is compared later.
+            length = _body_length(data, compression, raw) + PADDING_WORD
             return length if length <= len(data) else None
     except (ValueError, IndexError, struct.error):
         return None
-    encoded = compress_tiles(raw, compression)
-    return len(encoded) if data[:len(encoded)] == encoded else None
+    body, padding = _stream_body(raw, compression)
+    length = len(body) + padding
+    return length if data[:len(body)] == body and length <= len(data) else None
+
+
+def _body_length(stream: bytes, compression: str, raw: bytes) -> int:
+    """Length of a ROM tile stream before its padding."""
+    if compression == "gammalz":
+        return _decompress_gamma_lz(stream)[1]
+    if compression == "raw":
+        return _align4(4 + len(raw))
+    return len(_stream_body(raw, compression)[0])
 
 
 def encode_frames(frames: list[dict], header: list[int]) -> bytes:
@@ -438,13 +455,14 @@ def resolve_compressions(record: dict, tiles: bytes) -> dict:
 
 
 def _stream_paddings(tiles: bytes, frames: list[dict]) -> list[list[int] | None]:
-    """Each frame's nonzero padding word, else None."""
+    """Each frame's padding bytes if any is nonzero, else None."""
     ends = [f["tile_offset"] for f in frames[1:]] + [len(tiles)]
     paddings = []
     for frame, end in zip(frames, ends):
-        word = tiles[end - PADDING_BYTES:end]
-        padded = frame["compression"] in PADDED_COMPRESSIONS
-        paddings.append(list(word) if padded and any(word) else None)
+        stream = tiles[frame["tile_offset"]:end]
+        raw, compression = decompress_tiles(stream)
+        padding = stream[_body_length(stream, compression, raw):]
+        paddings.append(list(padding) if any(padding) else None)
     return paddings
 
 

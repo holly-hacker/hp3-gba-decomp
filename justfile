@@ -139,7 +139,7 @@ extract-images ver="us":
 # The image-bank rows each name a directory of PNG sprites and bank.json.
 # This re-encodes each sprite's palette, tiles, and frame data, and emits
 # assembly under build/<ver>/images/ and matching generated C declarations
-# under include/gen/<ver>/.
+# under include/gen/ (shared by all versions).
 # Pack all image banks for this version.
 pack-images ver="us":
     python3 tools/images/pack_images.py {{ver}}

@@ -6,7 +6,9 @@ with their settings (see sprite.py for the three entry kinds), the bank's
 bit depth, and the order of each image's palette/tiles/frames components;
 component addresses follow from that order and the encoded sizes. See docs/formats/graphics.md
 ("Image-bank build format"). Encoded components and assembly go under
-build/<ver>/images/; the matching C header goes under include/gen/<ver>/.
+build/<ver>/images/; the matching C header goes under include/gen/. Headers
+depend only on bank.json, so a bank name must use the same directory in every
+version's manifest.
 """
 import json
 import re
@@ -15,8 +17,7 @@ from pathlib import Path
 
 from itertools import repeat
 
-from sprite import (COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, PADDED_COMPRESSIONS, build, image_files,
-                    map_images)
+from sprite import COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, build, image_files, map_images
 
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 BANK_KEYS = {"format", "bpp", "componentOrder", "images"}
@@ -29,8 +30,8 @@ FRAME_KEYS = {"offset", "compression", "cells", "parts", "extra"}
 OPTIONAL_FRAME_KEYS = {"padding"}
 
 
-def image_banks(ver: str):
-    path = Path(f"regions.{ver}.txt")
+def image_banks(ver: str, path: Path | None = None):
+    path = path or Path(f"regions.{ver}.txt")
     for lineno, raw in enumerate(path.read_text().splitlines(), 1):
         parts = raw.split("#", 1)[0].split()
         if not parts or parts[0] != "image-bank":
@@ -79,9 +80,9 @@ def check_entry(image: dict) -> None:
                              f"(optionally {', '.join(sorted(OPTIONAL_FRAME_KEYS))})")
         check_compression(frame["compression"])
         if "padding" in frame:
-            _ints(frame["padding"], 4, "padding")
-            if frame["compression"] not in PADDED_COMPRESSIONS or not all(0 <= b <= 0xFF for b in frame["padding"]):
-                raise ValueError(f"padding must be 4 bytes on a {' or '.join(PADDED_COMPRESSIONS)} frame")
+            _ints(frame["padding"], len(frame["padding"]), "padding")
+            if not all(0 <= b <= 0xFF for b in frame["padding"]):
+                raise ValueError("padding must be a list of bytes")
         _ints(frame["offset"], 2, "frame offset")
         for cell in frame["cells"]:
             _ints(cell, 4, "cell")
@@ -173,10 +174,12 @@ def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
     if cursor != end:
         raise ValueError(f"{name}: packed {cursor - start:#x} bytes; region needs {end - start:#x}")
 
-    header_out = Path(f"include/gen/{ver}")
-    header_out.mkdir(parents=True, exist_ok=True)
+    header_path = Path(f"include/gen/{name}.h")
+    header_path.parent.mkdir(parents=True, exist_ok=True)
+    header_text = "\n".join(header) + "\n"
     (out / f"{name}.s").write_text("\n".join(asm) + "\n")
-    (header_out / f"{name}.h").write_text("\n".join(header) + "\n")
+    if not header_path.is_file() or header_path.read_text() != header_text:
+        header_path.write_text(header_text)
     return len(index["images"])
 
 
@@ -189,6 +192,13 @@ def main() -> None:
         names = [name for _, _, _, name in banks]
         if len(names) != len(set(names)):
             raise ValueError(f"regions.{ver}.txt: duplicate image-bank name")
+        # Generated headers are shared between versions.
+        sources = {name: source for _, _, source, name in banks}
+        for other in sorted(Path(".").glob("regions.*.txt")):
+            for _, _, source, name in image_banks(ver, other):
+                if name in sources and sources[name] != source:
+                    raise ValueError(f"{other}: image bank {name} uses {source}, "
+                                     f"not {sources[name]} as in regions.{ver}.txt")
         for start, end, source, name in banks:
             count = pack_bank(ver, start, end, source, name)
             print(f"{ver}: packed {name}: {count} images, {end - start} bytes")

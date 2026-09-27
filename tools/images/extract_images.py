@@ -48,6 +48,12 @@ BANKS = {
     "BattleIcons": {"prefix": "BattleIcon", "bpp": 4,
                     "componentOrder": ("tiles", "frames", "palette"), "storedCells": True,
                     "noPalette": ("BattleIcon036",)},
+    "FighterSprites": {"prefix": "Fighter", "bpp": 4,
+                       "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "BattleFaces": {"prefix": "BattleFace", "bpp": 8,
+                    "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "ActionIcons": {"prefix": "ActionIcon", "bpp": 4,
+                    "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
 }
 
 

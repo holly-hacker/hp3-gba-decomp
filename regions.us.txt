@@ -1175,6 +1175,15 @@ image-bank 0x089AE030 0x089F1DD4 data/images/monster_battle MonsterBattleSprites
 # Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
 image-bank 0x089F1DD4 0x089F46DC data/images/battle_icons BattleIcons
 
+# Player battle sprites, g_aFighterAnimTable records
+image-bank 0x089F46DC 0x08A13298 data/images/fighters FighterSprites
+
+# 40x40 faces, 8bpp; records 0-71 of the table at 0x0804D824 (sub_08012CE4, sub_08012D2C)
+image-bank 0x08A13298 0x08A2DCC4 data/images/battle_faces BattleFaces
+
+# 24x32 item and spell icons; records 72-132 of the table at 0x0804D824
+image-bank 0x08A2DCC4 0x08A30814 data/images/action_icons ActionIcons
+
 # Turn-order icon container and the gauge sprites sub_0801BA54 shows
 image-bank 0x08A37DA4 0x08A39000 data/images/unnamed2 UnnamedSprites2
 

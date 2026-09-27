@@ -989,7 +989,9 @@ The index contains no addresses: components are laid out back-to-back in
 list order, skipping components an entry lacks. `just pack-images`
 rebuilds every component under `build/<ver>/images/<bank>/`, writes
 `build/<ver>/images/<bank>.s` with `g<Name><Component>` labels, and writes
-`include/gen/<ver>/<bank>.h` with their C declarations. Packing fails on
+`include/gen/<bank>.h` with their C declarations. The header depends only
+on `bank.json`, so it is shared by all versions, and a bank name must use
+the same directory in every manifest. Packing fails on
 a PNG that is not indexed, a pixel index or palette outside the bank's bit
 depth, a drawn pixel outside every cell, an unlisted PNG, or a total size
 that differs from the manifest range. The US item-icon, Help, portrait,
@@ -1030,8 +1032,8 @@ everything else.
   (type 6), or `raw` (type 0, uncompressed), chosen per frame (one
   overworld sprite mixes `lzrle` and `rle`; one ally head sprite
   mixes `lzrle`, `rle`, and `raw`).
-- **`padding`** (stored-cells frames only, optional): the word after a
-  `raw` or `gammalz` stream when it is nonzero (see "Tile streams"). Item icons use both with no
+- **`padding`** (stored-cells frames only, optional): the bytes after
+  the stream's last token when any is nonzero (see "Tile streams"). Item icons use both with no
   size-based rule: every `rle` icon would be 2-5 bytes smaller as
   `lzrle`, so it is a per-asset setting.
 
@@ -1079,12 +1081,12 @@ reproduces all 37 RLE streams with runs of at least 3 and both token kinds
 capped at 127 bytes.
 
 `raw` and `gammalz` streams instead end on a word boundary followed by
-one padding word. It is zero in every sprite stream but one battle-sprite
-frame (`00 14 33 00`); two GammaLz resources outside the sprite banks
-hold similar values (`0x00xx1400` read as a word). **UNCONFIRMED**: these
-look like leftover pointers from the original tool. A nonzero word is
-kept as the frame's `padding`. GammaLz streams are encoded as described
-in "Encoder: Pucrunch 1.11".
+one padding word. Padding is zero in all but four sprite streams: two
+GammaLz words (`00 14 33 00`, `00 14 A4 00`) and two LzRle tails with a
+single `0x10` byte. **UNCONFIRMED**: these look like leftover memory from
+the original tools. A frame with nonzero padding keeps its padding bytes
+as `padding`. GammaLz streams are encoded as described in "Encoder:
+Pucrunch 1.11".
 
 ### Overworld monster sprites (PROVEN, extracted)
 
@@ -1160,8 +1162,24 @@ A palette after a sprite's frames is normally that sprite's own. The
 extractor's `noPalette` setting marks the two sprites whose following
 palette belongs to other records (`MonsterBattle025` and
 `BattleIcon036`, checked against every record's palette pointer), so it
-becomes its own palette-only entry. After `0x089F46DC`, further LzRle
-sprites with palettes continue; they are not claimed yet.
+becomes its own palette-only entry.
+
+### Fighter sprites, battle faces, and action icons (PROVEN, extracted)
+
+The sprites after `BattleIcons`, up to `0x08A30814` (JP `0x08A30644`),
+are identical in both ROMs and claimed as three stored-cells banks:
+
+| Bank | US | JP | Contents |
+|---|---|---|---|
+| `FighterSprites` | `0x089F46DC`-`0x08A13298` | `0x089F450C`-`0x08A130C8` | the sprites `g_aFighterAnimTable` points to: 30 player battle sprites (Harry, Hermione, Ron, Buckbeak) and one palette-only entry, 4bpp |
+| `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 faces, 8bpp (512-byte palettes) |
+| `ActionIcons` | `0x08A2DCC4`-`0x08A30814` | `0x08A2DAF4`-`0x08A30644` | 42 one-frame 24x32 item and spell icons, 4bpp |
+
+`BattleFaces` and `ActionIcons` are records 0-71 and 72-132 of an
+unlabeled 133-record `ObjectAssetRecord` table at `0x0804D824` (JP
+`0x0804D750`), which `sub_08012CE4` and `sub_08012D2C` index. The bank
+names describe the images; the table's purpose is not traced. Every
+sprite's palette in these banks is the one its records use.
 
 ### Item icons (PROVEN, extracted)
 
@@ -1243,7 +1261,7 @@ curved arrow, requested from the status/equip screen code). `regions.us.txt`'s `
 `image-bank` row claims the 80 icons as 4-bit `ItemNNN.png` sprites in
 `palette`, `tiles`, `frames` order (see "Image-bank build format"), the
 id-`0x86` icon last as `Item080`; 11 icons use `rle`, the rest `lzrle`.
-`src/data/items.c` includes the generated `include/gen/us/ItemIcons.h` and
+`src/data/items.c` includes the generated `include/gen/ItemIcons.h` and
 references the `gItemNNNPalette/Tiles/Frames` labels instead of literal
 addresses. See `docs/formats/items.md`.
 

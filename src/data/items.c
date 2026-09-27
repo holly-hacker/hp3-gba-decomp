@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/items.h"
 #include "items.h"
-#include "gen/us/ItemIcons.h"
+#include "gen/ItemIcons.h"
 
 // g_pItemTable, 132 records. See docs/formats/items.md for how each
 // field was identified. Content not yet confirmed identical to JP, so

@@ -1,20 +1,11 @@
 #include "types.h"
 #include "battle.h"
-#ifdef VERSION_JP
-#include "gen/jp/MonsterBattleSprites.h"
-#include "gen/jp/MonsterOverworldSprites.h"
-#include "gen/jp/MonsterPalettes.h"
-#include "gen/jp/BattleIcons.h"
-#include "gen/jp/AllyHeads.h"
-#include "gen/jp/UnnamedSprites2.h"
-#else
-#include "gen/us/MonsterBattleSprites.h"
-#include "gen/us/MonsterOverworldSprites.h"
-#include "gen/us/MonsterPalettes.h"
-#include "gen/us/BattleIcons.h"
-#include "gen/us/AllyHeads.h"
-#include "gen/us/UnnamedSprites2.h"
-#endif
+#include "gen/MonsterBattleSprites.h"
+#include "gen/MonsterOverworldSprites.h"
+#include "gen/MonsterPalettes.h"
+#include "gen/BattleIcons.h"
+#include "gen/AllyHeads.h"
+#include "gen/UnnamedSprites2.h"
 
 // Monster sprite records and the battle overlay records after them; see
 // docs/formats/folio_bruti.md ("Monster graphics table"). Content is
