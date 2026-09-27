@@ -167,10 +167,10 @@
       ]
     },
     "13": {
-      "name": "SetCameraPanSpeedOrRunRowChain",
+      "name": "DelayedRespawnRowAndRunChain",
       "operand_length": 4,
       "operand_names": [
-        "speed",
+        "delay",
         "row",
         "chainRow"
       ],
@@ -319,16 +319,16 @@
       "operand_length": 4
     },
     "23": {
-      "name": "SetTileObjectShadow",
+      "name": "SetTileObjectFollowTarget",
       "operand_length": 8,
       "operand_names": [
         "x",
         "y",
-        "shadowX",
-        "shadowY",
-        "useShadowTile",
-        "field65",
-        "field68",
+        "targetX",
+        "targetY",
+        "useTargetTile",
+        "resumeDistance",
+        "stopDistance",
         "unknown"
       ],
       "operand_widths": [
@@ -767,10 +767,10 @@
       ]
     },
     "52": {
-      "name": "SetCameraPanSpeedOrRunRowChainAlt",
+      "name": "DelayedRespawnRowAndRunChainFrames",
       "operand_length": 4,
       "operand_names": [
-        "speed",
+        "delay",
         "row",
         "chainRow"
       ],

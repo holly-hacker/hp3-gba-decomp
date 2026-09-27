@@ -232,7 +232,14 @@ typedef struct Object {
     u8 bAttackOutcomeState; // 0x60
     u8 bScriptPageHigh_candidate;  // 0x61, written by a room script
     u16 wStagedDamage;      // 0x62
-    u8 pad_64[0x18];        // -> 0x7C
+    u8 pad_64[0x01];        // -> 0x65
+    u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
+    u8 pad_66[0x02];        // -> 0x68
+    u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
+    u8 pad_69[0x03];        // -> 0x6C
+    u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
+    u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
+    u8 pad_6E[0x0E];        // -> 0x7C
     u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocObjectOfType, zeroed by
                              // InitPlayerBattleActor_candidate
     u8 pad_7D[0x03];        // -> 0x80
@@ -252,7 +259,8 @@ typedef struct Object {
     u8 pad_95[0x03];        // -> 0x98
     void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
     void (*pfnDestructor)(struct Object *obj);  // 0x9C, called by FreeObject if non-null
-    struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow)
+    struct Object *pShadowObject;  // 0xA0, companion object (main -> shadow); the
+                                   // object followed in action state 0x12
     struct Object *pLinkedObject_candidate;  // 0xA4, one of three linked-object slots
                                      // (see docs/formats/room_scripts.md); caller-defined
     struct Object *pOwnerObject;   // 0xA8, back-link (shadow -> main)
@@ -348,7 +356,7 @@ typedef enum {
     RoomObjectType_UnkA             = 0xA,
     RoomObjectType_UnkB             = 0xB,
     RoomObjectType_UnkC             = 0xC,
-    RoomObjectType_ScriptEffect     = 0xE,   // SpawnScriptEffectObject_candidate, camera-pan effect;
+    RoomObjectType_ScriptEffect     = 0xE,   // SpawnScriptEffectObject, e.g. delayed chain runs;
                                               // reuses the same value as BattleObjectType_FighterSlot0
                                               // since room/overworld and battle never run concurrently
     RoomObjectType_WanderingMonster = 0x10,  // SpawnWanderingMonsterObject; reuses

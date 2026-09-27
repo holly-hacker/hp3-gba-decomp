@@ -64,8 +64,18 @@ extern void RespawnRoomObjectsInRow_candidate(u32 row);
 // Live object at tile (x, y); every script targets (0, 0xFF), the player slot.
 extern Object *GetRoomObjectField_candidate(u32 x, u32 y);
 
-extern void CompareAndBranchRoomScript_candidate(u32 lhs, u32 cmpOp, u32 rhs, u32 trueChain, u32 falseChain,
-                                                 u32 trueRow, u32 falseRow);
+// cmpOp values for CompareAndBranchRoomScript (room_script_branch.h).
+enum {
+    RoomScriptCompareEqual,
+    RoomScriptCompareNotEqual,
+    RoomScriptCompareGreater,
+    RoomScriptCompareGreaterEqual,
+    RoomScriptCompareLess,
+    RoomScriptCompareLessEqual
+};
+
+extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, u8 falseChain, u8 trueRow,
+                                       u8 falseRow);
 // Whether chain row `row` may run; false for 0, true from 2 up, and for 1 only
 // while g_wRoomResourceFlags_candidate bit 0 is set.
 extern u32 ShouldRunRoomScriptRow_candidate(u32 row);
@@ -85,6 +95,9 @@ extern void *g_pPendingCameraFocus_candidate;
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Object *pLeader, u32 direction);
 extern void RespawnRowAndRunChain_candidate(u32 respawnRow, u32 chainRow);
+// Allocates a RoomObjectType_ScriptEffect object of the given kind (Object+0x8C),
+// ticked by the kind's entry in the script-effect tick table.
+extern Object *SpawnScriptEffectObject(u32 kind);
 extern void WriteRoomBgTile_candidate(u32 x, u32 y, u32 tileId, u32 layer);
 extern void ConsumeBattleItemSlot(u32 itemId, u32 count);
 extern void sub_080236DC(u32 characterId);

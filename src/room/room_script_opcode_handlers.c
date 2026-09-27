@@ -19,7 +19,7 @@ const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     RoomScriptOpPlaySoundById,  // 10
     RoomScriptOpSetRoomMusicVolume,  // 11
     RoomScriptOpSetSoundEffectVolume,  // 12
-    RoomScriptOpSetCameraPanSpeedOrRunRowChain,  // 13
+    RoomScriptOpDelayedRespawnRowAndRunChain,  // 13
     RoomScriptOpSetStoryStage,  // 14
     RoomScriptOpSetTileObjectAnimState,  // 15
     RoomScriptOpQueueTileObjectMove,  // 16
@@ -29,7 +29,7 @@ const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     RoomScriptOpSetTileObjectPosition,  // 20
     RoomScriptOpPlayCutscene,  // 21
     RoomScriptOpCloseRoomDialog,  // 22
-    RoomScriptOpSetTileObjectShadow,  // 23
+    RoomScriptOpSetTileObjectFollowTarget,  // 23
     RoomScriptOpStartObjectAnimSequence,  // 24
     RoomScriptOpStartTileObjectScript,  // 25
     RoomScriptOpPlayTileObjectAnimation,  // 26
@@ -58,7 +58,7 @@ const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93] = {
     RoomScriptOpSetBackgroundPriority,  // 49
     RoomScriptOp50,  // 50
     RoomScriptOpPlaySpecialSceneEffect,  // 51
-    RoomScriptOpSetCameraPanSpeedOrRunRowChainAlt,  // 52
+    RoomScriptOpDelayedRespawnRowAndRunChainFrames,  // 52
     RoomScriptOpSetTileObjectAndLinkedVisible,  // 53
     RoomScriptOpGotoIfStoryStageCompare,  // 54
     RoomScriptOpSetRandomQuestState,  // 55

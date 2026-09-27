@@ -328,13 +328,13 @@ thumb-func 0x0801C1D8 RoomScriptOpStartTileObjectScript
 thumb-func 0x0801C280 RoomScriptOpPlaySpecialSceneEffect
 thumb-func 0x0801C3EC RoomScriptOpFullHealParty
 thumb-func 0x0801C440 RoomScriptOpStartMinigame
-thumb-func 0x0801C50C RoomScriptOpGotoIfFolioPageGroupComplete
-thumb-func 0x0801C564 RoomScriptOpGotoIfAllQuestFlagsSet
-thumb-func 0x0801C5CC RoomScriptOpDespawnTileObject
-thumb-func 0x0801C5FC RoomScriptOp2
+c-file 0x0801C50C 0x0801C564 src/room/opcodes/room_script_op_goto_if_folio_page_group_complete.c RoomScriptOpGotoIfFolioPageGroupComplete
+c-file 0x0801C564 0x0801C5CC src/room/opcodes/room_script_op_goto_if_all_quest_flags_set.c RoomScriptOpGotoIfAllQuestFlagsSet
+c-file 0x0801C5CC 0x0801C5FC src/room/opcodes/room_script_op_despawn_tile_object.c RoomScriptOpDespawnTileObject
+c-file 0x0801C5FC 0x0801C634 src/room/opcodes/room_script_op2.c RoomScriptOp2
 c-file 0x0801C634 0x0801C654 src/room/opcodes/room_script_op_set_tile_object_flag_bit.c RoomScriptOpSetTileObjectFlagBit
 c-file 0x0801C654 0x0801C674 src/room/opcodes/room_script_op_clear_tile_object_flag_bit.c RoomScriptOpClearTileObjectFlagBit
-thumb-func 0x0801C674 RoomScriptOpShowRoomDialog
+c-file 0x0801C674 0x0801C6BC src/room/opcodes/room_script_op_show_room_dialog.c RoomScriptOpShowRoomDialog
 c-file 0x0801C6BC 0x0801C6C8 src/room/opcodes/room_script_op_pause_music.c RoomScriptOpPauseMusic
 c-file 0x0801C6C8 0x0801C6D4 src/room/opcodes/room_script_op_resume_music.c RoomScriptOpResumeMusic
 c-file 0x0801C6D4 0x0801C700 src/room/opcodes/room_script_op_play_music_module_and_flag_if_chain1.c RoomScriptOpPlayMusicModuleAndFlagIfChain1
@@ -342,15 +342,15 @@ c-file 0x0801C700 0x0801C72C src/room/opcodes/room_script_op_play_room_sound_eff
 c-file 0x0801C72C 0x0801C738 src/room/opcodes/room_script_op_play_sound_by_id.c RoomScriptOpPlaySoundById
 c-file 0x0801C738 0x0801C748 src/room/opcodes/room_script_op_set_room_music_volume.c RoomScriptOpSetRoomMusicVolume
 c-file 0x0801C748 0x0801C754 src/room/opcodes/room_script_op_set_sound_effect_volume.c RoomScriptOpSetSoundEffectVolume
-thumb-func 0x0801C754 RoomScriptOpSetCameraPanSpeedOrRunRowChain
+c-file 0x0801C754 0x0801C7B0 src/room/opcodes/room_script_op_delayed_respawn_row_and_run_chain.c RoomScriptOpDelayedRespawnRowAndRunChain
 c-file 0x0801C7B0 0x0801C7BC src/room/opcodes/room_script_op_set_story_stage.c RoomScriptOpSetStoryStage
 c-file 0x0801C7BC 0x0801C7D4 src/room/opcodes/room_script_op_set_tile_object_anim_state.c RoomScriptOpSetTileObjectAnimState
 c-file 0x0801C7D4 0x0801C810 src/room/opcodes/room_script_op_return_to_overworld.c RoomScriptOpReturnToOverworld
 c-file 0x0801C810 0x0801C84C src/room/opcodes/room_script_op_clear_all_queued_moves.c RoomScriptOpClearAllQueuedMoves
-thumb-func 0x0801C84C RoomScriptOpSetTileObjectPosition
+c-file 0x0801C84C 0x0801C87C src/room/opcodes/room_script_op_set_tile_object_position.c RoomScriptOpSetTileObjectPosition
 thumb-func 0x0801C87C RoomScriptOpPlayCutscene
 c-file 0x0801C974 0x0801C9B0 src/room/opcodes/room_script_op_close_room_dialog.c RoomScriptOpCloseRoomDialog
-thumb-func 0x0801C9B0 RoomScriptOpSetTileObjectShadow
+thumb-func 0x0801C9B0 RoomScriptOpSetTileObjectFollowTarget
 c-file 0x0801CA08 0x0801CA4C src/room/opcodes/room_script_op_play_tile_object_animation.c RoomScriptOpPlayTileObjectAnimation
 c-file 0x0801CA4C 0x0801CA68 src/room/opcodes/room_script_op_open_main_menu.c RoomScriptOpOpenMainMenu
 c-file 0x0801CA68 0x0801CA88 src/room/opcodes/room_script_op_arm_chain_yield.c RoomScriptOpArmChainYield
@@ -376,7 +376,7 @@ c-file 0x0801CD30 0x0801CD3C src/room/opcodes/room_script_op_show_background_lay
 c-file 0x0801CD3C 0x0801CD48 src/room/opcodes/room_script_op_hide_background_layer.c RoomScriptOpHideBackgroundLayer
 c-file 0x0801CD48 0x0801CD58 src/room/opcodes/room_script_op_set_background_priority.c RoomScriptOpSetBackgroundPriority
 thumb-func 0x0801CD58 RoomScriptOp50
-thumb-func 0x0801CD74 RoomScriptOpSetCameraPanSpeedOrRunRowChainAlt
+c-file 0x0801CD74 0x0801CDCC src/room/opcodes/room_script_op_delayed_respawn_row_and_run_chain_frames.c RoomScriptOpDelayedRespawnRowAndRunChainFrames
 c-file 0x0801CDCC 0x0801CE18 src/room/opcodes/room_script_op_set_tile_object_and_linked_visible.c RoomScriptOpSetTileObjectAndLinkedVisible
 c-file 0x0801CE18 0x0801CE44 src/room/opcodes/room_script_op_goto_if_story_stage_compare.c RoomScriptOpGotoIfStoryStageCompare
 c-file 0x0801CE44 0x0801CE68 src/room/opcodes/room_script_op_set_random_quest_state.c RoomScriptOpSetRandomQuestState
@@ -391,8 +391,8 @@ c-file 0x0801CF24 0x0801CF28 src/room/opcodes/room_script_op_no_op_alt.c RoomScr
 c-file 0x0801CF28 0x0801CF4C src/room/opcodes/room_script_op_invoke_chain_if_enabled.c RoomScriptOpInvokeChainIfEnabled
 c-file 0x0801CF4C 0x0801CF58 src/room/opcodes/room_script_op_grant_party_experience.c RoomScriptOpGrantPartyExperience
 c-file 0x0801CF58 0x0801CF64 src/room/opcodes/room_script_op_set_battle_defeat_state.c RoomScriptOpSetBattleDefeatState
-thumb-func 0x0801CF64 RoomScriptOpSetTileObjectDrawLayer
-thumb-func 0x0801CF94 RoomScriptOpEnterFredAndGeorgesShop
+c-file 0x0801CF64 0x0801CF94 src/room/opcodes/room_script_op_set_tile_object_draw_layer.c RoomScriptOpSetTileObjectDrawLayer
+c-file 0x0801CF94 0x0801CFBC src/room/opcodes/room_script_op_enter_fred_and_georges_shop.c RoomScriptOpEnterFredAndGeorgesShop
 c-file 0x0801CFBC 0x0801CFCC src/room/opcodes/room_script_op_respawn_row_and_run_chain.c RoomScriptOpRespawnRowAndRunChain
 c-file 0x0801CFCC 0x0801D020 src/room/opcodes/room_script_op_despawn_room_row_objects.c RoomScriptOpDespawnRoomRowObjects
 c-file 0x0801D020 0x0801D04C src/room/opcodes/room_script_op_grant_party_spell.c RoomScriptOpGrantPartySpell
@@ -412,7 +412,7 @@ c-file 0x0801D330 0x0801D33C src/room/opcodes/room_script_op_unmute_all_music_ch
 c-file 0x0801D33C 0x0801D34C src/room/opcodes/room_script_op_consume_room_item.c RoomScriptOpConsumeRoomItem
 c-file 0x0801D34C 0x0801D360 src/room/opcodes/room_script_op_reset_party_leader_selection.c RoomScriptOpResetPartyLeaderSelection
 c-file 0x0801D360 0x0801D390 src/room/opcodes/room_script_op_set_pending_chain_from_exit_param.c RoomScriptOpSetPendingChainFromExitParam
-thumb-func 0x0801D390 CompareAndBranchRoomScript_candidate
+c-file 0x0801D390 0x0801D464 src/room/compare_and_branch_room_script.c CompareAndBranchRoomScript
 c-file 0x0801D518 0x0801D5C8 src/gamemode/modes/cutscene/credits/initialize_credits.c InitializeCredits
 c-file 0x0801D5C8 0x0801D6DC src/gamemode/modes/cutscene/credits/update_credits.c UpdateCredits
 thumb-func 0x0801D6DC sub_0801D6DC
@@ -458,6 +458,7 @@ thumb-func 0x0801FDA0 InitDisplayControl
 c-file 0x0801FDE8 0x0801FED4 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
 c-file 0x0801FED4 0x0801FF14 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
 c-file 0x0801FF14 0x0801FF30 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
+thumb-func 0x0802018C SpawnScriptEffectObject
 thumb-func 0x08020228 TickRoomTileAnimations_candidate
 thumb-func 0x080203A8 InitRoomTileAnimationTable_candidate
 
