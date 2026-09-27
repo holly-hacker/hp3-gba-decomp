@@ -18,7 +18,7 @@ almost exclusively be AI-generated and not meant for human consumption.
 
 Current progress:
 - Main code section: between 20% and 25%
-- Assets: between 30% and 35%
+- Assets: between 40% and 45%
 - Library code: less than 5%
 
 ## Setup
