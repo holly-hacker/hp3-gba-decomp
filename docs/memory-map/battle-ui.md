@@ -438,7 +438,7 @@ transition in flight, and not in Dialogue mode". See
   `(0x14C4 - 0x14AC) / 4`). One entry per queued fainted-fighter message.
 - `+0x14C4` -> `bFaintMessageCount_candidate`: an incrementing
   write-cursor/count into `aFaintMessages_candidate`. The `== 0` gate in
-  `ApplyDamageToFighter` (battle.md) means "no messages queued yet".
+  `ApplyDamageToEnemyFighter` (battle.md) means "no messages queued yet".
 
 Found by walking the live call stack (mGBA gdb backtrace) up from
 `ResolveEnemyAttack`; a sibling function, `UpdateFighterFlashEffect_candidate`
@@ -465,7 +465,7 @@ every entry resolves to a genuinely separate, cleanly-bounded function:
 |---|---|---|
 | `0` | `0x080160FC` | `PlayActionWindupFlash` -- queues a palette-flash cue via `FUN_0800d264` (the same palette-refresh/fade queue used to undo poison discoloration), keyed by an anim-table entry and `Object+0xd5`'s high nibble, plus an anim-data-table switch via `SetPlayerObjectAnim` (`0x08015484`) -- the windup flash before the swing/cast animation starts |
 | `1` | `0x08017A7C` | `PlayFighterImpactSound` -- per-fighter-type sound (`Object+8`) plus a shared impact sound, the moment the attack/spell visually connects |
-| `2` | `0x080161A2` | `ApplyDamageNumberAnimState` -- commits a damage number previously staged at `Object+0x62` by `ShowDamageNumber_candidate`: sound, a HUD refresh, then (once flag `0x40000` is set) resets the anim state and applies the damage via `ApplyStatusDamageToFighter_candidate` |
+| `2` | `0x080161A2` | `ApplyDamageNumberAnimState` -- commits a damage number previously staged at `Object+0x62` by `ShowDamageNumber_candidate`: sound, a HUD refresh, then (once flag `0x40000` is set) resets the anim state and applies the damage via `ApplyDamageToAllyFighter` |
 | `3`, `6`-`14`, `16`-`20`, `22`-`25` | `0x08017B42` | `TickPlayerActionStateNoOp` -- shared no-op default, also every other case's own tail branch target |
 | `4` | `0x080177D8` | `ApplyStatusRestoreItemEffect` -- resolves a restorative-item/status-cure effect: `FUN_08026cdc(bSpellLevel)` selects among MP restore, SP restore, a cure call, or lifting `Paralyzed`, each with its own `TriggerBattleEffect` id and cost/message |
 | `5` | `0x08017ADE` | `ReturnFighterToPosition` -- post-action wait/return-to-formation state: flips the sprite and arms a 30-frame counter on entry, then on expiry clears `bSelectedActionIndex`, un-flips, and resets the anim state |

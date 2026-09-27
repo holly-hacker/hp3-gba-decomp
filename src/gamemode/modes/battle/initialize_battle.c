@@ -71,7 +71,8 @@ void InitializeBattle(void)
     }
     else
     {
-        // entered battle mode by exiting Folio Universitas or the Help screen, ie. this is not a new battle
+        // Resume after Folio Universitas, Help, or Folio Bruti (whose exit
+        // rewrites the previous mode to Folio Universitas).
         InitBattleBackground_candidate();
         RestoreFighterObjects_candidate();
         uVar7 = GetBattleBackgroundData_candidate();

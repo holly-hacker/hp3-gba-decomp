@@ -66,7 +66,7 @@ void ExitBattle(void)
     }
     else
     {
-        // Suspending for a Folio Universitas/Help submode: snapshot every live
+        // Suspending for a Folio/Help submode: snapshot every live
         // then pending fighter's Object (densely packed) instead of tearing
         // the battle down, so it can be restored by InitializeBattle's resume
         // path on return. `fighterIndex` keeps counting across both loops as

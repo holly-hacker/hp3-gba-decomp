@@ -1,10 +1,10 @@
 #include "types.h"
 #include "battle.h"
 
-// ApplyDamageToFighter's sibling for status ticks (poison) -- same
-// HP-underflow/faint check and animation-state write, but no XP/gold
-// reward payout: a status tick isn't a kill-credited attack.
-void ApplyStatusDamageToFighter_candidate(s32 damage, s32 fighterIndex)
+// Applies enemy attack damage and poison ticks to an ally. Unlike
+// ApplyDamageToEnemyFighter, this also updates the party's stored HP
+// and does not grant monster kill rewards.
+void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex)
 {
     // Strips ResolveEnemyAttack/ResolvePlayerAttack's "Critical hit!" sentinel.
     if ((u32)damage > 998)

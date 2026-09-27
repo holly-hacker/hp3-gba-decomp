@@ -73,7 +73,7 @@ void TickBattleTurnStateMachine(void)
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
                 if (g_pFightState->pFighters[i].bStatusFlags & Poisoned) {
                     ShowFloatingDamageNumber_candidate(g_pFightState->pFighters[i].bPoisonDamage, 4, i, 0);
-                    ApplyStatusDamageToFighter_candidate(g_pFightState->pFighters[i].bPoisonDamage, i);
+                    ApplyDamageToAllyFighter(g_pFightState->pFighters[i].bPoisonDamage, i);
                     g_pFightState->wBattleStateTimer = 0x3c;
                 }
             }

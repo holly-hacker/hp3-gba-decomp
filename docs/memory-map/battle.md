@@ -114,7 +114,7 @@ void EndOfRoundStatusTick() {                          // TickBattleTurnStateMac
     for (Fighter f : pFighters) {
         if (f.bStatusFlags & Poisoned) {
             ShowFloatingDamageNumber(f.bPoisonDamage, 4, f.index, 0);  // 0x080181AC
-            ApplyStatusDamageToFighter(f.bPoisonDamage, f.index);       // 0x08018094
+            ApplyDamageToAllyFighter(f.bPoisonDamage, f.index);  // 0x08018094
         }
     }
 }
@@ -146,7 +146,7 @@ int ResolveEnemyAttack(int attackerIndex, int defenderIndex) {   // 0x08017E44
         }
     }
 
-    return damage;                 // caller applies it, e.g. via ApplyDamageToFighter
+    return damage;                 // enemy hit is staged on its target's Object; see below
 }
 
 void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort damage) {  // 0x08015020
@@ -169,9 +169,9 @@ void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort
 // none), damage is u16 (callers extend with lsl/lsr #0x10). Returns the
 // spawned Object*; no call site uses it.
 
-// ---- Damage application (shared by both attack paths) ----
+// ---- Player-to-enemy damage application ----
 
-void ApplyDamageToFighter(short damage, uchar fighterIndex) {   // 0x08017F98
+void ApplyDamageToEnemyFighter(short damage, uchar fighterIndex) {   // 0x08017F98
     Fighter *f = &pFighters[fighterIndex];
     f->wHp -= damage;
     if (f->wHp == 0 || f->wHp > f->wHp_max) {   // fainted, or underflowed past 0
@@ -245,7 +245,7 @@ void ExecutePlayerAttackSequence(int attackerIndex) {            // 0x080161FE
         if (bPendingStatusMessageVariant != NO_PENDING_STATUS_MESSAGE_VARIANT)
             ShowBattleMessage(AttackResult, 0, bPendingStatusMessageVariant);
         ShowFloatingDamageNumber(g_nLastDamage, 0, targetSlot, 0);
-        ApplyDamageToFighter(g_nLastDamage, targetSlot);
+        ApplyDamageToEnemyFighter(g_nLastDamage, targetSlot);
         return;
     }
 
@@ -256,7 +256,7 @@ void ExecutePlayerAttackSequence(int attackerIndex) {            // 0x080161FE
         for (Fighter e : pFighters) if (e.bFighterType == Enemy) {
             int damage = ResolvePlayerAttack(attackerIndex, e.index);   // 0 for status-only spells, e.g. Fumos
             ShowDamageNumber(e.index, damage);
-            ApplyDamageToFighter(damage, e.index);
+            ApplyDamageToEnemyFighter(damage, e.index);
         }
     } else {
         // Fumos targets an ally (aAllySlotTurnOrderIndex); every other spell targets
@@ -264,7 +264,7 @@ void ExecutePlayerAttackSequence(int attackerIndex) {            // 0x080161FE
         int target = ResolveTargetIndex(f->bSpellId == Fumos, f->bSelectedActionIndex);
         int damage = ResolvePlayerAttack(attackerIndex, target);
         ShowDamageNumber(target, damage);
-        ApplyDamageToFighter(damage, target);
+        ApplyDamageToEnemyFighter(damage, target);
     }
 
     TriggerBattleEffect(g_abSpellEffectId[f->bSpellId * 3 + f->bSpellLevel], ...);
@@ -769,6 +769,28 @@ monster-paralysis case can call `SpawnParalysisEffect` (US `0x0801B590`,
 JP `0x0801B58C`), which creates a particle emitter and sets its byte
 at `+0x49` to `1`; that byte's further effect is not yet traced.
 
+Enemy-to-player damage is staged in the target's `Object+0x62` by
+`ShowDamageNumber_candidate` (`0x08017B5C`). Player action state `2` starts
+hit animation `4` and calls `ApplyDamageToAllyFighter` (`0x08018094`) only
+after `ObjectFlagActionAnimDone` is set. `TryApplyParalysis` clears the
+animation frame counter at `Object+0xD8`. If this happens after animation
+`4` starts, `TickObjectAnimation` cannot advance it or set the completion
+flag, so the damage remains unapplied. Later hits can overwrite the staged
+damage, but setting state `2` again does not restart the animation.
+
+Informus opens Folio Bruti, whose return path restores fighter objects in
+`pFighters` (turn) order rather than the initial party-first allocation
+order: `ExitFolioBruti` (`0x08037048`) makes `InitializeBattle` call
+`RestoreFighterObjects_candidate` (`0x0800F16C`). `TickObjectList` visits
+older objects first. When an Armor actor precedes its target in this
+order, its attack spawns the paralysis-script object and stages damage;
+the target starts animation `4` later in the same pass. The newly spawned
+script object then ticks after the target and clears its frame counter.
+The Cavalier Armor has a 10% chance on a damaging hit to run script 60,
+`StatusEffect 22 25 0; End`, producing this sequence. With the initial
+party-first allocation, the target starts animation `4` on the next pass,
+after the script has run, and reloads the counter.
+
 | Sub-case | Name | Start escape % | Gated on `g_wEffectContextValue`? | Feedback on success |
 |---|---|---|---|---|
 | `0x0A` | `Paralyze25` | 25 | yes | none |
@@ -805,10 +827,12 @@ caps it at level `2`.
 `TickBattleTurnStateMachine`'s state-2 handler
 (`EndOfRoundStatusTick` above) is end-of-round processing. Both reads
 (`bPoisonDamage`) and the HP write go through
-`ApplyStatusDamageToFighter_candidate` (`0x08018094`) --
-`ApplyDamageToFighter`'s sibling for this path: same HP-underflow/faint
-check and animation-state write, but **no XP/gold reward payout** (a
-status tick, not a kill-credited attack). `ShowFloatingDamageNumber_candidate`
+`ApplyDamageToAllyFighter` (`0x08018094`) --
+the same routine that applies enemy-to-player attack damage after the
+target's hit animation. It has the same HP-underflow/faint check and
+animation-state write as `ApplyDamageToEnemyFighter`, but **no XP/gold
+reward payout**.
+`ShowFloatingDamageNumber_candidate`
 (`0x080181AC`) is the floating popup: `"Miss!"` when both its damage and
 a fourth flag argument are `0`, otherwise the formatted amount.
 
@@ -917,21 +941,21 @@ field (the reader is what gives the field its name).
 
 | `MonsterTable` | `BattleFighter` | Label | Reader |
 | --- | --- | --- | --- |
-| `+0x00` | `+0x08`, `+0x24` | `wHp`, `wHp_max` | `ApplyDamageToFighter` |
+| `+0x00` | `+0x08`, `+0x24` | `wHp`, `wHp_max` | `ApplyDamageToEnemyFighter` |
 | `+0x02` | `+0x0E` | `bLevel` | none for a monster's own value |
 | `+0x03` | `+0x2A` | `bSpeed` | `BuildTurnOrder` |
 | `+0x04` | `+0x2B` | `bAccuracy` | `ResolveEnemyAttack` |
 | `+0x05` | `+0x2C` | `bCritChance` | `ResolveEnemyAttack` |
 | `+0x06`, `+0x08` | `+0x30`, `+0x32` | `wDamageRollMin`, `wDamageRollMax` | `ResolveEnemyAttack` |
 | `+0x0A`-`+0x0F` | `+0x34`-`+0x39` | `aSpellEffectiveness[6]` | `ResolvePlayerAttack` |
-| `+0x10`, `+0x12` | `+0x0C`, `+0x28` | `wRewardXp`, `wRewardGold` | `ApplyDamageToFighter`, `GrantMonsterKillReward` |
+| `+0x10`, `+0x12` | `+0x0C`, `+0x28` | `wRewardXp`, `wRewardGold` | `ApplyDamageToEnemyFighter`, `GrantMonsterKillReward` |
 | `+0x14`, `+0x15` | -- | `special_effect_chance`, `special_effect_id` | `RollMonsterSpecialEffect_candidate` (read from the table directly, not copied) |
 
 `MonsterTableRow` (`include/battle.h`) uses these same labels.
 
 ## XP/reward payout -- `MonsterTable+0x10`/`+0x12`, PROVEN
 
-On a fighter fainting, `ApplyDamageToFighter` adds
+On a fighter fainting, `ApplyDamageToEnemyFighter` adds
 `MonsterTable[fighter.bRosterIndex].reward_xp`/`.reward_gold` into two
 running EWRAM accumulators, `g_nBattleXpReward` (`0x0300260E`) and
 `g_nBattleGoldReward` (`0x03002610`). Confirmed live: defeating 2 Brown Recluse
@@ -945,7 +969,7 @@ flow" below); what consumes `g_nBattleGoldReward` isn't traced.
 
 A second, independent path exists: `GrantMonsterKillReward` (object-script
 opcode `0x83`, `0x0801A254`) adds a species' `wRewardXp`/`wRewardGold`
-straight into the same accumulators, bypassing `ApplyDamageToFighter`
+straight into the same accumulators, bypassing `ApplyDamageToEnemyFighter`
 entirely -- used by Harry's `Tempest Jinx` (banishes a monster without
 dealing damage, so it needs its own reward grant).
 
@@ -1111,7 +1135,7 @@ stateDiagram-v2
     Special --> Idle : outcome tail -- PostActionBattleCheck()
     Item --> Idle : status-restore resolve tail -- PostActionBattleCheck()
     Flee --> Idle : 30-tick timer expires -- PushBattleState(1)
-    Idle --> Impact : faint branch only (ApplyDamageToFighter /\nApplyStatusDamageToFighter_candidate)
+    Idle --> Impact : faint branch only (ApplyDamageToAllyFighter)
     Impact --> Idle : ReviveFighter_candidate
     Idle --> Dmg : set externally by the attacker's own resolve code\n(this fighter is the defender)
     Dmg --> Idle : dwFlags & ObjectFlagActionAnimDone observed
@@ -1128,7 +1152,7 @@ stateDiagram-v2
     F --> Idle : velocity reaches (0,0)
     Idle --> Attack : TickBattleTurnStateMachine S4 (Enemy),\nparalysis roll ok
     Attack --> Idle : return-flight tail, delay==0 -- PostActionBattleCheck()
-    Idle --> Settle : faint branch only (ApplyStatusDamageToFighter_candidate)
+    Idle --> Settle : faint branch only (ApplyDamageToEnemyFighter)
     Idle --> Hit : set externally by the attacker's own resolve code\n(this enemy is the defender)
     Hit --> Idle : dwFlags & ObjectFlagActionAnimDone observed
     note right of Settle

@@ -306,8 +306,8 @@ c-file 0x0801602C 0x08017B5C src/battle/tick_player_action_state.c TickPlayerAct
 thumb-func 0x08017B5C ShowDamageNumber_candidate
 c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
-thumb-func 0x08017F98 ApplyDamageToFighter
-c-file 0x08018094 0x080181AC src/battle/apply_status_damage_to_fighter.c ApplyStatusDamageToFighter_candidate
+thumb-func 0x08017F98 ApplyDamageToEnemyFighter
+c-file 0x08018094 0x080181AC src/battle/apply_damage_to_ally_fighter.c ApplyDamageToAllyFighter
 thumb-func 0x080181AC ShowFloatingDamageNumber_candidate
 thumb-func 0x08018304 CheckBattleDefeat
 thumb-func 0x08018460 PruneFaintedAndRebuildTurnOrder_candidate

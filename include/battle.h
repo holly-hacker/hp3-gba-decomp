@@ -183,8 +183,8 @@ typedef struct FightState {
     /*0x1482*/ u8 pad_1482[0x1491 - 0x1482];
     /*0x1491*/ u8 bPendingFighterCount_candidate;
     /*0x1492*/ u8 pad_1492[0x1494 - 0x1492];
-    /*0x1494*/ u32 dwDefeatCheckPending_candidate;  // set to 1 by any lethal-HP-threshold hit (ApplyDamageToFighter,
-                                                     // spell insta-kills, the poison-tick loop); cleared by whichever
+    /*0x1494*/ u32 dwDefeatCheckPending_candidate;  // set to 1 by any lethal-HP-threshold hit (ApplyDamageToEnemyFighter,
+                                                     // ApplyDamageToAllyFighter, spell insta-kills); cleared by whichever
                                                      // code path reacts to it after its own CheckBattleDefeat call
     /*0x1498*/ u8 pad_1498[0x149C - 0x1498];
     /*0x149C*/ u32 dwBattleResultPending;
@@ -237,7 +237,7 @@ extern void SetFighterTurnOrderIconDone(s32 fighterIndex);  // sets fighterIndex
 extern void sub_0800FEE0(s32 fighterIndex);
 extern void sub_08013108(u8 fighterIndex);        // cursor/highlight-to-fighter
 extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighterIndex, s32 flag);
-extern void ApplyStatusDamageToFighter_candidate(s32 damage, s32 fighterIndex);
+extern void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex);
 extern void CheckBattleDefeat(void);
 extern void PruneFaintedAndRebuildTurnOrder_candidate(s32 arg0);
 extern u8 RollFighterParalysisEscape(u8 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
@@ -331,7 +331,7 @@ extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void ShowItemUseResult(Object *obj, s32 targetIndex);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
-extern void ApplyDamageToFighter(u16 damage, u8 fighterIndex);  // 0x08017F98
+extern void ApplyDamageToEnemyFighter(u16 damage, u8 fighterIndex);  // 0x08017F98
 extern u8 g_abSpellEffectScriptId[][3];         // 0x080538B0, [spellId][level]
 extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
 // 16.16 position pair. Object+0x2C and FightState+0x104C hold one each, and
