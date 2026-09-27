@@ -17,9 +17,9 @@ All code under `src/` and `include/` is at the very least checked over by a huma
 almost exclusively be AI-generated and not meant for human consumption.
 
 Current progress:
-- Main code section: between 20% and 25%
-- Assets: between 40% and 45%
-- Library code: less than 5%
+- Game code: between 20% and 25%
+- Game assets: between 40% and 45%
+- Krawall code/assets: 0%
 
 ## Setup
 

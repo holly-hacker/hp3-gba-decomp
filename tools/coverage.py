@@ -17,10 +17,11 @@ import sys
 # Area boundaries for the US ROM: [start, end) each.
 US_AREAS = [
     ("code (start)", 0x08000000, 0x0804BDBC),
-    ("data", 0x0804BDBC, 0x08F9FBF6),
-    ("code (end)", 0x08F9FBF6, 0x08FB4B40),
+    ("data", 0x0804BDBC, 0x08FB0DB0),
+    ("code (krawall)", 0x08FB0DB0, 0x08FB2348),
+    ("data (krawall)", 0x08FB2348, 0x08FB4B40),
+    # ("empty", 0x08FB4B40, 0x09000000),
 ]
-
 KINDS = ["c-file", "asm-file", "data", "raw"]
 COLUMNS = ["c-file", "asm-file", "data", "matched", "raw"]
 NON_REGION = {"label", "thumb-func", "arm-func"}
@@ -64,7 +65,7 @@ def measure(regions, lo: int, hi: int) -> dict[str, int]:
     return sizes
 
 
-AREA_W, RANGE_W, BYTES_W, PCT_W = 13, 17, 10, 6
+AREA_W, RANGE_W, BYTES_W, PCT_W = 14, 17, 10, 6
 
 
 def fmt_row(label: str, span: str, total: int, sizes: dict[str, int]) -> str:
