@@ -1172,14 +1172,33 @@ are identical in both ROMs and claimed as three stored-cells banks:
 | Bank | US | JP | Contents |
 |---|---|---|---|
 | `FighterSprites` | `0x089F46DC`-`0x08A13298` | `0x089F450C`-`0x08A130C8` | the sprites `g_aFighterAnimTable` points to: 30 player battle sprites (Harry, Hermione, Ron, Buckbeak) and one palette-only entry, 4bpp |
-| `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 faces, 8bpp (512-byte palettes) |
-| `ActionIcons` | `0x08A2DCC4`-`0x08A30814` | `0x08A2DAF4`-`0x08A30644` | 42 one-frame 24x32 item and spell icons, 4bpp |
+| `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 portraits shown in battle when that fighter attacks, 8bpp (512-byte palettes) |
+| `ActionIcons` | `0x08A2DCC4`-`0x08A30814` | `0x08A2DAF4`-`0x08A30644` | 42 one-frame 24x32 icons for choosing a player action in the battle menu, 4bpp |
 
 `BattleFaces` and `ActionIcons` are records 0-71 and 72-132 of an
 unlabeled 133-record `ObjectAssetRecord` table at `0x0804D824` (JP
-`0x0804D750`), which `sub_08012CE4` and `sub_08012D2C` index. The bank
-names describe the images; the table's purpose is not traced. Every
+`0x0804D750`), which `sub_08012CE4` and `sub_08012D2C` index. Their uses
+come from observing the game, not from tracing those functions. Every
 sprite's palette in these banks is the one its records use.
+
+### Battle effects and status-screen characters (PROVEN, extracted)
+
+| Bank | US | JP | Contents |
+|---|---|---|---|
+| `BattleEffects` | `0x08A39500`-`0x08A9C6D0` | `0x08A39330`-`0x08A9C500` | 103 battle effect sprites and 11 palette-only entries, 4bpp |
+| `BattleEffects2` | `0x08D7C480`-`0x08D7E528` | `0x08D7C2B0`-`0x08D7E358` | one more battle effect sprite |
+| `StatusCharacters` | `0x08DF3918`-`0x08E1D5DC` | `0x08DF3748`-`0x08E1D40C` | Harry, Hermione, and Ron rotating in 32 frames each, 8bpp |
+
+The battle effect records are 16-byte `ObjectAssetRecord`s (animation delay
+3 or 5) at `0x08053D40`-`0x08053E50` and `0x08053E64`-`0x080544D4` (JP
+`0x08053C6C`-`0x08054400`), which `CreateEffectScriptObject` reads, with
+five palette pointers between the two runs. Every pointer in these runs
+lands on a component boundary in the effect ranges. The palette-only
+entries are palettes those pointers or battle code literals (for example
+at `0x080117F4` and `0x0801B2D8`) reference directly. `noPalette` marks
+`BattleEffect020`, whose following palette is one of the five loose ones.
+The status/equip screen's `sub_0803A030` reads the three
+`StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
 
 ### Item icons (PROVEN, extracted)
 

@@ -1178,10 +1178,10 @@ image-bank 0x089F1DD4 0x089F46DC data/images/battle_icons BattleIcons
 # Player battle sprites, g_aFighterAnimTable records
 image-bank 0x089F46DC 0x08A13298 data/images/fighters FighterSprites
 
-# 40x40 faces, 8bpp; records 0-71 of the table at 0x0804D824 (sub_08012CE4, sub_08012D2C)
+# Battle portraits shown when a fighter attacks, 8bpp; records 0-71 of the table at 0x0804D824
 image-bank 0x08A13298 0x08A2DCC4 data/images/battle_faces BattleFaces
 
-# 24x32 item and spell icons; records 72-132 of the table at 0x0804D824
+# Battle menu action icons; records 72-132 of the table at 0x0804D824
 image-bank 0x08A2DCC4 0x08A30814 data/images/action_icons ActionIcons
 
 # Turn-order icon container and the gauge sprites sub_0801BA54 shows
@@ -1189,6 +1189,9 @@ image-bank 0x08A37DA4 0x08A39000 data/images/unnamed2 UnnamedSprites2
 
 # Monster recolor palettes, g_pMonsterGraphicsTable and turn-order icon records
 image-bank 0x08A39000 0x08A39500 data/images/monster_palettes MonsterPalettes
+
+# Battle effect sprites: the records at 0x08053D40-0x080544D4 and palettes loaded by code
+image-bank 0x08A39500 0x08A9C6D0 data/images/battle_effects BattleEffects
 
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
@@ -1243,6 +1246,9 @@ krawall-module 0x08D22E4C 0x08D250B0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
+
+# Battle effect sprite, the record at 0x08054144
+image-bank 0x08D7C480 0x08D7E528 data/images/battle_effects2 BattleEffects2
 label 0x08D7E528 g_WizardCrackerPopItBg1Graphic
 label 0x08D7FF44 g_WizardCrackerPopItBg0Graphic
 label 0x08D8CDD4 g_WizardCrackerPopItBg2Graphic
@@ -1262,6 +1268,9 @@ label 0x08DDB23C g_LanguageSelectBg2Graphic
 label 0x08DDCE1C g_LanguageSelectBg1Graphic
 label 0x08DE5214 g_MenuScreenGraphic
 label 0x08DF2664 g_SaveMenuBg1Graphic
+
+# Status/equip screen character rotations, 8bpp; records at 0x0806B250 (sub_0803A030)
+image-bank 0x08DF3918 0x08E1D5DC data/images/status_characters StatusCharacters
 label 0x08E20FFC g_ClockSkipGraphic
 label 0x08E28804 g_HogwartsUpNightBg0Graphic
 label 0x08E2F80C g_HogwartsUpNightBg1Graphic

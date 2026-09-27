@@ -659,10 +659,10 @@ image-bank 0x089F1C04 0x089F450C data/images/battle_icons BattleIcons
 # Player battle sprites, g_aFighterAnimTable records
 image-bank 0x089F450C 0x08A130C8 data/images/fighters FighterSprites
 
-# 40x40 faces, 8bpp; records 0-71 of the table at 0x0804D750
+# Battle portraits shown when a fighter attacks, 8bpp; records 0-71 of the table at 0x0804D750
 image-bank 0x08A130C8 0x08A2DAF4 data/images/battle_faces BattleFaces
 
-# 24x32 item and spell icons; records 72-132 of the table at 0x0804D750
+# Battle menu action icons; records 72-132 of the table at 0x0804D750
 image-bank 0x08A2DAF4 0x08A30644 data/images/action_icons ActionIcons
 
 # Turn-order icon container and the gauge sprites sub_0801BA54 shows
@@ -670,6 +670,9 @@ image-bank 0x08A37BD4 0x08A38E30 data/images/unnamed2 UnnamedSprites2
 
 # Monster recolor palettes, g_pMonsterGraphicsTable and turn-order icon records
 image-bank 0x08A38E30 0x08A39330 data/images/monster_palettes MonsterPalettes
+
+# Battle effect sprites: the records at 0x08053C6C-0x08054400 and palettes loaded by code
+image-bank 0x08A39330 0x08A9C500 data/images/battle_effects BattleEffects
 
 krawall-module 0x08A9C500 0x08AA0884 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0884 0x08AA4C38 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
@@ -724,6 +727,9 @@ krawall-module 0x08D22C7C 0x08D24EE0 data/audio/modules/Module48.json Module48
 krawall-module 0x08D24EE0 0x08D2DAAC data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DAAC 0x08D3C5B4 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C5B4 0x08D3EE2C data/audio/modules/MusPause.json MusPause
+
+# Battle effect sprite, the record at 0x08054070
+image-bank 0x08D7C2B0 0x08D7E358 data/images/battle_effects2 BattleEffects2
 label 0x08D7E358 g_WizardCrackerPopItBg1Graphic
 label 0x08D7FD74 g_WizardCrackerPopItBg0Graphic
 label 0x08D8CC04 g_WizardCrackerPopItBg2Graphic
@@ -733,6 +739,10 @@ label 0x08D99730 g_ServePumpkinJuiceBg2Graphic
 label 0x08DA06EE g_ServePumpkinJuicePanelData
 label 0x08DC78C0 g_LupinPotionEmbeddedPalette
 label 0x08DC7EB4 g_HippogriffFliesIntoAirGraphic
+
+# Status/equip screen character rotations, 8bpp; records at 0x0806B1DC (sub_0803A030)
+image-bank 0x08DF3748 0x08E1D40C data/images/status_characters StatusCharacters
+
 label 0x08E20E2C g_ClockSkipGraphic
 label 0x08E28634 g_HogwartsUpNightBg0Graphic
 label 0x08E2F63C g_HogwartsUpNightBg1Graphic
