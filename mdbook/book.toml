@@ -8,3 +8,4 @@ language = "en"
 git-repository-url = "https://github.com/holly-hacker/hp3-gba-decomp"
 edit-url-template = "https://github.com/holly-hacker/hp3-gba-decomp/edit/main/{path}"
 mathjax-support = true
+additional-css = ["custom.css"]

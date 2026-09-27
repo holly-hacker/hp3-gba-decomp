@@ -1,0 +1,9 @@
+:root {
+    /* Increase from 7504x */
+    --content-max-width: 1000px;
+}
+
+table {
+    /* Don't center tables */
+    margin: initial;
+}
