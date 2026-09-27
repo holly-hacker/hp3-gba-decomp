@@ -3,6 +3,7 @@
 #include "game_modes.h"
 #include "object.h"
 #include "status_equip.h"
+#include "gen/ObjectSprites.h"
 
 void InitializeStatusEquipSlotSelect(void)
 {
@@ -15,7 +16,7 @@ void InitializeStatusEquipSlotSelect(void)
 
     g_StatusEquipSlotSelect.pCursor = SpawnObject(10, g_aStatusEquipSlots[g_bStatusEquipSlot].nX + 20,
                                                   g_aStatusEquipSlots[g_bStatusEquipSlot].nY,
-                                                  g_StatusEquipSlotCursorSpawnData);
+                                                  (const ObjPalette *)gStatusEquipSlotCursorPalette);
     g_StatusEquipSlotSelect.pCursor->pfnTick = TickStatusEquipSlotCursor;
     sub_0803A630();
 }

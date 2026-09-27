@@ -28,7 +28,8 @@ ROM_BASE = 0x08000000
 # storedCells banks keep each frame's OAM cells in bank.json; their palette
 # is optional per sprite, and a palette not followed by tiles is its own entry.
 # noPalette lists sprites whose following palette belongs to other records
-# (so it becomes the next, palette-only entry).
+# (so it becomes the next, palette-only entry). names replaces the default
+# positional name of entries whose labels C code uses.
 BANKS = {
     "ItemIcons": {"prefix": "Item", "bpp": 4, "componentOrder": ("palette", "tiles", "frames")},
     "HelpSprites": {"prefix": "Help", "bpp": 4, "componentOrder": ("tiles", "frames", "palette")},
@@ -37,7 +38,7 @@ BANKS = {
                                 "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "UnnamedSprites": {"prefix": "Unnamed", "bpp": 4,
                        "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
-    "UnnamedSprites2": {"prefix": "Unnamed2_", "bpp": 4,
+    "BattleHudItems": {"prefix": "BattleHudItem", "bpp": 4,
                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "MonsterPalettes": {"prefix": "MonsterPalette", "bpp": 4, "componentOrder": ("palette",)},
     "AllyHeads": {"prefix": "AllyHead", "bpp": 4,
@@ -55,6 +56,44 @@ BANKS = {
                          "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "BattleEffects2": {"prefix": "BattleEffect2_", "bpp": 4,
                        "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "MenuSprites": {"prefix": "MenuSprite", "bpp": 4,
+                    "componentOrder": ("tiles", "frames", "palette"), "storedCells": True,
+                    "names": {"MenuSprite001": "MainMenu", "MenuSprite002": "DebugMenuCursor"}},
+    "ObjectSprites": {"prefix": "ObjectSprite", "bpp": 4,
+                      "componentOrder": ("tiles", "frames", "palette"), "storedCells": True,
+                      "names": {"ObjectSprite001": "HarryVsDementorsObject18",
+                                "ObjectSprite002": "HarryVsDementorsObject1C",
+                                "ObjectSprite095": "StatusEquipSlotCursor",
+                                "ObjectSprite102": "ClockSkipObject1",
+                                "ObjectSprite103": "ClockSkipObject2"}},
+    "OptionIconUs": {"prefix": "OptionIconUs", "bpp": 4,
+                     "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "ObjectSprites2": {"prefix": "ObjectSprite2_", "bpp": 4,
+                       "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "ObjectPalettes": {"prefix": "ObjectPalette", "bpp": 4, "componentOrder": ("palette",)},
+    "OverworldSpellEffects": {"prefix": "OverworldSpellEffect", "bpp": 4,
+                        "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "OverworldPlayerSprites": {"prefix": "OverworldPlayer", "bpp": 4,
+                        "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "LumosParticles": {"prefix": "LumosParticle", "bpp": 4,
+                        "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "OwlCareSprites": {"prefix": "OwlCare", "bpp": 4,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "WizardCrackerSprites": {"prefix": "WizardCracker", "bpp": 4,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "PumpkinSprites": {"prefix": "Pumpkin", "bpp": 4,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "DivinationTeaSprites": {"prefix": "DivinationTea", "bpp": 4,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "HippogriffGlideSprites": {"prefix": "HippogriffGlide", "bpp": 4,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "HippogriffRiddikulusSprites": {"prefix": "HippogriffRiddikulus", "bpp": 4,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True,
+                         "names": {"HippogriffRiddikulus001": "HippogriffFliesIntoAir", "HippogriffRiddikulus002": "HippogriffFliesIntoAir2"}},
+    "Chatheads": {"prefix": "Chathead", "bpp": 8,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
+    "FamousWizardCards": {"prefix": "FamousWizardCard", "bpp": 8,
+                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "FighterSprites": {"prefix": "Fighter", "bpp": 4,
                        "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "BattleFaces": {"prefix": "BattleFace", "bpp": 8,
@@ -71,6 +110,7 @@ def split_bank(rom: bytes, start: int, end: int, name: str) -> list[tuple[str, d
     cursor, limit = start - ROM_BASE, end - ROM_BASE
     while cursor < limit:
         entry_name = f"{settings['prefix']}{len(entries) + 1:03d}"
+        entry_name = settings.get("names", {}).get(entry_name, entry_name)
         components = {}
         if stored and tile_stream_length(rom[cursor:limit]) is None:
             components["palette"] = rom[cursor:cursor + (2 << bpp)]

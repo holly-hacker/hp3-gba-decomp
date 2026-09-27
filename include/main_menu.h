@@ -35,7 +35,6 @@ extern const u32 g_dwMainMenuBg2Control;
 extern const u32 g_dwMainMenuBg1Control;
 extern const u8 g_MainMenuBg2Graphic[];
 extern const u8 *const g_apMainMenuTitleGraphic[8];
-extern const u16 g_MainMenuPalette[];
 extern const u32 g_adwMainMenuStateTimeouts[6];
 
 extern void ResetSaveStateForNewGame(void);

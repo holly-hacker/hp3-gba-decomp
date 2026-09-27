@@ -640,19 +640,30 @@ label 0x0806BD34 g_ClockSkipAnimData
 label 0x0806BEB0 g_aHarryHermionePortInTimeObjectPos
 label 0x0806C0B0 g_dwCoolTrainBg0Control
 
+# Overworld spell effects
+image-bank 0x0806E840 0x080780E0 data/images/overworld_spell_effects OverworldSpellEffects
+
 # Ally head rotations, g_aAllyTurnOrderIconAssets records 0-2 (tiles and frames);
 # SpawnTurnOrderIcon shows frame 0, other users unconfirmed
 image-bank 0x080780E0 0x0807E734 data/images/ally_heads AllyHeads
 
+# Overworld player sprites
+image-bank 0x0807E734 0x080A6C90 data/images/overworld_player OverworldPlayerSprites
+
 # Overworld (wandering) monster sprites, g_pMonsterGraphicsTable +0x10 records
 image-bank 0x080AC808 0x080B99C0 data/images/monster_overworld MonsterOverworldSprites
 
-label 0x080BC100 g_MainMenuPalette
-label 0x080BD64C g_HarryVsDementorsObject18SpawnData
-label 0x080BF520 g_HarryVsDementorsObject1CSpawnData
-label 0x080CD750 g_StatusEquipSlotCursorSpawnData
-label 0x080CF740 g_ClockSkipObject1SpawnData
-label 0x080D0320 g_ClockSkipObject2SpawnData
+# Main menu palette, debug menu cursor, and other small sprites
+image-bank 0x080BC100 0x080BCDDC data/images/menu_sprites MenuSprites
+
+# Object and character sprites (g_aObjectTypeAssets and other object records)
+image-bank 0x080BD4A0 0x080D0A90 data/images/object_sprites ObjectSprites
+
+# Object and character sprites, continued
+image-bank 0x080D0A90 0x08195AA0 data/images/object_sprites2 ObjectSprites2
+
+# Object palettes, the table at 0x0806C62C
+image-bank 0x08195AA0 0x08196260 data/images/object_palettes ObjectPalettes
 
 # Monster battle sprites, g_pMonsterGraphicsTable battle records
 image-bank 0x089ADE60 0x089F1C04 data/images/monster_battle MonsterBattleSprites
@@ -669,8 +680,11 @@ image-bank 0x08A130C8 0x08A2DAF4 data/images/battle_faces BattleFaces
 # Battle menu action icons; records 72-132 of the table at 0x0804D750
 image-bank 0x08A2DAF4 0x08A30644 data/images/action_icons ActionIcons
 
-# Turn-order icon container and the gauge sprites sub_0801BA54 shows
-image-bank 0x08A37BD4 0x08A38E30 data/images/unnamed2 UnnamedSprites2
+# Lumos particles
+image-bank 0x08A3190C 0x08A3250C data/images/lumos_particles LumosParticles
+
+# Battle HUD items: turn-order container and gauges
+image-bank 0x08A37BD4 0x08A38E30 data/images/battle_hud_items BattleHudItems
 
 # Monster recolor palettes, g_pMonsterGraphicsTable and turn-order icon records
 image-bank 0x08A38E30 0x08A39330 data/images/monster_palettes MonsterPalettes
@@ -733,10 +747,19 @@ krawall-module 0x08D2DAAC 0x08D3C5B4 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C5B4 0x08D3EE2C data/audio/modules/MusPause.json MusPause
 
 # Battle effect sprite, the record at 0x08054070
+# Owl care sprites
+image-bank 0x08D56898 0x08D7198C data/images/owl_care OwlCareSprites
+
 image-bank 0x08D7C2B0 0x08D7E358 data/images/battle_effects2 BattleEffects2
 label 0x08D7E358 g_WizardCrackerPopItBg1Graphic
 label 0x08D7FD74 g_WizardCrackerPopItBg0Graphic
+# Wizard cracker minigame sprites
+image-bank 0x08D80C9C 0x08D8CC04 data/images/wizard_cracker WizardCrackerSprites
+
 label 0x08D8CC04 g_WizardCrackerPopItBg2Graphic
+# Pumpkin minigame sprites
+image-bank 0x08D8E61C 0x08D97258 data/images/pumpkin PumpkinSprites
+
 label 0x08D97258 g_ServePumpkinJuiceBg0Graphic
 label 0x08D98824 g_ServePumpkinJuiceBg1Graphic
 label 0x08D99730 g_ServePumpkinJuiceBg2Graphic
@@ -753,11 +776,24 @@ label 0x08E2F63C g_HogwartsUpNightBg1Graphic
 label 0x08E30C9C g_HogwartsUpNightBg2Graphic
 label 0x08E32152 g_HogwartsUpNightPaletteData
 label 0x08E339A4 g_CoolTrainGraphic
+# Divination tea leaves minigame sprites
+image-bank 0x08E34D6C 0x08E36480 data/images/divination_tea DivinationTeaSprites
+
 label 0x08E36480 g_DivinationTeaBg2Graphic
 label 0x08E37A88 g_DivinationTeaBg1Graphic
-label 0x08E5276C g_HippogriffFliesIntoAirSpawnData
-label 0x08E52DAC g_HippogriffFliesIntoAirSpawnData2
+# Hippogriff glide minigame sprites
+image-bank 0x08E3B014 0x08E40178 data/images/hippogriff_glide HippogriffGlideSprites
+
+# Hippogriff flying cutscene objects and Riddikulus minigame sprites
+image-bank 0x08E50948 0x08E59490 data/images/hippogriff_riddikulus HippogriffRiddikulusSprites
+
 label 0x08E59490 g_RiddikulusBgGraphic
 label 0x08E5CB64 g_HarryVsDementorsBgGraphicA
 label 0x08E6051C g_HarryVsDementorsBgGraphicB
+# Dialog chatheads (partial), 8bpp
+image-bank 0x08EAAF88 0x08ECA0F0 data/images/chatheads Chatheads
+
+# Famous wizard cards (Folio Universitas), 8bpp
+image-bank 0x08EDF36C 0x08F3C9CC data/images/famous_wizard_cards FamousWizardCards
+
 label 0x08F3E388 g_apPatronusGraphics

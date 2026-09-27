@@ -8,6 +8,7 @@
 #include "object.h"
 #include "room.h"
 #include "text.h"
+#include "gen/MenuSprites.h"
 
 void InitializeDebugSoundTestMenu(void)
 {
@@ -41,7 +42,7 @@ void InitializeDebugSoundTestMenu(void)
         StopMusic();
     g_bCurrentMusicModule = 0xFF;
 
-    pObject = SpawnObject(10, 0x9C, g_DebugSoundTestState.dwRow * 18 + 0x3A, g_DebugMenuCursorSpawnData);
+    pObject = SpawnObject(10, 0x9C, g_DebugSoundTestState.dwRow * 18 + 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugSoundTestState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
     SetObjectAnimData(pObject, (void *)g_DebugSoundTestAnimFrames, (void *)g_DebugSoundTestAnimData, 0);

@@ -434,7 +434,7 @@ structural scan, `0x08a32800`-`0x08a3a000`):
   particle effect given the trigger.
 
 `0x08A38108` is the turn-order container's palette and `0x08A38FE0` the
-gauges' palette; both are claimed by the `UnnamedSprites2` bank (see
+gauges' palette; both are claimed by the `BattleHudItems` bank (see
 "Turn-order container and gauge sprites").
 
 ### `sub_08001528`'s call chain, traced (PROVEN through several hops)
@@ -1102,7 +1102,7 @@ order). Sprites without their own palette use the recolor palettes at
 by `g_pMonsterGraphicsTable` or the turn-order icon records, claimed by
 the palette-only `MonsterPalettes` bank as `MonsterPaletteNNN.png`
 swatches. The gauge palette at `0x08A38FE0` just before them belongs to
-`UnnamedSprites2`, and a tile stream follows them.
+`BattleHudItems`, and a tile stream follows them.
 
 ### Object-type sprites and coin icon (PROVEN, extracted)
 
@@ -1129,9 +1129,9 @@ from green to red (25 frames at 16x32 and 17 frames at 8x24). The two
 gauges are the records `sub_0801BA54` passes to `SetObjectAssetRecord`
 (the four words after `g_apEffectScripts`), and it spawns their object
 with the palette at `0x08A38FE0`, stored after the second gauge. The
-`UnnamedSprites2` `image-bank` row claims the range as `Unnamed2_001`-
-`Unnamed2_003` (stored cells, `tiles`, `frames`, `palette` order; the
-shared palette is `Unnamed2_003`'s).
+`BattleHudItems` `image-bank` row claims the range as `BattleHudItem001`-
+`BattleHudItem003` (stored cells, `tiles`, `frames`, `palette` order; the
+shared palette is `BattleHudItem003`'s).
 
 ### Battle sprites, turn-order icons, and ally heads (PROVEN, extracted)
 
@@ -1141,7 +1141,7 @@ and `g_aAllyTurnOrderIconAssets` point to (stored cells, `tiles`,
 `frames`, `palette` order). The byte ranges are identical in both ROMs at
 different addresses, so both manifests share one `data/images/` folder
 per bank. The same holds for `MonsterOverworldSprites`
-(JP `0x080AC808`-`0x080B99C0`), `UnnamedSprites2` (JP
+(JP `0x080AC808`-`0x080B99C0`), `BattleHudItems` (JP
 `0x08A37BD4`-`0x08A38E30`), and `MonsterPalettes` (JP
 `0x08A38E30`-`0x08A39330`), which the records also point into.
 

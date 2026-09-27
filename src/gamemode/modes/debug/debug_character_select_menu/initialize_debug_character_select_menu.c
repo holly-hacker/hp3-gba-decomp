@@ -8,6 +8,7 @@
 #include "overworld.h"
 #include "room.h"
 #include "text.h"
+#include "gen/MenuSprites.h"
 
 void InitializeDebugCharacterSelectMenu(void)
 {
@@ -36,7 +37,7 @@ void InitializeDebugCharacterSelectMenu(void)
     g_DebugCharacterSelectState.adwCharacter[0] = 0;
     g_DebugCharacterSelectState.adwCharacter[1] = 0;
     g_DebugCharacterSelectState.adwCharacter[2] = 0;
-    pObject = SpawnObject(10, 0x9C, 0x3A, g_DebugMenuCursorSpawnData);
+    pObject = SpawnObject(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugCharacterSelectState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
     SetObjectAnimData(pObject, (void *)g_DebugCharacterSelectAnimFrames, (void *)g_DebugCharacterSelectAnimData, 0);

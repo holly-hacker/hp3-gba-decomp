@@ -5,6 +5,7 @@
 #include "game_modes.h"
 #include "harry_vs_dementors.h"
 #include "text.h"
+#include "gen/ObjectSprites.h"
 
 void InitializeHarryVsDementorsMinigame(void)
 {
@@ -24,9 +25,9 @@ void InitializeHarryVsDementorsMinigame(void)
     g_HarryVsDementors.dwUnk40 = -1;
     g_HarryVsDementors.bUnk54 = 0;
 
-    g_HarryVsDementors.pObject18 = SpawnObject(0, 0x78, 0x78, g_HarryVsDementorsObject18SpawnData);
+    g_HarryVsDementors.pObject18 = SpawnObject(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsObject18Palette);
     g_HarryVsDementors.pObject18->dwFlags &= ~ObjectFlagVisible;
-    g_HarryVsDementors.pObject1C = SpawnObject(0, 0x78, 0x78, g_HarryVsDementorsObject1CSpawnData);
+    g_HarryVsDementors.pObject1C = SpawnObject(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsObject1CPalette);
     g_HarryVsDementors.pObject1C->dwFlags &= ~ObjectFlagVisible;
 
     ResetDisplayState(0);

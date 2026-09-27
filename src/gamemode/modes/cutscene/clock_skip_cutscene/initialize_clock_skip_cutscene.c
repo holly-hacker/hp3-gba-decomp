@@ -7,6 +7,7 @@
 #include "display.h"
 #include "game_modes.h"
 #include "io_regs.h"
+#include "gen/ObjectSprites.h"
 
 void InitializeClockSkipCutscene(void)
 {
@@ -20,11 +21,11 @@ void InitializeClockSkipCutscene(void)
     SetBgControl(0, g_dwUpNightBg0Control);
     LoadBgGraphic(0, g_ClockSkipGraphic, 1, 0, 0, 0);
 
-    pObject = SpawnObject(0x17, 0x78, 0x50, g_ClockSkipObject1SpawnData);
+    pObject = SpawnObject(0x17, 0x78, 0x50, (const ObjPalette *)gClockSkipObject1Palette);
     sub_08001690(pObject, g_ClockSkipObject1Asset);
     SetObjectAnimData(pObject, (void *)g_ClockSkipObject1Asset, (void *)g_ClockSkipAnimData, 0);
 
-    pObject = SpawnObject(0x17, 0x78, 0x50, g_ClockSkipObject2SpawnData);
+    pObject = SpawnObject(0x17, 0x78, 0x50, (const ObjPalette *)gClockSkipObject2Palette);
     sub_08001690(pObject, g_ClockSkipObject2Asset);
     SetObjectAnimData(pObject, (void *)g_ClockSkipObject2Asset, (void *)(g_ClockSkipAnimData + 0x36), 0);
 

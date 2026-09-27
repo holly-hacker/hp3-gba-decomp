@@ -7,6 +7,7 @@
 #include "object.h"
 #include "room.h"
 #include "text.h"
+#include "gen/MenuSprites.h"
 
 void InitializeDebugLevelAndQuestSelectMenu(void)
 {
@@ -37,7 +38,7 @@ void InitializeDebugLevelAndQuestSelectMenu(void)
     g_DebugLevelAndQuestSelectState.adwValue[0] = 0;
     g_DebugLevelAndQuestSelectState.adwValue[1] = 0;
     g_DebugLevelAndQuestSelectState.adwValue[2] = 0;
-    pObject = SpawnObject(10, 0x9C, 0x3A, g_DebugMenuCursorSpawnData);
+    pObject = SpawnObject(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugLevelAndQuestSelectState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
     SetObjectAnimData(pObject, (void *)g_DebugLevelAndQuestAnimFrames, (void *)g_DebugLevelAndQuestAnimData, 0);

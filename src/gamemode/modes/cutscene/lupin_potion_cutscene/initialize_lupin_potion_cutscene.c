@@ -12,6 +12,7 @@
 #include "scanline_effects.h"
 #include "text.h"
 #include "graphics.h"
+#include "gen/MenuSprites.h"
 
 void InitializeLupinPotionCutscene(void)
 {
@@ -24,7 +25,7 @@ void InitializeLupinPotionCutscene(void)
     sub_0803094C(0);
     sub_0803094C(1);
     sub_0803094C(2);
-    sub_0800D264((void *)g_MainMenuPalette, 0, 0x10);
+    sub_0800D264((void *)gMainMenuPalette, 0, 0x10);
     sub_08028AD4();
     sub_08029558();
     sub_08028F7C();

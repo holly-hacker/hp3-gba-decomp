@@ -3,6 +3,7 @@
 #include "display.h"
 #include "hippogriff_flies_into_air_cutscene.h"
 #include "object.h"
+#include "gen/HippogriffRiddikulusSprites.h"
 
 void InitializeHippogriffFliesIntoAirCutscene(void)
 {
@@ -11,11 +12,11 @@ void InitializeHippogriffFliesIntoAirCutscene(void)
     SetDispcntFlag(0x1000);
     LoadBgGraphic(0, g_HippogriffFliesIntoAirGraphic, 0, 0, 0, 0);
 
-    g_pHippogriffFliesIntoAirObject2 = SpawnObject(0, 0x30, 0xA8, g_HippogriffFliesIntoAirSpawnData2);
+    g_pHippogriffFliesIntoAirObject2 = SpawnObject(0, 0x30, 0xA8, (const ObjPalette *)gHippogriffFliesIntoAir2Palette);
     g_pHippogriffFliesIntoAirObject2->oam.priority = 2;
     sub_08001690(g_pHippogriffFliesIntoAirObject2, g_HippogriffFliesIntoAirAsset2);
 
-    g_pHippogriffFliesIntoAirObject = SpawnObject(0, 0x78, 0x3C, g_HippogriffFliesIntoAirSpawnData);
+    g_pHippogriffFliesIntoAirObject = SpawnObject(0, 0x78, 0x3C, (const ObjPalette *)gHippogriffFliesIntoAirPalette);
     g_pHippogriffFliesIntoAirObject->oam.priority = 2;
     sub_08001690(g_pHippogriffFliesIntoAirObject, g_HippogriffFliesIntoAirAsset);
     SetObjectAffineTransform(g_pHippogriffFliesIntoAirObject, 0x18000, 0x18000, 0, 3);

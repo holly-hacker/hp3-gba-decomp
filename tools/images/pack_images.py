@@ -24,6 +24,7 @@ BANK_KEYS = {"format", "bpp", "componentOrder", "images"}
 ENTRY_KEYS = [
     {"name", "offset", "compression"},
     {"name", "palette", "header", "frames"},
+    {"name", "palette", "header", "frames", "bpp"},
     {"name", "paletteOnly"},
 ]
 FRAME_KEYS = {"offset", "compression", "cells", "parts", "extra"}
@@ -70,6 +71,8 @@ def check_entry(image: dict) -> None:
         return
     if not isinstance(image["palette"], bool):
         raise ValueError("palette must be true or false")
+    if image.get("bpp", 4) not in (4, 8) or ("bpp" in image and image["palette"]):
+        raise ValueError("bpp must be 4 or 8, on a sprite without its own palette")
     _ints(image["header"], 4, "header")
     frames = image["frames"]
     if not isinstance(frames, list) or not frames:

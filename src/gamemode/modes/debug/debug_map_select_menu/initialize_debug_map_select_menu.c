@@ -8,6 +8,7 @@
 #include "object.h"
 #include "room.h"
 #include "text.h"
+#include "gen/MenuSprites.h"
 
 void InitializeDebugMapSelectMenu(void)
 {
@@ -35,7 +36,7 @@ void InitializeDebugMapSelectMenu(void)
 
     g_DebugMapSelectState.dwCursorRow = 0;
     g_DebugMapSelectState.nScrollY = 0;
-    pObject = SpawnObject(0x17, 0x78, 0xB, g_DebugMenuCursorSpawnData);
+    pObject = SpawnObject(0x17, 0x78, 0xB, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugMapSelectState.pCursorObject = pObject;
     SetObjectAnimData(pObject, (void *)g_DebugMapSelectAnimFrames, (void *)g_DebugMapSelectAnimData, 0);
 

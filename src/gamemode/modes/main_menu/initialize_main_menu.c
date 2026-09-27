@@ -6,6 +6,7 @@
 #include "graphics.h"
 #include "main_menu.h"
 #include "text.h"
+#include "gen/MenuSprites.h"
 
 void InitializeMainMenu(void)
 {
@@ -33,7 +34,7 @@ void InitializeMainMenu(void)
     ClearBgTilemap(1);
     ClearResourceCacheSlots();
     sub_0803094C(0);
-    sub_0800D264((void *)g_MainMenuPalette, 0, 0x10);
+    sub_0800D264((void *)gMainMenuPalette, 0, 0x10);
     sub_080438B4();
 
     PlayMusicModule(0x21);

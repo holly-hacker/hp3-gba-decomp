@@ -5,7 +5,7 @@
 #include "gen/MonsterPalettes.h"
 #include "gen/BattleIcons.h"
 #include "gen/AllyHeads.h"
-#include "gen/UnnamedSprites2.h"
+#include "gen/BattleHudItems.h"
 
 // Monster sprite records and the battle overlay records after them; see
 // docs/formats/folio_bruti.md ("Monster graphics table"). Content is
@@ -373,4 +373,4 @@ const ObjectAssetRecord g_aAllyTurnOrderIconAssets[4] = {
     { (void *)gBattleIcon039Tiles, (void *)gBattleIcon039Frames, (void *)gBattleIcon039Palette, 0 },
 };
 
-const ObjectAssetRecord g_TurnOrderIconContainerAsset = { (void *)gUnnamed2_001Tiles, (void *)gUnnamed2_001Frames, (void *)gUnnamed2_001Palette, 0 };
+const ObjectAssetRecord g_TurnOrderIconContainerAsset = { (void *)gBattleHudItem001Tiles, (void *)gBattleHudItem001Frames, (void *)gBattleHudItem001Palette, 0 };

@@ -9,6 +9,7 @@
 #include "room.h"
 #include "save.h"
 #include "text.h"
+#include "gen/MenuSprites.h"
 
 void InitializeDebugMenuMain(void)
 {
@@ -35,7 +36,7 @@ void InitializeDebugMenuMain(void)
     SetBgScroll_candidate(1, 0, 0);
 
     g_DebugMenuMainState.dwSelection = 0;
-    pObject = SpawnObject(10, 0x78, 0x2D, g_DebugMenuCursorSpawnData);
+    pObject = SpawnObject(10, 0x78, 0x2D, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugMenuMainState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
     SetObjectAnimData(pObject, (void *)g_DebugMenuMainAnimFrames, (void *)g_DebugMenuMainAnimData, 0);

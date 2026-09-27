@@ -37,7 +37,6 @@ typedef struct {
 } StatusEquipSlot;
 
 extern const StatusEquipSlot g_aStatusEquipSlots[6];  // 0x0806B2FC
-extern const ObjPalette g_StatusEquipSlotCursorSpawnData[];   // 0x080CD814
 
 // Screen objects and state of the slot select screen.
 typedef struct {

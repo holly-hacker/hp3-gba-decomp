@@ -412,6 +412,7 @@ def _frame_tiles(path: Path, frame_cells, bpp: int):
 
 def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
     """Encode one bank.json image entry into its ROM components."""
+    bpp = entry.get("bpp", bpp)
     if entry.get("paletteOnly"):
         _, _, _, colors = read_png(source / f"{entry['name']}.png", bpp)
         return {"palette": encode_palette(colors, bpp)}
@@ -466,8 +467,20 @@ def _stream_paddings(tiles: bytes, frames: list[dict]) -> list[list[int] | None]
     return paddings
 
 
-def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool) -> dict:
-    """The bank.json entry for ROM components, without writing any PNG."""
+def _sprite_bpp(tiles: bytes, record: dict) -> int:
+    """Bit depth from the first frame's tile bytes per cell pixel."""
+    frame = record["frames"][0]
+    pixels = sum(64 * w * h for _, _, w, h in frame["cells"])
+    raw = decompress_tiles(tiles[frame["tile_offset"]:])[0]
+    if len(raw) * 8 not in (4 * pixels, 8 * pixels):
+        raise ValueError(f"{len(raw)} tile bytes fit neither 4 nor 8 bpp for {pixels} pixels")
+    return len(raw) * 8 // pixels
+
+
+def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool, bpp: int) -> dict:
+    """The bank.json entry for ROM components, without writing any PNG.
+    A stored-cells sprite whose tiles are not at the bank's bit depth
+    records its own bpp."""
     if "tiles" not in components:
         return {"name": name, "paletteOnly": True}
     record = resolve_compressions(decode_frames(components["frames"]), components["tiles"])
@@ -479,8 +492,14 @@ def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool) 
             frames.append({k: frame[k] for k in keys})
             if padding:
                 frames[-1]["padding"] = padding
-        return {"name": name, "palette": "palette" in components, "header": record["header"],
-                "frames": frames}
+        entry = {"name": name, "palette": "palette" in components, "header": record["header"],
+                 "frames": frames}
+        sprite_bpp = _sprite_bpp(components["tiles"], record)
+        if sprite_bpp != bpp:
+            if "palette" in components:
+                raise ValueError(f"{name}: {sprite_bpp}bpp tiles with a {bpp}bpp palette")
+            entry["bpp"] = sprite_bpp
+        return entry
     if any(paddings):
         raise ValueError(f"{name}: needs stored cells (nonzero GammaLz padding)")
     if len(record["frames"]) != 1 or any(record["header"]) or "palette" not in components:
@@ -492,7 +511,8 @@ def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool) 
 def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, stored_cells: bool) -> dict:
     """Write one image entry's PNGs and return its bank.json entry. Fails
     unless rebuilding from the PNGs reproduces every component byte for byte."""
-    entry = entry_settings(name, components, stored_cells)
+    entry = entry_settings(name, components, stored_cells, bpp)
+    bank_bpp, bpp = bpp, entry.get("bpp", bpp)
     if entry.get("paletteOnly"):
         count = 1 << bpp
         write_png(source / f"{name}.png", count, 1, list(range(count)),
@@ -506,7 +526,7 @@ def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, sto
             w, h = frame["width"], frame["height"]
             cells = [tuple(c) for c in frame["cells"]] if stored_cells else cut_cells(w // 8, h // 8)
             write_png(source / path_name, w, h, unpack_pixels(raw, w, h, cells, bpp), colors, bpp)
-    rebuilt = build(source, entry, bpp)
+    rebuilt = build(source, entry, bank_bpp)
     if rebuilt != components:
         diff = sorted(set(rebuilt) ^ set(components)) or [k for k in components if rebuilt[k] != components[k]]
         raise ValueError(f"{name}: rebuilt {', '.join(diff)} differs from the ROM")
@@ -545,7 +565,7 @@ def extract_bank(source: Path, bpp: int, order: tuple[str, ...], entries: list[t
     if index_only:
         images = []
         for name, components in entries:
-            entry = entry_settings(name, components, stored_cells)
+            entry = entry_settings(name, components, stored_cells, bpp)
             missing = [f for f in image_files(entry) if not (source / f).is_file()]
             if missing:
                 raise ValueError(f"missing {source / missing[0]}; extract the bank first")
