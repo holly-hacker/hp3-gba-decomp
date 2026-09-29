@@ -5,7 +5,7 @@ const u8 g_abSpellVerdimilliousDuoScript[] = {
     BS_WaitFrames(2),
     BS_DarkenScreenPalette(),
     BS_WaitFrames(20),
-    BS_MoveBy(0, 240),
+    BS_MoveBy(0, -16),
     BS_PlaySoundOrDefault(90),
     BS_SetObjectAnim(20, 0),
     BS_ShowObject(),

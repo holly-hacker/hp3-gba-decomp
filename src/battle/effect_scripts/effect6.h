@@ -4,7 +4,7 @@ const u8 g_abEffect6Script[] = {
     BS_WaitFrames(1),
     BS_JitterPosition(1, 45),
     BS_ShowObject(),
-    BS_SetVelocity(253, 0),
+    BS_SetVelocity(-3, 0),
     BS_StartOrbitMotion(0, 0),
     BS_WaitFrames(80),
     BS_End(),

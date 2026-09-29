@@ -210,6 +210,10 @@ enum BattleStatusEffect {
     BSSTATUS_Revive = 28,
 };
 
+// Operand conventions: most operands are raw bytes. Where the interpreter reads an operand as a
+// signed byte the macro takes a signed value, and where it reads two bytes as an 8.8 fixed-point
+// number (whole byte first) the macro takes one 16-bit value, e.g. 0x0180 for 1.5.
+
 #define BS_End() BSOP_End
 #define BS_SetObjectAnim(a, b) BSOP_SetObjectAnim, (a), (b)
 #define BS_SetObjectAnimAndPalette(a, b) BSOP_SetObjectAnimAndPalette, (a), (b)
@@ -222,25 +226,25 @@ enum BattleStatusEffect {
 #define BS_WaitForCounter() BSOP_WaitForCounter
 #define BS_WaitForFieldClear() BSOP_WaitForFieldClear
 #define BS_MoveToAbsolute(a, b, c) BSOP_MoveToAbsolute, (a), (b), (c)
-#define BS_MoveTo(a, b, c, d, e) BSOP_MoveTo, (a), (b), (c), (d), (e)
+#define BS_MoveTo(a, b, c, d, e) BSOP_MoveTo, ((a) & 0xFF), ((b) & 0xFF), (c), (d), (e)
 #define BS_StopMove() BSOP_StopMove
 #define BS_SpawnEffectDetached(a) BSOP_SpawnEffectDetached, (a)
 #define BS_SpawnEffect(a) BSOP_SpawnEffect, (a)
 #define BS_SpawnEffectAtSelfDetached(a) BSOP_SpawnEffectAtSelfDetached, (a)
 #define BS_SpawnEffectAtSelf(a) BSOP_SpawnEffectAtSelf, (a)
-#define BS_SpawnEffectOffsetDetached(a, b, c, d, e) BSOP_SpawnEffectOffsetDetached, (a), (b), (c), (d), (e)
-#define BS_SpawnEffectOffset(a, b, c, d, e) BSOP_SpawnEffectOffset, (a), (b), (c), (d), (e)
+#define BS_SpawnEffectOffsetDetached(a, b, c, d, e) BSOP_SpawnEffectOffsetDetached, (a), ((b) & 0xFF), (c), ((d) & 0xFF), (e)
+#define BS_SpawnEffectOffset(a, b, c, d, e) BSOP_SpawnEffectOffset, (a), ((b) & 0xFF), (c), ((d) & 0xFF), (e)
 #define BS_Unk14(a) BSOP_Unk14, (a)
 #define BS_Unk15(a, b, c, d, e) BSOP_Unk15, (a), (b), (c), (d), (e)
 #define BS_SpawnEffectSharedTiles(a) BSOP_SpawnEffectSharedTiles, (a)
 #define BS_ToggleObjectFlipX() BSOP_ToggleObjectFlipX
 #define BS_ToggleObjectFlipY() BSOP_ToggleObjectFlipY
-#define BS_MoveBy(a, b) BSOP_MoveBy, (a), (b)
-#define BS_MoveBy_2(a, b) BSOP_MoveBy_2, (a), (b)
+#define BS_MoveBy(a, b) BSOP_MoveBy, ((a) & 0xFF), ((b) & 0xFF)
+#define BS_MoveBy_2(a, b) BSOP_MoveBy_2, ((a) & 0xFF), ((b) & 0xFF)
 #define BS_SnapToCaster(a) BSOP_SnapToCaster, (a)
 #define BS_TeleportToSlotPosition(a) BSOP_TeleportToSlotPosition, (a)
-#define BS_SetVelocity(a, b) BSOP_SetVelocity, (a), (b)
-#define BS_SetVelocity16(a, b, c, d, e, f) BSOP_SetVelocity16, (a), (b), (c), (d), (e), (f)
+#define BS_SetVelocity(a, b) BSOP_SetVelocity, ((a) & 0xFF), ((b) & 0xFF)
+#define BS_SetVelocity16(a, b, c, d) BSOP_SetVelocity16, (a), (((b) >> 8) & 0xFF), ((b) & 0xFF), (c), (((d) >> 8) & 0xFF), ((d) & 0xFF)
 #define BS_Unk1F(a, b, c) BSOP_Unk1F, (a), (b), (c)
 #define BS_SetLocal(a, b) BSOP_SetLocal, (a), (b)
 #define BS_IncrementLocal(a) BSOP_IncrementLocal, (a)
@@ -280,15 +284,15 @@ enum BattleStatusEffect {
 #define BS_SaveOrbit() BSOP_SaveOrbit
 #define BS_RestoreOrbit() BSOP_RestoreOrbit
 #define BS_StartCasterOrbitMotion(a, b) BSOP_StartCasterOrbitMotion, (a), (b)
-#define BS_SetAffineScale1(a, b, c, d) BSOP_SetAffineScale1, (a), (b), (c), (d)
-#define BS_SetAffineScale3(a, b, c, d) BSOP_SetAffineScale3, (a), (b), (c), (d)
-#define BS_StartAffineWobble(a, b, c, d, e, f, g, h) BSOP_StartAffineWobble, (a), (b), (c), (d), (e), (f), (g), (h)
+#define BS_SetAffineScale1(a, b) BSOP_SetAffineScale1, (((a) >> 8) & 0xFF), ((a) & 0xFF), (((b) >> 8) & 0xFF), ((b) & 0xFF)
+#define BS_SetAffineScale3(a, b) BSOP_SetAffineScale3, (((a) >> 8) & 0xFF), ((a) & 0xFF), (((b) >> 8) & 0xFF), ((b) & 0xFF)
+#define BS_StartAffineWobble(a, b, c, d, e, f) BSOP_StartAffineWobble, (((a) >> 8) & 0xFF), ((a) & 0xFF), (((b) >> 8) & 0xFF), ((b) & 0xFF), (c), (d), (e), (f)
 #define BS_StopAffineWobble() BSOP_StopAffineWobble
-#define BS_SetAffineScaleTween(a, b, c, d, e, f, g, h, i, j, k, l, m) BSOP_SetAffineScaleTween, (a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m)
+#define BS_SetAffineScaleTween(a, b, c, d, e, f, g, h, i) BSOP_SetAffineScaleTween, ((a) & 0xFF), (((b) >> 8) & 0xFF), ((b) & 0xFF), ((c) & 0xFF), (((d) >> 8) & 0xFF), ((d) & 0xFF), ((e) & 0xFF), (((f) >> 8) & 0xFF), ((f) & 0xFF), ((g) & 0xFF), (((h) >> 8) & 0xFF), ((h) & 0xFF), (i)
 #define BS_SetAffineRotation1(a) BSOP_SetAffineRotation1, (a)
 #define BS_SetAffineRotation3(a) BSOP_SetAffineRotation3, (a)
-#define BS_SetAffineScaleRotation1(a, b, c, d, e) BSOP_SetAffineScaleRotation1, (a), (b), (c), (d), (e)
-#define BS_SetAffineScaleRotation3(a, b, c, d, e) BSOP_SetAffineScaleRotation3, (a), (b), (c), (d), (e)
+#define BS_SetAffineScaleRotation1(a, b, c) BSOP_SetAffineScaleRotation1, (a), (((b) >> 8) & 0xFF), ((b) & 0xFF), (((c) >> 8) & 0xFF), ((c) & 0xFF)
+#define BS_SetAffineScaleRotation3(a, b, c) BSOP_SetAffineScaleRotation3, (a), (((b) >> 8) & 0xFF), ((b) & 0xFF), (((c) >> 8) & 0xFF), ((c) & 0xFF)
 #define BS_ReleaseAffineSlot() BSOP_ReleaseAffineSlot
 #define BS_ClearAnimFlag() BSOP_ClearAnimFlag
 #define BS_SetAnimFlag() BSOP_SetAnimFlag
@@ -323,9 +327,9 @@ enum BattleStatusEffect {
 #define BS_Unk6E() BSOP_Unk6E
 #define BS_ScrollBgUp(a) BSOP_ScrollBgUp, (a)
 #define BS_ScrollBgDown(a) BSOP_ScrollBgDown, (a)
-#define BS_SetTargetVelocityScaled(a, b) BSOP_SetTargetVelocityScaled, (a), (b)
-#define BS_SetTargetVelocity(a, b) BSOP_SetTargetVelocity, (a), (b)
-#define BS_SetCasterVelocityProduct(a, b, c, d) BSOP_SetCasterVelocityProduct, (a), (b), (c), (d)
+#define BS_SetTargetVelocityScaled(a, b) BSOP_SetTargetVelocityScaled, ((a) & 0xFF), ((b) & 0xFF)
+#define BS_SetTargetVelocity(a, b) BSOP_SetTargetVelocity, ((a) & 0xFF), ((b) & 0xFF)
+#define BS_SetCasterVelocityProduct(a, b, c, d) BSOP_SetCasterVelocityProduct, ((a) & 0xFF), ((b) & 0xFF), ((c) & 0xFF), ((d) & 0xFF)
 #define BS_NudgeCaster(a, b) BSOP_NudgeCaster, (a), (b)
 #define BS_NudgeTarget(a, b) BSOP_NudgeTarget, (a), (b)
 #define BS_SetCasterPosition(a, b) BSOP_SetCasterPosition, (a), (b)
@@ -334,7 +338,7 @@ enum BattleStatusEffect {
 #define BS_SnapCasterToSpawn() BSOP_SnapCasterToSpawn
 #define BS_MoveFighterTo(a, b, c) BSOP_MoveFighterTo, (a), (b), (c)
 #define BS_MoveFighterToSlotPosition(a) BSOP_MoveFighterToSlotPosition, (a)
-#define BS_MoveCasterTo(a, b, c, d, e) BSOP_MoveCasterTo, (a), (b), (c), (d), (e)
+#define BS_MoveCasterTo(a, b, c, d, e) BSOP_MoveCasterTo, ((a) & 0xFF), ((b) & 0xFF), (c), (d), (e)
 #define BS_WaitForCasterField86() BSOP_WaitForCasterField86
 #define BS_SetCasterAnim(a, b) BSOP_SetCasterAnim, (a), (b)
 #define BS_LoadBgEffect(a, b, c) BSOP_LoadBgEffect, (a), (b), (c)

@@ -6,7 +6,7 @@ const u8 g_abSpecialMonsterDragonflyAttackScript[] = {
     BS_WaitFrames(12),
     BS_StartCasterOrbitMotion(8, 0),
     BS_NudgeCaster(64, 0),
-    BS_SetCasterVelocityProduct(1, 48, 254, 96),
+    BS_SetCasterVelocityProduct(1, 48, -2, 96),
     BS_WaitFrames(1),
     BS_AdvanceAttackOutcome(),
     BS_AdvanceAttackOutcome(),

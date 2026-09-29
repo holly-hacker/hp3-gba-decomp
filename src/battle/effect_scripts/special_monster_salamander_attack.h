@@ -8,7 +8,7 @@ const u8 g_abSpecialMonsterSalamanderAttackScript[] = {
     BS_SetOamPriority(0),
     BS_ShowObject(),
     BS_PlaySound(72),
-    BS_StartAffineWobble(1, 0, 1, 0, 0, 0, 0, 1),
+    BS_StartAffineWobble(0x0100, 0x0100, 0, 0, 0, 1),
     BS_MoveTo(0, 0, 20, 0, 2),
     BS_CreateEmitter8(7, 8, 8, 0, 1, 14, 1, 1),
     BS_WaitFrames(3),

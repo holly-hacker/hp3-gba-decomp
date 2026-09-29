@@ -1,7 +1,7 @@
 // Cornish Pixie's special attack animation; no status effect.
 const u8 g_abSpecialMonsterPixieAttackScript[] = {
     BS_SetCasterAnim(4, 0),
-    BS_MoveCasterTo(234, 236, 7, 0, 0),
+    BS_MoveCasterTo(-22, -20, 7, 0, 0),
     BS_WaitForCasterField86(),
     BS_SetCasterVelocityProduct(1, 48, 1, 24),
     BS_WaitFrames(1),
@@ -18,11 +18,11 @@ const u8 g_abSpecialMonsterPixieAttackScript[] = {
     BS_SetCasterAnim(4, 10),
     BS_MoveCasterTo(4, 4, 9, 1, 0),
     BS_WaitForCasterField86(),
-    BS_SetCasterVelocityProduct(1, 48, 255, 48),
+    BS_SetCasterVelocityProduct(1, 48, -1, 48),
     BS_WaitFrames(1),
-    BS_SetCasterVelocityProduct(255, 32, 255, 32),
+    BS_SetCasterVelocityProduct(-1, 32, -1, 32),
     BS_WaitFrames(1),
-    BS_SetCasterVelocityProduct(255, 16, 255, 16),
+    BS_SetCasterVelocityProduct(-1, 16, -1, 16),
     BS_WaitFrames(1),
     BS_SetCasterVelocityProduct(0, 0, 0, 0),
     BS_SnapCasterToSpawn(),

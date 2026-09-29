@@ -1,7 +1,7 @@
 const u8 g_abEffect63Script[] = {
     BS_GotoIfLocalANotEqual(0, 38),
     BS_TeleportToSlotPosition(0),
-    BS_MoveBy(0, 202),
+    BS_MoveBy(0, -54),
   BS_Label(38),
     BS_SetObjectAnim(63, 0),
     BS_SetOamPriority(2),

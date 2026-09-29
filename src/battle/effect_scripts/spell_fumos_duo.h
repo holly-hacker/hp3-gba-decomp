@@ -13,7 +13,7 @@ const u8 g_abSpellFumosDuoScript[] = {
   BS_Label(38),
     BS_SetLocal(0, 0),
     BS_TeleportToSlotPosition(0),
-    BS_MoveBy(0, 248),
+    BS_MoveBy(0, -8),
     BS_SetObjectAnim(11, 0),
     BS_WaitFrames(1),
     BS_ShowObject(),

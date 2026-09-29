@@ -2,7 +2,7 @@
 const u8 g_abSpecialHermioneProperWandTechniqueScript[] = {
     BS_GotoIfLocalAEqual(0, 39),
     BS_TeleportToSlotPosition(1),
-    BS_MoveBy(0, 252),
+    BS_MoveBy(0, -4),
     BS_SetObjectAnim(51, 0),
     BS_SetAlphaBlend(0, 16),
     BS_EnableSemiTransparency(),

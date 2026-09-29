@@ -12,7 +12,7 @@ const u8 g_abSpecialMonsterSkeletonParalyzeScript[] = {
   BS_Label(38),
     BS_SetVelocity(0, 0),
     BS_WaitFrames(3),
-    BS_SetVelocity(251, 5),
+    BS_SetVelocity(-5, 5),
     BS_WaitFrames(3),
     BS_SetVelocity(0, 0),
     BS_WaitFrames(3),

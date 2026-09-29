@@ -522,7 +522,11 @@ build inputs).
   BattleStatusEffect` (`BSSTATUS_*`, `StatusEffect`'s first operand), and
   one `BS_<Name>(a, b, ...)` macro per opcode expanding to the opcode
   byte followed by its operand bytes. The operand count is fixed per
-  opcode, so the preprocessor rejects a wrong argument count. **To name a
+  opcode, so the preprocessor rejects a wrong argument count. Operands the
+  interpreter reads as a signed byte (`MoveBy`, `MoveTo`, velocity opcodes, ...)
+  take signed values, and byte pairs it reads as 8.8 fixed point (affine
+  scales, `SetVelocity16` magnitudes) take one 16-bit value, e.g. `0x0100` for
+  1.0; all other operands are raw bytes. **To name a
   new opcode, rename its enum entry and macro here** (and its `case` in
   `InterpretObjectScript`).
 - `src/battle/effect_scripts/<name>.h` -- one script each, a

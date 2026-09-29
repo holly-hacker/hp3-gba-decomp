@@ -9,7 +9,7 @@ const u8 g_abSpellPetrificusTotalusUnoScript[] = {
     BS_WaitFrames(1),
     BS_ShowObject(),
     BS_WaitForCounter(),
-    BS_MoveBy(0, 244),
+    BS_MoveBy(0, -12),
     BS_PlaySound(117),
     BS_SetObjectAnimFromTable2AndPalette(19, 0),
     BS_WaitForCounter(),

@@ -1,7 +1,7 @@
 // Whomping Willow's special attack animation; no status effect.
 const u8 g_abSpecialMonsterWhompingWillowAttackScript[] = {
     BS_TeleportToSlotPosition(0),
-    BS_MoveBy(0, 136),
+    BS_MoveBy(0, -120),
     BS_SetObjectAnim(61, 0),
     BS_WaitFrames(1),
     BS_ShowObject(),
@@ -26,7 +26,7 @@ const u8 g_abSpecialMonsterWhompingWillowAttackScript[] = {
     BS_WaitFrames(1),
     BS_ScrollBgUp(1),
     BS_WaitFrames(6),
-    BS_SetVelocity(0, 252),
+    BS_SetVelocity(0, -4),
     BS_WaitFrames(30),
     BS_GotoIfContextLow(49),
     BS_StatusEffect(BSSTATUS_PaletteFlash, 1, 0),
