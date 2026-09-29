@@ -174,6 +174,7 @@ enum BattleScriptOpcode {
     BSOP_DarkenScreenPalette = 0xA5,
     BSOP_RestoreScreenPalette = 0xA6,
     BSOP_PlaySoundEffect = 0xA7,
+    BSOP_COUNT = 0xA8,
 };
 
 // StatusEffect (0x97) first operand: selects the effect applied.

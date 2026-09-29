@@ -636,7 +636,7 @@ label 0x08053C56 g_awBattleSlotPosX_candidate
 label 0x08053C64 g_abBattleSlotPosY_candidate
 c-file 0x08053C6C 0x08054400 src/graphics/assets/effect_assets.c g_aEffectObjectAssets
 label 0x08054400 g_aEffectBgRecords_candidate
-label 0x08054E60 g_abScriptOpcodeLengths
+c-file 0x08054E60 0x08054F08 src/battle/script_opcode_lengths.c g_abScriptOpcodeLengths
 label 0x08054F08 g_abFighterIdleAnimData_candidate
 label 0x08054F0E g_aEffectAnimData_candidate
 label 0x08058870 g_aEffectAnimData2_candidate

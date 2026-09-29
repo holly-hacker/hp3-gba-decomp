@@ -140,11 +140,12 @@ opcode : u8
 operand_bytes : u8[N]     -- N = g_abScriptOpcodeLengths[opcode]
 ```
 
-**`g_abScriptOpcodeLengths`** (US `0x08054F34`, `byte[256]`) gives the
+**`g_abScriptOpcodeLengths`** (US `0x08054F34`, `u8[168]`, one entry per opcode; C in
+`src/battle/script_opcode_lengths.c`) gives the
 *extra* operand-byte count per opcode; total instruction length
 (including the opcode byte) is `table[opcode] + 1`. Only indices
-`0x00`-`0xA7` are ever read (the interpreter's own bounds check); the
-rest of the 256-entry table is unused leftover space. Confirmed by
+`0x00`-`0xA7` exist (the interpreter's own bounds check); the table ends
+where `g_abFighterIdleAnimData_candidate` begins. Confirmed by
 walking every one of the 65 scripts end-to-end with this table and
 finding every walk lands exactly on the next script's start address --
 zero mismatches across all 65.

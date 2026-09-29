@@ -1103,7 +1103,7 @@ label 0x08053D38 g_abBattleSlotPosY_candidate
 # Battle-script bytecode
 c-file 0x08053D40 0x080544D4 src/graphics/assets/effect_assets.c g_aEffectObjectAssets
 label 0x080544D4 g_aEffectBgRecords_candidate
-label 0x08054F34 g_abScriptOpcodeLengths
+c-file 0x08054F34 0x08054FDC src/battle/script_opcode_lengths.c g_abScriptOpcodeLengths
 label 0x08054FDC g_abFighterIdleAnimData_candidate
 label 0x08054FE2 g_aEffectAnimData_candidate
 label 0x08058944 g_aEffectAnimData2_candidate

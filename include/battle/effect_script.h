@@ -24,7 +24,7 @@ typedef struct EffectBgRecord {
 } EffectBgRecord;
 
 extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
-extern const u8 g_abScriptOpcodeLengths[];                   // 0x08054F34, operand bytes per opcode
+extern const u8 g_abScriptOpcodeLengths[168];                // 0x08054F34, operand bytes per opcode
 extern const ObjectAssetRecord g_aEffectObjectAssets[17];    // 0x08053D40
 extern void *const g_apEffectPalettes[5];                    // 0x08053E50
 extern const ObjectAssetRecord g_aEffectAnimAssets[65];      // 0x08053E64, opcodes 0x01/0x02
