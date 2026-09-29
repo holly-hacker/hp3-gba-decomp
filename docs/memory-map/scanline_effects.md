@@ -54,7 +54,7 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
   spin): `InitializeLoadingScreen`, `InitBattleBackground_candidate`,
   `InitializeDialogue`, `InitializeLupinPotionCutscene`, `sub_0802D674`; the table
   alone from `sub_08008E88`, `sub_08012A00`, `sub_08012B40`, `sub_08018CF8`.
-- Battle script op `0x80` (`ShowCannedDialogBlock`, handler `0x0801A208`) queues one
+- Battle script op `0x80` (`QueueScanlineEffect`, handler `0x0801A208`) queues one
   of the ROM tables at `0x08053B08`; see
   [`../formats/battle_scripts.md`](../formats/battle_scripts.md).
 - `ClearScanlineEffects`: `ExitLoadingScreen`, `ExitDialogue`, `ExitMinigameMenu`,
@@ -66,5 +66,4 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 What the individual callbacks draw (the one decoded table entry, line 159 with
 callback `0x0801FC59`, busy-waits for HBlank via `DISPSTAT` and rewrites video
 registers, so the mechanism reads as a per-scanline video-register effect) and the
-role of the `+2` halfword. The name `ShowCannedDialogBlock` should be revisited:
-its tables hold entries of this format.
+role of the `+2` halfword. Its tables hold entries of this format.

@@ -948,7 +948,7 @@ field (the reader is what gives the field its name).
 | `+0x05` | `+0x2C` | `bCritChance` | `ResolveEnemyAttack` |
 | `+0x06`, `+0x08` | `+0x30`, `+0x32` | `wDamageRollMin`, `wDamageRollMax` | `ResolveEnemyAttack` |
 | `+0x0A`-`+0x0F` | `+0x34`-`+0x39` | `aSpellEffectiveness[6]` | `ResolvePlayerAttack` |
-| `+0x10`, `+0x12` | `+0x0C`, `+0x28` | `wRewardXp`, `wRewardGold` | `ApplyDamageToEnemyFighter`, `GrantMonsterKillReward` |
+| `+0x10`, `+0x12` | `+0x0C`, `+0x28` | `wRewardXp`, `wRewardGold` | `ApplyDamageToEnemyFighter`, `KillTarget` |
 | `+0x14`, `+0x15` | -- | `special_effect_chance`, `special_effect_id` | `RollMonsterSpecialEffect_candidate` (read from the table directly, not copied) |
 
 `MonsterTableRow` (`include/battle/battle.h`) uses these same labels.
@@ -967,7 +967,7 @@ effect, not a gold bonus; see `FightState->bBonusRewardFlags` above).
 `g_nBattleXpReward` is consumed by `InitializeVictoryScreen` (see "End-of-battle
 flow" below); what consumes `g_nBattleGoldReward` isn't traced.
 
-A second, independent path exists: `GrantMonsterKillReward` (object-script
+A second, independent path exists: `KillTarget` (object-script
 opcode `0x83`, `0x0801A254`) adds a species' `wRewardXp`/`wRewardGold`
 straight into the same accumulators, bypassing `ApplyDamageToEnemyFighter`
 entirely -- used by Harry's `Tempest Jinx` (banishes a monster without
@@ -981,7 +981,7 @@ unless the previous mode was `FolioUniversitas` or
 `HelpTopicScreen` (returning from a card-detail/help screen
 opened mid-battle), it decrements `FightState->bScreenShakeTimer_candidate`
 while nonzero (nudging the BG scroll/priority each tick via `sub_0802D640`
-and `g_aBgScrollState[0x25]`), and the tick that timer reaches `0` it
+and `g_aBgScrollState[1].nScrollY_candidate`), and the tick that timer reaches `0` it
 resets every fighter's `Object` (`sub_080039E8`) instead of ticking the
 turn state machine that frame. Every other case (timer already `0`, or the
 previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).

@@ -9,19 +9,19 @@
       "operand_length": 2
     },
     "2": {
-      "name": "opcode_02",
+      "name": "SetObjectAnimAndPalette",
       "operand_length": 2
     },
     "3": {
-      "name": "opcode_03",
+      "name": "SetObjectAnimFromTable2",
       "operand_length": 2
     },
     "4": {
-      "name": "opcode_04",
+      "name": "SetObjectAnimFromTable2AndPalette",
       "operand_length": 2
     },
     "5": {
-      "name": "opcode_05",
+      "name": "SetEffectPalette",
       "operand_length": 1
     },
     "6": {
@@ -29,7 +29,7 @@
       "operand_length": 1
     },
     "7": {
-      "name": "opcode_07",
+      "name": "UnmuteMusic",
       "operand_length": 0
     },
     "8": {
@@ -45,7 +45,7 @@
       "operand_length": 0
     },
     "11": {
-      "name": "opcode_0B",
+      "name": "MoveToAbsolute",
       "operand_length": 3
     },
     "12": {
@@ -53,7 +53,7 @@
       "operand_length": 5
     },
     "13": {
-      "name": "opcode_0D",
+      "name": "StopMove",
       "operand_length": 0
     },
     "14": {
@@ -65,19 +65,19 @@
       "operand_length": 1
     },
     "16": {
-      "name": "opcode_10",
+      "name": "SpawnEffectAtSelfDetached",
       "operand_length": 1
     },
     "17": {
-      "name": "opcode_11",
+      "name": "SpawnEffectAtSelf",
       "operand_length": 1
     },
     "18": {
-      "name": "opcode_12",
+      "name": "SpawnEffectOffsetDetached",
       "operand_length": 5
     },
     "19": {
-      "name": "opcode_13",
+      "name": "SpawnEffectOffset",
       "operand_length": 5
     },
     "20": {
@@ -89,7 +89,7 @@
       "operand_length": 5
     },
     "22": {
-      "name": "opcode_16",
+      "name": "SpawnEffectSharedTiles",
       "operand_length": 1
     },
     "23": {
@@ -97,19 +97,19 @@
       "operand_length": 0
     },
     "24": {
-      "name": "opcode_18",
+      "name": "ToggleObjectFlipY",
       "operand_length": 0
     },
     "25": {
-      "name": "opcode_19",
+      "name": "MoveBy",
       "operand_length": 2
     },
     "26": {
-      "name": "opcode_1A",
+      "name": "MoveBy_2",
       "operand_length": 2
     },
     "27": {
-      "name": "opcode_1B",
+      "name": "SnapToCaster",
       "operand_length": 1
     },
     "28": {
@@ -117,11 +117,11 @@
       "operand_length": 1
     },
     "29": {
-      "name": "opcode_1D",
+      "name": "SetVelocity",
       "operand_length": 2
     },
     "30": {
-      "name": "opcode_1E",
+      "name": "SetVelocity16",
       "operand_length": 6
     },
     "31": {
@@ -137,11 +137,11 @@
       "operand_length": 1
     },
     "34": {
-      "name": "opcode_22",
+      "name": "SkipBytes",
       "operand_length": 1
     },
     "35": {
-      "name": "opcode_23",
+      "name": "GotoIfContextLow",
       "operand_length": 1
     },
     "36": {
@@ -149,7 +149,7 @@
       "operand_length": 2
     },
     "37": {
-      "name": "opcode_25",
+      "name": "GotoIfScriptParamEqual",
       "operand_length": 2
     },
     "38": {
@@ -165,7 +165,7 @@
       "operand_length": 2
     },
     "41": {
-      "name": "opcode_29",
+      "name": "GotoIfScriptParamEqual_2",
       "operand_length": 2
     },
     "42": {
@@ -177,39 +177,39 @@
       "operand_length": 1
     },
     "44": {
-      "name": "opcode_2C",
+      "name": "GotoIfLocalBEqual",
       "operand_length": 2
     },
     "45": {
-      "name": "opcode_2D",
+      "name": "GotoIfLocalBNotEqual",
       "operand_length": 2
     },
     "46": {
-      "name": "opcode_2E",
+      "name": "GotoIfLocalBEqual_2",
       "operand_length": 2
     },
     "47": {
-      "name": "opcode_2F",
+      "name": "GotoIfLocalBNotEqual_2",
       "operand_length": 2
     },
     "48": {
-      "name": "opcode_30",
+      "name": "AdvanceAttackOutcome",
       "operand_length": 0
     },
     "49": {
-      "name": "opcode_31",
+      "name": "CreateEmitter12",
       "operand_length": 12
     },
     "50": {
-      "name": "opcode_32",
+      "name": "CreateEmitter8",
       "operand_length": 8
     },
     "51": {
-      "name": "opcode_33",
+      "name": "CreateEmitterOnSelf",
       "operand_length": 16
     },
     "52": {
-      "name": "opcode_34",
+      "name": "CreateEmitterOnTarget",
       "operand_length": 16
     },
     "53": {
@@ -225,11 +225,11 @@
       "operand_length": 0
     },
     "56": {
-      "name": "opcode_38",
+      "name": "ReleaseWindupEmitter",
       "operand_length": 0
     },
     "57": {
-      "name": "opcode_39",
+      "name": "ReleaseKind2Emitters",
       "operand_length": 0
     },
     "58": {
@@ -237,19 +237,19 @@
       "operand_length": 0
     },
     "59": {
-      "name": "opcode_3B",
+      "name": "SetBehaviorFlags",
       "operand_length": 1
     },
     "60": {
-      "name": "opcode_3C",
+      "name": "ClearBehaviorFlags",
       "operand_length": 1
     },
     "61": {
-      "name": "opcode_3D",
+      "name": "BlendEffectPalette",
       "operand_length": 3
     },
     "62": {
-      "name": "opcode_3E",
+      "name": "SetOamPalette",
       "operand_length": 1
     },
     "63": {
@@ -265,103 +265,103 @@
       "operand_length": 2
     },
     "66": {
-      "name": "opcode_42",
+      "name": "StartOrbitMotionRandom",
       "operand_length": 1
     },
     "67": {
-      "name": "opcode_43",
+      "name": "SaveOrbit",
       "operand_length": 0
     },
     "68": {
-      "name": "opcode_44",
+      "name": "RestoreOrbit",
       "operand_length": 0
     },
     "69": {
-      "name": "StartOrbitMotion_2",
+      "name": "StartCasterOrbitMotion",
       "operand_length": 2
     },
     "70": {
-      "name": "opcode_46",
+      "name": "SetAffineScale1",
       "operand_length": 4
     },
     "71": {
-      "name": "opcode_47",
+      "name": "SetAffineScale3",
       "operand_length": 4
     },
     "72": {
-      "name": "opcode_48",
+      "name": "StartAffineWobble",
       "operand_length": 8
     },
     "73": {
-      "name": "opcode_49",
+      "name": "StopAffineWobble",
       "operand_length": 0
     },
     "74": {
-      "name": "opcode_4A",
+      "name": "SetAffineScaleTween",
       "operand_length": 13
     },
     "75": {
-      "name": "opcode_4B",
+      "name": "SetAffineRotation1",
       "operand_length": 1
     },
     "76": {
-      "name": "opcode_4C",
+      "name": "SetAffineRotation3",
       "operand_length": 1
     },
     "77": {
-      "name": "opcode_4D",
+      "name": "SetAffineScaleRotation1",
       "operand_length": 5
     },
     "78": {
-      "name": "opcode_4E",
+      "name": "SetAffineScaleRotation3",
       "operand_length": 5
     },
     "79": {
-      "name": "opcode_4F",
+      "name": "ReleaseAffineSlot",
       "operand_length": 0
     },
     "80": {
-      "name": "opcode_50",
+      "name": "ClearAnimFlag",
       "operand_length": 0
     },
     "81": {
-      "name": "opcode_51",
+      "name": "SetAnimFlag",
       "operand_length": 0
     },
     "82": {
-      "name": "ClearObjectFlag1",
+      "name": "HideObject",
       "operand_length": 0
     },
     "83": {
-      "name": "SetObjectFlag1",
+      "name": "ShowObject",
       "operand_length": 0
     },
     "84": {
-      "name": "opcode_54",
+      "name": "SetOamPriority",
       "operand_length": 1
     },
     "85": {
-      "name": "opcode_55",
+      "name": "SetTargetOamPriority",
       "operand_length": 1
     },
     "86": {
-      "name": "SetAllEnemiesFlagBits",
+      "name": "SetEnemiesOamPriority",
       "operand_length": 1
     },
     "87": {
-      "name": "SetAllAlliesFlagBits",
+      "name": "SetAlliesOamPriority",
       "operand_length": 1
     },
     "88": {
-      "name": "opcode_58",
+      "name": "IncrementActionVariant",
       "operand_length": 0
     },
     "89": {
-      "name": "opcode_59",
+      "name": "SnapToRandomAroundSlot",
       "operand_length": 3
     },
     "90": {
-      "name": "opcode_5A",
+      "name": "SnapToRandomAroundSpawn",
       "operand_length": 3
     },
     "91": {
@@ -369,19 +369,19 @@
       "operand_length": 2
     },
     "92": {
-      "name": "opcode_5C",
+      "name": "EnableSemiTransparency",
       "operand_length": 0
     },
     "93": {
-      "name": "opcode_5D",
+      "name": "DisableBlendMode",
       "operand_length": 0
     },
     "94": {
-      "name": "opcode_5E",
+      "name": "StartAlphaFade",
       "operand_length": 1
     },
     "95": {
-      "name": "opcode_5F",
+      "name": "SetAlphaBlend",
       "operand_length": 2
     },
     "96": {
@@ -393,7 +393,7 @@
       "operand_length": 1
     },
     "98": {
-      "name": "opcode_62",
+      "name": "Goto_2",
       "operand_length": 1
     },
     "99": {
@@ -401,11 +401,11 @@
       "operand_length": 8
     },
     "100": {
-      "name": "opcode_64",
+      "name": "FreeTileAllocation",
       "operand_length": 0
     },
     "101": {
-      "name": "opcode_65",
+      "name": "StartDelayedChain",
       "operand_length": 3
     },
     "102": {
@@ -413,27 +413,27 @@
       "operand_length": 0
     },
     "103": {
-      "name": "opcode_67",
+      "name": "SetLocalRandomRange",
       "operand_length": 3
     },
     "104": {
-      "name": "opcode_68",
+      "name": "SetDepthBiasZero",
       "operand_length": 0
     },
     "105": {
-      "name": "opcode_69",
+      "name": "SetDepthBiasMax",
       "operand_length": 0
     },
     "106": {
-      "name": "opcode_6A",
+      "name": "SetDepthBias",
       "operand_length": 1
     },
     "107": {
-      "name": "opcode_6B",
+      "name": "SetDepthBiasInverseLocalA",
       "operand_length": 0
     },
     "108": {
-      "name": "opcode_6C",
+      "name": "SetDepthBiasLocalA",
       "operand_length": 0
     },
     "109": {
@@ -445,47 +445,47 @@
       "operand_length": 0
     },
     "111": {
-      "name": "opcode_6F",
+      "name": "ScrollBgUp",
       "operand_length": 1
     },
     "112": {
-      "name": "opcode_70",
+      "name": "ScrollBgDown",
       "operand_length": 1
     },
     "113": {
-      "name": "opcode_71",
+      "name": "SetTargetVelocityScaled",
       "operand_length": 2
     },
     "114": {
-      "name": "opcode_72",
+      "name": "SetTargetVelocity",
       "operand_length": 2
     },
     "115": {
-      "name": "opcode_73",
+      "name": "SetCasterVelocityProduct",
       "operand_length": 4
     },
     "116": {
-      "name": "opcode_74",
+      "name": "NudgeCaster",
       "operand_length": 2
     },
     "117": {
-      "name": "opcode_75",
+      "name": "NudgeTarget",
       "operand_length": 2
     },
     "118": {
-      "name": "opcode_76",
+      "name": "SetCasterPosition",
       "operand_length": 2
     },
     "119": {
-      "name": "opcode_77",
+      "name": "SetTargetPosition",
       "operand_length": 2
     },
     "120": {
-      "name": "opcode_78",
+      "name": "SnapTargetToSlot",
       "operand_length": 0
     },
     "121": {
-      "name": "opcode_79",
+      "name": "SnapCasterToSpawn",
       "operand_length": 0
     },
     "122": {
@@ -497,27 +497,27 @@
       "operand_length": 1
     },
     "124": {
-      "name": "opcode_7C",
+      "name": "MoveCasterTo",
       "operand_length": 5
     },
     "125": {
-      "name": "opcode_7D",
+      "name": "WaitForCasterField86",
       "operand_length": 0
     },
     "126": {
-      "name": "opcode_7E",
+      "name": "SetCasterAnim",
       "operand_length": 2
     },
     "127": {
-      "name": "opcode_7F",
+      "name": "LoadBgEffect",
       "operand_length": 3
     },
     "128": {
-      "name": "ShowCannedDialogBlock",
+      "name": "QueueScanlineEffect",
       "operand_length": 1
     },
     "129": {
-      "name": "opcode_81",
+      "name": "SetBgEffectId",
       "operand_length": 1
     },
     "130": {
@@ -525,15 +525,15 @@
       "operand_length": 2
     },
     "131": {
-      "name": "GrantMonsterKillReward",
+      "name": "KillTarget",
       "operand_length": 0
     },
     "132": {
-      "name": "opcode_84",
+      "name": "RampBlendUp",
       "operand_length": 0
     },
     "133": {
-      "name": "opcode_85",
+      "name": "RampBlendDown",
       "operand_length": 0
     },
     "134": {
@@ -553,11 +553,11 @@
       "operand_length": 3
     },
     "138": {
-      "name": "opcode_8A",
+      "name": "SetBgPaletteColors",
       "operand_length": 4
     },
     "139": {
-      "name": "opcode_8B",
+      "name": "SetBgPaletteColorsAdjust",
       "operand_length": 5
     },
     "140": {
@@ -565,31 +565,31 @@
       "operand_length": 2
     },
     "141": {
-      "name": "opcode_8D",
+      "name": "SetEffectTimers",
       "operand_length": 10
     },
     "142": {
-      "name": "opcode_8E",
+      "name": "StartFadeCounter",
       "operand_length": 2
     },
     "143": {
-      "name": "opcode_8F",
+      "name": "SetWindowLayers",
       "operand_length": 11
     },
     "144": {
-      "name": "opcode_90",
+      "name": "SetWindowRect",
       "operand_length": 5
     },
     "145": {
-      "name": "opcode_91",
+      "name": "SetBehaviorFlag10",
       "operand_length": 0
     },
     "146": {
-      "name": "opcode_92",
+      "name": "HideWindow",
       "operand_length": 1
     },
     "147": {
-      "name": "opcode_93",
+      "name": "ResetBgState",
       "operand_length": 1
     },
     "148": {
@@ -601,7 +601,7 @@
       "operand_length": 0
     },
     "150": {
-      "name": "opcode_96",
+      "name": "FlipTargetFacing",
       "operand_length": 0
     },
     "151": {
@@ -647,7 +647,7 @@
       "operand_length": 0
     },
     "153": {
-      "name": "opcode_99",
+      "name": "SetLocalAToPartySize",
       "operand_length": 0
     },
     "154": {
@@ -655,27 +655,27 @@
       "operand_length": 2
     },
     "155": {
-      "name": "opcode_9B",
+      "name": "SetDispcntBit15",
       "operand_length": 0
     },
     "156": {
-      "name": "opcode_9C",
+      "name": "ClearDispcntBit15",
       "operand_length": 0
     },
     "157": {
-      "name": "opcode_9D",
+      "name": "SelectFirstAlly",
       "operand_length": 0
     },
     "158": {
-      "name": "opcode_9E",
+      "name": "SelectNextAlly",
       "operand_length": 0
     },
     "159": {
-      "name": "opcode_9F",
+      "name": "SelectFirstLiveEnemy",
       "operand_length": 0
     },
     "160": {
-      "name": "opcode_A0",
+      "name": "SelectNextLiveEnemy",
       "operand_length": 0
     },
     "161": {
@@ -703,7 +703,7 @@
       "operand_length": 0
     },
     "167": {
-      "name": "opcode_A7",
+      "name": "PlaySoundEffect",
       "operand_length": 1
     }
   }
