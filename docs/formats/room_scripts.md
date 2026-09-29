@@ -351,8 +351,9 @@ one way that object-side state gets reached).
 ## Disassembly (`extract-room-scripts`/`pack-room-scripts`, not build input yet)
 
 **PROVEN** the on-ROM chain format is byte-identical to the RAM format
-above: `FUN_08005E84` (US `0x08005E84`, the copier
-`BuildRoomSwitchStateObjectTable_candidate` calls per chain) is a
+above: `sub_08005E84` (US `0x08005E84`, the copier
+`BuildRoomSwitchStateObjectTable_candidate` calls per chain, up to and
+including the opcode-0 terminator) is a
 straight byte-for-byte copy loop driven by the same
 `g_abRoomScriptOpcodeLengths` table, with no transformation -- so a
 chain's bytes can be read and disassembled directly from the ROM
@@ -372,6 +373,18 @@ switchTable   = subBlock + u16(subBlock + 2)
 chainCount    = u8(switchTable + 0)
 chain[i]      = switchTable + u16(switchTable + 2 + i*2)
 ```
+
+**PROVEN** (`BuildRoomSwitchStateObjectTable_candidate`): the runtime table
+`g_pRoomSwitchStateObjectTable` is `{u16 count, u16 offsets[count]}` followed
+by the chains. Sub-block flags bit 0 (set in every shipped sub-block) makes
+the builder put the *default* sub-block's (entry 0's) chain 0 first and
+shift the variant's chains up by one: `count = chainCount + 1`, runtime
+chain 0 is the default's chain 0, and runtime chain `i + 1` is the variant's
+chain `i`. The chain indices scripts use (`WalkRoomSwitchStateChain_candidate`,
+`goto` operands) are runtime indices. The extractor below reads the
+variant's chains without this prepend, so its `chain<N>` numbering is one
+lower than the runtime index. Blob layout and extent proof:
+[`rooms.md`](rooms.md).
 
 `tools/room_scripts/extract_room_scripts.py` (`just extract-room-scripts
 [ver]`) walks all 55 rooms' `questStage = 0` (story-start) variant this

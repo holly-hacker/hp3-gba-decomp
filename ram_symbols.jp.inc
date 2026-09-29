@@ -166,3 +166,8 @@
 .set g_aResourceCache,               0x03005174  @ see ram_symbols.us.inc
 .set sTextMacroTable,               0x030031D0  @ see ram_symbols.us.inc
 .set gLocaleThousandsSep,           0x03005D6D  @ see ram_symbols.us.inc
+.set g_pRoomTableBuffer,               0x03001DEC  @ see ram_symbols.us.inc
+.set g_pRoomObjectTable,               0x03001DF4  @ see ram_symbols.us.inc
+.set g_pRoomWarpTriggerTable,          0x03001DF8  @ see ram_symbols.us.inc
+.set g_pRoomSwitchStateObjectTable,    0x03001DFC  @ see ram_symbols.us.inc
+.set g_wRoomResourceFlags_candidate,  0x03001DDC  @ see ram_symbols.us.inc

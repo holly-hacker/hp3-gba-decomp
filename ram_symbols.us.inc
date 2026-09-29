@@ -260,6 +260,9 @@
 .set g_pRoomScriptYieldContinuation,   0x03001DE0  @ u32 *: record to resume at after a yield, or 0
 .set g_pRoomScriptNextRecord,          0x03001DE4  @ u32 *: record following the one being dispatched
 .set g_bRoomScriptCallStackDepth,      0x03001DE8  @ u8: nested chain calls in flight
+.set g_pRoomTableBuffer,               0x03001DEC  @ RoomBlobHeader *: 0x2200-byte buffer holding the room's runtime tables
+.set g_pRoomObjectTable,               0x03001DF4  @ RoomBlobTable *: per-column, per-row tile records
+.set g_pRoomWarpTriggerTable,          0x03001DF8  @ RoomBlobTable *: per-column warp trigger lists
 .set g_pRoomSwitchStateObjectTable,    0x03001DFC  @ RoomScriptTable *: current room's chain offset table
 .set g_aRoomScriptCallStack,           0x03001E00  @ RoomScriptCallFrame[]: saved callers, indexed by depth
 .set g_bRoomScriptPendingChain,         0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none

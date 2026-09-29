@@ -12,37 +12,66 @@ per-room resource blob.
 
 ## The room resource blob
 
-**PROVEN**, from ground-truth disassembly (not just decompiler output).
-The level table's offset-`0x50` field (`docs/formats/levels.md`) points
-to a per-room blob, parsed by `ParseRoomResourceBlob_candidate`
-(`0x08005A78`) into a shared 0x2200-byte RAM scratch buffer (zeroed at
-the start of every room load):
+**PROVEN**, from disassembly and a scan of all 55 rooms (US). The level
+table's offset-`0x50` field (`docs/formats/levels.md`) points to a per-room
+blob, parsed by `ParseRoomResourceBlob_candidate` (`0x08005A78`) into a
+0x2200-byte RAM buffer (`g_pRoomTableBuffer`, zeroed at the start of every
+room load). Types: `include/overworld/room_blob.h`.
 
-- `u16` at blob+0 is a self-relative offset to a sub-header (`pSub`).
-- `pSub+1` starts a per-quest-stage array of variant-index bytes,
-  indexed by `g_abQuestEventState[0]` (the story-stage byte, see
-  [`save.md`](save.md)).
-- `pSub` itself is an array of 8-byte variant entries; entry N's `+0x24`
-  field is a `u16` self-relative offset (from the blob base) to that
-  variant's resolved sub-block. Entry 0 (`pSub+0x24`) is always the
-  "default" sub-block; the quest-stage-selected entry is the "variant"
-  sub-block.
-- Four builders run in sequence, each writing into the *same* scratch
-  buffer via bump allocation -- the pointer one builder returns is the
-  next builder's write cursor:
-  1. `CopyRoomBlobHeaderRecords_candidate` (`0x08005DD0`) copies a
-     count-prefixed array of 8-byte `{u32,u32}` records straight from
-     the blob's own header region. Purpose of these records is
-     **UNCONFIRMED** -- no consumer is known.
-  2. `BuildRoomWarpTriggerTable_candidate` (`0x0800572C`) builds
-     `g_pRoomWarpTriggerTable` (RAM `0x03001DF8`) -- see "Warp/trigger
-     tiles" below.
-  3. A third builder (`0x0800588C`) builds a table that is **never
-     read** anywhere in the ROM (no xrefs to its output) -- dead code
-     or an unused feature; not pursued further.
+```
+blob      u16 wSize                 offset of the stage index (= 4 + 8 * wRecordCount, all rooms)
+          u16 wRecordCount
+          {u32, u32} records[wRecordCount]
+pSub      = blob + wSize            stage index
+  +0x00   u8  variantCount
+  +0x01   u8  stageToVariant[33]    indexed by g_abQuestEventState[0]; every value < variantCount
+  +0x22   FF FF
+  +0x24   variantCount * 8-byte entries: u16 sub-block offset from blob start, then 6 zero bytes
+sub-block
+  +0x00   u16 warp table offset     from the sub-block
+  +0x02   u16 switch table offset   from the sub-block
+  +0x04   u16 flags                 bit 0 is stored to g_wRoomResourceFlags_candidate; set in all 127 sub-blocks
+  +0x06   u16 unknown               varies per sub-block, looks like an offset; no consumer found
+  +0x08   object table (inline)
+table     u8 count, u8 pad (0), u16 offsets[count]; offsets are from the table start
+```
+
+Entry 0 is the default sub-block; entry `stageToVariant[g_abQuestEventState[0]]`
+is the variant sub-block. **Extent proof:** in every room the lowest
+sub-block offset equals `wSize + 0x24 + 8 * variantCount`, so the stage
+index is followed immediately by the first sub-block.
+
+`ParseRoomResourceBlob_candidate` runs four builders in sequence. Each writes
+into the buffer at its cursor; the address it returns is the next builder's
+cursor. Runtime tables start with a `u16` count and `u16` offsets from the
+table start.
+
+  1. `CopyRoomBlobHeaderRecords_candidate` (`0x08005DD0`) copies the header
+     (`wSize`, `wRecordCount`, the 8-byte records) to the buffer start and
+     returns the buffer plus `wSize`, the start of the object table. Purpose
+     of the records is **UNCONFIRMED**; no consumer is known. Its second
+     parameter is unused.
+  2. `BuildRoomObjectTable_candidate` (`0x0800572C`) builds
+     `g_pRoomObjectTable` (`0x03001DF4`) from the sub-block's inline table,
+     one column at a time through `BuildRoomObjectColumn_candidate`
+     (`0x08005808`). Each column lists its rows; a row is an 8-byte zeroed
+     runtime prefix followed by the static record (see "Static per-tile
+     object table").
+  3. `BuildRoomWarpTriggerTable_candidate` (`0x0800588C`) builds
+     `g_pRoomWarpTriggerTable` (`0x03001DF8`), read by the accessors in
+     "Warp/trigger tiles". Each column is `{u32 count; 8-byte records}`
+     copied by `sub_08005E40`.
   4. `BuildRoomSwitchStateObjectTable_candidate` (`0x08005968`) builds
-     `g_pRoomSwitchStateObjectTable` (RAM `0x03001DFC`) -- see "Room
-     switch-state chains" below.
+     `g_pRoomSwitchStateObjectTable` (`0x03001DFC`); chains are copied by
+     `sub_08005E84`, see "Room switch-state chains".
+
+**Default prepend.** With flags bit 0 set (always, in the shipped data) the
+tables combine both sub-blocks: the object and switch tables get the default
+sub-block's entry 0 first, so `count` is the variant's count plus 1 and every
+variant index shifts up by one (runtime chain `i + 1` is variant chain `i`;
+runtime chain 0 is the default's chain 0). The warp table takes all of the
+default's columns first, then the variant's. Without the bit the runtime
+tables hold only the variant's entries.
 
 ## Static per-tile object table
 

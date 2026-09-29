@@ -9,7 +9,7 @@
 // Chain index -> chain offset table, reached through g_pRoomSwitchStateObjectTable.
 typedef struct RoomScriptTable {
     u16 wHeader;
-    u16 awChainOffsets[1];
+    u16 awChainOffsets[0];
 } RoomScriptTable;
 
 // A record: the opcode word followed by operand bytes; the length table gives

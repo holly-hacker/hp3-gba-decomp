@@ -117,7 +117,6 @@ extern u32 g_dwPendingCameraFocusFlag;
 extern void RestoreRoomObjectState(void);
 extern void RestoreRoomObjectStateMinimal(void);
 extern u8 sub_08005DC0(u32 questState, const void *pRoomResourceBlob);
-extern void ParseRoomResourceBlob_candidate(const void *pBlob);
 extern u32 SetRoomSwitchState(u32 state);
 extern u32 GetRoomSwitchState(void);
 extern void ApplyRoomSwitchEffect(u32 state);

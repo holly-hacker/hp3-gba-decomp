@@ -7,6 +7,7 @@
 #include "hw/input.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
+#include "overworld/room_blob.h"
 #include "hw/vblank.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.

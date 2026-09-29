@@ -88,8 +88,12 @@ thumb-func 0x08003A30 sub_08003A30
 thumb-func 0x08003A44 sub_08003A44
 thumb-func 0x08005384 GetOamShapeSizeDims
 thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
+c-file 0x0800572C 0x08005808 src/room/build_room_object_table.c BuildRoomObjectTable_candidate
+c-file 0x08005808 0x0800588C src/room/build_room_object_column.c BuildRoomObjectColumn_candidate
+c-file 0x0800588C 0x08005968 src/room/build_room_warp_trigger_table.c BuildRoomWarpTriggerTable_candidate
+c-file 0x08005968 0x08005A44 src/room/build_room_switch_state_object_table.c BuildRoomSwitchStateObjectTable_candidate
 thumb-func 0x08005A44 InitRoomScriptState_candidate
-thumb-func 0x08005A78 ParseRoomResourceBlob_candidate
+c-file 0x08005A78 0x08005B00 src/room/parse_room_resource_blob.c ParseRoomResourceBlob_candidate
 thumb-func 0x08005B00 RespawnRowAndRunChain_candidate
 thumb-func 0x08005B44 ShouldRunRoomScriptRow_candidate
 thumb-func 0x08005BCC GetRoomRowColumnCount_candidate
@@ -97,6 +101,12 @@ thumb-func 0x08005C60 GetRoomObjectField_candidate
 thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
 thumb-func 0x08005D88 sub_08005D88
 thumb-func 0x08005DC0 sub_08005DC0
+c-file 0x08005DD0 0x08005E18 src/room/copy_room_blob_header_records.c CopyRoomBlobHeaderRecords_candidate
+thumb-func 0x08005E18 sub_08005E18
+thumb-func 0x08005E40 sub_08005E40
+thumb-func 0x08005E84 sub_08005E84
+thumb-func 0x08005EC8 sub_08005EC8
+thumb-func 0x08005EE8 sub_08005EE8
 asm-file 0x08005F10 0x08006108 asm/check_object_collisions.s  CheckObjectCollisions
 asm-file 0x08006108 0x08006300 asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 0x080063B4 asm/decompress_bg_tile.s       DecompressBgTile
