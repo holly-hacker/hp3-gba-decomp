@@ -49,7 +49,7 @@ static inline void WaitForMoveThenApplyDamageNumber(Object *obj)
 static inline void ApplyDamageNumberAnimState(Object *obj)
 {
     if (obj->bActionFlags & 1) {
-        sub_08018B14(obj->wStagedDamage, (u8)obj->wObjectType);
+        sub_08018B14(obj->modeState.actor.wStagedDamage, (u8)obj->wObjectType);
         PlaySoundById(0x9b);
         SetPlayerObjectAnim(obj, 4);
         obj->bActionFlags &= 0xfe;
@@ -60,7 +60,7 @@ static inline void ApplyDamageNumberAnimState(Object *obj)
         return;
 
     SetObjectActionState(obj, 0);
-    ApplyDamageToAllyFighter(obj->wStagedDamage, obj->bFighterIndex);
+    ApplyDamageToAllyFighter(obj->modeState.actor.wStagedDamage, obj->bFighterIndex);
 }
 
 static inline void PlayFighterImpactSound(Object *obj)
@@ -182,7 +182,7 @@ void TickPlayerActionState(Object *obj)
             g_pFightState->bActionDelayCounter_candidate -= 1;
             if (g_pFightState->bActionDelayCounter_candidate > 4) {
                 sub_0802D640((u8)(g_abBgPriority[4] - 1));
-                g_aBgScrollState[0x25] += 0xFFFD0000;
+                g_aBgScrollState[1].nScrollY_candidate += 0xFFFD0000;
                 g_pFightState->bCameraZoomStep_candidate += 1;
             } else if (g_pFightState->bActionDelayCounter_candidate == 4) {
                 sub_0802D64C(0);
@@ -250,7 +250,7 @@ void TickPlayerActionState(Object *obj)
                 return;
             } else {
                 sub_0802D640((u8)(g_abBgPriority[4] + 1));
-                g_aBgScrollState[0x25] += 0x30000;
+                g_aBgScrollState[1].nScrollY_candidate += 0x30000;
                 g_pFightState->bCameraZoomStep_candidate -= 1;
             }
         } else if (flags & 1) {
@@ -630,7 +630,7 @@ void TickPlayerActionState(Object *obj)
                     g_nLastDamage = g_pFightState->pFighters[i].wHp - 1;
                 else
                     g_nLastDamage = 0xf;
-                ((Object *)g_pFightState->pFighters[i].pObject)->wStagedDamage = g_nLastDamage;
+                ((Object *)g_pFightState->pFighters[i].pObject)->modeState.actor.wStagedDamage = g_nLastDamage;
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
                 ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, i, 0);
                 ShowDamageNumber_candidate(i, g_nLastDamage);

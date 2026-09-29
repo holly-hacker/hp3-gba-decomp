@@ -23,7 +23,7 @@ void RoomScriptOpDelayedRespawnRowAndRunChainFrames(DelayedRespawnRowAndRunChain
             g_dwRoomScriptRunState = 2;
         pTimer = SpawnScriptEffectObject(1);
         pTimer->dwStateTimer = pRecord->wDelay;
-        pTimer->bDelayedRespawnRow = pRecord->bRespawnRow;
-        pTimer->bDelayedChainRow = pRecord->bChainRow;
+        pTimer->modeState.actor.bDelayedRespawnRow = pRecord->bRespawnRow;
+        pTimer->modeState.actor.bDelayedChainRow = pRecord->bChainRow;
     }
 }

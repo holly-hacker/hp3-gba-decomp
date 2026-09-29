@@ -1203,7 +1203,7 @@ The status/equip screen's `sub_0803A030` reads the three
 These record tables are C with generated labels: `g_aBattleHudAssets`
 (`src/graphics/assets/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
 fighter, `src/graphics/assets/fighter_anim_table.c`), `g_aEffectObjectAssets`,
-`g_apEffectPalettes`, and `g_aEffectAnimAssets`
+`g_apEffectPalettes`, `g_aEffectAnimAssets`, and `g_aEffectAnimAssets2`
 (`src/graphics/assets/effect_assets.c`), and `g_aStatusCharacterAssets`
 (`src/graphics/assets/status_character_assets.c`).
 

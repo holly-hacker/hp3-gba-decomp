@@ -309,7 +309,10 @@ extern u8 g_bLastTargetIndex;                   // 0x0300274C
 // fields below before spawning the effect object; the low bytes belong to
 // other battle state (see docs/memory-map/battle.md).
 typedef struct EffectStaging {
-    u8 pad_00[0x1A];
+    ParticleEmitter *pEmitter_candidate;  // 0x00, emitter spawned by the last emitter opcode
+    u8 pad_04[0x02];
+    u16 awSavedOrbit[6];    // 0x06, orbit parameters saved by script opcode 0x43
+    u8 pad_12[0x08];
     u16 wTimer_candidate;
     u16 wTimerMax_candidate;
     u16 wContextValue;
@@ -317,7 +320,7 @@ typedef struct EffectStaging {
     u8 bSlotParam;
     u8 bTargetIndex;
     u8 bCasterIndex;
-    u8 pad_24;
+    u8 bBgEffectId_candidate;
     u8 bStateA_candidate;
     u8 bStateB_candidate;
     u8 bIdStaged_candidate;

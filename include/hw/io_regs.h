@@ -19,6 +19,12 @@
 #define REG_BG2X_L  (*(volatile u16 *)0x04000028)
 #define REG_BG2Y_L  (*(volatile u16 *)0x0400002C)
 
+// Display control: layer enables and display mode.
+#define REG_DISPCNT (*(volatile u16 *)0x04000000)
+
+// Window outside/OBJ-window layer enables.
+#define REG_WINOUT (*(volatile u16 *)0x0400004A)
+
 // Color effects: blend control and brightness coefficient.
 #define REG_BLDCNT (*(volatile u16 *)0x04000050)
 #define REG_BLDY   (*(volatile u16 *)0x04000054)

@@ -18,7 +18,7 @@ void UpdateBattle(void)
         {
             g_pFightState->bScreenShakeTimer_candidate = timer - 1;
             sub_0802D640((u8)(g_abBgPriority[4] + 3));
-            g_aBgScrollState[0x25] += 0x80000;
+            g_aBgScrollState[1].nScrollY_candidate += 0x80000;
 
             if (g_pFightState->bScreenShakeTimer_candidate != 0)
                 return;

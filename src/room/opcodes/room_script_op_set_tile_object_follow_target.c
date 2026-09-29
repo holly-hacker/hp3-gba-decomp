@@ -27,10 +27,10 @@ void RoomScriptOpSetTileObjectFollowTarget(SetTileObjectFollowTargetRecord *pRec
     // Codegen construct: the ROM re-reads bUseTargetTile here and discards it, the trace of a
     // second test whose identical arms were merged. The original arms are unknown.
     if (pRecord->bUseTargetTile != 0)
-        pObject->bFollowResumeDistance = pRecord->bResumeDistance;
+        pObject->modeState.actor.bFollowResumeDistance = pRecord->bResumeDistance;
     else
-        pObject->bFollowResumeDistance = pRecord->bResumeDistance;
-    pObject->bFollowStopDistance = pRecord->bStopDistance;
+        pObject->modeState.actor.bFollowResumeDistance = pRecord->bResumeDistance;
+    pObject->modeState.actor.bFollowStopDistance = pRecord->bStopDistance;
     SetObjectActionSubState(pObject, 6);
     SetObjectActionState(pObject, 0x12);
 }

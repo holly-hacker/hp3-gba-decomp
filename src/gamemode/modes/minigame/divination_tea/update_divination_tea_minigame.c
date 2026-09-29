@@ -36,7 +36,7 @@ void UpdateDivinationTeaMinigame(void)
             roll = Mt19937RandRange(1, 2);
             pLeaf = &g_DivinationTea.aLeaves[i];
             pObject = pLeaf->pObject;
-            pLeaf->wAngle += (roll * (pObject->wUnk58 >> 7)) << 8;
+            pLeaf->wAngle += (roll * (pObject->orbitState.fields.wUnk58 >> 7)) << 8;
             pLeaf->wAngle = pLeaf->wAngle % 0x10000;
             SetObjectAffineTransform(pObject, (pLeaf->wScaleX / 256) << 16, (pLeaf->wScaleY / 256) << 16,
                                      pLeaf->wAngle, 1);

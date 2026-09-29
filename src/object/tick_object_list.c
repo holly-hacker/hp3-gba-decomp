@@ -50,7 +50,7 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
             pfnCheckCollisions(g_dwCollisionQueueCount, g_apCollisionQueue);
 
         for (obj = (Object *)list->pHead; obj != NULL; obj = (Object *)obj->node.pNext) {
-            orbit = obj->dwOrbitRadii;
+            orbit = obj->orbitState.fields.dwOrbitRadii;
             if (obj->pOwnerObject != NULL)
                 sub_080034B8(obj);
 

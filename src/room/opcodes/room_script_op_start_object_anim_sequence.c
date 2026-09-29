@@ -62,16 +62,16 @@ void RoomScriptOpStartObjectAnimSequence(StartObjectAnimSequenceRecord *pRecord)
 
     SetObjectActionState(pObject, actionState);
     scriptDataLow = pRecord->bScriptDataLow;
-    pScriptData = (u8 *)&pObject->wStagedDamage;
+    pScriptData = (u8 *)&pObject->modeState.actor.wStagedDamage;
     *pScriptData = scriptDataLow;
     scriptDataHigh = pRecord->bScriptDataHigh;
     ++pScriptData;
     *pScriptData = scriptDataHigh;
-    pObject->bRoomScriptArg64_candidate = pRecord->bArg64;
-    pObject->bFollowResumeDistance = pRecord->bArg65;
+    pObject->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64;
+    pObject->modeState.actor.bFollowResumeDistance = pRecord->bArg65;
     pObject->scriptState.wScriptPc = pRecord->bScriptPc;
-    pObject->bRoomScriptArg6A_candidate = pRecord->bArg6A;
-    pObject->bRoomScriptArg6B_candidate = pRecord->bArg6B;
+    pObject->modeState.actor.bRoomScriptArg6A_candidate = pRecord->bArg6A;
+    pObject->modeState.actor.bRoomScriptArg6B_candidate = pRecord->bArg6B;
     SetObjectActionSubState(pObject, 0);
     pObject->dwFlags |= ObjectFlagHasTickLogic;
 }

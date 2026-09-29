@@ -13,7 +13,15 @@ extern void TickScreenWindows_candidate(void);
 extern void TickPaletteAnimations_candidate(void);
 extern void TickBgTileAnimations_candidate(void);
 
-extern u32 g_aBgScrollState[];  // 0x03001E80; [0x25] == 0x03001F14
+// Per-BG scroll/affine state, 0x6C bytes per BG starting at g_aBgScrollState.
+typedef struct BgScrollState {
+    u8 pad_00[0x1C];
+    u32 dwFlags;                 // 0x1C, bit 0x8000 asks for a scroll update
+    u8 pad_20[0x08];
+    u32 nScrollY_candidate;      // 0x28, 16.16
+    u8 pad_2C[0x40];
+} BgScrollState;
+extern BgScrollState g_aBgScrollState[];  // 0x03001E80; [1].nScrollY_candidate == 0x03001F14
 extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
@@ -45,7 +53,6 @@ extern void ResetDisplayState(u32 arg);
 extern void FillBgTilemap_candidate(u32 bg, u32 arg1, u32 arg2);
 extern void ClearBgTilemap(u32 bg);
 
-// Per-BG scroll/affine state, one 0x6C-byte record per BG starting at g_aBgScrollState.
 extern void sub_08007AF0(u32 bg, u32 arg1, u32 arg2);
 extern void sub_08007C2C(u32 bg, u32 arg1, u32 arg2);
 extern void sub_08007C94(u32 bg, s32 arg1, u32 arg2);

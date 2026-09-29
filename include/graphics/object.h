@@ -196,6 +196,19 @@ typedef union __attribute__((packed)) ObjectScriptState {
     } bytes;
 } ObjectScriptState;
 
+// Bytes 0x62-0x6D of an effect script object. Read back each tick by
+// ProcessObjectFlagBehaviors; bBehaviorFlags selects which fields apply.
+typedef struct __attribute__((packed)) ObjectEffectState {
+    u8 bEffectId;           // 0x62, index into g_apEffectScripts
+    u8 abLocal[2];          // 0x63-0x64, script variables A and B; spawned children inherit
+                             // each one plus 1
+    u8 pad_65;
+    u8 bBehaviorFlags;      // 0x66, EffectBehaviorFlags bitmask
+    u8 abParams[5];         // 0x67-0x6B, meaning depends on the active behavior flags
+    u8 bParam6C;            // 0x6C
+    u8 bParam6D;            // 0x6D
+} ObjectEffectState;
+
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
 // into FightState.aSuspendedFighterObjects_candidate -- see battle.h). Only
@@ -233,22 +246,37 @@ typedef struct Object {
     u8 pad_44[0x08];        // -> 0x4C
     u32 nMoveTargetX;       // 0x4C, 16.16; set by SetObjectMoveTarget/StartObjectMove
     u32 nMoveTargetY;       // 0x50
-    u8 pad_54[0x04];        // -> 0x58
-    s16 wUnk58;             // 0x58, scaled (>> 7) by DivinationTea's leaf drift
-    u8 pad_5A[0x02];        // -> 0x5C
-    u32 dwOrbitRadii;       // 0x5C, packed radiusX/radiusY; nonzero runs ApplyObjectOrbitMotion
+    union __attribute__((packed)) {
+        // 0x54-0x5F, {angleX, angleY, velX, velY, radiusX, radiusY}; see
+        // CopyOrbitParamsFromTable and docs/formats/battle_scripts.md
+        u16 awOrbit[6];
+        struct __attribute__((packed)) {
+            u8 pad_54[0x04];        // -> 0x58
+            s16 wUnk58;             // 0x58, scaled (>> 7) by DivinationTea's leaf drift
+            u8 pad_5A[0x02];        // -> 0x5C
+            u32 dwOrbitRadii;       // 0x5C, packed radiusX/radiusY; nonzero runs ApplyObjectOrbitMotion
+        } fields;
+    } orbitState;
     ObjectScriptState scriptState;  // 0x60: object script PC or battle outcome/page bytes
-    u16 wStagedDamage;      // 0x62
-    u8 bRoomScriptArg64_candidate;  // 0x64, set by room script animation handlers
-    u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
-    u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileObjectScript
-    u8 pad_67;              // -> 0x68
-    u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
-    u8 pad_69;
-    u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartObjectAnimSequence
-    u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartObjectAnimSequence
-    u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
-    u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
+    // 0x62-0x6D is per-mode state: the actor view serves fighter and room
+    // objects, the effect view serves battle-effect script objects
+    // (see InterpretObjectScript).
+    union __attribute__((packed)) {
+        struct __attribute__((packed)) {
+            u16 wStagedDamage;      // 0x62
+            u8 bRoomScriptArg64_candidate;  // 0x64, set by room script animation handlers
+            u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
+            u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileObjectScript
+            u8 pad_67;              // -> 0x68
+            u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
+            u8 pad_69;
+            u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartObjectAnimSequence
+            u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartObjectAnimSequence
+            u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
+            u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
+        } actor;
+        ObjectEffectState effect;
+    } modeState;
     u8 pad_6E[0x0E];        // -> 0x7C
     u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocObjectOfType, zeroed by
                              // InitPlayerBattleActor_candidate

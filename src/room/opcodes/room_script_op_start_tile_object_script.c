@@ -31,15 +31,15 @@ void RoomScriptOpStartTileObjectScript(StartTileObjectScriptRecord *pRecord)
         pObject->dwFlags |= ObjectFlagRoomScriptYield;
 
     pObject->scriptState.wScriptPc = pRecord->wScriptPc;
-    pObject->wStagedDamage = pRecord->wScriptData;
-    pObject->bFollowResumeDistance = pRecord->bArg65;
-    pObject->bRoomScriptArg66_candidate = pRecord->bArg66;
+    pObject->modeState.actor.wStagedDamage = pRecord->wScriptData;
+    pObject->modeState.actor.bFollowResumeDistance = pRecord->bArg65;
+    pObject->modeState.actor.bRoomScriptArg66_candidate = pRecord->bArg66;
     SetObjectActionState(pObject, 15);
 
     if (pObject->dwFlags & ObjectFlagFourWayDirections_candidate)
-        pObject->bRoomScriptArg64_candidate = pRecord->bArg64 >> 1;
+        pObject->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64 >> 1;
     else
-        pObject->bRoomScriptArg64_candidate = pRecord->bArg64;
+        pObject->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64;
 
     SetObjectFlags(pObject, ObjectFlagHasTickLogic);
     SetObjectActionSubState(pObject, 0);
