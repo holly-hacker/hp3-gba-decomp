@@ -16,8 +16,10 @@ def link_binary(obj, out, start, baseline):
     prefix = symbols.read_text() if symbols.exists() else ''
     script.write_text(prefix + f'SECTIONS {{ . = 0x{start:x}; .text : {{ *(.text) }} }}\n')
     elf = out.with_suffix('.elf')
-    run(['arm-none-eabi-ld', '--just-symbols=' + str(baseline), '-T', script,
-         '-o', elf, obj])
+    extra = baseline.with_name('extra_symbols.o')
+    run(['arm-none-eabi-ld', '--just-symbols=' + str(baseline)]
+        + (['--just-symbols=' + str(extra)] if extra.exists() else [])
+        + ['-T', script, '-o', elf, obj])
     run(['arm-none-eabi-objcopy', '-O', 'binary', '--only-section=.text', elf, out])
     return out.read_bytes()
 
@@ -69,6 +71,18 @@ def prepare(ver, name, source=None, end=None, profile_source=None, reference_nam
     if labels:
         (ref / 'target.s').write_text(asm + labels)
         run(['arm-none-eabi-as', '-mcpu=arm7tdmi', '-o', ref / 'target.o', ref / 'target.s'])
+    # Callees claimed only by seeds (no manifest row) have no baseline symbol.
+    undefined = run(['arm-none-eabi-nm', '-u', ref / 'target.o'], capture_output=True, text=True).stdout.split()
+    known = run(['arm-none-eabi-nm', '--defined-only', baseline], capture_output=True, text=True).stdout.split()
+    seeds = {m[2]: (m[0], int(m[3], 16))
+             for m in re.findall(r'^\s*(thumb|arm)_func_start\s+(\w+)\s*\n(\w+):\s*@\s*(0x[\da-fA-F]+)', dump, re.M)
+             for m in [(m[0], m[1], m[2], m[3])]}
+    extra = [(n, *seeds[n]) for n in undefined if n in seeds and n not in known]
+    if extra:
+        directive = {'thumb': '.thumb_set', 'arm': '.set'}
+        (ref / 'extra_symbols.s').write_text('.syntax unified\n' + ''.join(
+            f'.global {n}\n{directive[mode]} {n}, 0x{addr:x}\n' for n, mode, addr in extra))
+        run(['arm-none-eabi-as', '-mcpu=arm7tdmi', '-o', ref / 'extra_symbols.o', ref / 'extra_symbols.s'])
     got = link_binary(ref / 'target.o', ref / 'linked.bin', start, baseline)
     want = (ROOT / f'baserom.{ver}.gba').read_bytes()[start - 0x08000000:end - 0x08000000]
     (ref / 'rom.bin').write_bytes(want)

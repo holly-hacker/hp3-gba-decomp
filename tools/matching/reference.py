@@ -34,17 +34,22 @@ def build_target_asm(ver: str, name: str, end_address: int | None = None) -> tup
         raise ValueError(f"{name!r} not found as a func_start label in {path}")
     begin, mode, _ = starts[idx]
     end = starts[idx + 1][0] if idx + 1 < len(starts) else len(lines)
+    interior_starts = False
     if end_address is not None:
-        # A data/branch label may mark the complete extent before the next seed.
+        # A data/branch label may mark the complete extent, even past later
+        # seeds when the function contains branch-target entry labels.
         # Never truncate an instruction or data directive merely to hit the size.
-        for i in range(begin + 1, end):
+        for i in range(begin + 1, len(lines)):
             label = re.match(r"^_([0-9A-Fa-f]{8}):", lines[i])
             annotated = re.match(r"^\w+:\s*@\s*(0x[0-9A-Fa-f]+)", lines[i])
             address = int(label[1], 16) if label else int(annotated[1], 16) if annotated else None
             if address == end_address:
+                interior_starts = i > end
                 end = i
                 break
     body = lines[begin + 1:end]  # skip the func_start directive itself
+    if interior_starts:
+        body = [l for l in body if not FUNC_START_RE.match(l)]
 
     symbols = ram_symbols(ver)
     externs, out = set(), []
