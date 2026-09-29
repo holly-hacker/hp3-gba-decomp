@@ -1,0 +1,9 @@
+#include "types.h"
+#include "overworld/room_script_bytecode.h"
+
+#include "v3/chain0.h"
+#include "v3/chain1.h"
+#include "v3/chain2.h"
+#include "v3/chain3.h"
+#include "v3/chain4.h"
+#include "v3/chain5.h"

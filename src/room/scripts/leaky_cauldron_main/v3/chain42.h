@@ -1,0 +1,15 @@
+const u8 g_abRoom42V3Chain42[] = {
+    RS_ArmChainYield(1),
+    RS_CancelObjectAnimSequence(0, 255),
+    RS_StartObjectAnimSequence(0, 255, 0, 0, 8, 0, 1, 0, 0, 0),
+    RS_DespawnTileObject(3, 0),
+    RS_RecruitPartyFollower(6),
+    RS_SetQuestState(7, 25),
+    RS_DelayedRespawnRowAndRunChain(0, 8, 33),
+    RS_ArmChainYield(1),
+    RS_Unk02(1, 0, 3),
+    RS_StartObjectAnimSequence(1, 0, 0, 0, 11, 0, 1, 0, 0, 0),
+    RS_DespawnTileObject(1, 0),
+    RS_SetTileObjectAnimStateWithSpeed(0, 255),
+    RS_End(),
+};

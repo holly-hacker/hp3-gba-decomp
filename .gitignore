@@ -13,7 +13,6 @@ data/audio/modules/*
 data/audio/samples/*
 data/images/
 data/items/*
-data/room_scripts/*
 data/text/*
 extracted/
 

@@ -1,0 +1,18 @@
+const u8 g_abRoom27V1Chain5[] = {
+    RS_ArmChainYield(1),
+    RS_CancelObjectAnimSequence(0, 255),
+    RS_StartTileObjectScript(288, 21, 1, 0, 255, 0, 0, 2, 255, 255, 255),
+    RS_StartTileObjectScript(288, 21, 1, 4, 0, 0, 0, 2, 255, 255, 255),
+    RS_StartTileObjectScript(288, 21, 1, 3, 0, 0, 0, 2, 255, 255, 255),
+    RS_RecruitPartyFollower(7),
+    RS_DespawnTileObject(3, 0),
+    RS_RecruitPartyFollower(6),
+    RS_DespawnTileObject(4, 0),
+    RS_DespawnTileObject(5, 0),
+    RS_DespawnTileObject(5, 1),
+    RS_DespawnTileObject(5, 2),
+    RS_SetStoryStage(6),
+    RS_ClearQuestStateUpperHalf(),
+    RS_SetTileObjectAnimStateWithSpeed(0, 255),
+    RS_End(),
+};

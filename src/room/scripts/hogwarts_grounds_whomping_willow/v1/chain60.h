@@ -1,0 +1,22 @@
+const u8 g_abRoom15V1Chain60[] = {
+    RS_ArmChainYield(1),
+    RS_SetTileObjectFacing(18, 0, 2),
+    RS_SetTileObjectFacing(31, 0, 6),
+    RS_DelayedRespawnRowAndRunChainFrames(2, 0, 0),
+    // "Expelliarmus!"
+    RS_ShowRoomDialog(581),
+    RS_PlaySoundById(74),
+    RS_PlayTileObjectAnimation(31, 0, 26),
+    RS_PlayTileObjectAnimation(18, 0, 24),
+    RS_DelayedRespawnRowAndRunChain(1, 0, 0),
+    RS_RespawnRowAndRunChain(30, 0),
+    RS_DespawnRoomRowObjects(31),
+    RS_DelayedRespawnRowAndRunChainFrames(10, 0, 0),
+    RS_ArmChainYield(0),
+    RS_StartObjectAnimSequence(0, 255, 0, 0, 61, 0, 1, 0, 0, 0),
+    RS_StartObjectAnimSequence(17, 2, 0, 0, 61, 2, 1, 0, 0, 0),
+    RS_StartObjectAnimSequence(17, 1, 0, 0, 61, 2, 1, 0, 0, 0),
+    RS_StartObjectAnimSequence(17, 0, 0, 0, 61, 2, 1, 0, 0, 0),
+    RS_StartObjectAnimSequence(17, 3, 0, 0, 61, 2, 1, 0, 0, 0),
+    RS_End(),
+};

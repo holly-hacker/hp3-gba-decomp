@@ -198,5 +198,7 @@ about how room content is placed.
 - The `(tag, value)` byte run immediately preceding `g_pRoomTable`
   (`~0x0806307C`-`0x08063C88`) has no identified consumer; worth a
   dynamic (mGBA watchpoint) pass rather than further static guessing.
-- JP-ROM table address not yet located or confirmed byte-identical;
-  everything above is US-only.
+- JP room table is at `0x08063C18` (found by matching the room-script chains'
+  bytes; its `+0x50` blob pointers reach the same blob layout, see
+  [`room_scripts.md`](room_scripts.md)). Its other fields are not compared
+  with US, so everything above is US-only.

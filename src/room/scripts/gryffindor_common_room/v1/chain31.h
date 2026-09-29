@@ -1,0 +1,15 @@
+const u8 g_abRoom29V1Chain31[] = {
+    RS_ArmChainYield(1),
+    RS_DespawnTileObject(11, 5),
+    RS_DespawnTileObject(11, 4),
+    RS_DespawnTileObject(11, 6),
+    RS_DespawnTileObject(11, 1),
+    RS_DespawnTileObject(11, 0),
+    RS_DespawnTileObject(11, 8),
+    RS_SetQuestState(2, 230),
+    RS_SetQuestState(1, 26),
+    RS_SetQuestState(37, 25),
+    RS_SetStoryStage(19),
+    RS_SetTileObjectAnimStateWithSpeed(0, 255),
+    RS_End(),
+};

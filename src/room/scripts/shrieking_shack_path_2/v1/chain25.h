@@ -1,0 +1,23 @@
+const u8 g_abRoom45V1Chain25[] = {
+    RS_CancelObjectAnimSequence(0, 255),
+    RS_SetQuestState(1, 224),
+    RS_ArmChainYield(1),
+    RS_StartTileObjectScript(567, 120, 0, 0, 255, 0, 0, 4, 255, 255, 255),
+    // "We have to find Ron! Maybe we should split up¸"
+    RS_ShowRoomDialog(560),
+    RS_SetTileObjectFacing(0, 255, 6),
+    RS_DelayedRespawnRowAndRunChainFrames(28, 0, 0),
+    RS_SetTileObjectFacing(0, 255, 2),
+    RS_DelayedRespawnRowAndRunChainFrames(20, 0, 0),
+    RS_SetTileObjectFacing(0, 255, 6),
+    RS_DelayedRespawnRowAndRunChainFrames(16, 0, 0),
+    RS_SetTileObjectFacing(0, 255, 2),
+    RS_DelayedRespawnRowAndRunChainFrames(26, 0, 0),
+    RS_SetTileObjectFacing(0, 255, 4),
+    RS_DelayedRespawnRowAndRunChainFrames(4, 0, 0),
+    RS_QueueTileObjectMove(1, 4, 0, 0, 1500, 0),
+    RS_ShowLoadingScreenTransition(29, 30, 32, 255),
+    RS_GotoIfStoryStageCompare(0, 29, 27, 0, 0, 0),
+    RS_GotoIfStoryStageCompare(0, 30, 28, 0, 0, 0),
+    RS_End(),
+};

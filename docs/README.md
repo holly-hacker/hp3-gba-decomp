@@ -94,8 +94,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   pointer table. Scripts are C: `src/battle/effect_scripts/`, `include/battle/script_opcodes.h`.
 - [`formats/room_scripts.md`](formats/room_scripts.md) — the room-script
   bytecode VM (a second, unrelated interpreter): its byte format,
-  pause/resume/nested-call state machine, and known opcodes. Dump only
-  (no pack yet): `tools/room_scripts/`, `extracted/room_scripts/`.
+  pause/resume/nested-call state machine, and known opcodes. Scripts are
+  C: `src/room/scripts/`, `include/overworld/room_script_bytecode.h`.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

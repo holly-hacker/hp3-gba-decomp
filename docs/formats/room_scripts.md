@@ -92,7 +92,7 @@ with `disassemble_bytes` directly.
 Addresses are US-ROM-specific, cited in prose only (this
 project's convention is to keep bytecode-format knowledge free of
 per-build addresses once it's committed to a machine-readable table --
-`tools/room_scripts/opcodes.json` already follows this).
+`include/overworld/room_script_bytecode.h` follows this).
 
 Several opcodes below take a tile `(x, y)` pair resolved through
 `GetRoomObjectField_candidate` (US `0x08005C60`, not otherwise
@@ -203,9 +203,8 @@ ever varies them this way.
 | `0x5C` (92) | `SetPendingChainFromExitParam` | 2 (chainIfExit1, chainIfExit0) | Reads `DAT_0300337D` (the 2-entry table `ReturnToOverworld`/`CloseRoomDialog` fill) and sets `g_bRoomScriptPendingChain` to `chainIfExit0` or `chainIfExit1` depending on its value -- selects a follow-up chain based on which overworld exit path was taken. Handler at US `0x0801D360`. |
 
 Only 2 opcodes remain unidentified: `0x2` and `0x2A` (93 total,
-0-indexed to `0x5C`; computed from `opcodes.json` directly, not
-hand-counted). `0x2A` occurs 6 times in the extracted (quest-stage-0)
-scripts. Its handler (`0x0801CC80`) sets only `r0` before calling
+0-indexed to `0x5C`; counted from `enum RoomScriptOpcode`, not
+hand-counted). `0x2A` occurs 6 times in the room scripts. Its handler (`0x0801CC80`) sets only `r0` before calling
 `FUN_080237D0`, which itself also reads `r7` without ever setting it --
 so this opcode's real behavior depends on caller-context registers
 (`r1`-`r3`, plus `FUN_080237D0`'s own unassigned `r7`). That register
@@ -272,8 +271,9 @@ quickly?" / "Umm... like I said, I'd read the book before." --
 Potions-classroom-appropriate content, unlike what decoding `426`
 *directly* as a string id gives (a real but unrelated line from
 elsewhere in the string table -- the bug this section exists to head
-off; `extract_room_scripts.py`'s dialog resolver does the two-level
-lookup above, not a direct `decode_dialog_text(426)` call).
+off; the decoded `// "..."` comments above `RS_ShowRoomDialog` records in
+`src/room/scripts/` come from the two-level lookup above, not a direct
+`decode_dialog_text(426)` call).
 
 A second table at `0x08FAAF10` (same 8-byte stride, but indexed by the
 resolved per-line string id -- `DAT_03002ED8` above -- not the block
@@ -349,7 +349,7 @@ rendezvous with that object finishing something, not a dialog-box
 close notification as such (a dialog box closing may itself just be
 one way that object-side state gets reached).
 
-## Disassembly (`extract-room-scripts`/`pack-room-scripts`, not build input yet)
+## Chains in C
 
 **PROVEN** the on-ROM chain format is byte-identical to the RAM format
 above: `sub_08005E84` (US `0x08005E84`, the copier
@@ -382,100 +382,33 @@ the builder put the *default* sub-block's (entry 0's) chain 0 first and
 shift the variant's chains up by one: `count = chainCount + 1`, runtime
 chain 0 is the default's chain 0, and runtime chain `i + 1` is the variant's
 chain `i`. The chain indices scripts use (`WalkRoomSwitchStateChain_candidate`,
-`goto` operands) are runtime indices. The extractor below reads the
-variant's chains without this prepend, so its `chain<N>` numbering is one
-lower than the runtime index. Blob layout and extent proof:
+`goto` operands) are runtime indices. The C chain names below use the
+variant's own index `N`, one lower than the runtime index. Blob layout and extent proof:
 [`rooms.md`](rooms.md).
 
-`tools/room_scripts/extract_room_scripts.py` (`just extract-room-scripts
-[ver]`) walks all 55 rooms' `questStage = 0` (story-start) variant this
-way and disassembles every chain it finds -- confirmed against real
-content: e.g. the Potions Classroom's `ShowRoomDialog 426 0 0` resolves,
-through the dialog-block indirection above plus
-[`text.md`](text.md)'s string decoder, to the real in-game exchange
-"Hermione, how did you write that up so quickly?" / "Umm... like I
-said, I'd read the book before." -- content that fits a Potions
-classroom, unlike decoding `426` directly as a string id (a real but
-unrelated sentence from elsewhere in the string table -- the failure
-mode the dialog-block indirection above exists to document).
+**PROVEN** (`just compare us`/`jp` pass). Every chain of every variant of all
+55 rooms (127 switch tables, 1685 unique chains) is C under
+`src/room/scripts/<room_name>/`, with room names from the string table:
 
-Output goes to `data/room_scripts/<ver>/<roomIdx>_<RoomName>/` (room
-names from the same dialog-string IDs [`levels.md`](levels.md)
-documents), one file per chain -- `chain<N>.txt` by default, or a name
-from `tools/room_scripts/script_names.json` (nested `{roomIdx: {chainIdx:
-{...}}}`, both as strings, committed even though `data/room_scripts/` itself is gitignored) --
-plus that room directory's own `index.json` (a JSON array of filenames,
-position = chain index -- the authority on a chain's table index, so a
-file can be renamed without disturbing chain order). A curated `script_names.json`
-"description" entry is emitted as a leading comment, same round-trip
-guarantee (stripped by `parse_chain_text` like any other comment).
+- `v<V>.c` is one region per switch table (`Room<RR>V<V>Chains`, a
+  `c-file` row in both manifests). A table's chains are contiguous, with the
+  offset table and the rest of the blob left as raw ROM in the gaps.
+- `v<V>/chain<N>.h` (or the curated name, e.g. `v1/talk_tom.h`) is one chain,
+  `const u8 g_abRoom<RR>V<V>Chain<N>[]` (`g_abRoom<RR><Name>` when named),
+  built from `RS_*` macros in `include/overworld/room_script_bytecode.h`
+  (`enum RoomScriptOpcode`, one macro per opcode taking named operands).
+  `V` is the variant entry (0 = default) and `N` the chain's index in that
+  table. Decoded dialog lines are `//` comments above `RS_ShowRoomDialog`.
+- `g_abRoomScriptOpcodeLengths` is in `src/room/room_script_opcode_lengths.c`.
 
-Only quest stage `0` is extracted; a room's other quest-stage variants
-(different `variantIndex`, a separate chain set live at other points in
-the story) aren't enumerated yet -- see "Further work".
-
-Instruction text is `<name> <value> <value> ...`, one instruction per
-line, values grouped per opcode according to
-`tools/room_scripts/opcodes.json`'s `operand_widths` (default: one
-value per raw operand byte; `ShowRoomDialog`'s first two bytes group
-into one `u16` dialog block id, matching how the interpreter actually
-reads it).
-
-For an opcode with `operand_names` (only the identified ones so far --
-see "Known opcodes" above), each value renders as `name:value` instead
-of a bare number, and a trailing run of values that match their
-declared `operand_defaults` is dropped entirely (parsing fills them
-back in) -- e.g. `SetQuestState value:1 index:245` rather than
-`SetQuestState 1 245 255 255`. A default is only ever set on a byte
-confirmed unread by the handler, or (for `ShowRoomDialog`'s trailing
-pair) confirmed always `0` across every extracted script -- never for a
-byte the handler reads that merely happens to be constant in the
-content seen so far (`room_scripts_codec.py`'s module docstring has the
-exact rule). Labels are positional, not just cosmetic: a labeled
-token's name is checked against the opcode's real operand order, so a
-transposed pair of values fails to parse instead of silently packing
-wrong.
-
-`ShowRoomDialog`'s block id also gets a decoded, read-only comment for
-every line the block plays (see "The dialog-block indirection" above),
-one line per `# "..."` comment immediately preceding the instruction
-rather than one crammed trailing comment, e.g.:
-
-```
-# "Hermione, how did you write that up so quickly?"
-# "Umm... like I said, I'd read the book before."
-ShowRoomDialog blockId:426
-```
-
--- generated by `opcodes.json`'s `comment_source` mechanism (currently
-the only opcode that has one; `resolve_comment` returns a list of lines
-rather than a single string, one per dialog line), ignored on any
-future parse step the same way `battle_scripts.md`'s sub-case comments
-are.
-
-`tools/room_scripts/pack_room_scripts.py` (`just pack-room-scripts
-[ver]`) reads `data/room_scripts/` back and confirms
-`encode_chain(parse_chain_text(...))` reproduces the baserom's bytes
-exactly for every chain -- a real round-trip check, but **not** a real
-pack step yet: it re-derives each chain's address straight from the
-baserom rather than emitting build assembly, since the room table isn't
-a `regions.<ver>.txt` region yet (see `levels.md`'s "Not yet located")
-and so has nowhere to place packed output. Confirmed passing for all
-1448 extracted chains.
-
-`tools/room_scripts/opcodes.json` and `room_scripts_codec.py` split
-opcode metadata (no addresses) from extraction -- naming a new opcode means editing `opcodes.json` here,
-not the extractor.
+Scripts are byte-identical between US and JP except five chains: room 7
+variant 2, room 15 variant 1, room 22 variant 1, room 23 variant 1 and room 47
+variant 1 (one chain each), which differ by a few records and use
+`#ifdef VERSION_JP`. JP's room table is `0x08063C18`, with the same blob
+layout as US.
 
 ## Further work
 
-- Dump each room's other quest-stage variants, not just stage `0` --
-  requires enumerating the real quest-stage value range per room (the
-  per-quest-stage variant-index array's length isn't confirmed, see
-  `rooms.md`'s room-resource-blob section).
-- Once the room table itself gets a `regions.<ver>.txt` row (see
-  `levels.md`), turn this into a real extract/pack pair with a `data/`
-  round-trip, following the Krawall/text pipelines as the template.
 - Decode and extract the `0x08FAAF10` per-line portrait table -- not
   urgent, but a natural follow-on once dialog blocks are otherwise
   understood.
@@ -493,7 +426,3 @@ not the extractor.
   battle-script `Object+0xc` flags field: bit `0x82` set by opcode `1`
   overlaps neither of that document's identified bits `0x1`/`0x2`/
   `0x40000`, so still open).
-- No extraction pipeline exists for this VM's content yet (`data/`
-  round-trip, chain-index-to-purpose table) -- an obvious next step
-  once more opcodes are named, following `battle_scripts.md`'s
-  pipeline as the template.

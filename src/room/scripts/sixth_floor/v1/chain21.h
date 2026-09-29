@@ -1,0 +1,5 @@
+const u8 g_abRoom23V1Chain21[] = {
+    // "I hope there are crackers at the Christmas feast."
+    RS_ShowRoomDialog(468),
+    RS_End(),
+};

@@ -1,0 +1,15 @@
+const u8 g_abRoom43V1Chain6[] = {
+    RS_ArmChainYield(1),
+    RS_PlayTileObjectAnimation(4, 0, 26),
+    RS_PlayTileObjectAnimation(4, 1, 18),
+    RS_DelayedRespawnRowAndRunChainFrames(15, 0, 0),
+    RS_PlaySoundById(41),
+    RS_PlayTileObjectAnimation(2, 2, 12),
+    RS_RespawnRowAndRunChain(7, 0),
+    RS_DespawnTileObject(2, 2),
+    RS_RespawnRowAndRunChain(6, 0),
+    RS_RespawnRowAndRunChain(8, 0),
+    RS_DespawnRoomRowObjects(4),
+    RS_PlayCutscene(8, 0, 8),
+    RS_End(),
+};

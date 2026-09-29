@@ -1,0 +1,16 @@
+const u8 g_abRoom05V1Chain14[] = {
+    RS_ArmChainYield(1),
+    RS_CancelObjectAnimSequence(0, 255),
+    RS_QueueTileObjectMove(0, 255, 0, 0, 1200, 0),
+    RS_DelayedRespawnRowAndRunChain(1, 0, 0),
+    RS_RemovePartyFollower(6),
+    RS_DelayedRespawnRowAndRunChainFrames(0, 24, 0),
+    RS_SetQuestState(3, 6),
+    RS_SetQuestState(0, 26),
+    RS_SetQuestState(2, 250),
+    RS_SetQuestState(12, 25),
+    RS_DelayedRespawnRowAndRunChain(0, 21, 0),
+    RS_PlayScreenTransitionIn(),
+    RS_SetTileObjectAnimStateWithSpeed(0, 255),
+    RS_End(),
+};

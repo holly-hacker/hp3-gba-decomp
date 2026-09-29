@@ -1,0 +1,26 @@
+const u8 g_abRoom24V1Chain4[] = {
+    RS_ArmChainYield(1),
+    RS_SetTileObjectFacing(2, 9, 4),
+    RS_SetTileObjectFacing(7, 0, 0),
+    RS_SetTileObjectFacing(0, 255, 2),
+    // "How can we find Sir Cadogan?"
+    // "Let's ask the portraits. Maybe they saw him go by."
+    RS_ShowRoomDialog(377),
+    RS_ArmChainYield(0),
+    RS_StartTileObjectScript(302, 28, 2, 2, 9, 0, 0, 2, 255, 255, 255),
+    RS_StartTileObjectScript(302, 28, 2, 7, 0, 0, 0, 2, 255, 255, 255),
+    RS_StartTileObjectScript(302, 28, 2, 0, 255, 0, 0, 2, 255, 255, 255),
+    RS_ArmChainYield(1),
+    RS_Unk2A(6, 255, 255, 255),
+    RS_DespawnTileObject(7, 0),
+    RS_DespawnTileObject(2, 9),
+    RS_RecruitPartyFollower(7),
+    RS_RespawnRowAndRunChain(3, 0),
+    RS_StartTileObjectScript(270, 28, 2, 3, 0, 0, 0, 0, 255, 255, 255),
+    RS_SetQuestState(25, 25),
+    RS_SetQuestState(1, 249),
+    RS_RespawnRowAndRunChain(13, 0),
+    RS_RespawnRowAndRunChain(24, 74),
+    RS_SetTileObjectAnimStateWithSpeed(0, 255),
+    RS_End(),
+};

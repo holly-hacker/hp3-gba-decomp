@@ -1,0 +1,18 @@
+const u8 g_abRoom19V1Chain0[] = {
+    RS_GotoIfStoryStageCompare(0, 0, 45, 0, 8, 0),
+    RS_GotoIfStoryStageCompare(0, 1, 46, 0, 3, 0),
+    RS_GotoIfStoryStageCompare(0, 2, 47, 0, 4, 0),
+    RS_GotoIfStoryStageCompare(0, 4, 48, 0, 5, 0),
+    RS_GotoIfStoryStageCompare(0, 5, 49, 0, 6, 0),
+    RS_GotoIfStoryStageCompare(0, 6, 7, 0, 19, 0),
+    RS_GotoIfStoryStageCompare(0, 7, 27, 0, 11, 0),
+    RS_GotoIfStoryStageCompare(0, 8, 20, 0, 7, 0),
+    RS_GotoIfStoryStageCompare(0, 15, 21, 0, 0, 0),
+    RS_GotoIfStoryStageCompare(0, 15, 51, 0, 13, 0),
+    RS_GotoIfStoryStageCompare(0, 16, 52, 0, 14, 0),
+    RS_GotoIfStoryStageCompare(0, 17, 53, 0, 15, 0),
+    RS_GotoIfStoryStageCompare(0, 18, 53, 0, 15, 0),
+    RS_GotoIfStoryStageCompare(0, 20, 54, 0, 16, 0),
+    RS_GotoIfStoryStageCompare(0, 21, 55, 0, 17, 0),
+    RS_End(),
+};
