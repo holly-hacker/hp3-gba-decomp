@@ -640,7 +640,7 @@ label 0x08054E60 g_abScriptOpcodeLengths
 label 0x08054F08 g_abFighterIdleAnimData_candidate
 label 0x08054F0E g_aEffectAnimData_candidate
 label 0x08058870 g_aEffectAnimData2_candidate
-label 0x0805B8A4 g_apEffectScripts
+c-file 0x08059878 0x0805B9A8 src/battle/effect_scripts.c g_apEffectScripts
 label 0x0805BB2C g_aSpecialSceneBgControls
 label 0x0805DF4C g_dwLinearCutsceneBg0Control
 label 0x0805DF50 g_dwLinearCutsceneBg1Control

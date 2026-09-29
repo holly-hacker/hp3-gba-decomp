@@ -3,7 +3,7 @@
 extract_room_scripts.py) back and verifies it re-encodes to exactly the
 bytes the baserom stores for each room's chains.
 
-Unlike tools/battle_scripts/'s pack_battle_scripts.py, this does NOT
+This does NOT
 emit build assembly -- the room table isn't a regions.<ver>.txt region
 yet (see docs/formats/levels.md's "Not yet located"), so there's
 nowhere in the real build to place packed chains. This instead re-runs

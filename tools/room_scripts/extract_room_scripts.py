@@ -1,19 +1,17 @@
 #!/usr/bin/env python3
 """One-time bootstrap: disassemble every room's room-script chains (the
 bytecode VM documented in docs/formats/room_scripts.md) into curated,
-editable text under data/room_scripts/. See extract_battle_scripts.py
-for the pattern this mirrors.
+editable text under data/room_scripts/.
 
 Layout: data/room_scripts/<ver>/<roomIdx>_<RoomName>/chain<N>.txt (or a
 curated name from script_names.json), plus that room directory's own
 index.json (a JSON array of filenames, position = chain index) --
-mirrors data/battle_scripts/index.json's role, so a chain's file can be
+so a chain's file can be
 renamed via script_names.json without disturbing chain order. Room
 names are resolved from the dialog string table (see
 docs/formats/levels.md's "Room names, PROVEN").
 
-Unlike tools/battle_scripts/'s extract/pack pair, pack_room_scripts.py
-does not (yet) emit build assembly -- the room table at 0x08063C8C
+pack_room_scripts.py does not (yet) emit build assembly -- the room table at 0x08063C8C
 isn't a regions.<ver>.txt region yet (see docs/formats/levels.md's "Not
 yet located"), so there's nowhere in the real build for a chain to be
 packed back into. pack_room_scripts.py instead re-encodes data/ and

@@ -91,7 +91,7 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   `data/audio/`.
 - [`formats/battle_scripts.md`](formats/battle_scripts.md) — the
   battle-script bytecode VM, its opcode table, and the effect-script
-  pointer table. Pipeline: `tools/battle_scripts/`, `data/battle_scripts/`.
+  pointer table. Scripts are C: `src/battle/effect_scripts/`, `include/battle/script_opcodes.h`.
 - [`formats/room_scripts.md`](formats/room_scripts.md) — the room-script
   bytecode VM (a second, unrelated interpreter): its byte format,
   pause/resume/nested-call state machine, and known opcodes. Dump only

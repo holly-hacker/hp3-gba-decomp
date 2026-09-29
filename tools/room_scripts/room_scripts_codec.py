@@ -2,7 +2,7 @@
 (`WalkRoomSwitchStateChain_candidate`, US `0x08005410`). See
 docs/formats/room_scripts.md for how each constant below was identified.
 
-Byte format, distinct from battle_scripts_codec.py's: each instruction's
+Byte format, distinct from the battle-script bytecode's: each instruction's
 opcode is a full `u32` (not a `u8`), followed by
 `g_abRoomScriptOpcodeLengths[opcode] - 4` operand bytes. Opcode `0`
 (`End`) terminates a chain with no operands and no handler call.
@@ -12,10 +12,9 @@ operand_length in bytes, optional operand_widths breaking those bytes
 into wider little-endian fields for readability, optional
 comment_source for annotating one decoded operand with a read-only
 trailing comment -- currently just `ShowRoomDialog`'s dialog-text id).
-Committed rather than gitignored, same footing as
-battle_scripts/opcodes.json: interpreter/ISA knowledge, not extracted
-game content, and deliberately carries no addresses (see
-battle_scripts_codec.py's module docstring for why).
+Committed rather than gitignored: interpreter/ISA knowledge, not
+extracted game content, and deliberately carries no addresses (they
+would break under a shiftable build and differ between US and JP).
 
 Two more optional per-opcode arrays, only present for opcodes whose
 fields are actually identified: `operand_names` (one label per decoded
@@ -42,11 +41,10 @@ This module's decode/format half is shared with a future pack step
 regardless, same as every other subsystem's codec.
 
 Per-chain identification (which room-script chain does what) lives in
-script_names.json next to this file, same footing/role as
-battle_scripts/script_names.json: curated RE knowledge, committed even
+script_names.json next to this file: curated RE knowledge, committed even
 though data/room_scripts/ itself is gitignored. Nested by room index
-then chain index as strings (there is no single flat id space like
-battle scripts' effect id, since chains are scoped per room), each leaf
+then chain index as strings (there is no single flat id space,
+since chains are scoped per room), each leaf
 optionally carrying "name" (used in the chain's extracted filename by
 extract_room_scripts.py in place of the default "chain<N>") and
 "description" (emitted as a leading "# ..." comment by
@@ -65,7 +63,7 @@ OPCODE_OPERAND_LENGTH: dict[int, int] = {int(k): v["operand_length"] for k, v in
 # opcode number -> list of byte-widths (1/2/4) the operand bytes split into,
 # each read/written little-endian. Opcodes without an explicit entry are
 # treated as all-byte-width (one operand token per byte), matching
-# battle_scripts_codec.py's convention.
+# the byte-per-token default.
 OPCODE_OPERAND_WIDTHS: dict[int, list[int]] = {
     int(k): v["operand_widths"] for k, v in _OPCODES_JSON.items() if "operand_widths" in v
 }
@@ -113,9 +111,7 @@ def script_key(room_idx: int, chain_idx: int) -> str:
 
 
 # A curated chain name becomes a filename (extract_room_scripts.py) --
-# keep it a plain identifier, same constraint battle_scripts_codec.py's
-# NAME_RE applies to its (assembly-label) filenames, even though this VM
-# has no assembly-label use for it yet.
+# keep it a plain identifier.
 NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 

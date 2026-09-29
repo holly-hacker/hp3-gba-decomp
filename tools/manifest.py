@@ -31,11 +31,6 @@ KRAWALL_DIRECTIVES = {"krawall-module": "modules", "krawall-samples": "samples"}
 # language files and the one pointer table all have distinct names).
 DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 
-# battle-script-table rows: same idea as krawall-module, but packed from
-# data/battle_scripts/scripts.json by pack_battle_scripts.py -- see
-# docs/formats/battle_scripts.md.
-BATTLE_SCRIPT_TABLE_DIRECTIVE = "battle-script-table"
-
 # image-bank rows name a directory containing bank.json and its PNG
 # sprites. pack_images.py encodes them and emits the assembly and C
 # declarations.
@@ -83,16 +78,6 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 kind = KRAWALL_DIRECTIVES[parts[0]]
                 asmfile = f"build/{ver}/audio/{kind}/{name}.s"
-                regions.append((start, end, asmfile, name))
-                continue
-            if parts[0] == BATTLE_SCRIPT_TABLE_DIRECTIVE:
-                if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
-                _, start_s, end_s, _source, name = parts
-                start, end = int(start_s, 16), int(end_s, 16)
-                if end <= start:
-                    sys.exit(f"{path}:{lineno}: end must be after start")
-                asmfile = f"build/{ver}/battle_scripts/{name}.s"
                 regions.append((start, end, asmfile, name))
                 continue
             if parts[0] in C_FILE_DIRECTIVES:

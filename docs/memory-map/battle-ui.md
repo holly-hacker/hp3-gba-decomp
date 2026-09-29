@@ -299,8 +299,7 @@ i.e. **`Stink Pellet` = effect id `44`, `Wizard Cracker` = effect id
 `46`, `Stink Pellet 2` = effect id `45`**.
 
 Cross-checked against the actual extracted script content
-(`data/battle_scripts/Effect44.txt`/`Effect45.txt`/`Effect46.txt`, currently
-named `Effect44`/`45`/`46` in `tools/battle_scripts/script_names.json`):
+(`src/battle/effect_scripts/effect44.h`/`effect45.h`/`effect46.h`):
 
 - **Effect `44`**: a single unconditional `StatusEffect 17 0 0`
   (opcode `0x97` case `0x11`, "Paralyzed", the *unconditional*-apply
@@ -608,7 +607,7 @@ whose script has no `StatusEffect` opcode at all -- see the `DefenseBoost`
 bit writeup in [`battle.md`](battle.md); its mapping to effect id `35` is solid (by position
 and elimination) but its actual defense-boost mechanism is not.
 
-All 16 are now named in `tools/battle_scripts/script_names.json` as
+All 16 are now named in `src/battle/effect_scripts/` as
 `SpecialHarry<CardName>` (matching the `SpecialHermione*`/`SpecialRon*`
 convention already used for the other two characters' Special Moves),
 e.g. `SpecialHarryHorklumpSpores`, `SpecialHarrySnitch`,

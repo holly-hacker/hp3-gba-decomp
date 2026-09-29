@@ -1346,7 +1346,7 @@ below).
 Its companion byte array at the same index, `g_abSpellEffectId_candidate`
 (`0x080538B0`), holds a per-`(spellId, level)` effect-script id fed into
 `TriggerBattleEffect`. All 30 entries are named in
-`tools/battle_scripts/script_names.json`:
+`src/battle/effect_scripts/`:
 
 | `SpellId` | Spell | Effect ids (Uno/Duo/Tria) | Max level | Has `StatusEffect`? |
 |---|---|---|---|---|

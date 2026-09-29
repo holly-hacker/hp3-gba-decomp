@@ -40,7 +40,7 @@ is called exclusively from the documented battle range `0x08015000`-
 xrefs to the interpreter's entry address are `WaitFramesTick`/
 `WaitForCounterTick`/`WaitForFieldClearTick` restoring `pfnTick` on an
 already-running script object, not new spawns. Consistent with
-`data/battle_scripts/`'s 65 effects all reading as combat content (spells,
+the 65 effect scripts (`src/battle/effect_scripts/`) all reading as combat content (spells,
 monster attacks, `SpecialHarry`/`SpecialRon` abilities). Static xref
 trace, exhaustive for direct references but not a runtime trace -- see
 `docs/README.md`'s confidence-key legend. Status-effect opcode `0x97`
@@ -159,9 +159,9 @@ interpreter's own bounds check.
 Only a few of the ~168 possible opcodes are semantically identified so
 far. Addresses below (`g_apScriptOpcodeCaseTable`'s literal jump
 targets, read directly from ROM) are cited here in prose, for
-US-ROM-specific reference only -- they are **not** stored anywhere in
-`tools/battle_scripts/opcodes.json` or `data/battle_scripts/`, see "Why no addresses
-in opcodes.json" below:
+US-ROM-specific reference only -- they are **not** stored in
+`include/battle/script_opcodes.h` or the scripts, see "Why no addresses in
+the opcode header" below:
 
 | Opcode | Name | Operand bytes | Meaning |
 |---|---|---|---|
@@ -217,9 +217,8 @@ in opcodes.json" below:
 `StatusEffect`'s 29 sub-cases are all identified.
 [`../memory-map/battle.md`](../memory-map/battle.md)'s "`StatusEffect`
 sub-cases" section owns their semantics and the evidence behind each
-name; the names below are the ones `tools/battle_scripts/opcodes.json`
-resolves, listed here only so a script's text reads without a second
-lookup.
+name; the names below are the `BSSTATUS_*` constants in
+`include/battle/script_opcodes.h`.
 
 | Sub-case | Name | Touches |
 |---|---|---|
@@ -390,8 +389,7 @@ What's actually confirmed:
   independent of spawning: `SetLocal` stores an arbitrary operand value
   into either byte; `IncrementLocal` increments either byte **on the
   currently-executing object**, not a spawned child -- e.g. effect id 19's
-  script (`data/battle_scripts/Effect19.txt`, not committed, see "US only" note
-  below) calls `IncrementLocal 0` twice in a row, twice, in its own body,
+  script (`src/battle/effect_scripts/effect19.h`) calls `BS_IncrementLocal(0)` twice in a row, twice, in its own body,
   well before any spawn happens. `SetLocalRandom` stores a Mersenne
   Twister roll into either byte.
 - **`bScriptLocalA` is read back by 8 different comparison opcodes**
@@ -498,15 +496,15 @@ that's bounds-checked and fed to its own jump table, landing on 26-29
 substantively different code bodies) has no equivalent elsewhere --
 `0x7F`/`0x8C`'s small value-selector branches are a different, much
 shallower pattern that fits better as an enumerated-value note on the
-opcode than as an `opcodes.json` `sub_dispatch` entry (not yet added).
+opcode than as a sub-case enum like `BattleStatusEffect` (not yet added).
 
-### Why no addresses in opcodes.json
+### Why no addresses in the opcode header
 
 Addresses are ROM-build-specific: they differ between the US and JP
 ROMs (not confirmed to even share this table's content at all), and a
 future shiftable build would relocate code freely -- a fixed address baked
 into what's supposed to be portable bytecode format knowledge would
-silently break both. `opcodes.json` carries only opcode number, name,
+silently break both. `include/battle/script_opcodes.h` carries only opcode number, name,
 operand length, and (for `StatusEffect`) named sub-cases -- nothing that
 a different ROM build could invalidate. Addresses belong only in
 Ghidra's database and in this doc's own prose (both already scoped,
@@ -515,122 +513,35 @@ build inputs).
 
 ## The script/pointer table
 
-**`g_apEffectScripts`** (US `0x0805B978`, `void*[65]`): 65 pointers, one
-per "effect id", each pointing at one script's first instruction.
-Effect id `0`-`64` are all populated and point into a single contiguous
-block running from `0x0805994C` up to `g_apEffectScripts` itself, in
-ascending order with **zero gaps or padding** between scripts (each
-script's end address is exactly the next script's start address, and
-the last script's end is exactly `0x0805B978`, the table's own start).
-Entries past index `64` diverge wildly (pointers into an unrelated
-`0x08A3xxxx` region) and index `64`'s bounds are corroborated by a
-`cmp r1, #0x41` (`0x41` = 65) found elsewhere in the disassembly --
-consistent with a hard `effectId < 65` bounds check somewhere in the
-effect-dispatch path (not traced to a specific call site).
+**PROVEN** (`just compare us` passes). The scripts are C, in one region
+(`c-file` `0x0805994C`-`0x0805BA7C`, `src/battle/effect_scripts.c`):
 
-An effect id is resolved to a script via `FUN_08018B70(effectId, ...)`
--> `FUN_08018BE0(effectId, ...)` (see [`../memory-map/battle.md`](../memory-map/battle.md)'s "How
-the effect-id -> script trace works" for the full spell/card -> effect
-id -> script chain).
+- `include/battle/script_opcodes.h` -- `enum BattleScriptOpcode`
+  (`BSOP_*`, all 168 opcodes; `Unk<XX>` until identified), `enum
+  BattleStatusEffect` (`BSSTATUS_*`, `StatusEffect`'s first operand), and
+  one `BS_<Name>(a, b, ...)` macro per opcode expanding to the opcode
+  byte followed by its operand bytes. The operand count is fixed per
+  opcode, so the preprocessor rejects a wrong argument count. **To name a
+  new opcode, rename its enum entry and macro here** (and its `case` in
+  `InterpretObjectScript`).
+- `src/battle/effect_scripts/<name>.h` -- one script each, a
+  `const u8 g_ab<Name>Script[]` of `BS_*` macros, with a leading comment
+  describing the effect. Named by real-world identification where known
+  (`special_harry_poison_immunity.h`), else `effect<N>.h`; names group by
+  category (`spell_`, `special_harry_`, `special_hermione_`, ...).
+- `src/battle/effect_scripts.c` -- `#include`s every script and defines
+  `g_apEffectScripts`, in effect-id order.
 
-## The extraction pipeline, built and build-integrated
+All scripts share one region because they are packed back to back with
+no alignment (sizes are not multiples of 4) while every C region ends
+4-byte aligned. agbcc emits `const u8` arrays unaligned and in source
+order, so include order is ROM order. Renaming a script file or symbol
+changes nothing in the ROM; effect id is the position in
+`g_apEffectScripts`.
 
-**PROVEN** (round-trips byte-exact, `just compare us` passes). Mirrors
-the Krawall pipeline, with one difference:
-the curated source is one plain-text file per script, not a single
-JSON blob, and opcode naming lives in its own small JSON file (ISA-level
-format knowledge, not game content, so it's committed rather than
-gitignored):
-
-- `tools/battle_scripts/opcodes.json` -- **the** opcode table: for each of
-  the 168 opcodes, its current `name` (`opcode_XX` until identified) and
-  `operand_length`; opcode `0x97` additionally carries a `sub_dispatch`
-  object (`{"operand_index": 0, "cases": {sub-case value: name}}`)
-  naming `StatusEffect`'s own sub-cases. **Deliberately carries no
-  addresses** -- see "Why no addresses in opcodes.json" above. **To name
-  a new opcode (or `StatusEffect` sub-case), edit this file.**
-- `tools/battle_scripts/script_names.json` -- the per-*script* counterpart:
-  keyed by effect id (`"0"`-`"64"`), each entry optionally carries
-  `name` (the script's real-world identification, e.g.
-  `SpecialHarryPoisonImmunity`) and `description` (a short, single-line
-  functional summary, e.g. `"Grants the party poison immunity for one
-  encounter."` -- not a citation trail; the real evidence for an
-  identification belongs in `docs/memory-map/battle.md`, not here).
-  Names are prefixed by category (`Spell`, `SpecialHarry`,
-  `SpecialHermione`, ...) so they group sensibly when listed
-  alphabetically. Committed, same footing as `opcodes.json` -- curated RE
-  knowledge, not extracted content -- even though `data/battle_scripts/` itself
-  is gitignored. **To name a newly-identified script, add or edit its
-  entry here**, then re-run `just extract-battle-scripts`.
-- `tools/battle_scripts/battle_scripts_codec.py` -- loads `opcodes.json` and
-  exposes `decode_script`/`encode_script` (raw bytes <-> `(opcode,
-  operand_bytes)` pairs) and `format_script_text`/`parse_script_text`
-  (that <-> the curated text format, one instruction per line:
-  `<name> [operand operand ...]`, decimal operands, e.g.
-  `StatusEffect 7 8 0`). `parse_script_text` accepts either a curated
-  name or the raw `opcode_XX` form for any opcode, named or not, same as
-  a real assembler accepts a raw opcode alongside a mnemonic.
-  `format_script_text` also appends a trailing `# <sub-case name>`
-  comment on a `StatusEffect` line when its `opcodes.json` sub-case is
-  named (e.g. `StatusEffect 7 8 0  # PoisonImmune`) -- purely a
-  readability aid; `parse_script_text` strips any trailing `#...` before
-  parsing, so hand-written comments round-trip fine too.
-- `tools/battle_scripts/extract_battle_scripts.py` (`just extract-battle-scripts`) --
-  one-time bootstrap, reads `baserom.us.gba`, writes one text file per
-  effect id (named from `script_names.json` when that effect id has an
-  entry there, else the default `EffectN.txt`) plus
-  `data/battle_scripts/index.json` (a JSON array of 65 filenames, position =
-  effect id -- see "Renaming a script" below). Gitignored, same footing
-  as the baserom, per hard rule 2 -- not regenerated by `just build`,
-  meant to be user-editable. Each named script's text also gets a
-  leading `# <description>` comment line when `script_names.json`
-  supplies one -- purely informational, stripped like any other comment
-  by `parse_script_text`, so it never affects the packed bytes.
-  Re-running it after naming an opcode in `opcodes.json` or a script in
-  `script_names.json` refreshes every script's text/filename accordingly
-  (and overwrites the whole directory, including any *hand*-renamed
-  files not driven by `script_names.json` -- re-run against a clean
-  extraction, not hand-edited content, same caveat as
-  `extract_monsters.py`).
-- `tools/battle_scripts/pack_battle_scripts.py` (`just pack-battle-scripts`, wired into
-  `just build`) -- reads `data/battle_scripts/index.json` plus the
-  `battle-script-table` row in `regions.<ver>.txt`, re-encodes each script
-  (in `index.json`'s order) with `encode_script`, and emits
-  `build/<ver>/battle_scripts/*.s`. Naming an opcode is purely
-  cosmetic/annotation -- `parse_script_text` resolves either the curated
-  name or the raw `opcode_XX` form to the same opcode number, so it
-  never changes `encode_script`'s output and can't affect the build's
-  byte-exactness. The pointer table itself is **not** stored in
-  `data/battle_scripts/` -- it's fully determined by script order and size, so
-  the packer computes and emits it directly, labeled `g_apEffectScripts`
-  to match the ROM.
-- `regions.us.txt`'s `battle-script-table` row (`0x0805994C`-`0x0805BA7C`)
-  and `tools/manifest.py`'s `battle-script-table` directive wire the packed
-  output into the build the same way `krawall-module` rows do.
-
-### Renaming a script
-
-The durable way to name a script, once its purpose is identified, is to
-add an entry to `tools/battle_scripts/script_names.json` (effect id -> `name`
-+ optional `description`) and re-run `just extract-battle-scripts` -- this
-is committed and survives every future re-run of the bootstrap, unlike a
-plain filesystem rename of a file under `data/battle_scripts/` (which is
-gitignored and gets overwritten wholesale next time the bootstrap runs).
-`script_names.json` is the actual source of truth for
-`data/battle_scripts/index.json`'s filenames; hand-editing `index.json`/renaming
-files directly still works for one-off local experimentation, but won't
-survive a re-extract.
-
-Whichever way a rename happens, order comes from `index.json`'s array
-position, not from the filename or from sorting a directory listing, so
-a rename never reshuffles which script lands at which effect id in the
-packed `g_apEffectScripts` table. `pack_battle_scripts.py` also uses each
-script's file name (minus `.txt`) directly as its assembly label, so the
-name must be a valid identifier (letters/digits/underscore, not starting
-with a digit) and unique across all 65 entries -- both checked at pack
-time.
-
-US only -- content not yet checked against JP.
+JP (`regions.jp.txt`, `0x08059878`-`0x0805B9A8`, table at `0x0805B8A4`) uses
+the same `effect_scripts.c`: all 65 scripts are byte-identical to US and
+have the same sizes, only the addresses differ.
 
 ## What's NOT yet known
 
@@ -638,9 +549,7 @@ US only -- content not yet checked against JP.
   opcodes actually used across the 65 scripts are still just `opcode_XX`.
   `StatusEffect`'s own 29 sub-cases are all named (see the table
   above). Working the rest out means reading each of the remaining case
-  handlers inside `InterpretObjectScript`; the codec/extraction tooling
-  above is designed so that filling names in incrementally (via
-  `opcodes.json`) is cheap.
+  handlers inside `InterpretObjectScript`; filling names in incrementally is cheap.
 - **`0x99`'s global-state check and `sub_080249FC`.** The opcode that
   conditionally resets `bScriptLocalA` based on `0x03003EF4`'s contents
   (see the opcode table above) isn't named -- what that global represents
@@ -662,8 +571,6 @@ US only -- content not yet checked against JP.
   by the 8 `GotoIfLocalA*` comparisons and `GotoLocalIndexedLabel`), and
   two standalone ones (`GotoIfFighterRosterMatches`/`_2`, added to the
   opcode table above). No other opcode can jump `wScriptPC`.
-- **Whether any script content differs between US/JP** -- not checked;
-  `regions.jp.txt` has no `battle-script-table` row yet.
 
 ## Future work
 
@@ -671,11 +578,10 @@ US only -- content not yet checked against JP.
   used top-level opcodes are still unnamed (`opcode_XX`); `StatusEffect`'s
   29 sub-cases are all named. Each is a real, bounded chunk of work:
   read one handler in `InterpretObjectScript`, name it and its operand
-  layout in `tools/battle_scripts/opcodes.json`, re-run `just extract-battle-scripts`
-  to refresh `data/battle_scripts/`'s text.
+  layout in `include/battle/script_opcodes.h`.
 - ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
   -- all 16 of Harry's cards are now named and mapped to their effect id
-  in `tools/battle_scripts/script_names.json`, via the in-game Card Combo
+  as scripts in `src/battle/effect_scripts/`, via the in-game Card Combo
   Glossary text (`data/text/en_us.json` string ids `1144`-`1175`, a
   16-entry name list immediately followed by a matching 16-entry
   description list) lining up positionally with

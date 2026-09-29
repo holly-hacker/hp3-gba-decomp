@@ -88,8 +88,7 @@ with `disassemble_bytes` directly.
 
 ## Known opcodes
 
-Addresses are US-ROM-specific, cited in prose only (see
-`battle_scripts.md`'s "Why no addresses in opcodes.json" for why: this
+Addresses are US-ROM-specific, cited in prose only (this
 project's convention is to keep bytecode-format knowledge free of
 per-build addresses once it's committed to a machine-readable table --
 `tools/room_scripts/opcodes.json` already follows this).
@@ -390,13 +389,10 @@ Output goes to `data/room_scripts/<ver>/<roomIdx>_<RoomName>/` (room
 names from the same dialog-string IDs [`levels.md`](levels.md)
 documents), one file per chain -- `chain<N>.txt` by default, or a name
 from `tools/room_scripts/script_names.json` (nested `{roomIdx: {chainIdx:
-{...}}}`, both as strings, same curated-identification role as
-`battle_scripts/script_names.json`,
-committed even though `data/room_scripts/` itself is gitignored) --
+{...}}}`, both as strings, committed even though `data/room_scripts/` itself is gitignored) --
 plus that room directory's own `index.json` (a JSON array of filenames,
 position = chain index -- the authority on a chain's table index, so a
-file can be renamed without disturbing chain order, mirroring
-`data/battle_scripts/index.json`). A curated `script_names.json`
+file can be renamed without disturbing chain order). A curated `script_names.json`
 "description" entry is emitted as a leading comment, same round-trip
 guarantee (stripped by `parse_chain_text` like any other comment).
 
@@ -453,10 +449,8 @@ a `regions.<ver>.txt` region yet (see `levels.md`'s "Not yet located")
 and so has nowhere to place packed output. Confirmed passing for all
 1448 extracted chains.
 
-`tools/room_scripts/opcodes.json` and `room_scripts_codec.py` mirror
-`tools/battle_scripts/`'s split exactly (opcode metadata carries no
-addresses, same rationale as `battle_scripts.md`'s "Why no addresses in
-opcodes.json") -- naming a new opcode means editing `opcodes.json` here,
+`tools/room_scripts/opcodes.json` and `room_scripts_codec.py` split
+opcode metadata (no addresses) from extraction -- naming a new opcode means editing `opcodes.json` here,
 not the extractor.
 
 ## Further work
@@ -467,7 +461,7 @@ not the extractor.
   `rooms.md`'s room-resource-blob section).
 - Once the room table itself gets a `regions.<ver>.txt` row (see
   `levels.md`), turn this into a real extract/pack pair with a `data/`
-  round-trip, following `battle_scripts.md`'s pipeline as the template.
+  round-trip, following the Krawall/text pipelines as the template.
 - Decode and extract the `0x08FAAF10` per-line portrait table -- not
   urgent, but a natural follow-on once dialog blocks are otherwise
   understood.

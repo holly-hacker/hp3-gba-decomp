@@ -1101,14 +1101,13 @@ label 0x08053D2A g_awBattleSlotPosX_candidate
 label 0x08053D38 g_abBattleSlotPosY_candidate
 
 # Battle-script bytecode
-# battle-script-table <start> <end> <dir> <name>
 c-file 0x08053D40 0x080544D4 src/graphics/assets/effect_assets.c g_aEffectObjectAssets
 label 0x080544D4 g_aEffectBgRecords_candidate
 label 0x08054F34 g_abScriptOpcodeLengths
 label 0x08054FDC g_abFighterIdleAnimData_candidate
 label 0x08054FE2 g_aEffectAnimData_candidate
 label 0x08058944 g_aEffectAnimData2_candidate
-battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
+c-file 0x0805994C 0x0805BA7C src/battle/effect_scripts.c g_apEffectScripts
 
 # Playtime counters, shared with JP at the same helper addresses.
 c-file 0x0805BA8C 0x0805BC00 src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers

@@ -1,0 +1,23 @@
+// Plays the spell's cast animation.
+const u8 g_abSpellIncendioDuoScript[] = {
+    BS_WaitFrames(2),
+    BS_DarkenScreenPalette(),
+    BS_WaitFrames(20),
+    BS_TeleportToSlotPosition(0),
+    BS_PlaySoundOrDefault(101),
+    BS_SetObjectAnim(24, 0),
+    BS_WaitFrames(1),
+    BS_ShowObject(),
+    BS_AdvanceAttackOutcome(),
+    BS_WaitFrames(1),
+    BS_AdvanceAttackOutcome(),
+    BS_AdvanceAttackOutcome(),
+    BS_WaitForCounter(),
+    BS_HideObject(),
+    BS_RestoreScreenPalette(),
+    BS_WaitFrames(20),
+    BS_AdvanceAttackOutcome(),
+    BS_AdvanceAttackOutcome(),
+    BS_AdvanceAttackOutcome(),
+    BS_End(),
+};
