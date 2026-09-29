@@ -54,6 +54,13 @@
 @ --- Battle state (see include/battle/battle.h) ---
 .set g_pFightState,   0x030024E8
 .set g_effectStaging, 0x03002750
+.set g_nBattleXpReward, 0x0300260E  @ see ram_symbols.us.inc
+.set g_nBattleGoldReward, 0x03002610  @ see ram_symbols.us.inc
+.set g_anFaintedRosterIndices, 0x030026D8  @ see ram_symbols.us.inc
+.set g_bDefeatWarpParam, 0x03002748  @ see ram_symbols.us.inc
+.set g_aBgScrollState, 0x03001E80  @ see ram_symbols.us.inc
+.set g_abBgPriority, 0x03003FEC  @ see ram_symbols.us.inc
+.set g_pParticleEmitterActiveListHead, 0x030051F8  @ see ram_symbols.us.inc
 
 @ --- Controller input (see docs/memory-map/input.md) ---
 .set g_wKeysHeld,          0x0300354C  @ see ram_symbols.us.inc/docs/memory-map/input.md

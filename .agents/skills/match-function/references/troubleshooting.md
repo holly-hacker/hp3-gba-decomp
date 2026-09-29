@@ -199,6 +199,16 @@ a `u8` field at bit 0 folds to `ands`, a `u32` field keeps the ROM's `lsl`/`lsr`
 Examples: `Object.bDrawLayer` (u8, TickObjectList), `Object.bAffineSlotState` (u32,
 TickFighterAttackAnimState).
 
+## 25. Loop counters: one shared local versus per-site locals
+
+In a large switch, the pseudo for a loop counter that is shared across cases sums its refs and
+live_length, so its `allocno_compare` priority differs from a block-local counter and it moves
+neighbouring pseudos between hard registers (including reload spill-register choice). When
+counters at disjoint sites land in different registers than the ROM, test each site as
+block-local versus one function-level variable, and flip the whole group together: single-site
+flips changed nothing while the group flip matched. Example: InterpretObjectScript, US
+`0x08018CC0`, opcodes 0x27/0x2B/0x83/0x84/0x85/0x97/0x9D-0xA0 share one signed index.
+
 ## Candidate acceptance and cleanup
 
 A diff improvement is evidence, not permission to land a proxy. Selective one-field inline

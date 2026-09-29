@@ -46,6 +46,7 @@ c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
 thumb-func 0x08001A78 CancelObjectMove_candidate
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
 thumb-func 0x08001A94 SetObjectMoveTargetWithDuration_candidate
+thumb-func 0x08001AA8 sub_08001AA8
 thumb-func 0x08001D90 sub_08001D90
 c-file 0x08001D9C 0x08001DF8 src/object/do_objects_overlap.c DoObjectsOverlap
 thumb-func 0x08001E58 SetObjectActionSubState
@@ -71,14 +72,18 @@ thumb-func 0x0800351C TickObjectMove
 thumb-func 0x0800359C IsObjectTickAllowed
 thumb-func 0x0800366C SetObjectAffineTransform
 thumb-func 0x08003708 SetObjectFlippedX
+thumb-func 0x08003788 sub_08003788
 thumb-func 0x08003808 ReleaseObjectAffineSlot
 thumb-func 0x08003848 StartObjectAffineScaleTween
 thumb-func 0x080038A0 TickObjectAffineEffect
 thumb-func 0x080038EC AllocObjectAffineSlot
+thumb-func 0x08003928 IsObjectFlippedX
+thumb-func 0x08003954 sub_08003954
 thumb-func 0x08003980 ApplyObjectOrbitMotion
 thumb-func 0x080039E8 sub_080039E8
 thumb-func 0x080039F8 sub_080039F8
 thumb-func 0x08003A0C sub_08003A0C
+thumb-func 0x08003A20 CopyOrbitParamsFromTable
 thumb-func 0x08003A30 sub_08003A30
 thumb-func 0x08003A44 sub_08003A44
 thumb-func 0x08005384 GetOamShapeSizeDims
@@ -98,6 +103,7 @@ asm-file 0x08006300 0x080063B4 asm/decompress_bg_tile.s       DecompressBgTile
 asm-file 0x080063B4 0x08006440 asm/find_free_obj_tile_run.s    FindFreeObjTileRun
 asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
+thumb-func 0x080065D4 sub_080065D4
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
 thumb-func 0x08006EF4 TickBgLayers_candidate
 
@@ -112,6 +118,7 @@ thumb-func 0x08007454 ClearBgTilemap
 thumb-func 0x08007464 sub_08007464
 thumb-func 0x08007474 FillBgTilemap_candidate
 thumb-func 0x080074F4 FillBgTile_candidate
+thumb-func 0x080075A8 sub_080075A8
 thumb-func 0x080075C0 sub_080075C0
 thumb-func 0x0800778C LoadBgGraphic
 thumb-func 0x080077C8 sub_080077C8
@@ -205,6 +212,7 @@ c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeFi
 thumb-func 0x0800D008 ApplyGammaRemapTable
 thumb-func 0x0800D0A0 SetupScanlineBands_candidate
 thumb-func 0x0800D1A4 InitGammaPalette
+thumb-func 0x0800D244 sub_0800D244
 thumb-func 0x0800D254 sub_0800D254
 thumb-func 0x0800D264 sub_0800D264
 thumb-func 0x0800D2DC sub_0800D2DC
@@ -212,10 +220,14 @@ thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
 thumb-func 0x0800D354 sub_0800D354
 thumb-func 0x0800D39C ClearPaletteRam
+thumb-func 0x0800D4A4 sub_0800D4A4
 thumb-func 0x0800D57C sub_0800D57C
 thumb-func 0x0800D5DC sub_0800D5DC
 thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
 thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
+thumb-func 0x0800E890 sub_0800E890
+thumb-func 0x0800EA68 ClearParalyzedFighter_candidate
+thumb-func 0x0800EB2C ClearPoisonedFighter_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate
 thumb-func 0x0800F16C RestoreFighterObjects_candidate
 thumb-func 0x0800F5F0 ResumeBattleAfterSubmode_candidate
@@ -224,11 +236,30 @@ thumb-func 0x080100A0 DispatchPendingAction
 thumb-func 0x080101D0 TickBattleMenuInput
 thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x08010864 ShowBattleMessage
+thumb-func 0x08012998 InitCharacterSpells_candidate
+thumb-func 0x08012A04 sub_08012A00
+thumb-func 0x08012A88 sub_08012A84
+thumb-func 0x08015470 SetPlayerObjectAnim
+thumb-func 0x080189B4 sub_080189C8
+thumb-func 0x08018AA4 sub_08018AB8
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptObject
+c-file 0x08018CAC 0x0801AE10 src/battle/interpret_object_script.c InterpretObjectScript
 thumb-func 0x0801AE10 CreateBattleEffectEmitter_candidate
+thumb-func 0x0801B200 sub_0801B204
+thumb-func 0x0801B2E8 sub_0801B2EC
+thumb-func 0x0801B344 sub_0801B348
 c-file 0x0801B42C 0x0801B4B8 src/battle/try_apply_paralysis.c TryApplyParalysis
+thumb-func 0x0801B4B8 sub_0801B4BC
 c-file 0x0801B58C 0x0801B5CC src/battle/spawn_paralysis_effect.c SpawnParalysisEffect
+thumb-func 0x0801B61C ComputeEffectSpawnPosition
+thumb-func 0x0801B64C WaitFramesTick
+thumb-func 0x0801B680 WaitForCounterTick
+thumb-func 0x0801B6CC WaitForFieldClearTick
+thumb-func 0x0801B70C sub_0801B710
+thumb-func 0x0801B770 sub_0801B774
+thumb-func 0x0801B86C sub_0801B870
+thumb-func 0x0801B900 WaitForCasterField86Tick_candidate
 c-file 0x0801C048 0x0801C0E4 src/room/opcodes/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
 c-file 0x0801C0E4 0x0801C1D4 src/room/opcodes/room_script_op_start_object_anim_sequence.c RoomScriptOpStartObjectAnimSequence
 c-file 0x0801C1D4 0x0801C27C src/room/opcodes/room_script_op_start_tile_object_script.c RoomScriptOpStartTileObjectScript
@@ -285,6 +316,7 @@ c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTic
 thumb-func 0x08021E54 ProcessOwlCareKitTick
 thumb-func 0x08024574 sub_08024518
 thumb-func 0x08024974 sub_08024918
+thumb-func 0x08024A58 GetPartySize
 thumb-func 0x08025114 InstallBgTileCodec
 c-file 0x08025504 0x0802566C src/input/update_key_input.c UpdateKeyInput
 thumb-func 0x08025944 InitInputSystem_candidate
@@ -358,6 +390,7 @@ thumb-func 0x0802C8A4 IsGameModeTransitionPending
 thumb-func 0x0802CDFC sub_0802CDB8
 thumb-func 0x0802CF28 sub_0802CEE4
 thumb-func 0x0802D588 NoopInit3
+thumb-func 0x0802D684 sub_0802D640
 thumb-func 0x0802D6FC sub_0802D6B8
 thumb-func 0x0802D7E4 GetCollisionTypeAtPixel_candidate
 thumb-func 0x0802DD98 NoopInit2
@@ -380,8 +413,11 @@ thumb-func 0x08030990 sub_0803094C
 thumb-func 0x080309A4 sub_08030960
 thumb-func 0x080309BC BindObjectToResourceCacheSlot
 thumb-func 0x08030A2C FindResourceCacheSlot
+thumb-func 0x08030A60 sub_08030A1C
 thumb-func 0x08030C44 sub_08030C00
 thumb-func 0x080315E8 InitResourceCachePools
+thumb-func 0x080316AC sub_08031668
+thumb-func 0x080316E8 ReleaseParticleEmitter_candidate
 thumb-func 0x08031718 sub_080316D4
 thumb-func 0x08031760 sub_0803171C
 thumb-func 0x0803178C TickParticleEmitters
@@ -442,6 +478,7 @@ thumb-func 0x0803631C sub_080362D8
 c-file 0x080368D4 0x08036910 src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x08036910 sub_080368CC
 thumb-func 0x08036928 sub_080368E4
+thumb-func 0x08037148 sub_08037104
 c-file 0x080395D0 0x080396E4 src/gamemode/modes/items/update_items_item_select.c UpdateItemsItemSelect
 c-file 0x080396E4 0x0803977C src/gamemode/modes/items/initialize_items_item_select.c InitializeItemsItemSelect
 c-file 0x0803977C 0x080397A4 src/gamemode/modes/items/exit_items_item_select.c ExitItemsItemSelect
@@ -489,6 +526,7 @@ c-file 0x0803B5C8 0x0803B600 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 0x0803B65C src/rng/next.c Mt19937Next
 c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
 thumb-func 0x0803BD04 InitSaveSystem
+thumb-func 0x0803C678 DarkenScreenPalette
 thumb-func 0x0803D330 InitScreenTransitionState_candidate
 thumb-func 0x0803D350 SetFadeToBlack
 thumb-func 0x0803D378 SetFadeToWhite
@@ -497,6 +535,7 @@ thumb-func 0x0803D3B8 SetAlphaBlendCoefficients
 thumb-func 0x0803D418 PlayScreenTransitionInByIndex
 thumb-func 0x0803D450 PlayScreenTransitionOutByIndex
 thumb-func 0x0803D488 sub_0803D420
+thumb-func 0x0803D49C RestoreScreenPalette
 thumb-func 0x0803DAB4 UpdateOverworldCamera_candidate
 thumb-func 0x0803E564 sub_0803E4FC
 thumb-func 0x0803E680 GetCameraPosition
@@ -544,8 +583,12 @@ thumb-func 0x080451D4 StopScanlineEffects
 thumb-func 0x08045218 IsScanlineEffectQueueIdle
 c-file 0x080452E0 0x08045304 src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 thumb-func 0x08045304 InitObjTileAllocBitmaps
+thumb-func 0x08045420 sub_080454F4
 thumb-func 0x08045440 FreeObjectVramTileAllocation
 c-file 0x08045488 0x080454B4 src/object/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
+thumb-func 0x08045734 HideScreenWindow_candidate
+thumb-func 0x08045764 SetScreenWindowLayers_candidate
+thumb-func 0x080457D4 SetScreenWindowRect_candidate
 thumb-func 0x0804589C TickScreenWindows_candidate
 thumb-func 0x08049DBC bios_CPUSet
 thumb-func 0x08049DE8 bios_VBlankIntrWait
@@ -569,6 +612,7 @@ c-file 0x0804C422 0x0804C542 src/menu/debug_character_names.c sDebugCharacterNam
 c-file 0x0804CDF0 0x0804D450 src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
+label 0x0804E560 g_aPlayerGfxRows_candidate
 c-file 0x0804E5E0 0x0804F330 src/graphics/assets/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table -- content proven byte-identical to the
@@ -583,7 +627,20 @@ c-file 0x08051138 0x08051174 src/battle/scripted_encounters.c g_aScriptedEncount
 # Playtime counters, shared source with US. The main-loop function and
 # constants follow JP's save-state layout.
 c-file 0x08051174 0x080513F4 src/graphics/assets/fighter_anim_table.c g_aFighterAnimTable
+label 0x080538D4 g_adwEffectBgControlOverride_candidate
+label 0x08053A34 g_apEffectScanlineTables_candidate
+label 0x08053A40 g_abEffectScanlineTableSizes_candidate
+label 0x08053B94 g_aEffectOrbitParams_candidate
+label 0x08053C54 g_abEffectRosterIdPair_candidate
+label 0x08053C56 g_awBattleSlotPosX_candidate
+label 0x08053C64 g_abBattleSlotPosY_candidate
 c-file 0x08053C6C 0x08054400 src/graphics/assets/effect_assets.c g_aEffectObjectAssets
+label 0x08054400 g_aEffectBgRecords_candidate
+label 0x08054E60 g_abScriptOpcodeLengths
+label 0x08054F08 g_abFighterIdleAnimData_candidate
+label 0x08054F0E g_aEffectAnimData_candidate
+label 0x08058870 g_aEffectAnimData2_candidate
+label 0x0805B8A4 g_apEffectScripts
 label 0x0805BB2C g_aSpecialSceneBgControls
 label 0x0805DF4C g_dwLinearCutsceneBg0Control
 label 0x0805DF50 g_dwLinearCutsceneBg1Control
