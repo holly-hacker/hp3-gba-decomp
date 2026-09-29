@@ -1134,7 +1134,7 @@ label 0x0805E288 g_dwStartupBg1Control
 label 0x0805EB10 g_dwHippogriffFliesIntoAirBg0Control
 label 0x0805EB14 g_HippogriffFliesIntoAirAsset
 label 0x0805EB24 g_HippogriffFliesIntoAirAsset2
-label 0x0805EB34 g_abRoomScriptOpcodeLengths
+c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 label 0x08060544 g_stPlaytimeFrameDelta
 label 0x0806054C g_stPlaytimeHourLimit
 label 0x08060884 g_PlayerCameraFocusOffset

@@ -66,7 +66,8 @@ operand_bytes : u8[N]   -- N = g_abRoomScriptOpcodeLengths[opcode] - 4
 ```
 
 **`g_abRoomScriptOpcodeLengths`** (US `0x0805EB34`, `byte[93]`, padded
-to a `u32`-aligned 96 bytes): gives each opcode's *total* record length
+to a `u32`-aligned 96 bytes; C in `src/room/room_script_opcode_lengths.c`,
+opcode enum and `RS_*` record macros in `include/overworld/room_script_bytecode.h`): gives each opcode's *total* record length
 (opcode word included), always a multiple of 4. Index `0`'s entry (`4`)
 is never actually consulted for advancing past a real instruction,
 since opcode `0` terminates the walk before the handler dispatch.
