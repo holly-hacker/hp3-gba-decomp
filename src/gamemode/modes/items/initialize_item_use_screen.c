@@ -1,7 +1,7 @@
 #include "types.h"
-#include "game_modes.h"
-#include "items_menu.h"
-#include "status_equip.h"
+#include "game/game_modes.h"
+#include "menu/items_menu.h"
+#include "menu/status_equip.h"
 
 void InitializeItemUseScreen(void)
 {

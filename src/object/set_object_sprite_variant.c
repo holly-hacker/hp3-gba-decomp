@@ -1,7 +1,7 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "object.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/object.h"
 
 void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex)
 {

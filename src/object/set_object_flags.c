@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 void SetObjectFlags(Object *obj, ObjectFlags flags)
 {

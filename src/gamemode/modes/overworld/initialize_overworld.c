@@ -1,13 +1,13 @@
 #include "types.h"
-#include "audio.h"
-#include "battle.h"
-#include "display.h"
-#include "graphics.h"
-#include "game_modes.h"
-#include "input.h"
-#include "overworld.h"
-#include "room.h"
-#include "vblank.h"
+#include "graphics/audio.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "graphics/graphics.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
+#include "hw/vblank.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.
 #define CURRENT_ROOM g_aRoomTable[g_GameModeStackContext.dwCurrentGameModeArg2]

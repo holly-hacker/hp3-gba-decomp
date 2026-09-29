@@ -1,8 +1,8 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "hippogriff_flies_into_air_cutscene.h"
-#include "object.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "cutscene/hippogriff_flies_into_air_cutscene.h"
+#include "graphics/object.h"
 #include "gen/HippogriffRiddikulusSprites.h"
 
 void InitializeHippogriffFliesIntoAirCutscene(void)

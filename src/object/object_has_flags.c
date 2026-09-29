@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 s32 ObjectHasFlags(Object *obj, ObjectFlags flags)
 {

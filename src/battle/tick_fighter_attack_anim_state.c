@@ -1,6 +1,6 @@
 #include "types.h"
-#include "audio.h"
-#include "battle.h"
+#include "graphics/audio.h"
+#include "battle/battle.h"
 #include "mt19937.h"
 
 // Enemy-side per-object tick dispatcher, mirroring TickPlayerActionState's

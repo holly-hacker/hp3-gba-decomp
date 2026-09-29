@@ -1,7 +1,7 @@
 #include "types.h"
-#include "audio.h"
-#include "game_modes.h"
-#include "main_menu.h"
+#include "graphics/audio.h"
+#include "game/game_modes.h"
+#include "menu/main_menu.h"
 
 void SelectMainMenuEntry_candidate(void)
 {

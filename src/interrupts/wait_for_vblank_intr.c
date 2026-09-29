@@ -1,6 +1,6 @@
 #include "types.h"
-#include "vblank.h"
-#include "bios.h"
+#include "hw/vblank.h"
+#include "hw/bios.h"
 
 // Clears the pending-vblank flag, then sleeps until the next vblank interrupt.
 void WaitForVBlankIntr(void)

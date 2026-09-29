@@ -1,10 +1,10 @@
 #include "types.h"
-#include "audio.h"
-#include "battle.h"
-#include "game_modes.h"
-#include "main_menu.h"
-#include "room.h"
-#include "save.h"
+#include "graphics/audio.h"
+#include "battle/battle.h"
+#include "game/game_modes.h"
+#include "menu/main_menu.h"
+#include "overworld/room.h"
+#include "game/save.h"
 
 void HandleSaveLoadContinuation(void)
 {

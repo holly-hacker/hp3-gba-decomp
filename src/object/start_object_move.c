@@ -1,4 +1,4 @@
-#include "object.h"
+#include "graphics/object.h"
 
 void StartObjectMove(Object *obj, u32 x, u32 y, u16 mode)
 {

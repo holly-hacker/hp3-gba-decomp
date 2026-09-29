@@ -1,7 +1,7 @@
 #include "types.h"
-#include "audio.h"
-#include "game_modes.h"
-#include "room_script.h"
+#include "graphics/audio.h"
+#include "game/game_modes.h"
+#include "overworld/room_script.h"
 
 typedef struct PlayMusicModuleAndFlagIfChain1Record {
     u32 dwOpcode;

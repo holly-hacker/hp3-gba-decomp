@@ -1,9 +1,9 @@
 #include "types.h"
-#include "debug_menu.h"
-#include "game_modes.h"
-#include "input.h"
-#include "main_menu.h"
-#include "minigame_menu.h"
+#include "menu/debug_menu.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "menu/main_menu.h"
+#include "menu/minigame_menu.h"
 
 void UpdateDebugMenuMain(void)
 {

@@ -1,9 +1,9 @@
 #include "types.h"
-#include "audio.h"
-#include "debug_menu.h"
-#include "game_modes.h"
-#include "input.h"
-#include "minigame_menu.h"
+#include "graphics/audio.h"
+#include "menu/debug_menu.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "menu/minigame_menu.h"
 
 void UpdateDebugSoundTestMenu(void)
 {

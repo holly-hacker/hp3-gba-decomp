@@ -1,5 +1,5 @@
 #include "types.h"
-#include "mem.h"
+#include "hw/mem.h"
 
 // Returns the tiles freed since the last OAM buffer swap to the allocator
 // and resets the pending-free mask.

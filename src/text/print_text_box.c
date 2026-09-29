@@ -1,5 +1,5 @@
 #include "types.h"
-#include "text.h"
+#include "graphics/text.h"
 
 // Draws pText starting at (x, y), wrapping at maxWidth, one line per call to
 // DrawTextLine until the text is exhausted. Returns the last tile cursor.

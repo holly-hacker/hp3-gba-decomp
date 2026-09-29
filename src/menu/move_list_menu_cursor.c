@@ -1,8 +1,8 @@
 #include "types.h"
-#include "audio.h"
-#include "game_modes.h"
-#include "menu.h"
-#include "minigame_menu.h"
+#include "graphics/audio.h"
+#include "game/game_modes.h"
+#include "menu/menu.h"
+#include "menu/minigame_menu.h"
 
 void MoveListMenuCursor(void)
 {

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle.h"
+#include "battle/battle.h"
 #include "mt19937.h"
 
 #define ATTACKER (g_pFightState->pFighters[attackerIndex])

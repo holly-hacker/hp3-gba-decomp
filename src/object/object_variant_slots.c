@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // Accessors for Object.aVariantSlots. None of them are called.
 

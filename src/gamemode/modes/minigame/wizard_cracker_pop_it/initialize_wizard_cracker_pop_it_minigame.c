@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "game_modes.h"
-#include "graphics.h"
-#include "mem.h"
-#include "text.h"
-#include "wizard_cracker_pop_it.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/graphics.h"
+#include "hw/mem.h"
+#include "graphics/text.h"
+#include "minigame/wizard_cracker_pop_it.h"
 
 void InitializeWizardCrackerPopItMinigame(void)
 {

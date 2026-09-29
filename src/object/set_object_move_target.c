@@ -1,4 +1,4 @@
-#include "object.h"
+#include "graphics/object.h"
 
 void SetObjectMoveTarget(Object *obj, u32 x, u32 y)
 {

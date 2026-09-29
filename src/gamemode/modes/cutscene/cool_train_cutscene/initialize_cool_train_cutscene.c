@@ -1,9 +1,9 @@
 #include "types.h"
-#include "audio.h"
-#include "bios.h"
-#include "cool_train_cutscene.h"
-#include "display.h"
-#include "io_regs.h"
+#include "graphics/audio.h"
+#include "hw/bios.h"
+#include "cutscene/cool_train_cutscene.h"
+#include "graphics/display.h"
+#include "hw/io_regs.h"
 
 void InitializeCoolTrainCutscene(void)
 {

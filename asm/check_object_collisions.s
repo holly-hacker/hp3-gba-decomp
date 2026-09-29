@@ -5,7 +5,7 @@
 @ section) and only ever taken by address, never `bl` -- InitObjectPool
 @ relocates it into IWRAM via bios_CPUSet (g_pCheckObjectCollisionsIwram).
 @
-@ Each object carries two ObjectCollisionBox slots (include/object.h,
+@ Each object carries two ObjectCollisionBox slots (include/graphics/object.h,
 @ Object.aCollisionBoxes at +0xB0/+0xB8) and a matching 2-entry callback
 @ array (Object.apfnCollisionCallback at +0xC8/+0xCC). For every ordered
 @ pair (i, j>i) and each box slot (1 then 0), if slot `n` is active

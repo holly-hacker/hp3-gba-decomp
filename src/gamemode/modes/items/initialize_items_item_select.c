@@ -1,9 +1,9 @@
 #include "types.h"
-#include "game_modes.h"
-#include "in_game_menu.h"
-#include "items_menu.h"
-#include "main_menu.h"
-#include "text.h"
+#include "game/game_modes.h"
+#include "menu/in_game_menu.h"
+#include "menu/items_menu.h"
+#include "menu/main_menu.h"
+#include "graphics/text.h"
 
 void InitializeItemsItemSelect(void)
 {

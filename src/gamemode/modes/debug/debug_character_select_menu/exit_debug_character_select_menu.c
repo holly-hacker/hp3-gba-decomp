@@ -1,7 +1,7 @@
 #include "types.h"
-#include "debug_menu.h"
-#include "display.h"
-#include "mem.h"
+#include "menu/debug_menu.h"
+#include "graphics/display.h"
+#include "hw/mem.h"
 
 void ExitDebugCharacterSelectMenu(void)
 {

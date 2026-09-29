@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "game_modes.h"
-#include "input.h"
-#include "main_menu.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "menu/main_menu.h"
 #include "mt19937.h"
-#include "text.h"
+#include "graphics/text.h"
 
 void UpdateMainMenu(void)
 {

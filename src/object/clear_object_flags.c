@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 void ClearObjectFlags(Object *obj, ObjectFlags flags)
 {

@@ -1,6 +1,6 @@
-#include "input.h"
+#include "hw/input.h"
 #include "mt19937.h"
-#include "vblank.h"
+#include "hw/vblank.h"
 
 // g_wKeysHeld (0x030034EC) is the live held-key bitmask maintained by
 // UpdateKeyInput (see docs/memory-map/input.md), folded in here purely as

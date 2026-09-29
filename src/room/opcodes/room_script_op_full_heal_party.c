@@ -1,7 +1,7 @@
 #include "types.h"
-#include "battle.h"
-#include "room.h"
-#include "room_script.h"
+#include "battle/battle.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 void RoomScriptOpFullHealParty(RoomScriptRecord *pRecord)
 {

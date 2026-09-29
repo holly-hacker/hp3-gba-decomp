@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // Returns the tile graphics of a variant slot's current animation frame:
 // the variant's pTileGfx plus the frame's wTileGfxOffset. The frame is

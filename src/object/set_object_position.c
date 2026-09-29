@@ -1,4 +1,4 @@
-#include "object.h"
+#include "graphics/object.h"
 
 void SetObjectPosition(Object *obj, s32 x, s32 y)
 {

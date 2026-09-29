@@ -1,5 +1,5 @@
-#include "mem.h"
-#include "bios.h"
+#include "hw/mem.h"
+#include "hw/bios.h"
 
 // Carves the object free list out of g_ObjectPoolState.pBuffer (0x69 objects,
 // 0x128-byte stride) and relocates the per-frame sort/collision passes

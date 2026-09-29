@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game_modes.h"
+#include "game/game_modes.h"
 
 // TickObject's gate: no mode transition in flight, and not in Dialogue mode.
 s32 IsObjectTickAllowed(void)

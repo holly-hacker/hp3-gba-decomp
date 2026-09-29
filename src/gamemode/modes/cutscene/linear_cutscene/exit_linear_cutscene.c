@@ -1,6 +1,6 @@
 #include "types.h"
-#include "display.h"
-#include "linear_cutscene.h"
+#include "graphics/display.h"
+#include "cutscene/linear_cutscene.h"
 
 void ExitLinearCutscene(void)
 {

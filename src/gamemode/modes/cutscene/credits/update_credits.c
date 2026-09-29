@@ -1,10 +1,10 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "input.h"
-#include "linear_cutscene.h"
-#include "minigame_menu.h"
-#include "text.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "cutscene/linear_cutscene.h"
+#include "menu/minigame_menu.h"
+#include "graphics/text.h"
 
 // Credits mode's pUpdateFn: each time the scroll passes a new text row, draws
 // the next credits line below it. Any of A/B/Select/Start, or running past the

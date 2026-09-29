@@ -1,6 +1,6 @@
 #include "types.h"
-#include "display.h"
-#include "room_script.h"
+#include "graphics/display.h"
+#include "overworld/room_script.h"
 
 typedef struct HideBackgroundLayerRecord {
     u32 dwOpcode;

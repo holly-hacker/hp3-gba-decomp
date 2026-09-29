@@ -1,5 +1,5 @@
 #include "mt19937.h"
-#include "io_regs.h"
+#include "hw/io_regs.h"
 
 // Return a random bool of roughly `percent` chance, adding extra entropy from VCOUNT.
 s32 Mt19937ChanceNoisy(u16 percent)

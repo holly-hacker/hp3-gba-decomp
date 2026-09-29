@@ -1,5 +1,5 @@
 #include "types.h"
-#include "text.h"
+#include "graphics/text.h"
 
 // Decompresses one string from the active language blob's Huffman-style
 // bitstream into outBuf. Returns 0 on success, 1 if no language blob is

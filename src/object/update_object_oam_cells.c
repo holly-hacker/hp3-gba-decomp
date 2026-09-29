@@ -1,7 +1,7 @@
 #include "types.h"
-#include "object.h"
-#include "room.h"
-#include "oam.h"
+#include "graphics/object.h"
+#include "overworld/room.h"
+#include "graphics/oam.h"
 
 // Queues this frame's OAM entries for an object. Returns 0 without drawing when
 // ObjectFlagOnscreenForTileAlloc is clear and 2 when the object has no VRAM tile

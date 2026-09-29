@@ -1,10 +1,10 @@
 #include "types.h"
-#include "audio.h"
-#include "game_modes.h"
-#include "input.h"
-#include "minigame_menu.h"
-#include "save.h"
-#include "wizard_cracker_pop_it.h"
+#include "graphics/audio.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "menu/minigame_menu.h"
+#include "game/save.h"
+#include "minigame/wizard_cracker_pop_it.h"
 
 void UpdateWizardCrackerPopItMinigame(void)
 {

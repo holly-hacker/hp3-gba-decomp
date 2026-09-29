@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "game_modes.h"
-#include "graphics.h"
-#include "hippogriff_glide.h"
-#include "main_menu.h"
-#include "mem.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/graphics.h"
+#include "minigame/hippogriff_glide.h"
+#include "menu/main_menu.h"
+#include "hw/mem.h"
 #include "gen/MenuSprites.h"
 
 void InitializeHippogriffGlideMinigame(void)

@@ -1,4 +1,4 @@
-#include "eeprom.h"
+#include "hw/eeprom.h"
 
 // Nintendo EEPROM library object EEPROM_NOWAIT: block writes that return
 // as soon as the chip reports ready. The ID string is not read by any

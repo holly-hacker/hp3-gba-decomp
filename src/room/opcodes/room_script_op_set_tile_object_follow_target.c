@@ -1,7 +1,7 @@
 #include "types.h"
-#include "object.h"
-#include "overworld.h"
-#include "room_script.h"
+#include "graphics/object.h"
+#include "overworld/overworld.h"
+#include "overworld/room_script.h"
 
 typedef struct SetTileObjectFollowTargetRecord {
     u32 dwOpcode;

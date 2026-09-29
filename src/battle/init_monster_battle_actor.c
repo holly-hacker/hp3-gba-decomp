@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle.h"
+#include "battle/battle.h"
 
 // Monster-side counterpart to InitPlayerBattleActor: allocates the fighter's
 // Object, hardwires pObject->pfnTick = TickFighterAttackAnimState_candidate,

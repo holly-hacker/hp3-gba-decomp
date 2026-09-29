@@ -1,5 +1,5 @@
-#include "object.h"
-#include "graphics.h"
+#include "graphics/object.h"
+#include "graphics/graphics.h"
 
 void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode)
 {

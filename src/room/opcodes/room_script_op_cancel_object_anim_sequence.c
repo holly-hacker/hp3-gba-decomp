@@ -1,7 +1,7 @@
 #include "types.h"
-#include "overworld.h"
-#include "room.h"
-#include "room_script.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 typedef struct CancelObjectAnimSequenceRecord {
     u32 dwOpcode;

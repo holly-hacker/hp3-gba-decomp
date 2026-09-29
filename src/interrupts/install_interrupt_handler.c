@@ -1,6 +1,6 @@
-#include "bios.h"
-#include "interrupts.h"
-#include "io_regs.h"
+#include "hw/bios.h"
+#include "hw/interrupts.h"
+#include "hw/io_regs.h"
 
 void InstallInterruptHandler(void *handlerCode)
 {

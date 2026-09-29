@@ -1,10 +1,10 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
-#include "game_modes.h"
-#include "items_menu.h"
-#include "main_menu.h"
-#include "mem.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "menu/items_menu.h"
+#include "menu/main_menu.h"
+#include "hw/mem.h"
 
 void ExitItemsSectionSelect(void)
 {

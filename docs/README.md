@@ -77,14 +77,14 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 
 - [`formats/folio_bruti.md`](formats/folio_bruti.md) — `MonsterTable`,
   the 24-byte monster stat record, per-spell effectiveness, and the
-  bestiary grid. Table lives as committed C in `src/data/monsters.c`.
+  bestiary grid. Table lives as committed C in `src/battle/monsters.c`.
 - [`formats/graphics.md`](formats/graphics.md) — the generic
   resource-decompression dispatchers and codec inventory, the room
   resource table, OBJ palette and tile loading, and PNG sprite banks.
   Pipeline: `tools/images/`, `data/images/`.
 - [`formats/items.md`](formats/items.md) — `g_pItemTable`, the item
   record layout, equipment stats, per-character equip eligibility, and
-  categories. Committed as `src/data/items.c`; icons are an image bank in
+  categories. Committed as `src/items/items.c`; icons are an image bank in
   `data/images/items/`.
 - [`formats/krawall.md`](formats/krawall.md) — the Krawall module /
   pattern / sample on-ROM structs. Pipeline: `tools/krawall/`,

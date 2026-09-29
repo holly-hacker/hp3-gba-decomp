@@ -1,10 +1,10 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "harry_patronus_cutscene.h"
-#include "input.h"
-#include "room.h"
-#include "room_script.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "cutscene/harry_patronus_cutscene.h"
+#include "hw/input.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 // Every fourth frame the next graphic is loaded into the back BG and swapped in. The state machine
 // fades in from black, runs until frame 0xF0 or a key press, fades to white, then leaves for the

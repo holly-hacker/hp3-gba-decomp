@@ -1,5 +1,5 @@
 #include "types.h"
-#include "rewards.h"
+#include "game/rewards.h"
 
 // Gives `amount` of a reward id and returns how many of it the player now
 // has: the Sickles total, a card's copy count, or the item count.

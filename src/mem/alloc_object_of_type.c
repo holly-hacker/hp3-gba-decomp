@@ -1,4 +1,4 @@
-#include "object.h"
+#include "graphics/object.h"
 
 // Allocates a default object and stamps its type/kind marker.
 Object *AllocObjectOfType(s32 type)

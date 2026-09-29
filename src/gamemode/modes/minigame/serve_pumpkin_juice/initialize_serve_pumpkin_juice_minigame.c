@@ -1,12 +1,12 @@
 #include "types.h"
-#include "bios.h"
-#include "display.h"
-#include "game_modes.h"
-#include "io_regs.h"
-#include "minigame_menu.h"
+#include "hw/bios.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/io_regs.h"
+#include "menu/minigame_menu.h"
 #include "mt19937.h"
-#include "serve_pumpkin_juice.h"
-#include "text.h"
+#include "minigame/serve_pumpkin_juice.h"
+#include "graphics/text.h"
 
 void InitializeUnusedServePumpkinJuiceMinigame(void)
 {

@@ -1,9 +1,9 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
-#include "game_modes.h"
-#include "mem.h"
-#include "graphics.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/mem.h"
+#include "graphics/graphics.h"
 
 // Battle mode's pDestroyFn. See docs/memory-map/battle.md.
 void ExitBattle(void)

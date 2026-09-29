@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "battle.h"
-#include "display.h"
-#include "game_modes.h"
-#include "graphics.h"
-#include "main_menu.h"
-#include "text.h"
+#include "graphics/audio.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/graphics.h"
+#include "menu/main_menu.h"
+#include "graphics/text.h"
 #include "gen/MenuSprites.h"
 
 void InitializeMainMenu(void)

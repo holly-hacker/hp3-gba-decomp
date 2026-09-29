@@ -1,6 +1,6 @@
 #include "types.h"
-#include "room_script.h"
-#include "room_script_branch.h"
+#include "overworld/room_script.h"
+#include "overworld/room_script_branch.h"
 
 typedef struct GotoIfFolioPageGroupCompleteRecord {
     u32 dwOpcode;

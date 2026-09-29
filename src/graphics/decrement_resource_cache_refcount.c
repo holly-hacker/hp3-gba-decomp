@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics.h"
+#include "graphics/graphics.h"
 
 void DecrementResourceCacheRefcount(s32 slotIndex)
 {

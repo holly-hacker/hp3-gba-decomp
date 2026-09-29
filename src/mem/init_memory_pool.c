@@ -1,4 +1,4 @@
-#include "mem.h"
+#include "hw/mem.h"
 
 // Registers heap pool poolIndex, reserving a MemBlock header at the
 // start for the pool's first (and initially only) free block.

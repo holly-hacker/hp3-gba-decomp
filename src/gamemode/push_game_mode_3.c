@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game_modes.h"
+#include "game/game_modes.h"
 
 void PushGameMode_3(GameMode mode, s32 arg1, s32 arg2, s32 arg3)
 {

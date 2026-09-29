@@ -1,10 +1,10 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "game_modes.h"
-#include "main_menu.h"
-#include "minigame_menu.h"
-#include "object.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "menu/main_menu.h"
+#include "menu/minigame_menu.h"
+#include "graphics/object.h"
 
 void InitializeMinigameMenu(void)
 {

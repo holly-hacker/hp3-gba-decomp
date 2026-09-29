@@ -1,10 +1,10 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
-#include "harry_vs_dementors.h"
-#include "main_menu.h"
-#include "mem.h"
-#include "minigame_menu.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "minigame/harry_vs_dementors.h"
+#include "menu/main_menu.h"
+#include "hw/mem.h"
+#include "menu/minigame_menu.h"
 
 void ExitHarryVsDementorsMinigame(void)
 {

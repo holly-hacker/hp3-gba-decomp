@@ -1,5 +1,5 @@
 #include "types.h"
-#include "text.h"
+#include "graphics/text.h"
 
 u8 *GetDialogText(s32 stringId)
 {

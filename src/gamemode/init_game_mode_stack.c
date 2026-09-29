@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game_modes.h"
-#include "save.h"
+#include "game/game_modes.h"
+#include "game/save.h"
 
 void InitGameModeStack(void)
 {

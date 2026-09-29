@@ -1,5 +1,5 @@
 #include "types.h"
-#include "room_script.h"
+#include "overworld/room_script.h"
 
 // Room-script VM entry that continues the walk stopped at g_pRoomScriptYieldContinuation.
 // Otherwise identical to WalkRoomSwitchStateChain_candidate, except that jumps save the

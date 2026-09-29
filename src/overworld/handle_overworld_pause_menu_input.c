@@ -1,9 +1,9 @@
 #include "types.h"
-#include "game_modes.h"
-#include "input.h"
-#include "audio.h"
-#include "object.h"
-#include "overworld.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "graphics/audio.h"
+#include "graphics/object.h"
+#include "overworld/overworld.h"
 
 void HandleOverworldPauseMenuInput(void)
 {

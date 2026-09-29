@@ -1,9 +1,9 @@
 #include "types.h"
-#include "io_regs.h"
-#include "main_menu.h"
-#include "mem.h"
-#include "object.h"
-#include "status_equip.h"
+#include "hw/io_regs.h"
+#include "menu/main_menu.h"
+#include "hw/mem.h"
+#include "graphics/object.h"
+#include "menu/status_equip.h"
 
 void ExitStatusEquipItemSelect(void)
 {

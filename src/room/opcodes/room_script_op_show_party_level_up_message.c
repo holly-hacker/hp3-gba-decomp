@@ -1,6 +1,6 @@
 #include "types.h"
-#include "dialog.h"
-#include "room_script.h"
+#include "menu/dialog.h"
+#include "overworld/room_script.h"
 
 typedef struct ShowPartyLevelUpMessageRecord {
     u32 dwOpcode;

@@ -1,6 +1,6 @@
-#include "vblank.h"
-#include "interrupts.h"
-#include "dma.h"
+#include "hw/vblank.h"
+#include "hw/interrupts.h"
+#include "hw/dma.h"
 
 void InitInterruptSystem(void)
 {

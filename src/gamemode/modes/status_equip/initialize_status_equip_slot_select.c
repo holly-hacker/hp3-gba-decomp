@@ -1,8 +1,8 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "object.h"
-#include "status_equip.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/object.h"
+#include "menu/status_equip.h"
 #include "gen/ObjectSprites.h"
 
 void InitializeStatusEquipSlotSelect(void)

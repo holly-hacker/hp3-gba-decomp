@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "mem.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
 
 // Releases obj back to the object pool's free list; a no-op if it was
 // already freed (wObjectType == 0xFFFF is the freed sentinel).

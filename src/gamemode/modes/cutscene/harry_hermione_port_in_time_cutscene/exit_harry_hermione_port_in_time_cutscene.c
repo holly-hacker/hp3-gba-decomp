@@ -1,8 +1,8 @@
 #include "types.h"
-#include "display.h"
-#include "mem.h"
-#include "overworld.h"
-#include "room.h"
+#include "graphics/display.h"
+#include "hw/mem.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
 
 void ExitHarryHermionePortInTimeCutscene(void)
 {

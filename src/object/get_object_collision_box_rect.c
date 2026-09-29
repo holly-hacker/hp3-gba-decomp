@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // Returns collision box boxIndex as pixel edges around the object's
 // previous-frame position, mirrored by its flip bits.

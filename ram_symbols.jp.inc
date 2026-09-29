@@ -9,13 +9,13 @@
 .set gIrqStackTop,     0x03007FA0
 .set gIntrVectorPtr,   0x03007FFC
 
-@ --- Interrupts / VBlank state (see include/vblank.h) ---
+@ --- Interrupts / VBlank state (see include/hw/vblank.h) ---
 .set g_pVBlankState, 0x030035CC
 .set gIntrTable,      0x030035D0  @ 13 x u32 handler slots dispatched by IntrMain
 .set g_wPendingIntrFlags, 0x03003804  @ see ram_symbols.us.inc
 .set g_pTimer2DebugPc, 0x030015A0  @ see ram_symbols.us.inc
 
-@ --- Object pool and active-object list (see include/mem.h) ---
+@ --- Object pool and active-object list (see include/hw/mem.h) ---
 .set g_dwObjectListActive_candidate, 0x030017A0
 .set g_pSortObjectsIwram,            0x0300194C
 .set g_pCheckObjectCollisionsIwram,  0x03001A10
@@ -25,7 +25,7 @@
 .set g_dwObjectListTicked_candidate,         0x03001DC0
 .set g_dwUnk03001DC4,         0x03001DC4
 
-@ --- Per-tick object queues (see include/mem.h) ---
+@ --- Per-tick object queues (see include/hw/mem.h) ---
 .set g_apOamQueue,            0x030015B8
 .set g_dwOamQueueCount,       0x0300175C
 .set g_apSpriteFrameQueue,    0x03001760
@@ -44,14 +44,14 @@
 .set g_adwObjTileAllocBitmap,    0x03006178
 .set g_adwObjTileFreeMask,       0x030061F8
 
-@ --- OAM shadow buffer, see include/oam.h ---
+@ --- OAM shadow buffer, see include/graphics/oam.h ---
 .set g_bOamEntryCount, 0x03005050
 
 @ --- main / game-mode stack (see src/main.c) ---
 .set g_GameModeStackContext, 0x03003F54  @ see ram_symbols.us.inc
 .set g_dwFrameSyncTarget, 0x03003BA8  @ see ram_symbols.us.inc
 
-@ --- Battle state (see include/battle.h) ---
+@ --- Battle state (see include/battle/battle.h) ---
 .set g_pFightState,   0x030024E8
 .set g_effectStaging, 0x03002750
 
@@ -66,7 +66,7 @@
 .set g_awPlayerKeysPressed,       0x0300355E
 .set g_awPlayerKeysReleased,      0x03003562
 .set g_awLinkKeysReceived, 0x03005A6C
-.set g_LinkPlayerState,    0x03005A84  @ see include/link.h
+.set g_LinkPlayerState,    0x03005A84  @ see include/link/link.h
 
 
 @ --- Save state / playtime ---
@@ -89,12 +89,12 @@
 .set gMt19937SeedValue,          0x030055F4
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for object visibility
 
-@ --- Overworld wandering monsters (see include/overworld.h) ---
+@ --- Overworld wandering monsters (see include/overworld/overworld.h) ---
 .set g_bTouchedMonsterRecordCount, 0x03003BD0  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,    0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,    0x03003BE8  @ Object *: armed wandering-monster object
 
-@ --- Overworld control slots and pause menu (see include/overworld.h) ---
+@ --- Overworld control slots and pause menu (see include/overworld/overworld.h) ---
 .set g_dwGameModeFlags,            0x03003BA4  @ u32: broad game-mode flags word
 .set g_OverworldControlState,     0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 .set g_bControlSlotTicks_candidate, 0x03003BB8  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read

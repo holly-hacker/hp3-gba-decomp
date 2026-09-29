@@ -1,10 +1,10 @@
 #include "types.h"
-#include "bios.h"
-#include "display.h"
-#include "game_modes.h"
-#include "harry_patronus_cutscene.h"
-#include "io_regs.h"
-#include "vblank.h"
+#include "hw/bios.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "cutscene/harry_patronus_cutscene.h"
+#include "hw/io_regs.h"
+#include "hw/vblank.h"
 
 void InitializeHarryPatronusCutscene(void)
 {

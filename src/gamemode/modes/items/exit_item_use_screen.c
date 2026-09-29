@@ -1,5 +1,5 @@
 #include "types.h"
-#include "mem.h"
+#include "hw/mem.h"
 
 void ExitItemUseScreen(void)
 {

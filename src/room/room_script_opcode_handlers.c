@@ -1,6 +1,6 @@
 #include "types.h"
-#include "room_script.h"
-#include "room_script_opcodes.h"
+#include "overworld/room_script.h"
+#include "overworld/room_script_opcodes.h"
 
 // Room-script opcode -> handler table; see docs/formats/room_scripts.md.
 // Opcode 0 ends a chain and has no handler.

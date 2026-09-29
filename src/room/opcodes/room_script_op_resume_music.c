@@ -1,6 +1,6 @@
 #include "types.h"
-#include "audio.h"
-#include "room_script.h"
+#include "graphics/audio.h"
+#include "overworld/room_script.h"
 
 void RoomScriptOpResumeMusic(RoomScriptRecord *pRecord)
 {

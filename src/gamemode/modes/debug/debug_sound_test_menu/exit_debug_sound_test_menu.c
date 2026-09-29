@@ -1,7 +1,7 @@
 #include "types.h"
-#include "display.h"
-#include "mem.h"
-#include "minigame_menu.h"
+#include "graphics/display.h"
+#include "hw/mem.h"
+#include "menu/minigame_menu.h"
 
 void ExitDebugSoundTestMenu(void)
 {

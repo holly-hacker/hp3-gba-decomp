@@ -1,9 +1,9 @@
 #include "types.h"
-#include "audio.h"
-#include "game_modes.h"
-#include "hippogriff_glide.h"
-#include "input.h"
-#include "save.h"
+#include "graphics/audio.h"
+#include "game/game_modes.h"
+#include "minigame/hippogriff_glide.h"
+#include "hw/input.h"
+#include "game/save.h"
 
 void UpdateHippogriffGlideMinigame(void)
 {

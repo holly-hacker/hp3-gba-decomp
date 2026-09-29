@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "graphics.h"
+#include "graphics/object.h"
+#include "graphics/graphics.h"
 
 // Drops obj's reference to its OBJ palette cache slot. The slot's palette
 // pointer and flags are saved in the object before the refcount is decremented.

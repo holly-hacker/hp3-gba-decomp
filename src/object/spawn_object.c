@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "mem.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
 
 // Same body as AllocDefaultObject, inlined here.
 static inline Object *AllocDefaultObjectInline(void)

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "display.h"
+#include "graphics/display.h"
 
 void ExitLanguageSelect(void)
 {

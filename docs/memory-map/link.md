@@ -21,7 +21,7 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
   linked, 5 error) and `g_bLinkChildMask` (`0x03005A22`, one bit per
   connected child). `IsLinkUp` (`0x0803FB78`) is exactly
   "state == 2 and mask == 3" — a two-player session ready.
-- `g_LinkPlayerState` (`0x03005A24`, `include/link.h`) holds the session's
+- `g_LinkPlayerState` (`0x03005A24`, `include/link/link.h`) holds the session's
   local terminal ID at `+5` (`bPlayerId`, `s8`): `LinkSerialTimer3Intr` stores
   `(SIOCNT >> 4) & 3` there while `g_dwLinkState != 0` (0 = parent, 1-3 =
   child), and init/teardown reset it to `0xFF` (-1, no session).

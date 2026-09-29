@@ -1,4 +1,4 @@
-#include "mem.h"
+#include "hw/mem.h"
 
 // Inserts newBlock into the per-pool free list right after afterBlock.
 void LinkFreeBlock(MemBlock *afterBlock, MemBlock *newBlock)

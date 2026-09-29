@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game_modes.h"
-#include "overworld.h"
+#include "game/game_modes.h"
+#include "overworld/overworld.h"
 
 // Overworld mode's pUpdateFn (per-frame tick). Room logic runs in the room's
 // objects, so this only ticks the pause-menu cooldown and Owl Care Kit clock.

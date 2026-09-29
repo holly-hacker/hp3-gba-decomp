@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // Byte-identical to SetObjectFacing; no callers found anywhere in the ROM.
 void SetObjectFacing_unused(Object *obj, u8 facing)

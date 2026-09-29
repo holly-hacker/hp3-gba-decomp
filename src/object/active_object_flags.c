@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "mem.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
 
 // Sets `flags` on every object on the active list. Unused.
 void SetActiveObjectsFlags(ObjectFlags flags)

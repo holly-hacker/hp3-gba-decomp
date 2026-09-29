@@ -1,5 +1,5 @@
 #include "types.h"
-#include "text.h"
+#include "graphics/text.h"
 
 // Draws one line of *ppText and leaves *ppText at the start of the next line.
 // The line ends at the last space (or 0xF0 0x00), at a newline, or after a hyphen

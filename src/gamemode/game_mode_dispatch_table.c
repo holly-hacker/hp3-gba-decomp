@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game_modes.h"
+#include "game/game_modes.h"
 
 extern void ExitLoadingScreen();
 extern void ExitCardComboDescription();

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "room.h"
-#include "room_script.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 typedef struct SetStoryStageRecord {
     u32 dwOpcode;

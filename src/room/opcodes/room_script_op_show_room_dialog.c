@@ -1,7 +1,7 @@
 #include "types.h"
-#include "audio.h"
-#include "dialog.h"
-#include "room_script.h"
+#include "graphics/audio.h"
+#include "menu/dialog.h"
+#include "overworld/room_script.h"
 
 typedef struct ShowRoomDialogRecord {
     u32 dwOpcode;

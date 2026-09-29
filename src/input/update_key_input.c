@@ -1,8 +1,8 @@
 #include "types.h"
-#include "input.h"
-#include "link.h"
-#include "io_regs.h"
-#include "game_modes.h"
+#include "hw/input.h"
+#include "link/link.h"
+#include "hw/io_regs.h"
+#include "game/game_modes.h"
 
 void UpdateKeyInput(void)
 {

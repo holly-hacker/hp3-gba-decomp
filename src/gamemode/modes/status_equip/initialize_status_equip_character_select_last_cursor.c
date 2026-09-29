@@ -1,9 +1,9 @@
 #include "types.h"
-#include "display.h"
-#include "in_game_menu.h"
-#include "main_menu.h"
-#include "object.h"
-#include "status_equip.h"
+#include "graphics/display.h"
+#include "menu/in_game_menu.h"
+#include "menu/main_menu.h"
+#include "graphics/object.h"
+#include "menu/status_equip.h"
 
 void InitializeStatusEquipCharacterSelectLastCursor(void)
 {

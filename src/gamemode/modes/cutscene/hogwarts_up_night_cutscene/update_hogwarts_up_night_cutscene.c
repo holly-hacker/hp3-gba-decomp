@@ -1,8 +1,8 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "input.h"
-#include "room.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "overworld/room.h"
 
 // Arg2 counts frames. The layers scroll from frame 0x20 to 0x80; the cutscene
 // ends at frame 0xC0 or on A/B/Select/Start, back in the current room.

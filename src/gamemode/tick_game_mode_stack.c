@@ -1,7 +1,7 @@
 #include "types.h"
-#include "game_modes.h"
-#include "input.h"
-#include "vblank.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "hw/vblank.h"
 
 void TickGameModeStack(void)
 {

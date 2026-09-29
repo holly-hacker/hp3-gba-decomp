@@ -1,8 +1,8 @@
 #include "types.h"
-#include "audio.h"
-#include "dialog.h"
-#include "text.h"
-#include "room_script.h"
+#include "graphics/audio.h"
+#include "menu/dialog.h"
+#include "graphics/text.h"
+#include "overworld/room_script.h"
 
 typedef struct ShowRewardPickupMessageRecord {
     u32 dwOpcode;

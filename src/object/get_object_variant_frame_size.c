@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // Writes the pixel width and height of a variant slot's current animation
 // frame to dims[0] and dims[1]. UpdateObjectSpriteFrame sizes the slot's VRAM

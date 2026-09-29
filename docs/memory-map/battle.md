@@ -162,7 +162,7 @@ void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort
 
 // Every effect call funnels through TriggerBattleEffect (0x08018B70), which
 // stages its args into the 0x03002750 area (`EffectStaging` in
-// include/battle.h), spawns the effect object via CreateEffectScriptObject,
+// include/battle/battle.h), spawns the effect object via CreateEffectScriptObject,
 // then clears the attacker's anim state in FightState. Signature PROVEN by
 // caller/callee codegen -- (u8 effectId, s32 x4, u16 damage): effectId is
 // the only narrow param (u8 entry extend at 0x08018B74; params 2-4 have
@@ -547,7 +547,7 @@ background/palette load. Three cases on `g_PrevGameModeStackContext`:
   `bPendingActionKind = SpecialMove`, then dispatches on
   `g_aCardTargetingMeta[g_GameModeArg2][0]` -- **already a named, matched
   global** (`extern u8 g_aCardTargetingMeta[][2]`, `0x080514DE`,
-  `include/battle.h:374`), used from `TickPlayerActionState`'s own
+  `include/battle/battle.h:374`), used from `TickPlayerActionState`'s own
   Special-Move-resolution case in `src/battle/tick_player_action_state.c`.
   Indexed by the raw Folio Universitas card slot `0`-`15`; `[0]` is the
   target-type byte this function reads, `[1]` is a second, independently
@@ -951,7 +951,7 @@ field (the reader is what gives the field its name).
 | `+0x10`, `+0x12` | `+0x0C`, `+0x28` | `wRewardXp`, `wRewardGold` | `ApplyDamageToEnemyFighter`, `GrantMonsterKillReward` |
 | `+0x14`, `+0x15` | -- | `special_effect_chance`, `special_effect_id` | `RollMonsterSpecialEffect_candidate` (read from the table directly, not copied) |
 
-`MonsterTableRow` (`include/battle.h`) uses these same labels.
+`MonsterTableRow` (`include/battle/battle.h`) uses these same labels.
 
 ## XP/reward payout -- `MonsterTable+0x10`/`+0x12`, PROVEN
 
@@ -1204,8 +1204,8 @@ identified) runs `LevelUpFighter_candidate` for all 3 party members,
 event), not an automatic threshold check against accumulated XP.
 
 Three `CharacterLevelEntry[100]` tables, 12-byte rows, matched
-byte-exact as curated C source (`src/data/harry_levels.c`,
-`src/data/ron_levels.c`, `src/data/hermione_levels.c`):
+byte-exact as curated C source (`src/character/harry_levels.c`,
+`src/character/ron_levels.c`, `src/character/hermione_levels.c`):
 
 | Table | US address |
 |---|---|

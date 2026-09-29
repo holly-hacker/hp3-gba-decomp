@@ -1,7 +1,7 @@
 #include "types.h"
-#include "object.h"
-#include "mem.h"
-#include "vblank.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
+#include "hw/vblank.h"
 
 // Runs from vblank callbacks. Tile changes that TickObjectList queued take
 // effect only on a vblank that swaps the OAM shadow buffers, so the buffer

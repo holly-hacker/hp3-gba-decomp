@@ -1,11 +1,11 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "harry_hermione_port_in_time_cutscene.h"
-#include "input.h"
-#include "overworld.h"
-#include "room.h"
-#include "room_script.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "cutscene/harry_hermione_port_in_time_cutscene.h"
+#include "hw/input.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 // Any of A/B/Select/Start skips to the overworld (exit 0xE). Otherwise progress rises until the
 // camera focus passes y = 0x1F4, flashes white, then falls back to 0 and leaves for the

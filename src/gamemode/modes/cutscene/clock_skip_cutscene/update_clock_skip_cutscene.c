@@ -1,8 +1,8 @@
 #include "types.h"
-#include "game_modes.h"
-#include "input.h"
-#include "room.h"
-#include "room_script.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 // Arg2 counts frames. After 0x85 frames, or on A/B/Select/Start, leaves for the
 // overworld: in room 0x28 by exit 6, elsewhere in the current room.

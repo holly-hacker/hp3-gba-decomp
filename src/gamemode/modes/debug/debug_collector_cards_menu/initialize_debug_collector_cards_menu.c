@@ -1,12 +1,12 @@
 #include "types.h"
-#include "bios.h"
-#include "debug_menu.h"
-#include "display.h"
-#include "game_modes.h"
-#include "io_regs.h"
-#include "room.h"
-#include "text.h"
-#include "wizard_cracker_pop_it.h"
+#include "hw/bios.h"
+#include "menu/debug_menu.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/io_regs.h"
+#include "overworld/room.h"
+#include "graphics/text.h"
+#include "minigame/wizard_cracker_pop_it.h"
 
 void InitializeDebugCollectorCardsMenu(void)
 {

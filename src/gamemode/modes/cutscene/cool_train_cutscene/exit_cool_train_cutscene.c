@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game_modes.h"
+#include "game/game_modes.h"
 
 void ExitCoolTrainCutscene(void)
 {

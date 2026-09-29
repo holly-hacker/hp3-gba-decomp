@@ -1,10 +1,10 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "main_menu.h"
-#include "mem.h"
-#include "options.h"
-#include "save.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "menu/main_menu.h"
+#include "hw/mem.h"
+#include "menu/options.h"
+#include "game/save.h"
 
 void ExitOptions(void)
 {

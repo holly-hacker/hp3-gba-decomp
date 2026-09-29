@@ -1,6 +1,6 @@
-#include "mem.h"
-#include "room.h"
-#include "bios.h"
+#include "hw/mem.h"
+#include "overworld/room.h"
+#include "hw/bios.h"
 
 // Relocates FindFreeObjTileRun into IWRAM for speed, then resets the OBJ
 // tile allocation bitmaps.

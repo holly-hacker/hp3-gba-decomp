@@ -1,6 +1,6 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
 
 void ExitHarryPatronusCutscene(void)
 {

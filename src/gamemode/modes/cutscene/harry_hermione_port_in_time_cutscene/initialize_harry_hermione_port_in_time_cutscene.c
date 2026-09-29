@@ -1,12 +1,12 @@
 #include "types.h"
-#include "bios.h"
-#include "display.h"
-#include "game_modes.h"
-#include "graphics.h"
-#include "harry_hermione_port_in_time_cutscene.h"
-#include "io_regs.h"
-#include "overworld.h"
-#include "room.h"
+#include "hw/bios.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/graphics.h"
+#include "cutscene/harry_hermione_port_in_time_cutscene.h"
+#include "hw/io_regs.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
 
 void InitializeHarryHermionePortInTimeCutscene(void)
 {

@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "divination_tea.h"
-#include "game_modes.h"
-#include "input.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "minigame/divination_tea.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
 #include "mt19937.h"
-#include "text.h"
+#include "graphics/text.h"
 
 void UpdateDivinationTeaMinigame(void)
 {

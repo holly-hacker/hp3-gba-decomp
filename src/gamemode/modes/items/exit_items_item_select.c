@@ -1,8 +1,8 @@
 #include "types.h"
-#include "display.h"
-#include "items_menu.h"
-#include "mem.h"
-#include "status_equip.h"
+#include "graphics/display.h"
+#include "menu/items_menu.h"
+#include "hw/mem.h"
+#include "menu/status_equip.h"
 
 void ExitItemsItemSelect(void)
 {

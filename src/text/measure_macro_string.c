@@ -1,5 +1,5 @@
 #include "types.h"
-#include "text.h"
+#include "graphics/text.h"
 
 // Returns the pixel width of a glyph string. A 0x40 prefix selects a macro
 // string from sTextMacroTable (code - 0x31), which is measured recursively.

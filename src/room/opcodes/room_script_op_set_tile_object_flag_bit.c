@@ -1,5 +1,5 @@
 #include "types.h"
-#include "room_script.h"
+#include "overworld/room_script.h"
 
 typedef struct SetTileObjectFlagBitRecord {
     u32 dwOpcode;

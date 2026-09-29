@@ -1,11 +1,11 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
-#include "game_modes.h"
-#include "main_menu.h"
-#include "mem.h"
-#include "minigame_menu.h"
-#include "riddikulus.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "menu/main_menu.h"
+#include "hw/mem.h"
+#include "menu/minigame_menu.h"
+#include "minigame/riddikulus.h"
 
 void ExitRiddikulusMinigame(void)
 {

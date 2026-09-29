@@ -1,5 +1,5 @@
 #include "types.h"
-#include "main_menu.h"
+#include "menu/main_menu.h"
 
 void UpdateLoadGame(void)
 {

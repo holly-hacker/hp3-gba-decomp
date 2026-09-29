@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game_modes.h"
-#include "hippogriff_flies_into_air_cutscene.h"
+#include "game/game_modes.h"
+#include "cutscene/hippogriff_flies_into_air_cutscene.h"
 
 // dwStateTimer counts down from 0x12C; at 0xC8 the hippogriff starts shrinking, at 0 the
 // HippogriffTookToAirCutscene follows.

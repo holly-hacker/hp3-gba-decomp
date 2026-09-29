@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle.h"
+#include "battle/battle.h"
 #include "mt19937.h"
 
 // Adds +/-16 random jitter to each Enemy fighter's bSpeed (clamped

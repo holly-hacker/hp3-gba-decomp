@@ -1,12 +1,12 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
-#include "game_modes.h"
-#include "mem.h"
-#include "minigame_menu.h"
-#include "overworld.h"
-#include "room.h"
-#include "room_script.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/mem.h"
+#include "menu/minigame_menu.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 // Overworld mode's pDestroyFn. Plays the outgoing screen transition, then
 // tears down the overworld's objects, palettes and lists. The mode being

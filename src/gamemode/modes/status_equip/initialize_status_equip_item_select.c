@@ -1,8 +1,8 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "io_regs.h"
-#include "status_equip.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/io_regs.h"
+#include "menu/status_equip.h"
 
 void InitializeStatusEquipItemSelect(void)
 {

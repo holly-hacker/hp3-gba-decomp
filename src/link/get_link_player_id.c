@@ -1,5 +1,5 @@
 #include "types.h"
-#include "link.h"
+#include "link/link.h"
 
 s32 GetLinkPlayerId(void)
 {

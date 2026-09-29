@@ -1,12 +1,12 @@
 #include "types.h"
-#include "audio.h"
-#include "bios.h"
-#include "cool_train_cutscene.h"
-#include "display.h"
-#include "game_modes.h"
-#include "input.h"
-#include "io_regs.h"
-#include "room.h"
+#include "graphics/audio.h"
+#include "hw/bios.h"
+#include "cutscene/cool_train_cutscene.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "hw/io_regs.h"
+#include "overworld/room.h"
 
 // Runs for 0x78 frames, or until A is pressed, then returns to the overworld
 // in the current room.

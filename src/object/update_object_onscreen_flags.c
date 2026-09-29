@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "room.h"
+#include "graphics/object.h"
+#include "overworld/room.h"
 
 s32 UpdateObjectOnscreenFlags(Object *obj)
 {

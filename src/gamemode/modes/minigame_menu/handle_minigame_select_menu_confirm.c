@@ -1,10 +1,10 @@
 #include "types.h"
-#include "audio.h"
-#include "game_modes.h"
-#include "input.h"
-#include "main_menu.h"
-#include "minigame_menu.h"
-#include "save.h"
+#include "graphics/audio.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "menu/main_menu.h"
+#include "menu/minigame_menu.h"
+#include "game/save.h"
 
 void HandleMinigameSelectMenuConfirm(void)
 {

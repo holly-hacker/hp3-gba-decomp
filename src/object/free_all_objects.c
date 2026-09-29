@@ -1,8 +1,8 @@
 #include "types.h"
-#include "mem.h"
-#include "object.h"
-#include "oam.h"
-#include "vblank.h"
+#include "hw/mem.h"
+#include "graphics/object.h"
+#include "graphics/oam.h"
+#include "hw/vblank.h"
 
 // Frees every object on the active list, then clears leftover sprites from OAM and waits
 // for VBlank so the empty screen is displayed. Game modes call this on exit.

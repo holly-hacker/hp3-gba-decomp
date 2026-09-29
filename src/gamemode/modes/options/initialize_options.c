@@ -1,12 +1,12 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "graphics.h"
-#include "main_menu.h"
-#include "object.h"
-#include "options.h"
-#include "save.h"
-#include "text.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/graphics.h"
+#include "menu/main_menu.h"
+#include "graphics/object.h"
+#include "menu/options.h"
+#include "game/save.h"
+#include "graphics/text.h"
 
 void InitializeOptions(void)
 {

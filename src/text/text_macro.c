@@ -1,6 +1,6 @@
 #include "types.h"
-#include "dialog.h"
-#include "text.h"
+#include "menu/dialog.h"
+#include "graphics/text.h"
 
 // Fill text macro @N (sTextMacroTable slot N - 1) before showing text that uses it.
 // JP copies a two-byte glyph (lead byte above 0xEF) as a unit.

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle.h"
+#include "battle/battle.h"
 #include "mt19937.h"
 
 // Rolls a monster's MonsterTable special effect: 100% fires unconditionally,

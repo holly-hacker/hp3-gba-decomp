@@ -2,7 +2,7 @@
 
 // g_pItemTable has 132 slots; only 0-78 are normal items, 79 is a dummy
 // end-of-list marker, 80-130 are the 51 famous wizard cards (order matches
-// sFamousWizardCardNames), 131 is unused padding. See docs/formats/items.md.
+// sDebugCollectorCardNames), 131 is unused padding. See docs/formats/items.md.
 #define ITEM_COUNT 132
 
 #define ITEM_ORDINARY_BELT                            0

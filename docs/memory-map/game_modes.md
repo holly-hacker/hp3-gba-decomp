@@ -47,7 +47,7 @@ Values for the debug-menu modes (`GameMode` enum, US ROM):
 | `DebugMenuCharacterSelect` | `0x2A` |
 
 Full enum (71 values, `Startup`=1 through `ConfirmTradeScreen`=0x47) is in
-`include/game_modes.h`, mirroring Ghidra's `GameMode` data type -- not
+`include/game/game_modes.h`, mirroring Ghidra's `GameMode` data type -- not
 reproduced in full here since it covers every screen/cutscene in the
 game, not just debug menus.
 
@@ -153,7 +153,7 @@ PROVEN from US decompiles and ROM tables.
 
 Screen state lives in `g_StatusEquipCharacterSelect`,
 `g_StatusEquipSlotSelect` and `g_StatusEquipItemSelect`; each holds the
-mode it pushes after its fade-out. Types are in `include/status_equip.h`;
+mode it pushes after its fade-out. Types are in `include/menu/status_equip.h`;
 the init/update/exit handlers are matched in
 `src/gamemode/modes/status_equip/` for both versions.
 
@@ -185,7 +185,7 @@ PROVEN from US decompiles, ROM tables and dialog text.
   `g_dwStatusEquipCharacter` and shows the result (text 0x400/0x401/0x403);
   A or B returns to 0x11.
 
-Types are in `include/items_menu.h`; the handlers are matched in
+Types are in `include/menu/items_menu.h`; the handlers are matched in
 `src/gamemode/modes/items/` for both versions. JP handlers sit +0x54 from
 US (0x11 `0x080395D0`-`0x080397A4`, 0x10 `0x080398A8`-`0x080399C8`, 0x12
 `0x080399C8`-`0x08039A68`), taken from JP's dispatch table; the RAM
@@ -197,12 +197,12 @@ PROVEN from US decompiles; the state names in the headers are provisional.
 
 | Mode | Screen state (US) | Header | High scores (`g_saveManager`) |
 |---|---|---|---|
-| 0x1B `WizardCrackerPopItMinigame` | `*g_pWizardCrackerPopIt` (`0x03005230`, allocated 0x1AC bytes) | `include/wizard_cracker_pop_it.h` | `adwWizardCrackerPopItHighScores` |
-| 0x1C `DivinationTeaMinigame` | `g_DivinationTea` (`0x03005B28`) | `include/divination_tea.h` | none |
-| 0x24 `UnusedServePumpkinJuiceMinigame` | `g_ServePumpkinJuice` (`0x03005238`) | `include/serve_pumpkin_juice.h` | none |
-| 0x2B `HippogriffGlideMinigame` | `*g_pHippogriffGlide` (`0x03002088`, allocated 0x1F0 bytes) | `include/hippogriff_glide.h` | `adwHippogriffGlideHighScores` |
-| 0x2F `RiddikulusMinigame` | `g_Riddikulus` (`0x03002048`) | `include/riddikulus.h` | `adwRiddikulusHighScores` |
-| 0x33 `HarryVsDementorsMinigame` | `g_HarryVsDementors` (`0x03002E18`) | `include/harry_vs_dementors.h` | none |
+| 0x1B `WizardCrackerPopItMinigame` | `*g_pWizardCrackerPopIt` (`0x03005230`, allocated 0x1AC bytes) | `include/minigame/wizard_cracker_pop_it.h` | `adwWizardCrackerPopItHighScores` |
+| 0x1C `DivinationTeaMinigame` | `g_DivinationTea` (`0x03005B28`) | `include/minigame/divination_tea.h` | none |
+| 0x24 `UnusedServePumpkinJuiceMinigame` | `g_ServePumpkinJuice` (`0x03005238`) | `include/minigame/serve_pumpkin_juice.h` | none |
+| 0x2B `HippogriffGlideMinigame` | `*g_pHippogriffGlide` (`0x03002088`, allocated 0x1F0 bytes) | `include/minigame/hippogriff_glide.h` | `adwHippogriffGlideHighScores` |
+| 0x2F `RiddikulusMinigame` | `g_Riddikulus` (`0x03002048`) | `include/minigame/riddikulus.h` | `adwRiddikulusHighScores` |
+| 0x33 `HarryVsDementorsMinigame` | `g_HarryVsDementors` (`0x03002E18`) | `include/minigame/harry_vs_dementors.h` | none |
 
 - Each update handler is a `switch` on `dwModeState`; the handlers only
   drive the state machine and call the screen's own helpers, which are not

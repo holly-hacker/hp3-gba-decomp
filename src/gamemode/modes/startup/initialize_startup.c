@@ -1,8 +1,8 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "game_modes.h"
-#include "text.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "graphics/text.h"
 
 void InitializeStartup(void)
 {

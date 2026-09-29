@@ -1,7 +1,7 @@
 #include "types.h"
-#include "room.h"
-#include "room_script.h"
-#include "room_script_branch.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
+#include "overworld/room_script_branch.h"
 
 typedef struct GotoIfAllQuestFlagsSetRecord {
     u32 dwOpcode;

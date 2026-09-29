@@ -1,5 +1,5 @@
 #include "types.h"
-#include "overworld.h"
+#include "overworld/overworld.h"
 
 void TickOverworldBeforeObjects_candidate(void)
 {

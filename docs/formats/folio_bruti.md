@@ -24,7 +24,7 @@ damage range, accuracy, and the rest) is **PROVEN field by field**,
 each from a live code path that reads it -- see "The monster stat table"
 below, and [`../memory-map/battle.md`](../memory-map/battle.md) for the
 readers themselves. The stat table is decompiled to C
-(`src/data/monsters.c`, 69 `MonsterTableRow` initializers, committed
+(`src/battle/monsters.c`, 69 `MonsterTableRow` initializers, committed
 source). The
 three functions that use the table (`DrawFolioBrutiMonsterPanel`,
 `GetMonsterSpellEffectiveness`, `InitMonsterBattleActor`) are named in
@@ -35,7 +35,7 @@ boundaries.
 
 **JP status:** `MonsterTable` content is now **PROVEN byte-identical**
 between US and JP (same as Krawall audio), just at a different address
-(`0x0804F33C`); one C source (`src/data/monsters.c`) serves both via
+(`0x0804F33C`); one C source (`src/battle/monsters.c`) serves both via
 per-version `c-file` rows. Two of the
 three functions are matched and named in `functions.jp.cfg`:
 `InitMonsterBattleActor` (`0x08014C74`) and `GetMonsterSpellEffectiveness`
@@ -275,7 +275,7 @@ crab is near-immune to a fire spell and maximally vulnerable to ice,
 exactly the type-matchup a bestiary would encode. Indices 4-6 are
 Rat/Albino Rat/Plague Rat (string ids 1190-1192) with HP 18/25/35,
 again increasing with tier and sharing one effectiveness row across the
-family. (Values live in `src/data/monsters.c`.)
+family. (Values live in `src/battle/monsters.c`.)
 
 Verification snippet:
 
@@ -359,7 +359,7 @@ The 16-byte `ObjectAssetRecord`s that follow, up to `0x0804F404`:
 
 The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table.
 
-`src/data/monster_graphics_table.c` reconstructs `0x0804E6B4`-`0x0804F404`
+`src/graphics/assets/monster_graphics_table.c` reconstructs `0x0804E6B4`-`0x0804F404`
 (JP `0x0804E5E0`-`0x0804F330`, same content) with every pointer a
 generated image-bank label.
 
@@ -443,7 +443,7 @@ share the same skip guard.
 ### The table as committed C source
 
 **PROVEN** (byte-exact, `just check-all` passes for both versions).
-`src/data/monsters.c` holds the 69 records as `MonsterTableRow`
+`src/battle/monsters.c` holds the 69 records as `MonsterTableRow`
 initializers in on-disk order (field layout matches the table above
 exactly), each with a leading `// <index>: <name>` comment (names decoded
 straight from the ROM's dialog text, purely human-readable annotations --

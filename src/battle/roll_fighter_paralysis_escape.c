@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle.h"
+#include "battle/battle.h"
 #include "mt19937.h"
 
 // Not-paralyzed fighters act normally (0). A paralyzed fighter rolls its

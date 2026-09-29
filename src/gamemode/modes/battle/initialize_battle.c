@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "battle.h"
-#include "display.h"
-#include "game_modes.h"
-#include "rewards.h"
-#include "mem.h"
-#include "room.h"
+#include "graphics/audio.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "game/rewards.h"
+#include "hw/mem.h"
+#include "overworld/room.h"
 
 // Battle mode's pInitFn. See docs/memory-map/battle.md.
 void InitializeBattle(void)

@@ -1,7 +1,7 @@
 #include "types.h"
-#include "object.h"
-#include "mem.h"
-#include "game_modes.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
+#include "game/game_modes.h"
 
 // Runs one update pass over an object list. TickObject runs for every object
 // (from the tail when the mode flags allow the full pass), then the objects

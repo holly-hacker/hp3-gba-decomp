@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game_modes.h"
-#include "overworld.h"
+#include "game/game_modes.h"
+#include "overworld/overworld.h"
 
 s32 TickOverworldControlSlots_candidate(void)
 {

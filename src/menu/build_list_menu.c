@@ -1,8 +1,8 @@
 #include "types.h"
-#include "game_modes.h"
-#include "main_menu.h"
-#include "menu.h"
-#include "object.h"
+#include "game/game_modes.h"
+#include "menu/main_menu.h"
+#include "menu/menu.h"
+#include "graphics/object.h"
 
 void BuildListMenu(const ListMenuDefinition *pDefinition)
 {

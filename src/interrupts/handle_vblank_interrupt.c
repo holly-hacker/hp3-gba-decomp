@@ -1,8 +1,8 @@
-#include "vblank.h"
-#include "interrupts.h"
-#include "io_regs.h"
-#include "dma.h"
-#include "oam.h"
+#include "hw/vblank.h"
+#include "hw/interrupts.h"
+#include "hw/io_regs.h"
+#include "hw/dma.h"
+#include "graphics/oam.h"
 
 extern void sub_08007130(void);
 extern void sub_0800D354(void);

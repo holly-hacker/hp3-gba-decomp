@@ -31,8 +31,8 @@ known".
   `Hermione`, `Hogwarts`) and common UI words (`Save`, `Load`, `Options`,
   `Quidditch`, `Potion`, etc.). The *only* readable strings in the whole
   16MB ROM are:
-  - The two already-extracted name tables (`asm/data/playable_character_names.us.s`,
-    `asm/data/famous_wizard_card_names.us.s`).
+  - The two already-extracted name tables (`asm/data/debug_character_names.us.s`,
+    `asm/data/debug_collector_card_names.us.s`).
   - A cluster of multiplayer/link-cable debug strings (`Error: Send
     Overrun`, `Error: Recv CRC`, etc., around `0x08060554`) and a build
     date stamp (`Apr  5 2004` near `0x0806bfc4`).
@@ -111,7 +111,7 @@ string table. No candidate resembled "7 parallel per-language tables" or
 found by this method.**
 
 One incidental find: `0x0800BBEC` contains a direct literal-pool pointer
-to `sFamousWizardCardNames` (`0x0804CEC4`), confirming ordinary
+to `sDebugCollectorCardNames` (`0x0804CEC4`), confirming ordinary
 armcc-style PC-relative literal-pool references are how code reaches
 known data -- a viable pattern to search for elsewhere, but not itself a
 new lead.
@@ -158,12 +158,12 @@ Static tracing *forward* from the one available piece of ground truth (a
 real ASCII string genuinely read by code, not just present in the ROM)
 reaches the VWF engine without needing mGBA at all.
 
-**Anchor**: of the two known plaintext tables, `sFamousWizardCardNames`
+**Anchor**: of the two known plaintext tables, `sDebugCollectorCardNames`
 (`0x0804CEC4`) is actually read by code -- `0x0800BBEC` in
 `build/us/full_disasm.s` loads it, computes a 32-byte-stride entry index
 from a counter at `0x03002238+4`, and calls
 `sub_08020FF8(len=0x1a0, entry_ptr, 1, x=0x78, y=0x10, attr=0xe0)`.
-(`sPlayableCharacterNames` at `0x0804C4F6`, by contrast, has **zero**
+(`sDebugCharacterNames` at `0x0804C4F6`, by contrast, has **zero**
 literal-pool references anywhere in the disassembly -- likely dead/debug
 data, not a useful anchor.)
 

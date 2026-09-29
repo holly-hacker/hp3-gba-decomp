@@ -1,7 +1,7 @@
 #include "types.h"
-#include "object.h"
-#include "room.h"
-#include "room_script.h"
+#include "graphics/object.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
 
 typedef struct StartTileObjectScriptRecord {
     u32 dwOpcode;

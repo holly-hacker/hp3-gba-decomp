@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "room.h"
+#include "graphics/object.h"
+#include "overworld/room.h"
 
 // Returns the eight-way direction from pos toward target, like
 // GetDirectionToTarget, but checks the room terrain in front of the object's

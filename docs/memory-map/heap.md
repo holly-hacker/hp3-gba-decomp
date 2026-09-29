@@ -20,7 +20,7 @@ registered (by `InitHeap`, spanning ~all of EWRAM):
 - `InitMemoryPool`, `GetFreeBlockSize`, `LinkBlockByAddress`,
   `LinkFreeBlock`, `UnlinkFreeBlock`, `List_PushHead`, `memset`,
   `BuildFreeList`, `AllocBlock`, `AllocZeroed` are all matched in
-  `src/mem/`. Types in `include/mem.h`. See also "Generic intrusive list
+  `src/mem/`. Types in `include/hw/mem.h`. See also "Generic intrusive list
   / active-object list" below for `List_PopHead`/`List_Remove`/
   `List_MoveToHead`/`AllocObjectFromFreeList`.
 
@@ -62,7 +62,7 @@ fixed-size-slot pool out of the heap:
 
 - `g_ObjectPoolState.pBuffer`/`.pFreeListHead` are adjacent words
   (`0x03001C08`/`0x03001C0C`, modeled as one `ObjectPoolState` struct in
-  `include/mem.h` since the real code reaches the second through the
+  `include/hw/mem.h` since the real code reaches the second through the
   first at `+4`) — a 0x7968-byte `AllocZeroed`'d buffer (0x69 objects *
   0x128-byte stride), carved into a free list by `BuildFreeList`.
 - `g_pObjectPoolAuxBuffer` (`0x03001DBC`) — a second, 0x104-byte
@@ -118,7 +118,7 @@ call returned nonzero.
 ## Generic intrusive list / active-object list — PROVEN
 
 The object pool's free list is built on a small generic doubly-linked-list
-library (`ListNode` in `include/mem.h`) that a *second* list, the active
+library (`ListNode` in `include/hw/mem.h`) that a *second* list, the active
 object list, also uses. All four matched in `src/mem/`.
 
 - `List_PopHead` (`0x08028728`) — `ListNode *List_PopHead(ListNode
@@ -167,7 +167,7 @@ then descending screen Y.
 
 `CheckObjectCollisions` does the per-frame pairwise collision pass.
 **PROVEN** by decompile: each object has two `ObjectCollisionBox` slots
-(`Object.aCollisionBoxes`, `include/object.h`) and a matching 2-entry
+(`Object.aCollisionBoxes`, `include/graphics/object.h`) and a matching 2-entry
 callback array (`Object.apfnCollisionCallback`). On AABB overlap, gated
 on `g_GameModeStackContext.dwCurrentGameMode == Overworld`, it calls
 each object's callback for the overlapping box slot with the other

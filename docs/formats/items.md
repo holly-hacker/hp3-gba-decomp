@@ -121,7 +121,7 @@ real category but passes the `0xA` "all items" filter, clones index
 ## The table as committed C source
 
 **PROVEN** (byte-exact, `just check-all` passes). `g_pItemTable` is
-committed as `src/data/items.c`, all 132 `ItemEntry` initializers in
+committed as `src/items/items.c`, all 132 `ItemEntry` initializers in
 on-disk order, each with a leading `// <index>: <name>` comment for the
 79 real entries. Placed for the US ROM only by a `c-file` row in
 `regions.us.txt` -- table content is not yet confirmed identical to JP
@@ -134,14 +134,14 @@ addresses; the dummy record 79 reuses item 63's labels, and records
 ## Item icons
 
 Real items' `pPalette`/`pTileData`/`pFrameData` aren't stored as
-literal integers in `src/data/items.c` -- see [`graphics.md`](graphics.md)'s
+literal integers in `src/items/items.c` -- see [`graphics.md`](graphics.md)'s
 "Item icons" section for the format. File stems follow item-table order:
 index 0 becomes `Item001`, independent of display text, and names the
 editable `data/images/items/Item001.png`. `just extract-images` writes
 the PNGs and `data/images/items/bank.json` in ROM order. The shared
 `tools/images/pack_images.py` rebuilds each icon from its PNG and emits
 assembly labels and a matching C header for the single `image-bank`
-region; it does not need to parse `src/data/items.c` or know
+region; it does not need to parse `src/items/items.c` or know
 item-specific formats.
 
 ## What's NOT yet known

@@ -1,10 +1,10 @@
 #include "types.h"
-#include "audio.h"
-#include "object.h"
-#include "display.h"
-#include "game_modes.h"
-#include "harry_vs_dementors.h"
-#include "text.h"
+#include "graphics/audio.h"
+#include "graphics/object.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "minigame/harry_vs_dementors.h"
+#include "graphics/text.h"
 #include "gen/ObjectSprites.h"
 
 void InitializeHarryVsDementorsMinigame(void)

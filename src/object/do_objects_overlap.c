@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // Returns 1 if the two objects' collision box 0 rects overlap; touching edges
 // count as overlapping.

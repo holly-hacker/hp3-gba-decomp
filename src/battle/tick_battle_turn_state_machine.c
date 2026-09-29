@@ -1,6 +1,6 @@
 #include "types.h"
-#include "battle.h"
-#include "game_modes.h"
+#include "battle/battle.h"
+#include "game/game_modes.h"
 
 static inline void TransitionBattleState(int newState)
 {

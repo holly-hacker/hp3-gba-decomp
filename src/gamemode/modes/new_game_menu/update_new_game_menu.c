@@ -1,8 +1,8 @@
 #include "types.h"
-#include "game_modes.h"
-#include "input.h"
-#include "main_menu.h"
-#include "menu.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "menu/main_menu.h"
+#include "menu/menu.h"
 
 void UpdateNewGameMenu(void)
 {

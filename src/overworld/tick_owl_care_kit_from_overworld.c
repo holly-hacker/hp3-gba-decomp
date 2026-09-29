@@ -1,6 +1,6 @@
 #include "types.h"
-#include "overworld.h"
-#include "owlcare.h"
+#include "overworld/overworld.h"
+#include "minigame/owlcare.h"
 
 void TickOwlCareKitFromOverworld(void)
 {

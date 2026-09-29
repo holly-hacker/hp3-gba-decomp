@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "game_modes.h"
-#include "game_save.h"
-#include "in_game_menu.h"
-#include "input.h"
-#include "status_equip.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "game/game_save.h"
+#include "menu/in_game_menu.h"
+#include "hw/input.h"
+#include "menu/status_equip.h"
 
 void UpdateStatusEquipSlotSelect(void)
 {

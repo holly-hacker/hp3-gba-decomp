@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "graphics.h"
+#include "graphics/object.h"
+#include "graphics/graphics.h"
 
 // Gives obj an OBJ palette bank for pPalette (a 2-byte header followed by 15
 // BGR555 colors, loaded into bank colors 1-15). Banks are shared through the

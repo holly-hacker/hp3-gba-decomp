@@ -1,5 +1,5 @@
 #include "types.h"
-#include "room_script.h"
+#include "overworld/room_script.h"
 
 // Room-script VM entry (see docs/formats/room_scripts.md). Walks chain `chain`
 // record by record until it ends or a handler yields (run state 2). A handler that

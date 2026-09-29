@@ -1,10 +1,10 @@
 #include "types.h"
-#include "game_modes.h"
-#include "harry_vs_dementors.h"
-#include "hippogriff_glide.h"
-#include "riddikulus.h"
-#include "room_script.h"
-#include "wizard_cracker_pop_it.h"
+#include "game/game_modes.h"
+#include "minigame/harry_vs_dementors.h"
+#include "minigame/hippogriff_glide.h"
+#include "minigame/riddikulus.h"
+#include "overworld/room_script.h"
+#include "minigame/wizard_cracker_pop_it.h"
 
 typedef struct StartMinigameRecord {
     u32 dwOpcode;

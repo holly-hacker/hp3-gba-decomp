@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // See SortObjectsByDepth and TickObjectList's per-layer particle flush.
 void SetObjectDrawLayer(Object *obj, u8 layer)

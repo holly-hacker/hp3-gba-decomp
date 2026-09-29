@@ -1,5 +1,5 @@
-#include "graphics.h"
-#include "bios.h"
+#include "graphics/graphics.h"
+#include "hw/bios.h"
 
 void InstallIwramDecompressCodecs(void)
 {

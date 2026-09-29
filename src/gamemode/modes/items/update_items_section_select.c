@@ -1,11 +1,11 @@
 #include "types.h"
-#include "audio.h"
-#include "game_modes.h"
-#include "game_save.h"
-#include "in_game_menu.h"
-#include "input.h"
-#include "items_menu.h"
-#include "main_menu.h"
+#include "graphics/audio.h"
+#include "game/game_modes.h"
+#include "game/game_save.h"
+#include "menu/in_game_menu.h"
+#include "hw/input.h"
+#include "menu/items_menu.h"
+#include "menu/main_menu.h"
 
 void UpdateItemsSectionSelect(void)
 {

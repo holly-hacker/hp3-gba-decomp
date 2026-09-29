@@ -1,7 +1,7 @@
 #include "types.h"
-#include "object.h"
-#include "mem.h"
-#include "audio.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
+#include "graphics/audio.h"
 
 // Runs one object's per-frame update for TickObjectList: frees it if marked for
 // destruction, binds or releases its effect graphics by visibility, runs its

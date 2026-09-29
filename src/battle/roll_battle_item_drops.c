@@ -1,7 +1,7 @@
 #include "types.h"
-#include "battle.h"
+#include "battle/battle.h"
 #include "mt19937.h"
-#include "monster_drop_table.h"
+#include "battle/monster_drop_table.h"
 
 #define NO_ITEM 0x85
 #define MAX_FAINTED_MONSTERS 4

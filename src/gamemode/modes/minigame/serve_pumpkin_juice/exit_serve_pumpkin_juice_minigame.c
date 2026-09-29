@@ -1,8 +1,8 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
-#include "mem.h"
-#include "minigame_menu.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "hw/mem.h"
+#include "menu/minigame_menu.h"
 
 void ExitUnusedServePumpkinJuiceMinigame(void)
 {

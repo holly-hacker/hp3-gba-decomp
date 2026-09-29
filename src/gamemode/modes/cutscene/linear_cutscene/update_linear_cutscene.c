@@ -1,9 +1,9 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "input.h"
-#include "linear_cutscene.h"
-#include "text.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "hw/input.h"
+#include "cutscene/linear_cutscene.h"
+#include "graphics/text.h"
 
 // A advances the text; the object is shown while more text remains, and A on
 // the last page leaves the cutscene.

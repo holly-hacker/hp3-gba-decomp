@@ -1,6 +1,6 @@
 #include "types.h"
-#include "battle.h"
-#include "room_script.h"
+#include "battle/battle.h"
+#include "overworld/room_script.h"
 
 typedef struct GrantPartySpellRecord {
     u32 dwOpcode;

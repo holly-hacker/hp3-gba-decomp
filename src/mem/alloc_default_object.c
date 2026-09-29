@@ -1,5 +1,5 @@
-#include "object.h"
-#include "mem.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
 
 // Pops an object off the free list and resets its default sentinel fields
 // (no type, no room-tile binding, no VRAM tile allocation).

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "text.h"
+#include "graphics/text.h"
 
 // Points the three decompressor globals DecompressDialogText reads at one
 // language's string-table blob (see DialogTextBlob). Called by SetLanguage

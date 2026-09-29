@@ -1,5 +1,5 @@
-#include "eeprom.h"
-#include "io_regs.h"
+#include "hw/eeprom.h"
+#include "hw/io_regs.h"
 
 // Nintendo EEPROM library object EEPROM_V124: interface selection, the
 // DMA3 serial transfer, and block read, write and verify. The ID string is

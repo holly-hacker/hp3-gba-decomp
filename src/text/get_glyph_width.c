@@ -1,5 +1,5 @@
 #include "types.h"
-#include "text.h"
+#include "graphics/text.h"
 
 // Returns the pixel width of glyphCode in font; codes outside the font's range
 // use the width stored for glyph index 1, and code 0 has no width.

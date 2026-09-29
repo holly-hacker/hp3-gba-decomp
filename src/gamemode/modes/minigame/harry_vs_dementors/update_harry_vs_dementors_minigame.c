@@ -1,9 +1,9 @@
 #include "types.h"
-#include "audio.h"
-#include "minigame_menu.h"
-#include "game_modes.h"
-#include "harry_vs_dementors.h"
-#include "input.h"
+#include "graphics/audio.h"
+#include "menu/minigame_menu.h"
+#include "game/game_modes.h"
+#include "minigame/harry_vs_dementors.h"
+#include "hw/input.h"
 
 void UpdateHarryVsDementorsMinigame(void)
 {

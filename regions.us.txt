@@ -1016,9 +1016,9 @@ label 0x0804C4CC g_dwDebugCharacterSelectBg0Control
 label 0x0804C4D0 g_dwDebugCharacterSelectBg1Control
 label 0x0804C4D4 g_DebugCharacterSelectAnimFrames
 label 0x0804C4E4 g_DebugCharacterSelectAnimData
-c-file 0x0804C4F6 0x0804C616 src/data/playable_character_names.c sPlayableCharacterNames
+c-file 0x0804C4F6 0x0804C616 src/menu/debug_character_names.c sDebugCharacterNames
 label 0x0804C618 g_dwDebugPortraitsBg1Control
-c-file 0x0804C61C 0x0804CA9C src/data/portrait_table.c g_apPortraitTable
+c-file 0x0804C61C 0x0804CA9C src/graphics/assets/portrait_table.c g_apPortraitTable
 label 0x0804CE8C g_dwDebugSoundTestBg0Control
 label 0x0804CE90 g_dwDebugSoundTestBg1Control
 label 0x0804CE94 g_DebugSoundTestAnimFrames
@@ -1026,28 +1026,28 @@ label 0x0804CEA4 g_DebugSoundTestAnimData
 label 0x0804CEB8 g_dwDebugCollectorCardsBg2Control
 label 0x0804CEBC g_dwDebugCollectorCardsBg1Control
 label 0x0804CEC0 g_dwDebugCollectorCardsBg0Control
-c-file 0x0804CEC4 0x0804D524 src/data/famous_wizard_card_names.c sFamousWizardCardNames
+c-file 0x0804CEC4 0x0804D524 src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 label 0x0804D798 g_abGammaNormalRemap
 label 0x0804D7B8 g_abGammaHighRemap
-c-file 0x0804D824 0x0804E074 src/data/battle_hud_assets.c g_aBattleHudAssets
+c-file 0x0804D824 0x0804E074 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 label 0x0804E254 g_abBattleMusicByRoom
 label 0x0804E28B g_abBattleMusicByOverworldSlot
-c-file 0x0804E5E0 0x0804E5EC src/data/spell_leveling.c g_abSpellMaxLevel
-c-file 0x0804E6B4 0x0804F404 src/data/monster_graphics_table.c g_pMonsterGraphicsTable
+c-file 0x0804E5E0 0x0804E5EC src/battle/spell_leveling.c g_abSpellMaxLevel
+c-file 0x0804E6B4 0x0804F404 src/graphics/assets/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table, decompiled to C
-c-file 0x0804F410 0x0804FA88 src/data/monsters.c MonsterTable
+c-file 0x0804F410 0x0804FA88 src/battle/monsters.c MonsterTable
 label 0x0804FB9C g_aMonsterAttackOffset_candidate
 
-c-file 0x0804FC28 0x0804FE50 src/data/monster_drop_table.c g_pMonsterDropTable
-c-file 0x0804FE50 0x08050300 src/data/harry_levels.c g_pHarryLevelTable
-c-file 0x08050300 0x080507B0 src/data/ron_levels.c g_pRonLevelTable
-c-file 0x080507B0 0x08050C60 src/data/hermione_levels.c g_pHermioneLevelTable
+c-file 0x0804FC28 0x0804FE50 src/battle/monster_drop_table.c g_pMonsterDropTable
+c-file 0x0804FE50 0x08050300 src/character/harry_levels.c g_pHarryLevelTable
+c-file 0x08050300 0x080507B0 src/character/ron_levels.c g_pRonLevelTable
+c-file 0x080507B0 0x08050C60 src/character/hermione_levels.c g_pHermioneLevelTable
 
 # Encounter roster tables, see docs/formats/encounters.md
-c-file 0x08050C6C 0x0805120C src/data/random_encounters.c g_aRandomEncounters
-c-file 0x0805120C 0x08051248 src/data/scripted_encounters.c g_aScriptedEncounters
-c-file 0x08051248 0x080514C8 src/data/fighter_anim_table.c g_aFighterAnimTable
+c-file 0x08050C6C 0x0805120C src/battle/random_encounters.c g_aRandomEncounters
+c-file 0x0805120C 0x08051248 src/battle/scripted_encounters.c g_aScriptedEncounters
+c-file 0x08051248 0x080514C8 src/graphics/assets/fighter_anim_table.c g_aFighterAnimTable
 label 0x080514C8 g_abHarryCardEffectId
 label 0x080514DE g_aCardTargetingMeta
 label 0x0805150A g_abSpecialMoveEffectId
@@ -1056,13 +1056,13 @@ label 0x08051560 g_aFighterAnimDataTable
 label 0x08051E70 g_pMonsterAnimFrameTable
 label 0x08053850 g_MonsterShadowAnimData
 label 0x080538B0 g_abSpellEffectScriptId
-c-file 0x080538EC 0x080539A0 src/data/spell_power.c g_awSpellPowerBase
+c-file 0x080538EC 0x080539A0 src/battle/spell_power.c g_awSpellPowerBase
 label 0x08053964 g_awSpellMpCost
 label 0x080539A0 g_aBattleSlotAnchorPos_candidate
 
 # Battle-script bytecode
 # battle-script-table <start> <end> <dir> <name>
-c-file 0x08053D40 0x080544D4 src/data/effect_assets.c g_aEffectObjectAssets
+c-file 0x08053D40 0x080544D4 src/graphics/assets/effect_assets.c g_aEffectObjectAssets
 battle-script-table 0x0805994C 0x0805BA7C data/battle_scripts g_apEffectScripts
 
 # Playtime counters, shared with JP at the same helper addresses.
@@ -1087,7 +1087,7 @@ label 0x08060884 g_PlayerCameraFocusOffset
 label 0x08060E8C gIntrTableTemplate
 
 # Item/equipment table, see docs/formats/items.md
-c-file 0x08060EE4 0x080629B4 src/data/items.c g_pItemTable
+c-file 0x08060EE4 0x080629B4 src/items/items.c g_pItemTable
 label 0x080629F4 g_dwLanguageSelectBg3Control
 label 0x080629F8 g_dwLanguageSelectBg2Control
 label 0x080629FC g_dwLanguageSelectBg1Control
@@ -1130,9 +1130,9 @@ label 0x08069AB8 g_aHelpSpriteAssets
 label 0x08069C18 g_apHelpSpritePalettes
 label 0x0806B1B4 g_aItemsSectionFilters
 label 0x0806B1F0 g_ItemsSectionMenuDefinition
-c-file 0x0806B250 0x0806B280 src/data/status_character_assets.c g_aStatusCharacterAssets
+c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 label 0x0806B2FC g_aStatusEquipSlots
-c-file 0x0806B944 0x0806BA4C src/data/shop_stock.c g_aShopStockMisc
+c-file 0x0806B944 0x0806BA4C src/shop/shop_stock.c g_aShopStockMisc
 
 # Dialog/UI text data
 # dialog-text <start> <end> <json-file> <name>
@@ -1352,4 +1352,4 @@ c-rodata 0x08FAA7D0 0x08FAA810 EepromV124
 c-rodata 0x08FAA810 0x08FAA824 EepromNoWait
 
 label 0x08FAAEF8 g_apPatronusGraphics
-c-file 0x08FB0D94 0x08FB0DB0 src/data/shop_stock_lists.c g_apShopStockLists
+c-file 0x08FB0D94 0x08FB0DB0 src/shop/shop_stock_lists.c g_apShopStockLists

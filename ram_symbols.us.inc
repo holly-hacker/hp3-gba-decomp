@@ -16,7 +16,7 @@
 .set gIrqStackTop,     0x03007FA0  @ top of the AGB IRQ-mode stack
 .set gIntrVectorPtr,   0x03007FFC  @ BIOS-called user interrupt handler pointer
 
-@ --- Interrupts / VBlank state (see include/vblank.h) ---
+@ --- Interrupts / VBlank state (see include/hw/vblank.h) ---
 @ Set by InitInterruptSystem to &g_VBlankState; read by every interrupt
 @ handler (HandleVBlankInterrupt, HandleHBlankInterrupt,
 @ HandleTimer0Interrupt, HandleTimer3OrSerialInterrupt,
@@ -27,17 +27,17 @@
 .set g_VBlankState, 0x03003530  @ the object g_pVBlankState is set to point at
 
 @ Sticky software copy of acked hardware IF bits, ORed by every interrupt
-@ handler after acking its own bit in IF. See include/vblank.h.
+@ handler after acking its own bit in IF. See include/hw/vblank.h.
 .set g_wPendingIntrFlags, 0x030037A4
 @ Reentrancy guard for HandleVBlankInterrupt; body only runs while this
-@ reads back as 1. See include/vblank.h.
+@ reads back as 1. See include/hw/vblank.h.
 .set g_dwVBlankIntrNestCount, 0x030037A8
-@ OAM DMA half-toggle; see include/vblank.h.
+@ OAM DMA half-toggle; see include/hw/vblank.h.
 .set g_bOamDmaHalfToggle, 0x030037AC
-@ Forces one extra sub_08007130 call this vblank; see include/vblank.h.
+@ Forces one extra sub_08007130 call this vblank; see include/hw/vblank.h.
 .set g_bForcePendingBgWritesFlush, 0x03002038
 
-@ --- OAM shadow buffer, see include/oam.h ---
+@ --- OAM shadow buffer, see include/graphics/oam.h ---
 .set g_pOamShadowBuffer, 0x03003FE8
 .set g_pOamDmaShadowBuffer, 0x03003FEC
 .set g_aOamShadowBufferA, 0x03003FF0
@@ -76,7 +76,7 @@
 .set g_effectStaging,        0x03002750  @ EffectStaging: battle-effect staging area, see TriggerBattleEffect
 .set g_dwBattleRewardFlagsSnapshot, 0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 .set g_anFaintedRosterIndices, 0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
-.set g_saveManager, 0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/save.h and docs/formats/save.md
+.set g_saveManager, 0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/game/save.h and docs/formats/save.md
 .set g_saveStateBlock, 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_dwUnk03003234, 0x03003234  @ u32: one-shot flag TickObject clears; see src/object/tick_object.c
 .set g_aBgScrollState,   0x03001E80  @ u32[]; [0x25] == 0x03001F14
@@ -118,14 +118,14 @@
 .set g_awPlayerKeysPressed,       0x030034FE  @ u16[2]: per-player newly-pressed masks
 .set g_awPlayerKeysReleased,      0x03003502  @ u16[2]: per-player newly-released masks
 .set g_awLinkKeysReceived,        0x03005A0C  @ u16[2]: per-player key masks received over the link cable
-.set g_LinkPlayerState,           0x03005A24  @ LinkPlayerState: serial-link session block; see include/link.h
+.set g_LinkPlayerState,           0x03005A24  @ LinkPlayerState: serial-link session block; see include/link/link.h
 
-@ --- Overworld wandering monsters (see include/overworld.h) ---
+@ --- Overworld wandering monsters (see include/overworld/overworld.h) ---
 .set g_bTouchedMonsterRecordCount, 0x03003B70  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,    0x03003B74  @ u8[20]: 5 x 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,    0x03003B88  @ Object *: armed wandering-monster object
 
-@ --- Overworld control slots and pause menu (see include/overworld.h) ---
+@ --- Overworld control slots and pause menu (see include/overworld/overworld.h) ---
 .set g_OverworldControlState,     0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 .set g_bControlSlotTicks_candidate, 0x03003B58  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
 .set g_dwPauseMenuLocked,          0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
@@ -137,7 +137,7 @@
 @ --- Dialog/UI text engine (US only) ---
 .set gTextRenderState,       0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
                                          @ text-rendering fields (e.g. +0x11 = line height); not
-                                         @ fully mapped, see include/text.h
+                                         @ fully mapped, see include/graphics/text.h
 .set sTextMacroTable,        0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by sub_08020D30) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
 .set gDialogTextBlobBase,    0x030033C0  @ active language blob's base pointer (0 = none installed)
 .set gDialogTextOffsetTable, 0x030033C4  @ pointer to the active blob's per-string-ID u32[] offset table
@@ -145,9 +145,9 @@
 .set gDialogTextScratchBuf,  0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,       0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,    0x03005D0D  @ byte: locale-specific number-formatting separator
-.set g_dwMainMenuTextCursor, 0x03005DB0  @ u32: text tile cursor returned by the main menu's copyright text; see include/main_menu.h
-.set g_pMenuCursorObject, 0x03002E08  @ Object *: cursor object created by sub_0801DF6C; see include/main_menu.h
-.set g_OptionsState, 0x03005DD0  @ OptionsState: 8 object pointers, then music, sound and gamma settings; see include/options.h
+.set g_dwMainMenuTextCursor, 0x03005DB0  @ u32: text tile cursor returned by the main menu's copyright text; see include/menu/main_menu.h
+.set g_pMenuCursorObject, 0x03002E08  @ Object *: cursor object created by sub_0801DF6C; see include/menu/main_menu.h
+.set g_OptionsState, 0x03005DD0  @ OptionsState: 8 object pointers, then music, sound and gamma settings; see include/menu/options.h
 .set g_dwOptionsReturnMode, 0x03005E04  @ u32: GameMode that opened the options screen
 .set g_bOptionsSavedMusicVolume, 0x03005E08  @ u8: settings kept across the language select trip
 .set g_bOptionsSavedSoundVolume, 0x03005E09  @ u8
@@ -157,48 +157,48 @@
 .set g_StatusEquipReturnMode, 0x03005298  @ GameMode: StatusEquipCharacterSelect returns to on B (InGameMenu, InGameMenuFadeIn or ItemsItemSelect)
 .set g_StatusEquipNextMode, 0x0300529C  @ GameMode: StatusEquipCharacterSelect advances to on A (StatusEquipSlotSelect or QuantitySelectScreen)
 .set g_dwStatusEquipCharacter, 0x030052A0  @ u32: FighterType chosen in StatusEquipCharacterSelect, read by the slot/item screens and ItemUseScreen
-.set g_StatusEquipCharacterSelect, 0x030052A8  @ StatusEquipCharacterSelectState: slot presence flags and pending mode; see include/status_equip.h
+.set g_StatusEquipCharacterSelect, 0x030052A8  @ StatusEquipCharacterSelectState: slot presence flags and pending mode; see include/menu/status_equip.h
 .set g_bStatusEquipCharacterSlot, 0x030052B8  @ u8: StatusEquipCharacterSelect cursor slot
-.set g_ItemsItemSelect, 0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/items_menu.h
+.set g_ItemsItemSelect, 0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/menu/items_menu.h
 .set g_ItemsSectionSelectNextMode, 0x030054E4  @ GameMode: pushed once the Items section select fades out
 .set g_bItemsSectionCursor, 0x030054E8  @ s8: Items section select row saved on exit
 .set g_dwItemUseItem, 0x030054EC  @ u32: item chosen in ItemsItemSelect, used by ItemUseScreen
 .set g_dwItemUseQuantity, 0x030054F0  @ u32: quantity chosen in QuantitySelectScreen, used by ItemUseScreen
-.set g_StatusEquipSlotSelect, 0x030054F8  @ StatusEquipSlotSelectState: slot select screen objects and pending mode; see include/status_equip.h
+.set g_StatusEquipSlotSelect, 0x030054F8  @ StatusEquipSlotSelectState: slot select screen objects and pending mode; see include/menu/status_equip.h
 .set g_bStatusEquipSlot, 0x03005564  @ s8: selected equipment slot in StatusEquipSlotSelect
 .set g_dwStatusEquipSlotType, 0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect
-.set g_StatusEquipItemSelect, 0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/status_equip.h
+.set g_StatusEquipItemSelect, 0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/menu/status_equip.h
 .set g_dwSelectedMinigame, 0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
-.set g_DebugMenuMainState, 0x030021C0  @ DebugMenuMainState: {Object *pCursorObject; u32 dwSelection}; see include/debug_menu.h
-.set g_DebugPortraitsState, 0x03002210  @ DebugPortraitsState: {Object *pPortraitObject; u32 dwSelection}; see include/debug_menu.h
-.set g_DebugCollectorCardsState, 0x03002238  @ DebugCollectorCardsState: {Object *pCardObject; u32 dwSelection}; see include/debug_menu.h
-.set g_DebugSoundTestState, 0x03002218  @ DebugSoundTestState; see include/debug_menu.h
-.set g_DebugLevelAndQuestSelectState, 0x030021C8  @ DebugLevelAndQuestSelectState; see include/debug_menu.h
-.set g_DebugMapSelectState, 0x030021E8  @ DebugMapSelectState; see include/debug_menu.h
-.set g_DebugCharacterSelectState, 0x030021F8  @ DebugCharacterSelectState; see include/debug_menu.h
+.set g_DebugMenuMainState, 0x030021C0  @ DebugMenuMainState: {Object *pCursorObject; u32 dwSelection}; see include/menu/debug_menu.h
+.set g_DebugPortraitsState, 0x03002210  @ DebugPortraitsState: {Object *pPortraitObject; u32 dwSelection}; see include/menu/debug_menu.h
+.set g_DebugCollectorCardsState, 0x03002238  @ DebugCollectorCardsState: {Object *pCardObject; u32 dwSelection}; see include/menu/debug_menu.h
+.set g_DebugSoundTestState, 0x03002218  @ DebugSoundTestState; see include/menu/debug_menu.h
+.set g_DebugLevelAndQuestSelectState, 0x030021C8  @ DebugLevelAndQuestSelectState; see include/menu/debug_menu.h
+.set g_DebugMapSelectState, 0x030021E8  @ DebugMapSelectState; see include/menu/debug_menu.h
+.set g_DebugCharacterSelectState, 0x030021F8  @ DebugCharacterSelectState; see include/menu/debug_menu.h
 .set g_bMusicPaused, 0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule, 0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
 .set g_bSaveSlotScreenResult, 0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
-.set g_MainMenuState,       0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot_candidate}; see include/main_menu.h
+.set g_MainMenuState,       0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot_candidate}; see include/menu/main_menu.h
 .set g_ScanlineEffectState,  0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging, 0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
 .set sDialogLanguageTable,   0x0806BD78  @ ROM: 8 x u32, one string-table blob pointer per language
 
-@ --- Heap allocator (see docs/memory-map/heap.md and include/mem.h) ---
+@ --- Heap allocator (see docs/memory-map/heap.md and include/hw/mem.h) ---
 .set gMemPool,      0x03003EE0  @ MemPool[]; only pool 0 (index 0) is ever registered
 .set gMemPoolCount, 0x03003EF0  @ u32: live pool count, incremented by InitMemoryPool
 
-@ --- Object pool (see docs/memory-map/heap.md and include/mem.h) ---
+@ --- Object pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
 .set g_dwObjectListActive_candidate, 0x030017A0
 .set g_pSortObjectsIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth
 .set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions
-.set g_ObjectPoolState,               0x03001C08  @ ObjectPoolState, 0x1B4 bytes; see include/mem.h
+.set g_ObjectPoolState,               0x03001C08  @ ObjectPoolState, 0x1B4 bytes; see include/hw/mem.h
 .set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwObjectListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveObjects, never cleared; gates FreeObject's VRAM tile release
-.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/mem.h
-.set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/mem.h
+.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/hw/mem.h
+.set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/hw/mem.h
 
-@ --- Per-tick object queues (see include/mem.h and TickObjectList) ---
+@ --- Per-tick object queues (see include/hw/mem.h and TickObjectList) ---
 .set g_apOamQueue,            0x030015B8  @ Object *[0x69]: onscreen objects drawn in depth order
 .set g_dwOamQueueCount,       0x0300175C
 .set g_apSpriteFrameQueue,    0x03001760  @ Object *[15]: visible objects with sprite cells
@@ -242,7 +242,7 @@
 .set gMt19937SeedValue,          0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for object visibility
 
-@ --- Room load / room script state (see include/room.h) ---
+@ --- Room load / room script state (see include/overworld/room.h) ---
 .set g_bRoomScriptYieldOpcode,        0x03001DE9  @ u8: opcode a running room script yielded on
 .set g_wRoomResourceFlags_candidate,  0x03001DDC  @ u16: bit 0 = the room also has a second object/switch row
 .set g_dwScanlineBandActiveMask,      0x030022E0  @ u32: bit n set = scanline band slot n is active
@@ -255,7 +255,7 @@
 .set g_dwRoomBgFlag_candidate,        0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by sub_0802E6FC
 .set g_dwPendingCameraFocusFlag,      0x03003FD4  @ u32: cleared on room entry
 
-@ --- Room-script VM (see include/room_script.h) ---
+@ --- Room-script VM (see include/overworld/room_script.h) ---
 .set g_bRoomScriptCurrentRow,          0x03001DDE  @ u8: chain the VM is walking
 .set g_pRoomScriptYieldContinuation,   0x03001DE0  @ u32 *: record to resume at after a yield, or 0
 .set g_pRoomScriptNextRecord,          0x03001DE4  @ u32 *: record following the one being dispatched
@@ -264,7 +264,7 @@
 .set g_aRoomScriptCallStack,           0x03001E00  @ RoomScriptCallFrame[]: saved callers, indexed by depth
 .set g_bRoomScriptPendingChain,         0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none
 
-@ --- Overworld object tracking (see include/overworld.h) ---
+@ --- Overworld object tracking (see include/overworld/overworld.h) ---
 .set g_pPlayerObject,        0x03003380  @ Object *: the player's overworld object
 .set g_aCameraEffects_candidate, 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot
 .set g_aCameraFocusSlots,    0x030020E8  @ CameraFocusSlot[2]: 0x38 bytes each
@@ -276,49 +276,49 @@
 .set g_bPartyCharId1, 0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2, 0x0300338E  @ u8: character id of the second follower
 .set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
-.set g_DialogState_candidate, 0x03002E88  @ DialogState; see include/dialog.h
+.set g_DialogState_candidate, 0x03002E88  @ DialogState; see include/menu/dialog.h
 
-@ --- EEPROM save driver (see include/eeprom.h, docs/formats/save.md) ---
+@ --- EEPROM save driver (see include/hw/eeprom.h, docs/formats/save.md) ---
 .set g_pEepromInterface, 0x030062C8  @ EepromInterface *: chosen by EepromSelectInterface
 
-@ --- Hippogriff Glide minigame (see include/hippogriff_glide.h) ---
+@ --- Hippogriff Glide minigame (see include/minigame/hippogriff_glide.h) ---
 .set g_dwHippogriffForceOverworldExit, 0x03002084  @ u32: set by StartMinigame
 .set g_pHippogriffGlide, 0x03002088  @ HippogriffGlideState *: allocated for the minigame's duration
 .set g_adwHippogriffGlideUnk, 0x03005D10  @ u32[3]: cleared on init, meaning not yet established
 
-@ --- Riddikulus minigame (see include/riddikulus.h) ---
+@ --- Riddikulus minigame (see include/minigame/riddikulus.h) ---
 .set g_dwRiddikulusMinigameScriptFlag_candidate, 0x03002040  @ u32: set by StartMinigame
 .set g_Riddikulus, 0x03002048  @ RiddikulusState
-.set g_dwListMenuSelection, 0x03003F14  @ u32: selected row of the current list menu; see include/minigame_menu.h
+.set g_dwListMenuSelection, 0x03003F14  @ u32: selected row of the current list menu; see include/menu/minigame_menu.h
 
-@ --- Harry vs Dementors minigame (see include/harry_vs_dementors.h) ---
+@ --- Harry vs Dementors minigame (see include/minigame/harry_vs_dementors.h) ---
 .set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ u32: set by StartMinigame
 .set g_HarryVsDementors, 0x03002E18  @ HarryVsDementorsState
 
-@ --- Wizard Cracker Pop-it minigame (see include/wizard_cracker_pop_it.h) ---
+@ --- Wizard Cracker Pop-it minigame (see include/minigame/wizard_cracker_pop_it.h) ---
 .set g_pWizardCrackerPopIt, 0x03005230  @ WizardCrackerPopItState *: allocated for the minigame's duration
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005228  @ u32: set by the StartMinigame room script opcode
 
-@ --- Tea Leaf Divination minigame (see include/divination_tea.h) ---
+@ --- Tea Leaf Divination minigame (see include/minigame/divination_tea.h) ---
 .set g_DivinationTea, 0x03005B28  @ DivinationTeaState
 
-@ --- Serve Pumpkin Juice minigame (see include/serve_pumpkin_juice.h) ---
+@ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
 .set g_ServePumpkinJuice, 0x03005238  @ ServePumpkinJuiceState
 .set g_pLinearCutsceneText,            0x030028B4  @ u8 *: unread remainder of the cutscene's text
-.set g_pLinearCutsceneObject,          0x030028B8  @ Object *; see include/linear_cutscene.h
+.set g_pLinearCutsceneObject,          0x030028B8  @ Object *; see include/cutscene/linear_cutscene.h
 .set g_dwLinearCutsceneIndex,          0x030028BC  @ u32: GameMode - Credits
 .set g_dwCreditsScrollRow,             0x030028A8  @ u32: last credits text row the scroll reached
 .set g_dwCreditsLine,                  0x030028AC  @ u32: next credits text line to draw
 .set g_dwCreditsTileCursor,            0x030028B0  @ u32: next free credits text tile
 .set g_wCoolTrainTimer,                0x03005E14  @ u16: frames left in the Cool Train cutscene
 .set g_HarryHermionePortInTime,        0x03005D98  @ HarryHermionePortInTimeState
-.set g_dwPatronusBgFront,              0x030051E4  @ u32; see include/harry_patronus_cutscene.h
+.set g_dwPatronusBgFront,              0x030051E4  @ u32; see include/cutscene/harry_patronus_cutscene.h
 .set g_dwPatronusBgBack,               0x030051E8  @ u32
 .set g_dwPatronusSwapPending,          0x030051EC  @ u32
 .set g_bPatronusGraphicIndex,          0x030051F0  @ u8
 .set g_swPatronusBgParam,              0x030051F2  @ s16
 .set g_nPatronusBgOffset,              0x030051F4  @ s32, 16.16
-.set g_pHippogriffFliesIntoAirObject,  0x03002F18  @ Object *; see include/hippogriff_flies_into_air_cutscene.h
+.set g_pHippogriffFliesIntoAirObject,  0x03002F18  @ Object *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
 .set g_pHippogriffFliesIntoAirObject2, 0x03002F1C  @ Object *
 .set g_LupinPotionCutscene,            0x03003A84  @ LupinPotionCutsceneState
 .set g_aLupinPotionBg2Scroll,          0x03003B3C  @ s32[2]

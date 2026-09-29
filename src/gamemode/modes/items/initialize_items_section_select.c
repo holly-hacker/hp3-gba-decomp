@@ -1,7 +1,7 @@
 #include "types.h"
-#include "game_modes.h"
-#include "in_game_menu.h"
-#include "items_menu.h"
+#include "game/game_modes.h"
+#include "menu/in_game_menu.h"
+#include "menu/items_menu.h"
 
 void InitializeItemsSectionSelect(void)
 {

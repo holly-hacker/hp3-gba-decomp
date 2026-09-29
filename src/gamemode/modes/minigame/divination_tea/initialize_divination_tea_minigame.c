@@ -1,14 +1,14 @@
 #include "types.h"
-#include "audio.h"
-#include "bios.h"
-#include "display.h"
-#include "divination_tea.h"
-#include "game_modes.h"
-#include "io_regs.h"
-#include "minigame_menu.h"
+#include "graphics/audio.h"
+#include "hw/bios.h"
+#include "graphics/display.h"
+#include "minigame/divination_tea.h"
+#include "game/game_modes.h"
+#include "hw/io_regs.h"
+#include "menu/minigame_menu.h"
 #include "mt19937.h"
-#include "room.h"
-#include "text.h"
+#include "overworld/room.h"
+#include "graphics/text.h"
 
 void InitializeDivinationTeaMinigame(void)
 {

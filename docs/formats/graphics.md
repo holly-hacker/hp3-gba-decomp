@@ -1201,11 +1201,11 @@ The status/equip screen's `sub_0803A030` reads the three
 `StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
 
 These record tables are C with generated labels: `g_aBattleHudAssets`
-(`src/data/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
-fighter, `src/data/fighter_anim_table.c`), `g_aEffectObjectAssets`,
+(`src/graphics/assets/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
+fighter, `src/graphics/assets/fighter_anim_table.c`), `g_aEffectObjectAssets`,
 `g_apEffectPalettes`, and `g_aEffectAnimAssets`
-(`src/data/effect_assets.c`), and `g_aStatusCharacterAssets`
-(`src/data/status_character_assets.c`).
+(`src/graphics/assets/effect_assets.c`), and `g_aStatusCharacterAssets`
+(`src/graphics/assets/status_character_assets.c`).
 
 ### Item icons (PROVEN, extracted)
 
@@ -1287,7 +1287,7 @@ curved arrow, requested from the status/equip screen code). `regions.us.txt`'s `
 `image-bank` row claims the 80 icons as 4-bit `ItemNNN.png` sprites in
 `palette`, `tiles`, `frames` order (see "Image-bank build format"), the
 id-`0x86` icon last as `Item080`; 11 icons use `rle`, the rest `lzrle`.
-`src/data/items.c` includes the generated `include/gen/ItemIcons.h` and
+`src/items/items.c` includes the generated `include/gen/ItemIcons.h` and
 references the `gItemNNNPalette/Tiles/Frames` labels instead of literal
 addresses. See `docs/formats/items.md`.
 
@@ -1326,7 +1326,7 @@ through them, but the records themselves are ordinary dialog assets --
   superficially inviting the same treatment, this pointer is never
   routed through either decompression dispatcher. Layout (byte offsets
   from `pFrameData`; C types `ObjectFrameData`/`ObjectFrameDesc` in
-  `include/object.h`):
+  `include/graphics/object.h`):
   - `+0x6` (`u16`): frame count. `GetObjectVariantFrameSize`
     (`0x08000E28`) wraps a frame index of -1 to `count - 1`.
   - `+0xA` (`u8`): unused in every observed record (`0`).
@@ -1384,7 +1384,7 @@ through them, but the records themselves are ordinary dialog assets --
   table order: table pointers delimit each tile and frame component, and
   each 512-byte palette ends at the next resource. The `Portraits`
   `image-bank` row claims all 131,576 bytes as 8-bit `PortraitNNN.png`
-  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/data/portrait_table.c` reconstructs the 72
+  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/graphics/assets/portrait_table.c` reconstructs the 72
   records at `0x0804C61C`-`0x0804CA9C`, referencing generated labels so
   repeated records share their original image. Both regions are
   verified by the whole-ROM comparison; JP addresses are not yet mapped.

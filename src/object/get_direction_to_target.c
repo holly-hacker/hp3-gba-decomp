@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 // Returns the direction from pos toward target. An axis counts as aligned
 // while pos is within tolerance of target on it. Four-way objects resolve

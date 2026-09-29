@@ -1,13 +1,13 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "io_regs.h"
-#include "minigame_menu.h"
-#include "object.h"
-#include "overworld.h"
-#include "room.h"
-#include "room_script.h"
-#include "vblank.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "hw/io_regs.h"
+#include "menu/minigame_menu.h"
+#include "graphics/object.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
+#include "hw/vblank.h"
 
 extern void sub_08024518(Object *pObject, u32 arg1);
 

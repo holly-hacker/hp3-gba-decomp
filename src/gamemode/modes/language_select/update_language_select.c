@@ -1,10 +1,10 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "game_modes.h"
-#include "input.h"
-#include "save.h"
-#include "text.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "game/save.h"
+#include "graphics/text.h"
 
 // The languages form a 2x4 grid: index >> 2 is the column, index & 3 the row.
 void UpdateLanguageSelect(void)

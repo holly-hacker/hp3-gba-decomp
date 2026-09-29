@@ -1,4 +1,4 @@
-#include "mem.h"
+#include "hw/mem.h"
 
 // First-fit allocator: walks each pool's free list for the first block
 // that fits, splitting off the remainder if it's bigger than needed.

@@ -1,13 +1,13 @@
 #include "types.h"
-#include "audio.h"
-#include "battle.h"
-#include "game_modes.h"
-#include "input.h"
-#include "main_menu.h"
-#include "options.h"
-#include "room.h"
-#include "save.h"
-#include "text.h"
+#include "graphics/audio.h"
+#include "battle/battle.h"
+#include "game/game_modes.h"
+#include "hw/input.h"
+#include "menu/main_menu.h"
+#include "menu/options.h"
+#include "overworld/room.h"
+#include "game/save.h"
+#include "graphics/text.h"
 
 void UpdateOptions(void)
 {

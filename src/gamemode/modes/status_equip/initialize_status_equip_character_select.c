@@ -1,7 +1,7 @@
 #include "types.h"
-#include "display.h"
-#include "in_game_menu.h"
-#include "status_equip.h"
+#include "graphics/display.h"
+#include "menu/in_game_menu.h"
+#include "menu/status_equip.h"
 
 void InitializeStatusEquipCharacterSelect(void)
 {

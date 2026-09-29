@@ -1,5 +1,5 @@
 #include "types.h"
-#include "object.h"
+#include "graphics/object.h"
 
 void SetObjectFacing(Object *obj, u8 facing)
 {

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "object.h"
-#include "mem.h"
+#include "graphics/object.h"
+#include "hw/mem.h"
 
 // Drops the object's hold on its sprite VRAM tiles. An object sharing tiles
 // through its pool aux record frees them only when the last user releases

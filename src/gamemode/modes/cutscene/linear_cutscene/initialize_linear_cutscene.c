@@ -1,8 +1,8 @@
 #include "types.h"
-#include "display.h"
-#include "game_modes.h"
-#include "linear_cutscene.h"
-#include "main_menu.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
+#include "cutscene/linear_cutscene.h"
+#include "menu/main_menu.h"
 
 void InitializeLinearCutscene(void)
 {

@@ -1,7 +1,7 @@
 #include "types.h"
-#include "audio.h"
-#include "display.h"
-#include "mem.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "hw/mem.h"
 
 void ExitClockSkipCutscene(void)
 {

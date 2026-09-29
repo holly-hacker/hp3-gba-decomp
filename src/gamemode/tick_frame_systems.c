@@ -1,10 +1,10 @@
 #include "types.h"
-#include "game_modes.h"
-#include "display.h"
-#include "graphics.h"
-#include "object.h"
-#include "oam.h"
-#include "overworld.h"
+#include "game/game_modes.h"
+#include "graphics/display.h"
+#include "graphics/graphics.h"
+#include "graphics/object.h"
+#include "graphics/oam.h"
+#include "overworld/overworld.h"
 
 void TickFrameSystems(void)
 {

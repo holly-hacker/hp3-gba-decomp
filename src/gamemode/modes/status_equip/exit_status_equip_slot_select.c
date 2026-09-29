@@ -1,5 +1,5 @@
 #include "types.h"
-#include "status_equip.h"
+#include "menu/status_equip.h"
 
 void ExitStatusEquipSlotSelect(void)
 {

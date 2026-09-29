@@ -1,7 +1,7 @@
 #include "types.h"
-#include "battle.h"
-#include "encounters.h"
-#include "game_modes.h"
+#include "battle/battle.h"
+#include "battle/encounters.h"
+#include "game/game_modes.h"
 
 // The random-encounter cell for the current mode-stack args: id/kind/variant
 // select the table row, `slot` picks one of its 4 enemy slots.

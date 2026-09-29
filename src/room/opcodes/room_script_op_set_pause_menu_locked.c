@@ -1,6 +1,6 @@
 #include "types.h"
-#include "overworld.h"
-#include "room_script.h"
+#include "overworld/overworld.h"
+#include "overworld/room_script.h"
 
 typedef struct SetPauseMenuLockedRecord {
     u32 dwOpcode;

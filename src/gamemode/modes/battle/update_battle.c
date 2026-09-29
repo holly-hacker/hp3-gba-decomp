@@ -1,7 +1,7 @@
 #include "types.h"
-#include "battle.h"
-#include "display.h"
-#include "game_modes.h"
+#include "battle/battle.h"
+#include "graphics/display.h"
+#include "game/game_modes.h"
 
 // Battle mode's pUpdateFn (per-frame tick). See docs/memory-map/battle.md.
 void UpdateBattle(void)
