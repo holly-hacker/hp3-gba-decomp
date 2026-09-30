@@ -71,6 +71,11 @@ new code. Record findings in the owning document and link to it from related
 documents rather than duplicating facts. Use the confidence levels in
 `docs/README.md`: **PROVEN**, **STRUCTURAL MATCH**, and **UNCONFIRMED**.
 
+Matched C under `src/` is authoritative: it is verified to compile to the ROM
+bytes, so prefer it (and its headers) over prose docs when they disagree. To
+name a global, look up its address in `ram_symbols.<ver>.inc` and cite the
+symbol rather than the raw address or re-deriving its meaning from assembly.
+
 Use `sub_<ADDR>` for unidentified functions and descriptive names when their
 behavior is supported by evidence. Retain `_candidate` for provisional
 identifications. Sync confirmed names into the appropriate function config,
