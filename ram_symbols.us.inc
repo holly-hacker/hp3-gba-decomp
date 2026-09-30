@@ -224,6 +224,14 @@
 .set g_pParticleEmitterFreeListHead,      0x030051B0  @ ListNode *
 .set g_wActiveParticleEmitterCount,       0x030051A0  @ u16
 .set g_pParticleEmitterActiveListHead,    0x03005198  @ ListNode *
+.set g_wActiveParticleCount,              0x0300519C  @ u16
+.set g_wParticleHighWaterMark,            0x0300519E  @ u16
+.set g_pParticleFreeListHead,             0x030051AC  @ ListNode *
+.set g_pParticleActiveListHead,           0x030051CC  @ ListNode *
+.set g_bParticleSpawnBlocked,             0x030051D0  @ u8: set when a particle's OAM submit fails (queue full); blocks spawning until TickParticleEmitters clears it
+.set g_wParticleEmitterHighWaterMark,     0x030051A2  @ u16
+.set g_apParticleGfxPools,                0x030051D8  @ ParticleGfxEntry *[]
+.set g_pMenuCursorEmitter,                0x030028C0  @ ParticleEmitter *: emitter of the cursor object built by sub_0801D940(4)
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked

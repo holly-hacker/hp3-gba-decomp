@@ -265,13 +265,11 @@ functions/plate comments as `WaitFramesTick`, `WaitForCounterTick`,
 All three call `TickParticleEmitters` (US `0x08031748`) on entry -- the
 same function
 `InterpretObjectScript`'s own real entry point calls before its first
-opcode fetch. Decompiled and confirmed unrelated to the calling object:
-it walks a separate global linked list (`DAT_03005198`) of
-struct-configured particle emitters and spawns particles via a large,
-Mersenne-Twister-driven function (not itself decoded beyond confirming
-its role) -- mandatory per-tick engine housekeeping that happens to be
-invoked from these entry points, not something specific to script
-objects or to waiting.
+opcode fetch. It is unrelated to the calling object: it ticks every emitter on
+the global active list and spawns their particles, drawing from the visual RNG
+cursor (and, for some particle modes, the gameplay cursor). It is mandatory
+per-tick engine housekeeping that happens to be invoked from these entry
+points. See [`../memory-map/particles.md`](../memory-map/particles.md).
 
 All three also unconditionally call `ProcessObjectFlagBehaviors` (US
 `0x0801AF68`) every tick regardless of whether the wait condition is met. Decompiled and

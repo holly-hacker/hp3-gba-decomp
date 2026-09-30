@@ -461,6 +461,7 @@ c-file 0x0801D858 0x0801D888 src/gamemode/modes/cutscene/linear_cutscene/exit_li
 c-file 0x0801D888 0x0801D8C0 src/gamemode/modes/cutscene/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
 c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 thumb-func 0x0801D940 sub_0801D940
+c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 thumb-func 0x0801DC6C sub_0801DC6C
 thumb-func 0x0801DCC4 sub_0801DCC4
 c-file 0x0801DD40 0x0801DD88 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
@@ -642,6 +643,7 @@ thumb-func 0x0802BAD0 PickMaxDamageMonster
 thumb-func 0x0802BC94 GrantPartyExperience_candidate
 thumb-func 0x0802BDEC InstallIwramDivideRoutines
 thumb-func 0x0802BE40 iwramDivideSignedRemainder
+thumb-func 0x0802BEE8 FixedMultiply
 thumb-func 0x0802C148 sub_0802C148
 thumb-func 0x0802C254 InitHeap
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
@@ -721,13 +723,17 @@ thumb-func 0x08030960 sub_08030960
 thumb-func 0x08030978 BindObjectToResourceCacheSlot
 thumb-func 0x080309E8 FindResourceCacheSlot
 thumb-func 0x08030A1C sub_08030A1C
+c-file 0x08030B70 0x08030C00 src/graphics/particle/alloc_particle_emitter.c AllocParticleEmitter
 thumb-func 0x08030C00 sub_08030C00
+c-file 0x08030C9C 0x08030D90 src/graphics/particle/tick_particle_emitter.c TickParticleEmitter
+c-file 0x08030D90 0x08031358 src/graphics/particle/spawn_particle.c SpawnParticle
+thumb-func 0x08031358 sub_08031358
 thumb-func 0x080315A4 InitResourceCachePools
 thumb-func 0x08031668 sub_08031668
-c-file 0x080316A4 0x080316D4 src/graphics/release_particle_emitter.c ReleaseParticleEmitter_candidate
+c-file 0x080316A4 0x080316D4 src/graphics/particle/release_particle_emitter.c ReleaseParticleEmitter_candidate
 thumb-func 0x080316D4 sub_080316D4
 thumb-func 0x0803171C sub_0803171C
-thumb-func 0x08031748 TickParticleEmitters
+c-file 0x08031748 0x08031798 src/graphics/particle/tick_particle_emitters.c TickParticleEmitters
 thumb-func 0x080317EC sub_080317EC
 c-file 0x080319FC 0x08031B4C src/gamemode/modes/cutscene/harry_patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file 0x08031B4C 0x08031CA8 src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
@@ -1039,6 +1045,9 @@ c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 
 # End of main code section, start of data section
 
+# Unit direction vectors (16.16 {x, y}) indexed by Direction4 and Direction
+label 0x0804BDBC g_aDirection4Vectors
+label 0x0804BDDC g_aDirection8Vectors
 label 0x0804C1B0 g_dwRiddikulusBg0Control
 label 0x0804C1B4 g_dwRiddikulusBg3Control
 label 0x0804C444 g_dwDebugMenuMainBg0Control
@@ -1164,6 +1173,9 @@ c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameMode
 label 0x0806605C g_dwMinigameMenuBg3Control
 label 0x08066060 g_dwMinigameMenuBg1Control
 label 0x08066FFC g_aObjectTypeAssets
+# Direction to Direction opposite tables (8-way, then 4-way)
+label 0x08068BFC g_abOppositeDirection8
+label 0x08068C04 g_abOppositeDirection4
 label 0x08068C30 g_dwPatronusBg2Control
 label 0x08068C34 g_dwPatronusBg3Control
 label 0x08068C38 g_aInGameMenuEntries
@@ -1236,6 +1248,9 @@ image-bank 0x080B9A84 0x080BC1C4 data/images/unnamed UnnamedSprites
 
 # Main menu palette, debug menu cursor, and other small sprites
 image-bank 0x080BC1C4 0x080BCEA0 data/images/menu_sprites MenuSprites
+
+# Palette of the menu cursor's particle emitter
+label 0x080BD344 g_MenuCursorSparklePalette
 
 # Object and character sprites (g_aObjectTypeAssets and other object records)
 image-bank 0x080BD564 0x080D0B54 data/images/object_sprites ObjectSprites

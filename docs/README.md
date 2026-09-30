@@ -49,6 +49,10 @@ Memory map (live RAM layout and the code that drives it):
   (`MemPool`/`MemBlock`, first-fit alloc/free) and the object pool built
   on top of it; the two ARM-mode object-list functions and why they're
   blocked on the toolchain, not on matching difficulty.
+- [`memory-map/particles.md`](memory-map/particles.md) — particle emitters
+  and particles: pools, the per-frame tick, the spawn draw order, which
+  draws use each RNG cursor, and the main-menu cursor emitter's
+  configuration and RNG cost.
 - [`memory-map/krawall.md`](memory-map/krawall.md) — the Krawall audio
   engine: locating it in the ROM, the mixer/effect-handler driver code,
   the `MixChannel`/effect-state struct fields, and the IWRAM/EWRAM

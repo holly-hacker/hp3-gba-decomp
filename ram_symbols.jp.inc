@@ -61,6 +61,16 @@
 .set g_aBgScrollState, 0x03001E80  @ see ram_symbols.us.inc
 .set g_abBgPriority, 0x03003FEC  @ see ram_symbols.us.inc
 .set g_pParticleEmitterActiveListHead, 0x030051F8  @ see ram_symbols.us.inc
+.set g_pParticleEmitterFreeListHead, 0x03005210
+.set g_wActiveParticleEmitterCount, 0x03005200
+.set g_wParticleEmitterHighWaterMark, 0x03005202
+.set g_apParticleGfxPools, 0x03005238
+.set g_wActiveParticleCount, 0x030051FC
+.set g_wParticleHighWaterMark, 0x030051FE
+.set g_pParticleFreeListHead, 0x0300520C
+.set g_pParticleActiveListHead, 0x0300522C
+.set g_bParticleSpawnBlocked, 0x03005230
+.set g_pMenuCursorEmitter, 0x030028C0
 
 @ --- Controller input (see docs/memory-map/input.md) ---
 .set g_wKeysHeld,          0x0300354C  @ see ram_symbols.us.inc/docs/memory-map/input.md

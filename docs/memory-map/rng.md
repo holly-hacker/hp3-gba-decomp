@@ -176,11 +176,16 @@ draw cursors sharing one 624-word state array --
   cursor pointer `0x03005588` (US); `0x030055EC`/`0x030055E8` (JP). Its
   regeneration path never calls `Mt19937Regenerate` -- it only wraps to
   `stateptr + 4` on exhaustion, so it can read but never regenerate the
-  shared state array; it can't affect cursor 1's outputs. No callers found
-  yet for any `*2` helper. Working hypothesis: cursor 2 is a read-only tap
-  for non-gameplay/cosmetic rolls, not something a battle simulator needs
-  to keep in lockstep with cursor 1. Unconfirmed -- needs an actual `*2`
-  call site to verify.
+  shared state array; it can't affect cursor 1's outputs. Its `Mt19937Next2`
+  source states it exists so purely visual effects don't advance the gameplay
+  RNG. Callers of the `*2` helpers (PROVEN by call sites in the disassembly):
+  `TickParticleEmitter` (`RandMax2`, the spawn roll), `SpawnParticle`
+  (`RandRange2`, positions, lifetimes and directions), `PlaySoundById`
+  (`0x0803FC68`), `sub_0803FD04` and `sub_08028BAC` (`RandMax2`). Nothing
+  calls `RandSigned2` or `Chance2`. The exception to "visual effects only use
+  cursor 2" is `SpawnParticle`'s modes 6-8, which draw velocities from cursor 1;
+  see [`particles.md`](particles.md). `Mt19937SetSeed` resets only cursor 1,
+  so cursor 2 keeps its position across a reseed.
 
 `Mt19937Next` also writes the temper result's low byte to a single-byte
 global (`0x03005574` US / `0x030055D4` JP) as a side effect on every call --
