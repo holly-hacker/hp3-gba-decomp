@@ -27,9 +27,10 @@ extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void sub_0800D254(void *ptr, s16 val1, s16 val2);
 extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
-// Dispatches through the 4-entry handler table at 0x0806B844 by transitionIndex.
+// Dispatches through the 15-entry handler table at 0x0806B844 by transitionIndex. Entry 2
+// (0x0803C450) is a blocking full-screen palette fade that keeps the normal per-frame tick running.
 extern void PlayScreenTransitionInByIndex(u32 blendArg, u32 transitionIndex);
-// Dispatches through the parallel handler table at 0x0806B880 by transitionIndex.
+// Dispatches through the parallel 15-entry handler table at 0x0806B880 by transitionIndex.
 extern void PlayScreenTransitionOutByIndex(u32 blendArg, u32 transitionIndex);
 
 // ORs into / clears DISPCNT bits.

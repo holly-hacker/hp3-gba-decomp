@@ -1199,8 +1199,8 @@ only reapplying equipment; resets defense/`bMagicDefensePercent` to `100`
 first). `GrantPartyLevelUps` (`0x0801D308`, PROVEN: its one caller is
 identified) runs `LevelUpFighter_candidate` for all 3 party members,
 `N` times, where `N` is a room-script opcode operand -- see
-[`../formats/room_scripts.md`](../formats/room_scripts.md)'s opcode
-`0x57`. A room script triggers party level-ups explicitly (e.g. a story
+`src/room/opcodes/room_script_op_grant_party_level_ups.c` (opcode
+`0x57`, see [`../formats/room_scripts.md`](../formats/room_scripts.md)). A room script triggers party level-ups explicitly (e.g. a story
 event), not an automatic threshold check against accumulated XP.
 
 Three `CharacterLevelEntry[100]` tables, 12-byte rows, matched

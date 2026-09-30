@@ -6,6 +6,8 @@ typedef struct ArmChainYieldRecord {
     u8 bArm;
 } ArmChainYieldRecord;
 
+// Only the following opcode decides whether the walk yields (see the run state in room_script.h):
+// handlers that bump 1 -> 2 do. Scripts write ArmChainYield 1 before such an opcode and 0 after.
 void RoomScriptOpArmChainYield(ArmChainYieldRecord *pRecord)
 {
     if (pRecord->bArm != 0)

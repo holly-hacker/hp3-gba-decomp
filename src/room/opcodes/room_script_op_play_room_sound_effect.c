@@ -10,6 +10,7 @@ typedef struct PlayRoomSoundEffectRecord {
 
 void RoomScriptOpPlayRoomSoundEffect(PlayRoomSoundEffectRecord *pRecord)
 {
+    // InitializeOverworld clears this bit and skips its room-music selection when it is set.
     if (g_bRoomScriptCurrentRow == 1)
         g_dwGameModeFlags |= 0x1000000;
     PlaySoundEffect_candidate(pRecord->bSoundId);

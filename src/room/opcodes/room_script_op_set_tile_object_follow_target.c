@@ -14,6 +14,8 @@ typedef struct SetTileObjectFollowTargetRecord {
     u8 bStopDistance;
 } SetTileObjectFollowTargetRecord;
 
+// Action state 0x12 (tick at 0x08005094) follows pShadowObject: while walking it stops within
+// the stop distance, and walks again once farther than both distances.
 void RoomScriptOpSetTileObjectFollowTarget(SetTileObjectFollowTargetRecord *pRecord)
 {
     Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);

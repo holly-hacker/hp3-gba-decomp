@@ -62,6 +62,8 @@ extern void ResumeRoomSwitchStateChain_candidate(void);
 extern void RespawnRoomObjectsInRow_candidate(u32 row);
 
 // Live object at tile (x, y); every script targets (0, 0xFF), the player slot.
+// x == 0 with y >= 0xFE selects a slot of the array at 0x03003358 instead of a tile; every
+// script uses (0, 255).
 extern Object *GetRoomObjectField_candidate(u32 x, u32 y);
 
 // cmpOp values for CompareAndBranchRoomScript (room_script_branch.h).
@@ -96,7 +98,9 @@ extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Object *pLeader, u32 direction);
 extern void RespawnRowAndRunChain_candidate(u32 respawnRow, u32 chainRow);
 // Allocates a RoomObjectType_ScriptEffect object of the given kind (Object+0x8C),
-// ticked by the kind's entry in the script-effect tick table.
+// ticked by the kind's entry in the script-effect tick table. Kind 1 (the delayed respawn timer,
+// tick at 0x080200FC) counts dwStateTimer down, then runs the row/chain, or resumes the yielded
+// chain if the walk yielded on a delayed-respawn opcode.
 extern Object *SpawnScriptEffectObject(u32 kind);
 extern void WriteRoomBgTile_candidate(u32 x, u32 y, u32 tileId, u32 layer);
 extern void ConsumeBattleItemSlot(u32 itemId, u32 count);

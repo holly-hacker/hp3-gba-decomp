@@ -8,6 +8,7 @@ typedef struct Op2Record {
     s16 nValue;
 } Op2Record;
 
+// Unnamed; reads like an animation or movement speed with a special case for the player.
 void RoomScriptOp2(Op2Record *pRecord)
 {
     Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);

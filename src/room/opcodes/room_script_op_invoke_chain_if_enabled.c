@@ -7,6 +7,8 @@ typedef struct InvokeChainIfEnabledRecord {
     u8 bChain;
 } InvokeChainIfEnabledRecord;
 
+// Every script passes row 0, which ShouldRunRoomScriptRow_candidate rejects, so this acts as an
+// unconditional goto to bChain.
 void RoomScriptOpInvokeChainIfEnabled(InvokeChainIfEnabledRecord *pRecord)
 {
     g_bRoomScriptPendingChain = pRecord->bChain;
