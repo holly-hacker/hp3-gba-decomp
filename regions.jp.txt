@@ -558,13 +558,15 @@ thumb-func 0x0803E680 GetCameraPosition
 thumb-func 0x0803E690 sub_0803E628
 thumb-func 0x0803EAA4 sub_0803EA3C
 c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId
-thumb-func 0x0803FCD0 PlaySoundById
+c-file 0x0803FCD0 0x0803FD6C src/audio/play_sound_by_id.c PlaySoundById
+c-file 0x0803FD6C 0x0803FE18 src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
 thumb-func 0x0803FE18 kramInstall
 thumb-func 0x0803FEF0 SetMusicVolume
 thumb-func 0x0803FF0C UnmuteAllMusicChannels
 thumb-func 0x0803FF1C PlayMusicModule
 thumb-func 0x0803FF6C sub_0803FF04
 thumb-func 0x0803FFD8 PlaySoundEffect_candidate
+thumb-func 0x0803FFF4 IsSoundActive_candidate
 c-file 0x08041954 0x08041AC8 src/gamemode/modes/minigame/divination_tea/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
 c-file 0x08041AC8 0x08041DEC src/gamemode/modes/minigame/divination_tea/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
 thumb-func 0x08041DEC sub_08041D84
@@ -606,6 +608,8 @@ thumb-func 0x08045734 HideScreenWindow_candidate
 thumb-func 0x08045764 SetScreenWindowLayers_candidate
 thumb-func 0x080457D4 SetScreenWindowRect_candidate
 thumb-func 0x0804589C TickScreenWindows_candidate
+thumb-func 0x08049D6C sub_08049E40
+thumb-func 0x08049D80 sub_08049E54
 thumb-func 0x08049DBC bios_CPUSet
 thumb-func 0x08049DE8 bios_VBlankIntrWait
 
@@ -1026,3 +1030,8 @@ image-bank 0x08EAAF88 0x08ECA0F0 data/images/chatheads Chatheads
 image-bank 0x08EDF36C 0x08F3C9CC data/images/famous_wizard_cards FamousWizardCards
 
 label 0x08F3E388 g_apPatronusGraphics
+
+# PlaySoundById tables: sample records, random-variant records and the per-sound config rows
+c-file 0x08F43A18 0x08F43CA8 src/audio/sound_samples.c g_aSoundSamples
+c-file 0x08F43CA8 0x08F43E88 src/audio/sound_variants.c g_aSoundVariants
+c-file 0x08F43E88 0x08F44154 src/audio/sound_config.c g_aSoundConfig

@@ -102,6 +102,36 @@ range is 0 to 0, so it draws nothing. On average the menu advances the gameplay 
 per 12 frames while the cursor is on screen. On the boot path the emitter is created after the
 `Mt19937AutoSeed` call in `UpdateMainMenu`, so those draws follow the seed directly.
 
+## Cursor 2 in the main menu — STRUCTURAL MATCH
+
+Derived from a static call graph over direct `bl` edges only. Indirect calls (object tick
+pointers, animation opcodes, interrupt handlers) are not followed, and nothing was checked in an
+emulator.
+
+- `PlaySoundById` (`0x0803FC68`, `src/audio/play_sound_by_id.c`) reads `g_aSoundConfig[id]`
+  (`0x08FB09F8`). A `SoundModeSample` row plays a sample with no RNG. A `SoundModeVariants` row draws
+  `Mt19937RandMax2(7)` to pick one of 8 variants from `g_aSoundVariants`. The tables are in
+  `src/audio/`. Variant-row ids below `0x100`: `0x18`, `0x20`,
+  `0x3A`, `0x3C`, `0x8C`, `0x9B`, `0x9D`, `0x9F`, `0xA0`, `0xA2`, `0xA3`, `0xA5`, `0xA6`, `0xA8`,
+  `0xA9`.
+- The sounds reachable from the main menu are `0` (cursor move), `1` (START and select) and `0x47`
+  (`TickObject`, when an object's position changed). All are sample rows. The boot path before the menu
+  plays `0`, `1` and `2` in the language select, also sample rows. `sub_0803FD04` has no direct-call path
+  from the menu. The cursor's animation streams (`0x0805E0D0`, `0x0805E0E0`) contain no `0xFD`
+  sound opcode (`sub_080021F4` case 14 plays `PlaySoundById`).
+- No other `Mt19937*` caller is reachable from the menu. `Mt19937AutoSeed` (on START) and the emitter
+  are the only ones on the boot path.
+
+So on the boot path, after `Mt19937AutoSeed`, the emitter is the only thing that advances either
+cursor. Per fire (every 6th frame while the cursor object is onscreen) cursor 2 consumes one draw for
+the spawn roll, plus two more on a pass; cursor 1 consumes one on a pass. Both cursors read the same
+seeded array from word 1 until cursor 1's first regeneration (`Mt19937SetSeed` sets its remaining
+count to `MT_N - 1`), so cursor 2's first roll tempers the same word as cursor 1's first draw.
+Cursor 2's variables start zeroed (`ClearSystemMemory` fills IWRAM from `0x03001598` to
+`0x03007D00`, which includes `0x03005588`/`0x0300558C`), so its first `Mt19937Next2` wraps to
+`state + 1`. Entering the menu from elsewhere in the game (not the boot path) depends on cursor 2's
+earlier history, which this analysis does not cover.
+
 ## Open questions
 
 - Meaning of `wParam38` beyond mode 6, the emitter flags `0x80` and `0x400`, and

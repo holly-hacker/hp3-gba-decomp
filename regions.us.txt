@@ -929,7 +929,8 @@ thumb-func 0x0803E880 LoadRoomBgLayer3Extra_candidate
 thumb-func 0x0803EA3C sub_0803EA3C
 thumb-func 0x0803EF5C TickLinkCommIfActive_candidate
 c-file 0x0803FA94 0x0803FAA4 src/link/get_link_player_id.c GetLinkPlayerId
-thumb-func 0x0803FC68 PlaySoundById
+c-file 0x0803FC68 0x0803FD04 src/audio/play_sound_by_id.c PlaySoundById
+c-file 0x0803FD04 0x0803FDB0 src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
 thumb-func 0x0803FDB0 kramInstall
 thumb-func 0x0803FE54 DisableKrawall
 thumb-func 0x0803FE60 EnableKrawall
@@ -944,6 +945,7 @@ thumb-func 0x0803FF1C PauseMusic
 thumb-func 0x0803FF40 ResumeMusic
 thumb-func 0x0803FF5C StopMusic
 thumb-func 0x0803FF70 PlaySoundEffect_candidate
+thumb-func 0x0803FF8C IsSoundActive_candidate
 thumb-func 0x0804115C InitializeFredAndGeorgesShop
 thumb-func 0x080411E0 UpdateFredAndGeorgesShop
 thumb-func 0x0804126C ExitFredAndGeorgesShop
@@ -1024,6 +1026,8 @@ thumb-func 0x080458A8 SetScreenWindowRect_candidate
 thumb-func 0x08045970 TickScreenWindows_candidate
 thumb-func 0x08045988 sub_08045988
 thumb-func 0x08049E3C sub_08049E3C
+thumb-func 0x08049E40 sub_08049E40
+thumb-func 0x08049E54 sub_08049E54
 
 # Thumb wrappers around BIOS SWI calls
 asm-file 0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
@@ -1550,4 +1554,8 @@ c-rodata 0x08FAA7D0 0x08FAA810 EepromV124
 c-rodata 0x08FAA810 0x08FAA824 EepromNoWait
 
 label 0x08FAAEF8 g_apPatronusGraphics
+# PlaySoundById tables: sample records, random-variant records and the per-sound config rows
+c-file 0x08FB0588 0x08FB0818 src/audio/sound_samples.c g_aSoundSamples
+c-file 0x08FB0818 0x08FB09F8 src/audio/sound_variants.c g_aSoundVariants
+c-file 0x08FB09F8 0x08FB0CC4 src/audio/sound_config.c g_aSoundConfig
 c-file 0x08FB0D94 0x08FB0DB0 src/shop/shop_stock_lists.c g_apShopStockLists
