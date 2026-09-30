@@ -5,9 +5,9 @@ If changed need to be made to this file, it should be proposed to a human so the
 
 > [!IMPORTANT]
 > If you are in any way (considering) contributing to The Cutting Room Floor, turn back now.
-> 
+>
 > TCRF has a very clear policy on AI: If AI was used at any point during your reverse engineering process, you may not
-> contribute to their wiki. This seems to include *any* kind of AI usage, which means all information in this repo is
+> contribute to their wiki. This seems to include _any_ kind of AI usage, which means all information in this repo is
 > effectively poisoned. Their wiki page on HP3-GBA containing calls for contribution, missing information or straight-up
 > errors does not change this.
 
@@ -28,10 +28,23 @@ Current progress:
 
 |        | Game Code | Game Assets | Krawall |
 | ------ | --------: | ----------: | ------: |
-| **US** | 25-30%    | 40-45%      | 0%      |
-| **JP** | 10-15%    | 35-40%      | 0%      |
+| **US** |    25-30% |      40-45% |      0% |
+| **JP** |    10-15% |      35-40% |      0% |
 
 Note that JP matching may run behind somewhat as it is not the primary focus.
+
+Rough list of current priorities:
+
+| Area                                                    | Reason                                               |
+| ------------------------------------------------------- | ---------------------------------------------------- |
+| Room construction                                       | Better understand quest progression, document chests |
+| Sources of RNG calls                                    | Improve RNG manipulation                             |
+| Decompile all gamemode lifetime functions               | Completeness, general understanding                  |
+| All functions called by main before main loop           | Completeness, general understanding                  |
+| Analyze room background creation                        | Maps large section of data rom (tiles)               |
+| Find differences between international and Japanese ROM | Completeness, find patched bugs                      |
+| Improve understanding of save system                    | Completeness, entrypoint for ACE                     |
+| Document room scripts                                   | Better understand quest progression                  |
 
 ## Setup
 
@@ -53,13 +66,14 @@ Discord server.
 
 Harry Potter and the Prisoner of Azkaban for the Gameboy Advance (and by extension decompiled code in this repo) uses
 code from open source libraries:
+
 - `src/libc` contains code belonging to or based on the [newlib](https://sourceware.org/pub/newlib/) project. All code
-in this folder should be licensed under a BSD-like license.
+  in this folder should be licensed under a BSD-like license.
 - the [Krawall](https://github.com/sebknzl/krawall) audio engine, licensed under the LGPL v2.1 license
-  - This code is currently not included in this repo, but may be in the future
+    - This code is currently not included in this repo, but may be in the future
 - the [Pucrunch](https://a1bert.kapsi.fi/Dev/pucrunch/) compression tool, licensed under the LGPL v2.1 license. The code
-referenced was pulled from [the Internet Archive](http://web.archive.org/web/20060925155413id_/http://www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c).
-  - `tools/graphics/pucrunch_gammalz.py` implements parts of its compression algorithm
+  referenced was pulled from [the Internet Archive](http://web.archive.org/web/20060925155413id_/http://www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c).
+    - `tools/graphics/pucrunch_gammalz.py` implements parts of its compression algorithm
 
 Most other code assets in this repo are based on the rom of Harry Potter and the Prisoner of Azkaban, as part of a clean
 room reverse engineering effort. Raw art assets are currently not included in this repo.
