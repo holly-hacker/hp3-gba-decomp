@@ -281,10 +281,12 @@ thumb-func 0x08012B44 sub_08012B40
 thumb-func 0x08012CB8 ClearFighterObjectFlag_candidate
 thumb-func 0x080130B8 SetFighterTurnOrderIconDone
 thumb-func 0x0801310C sub_08013108
+thumb-func 0x080131A0 OpenPendingFighterMenu_candidate
 thumb-func 0x080134C0 InitializeVictoryScreen
 thumb-func 0x080138F8 UpdateVictoryScreen
 c-file 0x080147AC 0x08014894 src/battle/roll_battle_item_drops.c RollBattleItemDrops
 thumb-func 0x08014894 ExitVictoryScreen
+thumb-func 0x08014950 ResetCharacterToLevel
 c-file 0x080149B0 0x08014C74 src/battle/init_player_battle_actor.c InitPlayerBattleActor
 c-file 0x08014C74 0x08014F08 src/battle/init_monster_battle_actor.c InitMonsterBattleActor
 thumb-func 0x08014F08 SpawnTurnOrderIcon
@@ -625,6 +627,7 @@ c-file 0x0802C600 0x0802C614 src/mem/link_free_block.c LinkFreeBlock
 c-file 0x0802C664 0x0802C694 src/mem/unlink_free_block.c UnlinkFreeBlock
 c-file 0x0802C710 0x0802C7AC src/gamemode/tick_game_mode_stack.c TickGameModeStack
 c-file 0x0802C7AC 0x0802C7EC src/gamemode/init_game_mode_stack.c InitGameModeStack
+thumb-func 0x0802C7EC GetCurrentGameMode_candidate
 thumb-func 0x0802C7F8 GetPendingGameMode_candidate
 c-file 0x0802C808 0x0802C824 src/gamemode/push_game_mode.c PushGameMode
 c-file 0x0802C824 0x0802C844 src/gamemode/push_game_mode_2.c PushGameMode_2
@@ -668,6 +671,10 @@ thumb-func 0x0802FEF0 SubmitOamAttrsNudged
 thumb-func 0x0802FF70 InitOamSystem
 thumb-func 0x0802FFE4 QueueOamEntry
 thumb-func 0x08030034 HideOamEntryOnAlternateVblanks
+thumb-func 0x080300D8 GetObjectAffineSlotId
+thumb-func 0x080300E4 SetObjectAffineSlotId
+thumb-func 0x080300F8 AllocAffineSlot
+thumb-func 0x0803013C FreeAffineSlot
 thumb-func 0x08030184 sub_08030140
 thumb-func 0x080301C8 HideUnusedOamEntries
 thumb-func 0x080302B8 InitializeOwlNameSelect
@@ -769,6 +776,7 @@ thumb-func 0x080361BC ExitConfirmTradeScreen
 c-file 0x080361F0 0x08036258 src/gamemode/modes/status_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
 c-file 0x08036258 0x0803631C src/gamemode/modes/status_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
 thumb-func 0x0803631C sub_080362D8
+thumb-func 0x080364EC DrawEquipItemStatComparison
 c-file 0x080368D4 0x08036910 src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x08036910 sub_080368CC
 thumb-func 0x08036928 sub_080368E4
@@ -987,8 +995,9 @@ thumb-func 0x080458B4 sub_08045988
 thumb-func 0x08049D68 sub_08049E3C
 thumb-func 0x08049D6C sub_08049E40
 thumb-func 0x08049D80 sub_08049E54
-thumb-func 0x08049DBC bios_CPUSet
-thumb-func 0x08049DE8 bios_VBlankIntrWait
+# Thumb wrappers around BIOS SWI calls
+asm-file 0x08049DB0 0x08049DF0 asm/rt/bios_calls.s               bios_calls
+
 c-file-O1 0x08049DF0 0x0804A174 src/eeprom/eeprom_v124.c EepromV124
 c-file-O1 0x0804A174 0x0804A1EC src/eeprom/eeprom_nowait.c EepromNoWait
 
@@ -1074,6 +1083,7 @@ label 0x08051D9C g_pMonsterAnimFrameTable
 label 0x0805377C g_MonsterShadowAnimData
 label 0x080537DC g_abSpellEffectScriptId
 c-file 0x08053818 0x080538CC src/battle/spell_power.c g_awSpellPowerBase
+label 0x08053890 g_awSpellMpCost
 label 0x080538CC g_aBattleSlotAnchorPos_candidate
 label 0x080538D4 g_adwEffectBgControlOverride_candidate
 label 0x08053A34 g_apEffectScanlineTables_candidate
@@ -1152,6 +1162,7 @@ label 0x080657A0 g_ScanlineBandsRoom12
 c-file 0x08065C48 0x08065FA8 src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 label 0x08065FE8 g_dwMinigameMenuBg3Control
 label 0x08065FEC g_dwMinigameMenuBg1Control
+label 0x08066F88 g_aObjectTypeAssets
 # Direction to Direction opposite tables (8-way, then 4-way)
 label 0x08068B88 g_abOppositeDirection8
 label 0x08068B90 g_abOppositeDirection4
@@ -1171,6 +1182,8 @@ label 0x0806911C g_dwServePumpkinJuiceBg3Control
 label 0x080692B4 g_ServePumpkinJuiceTable
 label 0x0806933C g_ServePumpkinJuicePauseText
 label 0x0806934C g_ServePumpkinJuiceResultsText
+label 0x08069A44 g_aHelpSpriteAssets
+label 0x08069BA4 g_apHelpSpritePalettes
 label 0x0806B140 g_aItemsSectionFilters
 label 0x0806B17C g_ItemsSectionMenuDefinition
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
@@ -1215,6 +1228,9 @@ image-bank 0x080AC6F4 0x080AC808 data/images/help HelpSprites
 
 # Overworld (wandering) monster sprites, g_pMonsterGraphicsTable +0x10 records
 image-bank 0x080AC808 0x080B99C0 data/images/monster_overworld MonsterOverworldSprites
+
+# Scabbers, a recolor palette, the Giant Rat transformation, and the coin icon
+image-bank 0x080B99C0 0x080BC100 data/images/unnamed UnnamedSprites
 
 # Main menu palette, debug menu cursor, and other small sprites
 image-bank 0x080BC100 0x080BCDDC data/images/menu_sprites MenuSprites
