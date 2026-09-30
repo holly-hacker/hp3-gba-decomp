@@ -32,6 +32,9 @@ void UpdateStartup(void)
             LoadBgGraphic(2, g_StartupNoticeGraphic, 1, 0, 8, 1);
             SetTextTargetFromBgControl(g_dwStartupBg1Control);
             SelectTextFont(8, 0, -1);
+#ifdef VERSION_JP
+            SetTextLineHeight(GetTextLineHeight() - 1);
+#endif
             pText = GetDialogText(0x8E5);  // Harry Potter / WBIE trademark and copyright notice
             DrawTextLines(0xE0, 0x78, 0x67, 0xE0, 0x50, &pText, 1);
             g_GameModeStackContext.dwModeState = 2;
@@ -52,6 +55,9 @@ void UpdateStartup(void)
     case 3:
         if (g_GameModeStackContext.dwModeTimer == 0x84)
         {
+#ifdef VERSION_JP
+            PushGameMode(MainMenu);
+#else
             // French shows the English notice after its translation.
             if (GetLanguage() == LanguageFrench)
             {
@@ -62,6 +68,7 @@ void UpdateStartup(void)
             }
             else
                 PushGameMode(MainMenu);
+#endif
         }
         break;
 

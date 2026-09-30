@@ -9,3 +9,4 @@ typedef signed int     s32;
 
 #define NULL ((void *)0)
 #define OFFSETOF(type, member) ((u32)&((type *)0)->member)
+#define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))

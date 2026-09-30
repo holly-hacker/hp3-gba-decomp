@@ -34,6 +34,7 @@ void UpdateOptions(void)
         else
         {
             PlaySoundById(2);
+#ifndef VERSION_JP
             if (g_dwOptionsEntryLanguage != GetLanguage())
             {
                 SetLanguage(g_dwOptionsEntryLanguage);
@@ -42,6 +43,7 @@ void UpdateOptions(void)
                 SyncSaveHeaderIfDirty();
                 EnableKrawall();
             }
+#endif
         }
 
         SetSoundEffectVolume((u8)(g_saveManager.header.bMusicVolume * 25));
@@ -60,6 +62,7 @@ void UpdateOptions(void)
     }
     else if (g_wKeysPressed & KeyA)
     {
+#ifndef VERSION_JP
         switch (g_GameModeStackContext.dwModeScratchB)
         {
         case 0:
@@ -74,6 +77,7 @@ void UpdateOptions(void)
             PushGameMode(LanguageSelect);
             break;
         }
+#endif
     }
     else if (g_wKeysPressed & (KeyUp | KeyDown))
         MoveOptionsCursor_candidate();

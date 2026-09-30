@@ -14,6 +14,17 @@ void InitializeOptions(void)
     SetAlphaBlendTargets(0, 0);
     ClearResourceCacheSlots();
 
+#ifdef VERSION_JP
+    g_dwOptionsReturnMode = g_PrevGameModeStackContext.dwCurrentGameMode;
+
+    g_GameModeStackContext.dwModeState = 0;
+    g_GameModeStackContext.dwModeTimer = 3;
+
+    g_OptionsState.dwMusicVolume = g_saveManager.header.bMusicVolume;
+    g_OptionsState.dwSoundVolume = g_saveManager.header.bSoundVolume;
+    g_OptionsState.dwGammaHigh = g_saveManager.header.bHeaderFlags.bits.bGammaHigh;
+    g_GameModeStackContext.dwModeScratchB = 0;
+#else
     if (g_PrevGameModeStackContext.dwCurrentGameMode != LanguageSelect)
     {
         g_dwOptionsEntryLanguage = GetLanguage();
@@ -38,6 +49,7 @@ void InitializeOptions(void)
         g_OptionsState.dwGammaHigh = g_saveManager.header.bHeaderFlags.bits.bGammaHigh;
         g_GameModeStackContext.dwModeScratchB = 0;
     }
+#endif
 
     sub_0801DF6C(0x8CF, 4, 1, g_MenuScreenGraphic, 0, 1);  // "Options"
     g_pMenuCursorObject->oam.objMode = 1;

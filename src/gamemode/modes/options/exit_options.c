@@ -19,7 +19,7 @@ void ExitOptions(void)
 
     sub_0801E0DC();
 
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < ARRAY_COUNT(g_OptionsState.apObjects); i++)
     {
         FreeObject(g_OptionsState.apObjects[i]);
         g_OptionsState.apObjects[i] = NULL;

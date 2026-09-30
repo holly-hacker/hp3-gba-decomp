@@ -29,7 +29,9 @@ void InitializeMainMenu(void)
     SetBgControlRegister_candidate(2, g_dwMainMenuBg2Control);
     ClearBgTilemap(2);
     LoadBgGraphic(2, g_MainMenuBg2Graphic, 1, 0, 1, 1);
+#ifndef VERSION_JP
     LoadBgGraphic(2, g_apMainMenuTitleGraphic[GetLanguage()], 0xC8, 0, 0xF, 9);
+#endif
     SetBgControlRegister_candidate(1, g_dwMainMenuBg1Control);
     ClearBgTilemap(1);
     ClearResourceCacheSlots();

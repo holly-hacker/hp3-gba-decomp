@@ -4,10 +4,14 @@
 #include "graphics/object.h"
 
 typedef struct {
+#ifdef VERSION_JP
+    Object *apObjects[7];  // 0x00
+#else
     Object *apObjects[8];  // 0x00
-    u32 dwMusicVolume;     // 0x20
-    u32 dwSoundVolume;     // 0x24
-    u32 dwGammaHigh;       // 0x28
+#endif
+    u32 dwMusicVolume;     // US 0x20, JP 0x1C
+    u32 dwSoundVolume;     // US 0x24, JP 0x20
+    u32 dwGammaHigh;       // US 0x28, JP 0x24
 } OptionsState;
 
 extern OptionsState g_OptionsState;  // 0x03005DD0
