@@ -43,6 +43,16 @@ ROM_BASE = 0x08000000
 LANG_TABLE = 0x0806BD78
 LANGS = ["en_us", "en_gb", "fr", "de", "es", "it", "nl", "da"]
 
+# Per-version language lists and pointer-table addresses. The JP cart has a
+# single Japanese blob.
+VERSION_LANGS = {"us": LANGS, "jp": ["ja"]}
+VERSION_LANG_TABLE = {"us": LANG_TABLE, "jp": 0x0806BD04}
+VERSION_ROM = {"us": "baserom.us.gba", "jp": "baserom.jp.gba"}
+
+# Languages whose glyph codes are not mapped to characters: CHARMAP and the
+# ASCII identity range describe the US/EU font and are not verified for JP.
+RAW_LANGS = {"ja"}
+
 
 def rd8(rom: bytes, addr: int) -> int:
     return rom[addr - ROM_BASE]
@@ -56,8 +66,8 @@ def rd32(rom: bytes, addr: int) -> int:
     return struct.unpack_from("<I", rom, addr - ROM_BASE)[0]
 
 
-def lang_base(rom: bytes, lang_index: int) -> int:
-    return rd32(rom, LANG_TABLE + lang_index * 4)
+def lang_base(rom: bytes, lang_index: int, ver: str = "us") -> int:
+    return rd32(rom, VERSION_LANG_TABLE[ver] + lang_index * 4)
 
 
 class TextBlob:
@@ -323,7 +333,7 @@ CHARMAP_REVERSE: dict[str, int] = {v: k for k, v in CHARMAP.items()}
 assert len(CHARMAP_REVERSE) == len(CHARMAP), "CHARMAP has a duplicate character value"
 
 
-def bytes_to_editable(data: bytes) -> str:
+def bytes_to_editable(data: bytes, raw: bool = False) -> str:
     """Reversible glyph-bytes -> human-editable string, for data/text/
     JSON. `data` must NOT include the trailing 0x00 terminator (strip it
     first -- decode() includes it, encode_string() expects it back).
@@ -335,15 +345,19 @@ def bytes_to_editable(data: bytes) -> str:
     docs/formats/text.md) falls back to a Unicode Private Use Area
     placeholder: single byte b -> U+E000+b; two-byte code (b0<<8)|b1
     (b0 in 0xF0-0xFF) -> that value directly, since it already falls in
-    U+F000-U+FFFF."""
+    U+F000-U+FFFF. With raw=True no code is mapped to a character: every
+    single byte uses its U+E000+b placeholder."""
     out = []
     i = 0
     while i < len(data):
         b = data[i]
-        if b in CHARMAP:
+        if raw and b <= 0xEF:
+            out.append(chr(0xE000 + b))
+            i += 1
+        elif b in CHARMAP and not raw:
             out.append(CHARMAP[b])
             i += 1
-        elif 0x20 <= b <= 0x7A:
+        elif not raw and 0x20 <= b <= 0x7A:
             out.append(chr(b))
             i += 1
         elif b > 0xEF:
@@ -356,13 +370,21 @@ def bytes_to_editable(data: bytes) -> str:
     return "".join(out)
 
 
-def editable_to_bytes(s: str) -> bytes:
+def editable_to_bytes(s: str, raw: bool = False) -> bytes:
     """Inverse of bytes_to_editable(). Output does NOT include a
     trailing 0x00 -- append one before calling encode_string()."""
     out = bytearray()
     for ch in s:
         cp = ord(ch)
-        if ch in CHARMAP_REVERSE:
+        if raw:
+            if 0xE000 <= cp <= 0xE0EF:
+                out.append(cp - 0xE000)
+            elif 0xF000 <= cp <= 0xFFFF:
+                out.append(cp >> 8)
+                out.append(cp & 0xFF)
+            else:
+                raise ValueError(f"codepoint {cp:#x} not representable in a raw glyph string")
+        elif ch in CHARMAP_REVERSE:
             out.append(CHARMAP_REVERSE[ch])
         elif 0x20 <= cp <= 0x7A:
             out.append(cp)

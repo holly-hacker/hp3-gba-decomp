@@ -438,10 +438,18 @@ therefore `compare`/`check-all`): reads `regions.<ver>.txt`'s
 symbol paths from `data/text/`, and writes real labeled `.s` files to
 `build/<ver>/text/` (gitignored), erroring loudly on any size mismatch
 against the row's declared end address -- same discipline as
-`pack_krawall.py`. Confirmed end-to-end: `just check-all` passes for
-both US and JP (`pack_text.py` no-ops cleanly when a version's
-manifest has no `dialog-text` rows yet, rather than erroring -- JP
-dialog text isn't located, see below).
+`pack_krawall.py`. Confirmed end-to-end: `just compare us` and
+`just compare jp` both match.
+
+**JP dialog text** (PROVEN by byte-exact round trip): the JP ROM's
+`sDialogTextTable` (0x0806BD04) holds a single pointer, to one Japanese
+blob at 0x08ECA0F0-0x08EDF36C (0x1527C bytes, no trailing padding) in the
+same format as the US blobs: 0x400-byte tree, 2767 strings. `TextBlob`
+decodes it and `build_blob` reproduces it exactly. `extract-text` writes
+it to `data/text/ja.json`, which is written raw (every single-byte glyph
+code as U+E000+code, extended codes as U+F000+): the US charmap and the
+ASCII identity range are not verified for the JP font, so no glyph is
+mapped to a character. The Japanese charmap is UNCONFIRMED.
 
 **`functions.us.cfg`**: named the whole chain (`DrawTextLine`,
 `GetGlyphWidth`, `PrintTextBox`, `DecompressDialogText`,

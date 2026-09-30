@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Pack data/text/ (curated, editable dialog-string JSON, currently
-US-only -- see tools/text/extract_text.py) into per-version, byte-exact
+"""Pack data/text/ (curated, editable dialog-string JSON, see
+tools/text/extract_text.py) into per-version, byte-exact
 assembly for regions.<ver>.txt's dialog-text/dialog-text-table rows. The
 tree and symbol paths are reconstructed from the strings during packing;
 each JSON file is a string array. See
@@ -25,7 +25,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from text_codec import (
-    LANGS, build_blob, build_tree_from_strings, editable_to_bytes,
+    RAW_LANGS, VERSION_LANGS, build_blob, build_tree_from_strings,
+    editable_to_bytes,
 )
 
 
@@ -43,6 +44,7 @@ def emit_pad_to_align4(lines: list[str], cursor: int) -> int:
 
 
 def parse_text_rows(ver: str):
+    langs = VERSION_LANGS[ver]
     """Returns (lang_rows, table_row). lang_rows: {lang_code: (start, end, json_path, name)}.
     table_row: (start, end, name)."""
     lang_rows: dict[str, tuple[int, int, str, str]] = {}
@@ -58,8 +60,8 @@ def parse_text_rows(ver: str):
                     sys.exit(f"regions.{ver}.txt:{lineno}: expected 'dialog-text <start> <end> <json> <name>'")
                 _, start, end, json_path, name = parts
                 lang = Path(json_path).stem
-                if lang not in LANGS:
-                    sys.exit(f"regions.{ver}.txt:{lineno}: {json_path} doesn't match a known language code {LANGS}")
+                if lang not in langs:
+                    sys.exit(f"regions.{ver}.txt:{lineno}: {json_path} doesn't match a known language code {langs}")
                 if lang in lang_rows:
                     sys.exit(f"regions.{ver}.txt:{lineno}: duplicate dialog-text row for language {lang!r}")
                 lang_rows[lang] = (int(start, 16), int(end, 16), json_path, name)
@@ -71,10 +73,9 @@ def parse_text_rows(ver: str):
                 _, start, end, name = parts
                 table_row = (int(start, 16), int(end, 16), name)
     if not lang_rows and table_row is None:
-        # Not an error: dialog text hasn't been located/extracted for
-        # this ROM version yet (e.g. JP -- see docs/formats/text.md).
+        # Not an error: this manifest has no dialog-text rows.
         return lang_rows, table_row
-    missing = [l for l in LANGS if l not in lang_rows]
+    missing = [l for l in langs if l not in lang_rows]
     if missing:
         sys.exit(f"regions.{ver}.txt: missing dialog-text rows for languages {missing}")
     if table_row is None:
@@ -86,7 +87,8 @@ def pack_language(lang: str, start_addr: int, end_addr: int, json_path: str, nam
     payload = json.loads(Path(json_path).read_text())
     if not isinstance(payload, list) or not all(isinstance(s, str) for s in payload):
         sys.exit(f"{json_path}: expected an array of strings")
-    strings = [editable_to_bytes(s) + b"\x00" for s in payload]
+    raw = lang in RAW_LANGS
+    strings = [editable_to_bytes(s, raw) + b"\x00" for s in payload]
     tree, encode_map = build_tree_from_strings(strings)
     blob = build_blob(tree, strings, encode_map)
 
@@ -102,10 +104,10 @@ def pack_language(lang: str, start_addr: int, end_addr: int, json_path: str, nam
     return "\n".join(lines) + "\n"
 
 
-def pack_table(start_addr: int, end_addr: int, name: str, lang_rows: dict[str, tuple[int, int, str, str]]) -> str:
+def pack_table(ver: str, start_addr: int, end_addr: int, name: str, lang_rows: dict[str, tuple[int, int, str, str]]) -> str:
     lines = [f"{name}:"]
     cursor = start_addr
-    for lang in LANGS:
+    for lang in VERSION_LANGS[ver]:
         _, _, _, lang_name = lang_rows[lang]
         lines.append(f".word {lang_name}")
         cursor += 4
@@ -132,7 +134,7 @@ def main() -> None:
         asm = pack_language(lang, start, end, json_path, name)
         (out_dir / f"{name}.s").write_text(asm)
 
-    table_asm = pack_table(t_start, t_end, t_name, lang_rows)
+    table_asm = pack_table(ver, t_start, t_end, t_name, lang_rows)
     (out_dir / f"{t_name}.s").write_text(table_asm)
 
     print(f"packed {len(lang_rows)} language string tables + pointer table for {ver}", file=sys.stderr)

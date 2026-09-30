@@ -78,9 +78,8 @@ pack-krawall ver="us":
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/text/ is gitignored (same footing as the baserom, see
 # AGENTS.md hard rule 2) and meant to be user-editable for future modding,
-# so it's never silently regenerated/overwritten on every build. US only
-# -- dialog text hasn't been located in the JP ROM (see docs/formats/text.md).
-# Bootstrap data/text/ locally from baserom.us.gba.
+# so it's never silently regenerated/overwritten on every build.
+# Bootstrap data/text/ locally from baserom.us.gba and baserom.jp.gba.
 extract-text:
     python3 tools/text/extract_text.py
 

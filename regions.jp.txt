@@ -1182,7 +1182,7 @@ label 0x0806BAD4 g_dwDivinationTeaBg0Control
 label 0x0806BAD8 g_dwDivinationTeaBg1Control
 label 0x0806BAE4 g_DivinationTeaCupAnimA
 label 0x0806BAFC g_DivinationTeaTable
-label 0x0806BD04 sDialogTextTable
+dialog-text-table 0x0806BD04 0x0806BD08 sDialogTextTable
 label 0x0806BD08 g_dwUpNightBg0Control
 label 0x0806BD0C g_dwUpNightBg1Control
 label 0x0806BD10 g_dwUpNightBg2Control
@@ -1500,6 +1500,8 @@ image-bank 0x08E8AD90 0x08EAAF88 data/images/portraits Portraits
 
 # Dialog chatheads (partial), 8bpp
 image-bank 0x08EAAF88 0x08ECA0F0 data/images/chatheads Chatheads
+
+dialog-text 0x08ECA0F0 0x08EDF36C data/text/ja.json DialogTextJa
 
 # Famous wizard cards (Folio Universitas), 8bpp
 image-bank 0x08EDF36C 0x08F3C9CC data/images/famous_wizard_cards FamousWizardCards
