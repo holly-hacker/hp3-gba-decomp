@@ -35,13 +35,16 @@ Note that JP matching may run behind somewhat as it is not the primary focus.
 
 ## Setup
 
-To be documented. See `flake.nix` and `Justfile`.
+The setup in this repo uses Linux tooling. If you use Windows, you can run these steps inside WSL.
 
-TL;DR: place your roms at `rom.us.gba` and `rom.jp.gba`, start a dev shell with `nix develop` (this will build/fetch
-required tools) and run `just check-all` to execute the entire extraction and build process.
+1. Install the `nix` package manager. This will install the specific version of the tooling used.
+2. Place the international and Japanese roms at `baserom.us.gba` and `baserom.jp.gba`.
+3. Start a nix dev shell using `nix develop`. This may take a few minutes the first time.
+4. Test whether the rom files are correct using `just setup`. This should show "OK" for both roms.
+5. Extract assets using `just extract-all`.
+6. Run the entire build process using `just check-all`.
 
-Note that the first build may take a while as it will try to re-compress extracted resources. Subsequent builds will be
-faster.
+The built ROMs should now be placed at `build/us/rom.gba` and `build/jp/rom.gba`.
 
 ## Attribution
 
