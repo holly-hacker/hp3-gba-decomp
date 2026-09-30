@@ -37,7 +37,7 @@ void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 enc
     counts[1] = countB;
     counts[2] = countC;
 
-    for (kind = 0; kind <= 2; kind++) {
+    for (kind = 0; kind < ARRAY_COUNT(counts); kind++) {
         terrainType = GetEncounterKindTerrainType(kind);
 
         i = 0;

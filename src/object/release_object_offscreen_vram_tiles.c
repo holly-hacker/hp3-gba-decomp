@@ -42,7 +42,7 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
         }
 
         if (obj->bDrawFlags & ObjectDrawFlagVariantSlots) {
-            for (i = 0; i < 1; i++) {
+            for (i = 0; i < ARRAY_COUNT(obj->aVariantSlots); i++) {
                 variantSlot = &obj->aVariantSlots[i];
                 if (variantSlot->wVramTileAllocId != 0xFFFF) {
                     FreeObjectVramTileAllocation(variantSlot->wVramTileAllocId, variantSlot->wVramTileRow,

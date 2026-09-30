@@ -33,7 +33,7 @@ void ExitBattle(void)
         ClearPaletteRam();
         sub_0804542C();
 
-        for (slot = 0; slot <= 6; slot++)
+        for (slot = 0; slot < ARRAY_COUNT(g_apFighterObjects_candidate); slot++)
             g_apFighterObjects_candidate[slot] = NULL;
         g_pBattleMessageIconObject_candidate = NULL;
 
@@ -115,7 +115,7 @@ void ExitBattle(void)
         ClearPaletteRam();
         sub_0804542C();
 
-        for (slot = 0; slot <= 6; slot++)
+        for (slot = 0; slot < ARRAY_COUNT(g_apFighterObjects_candidate); slot++)
             g_apFighterObjects_candidate[slot] = NULL;
         g_pBattleMessageIconObject_candidate = NULL;
     }

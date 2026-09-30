@@ -112,7 +112,7 @@ u8 UpdateObjectOamCells(Object *obj)
         else {
             if (obj->bDrawFlags & ObjectDrawFlagVariantSlots) {
                 for (order = 7; order >= 0; order--) {
-                    for (slot = 0; slot < 1; slot++) {
+                    for (slot = 0; slot < ARRAY_COUNT(obj->aVariantSlots); slot++) {
                         if (obj->aVariantSlots[slot].pSpriteVariantTables != NULL
                             && obj->aVariantSlots[slot].bDrawOrder == order) {
                             s32 tableIndex;

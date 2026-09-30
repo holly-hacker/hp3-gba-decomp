@@ -20,7 +20,7 @@ void InitializeBattle(void)
     g_dwBattleRewardFlagsSnapshot = 0;
 
     // Allocate all 6 fighter objects (3 on the player side, 3 on the enemy side)
-    for (i = 0; i <= 6; i++)
+    for (i = 0; i < ARRAY_COUNT(g_apFighterObjects_candidate); i++)
     {
         g_apFighterObjects_candidate[i] = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
         SetObjectPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
@@ -41,7 +41,7 @@ void InitializeBattle(void)
 
     SetObjectPosition(g_pBattleMessageIconObject_candidate, 2, 0x75);
 
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < ARRAY_COUNT(g_anFaintedRosterIndices); i++)
         g_anFaintedRosterIndices[i] = -1;
 
     if (g_PrevGameModeStackContext.dwCurrentGameMode != FolioUniversitas && g_PrevGameModeStackContext.dwCurrentGameMode != HelpTopicScreen)

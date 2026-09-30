@@ -12,7 +12,7 @@ void RoomScriptOpReturnToOverworld(ReturnToOverworldRecord *pRecord)
 {
     u8 i;
 
-    for (i = 0; i < 2; i++)
+    for (i = 0; i < ARRAY_COUNT(g_abRoomScriptExitParams_candidate); i++)
         g_abRoomScriptExitParams_candidate[i] = pRecord->bExitParam;
     PushGameMode_2(Overworld, 0, pRecord->bExitId);
     g_dwGameModeFlags |= 0x80000000;

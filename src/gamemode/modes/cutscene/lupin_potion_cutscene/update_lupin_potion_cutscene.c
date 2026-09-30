@@ -29,7 +29,7 @@ void UpdateLupinPotionCutscene(void)
             g_LupinPotionCutscene.nPanelOffset = 0x28;
             sub_08029380();
         }
-        for (i = 0; i <= 7; i++)
+        for (i = 0; i < ARRAY_COUNT(g_LupinPotionCutscene.apPanelObject); i++)
         {
             if (g_LupinPotionCutscene.apPanelObject[i] != NULL)
                 SetObjectPosition(g_LupinPotionCutscene.apPanelObject[i], i << 5,
@@ -50,7 +50,7 @@ void UpdateLupinPotionCutscene(void)
             g_GameModeStackContext.dwModeState = 2;
             g_LupinPotionCutscene.nPanelOffset = 0;
         }
-        for (i = 0; i <= 7; i++)
+        for (i = 0; i < ARRAY_COUNT(g_LupinPotionCutscene.apPanelObject); i++)
         {
             if (g_LupinPotionCutscene.apPanelObject[i] != NULL)
                 SetObjectPosition(g_LupinPotionCutscene.apPanelObject[i], i << 5,

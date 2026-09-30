@@ -10,7 +10,7 @@ void EnableObjectVariantSlots(Object *obj)
     s32 i;
 
     obj->bDrawFlags |= ObjectDrawFlagVariantSlots;
-    for (i = 0; i < 1; i++) {
+    for (i = 0; i < ARRAY_COUNT(obj->aVariantSlots); i++) {
         obj->aVariantSlots[i].wVramTileAllocId |= 0xFFFF;
         obj->aVariantSlots[i].bPaletteBank = obj->oam.paletteNum;
         obj->aVariantSlots[i].pSpriteVariantTables = NULL;

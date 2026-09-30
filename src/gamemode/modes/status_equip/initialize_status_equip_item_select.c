@@ -16,7 +16,7 @@ void InitializeStatusEquipItemSelect(void)
     BG_PLTT[6] = 0xF;
 
     g_StatusEquipItemSelect.dwUnk18 = 0;
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < ARRAY_COUNT(g_StatusEquipItemSelect.apStatArrows); i++)
         g_StatusEquipItemSelect.apStatArrows[i] = NULL;
 
     SetAlphaBlendTargets(0x14, 1);

@@ -23,7 +23,7 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
             g_GameModeStackContext.dwModeState = ServePumpkinJuiceStatePauseMenu;
         }
 
-        for (i = 0; i < 3; i++)
+        for (i = 0; i < ARRAY_COUNT(g_ServePumpkinJuice.adwUnk20); i++)
         {
             if (g_ServePumpkinJuice.adwUnk20[i] > 0)
                 found = 1;

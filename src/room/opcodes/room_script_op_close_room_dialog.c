@@ -12,7 +12,7 @@ void RoomScriptOpCloseRoomDialog(CloseRoomDialogRecord *pRecord)
 {
     u8 i;
 
-    for (i = 0; i < 2; i++)
+    for (i = 0; i < ARRAY_COUNT(g_abRoomScriptExitParams_candidate); i++)
         g_abRoomScriptExitParams_candidate[i] = pRecord->bExitParam;
     if (g_dwGameModeFlags & 1)
         g_dwGameModeFlags &= ~1;

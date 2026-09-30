@@ -253,7 +253,7 @@ void InterpretObjectScript(Object *obj)
             break;
         case BSOP_GotoIfFighterRosterMatches:
             {
-                for (n = 0; n < 2; n++)
+                for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair_candidate); n++)
                 {
                     if (g_abEffectRosterIdPair_candidate[n] == targetFighter->bRosterIndex)
                         sub_0801B710(obj, args[1]);
@@ -274,7 +274,7 @@ void InterpretObjectScript(Object *obj)
             break;
         case BSOP_GotoIfFighterRosterMatches_2:
             {
-                for (n = 0; n < 2; n++)
+                for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair_candidate); n++)
                 {
                     if (g_abEffectRosterIdPair_candidate[n] == targetFighter->bRosterIndex)
                         sub_0801B710(obj, args[1]);

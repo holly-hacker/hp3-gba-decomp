@@ -71,7 +71,7 @@ void SetupBattleRoster(void)
         }
     }
 
-    for (slot = 0; slot <= 2; slot = (u8)(slot + 1))
+    for (slot = 0; slot < ARRAY_COUNT(g_pFightState->aAllySlotTurnOrderIndex); slot = (u8)(slot + 1))
         g_pFightState->aAllySlotTurnOrderIndex[slot] |= 0xFF;
 
     count = g_pFightState->bFighterCount;

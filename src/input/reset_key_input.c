@@ -10,7 +10,7 @@ void ResetKeyInput(void)
     g_wKeysPressed = 0;
     g_wKeysReleased = 0;
 
-    for (i = 0; i < 2; i++)
+    for (i = 0; i < ARRAY_COUNT(g_awPlayerKeysHeld); i++)
     {
         g_awPlayerKeysHeld[i] = 0;
         g_awPlayerKeysHeldPrevious[i] = 0;

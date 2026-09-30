@@ -19,7 +19,7 @@ void ExitWizardCrackerPopItMinigame(void)
 
     PlayScreenTransitionOutByIndex(0x3F, 2);
 
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < ARRAY_COUNT(g_aWizardCrackerPopItPalettes); i++)
     {
         sub_08030960(g_aWizardCrackerPopItPalettes[i].bSlotB);
         sub_08030960(g_aWizardCrackerPopItPalettes[i].bSlotA);

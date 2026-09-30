@@ -29,7 +29,7 @@ void UpdateStatusEquipSlotSelect(void)
         g_GameModeStackContext.dwModeSubState++;
         SetAlphaBlendCoefficients(g_GameModeStackContext.dwModeSubState,
                                   16 - g_GameModeStackContext.dwModeSubState);
-        for (i = 0; i < 6; i++)
+        for (i = 0; i < ARRAY_COUNT(g_StatusEquipSlotSelect.apSlotItems); i++)
         {
             if (g_StatusEquipSlotSelect.apSlotItems[i] != NULL)
                 sub_08026FE0(g_StatusEquipSlotSelect.apSlotItems[i],
@@ -92,7 +92,7 @@ void UpdateStatusEquipSlotSelect(void)
         g_GameModeStackContext.dwModeSubState--;
         SetAlphaBlendCoefficients(g_GameModeStackContext.dwModeSubState,
                                   16 - g_GameModeStackContext.dwModeSubState);
-        for (i = 0; i < 6; i++)
+        for (i = 0; i < ARRAY_COUNT(g_StatusEquipSlotSelect.apSlotItems); i++)
         {
             if (g_StatusEquipSlotSelect.apSlotItems[i] != NULL)
                 sub_08026FE0(g_StatusEquipSlotSelect.apSlotItems[i],

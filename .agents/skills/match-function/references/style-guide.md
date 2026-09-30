@@ -20,6 +20,10 @@ stable unless the task requires changing them. Avoid formatting unrelated files.
   index as a flag merely to perturb allocation. Preserve declaration order while matching.
 - Use enum names and named constants for understood values. Decimal for ordinary counts;
   hex for masks and hardware/address values. Use typed field/array access once known.
+- Bound loops over a known array with `ARRAY_COUNT(array)` from `types.h` instead of a
+  literal length, so the loop follows the array (and any per-version size). The macro is
+  signed like an `int` literal; do not replace it with a bare `sizeof` division, which is
+  unsigned and changes the generated comparison and loop shape.
 - Prefer multiplication, division, indexing and normal loops when they express the behavior.
   Use shifts/masks for bit operations. Cast only at an actual type/width boundary; repeated
   pointer casts usually signal a missing type. Avoid explicit hard-register assignments.
