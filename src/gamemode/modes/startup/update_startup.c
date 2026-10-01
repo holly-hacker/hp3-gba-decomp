@@ -3,6 +3,8 @@
 #include "game/game_modes.h"
 #include "graphics/text.h"
 
+#define SCREEN_DURATION 0x84
+
 void UpdateStartup(void)
 {
     u8 *pText;
@@ -13,7 +15,7 @@ void UpdateStartup(void)
     switch (g_GameModeStackContext.dwModeState)
     {
     case 0:
-        if (g_GameModeStackContext.dwModeTimer == 0x84)
+        if (g_GameModeStackContext.dwModeTimer == SCREEN_DURATION)
         {
             SetAlphaBlendCoefficients(0x10, 0);
             SetAlphaBlendTargets(6, 8);
@@ -53,7 +55,7 @@ void UpdateStartup(void)
         break;
 
     case 3:
-        if (g_GameModeStackContext.dwModeTimer == 0x84)
+        if (g_GameModeStackContext.dwModeTimer == SCREEN_DURATION)
         {
 #ifdef VERSION_JP
             PushGameMode(MainMenu);
@@ -96,7 +98,7 @@ void UpdateStartup(void)
         break;
 
     case 6:
-        if (g_GameModeStackContext.dwModeTimer == 0x84)
+        if (g_GameModeStackContext.dwModeTimer == SCREEN_DURATION)
             PushGameMode(MainMenu);
         break;
     }
