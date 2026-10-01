@@ -476,7 +476,7 @@ thumb-func 0x08020174 SpawnScriptEffectObject
 thumb-func 0x08020210 TickRoomTileAnimations_candidate
 thumb-func 0x08020390 InitRoomTileAnimationTable_candidate
 thumb-func 0x080203B4 sub_080203CC
-thumb-func 0x08020654 DrawTextLine
+c-file 0x08020654 0x0802086C src/text/draw_text_line.c DrawTextLine
 thumb-func 0x0802086C DrawStringAligned
 thumb-func 0x080209C4 DrawString
 thumb-func 0x08020D3C InitTextMacroTable

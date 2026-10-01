@@ -46,6 +46,10 @@ typedef struct {
     u16 unk6;
     u32 unk8;
     const u8 *pWidths;
+#ifdef VERSION_JP
+    const u32 *pGlyphFlags;     // 2 flag bits per glyph (see DrawTextLine)
+#endif
+    void *unk10;                // pointer into the font blob; at +0x14 in JP
 } FontDescriptor;
 
 // Text renderer state at 0x03003110, partial.
