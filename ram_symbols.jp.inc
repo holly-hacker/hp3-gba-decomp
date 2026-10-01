@@ -169,6 +169,7 @@
 .set g_pObjectPoolAuxBuffer,  0x03001DBC
 .set g_dwObjectListTicked_candidate,         0x03001DC0
 .set g_dwUnk03001DC4,         0x03001DC4
+.set g_adwRoomObjUnkACState,        0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room object constructors
 .set g_ActiveObjectListState, 0x030015B0
 
 @ --- Per-tick object queues (see include/hw/mem.h and TickObjectList) ---
@@ -237,6 +238,7 @@
 .set g_dwPendingCameraFocusFlag,     0x03004034  @ see ram_symbols.us.inc
 
 @ --- Room-script VM (see include/overworld/room_script.h) ---
+.set g_abTriggeredScriptFlags,        0x03002240  @ u8[32]: bitset over object script entry points; set once a one-time scripted object was triggered
 .set g_bRoomScriptCurrentRow, 0x03001DDE
 .set g_pRoomScriptYieldContinuation, 0x03001DE0
 .set g_pRoomScriptNextRecord, 0x03001DE4

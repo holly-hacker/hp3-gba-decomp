@@ -99,9 +99,19 @@ typedef enum {
 // CheckObjectCollisions does the same math inline. bState is compared == 1 to
 // take part in the pairwise overlap test; other values are unconfirmed.
 typedef struct ObjectCollisionBox {
-    u32 dwPackedOffsets;  // 0x00
-    u8 bState;            // 0x04
-    u8 pad_5[3];          // -> 0x08
+    union {
+        u32 dwPackedOffsets;
+        struct {
+            s8 bLeft;
+            s8 bRight;
+            s8 bTop;
+            s8 bBottom;
+        } edges;
+    } offsets;            // 0x00
+    union {
+        u32 dwWord;
+        u8 bState;
+    } state;              // 0x04
 } ObjectCollisionBox;
 
 // A collision box resolved to pixel edges; see GetObjectCollisionBoxRect.
@@ -267,9 +277,9 @@ typedef struct Object {
             u8 bRoomScriptArg64_candidate;  // 0x64, set by room script animation handlers
             u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
             u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileObjectScript
-            u8 pad_67;              // -> 0x68
+            u8 bRoomObjectArg67_candidate;  // 0x67, cleared by the type 9 room object constructor
             u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
-            u8 pad_69;
+            u8 bRoomObjectArg69_candidate;  // 0x69, set by the type 9 room object constructor
             u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartObjectAnimSequence
             u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartObjectAnimSequence
             u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
@@ -282,11 +292,11 @@ typedef struct Object {
                              // InitPlayerBattleActor_candidate
     u8 pad_7D[0x03];        // -> 0x80
     u32 dwStateTimer;       // 0x80
-    u8 pad_84[0x02];        // -> 0x86
+    u16 wUnk84;             // 0x84, zeroed by the type 6 room object constructor
     u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
     u8 pad_88[0x02];        // -> 0x8a
     u16 wActionVariant;     // 0x8A
-    u8 pad_8C[0x01];        // -> 0x8D
+    u8 bRoomObjectKind_candidate;  // 0x8C, set from the tile record by room object constructors; 2 selects the second collision box
     u8 bActionState;        // 0x8D, the dispatch key
     u8 pad_8E[0x01];        // -> 0x8F
     u8 bActionSubState;     // 0x8F, secondary per-object state; see SetObjectActionSubState
@@ -305,7 +315,8 @@ typedef struct Object {
     u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultObject; also read by
                              // sub_08001F40 as one of several "movement stopped"
                              // conditions. Not enough evidence yet for a real name.
-    u8 pad_AE[0x02];        // -> 0xB0
+    u8 pad_AE[0x01];        // -> 0xAF
+    u8 bCollisionMode_candidate;  // 0xAF, 1 or 2; set by the room object constructors
     ObjectCollisionBox aCollisionBoxes[2];  // 0xB0, see CheckObjectCollisions;
                              // slot 0 at 0xB0, slot 1 at 0xB8
     // 0xC0-0xC3: terrain bounding box, signed pixel offsets from the object's
@@ -470,6 +481,7 @@ extern void SetObjectFlags(Object *obj, ObjectFlags flags);
 // Starts animation `animId` from the object's animation table.
 extern void SetObjectAnimData_candidate(Object *obj, u32 animId);
 extern void SetObjectActionSubState(Object *obj, u8 state);
+extern void SetObjectDrawLayer(Object *obj, u8 layer);
 extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
 // Clears the object's queued move (Object+0x3C..0x48).
 extern void CancelObjectMove_candidate(Object *obj);

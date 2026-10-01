@@ -196,6 +196,7 @@
 .set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwObjectListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveObjects, never cleared; gates FreeObject's VRAM tile release
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/hw/mem.h
+.set g_adwRoomObjUnkACState,        0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room object constructors
 .set g_ActiveObjectListState,        0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/hw/mem.h
 
 @ --- Per-tick object queues (see include/hw/mem.h and TickObjectList) ---
@@ -264,6 +265,7 @@
 .set g_dwPendingCameraFocusFlag,      0x03003FD4  @ u32: cleared on room entry
 
 @ --- Room-script VM (see include/overworld/room_script.h) ---
+.set g_abTriggeredScriptFlags,        0x03002240  @ u8[32]: bitset over object script entry points; set once a one-time scripted object was triggered
 .set g_bRoomScriptCurrentRow,          0x03001DDE  @ u8: chain the VM is walking
 .set g_pRoomScriptYieldContinuation,   0x03001DE0  @ u32 *: record to resume at after a yield, or 0
 .set g_pRoomScriptNextRecord,          0x03001DE4  @ u32 *: record following the one being dispatched

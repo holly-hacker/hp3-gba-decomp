@@ -89,12 +89,14 @@ A tile record is `{u32 objectPtr; u16 objType; ...static fields...}` --
 construction (`SetRoomObjectRecordPtr_candidate` performs the same
 write from other call sites); `objType` (offset `+8`, i.e.
 `GetRoomObjectRecordPtr_candidate`'s return value) selects a
-constructor from `g_apRoomObjectConstructors` (`0x0804C054`, a 14-entry
+constructor from `g_apRoomObjectConstructors` (`src/room/room_object_constructors.c`,
+US `0x0804C054`, JP `0x0804BF80`; constructors take `(column, row)` and return
+the new `Object *`; a 14-entry
 function-pointer array, indices 0-13 -- entries beyond 13 fail to parse
 as valid pointers, so 14 is the full object-type count). The static
 fields after `objType` vary in layout per object type; for type 9 (see
-below) they run `+4/+6` (i16 x/y), `+8` (u16 script PC), `+0xa`-`+0xd`
-(assorted bytes) -- other types read a different, shorter subset of the
+below) they run `+4/+6` (i16 x/y), `+8` (u16 script PC), `+0xa` (kind 0-3;
+kind 2 despawns once triggered), `+0xb`-`+0xd` (bytes copied into the object) -- other types read a different, shorter subset of the
 same base pointer, so the record's on-disk length varies by which
 constructor consumes it (only the objType index at `+8` has a
 type-independent meaning).
@@ -106,11 +108,20 @@ persistent bitmap) to detect whether this tile's object was already
 triggered/consumed, matching what "already opened" state should look
 like. Its tick handler is a distinct function at `0x0800BDCC`, function-
 boundaried but not yet cleanly decompilable -- needs a proper
-re-analysis pass. Types 2/4/6 (`0x0802BB00`/`0x08026414`/`0x08026348`)
+re-analysis pass. Types 2/4/7 (`0x0802BB00`/`0x08026414`/`0x08026348`)
 are structurally similar constructors (same `SnapObjectPosition`/
 `SetObjectActionState` shape) for other placed-sprite
-kinds, not differentiated by content. Types 0-1, 3, 5, 7-8, 10-13 are
-undecompiled.
+kinds, not differentiated by content. Type 0 is null; type 1 is
+`SpawnRoomTileAnimationObject_candidate`. Every constructor is decompiled
+under `src/room/objects/` (`sub_<US addr>` names, shared by
+both versions). Each allocates an object, positions
+it from the record's `(x, y)` and fills in `Object` state and callbacks from
+the remaining record bytes; the record layout after `(x, y)` is per type
+(`include/overworld/room_object.h`). What the objects are in game is not yet
+identified. Type 1 registers a room tile animation; type 5 is a scripted
+trigger whose `bKind` (0-82) selects sprite, draw flags and collision
+behavior; types 2, 4, 7 and 13 are collision-box objects; types 10 and 12 also
+zero the three words at `g_adwRoomObjUnkACState`.
 
 ## Warp/trigger tiles
 
@@ -160,8 +171,8 @@ described by these two room-local systems than by the per-`Object` VM.
 
 - Decode the `CopyRoomBlobHeaderRecords_candidate` records' purpose (no
   consumer found).
-- Decode `g_apRoomObjectConstructors` entries 0-1, 3, 5, 7-8, 10-13, and
-  differentiate types 2/4/6 by actual in-game content.
+- Decode `g_apRoomObjectConstructors` the tick and collision callbacks of every type, and
+  differentiate types 2/4/7 by actual in-game content.
 - Decode `0x0800BDCC` (type-9 tick handler). See
   [`room_scripts.md`](room_scripts.md)'s own "Further work" for the
   room-script opcode table's open items.
