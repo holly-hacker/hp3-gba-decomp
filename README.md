@@ -38,6 +38,7 @@ Rough list of current priorities:
 | Area                                                    | Reason                                               |
 | ------------------------------------------------------- | ---------------------------------------------------- |
 | Room construction                                       | Better understand quest progression, document chests |
+| Document quest state array                              | Improves understanding of the rest of the code       |
 | Sources of RNG calls                                    | Improve RNG manipulation                             |
 | Decompile all gamemode lifetime functions               | Completeness, general understanding                  |
 | All functions called by main before main loop           | Completeness, general understanding                  |
