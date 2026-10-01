@@ -136,6 +136,12 @@ build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver
     python3 tools/check_sections.py {{ver}}
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
+# Build without the section check
+build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
+    for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
+    arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf
+    arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/mod.elf build/{{ver}}/mod.gba
+
 # For matching work: `just compare` only reports a byte offset, this says
 # which instructions differ.
 # Disassemble one region side by side against the donor ROM.
