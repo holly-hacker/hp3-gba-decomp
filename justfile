@@ -169,10 +169,11 @@ compare ver="us": (build ver)
 check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (compare "jp") check-sorted
     @echo "us and jp: full disassembly and linked build both match the donor ROM."
 
-# Confirm regions.<ver>.txt and functions.<ver>.cfg stay sorted by address.
+# Confirm regions.<ver>.txt, functions.<ver>.cfg and ram_symbols.<ver>.inc stay sorted by address.
 check-sorted:
     python3 tools/check_sorted_regions.py
     python3 tools/check_sorted_functions.py
+    python3 tools/check_sorted_ram_symbols.py
 
 # Lossy (effect remapping, pattern rewrites for playback accuracy) and NOT
 # used by the build -- see docs/formats/krawall.md. Writes to extracted/,
