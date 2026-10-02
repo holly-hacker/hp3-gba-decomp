@@ -41,10 +41,10 @@ extern void ResetSaveStateForNewGame(void);
 extern u32 HasLoadableSaveSlot(void);
 extern void sub_080438B4(void);
 extern void DrawMainMenuCopyright_candidate(void);
-extern void ShowMainMenuEntries_candidate(void);
+extern void ShowMainMenuEntries(void);
 extern void SelectMainMenuEntry_candidate(void);
 extern void MoveMainMenuCursor_candidate(void);
-extern void DrawMainMenuEntry_candidate(u32 entry, u32 selectedEntry);
+extern void DrawMainMenuEntry(u32 entry, u32 selectedEntry);
 extern void PositionMainMenuCursorObject_candidate(u32 tween);
 
 extern void InitializeSaveSlotScreen_candidate(u32 titleStringId);

@@ -39,7 +39,7 @@ void UpdateMainMenu(void)
             }
             else
             {
-                ShowMainMenuEntries_candidate();
+                ShowMainMenuEntries();
                 g_GameModeStackContext.dwModeState = 1;
             }
         }
@@ -99,7 +99,7 @@ void UpdateMainMenu(void)
         if (g_GameModeStackContext.dwModeSubState == 0)
         {
             ClearBgTilemap(1);
-            ShowMainMenuEntries_candidate();
+            ShowMainMenuEntries();
             g_GameModeStackContext.dwModeState = 1;
         }
         break;

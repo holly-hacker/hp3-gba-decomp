@@ -980,8 +980,8 @@ c-file 0x0804359C 0x0804374C src/gamemode/modes/main_menu/update_main_menu.c Upd
 c-file 0x0804374C 0x0804388C src/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
 c-file 0x0804388C 0x080438D0 src/gamemode/modes/main_menu/exit_main_menu_screen.c ExitMainMenuScreen
 thumb-func 0x080438D0 sub_080438B4
-c-file 0x08043900 0x0804395C src/main_menu/show_main_menu_entries.c ShowMainMenuEntries_candidate
-thumb-func 0x0804395C DrawMainMenuEntry_candidate
+c-file 0x08043900 0x0804395C src/main_menu/show_main_menu_entries.c ShowMainMenuEntries
+thumb-func 0x0804395C DrawMainMenuEntry
 thumb-func 0x080439C8 DrawMainMenuCopyright_candidate
 c-file 0x08043A40 0x08043A88 src/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
 thumb-func 0x08043A88 HasLoadableSaveSlot

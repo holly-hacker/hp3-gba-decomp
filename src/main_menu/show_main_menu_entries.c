@@ -3,7 +3,7 @@
 #include "menu/main_menu.h"
 #include "graphics/object.h"
 
-void ShowMainMenuEntries_candidate(void)
+void ShowMainMenuEntries(void)
 {
     u32 entry;
 
@@ -16,6 +16,6 @@ void ShowMainMenuEntries_candidate(void)
     {
         if (entry == MainMenuLoadGame && !g_MainMenuState.dwLoadGameAvailable)
             continue;
-        DrawMainMenuEntry_candidate(entry, g_GameModeStackContext.dwModeScratchB);
+        DrawMainMenuEntry(entry, g_GameModeStackContext.dwModeScratchB);
     }
 }
