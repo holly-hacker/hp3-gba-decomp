@@ -14,5 +14,7 @@
   - [Monsters](data/monsters.md)
   - [Wizard Cards]()
   - [Rooms]()
+- [Technical]()
+  - [Game Modes](tech/gamemodes.md)
 - [Known Glitches]()
 - [Unused and Cut Content]()

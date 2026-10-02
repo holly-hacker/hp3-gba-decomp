@@ -92,8 +92,6 @@
 .set g_bCurrentRoomId,   0x03003B50  @ byte: current room/map id
 .set g_GameModeStackContext, 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
 .set g_dwPendingGameMode, 0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
-.set g_dwPendingGameModeArg1, 0x03003F1C  @ u32: g_dwPendingGameMode's arg1, i.e. dwCurrentGameModeArg1's pending counterpart
-.set g_dwPendingGameModeArg3, 0x03003F24  @ u32: g_dwPendingGameMode's arg3, i.e. dwCurrentGameModeArg3's pending counterpart
 .set g_dwTickCount, 0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
 
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
