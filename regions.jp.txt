@@ -410,7 +410,7 @@ c-file 0x0801CF04 0x0801CF20 src/room/opcodes/room_script_op_clear_quest_state_u
 c-file 0x0801CF20 0x0801CF24 src/room/opcodes/room_script_op_no_op_alt.c RoomScriptOpNoOpAlt
 c-file 0x0801CF24 0x0801CF48 src/room/opcodes/room_script_op_invoke_chain_if_enabled.c RoomScriptOpInvokeChainIfEnabled
 c-file 0x0801CF48 0x0801CF54 src/room/opcodes/room_script_op_grant_party_experience.c RoomScriptOpGrantPartyExperience
-c-file 0x0801CF54 0x0801CF60 src/room/opcodes/room_script_op_set_battle_defeat_state.c RoomScriptOpSetBattleDefeatState
+c-file 0x0801CF54 0x0801CF60 src/room/opcodes/room_script_op_set_defeat_warp_selector.c RoomScriptOpSetDefeatWarpSelector
 c-file 0x0801CF60 0x0801CF90 src/room/opcodes/room_script_op_set_tile_object_draw_layer.c RoomScriptOpSetTileObjectDrawLayer
 c-file 0x0801CF90 0x0801CFB8 src/room/opcodes/room_script_op_enter_fred_and_georges_shop.c RoomScriptOpEnterFredAndGeorgesShop
 c-file 0x0801CFB8 0x0801CFC8 src/room/opcodes/room_script_op_respawn_row_and_run_chain.c RoomScriptOpRespawnRowAndRunChain

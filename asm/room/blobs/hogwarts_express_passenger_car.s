@@ -159,7 +159,7 @@ Room06V1Chain3:
     StartTileObjectScript 590, 184, 0, Room06V1Group3_id, 0, 0, 0, 2, 255, 255, 255
     DespawnTileObject Room06V1Group3_id, 0
     RecruitPartyFollower 6
-    SetBattleDefeatState 1
+    SetDefeatWarpSelector 1
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room06V1Chain4:
@@ -245,7 +245,7 @@ Room06V1Chain17:
     ShowRoomDialog 132
     SetQuestState 1, 246
     DelayedRespawnRowAndRunChain 0, Room06V1Group11_id, 0
-    SetBattleDefeatState 1
+    SetDefeatWarpSelector 1
     SetQuestState 11, 6
     SetQuestState QUEST_OBJ_RETURN_TO_LUPIN, QUEST_OBJECTIVE_INDEX
     End

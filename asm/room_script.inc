@@ -161,7 +161,7 @@
 .set RSOP_NoOpAlt, 63
 .set RSOP_InvokeChainIfEnabled, 64
 .set RSOP_GrantPartyExperience, 65
-.set RSOP_SetBattleDefeatState, 66
+.set RSOP_SetDefeatWarpSelector, 66
 .set RSOP_SetTileObjectDrawLayer, 67
 .set RSOP_EnterFredAndGeorgesShop, 68
 .set RSOP_FullHealParty, 69
@@ -453,8 +453,8 @@
     .byte RSOP_GrantPartyExperience, 0, 0, 0, (((\experience) >> 0) & 0xFF), (((\experience) >> 8) & 0xFF), (((\unused) >> 0) & 0xFF), (((\unused) >> 8) & 0xFF)
 .endm
 
-.macro SetBattleDefeatState value
-    .byte RSOP_SetBattleDefeatState, 0, 0, 0, (\value), (255), (255), (255)
+.macro SetDefeatWarpSelector value
+    .byte RSOP_SetDefeatWarpSelector, 0, 0, 0, (\value), (255), (255), (255)
 .endm
 
 .macro SetTileObjectDrawLayer group, member, priority, unused

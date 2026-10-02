@@ -131,7 +131,7 @@ Room04V1Route5:
     Offsets Room04V1Chain24, Room04V1Chain25
     EndTable
 Room04V1Chain0:
-    SetBattleDefeatState 3
+    SetDefeatWarpSelector 3
     SetQuestState 0, 128
     SetQuestState 0, 226
     GotoIfQuestStateCompare 5, 1, 23, Room04V1Chain18_id, 0, 0, 0

@@ -27,7 +27,7 @@ Room22Blob:
     EndTable
 Room22V0Chain0:
     SetQuestState 5, QUEST_CASTLE_AREA
-    SetBattleDefeatState 2
+    SetDefeatWarpSelector 2
     End
     EndSubBlock Room22V0End
 

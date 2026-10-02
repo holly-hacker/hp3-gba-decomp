@@ -245,7 +245,7 @@ Room25V1Chain0:
     End
 Room25V1Chain1:
     SetQuestState 1, 233
-    SetBattleDefeatState 6
+    SetDefeatWarpSelector 6
     End
 Room25V1Chain2:
     SetTileObjectAnimState Room25V0Group0_id, 4
@@ -311,7 +311,7 @@ Room25V1Chain6:
 Room25V1Chain7:
     RespawnRowAndRunChain Room25V1Group3_id, 0
     CancelObjectAnimSequence 0, 255
-    SetBattleDefeatState 19
+    SetDefeatWarpSelector 19
     DespawnTileObject Room25V1Group8_id, 1
     StartObjectAnimSequence 0, 255, 0, 0, Room25V1Route0_id, 0, 1, 0, 0, 0
     ArmChainYield 1
@@ -328,7 +328,7 @@ Room25V1Chain7:
 Room25V1Chain8:
     RespawnRowAndRunChain Room25V1Group4_id, 0
     CancelObjectAnimSequence 0, 255
-    SetBattleDefeatState 19
+    SetDefeatWarpSelector 19
     DespawnTileObject Room25V1Group8_id, 0
     StartObjectAnimSequence 0, 255, 0, 0, Room25V1Route1_id, 0, 1, 0, 0, 0
     ArmChainYield 1
@@ -554,7 +554,7 @@ Room25V1Chain47:
     ReturnToOverworld 25, 0
     End
 Room25V1Chain48:
-    SetBattleDefeatState 19
+    SetDefeatWarpSelector 19
     End
 Room25V1Chain49:
     ReturnToOverworld 25, 1

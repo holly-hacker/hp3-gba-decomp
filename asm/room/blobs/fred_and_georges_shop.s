@@ -21,7 +21,7 @@ Room36Blob:
     Offsets Room36V0Chain0
     EndTable
 Room36V0Chain0:
-    SetBattleDefeatState 2
+    SetDefeatWarpSelector 2
     End
     EndSubBlock Room36V0End
 

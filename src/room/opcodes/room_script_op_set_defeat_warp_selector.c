@@ -2,12 +2,12 @@
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 
-typedef struct SetBattleDefeatStateRecord {
+typedef struct SetDefeatWarpSelectorRecord {
     u32 dwOpcode;
     u8 bValue;
-} SetBattleDefeatStateRecord;
+} SetDefeatWarpSelectorRecord;
 
-void RoomScriptOpSetBattleDefeatState(SetBattleDefeatStateRecord *pRecord)
+void RoomScriptOpSetDefeatWarpSelector(SetDefeatWarpSelectorRecord *pRecord)
 {
     g_abQuestEventState[QUEST_DEFEAT_WARP_SELECTOR] = pRecord->bValue;
 }

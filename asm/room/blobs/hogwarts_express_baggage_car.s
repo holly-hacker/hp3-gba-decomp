@@ -397,7 +397,7 @@ Room05V1Chain16:
     SetQuestState 0, 246
     SetQuestState 0, QUEST_CAMERA_Y_OFFSET
     DespawnRoomRowObjects Room05V1Group28_id
-    SetBattleDefeatState 18
+    SetDefeatWarpSelector 18
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group17_id, 0
     QueueTileObjectMove Room05V1Group17_id, 8, 0, 0, 1200, 0
     ShowLoadingScreenTransition 9, 10, 32, 255

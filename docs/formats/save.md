@@ -186,7 +186,7 @@ the room-script opcodes (`GotoIfQuestStateCompare`, `SetQuestState`,
 `AddQuestState`, `SubtractQuestState`, `CopyQuestState`,
 `SetRandomQuestState`, `GotoIfQuestStatePairCompare`, plus the dedicated
 `SetStoryStage`/`GotoIfStoryStageCompare` (index `0`) and
-`SetBattleDefeatState` (index `0x10`); see
+`SetDefeatWarpSelector` (index `0x10`); see
 [`room_scripts.md`](room_scripts.md)). Roles below come from the
 accessing C/assembly and from the values the room scripts in
 `asm/room/blobs/` write. A "script-only" index has no fixed-index access
@@ -195,7 +195,7 @@ in C or assembly.
 | Index | Role | Confidence |
 |---|---|---|
 | `0x00` | Story stage. Selects the room blob variant ([`rooms.md`](rooms.md)), is compared by `GotoIfStoryStageCompare` in 36 rooms, and is set by `SetStoryStage` and by the loading-screen choice (see below). `InitRoomScriptState_candidate` resets it to `0`; `CheckBattleDefeat` sets it to `0x1F` | **PROVEN** |
-| `0x10` | Defeat-warp selector, written by `SetBattleDefeatState` (values `0`-`7`, `10`, `15`-`19` occur in the room scripts). `CheckBattleDefeat` indexes the defeat-warp table with it and compares it with `0x13` | **PROVEN** |
+| `0x10` | Defeat-warp selector, written by `SetDefeatWarpSelector` (values `0`-`7`, `10`, `15`-`19` occur in the room scripts). `CheckBattleDefeat` indexes the defeat-warp table with it and compares it with `0x13` | **PROVEN** |
 | `0x11` | Castle area number: the dungeons set `0`, the entrance hall and great hall `1`, the second to seventh floors `2`-`7`. No C, assembly or script (compare, copy, random) access reads it | **PROVEN** (writers), **UNCONFIRMED** (use) |
 | `0x12` | Previous story stage: `InitializeOverworld` and `ExitLoadingScreen` copy index `0` here. On returning to the overworld (game-mode argument 3 = `0xFF`), `InitializeOverworld` maps both stages through the room blob's stage-to-variant table (`sub_08005DC0`): equal variants run `RestoreRoomObjectState`, different ones `RestoreRoomObjectStateMinimal` | **PROVEN** |
 | `0x14`-`0x18` | One flag per Folio Universitas page group `0`-`4`, set to `1` by `SetQuestState 1, 20+group` in the Wizard Card Collectors Club script after that group's reward is granted. `GotoIfAllQuestFlagsSet` branches on all five being nonzero, and `sub_0800BF20` reads `[0x14 + group]` | **PROVEN** |

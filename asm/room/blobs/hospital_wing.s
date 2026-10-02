@@ -24,7 +24,7 @@ Room33Blob:
     Offsets Room33V0Chain0
     EndTable
 Room33V0Chain0:
-    SetBattleDefeatState 2
+    SetDefeatWarpSelector 2
     End
     EndSubBlock Room33V0End
 
@@ -126,7 +126,7 @@ Room33V1Chain9:
     Offsets Room33V2Chain0, Room33V2Chain1, Room33V2Chain2
     EndTable
 Room33V2Chain0:
-    SetBattleDefeatState 2
+    SetDefeatWarpSelector 2
     @ "Oh! You're awake. Someone found you unconscious and brought you in for care. You should be more careful."
     ShowRoomDialog 649
     FullHealParty

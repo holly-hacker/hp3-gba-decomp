@@ -58,7 +58,7 @@ Room44V1Chain1:
     End
 Room44V1Chain2:
     SetQuestState 1, 253
-    SetBattleDefeatState 7
+    SetDefeatWarpSelector 7
     End
 Room44V1Chain3:
     GotoIfStoryStageCompare 0, 23, Room44V1Chain1_id, 0, Room44V1Group1_id, Room44V1Group3_id
@@ -68,10 +68,10 @@ Room44V1Chain4:
     StartBattle 8, 0, Room44V1Chain2_id
     End
 Room44V1Chain5:
-    SetBattleDefeatState 10
+    SetDefeatWarpSelector 10
     End
 Room44V1Chain6:
-    SetBattleDefeatState 7
+    SetDefeatWarpSelector 7
     End
 Room44V1Chain7:
     GotoIfQuestStateCompare 253, 0, 0, Room44V1Chain4_id, 0, 0, 0

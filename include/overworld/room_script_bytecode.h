@@ -71,7 +71,7 @@ enum RoomScriptOpcode {
     RSOP_NoOpAlt = 63,
     RSOP_InvokeChainIfEnabled = 64,
     RSOP_GrantPartyExperience = 65,
-    RSOP_SetBattleDefeatState = 66,
+    RSOP_SetDefeatWarpSelector = 66,
     RSOP_SetTileObjectDrawLayer = 67,
     RSOP_EnterFredAndGeorgesShop = 68,
     RSOP_FullHealParty = 69,
