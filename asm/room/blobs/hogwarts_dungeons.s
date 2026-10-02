@@ -27,7 +27,7 @@ Room18Blob:
     Offsets Room18V0Chain0
     EndTable
 Room18V0Chain0:
-    SetQuestState 0, 17
+    SetQuestState 0, QUEST_CASTLE_AREA
     SetBattleDefeatState 2
     End
     EndSubBlock Room18V0End

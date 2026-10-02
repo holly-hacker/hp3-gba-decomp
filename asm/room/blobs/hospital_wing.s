@@ -80,8 +80,8 @@ Room33V1Chain4:
     ArmChainYield 1
     RecruitPartyFollower 6
     DespawnTileObject Room33V1Group1_id, 0
-    SetQuestState 50, 25
-    SetQuestState 1, 26
+    SetQuestState QUEST_OBJ_SECRET_PATH_TO_HAGRIDS_HUT, QUEST_OBJECTIVE_INDEX
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     SetStoryStage 25
     PlayCutscene 15, 0, 0
     End
@@ -101,7 +101,7 @@ Room33V1Chain6:
     StartObjectAnimSequence Room33V1Group1_id, 0, 0, 0, Room33V1Route1_id, 0, 1, 0, 0, 0
     End
 Room33V1Chain7:
-    GotoIfQuestStateCompare 255, 0, 1, Room33V1Chain1_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_SCRATCH_RESULT, 0, 1, Room33V1Chain1_id, 0, 0, 0
     FullHealParty
     End
 Room33V1Chain8:

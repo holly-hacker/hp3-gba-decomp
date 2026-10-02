@@ -53,7 +53,7 @@ Room44V1Chain0:
     DelayedRespawnRowAndRunChainFrames 2, 0, Room44V1Chain3_id
     End
 Room44V1Chain1:
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     GotoIfQuestStateCompare 253, 0, 0, Room44V1Chain11_id, 0, Room44V1Group2_id, 0
     End
 Room44V1Chain2:

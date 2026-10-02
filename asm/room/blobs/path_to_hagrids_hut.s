@@ -80,6 +80,6 @@ Room14V1Chain2:
     ShowRoomDialog 589
     End
 Room14V1Chain3:
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     End
     EndSubBlock Room14V1End

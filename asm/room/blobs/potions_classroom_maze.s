@@ -95,7 +95,7 @@ Room02V1Chain2:
     GrantPartyExperience 10, 65535
     PlayRoomSoundEffect 24
     DelayedRespawnRowAndRunChain 0, Room02V1Group1_id, 0
-    SetQuestState 21, 25
+    SetQuestState QUEST_OBJ_RETURN_INGREDIENTS_TO_SNAPE, QUEST_OBJECTIVE_INDEX
     @ "There, we have all the ingredients. Now we need to get them back to class."
     ShowRoomDialog 318
     SetTileObjectAnimStateWithSpeed 0, 255

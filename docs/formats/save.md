@@ -172,12 +172,93 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
 | **room-object state** (`PackRoomObjectStateToSaveStream`, `0x0802A570`), variable-length | `roomObjectState` | data-dependent, see below |
 | `0x03002240` (`g_abTriggeredScriptFlags`) | `abTriggeredScriptFlags` (32 bytes) | **STRUCTURAL MATCH**. A 256-bit bitset, one bit per Object script entry-point value (`wScriptPC`, [`battle_scripts.md`](battle_scripts.md)). Consumed by `SpawnScriptedOneTimeObject` (`0x0800BC6C`, an `AllocObjectOfType(9)` spawner reached only via a function-pointer table -- not discovered by `gbadisasm`): after setting the newly-spawned object's `wScriptPC` from its spawn descriptor, checks the bit for that value here -- if already set, the object is given an alternate "already resolved" appearance/animation instead of its normal one. Every static xref to the array touches it as a whole block, never a single bit: zeroed by `ResetQuestStateForNewGame` at new-game creation, bulk-copied in and out of the save stream by the load/save pair (`FUN_080213c0`'s `UnpackBytesFromSaveStream(g_abTriggeredScriptFlags, 0x20)`, `SerializeGameStateToSaveBuffer`). No code path that flips an individual bit has been located yet -- the object-script system that would mark a `wScriptPC` "resolved" after it fires is the place to keep looking; a negative search here isn't proof it doesn't exist (see repo conventions on disassembly/Ghidra exhaustiveness). Tracks which one-time scripted objects of this kind have already fired, persisting across room transitions (unlike the per-room `roomObjectState` snapshot). |
-| `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 didn't reset there. Bulk load/save through `FUN_080213c0` (`UnpackBytesFromSaveStream(g_abQuestEventState, 0x100)`) and `SerializeGameStateToSaveBuffer`; zeroed whole by `ResetQuestStateForNewGame`. Index 0 (**PROVEN**, story-stage index): read by `InitializeLoadingScreen` (`0x0800C1DA`) to look up a story-stage table entry and cached into `DAT_03003F00`; written by the room-load dispatch handler `switchD_08029d60::caseD_19` (`0x0802A09C`, part of `FUN_08029abc`, the per-room-entry setup switch) which first copies the outgoing value to index `0x12` (`g_abQuestEventState[0x12] = g_abQuestEventState[0]`) then, if a pending override (`DAT_03003B5A`) is set, applies it and clears the override; also reset to `0` by `FUN_08005aa44`, an unidentified subsystem-init routine, and resynced from `g_bBuckbeakLevel` by `FUN_0800ab34` (party level-reset routine), which additionally re-zeroes indices `0xE0`-`0xFF` whenever the Buckbeak level changed. Indices 0 and `0x10` are also written by `CheckBattleDefeat` -- see [`battle.md`](battle.md). |
+| `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 didn't reset there. Bulk load/save through `FUN_080213c0` (`UnpackBytesFromSaveStream(g_abQuestEventState, 0x100)`) and `SerializeGameStateToSaveBuffer`; zeroed whole by `ResetQuestStateForNewGame`. Index 0 (**PROVEN**, story-stage index): read by `InitializeLoadingScreen` (`0x0800C1DA`) to look up a story-stage table entry and cached into `DAT_03003F00`; written by the room-load dispatch handler `switchD_08029d60::caseD_19` (`0x0802A09C`, part of `FUN_08029abc`, the per-room-entry setup switch) which first copies the outgoing value to index `0x12` (`g_abQuestEventState[0x12] = g_abQuestEventState[0]`) then, if a pending override (`DAT_03003B5A`) is set, applies it and clears the override; also reset to `0` by `FUN_08005aa44`, an unidentified subsystem-init routine, and resynced from `g_bBuckbeakLevel` by `FUN_0800ab34` (party level-reset routine), which additionally re-zeroes indices `0xE0`-`0xFF` whenever the Buckbeak level changed. Indices 0 and `0x10` are also written by `CheckBattleDefeat` -- see [`battle.md`](battle.md). Per-index roles: see "Quest event state" below. |
 | **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching [`folio_bruti.md`](folio_bruti.md)'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
 | `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anFolioUniversitasCounts` (51 nibbles) | Per the user: Folio Universitas (Harry's card collection) per-card count, one nibble per card. A card is only shown in-game once its count reaches at least 1. |
 | `0x0300320B` (`g_abFolioUniversitasUnlocked`) | `a1FolioUniversitasSeen` (51 bools, stored as 7 bytes, LSB-first) | Per the user: parallel per-card seen/owned flag; all-seen is stored as `ffffffffffff07`. Confirmed against a real (non-test) save (`bak.sav`): `a1FolioUniversitasSeen[i]` is true exactly where `anFolioUniversitasCounts[i] > 0`, for all 51 cards. Gates whether a card's icon is drawn locked or owned at all (`FUN_08037800`, the card-grid icon draw function). |
 | `0x03003212` (`g_abFolioUniversitasCardIsNew`) | `a1FolioUniversitasCardIsNew` (51 bools, stored as 7 bytes, LSB-first) | **STRUCTURAL MATCH**, confirmed by the user: drives the "flashing" new-card indicator in the Folio Universitas interface. `FUN_08037800` reads this bit per card (via `IsFolioUniversitasCardNew`/`0x0800381F4`) and picks a distinct, separate icon variant when it's set, on top of the seen/owned check above. Set together with `a1FolioUniversitasSeen` by `IncrementFolioUniversitasCard` (`0x0803774C`) whenever a card's count transitions `0->1`; cleared together with it by `DecrementFolioUniversitasCard` (`0x080377A8`, called from battle code including `HandleScriptedDamageEvent_candidate`) when a card's count returns to `0`. No separate clear-on-view code path was found, so as coded this flag stays set for as long as the player holds at least one copy since the count last hit zero, not literally "until first viewed in the menu". |
 | `0x0300321C`-`0x0300322D` | `owlCareKit` | The **Owl Care Kit**, a persistent virtual-pet-owl feature -- **PROVEN end-to-end**, independently verified (including re-deriving the game-mode dispatch table from scratch in a separate pass). See "Owl Care Kit" below. |
+
+### Quest event state
+
+`g_abQuestEventState` is a flat 256-byte array shared by C, assembly and
+the room-script opcodes (`GotoIfQuestStateCompare`, `SetQuestState`,
+`AddQuestState`, `SubtractQuestState`, `CopyQuestState`,
+`SetRandomQuestState`, `GotoIfQuestStatePairCompare`, plus the dedicated
+`SetStoryStage`/`GotoIfStoryStageCompare` (index `0`) and
+`SetBattleDefeatState` (index `0x10`); see
+[`room_scripts.md`](room_scripts.md)). Roles below come from the
+accessing C/assembly and from the values the room scripts in
+`asm/room/blobs/` write. A "script-only" index has no fixed-index access
+in C or assembly.
+
+| Index | Role | Confidence |
+|---|---|---|
+| `0x00` | Story stage. Selects the room blob variant ([`rooms.md`](rooms.md)), is compared by `GotoIfStoryStageCompare` in 36 rooms, and is set by `SetStoryStage` and by the loading-screen choice (see below). `InitRoomScriptState_candidate` resets it to `0`; `CheckBattleDefeat` sets it to `0x1F` | **PROVEN** |
+| `0x10` | Defeat-warp selector, written by `SetBattleDefeatState` (values `0`-`7`, `10`, `15`-`19` occur in the room scripts). `CheckBattleDefeat` indexes the defeat-warp table with it and compares it with `0x13` | **PROVEN** |
+| `0x11` | Castle area number: the dungeons set `0`, the entrance hall and great hall `1`, the second to seventh floors `2`-`7`. No C, assembly or script (compare, copy, random) access reads it | **PROVEN** (writers), **UNCONFIRMED** (use) |
+| `0x12` | Previous story stage: `InitializeOverworld` and `ExitLoadingScreen` copy index `0` here. On returning to the overworld (game-mode argument 3 = `0xFF`), `InitializeOverworld` maps both stages through the room blob's stage-to-variant table (`sub_08005DC0`): equal variants run `RestoreRoomObjectState`, different ones `RestoreRoomObjectStateMinimal` | **PROVEN** |
+| `0x14`-`0x18` | One flag per Folio Universitas page group `0`-`4`, set to `1` by `SetQuestState 1, 20+group` in the Wizard Card Collectors Club script after that group's reward is granted. `GotoIfAllQuestFlagsSet` branches on all five being nonzero, and `sub_0800BF20` reads `[0x14 + group]` | **PROVEN** |
+| `0x19` | Main-menu objective index (`g_bMainMenuObjectiveIndex`, serialized twice): `sub_0803233C` draws dialog text `0x924 + [0x19]`. Set in 28 rooms | **PROVEN** |
+| `0x1A` | Alternate presentation flag for rooms `8`-`15`: when nonzero and the current room id is `8`-`15`, battle setup uses the alternate background data (`0x08882CFC`/`0x08886004` instead of the per-room `0x0804E09C` table), and `InitializeOverworld` plays the music module from the table at `0x08065730` ([`levels.md`](levels.md)), and `SetupRoomBgControlAndWindows_candidate` calls `sub_0802A2A4`, which loads an alternate 16-colour BG palette (embedded palettes at `0x08854EE0`-`0x0885650C`, `0x081B2E98` for room `6`) for room ids `5`-`0x29`. Set to `1` by `PlaySpecialSceneEffect` mode `3`; scripts in 10 rooms set it to `0` or `1` | **PROVEN** (readers/writers), **UNCONFIRMED** (what the alternate variant depicts) |
+| `0x1B` | Signed vertical camera offset: `sub_0803E45C` subtracts it from the scroll Y. Only the baggage car script writes it (`50`, later `0`) | **STRUCTURAL MATCH** |
+| `0x1C` | New Game+ completion count. `ResetQuestStateForNewGame` (`0x08021580`) zeroes the whole array, but with a nonzero argument (from `HandleEndingSequenceTransition` at game completion) it first saves this byte and restores it plus one. Leaky Cauldron cellar 1's script compares it | **PROVEN** (mechanism), **STRUCTURAL MATCH** (name) |
+| `0x1D` | Rooms 5-7 BG-animation variant (`0`/`1`), written by `PlaySpecialSceneEffect` modes `2` and `1` and read by `ApplyRoomBgControlOverride_candidate` ([`levels.md`](levels.md)) | **PROVEN** |
+| `0x80`-`0xFF` | `ClearQuestStateUpperHalf` zeroes this range (used three times in the baggage car script). `ResetDebugPartyFromArgs_candidate` zeroes `0xE0`-`0xFF` when the Buckbeak level argument changes | **PROVEN** |
+| `0x80`-`0x83` | Script-only counters (`Add`/`Subtract` by 1, compared against `0`-`3`) in a few rooms | **UNCONFIRMED** (meaning) |
+| `0xDF`-`0xFD` | Chapter-scoped scratch flags and small counters, mostly compared against `0` and `1`. Room scripts reuse one index with different meanings in different chapters (`ClearQuestStateUpperHalf` clears them at 14 chapter boundaries, e.g. `249` is the "portraits are uneasy" state on the castle floors but a train/Leaky Cauldron event elsewhere). Named only where every use belongs to one event: `0xEE`/`0xEF` (cellar 2 experience-given flags), `0xF2` (Crookshanks caught), `0xF3` (cellar 1 rat tonic found), `0xF7` (cellar 1 intro dialog shown), `0xFC` (Scabbers caught). Written by `SetQuestState` right after the matching event in each case | **PROVEN** (named indices' triggers), **UNCONFIRMED** (the rest) |
+| `0xFE` | Copy of `g_abRoomScriptExitParams_candidate[0]` written by `SpawnPlayerObject_candidate`, cleared by the debug map-select menu. No C, assembly or script access reads it | **PROVEN** (writers), **UNCONFIRMED** (use) |
+| `0xFF` | `RoomScriptOpFullHealParty` sets it to `1` when any party member was below max HP/MP before the heal, else `0` (the hospital wing script branches on it). `UpdateLoadingScreen` also stores the selected option index (`0`-`2`) here | **PROVEN** (full heal), **STRUCTURAL MATCH** (loading screen) |
+
+Indices `1`, `2`, `4`, `5`, `6`, `8`, `12` and `14` are set and compared
+only by room scripts and are chapter-scoped like the upper range (index `4`
+counts book pages found in the library but is a puzzle-done marker in the
+transfiguration maze, and the maze script zeroes `4` and `5` by hand at
+the chapter end); their meanings are not resolved.
+
+#### Loading-screen story-stage choice
+
+`ShowLoadingScreenTransition a, b, c, 255` (baggage car, Leaky Cauldron
+main room, potions classroom, rooftop, Shrieking Shack path 2; e.g.
+`27, 28, 32`) pushes the `LoadingScreen` game mode with the three values
+as its arguments. `InitializeLoadingScreen` stores them as three options,
+`UpdateLoadingScreen` runs a wrapped horizontal selection over two or
+three of them (a byte table at `0x0804D76A`, indexed by the current
+stage's position in the table at `0x0804D6CC`), and on confirm writes the option index to index
+`0xFF` and the chosen option to index `0` (story stage). The following
+script rows branch with `GotoIfStoryStageCompare` on the first two values.
+**STRUCTURAL MATCH**: read from the code and scripts, not observed live.
+
+#### Defeat-warp table
+
+`CheckBattleDefeat` looks up `g_abQuestEventState[0x10]` in the 20-entry
+`u32` table at `0x08051510` and stores the result as
+`FightState->bDefeatWarpTarget`, the room id the post-defeat
+`PushGameMode_2(Overworld, ...)` warps to. It also sets
+`g_abRoomScriptExitParams_candidate[0]` to `1` for selector `0x13` and
+`0` for every other selector. The length is bounded by the largest
+selector the room scripts use (`19`) and by the following word
+(`0x04010400`) not being a valid room id. Table bytes and room names are
+**PROVEN**.
+
+| Selector | Room id | Room |
+|---|---|---|
+| `0` | `0x29` | Leaky Cauldron, Harry's room |
+| `1` | `0x06` | Hogwarts Express passenger car |
+| `2` | `0x21` | Hospital wing (the value most castle-room scripts set) |
+| `3` | `0x04` | Transfiguration classroom maze |
+| `4` | `0x02` | Potions classroom maze |
+| `5` | `0x0C` | Hagrid's garden maze |
+| `6` | `0x19` | Rooftop |
+| `7` | `0x2C` | Shrieking Shack path |
+| `8` | `0x0F` | Whomping Willow grounds |
+| `9` | `0x2B` | Shrieking Shack interior |
+| `10`-`14` | `0x2D`-`0x31` | Shrieking Shack paths 2-6 |
+| `15` | `0x27` | Leaky Cauldron cellar 2 |
+| `16` | `0x26` | Leaky Cauldron cellar 1 |
+| `17` | `0x0E` | Path to Hagrid's hut |
+| `18` | `0x05` | Hogwarts Express baggage car |
+| `19` | `0x19` | Rooftop |
 
 ### Owl Care Kit
 

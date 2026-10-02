@@ -239,7 +239,7 @@ Room25V1Route26:
     Offsets Room25V1Chain48, Room25V1Chain49, Room25V1Chain50
     EndTable
 Room25V1Chain0:
-    SetQuestState 57, 25
+    SetQuestState QUEST_OBJ_RESCUE_SIRIUS, QUEST_OBJECTIVE_INDEX
     GotoIfQuestStateCompare 233, 0, 0, Room25V1Chain1_id, 0, 0, 0
     DelayedRespawnRowAndRunChain 1, 0, Room25V1Chain20_id
     End

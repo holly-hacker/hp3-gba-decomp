@@ -24,7 +24,7 @@ Room23Blob:
     Offsets Room23V0Chain0
     EndTable
 Room23V0Chain0:
-    SetQuestState 6, 17
+    SetQuestState 6, QUEST_CASTLE_AREA
     SetBattleDefeatState 2
     End
     EndSubBlock Room23V0End

@@ -217,14 +217,14 @@ Room43V1Chain11:
 Room43V1Chain12:
     ArmChainYield 1
     SetQuestState 1, 235
-    SetQuestState 48, 25
+    SetQuestState QUEST_OBJ_RETURN_TO_HOGWARTS, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room43V1Chain13:
     ArmChainYield 1
     CancelObjectAnimSequence 0, 255
     ArmChainYield 0
-    SetQuestState 55, 25
+    SetQuestState QUEST_OBJ_FIND_RON, QUEST_OBJECTIVE_INDEX
     StartObjectAnimSequence 0, 255, 0, 0, Room43V1Route9_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain14:

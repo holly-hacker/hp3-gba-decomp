@@ -148,7 +148,7 @@ Room05V1Chain2:
 Room05V1Chain3:
     ArmChainYield 1
     CancelObjectAnimSequence 0, 255
-    SetQuestState 10, 25
+    SetQuestState QUEST_OBJ_FIND_TREVOR, QUEST_OBJECTIVE_INDEX
     @ "There he is!"
     @ "Let's get him and get back to..."
     ShowRoomDialog 146
@@ -167,7 +167,7 @@ Room05V1Chain3:
     PlaySoundById 156
     DelayedRespawnRowAndRunChain 1, Room05V1Group18_id, 0
     PlayScreenTransitionIn
-    SetQuestState 50, 27
+    SetQuestState 50, QUEST_CAMERA_Y_OFFSET
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "Uhhh..."
     @ "Harry!"
@@ -368,9 +368,9 @@ Room05V1Chain14:
     RemovePartyFollower 6
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group23_id, 0
     SetQuestState 3, 6
-    SetQuestState 0, 26
+    SetQuestState 0, QUEST_ALT_PRESENTATION
     SetQuestState 2, 250
-    SetQuestState 12, 25
+    SetQuestState QUEST_OBJ_FIND_CHOCOLATE, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room05V1Group20_id, 0
     PlayScreenTransitionIn
     SetTileObjectAnimStateWithSpeed 0, 255
@@ -384,8 +384,8 @@ Room05V1Chain15:
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group22_id, 0
     SetQuestState 0, 226
     SetQuestState 7, 6
-    SetQuestState 0, 26
-    SetQuestState 13, 25
+    SetQuestState 0, QUEST_ALT_PRESENTATION
+    SetQuestState QUEST_OBJ_FIND_CONDUCTOR, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 250
     DelayedRespawnRowAndRunChain 0, Room05V1Group20_id, 0
     PlayScreenTransitionIn
@@ -395,7 +395,7 @@ Room05V1Chain16:
     ArmChainYield 1
     CancelObjectAnimSequence 0, 255
     SetQuestState 0, 246
-    SetQuestState 0, 27
+    SetQuestState 0, QUEST_CAMERA_Y_OFFSET
     DespawnRoomRowObjects Room05V1Group28_id
     SetBattleDefeatState 18
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group17_id, 0

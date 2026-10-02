@@ -9,5 +9,5 @@ typedef struct SetBattleDefeatStateRecord {
 
 void RoomScriptOpSetBattleDefeatState(SetBattleDefeatStateRecord *pRecord)
 {
-    g_abQuestEventState[0x10] = pRecord->bValue;
+    g_abQuestEventState[QUEST_DEFEAT_WARP_SELECTOR] = pRecord->bValue;
 }

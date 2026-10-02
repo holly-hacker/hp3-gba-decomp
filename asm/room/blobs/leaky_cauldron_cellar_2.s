@@ -188,8 +188,8 @@ Room39V1Chain12:
     DespawnTileObject Room39V1Group11_id, 5
     DespawnTileObject Room39V1Group11_id, 3
     SetTileObjectAnimState Room39V0Group0_id, 0
-    SetQuestState 1, 252
-    SetQuestState 54, 25
+    SetQuestState 1, QUEST_CELLAR2_SCABBERS_CAUGHT
+    SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain46_id
     End
 Room39V1Chain13:
@@ -201,8 +201,8 @@ Room39V1Chain13:
     ShowRoomDialog 55
     DespawnTileObject Room39V1Group16_id, 5
     DespawnTileObject Room39V0Group0_id, 3
-    SetQuestState 1, 242
-    SetQuestState 54, 25
+    SetQuestState 1, QUEST_CELLAR2_CROOKSHANKS_CAUGHT
+    SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room39V1Group5_id, 0
     DelayedRespawnRowAndRunChain 0, Room39V1Group9_id, 0
     End
@@ -214,7 +214,7 @@ Room39V1Chain15:
 Room39V1Chain16:
     CancelObjectAnimSequence 0, 255
     StartObjectAnimSequence Room39V1Group4_id, 0, 0, 0, Room39V1Route0_id, 0, 1, 0, 0, 0
-    SetQuestState 54, 25
+    SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     End
 Room39V1Chain17:
     ArmChainYield 1
@@ -230,7 +230,7 @@ Room39V1Chain17:
     RemovePartyFollower 6
     RecruitPartyFollower 6
     RecruitPartyFollower 7
-    SetQuestState 54, 25
+    SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain35_id
     End
@@ -288,7 +288,7 @@ Room39V1Chain25:
     RemovePartyFollower 7
     RecruitPartyFollower 7
     RecruitPartyFollower 6
-    SetQuestState 54, 25
+    SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain35_id
     End
@@ -346,7 +346,7 @@ Room39V1Chain34:
     End
 Room39V1Chain35:
     StartObjectAnimSequence 0, 255, 0, 0, Room39V1Route1_id, 0, 1, 0, 0, 0
-    SetQuestState 2, 25
+    SetQuestState QUEST_OBJ_GREET_WEASLEYS, QUEST_OBJECTIVE_INDEX
     End
 Room39V1Chain36:
     ArmChainYield 1
@@ -385,7 +385,7 @@ Room39V1Chain39:
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room39V1Chain40:
-    GotoIfQuestStateCompare 0, 0, 6, Room39V1Chain48_id, 0, Room39V1Group12_id, Room39V1Group11_id
+    GotoIfQuestStateCompare QUEST_STORY_STAGE, 0, 6, Room39V1Chain48_id, 0, Room39V1Group12_id, Room39V1Group11_id
     End
 Room39V1Chain41:
     GotoIfStoryStageCompare 1, 6, Room39V1Chain44_id, 0, Room39V1Group13_id, 0
@@ -398,18 +398,18 @@ Room39V1Chain43:
     SetQuestState 1, 237
     End
 Room39V1Chain44:
-    GotoIfQuestStateCompare 238, 0, 0, Room39V1Chain45_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_CELLAR2_XP5_GIVEN, 0, 0, Room39V1Chain45_id, 0, 0, 0
     End
 Room39V1Chain45:
     GrantPartyExperience 5, 65535
-    SetQuestState 1, 238
+    SetQuestState 1, QUEST_CELLAR2_XP5_GIVEN
     End
 Room39V1Chain46:
-    GotoIfQuestStateCompare 239, 0, 0, Room39V1Chain47_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_CELLAR2_XP20_GIVEN, 0, 0, Room39V1Chain47_id, 0, 0, 0
     End
 Room39V1Chain47:
     GrantPartyExperience 20, 65535
-    SetQuestState 1, 239
+    SetQuestState 1, QUEST_CELLAR2_XP20_GIVEN
     End
 Room39V1Chain48:
     DelayedRespawnRowAndRunChainFrames 0, Room39V1Group14_id, 0
@@ -427,13 +427,13 @@ Room39V1Chain50:
     DelayedRespawnRowAndRunChainFrames 0, Room39V1Group6_id, 0
     End
 Room39V1Chain51:
-    GotoIfQuestStateCompare 252, 0, 1, Room39V1Chain50_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_CELLAR2_SCABBERS_CAUGHT, 0, 1, Room39V1Chain50_id, 0, 0, 0
     End
 Room39V1Chain52:
-    GotoIfQuestStateCompare 242, 0, 0, 0, Room39V1Chain49_id, Room39V1Group16_id, 0
+    GotoIfQuestStateCompare QUEST_CELLAR2_CROOKSHANKS_CAUGHT, 0, 0, 0, Room39V1Chain49_id, Room39V1Group16_id, 0
     End
 Room39V1Chain53:
-    GotoIfQuestStateCompare 252, 0, 0, 0, 0, Room39V1Group15_id, 0
+    GotoIfQuestStateCompare QUEST_CELLAR2_SCABBERS_CAUGHT, 0, 0, 0, 0, Room39V1Group15_id, 0
     End
 Room39V1Chain54:
     DespawnTileObject Room39V0Group0_id, 3

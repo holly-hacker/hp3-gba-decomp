@@ -28,7 +28,7 @@ Room19Blob:
     Offsets Room19V0Chain0
     EndTable
 Room19V0Chain0:
-    SetQuestState 2, 17
+    SetQuestState 2, QUEST_CASTLE_AREA
     SetBattleDefeatState 2
     End
     EndSubBlock Room19V0End
@@ -213,7 +213,7 @@ Room19V1Chain3:
     ShowRoomDialog 391
     SetQuestState 2, 249
     Unk02 0, 255, 1
-    SetQuestState 23, 25
+    SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_POTIONS, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 245
     SetTileObjectFacing 0, 255, 0
     GrantPartyExperience 10, 65535
@@ -325,7 +325,7 @@ Room19V1Chain23:
     @ "I'll see you there. I have - something important to do..."
     ShowRoomDialog 459
     SetQuestState 2, 230
-    SetQuestState 34, 25
+    SetQuestState QUEST_OBJ_GO_TO_GREAT_HALL, QUEST_OBJECTIVE_INDEX
     SetStoryStage 16
     SetTileObjectAnimStateWithSpeed 0, 255
     End

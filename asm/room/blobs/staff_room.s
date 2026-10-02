@@ -151,7 +151,7 @@ Room27V1Chain2:
     @ "Bye, Professor."
     ShowRoomDialog 352
     RespawnRowAndRunChain Room27V1Group4_id, 0
-    SetQuestState 23, 25
+    SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_POTIONS, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room27V1Chain3:

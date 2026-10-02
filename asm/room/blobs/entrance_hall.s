@@ -35,7 +35,7 @@ Room16Blob:
     Offsets Room16V0Chain0
     EndTable
 Room16V0Chain0:
-    SetQuestState 1, 17
+    SetQuestState 1, QUEST_CASTLE_AREA
     SetBattleDefeatState 2
     End
     EndSubBlock Room16V0End
@@ -287,7 +287,7 @@ Room16V1Chain7:
     SetQuestState 1, 224
     RecruitPartyFollower 7
     RecruitPartyFollower 6
-    SetQuestState 14, 25
+    SetQuestState QUEST_OBJ_FIND_COMMON_ROOM, QUEST_OBJECTIVE_INDEX
     End
 Room16V1Chain8:
     @ "The Gryffindor common room is on the seventh floor. Just like last year."
@@ -592,7 +592,7 @@ Room16V1Chain74:
     GotoIfStoryStageCompare 0, 18, Room16V1Chain85_id, 0, 0, 0
     End
 Room16V1Chain75:
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     End
 Room16V1Chain76:
     @ "I wonder why the portraits are so nervous?"

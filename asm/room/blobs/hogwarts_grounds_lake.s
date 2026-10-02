@@ -191,7 +191,7 @@ Room13V1Chain2:
     ArmChainYield 1
     CancelObjectAnimSequence 0, 255
     RespawnRowAndRunChain Room13V1Group12_id, 0
-    SetQuestState 48, 25
+    SetQuestState QUEST_OBJ_RETURN_TO_HOGWARTS, QUEST_OBJECTIVE_INDEX
     RecruitPartyFollower 6
     ArmChainYield 0
     StartObjectAnimSequence 0, 255, 0, 0, Room13V1Route17_id, 0, 1, 0, 0, 0
@@ -237,7 +237,7 @@ Room13V1Chain9:
     CancelObjectAnimSequence 0, 255
     @ "Dad?"
     ShowRoomDialog 586
-    SetQuestState 50, 25
+    SetQuestState QUEST_OBJ_SECRET_PATH_TO_HAGRIDS_HUT, QUEST_OBJECTIVE_INDEX
     ReturnToOverworld 33, 2
     End
 Room13V1Chain10:
@@ -275,7 +275,7 @@ Room13V1Chain12:
     End
 Room13V1Chain13:
     ArmChainYield 1
-    SetQuestState 53, 25
+    SetQuestState QUEST_OBJ_GO_TO_ROOFTOP, QUEST_OBJECTIVE_INDEX
     SetQuestState 0, 129
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "The Dementors almost have Sirius! Where are you, Dad? Wait a minute, it wasn't Dad, it was¸ me."

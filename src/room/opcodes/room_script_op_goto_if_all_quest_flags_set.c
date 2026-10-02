@@ -17,7 +17,7 @@ void RoomScriptOpGotoIfAllQuestFlagsSet(GotoIfAllQuestFlagsSetRecord *pRecord)
     u32 allSet = 1;
     u32 i;
 
-    for (i = 0x14; i <= 0x18; i++)
+    for (i = QUEST_FOLIO_REWARD_FIRST; i <= QUEST_FOLIO_REWARD_LAST; i++)
     {
         if (g_abQuestEventState[i] == 0)
             allSet = 0;

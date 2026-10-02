@@ -6,6 +6,6 @@ void RoomScriptOpClearQuestStateUpperHalf(RoomScriptRecord *pRecord)
 {
     s32 i;
 
-    for (i = 0x80; i <= 0xff; i++)
+    for (i = QUEST_UPPER_HALF_FIRST; i <= 0xff; i++)
         g_abQuestEventState[i] = 0;
 }

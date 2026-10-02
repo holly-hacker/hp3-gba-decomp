@@ -145,8 +145,8 @@ void InitializeOverworld(void)
         {
             if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
             {
-                if (sub_08005DC0(g_abQuestEventState[0x12], CURRENT_ROOM.pRoomResourceBlob)
-                    == sub_08005DC0(g_abQuestEventState[0], CURRENT_ROOM.pRoomResourceBlob))
+                if (sub_08005DC0(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
+                    == sub_08005DC0(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
                 {
                     g_GameModeStackContext.dwCurrentGameModeArg3 = 0;
                     RestoreRoomObjectState();
@@ -175,8 +175,8 @@ void InitializeOverworld(void)
         }
         else if (g_GameModeStackContext.dwCurrentGameModeArg1 - 2 < 2)
         {
-            if (sub_08005DC0(g_abQuestEventState[0x12], CURRENT_ROOM.pRoomResourceBlob)
-                == sub_08005DC0(g_abQuestEventState[0], CURRENT_ROOM.pRoomResourceBlob))
+            if (sub_08005DC0(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
+                == sub_08005DC0(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
             {
                 RestoreRoomObjectState();
                 sub_0800A348(0, 0);
@@ -200,9 +200,9 @@ void InitializeOverworld(void)
         // Music.
         if (g_dwGameModeFlags & 0x1000000)
             g_dwGameModeFlags &= ~0x1000000;
-        else if (g_abQuestEventState[0x1a] != 0)
+        else if (g_abQuestEventState[QUEST_ALT_PRESENTATION] != 0)
             PlayMusicModule(g_adwRoomQuestMusicOverride[g_GameModeStackContext.dwCurrentGameModeArg2]);
-        else if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0xf && (u8)(g_abQuestEventState[0] - 2) < 2)
+        else if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0xf && (u8)(g_abQuestEventState[QUEST_STORY_STAGE] - 2) < 2)
             PlayMusicModule(0x12);
         else
             PlayMusicModule(CURRENT_ROOM.bDefaultMusicModule);
@@ -385,10 +385,10 @@ void InitializeOverworld(void)
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
             RespawnRoomObjectsInRow_candidate(g_bPendingRoomScriptRow);
 
-        g_abQuestEventState[0x12] = g_abQuestEventState[0];
+        g_abQuestEventState[QUEST_PREV_STORY_STAGE] = g_abQuestEventState[QUEST_STORY_STAGE];
         if (g_bPendingQuestStateOverride_candidate != 0xff)
         {
-            g_abQuestEventState[0] = g_bPendingQuestStateOverride_candidate;
+            g_abQuestEventState[QUEST_STORY_STAGE] = g_bPendingQuestStateOverride_candidate;
             g_bPendingQuestStateOverride_candidate = 0xff;
         }
 

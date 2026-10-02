@@ -999,9 +999,9 @@ action, and also called directly from state `2`'s post-poison-tick
 check) pushes state `6` once every non-`Enemy` fighter's HP is `0`
 (Buckbeak-only encounters check only Buckbeak). Defeat also fully heals
 the party and sets `FightState->bDefeatWarpTarget` from a table indexed
-by `g_abQuestEventState[0x10]`, resetting index `0` to `0x1F` -- new
-territory for [`../formats/save.md`](../formats/save.md)'s
-`abQuestEventState`, which so far only covers index `25` and `~224`-`254`.
+by `g_abQuestEventState[0x10]`, resetting index `0` to `0x1F`; the table
+and the array's other indices are in
+[`../formats/save.md`](../formats/save.md#quest-event-state).
 
 State `6` calls `PushGameMode_2(Overworld, 0, bDefeatWarpTarget)` after a
 150-tick delay; state `7` calls `PushGameMode(VictoryScreen)` after a

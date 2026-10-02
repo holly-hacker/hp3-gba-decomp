@@ -142,7 +142,7 @@ Room06V1Chain2:
     PlaySoundById 63
     PlayTileObjectAnimation Room06V1Group0_id, 0, 7
     SetQuestState 1, 224
-    SetQuestState 9, 25
+    SetQuestState QUEST_OBJ_FIND_YOUR_SEAT, QUEST_OBJECTIVE_INDEX
     InvokeChainIfEnabled 0, Room06V1Chain3_id
     SetQuestState 9, 8
     End
@@ -247,7 +247,7 @@ Room06V1Chain17:
     DelayedRespawnRowAndRunChain 0, Room06V1Group11_id, 0
     SetBattleDefeatState 1
     SetQuestState 11, 6
-    SetQuestState 56, 25
+    SetQuestState QUEST_OBJ_RETURN_TO_LUPIN, QUEST_OBJECTIVE_INDEX
     End
 Room06V1Chain18:
     @ "Better return to your seat, miss. We'll be at Hogsmeade very shortly."
@@ -322,7 +322,7 @@ Room06V1Chain31:
     DespawnTileObject Room06V1Group2_id, 1
     RecruitPartyFollower 7
     DespawnTileObject Room06V1Group2_id, 0
-    SetQuestState 10, 25
+    SetQuestState QUEST_OBJ_FIND_TREVOR, QUEST_OBJECTIVE_INDEX
     SetTileObjectFlagBit 0, 255, 9
     SetTileObjectAnimStateWithSpeed 0, 255
     End

@@ -18,7 +18,7 @@ void ParseRoomResourceBlob_candidate(const RoomBlobHeader *pBlob)
     pStageIndex = (const RoomBlobStageIndex *)pTable;
     pTable = (u8 *)pBlob + pStageIndex->aEntries[0].wSubBlockOffset;
     pDefault = (const RoomBlobSubBlock *)pTable;
-    pTable = (u8 *)pBlob + pStageIndex->aEntries[pStageIndex->abStageToVariant[g_abQuestEventState[0]]].wSubBlockOffset;
+    pTable = (u8 *)pBlob + pStageIndex->aEntries[pStageIndex->abStageToVariant[g_abQuestEventState[QUEST_STORY_STAGE]]].wSubBlockOffset;
     pVariant = (const RoomBlobSubBlock *)pTable;
 
     pTable = CopyRoomBlobHeaderRecords_candidate(pBlob, pVariant);

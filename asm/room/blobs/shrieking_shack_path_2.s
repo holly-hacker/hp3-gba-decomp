@@ -369,7 +369,7 @@ Room45V1Chain32:
     SetTileObjectFacing Room45V1Group5_id, 0, 2
     End
 Room45V1Chain33:
-    GotoIfQuestStateCompare 0, 0, 22, Room45V1Chain58_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_STORY_STAGE, 0, 22, Room45V1Chain58_id, 0, 0, 0
     End
 Room45V1Chain34:
     DespawnTileObject Room45V1Group7_id, 0

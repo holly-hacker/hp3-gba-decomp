@@ -30,7 +30,7 @@ Room24Blob:
     Offsets Room24V0Chain0
     EndTable
 Room24V0Chain0:
-    SetQuestState 7, 17
+    SetQuestState 7, QUEST_CASTLE_AREA
     SetBattleDefeatState 2
     End
     EndSubBlock Room24V0End
@@ -344,7 +344,7 @@ Room24V1Chain4:
     RecruitPartyFollower 7
     RespawnRowAndRunChain Room24V1Group2_id, 0
     StartTileObjectScript 270, 28, 2, Room24V1Group2_id, 0, 0, 0, 0, 255, 255, 255
-    SetQuestState 25, 25
+    SetQuestState QUEST_OBJ_FIND_FAT_LADY, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 249
     RespawnRowAndRunChain Room24V1Group12_id, 0
     RespawnRowAndRunChain Room24V1Group23_id, Room24V1Chain73_id

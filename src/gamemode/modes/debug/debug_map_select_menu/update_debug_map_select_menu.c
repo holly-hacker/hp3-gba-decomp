@@ -50,7 +50,7 @@ void UpdateDebugMapSelectMenu(void)
     if (g_wKeysPressed & KeyA)
     {
         g_abRoomScriptExitParams_candidate[0] = 0;
-        g_abQuestEventState[0xFE] = 0;
+        g_abQuestEventState[QUEST_SPAWN_ID_COPY] = 0;
         Mt19937AutoSeed();
         PushGameMode_2(Overworld, 0, mapIndex);
     }

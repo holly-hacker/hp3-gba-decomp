@@ -28,7 +28,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
         sub_0800A914();
         sub_0800A598(g_aSpecialSceneBg2, g_aSpecialSceneBgControls, 0);
         sub_0802B138();
-        g_abQuestEventState[0x1d] = 0;
+        g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 0;
         break;
     case 0:
         sub_0800A914();
@@ -39,7 +39,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
         bgResource = g_aSpecialSceneBg1;
     installBg:
         sub_0800A598(bgResource, g_aSpecialSceneBgControls, 0);
-        g_abQuestEventState[0x1d] = 1;
+        g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 1;
         g_aCameraEffects_candidate[0].bState = 0;
         g_aCameraEffects_candidate[0].dwFramesLeft = 0;
         g_aCameraEffects_candidate[0].dwRunForever = 0;
@@ -52,7 +52,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
             SetFadeToWhite(0x3f, ((i & 2) << 20) >> 16);
             WaitForVBlank();
         }
-        g_abQuestEventState[0x1a] = 1;
+        g_abQuestEventState[QUEST_ALT_PRESENTATION] = 1;
         LoadEmbeddedPalette_candidate(g_aSpecialScenePalette, 0, 16);
         PlayMusicModule(9);
         for (i = 0; i <= 9; i++)

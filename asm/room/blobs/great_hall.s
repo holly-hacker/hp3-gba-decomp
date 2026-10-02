@@ -24,7 +24,7 @@ Room17Blob:
     Offsets Room17V0Chain0
     EndTable
 Room17V0Chain0:
-    SetQuestState 1, 17
+    SetQuestState 1, QUEST_CASTLE_AREA
     SetBattleDefeatState 2
     End
     EndSubBlock Room17V0End
@@ -221,7 +221,7 @@ Room17V1Chain9:
     DespawnTileObject Room17V1Group1_id, 6
     DespawnTileObject Room17V1Group1_id, 2
     DespawnTileObject Room17V1Group1_id, 13
-    SetQuestState 35, 25
+    SetQuestState QUEST_OBJ_GO_TO_LUPINS_OFFICE, QUEST_OBJECTIVE_INDEX
     SetQuestState 0, 230
     SetStoryStage 17
     SetTileObjectAnimStateWithSpeed 0, 255

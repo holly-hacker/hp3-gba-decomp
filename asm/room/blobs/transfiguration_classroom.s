@@ -267,7 +267,7 @@ Room03V1Chain14:
     @ "I'm really looking forward to this. Let's go."
     ShowRoomDialog 229
     ClearQuestStateUpperHalf
-    SetQuestState 17, 25
+    SetQuestState QUEST_OBJ_GO_TO_CARE_OF_MAGICAL_CREATURES, QUEST_OBJECTIVE_INDEX
     RespawnRowAndRunChain Room03V1Group9_id, 0
     SetStoryStage 2
     SetTileObjectAnimStateWithSpeed 0, 255
@@ -299,7 +299,7 @@ Room03V1Chain17:
     ArmChainYield 1
     Unk02 0, 255, 1
     SetQuestState 1, 223
-    SetQuestState 16, 25
+    SetQuestState QUEST_OBJ_FIND_MCGONAGALL, QUEST_OBJECTIVE_INDEX
     ReturnToOverworld 4, 0
     End
 Room03V1Chain18:

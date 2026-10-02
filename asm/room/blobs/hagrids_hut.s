@@ -242,7 +242,7 @@ Room11V1Chain7:
     ArmChainYield 1
     SetQuestState 0, 230
     SetQuestState 1, 224
-    SetQuestState 32, 25
+    SetQuestState QUEST_OBJ_GO_TO_LIBRARY_FOR_HERMIONE, QUEST_OBJECTIVE_INDEX
     RecruitPartyFollower 7
     DespawnRoomRowObjects Room11V1Group4_id
     SetTileObjectAnimStateWithSpeed 0, 255
@@ -326,7 +326,7 @@ Room11V1Chain18:
 Room11V1Chain19:
     ArmChainYield 1
     DespawnTileObject Room11V1Group7_id, 0
-    SetQuestState 45, 25
+    SetQuestState QUEST_OBJ_GO_TO_WHOMPING_WILLOW, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 233
     SetStoryStage 22
     SetTileObjectAnimStateWithSpeed 0, 255

@@ -64,7 +64,7 @@ Room35V0Chain0:
     EndTable
 Room35V1Chain0:
     ClearOverworldMonstersDisabled
-    GotoIfQuestStateCompare 25, 0, 28, Room35V1Chain12_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_OBJECTIVE_INDEX, 0, QUEST_OBJ_FIND_BOOK_PAGES, Room35V1Chain12_id, 0, 0, 0
     End
 Room35V1Chain1:
     AddQuestState 1, 128

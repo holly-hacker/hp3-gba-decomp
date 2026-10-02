@@ -228,7 +228,7 @@ Room34V1Chain4:
     @ "I would appreciate you doing that, Miss Granger."
     @ "OK, let's get to it."
     ShowRoomDialog 415
-    SetQuestState 28, 25
+    SetQuestState QUEST_OBJ_FIND_BOOK_PAGES, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room34V1Chain5:
@@ -310,7 +310,7 @@ Room34V1Chain17:
     @ "We can't tell Hagrid that!"
     @ "Let's find Hermione. Maybe she'll be able to make sense of it all."
     ShowRoomDialog 442
-    SetQuestState 33, 25
+    SetQuestState QUEST_OBJ_FIND_HERMIONE, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 230
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -348,7 +348,7 @@ Room34V1Chain22:
     End
 Room34V1Chain23:
     ArmChainYield 1
-    SetQuestState 29, 25
+    SetQuestState QUEST_OBJ_RETURN_TO_DADA, QUEST_OBJECTIVE_INDEX
     SetStoryStage 9
     DespawnTileObject Room34V1Group13_id, 0
     End
@@ -516,6 +516,6 @@ Room34V1Chain55:
     End
 Room34V1Chain56:
     GotoIfQuestStateCompare 1, 0, 19, Room34V1Chain43_id, 0, 0, 0
-    GotoIfQuestStateCompare 25, 2, 27, Room34V1Chain26_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_OBJECTIVE_INDEX, 2, QUEST_OBJ_GO_TO_LIBRARY_FOR_DADA, Room34V1Chain26_id, 0, 0, 0
     End
     EndSubBlock Room34V1End

@@ -137,7 +137,7 @@ Room07V2Chain2:
     SetQuestState 1, 246
     DespawnTileObject Room07V2Group1_id, 2
     SetQuestState 6, 6
-    SetQuestState 56, 25
+    SetQuestState QUEST_OBJ_RETURN_TO_LUPIN, QUEST_OBJECTIVE_INDEX
     GrantRoomReward 76, 0
 .ifdef VERSION_JP
     ShowRewardPickupMessage 76

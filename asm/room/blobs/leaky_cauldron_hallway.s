@@ -65,7 +65,7 @@ Room40V1Chain2:
     End
 Room40V1Chain3:
     CancelObjectAnimSequence 0, 255
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     SetQuestState 1, 231
     ArmChainYield 1
     StartTileObjectScript 366, 232, 0, 0, 255, 0, 0, 0, 255, 255, 255
@@ -91,7 +91,7 @@ Room40V1Chain4:
     SetStoryStage 7
     ResetPartyLeaderSelection
     CancelObjectAnimSequence 0, 255
-    SetQuestState 9, 25
+    SetQuestState QUEST_OBJ_FIND_YOUR_SEAT, QUEST_OBJECTIVE_INDEX
     SetOverworldMonstersDisabled
     DelayedRespawnRowAndRunChain 1, 0, 0
     PlayCutscene 0, 0, Room40V1Chain6_id

@@ -9,5 +9,5 @@ typedef struct SetStoryStageRecord {
 
 void RoomScriptOpSetStoryStage(SetStoryStageRecord *pRecord)
 {
-    g_abQuestEventState[0] = pRecord->bStage;
+    g_abQuestEventState[QUEST_STORY_STAGE] = pRecord->bStage;
 }

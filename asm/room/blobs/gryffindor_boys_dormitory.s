@@ -133,7 +133,7 @@ Room28V1Chain0:
     End
 Room28V1Chain1:
     SetTileObjectAnimState Room28V0Group0_id, 2
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     GotoIfQuestStateCompare 231, 0, 0, 0, 0, Room28V1Group1_id, 0
     GotoIfQuestStateCompare 231, 0, 1, Room28V1Chain11_id, Room28V1Chain18_id, Room28V1Group5_id, 0
     End
@@ -174,7 +174,7 @@ Room28V1Chain6:
     ArmChainYield 1
     DespawnRoomRowObjects Room28V1Group1_id
     DespawnRoomRowObjects Room28V1Group5_id
-    SetQuestState 36, 25
+    SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_LUPIN, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 231
     SetQuestState 2, 230
     SetTileObjectAnimStateWithSpeed 0, 255
@@ -182,7 +182,7 @@ Room28V1Chain6:
 Room28V1Chain7:
     SetTileObjectAnimState Room28V0Group0_id, 1
     SetTileObjectAnimState Room28V0Group0_id, 2
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     GotoIfQuestStateCompare 232, 0, 0, 0, 0, Room28V1Group2_id, 0
     GotoIfQuestStateCompare 232, 0, 1, Room28V1Chain19_id, 0, 0, 0
     End
@@ -214,7 +214,7 @@ Room28V1Chain10:
 Room28V1Chain11:
     ArmChainYield 1
     CancelObjectAnimSequence 0, 255
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     SetTileObjectAnimState Room28V0Group0_id, 1
     @ "AAARRRGGGHHH! NOOOOOOOOOOOO!"
     ShowRoomDialog 505
@@ -246,7 +246,7 @@ Room28V1Chain14:
     ShowRoomDialog 531
     DespawnRoomRowObjects Room28V1Group4_id
     SetStoryStage 21
-    SetQuestState 43, 25
+    SetQuestState QUEST_OBJ_FIND_RON_AND_HERMIONE, QUEST_OBJECTIVE_INDEX
     SetQuestState 0, 232
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -259,7 +259,7 @@ Room28V1Chain15:
     End
 Room28V1Chain16:
     ArmChainYield 1
-    SetQuestState 0, 26
+    SetQuestState 0, QUEST_ALT_PRESENTATION
     PlayCutscene 1, 0, Room28V1Chain13_id
     End
 Room28V1Chain17:

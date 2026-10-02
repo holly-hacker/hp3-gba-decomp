@@ -563,7 +563,7 @@ Room15V1Chain7:
 Room15V1Chain8:
     ArmChainYield 1
     SetQuestState 1, 248
-    SetQuestState 18, 25
+    SetQuestState QUEST_OBJ_FIND_ESCAPED_BOOKS, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     ReturnToOverworld 12, 0
     End
@@ -826,7 +826,7 @@ Room15V1Chain41:
     RecruitPartyFollower 7
     DespawnRoomRowObjects Room15V1Group11_id
     ClearQuestStateUpperHalf
-    SetQuestState 19, 25
+    SetQuestState QUEST_OBJ_GO_TO_POTIONS, QUEST_OBJECTIVE_INDEX
     SetStoryStage 4
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -861,14 +861,14 @@ Room15V1Chain46:
     @ "That took care of that - now let's get Ron!"
     ShowRoomDialog 559
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetQuestState 47, 25
+    SetQuestState QUEST_OBJ_FOLLOW_PATH_TO_SHRIEKING_SHACK, QUEST_OBJECTIVE_INDEX
     ClearQuestStateUpperHalf
     ReturnToOverworld 44, 0
     End
 Room15V1Chain47:
     ArmChainYield 1
     CancelObjectAnimSequence 0, 255
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     SetOverworldMonstersDisabled
     RemovePartyFollower 6
     DelayedRespawnRowAndRunChain 1, 0, 0
@@ -933,7 +933,7 @@ Room15V1Chain53:
     @ "Hello, Buckbeak, remember me? We're going to take you for a walk."
     @ "Let's hurry on to the lake!"
     ShowRoomDialog 594
-    SetQuestState 52, 25
+    SetQuestState QUEST_OBJ_GO_BACK_TO_LAKE, QUEST_OBJECTIVE_INDEX
     SetStoryStage 26
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -941,7 +941,7 @@ Room15V1Chain54:
     ArmChainYield 1
     DespawnTileObject Room15V1Group22_id, 2
     DespawnTileObject Room15V1Group22_id, 3
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     ReturnToOverworld 13, 1
     End
 Room15V1Chain55:
@@ -989,7 +989,7 @@ Room15V1Chain58:
     End
 Room15V1Chain59:
     ArmChainYield 1
-    SetQuestState 49, 25
+    SetQuestState QUEST_OBJ_WALK_TO_LAKE, QUEST_OBJECTIVE_INDEX
     SetStoryStage 24
     PlayCutscene 12, 0, 0
     End
@@ -1017,7 +1017,7 @@ Room15V1Chain60:
 Room15V1Chain61:
     ArmChainYield 1
     DespawnRoomRowObjects Room15V1Group25_id
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     ReturnToOverworld 13, 1
     End
 Room15V1Chain62:
@@ -1029,7 +1029,7 @@ Room15V1Chain63:
     ShowRoomDialog 624
     End
 Room15V1Chain64:
-    SetQuestState 17, 25
+    SetQuestState QUEST_OBJ_GO_TO_CARE_OF_MAGICAL_CREATURES, QUEST_OBJECTIVE_INDEX
     End
 Room15V1Chain65:
     ArmChainYield 1
@@ -1125,7 +1125,7 @@ Room15V1Chain72:
     @ "If that dog can get in, we can!"
     ShowRoomDialog 557
     SetQuestState 1, 129
-    SetQuestState 46, 25
+    SetQuestState QUEST_OBJ_FIND_PATH_BENEATH_WILLOW, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room15V1Chain73:

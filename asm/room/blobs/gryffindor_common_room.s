@@ -615,7 +615,7 @@ Room29V1Chain15:
     @ "Scabbers, come back!"
     @ "I'll help you get him, Ron."
     ShowRoomDialog 356
-    SetQuestState 24, 25
+    SetQuestState QUEST_OBJ_FIND_SCABBERS_COMMON_ROOM, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room29V1Chain16:
@@ -763,8 +763,8 @@ Room29V1Chain31:
     DespawnTileObject Room29V1Group10_id, 0
     DespawnTileObject Room29V1Group10_id, 8
     SetQuestState 2, 230
-    SetQuestState 1, 26
-    SetQuestState 37, 25
+    SetQuestState 1, QUEST_ALT_PRESENTATION
+    SetQuestState QUEST_OBJ_GO_TO_BOYS_DORMITORY, QUEST_OBJECTIVE_INDEX
     SetStoryStage 19
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -830,7 +830,7 @@ Room29V1Chain38:
     DespawnTileObject Room29V1Group12_id, 2
     DespawnTileObject Room29V1Group12_id, 1
     SetQuestState 2, 231
-    SetQuestState 37, 25
+    SetQuestState QUEST_OBJ_GO_TO_BOYS_DORMITORY, QUEST_OBJECTIVE_INDEX
     SetStoryStage 20
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -855,9 +855,9 @@ Room29V1Chain42:
     DespawnRoomRowObjects Room29V1Group13_id
     RecruitPartyFollower 7
     RecruitPartyFollower 6
-    SetQuestState 44, 25
+    SetQuestState QUEST_OBJ_GO_TO_HAGRIDS_HUT_SECOND, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 233
-    SetQuestState 1, 26
+    SetQuestState 1, QUEST_ALT_PRESENTATION
     ClearOverworldMonstersDisabled
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -948,7 +948,7 @@ Room29V1Chain50:
     End
 Room29V1Chain51:
     ArmChainYield 1
-    SetQuestState 15, 25
+    SetQuestState QUEST_OBJ_GO_TO_TRANSFIGURATION, QUEST_OBJECTIVE_INDEX
     SetStoryStage 1
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -961,7 +961,7 @@ Room29V1Chain53:
     DespawnRoomRowObjects Room29V1Group8_id
     RecruitPartyFollower 7
     DespawnRoomRowObjects Room29V1Group19_id
-    SetQuestState 26, 25
+    SetQuestState QUEST_OBJ_GO_TO_DADA, QUEST_OBJECTIVE_INDEX
     SetStoryStage 7
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -974,7 +974,7 @@ Room29V1Chain55:
 Room29V1Chain56:
     ArmChainYield 1
     SetQuestState 1, 245
-    SetQuestState 31, 25
+    SetQuestState QUEST_OBJ_GO_TO_HAGRIDS_HUT_FIRST, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 230
     GrantRoomReward 67, 0
     ClearOverworldMonstersDisabled
@@ -1006,7 +1006,7 @@ Room29V1Chain60:
     StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route44_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain61:
-    SetQuestState 0, 26
+    SetQuestState 0, QUEST_ALT_PRESENTATION
     End
 Room29V1Chain62:
     ArmChainYield 1

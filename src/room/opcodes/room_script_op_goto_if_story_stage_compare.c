@@ -14,6 +14,6 @@ typedef struct GotoIfStoryStageCompareRecord {
 
 void RoomScriptOpGotoIfStoryStageCompare(GotoIfStoryStageCompareRecord *pRecord)
 {
-    CompareAndBranchRoomScript(g_abQuestEventState[0], pRecord->bCmpOp, pRecord->bValue, pRecord->bTrueChain,
+    CompareAndBranchRoomScript(g_abQuestEventState[QUEST_STORY_STAGE], pRecord->bCmpOp, pRecord->bValue, pRecord->bTrueChain,
                                pRecord->bFalseChain, pRecord->bTrueRow, pRecord->bFalseRow);
 }

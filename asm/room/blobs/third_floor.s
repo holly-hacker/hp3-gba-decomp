@@ -30,7 +30,7 @@ Room20Blob:
     Offsets Room20V0Chain0
     EndTable
 Room20V0Chain0:
-    SetQuestState 3, 17
+    SetQuestState 3, QUEST_CASTLE_AREA
     SetBattleDefeatState 2
     End
     EndSubBlock Room20V0End

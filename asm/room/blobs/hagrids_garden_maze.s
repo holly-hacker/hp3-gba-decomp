@@ -168,7 +168,7 @@ Room12V1Route9:
     EndTable
 Room12V1Chain0:
     SetBattleDefeatState 5
-    SetQuestState 18, 25
+    SetQuestState QUEST_OBJ_FIND_ESCAPED_BOOKS, QUEST_OBJECTIVE_INDEX
     GotoIfQuestStateCompare 233, 0, 23, Room12V1Chain40_id, 0, 0, Room12V1Group10_id
     GotoIfQuestStateCompare 245, 2, 0, Room12V1Chain1_id, 0, 0, 0
     End
@@ -246,7 +246,7 @@ Room12V1Chain19:
 Room12V1Chain20:
     SetQuestState 1, 228
     AddQuestState 1, 229
-    SetQuestState 17, 25
+    SetQuestState QUEST_OBJ_GO_TO_CARE_OF_MAGICAL_CREATURES, QUEST_OBJECTIVE_INDEX
     End
 Room12V1Chain21:
     SetStoryStage 3

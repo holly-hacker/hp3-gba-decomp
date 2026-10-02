@@ -57,7 +57,7 @@ Room41V1Chain2:
     ArmChainYield 1
     PlayScreenTransitionIn
     StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 4, 255, 255, 255
-    SetQuestState 2, 25
+    SetQuestState QUEST_OBJ_GREET_WEASLEYS, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room41V1Chain3:
@@ -78,7 +78,7 @@ Room41V1Chain5:
     StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     PlayRoomSoundEffect 10
     PlayScreenTransitionOut
-    SetQuestState 0, 26
+    SetQuestState 0, QUEST_ALT_PRESENTATION
     PlayCutscene 0, 0, Room41V1Chain2_id
     End
 Room41V1Chain6:
@@ -164,7 +164,7 @@ Room41V2Chain3:
     ShowRoomDialog 23
     StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     PlayRoomSoundEffect 10
-    SetQuestState 0, 26
+    SetQuestState 0, QUEST_ALT_PRESENTATION
     PlayScreenTransitionOut
     PlayCutscene 0, 0, Room41V2Chain4_id
     End
@@ -173,7 +173,7 @@ Room41V2Chain4:
     PlayScreenTransitionIn
     StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 4, 255, 255, 255
     SetStoryStage 2
-    SetQuestState 2, 25
+    SetQuestState QUEST_OBJ_GREET_WEASLEYS, QUEST_OBJECTIVE_INDEX
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room41V2Chain5:

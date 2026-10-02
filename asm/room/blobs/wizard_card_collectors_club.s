@@ -47,22 +47,22 @@ Room37V0Chain0:
 Room37V1Chain0:
     End
 Room37V1Chain1:
-    GotoIfQuestStateCompare 20, 0, 0, Room37V1Chain8_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST, 0, 0, Room37V1Chain8_id, 0, 0, 0
     End
 Room37V1Chain2:
-    GotoIfQuestStateCompare 21, 0, 0, Room37V1Chain9_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 1, 0, 0, Room37V1Chain9_id, 0, 0, 0
     End
 Room37V1Chain3:
-    GotoIfQuestStateCompare 22, 0, 0, Room37V1Chain12_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 2, 0, 0, Room37V1Chain12_id, 0, 0, 0
     End
 Room37V1Chain4:
-    GotoIfQuestStateCompare 23, 0, 0, Room37V1Chain15_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 3, 0, 0, Room37V1Chain15_id, 0, 0, 0
     End
 Room37V1Chain5:
-    GotoIfQuestStateCompare 24, 0, 0, Room37V1Chain18_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 4, 0, 0, Room37V1Chain18_id, 0, 0, 0
     End
 Room37V1Chain6:
-    SetQuestState 1, 20
+    SetQuestState 1, QUEST_FOLIO_REWARD_FIRST
     UnlockMinigame 3
     ArmChainYield 1
     ShowFolioCategoryStatusMessage 0, 1
@@ -78,7 +78,7 @@ Room37V1Chain9:
     GotoIfFolioPageGroupComplete 1, 0, Room37V1Chain10_id, 0, Room37V1Chain11_id, 255, 255, 255
     End
 Room37V1Chain10:
-    SetQuestState 1, 21
+    SetQuestState 1, QUEST_FOLIO_REWARD_FIRST + 1
     GrantRoomReward 54, 0
     GrantRoomReward 53, 0
     GrantRoomReward 51, 0
@@ -98,7 +98,7 @@ Room37V1Chain13:
     ShowFolioCategoryStatusMessage 2, 0
     End
 Room37V1Chain14:
-    SetQuestState 1, 22
+    SetQuestState 1, QUEST_FOLIO_REWARD_FIRST + 2
     GrantRoomReward 18, 0
     ArmChainYield 1
     ShowFolioCategoryStatusMessage 2, 1
@@ -111,7 +111,7 @@ Room37V1Chain16:
     ShowFolioCategoryStatusMessage 3, 0
     End
 Room37V1Chain17:
-    SetQuestState 1, 23
+    SetQuestState 1, QUEST_FOLIO_REWARD_FIRST + 3
     GrantPartyLevelUps 2
     ArmChainYield 1
     ShowFolioCategoryStatusMessage 3, 1
@@ -124,7 +124,7 @@ Room37V1Chain19:
     ShowFolioCategoryStatusMessage 4, 0
     End
 Room37V1Chain20:
-    SetQuestState 1, 24
+    SetQuestState 1, QUEST_FOLIO_REWARD_FIRST + 4
     GrantPartyLevelUps 1
     GrantRoomReward 19, 0
     ArmChainYield 1
@@ -147,19 +147,19 @@ Room37V1Chain23:
     SetTileObjectAnimStateWithSpeed 0, 255
     End
 Room37V1Chain24:
-    GotoIfQuestStateCompare 20, 0, 1, Room37V1Chain25_id, Room37V1Chain29_id, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST, 0, 1, Room37V1Chain25_id, Room37V1Chain29_id, 0, 0
     End
 Room37V1Chain25:
-    GotoIfQuestStateCompare 21, 0, 1, Room37V1Chain26_id, Room37V1Chain30_id, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 1, 0, 1, Room37V1Chain26_id, Room37V1Chain30_id, 0, 0
     End
 Room37V1Chain26:
-    GotoIfQuestStateCompare 22, 0, 1, Room37V1Chain27_id, Room37V1Chain31_id, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 2, 0, 1, Room37V1Chain27_id, Room37V1Chain31_id, 0, 0
     End
 Room37V1Chain27:
-    GotoIfQuestStateCompare 23, 0, 1, Room37V1Chain28_id, Room37V1Chain32_id, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 3, 0, 1, Room37V1Chain28_id, Room37V1Chain32_id, 0, 0
     End
 Room37V1Chain28:
-    GotoIfQuestStateCompare 24, 0, 1, Room37V1Chain22_id, Room37V1Chain33_id, 0, 0
+    GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST + 4, 0, 1, Room37V1Chain22_id, Room37V1Chain33_id, 0, 0
     End
 Room37V1Chain29:
     GotoIfFolioPageGroupComplete 0, 0, Room37V1Chain23_id, 0, Room37V1Chain25_id, 255, 255, 255

@@ -221,7 +221,7 @@ Room01V1Chain8:
     @ "Do not think of this as an opportunity to avoid the lesson, Weasley. Tardiness will be punished."
     @ "Yes, Professor."
     ShowRoomDialog 297
-    SetQuestState 20, 25
+    SetQuestState QUEST_OBJ_FIND_POTION_INGREDIENTS, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 225
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -239,7 +239,7 @@ Room01V1Chain9:
     @ "Yes, Professor."
     @ "Let's go to the Potions store room, Hermione."
     ShowRoomDialog 298
-    SetQuestState 20, 25
+    SetQuestState QUEST_OBJ_FIND_POTION_INGREDIENTS, QUEST_OBJECTIVE_INDEX
     SetQuestState 0, 225
     SetTileObjectAnimStateWithSpeed 0, 255
     End
@@ -406,7 +406,7 @@ Room01V1Chain28:
     GrantPartySpell 6
     GrantPartySpell 7
     ShowSpellLearnedMessage 8, 1
-    SetQuestState 22, 25
+    SetQuestState QUEST_OBJ_GO_TO_STAFF_ROOM, QUEST_OBJECTIVE_INDEX
     DespawnRoomRowObjects Room01V1Group11_id
     RespawnRowAndRunChain Room01V1Group4_id, 0
     GotoIfQuestStateCompare 225, 1, 0, Room01V1Chain37_id, Room01V1Chain38_id, 0, 0
@@ -512,7 +512,7 @@ Room01V1Chain42:
     SetTileObjectFacing Room01V1Group1_id, 8, 6
     @ "I require a volunteer to gather ingredients for this potion."
     ShowRoomDialog 296
-    SetQuestState 20, 25
+    SetQuestState QUEST_OBJ_FIND_POTION_INGREDIENTS, QUEST_OBJECTIVE_INDEX
     ShowLoadingScreenTransition 5, 6, 32, 255
     GotoIfStoryStageCompare 0, 5, Room01V1Chain9_id, Room01V1Chain8_id, 0, 0
     End

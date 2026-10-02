@@ -92,7 +92,7 @@ Room26V1Chain4:
     ShowRoomDialog 494
     DespawnTileObject Room26V1Group1_id, 1
     SetQuestState 1, 230
-    SetQuestState 36, 25
+    SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_LUPIN, QUEST_OBJECTIVE_INDEX
     SetStoryStage 18
     SetTileObjectAnimStateWithSpeed 0, 255
     End

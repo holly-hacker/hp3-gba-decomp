@@ -102,7 +102,7 @@ Room42TalkFudge1:
     StartObjectAnimSequence Room42V1Group2_id, 1, 0, 4, Room42V1Route0_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     SetQuestState 1, 224
-    SetQuestState 1, 0
+    SetQuestState 1, QUEST_STORY_STAGE
     End
 @ Talk to person at the bar
 Room42TalkPatronBar:
@@ -238,7 +238,7 @@ Room42V2Chain0:
 Room42V2Chain1:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetQuestState 4, 25
+    SetQuestState QUEST_OBJ_FIND_RAT_TONIC, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChainFrames 0, Room42V2Group4_id, 0
     SetTileObjectFlagBit 0, 255, 9
     SetStoryStage 3
@@ -772,7 +772,7 @@ Room42V3Chain42:
     StartObjectAnimSequence 0, 255, 0, 0, Room42V3Route8_id, 0, 1, 0, 0, 0
     DespawnTileObject Room42V3Group2_id, 0
     RecruitPartyFollower 6
-    SetQuestState 7, 25
+    SetQuestState QUEST_OBJ_FIND_CROOKSHANKS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group7_id, Room42V3Chain32_id
     ArmChainYield 1
     Unk02 Room42V3Group0_id, 0, 3
@@ -786,7 +786,7 @@ Room42V3Chain43:
     StartObjectAnimSequence 0, 255, 0, 0, Room42V3Route9_id, 0, 1, 0, 0, 0
     DespawnTileObject Room42V3Group0_id, 0
     RecruitPartyFollower 7
-    SetQuestState 6, 25
+    SetQuestState QUEST_OBJ_FIND_SCABBERS_LEAKY_CAULDRON, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group6_id, Room42V3Chain32_id
     ArmChainYield 1
     Unk02 Room42V3Group2_id, 0, 3

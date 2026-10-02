@@ -85,7 +85,7 @@ Room38V1Chain0:
     SetQuestState 1, 233
     GotoIfQuestStateCompare 224, 0, 2, Room38V1Chain30_id, 0, 0, 0
     GotoIfQuestStateCompare 251, 0, 1, 0, 0, Room38V1Group3_id, Room38V1Group4_id
-    GotoIfQuestStateCompare 28, 3, 1, Room38V1Chain29_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_COMPLETION_COUNT, 3, 1, Room38V1Chain29_id, 0, 0, 0
     End
 Room38V1Chain1:
     ArmChainYield 1
@@ -102,7 +102,7 @@ Room38V1Chain2:
 Room38V1Chain3:
     @ "This place could do with a spring clean..."
     ShowRoomDialog 33
-    SetQuestState 1, 247
+    SetQuestState 1, QUEST_CELLAR1_INTRO_DIALOG_SHOWN
     End
 Room38V1Chain4:
     @ "This place is really dark. I'd better cast Lumos so I don't fall over."
@@ -110,7 +110,7 @@ Room38V1Chain4:
     SetQuestState 1, 248
     End
 Room38V1Chain5:
-    GotoIfQuestStateCompare 243, 0, 1, 0, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_CELLAR1_RAT_TONIC_FOUND, 0, 1, 0, 0, 0, 0
     CancelObjectAnimSequence 0, 255
     ArmChainYield 1
     StartTileObjectScript 335, 211, 0, 0, 255, 0, 0, 2, 255, 255, 255
@@ -140,7 +140,7 @@ Room38V1Chain7:
     End
 Room38V1Chain8:
     DelayedRespawnRowAndRunChain 0, 0, 0
-    GotoIfQuestStateCompare 243, 0, 1, 0, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_CELLAR1_RAT_TONIC_FOUND, 0, 1, 0, 0, 0, 0
     End
 Room38V1Chain9:
     ArmChainYield 1
@@ -164,7 +164,7 @@ Room38V1Chain13:
     AddQuestState 1, 237
     End
 Room38V1Chain14:
-    GotoIfQuestStateCompare 243, 0, 0, 0, 0, Room38V1Group2_id, 0
+    GotoIfQuestStateCompare QUEST_CELLAR1_RAT_TONIC_FOUND, 0, 0, 0, 0, Room38V1Group2_id, 0
     End
 Room38V1Chain15:
     SetTileObjectAnimState Room38V0Group0_id, 1
@@ -180,7 +180,7 @@ Room38V1Chain18:
     GotoIfQuestStateCompare 248, 0, 0, Room38V1Chain4_id, 0, 0, 0
     End
 Room38V1Chain19:
-    GotoIfQuestStateCompare 247, 0, 0, Room38V1Chain3_id, 0, 0, 0
+    GotoIfQuestStateCompare QUEST_CELLAR1_INTRO_DIALOG_SHOWN, 0, 0, Room38V1Chain3_id, 0, 0, 0
     End
 Room38V1Chain20:
     PlayTileObjectAnimation Room38V1Group2_id, 0, 1
@@ -191,9 +191,9 @@ Room38V1Chain21:
     End
 Room38V1Chain22:
     DespawnTileObject Room38V1Group2_id, 2
-    SetQuestState 1, 243
+    SetQuestState 1, QUEST_CELLAR1_RAT_TONIC_FOUND
     FullHealParty
-    SetQuestState 5, 25
+    SetQuestState QUEST_OBJ_DELIVER_RAT_TONIC_TO_RON, QUEST_OBJECTIVE_INDEX
     SetStoryStage 5
     GrantRoomReward 62, 0
     ArmChainYield 1

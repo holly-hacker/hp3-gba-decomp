@@ -246,7 +246,7 @@ Room00V1Chain9:
     @ "Professor Lupin says he's feeling too ill to teach today."
     @ "I would like you all to go to the library and research the subject of - werewolves. Now, run along."
     ShowRoomDialog 411
-    SetQuestState 27, 25
+    SetQuestState QUEST_OBJ_GO_TO_LIBRARY_FOR_DADA, QUEST_OBJECTIVE_INDEX
     DespawnRoomRowObjects Room00V1Group6_id
     DelayedRespawnRowAndRunChain 0, Room00V1Group4_id, 0
     InvokeChainIfEnabled 0, Room00V1Chain2_id
@@ -325,7 +325,7 @@ Room00V1Chain17:
     @ "More and more... C'mon, let's get back to the common room."
     ShowRoomDialog 427
     ClearQuestStateUpperHalf
-    SetQuestState 30, 25
+    SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_DADA, QUEST_OBJECTIVE_INDEX
     SetStoryStage 14
     SetTileObjectAnimStateWithSpeed 0, 255
     End
