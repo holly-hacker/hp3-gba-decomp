@@ -551,9 +551,15 @@ background/palette load. Three cases on `g_PrevGameModeStackContext`:
   Special-Move-resolution case in `src/battle/tick_player_action_state.c`.
   Indexed by the raw Folio Universitas card slot `0`-`15`; `[0]` is the
   target-type byte this function reads, `[1]` is a second, independently
-  read boolean -- gates an extra `sub_080129F4()` cleanup call across
-  several post-hit `bAttackOutcomeState` cases in
-  `TickPlayerActionState`, not yet named/understood further. `[0]`'s
+  read boolean -- gates a `StopBgTileAnimationsAfterCard_candidate()` call
+  (a wrapper for `StopAllBgTileAnimations`, which clears the active bit on
+  every BG tile-animation entry, see
+  [`frame_systems.md`](frame_systems.md)) across several post-hit
+  `bAttackOutcomeState` cases in `TickPlayerActionState`. Set for Horklump
+  Spores, Tempest Jinx, Cracker Jinx, Girding All, Replenish MP, Replenish
+  SP, Sonorous Charm and Ultimate MP. What those cards share is unknown:
+  all of them queue a scanline effect, but so does the unflagged
+  Reparifors. `[0]`'s
   values: `0` = no target menu -- immediate self/party cast,
   `bSelectedActionIndex = 0x2a`, `bMenuScreen = 0`; `1` =
   `OpenEnemyTargetMenu_candidate` (`0x08012B98`, `bMenuScreen = 6`,

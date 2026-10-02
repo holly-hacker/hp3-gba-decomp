@@ -167,7 +167,7 @@ Room12V1Route9:
     Offsets Room12V1Chain42, Room12V1Chain43, Room12V1Chain44
     EndTable
 Room12V1Chain0:
-    SetDefeatWarpSelector 5
+    SetDefeatWarpSelector 5 @ Hagrid's Garden Maze
     SetQuestState QUEST_OBJ_FIND_ESCAPED_BOOKS, QUEST_OBJECTIVE_INDEX
     GotoIfQuestStateCompare 233, 0, 23, Room12V1Chain40_id, 0, 0, Room12V1Group10_id
     GotoIfQuestStateCompare 245, 2, 0, Room12V1Chain1_id, 0, 0, 0

@@ -81,7 +81,7 @@ Room38V0Chain0:
     Offsets Room38V1Chain30, Room38V1Chain31, Room38V1Chain32, Room38V1Chain33, Room38V1Chain34, Room38V1Chain35
     EndTable
 Room38V1Chain0:
-    SetDefeatWarpSelector 16
+    SetDefeatWarpSelector 16 @ Leaky Cauldron - Cellar 1
     SetQuestState 1, 233
     GotoIfQuestStateCompare 224, 0, 2, Room38V1Chain30_id, 0, 0, 0
     GotoIfQuestStateCompare 251, 0, 1, 0, 0, Room38V1Group3_id, Room38V1Group4_id
@@ -359,7 +359,7 @@ Room38V3Route1:
     Offsets Room38V3Chain6
     EndTable
 Room38V3Chain0:
-    SetDefeatWarpSelector 0
+    SetDefeatWarpSelector 0 @ Leaky Cauldron - Harry's Room
     GotoIfQuestStateCompare 251, 0, 1, 0, 0, Room38V3Group1_id, Room38V3Group2_id
     End
 Room38V3Chain1:

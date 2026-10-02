@@ -29,7 +29,7 @@ Room19Blob:
     EndTable
 Room19V0Chain0:
     SetQuestState 2, QUEST_CASTLE_AREA
-    SetDefeatWarpSelector 2
+    SetDefeatWarpSelector 2 @ Hospital Wing
     End
     EndSubBlock Room19V0End
 

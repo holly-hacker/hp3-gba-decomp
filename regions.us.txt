@@ -300,7 +300,7 @@ thumb-func 0x080101D0 TickBattleMenuInput
 thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x08010864 ShowBattleMessage
 thumb-func 0x08012994 InitCharacterSpells_candidate
-thumb-func 0x080129F4 sub_080129F4
+thumb-func 0x080129F4 StopBgTileAnimationsAfterCard_candidate
 thumb-func 0x08012A00 sub_08012A00
 thumb-func 0x08012A38 sub_08012A38
 thumb-func 0x08012A84 sub_08012A84
@@ -1149,10 +1149,8 @@ c-file 0x080507B0 0x08050C60 src/character/hermione_levels.c g_pHermioneLevelTab
 c-file 0x08050C6C 0x0805120C src/battle/random_encounters.c g_aRandomEncounters
 c-file 0x0805120C 0x08051248 src/battle/scripted_encounters.c g_aScriptedEncounters
 c-file 0x08051248 0x080514C8 src/graphics/assets/fighter_anim_table.c g_aFighterAnimTable
-label 0x080514C8 g_abHarryCardEffectId
-label 0x080514DE g_aCardTargetingMeta
-label 0x0805150A g_abSpecialMoveEffectId
-label 0x0805150D g_abHermioneLectureEffectId
+c-file 0x080514C8 0x08051510 src/battle/battle_effect_id_tables.c g_abHarryCardEffectId
+c-file 0x08051510 0x08051560 src/battle/defeat_warp_rooms.c g_aDefeatWarpRoomId
 label 0x08051560 g_aFighterAnimDataTable
 label 0x08051E70 g_pMonsterAnimFrameTable
 label 0x08053850 g_MonsterShadowAnimData

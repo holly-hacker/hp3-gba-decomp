@@ -35,7 +35,7 @@ Room45Blob:
     EndTable
 Room45V0Chain0:
     ClearOverworldMonstersDisabled
-    SetDefeatWarpSelector 7
+    SetDefeatWarpSelector 7 @ Shrieking Shack Path
     End
     EndSubBlock Room45V0End
 
@@ -162,7 +162,7 @@ Room45V1Route2:
     Offsets Room45V1Chain78
     EndTable
 Room45V1Chain0:
-    SetDefeatWarpSelector 10
+    SetDefeatWarpSelector 10 @ Shrieking Shack - Path 2
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group6_id, 0
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group1_id, 0
     DelayedRespawnRowAndRunChainFrames 0, 0, Room45V1Chain46_id
@@ -463,7 +463,7 @@ Room45V1Chain55:
     ArmChainYield 1
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
     GotoIfStoryStageCompare 0, 30, 0, 0, Room45V1Group1_id, 0
-    SetDefeatWarpSelector 10
+    SetDefeatWarpSelector 10 @ Shrieking Shack - Path 2
     ArmChainYield 0
     End
 Room45V1Chain56:

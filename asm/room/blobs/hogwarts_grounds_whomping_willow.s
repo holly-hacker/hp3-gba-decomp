@@ -33,7 +33,7 @@ Room15Blob:
     Offsets Room15V0Chain0
     EndTable
 Room15V0Chain0:
-    SetDefeatWarpSelector 2
+    SetDefeatWarpSelector 2 @ Hospital Wing
     End
     EndSubBlock Room15V0End
 

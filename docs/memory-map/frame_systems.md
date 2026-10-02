@@ -40,7 +40,11 @@ function. Calls, in order:
 - **`TickBgTileAnimations_candidate`**: up to `0x03002168` entries of `0x10` bytes at
   `0x0300216C`; steps a frame index and counter, then re-uploads the tiles with
   `0x08007F20` (a copy/RLE/LZ77 VRAM loader chosen by header bits) to the VRAM
-  address in `0x030021AC[i]`.
+  address in `0x030021AC[i]`. Entry flag byte: bit 0 active, bit 1 running,
+  bit 2 tiles uploaded. `sub_0800A598` registers an entry (flags `|= 7`),
+  `StopAllBgTileAnimations` (`0x0800A83C`) clears bit 0 of every entry,
+  `sub_0800A8A8`/`sub_0800A8E0` clear/set bit 1 of every entry. A routine at
+  `0x0800A874` that sets bit 0 on every entry has no callers.
 - **`TickOverworldBeforeObjects_candidate`**: three calls. `TickCameraFocus_candidate`
   (`0x0800A03C`, JP `0x0800A03C`) runs slot 0's camera focus and any scripted camera
   effect. `UpdateOverworldCamera_candidate` (`0x0803DA4C`, JP `0x0803DAB4`) turns the

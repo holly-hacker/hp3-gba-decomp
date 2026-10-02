@@ -25,7 +25,7 @@ Room02Blob:
     Offsets Room02V0Chain0
     EndTable
 Room02V0Chain0:
-    SetDefeatWarpSelector 4
+    SetDefeatWarpSelector 4 @ Potions Classroom Maze
     End
     EndSubBlock Room02V0End
 

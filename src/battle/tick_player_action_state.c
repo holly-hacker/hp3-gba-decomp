@@ -537,7 +537,7 @@ void TickPlayerActionState(Object *obj)
             obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (ACTIVE_FIGHTER.bFighterType == Harry &&
                 g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                sub_080129F4();
+                StopBgTileAnimationsAfterCard_candidate();
             sub_08012B40();
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
@@ -549,7 +549,7 @@ void TickPlayerActionState(Object *obj)
             g_pFightState->bAttackAnimState_candidate = 0;
             obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                sub_080129F4();
+                StopBgTileAnimationsAfterCard_candidate();
             sub_08012B40();
             g_nLastDamage = 5;
             SetObjectActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
@@ -567,7 +567,7 @@ void TickPlayerActionState(Object *obj)
             g_pFightState->bAttackAnimState_candidate = 0;
             obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                sub_080129F4();
+                StopBgTileAnimationsAfterCard_candidate();
             sub_08012B40();
             g_nLastDamage = 0x14;
             SetObjectActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
@@ -585,7 +585,7 @@ void TickPlayerActionState(Object *obj)
             g_pFightState->bAttackAnimState_candidate = 0;
             obj->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                sub_080129F4();
+                StopBgTileAnimationsAfterCard_candidate();
             sub_08012B40();
             g_nLastDamage = 0x14;
             g_pFightState->bFaintMessageCount_candidate = 0;
@@ -613,7 +613,7 @@ void TickPlayerActionState(Object *obj)
         if (obj->scriptState.bytes.bAttackOutcomeState != 5)
             return;
         if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-            sub_080129F4();
+            StopBgTileAnimationsAfterCard_candidate();
         sub_08012B40();
         g_pFightState->bFaintMessageCount_candidate = 0;
         for (i = 0; i < g_pFightState->bFighterCount; i++) {

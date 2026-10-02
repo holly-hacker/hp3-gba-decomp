@@ -276,7 +276,7 @@ thumb-func 0x080101D0 TickBattleMenuInput
 thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x08010864 ShowBattleMessage
 thumb-func 0x08012998 InitCharacterSpells_candidate
-thumb-func 0x080129F8 sub_080129F4
+thumb-func 0x080129F8 StopBgTileAnimationsAfterCard_candidate
 thumb-func 0x08012A04 sub_08012A00
 thumb-func 0x08012A3C sub_08012A38
 thumb-func 0x08012A88 sub_08012A84
@@ -1119,10 +1119,8 @@ c-file 0x08051138 0x08051174 src/battle/scripted_encounters.c g_aScriptedEncount
 # Playtime counters, shared source with US. The main-loop function and
 # constants follow JP's save-state layout.
 c-file 0x08051174 0x080513F4 src/graphics/assets/fighter_anim_table.c g_aFighterAnimTable
-label 0x080513F4 g_abHarryCardEffectId
-label 0x0805140A g_aCardTargetingMeta
-label 0x08051436 g_abSpecialMoveEffectId
-label 0x08051439 g_abHermioneLectureEffectId
+c-file 0x080513F4 0x0805143C src/battle/battle_effect_id_tables.c g_abHarryCardEffectId
+c-file 0x0805143C 0x0805148C src/battle/defeat_warp_rooms.c g_aDefeatWarpRoomId
 label 0x0805148C g_aFighterAnimDataTable
 label 0x08051D9C g_pMonsterAnimFrameTable
 label 0x0805377C g_MonsterShadowAnimData

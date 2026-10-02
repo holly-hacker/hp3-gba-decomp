@@ -139,7 +139,7 @@ Room39V1Route4:
     EndTable
 Room39V1Chain0:
     DelayedRespawnRowAndRunChainFrames 1, 0, Room39V1Chain40_id
-    SetDefeatWarpSelector 15
+    SetDefeatWarpSelector 15 @ Leaky Cauldron - Cellar 2
     End
 Room39V1Chain1:
     SetTileObjectAnimState Room39V0Group0_id, 0

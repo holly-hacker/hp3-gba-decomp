@@ -232,7 +232,7 @@ script rows branch with `GotoIfStoryStageCompare` on the first two values.
 #### Defeat-warp table
 
 `CheckBattleDefeat` looks up `g_abQuestEventState[0x10]` in the 20-entry
-`u32` table at `0x08051510` and stores the result as
+`u32` table `g_aDefeatWarpRoomId` (`0x08051510`, JP `0x0805143C`) and stores the result as
 `FightState->bDefeatWarpTarget`, the room id the post-defeat
 `PushGameMode_2(Overworld, ...)` warps to. It also sets
 `g_abRoomScriptExitParams_candidate[0]` to `1` for selector `0x13` and

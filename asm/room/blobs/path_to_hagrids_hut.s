@@ -24,7 +24,7 @@ Room14Blob:
     EndTable
 Room14V0Chain0:
     ClearOverworldMonstersDisabled
-    SetDefeatWarpSelector 2
+    SetDefeatWarpSelector 2 @ Hospital Wing
     End
     EndSubBlock Room14V0End
 
@@ -65,7 +65,7 @@ Room14V0Chain0:
     EndTable
 Room14V1Chain0:
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetDefeatWarpSelector 17
+    SetDefeatWarpSelector 17 @ Path to Hagrid's Hut
     RespawnRowAndRunChain Room14V1Group1_id, 0
     End
 Room14V1Chain1:

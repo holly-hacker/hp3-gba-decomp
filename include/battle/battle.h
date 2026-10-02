@@ -299,10 +299,11 @@ extern void ClearParalyzedFighter_candidate(u8 fighterIndex);
 extern void PostActionBattleCheck(void);
 extern void PushBattleState(s32 state);
 extern void DecrementFolioUniversitasCard(s32 slot);
-extern u8 g_abHarryCardEffectId[16];            // 0x080514C8
-extern u8 g_aCardTargetingMeta[][2];            // 0x080514DE, stride 2
-extern u8 g_abHermioneLectureEffectId[3];       // 0x0805150D
-extern u8 g_abSpecialMoveEffectId[7];           // 0x0805150A
+extern const u8 g_abHarryCardEffectId[22];      // 0x080514C8
+extern const u8 g_aCardTargetingMeta[22][2];     // 0x080514DE
+extern const u8 g_abHermioneLectureEffectId[3];  // 0x0805150D
+extern const u32 g_aDefeatWarpRoomId[20];       // 0x08051510
+extern const u8 g_abSpecialMoveEffectId[3];      // 0x0805150A
 extern u16 g_nLastDamage;                       // 0x0300274A
 extern u8 g_bLastTargetIndex;                   // 0x0300274C
 // Battle-effect staging area at 0x03002750. TriggerBattleEffect fills the
@@ -326,7 +327,7 @@ typedef struct EffectStaging {
     u8 bIdStaged_candidate;
 } EffectStaging;
 extern EffectStaging g_effectStaging;                 // 0x03002750
-extern void sub_080129F4(void);
+extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
 extern void sub_08012B40(void);
 extern void sub_08003A30(void *obj, s32 a, s16 b, s16 c);  // a is shifted << 8 inside and stored to a 16-bit field
 extern void sub_0802D64C(s16 delta);
