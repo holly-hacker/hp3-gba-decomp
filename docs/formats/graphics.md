@@ -229,7 +229,7 @@ as `kramInstall`, see
 Dialog/UI text uses neither dispatcher; its Huffman scheme is in
 [`text.md`](text.md).
 
-`0x0806BE38` (`g_pTimeTurnerCutsceneRoomTable`) is a compact, purpose-
+`0x0806BE38` (`g_aTimeTurnerCutsceneRoomTable`) is a compact, purpose-
 built 2-entry table using this same `RoomTableEntry` layout, reached
 only from the Harry/Hermione Time-Turner cutscene
 (`InitTimeTurnerCutsceneRoom_candidate`, `0x08043114`) -- it is

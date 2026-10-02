@@ -82,4 +82,10 @@ One `room-graphics <start> <end> <dir> Room<NN>Graphics` row per room claims the
 whole range; `just pack-room-graphics` encodes it and labels each resource
 (`Room<NN>BgMap0`, `Room<NN>BgBlocks0`, `Room<NN>CollisionBehavior`,
 `Room<NN>CollisionMap`, `Room<NN>TilesetA`, `Room<NN>PaletteA`, ...), which
-the room table refers to. Code: `tools/room_graphics/`.
+`src/room/room_table.c` (`g_aRoomTable`) refers to, through `include/gen/RoomGraphics.h`. Code: `tools/room_graphics/`.
+
+The Time-Turner cutscene's two-entry table (`g_aTimeTurnerCutsceneRoomTable`,
+`src/room/time_turner_room_table.c`) uses the same entry layout and no data of
+its own: entry 0 refers to the resources of room 33 and entry 1 to those of room
+14, with its own music and encounter values. The small coordinate table that
+follows it is still raw.

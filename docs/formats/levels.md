@@ -55,7 +55,7 @@ immediately before *that* are four separate BGxCNT constants, `g_dwBg2Control`,
 
 `docs/formats/graphics.md`'s "Level-table entry layout" section
 documents a **separate** 124-byte-stride room table at `0x0806BE38`
-(`g_pTimeTurnerCutsceneRoomTable`), reached via a completely different
+(`g_aTimeTurnerCutsceneRoomTable`), reached via a completely different
 function, `InitTimeTurnerCutsceneRoom_candidate` (`0x08043114`, ground-
 truth-confirmed via its own distinct `=0x0806BE38` literal pool
 entries). The two tables are not the same data and not aliases of each
@@ -71,7 +71,7 @@ index*0x7C`, which is why both were independently described as "the
 (scene start) and 1 (the cutscene's mid-point transition) from
 `InitializeHarryHermionePortInTimeCutscene`/
 `UpdateHarryHermionePortInTimeCutscene` (`0x08042F08`/`0x08042FC0`) --
-the Harry/Hermione Time-Turner sequence. So `g_pTimeTurnerCutsceneRoomTable`
+the Harry/Hermione Time-Turner sequence. So `g_aTimeTurnerCutsceneRoomTable`
 is a compact, purpose-built **2-entry** instance of the same
 `RoomTableEntry` layout, holding just the two static background
 snapshots that cutscene needs, entirely independent of the 55-entry
@@ -188,9 +188,10 @@ about how room content is placed.
 
 ## Not yet located
 
-- Everything the table points at is build input: see
-  [`room_graphics.md`](room_graphics.md). Which of the `Unused` fields are
-  padding versus unread by the traced consumers is still unconfirmed.
+- The table and everything it points at are build input: see
+  [`room_graphics.md`](room_graphics.md) and `src/room/room_table.c`. Which of the
+  `Unused` fields are padding versus unread by the traced consumers is still
+  unconfirmed; the table writes them as zero, which the ROM matches.
 - The `(tag, value)` byte run immediately preceding `g_pRoomTable`
   (`~0x0806307C`-`0x08063C88`) has no identified consumer; worth a
   dynamic (mGBA watchpoint) pass rather than further static guessing.

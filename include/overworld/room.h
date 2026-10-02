@@ -63,6 +63,8 @@ typedef struct RoomTableEntry {
 } RoomTableEntry;
 
 extern const RoomTableEntry g_aRoomTable[55];  // ROM 0x08063C8C
+// Entries 0 and 1 of the Time-Turner cutscene's own table, ROM 0x0806BE38 (US).
+extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
 
 // Krawall module id per room, read as a byte at [room * 4]; used instead of
 // bDefaultMusicModule while quest event state 0x1A is set.

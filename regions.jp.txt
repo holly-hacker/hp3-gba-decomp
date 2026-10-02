@@ -1200,7 +1200,7 @@ label 0x08062FFC g_dwBg0Control
 label 0x08063000 g_aSpecialSceneBg2
 label 0x08063408 g_aSpecialSceneBg0
 label 0x08063810 g_aSpecialSceneBg1
-label 0x08063C18 g_aRoomTable
+c-file 0x08063C18 0x080656BC src/room/room_table.c g_aRoomTable
 label 0x080656BC g_adwRoomQuestMusicOverride
 label 0x08065798 g_ScanlineBandsDefault
 label 0x080657A0 g_ScanlineBandsRoom12
@@ -1256,6 +1256,7 @@ label 0x0806BD10 g_dwUpNightBg2Control
 label 0x0806BD14 g_ClockSkipObject1Asset
 label 0x0806BD24 g_ClockSkipObject2Asset
 label 0x0806BD34 g_ClockSkipAnimData
+c-file 0x0806BDA8 0x0806BEA0 src/room/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
 label 0x0806BEB0 g_aHarryHermionePortInTimeObjectPos
 label 0x0806BF40 g_dwMainMenuBg3Control
 label 0x0806BF44 g_dwMainMenuBg2Control
