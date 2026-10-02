@@ -1097,8 +1097,7 @@ label 0x0804D468 g_abRoomObjUnk9AnimData
 label 0x0804D6C4 g_abGammaNormalRemap
 label 0x0804D6E4 g_abGammaHighRemap
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
-label 0x0804E180 g_abBattleMusicByRoom
-label 0x0804E1B7 g_abBattleMusicByOverworldSlot
+c-file 0x0804E180 0x0804E1C8 src/battle/battle_music.c g_abBattleMusicByRoom
 c-file 0x0804E50C 0x0804E518 src/battle/spell_leveling.c g_abSpellMaxLevel
 label 0x0804E560 g_aPlayerGfxRows_candidate
 c-file 0x0804E5E0 0x0804F330 src/graphics/assets/monster_graphics_table.c g_pMonsterGraphicsTable

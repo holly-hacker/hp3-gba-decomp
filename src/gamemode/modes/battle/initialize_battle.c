@@ -81,7 +81,7 @@ void InitializeBattle(void)
     }
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF)
-        PlayMusicModule(g_abBattleMusicByOverworldSlot[g_GameModeStackContext.dwCurrentGameModeArg1]);
+        PlayMusicModule(g_abBattleMusicByScriptedEncounter[g_GameModeStackContext.dwCurrentGameModeArg1]);
     else
         PlayMusicModule(g_abBattleMusicByRoom[g_bCurrentRoomId]);
 
