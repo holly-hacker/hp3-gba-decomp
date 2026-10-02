@@ -1278,7 +1278,7 @@ label 0x0806BF40 g_aHarryHermionePortInTimeObjectPos
 label 0x0806BFD0 g_dwMainMenuBg3Control
 label 0x0806BFD4 g_dwMainMenuBg2Control
 label 0x0806BFD8 g_dwMainMenuBg1Control
-label 0x0806BFDC g_adwMainMenuStateTimeouts
+c-file 0x0806BFDC 0x0806BFF4 src/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 label 0x0806BFF4 g_apMainMenuTitleGraphic
 label 0x0806C048 g_aOptionsMenuItems
 label 0x0806C144 g_apRoomObjUnkBAnimFrames
