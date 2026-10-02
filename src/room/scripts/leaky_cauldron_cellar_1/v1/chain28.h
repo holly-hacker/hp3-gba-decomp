@@ -1,4 +1,0 @@
-const u8 g_abRoom38V1Chain28[] = {
-    RS_GotoIfQuestStateCompare(236, 0, 1, 22, 0, 0, 0),
-    RS_End(),
-};

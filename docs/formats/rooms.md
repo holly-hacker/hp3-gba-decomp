@@ -21,7 +21,7 @@ room load). Types: `include/overworld/room_blob.h`.
 ```
 blob      u16 wSize                 offset of the stage index (= 4 + 8 * wRecordCount, all rooms)
           u16 wRecordCount
-          {u32, u32} records[wRecordCount]
+          {s16 x, s16 y, u16 entryId, u8 facing, FF} playerEntryPoints[wRecordCount]
 pSub      = blob + wSize            stage index
   +0x00   u8  variantCount
   +0x01   u8  stageToVariant[33]    indexed by g_abQuestEventState[0]; every value < variantCount
@@ -31,9 +31,10 @@ sub-block
   +0x00   u16 warp table offset     from the sub-block
   +0x02   u16 switch table offset   from the sub-block
   +0x04   u16 flags                 bit 0 is stored to g_wRoomResourceFlags_candidate; set in all 127 sub-blocks
-  +0x06   u16 unknown               varies per sub-block, looks like an offset; no consumer found
+  +0x06   u16 size                  offset of the sub-block's 4-byte trailer (00 00 FF FF)
   +0x08   object table (inline)
-table     u8 count, u8 pad (0), u16 offsets[count]; offsets are from the table start
+table     u8 count, u8 pad (0), u16 offsets[count]; offsets are from the table start;
+          padded with FF to (count + 1) slots rounded up to even
 ```
 
 Entry 0 is the default sub-block; entry `stageToVariant[g_abQuestEventState[0]]`
@@ -48,9 +49,9 @@ table start.
 
   1. `CopyRoomBlobHeaderRecords_candidate` (`0x08005DD0`) copies the header
      (`wSize`, `wRecordCount`, the 8-byte records) to the buffer start and
-     returns the buffer plus `wSize`, the start of the object table. Purpose
-     of the records is **UNCONFIRMED**; no consumer is known. Its second
-     parameter is unused.
+     returns the buffer plus `wSize`, the start of the object table. The
+     records are the player entry points, see "Player entry points". Its
+     second parameter is unused.
   2. `BuildRoomObjectTable_candidate` (`0x0800572C`) builds
      `g_pRoomObjectTable` (`0x03001DF4`) from the sub-block's inline table,
      one column at a time through `BuildRoomObjectColumn_candidate`
@@ -73,14 +74,21 @@ runtime chain 0 is the default's chain 0). The warp table takes all of the
 default's columns first, then the variant's. Without the bit the runtime
 tables hold only the variant's entries.
 
-## Static per-tile object table
+## Object groups and records
 
 **STRUCTURAL MATCH**, confirmed field-by-field via `GetRoomObjectRecordPtr_candidate`'s
-consumers. `g_pRoomObjectTable` (RAM `0x03001DF4`) is a 2D
-column-then-row offset table: `table[2+x*2]` (`u16`) gives a column's
-row-table offset; that column's `[2+y*2]` gives the tile's record
-offset. `RespawnRoomObjectAtTile` (`0x08005B70`) and
-`GetRoomObjectRecordPtr_candidate` (`0x08005C38`) both do this lookup;
+consumers. `g_pRoomObjectTable` (RAM `0x03001DF4`) is a two-level offset
+table: `table[2+g*2]` (`u16`) gives group `g`'s member table; that table's
+`[2+m*2]` gives member `m`'s record offset. A group is a set of objects that
+is spawned together; scripts and objects address an object as
+`(group, member)`. The code's names for these indices are `(column, row)` and,
+in script opcodes, `(tileX, tileY)`; they are not positions.
+`RespawnRoomObjectsInRow_candidate(g)` spawns every member of group `g`, and
+`RespawnRowAndRunChain(group, chain)` spawns a group and then runs a chain.
+Room entry spawns group 0 and, with flags bit 0 set, group 1. Runtime group 0
+is the default sub-block's only group; variant group `i` is runtime group
+`i + 1`. Groups range from 0 to 47 members. `RespawnRoomObjectAtTile`
+(`0x08005B70`) and `GetRoomObjectRecordPtr_candidate` (`0x08005C38`) both do this lookup;
 the latter is called by every object-type constructor to fetch its own
 record.
 
@@ -101,45 +109,87 @@ same base pointer, so the record's on-disk length varies by which
 constructor consumes it (only the objType index at `+8` has a
 type-independent meaning).
 
-**Object type 9 = `SpawnScriptedOneTimeObject`** (`0x0800BC6C`). This is
-the chest/one-time-pickup pattern: it sets `Object.wScriptPC` from the
-record's static data and checks `g_abTriggeredScriptFlags` (a
-persistent bitmap) to detect whether this tile's object was already
-triggered/consumed, matching what "already opened" state should look
-like. Its tick handler is a distinct function at `0x0800BDCC`, function-
-boundaried but not yet cleanly decompilable -- needs a proper
-re-analysis pass. Types 2/4/7 (`0x0802BB00`/`0x08026414`/`0x08026348`)
-are structurally similar constructors (same `SnapObjectPosition`/
-`SetObjectActionState` shape) for other placed-sprite
-kinds, not differentiated by content. Type 0 is null; type 1 is
-`SpawnRoomTileAnimationObject_candidate`. Every constructor is decompiled
-under `src/room/objects/` (`sub_<US addr>` names, shared by
-both versions). Each allocates an object, positions
-it from the record's `(x, y)` and fills in `Object` state and callbacks from
-the remaining record bytes; the record layout after `(x, y)` is per type
-(`include/overworld/room_object.h`). What the objects are in game is not yet
-identified. Type 1 registers a room tile animation; type 5 is a scripted
-trigger whose `bKind` (0-82) selects sprite, draw flags and collision
-behavior; types 2, 4, 7 and 13 are collision-box objects; types 10 and 12 also
-zero the three words at `g_adwRoomObjUnkACState`.
+### Record layouts (blob side, from the record start)
 
-## Warp/trigger tiles
+Every record starts with a `u32` object type (1-13; indexes
+`g_apRoomObjectConstructors`), then `s16 x`, `s16 y` in pixels. Fields after
+that, with the constructors under `src/room/objects/` and the callbacks that
+read them. `(respawn_group, chain)` is the operand pair of
+`RespawnRowAndRunChain`; a pair of zeros runs nothing. Trailing bytes of `FF`
+are padding. Each type has an assembler macro in `asm/room_blob.inc` that takes
+these field names: `TileAnimation` (1), `Door` (2), `Switch` (3),
+`TriggerZone` (4), `Prop` (5), `Npc` (6), `TriggerRect` (7), `Breakable` (8),
+`Chest` (9), `MovePlayer` (10), `TimedHazard` (11), `ContactTrigger` (12) and
+`DoorAlt` (13). The names for types 10-13 and the field names written
+`arg_XX`/`unk_XX` are placeholders where the role is not established.
 
-**STRUCTURAL MATCH.** `g_pRoomWarpTriggerTable`, read by three small
-accessors:
+| Type | Size | Role | Fields (offset) |
+|---|---|---|---|
+| 1 | 12 | room tile animation | `anim_id` (8), `flag` (9) |
+| 2, 13 | 16 | door: moves the player to another room (13 goes through game mode 8) | `half_width` (8), `half_height` (9) collision box; `exit_param` (A) is the destination's entry id; `destination_room` (B); `chain` (C) runs instead of leaving when nonzero; `require_a_press` (D) |
+| 3 | 20 | two-state switch | `variant` (9) selects sprite and trigger kind; `rearm_delay` (A, u16, x30 ticks); `initial_frame` (C); pairs at E/F and 10/11 run on the first and second activation (`on_activate_*`, `on_deactivate_*`) |
+| 4 | 20 | trigger zone | `half_width`, `half_height` (8, 9); `rearm_delay` (A, u16, x30 ticks); `trigger_kind` (C): 0 fires once on touch, other values re-arm after `rearm_delay`, 3-5 fire when hit by overworld spell effect 2, 3 or 4 (object type `0xF`, spell index in `wCharacterId`), 2 reacts to type 5 objects; `require_a_press` (D); pair at F/10 |
+| 5 | 24 | scripted prop; `kind` (C, 0-82) selects sprite and behavior | `facing` (D); `chain` (14) runs when a spell hits it; others unresolved |
+| 6 | 16 | NPC | `sprite` (8, index into `g_aObjectTypeAssets`); `facing` (9, stored halved); `interact_cooldown` (A, u16, x30 ticks); `interact_mode` (C): 0 interactable once, 1 repeatable after the cooldown; pair at D/E runs on interaction (both zero: not interactable) |
+| 7 | 20 | trigger zone with explicit edges | `left`, `top`, `right`, `bottom` (8-B); `rearm_delay` (C, u16); `trigger_kind` (E); `require_a_press` (F); pair at 11/12 |
+| 8 | 28 | breakable that respawns other objects | `variant` (9); eight `(group, member)` targets (9..18) that are freed and respawned |
+| 9 | 16 | chest / one-time pickup | `flag_id` (8, u16: bit in `g_abTriggeredScriptFlags`); `kind` (A, 0-3); `reward_id` (B, below 0x84 grants a reward, otherwise runs the pair); `chain` (C), `respawn_group` (D) |
+| 10 | 16 | moves the player to a point | `target_x`, `target_y` (8, A, s16); `variant` (C) |
+| 11 | 16 | timed hazard; contact runs the pair | `variant` (C); pair at D/E; two periods at 8 and A |
+| 12 | 12 | contact moves the player, then runs the pair | pair at 8/9 |
 
-- `GetRoomWarpTriggerByte_candidate` (`0x08005CE8`): one byte per
-  column (no row index) -- purpose beyond "per-column byte" not
-  determined.
-- `GetRoomWarpTriggerOffset_candidate` (`0x08005D00`): per-tile `(dx,
-  dy)` as two `i16`s at record offset `+4`/`+6`.
-- `ApplyRoomWarpTrigger_candidate` (`0x08005D30`): reads a `u8` at
-  record offset `+8`, then calls `WalkRoomSwitchStateChain_candidate`
-  with it -- this byte is a **switch-state chain index**, tying a warp
-  tile to the room-switch-state system below.
+## Source files
 
-Row stride is at least 9 bytes (fields observed at `+4` through `+8`);
-exact stride and the meaning of offsets `+0`-`+3` are **UNCONFIRMED**.
+Each room's blob is one assembly source, `asm/room/blobs/<room_name>.s`
+(names are the room script directory names), built by one `asm-file` row
+(`Room<RR>Blob`) per version. The macros in `asm/room_blob.inc` write the header,
+stage index, offset tables and object records; the assembler computes every
+offset, count and padding byte, and the sub-block size word. Switch-state
+chains are labelled blocks of the `asm/room_script.inc` opcode macros. Every group, route and chain label defines a `<label>_id`
+symbol with its runtime number (position in its table, plus 1 for a variant's
+groups and chains because the default sub-block's entry 0 comes first), and
+operands that name a chain, group or route use it, for example
+`GotoIfStoryStageCompare 0, 20, Room10V1Chain3_id, 0, 0, 0`; the opcode macros
+call a tile object's operands `group` and `member`. Zero stays literal where it
+means "none". Where the US and JP blobs differ, the source uses
+`.ifdef VERSION_JP`. The opcode numbers are repeated in `asm/room_script.inc`
+from `enum RoomScriptOpcode`.
+
+The type 4 and 7 callbacks and the door callbacks were checked against all
+127 sub-blocks: all 117 door records name a valid room and an entry id that
+exists in it, and every `(respawn_group, chain)` pair and type 8 target
+refers to a group, member and chain that exist.
+
+## Player entry points
+
+**PROVEN** for the lookup. The blob header's records are the room's player
+spawn points. `SpawnPlayerObject_candidate` finds the record whose `entryId`
+equals `g_abRoomScriptExitParams_candidate[0]` (`sub_08005BE4`) and places the
+player at `(x, y)` facing `facing`; with no match it uses a default record
+table at US `0x0804C08C`. Doors set the exit parameter before the room
+change.
+
+## Waypoint routes
+
+**STRUCTURAL MATCH.** The "warp trigger" table (`g_pRoomWarpTriggerTable`) is a
+set of walking routes for NPC objects. A route is a list of
+`{s16 x, s16 y, u8 chain}` waypoints (8 bytes each: four padding bytes after
+the chain byte, which are `FF`). A route's group counts here are separate from
+object groups: the default sub-block has none, and variant route `i` is runtime
+route `i`.
+
+- `GetRoomWarpTriggerByte_candidate` (`0x08005CE8`): waypoint count.
+- `GetRoomWarpTriggerOffset_candidate` (`0x08005D00`): waypoint `(x, y)`.
+- `ApplyRoomWarpTrigger_candidate` (`0x08005D30`): runs the waypoint's chain.
+
+An NPC (type 6) follows a route when a script puts it into an animation
+sequence (`StartObjectAnimSequence`): its operands `bArg64` and `bArg65` are
+stored in Object `+0x64` (route) and `+0x65` (current waypoint). The sequence
+selector picks the walking mode: `sub_08004500` loops through the waypoints,
+`sub_08004688` ping-pongs, and `sub_0800483C` walks once and stops. Each runs
+the waypoint's chain on arrival and waits the script's delay between waypoints.
+All 694 `StartObjectAnimSequence` uses in the variant chains name a route and
+waypoint that exist. The ROOM_OBJECT records do not choose a route.
 
 ## Room switch-state chains
 
@@ -169,18 +219,12 @@ described by these two room-local systems than by the per-`Object` VM.
 
 ## Further work
 
-- Decode the `CopyRoomBlobHeaderRecords_candidate` records' purpose (no
-  consumer found).
-- Decode `g_apRoomObjectConstructors` the tick and collision callbacks of every type, and
-  differentiate types 2/4/7 by actual in-game content.
-- Decode `0x0800BDCC` (type-9 tick handler). See
-  [`room_scripts.md`](room_scripts.md)'s own "Further work" for the
-  room-script opcode table's open items.
-- Confirm `g_pRoomWarpTriggerTable`'s full row stride and offsets
-  `+0`-`+3`.
-- Cross-check against a live mGBA session for any of the above --
-  static tracing alone left several field boundaries inferred rather
-  than directly observed.
+- Type 5 fields other than `kind`, `facing` and `chain`, and the meaning of
+  each `kind`; type 3's remaining variants; type 10 and 11 fields marked
+  without a role above.
+- `StartObjectAnimSequence` selectors that share a walking mode (7/10, 8/11,
+  9/12, 13) differ in `sub_08003A80` pre-checks that are not documented.
+- Cross-check against a live mGBA session for any of the above.
 
 ## Bounding boxes / walkable-area limits
 

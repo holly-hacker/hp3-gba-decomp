@@ -99,7 +99,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 - [`formats/room_scripts.md`](formats/room_scripts.md) — the room-script
   bytecode VM (a second, unrelated interpreter): its byte format,
   pause/resume/nested-call state machine, and known opcodes. Scripts are
-  C: `src/room/scripts/`, `include/overworld/room_script_bytecode.h`.
+  Assembly: `asm/room/blobs/`, `asm/room_script.inc`; opcode numbers in
+  `include/overworld/room_script_bytecode.h`.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

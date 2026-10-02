@@ -152,15 +152,15 @@ quickly?" / "Umm... like I said, I'd read the book before." --
 Potions-classroom-appropriate content, unlike what decoding `426`
 *directly* as a string id gives (a real but unrelated line from
 elsewhere in the string table -- the bug this section exists to head
-off; the decoded `// "..."` comments above `RS_ShowRoomDialog` records in
-`src/room/scripts/` come from the two-level lookup above, not a direct
+off; the decoded `@ "..."` comments above `ShowRoomDialog` records in
+`asm/room/blobs/` come from the two-level lookup above, not a direct
 `decode_dialog_text(426)` call).
 
 A second table at `0x08FAAF10` (same 8-byte stride, but indexed by the
 resolved per-line string id -- `DAT_03002ED8` above -- not the block
 id) is read by `FUN_0801F96C` into `DAT_03002EDC` on every line;
 candidate: a per-message portrait pointer list, since `ShowRoomDialog`'s
-own trailing operand bytes are unused padding (see the `RS_ShowRoomDialog` macro), leaving this as the only other portrait-shaped candidate found
+own trailing operand bytes are unused padding (see the `ShowRoomDialog` macro in `asm/room_script.inc`), leaving this as the only other portrait-shaped candidate found
 so far. Not decoded or extracted -- worth a pass once more of the VM is
 identified.
 
@@ -267,24 +267,22 @@ variant's own index `N`, one lower than the runtime index. Blob layout and exten
 [`rooms.md`](rooms.md).
 
 **PROVEN** (`just compare us`/`jp` pass). Every chain of every variant of all
-55 rooms (127 switch tables, 1685 unique chains) is C under
-`src/room/scripts/<room_name>/`, with room names from the string table:
+55 rooms (127 switch tables, 1685 unique chains) is assembly in the room's blob
+source, `asm/room/blobs/<room_name>.s`, with room names from the string table:
 
-- `v<V>.c` is one region per switch table (`Room<RR>V<V>Chains`, a
-  `c-file` row in both manifests). A table's chains are contiguous, with the
-  offset table and the rest of the blob left as raw ROM in the gaps.
-- `v<V>/chain<N>.h` (or the curated name, e.g. `v1/talk_tom.h`) is one chain,
-  `const u8 g_abRoom<RR>V<V>Chain<N>[]` (`g_abRoom<RR><Name>` when named),
-  built from `RS_*` macros in `include/overworld/room_script_bytecode.h`
-  (`enum RoomScriptOpcode`, one macro per opcode taking named operands).
-  `V` is the variant entry (0 = default) and `N` the chain's index in that
-  table. Decoded dialog lines are `//` comments above `RS_ShowRoomDialog`.
+- One `asm-file` row per room (`Room<RR>Blob`) covers the whole blob, see
+  [`rooms.md`](rooms.md). A chain is a label (`Room<RR>V<V>Chain<N>`, or
+  `Room<RR><Name>` for the curated names such as `Room25TalkMalfoy`) followed by
+  one macro line per record, in the macros of `asm/room_script.inc` (one per
+  opcode, taking named operands). `V` is the variant entry (0 = default) and
+  `N` the chain's index in that table. Decoded dialog lines are `@` comments
+  above `ShowRoomDialog`.
 - `g_abRoomScriptOpcodeLengths` is in `src/room/room_script_opcode_lengths.c`.
 
 Scripts are byte-identical between US and JP except five chains: room 7
 variant 2, room 15 variant 1, room 22 variant 1, room 23 variant 1 and room 47
 variant 1 (one chain each), which differ by a few records and use
-`#ifdef VERSION_JP`. JP's room table is `0x08063C18`, with the same blob
+`.ifdef VERSION_JP`. JP's room table is `0x08063C18`, with the same blob
 layout as US.
 
 ## Further work

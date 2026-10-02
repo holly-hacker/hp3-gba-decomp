@@ -27,8 +27,10 @@ BASE_ADDR = 0x08000000
 
 
 def prelude(ver: str) -> list[str]:
+    version = [".set VERSION_JP, 1"] if ver == "jp" else []
     return [
         ".syntax unified",
+        *version,
         '.include "macros.inc"',
         f'.include "ram_symbols.{ver}.inc"',
         ".text",
