@@ -40,9 +40,9 @@ merge stacking order is level-table layer `0,2,1,3` bottom-to-top, not
 literal index order (see "On-demand per-tile BG streaming" for why).
 User-confirmed against actual gameplay for 4 rooms (`0x28`, `0x26`,
 `0x27`, `0x24`) and structurally checked for the rest, including which
-level-table layer maps to which hardware BG register. Not yet wired into
-`just`/`regions.us.txt` (currently a research tool like
-`dump_collision.py`, not build input). **PROVEN and extracted for a third resource class**: the game's dialog
+level-table layer maps to which hardware BG register. Build input through
+[`room_graphics.md`](room_graphics.md), which extracts and packs these
+resources. **PROVEN and extracted for a third resource class**: the game's dialog
 portraits (`g_apPortraitTable`, `0x0804C61C`, 72 records -- see
 "Character portraits" below), whose 54 unique images are extracted to
 editable PNGs and rebuilt from them through an `image-bank` region.
@@ -58,8 +58,9 @@ sufficient evidence on its own. Standing caveat throughout this doc:
 rendered content using a fake grayscale ramp palette must only be
 described structurally, never as depicting specific real-world content
 (item icons and portraits are the exceptions -- their real, decoded
-palettes make identifying content legitimate). No build-integrated
-extractor exists yet for graphics data outside item icons and portraits.
+palettes make identifying content legitimate). Room graphics (see
+[`room_graphics.md`](room_graphics.md)) and the image banks are build
+input; other graphics data has no build-integrated extractor yet.
 
 ## What we know
 
@@ -964,8 +965,9 @@ codec, straight `CPUSet` copy via `SetupRoomBgControlAndWindows_candidate`
 one. Confirmed byte-exact against a live mGBA memory dump for room
 `0x28`. `tools/graphics/dump_bg_tiles.py` reads it straight from ROM.
 
-**Not yet done**: the very last tile's true compressed length (offset
-table gives each tile's start, not the last one's end).
+The offset table's per-tile entries are bit lengths, including the last
+tile's, so every tile's extent is known (see
+[`room_graphics.md`](room_graphics.md)).
 
 ### Image-bank build format
 

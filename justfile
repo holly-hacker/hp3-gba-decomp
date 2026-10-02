@@ -36,7 +36,7 @@ disasm-compare ver="us": (disasm ver)
 # One object per region, gaps .incbin'd from the baserom, and a linker
 # script placing each at its manifest address.
 # Generate the build inputs from regions.<ver>.txt.
-gen-link ver="us": (pack-images ver)
+gen-link ver="us": (pack-images ver) (pack-room-graphics ver)
     mkdir -p build/{{ver}}
     python3 tools/gen_link.py {{ver}}
 
@@ -49,9 +49,8 @@ gen-link ver="us": (pack-images ver)
 dump-krawall ver="us":
     python3 tools/krawall/dump_krawall.py {{ver}} > /dev/null
 
-# Research/debugging aid only -- NOT build input (no pack-collision
-# exists; the room-table collision fields aren't proven complete enough
-# for a regions.<ver>.txt row yet, see docs/formats/collision.md).
+# Research/debugging aid only -- NOT build input (the collision data is
+# built from data/room_graphics/, see docs/formats/room_graphics.md).
 # Renders each room's collision map as walkability + tile-type PNGs
 # straight from the baserom, for checking against real gameplay. US only
 # (JP room-table address not yet located).
@@ -108,6 +107,18 @@ extract-images ver="us":
 pack-images ver="us":
     python3 tools/images/pack_images.py {{ver}}
 
+# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every room
+# from its files to check it matches both ROMs. Re-running overwrites local edits.
+# Bootstrap data/room_graphics/ (palettes, tile sheets, maps) from the baserom.
+extract-room-graphics:
+    python3 tools/room_graphics/extract_room_graphics.py
+
+# Each room-graphics row names a room's directory under data/room_graphics/.
+# Encodes its 14 resources and emits assembly under build/<ver>/room_graphics/.
+# Pack all room graphics for this version.
+pack-room-graphics ver="us":
+    python3 tools/room_graphics/pack_room_graphics.py {{ver}}
+
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
 # AGENTS.md hard rule 2), so a fresh clone has none of it and the pack-*
@@ -115,12 +126,12 @@ pack-images ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-images
+extract-all: extract-krawall extract-text extract-images extract-room-graphics
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
 # Compile the c-file rows of regions.<ver>.txt to assembly.
-compile-c ver="us": (pack-images ver)
+compile-c ver="us": (pack-images ver) (pack-room-graphics ver)
     python3 tools/c/compile_c.py {{ver}}
 
 # Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def

@@ -188,13 +188,9 @@ about how room content is placed.
 
 ## Not yet located
 
-- No `regions.us.txt` rows are ready for this table yet: several field
-  offsets (BG tileset pointers, BG-control-override targets) aren't
-  fully walked to genuine termination -- the BG tileset codec
-  (`DecompressBgTile`, `0x08006300`) and its per-tile offset-table
-  packing aren't decoded yet, see graphics.md -- and multiple `Unused`
-  byte ranges aren't confirmed padding vs. simply unread by the traced
-  call sites (AGENTS.md hard rule on region-extent confirmation).
+- Everything the table points at is build input: see
+  [`room_graphics.md`](room_graphics.md). Which of the `Unused` fields are
+  padding versus unread by the traced consumers is still unconfirmed.
 - The `(tag, value)` byte run immediately preceding `g_pRoomTable`
   (`~0x0806307C`-`0x08063C88`) has no identified consumer; worth a
   dynamic (mGBA watchpoint) pass rather than further static guessing.

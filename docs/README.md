@@ -101,6 +101,9 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   pause/resume/nested-call state machine, and known opcodes. Scripts are
   Assembly: `asm/room/blobs/`, `asm/room_script.inc`; opcode numbers in
   `include/overworld/room_script_bytecode.h`.
+- [`formats/room_graphics.md`](formats/room_graphics.md) — the 14 resources per
+  room (maps, blocks, collision, tilesets, palettes): ROM layout, tileset codec,
+  and how they are extracted and built. Tools: `tools/room_graphics/`.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

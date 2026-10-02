@@ -12,6 +12,7 @@ build/
 data/audio/modules/*
 data/audio/samples/*
 data/images/
+data/room_graphics/
 data/items/*
 data/text/*
 extracted/

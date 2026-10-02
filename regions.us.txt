@@ -1390,6 +1390,61 @@ asm-file 0x081B2DC4 0x081B2E98 asm/room/blobs/diagon_alley_test_map_5.s Room54Bl
 label 0x081B2E98 g_aSpecialScenePalette
 
 # Monster battle sprites, g_pMonsterGraphicsTable battle records
+room-graphics 0x081DB29C 0x081E9248 data/room_graphics/defense_against_the_dark_arts_classroom Room00Graphics
+room-graphics 0x081E9248 0x081FC57C data/room_graphics/potions_classroom Room01Graphics
+room-graphics 0x081FC57C 0x0822C920 data/room_graphics/potions_classroom_maze Room02Graphics
+room-graphics 0x0822C920 0x08253450 data/room_graphics/transfiguration_classroom Room03Graphics
+room-graphics 0x08253450 0x082777FC data/room_graphics/transfiguration_classroom_maze Room04Graphics
+room-graphics 0x082777FC 0x0828522C data/room_graphics/hogwarts_express_baggage_car Room05Graphics
+room-graphics 0x0828522C 0x08291B64 data/room_graphics/hogwarts_express_passenger_car Room06Graphics
+room-graphics 0x08291B64 0x0829D884 data/room_graphics/hogwarts_express_buffet_car Room07Graphics
+room-graphics 0x0829D884 0x082B11B8 data/room_graphics/hogwarts_grounds_castle_doors Room08Graphics
+room-graphics 0x082B11B8 0x082C5C9C data/room_graphics/hogwarts_grounds_boathouse Room09Graphics
+room-graphics 0x082C5C9C 0x0831B938 data/room_graphics/hogwarts_grounds_greenhouses Room10Graphics
+room-graphics 0x0831B938 0x0832A678 data/room_graphics/hagrids_hut Room11Graphics
+room-graphics 0x0832A678 0x0837989C data/room_graphics/hagrids_garden_maze Room12Graphics
+room-graphics 0x0837989C 0x083A6754 data/room_graphics/hogwarts_grounds_lake Room13Graphics
+room-graphics 0x083A6754 0x083ED93C data/room_graphics/path_to_hagrids_hut Room14Graphics
+room-graphics 0x083ED93C 0x0844B618 data/room_graphics/hogwarts_grounds_whomping_willow Room15Graphics
+room-graphics 0x0844B618 0x08478DE8 data/room_graphics/entrance_hall Room16Graphics
+room-graphics 0x08478DE8 0x084A24E8 data/room_graphics/great_hall Room17Graphics
+room-graphics 0x084A24E8 0x084B868C data/room_graphics/hogwarts_dungeons Room18Graphics
+room-graphics 0x084B868C 0x084DE950 data/room_graphics/second_floor Room19Graphics
+room-graphics 0x084DE950 0x0850AB80 data/room_graphics/third_floor Room20Graphics
+room-graphics 0x0850AB80 0x085360C0 data/room_graphics/fourth_floor Room21Graphics
+room-graphics 0x085360C0 0x0854BF84 data/room_graphics/fifth_floor Room22Graphics
+room-graphics 0x0854BF84 0x08566390 data/room_graphics/sixth_floor Room23Graphics
+room-graphics 0x08566390 0x0858FBC0 data/room_graphics/seventh_floor Room24Graphics
+room-graphics 0x0858FBC0 0x085D1054 data/room_graphics/rooftop Room25Graphics
+room-graphics 0x085D1054 0x085DFC2C data/room_graphics/lupins_office Room26Graphics
+room-graphics 0x085DFC2C 0x085F420C data/room_graphics/staff_room Room27Graphics
+room-graphics 0x085F420C 0x08604800 data/room_graphics/gryffindor_boys_dormitory Room28Graphics
+room-graphics 0x08604800 0x0861330C data/room_graphics/gryffindor_common_room Room29Graphics
+room-graphics 0x0861330C 0x0863A8FC data/room_graphics/grand_staircase Room30Graphics
+room-graphics 0x0863A8FC 0x08655500 data/room_graphics/portrait_room Room31Graphics
+room-graphics 0x08655500 0x08658A6C data/room_graphics/portrait_room_passage Room32Graphics
+room-graphics 0x08658A6C 0x08673ABC data/room_graphics/hospital_wing Room33Graphics
+room-graphics 0x08673ABC 0x086A285C data/room_graphics/library Room34Graphics
+room-graphics 0x086A285C 0x086CD7F0 data/room_graphics/library_2 Room35Graphics
+room-graphics 0x086CD7F0 0x086D4198 data/room_graphics/fred_and_georges_shop Room36Graphics
+room-graphics 0x086D4198 0x086E8F28 data/room_graphics/wizard_card_collectors_club Room37Graphics
+room-graphics 0x086E8F28 0x0871D4CC data/room_graphics/leaky_cauldron_cellar_1 Room38Graphics
+room-graphics 0x0871D4CC 0x08752590 data/room_graphics/leaky_cauldron_cellar_2 Room39Graphics
+room-graphics 0x08752590 0x0875CF18 data/room_graphics/leaky_cauldron_hallway Room40Graphics
+room-graphics 0x0875CF18 0x0876399C data/room_graphics/leaky_cauldron_harrys_room Room41Graphics
+room-graphics 0x0876399C 0x0877E2D4 data/room_graphics/leaky_cauldron_main Room42Graphics
+room-graphics 0x0877E2D4 0x08796454 data/room_graphics/shrieking_shack_interior Room43Graphics
+room-graphics 0x08796454 0x087AE4F0 data/room_graphics/shrieking_shack_path Room44Graphics
+room-graphics 0x087AE4F0 0x088001A0 data/room_graphics/shrieking_shack_path_2 Room45Graphics
+room-graphics 0x088001A0 0x0880DDB4 data/room_graphics/shrieking_shack_path_3 Room46Graphics
+room-graphics 0x0880DDB4 0x0883E580 data/room_graphics/shrieking_shack_path_4 Room47Graphics
+room-graphics 0x0883E580 0x08846D44 data/room_graphics/shrieking_shack_path_5 Room48Graphics
+room-graphics 0x08846D44 0x08852198 data/room_graphics/shrieking_shack_path_6 Room49Graphics
+room-graphics 0x08852198 0x08852AA0 data/room_graphics/diagon_alley_test_map1 Room50Graphics
+room-graphics 0x08852AA0 0x088533A8 data/room_graphics/diagon_alley_test_map_2 Room51Graphics
+room-graphics 0x088533A8 0x08853CB0 data/room_graphics/diagon_alley_test_map_3 Room52Graphics
+room-graphics 0x08853CB0 0x088545CC data/room_graphics/diagon_alley_test_map_4 Room53Graphics
+room-graphics 0x088545CC 0x08854EE0 data/room_graphics/diagon_alley_test_map_5 Room54Graphics
 image-bank 0x089AE030 0x089F1DD4 data/images/monster_battle MonsterBattleSprites
 
 # Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
