@@ -25,6 +25,7 @@ typedef struct {
 ```
 
 This struct lives at 3 positions (US/JP):
+
 - `0x03003EF4`/`0x03003F54`: Current game mode
 - `0x03003F18`/`0x03003F78`: Next/pending game mode
 - `0x03003F3C`/`0x03003F9C`: Previous game mode
@@ -56,7 +57,15 @@ not get used in-game.
 
 ### `Overworld` (0x08)
 
+Arguments: `(?, roomId, ?)`
+
 ### `Battle` (0x09)
+
+Arguments:
+
+- `(roomId, variantId, kindId)`: Standard/random encounter, indexes into random encounter table as
+  `table[room][kind][variant]`
+- `(encounterId, unused, 0xFF)`: Scripted encounter
 
 ### `InGameMenu` (0x0A)
 
