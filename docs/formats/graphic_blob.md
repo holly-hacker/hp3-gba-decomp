@@ -92,17 +92,30 @@ and a `bank.json` with each stream's width, height and tile count.
 
 ## Other blob runs
 
-19 more runs of contiguous blobs (US `0x080BCEA0`, `0x08A30814`-`0x08E65D6C`;
-JP the same bytes, 0xC4 to 0x201C lower) are separate banks (`MenuCursor`,
-`OwlCare`, `CoolTrain`, ...), one `data/graphic_blobs/<bank>/` directory each. A run is the longest chain
-of blobs whose parsed ends meet (**PROVEN**: every blob's GammaLz stream length
-matches its length field, and all rebuild byte for byte). Runs are separated by
-unrelated data, so each is its own row. They add flags `0x19 0x00` (raw 4 bpp tiles), `0x99 0x01` and
-`0xF9 0x00`/`0x01` (8 bpp) to the battle set, and one 128x132-tile map. A blob with a
-`label` row at its address in the manifest takes that symbol (`g_Foo`
-becomes PNG `Foo`, with `symbol` in `bank.json`); the other blobs are numbered
-`<Bank>001`... by position in the run. Blobs with flags `0x78`/`0x7A` (no embedded palette) and the
-`0xFF` palette-data labels are not supported by the codec and stay raw.
+The rest of the blobs outside `BgGraphics` (US `0x080BCEA0`, `0x08A30814`-`0x08E65D6C`;
+JP the same bytes, 0xC4 to 0x201C lower) form 17 runs, each a bank
+(`MenuCursor`, `OwlCare`, `CoolTrain`, ...) with its own
+`data/graphic_blobs/<bank>/` directory. A run is a chain of blobs whose parsed
+ends meet (**PROVEN**: every GammaLz stream's length matches its length field,
+and all rebuild byte for byte); unrelated data separates the runs. They add
+flags `0x19 0x00` (raw 4 bpp tiles), `0x99 0x01` and `0xF9 0x00`/`0x01` (8 bpp)
+to the battle set, and one 128x132-tile map.
+
+A blob with a `label` row at its address in the manifest takes that symbol
+(`g_Foo` becomes PNG `Foo`, with `symbol` in `bank.json`); the others are
+numbered `<Bank>001`... by position in the run.
+
+Blobs without a palette (flags0 bit 0 clear: `0x78`, `0xF8`) draw with a palette
+that is already loaded. Their PNGs show the colors of a blob or label that
+`bank.json` records as `palette` (gray when none), and the packer ignores it.
+The sources are set in `PALETTE_SOURCES` in `extract_graphic_blobs.py`; see
+[`../memory-map/menu_screen.md`](../memory-map/menu_screen.md) for which are
+established. Four blobs have more tiles than their images' distinct tiles: the tile
+numbering is not the standard rebuild's. They list their tilemap cells'
+tiles and flips as `layout` in `bank.json`, and every cell of a tile must keep
+the same pixels. Blobs with flags `0x7A` (32-byte palette) and the `0xFF`
+palette-data labels are not supported and stay raw. The US main menu's
+`g_MainMenuBg2Graphic` differs from JP's, so it is not in a bank.
 
 ## Extraction
 

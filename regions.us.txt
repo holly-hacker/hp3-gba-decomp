@@ -1524,7 +1524,7 @@ krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 
-graphic-blobs 0x08D3F2B4 0x08D41DD4 data/graphic_blobs/patronus_cutscene PatronusCutscene
+graphic-blobs 0x08D3F2B4 0x08D48D74 data/graphic_blobs/patronus_cutscene PatronusCutscene
 # Battle effect sprite, the record at 0x08054144
 # Owl care sprites
 image-bank 0x08D56A68 0x08D71B5C data/images/owl_care OwlCareSprites
@@ -1549,19 +1549,17 @@ graphic-blobs 0x08D9A360 0x08DA04DC data/graphic_blobs/debug_menu DebugMenu
 label 0x08D9A360 g_DebugMenuGraphic
 label 0x08D9AAD0 g_DebugCollectorCardsBg0Graphic
 label 0x08DA08BE g_ServePumpkinJuicePanelData
-graphic-blobs 0x08DA1574 0x08DC1EFC data/graphic_blobs/cutscene_drawings CutsceneDrawings
+graphic-blobs 0x08DA0AC0 0x08DC7A90 data/graphic_blobs/cutscene_drawings_startup CutsceneDrawingsStartup
 label 0x08DBF920 g_MenuBg3Graphic
-graphic-blobs 0x08DC456C 0x08DC7A90 data/graphic_blobs/startup Startup
 label 0x08DC456C g_StartupBg3Graphic
 label 0x08DC5AD8 g_StartupBg2Graphic
 label 0x08DC6B7C g_StartupNoticeGraphic
 label 0x08DC7A90 g_LupinPotionEmbeddedPalette
-graphic-blobs 0x08DC8084 0x08DE5214 data/graphic_blobs/hippogriff_language_bgs HippogriffLanguageBgs
+graphic-blobs 0x08DC8084 0x08DF3918 data/graphic_blobs/hippogriff_language_minigame_bgs HippogriffLanguageMinigameBgs
 label 0x08DC8084 g_HippogriffFliesIntoAirGraphic
 label 0x08DDB23C g_LanguageSelectBg2Graphic
 label 0x08DDCE1C g_LanguageSelectBg1Graphic
 label 0x08DE5214 g_MenuScreenGraphic
-graphic-blobs 0x08DE7B34 0x08DF3918 data/graphic_blobs/minigame_and_folio_bgs MinigameAndFolioBgs
 label 0x08DF2664 g_SaveMenuBg1Graphic
 
 # Status/equip screen character rotations, 8bpp; records at 0x0806B250 (sub_0803A030)

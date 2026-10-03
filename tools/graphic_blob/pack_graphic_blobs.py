@@ -7,6 +7,11 @@ with its flags and the images it is built from. The packed blobs, and the
 assembly that labels each as g<BlobName> (or its `symbol`), go under build/<ver>/graphic_blobs/;
 the C declarations go to include/gen/<name>.h.
 
+A blob without a palette may name `palette`, the blob or label whose colors its
+PNG shows; the packer does not use it.
+A blob whose tiles and tilemap the standard rebuild (see blobs.py) does not
+reproduce lists its tilemap cells' tiles and flips as `layout`.
+
 Usage: pack_graphic_blobs.py <ver>
 """
 import json
@@ -23,7 +28,7 @@ import stamp
 ROOT = Path(__file__).resolve().parents[2]
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 ENTRY_KEYS = {"name", "flags"}
-OPTIONAL_ENTRY_KEYS = {"highBits", "unused", "symbol"}
+OPTIONAL_ENTRY_KEYS = {"highBits", "unused", "symbol", "palette", "layout"}
 
 
 def graphic_blob_rows(ver: str):
@@ -69,8 +74,10 @@ def load_index(source: Path) -> list[dict]:
         blobs.check_flags(*flags)
         for key in OPTIONAL_ENTRY_KEYS & set(entry):
             value = entry[key]
-            if key == "symbol":
+            if key in ("symbol", "palette"):
                 ok = isinstance(value, str) and SYMBOL.fullmatch(value)
+            elif key == "layout":
+                ok = isinstance(value, list) and all(isinstance(i, int) and 0 <= i < 0x1000 for i in value)
             elif key == "unused":
                 ok = isinstance(value, int) and value > 0
             else:
@@ -93,8 +100,10 @@ def blob_from_files(source: Path, entry: dict) -> blobs.Blob:
     if entry.get("unused"):
         _, sheet, _ = blobs.read_png(source / f"{entry['name']}.unused.png")
         unused = blobs.unused_from_sheet(sheet, entry["unused"])
-    palette = blobs.encode_palette(colors, entry.get("highBits", []))
-    return blobs.blob_from_image(*entry["flags"], palette, size[0] // 8, size[1] // 8, pixels, unused)
+    flags0 = entry["flags"][0]
+    palette = blobs.encode_palette(colors, entry.get("highBits", [])) if flags0 & 1 else None
+    return blobs.blob_from_image(*entry["flags"], palette, size[0] // 8, size[1] // 8, pixels, unused,
+                                   entry.get("layout"))
 
 
 def _build(args) -> bytes:

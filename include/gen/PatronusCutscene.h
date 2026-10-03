@@ -4,3 +4,8 @@
 #include "types.h"
 
 extern const u8 gPatronusCutscene001[];
+extern const u8 gPatronusCutscene002[];
+extern const u8 gPatronusCutscene003[];
+extern const u8 gPatronusCutscene004[];
+extern const u8 gPatronusCutscene005[];
+extern const u8 gPatronusCutscene006[];

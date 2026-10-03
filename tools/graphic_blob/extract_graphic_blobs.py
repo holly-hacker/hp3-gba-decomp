@@ -28,6 +28,18 @@ ROM_BASE = blobs.ROM_BASE
 EFFECT_STARTS = (8, 22, 58, 104, 156)
 
 
+# Blobs without a palette draw with one that is already loaded. Their PNGs show
+# the colors of the blob or label named here (recorded as `palette`). Whether
+# each source is the palette the game actually uses is only established for
+# the menu screen frame (see docs/memory-map/menu_screen.md).
+PALETTE_SOURCES = {
+    "PatronusCutscene": {f"PatronusCutscene{n:03d}": "PatronusCutscene001" for n in range(2, 7)},
+    "CutsceneDrawingsStartup": {"CutsceneDrawingsStartup001": "g_MenuBg3Graphic",
+                                "CutsceneDrawingsStartup013": "g_MenuBg3Graphic"},
+    "HippogriffLanguageMinigameBgs": {"MenuScreenGraphic": "g_MenuBg3Graphic"},
+}
+
+
 def names(bank: str, labels: dict[int, str]):
     """Blob names by position. The first 28 blobs of BgGraphics are the 14
     floor and wall pairs of the battle background table, the next two its
@@ -52,6 +64,10 @@ def names(bank: str, labels: dict[int, str]):
     return name
 
 
+def gray_palette(bpp8: bool):
+    return [((i if bpp8 else (i % 16) * 17),) * 3 for i in range(256)]
+
+
 def walk(rom: bytes, start: int, end: int):
     addr, found = start, []
     while addr < end:
@@ -64,14 +80,18 @@ def walk(rom: bytes, start: int, end: int):
 
 
 def write_blob(args):
-    source, name, symbol, blob, raw = args
-    colors, high = blobs.decode_palette(blob.palette)
+    source, name, symbol, palette_from, colors, blob, raw = args
+    high = []
+    if blob.palette is not None:
+        colors, high = blobs.decode_palette(blob.palette)
     size = (blob.width * 8, blob.height * 8)
     transparent = blobs.transparent_indices(blob.bpp8)
     blobs.write_png(source / f"{name}.png", size, blobs.image_pixels(blob), colors, transparent)
     entry = {"name": name, "flags": [blob.flags0, blob.flags1]}
     if symbol:
         entry["symbol"] = symbol
+    if palette_from:
+        entry["palette"] = palette_from
     if high:
         entry["highBits"] = high
     unused = blob.tiles[blobs.used_tiles(blob):]
@@ -80,6 +100,9 @@ def write_blob(args):
         size, pixels = blobs.unused_sheet(unused)
         blobs.write_png(source / f"{name}.unused.png", size, pixels, colors, transparent)
     rebuilt = blobs.build(blob_from_files(source, entry))
+    if rebuilt != raw:
+        entry["layout"] = blobs.layout_of(blob)
+        rebuilt = blobs.build(blob_from_files(source, entry))
     if rebuilt != raw:
         raise ValueError(f"{name}: rebuilding from the PNGs gives different bytes")
     return entry
@@ -100,8 +123,26 @@ def main() -> None:
                 old.unlink()
             labels = manifest_labels(ver)
             namer = names(name, labels)
-            jobs = [(source, namer(i, addr), labels.get(addr) if labels.get(addr, "").startswith("g_") else None, blob, raw)
-                    for i, (addr, blob, raw) in enumerate(found)]
+            jobs = []
+            by_name = {}
+            for i, (addr, blob, raw) in enumerate(found):
+                label = labels.get(addr, "")
+                by_name[namer(i, addr)] = (addr, blob)
+                if label.startswith("g_"):
+                    by_name[label] = (addr, blob)
+            for i, (addr, blob, raw) in enumerate(found):
+                blob_name = namer(i, addr)
+                wanted = PALETTE_SOURCES.get(name, {}).get(blob_name)
+                colors = gray_palette(blob.bpp8)
+                if wanted:
+                    if wanted in by_name:
+                        palette = by_name[wanted][1].palette
+                    else:
+                        addr_of = {v: k for k, v in labels.items()}[wanted]
+                        palette = blobs.parse(rom, addr_of)[0].palette
+                    colors, _ = blobs.decode_palette(palette)
+                symbol = labels[addr] if labels.get(addr, "").startswith("g_") else None
+                jobs.append((source, blob_name, symbol, wanted, colors, blob, raw))
             with ProcessPoolExecutor() as pool:
                 entries = list(pool.map(write_blob, jobs))
             (source / "bank.json").write_text(

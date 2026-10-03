@@ -10,7 +10,11 @@ the way the original tool made them: tiles in order of first use, a tile is
 reused when a cell matches it or its flipped copy (tried unflipped,
 horizontal, vertical, both), and a tile's palette bank is part of its identity.
 
-Supported flags: palette (flags0 bit 0), tilemap and tiles (bits 3 and 4),
+A blob without a palette (flags0 bit 0 clear) draws with whatever palette is
+already loaded; its PNG then carries a palette only for viewing, which the
+packer ignores.
+
+Supported flags: palette (flags0 bit 0, optional), tilemap and tiles (bits 3 and 4),
 raw or GammaLz tiles (bits 5-6 = 0 or 3), 4 or 8 bpp (bit 7), byte or
 halfword tilemap cells (flags1 bit 0).
 """
@@ -32,8 +36,8 @@ FLIPS = ((0, 0), (1, 0), (0, 1), (1, 1))
 
 
 class Blob:
-    """flags0, flags1, palette (512 bytes), tilemap size, cells (tile, h, v,
-    bank per cell) and tiles (one tuple of 64 color numbers each)."""
+    """flags0, flags1, palette (512 bytes, or None), tilemap size, cells (tile,
+    h, v, bank per cell) and tiles (one tuple of 64 color numbers each)."""
 
     def __init__(self, flags0, flags1, palette, width, height, cells, tiles):
         self.flags0, self.flags1 = flags0, flags1
@@ -54,7 +58,7 @@ class Blob:
 
 
 def check_flags(flags0: int, flags1: int) -> None:
-    if (flags0 & ~FLAGS0_MASK or flags1 & ~1 or (flags0 & 0x19) != 0x19
+    if (flags0 & ~FLAGS0_MASK or flags1 & ~1 or (flags0 & 0x18) != 0x18
             or (flags0 >> 5) & 3 not in (CODEC_RAW, CODEC_GAMMA_LZ)):
         raise ValueError(f"unsupported blob flags {flags0:#04x} {flags1:#04x}")
 
@@ -88,8 +92,10 @@ def parse(rom: bytes, addr: int) -> tuple[Blob, int, bytes]:
     flags0, flags1 = rom[pos], rom[pos + 1]
     check_flags(flags0, flags1)
     pos += 2
-    palette = rom[pos:pos + PALETTE_BYTES]
-    pos += PALETTE_BYTES
+    palette = None
+    if flags0 & 1:
+        palette = rom[pos:pos + PALETTE_BYTES]
+        pos += PALETTE_BYTES
     width, height = struct.unpack_from("<HH", rom, pos)
     pos += 4
     count = width * height
@@ -116,7 +122,8 @@ def parse(rom: bytes, addr: int) -> tuple[Blob, int, bytes]:
 def build(blob: Blob) -> bytes:
     """The blob's ROM bytes."""
     out = bytearray((blob.flags0, blob.flags1))
-    out += blob.palette
+    if blob.palette is not None:
+        out += blob.palette
     out += struct.pack("<HH", blob.width, blob.height)
     if blob.byte_cells:
         out += bytes(c[0] for c in blob.cells)
@@ -162,9 +169,17 @@ def image_pixels(blob: Blob) -> list[int]:
     return pixels
 
 
+def layout_of(blob: Blob) -> list[int]:
+    """Each cell's tile number and flips (tilemap cell without the palette bank)."""
+    return [t | h << 10 | v << 11 for t, h, v, _ in blob.cells]
+
+
 def blob_from_image(flags0: int, flags1: int, palette: bytes, width: int, height: int,
-                    pixels: list[int], unused: list[tuple]) -> Blob:
-    """Rebuild the tiles and tilemap from an image, as the original tool did."""
+                    pixels: list[int], unused: list[tuple], layout=None) -> Blob:
+    """Rebuild the tiles and tilemap from an image, as the original tool did.
+    With a layout (see layout_of), every cell takes the given tile and flips
+    instead; tiles must be numbered in order of first use and every cell of a
+    tile must show the same pixels."""
     check_flags(flags0, flags1)
     bpp8, byte_cells = bool(flags0 & 0x80), bool(flags1 & 1)
     w = width * 8
@@ -178,6 +193,17 @@ def blob_from_image(flags0: int, flags1: int, palette: bytes, width: int, height
             if len(banks) != 1:
                 raise ValueError(f"cell ({n % width}, {n // width}) mixes palette banks {sorted(banks)}")
             bank = banks.pop()
+        if layout is not None:
+            tile, h, v = layout[n] & 0x3FF, (layout[n] >> 10) & 1, (layout[n] >> 11) & 1
+            image = flip(image, h, v)
+            mask = 0xFF if bpp8 else 0x0F
+            image = tuple(p & mask for p in image)
+            if tile == len(tiles):
+                tiles.append(image)
+            elif tile > len(tiles) or tiles[tile] != image:
+                raise ValueError(f"cell ({n % width}, {n // width}) does not match tile {tile} of its layout")
+            cells.append((tile, h, v, bank))
+            continue
         for h, v in ((0, 0),) if byte_cells else FLIPS:
             found = index.get(flip(image, h, v))
             if found is not None:
@@ -190,7 +216,9 @@ def blob_from_image(flags0: int, flags1: int, palette: bytes, width: int, height
     if byte_cells and len(tiles) > 256:
         raise ValueError(f"{len(tiles)} tiles do not fit byte tilemap cells")
     mask = 0xFF if bpp8 else 0x0F
-    tiles = [tuple(p & mask for p in t) for t in tiles] + unused
+    if layout is None:
+        tiles = [tuple(p & mask for p in t) for t in tiles]
+    tiles = tiles + unused
     return Blob(flags0, flags1, palette, width, height, cells, tiles)
 
 
