@@ -49,7 +49,17 @@ def decode_gamma_lz_with_end(rom: bytes, hdr_addr: int) -> tuple[bytes, int]:
     header = rom[pos:pos + 4]
     extra_pass = bool(header[0] & 0x80)
     expected_size = header[1] | (header[2] << 8) | (header[3] << 16)
-    pos += 4
+    result, end = decode_gamma_lz_stream(rom, hdr_addr + 4)
+    if len(result) != expected_size:
+        raise ValueError(f"{hdr_addr:#x}: decoded {len(result)} bytes, expected {expected_size}")
+    return (_apply_delta_pass(result) if extra_pass else result), end
+
+
+def decode_gamma_lz_stream(rom: bytes, hdr_addr: int) -> tuple[bytes, int]:
+    """Decode a stream that starts at its inner header, with no outer
+    header (flags and size). Returns the data and the ROM address just past
+    the stream's last 32-bit word."""
+    pos = hdr_addr - ROM_BASE
     table_size, sentinel, distance_width, prefix_width = rom[pos:pos + 4]
     pos += 4
     if table_size == 0 or table_size & 3 or prefix_width > 8:
@@ -109,11 +119,7 @@ def decode_gamma_lz_with_end(rom: bytes, hdr_addr: int) -> tuple[bytes, int]:
                 fill = ((fill_code << 3) | reader.bits(3)) & 0xFF
             output.extend(bytes((fill,)) * (run_code + 1 + (high << 8)))
 
-    if len(output) != expected_size:
-        raise ValueError(f"{hdr_addr:#x}: decoded {len(output)} bytes, expected {expected_size}")
-    result = bytes(output)
-    end = ROM_BASE + reader.pos
-    return (_apply_delta_pass(result) if extra_pass else result), end
+    return bytes(output), ROM_BASE + reader.pos
 
 
 def _apply_delta_pass(buf: bytes) -> bytes:

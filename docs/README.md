@@ -104,6 +104,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 - [`formats/room_graphics.md`](formats/room_graphics.md) — the 14 resources per
   room (maps, blocks, collision, tilesets, palettes): ROM layout, tileset codec,
   and how they are extracted and built. Tools: `tools/room_graphics/`.
+- [`formats/graphic_blob.md`](formats/graphic_blob.md) — the palette, tilemap
+  and tile-stream blob loaded by `sub_080065D4`; battle backgrounds use it.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

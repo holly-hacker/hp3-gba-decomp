@@ -622,7 +622,9 @@ above; all four are visual/Object plumbing, no combat-mechanical state:
   `InitializeLupinPotionCutscene`, `InitializeFolioCardDetailScreen`,
   `InitializeDebugCollectorCardsMenu`, `PlaySpecialSceneEffect`, and
   three other non-battle sites, confirming it as a general graphics-blob
-  palette loader, not something written for `InitializeBattle`.
+  palette loader, not something written for `InitializeBattle`. The blobs
+the background table points at are described in
+[`graphic_blob.md`](../formats/graphic_blob.md).
 
 ### `bMenuScreen = 9` -- the pending-fighter target menu, PROVEN
 

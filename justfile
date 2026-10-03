@@ -36,7 +36,7 @@ disasm-compare ver="us": (disasm ver)
 # One object per region, gaps .incbin'd from the baserom, and a linker
 # script placing each at its manifest address.
 # Generate the build inputs from regions.<ver>.txt.
-gen-link ver="us": (pack-images ver) (pack-room-graphics ver)
+gen-link ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver)
     mkdir -p build/{{ver}}
     python3 tools/gen_link.py {{ver}}
 
@@ -119,6 +119,18 @@ extract-room-graphics:
 pack-room-graphics ver="us":
     python3 tools/room_graphics/pack_room_graphics.py {{ver}}
 
+# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every blob
+# from its PNGs to check it matches the baserom. Re-running overwrites local edits.
+# Bootstrap data/graphic_blobs/ (indexed PNGs of each blob) from the baserom.
+extract-graphic-blobs ver="us":
+    python3 tools/graphic_blob/extract_graphic_blobs.py {{ver}}
+
+# Each graphic-blobs row names a directory under data/graphic_blobs/.
+# Encodes its blobs and emits assembly under build/<ver>/graphic_blobs/.
+# Pack all graphic blobs for this version.
+pack-graphic-blobs ver="us":
+    python3 tools/graphic_blob/pack_graphic_blobs.py {{ver}}
+
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
 # AGENTS.md hard rule 2), so a fresh clone has none of it and the pack-*
@@ -126,12 +138,12 @@ pack-room-graphics ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-images extract-room-graphics
+extract-all: extract-krawall extract-text extract-images extract-room-graphics extract-graphic-blobs
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
 # Compile the c-file rows of regions.<ver>.txt to assembly.
-compile-c ver="us": (pack-images ver) (pack-room-graphics ver)
+compile-c ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver)
     python3 tools/c/compile_c.py {{ver}}
 
 # Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def

@@ -3,7 +3,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 # Codecs shared by the pack steps; editing one repacks everything.
-CODECS = [ROOT / "tools" / d for d in ("graphics", "images", "room_graphics")]
+CODECS = [ROOT / "tools" / d for d in ("graphics", "images", "room_graphics", "graphic_blob")]
 
 
 def fresh(output: Path, *inputs: Path) -> bool:

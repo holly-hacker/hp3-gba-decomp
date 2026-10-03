@@ -41,6 +41,11 @@ IMAGE_BANK_DIRECTIVE = "image-bank"
 # build/<ver>/room_graphics/<name>.s.
 ROOM_GRAPHICS_DIRECTIVE = "room-graphics"
 
+# graphic-blobs rows name a directory of editable graphic blobs
+# (data/graphic_blobs/<dir>/). pack_graphic_blobs.py packs it to
+# build/<ver>/graphic_blobs/<name>.s.
+GRAPHIC_BLOBS_DIRECTIVE = "graphic-blobs"
+
 # c-file and c-file-O1 rows name a .c under src/, compiled to assembly by
 # tools/c/compile_c.py (the `compile-c` recipe, which must run before
 # `gen-link`) with the compiler the ROM was built with -- see
@@ -123,6 +128,15 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 if end <= start:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 regions.append((start, end, f"build/{ver}/room_graphics/{name}.s", name))
+                continue
+            if parts[0] == GRAPHIC_BLOBS_DIRECTIVE:
+                if len(parts) != 5:
+                    sys.exit(f"{path}:{lineno}: expected 'graphic-blobs <start> <end> <dir> <name>'")
+                _, start_s, end_s, _source, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                regions.append((start, end, f"build/{ver}/graphic_blobs/{name}.s", name))
                 continue
             if parts[0] in DIALOG_TEXT_DIRECTIVES:
                 expected_len = 5 if parts[0] == "dialog-text" else 4

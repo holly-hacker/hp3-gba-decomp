@@ -140,6 +140,12 @@ def encode_gamma_lz(data: bytes) -> bytes:
     return delta if len(delta) < len(plain) else plain
 
 
+def encode_gamma_lz_stream(data: bytes) -> bytes:
+    """Return the stream without its outer header (flags and size), never
+    delta coded: the form decode_gamma_lz.decode_gamma_lz_stream reads."""
+    return _encode_once(bytes(data), False)[4:]
+
+
 def main() -> None:
     if len(sys.argv) != 3:
         sys.exit(f"usage: {sys.argv[0]} <ver> <hex addr>")
