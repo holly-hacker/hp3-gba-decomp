@@ -23,6 +23,22 @@ typedef struct EffectBgRecord {
     u16 pad_0E;         // 0x0E
 } EffectBgRecord;
 
+// What EffectBgRecord::pControls points at: an 8-byte control block, then streams.
+typedef struct {
+    const void *pStream;
+    u32 dwTag;
+} EffectStreamEntry;
+typedef struct {
+    u32 adwControls[2];
+    EffectStreamEntry entries[32];
+} EffectStreamList32;
+typedef struct {
+    u32 adwControls[2];
+    EffectStreamEntry entries[8];
+} EffectStreamList8;
+extern const EffectStreamList32 g_RainStreakList_candidate;  // 0x08053B18
+extern const EffectStreamList8 g_RainSplashList_candidate;   // 0x08053C20
+
 extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
 extern const u8 g_abScriptOpcodeLengths[168];                // 0x08054F34, operand bytes per opcode
 extern const ObjectAssetRecord g_aEffectObjectAssets[17];    // 0x08053D40

@@ -1097,6 +1097,7 @@ label 0x0804D468 g_abRoomObjUnk9AnimData
 label 0x0804D6C4 g_abGammaNormalRemap
 label 0x0804D6E4 g_abGammaHighRemap
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
+c-file 0x0804DFC8 0x0804E180 src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
 c-file 0x0804E180 0x0804E1C8 src/battle/battle_music.c g_abBattleMusicByRoom
 c-file 0x0804E50C 0x0804E518 src/battle/spell_leveling.c g_abSpellMaxLevel
 label 0x0804E560 g_aPlayerGfxRows_candidate
@@ -1131,6 +1132,7 @@ label 0x080538CC g_aBattleSlotAnchorPos_candidate
 label 0x080538D4 g_adwEffectBgControlOverride_candidate
 label 0x08053A34 g_apEffectScanlineTables_candidate
 label 0x08053A40 g_abEffectScanlineTableSizes_candidate
+c-file 0x08053A44 0x08053B94 src/graphics/assets/rain_stream_lists.c g_RainStreakList_candidate
 label 0x08053B94 g_aEffectOrbitParams_candidate
 label 0x08053C54 g_abEffectRosterIdPair_candidate
 label 0x08053C56 g_awBattleSlotPosX_candidate

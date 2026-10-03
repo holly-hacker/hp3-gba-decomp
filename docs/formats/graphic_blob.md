@@ -76,12 +76,13 @@ sheets, the first 32 show short diagonal streaks and the last 8 small ring and
 dot shapes, which read as rain and rain splashes (**UNCONFIRMED**: the tile
 arrangement, palette and the use of the width and height are not known).
 
-Two lists of 8-byte entries point at them: `0x08053B18` (32 entries, entry
-`{stream, 1}`, after a header of `0x02A01F03`, `0x400`) and `0x08053C20` (8
-entries, `{stream, 2}`, after `0x031C0802`, `0x120`); the header's second
-word is the decoded size. The lists belong to records of the table at
-`0x080544D4` (`g_aEffectBgRecords_candidate`, 16 bytes each: a blob, flags, a
-list, a size); the code that reads the lists is not traced.
+Two lists point at them (`g_RainStreakList_candidate` at `0x08053B18` with 32
+entries, `g_RainSplashList_candidate` at `0x08053C20` with 8; JP
+`0x08053A44` and `0x08053B4C`). Each is an 8-byte control block, then
+entries `{stream, tag}` (tag 1 and 2 respectively). The block is what the
+effect script copies from `EffectBgRecord::pControls`
+(`g_aEffectBgRecords_candidate` at `0x080544D4`) into
+`g_adwEffectBgControlOverride_candidate`; what reads the entries is not traced.
 
 `just extract-tile-streams` and `just pack-tile-streams` handle them like the
 blobs, with `tile-streams <start> <end> <dir> <name>` rows and
