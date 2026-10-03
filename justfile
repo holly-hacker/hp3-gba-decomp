@@ -36,7 +36,7 @@ disasm-compare ver="us": (disasm ver)
 # One object per region, gaps .incbin'd from the baserom, and a linker
 # script placing each at its manifest address.
 # Generate the build inputs from regions.<ver>.txt.
-gen-link ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver)
+gen-link ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver) (pack-fonts ver)
     mkdir -p build/{{ver}}
     python3 tools/gen_link.py {{ver}}
 
@@ -161,6 +161,18 @@ extract-tile-frames ver="us":
 pack-tile-frames ver="us":
     python3 tools/graphic_blob/pack_tile_frames.py {{ver}}
 
+# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every font
+# from its PNG to check it matches the baserom. Re-running overwrites local edits.
+# Bootstrap data/fonts/ (PNG glyph atlases) from the baserom.
+extract-fonts ver="us":
+    python3 tools/fonts/extract_fonts.py {{ver}}
+
+# Each fonts row names a directory under data/fonts/.
+# Encodes its fonts and emits assembly under build/<ver>/fonts/.
+# Pack all fonts for this version.
+pack-fonts ver="us":
+    python3 tools/fonts/pack_fonts.py {{ver}}
+
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
 # AGENTS.md hard rule 2), so a fresh clone has none of it and the pack-*
@@ -168,12 +180,12 @@ pack-tile-frames ver="us":
 # US-only: every extractor reads baserom.us.gba (content is either
 # version-independent or not yet located in the JP ROM).
 # Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-images extract-room-graphics extract-graphic-blobs extract-tile-streams extract-tile-frames
+extract-all: extract-krawall extract-text extract-images extract-room-graphics extract-graphic-blobs extract-tile-streams extract-tile-frames extract-fonts
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
 # Compile the c-file rows of regions.<ver>.txt to assembly.
-compile-c ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver)
+compile-c ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver) (pack-fonts ver)
     python3 tools/c/compile_c.py {{ver}}
 
 # Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def

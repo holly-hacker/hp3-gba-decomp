@@ -1571,6 +1571,8 @@ graphic-blobs 0x08E59490 0x08E63D50 data/graphic_blobs/riddikulus_dementors Ridd
 label 0x08E59490 g_RiddikulusBgGraphic
 label 0x08E5CB64 g_HarryVsDementorsBgGraphicA
 label 0x08E6051C g_HarryVsDementorsBgGraphicB
+fonts 0x08E63D50 0x08E836C4 data/fonts/kanji_fonts KanjiFonts
+fonts 0x08E836C4 0x08E8AD90 data/fonts/text_fonts TextFonts
 image-bank 0x08E8AD90 0x08EAAF88 data/images/portraits Portraits
 
 # Dialog chatheads (partial), 8bpp

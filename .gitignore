@@ -16,6 +16,7 @@ data/room_graphics/
 data/graphic_blobs/
 data/tile_streams/
 data/tile_frames/
+data/fonts/
 data/items/*
 data/text/*
 extracted/
