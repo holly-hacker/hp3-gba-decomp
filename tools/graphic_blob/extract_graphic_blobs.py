@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import blobs
-from pack_graphic_blobs import blob_from_files, graphic_blob_rows
+from pack_graphic_blobs import blob_from_files, graphic_blob_rows, manifest_labels
 
 ROM_BASE = blobs.ROM_BASE
 
@@ -28,12 +28,16 @@ ROM_BASE = blobs.ROM_BASE
 EFFECT_STARTS = (8, 22, 58, 104, 156)
 
 
-def names(bank: str):
+def names(bank: str, labels: dict[int, str]):
     """Blob names by position. The first 28 blobs of BgGraphics are the 14
     floor and wall pairs of the battle background table, the next two its
     alternate pair, then come single graphics and five battle effects'
-    frames."""
-    def name(i: int) -> str:
+    frames. Elsewhere a blob that has a `label` row in the manifest at its
+    address takes that symbol (its name is the symbol without the `g_`),
+    the rest are numbered."""
+    def name(i: int, addr: int) -> str:
+        if addr in labels and labels[addr].startswith("g_"):
+            return labels[addr][2:]
         if bank == "BgGraphics":
             if i < 28:
                 return f"Battle{'Floor' if i % 2 == 0 else 'Wall'}{i // 2 + 1:02d}"
@@ -52,7 +56,7 @@ def walk(rom: bytes, start: int, end: int):
     addr, found = start, []
     while addr < end:
         blob, next_addr, raw = blobs.parse(rom, addr)
-        found.append((blob, raw))
+        found.append((addr, blob, raw))
         addr = next_addr
     if addr != end:
         raise ValueError(f"walk ends at {addr:#010x}, not the row end {end:#010x}")
@@ -60,12 +64,14 @@ def walk(rom: bytes, start: int, end: int):
 
 
 def write_blob(args):
-    source, name, blob, raw = args
+    source, name, symbol, blob, raw = args
     colors, high = blobs.decode_palette(blob.palette)
     size = (blob.width * 8, blob.height * 8)
     transparent = blobs.transparent_indices(blob.bpp8)
     blobs.write_png(source / f"{name}.png", size, blobs.image_pixels(blob), colors, transparent)
     entry = {"name": name, "flags": [blob.flags0, blob.flags1]}
+    if symbol:
+        entry["symbol"] = symbol
     if high:
         entry["highBits"] = high
     unused = blob.tiles[blobs.used_tiles(blob):]
@@ -92,8 +98,10 @@ def main() -> None:
             source.mkdir(parents=True, exist_ok=True)
             for old in source.glob("*.png"):
                 old.unlink()
-            namer = names(name)
-            jobs = [(source, namer(i), blob, raw) for i, (blob, raw) in enumerate(found)]
+            labels = manifest_labels(ver)
+            namer = names(name, labels)
+            jobs = [(source, namer(i, addr), labels.get(addr) if labels.get(addr, "").startswith("g_") else None, blob, raw)
+                    for i, (addr, blob, raw) in enumerate(found)]
             with ProcessPoolExecutor() as pool:
                 entries = list(pool.map(write_blob, jobs))
             (source / "bank.json").write_text(

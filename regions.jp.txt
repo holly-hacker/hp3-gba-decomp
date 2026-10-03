@@ -7,14 +7,12 @@ asm-file 0x080000A0 0x080000C0 asm/rom_header_tail.jp.s  ROMHeaderTail
 asm-file 0x080000C0 0x08000104 asm/crt0.s                crt0
 asm-file 0x08000104 0x0800011C asm/rt/enable_irq.s        EnableIrq
 asm-file 0x0800011C 0x08000134 asm/rt/disable_irq.s       DisableIrq
-
 asm-file 0x08000134 0x0800027C asm/rt/intr_main.s        IntrMain
 asm-file 0x0800027C 0x080002A4 asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 asm-file 0x080002A4 0x080002E0 asm/rt/divide_signed_remainder.s DivideSignedRemainder
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
 asm-file 0x080005B0 0x080005EC asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 asm-file 0x080005EC 0x08000918 asm/decompress_gamma_lz.s      DecompressGammaLz
-
 c-file 0x08000918 0x08000BC0 src/object/tick_object_list.c TickObjectList
 c-file 0x08000BC0 0x08000C48 src/object/commit_queued_object_tile_updates.c CommitQueuedObjectTileUpdates
 c-file 0x08000C48 0x08000CD8 src/object/free_object.c FreeObject
@@ -1040,7 +1038,6 @@ thumb-func 0x08049D6C sub_08049E40
 thumb-func 0x08049D80 sub_08049E54
 # Thumb wrappers around BIOS SWI calls
 asm-file 0x08049DB0 0x08049DF0 asm/rt/bios_calls.s               bios_calls
-
 c-file-O1 0x08049DF0 0x0804A174 src/eeprom/eeprom_v124.c EepromV124
 c-file-O1 0x0804A174 0x0804A1EC src/eeprom/eeprom_nowait.c EepromNoWait
 
@@ -1127,7 +1124,6 @@ label 0x08051D9C g_pMonsterAnimFrameTable
 label 0x0805377C g_MonsterShadowAnimData
 label 0x080537DC g_abSpellEffectScriptId
 c-file 0x08053818 0x080538CC src/battle/spell_power.c g_awSpellPowerBase
-label 0x08053890 g_awSpellMpCost
 label 0x080538CC g_aBattleSlotAnchorPos_candidate
 label 0x080538D4 g_adwEffectBgControlOverride_candidate
 label 0x08053A34 g_apEffectScanlineTables_candidate
@@ -1298,7 +1294,7 @@ image-bank 0x080B99C0 0x080BC100 data/images/unnamed UnnamedSprites
 
 # Main menu palette, debug menu cursor, and other small sprites
 image-bank 0x080BC100 0x080BCDDC data/images/menu_sprites MenuSprites
-
+graphic-blobs 0x080BCDDC 0x080BD280 data/graphic_blobs/menu_cursor MenuCursor
 # Palette of the menu cursor's particle emitter
 label 0x080BD280 g_MenuCursorSparklePalette
 # Object and character sprites (g_aObjectTypeAssets and other object records)
@@ -1440,10 +1436,10 @@ image-bank 0x08A130C8 0x08A2DAF4 data/images/battle_faces BattleFaces
 
 # Battle menu action icons; records 72-132 of the table at 0x0804D750
 image-bank 0x08A2DAF4 0x08A30644 data/images/action_icons ActionIcons
-
+graphic-blobs 0x08A30644 0x08A3190C data/graphic_blobs/battle_graphics BattleGraphics
 # Lumos particles
 image-bank 0x08A3190C 0x08A3250C data/images/lumos_particles LumosParticles
-
+graphic-blobs 0x08A3250C 0x08A37BD4 data/graphic_blobs/equip_character_select EquipCharacterSelect
 # Battle HUD items: turn-order container and gauges
 image-bank 0x08A37BD4 0x08A38E30 data/images/battle_hud_items BattleHudItems
 
@@ -1452,7 +1448,6 @@ image-bank 0x08A38E30 0x08A39330 data/images/monster_palettes MonsterPalettes
 
 # Battle effect sprites: the records at 0x08053C6C-0x08054400 and palettes loaded by code
 image-bank 0x08A39330 0x08A9C500 data/images/battle_effects BattleEffects
-
 krawall-module 0x08A9C500 0x08AA0884 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0884 0x08AA4C38 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4C38 0x08AA6368 data/audio/modules/MusBattle.json MusBattle
@@ -1507,58 +1502,68 @@ krawall-module 0x08D24EE0 0x08D2DAAC data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DAAC 0x08D3C5B4 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C5B4 0x08D3EE2C data/audio/modules/MusPause.json MusPause
 
+graphic-blobs 0x08D3F0E4 0x08D41C04 data/graphic_blobs/patronus_cutscene PatronusCutscene
 # Battle effect sprite, the record at 0x08054070
 # Owl care sprites
 image-bank 0x08D56898 0x08D7198C data/images/owl_care OwlCareSprites
 
+graphic-blobs 0x08D71DA0 0x08D79B34 data/graphic_blobs/owl_care OwlCare
+graphic-blobs 0x08D79B54 0x08D7C2B0 data/graphic_blobs/dialog_backgrounds DialogBackgrounds
 image-bank 0x08D7C2B0 0x08D7E358 data/images/battle_effects2 BattleEffects2
+graphic-blobs 0x08D7E358 0x08D80C1C data/graphic_blobs/wizard_cracker_pop_it WizardCrackerPopIt
 label 0x08D7E358 g_WizardCrackerPopItBg1Graphic
 label 0x08D7FD74 g_WizardCrackerPopItBg0Graphic
 # Wizard cracker minigame sprites
 image-bank 0x08D80C9C 0x08D8CC04 data/images/wizard_cracker WizardCrackerSprites
-
+graphic-blobs 0x08D8CC04 0x08D8E61C data/graphic_blobs/wizard_cracker_pop_it_bg2 WizardCrackerPopItBg2
 label 0x08D8CC04 g_WizardCrackerPopItBg2Graphic
 # Pumpkin minigame sprites
 image-bank 0x08D8E61C 0x08D97258 data/images/pumpkin PumpkinSprites
-
+graphic-blobs 0x08D97258 0x08D9A130 data/graphic_blobs/serve_pumpkin_juice ServePumpkinJuice
 label 0x08D97258 g_ServePumpkinJuiceBg0Graphic
 label 0x08D98824 g_ServePumpkinJuiceBg1Graphic
 label 0x08D99730 g_ServePumpkinJuiceBg2Graphic
+graphic-blobs 0x08D9A190 0x08DA030C data/graphic_blobs/debug_menu DebugMenu
 label 0x08D9A190 g_DebugMenuGraphic
 label 0x08D9A900 g_DebugCollectorCardsBg0Graphic
 label 0x08DA06EE g_ServePumpkinJuicePanelData
+graphic-blobs 0x08DA13A4 0x08DC1D2C data/graphic_blobs/cutscene_drawings CutsceneDrawings
 label 0x08DBF750 g_MenuBg3Graphic
+graphic-blobs 0x08DC439C 0x08DC78C0 data/graphic_blobs/startup Startup
 label 0x08DC439C g_StartupBg3Graphic
 label 0x08DC5908 g_StartupBg2Graphic
 label 0x08DC69AC g_StartupNoticeGraphic
 label 0x08DC78C0 g_LupinPotionEmbeddedPalette
+graphic-blobs 0x08DC7EB4 0x08DE5044 data/graphic_blobs/hippogriff_language_bgs HippogriffLanguageBgs
 label 0x08DC7EB4 g_HippogriffFliesIntoAirGraphic
 label 0x08DDB06C g_LanguageSelectBg2Graphic
 label 0x08DDCC4C g_LanguageSelectBg1Graphic
 label 0x08DE5044 g_MenuScreenGraphic
+graphic-blobs 0x08DE7964 0x08DF3748 data/graphic_blobs/minigame_and_folio_bgs MinigameAndFolioBgs
 label 0x08DF2494 g_SaveMenuBg1Graphic
 
 # Status/equip screen character rotations, 8bpp; records at 0x0806B1DC (sub_0803A030)
 image-bank 0x08DF3748 0x08E1D40C data/images/status_characters StatusCharacters
-
+graphic-blobs 0x08E1D40C 0x08E32150 data/graphic_blobs/hogwarts_up_night HogwartsUpNight
 label 0x08E20E2C g_ClockSkipGraphic
 label 0x08E28634 g_HogwartsUpNightBg0Graphic
 label 0x08E2F63C g_HogwartsUpNightBg1Graphic
 label 0x08E30C9C g_HogwartsUpNightBg2Graphic
 label 0x08E32152 g_HogwartsUpNightPaletteData
 label 0x08E328F4 g_MainMenuBg2Graphic
+graphic-blobs 0x08E339A4 0x08E34D6C data/graphic_blobs/cool_train CoolTrain
 label 0x08E339A4 g_CoolTrainGraphic
 # Divination tea leaves minigame sprites
 image-bank 0x08E34D6C 0x08E36480 data/images/divination_tea DivinationTeaSprites
-
+graphic-blobs 0x08E36480 0x08E3AFF4 data/graphic_blobs/divination_tea DivinationTea
 label 0x08E36480 g_DivinationTeaBg2Graphic
 label 0x08E37A88 g_DivinationTeaBg1Graphic
 # Hippogriff glide minigame sprites
 image-bank 0x08E3B014 0x08E40178 data/images/hippogriff_glide HippogriffGlideSprites
-
+graphic-blobs 0x08E40178 0x08E508E8 data/graphic_blobs/hippogriff_minigame HippogriffMinigame
 # Hippogriff flying cutscene objects and Riddikulus minigame sprites
 image-bank 0x08E50948 0x08E59490 data/images/hippogriff_riddikulus HippogriffRiddikulusSprites
-
+graphic-blobs 0x08E59490 0x08E63D50 data/graphic_blobs/riddikulus_dementors RiddikulusDementors
 label 0x08E59490 g_RiddikulusBgGraphic
 label 0x08E5CB64 g_HarryVsDementorsBgGraphicA
 label 0x08E6051C g_HarryVsDementorsBgGraphicB
@@ -1566,7 +1571,6 @@ image-bank 0x08E8AD90 0x08EAAF88 data/images/portraits Portraits
 
 # Dialog chatheads (partial), 8bpp
 image-bank 0x08EAAF88 0x08ECA0F0 data/images/chatheads Chatheads
-
 dialog-text 0x08ECA0F0 0x08EDF36C data/text/ja.json DialogTextJa
 
 # Famous wizard cards (Folio Universitas), 8bpp

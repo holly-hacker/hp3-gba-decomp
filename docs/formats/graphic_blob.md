@@ -90,6 +90,20 @@ blobs, with `tile-streams <start> <end> <dir> <name>` rows and
 row, color 0 transparent), named `RainStreak01`-`32` and `RainSplash01`-`08`,
 and a `bank.json` with each stream's width, height and tile count.
 
+## Other blob runs
+
+19 more runs of contiguous blobs (US `0x080BCEA0`, `0x08A30814`-`0x08E65D6C`;
+JP the same bytes, 0xC4 to 0x201C lower) are separate banks (`MenuCursor`,
+`OwlCare`, `CoolTrain`, ...), one `data/graphic_blobs/<bank>/` directory each. A run is the longest chain
+of blobs whose parsed ends meet (**PROVEN**: every blob's GammaLz stream length
+matches its length field, and all rebuild byte for byte). Runs are separated by
+unrelated data, so each is its own row. They add flags `0x19 0x00` (raw 4 bpp tiles), `0x99 0x01` and
+`0xF9 0x00`/`0x01` (8 bpp) to the battle set, and one 128x132-tile map. A blob with a
+`label` row at its address in the manifest takes that symbol (`g_Foo`
+becomes PNG `Foo`, with `symbol` in `bank.json`); the other blobs are numbered
+`<Bank>001`... by position in the run. Blobs with flags `0x78`/`0x7A` (no embedded palette) and the
+`0xFF` palette-data labels are not supported by the codec and stay raw.
+
 ## Extraction
 
 `just extract-graphic-blobs` writes `data/graphic_blobs/bg_graphics/`
