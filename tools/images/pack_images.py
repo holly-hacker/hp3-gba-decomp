@@ -23,11 +23,13 @@ from sprite import COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, build, image_
 
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 BANK_KEYS = {"format", "bpp", "componentOrder", "images"}
+OPTIONAL_BANK_KEYS = {"paletteHeader", "paletteTrailer"}
 ENTRY_KEYS = [
     {"name", "offset", "compression"},
     {"name", "palette", "header", "frames"},
     {"name", "palette", "header", "frames", "bpp"},
     {"name", "paletteOnly"},
+    {"name", "paletteOnly", "highBits"},
 ]
 FRAME_KEYS = {"offset", "compression", "cells", "parts", "extra"}
 OPTIONAL_FRAME_KEYS = {"padding"}
@@ -66,6 +68,9 @@ def check_entry(image: dict) -> None:
     if image.get("paletteOnly") is not None:
         if image["paletteOnly"] is not True:
             raise ValueError("paletteOnly must be true")
+        _ints(image.get("highBits", []), len(image.get("highBits", [])), "highBits")
+        if not all(0 <= i < 1 << 8 for i in image.get("highBits", [])):
+            raise ValueError("highBits must be palette indices")
         return
     if "offset" in image:
         check_compression(image["compression"])
@@ -101,8 +106,13 @@ def check_entry(image: dict) -> None:
 def load_index(source: Path) -> dict:
     index_path = source / "bank.json"
     index = json.loads(index_path.read_text())
-    if set(index) != BANK_KEYS or index["format"] != 2:
-        raise ValueError(f"{index_path}: expected format 2 with {', '.join(sorted(BANK_KEYS))}")
+    if not BANK_KEYS <= set(index) <= BANK_KEYS | OPTIONAL_BANK_KEYS or index["format"] != 2:
+        raise ValueError(f"{index_path}: expected format 2 with {', '.join(sorted(BANK_KEYS))} "
+                         f"(optionally {', '.join(sorted(OPTIONAL_BANK_KEYS))})")
+    for key in OPTIONAL_BANK_KEYS & set(index):
+        _ints(index[key], len(index[key]), f"{index_path}: {key}")
+        if not all(0 <= b <= 0xFF for b in index[key]):
+            raise ValueError(f"{index_path}: {key} must be a list of bytes")
     if index["bpp"] not in (4, 8):
         raise ValueError(f"{index_path}: bpp must be 4 or 8")
     order = index["componentOrder"]
@@ -169,6 +179,8 @@ def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
             if kind not in components:
                 continue
             data = components[kind]
+            if kind == "palette":
+                data = bytes(index.get("paletteHeader", [])) + data + bytes(index.get("paletteTrailer", []))
             symbol = component_symbol(image["name"], kind)
             bin_path = bin_dir / f"{image['name']}.{kind}.bin"
             if not bin_path.is_file() or bin_path.read_bytes() != data:

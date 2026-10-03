@@ -9,7 +9,8 @@ one of:
   per frame, each frame listing its offset, compression, OAM cells (in
   tiles), attached parts, and extra halfwords;
 - a palette, {name, paletteOnly}: <name>.png, a swatch whose PNG palette
-  is the data.
+  is the data. highBits lists the entries whose unused bit 15 is set, which
+  a PNG palette cannot hold.
 
 Components: palette (2**bpp BGR555 entries from the PNG palette), tiles
 (each frame's cell tiles, compressed, one stream per frame), and frames
@@ -118,6 +119,22 @@ def decode_palette(data: bytes, bpp: int) -> list[tuple[int, int, int]]:
         channels = (value & 0x1F, (value >> 5) & 0x1F, (value >> 10) & 0x1F)
         colors.append(tuple(c << 3 | c >> 2 for c in channels))
     return colors
+
+
+def high_bits(data: bytes) -> list[int]:
+    """Indices of the palette entries whose unused bit 15 is set."""
+    return [i for i, value in enumerate(struct.unpack(f"<{len(data) // 2}H", data)) if value & 0x8000]
+
+
+def clear_high_bits(data: bytes) -> bytes:
+    return bytes(b & 0x7F if i & 1 else b for i, b in enumerate(data))
+
+
+def set_high_bits(data: bytes, indices: list[int]) -> bytes:
+    out = bytearray(data)
+    for i in indices:
+        out[i * 2 + 1] |= 0x80
+    return bytes(out)
 
 
 def gray_palette(bpp: int) -> list[tuple[int, int, int]]:
@@ -415,7 +432,7 @@ def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
     bpp = entry.get("bpp", bpp)
     if entry.get("paletteOnly"):
         _, _, _, colors = read_png(source / f"{entry['name']}.png", bpp)
-        return {"palette": encode_palette(colors, bpp)}
+        return {"palette": set_high_bits(encode_palette(colors, bpp), entry.get("highBits", []))}
     if "frames" in entry:
         specs = entry["frames"]
         header = entry["header"]
@@ -482,7 +499,10 @@ def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool, 
     A stored-cells sprite whose tiles are not at the bank's bit depth
     records its own bpp."""
     if "tiles" not in components:
-        return {"name": name, "paletteOnly": True}
+        entry = {"name": name, "paletteOnly": True}
+        if high := high_bits(components["palette"]):
+            entry["highBits"] = high
+        return entry
     record = resolve_compressions(decode_frames(components["frames"]), components["tiles"])
     paddings = _stream_paddings(components["tiles"], record["frames"])
     if stored_cells:
@@ -516,7 +536,7 @@ def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, sto
     if entry.get("paletteOnly"):
         count = 1 << bpp
         write_png(source / f"{name}.png", count, 1, list(range(count)),
-                  decode_palette(components["palette"], bpp), bpp)
+                  decode_palette(clear_high_bits(components["palette"]), bpp), bpp)
     else:
         record = decode_frames(components["frames"])
         colors = (decode_palette(components["palette"], bpp) if "palette" in components
@@ -558,9 +578,11 @@ def _uses_gamma_lz(components: dict[str, bytes]) -> bool:
 
 
 def extract_bank(source: Path, bpp: int, order: tuple[str, ...], entries: list[tuple[str, dict[str, bytes]]],
-                 stored_cells: bool = False, index_only: bool = False) -> None:
+                 stored_cells: bool = False, index_only: bool = False,
+                 palette_header: list[int] | None = None, palette_trailer: list[int] | None = None) -> None:
     """Write each image's PNGs and the bank's bank.json. With index_only,
-    keep existing PNGs and regenerate only the index."""
+    keep existing PNGs and regenerate only the index. The optional palette
+    header and trailer are the bytes around every palette in the bank."""
     source.mkdir(parents=True, exist_ok=True)
     if index_only:
         images = []
@@ -576,6 +598,9 @@ def extract_bank(source: Path, bpp: int, order: tuple[str, ...], entries: list[t
         images = map_images(extract, repeat(source), names, components, repeat(bpp), repeat(stored_cells),
                             gamma_lz=any(map(_uses_gamma_lz, components)))
     lines = ",\n".join(_entry_json(image) for image in images)
+    wrap = "".join(f'  "{key}": {json.dumps(value)},\n'
+                   for key, value in (("paletteHeader", palette_header), ("paletteTrailer", palette_trailer))
+                   if value is not None)
     (source / "bank.json").write_text(
-        f'{{\n  "format": 2,\n  "bpp": {bpp},\n  "componentOrder": {json.dumps(list(order))},\n'
+        f'{{\n  "format": 2,\n  "bpp": {bpp},\n  "componentOrder": {json.dumps(list(order))},\n{wrap}'
         f'  "images": [\n{lines}\n  ]\n}}\n')

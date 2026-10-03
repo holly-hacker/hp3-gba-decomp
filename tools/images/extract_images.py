@@ -29,7 +29,9 @@ ROM_BASE = 0x08000000
 # is optional per sprite, and a palette not followed by tiles is its own entry.
 # noPalette lists sprites whose following palette belongs to other records
 # (so it becomes the next, palette-only entry). names replaces the default
-# positional name of entries whose labels C code uses.
+# positional name of entries whose labels C code uses. paletteHeader and
+# paletteTrailer are bytes that surround every palette in the bank; they
+# must be identical across the bank and are kept in bank.json.
 BANKS = {
     "ItemIcons": {"prefix": "Item", "bpp": 4, "componentOrder": ("palette", "tiles", "frames")},
     "HelpSprites": {"prefix": "Help", "bpp": 4, "componentOrder": ("tiles", "frames", "palette")},
@@ -41,6 +43,8 @@ BANKS = {
     "BattleHudItems": {"prefix": "BattleHudItem", "bpp": 4,
                         "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "MonsterPalettes": {"prefix": "MonsterPalette", "bpp": 4, "componentOrder": ("palette",)},
+    "RoomAltPalettes": {"prefix": "RoomAltPalette", "bpp": 8, "componentOrder": ("palette",),
+                        "paletteHeader": [0xA1, 0x00], "paletteTrailer": [0x00, 0x00]},
     "AllyHeads": {"prefix": "AllyHead", "bpp": 4,
                   "componentOrder": ("tiles", "frames", "palette"), "storedCells": True},
     "MonsterBattleSprites": {"prefix": "MonsterBattle", "bpp": 4,
@@ -130,6 +134,18 @@ def split_bank(rom: bytes, start: int, end: int, name: str) -> list[tuple[str, d
                         cursor >= limit or entry_name in settings.get("noPalette", ())
                         or tile_stream_length(rom[cursor:limit]) is not None):
                     continue
+                elif kind == "palette":
+                    header, trailer = settings.get("paletteHeader", []), settings.get("paletteTrailer", [])
+                    if list(rom[cursor:cursor + len(header)]) != header:
+                        raise ValueError(f"palette header is not {bytes(header).hex()}")
+                    cursor += len(header)
+                    palette_at = cursor
+                    cursor += component_length(kind, rom[cursor:limit], bpp)
+                    if list(rom[cursor:cursor + len(trailer)]) != trailer:
+                        raise ValueError(f"palette trailer is not {bytes(trailer).hex()}")
+                    components[kind] = rom[palette_at:cursor]
+                    cursor += len(trailer)
+                    continue
                 else:
                     cursor += component_length(kind, rom[cursor:limit], bpp)
             except (ValueError, IndexError, struct.error) as exc:
@@ -160,7 +176,8 @@ def main() -> None:
             settings = BANKS[name]
             sprites = split_bank(rom, start, end, name)
             extract_bank(source, settings["bpp"], settings["componentOrder"], sprites,
-                         settings.get("storedCells", False), index_only)
+                         settings.get("storedCells", False), index_only,
+                         settings.get("paletteHeader"), settings.get("paletteTrailer"))
             print(f"{ver}: {'indexed' if index_only else 'extracted'} {name}: {len(sprites)} images in {source}")
         if not banks:
             print(f"{ver}: no image-bank regions")
