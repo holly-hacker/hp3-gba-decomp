@@ -1571,6 +1571,7 @@ label 0x08E28804 g_HogwartsUpNightBg0Graphic
 label 0x08E2F80C g_HogwartsUpNightBg1Graphic
 label 0x08E30E6C g_HogwartsUpNightBg2Graphic
 label 0x08E32322 g_HogwartsUpNightPaletteData
+graphic-blobs 0x08E3254C 0x08E359C0 data/graphic_blobs/main_menu_titles MainMenuTitles
 label 0x08E349CC g_MainMenuBg2Graphic
 graphic-blobs 0x08E359C0 0x08E36D88 data/graphic_blobs/cool_train CoolTrain
 label 0x08E359C0 g_CoolTrainGraphic

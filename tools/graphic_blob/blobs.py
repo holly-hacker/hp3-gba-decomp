@@ -105,7 +105,7 @@ def parse(rom: bytes, addr: int) -> tuple[Blob, int, bytes]:
     else:
         raw = struct.unpack_from(f"<{count}H", rom, pos)
         cells = [(c & 0x3FF, (c >> 10) & 1, (c >> 11) & 1, c >> 12) for c in raw]
-        pos += 2 * count
+        pos += 2 * count + 2 * (count & 1)
     (length,) = struct.unpack_from("<H", rom, pos)
     pos += 2
     if (flags0 >> 5) & 3 == CODEC_RAW:
@@ -131,6 +131,7 @@ def build(blob: Blob) -> bytes:
     else:
         out += struct.pack(f"<{len(blob.cells)}H",
                            *(t | h << 10 | v << 11 | bank << 12 for t, h, v, bank in blob.cells))
+        out += b"\0\0" * (len(blob.cells) & 1)
     data = _pack_tiles(blob.tiles, blob.bpp8)
     stream = data if blob.codec == CODEC_RAW else encode_gamma_lz_stream(data)
     out += struct.pack("<H", len(stream)) + stream

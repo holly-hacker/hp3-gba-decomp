@@ -114,8 +114,17 @@ established. Four blobs have more tiles than their images' distinct tiles: the t
 numbering is not the standard rebuild's. They list their tilemap cells'
 tiles and flips as `layout` in `bank.json`, and every cell of a tile must keep
 the same pixels. Blobs with flags `0x7A` (32-byte palette) and the `0xFF`
-palette-data labels are not supported and stay raw. The US main menu's
-`g_MainMenuBg2Graphic` differs from JP's, so it is not in a bank.
+palette-data labels are not supported and stay raw.
+
+`MainMenuTitles` (US only) holds the main menu's per-language title logos
+(seven distinct 15x5-tile palette-less blobs, the entries of
+`g_apMainMenuTitleGraphic`, whose first two entries are the same blob) and
+`g_MainMenuBg2Graphic`, also palette-less. JP has one title blob, identical to
+the first US one, and a `g_MainMenuBg2Graphic` that carries its own palette
+(flags `0x79`), so it is its own bank, `MainMenuJp`, in a separate directory.
+The title blob (`g_UnusedMainMenuTitleGraphic`) is unused in JP: its only
+reference is the lone entry of a title table that no JP code reads. A halfword
+tilemap with an odd cell count is followed by one zero cell (the 15x5 titles).
 
 ## Extraction
 
