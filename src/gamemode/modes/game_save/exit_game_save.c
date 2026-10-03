@@ -10,7 +10,7 @@ void ExitGameSave(void)
     sub_0803D420(0, 8);
     PlayScreenTransitionOutByIndex(0x3F, 2);
     sub_0803D420(0, 8);
-    sub_0801E0DC();
+    ExitMenuScreen();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800D2DC();
 }

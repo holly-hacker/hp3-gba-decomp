@@ -14,6 +14,6 @@ void ExitStatusEquipItemSelect(void)
     if (g_StatusEquipItemSelect.pItemList != NULL)
         sub_08027BA4();
 
-    sub_0801E0DC();
+    ExitMenuScreen();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
 }

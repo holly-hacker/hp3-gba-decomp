@@ -17,7 +17,7 @@ void ExitOptions(void)
     else
         ApplyGammaRemapTable(g_abGammaHighRemap);
 
-    sub_0801E0DC();
+    ExitMenuScreen();
 
     for (i = 0; i < ARRAY_COUNT(g_OptionsState.apObjects); i++)
     {

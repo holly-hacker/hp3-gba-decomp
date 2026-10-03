@@ -17,7 +17,7 @@ void ExitInGameMenu(void)
         sub_0803D420(0, 8);
     }
 
-    sub_0801E0DC();
+    ExitMenuScreen();
     sub_08007464(1, 0x6F);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800D2DC();

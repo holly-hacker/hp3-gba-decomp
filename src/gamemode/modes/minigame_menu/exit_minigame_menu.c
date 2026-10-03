@@ -8,7 +8,7 @@
 void ExitMinigameMenu(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
-    sub_0801E0DC();
+    ExitMenuScreen();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0803171C();
     ClearScanlineEffects();

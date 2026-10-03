@@ -56,8 +56,8 @@ extern void ConfirmLoadGameSlot_candidate(void);
 extern void InitRoomState(void);
 
 extern Object *g_pMenuCursorObject;  // 0x03002E08
-extern void sub_0801DF6C(u32 titleStringId, u32 arg1, u32 arg2, const u8 *pGraphic, u32 arg4, u32 arg5);
-extern void sub_0801E05C(u32 titleTextId, u32 cursorKind, u32 arg2);
+extern void InitializeMenuScreen(u32 titleStringId, u32 cursorKind, u32 hasPanel, const u8 *pOverlayGraphic, u32 overlayX, u32 overlayY);
+extern void BeginMenuScreen(u32 titleStringId, u32 cursorKind, u32 hasPanel);
 extern void sub_0801E0D8(void);
-extern void sub_0801E0DC(void);
+extern void ExitMenuScreen(void);
 extern void sub_0801DCC4(Object *pObject, s32 x, s32 y);

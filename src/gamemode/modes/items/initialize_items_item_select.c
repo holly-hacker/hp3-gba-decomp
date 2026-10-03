@@ -11,7 +11,7 @@ void InitializeItemsItemSelect(void)
 
     g_GameModeStackContext.dwModeState = 1;
     sub_080320A4();
-    sub_0801E05C(0x531, 9, 0);
+    BeginMenuScreen(0x531, 9, 0);
 
     g_ItemsItemSelect.dwHasItems = sub_08027AF4(g_ItemsItemSelect.dwFilter, 0x34, 0x36, 1, 0, 3, -1);
     if (g_ItemsItemSelect.dwHasItems != 0)

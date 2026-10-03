@@ -119,7 +119,7 @@
 .set g_pDecompressLzRleIwram,   0x030028D4  @ u8[0x1F8]: IWRAM copy of DecompressLzRle
 .set g_pDecompressGammaLzIwram, 0x03002ACC  @ u8[0x33C]: IWRAM copy of DecompressGammaLz
 
-.set g_pMenuCursorObject,                              0x03002E08  @ Object *: cursor object created by sub_0801DF6C; see include/menu/main_menu.h
+.set g_pMenuCursorObject,                              0x03002E08  @ Object *: cursor object created by BeginMenuScreen; see include/menu/main_menu.h
 .set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ u32: set by StartMinigame
 .set g_HarryVsDementors,                               0x03002E18  @ HarryVsDementorsState
 .set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/menu/dialog.h

@@ -67,6 +67,8 @@ Memory map (live RAM layout and the code that drives it):
 - [`memory-map/scanline_effects.md`](memory-map/scanline_effects.md) — the
   VCount-interrupt callback list: entry format, live/staging tables, and the
   `InitScanlineEffects`/`QueueScanlineEffectTable`/`CommitScanlineEffects` API.
+- [`memory-map/menu_screen.md`](memory-map/menu_screen.md) — the shared menu-screen
+  setup functions and the palette-less graphic blobs they draw with.
 - [`memory-map/frame_systems.md`](memory-map/frame_systems.md) — the
   per-frame `TickFrameSystems` sequence and the BG-layer, window, palette
   and tile-animation ticks it runs.

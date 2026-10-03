@@ -468,10 +468,13 @@ c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c 
 thumb-func 0x0801DC6C sub_0801DC6C
 thumb-func 0x0801DCC4 sub_0801DCC4
 c-file 0x0801DD40 0x0801DD88 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
-thumb-func 0x0801DF6C sub_0801DF6C
-thumb-func 0x0801E05C sub_0801E05C
+thumb-func 0x0801DF6C InitializeMenuScreen
+thumb-func 0x0801DF90 LoadMenuScreenFrame
+thumb-func 0x0801E004 LoadMenuScreenOverlay
+thumb-func 0x0801E05C BeginMenuScreen
 thumb-func 0x0801E0D8 sub_0801E0D8
-thumb-func 0x0801E0DC sub_0801E0DC
+thumb-func 0x0801E0DC ExitMenuScreen
+thumb-func 0x0801E118 DrawMenuScreenTitle
 c-file 0x0801E174 0x0801E280 src/gamemode/modes/minigame/harry_vs_dementors/initialize_harry_vs_dementors_minigame.c InitializeHarryVsDementorsMinigame
 c-file 0x0801E280 0x0801E414 src/gamemode/modes/minigame/harry_vs_dementors/update_harry_vs_dementors_minigame.c UpdateHarryVsDementorsMinigame
 thumb-func 0x0801E414 sub_0801E414
