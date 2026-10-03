@@ -14,6 +14,7 @@ data/audio/samples/*
 data/images/
 data/room_graphics/
 data/graphic_blobs/
+data/tile_streams/
 data/items/*
 data/text/*
 extracted/

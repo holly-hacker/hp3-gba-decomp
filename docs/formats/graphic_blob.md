@@ -66,6 +66,29 @@ after it are not a blob). After the 30 above come 165 more, all wall-type
 frames (burst and streak sequences among them) and a few screens with number
 grids; the users of these blobs are not traced.
 
+## Rain tile streams
+
+40 streams follow the blob run, `0x089AD364`-`0x089AE030` (JP
+`0x089AD194`-`0x089ADE60`), contiguous to the end (**PROVEN**). Each is a
+u16 width (always 112), a u16 height (36 to 120) and a headerless GammaLz
+stream of 4 bpp tiles: 32 streams of 1024 bytes and 8 of 288. Rendered as tile
+sheets, the first 32 show short diagonal streaks and the last 8 small ring and
+dot shapes, which read as rain and rain splashes (**UNCONFIRMED**: the tile
+arrangement, palette and the use of the width and height are not known).
+
+Two lists of 8-byte entries point at them: `0x08053B18` (32 entries, entry
+`{stream, 1}`, after a header of `0x02A01F03`, `0x400`) and `0x08053C20` (8
+entries, `{stream, 2}`, after `0x031C0802`, `0x120`); the header's second
+word is the decoded size. The lists belong to records of the table at
+`0x080544D4` (`g_aEffectBgRecords_candidate`, 16 bytes each: a blob, flags, a
+list, a size); the code that reads the lists is not traced.
+
+`just extract-tile-streams` and `just pack-tile-streams` handle them like the
+blobs, with `tile-streams <start> <end> <dir> <name>` rows and
+`data/tile_streams/`: one grayscale PNG tile sheet per stream (8 tiles per
+row, color 0 transparent), named `RainStreak01`-`32` and `RainSplash01`-`08`,
+and a `bank.json` with each stream's width, height and tile count.
+
 ## Extraction
 
 `just extract-graphic-blobs` writes `data/graphic_blobs/bg_graphics/`

@@ -1446,6 +1446,7 @@ room-graphics 0x08853CB0 0x088545CC data/room_graphics/diagon_alley_test_map_4 R
 room-graphics 0x088545CC 0x08854EE0 data/room_graphics/diagon_alley_test_map_5 Room54Graphics
 image-bank 0x08854EE0 0x08856710 data/images/room_alt_palettes RoomAltPalettes
 graphic-blobs 0x08856710 0x089AD364 data/graphic_blobs/bg_graphics BgGraphics
+tile-streams 0x089AD364 0x089AE030 data/tile_streams/rain RainTiles
 image-bank 0x089AE030 0x089F1DD4 data/images/monster_battle MonsterBattleSprites
 
 # Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
