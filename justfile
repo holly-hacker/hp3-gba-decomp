@@ -58,6 +58,12 @@ dump-krawall ver="us":
 dump-collision ver="us":
     python3 tools/collision/dump_collision.py {{ver}}
 
+# Research/debugging aid only -- NOT build input. Decodes each room's BG
+# layers from the baserom, so it shows the assembled rooms (US only).
+# Render every room's BG layers to extracted/graphics/rooms/ PNGs.
+dump-room-graphics ver="us":
+    python3 tools/graphics/dump_bg_tiles.py {{ver}}
+
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/audio/ is gitignored (same footing as the baserom, see
 # AGENTS.md hard rule 2) and meant to be user-editable for future modding,

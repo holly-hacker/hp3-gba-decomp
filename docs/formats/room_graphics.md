@@ -84,6 +84,10 @@ whole range; `just pack-room-graphics` encodes it and labels each resource
 `Room<NN>CollisionMap`, `Room<NN>TilesetA`, `Room<NN>PaletteA`, ...), which
 `src/room/room_table.c` (`g_aRoomTable`) refers to, through `include/gen/RoomGraphics.h`. Code: `tools/room_graphics/`.
 
+`just dump-room-graphics` (`tools/graphics/dump_bg_tiles.py`) renders every room's
+assembled BG layers and a merged view to `extracted/graphics/rooms/`, straight
+from the baserom. It is a viewing aid, not build input.
+
 The Time-Turner cutscene's two-entry table (`g_aTimeTurnerCutsceneRoomTable`,
 `src/room/time_turner_room_table.c`) uses the same entry layout and no data of
 its own: entry 0 refers to the resources of room 33 and entry 1 to those of room
