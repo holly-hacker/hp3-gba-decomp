@@ -108,6 +108,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   and how they are extracted and built. Tools: `tools/room_graphics/`.
 - [`formats/graphic_blob.md`](formats/graphic_blob.md) — the palette, tilemap
   and tile-stream blob loaded by `sub_080065D4`; battle backgrounds use it.
+- [`formats/special_scene_frames.md`](formats/special_scene_frames.md) — the 128 raw
+  tile frames and animation tables of the special scene effect.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

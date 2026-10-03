@@ -1367,6 +1367,7 @@ asm-file 0x081B2ABC 0x081B2BF4 asm/room/blobs/diagon_alley_test_map_4.s Room53Bl
 asm-file 0x081B2BF4 0x081B2CC8 asm/room/blobs/diagon_alley_test_map_5.s Room54Blob
 label 0x081B2CC8 g_aSpecialScenePalette
 
+tile-frames 0x081B2ECC 0x081DB0CC data/tile_frames/special_scene SpecialSceneFrames
 # Monster battle sprites, g_pMonsterGraphicsTable battle records
 room-graphics 0x081DB0CC 0x081E9078 data/room_graphics/defense_against_the_dark_arts_classroom Room00Graphics
 room-graphics 0x081E9078 0x081FC3AC data/room_graphics/potions_classroom Room01Graphics

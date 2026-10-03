@@ -51,6 +51,11 @@ GRAPHIC_BLOBS_DIRECTIVE = "graphic-blobs"
 # build/<ver>/tile_streams/<name>.s.
 TILE_STREAMS_DIRECTIVE = "tile-streams"
 
+# tile-frames rows name a directory of editable tile sheets
+# (data/tile_frames/<dir>/). pack_tile_frames.py packs it to
+# build/<ver>/tile_frames/<name>.s.
+TILE_FRAMES_DIRECTIVE = "tile-frames"
+
 # c-file and c-file-O1 rows name a .c under src/, compiled to assembly by
 # tools/c/compile_c.py (the `compile-c` recipe, which must run before
 # `gen-link`) with the compiler the ROM was built with -- see
@@ -151,6 +156,15 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 if end <= start:
                     sys.exit(f"{path}:{lineno}: end must be after start")
                 regions.append((start, end, f"build/{ver}/tile_streams/{name}.s", name))
+                continue
+            if parts[0] == TILE_FRAMES_DIRECTIVE:
+                if len(parts) != 5:
+                    sys.exit(f"{path}:{lineno}: expected 'tile-frames <start> <end> <dir> <name>'")
+                _, start_s, end_s, _source, name = parts
+                start, end = int(start_s, 16), int(end_s, 16)
+                if end <= start:
+                    sys.exit(f"{path}:{lineno}: end must be after start")
+                regions.append((start, end, f"build/{ver}/tile_frames/{name}.s", name))
                 continue
             if parts[0] in DIALOG_TEXT_DIRECTIVES:
                 expected_len = 5 if parts[0] == "dialog-text" else 4
