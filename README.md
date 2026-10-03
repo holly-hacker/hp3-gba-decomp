@@ -35,14 +35,14 @@ Note that JP matching may run behind somewhat as it is not the primary focus.
 
 Rough list of current priorities:
 
-| Area                                                    | Reason                                               |
-| ------------------------------------------------------- | ---------------------------------------------------- |
-| Sources of RNG calls                                    | Improve RNG manipulation                             |
-| Decompile all gamemode lifetime functions               | Completeness, general understanding                  |
-| All functions called by main before main loop           | Completeness, general understanding                  |
-| Find differences between international and Japanese ROM | Completeness, find patched bugs                      |
-| Improve understanding of save system                    | Completeness, entrypoint for ACE                     |
-| Document room scripts                                   | Better understand quest progression                  |
+| Area                                                    | Reason                              |
+| ------------------------------------------------------- | ----------------------------------- |
+| Sources of RNG calls                                    | Improve RNG manipulation            |
+| Decompile all gamemode lifetime functions               | Completeness, general understanding |
+| All functions called by main before main loop           | Completeness, general understanding |
+| Find differences between international and Japanese ROM | Completeness, find patched bugs     |
+| Improve understanding of save system                    | Completeness, entrypoint for ACE    |
+| Document room scripts                                   | Better understand quest progression |
 
 ## Setup
 
@@ -68,10 +68,10 @@ code from open source libraries:
 - `src/libc` contains code belonging to or based on the [newlib](https://sourceware.org/pub/newlib/) project. All code
   in this folder should be licensed under a BSD-like license.
 - the [Krawall](https://github.com/sebknzl/krawall) audio engine, licensed under the LGPL v2.1 license
-    - This code is currently not included in this repo, but may be in the future
+  - This code is currently not included in this repo, but may be in the future
 - the [Pucrunch](https://a1bert.kapsi.fi/Dev/pucrunch/) compression tool, licensed under the LGPL v2.1 license. The code
   referenced was pulled from [the Internet Archive](http://web.archive.org/web/20060925155413id_/http://www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c).
-    - `tools/graphics/pucrunch_gammalz.py` implements parts of its compression algorithm
+  - `tools/graphics/pucrunch_gammalz.py` implements parts of its compression algorithm
 
 Most other code assets in this repo are based on the rom of Harry Potter and the Prisoner of Azkaban, as part of a clean
 room reverse engineering effort. Raw art assets are currently not included in this repo.
