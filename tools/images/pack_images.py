@@ -17,6 +17,8 @@ from pathlib import Path
 
 from itertools import repeat
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import stamp  # noqa: E402
 from sprite import COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, build, image_files, map_images
 
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
@@ -140,6 +142,8 @@ def _build(source: Path, image: dict, bpp: int) -> dict[str, bytes] | str:
 def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
     index = load_index(source)
     out = Path(f"build/{ver}/images")
+    if stamp.fresh(out / f"{name}.s", source, Path(f"regions.{ver}.txt")):
+        return len(index["images"])
     bin_dir = out / name
     bin_dir.mkdir(parents=True, exist_ok=True)
     asm = []

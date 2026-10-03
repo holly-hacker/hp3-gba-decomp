@@ -21,6 +21,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 from roomfiles import read_room_dir
 from roomgfx import build_room
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import stamp
+
 ROOT = Path(__file__).resolve().parents[2]
 LABELS = {f"map{n}": f"BgMap{n}" for n in range(4)}
 LABELS.update({f"blocks{n}": f"BgBlocks{n}" for n in range(4)})
@@ -59,6 +62,8 @@ def main() -> None:
     rows = list(room_graphics_rows(ver))
     write_header([name[:-len("Graphics")] for _, _, _, name in rows])
     for start, end, source, name in rows:
+        if stamp.fresh(out_dir / f"{name}.s", source, ROOT / f"regions.{ver}.txt"):
+            continue
         sections = build_room(read_room_dir(source))
         data = b"".join(b for _, b in sections)
         if len(data) != end - start:

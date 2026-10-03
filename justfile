@@ -142,14 +142,14 @@ gen-compile-commands:
 
 # Assemble every region and link them at their manifest addresses.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
-    for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
+    printf '%s\n' build/{{ver}}/obj/*.s | xargs -P "$(nproc)" -I{} sh -c 'arm-none-eabi-as -mcpu=arm7tdmi "$1" -o "${1%.s}.o"' _ {}
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
 # Build without the section check
 build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
-    for f in build/{{ver}}/obj/*.s; do arm-none-eabi-as -mcpu=arm7tdmi "$f" -o "${f%.s}.o"; done
+    printf '%s\n' build/{{ver}}/obj/*.s | xargs -P "$(nproc)" -I{} sh -c 'arm-none-eabi-as -mcpu=arm7tdmi "$1" -o "${1%.s}.o"' _ {}
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/mod.elf build/{{ver}}/mod.gba
 

@@ -16,6 +16,7 @@ import re
 import shutil
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 
 def agbcc_prefix() -> str:
     exe = shutil.which("agbcc")
@@ -121,10 +122,14 @@ def main() -> None:
         return
 
     prefix = agbcc_prefix()
-    for directive, _, _, src, name in rows:
+    def compile_row(row):
+        directive, _, _, src, name = row
         compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver,
                     o1=directive == "c-file-O1",
                     keep_rodata=name in separate_rodata)
+
+    with ThreadPoolExecutor() as pool:
+        list(pool.map(compile_row, rows))
     print(f"compiled {len(rows)} C file(s) for {ver}")
 
 
