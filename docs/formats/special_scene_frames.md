@@ -58,6 +58,23 @@ frame and palette bank 15 of the room's palette A (day) or of
 `g_aSpecialScenePalette` (night); stepping through the 128 frames animates it.
 This is a render for inspection, not something the build or an extractor makes.
 
+## Compressed frames
+
+Two more frame pools, contiguous at US `0x08D48D74`-`0x08D56A68`, use frame kinds
+`0x70` and `0xF0`. Kind bits 5-6 = 3 mean the size is the length of a GammaLz
+stream, which decodes to the tiles (the draw code calls the codec through
+`0x030028D0`); kind bit 7 marks 8 bpp tiles (**PROVEN** for `0xF0`: the BG
+control word `g_dwDivinationTeaBg2Control` has the 256-color bit set and the
+frames decode to 64 tiles of 64 bytes, a 64x64 texture of three color numbers).
+
+| Bank | Frames | Tiles each | Resource (buffer size) | Used by |
+|---|---|---|---|---|
+| `ServePumpkinJuiceFrames` | 16 | 60 (4 bpp) | `g_ServePumpkinJuiceTable` `0x08069328` (`0x780`) | `InitializeUnusedServePumpkinJuiceMinigame` |
+| `DivinationTeaFrames` | 64 | 64 (8 bpp) | `g_DivinationTeaTable` `0x0806BB70` (`0x1000`) | `InitializeDivinationTeaMinigame` |
+
+Their resources have the layout above (flags `2`, `0x10` and `0x40` entries). The
+frames are consecutive: each starts where the previous stream ends.
+
 ## Extraction
 
 `just extract-tile-frames` and `just pack-tile-frames` handle the frames like

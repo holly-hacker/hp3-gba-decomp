@@ -66,8 +66,9 @@ def frame_from_file(source: Path, entry: dict):
     rows = (entry["tiles"] + tile_frames.TILES_PER_ROW - 1) // tile_frames.TILES_PER_ROW
     if size != (tile_frames.TILES_PER_ROW * 8, rows * 8):
         raise ValueError(f"{entry['name']}.png: expected {tile_frames.TILES_PER_ROW * 8}x{rows * 8}, got {size[0]}x{size[1]}")
-    if max(pixels) > 15:
-        raise ValueError(f"{entry['name']}.png: color number above 15")
+    limit = 255 if entry["kind"] & tile_frames.KIND_8BPP else 15
+    if max(pixels) > limit:
+        raise ValueError(f"{entry['name']}.png: color number above {limit}")
     return tile_frames.tiles_from_sheet(pixels, entry["tiles"])
 
 

@@ -101,7 +101,9 @@ def blob_from_files(source: Path, entry: dict) -> blobs.Blob:
         _, sheet, _ = blobs.read_png(source / f"{entry['name']}.unused.png")
         unused = blobs.unused_from_sheet(sheet, entry["unused"])
     flags0 = entry["flags"][0]
-    palette = blobs.encode_palette(colors, entry.get("highBits", [])) if flags0 & 1 else None
+    palette = None
+    if flags0 & 3:
+        palette = blobs.encode_palette(colors, entry.get("highBits", []), 256 if flags0 & 1 else 16)
     return blobs.blob_from_image(*entry["flags"], palette, size[0] // 8, size[1] // 8, pixels, unused,
                                    entry.get("layout"))
 

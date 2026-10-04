@@ -113,7 +113,8 @@ The sources are set in `PALETTE_SOURCES` in `extract_graphic_blobs.py`; see
 established. Four blobs have more tiles than their images' distinct tiles: the tile
 numbering is not the standard rebuild's. They list their tilemap cells'
 tiles and flips as `layout` in `bank.json`, and every cell of a tile must keep
-the same pixels. Blobs with flags `0x7A` (32-byte palette) and the `0xFF`
+the same pixels. Blobs with flags `0x7A` carry a 16-color (32-byte) palette (flags0 bit 1)
+instead of a 256-color one; the PNG shows it as colors 0-15. The `0xFF`
 palette-data labels are not supported and stay raw.
 
 `MainMenuTitles` (US only) holds the main menu's per-language title logos

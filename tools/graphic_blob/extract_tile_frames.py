@@ -47,7 +47,8 @@ def main() -> None:
             for i, ((kind, tiles), raw) in enumerate(found):
                 entry = {"name": name(bank, i), "kind": kind, "tiles": len(tiles)}
                 size, pixels = tile_frames.sheet(tiles)
-                blobs.write_png(source / f"{entry['name']}.png", size, pixels, tile_frames.GRAY,
+                blobs.write_png(source / f"{entry['name']}.png", size, pixels,
+                                tile_frames.GRAY8 if kind & tile_frames.KIND_8BPP else tile_frames.GRAY,
                                 blobs.transparent_indices(False)[:1])
                 if tile_frames.build(kind, frame_from_file(source, entry)) != raw:
                     raise ValueError(f"{entry['name']}: rebuilding from the PNG gives different bytes")

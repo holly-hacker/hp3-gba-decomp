@@ -10,11 +10,11 @@ the way the original tool made them: tiles in order of first use, a tile is
 reused when a cell matches it or its flipped copy (tried unflipped,
 horizontal, vertical, both), and a tile's palette bank is part of its identity.
 
-A blob without a palette (flags0 bit 0 clear) draws with whatever palette is
+A blob without a palette (flags0 bits 0 and 1 clear) draws with whatever palette is
 already loaded; its PNG then carries a palette only for viewing, which the
 packer ignores.
 
-Supported flags: palette (flags0 bit 0, optional), tilemap and tiles (bits 3 and 4),
+Supported flags: palette (flags0 bit 0: 256 colors, or bit 1: 16 colors; optional), tilemap and tiles (bits 3 and 4),
 raw or GammaLz tiles (bits 5-6 = 0 or 3), 4 or 8 bpp (bit 7), byte or
 halfword tilemap cells (flags1 bit 0).
 """
@@ -31,7 +31,8 @@ from encode_gamma_lz import encode_gamma_lz_stream  # noqa: E402
 ROM_BASE = 0x08000000
 PALETTE_BYTES = 512
 CODEC_RAW, CODEC_GAMMA_LZ = 0, 3
-FLAGS0_MASK = 0x01 | 0x08 | 0x10 | 0x60 | 0x80
+PALETTE16_BYTES = 32
+FLAGS0_MASK = 0x01 | 0x02 | 0x08 | 0x10 | 0x60 | 0x80
 FLIPS = ((0, 0), (1, 0), (0, 1), (1, 1))
 
 
@@ -58,7 +59,7 @@ class Blob:
 
 
 def check_flags(flags0: int, flags1: int) -> None:
-    if (flags0 & ~FLAGS0_MASK or flags1 & ~1 or (flags0 & 0x18) != 0x18
+    if (flags0 & ~FLAGS0_MASK or flags1 & ~1 or (flags0 & 0x18) != 0x18 or (flags0 & 3) == 3
             or (flags0 >> 5) & 3 not in (CODEC_RAW, CODEC_GAMMA_LZ)):
         raise ValueError(f"unsupported blob flags {flags0:#04x} {flags1:#04x}")
 
@@ -96,6 +97,9 @@ def parse(rom: bytes, addr: int) -> tuple[Blob, int, bytes]:
     if flags0 & 1:
         palette = rom[pos:pos + PALETTE_BYTES]
         pos += PALETTE_BYTES
+    elif flags0 & 2:
+        palette = rom[pos:pos + PALETTE16_BYTES]
+        pos += PALETTE16_BYTES
     width, height = struct.unpack_from("<HH", rom, pos)
     pos += 4
     count = width * height
@@ -143,17 +147,18 @@ def used_tiles(blob: Blob) -> int:
 
 
 def decode_palette(data: bytes):
-    """(r, g, b) per entry, and the entries whose unused bit 15 is set."""
-    values = struct.unpack("<256H", data)
+    """(r, g, b) for 256 entries (black after a 16-color palette), and the
+    entries whose unused bit 15 is set."""
+    values = struct.unpack(f"<{len(data) // 2}H", data)
     colors = [tuple(((v >> s) & 31) << 3 | ((v >> s) & 31) >> 2 for s in (0, 5, 10)) for v in values]
-    return colors, [i for i, v in enumerate(values) if v & 0x8000]
+    return colors + [(0, 0, 0)] * (256 - len(colors)), [i for i, v in enumerate(values) if v & 0x8000]
 
 
-def encode_palette(colors, high_bits) -> bytes:
-    values = [(r >> 3) | (g >> 3) << 5 | (b >> 3) << 10 for r, g, b in colors]
+def encode_palette(colors, high_bits, count: int = 256) -> bytes:
+    values = [(r >> 3) | (g >> 3) << 5 | (b >> 3) << 10 for r, g, b in colors[:count]]
     for i in high_bits:
         values[i] |= 0x8000
-    return struct.pack("<256H", *values)
+    return struct.pack(f"<{count}H", *values)
 
 
 def image_pixels(blob: Blob) -> list[int]:
