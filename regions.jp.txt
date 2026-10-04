@@ -238,20 +238,26 @@ thumb-func 0x0800C590 ExitLoadingScreen
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
 thumb-func 0x0800CBF0 sub_0800CBF0
-thumb-func 0x0800D008 ApplyGammaRemapTable
-thumb-func 0x0800D0A0 SetupScanlineBands_candidate
-thumb-func 0x0800D1A4 InitGammaPalette
+c-file 0x0800D008 0x0800D0A0 src/graphics/palette/apply_gamma_remap_table.c ApplyGammaRemapTable
+thumb-func 0x0800D0A0 SetupColorCycles
+c-file 0x0800D120 0x0800D1A4 src/graphics/palette/apply_gamma_to_colors.c ApplyGammaToColors
+c-file 0x0800D1A4 0x0800D204 src/graphics/palette/init_gamma_palette.c InitGammaPalette
 thumb-func 0x0800D244 sub_0800D244
 thumb-func 0x0800D254 sub_0800D254
 thumb-func 0x0800D264 sub_0800D264
-thumb-func 0x0800D2DC sub_0800D2DC
+c-file 0x0800D2DC 0x0800D2F4 src/graphics/palette/reset_palette_animations.c ResetPaletteAnimations
 thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
 thumb-func 0x0800D354 sub_0800D354
 thumb-func 0x0800D39C ClearPaletteRam
 thumb-func 0x0800D4A4 sub_0800D4A4
+c-file 0x0800D4E4 0x0800D4F4 src/graphics/palette/clear_color_cycle.c ClearColorCycle
 thumb-func 0x0800D57C sub_0800D57C
 thumb-func 0x0800D5DC sub_0800D5DC
+c-file 0x0800D6A4 0x0800D6BC src/graphics/palette/init_palette_buffer.c InitPaletteBuffer
+c-file 0x0800D794 0x0800D7BC src/graphics/palette/reset_color_cycles.c ResetColorCycles
+c-file 0x0800D944 0x0800D96C src/graphics/palette/reset_palette_effects.c ResetPaletteEffects
+c-file 0x0800D96C 0x0800D98C src/graphics/palette/clear_palette_effect.c ClearPaletteEffect
 c-file 0x0800DBAC 0x0800DDB0 src/gamemode/modes/battle/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 0x0800DE50 src/gamemode/modes/battle/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
@@ -1117,6 +1123,7 @@ label 0x0804D458 g_apRoomObjUnk9AnimFrames
 label 0x0804D468 g_abRoomObjUnk9AnimData
 label 0x0804D6C4 g_abGammaNormalRemap
 label 0x0804D6E4 g_abGammaHighRemap
+label 0x0804D704 g_abGammaHighInverseRemap
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804DFC8 0x0804E180 src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
 c-file 0x0804E180 0x0804E1C8 src/battle/battle_music.c g_abBattleMusicByRoom
@@ -1224,8 +1231,8 @@ label 0x08063408 g_aSpecialSceneBg0
 label 0x08063810 g_aSpecialSceneBg1
 c-file 0x08063C18 0x080656BC src/room/room_table.c g_aRoomTable
 label 0x080656BC g_adwRoomQuestMusicOverride
-label 0x08065798 g_ScanlineBandsDefault
-label 0x080657A0 g_ScanlineBandsRoom12
+label 0x08065798 g_ColorCyclesDefault
+label 0x080657A0 g_ColorCyclesRoom12
 c-file 0x08065C48 0x08065FA8 src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 label 0x08065FE8 g_dwMinigameMenuBg3Control
 label 0x08065FEC g_dwMinigameMenuBg1Control

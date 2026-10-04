@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "hw/mem.h"
 #include "menu/minigame_menu.h"
@@ -75,7 +76,7 @@ void ExitOverworldScreen(void)
     sub_08030960(1);
     sub_08030960(2);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
-    sub_0800D2DC();
+    ResetPaletteAnimations();
     sub_08007AA8(0);
     sub_080203CC();
     sub_0800A914();

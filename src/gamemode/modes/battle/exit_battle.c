@@ -4,6 +4,7 @@
 #include "game/game_modes.h"
 #include "hw/mem.h"
 #include "graphics/graphics.h"
+#include "graphics/palette.h"
 
 // Battle mode's pDestroyFn. See docs/memory-map/battle.md.
 void ExitBattle(void)
@@ -24,7 +25,7 @@ void ExitBattle(void)
         sub_080316D4();
         sub_0803171C();
         FreeAllObjects(&g_ActiveObjectListState.pHead);
-        sub_0800D2DC();
+        ResetPaletteAnimations();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
         sub_08026254();
@@ -106,7 +107,7 @@ void ExitBattle(void)
         sub_080316D4();
         sub_0803171C();
         FreeAllObjects(&g_ActiveObjectListState.pHead);
-        sub_0800D2DC();
+        ResetPaletteAnimations();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
         sub_08026254();

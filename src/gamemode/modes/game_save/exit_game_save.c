@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/palette.h"
 #include "game/game_save.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
@@ -12,5 +13,5 @@ void ExitGameSave(void)
     sub_0803D420(0, 8);
     ExitMenuScreen();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
-    sub_0800D2DC();
+    ResetPaletteAnimations();
 }

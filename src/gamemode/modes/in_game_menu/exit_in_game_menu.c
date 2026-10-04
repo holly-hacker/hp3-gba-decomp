@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "menu/in_game_menu.h"
 #include "menu/main_menu.h"
@@ -20,5 +21,5 @@ void ExitInGameMenu(void)
     ExitMenuScreen();
     sub_08007464(1, 0x6F);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
-    sub_0800D2DC();
+    ResetPaletteAnimations();
 }

@@ -3,6 +3,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "graphics/graphics.h"
+#include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "hw/input.h"
 #include "overworld/overworld.h"
@@ -73,7 +74,7 @@ void InitializeOverworld(void)
 
         // Make the requested room current.
         g_dwGameModeFlags &= ~0x2000000;
-        g_dwScanlineBandActiveMask = 0;
+        g_dwColorCycleActiveMask = 0;
         g_bCurrentRoomId = g_GameModeStackContext.dwCurrentGameModeArg2;
         InitObjTileAllocBitmaps(0);
         sub_0803DC44();
@@ -216,7 +217,7 @@ void InitializeOverworld(void)
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideA);
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideB);
 
-        // Per-room BG layer enables and priorities; rooms 12 and the default add scanline bands.
+        // Per-room BG layer enables and priorities; room 12 and the default start color cycles.
         g_dwRoomBgFlag_candidate = 0;
         switch (g_GameModeStackContext.dwCurrentGameModeArg2)
         {
@@ -248,7 +249,7 @@ void InitializeOverworld(void)
             SetBgPriority(2, 0);
             break;
         case 0xc:
-            SetupScanlineBands_candidate(&g_ScanlineBandsRoom12);
+            SetupColorCycles(&g_ColorCyclesRoom12);
             break;
         case 0x13:
             g_dwRoomBgFlag_candidate = 1;
@@ -375,7 +376,7 @@ void InitializeOverworld(void)
         case 0x31:
             break;
         default:
-            SetupScanlineBands_candidate(&g_ScanlineBandsDefault);
+            SetupColorCycles(&g_ColorCyclesDefault);
             break;
         }
 

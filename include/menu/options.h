@@ -37,6 +37,8 @@ extern u32 g_dwOptionsEntryLanguage;   // 0x03005E0C: language when the screen w
 
 extern const u8 g_abGammaNormalRemap[];  // 0x0804D798
 extern const u8 g_abGammaHighRemap[];    // 0x0804D7B8
+// Approximate inverse of g_abGammaHighRemap, used to undo it.
+extern const u8 g_abGammaHighInverseRemap[];  // 0x0804D7D8
 extern const u8 g_MenuScreenGraphic[];   // 0x08DE5214
 
 extern void ApplyGammaRemapTable(const u8 *pTable);

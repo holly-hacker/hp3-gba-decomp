@@ -47,6 +47,9 @@
 // Background palette RAM, 256 colors.
 #define BG_PLTT ((volatile u16 *)0x05000000)
 
+// Sprite (OBJ) palette RAM, 256 colors.
+#define OBJ_PLTT ((volatile u16 *)0x05000200)
+
 // Start of video RAM.
 #define VRAM_BASE ((void *)0x06000000)
 

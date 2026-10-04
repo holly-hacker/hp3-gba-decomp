@@ -533,12 +533,10 @@ frame: `sub_08049EBC` (`svc 5`, `VBlankIntrWait`, already named in
 [`text.md`](text.md)'s BIOS wrapper table) -> BIOS vblank
 wait/dispatch -> an **IWRAM-resident interrupt handler at `0x030035A8`**
 (the game's own vblank ISR, copied to IWRAM for speed -- not yet
-otherwise documented) -> `0x08025E95` -> `0x0800D306` (the palette-flush
-loop itself, right next to the already-known `sub_0800D2F4`/
-`sub_0800D944` animation-slot processors -- almost certainly iterating
-pending slots and calling `sub_0800DB58` once per slot, matching the
-observed `r6` register counting down `8, 7, ...` across consecutive
-hits) -> `sub_0800DB58`.
+otherwise documented) -> `0x08025E95` -> `0x0800D306` (inside
+`sub_0800D304`, the palette flush loop, which calls `sub_0800DB58` for each
+active palette effect; see [`../memory-map/palette.md`](../memory-map/palette.md))
+-> `sub_0800DB58`.
 
 Live memory reads of the IWRAM table at the moment of a real hit:
 

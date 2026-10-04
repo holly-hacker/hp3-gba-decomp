@@ -179,11 +179,12 @@ about how room content is placed.
 
 - `g_PlayerCameraFocusOffset` (`0x08060884`): two words `(0x18, 0x23)`, the `(x, y)`
   offset `InitializeOverworld` passes to `SetCameraFollowTarget_candidate` for the player.
-- `g_ScanlineBandsDefault` (`0x0806580C`) and `g_ScanlineBandsRoom12` (`0x08065814`): 8-byte
-  tables, `u16` band count (1), `u16` padding, then a 4-byte band `{start line, line count,
-  param, flags}` (`{8, 8, 3, 1}` and `{0x68, 8, 3, 1}`). `SetupScanlineBands_candidate`
-  copies them into the 12-slot record array at `0x03002280`; room 12 uses its own table and
-  every room without a switch arm uses the default. The `param` byte's meaning is unconfirmed.
+- `g_ColorCyclesDefault` (`0x0806580C`) and `g_ColorCyclesRoom12` (`0x08065814`): 8-byte
+  `ColorCycleTable`s, `u16` count (1), `u16` padding, then one `ColorCycleDesc`
+  `{start color, color count, delay, flags}` (`{8, 8, 3, 1}` and `{0x68, 8, 3, 1}`).
+  `SetupColorCycles` starts them as palette color cycles (see
+  [`../memory-map/palette.md`](../memory-map/palette.md)); room 12 uses its own table and
+  every room without a switch arm uses the default.
 - `g_pRoomQuestMusicOverride` is 55 words, ending exactly at `0x0806580C`.
 
 ## Not yet located

@@ -90,25 +90,6 @@ extern void GetCameraPosition(s32 *pPosition);  // copies g_CameraPosition_candi
 extern void sub_0803E628(s32 *pPosition);  // copies a two-word position into g_CameraPosition_candidate
 extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
 
-// One band of scanlines for SetupScanlineBands_candidate.
-typedef struct ScanlineBand {
-    u8 bStartLine;
-    u8 bLineCount;
-    u8 bParam_candidate;
-    u8 bFlags;
-} ScanlineBand;
-
-typedef struct ScanlineBandTable {
-    u16 wBandCount;
-    u16 wUnused;
-    ScanlineBand aBands[1];
-} ScanlineBandTable;
-
-extern const ScanlineBandTable g_ScanlineBandsDefault;
-extern const ScanlineBandTable g_ScanlineBandsRoom12;
-extern void SetupScanlineBands_candidate(const ScanlineBandTable *pTable);
-extern u32 g_dwScanlineBandActiveMask;
-
 extern u16 g_wRoomResourceFlags_candidate;
 extern u8 g_abQuestEventState[];
 

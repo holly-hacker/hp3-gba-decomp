@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
@@ -25,7 +26,7 @@ void ExitWizardCrackerPopItMinigame(void)
         sub_08030960(g_aWizardCrackerPopItPalettes[i].bSlotA);
     }
 
-    sub_0800D2DC();
+    ResetPaletteAnimations();
     sub_0801DC6C(g_pWizardCrackerPopIt->pObject0);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 1;

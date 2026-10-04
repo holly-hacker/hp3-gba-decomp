@@ -76,7 +76,14 @@
 .set g_DebugCollectorCardsState,      0x03002238  @ DebugCollectorCardsState: {Object *pCardObject; u32 dwSelection}; see include/menu/debug_menu.h
 
 .set g_abTriggeredScriptFlags,      0x03002240  @ u8[32]: bitset over object script entry points; set once a one-time scripted object was triggered
-.set g_dwScanlineBandActiveMask,    0x030022E0  @ u32: bit n set = scanline band slot n is active
+.set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
+.set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
+.set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
+.set g_pPaletteWorkBuffer,        0x030022EC  @ u16 *: 0x400-byte BG+OBJ palette work buffer, allocated by InitGammaPalette
+.set g_dwObjPaletteQueueCount,     0x030022F0  @ u32: queued OBJ palette loads (25 max)
+.set g_dwPaletteEffectCount,       0x030022F4  @ u32: active palette effects
+.set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]; see include/graphics/palette.h
+.set g_PaletteState,              0x030024B0  @ PaletteState; see include/graphics/palette.h
 .set g_pFightState,                 0x030024E8  @ FightState *, the active battle's state
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride, by FighterType
 .set g_bPendingRoomScriptChain,     0x0300260C  @ u8: switch-state chain to walk on a resume transition

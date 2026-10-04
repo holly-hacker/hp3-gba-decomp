@@ -9,13 +9,13 @@
 #include "mt19937.h"
 #include "game/save.h"
 #include "graphics/graphics.h"
+#include "graphics/palette.h"
 #include "menu/main_menu.h"
 #include "divide.h"
 
 extern void InstallIwramFindFreeObjTileRun(void);
 extern void InstallIwramDecompressCodecs(void);
 extern void InitSaveSystem(void);
-extern void InitGammaPalette(void);
 extern void NoopInit(void);
 extern void InitOamSystem(void);
 extern void InitResourceCachePools(void);

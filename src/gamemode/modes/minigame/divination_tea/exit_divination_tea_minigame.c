@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/palette.h"
 #include "minigame/divination_tea.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
@@ -18,7 +19,7 @@ void ExitDivinationTeaMinigame(void)
         sub_0803171C();
     }
 
-    sub_0800D2DC();
+    ResetPaletteAnimations();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800A914();
 }

@@ -32,11 +32,10 @@ function. Calls, in order:
   `0x03006228`, two rects each) tweened or drifted per frame. `sub_08045988`
   writes the rects to `WINxH`/`WINxV` (`0x04000040`+) at vblank; the setters are
   `SetScreenWindowRect_candidate` and `SetScreenWindowLayers_candidate`.
-- **`TickPaletteAnimations_candidate`**: 12 frame-cycling slots (`0x8` bytes at
-  `0x03002280`, `0x0800D7E8`) and up to 12 blend/fade slots (`0x14` bytes at
-  `0x030022F8`, `0x0800D9D4`, per-channel 5-bit RGB interpolation). Both mark a
-  pending flag that the palette flush DMA consumes; see
-  [`../formats/graphics.md`](../formats/graphics.md).
+- **`TickPaletteAnimations_candidate`**: steps the 12 color cycles (`0x0800D7E8`)
+  and up to 12 palette effects (`0x0800D9D4`, per-channel 5-bit RGB
+  interpolation). Both mark a dirty flag that the palette flush DMA consumes; see
+  [`palette.md`](palette.md).
 - **`TickBgTileAnimations_candidate`**: up to `0x03002168` entries of `0x10` bytes at
   `0x0300216C`; steps a frame index and counter, then re-uploads the tiles with
   `0x08007F20` (a copy/RLE/LZ77 VRAM loader chosen by header bits) to the VRAM

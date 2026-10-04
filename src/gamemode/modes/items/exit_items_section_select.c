@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "menu/items_menu.h"
 #include "menu/main_menu.h"
@@ -15,5 +16,5 @@ void ExitItemsSectionSelect(void)
     g_pMenuCursorObject = NULL;
     sub_080316D4();
     sub_0803171C();
-    sub_0800D2DC();
+    ResetPaletteAnimations();
 }
