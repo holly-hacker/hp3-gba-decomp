@@ -20,11 +20,18 @@ typedef union {
     HeaderFlagsBits bits;
 } __attribute__((packed)) SaveHeaderFlags;
 
+// SaveHeader.language: the language SetLanguage applies at boot, and
+// whether the player has picked one yet.
+typedef struct {
+    u8 bLanguageIndex : 7;
+    u8 flLanguageConfigured : 1;
+} __attribute__((packed)) SaveLanguage;
+
 // See docs/formats/save.md. File-level header, shared across all 3 save
 // slots -- the live RAM copy is SaveManager.header (0x03005598, IWRAM).
 typedef struct {
     u8 szMagic[8];        // 0x0: "HPPOA001" (US) / "HPPOA004" (JP)
-    u8 bLanguageByte;     // 0x8: bit 0x80 = flLanguageConfigured, bits 0-6 = bLanguageIndex
+    SaveLanguage language;  // 0x8
     u8 bMusicVolume;      // 0x9: options-menu Music volume, 0-10
     u8 bSoundVolume;      // 0xA: options-menu Sound volume, 0-10
     u8 abUnknown0[2];     // 0xB-0xC: unused padding (ValidateSaveHeader doesn't check it)
@@ -44,24 +51,57 @@ typedef enum {
     flGammaHigh                    = 0x80,
 } HeaderFlags;
 
-// One 12-byte slot summary record; only the flags byte is mapped.
+// The file-level options block (blocks 2-6), holding the minigame high
+// scores indexed by difficulty (Easy/Medium/Hard).
 typedef struct {
-    u8 abUnmapped_0[9];
-    u8 bFlags;  // bit 0 is set when the slot holds a save
-    u8 abUnmapped_A[2];
+    u32 adwWizardCrackerPopItHighScores[3];  // 0x00
+    u32 adwHippogriffGlideHighScores[3];     // 0x0C
+    u32 adwRiddikulusHighScores[3];          // 0x18
+    u8 abPadding[2];                         // 0x24
+    u16 wChecksum;                           // 0x26: -Sum16(options, 0x26)
+} SaveOptions;
+
+// A slot's summary for the save/load menus, unpacked from the first fields
+// of the slot's save stream (see UnpackSaveSlotPreview).
+typedef struct {
+    u32 dwMoney;
+    u8 bPlaytimeHours;
+    u8 bPlaytimeMinutes;
+    u8 bPlaytimeSeconds;
+    u8 bPlaytimeFrames;
+    u8 bCurrentRoomId;
+    u8 bSaveFlags;  // SaveFlags; PlaytimeCounterActive is set once a game was started
+    u8 bMainMenuObjectiveIndex;
+    u8 bPartyLeaderDisplayLevel;
 } SaveSlotPreview;
 
-// The live save manager at 0x03005598; only the mapped members are declared.
+// SaveManager.dwStreamMode while the slot stream is in use.
+typedef enum {
+    SaveStreamIdle = 0,
+    SaveStreamPacking = 1,
+    SaveStreamUnpacking = 2,
+} SaveStreamMode;
+
+// EEPROM layout: header in blocks 0-1, options in blocks 2-6, then three
+// slots of SAVE_SLOT_BLOCKS 8-byte blocks each.
+#define SAVE_SLOT_SIZE 0xA98
+#define SAVE_SLOT_BLOCKS (SAVE_SLOT_SIZE / 8)
+#define SAVE_SLOT_FIRST_BLOCK 7
+#define SAVE_SLOT_COUNT 3
+
+// The live save manager at 0x03005598.
 typedef struct {
     SaveHeader header;
-    // Minigame high scores, indexed by difficulty (Easy/Medium/Hard).
-    u32 adwWizardCrackerPopItHighScores[3];  // 0x10
-    u32 adwHippogriffGlideHighScores[3];     // 0x1C
-    u32 adwRiddikulusHighScores[3];          // 0x28
-    u8 abUnmapped_34[8];
+    SaveOptions options;              // 0x10
+    u8 *pSlotBuffer;                  // 0x38: 0xA98-byte staging buffer for one slot
     SaveSlotPreview aSlotPreview[3];  // 0x3C
     u32 adwSlotValid[3];      // 0x60: ValidateSaveSlot's result per slot, 1 when the checksum is good
     u32 dwActiveSlot;  // 0x6C: slot last loaded or saved
+    u8 *pStreamCursor;         // 0x70: next byte of the slot stream
+    s32 dwStreamBitPos;        // 0x74: bit (or nibble shift) within *pStreamCursor
+    u32 dwStreamBytesUsed;     // 0x78: stream length after the last full pack/unpack
+    u32 dwStreamPercentUsed;   // 0x7C: dwStreamBytesUsed as a percentage of the slot size
+    u32 dwStreamMode;          // 0x80: SaveStreamMode
 } SaveManager;
 
 extern SaveManager g_saveManager;  // 0x03005598
@@ -104,6 +144,29 @@ void ProcessPlaytimeTick(void);
 // Adds a signed amount of Sickles to the player's money, clamped to
 // 0..999999, and returns the new total.
 u32 AddSickles(s32 amount);
+
+extern const SaveHeader g_DefaultSaveHeader;
+extern const SaveOptions g_DefaultSaveOptions;
+
+u16 Sum16(const void *data, u32 size);
+
+// DISPSTAT saved by EepromTransferBegin and restored by EepromTransferEnd.
+extern u16 g_wEepromSavedDispstat;
+
+void EepromTransferBegin(void);
+void EepromTransferEnd(void);
+void EepromReadBlocks(u32 startBlock, u32 count, void *dst);
+void EepromWriteBlocks(u32 startBlock, u32 count, const void *src);
+
+void InitSaveSystem(void);
+void LoadSaveSlotPreviews(void);
+void ClearSaveSlotBuffer(void);
+void UnpackBytesFromSaveStream(void *dst, u32 len);
+void UnpackSaveSlotPreview(SaveSlotPreview *preview);
+u32 ValidateSaveHeader(void);
+void WriteDefaultSaveHeader(void);
+u32 ValidateSaveOptions(void);
+void WriteDefaultSaveOptions(void);
 
 extern s32 SetSaveLanguageFlag(void);
 extern s32 SyncSaveHeaderIfDirty(void);

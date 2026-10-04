@@ -11,7 +11,7 @@ void InitGameModeStack(void)
 #ifdef VERSION_JP
     PushGameMode(Startup);
 #else
-    if ((g_saveManager.header.bLanguageByte & 0x80) == 0)
+    if (!g_saveManager.header.language.flLanguageConfigured)
         PushGameMode(LanguageSelect);
     else
         PushGameMode(Startup);

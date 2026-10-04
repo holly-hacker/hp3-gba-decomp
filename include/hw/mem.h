@@ -63,6 +63,7 @@ void List_MoveToHead(ListNode **destListHead, ListNode **srcListHead, ListNode *
 // Ordinary game code, not the vendored newlib copy in src/libc/ -- see
 // docs/memory-map/heap.md.
 void *memset(void *dst, int val, u32 len);
+void *CopyMemory(void *dst, const void *src, u32 len);
 
 // Object pool: a 0x69-slot, 0x128-byte-stride free list carved out of a
 // bulk AllocZeroed'd buffer by InitObjectPool, plus a small auxiliary

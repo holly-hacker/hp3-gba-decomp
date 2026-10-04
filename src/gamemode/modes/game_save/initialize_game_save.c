@@ -14,7 +14,7 @@ void InitializeGameSave(void)
     InitializeMenuScreen(0x533, 9, 0, g_SaveMenuBg1Graphic, 0, 0);  // "Save Game"
 
     if (g_saveManager.adwSlotValid[g_saveManager.dwActiveSlot] != 0
-        && (g_saveManager.aSlotPreview[g_saveManager.dwActiveSlot].bFlags & 1))
+        && (g_saveManager.aSlotPreview[g_saveManager.dwActiveSlot].bSaveFlags & PlaytimeCounterActive))
     {
         // "Do you want to overwrite this saved game?" / "Do you want to save your current progress?"
         stringId = (g_PrevGameModeStackContext.dwCurrentGameMode == GameCompletedReplayCutscene) ? 0x8E4 : 0x8E3;

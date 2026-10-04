@@ -280,6 +280,7 @@
 .set gMt19937SeedValue,         0x030055F4
 
 .set g_saveManager,              0x030055F8  @ see ram_symbols.us.inc
+.set g_wEepromSavedDispstat,     0x0300567C  @ see ram_symbols.us.inc
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for object visibility
 .set g_awLinkKeysReceived,       0x03005A6C
 .set g_LinkPlayerState,          0x03005A84  @ see include/link/link.h

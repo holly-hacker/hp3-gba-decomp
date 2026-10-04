@@ -299,6 +299,7 @@
 .set gMt19937SeedValue,         0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 
 .set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/game/save.h and docs/formats/save.md
+.set g_wEepromSavedDispstat,     0x0300561C  @ u16: DISPSTAT saved across EEPROM transfers (EepromTransferBegin/End)
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for object visibility
 .set g_awLinkKeysReceived,       0x03005A0C  @ u16[2]: per-player key masks received over the link cable
 .set g_LinkPlayerState,          0x03005A24  @ LinkPlayerState: serial-link session block; see include/link/link.h

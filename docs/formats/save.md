@@ -18,7 +18,7 @@ at a time. The driver never loads that address from a literal pool; it's
 built in two Thumb instructions (`movs r4, #0xD0` / `lsls r4, r4, #0x14`),
 which is why a literal-pool search for the constant doesn't find it.
 
-### Driver call stack (all in `asm`/on-disk `full_disasm.s`, US ROM)
+### Driver call stack (US ROM)
 
 | Function | Address | Role |
 |---|---|---|
@@ -29,7 +29,7 @@ which is why a literal-pool search for the constant doesn't find it.
 | `EepromWriteBlockGuarded` | `0x0804A248` | Refuses to write if the selected geometry table is the 512B one (dead code path in practice -- see below); otherwise calls `EepromWriteBlockRaw`. |
 | `EepromWriteBlockVerified` | `0x0804A280` | Write-guarded, then verify; retries up to 3 times total. |
 | `EepromSelectInterface` | `0x08049EC4` | Sets `g_pEepromInterface` to `sEepromInterface4K` (size class 4) or `sEepromInterface64K` (size class 0x40), based on its argument. |
-| `EepromTransferBegin` / `EepromTransferEnd` | `0x0803C378` / `0x0803C3A8` | Save/clear `DISPSTAT`+`IF`, enable only the VBlank IRQ (needed by the write busy-wait), always select the 8KB interface; restore `DISPSTAT` afterward. |
+| `EepromTransferBegin` / `EepromTransferEnd` | `0x0803C378` / `0x0803C3A8` | Save `DISPSTAT` to `g_wEepromSavedDispstat` and clear it (no VBlank/HBlank/VCount IRQ sources), acknowledge every pending interrupt in `IF`, always select the 8KB interface; restore `DISPSTAT` afterward. |
 | `EepromReadBlocks` | `0x0803C318` | `(startBlock, count, dst)` -- `EepromTransferBegin`, loop `EepromReadBlock` per 8-byte block, `EepromTransferEnd`. |
 | `EepromWriteBlocks` | `0x0803C348` | Same shape, writing via `EepromWriteBlockVerified`. |
 
@@ -81,8 +81,8 @@ writing back.
 
 Each save slot is `0x153` blocks (339 blocks = 2712 = `0xA98` bytes); slot
 `N` starts at block `7 + N*339`. `0xA98` is also the size of the
-heap-allocated slot-transfer buffer (`g_SaveManager.pSlotBuffer`,
-`sub_0802C2EC(0xA98)`) that every slot is staged through one at a time --
+heap-allocated slot-transfer buffer (`g_saveManager.pSlotBuffer`,
+`AllocZeroed(0xA98)`) that every slot is staged through one at a time --
 only one slot's data is resident in RAM at once.
 
 ### Checksum scheme (all three region kinds)
@@ -90,7 +90,8 @@ only one slot's data is resident in RAM at once.
 **PROVEN**, verified against `baserom.us.sav`: summing every little-endian
 `u16` word of each region (including its own trailing checksum word), mod
 0x10000, gives 0 for the header, the options block, and each save slot.
-`Sum16` (`0x0803C1E0`) computes this running sum; the checksum word itself
+`Sum16` (`0x0803C1E0`) computes this running sum (it is also inlined
+into the header and options functions); the checksum word itself
 is always written as `-sum` of the rest of the region, so a valid region
 sums to zero as a whole. The checksum word is the **last** halfword of its
 region (header: byte 14-15; options: byte 38-39; each slot: its last two
@@ -98,25 +99,25 @@ bytes).
 
 ### SaveHeader (16 bytes, blocks 0-1)
 
-Default contents at ROM `g_abDefaultSaveHeader` (`0x0806B80C`):
+Default contents at ROM `g_DefaultSaveHeader` (`0x0806B80C`):
 `48 50 50 4F 41 30 30 31 00 0A 0A 01 00 00 00 00`.
 
 | Offset | Size | JSON key | Notes |
 |---|---|---|---|
 | 0x0 | 8 | `szMagic` | ASCII `"HPPOA001"` (US) / `"HPPOA004"` (JP) -- confirmed against `baserom.us.sav`/`baserom.jp.sav`. `ValidateSaveHeader` checksum-checks the whole header, then byte-compares these 8 bytes against the ROM default; either check failing triggers `WriteDefaultSaveHeader`. |
-| 0x8 | 1 | `flLanguageConfigured` + `bLanguageIndex` | Both packed into one byte: bit 7 = `flLanguageConfigured` (set by `SetSaveLanguageFlag` via `GetLanguage()\|0x80`); bits 0-6 = `bLanguageIndex`, passed to `SetLanguage()` during `InitSaveSystem`. Default `0x00` (unconfigured, language 0). |
+| 0x8 | 1 | `flLanguageConfigured` + `bLanguageIndex` | Both packed into one byte: bit 7 = `flLanguageConfigured` (set by `SetSaveLanguageFlag`, which also stores `GetLanguage()` in bits 0-6); bits 0-6 = `bLanguageIndex`, passed to `SetLanguage()` during `InitSaveSystem`. Default `0x00` (unconfigured, language 0). |
 | 0x9 | 1 | `bMusicVolume` | Options-menu **Music** volume, 0-10 scale (`0x0a` default). `g_bMusicVolume`/`SaveManager_03005598.aHeader[9]`, read by `ApplyAudioVolumeSettings` (`0x0803FF98`, scaled `*25`). Confirmed against a real save with Music set to off (`0x00`). |
 | 0xA | 1 | `bSoundVolume` | Options-menu **Sound** volume, 0-10 scale (`0x0a` default). `g_bSoundVolume`/`SaveManager_03005598.aHeader[0xa]`, read by `ApplyAudioVolumeSettings` (scaled `*12`). Confirmed against a real save with Sound set to off (`0x00`). |
-| 0xB-0xC | 2 | `abUnknown0` | `01 00` in both the ROM default and every real save sampled. Exhaustive xref search on both this field's file offset (RAM `0x030055A3`-`0x030055A4`, `SaveManager+0xB`) and the containing `SaveManager` base (`0x03005598`) finds no code that reads or writes these two bytes individually. `ValidateSaveHeader` (`0x0803C244`) checksums the full 16-byte header but only byte-compares the first 8 bytes (`szMagic`) against `g_abDefaultSaveHeader` -- it does **not** cover this field, confirmed in-game: a real save with `abUnknown0` changed away from its `01 00` default still validates and loads normally. Consistent with these bytes being genuinely unused padding, though a reader reached only through a function boundary auto-analysis missed can't be fully ruled out by static search alone. |
+| 0xB-0xC | 2 | `abUnknown0` | `01 00` in both the ROM default and every real save sampled. Exhaustive xref search on both this field's file offset (RAM `0x030055A3`-`0x030055A4`, `SaveManager+0xB`) and the containing `SaveManager` base (`0x03005598`) finds no code that reads or writes these two bytes individually. `ValidateSaveHeader` (`0x0803C244`) checksums the full 16-byte header but only byte-compares the first 8 bytes (`szMagic`) against `g_DefaultSaveHeader` -- it does **not** cover this field, confirmed in-game: a real save with `abUnknown0` changed away from its `01 00` default still validates and loads normally. Consistent with these bytes being genuinely unused padding, though a reader reached only through a function boundary auto-analysis missed can't be fully ruled out by static search alone. |
 | 0xD | 1 | `flOwlCareKitUnlocked` + `flMinigame1Unlocked`-`flMinigame5Unlocked` + `flTeaLeafDivinationIntroShown` + `flGammaHigh` | Bitmask (`g_bHeaderFlags`/`SaveManager_03005598.aHeader[0xd]`), one JSON field per bit, LSB first. Bits `0x02`/`0x04`/`0x08`/`0x10` (**PROVEN**) gate the 4 minigame-select entries -- confirmed via `DrawMinigameSelectMenu`/`ShowMinigameLockedMessageIfNeeded`/`HandleMinigameMenuSelection` (`0x0802D148`/`0x0802D1C8`/`0x0802D08C`), a real save where bit `0x04` flipped `0->1` at the exact save "Buckbeak's Hippogriff Glide" was unlocked, and the dialog strings each minigame reads its name from (`0xa4a`+index in `data/text/en_us.json`): index 0 = "Wizard Cracker Pop-it" (bit `0x02`), 1 = "Buckbeak's Hippogriff Glide" (bit `0x04`), 2 = "Riddikulus Boggart Challenge" (bit `0x08`), 3 = "Tea Leaf Divination" (bit `0x10`). Bit `0x80` (`flGammaHigh`, **PROVEN**) is the options-menu **Gamma** setting (Normal/High), confirmed against a real save with Gamma=High; also read by a menu-graphics selector, `FUN_0800D1A4`. File-level (part of `SaveHeader`, shared across all 3 save slots -- unlike the per-slot `abQuestEventState`), matching that a minigame unlock isn't scoped to one save slot (`options.abUnknown0` stayed all-zero throughout, ruling that out as the location). **Bit `0x01` (`flOwlCareKitUnlocked`) -- PROVEN, verified end-to-end**: gates whether the Owl Care Kit menu entry is available at all (delivered via a GameCube link event, per the dialog string "Owl Care Kit received!"). Game mode `0x16` is a generic list-menu mode, reused by both the top-level pause menu and its Connectivity submenu; `DAT_03003F14`, in this context, is that list menu's cursor/selected-entry index. The pause menu's Connectivity entry pushes mode `0x16` with one of three ROM-resident 2-entry list variants depending on this bit and the save's own `owlCareKit.flVisited` (see the Owl Care Kit section below): locked (`0x08069474`, "Owl Care Kit" entry's row is unreachable), unlocked-not-yet-visited (`0x0806948C`, "Owl Care Kit" entry routes to game mode `0x42`, the name/type picker), unlocked-and-visited (routes to mode `0x29`, the care screen directly). `InitializeConnectivityMenu` (`0x08036038`) performs this list-pointer swap. **Bit `0x40` (`flTeaLeafDivinationIntroShown`) resolved**: read/written by a function at ROM `0x0802CF38` (`HandleMinigameSelectMenuConfirm`, found by disassembling backward from a `ldrb r1,[r?,#0xd]` hit to its `push {r4,lr}` entry point), the confirm-button handler for the minigame select menu. Selecting minigame index 3 (Tea Leaf Divination, already unlock-gated by bit `0x10`) checks this bit: clear sets it, syncs the header to EEPROM, and pushes game mode `0x44` (param `3`) -- an intro/tutorial sequence shown once; set skips straight to game mode `0x1C` (param `0`), the normal launch. Bit `0x20` (`flMinigame5Unlocked`) is set by `UnlockMinigame` index 4 (the fifth of its five bits) but has no known reader: the fifth minigame is unused (its code exists but is unreachable). The same exhaustive xref search (direct address, `SaveManager` base, and the `g_bHeaderFlags` symbol's own 26 xrefs) turns up masks for every other bit in this byte (`0x01`/`0x02`/`0x04`/`0x08`/`0x10`/`0x40`/`0x80`) but never `0x20`. |
 | 0xE | 2 | `wChecksum` | `u16`, `-Sum16(header, 16)`. |
 
 ### SaveOptions (40 bytes, blocks 2-6)
 
-Default is all zero (`g_abDefaultSaveOptions`, `0x0806B81C`).
+Default is all zero (`g_DefaultSaveOptions`, `0x0806B81C`).
 `ValidateSaveOptions`/`WriteDefaultSaveOptions` treat it with the same
 checksum-then-content-compare pattern as the header, with the checksum
-word at local offset 0x26 (global offset 0x36 within `g_SaveManager`).
+word at local offset 0x26 (global offset 0x36 within `g_saveManager`).
 
 **This is where minigame high scores live**, not per-slot data --
 file-level, loaded once at boot by `InitSaveSystem` regardless of which
@@ -141,7 +142,7 @@ A slot's `0xA98` bytes are not a flat data copy -- they're a serialized
 **bit/byte stream**, built field-by-field by `SerializeGameStateToSaveBuffer`
 (`0x08021498`) through `PackBytesToSaveStream`/`PackBitsToSaveStream`
 (`0x0803C00C`/`0x0803C050`), which append to a cursor
-(`g_SaveManager.streamCursor`/`streamBitPos`) rather than writing at fixed
+(`g_saveManager.pStreamCursor`/`dwStreamBitPos`) rather than writing at fixed
 offsets. `PackAndChecksumSaveSlot` (`0x0803BF9C`) resets that cursor to
 the slot buffer's start, calls `SerializeGameStateToSaveBuffer`, then
 `Sum16`s the whole `0xA98` bytes and writes `-sum` as the slot's trailing
@@ -444,21 +445,45 @@ applied at the address even though the label is still `DAT_03005598`):
 | 0x10 | `options` | RAM copy of SaveOptions (40 bytes) |
 | 0x38 | `pSlotBuffer` | heap pointer, the 0xA98-byte slot-transfer buffer |
 | 0x3C | `slotPreview` | 3x 12-byte per-slot preview/summary records (cleared via `memset` when a slot fails validation) |
-| 0x60 | `slotValid[3]` | `u32` per slot, set by `ValidateSaveSlot` (1 = checksum good, 0 = bad) |
-| 0x6C | `activeSlot` | `u32`, set by `SaveGameToSlot` |
-| 0x70-0x83 | stream state | cursor pointer, bit position, and progress-percent fields driving the bit/nibble/byte pack-unpack helpers (`UnpackBytesFromSaveStream`/`UnpackNibblesFromSaveStream`/`UnpackBitsFromSaveStream`/`PackBytesToSaveStream`/`PackBitsToSaveStream`, `0x0803BDDC`-`0x0803C094`). This is the general-purpose stream used to serialize the entire save-slot payload (see "Save slots" above), not just a save-select preview. |
+| 0x60 | `adwSlotValid[3]` | `u32` per slot, set by `ValidateSaveSlot` (1 = checksum good, 0 = bad) |
+| 0x6C | `dwActiveSlot` | `u32`, set by `SaveGameToSlot` |
+| 0x70 | `pStreamCursor` | next byte of the slot stream |
+| 0x74 | `dwStreamBitPos` | bit (or nibble shift) within the cursor byte; the byte unpackers first advance past a partly used byte |
+| 0x78 | `dwStreamBytesUsed` | stream length after a full pack (`PackAndChecksumSaveSlot`) or unpack (`sub_0803BD48`) |
+| 0x7C | `dwStreamPercentUsed` | `dwStreamBytesUsed * 100 / 0xA98` |
+| 0x80 | `dwStreamMode` | `1` while packing, `2` while unpacking, `0` otherwise. No reader located |
+
+The stream drives the bit/nibble/byte pack-unpack helpers
+(`UnpackBytesFromSaveStream`/`UnpackNibblesFromSaveStream`/`UnpackBitsFromSaveStream`/`PackBytesToSaveStream`/`PackBitsToSaveStream`,
+`0x0803BDDC`-`0x0803C094`) that serialize the entire save-slot payload (see
+"Save slots" above). `g_wEepromSavedDispstat` (`0x0300561C`) directly
+follows the struct.
+
+Each 12-byte `aSlotPreview` record is unpacked by `UnpackSaveSlotPreview`
+(`0x08021604`) from the first fields of a valid slot's stream: `dwMoney`,
+the 4 playtime bytes, `bCurrentRoomId`, `bSaveFlags`,
+`bMainMenuObjectiveIndex`, `bPartyLeaderDisplayLevel` (**PROVEN**: same
+order and widths as `SerializeGameStateToSaveBuffer`'s first six pack
+calls). The save menu treats a valid slot as holding a game when the
+preview's `bSaveFlags` has `PlaytimeCounterActive`.
 
 ## `InitSaveSystem` flow (`0x0803BC9C`)
 
+**PROVEN** (matched C, `src/save/init_save_system.c`).
+
 1. Allocate the `0xA98`-byte slot-transfer buffer.
-2. `ValidateSaveHeader`; if invalid, `WriteDefaultSaveHeader` +
-   `WriteDefaultSaveOptions` + `ClearSaveSlotBuffer`, then write all three
-   slots as zeroed/default via `WriteSaveSlot`. If valid, `ValidateSaveOptions`
-   alone (repairing just the options block if needed).
-3. Apply the header's language byte via `SetLanguage`.
-4. `LoadOrResetSaveSlots`: for each of the 3 slots, `LoadSaveSlot` +
-   `ValidateSaveSlot`; an invalid slot's preview record is registered as
-   empty, a valid one's preview is built from its data.
+2. `ValidateSaveHeader` (checksum, then the 8 magic bytes against
+   `g_DefaultSaveHeader`). If invalid, `WriteDefaultSaveHeader` +
+   `WriteDefaultSaveOptions` + `ClearSaveSlotBuffer`, then zero the first
+   two blocks of each slot (`EepromWriteBlocks(7 + N*0x153, 2, ...)`), which
+   leaves the slot failing its checksum rather than writing a whole slot.
+3. `ValidateSaveOptions`, rewriting the default options if it fails (also
+   right after step 2's reset).
+4. Apply the header's language index (bits 0-6) via `SetLanguage`.
+5. `LoadSaveSlotPreviews`: for each of the 3 slots, `LoadSaveSlot` +
+   `ValidateSaveSlot` (a one-pass retry loop: its retry count is 0); a
+   valid slot's preview is unpacked with `UnpackSaveSlotPreview`, an invalid
+   one's is zeroed.
 
 ## Parsing
 
@@ -488,7 +513,7 @@ line-for-line.
 separate index/wrapper object. Every non-struct
 field's key carries a Hungarian-notation type/size prefix, the same
 convention already used for this ROM's globals (`wHp`, `bLevel`,
-`g_abDefaultSaveHeader`):
+`g_abQuestEventState`):
 
 | Prefix | Meaning |
 |---|---|
@@ -548,7 +573,5 @@ a slot's content past its checksum.
   confirmed so far only drives its own sound/graphic-swap effect
   (`0x0802DF3C`); whatever door/platform/gate a lever is meant to
   control elsewhere in the room isn't traced yet.
-- Trace where `slotPreview` (`g_SaveManager+0x3C`) gets built from a
-  loaded slot, for the save-select UI.
 - JP-side addresses are not yet matched from these US ones (see
   `python3 -m tools.matching match-versions` / `just match-functions`).

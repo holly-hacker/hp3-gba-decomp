@@ -22,6 +22,9 @@
 // Display control: layer enables and display mode.
 #define REG_DISPCNT (*(volatile u16 *)0x04000000)
 
+// Display status: blank flags and the VBlank/HBlank/VCount IRQ enables.
+#define REG_DISPSTAT (*(volatile u16 *)0x04000004)
+
 // Window outside/OBJ-window layer enables.
 #define REG_WINOUT (*(volatile u16 *)0x0400004A)
 

@@ -231,7 +231,7 @@ extern void sub_080248E8(void);
 extern void sub_0801FA9C(void);
 extern void StopScanlineEffects(void);
 extern void sub_0802B20C(void);
-extern void InitObjTileAllocBitmaps(u32 arg);
+extern void InitObjTileAllocBitmaps(u8 bgMode);
 extern void ShowMapNamePopup(void);
 extern void OverworldVBlankCallback(void);
 extern void ClearScanlineEffects(void);

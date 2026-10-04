@@ -505,6 +505,7 @@ thumb-func 0x08021210 GetTextLineHeight
 c-file 0x080213BC 0x080213EC src/text/get_glyph_width.c GetGlyphWidth
 thumb-func 0x080215BC NoopInit
 thumb-func 0x080215C0 ResetSaveStateForNewGame
+c-file 0x08021660 0x080216AC src/save/unpack_save_slot_preview.c UnpackSaveSlotPreview
 c-file 0x080216AC 0x080216B8 src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 0x080216F0 src/save/process_playtime_tick.c ProcessPlaytimeTick
 thumb-func 0x080216FC AddSickles
@@ -643,6 +644,7 @@ c-file 0x0802C2C8 0x0802C348 src/mem/alloc_block.c AllocBlock
 c-file 0x0802C348 0x0802C3EC src/mem/alloc_zeroed.c AllocZeroed
 thumb-func 0x0802C3EC FreeBlock
 c-file 0x0802C4AC 0x0802C518 src/mem/memset.c memset
+c-file 0x0802C518 0x0802C580 src/mem/copy_memory.c CopyMemory
 c-file 0x0802C584 0x0802C5CC src/mem/init_memory_pool.c InitMemoryPool
 c-file 0x0802C5CC 0x0802C5EC src/mem/get_free_block_size.c GetFreeBlockSize
 c-file 0x0802C5EC 0x0802C600 src/mem/link_block_by_address.c LinkBlockByAddress
@@ -899,13 +901,25 @@ c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
 c-file 0x0803B6B4 0x0803B784 src/room/objects/sub_0803B64C.c sub_0803B64C
 thumb-func 0x0803B784 sub_0803B71C
 thumb-func 0x0803BA80 sub_0803BA18
-thumb-func 0x0803BD04 InitSaveSystem
-thumb-func 0x0803BD6C SetSaveLanguageFlag
+c-file 0x0803BC70 0x0803BD04 src/save/load_save_slot_previews.c LoadSaveSlotPreviews
+c-file 0x0803BD04 0x0803BD6C src/save/init_save_system.c InitSaveSystem
+c-file 0x0803BD6C 0x0803BD94 src/save/set_save_language_flag.c SetSaveLanguageFlag
+c-file 0x0803BD94 0x0803BDB0 src/save/clear_save_slot_buffer.c ClearSaveSlotBuffer
 thumb-func 0x0803BDB0 sub_0803BD48
+c-file 0x0803BE44 0x0803BE78 src/save/unpack_bytes_from_save_stream.c UnpackBytesFromSaveStream
 thumb-func 0x0803BF88 SaveGameToSlot
-thumb-func 0x0803C110 ValidateSaveSlot
-thumb-func 0x0803C144 LoadSaveSlot
+c-file 0x0803C110 0x0803C144 src/save/validate_save_slot.c ValidateSaveSlot
+c-file 0x0803C144 0x0803C160 src/save/load_save_slot.c LoadSaveSlot
 thumb-func 0x0803C17C SyncSaveHeaderIfDirty
+c-file 0x0803C248 0x0803C26C src/save/sum16.c Sum16
+c-file 0x0803C26C 0x0803C2AC src/save/write_default_save_header.c WriteDefaultSaveHeader
+c-file 0x0803C2AC 0x0803C304 src/save/validate_save_header.c ValidateSaveHeader
+c-file 0x0803C304 0x0803C348 src/save/write_default_save_options.c WriteDefaultSaveOptions
+c-file 0x0803C348 0x0803C380 src/save/validate_save_options.c ValidateSaveOptions
+c-file 0x0803C380 0x0803C3B0 src/save/eeprom_read_blocks.c EepromReadBlocks
+c-file 0x0803C3B0 0x0803C3E0 src/save/eeprom_write_blocks.c EepromWriteBlocks
+c-file 0x0803C3E0 0x0803C410 src/save/eeprom_transfer_begin.c EepromTransferBegin
+c-file 0x0803C410 0x0803C424 src/save/eeprom_transfer_end.c EepromTransferEnd
 thumb-func 0x0803C678 DarkenScreenPalette
 thumb-func 0x0803D330 InitScreenTransitionState_candidate
 thumb-func 0x0803D350 SetFadeToBlack
@@ -967,7 +981,7 @@ c-file 0x080422A4 0x080422F0 src/gamemode/modes/minigame/divination_tea/exit_div
 thumb-func 0x080422F0 sub_08042288
 thumb-func 0x08042338 sub_080422D0
 c-file 0x08042428 0x080425D0 src/text/format_decimal.c FormatDecimal
-thumb-func 0x080425D0 InitDialogTextEngine
+c-file 0x080425D0 0x080425F0 src/text/init_dialog_text_engine.c InitDialogTextEngine
 c-file 0x080425F0 0x08042618 src/text/set_language.c SetLanguage
 c-file 0x08042618 0x08042624 src/text/get_language.c GetLanguage
 c-file 0x08042624 0x08042648 src/text/get_dialog_text.c GetDialogText
@@ -1029,7 +1043,7 @@ thumb-func 0x080451D4 StopScanlineEffects
 thumb-func 0x08045200 ClearScanlineEffects
 thumb-func 0x08045218 IsScanlineEffectQueueIdle
 c-file 0x080452E0 0x08045304 src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
-thumb-func 0x08045304 InitObjTileAllocBitmaps
+c-file 0x08045304 0x08045358 src/object/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x08045358 sub_0804542C
 thumb-func 0x08045420 sub_080454F4
 thumb-func 0x08045440 FreeObjectVramTileAllocation
@@ -1247,6 +1261,8 @@ c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aSt
 label 0x0806B288 g_aStatusEquipSlots
 label 0x0806B760 g_apRoomObjUnkCAnimFrames
 label 0x0806B768 g_abRoomObjUnkCAnimData
+label 0x0806B798 g_DefaultSaveHeader
+label 0x0806B7A8 g_DefaultSaveOptions
 label 0x0806B858 g_pIwramSectionStart
 label 0x0806B85C g_pIwramSectionEnd
 label 0x0806B860 g_pEwramSectionStart
