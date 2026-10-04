@@ -49,7 +49,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
         PlaySoundById(0x45);
         for (i = 0; i <= 8; i++)
         {
-            SetFadeToWhite(0x3f, ((i & 2) << 20) >> 16);
+            SetFadeToWhite(0x3f, (i & 2) << 4);
             WaitForVBlank();
         }
         g_abQuestEventState[QUEST_ALT_PRESENTATION] = 1;
@@ -57,7 +57,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
         PlayMusicModule(9);
         for (i = 0; i <= 9; i++)
         {
-            SetFadeToWhite(0x3f, ((i & 2) << 20) >> 16);
+            SetFadeToWhite(0x3f, (i & 2) << 4);
             WaitForVBlank();
         }
         REG_BLDCNT = savedBlendControl;

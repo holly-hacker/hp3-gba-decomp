@@ -6,6 +6,10 @@
 
 extern void ClearVram(void);
 extern void ClearPaletteRam(void);
+extern void ClearOamDma(void);
+extern void ClearPaletteRamDma(void);
+// ClearVram, ClearOamDma, then ClearPaletteRamDma.
+extern void ClearVideoMemory(void);
 
 // Per-frame ticks run by TickFrameSystems; see docs/memory-map/frame_systems.md.
 extern void TickBgLayers_candidate(void);
@@ -42,7 +46,7 @@ extern void DisableBg(u32 bg);
 extern void SetBgPriority(u32 bg, u32 priority);
 extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
 // Sets BLDCNT (layer mask | fade mode) and BLDY (amount, at most 0x10).
-extern void SetFadeToWhite(u16 layerMask, u32 amount);
+extern void SetFadeToWhite(u16 layerMask, u16 amount);
 extern void SetFadeToBlack(u16 layerMask, u16 amount);
 
 // Hardware windows: layer masks, rectangle (16.16 coordinates), and hiding one.

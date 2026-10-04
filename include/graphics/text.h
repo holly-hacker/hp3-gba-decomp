@@ -38,18 +38,19 @@ typedef enum {
     LanguageDanish    = 7,
 } Language;
 
-// Font descriptor, partial. Widths are indexed by (glyphCode - firstCode).
+// Font descriptor, filled from a font blob by LoadFontDescriptor (see
+// docs/formats/fonts.md). Widths are indexed by (glyphCode - firstCode).
 typedef struct {
-    u16 unk0;
+    u8 height;
     u16 firstCode;
     u16 lastCode;
-    u16 unk6;
-    u32 unk8;
+    u8 unk6;                    // per-font value from g_aFontTable
+    const u16 *pGlyphOffsets;
     const u8 *pWidths;
 #ifdef VERSION_JP
     const u32 *pGlyphFlags;     // 2 flag bits per glyph (see DrawTextLine)
 #endif
-    void *unk10;                // pointer into the font blob; at +0x14 in JP
+    const u8 *pBitmaps;
 } FontDescriptor;
 
 // Text renderer state at 0x03003110, partial.
@@ -69,6 +70,23 @@ extern u8 gCurrentLanguage;
 extern u8 gLocaleThousandsSep;
 extern TextRenderState gTextRenderState;
 extern u8 *sTextMacroTable[4];
+
+// ROM font lists: blob pointer and the value copied to FontDescriptor.unk6.
+// g_aFontTable holds the Latin fonts; JP adds g_aExtFontTable, the
+// two-byte-glyph (kana/kanji) fonts for descriptor slot 1.
+typedef struct {
+    const u8 *pBlob;
+    u32 value;
+} FontTableEntry;
+
+extern const FontTableEntry g_aFontTable[12];
+#ifdef VERSION_JP
+extern const FontTableEntry g_aExtFontTable[12];
+#endif
+// Descriptor pairs, one per font index (slot 0 and slot 1).
+extern FontDescriptor g_aFontDescriptors[12][2];
+void LoadFontDescriptor(u32 index, u32 slot);
+void InitTextMacroTable(void);
 s32 DecompressDialogText(s32 stringId, u8 *outBuf, s32 maxSize);
 void InitDialogTextEngine(void);
 u8 *GetDialogText(s32 stringId);

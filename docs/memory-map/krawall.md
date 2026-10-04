@@ -536,7 +536,9 @@ caller statically nail down the whole picture:
     (`0x03001598`, `0x020027F8` respectively) and masked with `0xFFFFFF`
     at the call site rather than stored as plain lengths -- reads like
     linker-generated region-end symbols (`__iwram_end`, `__ewram_end`)
-    rather than hand-written constants, though not confirmed.
+    rather than hand-written constants. The same four bounds are stored as
+    ROM pointers (`g_pIwramSectionStart` etc., US `0x0806B8CC`) that
+    `ClearWorkRam` uses to zero the RAM above both sections.
   - Also writes byte `8` to IWRAM `0x03005AC0` just before the copies --
     candidate "driver state" flag, not investigated further.
 

@@ -9,20 +9,23 @@ see [`text.md`](text.md)) reads them through `FontDescriptor`s in RAM.
 ## Selection (STRUCTURAL MATCH)
 
 `SelectTextFont(index, color, ...)` points `gTextRenderState` at the descriptor
-`index` of the RAM table at `0x03002F30` (`0x28` bytes per font: two `0x14`-byte
-descriptors, one per glyph-code range). `sub_08020C64(index, slot)` fills a
-descriptor from a table of `{font pointer, value}` entries. The value is copied
-into the descriptor at `+6`; its meaning is not traced.
+`index` of `g_aFontDescriptors` (`0x03002F30`, two descriptors per font index:
+`0x14` bytes each in US, `0x18` in JP, which adds `pGlyphFlags`).
+`InitTextMacroTable` fills them at boot through `LoadFontDescriptor(index,
+slot)`, which reads the blob header below from a ROM table of `{font pointer,
+value}` entries. The value is copied into the descriptor's `unk6`; its meaning
+is not traced.
 
-- US, 12 entries at `0x080604DC`: 0-9 are the ten Latin fonts in ROM order
-  (values 8, 8, 8, 16, 16, 13, 16, 8, 8, 8); entries 10 and 11 reuse fonts 7 and
-  9 (values 12 and 8).
-- JP, 24 entries at `0x08060408`: 0-2 and 7-9 are the 9-pixel kanji font (value
-  9), 3-4 the first 12-pixel kanji font (16), 5-6 the second 12-pixel one (16),
-  10 the first 12-pixel one again (12), 11 the 8-pixel one (8). Entries 12-21 are
-  the ten Latin fonts in ROM order (values 8, 8, 8, 16, 16, 13, 16, 8, 8, 8),
-  22 and 23 reuse Latin fonts 5 and 9 (12 and 8; US reuses 7 and 9). A Latin
-  font's index is 12 higher in JP than in US.
+- US `g_aFontTable`, 12 entries at `0x080604DC`, slot 0 only: 0-9 are the ten
+  Latin fonts in ROM order (values 8, 8, 8, 16, 16, 13, 16, 8, 8, 8); entries
+  10 and 11 reuse fonts 7 and 9 (values 12 and 8).
+- JP fills both slots. Slot 1 comes from `g_aExtFontTable` (12 entries at
+  `0x08060408`): 0-2 and 7-9 are the 9-pixel kanji font (value 9), 3-4 the
+  first 12-pixel kanji font (16), 5-6 the second 12-pixel one (16), 10 the
+  first 12-pixel one again (12), 11 the 8-pixel one (8). Slot 0 comes from
+  `g_aFontTable` (12 entries at `0x08060468`): the ten Latin fonts in ROM order
+  (values 8, 8, 8, 16, 16, 13, 16, 8, 8, 8), then Latin fonts 5 and 9 (12 and
+  8; US reuses 7 and 9). Both slots take `unk6` from `g_aExtFontTable`.
 
 ## Font blob (PROVEN: all fourteen rebuild byte for byte)
 

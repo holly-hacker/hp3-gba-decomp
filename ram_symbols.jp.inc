@@ -114,6 +114,7 @@
 .set g_DialogState_candidate,                          0x03002E88
 .set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ see ram_symbols.us.inc
 .set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C
+.set g_aFontDescriptors,                                  0x03002F30
 .set gTextRenderState,                                 0x03003170  @ text-rendering fields (e.g. +0x11 = line height); not
                                                                    @ fully mapped, see include/graphics/text.h
 .set sTextMacroTable,                                  0x030031D0  @ see ram_symbols.us.inc
@@ -195,6 +196,10 @@
 .set g_bTouchedMonsterRecordCount,           0x03003BD0  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,             0x03003BE8  @ Object *: armed wandering-monster object
+.set g_abIwramDivideCode,                   0x03003BF0
+.set g_pfnIwramDivideSignedQuotient,        0x03003F30
+.set g_pfnIwramDivideSignedRemainder,       0x03003F34
+.set g_pfnIwramDivideUnsigned,              0x03003F38
 .set gMemPool,                               0x03003F40
 .set gMemPoolCount,                          0x03003F50
 .set g_GameModeStackContext,                 0x03003F54  @ see ram_symbols.us.inc

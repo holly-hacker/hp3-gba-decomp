@@ -151,3 +151,14 @@ void FreeAllObjects(ListNode **activeListHead);
 void SortObjectsByDepth(void);
 void CheckObjectCollisions(void);
 void InitObjectPool(void);
+
+// Start/end of the statically linked IWRAM and EWRAM sections, as ROM
+// pointer constants. kramInstall copies the ROM image of these sections
+// to RAM; ClearWorkRam zeroes the RAM above them.
+extern u8 *const g_pIwramSectionStart;
+extern u8 *const g_pIwramSectionEnd;
+extern u8 *const g_pEwramSectionStart;
+extern u8 *const g_pEwramSectionEnd;
+
+void ClearSystemMemory(void);
+void ClearWorkRam(void);

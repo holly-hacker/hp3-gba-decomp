@@ -10,12 +10,10 @@
 #include "game/save.h"
 #include "graphics/graphics.h"
 #include "menu/main_menu.h"
+#include "divide.h"
 
-extern void ClearSystemMemory(void);
-extern void InstallIwramDivideRoutines(void);
 extern void InstallIwramFindFreeObjTileRun(void);
 extern void InstallIwramDecompressCodecs(void);
-extern void InitTextMacroTable(void);
 extern void InitSaveSystem(void);
 extern void InitGammaPalette(void);
 extern void NoopInit(void);

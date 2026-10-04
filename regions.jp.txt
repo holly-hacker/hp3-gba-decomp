@@ -492,7 +492,8 @@ thumb-func 0x080205E0 sub_080205F8
 c-file 0x08020654 0x0802086C src/text/draw_text_line.c DrawTextLine
 thumb-func 0x0802086C DrawStringAligned
 thumb-func 0x080209C4 DrawString
-thumb-func 0x08020D3C InitTextMacroTable
+c-file 0x08020C44 0x08020CD4 src/text/load_font_descriptor.c LoadFontDescriptor
+c-file 0x08020D3C 0x08020D74 src/text/init_text_macro_table.c InitTextMacroTable
 thumb-func 0x08020D74 SetTextTargetFromBgControl
 thumb-func 0x08020E04 SelectTextFont
 thumb-func 0x08020E48 SetTextLineHeight
@@ -631,11 +632,13 @@ thumb-func 0x0802BC08 sub_0802BBAC
 c-file 0x0802BCB0 0x0802BCD0 src/room/objects/sub_0802BC54.c sub_0802BC54
 thumb-func 0x0802BCD0 sub_0802BC74
 thumb-func 0x0802BCF0 GrantPartyExperience_candidate
-thumb-func 0x0802BE48 InstallIwramDivideRoutines
-thumb-func 0x0802BE9C iwramDivideSignedRemainder
+c-file 0x0802BE48 0x0802BE88 src/math/install_iwram_divide_routines.c InstallIwramDivideRoutines
+c-file 0x0802BE88 0x0802BE9C src/math/iwram_divide_signed_quotient.c iwramDivideSignedQuotient
+c-file 0x0802BE9C 0x0802BEB0 src/math/iwram_divide_signed_remainder.c iwramDivideSignedRemainder
+c-file 0x0802BEB0 0x0802BEC4 src/math/iwram_divide_unsigned_unused.c iwramDivideUnsigned_unused
 thumb-func 0x0802BF44 FixedMultiply
 thumb-func 0x0802C1A4 sub_0802C148
-thumb-func 0x0802C2B0 InitHeap
+c-file 0x0802C2B0 0x0802C2C8 src/mem/init_heap.c InitHeap
 c-file 0x0802C2C8 0x0802C348 src/mem/alloc_block.c AllocBlock
 c-file 0x0802C348 0x0802C3EC src/mem/alloc_zeroed.c AllocZeroed
 thumb-func 0x0802C3EC FreeBlock
@@ -869,8 +872,12 @@ thumb-func 0x0803AC1C ExitCardTrade
 thumb-func 0x0803AF08 InitializeFolioCardDetailScreen
 thumb-func 0x0803B008 HandleFolioCardDetailScreenTick
 thumb-func 0x0803B034 ExitFolioCardDetailScreen
-thumb-func 0x0803B128 ClearSystemMemory
-thumb-func 0x0803B1C0 ClearVram
+c-file 0x0803B128 0x0803B138 src/mem/clear_system_memory.c ClearSystemMemory
+c-file 0x0803B138 0x0803B1AC src/mem/clear_work_ram.c ClearWorkRam
+c-file 0x0803B1AC 0x0803B1C0 src/mem/clear_video_memory.c ClearVideoMemory
+c-file 0x0803B1C0 0x0803B1D4 src/mem/clear_vram.c ClearVram
+c-file 0x0803B1D4 0x0803B1F8 src/mem/clear_oam_dma.c ClearOamDma
+c-file 0x0803B1F8 0x0803B220 src/mem/clear_palette_ram_dma.c ClearPaletteRamDma
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B220 0x0803B37C src/rng/regenerate.c Mt19937Regenerate
@@ -902,7 +909,7 @@ thumb-func 0x0803C17C SyncSaveHeaderIfDirty
 thumb-func 0x0803C678 DarkenScreenPalette
 thumb-func 0x0803D330 InitScreenTransitionState_candidate
 thumb-func 0x0803D350 SetFadeToBlack
-thumb-func 0x0803D378 SetFadeToWhite
+c-file 0x0803D378 0x0803D3A0 src/graphics/set_fade_to_white.c SetFadeToWhite
 thumb-func 0x0803D3A0 SetAlphaBlendTargets
 thumb-func 0x0803D3B8 SetAlphaBlendCoefficients
 thumb-func 0x0803D418 PlayScreenTransitionInByIndex
@@ -1158,6 +1165,8 @@ label 0x0805EA3C g_dwHippogriffFliesIntoAirBg0Control
 label 0x0805EA40 g_HippogriffFliesIntoAirAsset
 label 0x0805EA50 g_HippogriffFliesIntoAirAsset2
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
+label 0x08060408 g_aExtFontTable
+label 0x08060468 g_aFontTable
 label 0x080604D0 g_stPlaytimeFrameDelta
 label 0x080604D8 g_stPlaytimeHourLimit
 label 0x08060810 g_PlayerCameraFocusOffset
@@ -1238,6 +1247,10 @@ c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aSt
 label 0x0806B288 g_aStatusEquipSlots
 label 0x0806B760 g_apRoomObjUnkCAnimFrames
 label 0x0806B768 g_abRoomObjUnkCAnimData
+label 0x0806B858 g_pIwramSectionStart
+label 0x0806B85C g_pIwramSectionEnd
+label 0x0806B860 g_pEwramSectionStart
+label 0x0806B864 g_pEwramSectionEnd
 label 0x0806B888 g_apRoomObjUnkAAnimFrames
 label 0x0806B894 g_apRoomObjUnkAEffectData
 label 0x0806B8A0 g_abRoomObjUnkAAnimData

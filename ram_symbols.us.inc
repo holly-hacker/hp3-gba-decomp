@@ -125,10 +125,11 @@
 .set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/menu/dialog.h
 .set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ Object *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
 .set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C  @ Object *
+.set g_aFontDescriptors,                                  0x03002F30  @ FontDescriptor[12][2], filled by LoadFontDescriptor
 .set gTextRenderState,                                 0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
                                                                    @ text-rendering fields (e.g. +0x11 = line height); not
                                                                    @ fully mapped, see include/graphics/text.h
-.set sTextMacroTable,                                  0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by sub_08020D30) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
+.set sTextMacroTable,                                  0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by InitTextMacroTable) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickObject clears; see src/object/tick_object.c
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
@@ -211,6 +212,10 @@
 .set g_bTouchedMonsterRecordCount,           0x03003B70  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003B74  @ u8[20]: 5 x 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,             0x03003B88  @ Object *: armed wandering-monster object
+.set g_abIwramDivideCode,                   0x03003B90  @ u8[0x340]: IWRAM copy of the ARM divide routines (InstallIwramDivideRoutines)
+.set g_pfnIwramDivideSignedQuotient,        0x03003ED0  @ IWRAM entry of DivideSignedQuotient
+.set g_pfnIwramDivideSignedRemainder,       0x03003ED4  @ IWRAM entry of DivideSignedRemainder
+.set g_pfnIwramDivideUnsigned,              0x03003ED8  @ IWRAM entry of DivideUnsignedWorker
 .set gMemPool,                               0x03003EE0  @ MemPool[]; only pool 0 (index 0) is ever registered
 .set gMemPoolCount,                          0x03003EF0  @ u32: live pool count, incremented by InitMemoryPool
 .set g_GameModeStackContext,                 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
