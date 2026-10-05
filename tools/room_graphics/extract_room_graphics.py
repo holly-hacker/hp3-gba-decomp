@@ -29,7 +29,7 @@ def manifest_rows(ver: str):
     table, names = None, {}
     for line in (ROOT / f"regions.{ver}.txt").read_text().splitlines():
         parts = line.split("#", 1)[0].split()
-        if len(parts) == 3 and parts[0] == "label" and parts[2] == "g_aRoomTable":
+        if parts and parts[-1] == "g_aRoomTable" and parts[0] in ("label", "c-file"):
             table = int(parts[1], 16)
         elif len(parts) == 5 and parts[0] == "asm-file":
             m = re.fullmatch(r"Room(\d\d)Blob", parts[4])
