@@ -1021,16 +1021,19 @@ byte for byte. Without group names it replaces all of `data/graphics/`.
 
 An `image-bank` run's options are `bpp` (4 or 8), `componentOrder` (the
 ROM order of each image's `palette`/`tiles`/`frames` components),
-`storedCells`, `noPalette`, and `paletteHeader`/`paletteTrailer` bytes
-around every palette. An image's settings in `graphics.json` are one of:
+`storedCells`, `noPalette`, `paletteHeader`/`paletteTrailer` bytes
+around every palette, and `paletteSources`, which maps a sprite without a
+palette to the item whose palette the game draws it with (taken from the
+sprite's asset records); extraction colors its PNGs with that palette, and
+packing ignores it. An image's settings in `graphics.json` are one of:
 
 - a **derived sprite**, `{offset, compression}`: one frame,
   `<name>.png`, cells cut from the image size (see "Sprite images");
 - a **stored-layout sprite**, `{palette, header, frames}`:
   `<name>.<i>.png` per frame, each frame listing `offset`, `compression`,
   `cells` (`[x, y, w, h]` in tiles), `parts`, and `extra`; `palette:
-  false` means the sprite's palette lives outside the run and its PNGs
-  carry a gray display palette that packing ignores;
+  false` means the sprite's palette lives elsewhere; its PNGs carry the
+  `paletteSources` palette, or a gray one, which packing ignores;
 - a **palette**, `{paletteOnly: true}`: `<name>.png`, a one-row
   swatch whose PNG palette is the data.
 

@@ -43,6 +43,9 @@ def walk(ver: str, rom: bytes, known) -> tuple[dict[str, list[runs.Run]], dict[s
             except (ValueError, IndexError) as exc:
                 raise ValueError(f"{ver}: {row.group.name}: {exc}") from None
             addresses.update((name, start) for name, (start, _) in zip(run.names, spans))
+            palettes = getattr(runs.KINDS[run.kind], "palettes", None)
+            if palettes is not None:
+                addresses.update((f"{name}.palette", addr) for name, addr in palettes(rom, ver, run).items())
             walked.append(run)
             addr = spans[-1][1]
         if addr != row.end:

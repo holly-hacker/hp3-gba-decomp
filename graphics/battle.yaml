@@ -6,6 +6,10 @@ groups:
         count: 3
         names: {1: AllyHead001}
         noPalette: [AllyHead003]
+        paletteSources:
+          AllyHead001: BattleIcon037
+          AllyHead002: BattleIcon037
+          AllyHead003: BattleIcon038
 
   - name: BgGraphics
     runs:
@@ -56,11 +60,54 @@ groups:
         count: 36
         names: {1: MonsterBattle001}
         noPalette: [MonsterBattle025]
+        paletteSources:
+          MonsterBattle003: MonsterPalette003
+          MonsterBattle005: MonsterPalette006
+          MonsterBattle006: MonsterPalette008
+          MonsterBattle010: MonsterPalette018
+          MonsterBattle014: MonsterPalette024
+          MonsterBattle015: MonsterPalette026
+          MonsterBattle016: MonsterPalette028
+          MonsterBattle017: MonsterPalette030
+          MonsterBattle023: MonsterPalette032
+          MonsterBattle024: MonsterPalette036
+          MonsterBattle025: MonsterPalette037
       # Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
       - kind: image-bank
         count: 39
         names: {1: BattleIcon001}
         noPalette: [BattleIcon036]
+        paletteSources:
+          BattleIcon002: MonsterBattle001
+          BattleIcon003: MonsterBattle002
+          BattleIcon004: MonsterPalette003
+          BattleIcon005: MonsterBattle004
+          BattleIcon006: MonsterPalette006
+          BattleIcon007: MonsterPalette008
+          BattleIcon009: MonsterBattle008
+          BattleIcon010: MonsterBattle009
+          BattleIcon011: MonsterPalette018
+          BattleIcon015: MonsterPalette024
+          BattleIcon016: MonsterPalette026
+          BattleIcon017: MonsterPalette028
+          BattleIcon018: MonsterPalette030
+          BattleIcon019: MonsterBattle018
+          BattleIcon020: MonsterBattle019
+          BattleIcon021: MonsterBattle020
+          BattleIcon022: MonsterBattle021
+          BattleIcon023: MonsterBattle022
+          BattleIcon024: MonsterPalette034
+          BattleIcon025: MonsterPalette035
+          BattleIcon026: MonsterPalette037
+          BattleIcon028: MonsterBattle028
+          BattleIcon029: MonsterBattle029
+          BattleIcon030: MonsterBattle030
+          BattleIcon031: MonsterBattle031
+          BattleIcon032: MonsterBattle032
+          BattleIcon033: MonsterBattle033
+          BattleIcon034: MonsterBattle034
+          BattleIcon035: MonsterBattle035
+          BattleIcon036: MonsterBattle036
       # g_aFighterAnimTable records
       - kind: image-bank
         count: 31
@@ -94,6 +141,20 @@ groups:
         count: 114
         names: {1: BattleEffect001}
         noPalette: [BattleEffect020]
+        paletteSources:
+          BattleEffect006: BattleEffect005
+          BattleEffect007: BattleEffect005
+          BattleEffect008: BattleEffect005
+          BattleEffect010: BattleEffect009
+          BattleEffect011: BattleEffect009
+          BattleEffect012: BattleEffect009
+          BattleEffect016: BattleEffect015
+          BattleEffect017: BattleEffect015
+          BattleEffect019: BattleEffect018
+          BattleEffect020: BattleEffect018
+          BattleEffect037: BattleEffect003
+          BattleEffect072: BattleEffect004
+          BattleEffect093: BattleEffect079
 
   - name: BattleEffects2
     runs:

@@ -6,7 +6,9 @@ OAM cells (its palette is then optional per sprite, and a palette not
 followed by tiles is its own image); `noPalette`, sprites without a palette
 whose next data is not a tile stream (the palette of other records, or the
 next run); and `paletteHeader`/`paletteTrailer`, bytes around every
-palette. Each component is labeled g<Image><Component>. See
+palette; and `paletteSources`, which maps a sprite without a palette to
+the item whose palette its PNGs are drawn with (display only; packing
+ignores it). Each component is labeled g<Image><Component>. See
 docs/formats/graphics.md ("Sprite images").
 """
 import re
@@ -20,7 +22,7 @@ ROM_BASE = 0x08000000
 ITEMS = "images"
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 OPTIONS = {"bpp": 4, "componentOrder": ["tiles", "frames", "palette"], "storedCells": True,
-           "noPalette": [], "paletteHeader": [], "paletteTrailer": []}
+           "noPalette": [], "paletteHeader": [], "paletteTrailer": [], "paletteSources": {}}
 ENTRY_KEYS = [
     {"name", "offset", "compression"},
     {"name", "palette", "header", "frames"},
@@ -83,6 +85,10 @@ def check_entry(image: dict) -> None:
 
 
 def check(run: dict) -> None:
+    sources = run["paletteSources"]
+    if not isinstance(sources, dict) or not all(
+            isinstance(k, str) and isinstance(v, str) and SYMBOL.fullmatch(v) for k, v in sources.items()):
+        raise ValueError("paletteSources must map image names to item names")
     for key in ("paletteHeader", "paletteTrailer"):
         _ints(run[key], len(run[key]), key)
         if not all(0 <= b <= 0xFF for b in run[key]):
@@ -135,8 +141,10 @@ def build(source: Path, settings: dict, image: dict) -> list[tuple[str, bytes]]:
     return pieces
 
 
-def split_bank(rom: bytes, run) -> list[tuple[str, int, int, dict[str, bytes]]]:
-    """Each image of a run, from its start: (name, start, end, components)."""
+def split_bank(rom: bytes, run, palettes: dict[str, int] | None = None
+               ) -> list[tuple[str, int, int, dict[str, bytes]]]:
+    """Each image of a run, from its start: (name, start, end, components).
+    palettes, when given, receives each palette's ROM address by image name."""
     settings = run.options
     bpp, stored = settings["bpp"], settings["storedCells"]
     entries = []
@@ -146,6 +154,8 @@ def split_bank(rom: bytes, run) -> list[tuple[str, int, int, dict[str, bytes]]]:
         components = {}
         if stored and tile_stream_length(rom[cursor:limit]) is None:
             components["palette"] = rom[cursor:cursor + (2 << bpp)]
+            if palettes is not None:
+                palettes[entry_name] = cursor + ROM_BASE
             cursor += 2 << bpp
             entries.append((entry_name, entry_start + ROM_BASE, cursor + ROM_BASE, components))
             continue
@@ -172,6 +182,8 @@ def split_bank(rom: bytes, run) -> list[tuple[str, int, int, dict[str, bytes]]]:
                     if list(rom[cursor:cursor + len(trailer)]) != trailer:
                         raise ValueError(f"palette trailer is not {bytes(trailer).hex()}")
                     components[kind] = rom[palette_at:cursor]
+                    if palettes is not None:
+                        palettes[entry_name] = palette_at + ROM_BASE
                     cursor += len(trailer)
                     continue
                 else:
@@ -187,6 +199,18 @@ def walk(rom: bytes, ver: str, run) -> list[tuple[int, int]]:
     return [(start, end) for _, start, end, _ in split_bank(rom, run)]
 
 
+def palettes(rom: bytes, ver: str, run) -> dict[str, int]:
+    """The ROM address of each image's palette, by image name."""
+    found = {}
+    split_bank(rom, run, found)
+    return found
+
+
 def extract(rom: bytes, ver: str, run, source: Path, find) -> list[dict]:
+    size = 2 << run.options["bpp"]
+    shown = {}
+    for name, item in run.options["paletteSources"].items():
+        addr = find(f"{item}.palette") - ROM_BASE
+        shown[name] = rom[addr:addr + size]
     return extract_images(source, run.options["bpp"], [(n, c) for n, _, _, c in split_bank(rom, run)],
-                          run.options["storedCells"])
+                          run.options["storedCells"], shown)

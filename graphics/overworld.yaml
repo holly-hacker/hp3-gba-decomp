@@ -4,6 +4,8 @@ groups:
       - kind: image-bank
         count: 28
         names: {1: OverworldSpellEffect001}
+        paletteSources:
+          OverworldSpellEffect012: OverworldSpellEffect003
 
   - name: OverworldPlayerSprites
     runs:
@@ -11,6 +13,18 @@ groups:
         count: 19
         names: {1: OverworldPlayer001}
         noPalette: [OverworldPlayer019]
+        paletteSources:
+          OverworldPlayer002: OverworldPlayer004
+          OverworldPlayer008: OverworldPlayer004
+          OverworldPlayer009: OverworldPlayer005
+          OverworldPlayer010: OverworldPlayer006
+          OverworldPlayer012: OverworldPlayer011
+          OverworldPlayer013: OverworldPlayer011
+          OverworldPlayer014: OverworldPlayer005
+          OverworldPlayer015: OverworldPlayer006
+          OverworldPlayer016: OverworldPlayer004
+          OverworldPlayer017: OverworldPlayer005
+          OverworldPlayer018: OverworldPlayer006
 
   - name: MonsterOverworldSprites
     runs:
@@ -18,6 +32,18 @@ groups:
       - kind: image-bank
         count: 29
         names: {1: MonsterOverworld001}
+        paletteSources:
+          MonsterOverworld003: MonsterOverworld029
+          MonsterOverworld005: MonsterPalette006
+          MonsterOverworld006: MonsterPalette008
+          MonsterOverworld010: MonsterPalette018
+          MonsterOverworld014: MonsterPalette024
+          MonsterOverworld015: MonsterPalette026
+          MonsterOverworld016: MonsterPalette028
+          MonsterOverworld017: MonsterPalette030
+          MonsterOverworld023: MonsterPalette033
+          MonsterOverworld024: MonsterPalette035
+          MonsterOverworld025: MonsterPalette037
       # Scabbers, a recolor palette, the Giant Rat transformation, and the coin icon
       - kind: image-bank
         count: 4
@@ -36,6 +62,9 @@ groups:
           96: ObjectSprite096
           102: ClockSkipObject1
           104: ObjectSprite104
+        paletteSources:
+          ObjectSprite031: ObjectSprite096
+          ObjectSprite032: ObjectSprite097
 
   - name: ObjectSprites2
     runs:
@@ -43,6 +72,90 @@ groups:
         count: 195
         names: {1: ObjectSprite2_001}
         noPalette: [ObjectSprite2_195]
+        paletteSources:
+          ObjectSprite2_022: OverworldPlayer006
+          ObjectSprite2_026: OverworldPlayer005
+          ObjectSprite2_027: OverworldPlayer006
+          ObjectSprite2_034: OverworldPlayer004
+          ObjectSprite2_078: OverworldPlayer006
+          ObjectSprite2_082: OverworldPlayer005
+          ObjectSprite2_083: OverworldPlayer004
+          ObjectSprite2_112: ObjectSprite2_114
+          ObjectSprite2_113: ObjectSprite2_114
+          ObjectSprite2_116: ObjectPalette050
+          ObjectSprite2_117: ObjectSprite2_118
+          ObjectSprite2_119: ObjectSprite2_122
+          ObjectSprite2_120: ObjectSprite2_123
+          ObjectSprite2_121: ObjectSprite2_124
+          ObjectSprite2_126: ObjectPalette001
+          ObjectSprite2_127: ObjectPalette002
+          ObjectSprite2_128: ObjectPalette002
+          ObjectSprite2_129: ObjectPalette003
+          ObjectSprite2_130: ObjectPalette004
+          ObjectSprite2_131: ObjectPalette005
+          ObjectSprite2_132: ObjectPalette006
+          ObjectSprite2_133: ObjectPalette007
+          ObjectSprite2_134: ObjectPalette008
+          ObjectSprite2_135: ObjectPalette009
+          ObjectSprite2_136: ObjectPalette010
+          ObjectSprite2_137: ObjectPalette011
+          ObjectSprite2_138: ObjectPalette012
+          ObjectSprite2_139: ObjectPalette013
+          ObjectSprite2_140: ObjectPalette014
+          ObjectSprite2_141: ObjectPalette015
+          ObjectSprite2_142: ObjectPalette016
+          ObjectSprite2_143: ObjectPalette017
+          ObjectSprite2_144: ObjectPalette018
+          ObjectSprite2_145: ObjectPalette019
+          ObjectSprite2_146: ObjectPalette020
+          ObjectSprite2_147: ObjectPalette021
+          ObjectSprite2_148: ObjectPalette022
+          ObjectSprite2_149: ObjectPalette023
+          ObjectSprite2_150: ObjectPalette024
+          ObjectSprite2_151: ObjectPalette024
+          ObjectSprite2_152: ObjectPalette023
+          ObjectSprite2_153: ObjectPalette026
+          ObjectSprite2_154: ObjectPalette027
+          ObjectSprite2_155: ObjectPalette025
+          ObjectSprite2_156: ObjectPalette025
+          ObjectSprite2_157: ObjectPalette025
+          ObjectSprite2_158: ObjectPalette025
+          ObjectSprite2_159: ObjectPalette028
+          ObjectSprite2_160: ObjectSprite2_002
+          ObjectSprite2_161: ObjectPalette025
+          ObjectSprite2_162: ObjectPalette025
+          ObjectSprite2_163: ObjectPalette029
+          ObjectSprite2_164: ObjectPalette030
+          ObjectSprite2_165: ObjectPalette031
+          ObjectSprite2_166: ObjectPalette032
+          ObjectSprite2_168: ObjectPalette033
+          ObjectSprite2_169: ObjectPalette034
+          ObjectSprite2_170: ObjectPalette035
+          ObjectSprite2_171: ObjectPalette036
+          ObjectSprite2_172: ObjectPalette037
+          ObjectSprite2_173: ObjectPalette038
+          ObjectSprite2_174: ObjectPalette039
+          ObjectSprite2_175: ObjectPalette040
+          ObjectSprite2_176: ObjectPalette041
+          ObjectSprite2_177: ObjectPalette042
+          ObjectSprite2_178: ObjectPalette043
+          ObjectSprite2_179: ObjectPalette044
+          ObjectSprite2_180: ObjectPalette045
+          ObjectSprite2_181: ObjectPalette046
+          ObjectSprite2_182: ObjectPalette047
+          ObjectSprite2_183: ObjectPalette048
+          ObjectSprite2_184: ObjectPalette051
+          ObjectSprite2_185: ObjectPalette052
+          ObjectSprite2_186: ObjectPalette053
+          ObjectSprite2_187: ObjectPalette054
+          ObjectSprite2_188: ObjectPalette055
+          ObjectSprite2_189: ObjectPalette056
+          ObjectSprite2_190: ObjectPalette057
+          ObjectSprite2_191: ObjectPalette058
+          ObjectSprite2_192: ObjectPalette059
+          ObjectSprite2_193: ObjectPalette060
+          ObjectSprite2_194: ObjectPalette061
+          ObjectSprite2_195: ObjectPalette062
       # The palettes g_apRoomObjTriggerEffectData points to
       - kind: image-bank
         count: 62

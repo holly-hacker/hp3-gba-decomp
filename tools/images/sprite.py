@@ -527,9 +527,11 @@ def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool, 
     return {"name": name, "offset": frame["offset"], "compression": frame["compression"]}
 
 
-def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, stored_cells: bool) -> dict:
+def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, stored_cells: bool,
+            display_palette: bytes | None = None) -> dict:
     """Write one image entry's PNGs and return its settings. Fails
-    unless rebuilding from the PNGs reproduces every component byte for byte."""
+    unless rebuilding from the PNGs reproduces every component byte for byte.
+    display_palette colors the PNGs of an image without its own palette."""
     entry = entry_settings(name, components, stored_cells, bpp)
     bank_bpp, bpp = bpp, entry.get("bpp", bpp)
     if entry.get("paletteOnly"):
@@ -538,8 +540,12 @@ def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, sto
                   decode_palette(clear_high_bits(components["palette"]), bpp), bpp)
     else:
         record = decode_frames(components["frames"])
-        colors = (decode_palette(components["palette"], bpp) if "palette" in components
-                  else gray_palette(bpp))
+        if "palette" in components:
+            colors = decode_palette(components["palette"], bpp)
+        elif display_palette is not None:
+            colors = decode_palette(display_palette, bpp)
+        else:
+            colors = gray_palette(bpp)
         for path_name, frame in zip(image_files(entry), record["frames"]):
             raw, _ = decompress_tiles(components["tiles"][frame["tile_offset"]:])
             w, h = frame["width"], frame["height"]
@@ -568,9 +574,12 @@ def _uses_gamma_lz(components: dict[str, bytes]) -> bool:
 
 
 def extract_images(source: Path, bpp: int, entries: list[tuple[str, dict[str, bytes]]],
-                   stored_cells: bool) -> list[dict]:
-    """Write each image's PNGs and return their settings, in order."""
+                   stored_cells: bool, display_palettes: dict[str, bytes] | None = None) -> list[dict]:
+    """Write each image's PNGs and return their settings, in order.
+    display_palettes maps the names of images without their own palette to
+    the palette their PNGs are drawn with."""
     names = [name for name, _ in entries]
     components = [c for _, c in entries]
-    return map_images(extract, repeat(source), names, components, repeat(bpp), repeat(stored_cells),
+    shown = [(display_palettes or {}).get(name) for name in names]
+    return map_images(extract, repeat(source), names, components, repeat(bpp), repeat(stored_cells), shown,
                       gamma_lz=any(map(_uses_gamma_lz, components)))
