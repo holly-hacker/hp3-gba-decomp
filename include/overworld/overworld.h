@@ -62,6 +62,20 @@ extern Object *g_pFollowerObject1;
 extern u8 g_bPartyCharId0;
 extern u8 g_bPartyCharId1;
 extern u8 g_bPartyCharId2;
+// Index into the 9-entry field spell table at 0x08060BAC: {u32 spell,
+// u8 FighterType, u8 minimum bKnownSpellCount}. Flipendo, Lumos and Diffindo
+// for Harry, Flipendo, Reparo and Glacius for Hermione, Flipendo, Alohomora
+// and Spongify for Ron; Diffindo and Spongify need 5 known spells, Glacius 6.
+// CyclePartyLeaderSelection_candidate steps it; it is saved with the party.
+extern u8 g_bSelectedFieldSpell;
+// HUD objects, cleared by ResetPartyState and freed by sub_08024BD4.
+extern Object *g_pFieldSpellNameObject;       // selected spell's name text (sub_08023A2C)
+extern Object *g_pMapNameTextObject;          // room name text (ShowMapNamePopup)
+extern Object *g_pFieldSpellPortraitObject;   // face portrait of the spell's character (sub_08023A2C)
+extern Object *g_pMapNamePopupObject;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
+extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
+
+extern void ResetPartyState(void);
 
 // Per-slot scripted camera effect, started by room script opcodes 0x10
 // (QueueTileObjectMove: pan the camera focus to an object) and 0x12
@@ -128,7 +142,10 @@ extern void HandleOverworldPauseMenuInput(void);
 // Set by the room chain runner while it processes a chain; consumed (cleared)
 // once per frame by HandleOverworldPauseMenuInput.
 extern u32 g_dwRoomChainRanThisFrame_candidate;
-extern u8 g_bUnk03005E18;
+// 1 while RestoreRoomObjectState respawns the room's saved objects, and set
+// when the overworld pushes a pause menu; the room object constructed by
+// sub_08044C00 and its callbacks branch on it.
+extern u8 g_bRestoringRoomObjects_candidate;
 // Records wandering-monster touches and respawns replacements; see the
 // wandering-monster notes above.
 extern void HandleWanderingMonsterTouch(void);

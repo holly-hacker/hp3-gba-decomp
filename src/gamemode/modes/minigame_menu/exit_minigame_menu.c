@@ -10,6 +10,6 @@ void ExitMinigameMenu(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     ExitMenuScreen();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
-    sub_0803171C();
+    FreeAllParticles();
     ClearScanlineEffects();
 }

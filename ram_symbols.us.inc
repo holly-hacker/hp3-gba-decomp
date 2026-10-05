@@ -138,8 +138,11 @@
 .set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ u32: set by StartMinigame
 .set g_HarryVsDementors,                               0x03002E18  @ HarryVsDementorsState
 .set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/menu/dialog.h
+.set g_pDialogMacroExpandBuffer,                       0x03002EA8  @ u8 *: 0x400-byte buffer, allocated by InitDialogBox
 .set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ Object *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
 .set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C  @ Object *
+.set g_aRoomTileAnimations,                            0x03002F24  @ RoomTileAnimation *: 32 entries, allocated by InitRoomTileAnimationTable
+.set g_dwRoomTileAnimationCount,                       0x03002F28  @ u32: entries in use in g_aRoomTileAnimations
 .set g_aFontDescriptors,                                  0x03002F30  @ FontDescriptor[12][2], filled by LoadFontDescriptor
 .set gTextRenderState,                                 0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
                                                                    @ text-rendering fields (e.g. +0x11 = line height); not
@@ -150,6 +153,7 @@
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
 @ --- Overworld object tracking (see include/overworld/overworld.h) ---
+.set g_nCameraYOffset,               0x0300337C  @ s8: camera Y offset in pixels; 18 after InitRoomBgState_candidate
 .set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
 .set g_pPlayerObject,                    0x03003380  @ Object *: the player's overworld object
 .set g_pFollowerObject0,                 0x03003384  @ Object *: first party follower, NULL while empty
@@ -157,6 +161,12 @@
 .set g_bPartyCharId0,                    0x0300338C  @ u8: character id of the party leader
 .set g_bPartyCharId1,                    0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2,                    0x0300338E  @ u8: character id of the second follower
+.set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into the field spell table at 0x08060BAC; see include/overworld/overworld.h
+.set g_pFieldSpellNameObject,            0x030033A0  @ Object *: selected field spell name text
+.set g_pMapNameTextObject,               0x030033A4  @ Object *: room name text of ShowMapNamePopup
+.set g_dwUnk030033A8,                    0x030033A8  @ u32: zeroed by ResetPartyState and sub_080248E8; no reader found
+.set g_pFieldSpellPortraitObject,        0x030033AC  @ Object *: face portrait of the selected field spell's character
+.set g_pMapNamePopupObject,             0x030033B0  @ Object *: 240x16 bar sprite behind the room name text
 
 .set gDialogTextBlobBase,    0x030033C0  @ active language blob's base pointer (0 = none installed)
 .set gDialogTextOffsetTable, 0x030033C4  @ pointer to the active blob's per-string-ID u32[] offset table
@@ -164,6 +174,7 @@
 
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
 @ ResetKeyInput, 0x080254A8/0x080258F8) ---
+.set g_aDecompressBgTileIwram,      0x030033CC  @ u8[0x100]: IWRAM copy of DecompressBgTile
 .set g_wKeysHeld,                0x030034EC  @ u16: current held-key bitmask (standard GBA KEYINPUT bit
                                              @ order), updated once per frame by UpdateKeyInput; also
                                              @ folded into Mt19937AutoSeed's seed as a cheap entropy
@@ -183,6 +194,7 @@
 .set g_awPlayerKeysHeldPrevious, 0x030034FA  @ u16[2]: previous-frame counterpart of the above
 .set g_awPlayerKeysPressed,      0x030034FE  @ u16[2]: per-player newly-pressed masks
 .set g_awPlayerKeysReleased,     0x03003502  @ u16[2]: per-player newly-released masks
+.set g_awPlayerInputDisabled_candidate, 0x03003506  @ u16[2]: written with g_wInputDisabled by EnableKeyInput and sub_08025978; no reader found
 
 .set g_VBlankState, 0x03003530  @ the object g_pVBlankState is set to point at
 
@@ -223,6 +235,7 @@
 .set g_bPendingQuestStateOverride_candidate, 0x03003B5A  @ u8: 0xFF = none; else copied into quest state 0 on room entry
 .set g_dwRoomBgFlag_candidate,               0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by sub_0802E6FC
 .set g_dwPauseMenuLocked,                    0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
+.set g_pRoomObjectStateBuffer,               0x03003B68  @ 0x20BC-byte buffer, allocated by InitRoomState; see docs/formats/save.md
 .set g_dwPauseMenuCooldown,                  0x03003B6C  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003B70  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003B74  @ u8[20]: 5 x 4-byte touched-monster records
@@ -262,8 +275,11 @@
 .set g_wParticleHighWaterMark,         0x0300519E  @ u16
 .set g_wActiveParticleEmitterCount,    0x030051A0  @ u16
 .set g_wParticleEmitterHighWaterMark,  0x030051A2  @ u16
+.set g_aParticles,                    0x030051A4  @ Particle *: MAX_PARTICLES entries, allocated by InitResourceCachePools
+.set g_aParticleEmitters,             0x030051A8  @ ParticleEmitter *: MAX_PARTICLE_EMITTERS entries
 .set g_pParticleFreeListHead,          0x030051AC  @ ListNode *
 .set g_pParticleEmitterFreeListHead,   0x030051B0  @ ListNode *
+.set g_apParticlesByPriority,         0x030051B8  @ Particle **[4]: active particles bucketed by OAM priority
 .set g_pParticleActiveListHead,        0x030051CC  @ ListNode *
 .set g_bParticleSpawnBlocked,          0x030051D0  @ u8: set when a particle's OAM submit fails (queue full); blocks spawning until TickParticleEmitters clears it
 .set g_apParticleGfxPools,             0x030051D8  @ ParticleGfxEntry *[]
@@ -315,9 +331,18 @@
 
 .set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/game/save.h and docs/formats/save.md
 .set g_wEepromSavedDispstat,     0x0300561C  @ u16: DISPSTAT saved across EEPROM transfers (EepromTransferBegin/End)
+.set g_pScreenPaletteBackup,        0x03005624  @ u16 *: 0x400-byte palette copy kept by DarkenScreenPalette
+.set g_dwUnk03005638,                      0x03005638  @ u32: set by SetScreenDarkenParams_candidate; no reader found
+.set g_dwScreenDarkenStepTicks_candidate, 0x0300563C  @ u32: palette step ticks of DarkenScreenPalette/RestoreScreenPalette
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for object visibility
+.set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera_candidate
+.set g_apBgTileCacheEntries,        0x03005988  @ BgTileCacheEntry *[2]; see include/overworld/room.h
+.set g_apBgTileCacheBuckets,        0x03005990  @ u16 *[2]
+.set g_apBgTileCacheFreeSlots,      0x03005998  @ u16 *[2]
+.set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState_candidate
 .set g_awLinkKeysReceived,       0x03005A0C  @ u16[2]: per-player key masks received over the link cable
 .set g_LinkPlayerState,          0x03005A24  @ LinkPlayerState: serial-link session block; see include/link/link.h
+.set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
 .set g_DivinationTea,            0x03005B28  @ DivinationTeaState
@@ -325,6 +350,7 @@
 .set gCurrentLanguage,           0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,        0x03005D0D  @ byte: locale-specific number-formatting separator
 .set g_adwHippogriffGlideUnk,    0x03005D10  @ u32[3]: cleared on init, meaning not yet established
+.set g_aGameTimers,                0x03005D58  @ GameTimer[4]; see include/game/game_timer.h
 .set g_HarryHermionePortInTime,  0x03005D98  @ HarryHermionePortInTimeState
 
 @ --- Dialog/UI text engine (US only) ---
@@ -339,7 +365,7 @@
 .set g_dwOptionsEntryLanguage,   0x03005E0C  @ u32: language when the options screen was entered
 
 .set g_wCoolTrainTimer,          0x03005E14  @ u16: frames left in the Cool Train cutscene
-.set g_bUnk03005E18,             0x03005E18  @ u8: set to 1 when the overworld pushes a pause menu; RestoreRoomObjectState sets it to 1 at entry and 0 at exit
+.set g_bRestoringRoomObjects_candidate, 0x03005E18  @ u8: 1 while RestoreRoomObjectState respawns objects; also set when the overworld pushes a pause menu
 .set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging,    0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
 .set g_pFindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun

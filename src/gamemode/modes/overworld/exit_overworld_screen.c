@@ -21,9 +21,9 @@ void ExitOverworldScreen(void)
     }
     else if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == InGameMenu)
     {
-        sub_0803D420(0, 8);
+        SetScreenDarkenParams_candidate(0, 8);
         PlayScreenTransitionOutByIndex(0x3F, 2);
-        sub_0803D420(0, 8);
+        SetScreenDarkenParams_candidate(0, 8);
     }
     else
     {
@@ -71,8 +71,8 @@ void ExitOverworldScreen(void)
         g_dwGameModeFlags |= 0x400000;
 
     sub_0803FF04();
-    sub_080316D4();
-    sub_0803171C();
+    FreeAllParticleEmitters();
+    FreeAllParticles();
     sub_08030960(1);
     sub_08030960(2);
     FreeAllObjects(&g_ActiveObjectListState.pHead);

@@ -47,6 +47,8 @@ extern u8 g_bOamEntryCount;
 // entry count from the frame that's now being DMA-flushed.
 extern u8 g_bOamEntryCountPrev;
 
+extern void InitOamSystem(void);
+extern void ClearOamShadowBuffers(void);
 extern void HideUnusedOamEntries(void);
 
 // Copy *pEntry into both halves of OAM shadow slot `index` and advance

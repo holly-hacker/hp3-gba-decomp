@@ -3,35 +3,29 @@
 #include "hw/interrupts.h"
 #include "hw/io_regs.h"
 #include "hw/mem.h"
+#include "hw/input.h"
 #include "graphics/text.h"
 #include "game/game_modes.h"
 #include "battle/battle.h"
 #include "mt19937.h"
 #include "game/save.h"
 #include "graphics/graphics.h"
+#include "graphics/oam.h"
 #include "graphics/palette.h"
+#include "graphics/audio.h"
+#include "graphics/scanline_effects.h"
 #include "menu/main_menu.h"
+#include "menu/dialog.h"
+#include "overworld/room.h"
 #include "divide.h"
+#include "game/game_timer.h"
 
 extern void InstallIwramFindFreeObjTileRun(void);
 extern void InstallIwramDecompressCodecs(void);
 extern void InitSaveSystem(void);
 extern void NoopInit(void);
-extern void InitOamSystem(void);
-extern void InitResourceCachePools(void);
-extern void InitScreenTransitionState_candidate(void);
-extern void sub_0803E4FC(void);
 extern void NoopInit2(void);
-extern void InitInputSystem_candidate(void);
-extern void sub_08042E2C(void);
-extern void InitDisplayControl(void);
-extern void InitRoomScriptState_candidate(void);
 extern void NoopInit3(void);
-extern void sub_0801FB78(void);
-extern void InitRoomTileAnimationTable_candidate(void);
-extern void InstallBgTileCodec(void);
-extern void kramInstall(void);
-extern void InitScanlineEffects(void);
 
 // Thumb function entry point in still-raw territory, taken by address as
 // the VBlank callback -- see `thumb-func 0x08026244` in regions.us.txt.
@@ -62,15 +56,15 @@ void AgbMain(void)
     InitOamSystem();
     InitResourceCachePools();
     InitScreenTransitionState_candidate();
-    sub_0803E4FC();
+    InitRoomBgState_candidate();
     NoopInit2();
-    InitInputSystem_candidate();
-    sub_08042E2C();
+    InitInputSystem();
+    ResetAllGameTimers();
     InitDisplayControl();
     InitRoomScriptState_candidate();
     NoopInit3();
-    sub_0801FB78();
-    InitRoomTileAnimationTable_candidate();
+    InitDialogBox();
+    InitRoomTileAnimationTable();
     InitRoomState();
     ClearResourceCacheSlots();
     InstallBgTileCodec();

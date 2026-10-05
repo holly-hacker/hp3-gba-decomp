@@ -87,7 +87,25 @@ extern CameraFocusOffset g_CameraPosition_candidate;
 // plate comment describes elsewhere -- real source likely declares it int.
 extern u32 g_bCurrentRoomId;                // 0x03003B50
 extern void GetCameraPosition(s32 *pPosition);  // copies g_CameraPosition_candidate out
-extern void sub_0803E628(s32 *pPosition);  // copies a two-word position into g_CameraPosition_candidate
+extern void SetCameraPosition(const s32 *pPosition);  // copies a two-word position into g_CameraPosition_candidate
+// Signed camera Y offset in pixels, added to quest event state 0x1B (sub_0803E45C).
+extern s8 g_nCameraYOffset;
+// Nonzero for each BG layer UpdateOverworldCamera_candidate scrolls.
+extern u32 g_adwBgScrollEnabled[4];
+extern u32 g_dwUnk030059AC;  // zeroed by InitRoomBgState_candidate; no other literal reference found
+
+// Room BG tile VRAM cache, per tile-size class (layers 0/3 and 1/2): see
+// docs/formats/graphics.md ("The runtime streaming/caching path").
+typedef struct BgTileCacheEntry {
+    u16 wRefcount;
+    u16 wTileId;
+    u16 wNext;  // next entry in the hash chain, 0xFFFF ends it
+    u16 pad_06;
+} BgTileCacheEntry;
+extern BgTileCacheEntry *g_apBgTileCacheEntries[2];  // 0x400 and 0x200 entries
+extern u16 *g_apBgTileCacheBuckets[2];               // chain heads by tile id & 0x7FF / 0x3FF
+extern u16 *g_apBgTileCacheFreeSlots[2];             // stack of free entry indices
+extern void InitRoomBgState_candidate(void);
 extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
 
 extern u16 g_wRoomResourceFlags_candidate;
@@ -185,6 +203,28 @@ extern u8 g_bPendingQuestStateOverride_candidate;
 extern u32 g_dwRoomBgFlag_candidate;
 extern u32 g_dwPendingCameraFocusFlag;
 
+// One animated room tile, stepped by TickRoomTileAnimations_candidate; see
+// docs/memory-map/frame_systems.md.
+typedef struct RoomTileAnimation {
+    u8 bSet;
+    u8 bStep;
+    u8 bDelay;
+    u8 bFlags;
+    u16 wX;
+    u16 wY;
+} RoomTileAnimation;
+
+#define MAX_ROOM_TILE_ANIMATIONS 32
+extern RoomTileAnimation *g_aRoomTileAnimations;
+extern u32 g_dwRoomTileAnimationCount;
+
+extern void InitRoomTileAnimationTable(void);
+
+// Snapshot of the current room's non-default objects; see docs/formats/save.md.
+#define ROOM_OBJECT_STATE_BUFFER_SIZE 0x20BC
+extern void *g_pRoomObjectStateBuffer;
+extern void InitRoomState(void);
+extern void InitRoomScriptState_candidate(void);
 extern void RestoreRoomObjectState(void);
 extern void RestoreRoomObjectStateMinimal(void);
 extern u8 sub_08005DC0(u32 questState, const void *pRoomResourceBlob);

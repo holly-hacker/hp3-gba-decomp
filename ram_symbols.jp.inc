@@ -127,8 +127,11 @@
 .set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ set by StartMinigame
 .set g_HarryVsDementors,                               0x03002E18  @ see ram_symbols.us.inc
 .set g_DialogState_candidate,                          0x03002E88
+.set g_pDialogMacroExpandBuffer,                       0x03002EA8
 .set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ see ram_symbols.us.inc
 .set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C
+.set g_aRoomTileAnimations,                            0x03002F24
+.set g_dwRoomTileAnimationCount,                       0x03002F28
 .set g_aFontDescriptors,                                  0x03002F30
 .set gTextRenderState,                                 0x03003170  @ text-rendering fields (e.g. +0x11 = line height); not
                                                                    @ fully mapped, see include/graphics/text.h
@@ -138,6 +141,7 @@
 .set g_OverworldControlState,                          0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
 @ --- Overworld object tracking (see include/overworld/overworld.h) ---
+.set g_nCameraYOffset,                  0x030033DC
 .set g_abRoomScriptExitParams_candidate, 0x030033DD  @ see ram_symbols.us.inc
 .set g_pPlayerObject,                    0x030033E0  @ see ram_symbols.us.inc
 .set g_pFollowerObject0,                 0x030033E4
@@ -145,6 +149,12 @@
 .set g_bPartyCharId0,                    0x030033EC
 .set g_bPartyCharId1,                    0x030033ED
 .set g_bPartyCharId2,                    0x030033EE
+.set g_bSelectedFieldSpell,             0x030033EF
+.set g_pFieldSpellNameObject,           0x03003400
+.set g_pMapNameTextObject,              0x03003404
+.set g_dwUnk030033A8,                   0x03003408
+.set g_pFieldSpellPortraitObject,      0x0300340C
+.set g_pMapNamePopupObject,             0x03003410
 
 .set gDialogTextBlobBase,    0x03003420
 .set gDialogTextOffsetTable, 0x03003424
@@ -152,6 +162,7 @@
 
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
 @ ResetKeyInput, 0x080254A8/0x080258F8) ---
+.set g_aDecompressBgTileIwram,          0x0300342C
 .set g_wKeysHeld,                0x0300354C  @ see ram_symbols.us.inc/docs/memory-map/input.md
                                              @ order), updated once per frame by UpdateKeyInput; also
                                              @ folded into Mt19937AutoSeed's seed as a cheap entropy
@@ -169,6 +180,7 @@
 .set g_awPlayerKeysHeldPrevious, 0x0300355A
 .set g_awPlayerKeysPressed,      0x0300355E
 .set g_awPlayerKeysReleased,     0x03003562
+.set g_awPlayerInputDisabled_candidate, 0x03003566
 
 .set g_VBlankState, 0x03003590
 
@@ -207,6 +219,7 @@
 .set g_bPendingQuestStateOverride_candidate, 0x03003BBA
 .set g_dwRoomBgFlag_candidate,               0x03003BBC
 .set g_dwPauseMenuLocked,                    0x03003BC0  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
+.set g_pRoomObjectStateBuffer,          0x03003BC8
 .set g_dwPauseMenuCooldown,                  0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003BD0  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
@@ -234,6 +247,8 @@
 .set g_aOamShadowBufferB,   0x03004850
 .set g_bOamEntryCount,      0x03005050
 .set g_bOamEntryCountPrev,  0x03005051
+.set g_bAffineSlotHighWaterMark, 0x03005052
+.set g_abAffineSlotUsed,         0x03005053
 .set g_aObjAffineSetSource, 0x03005074
 
 @ --- Resource cache / particle emitters (see docs/formats/graphics.md and
@@ -244,8 +259,11 @@
 .set g_wParticleHighWaterMark,         0x030051FE
 .set g_wActiveParticleEmitterCount,    0x03005200
 .set g_wParticleEmitterHighWaterMark,  0x03005202
+.set g_aParticles,                      0x03005204
+.set g_aParticleEmitters,               0x03005208
 .set g_pParticleFreeListHead,          0x0300520C
 .set g_pParticleEmitterFreeListHead,   0x03005210
+.set g_apParticlesByPriority,           0x03005218
 .set g_pParticleActiveListHead,        0x0300522C
 .set g_bParticleSpawnBlocked,          0x03005230
 .set g_apParticleGfxPools,             0x03005238
@@ -296,9 +314,18 @@
 
 .set g_saveManager,              0x030055F8  @ see ram_symbols.us.inc
 .set g_wEepromSavedDispstat,     0x0300567C  @ see ram_symbols.us.inc
+.set g_pScreenPaletteBackup,            0x03005684
+.set g_dwUnk03005638,                   0x03005698
+.set g_dwScreenDarkenStepTicks_candidate, 0x0300569C
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for object visibility
+.set g_adwBgScrollEnabled,              0x03005920
+.set g_apBgTileCacheEntries,            0x030059E8
+.set g_apBgTileCacheBuckets,            0x030059F0
+.set g_apBgTileCacheFreeSlots,          0x030059F8
+.set g_dwUnk030059AC,                   0x03005A0C
 .set g_awLinkKeysReceived,       0x03005A6C
 .set g_LinkPlayerState,          0x03005A84  @ see include/link/link.h
+.set g_bUnk03005AC0,             0x03005B20
 .set g_bMusicPaused,             0x03005B21
 .set g_bCurrentMusicModule,      0x03005B22
 .set g_DivinationTea,            0x03005B88  @ see ram_symbols.us.inc
@@ -306,6 +333,7 @@
 .set gCurrentLanguage,           0x03005D6C
 .set gLocaleThousandsSep,        0x03005D6D  @ see ram_symbols.us.inc
 .set g_adwHippogriffGlideUnk,    0x03005D70  @ see ram_symbols.us.inc
+.set g_aGameTimers,                     0x03005DB8
 .set g_HarryHermionePortInTime,  0x03005DF8  @ see ram_symbols.us.inc
 .set g_dwMainMenuTextCursor,     0x03005E10
 .set g_MainMenuState,            0x03005E18
@@ -313,7 +341,9 @@
 .set g_OptionsState,             0x03005E30
 .set g_dwOptionsReturnMode,      0x03005E5C
 .set g_wCoolTrainTimer,          0x03005E64  @ u16: frames left in the Cool Train cutscene
-.set g_bUnk03005E18,             0x03005E68  @ see ram_symbols.us.inc
+.set g_bRestoringRoomObjects_candidate, 0x03005E68  @ see ram_symbols.us.inc
+.set g_ScanlineEffectState,      0x03005E70
+.set g_ScanlineEffectStaging,    0x03005FA8
 .set g_pFindFreeObjTileRunIwram, 0x030060D8
 .set g_adwObjTileAllocBitmap,    0x03006178
 .set g_adwObjTileFreeMask,       0x030061F8

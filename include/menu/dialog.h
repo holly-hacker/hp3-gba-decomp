@@ -4,13 +4,24 @@
 
 // Dialog box state at 0x03002E88; only the fields room scripts touch are named.
 typedef struct DialogState {
-    u8 pad_00[0x0C];
-    u16 wBlockId;  // 0x0C, set by ShowRoomDialogBox_candidate
-    u8 pad_0E[0x0E];
+    u32 dwState;                // 0x00, 0 = no box, 1 = open (InitializeDialogue), 2 = closed by
+                                //       ExitDialogue; the next vblank's sub_0801FBBC resets 2 to 0
+    u8 pad_04[0x08];
+    u16 wBlockId;               // 0x0C, set by ShowRoomDialogBox_candidate
+    u8 pad_0E[0x08];
+    u16 wRevealStep_candidate;  // 0x16, added to the halfword at 0x10 per reveal step (sub_0801FD64); defaults to 1
+    u8 pad_18[0x04];
     u8 bArg1C;     // 0x1C, forwarded from room-script dialog opcodes
     u8 bArg1D;     // 0x1D
 } DialogState;
 extern DialogState g_DialogState_candidate;
+
+// Destination for expanding text macros (@1, @2, ...) into a dialog string
+// before it is drawn (sub_08020EB8); allocated once by InitDialogBox.
+#define DIALOG_MACRO_EXPAND_BUFFER_SIZE 0x400
+extern u8 *g_pDialogMacroExpandBuffer;
+
+extern void InitDialogBox(void);
 
 // Fill text macro @N (sTextMacroTable slot N - 1) with a string or a signed
 // decimal number.

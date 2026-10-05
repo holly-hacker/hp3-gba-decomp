@@ -61,7 +61,7 @@ enum BattleScriptOpcode {
     BSOP_CreateEmitterOnTarget = 0x34,
     BSOP_Unk35 = 0x35,
     BSOP_Unk36 = 0x36,
-    BSOP_Unk37 = 0x37,
+    BSOP_FreeAllParticles = 0x37,
     BSOP_ReleaseWindupEmitter = 0x38,
     BSOP_ReleaseKind2Emitters = 0x39,
     BSOP_Unk3A = 0x3A,
@@ -269,7 +269,7 @@ enum BattleStatusEffect {
 #define BS_CreateEmitterOnTarget(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) BSOP_CreateEmitterOnTarget, (a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p)
 #define BS_Unk35(a, b, c) BSOP_Unk35, (a), (b), (c)
 #define BS_Unk36(a, b) BSOP_Unk36, (a), (b)
-#define BS_Unk37() BSOP_Unk37
+#define BS_FreeAllParticles() BSOP_FreeAllParticles
 #define BS_ReleaseWindupEmitter() BSOP_ReleaseWindupEmitter
 #define BS_ReleaseKind2Emitters() BSOP_ReleaseKind2Emitters
 #define BS_Unk3A() BSOP_Unk3A

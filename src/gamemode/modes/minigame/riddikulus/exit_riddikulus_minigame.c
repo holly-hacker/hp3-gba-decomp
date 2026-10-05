@@ -21,7 +21,7 @@ void ExitRiddikulusMinigame(void)
     {
         sub_0801DC6C(g_Riddikulus.pCursorObject);
         g_Riddikulus.pCursorObject = NULL;
-        sub_0803171C();
+        FreeAllParticles();
     }
 
     sub_0802CEE4(g_Riddikulus.pObjectGroup1C);

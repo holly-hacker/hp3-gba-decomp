@@ -4,16 +4,15 @@
 
 // Set by InitInterruptSystem to &g_VBlankState; read by every interrupt
 // handler, not just HandleVBlankInterrupt.
-//
-// unk04/unk24: a callback-pointer/counter pair per other interrupt
-// (HBlank/VCount), confirmed via HandleHBlankInterrupt etc. -- left opaque
-// here since HandleVBlankInterrupt never touches them.
 typedef struct {
     void *pVBlankCallback;    // 0x00: user callback, invoked if set
-    u8    unk04[0x18];        // 0x04: unconfirmed
+    void *pHBlankCallback;    // 0x04: invoked by HandleHBlankInterrupt_candidate if set
+    void *pVCountCallback;    // 0x08: invoked by HandleVCountInterrupt if set
+    u8    unk0C[0x10];        // 0x0C: unconfirmed
     u32   dwVBlankCount;      // 0x1C: incremented once per real vblank
     u32   dwVBlankConsumed;   // 0x20: last dwVBlankCount value WaitForVBlank consumed
-    u8    unk24[0x8];         // 0x24: unconfirmed
+    u32   dwHBlankCount;      // 0x24: incremented once per HBlank interrupt
+    u32   dwVCountCount;      // 0x28: incremented once per VCount interrupt
     u32   dwSecondTick;       // 0x2C: counts 0-59 real vblanks, then rolls over
     u32   dwFrameCounter;     // 0x30: incremented once per logic tick by TickGameModeStack
     u32   dwFramesLastSecond; // 0x34: dwFrameCounter snapshot on dwSecondTick rollover; no reader found
@@ -27,6 +26,8 @@ extern VBlankState g_VBlankState;
 extern void WaitForVBlank(void);
 extern void WaitForVBlankIntr(void);
 extern void SetVBlankCallback(void *callback);
+extern void SetVCountCallback(void *callback);
+extern void EnableVCountInterrupt(u32 line);
 extern void HandleVBlankInterrupt(void);
 
 // See ram_symbols.us.inc: 0x03003B48, read only by WaitForVBlank and

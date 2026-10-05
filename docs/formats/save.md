@@ -429,9 +429,8 @@ transition within the same play session, never a save/reload. This means
 570-entry span suggests, since the tail of that space doubles as this
 table's storage during normal (non-serialized) play.
 
-`0x0802B018` allocates the whole `0x20BC`-byte buffer once
-(`DAT_03003B68`) via the heap allocator also used elsewhere in save
-handling.
+`InitRoomState` (`0x0802B018`) allocates the whole `0x20BC`-byte buffer
+once (`g_pRoomObjectStateBuffer`) with `AllocZeroed`.
 
 ## `SaveManager` (IWRAM, `0x03005598`)
 

@@ -40,6 +40,8 @@
 // Active-low button state; UpdateKeyInput XORs with 0x3FF for active-high.
 // Also SIOMLT_RECV (player 0's slot) during a multiplayer link session.
 #define REG_KEYINPUT (*(volatile u16 *)0x04000130)
+// Interrupt enable and request/acknowledge flags.
+#define REG_IE      (*(volatile u16 *)0x04000200)
 #define REG_IF      (*(volatile u16 *)0x04000202)
 #define REG_WAITCNT (*(volatile u16 *)0x04000204)
 #define REG_IME     (*(volatile u16 *)0x04000208)

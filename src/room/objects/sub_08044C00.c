@@ -34,7 +34,7 @@ Object *sub_08044C00(u8 bColumn, u8 bRow)
             else
                 SetObjectAnimFrame(pObj, 0);
 
-            if (g_bUnk03005E18 == 0)
+            if (g_bRestoringRoomObjects_candidate == 0)
                 pObj->bActionFlags = 0;
             else
                 pObj->bActionFlags |= 0x20;

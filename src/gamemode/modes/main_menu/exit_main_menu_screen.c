@@ -11,8 +11,8 @@ void ExitMainMenuScreen(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     sub_0801DC6C(g_MainMenuState.pCursorObject);
-    sub_080316D4();
-    sub_0803171C();
+    FreeAllParticleEmitters();
+    FreeAllParticles();
     sub_08030960(0);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_08007A90();

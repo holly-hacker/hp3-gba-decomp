@@ -107,12 +107,14 @@ transition is pending, the slot's queued object move is not active (`bState != 1
   pushes `Options` (`0x05`).
 - While `g_dwPauseMenuLocked` is set, either key only plays sound 3.
 - Otherwise, when `g_dwPauseMenuCooldown` is 0: consume the key, zero the player's
-  velocity, set the cooldown to 4, play sound 1, push the mode and set `g_bUnk03005E18`.
+  velocity, set the cooldown to 4, play sound 1, push the mode and set `g_bRestoringRoomObjects_candidate`.
 
 `g_dwRoomChainRanThisFrame_candidate` is set to 1 by `RespawnRowAndRunChain_candidate`
 (and `sub_08005D30`) around a room chain and cleared unconditionally at the end of
-this function every frame. `g_bUnk03005E18` is also set to 1 on entry to
-`RestoreRoomObjectState` and cleared on exit; no reader was found.
+this function every frame. `g_bRestoringRoomObjects_candidate` is also set to 1 on entry to
+`RestoreRoomObjectState` and cleared on exit. Its readers are the room object constructor
+`sub_08044C00` (a room object spawn-table entry) and its callbacks `sub_08044D24` and
+`sub_08044F54`, which take a different path while it is set.
 
 ## UNCONFIRMED
 

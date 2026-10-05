@@ -1,8 +1,10 @@
 # Scanline effects (VCount-interrupt callback list) — memory map
 
 See [`../README.md`](../README.md) for the confidence-key legend
-(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout. Addresses are US.
-JP has not been matched.
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout. Addresses are US;
+JP state is at `0x03005E70`. `InitScanlineEffects`, `QueueScanlineEffectTable`,
+`StartScanlineEffects`, `ClearScanlineEffectStaging`, `ScanlineEffectNop` and the
+default table are matched for both versions in `src/graphics/scanline/`.
 
 ## Mechanism, PROVEN
 

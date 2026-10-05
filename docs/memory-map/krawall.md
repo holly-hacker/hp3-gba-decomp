@@ -539,8 +539,27 @@ caller statically nail down the whole picture:
     rather than hand-written constants. The same four bounds are stored as
     ROM pointers (`g_pIwramSectionStart` etc., US `0x0806B8CC`) that
     `ClearWorkRam` uses to zero the RAM above both sections.
-  - Also writes byte `8` to IWRAM `0x03005AC0` just before the copies --
-    candidate "driver state" flag, not investigated further.
+  - Also writes byte `8` to `g_bUnk03005AC0` (`0x03005AC0`) just before the
+    copies; `PlayMusicModule` writes the same value and an uncalled setter
+    at `0x0803FE6C` stores its argument there. No reader was found.
+  - Then calls `InitAudio` (`0x0803FDFC`): `kragInit(KRAG_INIT_STEREO)`,
+    `kramSetMasterVol(KRAM_MV_CHANNELS16 | 128)`, `kramQualityMode(KRAM_QM_HQ)`,
+    full volumes, the saved volumes (`ApplyAudioVolumeSettings`), music state
+    reset, and `krapCallback(OnKrawallEvent)`. `OnKrawallEvent` handles only
+    `KRAP_CB_JDONE` (5, jingle finished): it sets the music to a quarter of
+    the saved volume and fades it back up. All are matched in `src/audio/`.
+
+### Krawall API entry points called at startup [STRUCTURAL MATCH]
+
+Identified by comparing the ROM bodies with the public source's functions:
+
+| Name | US | JP | Evidence |
+|---|---|---|---|
+| `kragInit` | `0x08046D0C` | `0x08046C38` | `kramSetMasterVol(128)`, `dsInit(stereo)`, `kradActivate`, `krapInit` in that order; no `kramResetChannels` call |
+| `kramQualityMode` | `0x08046EF4` | `0x08046E20` | `hqRamp`/`hqMode` (`0x03000093`/`0x03000092`), mode clamped to 0-2, per-channel quality update; tests `KRAM_QM_RAMP` (0x10) like the public source's commented-out variant |
+| `kramSetSFXVol` | `0x08046F5C` | `0x08046E88` | clamps to 255 and stores `volMaster[1]` (`0x03000091`); no `kramResetChannels` call |
+| `kramSetMasterVol` | `0x08046F7C` | `0x08046EA8` | `vol >> 16` selects the channel-count patch, then builds the 1024-entry clip table |
+| `krapCallback` | `0x080491AC` | `0x080490D8` | stores the pointer at `0x020025B4`; the player calls through it with event 1 (`timerRoutine`, fade done), 2 (before `krapStop`), 3 (`eff_mark`), 4 and 6 (`advanceRow`) and 5 (`jingleDone`), the public `KRAP_CB_*` numbering |
 
 This also answers "verify whether `0x03000AB4`/`kramMixChannel`'s tail
 target etc. are installed rather than statically linked" from multiple

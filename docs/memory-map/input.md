@@ -73,7 +73,8 @@ All `u16`, standard GBA `KEYINPUT` bit order (active-high once XORed, as
 | `g_wKeysHeldPrevious` | `0x030034EE` | Held-key mask from the previous frame's update. |
 | `g_wKeysPressed` | `0x030034F0` | Keys newly pressed this frame: `currentHeld & ~previousHeld`. By far the most-read of these globals (144 cross-references) -- menu, battle, cutscene, and minigame update functions across the ROM test it for edge-triggered button presses. Some consumers clear it to `0` after handling a press, consuming the event for the rest of the frame (e.g. `HandleOverworldPauseMenuInput (0x0802AEF8)`'s Select/Start dispatch). |
 | `g_wKeysReleased` | `0x030034F2` | Keys newly released this frame: `previousHeld & ~currentHeld`. No confirmed readers yet. |
-| `g_wInputDisabled` | `0x030034F4` | Nonzero forces `UpdateKeyInput` to clear all key state instead of reading input. Set/cleared by two small helper functions at `0x08025954`/`0x08025978` (US) that also fill a small unrelated block at `0x030034D0`-`0x030034D7` -- not yet identified as one of the globals in this table (four bytes, purpose unconfirmed). |
+| `g_wInputDisabled` | `0x030034F4` | Nonzero forces `UpdateKeyInput` to clear all key state instead of reading input. Cleared by `EnableKeyInput` (US `0x08025954`, called from `InitInputSystem`) and set to 1 by `sub_08025978`; both also write the same value to both entries of `g_awPlayerInputDisabled_candidate`. |
+| `g_awPlayerInputDisabled_candidate` | `0x03003506` | `u16[2]`, the per-player counterpart of `g_wInputDisabled` by position and by the two writers above. `sub_08025978` has no callers found, and no reader was found. |
 | `g_awPlayerKeysHeld` | `0x030034F6` | `u16[2]`, per-player held-key masks, serial-link input path only. |
 | `g_awPlayerKeysHeldPrevious` | `0x030034FA` | `u16[2]`, previous-frame counterpart of the above. |
 | `g_awPlayerKeysPressed` | `0x030034FE` | `u16[2]`, per-player newly-pressed masks. |

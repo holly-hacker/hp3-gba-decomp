@@ -13,9 +13,9 @@ void ExitInGameMenu(void)
 
     if (GetPendingGameMode_candidate() == Overworld)
     {
-        sub_0803D420(0, 8);
+        SetScreenDarkenParams_candidate(0, 8);
         PlayScreenTransitionOutByIndex(0x3F, 2);
-        sub_0803D420(0, 8);
+        SetScreenDarkenParams_candidate(0, 8);
     }
 
     ExitMenuScreen();

@@ -323,11 +323,11 @@ void InterpretObjectScript(Object *obj)
             sub_08030A1C(args[1], args[2], &g_aEffectObjectAssets[args[3]]);
             break;
         case BSOP_Unk36:  // particle system setup
-            sub_0803171C();
+            FreeAllParticles();
             sub_08031668(args[1], args[2]);
             break;
-        case BSOP_Unk37:  // particle system call
-            sub_0803171C();
+        case BSOP_FreeAllParticles:
+            FreeAllParticles();
             break;
         case BSOP_ReleaseWindupEmitter:  // releases this object's windup emitter
             ReleaseParticleEmitter_candidate(obj->pWindupParticleEmitter);

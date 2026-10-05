@@ -108,5 +108,5 @@ void UpdateLupinPotionCutscene(void)
     sub_08007F84(2, &g_aLupinPotionBg2Scroll[0], &g_aLupinPotionBg2Scroll[1]);
     aCamera[0] >>= 16;
     aCamera[1] >>= 16;
-    sub_0803E628(aCamera);
+    SetCameraPosition(aCamera);
 }

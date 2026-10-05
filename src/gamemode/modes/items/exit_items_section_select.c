@@ -14,7 +14,7 @@ void ExitItemsSectionSelect(void)
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0801DC6C(g_pMenuCursorObject);
     g_pMenuCursorObject = NULL;
-    sub_080316D4();
-    sub_0803171C();
+    FreeAllParticleEmitters();
+    FreeAllParticles();
     ResetPaletteAnimations();
 }

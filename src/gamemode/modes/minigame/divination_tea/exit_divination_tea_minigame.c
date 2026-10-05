@@ -15,8 +15,8 @@ void ExitDivinationTeaMinigame(void)
     {
         sub_0801DC6C(g_DivinationTea.pCursorObject);
         g_DivinationTea.pCursorObject = NULL;
-        sub_080316D4();
-        sub_0803171C();
+        FreeAllParticleEmitters();
+        FreeAllParticles();
     }
 
     ResetPaletteAnimations();

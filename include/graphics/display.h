@@ -125,4 +125,15 @@ extern void DrawLanguageSelectPicture_candidate(u32 selectedIndex);
 extern void SetBgControlRegister_candidate(u32 bg, u32 control);
 // X-only counterpart of SetBgScroll; `position` is already 16.16 fixed-point.
 extern void SetBgScrollX_candidate(u32 bg, s32 position);
-extern void sub_0803D420(u32 arg0, u32 arg1);
+// Set by SetScreenDarkenParams_candidate (every caller passes 0, 8).
+// DarkenScreenPalette and RestoreScreenPalette pass the step ticks to the
+// palette effect they start (PaletteEffect.bStepTicks_candidate); no reader
+// of g_dwUnk03005638 has been found.
+extern u32 g_dwUnk03005638;
+extern u32 g_dwScreenDarkenStepTicks_candidate;
+extern void SetScreenDarkenParams_candidate(u32 arg0, u32 stepTicks);
+// 0x400-byte copy of the BG+OBJ palette that DarkenScreenPalette saves and
+// RestoreScreenPalette restores.
+extern u16 *g_pScreenPaletteBackup;
+extern void InitScreenTransitionState_candidate(void);
+extern void InitDisplayControl(void);

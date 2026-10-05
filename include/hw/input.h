@@ -32,8 +32,13 @@ extern u16 g_awPlayerKeysHeld[2];          // 0x030034F6: per-player held-key ma
 extern u16 g_awPlayerKeysHeldPrevious[2];  // 0x030034FA: previous-frame counterpart of the above
 extern u16 g_awPlayerKeysPressed[2];       // 0x030034FE: per-player newly-pressed masks
 extern u16 g_awPlayerKeysReleased[2];      // 0x03003502: per-player newly-released masks
+// 0x03003506: per-player counterpart of g_wInputDisabled, written alongside
+// it by EnableKeyInput and the uncalled sub_08025978; no reader found.
+extern u16 g_awPlayerInputDisabled_candidate[2];
 
 extern void UpdateKeyInput(void);
 extern void ResetKeyInput(void);
+extern void EnableKeyInput(void);
+extern void InitInputSystem(void);
 
 extern u16 g_awLinkKeysReceived[2];  // 0x03005A0C: per-player key masks received over the link cable

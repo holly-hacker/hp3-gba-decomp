@@ -21,6 +21,12 @@ extern DecompressFunc g_pDecompressGammaLzEntry;
 extern u8 g_pDecompressLzRleIwram[0x1F8];
 extern u8 g_pDecompressGammaLzIwram[0x33C];
 
+// Huffman BG tile decoder (ARM), copied to IWRAM by InstallBgTileCodec; see
+// docs/formats/graphics.md ("On-demand per-tile BG streaming").
+void DecompressBgTile(void);
+extern u8 g_aDecompressBgTileIwram[0x100];
+void InstallBgTileCodec(void);
+
 // bios_ObjAffineSet's input struct (see include/hw/bios.h): reciprocal
 // scale (8.8 fixed) plus rotation angle; the trailing pad word gives
 // each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage
@@ -34,6 +40,9 @@ typedef struct ObjAffineSource {
     u16 pad6;
 } ObjAffineSource;
 extern ObjAffineSource g_aObjAffineSetSource[32];  // 0x03005014
+extern u8 g_bAffineSlotHighWaterMark;
+extern u8 g_abAffineSlotUsed[32];
+extern void ResetAffineSlots(void);
 
 // OBJ palette resource: 16 BGR555 entries. Entry 0 is the transparent color and is
 // not uploaded; entries 1-15 fill the OBJ palette bank (see AttachObjectPalette).
@@ -216,7 +225,24 @@ static inline void FreeParticle(Particle *particle)
 extern u8 g_bParticleSpawnBlocked;                  // 0x030051D0
 extern void TickParticleEmitters(void);
 extern u16 g_wParticleEmitterHighWaterMark;         // 0x030051A2
-extern ParticleGfxEntry *g_apParticleGfxPools[];    // 0x030051D8
+#define PARTICLE_GFX_POOL_COUNT 3
+#define PARTICLE_GFX_POOL_SIZE 5  // entries per pool
+extern ParticleGfxEntry *g_apParticleGfxPools[PARTICLE_GFX_POOL_COUNT];  // 0x030051D8
+
+// Backing storage for the particle and emitter free lists.
+#define MAX_PARTICLES 64
+#define MAX_PARTICLE_EMITTERS 10
+extern Particle *g_aParticles;                      // 0x030051A4
+extern ParticleEmitter *g_aParticleEmitters;        // 0x030051A8
+// Active particles bucketed by OAM priority each frame (sub_08030C00); each
+// array holds up to MAX_PARTICLES pointers.
+extern Particle **g_apParticlesByPriority[4];       // 0x030051B8
+
+extern void InitResourceCachePools(void);
+extern void ResetParticleState(void);
+extern void FreeAllParticleEmitters(void);
+extern void FreeAllParticles(void);
+extern void ReleaseParticle(Particle *particle);
 
 extern ParticleEmitter *g_pMenuCursorEmitter;       // 0x030028C0
 

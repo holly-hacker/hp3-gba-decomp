@@ -40,7 +40,7 @@ extern void PlayMusicModule(u8 moduleId);
 // Clears the mute flag on every active Krawall channel.
 extern void UnmuteAllMusicChannels(void);
 extern void PlaySoundEffect_candidate(u32 id);
-extern void SetMusicVolume(u32 volume, u32 arg);
+extern void SetMusicVolume(u8 volume, u32 fade);
 // Pause/resume the music module; ResumeMusic only acts if PauseMusic paused it.
 extern void PauseMusic(void);
 extern void ResumeMusic(void);
@@ -49,6 +49,26 @@ extern void StopSoundEffect(s32 handle);
 
 extern u8 g_bMusicPaused;         // 0x03005AC1: set by PauseMusic
 extern u8 g_bCurrentMusicModule;  // 0x03005AC2: last module started by PlayMusicModule, 0xFF if none
-extern void SetSoundEffectVolume(u32 volume);
+extern void SetSoundEffectVolume(u8 volume);
+
+// Audio startup: kramInstall copies the RAM sections and calls InitAudio.
+extern u8 g_bUnk03005AC0;  // set to 8 by kramInstall and PlayMusicModule
+extern void kramInstall(void);
+extern void InitAudio(void);
+extern void ApplyAudioVolumeSettings(void);
+extern void OnKrawallEvent(s32 event, s32 param);
+
+// Krawall library entry points called by the startup code, identified against
+// the public Krawall API; see docs/memory-map/krawall.md.
+#define KRAG_INIT_STEREO   1
+#define KRAM_QM_HQ         2
+#define KRAM_MV_CHANNELS16 (4 << 16)
+#define KRAP_CB_JDONE      5  // krapCallback event: jingle finished
+extern void kragInit(u32 stereo);
+extern void kramSetMasterVol(u32 volume);
+extern void kramQualityMode(u32 mode);
+extern void kramSetSFXVol(u32 volume);
+extern void krapCallback(void (*callback)(s32 event, s32 param));
+extern void krapSetMusicVol(u32 volume, u32 fade);
 extern void DisableKrawall(void);
 extern void EnableKrawall(void);

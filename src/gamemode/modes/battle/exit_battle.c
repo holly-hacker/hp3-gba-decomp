@@ -22,8 +22,8 @@ void ExitBattle(void)
         u32 partyIndex;
 
         sub_08030960(0);
-        sub_080316D4();
-        sub_0803171C();
+        FreeAllParticleEmitters();
+        FreeAllParticles();
         FreeAllObjects(&g_ActiveObjectListState.pHead);
         ResetPaletteAnimations();
         sub_08031668(0, 0);
@@ -104,8 +104,8 @@ void ExitBattle(void)
                 ClearFighterObjectFlag_candidate(fighterIndex);
 
         sub_08030960(0);
-        sub_080316D4();
-        sub_0803171C();
+        FreeAllParticleEmitters();
+        FreeAllParticles();
         FreeAllObjects(&g_ActiveObjectListState.pHead);
         ResetPaletteAnimations();
         sub_08031668(0, 0);

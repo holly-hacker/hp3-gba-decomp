@@ -29,7 +29,7 @@ void HandleOverworldPauseMenuInput(void)
                 g_dwPauseMenuCooldown = 4;
                 PlaySoundById(1);
                 PushGameMode(InGameMenu);
-                g_bUnk03005E18 = 1;
+                g_bRestoringRoomObjects_candidate = 1;
             }
         }
         else if (g_wKeysPressed & KeySelect) {
@@ -42,7 +42,7 @@ void HandleOverworldPauseMenuInput(void)
                 g_dwPauseMenuCooldown = 4;
                 PlaySoundById(1);
                 PushGameMode(Options);
-                g_bUnk03005E18 = 1;
+                g_bRestoringRoomObjects_candidate = 1;
             }
         }
     }

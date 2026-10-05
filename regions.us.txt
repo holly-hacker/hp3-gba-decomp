@@ -117,7 +117,7 @@ c-file 0x0800572C 0x08005808 src/room/build_room_object_table.c BuildRoomObjectT
 c-file 0x08005808 0x0800588C src/room/build_room_object_column.c BuildRoomObjectColumn_candidate
 c-file 0x0800588C 0x08005968 src/room/build_room_warp_trigger_table.c BuildRoomWarpTriggerTable_candidate
 c-file 0x08005968 0x08005A44 src/room/build_room_switch_state_object_table.c BuildRoomSwitchStateObjectTable_candidate
-thumb-func 0x08005A44 InitRoomScriptState_candidate
+c-file 0x08005A44 0x08005A78 src/room/init_room_script_state.c InitRoomScriptState_candidate
 c-file 0x08005A78 0x08005B00 src/room/parse_room_resource_blob.c ParseRoomResourceBlob_candidate
 thumb-func 0x08005B00 RespawnRowAndRunChain_candidate
 thumb-func 0x08005B44 ShouldRunRoomScriptRow_candidate
@@ -512,18 +512,18 @@ thumb-func 0x0801F654 UpdateDialogueBox
 thumb-func 0x0801FA9C sub_0801FA9C
 thumb-func 0x0801FAF4 ExitDialogue
 thumb-func 0x0801FB54 ShowRoomDialogBox_candidate
-thumb-func 0x0801FB78 sub_0801FB78
+c-file 0x0801FB78 0x0801FBA4 src/text/init_dialog_box.c InitDialogBox
 thumb-func 0x0801FBA4 sub_0801FBA4
 thumb-func 0x0801FBBC sub_0801FBBC
-thumb-func 0x0801FDA0 InitDisplayControl
+c-file 0x0801FDA0 0x0801FDB0 src/graphics/init_display_control.c InitDisplayControl
 c-file 0x0801FDE8 0x0801FED4 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
 c-file 0x0801FED4 0x0801FF14 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
 c-file 0x0801FF14 0x0801FF30 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
 thumb-func 0x0802018C SpawnScriptEffectObject
 thumb-func 0x080201C8 AddRoomTileAnimation_candidate
 thumb-func 0x08020228 TickRoomTileAnimations_candidate
-thumb-func 0x080203A8 InitRoomTileAnimationTable_candidate
 
+c-file 0x080203A8 0x080203CC src/room/init_room_tile_animation_table.c InitRoomTileAnimationTable
 thumb-func 0x080203CC sub_080203CC
 thumb-func 0x080203F0 sub_080203F0
 thumb-func 0x0802042C sub_0802042C
@@ -544,7 +544,7 @@ c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
 c-file 0x080210D8 0x080211C0 src/text/text_macro.c SetTextMacroString
 thumb-func 0x080211C0 GetTextLineHeight
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
-thumb-func 0x08021560 NoopInit
+c-file 0x08021560 0x08021564 src/noop_init.c NoopInit
 thumb-func 0x08021564 ResetSaveStateForNewGame
 c-file 0x08021604 0x08021650 src/save/unpack_save_slot_preview.c UnpackSaveSlotPreview
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
@@ -561,6 +561,7 @@ thumb-func 0x080237D0 sub_080237D0
 thumb-func 0x080238D8 ShowMapNamePopup
 thumb-func 0x08024234 CyclePartyLeaderSelection_candidate
 thumb-func 0x08024518 sub_08024518
+c-file 0x08024888 0x080248E8 src/overworld/reset_party_state.c ResetPartyState
 thumb-func 0x080248E8 sub_080248E8
 thumb-func 0x08024918 sub_08024918
 thumb-func 0x08024980 sub_08024980
@@ -572,13 +573,14 @@ thumb-func 0x08024A88 sub_08024A88
 thumb-func 0x08024AEC GetPartyMasterStatsSlot_candidate
 c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTable
-thumb-func 0x080250B8 InstallBgTileCodec
+c-file 0x080250B8 0x080250D4 src/graphics/install_bg_tile_codec.c InstallBgTileCodec
 thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
 thumb-func 0x080251EC UpdateHighScoreNameEntry
 thumb-func 0x08025368 ExitHighScoreNameEntry
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
-thumb-func 0x080258E8 InitInputSystem_candidate
+c-file 0x080258E8 0x080258F8 src/input/init_input_system.c InitInputSystem
 c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
+c-file 0x08025954 0x08025978 src/input/enable_key_input.c EnableKeyInput
 thumb-func 0x08025A18 sub_08025A18
 thumb-func 0x08025A74 StepWrappedSelectionVertical_candidate
 thumb-func 0x08025B2C StepWrappedSelectionHorizontal_candidate
@@ -587,11 +589,13 @@ thumb-func 0x08025E18 UpdateTopicScreen
 thumb-func 0x08025E84 ExitTopicScreen
 c-file 0x08025E90 0x08026068 src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterruptSystem
-thumb-func 0x080260A8 EnableInterrupts
+c-file 0x080260A8 0x080260DC src/interrupts/enable_interrupts.c EnableInterrupts
 c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
-thumb-func 0x08026158 SetVBlankCallback
+c-file 0x08026158 0x08026184 src/interrupts/set_vblank_callback.c SetVBlankCallback
+c-file 0x080261B0 0x080261DC src/interrupts/set_vcount_callback.c SetVCountCallback
 c-file 0x080261DC 0x080261F8 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 
+c-file 0x080261F8 0x0802621C src/interrupts/enable_vcount_interrupt.c EnableVCountInterrupt
 thumb-func 0x08026244 VBlankCallback_candidate
 thumb-func 0x08026254 sub_08026254
 thumb-func 0x08026284 HandleHBlankInterrupt_candidate
@@ -656,7 +660,7 @@ c-file 0x0802A14C 0x0802A2A4 src/gamemode/modes/overworld/exit_overworld_screen.
 thumb-func 0x0802AB34 RestoreRoomObjectState
 thumb-func 0x0802AE64 RestoreRoomObjectStateMinimal
 c-file 0x0802AEF8 0x0802B018 src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
-thumb-func 0x0802B018 InitRoomState
+c-file 0x0802B018 0x0802B058 src/overworld/init_room_state.c InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
 thumb-func 0x0802B08C sub_0802B08C
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
@@ -727,12 +731,12 @@ thumb-func 0x0802D334 TickMinigameSwitchFadeOut_candidate
 thumb-func 0x0802D368 SwapMinigameSelection_candidate
 thumb-func 0x0802D384 TickMinigameSwitchFadeIn_candidate
 thumb-func 0x0802D3BC sub_0802D3BC
-thumb-func 0x0802D544 NoopInit3
+c-file 0x0802D544 0x0802D548 src/noop_init3.c NoopInit3
 thumb-func 0x0802D640 sub_0802D640
 thumb-func 0x0802D64C sub_0802D64C
 thumb-func 0x0802D6B8 sub_0802D6B8
 thumb-func 0x0802D7A0 GetCollisionTypeAtPixel_candidate
-thumb-func 0x0802DD54 NoopInit2
+c-file 0x0802DD54 0x0802DD58 src/noop_init2.c NoopInit2
 thumb-func 0x0802DD58 LoadRoomSharedTileset_candidate
 thumb-func 0x0802DDAC sub_0802DDAC
 thumb-func 0x0802DF28 IsBlockingCollisionType
@@ -745,22 +749,24 @@ thumb-func 0x0802FCC0 sub_0802FCC0
 thumb-func 0x0802FD5C sub_0802FD5C
 thumb-func 0x0802FE04 SetObjectAnimData_candidate
 thumb-func 0x0802FEAC SubmitOamAttrsNudged
-thumb-func 0x0802FF2C InitOamSystem
+c-file 0x0802FF2C 0x0802FF58 src/graphics/oam/init_oam_system.c InitOamSystem
 thumb-func 0x0802FFA0 QueueOamEntry
 thumb-func 0x0802FFF0 HideOamEntryOnAlternateVblanks
+c-file 0x08030014 0x08030094 src/graphics/oam/clear_oam_shadow_buffers.c ClearOamShadowBuffers
 thumb-func 0x08030094 GetObjectAffineSlotId
 thumb-func 0x080300A0 SetObjectAffineSlotId
 thumb-func 0x080300B4 AllocAffineSlot
 thumb-func 0x080300F8 FreeAffineSlot
 thumb-func 0x08030140 sub_08030140
 thumb-func 0x08030184 HideUnusedOamEntries
+c-file 0x080301E8 0x0803020C src/graphics/oam/reset_affine_slots.c ResetAffineSlots
 thumb-func 0x08030274 InitializeOwlNameSelect
 thumb-func 0x0803031C UpdateOwlNameSelect
 thumb-func 0x08030568 ExitOwlNameSelect
 thumb-func 0x0803071C BindObjectEffectData
 thumb-func 0x08030794 AllocResourceCacheSlot
-thumb-func 0x08030824 ClearResourceCacheSlots
 
+c-file 0x08030824 0x08030844 src/graphics/clear_resource_cache_slots.c ClearResourceCacheSlots
 thumb-func 0x08030844 sub_08030844
 c-file 0x08030878 0x080308A8 src/object/attach_object_palette.c AttachObjectPalette
 thumb-func 0x080308A8 AttachObjectPaletteUnshared_candidate
@@ -776,13 +782,15 @@ thumb-func 0x08030C00 sub_08030C00
 c-file 0x08030C9C 0x08030D90 src/graphics/particle/tick_particle_emitter.c TickParticleEmitter
 c-file 0x08030D90 0x08031358 src/graphics/particle/spawn_particle.c SpawnParticle
 thumb-func 0x08031358 sub_08031358
-thumb-func 0x080315A4 InitResourceCachePools
+c-file 0x080315A4 0x08031624 src/graphics/particle/init_resource_cache_pools.c InitResourceCachePools
+c-file 0x08031624 0x08031668 src/graphics/particle/reset_particle_state.c ResetParticleState
 thumb-func 0x08031668 sub_08031668
 c-file 0x080316A4 0x080316D4 src/graphics/particle/release_particle_emitter.c ReleaseParticleEmitter_candidate
-thumb-func 0x080316D4 sub_080316D4
-thumb-func 0x0803171C sub_0803171C
+c-file 0x080316D4 0x0803171C src/graphics/particle/free_all_particle_emitters.c FreeAllParticleEmitters
+c-file 0x0803171C 0x08031748 src/graphics/particle/free_all_particles.c FreeAllParticles
 c-file 0x08031748 0x08031798 src/graphics/particle/tick_particle_emitters.c TickParticleEmitters
 thumb-func 0x080317EC sub_080317EC
+c-file 0x08031848 0x0803186C src/graphics/particle/release_particle.c ReleaseParticle
 c-file 0x080319FC 0x08031B4C src/gamemode/modes/cutscene/harry_patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file 0x08031B4C 0x08031CA8 src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
 c-file 0x08031CA8 0x08031CC4 src/gamemode/modes/cutscene/harry_patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
@@ -970,24 +978,24 @@ c-file 0x0803C348 0x0803C378 src/save/eeprom_write_blocks.c EepromWriteBlocks
 c-file 0x0803C378 0x0803C3A8 src/save/eeprom_transfer_begin.c EepromTransferBegin
 c-file 0x0803C3A8 0x0803C3BC src/save/eeprom_transfer_end.c EepromTransferEnd
 thumb-func 0x0803C610 DarkenScreenPalette
-thumb-func 0x0803D2C8 InitScreenTransitionState_candidate
+c-file 0x0803D2C8 0x0803D2E8 src/graphics/init_screen_transition_state.c InitScreenTransitionState_candidate
 thumb-func 0x0803D2E8 SetFadeToBlack
 c-file 0x0803D310 0x0803D338 src/graphics/set_fade_to_white.c SetFadeToWhite
 thumb-func 0x0803D338 SetAlphaBlendTargets
 thumb-func 0x0803D350 SetAlphaBlendCoefficients
 thumb-func 0x0803D3B0 PlayScreenTransitionInByIndex
 thumb-func 0x0803D3E8 PlayScreenTransitionOutByIndex
-thumb-func 0x0803D420 sub_0803D420
+c-file 0x0803D420 0x0803D434 src/graphics/set_screen_darken_params.c SetScreenDarkenParams_candidate
 thumb-func 0x0803D434 RestoreScreenPalette
 thumb-func 0x0803DA4C UpdateOverworldCamera_candidate
 thumb-func 0x0803DB68 sub_0803DB68
 thumb-func 0x0803DC44 sub_0803DC44
 thumb-func 0x0803DCDC LoadRoomBgLayer0Extra_candidate
 thumb-func 0x0803DD7C WriteRoomBgTile_candidate
-thumb-func 0x0803E4FC sub_0803E4FC
+c-file 0x0803E4FC 0x0803E588 src/overworld/init_room_bg_state.c InitRoomBgState_candidate
 thumb-func 0x0803E588 SetupRoomBgControlAndWindows_candidate
 thumb-func 0x0803E618 GetCameraPosition
-thumb-func 0x0803E628 sub_0803E628
+c-file 0x0803E628 0x0803E638 src/overworld/set_camera_position.c SetCameraPosition
 thumb-func 0x0803E664 LoadRoomBgTilemap1_candidate
 thumb-func 0x0803E6A0 LoadRoomBgTilemap0_candidate
 thumb-func 0x0803E6F0 LoadRoomBgTilemap2_candidate
@@ -1000,11 +1008,12 @@ thumb-func 0x0803EF5C TickLinkCommIfActive_candidate
 c-file 0x0803FA94 0x0803FAA4 src/link/get_link_player_id.c GetLinkPlayerId
 c-file 0x0803FC68 0x0803FD04 src/audio/play_sound_by_id.c PlaySoundById
 c-file 0x0803FD04 0x0803FDB0 src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
-thumb-func 0x0803FDB0 kramInstall
+c-file 0x0803FDB0 0x0803FDFC src/audio/kram_install.c kramInstall
+c-file 0x0803FDFC 0x0803FE48 src/audio/init_audio.c InitAudio
 thumb-func 0x0803FE54 DisableKrawall
 thumb-func 0x0803FE60 EnableKrawall
-thumb-func 0x0803FE78 SetSoundEffectVolume
-thumb-func 0x0803FE88 SetMusicVolume
+c-file 0x0803FE78 0x0803FE88 src/audio/set_sound_effect_volume.c SetSoundEffectVolume
+c-file 0x0803FE88 0x0803FE98 src/audio/set_music_volume.c SetMusicVolume
 thumb-func 0x0803FE98 StopSoundEffect
 thumb-func 0x0803FEA4 UnmuteAllMusicChannels
 thumb-func 0x0803FEB4 PlayMusicModule
@@ -1015,6 +1024,8 @@ thumb-func 0x0803FF40 ResumeMusic
 thumb-func 0x0803FF5C StopMusic
 thumb-func 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0803FF8C IsSoundActive_candidate
+c-file 0x0803FF98 0x0803FFC8 src/audio/apply_audio_volume_settings.c ApplyAudioVolumeSettings
+c-file 0x0804000C 0x08040038 src/audio/on_krawall_event.c OnKrawallEvent
 c-file 0x08040038 0x08040114 src/room/objects/sub_08040038.c sub_08040038
 thumb-func 0x08040114 sub_08040114
 thumb-func 0x08040358 sub_08040358
@@ -1041,7 +1052,8 @@ c-file 0x08042C74 0x08042D10 src/gamemode/modes/cutscene/hogwarts_up_night_cutsc
 c-file 0x08042D10 0x08042D74 src/gamemode/modes/cutscene/clock_skip_cutscene/update_clock_skip_cutscene.c UpdateClockSkipCutscene
 c-file 0x08042D74 0x08042D90 src/gamemode/modes/cutscene/clock_skip_cutscene/exit_clock_skip_cutscene.c ExitClockSkipCutscene
 c-file 0x08042D90 0x08042DC8 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/exit_hogwarts_up_night_cutscene.c ExitHogwartsUpNightCutscene
-thumb-func 0x08042E2C sub_08042E2C
+c-file 0x08042E2C 0x08042E44 src/timer/reset_all_game_timers.c ResetAllGameTimers
+c-file 0x08042E44 0x08042E70 src/timer/reset_game_timer.c ResetGameTimer
 c-file 0x08042F08 0x08042FC0 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
 c-file 0x08042FC0 0x08043114 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
 thumb-func 0x08043114 sub_08043114
@@ -1085,13 +1097,16 @@ c-file 0x08044BF0 0x08044C00 src/gamemode/modes/cutscene/cool_train_cutscene/exi
 c-file 0x08044C00 0x08044D24 src/room/objects/sub_08044C00.c sub_08044C00
 thumb-func 0x08044D24 sub_08044D24
 thumb-func 0x08044F54 sub_08044F54
-thumb-func 0x08045094 InitScanlineEffects
-thumb-func 0x080450D4 QueueScanlineEffectTable
+c-file 0x08045094 0x080450D4 src/graphics/scanline/init_scanline_effects.c InitScanlineEffects
+c-file 0x080450D4 0x08045118 src/graphics/scanline/queue_scanline_effect_table.c QueueScanlineEffectTable
 thumb-func 0x08045260 CommitScanlineEffects
-thumb-func 0x0804528C StartScanlineEffects
+c-file 0x0804528C 0x080452A8 src/graphics/scanline/start_scanline_effects.c StartScanlineEffects
 thumb-func 0x080452A8 StopScanlineEffects
 thumb-func 0x080452D4 ClearScanlineEffects
 thumb-func 0x080452EC IsScanlineEffectQueueIdle
+c-file 0x08045314 0x08045318 src/graphics/scanline/scanline_effect_nop.c ScanlineEffectNop
+thumb-func 0x08045318 ScanlineEffectVCountCallback
+c-file 0x08045374 0x080453B4 src/graphics/scanline/clear_scanline_effect_staging.c ClearScanlineEffectStaging
 c-file 0x080453B4 0x080453D8 src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 c-file 0x080453D8 0x0804542C src/object/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x0804542C sub_0804542C
@@ -1107,6 +1122,12 @@ c-file 0x08045AE8 0x08045ECC src/room/objects/sub_08045AE8.c sub_08045AE8
 thumb-func 0x08045ECC sub_08045ECC
 thumb-func 0x0804651C sub_0804651C
 thumb-func 0x080465D4 sub_080465D4
+thumb-func 0x08046D0C kragInit
+thumb-func 0x08046EF4 kramQualityMode
+thumb-func 0x08046F5C kramSetSFXVol
+thumb-func 0x08046F7C kramSetMasterVol
+thumb-func 0x080491AC krapCallback
+thumb-func 0x0804923C krapSetMusicVol
 thumb-func 0x08049E3C sub_08049E3C
 thumb-func 0x08049E40 sub_08049E40
 thumb-func 0x08049E54 sub_08049E54
@@ -1209,6 +1230,7 @@ c-file 0x08066E44 0x08066FFC src/room/objects/sub_0802F500.globals.c g_adwRoomOb
 c-file 0x08066FFC 0x0806788C src/graphics/assets/object_type_assets.c g_aObjectTypeAssets
 c-file 0x0806788C 0x080678BC src/room/objects/room_obj_unk6_frames.c g_abRoomObjUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
+c-file 0x08068BF0 0x08068BF8 src/graphics/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068BFC 0x08068C08 src/graphics/particle/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068C30 0x08068C38 src/gamemode/modes/cutscene/harry_patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068C38 0x08068D04 src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries
@@ -1243,6 +1265,7 @@ c-file 0x0806C12C 0x0806C174 src/room/objects/sub_08044894.globals.c g_aRoomFlam
 c-file 0x0806C174 0x0806C178 src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
 c-file 0x0806C178 0x0806C200 src/room/objects/sub_08044C00.globals.c g_aRoomSwitchSprites
+c-file 0x0806C2F0 0x0806C300 src/graphics/scanline/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file 0x0806C304 0x0806E904 src/room/objects/sub_08045AE8.globals.c g_aRoomObjTriggerSprites
 graphics 0x0806E904 0x080781A4 overworld OverworldSpellEffects
 graphics 0x080781A4 0x0807E7F8 battle AllyHeads
@@ -1416,3 +1439,5 @@ c-file 0x08FB0588 0x08FB0818 src/audio/sound_samples.c g_aSoundSamples
 c-file 0x08FB0818 0x08FB09F8 src/audio/sound_variants.c g_aSoundVariants
 c-file 0x08FB09F8 0x08FB0CC4 src/audio/sound_config.c g_aSoundConfig
 c-file 0x08FB0D94 0x08FB0DB0 src/shop/shop_stock_lists.c g_apShopStockLists
+label 0x08FB0DB0 g_IwramSectionRomImage
+label 0x08FB2348 g_EwramSectionRomImage

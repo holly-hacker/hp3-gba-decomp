@@ -14,7 +14,7 @@ void ExitHarryVsDementorsMinigame(void)
     {
         sub_0801DC6C(g_HarryVsDementors.pCursorObject);
         g_HarryVsDementors.pCursorObject = NULL;
-        sub_0803171C();
+        FreeAllParticles();
     }
 
     sub_0802CEE4(g_HarryVsDementors.pObjectGroup20);

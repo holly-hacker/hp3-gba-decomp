@@ -41,7 +41,7 @@ void InitializeLupinPotionCutscene(void)
     sub_0800A38C(position, 0);
     position.aCoordinates[0] >>= 16;
     position.aCoordinates[1] >>= 16;
-    sub_0803E628(position.aCoordinates);
+    SetCameraPosition(position.aCoordinates);
 
     SetTextTargetFromBgControl(g_dwLupinPotionTextBgControl);
     SelectTextFont(7, 0, 0);
