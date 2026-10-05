@@ -1,7 +1,8 @@
 #include "hw/mem.h"
 #include "graphics/display.h"
+#include "hw/io_regs.h"
 
 void ClearVram(void)
 {
-    memset((void *)0x06000000, 0, 0x18000);
+    memset(VRAM_BASE, 0, VRAM_SIZE);
 }

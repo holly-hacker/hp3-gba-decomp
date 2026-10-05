@@ -88,8 +88,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   bestiary grid. Table lives as committed C in `src/battle/monsters.c`.
 - [`formats/graphics.md`](formats/graphics.md) — the generic
   resource-decompression dispatchers and codec inventory, the room
-  resource table, OBJ palette and tile loading, and PNG sprite banks.
-  Pipeline: `tools/graphics/`, `data/graphics/`.
+  resource table, OBJ palette and tile loading, PNG sprite banks, and object
+  animation command streams. Pipeline: `tools/graphics/`, `data/graphics/`.
 - [`formats/items.md`](formats/items.md) — `g_pItemTable`, the item
   record layout, equipment stats, per-character equip eligibility, and
   categories. Committed as `src/items/items.c`; icons are the `ItemIcons`

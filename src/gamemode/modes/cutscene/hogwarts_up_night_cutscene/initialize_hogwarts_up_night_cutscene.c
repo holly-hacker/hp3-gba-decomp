@@ -23,5 +23,5 @@ void InitializeHogwartsUpNightCutscene(void)
     sub_08007AF0(0, 0, 0x480000);
     sub_08007AF0(1, 0, 0xFFD00000);
     PlayScreenTransitionInByIndex(0x3F, 2);
-    sub_0800D5DC(0, 0x100, 0x10, 10, 0x31, g_HogwartsUpNightPaletteData);
+    sub_0800D5DC(0, 0x100, 0x10, 10, 0x31, GRAPHIC_BLOB_PALETTE_COLORS(gHogwartsUpNightFadeGraphic));
 }

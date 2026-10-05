@@ -37,6 +37,7 @@ extern const u8 gClockSkipGraphic[];
 extern const u8 gHogwartsUpNightBg0Graphic[];
 extern const u8 gHogwartsUpNightBg1Graphic[];
 extern const u8 gHogwartsUpNightBg2Graphic[];
+extern const u8 gHogwartsUpNightFadeGraphic[];
 
 /* CoolTrain */
 extern const u8 gCoolTrainGraphic[];

@@ -14,8 +14,8 @@ typedef struct {
 
 // One 16-byte record of a list menu's row objects, read by sub_08001690.
 typedef struct {
-    u32 dwUnk0;
-    u32 dwUnk4;
+    void *pTileGfx;
+    void *pFrameData;            // 0x04
     const ObjPalette *pPalette;  // 0x08
     u32 dwUnkC;
 } ListMenuRowObject;
@@ -31,7 +31,7 @@ typedef struct {
     u16 wBaseY;             // 0x0A
     u16 wStrideX;           // 0x0C
     u16 wStrideY;           // 0x0E
-    ListMenuEntry *pEntries;  // 0x10
+    const ListMenuEntry *pEntries;  // 0x10
     u16 wRowObjectCount;    // 0x14: one object per row, created from pRowObjects
     u16 wUnk16;
     u16 wRowObjectOffsetX;  // 0x18

@@ -12,3 +12,14 @@ groups:
         names: {1: Pumpkin001}
       - kind: graphic-blobs
         names: [ServePumpkinJuiceBg0Graphic, ServePumpkinJuiceBg1Graphic, ServePumpkinJuiceBg2Graphic]
+
+  # The 256-color palette whose colors the panel's palette effect cycles
+  - name: ServePumpkinJuicePanel
+    runs:
+      - kind: image-bank
+        names: [ServePumpkinJuicePanel]
+        bpp: 8
+        componentOrder: [palette]
+        storedCells: false
+        paletteHeader: [0xa1, 0x0]
+        paletteTrailer: [0x0, 0x0]

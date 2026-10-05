@@ -71,14 +71,16 @@ extern Object *sub_0802BC54(u8 bColumn, u8 bRow);
 
 extern void sub_08044960(Object *pObj);
 extern void sub_08044ADC(Object *pSelf, Object *pOther);
-extern const void *const g_apRoomObjUnkBAnimFrames[3];  // ROM 0x0806C144 (US)
-extern const void *const g_apRoomObjUnkBEffectData[3];  // ROM 0x0806C150 (US)
-extern const u8 g_abRoomObjUnkBAnimData[];              // ROM 0x0806C15C (US)
+extern const ObjectGfxRecord g_aRoomObjUnkBSprites[3];             // ROM 0x0806C12C (US)
+extern const ObjectGfxRecord *const g_apRoomObjUnkBAnimFrames[3];  // ROM 0x0806C144 (US)
+extern const void *const g_apRoomObjUnkBEffectData[3];             // ROM 0x0806C150 (US)
+extern const u8 g_abRoomObjUnkBAnimData[22];                       // ROM 0x0806C15C (US)
 
 extern void sub_08035664(Object *pObj);
 extern void sub_08035724(Object *pSelf, Object *pOther);
-extern const ObjectAssetRecord *const g_apRoomObjUnk8AssetRecords[2];  // ROM 0x080693D4 (US)
-extern const void *const g_apRoomObjUnk8EffectData[2];                 // ROM 0x080693DC (US)
+extern const ObjectGfxRecord g_RoomObjUnk8Sprite;                    // ROM 0x080693CC (US)
+extern const ObjectGfxRecord *const g_apRoomObjUnk8AssetRecords[2];  // ROM 0x080693D4 (US)
+extern const void *const g_apRoomObjUnk8EffectData[2];               // ROM 0x080693DC (US)
 
 // Object bytes 0x60-0x6F as written by the type 8 constructor.
 typedef struct RoomObjectUnk8State {
@@ -107,14 +109,16 @@ extern u32 g_adwRoomObjUnkACState[3];
 
 extern void sub_08040114(Object *pObj);
 extern void sub_08040358(Object *pSelf, Object *pOther);
-extern const void *const g_apRoomObjUnkAAnimFrames[];  // ROM 0x0806B8FC (US)
-extern const void *const g_apRoomObjUnkAEffectData[];  // ROM 0x0806B908 (US)
-extern const u8 g_abRoomObjUnkAAnimData[];             // ROM 0x0806B914 (US)
+// [3] is the spell effect sprite of sub_08040680.
+extern const ObjectGfxRecord g_aRoomObjUnkASprites[4];                // ROM 0x0806B8DC (US)
+extern const ObjectGfxRecord *const g_apRoomObjUnkAAnimFrames[3];     // ROM 0x0806B8FC (US)
+extern const void *const g_apRoomObjUnkAEffectData[3];                // ROM 0x0806B908 (US)
+extern const u8 g_abRoomObjUnkAAnimData[30];                          // ROM 0x0806B914 (US)
 
 extern void sub_0803B71C(Object *pObj);
 extern void sub_0803BA18(Object *pSelf, Object *pOther);
-extern const void *const g_apRoomObjUnkCAnimFrames[];  // ROM 0x0806B7D4 (US)
-extern const u8 g_abRoomObjUnkCAnimData[];             // ROM 0x0806B7DC (US)
+extern const ObjectGfxRecord g_RoomObjUnkCSprite;  // ROM 0x0806B7D4 (US)
+extern const u8 g_abRoomObjUnkCAnimData[46];             // ROM 0x0806B7DC (US)
 
 // Types 2, 4 and 7 take their runtime object type from the first word of the record.
 typedef struct RoomObjectRecordUnk2 {
@@ -195,8 +199,9 @@ typedef struct RoomObjectRecordUnk3 {
 
 extern void sub_08044D24(Object *pObj);
 extern void sub_08044F54(Object *pSelf, Object *pOther);
-extern const ObjectAssetRecord *const g_apRoomObjUnk3AssetRecords[11];  // ROM 0x0806C1A0 (US)
-extern const void *const g_apRoomObjUnk3EffectData[11];                 // ROM 0x0806C1D0 (US)
+extern const ObjectGfxRecord g_aRoomObjUnk3Sprites[5];               // ROM 0x0806C178 (US)
+extern const ObjectGfxRecord *const g_apRoomObjUnk3AssetRecords[12];  // ROM 0x0806C1A0 (US)
+extern const void *const g_apRoomObjUnk3EffectData[12];               // ROM 0x0806C1D0 (US)
 
 // Scripted trigger object. bKind (0-82) selects the sprite, draw flags and
 // collision behavior; the remaining record bytes become Object bytes 0x62-0x68.
@@ -237,10 +242,15 @@ extern Object *sub_0802FD5C(Object *pObj);
 extern void sub_08045ECC(Object *pObj);
 extern void sub_080465D4(Object *pSelf, Object *pOther);
 extern void sub_0804651C(Object *pSelf, Object *pOther);
-extern const void *const g_apRoomObjTriggerAnimFrames[];  // ROM 0x0806C584 (US)
-extern const void *const g_apRoomObjTriggerEffectData[];  // ROM 0x0806C6F0 (US)
-extern const u8 g_abRoomObjTriggerAnimData[];             // ROM 0x0806C8F4 (US), 0x5A bytes per kind
-extern const u8 g_abRoomObjTriggerFacingFrames[];         // ROM 0x0806E8F2 (US)
+extern const ObjectGfxRecord g_aRoomObjTriggerSprites[80];                // ROM 0x0806C304 (US)
+extern const ObjectGfxRecord *const g_apRoomObjTriggerAnimFrames[91];     // ROM 0x0806C584 (US)
+extern const void *const g_apRoomObjTriggerEffectData[91];                // ROM 0x0806C6F0 (US)
+extern const s32 g_aRoomObjTriggerPushVelocity[8][2];                     // ROM 0x0806C85C (US)
+extern const u32 g_adwRoomObjTriggerPushFacing[8];                        // ROM 0x0806C89C (US)
+extern const ObjectGfxRecord g_aRoomObjTriggerEffectSprites[7];           // ROM 0x0806C8BC (US)
+extern const u8 g_abRoomObjTriggerAnimData[91][90];                       // ROM 0x0806C8F4 (US)
+extern const u8 g_abRoomObjTriggerFacingFrames[8];                        // ROM 0x0806E8F2 (US)
+extern const u8 g_abRoomObjTriggerFacingAnimStart[8];                     // ROM 0x0806E8FA (US)
 
 typedef struct RoomObjectRecordUnk6 {
     u32 dwObjectType;
@@ -257,9 +267,9 @@ typedef struct RoomObjectRecordUnk6 {
 
 extern void sub_0802F7F0(Object *pObj);
 extern void sub_0802FCC0(Object *pSelf, Object *pOther);
-extern const u32 g_adwRoomObjUnk6FrameRows[];                  // ROM 0x08066E44 (US)
-extern const ObjectAssetRecord g_aObjectTypeAssets[];   // ROM 0x08066FFC (US), indexed by an object kind
-extern const u8 g_abRoomObjUnk6Frames[];                       // ROM 0x0806788C (US)
+extern const u32 g_adwRoomObjUnk6FrameRows[110];          // ROM 0x08066E44 (US)
+extern const ObjectAssetRecord g_aObjectTypeAssets[137];  // ROM 0x08066FFC (US), indexed by an object kind
+extern const u8 g_abRoomObjUnk6Frames[12][4];             // ROM 0x0806788C (US)
 
 // One-time scripted object (chests and similar pickups). wScriptPc is the
 // object's bit in g_abTriggeredScriptFlags.
@@ -278,5 +288,6 @@ typedef struct RoomObjectRecordUnk9 {
 extern u8 g_abTriggeredScriptFlags[32];
 extern void sub_0800BDCC(Object *pObj);
 extern void sub_0800BF20(Object *pSelf, Object *pOther);
-extern const void *const g_apRoomObjUnk9AnimFrames[4];  // ROM 0x0804D52C (US)
-extern const u8 g_abRoomObjUnk9AnimData[];              // ROM 0x0804D53C (US), 0x64 bytes per kind
+extern const ObjectGfxRecord g_RoomObjUnk9Sprite;                 // ROM 0x0804D524 (US)
+extern const ObjectGfxRecord *const g_apRoomObjUnk9AnimFrames[4];  // ROM 0x0804D52C (US)
+extern const u8 g_abRoomObjUnk9AnimData[4][100];                   // ROM 0x0804D53C (US)

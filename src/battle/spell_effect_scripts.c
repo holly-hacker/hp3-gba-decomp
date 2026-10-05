@@ -1,0 +1,32 @@
+#include "types.h"
+#include "constants/spells.h"
+#include "battle/battle.h"
+
+// The effect script a spell cast plays, by spell and cast level.
+const u8 g_abSpellEffectScriptId[SPELL_COUNT][SPELL_LEVELS] = {
+    { 0x02, 0x03, 0x15 },  // Flipendo
+    { 0x26, 0x26, 0x26 },  // Informus
+    { 0x13, 0x14, 0x1A },  // Verdimillious
+    { 0x16, 0x16, 0x16 },  // Diffindo
+    { 0x17, 0x18, 0x19 },  // Incendio
+    { 0x1C, 0x1C, 0x1C },  // WingardiumLeviosa
+    { 0x21, 0x22, 0x21 },  // PetrificusTotalus
+    { 0x1E, 0x1F, 0x1E },  // Glacius
+    { 0x0B, 0x20, 0x20 },  // Fumos
+    { 0x1D, 0x1D, 0x1D },  // Spongify
+};
+
+// Another per-spell, per-level byte table with no known reader. Its values
+// (0x59-0x71) are past the last of the 65 effect scripts.
+const u8 g_abSpellUnknownByLevel[SPELL_COUNT][SPELL_LEVELS] = {
+    { 0x5D, 0x5E, 0x5F },  // Flipendo
+    { 0x64, 0x64, 0x64 },  // Informus
+    { 0x59, 0x5A, 0x5C },  // Verdimillious
+    { 0x71, 0x71, 0x71 },  // Diffindo
+    { 0x64, 0x65, 0x67 },  // Incendio
+    { 0x61, 0x63, 0x61 },  // WingardiumLeviosa
+    { 0x64, 0x64, 0x64 },  // PetrificusTotalus
+    { 0x69, 0x6B, 0x6B },  // Glacius
+    { 0x61, 0x61, 0x61 },  // Fumos
+    { 0x70, 0x70, 0x70 },  // Spongify
+};

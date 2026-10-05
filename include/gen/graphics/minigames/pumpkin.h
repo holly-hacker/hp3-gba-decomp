@@ -90,3 +90,6 @@ extern const u8 gPumpkin043Palette[];
 extern const u8 gServePumpkinJuiceBg0Graphic[];
 extern const u8 gServePumpkinJuiceBg1Graphic[];
 extern const u8 gServePumpkinJuiceBg2Graphic[];
+
+/* ServePumpkinJuicePanel */
+extern const u8 gServePumpkinJuicePanelPalette[];

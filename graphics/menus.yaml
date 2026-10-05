@@ -23,6 +23,15 @@ groups:
         noPalette: [MenuSprite008]
       - kind: graphic-blobs
         names: [MenuCursor001]
+      # The menu cursor's palette (also its sparkle emitter's), then the
+      # 16-palette set sub_0801DD20 loads rows 3-15 of
+      - kind: image-bank
+        count: 17
+        names:
+          1: MenuCursorSparkle
+          2: MenuPalette001
+        componentOrder: [palette]
+        storedCells: false
 
   - name: EquipCharacterSelect
     runs:

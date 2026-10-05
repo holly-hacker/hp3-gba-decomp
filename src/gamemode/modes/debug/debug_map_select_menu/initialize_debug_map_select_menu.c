@@ -38,7 +38,7 @@ void InitializeDebugMapSelectMenu(void)
     g_DebugMapSelectState.nScrollY = 0;
     pObject = SpawnObject(0x17, 0x78, 0xB, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugMapSelectState.pCursorObject = pObject;
-    SetObjectAnimData(pObject, (void *)g_DebugMapSelectAnimFrames, (void *)g_DebugMapSelectAnimData, 0);
+    SetObjectAnimData(pObject, &g_DebugMapSelectAnimFrames, (void *)g_DebugMapSelectAnimData, 0);
 
     sub_0800B120();
     g_GameModeStackContext.dwModeTimer = 2;

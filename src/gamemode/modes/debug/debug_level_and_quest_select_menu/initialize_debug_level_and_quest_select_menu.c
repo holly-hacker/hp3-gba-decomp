@@ -41,7 +41,7 @@ void InitializeDebugLevelAndQuestSelectMenu(void)
     pObject = SpawnObject(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugLevelAndQuestSelectState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, (void *)g_DebugLevelAndQuestAnimFrames, (void *)g_DebugLevelAndQuestAnimData, 0);
+    SetObjectAnimData(pObject, &g_DebugLevelAndQuestAnimFrames, (void *)g_DebugLevelAndQuestAnimData, 0);
 
     args = g_GameModeStackContext.dwCurrentGameModeArg2;
     g_DebugLevelAndQuestSelectState.adwValue[0] = (u8)(args >> 16);

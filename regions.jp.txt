@@ -326,6 +326,7 @@ c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEff
 thumb-func 0x08018BCC CreateEffectScriptObject
 c-file 0x08018CAC 0x0801AE10 src/battle/interpret_object_script.c InterpretObjectScript
 thumb-func 0x0801AE10 CreateBattleEffectEmitter_candidate
+thumb-func 0x0801B12C sub_0801B130
 thumb-func 0x0801B200 sub_0801B204
 thumb-func 0x0801B2E8 sub_0801B2EC
 thumb-func 0x0801B344 sub_0801B348
@@ -340,6 +341,12 @@ thumb-func 0x0801B70C sub_0801B710
 thumb-func 0x0801B770 sub_0801B774
 thumb-func 0x0801B86C sub_0801B870
 thumb-func 0x0801B900 WaitForCasterField86Tick_candidate
+thumb-func 0x0801B94C sub_0801B950
+thumb-func 0x0801B994 sub_0801B998
+thumb-func 0x0801B9B8 sub_0801B9BC
+thumb-func 0x0801B9F0 sub_0801B9F4
+thumb-func 0x0801BA28 sub_0801BA2C
+thumb-func 0x0801BA40 sub_0801BA44
 thumb-func 0x0801BCAC sub_0801BCB0
 thumb-func 0x0801BD08 InitializeCardComboDescription
 thumb-func 0x0801BEA4 UpdateCardComboDescription
@@ -558,6 +565,11 @@ thumb-func 0x080261B4 SetVBlankCallback
 c-file 0x08026238 0x08026254 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 thumb-func 0x080262A0 VBlankCallback_candidate
 thumb-func 0x080262B0 sub_08026254
+thumb-func 0x080262E0 HandleHBlankInterrupt_candidate
+thumb-func 0x08026318 HandleVCountInterrupt
+thumb-func 0x08026350 HandleTimer0Interrupt_candidate
+thumb-func 0x08026378 HandleTimer3Interrupt_candidate
+thumb-func 0x080263A0 IntrDummy
 c-file 0x080263A4 0x08026470 src/room/objects/sub_08026348.c sub_08026348
 c-file 0x08026470 0x0802654C src/room/objects/sub_08026414.c sub_08026414
 thumb-func 0x0802654C sub_080264F0
@@ -604,6 +616,7 @@ thumb-func 0x080292BC sub_08029260
 thumb-func 0x080293DC sub_08029380
 c-file 0x08029584 0x080295B4 src/gamemode/modes/cutscene/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
 thumb-func 0x080295B4 sub_08029558
+thumb-func 0x0802963C LupinPotionPanelScanlineCallback_candidate
 c-file 0x080296EC 0x080297FC src/main.c AgbMain
 c-file 0x080297FC 0x0802A1A8 src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
 c-file 0x0802A1A8 0x0802A300 src/gamemode/modes/overworld/exit_overworld_screen.c ExitOverworldScreen
@@ -1081,57 +1094,32 @@ c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
 # End of main code section, start of data section
 
 # Unit direction vectors (16.16 {x, y}) indexed by Direction4 and Direction
-label 0x0804BCE8 g_aDirection4Vectors
-label 0x0804BD08 g_aDirection8Vectors
+c-file 0x0804BCE8 0x0804BD48 src/graphics/particle/direction_vectors.c g_aDirection4Vectors
 c-file 0x0804BF80 0x0804BFB8 src/room/room_object_constructors.c g_apRoomObjectConstructors
-label 0x0804C0DC g_dwRiddikulusBg0Control
-label 0x0804C0E0 g_dwRiddikulusBg3Control
-label 0x0804C370 g_dwDebugMenuMainBg0Control
-label 0x0804C374 g_dwDebugMenuMainBg1Control
-label 0x0804C378 g_DebugMenuMainAnimFrames
-label 0x0804C388 g_DebugMenuMainAnimData
-label 0x0804C39C g_abDebugLevelAndQuestMax
-label 0x0804C3A0 g_dwDebugLevelAndQuestBg0Control
-label 0x0804C3A4 g_dwDebugLevelAndQuestBg1Control
-label 0x0804C3A8 g_DebugLevelAndQuestAnimFrames
-label 0x0804C3B8 g_DebugLevelAndQuestAnimData
-label 0x0804C3CC g_dwDebugMapSelectBg0Control
-label 0x0804C3D0 g_dwDebugMapSelectBg1Control
-label 0x0804C3D4 g_DebugMapSelectAnimFrames
-label 0x0804C3E4 g_DebugMapSelectAnimData
-label 0x0804C3F8 g_dwDebugCharacterSelectBg0Control
-label 0x0804C3FC g_dwDebugCharacterSelectBg1Control
-label 0x0804C400 g_DebugCharacterSelectAnimFrames
-label 0x0804C410 g_DebugCharacterSelectAnimData
-c-file 0x0804C422 0x0804C542 src/menu/debug_character_names.c sDebugCharacterNames
-label 0x0804C544 g_dwDebugPortraitsBg1Control
+c-file 0x0804C0DC 0x0804C0E4 src/gamemode/modes/minigame/riddikulus/riddikulus.globals.c g_dwRiddikulusBg0Control
+c-file 0x0804C370 0x0804C39C src/gamemode/modes/debug/debug_menu_main/debug_menu_main.globals.c g_dwDebugMenuMainBg0Control
+c-file 0x0804C39C 0x0804C3CC src/gamemode/modes/debug/debug_level_and_quest_select_menu/debug_level_and_quest_select_menu.globals.c g_abDebugLevelAndQuestMax
+c-file 0x0804C3CC 0x0804C3F8 src/gamemode/modes/debug/debug_map_select_menu/debug_map_select_menu.globals.c g_dwDebugMapSelectBg0Control
+c-file 0x0804C3F8 0x0804C544 src/gamemode/modes/debug/debug_character_select_menu/debug_character_select_menu.globals.c g_dwDebugCharacterSelectBg0Control
+c-file 0x0804C544 0x0804C548 src/gamemode/modes/debug/debug_portraits_menu/debug_portraits_menu.globals.c g_dwDebugPortraitsBg1Control
 c-file 0x0804C548 0x0804C9C8 src/graphics/assets/portrait_table.c g_apPortraitTable
-label 0x0804CDB8 g_dwDebugSoundTestBg0Control
-label 0x0804CDBC g_dwDebugSoundTestBg1Control
-label 0x0804CDC0 g_DebugSoundTestAnimFrames
-label 0x0804CDD0 g_DebugSoundTestAnimData
-label 0x0804CDE4 g_dwDebugCollectorCardsBg2Control
-label 0x0804CDE8 g_dwDebugCollectorCardsBg1Control
-label 0x0804CDEC g_dwDebugCollectorCardsBg0Control
+c-file 0x0804CDB8 0x0804CDE4 src/gamemode/modes/debug/debug_sound_test_menu/debug_sound_test_menu.globals.c g_dwDebugSoundTestBg0Control
+c-file 0x0804CDE4 0x0804CDF0 src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
 c-file 0x0804CDF0 0x0804D450 src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 
-label 0x0804D458 g_apRoomObjUnk9AnimFrames
-label 0x0804D468 g_abRoomObjUnk9AnimData
-label 0x0804D6C4 g_abGammaNormalRemap
-label 0x0804D6E4 g_abGammaHighRemap
-label 0x0804D704 g_abGammaHighInverseRemap
+c-file 0x0804D450 0x0804D5F8 src/room/objects/SpawnScriptedOneTimeObject.globals.c g_RoomObjUnk9Sprite
+c-file 0x0804D6C4 0x0804D724 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804DFC8 0x0804E180 src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
 c-file 0x0804E180 0x0804E1C8 src/battle/battle_music.c g_abBattleMusicByRoom
 c-file 0x0804E50C 0x0804E518 src/battle/spell_leveling.c g_abSpellMaxLevel
-label 0x0804E560 g_aPlayerGfxRows_candidate
 c-file 0x0804E5E0 0x0804F330 src/graphics/assets/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table -- content proven byte-identical to the
 # US table (0x0804F410), just at a different address; one C source serves
 # both. See docs/formats/folio_bruti.md.
 c-file 0x0804F33C 0x0804F9B4 src/battle/monsters.c MonsterTable
-label 0x0804FAC8 g_aMonsterAttackOffset_candidate
+c-file 0x0804FAC8 0x0804FB54 src/battle/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
 c-file 0x0804FB54 0x0804FD7C src/battle/monster_drop_table.c g_pMonsterDropTable
 c-file 0x0804FD7C 0x0805022C src/character/harry_levels.c g_pHarryLevelTable
 c-file 0x0805022C 0x080506DC src/character/ron_levels.c g_pRonLevelTable
@@ -1144,149 +1132,85 @@ c-file 0x08051138 0x08051174 src/battle/scripted_encounters.c g_aScriptedEncount
 c-file 0x08051174 0x080513F4 src/graphics/assets/fighter_anim_table.c g_aFighterAnimTable
 c-file 0x080513F4 0x0805143C src/battle/battle_effect_id_tables.c g_abHarryCardEffectId
 c-file 0x0805143C 0x0805148C src/battle/defeat_warp_rooms.c g_aDefeatWarpRoomId
-label 0x0805148C g_aFighterAnimDataTable
-label 0x08051D9C g_pMonsterAnimFrameTable
-label 0x0805377C g_MonsterShadowAnimData
-label 0x080537DC g_abSpellEffectScriptId
+c-file 0x0805148C 0x08051D9C src/battle/fighter_anim_data.c g_aFighterAnimDataTable
+c-file 0x08051D9C 0x080537DC src/battle/monster_anim_data.c g_pMonsterAnimFrameTable
+c-file 0x080537DC 0x08053818 src/battle/spell_effect_scripts.c g_abSpellEffectScriptId
 c-file 0x08053818 0x080538CC src/battle/spell_power.c g_awSpellPowerBase
-label 0x080538CC g_aBattleSlotAnchorPos_candidate
-label 0x080538D4 g_adwEffectBgControlOverride_candidate
-label 0x08053A34 g_apEffectScanlineTables_candidate
-label 0x08053A40 g_abEffectScanlineTableSizes_candidate
+c-file 0x080538CC 0x080538D4 src/battle/battle_slot_anchor_pos.c g_aBattleSlotAnchorPos_candidate
+c-file 0x080538D4 0x08053A44 src/battle/effect_scanline_tables.c g_adwEffectBgControlOverride_candidate
 c-file 0x08053A44 0x08053B94 src/graphics/assets/rain_stream_lists.c g_RainStreakList_candidate
-label 0x08053B94 g_aEffectOrbitParams_candidate
-label 0x08053C54 g_abEffectRosterIdPair_candidate
-label 0x08053C56 g_awBattleSlotPosX_candidate
-label 0x08053C64 g_abBattleSlotPosY_candidate
+c-file 0x08053B94 0x08053C6C src/battle/effect_slot_positions.c g_aEffectOrbitParams_candidate
 c-file 0x08053C6C 0x08054400 src/graphics/assets/effect_assets.c g_aEffectObjectAssets
-label 0x08054400 g_aEffectBgRecords_candidate
+c-file 0x08054400 0x08054E60 src/battle/effect_bg_records.c g_aEffectBgRecords_candidate
 c-file 0x08054E60 0x08054F08 src/battle/script_opcode_lengths.c g_abScriptOpcodeLengths
-label 0x08054F08 g_abFighterIdleAnimData_candidate
-label 0x08054F0E g_aEffectAnimData_candidate
-label 0x08058870 g_aEffectAnimData2_candidate
+c-file 0x08054F08 0x08059878 src/battle/effect_anim_data.c g_abFighterIdleAnimData_candidate
 c-file 0x08059878 0x0805B9A8 src/battle/effect_scripts.c g_apEffectScripts
 c-file 0x0805B9B8 0x0805BB2C src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
-label 0x0805BB2C g_aSpecialSceneBgControls
-label 0x0805DF4C g_dwLinearCutsceneBg0Control
-label 0x0805DF50 g_dwLinearCutsceneBg1Control
-label 0x0805DF54 g_aLinearCutsceneTable
-label 0x0805E038 g_dwCommonBg2Control
-label 0x0805E0A0 g_dwHarryVsDementorsBg0Control
-label 0x0805E0A4 g_dwHarryVsDementorsBg3Control
-label 0x0805E1AC g_dwStartupBg3Control
-label 0x0805E1B0 g_dwStartupBg2Control
-label 0x0805E1B4 g_dwStartupBg1Control
-label 0x0805EA3C g_dwHippogriffFliesIntoAirBg0Control
-label 0x0805EA40 g_HippogriffFliesIntoAirAsset
-label 0x0805EA50 g_HippogriffFliesIntoAirAsset2
+c-file 0x0805BB2C 0x0805BB30 src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
+c-file 0x0805DF4C 0x0805DFCC src/gamemode/modes/cutscene/linear_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
+c-file 0x0805E038 0x0805E03C src/menu/common_bg2_control.c g_dwCommonBg2Control
+c-file 0x0805E0A0 0x0805E0A8 src/gamemode/modes/minigame/harry_vs_dementors/harry_vs_dementors.globals.c g_dwHarryVsDementorsBg0Control
+c-file 0x0805E1AC 0x0805E1B8 src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
+c-file 0x0805EA3C 0x0805EA60 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
-label 0x08060408 g_aExtFontTable
-label 0x08060468 g_aFontTable
-label 0x080604D0 g_stPlaytimeFrameDelta
-label 0x080604D8 g_stPlaytimeHourLimit
-label 0x08060810 g_PlayerCameraFocusOffset
-label 0x08060E18 gIntrTableTemplate
+c-file 0x08060408 0x080604C8 src/text/load_font_descriptor.globals.c g_aExtFontTable
+c-file 0x080604D0 0x080604E0 src/save/process_playtime_tick.globals.c g_stPlaytimeFrameDelta
+c-file 0x08060810 0x08060818 src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
+c-file 0x08060E18 0x08060E4C src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file 0x08060E70 0x08062940 src/items/items.c g_pItemTable
-label 0x08062980 g_dwLanguageSelectBg3Control
-label 0x08062984 g_dwLanguageSelectBg2Control
-label 0x08062988 g_dwLanguageSelectBg1Control
+c-file 0x08062980 0x0806298C src/gamemode/modes/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 
-label 0x08062994 g_aLupinPotionScanlineTable
-label 0x080629BC g_dwLupinPotionTextBgControl
-label 0x08062FF0 g_dwBg2Control
-label 0x08062FF4 g_dwBg1Control
-label 0x08062FF8 g_dwBg3Control
-label 0x08062FFC g_dwBg0Control
-label 0x08063000 g_aSpecialSceneBg2
-label 0x08063408 g_aSpecialSceneBg0
-label 0x08063810 g_aSpecialSceneBg1
+c-file 0x08062994 0x080629C4 src/gamemode/modes/cutscene/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
+c-file 0x08062FF0 0x08063000 src/gamemode/modes/overworld/overworld.globals.c g_dwBg2Control
+c-file 0x08063000 0x08063C18 src/room/special_scene_bg_animations.c g_aSpecialSceneBg2
 c-file 0x08063C18 0x080656BC src/room/room_table.c g_aRoomTable
-label 0x080656BC g_adwRoomQuestMusicOverride
-label 0x08065798 g_ColorCyclesDefault
-label 0x080657A0 g_ColorCyclesRoom12
+c-file 0x080656BC 0x08065798 src/gamemode/modes/overworld/room_quest_music_override.c g_adwRoomQuestMusicOverride
+c-file 0x08065798 0x080657A8 src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
 c-file 0x08065C48 0x08065FA8 src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
-label 0x08065FE8 g_dwMinigameMenuBg3Control
-label 0x08065FEC g_dwMinigameMenuBg1Control
-label 0x08066DD0 g_adwRoomObjUnk6FrameRows
-label 0x08066F88 g_aObjectTypeAssets
-label 0x08067818 g_abRoomObjUnk6Frames
+c-file 0x08065FE8 0x08065FF0 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
+c-file 0x08066DD0 0x08066F88 src/room/objects/sub_0802F500.globals.c g_adwRoomObjUnk6FrameRows
+c-file 0x08066F88 0x08067818 src/graphics/assets/object_type_assets.c g_aObjectTypeAssets
+c-file 0x08067818 0x08067848 src/room/objects/room_obj_unk6_frames.c g_abRoomObjUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
-label 0x08068B88 g_abOppositeDirection8
-label 0x08068B90 g_abOppositeDirection4
-label 0x08068BBC g_dwPatronusBg2Control
-label 0x08068BC0 g_dwPatronusBg3Control
-label 0x08068BC4 g_aInGameMenuEntries
-label 0x08068C6C g_InGameMenuDefinition
-label 0x08068C90 g_dwWizardCrackerPopItBg1Control
-label 0x08068C94 g_dwWizardCrackerPopItBg2Control
-label 0x08068C98 g_dwWizardCrackerPopItBg0Control
-label 0x08068C9C g_dwWizardCrackerPopItBg3Control
-label 0x08068CA0 g_aWizardCrackerPopItPalettes
-label 0x08069110 g_dwServePumpkinJuiceBg0Control
-label 0x08069114 g_dwServePumpkinJuiceBg1Control
-label 0x08069118 g_dwServePumpkinJuiceBg2Control
-label 0x0806911C g_dwServePumpkinJuiceBg3Control
-label 0x080692B4 g_ServePumpkinJuiceTable
-label 0x0806933C g_ServePumpkinJuicePauseText
-label 0x0806934C g_ServePumpkinJuiceResultsText
-label 0x08069360 g_apRoomObjUnk8AssetRecords
-label 0x08069368 g_apRoomObjUnk8EffectData
-label 0x08069A44 g_aHelpSpriteAssets
-label 0x08069BA4 g_apHelpSpritePalettes
-label 0x0806B140 g_aItemsSectionFilters
-label 0x0806B17C g_ItemsSectionMenuDefinition
+c-file 0x08068B88 0x08068B94 src/graphics/particle/opposite_directions.c g_abOppositeDirection8
+c-file 0x08068BBC 0x08068BC4 src/gamemode/modes/cutscene/harry_patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
+c-file 0x08068BC4 0x08068C90 src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries
+c-file 0x08068C90 0x08068CC8 src/gamemode/modes/minigame/wizard_cracker_pop_it/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
+c-file 0x08069110 0x08069120 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
+c-file 0x080692B4 0x0806933C src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
+c-file 0x0806933C 0x08069358 src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
+c-file 0x08069358 0x08069370 src/room/objects/sub_08035540.globals.c g_RoomObjUnk8Sprite
+c-file 0x08069A44 0x08069BFC src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
+c-file 0x0806B11C 0x0806B1A0 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
-label 0x0806B288 g_aStatusEquipSlots
-label 0x0806B760 g_apRoomObjUnkCAnimFrames
-label 0x0806B768 g_abRoomObjUnkCAnimData
-label 0x0806B798 g_DefaultSaveHeader
-label 0x0806B7A8 g_DefaultSaveOptions
-label 0x0806B858 g_pIwramSectionStart
-label 0x0806B85C g_pIwramSectionEnd
-label 0x0806B860 g_pEwramSectionStart
-label 0x0806B864 g_pEwramSectionEnd
-label 0x0806B888 g_apRoomObjUnkAAnimFrames
-label 0x0806B894 g_apRoomObjUnkAEffectData
-label 0x0806B8A0 g_abRoomObjUnkAAnimData
+c-file 0x0806B288 0x0806B2E8 src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
+c-file 0x0806B760 0x0806B798 src/room/objects/sub_0803B64C.globals.c g_RoomObjUnkCSprite
+c-file 0x0806B798 0x0806B7A8 src/save/write_default_save_header.globals.c g_DefaultSaveHeader
+c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
+c-file 0x0806B858 0x0806B868 src/mem/clear_work_ram.globals.c g_pIwramSectionStart
+c-file 0x0806B868 0x0806B8C0 src/room/objects/sub_08040038.globals.c g_aRoomObjUnkASprites
 c-file 0x0806B8D0 0x0806B9D8 src/shop/shop_stock.c g_aShopStockMisc
-label 0x0806BA8C g_DivinationTeaCupAnimB
-label 0x0806BAD0 g_dwDivinationTeaBg2Control
-label 0x0806BAD4 g_dwDivinationTeaBg0Control
-label 0x0806BAD8 g_dwDivinationTeaBg1Control
-label 0x0806BAE4 g_DivinationTeaCupAnimA
-label 0x0806BAFC g_DivinationTeaTable
+c-file 0x0806BA8C 0x0806BAFC src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimB
+c-file 0x0806BAFC 0x0806BD04 src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD04 0x0806BD08 sDialogTextTable
-label 0x0806BD08 g_dwUpNightBg0Control
-label 0x0806BD0C g_dwUpNightBg1Control
-label 0x0806BD10 g_dwUpNightBg2Control
-label 0x0806BD14 g_ClockSkipObject1Asset
-label 0x0806BD24 g_ClockSkipObject2Asset
-label 0x0806BD34 g_ClockSkipAnimData
+c-file 0x0806BD08 0x0806BD14 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
+c-file 0x0806BD14 0x0806BDA0 src/gamemode/modes/cutscene/clock_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipObject1Asset
 c-file 0x0806BDA8 0x0806BEA0 src/room/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
-label 0x0806BEB0 g_aHarryHermionePortInTimeObjectPos
-label 0x0806BF40 g_dwMainMenuBg3Control
-label 0x0806BF44 g_dwMainMenuBg2Control
-label 0x0806BF48 g_dwMainMenuBg1Control
+c-file 0x0806BEB0 0x0806BED0 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeObjectPos
+c-file 0x0806BF40 0x0806BF4C src/gamemode/modes/main_menu/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BF4C 0x0806BF64 src/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
-label 0x0806BF9C g_aOptionsMenuItems
-label 0x0806C080 g_apRoomObjUnkBAnimFrames
-label 0x0806C08C g_apRoomObjUnkBEffectData
-label 0x0806C098 g_abRoomObjUnkBAnimData
-label 0x0806C0B0 g_dwCoolTrainBg0Control
+c-file 0x0806BF9C 0x0806C044 src/gamemode/modes/options/options_menu_items.c g_aOptionsMenuItems
+c-file 0x0806C068 0x0806C0B0 src/room/objects/sub_08044894.globals.c g_aRoomObjUnkBSprites
+c-file 0x0806C0B0 0x0806C0B4 src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
-label 0x0806C0DC g_apRoomObjUnk3AssetRecords
-label 0x0806C10C g_apRoomObjUnk3EffectData
-label 0x0806C4C0 g_apRoomObjTriggerAnimFrames
-label 0x0806C62C g_apRoomObjTriggerEffectData
-label 0x0806C830 g_abRoomObjTriggerAnimData
-label 0x0806E82E g_abRoomObjTriggerFacingFrames
+c-file 0x0806C0B4 0x0806C13C src/room/objects/sub_08044C00.globals.c g_aRoomObjUnk3Sprites
+c-file 0x0806C240 0x0806E840 src/room/objects/sub_08045AE8.globals.c g_aRoomObjTriggerSprites
 graphics 0x0806E840 0x080780E0 overworld OverworldSpellEffects
 graphics 0x080780E0 0x0807E734 battle AllyHeads
 graphics 0x0807E734 0x080A6C90 overworld OverworldPlayerSprites
 graphics 0x080A6C90 0x080AC808 menus ItemAndHelpIcons
 graphics 0x080AC808 0x080BC100 overworld MonsterOverworldSprites
-graphics 0x080BC100 0x080BD280 menus MenuSprites
-label 0x080BD280 g_MenuCursorSparklePalette
+graphics 0x080BC100 0x080BD4A0 menus MenuSprites
 graphics 0x080BD4A0 0x080D0A90 overworld ObjectSprites
 graphics 0x080D0A90 0x08196260 overworld ObjectSprites2
 
@@ -1346,9 +1270,8 @@ asm-file 0x081B2050 0x081B251C asm/room/blobs/diagon_alley_test_map_2.s Room51Bl
 asm-file 0x081B251C 0x081B2ABC asm/room/blobs/diagon_alley_test_map_3.s Room52Blob
 asm-file 0x081B2ABC 0x081B2BF4 asm/room/blobs/diagon_alley_test_map_4.s Room53Blob
 asm-file 0x081B2BF4 0x081B2CC8 asm/room/blobs/diagon_alley_test_map_5.s Room54Blob
-label 0x081B2CC8 g_aSpecialScenePalette
 
-graphics 0x081B2ECC 0x081DB0CC overworld SpecialSceneFrames
+graphics 0x081B2CC8 0x081DB0CC overworld SpecialSceneFrames
 graphics 0x081DB0CC 0x08854D10 rooms RoomGraphics
 graphics 0x08854D10 0x08856540 overworld RoomAltPalettes
 graphics 0x08856540 0x089AD194 battle BgGraphics
@@ -1418,16 +1341,15 @@ graphics 0x08D56898 0x08D7198C minigames/owl_care OwlCareSprites
 graphics 0x08D71DA0 0x08D79B34 minigames/owl_care OwlCare
 graphics 0x08D79B54 0x08D7C2B0 menus DialogBackgrounds
 graphics 0x08D7C2B0 0x08D7E358 battle BattleEffects2
-graphics 0x08D7E358 0x08D80C1C minigames/wizard_cracker WizardCrackerPopIt
+graphics 0x08D7E358 0x08D80C9C minigames/wizard_cracker WizardCrackerPopIt
 graphics 0x08D80C9C 0x08D8E61C minigames/wizard_cracker WizardCrackerSprites
 graphics 0x08D8E61C 0x08D9A130 minigames/pumpkin PumpkinGraphics
 graphics 0x08D9A190 0x08DA06EC menus DebugMenu
-label 0x08DA06EE g_ServePumpkinJuicePanelData
+graphics 0x08DA06EC 0x08DA08F0 minigames/pumpkin ServePumpkinJuicePanel
 graphics 0x08DA08F0 0x08DC7EB4 cutscenes CutsceneDrawings
 graphics 0x08DC7EB4 0x08DF3748 minigames/hippogriff HippogriffLanguageMinigameBgs
 graphics 0x08DF3748 0x08E1D40C menus StatusCharacters
-graphics 0x08E1D40C 0x08E32150 cutscenes HogwartsUpNight
-label 0x08E32152 g_HogwartsUpNightPaletteData
+graphics 0x08E1D40C 0x08E3237C cutscenes HogwartsUpNight
 graphics 0x08E3237C 0x08E339A4 menus/jp MainMenuJp
 graphics 0x08E339A4 0x08E34D6C cutscenes CoolTrain
 graphics 0x08E34D6C 0x08E3AFF4 minigames/divination_tea DivinationTeaGraphics
@@ -1442,7 +1364,7 @@ graphics 0x08EDF36C 0x08F3C9CC menus FamousWizardCards
 c-rodata 0x08F3DC60 0x08F3DCA0 EepromV124
 c-rodata 0x08F3DCA0 0x08F3DCB4 EepromNoWait
 
-label 0x08F3E388 g_apPatronusGraphics
+c-file 0x08F3E388 0x08F3E3A0 src/gamemode/modes/cutscene/harry_patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows
 c-file 0x08F43A18 0x08F43CA8 src/audio/sound_samples.c g_aSoundSamples

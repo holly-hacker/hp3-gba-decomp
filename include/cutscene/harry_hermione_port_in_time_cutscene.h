@@ -24,7 +24,7 @@ typedef struct {
     s32 dwUnk0xC;     // 0x0C
 } HarryHermionePortInTimePosition;
 
-extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeObjectPos[];  // 0x0806BF40
+extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeObjectPos[2];  // 0x0806BF40
 
 extern void sub_08043114(u32 arg);
 extern void sub_08043308(u32 arg);

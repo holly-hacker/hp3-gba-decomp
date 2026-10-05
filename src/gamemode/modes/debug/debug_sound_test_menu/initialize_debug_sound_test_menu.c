@@ -45,7 +45,7 @@ void InitializeDebugSoundTestMenu(void)
     pObject = SpawnObject(10, 0x9C, g_DebugSoundTestState.dwRow * 18 + 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugSoundTestState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, (void *)g_DebugSoundTestAnimFrames, (void *)g_DebugSoundTestAnimData, 0);
+    SetObjectAnimData(pObject, &g_DebugSoundTestAnimFrames, (void *)g_DebugSoundTestAnimData, 0);
 
     g_GameModeStackContext.dwModeState = 0;
     sub_0800B8F0();

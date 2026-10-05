@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "graphics/display.h"
 #include "gen/graphics/minigames/pumpkin.h"
 
 // Serve Pumpkin Juice, game mode 0x24 (UnusedServePumpkinJuiceMinigame). No
@@ -34,8 +35,7 @@ extern const u32 g_dwServePumpkinJuiceBg0Control;  // 0x08069184
 extern const u32 g_dwServePumpkinJuiceBg1Control;  // 0x08069188
 extern const u32 g_dwServePumpkinJuiceBg2Control;  // 0x0806918C
 extern const u32 g_dwServePumpkinJuiceBg3Control;  // 0x08069190
-extern const u8 g_ServePumpkinJuiceTable[];        // 0x08069328
-extern const u8 g_ServePumpkinJuicePanelData[];    // 0x08DA08BE
+extern const BgTileAnimation16 g_ServePumpkinJuiceTable;  // 0x08069328
 extern const u8 g_ServePumpkinJuicePauseText[];    // 0x080693B0
 extern const u8 g_ServePumpkinJuiceResultsText[];  // 0x080693C0
 

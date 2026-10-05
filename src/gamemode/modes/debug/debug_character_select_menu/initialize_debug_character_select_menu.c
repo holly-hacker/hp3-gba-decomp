@@ -40,7 +40,7 @@ void InitializeDebugCharacterSelectMenu(void)
     pObject = SpawnObject(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugCharacterSelectState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, (void *)g_DebugCharacterSelectAnimFrames, (void *)g_DebugCharacterSelectAnimData, 0);
+    SetObjectAnimData(pObject, &g_DebugCharacterSelectAnimFrames, (void *)g_DebugCharacterSelectAnimData, 0);
 
     g_DebugCharacterSelectState.adwCharacter[0] = g_bPartyCharId0 == 0xFF ? 0 : g_bPartyCharId0 + 1;
     g_DebugCharacterSelectState.adwCharacter[1] = g_bPartyCharId1 == 0xFF ? 0 : g_bPartyCharId1 + 1;

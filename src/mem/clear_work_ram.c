@@ -1,5 +1,6 @@
 #include "hw/mem.h"
 #include "hw/dma.h"
+#include "hw/io_regs.h"
 
 void ClearWorkRam(void)
 {
@@ -12,13 +13,13 @@ void ClearWorkRam(void)
 
     zero = 0;
     REG_DMA3.src = (const void *)&zero;
-    REG_DMA3.dst = (void *)(0x03000000 + iwramSize);
-    REG_DMA3.cnt = 0x85000000 | ((0x7D00 - iwramSize) >> 2);
+    REG_DMA3.dst = IWRAM_BASE + iwramSize;
+    REG_DMA3.cnt = 0x85000000 | ((IWRAM_STACKS - IWRAM_BASE - iwramSize) >> 2);
     (void)REG_DMA3.cnt;
 
     zero = 0;
     REG_DMA3.src = (const void *)&zero;
-    REG_DMA3.dst = (void *)(0x02000000 + ewramSize);
-    REG_DMA3.cnt = 0x85000000 | ((0x40000 - ewramSize) >> 2);
+    REG_DMA3.dst = EWRAM_BASE + ewramSize;
+    REG_DMA3.cnt = 0x85000000 | ((EWRAM_END - EWRAM_BASE - ewramSize) >> 2);
     (void)REG_DMA3.cnt;
 }

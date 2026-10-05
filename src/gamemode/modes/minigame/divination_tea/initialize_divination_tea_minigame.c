@@ -37,7 +37,7 @@ void InitializeDivinationTeaMinigame(void)
     LoadBgGraphic(2, gDivinationTeaBg2Graphic, 1, 0, 0, 0);
     LoadBgGraphic(1, gDivinationTeaBg1Graphic, 1, 0, 0, 0);
     ClearBgTilemap(0);
-    sub_0800A598(g_DivinationTeaTable, &g_dwDivinationTeaBg2Control, 8);
+    sub_0800A598(&g_DivinationTeaTable, &g_dwDivinationTeaBg2Control, 8);
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(5, 0, -1);
 

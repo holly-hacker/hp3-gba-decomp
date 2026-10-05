@@ -33,6 +33,9 @@ extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void sub_0800D254(void *ptr, s16 val1, s16 val2);
 extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
+// The colors of a graphic blob's embedded palette, after its two flag bytes
+// (see docs/formats/graphic_blob.md).
+#define GRAPHIC_BLOB_PALETTE_COLORS(blob) ((const u16 *)((const u8 *)(blob) + 2))
 // Dispatches through the 15-entry handler table at 0x0806B844 by transitionIndex. Entry 2
 // (0x0803C450) is a blocking full-screen palette fade that keeps the normal per-frame tick running.
 extern void PlayScreenTransitionInByIndex(u32 blendArg, u32 transitionIndex);
@@ -75,12 +78,32 @@ extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);
 extern void sub_0800A914(void);
+// One frame of a BG tile animation: its tile data and how many ticks it shows
+// (0 holds it).
+typedef struct BgTileAnimFrame {
+    const void *pTiles;
+    u32 dwDuration;
+} BgTileAnimFrame;
+
+// A BG tile animation registered by sub_0800A598 and stepped by
+// TickBgTileAnimations_candidate; see docs/memory-map/frame_systems.md.
+#define BG_TILE_ANIMATION(frameCount) struct {                       \
+    u8 bFlags;                                                        \
+    u8 bFrameCount;                                                   \
+    u16 wUnk2;            /* copied into the animation's entry */     \
+    u32 dwBufferSize;     /* bytes allocated for the decoded tiles */ \
+    BgTileAnimFrame aFrames[frameCount];                              \
+}
+
+typedef BG_TILE_ANIMATION(16) BgTileAnimation16;
+typedef BG_TILE_ANIMATION(64) BgTileAnimation64;
+typedef BG_TILE_ANIMATION(128) BgTileAnimation128;
+
 // Scene-effect resources selected by room-script opcode 0x33.
-extern const u8 g_aSpecialSceneBg0[];
-extern const u8 g_aSpecialSceneBg1[];
-extern const u8 g_aSpecialSceneBg2[];
-extern const u8 g_aSpecialSceneBgControls[];
-extern u8 g_aSpecialScenePalette[];
+extern const BgTileAnimation128 g_aSpecialSceneBg2;  // 0x08063074
+extern const BgTileAnimation128 g_aSpecialSceneBg0;  // 0x0806347C
+extern const BgTileAnimation128 g_aSpecialSceneBg1;  // 0x08063884
+extern const u32 g_dwSpecialSceneBgControl;          // 0x0805BC00
 extern void sub_0803094C(u32 arg);
 extern void sub_08001D90(u32 arg);
 

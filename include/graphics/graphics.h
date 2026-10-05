@@ -188,8 +188,8 @@ extern u16 g_wActiveParticleCount;                  // 0x0300519C
 extern u16 g_wParticleHighWaterMark;                // 0x0300519E
 extern ListNode *g_pParticleFreeListHead;           // 0x030051AC
 extern ListNode *g_pParticleActiveListHead;         // 0x030051CC
-extern const s32 g_aDirection4Vectors[][2];         // 0x0804BDBC
-extern const s32 g_aDirection8Vectors[][2];         // 0x0804BDDC
+extern const s32 g_aDirection4Vectors[4][2];        // 0x0804BDBC
+extern const s32 g_aDirection8Vectors[8][2];        // 0x0804BDDC
 extern const u8 g_abOppositeDirection8[8];          // 0x08068BFC
 extern const u8 g_abOppositeDirection4[4];          // 0x08068C04
 extern s32 FixedMultiply(s32 a, s32 b);  // 16.16 multiply that keeps 10 bits of each operand
@@ -219,7 +219,6 @@ extern u16 g_wParticleEmitterHighWaterMark;         // 0x030051A2
 extern ParticleGfxEntry *g_apParticleGfxPools[];    // 0x030051D8
 
 extern ParticleEmitter *g_pMenuCursorEmitter;       // 0x030028C0
-extern const ObjPalette g_MenuCursorSparklePalette;  // 0x080BD344
 
 extern void CreateMenuCursorEmitter(struct Object *pCursor);
 extern void TickParticleEmitter(ParticleEmitter *emitter);

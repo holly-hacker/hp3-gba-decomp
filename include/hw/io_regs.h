@@ -44,6 +44,11 @@
 #define REG_WAITCNT (*(volatile u16 *)0x04000204)
 #define REG_IME     (*(volatile u16 *)0x04000208)
 
+// On-board (EWRAM) and in-chip (IWRAM) work RAM.
+#define EWRAM_BASE ((u8 *)0x02000000)
+#define EWRAM_END  ((u8 *)0x02040000)
+#define IWRAM_BASE ((u8 *)0x03000000)
+
 // Background palette RAM, 256 colors.
 #define BG_PLTT ((volatile u16 *)0x05000000)
 
@@ -52,6 +57,7 @@
 
 // Start of video RAM.
 #define VRAM_BASE ((void *)0x06000000)
+#define VRAM_SIZE 0x18000
 
 // Serial EEPROM bus, memory-mapped over the SRAM-area mirror while a
 // game-pak DMA is in flight; only the low bit of each transferred

@@ -156,10 +156,21 @@ void InitObjectPool(void);
 // Start/end of the statically linked IWRAM and EWRAM sections, as ROM
 // pointer constants. kramInstall copies the ROM image of these sections
 // to RAM; ClearWorkRam zeroes the RAM above them.
+extern u8 g_IwramSectionStart[];  // 0x03000000
+extern u8 g_IwramSectionEnd[];    // 0x03001598
+extern u8 g_EwramSectionStart[];  // 0x02000000
+extern u8 g_EwramSectionEnd[];    // 0x020027F8
 extern u8 *const g_pIwramSectionStart;
 extern u8 *const g_pIwramSectionEnd;
 extern u8 *const g_pEwramSectionStart;
 extern u8 *const g_pEwramSectionEnd;
+
+// ClearWorkRam leaves IWRAM from here up alone: the IRQ and system stacks
+// (gIrqStackTop, gSystemStackTop) and the BIOS area.
+#define IWRAM_STACKS ((u8 *)0x03007D00)
+
+// Start of pool 0, which InitHeap spans to EWRAM_END.
+extern u8 g_abEwramHeap[];  // 0x02002800
 
 void ClearSystemMemory(void);
 void ClearWorkRam(void);

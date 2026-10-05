@@ -23,7 +23,7 @@ Object *sub_0802F500(u8 bColumn, u8 bRow)
     sub_08030844(pObj, g_aObjectTypeAssets[pObj->bFighterIndex].pPalette);
     pObj->bFacing = pRecord->bFacing >> 1;
     SetObjectAssetRecord(pObj, &g_aObjectTypeAssets[pObj->bFighterIndex]);
-    SetObjectAnimFrame(pObj, g_abRoomObjUnk6Frames[g_adwRoomObjUnk6FrameRows[pObj->bFighterIndex] * 4 + pObj->bFacing]);
+    SetObjectAnimFrame(pObj, g_abRoomObjUnk6Frames[g_adwRoomObjUnk6FrameRows[pObj->bFighterIndex]][pObj->bFacing]);
     pObj->oam.priority = 1;
     pObj->bDepthSortBias = 0x80;
     pObj->dwUnk_0x28 = 0x10000;

@@ -31,13 +31,15 @@ groups:
   - name: HogwartsUpNight
     runs:
       - kind: graphic-blobs
-        count: 6
+        count: 7
         names:
           1: HogwartsUpNight001
           3: ClockSkipGraphic
           4: HogwartsUpNightBg0Graphic
           5: HogwartsUpNightBg1Graphic
           6: HogwartsUpNightBg2Graphic
+          # Its palette is the fade target of InitializeHogwartsUpNightCutscene
+          7: HogwartsUpNightFadeGraphic
 
   - name: CoolTrain
     runs:

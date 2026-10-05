@@ -4,6 +4,7 @@
 #include "graphics/object.h"
 #include "graphics/graphics.h"
 #include "battle/battle.h"
+#include "graphics/scanline_effects.h"
 
 // Battle-effect script interpreter; see docs/formats/battle_scripts.md.
 
@@ -45,18 +46,29 @@ extern const ObjectAssetRecord g_aEffectObjectAssets[17];    // 0x08053D40
 extern void *const g_apEffectPalettes[5];                    // 0x08053E50
 extern const ObjectAssetRecord g_aEffectAnimAssets[65];      // 0x08053E64, opcodes 0x01/0x02
 extern const ObjectAssetRecord g_aEffectAnimAssets2[38];     // 0x08054274, opcodes 0x03/0x04
-extern u8 g_aEffectAnimData_candidate[65][0xE2];             // 0x08054FE2
-extern u8 g_aEffectAnimData2_candidate[][0x6C];              // 0x08058944
-extern const u8 g_abFighterIdleAnimData_candidate[];         // 0x08054FDC
-extern const MonsterGfxRow g_aPlayerGfxRows_candidate[];     // 0x0804E634, one row per party member
-extern const u32 g_adwEffectBgControlOverride_candidate[];   // 0x080539A8
-extern const void *const g_apEffectScanlineTables_candidate[];  // 0x08053B08
-extern const u8 g_abEffectScanlineTableSizes_candidate[];    // 0x08053B14
-extern const u32 g_aEffectOrbitParams_candidate[][3];        // 0x08053C68, 12-byte rows
+extern const u8 g_aEffectAnimData_candidate[65][226];        // 0x08054FE2
+extern const u8 g_aEffectAnimData2_candidate[38][108];       // 0x08058944
+extern const u8 g_abFighterIdleAnimData_candidate[6];        // 0x08054FDC
+extern const u32 g_adwEffectBgControlOverride_candidate[4];  // 0x080539A8
+extern const ScanlineEffectEntry g_aEffectScanlineTable0[6];   // 0x080539B8
+extern const ScanlineEffectEntry g_aEffectScanlineTable1[9];   // 0x08053A18
+extern const ScanlineEffectEntry g_aEffectScanlineTable2[6];   // 0x08053AA8
+extern const ScanlineEffectEntry *const g_apEffectScanlineTables_candidate[3];  // 0x08053B08
+extern const u8 g_abEffectScanlineTableSizes_candidate[3];    // 0x08053B14
+
+// Scanline callbacks of the effect tables.
+extern void sub_0801B130(u32 *pPayload0, u32 *pPayload1);
+extern void sub_0801B950(u32 *pPayload0, u32 *pPayload1);
+extern void sub_0801B998(u32 *pPayload0, u32 *pPayload1);
+extern void sub_0801B9BC(u32 *pPayload0, u32 *pPayload1);
+extern void sub_0801B9F4(u32 *pPayload0, u32 *pPayload1);
+extern void sub_0801BA2C(u32 *pPayload0, u32 *pPayload1);
+extern void sub_0801BA44(u32 *pPayload0, u32 *pPayload1);
+extern const s16 g_aEffectOrbitParams_candidate[16][6];      // 0x08053C68
 extern const u8 g_abEffectRosterIdPair_candidate[2];         // 0x08053D28
-extern const u16 g_awBattleSlotPosX_candidate[];             // 0x08053D2A, per fighter slot
-extern const u8 g_abBattleSlotPosY_candidate[];              // 0x08053D38
-extern const EffectBgRecord g_aEffectBgRecords_candidate[];  // 0x080544D4
+extern const u16 g_awBattleSlotPosX_candidate[7];            // 0x08053D2A, per fighter slot
+extern const u8 g_abBattleSlotPosY_candidate[7];             // 0x08053D38
+extern const EffectBgRecord g_aEffectBgRecords_candidate[166];  // 0x080544D4
 
 extern void InterpretObjectScript(Object *obj);
 extern void WaitFramesTick(Object *obj);

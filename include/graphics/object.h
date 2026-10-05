@@ -164,7 +164,17 @@ typedef struct ObjectAssetRecord {
     u8 bAnimFrameDelay;
 } ObjectAssetRecord;
 
+// The tile and frame half of an ObjectAssetRecord, for a sprite whose palette
+// is loaded separately. It is passed where an ObjectAssetRecord is expected;
+// the animation code reads only these two fields.
+typedef struct ObjectGfxRecord {
+    void *pTileGfx;
+    void *pFrameData;
+} ObjectGfxRecord;
+
 extern const ObjectAssetRecord g_apPortraitTable[72];  // US 0x0804C61C
+extern const ObjectAssetRecord g_aHelpSpriteAssets[22];  // US 0x08069AB8
+extern const void *const g_apHelpSpritePalettes[22];    // US 0x08069C18
 
 // ObjectVariantSlot.bFrameFlags.
 typedef enum {
@@ -449,7 +459,9 @@ extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the already
 extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
-extern void SetObjectAnimData(Object *obj, const void *a, void *b, s32 c);
+// pAnimTable is the sprite record; the stream starts at command startCommand
+// of pAnimData (see graphics/object_anim.h).
+extern void SetObjectAnimData(Object *obj, const void *pAnimTable, const void *pAnimData, s32 startCommand);
 extern u32 TickObjectList(ActiveObjectListState *list, u8 mode);
 extern void TickObject(Object *obj, u32 mode);
 extern s32 IsObjectTickAllowed(void);

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "graphics/graphics.h"
 #include "graphics/object.h"
+#include "gen/graphics/menus.h"
 
 // Attaches the sparkle emitter to a menu cursor object (cursor kind 4 of sub_0801D940).
 // Mode 6 particles take their horizontal speed from Mt19937RandRange on the gameplay RNG
@@ -9,7 +10,7 @@ void CreateMenuCursorEmitter(Object *pCursor)
 {
     ParticleEmitter *emitter;
 
-    emitter = AllocParticleEmitter(&g_MenuCursorSparklePalette, 0, 0);
+    emitter = AllocParticleEmitter((const ObjPalette *)gMenuCursorSparklePalette, 0, 0);
     emitter->pTarget = pCursor;
     emitter->wSpawnPeriod = 5;
     emitter->wLifetimeBase = 0x23;

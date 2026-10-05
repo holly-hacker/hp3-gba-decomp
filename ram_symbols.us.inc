@@ -11,6 +11,14 @@
 @ The dialog-text-engine symbols have no JP counterpart at all (that
 @ engine isn't present in the JP ROM -- see docs/formats/text.md).
 
+@ --- Statically linked RAM sections (see include/hw/mem.h and ClearWorkRam) ---
+.set g_EwramSectionStart,     0x02000000
+.set g_EwramSectionEnd,       0x020027F8  @ ClearWorkRam zeroes EWRAM from here
+.set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM
+.set g_IwramSectionStart,     0x03000000  @ IWRAM image kramInstall copies from ROM
+.set IwramTimer1Handler,      0x03000004  @ gIntrTableTemplate's timer 1 handler, in that image
+.set g_IwramSectionEnd,       0x03001598  @ end of that image; ClearWorkRam zeroes from here
+
 .set g_pTimer2DebugPc,        0x030015A0  @ code ptr: IntrMain stores [sp,#0x14] here on a Timer 2 IRQ
                                           @ (saved lr per the BIOS IRQ frame, unverified); read by
                                           @ HandleTimer2Interrupt

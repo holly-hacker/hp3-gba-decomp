@@ -113,7 +113,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
     else
     {
         AttachObjectPaletteUnshared_candidate(pObject, g_aFighterAnimTable[type].aRecords[0].pPalette);
-        SetObjectAnimData(pObject, &g_aFighterAnimTable[type], &g_aFighterAnimDataTable[type * 0x244], 0);
+        SetObjectAnimData(pObject, &g_aFighterAnimTable[type], g_aFighterAnimDataTable[type][0], 0);
         // Via a temp: storing the field directly recolors the function.
         // The [0] reload folds back onto the base register, no extra move.
         ppAnimCursor = &pObject->pAnimFrameCursor;

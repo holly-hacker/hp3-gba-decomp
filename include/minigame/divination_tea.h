@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "graphics/display.h"
 #include "graphics/object.h"
 #include "gen/graphics/minigames/divination_tea.h"
 
@@ -40,14 +41,17 @@ typedef struct {
 
 extern DivinationTeaState g_DivinationTea;  // 0x03005B28
 
-// BG control words for BG2, BG0 and BG1, the BG2/BG1 graphics, and animation
-// data shared by the cup objects.
-extern const u32 g_dwDivinationTeaBg2Control;  // 0x0806BB44
-extern const u32 g_dwDivinationTeaBg0Control;  // 0x0806BB48
-extern const u32 g_dwDivinationTeaBg1Control;  // 0x0806BB4C
-extern const u8 g_DivinationTeaCupAnimA[];     // 0x0806BB58
-extern const u8 g_DivinationTeaCupAnimB[];     // 0x0806BB00
-extern const u8 g_DivinationTeaTable[];        // 0x0806BB70
+// BG control words for BG2, BG0 and BG1, the sprites, and the animation shared
+// by the cup objects: g_DivinationTeaCupAnimA is their sprite and
+// g_DivinationTeaCupAnimB their animation stream.
+extern const u8 g_DivinationTeaCupAnimB[68];               // 0x0806BB00
+extern const u32 g_dwDivinationTeaBg2Control;              // 0x0806BB44
+extern const u32 g_dwDivinationTeaBg0Control;              // 0x0806BB48
+extern const u32 g_dwDivinationTeaBg1Control;              // 0x0806BB4C
+extern const ObjectGfxRecord g_DivinationTeaLeafSprite;    // 0x0806BB50
+extern const ObjectGfxRecord g_DivinationTeaCupAnimA;      // 0x0806BB58
+extern const ObjectAssetRecord g_DivinationTeaObjectAsset; // 0x0806BB60, five objects spawned by sub_0804200C
+extern const BgTileAnimation64 g_DivinationTeaTable;  // 0x0806BB70
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

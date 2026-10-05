@@ -72,23 +72,23 @@ extern const u32 g_dwDebugCollectorCardsBg1Control;  // 0x0804CEBC
 extern const u32 g_dwDebugCollectorCardsBg2Control;  // 0x0804CEB8
 extern const u32 g_dwDebugSoundTestBg0Control;  // 0x0804CE8C
 extern const u32 g_dwDebugSoundTestBg1Control;  // 0x0804CE90
-extern const u8 g_DebugSoundTestAnimFrames[];   // 0x0804CE94
-extern const u8 g_DebugSoundTestAnimData[];     // 0x0804CEA4
+extern const ObjectAssetRecord g_DebugSoundTestAnimFrames;  // 0x0804CE94
+extern const u8 g_DebugSoundTestAnimData[18];    // 0x0804CEA4
 extern const u8 g_abDebugLevelAndQuestMax[4];        // 0x0804C470: largest value of each row
 extern const u32 g_dwDebugLevelAndQuestBg0Control;  // 0x0804C474
 extern const u32 g_dwDebugLevelAndQuestBg1Control;  // 0x0804C478
-extern const u8 g_DebugLevelAndQuestAnimFrames[];   // 0x0804C47C
-extern const u8 g_DebugLevelAndQuestAnimData[];     // 0x0804C48C
+extern const ObjectAssetRecord g_DebugLevelAndQuestAnimFrames;  // 0x0804C47C
+extern const u8 g_DebugLevelAndQuestAnimData[18];    // 0x0804C48C
 extern const u32 g_dwDebugMapSelectBg0Control;  // 0x0804C4A0
 extern const u32 g_dwDebugMapSelectBg1Control;  // 0x0804C4A4
-extern const u8 g_DebugMapSelectAnimFrames[];   // 0x0804C4A8
-extern const u8 g_DebugMapSelectAnimData[];     // 0x0804C4B8
+extern const ObjectAssetRecord g_DebugMapSelectAnimFrames;  // 0x0804C4A8
+extern const u8 g_DebugMapSelectAnimData[18];    // 0x0804C4B8
 extern const u32 g_dwDebugCharacterSelectBg0Control;  // 0x0804C4CC
 extern const u32 g_dwDebugCharacterSelectBg1Control;  // 0x0804C4D0
-extern const u8 g_DebugCharacterSelectAnimFrames[];   // 0x0804C4D4
-extern const u8 g_DebugCharacterSelectAnimData[];     // 0x0804C4E4
-extern const u8 g_DebugMenuMainAnimFrames[];   // 0x0804C44C
-extern const u8 g_DebugMenuMainAnimData[];     // 0x0804C45C
+extern const ObjectAssetRecord g_DebugCharacterSelectAnimFrames;  // 0x0804C4D4
+extern const u8 g_DebugCharacterSelectAnimData[18];    // 0x0804C4E4
+extern const ObjectAssetRecord g_DebugMenuMainAnimFrames;  // 0x0804C44C
+extern const u8 g_DebugMenuMainAnimData[18];    // 0x0804C45C
 
 extern void ResetDebugPartyFromArgs_candidate(void);
 extern void DrawDebugMenuMainEntries_candidate(void);

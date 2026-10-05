@@ -39,7 +39,7 @@ void InitializeDebugMenuMain(void)
     pObject = SpawnObject(10, 0x78, 0x2D, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugMenuMainState.pCursorObject = pObject;
     pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, (void *)g_DebugMenuMainAnimFrames, (void *)g_DebugMenuMainAnimData, 0);
+    SetObjectAnimData(pObject, &g_DebugMenuMainAnimFrames, (void *)g_DebugMenuMainAnimData, 0);
 
     g_GameModeStackContext.dwModeState = 0;
     DrawDebugMenuMainEntries_candidate();

@@ -21,9 +21,9 @@ Object *sub_0803B64C(u8 bColumn, u8 bRow)
     sub_08030844(pObj, gObjectSprite2_111Palette);
 
     if (ROOM_OBJECT_WORD_STATE(pObj)->n60 == 0)
-        SetObjectAnimData(pObj, g_apRoomObjUnkCAnimFrames, (void *)g_abRoomObjUnkCAnimData, 2);
+        SetObjectAnimData(pObj, &g_RoomObjUnkCSprite, (void *)g_abRoomObjUnkCAnimData, 2);
     else
-        SetObjectAnimData(pObj, g_apRoomObjUnkCAnimFrames, (void *)g_abRoomObjUnkCAnimData, 0);
+        SetObjectAnimData(pObj, &g_RoomObjUnkCSprite, (void *)g_abRoomObjUnkCAnimData, 0);
 
     for (i = 0; i < ARRAY_COUNT(g_adwRoomObjUnkACState); i++)
         g_adwRoomObjUnkACState[i] = 0;

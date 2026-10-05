@@ -79,7 +79,7 @@ void UpdateDivinationTeaMinigame(void)
                 PlaySoundById(1);
                 sub_08007CD4(2, 1);
                 for (i = 0; i < ARRAY_COUNT(g_DivinationTea.apCupObjects); i++)
-                    SetObjectAnimData(g_DivinationTea.apCupObjects[i], (void *)g_DivinationTeaCupAnimA,
+                    SetObjectAnimData(g_DivinationTea.apCupObjects[i], &g_DivinationTeaCupAnimA,
                                       (void *)g_DivinationTeaCupAnimB, 1);
             }
 

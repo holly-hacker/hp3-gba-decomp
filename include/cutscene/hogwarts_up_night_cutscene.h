@@ -8,5 +8,4 @@ extern const u32 g_dwUpNightBg0Control;  // 0x0806BD98
 extern const u32 g_dwUpNightBg1Control;  // 0x0806BD9C
 extern const u32 g_dwUpNightBg2Control;  // 0x0806BDA0
 
-extern const u8 g_HogwartsUpNightPaletteData[];  // 0x08E32322
 

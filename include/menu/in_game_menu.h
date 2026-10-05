@@ -5,6 +5,7 @@
 #include "menu/menu.h"
 
 extern const ListMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38
+extern const ListMenuRowObject g_aInGameMenuRowObjects[6];  // 0x08068C80
 extern const ListMenuDefinition g_InGameMenuDefinition;  // 0x08068CE0
 
 extern GameMode g_StatusEquipReturnMode;  // 0x03005298: StatusEquipCharacterSelect's B target

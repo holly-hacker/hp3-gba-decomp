@@ -11,14 +11,14 @@ void SetPlayerObjectAnim(Object *obj, s32 state)
         if (state == 0)
         {
             SetObjectAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wObjectType] + state * 0x10,
-                               &g_aFighterAnimDataTable[obj->wObjectType * 0x244] + state * 0x3a, 0);
+                               g_aFighterAnimDataTable[obj->wObjectType][state], 0);
             obj->pAnimFrameCursor = obj->pAnimFrameBase + Mt19937RandMax(2) * 4;
             SetObjectAnimFrame(obj, *obj->pAnimFrameCursor);
         }
         else
         {
             SetObjectAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wObjectType] + state * 0x10,
-                               &g_aFighterAnimDataTable[obj->wObjectType * 0x244] + state * 0x3a, 0);
+                               g_aFighterAnimDataTable[obj->wObjectType][state], 0);
         }
         obj->dwFlags |= ObjectFlagVisible;
     }
@@ -26,6 +26,6 @@ void SetPlayerObjectAnim(Object *obj, s32 state)
     {
         obj->dwFlags &= ~ObjectFlagActionAnimDone;
         SetObjectAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wObjectType] + state * 0x10,
-                           &g_aFighterAnimDataTable[obj->wObjectType * 0x244] + state * 0x3a, 0);
+                           g_aFighterAnimDataTable[obj->wObjectType][state], 0);
     }
 }

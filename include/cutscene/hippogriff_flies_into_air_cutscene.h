@@ -8,5 +8,5 @@ extern Object *g_pHippogriffFliesIntoAirObject;   // 0x03002F18: the hippogriff;
 extern Object *g_pHippogriffFliesIntoAirObject2;  // 0x03002F1C
 
 extern const u32 g_dwHippogriffFliesIntoAirBg0Control;  // 0x0805EB10
-extern const u8 g_HippogriffFliesIntoAirAsset[];        // 0x0805EB14: the hippogriff's asset record
-extern const u8 g_HippogriffFliesIntoAirAsset2[];       // 0x0805EB24
+extern const ObjectAssetRecord g_HippogriffFliesIntoAirAsset;   // 0x0805EB14: the hippogriff
+extern const ObjectAssetRecord g_HippogriffFliesIntoAirAsset2;  // 0x0805EB24

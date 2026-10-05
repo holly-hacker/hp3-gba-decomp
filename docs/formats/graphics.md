@@ -1419,6 +1419,29 @@ through them, but the records themselves are ordinary dialog assets --
   repeated records share their original image. Both regions are
   verified by the whole-ROM comparison; JP addresses are not yet mapped.
 
+### Object animation command streams (STRUCTURAL MATCH, from `sub_080021F4`)
+
+`SetObjectAnimData(obj, record, data, start)` points an object at a byte
+stream (`data + start * 2`); `sub_080021F4` reads it two bytes at a time. A
+first byte up to `0xEE` shows that frame for the second byte's count of ticks
+(0 holds it); `0xEF`-`0xFF` run immediately, in sequence, until the next
+frame. `include/graphics/object_anim.h` spells them as `ANIM_*` macros, which
+the ROM's animation tables use.
+
+| Byte | Command | Operand |
+|---|---|---|
+| `0xEF` | move x forward (mirrored when h-flipped) | signed pixels |
+| `0xF0` | set `ObjectFlagActionAnimDone`, stay here | ignored (0, or `0xFF` in some monster animations) |
+| `0xF1` / `0xF2` | toggle v-flip / h-flip | -- |
+| `0xF3` / `0xF4` | set / clear `ObjectFlagVisible` | -- |
+| `0xF5`-`0xFC` | move down-left, up-left, down-right, up-right, down, up, left, right | pixels |
+| `0xFD` | `PlaySoundById` | sound id |
+| `0xFE` | jump to command `n` of the stream | `n` |
+| `0xFF` | event marker: sets `ObjectFlagSpecialMoveTrigger`, stores the operand at `Object+0xDC`, holds one tick | marker |
+
+Tables that keep several streams per row (room object kinds, monsters, effect
+animations) pad each row with zeros to a fixed stride.
+
 ## Open threads
 
 In rough priority order. BG/level tile graphics are PROVEN end-to-end,

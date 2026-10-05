@@ -3,6 +3,12 @@ groups:
     runs:
       - kind: graphic-blobs
         names: [WizardCrackerPopItBg1Graphic, WizardCrackerPopItBg0Graphic]
+      # Palettes of g_aWizardCrackerPopItPalettes
+      - kind: image-bank
+        count: 4
+        names: {1: WizardCrackerPopItPalette001}
+        componentOrder: [palette]
+        storedCells: false
 
   - name: WizardCrackerSprites
     runs:

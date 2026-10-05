@@ -654,8 +654,9 @@ void InterpretObjectScript(Object *obj)
         case BSOP_WaitForCasterField86:  // waits on the caster's field 0x86 (returns)
             obj->pfnTick = WaitForCasterField86Tick_candidate;
             return;
-        case BSOP_SetCasterAnim:  // sets the caster's animation
-            SetObjectAnimData(casterFighter->pObject, &g_aPlayerGfxRows_candidate[casterFighter->pObject->wObjectType], g_aEffectAnimData_candidate[args[1]], args[2]);
+        case BSOP_SetCasterAnim:  // sets the caster's animation; monster object types are 4 + monster index
+            SetObjectAnimData(casterFighter->pObject, &g_pMonsterGraphicsTable[casterFighter->pObject->wObjectType - 4],
+                              g_aEffectAnimData_candidate[args[1]], args[2]);
             break;
         case BSOP_LoadBgEffect:  // loads a BG effect record
             {

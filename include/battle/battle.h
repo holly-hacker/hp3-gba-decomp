@@ -130,13 +130,13 @@ typedef struct MonsterGfxRow {
     ObjectAssetRecord overworld;  // 0x10, wandering-monster sprite
 } MonsterGfxRow;
 extern const MonsterGfxRow g_pMonsterGraphicsTable[69];  // 0x0804E6B4, src/graphics/assets/monster_graphics_table.c
-extern u8 g_pMonsterAnimFrameTable[];              // 0x08051E70, stride 0x60
+extern const u8 g_pMonsterAnimFrameTable[69][96];  // 0x08051E70
 // Companion sprite InitMonsterBattleActor spawns for monsters 45-47.
 extern const ObjectAssetRecord g_MonsterShadowGfxRow;               // 0x0804EF54
 extern const ObjectAssetRecord g_aEnemyTurnOrderIconAssets[69];     // 0x0804EF64
 extern const ObjectAssetRecord g_aAllyTurnOrderIconAssets[4];       // 0x0804F3B4
 extern const ObjectAssetRecord g_TurnOrderIconContainerAsset;       // 0x0804F3F4
-extern u8 g_MonsterShadowAnimData[];             // 0x08053850
+extern const u8 g_MonsterShadowAnimData[96];     // 0x08053850
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
 // ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate;
@@ -336,7 +336,8 @@ extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void ShowItemUseResult(Object *obj, s32 targetIndex);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
 extern void ApplyDamageToEnemyFighter(u16 damage, u8 fighterIndex);  // 0x08017F98
-extern u8 g_abSpellEffectScriptId[][3];         // 0x080538B0, [spellId][level]
+extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
+extern const u8 g_abSpellUnknownByLevel[10][3];  // 0x080538CE, [spellId][level], no known reader
 extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
 // 16.16 position pair. Object+0x2C and FightState+0x104C hold one each, and
 // the battle code copies between them as a single 8-byte unit.
@@ -347,8 +348,8 @@ typedef struct Point1616 {
 // Screen anchor an attacker walks to, per target's BattleFighter.bSlotParam,
 // as {x, y} in whole pixels; the monster's own {x, y} extent in
 // g_aMonsterAttackOffset_candidate is subtracted off to get the destination.
-extern u8 g_aBattleSlotAnchorPos_candidate[][2];  // 0x080539A0, [bSlotParam]
-extern u8 g_aMonsterAttackOffset_candidate[][2];  // 0x0804FB9C, [rosterIndex]
+extern const u8 g_aBattleSlotAnchorPos_candidate[3][2];  // 0x080539A0, [bSlotParam]
+extern const u8 g_aMonsterAttackOffset_candidate[69][2];  // 0x0804FB9C, [rosterIndex]
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
@@ -360,7 +361,7 @@ typedef struct FighterAnimRow {
     ObjectAssetRecord aRecords[10];
 } FighterAnimRow;
 extern const FighterAnimRow g_aFighterAnimTable[4];  // 0x08051248, src/graphics/assets/fighter_anim_table.c
-extern u8 g_aFighterAnimDataTable[];        // 0x08051560, stride 0x244, contents undecoded
+extern const u8 g_aFighterAnimDataTable[4][10][58];  // 0x08051560, [fighter][anim state]
 
 extern void TickPlayerActionState(Object *obj);
 extern void TickFighterAttackAnimState_candidate(Object *obj);  // 0x08015608

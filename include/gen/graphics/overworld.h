@@ -1015,6 +1015,7 @@ extern const u8 gObjectPalette061Palette[];
 extern const u8 gObjectPalette062Palette[];
 
 /* SpecialSceneFrames */
+extern const u8 gSpecialScenePalette[];
 extern const u8 gSpecialSceneFrame001[];
 extern const u8 gSpecialSceneFrame002[];
 extern const u8 gSpecialSceneFrame003[];

@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "graphics/object.h"
+#include "graphics/scanline_effects.h"
 #include "gen/graphics/cutscenes.h"
 
 // The mode's screen state at 0x03003A84. Only the fields the mode handlers use are named.
@@ -17,8 +18,14 @@ typedef struct {
 extern LupinPotionCutsceneState g_LupinPotionCutscene;  // 0x03003A84
 extern s32 g_aLupinPotionBg2Scroll[2];                  // 0x03003B3C
 
-extern const u32 g_dwLupinPotionTextBgControl;  // 0x08062A30
-extern const u8 g_aLupinPotionScanlineTable[];  // 0x08062A08: 2 scanline effect entries
+extern const ScanlineEffectEntry g_aLupinPotionScanlineTable[2];  // 0x08062A08
+extern const u32 g_dwLupinPotionBg3Control;     // 0x08062A28
+extern const u32 g_dwLupinPotionBg1Control;     // 0x08062A2C
+extern const u32 g_dwLupinPotionTextBgControl;  // 0x08062A30, BG2
+extern const u32 g_dwLupinPotionBg0Control;     // 0x08062A34
+
+// Scanline callback that scrolls the panel on BG2 (see nPanelOffset).
+extern void LupinPotionPanelScanlineCallback_candidate(u32 *pPayload0, u32 *pPayload1);
 
 extern void sub_08028AD4(void);
 extern void sub_08028F7C(void);

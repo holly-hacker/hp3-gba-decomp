@@ -268,6 +268,23 @@ extern const u8 gMenuSprite007Frames[];
 extern const u8 gMenuSprite008Tiles[];
 extern const u8 gMenuSprite008Frames[];
 extern const u8 gMenuCursor001[];
+extern const u8 gMenuCursorSparklePalette[];
+extern const u8 gMenuPalette001Palette[];
+extern const u8 gMenuPalette002Palette[];
+extern const u8 gMenuPalette003Palette[];
+extern const u8 gMenuPalette004Palette[];
+extern const u8 gMenuPalette005Palette[];
+extern const u8 gMenuPalette006Palette[];
+extern const u8 gMenuPalette007Palette[];
+extern const u8 gMenuPalette008Palette[];
+extern const u8 gMenuPalette009Palette[];
+extern const u8 gMenuPalette010Palette[];
+extern const u8 gMenuPalette011Palette[];
+extern const u8 gMenuPalette012Palette[];
+extern const u8 gMenuPalette013Palette[];
+extern const u8 gMenuPalette014Palette[];
+extern const u8 gMenuPalette015Palette[];
+extern const u8 gMenuPalette016Palette[];
 
 /* EquipCharacterSelect */
 extern const u8 gEquipCharacterSelect001[];

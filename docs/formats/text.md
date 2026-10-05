@@ -163,7 +163,7 @@ reaches the VWF engine without needing mGBA at all.
 `build/us/full_disasm.s` loads it, computes a 32-byte-stride entry index
 from a counter at `0x03002238+4`, and calls
 `sub_08020FF8(len=0x1a0, entry_ptr, 1, x=0x78, y=0x10, attr=0xe0)`.
-(`sDebugCharacterNames` at `0x0804C4F6`, by contrast, has **zero**
+(`sPlayableCharacterNames` at `0x0804C4F6`, by contrast, has **zero**
 literal-pool references anywhere in the disassembly -- likely dead/debug
 data, not a useful anchor.)
 

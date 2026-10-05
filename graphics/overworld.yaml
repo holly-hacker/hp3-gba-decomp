@@ -52,6 +52,14 @@ groups:
 
   - name: SpecialSceneFrames
     runs:
+      # The 256-color palette RoomScriptOpPlaySpecialSceneEffect loads
+      - kind: image-bank
+        names: [SpecialScene]
+        bpp: 8
+        componentOrder: [palette]
+        storedCells: false
+        paletteHeader: [0xa1, 0x0]
+        paletteTrailer: [0x0, 0x0]
       - kind: tile-frames
         count: 128
         names: {1: SpecialSceneFrame001}

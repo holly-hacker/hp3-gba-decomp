@@ -1,0 +1,30 @@
+#include "types.h"
+#include "battle/effect_script.h"
+
+// StartOrbitMotion rows: angle X/Y, angular velocity X/Y and radius X/Y, in
+// Object.orbitState.awOrbit order.
+const s16 g_aEffectOrbitParams_candidate[16][6] = {
+    { -0x4000, -0x8000, 0x200, -0x400, 0, 5 },
+    { -0x4000, 0x0, 0x0, 0x0, 20, 0 },
+    { 0x0, 0x0, 0x800, -0x800, 2, 2 },
+    { -0x4000, -0x8000, 0x400, -0x800, 0, 5 },
+    { -0x4000, -0x8000, 0x500, -0xA00, 0, 5 },
+    { -0x4000, -0x8000, 0x200, -0x400, 10, -20 },
+    { -0x4000, 0x4000, 0xA00, -0xA00, -20, -20 },
+    { -0x4000, -0x8000, 0x400, -0x800, 16, -20 },
+    { 0x0, 0x0, 0x0, 0x0, 0, 0 },
+    { -0x4040, -0x4000, 0x800, -0x400, 1, 12 },
+    { 0x0, 0x0, 0xA00, -0xA00, -65, -26 },
+    { -0x4000, -0x8000, 0x200, -0x400, 0, -80 },
+    { 0x0, 0x0, 0x800, -0x800, -4, -4 },
+    { -0x4000, -0x8000, 0x0, 0x0, 10, -20 },
+    { -0x4000, 0x4000, 0xA00, -0xA00, 64, 64 },
+    { -0x4000, 0x4000, 0x1400, -0x1400, 10, 10 },
+};
+
+// Roster indices the effect script checks a target fighter against.
+const u8 g_abEffectRosterIdPair_candidate[2] = { 0x3B, 0x3A };
+
+// Screen position of each fighter slot (bScriptParam).
+const u16 g_awBattleSlotPosX_candidate[7] = { 212, 176, 140, 31, 67, 103, 139 };
+const u8 g_abBattleSlotPosY_candidate[7] = { 110, 114, 118, 95, 91, 87, 83 };

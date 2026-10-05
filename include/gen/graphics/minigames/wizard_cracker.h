@@ -6,6 +6,10 @@
 /* WizardCrackerPopIt */
 extern const u8 gWizardCrackerPopItBg1Graphic[];
 extern const u8 gWizardCrackerPopItBg0Graphic[];
+extern const u8 gWizardCrackerPopItPalette001Palette[];
+extern const u8 gWizardCrackerPopItPalette002Palette[];
+extern const u8 gWizardCrackerPopItPalette003Palette[];
+extern const u8 gWizardCrackerPopItPalette004Palette[];
 
 /* WizardCrackerSprites */
 extern const u8 gWizardCracker001Palette[];

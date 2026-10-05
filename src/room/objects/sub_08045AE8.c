@@ -30,7 +30,7 @@ Object *sub_08045AE8(u8 bColumn, u8 bRow)
     pObj->apfnCollisionCallback[1] = sub_0804651C;
     sub_08030844(pObj, g_apRoomObjTriggerEffectData[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind]);
     SetObjectAnimData(pObj, g_apRoomObjTriggerAnimFrames[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind],
-                      (void *)(g_abRoomObjTriggerAnimData + ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind * 0x5A), 0);
+                      (void *)g_abRoomObjTriggerAnimData[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind], 0);
 
     if (kind - 0x1A <= 0xC)
     {
