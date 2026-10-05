@@ -139,8 +139,11 @@ Extraction can overwrite local edits and must not run automatically on builds.
 For a new subsystem, document the format in `docs/formats/`, follow the existing
 extractor/packer/codec pattern under `tools/`, add manifest support and Just
 recipes where appropriate, and verify byte-exact round trips. Add extraction
-to `extract-all` when it supplies required build inputs. Some tools are only
-for analysis or only support US; check their implementation and documentation.
+to `extract-all` when it supplies required build inputs. A new graphics format
+is a kind module in `tools/graphics/kinds/` used by the shared graphics packer
+and extractor; see `docs/formats/graphics.md` ("Graphics build format"). Some
+tools are only for analysis or only support US; check their implementation
+and documentation.
 
 ## Commands and validation
 

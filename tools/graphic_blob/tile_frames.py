@@ -6,7 +6,7 @@ A frame is edited as <name>.png, a sheet of its tiles, 8 per row, in
 grayscale (the real palette is not known). A pixel is the 4-bit (or, for an
 8 bpp frame, 8-bit) color number and color 0 is marked transparent. The kind,
 which is not derived from the tile data, and the tile count are kept in
-bank.json.
+the run's settings.
 """
 import struct
 import sys

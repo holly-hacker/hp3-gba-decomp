@@ -6,7 +6,7 @@
 #include "graphics/graphics.h"
 #include "menu/main_menu.h"
 #include "graphics/text.h"
-#include "gen/MenuSprites.h"
+#include "gen/graphics/menus.h"
 
 void InitializeMainMenu(void)
 {

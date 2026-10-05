@@ -1,5 +1,5 @@
 #include "graphics/object.h"
-#include "gen/Portraits.h"
+#include "gen/graphics/menus.h"
 
 // 72 portrait records; repeated entries share the same image resource.
 // The generated symbols track component positions within the portrait bank.

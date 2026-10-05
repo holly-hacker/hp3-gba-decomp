@@ -10,7 +10,7 @@
                                  layer files keep each cell's own bank.
   layer0.json .. layer3.json     block grid and block set of each BG layer
   collision.json                 collision patterns and the block grid
-  bank.json                      the codec of each resource and the values the
+  room.json                      the codec of each resource and the values the
                                  original tool left in padding
 """
 import collections
@@ -23,6 +23,8 @@ from PIL import Image
 from roomgfx import COMPRESSED, Block, Collision, Layer, RoomGraphics
 from bgtileset import Tileset
 
+ROOM_FILES = ("tileset_a.png", "tileset_b.png", "layer0.json", "layer1.json", "layer2.json", "layer3.json",
+              "collision.json", "room.json")
 TILES_PER_ROW = 16
 SHEET_WIDTH = TILES_PER_ROW * 8
 
@@ -125,11 +127,11 @@ def write_room_dir(room: RoomGraphics, path: Path) -> None:
             "head_residue": int.from_bytes(tileset.head_residue, "little"),
             "end_residue": int.from_bytes(tileset.end_residue, "little"),
         }
-    (path / "bank.json").write_text(dump_json(bank))
+    (path / "room.json").write_text(dump_json(bank))
 
 
 def read_room_dir(path: Path) -> RoomGraphics:
-    bank = json.loads((path / "bank.json").read_text())
+    bank = json.loads((path / "room.json").read_text())
     layers = []
     for n in range(4):
         data = json.loads((path / f"layer{n}.json").read_text())

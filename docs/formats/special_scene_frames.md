@@ -53,7 +53,7 @@ appear (**UNCONFIRMED**; the script that runs mode 3 is `Room06V3Chain29`).
 ## Viewing
 
 The frame PNGs are raw tile sheets, not the picture. To see the scenery, draw a
-room's layer 0 (rooms 5-7, `data/room_graphics/`) with tiles 0-39 taken from one
+room's layer 0 (rooms 5-7, `data/graphics/rooms/`) with tiles 0-39 taken from one
 frame and palette bank 15 of the room's palette A (day) or of
 `g_aSpecialScenePalette` (night); stepping through the 128 frames animates it.
 This is a render for inspection, not something the build or an extractor makes.
@@ -77,9 +77,9 @@ frames are consecutive: each starts where the previous stream ends.
 
 ## Extraction
 
-`just extract-tile-frames` and `just pack-tile-frames` handle the frames like
-tile streams: a `tile-frames <start> <end> <dir> <name>` row covers the 128
-frames (`0x081B309C`-`0x081DB29C`; the palette stays raw), `data/tile_frames/`
-holds one grayscale PNG tile sheet per frame (8 tiles per row, color 0
-transparent, `SpecialSceneFrame001`-`128`) and `bank.json` with each frame's
-kind and tile count. All frames rebuild byte for byte.
+A `tile-frames` run, `SpecialSceneFrames` (see [`graphics.md`](graphics.md)
+"Graphics build format"), covers the 128 frames (`0x081B309C`-`0x081DB29C`;
+the palette stays raw) as one grayscale PNG tile sheet per frame (8 tiles per
+row, color 0 transparent, `SpecialSceneFrame001`-`128`); its `frames`
+settings list each frame's kind and tile count. All frames rebuild byte for
+byte.

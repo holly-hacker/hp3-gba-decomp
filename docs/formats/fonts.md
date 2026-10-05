@@ -64,8 +64,8 @@ kanji.
 
 ## Extraction
 
-`just extract-fonts` and `just pack-fonts` handle them like tile streams: a
-`fonts <start> <end> <dir> <name>` row covers the ten fonts, `data/fonts/`
-(gitignored) holds one grayscale PNG glyph atlas per font (`Font00`-`Font09`,
-16 glyphs per row, each cell as wide as the widest glyph, pixel value 0
-transparent) and `bank.json` with each font's range, height and glyph widths (and flags).
+A `fonts` run (see [`graphics.md`](graphics.md) "Graphics build format")
+covers the ten fonts as one grayscale PNG glyph atlas per font
+(`Font00`-`Font09`, 16 glyphs per row, each cell as wide as the widest glyph,
+pixel value 0 transparent); its `fonts` settings list each font's range,
+height and glyph widths (and flags).

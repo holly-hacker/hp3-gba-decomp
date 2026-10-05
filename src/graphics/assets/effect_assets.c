@@ -1,7 +1,6 @@
 #include "types.h"
 #include "graphics/object.h"
-#include "gen/BattleEffects.h"
-#include "gen/BattleEffects2.h"
+#include "gen/graphics/battle.h"
 
 // Battle effect sprites used by object scripts (docs/formats/battle_scripts.md).
 const ObjectAssetRecord g_aEffectObjectAssets[17] = {

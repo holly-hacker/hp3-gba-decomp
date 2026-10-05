@@ -4,7 +4,7 @@ stream without its outer header (see docs/formats/graphic_blob.md).
 A stream is edited as <name>.png, a sheet of its tiles, 8 per row, in
 grayscale (the real palette is not known). A pixel is the 4-bit color number
 and color 0 is marked transparent. The width and height, which are not
-derived from the tile data, and the tile count are kept in bank.json.
+derived from the tile data, and the tile count are kept in the run's settings.
 """
 import struct
 import sys

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/object.h"
-#include "gen/StatusCharacters.h"
+#include "gen/graphics/menus.h"
 
 // Status/equip screen character rotations, indexed by sub_0803A030.
 const ObjectAssetRecord g_aStatusCharacterAssets[3] = {

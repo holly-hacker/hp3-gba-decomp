@@ -12,7 +12,7 @@
 #include "graphics/scanline_effects.h"
 #include "graphics/text.h"
 #include "graphics/graphics.h"
-#include "gen/MenuSprites.h"
+#include "gen/graphics/menus.h"
 
 void InitializeLupinPotionCutscene(void)
 {

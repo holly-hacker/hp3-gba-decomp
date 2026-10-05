@@ -1,7 +1,7 @@
 """Convert between indexed PNG sprites and their ROM tile, frame, and palette data.
 
-See docs/formats/graphics.md ("Sprite images"). A bank.json image entry is
-one of:
+See docs/formats/graphics.md ("Sprite images"). An image-bank run's image
+entry is one of:
 
 - a derived sprite, {name, offset, compression}: one frame, <name>.png,
   OAM cells cut from the image size (cut_cells);
@@ -17,7 +17,6 @@ Components: palette (2**bpp BGR555 entries from the PNG palette), tiles
 (an ObjectFrameData record).
 """
 import hashlib
-import json
 import os
 import struct
 import sys
@@ -428,7 +427,7 @@ def _frame_tiles(path: Path, frame_cells, bpp: int):
 
 
 def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
-    """Encode one bank.json image entry into its ROM components."""
+    """Encode one image entry into its ROM components."""
     bpp = entry.get("bpp", bpp)
     if entry.get("paletteOnly"):
         _, _, _, colors = read_png(source / f"{entry['name']}.png", bpp)
@@ -495,7 +494,7 @@ def _sprite_bpp(tiles: bytes, record: dict) -> int:
 
 
 def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool, bpp: int) -> dict:
-    """The bank.json entry for ROM components, without writing any PNG.
+    """The image entry for ROM components, without writing any PNG.
     A stored-cells sprite whose tiles are not at the bank's bit depth
     records its own bpp."""
     if "tiles" not in components:
@@ -529,7 +528,7 @@ def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool, 
 
 
 def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, stored_cells: bool) -> dict:
-    """Write one image entry's PNGs and return its bank.json entry. Fails
+    """Write one image entry's PNGs and return its settings. Fails
     unless rebuilding from the PNGs reproduces every component byte for byte."""
     entry = entry_settings(name, components, stored_cells, bpp)
     bank_bpp, bpp = bpp, entry.get("bpp", bpp)
@@ -553,15 +552,6 @@ def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, sto
     return entry
 
 
-def _entry_json(image: dict) -> str:
-    """One line per image, or per frame for stored-layout sprites."""
-    if "frames" not in image:
-        return f"    {json.dumps(image)}"
-    head = json.dumps({k: v for k, v in image.items() if k != "frames"})[:-1]
-    frames = ",\n".join(f"      {json.dumps(frame)}" for frame in image["frames"])
-    return f'    {head}, "frames": [\n{frames}\n    ]}}'
-
-
 def map_images(fn, *args, gamma_lz: bool):
     """map(fn, *args), across processes when GammaLz encoding is involved."""
     if not gamma_lz:
@@ -577,30 +567,10 @@ def _uses_gamma_lz(components: dict[str, bytes]) -> bool:
     return any(f["compression"] == "gammalz" for f in record["frames"])
 
 
-def extract_bank(source: Path, bpp: int, order: tuple[str, ...], entries: list[tuple[str, dict[str, bytes]]],
-                 stored_cells: bool = False, index_only: bool = False,
-                 palette_header: list[int] | None = None, palette_trailer: list[int] | None = None) -> None:
-    """Write each image's PNGs and the bank's bank.json. With index_only,
-    keep existing PNGs and regenerate only the index. The optional palette
-    header and trailer are the bytes around every palette in the bank."""
-    source.mkdir(parents=True, exist_ok=True)
-    if index_only:
-        images = []
-        for name, components in entries:
-            entry = entry_settings(name, components, stored_cells, bpp)
-            missing = [f for f in image_files(entry) if not (source / f).is_file()]
-            if missing:
-                raise ValueError(f"missing {source / missing[0]}; extract the bank first")
-            images.append(entry)
-    else:
-        names = [name for name, _ in entries]
-        components = [c for _, c in entries]
-        images = map_images(extract, repeat(source), names, components, repeat(bpp), repeat(stored_cells),
-                            gamma_lz=any(map(_uses_gamma_lz, components)))
-    lines = ",\n".join(_entry_json(image) for image in images)
-    wrap = "".join(f'  "{key}": {json.dumps(value)},\n'
-                   for key, value in (("paletteHeader", palette_header), ("paletteTrailer", palette_trailer))
-                   if value is not None)
-    (source / "bank.json").write_text(
-        f'{{\n  "format": 2,\n  "bpp": {bpp},\n  "componentOrder": {json.dumps(list(order))},\n{wrap}'
-        f'  "images": [\n{lines}\n  ]\n}}\n')
+def extract_images(source: Path, bpp: int, entries: list[tuple[str, dict[str, bytes]]],
+                   stored_cells: bool) -> list[dict]:
+    """Write each image's PNGs and return their settings, in order."""
+    names = [name for name, _ in entries]
+    components = [c for _, c in entries]
+    return map_images(extract, repeat(source), names, components, repeat(bpp), repeat(stored_cells),
+                      gamma_lz=any(map(_uses_gamma_lz, components)))

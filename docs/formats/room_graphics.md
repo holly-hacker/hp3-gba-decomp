@@ -62,8 +62,9 @@ kept per tileset. All 110 tilesets of each version re-encode exactly
 
 ## Source files
 
-`just extract-room-graphics` writes `data/room_graphics/<room_name>/` (gitignored,
-like `data/images/`) after checking that every room rebuilds to both ROMs:
+Each room is a `room-graphics` run in `data/graphics/rooms/` (see
+[`graphics.md`](graphics.md) "Graphics build format") whose `dir` setting
+names its subdirectory, `<room_name>/`:
 
 - `tileset_a.png`, `tileset_b.png`: 8-bit indexed tile sheets, 16 tiles per
   row, with the room's 256-color palette (16 banks of 16) as the PNG palette. A
@@ -76,13 +77,15 @@ like `data/images/`) after checking that every room rebuilds to both ROMs:
   with a tile number, palette bank and `h`/`v` flips).
 - `collision.json`: the collision patterns (16 cells with a type and a layer)
   and the block grid.
-- `bank.json`: each resource's codec and delta flag, and the tileset residue.
+- `room.json`: each resource's codec and delta flag, and the tileset residue.
 
-One `room-graphics <start> <end> <dir> Room<NN>Graphics` row per room claims the
-whole range; `just pack-room-graphics` encodes it and labels each resource
+One `room-graphics <start> <end> data/graphics/rooms Room<NN>Graphics` row per
+room claims the whole range; packing encodes it and labels each resource
 (`Room<NN>BgMap0`, `Room<NN>BgBlocks0`, `Room<NN>CollisionBehavior`,
 `Room<NN>CollisionMap`, `Room<NN>TilesetA`, `Room<NN>PaletteA`, ...), which
-`src/room/room_table.c` (`g_aRoomTable`) refers to, through `include/gen/RoomGraphics.h`. Code: `tools/room_graphics/`.
+`src/room/room_table.c` (`g_aRoomTable`) refers to, through
+`include/gen/graphics/rooms.h`. Code: `tools/room_graphics/` and
+`tools/graphics/kinds/room_graphics.py`.
 
 `just dump-room-graphics` (`tools/graphics/dump_bg_tiles.py`) renders every room's
 assembled BG layers and a merged view to `extracted/graphics/rooms/`, straight

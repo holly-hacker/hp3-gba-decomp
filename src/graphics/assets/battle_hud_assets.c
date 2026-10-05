@@ -1,7 +1,6 @@
 #include "types.h"
 #include "graphics/object.h"
-#include "gen/BattleFaces.h"
-#include "gen/ActionIcons.h"
+#include "gen/graphics/battle.h"
 
 // Battle UI sprites, indexed by sub_08012CE4 and sub_08012D2C: records 0-71
 // are the portraits shown when a fighter attacks, 72-132 the battle-menu

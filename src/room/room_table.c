@@ -1,5 +1,6 @@
 #include "types.h"
-#include "gen/RoomGraphics.h"
+#include "gen/graphics/rooms.h"
+#include "overworld/room_blob.h"
 #include "graphics/display.h"
 #include "overworld/room.h"
 

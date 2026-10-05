@@ -1,6 +1,6 @@
 #include "types.h"
 #include "overworld/room_object.h"
-#include "gen/ObjectSprites2.h"
+#include "gen/graphics/overworld.h"
 
 // Room object constructor for tile objType 9, the chest/one-time pickup.
 // See docs/formats/rooms.md.

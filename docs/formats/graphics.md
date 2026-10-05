@@ -22,9 +22,8 @@ found 14 real palettes (9 new) with zero gameplay. **PROVEN and
 extracted end-to-end for one whole tile-data-consuming resource class**:
 every real item's icon (`ItemEntry.pPalette/pTileData/pFrameData`, see "Item
 icons" below) is now statically decoded, extracted to editable indexed
-PNGs under `data/images/items/`, and rebuilt from them into a byte-verified
-`regions.us.txt` region (`just extract-images`; see "Sprite
-images"). **PROVEN end-to-end for
+PNGs under `data/graphics/menus/`, and rebuilt from them into a
+byte-verified `regions.us.txt` region (see "Graphics build format"). **PROVEN end-to-end for
 level/room BG graphics, fully static, and extracted**: the two-level
 tilemap format (block-index map + per-block tile-ID/palette data), the
 per-tile streaming codec (`DecompressBgTile`, `0x08006300`), and the
@@ -397,9 +396,10 @@ container differs from Pucrunch's own output:
   `0x80` when that stream is strictly shorter.
 
 The match search compares each position against all earlier ones with
-numpy (O(n^2)), so encoding the largest (63 KB) resource takes about 15 s. The image-bank pipeline caches encoded streams under
-`build/cache/gammalz/` by input hash and encodes a bank's sprites in
-parallel.
+numpy (O(n^2)), so encoding the largest (63 KB) resource takes about 15 s.
+The build cache (`tools/buildcache.py`) keeps every encoded item, and
+`tools/images/sprite.py` also caches encoded sprite streams under
+`build/cache/gammalz/` by input hash, which extraction fills.
 
 ### Real, uncompressed palettes -- found via code tracing (PROVEN)
 
@@ -967,49 +967,62 @@ The offset table's per-tile entries are bit lengths, including the last
 tile's, so every tile's extent is known (see
 [`room_graphics.md`](room_graphics.md)).
 
-### Image-bank build format
+### Graphics build format
 
-An `image-bank <start> <end> <dir> <name>` manifest row claims one
-contiguous range of images. `<dir>/bank.json` holds `format: 2`, the
-bank's `bpp` (4 or 8), `componentOrder` (the ROM order of each image's
-`palette`/`tiles`/`frames` components), and an ordered `images` list. An
-entry is one of:
+A graphics manifest row, `<kind> <start> <end> <dir> <Name>`, claims one
+contiguous run of one kind: `image-bank` (this document), `graphic-blobs`
+and `tile-streams` ([`graphic_blob.md`](graphic_blob.md)), `tile-frames`
+([`special_scene_frames.md`](special_scene_frames.md)), `fonts`
+([`fonts.md`](fonts.md)) or `room-graphics`
+([`room_graphics.md`](room_graphics.md)). `<dir>` is a feature directory
+under `data/graphics/` (`battle`, `overworld`, `menus`, `cutscenes`,
+`minigames/<game>`, `rooms`) shared by all runs of that feature. Its
+`graphics.json` (`format: 1`) maps each run name to the run's settings,
+with its items in ROM order; it contains no addresses, so items are laid
+out back to back and the total must equal the manifest range. Every file
+in the directory must belong to exactly one run. A subdirectory with its own
+`graphics.json` is a nested feature; `menus/us` and `menus/jp` hold the runs
+only one version has, whose file names would otherwise collide.
+
+`just pack <ver>` (`tools/graphics/pack_graphics.py`, kinds in
+`tools/graphics/kinds/`) builds every item through the build cache and
+writes `build/<ver>/graphics/<Name>.bin` and `.s` with the run's labels.
+`include/gen/graphics/<feature>.h` declares the labels of every run of the
+feature, including runs only the other version has, so headers are the same
+for both versions and are committed.
+
+`just extract-graphics [run ...]` (`tools/graphics/extract_graphics.py`)
+walks each run's ROM range from its start, taking each item's length from
+the item itself, extracts every run once (from the US ROM when its manifest
+has the run, otherwise JP), and requires the walk to end exactly at the
+range's end and every item to rebuild byte for byte. Without run names it
+replaces all of `data/graphics/`. Per-run extraction settings, such as name
+prefixes and fixed names, live in the kind modules.
+
+An `image-bank` run's settings are `bpp` (4 or 8), `componentOrder` (the
+ROM order of each image's `palette`/`tiles`/`frames` components), optional
+`paletteHeader`/`paletteTrailer` bytes around every palette, and an ordered
+`images` list. An entry is one of:
 
 - a **derived sprite**, `{name, offset, compression}`: one frame,
   `<name>.png`, cells cut from the image size (see "Sprite images");
 - a **stored-layout sprite**, `{name, palette, header, frames}`:
   `<name>.<i>.png` per frame, each frame listing `offset`, `compression`,
   `cells` (`[x, y, w, h]` in tiles), `parts`, and `extra`; `palette:
-  false` means the sprite's palette lives outside the bank and its PNGs
+  false` means the sprite's palette lives outside the run and its PNGs
   carry a gray display palette that packing ignores;
 - a **palette**, `{name, paletteOnly: true}`: `<name>.png`, a one-row
   swatch whose PNG palette is the data.
 
-The index contains no addresses: components are laid out back-to-back in
-list order, skipping components an entry lacks. `just pack-images`
-rebuilds every component under `build/<ver>/images/<bank>/`, writes
-`build/<ver>/images/<bank>.s` with `g<Name><Component>` labels, and writes
-`include/gen/<bank>.h` with their C declarations. The header depends only
-on `bank.json`, so it is shared by all versions, and a bank name must use
-the same directory in every manifest. Packing fails on
-a PNG that is not indexed, a pixel index or palette outside the bank's bit
-depth, a drawn pixel outside every cell, an unlisted PNG, or a total size
-that differs from the manifest range. The US item-icon, Help, portrait,
-overworld monster sprite and palette, and both unnamed banks use this
-format; room BG tiles remain outside it.
-
-`just extract-images` (`tools/images/extract_images.py`) creates the PNGs
-and indexes from the baserom without reading any pointer table. Each
-bank's `bpp`, `componentOrder`, name prefix, and cell mode are fixed in
-the extractor; it walks the manifest range from its start, taking each
-component's length from the component itself (palette `2 << bpp` bytes,
-tile resource header and stream, frame record counts). In a stored-layout
-bank, a sprite's tiles are its back-to-back frame streams, its palette is
-present only when the next data is not a tile stream, and a palette not
-followed by tiles is its own entry. The walk must end exactly at the
-range's end, and every image must rebuild from its PNGs byte for byte.
-Images are named by prefix and one-based position (`Item001`,
-`Portrait001`, `MonsterOverworld001`), the names `src/` tables reference.
+Components are labeled `g<Name><Component>`, skipping components an entry
+lacks. Packing fails on a PNG that is not indexed, a pixel index or palette
+outside the bit depth, or a drawn pixel outside every cell. The extractor
+fixes each run's `bpp`, `componentOrder`, name prefix, and cell mode. In a
+stored-layout run, a sprite's tiles are its back-to-back frame streams, its
+palette is present only when the next data is not a tile stream, and a
+palette not followed by tiles is its own entry. Images are named by prefix
+and one-based position (`Item001`, `Portrait001`, `MonsterOverworld001`),
+the names `src/` tables reference.
 
 ### Sprite images
 
@@ -1139,8 +1152,7 @@ Three `image-bank` rows claim the sprites `g_pMonsterGraphicsTable`'s
 battle records, `g_MonsterShadowGfxRow`, `g_aEnemyTurnOrderIconAssets`,
 and `g_aAllyTurnOrderIconAssets` point to (stored cells, `tiles`,
 `frames`, `palette` order). The byte ranges are identical in both ROMs at
-different addresses, so both manifests share one `data/images/` folder
-per bank. The same holds for `MonsterOverworldSprites`
+different addresses, so both manifests share one run per bank. The same holds for `MonsterOverworldSprites`
 (JP `0x080AC808`-`0x080B99C0`), `BattleHudItems` (JP
 `0x08A37BD4`-`0x08A38E30`), and `MonsterPalettes` (JP
 `0x08A38E30`-`0x08A39330`), which the records also point into.
@@ -1285,9 +1297,9 @@ icon in the same format follows directly: `GetItemImageData` returns it for
 the pseudo-item id `0x86` instead of reading the item table (a 24x24 gold
 curved arrow, requested from the status/equip screen code). `regions.us.txt`'s `ItemIcons`
 `image-bank` row claims the 80 icons as 4-bit `ItemNNN.png` sprites in
-`palette`, `tiles`, `frames` order (see "Image-bank build format"), the
+`palette`, `tiles`, `frames` order (see "Graphics build format"), the
 id-`0x86` icon last as `Item080`; 11 icons use `rle`, the rest `lzrle`.
-`src/items/items.c` includes the generated `include/gen/ItemIcons.h` and
+`src/items/items.c` includes the generated `include/gen/graphics/menus.h` and
 references the `gItemNNNPalette/Tiles/Frames` labels instead of literal
 addresses. See `docs/formats/items.md`.
 

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "overworld/room_object.h"
-#include "gen/ObjectSprites2.h"
+#include "gen/graphics/overworld.h"
 
 // Room object constructor for tile objType 12; see docs/formats/rooms.md.
 Object *sub_0803B64C(u8 bColumn, u8 bRow)

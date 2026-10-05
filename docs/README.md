@@ -89,11 +89,11 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 - [`formats/graphics.md`](formats/graphics.md) — the generic
   resource-decompression dispatchers and codec inventory, the room
   resource table, OBJ palette and tile loading, and PNG sprite banks.
-  Pipeline: `tools/images/`, `data/images/`.
+  Pipeline: `tools/graphics/`, `data/graphics/`.
 - [`formats/items.md`](formats/items.md) — `g_pItemTable`, the item
   record layout, equipment stats, per-character equip eligibility, and
-  categories. Committed as `src/items/items.c`; icons are an image bank in
-  `data/images/items/`.
+  categories. Committed as `src/items/items.c`; icons are the `ItemIcons`
+  image bank in `data/graphics/menus/`.
 - [`formats/krawall.md`](formats/krawall.md) — the Krawall module /
   pattern / sample on-ROM structs. Pipeline: `tools/krawall/`,
   `data/audio/`.

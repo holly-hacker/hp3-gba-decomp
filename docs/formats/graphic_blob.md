@@ -84,35 +84,34 @@ effect script copies from `EffectBgRecord::pControls`
 (`g_aEffectBgRecords_candidate` at `0x080544D4`) into
 `g_adwEffectBgControlOverride_candidate`; what reads the entries is not traced.
 
-`just extract-tile-streams` and `just pack-tile-streams` handle them like the
-blobs, with `tile-streams <start> <end> <dir> <name>` rows and
-`data/tile_streams/`: one grayscale PNG tile sheet per stream (8 tiles per
-row, color 0 transparent), named `RainStreak01`-`32` and `RainSplash01`-`08`,
-and a `bank.json` with each stream's width, height and tile count.
+A `tile-streams` run (`RainTiles`, see [`graphics.md`](graphics.md) "Graphics
+build format") holds them as one grayscale PNG tile sheet per stream (8 tiles
+per row, color 0 transparent), named `RainStreak01`-`32` and
+`RainSplash01`-`08`; its `streams` settings list each stream's width, height
+and tile count.
 
 ## Other blob runs
 
 The rest of the blobs outside `BgGraphics` (US `0x080BCEA0`, `0x08A30814`-`0x08E65D6C`;
 JP the same bytes, 0xC4 to 0x201C lower) form 17 runs, each a bank
-(`MenuCursor`, `OwlCare`, `CoolTrain`, ...) with its own
-`data/graphic_blobs/<bank>/` directory. A run is a chain of blobs whose parsed
+(`MenuCursor`, `OwlCare`, `CoolTrain`, ...) in its feature's directory. A run is a chain of blobs whose parsed
 ends meet (**PROVEN**: every GammaLz stream's length matches its length field,
 and all rebuild byte for byte); unrelated data separates the runs. They add
 flags `0x19 0x00` (raw 4 bpp tiles), `0x99 0x01` and `0xF9 0x00`/`0x01` (8 bpp)
 to the battle set, and one 128x132-tile map.
 
 A blob with a `label` row at its address in the manifest takes that symbol
-(`g_Foo` becomes PNG `Foo`, with `symbol` in `bank.json`); the others are
+(`g_Foo` becomes PNG `Foo`, with `symbol` in its settings); the others are
 numbered `<Bank>001`... by position in the run.
 
 Blobs without a palette (flags0 bit 0 clear: `0x78`, `0xF8`) draw with a palette
 that is already loaded. Their PNGs show the colors of a blob or label that
-`bank.json` records as `palette` (gray when none), and the packer ignores it.
-The sources are set in `PALETTE_SOURCES` in `extract_graphic_blobs.py`; see
+its settings record as `palette` (gray when none), and the packer ignores it.
+The sources are set in `PALETTE_SOURCES` in `tools/graphics/kinds/graphic_blobs.py`; see
 [`../memory-map/menu_screen.md`](../memory-map/menu_screen.md) for which are
 established. Four blobs have more tiles than their images' distinct tiles: the tile
 numbering is not the standard rebuild's. They list their tilemap cells'
-tiles and flips as `layout` in `bank.json`, and every cell of a tile must keep
+tiles and flips as `layout` in their settings, and every cell of a tile must keep
 the same pixels. Blobs with flags `0x7A` carry a 16-color (32-byte) palette (flags0 bit 1)
 instead of a 256-color one; the PNG shows it as colors 0-15. The `0xFF`
 palette-data labels are not supported and stay raw.
@@ -122,20 +121,20 @@ palette-data labels are not supported and stay raw.
 `g_apMainMenuTitleGraphic`, whose first two entries are the same blob) and
 `g_MainMenuBg2Graphic`, also palette-less. JP has one title blob, identical to
 the first US one, and a `g_MainMenuBg2Graphic` that carries its own palette
-(flags `0x79`), so it is its own bank, `MainMenuJp`, in a separate directory.
+(flags `0x79`), so it is its own run, `MainMenuJp`; the two runs sit in
+`menus/us` and `menus/jp`.
 The title blob (`g_UnusedMainMenuTitleGraphic`) is unused in JP: its only
 reference is the lone entry of a title table that no JP code reads. A halfword
 tilemap with an odd cell count is followed by one zero cell (the 15x5 titles).
 
 ## Extraction
 
-`just extract-graphic-blobs` writes `data/graphic_blobs/bg_graphics/`
-(gitignored): one indexed PNG per blob, `<name>.png`, and `bank.json` with each
-blob's flags. The pixel values are palette indices (`bank * 16 + color number`
-for 4 bpp, the color number for 8 bpp), and the PNG palette is the blob's 256
-colors. `just pack-graphic-blobs` rebuilds the blobs; the manifest row is
-`graphic-blobs <start> <end> <dir> <name>`, and each blob gets a label
-`g<BlobName>` and a declaration in `include/gen/<name>.h`.
+A `graphic-blobs` run (see [`graphics.md`](graphics.md) "Graphics build
+format") holds one indexed PNG per blob, `<name>.png`, and its `blobs`
+settings list each blob's flags. The pixel values are palette indices
+(`bank * 16 + color number` for 4 bpp, the color number for 8 bpp), and the
+PNG palette is the blob's 256 colors. Each blob is labeled `g<BlobName>` (or
+its `symbol`).
 
 The tiles and tilemap are derived from the image, in the order the original
 tool produced them (all 195 blobs reproduce): tiles in order of first use, a

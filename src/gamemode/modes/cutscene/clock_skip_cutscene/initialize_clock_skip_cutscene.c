@@ -7,7 +7,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
-#include "gen/ObjectSprites.h"
+#include "gen/graphics/overworld.h"
 
 void InitializeClockSkipCutscene(void)
 {

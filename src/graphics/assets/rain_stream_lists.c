@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/effect_script.h"
-#include "gen/RainTiles.h"
+#include "gen/graphics/overworld.h"
 
 // Rain streak and splash streams, each behind the 8-byte control block of an effect BG record
 // (docs/formats/graphic_blob.md).

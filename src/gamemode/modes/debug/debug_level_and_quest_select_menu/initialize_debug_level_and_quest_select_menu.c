@@ -7,7 +7,7 @@
 #include "graphics/object.h"
 #include "overworld/room.h"
 #include "graphics/text.h"
-#include "gen/MenuSprites.h"
+#include "gen/graphics/menus.h"
 
 void InitializeDebugLevelAndQuestSelectMenu(void)
 {

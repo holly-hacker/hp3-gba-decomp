@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "cutscene/hippogriff_flies_into_air_cutscene.h"
 #include "graphics/object.h"
-#include "gen/HippogriffRiddikulusSprites.h"
+#include "gen/graphics/minigames/riddikulus.h"
 
 void InitializeHippogriffFliesIntoAirCutscene(void)
 {

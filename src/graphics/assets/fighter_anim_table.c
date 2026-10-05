@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "gen/FighterSprites.h"
+#include "gen/graphics/battle.h"
 
 // One row of ten sprite records per FighterType. SetPlayerObjectAnim selects
 // a record by animation state; record 0 is the live sprite, 6 and 7 hold the

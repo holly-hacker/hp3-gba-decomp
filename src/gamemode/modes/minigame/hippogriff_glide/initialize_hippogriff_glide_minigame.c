@@ -6,7 +6,7 @@
 #include "minigame/hippogriff_glide.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
-#include "gen/MenuSprites.h"
+#include "gen/graphics/menus.h"
 
 void InitializeHippogriffGlideMinigame(void)
 {

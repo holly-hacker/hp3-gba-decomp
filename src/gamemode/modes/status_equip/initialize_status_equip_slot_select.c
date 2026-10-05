@@ -3,7 +3,7 @@
 #include "game/game_modes.h"
 #include "graphics/object.h"
 #include "menu/status_equip.h"
-#include "gen/ObjectSprites.h"
+#include "gen/graphics/overworld.h"
 
 void InitializeStatusEquipSlotSelect(void)
 {

@@ -31,34 +31,12 @@ KRAWALL_DIRECTIVES = {"krawall-module": "modules", "krawall-samples": "samples"}
 # language files and the one pointer table all have distinct names).
 DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 
-# image-bank rows name a directory containing bank.json and its PNG
-# sprites. pack_images.py encodes them and emits the assembly and C
-# declarations.
-IMAGE_BANK_DIRECTIVE = "image-bank"
-
-# room-graphics rows name a directory of one room's editable graphics
-# (data/room_graphics/<room>/). pack_room_graphics.py packs it to
-# build/<ver>/room_graphics/<name>.s.
-ROOM_GRAPHICS_DIRECTIVE = "room-graphics"
-
-# graphic-blobs rows name a directory of editable graphic blobs
-# (data/graphic_blobs/<dir>/). pack_graphic_blobs.py packs it to
-# build/<ver>/graphic_blobs/<name>.s.
-GRAPHIC_BLOBS_DIRECTIVE = "graphic-blobs"
-
-# tile-streams rows name a directory of editable tile sheets
-# (data/tile_streams/<dir>/). pack_tile_streams.py packs it to
-# build/<ver>/tile_streams/<name>.s.
-TILE_STREAMS_DIRECTIVE = "tile-streams"
-
-# tile-frames rows name a directory of editable tile sheets
-# (data/tile_frames/<dir>/). pack_tile_frames.py packs it to
-# build/<ver>/tile_frames/<name>.s.
-TILE_FRAMES_DIRECTIVE = "tile-frames"
-
-# fonts rows name a directory of editable font glyph atlases
-# (data/fonts/<dir>/). pack_fonts.py packs it to build/<ver>/fonts/<name>.s.
-FONTS_DIRECTIVE = "fonts"
+# Graphics rows (image-bank, graphic-blobs, tile-streams, tile-frames, fonts,
+# room-graphics) name a feature directory under data/graphics/ and a run in
+# its graphics.json; tools/graphics/pack_graphics.py packs each run to
+# build/<ver>/graphics/<name>.s.
+GRAPHICS_DIRECTIVES = {"image-bank", "graphic-blobs", "tile-streams", "tile-frames", "fonts",
+                       "room-graphics"}
 
 # c-file and c-file-O1 rows name a .c under src/, compiled to assembly by
 # tools/c/compile_c.py (the `compile-c` recipe, which must run before
@@ -124,60 +102,14 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 asmfile = f"build/{ver}/c/{name}.s"
                 regions.append((start, end, asmfile, name + RODATA_SUFFIX))
                 continue
-            if parts[0] == IMAGE_BANK_DIRECTIVE:
+            if parts[0] in GRAPHICS_DIRECTIVES:
                 if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected 'image-bank <start> <end> <dir> <name>'")
+                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <dir> <name>'")
                 _, start_s, end_s, _source, name = parts
                 start, end = int(start_s, 16), int(end_s, 16)
                 if end <= start:
                     sys.exit(f"{path}:{lineno}: end must be after start")
-                asmfile = f"build/{ver}/images/{name}.s"
-                regions.append((start, end, asmfile, name))
-                continue
-            if parts[0] == ROOM_GRAPHICS_DIRECTIVE:
-                if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected 'room-graphics <start> <end> <dir> <name>'")
-                _, start_s, end_s, _source, name = parts
-                start, end = int(start_s, 16), int(end_s, 16)
-                if end <= start:
-                    sys.exit(f"{path}:{lineno}: end must be after start")
-                regions.append((start, end, f"build/{ver}/room_graphics/{name}.s", name))
-                continue
-            if parts[0] == GRAPHIC_BLOBS_DIRECTIVE:
-                if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected 'graphic-blobs <start> <end> <dir> <name>'")
-                _, start_s, end_s, _source, name = parts
-                start, end = int(start_s, 16), int(end_s, 16)
-                if end <= start:
-                    sys.exit(f"{path}:{lineno}: end must be after start")
-                regions.append((start, end, f"build/{ver}/graphic_blobs/{name}.s", name))
-                continue
-            if parts[0] == TILE_STREAMS_DIRECTIVE:
-                if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected 'tile-streams <start> <end> <dir> <name>'")
-                _, start_s, end_s, _source, name = parts
-                start, end = int(start_s, 16), int(end_s, 16)
-                if end <= start:
-                    sys.exit(f"{path}:{lineno}: end must be after start")
-                regions.append((start, end, f"build/{ver}/tile_streams/{name}.s", name))
-                continue
-            if parts[0] == TILE_FRAMES_DIRECTIVE:
-                if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected 'tile-frames <start> <end> <dir> <name>'")
-                _, start_s, end_s, _source, name = parts
-                start, end = int(start_s, 16), int(end_s, 16)
-                if end <= start:
-                    sys.exit(f"{path}:{lineno}: end must be after start")
-                regions.append((start, end, f"build/{ver}/tile_frames/{name}.s", name))
-                continue
-            if parts[0] == FONTS_DIRECTIVE:
-                if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected 'fonts <start> <end> <dir> <name>'")
-                _, start_s, end_s, _source, name = parts
-                start, end = int(start_s, 16), int(end_s, 16)
-                if end <= start:
-                    sys.exit(f"{path}:{lineno}: end must be after start")
-                regions.append((start, end, f"build/{ver}/fonts/{name}.s", name))
+                regions.append((start, end, f"build/{ver}/graphics/{name}.s", name))
                 continue
             if parts[0] in DIALOG_TEXT_DIRECTIVES:
                 expected_len = 5 if parts[0] == "dialog-text" else 4

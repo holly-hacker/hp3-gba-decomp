@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "gen/BgGraphics.h"
+#include "gen/graphics/battle.h"
 
 // Floor and wall graphic blobs of the battle background, indexed by g_bCurrentRoomId
 // (docs/formats/graphic_blob.md).

@@ -1,5 +1,6 @@
 #include "types.h"
-#include "gen/RoomGraphics.h"
+#include "gen/graphics/rooms.h"
+#include "overworld/room_blob.h"
 #include "overworld/room.h"
 
 // The room table entries of the two backgrounds of the Harry and Hermione Time-Turner

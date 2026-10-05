@@ -157,7 +157,7 @@ every room to `extracted/collision/us/` for visual inspection: a plain
 walkability PNG and one annotated with per-type color/pattern + layer
 markers (`TYPE_LEGEND.png` in the same directory). Research/debugging
 aid only, not build input. The collision data itself is built from
-`data/room_graphics/` (see [`room_graphics.md`](room_graphics.md)).
+`data/graphics/rooms/` (see [`room_graphics.md`](room_graphics.md)).
 
 ## Not yet located
 

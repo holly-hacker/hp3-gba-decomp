@@ -137,12 +137,11 @@ Real items' `pPalette`/`pTileData`/`pFrameData` aren't stored as
 literal integers in `src/items/items.c` -- see [`graphics.md`](graphics.md)'s
 "Item icons" section for the format. File stems follow item-table order:
 index 0 becomes `Item001`, independent of display text, and names the
-editable `data/images/items/Item001.png`. `just extract-images` writes
-the PNGs and `data/images/items/bank.json` in ROM order. The shared
-`tools/images/pack_images.py` rebuilds each icon from its PNG and emits
-assembly labels and a matching C header for the single `image-bank`
-region; it does not need to parse `src/items/items.c` or know
-item-specific formats.
+editable `data/graphics/menus/Item001.png`, part of the `ItemIcons`
+`image-bank` run (see [`graphics.md`](graphics.md) "Graphics build
+format"). The shared packer rebuilds each icon from its PNG and emits its
+labels and declarations in `include/gen/graphics/menus.h`; it does not need
+to parse `src/items/items.c` or know item-specific formats.
 
 ## What's NOT yet known
 

@@ -1,11 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "gen/MonsterBattleSprites.h"
-#include "gen/MonsterOverworldSprites.h"
-#include "gen/MonsterPalettes.h"
-#include "gen/BattleIcons.h"
-#include "gen/AllyHeads.h"
-#include "gen/BattleHudItems.h"
+#include "gen/graphics/battle.h"
+#include "gen/graphics/overworld.h"
 
 // Monster sprite records and the battle overlay records after them; see
 // docs/formats/folio_bruti.md ("Monster graphics table"). Content is

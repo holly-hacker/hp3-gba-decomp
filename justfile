@@ -97,95 +97,26 @@ pack-text ver="us":
     python3 tools/text/pack_text.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
-# `build` -- data/images/ is gitignored (same footing as the baserom,
-# see AGENTS.md hard rule 2). Walks each image-bank row of
-# regions.<ver>.txt; see docs/formats/graphics.md's "Image-bank build
-# format". Re-running overwrites local PNG edits.
-# Bootstrap data/images/ PNGs and bank.json files from the baserom.
-extract-images ver="us":
-    python3 tools/images/extract_images.py {{ver}}
+# `build` -- data/graphics/ is gitignored (same footing as the baserom,
+# AGENTS.md hard rule 2). Extracts every graphics row of both manifests, or
+# only the named runs. Re-running overwrites local edits.
+# Bootstrap data/graphics/ from the baseroms.
+extract-graphics *runs:
+    python3 tools/graphics/extract_graphics.py {{runs}}
 
-# The image-bank rows each name a directory of PNG sprites and bank.json.
-# This re-encodes each sprite's palette, tiles, and frame data, and emits
-# assembly under build/<ver>/images/ and matching generated C declarations
-# under include/gen/ (shared by all versions).
-# Pack all image banks for this version.
-pack-images ver="us":
-    python3 tools/images/pack_images.py {{ver}}
-
-# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every room
-# from its files to check it matches both ROMs. Re-running overwrites local edits.
-# Bootstrap data/room_graphics/ (palettes, tile sheets, maps) from the baserom.
-extract-room-graphics:
-    python3 tools/room_graphics/extract_room_graphics.py
-
-# Each room-graphics row names a room's directory under data/room_graphics/.
-# Encodes its 14 resources and emits assembly under build/<ver>/room_graphics/.
-# Pack all room graphics for this version.
-pack-room-graphics ver="us":
-    python3 tools/room_graphics/pack_room_graphics.py {{ver}}
-
-# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every blob
-# from its PNGs to check it matches the baserom. Re-running overwrites local edits.
-# Bootstrap data/graphic_blobs/ (indexed PNGs of each blob) from the baserom.
-extract-graphic-blobs ver="us":
-    python3 tools/graphic_blob/extract_graphic_blobs.py {{ver}}
-
-# Each graphic-blobs row names a directory under data/graphic_blobs/.
-# Encodes its blobs and emits assembly under build/<ver>/graphic_blobs/.
-# Pack all graphic blobs for this version.
-pack-graphic-blobs ver="us":
-    python3 tools/graphic_blob/pack_graphic_blobs.py {{ver}}
-
-# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every stream
-# from its PNG to check it matches the baserom. Re-running overwrites local edits.
-# Bootstrap data/tile_streams/ (PNG tile sheets) from the baserom.
-extract-tile-streams ver="us":
-    python3 tools/graphic_blob/extract_tile_streams.py {{ver}}
-
-# Each tile-streams row names a directory under data/tile_streams/.
-# Encodes its streams and emits assembly under build/<ver>/tile_streams/.
-# Pack all tile streams for this version.
-pack-tile-streams ver="us":
-    python3 tools/graphic_blob/pack_tile_streams.py {{ver}}
-
-# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every frame
-# from its PNG to check it matches the baserom. Re-running overwrites local edits.
-# Bootstrap data/tile_frames/ (PNG tile sheets) from the baserom.
-extract-tile-frames ver="us":
-    python3 tools/graphic_blob/extract_tile_frames.py {{ver}}
-
-# Each tile-frames row names a directory under data/tile_frames/.
-# Encodes its frames and emits assembly under build/<ver>/tile_frames/.
-# Pack all tile frames for this version.
-pack-tile-frames ver="us":
-    python3 tools/graphic_blob/pack_tile_frames.py {{ver}}
-
-# Gitignored like data/images/ (AGENTS.md hard rule 2). Rebuilds every font
-# from its PNG to check it matches the baserom. Re-running overwrites local edits.
-# Bootstrap data/fonts/ (PNG glyph atlases) from the baserom.
-extract-fonts ver="us":
-    python3 tools/fonts/extract_fonts.py {{ver}}
-
-# Each fonts row names a directory under data/fonts/.
-# Encodes its fonts and emits assembly under build/<ver>/fonts/.
-# Pack all fonts for this version.
-pack-fonts ver="us":
-    python3 tools/fonts/pack_fonts.py {{ver}}
-
-# Encoded results are cached in build/cache/ by content (tools/buildcache.py),
-# so only changed images, rooms and blobs are re-encoded.
-# Pack every graphics asset for this version.
-pack ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver) (pack-fonts ver)
+# Builds each graphics row from data/graphics/ to build/<ver>/graphics/ and
+# writes the feature headers under include/gen/graphics/. Encoded results are
+# cached in build/cache/ by content (tools/buildcache.py).
+# Pack every graphics run for this version.
+pack ver="us":
+    python3 tools/graphics/pack_graphics.py {{ver}}
 
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
-# AGENTS.md hard rule 2), so a fresh clone has none of it and the pack-*
+# AGENTS.md hard rule 2), so a fresh clone has none of it and the pack
 # steps have nothing to read. Re-running overwrites local hand-edits.
-# US-only: every extractor reads baserom.us.gba (content is either
-# version-independent or not yet located in the JP ROM).
-# Bootstrap every data/ subdirectory from the baserom. Run once per clone.
-extract-all: extract-krawall extract-text extract-images extract-room-graphics extract-graphic-blobs extract-tile-streams extract-tile-frames extract-fonts
+# Bootstrap every data/ subdirectory from the baseroms. Run once per clone.
+extract-all: extract-krawall extract-text extract-graphics
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.

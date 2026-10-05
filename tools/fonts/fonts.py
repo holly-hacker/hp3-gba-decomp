@@ -23,7 +23,7 @@ table of glyph flags, a width per glyph and the bitmaps:
 Each table starts on a 4-byte boundary. A font is edited as <name>.png, an
 atlas of its glyphs, 16 per row, each in a cell as wide as the widest glyph
 and as tall as the font. A pixel is the 2-bit value (0 is transparent). Glyph
-widths and flags are kept in bank.json: they are not derived from the pixels.
+widths and flags are kept in the run's settings: they are not derived from the pixels.
 """
 import struct
 import sys
