@@ -21,8 +21,8 @@ Object *sub_08040038(u8 bColumn, u8 bRow)
     ROOM_OBJECT_WORD_STATE(pObj)->b6C = pRecord->abArgD[0];
     ROOM_OBJECT_WORD_STATE(pObj)->b6D = pRecord->abArgD[1];
     ROOM_OBJECT_WORD_STATE(pObj)->n68 = 0;
-    sub_08030844(pObj, g_apRoomObjUnkAEffectData[pObj->wCharacterId_candidate]);
-    SetObjectAnimData(pObj, g_apRoomObjUnkAAnimFrames[pObj->wCharacterId_candidate], (void *)g_abRoomObjUnkAAnimData, 0);
+    sub_08030844(pObj, g_apRoomSpongifyPadEffectData[pObj->wCharacterId_candidate]);
+    SetObjectAnimData(pObj, g_apRoomSpongifyPadAnimFrames[pObj->wCharacterId_candidate], (void *)g_abRoomSpongifyPadAnimData, 0);
     pObj->oam.priority = 3;
     pObj->bDepthSortBias = 0x80;
 

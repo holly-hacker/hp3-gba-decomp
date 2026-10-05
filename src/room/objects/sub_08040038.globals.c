@@ -3,28 +3,28 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_aRoomObjUnkASprites[4] = {
-    { (void *)gObjectSprite2_112Tiles, (void *)gObjectSprite2_112Frames },
-    { (void *)gObjectSprite2_113Tiles, (void *)gObjectSprite2_113Frames },
-    { (void *)gObjectSprite2_114Tiles, (void *)gObjectSprite2_114Frames },
+const ObjectGfxRecord g_aRoomSpongifyPadSprites[4] = {
+    { (void *)gSpongifyPadRug001Tiles, (void *)gSpongifyPadRug001Frames },
+    { (void *)gSpongifyPadRug002Tiles, (void *)gSpongifyPadRug002Frames },
+    { (void *)gSpongifyPadLeavesTiles, (void *)gSpongifyPadLeavesFrames },
     { (void *)gOverworldSpellEffect007Tiles, (void *)gOverworldSpellEffect007Frames },
 };
 
 // Indexed by the object's character id.
-const ObjectGfxRecord *const g_apRoomObjUnkAAnimFrames[3] = {
-    &g_aRoomObjUnkASprites[0],
-    &g_aRoomObjUnkASprites[1],
-    &g_aRoomObjUnkASprites[2],
+const ObjectGfxRecord *const g_apRoomSpongifyPadAnimFrames[3] = {
+    &g_aRoomSpongifyPadSprites[0],
+    &g_aRoomSpongifyPadSprites[1],
+    &g_aRoomSpongifyPadSprites[2],
 };
 
-const void *const g_apRoomObjUnkAEffectData[3] = {
-    gObjectSprite2_114Palette,
-    gObjectSprite2_114Palette,
+const void *const g_apRoomSpongifyPadEffectData[3] = {
+    gSpongifyPadLeavesPalette,
+    gSpongifyPadLeavesPalette,
     gObjectSprite2_115Palette,
 };
 
 // Command 5 is sub_08040680's spell effect.
-const u8 g_abRoomObjUnkAAnimData[30] = {
+const u8 g_abRoomSpongifyPadAnimData[30] = {
     // 0
     ANIM_FRAME(0, 9), ANIM_FRAME(1, 9), ANIM_JUMP(0),
     0, 0, 0, 0,  // unused

@@ -6,7 +6,7 @@
 
 // Command 0 holds the first frame; the cups play from command 1 once B is
 // pressed and stop on their last frame.
-const u8 g_DivinationTeaCupAnimB[68] = {
+const u8 g_DivinationTeaCupAnimData[68] = {
     ANIM_FRAME(0, 0),
     ANIM_FRAME(1, 4), ANIM_FRAME(2, 4), ANIM_FRAME(3, 4), ANIM_FRAME(4, 4),
     ANIM_FRAME(5, 4), ANIM_FRAME(6, 4), ANIM_FRAME(7, 4), ANIM_FRAME(8, 4),
@@ -24,13 +24,13 @@ const u32 g_dwDivinationTeaBg0Control = 0x1E0C;
 const u32 g_dwDivinationTeaBg1Control = 0x1C86;
 
 const ObjectGfxRecord g_DivinationTeaLeafSprite = {
-    (void *)gDivinationTea001Tiles, (void *)gDivinationTea001Frames,
+    (void *)gDivinationTeaLeafTiles, (void *)gDivinationTeaLeafFrames,
 };
 
-const ObjectGfxRecord g_DivinationTeaCupAnimA = {
-    (void *)gDivinationTea002Tiles, (void *)gDivinationTea002Frames,
+const ObjectGfxRecord g_DivinationTeaCupSprite = {
+    (void *)gDivinationTeaCupTiles, (void *)gDivinationTeaCupFrames,
 };
 
-const ObjectAssetRecord g_DivinationTeaObjectAsset = {
-    (void *)gObjectSprite101Tiles, (void *)gObjectSprite101Frames, (void *)gObjectSprite101Palette, 0,
+const ObjectAssetRecord g_DivinationTeaTextFrameAsset = {
+    (void *)gDivinationTeaTextFrameTiles, (void *)gDivinationTeaTextFrameFrames, (void *)gDivinationTeaTextFramePalette, 0,
 };

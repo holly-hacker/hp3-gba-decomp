@@ -4,16 +4,16 @@
 #include "types.h"
 
 /* OptionIconUs */
-extern const u8 gOptionIconUs001Tiles[];
-extern const u8 gOptionIconUs001Frames[];
-extern const u8 gOptionIconUs001Palette[];
+extern const u8 gOptionsIconLanguageTiles[];
+extern const u8 gOptionsIconLanguageFrames[];
+extern const u8 gOptionsIconLanguagePalette[];
 
 /* MainMenuTitles */
-extern const u8 gMainMenuTitles001[];
-extern const u8 gMainMenuTitles002[];
-extern const u8 gMainMenuTitles003[];
-extern const u8 gMainMenuTitles004[];
-extern const u8 gMainMenuTitles005[];
-extern const u8 gMainMenuTitles006[];
-extern const u8 gMainMenuTitles007[];
+extern const u8 gMainMenuTitleEnglish[];
+extern const u8 gMainMenuTitleFrench[];
+extern const u8 gMainMenuTitleGerman[];
+extern const u8 gMainMenuTitleSpanish[];
+extern const u8 gMainMenuTitleItalian[];
+extern const u8 gMainMenuTitleDutch[];
+extern const u8 gMainMenuTitleDanish[];
 extern const u8 gMainMenuBg2Graphic[];

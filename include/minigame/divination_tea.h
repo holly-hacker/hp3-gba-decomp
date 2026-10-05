@@ -41,16 +41,14 @@ typedef struct {
 
 extern DivinationTeaState g_DivinationTea;  // 0x03005B28
 
-// BG control words for BG2, BG0 and BG1, the sprites, and the animation shared
-// by the cup objects: g_DivinationTeaCupAnimA is their sprite and
-// g_DivinationTeaCupAnimB their animation stream.
-extern const u8 g_DivinationTeaCupAnimB[68];               // 0x0806BB00
-extern const u32 g_dwDivinationTeaBg2Control;              // 0x0806BB44
-extern const u32 g_dwDivinationTeaBg0Control;              // 0x0806BB48
-extern const u32 g_dwDivinationTeaBg1Control;              // 0x0806BB4C
-extern const ObjectGfxRecord g_DivinationTeaLeafSprite;    // 0x0806BB50
-extern const ObjectGfxRecord g_DivinationTeaCupAnimA;      // 0x0806BB58
-extern const ObjectAssetRecord g_DivinationTeaObjectAsset; // 0x0806BB60, five objects spawned by sub_0804200C
+// BG control words for BG2, BG0 and BG1, and the sprites and cup animation.
+extern const u8 g_DivinationTeaCupAnimData[68];                // 0x0806BB00
+extern const u32 g_dwDivinationTeaBg2Control;                  // 0x0806BB44
+extern const u32 g_dwDivinationTeaBg0Control;                  // 0x0806BB48
+extern const u32 g_dwDivinationTeaBg1Control;                  // 0x0806BB4C
+extern const ObjectGfxRecord g_DivinationTeaLeafSprite;        // 0x0806BB50
+extern const ObjectGfxRecord g_DivinationTeaCupSprite;         // 0x0806BB58
+extern const ObjectAssetRecord g_DivinationTeaTextFrameAsset;  // 0x0806BB60, five spawned by sub_0804200C
 extern const BgTileAnimation64 g_DivinationTeaTable;  // 0x0806BB70
 
 // dwModeState values. The names describe the observed behavior and are

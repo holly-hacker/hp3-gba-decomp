@@ -3,13 +3,13 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_RoomObjUnkCSprite = {
-    (void *)gObjectSprite2_111Tiles, (void *)gObjectSprite2_111Frames,
+const ObjectGfxRecord g_RoomRaisingPlatformSprite = {
+    (void *)gRaisingPlatformTiles, (void *)gRaisingPlatformFrames,
 };
 
 // The constructor starts the object at command 2, or at 0 when its third
 // record argument is nonzero.
-const u8 g_abRoomObjUnkCAnimData[46] = {
+const u8 g_abRoomRaisingPlatformAnimData[46] = {
     // 0
     ANIM_FRAME(0, 3), ANIM_END,
     // 2

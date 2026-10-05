@@ -19,8 +19,8 @@ Object *sub_08044894(u8 bColumn, u8 bRow)
     pObj->modeState.actor.bFollowResumeDistance = pRecord->abArgC[2];
     pObj->scriptState.wScriptPc = pRecord->wArg8;
     pObj->modeState.actor.wStagedDamage = pRecord->wArgA;
-    sub_08030844(pObj, g_apRoomObjUnkBEffectData[pObj->wCharacterId_candidate]);
-    SetObjectAnimData(pObj, g_apRoomObjUnkBAnimFrames[pObj->wCharacterId_candidate], (void *)g_abRoomObjUnkBAnimData, 0);
+    sub_08030844(pObj, g_apRoomFlamePillarEffectData[pObj->wCharacterId_candidate]);
+    SetObjectAnimData(pObj, g_apRoomFlamePillarAnimFrames[pObj->wCharacterId_candidate], (void *)g_abRoomFlamePillarAnimData, 0);
     pObj->oam.priority = 1;
     pObj->bDepthSortBias = 0x80;
     return pObj;

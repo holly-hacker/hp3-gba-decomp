@@ -15,12 +15,12 @@ const ListMenuEntry g_aInGameMenuEntries[6] = {
 
 // One icon per row.
 const ListMenuRowObject g_aInGameMenuRowObjects[6] = {
-    { (void *)gObjectSprite019Tiles, (void *)gObjectSprite019Frames, (const ObjPalette *)gObjectSprite019Palette, 0 },
-    { (void *)gMenuSprite004Tiles,   (void *)gMenuSprite004Frames,   (const ObjPalette *)gMenuSprite004Palette,   0 },
-    { (void *)gObjectSprite020Tiles, (void *)gObjectSprite020Frames, (const ObjPalette *)gObjectSprite020Palette, 0 },
-    { (void *)gObjectSprite021Tiles, (void *)gObjectSprite021Frames, (const ObjPalette *)gObjectSprite021Palette, 0 },
-    { (void *)gObjectSprite022Tiles, (void *)gObjectSprite022Frames, (const ObjPalette *)gObjectSprite022Palette, 0 },
-    { (void *)gObjectSprite023Tiles, (void *)gObjectSprite023Frames, (const ObjPalette *)gObjectSprite023Palette, 0 },
+    { (void *)gInGameMenuIconStatusEquipTiles, (void *)gInGameMenuIconStatusEquipFrames, (const ObjPalette *)gInGameMenuIconStatusEquipPalette, 0 },
+    { (void *)gInGameMenuIconItemsTiles,   (void *)gInGameMenuIconItemsFrames,   (const ObjPalette *)gInGameMenuIconItemsPalette,   0 },
+    { (void *)gInGameMenuIconFoliosTiles, (void *)gInGameMenuIconFoliosFrames, (const ObjPalette *)gInGameMenuIconFoliosPalette, 0 },
+    { (void *)gInGameMenuIconSaveTiles, (void *)gInGameMenuIconSaveFrames, (const ObjPalette *)gInGameMenuIconSavePalette, 0 },
+    { (void *)gInGameMenuIconConnectivityTiles, (void *)gInGameMenuIconConnectivityFrames, (const ObjPalette *)gInGameMenuIconConnectivityPalette, 0 },
+    { (void *)gInGameMenuIconHelpTiles, (void *)gInGameMenuIconHelpFrames, (const ObjPalette *)gInGameMenuIconHelpPalette, 0 },
 };
 
 const ListMenuDefinition g_InGameMenuDefinition = {

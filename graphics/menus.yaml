@@ -20,6 +20,8 @@ groups:
           1: MainMenu
           2: DebugMenuCursor
           3: MenuSprite003
+          4: InGameMenuIconItems
+          5: MenuSprite005
         noPalette: [MenuSprite008]
       - kind: graphic-blobs
         names: [MenuCursor001]

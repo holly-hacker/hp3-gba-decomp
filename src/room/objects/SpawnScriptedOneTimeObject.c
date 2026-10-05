@@ -35,7 +35,7 @@ Object *SpawnScriptedOneTimeObject(u8 bColumn, u8 bRow)
 
     pObj->pfnTick = sub_0800BDCC;
     pObj->apfnCollisionCallback[0] = sub_0800BF20;
-    sub_08030844(pObj, gObjectSprite2_108Palette);
+    sub_08030844(pObj, gChestPalette);
     pObj->modeState.actor.bRoomObjectArg67_candidate = 0;
     pObj->modeState.actor.bRoomScriptArg66_candidate = 0;
 
@@ -47,11 +47,11 @@ Object *SpawnScriptedOneTimeObject(u8 bColumn, u8 bRow)
         if (kind == 2)
             pObj->dwFlags |= 0x82;
         else
-            SetObjectAnimData(pObj, g_apRoomObjUnk9AnimFrames[kind], (void *)g_abRoomObjUnk9AnimData[kind], 8);
+            SetObjectAnimData(pObj, g_apRoomChestAnimFrames[kind], (void *)g_abRoomChestAnimData[kind], 8);
     }
     else
     {
-        SetObjectAnimData(pObj, g_apRoomObjUnk9AnimFrames[kind], (void *)g_abRoomObjUnk9AnimData[kind], 0);
+        SetObjectAnimData(pObj, g_apRoomChestAnimFrames[kind], (void *)g_abRoomChestAnimData[kind], 0);
     }
 
     pObj->oam.priority = 1;

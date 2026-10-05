@@ -58,10 +58,24 @@ groups:
           1: HarryVsDementorsObject18
           2: HarryVsDementorsObject1C
           3: ObjectSprite003
+          19: InGameMenuIconStatusEquip
+          20: InGameMenuIconFolios
+          21: InGameMenuIconSave
+          22: InGameMenuIconConnectivity
+          23: InGameMenuIconHelp
+          24: ObjectSprite024
+          91: ItemsSectionIconAll
+          92: ItemsSectionIconPotions
+          93: ItemsSectionIconMisc
+          94: ObjectSprite094
           95: StatusEquipSlotCursor
           96: ObjectSprite096
+          101: DivinationTeaTextFrame
           102: ClockSkipObject1
           104: ObjectSprite104
+          105: OptionsIconSound
+          106: OptionsIconMusic
+          107: OptionsIconBrightness
         paletteSources:
           ObjectSprite031: ObjectSprite096
           ObjectSprite032: ObjectSprite097
@@ -70,7 +84,23 @@ groups:
     runs:
       - kind: image-bank
         count: 195
-        names: {1: ObjectSprite2_001}
+        names:
+          1: ObjectSprite2_001
+          108: Chest
+          109: ObjectSprite2_109
+          110: Button
+          111: RaisingPlatform
+          112: SpongifyPadRug001
+          114: SpongifyPadLeaves
+          115: ObjectSprite2_115
+          116: FlamePillar001
+          119: PressurePlate
+          120: Lever001
+          123: ObjectSprite2_123
+          127: PushableBlock
+          128: ObjectSprite2_128
+          130: LockedDoor
+          131: ObjectSprite2_131
         noPalette: [ObjectSprite2_195]
         paletteSources:
           ObjectSprite2_022: OverworldPlayer006
@@ -80,18 +110,18 @@ groups:
           ObjectSprite2_078: OverworldPlayer006
           ObjectSprite2_082: OverworldPlayer005
           ObjectSprite2_083: OverworldPlayer004
-          ObjectSprite2_112: ObjectSprite2_114
-          ObjectSprite2_113: ObjectSprite2_114
-          ObjectSprite2_116: ObjectPalette050
-          ObjectSprite2_117: ObjectSprite2_118
-          ObjectSprite2_119: ObjectSprite2_122
-          ObjectSprite2_120: ObjectSprite2_123
-          ObjectSprite2_121: ObjectSprite2_124
+          SpongifyPadRug001: SpongifyPadLeaves
+          SpongifyPadRug002: SpongifyPadLeaves
+          FlamePillar001: ObjectPalette050
+          FlamePillar002: FlamePillar003
+          PressurePlate: Lever003
+          Lever001: ObjectSprite2_123
+          Lever002: ObjectSprite2_124
           ObjectSprite2_126: ObjectPalette001
-          ObjectSprite2_127: ObjectPalette002
+          PushableBlock: ObjectPalette002
           ObjectSprite2_128: ObjectPalette002
           ObjectSprite2_129: ObjectPalette003
-          ObjectSprite2_130: ObjectPalette004
+          LockedDoor: ObjectPalette004
           ObjectSprite2_131: ObjectPalette005
           ObjectSprite2_132: ObjectPalette006
           ObjectSprite2_133: ObjectPalette007
@@ -167,7 +197,7 @@ groups:
     runs:
       # The 256-color palette RoomScriptOpPlaySpecialSceneEffect loads
       - kind: image-bank
-        names: [SpecialScene]
+        names: [TrainWindowNight]
         bpp: 8
         componentOrder: [palette]
         storedCells: false
@@ -175,7 +205,7 @@ groups:
         paletteTrailer: [0x0, 0x0]
       - kind: tile-frames
         count: 128
-        names: {1: SpecialSceneFrame001}
+        names: {1: TrainWindowSceneryFrame001}
 
   - name: RoomAltPalettes
     runs:

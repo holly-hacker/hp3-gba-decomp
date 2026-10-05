@@ -13,16 +13,16 @@ extern const u8 gPatronusCutscene006[];
 
 /* CutsceneDrawings */
 extern const u8 gCutsceneDrawingsStartup001[];
-extern const u8 gCutsceneDrawingsStartup002[];
-extern const u8 gCutsceneDrawingsStartup003[];
-extern const u8 gCutsceneDrawingsStartup004[];
-extern const u8 gCutsceneDrawingsStartup005[];
-extern const u8 gCutsceneDrawingsStartup006[];
-extern const u8 gCutsceneDrawingsStartup007[];
-extern const u8 gCutsceneDrawingsStartup008[];
-extern const u8 gCutsceneDrawingsStartup009[];
-extern const u8 gCutsceneDrawingsStartup010[];
-extern const u8 gCutsceneDrawingsStartup011[];
+extern const u8 gCreditsGraphic[];
+extern const u8 gIntroCutsceneGraphic[];
+extern const u8 gHarryArrivedAtHogwartsCutsceneGraphic[];
+extern const u8 gUnusedChristmasArrivedCutsceneGraphic[];
+extern const u8 gSiriusBlackCutsceneGraphic[];
+extern const u8 gPeterPettigrewCutsceneGraphic[];
+extern const u8 gRonSleepingCutsceneGraphic[];
+extern const u8 gTimeTurnerPermissionCutsceneGraphic[];
+extern const u8 gHippogriffTookToAirCutsceneGraphic[];
+extern const u8 gGameCompletedReplayCutsceneGraphic[];
 extern const u8 gMenuBg3Graphic[];
 extern const u8 gCutsceneDrawingsStartup013[];
 extern const u8 gStartupBg3Graphic[];

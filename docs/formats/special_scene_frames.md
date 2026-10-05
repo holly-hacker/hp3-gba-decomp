@@ -9,12 +9,12 @@ for the neighbouring blob formats.
 
 | Part | Size | Contents |
 |---|---|---|
-| `gSpecialScenePalette` | `0x204` | flags `0xA1 0x00`, 512 bytes of colors, a zero halfword; `LoadEmbeddedPalette_candidate` reads the colors |
+| `gTrainWindowNightPalette` | `0x204` | flags `0xA1 0x00`, 512 bytes of colors, a zero halfword; `LoadEmbeddedPalette_candidate` reads the colors |
 | 128 frames | `0x504` each | `u16 kind` (always `0x0010`), `u16 size` (always `0x0500`), then `size` bytes of 4 bpp tiles |
 
 `0x204 + 128 * 0x504` is exactly the 164,868-byte span (**PROVEN**). The `SpecialSceneFrames`
 graphics group claims the whole span: the palette as a one-entry 8 bpp
-`image-bank` run (`SpecialScene`), then the frames as a `tile-frames` run. A frame
+`image-bank` run (`TrainWindowNight`), then the frames as a `tile-frames` run. A frame
 holds 40 tiles. They are not an 8x5 image: they are the tile numbers 0-39 of the
 room's layer 0 (palette bank 15 in rooms 5, 6 and 7, **PROVEN** from the layer
 files), so the room's block map arranges them into the four window views. The
@@ -47,7 +47,7 @@ The frames are the scenery outside the Hogwarts Express windows: rooms 5, 6 and 
 | `g_aSpecialSceneBg1` | 1 | 2 x16, 4 x11, 8 x9, then 0 | train slowing to a stop; `Room06V1Chain7` ("Why's the train stopped?") |
 | `g_aSpecialSceneBg0` | 0 | 0 for all 128 | stopped; no script sets mode 0, but entering rooms 5-7 with `g_abQuestEventState[0x1d] == 1` applies it |
 
-Mode 3 loads `gSpecialScenePalette` (the alternate presentation palette for room 6) instead of
+Mode 3 loads `gTrainWindowNightPalette` (the alternate presentation palette for room 6) instead of
 selecting an animation. The two palettes (the room's own and this one) are
 probably the day and night looks of the scenery, switched when the Dementors
 appear (**UNCONFIRMED**; the script that runs mode 3 is `Room06V3Chain29`).
@@ -57,7 +57,7 @@ appear (**UNCONFIRMED**; the script that runs mode 3 is `Room06V3Chain29`).
 The frame PNGs are raw tile sheets, not the picture. To see the scenery, draw a
 room's layer 0 (rooms 5-7, `data/graphics/rooms/`) with tiles 0-39 taken from one
 frame and palette bank 15 of the room's palette A (day) or of
-`gSpecialScenePalette` (night); stepping through the 128 frames animates it.
+`gTrainWindowNightPalette` (night); stepping through the 128 frames animates it.
 This is a render for inspection, not something the build or an extractor makes.
 
 ## Compressed frames
@@ -82,6 +82,6 @@ frames are consecutive: each starts where the previous stream ends.
 A `tile-frames` run, `SpecialSceneFrames` (see [`graphics.md`](graphics.md)
 "Graphics build format"), covers the 128 frames (`0x081B309C`-`0x081DB29C`;
 the palette stays raw) as one grayscale PNG tile sheet per frame (8 tiles per
-row, color 0 transparent, `SpecialSceneFrame001`-`128`); its `frames`
+row, color 0 transparent, `TrainWindowSceneryFrame001`-`128`); its `frames`
 settings list each frame's kind and tile count. All frames rebuild byte for
 byte.

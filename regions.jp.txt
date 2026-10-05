@@ -1107,7 +1107,7 @@ c-file 0x0804CDB8 0x0804CDE4 src/gamemode/modes/debug/debug_sound_test_menu/debu
 c-file 0x0804CDE4 0x0804CDF0 src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
 c-file 0x0804CDF0 0x0804D450 src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 
-c-file 0x0804D450 0x0804D5F8 src/room/objects/SpawnScriptedOneTimeObject.globals.c g_RoomObjUnk9Sprite
+c-file 0x0804D450 0x0804D5F8 src/room/objects/SpawnScriptedOneTimeObject.globals.c g_RoomChestSprite
 c-file 0x0804D6C4 0x0804D724 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804DFC8 0x0804E180 src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
@@ -1184,13 +1184,13 @@ c-file 0x08069A44 0x08069BFC src/graphics/assets/help_sprite_assets.c g_aHelpSpr
 c-file 0x0806B11C 0x0806B1A0 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B288 0x0806B2E8 src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
-c-file 0x0806B760 0x0806B798 src/room/objects/sub_0803B64C.globals.c g_RoomObjUnkCSprite
+c-file 0x0806B760 0x0806B798 src/room/objects/sub_0803B64C.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B798 0x0806B7A8 src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B858 0x0806B868 src/mem/clear_work_ram.globals.c g_pIwramSectionStart
-c-file 0x0806B868 0x0806B8C0 src/room/objects/sub_08040038.globals.c g_aRoomObjUnkASprites
+c-file 0x0806B868 0x0806B8C0 src/room/objects/sub_08040038.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 0x0806B9D8 src/shop/shop_stock.c g_aShopStockMisc
-c-file 0x0806BA8C 0x0806BAFC src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimB
+c-file 0x0806BA8C 0x0806BAFC src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
 c-file 0x0806BAFC 0x0806BD04 src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD04 0x0806BD08 sDialogTextTable
 c-file 0x0806BD08 0x0806BD14 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
@@ -1200,10 +1200,10 @@ c-file 0x0806BEB0 0x0806BED0 src/gamemode/modes/cutscene/harry_hermione_port_in_
 c-file 0x0806BF40 0x0806BF4C src/gamemode/modes/main_menu/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BF4C 0x0806BF64 src/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BF9C 0x0806C044 src/gamemode/modes/options/options_menu_items.c g_aOptionsMenuItems
-c-file 0x0806C068 0x0806C0B0 src/room/objects/sub_08044894.globals.c g_aRoomObjUnkBSprites
+c-file 0x0806C068 0x0806C0B0 src/room/objects/sub_08044894.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C0B0 0x0806C0B4 src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
-c-file 0x0806C0B4 0x0806C13C src/room/objects/sub_08044C00.globals.c g_aRoomObjUnk3Sprites
+c-file 0x0806C0B4 0x0806C13C src/room/objects/sub_08044C00.globals.c g_aRoomSwitchSprites
 c-file 0x0806C240 0x0806E840 src/room/objects/sub_08045AE8.globals.c g_aRoomObjTriggerSprites
 graphics 0x0806E840 0x080780E0 overworld OverworldSpellEffects
 graphics 0x080780E0 0x0807E734 battle AllyHeads

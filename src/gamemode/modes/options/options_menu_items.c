@@ -9,11 +9,11 @@
 // The left column's option icons, then two objects each on the music and
 // sound volume rows (x 170).
 const OptionsMenuItem g_aOptionsMenuItems[OPTIONS_MENU_ITEM_COUNT] = {
-    { gObjectSprite105Tiles, gObjectSprite105Frames, 0, 0, gObjectSprite105Palette, 46, 40 },
-    { gObjectSprite106Tiles, gObjectSprite106Frames, 0, 0, gObjectSprite106Palette, 46, 60 },
-    { gObjectSprite107Tiles, gObjectSprite107Frames, 0, 0, gObjectSprite107Palette, 46, 80 },
+    { gOptionsIconSoundTiles, gOptionsIconSoundFrames, 0, 0, gOptionsIconSoundPalette, 46, 40 },
+    { gOptionsIconMusicTiles, gOptionsIconMusicFrames, 0, 0, gOptionsIconMusicPalette, 46, 60 },
+    { gOptionsIconBrightnessTiles, gOptionsIconBrightnessFrames, 0, 0, gOptionsIconBrightnessPalette, 46, 80 },
 #ifndef VERSION_JP
-    { gOptionIconUs001Tiles, gOptionIconUs001Frames, 0, 0, gOptionIconUs001Palette, 46, 100 },
+    { gOptionsIconLanguageTiles, gOptionsIconLanguageFrames, 0, 0, gOptionsIconLanguagePalette, 46, 100 },
 #endif
     { gObjectSprite2_001Tiles, gObjectSprite2_001Frames, 0, 0, gObjectSprite2_001Palette, 170, 45 },
     { gObjectSprite2_001Tiles, gObjectSprite2_001Frames, 0, 0, gObjectSprite2_001Palette, 170, 65 },

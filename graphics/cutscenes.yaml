@@ -17,6 +17,16 @@ groups:
         count: 16
         names:
           1: CutsceneDrawingsStartup001
+          2: CreditsGraphic
+          3: IntroCutsceneGraphic
+          4: HarryArrivedAtHogwartsCutsceneGraphic
+          5: UnusedChristmasArrivedCutsceneGraphic
+          6: SiriusBlackCutsceneGraphic
+          7: PeterPettigrewCutsceneGraphic
+          8: RonSleepingCutsceneGraphic
+          9: TimeTurnerPermissionCutsceneGraphic
+          10: HippogriffTookToAirCutsceneGraphic
+          11: GameCompletedReplayCutsceneGraphic
           12: MenuBg3Graphic
           13: CutsceneDrawingsStartup013
           14: StartupBg3Graphic

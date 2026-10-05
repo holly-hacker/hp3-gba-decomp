@@ -71,10 +71,10 @@ extern Object *sub_0802BC54(u8 bColumn, u8 bRow);
 
 extern void sub_08044960(Object *pObj);
 extern void sub_08044ADC(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_aRoomObjUnkBSprites[3];             // ROM 0x0806C12C (US)
-extern const ObjectGfxRecord *const g_apRoomObjUnkBAnimFrames[3];  // ROM 0x0806C144 (US)
-extern const void *const g_apRoomObjUnkBEffectData[3];             // ROM 0x0806C150 (US)
-extern const u8 g_abRoomObjUnkBAnimData[22];                       // ROM 0x0806C15C (US)
+extern const ObjectGfxRecord g_aRoomFlamePillarSprites[3];             // ROM 0x0806C12C (US)
+extern const ObjectGfxRecord *const g_apRoomFlamePillarAnimFrames[3];  // ROM 0x0806C144 (US)
+extern const void *const g_apRoomFlamePillarEffectData[3];             // ROM 0x0806C150 (US)
+extern const u8 g_abRoomFlamePillarAnimData[22];                       // ROM 0x0806C15C (US)
 
 extern void sub_08035664(Object *pObj);
 extern void sub_08035724(Object *pSelf, Object *pOther);
@@ -110,15 +110,15 @@ extern u32 g_adwRoomObjUnkACState[3];
 extern void sub_08040114(Object *pObj);
 extern void sub_08040358(Object *pSelf, Object *pOther);
 // [3] is the spell effect sprite of sub_08040680.
-extern const ObjectGfxRecord g_aRoomObjUnkASprites[4];                // ROM 0x0806B8DC (US)
-extern const ObjectGfxRecord *const g_apRoomObjUnkAAnimFrames[3];     // ROM 0x0806B8FC (US)
-extern const void *const g_apRoomObjUnkAEffectData[3];                // ROM 0x0806B908 (US)
-extern const u8 g_abRoomObjUnkAAnimData[30];                          // ROM 0x0806B914 (US)
+extern const ObjectGfxRecord g_aRoomSpongifyPadSprites[4];             // ROM 0x0806B8DC (US)
+extern const ObjectGfxRecord *const g_apRoomSpongifyPadAnimFrames[3];  // ROM 0x0806B8FC (US)
+extern const void *const g_apRoomSpongifyPadEffectData[3];             // ROM 0x0806B908 (US)
+extern const u8 g_abRoomSpongifyPadAnimData[30];                       // ROM 0x0806B914 (US)
 
 extern void sub_0803B71C(Object *pObj);
 extern void sub_0803BA18(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_RoomObjUnkCSprite;  // ROM 0x0806B7D4 (US)
-extern const u8 g_abRoomObjUnkCAnimData[46];             // ROM 0x0806B7DC (US)
+extern const ObjectGfxRecord g_RoomRaisingPlatformSprite;  // ROM 0x0806B7D4 (US)
+extern const u8 g_abRoomRaisingPlatformAnimData[46];       // ROM 0x0806B7DC (US)
 
 // Types 2, 4 and 7 take their runtime object type from the first word of the record.
 typedef struct RoomObjectRecordUnk2 {
@@ -199,9 +199,9 @@ typedef struct RoomObjectRecordUnk3 {
 
 extern void sub_08044D24(Object *pObj);
 extern void sub_08044F54(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_aRoomObjUnk3Sprites[5];               // ROM 0x0806C178 (US)
-extern const ObjectGfxRecord *const g_apRoomObjUnk3AssetRecords[12];  // ROM 0x0806C1A0 (US)
-extern const void *const g_apRoomObjUnk3EffectData[12];               // ROM 0x0806C1D0 (US)
+extern const ObjectGfxRecord g_aRoomSwitchSprites[5];                // ROM 0x0806C178 (US)
+extern const ObjectGfxRecord *const g_apRoomSwitchAssetRecords[12];  // ROM 0x0806C1A0 (US)
+extern const void *const g_apRoomSwitchEffectData[12];               // ROM 0x0806C1D0 (US)
 
 // Scripted trigger object. bKind (0-82) selects the sprite, draw flags and
 // collision behavior; the remaining record bytes become Object bytes 0x62-0x68.
@@ -242,15 +242,15 @@ extern Object *sub_0802FD5C(Object *pObj);
 extern void sub_08045ECC(Object *pObj);
 extern void sub_080465D4(Object *pSelf, Object *pOther);
 extern void sub_0804651C(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_aRoomObjTriggerSprites[80];                // ROM 0x0806C304 (US)
-extern const ObjectGfxRecord *const g_apRoomObjTriggerAnimFrames[91];     // ROM 0x0806C584 (US)
-extern const void *const g_apRoomObjTriggerEffectData[91];                // ROM 0x0806C6F0 (US)
-extern const s32 g_aRoomObjTriggerPushVelocity[8][2];                     // ROM 0x0806C85C (US)
-extern const u32 g_adwRoomObjTriggerPushFacing[8];                        // ROM 0x0806C89C (US)
-extern const ObjectGfxRecord g_aRoomObjTriggerEffectSprites[7];           // ROM 0x0806C8BC (US)
-extern const u8 g_abRoomObjTriggerAnimData[91][90];                       // ROM 0x0806C8F4 (US)
-extern const u8 g_abRoomObjTriggerFacingFrames[8];                        // ROM 0x0806E8F2 (US)
-extern const u8 g_abRoomObjTriggerFacingAnimStart[8];                     // ROM 0x0806E8FA (US)
+extern const ObjectGfxRecord g_aRoomObjTriggerSprites[80];             // ROM 0x0806C304 (US)
+extern const ObjectGfxRecord *const g_apRoomObjTriggerAnimFrames[91];  // ROM 0x0806C584 (US)
+extern const void *const g_apRoomObjTriggerEffectData[91];             // ROM 0x0806C6F0 (US)
+extern const s32 g_aRoomObjTriggerPushVelocity[8][2];                  // ROM 0x0806C85C (US)
+extern const u32 g_adwRoomObjTriggerPushFacing[8];                     // ROM 0x0806C89C (US)
+extern const ObjectGfxRecord g_aRoomObjTriggerEffectSprites[7];        // ROM 0x0806C8BC (US)
+extern const u8 g_abRoomObjTriggerAnimData[91][90];                    // ROM 0x0806C8F4 (US)
+extern const u8 g_abRoomObjTriggerFacingFrames[8];                     // ROM 0x0806E8F2 (US)
+extern const u8 g_abRoomObjTriggerFacingAnimStart[8];                  // ROM 0x0806E8FA (US)
 
 typedef struct RoomObjectRecordUnk6 {
     u32 dwObjectType;
@@ -288,6 +288,6 @@ typedef struct RoomObjectRecordUnk9 {
 extern u8 g_abTriggeredScriptFlags[32];
 extern void sub_0800BDCC(Object *pObj);
 extern void sub_0800BF20(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_RoomObjUnk9Sprite;                 // ROM 0x0804D524 (US)
-extern const ObjectGfxRecord *const g_apRoomObjUnk9AnimFrames[4];  // ROM 0x0804D52C (US)
-extern const u8 g_abRoomObjUnk9AnimData[4][100];                   // ROM 0x0804D53C (US)
+extern const ObjectGfxRecord g_RoomChestSprite;                  // ROM 0x0804D524 (US)
+extern const ObjectGfxRecord *const g_apRoomChestAnimFrames[4];  // ROM 0x0804D52C (US)
+extern const u8 g_abRoomChestAnimData[4][100];                   // ROM 0x0804D53C (US)

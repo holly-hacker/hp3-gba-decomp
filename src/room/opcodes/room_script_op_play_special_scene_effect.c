@@ -54,7 +54,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
             WaitForVBlank();
         }
         g_abQuestEventState[QUEST_ALT_PRESENTATION] = 1;
-        LoadEmbeddedPalette_candidate((u8 *)gSpecialScenePalette, 0, 16);
+        LoadEmbeddedPalette_candidate((u8 *)gTrainWindowNightPalette, 0, 16);
         PlayMusicModule(9);
         for (i = 0; i <= 9; i++)
         {

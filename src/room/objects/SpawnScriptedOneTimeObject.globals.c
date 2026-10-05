@@ -3,21 +3,21 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_RoomObjUnk9Sprite = {
-    (void *)gObjectSprite2_108Tiles, (void *)gObjectSprite2_108Frames,
+const ObjectGfxRecord g_RoomChestSprite = {
+    (void *)gChestTiles, (void *)gChestFrames,
 };
 
 // Indexed by the object's kind.
-const ObjectGfxRecord *const g_apRoomObjUnk9AnimFrames[4] = {
-    &g_RoomObjUnk9Sprite,
-    &g_RoomObjUnk9Sprite,
-    &g_RoomObjUnk9Sprite,
-    &g_RoomObjUnk9Sprite,
+const ObjectGfxRecord *const g_apRoomChestAnimFrames[4] = {
+    &g_RoomChestSprite,
+    &g_RoomChestSprite,
+    &g_RoomChestSprite,
+    &g_RoomChestSprite,
 };
 
 // One animation block per kind. An object whose script flag is already set
 // starts at command 8.
-const u8 g_abRoomObjUnk9AnimData[4][100] = {
+const u8 g_abRoomChestAnimData[4][100] = {
     {
         // 0
         ANIM_FRAME(15, 3), ANIM_END,

@@ -2,10 +2,18 @@ groups:
   - name: OptionIconUs
     runs:
       - kind: image-bank
-        names: [OptionIconUs001]
+        names: [OptionsIconLanguage]
 
   - name: MainMenuTitles
     runs:
       - kind: graphic-blobs
         count: 8
-        names: {1: MainMenuTitles001, 8: MainMenuBg2Graphic}
+        names:
+          1: MainMenuTitleEnglish
+          2: MainMenuTitleFrench
+          3: MainMenuTitleGerman
+          4: MainMenuTitleSpanish
+          5: MainMenuTitleItalian
+          6: MainMenuTitleDutch
+          7: MainMenuTitleDanish
+          8: MainMenuBg2Graphic

@@ -17,7 +17,7 @@ Object *sub_08044C00(u8 bColumn, u8 bRow)
         pObj->oam.objMode = 0;
         pObj->oam.bpp8 = 0;
         pObj->oam.priority = 3;
-        sub_08030844(pObj, g_apRoomObjUnk3EffectData[pObj->wCharacterId_candidate]);
+        sub_08030844(pObj, g_apRoomSwitchEffectData[pObj->wCharacterId_candidate]);
         pObj->bActionState = 0;
         ROOM_OBJECT_WORD_STATE(pObj)->b6D = 0;
         ROOM_OBJECT_WORD_STATE(pObj)->b6C = 1;
@@ -27,7 +27,7 @@ Object *sub_08044C00(u8 bColumn, u8 bRow)
 
         if (pObj->wCharacterId_candidate <= 10)
         {
-            SetObjectAssetRecord(pObj, g_apRoomObjUnk3AssetRecords[pObj->wCharacterId_candidate]);
+            SetObjectAssetRecord(pObj, g_apRoomSwitchAssetRecords[pObj->wCharacterId_candidate]);
 
             if ((pObj->wCharacterId_candidate == 9 || pObj->wCharacterId_candidate == 10) && pRecord->bFlagC != 0)
                 SetObjectAnimFrame(pObj, 1);

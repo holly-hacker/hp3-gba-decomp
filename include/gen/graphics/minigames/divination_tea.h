@@ -70,9 +70,9 @@ extern const u8 gDivinationTeaFrame063[];
 extern const u8 gDivinationTeaFrame064[];
 
 /* DivinationTeaGraphics */
-extern const u8 gDivinationTea001Tiles[];
-extern const u8 gDivinationTea001Frames[];
-extern const u8 gDivinationTea002Tiles[];
-extern const u8 gDivinationTea002Frames[];
+extern const u8 gDivinationTeaLeafTiles[];
+extern const u8 gDivinationTeaLeafFrames[];
+extern const u8 gDivinationTeaCupTiles[];
+extern const u8 gDivinationTeaCupFrames[];
 extern const u8 gDivinationTeaBg2Graphic[];
 extern const u8 gDivinationTeaBg1Graphic[];

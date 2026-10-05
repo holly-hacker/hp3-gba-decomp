@@ -9,7 +9,7 @@ groups:
     runs:
       - kind: image-bank
         count: 2
-        names: {1: DivinationTea001}
-        noPalette: [DivinationTea002]
+        names: {1: DivinationTeaLeaf, 2: DivinationTeaCup}
+        noPalette: [DivinationTeaCup]
       - kind: graphic-blobs
         names: [DivinationTeaBg2Graphic, DivinationTeaBg1Graphic]

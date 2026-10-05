@@ -5,12 +5,12 @@
 
 const ObjectGfxRecord g_aRoomObjTriggerSprites[80] = {
     { (void *)gObjectSprite2_126Tiles, (void *)gObjectSprite2_126Frames },  // 0
-    { (void *)gObjectSprite2_127Tiles, (void *)gObjectSprite2_127Frames },  // 1
+    { (void *)gPushableBlockTiles, (void *)gPushableBlockFrames },  // 1
     { (void *)gObjectSprite2_128Tiles, (void *)gObjectSprite2_128Frames },  // 2
-    { (void *)gObjectSprite2_108Tiles, (void *)gObjectSprite2_108Frames },  // 3
+    { (void *)gChestTiles, (void *)gChestFrames },  // 3
     { (void *)gObjectSprite2_129Tiles, (void *)gObjectSprite2_129Frames },  // 4
     { (void *)gOverworldPlayer019Tiles, (void *)gOverworldPlayer019Frames },  // 5
-    { (void *)gObjectSprite2_130Tiles, (void *)gObjectSprite2_130Frames },  // 6
+    { (void *)gLockedDoorTiles, (void *)gLockedDoorFrames },  // 6
     { (void *)gObjectSprite2_131Tiles, (void *)gObjectSprite2_131Frames },  // 7
     { (void *)gObjectSprite2_132Tiles, (void *)gObjectSprite2_132Frames },  // 8
     { (void *)gObjectSprite2_133Tiles, (void *)gObjectSprite2_133Frames },  // 9
@@ -56,7 +56,7 @@ const ObjectGfxRecord g_aRoomObjTriggerSprites[80] = {
     { (void *)gObjectSprite2_172Tiles, (void *)gObjectSprite2_172Frames },  // 49
     { (void *)gObjectSprite2_173Tiles, (void *)gObjectSprite2_173Frames },  // 50
     { (void *)gObjectSprite2_174Tiles, (void *)gObjectSprite2_174Frames },  // 51
-    { (void *)gObjectSprite2_120Tiles, (void *)gObjectSprite2_120Frames },  // 52
+    { (void *)gLever001Tiles, (void *)gLever001Frames },  // 52
     { (void *)gObjectSprite2_175Tiles, (void *)gObjectSprite2_175Frames },  // 53
     { (void *)gObjectSprite2_176Tiles, (void *)gObjectSprite2_176Frames },  // 54
     { (void *)gObjectSprite2_177Tiles, (void *)gObjectSprite2_177Frames },  // 55
@@ -66,15 +66,15 @@ const ObjectGfxRecord g_aRoomObjTriggerSprites[80] = {
     { (void *)gObjectSprite2_181Tiles, (void *)gObjectSprite2_181Frames },  // 59
     { (void *)gObjectSprite2_182Tiles, (void *)gObjectSprite2_182Frames },  // 60
     { (void *)gObjectSprite2_183Tiles, (void *)gObjectSprite2_183Frames },  // 61
-    { (void *)gObjectSprite2_118Tiles, (void *)gObjectSprite2_118Frames },  // 62
-    { (void *)gObjectSprite2_117Tiles, (void *)gObjectSprite2_117Frames },  // 63
-    { (void *)gObjectSprite2_116Tiles, (void *)gObjectSprite2_116Frames },  // 64
-    { (void *)gObjectSprite2_122Tiles, (void *)gObjectSprite2_122Frames },  // 65
+    { (void *)gFlamePillar003Tiles, (void *)gFlamePillar003Frames },  // 62
+    { (void *)gFlamePillar002Tiles, (void *)gFlamePillar002Frames },  // 63
+    { (void *)gFlamePillar001Tiles, (void *)gFlamePillar001Frames },  // 64
+    { (void *)gLever003Tiles, (void *)gLever003Frames },  // 65
     { (void *)gObjectSprite2_184Tiles, (void *)gObjectSprite2_184Frames },  // 66
     { (void *)gObjectSprite2_185Tiles, (void *)gObjectSprite2_185Frames },  // 67
     { (void *)gObjectSprite2_186Tiles, (void *)gObjectSprite2_186Frames },  // 68
-    { (void *)gObjectSprite2_111Tiles, (void *)gObjectSprite2_111Frames },  // 69
-    { (void *)gObjectSprite2_121Tiles, (void *)gObjectSprite2_121Frames },  // 70
+    { (void *)gRaisingPlatformTiles, (void *)gRaisingPlatformFrames },  // 69
+    { (void *)gLever002Tiles, (void *)gLever002Frames },  // 70
     { (void *)gObjectSprite2_187Tiles, (void *)gObjectSprite2_187Frames },  // 71
     { (void *)gObjectSprite2_188Tiles, (void *)gObjectSprite2_188Frames },  // 72
     { (void *)gObjectSprite2_189Tiles, (void *)gObjectSprite2_189Frames },  // 73
@@ -185,8 +185,8 @@ const void *const g_apRoomObjTriggerEffectData[91] = {
     gObjectPalette001Palette,
     gObjectPalette002Palette,
     gObjectPalette002Palette,
-    gObjectSprite2_108Palette,
-    gObjectSprite2_108Palette,
+    gChestPalette,
+    gChestPalette,
     gObjectPalette003Palette,
     gObjectPalette004Palette,
     gObjectPalette005Palette,
@@ -254,13 +254,13 @@ const void *const g_apRoomObjTriggerEffectData[91] = {
     gObjectPalette047Palette,
     gObjectPalette048Palette,
     gObjectPalette049Palette,
-    gObjectSprite2_118Palette,
+    gFlamePillar003Palette,
     gObjectPalette050Palette,
     gObjectSprite2_125Palette,
     gObjectPalette051Palette,
     gObjectPalette052Palette,
     gObjectPalette053Palette,
-    gObjectSprite2_111Palette,
+    gRaisingPlatformPalette,
     gObjectSprite2_124Palette,
     gObjectPalette054Palette,
     gObjectPalette055Palette,
