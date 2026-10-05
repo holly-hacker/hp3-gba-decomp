@@ -1,0 +1,80 @@
+groups:
+  - name: ItemAndHelpIcons
+    runs:
+      - kind: image-bank
+        count: 80
+        names: {1: Item001}
+        componentOrder: [palette, tiles, frames]
+        storedCells: false
+      # g_aHelpSpriteAssets[14]
+      - kind: image-bank
+        names: [Help001]
+        storedCells: false
+
+  - name: MenuSprites
+    runs:
+      # Main menu palette, debug menu cursor, and other small sprites
+      - kind: image-bank
+        count: 8
+        names:
+          1: MainMenu
+          2: DebugMenuCursor
+          3: MenuSprite003
+        noPalette: [MenuSprite008]
+      - kind: graphic-blobs
+        names: [MenuCursor001]
+
+  - name: EquipCharacterSelect
+    runs:
+      - kind: graphic-blobs
+        count: 3
+        names: {1: EquipCharacterSelect001}
+
+  - name: DialogBackgrounds
+    runs:
+      - kind: graphic-blobs
+        count: 2
+        names: {1: DialogBackgrounds001}
+
+  - name: DebugMenu
+    runs:
+      - kind: graphic-blobs
+        count: 5
+        names:
+          1: DebugMenuGraphic
+          2: DebugCollectorCardsBg0Graphic
+          3: DebugMenu003
+      - kind: graphic-blobs
+        names: [MenuPanel001]
+
+  - name: StatusCharacters
+    runs:
+      # Status/equip screen character rotations: g_aStatusCharacterAssets
+      - kind: image-bank
+        count: 3
+        names: {1: StatusCharacter001}
+        bpp: 8
+
+  - name: FontsAndPortraits
+    runs:
+      - kind: fonts
+        count: 10
+        names: {1: TextFont00}
+      - kind: image-bank
+        count: 54
+        names: {1: Portrait001}
+        bpp: 8
+        storedCells: false
+      # Dialog chatheads (partial)
+      - kind: image-bank
+        count: 46
+        names: {1: Chathead001}
+        bpp: 8
+
+  - name: FamousWizardCards
+    runs:
+      # Folio Universitas cards
+      - kind: image-bank
+        count: 51
+        names: {1: FamousWizardCard001}
+        bpp: 8

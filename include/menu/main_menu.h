@@ -33,7 +33,7 @@ extern Object *sub_0801D940(u32 kind);
 extern const u32 g_dwMainMenuBg3Control;
 extern const u32 g_dwMainMenuBg2Control;
 extern const u32 g_dwMainMenuBg1Control;
-extern const u8 g_MainMenuBg2Graphic[];
+extern const u8 gMainMenuBg2Graphic[];
 extern const u8 *const g_apMainMenuTitleGraphic[8];
 extern const u32 g_adwMainMenuStateTimeouts[6];
 

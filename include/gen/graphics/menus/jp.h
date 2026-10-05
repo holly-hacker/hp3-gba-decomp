@@ -4,8 +4,8 @@
 #include "types.h"
 
 /* MainMenuJp */
-extern const u8 g_UnusedMainMenuTitleGraphic[];
-extern const u8 g_MainMenuBg2Graphic[];
+extern const u8 gUnusedMainMenuTitleGraphic[];
+extern const u8 gMainMenuBg2Graphic[];
 
 /* KanjiFonts */
 extern const u8 gKanjiFont00[];

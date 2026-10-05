@@ -1,0 +1,13 @@
+groups:
+  - name: OwlCareSprites
+    runs:
+      - kind: image-bank
+        count: 16
+        names: {1: OwlCare001}
+        noPalette: [OwlCare016]
+
+  - name: OwlCare
+    runs:
+      - kind: graphic-blobs
+        count: 3
+        names: {1: OwlCare001}

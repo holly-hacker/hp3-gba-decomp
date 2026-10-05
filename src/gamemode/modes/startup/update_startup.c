@@ -31,7 +31,7 @@ void UpdateStartup(void)
         {
             ClearBgTilemap(2);
             ClearBgTilemap(1);
-            LoadBgGraphic(2, g_StartupNoticeGraphic, 1, 0, 8, 1);
+            LoadBgGraphic(2, gStartupNoticeGraphic, 1, 0, 8, 1);
             SetTextTargetFromBgControl(g_dwStartupBg1Control);
             SelectTextFont(8, 0, -1);
 #ifdef VERSION_JP

@@ -16,4 +16,4 @@ extern const u8 gMainMenuTitles004[];
 extern const u8 gMainMenuTitles005[];
 extern const u8 gMainMenuTitles006[];
 extern const u8 gMainMenuTitles007[];
-extern const u8 g_MainMenuBg2Graphic[];
+extern const u8 gMainMenuBg2Graphic[];

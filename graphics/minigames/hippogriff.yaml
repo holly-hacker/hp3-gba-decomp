@@ -1,0 +1,26 @@
+groups:
+  - name: HippogriffLanguageMinigameBgs
+    runs:
+      - kind: graphic-blobs
+        count: 31
+        names:
+          1: HippogriffFliesIntoAirGraphic
+          2: HippogriffLanguageMinigameBgs002
+          13: LanguageSelectBg2Graphic
+          14: LanguageSelectBg1Graphic
+          15: HippogriffLanguageMinigameBgs015
+          18: MenuScreenGraphic
+          19: HippogriffLanguageMinigameBgs019
+          31: SaveMenuBg1Graphic
+        paletteSources:
+          MenuScreenGraphic: MenuBg3Graphic
+
+  - name: HippogriffGlideGraphics
+    runs:
+      - kind: image-bank
+        count: 4
+        names: {1: HippogriffGlide001}
+        noPalette: [HippogriffGlide004]
+      - kind: graphic-blobs
+        count: 7
+        names: {1: HippogriffMinigame001}

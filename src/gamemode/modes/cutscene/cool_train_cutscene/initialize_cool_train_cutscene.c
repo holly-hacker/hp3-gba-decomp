@@ -15,7 +15,7 @@ void InitializeCoolTrainCutscene(void)
     SetDispcntFlag(0x1000);
     SetBgControl(0, g_dwCoolTrainBg0Control);
     ClearBgTilemap(0);
-    LoadBgGraphic(0, g_CoolTrainGraphic, 0, 0, 0, 0);
+    LoadBgGraphic(0, gCoolTrainGraphic, 0, 0, 0, 0);
     SetMusicVolume(0, 1);
     PlaySoundById(0x43);
     PlaySoundById(0x3F);

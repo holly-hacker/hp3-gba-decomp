@@ -4,7 +4,7 @@
 #include "types.h"
 
 /* HippogriffLanguageMinigameBgs */
-extern const u8 g_HippogriffFliesIntoAirGraphic[];
+extern const u8 gHippogriffFliesIntoAirGraphic[];
 extern const u8 gHippogriffLanguageMinigameBgs002[];
 extern const u8 gHippogriffLanguageMinigameBgs003[];
 extern const u8 gHippogriffLanguageMinigameBgs004[];
@@ -16,12 +16,12 @@ extern const u8 gHippogriffLanguageMinigameBgs009[];
 extern const u8 gHippogriffLanguageMinigameBgs010[];
 extern const u8 gHippogriffLanguageMinigameBgs011[];
 extern const u8 gHippogriffLanguageMinigameBgs012[];
-extern const u8 g_LanguageSelectBg2Graphic[];
-extern const u8 g_LanguageSelectBg1Graphic[];
+extern const u8 gLanguageSelectBg2Graphic[];
+extern const u8 gLanguageSelectBg1Graphic[];
 extern const u8 gHippogriffLanguageMinigameBgs015[];
 extern const u8 gHippogriffLanguageMinigameBgs016[];
 extern const u8 gHippogriffLanguageMinigameBgs017[];
-extern const u8 g_MenuScreenGraphic[];
+extern const u8 gMenuScreenGraphic[];
 extern const u8 gHippogriffLanguageMinigameBgs019[];
 extern const u8 gHippogriffLanguageMinigameBgs020[];
 extern const u8 gHippogriffLanguageMinigameBgs021[];
@@ -34,9 +34,9 @@ extern const u8 gHippogriffLanguageMinigameBgs027[];
 extern const u8 gHippogriffLanguageMinigameBgs028[];
 extern const u8 gHippogriffLanguageMinigameBgs029[];
 extern const u8 gHippogriffLanguageMinigameBgs030[];
-extern const u8 g_SaveMenuBg1Graphic[];
+extern const u8 gSaveMenuBg1Graphic[];
 
-/* HippogriffGlideSprites */
+/* HippogriffGlideGraphics */
 extern const u8 gHippogriffGlide001Palette[];
 extern const u8 gHippogriffGlide002Tiles[];
 extern const u8 gHippogriffGlide002Frames[];
@@ -44,8 +44,6 @@ extern const u8 gHippogriffGlide003Tiles[];
 extern const u8 gHippogriffGlide003Frames[];
 extern const u8 gHippogriffGlide004Tiles[];
 extern const u8 gHippogriffGlide004Frames[];
-
-/* HippogriffMinigame */
 extern const u8 gHippogriffMinigame001[];
 extern const u8 gHippogriffMinigame002[];
 extern const u8 gHippogriffMinigame003[];

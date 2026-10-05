@@ -44,6 +44,8 @@ editing it. Preserve unrelated work and local asset edits.
   for gbadisasm. Keep sorted by address.
 - `regions.{us,jp}.txt`: build manifests for assembly, `c-file` regions, asset
   directives, and labels inside raw regions. Keep sorted by address.
+- `graphics/<feature>.yaml`: the `graphics` groups, their runs, options and
+  item names, shared by both versions.
 - `src/`, `include/`: matching C, reconstructed tables, shared types and
   declarations. `src/libc/` uses the separate newlib compiler profile.
 - `asm/`, `macros.inc`: curated assembly and function macros. The ignored

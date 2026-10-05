@@ -24,11 +24,11 @@ void InitializeMainMenu(void)
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
     SetBgControl(3, g_dwMainMenuBg3Control);
-    LoadBgGraphic(3, g_MenuBg3Graphic, 0, 0, 0, 0);
+    LoadBgGraphic(3, gMenuBg3Graphic, 0, 0, 0, 0);
     SetBgScrollX_candidate(3, 0x80000);
     SetBgControlRegister_candidate(2, g_dwMainMenuBg2Control);
     ClearBgTilemap(2);
-    LoadBgGraphic(2, g_MainMenuBg2Graphic, 1, 0, 1, 1);
+    LoadBgGraphic(2, gMainMenuBg2Graphic, 1, 0, 1, 1);
 #ifndef VERSION_JP
     LoadBgGraphic(2, g_apMainMenuTitleGraphic[GetLanguage()], 0xC8, 0, 0xF, 9);
 #endif

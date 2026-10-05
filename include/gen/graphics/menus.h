@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-/* ItemIcons */
+/* ItemAndHelpIcons */
 extern const u8 gItem001Palette[];
 extern const u8 gItem001Tiles[];
 extern const u8 gItem001Frames[];
@@ -244,8 +244,6 @@ extern const u8 gItem079Frames[];
 extern const u8 gItem080Palette[];
 extern const u8 gItem080Tiles[];
 extern const u8 gItem080Frames[];
-
-/* HelpSprites */
 extern const u8 gHelp001Tiles[];
 extern const u8 gHelp001Frames[];
 extern const u8 gHelp001Palette[];
@@ -269,8 +267,6 @@ extern const u8 gMenuSprite007Tiles[];
 extern const u8 gMenuSprite007Frames[];
 extern const u8 gMenuSprite008Tiles[];
 extern const u8 gMenuSprite008Frames[];
-
-/* MenuCursor */
 extern const u8 gMenuCursor001[];
 
 /* EquipCharacterSelect */
@@ -283,13 +279,11 @@ extern const u8 gDialogBackgrounds001[];
 extern const u8 gDialogBackgrounds002[];
 
 /* DebugMenu */
-extern const u8 g_DebugMenuGraphic[];
-extern const u8 g_DebugCollectorCardsBg0Graphic[];
+extern const u8 gDebugMenuGraphic[];
+extern const u8 gDebugCollectorCardsBg0Graphic[];
 extern const u8 gDebugMenu003[];
 extern const u8 gDebugMenu004[];
 extern const u8 gDebugMenu005[];
-
-/* MenuPanel */
 extern const u8 gMenuPanel001[];
 
 /* StatusCharacters */
@@ -303,7 +297,7 @@ extern const u8 gStatusCharacter003Tiles[];
 extern const u8 gStatusCharacter003Frames[];
 extern const u8 gStatusCharacter003Palette[];
 
-/* TextFonts */
+/* FontsAndPortraits */
 extern const u8 gTextFont00[];
 extern const u8 gTextFont01[];
 extern const u8 gTextFont02[];
@@ -314,8 +308,6 @@ extern const u8 gTextFont06[];
 extern const u8 gTextFont07[];
 extern const u8 gTextFont08[];
 extern const u8 gTextFont09[];
-
-/* Portraits */
 extern const u8 gPortrait001Tiles[];
 extern const u8 gPortrait001Frames[];
 extern const u8 gPortrait001Palette[];
@@ -478,8 +470,6 @@ extern const u8 gPortrait053Palette[];
 extern const u8 gPortrait054Tiles[];
 extern const u8 gPortrait054Frames[];
 extern const u8 gPortrait054Palette[];
-
-/* Chatheads */
 extern const u8 gChathead001Tiles[];
 extern const u8 gChathead001Frames[];
 extern const u8 gChathead001Palette[];

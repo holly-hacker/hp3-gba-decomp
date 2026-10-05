@@ -969,60 +969,78 @@ tile's, so every tile's extent is known (see
 
 ### Graphics build format
 
-A graphics manifest row, `<kind> <start> <end> <dir> <Name>`, claims one
-contiguous run of one kind: `image-bank` (this document), `graphic-blobs`
-and `tile-streams` ([`graphic_blob.md`](graphic_blob.md)), `tile-frames`
-([`special_scene_frames.md`](special_scene_frames.md)), `fonts`
-([`fonts.md`](fonts.md)) or `room-graphics`
-([`room_graphics.md`](room_graphics.md)). `<dir>` is a feature directory
-under `data/graphics/` (`battle`, `overworld`, `menus`, `cutscenes`,
-`minigames/<game>`, `rooms`) shared by all runs of that feature. Its
-`graphics.json` (`format: 1`) maps each run name to the run's settings,
-with its items in ROM order; it contains no addresses, so items are laid
-out back to back and the total must equal the manifest range. Every file
-in the directory must belong to exactly one run. A subdirectory with its own
-`graphics.json` is a nested feature; `menus/us` and `menus/jp` hold the runs
-only one version has, whose file names would otherwise collide.
+A `graphics <start> <end> <feature> <Group>` manifest row claims one group:
+contiguous graphics of one feature, such as a minigame's sprites and
+backgrounds. `graphics/<feature>.yaml` describes the feature's groups for
+both versions; a version without a group has no row for it. A group is a
+list of runs, each of one kind: `image-bank` (this document),
+`graphic-blobs` and `tile-streams` ([`graphic_blob.md`](graphic_blob.md)),
+`tile-frames` ([`special_scene_frames.md`](special_scene_frames.md)),
+`fonts` ([`fonts.md`](fonts.md)) or `room-graphics`
+([`room_graphics.md`](room_graphics.md)):
+
+```yaml
+groups:
+  - name: PumpkinGraphics
+    runs:
+      - kind: image-bank
+        count: 43
+        names: {1: Pumpkin001}
+      - kind: graphic-blobs
+        names: [ServePumpkinJuiceBg0Graphic, ServePumpkinJuiceBg1Graphic, ServePumpkinJuiceBg2Graphic]
+```
+
+`names` lists one name per item, or maps one-based positions to names, each
+naming the items from its position up to the next entry by counting up the
+name's trailing number (`count` then gives the run's length). Every item is
+labeled `g<Name>`, with a component suffix for images (`gItem001Tiles`).
+Other keys are the kind's options, such as an image run's `bpp`; only values
+that differ from the kind's `OPTIONS` defaults are written.
+
+The editable files live in `data/graphics/<feature>/` (`battle`,
+`overworld`, `menus`, `cutscenes`, `minigames/<game>`, `rooms`). Its
+`graphics.json` (`format: 2`) holds each group's item settings, run by run,
+without names or addresses; every file in the directory must belong to
+exactly one group. A subdirectory with its own `graphics.json` is a nested
+feature: `menus/us` and `menus/jp` hold groups only one version has, whose
+files would otherwise collide.
 
 `just pack <ver>` (`tools/graphics/pack_graphics.py`, kinds in
 `tools/graphics/kinds/`) builds every item through the build cache and
-writes `build/<ver>/graphics/<Name>.bin` and `.s` with the run's labels.
-`include/gen/graphics/<feature>.h` declares the labels of every run of the
-feature, including runs only the other version has, so headers are the same
-for both versions and are committed.
+writes `build/<ver>/graphics/<Group>.bin` and `.s`; the group's size must
+equal the manifest range. `include/gen/graphics/<feature>.h` declares the
+labels of every group of the feature, including groups only the other
+version has, so headers are the same for both versions and are committed.
 
-`just extract-graphics [run ...]` (`tools/graphics/extract_graphics.py`)
-walks each run's ROM range from its start, taking each item's length from
-the item itself, extracts every run once (from the US ROM when its manifest
-has the run, otherwise JP), and requires the walk to end exactly at the
-range's end and every item to rebuild byte for byte. Without run names it
-replaces all of `data/graphics/`. Per-run extraction settings, such as name
-prefixes and fixed names, live in the kind modules.
+`just extract-graphics [group ...]` (`tools/graphics/extract_graphics.py`)
+walks each group from its start, taking each item's length from the item
+itself and each run's length from its names, and requires the walk to end
+exactly at the group's end. It extracts every group once (from the US ROM
+when its manifest has the group, otherwise JP), and every item must rebuild
+byte for byte. Without group names it replaces all of `data/graphics/`.
 
-An `image-bank` run's settings are `bpp` (4 or 8), `componentOrder` (the
-ROM order of each image's `palette`/`tiles`/`frames` components), optional
-`paletteHeader`/`paletteTrailer` bytes around every palette, and an ordered
-`images` list. An entry is one of:
+An `image-bank` run's options are `bpp` (4 or 8), `componentOrder` (the
+ROM order of each image's `palette`/`tiles`/`frames` components),
+`storedCells`, `noPalette`, and `paletteHeader`/`paletteTrailer` bytes
+around every palette. An image's settings in `graphics.json` are one of:
 
-- a **derived sprite**, `{name, offset, compression}`: one frame,
+- a **derived sprite**, `{offset, compression}`: one frame,
   `<name>.png`, cells cut from the image size (see "Sprite images");
-- a **stored-layout sprite**, `{name, palette, header, frames}`:
+- a **stored-layout sprite**, `{palette, header, frames}`:
   `<name>.<i>.png` per frame, each frame listing `offset`, `compression`,
   `cells` (`[x, y, w, h]` in tiles), `parts`, and `extra`; `palette:
   false` means the sprite's palette lives outside the run and its PNGs
   carry a gray display palette that packing ignores;
-- a **palette**, `{name, paletteOnly: true}`: `<name>.png`, a one-row
+- a **palette**, `{paletteOnly: true}`: `<name>.png`, a one-row
   swatch whose PNG palette is the data.
 
 Components are labeled `g<Name><Component>`, skipping components an entry
 lacks. Packing fails on a PNG that is not indexed, a pixel index or palette
-outside the bit depth, or a drawn pixel outside every cell. The extractor
-fixes each run's `bpp`, `componentOrder`, name prefix, and cell mode. In a
+outside the bit depth, or a drawn pixel outside every cell. In a
 stored-layout run, a sprite's tiles are its back-to-back frame streams, its
 palette is present only when the next data is not a tile stream, and a
-palette not followed by tiles is its own entry. Images are named by prefix
-and one-based position (`Item001`, `Portrait001`, `MonsterOverworld001`),
-the names `src/` tables reference.
+palette not followed by tiles is its own entry. A sprite without a palette
+whose next data is not a tile stream is listed in `noPalette`.
 
 ### Sprite images
 

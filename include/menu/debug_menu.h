@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "graphics/object.h"
+#include "gen/graphics/menus.h"
 
 typedef struct {
     Object *pCursorObject;  // 0x00
@@ -69,7 +70,6 @@ extern const u32 g_dwDebugPortraitsBg1Control;  // 0x0804C618
 extern const u32 g_dwDebugCollectorCardsBg0Control;  // 0x0804CEC0
 extern const u32 g_dwDebugCollectorCardsBg1Control;  // 0x0804CEBC
 extern const u32 g_dwDebugCollectorCardsBg2Control;  // 0x0804CEB8
-extern const u8 g_DebugCollectorCardsBg0Graphic[];   // 0x08D9AAD0
 extern const u32 g_dwDebugSoundTestBg0Control;  // 0x0804CE8C
 extern const u32 g_dwDebugSoundTestBg1Control;  // 0x0804CE90
 extern const u8 g_DebugSoundTestAnimFrames[];   // 0x0804CE94
@@ -87,7 +87,6 @@ extern const u32 g_dwDebugCharacterSelectBg0Control;  // 0x0804C4CC
 extern const u32 g_dwDebugCharacterSelectBg1Control;  // 0x0804C4D0
 extern const u8 g_DebugCharacterSelectAnimFrames[];   // 0x0804C4D4
 extern const u8 g_DebugCharacterSelectAnimData[];     // 0x0804C4E4
-extern const u8 g_DebugMenuGraphic[];          // 0x08D9A360
 extern const u8 g_DebugMenuMainAnimFrames[];   // 0x0804C44C
 extern const u8 g_DebugMenuMainAnimData[];     // 0x0804C45C
 

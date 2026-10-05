@@ -10,7 +10,7 @@ void InitializeHippogriffFliesIntoAirCutscene(void)
     ResetDisplayState(0);
     SetBgControl(0, g_dwHippogriffFliesIntoAirBg0Control);
     SetDispcntFlag(0x1000);
-    LoadBgGraphic(0, g_HippogriffFliesIntoAirGraphic, 0, 0, 0, 0);
+    LoadBgGraphic(0, gHippogriffFliesIntoAirGraphic, 0, 0, 0, 0);
 
     g_pHippogriffFliesIntoAirObject2 = SpawnObject(0, 0x30, 0xA8, (const ObjPalette *)gHippogriffFliesIntoAir2Palette);
     g_pHippogriffFliesIntoAirObject2->oam.priority = 2;

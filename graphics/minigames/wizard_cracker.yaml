@@ -1,0 +1,14 @@
+groups:
+  - name: WizardCrackerPopIt
+    runs:
+      - kind: graphic-blobs
+        names: [WizardCrackerPopItBg1Graphic, WizardCrackerPopItBg0Graphic]
+
+  - name: WizardCrackerSprites
+    runs:
+      - kind: image-bank
+        count: 9
+        names: {1: WizardCracker001}
+        noPalette: [WizardCracker009]
+      - kind: graphic-blobs
+        names: [WizardCrackerPopItBg2Graphic]

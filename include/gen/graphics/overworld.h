@@ -193,8 +193,6 @@ extern const u8 gMonsterOverworld028Tiles[];
 extern const u8 gMonsterOverworld028Frames[];
 extern const u8 gMonsterOverworld028Palette[];
 extern const u8 gMonsterOverworld029Palette[];
-
-/* UnnamedSprites */
 extern const u8 gUnnamed001Tiles[];
 extern const u8 gUnnamed001Frames[];
 extern const u8 gUnnamed001Palette[];
@@ -953,8 +951,6 @@ extern const u8 gObjectSprite2_194Tiles[];
 extern const u8 gObjectSprite2_194Frames[];
 extern const u8 gObjectSprite2_195Tiles[];
 extern const u8 gObjectSprite2_195Frames[];
-
-/* ObjectPalettes */
 extern const u8 gObjectPalette001Palette[];
 extern const u8 gObjectPalette002Palette[];
 extern const u8 gObjectPalette003Palette[];

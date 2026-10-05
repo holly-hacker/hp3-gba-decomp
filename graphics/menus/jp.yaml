@@ -1,0 +1,11 @@
+groups:
+  - name: MainMenuJp
+    runs:
+      - kind: graphic-blobs
+        names: [UnusedMainMenuTitleGraphic, MainMenuBg2Graphic]
+
+  - name: KanjiFonts
+    runs:
+      - kind: fonts
+        count: 4
+        names: {1: KanjiFont00}

@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "graphics/object.h"
+#include "gen/graphics/minigames/wizard_cracker.h"
 
 // Wizard Cracker Pop-it, game mode 0x1B (WizardCrackerPopItMinigame).
 
@@ -45,9 +46,6 @@ extern const u32 g_dwWizardCrackerPopItBg1Control;  // 0x08068D04
 extern const u32 g_dwWizardCrackerPopItBg2Control;  // 0x08068D08
 extern const u32 g_dwWizardCrackerPopItBg0Control;  // 0x08068D0C
 extern const u32 g_dwWizardCrackerPopItBg3Control;  // 0x08068D10
-extern const u8 g_WizardCrackerPopItBg0Graphic[];   // 0x08D7FF44
-extern const u8 g_WizardCrackerPopItBg1Graphic[];   // 0x08D7E528
-extern const u8 g_WizardCrackerPopItBg2Graphic[];   // 0x08D8CDD4
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

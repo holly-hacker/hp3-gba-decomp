@@ -79,10 +79,10 @@ names its subdirectory, `<room_name>/`:
   and the block grid.
 - `room.json`: each resource's codec and delta flag, and the tileset residue.
 
-One `room-graphics <start> <end> data/graphics/rooms Room<NN>Graphics` row per
-room claims the whole range; packing encodes it and labels each resource
-(`Room<NN>BgMap0`, `Room<NN>BgBlocks0`, `Room<NN>CollisionBehavior`,
-`Room<NN>CollisionMap`, `Room<NN>TilesetA`, `Room<NN>PaletteA`, ...), which
+The `RoomGraphics` group holds the 55 rooms in room table order, as items `Room00`-`Room54`
+whose 14 contiguous resources are labeled `gRoom<NN>BgMap0`,
+`gRoom<NN>BgBlocks0`, `gRoom<NN>CollisionBehavior`, `gRoom<NN>CollisionMap`,
+`gRoom<NN>TilesetA`, `gRoom<NN>PaletteA`, ..., which
 `src/room/room_table.c` (`g_aRoomTable`) refers to, through
 `include/gen/graphics/rooms.h`. Code: `tools/room_graphics/` and
 `tools/graphics/kinds/room_graphics.py`.

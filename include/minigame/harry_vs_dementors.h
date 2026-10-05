@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "graphics/object.h"
+#include "gen/graphics/minigames/riddikulus.h"
 
 extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
 
@@ -38,8 +39,6 @@ extern HarryVsDementorsState g_HarryVsDementors;  // 0x03002E18
 // BG control words, per-level BG0 graphics and the two spawned objects' data.
 extern const u32 g_dwHarryVsDementorsBg0Control;  // 0x0805E174
 extern const u32 g_dwHarryVsDementorsBg3Control;  // 0x0805E178
-extern const u8 g_HarryVsDementorsBgGraphicA[];   // 0x08E5EB80: levels 0 and 1
-extern const u8 g_HarryVsDementorsBgGraphicB[];   // 0x08E62538: level 2
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

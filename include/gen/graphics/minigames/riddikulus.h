@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-/* HippogriffRiddikulusSprites */
+/* RiddikulusGraphics */
 extern const u8 gHippogriffFliesIntoAirTiles[];
 extern const u8 gHippogriffFliesIntoAirFrames[];
 extern const u8 gHippogriffFliesIntoAirPalette[];
@@ -49,8 +49,6 @@ extern const u8 gHippogriffRiddikulus014Palette[];
 extern const u8 gHippogriffRiddikulus015Tiles[];
 extern const u8 gHippogriffRiddikulus015Frames[];
 extern const u8 gHippogriffRiddikulus015Palette[];
-
-/* RiddikulusDementors */
-extern const u8 g_RiddikulusBgGraphic[];
-extern const u8 g_HarryVsDementorsBgGraphicA[];
-extern const u8 g_HarryVsDementorsBgGraphicB[];
+extern const u8 gRiddikulusBgGraphic[];
+extern const u8 gHarryVsDementorsBgGraphicA[];
+extern const u8 gHarryVsDementorsBgGraphicB[];

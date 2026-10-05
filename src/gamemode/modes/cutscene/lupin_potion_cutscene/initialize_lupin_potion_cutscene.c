@@ -46,7 +46,7 @@ void InitializeLupinPotionCutscene(void)
     SetTextTargetFromBgControl(g_dwLupinPotionTextBgControl);
     SelectTextFont(7, 0, 0);
     sub_0801FBA4(0);
-    LoadEmbeddedPalette_candidate((u8 *)g_LupinPotionEmbeddedPalette, 0, 1);
+    LoadEmbeddedPalette_candidate((u8 *)gLupinPotionEmbeddedPalette, 0, 1);
     PlayMusicModule(0x10);
     QueueScanlineEffectTable(g_aLupinPotionScanlineTable, 2);
     while (!IsScanlineEffectQueueIdle())

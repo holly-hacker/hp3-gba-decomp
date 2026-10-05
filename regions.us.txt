@@ -1,30 +1,31 @@
-# Extracted-region manifest for the US ROM.
+# Extracted-region manifest for the US ROM; regions.jp.txt follows the same
+# syntax. Rows are sorted by address; unclaimed bytes are taken from the
+# baserom.
 #
-# Syntax:
 # label <address> <name>
-#   A symbol that can be addressed by other code, see also ram_symbols.us.inc.
-#   Not intended for code, use `thumb-func` or `arm-func` instead.
-#
+#   A symbol other code can address, see also ram_symbols.us.inc. Code
+#   entry points use `thumb-func` or `arm-func` instead.
 # thumb-func <address> <name>
-#   Same as `label`, but for a Thumb code entry point whose address is taken
-#   directly (e.g. stored in a function-pointer table) rather than only
-#   reached via `bl` -- marks the symbol `.thumb_func` so its value carries
-#   the low bit real Thumb function pointers always have.
-#
+#   A Thumb entry point whose address is taken directly (e.g. stored in a
+#   function-pointer table): the symbol carries the Thumb bit.
+# arm-func <address> <name>
+#   A confirmed ARM entry point.
 # asm-file <start> <end> <path.s> <name>
-#   A region of committed assembly code.
-#
+#   Committed assembly.
 # c-file <start> <end> <source.c> <name>
-#   A region for a compiled C file.
-#
-# c-file-O1 <start> <end> <source.c> <name>
-#   Same as `c-file`, but compiled with -O1 instead of -O2.
-#
+#   A compiled C file; c-file-O1 compiles it with -O1 instead of -O2.
 # c-rodata <start> <end> <name>
-#   Places the .rodata of the `c-file`/`c-file-O1` row named <name> at its
-#   own address, for an object whose read-only data the ROM keeps apart
-#   from its code. Without such a row, a C file's .rodata is part of its
-#   own region.
+#   The .rodata of the c-file row <name>, where the ROM keeps it apart from
+#   the code.
+# graphics <start> <end> <feature> <group>
+#   A group of graphics, described in graphics/<feature>.yaml.
+# krawall-module <start> <end> <json-file> <name>
+#   A Krawall module and its patterns, packed from data/audio/modules/.
+# krawall-samples <start> <end> <dir> <name>
+#   The Krawall sample set and its pointer list, packed from data/audio/samples/.
+# dialog-text <start> <end> <json-file> <name>, dialog-text-table <start> <end> <name>
+#   One language's dialog text, and the table of language pointers, packed
+#   from data/text/.
 
 asm-file 0x08000000 0x080000A0 asm/gba_header.s          GBAHeader
 asm-file 0x080000A0 0x080000C0 asm/rom_header_tail.us.s  ROMHeaderTail
@@ -1097,14 +1098,12 @@ thumb-func 0x08049E3C sub_08049E3C
 thumb-func 0x08049E40 sub_08049E40
 thumb-func 0x08049E54 sub_08049E54
 
-# Thumb wrappers around BIOS SWI calls
 asm-file 0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
 
 # EEPROM save driver -- see docs/formats/save.md
 c-file-O1 0x08049EC4 0x0804A248 src/eeprom/eeprom_v124.c EepromV124
 c-file-O1 0x0804A248 0x0804A2C0 src/eeprom/eeprom_nowait.c EepromNoWait
 
-# Thumb-mode division runtime
 asm-file 0x0804A2C0 0x0804A2FC asm/rt/call_via_rX.s              _call_via_r0
 asm-file 0x0804A2FC 0x0804A390 asm/rt/divsi3.s                   __divsi3
 asm-file 0x0804A390 0x0804A394 asm/rt/div0.s                    __div0
@@ -1193,7 +1192,6 @@ label 0x08053D28 g_abEffectRosterIdPair_candidate
 label 0x08053D2A g_awBattleSlotPosX_candidate
 label 0x08053D38 g_abBattleSlotPosY_candidate
 
-# Battle-script bytecode
 c-file 0x08053D40 0x080544D4 src/graphics/assets/effect_assets.c g_aEffectObjectAssets
 label 0x080544D4 g_aEffectBgRecords_candidate
 c-file 0x08054F34 0x08054FDC src/battle/script_opcode_lengths.c g_abScriptOpcodeLengths
@@ -1202,7 +1200,6 @@ label 0x08054FE2 g_aEffectAnimData_candidate
 label 0x08058944 g_aEffectAnimData2_candidate
 c-file 0x0805994C 0x0805BA7C src/battle/effect_scripts.c g_apEffectScripts
 
-# Playtime counters, shared with JP at the same helper addresses.
 c-file 0x0805BA8C 0x0805BC00 src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 label 0x0805BC00 g_aSpecialSceneBgControls
 label 0x0805E020 g_dwLinearCutsceneBg0Control
@@ -1230,7 +1227,6 @@ label 0x080629F4 g_dwLanguageSelectBg3Control
 label 0x080629F8 g_dwLanguageSelectBg2Control
 label 0x080629FC g_dwLanguageSelectBg1Control
 
-# Game-mode dispatch table, see docs/memory-map/game_modes.md
 label 0x08062A08 g_aLupinPotionScanlineTable
 label 0x08062A30 g_dwLupinPotionTextBgControl
 label 0x08063064 g_dwBg2Control
@@ -1290,8 +1286,6 @@ label 0x0806B908 g_apRoomObjUnkAEffectData
 label 0x0806B914 g_abRoomObjUnkAAnimData
 c-file 0x0806B944 0x0806BA4C src/shop/shop_stock.c g_aShopStockMisc
 
-# Dialog/UI text data
-# dialog-text <start> <end> <json-file> <name>
 label 0x0806BB00 g_DivinationTeaCupAnimB
 label 0x0806BB44 g_dwDivinationTeaBg2Control
 label 0x0806BB48 g_dwDivinationTeaBg0Control
@@ -1324,44 +1318,16 @@ label 0x0806C584 g_apRoomObjTriggerAnimFrames
 label 0x0806C6F0 g_apRoomObjTriggerEffectData
 label 0x0806C8F4 g_abRoomObjTriggerAnimData
 label 0x0806E8F2 g_abRoomObjTriggerFacingFrames
-# Ally head rotations, g_aAllyTurnOrderIconAssets records 0-2 (tiles and frames);
-# SpawnTurnOrderIcon shows frame 0, other users unconfirmed
-# Overworld spell effects
-image-bank 0x0806E904 0x080781A4 data/images/overworld_spell_effects OverworldSpellEffects
-image-bank 0x080781A4 0x0807E7F8 data/images/ally_heads AllyHeads
-
-# Overworld player sprites
-image-bank 0x0807E7F8 0x080A6D54 data/images/overworld_player OverworldPlayerSprites
-
-# Item icon image bank
-image-bank 0x080a6d54 0x080AC7B8 data/images/items ItemIcons
-
-# Help screen sprite, g_aHelpSpriteAssets[14]
-image-bank 0x080AC7B8 0x080AC8CC data/images/help HelpSprites
-
-# Overworld (wandering) monster sprites, g_pMonsterGraphicsTable +0x10 records
-image-bank 0x080AC8CC 0x080B9A84 data/images/monster_overworld MonsterOverworldSprites
-
-# Scabbers, a recolor palette, the Giant Rat transformation, and the coin icon
-image-bank 0x080B9A84 0x080BC1C4 data/images/unnamed UnnamedSprites
-
-# Main menu palette, debug menu cursor, and other small sprites
-image-bank 0x080BC1C4 0x080BCEA0 data/images/menu_sprites MenuSprites
-graphic-blobs 0x080BCEA0 0x080BD344 data/graphic_blobs/menu_cursor MenuCursor
-# Palette of the menu cursor's particle emitter
+graphics 0x0806E904 0x080781A4 overworld OverworldSpellEffects
+graphics 0x080781A4 0x0807E7F8 battle AllyHeads
+graphics 0x0807E7F8 0x080A6D54 overworld OverworldPlayerSprites
+graphics 0x080A6D54 0x080AC8CC menus ItemAndHelpIcons
+graphics 0x080AC8CC 0x080BC1C4 overworld MonsterOverworldSprites
+graphics 0x080BC1C4 0x080BD344 menus MenuSprites
 label 0x080BD344 g_MenuCursorSparklePalette
-
-# Object and character sprites (g_aObjectTypeAssets and other object records)
-image-bank 0x080BD564 0x080D0B54 data/images/object_sprites ObjectSprites
-
-# Options menu icon present only in the US ROM
-image-bank 0x080D0B54 0x080D0C38 data/images/us/option_icon OptionIconUs
-
-# Object and character sprites, continued
-image-bank 0x080D0C38 0x08195C48 data/images/object_sprites2 ObjectSprites2
-
-# Object palettes, the table at 0x0806C6F0
-image-bank 0x08195C48 0x08196408 data/images/object_palettes ObjectPalettes
+graphics 0x080BD564 0x080D0B54 overworld ObjectSprites
+graphics 0x080D0B54 0x080D0C38 menus/us OptionIconUs
+graphics 0x080D0C38 0x08196408 overworld ObjectSprites2
 
 # Room-script chains (room resource blobs)
 asm-file 0x08196408 0x08196DFC asm/room/blobs/defense_against_the_dark_arts_classroom.s Room00Blob
@@ -1421,91 +1387,15 @@ asm-file 0x081B2C8C 0x081B2DC4 asm/room/blobs/diagon_alley_test_map_4.s Room53Bl
 asm-file 0x081B2DC4 0x081B2E98 asm/room/blobs/diagon_alley_test_map_5.s Room54Blob
 label 0x081B2E98 g_aSpecialScenePalette
 
-tile-frames 0x081B309C 0x081DB29C data/tile_frames/special_scene SpecialSceneFrames
-# Monster battle sprites, g_pMonsterGraphicsTable battle records
-room-graphics 0x081DB29C 0x081E9248 data/room_graphics/defense_against_the_dark_arts_classroom Room00Graphics
-room-graphics 0x081E9248 0x081FC57C data/room_graphics/potions_classroom Room01Graphics
-room-graphics 0x081FC57C 0x0822C920 data/room_graphics/potions_classroom_maze Room02Graphics
-room-graphics 0x0822C920 0x08253450 data/room_graphics/transfiguration_classroom Room03Graphics
-room-graphics 0x08253450 0x082777FC data/room_graphics/transfiguration_classroom_maze Room04Graphics
-room-graphics 0x082777FC 0x0828522C data/room_graphics/hogwarts_express_baggage_car Room05Graphics
-room-graphics 0x0828522C 0x08291B64 data/room_graphics/hogwarts_express_passenger_car Room06Graphics
-room-graphics 0x08291B64 0x0829D884 data/room_graphics/hogwarts_express_buffet_car Room07Graphics
-room-graphics 0x0829D884 0x082B11B8 data/room_graphics/hogwarts_grounds_castle_doors Room08Graphics
-room-graphics 0x082B11B8 0x082C5C9C data/room_graphics/hogwarts_grounds_boathouse Room09Graphics
-room-graphics 0x082C5C9C 0x0831B938 data/room_graphics/hogwarts_grounds_greenhouses Room10Graphics
-room-graphics 0x0831B938 0x0832A678 data/room_graphics/hagrids_hut Room11Graphics
-room-graphics 0x0832A678 0x0837989C data/room_graphics/hagrids_garden_maze Room12Graphics
-room-graphics 0x0837989C 0x083A6754 data/room_graphics/hogwarts_grounds_lake Room13Graphics
-room-graphics 0x083A6754 0x083ED93C data/room_graphics/path_to_hagrids_hut Room14Graphics
-room-graphics 0x083ED93C 0x0844B618 data/room_graphics/hogwarts_grounds_whomping_willow Room15Graphics
-room-graphics 0x0844B618 0x08478DE8 data/room_graphics/entrance_hall Room16Graphics
-room-graphics 0x08478DE8 0x084A24E8 data/room_graphics/great_hall Room17Graphics
-room-graphics 0x084A24E8 0x084B868C data/room_graphics/hogwarts_dungeons Room18Graphics
-room-graphics 0x084B868C 0x084DE950 data/room_graphics/second_floor Room19Graphics
-room-graphics 0x084DE950 0x0850AB80 data/room_graphics/third_floor Room20Graphics
-room-graphics 0x0850AB80 0x085360C0 data/room_graphics/fourth_floor Room21Graphics
-room-graphics 0x085360C0 0x0854BF84 data/room_graphics/fifth_floor Room22Graphics
-room-graphics 0x0854BF84 0x08566390 data/room_graphics/sixth_floor Room23Graphics
-room-graphics 0x08566390 0x0858FBC0 data/room_graphics/seventh_floor Room24Graphics
-room-graphics 0x0858FBC0 0x085D1054 data/room_graphics/rooftop Room25Graphics
-room-graphics 0x085D1054 0x085DFC2C data/room_graphics/lupins_office Room26Graphics
-room-graphics 0x085DFC2C 0x085F420C data/room_graphics/staff_room Room27Graphics
-room-graphics 0x085F420C 0x08604800 data/room_graphics/gryffindor_boys_dormitory Room28Graphics
-room-graphics 0x08604800 0x0861330C data/room_graphics/gryffindor_common_room Room29Graphics
-room-graphics 0x0861330C 0x0863A8FC data/room_graphics/grand_staircase Room30Graphics
-room-graphics 0x0863A8FC 0x08655500 data/room_graphics/portrait_room Room31Graphics
-room-graphics 0x08655500 0x08658A6C data/room_graphics/portrait_room_passage Room32Graphics
-room-graphics 0x08658A6C 0x08673ABC data/room_graphics/hospital_wing Room33Graphics
-room-graphics 0x08673ABC 0x086A285C data/room_graphics/library Room34Graphics
-room-graphics 0x086A285C 0x086CD7F0 data/room_graphics/library_2 Room35Graphics
-room-graphics 0x086CD7F0 0x086D4198 data/room_graphics/fred_and_georges_shop Room36Graphics
-room-graphics 0x086D4198 0x086E8F28 data/room_graphics/wizard_card_collectors_club Room37Graphics
-room-graphics 0x086E8F28 0x0871D4CC data/room_graphics/leaky_cauldron_cellar_1 Room38Graphics
-room-graphics 0x0871D4CC 0x08752590 data/room_graphics/leaky_cauldron_cellar_2 Room39Graphics
-room-graphics 0x08752590 0x0875CF18 data/room_graphics/leaky_cauldron_hallway Room40Graphics
-room-graphics 0x0875CF18 0x0876399C data/room_graphics/leaky_cauldron_harrys_room Room41Graphics
-room-graphics 0x0876399C 0x0877E2D4 data/room_graphics/leaky_cauldron_main Room42Graphics
-room-graphics 0x0877E2D4 0x08796454 data/room_graphics/shrieking_shack_interior Room43Graphics
-room-graphics 0x08796454 0x087AE4F0 data/room_graphics/shrieking_shack_path Room44Graphics
-room-graphics 0x087AE4F0 0x088001A0 data/room_graphics/shrieking_shack_path_2 Room45Graphics
-room-graphics 0x088001A0 0x0880DDB4 data/room_graphics/shrieking_shack_path_3 Room46Graphics
-room-graphics 0x0880DDB4 0x0883E580 data/room_graphics/shrieking_shack_path_4 Room47Graphics
-room-graphics 0x0883E580 0x08846D44 data/room_graphics/shrieking_shack_path_5 Room48Graphics
-room-graphics 0x08846D44 0x08852198 data/room_graphics/shrieking_shack_path_6 Room49Graphics
-room-graphics 0x08852198 0x08852AA0 data/room_graphics/diagon_alley_test_map1 Room50Graphics
-room-graphics 0x08852AA0 0x088533A8 data/room_graphics/diagon_alley_test_map_2 Room51Graphics
-room-graphics 0x088533A8 0x08853CB0 data/room_graphics/diagon_alley_test_map_3 Room52Graphics
-room-graphics 0x08853CB0 0x088545CC data/room_graphics/diagon_alley_test_map_4 Room53Graphics
-room-graphics 0x088545CC 0x08854EE0 data/room_graphics/diagon_alley_test_map_5 Room54Graphics
-image-bank 0x08854EE0 0x08856710 data/images/room_alt_palettes RoomAltPalettes
-graphic-blobs 0x08856710 0x089AD364 data/graphic_blobs/bg_graphics BgGraphics
-tile-streams 0x089AD364 0x089AE030 data/tile_streams/rain RainTiles
-image-bank 0x089AE030 0x089F1DD4 data/images/monster_battle MonsterBattleSprites
-
-# Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
-image-bank 0x089F1DD4 0x089F46DC data/images/battle_icons BattleIcons
-
-# Player battle sprites, g_aFighterAnimTable records
-image-bank 0x089F46DC 0x08A13298 data/images/fighters FighterSprites
-
-# Battle portraits shown when a fighter attacks, 8bpp; records 0-71 of the table at 0x0804D824
-image-bank 0x08A13298 0x08A2DCC4 data/images/battle_faces BattleFaces
-
-# Battle menu action icons; records 72-132 of the table at 0x0804D824
-image-bank 0x08A2DCC4 0x08A30814 data/images/action_icons ActionIcons
-graphic-blobs 0x08A30814 0x08A31ADC data/graphic_blobs/battle_graphics BattleGraphics
-# Lumos particles
-image-bank 0x08A31ADC 0x08A326DC data/images/lumos_particles LumosParticles
-graphic-blobs 0x08A326DC 0x08A37DA4 data/graphic_blobs/equip_character_select EquipCharacterSelect
-# Battle HUD items: turn-order container and gauges
-image-bank 0x08A37DA4 0x08A39000 data/images/battle_hud_items BattleHudItems
-
-# Monster recolor palettes, g_pMonsterGraphicsTable and turn-order icon records
-image-bank 0x08A39000 0x08A39500 data/images/monster_palettes MonsterPalettes
-
-# Battle effect sprites: the records at 0x08053D40-0x080544D4 and palettes loaded by code
-image-bank 0x08A39500 0x08A9C6D0 data/images/battle_effects BattleEffects
+graphics 0x081B309C 0x081DB29C overworld SpecialSceneFrames
+graphics 0x081DB29C 0x08854EE0 rooms RoomGraphics
+graphics 0x08854EE0 0x08856710 overworld RoomAltPalettes
+graphics 0x08856710 0x089AD364 battle BgGraphics
+graphics 0x089AD364 0x089AE030 overworld RainTiles
+graphics 0x089AE030 0x08A31ADC battle BattleSprites
+graphics 0x08A31ADC 0x08A326DC overworld LumosParticles
+graphics 0x08A326DC 0x08A37DA4 menus EquipCharacterSelect
+graphics 0x08A37DA4 0x08A9C6D0 battle BattleHudAndEffects
 krawall-module 0x08A9C6D0 0x08AA0A54 data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 0x08AA4E08 data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 0x08AA6538 data/audio/modules/MusBattle.json MusBattle
@@ -1560,79 +1450,29 @@ krawall-module 0x08D250B0 0x08D2DC7C data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C 0x08D3C784 data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
 
-graphic-blobs 0x08D3F2B4 0x08D48D74 data/graphic_blobs/patronus_cutscene PatronusCutscene
-tile-frames 0x08D48D74 0x08D4A410 data/tile_frames/serve_pumpkin_juice ServePumpkinJuiceFrames
-tile-frames 0x08D4A410 0x08D56A68 data/tile_frames/divination_tea DivinationTeaFrames
-# Battle effect sprite, the record at 0x08054144
-# Owl care sprites
-image-bank 0x08D56A68 0x08D71B5C data/images/owl_care OwlCareSprites
-
-graphic-blobs 0x08D71F70 0x08D79D04 data/graphic_blobs/owl_care OwlCare
-graphic-blobs 0x08D79D24 0x08D7C480 data/graphic_blobs/dialog_backgrounds DialogBackgrounds
-image-bank 0x08D7C480 0x08D7E528 data/images/battle_effects2 BattleEffects2
-graphic-blobs 0x08D7E528 0x08D80DEC data/graphic_blobs/wizard_cracker_pop_it WizardCrackerPopIt
-label 0x08D7E528 g_WizardCrackerPopItBg1Graphic
-label 0x08D7FF44 g_WizardCrackerPopItBg0Graphic
-# Wizard cracker minigame sprites
-image-bank 0x08D80E6C 0x08D8CDD4 data/images/wizard_cracker WizardCrackerSprites
-graphic-blobs 0x08D8CDD4 0x08D8E7EC data/graphic_blobs/wizard_cracker_pop_it_bg2 WizardCrackerPopItBg2
-label 0x08D8CDD4 g_WizardCrackerPopItBg2Graphic
-# Pumpkin minigame sprites
-image-bank 0x08D8E7EC 0x08D97428 data/images/pumpkin PumpkinSprites
-graphic-blobs 0x08D97428 0x08D9A300 data/graphic_blobs/serve_pumpkin_juice ServePumpkinJuice
-label 0x08D97428 g_ServePumpkinJuiceBg0Graphic
-label 0x08D989F4 g_ServePumpkinJuiceBg1Graphic
-label 0x08D99900 g_ServePumpkinJuiceBg2Graphic
-graphic-blobs 0x08D9A360 0x08DA04DC data/graphic_blobs/debug_menu DebugMenu
-label 0x08D9A360 g_DebugMenuGraphic
-label 0x08D9AAD0 g_DebugCollectorCardsBg0Graphic
-graphic-blobs 0x08DA04DC 0x08DA08BC data/graphic_blobs/menu_panel MenuPanel
+graphics 0x08D3F2B4 0x08D48D74 cutscenes PatronusCutscene
+graphics 0x08D48D74 0x08D4A410 minigames/pumpkin ServePumpkinJuiceFrames
+graphics 0x08D4A410 0x08D56A68 minigames/divination_tea DivinationTeaFrames
+graphics 0x08D56A68 0x08D71B5C minigames/owl_care OwlCareSprites
+graphics 0x08D71F70 0x08D79D04 minigames/owl_care OwlCare
+graphics 0x08D79D24 0x08D7C480 menus DialogBackgrounds
+graphics 0x08D7C480 0x08D7E528 battle BattleEffects2
+graphics 0x08D7E528 0x08D80DEC minigames/wizard_cracker WizardCrackerPopIt
+graphics 0x08D80E6C 0x08D8E7EC minigames/wizard_cracker WizardCrackerSprites
+graphics 0x08D8E7EC 0x08D9A300 minigames/pumpkin PumpkinGraphics
+graphics 0x08D9A360 0x08DA08BC menus DebugMenu
 label 0x08DA08BE g_ServePumpkinJuicePanelData
-graphic-blobs 0x08DA0AC0 0x08DC7A90 data/graphic_blobs/cutscene_drawings_startup CutsceneDrawingsStartup
-label 0x08DBF920 g_MenuBg3Graphic
-label 0x08DC456C g_StartupBg3Graphic
-label 0x08DC5AD8 g_StartupBg2Graphic
-label 0x08DC6B7C g_StartupNoticeGraphic
-graphic-blobs 0x08DC7A90 0x08DC8084 data/graphic_blobs/lupin_potion LupinPotion
-label 0x08DC7A90 g_LupinPotionEmbeddedPalette
-graphic-blobs 0x08DC8084 0x08DF3918 data/graphic_blobs/hippogriff_language_minigame_bgs HippogriffLanguageMinigameBgs
-label 0x08DC8084 g_HippogriffFliesIntoAirGraphic
-label 0x08DDB23C g_LanguageSelectBg2Graphic
-label 0x08DDCE1C g_LanguageSelectBg1Graphic
-label 0x08DE5214 g_MenuScreenGraphic
-label 0x08DF2664 g_SaveMenuBg1Graphic
-
-# Status/equip screen character rotations, 8bpp; records at 0x0806B250 (sub_0803A030)
-image-bank 0x08DF3918 0x08E1D5DC data/images/status_characters StatusCharacters
-graphic-blobs 0x08E1D5DC 0x08E32320 data/graphic_blobs/hogwarts_up_night HogwartsUpNight
-label 0x08E20FFC g_ClockSkipGraphic
-label 0x08E28804 g_HogwartsUpNightBg0Graphic
-label 0x08E2F80C g_HogwartsUpNightBg1Graphic
-label 0x08E30E6C g_HogwartsUpNightBg2Graphic
+graphics 0x08DA0AC0 0x08DC8084 cutscenes CutsceneDrawings
+graphics 0x08DC8084 0x08DF3918 minigames/hippogriff HippogriffLanguageMinigameBgs
+graphics 0x08DF3918 0x08E1D5DC menus StatusCharacters
+graphics 0x08E1D5DC 0x08E32320 cutscenes HogwartsUpNight
 label 0x08E32322 g_HogwartsUpNightPaletteData
-graphic-blobs 0x08E3254C 0x08E359C0 data/graphic_blobs/main_menu_titles MainMenuTitles
-label 0x08E349CC g_MainMenuBg2Graphic
-graphic-blobs 0x08E359C0 0x08E36D88 data/graphic_blobs/cool_train CoolTrain
-label 0x08E359C0 g_CoolTrainGraphic
-# Divination tea leaves minigame sprites
-image-bank 0x08E36D88 0x08E3849C data/images/divination_tea DivinationTeaSprites
-graphic-blobs 0x08E3849C 0x08E3D010 data/graphic_blobs/divination_tea DivinationTea
-label 0x08E3849C g_DivinationTeaBg2Graphic
-label 0x08E39AA4 g_DivinationTeaBg1Graphic
-# Hippogriff glide minigame sprites
-image-bank 0x08E3D030 0x08E42194 data/images/hippogriff_glide HippogriffGlideSprites
-graphic-blobs 0x08E42194 0x08E52904 data/graphic_blobs/hippogriff_minigame HippogriffMinigame
-# Hippogriff flying cutscene objects and Riddikulus minigame sprites
-image-bank 0x08E52964 0x08E5B4AC data/images/hippogriff_riddikulus HippogriffRiddikulusSprites
-graphic-blobs 0x08E5B4AC 0x08E65D6C data/graphic_blobs/riddikulus_dementors RiddikulusDementors
-label 0x08E5B4AC g_RiddikulusBgGraphic
-label 0x08E5EB80 g_HarryVsDementorsBgGraphicA
-label 0x08E62538 g_HarryVsDementorsBgGraphicB
-fonts 0x08E65D6C 0x08E6D438 data/fonts/text_fonts TextFonts
-image-bank 0x08E6D438 0x08E8D630 data/images/portraits Portraits
-
-# Dialog chatheads (partial), 8bpp
-image-bank 0x08E8D630 0x08EAC798 data/images/chatheads Chatheads
+graphics 0x08E3254C 0x08E359C0 menus/us MainMenuTitles
+graphics 0x08E359C0 0x08E36D88 cutscenes CoolTrain
+graphics 0x08E36D88 0x08E3D010 minigames/divination_tea DivinationTeaGraphics
+graphics 0x08E3D030 0x08E52904 minigames/hippogriff HippogriffGlideGraphics
+graphics 0x08E52964 0x08E65D6C minigames/riddikulus RiddikulusGraphics
+graphics 0x08E65D6C 0x08EAC798 menus FontsAndPortraits
 dialog-text 0x08EAC798 0x08EBFE84 data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 0x08ED3574 data/text/en_gb.json DialogTextEnGb
 dialog-text 0x08ED3574 0x08EE88CC data/text/fr.json DialogTextFr
@@ -1642,8 +1482,7 @@ dialog-text 0x08F0FB84 0x08F24704 data/text/it.json DialogTextIt
 dialog-text 0x08F24704 0x08F37D1C data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C 0x08F4BEDC data/text/da.json DialogTextDa
 
-# Famous wizard cards (Folio Universitas), 8bpp
-image-bank 0x08F4BEDC 0x08FA953C data/images/famous_wizard_cards FamousWizardCards
+graphics 0x08F4BEDC 0x08FA953C menus FamousWizardCards
 
 c-rodata 0x08FAA7D0 0x08FAA810 EepromV124
 c-rodata 0x08FAA810 0x08FAA824 EepromNoWait

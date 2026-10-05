@@ -1,0 +1,45 @@
+groups:
+  - name: PatronusCutscene
+    runs:
+      - kind: graphic-blobs
+        count: 6
+        names: {1: PatronusCutscene001}
+        paletteSources:
+          PatronusCutscene002: PatronusCutscene001
+          PatronusCutscene003: PatronusCutscene001
+          PatronusCutscene004: PatronusCutscene001
+          PatronusCutscene005: PatronusCutscene001
+          PatronusCutscene006: PatronusCutscene001
+
+  - name: CutsceneDrawings
+    runs:
+      - kind: graphic-blobs
+        count: 16
+        names:
+          1: CutsceneDrawingsStartup001
+          12: MenuBg3Graphic
+          13: CutsceneDrawingsStartup013
+          14: StartupBg3Graphic
+          15: StartupBg2Graphic
+          16: StartupNoticeGraphic
+        paletteSources:
+          CutsceneDrawingsStartup001: MenuBg3Graphic
+          CutsceneDrawingsStartup013: MenuBg3Graphic
+      - kind: graphic-blobs
+        names: [LupinPotionEmbeddedPalette]
+
+  - name: HogwartsUpNight
+    runs:
+      - kind: graphic-blobs
+        count: 6
+        names:
+          1: HogwartsUpNight001
+          3: ClockSkipGraphic
+          4: HogwartsUpNightBg0Graphic
+          5: HogwartsUpNightBg1Graphic
+          6: HogwartsUpNightBg2Graphic
+
+  - name: CoolTrain
+    runs:
+      - kind: graphic-blobs
+        names: [CoolTrainGraphic]

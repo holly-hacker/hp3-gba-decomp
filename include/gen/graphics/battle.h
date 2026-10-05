@@ -208,7 +208,7 @@ extern const u8 gBattleEffectBg5Frame08[];
 extern const u8 gBattleEffectBg5Frame09[];
 extern const u8 gBattleEffectBg5Frame10[];
 
-/* MonsterBattleSprites */
+/* BattleSprites */
 extern const u8 gMonsterBattle001Tiles[];
 extern const u8 gMonsterBattle001Frames[];
 extern const u8 gMonsterBattle001Palette[];
@@ -304,8 +304,6 @@ extern const u8 gMonsterBattle035Palette[];
 extern const u8 gMonsterBattle036Tiles[];
 extern const u8 gMonsterBattle036Frames[];
 extern const u8 gMonsterBattle036Palette[];
-
-/* BattleIcons */
 extern const u8 gBattleIcon001Tiles[];
 extern const u8 gBattleIcon001Frames[];
 extern const u8 gBattleIcon001Palette[];
@@ -389,8 +387,6 @@ extern const u8 gBattleIcon038Palette[];
 extern const u8 gBattleIcon039Tiles[];
 extern const u8 gBattleIcon039Frames[];
 extern const u8 gBattleIcon039Palette[];
-
-/* FighterSprites */
 extern const u8 gFighter001Tiles[];
 extern const u8 gFighter001Frames[];
 extern const u8 gFighter001Palette[];
@@ -482,8 +478,6 @@ extern const u8 gFighter030Palette[];
 extern const u8 gFighter031Tiles[];
 extern const u8 gFighter031Frames[];
 extern const u8 gFighter031Palette[];
-
-/* BattleFaces */
 extern const u8 gBattleFace001Tiles[];
 extern const u8 gBattleFace001Frames[];
 extern const u8 gBattleFace001Palette[];
@@ -694,8 +688,6 @@ extern const u8 gBattleFace069Palette[];
 extern const u8 gBattleFace070Tiles[];
 extern const u8 gBattleFace070Frames[];
 extern const u8 gBattleFace070Palette[];
-
-/* ActionIcons */
 extern const u8 gActionIcon001Tiles[];
 extern const u8 gActionIcon001Frames[];
 extern const u8 gActionIcon001Palette[];
@@ -822,11 +814,9 @@ extern const u8 gActionIcon041Palette[];
 extern const u8 gActionIcon042Tiles[];
 extern const u8 gActionIcon042Frames[];
 extern const u8 gActionIcon042Palette[];
-
-/* BattleGraphics */
 extern const u8 gBattleGraphics001[];
 
-/* BattleHudItems */
+/* BattleHudAndEffects */
 extern const u8 gBattleHudItem001Tiles[];
 extern const u8 gBattleHudItem001Frames[];
 extern const u8 gBattleHudItem001Palette[];
@@ -835,8 +825,6 @@ extern const u8 gBattleHudItem002Frames[];
 extern const u8 gBattleHudItem003Tiles[];
 extern const u8 gBattleHudItem003Frames[];
 extern const u8 gBattleHudItem003Palette[];
-
-/* MonsterPalettes */
 extern const u8 gMonsterPalette001Palette[];
 extern const u8 gMonsterPalette002Palette[];
 extern const u8 gMonsterPalette003Palette[];
@@ -877,8 +865,6 @@ extern const u8 gMonsterPalette037Palette[];
 extern const u8 gMonsterPalette038Palette[];
 extern const u8 gMonsterPalette039Palette[];
 extern const u8 gMonsterPalette040Palette[];
-
-/* BattleEffects */
 extern const u8 gBattleEffect001Tiles[];
 extern const u8 gBattleEffect001Frames[];
 extern const u8 gBattleEffect001Palette[];

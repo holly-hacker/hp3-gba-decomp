@@ -1,0 +1,79 @@
+groups:
+  - name: OverworldSpellEffects
+    runs:
+      - kind: image-bank
+        count: 28
+        names: {1: OverworldSpellEffect001}
+
+  - name: OverworldPlayerSprites
+    runs:
+      - kind: image-bank
+        count: 19
+        names: {1: OverworldPlayer001}
+        noPalette: [OverworldPlayer019]
+
+  - name: MonsterOverworldSprites
+    runs:
+      # Wandering monsters: g_pMonsterGraphicsTable +0x10 records
+      - kind: image-bank
+        count: 29
+        names: {1: MonsterOverworld001}
+      # Scabbers, a recolor palette, the Giant Rat transformation, and the coin icon
+      - kind: image-bank
+        count: 4
+        names: {1: Unnamed001}
+
+  - name: ObjectSprites
+    runs:
+      # Object and character sprites: g_aObjectTypeAssets and other object records
+      - kind: image-bank
+        count: 107
+        names:
+          1: HarryVsDementorsObject18
+          2: HarryVsDementorsObject1C
+          3: ObjectSprite003
+          95: StatusEquipSlotCursor
+          96: ObjectSprite096
+          102: ClockSkipObject1
+          104: ObjectSprite104
+
+  - name: ObjectSprites2
+    runs:
+      - kind: image-bank
+        count: 195
+        names: {1: ObjectSprite2_001}
+        noPalette: [ObjectSprite2_195]
+      # The palettes g_apRoomObjTriggerEffectData points to
+      - kind: image-bank
+        count: 62
+        names: {1: ObjectPalette001}
+        componentOrder: [palette]
+        storedCells: false
+
+  - name: SpecialSceneFrames
+    runs:
+      - kind: tile-frames
+        count: 128
+        names: {1: SpecialSceneFrame001}
+
+  - name: RoomAltPalettes
+    runs:
+      - kind: image-bank
+        count: 12
+        names: {1: RoomAltPalette001}
+        bpp: 8
+        componentOrder: [palette]
+        storedCells: false
+        paletteHeader: [0xa1, 0x0]
+        paletteTrailer: [0x0, 0x0]
+
+  - name: RainTiles
+    runs:
+      - kind: tile-streams
+        count: 40
+        names: {1: RainStreak01, 33: RainSplash01}
+
+  - name: LumosParticles
+    runs:
+      - kind: image-bank
+        names: [LumosParticle001]

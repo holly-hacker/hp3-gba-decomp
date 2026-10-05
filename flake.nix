@@ -13,8 +13,9 @@
 
         # pillow: writes the extracted PNGs in tools/items/extract_item_icons.py.
         # numpy: collision maps (tools/collision) and GammaLz match search (tools/graphics).
+        # pyyaml: the graphics group descriptions under graphics/ (tools/graphics).
         # toml: decomp-permuter's settings/weights files below.
-        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.numpy ps.pillow ps.toml ]);
+        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.numpy ps.pillow ps.pyyaml ps.toml ]);
 
         # pret's matching GBA disassembler. Pinned to the last upstream
         # commit (inactive since 2020-01). Two heap bugs in disasm.c crash

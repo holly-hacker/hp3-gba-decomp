@@ -21,7 +21,7 @@ extern const u8 gServePumpkinJuiceFrame014[];
 extern const u8 gServePumpkinJuiceFrame015[];
 extern const u8 gServePumpkinJuiceFrame016[];
 
-/* PumpkinSprites */
+/* PumpkinGraphics */
 extern const u8 gPumpkin001Tiles[];
 extern const u8 gPumpkin001Frames[];
 extern const u8 gPumpkin002Tiles[];
@@ -87,8 +87,6 @@ extern const u8 gPumpkin040Palette[];
 extern const u8 gPumpkin041Palette[];
 extern const u8 gPumpkin042Palette[];
 extern const u8 gPumpkin043Palette[];
-
-/* ServePumpkinJuice */
-extern const u8 g_ServePumpkinJuiceBg0Graphic[];
-extern const u8 g_ServePumpkinJuiceBg1Graphic[];
-extern const u8 g_ServePumpkinJuiceBg2Graphic[];
+extern const u8 gServePumpkinJuiceBg0Graphic[];
+extern const u8 gServePumpkinJuiceBg1Graphic[];
+extern const u8 gServePumpkinJuiceBg2Graphic[];

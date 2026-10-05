@@ -16,9 +16,9 @@ void InitializeHogwartsUpNightCutscene(void)
     SetBgControl(0, g_dwUpNightBg0Control);
     SetBgControl(1, g_dwUpNightBg1Control);
     SetBgControl(2, g_dwUpNightBg2Control);
-    LoadBgGraphic(0, g_HogwartsUpNightBg0Graphic, 0, 0, 0, 0);
-    LoadBgGraphic(1, g_HogwartsUpNightBg1Graphic, 0x258, 0, 0, 0);
-    LoadBgGraphic(2, g_HogwartsUpNightBg2Graphic, 0x313, 0, 0, 0);
+    LoadBgGraphic(0, gHogwartsUpNightBg0Graphic, 0, 0, 0, 0);
+    LoadBgGraphic(1, gHogwartsUpNightBg1Graphic, 0x258, 0, 0, 0);
+    LoadBgGraphic(2, gHogwartsUpNightBg2Graphic, 0x313, 0, 0, 0);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
     sub_08007AF0(0, 0, 0x480000);
     sub_08007AF0(1, 0, 0xFFD00000);

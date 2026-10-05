@@ -1,0 +1,14 @@
+groups:
+  - name: ServePumpkinJuiceFrames
+    runs:
+      - kind: tile-frames
+        count: 16
+        names: {1: ServePumpkinJuiceFrame001}
+
+  - name: PumpkinGraphics
+    runs:
+      - kind: image-bank
+        count: 43
+        names: {1: Pumpkin001}
+      - kind: graphic-blobs
+        names: [ServePumpkinJuiceBg0Graphic, ServePumpkinJuiceBg1Graphic, ServePumpkinJuiceBg2Graphic]

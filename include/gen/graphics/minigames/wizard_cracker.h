@@ -4,8 +4,8 @@
 #include "types.h"
 
 /* WizardCrackerPopIt */
-extern const u8 g_WizardCrackerPopItBg1Graphic[];
-extern const u8 g_WizardCrackerPopItBg0Graphic[];
+extern const u8 gWizardCrackerPopItBg1Graphic[];
+extern const u8 gWizardCrackerPopItBg0Graphic[];
 
 /* WizardCrackerSprites */
 extern const u8 gWizardCracker001Palette[];
@@ -25,6 +25,4 @@ extern const u8 gWizardCracker008Tiles[];
 extern const u8 gWizardCracker008Frames[];
 extern const u8 gWizardCracker009Tiles[];
 extern const u8 gWizardCracker009Frames[];
-
-/* WizardCrackerPopItBg2 */
-extern const u8 g_WizardCrackerPopItBg2Graphic[];
+extern const u8 gWizardCrackerPopItBg2Graphic[];

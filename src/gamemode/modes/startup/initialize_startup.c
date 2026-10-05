@@ -16,9 +16,9 @@ void InitializeStartup(void)
     SetBgControl(2, bgCtrl2);
     SetBgControl(1, g_dwStartupBg1Control);
 
-    LoadBgGraphic(3, g_StartupBg3Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(3, gStartupBg3Graphic, 1, 0, 0, 0);
     ClearBgTilemap(2);
-    LoadBgGraphic(2, g_StartupBg2Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(2, gStartupBg2Graphic, 1, 0, 0, 0);
     ClearBgTilemap(1);
 
     SetTextTargetFromBgControl(bgCtrl2);

@@ -23,9 +23,9 @@ void InitializeUnusedServePumpkinJuiceMinigame(void)
     bgControl = g_dwServePumpkinJuiceBg3Control;
     SetBgControl(3, bgControl);
 
-    LoadBgGraphic(0, g_ServePumpkinJuiceBg0Graphic, 1, 0, 0, 0);
-    g_ServePumpkinJuice.pBg1Tilemap = LoadBgGraphic(1, g_ServePumpkinJuiceBg1Graphic, 1, 0, 0, 0);
-    LoadBgGraphic(2, g_ServePumpkinJuiceBg2Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(0, gServePumpkinJuiceBg0Graphic, 1, 0, 0, 0);
+    g_ServePumpkinJuice.pBg1Tilemap = LoadBgGraphic(1, gServePumpkinJuiceBg1Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(2, gServePumpkinJuiceBg2Graphic, 1, 0, 0, 0);
     sub_08007AF0(2, 0, 0x100000);
     sub_0800A598(g_ServePumpkinJuiceTable, &g_dwServePumpkinJuiceBg2Control, 8);
     SetTextTargetFromBgControl(bgControl);

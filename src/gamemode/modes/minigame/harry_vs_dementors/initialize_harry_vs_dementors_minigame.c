@@ -41,13 +41,13 @@ void InitializeHarryVsDementorsMinigame(void)
     switch (g_GameModeStackContext.dwCurrentGameModeArg3)
     {
     case 0:
-        LoadBgGraphic(0, g_HarryVsDementorsBgGraphicA, 1, 0, 0, 0);
+        LoadBgGraphic(0, gHarryVsDementorsBgGraphicA, 1, 0, 0, 0);
         break;
     case 1:
-        LoadBgGraphic(0, g_HarryVsDementorsBgGraphicA, 1, 0, 0, 0);
+        LoadBgGraphic(0, gHarryVsDementorsBgGraphicA, 1, 0, 0, 0);
         break;
     case 2:
-        LoadBgGraphic(0, g_HarryVsDementorsBgGraphicB, 1, 0, 0, 0);
+        LoadBgGraphic(0, gHarryVsDementorsBgGraphicB, 1, 0, 0, 0);
         break;
     }
 

@@ -1,0 +1,15 @@
+groups:
+  - name: DivinationTeaFrames
+    runs:
+      - kind: tile-frames
+        count: 64
+        names: {1: DivinationTeaFrame001}
+
+  - name: DivinationTeaGraphics
+    runs:
+      - kind: image-bank
+        count: 2
+        names: {1: DivinationTea001}
+        noPalette: [DivinationTea002]
+      - kind: graphic-blobs
+        names: [DivinationTeaBg2Graphic, DivinationTeaBg1Graphic]

@@ -1,0 +1,11 @@
+groups:
+  - name: OptionIconUs
+    runs:
+      - kind: image-bank
+        names: [OptionIconUs001]
+
+  - name: MainMenuTitles
+    runs:
+      - kind: graphic-blobs
+        count: 8
+        names: {1: MainMenuTitles001, 8: MainMenuBg2Graphic}

@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "graphics/object.h"
+#include "gen/graphics/minigames/divination_tea.h"
 
 // Tea Leaf Divination, game mode 0x1C (DivinationTeaMinigame).
 
@@ -44,8 +45,6 @@ extern DivinationTeaState g_DivinationTea;  // 0x03005B28
 extern const u32 g_dwDivinationTeaBg2Control;  // 0x0806BB44
 extern const u32 g_dwDivinationTeaBg0Control;  // 0x0806BB48
 extern const u32 g_dwDivinationTeaBg1Control;  // 0x0806BB4C
-extern const u8 g_DivinationTeaBg2Graphic[];   // 0x08E3849C
-extern const u8 g_DivinationTeaBg1Graphic[];   // 0x08E39AA4
 extern const u8 g_DivinationTeaCupAnimA[];     // 0x0806BB58
 extern const u8 g_DivinationTeaCupAnimB[];     // 0x0806BB00
 extern const u8 g_DivinationTeaTable[];        // 0x0806BB70

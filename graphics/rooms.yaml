@@ -1,0 +1,6 @@
+groups:
+  - name: RoomGraphics
+    runs:
+      - kind: room-graphics
+        count: 55
+        names: {1: Room00}

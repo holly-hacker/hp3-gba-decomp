@@ -28,7 +28,7 @@ void InitializeRiddikulusMinigame(void)
     SetBgControl(3, bgControl);
     ClearBgTilemap(3);
     SetTextTargetFromBgControl(bgControl);
-    LoadBgGraphic(0, g_RiddikulusBgGraphic, 1, 0, 0, 0);
+    LoadBgGraphic(0, gRiddikulusBgGraphic, 1, 0, 0, 0);
 
     sub_08008B84();
     sub_08008BD8();

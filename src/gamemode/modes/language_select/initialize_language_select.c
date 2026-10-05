@@ -12,12 +12,12 @@ void InitializeLanguageSelect(void)
     SetBgControl(2, g_dwLanguageSelectBg2Control);
     SetBgControl(1, g_dwLanguageSelectBg1Control);
 
-    LoadBgGraphic(3, g_MenuBg3Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(3, gMenuBg3Graphic, 1, 0, 0, 0);
     SetBgScroll_candidate(3, 8, 0);
     sub_08007464(2, 0x78);
-    LoadBgGraphic(2, g_LanguageSelectBg2Graphic, 0x79, 0, 0, 10);
+    LoadBgGraphic(2, gLanguageSelectBg2Graphic, 0x79, 0, 0, 10);
     ClearBgTilemap(1);
-    LoadBgGraphic(1, g_LanguageSelectBg1Graphic, 1, 0, 0, 0x14);
+    LoadBgGraphic(1, gLanguageSelectBg1Graphic, 1, 0, 0, 0x14);
 
     g_GameModeStackContext.dwModeScratchB =
         g_saveManager.header.language.flLanguageConfigured ? GetLanguage() : 0;

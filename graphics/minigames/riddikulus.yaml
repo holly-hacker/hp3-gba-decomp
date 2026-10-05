@@ -1,0 +1,14 @@
+groups:
+  - name: RiddikulusGraphics
+    runs:
+      # Hippogriff flying cutscene objects and Riddikulus minigame sprites
+      - kind: image-bank
+        count: 15
+        names:
+          1: HippogriffFliesIntoAir
+          2: HippogriffFliesIntoAir2
+          3: HippogriffRiddikulus003
+      # levels 0 and 1
+      # level 2
+      - kind: graphic-blobs
+        names: [RiddikulusBgGraphic, HarryVsDementorsBgGraphicA, HarryVsDementorsBgGraphicB]

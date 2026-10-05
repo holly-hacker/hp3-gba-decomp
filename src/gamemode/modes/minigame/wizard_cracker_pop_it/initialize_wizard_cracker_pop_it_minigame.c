@@ -21,11 +21,11 @@ void InitializeWizardCrackerPopItMinigame(void)
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
     SetBgControl(0, g_dwWizardCrackerPopItBg0Control);
-    sub_080077C8(0, g_WizardCrackerPopItBg0Graphic, 1, 0, 0, 0);
+    sub_080077C8(0, gWizardCrackerPopItBg0Graphic, 1, 0, 0, 0);
     SetBgControl(1, g_dwWizardCrackerPopItBg1Control);
-    LoadBgGraphic(1, g_WizardCrackerPopItBg1Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(1, gWizardCrackerPopItBg1Graphic, 1, 0, 0, 0);
     SetBgControl(2, g_dwWizardCrackerPopItBg2Control);
-    sub_080077C8(2, g_WizardCrackerPopItBg2Graphic, 1, 0, 0, 0);
+    sub_080077C8(2, gWizardCrackerPopItBg2Graphic, 1, 0, 0, 0);
     bgControl = g_dwWizardCrackerPopItBg3Control;
     SetBgControl(3, bgControl);
     ClearBgTilemap(3);

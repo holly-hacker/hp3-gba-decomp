@@ -11,7 +11,7 @@ extern const u8 gPatronusCutscene004[];
 extern const u8 gPatronusCutscene005[];
 extern const u8 gPatronusCutscene006[];
 
-/* CutsceneDrawingsStartup */
+/* CutsceneDrawings */
 extern const u8 gCutsceneDrawingsStartup001[];
 extern const u8 gCutsceneDrawingsStartup002[];
 extern const u8 gCutsceneDrawingsStartup003[];
@@ -23,22 +23,20 @@ extern const u8 gCutsceneDrawingsStartup008[];
 extern const u8 gCutsceneDrawingsStartup009[];
 extern const u8 gCutsceneDrawingsStartup010[];
 extern const u8 gCutsceneDrawingsStartup011[];
-extern const u8 g_MenuBg3Graphic[];
+extern const u8 gMenuBg3Graphic[];
 extern const u8 gCutsceneDrawingsStartup013[];
-extern const u8 g_StartupBg3Graphic[];
-extern const u8 g_StartupBg2Graphic[];
-extern const u8 g_StartupNoticeGraphic[];
-
-/* LupinPotion */
-extern const u8 g_LupinPotionEmbeddedPalette[];
+extern const u8 gStartupBg3Graphic[];
+extern const u8 gStartupBg2Graphic[];
+extern const u8 gStartupNoticeGraphic[];
+extern const u8 gLupinPotionEmbeddedPalette[];
 
 /* HogwartsUpNight */
 extern const u8 gHogwartsUpNight001[];
 extern const u8 gHogwartsUpNight002[];
-extern const u8 g_ClockSkipGraphic[];
-extern const u8 g_HogwartsUpNightBg0Graphic[];
-extern const u8 g_HogwartsUpNightBg1Graphic[];
-extern const u8 g_HogwartsUpNightBg2Graphic[];
+extern const u8 gClockSkipGraphic[];
+extern const u8 gHogwartsUpNightBg0Graphic[];
+extern const u8 gHogwartsUpNightBg1Graphic[];
+extern const u8 gHogwartsUpNightBg2Graphic[];
 
 /* CoolTrain */
-extern const u8 g_CoolTrainGraphic[];
+extern const u8 gCoolTrainGraphic[];

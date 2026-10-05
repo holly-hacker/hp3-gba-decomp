@@ -19,7 +19,7 @@ void InitializeClockSkipCutscene(void)
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
     SetBgControl(0, g_dwUpNightBg0Control);
-    LoadBgGraphic(0, g_ClockSkipGraphic, 1, 0, 0, 0);
+    LoadBgGraphic(0, gClockSkipGraphic, 1, 0, 0, 0);
 
     pObject = SpawnObject(0x17, 0x78, 0x50, (const ObjPalette *)gClockSkipObject1Palette);
     sub_08001690(pObject, g_ClockSkipObject1Asset);

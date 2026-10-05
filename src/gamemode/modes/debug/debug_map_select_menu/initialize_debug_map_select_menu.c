@@ -27,7 +27,7 @@ void InitializeDebugMapSelectMenu(void)
     SetBgControl(0, g_dwDebugMapSelectBg0Control);
     bgCtrl1 = g_dwDebugMapSelectBg1Control;
     SetBgControl(1, bgCtrl1);
-    LoadBgGraphic(0, g_DebugMenuGraphic, 0, 0, 0, 0);
+    LoadBgGraphic(0, gDebugMenuGraphic, 0, 0, 0, 0);
     ClearBgTilemap(1);
     SetTextTargetFromBgControl(bgCtrl1);
     SelectTextFont(7, 0, -1);

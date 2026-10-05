@@ -26,7 +26,7 @@ void InitializeDebugSoundTestMenu(void)
     SetBgControl(0, g_dwDebugSoundTestBg0Control);
     bgCtrl1 = g_dwDebugSoundTestBg1Control;
     SetBgControl(1, bgCtrl1);
-    LoadBgGraphic(0, g_DebugMenuGraphic, 0, 0, 0, 0);
+    LoadBgGraphic(0, gDebugMenuGraphic, 0, 0, 0, 0);
     ClearBgTilemap(1);
     SetTextTargetFromBgControl(bgCtrl1);
     SelectTextFont(5, 0, -1);

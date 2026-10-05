@@ -100,14 +100,10 @@ and all rebuild byte for byte); unrelated data separates the runs. They add
 flags `0x19 0x00` (raw 4 bpp tiles), `0x99 0x01` and `0xF9 0x00`/`0x01` (8 bpp)
 to the battle set, and one 128x132-tile map.
 
-A blob with a `label` row at its address in the manifest takes that symbol
-(`g_Foo` becomes PNG `Foo`, with `symbol` in its settings); the others are
-numbered `<Bank>001`... by position in the run.
-
 Blobs without a palette (flags0 bit 0 clear: `0x78`, `0xF8`) draw with a palette
-that is already loaded. Their PNGs show the colors of a blob or label that
-its settings record as `palette` (gray when none), and the packer ignores it.
-The sources are set in `PALETTE_SOURCES` in `tools/graphics/kinds/graphic_blobs.py`; see
+that is already loaded. Their PNGs show the colors of the item their settings
+record as `palette` (gray when none), and the packer ignores it.
+The sources are the run's `paletteSources` option; see
 [`../memory-map/menu_screen.md`](../memory-map/menu_screen.md) for which are
 established. Four blobs have more tiles than their images' distinct tiles: the tile
 numbering is not the standard rebuild's. They list their tilemap cells'
@@ -119,11 +115,11 @@ palette-data labels are not supported and stay raw.
 `MainMenuTitles` (US only) holds the main menu's per-language title logos
 (seven distinct 15x5-tile palette-less blobs, the entries of
 `g_apMainMenuTitleGraphic`, whose first two entries are the same blob) and
-`g_MainMenuBg2Graphic`, also palette-less. JP has one title blob, identical to
-the first US one, and a `g_MainMenuBg2Graphic` that carries its own palette
+`gMainMenuBg2Graphic`, also palette-less. JP has one title blob, identical to
+the first US one, and a `gMainMenuBg2Graphic` that carries its own palette
 (flags `0x79`), so it is its own run, `MainMenuJp`; the two runs sit in
 `menus/us` and `menus/jp`.
-The title blob (`g_UnusedMainMenuTitleGraphic`) is unused in JP: its only
+The title blob (`gUnusedMainMenuTitleGraphic`) is unused in JP: its only
 reference is the lone entry of a title table that no JP code reads. A halfword
 tilemap with an odd cell count is followed by one zero cell (the 15x5 titles).
 
@@ -133,8 +129,7 @@ A `graphic-blobs` run (see [`graphics.md`](graphics.md) "Graphics build
 format") holds one indexed PNG per blob, `<name>.png`, and its `blobs`
 settings list each blob's flags. The pixel values are palette indices
 (`bank * 16 + color number` for 4 bpp, the color number for 8 bpp), and the
-PNG palette is the blob's 256 colors. Each blob is labeled `g<BlobName>` (or
-its `symbol`).
+PNG palette is the blob's 256 colors. Each blob is labeled `g<Name>`.
 
 The tiles and tilemap are derived from the image, in the order the original
 tool produced them (all 195 blobs reproduce): tiles in order of first use, a

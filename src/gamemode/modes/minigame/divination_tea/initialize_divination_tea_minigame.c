@@ -34,8 +34,8 @@ void InitializeDivinationTeaMinigame(void)
     REG_BG2PC = 0;
     REG_BG2PD = 0x100;
 
-    LoadBgGraphic(2, g_DivinationTeaBg2Graphic, 1, 0, 0, 0);
-    LoadBgGraphic(1, g_DivinationTeaBg1Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(2, gDivinationTeaBg2Graphic, 1, 0, 0, 0);
+    LoadBgGraphic(1, gDivinationTeaBg1Graphic, 1, 0, 0, 0);
     ClearBgTilemap(0);
     sub_0800A598(g_DivinationTeaTable, &g_dwDivinationTeaBg2Control, 8);
     SetTextTargetFromBgControl(bgControl);

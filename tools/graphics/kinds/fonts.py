@@ -1,7 +1,7 @@
 """fonts runs: fonts drawn as PNG glyph atlases (see tools/fonts/fonts.py and
 docs/formats/fonts.md).
 
-Settings: the ordered `fonts` list. Each font is labeled g<Name>.
+Each font is labeled g<Name>.
 """
 import re
 from pathlib import Path
@@ -10,14 +10,13 @@ import blobs
 import fonts as codec
 
 ITEMS = "fonts"
+OPTIONS = {}
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 ENTRY_KEYS = {"name", "first", "last", "height", "widths"}
 OPTIONAL_ENTRY_KEYS = {"flags"}
 
 
 def check(run: dict) -> None:
-    if set(run) != {ITEMS}:
-        raise ValueError(f"expected {ITEMS}")
     names = set()
     for entry in run["fonts"]:
         if not ENTRY_KEYS <= set(entry) <= ENTRY_KEYS | OPTIONAL_ENTRY_KEYS:
@@ -41,12 +40,12 @@ def check(run: dict) -> None:
             raise ValueError(f"{name}: flags must be one digit 0-3 per glyph code")
 
 
-def item_files(run: dict, entry: dict) -> list[str]:
+def item_files(entry: dict) -> list[str]:
     return [f"{entry['name']}.png"]
 
 
 def files(run: dict) -> list[str]:
-    return [f for entry in run[ITEMS] for f in item_files(run, entry)]
+    return [f for entry in run[ITEMS] for f in item_files(entry)]
 
 
 def font_from_file(source: Path, entry: dict) -> codec.Font:
@@ -63,24 +62,29 @@ def font_from_file(source: Path, entry: dict) -> codec.Font:
                       codec.glyphs_from_atlas(pixels, widths, height), flags)
 
 
-def build(source: Path, name: str, settings: dict, entry: dict) -> list[tuple[str, bytes]]:
+def build(source: Path, settings: dict, entry: dict) -> list[tuple[str, bytes]]:
     return [(f"g{entry['name']}", codec.build(font_from_file(source, entry)))]
 
 
-def extract(rom: bytes, ver: str, start: int, end: int, bank: str, source: Path) -> dict:
-    addr, entries = start, []
-    while addr < end:
-        font, next_addr, raw = codec.parse(rom, addr)
-        entry = {"name": f"{bank.removesuffix('s')}{len(entries):02d}", "first": font.first, "last": font.last,
-                 "height": font.height, "widths": font.widths}
+def walk(rom: bytes, ver: str, run) -> list[tuple[int, int]]:
+    spans, addr = [], run.start
+    for _ in range(run.count):
+        _, end, _ = codec.parse(rom, addr)
+        spans.append((addr, end))
+        addr = end
+    return spans
+
+
+def extract(rom: bytes, ver: str, run, source: Path, find) -> list[dict]:
+    entries = []
+    for name, (addr, _) in zip(run.names, walk(rom, ver, run)):
+        font, end, raw = codec.parse(rom, addr)
+        entry = {"name": name, "first": font.first, "last": font.last, "height": font.height, "widths": font.widths}
         if font.flags is not None:
             entry["flags"] = "".join(map(str, font.flags))
         size, pixels = codec.atlas(font)
-        blobs.write_png(source / f"{entry['name']}.png", size, pixels, codec.GRAY, [0])
+        blobs.write_png(source / f"{name}.png", size, pixels, codec.GRAY, [0])
         if codec.build(font_from_file(source, entry)) != raw:
-            raise ValueError(f"{entry['name']}: rebuilding from the PNG gives different bytes")
+            raise ValueError(f"{name}: rebuilding from the PNG gives different bytes")
         entries.append(entry)
-        addr = next_addr
-    if addr != end:
-        raise ValueError(f"walk ends at {addr:#010x}, not the row end {end:#010x}")
-    return {ITEMS: entries}
+    return entries

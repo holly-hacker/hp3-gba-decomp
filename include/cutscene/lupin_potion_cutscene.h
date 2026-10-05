@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "graphics/object.h"
+#include "gen/graphics/cutscenes.h"
 
 // The mode's screen state at 0x03003A84. Only the fields the mode handlers use are named.
 typedef struct {
@@ -18,7 +19,6 @@ extern s32 g_aLupinPotionBg2Scroll[2];                  // 0x03003B3C
 
 extern const u32 g_dwLupinPotionTextBgControl;  // 0x08062A30
 extern const u8 g_aLupinPotionScanlineTable[];  // 0x08062A08: 2 scanline effect entries
-extern const u8 g_LupinPotionEmbeddedPalette[]; // 0x08DC7A90
 
 extern void sub_08028AD4(void);
 extern void sub_08028F7C(void);

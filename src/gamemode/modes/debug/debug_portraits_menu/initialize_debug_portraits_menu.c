@@ -18,7 +18,7 @@ void InitializeDebugPortraitsMenu(void)
     ResetDisplayState(1);
     SetDispcntFlag(0x1000);
     SetBgControl(1, g_dwDebugPortraitsBg1Control);
-    LoadBgGraphic(1, g_DebugMenuGraphic, 0, 0, 0, 0);
+    LoadBgGraphic(1, gDebugMenuGraphic, 0, 0, 0, 0);
 
     g_DebugPortraitsState.dwSelection = 0;
     g_DebugPortraitsState.pPortraitObject = 0;

@@ -1,0 +1,102 @@
+groups:
+  - name: AllyHeads
+    runs:
+      # Ally head rotations: g_aAllyTurnOrderIconAssets records 0-2 (tiles and frames)
+      - kind: image-bank
+        count: 3
+        names: {1: AllyHead001}
+        noPalette: [AllyHead003]
+
+  - name: BgGraphics
+    runs:
+      - kind: graphic-blobs
+        count: 195
+        names:
+          1: BattleFloor01
+          2: BattleWall01
+          3: BattleFloor02
+          4: BattleWall02
+          5: BattleFloor03
+          6: BattleWall03
+          7: BattleFloor04
+          8: BattleWall04
+          9: BattleFloor05
+          10: BattleWall05
+          11: BattleFloor06
+          12: BattleWall06
+          13: BattleFloor07
+          14: BattleWall07
+          15: BattleFloor08
+          16: BattleWall08
+          17: BattleFloor09
+          18: BattleWall09
+          19: BattleFloor10
+          20: BattleWall10
+          21: BattleFloor11
+          22: BattleWall11
+          23: BattleFloor12
+          24: BattleWall12
+          25: BattleFloor13
+          26: BattleWall13
+          27: BattleFloor14
+          28: BattleWall14
+          29: BattleAltFloor
+          30: BattleAltWall
+          31: BgGraphic001
+          38: BattleEffectBg1Frame01
+          52: BattleEffectBg2Frame01
+          88: BattleEffectBg3Frame01
+          134: BattleEffectBg4Frame01
+          186: BattleEffectBg5Frame01
+
+  - name: BattleSprites
+    runs:
+      # g_pMonsterGraphicsTable battle records
+      - kind: image-bank
+        count: 36
+        names: {1: MonsterBattle001}
+        noPalette: [MonsterBattle025]
+      # Monster shadow, enemy turn-order icons, ally head palettes, and ally record 3
+      - kind: image-bank
+        count: 39
+        names: {1: BattleIcon001}
+        noPalette: [BattleIcon036]
+      # g_aFighterAnimTable records
+      - kind: image-bank
+        count: 31
+        names: {1: Fighter001}
+      # Portraits shown when a fighter attacks: g_aBattleHudAssets records 0-71
+      - kind: image-bank
+        count: 70
+        names: {1: BattleFace001}
+        bpp: 8
+      # Battle menu action icons: g_aBattleHudAssets records 72-132
+      - kind: image-bank
+        count: 42
+        names: {1: ActionIcon001}
+      - kind: graphic-blobs
+        names: [BattleGraphics001]
+
+  - name: BattleHudAndEffects
+    runs:
+      # Turn-order container and gauges
+      - kind: image-bank
+        count: 3
+        names: {1: BattleHudItem001}
+      # Recolor palettes of g_pMonsterGraphicsTable and turn-order icon records
+      - kind: image-bank
+        count: 40
+        names: {1: MonsterPalette001}
+        componentOrder: [palette]
+        storedCells: false
+      # g_aEffectObjectAssets records and palettes loaded by code
+      - kind: image-bank
+        count: 114
+        names: {1: BattleEffect001}
+        noPalette: [BattleEffect020]
+
+  - name: BattleEffects2
+    runs:
+      # One g_aEffectObjectAssets record
+      - kind: image-bank
+        names: [BattleEffect2_001]

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "types.h"
+#include "gen/graphics/cutscenes.h"
+#include "gen/graphics/minigames/hippogriff.h"
 
 // Display registers and BG layers. sub_ names are still unidentified.
 
@@ -85,15 +87,9 @@ extern void sub_08001D90(u32 arg);
 extern const u32 g_dwStartupBg3Control;
 extern const u32 g_dwStartupBg2Control;
 extern const u32 g_dwStartupBg1Control;
-extern const u8 g_StartupBg3Graphic[];
-extern const u8 g_StartupBg2Graphic[];
-extern const u8 g_StartupNoticeGraphic[];
 extern const u32 g_dwLanguageSelectBg3Control;
 extern const u32 g_dwLanguageSelectBg2Control;
 extern const u32 g_dwLanguageSelectBg1Control;
-extern const u8 g_MenuBg3Graphic[];
-extern const u8 g_LanguageSelectBg2Graphic[];
-extern const u8 g_LanguageSelectBg1Graphic[];
 
 // Sets both current and target scroll (both axes snap instantly, no interpolation).
 extern void SetBgScroll_candidate(u32 bg, s32 x, s32 y);

@@ -31,12 +31,10 @@ KRAWALL_DIRECTIVES = {"krawall-module": "modules", "krawall-samples": "samples"}
 # language files and the one pointer table all have distinct names).
 DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 
-# Graphics rows (image-bank, graphic-blobs, tile-streams, tile-frames, fonts,
-# room-graphics) name a feature directory under data/graphics/ and a run in
-# its graphics.json; tools/graphics/pack_graphics.py packs each run to
+# graphics rows claim one group of graphics, described in
+# graphics/<feature>.yaml; tools/graphics/pack_graphics.py packs it to
 # build/<ver>/graphics/<name>.s.
-GRAPHICS_DIRECTIVES = {"image-bank", "graphic-blobs", "tile-streams", "tile-frames", "fonts",
-                       "room-graphics"}
+GRAPHICS_DIRECTIVE = "graphics"
 
 # c-file and c-file-O1 rows name a .c under src/, compiled to assembly by
 # tools/c/compile_c.py (the `compile-c` recipe, which must run before
@@ -102,10 +100,10 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 asmfile = f"build/{ver}/c/{name}.s"
                 regions.append((start, end, asmfile, name + RODATA_SUFFIX))
                 continue
-            if parts[0] in GRAPHICS_DIRECTIVES:
+            if parts[0] == GRAPHICS_DIRECTIVE:
                 if len(parts) != 5:
-                    sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <dir> <name>'")
-                _, start_s, end_s, _source, name = parts
+                    sys.exit(f"{path}:{lineno}: expected 'graphics <start> <end> <feature> <group>'")
+                _, start_s, end_s, _feature, name = parts
                 start, end = int(start_s, 16), int(end_s, 16)
                 if end <= start:
                     sys.exit(f"{path}:{lineno}: end must be after start")

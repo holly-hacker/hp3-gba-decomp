@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "graphics/object.h"
+#include "gen/graphics/minigames/riddikulus.h"
 
 extern u32 g_dwRiddikulusMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame
 
@@ -30,7 +31,6 @@ extern RiddikulusState g_Riddikulus;  // 0x03002048
 // BG control words and the BG0 graphic.
 extern const u32 g_dwRiddikulusBg0Control;  // 0x0804C1B0
 extern const u32 g_dwRiddikulusBg3Control;  // 0x0804C1B4
-extern const u8 g_RiddikulusBgGraphic[];    // 0x08E5B4AC
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.
