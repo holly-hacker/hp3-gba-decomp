@@ -5,9 +5,10 @@ entry is one of:
 
 - a derived sprite, {name, offset, compression}: one frame, <name>.png,
   OAM cells cut from the image size (cut_cells);
-- a stored-layout sprite, {name, palette, header, frames}: <name>.<i>.png
-  per frame, each frame listing its offset, compression, OAM cells (in
-  tiles), attached parts, and extra halfwords;
+- a stored-layout sprite, {name, palette, header, frames}: <name>.png, a
+  sheet of every frame (see split_sheet), each frame listing its offset,
+  compression, OAM cells (in tiles), attached parts, and extra halfwords,
+  and its size when smaller than the sheet's cells;
 - a palette, {name, paletteOnly}: <name>.png, a swatch whose PNG palette
   is the data. highBits lists the entries whose unused bit 15 is set, which
   a PNG palette cannot hold.
@@ -60,6 +61,8 @@ MAX_TILES_PER_SIDE = 15
 FRAME_HEADER_SIZE = 0xC
 FRAME_DESC_SIZE = 0xA
 PART_SIZE = 6
+# Frames per row of a stored-layout sprite's sheet.
+SHEET_COLUMNS = 8
 
 
 def _align4(n: int) -> int:
@@ -408,22 +411,65 @@ def write_png(path: Path, width: int, height: int, pixels: list[int],
 
 def image_files(entry: dict) -> list[str]:
     """PNG file names an image entry uses."""
-    if "frames" in entry:
-        return [f"{entry['name']}.{i}.png" for i in range(len(entry["frames"]))]
     return [f"{entry['name']}.png"]
 
 
-def _frame_tiles(path: Path, frame_cells, bpp: int):
+def sheet_grid(count: int) -> tuple[int, int]:
+    """Columns and rows of a sheet of count frames."""
+    columns = min(count, SHEET_COLUMNS)
+    return columns, -(-count // columns)
+
+
+def split_sheet(path: Path, frames: list[dict], bpp: int):
+    """Each frame's (width, height, pixels) from a sprite sheet, and its colors.
+
+    Frames fill the sheet's equal cells left to right, SHEET_COLUMNS per
+    row. A frame takes its cell's top-left `size` pixels, or the whole cell
+    without one; every other sheet pixel is index 0."""
     width, height, pixels, colors = read_png(path, bpp)
+    columns, rows = sheet_grid(len(frames))
+    if width % columns or height % rows:
+        raise ValueError(f"{path.name}: {width}x{height} does not split into {columns}x{rows} frames")
+    cell_w, cell_h = width // columns, height // rows
+    sizes = [tuple(f.get("size", (cell_w, cell_h))) for f in frames]
+    if any(w > cell_w or h > cell_h for w, h in sizes):
+        raise ValueError(f"{path.name}: a frame size exceeds the {cell_w}x{cell_h} cells")
+    for y in range(height):
+        for x in range(width):
+            if pixels[y * width + x]:
+                i = y // cell_h * columns + x // cell_w
+                if i >= len(frames) or x % cell_w >= sizes[i][0] or y % cell_h >= sizes[i][1]:
+                    raise ValueError(f"{path.name}: pixel ({x}, {y}) lies outside every frame")
+    out = []
+    for i, (w, h) in enumerate(sizes):
+        x0, y0 = i % columns * cell_w, i // columns * cell_h
+        out.append((w, h, [p for y in range(y0, y0 + h) for p in pixels[y * width + x0:y * width + x0 + w]]))
+    return out, colors
+
+
+def join_sheet(frames: list[tuple[int, int, list[int]]]) -> tuple[int, int, list[int]]:
+    """The sheet split_sheet reads, from each frame's (width, height, pixels)."""
+    columns, rows = sheet_grid(len(frames))
+    cell_w, cell_h = max(w for w, _, _ in frames), max(h for _, h, _ in frames)
+    width, height = columns * cell_w, rows * cell_h
+    sheet = [0] * (width * height)
+    for i, (w, h, pixels) in enumerate(frames):
+        x0, y0 = i % columns * cell_w, i // columns * cell_h
+        for y in range(h):
+            sheet[(y0 + y) * width + x0:(y0 + y) * width + x0 + w] = pixels[y * w:(y + 1) * w]
+    return width, height, sheet
+
+
+def _frame_tiles(name: str, width: int, height: int, pixels: list[int], frame_cells, bpp: int):
     if width % 8 or height % 8:
-        raise ValueError(f"{path.name}: {width}x{height} is not a multiple of 8 pixels")
+        raise ValueError(f"{name}: {width}x{height} frame is not a multiple of 8 pixels")
     cells = frame_cells(width // 8, height // 8)
     covered = set(_cell_pixels(cells))
     stray = [(x, y) for y in range(height) for x in range(width)
              if pixels[y * width + x] and (x, y) not in covered]
     if stray:
-        raise ValueError(f"{path.name}: pixel {stray[0]} lies outside every OAM cell")
-    return width, height, cells, pack_pixels(pixels, width, cells, bpp), colors
+        raise ValueError(f"{name}: pixel {stray[0]} lies outside every OAM cell")
+    return cells, pack_pixels(pixels, width, cells, bpp)
 
 
 def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
@@ -432,22 +478,24 @@ def build(source: Path, entry: dict, bpp: int) -> dict[str, bytes]:
     if entry.get("paletteOnly"):
         _, _, _, colors = read_png(source / f"{entry['name']}.png", bpp)
         return {"palette": set_high_bits(encode_palette(colors, bpp), entry.get("highBits", []))}
+    path = source / f"{entry['name']}.png"
     if "frames" in entry:
         specs = entry["frames"]
         header = entry["header"]
         own_palette = entry["palette"]
+        images, palette = split_sheet(path, specs, bpp)
     else:
         specs = [{"offset": entry["offset"], "compression": entry["compression"],
                   "cells": None, "parts": [], "extra": []}]
         header = [0, 0, 0, 0]
         own_palette = True
-    frames, streams, palette = [], [], None
-    for path_name, spec in zip(image_files(entry), specs):
+        width, height, pixels, palette = read_png(path, bpp)
+        images = [(width, height, pixels)]
+    frames, streams = [], []
+    for i, ((width, height, pixels), spec) in enumerate(zip(images, specs)):
         stored = spec["cells"]
         frame_cells = (lambda w, h: [tuple(c) for c in stored]) if stored is not None else cut_cells
-        width, height, cells, raw, colors = _frame_tiles(source / path_name, frame_cells, bpp)
-        if palette is None:
-            palette = colors
+        cells, raw = _frame_tiles(f"{path.name} frame {i}", width, height, pixels, frame_cells, bpp)
         stream = compress_tiles(raw, spec["compression"], spec.get("padding"))
         streams.append(stream)
         frames.append({"width": width, "height": height, "offset": spec["offset"],
@@ -506,9 +554,12 @@ def entry_settings(name: str, components: dict[str, bytes], stored_cells: bool, 
     paddings = _stream_paddings(components["tiles"], record["frames"])
     if stored_cells:
         keys = ("offset", "compression", "cells", "parts", "extra")
+        cell = (max(f["width"] for f in record["frames"]), max(f["height"] for f in record["frames"]))
         frames = []
         for frame, padding in zip(record["frames"], paddings):
             frames.append({k: frame[k] for k in keys})
+            if (frame["width"], frame["height"]) != cell:
+                frames[-1]["size"] = [frame["width"], frame["height"]]
             if padding:
                 frames[-1]["padding"] = padding
         entry = {"name": name, "palette": "palette" in components, "header": record["header"],
@@ -546,11 +597,13 @@ def extract(source: Path, name: str, components: dict[str, bytes], bpp: int, sto
             colors = decode_palette(display_palette, bpp)
         else:
             colors = gray_palette(bpp)
-        for path_name, frame in zip(image_files(entry), record["frames"]):
+        images = []
+        for frame in record["frames"]:
             raw, _ = decompress_tiles(components["tiles"][frame["tile_offset"]:])
             w, h = frame["width"], frame["height"]
             cells = [tuple(c) for c in frame["cells"]] if stored_cells else cut_cells(w // 8, h // 8)
-            write_png(source / path_name, w, h, unpack_pixels(raw, w, h, cells, bpp), colors, bpp)
+            images.append((w, h, unpack_pixels(raw, w, h, cells, bpp)))
+        write_png(source / f"{name}.png", *join_sheet(images), colors, bpp)
     rebuilt = build(source, entry, bank_bpp)
     if rebuilt != components:
         diff = sorted(set(rebuilt) ^ set(components)) or [k for k in components if rebuilt[k] != components[k]]

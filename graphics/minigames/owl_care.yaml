@@ -10,4 +10,4 @@ groups:
     runs:
       - kind: graphic-blobs
         count: 3
-        names: {1: OwlCare001}
+        names: {1: OwlCareGraphic001}

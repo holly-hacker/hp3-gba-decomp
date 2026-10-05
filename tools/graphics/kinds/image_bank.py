@@ -31,7 +31,7 @@ ENTRY_KEYS = [
     {"name", "paletteOnly", "highBits"},
 ]
 FRAME_KEYS = {"offset", "compression", "cells", "parts", "extra"}
-OPTIONAL_FRAME_KEYS = {"padding"}
+OPTIONAL_FRAME_KEYS = {"padding", "size"}
 
 
 def _ints(value, count: int, what: str) -> None:
@@ -74,6 +74,10 @@ def check_entry(image: dict) -> None:
             _ints(frame["padding"], len(frame["padding"]), "padding")
             if not all(0 <= b <= 0xFF for b in frame["padding"]):
                 raise ValueError("padding must be a list of bytes")
+        if "size" in frame:
+            _ints(frame["size"], 2, "size")
+            if not all(0 < v <= 0xFF and v % 8 == 0 for v in frame["size"]):
+                raise ValueError("size must be two multiples of 8 pixels up to 248")
         _ints(frame["offset"], 2, "frame offset")
         for cell in frame["cells"]:
             _ints(cell, 4, "cell")

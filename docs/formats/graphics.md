@@ -1030,9 +1030,10 @@ packing ignores it. An image's settings in `graphics.json` are one of:
 - a **derived sprite**, `{offset, compression}`: one frame,
   `<name>.png`, cells cut from the image size (see "Sprite images");
 - a **stored-layout sprite**, `{palette, header, frames}`:
-  `<name>.<i>.png` per frame, each frame listing `offset`, `compression`,
-  `cells` (`[x, y, w, h]` in tiles), `parts`, and `extra`; `palette:
-  false` means the sprite's palette lives elsewhere; its PNGs carry the
+  `<name>.png`, a sheet of all its frames, each frame listing `offset`,
+  `compression`, `cells` (`[x, y, w, h]` in tiles), `parts`, and
+  `extra`, plus `size` when smaller than the sheet's cells; `palette:
+  false` means the sprite's palette lives elsewhere; its PNG carries the
   `paletteSources` palette, or a gray one, which packing ignores;
 - a **palette**, `{paletteOnly: true}`: `<name>.png`, a one-row
   swatch whose PNG palette is the data.
@@ -1049,15 +1050,20 @@ whose next data is not a tile stream is listed in `noPalette`.
 
 **PROVEN** as a build pipeline: the extractor rebuilds every image in
 every bank from its PNGs and requires byte-identical components before
-writing an index, and all banks pass the whole-ROM comparison. Each frame
-is one indexed PNG plus a few settings; `tools/images/sprite.py` derives
-everything else.
+writing an index, and all banks pass the whole-ROM comparison. Each image
+is one indexed PNG plus a few settings per frame; `tools/images/sprite.py`
+derives everything else.
 
-- **PNG**: the frame's full pixel canvas, 4-bit (`bpp: 4`) or 8-bit
+- **PNG**: each frame's full pixel canvas, 4-bit (`bpp: 4`) or 8-bit
   indexed. Its `PLTE` is the ROM palette in order, including entry 0's
   stored color (usually `0x7C1F` magenta); `tRNS` marks index 0
   transparent for viewing. Channels convert as `c5 << 3 | c5 >> 2` on
   extraction and `c8 >> 3` on packing. Short palettes pad with black.
+- **Sheet** (stored-layout sprites): the frames in order, left to right,
+  8 per row, in equal cells as large as the widest and tallest frame. A
+  frame fills its cell's top-left corner, `size` pixels (`[w, h]`, the
+  frame descriptor's `+0x2`/`+0x3`) when smaller than the cell; every
+  other sheet pixel must be index 0.
 - **`offset`**: the canvas's top-left pixel relative to the object's
   anchor; it becomes the frame descriptor's `+0x6`/`+0x8` and each cell's
   X/Y.

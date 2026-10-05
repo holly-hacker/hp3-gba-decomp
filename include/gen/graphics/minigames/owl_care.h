@@ -38,6 +38,6 @@ extern const u8 gOwlCare016Tiles[];
 extern const u8 gOwlCare016Frames[];
 
 /* OwlCare */
-extern const u8 gOwlCare001[];
-extern const u8 gOwlCare002[];
-extern const u8 gOwlCare003[];
+extern const u8 gOwlCareGraphic001[];
+extern const u8 gOwlCareGraphic002[];
+extern const u8 gOwlCareGraphic003[];
