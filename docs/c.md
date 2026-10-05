@@ -8,7 +8,10 @@ what to know before adding a `c-file` region.
 A `c-file <start> <end> <source.c> <name>` row in `regions.<ver>.txt`
 points at a `.c` under `src/`. `tools/c/compile_c.py` runs it through the
 system `cpp` and then `agbcc`, and `tools/gen_link.py` wraps the result as
-the region's object. Two flag profiles, by directory:
+the region's object, which `tools/assemble.py` assembles. Both steps reuse
+results from `build/cache/` (`tools/buildcache.py`), keyed by the
+preprocessed source and by the assembler's inputs; deleting it is always
+safe. Two flag profiles, by directory:
 
 | | compiler | flags |
 |---|---|---|

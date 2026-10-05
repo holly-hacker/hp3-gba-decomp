@@ -9,6 +9,10 @@ The compiler profile is picked by directory (src/libc/ uses old_agbcc
 without interworking; other sources use agbcc with interworking).
 The manifest directive selects -O2 (c-file) or -O1 (c-file-O1).
 
+The cpp output is cheap to produce and determines everything else, so it
+keys the build cache (tools/buildcache.py): unchanged sources and headers
+reuse their assembly without running agbcc.
+
 Usage: compile_c.py <ver>   (before `gen-link`)
 """
 import os
@@ -17,6 +21,9 @@ import shutil
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import buildcache  # noqa: E402
 
 def agbcc_prefix() -> str:
     exe = shutil.which("agbcc")
@@ -81,27 +88,33 @@ def place_in_text(asm: str, src: str, keep_rodata: bool = False) -> str:
     return asm
 
 
-def compile_one(src: str, out: str, prefix: str, ver: str, o1: bool = False,
-                keep_rodata: bool = False) -> None:
+def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
+                o1: bool = False, keep_rodata: bool = False) -> None:
     cc1, cppflags, cflags = profile(src, prefix, o1, ver)
     pre = subprocess.run(["cpp", *cppflags, src],
                          capture_output=True, text=True)
     if pre.returncode:
         sys.exit(f"cpp failed on {src}:\n{pre.stderr}")
+    key = buildcache.digest(tools, os.path.realpath(cc1), cflags, src,
+                            keep_rodata, pre.stdout)
+    asm = buildcache.load("c", key)
+    if asm is None:
+        asm = compile_preprocessed(src, cc1, cflags, pre.stdout, keep_rodata)
+        buildcache.store("c", key, asm)
+    buildcache.write_if_changed(out, asm)
+
+
+def compile_preprocessed(src: str, cc1: str, cflags: list[str], pre: str,
+                         keep_rodata: bool) -> bytes:
     cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
-                        input=pre.stdout, capture_output=True, text=True)
+                        input=pre, capture_output=True, text=True)
     if cc.returncode:
         sys.exit(f"{os.path.basename(cc1)} failed on {src}:\n{cc.stderr}")
-
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    with open(out, "w") as f:
-        # The region wrapper is .syntax unified; agbcc emits divided
-        # syntax. The trailing .align pads to the 4-byte boundary with
-        # explicit zeros, which is what the ROM has.
-        f.write(".syntax divided\n")
-        f.write(place_in_text(cc.stdout, src, keep_rodata))
-        f.write("\t.align\t2, 0\n")
-        f.write(".syntax unified\n")
+    # The region wrapper is .syntax unified; agbcc emits divided syntax.
+    # The trailing .align pads to the 4-byte boundary with explicit zeros,
+    # which is what the ROM has.
+    return (".syntax divided\n" + place_in_text(cc.stdout, src, keep_rodata)
+            + "\t.align\t2, 0\n" + ".syntax unified\n").encode()
 
 
 def main() -> None:
@@ -122,9 +135,10 @@ def main() -> None:
         return
 
     prefix = agbcc_prefix()
+    tools = buildcache.tool_digest()
     def compile_row(row):
         directive, _, _, src, name = row
-        compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver,
+        compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver, tools,
                     o1=directive == "c-file-O1",
                     keep_rodata=name in separate_rodata)
 

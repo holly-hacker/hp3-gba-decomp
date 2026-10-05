@@ -22,7 +22,7 @@ from roomfiles import read_room_dir
 from roomgfx import build_room
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import stamp
+import buildcache
 
 ROOT = Path(__file__).resolve().parents[2]
 LABELS = {f"map{n}": f"BgMap{n}" for n in range(4)}
@@ -52,7 +52,11 @@ def write_header(prefixes: list[str]) -> None:
     for prefix in prefixes:
         lines += [f"extern const u8 {prefix}{label}[];" for label in [*LABELS.values(), "Blob"]]
         lines.append("")
-    (ROOT / "include/gen/RoomGraphics.h").write_text("\n".join(lines).rstrip("\n") + "\n")
+    buildcache.write_if_changed(ROOT / "include/gen/RoomGraphics.h", "\n".join(lines).rstrip("\n") + "\n")
+
+
+def _build(source: Path) -> list[tuple[str, bytes]]:
+    return build_room(read_room_dir(source))
 
 
 def main() -> None:
@@ -61,14 +65,14 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = list(room_graphics_rows(ver))
     write_header([name[:-len("Graphics")] for _, _, _, name in rows])
-    for start, end, source, name in rows:
-        if stamp.fresh(out_dir / f"{name}.s", source, ROOT / f"regions.{ver}.txt"):
-            continue
-        sections = build_room(read_room_dir(source))
+    tools = buildcache.tool_digest()
+    keys = [buildcache.digest(tools, buildcache.tree_digest(source)) for _, _, source, _ in rows]
+    built = buildcache.cached_map("room_graphics", _build, [(source,) for _, _, source, _ in rows], keys)
+    for (start, end, source, name), sections in zip(rows, built):
         data = b"".join(b for _, b in sections)
         if len(data) != end - start:
             raise SystemExit(f"{name}: packs to {len(data)} bytes, the manifest claims {end - start}")
-        (out_dir / f"{name}.bin").write_bytes(data)
+        buildcache.write_if_changed(out_dir / f"{name}.bin", data)
         prefix = name[:-len("Graphics")]
         lines, offset = [], 0
         for section, blob in sections:
@@ -76,7 +80,7 @@ def main() -> None:
             lines += [f".global {label}", f"{label}:",
                       f'    .incbin "build/{ver}/room_graphics/{name}.bin", {offset}, {len(blob)}']
             offset += len(blob)
-        (out_dir / f"{name}.s").write_text("\n".join(lines) + "\n")
+        buildcache.write_if_changed(out_dir / f"{name}.s", "\n".join(lines) + "\n")
 
 
 if __name__ == "__main__":

@@ -52,6 +52,8 @@ editing it. Preserve unrelated work and local asset edits.
 - `tools/c/`, `tools/matching/`: production compilation and candidate matching.
 - `tools/manifest.py`, `tools/gen_link.py`, `tools/check_sections.py`: manifest
   parsing, fixed-address linking, and region size/address validation.
+- `tools/buildcache.py`, `tools/assemble.py`: content-addressed cache in
+  `build/cache/` for packed assets, compiled C and objects (safe to delete).
 - `tools/coverage.py`: manifest claim coverage by ROM area/kind, using the
   US code/data areas below (JP has no default areas, pass `--area`).
 - `tools/<subsystem>/`, `data/`: asset codecs and local editable asset source.

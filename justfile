@@ -36,7 +36,7 @@ disasm-compare ver="us": (disasm ver)
 # One object per region, gaps .incbin'd from the baserom, and a linker
 # script placing each at its manifest address.
 # Generate the build inputs from regions.<ver>.txt.
-gen-link ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver) (pack-fonts ver)
+gen-link ver="us": (pack ver)
     mkdir -p build/{{ver}}
     python3 tools/gen_link.py {{ver}}
 
@@ -173,6 +173,11 @@ extract-fonts ver="us":
 pack-fonts ver="us":
     python3 tools/fonts/pack_fonts.py {{ver}}
 
+# Encoded results are cached in build/cache/ by content (tools/buildcache.py),
+# so only changed images, rooms and blobs are re-encoded.
+# Pack every graphics asset for this version.
+pack ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver) (pack-fonts ver)
+
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
 # AGENTS.md hard rule 2), so a fresh clone has none of it and the pack-*
@@ -185,7 +190,7 @@ extract-all: extract-krawall extract-text extract-images extract-room-graphics e
 
 # Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
 # Compile the c-file rows of regions.<ver>.txt to assembly.
-compile-c ver="us": (pack-images ver) (pack-room-graphics ver) (pack-graphic-blobs ver) (pack-tile-streams ver) (pack-tile-frames ver) (pack-fonts ver)
+compile-c ver="us": (pack ver)
     python3 tools/c/compile_c.py {{ver}}
 
 # Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def
@@ -196,14 +201,14 @@ gen-compile-commands:
 
 # Assemble every region and link them at their manifest addresses.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
-    printf '%s\n' build/{{ver}}/obj/*.s | xargs -P "$(nproc)" -I{} sh -c 'arm-none-eabi-as -mcpu=arm7tdmi "$1" -o "${1%.s}.o"' _ {}
+    python3 tools/assemble.py {{ver}}
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
 # Build without the section check
 build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
-    printf '%s\n' build/{{ver}}/obj/*.s | xargs -P "$(nproc)" -I{} sh -c 'arm-none-eabi-as -mcpu=arm7tdmi "$1" -o "${1%.s}.o"' _ {}
+    python3 tools/assemble.py {{ver}}
     arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/mod.elf build/{{ver}}/mod.gba
 

@@ -3,7 +3,7 @@
 
 Writes, all under build/<ver>/ and none of it committed:
 
-  obj/rNNN_<name>.s   a wrapper per region: the assembler prelude, then an
+  obj/<name>.s        a wrapper per region: the assembler prelude, then an
                       .include (or .incbin) of the region's real source
   obj/gaps.s          every unclaimed byte range, one section per gap,
                       .incbin straight from the baserom
@@ -13,14 +13,18 @@ The linker, not the order of a concatenated file, decides where things
 land, so a region that assembles to the wrong size is caught by ld or by
 tools/check_sections.py rather than silently shifting its neighbours.
 
+Wrappers are named after their region, not its position, and unchanged
+ones are left alone, so inserting a manifest row changes no other wrapper
+and tools/assemble.py reuses their objects.
+
 Usage: gen_link.py <ver>
 """
 import os
 import re
-import shutil
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from buildcache import write_if_changed  # noqa: E402
 from manifest import RODATA_SUFFIX, Labels, parse_manifest  # noqa: E402
 
 BASE_ADDR = 0x08000000
@@ -50,33 +54,29 @@ def exported_labels(srcfile: str) -> list[str]:
         return re.findall(r"^([A-Za-z_][A-Za-z0-9_]*):", f.read(), re.M)
 
 
-def write_region(objdir: str, ver: str, idx: int, region,
-                 rodata_idx: int | None = None) -> tuple[str, str]:
-    """Writes the wrapper .s for one region; returns (section, stem).
+def write_region(objdir: str, ver: str, region, rodata: str | None = None) -> None:
+    """Writes the wrapper .s for one region, named after it.
 
-    rodata_idx is the index of the region holding this C object's .rodata
-    (a c-rodata row); that region's markers bracket the object's .rodata.
+    rodata names the region holding this C object's .rodata (a c-rodata
+    row); that region's markers bracket the object's .rodata.
     """
     start, end, srcfile, name = region
-    stem = f"r{idx:03d}_{name}"
     out = prelude(ver)
     # ld rounds an output section's size up to its alignment, so a region
     # that came out a couple of bytes short still measures full there.
     # These bracket the real content for tools/check_sections.py.
-    if rodata_idx is not None:
-        out += [".section .rodata", f"__rgn{rodata_idx:03d}_beg:", ".text"]
-    out.append(f"__rgn{idx:03d}_beg:")
+    if rodata is not None:
+        out += [".section .rodata", f"__rgn_{rodata}_beg:", ".text"]
+    out.append(f"__rgn_{name}_beg:")
     if srcfile.endswith(".bin"):
         out += [f".global {name}", f"{name}:", f'.incbin "{srcfile}"']
     else:
         out += [f".global {label}" for label in exported_labels(srcfile)]
         out += [f'.include "{srcfile}"']
-    if rodata_idx is not None:
-        out += [".section .rodata", f"__rgn{rodata_idx:03d}_end:", ".text"]
-    out.append(f"__rgn{idx:03d}_end:")
-    with open(os.path.join(objdir, f"{stem}.s"), "w") as f:
-        f.write("\n".join(out) + "\n")
-    return f".rgn{idx:03d}", stem
+    if rodata is not None:
+        out += [".section .rodata", f"__rgn_{rodata}_end:", ".text"]
+    out.append(f"__rgn_{name}_end:")
+    write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
 
 
 def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> list[str]:
@@ -102,8 +102,7 @@ def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> list[str]:
             cur = point
         if cur < end:
             out.append(f'.incbin "{rom}", {hex(cur - BASE_ADDR)}, {hex(end - cur)}')
-    with open(os.path.join(objdir, "gaps.s"), "w") as f:
-        f.write("\n".join(out) + "\n")
+    write_if_changed(os.path.join(objdir, "gaps.s"), "\n".join(out) + "\n")
     return names
 
 
@@ -116,10 +115,11 @@ def main() -> None:
     regions, labels = parse_manifest(f"regions.{ver}.txt", ver)
 
     objdir = f"build/{ver}/obj"
-    shutil.rmtree(objdir, ignore_errors=True)
-    os.makedirs(objdir)
+    os.makedirs(objdir, exist_ok=True)
 
-    index = {region[3]: i for i, region in enumerate(regions)}
+    names = {region[3] for region in regions}
+    if len(names) != len(regions) or "gaps" in names:
+        sys.exit(f"regions.{ver}.txt: region names must be unique and not 'gaps'")
 
     # placements: (address, output section, object stem, input section)
     placements = []
@@ -131,19 +131,23 @@ def main() -> None:
             gaps.append((addr, start))
         addr = end
         if name.endswith(RODATA_SUFFIX):
-            owner = index[name[:-len(RODATA_SUFFIX)]]
-            placements.append((start, f".rgn{i:03d}",
-                               f"r{owner:03d}_{regions[owner][3]}", ".rodata"))
+            placements.append((start, f".rgn{i:03d}", name[:-len(RODATA_SUFFIX)], ".rodata"))
             continue
-        section, stem = write_region(objdir, ver, i, region,
-                                     index.get(name + RODATA_SUFFIX))
-        placements.append((start, section, stem, ".text"))
+        rodata = name + RODATA_SUFFIX
+        write_region(objdir, ver, region, rodata if rodata in names else None)
+        placements.append((start, f".rgn{i:03d}", name, ".text"))
     if addr < BASE_ADDR + rom_size:
         gaps.append((addr, BASE_ADDR + rom_size))
 
     gap_sections = write_gaps(objdir, ver, gaps, labels)
     placements += [(g[0], s, "gaps", s) for g, s in zip(gaps, gap_sections)]
     placements.sort()
+
+    # Objects of regions that no longer exist would otherwise be linked.
+    keep = {f"{stem}{ext}" for _, _, stem, _ in placements for ext in (".s", ".o")}
+    for entry in os.listdir(objdir):
+        if entry not in keep:
+            os.remove(os.path.join(objdir, entry))
 
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write("SECTIONS\n{\n")

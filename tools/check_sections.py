@@ -7,7 +7,7 @@ the next section still starts at its fixed address, objcopy fills the
 hole, and the only symptom is a whole-ROM cmp failure. Section sizes are
 no help either, since ld rounds them up to the section alignment.
 
-gen_link.py brackets each region in __rgn<N>_beg/__rgn<N>_end, which
+gen_link.py brackets each region in __rgn_<name>_beg/__rgn_<name>_end, which
 measure the real content. This reads those back out of the linked ELF.
 
 Usage: check_sections.py <ver>   (after `ld`, before the sha1 compare)
@@ -27,7 +27,7 @@ def marker_addresses(elf: str) -> dict[str, int]:
     return {
         m.group(2): int(m.group(1), 16)
         for m in (
-            re.match(r"([0-9a-fA-F]+)\s+\S+\s+(__rgn\d+_(?:beg|end))$", line.strip())
+            re.match(r"([0-9a-fA-F]+)\s+\S+\s+(__rgn_\S+_(?:beg|end))$", line.strip())
             for line in nm.stdout.splitlines()
         )
         if m
@@ -43,10 +43,10 @@ def main() -> None:
     markers = marker_addresses(f"build/{ver}/rom.elf")
 
     bad = []
-    for i, (start, end, srcfile, name) in enumerate(regions):
-        beg, fin = markers.get(f"__rgn{i:03d}_beg"), markers.get(f"__rgn{i:03d}_end")
+    for start, end, srcfile, name in regions:
+        beg, fin = markers.get(f"__rgn_{name}_beg"), markers.get(f"__rgn_{name}_end")
         if beg is None or fin is None:
-            sys.exit(f"__rgn{i:03d} markers missing -- rerun gen_link.py")
+            sys.exit(f"__rgn_{name} markers missing -- rerun gen_link.py")
         if fin - beg != end - start:
             bad.append(f"  {name} ({srcfile}): assembled to {hex(fin - beg)} bytes, "
                        f"but regions.{ver}.txt claims {hex(start)}-{hex(end)} = "

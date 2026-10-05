@@ -15,11 +15,9 @@ import re
 import sys
 from pathlib import Path
 
-from itertools import repeat
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import stamp  # noqa: E402
-from sprite import COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, build, image_files, map_images
+import buildcache  # noqa: E402
+from sprite import COMPONENT_KINDS, COMPRESSION_TYPES, OAM_SHAPES, build, image_files
 
 SYMBOL = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 BANK_KEYS = {"format", "bpp", "componentOrder", "images"}
@@ -141,19 +139,17 @@ def load_index(source: Path) -> dict:
     return index
 
 
-def _build(source: Path, image: dict, bpp: int) -> dict[str, bytes] | str:
-    """build(), with a failure returned as its message."""
+def _build(source: Path, image: dict, bpp: int) -> dict[str, bytes]:
+    """build(), with a failure naming the image."""
     try:
         return build(source, image, bpp)
     except (OSError, ValueError) as exc:
-        return f"{source / image['name']}: {exc}"
+        raise ValueError(f"{source / image['name']}: {exc}") from None
 
 
-def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
+def pack_bank(ver: str, start: int, end: int, source: Path, name: str, tools: str) -> int:
     index = load_index(source)
     out = Path(f"build/{ver}/images")
-    if stamp.fresh(out / f"{name}.s", source, Path(f"regions.{ver}.txt")):
-        return len(index["images"])
     bin_dir = out / name
     bin_dir.mkdir(parents=True, exist_ok=True)
     asm = []
@@ -166,11 +162,11 @@ def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
     ]
     cursor = start
     images = index["images"]
-    gamma_lz = any(f["compression"] == "gammalz" for image in images for f in image.get("frames", []))
-    built = map_images(_build, repeat(source), images, repeat(index["bpp"]), gamma_lz=gamma_lz)
+    keys = [buildcache.digest(tools, index["bpp"], image,
+                              [buildcache.file_digest(source / f) for f in image_files(image)])
+            for image in images]
+    built = buildcache.cached_map("images", _build, [(source, image, index["bpp"]) for image in images], keys)
     for image, components in zip(images, built):
-        if isinstance(components, str):
-            raise ValueError(components)
         missing = set(components) - set(index["componentOrder"])
         if missing:
             raise ValueError(f"{name}: {image['name']} has {', '.join(sorted(missing))} "
@@ -183,8 +179,7 @@ def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
                 data = bytes(index.get("paletteHeader", [])) + data + bytes(index.get("paletteTrailer", []))
             symbol = component_symbol(image["name"], kind)
             bin_path = bin_dir / f"{image['name']}.{kind}.bin"
-            if not bin_path.is_file() or bin_path.read_bytes() != data:
-                bin_path.write_bytes(data)
+            buildcache.write_if_changed(bin_path, data)
             cursor += len(data)
             if cursor > end:
                 raise ValueError(f"{name}: {image['name']} {kind} exceeds {end:#010x}")
@@ -193,12 +188,8 @@ def pack_bank(ver: str, start: int, end: int, source: Path, name: str) -> int:
     if cursor != end:
         raise ValueError(f"{name}: packed {cursor - start:#x} bytes; region needs {end - start:#x}")
 
-    header_path = Path(f"include/gen/{name}.h")
-    header_path.parent.mkdir(parents=True, exist_ok=True)
-    header_text = "\n".join(header) + "\n"
-    (out / f"{name}.s").write_text("\n".join(asm) + "\n")
-    if not header_path.is_file() or header_path.read_text() != header_text:
-        header_path.write_text(header_text)
+    buildcache.write_if_changed(out / f"{name}.s", "\n".join(asm) + "\n")
+    buildcache.write_if_changed(f"include/gen/{name}.h", "\n".join(header) + "\n")
     return len(index["images"])
 
 
@@ -218,8 +209,9 @@ def main() -> None:
                 if name in sources and sources[name] != source:
                     raise ValueError(f"{other}: image bank {name} uses {source}, "
                                      f"not {sources[name]} as in regions.{ver}.txt")
+        tools = buildcache.tool_digest()
         for start, end, source, name in banks:
-            count = pack_bank(ver, start, end, source, name)
+            count = pack_bank(ver, start, end, source, name, tools)
             print(f"{ver}: packed {name}: {count} images, {end - start} bytes")
         if not banks:
             print(f"{ver}: no image-bank regions")
