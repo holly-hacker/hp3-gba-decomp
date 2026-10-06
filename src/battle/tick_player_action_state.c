@@ -448,9 +448,9 @@ void TickPlayerActionState(Object *obj)
             obj->dwFlags &= 0xfffbffff;
             fighterType = ACTIVE_FIGHTER.bFighterType;
             if (fighterType == Harry) {
-                if (g_pFightState->bAttackVfxId_candidate != 0xff) {
-                    DecrementFolioUniversitasCard(g_pFightState->bAttackVfxId_candidate);
-                    DecrementFolioUniversitasCard(g_pFightState->bAttackVfxId_candidate + 1);
+                if (g_pFightState->bFolioComboFirstCard != 0xff) {
+                    DecrementFolioUniversitasCard(g_pFightState->bFolioComboFirstCard);
+                    DecrementFolioUniversitasCard(g_pFightState->bFolioComboFirstCard + 1);
                 }
                 SetPlayerObjectAnim(obj, 0);
                 /* Throughout this case: the real code re-reads

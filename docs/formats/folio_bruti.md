@@ -43,9 +43,7 @@ three functions are matched and named in `functions.jp.cfg`:
 the relocated `MonsterTable` literal landing at the same relative
 offset) since `python3 -m tools.matching match-versions`'s signature matching doesn't
 catch either one on its own -- see "The extraction pipeline" below for
-why. `DrawFolioBrutiMonsterPanel`, `UpdateFolioBrutiGridCursor`, and the
-other functions found alongside them are still US-only; not yet matched
-to JP.
+why. `DrawFolioBrutiMonsterPanel` and `DrawFolioBrutiMonsterText` are named in both versions but not yet extracted; the grid screen (`InitializeFolioBruti`, `UpdateFolioBrutiGridCursor`, `ExitFolioBruti`) and its small helpers are matched in both.
 
 ## What we know
 

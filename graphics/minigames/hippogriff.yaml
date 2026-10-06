@@ -11,6 +11,10 @@ groups:
           15: HippogriffLanguageMinigameBgs015
           18: MenuScreenGraphic
           19: HippogriffLanguageMinigameBgs019
+          27: FolioBrutiBg3Graphic
+          28: FolioBrutiBg2Graphic
+          29: FolioUniversitasBg3Graphic
+          30: FolioUniversitasBg0Graphic
           31: SaveMenuBg1Graphic
         paletteSources:
           MenuScreenGraphic: MenuBg3Graphic

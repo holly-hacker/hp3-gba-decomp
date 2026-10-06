@@ -102,6 +102,8 @@ typedef struct MonsterTableRow {
     u8 bSpecialId;           // 0x15, not copied to BattleFighter
     u16 wPad_0x16;           // 0x16
 } MonsterTableRow;
+// The spell's effectiveness (0-100) against a monster, or -1 for a spell the monster has no entry for.
+extern s32 GetMonsterSpellEffectiveness(s32 monsterIndex, s32 spellIndex);
 extern const MonsterTableRow MonsterTable[];  // 0x0804F410, src/battle/monsters.c
 
 // One per-level row of Harry/Ron/Hermione's level-up stat tables, 12 bytes
@@ -190,7 +192,8 @@ typedef struct FightState {
     /*0x149C*/ u32 dwBattleResultPending;
     /*0x14A0*/ u32 dwPlayerActionActive_candidate;
     /*0x14A4*/ u8 pad_14A4;
-    /*0x14A5*/ u8 abHelpReturnArgs_candidate[3];  // PushGameMode_3 arguments the battle Help entry hands to HelpTopicScreen (case 6)
+    /*0x14A5*/ u8 abBattleResumeArgs_candidate[3];  // PushGameMode_3 arguments that re-enter Battle from the Help and
+                                                    // Folio Universitas screens; [2] is 0xFF when no card-combo restriction applies
     /*0x14A8*/ u8 bPendingStatusMessageVariant_candidate;
     /*0x14A9*/ u8 pad_14A9[0x14AC - 0x14A9];
     /*0x14AC*/ struct {
@@ -200,7 +203,7 @@ typedef struct FightState {
     } aFaintMessages_candidate[6];
     /*0x14C4*/ u8 bFaintMessageCount_candidate;
     /*0x14C5*/ u8 bDefeatWarpTarget;  // overworld warp-target index set by CheckBattleDefeat; state 6's PushGameMode_2 arg3
-    /*0x14C6*/ u8 bAttackVfxId_candidate;
+    /*0x14C6*/ u8 bFolioComboFirstCard;  // first card of the combo picked on the Folio Universitas screen for this attack, 0xFF for none
 } FightState;
 
 extern FightState *g_pFightState;

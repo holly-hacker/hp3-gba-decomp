@@ -53,8 +53,10 @@ groups:
         count: 5
         names:
           1: DebugMenuGraphic
-          2: DebugCollectorCardsBg0Graphic
-          3: DebugMenu003
+          2: FolioCardFrameRed
+          3: FolioCardFrameBlue
+          4: FolioCardFramePurple
+          5: DebugMenu005
       - kind: graphic-blobs
         names: [MenuPanel001]
 

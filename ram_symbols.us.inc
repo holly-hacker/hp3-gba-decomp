@@ -310,6 +310,8 @@
 .set g_dwStatusEquipSlotType,      0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect
 .set g_StatusEquipItemSelect,      0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/menu/status_equip.h
 .set g_bFoliosMenuCursor, 0x030052F8  @ s8: Folios row restored on re-entry
+.set g_FolioBrutiState,            0x03005300  @ FolioBrutiState: the Folio Bruti screen state; see include/menu/folio_bruti.h
+.set g_FolioUniversitasState,      0x03005340  @ FolioUniversitasState: the Folio Universitas screen state; see include/menu/folio_universitas.h
 .set g_HelpState,                 0x03005370  @ HelpState: the Help / HelpTopicScreen engine state; see include/menu/help.h
 .set g_ItemsItemSelect,            0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/menu/items_menu.h
 .set g_ItemsSectionSelectNextMode, 0x030054E4  @ GameMode: pushed once the Items section select fades out

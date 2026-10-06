@@ -64,6 +64,16 @@ groups:
           22: InGameMenuIconConnectivity
           23: InGameMenuIconHelp
           24: ObjectSprite024
+          25: FolioBrutiCursor
+          26: FolioBrutiSpellDot
+          27: ObjectSprite027
+          28: FolioUniversitasCursor
+          29: ButtonPrompts
+          30: ObjectSprite030
+          33: FolioUniversitasCountBadges
+          34: FolioCardThumbnail001
+          85: FolioCardBackThumbnail
+          86: ObjectSprite086
           91: ItemsSectionIconAll
           92: ItemsSectionIconPotions
           93: ItemsSectionIconMisc

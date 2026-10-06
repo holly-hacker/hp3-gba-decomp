@@ -297,9 +297,9 @@ extern const u8 gDialogBackgrounds002[];
 
 /* DebugMenu */
 extern const u8 gDebugMenuGraphic[];
-extern const u8 gDebugCollectorCardsBg0Graphic[];
-extern const u8 gDebugMenu003[];
-extern const u8 gDebugMenu004[];
+extern const u8 gFolioCardFrameRed[];
+extern const u8 gFolioCardFrameBlue[];
+extern const u8 gFolioCardFramePurple[];
 extern const u8 gDebugMenu005[];
 extern const u8 gMenuPanel001[];
 

@@ -277,6 +277,36 @@ screen transition instead of the fade. Exit saves `dwModeScratchB` (the cursor r
 - ConfirmTradeScreen: a two-row prompt (`g_aConfirmTradeEntries`); row 0, also forced by
   B, returns to `Connectivity`, row 1 continues to `CardTrade`.
 
+## FolioUniversitas (0x26), FolioUniversitasCardDetails (0x28), CardComboDescription (0x46), FolioBruti (0x2D)
+
+PROVEN from the matched code in `src/gamemode/modes/folio_universitas/`,
+`folio_universitas_card_details/`, `card_combo_description/` and `folio_bruti/`, and the
+screen helpers in `src/menu/` (`folio_universitas.h`, `folio_bruti.h`).
+
+- Folio Universitas lays the 51 cards out in rows of ten (`g_FolioUniversitasState`:
+  `dwCategory` is the row, `dwSlot` the column): Jinx, Defense/Protection, General,
+  Hogwarts/Instruction, Quidditch and Special, the last row holding only the 51st card. The
+  tenth card of a row is the rare one and has no combo; the others form combos of three,
+  combo index `row * 3 + slot / 3`, whose name and description are text `0x478 + combo` and
+  `0x488 + combo`. `dwCurrentGameModeArg2` is the card the cursor starts on.
+  `dwCurrentGameModeArg1` is the `FolioUniversitasPurpose`: Browse (from `Folios`; A opens
+  `FolioUniversitasCardDetails` for a collected card, Select opens `CardComboDescription`, B
+  returns to `Folios`), PickCombo (from `Battle`; the cursor moves a combo at a time, A needs
+  all three cards collected and `IsFolioUniversitasCardUnavailable` false, then stores the
+  first card in `FightState.bFolioComboFirstCard` and re-enters `Battle`, B re-enters it with
+  `Arg2 = 0xFF`) and PickCard (from `CardTrade`; A needs a card with a nonzero count, B returns
+  card `0x33`). Leaving for `Folios` or `CardTrade` clears the new-card marks (`ClearFolioUniversitasNewCards`).
+- The card detail screen draws card `Arg2` on one of three frames (`g_aFolioCardAssets`):
+  blue, purple for the last card of a combo, red for the rare card and the 51st; A or B
+  returns to `FolioUniversitas`. `CardComboDescription` shows the three cards of combo `Arg3`
+  with its name and description, dimming never-collected cards to the face-down card.
+- Folio Bruti is a 9 by 6 grid of monsters (`g_FolioBrutiState`): monster `row * 9 + column`
+  of `MonsterTable`, with the last cell skipped, so only the first 53 appear. Entering from
+  `Battle` starts on monster `Arg2`; A or B returns to `Folios`, or re-enters `Battle` with
+  `Arg2 = 0xFF`. Each monster has a level in `abMonsterDocLevel`: 0 never seen, 1 seen, 2 seen
+  this session (new), 3 analyzed with Informus, 4 analyzed (new); Exit clears the "new" marks.
+  The detail panel is described in [`../formats/folio_bruti.md`](../formats/folio_bruti.md).
+
 ## CardTrade (0x15) and GameCubeLink (0x41)
 
 PROVEN from the matched handlers in `src/gamemode/modes/card_trade/` and

@@ -16,7 +16,7 @@ groups:
       - kind: graphic-blobs
         count: 16
         names:
-          1: CutsceneDrawingsStartup001
+          1: CardComboDescriptionPanel
           2: CreditsGraphic
           3: IntroCutsceneGraphic
           4: HarryArrivedAtHogwartsCutsceneGraphic
@@ -33,7 +33,7 @@ groups:
           15: StartupBg2Graphic
           16: StartupNoticeGraphic
         paletteSources:
-          CutsceneDrawingsStartup001: MenuBg3Graphic
+          CardComboDescriptionPanel: MenuBg3Graphic
           CutsceneDrawingsStartup013: MenuBg3Graphic
       - kind: graphic-blobs
         names: [LupinPotionEmbeddedPalette]

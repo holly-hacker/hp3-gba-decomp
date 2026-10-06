@@ -26,7 +26,7 @@ void InitializeDebugCollectorCardsMenu(void)
     bgCtrl2 = g_dwDebugCollectorCardsBg2Control;
     SetBgControl(2, bgCtrl2);
     SetTextTargetFromBgControl(bgCtrl2);
-    LoadBgGraphic(0, gDebugCollectorCardsBg0Graphic, 0, 0, 0, 0);
+    LoadBgGraphic(0, gFolioCardFrameRed, 0, 0, 0, 0);
     pGraphic = gDebugMenuGraphic;
     sub_080077C8(1, pGraphic, 0, 0, 0, 0);
     LoadEmbeddedPalette_candidate((u8 *)pGraphic, 0, 3);

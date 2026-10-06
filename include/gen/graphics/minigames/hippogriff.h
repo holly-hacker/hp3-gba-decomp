@@ -30,10 +30,10 @@ extern const u8 gHippogriffLanguageMinigameBgs023[];
 extern const u8 gHippogriffLanguageMinigameBgs024[];
 extern const u8 gHippogriffLanguageMinigameBgs025[];
 extern const u8 gHippogriffLanguageMinigameBgs026[];
-extern const u8 gHippogriffLanguageMinigameBgs027[];
-extern const u8 gHippogriffLanguageMinigameBgs028[];
-extern const u8 gHippogriffLanguageMinigameBgs029[];
-extern const u8 gHippogriffLanguageMinigameBgs030[];
+extern const u8 gFolioBrutiBg3Graphic[];
+extern const u8 gFolioBrutiBg2Graphic[];
+extern const u8 gFolioUniversitasBg3Graphic[];
+extern const u8 gFolioUniversitasBg0Graphic[];
 extern const u8 gSaveMenuBg1Graphic[];
 
 /* HippogriffGlideGraphics */

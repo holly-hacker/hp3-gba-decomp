@@ -141,6 +141,7 @@ asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
 thumb-func 0x080065D4 sub_080065D4
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
+thumb-func 0x08006C00 sub_08006C00
 thumb-func 0x08006EF4 TickBgLayers_candidate
 
 thumb-func 0x08007130 sub_08007130
@@ -352,6 +353,7 @@ thumb-func 0x0801873C ResetAllPartyLevelsTo1
 thumb-func 0x08018754 ResetPartyHpMpAndStats
 c-file 0x08018780 0x080187EC src/save/deserialize_party_stats.c DeserializePartyStats
 c-file 0x080187EC 0x08018844 src/save/serialize_party_stats.c SerializePartyStats
+thumb-func 0x0801890C GetMonsterSpellEffectiveness
 thumb-func 0x080189C8 sub_080189C8
 thumb-func 0x08018AB8 sub_08018AB8
 thumb-func 0x08018ACC PostActionBattleCheck
@@ -382,9 +384,9 @@ thumb-func 0x0801B9F4 sub_0801B9F4
 thumb-func 0x0801BA2C sub_0801BA2C
 thumb-func 0x0801BA44 sub_0801BA44
 thumb-func 0x0801BCB0 sub_0801BCB0
-thumb-func 0x0801BD0C InitializeCardComboDescription
-thumb-func 0x0801BEA8 UpdateCardComboDescription
-thumb-func 0x0801BEDC ExitCardComboDescription
+c-file 0x0801BD0C 0x0801BEA8 src/gamemode/modes/card_combo_description/initialize_card_combo_description.c InitializeCardComboDescription
+c-file 0x0801BEA8 0x0801BEDC src/gamemode/modes/card_combo_description/update_card_combo_description.c UpdateCardComboDescription
+c-file 0x0801BEDC 0x0801BEF8 src/gamemode/modes/card_combo_description/exit_card_combo_description.c ExitCardComboDescription
 c-file 0x0801BEF8 0x0801BF58 src/room/opcodes/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
 thumb-func 0x0801BF58 RoomScriptOpQueueTileObjectMove
 c-file 0x0801C04C 0x0801C0E8 src/room/opcodes/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
@@ -716,6 +718,7 @@ c-file 0x0802BE2C 0x0802BE40 src/math/iwram_divide_signed_quotient.c iwramDivide
 c-file 0x0802BE40 0x0802BE54 src/math/iwram_divide_signed_remainder.c iwramDivideSignedRemainder
 c-file 0x0802BE54 0x0802BE68 src/math/iwram_divide_unsigned_unused.c iwramDivideUnsigned_unused
 thumb-func 0x0802BEE8 FixedMultiply
+thumb-func 0x0802BF14 FixedDivide
 thumb-func 0x0802C148 sub_0802C148
 c-file 0x0802C254 0x0802C26C src/mem/init_heap.c InitHeap
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
@@ -901,19 +904,42 @@ thumb-func 0x080368E4 sub_080368E4
 c-file 0x0803693C 0x080369CC src/gamemode/modes/folios/update_folios.c UpdateFolios
 c-file 0x080369CC 0x08036A20 src/gamemode/modes/folios/initialize_folios.c InitializeFolios
 c-file 0x08036A20 0x08036A64 src/gamemode/modes/folios/exit_folios.c ExitFolios
-thumb-func 0x08036A64 InitializeFolioBruti
-thumb-func 0x08036BB8 UpdateFolioBrutiGridCursor
+c-file 0x08036A64 0x08036BB8 src/gamemode/modes/folio_bruti/initialize_folio_bruti.c InitializeFolioBruti
+c-file 0x08036BB8 0x08036D0C src/gamemode/modes/folio_bruti/update_folio_bruti_grid_cursor.c UpdateFolioBrutiGridCursor
 c-file 0x08036D0C 0x08036D60 src/save/deserialize_monster_dex_levels.c DeserializeMonsterDexLevels
-thumb-func 0x08037048 ExitFolioBruti
+c-file 0x08036D60 0x08037048 src/menu/draw_folio_bruti_monster_panel.c DrawFolioBrutiMonsterPanel
+c-file 0x08037048 0x080370A0 src/gamemode/modes/folio_bruti/exit_folio_bruti.c ExitFolioBruti
 c-file 0x080370A0 0x080370E8 src/save/serialize_monster_dex_levels.c SerializeMonsterDexLevels
 thumb-func 0x08037104 sub_08037104
-thumb-func 0x080372B0 InitializeFolioUniversitas
-thumb-func 0x080373D4 UpdateFolioUniversitas
-thumb-func 0x0803774C IncrementFolioUniversitasCard
-thumb-func 0x080377A8 DecrementFolioUniversitasCard
-thumb-func 0x08037F48 ExitFolioUniversitas
+c-file 0x08037120 0x0803715C src/menu/draw_folio_bruti_heading.c DrawFolioBrutiHeading
+c-file 0x0803715C 0x080371E0 src/menu/draw_folio_bruti_monster_text.c DrawFolioBrutiMonsterText
+c-file 0x080371E0 0x0803724C src/menu/draw_folio_bruti_grid.c DrawFolioBrutiGrid
+c-file 0x0803724C 0x08037274 src/save/clear_monster_dex_new_flags.c ClearMonsterDexNewFlags
+c-file 0x08037274 0x080372B0 src/menu/draw_folio_bruti_spell_labels.c DrawFolioBrutiSpellLabels
+c-file 0x080372B0 0x080373D4 src/gamemode/modes/folio_universitas/initialize_folio_universitas.c InitializeFolioUniversitas
+c-file 0x080373D4 0x0803774C src/gamemode/modes/folio_universitas/update_folio_universitas.c UpdateFolioUniversitas
+c-file 0x0803774C 0x080377A8 src/save/increment_folio_universitas_card.c IncrementFolioUniversitasCard
+c-file 0x080377A8 0x08037800 src/save/decrement_folio_universitas_card.c DecrementFolioUniversitasCard
+thumb-func 0x08037800 DrawFolioCardSlot
+c-file 0x0803793C 0x08037BE8 src/menu/draw_folio_universitas_button_hints.c DrawFolioUniversitasButtonHints
+thumb-func 0x08037BE8 DrawFolioUniversitasNames
+c-file 0x08037CB0 0x08037DB8 src/menu/set_folio_combo_slot.c SetFolioComboSlot
+c-file 0x08037DB8 0x08037E70 src/menu/update_folio_combo_slots.c UpdateFolioComboSlots
+c-file 0x08037E70 0x08037F48 src/menu/highlight_folio_combo_slot.c HighlightFolioComboSlot
+c-file 0x08037F48 0x08037F8C src/gamemode/modes/folio_universitas/exit_folio_universitas.c ExitFolioUniversitas
 c-file 0x08037F8C 0x08037FB8 src/save/deserialize_folio_universitas.c DeserializeFolioUniversitas
 c-file 0x08037FB8 0x08037FE4 src/save/serialize_folio_universitas.c SerializeFolioUniversitas
+c-file 0x08037FE4 0x08038010 src/menu/spawn_folio_card_thumbnail.c SpawnFolioCardThumbnail
+c-file 0x08038010 0x0803803C src/save/is_folio_universitas_card_seen.c IsFolioUniversitasCardSeen
+c-file 0x0803803C 0x08038060 src/menu/get_folio_universitas_selected_combo.c GetFolioUniversitasSelectedCombo
+c-file 0x08038060 0x080380EC src/menu/spawn_folio_universitas_button_prompts.c SpawnFolioUniversitasButtonPrompts
+c-file 0x080380EC 0x08038164 src/menu/spawn_folio_universitas_cursor.c SpawnFolioUniversitasCursor
+c-file 0x08038164 0x0803817C src/menu/draw_folio_universitas_card_slots.c DrawFolioUniversitasCardSlots
+c-file 0x0803817C 0x080381E0 src/menu/draw_folio_universitas_headings.c DrawFolioUniversitasHeadings
+c-file 0x080381E0 0x080381F4 src/menu/get_folio_universitas_selected_card.c GetFolioUniversitasSelectedCard
+c-file 0x080381F4 0x08038220 src/save/is_folio_universitas_card_new.c IsFolioUniversitasCardNew
+c-file 0x08038220 0x08038234 src/save/clear_folio_universitas_new_cards.c ClearFolioUniversitasNewCards
+c-file 0x08038234 0x08038290 src/menu/is_folio_universitas_card_unavailable.c IsFolioUniversitasCardUnavailable
 c-file 0x08038290 0x08038320 src/gamemode/modes/gamecube_link/initialize_gamecube_link.c InitializeGameCubeLink
 c-file 0x08038320 0x08038400 src/gamemode/modes/gamecube_link/update_gamecube_link.c UpdateGameCubeLink
 thumb-func 0x08038400 UpdateGameCubeLinkStatusText
@@ -921,7 +947,7 @@ c-file 0x0803860C 0x08038650 src/gamemode/modes/gamecube_link/exit_gamecube_link
 thumb-func 0x08038650 ShowGameCubeLinkMessage
 thumb-func 0x08038694 SpawnGameCubeLinkIconObjects
 thumb-func 0x080386F0 DispatchGameCubeLinkCommand
-c-file 0x080387DC 0x08038874 src/gamemode/modes/help/is_help_topic_unlocked.c IsHelpTopicUnlocked
+c-file 0x080387DC 0x08038874 src/menu/is_help_topic_unlocked.c IsHelpTopicUnlocked
 thumb-func 0x08038874 StartHelpScreen
 c-file 0x08038970 0x08038B8C src/gamemode/modes/help/update_help.c UpdateHelp
 thumb-func 0x08038B8C LeaveHelpScreen
@@ -988,9 +1014,11 @@ thumb-func 0x0803AD00 SetCardTradeSlotCard
 thumb-func 0x0803AD78 DrawCardTradeSlotName
 thumb-func 0x0803ADD0 ShowCardTradeMessage
 thumb-func 0x0803AE78 LeaveCardTradeScreen
-thumb-func 0x0803AEA0 InitializeFolioCardDetailScreen
-thumb-func 0x0803AFA0 HandleFolioCardDetailScreenTick
-thumb-func 0x0803AFCC ExitFolioCardDetailScreen
+c-file 0x0803AEA0 0x0803AFA0 src/gamemode/modes/folio_universitas_card_details/initialize_folio_card_detail_screen.c InitializeFolioCardDetailScreen
+c-file 0x0803AFA0 0x0803AFCC src/gamemode/modes/folio_universitas_card_details/handle_folio_card_detail_screen_tick.c HandleFolioCardDetailScreenTick
+c-file 0x0803AFCC 0x0803AFE4 src/gamemode/modes/folio_universitas_card_details/exit_folio_card_detail_screen.c ExitFolioCardDetailScreen
+c-file 0x0803AFE4 0x0803B03C src/menu/spawn_folio_card_object.c SpawnFolioCardObject
+c-file 0x0803B03C 0x0803B0C0 src/menu/draw_folio_card_detail_text.c DrawFolioCardDetailText
 c-file 0x0803B0C0 0x0803B0D0 src/mem/clear_system_memory.c ClearSystemMemory
 c-file 0x0803B0D0 0x0803B144 src/mem/clear_work_ram.c ClearWorkRam
 c-file 0x0803B144 0x0803B158 src/mem/clear_video_memory.c ClearVideoMemory
@@ -1252,6 +1280,7 @@ c-file 0x0804E6B4 0x0804F404 src/graphics/assets/monster_graphics_table.c g_pMon
 
 # Folio Bruti monster stat table, decompiled to C
 c-file 0x0804F410 0x0804FA88 src/battle/monsters.c MonsterTable
+c-file 0x0804FA88 0x0804FB9C src/graphics/assets/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
 c-file 0x0804FB9C 0x0804FC28 src/battle/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
 
 c-file 0x0804FC28 0x0804FE50 src/battle/monster_drop_table.c g_pMonsterDropTable
@@ -1320,14 +1349,20 @@ c-file 0x080693B0 0x080693CC src/gamemode/modes/minigame/serve_pumpkin_juice/upd
 c-file 0x080693CC 0x080693E4 src/room/objects/SpawnPushResetButtonObject.globals.c g_RoomObjUnk8Sprite
 c-file 0x0806945C 0x0806950C src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C 0x08069568 src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
+c-file 0x08069568 0x080695A4 src/gamemode/modes/folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control
+c-file 0x080695A4 0x080696B0 src/graphics/assets/folio_anims.c g_aFolioBrutiCursorAnim
+c-file 0x080696B0 0x080696EC src/gamemode/modes/folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
+c-file 0x080696EC 0x08069A2C src/graphics/assets/folio_card_thumbnails.c g_aFolioCardThumbnails
 c-file 0x08069A2C 0x08069A50 src/gamemode/modes/gamecube_link/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069AB8 0x08069C70 src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
-c-file 0x08069C70 0x0806B190 src/gamemode/modes/help/help_pages.c g_aHelpFolioUniversitas
+c-file 0x08069C70 0x0806B190 src/menu/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B190 0x0806B214 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B238 0x0806B250 src/gamemode/modes/connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B2FC 0x0806B35C src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B35C 0x0806B3AC src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
+c-file 0x0806B3CC 0x0806B3D8 src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
+c-file 0x0806B3D8 0x0806B7D4 src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
 c-file 0x0806B7D4 0x0806B80C src/room/objects/SpawnRaisingPlatformObject.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B80C 0x0806B81C src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions

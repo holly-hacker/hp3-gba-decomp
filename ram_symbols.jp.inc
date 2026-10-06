@@ -293,6 +293,8 @@
 .set g_bConnectivityMenuCursor, 0x0300531C  @ see ram_symbols.us.inc
 .set g_StatusEquipItemSelect,      0x03005328  @ see ram_symbols.us.inc
 .set g_bFoliosMenuCursor, 0x03005358  @ see ram_symbols.us.inc
+.set g_FolioBrutiState,            0x03005360  @ see ram_symbols.us.inc
+.set g_FolioUniversitasState,      0x030053A0  @ see ram_symbols.us.inc
 .set g_HelpState,                 0x030053D0  @ see ram_symbols.us.inc
 .set g_ItemsItemSelect,            0x03005538  @ see ram_symbols.us.inc
 .set g_ItemsSectionSelectNextMode, 0x03005544  @ see ram_symbols.us.inc

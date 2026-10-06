@@ -12,7 +12,7 @@ extern const u8 gPatronusCutscene005[];
 extern const u8 gPatronusCutscene006[];
 
 /* CutsceneDrawings */
-extern const u8 gCutsceneDrawingsStartup001[];
+extern const u8 gCardComboDescriptionPanel[];
 extern const u8 gCreditsGraphic[];
 extern const u8 gIntroCutsceneGraphic[];
 extern const u8 gHarryArrivedAtHogwartsCutsceneGraphic[];
