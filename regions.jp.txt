@@ -574,8 +574,8 @@ thumb-func 0x08026318 HandleVCountInterrupt
 thumb-func 0x08026350 HandleTimer0Interrupt_candidate
 thumb-func 0x08026378 HandleTimer3Interrupt_candidate
 thumb-func 0x080263A0 IntrDummy
-c-file 0x080263A4 0x08026470 src/room/objects/sub_08026348.c sub_08026348
-c-file 0x08026470 0x0802654C src/room/objects/sub_08026414.c sub_08026414
+c-file 0x080263A4 0x08026470 src/room/objects/SpawnTriggerRectObject.c SpawnTriggerRectObject
+c-file 0x08026470 0x0802654C src/room/objects/SpawnTriggerZoneObject.c SpawnTriggerZoneObject
 thumb-func 0x0802654C sub_080264F0
 thumb-func 0x08026614 sub_080265B8
 thumb-func 0x080266D0 sub_08026674
@@ -649,9 +649,9 @@ thumb-func 0x0802B5E8 HandleWanderingMonsterTouch
 thumb-func 0x0802BA68 GetEncounterKindTerrainType
 thumb-func 0x0802BA78 FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BB2C PickMaxDamageMonster
-c-file 0x0802BB5C 0x0802BC08 src/room/objects/sub_0802BB00.c sub_0802BB00
+c-file 0x0802BB5C 0x0802BC08 src/room/objects/SpawnDoorObject.c SpawnDoorObject
 thumb-func 0x0802BC08 sub_0802BBAC
-c-file 0x0802BCB0 0x0802BCD0 src/room/objects/sub_0802BC54.c sub_0802BC54
+c-file 0x0802BCB0 0x0802BCD0 src/room/objects/SpawnPortraitDoorObject.c SpawnPortraitDoorObject
 thumb-func 0x0802BCD0 sub_0802BC74
 thumb-func 0x0802BCF0 GrantPartyExperience_candidate
 c-file 0x0802BE48 0x0802BE88 src/math/install_iwram_divide_routines.c InstallIwramDivideRoutines
@@ -711,7 +711,7 @@ thumb-func 0x0802DDF0 sub_0802DDAC
 thumb-func 0x0802DF6C IsBlockingCollisionType
 thumb-func 0x0802DF80 ApplyRoomSwitchEffect
 thumb-func 0x0802E740 RestorePendingCameraFocus_candidate
-c-file 0x0802F544 0x0802F704 src/room/objects/sub_0802F500.c sub_0802F500
+c-file 0x0802F544 0x0802F704 src/room/objects/SpawnNpcObject.c SpawnNpcObject
 thumb-func 0x0802F704 sub_0802F6C0
 thumb-func 0x0802F834 sub_0802F7F0
 thumb-func 0x0802FD04 sub_0802FCC0
@@ -813,7 +813,7 @@ thumb-func 0x08035374 sub_08035330
 thumb-func 0x080353E0 sub_0803539C
 thumb-func 0x0803545C sub_08035418
 thumb-func 0x080354B8 sub_08035474
-c-file 0x08035584 0x080356A8 src/room/objects/sub_08035540.c sub_08035540
+c-file 0x08035584 0x080356A8 src/room/objects/SpawnPushResetButtonObject.c SpawnPushResetButtonObject
 thumb-func 0x080356A8 sub_08035664
 thumb-func 0x08035768 sub_08035724
 c-file 0x080357A8 0x080358DC src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
@@ -923,7 +923,7 @@ c-file 0x0803B594 0x0803B5C8 src/rng/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B5C8 0x0803B600 src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 0x0803B65C src/rng/next.c Mt19937Next
 c-file 0x0803B65C 0x0803B6B4 src/rng/next2.c Mt19937Next2
-c-file 0x0803B6B4 0x0803B784 src/room/objects/sub_0803B64C.c sub_0803B64C
+c-file 0x0803B6B4 0x0803B784 src/room/objects/SpawnRaisingPlatformObject.c SpawnRaisingPlatformObject
 thumb-func 0x0803B784 sub_0803B71C
 thumb-func 0x0803BA80 sub_0803BA18
 c-file 0x0803BC70 0x0803BD04 src/save/load_save_slot_previews.c LoadSaveSlotPreviews
@@ -993,7 +993,7 @@ thumb-func 0x0803FFD8 PlaySoundEffect_candidate
 thumb-func 0x0803FFF4 IsSoundActive_candidate
 c-file 0x08040000 0x08040030 src/audio/apply_audio_volume_settings.c ApplyAudioVolumeSettings
 c-file 0x08040074 0x080400A0 src/audio/on_krawall_event.c OnKrawallEvent
-c-file 0x080400A0 0x0804017C src/room/objects/sub_08040038.c sub_08040038
+c-file 0x080400A0 0x0804017C src/room/objects/SpawnSpongifyPadObject.c SpawnSpongifyPadObject
 thumb-func 0x0804017C sub_08040114
 thumb-func 0x080403C0 sub_08040358
 thumb-func 0x080411C4 InitializeFredAndGeorgesShop
@@ -1055,13 +1055,13 @@ thumb-func 0x08044308 BuildOptionsScreen_candidate
 thumb-func 0x0804452C MoveOptionsCursor_candidate
 thumb-func 0x08044614 AdjustOptionValue_candidate
 c-file 0x080446DC 0x08044748 src/gamemode/modes/options/exit_options.c ExitOptions
-c-file 0x080447C0 0x0804488C src/room/objects/sub_08044894.c sub_08044894
+c-file 0x080447C0 0x0804488C src/room/objects/SpawnFlamePillarObject.c SpawnFlamePillarObject
 thumb-func 0x0804488C sub_08044960
 thumb-func 0x08044A08 sub_08044ADC
 c-file 0x08044A2C 0x08044AA8 src/gamemode/modes/cutscene/cool_train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
 c-file 0x08044AA8 0x08044B1C src/gamemode/modes/cutscene/cool_train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file 0x08044B1C 0x08044B2C src/gamemode/modes/cutscene/cool_train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
-c-file 0x08044B2C 0x08044C50 src/room/objects/sub_08044C00.c sub_08044C00
+c-file 0x08044B2C 0x08044C50 src/room/objects/SpawnSwitchObject.c SpawnSwitchObject
 thumb-func 0x08044C50 sub_08044D24
 thumb-func 0x08044E80 sub_08044F54
 c-file 0x08044FC0 0x08045000 src/graphics/scanline/init_scanline_effects.c InitScanlineEffects
@@ -1085,7 +1085,7 @@ thumb-func 0x08045764 SetScreenWindowLayers_candidate
 thumb-func 0x080457D4 SetScreenWindowRect_candidate
 thumb-func 0x0804589C TickScreenWindows_candidate
 thumb-func 0x080458B4 sub_08045988
-c-file 0x08045A14 0x08045DF8 src/room/objects/sub_08045AE8.c sub_08045AE8
+c-file 0x08045A14 0x08045DF8 src/room/objects/SpawnPropObject.c SpawnPropObject
 thumb-func 0x08045DF8 sub_08045ECC
 thumb-func 0x08046448 sub_0804651C
 thumb-func 0x08046500 sub_080465D4
@@ -1189,7 +1189,7 @@ c-file 0x080656BC 0x08065798 src/gamemode/modes/overworld/room_quest_music_overr
 c-file 0x08065798 0x080657A8 src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
 c-file 0x08065C48 0x08065FA8 src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x08065FE8 0x08065FF0 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
-c-file 0x08066DD0 0x08066F88 src/room/objects/sub_0802F500.globals.c g_adwRoomObjUnk6FrameRows
+c-file 0x08066DD0 0x08066F88 src/room/objects/SpawnNpcObject.globals.c g_adwRoomObjUnk6FrameRows
 c-file 0x08066F88 0x08067818 src/graphics/assets/object_type_assets.c g_aObjectTypeAssets
 c-file 0x08067818 0x08067848 src/room/objects/room_obj_unk6_frames.c g_abRoomObjUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
@@ -1201,16 +1201,16 @@ c-file 0x08068C90 0x08068CC8 src/gamemode/modes/minigame/wizard_cracker_pop_it/w
 c-file 0x08069110 0x08069120 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
 c-file 0x080692B4 0x0806933C src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x0806933C 0x08069358 src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file 0x08069358 0x08069370 src/room/objects/sub_08035540.globals.c g_RoomObjUnk8Sprite
+c-file 0x08069358 0x08069370 src/room/objects/SpawnPushResetButtonObject.globals.c g_RoomObjUnk8Sprite
 c-file 0x08069A44 0x08069BFC src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x0806B11C 0x0806B1A0 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B288 0x0806B2E8 src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
-c-file 0x0806B760 0x0806B798 src/room/objects/sub_0803B64C.globals.c g_RoomRaisingPlatformSprite
+c-file 0x0806B760 0x0806B798 src/room/objects/SpawnRaisingPlatformObject.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B798 0x0806B7A8 src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B858 0x0806B868 src/mem/clear_work_ram.globals.c g_pIwramSectionStart
-c-file 0x0806B868 0x0806B8C0 src/room/objects/sub_08040038.globals.c g_aRoomSpongifyPadSprites
+c-file 0x0806B868 0x0806B8C0 src/room/objects/SpawnSpongifyPadObject.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 0x0806B9D8 src/shop/shop_stock.c g_aShopStockMisc
 c-file 0x0806BA8C 0x0806BAFC src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
 c-file 0x0806BAFC 0x0806BD04 src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
@@ -1222,12 +1222,12 @@ c-file 0x0806BEB0 0x0806BED0 src/gamemode/modes/cutscene/harry_hermione_port_in_
 c-file 0x0806BF40 0x0806BF4C src/gamemode/modes/main_menu/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BF4C 0x0806BF64 src/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BF9C 0x0806C044 src/gamemode/modes/options/options_menu_items.c g_aOptionsMenuItems
-c-file 0x0806C068 0x0806C0B0 src/room/objects/sub_08044894.globals.c g_aRoomFlamePillarSprites
+c-file 0x0806C068 0x0806C0B0 src/room/objects/SpawnFlamePillarObject.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C0B0 0x0806C0B4 src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
-c-file 0x0806C0B4 0x0806C13C src/room/objects/sub_08044C00.globals.c g_aRoomSwitchSprites
+c-file 0x0806C0B4 0x0806C13C src/room/objects/SpawnSwitchObject.globals.c g_aRoomSwitchSprites
 c-file 0x0806C22C 0x0806C23C src/graphics/scanline/default_scanline_effects.c g_aDefaultScanlineEffects
-c-file 0x0806C240 0x0806E840 src/room/objects/sub_08045AE8.globals.c g_aRoomObjTriggerSprites
+c-file 0x0806C240 0x0806E840 src/room/objects/SpawnPropObject.globals.c g_aRoomObjTriggerSprites
 graphics 0x0806E840 0x080780E0 overworld OverworldSpellEffects
 graphics 0x080780E0 0x0807E734 battle AllyHeads
 graphics 0x0807E734 0x080A6C90 overworld OverworldPlayerSprites

@@ -120,23 +120,25 @@ are padding. Each type has an assembler macro in `asm/room_blob.inc` that takes
 these field names: `TileAnimation` (1), `Door` (2), `Switch` (3),
 `TriggerZone` (4), `Prop` (5), `Npc` (6), `TriggerRect` (7), `Breakable` (8),
 `Chest` (9), `MovePlayer` (10), `TimedHazard` (11), `ContactTrigger` (12) and
-`DoorAlt` (13). The names for types 10-13 and the field names written
-`arg_XX`/`unk_XX` are placeholders where the role is not established.
+`DoorAlt` (13). The field names written `arg_XX`/`unk_XX` are placeholders
+where the role is not established. The constructors are named after the roles
+below (`SpawnDoorObject`, ..., `SpawnPortraitDoorObject`; see
+`g_apRoomObjectConstructors`).
 
 | Type | Size | Role | Fields (offset) |
 |---|---|---|---|
 | 1 | 12 | room tile animation | `anim_id` (8), `flag` (9) |
-| 2, 13 | 16 | door: moves the player to another room (13 goes through game mode 8) | `half_width` (8), `half_height` (9) collision box; `exit_param` (A) is the destination's entry id; `destination_room` (B); `chain` (C) runs instead of leaving when nonzero; `require_a_press` (D) |
+| 2, 13 | 16 | door: moves the player to another room through game mode 8. Type 13 is a portrait door, linking each floor with `portrait_room` (31): it enters `portrait_room_passage` (32) first, with the destination as the next game mode argument, and from there leaves directly | `half_width` (8), `half_height` (9) collision box; `exit_param` (A) is the destination's entry id; `destination_room` (B); `chain` (C) runs instead of leaving when nonzero; `require_a_press` (D) |
 | 3 | 20 | two-state switch | `variant` (9) selects sprite and trigger kind; `rearm_delay` (A, u16, x30 ticks); `initial_frame` (C); pairs at E/F and 10/11 run on the first and second activation (`on_activate_*`, `on_deactivate_*`) |
 | 4 | 20 | trigger zone | `half_width`, `half_height` (8, 9); `rearm_delay` (A, u16, x30 ticks); `trigger_kind` (C): 0 fires once on touch, other values re-arm after `rearm_delay`, 3-5 fire when hit by overworld spell effect 2, 3 or 4 (object type `0xF`, spell index in `wCharacterId`), 2 reacts to type 5 objects; `require_a_press` (D); pair at F/10 |
 | 5 | 24 | scripted prop; `kind` (C, 0-82) selects sprite and behavior | `facing` (D); `chain` (14) runs when a spell hits it; others unresolved |
 | 6 | 16 | NPC | `sprite` (8, index into `g_aObjectTypeAssets`); `facing` (9, stored halved); `interact_cooldown` (A, u16, x30 ticks); `interact_mode` (C): 0 interactable once, 1 repeatable after the cooldown; pair at D/E runs on interaction (both zero: not interactable) |
 | 7 | 20 | trigger zone with explicit edges | `left`, `top`, `right`, `bottom` (8-B); `rearm_delay` (C, u16); `trigger_kind` (E); `require_a_press` (F); pair at 11/12 |
-| 8 | 28 | breakable that respawns other objects | `variant` (9); eight `(group, member)` targets (9..18) that are freed and respawned |
+| 8 | 28 | push puzzle reset button: any overworld spell effect (object type `0xF`) presses variant 0, and when the press animation ends the targets are respawned at their record positions. Every use targets pushable props (kind 1 blocks, kind 81 book stacks) | `variant` (8); eight `(group, member)` targets (9-0x18) that are freed and respawned |
 | 9 | 16 | chest / one-time pickup | `flag_id` (8, u16: bit in `g_abTriggeredScriptFlags`); `kind` (A, 0-3); `reward_id` (B, below 0x84 grants a reward, otherwise runs the pair); `chain` (C), `respawn_group` (D) |
-| 10 | 16 | moves the player to a point | `target_x`, `target_y` (8, A, s16); `variant` (C) |
-| 11 | 16 | timed hazard; contact runs the pair | `variant` (C); pair at D/E; two periods at 8 and A |
-| 12 | 12 | contact moves the player, then runs the pair | pair at 8/9 |
+| 10 | 16 | Spongify pad: overworld spell effect 5 arms it, then touching it launches the player and followers to the target point | `target_x`, `target_y` (8, A, s16); `variant` (C) |
+| 11 | 16 | flame jet that alternates on and off; contact runs the pair | `variant` (C); pair at D/E; off and on periods at 8 and A |
+| 12 | 12 | raising platform: the party gathers on it, it lifts them, then runs the pair | pair at 8/9; nonzero `arg_0a` (A) starts it inactive until overworld spell effect 2 hits it |
 
 ## Source files
 

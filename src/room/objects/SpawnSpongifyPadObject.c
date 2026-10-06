@@ -1,8 +1,9 @@
 #include "types.h"
 #include "overworld/room_object.h"
 
-// Room object constructor for tile objType 10; see docs/formats/rooms.md.
-Object *sub_08040038(u8 bColumn, u8 bRow)
+// Room object constructor for tile objType 10, a Spongify pad that launches the
+// party to a target point. See docs/formats/rooms.md.
+Object *SpawnSpongifyPadObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnkA *pRecord = sub_08005C38(bColumn, bRow);
     Object *pObj = AllocObjectOfType(RoomObjectType_UnkA);

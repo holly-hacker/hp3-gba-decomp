@@ -1,8 +1,9 @@
 #include "types.h"
 #include "overworld/room_object.h"
 
-// Room object constructor for tile objType 11; see docs/formats/rooms.md.
-Object *sub_08044894(u8 bColumn, u8 bRow)
+// Room object constructor for tile objType 11, a flame jet that cycles on and
+// off. See docs/formats/rooms.md.
+Object *SpawnFlamePillarObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnkB *pRecord = sub_08005C38(bColumn, bRow);
     Object *pObj = AllocObjectOfType(RoomObjectType_UnkB);

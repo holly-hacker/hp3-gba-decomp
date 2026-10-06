@@ -1,9 +1,9 @@
 #include "types.h"
 #include "overworld/room_object.h"
 
-// Room object constructor for tile objType 6; see docs/formats/rooms.md.
+// Room object constructor for tile objType 6, an NPC; see docs/formats/rooms.md.
 // bFighterIndex doubles as the kind index into the asset tables.
-Object *sub_0802F500(u8 bColumn, u8 bRow)
+Object *SpawnNpcObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk6 *pRecord = sub_08005C38(bColumn, bRow);
     Object *pObj = AllocObjectOfType(pRecord->dwObjectType);

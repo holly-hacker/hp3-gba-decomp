@@ -1,8 +1,9 @@
 #include "types.h"
 #include "overworld/room_object.h"
 
-// Room object constructor for tile objType 2; see docs/formats/rooms.md.
-Object *sub_0802BB00(u8 bColumn, u8 bRow)
+// Room object constructor for tile objType 2, a door to another room.
+// See docs/formats/rooms.md.
+Object *SpawnDoorObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk2 *pRecord = sub_08005C38(bColumn, bRow);
     Object *pObj = AllocObjectOfType(pRecord->dwObjectType);

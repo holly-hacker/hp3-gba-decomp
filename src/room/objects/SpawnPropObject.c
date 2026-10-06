@@ -1,8 +1,9 @@
 #include "types.h"
 #include "overworld/room_object.h"
 
-// Room object constructor for tile objType 5; see docs/formats/rooms.md.
-Object *sub_08045AE8(u8 bColumn, u8 bRow)
+// Room object constructor for tile objType 5, a scripted prop whose kind selects
+// its sprite and behavior. See docs/formats/rooms.md.
+Object *SpawnPropObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk5 *pRecord = sub_08005C38(bColumn, bRow);
     Object *pObj = AllocObjectOfType(RoomObjectType_ScriptedTrigger);

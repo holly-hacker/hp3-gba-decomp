@@ -1,8 +1,9 @@
 #include "types.h"
 #include "overworld/room_object.h"
 
-// Room object constructor for tile objType 8; see docs/formats/rooms.md.
-Object *sub_08035540(u8 bColumn, u8 bRow)
+// Room object constructor for tile objType 8, a button that a spell presses to
+// respawn a push puzzle's objects. See docs/formats/rooms.md.
+Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk8 *pRecord = sub_08005C38(bColumn, bRow);
     Object *pObj = AllocObjectOfType(RoomObjectType_Unk8);

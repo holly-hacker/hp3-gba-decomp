@@ -2,8 +2,9 @@
 #include "overworld/overworld.h"
 #include "overworld/room_object.h"
 
-// Room object constructor for tile objType 3; see docs/formats/rooms.md.
-Object *sub_08044C00(u8 bColumn, u8 bRow)
+// Room object constructor for tile objType 3, a two-state switch (button,
+// pressure plate or lever). See docs/formats/rooms.md.
+Object *SpawnSwitchObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk3 *pRecord = sub_08005C38(bColumn, bRow);
     Object *pObj = AllocDefaultObject();

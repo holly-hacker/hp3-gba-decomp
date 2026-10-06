@@ -56,18 +56,18 @@ extern void sub_08030844(Object *pObj, const void *pEffectData);
 extern const RoomObjectConstructor g_apRoomObjectConstructors[ROOM_OBJECT_TYPE_COUNT];  // ROM 0x0804C054 (US)
 
 extern Object *SpawnRoomTileAnimationObject_candidate(u8 bColumn, u8 bRow);
-extern Object *sub_0802BB00(u8 bColumn, u8 bRow);
-extern Object *sub_08044C00(u8 bColumn, u8 bRow);
-extern Object *sub_08026414(u8 bColumn, u8 bRow);
-extern Object *sub_08045AE8(u8 bColumn, u8 bRow);
-extern Object *sub_0802F500(u8 bColumn, u8 bRow);
-extern Object *sub_08026348(u8 bColumn, u8 bRow);
-extern Object *sub_08035540(u8 bColumn, u8 bRow);
+extern Object *SpawnDoorObject(u8 bColumn, u8 bRow);
+extern Object *SpawnSwitchObject(u8 bColumn, u8 bRow);
+extern Object *SpawnTriggerZoneObject(u8 bColumn, u8 bRow);
+extern Object *SpawnPropObject(u8 bColumn, u8 bRow);
+extern Object *SpawnNpcObject(u8 bColumn, u8 bRow);
+extern Object *SpawnTriggerRectObject(u8 bColumn, u8 bRow);
+extern Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow);
 extern Object *SpawnScriptedOneTimeObject(u8 bColumn, u8 bRow);
-extern Object *sub_08040038(u8 bColumn, u8 bRow);
-extern Object *sub_08044894(u8 bColumn, u8 bRow);
-extern Object *sub_0803B64C(u8 bColumn, u8 bRow);
-extern Object *sub_0802BC54(u8 bColumn, u8 bRow);
+extern Object *SpawnSpongifyPadObject(u8 bColumn, u8 bRow);
+extern Object *SpawnFlamePillarObject(u8 bColumn, u8 bRow);
+extern Object *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow);
+extern Object *SpawnPortraitDoorObject(u8 bColumn, u8 bRow);
 
 extern void sub_08044960(Object *pObj);
 extern void sub_08044ADC(Object *pSelf, Object *pOther);
