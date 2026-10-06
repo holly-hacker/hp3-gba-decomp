@@ -13,7 +13,7 @@ void InitializeConnectivityMenu(void)
 
     if (g_saveManager.header.bHeaderFlags.all & flOwlCareKitUnlocked)
     {
-        if ((g_saveStateBlock.bOwlCareKitFlags & 1) == 0)
+        if ((g_saveStateBlock.owlCareKit.bFlags & 1) == 0)
             g_ConnectivityMenu.pEntries = g_aConnectivityOwlNameEntries;
         else
             g_ConnectivityMenu.pEntries = g_aConnectivityOwlCareEntries;

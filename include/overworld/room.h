@@ -3,6 +3,7 @@
 #include "types.h"
 #include "graphics/object.h"
 #include "overworld/room_script.h"
+#include "overworld/room_object_state.h"
 
 // A pixel coordinate in room space, passed by value.
 typedef struct PixelPoint {
@@ -222,7 +223,6 @@ extern void InitRoomTileAnimationTable(void);
 
 // Snapshot of the current room's non-default objects; see docs/formats/save.md.
 #define ROOM_OBJECT_STATE_BUFFER_SIZE 0x20BC
-extern void *g_pRoomObjectStateBuffer;
 extern void InitRoomState(void);
 extern void InitRoomScriptState_candidate(void);
 extern void RestoreRoomObjectState(void);

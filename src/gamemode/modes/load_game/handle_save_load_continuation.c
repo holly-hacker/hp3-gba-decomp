@@ -20,7 +20,7 @@ void HandleSaveLoadContinuation(void)
         if (ValidateSaveSlot(g_saveManager.dwActiveSlot))
         {
             ClearRoomObjectStateBuffer();
-            sub_0803BD48(g_saveManager.dwActiveSlot);
+            UnpackSaveSlot(g_saveManager.dwActiveSlot);
 
             if (g_saveStateBlock.bSaveFlags & ContinueRestartsIntro)
             {

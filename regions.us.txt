@@ -262,6 +262,8 @@ thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
+c-file 0x0800CAE8 0x0800CAF8 src/save/initialize_playtime_struct.c InitializePlaytimeStruct
+c-file 0x0800CAF8 0x0800CB04 src/save/copy_playtime.c CopyPlaytime
 thumb-func 0x0800CBF0 sub_0800CBF0
 c-file 0x0800D008 0x0800D0A0 src/graphics/palette/apply_gamma_remap_table.c ApplyGammaRemapTable
 thumb-func 0x0800D0A0 SetupColorCycles
@@ -327,6 +329,7 @@ c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterB
 thumb-func 0x08014F1C SpawnTurnOrderIcon
 c-file 0x08015020 0x080150B4 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
 thumb-func 0x080151B0 LevelUpPartyMember_candidate
+thumb-func 0x0801526C InitPartyStatForCurrentLevel
 thumb-func 0x080152CC sub_080152CC
 thumb-func 0x08015334 sub_08015334
 thumb-func 0x0801539C SetMonsterObjectAnim
@@ -344,6 +347,10 @@ thumb-func 0x080181AC ShowFloatingDamageNumber_candidate
 thumb-func 0x08018304 CheckBattleDefeat
 thumb-func 0x08018460 PruneFaintedAndRebuildTurnOrder_candidate
 thumb-func 0x080186E0 CheckBattleVictory
+thumb-func 0x0801873C ResetAllPartyLevelsTo1
+thumb-func 0x08018754 ResetPartyHpMpAndStats
+c-file 0x08018780 0x080187EC src/save/deserialize_party_stats.c DeserializePartyStats
+c-file 0x080187EC 0x08018844 src/save/serialize_party_stats.c SerializePartyStats
 thumb-func 0x080189C8 sub_080189C8
 thumb-func 0x08018AB8 sub_08018AB8
 thumb-func 0x08018ACC PostActionBattleCheck
@@ -545,11 +552,16 @@ c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
 c-file 0x080210D8 0x080211C0 src/text/text_macro.c SetTextMacroString
 thumb-func 0x080211C0 GetTextLineHeight
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
+c-file 0x080213C0 0x08021498 src/save/deserialize_game_state.c DeserializeGameStateFromSaveBuffer
+c-file 0x08021498 0x08021560 src/save/serialize_game_state.c SerializeGameStateToSaveBuffer
 c-file 0x08021560 0x08021564 src/noop_init.c NoopInit
-thumb-func 0x08021564 ResetSaveStateForNewGame
+c-file 0x08021564 0x08021580 src/save/reset_save_state_for_new_game.c ResetSaveStateForNewGame
+c-file 0x08021580 0x080215DC src/save/reset_quest_state_for_new_game.c ResetQuestStateForNewGame
+c-file 0x080215DC 0x08021604 src/save/start_new_game_playtime.c StartNewGamePlaytime
 c-file 0x08021604 0x08021650 src/save/unpack_save_slot_preview.c UnpackSaveSlotPreview
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x0802165C 0x08021694 src/save/process_playtime_tick.c ProcessPlaytimeTick
+c-file 0x08021694 0x080216A0 src/save/set_sickles.c SetSickles
 thumb-func 0x080216A0 AddSickles
 thumb-func 0x08021A58 InitJoybusSession
 thumb-func 0x08021AF4 TickJoybusSession
@@ -558,6 +570,8 @@ thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
 thumb-func 0x08021DF8 ProcessOwlCareKitTick
 thumb-func 0x08022D98 HandleOwlCareKitScreenExit
+c-file 0x08022E6C 0x08022EA8 src/save/deserialize_owl_care_kit.c DeserializeOwlCareKit
+c-file 0x08022EA8 0x08022EE4 src/save/serialize_owl_care_kit.c SerializeOwlCareKit
 thumb-func 0x080233E4 SpawnPlayerObject_candidate
 thumb-func 0x08023644 SyncFollowerLevelToLeader_candidate
 thumb-func 0x080236DC sub_080236DC
@@ -613,11 +627,16 @@ thumb-func 0x080264F0 sub_080264F0
 thumb-func 0x080265B8 sub_080265B8
 thumb-func 0x08026674 sub_08026674
 c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
+thumb-func 0x08026870 sub_08026870
 thumb-func 0x080269E0 sub_080269E0
 thumb-func 0x08026B8C GetRewardNameStringId_candidate
 thumb-func 0x08026CDC sub_08026CDC
 thumb-func 0x08026CF0 sub_08026CF0
 thumb-func 0x08026D34 sub_08026D34
+c-file 0x08026D4C 0x08026D58 src/save/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame_candidate
+thumb-func 0x08026D58 ClearItemInventory
+c-file 0x08026DA0 0x08026DC0 src/save/serialize_item_quantities.c SerializeItemQuantities
+c-file 0x08026DC0 0x08026DE0 src/save/deserialize_item_quantities.c DeserializeItemQuantities
 c-file 0x08026DE0 0x08026E2C src/items/grant_reward.c GrantReward
 
 thumb-func 0x08026E2C ConsumeBattleItemSlot
@@ -661,6 +680,8 @@ thumb-func 0x080295E0 LupinPotionPanelScanlineCallback_candidate
 c-file 0x08029690 0x080297A0 src/main.c AgbMain
 c-file 0x080297A0 0x0802A14C src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
 c-file 0x0802A14C 0x0802A2A4 src/gamemode/modes/overworld/exit_overworld_screen.c ExitOverworldScreen
+c-file 0x0802A3D4 0x0802A570 src/save/deserialize_room_object_state.c DeserializeRoomObjectState
+c-file 0x0802A570 0x0802A70C src/save/serialize_room_object_state.c SerializeRoomObjectState
 thumb-func 0x0802AB34 RestoreRoomObjectState
 thumb-func 0x0802AE64 RestoreRoomObjectStateMinimal
 c-file 0x0802AEF8 0x0802B018 src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
@@ -881,13 +902,17 @@ c-file 0x080369CC 0x08036A20 src/gamemode/modes/folios/initialize_folios.c Initi
 c-file 0x08036A20 0x08036A64 src/gamemode/modes/folios/exit_folios.c ExitFolios
 thumb-func 0x08036A64 InitializeFolioBruti
 thumb-func 0x08036BB8 UpdateFolioBrutiGridCursor
+c-file 0x08036D0C 0x08036D60 src/save/deserialize_monster_dex_levels.c DeserializeMonsterDexLevels
 thumb-func 0x08037048 ExitFolioBruti
+c-file 0x080370A0 0x080370E8 src/save/serialize_monster_dex_levels.c SerializeMonsterDexLevels
 thumb-func 0x08037104 sub_08037104
 thumb-func 0x080372B0 InitializeFolioUniversitas
 thumb-func 0x080373D4 UpdateFolioUniversitas
 thumb-func 0x0803774C IncrementFolioUniversitasCard
 thumb-func 0x080377A8 DecrementFolioUniversitasCard
 thumb-func 0x08037F48 ExitFolioUniversitas
+c-file 0x08037F8C 0x08037FB8 src/save/deserialize_folio_universitas.c DeserializeFolioUniversitas
+c-file 0x08037FB8 0x08037FE4 src/save/serialize_folio_universitas.c SerializeFolioUniversitas
 c-file 0x08038290 0x08038320 src/gamemode/modes/gamecube_link/initialize_gamecube_link.c InitializeGameCubeLink
 c-file 0x08038320 0x08038400 src/gamemode/modes/gamecube_link/update_gamecube_link.c UpdateGameCubeLink
 thumb-func 0x08038400 UpdateGameCubeLinkStatusText
@@ -980,16 +1005,27 @@ c-file 0x0803B5F4 0x0803B64C src/rng/next2.c Mt19937Next2
 c-file 0x0803B64C 0x0803B71C src/room/objects/SpawnRaisingPlatformObject.c SpawnRaisingPlatformObject
 thumb-func 0x0803B71C sub_0803B71C
 thumb-func 0x0803BA18 sub_0803BA18
+c-file 0x0803BAF4 0x0803BB78 src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
+c-file 0x0803BB78 0x0803BC08 src/save/pack_bit_pairs_to_save_stream.c PackBitPairsToSaveStream
 c-file 0x0803BC08 0x0803BC9C src/save/load_save_slot_previews.c LoadSaveSlotPreviews
 c-file 0x0803BC9C 0x0803BD04 src/save/init_save_system.c InitSaveSystem
 c-file 0x0803BD04 0x0803BD2C src/save/set_save_language_flag.c SetSaveLanguageFlag
 c-file 0x0803BD2C 0x0803BD48 src/save/clear_save_slot_buffer.c ClearSaveSlotBuffer
-thumb-func 0x0803BD48 sub_0803BD48
+c-file 0x0803BD48 0x0803BD84 src/save/unpack_save_slot.c UnpackSaveSlot
+c-file 0x0803BD84 0x0803BDDC src/save/refresh_save_slot_preview.c RefreshSaveSlotPreview
 c-file 0x0803BDDC 0x0803BE10 src/save/unpack_bytes_from_save_stream.c UnpackBytesFromSaveStream
-thumb-func 0x0803BF20 SaveGameToSlot
+c-file 0x0803BE10 0x0803BE74 src/save/unpack_nibbles_from_save_stream.c UnpackNibblesFromSaveStream
+c-file 0x0803BE74 0x0803BEE4 src/save/unpack_bit_pairs_from_save_stream.c UnpackBitPairsFromSaveStream
+c-file 0x0803BEE4 0x0803BF20 src/save/unpack_bits_from_save_stream.c UnpackBitsFromSaveStream
+c-file 0x0803BF20 0x0803BF9C src/save/save_game_to_slot.c SaveGameToSlot
+c-file 0x0803BF9C 0x0803C00C src/save/pack_and_checksum_save_slot.c PackAndChecksumSaveSlot
+c-file 0x0803C00C 0x0803C050 src/save/pack_bytes_to_save_stream.c PackBytesToSaveStream
+c-file 0x0803C050 0x0803C0A8 src/save/pack_bits_to_save_stream.c PackBitsToSaveStream
 c-file 0x0803C0A8 0x0803C0DC src/save/validate_save_slot.c ValidateSaveSlot
 c-file 0x0803C0DC 0x0803C0F8 src/save/load_save_slot.c LoadSaveSlot
-thumb-func 0x0803C114 SyncSaveHeaderIfDirty
+c-file 0x0803C0F8 0x0803C114 src/save/write_save_slot.c WriteSaveSlot
+c-file 0x0803C114 0x0803C178 src/save/sync_save_header_if_dirty.c SyncSaveHeaderIfDirty
+c-file 0x0803C178 0x0803C1E0 src/save/sync_save_options_if_dirty.c SyncSaveOptionsIfDirty
 c-file 0x0803C1E0 0x0803C204 src/save/sum16.c Sum16
 c-file 0x0803C204 0x0803C244 src/save/write_default_save_header.c WriteDefaultSaveHeader
 c-file 0x0803C244 0x0803C29C src/save/validate_save_header.c ValidateSaveHeader
@@ -1240,7 +1276,7 @@ c-file 0x0805E280 0x0805E28C src/gamemode/modes/startup/startup.globals.c g_dwSt
 c-file 0x0805EB10 0x0805EB34 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x080604DC 0x0806053C src/text/load_font_descriptor.globals.c g_aFontTable
-c-file 0x08060544 0x08060554 src/save/process_playtime_tick.globals.c g_stPlaytimeFrameDelta
+c-file 0x0806053C 0x08060554 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
 c-file 0x08060884 0x0806088C src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
 c-file 0x08060E8C 0x08060EC0 src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 

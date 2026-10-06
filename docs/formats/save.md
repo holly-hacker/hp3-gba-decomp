@@ -148,11 +148,17 @@ the slot buffer's start, calls `SerializeGameStateToSaveBuffer`, then
 `Sum16`s the whole `0xA98` bytes and writes `-sum` as the slot's trailing
 checksum. `SaveGameToSlot` (`0x0803BF20`) is the save-to-EEPROM operation
 for slot `N`: pack + checksum, `WriteSaveSlot`, reload + `ValidateSaveSlot`,
-then mark the slot active. The read side (`UnpackBytesFromSaveStream`/
-`UnpackNibblesFromSaveStream`/`UnpackBitsFromSaveStream`, `0x0803BDDC`/
-`0x0803BE10`/`0x0803BEE4`) is not traced -- `tools/save/parse_save.py`
-implements its own decoder/encoder pair instead of mirroring those
-functions (see "Parsing" below).
+then mark the slot active. The read side is `UnpackSaveSlot` (`0x0803BD48`), which resets the cursor,
+runs `DeserializeGameStateFromSaveBuffer` (`0x080213C0`, the mirror of
+`SerializeGameStateToSaveBuffer`) and records the stream length. The
+stream primitives are `Pack{Bytes,Bits,Nibbles,BitPairs}ToSaveStream` and
+`Unpack{Bytes,Bits,Nibbles,BitPairs}FromSaveStream`; the bit-pair pair has no
+callers. `tools/save/parse_save.py` implements its own decoder/encoder
+pair rather than mirroring those functions (see "Parsing" below).
+
+`SaveStateBlock` (`g_saveStateBlock`, `0x03003180`) is `0xB4` bytes: both
+`ResetSaveStateForNewGame` and the slot deserializer `memset` it to that
+size. It ends at `0x03003234`, where the next RAM symbol begins.
 
 **Confirmed serialized fields**, in `SerializeGameStateToSaveBuffer`'s
 emission order (byte-exact, verified by round-tripping `tools/save/parse_save.py`
@@ -171,9 +177,9 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | `0x0300338F` | `bSelectedOverworldSpell` | Per the user: the currently-selected spell in the overworld (as opposed to in battle). |
 | `0x030037B0` (`g_abItemQuantities`), 152 bytes | `itemQuantities` + `equippedItems` | see "Item quantities and equipment" below |
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
-| **room-object state** (`PackRoomObjectStateToSaveStream`, `0x0802A570`), variable-length | `roomObjectState` | data-dependent, see below |
+| **room-object state** (`SerializeRoomObjectState`, `0x0802A570`), variable-length | `roomObjectState` | data-dependent, see below |
 | `0x03002240` (`g_abOpenedChestFlags`) | `abOpenedChestFlags` (32 bytes) | **PROVEN**. A 256-bit bitset with one bit per chest `flag_id` ([`rooms.md`](rooms.md)'s "Chests"). `TickChestObject` sets a chest's bit when it is opened, and `SpawnChestObject` spawns a chest whose bit is set as already open. Zeroed by `ResetQuestStateForNewGame`; copied in and out of the save stream as one block. |
-| `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 didn't reset there. Bulk load/save through `FUN_080213c0` (`UnpackBytesFromSaveStream(g_abQuestEventState, 0x100)`) and `SerializeGameStateToSaveBuffer`; zeroed whole by `ResetQuestStateForNewGame`. Index 0 (**PROVEN**, story-stage index): read by `InitializeLoadingScreen` (`0x0800C1DA`) to look up a story-stage table entry and cached into `DAT_03003F00`; written by the room-load dispatch handler `switchD_08029d60::caseD_19` (`0x0802A09C`, part of `FUN_08029abc`, the per-room-entry setup switch) which first copies the outgoing value to index `0x12` (`g_abQuestEventState[0x12] = g_abQuestEventState[0]`) then, if a pending override (`DAT_03003B5A`) is set, applies it and clears the override; also reset to `0` by `FUN_08005aa44`, an unidentified subsystem-init routine, and resynced from `g_bBuckbeakLevel` by `FUN_0800ab34` (party level-reset routine), which additionally re-zeroes indices `0xE0`-`0xFF` whenever the Buckbeak level changed. Indices 0 and `0x10` are also written by `CheckBattleDefeat` -- see [`battle.md`](battle.md). Per-index roles: see "Quest event state" below. |
+| `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 didn't reset there. Bulk load/save through `DeserializeGameStateFromSaveBuffer` and `SerializeGameStateToSaveBuffer`; zeroed whole by `ResetQuestStateForNewGame`. Index 0 (**PROVEN**, story-stage index): read by `InitializeLoadingScreen` (`0x0800C1DA`) to look up a story-stage table entry and cached into `DAT_03003F00`; written by the room-load dispatch handler `switchD_08029d60::caseD_19` (`0x0802A09C`, part of `FUN_08029abc`, the per-room-entry setup switch) which first copies the outgoing value to index `0x12` (`g_abQuestEventState[0x12] = g_abQuestEventState[0]`) then, if a pending override (`DAT_03003B5A`) is set, applies it and clears the override; also reset to `0` by `FUN_08005aa44`, an unidentified subsystem-init routine, and resynced from `g_bBuckbeakLevel` by `FUN_0800ab34` (party level-reset routine), which additionally re-zeroes indices `0xE0`-`0xFF` whenever the Buckbeak level changed. Indices 0 and `0x10` are also written by `CheckBattleDefeat` -- see [`battle.md`](battle.md). Per-index roles: see "Quest event state" below. |
 | **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching [`folio_bruti.md`](folio_bruti.md)'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
 | `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anFolioUniversitasCounts` (51 nibbles) | Per the user: Folio Universitas (Harry's card collection) per-card count, one nibble per card. A card is only shown in-game once its count reaches at least 1. |
 | `0x0300320B` (`g_abFolioUniversitasUnlocked`) | `a1FolioUniversitasSeen` (51 bools, stored as 7 bytes, LSB-first) | Per the user: parallel per-card seen/owned flag; all-seen is stored as `ffffffffffff07`. Confirmed against a real (non-test) save (`bak.sav`): `a1FolioUniversitasSeen[i]` is true exactly where `anFolioUniversitasCounts[i] > 0`, for all 51 cards. Gates whether a card's icon is drawn locked or owned at all (`FUN_08037800`, the card-grid icon draw function). |
@@ -357,8 +363,8 @@ See [`items.md`](items.md)'s "The table as committed C source" and "Item icons"
 sections for how `g_pItemTable` itself (not the `itemQuantities`/
 `equippedItems` save fields above) and its icons are built.
 
-**Room-object state** (`roomObjectState`, packed by `PackRoomObjectStateToSaveStream`
-(`0x0802A570`), unpacked by `UnpackRoomObjectStateFromSaveStream` (`0x0802A3D4`)):
+**Room-object state** (`roomObjectState`, packed by `SerializeRoomObjectState`
+(`0x0802A570`), unpacked by `DeserializeRoomObjectState` (`0x0802A3D4`)):
 this is **not an inventory list** -- it's a snapshot of every non-default
 object currently active in the room the player is standing in (spawned
 monsters, pickups, switches, chests, etc.), keyed by world-tile position,
@@ -408,7 +414,7 @@ like a slot's `abTailPadding` when all-zero.
 | `kind5Objects` | 0xF14 | 0x34 (52) | 32 | kind `5`, when the object's byte at `+0x61` is *not* the ASCII char `'3'` |
 | `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Object` fields at all -- on restore, the respawned object's own tile position is used to look up an entry in a separate, static per-map item-drop table (`LookupFloorItemStateEntry`), and these two dwords overwrite that entry. Refreshes persistent floor-item state keyed by tile position, not the spawned object itself. |
 | `kind5SwitchObjects` | 0x1714 | 0x4 | 32 | kind `5`, when `+0x61 == '3'` -- structurally the per-object counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Object+0xc)`); a stored `1` makes restore call `MarkRoomObjectConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
-| `pickupMarkers` | 0x1794 | 0x4 | 32 | kind `0xB`. `bUnk_0x80` round-trips with a `+1` offset applied only on restore (`Object+0x80` becomes `bUnk_0x80 + 1`); captured verbatim (`Object+0x80`'s raw low byte) on save. `bUnk_0x8f`, when it equals `8` on restore, triggers an item-grant popup callback (`GrantPickupMarkerItem`). |
+| `pickupMarkers` | 0x1794 | 0x4 | 16 (the table ends at `presenceMarkers`) | kind `0xB`. `bUnk_0x80` round-trips with a `+1` offset applied only on restore (`Object+0x80` becomes `bUnk_0x80 + 1`); captured verbatim (`Object+0x80`'s raw low byte) on save. `bUnk_0x8f`, when it equals `8` on restore, triggers an item-grant popup callback (`GrantPickupMarkerItem`). |
 | `presenceMarkers` | 0x17D4 | 0x4 | 570 (theoretical span; see below) | kinds `2`, `8`, `10` unconditionally, plus kind `5`/`6` under specific status-bit conditions -- just a tile position (`bTileX`/`bTileY`), no extra state: restore only respawns the tile's default object. |
 
 None of the numeric "kind" values above are tied to a named enum yet --
@@ -448,7 +454,7 @@ applied at the address even though the label is still `DAT_03005598`):
 | 0x6C | `dwActiveSlot` | `u32`, set by `SaveGameToSlot` |
 | 0x70 | `pStreamCursor` | next byte of the slot stream |
 | 0x74 | `dwStreamBitPos` | bit (or nibble shift) within the cursor byte; the byte unpackers first advance past a partly used byte |
-| 0x78 | `dwStreamBytesUsed` | stream length after a full pack (`PackAndChecksumSaveSlot`) or unpack (`sub_0803BD48`) |
+| 0x78 | `dwStreamBytesUsed` | stream length after a full pack (`PackAndChecksumSaveSlot`) or unpack (`UnpackSaveSlot`) |
 | 0x7C | `dwStreamPercentUsed` | `dwStreamBytesUsed * 100 / 0xA98` |
 | 0x80 | `dwStreamMode` | `1` while packing, `2` while unpacking, `0` otherwise. No reader located |
 

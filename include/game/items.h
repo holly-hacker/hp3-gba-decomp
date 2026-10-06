@@ -50,3 +50,7 @@ extern const ItemEntry g_pItemTable[132];  // 0x08060EE4, US only, src/items/ite
 // Owned count per item id, indexed by reward id (see rewards.h), which extends
 // past the last real item. See docs/formats/save.md.
 extern u8 g_abItemQuantities[];  // 0x030037B0
+
+// The saved size of the array: ITEM_COUNT quantities, then the party's
+// equipped item ids (3 members x 6 slots, 0xFF when empty) and 2 bytes of padding.
+#define SAVE_ITEM_QUANTITIES_SIZE 0x98

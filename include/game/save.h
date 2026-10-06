@@ -89,6 +89,18 @@ typedef enum {
 #define SAVE_SLOT_FIRST_BLOCK 7
 #define SAVE_SLOT_COUNT 3
 
+// The part of a party member's BattleFighter that is saved: wHp through
+// aSpellUsageProgress (BattleFighter +0x08..+0x23).
+typedef struct {
+    u16 wHp;
+    u16 wMp;
+    u16 wRewardXp;
+    u8 bLevel;
+    u8 bKnownSpellCount;
+    u8 aSpellCastLevel[10];
+    u8 aSpellUsageProgress[10];
+} SavedFighterStats;
+
 // The live save manager at 0x03005598.
 typedef struct {
     SaveHeader header;
@@ -121,21 +133,42 @@ typedef enum {
     Unknown_0x04 = 0x04,
 } SaveFlags;
 
+// The Owl Care Kit's persistent state (SaveStateBlock.owlCareKit); see
+// docs/formats/save.md. The slot stream stores bFlags..bUnknown3 as nibbles
+// and the rest as bytes.
+typedef struct {
+    u8 bFlags;               // 0x00: bit 0 = care screen visited
+    u8 bNameIndex;           // 0x01: 0-13
+    u8 bTypeIndex;           // 0x02: 0-2
+    u8 bUnknown3;            // 0x03
+    u8 abStatMeters[3];      // 0x04
+    u16 wElapsedTicks;       // 0x08
+    u8 abCareCounters[6];    // 0x0A
+    u16 wMailTimer;          // 0x10
+} OwlCareKitState;
+
 // Live save-adjacent state block at 0x03003180 (money, playtime, save flags,
-// ...); see docs/formats/save.md. abMonsterDocLevel is accessed as a member
-// to reproduce the ROM's base+0x10 address shape shared by three code sites.
+// ...), 0xB4 bytes: ResetSaveStateForNewGame and the slot unpacker clear it
+// with that size. See docs/formats/save.md. abMonsterDocLevel is accessed as
+// a member to reproduce the ROM's base+0x10 address shape shared by three
+// code sites.
 typedef struct {
     u32 dwMoney;
     Playtime stPlaytime;
     u8 bSaveFlags;
     u8 pad_0D[0x03];
-    u8 abMonsterDocLevel[69];
-    u8 abOtherSaveState[0x47];  // 0x55-0x9B: Folio Universitas counts and flags, etc.
-    u8 bOwlCareKitFlags;        // 0x9C: bit 0 = care screen visited (owlCareKit.flVisited)
+    u8 abMonsterDocLevel[69];             // 0x10
+    u8 pad_55[0x03];
+    u8 abFolioUniversitasCounts[51];      // 0x58: one nibble per card in the stream
+    u8 abFolioUniversitasSeen[7];         // 0x8B: 51 bits
+    u8 abFolioUniversitasCardIsNew[7];    // 0x92: 51 bits
+    OwlCareKitState owlCareKit;           // 0x9C: 0x12 bytes, sized 0x14 by agbcc's rounding
+    u8 pad_B0[0x04];
 } SaveStateBlock;
 
 extern SaveStateBlock g_saveStateBlock;
 
+extern const Playtime g_stPlaytimeZero;
 extern const Playtime g_stPlaytimeFrameDelta;
 extern const Playtime g_stPlaytimeHourLimit;
 
@@ -146,6 +179,7 @@ void ProcessPlaytimeTick(void);
 // Adds a signed amount of Sickles to the player's money, clamped to
 // 0..999999, and returns the new total.
 u32 AddSickles(s32 amount);
+void SetSickles(u32 amount);
 
 extern const SaveHeader g_DefaultSaveHeader;
 extern const SaveOptions g_DefaultSaveOptions;
@@ -171,9 +205,46 @@ u32 ValidateSaveOptions(void);
 void WriteDefaultSaveOptions(void);
 
 extern s32 SetSaveLanguageFlag(void);
-extern s32 SyncSaveHeaderIfDirty(void);
-extern void LoadSaveSlot(u32 slot);
-extern u32 ValidateSaveSlot(u32 slot);
+u32 SyncSaveHeaderIfDirty(void);
+u32 SyncSaveOptionsIfDirty(void);
+void LoadSaveSlot(u32 slot);
+void WriteSaveSlot(u32 slot);
+u32 ValidateSaveSlot(u32 slot);
+void SaveGameToSlot(u32 slot);
+void PackAndChecksumSaveSlot(void);
+void UnpackSaveSlot(u32 slot);
+void RefreshSaveSlotPreview(u32 slot);
+void SerializeGameStateToSaveBuffer(void);
+void SerializeItemQuantities(void);
+void SerializePartyStats(void);
+void SerializeRoomObjectState(void);
+void SerializeMonsterDexLevels(void);
+void SerializeFolioUniversitas(void);
+void SerializeOwlCareKit(void);
+void DeserializeItemQuantities(void);
+void DeserializePartyStats(void);
+void DeserializeRoomObjectState(void);
+void DeserializeMonsterDexLevels(void);
+void DeserializeFolioUniversitas(void);
+void DeserializeOwlCareKit(void);
+void PackNibblesToSaveStream(const u8 *src, u32 count);
+void PackBitPairsToSaveStream(const u8 *src, u32 count);
+void InitializePlaytimeStruct(Playtime *playtime);
+void CopyPlaytime(Playtime *dst, const Playtime *src);
+void ResetSaveStateForNewGame(void);
+void ResetQuestStateForNewGame(u32 newGamePlus);
+void StartNewGamePlaytime(void);
+void ClearItemInventory(void);
+void ClearItemInventoryForNewGame_candidate(void);
+extern void ResetPartyHpMpAndStats(void);
+extern void ResetAllPartyLevelsTo1(void);
+extern void InitPartyStatForCurrentLevel(u32 index);
+extern void sub_08026870(void);
+void DeserializeGameStateFromSaveBuffer(void);
+void PackBytesToSaveStream(const void *src, u32 len);
+void PackBitsToSaveStream(const u8 *src, u32 count);
+void UnpackNibblesFromSaveStream(u8 *dst, u32 count);
+void UnpackBitPairsFromSaveStream(u8 *dst, u32 count);
+void UnpackBitsFromSaveStream(u8 *dst, u32 count);
 extern void ResetCharacterToLevel(u32 character, u32 level);  // sets a party member's saved level and stats from the level table
 extern void InitCharacterSpells_candidate(u32 index, u16 *pStats);
-extern void sub_0803BD48(u32 slot);

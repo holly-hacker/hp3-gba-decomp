@@ -17,7 +17,7 @@ extern void sub_0802CEE4(void *pObjectGroup);  // frees the objects a group owns
 extern void sub_0803FF04(void);
 extern void sub_080075C0(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5);
 
-// Shared minigame exit teardown: DisableKrawall, sub_0803C178, EnableKrawall.
+// Shared minigame exit teardown: DisableKrawall, SyncSaveOptionsIfDirty, EnableKrawall.
 extern void sub_0802CDB8(void);
 
 extern void DrawMinigameSelectMenu(void);

@@ -1,8 +1,2 @@
-#include "types.h"
-#include "hw/mem.h"
-#include "game/save.h"
-
-void ClearSaveSlotBuffer(void)
-{
-    memset(g_saveManager.pSlotBuffer, 0, SAVE_SLOT_SIZE);
-}
+#define CLEAR_SAVE_SLOT_BUFFER_LINKAGE
+#include "game/clear_save_slot_buffer.h"

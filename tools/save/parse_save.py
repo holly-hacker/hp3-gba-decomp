@@ -135,12 +135,8 @@ def bits_to_bytes(bits, byte_count: int) -> bytes:
 #
 # Mirrors PackBytesToSaveStream (0x0803C00C) / PackBitsToSaveStream
 # (0x0803C050) / PackNibblesToSaveStream (0x0803BAF4). SaveReader is the
-# exact inverse of SaveWriter (both implemented here; the game's own
-# Unpack* functions at 0x0803BDDC/0x0803BE10/0x0803BEE4 are not
-# reimplemented -- they consume the same bit sequence a matching call
-# shape produces, which is a separate, self-consistent guarantee from
-# "this tool's writer and reader invert each other", which is what
-# round-tripping through JSON actually needs).
+# exact inverse of SaveWriter, and follows the game's own Unpack*
+# functions at 0x0803BDDC/0x0803BE10/0x0803BEE4.
 # --------------------------------------------------------------------------
 
 class SaveWriter:
@@ -837,7 +833,16 @@ def decode_room_object_state(r: SaveReader) -> dict:
     return result
 
 
+# The in-RAM pickupMarkers table has room for 16 entries before the
+# presenceMarkers table; the game does not bound the count it loads.
+MAX_PICKUP_MARKERS = 16
+
+
 def encode_room_object_state(w: SaveWriter, state: dict):
+    if len(state["pickupMarkers"]) > MAX_PICKUP_MARKERS:
+        print(f"warning: {len(state['pickupMarkers'])} pickupMarkers exceed the "
+              f"{MAX_PICKUP_MARKERS} the game has room for; loading overwrites presenceMarkers",
+              file=sys.stderr)
     w.write_bytes(struct.pack("<i", round(state["fxPlayerPosX"] * FIXED_POINT_SHIFT)))
     w.write_bytes(struct.pack("<i", round(state["fxPlayerPosY"] * FIXED_POINT_SHIFT)))
     w.write_bytes(bytes([state["bPlayerFacing"]]))
@@ -967,6 +972,9 @@ def decode_slot_stream(payload: bytes) -> dict:
     # g_bMainMenuObjectiveIndex, 0x030027b9) -- the same live byte as
     # abQuestEventState[25] below, serialized twice.
     slot["bMainMenuObjectiveIndex"] = r.read_bytes(1)[0]
+    # The party leader's level + 1, used only for the save menu's slot
+    # preview: the game loads it into partyStats[0].bLevel (minus 1), which
+    # the partyStats below then overwrite.
     slot["bPartyLeaderDisplayLevel"] = r.read_bytes(1)[0]
     # Overworld follower sprite per party slot -- observed values: 3 =
     # Harry (Lumos, headless -- likely an overlay), 4 = Harry (GBC),
