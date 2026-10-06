@@ -189,7 +189,8 @@ typedef struct FightState {
     /*0x1498*/ u8 pad_1498[0x149C - 0x1498];
     /*0x149C*/ u32 dwBattleResultPending;
     /*0x14A0*/ u32 dwPlayerActionActive_candidate;
-    /*0x14A4*/ u8 pad_14A4[0x14A8 - 0x14A4];
+    /*0x14A4*/ u8 pad_14A4;
+    /*0x14A5*/ u8 abHelpReturnArgs_candidate[3];  // PushGameMode_3 arguments the battle Help entry hands to HelpTopicScreen (case 6)
     /*0x14A8*/ u8 bPendingStatusMessageVariant_candidate;
     /*0x14A9*/ u8 pad_14A9[0x14AC - 0x14A9];
     /*0x14AC*/ struct {

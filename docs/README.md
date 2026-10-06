@@ -114,6 +114,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   tile frames and animation tables of the special scene effect.
 - [`formats/fonts.md`](formats/fonts.md) — the ten 2 bpp text fonts, their
   header and bitmap layout, and how they are selected.
+- [`formats/help_pages.md`](formats/help_pages.md) — the Help / HelpTopicScreen
+  page scripts: opcode format, the 91 pages and their menus, and the engine state.
 - [`formats/save.md`](formats/save.md) — the EEPROM transport, save
   region layout, checksums, and the save-slot serialization stream.
   Tool: `tools/save/parse_save.py`.

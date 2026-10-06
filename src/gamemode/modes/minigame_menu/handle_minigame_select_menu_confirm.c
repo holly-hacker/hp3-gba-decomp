@@ -35,12 +35,12 @@ void HandleMinigameSelectMenuConfirm(void)
         if (g_wKeysPressed & KeyA)
         {
             if ((g_GameModeStackContext.dwCurrentGameModeArg2 == 0
-                     ? g_saveManager.header.bHeaderFlags.all & flMinigame1Unlocked
+                     ? g_saveManager.header.bHeaderFlags.all & flWizardCrackerPopItUnlocked
                  : g_GameModeStackContext.dwCurrentGameModeArg2 == 1
-                     ? g_saveManager.header.bHeaderFlags.all & flMinigame2Unlocked
+                     ? g_saveManager.header.bHeaderFlags.all & flHippogriffGlideUnlocked
                  : g_GameModeStackContext.dwCurrentGameModeArg2 == 2
-                     ? g_saveManager.header.bHeaderFlags.all & flMinigame3Unlocked
-                     : g_saveManager.header.bHeaderFlags.all & flMinigame4Unlocked) != 0)
+                     ? g_saveManager.header.bHeaderFlags.all & flRiddikulusUnlocked
+                     : g_saveManager.header.bHeaderFlags.all & flTeaLeafDivinationUnlocked) != 0)
             {
                 PlaySoundById(1);
                 if (g_GameModeStackContext.dwCurrentGameModeArg2 == 3)

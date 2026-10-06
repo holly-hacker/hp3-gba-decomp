@@ -30,6 +30,8 @@ typedef struct BgScrollState {
 extern BgScrollState g_aBgScrollState[];  // 0x03001E80; [1].nScrollY_candidate == 0x03001F14
 extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 
+// Stops the palette effect with the given handle.
+extern void StopPaletteEffect(s32 handle);
 extern void sub_0800D264(void *ptr, s16 val1, s16 val2);  // 25-entry palette-flash/fade queue; val1/val2 real width is 16-bit
 extern void sub_0800D254(void *ptr, s16 val1, s16 val2);
 extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);

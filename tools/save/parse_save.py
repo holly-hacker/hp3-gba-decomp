@@ -245,14 +245,14 @@ HEADER_FLAG_BITS = {
     # dialog string "Owl Care Kit received!". Read by InitializeConnectivityMenu
     # (0x08036038), which picks the Connectivity submenu's list variant.
     "flOwlCareKitUnlocked": 0x01,
-    "flMinigame1Unlocked": 0x02,
-    "flMinigame2Unlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
-    "flMinigame3Unlocked": 0x08,
-    "flMinigame4Unlocked": 0x10,
-    # The unused fifth minigame: UnlockMinigame index 4 sets it, and the
-    # minigame's code exists but is unreachable. An exhaustive xref search on
-    # this byte's storage/base address finds no reader.
-    "flMinigame5Unlocked": 0x20,
+    "flWizardCrackerPopItUnlocked": 0x02,
+    "flHippogriffGlideUnlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
+    "flRiddikulusUnlocked": 0x08,
+    "flTeaLeafDivinationUnlocked": 0x10,
+    # Harry vs Dementors: UnlockMinigame index 4 sets it. Only the Help menu
+    # reads it (IsHelpTopicUnlocked, "Dementor Challenge" topic); the minigame
+    # select menu has no entry for it.
+    "flHarryVsDementorsUnlocked": 0x20,
     # Set the first time the player confirms Tea Leaf Divination (minigame
     # index 3) from the minigame select menu (HandleMinigameSelectMenuConfirm,
     # ROM 0x0802CF38): clear routes to a one-time intro/tutorial game mode

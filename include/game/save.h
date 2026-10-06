@@ -5,11 +5,11 @@
 // SaveHeader.bHeaderFlags, one field per HeaderFlags bit (LSB first).
 typedef struct {
     u8 bOwlCareKitUnlocked : 1;
-    u8 bMinigame1Unlocked : 1;
-    u8 bMinigame2Unlocked : 1;
-    u8 bMinigame3Unlocked : 1;
-    u8 bMinigame4Unlocked : 1;
-    u8 bMinigame5Unlocked : 1;
+    u8 bWizardCrackerPopItUnlocked : 1;
+    u8 bHippogriffGlideUnlocked : 1;
+    u8 bRiddikulusUnlocked : 1;
+    u8 bTeaLeafDivinationUnlocked : 1;
+    u8 bHarryVsDementorsUnlocked : 1;
     u8 bTeaLeafDivinationIntroShown : 1;
     u8 bGammaHigh : 1;
 } __attribute__((packed)) HeaderFlagsBits;
@@ -42,11 +42,11 @@ typedef struct {
 // bHeaderFlags bits, see docs/formats/save.md.
 typedef enum {
     flOwlCareKitUnlocked           = 0x01,
-    flMinigame1Unlocked            = 0x02,
-    flMinigame2Unlocked            = 0x04,
-    flMinigame3Unlocked            = 0x08,
-    flMinigame4Unlocked            = 0x10,
-    flMinigame5Unlocked            = 0x20,  // unused fifth minigame; set by UnlockMinigame index 4
+    flWizardCrackerPopItUnlocked   = 0x02,
+    flHippogriffGlideUnlocked      = 0x04,
+    flRiddikulusUnlocked           = 0x08,
+    flTeaLeafDivinationUnlocked    = 0x10,
+    flHarryVsDementorsUnlocked     = 0x20,  // gates its Help topic only; no minigame menu entry
     flTeaLeafDivinationIntroShown  = 0x40,
     flGammaHigh                    = 0x80,
 } HeaderFlags;

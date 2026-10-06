@@ -281,6 +281,7 @@ thumb-func 0x0800D4A4 sub_0800D4A4
 c-file 0x0800D4E4 0x0800D4F4 src/graphics/palette/clear_color_cycle.c ClearColorCycle
 thumb-func 0x0800D57C sub_0800D57C
 thumb-func 0x0800D5DC sub_0800D5DC
+thumb-func 0x0800D62C StopPaletteEffect
 c-file 0x0800D6A4 0x0800D6BC src/graphics/palette/init_palette_buffer.c InitPaletteBuffer
 c-file 0x0800D794 0x0800D7BC src/graphics/palette/reset_color_cycles.c ResetColorCycles
 c-file 0x0800D944 0x0800D96C src/graphics/palette/reset_palette_effects.c ResetPaletteEffects
@@ -602,9 +603,9 @@ c-file 0x08025954 0x08025978 src/input/enable_key_input.c EnableKeyInput
 thumb-func 0x08025A18 sub_08025A18
 thumb-func 0x08025A74 StepWrappedSelectionVertical_candidate
 thumb-func 0x08025B2C StepWrappedSelectionHorizontal_candidate
-thumb-func 0x08025D28 InitializeTopicScreen
-thumb-func 0x08025E18 UpdateTopicScreen
-thumb-func 0x08025E84 ExitTopicScreen
+c-file 0x08025D28 0x08025E18 src/gamemode/modes/help_topic_screen/initialize_topic_screen.c InitializeTopicScreen
+c-file 0x08025E18 0x08025E84 src/gamemode/modes/help_topic_screen/update_topic_screen.c UpdateTopicScreen
+c-file 0x08025E84 0x08025E90 src/gamemode/modes/help_topic_screen/exit_topic_screen.c ExitTopicScreen
 c-file 0x08025E90 0x08026068 src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file 0x08026068 0x080260A8 src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x080260A8 0x080260DC src/interrupts/enable_interrupts.c EnableInterrupts
@@ -920,9 +921,21 @@ c-file 0x0803860C 0x08038650 src/gamemode/modes/gamecube_link/exit_gamecube_link
 thumb-func 0x08038650 ShowGameCubeLinkMessage
 thumb-func 0x08038694 SpawnGameCubeLinkIconObjects
 thumb-func 0x080386F0 DispatchGameCubeLinkCommand
-thumb-func 0x08038970 UpdateHelp
-thumb-func 0x080390A0 InitializeHelp
-thumb-func 0x080390C0 ExitHelpScreen
+c-file 0x080387DC 0x08038874 src/gamemode/modes/help/is_help_topic_unlocked.c IsHelpTopicUnlocked
+thumb-func 0x08038874 StartHelpScreen
+c-file 0x08038970 0x08038B8C src/gamemode/modes/help/update_help.c UpdateHelp
+thumb-func 0x08038B8C LeaveHelpScreen
+thumb-func 0x08038C00 RunHelpScript
+thumb-func 0x08038EB8 OpenSelectedHelpMenuEntry
+thumb-func 0x08038F2C SetHelpMenuSelection
+c-file 0x080390A0 0x080390C0 src/gamemode/modes/help/initialize_help.c InitializeHelp
+c-file 0x080390C0 0x080390F4 src/gamemode/modes/help/exit_help_screen.c ExitHelpScreen
+thumb-func 0x080390F4 FreeHelpScreen
+thumb-func 0x08039118 SetHelpExitMode
+thumb-func 0x08039148 ClearHelpScreen
+thumb-func 0x08039248 TurnToPrevHelpPage
+thumb-func 0x0803927C TurnToNextHelpPage
+thumb-func 0x080392B0 CancelHelpScreen
 thumb-func 0x08039370 UpdateQuantitySelectScreen
 thumb-func 0x080394EC InitializeQuantitySelectScreen
 thumb-func 0x08039508 ExitQuantitySelectScreen
@@ -1309,6 +1322,7 @@ c-file 0x0806945C 0x0806950C src/gamemode/modes/connectivity/connectivity.global
 c-file 0x0806950C 0x08069568 src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
 c-file 0x08069A2C 0x08069A50 src/gamemode/modes/gamecube_link/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069AB8 0x08069C70 src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
+c-file 0x08069C70 0x0806B190 src/gamemode/modes/help/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B190 0x0806B214 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B238 0x0806B250 src/gamemode/modes/connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
