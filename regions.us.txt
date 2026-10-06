@@ -295,19 +295,21 @@ thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
 thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
 c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
 c-file 0x0800E62C 0x0800E890 src/battle/build_turn_order.c BuildTurnOrder
-thumb-func 0x0800E890 sub_0800E890
+thumb-func 0x0800E890 ReviveFighter_candidate
 c-file 0x0800EA68 0x0800EB2C src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
 c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate
 c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
-thumb-func 0x0800F16C RestoreFighterObjects_candidate
-thumb-func 0x0800F5F0 ResumeBattleAfterSubmode_candidate
+c-file 0x0800F16C 0x0800F5F0 src/battle/restore_fighter_objects.c RestoreFighterObjects_candidate
+c-file 0x0800F5F0 0x0800F794 src/battle/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
 c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
 c-file 0x0800FEE0 0x0800FFAC src/battle/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
 c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
-thumb-func 0x080100A0 DispatchPendingAction
+thumb-func 0x08010008 TrackSpellFamiliarity
+c-file 0x080100A0 0x080101D0 src/battle/dispatch_pending_action.c DispatchPendingAction
 thumb-func 0x080101D0 TickBattleMenuInput
 thumb-func 0x080104A0 OpenBattleTopMenu
+thumb-func 0x080107BC OpenAllyTargetMenu
 thumb-func 0x08010864 ShowBattleMessage
 thumb-func 0x08012994 InitCharacterSpells_candidate
 thumb-func 0x080129F4 StopBgTileAnimationsAfterCard_candidate
@@ -317,7 +319,9 @@ thumb-func 0x08012A84 sub_08012A84
 thumb-func 0x08012AC0 GetBattleBackgroundData_candidate
 c-file 0x08012AFC 0x08012B40 src/battle/push_battle_state.c PushBattleState
 thumb-func 0x08012B40 sub_08012B40
+thumb-func 0x08012B98 OpenEnemyTargetMenu_candidate
 thumb-func 0x08012CB4 ClearFighterObjectFlag_candidate
+thumb-func 0x08012E0C sub_08012E0C
 
 c-file 0x080130B4 0x08013108 src/battle/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
 thumb-func 0x08013108 sub_08013108
@@ -335,16 +339,16 @@ thumb-func 0x080151B0 LevelUpPartyMember_candidate
 thumb-func 0x0801526C InitPartyStatForCurrentLevel
 thumb-func 0x080152CC sub_080152CC
 thumb-func 0x08015334 sub_08015334
-thumb-func 0x0801539C SetMonsterObjectAnim
+c-file 0x0801539C 0x08015484 src/battle/set_monster_object_anim.c SetMonsterObjectAnim
 c-file 0x08015484 0x08015574 src/battle/set_player_object_anim.c SetPlayerObjectAnim
 thumb-func 0x08015574 UpdateFighterFlashEffect_candidate
 c-file 0x08015608 0x08015F50 src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
 thumb-func 0x08015F50 ShowItemUseResult
 c-file 0x0801602C 0x08017B5C src/battle/tick_player_action_state.c TickPlayerActionState
-thumb-func 0x08017B5C ShowDamageNumber_candidate
+c-file 0x08017B5C 0x08017C24 src/battle/show_damage_number.c ShowDamageNumber_candidate
 c-file 0x08017C24 0x08017E44 src/battle/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E44 0x08017F98 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
-thumb-func 0x08017F98 ApplyDamageToEnemyFighter
+c-file 0x08017F98 0x08018094 src/battle/apply_damage_to_enemy_fighter.c ApplyDamageToEnemyFighter
 c-file 0x08018094 0x080181AC src/battle/apply_damage_to_ally_fighter.c ApplyDamageToAllyFighter
 thumb-func 0x080181AC ShowFloatingDamageNumber_candidate
 c-file 0x08018304 0x08018460 src/battle/check_battle_defeat.c CheckBattleDefeat

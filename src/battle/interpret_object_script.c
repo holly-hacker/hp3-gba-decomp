@@ -997,7 +997,7 @@ void InterpretObjectScript(Object *obj)
                 g_pFightState->bBonusRewardFlags |= ForceItemDrop;
                 break;
             case BSSTATUS_Revive:
-                sub_0800E890(g_effectStaging.bTargetIndex);
+                ReviveFighter_candidate(g_effectStaging.bTargetIndex);
                 break;
             }
             break;

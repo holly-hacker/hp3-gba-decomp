@@ -269,7 +269,7 @@ thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
 thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
 c-file 0x0800E5B8 0x0800E62C src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
 c-file 0x0800E62C 0x0800E890 src/battle/build_turn_order.c BuildTurnOrder
-thumb-func 0x0800E890 sub_0800E890
+thumb-func 0x0800E890 ReviveFighter_candidate
 c-file 0x0800EA68 0x0800EB2C src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
 c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate

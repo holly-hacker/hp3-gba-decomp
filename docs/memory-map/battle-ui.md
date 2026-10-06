@@ -68,10 +68,9 @@ screen for a given fighter: sets `field_0x1070=1`, builds a local 7-entry
 enabled/grayed array (all `1` by default), then:
 
 - grays index `1` (`Special Move`) if the active fighter is Hermione with
-  `field_0x148c==0` or Ron with `field_0x1488==0` -- these two fields are
-  the natural "lectures known" / "special moves known" counts (not
-  independently confirmed by name, but exactly gate the one menu item
-  that needs at least one unlocked move to be usable).
+  `dwHermioneSpecialUsed != 0` or Ron with `dwRonSpecialUsed != 0` -- the
+  per-battle "already used this Special Move" flags, set by
+  `DispatchPendingAction`.
 - grays index `2` (`Informus`) **and** index `4` (`Flee`) together, in the
   same branch, when `DAT_03003f24 == 0xff` -- matching the user's
   "Informus/Flee grayed out for bosses" fact exactly; `DAT_03003f24` is

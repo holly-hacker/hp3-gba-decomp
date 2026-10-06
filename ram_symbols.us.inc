@@ -112,6 +112,7 @@
 .set g_nLastDamage,                        0x0300274A  @ u16: last computed attack/status damage
 .set g_bLastTargetIndex,                   0x0300274C  @ byte: last attack's target fighter index
 .set g_effectStaging,                      0x03002750  @ EffectStaging: battle-effect staging area, see TriggerBattleEffect
+.set g_bReviveInsertCount_candidate,        0x03002773  @ u8: incremented by ReviveFighter_candidate when the revived fighter is inserted at or before the active one; no reader found
 
 .set g_dwRoomScriptRunState,    0x0300279C  @ u32: room script run state; InitializeOverworld resets 4 to 0 and only resumes a chain in state 2
 .set g_abQuestEventState,       0x030027A0  @ u8[]: quest event state bytes, see docs/formats/save.md

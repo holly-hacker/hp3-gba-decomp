@@ -203,8 +203,8 @@ void DispatchPendingAction(int fighterIndex) {                  // 0x080100a0
         if (f->bFighterType == Harry) f->bSpellId = (SpellId)g_nFolioUniversitasSlot;
         ShowBattleMessage(SpecialMoveAnnounce, f->bSpellId, 0);
         SetFighterAttackAnimState(f->pObject, 0x15);
-        if (f->bFighterType == Hermione) nHermioneLecturesKnown = 1;
-        else if (f->bFighterType == Ron)  nRonMovesKnown = 1;
+        if (f->bFighterType == Hermione) dwHermioneSpecialUsed = 1;
+        else if (f->bFighterType == Ron)  dwRonSpecialUsed = 1;
         break;
     case Flee:
         if (Mt19937Chance(0x4b) == 0) {
@@ -575,9 +575,8 @@ background/palette load. Three cases on `g_PrevGameModeStackContext`:
   but `0` also sets `bBattleState = 3`.
 - **fresh battle** (neither `FolioUniversitas` nor `HelpTopicScreen`):
   resets per-round state -- `wBattleStateTimer = 0`, `bActiveFighterIndex
-  = 0xff`, `bMenuFighterIndex = 0xff` unless a fighter with a live pending
-  spell cast is found by scanning `aSpellCastLevel`/`aSpellUsageProgress`
-  -- pushes battle state `2`, and sets `bScreenShakeTimer_candidate =
+  = 0xff`, `bMenuFighterIndex` = the first non-`Enemy` fighter with HP
+  left -- pushes battle state `2`, and sets `bScreenShakeTimer_candidate =
   0x1e` (the screen-shake `UpdateBattle` ticks down before the turn state
   machine gets its first tick).
 - **`HelpTopicScreen`**: falls straight into the shared tail below.

@@ -92,7 +92,7 @@ extern void sub_08012A00(void);
 extern void *sub_08012A84(void);
 extern void sub_080065D4(u32 a, void *b, u32 c);
 extern void sub_08037104(u32 a);
-extern void sub_0800E890(u32 fighterIndex);
+extern void ReviveFighter_candidate(u8 pendingIdx);
 extern s32 sub_080189C8(u32 rosterIndex);  // per-monster XP reward
 extern s32 sub_08018AB8(u32 rosterIndex);  // per-monster gold reward
 extern ParticleEmitter *sub_0801B204(Object *obj, u32 a, u32 b);

@@ -86,6 +86,15 @@ typedef struct BattleFighter {
     /*0x44*/ u8 bParalysisEscapeChance;
 } BattleFighter;
 
+// BattleFighter.bPendingActionKind: what the battle menu queued for DispatchPendingAction.
+typedef enum {
+    PendingActionNone        = 0,
+    PendingActionUseItem     = 1,
+    PendingActionSpecialMove = 2,
+    PendingActionFlee        = 3,
+    PendingActionInformus    = 4,
+} PendingActionKind;
+
 // One MonsterTable record, 0x18 bytes; see docs/formats/folio_bruti.md.
 typedef struct MonsterTableRow {
     u16 wHp;                 // 0x00
@@ -182,7 +191,10 @@ typedef struct FightState {
     /*0x147F*/ u8 bCameraZoomStep_candidate;
     /*0x1480*/ u8 bBonusRewardFlags;  // BattleRewardFlags; snapshotted to g_dwBattleRewardFlagsSnapshot by ExitBattle
     /*0x1481*/ u8 bEnemyScalePercent_candidate;  // set by InitializeBattle from Harry's level: 0x40/0x30/0x20 for level 0/1/2+
-    /*0x1482*/ u8 pad_1482[0x1491 - 0x1482];
+    /*0x1482*/ u8 pad_1482[0x1488 - 0x1482];
+    /*0x1488*/ u32 dwRonSpecialUsed;  // set once Ron has used his Special Move this battle; grays the menu entry while nonzero
+    /*0x148C*/ u32 dwHermioneSpecialUsed;  // set once Hermione has used her Special Move this battle; grays the menu entry while nonzero
+    /*0x1490*/ u8 pad_1490;
     /*0x1491*/ u8 bPendingFighterCount_candidate;
     /*0x1492*/ u8 pad_1492[0x1494 - 0x1492];
     /*0x1494*/ u32 dwDefeatCheckPending_candidate;  // set to 1 by any lethal-HP-threshold hit (ApplyDamageToEnemyFighter,
@@ -282,6 +294,9 @@ extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
 extern s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance);
 extern void SpawnParalysisEffect(Object *obj);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
+extern void OpenEnemyTargetMenu_candidate(u8 fighterIndex);  // bMenuScreen 6, 0x08012B98
+extern void OpenAllyTargetMenu(u8 fighterIndex);             // bMenuScreen 8, 0x080107BC
+extern void OpenPendingFighterMenu_candidate(u8 fighterIndex);  // bMenuScreen 9, 0x0801319C
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
@@ -291,7 +306,7 @@ extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
 extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s32 damage);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables
-extern void SetMonsterObjectAnim(Object *obj, s32 state);  // 0x0801539C, monster gfx tables + shadow
+extern void SetMonsterObjectAnim(Object *obj, u8 state);  // 0x0801539C, monster gfx tables + shadow
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
 extern Object *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
 extern s32 sub_08026CDC(s32 spellLevel);
@@ -301,7 +316,9 @@ extern u16 sub_080152CC(s32 x, s32 fighterIndex);
 extern void ClearPoisonedFighter_candidate(u8 fighterIndex);  // clears Poisoned, zeroes bPoisonDamage; CurePoison's shared helper
 extern void ClearParalyzedFighter_candidate(u8 fighterIndex);
 extern void PostActionBattleCheck(void);
+extern s32 sub_08012E0C(u8 fighterIndex);  // 1 if the fighter has a shadow Object (monsters 45-47)
 extern void PushBattleState(s32 state);
+extern void TrackSpellFamiliarity(u8 fighterType, u8 spellId, u8 spellLevel, u16 *pHp);  // 0x08010008
 extern void DecrementFolioUniversitasCard(s32 slot);
 extern const u8 g_abHarryCardEffectId[22];      // 0x080514C8
 extern const u8 g_aCardTargetingMeta[22][2];     // 0x080514DE
@@ -331,6 +348,7 @@ typedef struct EffectStaging {
     u8 bIdStaged_candidate;
 } EffectStaging;
 extern EffectStaging g_effectStaging;                 // 0x03002750
+extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
 extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
 extern void sub_08012B40(void);
 extern void sub_08003A30(void *obj, s32 a, s16 b, s16 c);  // a is shifted << 8 inside and stored to a 16-bit field
@@ -339,7 +357,7 @@ extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void ShowItemUseResult(Object *obj, s32 targetIndex);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
-extern void ApplyDamageToEnemyFighter(u16 damage, u8 fighterIndex);  // 0x08017F98
+extern void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex);  // 0x08017F98
 extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
 extern const u8 g_abSpellUnknownByLevel[10][3];  // 0x080538CE, [spellId][level], no known reader
 extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
