@@ -31,8 +31,8 @@ extern const u8 gStartupNoticeGraphic[];
 extern const u8 gLupinPotionEmbeddedPalette[];
 
 /* HogwartsUpNight */
-extern const u8 gHogwartsUpNight001[];
-extern const u8 gHogwartsUpNight002[];
+extern const u8 gCardTradeOverlay[];
+extern const u8 gFolioCardDetailBg3Graphic[];
 extern const u8 gClockSkipGraphic[];
 extern const u8 gHogwartsUpNightBg0Graphic[];
 extern const u8 gHogwartsUpNightBg1Graphic[];

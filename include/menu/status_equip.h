@@ -83,4 +83,4 @@ extern void sub_080362D8(void);
 extern u32 sub_080368E4(void);
 extern void sub_08027048(void);
 extern void sub_08027BA4(void);
-extern void sub_08032138(void);
+extern void StartMenuFadeOut(void);

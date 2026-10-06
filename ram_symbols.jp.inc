@@ -138,6 +138,7 @@
 .set sTextMacroTable,                                  0x030031D0  @ see ram_symbols.us.inc
 .set g_saveStateBlock,                                 0x030031E0
 .set g_dwUnk03003234,                                  0x03003294  @ see ram_symbols.us.inc
+.set g_GameCubeLinkScreenState, 0x03003298  @ see ram_symbols.us.inc
 .set g_OverworldControlState,                          0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
 @ --- Overworld object tracking (see include/overworld/overworld.h) ---
@@ -235,6 +236,7 @@
 .set g_dwPendingGameMode,                    0x03003F78  @ see ram_symbols.us.inc
 .set g_PrevGameModeStackContext,             0x03003F9C
 .set g_dwTickCount,                          0x03003FC0
+.set g_apMenuIconObjects, 0x03003FC8  @ see ram_symbols.us.inc
 .set g_dwSelectedMinigame,                   0x03003FE8
 .set g_abBgPriority,                         0x03003FEC  @ see ram_symbols.us.inc
 .set g_dwPendingCameraFocusFlag,             0x03004034  @ see ram_symbols.us.inc
@@ -275,6 +277,7 @@
 .set g_bPatronusGraphicIndex, 0x03005250
 .set g_swPatronusBgParam,     0x03005252
 .set g_nPatronusBgOffset,     0x03005254
+.set g_ConnectivityMenu, 0x03005258  @ see ram_symbols.us.inc
 
 .set g_ListMenuState,                          0x03005280
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005288  @ see ram_symbols.us.inc
@@ -287,7 +290,9 @@
 .set g_dwStatusEquipCharacter,     0x03005300  @ see ram_symbols.us.inc
 .set g_StatusEquipCharacterSelect, 0x03005308  @ see ram_symbols.us.inc
 .set g_bStatusEquipCharacterSlot,  0x03005318  @ see ram_symbols.us.inc
+.set g_bConnectivityMenuCursor, 0x0300531C  @ see ram_symbols.us.inc
 .set g_StatusEquipItemSelect,      0x03005328  @ see ram_symbols.us.inc
+.set g_bFoliosMenuCursor, 0x03005358  @ see ram_symbols.us.inc
 .set g_ItemsItemSelect,            0x03005538  @ see ram_symbols.us.inc
 .set g_ItemsSectionSelectNextMode, 0x03005544  @ see ram_symbols.us.inc
 .set g_bItemsSectionCursor,        0x03005548  @ see ram_symbols.us.inc
@@ -295,6 +300,7 @@
 .set g_dwItemUseQuantity,          0x03005550  @ see ram_symbols.us.inc
 .set g_StatusEquipSlotSelect,      0x03005558  @ see ram_symbols.us.inc
 .set g_bStatusEquipSlot,           0x030055C4  @ see ram_symbols.us.inc
+.set g_CardTradeState, 0x030055C8  @ see ram_symbols.us.inc
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked

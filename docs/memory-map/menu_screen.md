@@ -19,7 +19,7 @@ The shared frame of the options, save, minigame-select and card-combo screens
 | `DrawMenuScreenTitle` | `0x0801E118` | Clears a text rectangle on BG2 and draws the string, except for string id `0xACF`. |
 
 `BuildListMenu` and `InitializeItemsItemSelect` call `BeginMenuScreen` without
-`InitializeMenuScreen`; `sub_08031FB8` calls `LoadMenuScreenFrame` directly.
+`InitializeMenuScreen`; `BeginPauseMenuScreen` calls `LoadMenuScreenFrame` directly.
 
 ## Palette-less graphic blobs
 

@@ -214,9 +214,9 @@ thumb-func 0x0800A3AC SetCameraFollowTarget_candidate
 thumb-func 0x0800A3EC sub_0800A3EC
 thumb-func 0x0800A420 sub_0800A420
 thumb-func 0x0800A4E8 SetRoomScrollBounds
-thumb-func 0x0800A510 InitializePurpleScreenReturnToMenu
-thumb-func 0x0800A560 UpdatePurpleScreenReturnToMenu
-thumb-func 0x0800A580 ExitPurpleScreenReturnToMenu
+c-file 0x0800A510 0x0800A560 src/gamemode/modes/purple_screen_return_to_menu/initialize_purple_screen_return_to_menu.c InitializePurpleScreenReturnToMenu
+c-file 0x0800A560 0x0800A580 src/gamemode/modes/purple_screen_return_to_menu/update_purple_screen_return_to_menu.c UpdatePurpleScreenReturnToMenu
+c-file 0x0800A580 0x0800A598 src/gamemode/modes/purple_screen_return_to_menu/exit_purple_screen_return_to_menu.c ExitPurpleScreenReturnToMenu
 thumb-func 0x0800A598 sub_0800A598
 thumb-func 0x0800A610 TickBgTileAnimations_candidate
 thumb-func 0x0800A914 sub_0800A914
@@ -479,12 +479,13 @@ c-file 0x0801D888 0x0801D8C0 src/gamemode/modes/cutscene/linear_cutscene/initial
 c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 thumb-func 0x0801D940 sub_0801D940
 c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c CreateMenuCursorEmitter
-thumb-func 0x0801DC6C sub_0801DC6C
+thumb-func 0x0801DC6C ReleaseMenuCursor
 thumb-func 0x0801DCC4 sub_0801DCC4
 c-file 0x0801DD40 0x0801DD88 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 thumb-func 0x0801DF6C InitializeMenuScreen
 thumb-func 0x0801DF90 LoadMenuScreenFrame
 thumb-func 0x0801E004 LoadMenuScreenOverlay
+thumb-func 0x0801E04C ClearMenuTextLayer_candidate
 thumb-func 0x0801E05C BeginMenuScreen
 thumb-func 0x0801E0D8 sub_0801E0D8
 thumb-func 0x0801E0DC ExitMenuScreen
@@ -550,6 +551,9 @@ c-file 0x08021604 0x08021650 src/save/unpack_save_slot_preview.c UnpackSaveSlotP
 c-file 0x08021650 0x0802165C src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x0802165C 0x08021694 src/save/process_playtime_tick.c ProcessPlaytimeTick
 thumb-func 0x080216A0 AddSickles
+thumb-func 0x08021A58 InitJoybusSession
+thumb-func 0x08021AF4 TickJoybusSession
+thumb-func 0x08021B28 TeardownJoybusHardware
 thumb-func 0x08021C08 InitializeOwlCareKitScreen
 thumb-func 0x08021D6C HandleOwlCareKitScreenTick
 thumb-func 0x08021DF8 ProcessOwlCareKitTick
@@ -714,7 +718,7 @@ c-file 0x0802C860 0x0802C87C src/gamemode/is_game_mode_transition_pending.c IsGa
 c-file 0x0802C87C 0x0802C8A8 src/gamemode/dispatch_game_mode_init.c DispatchGameModeInit
 c-file 0x0802C8A8 0x0802C8D0 src/gamemode/dispatch_game_mode_update.c DispatchGameModeUpdate
 c-file 0x0802C8D0 0x0802C90C src/gamemode/dispatch_game_mode_destroy.c DispatchGameModeDestroy
-thumb-func 0x0802C90C sub_0802C90C
+thumb-func 0x0802C90C SpawnMenuIconObject
 c-file 0x0802C984 0x0802C988 src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
@@ -799,20 +803,21 @@ c-file 0x08031CC4 0x08031D30 src/gamemode/modes/cutscene/harry_patronus_cutscene
 c-file 0x08031D30 0x08031E7C src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
 c-file 0x08031E7C 0x08031F6C src/menu/build_list_menu.c BuildListMenu
 c-file 0x08031F6C 0x08031FB8 src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
-thumb-func 0x08031FB8 sub_08031FB8
+thumb-func 0x08031FB8 BeginPauseMenuScreen
 c-file 0x08031FF4 0x08032030 src/gamemode/modes/in_game_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
 c-file 0x08032054 0x080320A4 src/gamemode/modes/in_game_menu/exit_in_game_menu.c ExitInGameMenu
-thumb-func 0x080320A4 sub_080320A4
-thumb-func 0x08032114 TickBlendFadeOut_candidate
-thumb-func 0x08032138 sub_08032138
-thumb-func 0x0803217C sub_0803217C
-thumb-func 0x080321A8 sub_080321A8
+thumb-func 0x080320A4 StartMenuFadeIn
+thumb-func 0x080320E8 StartMenuOverlayFadeIn
+thumb-func 0x08032114 TickMenuFadeIn
+thumb-func 0x08032138 StartMenuFadeOut
+thumb-func 0x0803217C StartMenuOverlayFadeOut
+thumb-func 0x080321A8 TickMenuFadeOut
 thumb-func 0x080321CC ListMenuCursorTick_candidate
 thumb-func 0x08032204 SelectInGameMenuEntry_candidate
 c-file 0x0803227C 0x080322BC src/menu/move_list_menu_cursor.c MoveListMenuCursor
 c-file 0x080322BC 0x0803232C src/menu/draw_list_menu_row.c DrawListMenuRow
 thumb-func 0x0803232C sub_0803232C
-thumb-func 0x0803233C sub_0803233C
+thumb-func 0x0803233C DrawPauseMenuObjective
 thumb-func 0x080323AC sub_080323AC
 thumb-func 0x080323B0 sub_080323B0
 c-file 0x080323B4 0x08032534 src/gamemode/modes/minigame/wizard_cracker_pop_it/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
@@ -858,12 +863,12 @@ thumb-func 0x08035D98 sub_08035D98
 thumb-func 0x08035DC0 sub_08035DC0
 thumb-func 0x08035DEC StatusEquipSlotToCharacter
 thumb-func 0x08035E1C StatusEquipCharacterToSlot
-thumb-func 0x08035EB0 HandleConnectivityMenuTick
-thumb-func 0x08035F7C UpdateConfirmTradeScreen
-thumb-func 0x08036038 InitializeConnectivityMenu
-thumb-func 0x080360DC ExitConnectivity
-thumb-func 0x08036120 InitializeConfirmTradeScreen
-thumb-func 0x08036178 ExitConfirmTradeScreen
+c-file 0x08035EB0 0x08035F7C src/gamemode/modes/connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
+c-file 0x08035F7C 0x08036038 src/gamemode/modes/connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
+c-file 0x08036038 0x080360DC src/gamemode/modes/connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
+c-file 0x080360DC 0x08036120 src/gamemode/modes/connectivity/exit_connectivity.c ExitConnectivity
+c-file 0x08036120 0x08036178 src/gamemode/modes/connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
+c-file 0x08036178 0x080361AC src/gamemode/modes/connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
 c-file 0x080361AC 0x08036214 src/gamemode/modes/status_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
 c-file 0x08036214 0x080362D8 src/gamemode/modes/status_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
 thumb-func 0x080362D8 sub_080362D8
@@ -871,9 +876,9 @@ thumb-func 0x080364A8 DrawEquipItemStatComparison
 c-file 0x08036890 0x080368CC src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x080368CC sub_080368CC
 thumb-func 0x080368E4 sub_080368E4
-thumb-func 0x0803693C UpdateFolios
-thumb-func 0x080369CC InitializeFolios
-thumb-func 0x08036A20 ExitFolios
+c-file 0x0803693C 0x080369CC src/gamemode/modes/folios/update_folios.c UpdateFolios
+c-file 0x080369CC 0x08036A20 src/gamemode/modes/folios/initialize_folios.c InitializeFolios
+c-file 0x08036A20 0x08036A64 src/gamemode/modes/folios/exit_folios.c ExitFolios
 thumb-func 0x08036A64 InitializeFolioBruti
 thumb-func 0x08036BB8 UpdateFolioBrutiGridCursor
 thumb-func 0x08037048 ExitFolioBruti
@@ -883,9 +888,13 @@ thumb-func 0x080373D4 UpdateFolioUniversitas
 thumb-func 0x0803774C IncrementFolioUniversitasCard
 thumb-func 0x080377A8 DecrementFolioUniversitasCard
 thumb-func 0x08037F48 ExitFolioUniversitas
-thumb-func 0x08038290 InitializeGameCubeLink
-thumb-func 0x08038320 UpdateGameCubeLink
-thumb-func 0x0803860C ExitGameCubeLink
+c-file 0x08038290 0x08038320 src/gamemode/modes/gamecube_link/initialize_gamecube_link.c InitializeGameCubeLink
+c-file 0x08038320 0x08038400 src/gamemode/modes/gamecube_link/update_gamecube_link.c UpdateGameCubeLink
+thumb-func 0x08038400 UpdateGameCubeLinkStatusText
+c-file 0x0803860C 0x08038650 src/gamemode/modes/gamecube_link/exit_gamecube_link.c ExitGameCubeLink
+thumb-func 0x08038650 ShowGameCubeLinkMessage
+thumb-func 0x08038694 SpawnGameCubeLinkIconObjects
+thumb-func 0x080386F0 DispatchGameCubeLinkCommand
 thumb-func 0x08038970 UpdateHelp
 thumb-func 0x080390A0 InitializeHelp
 thumb-func 0x080390C0 ExitHelpScreen
@@ -926,9 +935,21 @@ thumb-func 0x0803A590 sub_0803A590
 thumb-func 0x0803A604 sub_0803A604
 thumb-func 0x0803A630 sub_0803A630
 thumb-func 0x0803A678 sub_0803A678
-thumb-func 0x0803A6D0 InitializeCardTrade
-thumb-func 0x0803A780 UpdateCardTrade
-thumb-func 0x0803ABBC ExitCardTrade
+c-file 0x0803A6D0 0x0803A780 src/gamemode/modes/card_trade/initialize_card_trade.c InitializeCardTrade
+c-file 0x0803A780 0x0803AA50 src/gamemode/modes/card_trade/update_card_trade.c UpdateCardTrade
+thumb-func 0x0803AA50 ResetCardTradeAfterLinkLoss
+thumb-func 0x0803AAA8 SpawnCardTradeCardObjects
+thumb-func 0x0803AB1C SelectCardTradeEntry
+c-file 0x0803ABBC 0x0803ABF8 src/gamemode/modes/card_trade/exit_card_trade.c ExitCardTrade
+thumb-func 0x0803ABF8 ReceiveCardTradeOffer
+thumb-func 0x0803AC1C GetCardTradeSendWord
+thumb-func 0x0803AC38 CancelCardTradeOffer
+thumb-func 0x0803AC70 ShowCardTradeLinkStatus
+thumb-func 0x0803ACE0 RefreshCardTradeSlots
+thumb-func 0x0803AD00 SetCardTradeSlotCard
+thumb-func 0x0803AD78 DrawCardTradeSlotName
+thumb-func 0x0803ADD0 ShowCardTradeMessage
+thumb-func 0x0803AE78 LeaveCardTradeScreen
 thumb-func 0x0803AEA0 InitializeFolioCardDetailScreen
 thumb-func 0x0803AFA0 HandleFolioCardDetailScreenTick
 thumb-func 0x0803AFCC ExitFolioCardDetailScreen
@@ -1005,8 +1026,15 @@ thumb-func 0x0803E768 LoadRoomBgLayer1Extra_candidate
 thumb-func 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
 thumb-func 0x0803E880 LoadRoomBgLayer3Extra_candidate
 thumb-func 0x0803EA3C sub_0803EA3C
+thumb-func 0x0803EEE4 SetLinkCallbacks
+thumb-func 0x0803EEF0 InitLinkSession
 thumb-func 0x0803EF5C TickLinkCommIfActive_candidate
+thumb-func 0x0803F01C StartLinkConnection
+thumb-func 0x0803F04C TickLinkSession
+thumb-func 0x0803F298 LinkConnect
+thumb-func 0x0803FA60 CloseLinkSession
 c-file 0x0803FA94 0x0803FAA4 src/link/get_link_player_id.c GetLinkPlayerId
+thumb-func 0x0803FB78 IsLinkUp
 c-file 0x0803FC68 0x0803FD04 src/audio/play_sound_by_id.c PlaySoundById
 c-file 0x0803FD04 0x0803FDB0 src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
 c-file 0x0803FDB0 0x0803FDFC src/audio/kram_install.c kramInstall
@@ -1064,7 +1092,7 @@ c-file 0x08043470 0x08043580 src/gamemode/modes/main_menu/initialize_main_menu.c
 c-file 0x08043580 0x08043730 src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
 c-file 0x08043730 0x08043870 src/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
 c-file 0x08043870 0x080438B4 src/gamemode/modes/main_menu/exit_main_menu_screen.c ExitMainMenuScreen
-thumb-func 0x080438B4 sub_080438B4
+thumb-func 0x080438B4 StartMainMenuPaletteEffect_candidate
 c-file 0x080438E4 0x08043940 src/main_menu/show_main_menu_entries.c ShowMainMenuEntries
 thumb-func 0x08043940 DrawMainMenuEntry
 thumb-func 0x080439AC DrawMainMenuCopyright_candidate
@@ -1155,6 +1183,7 @@ c-file 0x0804BD5C 0x0804BDBC src/libc/memcpy.c memcpy
 c-file 0x0804BDBC 0x0804BE1C src/graphics/particle/direction_vectors.c g_aDirection4Vectors
 c-file 0x0804C054 0x0804C08C src/room/room_object_constructors.c g_apRoomObjectConstructors
 c-file 0x0804C1B0 0x0804C1B8 src/gamemode/modes/minigame/riddikulus/riddikulus.globals.c g_dwRiddikulusBg0Control
+c-file 0x0804C43C 0x0804C440 src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
 c-file 0x0804C444 0x0804C470 src/gamemode/modes/debug/debug_menu_main/debug_menu_main.globals.c g_dwDebugMenuMainBg0Control
 c-file 0x0804C470 0x0804C4A0 src/gamemode/modes/debug/debug_level_and_quest_select_menu/debug_level_and_quest_select_menu.globals.c g_abDebugLevelAndQuestMax
 c-file 0x0804C4A0 0x0804C4CC src/gamemode/modes/debug/debug_map_select_menu/debug_map_select_menu.globals.c g_dwDebugMapSelectBg0Control
@@ -1240,10 +1269,15 @@ c-file 0x08069184 0x08069194 src/gamemode/modes/minigame/serve_pumpkin_juice/ser
 c-file 0x08069328 0x080693B0 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 0x080693CC src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x080693CC 0x080693E4 src/room/objects/SpawnPushResetButtonObject.globals.c g_RoomObjUnk8Sprite
+c-file 0x0806945C 0x0806950C src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
+c-file 0x0806950C 0x08069568 src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
+c-file 0x08069A2C 0x08069A50 src/gamemode/modes/gamecube_link/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069AB8 0x08069C70 src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x0806B190 0x0806B214 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
+c-file 0x0806B238 0x0806B250 src/gamemode/modes/connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B2FC 0x0806B35C src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
+c-file 0x0806B35C 0x0806B3AC src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B7D4 0x0806B80C src/room/objects/SpawnRaisingPlatformObject.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B80C 0x0806B81C src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions

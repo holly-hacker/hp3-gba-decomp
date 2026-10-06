@@ -19,7 +19,7 @@ void ExitRiddikulusMinigame(void)
 
     if (g_Riddikulus.pCursorObject != NULL)
     {
-        sub_0801DC6C(g_Riddikulus.pCursorObject);
+        ReleaseMenuCursor(g_Riddikulus.pCursorObject);
         g_Riddikulus.pCursorObject = NULL;
         FreeAllParticles();
     }

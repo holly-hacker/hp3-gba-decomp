@@ -9,7 +9,7 @@ void UpdateItemUseScreen(void)
     switch (g_GameModeStackContext.dwModeState)
     {
     case 1:
-        TickBlendFadeOut_candidate();
+        TickMenuFadeIn();
         if (g_GameModeStackContext.dwModeSubState == 0)
             g_GameModeStackContext.dwModeState = 2;
         break;
@@ -20,7 +20,7 @@ void UpdateItemUseScreen(void)
         break;
 
     case 3:
-        sub_080321A8();
+        TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
             PushGameMode(ItemsItemSelect);
         break;

@@ -54,3 +54,5 @@ extern void ListMenuCursorTick_candidate(Object *pObject);
 extern void BuildListMenu(const ListMenuDefinition *pDefinition);
 extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);
+extern void DrawMenuScreenTitle(u32 stringId);
+extern void LoadMenuScreenOverlay(const u8 *pGraphic, u32 arg1, u32 arg2);

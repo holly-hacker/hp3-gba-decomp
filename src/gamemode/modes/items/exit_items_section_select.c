@@ -12,7 +12,7 @@ void ExitItemsSectionSelect(void)
     g_bItemsSectionCursor = g_GameModeStackContext.dwModeScratchB;
     ClearBgTilemap(2);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
-    sub_0801DC6C(g_pMenuCursorObject);
+    ReleaseMenuCursor(g_pMenuCursorObject);
     g_pMenuCursorObject = NULL;
     FreeAllParticleEmitters();
     FreeAllParticles();

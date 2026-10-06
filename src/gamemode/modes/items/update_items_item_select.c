@@ -15,7 +15,7 @@ void UpdateItemsItemSelect(void)
     switch (g_GameModeStackContext.dwModeState)
     {
     case 1:
-        TickBlendFadeOut_candidate();
+        TickMenuFadeIn();
         if (g_GameModeStackContext.dwModeSubState == 0)
         {
             SetAlphaBlendTargets(0, 1);
@@ -62,7 +62,7 @@ void UpdateItemsItemSelect(void)
         break;
 
     case 3:
-        sub_080321A8();
+        TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
             PushGameMode(g_ItemsItemSelect.nextMode);
         break;

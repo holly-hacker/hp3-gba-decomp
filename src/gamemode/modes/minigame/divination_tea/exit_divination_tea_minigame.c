@@ -13,7 +13,7 @@ void ExitDivinationTeaMinigame(void)
 
     if (g_DivinationTea.pCursorObject != NULL)
     {
-        sub_0801DC6C(g_DivinationTea.pCursorObject);
+        ReleaseMenuCursor(g_DivinationTea.pCursorObject);
         g_DivinationTea.pCursorObject = NULL;
         FreeAllParticleEmitters();
         FreeAllParticles();

@@ -17,13 +17,13 @@ void UpdateInGameMenu(void)
     {
     case 0:
     case 1:
-        TickBlendFadeOut_candidate();
+        TickMenuFadeIn();
         if (g_GameModeStackContext.dwModeSubState == 0)
         {
             if (g_GameModeStackContext.dwModeState == 0)
             {
                 g_GameModeStackContext.dwModeState = 1;
-                sub_080320A4();
+                StartMenuFadeIn();
                 BuildListMenu(&g_InGameMenuDefinition);
             }
             else
@@ -51,14 +51,14 @@ void UpdateInGameMenu(void)
 
     case 3:
     case 4:
-        sub_080321A8();
+        TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
             sub_0803232C();
             if (g_GameModeStackContext.dwModeState == 3)
             {
                 g_GameModeStackContext.dwModeState = 4;
-                sub_0803217C();
+                StartMenuOverlayFadeOut();
             }
             else
             {

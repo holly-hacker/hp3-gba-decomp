@@ -130,6 +130,8 @@ typedef struct {
     u8 bSaveFlags;
     u8 pad_0D[0x03];
     u8 abMonsterDocLevel[69];
+    u8 abOtherSaveState[0x47];  // 0x55-0x9B: Folio Universitas counts and flags, etc.
+    u8 bOwlCareKitFlags;        // 0x9C: bit 0 = care screen visited (owlCareKit.flVisited)
 } SaveStateBlock;
 
 extern SaveStateBlock g_saveStateBlock;

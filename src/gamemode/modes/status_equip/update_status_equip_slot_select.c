@@ -14,7 +14,7 @@ void UpdateStatusEquipSlotSelect(void)
     switch (g_GameModeStackContext.dwModeState)
     {
     case 1:
-        TickBlendFadeOut_candidate();
+        TickMenuFadeIn();
         if (g_GameModeStackContext.dwModeSubState == 0)
         {
             SetAlphaBlendTargets(0, 1);
@@ -111,7 +111,7 @@ void UpdateStatusEquipSlotSelect(void)
             SetAlphaBlendCoefficients(16, 0);
             SetAlphaBlendTargets(0x14, 1);
         }
-        sub_080321A8();
+        TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
             sub_0803A604();

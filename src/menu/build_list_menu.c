@@ -32,7 +32,7 @@ void BuildListMenu(const ListMenuDefinition *pDefinition)
 
     for (row = 0; row < pDefinition->wRowObjectCount; row++)
     {
-        pObject = sub_0802C90C(row, 0);
+        pObject = SpawnMenuIconObject(row, 0);
         pObject->dwFlags |= ObjectFlagSuppressEffectBinding | ObjectFlagHasAnimation;
         SetObjectPosition(pObject,
                           pDefinition->wStrideX * row + pDefinition->wBaseX

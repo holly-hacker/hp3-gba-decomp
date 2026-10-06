@@ -37,7 +37,7 @@ void InitializeMainMenu(void)
     ClearResourceCacheSlots();
     sub_0803094C(0);
     sub_0800D264((void *)gMainMenuPalette, 0, 0x10);
-    sub_080438B4();
+    StartMainMenuPaletteEffect_candidate();
 
     PlayMusicModule(0x21);
     PlayScreenTransitionInByIndex(0x3F, 2);

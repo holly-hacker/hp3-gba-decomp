@@ -12,7 +12,7 @@ void ExitHarryVsDementorsMinigame(void)
 
     if (g_HarryVsDementors.pCursorObject != NULL)
     {
-        sub_0801DC6C(g_HarryVsDementors.pCursorObject);
+        ReleaseMenuCursor(g_HarryVsDementors.pCursorObject);
         g_HarryVsDementors.pCursorObject = NULL;
         FreeAllParticles();
     }

@@ -27,7 +27,7 @@ void ExitWizardCrackerPopItMinigame(void)
     }
 
     ResetPaletteAnimations();
-    sub_0801DC6C(g_pWizardCrackerPopIt->pObject0);
+    ReleaseMenuCursor(g_pWizardCrackerPopIt->pObject0);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 1;
     FreeAllParticles();

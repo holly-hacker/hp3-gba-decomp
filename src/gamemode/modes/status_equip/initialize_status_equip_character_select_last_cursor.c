@@ -7,7 +7,7 @@
 
 void InitializeStatusEquipCharacterSelectLastCursor(void)
 {
-    sub_080320A4();
+    StartMenuFadeIn();
     SetAlphaBlendTargets(0x1E, 1);
     sub_08035A34();
 

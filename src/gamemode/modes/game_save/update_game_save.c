@@ -36,7 +36,7 @@ void UpdateGameSave(void)
         break;
 
     case 4:
-        TickBlendFadeOut_candidate();
+        TickMenuFadeIn();
         if (g_GameModeStackContext.dwModeSubState == 0)
             g_GameModeStackContext.dwModeState = 5;
         break;

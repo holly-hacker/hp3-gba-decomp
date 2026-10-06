@@ -4,9 +4,9 @@
 #include "gen/graphics/overworld.h"
 
 const ListMenuEntry g_aItemsSectionEntries[3] = {
-    { ItemsItemSelect, 0x586, 0, 0 },
-    { ItemsItemSelect, 0x587, 0, 0 },
-    { ItemsItemSelect, 0x589, 0, 0 },
+    { ItemsItemSelect, 0x586, 0, 0 },  // "All"
+    { ItemsItemSelect, 0x587, 0, 0 },  // "Potions"
+    { ItemsItemSelect, 0x589, 0, 0 },  // "Miscellaneous"
 };
 
 const u32 g_aItemsSectionFilters[3] = { 0xA, ItemCategoryPotion, ItemCategoryMisc };
@@ -18,7 +18,7 @@ const ListMenuRowObject g_aItemsSectionRowObjects[3] = {
 };
 
 const ListMenuDefinition g_ItemsSectionMenuDefinition = {
-    0x531,
+    0x531,  // title: "Items"
     ARRAY_COUNT(g_aItemsSectionEntries),
     4,
     0,

@@ -11,12 +11,13 @@ extern const ListMenuDefinition g_InGameMenuDefinition;  // 0x08068CE0
 extern GameMode g_StatusEquipReturnMode;  // 0x03005298: StatusEquipCharacterSelect's B target
 extern GameMode g_StatusEquipNextMode;    // 0x0300529C: StatusEquipCharacterSelect's A target
 
-extern void sub_08031FB8(u32 arg);
-extern void sub_080320A4(void);
-extern void sub_0803217C(void);
-extern void sub_080321A8(void);
+extern void BeginPauseMenuScreen(u32 arg);
+extern void StartMenuFadeIn(void);
+extern void StartMenuOverlayFadeIn(void);
+extern void StartMenuOverlayFadeOut(void);
+extern void TickMenuFadeOut(void);
 extern void SelectInGameMenuEntry_candidate(void);
 extern void sub_0803232C(void);
-extern void sub_0803233C(void);
+extern void DrawPauseMenuObjective(void);
 extern void sub_080323AC(void);
 extern void sub_080323B0(void);

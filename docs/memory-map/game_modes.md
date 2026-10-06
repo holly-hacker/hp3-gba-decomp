@@ -242,3 +242,56 @@ Juice (`0x03005298`).
 - Whether `DebugMenuMain` is reachable/meaningful from every game state,
   or only from specific ones (e.g. title screen) -- untested.
 - JP addresses for `g_dwPendingGameMode`/`g_dwCurrentGameMode`.
+
+## PurpleScreenReturnToMenu (0x32)
+
+PROVEN from the matched handlers in `src/gamemode/modes/purple_screen_return_to_menu/`.
+A placeholder screen: Init clears VRAM, enables the object layer
+(`SetDispcntFlag(0x1000)`), sets BG0's control word
+(`g_dwPurpleScreenBg0Control`, `0x3F03`), zeroes `dwCurrentGameModeArg2` and fades in. No
+graphics or objects are loaded, so the backdrop is the backdrop colour. Update
+pushes `MainMenu` as soon as any of A/B/Select/Start (`g_wKeysPressed & 0xF`)
+is pressed; Exit fades out and frees all objects. No `PushGameMode*` call with a
+literal `0x32` exists in the ROM and no mode-table scanned (in-game menu, items,
+status/equip next-mode fields) names it, so no pusher is known (UNCONFIRMED:
+possibly reachable only through a data-driven mode id).
+
+## Folios (0x13), Connectivity (0x16), ConfirmTradeScreen (0x47)
+
+PROVEN from the matched handlers in `src/gamemode/modes/folios/` and
+`src/gamemode/modes/connectivity/`. All three are pause-menu submenus built from a
+`ListMenuDefinition` (`include/menu/menu.h`) and share `UpdateInGameMenu`'s shape:
+`dwModeState` 1 waits for the blend fade (`dwModeSubState` 0), 2 handles A
+(`SelectInGameMenuEntry_candidate`), Up/Down (`MoveListMenuCursor`) and B, 4 waits for
+the fade-out (`dwModeSubState == 0x10`) before pushing the next mode. `dwCurrentGameModeArg1 == 1` starts directly in state 2 with a
+screen transition instead of the fade. Exit saves `dwModeScratchB` (the cursor row) in
+`g_bFoliosMenuCursor` / `g_bConnectivityMenuCursor`; Init restores it.
+
+- Folios: rows Folio Universitas and Folio Bruti (`g_aFoliosEntries`); B returns to
+  `InGameMenuFadeIn`.
+- Connectivity: row 0 is `ConfirmTradeScreen`; row 1 depends on the Owl Care Kit:
+  locked (`flOwlCareKitUnlocked` clear) `GameCubeLink`, unlocked and never visited
+  `OwlNameSelect`, otherwise `OwlCareMinigame` (an immediate row). `InitializeConnectivityMenu`
+  copies `g_ConnectivityMenuTemplate` to `g_ConnectivityMenu` and swaps `pEntries`. B
+  stores -1 in `dwCurrentGameModeArg2` and returns to `InGameMenuFadeIn`.
+- ConfirmTradeScreen: a two-row prompt (`g_aConfirmTradeEntries`); row 0, also forced by
+  B, returns to `Connectivity`, row 1 continues to `CardTrade`.
+
+## CardTrade (0x15) and GameCubeLink (0x41)
+
+PROVEN from the matched handlers in `src/gamemode/modes/card_trade/` and
+`src/gamemode/modes/gamecube_link/`. Both are Connectivity rows built on a
+`ListMenuDefinition` and keep their link session alive across `dwModeState` steps; see
+[`link.md`](link.md) and [`gcn-link.md`](gcn-link.md) for the protocols.
+
+- CardTrade: Init with `dwCurrentGameModeArg1 == 1` returns from a sub-screen at state 2
+  with `Arg2` as the local card; otherwise it clears `g_CardTradeState` and fades in from
+  state 0. `UpdateCardTrade` pumps the link every frame, then runs states 0-1 (fade, build
+  the menu), 2 (pick a card), 3-4 (fade out to `Connectivity`/`FolioUniversitas`),
+  5 (peer sync countdown), 6 (move both cards, then grant/remove through the Folio
+  Universitas count routines), 7 and 8 (save the game, then back to state 2).
+  Exit leaves the link running if the next mode is `Connectivity`.
+- GameCubeLink: the list definition is title-only. `UpdateGameCubeLink` ticks the JOYBUS
+  session and passes its event to `UpdateGameCubeLinkStatusText`, which draws the status text. B starts a
+  fade back to the previous mode; in state 2 any of A/B/Select/Start/L/R pushes
+  `OwlNameSelect` (`Arg1 == 0`) or `OwlCareMinigame` (`Arg1 == 1`).

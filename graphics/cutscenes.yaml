@@ -43,7 +43,8 @@ groups:
       - kind: graphic-blobs
         count: 7
         names:
-          1: HogwartsUpNight001
+          1: CardTradeOverlay
+          2: FolioCardDetailBg3Graphic
           3: ClockSkipGraphic
           4: HogwartsUpNightBg0Graphic
           5: HogwartsUpNightBg1Graphic

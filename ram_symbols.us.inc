@@ -150,6 +150,7 @@
 .set sTextMacroTable,                                  0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by InitTextMacroTable) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickObject clears; see src/object/tick_object.c
+.set g_GameCubeLinkScreenState, 0x03003238  @ GameCubeLinkScreenState: status/result text bookkeeping for the GameCube link screen
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
 @ --- Overworld object tracking (see include/overworld/overworld.h) ---
@@ -251,6 +252,7 @@
 .set g_dwPendingGameMode,                    0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
 .set g_PrevGameModeStackContext,             0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
+.set g_apMenuIconObjects, 0x03003F68  @ Object *[]: objects registered by index via RegisterMenuIconObject
 .set g_dwSelectedMinigame,                   0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
 .set g_abBgPriority,                         0x03003F8C  @ u8[]; [4] == 0x03003F90
 .set g_dwPendingCameraFocusFlag,             0x03003FD4  @ u32: cleared on room entry
@@ -291,6 +293,7 @@
 .set g_bPatronusGraphicIndex, 0x030051F0  @ u8
 .set g_swPatronusBgParam,     0x030051F2  @ s16
 .set g_nPatronusBgOffset,     0x030051F4  @ s32, 16.16
+.set g_ConnectivityMenu, 0x030051F8  @ ListMenuDefinition: RAM copy of g_ConnectivityMenuTemplate with the active row table
 
 .set g_ListMenuState,                          0x03005220  @ ListMenuState: pause menu cursor row saved by ExitInGameMenu, definition of the list menu on screen
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005228  @ u32: set by the StartMinigame room script opcode
@@ -303,8 +306,10 @@
 .set g_dwStatusEquipCharacter,     0x030052A0  @ u32: FighterType chosen in StatusEquipCharacterSelect, read by the slot/item screens and ItemUseScreen
 .set g_StatusEquipCharacterSelect, 0x030052A8  @ StatusEquipCharacterSelectState: slot presence flags and pending mode; see include/menu/status_equip.h
 .set g_bStatusEquipCharacterSlot,  0x030052B8  @ u8: StatusEquipCharacterSelect cursor slot
+.set g_bConnectivityMenuCursor, 0x030052BC  @ s8: Connectivity row restored on re-entry
 .set g_dwStatusEquipSlotType,      0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect
 .set g_StatusEquipItemSelect,      0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/menu/status_equip.h
+.set g_bFoliosMenuCursor, 0x030052F8  @ s8: Folios row restored on re-entry
 .set g_ItemsItemSelect,            0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/menu/items_menu.h
 .set g_ItemsSectionSelectNextMode, 0x030054E4  @ GameMode: pushed once the Items section select fades out
 .set g_bItemsSectionCursor,        0x030054E8  @ s8: Items section select row saved on exit
@@ -312,6 +317,7 @@
 .set g_dwItemUseQuantity,          0x030054F0  @ u32: quantity chosen in QuantitySelectScreen, used by ItemUseScreen
 .set g_StatusEquipSlotSelect,      0x030054F8  @ StatusEquipSlotSelectState: slot select screen objects and pending mode; see include/menu/status_equip.h
 .set g_bStatusEquipSlot,           0x03005564  @ s8: selected equipment slot in StatusEquipSlotSelect
+.set g_CardTradeState, 0x03005568  @ CardTradeState: link card trade session; see include/menu/card_trade.h
 
 @ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
 @ Names mostly match jogotu's BizHawk script naming, cross-checked

@@ -10,7 +10,7 @@ void InitializeItemsItemSelect(void)
     u8 *text;
 
     g_GameModeStackContext.dwModeState = 1;
-    sub_080320A4();
+    StartMenuFadeIn();
     BeginMenuScreen(0x531, 9, 0);
 
     g_ItemsItemSelect.dwHasItems = sub_08027AF4(g_ItemsItemSelect.dwFilter, 0x34, 0x36, 1, 0, 3, -1);
