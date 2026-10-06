@@ -1083,9 +1083,9 @@ countdown whose meaning is local to that state.
   active fighter.
 
   `SetFighterTurnOrderIconDone` sets the ending fighter's turn-order icon to
-  its idle frame (`0` ally/`1` enemy) via `SetObjectAnimFrame`; `sub_0800FEE0`
+  its idle frame (`0` ally/`1` enemy) via `SetObjectAnimFrame`; `SetFighterTurnOrderIconActive`
   sets the next fighter's icon to its highlighted frame (`2`/`3`) the same
-  way. Both also restack `bDepthSortBias` across all icons through
+  way and also restacks `bDepthSortBias` across all icons through
   `apTurnOrderIconObjects` (`FightState+0x818`), a 7-entry array of the icon
   *container* Objects `SpawnTurnOrderIcon` allocates, one per active fighter
   slot -- distinct from each fighter's own `pObject`. Each container's

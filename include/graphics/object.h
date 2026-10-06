@@ -507,6 +507,7 @@ extern void sub_08030140(void);
 extern void CommitQueuedObjectTileUpdates(void);  // run from vblank callbacks
 extern void sub_08001690(Object *obj, const void *pAssetRecord);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
+extern void sub_080023B4(Object *obj);  // reloads the animation frame's cells and terrain box
 extern void SetObjectActionState(Object *obj, u8 state);
 extern void SetObjectFlags(Object *obj, ObjectFlags flags);
 // Starts animation `animId` from the object's animation table.

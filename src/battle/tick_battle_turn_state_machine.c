@@ -36,7 +36,7 @@ void TickBattleTurnStateMachine(void)
             g_pFightState->wBattleStateTimer = 0x10;
 
             if (g_pFightState->bActiveFighterIndex < g_pFightState->bFighterCount)
-                sub_0800FEE0(g_pFightState->bActiveFighterIndex);
+                SetFighterTurnOrderIconActive(g_pFightState->bActiveFighterIndex);
         }
         else if (g_pFightState->wBattleStateTimer == 0) {
             // wait for every fighter's turn-order icon (pObject->pLinkedObject_candidate) to clear
@@ -95,7 +95,7 @@ void TickBattleTurnStateMachine(void)
         if (--g_pFightState->wBattleStateTimer == 0xffff) {
             if (g_pFightState->dwDefeatCheckPending_candidate != 0) {
                 g_pFightState->dwDefeatCheckPending_candidate = 0;
-                sub_0800FEE0(0);
+                SetFighterTurnOrderIconActive(0);
                 sub_08013108(g_pFightState->bFighterCount - 1);
             }
 
@@ -110,7 +110,7 @@ void TickBattleTurnStateMachine(void)
         }
 
         if (g_pFightState->wBattleStateTimer == 0x10) {
-            sub_0800FEE0(0);
+            SetFighterTurnOrderIconActive(0);
             sub_08013108(g_pFightState->bFighterCount - 1);
         }
 

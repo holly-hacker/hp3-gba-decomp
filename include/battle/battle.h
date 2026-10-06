@@ -171,7 +171,7 @@ typedef struct FightState {
     /*0x1063*/ u8 pad_1063;
     /*0x1064*/ u32 dwStateJustEntered;       // one-shot flag consumed by each state's own tick, set whenever bBattleState changes
     /*0x1068*/ u16 wBattleStateTimer;        // generic per-state countdown, meaning is state-specific
-    /*0x106A*/ u8 pad_106A[0x106C - 0x106A];
+    /*0x106A*/ u16 wNextFighterTurnKey_candidate;  // nFaintedFlag of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder_candidate
     /*0x106C*/ u8 bActiveFighterIndex;
     /*0x106D*/ u8 bMenuFighterIndex;
     /*0x106E*/ u8 bUnk106E;    // zeroed by InitializeBattle, only on a fresh (non-resumed) battle
@@ -238,7 +238,7 @@ extern Object *g_apFighterObjects_candidate[7];
 
 extern void TickBattleTurnStateMachine(void);
 extern void SetFighterTurnOrderIconDone(s32 fighterIndex);  // sets fighterIndex's turn-order icon to its idle frame
-extern void sub_0800FEE0(s32 fighterIndex);
+extern void SetFighterTurnOrderIconActive(s32 fighterIndex);  // sets fighterIndex's turn-order icon to its highlighted frame, bringing it to the front
 extern void sub_08013108(u8 fighterIndex);        // cursor/highlight-to-fighter
 extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighterIndex, s32 flag);
 extern void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex);
@@ -377,7 +377,7 @@ extern u32 GetPartyPresenceMask(void);
 extern u8 GetPartySize(void);
 extern void JitterEnemyTurnOrder(void);
 extern void BuildTurnOrder(void);
-extern void SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
+extern Object *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
 extern Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
 extern Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
 extern u8 *GetBattleBackgroundData_candidate(void);

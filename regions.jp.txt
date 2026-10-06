@@ -277,7 +277,7 @@ c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
 thumb-func 0x0800F16C RestoreFighterObjects_candidate
 thumb-func 0x0800F5F0 ResumeBattleAfterSubmode_candidate
 c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
-thumb-func 0x0800FEE0 sub_0800FEE0
+thumb-func 0x0800FEE0 SetFighterTurnOrderIconActive
 c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
 thumb-func 0x080100A0 DispatchPendingAction
 thumb-func 0x080101D0 TickBattleMenuInput
