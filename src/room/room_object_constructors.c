@@ -13,7 +13,7 @@ const RoomObjectConstructor g_apRoomObjectConstructors[ROOM_OBJECT_TYPE_COUNT] =
     SpawnNpcObject,
     SpawnTriggerRectObject,
     SpawnPushResetButtonObject,
-    SpawnScriptedOneTimeObject,
+    SpawnChestObject,
     SpawnSpongifyPadObject,
     SpawnFlamePillarObject,
     SpawnRaisingPlatformObject,

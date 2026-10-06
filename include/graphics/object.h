@@ -229,6 +229,23 @@ typedef struct __attribute__((packed)) ObjectEffectState {
     u8 bParam6D;            // 0x6D
 } ObjectEffectState;
 
+// Object 0x62-0x6D for a chest (room object type 9), from its record; see
+// SpawnChestObject.
+typedef struct __attribute__((packed)) ObjectChestState {
+    u16 wRewardId;          // 0x62, see rewards.h
+    u8 bKind;               // 0x64, 0-3
+    u8 bOpened;             // 0x65, set once opening starts or when spawned already open
+    u8 bUnchaining;         // 0x66, kind 1: set when spell effect 3 starts unchaining it
+    u8 bUnk67;              // 0x67, cleared by the constructor
+    union __attribute__((packed)) {
+        u16 wPair;          // tested as a whole: zero means no pair
+        struct __attribute__((packed)) {
+            u8 bRespawnGroup;   // 0x68
+            u8 bChain;          // 0x69
+        } bytes;
+    } pair;                 // 0x68, run instead of a reward above REWARD_ID_GOLD
+} ObjectChestState;
+
 // General-purpose sprite/animation object, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
 // into FightState.aSuspendedFighterObjects_candidate -- see battle.h). Only
@@ -287,15 +304,16 @@ typedef struct Object {
             u8 bRoomScriptArg64_candidate;  // 0x64, set by room script animation handlers
             u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
             u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileObjectScript
-            u8 bRoomObjectArg67_candidate;  // 0x67, cleared by the type 9 room object constructor
+            u8 bRoomObjectArg67_candidate;  // 0x67
             u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
-            u8 bRoomObjectArg69_candidate;  // 0x69, set by the type 9 room object constructor
+            u8 bRoomObjectArg69_candidate;  // 0x69
             u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartObjectAnimSequence
             u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartObjectAnimSequence
             u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
             u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
         } actor;
         ObjectEffectState effect;
+        ObjectChestState chest;
     } modeState;
     u8 pad_6E[0x0E];        // -> 0x7C
     u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocObjectOfType, zeroed by
@@ -312,7 +330,8 @@ typedef struct Object {
     u8 bActionSubState;     // 0x8F, secondary per-object state; see SetObjectActionSubState
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
-    u8 pad_92[0x02];        // -> 0x94
+    u8 bReceivedRewardId;   // 0x92, player: reward id shown by the receive-item action (0x17)
+    u8 pad_93[0x01];        // -> 0x94
     u8 bFlags_0x94_candidate;  // 0x94, bit 0x4 set by a room script; meaning unconfirmed
     u8 pad_95[0x03];        // -> 0x98
     void (*pfnTick)(struct Object *obj);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
@@ -411,7 +430,7 @@ typedef enum {
     RoomObjectType_Player           = 0,     // SpawnPlayerObject_candidate
     RoomObjectType_ScriptedTrigger  = 5,     // sub-behavior picked by a separate per-instance kind field
     RoomObjectType_Unk8             = 8,
-    RoomObjectType_ScriptedOneTime  = 9,     // SpawnScriptedOneTimeObject
+    RoomObjectType_Chest            = 9,     // SpawnChestObject
     RoomObjectType_UnkA             = 0xA,
     RoomObjectType_UnkB             = 0xB,
     RoomObjectType_UnkC             = 0xC,

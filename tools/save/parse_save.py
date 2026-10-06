@@ -984,11 +984,9 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot["partyStats"] = [decode_party_member(r) for _ in range(PARTY_MEMBER_COUNT)]
     slot["roomObjectState"] = decode_room_object_state(r)
 
-    # 256-bit bitset (one bit per Object script entry-point/wScriptPC value)
-    # tracking which one-time scripted objects have already fired, checked
-    # by SpawnScriptedOneTimeObject (0x0800BC6C) when respawning them --
-    # persists across room transitions, unlike roomObjectState above.
-    slot["abTriggeredScriptFlags"] = r.read_bytes(32).hex()
+    # 256-bit bitset, one bit per chest flag id, set when that chest is
+    # opened. Persists across room transitions, unlike roomObjectState above.
+    slot["abOpenedChestFlags"] = r.read_bytes(32).hex()
     # Ghidra: g_abQuestEventState (0x030027a0). Index 25 = bMainMenuObjectiveIndex
     # above. Persistent global state, not per-room (confirmed unchanged
     # across a real room-to-room crossing). Indices ~224-254 are
@@ -1064,7 +1062,7 @@ def encode_slot_stream(slot: dict) -> bytes:
 
     encode_room_object_state(w, slot["roomObjectState"])
 
-    w.write_bytes(bytes.fromhex(slot["abTriggeredScriptFlags"]))
+    w.write_bytes(bytes.fromhex(slot["abOpenedChestFlags"]))
     w.write_bytes(bytes(slot["abQuestEventState"]))
 
     for level in slot["a3FolioBrutiLevels"] + slot["a3BossMonsterLevels"]:

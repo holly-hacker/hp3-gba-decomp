@@ -63,7 +63,7 @@ extern Object *SpawnPropObject(u8 bColumn, u8 bRow);
 extern Object *SpawnNpcObject(u8 bColumn, u8 bRow);
 extern Object *SpawnTriggerRectObject(u8 bColumn, u8 bRow);
 extern Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow);
-extern Object *SpawnScriptedOneTimeObject(u8 bColumn, u8 bRow);
+extern Object *SpawnChestObject(u8 bColumn, u8 bRow);
 extern Object *SpawnSpongifyPadObject(u8 bColumn, u8 bRow);
 extern Object *SpawnFlamePillarObject(u8 bColumn, u8 bRow);
 extern Object *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow);
@@ -271,23 +271,24 @@ extern const u32 g_adwRoomObjUnk6FrameRows[110];          // ROM 0x08066E44 (US)
 extern const ObjectAssetRecord g_aObjectTypeAssets[137];  // ROM 0x08066FFC (US), indexed by an object kind
 extern const u8 g_abRoomObjUnk6Frames[12][4];             // ROM 0x0806788C (US)
 
-// One-time scripted object (chests and similar pickups). wScriptPc is the
-// object's bit in g_abTriggeredScriptFlags.
+// Chest record. wFlagId is the chest's bit in g_abOpenedChestFlags.
 typedef struct RoomObjectRecordUnk9 {
     u16 wObjType;
     u16 wUnk2;
     s16 nPixelX;
     s16 nPixelY;
-    u16 wScriptPc;   // 0x08
-    u8 bKind;        // 0x0A, 0-3; 2 despawns once triggered
-    u8 bArgB;        // 0x0B
-    u8 bArgC;        // 0x0C
-    u8 bArgD;        // 0x0D
+    u16 wFlagId;        // 0x08
+    u8 bKind;           // 0x0A, 0-3; 2 despawns once opened
+    u8 bRewardId;       // 0x0B, see rewards.h; above REWARD_ID_GOLD runs the pair instead
+    u8 bChain;          // 0x0C
+    u8 bRespawnGroup;   // 0x0D
 } RoomObjectRecordUnk9;
 
-extern u8 g_abTriggeredScriptFlags[32];
-extern void sub_0800BDCC(Object *pObj);
-extern void sub_0800BF20(Object *pSelf, Object *pOther);
+// One bit per chest flag id, set when that chest is opened. Saved with the game.
+extern u8 g_abOpenedChestFlags[32];
+extern void TickChestObject(Object *pObj);
+extern void HandleChestTouch(Object *pSelf, Object *pOther);
+extern void sub_0802E2BC(Object *pSpell, Object *pTarget);  // overworld spell effect hits a room object
 extern const ObjectGfxRecord g_RoomChestSprite;                  // ROM 0x0804D524 (US)
 extern const ObjectGfxRecord *const g_apRoomChestAnimFrames[4];  // ROM 0x0804D52C (US)
 extern const u8 g_abRoomChestAnimData[4][100];                   // ROM 0x0804D53C (US)

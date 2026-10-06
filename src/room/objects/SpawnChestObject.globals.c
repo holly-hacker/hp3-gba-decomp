@@ -15,8 +15,9 @@ const ObjectGfxRecord *const g_apRoomChestAnimFrames[4] = {
     &g_RoomChestSprite,
 };
 
-// One animation block per kind. An object whose script flag is already set
-// starts at command 8.
+// One animation block per kind. A closed chest starts at command 0, opening
+// plays from command 2, and a chest whose flag is already set starts at
+// command 8.
 const u8 g_abRoomChestAnimData[4][100] = {
     {
         // 0

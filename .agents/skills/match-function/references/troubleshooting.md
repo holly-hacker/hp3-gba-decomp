@@ -87,6 +87,11 @@ source does not guarantee merging. Re-derive the true outer split first. In Reso
 “both flags” versus the remaining combinations permits a shared DefenseBoost recheck inside
 one else arm. A goto matched too, but structured control flow expressed the same join.
 
+Cross-jumping runs after register allocation, so duplicated source also changes allocation:
+each copy's references count toward the variables it uses. When a goto-joined draft matches
+except for two callee-saved registers swapped, write the shared block out in each branch.
+Example: HandleChestTouch, US 0x0800BF20 (the parameter took r4 only with two copies).
+
 A merged tail's register convention is set by whichever branch reaches it needing zero
 fixup moves; the other branch pays the reconciling `adds`. Fix that branch's own tie
 (entry 9) first -- the tail's ordering won't resolve in isolation. Example: UpdateKeyInput,
@@ -164,7 +169,9 @@ index sum (`[i + pendingI]`). Example: ExitBattle, US 0x0800DE50 loop 2.
 `p = &g.array[i]` folds the member offset into the literal pool (`.word g+0x1c`). Reading and
 writing `g.array[i]` directly, in both the compare and the store, keeps the plain symbol in the
 pool and emits `adds rX, #offset` after the index shift. Example: UpdateHippogriffGlideMinigame,
-US 0x08009BE0.
+US 0x08009BE0. Likewise, indexing with a variable the branch has already fixed (`table[kind]`
+inside `if (kind == 1)`) gives `ldr base; adds #offset` where `table[1]` pools `base+offset`
+(HandleChestTouch, US 0x0800BF20).
 
 ## 21. Switch layout
 

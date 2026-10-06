@@ -83,15 +83,17 @@ extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, 
 extern u32 ShouldRunRoomScriptRow_candidate(u32 row);
 extern u16 GetRoomRowColumnCount_candidate(u32 row);
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
-extern u8 IsFolioPageGroupUnlocked_candidate(u32 pageGroupId);
+extern u32 IsFolioPageGroupUnlocked_candidate(u32 pageGroupId);
 extern void LevelUpPartyMember_candidate(u32 fighterType);
 extern u8 g_abRoomScriptExitParams_candidate[2];
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
 extern void sub_08024980(u32 characterId);  // fills follower slot 0
 extern void sub_080249A4(u32 characterId);  // fills follower slot 1
 extern Object *sub_0802F6C0(u32 characterId);
-extern void sub_08024A30(u32 rewardId);
-extern void sub_08024A88(u32 rewardId);
+// Starts the player's receive-item action and grants one of the reward (30-60 Sickles for
+// REWARD_ID_GOLD).
+extern void PlayerReceiveReward(u32 rewardId);
+extern void PlayerReceiveRewardAlt(u32 rewardId);  // also sets the action timer to 0x42
 extern void RestorePendingCameraFocus_candidate(void *pFocus);
 extern void *g_pPendingCameraFocus_candidate;
 extern void GrantPartyExperience_candidate(u32 xp);

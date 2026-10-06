@@ -201,6 +201,10 @@
     .byte \variant, \group0, \member0, \group1, \member1, \group2, \member2, \group3, \member3, \group4, \member4, \group5, \member5, \group6, \member6, \group7, \member7, 0xff, 0xff, 0xff
 .endm
 
+@ flag_id is the chest's bit in g_abOpenedChestFlags. reward_id is a reward id
+@ as interpreted by GrantReward (include/game/rewards.h): an item, a Folio
+@ Universitas card or Sickles. Ids above 0x83 grant nothing and run the
+@ (respawn_group, chain) pair instead.
 .macro Chest x, y, flag_id, reward_id, kind=0, chain=0, respawn_group=0
     _member 16
     .4byte 9

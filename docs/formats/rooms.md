@@ -135,10 +135,38 @@ below (`SpawnDoorObject`, ..., `SpawnPortraitDoorObject`; see
 | 6 | 16 | NPC | `sprite` (8, index into `g_aObjectTypeAssets`); `facing` (9, stored halved); `interact_cooldown` (A, u16, x30 ticks); `interact_mode` (C): 0 interactable once, 1 repeatable after the cooldown; pair at D/E runs on interaction (both zero: not interactable) |
 | 7 | 20 | trigger zone with explicit edges | `left`, `top`, `right`, `bottom` (8-B); `rearm_delay` (C, u16); `trigger_kind` (E); `require_a_press` (F); pair at 11/12 |
 | 8 | 28 | push puzzle reset button: any overworld spell effect (object type `0xF`) presses variant 0, and when the press animation ends the targets are respawned at their record positions. Every use targets pushable props (kind 1 blocks, kind 81 book stacks) | `variant` (8); eight `(group, member)` targets (9-0x18) that are freed and respawned |
-| 9 | 16 | chest / one-time pickup | `flag_id` (8, u16: bit in `g_abTriggeredScriptFlags`); `kind` (A, 0-3); `reward_id` (B, below 0x84 grants a reward, otherwise runs the pair); `chain` (C), `respawn_group` (D) |
+| 9 | 16 | chest, see "Chests" below | `flag_id` (8, u16); `kind` (A, 0-3); `reward_id` (B); `chain` (C), `respawn_group` (D) |
 | 10 | 16 | Spongify pad: overworld spell effect 5 arms it, then touching it launches the player and followers to the target point | `target_x`, `target_y` (8, A, s16); `variant` (C) |
 | 11 | 16 | flame jet that alternates on and off; contact runs the pair | `variant` (C); pair at D/E; off and on periods at 8 and A |
 | 12 | 12 | raising platform: the party gathers on it, it lifts them, then runs the pair | pair at 8/9; nonzero `arg_0a` (A) starts it inactive until overworld spell effect 2 hits it |
+
+### Chests
+
+**PROVEN** from `SpawnChestObject`, its touch handler `HandleChestTouch` and
+its tick `TickChestObject`.
+
+- `flag_id` is the chest's bit in `g_abOpenedChestFlags` (256 bits, saved with
+  the game; see [`save.md`](save.md)). Flag ids are global: a chest that appears
+  in several sub-blocks of a room uses the same id in each. A chest whose bit is
+  set spawns open (kind 2: hidden) and cannot be opened again. Opening it sets
+  the bit.
+- `reward_id` uses the reward numbering in `include/game/rewards.h` (items,
+  Folio Universitas cards, `0x83` Sickles). When the open animation ends, an id
+  up to `0x83` goes to `PlayerReceiveReward`, which plays the receive-item
+  action and calls `GrantReward` with a count of 1 (30-60 for Sickles). A
+  higher id grants nothing and runs the `(respawn_group, chain)` pair.
+- `kind` selects how the chest opens. All kinds use the `Chest` sprite sheet.
+  Kind 0 (81 chests) opens when the player presses A against it. Kind 1
+  (unused) is chained: overworld spell effect 3 plays its unchaining animation
+  and turns it into kind 0. Kind 3 is a Wizard Card Collectors Club
+  chest: `(reward_id + 0x79) & 0xFF` is a Folio Universitas page group, and the
+  chest opens on A only while that group is unlocked and its
+  `g_abQuestEventState[0x14 + group]` flag is clear, otherwise A runs the
+  pair. Kind 2 (two chests, both in default group 0) spawns hidden with
+  collision off; its animations make it appear from and vanish into sparkles.
+  It opens on A, with extra conditions on `g_dwPendingCameraFocusFlag` and the
+  player's `bFighterIndex`. **UNCONFIRMED:** what makes it visible; no code or
+  script that reveals it has been found.
 
 ## Source files
 
@@ -212,9 +240,8 @@ VM that *runs* it.
 
 **RESOLVED: separate systems, meeting only incidentally.** Neither the
 per-tile object table nor the warp-trigger table stores a pointer into
-`InterpretObjectScript`'s opcode format. The one concrete script-like
-field found (`SpawnScriptedOneTimeObject`'s `wScriptPC`) feeds a custom
-tick handler (`0x0800BDCC`), not `InterpretObjectScript` directly. The
+`InterpretObjectScript`'s opcode format. A chest keeps its flag id in the
+Object's `wScriptPc` slot, but no object script runs it. The
 room-script VM ([`room_scripts.md`](room_scripts.md)) uses its own,
 separate bytecode format. "Scripts that run in each area" is better
 described by these two room-local systems than by the per-`Object` VM.

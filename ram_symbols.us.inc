@@ -83,7 +83,7 @@
 .set g_DebugSoundTestState,           0x03002218  @ DebugSoundTestState; see include/menu/debug_menu.h
 .set g_DebugCollectorCardsState,      0x03002238  @ DebugCollectorCardsState: {Object *pCardObject; u32 dwSelection}; see include/menu/debug_menu.h
 
-.set g_abTriggeredScriptFlags,      0x03002240  @ u8[32]: bitset over object script entry points; set once a one-time scripted object was triggered
+.set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset

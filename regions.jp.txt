@@ -229,9 +229,9 @@ c-file 0x0800BA2C 0x0800BAF8 src/gamemode/modes/debug/debug_collector_cards_menu
 thumb-func 0x0800BAF8 sub_0800BAF8
 c-file 0x0800BBF0 0x0800BC54 src/gamemode/modes/debug/debug_collector_cards_menu/update_debug_collector_cards_menu.c UpdateDebugCollectorCardsMenu
 c-file 0x0800BC54 0x0800BC6C src/gamemode/modes/debug/debug_collector_cards_menu/exit_debug_collector_cards_menu.c ExitDebugCollectorCardsMenu
-c-file 0x0800BC6C 0x0800BDCC src/room/objects/SpawnScriptedOneTimeObject.c SpawnScriptedOneTimeObject
-thumb-func 0x0800BDCC sub_0800BDCC
-thumb-func 0x0800BF20 sub_0800BF20
+c-file 0x0800BC6C 0x0800BDCC src/room/objects/SpawnChestObject.c SpawnChestObject
+c-file 0x0800BDCC 0x0800BF20 src/room/objects/TickChestObject.c TickChestObject
+c-file 0x0800BF20 0x0800C0FC src/room/objects/HandleChestTouch.c HandleChestTouch
 thumb-func 0x0800C0FC InitializeLoadingScreen
 thumb-func 0x0800C248 UpdateLoadingScreen
 thumb-func 0x0800C590 ExitLoadingScreen
@@ -540,8 +540,8 @@ thumb-func 0x080249DC sub_08024980
 thumb-func 0x08024A00 sub_080249A4
 thumb-func 0x08024A24 GetPartyPresenceMask
 thumb-func 0x08024A58 GetPartySize
-thumb-func 0x08024A8C sub_08024A30
-thumb-func 0x08024AE4 sub_08024A88
+c-file 0x08024A8C 0x08024AE4 src/items/player_receive_reward.c PlayerReceiveReward
+c-file 0x08024AE4 0x08024B48 src/items/player_receive_reward_alt.c PlayerReceiveRewardAlt
 thumb-func 0x08024B48 GetPartyMasterStatsSlot_candidate
 c-file 0x08024E24 0x08024F14 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024F14 0x08024F38 src/text/init_dialog_text_table.c InitDialogTextTable
@@ -710,6 +710,7 @@ thumb-func 0x0802DD9C LoadRoomSharedTileset_candidate
 thumb-func 0x0802DDF0 sub_0802DDAC
 thumb-func 0x0802DF6C IsBlockingCollisionType
 thumb-func 0x0802DF80 ApplyRoomSwitchEffect
+thumb-func 0x0802E300 sub_0802E2BC
 thumb-func 0x0802E740 RestorePendingCameraFocus_candidate
 c-file 0x0802F544 0x0802F704 src/room/objects/SpawnNpcObject.c SpawnNpcObject
 thumb-func 0x0802F704 sub_0802F6C0
@@ -1128,7 +1129,7 @@ c-file 0x0804CDB8 0x0804CDE4 src/gamemode/modes/debug/debug_sound_test_menu/debu
 c-file 0x0804CDE4 0x0804CDF0 src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
 c-file 0x0804CDF0 0x0804D450 src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 
-c-file 0x0804D450 0x0804D5F8 src/room/objects/SpawnScriptedOneTimeObject.globals.c g_RoomChestSprite
+c-file 0x0804D450 0x0804D5F8 src/room/objects/SpawnChestObject.globals.c g_RoomChestSprite
 c-file 0x0804D6C4 0x0804D724 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804DFC8 0x0804E180 src/battle/battle_backgrounds.c g_aBattleBackgroundPairs

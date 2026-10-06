@@ -13,7 +13,7 @@ typedef struct GrantRoomRewardRecord {
 void RoomScriptOpGrantRoomReward(GrantRoomRewardRecord *pRecord)
 {
     if (pRecord->bVariant != 0)
-        sub_08024A88(pRecord->bRewardId);
+        PlayerReceiveRewardAlt(pRecord->bRewardId);
     else
-        sub_08024A30(pRecord->bRewardId);
+        PlayerReceiveReward(pRecord->bRewardId);
 }
