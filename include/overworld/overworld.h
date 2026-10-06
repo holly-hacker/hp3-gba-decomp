@@ -77,14 +77,18 @@ extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no r
 
 extern void ResetPartyState(void);
 
+typedef struct ObjectVelocity {
+    u32 nX;
+    u32 nY;
+} ObjectVelocity;
+
 // Per-slot scripted camera effect, started by room script opcodes 0x10
 // (QueueTileObjectMove: pan the camera focus to an object) and 0x12
 // (SetAllQueuedMoveParams: shake). One 0x2C-byte record per control slot,
 // ticked by TickCameraFocus_candidate. See docs/memory-map/frame_systems.md.
 typedef struct CameraEffect {
     Object *pTarget;           // 0x00, pan target
-    u32 nSavedVelX;            // 0x04, the controlled object's velocity, restored when the pan ends
-    u32 nSavedVelY;            // 0x08
+    ObjectVelocity savedVel;   // 0x04, the controlled object's velocity, restored when the pan ends
     u8 pad_0C[0x08];           // -> 0x14
     s32 nStep;                 // 0x14, pan speed; shake amplitude (posX << 16) in state 3
     u32 dwFramesLeft;          // 0x18, shake duration in frames
@@ -99,6 +103,8 @@ typedef struct CameraEffect {
     u32 dwResumeScript;        // 0x28, nonzero: resume the yielded room script when the pan ends
 } CameraEffect;
 extern CameraEffect g_aCameraEffects_candidate[];
+// Pan-speed operand to 16.16 step: (|amount| << 8) & 0x7FFFFF, negated for a negative amount.
+extern s32 sub_0802C148(s16 amount);
 // Starts the first slot's camera-shake effect and plays its cue.
 extern void sub_0802B138(void);
 

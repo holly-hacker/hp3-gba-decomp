@@ -94,8 +94,8 @@ Each opcode's operand layout is its `RS_*` macro in
 names and numbers), and its behavior is the handler in
 `src/room/opcodes/room_script_op_*.c`, dispatched through
 `g_apRoomScriptOpcodeHandlers`. Behavior notes live as comments next to those
-handlers. Opcode `0x10` (`QueueTileObjectMove`, US `0x0801BF58`) is still
-assembly; its camera effect is described in
+handlers. The camera effects of opcodes `0x10` (`QueueTileObjectMove`) and
+`0x12` are described in
 [`../memory-map/frame_systems.md`](../memory-map/frame_systems.md).
 
 ### The row gate (`ShouldRunRoomScriptRow_candidate`)

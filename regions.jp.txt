@@ -362,7 +362,7 @@ c-file 0x0801BD08 0x0801BEA4 src/gamemode/modes/card_combo_description/initializ
 c-file 0x0801BEA4 0x0801BED8 src/gamemode/modes/card_combo_description/update_card_combo_description.c UpdateCardComboDescription
 c-file 0x0801BED8 0x0801BEF4 src/gamemode/modes/card_combo_description/exit_card_combo_description.c ExitCardComboDescription
 c-file 0x0801BEF4 0x0801BF54 src/room/opcodes/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
-thumb-func 0x0801BF54 RoomScriptOpQueueTileObjectMove
+c-file 0x0801BF54 0x0801C048 src/room/opcodes/room_script_op_queue_tile_object_move.c RoomScriptOpQueueTileObjectMove
 c-file 0x0801C048 0x0801C0E4 src/room/opcodes/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
 c-file 0x0801C0E4 0x0801C1D4 src/room/opcodes/room_script_op_start_object_anim_sequence.c RoomScriptOpStartObjectAnimSequence
 c-file 0x0801C1D4 0x0801C27C src/room/opcodes/room_script_op_start_tile_object_script.c RoomScriptOpStartTileObjectScript
