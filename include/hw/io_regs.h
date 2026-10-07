@@ -6,9 +6,20 @@
 // Flag"), not an MMIO register -- SWI IntrWait/VBlankIntrWait poll it.
 #define REG_IFBIOS  (*(volatile u16 *)0x03007FF8)
 
+// Display control: layer enables and display mode.
+#define REG_DISPCNT (*(volatile u16 *)0x04000000)
+
+// Display status: blank flags and the VBlank/HBlank/VCount IRQ enables.
+#define REG_DISPSTAT (*(volatile u16 *)0x04000004)
+
 // Current vertical scanline, range 0..227. See:
 // https://problemkaputt.de/gbatek.htm#lcdiointerruptsandstatus
 #define REG_VCOUNT  (*(volatile u16 *)0x04000006)
+
+// BG0-BG2 control: priority in bits 0-1.
+#define REG_BG0CNT  (*(volatile u16 *)0x04000008)
+#define REG_BG1CNT  (*(volatile u16 *)0x0400000A)
+#define REG_BG2CNT  (*(volatile u16 *)0x0400000C)
 
 // BG2 affine parameters (fixed-point 8.8) and reference point. The reference
 // point registers are 32-bit; only the low halves are written here.
@@ -19,11 +30,8 @@
 #define REG_BG2X_L  (*(volatile u16 *)0x04000028)
 #define REG_BG2Y_L  (*(volatile u16 *)0x0400002C)
 
-// Display control: layer enables and display mode.
-#define REG_DISPCNT (*(volatile u16 *)0x04000000)
-
-// Display status: blank flags and the VBlank/HBlank/VCount IRQ enables.
-#define REG_DISPSTAT (*(volatile u16 *)0x04000004)
+// Window 0/1 inside layer enables.
+#define REG_WININ (*(volatile u16 *)0x04000048)
 
 // Window outside/OBJ-window layer enables.
 #define REG_WINOUT (*(volatile u16 *)0x0400004A)

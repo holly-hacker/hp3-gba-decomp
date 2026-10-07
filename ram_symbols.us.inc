@@ -84,6 +84,8 @@
 .set g_DebugCollectorCardsState,      0x03002238  @ DebugCollectorCardsState: {Object *pCardObject; u32 dwSelection}; see include/menu/debug_menu.h
 
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
+.set g_LoadingScreenState,         0x03002260  @ LoadingScreenState; see include/menu/loading_screen.h
+.set g_dwLoadingScreenBgRow,       0x0300227C  @ u32: BG2 tile row of the loading screen panel
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
@@ -151,6 +153,16 @@
 .set g_HarryVsDementors,                               0x03002E18  @ HarryVsDementorsState
 .set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/menu/dialog.h
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8  @ u8 *: 0x400-byte buffer, allocated by InitDialogBox
+.set g_awSavedBgPalette0,                              0x03002EAC  @ u16[16]: BG palette bank 0 saved by InitializeDialogue and InitializeLoadingScreen, restored by their exits
+.set g_adwSavedBgPriority,                             0x03002ED0  @ u32[2]: BG0/BG1 priority saved by InitializeDialogue, restored by ExitDialogue
+.set g_dwDialogTextId,                                 0x03002ED8  @ u32: dialog string id of the line being shown
+.set g_dwDialogTextEntry,                              0x03002EDC  @ u32: first word of the dialog text table entry for g_dwDialogTextId
+.set g_pDialogBoxTilemap,                              0x03002EE0  @ void *: tilemap of the dialog box BG graphic
+.set g_pDialogBoxObject,                               0x03002EE4  @ Object *: dialog box panel sprite
+.set g_dwDialogBoxY,                                   0x03002EE8  @ u32: screen line of the dialog box's top edge, 0x9F hidden .. 0x7B shown
+.set g_pDialogCursorObject,                            0x03002EEC  @ Object *: menu cursor of the dialog box
+.set g_dwDialogTextActive,                             0x03002EF0  @ u32: nonzero once the box's text has started
+.set g_dwDialogBoxTileRow,                             0x03002EF4  @ u32: BG1 tile row the box's tilemap is drawn at
 .set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ Object *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
 .set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C  @ Object *
 .set g_aRoomTileAnimations,                            0x03002F24  @ RoomTileAnimation *: 32 entries, allocated by InitRoomTileAnimationTable

@@ -57,7 +57,7 @@ extern void SetDispcntFlag(u32 flags);
 extern void SetBgControl(u32 bg, u32 control);
 extern void EnableBg(u32 bg);
 extern void DisableBg(u32 bg);
-extern void SetBgPriority(u32 bg, u32 priority);
+extern void SetBgPriority(u32 bg, u8 priority);
 extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
 // Sets BLDCNT (layer mask | fade mode) and BLDY (amount, at most 0x10).
 extern void SetFadeToWhite(u16 layerMask, u16 amount);
@@ -85,6 +85,8 @@ extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const
 extern void *LoadBgGraphic(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
 // Loads a graphic's tiles and palette without drawing its tilemap; returns the tilemap for sub_08006C00.
 extern void *LoadBgGraphicTiles_candidate(u32 bg, const void *pResource, u32 tileOffset, u32 palBank);
+// Draws a loaded graphic's tilemap (LoadBgGraphicTiles_candidate's result) on a BG at tile (x, y).
+extern void WriteBgGraphicTilemap_candidate(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 x, u32 y);
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);

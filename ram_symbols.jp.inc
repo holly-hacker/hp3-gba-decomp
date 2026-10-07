@@ -73,6 +73,8 @@
 .set g_DebugCollectorCardsState,      0x03002238
 
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
+.set g_LoadingScreenState,         0x03002260  @ see ram_symbols.us.inc
+.set g_dwLoadingScreenBgRow,       0x0300227C  @ see ram_symbols.us.inc
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
@@ -139,6 +141,16 @@
 .set g_HarryVsDementors,                               0x03002E18  @ see ram_symbols.us.inc
 .set g_DialogState_candidate,                          0x03002E88
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8
+.set g_awSavedBgPalette0,                              0x03002EAC  @ see ram_symbols.us.inc
+.set g_adwSavedBgPriority,                             0x03002ED0  @ see ram_symbols.us.inc
+.set g_dwDialogTextId,                                 0x03002ED8  @ see ram_symbols.us.inc
+.set g_dwDialogTextEntry,                              0x03002EDC  @ see ram_symbols.us.inc
+.set g_pDialogBoxTilemap,                              0x03002EE0  @ see ram_symbols.us.inc
+.set g_pDialogBoxObject,                               0x03002EE4  @ see ram_symbols.us.inc
+.set g_dwDialogBoxY,                                   0x03002EE8  @ see ram_symbols.us.inc
+.set g_pDialogCursorObject,                            0x03002EEC  @ see ram_symbols.us.inc
+.set g_dwDialogTextActive,                             0x03002EF0  @ see ram_symbols.us.inc
+.set g_dwDialogBoxTileRow,                             0x03002EF4  @ see ram_symbols.us.inc
 .set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ see ram_symbols.us.inc
 .set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C
 .set g_aRoomTileAnimations,                            0x03002F24

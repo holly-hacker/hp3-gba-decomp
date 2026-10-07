@@ -8,8 +8,8 @@
 
 s16  bios_ArcTan2(s16 x, s16 y);
 void bios_BgAffineSet(const void *src, void *dst, s32 count);
-void bios_CPUFastSet(const void *src, void *dst, u32 lengthMode);
-void bios_CPUSet(const void *src, void *dst, u32 lengthMode);
+void bios_CPUFastSet(const volatile void *src, volatile void *dst, u32 lengthMode);
+void bios_CPUSet(const volatile void *src, volatile void *dst, u32 lengthMode);
 s32  bios_Div(s32 numerator, s32 denominator);
 s32  bios_Mod(s32 numerator, s32 denominator);
 void bios_HuffUnComp(const void *src, void *dst);

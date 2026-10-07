@@ -127,6 +127,7 @@ thumb-func 0x080072EC SetBgControlRegister_candidate
 thumb-func 0x08007334 EnableBg
 thumb-func 0x08007348 DisableBg
 thumb-func 0x080073BC ResetDisplayState
+thumb-func 0x08007434 sub_08007434
 thumb-func 0x08007444 SetDispcntFlag
 thumb-func 0x08007454 ClearBgTilemap
 thumb-func 0x08007464 sub_08007464
@@ -235,9 +236,14 @@ c-file 0x0800BC54 0x0800BC6C src/gamemode/modes/debug/debug_collector_cards_menu
 c-file 0x0800BC6C 0x0800BDCC src/room/objects/SpawnChestObject.c SpawnChestObject
 c-file 0x0800BDCC 0x0800BF20 src/room/objects/TickChestObject.c TickChestObject
 c-file 0x0800BF20 0x0800C0FC src/room/objects/HandleChestTouch.c HandleChestTouch
-thumb-func 0x0800C0FC InitializeLoadingScreen
-thumb-func 0x0800C248 UpdateLoadingScreen
-thumb-func 0x0800C590 ExitLoadingScreen
+c-file 0x0800C0FC 0x0800C248 src/gamemode/modes/loading_screen/initialize_loading_screen.c InitializeLoadingScreen
+c-file 0x0800C248 0x0800C344 src/gamemode/modes/loading_screen/update_loading_screen.c UpdateLoadingScreen
+thumb-func 0x0800C344 sub_0800C344
+thumb-func 0x0800C3FC sub_0800C3FC
+c-file 0x0800C590 0x0800C618 src/gamemode/modes/loading_screen/exit_loading_screen.c ExitLoadingScreen
+thumb-func 0x0800C618 sub_0800C618
+thumb-func 0x0800C674 sub_0800C674
+thumb-func 0x0800C6D0 sub_0800C6D0
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 0x0800CAE8 src/save/compare_playtime_field.c ComparePlaytimeField
 c-file 0x0800CAE8 0x0800CAF8 src/save/initialize_playtime_struct.c InitializePlaytimeStruct
@@ -502,14 +508,22 @@ thumb-func 0x0801F104 sub_0801F108
 c-file 0x0801F260 0x0801F368 src/gamemode/modes/startup/initialize_startup.c InitializeStartup
 c-file 0x0801F368 0x0801F50C src/gamemode/modes/startup/update_startup.c UpdateStartup
 c-file 0x0801F50C 0x0801F51C src/gamemode/modes/startup/exit_startup.c ExitStartup
-thumb-func 0x0801F51C InitializeDialogue
-thumb-func 0x0801F63C UpdateDialogueBox
+c-file 0x0801F51C 0x0801F63C src/gamemode/modes/dialogue/initialize_dialogue.c InitializeDialogue
+c-file 0x0801F63C 0x0801F794 src/gamemode/modes/dialogue/update_dialogue_box.c UpdateDialogueBox
+thumb-func 0x0801F794 sub_0801F7AC
+thumb-func 0x0801F950 sub_0801F968
+thumb-func 0x0801FA00 sub_0801FA18
 thumb-func 0x0801FA84 sub_0801FA9C
-thumb-func 0x0801FADC ExitDialogue
+c-file 0x0801FADC 0x0801FB3C src/gamemode/modes/dialogue/exit_dialogue.c ExitDialogue
 thumb-func 0x0801FB3C ShowRoomDialogBox_candidate
 c-file 0x0801FB60 0x0801FB8C src/text/init_dialog_box.c InitDialogBox
 thumb-func 0x0801FB8C sub_0801FBA4
+thumb-func 0x0801FB98 sub_0801FBB0
 thumb-func 0x0801FBA4 sub_0801FBBC
+thumb-func 0x0801FC40 sub_0801FC58
+thumb-func 0x0801FCE4 sub_0801FCFC
+thumb-func 0x0801FD14 sub_0801FD2C
+thumb-func 0x0801FD4C sub_0801FD64
 c-file 0x0801FD88 0x0801FD98 src/graphics/init_display_control.c InitDisplayControl
 c-file 0x0801FDD0 0x0801FEBC src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
 c-file 0x0801FEBC 0x0801FEFC src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
@@ -583,6 +597,7 @@ thumb-func 0x08024A58 GetPartySize
 c-file 0x08024A8C 0x08024AE4 src/items/player_receive_reward.c PlayerReceiveReward
 c-file 0x08024AE4 0x08024B48 src/items/player_receive_reward_alt.c PlayerReceiveRewardAlt
 thumb-func 0x08024B48 GetPartyMasterStatsSlot_candidate
+thumb-func 0x08024C30 sub_08024BD4
 c-file 0x08024E24 0x08024F14 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024F14 0x08024F38 src/text/init_dialog_text_table.c InitDialogTextTable
 c-file 0x08025114 0x08025130 src/graphics/install_bg_tile_codec.c InstallBgTileCodec
@@ -635,6 +650,7 @@ c-file 0x08026DFC 0x08026E1C src/save/serialize_item_quantities.c SerializeItemQ
 c-file 0x08026E1C 0x08026E3C src/save/deserialize_item_quantities.c DeserializeItemQuantities
 c-file 0x08026E3C 0x08026E88 src/items/grant_reward.c GrantReward
 thumb-func 0x08026E88 ConsumeBattleItemSlot
+thumb-func 0x08026EA8 sub_08026E4C
 thumb-func 0x08026FF8 IsFolioPageGroupUnlocked_candidate
 thumb-func 0x0802703C sub_08026FE0
 thumb-func 0x080270A4 sub_08027048
@@ -783,9 +799,15 @@ thumb-func 0x0803013C FreeAffineSlot
 thumb-func 0x08030184 sub_08030140
 thumb-func 0x080301C8 HideUnusedOamEntries
 c-file 0x0803022C 0x08030250 src/graphics/oam/reset_affine_slots.c ResetAffineSlots
-thumb-func 0x080302B8 InitializeOwlNameSelect
-thumb-func 0x08030360 UpdateOwlNameSelect
-thumb-func 0x080305AC ExitOwlNameSelect
+c-file 0x080302B8 0x08030360 src/gamemode/modes/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
+c-file 0x08030360 0x080304BC src/gamemode/modes/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
+thumb-func 0x080304BC sub_08030478
+c-file 0x080305AC 0x080305D8 src/gamemode/modes/owl_name_select/exit_owl_name_select.c ExitOwlNameSelect
+thumb-func 0x080305D8 sub_08030594
+thumb-func 0x08030634 sub_080305F0
+thumb-func 0x08030688 sub_08030644
+thumb-func 0x080306FC sub_080306B8
+thumb-func 0x08030734 sub_080306F0
 thumb-func 0x08030760 BindObjectEffectData
 thumb-func 0x080307D8 AllocResourceCacheSlot
 c-file 0x08030868 0x08030888 src/graphics/clear_resource_cache_slots.c ClearResourceCacheSlots
@@ -954,9 +976,12 @@ thumb-func 0x08039194 ClearHelpScreen
 thumb-func 0x0803929C TurnToPrevHelpPage
 thumb-func 0x080392D0 TurnToNextHelpPage
 thumb-func 0x08039304 CancelHelpScreen
-thumb-func 0x080393C4 UpdateQuantitySelectScreen
-thumb-func 0x08039540 InitializeQuantitySelectScreen
-thumb-func 0x0803955C ExitQuantitySelectScreen
+c-file 0x080393C4 0x0803947C src/gamemode/modes/quantity_select/update_quantity_select_screen.c UpdateQuantitySelectScreen
+thumb-func 0x0803947C sub_08039428
+c-file 0x08039540 0x0803955C src/gamemode/modes/quantity_select/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
+c-file 0x0803955C 0x08039560 src/gamemode/modes/quantity_select/exit_quantity_select_screen.c ExitQuantitySelectScreen
+thumb-func 0x08039560 sub_0803950C
+thumb-func 0x080395B8 sub_08039564
 c-file 0x080395D0 0x080396E4 src/gamemode/modes/items/update_items_item_select.c UpdateItemsItemSelect
 c-file 0x080396E4 0x0803977C src/gamemode/modes/items/initialize_items_item_select.c InitializeItemsItemSelect
 c-file 0x0803977C 0x080397A4 src/gamemode/modes/items/exit_items_item_select.c ExitItemsItemSelect
@@ -1196,6 +1221,7 @@ thumb-func 0x08044C50 sub_08044D24
 thumb-func 0x08044E80 sub_08044F54
 c-file 0x08044FC0 0x08045000 src/graphics/scanline/init_scanline_effects.c InitScanlineEffects
 c-file 0x08045000 0x08045044 src/graphics/scanline/queue_scanline_effect_table.c QueueScanlineEffectTable
+thumb-func 0x0804513C QueueScanlineEffectEntry
 thumb-func 0x0804518C CommitScanlineEffects
 c-file 0x080451B8 0x080451D4 src/graphics/scanline/start_scanline_effects.c StartScanlineEffects
 thumb-func 0x080451D4 StopScanlineEffects
@@ -1260,6 +1286,9 @@ c-file 0x0804CDE4 0x0804CDF0 src/gamemode/modes/debug/debug_collector_cards_menu
 c-file 0x0804CDF0 0x0804D450 src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 
 c-file 0x0804D450 0x0804D5F8 src/room/objects/SpawnChestObject.globals.c g_RoomChestSprite
+c-file 0x0804D5F8 0x0804D618 src/gamemode/modes/loading_screen/loading_screen_stages.globals.c g_LoadingScreenTables
+label 0x0804D696 g_abLoadingScreenTwoOptions
+c-file 0x0804D69C 0x0804D6BC src/gamemode/modes/loading_screen/loading_screen_effects.globals.c g_aLoadingScreenScanlineEffects
 c-file 0x0804D6C4 0x0804D724 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804DFC8 0x0804E180 src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
@@ -1306,6 +1335,7 @@ c-file 0x0805DF4C 0x0805DFCC src/gamemode/modes/cutscene/linear_cutscene/linear_
 c-file 0x0805E038 0x0805E03C src/menu/common_bg2_control.c g_dwCommonBg2Control
 c-file 0x0805E0A0 0x0805E0A8 src/gamemode/modes/minigame/harry_vs_dementors/harry_vs_dementors.globals.c g_dwHarryVsDementorsBg0Control
 c-file 0x0805E1AC 0x0805E1B8 src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
+c-file 0x0805E1B8 0x0805E1C8 src/gamemode/modes/dialogue/dialogue.globals.c g_aDialogScanlineEffects
 c-file 0x0805EA3C 0x0805EA60 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x08060408 0x080604C8 src/text/load_font_descriptor.globals.c g_aExtFontTable
@@ -1331,6 +1361,7 @@ c-file 0x08066F88 0x08067818 src/graphics/assets/object_type_assets.c g_aObjectT
 c-file 0x08067818 0x08067848 src/room/objects/room_obj_unk6_frames.c g_abRoomObjUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068B7C 0x08068B84 src/graphics/oam/hidden_oam_entry.c g_HiddenOamEntry
+c-file 0x08068B84 0x08068B88 src/gamemode/modes/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file 0x08068B88 0x08068B94 src/graphics/particle/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068BBC 0x08068BC4 src/gamemode/modes/cutscene/harry_patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068BC4 0x08068C90 src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries

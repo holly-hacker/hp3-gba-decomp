@@ -31,5 +31,8 @@ extern void ScanlineEffectVCountCallback(void);
 extern void InitScanlineEffects(void);
 extern void ClearScanlineEffectStaging(void);
 extern void QueueScanlineEffectTable(const void *pEntries, u32 count);
+// Overwrites staging entry `index`'s line, parameter word and callback.
+extern void QueueScanlineEffectEntry(u32 index, u16 line, u32 param,
+                                     void (*pfnCallback)(u32 *pPayload0, u32 *pPayload1));
 extern void StartScanlineEffects(void);
 extern u32 IsScanlineEffectQueueIdle(void);

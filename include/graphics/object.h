@@ -326,7 +326,7 @@ typedef struct Object {
     u16 wActionVariant;     // 0x8A
     u8 bRoomObjectKind_candidate;  // 0x8C, set from the tile record by room object constructors; 2 selects the second collision box
     u8 bActionState;        // 0x8D, the dispatch key
-    u8 pad_8E[0x01];        // -> 0x8F
+    u8 bPrevActionState_candidate;  // 0x8E, ExitDialogue restores the player to this action state
     u8 bActionSubState;     // 0x8F, secondary per-object state; see SetObjectActionSubState
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
