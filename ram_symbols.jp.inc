@@ -62,6 +62,9 @@
 .set g_aCameraEffects_candidate,                 0x03002090  @ see ram_symbols.us.inc
 .set g_aCameraFocusSlots,                        0x030020E8  @ see ram_symbols.us.inc
 .set g_aCameraFollowOffsets,                     0x03002158  @ see ram_symbols.us.inc
+.set g_bBgTileAnimationCount,                    0x03002168  @ see ram_symbols.us.inc
+.set g_aBgTileAnimations,                        0x0300216C  @ see ram_symbols.us.inc
+.set g_apBgTileAnimationBuffers,                 0x030021AC  @ see ram_symbols.us.inc
 
 @ --- Dialog/UI text engine ---
 .set g_DebugMenuMainState,            0x030021C0

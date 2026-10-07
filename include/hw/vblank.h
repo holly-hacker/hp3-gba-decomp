@@ -26,6 +26,7 @@ extern VBlankState g_VBlankState;
 extern void WaitForVBlank(void);
 extern void WaitForVBlankIntr(void);
 extern void SetVBlankCallback(void *callback);
+extern void VBlankCallback(void);  // default callback: tile upload commits
 extern void SetVCountCallback(void *callback);
 extern void EnableVCountInterrupt(u32 line);
 extern void HandleVBlankInterrupt(void);

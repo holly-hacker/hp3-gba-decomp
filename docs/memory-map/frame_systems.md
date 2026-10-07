@@ -40,7 +40,10 @@ function. Calls, in order:
   `0x0300216C`; steps a frame index and counter, then re-uploads the tiles with
   `0x08007F20` (a copy/RLE/LZ77 VRAM loader chosen by header bits) to the VRAM
   address in `0x030021AC[i]`. Entry flag byte: bit 0 active, bit 1 running,
-  bit 2 tiles uploaded. `sub_0800A598` registers an entry (flags `|= 7`),
+  bit 2 tiles pending upload (`CommitBgTileAnimations`, run by `VBlankCallback`, uploads
+  them and clears it), bit 3 (set from `sub_0800A598`'s third argument) uploads the whole
+  buffer with one DMA instead of per tile through `FindBgTileCacheEntry`.
+  `sub_0800A598` registers an entry (flags `= arg | 7`),
   `StopAllBgTileAnimations` (`0x0800A83C`) clears bit 0 of every entry,
   `sub_0800A8A8`/`sub_0800A8E0` clear/set bit 1 of every entry. A routine at
   `0x0800A874` that sets bit 0 on every entry has no callers.

@@ -27,10 +27,6 @@ extern void NoopInit(void);
 extern void NoopInit2(void);
 extern void NoopInit3(void);
 
-// Thumb function entry point in still-raw territory, taken by address as
-// the VBlank callback -- see `thumb-func 0x08026244` in regions.us.txt.
-extern void VBlankCallback_candidate(void);
-
 // agbcc special-cases a C function literally named `main`, inserting an
 // implicit call to `__gccmain` at entry that the real ROM code doesn't
 // have -- hence AgbMain.
@@ -72,7 +68,7 @@ void AgbMain(void)
     g_dwGameModeFlags = 0;
     g_pVBlankState->wOamFrameReady = 0;
 
-    SetVBlankCallback(VBlankCallback_candidate);
+    SetVBlankCallback(VBlankCallback);
     kramInstall();
     EnableInterrupts();
     InitScanlineEffects();

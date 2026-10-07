@@ -198,6 +198,7 @@ c-file 0x0800A560 0x0800A580 src/gamemode/modes/purple_screen_return_to_menu/upd
 c-file 0x0800A580 0x0800A598 src/gamemode/modes/purple_screen_return_to_menu/exit_purple_screen_return_to_menu.c ExitPurpleScreenReturnToMenu
 thumb-func 0x0800A598 sub_0800A598
 thumb-func 0x0800A610 TickBgTileAnimations_candidate
+c-file 0x0800A6EC 0x0800A83C src/graphics/commit_bg_tile_animations.c CommitBgTileAnimations
 thumb-func 0x0800A914 sub_0800A914
 c-file 0x0800A950 0x0800AA54 src/gamemode/modes/debug/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
 c-file 0x0800AA54 0x0800AB34 src/gamemode/modes/debug/debug_menu_main/update_debug_menu_main.c UpdateDebugMenuMain
@@ -625,7 +626,7 @@ c-file 0x080261B4 0x080261E0 src/interrupts/set_vblank_callback.c SetVBlankCallb
 c-file 0x0802620C 0x08026238 src/interrupts/set_vcount_callback.c SetVCountCallback
 c-file 0x08026238 0x08026254 src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
 c-file 0x08026254 0x08026278 src/interrupts/enable_vcount_interrupt.c EnableVCountInterrupt
-thumb-func 0x080262A0 VBlankCallback_candidate
+c-file 0x080262A0 0x080262B0 src/interrupts/vblank_callback.c VBlankCallback
 thumb-func 0x080262B0 sub_08026254
 thumb-func 0x080262E0 HandleHBlankInterrupt_candidate
 thumb-func 0x08026318 HandleVCountInterrupt
@@ -1123,6 +1124,7 @@ thumb-func 0x0803E794 LoadRoomBgTilemap3_candidate
 thumb-func 0x0803E7D0 LoadRoomBgLayer1Extra_candidate
 thumb-func 0x0803E85C LoadRoomBgLayer2Extra_candidate
 thumb-func 0x0803E8E8 LoadRoomBgLayer3Extra_candidate
+c-file 0x0803EA48 0x0803EAA4 src/overworld/find_bg_tile_cache_entry.c FindBgTileCacheEntry
 thumb-func 0x0803EAA4 sub_0803EA3C
 thumb-func 0x0803EF4C SetLinkCallbacks
 thumb-func 0x0803EF58 InitLinkSession

@@ -73,6 +73,9 @@
 .set g_aCameraEffects_candidate,                 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot
 .set g_aCameraFocusSlots,                        0x030020E8  @ CameraFocusSlot[2]: 0x38 bytes each
 .set g_aCameraFollowOffsets,                     0x03002158  @ s32[2][2]: per-slot (X, Y) offset set by SetCameraFollowTarget_candidate
+.set g_bBgTileAnimationCount,                    0x03002168  @ u8: number of registered BG tile animations
+.set g_aBgTileAnimations,                        0x0300216C  @ BgTileAnimEntry[4]: 0x10 bytes each; size inferred from the span up to g_apBgTileAnimationBuffers
+.set g_apBgTileAnimationBuffers,                 0x030021AC  @ void *[4]: decoded tile buffer of each BG tile animation
 
 @ --- Dialog/UI text engine (US only) ---
 .set g_DebugMenuMainState,            0x030021C0  @ DebugMenuMainState: {Object *pCursorObject; u32 dwSelection}; see include/menu/debug_menu.h

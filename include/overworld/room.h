@@ -107,6 +107,7 @@ extern BgTileCacheEntry *g_apBgTileCacheEntries[2];  // 0x400 and 0x200 entries
 extern u16 *g_apBgTileCacheBuckets[2];               // chain heads by tile id & 0x7FF / 0x3FF
 extern u16 *g_apBgTileCacheFreeSlots[2];             // stack of free entry indices
 extern void InitRoomBgState_candidate(void);
+extern u16 FindBgTileCacheEntry(u16 tileId, u32 sizeClass);
 extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
 
 extern u16 g_wRoomResourceFlags_candidate;
