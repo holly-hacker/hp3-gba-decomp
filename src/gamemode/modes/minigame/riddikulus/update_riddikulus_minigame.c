@@ -78,8 +78,8 @@ void UpdateRiddikulusMinigame(void)
         if (g_wKeysPressed & (KeyA | KeyStart))
         {
             if (g_Riddikulus.dwScore >
-                g_saveManager.options.adwRiddikulusHighScores[g_GameModeStackContext.dwCurrentGameModeArg3])
-                g_saveManager.options.adwRiddikulusHighScores[g_GameModeStackContext.dwCurrentGameModeArg3] =
+                g_saveManager.options.aadwHighScores[HighScoreRiddikulus][g_GameModeStackContext.dwCurrentGameModeArg3])
+                g_saveManager.options.aadwHighScores[HighScoreRiddikulus][g_GameModeStackContext.dwCurrentGameModeArg3] =
                     g_Riddikulus.dwScore;
 
             PlaySoundById(1);

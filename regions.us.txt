@@ -142,6 +142,7 @@ asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
 thumb-func 0x080065D4 sub_080065D4
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
+thumb-func 0x08006A98 sub_08006A98
 thumb-func 0x08006C00 sub_08006C00
 thumb-func 0x08006EF4 TickBgLayers_candidate
 
@@ -326,10 +327,14 @@ thumb-func 0x08012E0C sub_08012E0C
 c-file 0x080130B4 0x08013108 src/battle/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
 thumb-func 0x08013108 sub_08013108
 thumb-func 0x0801319C OpenPendingFighterMenu_candidate
-thumb-func 0x080134BC InitializeVictoryScreen
-thumb-func 0x080138F4 UpdateVictoryScreen
+c-file 0x080134BC 0x080138F4 src/gamemode/modes/victory_screen/initialize_victory_screen.c InitializeVictoryScreen
+c-file 0x080138F4 0x08013AC8 src/gamemode/modes/victory_screen/update_victory_screen.c UpdateVictoryScreen
+thumb-func 0x08013AC8 sub_08013AC8
+thumb-func 0x08014004 sub_08014004
+thumb-func 0x0801456C sub_0801456C
 c-file 0x080147C0 0x080148A8 src/battle/roll_battle_item_drops.c RollBattleItemDrops
-thumb-func 0x080148A8 ExitVictoryScreen
+c-file 0x080148A8 0x080148F4 src/gamemode/modes/victory_screen/exit_victory_screen.c ExitVictoryScreen
+thumb-func 0x0801493C sub_0801493C
 thumb-func 0x08014964 ResetCharacterToLevel
 c-file 0x080149C4 0x08014C88 src/battle/init_player_battle_actor.c InitPlayerBattleActor
 c-file 0x08014C88 0x08014F1C src/battle/init_monster_battle_actor.c InitMonsterBattleActor
@@ -574,12 +579,21 @@ thumb-func 0x080216A0 AddSickles
 thumb-func 0x08021A58 InitJoybusSession
 thumb-func 0x08021AF4 TickJoybusSession
 thumb-func 0x08021B28 TeardownJoybusHardware
-thumb-func 0x08021C08 InitializeOwlCareKitScreen
-thumb-func 0x08021D6C HandleOwlCareKitScreenTick
+c-file 0x08021C08 0x08021D6C src/gamemode/modes/minigame/owl_care_kit/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
+c-file 0x08021D6C 0x08021DF8 src/gamemode/modes/minigame/owl_care_kit/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
 thumb-func 0x08021DF8 ProcessOwlCareKitTick
-thumb-func 0x08022D98 HandleOwlCareKitScreenExit
+thumb-func 0x08021E80 sub_08021E80
+thumb-func 0x08022134 sub_08022134
+thumb-func 0x0802238C sub_0802238C
+thumb-func 0x0802246C sub_0802246C
+thumb-func 0x08022B40 sub_08022B40
+c-file 0x08022D98 0x08022DE8 src/gamemode/modes/minigame/owl_care_kit/handle_owl_care_kit_screen_exit.c HandleOwlCareKitScreenExit
 c-file 0x08022E6C 0x08022EA8 src/save/deserialize_owl_care_kit.c DeserializeOwlCareKit
 c-file 0x08022EA8 0x08022EE4 src/save/serialize_owl_care_kit.c SerializeOwlCareKit
+thumb-func 0x08022EE4 sub_08022EE4
+thumb-func 0x08022F28 sub_08022F28
+thumb-func 0x08023188 sub_08023188
+thumb-func 0x080233C0 sub_080233C0
 thumb-func 0x080233E4 SpawnPlayerObject_candidate
 thumb-func 0x08023644 SyncFollowerLevelToLeader_candidate
 thumb-func 0x080236DC sub_080236DC
@@ -600,9 +614,12 @@ thumb-func 0x08024AEC GetPartyMasterStatsSlot_candidate
 c-file 0x08024DC8 0x08024EB8 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024EB8 0x08024EDC src/text/init_dialog_text_table.c InitDialogTextTable
 c-file 0x080250B8 0x080250D4 src/graphics/install_bg_tile_codec.c InstallBgTileCodec
-thumb-func 0x080250D4 InitializeHighScoreNameEntryScreen
-thumb-func 0x080251EC UpdateHighScoreNameEntry
-thumb-func 0x08025368 ExitHighScoreNameEntry
+c-file 0x080250D4 0x080251EC src/gamemode/modes/high_score_name_entry/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
+c-file 0x080251EC 0x08025284 src/gamemode/modes/high_score_name_entry/update_high_score_name_entry.c UpdateHighScoreNameEntry
+thumb-func 0x08025284 DrawHighScoreNameEntryKeypad
+c-file 0x08025368 0x0802539C src/gamemode/modes/high_score_name_entry/exit_high_score_name_entry.c ExitHighScoreNameEntry
+thumb-func 0x0802539C HighScoreNameEntryCursorTick
+thumb-func 0x08025410 DrawHighScoreNameEntryPreview
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
 c-file 0x080258E8 0x080258F8 src/input/init_input_system.c InitInputSystem
 c-file 0x080258F8 0x08025954 src/input/reset_key_input.c ResetKeyInput
@@ -750,9 +767,11 @@ c-file 0x0802C8A8 0x0802C8D0 src/gamemode/dispatch_game_mode_update.c DispatchGa
 c-file 0x0802C8D0 0x0802C90C src/gamemode/dispatch_game_mode_destroy.c DispatchGameModeDestroy
 thumb-func 0x0802C90C SpawnMenuIconObject
 c-file 0x0802C984 0x0802C988 src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
-thumb-func 0x0802C988 HandleHighScoreDifficultyMenuTick
-thumb-func 0x0802CCF4 InitializeWizardCrackerPopItDifficultySelect
-thumb-func 0x0802CD88 ExitWizardCrackerPopItDifficultySelect
+c-file 0x0802C988 0x0802CB80 src/gamemode/modes/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
+thumb-func 0x0802CB80 sub_0802CB80
+thumb-func 0x0802CC44 sub_0802CC44
+c-file 0x0802CCF4 0x0802CD88 src/gamemode/modes/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
+c-file 0x0802CD88 0x0802CDB8 src/gamemode/modes/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CDB8 sub_0802CDB8
 thumb-func 0x0802CEE4 sub_0802CEE4
 c-file 0x0802CF38 0x0802D08C src/gamemode/modes/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
@@ -1281,6 +1300,8 @@ c-file 0x0804D824 0x0804E074 src/graphics/assets/battle_hud_assets.c g_aBattleHu
 c-file 0x0804E09C 0x0804E254 src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
 c-file 0x0804E254 0x0804E29C src/battle/battle_music.c g_abBattleMusicByRoom
 c-file 0x0804E5E0 0x0804E5EC src/battle/spell_leveling.c g_abSpellMaxLevel
+c-file 0x0804E600 0x0804E610 src/gamemode/modes/victory_screen/victory_screen.globals.c g_dwVictoryBg2Control
+c-file 0x0804E640 0x0804E674 src/gamemode/modes/victory_screen/victory_screen_portraits.globals.c g_aVictoryBg1PortraitRects
 c-file 0x0804E6B4 0x0804F404 src/graphics/assets/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table, decompiled to C
@@ -1324,7 +1345,9 @@ c-file 0x0805EB10 0x0805EB34 src/gamemode/modes/cutscene/hippogriff_flies_into_a
 c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x080604DC 0x0806053C src/text/load_font_descriptor.globals.c g_aFontTable
 c-file 0x0806053C 0x08060554 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
+c-file 0x080606A8 0x080606B8 src/gamemode/modes/minigame/owl_care_kit/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060884 0x0806088C src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
+c-file 0x08060E64 0x08060E7C src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
 c-file 0x08060E8C 0x08060EC0 src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 
 # Item/equipment table, see docs/formats/items.md
@@ -1338,6 +1361,7 @@ c-file 0x08063C8C 0x08065730 src/room/room_table.c g_aRoomTable
 c-file 0x08065730 0x0806580C src/gamemode/modes/overworld/room_quest_music_override.c g_adwRoomQuestMusicOverride
 c-file 0x0806580C 0x0806581C src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
+c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066E44 0x08066FFC src/room/objects/SpawnNpcObject.globals.c g_adwRoomObjUnk6FrameRows
 c-file 0x08066FFC 0x0806788C src/graphics/assets/object_type_assets.c g_aObjectTypeAssets

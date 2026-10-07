@@ -6,7 +6,7 @@
 extern const u32 g_dwMinigameMenuBg3Control;  // 0x0806605C
 extern const u32 g_dwMinigameMenuBg1Control;  // 0x08066060
 
-extern u32 g_dwSelectedMinigame;  // 0x03003F88: minigame index passed to the difficulty select
+extern s32 g_dwSelectedMinigame;  // 0x03003F88: minigame index passed to the difficulty select
 
 extern u32 g_dwListMenuSelection;  // 0x03003F14: the same word as g_GameModeStackContext.dwModeScratchB,
                                    // the selected row of a minigame's results/pause menu

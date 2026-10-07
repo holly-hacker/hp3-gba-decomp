@@ -51,12 +51,17 @@ typedef enum {
     flGammaHigh                    = 0x80,
 } HeaderFlags;
 
+// Row of SaveOptions.aadwHighScores; also the minigame index of the minigame menu.
+typedef enum {
+    HighScoreWizardCrackerPopIt = 0,
+    HighScoreHippogriffGlide = 1,
+    HighScoreRiddikulus = 2,
+} HighScoreMinigame;
+
 // The file-level options block (blocks 2-6), holding the minigame high
 // scores indexed by difficulty (Easy/Medium/Hard).
 typedef struct {
-    u32 adwWizardCrackerPopItHighScores[3];  // 0x00
-    u32 adwHippogriffGlideHighScores[3];     // 0x0C
-    u32 adwRiddikulusHighScores[3];          // 0x18
+    u32 aadwHighScores[3][3];                // 0x00: [HighScoreMinigame][difficulty]
     u8 abPadding[2];                         // 0x24
     u16 wChecksum;                           // 0x26: -Sum16(options, 0x26)
 } SaveOptions;

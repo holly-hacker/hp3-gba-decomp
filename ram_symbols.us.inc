@@ -107,6 +107,17 @@
 .set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_anFaintedRosterIndices,             0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
+.set g_dwVictoryUnk26E8,                    0x030026E8  @ u32: zeroed by InitializeVictoryScreen; no reader found
+.set g_dwVictoryUnk26EC,                    0x030026EC  @ u32: 0x78 after InitializeVictoryScreen; no reader found
+.set g_dwVictoryXpRemaining,                0x030026F0  @ u32: XP still to be counted up on the victory screen, see include/battle/victory_screen.h
+.set g_dwVictoryUnk26F4,                    0x030026F4  @ u32: zeroed by InitializeVictoryScreen
+.set g_dwVictoryUnk26F8,                    0x030026F8  @ u32: zeroed by InitializeVictoryScreen
+.set g_dwVictoryUnk26FC,                    0x030026FC  @ u32: zeroed by InitializeVictoryScreen
+.set g_abVictoryPartySlots,                 0x03002700  @ u8[3]: party stats slot shown per portrait position, see include/battle/victory_screen.h
+.set g_pVictoryBg2Tilemap,                  0x03002704  @ void *: BG2 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
+.set g_pVictoryBg1Tilemap,                  0x03002708  @ void *: BG1 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
+.set g_wVictoryTextTileCursor,              0x0300270C  @ u16: next free text tile of the victory screen
+.set g_wVictoryUnk2734,                     0x03002734  @ u16: zeroed by InitializeVictoryScreen
 .set g_bDefeatWarpParam,                   0x03002748  @ byte
 .set g_bSpellMissStreak,                   0x03002749  @ byte: consecutive-miss streak breaker
 .set g_nLastDamage,                        0x0300274A  @ u16: last computed attack/status damage
@@ -152,6 +163,7 @@
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickObject clears; see src/object/tick_object.c
 .set g_GameCubeLinkScreenState, 0x03003238  @ GameCubeLinkScreenState: status/result text bookkeeping for the GameCube link screen
+.set g_OwlCareKitScreen,        0x03003270  @ OwlCareKitScreenState: live state of the Owl Care Kit care screen, see include/minigame/owlcare.h
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
 @ --- Overworld object tracking (see include/overworld/overworld.h) ---
@@ -177,6 +189,7 @@
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
 @ ResetKeyInput, 0x080254A8/0x080258F8) ---
 .set g_aDecompressBgTileIwram,      0x030033CC  @ u8[0x100]: IWRAM copy of DecompressBgTile
+.set g_HighScoreNameEntry,          0x030034D0  @ HighScoreNameEntryState; see include/minigame/high_score_name_entry.h
 .set g_wKeysHeld,                0x030034EC  @ u16: current held-key bitmask (standard GBA KEYINPUT bit
                                              @ order), updated once per frame by UpdateKeyInput; also
                                              @ folded into Mt19937AutoSeed's seed as a cheap entropy

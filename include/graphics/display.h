@@ -21,7 +21,9 @@ extern void TickBgTileAnimations_candidate(void);
 
 // Per-BG scroll/affine state, 0x6C bytes per BG starting at g_aBgScrollState.
 typedef struct BgScrollState {
-    u8 pad_00[0x1C];
+    u8 pad_00[0x08];
+    void *pBgGraphicResult_candidate;  // 0x08, LoadBgGraphic's result for this BG, as stored by the owl care screen
+    u8 pad_0C[0x10];
     u32 dwFlags;                 // 0x1C, bit 0x8000 asks for a scroll update
     u8 pad_20[0x08];
     u32 nScrollY_candidate;      // 0x28, 16.16
@@ -81,6 +83,8 @@ extern void sub_08007F84(u32 bg, s32 *pOut0, s32 *pOut1);
 // Allocates a slot in the palette-effect table at 0x030022F8.
 extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData);
 extern void *LoadBgGraphic(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
+// Loads a graphic's tiles and palette without drawing its tilemap; returns the tilemap for sub_08006C00.
+extern void *LoadBgGraphicTiles_candidate(u32 bg, const void *pResource, u32 tileOffset, u32 palBank);
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);

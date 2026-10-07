@@ -392,7 +392,7 @@ extern void InitBattleBackground_candidate(void);
 extern void RestoreFighterObjects_candidate(void);
 extern void SetupBattleRoster(void);
 extern u32 GetPartyPresenceMask(void);
-extern u8 GetPartySize(void);
+extern u32 GetPartySize(void);
 extern void JitterEnemyTurnOrder(void);
 extern void BuildTurnOrder(void);
 extern Object *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);

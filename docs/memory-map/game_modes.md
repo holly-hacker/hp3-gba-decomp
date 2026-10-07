@@ -197,11 +197,11 @@ PROVEN from US decompiles; the state names in the headers are provisional.
 
 | Mode | Screen state (US) | Header | High scores (`g_saveManager`) |
 |---|---|---|---|
-| 0x1B `WizardCrackerPopItMinigame` | `*g_pWizardCrackerPopIt` (`0x03005230`, allocated 0x1AC bytes) | `include/minigame/wizard_cracker_pop_it.h` | `adwWizardCrackerPopItHighScores` |
+| 0x1B `WizardCrackerPopItMinigame` | `*g_pWizardCrackerPopIt` (`0x03005230`, allocated 0x1AC bytes) | `include/minigame/wizard_cracker_pop_it.h` | `aadwHighScores[HighScoreWizardCrackerPopIt]` |
 | 0x1C `DivinationTeaMinigame` | `g_DivinationTea` (`0x03005B28`) | `include/minigame/divination_tea.h` | none |
 | 0x24 `UnusedServePumpkinJuiceMinigame` | `g_ServePumpkinJuice` (`0x03005238`) | `include/minigame/serve_pumpkin_juice.h` | none |
-| 0x2B `HippogriffGlideMinigame` | `*g_pHippogriffGlide` (`0x03002088`, allocated 0x1F0 bytes) | `include/minigame/hippogriff_glide.h` | `adwHippogriffGlideHighScores` |
-| 0x2F `RiddikulusMinigame` | `g_Riddikulus` (`0x03002048`) | `include/minigame/riddikulus.h` | `adwRiddikulusHighScores` |
+| 0x2B `HippogriffGlideMinigame` | `*g_pHippogriffGlide` (`0x03002088`, allocated 0x1F0 bytes) | `include/minigame/hippogriff_glide.h` | `aadwHighScores[HighScoreHippogriffGlide]` |
+| 0x2F `RiddikulusMinigame` | `g_Riddikulus` (`0x03002048`) | `include/minigame/riddikulus.h` | `aadwHighScores[HighScoreRiddikulus]` |
 | 0x33 `HarryVsDementorsMinigame` | `g_HarryVsDementors` (`0x03002E18`) | `include/minigame/harry_vs_dementors.h` | none |
 
 - Each update handler is a `switch` on `dwModeState`; the handlers only

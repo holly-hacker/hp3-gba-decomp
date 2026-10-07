@@ -29,8 +29,8 @@ void UpdateHippogriffGlideMinigame(void)
     case HippogriffGlideStateFinished:
         pState = g_pHippogriffGlide;
         if (pState->dwScore >
-            g_saveManager.options.adwHippogriffGlideHighScores[g_GameModeStackContext.dwCurrentGameModeArg3])
-            g_saveManager.options.adwHippogriffGlideHighScores[g_GameModeStackContext.dwCurrentGameModeArg3] =
+            g_saveManager.options.aadwHighScores[HighScoreHippogriffGlide][g_GameModeStackContext.dwCurrentGameModeArg3])
+            g_saveManager.options.aadwHighScores[HighScoreHippogriffGlide][g_GameModeStackContext.dwCurrentGameModeArg3] =
                 pState->dwScore;
 
         InitializeHippogriffGlideResultsMenu();

@@ -96,6 +96,17 @@
 .set g_pBattleMessageIconObject_candidate, 0x03002684
 .set g_BattleMessageIconState_candidate,   0x03002688
 .set g_anFaintedRosterIndices,             0x030026D8  @ see ram_symbols.us.inc
+.set g_dwVictoryUnk26E8,               0x030026E8  @ see ram_symbols.us.inc
+.set g_dwVictoryUnk26EC,               0x030026EC  @ see ram_symbols.us.inc
+.set g_dwVictoryXpRemaining,           0x030026F0  @ see ram_symbols.us.inc
+.set g_dwVictoryUnk26F4,               0x030026F4  @ see ram_symbols.us.inc
+.set g_dwVictoryUnk26F8,               0x030026F8  @ see ram_symbols.us.inc
+.set g_dwVictoryUnk26FC,               0x030026FC  @ see ram_symbols.us.inc
+.set g_abVictoryPartySlots,            0x03002700  @ see ram_symbols.us.inc
+.set g_pVictoryBg2Tilemap,             0x03002704  @ see ram_symbols.us.inc
+.set g_pVictoryBg1Tilemap,             0x03002708  @ see ram_symbols.us.inc
+.set g_wVictoryTextTileCursor,         0x0300270C  @ see ram_symbols.us.inc
+.set g_wVictoryUnk2734,                0x03002734  @ see ram_symbols.us.inc
 .set g_bDefeatWarpParam,                   0x03002748  @ see ram_symbols.us.inc
 .set g_bSpellMissStreak,                   0x03002749
 .set g_nLastDamage,                        0x0300274A
@@ -139,6 +150,7 @@
 .set g_saveStateBlock,                                 0x030031E0
 .set g_dwUnk03003234,                                  0x03003294  @ see ram_symbols.us.inc
 .set g_GameCubeLinkScreenState, 0x03003298  @ see ram_symbols.us.inc
+.set g_OwlCareKitScreen,        0x030032D0  @ see ram_symbols.us.inc
 .set g_OverworldControlState,                          0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
 @ --- Overworld object tracking (see include/overworld/overworld.h) ---
@@ -164,6 +176,7 @@
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
 @ ResetKeyInput, 0x080254A8/0x080258F8) ---
 .set g_aDecompressBgTileIwram,          0x0300342C
+.set g_HighScoreNameEntry,              0x03003530
 .set g_wKeysHeld,                0x0300354C  @ see ram_symbols.us.inc/docs/memory-map/input.md
                                              @ order), updated once per frame by UpdateKeyInput; also
                                              @ folded into Mt19937AutoSeed's seed as a cheap entropy
