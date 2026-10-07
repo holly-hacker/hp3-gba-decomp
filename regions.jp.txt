@@ -36,7 +36,7 @@ thumb-func 0x08001690 sub_08001690
 c-file 0x080016E8 0x0800187C src/object/object_variant_slots.c EnableObjectVariantSlots
 thumb-func 0x0800187C SetObjectAssetRecord
 thumb-func 0x080018D8 SetObjectAnimData
-thumb-func 0x08001958 SetObjectAnimFrame
+c-file 0x08001958 0x0800199C src/object/set_object_anim_frame.c SetObjectAnimFrame
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
@@ -61,6 +61,7 @@ c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDe
 thumb-func 0x08001F40 CheckObjectTerrainCollision
 c-file 0x08001FD8 0x08002154 src/object/tick_object.c TickObject
 thumb-func 0x08002154 TickObjectAnimation
+thumb-func 0x080023B4 sub_080023B4
 thumb-func 0x080025F8 IntegrateObjectVelocity
 c-file 0x08002618 0x08002C18 src/object/update_object_oam_cells.c UpdateObjectOamCells
 thumb-func 0x08002C18 WriteObjectOamCells
@@ -274,14 +275,16 @@ c-file 0x0800EA68 0x0800EB2C src/battle/clear_paralyzed_fighter.c ClearParalyzed
 c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate
 c-file 0x0800EDD8 0x0800F16C src/battle/setup_battle_roster.c SetupBattleRoster
-thumb-func 0x0800F16C RestoreFighterObjects_candidate
-thumb-func 0x0800F5F0 ResumeBattleAfterSubmode_candidate
+c-file 0x0800F16C 0x0800F5F0 src/battle/restore_fighter_objects.c RestoreFighterObjects_candidate
+c-file 0x0800F5F0 0x0800F794 src/battle/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
 c-file 0x0800F794 0x0800FEE0 src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
-thumb-func 0x0800FEE0 SetFighterTurnOrderIconActive
+c-file 0x0800FEE0 0x0800FFAC src/battle/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
 c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
-thumb-func 0x080100A0 DispatchPendingAction
+thumb-func 0x08010008 TrackSpellFamiliarity
+c-file 0x080100A0 0x080101D0 src/battle/dispatch_pending_action.c DispatchPendingAction
 thumb-func 0x080101D0 TickBattleMenuInput
 thumb-func 0x080104A0 OpenBattleTopMenu
+thumb-func 0x080107BC OpenAllyTargetMenu
 thumb-func 0x08010864 ShowBattleMessage
 thumb-func 0x08012998 InitCharacterSpells_candidate
 thumb-func 0x080129F8 StopBgTileAnimationsAfterCard_candidate
@@ -289,10 +292,12 @@ thumb-func 0x08012A04 sub_08012A00
 thumb-func 0x08012A3C sub_08012A38
 thumb-func 0x08012A88 sub_08012A84
 thumb-func 0x08012AC4 GetBattleBackgroundData_candidate
-thumb-func 0x08012B00 PushBattleState
+c-file 0x08012B00 0x08012B44 src/battle/push_battle_state.c PushBattleState
 thumb-func 0x08012B44 sub_08012B40
+thumb-func 0x08012B9C OpenEnemyTargetMenu_candidate
 thumb-func 0x08012CB8 ClearFighterObjectFlag_candidate
-thumb-func 0x080130B8 SetFighterTurnOrderIconDone
+thumb-func 0x08012E10 sub_08012E0C
+c-file 0x080130B8 0x0801310C src/battle/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
 thumb-func 0x0801310C sub_08013108
 thumb-func 0x080131A0 OpenPendingFighterMenu_candidate
 thumb-func 0x080134C0 InitializeVictoryScreen
@@ -302,27 +307,27 @@ thumb-func 0x08014894 ExitVictoryScreen
 thumb-func 0x08014950 ResetCharacterToLevel
 c-file 0x080149B0 0x08014C74 src/battle/init_player_battle_actor.c InitPlayerBattleActor
 c-file 0x08014C74 0x08014F08 src/battle/init_monster_battle_actor.c InitMonsterBattleActor
-thumb-func 0x08014F08 SpawnTurnOrderIcon
+c-file 0x08014F08 0x0801500C src/battle/spawn_turn_order_icon.c SpawnTurnOrderIcon
 c-file 0x0801500C 0x080150A0 src/battle/roll_monster_special_effect.c RollMonsterSpecialEffect
 thumb-func 0x0801519C LevelUpPartyMember_candidate
 thumb-func 0x08015258 InitPartyStatForCurrentLevel
 thumb-func 0x080152B8 sub_080152CC
 thumb-func 0x08015320 sub_08015334
-thumb-func 0x08015388 SetMonsterObjectAnim
+c-file 0x08015388 0x08015470 src/battle/set_monster_object_anim.c SetMonsterObjectAnim
 c-file 0x08015470 0x08015560 src/battle/set_player_object_anim.c SetPlayerObjectAnim
 thumb-func 0x08015560 UpdateFighterFlashEffect_candidate
 c-file 0x080155F4 0x08015F3C src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
 thumb-func 0x08015F3C ShowItemUseResult
 c-file 0x08016018 0x08017B48 src/battle/tick_player_action_state.c TickPlayerActionState
-thumb-func 0x08017B48 ShowDamageNumber_candidate
+c-file 0x08017B48 0x08017C10 src/battle/show_damage_number.c ShowDamageNumber_candidate
 c-file 0x08017C10 0x08017E30 src/battle/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E30 0x08017F84 src/battle/resolve_enemy_attack.c ResolveEnemyAttack
-thumb-func 0x08017F84 ApplyDamageToEnemyFighter
+c-file 0x08017F84 0x08018080 src/battle/apply_damage_to_enemy_fighter.c ApplyDamageToEnemyFighter
 c-file 0x08018080 0x08018198 src/battle/apply_damage_to_ally_fighter.c ApplyDamageToAllyFighter
 thumb-func 0x08018198 ShowFloatingDamageNumber_candidate
-thumb-func 0x080182F0 CheckBattleDefeat
-thumb-func 0x0801844C PruneFaintedAndRebuildTurnOrder_candidate
-thumb-func 0x080186CC CheckBattleVictory
+c-file 0x080182F0 0x0801844C src/battle/check_battle_defeat.c CheckBattleDefeat
+c-file 0x0801844C 0x080186CC src/battle/prune_fainted_and_rebuild_turn_order.c PruneFaintedAndRebuildTurnOrder_candidate
+c-file 0x080186CC 0x08018728 src/battle/check_battle_victory.c CheckBattleVictory
 thumb-func 0x08018728 ResetAllPartyLevelsTo1
 thumb-func 0x08018740 ResetPartyHpMpAndStats
 c-file 0x0801876C 0x080187D8 src/save/deserialize_party_stats.c DeserializePartyStats
@@ -330,7 +335,7 @@ c-file 0x080187D8 0x08018830 src/save/serialize_party_stats.c SerializePartyStat
 thumb-func 0x080188F8 GetMonsterSpellEffectiveness
 thumb-func 0x080189B4 sub_080189C8
 thumb-func 0x08018AA4 sub_08018AB8
-thumb-func 0x08018AB8 PostActionBattleCheck
+c-file 0x08018AB8 0x08018B00 src/battle/post_action_battle_check.c PostActionBattleCheck
 thumb-func 0x08018B00 sub_08018B14
 c-file 0x08018B5C 0x08018BCC src/battle/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptObject
