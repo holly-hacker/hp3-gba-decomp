@@ -249,6 +249,10 @@
 @ OAM DMA half-toggle; see include/hw/vblank.h.
 .set g_bOamDmaHalfToggle,                    0x030037AC
 .set g_abItemQuantities,                     0x030037B0  @ u8[132]: owned count per item id, see docs/formats/save.md
+.set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32; see include/menu/unused_hogwarts_map_screen.h
+.set g_pUnusedHogwartsMapCursor,             0x03003A54  @ Object *
+.set g_pUnusedHogwartsMapBg1Tilemap,         0x03003A58  @ void *
+.set g_apUnusedHogwartsMapObjects,           0x03003A60  @ Object *[9]
 .set g_LupinPotionCutscene,                  0x03003A84  @ LupinPotionCutsceneState
 .set g_aLupinPotionBg2Scroll,                0x03003B3C  @ s32[2]
 .set g_dwGameModeFlags,                      0x03003B44  @ u32: broad flags word read/written across
@@ -380,6 +384,7 @@
 .set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
+.set g_FredAndGeorgesShop,       0x03005AC8  @ FredAndGeorgesShopState; see include/menu/fred_and_georges_shop.h
 .set g_DivinationTea,            0x03005B28  @ DivinationTeaState
 .set gDialogTextScratchBuf,      0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,           0x03005D0C  @ byte: language ID (0-7) set by SetLanguage

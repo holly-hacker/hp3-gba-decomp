@@ -688,9 +688,13 @@ thumb-func 0x08027AF4 sub_08027AF4
 thumb-func 0x08027BA4 sub_08027BA4
 thumb-func 0x08027BDC sub_08027BDC
 thumb-func 0x08027C08 sub_08027C08
-thumb-func 0x08027F40 InitializeUnusedHogwartsMapScreen
-thumb-func 0x0802804C UpdateUnusedHogwartsMapScreen
-thumb-func 0x08028210 ExitUnusedHogwartsMapScreen
+c-file 0x08027F40 0x0802804C src/gamemode/modes/unused_hogwarts_map_screen/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
+c-file 0x0802804C 0x080280CC src/gamemode/modes/unused_hogwarts_map_screen/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
+thumb-func 0x080280CC sub_080280CC
+thumb-func 0x080281AC sub_080281AC
+c-file 0x08028210 0x08028240 src/gamemode/modes/unused_hogwarts_map_screen/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
+thumb-func 0x08028240 sub_08028240
+thumb-func 0x080282C4 sub_080282C4
 
 c-file 0x08028314 0x08028408 src/gamemode/modes/language_select/initialize_language_select.c InitializeLanguageSelect
 c-file 0x08028408 0x08028524 src/gamemode/modes/language_select/update_language_select.c UpdateLanguageSelect
@@ -1184,9 +1188,21 @@ c-file 0x0804000C 0x08040038 src/audio/on_krawall_event.c OnKrawallEvent
 c-file 0x08040038 0x08040114 src/room/objects/SpawnSpongifyPadObject.c SpawnSpongifyPadObject
 thumb-func 0x08040114 sub_08040114
 thumb-func 0x08040358 sub_08040358
-thumb-func 0x0804115C InitializeFredAndGeorgesShop
-thumb-func 0x080411E0 UpdateFredAndGeorgesShop
-thumb-func 0x0804126C ExitFredAndGeorgesShop
+thumb-func 0x08040720 sub_08040720
+thumb-func 0x080407CC sub_080407CC
+thumb-func 0x08040A38 sub_08040A38
+thumb-func 0x08040CA4 sub_08040CA4
+thumb-func 0x08040F04 sub_08040F04
+c-file 0x0804115C 0x080411E0 src/gamemode/modes/fred_and_georges_shop/initialize_fred_and_georges_shop.c InitializeFredAndGeorgesShop
+c-file 0x080411E0 0x0804126C src/gamemode/modes/fred_and_georges_shop/update_fred_and_georges_shop.c UpdateFredAndGeorgesShop
+c-file 0x0804126C 0x08041288 src/gamemode/modes/fred_and_georges_shop/exit_fred_and_georges_shop.c ExitFredAndGeorgesShop
+thumb-func 0x08041288 sub_08041288
+thumb-func 0x0804132C sub_0804132C
+thumb-func 0x08041360 sub_08041360
+thumb-func 0x08041454 sub_08041454
+thumb-func 0x08041590 sub_08041590
+thumb-func 0x080416CC sub_080416CC
+thumb-func 0x080418BC sub_080418BC
 c-file 0x080418EC 0x08041A60 src/gamemode/modes/minigame/divination_tea/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
 c-file 0x08041A60 0x08041D84 src/gamemode/modes/minigame/divination_tea/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
 thumb-func 0x08041D84 sub_08041D84
@@ -1382,6 +1398,7 @@ c-file 0x08060E8C 0x08060EC0 src/interrupts/init_interrupt_system.globals.c gInt
 
 # Item/equipment table, see docs/formats/items.md
 c-file 0x08060EE4 0x080629B4 src/items/items.c g_pItemTable
+c-file 0x080629B8 0x080629F4 src/gamemode/modes/unused_hogwarts_map_screen/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file 0x080629F4 0x08062A00 src/gamemode/modes/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 
 c-file 0x08062A08 0x08062A38 src/gamemode/modes/cutscene/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
@@ -1430,6 +1447,7 @@ c-file 0x0806B8CC 0x0806B8DC src/mem/clear_work_ram.globals.c g_pIwramSectionSta
 c-file 0x0806B8DC 0x0806B934 src/room/objects/SpawnSpongifyPadObject.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 0x0806BA4C src/shop/shop_stock.c g_aShopStockMisc
 
+c-file 0x0806BAF0 0x0806BAF4 src/gamemode/modes/fred_and_georges_shop/fred_and_georges_shop.globals.c g_dwFredAndGeorgesShopBg1Control
 c-file 0x0806BB00 0x0806BB70 src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
 c-file 0x0806BB70 0x0806BD78 src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD78 0x0806BD98 sDialogTextTable

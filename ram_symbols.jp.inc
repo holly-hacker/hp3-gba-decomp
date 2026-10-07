@@ -233,6 +233,10 @@
 @ OAM DMA half-toggle; see include/hw/vblank.h.
 .set g_bOamDmaHalfToggle,                    0x0300380C
 .set g_abItemQuantities,                     0x03003810
+.set g_dwUnusedHogwartsMapShownBg,           0x03003AB0
+.set g_pUnusedHogwartsMapCursor,             0x03003AB4
+.set g_pUnusedHogwartsMapBg1Tilemap,         0x03003AB8
+.set g_apUnusedHogwartsMapObjects,           0x03003AC0
 .set g_LupinPotionCutscene,                  0x03003AE4  @ see ram_symbols.us.inc
 .set g_aLupinPotionBg2Scroll,                0x03003B9C
 .set g_dwGameModeFlags,                      0x03003BA4  @ u32: broad game-mode flags word
@@ -362,6 +366,7 @@
 .set g_bUnk03005AC0,             0x03005B20
 .set g_bMusicPaused,             0x03005B21
 .set g_bCurrentMusicModule,      0x03005B22
+.set g_FredAndGeorgesShop,       0x03005B28
 .set g_DivinationTea,            0x03005B88  @ see ram_symbols.us.inc
 .set gDialogTextScratchBuf,      0x03005D68
 .set gCurrentLanguage,           0x03005D6C
