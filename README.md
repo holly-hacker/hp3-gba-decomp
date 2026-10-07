@@ -38,8 +38,6 @@ Rough list of current priorities:
 | Area                                                    | Reason                              |
 | ------------------------------------------------------- | ----------------------------------- |
 | Sources of RNG calls                                    | Improve RNG manipulation            |
-| Decompile all gamemode lifetime functions               | Completeness, general understanding |
-| All functions called by main before main loop           | Completeness, general understanding |
 | Find differences between international and Japanese ROM | Completeness, find patched bugs     |
 | Improve understanding of save system                    | Completeness, entrypoint for ACE    |
 | Document room scripts                                   | Better understand quest progression |
