@@ -252,6 +252,7 @@
 .set g_bPendingQuestStateOverride_candidate, 0x03003BBA
 .set g_dwRoomBgFlag_candidate,               0x03003BBC
 .set g_dwPauseMenuLocked,                    0x03003BC0  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
+.set g_bRoomSwitchState,                     0x03003BC4  @ see ram_symbols.us.inc
 .set g_pRoomObjectStateBuffer,          0x03003BC8
 .set g_dwPauseMenuCooldown,                  0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003BD0  @ byte: queued (encounter id, kind) pair count
@@ -271,6 +272,11 @@
 .set g_apMenuIconObjects, 0x03003FC8  @ see ram_symbols.us.inc
 .set g_dwSelectedMinigame,                   0x03003FE8
 .set g_abBgPriority,                         0x03003FEC  @ see ram_symbols.us.inc
+.set g_dwRoomCollisionPatternCount,           0x03004018  @ see ram_symbols.us.inc
+.set g_adwEdgeEndpointTypes,                  0x03004020  @ see ram_symbols.us.inc
+.set g_pRoomCollisionTilemapBuffer,           0x03004028  @ see ram_symbols.us.inc
+.set g_pRoomCollisionBehaviorTable,           0x0300402C  @ see ram_symbols.us.inc
+.set g_pRoomCollisionTilemap,                 0x03004030  @ see ram_symbols.us.inc
 .set g_dwPendingCameraFocusFlag,             0x03004034  @ see ram_symbols.us.inc
 .set g_pPendingCameraFocus_candidate,        0x03004038  @ see ram_symbols.us.inc
 
@@ -359,6 +365,7 @@
 .set g_dwUnk03005638,                   0x03005698
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300569C
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for object visibility
+.set g_RoomSizePixels,           0x030056A8  @ see ram_symbols.us.inc
 .set g_adwBgScrollEnabled,              0x03005920
 .set g_apBgTileCacheEntries,            0x030059E8
 .set g_apBgTileCacheBuckets,            0x030059F0

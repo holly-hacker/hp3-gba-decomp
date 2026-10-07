@@ -4,15 +4,7 @@
 #include "graphics/object.h"
 #include "overworld/room_script.h"
 #include "overworld/room_object_state.h"
-
-// A pixel coordinate in room space, passed by value.
-typedef struct PixelPoint {
-    u32 x;
-    u32 y;
-} PixelPoint;
-
-extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
-extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
+#include "overworld/terrain.h"
 
 // A BG tileset and its palette. Tileset A (layers 0 and 3) and tileset B
 // (layers 1 and 2) each pair with one; the second pair's palette is not
@@ -229,7 +221,8 @@ extern void InitRoomScriptState_candidate(void);
 extern void RestoreRoomObjectState(void);
 extern void RestoreRoomObjectStateMinimal(void);
 extern u8 sub_08005DC0(u32 questState, const void *pRoomResourceBlob);
-extern u32 SetRoomSwitchState(u32 state);
+extern u8 g_bRoomSwitchState;  // 0 or 1
+extern u32 SetRoomSwitchState(u32 state);  // returns nonzero if the state changed
 extern u32 GetRoomSwitchState(void);
 extern void ApplyRoomSwitchEffect(u32 state);
 

@@ -31,7 +31,7 @@ void ExitOverworldScreen(void)
     }
 
     sub_08005D88();
-    sub_0802DDAC();
+    FreeRoomSharedTileset();
     sub_0802B210();
 
     if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Battle

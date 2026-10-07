@@ -170,7 +170,7 @@ void TickOwlCareKitFromOverworld(void);
 
 // Overworld teardown helpers called by ExitOverworldScreen.
 extern void sub_08005D88(void);
-extern void sub_0802DDAC(void);
+extern void FreeRoomSharedTileset(void);
 extern void sub_0802B210(void);
 extern void sub_0802B08C(void);
 extern void sub_08024918(void);

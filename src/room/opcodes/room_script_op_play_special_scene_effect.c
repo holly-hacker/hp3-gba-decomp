@@ -10,8 +10,6 @@
 #include "hw/vblank.h"
 #include "gen/graphics/overworld.h"
 
-extern void sub_08024518(Object *pObject, u32 arg1);
-
 typedef struct SpecialSceneEffectRecord {
     u32 dwOpcode;
     u8 bMode;

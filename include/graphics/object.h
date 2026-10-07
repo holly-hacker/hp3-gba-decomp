@@ -19,9 +19,13 @@ typedef enum {
     ObjectFlagHasAnimation             = 0x10,       // TickObjectAnimation runs
     ObjectFlagAnimFrameLoaded          = 0x80,       // set once LoadObjectAnimFrameCells has run
     ObjectFlagSkipSpriteFrameUpdate    = 0x100,      // TickObjectList skips UpdateObjectSpriteFrame
+    ObjectFlagTerrainCollisionA_candidate = 0x200,   // with ObjectFlagTerrainCollisionB_candidate: either
+                                                       // bit makes CheckObjectTerrainCollision resolve
+                                                       // the object against the room terrain
     ObjectFlagOnscreen                 = 0x400,      // set by UpdateObjectOnscreenFlags
     ObjectFlagTickHandlerSuspendsMovement = 0x800,   // pfnTick asked to skip the rest of this tick
     ObjectFlagSpecialMoveTrigger       = 0x8000,
+    ObjectFlagTerrainCollisionB_candidate = 0x10000, // see ObjectFlagTerrainCollisionA_candidate
     ObjectFlagHasSpriteCells           = 0x20000,    // distinguishes the sprite-frame-update queue
                                                        // from the OAM/priority-sort queue
     ObjectFlagActionAnimDone           = 0x40000,    // set by TickObjectAnimation on a non-looping
@@ -32,6 +36,11 @@ typedef enum {
     ObjectFlagOnscreenForTileAlloc     = 0x400000,   // mirrors ObjectFlagOnscreen (set/cleared
                                                        // together by UpdateObjectOnscreenFlags)
     ObjectFlagRoomRecordBound          = 0x800000,   // FreeObject clears the object's room record
+    ObjectFlagNoPushTrigger_candidate  = 0x1000000,  // ApplyTerrainTypeEffect does not start a push while set
+    ObjectFlagSkipTerrainOnce_candidate = 0x2000000, // CheckObjectTerrainCollision skips the terrain
+                                                       // pass and clears it
+    ObjectFlagTerrainDrawLayer         = 0x4000000,  // the terrain pass sets oam.priority from the
+                                                       // room's collision layer under the object
     ObjectFlagRoomScriptYield          = 0x8000000,  // set by a room script that yielded on this object
     ObjectFlagAnimPaused               = 0x10000000, // TickObjectAnimation's frame counter freezes
     ObjectFlagSuppressEffectBinding    = 0x20000000, // TickObject skips Claim/BindObjectEffect entirely
@@ -318,7 +327,8 @@ typedef struct Object {
     u8 pad_6E[0x0E];        // -> 0x7C
     u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocObjectOfType, zeroed by
                              // InitPlayerBattleActor_candidate
-    u8 pad_7D[0x03];        // -> 0x80
+    u8 bTerrainType;        // 0x7D, collision type under the object, set by RespondToTerrain
+    u8 pad_7E[0x02];        // -> 0x80
     u32 dwStateTimer;       // 0x80
     u16 wUnk84;             // 0x84, zeroed by the type 6 room object constructor
     u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
@@ -342,7 +352,7 @@ typedef struct Object {
                                      // (see docs/formats/room_scripts.md); caller-defined
     struct Object *pOwnerObject;   // 0xA8, back-link (shadow -> main)
     u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultObject; also read by
-                             // sub_08001F40 as one of several "movement stopped"
+                             // CheckObjectTerrainCollision as one of several "movement stopped"
                              // conditions. Not enough evidence yet for a real name.
     u8 pad_AE[0x01];        // -> 0xAF
     u8 bCollisionMode_candidate;  // 0xAF, 1 or 2; set by the room object constructors
@@ -350,7 +360,7 @@ typedef struct Object {
                              // slot 0 at 0xB0, slot 1 at 0xB8
     // 0xC0-0xC3: terrain bounding box, signed pixel offsets from the object's
     // integer position, copied from the current animation frame (sub_080023B4).
-    // Terrain probes (GetUnblockedDirectionToTarget, sub_0802D868) test pixels
+    // Terrain probes (GetUnblockedDirectionToTarget, GetObjectTerrainBox) test pixels
     // at these edges.
     s8 bTerrainBoxLeft;     // 0xC0
     s8 bTerrainBoxRight;    // 0xC1

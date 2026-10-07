@@ -269,6 +269,7 @@
 .set g_bPendingQuestStateOverride_candidate, 0x03003B5A  @ u8: 0xFF = none; else copied into quest state 0 on room entry
 .set g_dwRoomBgFlag_candidate,               0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by sub_0802E6FC
 .set g_dwPauseMenuLocked,                    0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
+.set g_bRoomSwitchState,                     0x03003B64  @ u8: current room switch state (0 or 1), see SetRoomSwitchState
 .set g_pRoomObjectStateBuffer,               0x03003B68  @ 0x20BC-byte buffer, allocated by InitRoomState; see docs/formats/save.md
 .set g_dwPauseMenuCooldown,                  0x03003B6C  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003B70  @ byte: queued (encounter id, kind) pair count
@@ -288,6 +289,11 @@
 .set g_apMenuIconObjects, 0x03003F68  @ Object *[]: objects registered by index via RegisterMenuIconObject
 .set g_dwSelectedMinigame,                   0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
 .set g_abBgPriority,                         0x03003F8C  @ u8[]; [4] == 0x03003F90
+.set g_dwRoomCollisionPatternCount,           0x03003FB8  @ u32: pattern count from the collision tilemap header
+.set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]: see include/overworld/terrain.h
+.set g_pRoomCollisionTilemapBuffer,           0x03003FC8  @ u8 *: decompressed collision tilemap resource, 4-byte header then the pattern ids
+.set g_pRoomCollisionBehaviorTable,           0x03003FCC  @ u8 *: 16 collision bytes per pattern, see docs/formats/collision.md
+.set g_pRoomCollisionTilemap,                 0x03003FD0  @ u16 *: pattern ids of the 32x32-pixel blocks, g_pRoomCollisionTilemapBuffer + 4
 .set g_dwPendingCameraFocusFlag,             0x03003FD4  @ u32: cleared on room entry
 .set g_pPendingCameraFocus_candidate,        0x03003FD8  @ void *: argument RestorePendingCameraFocus_candidate is called with
 
@@ -377,6 +383,7 @@
 .set g_dwUnk03005638,                      0x03005638  @ u32: set by SetScreenDarkenParams_candidate; no reader found
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300563C  @ u32: palette step ticks of DarkenScreenPalette/RestoreScreenPalette
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for object visibility
+.set g_RoomSizePixels,           0x03005648  @ RoomSizePixels: width and height of the current room in pixels
 .set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera_candidate
 .set g_apBgTileCacheEntries,        0x03005988  @ BgTileCacheEntry *[2]; see include/overworld/room.h
 .set g_apBgTileCacheBuckets,        0x03005990  @ u16 *[2]

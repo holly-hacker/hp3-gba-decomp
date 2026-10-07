@@ -15,6 +15,8 @@
 typedef void (*DecompressFunc)(const void *src, void *dst, u32 *pSize);
 void DecompressLzRle(const void *src, void *dst, u32 *pSize);
 void DecompressGammaLz(const void *src, void *dst, u32 *pSize);
+extern u32 GetResourceDecompressedSize(const void *pResource);  // 0x0801DD88, the size in the resource header
+extern void DecompressResource(const void *pResource, void *pDest);  // 0x0801DD90
 void InstallIwramDecompressCodecs(void);
 extern DecompressFunc g_pDecompressLzRleEntry;
 extern DecompressFunc g_pDecompressGammaLzEntry;

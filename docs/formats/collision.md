@@ -26,8 +26,8 @@ fields, see [`levels.md`](levels.md)) decompresses two resources:
 `GetCollisionTypeAtPixel_candidate` (`0x0802D7A0`) resolves a pixel to
 its tile-type byte (out-of-bounds = solid, type 1). The **low 6 bits**
 of that byte are the tile type (below); the **top 2 bits** are a
-separate value, read by `0x0802E030` and written into `oam.priority` (the draw layer)
-(`Object+0xD5` bits 2-3, see `SetObjectDrawLayer`). STRUCTURAL MATCH:
+separate value, read by `GetCollisionLayerAtPixel` (`0x0802E030`) and written into `oam.priority` (the draw layer)
+(`Object+0xD5` bits 2-3, see `SetObjectDrawLayer`) by `ResolveObjectTerrain`. STRUCTURAL MATCH:
 `SortObjectsByDepth` folds it into the draw-order sort key,
 and `TickObjectList` flushes a per-layer queued particle list
 (`FUN_080317ec`/`FUN_08031358`) as it crosses each layer boundary while
@@ -35,15 +35,14 @@ walking the depth-sorted object list. UNCONFIRMED: the previously
 recorded "user-verified: layer=1 is an occlusion flag" claim has no
 evidence trail here and wasn't reproduced by the above.
 
-## Movement blocking (PROVEN, via `FUN_0802DA20`)
+## Movement blocking (PROVEN, via `RespondToTerrain`)
 
 Only types **1-25** trigger the actual position-revert/blocking
 response in the movement-resolution function. **Types 26+ are passable
-by default** -- `ApplyTileCollisionEffect_candidate` (`0x0802D8F4`,
-dispatched from `CheckObjectTileCollision_candidate`/
-`ScanCollisionEdge_candidate`, `0x0802D868`/`0x0802DC3C`, which walk an
-object's swept movement box in 4px steps) only force-blocks two of
-them, and only conditionally:
+by default** -- `ApplyTerrainTypeEffect` (`0x0802D8F4`, run by
+`GetObjectTerrainType`, `0x0802D868`, on what `ScanTerrainEdge`
+(`0x0802DC3C`) found along an edge of the object's terrain box, sampled in
+4px steps) only force-blocks two of them, and only conditionally:
 
 `IsBlockingCollisionType` (`0x0802DF28`) is the shared 1-25 test.
 `GetUnblockedDirectionToTarget` (`0x08000FF0`) uses it to steer an object
@@ -97,17 +96,17 @@ Confirmed byte-exact against the ROM along the way (geometry, indexing,
 table data, pattern bounds), which is what let the live-play check settle
 this as a game bug rather than a modeling error:
 
-- `FUN_0802DB20` is the per-object slope-slide/direction-reversal state
-  machine behind the ice/Glacius puzzle (type `0x2D`), driven by
-  `FUN_0802DA20`'s `Object.bUnk_0x7C` states 1/2/4/5 -- not a second
-  geometry consumer; it indexes `g_aSlopeLineSegments` the same way the
-  real solidity test does.
+- `RespondToTerrain` (`0x0802DA20`) is the per-object state machine behind the
+  ice/Glacius puzzle (type `0x2D`), keyed on `Object.bUnk_0x7C` states 1/2/4/5;
+  state 5 slides the object along the slope with `TrySlideAlongSlope`
+  (`0x0802DB20`) -- not a second geometry consumer; it indexes
+  `g_aSlopeLineSegments` the same way the real solidity test does.
 - `GetCollisionTypeAtPixel_candidate` (`0x0802D7A0`) is the real per-pixel
   solidity test, and `tools/collision/dump_collision.py` matches its
   cross product, nibble decode, and per-cell index exactly.
 - The 24 raw table entries read from `baserom.us.gba` match the table
   above exactly.
-- `FUN_0802E030` (layer accessor) is just `(byte>>6)+1`, no geometry
+- `GetCollisionLayerAtPixel` is just `(byte>>6)+1`, no geometry
   feedback.
 - Rooms 25/29's tilemap header pattern counts match their behavior
   tables' actual pattern counts exactly (307/307, 80/80), no

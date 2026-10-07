@@ -8,6 +8,6 @@ void ExitHarryHermionePortInTimeCutscene(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
-    sub_0802DDAC();
+    FreeRoomSharedTileset();
     sub_0803EA3C();
 }

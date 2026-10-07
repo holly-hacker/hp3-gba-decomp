@@ -82,7 +82,7 @@ c-file 0x08001EF0 0x08001EF8 src/object/clear_object_flags.c ClearObjectFlags
 c-file 0x08001EF8 0x08001F0C src/object/object_has_flags.c ObjectHasFlags
 c-file 0x08001F0C 0x08001F30 src/object/set_object_draw_layer.c SetObjectDrawLayer
 c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
-thumb-func 0x08001F40 CheckObjectTerrainCollision
+c-file 0x08001F40 0x08001F98 src/object/check_object_terrain_collision.c CheckObjectTerrainCollision
 c-file 0x08001FD8 0x08002154 src/object/tick_object.c TickObject
 thumb-func 0x08002154 TickObjectAnimation
 thumb-func 0x080023B4 sub_080023B4
@@ -509,6 +509,8 @@ c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c 
 thumb-func 0x0801DC6C ReleaseMenuCursor
 thumb-func 0x0801DCC4 sub_0801DCC4
 c-file 0x0801DD40 0x0801DD88 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
+thumb-func 0x0801DD88 GetResourceDecompressedSize
+thumb-func 0x0801DD90 DecompressResource
 thumb-func 0x0801DF6C InitializeMenuScreen
 thumb-func 0x0801DF90 LoadMenuScreenFrame
 thumb-func 0x0801E004 LoadMenuScreenOverlay
@@ -563,6 +565,7 @@ c-file 0x080203A8 0x080203CC src/room/init_room_tile_animation_table.c InitRoomT
 thumb-func 0x080203CC sub_080203CC
 thumb-func 0x080203F0 sub_080203F0
 thumb-func 0x0802042C sub_0802042C
+thumb-func 0x08020440 sub_08020440
 c-file 0x08020490 0x08020504 src/room/objects/SpawnRoomTileAnimationObject_candidate.c SpawnRoomTileAnimationObject_candidate
 thumb-func 0x080205F8 sub_080205F8
 c-file 0x08020714 0x080208B4 src/text/draw_text_line.c DrawTextLine
@@ -737,8 +740,7 @@ thumb-func 0x0802B08C sub_0802B08C
 c-file 0x0802B0A0 0x0802B0DC src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
 c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
 thumb-func 0x0802B0F4 ClearRoomObjectStateBuffer
-thumb-func 0x0802B110 SetRoomSwitchState
-thumb-func 0x0802B12C GetRoomSwitchState
+c-file 0x0802B110 0x0802B138 src/overworld/room_switch_state.c SetRoomSwitchState
 thumb-func 0x0802B138 sub_0802B138
 thumb-func 0x0802B164 OverworldVBlankCallback
 thumb-func 0x0802B174 ApplyRoomBgControlOverride_candidate
@@ -762,6 +764,8 @@ c-file 0x0802BE40 0x0802BE54 src/math/iwram_divide_signed_remainder.c iwramDivid
 c-file 0x0802BE54 0x0802BE68 src/math/iwram_divide_unsigned_unused.c iwramDivideUnsigned_unused
 thumb-func 0x0802BEE8 FixedMultiply
 thumb-func 0x0802BF14 FixedDivide
+thumb-func 0x0802BF34 sub_0802BF34
+thumb-func 0x0802C018 sub_0802C018
 thumb-func 0x0802C148 sub_0802C148
 c-file 0x0802C254 0x0802C26C src/mem/init_heap.c InitHeap
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
@@ -809,12 +813,11 @@ c-file 0x0802D544 0x0802D548 src/noop_init3.c NoopInit3
 thumb-func 0x0802D640 sub_0802D640
 thumb-func 0x0802D64C sub_0802D64C
 thumb-func 0x0802D6B8 sub_0802D6B8
-thumb-func 0x0802D7A0 GetCollisionTypeAtPixel_candidate
-c-file 0x0802DD54 0x0802DD58 src/noop_init2.c NoopInit2
-thumb-func 0x0802DD58 LoadRoomSharedTileset_candidate
-thumb-func 0x0802DDAC sub_0802DDAC
-thumb-func 0x0802DF28 IsBlockingCollisionType
-thumb-func 0x0802DF3C ApplyRoomSwitchEffect
+c-file 0x0802D704 0x0802D7A0 src/overworld/resolve_object_terrain.c ResolveObjectTerrain
+c-file 0x0802D7A0 0x0802DF3C src/overworld/terrain_collision.c GetCollisionTypeAtPixel_candidate
+c-file 0x0802DF3C 0x0802DF74 src/overworld/apply_room_switch_effect.c ApplyRoomSwitchEffect
+c-file 0x0802DF74 0x0802E030 src/overworld/nudge_object.c NudgeAlongVelocity
+c-file 0x0802E030 0x0802E090 src/overworld/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
 thumb-func 0x0802E2BC sub_0802E2BC
 thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
 c-file 0x0802F500 0x0802F6C0 src/room/objects/SpawnNpcObject.c SpawnNpcObject
@@ -1296,6 +1299,7 @@ c-file 0x08045AE8 0x08045ECC src/room/objects/SpawnPropObject.c SpawnPropObject
 thumb-func 0x08045ECC sub_08045ECC
 thumb-func 0x0804651C sub_0804651C
 thumb-func 0x080465D4 sub_080465D4
+thumb-func 0x08046C5C sub_08046C5C
 thumb-func 0x08046D0C kragInit
 thumb-func 0x08046EF4 kramQualityMode
 thumb-func 0x08046F5C kramSetSFXVol
@@ -1412,6 +1416,7 @@ c-file 0x0806580C 0x0806581C src/gamemode/modes/overworld/room_color_cycles.c g_
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
+c-file 0x08066094 0x080660D4 src/overworld/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066E44 0x08066FFC src/room/objects/SpawnNpcObject.globals.c g_adwRoomObjUnk6FrameRows
 c-file 0x08066FFC 0x0806788C src/graphics/assets/object_type_assets.c g_aObjectTypeAssets
 c-file 0x0806788C 0x080678BC src/room/objects/room_obj_unk6_frames.c g_abRoomObjUnk6Frames
