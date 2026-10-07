@@ -970,9 +970,9 @@ c-file 0x080372B0 0x080373D4 src/gamemode/modes/folio_universitas/initialize_fol
 c-file 0x080373D4 0x0803774C src/gamemode/modes/folio_universitas/update_folio_universitas.c UpdateFolioUniversitas
 c-file 0x0803774C 0x080377A8 src/save/increment_folio_universitas_card.c IncrementFolioUniversitasCard
 c-file 0x080377A8 0x08037800 src/save/decrement_folio_universitas_card.c DecrementFolioUniversitasCard
-thumb-func 0x08037800 DrawFolioCardSlot
+c-file 0x08037800 0x0803793C src/menu/draw_folio_card_slot.c DrawFolioCardSlot
 c-file 0x0803793C 0x08037BE8 src/menu/draw_folio_universitas_button_hints.c DrawFolioUniversitasButtonHints
-thumb-func 0x08037BE8 DrawFolioUniversitasNames
+c-file 0x08037BE8 0x08037CB0 src/menu/draw_folio_universitas_names.c DrawFolioUniversitasNames
 c-file 0x08037CB0 0x08037DB8 src/menu/set_folio_combo_slot.c SetFolioComboSlot
 c-file 0x08037DB8 0x08037E70 src/menu/update_folio_combo_slots.c UpdateFolioComboSlots
 c-file 0x08037E70 0x08037F48 src/menu/highlight_folio_combo_slot.c HighlightFolioComboSlot
