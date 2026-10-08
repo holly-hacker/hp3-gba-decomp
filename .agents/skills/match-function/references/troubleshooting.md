@@ -17,8 +17,10 @@ Extra `cmp #0`/`bge`/add/shift around division by a power of two can be signed r
 An unsigned value may remove it. Sub-word locals can introduce masks because Thumb
 `PROMOTE_MODE` promotes them; prefer s32/u32 arithmetic and truncate at a genuine boundary.
 Do not narrow merely to save a register. Inspect `ldr` versus `ldrb`/`ldrh`. Do give a call
-result its declared width: a `u16` local for a `u16` return changed reload choices at a later
-bitfield store (UpdateObjectSpriteFrame, US 0x08002F28, `allocId`).
+result the width of the field it is stored in: a `u16` local for a call result stored to a `u16`
+field supplies the `lsls`/`lsrs #16` before a later compare and changed reload choices at a
+bitfield store (UpdateObjectSpriteFrame, US 0x08002F28, `allocId`, `slotAllocId`; the callee
+AllocObjectVramTiles returns `u32`).
 
 Promotion can also let `combine` fold `(a^b)&a` into one `bicsi3` when `a` is a named
 sub-word local, where the same expression over array re-reads (HImode, `subreg`-wrapped)

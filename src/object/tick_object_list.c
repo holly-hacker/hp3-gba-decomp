@@ -19,8 +19,8 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
     u32 queueIndex;
     u32 layer;
     u32 anyOamWork;
-    void (*pfnCheckCollisions)(u32, Object **) = (void (*)(u32, Object **))g_pCheckObjectCollisionsIwram;
-    void (*pfnSortObjects)(Object **, u32) = (void (*)(Object **, u32))g_pSortObjectsIwram;
+    void (*pfnCheckCollisions)(u32, Object **) = CheckObjectCollisionsIwram;
+    void (*pfnSortObjects)(Object **, u32) = SortObjectsByDepthIwram;
 
     anyOamWork = 0;
     g_bSpriteFrameQueueCount = 0;

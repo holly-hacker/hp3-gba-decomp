@@ -35,8 +35,8 @@
 .set g_dwCollisionQueueCount,        0x03001948
 
 @ --- Object pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
-.set g_pSortObjectsIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth
-.set g_pCheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions
+.set SortObjectsByDepthIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth
+.set CheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions
 .set g_ObjectPoolState,              0x03001C08  @ ObjectPoolState, 0x1B4 bytes; see include/hw/mem.h
 .set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwObjectListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveObjects, never cleared; gates FreeObject's VRAM tile release
@@ -419,7 +419,7 @@
 .set g_bRestoringRoomObjects_candidate, 0x03005E18  @ u8: 1 while RestoreRoomObjectState respawns objects; also set when the overworld pushes a pause menu
 .set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging,    0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
-.set g_pFindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun
+.set FindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun
 .set g_abObjTileAllocBitmap,    0x03006128  @ u8[128]: set bit = tile in use
 .set g_abObjTileFreeMask,       0x030061A8  @ u8[128]: clear bit = free pending the next OAM swap
 .set g_pEepromInterface,         0x030062C8  @ EepromInterface *: chosen by EepromSelectInterface

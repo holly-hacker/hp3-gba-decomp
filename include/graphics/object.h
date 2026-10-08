@@ -510,7 +510,7 @@ extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
 // Frees the OBJ VRAM tiles of an allocation of pixelCount pixels.
 extern void FreeObjectVramTileAllocation(u16 allocId, u32 pixelCount, u8 is8bpp);  // 0x08045514
 // Returns the first allocated tile, or 0xFFFF when none are free.
-extern u16 AllocObjectVramTiles(ObjectAssetRecord *record, u32 pixelCount, u32 is8bpp);
+extern u32 AllocObjectVramTiles(ObjectAssetRecord *record, u32 pixelCount, u32 is8bpp);
 // Decompresses every frame of record's tile graphics into consecutive OBJ VRAM tiles starting at
 // tile firstTile.
 extern void LoadObjTileSheet(ObjectAssetRecord *record, u16 firstTile);

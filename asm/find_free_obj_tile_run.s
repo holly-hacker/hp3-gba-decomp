@@ -6,7 +6,7 @@
 @ first bit of the run, or 0xFFFF if no run fits below bit 0x400.
 @ ARM-mode and only ever taken by address, never `bl` --
 @ InstallIwramFindFreeObjTileRun relocates it into IWRAM via bios_CPUSet
-@ (g_pFindFreeObjTileRunIwram).
+@ (FindFreeObjTileRunIwram).
 @
 @ r0 = start of the current candidate run, lr = bits still needed,
 @ r2 = next bit to examine, ip = bit within the current byte.

@@ -6,6 +6,6 @@
 // tile allocation bitmaps.
 void InstallIwramFindFreeObjTileRun(void)
 {
-    bios_CPUSet(FindFreeObjTileRun, g_pFindFreeObjTileRunIwram, 0x4000027);
+    bios_CPUSet(FindFreeObjTileRun, FindFreeObjTileRunIwram, 0x4000027);
     InitObjTileAllocBitmaps(0);
 }

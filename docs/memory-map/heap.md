@@ -75,7 +75,7 @@ fixed-size-slot pool out of the heap:
   reaches 0. Objects with `bDrawFlags & 3 == 0` free their own allocation and
   the variant slot's (when bit `0x40` is set) directly. Record fields beyond
   those two arrays are unconfirmed.
-- `g_pSortObjectsIwram`/`g_pCheckObjectCollisionsIwram` (`0x0300194C`/
+- `SortObjectsByDepthIwram`/`CheckObjectCollisionsIwram` (`0x0300194C`/
   `0x03001A10`) — `SortObjectsByDepth`/
   `CheckObjectCollisions` relocated into IWRAM via
   `bios_CPUSet`, the standard GBA hot-loop-in-IWRAM pattern.

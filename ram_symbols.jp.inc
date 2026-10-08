@@ -24,8 +24,8 @@
 .set g_dwCollisionQueueCount,        0x03001948
 
 @ --- Object pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
-.set g_pSortObjectsIwram,            0x0300194C
-.set g_pCheckObjectCollisionsIwram,  0x03001A10
+.set SortObjectsByDepthIwram,            0x0300194C
+.set CheckObjectCollisionsIwram,  0x03001A10
 .set g_ObjectPoolState,              0x03001C08
 .set g_pObjectPoolAuxBuffer,         0x03001DBC
 .set g_dwObjectListTicked_candidate, 0x03001DC0
@@ -394,7 +394,7 @@
 .set g_bRestoringRoomObjects_candidate, 0x03005E68  @ see ram_symbols.us.inc
 .set g_ScanlineEffectState,      0x03005E70
 .set g_ScanlineEffectStaging,    0x03005FA8
-.set g_pFindFreeObjTileRunIwram, 0x030060D8
+.set FindFreeObjTileRunIwram, 0x030060D8
 .set g_abObjTileAllocBitmap,    0x03006178
 .set g_abObjTileFreeMask,       0x030061F8
 .set g_pEepromInterface,         0x03006318

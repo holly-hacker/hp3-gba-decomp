@@ -146,7 +146,7 @@ u32 ApplyTerrainTypeEffect(Object *obj, TerrainBox *box, u32 type)
             if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->right, box->bottom }) != 0x22)
                 break;
             if (obj->bActionSubState == 1 && !(obj->dwFlags & ObjectFlagNoPushTrigger_candidate))
-                sub_08046C5C(obj);
+                SnapObjectXToTileGrid(obj);
         }
         break;
     case 0x1F:

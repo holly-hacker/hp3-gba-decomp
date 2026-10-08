@@ -3,7 +3,7 @@
 @ Sorts an array of Object pointers into draw order. r0: pointer array.
 @ r1: object count. ARM-mode (see docs/compiler.md's "ARM-mode code"
 @ section) and only ever taken by address, never `bl` -- InitObjectPool
-@ relocates it into IWRAM via bios_CPUSet (g_pSortObjectsIwram).
+@ relocates it into IWRAM via bios_CPUSet (SortObjectsByDepthIwram).
 @
 @ Shell sort: an insertion sort repeated with shrinking gaps 21, 7, 3, 1
 @ (Marcin Ciura's sequence), packed byte-wise into one 0x15070301 constant

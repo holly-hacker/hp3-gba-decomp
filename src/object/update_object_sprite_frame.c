@@ -17,7 +17,7 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
     u32 index;
     u32 prevIndex;
     u16 slotPixelCount;
-    u32 slotAllocId;
+    u16 slotAllocId;
     u8 i;
     ObjectAssetRecord *record;
     ObjectFrameData *frameData;

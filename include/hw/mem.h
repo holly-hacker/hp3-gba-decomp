@@ -105,9 +105,12 @@ typedef struct ObjectPoolAuxRecord {
     u32 dwAllocTick;         // 0x30, g_dwTickCount when the ShareTiles allocation was made
 } ObjectPoolAuxRecord;
 extern ObjectPoolAuxRecord *g_pObjectPoolAuxBuffer;
-extern u8 g_pSortObjectsIwram[0xC4];
-extern u8 g_pCheckObjectCollisionsIwram[0x1F4];
-extern u8 g_pFindFreeObjTileRunIwram[0x9C];
+// IWRAM copies of the ARM routines above, made by InitObjectPool and
+// InstallIwramFindFreeObjTileRun. They are declared as functions so callers
+// can take their address; the ROM calls them through that pointer.
+extern void SortObjectsByDepthIwram(struct Object **queue, u32 count);
+extern void CheckObjectCollisionsIwram(u32 count, struct Object **queue);
+extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 startBit);
 u32 FindFreeObjTileRun(const u8 *pBitmap, u32 runLength, u32 startBit);
 // OBJ VRAM tile allocator bitmaps, one bit per 32-byte tile (1024 tiles).
 // A set bit in g_abObjTileAllocBitmap marks a tile in use. Freeing a run

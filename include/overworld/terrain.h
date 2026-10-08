@@ -73,4 +73,4 @@ extern void GetObjectTerrainBox(Object *obj, TerrainBox *box);  // 0x0802DEE0
 extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
 extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
 
-extern void sub_08046C5C(Object *obj);
+extern void SnapObjectXToTileGrid(Object *obj);

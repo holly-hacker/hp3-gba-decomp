@@ -1274,7 +1274,7 @@ c-file 0x080452A0 0x080452E0 src/graphics/scanline/clear_scanline_effect_staging
 c-file 0x080452E0 0x08045304 src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 c-file 0x08045304 0x08045358 src/object/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x08045358 sub_0804542C
-thumb-func 0x0804537C AllocObjectVramTiles
+c-file 0x0804537C 0x080453E8 src/object/alloc_object_vram_tiles.c AllocObjectVramTiles
 c-file 0x080453E8 0x08045408 src/object/load_obj_tile.c LoadObjTile
 c-file 0x08045408 0x08045420 src/object/load_obj_tile_at.c LoadObjTileAt
 c-file 0x08045420 0x08045440 src/object/free_object_vram_tile_allocation_now.c FreeObjectVramTileAllocationNow
@@ -1293,7 +1293,7 @@ c-file 0x08045A14 0x08045DF8 src/room/objects/SpawnPropObject.c SpawnPropObject
 thumb-func 0x08045DF8 sub_08045ECC
 thumb-func 0x08046448 sub_0804651C
 thumb-func 0x08046500 sub_080465D4
-thumb-func 0x08046B88 sub_08046C5C
+c-file 0x08046B88 0x08046BD0 src/overworld/snap_object_x_to_tile_grid.c SnapObjectXToTileGrid
 thumb-func 0x08046C38 kragInit
 thumb-func 0x08046E20 kramQualityMode
 thumb-func 0x08046E88 kramSetSFXVol
