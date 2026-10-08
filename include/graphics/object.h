@@ -573,12 +573,36 @@ extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
 extern void CancelObjectMove_candidate(Object *obj);
 extern void SetObjectAssetRecord(Object *obj, const void *rec);
 // Like AttachObjectPalette, but always binds a newly allocated cache slot
-// instead of sharing one already holding pPalette, then sets bit 0 of the
-// slot's +6 flags (meaning unknown). Returns the slot index.
+// instead of sharing one already holding pPalette, and marks the slot
+// ResourceCacheFlagUnshared. Returns the slot index.
 extern u8 AttachObjectPaletteUnshared_candidate(Object *obj, const ObjPalette *pPalette);
 extern Object *SpawnMenuIconObject(u32 slot, u32 arg1);  // allocs a type 0x13 object and files it under slot
 extern u32 AttachObjectPalette(Object *obj, const ObjPalette *pPalette);  // 0x08030878
 extern void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette *pPalette);
+
+// Bodies of AttachObjectPalette and AttachObjectPaletteUnshared_candidate, which the
+// ROM also inlines in BindObjectEffectData.
+static inline u32 AttachSharedPalette(Object *obj, const ObjPalette *pPalette)
+{
+    u32 slot = FindResourceCacheSlot(pPalette);
+
+    if (slot != 0xFF)
+        pPalette = NULL;
+    else
+        slot = AllocResourceCacheSlot();
+
+    BindObjectToResourceCacheSlot(slot, obj, pPalette);
+    return slot;
+}
+
+static inline u32 AttachUnsharedPalette(Object *obj, const ObjPalette *pPalette)
+{
+    u32 slot = AllocResourceCacheSlot();
+
+    BindObjectToResourceCacheSlot(slot, obj, pPalette);
+    g_aResourceCache[slot].wFlags |= ResourceCacheFlagUnshared;
+    return slot;
+}
 extern void sub_080039E8(Object *obj);
 extern void sub_080039F8(Object *obj);
 extern void sub_08003A0C(Object *obj);

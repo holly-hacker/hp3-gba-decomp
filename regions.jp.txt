@@ -34,7 +34,7 @@ c-file 0x080015F8 0x0800163C src/object/active_object_flags.c SetActiveObjectsFl
 c-file 0x0800163C 0x08001664 src/object/object_pool_settings.c ClearObjectPoolAuxBuffer
 thumb-func 0x08001690 sub_08001690
 c-file 0x080016E8 0x0800187C src/object/object_variant_slots.c EnableObjectVariantSlots
-thumb-func 0x0800187C SetObjectAssetRecord
+c-file 0x0800187C 0x080018A0 src/object/set_object_asset_record.c SetObjectAssetRecord
 c-file 0x080018D8 0x08001918 src/object/set_object_anim_data.c SetObjectAnimData
 c-file 0x08001958 0x0800199C src/object/set_object_anim_frame.c SetObjectAnimFrame
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
@@ -829,8 +829,8 @@ thumb-func 0x08030634 sub_080305F0
 thumb-func 0x08030688 sub_08030644
 thumb-func 0x080306FC sub_080306B8
 thumb-func 0x08030734 sub_080306F0
-thumb-func 0x08030760 BindObjectEffectData
-thumb-func 0x080307D8 AllocResourceCacheSlot
+c-file 0x08030760 0x080307D8 src/object/bind_object_effect_data.c BindObjectEffectData
+c-file 0x080307D8 0x08030868 src/graphics/alloc_resource_cache_slot.c AllocResourceCacheSlot
 c-file 0x08030868 0x08030888 src/graphics/clear_resource_cache_slots.c ClearResourceCacheSlots
 thumb-func 0x08030888 sub_08030844
 c-file 0x080308BC 0x080308EC src/object/attach_object_palette.c AttachObjectPalette
@@ -839,8 +839,8 @@ c-file 0x0803091C 0x08030968 src/object/release_object_palette.c ReleaseObjectPa
 c-file 0x08030968 0x08030990 src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
 thumb-func 0x08030990 sub_0803094C
 thumb-func 0x080309A4 sub_08030960
-thumb-func 0x080309BC BindObjectToResourceCacheSlot
-thumb-func 0x08030A2C FindResourceCacheSlot
+c-file 0x080309BC 0x08030A18 src/object/bind_object_to_resource_cache_slot.c BindObjectToResourceCacheSlot
+c-file 0x08030A2C 0x08030A60 src/graphics/find_resource_cache_slot.c FindResourceCacheSlot
 thumb-func 0x08030A60 sub_08030A1C
 c-file 0x08030BB4 0x08030C44 src/graphics/particle/alloc_particle_emitter.c AllocParticleEmitter
 c-file 0x08030C44 0x08030CE0 src/graphics/particle/bucket_particles_by_priority.c BucketParticlesByPriority

@@ -9,13 +9,5 @@
 // queues its upload. Returns the bank index.
 u32 AttachObjectPalette(Object *obj, const ObjPalette *pPalette)
 {
-    u32 slot = FindResourceCacheSlot(pPalette);
-
-    if (slot != 0xFF)
-        pPalette = NULL;
-    else
-        slot = AllocResourceCacheSlot();
-
-    BindObjectToResourceCacheSlot(slot, obj, pPalette);
-    return slot;
+    return AttachSharedPalette(obj, pPalette);
 }

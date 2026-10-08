@@ -59,7 +59,7 @@ c-file 0x080015F8 0x0800163C src/object/active_object_flags.c SetActiveObjectsFl
 c-file 0x0800163C 0x08001664 src/object/object_pool_settings.c ClearObjectPoolAuxBuffer
 thumb-func 0x08001690 sub_08001690
 c-file 0x080016E8 0x0800187C src/object/object_variant_slots.c EnableObjectVariantSlots
-thumb-func 0x0800187C SetObjectAssetRecord
+c-file 0x0800187C 0x080018A0 src/object/set_object_asset_record.c SetObjectAssetRecord
 c-file 0x080018D8 0x08001918 src/object/set_object_anim_data.c SetObjectAnimData
 c-file 0x08001958 0x0800199C src/object/set_object_anim_frame.c SetObjectAnimFrame
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
@@ -860,8 +860,8 @@ thumb-func 0x080305F0 sub_080305F0
 thumb-func 0x08030644 sub_08030644
 thumb-func 0x080306B8 sub_080306B8
 thumb-func 0x080306F0 sub_080306F0
-thumb-func 0x0803071C BindObjectEffectData
-thumb-func 0x08030794 AllocResourceCacheSlot
+c-file 0x0803071C 0x08030794 src/object/bind_object_effect_data.c BindObjectEffectData
+c-file 0x08030794 0x08030824 src/graphics/alloc_resource_cache_slot.c AllocResourceCacheSlot
 
 c-file 0x08030824 0x08030844 src/graphics/clear_resource_cache_slots.c ClearResourceCacheSlots
 thumb-func 0x08030844 sub_08030844
@@ -871,8 +871,8 @@ c-file 0x080308D8 0x08030924 src/object/release_object_palette.c ReleaseObjectPa
 c-file 0x08030924 0x0803094C src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
 thumb-func 0x0803094C sub_0803094C
 thumb-func 0x08030960 sub_08030960
-thumb-func 0x08030978 BindObjectToResourceCacheSlot
-thumb-func 0x080309E8 FindResourceCacheSlot
+c-file 0x08030978 0x080309D4 src/object/bind_object_to_resource_cache_slot.c BindObjectToResourceCacheSlot
+c-file 0x080309E8 0x08030A1C src/graphics/find_resource_cache_slot.c FindResourceCacheSlot
 thumb-func 0x08030A1C sub_08030A1C
 c-file 0x08030B70 0x08030C00 src/graphics/particle/alloc_particle_emitter.c AllocParticleEmitter
 c-file 0x08030C00 0x08030C9C src/graphics/particle/bucket_particles_by_priority.c BucketParticlesByPriority

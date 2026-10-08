@@ -79,8 +79,14 @@ typedef struct ObjPalette {
 typedef struct ResourceCacheSlot {
     void *pData;
     u16 wRefcount;
-    u16 wFlags;  // bit 0x1 = in-use; cleared when wRefcount reaches 0
+    u16 wFlags;  // ResourceCacheFlags
 } ResourceCacheSlot;
+
+typedef enum {
+    ResourceCacheFlagUnshared = 0x1,  // not matched by FindResourceCacheSlot; cleared when
+                                      // wRefcount reaches 0
+    ResourceCacheFlagReserved = 0x2,  // skipped by FindResourceCacheSlot and AllocResourceCacheSlot
+} ResourceCacheFlags;
 extern ResourceCacheSlot g_aResourceCache[16];  // 0x03005114
 extern void ClearResourceCacheSlots(void);
 extern u32 FindResourceCacheSlot(const ObjPalette *pPalette);
