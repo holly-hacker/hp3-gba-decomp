@@ -1,8 +1,8 @@
 #pragma once
 
 // Object animation command streams, attached with SetObjectAnimData and played
-// two bytes at a time from Object.pAnimFrameCursor by sub_080021F4
-// (AdvanceAnimationCommand in docs/formats/battle_scripts.md). A first byte up
+// two bytes at a time from Object.anim.pAnimFrameCursor by RunObjectAnimCommands.
+// A first byte up
 // to 0xEE shows that animation frame for the second byte's count of ticks (0
 // holds it); 0xEF-0xFF are commands that run immediately, in sequence, until
 // the next frame. Move distances are whole pixels.

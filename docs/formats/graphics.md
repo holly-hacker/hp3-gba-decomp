@@ -1368,12 +1368,17 @@ through them, but the records themselves are ordinary dialog assets --
   routed through either decompression dispatcher. Layout (byte offsets
   from `pFrameData`; C types `ObjectFrameData`/`ObjectFrameDesc` in
   `include/graphics/object.h`):
+  - `+0x2`-`+0x5` (`s8` each): terrain box left/right/top/bottom, the same
+    for every frame. `LoadObjectAnimFrameBounds` (`0x080023B4`) copies it
+    to `Object+0xC0`.
   - `+0x6` (`u16`): frame count. `GetObjectVariantFrameSize`
     (`0x08000E28`) wraps a frame index of -1 to `count - 1`.
-  - `+0xA` (`u8`): unused in every observed record (`0`).
-  - `+0xB` (`u8`): attached-part count (`0` in every observed record --
-    the separate mechanism `UpdateObjectSpriteFrame`'s sibling path
-    reads via `Object+0x120`, not exercised by any portrait).
+  - `+0xA` (`u8`): count of extra `u16`s after each frame descriptor
+    (`0` in every observed portrait).
+  - `+0xB` (`u8`): collision-box count (`0` in every observed portrait).
+    Each frame's boxes follow its extra `u16`s, 6 bytes each: `s8`
+    left/right/top/bottom and a state byte, copied into
+    `Object.aCollisionBoxes` with the count in `Object+0xAF`.
   - `+0xC + frame*2` (`u16`): per-frame offset, added to `pFrameData +
     0xC` to get that frame's descriptor base. Only frame 0 has been
     exercised.
@@ -1386,9 +1391,11 @@ through them, but the records themselves are ordinary dialog assets --
   - Frame descriptor base `+0x4` (`u16`): byte offset of the frame's
     tile data from `pTileGfx` (`GetObjectVariantFrameTileGfx`,
     `0x08000EC0`, and `UpdateObjectSpriteFrame`'s `LoadObjTile` path).
-  - Cell table starts at frame-descriptor-base `+ 0xA` (no attached
-    parts observed, so this is `+0xA` in practice; the general formula
-    adds `n_at_0xA*2 + part_count*6`). Each cell is 4 bytes
+  - Frame descriptor base `+0x6`/`+0x8` (`s16`): x/y of the frame's
+    top-left corner relative to the object. With the width and height
+    they give `Object.spriteBounds`.
+  - Cell table starts at frame-descriptor-base `+ 0xA +
+    extra_count*2 + box_count*6` (`+0xA` for every portrait). Each cell is 4 bytes
     `{b0, b1, b2, b3}`:
     - size = `(b2 & 0xF) >> 2`, shape = `(b2 & 0x3F) >> 4` (2 bits
       each) -- the standard GBA OAM shape/size pair, decoding to
@@ -1428,10 +1435,10 @@ through them, but the records themselves are ordinary dialog assets --
   repeated records share their original image. Both regions are
   verified by the whole-ROM comparison; JP addresses are not yet mapped.
 
-### Object animation command streams (STRUCTURAL MATCH, from `sub_080021F4`)
+### Object animation command streams (STRUCTURAL MATCH, from `RunObjectAnimCommands`)
 
 `SetObjectAnimData(obj, record, data, start)` points an object at a byte
-stream (`data + start * 2`); `sub_080021F4` reads it two bytes at a time. A
+stream (`data + start * 2`); `RunObjectAnimCommands` reads it two bytes at a time. A
 first byte up to `0xEE` shows that frame for the second byte's count of ticks
 (0 holds it); `0xEF`-`0xFF` run immediately, in sequence, until the next
 frame. `include/graphics/object_anim.h` spells them as `ANIM_*` macros, which

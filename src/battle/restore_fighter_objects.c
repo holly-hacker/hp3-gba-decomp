@@ -48,13 +48,13 @@ void RestoreFighterObjects_candidate(void)
             shadow->bDepthSortBias = 0xC8;
             shadow->dwUnk_0x28 = 1;
             shadow->dwFlags = 0x6019;
-            shadow->bAnimFrameDelay = 1;
+            shadow->anim.bAnimFrameDelay = 1;
             AttachObjectPalette(shadow, g_MonsterShadowGfxRow.pPalette);
             SetObjectAnimData(shadow, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, 0);
-            shadow->pAnimFrameCursor = obj->pAnimFrameCursor;
+            shadow->anim.pAnimFrameCursor = obj->anim.pAnimFrameCursor;
 
             if (FIGHTER(i).pObject->wActionVariant == 2)
-                shadow->bAnimFrameCounter = 0;
+                shadow->anim.bAnimFrameCounter = 0;
 
             shadow->pOwnerObject = obj;
             obj->pShadowObject = shadow;

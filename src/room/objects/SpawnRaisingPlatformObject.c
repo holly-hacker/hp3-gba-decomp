@@ -13,7 +13,7 @@ Object *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow)
     SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x1D;
     SetObjectActionSubState(pObj, 0xA);
-    pObj->bAnimFrameDelay = 1;
+    pObj->anim.bAnimFrameDelay = 1;
     pObj->pfnTick = sub_0803B71C;
     pObj->apfnCollisionCallback[0] = sub_0803BA18;
     pObj->modeState.actor.bRoomScriptArg64_candidate = pRecord->abArg8[0];

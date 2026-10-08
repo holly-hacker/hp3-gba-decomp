@@ -52,7 +52,7 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
         for (obj = (Object *)list->pHead; obj != NULL; obj = (Object *)obj->node.pNext) {
             orbit = obj->orbitState.fields.dwOrbitRadii;
             if (obj->pOwnerObject != NULL)
-                sub_080034B8(obj);
+                FollowOwnerObject(obj);
 
             posX = obj->nXPrev;
             posY = obj->nYPrev;

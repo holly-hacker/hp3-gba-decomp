@@ -11,7 +11,7 @@ void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex)
     record = &obj->aVariantSlots[0].pSpriteVariantTables[tableIndex][variantIndex];
     obj->bSpriteVariantIndex = variantIndex;
     obj->bSpriteVariantTableIndex = tableIndex;
-    obj->bAnimFrameDelay = record->bAnimFrameDelay;
+    obj->anim.bAnimFrameDelay = record->bAnimFrameDelay;
     SetObjectAssetRecord(obj, record);
 
     palette = record->pPalette;

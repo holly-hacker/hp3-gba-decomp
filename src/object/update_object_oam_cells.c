@@ -62,9 +62,9 @@ u8 UpdateObjectOamCells(Object *obj)
         result = 1;
 
         if (flags & ObjectFlagSkipSpriteFrameUpdate) {
-            frameData = obj->pAnimTable->pFrameData;
+            frameData = obj->anim.pAnimTable->pFrameData;
             frameDesc = (ObjectFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                            + frameData->awFrameOffsets[obj->bLastAnimFrameValue]);
+                                            + frameData->awFrameOffsets[obj->anim.bLastAnimFrameValue]);
             count = frameDesc->bCellCount & 0x1F;
             frameCell = (ObjectFrameCell *)((u8 *)frameDesc + (frameData->bFramePartCount * 6 + 10)
                                             + frameData->bFrameHeaderExtra * 2);
@@ -107,7 +107,7 @@ u8 UpdateObjectOamCells(Object *obj)
                 else
                     QueueOamEntry(g_bOamEntryCount, &cell);
             }
-            obj->bAnimFrameIndex_candidate = obj->bLastAnimFrameValue;
+            obj->anim.bAnimFrameIndex_candidate = obj->anim.bLastAnimFrameValue;
         }
         else {
             if (obj->bDrawFlags & ObjectDrawFlagVariantSlots) {
@@ -129,7 +129,7 @@ u8 UpdateObjectOamCells(Object *obj)
                             frameData = obj->aVariantSlots[slot].pSpriteVariantTables[tableIndex][variantIndex].pFrameData;
                             wrap = obj->aVariantSlots[slot].bFrameFlags & ObjectVariantSlotFlagPrevFrameWrap;
                             if (wrap || (obj->aVariantSlots[slot].bFrameFlags & ObjectVariantSlotFlagPrevFrameClamp)) {
-                                frame = obj->bLastAnimFrameValue - 1;
+                                frame = obj->anim.bLastAnimFrameValue - 1;
                                 if (frame < 0) {
                                     if (wrap)
                                         frame = frameData->wFrameCount - 1;
@@ -138,7 +138,7 @@ u8 UpdateObjectOamCells(Object *obj)
                                 }
                             }
                             else {
-                                frame = obj->bLastAnimFrameValue;
+                                frame = obj->anim.bLastAnimFrameValue;
                             }
                             WriteObjectOamCells(obj->aVariantSlots[slot].pSpriteVariantTables[tableIndex][variantIndex].pFrameData,
                                                 frame, cellFlags, screenPos,
@@ -153,7 +153,7 @@ u8 UpdateObjectOamCells(Object *obj)
                     cellFlags |= 1;
                 else
                     cellFlags &= ~1;
-                WriteObjectOamCells(obj->pAnimTable->pFrameData, obj->bLastAnimFrameValue, cellFlags,
+                WriteObjectOamCells(obj->anim.pAnimTable->pFrameData, obj->anim.bLastAnimFrameValue, cellFlags,
                                     screenPos, obj->wVramTileAllocId, &cell, obj);
             }
             result++;
@@ -170,7 +170,7 @@ u8 UpdateObjectOamCells(Object *obj)
             obj->oam.y = ((s32)obj->nYPrev >> 16) - screenPos[1];
         }
         obj->oam.tileNum = obj->wVramTileAllocId;
-        for (count = obj->unk_DC.wOamStripCount; count != 0; count--) {
+        for (count = obj->anim.unk_DC.wOamStripCount; count != 0; count--) {
             if (obj->bDrawFlags & ObjectDrawFlagBlink)
                 HideOamEntryOnAlternateVblanks(g_bOamEntryCount);
             if (obj->bDrawFlags & ObjectDrawFlagPostActionFlash)

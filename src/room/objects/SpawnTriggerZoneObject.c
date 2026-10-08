@@ -20,12 +20,12 @@ Object *SpawnTriggerZoneObject(u8 bColumn, u8 bRow)
     pObj->aCollisionBoxes[0].offsets.edges.bRight = pRecord->bHalfWidth;
     pObj->aCollisionBoxes[0].offsets.edges.bBottom = pRecord->bHalfHeight;
     pObj->aCollisionBoxes[0].state.bState = 1;
-    pObj->bCollisionMode_candidate = 1;
+    pObj->bCollisionBoxCount = 1;
 
     if (pObj->bRoomObjectKind_candidate == 2)
     {
         pObj->aCollisionBoxes[1] = pObj->aCollisionBoxes[0];
-        pObj->bCollisionMode_candidate = 2;
+        pObj->bCollisionBoxCount = 2;
         pObj->apfnCollisionCallback[1] = sub_08026674;
         pObj->apfnCollisionCallback[0] = 0;
         pObj->aCollisionBoxes[0].state.bState = 0;

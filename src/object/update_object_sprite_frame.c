@@ -37,10 +37,10 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
         && (flags & (ObjectFlagOnscreenForTileAlloc | ObjectFlagSkipSpriteFrameUpdate | ObjectFlagPendingDestroy))
                == ObjectFlagOnscreenForTileAlloc
         && ((flags & ObjectFlagAnimFrameLoaded) || obj->wVramTileAllocId == 0xFFFF)) {
-        record = obj->pAnimTable;
+        record = obj->anim.pAnimTable;
         frameData = record->pFrameData;
         frameDesc = (ObjectFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                        + frameData->awFrameOffsets[obj->bLastAnimFrameValue]);
+                                        + frameData->awFrameOffsets[obj->anim.bLastAnimFrameValue]);
         dims[0] = frameDesc->bWidth;
         dims[1] = frameDesc->bHeight;
         pixelCount = dims[0] * dims[1];
@@ -50,7 +50,7 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
                 index = 0;
                 if ((g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].pAnimTable != record
                      || g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].abRefCounts[index] == 0
-                     || g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].bAnimFrame != obj->bLastAnimFrameValue)
+                     || g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].bAnimFrame != obj->anim.bLastAnimFrameValue)
                     && g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].dwAllocTick != g_dwTickCount) {
                     if (obj->wVramTileAllocId != 0xFFFF) {
                         FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramPixelCount,
@@ -60,9 +60,9 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
                     else {
                         g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].abRefCounts[index]++;
                     }
-                    g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].pAnimTable = obj->pAnimTable;
+                    g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].pAnimTable = obj->anim.pAnimTable;
                     allocId = AllocObjectVramTiles(NULL, pixelCount, obj->oam.bpp8);
-                    g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].bAnimFrame = obj->bLastAnimFrameValue;
+                    g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].bAnimFrame = obj->anim.bLastAnimFrameValue;
                     g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].awTileAllocIds[index] = allocId;
                     g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].dwAllocTick = g_dwTickCount;
                 }
@@ -74,7 +74,7 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
                 }
             }
             else {
-                index = obj->bLastAnimFrameValue;
+                index = obj->anim.bLastAnimFrameValue;
                 if (g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].abRefCounts[index] == 0) {
                     allocId = AllocObjectVramTiles(NULL, pixelCount, obj->oam.bpp8);
                     g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].awTileAllocIds[index] = allocId;
@@ -85,14 +85,14 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
                 }
                 g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].abRefCounts[index]++;
 
-                prevIndex = obj->bAnimFrameIndex_candidate;
+                prevIndex = obj->anim.bAnimFrameIndex_candidate;
                 if (index != prevIndex && obj->wVramTileAllocId != 0xFFFF) {
                     g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].abRefCounts[prevIndex]--;
-                    if (g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].abRefCounts[obj->bAnimFrameIndex_candidate] == 0) {
+                    if (g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].abRefCounts[obj->anim.bAnimFrameIndex_candidate] == 0) {
                         FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramPixelCount,
                                                      obj->oam.bpp8);
                         obj->wVramTileAllocId |= 0xFFFF;
-                        g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].awTileAllocIds[obj->bAnimFrameIndex_candidate] |= 0xFFFF;
+                        g_pObjectPoolAuxBuffer[obj->bObjectPoolAuxSlot].awTileAllocIds[obj->anim.bAnimFrameIndex_candidate] |= 0xFFFF;
                     }
                 }
             }
@@ -144,7 +144,7 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
                         slotFrameData = obj->aVariantSlots[i].pSpriteVariantTables[tableIndex][variantIndex].pFrameData;
                         wrap = obj->aVariantSlots[i].bFrameFlags & ObjectVariantSlotFlagPrevFrameWrap;
                         if (wrap || (obj->aVariantSlots[i].bFrameFlags & ObjectVariantSlotFlagPrevFrameClamp)) {
-                            frame = obj->bLastAnimFrameValue - 1;
+                            frame = obj->anim.bLastAnimFrameValue - 1;
                             if (frame < 0) {
                                 if (wrap)
                                     frame = slotFrameData->wFrameCount - 1;
@@ -153,7 +153,7 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
                             }
                         }
                         else {
-                            frame = obj->bLastAnimFrameValue;
+                            frame = obj->anim.bLastAnimFrameValue;
                         }
                         LoadObjTileAt(obj->aVariantSlots[i].pSpriteVariantTables[tableIndex][variantIndex].pFrameData,
                                       tileGfx, obj->aVariantSlots[i].wVramTileAllocId, frame,
@@ -165,15 +165,15 @@ void UpdateObjectSpriteFrame(Object *obj, u32 mode)
                 ObjectFrameData *animFrameData;
                 ObjectFrameDesc *animFrameDesc;
 
-                animFrameData = obj->pAnimTable->pFrameData;
+                animFrameData = obj->anim.pAnimTable->pFrameData;
                 animFrameDesc = (ObjectFrameDesc *)((u8 *)animFrameData->awFrameOffsets
-                                                    + animFrameData->awFrameOffsets[obj->bLastAnimFrameValue]);
-                tileGfx = (u8 *)obj->pAnimTable->pTileGfx + animFrameDesc->wTileGfxOffset;
+                                                    + animFrameData->awFrameOffsets[obj->anim.bLastAnimFrameValue]);
+                tileGfx = (u8 *)obj->anim.pAnimTable->pTileGfx + animFrameDesc->wTileGfxOffset;
                 LoadObjTile(obj, tileGfx);
             }
         }
         obj->dwFlags |= ObjectFlagAnimFrameLoaded;
     }
 
-    obj->bAnimFrameIndex_candidate = obj->bLastAnimFrameValue;
+    obj->anim.bAnimFrameIndex_candidate = obj->anim.bLastAnimFrameValue;
 }

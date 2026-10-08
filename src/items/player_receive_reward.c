@@ -11,7 +11,7 @@ void PlayerReceiveReward(u32 rewardId)
     u32 amount;
 
     CancelObjectMove_candidate(g_pPlayerObject);
-    g_pPlayerObject->bAnimFrameCounter = 0;
+    g_pPlayerObject->anim.bAnimFrameCounter = 0;
     SetObjectActionState(g_pPlayerObject, 0x17);
     SetObjectActionSubState(g_pPlayerObject, 0);
     g_pPlayerObject->dwStateTimer = 1;

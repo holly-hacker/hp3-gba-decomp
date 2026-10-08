@@ -16,9 +16,9 @@ void RoomScriptOpCancelObjectAnimSequence(CancelObjectAnimSequenceRecord *pRecor
     if (pObject != NULL)
     {
         CancelObjectMove_candidate(pObject);
-        pObject->bAnimFrameCounter = 0;
+        pObject->anim.bAnimFrameCounter = 0;
         if (pObject->pLinkedObject_candidate != NULL)
-            pObject->pLinkedObject_candidate->bAnimFrameCounter = 0;
+            pObject->pLinkedObject_candidate->anim.bAnimFrameCounter = 0;
         if (g_dwPendingCameraFocusFlag != 0)
             RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
         SetObjectActionState(pObject, 0);

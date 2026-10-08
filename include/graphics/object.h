@@ -54,6 +54,8 @@ typedef enum {
     ObjectDrawFlagShareTiles      = 0x1,   // one shared allocation, refcount index 0
     ObjectDrawFlagShareFrameTiles = 0x2,   // shared per animation frame, refcount index
                                             // bAnimFrameIndex_candidate
+    ObjectDrawFlagFollowBelow     = 0x4,   // FollowOwnerObject: 1 pixel below the owner
+    ObjectDrawFlagFollowAbove     = 0x8,   // FollowOwnerObject: 1 pixel above the owner
     ObjectDrawFlagPostActionFlash = 0x10,  // see docs/formats/battle_scripts.md; queues the
                                             // object's OAM entries with SubmitOamAttrsNudged
     ObjectDrawFlagBlink           = 0x20,  // WriteObjectOamCells hides the entries on alternate
@@ -64,11 +66,20 @@ typedef enum {
     ObjectDrawFlagExtraOamPass    = 0x80,  // set while TickObjectList's extra pass draws it
 } ObjectDrawFlags;
 
-// Signed sprite extents packed as {low s16, high s16} for each axis.
-// UpdateObjectOnscreenFlags copies both words together before unpacking them.
-typedef struct ObjectSpriteBounds {
-    u32 packedX;
-    u32 packedY;
+// Signed sprite extents in pixels from the object's position, set from the
+// current animation frame by LoadObjectAnimFrameBounds. UpdateObjectOnscreenFlags
+// copies both words together before unpacking them.
+typedef union ObjectSpriteBounds {
+    struct {
+        u32 packedX;
+        u32 packedY;
+    } words;
+    struct {
+        s16 wLeft;
+        s16 wRight;
+        s16 wTop;
+        s16 wBottom;
+    } edges;
 } ObjectSpriteBounds;
 
 // A 16.16 fixed-point position, passed by value.
@@ -135,11 +146,13 @@ typedef struct ObjectRect {
 // Each awFrameOffsets entry is a byte offset from awFrameOffsets itself to
 // that frame's ObjectFrameDesc.
 typedef struct ObjectFrameData {
-    u8 unk_0[6];
+    u8 unk_0[2];
+    s8 abTerrainBox[4];     // 0x02, left/right/top/bottom; see Object.bTerrainBoxLeft
     u16 wFrameCount;        // 0x06
     u8 unk_8[2];            // -> 0x0A
     u8 bFrameHeaderExtra;   // 0x0A, count of extra u16s after each ObjectFrameDesc
-    u8 bFramePartCount;     // 0x0B, count of extra 6-byte parts after each ObjectFrameDesc
+    u8 bFramePartCount;     // 0x0B, count of 6-byte collision boxes after those u16s: s8
+                             // left/right/top/bottom, then a state byte and a byte the object does not copy
     u16 awFrameOffsets[1];  // 0x0C, wFrameCount entries
 } ObjectFrameData;
 
@@ -149,7 +162,8 @@ typedef struct ObjectFrameDesc {
     u8 bWidth;              // 0x02, pixels
     u8 bHeight;             // 0x03, pixels
     u16 wTileGfxOffset;     // 0x04, byte offset of this frame's tiles from pTileGfx
-    u8 unk_6[4];            // 0x06; the frame's ObjectFrameCells start at 0x0A, after
+    s16 awOrigin[2];        // 0x06, x/y of the frame's top-left corner, relative to the object.
+                             // The frame's ObjectFrameCells start at 0x0A, after
                              // ObjectFrameData.bFramePartCount parts and bFrameHeaderExtra u16s
 } ObjectFrameDesc;
 
@@ -190,7 +204,7 @@ typedef enum {
     ObjectVariantSlotFlagBlink          = 0x1,  // entries are hidden in the second half of the
                                                  // OAM shadow buffer, so the slot shows on
                                                  // alternate vblanks
-    ObjectVariantSlotFlagBounds         = 0x2,  // sub_080024B0 takes the object's terrain box,
+    ObjectVariantSlotFlagBounds         = 0x2,  // LoadVariantSlotFrameBounds takes the object's terrain box,
                                                  // sprite bounds and collision boxes from slot 0
     ObjectVariantSlotFlagPrevFrameWrap  = 0x4,  // draw the frame before bLastAnimFrameValue,
                                                  // wrapping to the last frame
@@ -216,6 +230,32 @@ typedef struct ObjectVariantSlot {
     ObjectAssetRecord **pSpriteVariantTables;  // 0x08, outer table selected by
                              // Object.bSpriteVariantTableIndex
 } ObjectVariantSlot;
+
+// Object's animation state at Object+0xD8. The animation functions reach it
+// through one pointer to the whole block.
+typedef struct ObjectAnimState {
+    u8 bAnimFrameCounter;   // 0x00, frames-remaining countdown reloaded from
+                             // bAnimFrameDelay each time it hits 0; see TickObjectAnimation
+    u8 bAnimFrameDelay;     // 0x01
+    u8 bAnimFrameIndex_candidate;  // 0x02, the frame LoadObjectAnimFrameBounds compares with
+                             // bLastAnimFrameValue; 0xFF forces a reload. Selects the per-frame
+                             // tile refcount in the object pool's
+                             // aux record when ObjectDrawFlagShareTiles is clear; see
+                             // ReleaseObjectOffscreenVramTiles
+    u8 bLastAnimFrameValue; // 0x03, current cycling frame index for non-scripted (cursor-less)
+                             // animations; see TickObjectAnimation
+    union {
+        u8 bEnemyAttackPhase_candidate;  // TickFighterAttackAnimState_candidate's own
+                             // multi-step sentinel: 0xff idle, 0/2/3/4 successive phases
+                             // -- real compares it unsigned against 0xff, not as a signed -1
+        u16 wOamStripCount;  // copies of oam UpdateObjectOamCells queues, each 32 pixels
+                             // right of the last, while bForceOnscreen_candidate is set
+    } unk_DC;               // 0x04, agbcc rounds the union to 4 bytes (-> 0x08)
+    ObjectAssetRecord *pAnimTable;  // 0x08, set by SetObjectAssetRecord; its pFrameData
+                             // holds the animation frames -- see docs/formats/graphics.md
+    u8 *pAnimFrameCursor;   // 0x0C
+    u8 *pAnimFrameBase;     // 0x10
+} ObjectAnimState;
 
 typedef union __attribute__((packed)) ObjectScriptState {
     u16 wScriptPc;
@@ -282,14 +322,17 @@ typedef struct Object {
     u32 dwUnk_0x28;         // 0x28, set to 1 by InitPlayerBattleActor_candidate
     u32 nX;                 // 0x2C, 16.16
     u32 nY;                 // 0x30, 16.16
-    u32 nXPrev;             // 0x34, 16.16; see docs/formats/battle_scripts.md's
+    u32 nXPrev;             // 0x34, 16.16 pending position: IntegrateObjectVelocity sets it
+                             // to nX plus velocity, and TickObjectList copies it into nX
+                             // after collisions. See docs/formats/battle_scripts.md's
                              // StartOrbitMotion/ApplyObjectOrbitMotion writeup.
                              // SetObjectPosition/SnapObjectPosition also set this
                              // equal to nX (no interpolation pending after a teleport)
     u32 nYPrev;              // 0x38, see nXPrev
     u32 nVelX;              // 0x3C
     u32 nVelY;              // 0x40
-    u8 pad_44[0x08];        // -> 0x4C
+    u32 nAccelX;            // 0x44, added to nVelX each tick by IntegrateObjectVelocity
+    u32 nAccelY;            // 0x48
     u32 nMoveTargetX;       // 0x4C, 16.16; set by SetObjectMoveTarget/StartObjectMove
     u32 nMoveTargetY;       // 0x50
     union __attribute__((packed)) {
@@ -302,6 +345,14 @@ typedef struct Object {
             u8 pad_5A[0x02];        // -> 0x5C
             u32 dwOrbitRadii;       // 0x5C, packed radiusX/radiusY; nonzero runs ApplyObjectOrbitMotion
         } fields;
+        struct __attribute__((packed)) {
+            s16 wAngleX;            // 0x54, 8.8; the high byte indexes g_anSineTable
+            u16 wAngleY;            // 0x56
+            u16 wAngleVelX;         // 0x58
+            u16 wAngleVelY;         // 0x5A
+            s16 wRadiusX;           // 0x5C, pixels
+            s16 wRadiusY;           // 0x5E
+        } orbit;
     } orbitState;
     ObjectScriptState scriptState;  // 0x60: object script PC or battle outcome/page bytes
     // 0x62-0x6D is per-mode state: the actor view serves fighter and room
@@ -355,11 +406,13 @@ typedef struct Object {
                              // CheckObjectTerrainCollision as one of several "movement stopped"
                              // conditions. Not enough evidence yet for a real name.
     u8 pad_AE[0x01];        // -> 0xAF
-    u8 bCollisionMode_candidate;  // 0xAF, 1 or 2; set by the room object constructors
+    u8 bCollisionBoxCount;  // 0xAF, aCollisionBoxes in use: the animation frame's box count,
+                             // or 1 or 2 from the room object constructors
     ObjectCollisionBox aCollisionBoxes[2];  // 0xB0, see CheckObjectCollisions;
                              // slot 0 at 0xB0, slot 1 at 0xB8
     // 0xC0-0xC3: terrain bounding box, signed pixel offsets from the object's
-    // integer position, copied from the current animation frame (sub_080023B4).
+    // integer position, copied from the sprite record's ObjectFrameData by
+    // LoadObjectAnimFrameBounds (the same box for every frame).
     // Terrain probes (GetUnblockedDirectionToTarget, GetObjectTerrainBox) test pixels
     // at these edges.
     s8 bTerrainBoxLeft;     // 0xC0
@@ -379,25 +432,7 @@ typedef struct Object {
                              // TickObjectList); paletteNum is the graphics-cache slot (see
                              // ReleaseObjectPalette/BindEffectChannelSlot_candidate).
                              // UpdateObjectOamCells fills in x/y each frame
-    u8 bAnimFrameCounter;   // 0xD8, frames-remaining countdown reloaded from bAnimFrameDelay
-                             // each time it hits 0; see TickObjectAnimation
-    u8 bAnimFrameDelay;     // 0xD9
-    u8 bAnimFrameIndex_candidate;  // 0xDA, selects the per-frame tile refcount in the object pool's
-                             // aux record when ObjectDrawFlagShareTiles is clear; see
-                             // ReleaseObjectOffscreenVramTiles
-    u8 bLastAnimFrameValue; // 0xDB, current cycling frame index for non-scripted (cursor-less)
-                             // animations; see TickObjectAnimation
-    union {
-        u8 bEnemyAttackPhase_candidate;  // TickFighterAttackAnimState_candidate's own
-                             // multi-step sentinel: 0xff idle, 0/2/3/4 successive phases
-                             // -- real compares it unsigned against 0xff, not as a signed -1
-        u16 wOamStripCount;  // copies of oam UpdateObjectOamCells queues, each 32 pixels
-                             // right of the last, while bForceOnscreen_candidate is set
-    } unk_DC;               // 0xDC, agbcc rounds the union to 4 bytes (-> 0xE0)
-    ObjectAssetRecord *pAnimTable;  // 0xE0, set by SetObjectAssetRecord; its pFrameData
-                             // holds the animation frames -- see docs/formats/graphics.md
-    u8 *pAnimFrameCursor;   // 0xE4
-    u8 *pAnimFrameBase;     // 0xE8
+    ObjectAnimState anim;   // 0xD8
     s32 nAffineScaleX;      // 0xEC, 16.16 fixed-point affine scale X (0x10000 = 1.0x); see
                              // TickObjectAffineEffect/SetObjectAffineTransform/
                              // StartObjectAffineScaleTween
@@ -499,7 +534,7 @@ extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTar
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 // pAnimTable is the sprite record; the stream starts at command startCommand
 // of pAnimData (see graphics/object_anim.h).
-extern void SetObjectAnimData(Object *obj, const void *pAnimTable, const void *pAnimData, s32 startCommand);
+extern void SetObjectAnimData(Object *obj, const void *pAnimTable, const void *pAnimData, u8 startCommand);
 extern u32 TickObjectList(ActiveObjectListState *list, u8 mode);
 extern void TickObject(Object *obj, u32 mode);
 extern s32 IsObjectTickAllowed(void);
@@ -507,8 +542,7 @@ extern void CheckObjectTerrainCollision(Object *obj);
 extern void TickObjectMove(Object *obj);
 extern void TickObjectAnimation(Object *obj);
 extern void TickObjectAffineEffect(Object *obj);  // steps the scale tween while bAffineEffectTimer runs
-extern void IntegrateObjectVelocity(Object *obj);  // adds +0x44/+0x48 to the velocity, then sets
-                             // nXPrev/nYPrev to the position plus velocity
+extern void IntegrateObjectVelocity(Object *obj);
 extern void BindObjectEffectData(Object *obj);  // binds pEffectData to a resource-cache slot, then clears it
 extern u8 UpdateObjectOamCells(Object *obj);
 // Queues the OAM cells of one frame of frameData, copying the other attributes
@@ -519,11 +553,14 @@ extern void WriteObjectOamCells(ObjectFrameData *frameData, u16 frame, u8 cellFl
                                 u16 tileBase, OamEntry *pTemplate, Object *obj);
 extern void UpdateObjectSpriteFrame(Object *obj, u32 mode);
 extern void ApplyObjectOrbitMotion(Object *obj);
-extern void sub_080034B8(Object *obj);
+// Moves an object to its pOwnerObject's pending position and draw layer.
+extern void FollowOwnerObject(Object *obj);
 extern void CommitQueuedObjectTileUpdates(void);  // run from vblank callbacks
 extern void sub_08001690(Object *obj, const void *pAssetRecord);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
-extern void sub_080023B4(Object *obj);  // reloads the animation frame's cells and terrain box
+extern void RunObjectAnimCommands(Object *obj);
+extern void LoadObjectAnimFrameBounds(Object *obj);
+extern void LoadVariantSlotFrameBounds(Object *obj);
 extern void SetObjectActionState(Object *obj, u8 state);
 extern void SetObjectFlags(Object *obj, ObjectFlags flags);
 // Starts animation `animId` from the object's animation table.

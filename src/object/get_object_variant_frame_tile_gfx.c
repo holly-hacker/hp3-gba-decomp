@@ -21,7 +21,7 @@ void *GetObjectVariantFrameTileGfx(Object *obj, u8 slot)
 
     wrap = obj->aVariantSlots[slot].bFrameFlags & 4;
     if (wrap || (obj->aVariantSlots[slot].bFrameFlags & 8)) {
-        frame = obj->bLastAnimFrameValue - 1;
+        frame = obj->anim.bLastAnimFrameValue - 1;
         if (frame < 0) {
             if (wrap)
                 frame = frameData->wFrameCount - 1;
@@ -30,7 +30,7 @@ void *GetObjectVariantFrameTileGfx(Object *obj, u8 slot)
         }
     }
     else {
-        frame = obj->bLastAnimFrameValue;
+        frame = obj->anim.bLastAnimFrameValue;
     }
 
     frameDesc = (ObjectFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);

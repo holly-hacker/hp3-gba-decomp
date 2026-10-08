@@ -4,10 +4,10 @@
 // or the object is flagged for a reload; always clears ObjectFlagActionAnimDone.
 void SetObjectAnimFrame(Object *obj, u8 frameIndex)
 {
-    if (obj->bLastAnimFrameValue != frameIndex || (obj->dwFlags & ObjectFlagAnimFrameLoaded)) {
-        obj->bLastAnimFrameValue = frameIndex;
-        obj->bAnimFrameCounter = obj->bAnimFrameDelay;
-        sub_080023B4(obj);
+    if (obj->anim.bLastAnimFrameValue != frameIndex || (obj->dwFlags & ObjectFlagAnimFrameLoaded)) {
+        obj->anim.bLastAnimFrameValue = frameIndex;
+        obj->anim.bAnimFrameCounter = obj->anim.bAnimFrameDelay;
+        LoadObjectAnimFrameBounds(obj);
     }
 
     obj->dwFlags &= ~ObjectFlagActionAnimDone;

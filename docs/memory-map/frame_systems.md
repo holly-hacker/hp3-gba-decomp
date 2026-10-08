@@ -24,7 +24,7 @@ function. Calls, in order:
 - **`TickBgLayers_candidate`**: walks 4 BG layer records (`0x6C` bytes at
   `0x03001E84`, the same array `SetBgPriority` writes through). Flag bits at `+0x18`:
   `1` scroll tween toward `+0x34/+0x38` over `+0x3C` frames (or `0x0802BF8C` when
-  the duration is 0), `8` sine wobble (`0x08007228`, table `0x0806589C`), `4`
+  the duration is 0), `8` sine wobble (`0x08007228`, `g_anSineTable`), `4`
   ping-pong zoom, `2` rotation, `0x4000` matrix dirty. A dirty matrix is rebuilt
   into the BG affine parameters and reference point (`0x7800`/`0x5000` centre
   constants).

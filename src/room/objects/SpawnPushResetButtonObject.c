@@ -14,7 +14,7 @@ Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow)
     pObj->oam.priority = 1;
     pObj->bDepthSortBias = 0xFF;
     pObj->wCharacterId_candidate = pRecord->bVariant;
-    pObj->bAnimFrameDelay = 0;
+    pObj->anim.bAnimFrameDelay = 0;
     pObj->pfnTick = sub_08035664;
     pObj->apfnCollisionCallback[0] = sub_08035724;
     ROOM_OBJECT_UNK8_STATE(pObj)->abA[0] = pRecord->abPairs[0];

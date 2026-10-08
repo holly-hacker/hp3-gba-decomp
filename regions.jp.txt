@@ -35,19 +35,19 @@ c-file 0x0800163C 0x08001664 src/object/object_pool_settings.c ClearObjectPoolAu
 thumb-func 0x08001690 sub_08001690
 c-file 0x080016E8 0x0800187C src/object/object_variant_slots.c EnableObjectVariantSlots
 thumb-func 0x0800187C SetObjectAssetRecord
-thumb-func 0x080018D8 SetObjectAnimData
+c-file 0x080018D8 0x08001918 src/object/set_object_anim_data.c SetObjectAnimData
 c-file 0x08001958 0x0800199C src/object/set_object_anim_frame.c SetObjectAnimFrame
 c-file 0x0800199C 0x080019A4 src/object/set_object_move_target.c SetObjectMoveTarget
 c-file 0x080019A4 0x080019B0 src/object/snap_object_position.c SnapObjectPosition
 c-file 0x080019B0 0x080019C0 src/object/set_object_position.c SetObjectPosition
 c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
-thumb-func 0x08001A78 CancelObjectMove_candidate
+c-file 0x08001A78 0x08001A84 src/object/cancel_object_move.c CancelObjectMove_candidate
 c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
 thumb-func 0x08001A94 SetObjectMoveTargetWithDuration_candidate
 thumb-func 0x08001AA8 sub_08001AA8
 thumb-func 0x08001D90 sub_08001D90
 c-file 0x08001D9C 0x08001DF8 src/object/do_objects_overlap.c DoObjectsOverlap
-thumb-func 0x08001E58 SetObjectActionSubState
+c-file 0x08001E58 0x08001E7C src/object/set_object_action_sub_state.c SetObjectActionSubState
 c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
 thumb-func 0x08001EA0 SetObjectAnimSubState_candidate
 c-file 0x08001EA8 0x08001EC8 src/object/set_object_facing.c SetObjectFacing
@@ -60,14 +60,16 @@ c-file 0x08001F30 0x08001F40 src/object/set_object_depth_sort_bias.c SetObjectDe
 
 c-file 0x08001F40 0x08001F98 src/object/check_object_terrain_collision.c CheckObjectTerrainCollision
 c-file 0x08001FD8 0x08002154 src/object/tick_object.c TickObject
-thumb-func 0x08002154 TickObjectAnimation
-thumb-func 0x080023B4 sub_080023B4
-thumb-func 0x080025F8 IntegrateObjectVelocity
+c-file 0x08002154 0x080021F4 src/object/tick_object_animation.c TickObjectAnimation
+c-file 0x080021F4 0x080023B4 src/object/run_object_anim_commands.c RunObjectAnimCommands
+c-file 0x080023B4 0x080024B0 src/object/load_object_anim_frame_bounds.c LoadObjectAnimFrameBounds
+c-file 0x080024B0 0x080025F8 src/object/load_variant_slot_frame_bounds.c LoadVariantSlotFrameBounds
+c-file 0x080025F8 0x08002618 src/object/integrate_object_velocity.c IntegrateObjectVelocity
 c-file 0x08002618 0x08002C18 src/object/update_object_oam_cells.c UpdateObjectOamCells
 c-file 0x08002C18 0x08002F28 src/object/write_object_oam_cells.c WriteObjectOamCells
 c-file 0x08002F28 0x080034B8 src/object/update_object_sprite_frame.c UpdateObjectSpriteFrame
-thumb-func 0x080034B8 sub_080034B8
-thumb-func 0x0800351C TickObjectMove
+c-file 0x080034B8 0x0800351C src/object/follow_owner_object.c FollowOwnerObject
+c-file 0x0800351C 0x0800359C src/object/tick_object_move.c TickObjectMove
 c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
 c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectAffineTransform
 thumb-func 0x08003708 SetObjectFlippedX
@@ -78,7 +80,7 @@ thumb-func 0x080038A0 TickObjectAffineEffect
 thumb-func 0x080038EC AllocObjectAffineSlot
 thumb-func 0x08003928 IsObjectFlippedX
 thumb-func 0x08003954 sub_08003954
-thumb-func 0x08003980 ApplyObjectOrbitMotion
+c-file 0x08003980 0x080039E8 src/object/apply_object_orbit_motion.c ApplyObjectOrbitMotion
 thumb-func 0x080039E8 sub_080039E8
 thumb-func 0x080039F8 sub_080039F8
 thumb-func 0x08003A0C sub_08003A0C
@@ -740,8 +742,10 @@ c-file 0x0802BE48 0x0802BE88 src/math/install_iwram_divide_routines.c InstallIwr
 c-file 0x0802BE88 0x0802BE9C src/math/iwram_divide_signed_quotient.c iwramDivideSignedQuotient
 c-file 0x0802BE9C 0x0802BEB0 src/math/iwram_divide_signed_remainder.c iwramDivideSignedRemainder
 c-file 0x0802BEB0 0x0802BEC4 src/math/iwram_divide_unsigned_unused.c iwramDivideUnsigned_unused
+c-file 0x0802BEC4 0x0802BED8 src/math/sin8_8.c Sin8_8
+c-file 0x0802BED8 0x0802BEF4 src/math/cos8_8.c Cos8_8
 thumb-func 0x0802BF44 FixedMultiply
-thumb-func 0x0802BF70 FixedDivide
+c-file 0x0802BF70 0x0802BF90 src/math/fixed_divide.c FixedDivide
 thumb-func 0x0802BF90 sub_0802BF34
 thumb-func 0x0802C074 sub_0802C018
 thumb-func 0x0802C1A4 sub_0802C148
@@ -1400,6 +1404,7 @@ c-file 0x08063000 0x08063C18 src/room/special_scene_bg_animations.c g_aSpecialSc
 c-file 0x08063C18 0x080656BC src/room/room_table.c g_aRoomTable
 c-file 0x080656BC 0x08065798 src/gamemode/modes/overworld/room_quest_music_override.c g_adwRoomQuestMusicOverride
 c-file 0x08065798 0x080657A8 src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
+c-file 0x08065828 0x08065C28 src/math/sine_table.c g_anSineTable
 c-file 0x08065C48 0x08065FA8 src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x08065FA8 0x08065FC8 src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x08065FE8 0x08065FF0 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control

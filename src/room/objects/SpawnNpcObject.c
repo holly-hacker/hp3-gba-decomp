@@ -10,7 +10,7 @@ Object *SpawnNpcObject(u8 bColumn, u8 bRow)
 
     SetObjectPosition(pObj, pRecord->nPixelX, pRecord->nPixelY);
     pObj->dwFlags = 0x04102015;
-    pObj->bAnimFrameDelay = 0;
+    pObj->anim.bAnimFrameDelay = 0;
     pObj->bFighterIndex = pRecord->bKind;
     pObj->bRoomObjectKind_candidate = pRecord->argC.bFirst;
 

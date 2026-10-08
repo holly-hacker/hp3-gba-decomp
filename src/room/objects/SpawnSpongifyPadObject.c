@@ -13,7 +13,7 @@ Object *SpawnSpongifyPadObject(u8 bColumn, u8 bRow)
     pObj->dwFlags = 0x200D;
     SetObjectActionState(pObj, 0);
     SetObjectActionSubState(pObj, 1);
-    pObj->bAnimFrameDelay = 1;
+    pObj->anim.bAnimFrameDelay = 1;
     pObj->pfnTick = sub_08040114;
     pObj->apfnCollisionCallback[0] = sub_08040358;
     pObj->wCharacterId_candidate = pRecord->bVariant;

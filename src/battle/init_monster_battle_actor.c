@@ -39,14 +39,14 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
 
     SetObjectActionState(pObject, 0xF);
 
-    pObject->bAnimFrameDelay = 1;
+    pObject->anim.bAnimFrameDelay = 1;
     pObject->pfnTick = TickFighterAttackAnimState_candidate; // contains `Mt19937RandMax` call every enemy turn to determine target
 
     AttachObjectPaletteUnshared_candidate(pObject, g_pMonsterGraphicsTable[type].battle.pPalette);
     SetObjectAnimData(pObject, &g_pMonsterGraphicsTable[type].battle, g_pMonsterAnimFrameTable[type], 0);
 
-    ppAnimCursor = &pObject->pAnimFrameCursor;
-    ppBase = &pObject->pAnimFrameBase;
+    ppAnimCursor = &pObject->anim.pAnimFrameCursor;
+    ppBase = &pObject->anim.pAnimFrameBase;
 
     // Doubling as slot + slot: slot * 2 splits the copy and shift across
     // r3/r0, this keeps both in r0.
@@ -78,17 +78,17 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
         pShadowObject->bDepthSortBias = -0x40;
         pShadowObject->dwUnk_0x28 = 1;
         pShadowObject->dwFlags = 0x6019;
-        pShadowObject->bAnimFrameDelay = 1;
+        pShadowObject->anim.bAnimFrameDelay = 1;
 
         AttachObjectPalette(pShadowObject, g_MonsterShadowGfxRow.pPalette);
         SetObjectAnimData(pShadowObject, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, 0);
 
-        pShadowObject->pAnimFrameCursor = pShadowObject->pAnimFrameBase + slotX2 + 2;
+        pShadowObject->anim.pAnimFrameCursor = pShadowObject->anim.pAnimFrameBase + slotX2 + 2;
 
         if (slot > 4)
-            pShadowObject->pAnimFrameCursor = pShadowObject->pAnimFrameBase + 2;
+            pShadowObject->anim.pAnimFrameCursor = pShadowObject->anim.pAnimFrameBase + 2;
 
-        SetObjectAnimFrame(pShadowObject, pShadowObject->pAnimFrameCursor[0]);
+        SetObjectAnimFrame(pShadowObject, pShadowObject->anim.pAnimFrameCursor[0]);
 
         pShadowObject->pOwnerObject = pObject;
         pObject->pShadowObject = pShadowObject;

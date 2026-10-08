@@ -29,9 +29,9 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
             pSelf->modeState.chest.bOpened = 1;
             SetObjectActionSubState(pSelf, 8);
             CancelObjectMove_candidate(pOther);
-            pOther->bAnimFrameCounter = kind;
+            pOther->anim.bAnimFrameCounter = kind;
             if (pOther->pLinkedObject_candidate != NULL)
-                pOther->pLinkedObject_candidate->bAnimFrameCounter = kind;
+                pOther->pLinkedObject_candidate->anim.bAnimFrameCounter = kind;
             SetObjectActionState(pOther, 0);
             SetObjectAnimSubState_candidate(pOther, 0);
         }
@@ -53,9 +53,9 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
                     pSelf->modeState.chest.bOpened = 1;
                     SetObjectActionSubState(pSelf, 8);
                     CancelObjectMove_candidate(pOther);
-                    pOther->bAnimFrameCounter = opened;
+                    pOther->anim.bAnimFrameCounter = opened;
                     if (pOther->pLinkedObject_candidate != NULL)
-                        pOther->pLinkedObject_candidate->bAnimFrameCounter = opened;
+                        pOther->pLinkedObject_candidate->anim.bAnimFrameCounter = opened;
                     SetObjectActionState(pOther, 0);
                     SetObjectAnimSubState_candidate(pOther, 0);
                 }
@@ -73,9 +73,9 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
             pSelf->modeState.chest.bOpened = 1;
             SetObjectActionSubState(pSelf, 8);
             CancelObjectMove_candidate(pOther);
-            pOther->bAnimFrameCounter = opened;
+            pOther->anim.bAnimFrameCounter = opened;
             if (pOther->pLinkedObject_candidate != NULL)
-                pOther->pLinkedObject_candidate->bAnimFrameCounter = opened;
+                pOther->pLinkedObject_candidate->anim.bAnimFrameCounter = opened;
             SetObjectActionState(pOther, 0);
             SetObjectAnimSubState_candidate(pOther, 0);
         }
@@ -92,9 +92,9 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
             SetObjectAnimData(pSelf, g_apRoomChestAnimFrames[kind], g_abRoomChestAnimData[kind], 10);
             pSelf->modeState.chest.bKind = 0;
             CancelObjectMove_candidate(g_pPlayerObject);
-            g_pPlayerObject->bAnimFrameCounter = 0;
+            g_pPlayerObject->anim.bAnimFrameCounter = 0;
             if (g_pPlayerObject->pLinkedObject_candidate != NULL)
-                g_pPlayerObject->pLinkedObject_candidate->bAnimFrameCounter = 0;
+                g_pPlayerObject->pLinkedObject_candidate->anim.bAnimFrameCounter = 0;
             SetObjectActionState(g_pPlayerObject, 0);
             SetObjectAnimSubState_candidate(g_pPlayerObject, 0);
         }

@@ -61,7 +61,7 @@ void InterpretObjectScript(Object *obj)
         case BSOP_SetObjectAnimFromTable2:  // sets asset record and animation from the second table
             SetObjectAssetRecord(obj, &g_aEffectAnimAssets2[args[1]]);
             SetObjectAnimData(obj, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2_candidate[args[1]], args[2]);
-            obj->pAnimTable = (ObjectAssetRecord *)&g_aEffectAnimAssets2[args[1]];
+            obj->anim.pAnimTable = (ObjectAssetRecord *)&g_aEffectAnimAssets2[args[1]];
             break;
         case BSOP_SetObjectAnimFromTable2AndPalette:  // like 0x03, then swaps in the palette
             SetObjectAssetRecord(obj, &g_aEffectAnimAssets2[args[1]]);
@@ -82,7 +82,7 @@ void InterpretObjectScript(Object *obj)
             obj->pfnTick = WaitFramesTick;
             return;
         case BSOP_WaitForCounter:
-            obj->wActionVariant = obj->unk_DC.bEnemyAttackPhase_candidate + 1;
+            obj->wActionVariant = obj->anim.unk_DC.bEnemyAttackPhase_candidate + 1;
             obj->pfnTick = WaitForCounterTick;
             return;
         case BSOP_WaitForFieldClear:

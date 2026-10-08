@@ -12,8 +12,8 @@ void SetPlayerObjectAnim(Object *obj, s32 state)
         {
             SetObjectAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wObjectType] + state * 0x10,
                                g_aFighterAnimDataTable[obj->wObjectType][state], 0);
-            obj->pAnimFrameCursor = obj->pAnimFrameBase + Mt19937RandMax(2) * 4;
-            SetObjectAnimFrame(obj, *obj->pAnimFrameCursor);
+            obj->anim.pAnimFrameCursor = obj->anim.pAnimFrameBase + Mt19937RandMax(2) * 4;
+            SetObjectAnimFrame(obj, *obj->anim.pAnimFrameCursor);
         }
         else
         {

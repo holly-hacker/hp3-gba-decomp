@@ -13,7 +13,7 @@ Object *SpawnPropObject(u8 bColumn, u8 bRow)
     pObj->dwFlags = 0x04002215;
     SetObjectActionState(pObj, 0);
     pObj->bUnk_0x7C = 5;
-    pObj->bAnimFrameDelay = 1;
+    pObj->anim.bAnimFrameDelay = 1;
     ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind = pRecord->bKind;
     kind = pRecord->bKind;
     ROOM_OBJECT_TRIGGER_STATE(pObj)->b62 = pRecord->b62;

@@ -15,8 +15,8 @@ void SetMonsterObjectAnim(Object *obj, u8 state)
         if ((u16)(obj->wObjectType - 0x31) <= 2) {
             SetObjectAnimData(obj->pShadowObject, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, state);
         } else if (state == 0) {
-            obj->pAnimFrameCursor += Mt19937RandMax(2) * 4;
-            SetObjectAnimFrame(obj, *obj->pAnimFrameCursor);
+            obj->anim.pAnimFrameCursor += Mt19937RandMax(2) * 4;
+            SetObjectAnimFrame(obj, *obj->anim.pAnimFrameCursor);
         }
 
         obj->dwFlags |= ObjectFlagVisible;

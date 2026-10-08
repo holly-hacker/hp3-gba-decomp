@@ -32,7 +32,7 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
 
     SetObjectActionState(pObject, 0xF);
 
-    pObject->bAnimFrameDelay = 1;
+    pObject->anim.bAnimFrameDelay = 1;
     pObject->pfnTick = TickPlayerActionState;
     fighter->bFighterType = type;
 
@@ -116,8 +116,8 @@ Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battl
         SetObjectAnimData(pObject, &g_aFighterAnimTable[type], g_aFighterAnimDataTable[type][0], 0);
         // Via a temp: storing the field directly recolors the function.
         // The [0] reload folds back onto the base register, no extra move.
-        ppAnimCursor = &pObject->pAnimFrameCursor;
-        *ppAnimCursor = pObject->pAnimFrameBase + slot * 4 + 2;
+        ppAnimCursor = &pObject->anim.pAnimFrameCursor;
+        *ppAnimCursor = pObject->anim.pAnimFrameBase + slot * 4 + 2;
         SetObjectAnimFrame(pObject, (*ppAnimCursor)[0]);
     }
     return pObject;

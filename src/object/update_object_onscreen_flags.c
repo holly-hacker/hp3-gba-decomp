@@ -21,16 +21,16 @@ s32 UpdateObjectOnscreenFlags(Object *obj)
     bounds = obj->spriteBounds;
 
     if (obj->oam.hFlip) {
-        left = position[0] - (s16)bounds.packedX + 9;
-        right = position[0] - (s16)(bounds.packedX >> 16) - 249;
+        left = position[0] - (s16)bounds.words.packedX + 9;
+        right = position[0] - (s16)(bounds.words.packedX >> 16) - 249;
     }
     else {
-        left = position[0] + (s16)(bounds.packedX >> 16) + 9;
-        right = position[0] + (s16)bounds.packedX - 249;
+        left = position[0] + (s16)(bounds.words.packedX >> 16) + 9;
+        right = position[0] + (s16)bounds.words.packedX - 249;
     }
 
-    top = position[1] + (s16)bounds.packedY - 169;
-    bottom = position[1] + (s16)(bounds.packedY >> 16) + 9;
+    top = position[1] + (s16)bounds.words.packedY - 169;
+    bottom = position[1] + (s16)(bounds.words.packedY >> 16) + 9;
 
     if (left < g_CameraPosition_candidate.nX || right > g_CameraPosition_candidate.nX ||
         bottom < g_CameraPosition_candidate.nY || top > g_CameraPosition_candidate.nY) {

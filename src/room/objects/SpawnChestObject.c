@@ -18,7 +18,7 @@ Object *SpawnChestObject(u8 bColumn, u8 bRow)
     SetObjectActionState(pObj, 0);
     SetObjectActionSubState(pObj, 1);
     pObj->bUnk_0x7C = 1;
-    pObj->bAnimFrameDelay = 1;
+    pObj->anim.bAnimFrameDelay = 1;
     // The flag id is kept in the object script PC slot.
     pObj->scriptState.wScriptPc = pRecord->wFlagId;
     kind = pRecord->bKind;

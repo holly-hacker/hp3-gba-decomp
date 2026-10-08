@@ -12,7 +12,7 @@ Object *SpawnFlamePillarObject(u8 bColumn, u8 bRow)
     pObj->dwFlags = ObjectFlagVisible | ObjectFlagWantsCollisionCheck | ObjectFlagHasTickLogic | ObjectFlagHasAnimation;
     SetObjectActionState(pObj, 4);
     SetObjectActionSubState(pObj, 0);
-    pObj->bAnimFrameDelay = 1;
+    pObj->anim.bAnimFrameDelay = 1;
     pObj->pfnTick = sub_08044960;
     pObj->apfnCollisionCallback[0] = sub_08044ADC;
     pObj->wCharacterId_candidate = pRecord->abArgC[0];

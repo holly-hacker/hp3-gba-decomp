@@ -25,7 +25,7 @@ Object *SpawnDoorObject(u8 bColumn, u8 bRow)
     pObj->aCollisionBoxes[0].offsets.edges.bLeft = -pRecord->bHalfWidth;
     pObj->aCollisionBoxes[0].offsets.edges.bRight = pRecord->bHalfWidth;
     pObj->aCollisionBoxes[0].state.bState = 1;
-    pObj->bCollisionMode_candidate = 1;
+    pObj->bCollisionBoxCount = 1;
     pObj->apfnCollisionCallback[0] = sub_0800CBF0;
     pObj->pfnTick = sub_0802BC74;
     return pObj;

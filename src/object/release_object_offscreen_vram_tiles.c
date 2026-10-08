@@ -21,7 +21,7 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
             if (obj->bDrawFlags & ObjectDrawFlagShareTiles)
                 index = 0;
             else
-                index = obj->bAnimFrameIndex_candidate;
+                index = obj->anim.bAnimFrameIndex_candidate;
 
             if (--g_pObjectPoolAuxBuffer[auxSlot].abRefCounts[index] == 0) {
                 g_pObjectPoolAuxBuffer[auxSlot].awTileAllocIds[index] = 0xFFFF;

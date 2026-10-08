@@ -157,7 +157,7 @@ emulator.
   (`TickObject`, when an object's position changed). All are sample rows. The boot path before the menu
   plays `0`, `1` and `2` in the language select, also sample rows. `sub_0803FD04` has no direct-call path
   from the menu. The cursor's animation streams (`0x0805E0D0`, `0x0805E0E0`) contain no `0xFD`
-  sound opcode (`sub_080021F4` case 14 plays `PlaySoundById`).
+  sound opcode (`RunObjectAnimCommands` case 14 plays `PlaySoundById`).
 - No other `Mt19937*` caller is reachable from the menu. `Mt19937AutoSeed` (on START) and the emitter
   are the only ones on the boot path.
 
