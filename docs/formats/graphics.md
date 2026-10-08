@@ -169,8 +169,9 @@ directly, not via a decompressed buffer.
 
 Compressed resources start with a 4-byte header: byte 0 bits 4-6 are
 the **type** (the jump-table index), byte 0 bit 7 requests a delta
-post-pass (`sub_0801DF48`, an in-place running sum over `u16`s, applied
-after any type), and bytes 1-3 are the decompressed size (LE 24-bit).
+post-pass (`ApplyResourceDeltaPass`, an in-place running sum over `u16`s, applied
+after any type), and bytes 1-3 are the decompressed size (LE 24-bit); see
+`ResourceHeader` in `include/graphics/graphics.h`.
 So `0xE0` is type 6 with the post-pass. `GetResourceDecompressedSize`
 (`0x0801DD88`) only returns `header >> 8`, the decompressed size.
 
@@ -213,7 +214,7 @@ layout is untested.
 | Codec | Where | Format | Repo decoder |
 |---|---|---|---|
 | BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python); RLE encoder `encode_bios_rle.py` |
-| `DecompressHuffTree` | Thumb, ROM | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `sub_08024DC8` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (STRUCTURAL MATCH, disassembly only; no resource seen) | none |
+| `DecompressHuffTree` | Thumb, ROM (`src/graphics/decompress_huff_tree.c`) | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `DecompressDialogText` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (no resource seen) | none |
 | `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py`; encoder `encode_lz_rle.py` (see "Sprite images") |
 | `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | Pucrunch 1.11 token format in a proprietary container (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Python); encoder `encode_gamma_lz.py` |
 | `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Python) |
@@ -335,8 +336,9 @@ Algorithm, bit-level:
   copy sub-cases in the final ~250 bytes of the codec
   (`0x8000814`-`0x80008F8`) are documented branch-by-branch in
   `asm/decompress_gamma_lz.s`; the Python decoder emits bytes directly.
-- **Companion post-pass** (separate functions `sub_0801DF48`/
-  `sub_0801DF6C`, run by the *caller* only when `extra_pass` is set, not
+- **Companion post-pass** (`ApplyResourceDeltaPass`, `0x0801DF48`; a
+  byte-identical unreferenced copy sits at `0x0801DF24`, run by the
+  *caller* only when `extra_pass` is set, not
   part of the codec itself): an in-place running sum over the decoded
   buffer treated as `u16[]` -- the codec's raw output is itself
   delta-coded in this mode, and this pass integrates it back to
@@ -847,7 +849,7 @@ wrong relative order.
 **The dispatcher's delta-decode post-pass applies to every compression
 type, not just type 6 (PROVEN, from real disassembly).** `DecompressResource`'s
 tail (`0x0801DE36`-`0x0801DE4C`) checks byte0 bit 7 and, if set, calls the
-delta-decode pass (`sub_0801DF48`) unconditionally after every dispatch
+delta-decode pass (`ApplyResourceDeltaPass`) unconditionally after every dispatch
 type 0-8 -- the bit is independent of compression type, not specific to
 type 6. `tools/graphics/decode_gamma_lz.py` applies this pass internally
 for type-6 resources; `dump_bg_tiles.py`'s `decode_resource()` applies

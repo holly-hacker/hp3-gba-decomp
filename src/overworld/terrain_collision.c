@@ -193,7 +193,7 @@ void RespondToTerrain(Object *obj, u32 type)
                     SetObjectActionSubState(obj, 2);
                     CancelObjectMove_candidate(obj);
                     if (obj == g_pPlayerObject)
-                        sub_08024518(obj, 0);
+                        SetPartyMemberAnim(obj, PartyAnimStand);
                 }
             }
             break;

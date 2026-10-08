@@ -74,5 +74,3 @@ extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 
 extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
 
 extern void sub_08046C5C(Object *obj);
-extern void sub_08024518(Object *pObject, u32 arg1);
-extern void sub_08020440(u8 arg0, u16 arg1, u16 arg2, u8 arg3);

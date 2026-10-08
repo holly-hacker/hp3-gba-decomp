@@ -61,8 +61,13 @@ shared-label rewrite did not. Verify label use counts in the current RTL.
 ## 8. Two locals, one register
 
 Try merging same-purpose temporaries with disjoint lifetimes when the ROM reuses a register.
-Do not infer source identity solely from register reuse. Keep unrelated semantic roles separate.
+Do not infer source identity solely from register reuse. Keep unrelated semantic roles separate
+unless allocation requires otherwise, as below.
 A second local can change allocation even when it seems to be a harmless copy.
+When a short-lived temporary takes its source's register (`ldrh r0; lsls r0, r0, #2`) but the
+ROM's is fresh, `local-alloc.c:combine_regs` tied them because the destination was block-local.
+Reusing a variable that lives across blocks breaks the tie, even across unrelated roles
+(DecompressHuffTree, US 0x08024EDC, computes the tree size in `bits`).
 
 ## 9. Constant allocation ties
 
@@ -230,6 +235,9 @@ Examples: TickParticleLayer and BucketParticlesByPriority (US 0x080317EC, 0x0803
 `entry = g_apParticlesByPriority[n]; entry += i;`. Conversely, a pointer plus offset loaded from
 a field expanded base first in either spelling, and an integer sum
 `*(u16 *)((u32)ofs + (u32)ptr)` put the index first (DrawParticle, US 0x0803186C).
+To get the index computed first but the base as the sum's target, add a byte offset to a
+byte-pointer base: `*(u16 *)((const u8 *)&nodes[n] + ((bits & 1) << 1))` (DecompressHuffTree,
+US 0x08024EDC).
 
 ## Candidate acceptance and cleanup
 

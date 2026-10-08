@@ -483,8 +483,11 @@ c-file 0x0801DBDC 0x0801DC68 src/graphics/particle/create_menu_cursor_emitter.c 
 thumb-func 0x0801DC68 ReleaseMenuCursor
 thumb-func 0x0801DCC0 sub_0801DCC4
 c-file 0x0801DD3C 0x0801DD84 src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
-thumb-func 0x0801DD84 GetResourceDecompressedSize
-thumb-func 0x0801DD8C DecompressResource
+c-file 0x0801DD84 0x0801DD8C src/graphics/get_resource_decompressed_size.c GetResourceDecompressedSize
+c-file 0x0801DD8C 0x0801DE58 src/graphics/decompress_resource.c DecompressResource
+c-file 0x0801DE58 0x0801DF20 src/graphics/decompress_resource_vram.c DecompressResourceVram
+c-file 0x0801DF20 0x0801DF44 src/graphics/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassUnused
+c-file 0x0801DF44 0x0801DF68 src/graphics/apply_resource_delta_pass.c ApplyResourceDeltaPass
 thumb-func 0x0801DF68 InitializeMenuScreen
 thumb-func 0x0801DF8C LoadMenuScreenFrame
 thumb-func 0x0801E000 LoadMenuScreenOverlay
@@ -534,12 +537,17 @@ c-file 0x0801FEFC 0x0801FF18 src/gamemode/modes/cutscene/hippogriff_flies_into_a
 thumb-func 0x08020174 SpawnScriptEffectObject
 thumb-func 0x080201B0 AddRoomTileAnimation_candidate
 thumb-func 0x08020210 TickRoomTileAnimations_candidate
+c-file 0x08020260 0x08020390 src/room/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
 c-file 0x08020390 0x080203B4 src/room/init_room_tile_animation_table.c InitRoomTileAnimationTable
 thumb-func 0x080203B4 sub_080203CC
 thumb-func 0x080203D8 sub_080203F0
 thumb-func 0x08020414 sub_0802042C
-thumb-func 0x08020428 sub_08020440
+c-file 0x08020428 0x08020478 src/room/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
 c-file 0x08020478 0x080204EC src/room/objects/SpawnRoomTileAnimationObject_candidate.c SpawnRoomTileAnimationObject_candidate
+c-file 0x08020558 0x08020574 src/room/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
+c-file 0x08020574 0x08020590 src/room/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
+c-file 0x08020590 0x080205AC src/room/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
+c-file 0x080205AC 0x080205E0 src/room/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
 thumb-func 0x080205E0 sub_080205F8
 c-file 0x08020654 0x0802086C src/text/draw_text_line.c DrawTextLine
 thumb-func 0x0802086C DrawStringAligned
@@ -590,7 +598,7 @@ thumb-func 0x08023738 sub_080236DC
 thumb-func 0x0802382C sub_080237D0
 thumb-func 0x08023934 ShowMapNamePopup
 thumb-func 0x08024290 CyclePartyLeaderSelection_candidate
-thumb-func 0x08024574 sub_08024518
+c-file 0x08024574 0x08024794 src/overworld/set_party_member_anim.c SetPartyMemberAnim
 c-file 0x080248E4 0x08024944 src/overworld/reset_party_state.c ResetPartyState
 thumb-func 0x08024944 sub_080248E8
 thumb-func 0x08024974 sub_08024918
@@ -604,6 +612,7 @@ thumb-func 0x08024B48 GetPartyMasterStatsSlot_candidate
 thumb-func 0x08024C30 sub_08024BD4
 c-file 0x08024E24 0x08024F14 src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024F14 0x08024F38 src/text/init_dialog_text_table.c InitDialogTextTable
+c-file 0x08024F38 0x08024FDC src/graphics/decompress_huff_tree.c DecompressHuffTree
 c-file 0x08025114 0x08025130 src/graphics/install_bg_tile_codec.c InstallBgTileCodec
 c-file 0x08025130 0x08025248 src/gamemode/modes/high_score_name_entry/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
 c-file 0x08025248 0x080252E0 src/gamemode/modes/high_score_name_entry/update_high_score_name_entry.c UpdateHighScoreNameEntry
@@ -1133,6 +1142,7 @@ thumb-func 0x0803E794 LoadRoomBgTilemap3_candidate
 thumb-func 0x0803E7D0 LoadRoomBgLayer1Extra_candidate
 thumb-func 0x0803E85C LoadRoomBgLayer2Extra_candidate
 thumb-func 0x0803E8E8 LoadRoomBgLayer3Extra_candidate
+thumb-func 0x0803E974 sub_0803E90C
 c-file 0x0803EA48 0x0803EAA4 src/overworld/find_bg_tile_cache_entry.c FindBgTileCacheEntry
 thumb-func 0x0803EAA4 sub_0803EA3C
 thumb-func 0x0803EF4C SetLinkCallbacks
@@ -1370,10 +1380,14 @@ c-file 0x0805E1AC 0x0805E1B8 src/gamemode/modes/startup/startup.globals.c g_dwSt
 c-file 0x0805E1B8 0x0805E1C8 src/gamemode/modes/dialogue/dialogue.globals.c g_aDialogScanlineEffects
 c-file 0x0805EA3C 0x0805EA60 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
+c-file 0x0805EAC8 0x08060408 src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x08060408 0x080604C8 src/text/load_font_descriptor.globals.c g_aExtFontTable
 c-file 0x080604C8 0x080604E0 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
 c-file 0x08060634 0x08060644 src/gamemode/modes/minigame/owl_care_kit/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060810 0x08060818 src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
+c-file 0x08060818 0x08060828 src/overworld/party_focus_gfx.c g_PartyFocusGfx_candidate
+c-file 0x08060878 0x08060AB8 src/overworld/party_assets.c g_aPartyWalkAssets
+c-file 0x08060B80 0x08060DF0 src/overworld/party_anims.c g_abPartyStandFrames
 c-file 0x08060DF0 0x08060E08 src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
 c-file 0x08060E18 0x08060E4C src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file 0x08060E70 0x08062940 src/items/items.c g_pItemTable

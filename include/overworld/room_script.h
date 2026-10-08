@@ -104,7 +104,8 @@ extern void RespawnRowAndRunChain_candidate(u32 respawnRow, u32 chainRow);
 // tick at 0x080200FC) counts dwStateTimer down, then runs the row/chain, or resumes the yielded
 // chain if the walk yielded on a delayed-respawn opcode.
 extern Object *SpawnScriptEffectObject(u32 kind);
-extern void WriteRoomBgTile_candidate(u32 x, u32 y, u32 tileId, u32 layer);
+extern void WriteRoomBgTile_candidate(u16 x, u16 y, u16 tileId, u8 layer);
+extern u16 sub_0803E90C(u16 x, u16 y, u8 layer);  // the room BG entry WriteRoomBgTile_candidate writes
 extern void ConsumeBattleItemSlot(u32 itemId, u32 count);
 extern void sub_080236DC(u32 characterId);
 extern void sub_080237D0(u32 arg0);

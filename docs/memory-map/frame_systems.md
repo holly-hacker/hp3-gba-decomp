@@ -55,9 +55,14 @@ function. Calls, in order:
   `TickRoomTileAnimations_candidate` (`0x08020228`, JP `0x08020210`) steps the room's
   animated tiles: 8-byte entries `{set, step, delay, flags, x, y}` at `0x03002F24`
   (count at `0x03002F28`) added by `AddRoomTileAnimation_candidate` (`0x080201C8`, JP
-  `0x080201B0`). When an entry's delay hits 0, `0x08020278` copies the frame's tiles
-  (frame lists come from the sets at `0x08060400`; delay `0xFF` loops, `0xFE` halts) to
-  the entry's tile position on the BG layers in the frame's mask.
+  `0x080201B0`). When an entry's delay hits 0, `ApplyRoomTileAnimationFrame`
+  (`0x08020278`, JP `0x08020260`) shows its current step and advances it. Steps come
+  from `g_apRoomTileAnimSets` (`src/room/room_tile_anim_sets.c`, 55 sets indexed by the
+  entry's set): each frame lists 32x32-pixel source blocks, whose tiles on the BG layers
+  in the frame's mask (bit 4: collision patterns too) are copied to the entry's position,
+  offset from the first block. Delay `0xFF` restarts the set, `0xFE` halts it (flags bit
+  0). `ApplyRoomTileAnimationAt` (`0x08020440`, JP `0x08020428`) shows a set's first step
+  once without an entry; `ApplyRoomSwitchEffect` uses it with sets `0x18`/`0x19`.
   `FindRoomTileAnimation_candidate` (`0x08020504`, JP `0x080204EC`) looks an entry up by
   tile; room object capture/restore saves and restores its state that way, and
   `SpawnRoomTileAnimationObject_candidate` (`0x08020490`, JP `0x08020478`) creates the

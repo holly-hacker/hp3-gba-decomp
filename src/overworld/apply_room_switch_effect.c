@@ -9,11 +9,11 @@ void ApplyRoomSwitchEffect(u32 state)
     if (state != 0)
     {
         SetAlphaBlendTargets(4, 0x1F);
-        sub_08020440(0x18, 0xE0, 0x220, 0);
+        ApplyRoomTileAnimationAt(0x18, 0xE0, 0x220, 0);
     }
     else
     {
         SetAlphaBlendTargets(5, 0x1F);
-        sub_08020440(0x19, 0xE0, 0x220, 0);
+        ApplyRoomTileAnimationAt(0x19, 0xE0, 0x220, 0);
     }
 }

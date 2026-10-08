@@ -9,7 +9,9 @@ Produce idiomatic C that documents the game and accurately recreates its ROM.
 Both readable meaning and matching output are acceptance criteria. The original
 implementation establishes that a solution exists in the original build context;
 a stalled attempt means the reconstruction or context needs more investigation.
-Report an unresolved mismatch precisely; do not declare matching impossible.
+Report an unresolved mismatch precisely; do not declare matching impossible. Before reporting
+any function as unmatched, read [troubleshooting.md](references/troubleshooting.md) and test
+every entry that fits the remaining symptom.
 
 ## Working agreement
 
