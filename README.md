@@ -28,8 +28,8 @@ Current progress:
 
 |        | Game Code | Game Assets | Krawall |
 | ------ | --------: | ----------: | ------: |
-| **US** |    35-40% |       99.6% |      0% |
-| **JP** |    35-40% |       99.6% |      0% |
+| **US** |    40-45% |       99.6% |      0% |
+| **JP** |    40-45% |       99.6% |      0% |
 
 Note that JP matching may run behind somewhat as it is not the primary focus.
 
