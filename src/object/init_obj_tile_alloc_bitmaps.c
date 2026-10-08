@@ -9,10 +9,10 @@
 void InitObjTileAllocBitmaps(u8 bgMode)
 {
     if (bgMode >= 3 && bgMode <= 5) {
-        memset(g_adwObjTileAllocBitmap, 0xFF, 0x40);
-        memset(&g_adwObjTileAllocBitmap[16], 0, 0x40);
+        memset(g_abObjTileAllocBitmap, 0xFF, 0x40);
+        memset(&g_abObjTileAllocBitmap[64], 0, 0x40);
     } else {
-        memset(g_adwObjTileAllocBitmap, 0, 0x80);
-        memset(g_adwObjTileFreeMask, 0xFF, 0x80);
+        memset(g_abObjTileAllocBitmap, 0, 0x80);
+        memset(g_abObjTileFreeMask, 0xFF, 0x80);
     }
 }

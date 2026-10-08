@@ -68,6 +68,7 @@
 // Start of video RAM.
 #define VRAM_BASE ((void *)0x06000000)
 #define VRAM_SIZE 0x18000
+#define OBJ_VRAM_TILES ((u8 *)0x06010000)
 
 // Serial EEPROM bus, memory-mapped over the SRAM-area mirror while a
 // game-pak DMA is in flight; only the low bit of each transferred

@@ -87,7 +87,6 @@ extern void sub_080075A8(u32 a, u32 b, u32 c, u32 d, u32 e);
 extern void sub_0800D244(void *a, u32 b, u32 c);
 extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
 extern void sub_0801B4BC(u32 a, void *b, u32 c, u32 d, void *e);
-extern void sub_080454F4(u16 a, u16 b, u32 c);
 extern void sub_08012A00(void);
 extern void *sub_08012A84(void);
 extern void sub_080065D4(u32 a, void *b, u32 c);

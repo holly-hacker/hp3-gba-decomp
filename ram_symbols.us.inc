@@ -420,8 +420,8 @@
 .set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging,    0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
 .set g_pFindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun
-.set g_adwObjTileAllocBitmap,    0x03006128  @ u32[32]: set bit = tile in use
-.set g_adwObjTileFreeMask,       0x030061A8  @ u32[32]: clear bit = free pending the next OAM swap
+.set g_abObjTileAllocBitmap,    0x03006128  @ u8[128]: set bit = tile in use
+.set g_abObjTileFreeMask,       0x030061A8  @ u8[128]: clear bit = free pending the next OAM swap
 .set g_pEepromInterface,         0x030062C8  @ EepromInterface *: chosen by EepromSelectInterface
 .set gSystemStackTop,            0x03007EA0  @ top of the AGB system-mode stack
 .set gIrqStackTop,               0x03007FA0  @ top of the AGB IRQ-mode stack

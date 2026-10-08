@@ -1275,11 +1275,15 @@ c-file 0x080452E0 0x08045304 src/object/install_iwram_find_free_obj_tile_run.c I
 c-file 0x08045304 0x08045358 src/object/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x08045358 sub_0804542C
 thumb-func 0x0804537C AllocObjectVramTiles
-thumb-func 0x080453E8 LoadObjTile
-thumb-func 0x08045408 LoadObjTileAt
-thumb-func 0x08045420 sub_080454F4
-thumb-func 0x08045440 FreeObjectVramTileAllocation
+c-file 0x080453E8 0x08045408 src/object/load_obj_tile.c LoadObjTile
+c-file 0x08045408 0x08045420 src/object/load_obj_tile_at.c LoadObjTileAt
+c-file 0x08045420 0x08045440 src/object/free_object_vram_tile_allocation_now.c FreeObjectVramTileAllocationNow
+c-file 0x08045440 0x08045460 src/object/free_object_vram_tile_allocation.c FreeObjectVramTileAllocation
 c-file 0x08045488 0x080454B4 src/object/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
+c-file 0x080454B4 0x08045510 src/object/load_obj_tile_sheet.c LoadObjTileSheet
+c-file 0x08045510 0x0804555C src/object/mark_obj_tiles_in_use.c MarkObjTilesInUse
+c-file 0x0804555C 0x080455B4 src/object/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
+c-file 0x080455B4 0x0804560C src/object/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
 thumb-func 0x08045734 HideScreenWindow_candidate
 thumb-func 0x08045764 SetScreenWindowLayers_candidate
 thumb-func 0x080457D4 SetScreenWindowRect_candidate

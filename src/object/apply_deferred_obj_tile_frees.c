@@ -6,8 +6,8 @@
 void ApplyDeferredObjTileFrees(void)
 {
     u32 i;
-    u32 *pBitmap = g_adwObjTileAllocBitmap;
-    u32 *pMask = g_adwObjTileFreeMask;
+    u32 *pBitmap = (u32 *)g_abObjTileAllocBitmap;
+    u32 *pMask = (u32 *)g_abObjTileFreeMask;
 
     for (i = 0; i < 32; i++) {
         pBitmap[i] &= pMask[i];

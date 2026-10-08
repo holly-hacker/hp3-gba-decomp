@@ -395,8 +395,8 @@
 .set g_ScanlineEffectState,      0x03005E70
 .set g_ScanlineEffectStaging,    0x03005FA8
 .set g_pFindFreeObjTileRunIwram, 0x030060D8
-.set g_adwObjTileAllocBitmap,    0x03006178
-.set g_adwObjTileFreeMask,       0x030061F8
+.set g_abObjTileAllocBitmap,    0x03006178
+.set g_abObjTileFreeMask,       0x030061F8
 .set g_pEepromInterface,         0x03006318
 .set gSystemStackTop,            0x03007EA0
 .set gIrqStackTop,               0x03007FA0
