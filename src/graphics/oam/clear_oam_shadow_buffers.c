@@ -14,10 +14,10 @@ void ClearOamShadowBuffers(void)
 
     for (i = 0; i < 128; i++)
     {
-        ((OamEntry *)g_aOamShadowBufferA)[i] = g_HiddenOamEntry;
-        ((OamEntry *)g_aOamShadowBufferA)[i + 128] = g_HiddenOamEntry;
-        ((OamEntry *)g_aOamShadowBufferB)[i] = g_HiddenOamEntry;
-        ((OamEntry *)g_aOamShadowBufferB)[i + 128] = g_HiddenOamEntry;
+        g_OamShadowBufferA.aHalves[0][i] = g_HiddenOamEntry;
+        g_OamShadowBufferA.aHalves[1][i] = g_HiddenOamEntry;
+        g_OamShadowBufferB.aHalves[0][i] = g_HiddenOamEntry;
+        g_OamShadowBufferB.aHalves[1][i] = g_HiddenOamEntry;
     }
 
     REG_DMA3.src = g_pOamShadowBuffer;

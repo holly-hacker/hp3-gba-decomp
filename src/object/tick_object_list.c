@@ -81,7 +81,7 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
         }
     }
 
-    sub_08030C00();
+    BucketParticlesByPriority();
 
     for (queueIndex = 0; queueIndex < g_dwOamQueueCount; queueIndex++) {
         obj = g_apOamQueue[queueIndex];
@@ -92,7 +92,7 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
             oamResult = UpdateObjectOamCells(obj);
             if (obj->oam.priority != layer)
                 while (layer < obj->oam.priority) {
-                    sub_080317EC(layer);
+                    TickParticleLayer(layer);
                     layer++;
                 }
 
@@ -117,13 +117,13 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
         }
 
         while (layer <= 3) {
-            sub_080317EC(layer);
+            TickParticleLayer(layer);
             layer++;
         }
     }
 
     if (mode == 1)
-        sub_08030140();
+        CommitObjAffineMatrices();
 
     return anyOamWork;
 }

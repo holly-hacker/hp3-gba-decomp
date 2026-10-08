@@ -1378,7 +1378,7 @@ through them, but the records themselves are ordinary dialog assets --
   - Frame descriptor base `+0x0` (`u8`, low 5 bits): cell count.
   - Frame descriptor base `+0x2`/`+0x3` (`u8`): frame width/height in
     pixels. `UpdateObjectSpriteFrame` passes `width*height` to the OBJ
-    tile allocator (`0x08045450`), which divides it by 64 (4bpp) or 32
+    tile allocator (`AllocObjectVramTiles`), which divides it by 64 (4bpp) or 32
     (8bpp, 32-byte units); every item icon's values are `32x32` or
     `16x32`, matching their decoded sizes.
   - Frame descriptor base `+0x4` (`u16`): byte offset of the frame's
@@ -1401,10 +1401,8 @@ through them, but the records themselves are ordinary dialog assets --
       on-screen anchor, doubled for a double-size affine object. C type
       `ObjectFrameCell`, a packed bitfield word, decoded by
       `UpdateObjectOamCells` (`0x08002618`, matched). `WriteObjectOamCells`
-      (`0x08002C18`) decodes the same bytes into a live OAM entry's
-      position/shape/tile fields (its
-      `uVar2`/`uVar3` locals are shape/size, in that order -- easy to
-      transpose, since a swap is invisible whenever shape==size).
+      (`0x08002C18`, matched) decodes the same bytes into a live OAM
+      entry's position/shape/tile fields.
   - Confirmed against real hardware, not just the struct shape: for
     record 1, a live mGBA OAM dump (`x/4 0x07000000 20`) and OBJ-VRAM
     dump (`x/4 0x06010E00 784`) matched this decode's shape/size/tile

@@ -34,6 +34,15 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 | `FreeAllParticles` | `0x0803171C` | `src/graphics/particle/free_all_particles.c` |
 | `ReleaseParticle` | `0x08031848` | `src/graphics/particle/release_particle.c` |
 | `TickParticleEmitters` | `0x08031748` | `src/graphics/particle/tick_particle_emitters.c` |
+| `BucketParticlesByPriority` | `0x08030C00` | `src/graphics/particle/bucket_particles_by_priority.c` |
+| `TickParticleLayer` | `0x080317EC` | `src/graphics/particle/tick_particle_layer.c` |
+| `TickParticle` | `0x08031358` | `src/graphics/particle/tick_particle.c` |
+| `TickParticleStill` | `0x08031434` | `src/graphics/particle/tick_particle_still.c` |
+| `TickParticleDirectional` | `0x08031480` | `src/graphics/particle/tick_particle_directional.c` |
+| `TickParticleMoving` | `0x080314DC` | `src/graphics/particle/tick_particle_moving.c` |
+| `TickParticleWithGravity` | `0x08031538` | `src/graphics/particle/tick_particle_with_gravity.c` |
+| `DrawParticle` | `0x0803186C` | `src/graphics/particle/draw_particle.c` |
+| `UpdateParticleCollision` | `0x0803197C` | `src/graphics/particle/update_particle_collision.c` |
 | `CreateMenuCursorEmitter` | `0x0801DBE0` | `src/graphics/particle/create_menu_cursor_emitter.c` |
 | `FixedMultiply` | `0x0802BEE8` | asm; `((a >> 6) * (b >> 6)) >> 4` |
 
@@ -41,13 +50,14 @@ JP addresses (same sources, byte-matched): `CreateMenuCursorEmitter` `0x0801DBDC
 `AllocParticleEmitter` `0x08030BB4`, `TickParticleEmitter` `0x08030CE0`, `SpawnParticle`
 `0x08030DD4`, `TickParticleEmitters` `0x0803178C`, `InitResourceCachePools` `0x080315E8`,
 `ResetParticleState` `0x08031668`, `FreeAllParticleEmitters` `0x08031718`, `FreeAllParticles`
-`0x08031760`, `ReleaseParticle` `0x0803188C`, `FixedMultiply` `0x0802BF44`. The RAM symbols
+`0x08031760`, `ReleaseParticle` `0x0803188C`, `FixedMultiply` `0x0802BF44`. The particle
+tick and draw functions above sit `0x44` higher than US (`BucketParticlesByPriority`
+`0x08030C44` through `UpdateParticleCollision` `0x080319C0`). The RAM symbols
 sit `0x60` higher than US (for example `g_pParticleEmitterActiveListHead` is `0x030051F8`);
 `g_pMenuCursorEmitter` is `0x030028C0` in both.
 
-Not yet decompiled: the per-particle update `sub_08031358`, the particle OAM submit
-`sub_0803186C`, and the graphics pool teardown `sub_08031668`.
-The bytes at `0x08031798`-`0x080317EC` are an unseeded function.
+Not yet decompiled: the graphics pool teardown `sub_08031668`. The bytes at
+`0x08031798`-`0x080317EC` and `0x080319B0`-`0x080319FC` are unseeded functions.
 
 ## Per-frame flow
 
@@ -67,6 +77,28 @@ and so do the battle script wait handlers. It walks the active list; an emitter 
    `Mt19937RandMax2(wSpawnRollMax) < wSpawnRollThreshold` (cursor 2).
 4. Releases the emitter when the target has `ObjectFlagPendingDestroy`, or when
    `ParticleEmitterFlagRelease` is set and `wDuration` counts down past zero.
+
+Particles are ticked and drawn from `TickObjectList`'s mode 1 pass, not from the emitter
+tick. `BucketParticlesByPriority` sorts the active particles into one bucket per OAM
+priority (`g_apParticlesByPriority`, counts in `g_abParticlesByPriorityCount`); a particle
+with `ParticleEmitterFlagPriorityAbove` goes into the bucket below its own priority. As the
+depth-sorted objects are drawn, `TickParticleLayer(n)` runs each particle of bucket `n`
+through `TickParticle`, so particles are queued among the objects of their priority.
+`ParticleEmitterFlagSkipTick` marks a particle as bucketed until `TickParticleLayer` clears it.
+
+`TickParticle`:
+
+1. Counts `sLife` down and frees the particle when it passes zero.
+2. Advances the animation (a new frame every `bAnimTicks` ticks, holding on the last
+   frame, or looping with `ParticleEmitterFlagAnimTicksFixed`) and, except in mode 0,
+   adds the velocity to the position. Mode 6 (`TickParticleWithGravity`) waits one tick
+   longer per frame and adds `wParam46 << 4` to `nVelY` (gravity; copied from the emitter's
+   `wParam38`).
+3. Unless `ParticleEmitterFlagNoCollision`, sets the OAM priority from the collision type
+   under the particle (`UpdateParticleCollision`: bits 6-7 plus 1).
+4. Unless `g_dwGameModeFlags` has `0x40000` or `0x400000`, frees the particle on collision
+   type 1 and otherwise queues its OAM entry (`DrawParticle`). Offscreen particles are not
+   queued. A full OAM queue sets `g_bParticleSpawnBlocked`.
 
 ## RNG use of one spawn — PROVEN
 
@@ -96,7 +128,7 @@ branch calls `CreateMenuCursorEmitter`. The emitter is released by `ExitMainMenu
 | Field | Value |
 |---|---|
 | `wSpawnPeriod` | 5 (fires every 6 frames) |
-| `wFlags` | `0xC84`: `SpawnRoll` plus bits `0x400`, `0x80`, `0x04` |
+| `wFlags` | `0xC84`: `SpawnRoll`, `NoCollision`, `AnimTicksFixed` and bit `0x400` |
 | Spawn roll | `RandMax2(0x1000) < 0x800`: 16381 of 32768 draws pass (about 49.99%) |
 | `bMode` | 6 (random velocity, `abVelRange` = -40, 40, 0, 0) |
 | `wLifetimeBase`, `wLifetimeRange` | `0x23`, 5 (fixed 40-frame lifetime, no draw) |
@@ -141,7 +173,6 @@ earlier history, which this analysis does not cover.
 
 ## Open questions
 
-- Meaning of `wParam38` beyond mode 6, the emitter flags `0x80` and `0x400`, and
+- Meaning of `wParam38` beyond mode 6, the emitter flag `0x400`, and
   `ParticleEmitterFlagPriorityBelow_candidate`'s stale-priority read (particles start zeroed, so
   that branch always yields priority 0).
-- The neighbouring particle code (`sub_08031358`, `sub_0803186C`, teardown) is still assembly in both versions.

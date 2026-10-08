@@ -517,9 +517,9 @@ void InterpretObjectScript(Object *obj)
             sub_0801B710(obj, args[obj->modeState.effect.abLocal[args[1]] + 2]);
             break;
         case BSOP_FreeTileAllocation:  // frees the tile allocation
-            sub_080454F4(obj->wVramTileAllocId, obj->wVramTileRow, obj->oam.bpp8);
+            sub_080454F4(obj->wVramTileAllocId, obj->wVramPixelCount, obj->oam.bpp8);
             obj->wVramTileAllocId = 0xFFFF;
-            obj->wVramTileRow = 0;
+            obj->wVramPixelCount = 0;
             break;
         case BSOP_StartDelayedChain:  // sets behavior flag 8 (delayed chain)
             obj->modeState.effect.bParam6C = args[1];

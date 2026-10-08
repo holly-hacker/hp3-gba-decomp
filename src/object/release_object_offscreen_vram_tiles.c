@@ -25,30 +25,30 @@ void ReleaseObjectOffscreenVramTiles(Object *obj)
 
             if (--g_pObjectPoolAuxBuffer[auxSlot].abRefCounts[index] == 0) {
                 g_pObjectPoolAuxBuffer[auxSlot].awTileAllocIds[index] = 0xFFFF;
-                FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramTileRow,
+                FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramPixelCount,
                                              obj->oam.bpp8);
             }
 
             obj->wVramTileAllocId = 0xFFFF;
-            obj->wVramTileRow = 0;
+            obj->wVramPixelCount = 0;
         }
     }
     else {
         if (obj->wVramTileAllocId != 0xFFFF) {
-            FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramTileRow,
+            FreeObjectVramTileAllocation(obj->wVramTileAllocId, obj->wVramPixelCount,
                                          obj->oam.bpp8);
             obj->wVramTileAllocId = 0xFFFF;
-            obj->wVramTileRow = 0;
+            obj->wVramPixelCount = 0;
         }
 
         if (obj->bDrawFlags & ObjectDrawFlagVariantSlots) {
             for (i = 0; i < ARRAY_COUNT(obj->aVariantSlots); i++) {
                 variantSlot = &obj->aVariantSlots[i];
                 if (variantSlot->wVramTileAllocId != 0xFFFF) {
-                    FreeObjectVramTileAllocation(variantSlot->wVramTileAllocId, variantSlot->wVramTileRow,
+                    FreeObjectVramTileAllocation(variantSlot->wVramTileAllocId, variantSlot->wVramPixelCount,
                                                  obj->oam.bpp8);
                     variantSlot->wVramTileAllocId = 0xFFFF;
-                    variantSlot->wVramTileRow = 0;
+                    variantSlot->wVramPixelCount = 0;
                 }
             }
         }

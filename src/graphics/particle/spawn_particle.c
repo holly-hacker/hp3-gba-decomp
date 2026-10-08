@@ -124,8 +124,8 @@ void SpawnParticle(ParticleEmitter *emitter)
     particle->pSprite = emitter->pSprite;
     if (emitter->wFlags & ParticleEmitterFlagAnimTicksFixed)
         particle->bAnimTicks = emitter->bAnimTicks;
-    else if (particle->sLife >= particle->pSprite->pHeader->wFrameCount_candidate)
-        particle->bAnimTicks = particle->sLife / particle->pSprite->pHeader->wFrameCount_candidate;
+    else if (particle->sLife >= particle->pSprite->pHeader->wFrameCount)
+        particle->bAnimTicks = particle->sLife / particle->pSprite->pHeader->wFrameCount;
     else
         particle->bAnimTicks = 1;
 

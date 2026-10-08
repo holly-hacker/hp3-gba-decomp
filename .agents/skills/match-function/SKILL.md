@@ -105,7 +105,7 @@ Read the relevant entries in [troubleshooting.md](references/troubleshooting.md)
 | --- | --- |
 | Extra masks, shifts, wrong field accesses | 1–3, 24 |
 | Branch layout, switch shape, duplicated/shared checks | 4–5, 7, 10–11 |
-| Spills, wrong registers, unexpected local reuse | 6, 8–9, 13–15 |
+| Spills, wrong registers, unexpected local reuse | 6, 8–9, 13–15, 25–26 |
 | Loop initialization, copies, hoisted loads | 12, 16–19, 23 |
 | Pool entries, switch layout, argument extension | 20–22 |
 

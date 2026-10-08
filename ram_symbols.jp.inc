@@ -283,8 +283,8 @@
 @ --- OAM shadow buffer, see include/graphics/oam.h ---
 .set g_pOamShadowBuffer,    0x03004048
 .set g_pOamDmaShadowBuffer, 0x0300404C
-.set g_aOamShadowBufferA,   0x03004050
-.set g_aOamShadowBufferB,   0x03004850
+.set g_OamShadowBufferA,    0x03004050
+.set g_OamShadowBufferB,    0x03004850
 .set g_bOamEntryCount,      0x03005050
 .set g_bOamEntryCountPrev,  0x03005051
 .set g_bAffineSlotHighWaterMark, 0x03005052
@@ -304,6 +304,7 @@
 .set g_pParticleFreeListHead,          0x0300520C
 .set g_pParticleEmitterFreeListHead,   0x03005210
 .set g_apParticlesByPriority,           0x03005218
+.set g_abParticlesByPriorityCount,      0x03005228
 .set g_pParticleActiveListHead,        0x0300522C
 .set g_bParticleSpawnBlocked,          0x03005230
 .set g_apParticleGfxPools,             0x03005238

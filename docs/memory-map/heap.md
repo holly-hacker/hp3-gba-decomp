@@ -93,9 +93,10 @@ fixed-size-slot pool out of the heap:
   zeroes `g_pObjectPoolAuxBuffer`.
   The queue is a struct member: `TickObjectList` (matched,
   `src/object/tick_object_list.c`) indexes it through the struct.
-- `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. Read in
-  `WriteObjectOamCells` as what looks like a fixed-point rounding/scale
-  constant, unrelated to the pool itself; not enough evidence for a real
+- `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. `WriteObjectOamCells`
+  adds it to the magnitude of a 16.16 scaled cell offset before shifting
+  out the fraction, a rounding bias. No other literal reference exists in
+  US code, so it is presumably always 0; not enough evidence for a real
   name yet.
 
 ## Per-tick object queues — PROVEN
@@ -110,10 +111,12 @@ them. `mode == 1` is the full pass that also updates OAM.
 | Sprite frame | `g_apSpriteFrameQueue` `0x03001760`[15] | u8 `0x0300179C` | same per-object updates, walked tail to head before the OAM queue |
 | Collision | `g_apCollisionQueue` `0x030017A4`[0x69] | u32 `0x03001948` | `CheckObjectCollisions(count, array)`, active list only, skipped when game-mode flag `0x800` is set |
 
-While draining the sorted OAM queue, `TickObjectList` calls `sub_080317EC(n)`
+Before draining the sorted OAM queue, `TickObjectList` buckets the live particles by OAM
+priority (`BucketParticlesByPriority`). While draining it, it calls `TickParticleLayer(n)`
 for each draw layer `n` (`Object.oam.priority`) the sort has passed, then for the
-remaining layers up to 3. It returns 1 if any queue-drain `UpdateObjectOamCells`
-call returned nonzero.
+remaining layers up to 3, so particles are queued among the objects of their priority
+(see [`particles.md`](particles.md)). Mode 1 ends with `CommitObjAffineMatrices`. It
+returns 1 if any queue-drain `UpdateObjectOamCells` call returned nonzero.
 
 ## Generic intrusive list / active-object list — PROVEN
 

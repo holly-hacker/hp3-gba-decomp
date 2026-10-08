@@ -16,7 +16,9 @@ operand equality. Ghidra types can be stale; check headers and callers too.
 Extra `cmp #0`/`bge`/add/shift around division by a power of two can be signed rounding.
 An unsigned value may remove it. Sub-word locals can introduce masks because Thumb
 `PROMOTE_MODE` promotes them; prefer s32/u32 arithmetic and truncate at a genuine boundary.
-Do not narrow merely to save a register. Inspect `ldr` versus `ldrb`/`ldrh`.
+Do not narrow merely to save a register. Inspect `ldr` versus `ldrb`/`ldrh`. Do give a call
+result its declared width: a `u16` local for a `u16` return changed reload choices at a later
+bitfield store (UpdateObjectSpriteFrame, US 0x08002F28, `allocId`).
 
 Promotion can also let `combine` fold `(a^b)&a` into one `bicsi3` when `a` is a named
 sub-word local, where the same expression over array re-reads (HImode, `subreg`-wrapped)
@@ -206,15 +208,28 @@ a `u8` field at bit 0 folds to `ands`, a `u32` field keeps the ROM's `lsl`/`lsr`
 Examples: `Object.bDrawLayer` (u8, TickObjectList), `Object.bAffineSlotState` (u32,
 TickFighterAttackAnimState).
 
-## 25. Loop counters: one shared local versus per-site locals
+## 25. One shared local versus per-site locals
 
-In a large switch, the pseudo for a loop counter that is shared across cases sums its refs and
-live_length, so its `allocno_compare` priority differs from a block-local counter and it moves
-neighbouring pseudos between hard registers (including reload spill-register choice). When
-counters at disjoint sites land in different registers than the ROM, test each site as
-block-local versus one function-level variable, and flip the whole group together: single-site
-flips changed nothing while the group flip matched. Example: InterpretObjectScript, US
-`0x08018CC0`, opcodes 0x27/0x2B/0x83/0x84/0x85/0x97/0x9D-0xA0 share one signed index.
+A local assigned at several disjoint sites is one pseudo: it sums refs and live_length, so its
+`allocno_compare` priority differs from block-local copies, it may take a callee-saved register,
+and it moves neighbouring pseudos between hard registers (including reload spill-register
+choice). When values at disjoint sites land in different registers than the ROM, test each site
+as block-local versus one function-level variable, and flip the whole group together: single-site
+flips changed nothing while the group flip matched. Examples: InterpretObjectScript, US
+`0x08018CC0`, opcodes 0x27/0x2B/0x83/0x84/0x85/0x97/0x9D-0xA0 share one signed index;
+UpdateObjectSpriteFrame, US 0x08002F28, needs `record`/`frameData` per site.
+
+## 26. Base and index of an address add swapped (`adds rD, rBase, rIdx`)
+
+When only the operand order of `base + index` differs, and with it which register the sum
+reuses, check how the sum is expanded; reordering the C spelling does not change it.
+`optabs.c:expand_binop` swaps commutative operands only when the target is the second operand
+or the first is not a register. With a pointer base, `base[i]` and `*(base + i)` expand to
+`(plus idx base)`, while `p = base; p += i; *p` expands to `(plus p idx)` with `p` as the target.
+Examples: TickParticleLayer and BucketParticlesByPriority (US 0x080317EC, 0x08030C00),
+`entry = g_apParticlesByPriority[n]; entry += i;`. Conversely, a pointer plus offset loaded from
+a field expanded base first in either spelling, and an integer sum
+`*(u16 *)((u32)ofs + (u32)ptr)` put the index first (DrawParticle, US 0x0803186C).
 
 ## Candidate acceptance and cleanup
 

@@ -26,19 +26,20 @@ typedef struct OamEntry {
     u16 affineParam;
 } OamEntry;
 
-// CPU-side OAM staging area, double-buffered so HandleVBlankInterrupt can
-// DMA one buffer out to real OAM while game code writes the next frame's
-// entries into the other. Each buffer is 0x800 bytes: two 0x400-byte
-// (128 OAM entries * 8-byte stride) halves, alternated every vblank by
-// g_bOamDmaHalfToggle independently of the buffer-level swap.
-extern u8 g_aOamShadowBufferA[0x800];
-extern u8 g_aOamShadowBufferB[0x800];
+// Double-buffered OAM staging area. The vblank DMA alternates between the
+// two halves (g_bOamDmaHalfToggle), so an entry that differs between them
+// shows on alternate vblanks.
+typedef struct OamShadowBuffer {
+    OamEntry aHalves[2][128];
+} OamShadowBuffer;
+extern OamShadowBuffer g_OamShadowBufferA;
+extern OamShadowBuffer g_OamShadowBufferB;
 
 // Buffer game code is currently writing sprite attributes into.
-extern void *g_pOamShadowBuffer;
+extern OamShadowBuffer *g_pOamShadowBuffer;
 // Buffer HandleVBlankInterrupt is currently DMA-flushing to real OAM;
 // snapshotted from g_pOamShadowBuffer when the two buffers are swapped.
-extern void *g_pOamDmaShadowBuffer;
+extern OamShadowBuffer *g_pOamDmaShadowBuffer;
 
 // Number of OAM entries queued into g_pOamShadowBuffer this frame; reset to
 // 0 once HandleVBlankInterrupt has swapped buffers.
@@ -51,13 +52,18 @@ extern void InitOamSystem(void);
 extern void ClearOamShadowBuffers(void);
 extern void HideUnusedOamEntries(void);
 
-// Copy *pEntry into both halves of OAM shadow slot `index` and advance
-// g_bOamEntryCount; they return -1 without queuing once the count is negative.
-// SubmitOamAttrsNudged also moves the copies 1 pixel right and left respectively.
+// Return -1 when the queue is full. SubmitOamAttrsNudged jitters the entry by
+// 1 pixel between the halves.
 extern s32 QueueOamEntry(u8 index, OamEntry *pEntry);
 extern s32 SubmitOamAttrsNudged(u8 index, OamEntry *pEntry);
-// Hides OAM shadow slot `index` in the second half of g_pOamShadowBuffer only,
-// so the entry shows on alternate vblanks.
-extern void HideOamEntryOnAlternateVblanks(u8 index);
-// Writes the pixel width and height of an OAM shape/size pair to dims[0]/dims[1].
+// Hides the entry in the second half only.
+extern void HideOamEntryOnAlternateVblanks(u32 index);
+// Dimensions of each OAM shape/size pair, indexed [shape][size].
+typedef struct OamShapeSize {
+    u8 bWidth;            // pixels
+    u8 bHeight;           // pixels
+    u16 wTileBytes4bpp;   // bWidth * bHeight / 2
+} OamShapeSize;
+extern const OamShapeSize g_aOamShapeSizes[3][4];
+
 extern void GetOamShapeSizeDims(u32 shape, u32 size, s32 *dims);

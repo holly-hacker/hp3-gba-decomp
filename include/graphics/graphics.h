@@ -64,11 +64,13 @@ extern void ClearResourceCacheSlots(void);
 extern u32 FindResourceCacheSlot(const ObjPalette *pPalette);
 extern u32 AllocResourceCacheSlot(void);
 
-// Header of a particle sprite resource; ParticleEmitter.pSprite points at a
-// record whose second word points here.
+// Particle sprite header, laid out like ObjectFrameData. Reached through the
+// second word of ParticleEmitter.pSprite's record.
 typedef struct ParticleSpriteHeader {
     u8 pad_00[0x06];
-    u16 wFrameCount_candidate;  // 0x06, the spawn code divides a particle's lifetime by it
+    u16 wFrameCount;         // 0x06
+    u8 pad_08[0x04];
+    u16 awFrameOffsets[1];   // 0x0C, wFrameCount entries
 } ParticleSpriteHeader;
 
 typedef struct ParticleSprite {
@@ -91,9 +93,9 @@ typedef struct ParticleGfxEntry {
 typedef enum {
     ParticleEmitterFlagFourWayDirections = 0x0001,  // mode 1 picks from the 4-way vector table
     ParticleEmitterFlagRelease          = 0x0002,  // count wDuration down, then release
-    ParticleEmitterFlagAnimTicksFixed   = 0x0004,  // particles use bAnimTicks instead of a
-                                                    // lifetime-derived value
+    ParticleEmitterFlagAnimTicksFixed   = 0x0004,  // use bAnimTicks and loop the animation
     ParticleEmitterFlagSpawnDisabled    = 0x0040,  // no spawning while set
+    ParticleEmitterFlagNoCollision      = 0x0080,  // particles skip UpdateParticleCollision
     ParticleEmitterFlagPriorityFromTarget = 0x0100,  // particle OAM priority = the target's
     ParticleEmitterFlagScreenPosition   = 0x0200,  // spawn at the target's OAM position, with
                                                     // particle priority 1, even when the target
@@ -107,7 +109,8 @@ typedef enum {
                                                     // current frame
     ParticleEmitterFlagFixedPosition    = 0x2000,  // spawn at (sPosX, sPosY)
     ParticleEmitterFlagPriorityAbove    = 0x4000,  // particle priority = target's + 1
-    ParticleEmitterFlagSkipTick         = 0x8000,  // skip this frame's tick; cleared every frame
+    ParticleEmitterFlagSkipTick         = 0x8000,  // skip this frame's tick; on a particle,
+                                                    // already bucketed this frame
 } ParticleEmitterFlags;
 
 // Node in the particle-emitter active/free lists (see below). ListNode
@@ -180,14 +183,14 @@ typedef struct Particle {
     s16 sLife;               // 0x38
     u16 wFlags;              // 0x3A, the emitter's wFlags when spawned
     u16 wTileAllocId;        // 0x3C
-    u16 wFrameCounter;       // 0x3E
-    u8 bAnimTicks;           // 0x40
+    s16 wFrameCounter;       // 0x3E, ticks shown of the current frame
+    s8 bAnimTicks;           // 0x40, ticks per animation frame
     s8 bFrame;               // 0x41
     u8 bMode;                // 0x42
     u8 bParam;               // 0x43, direction index
     u8 bUnk44;               // 0x44
     u8 pad_45;
-    u16 wParam46;            // 0x46
+    s16 wParam46;            // 0x46, mode 6 gravity: nVelY grows by wParam46 << 4 per tick
 } Particle;
 
 // See docs/formats/battle_scripts.md's TickParticleEmitters note --
@@ -236,9 +239,22 @@ extern ParticleGfxEntry *g_apParticleGfxPools[PARTICLE_GFX_POOL_COUNT];  // 0x03
 #define MAX_PARTICLE_EMITTERS 10
 extern Particle *g_aParticles;                      // 0x030051A4
 extern ParticleEmitter *g_aParticleEmitters;        // 0x030051A8
-// Active particles bucketed by OAM priority each frame (sub_08030C00); each
-// array holds up to MAX_PARTICLES pointers.
+// Active particles by OAM priority, filled by BucketParticlesByPriority.
 extern Particle **g_apParticlesByPriority[4];       // 0x030051B8
+extern u8 g_abParticlesByPriorityCount[4];          // 0x030051C8
+extern const u8 g_abOamSizeForDims[4][4];
+extern const u8 g_abOamShapeForDims[4][4];
+
+extern void BucketParticlesByPriority(void);
+extern s8 TickParticleLayer(u8 priority);
+extern s8 TickParticle(Particle *particle);
+extern void TickParticleStill(Particle *particle);
+extern void TickParticleDirectional(Particle *particle);
+extern void TickParticleMoving(Particle *particle);
+extern void TickParticleWithGravity(Particle *particle);
+extern s8 DrawParticle(Particle *particle);
+extern u8 UpdateParticleCollision(Particle *particle);
+extern void CommitObjAffineMatrices(void);
 
 extern void InitResourceCachePools(void);
 extern void ResetParticleState(void);

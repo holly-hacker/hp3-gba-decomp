@@ -17,7 +17,7 @@ typedef enum {
     ObjectFlagWantsCollisionCheck      = 0x4,        // queues the object for the collision-check pass
     ObjectFlagHasTickLogic             = 0x8,        // opts into the full movement/pfnTick path
     ObjectFlagHasAnimation             = 0x10,       // TickObjectAnimation runs
-    ObjectFlagAnimFrameLoaded          = 0x80,       // set once LoadObjectAnimFrameCells has run
+    ObjectFlagAnimFrameLoaded          = 0x80,       // new tiles pending CommitQueuedObjectTileUpdates
     ObjectFlagSkipSpriteFrameUpdate    = 0x100,      // TickObjectList skips UpdateObjectSpriteFrame
     ObjectFlagTerrainCollisionA_candidate = 0x200,   // with ObjectFlagTerrainCollisionB_candidate: either
                                                        // bit makes CheckObjectTerrainCollision resolve
@@ -211,7 +211,7 @@ typedef struct ObjectVariantSlot {
     u8 bDrawOrder;          // 0x02, UpdateObjectOamCells queues slots from 7 down to 0;
                              // values above 7 are never drawn
     u8 pad_3[0x01];         // -> 0x04
-    u16 wVramTileRow;       // 0x04, second argument to FreeObjectVramTileAllocation
+    u16 wVramPixelCount;    // 0x04, size of wVramTileAllocId in pixels (0 = none)
     u16 wVramTileAllocId;   // 0x06, 0xFFFF = none
     ObjectAssetRecord **pSpriteVariantTables;  // 0x08, outer table selected by
                              // Object.bSpriteVariantTableIndex
@@ -415,7 +415,7 @@ typedef struct Object {
                              // oam.paletteNum indexes (mutually exclusive with
                              // it -- see ReleaseObjectPalette/BindEffectChannelSlot_candidate)
     u32 dwEffectFlags;      // 0x10C
-    u16 wVramTileRow;       // 0x110, row passed to FreeObjectVramTileAllocation
+    u16 wVramPixelCount;    // 0x110, size of wVramTileAllocId in pixels (0 = none)
     u16 wVramTileAllocId;   // 0x112, VRAM tile allocation id passed to
                              // FreeObjectVramTileAllocation (0xFFFF = none); set to 0xFFFF by
                              // ExitBattle when suspending a fighter for the Folio Universitas/
@@ -472,7 +472,15 @@ extern u8 GetUnblockedDirectionToTarget(Object *obj, FixedPoint pos, FixedPoint 
 extern ObjectRect GetObjectCollisionBoxRect(Object *obj, s32 boxIndex);
 extern s32 DoObjectsOverlap(Object *a, Object *b);  // tests collision box 0 of each
 extern void ReleaseObjectOffscreenVramTiles(Object *obj);  // 0x08001300
-extern void FreeObjectVramTileAllocation(u16 allocId, u16 tileRow, u8 is8bpp);  // 0x08045514
+// Frees the OBJ VRAM tiles of an allocation of pixelCount pixels.
+extern void FreeObjectVramTileAllocation(u16 allocId, u16 pixelCount, u8 is8bpp);  // 0x08045514
+// Returns the first allocated tile, or 0xFFFF when none are free.
+extern u16 AllocObjectVramTiles(ObjectAssetRecord *record, u32 pixelCount, u32 is8bpp);
+// Decompresses tileGfx into OBJ VRAM at the object's wVramTileAllocId.
+extern void LoadObjTile(Object *obj, void *tileGfx);
+// Decompresses tileGfx into OBJ VRAM at tile allocId; other arguments are unused.
+extern void LoadObjTileAt(ObjectFrameData *frameData, void *tileGfx, u16 allocId, u16 frame,
+                          u16 pixelCount);
 extern void ReleaseObjectPalette(Object *obj);  // 0x080308D8
 extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);
 extern Object *SpawnObject(u32 type, s32 x, s32 y, const ObjPalette *pPalette);
@@ -509,12 +517,9 @@ extern u8 UpdateObjectOamCells(Object *obj);
 // TickObjectList's extra OAM pass (see docs/memory-map/heap.md).
 extern void WriteObjectOamCells(ObjectFrameData *frameData, u16 frame, u8 cellFlags, s32 *pos,
                                 u16 tileBase, OamEntry *pTemplate, Object *obj);
-extern void UpdateObjectSpriteFrame(Object *obj, u8 mode);
+extern void UpdateObjectSpriteFrame(Object *obj, u32 mode);
 extern void ApplyObjectOrbitMotion(Object *obj);
 extern void sub_080034B8(Object *obj);
-extern void sub_08030C00(void);
-extern void sub_080317EC(u8 layer);  // flushes the particles queued for one draw layer
-extern void sub_08030140(void);
 extern void CommitQueuedObjectTileUpdates(void);  // run from vblank callbacks
 extern void sub_08001690(Object *obj, const void *pAssetRecord);
 extern void SetObjectAnimFrame(Object *obj, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed

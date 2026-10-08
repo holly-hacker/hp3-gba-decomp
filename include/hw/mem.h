@@ -93,12 +93,16 @@ extern ObjectPoolState g_ObjectPoolState;
 // One 0x34-byte record of g_pObjectPoolAuxBuffer (5 records), selected by
 // Object.bObjectPoolAuxSlot. Tracks VRAM tile allocations shared between
 // objects: abRefCounts[i] counts the objects holding the allocation whose id
-// is in awTileAllocIds[i] (0xFFFF = none). Field extents past the ones
-// ReleaseObjectOffscreenVramTiles touches are unconfirmed.
+// is in awTileAllocIds[i] (0xFFFF = none). Index 0 is the ShareTiles
+// allocation; ShareFrameTiles indexes by animation frame.
 typedef struct ObjectPoolAuxRecord {
-    u8 pad_00[0x08];
+    u8 pad_00[0x04];
+    struct ObjectAssetRecord *pAnimTable;  // 0x04, sprite record of the ShareTiles allocation
     u16 awTileAllocIds[12];  // 0x08
-    u8 abRefCounts[0x14];    // 0x20
+    u8 abRefCounts[12];      // 0x20
+    u8 bAnimFrame;           // 0x2C, animation frame of the ShareTiles allocation
+    u8 pad_2D[0x03];         // -> 0x30
+    u32 dwAllocTick;         // 0x30, g_dwTickCount when the ShareTiles allocation was made
 } ObjectPoolAuxRecord;
 extern ObjectPoolAuxRecord *g_pObjectPoolAuxBuffer;
 extern u8 g_pSortObjectsIwram[0xC4];
@@ -113,9 +117,7 @@ extern u32 g_adwObjTileAllocBitmap[32];
 extern u32 g_adwObjTileFreeMask[32];
 void ApplyDeferredObjTileFrees(void);
 extern u32 g_dwObjectListActive_candidate;
-// Zeroed by InitObjectPool; read in WriteObjectOamCells as what looks
-// like a fixed-point rounding/scale constant, unrelated to the pool
-// itself. Not enough evidence yet for a real name.
+// Rounding bias for WriteObjectOamCells' scaled cell offsets; always 0.
 extern u32 g_dwUnk03001DC4;
 // Set to 1 by every TickActiveObjects call and never cleared, so it is 0
 // only until the active list's first tick. FreeObject releases the object's

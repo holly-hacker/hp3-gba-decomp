@@ -64,8 +64,8 @@ thumb-func 0x08002154 TickObjectAnimation
 thumb-func 0x080023B4 sub_080023B4
 thumb-func 0x080025F8 IntegrateObjectVelocity
 c-file 0x08002618 0x08002C18 src/object/update_object_oam_cells.c UpdateObjectOamCells
-thumb-func 0x08002C18 WriteObjectOamCells
-thumb-func 0x08002F28 UpdateObjectSpriteFrame
+c-file 0x08002C18 0x08002F28 src/object/write_object_oam_cells.c WriteObjectOamCells
+c-file 0x08002F28 0x080034B8 src/object/update_object_sprite_frame.c UpdateObjectSpriteFrame
 thumb-func 0x080034B8 sub_080034B8
 thumb-func 0x0800351C TickObjectMove
 c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
@@ -85,7 +85,7 @@ thumb-func 0x08003A0C sub_08003A0C
 thumb-func 0x08003A20 CopyOrbitParamsFromTable
 thumb-func 0x08003A30 sub_08003A30
 thumb-func 0x08003A44 sub_08003A44
-thumb-func 0x08005384 GetOamShapeSizeDims
+c-file 0x08005384 0x0800539C src/graphics/oam/get_oam_shape_size_dims.c GetOamShapeSizeDims
 thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
 c-file 0x08005410 0x080055C0 src/room/walk_room_switch_state_chain.c WalkRoomSwitchStateChain_candidate
 c-file 0x080055C0 0x0800572C src/room/resume_room_switch_state_chain.c ResumeRoomSwitchStateChain_candidate
@@ -795,16 +795,16 @@ thumb-func 0x0802F834 sub_0802F7F0
 thumb-func 0x0802FD04 sub_0802FCC0
 thumb-func 0x0802FDA0 sub_0802FD5C
 thumb-func 0x0802FE48 SetObjectAnimData_candidate
-thumb-func 0x0802FEF0 SubmitOamAttrsNudged
+c-file 0x0802FEF0 0x0802FF70 src/graphics/oam/submit_oam_attrs_nudged.c SubmitOamAttrsNudged
 c-file 0x0802FF70 0x0802FF9C src/graphics/oam/init_oam_system.c InitOamSystem
-thumb-func 0x0802FFE4 QueueOamEntry
-thumb-func 0x08030034 HideOamEntryOnAlternateVblanks
+c-file 0x0802FFE4 0x08030034 src/graphics/oam/queue_oam_entry.c QueueOamEntry
+c-file 0x08030034 0x08030058 src/graphics/oam/hide_oam_entry_on_alternate_vblanks.c HideOamEntryOnAlternateVblanks
 c-file 0x08030058 0x080300D8 src/graphics/oam/clear_oam_shadow_buffers.c ClearOamShadowBuffers
 thumb-func 0x080300D8 GetObjectAffineSlotId
 thumb-func 0x080300E4 SetObjectAffineSlotId
 thumb-func 0x080300F8 AllocAffineSlot
 thumb-func 0x0803013C FreeAffineSlot
-thumb-func 0x08030184 sub_08030140
+c-file 0x08030184 0x080301C8 src/graphics/oam/commit_obj_affine_matrices.c CommitObjAffineMatrices
 thumb-func 0x080301C8 HideUnusedOamEntries
 c-file 0x0803022C 0x08030250 src/graphics/oam/reset_affine_slots.c ResetAffineSlots
 c-file 0x080302B8 0x08030360 src/gamemode/modes/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
@@ -830,10 +830,14 @@ thumb-func 0x080309BC BindObjectToResourceCacheSlot
 thumb-func 0x08030A2C FindResourceCacheSlot
 thumb-func 0x08030A60 sub_08030A1C
 c-file 0x08030BB4 0x08030C44 src/graphics/particle/alloc_particle_emitter.c AllocParticleEmitter
-thumb-func 0x08030C44 sub_08030C00
+c-file 0x08030C44 0x08030CE0 src/graphics/particle/bucket_particles_by_priority.c BucketParticlesByPriority
 c-file 0x08030CE0 0x08030DD4 src/graphics/particle/tick_particle_emitter.c TickParticleEmitter
 c-file 0x08030DD4 0x0803139C src/graphics/particle/spawn_particle.c SpawnParticle
-thumb-func 0x0803139C sub_08031358
+c-file 0x0803139C 0x08031478 src/graphics/particle/tick_particle.c TickParticle
+c-file 0x08031478 0x080314C4 src/graphics/particle/tick_particle_still.c TickParticleStill
+c-file 0x080314C4 0x08031520 src/graphics/particle/tick_particle_directional.c TickParticleDirectional
+c-file 0x08031520 0x0803157C src/graphics/particle/tick_particle_moving.c TickParticleMoving
+c-file 0x0803157C 0x080315E8 src/graphics/particle/tick_particle_with_gravity.c TickParticleWithGravity
 c-file 0x080315E8 0x08031668 src/graphics/particle/init_resource_cache_pools.c InitResourceCachePools
 c-file 0x08031668 0x080316AC src/graphics/particle/reset_particle_state.c ResetParticleState
 thumb-func 0x080316AC sub_08031668
@@ -841,8 +845,10 @@ c-file 0x080316E8 0x08031718 src/graphics/particle/release_particle_emitter.c Re
 c-file 0x08031718 0x08031760 src/graphics/particle/free_all_particle_emitters.c FreeAllParticleEmitters
 c-file 0x08031760 0x0803178C src/graphics/particle/free_all_particles.c FreeAllParticles
 c-file 0x0803178C 0x080317DC src/graphics/particle/tick_particle_emitters.c TickParticleEmitters
-thumb-func 0x08031830 sub_080317EC
+c-file 0x08031830 0x0803188C src/graphics/particle/tick_particle_layer.c TickParticleLayer
 c-file 0x0803188C 0x080318B0 src/graphics/particle/release_particle.c ReleaseParticle
+c-file 0x080318B0 0x080319C0 src/graphics/particle/draw_particle.c DrawParticle
+c-file 0x080319C0 0x080319F4 src/graphics/particle/update_particle_collision.c UpdateParticleCollision
 c-file 0x08031A40 0x08031B90 src/gamemode/modes/cutscene/harry_patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file 0x08031B90 0x08031CEC src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
 c-file 0x08031CEC 0x08031D08 src/gamemode/modes/cutscene/harry_patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
@@ -1254,6 +1260,9 @@ c-file 0x080452A0 0x080452E0 src/graphics/scanline/clear_scanline_effect_staging
 c-file 0x080452E0 0x08045304 src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 c-file 0x08045304 0x08045358 src/object/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x08045358 sub_0804542C
+thumb-func 0x0804537C AllocObjectVramTiles
+thumb-func 0x080453E8 LoadObjTile
+thumb-func 0x08045408 LoadObjTileAt
 thumb-func 0x08045420 sub_080454F4
 thumb-func 0x08045440 FreeObjectVramTileAllocation
 c-file 0x08045488 0x080454B4 src/object/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
@@ -1294,6 +1303,7 @@ c-file 0x0804BC88 0x0804BCE8 src/libc/memcpy.c memcpy
 
 # Unit direction vectors (16.16 {x, y}) indexed by Direction4 and Direction
 c-file 0x0804BCE8 0x0804BD48 src/graphics/particle/direction_vectors.c g_aDirection4Vectors
+c-file 0x0804BF50 0x0804BF80 src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804BF80 0x0804BFB8 src/room/room_object_constructors.c g_apRoomObjectConstructors
 c-file 0x0804C0DC 0x0804C0E4 src/gamemode/modes/minigame/riddikulus/riddikulus.globals.c g_dwRiddikulusBg0Control
 c-file 0x0804C368 0x0804C36C src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
@@ -1387,6 +1397,7 @@ c-file 0x08067818 0x08067848 src/room/objects/room_obj_unk6_frames.c g_abRoomObj
 c-file 0x08068B7C 0x08068B84 src/graphics/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068B84 0x08068B88 src/gamemode/modes/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file 0x08068B88 0x08068B94 src/graphics/particle/opposite_directions.c g_abOppositeDirection8
+c-file 0x08068B9C 0x08068BBC src/graphics/particle/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068BBC 0x08068BC4 src/gamemode/modes/cutscene/harry_patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068BC4 0x08068C90 src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file 0x08068C90 0x08068CC8 src/gamemode/modes/minigame/wizard_cracker_pop_it/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control

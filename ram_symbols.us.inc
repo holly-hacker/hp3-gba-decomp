@@ -300,13 +300,13 @@
 @ --- OAM shadow buffer, see include/graphics/oam.h ---
 .set g_pOamShadowBuffer,         0x03003FE8
 .set g_pOamDmaShadowBuffer,      0x03003FEC
-.set g_aOamShadowBufferA,        0x03003FF0
-.set g_aOamShadowBufferB,        0x030047F0
+.set g_OamShadowBufferA,         0x03003FF0
+.set g_OamShadowBufferB,         0x030047F0
 .set g_bOamEntryCount,           0x03004FF0
 .set g_bOamEntryCountPrev,       0x03004FF1
 .set g_bAffineSlotHighWaterMark, 0x03004FF2  @ highest allocated affine slot index + 1; see AllocAffineSlot
 .set g_abAffineSlotUsed,         0x03004FF3  @ u8[32], one per affine hardware slot; see AllocAffineSlot/FreeAffineSlot
-.set g_aObjAffineSetSource,      0x03005014  @ ObjAffineSource[32] (8-byte stride), fed to bios_ObjAffineSet by sub_08030140
+.set g_aObjAffineSetSource,      0x03005014  @ ObjAffineSource[32] (8-byte stride), fed to bios_ObjAffineSet by CommitObjAffineMatrices
 
 @ --- Resource cache / particle emitters (see docs/formats/graphics.md and
 @ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
@@ -321,6 +321,7 @@
 .set g_pParticleFreeListHead,          0x030051AC  @ ListNode *
 .set g_pParticleEmitterFreeListHead,   0x030051B0  @ ListNode *
 .set g_apParticlesByPriority,         0x030051B8  @ Particle **[4]: active particles bucketed by OAM priority
+.set g_abParticlesByPriorityCount,    0x030051C8  @ u8[4]: entries in each g_apParticlesByPriority array
 .set g_pParticleActiveListHead,        0x030051CC  @ ListNode *
 .set g_bParticleSpawnBlocked,          0x030051D0  @ u8: set when a particle's OAM submit fails (queue full); blocks spawning until TickParticleEmitters clears it
 .set g_apParticleGfxPools,             0x030051D8  @ ParticleGfxEntry *[]

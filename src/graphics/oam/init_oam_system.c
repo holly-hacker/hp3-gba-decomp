@@ -4,8 +4,8 @@
 
 void InitOamSystem(void)
 {
-    g_pOamShadowBuffer = g_aOamShadowBufferA;
+    g_pOamShadowBuffer = &g_OamShadowBufferA;
     ClearOamShadowBuffers();
     ResetAffineSlots();
-    g_pOamDmaShadowBuffer = g_aOamShadowBufferB;
+    g_pOamDmaShadowBuffer = &g_OamShadowBufferB;
 }

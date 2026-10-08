@@ -29,16 +29,16 @@ void HandleVBlankInterrupt(void)
         if (g_pVBlankState->wOamFrameReady != 0)
         {
             // swap: flush the buffer NOT currently marked as the DMA source
-            if (g_pOamDmaShadowBuffer == g_aOamShadowBufferA)
+            if (g_pOamDmaShadowBuffer == &g_OamShadowBufferA)
             {
-                REG_DMA3.src = g_aOamShadowBufferB + g_bOamDmaHalfToggle * 0x400;
+                REG_DMA3.src = g_OamShadowBufferB.aHalves[g_bOamDmaHalfToggle];
                 REG_DMA3.dst = OAM_BASE;
                 REG_DMA3.cnt = 0x84000100;
                 (void)REG_DMA3.cnt;
             }
             else
             {
-                REG_DMA3.src = g_aOamShadowBufferA + g_bOamDmaHalfToggle * 0x400;
+                REG_DMA3.src = g_OamShadowBufferA.aHalves[g_bOamDmaHalfToggle];
                 REG_DMA3.dst = OAM_BASE;
                 REG_DMA3.cnt = 0x84000100;
                 (void)REG_DMA3.cnt;
@@ -49,24 +49,24 @@ void HandleVBlankInterrupt(void)
             sub_0800D354();
 
             g_pOamDmaShadowBuffer = g_pOamShadowBuffer;
-            if (g_pOamShadowBuffer == g_aOamShadowBufferA)
-                g_pOamShadowBuffer = g_aOamShadowBufferB;
+            if (g_pOamShadowBuffer == &g_OamShadowBufferA)
+                g_pOamShadowBuffer = &g_OamShadowBufferB;
             else
-                g_pOamShadowBuffer = g_aOamShadowBufferA;
+                g_pOamShadowBuffer = &g_OamShadowBufferA;
         }
         else
         {
             // no swap: just re-flush the current DMA source buffer
-            if (g_pOamDmaShadowBuffer == g_aOamShadowBufferA)
+            if (g_pOamDmaShadowBuffer == &g_OamShadowBufferA)
             {
-                REG_DMA3.src = g_aOamShadowBufferA + g_bOamDmaHalfToggle * 0x400;
+                REG_DMA3.src = g_OamShadowBufferA.aHalves[g_bOamDmaHalfToggle];
                 REG_DMA3.dst = OAM_BASE;
                 REG_DMA3.cnt = 0x84000100;
                 (void)REG_DMA3.cnt;
             }
             else
             {
-                REG_DMA3.src = g_aOamShadowBufferB + g_bOamDmaHalfToggle * 0x400;
+                REG_DMA3.src = g_OamShadowBufferB.aHalves[g_bOamDmaHalfToggle];
                 REG_DMA3.dst = OAM_BASE;
                 REG_DMA3.cnt = 0x84000100;
                 (void)REG_DMA3.cnt;
