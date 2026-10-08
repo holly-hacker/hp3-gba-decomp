@@ -99,10 +99,10 @@ c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectA
 
 thumb-func 0x08003708 SetObjectFlippedX
 thumb-func 0x08003788 sub_08003788
-thumb-func 0x08003808 ReleaseObjectAffineSlot
+c-file 0x08003808 0x08003848 src/object/release_object_affine_slot.c ReleaseObjectAffineSlot
 thumb-func 0x08003848 StartObjectAffineScaleTween
-thumb-func 0x080038A0 TickObjectAffineEffect
-thumb-func 0x080038EC AllocObjectAffineSlot
+c-file 0x080038A0 0x080038EC src/object/tick_object_affine_effect.c TickObjectAffineEffect
+c-file 0x080038EC 0x08003928 src/object/alloc_object_affine_slot.c AllocObjectAffineSlot
 thumb-func 0x08003928 IsObjectFlippedX
 thumb-func 0x08003954 sub_08003954
 c-file 0x08003980 0x080039E8 src/object/apply_object_orbit_motion.c ApplyObjectOrbitMotion
@@ -844,10 +844,10 @@ c-file 0x0802FF2C 0x0802FF58 src/graphics/oam/init_oam_system.c InitOamSystem
 c-file 0x0802FFA0 0x0802FFF0 src/graphics/oam/queue_oam_entry.c QueueOamEntry
 c-file 0x0802FFF0 0x08030014 src/graphics/oam/hide_oam_entry_on_alternate_vblanks.c HideOamEntryOnAlternateVblanks
 c-file 0x08030014 0x08030094 src/graphics/oam/clear_oam_shadow_buffers.c ClearOamShadowBuffers
-thumb-func 0x08030094 GetObjectAffineSlotId
-thumb-func 0x080300A0 SetObjectAffineSlotId
-thumb-func 0x080300B4 AllocAffineSlot
-thumb-func 0x080300F8 FreeAffineSlot
+c-file 0x08030094 0x080300A0 src/graphics/oam/get_object_affine_slot_id.c GetObjectAffineSlotId
+c-file 0x080300A0 0x080300B4 src/graphics/oam/set_object_affine_slot_id.c SetObjectAffineSlotId
+c-file 0x080300B4 0x080300F8 src/graphics/oam/alloc_affine_slot.c AllocAffineSlot
+c-file 0x080300F8 0x08030140 src/graphics/oam/free_affine_slot.c FreeAffineSlot
 c-file 0x08030140 0x08030184 src/graphics/oam/commit_obj_affine_matrices.c CommitObjAffineMatrices
 thumb-func 0x08030184 HideUnusedOamEntries
 c-file 0x080301E8 0x0803020C src/graphics/oam/reset_affine_slots.c ResetAffineSlots

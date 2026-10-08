@@ -525,10 +525,11 @@ extern void SetObjectVelocity(Object *obj, u32 velX, u32 velY);
 extern void SetObjectMoveTarget(Object *obj, u32 x, u32 y);
 extern void StartObjectMove(Object *obj, u32 x, u32 y, u16 mode);
 extern void ReleaseObjectAffineSlot(Object *obj);
-extern void SetObjectAffineSlotId(OamEntry *oam, u32 slot);  // writes the affine slot index into the OAM word at oam+2
-extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the already-allocated slot
-                             // id from wAffineSlotIndexPacked if oam.affineMode is
-                             // set (1 or 3), else calls AllocAffineSlot and stores the result
+extern u32 GetObjectAffineSlotId(OamEntry *oam);
+extern void SetObjectAffineSlotId(OamEntry *oam, u16 slot);
+extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the slot already in oam if
+                             // oam.affineMode is set (1 or 3), else calls AllocAffineSlot and
+                             // stores the result
 extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);

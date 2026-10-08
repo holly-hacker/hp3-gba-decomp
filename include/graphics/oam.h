@@ -26,6 +26,10 @@ typedef struct OamEntry {
     u16 affineParam;
 } OamEntry;
 
+// The entry's attribute 1 as a whole halfword. When affineMode is set, bits 9-13
+// (matrixNum, hFlip, vFlip) hold the affine parameter-set index.
+#define OAM_ATTR1(oam) (((u16 *)(oam))[1])
+
 // Double-buffered OAM staging area. The vblank DMA alternates between the
 // two halves (g_bOamDmaHalfToggle), so an entry that differs between them
 // shows on alternate vblanks.

@@ -54,7 +54,7 @@ void InstallBgTileCodec(void);
 // each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage
 // g_abAffineSlotUsed/g_bAffineSlotHighWaterMark (see ram_symbols.us.inc);
 // GetObjectAffineSlotId/SetObjectAffineSlotId read/write the allocated
-// index out of Object.wAffineSlotIndexPacked.
+// index in an OamEntry's affine index bits (see OAM_ATTR1).
 typedef struct ObjAffineSource {
     s16 sx;
     s16 sy;
@@ -65,6 +65,8 @@ extern ObjAffineSource g_aObjAffineSetSource[32];  // 0x03005014
 extern u8 g_bAffineSlotHighWaterMark;
 extern u8 g_abAffineSlotUsed[32];
 extern void ResetAffineSlots(void);
+extern u32 AllocAffineSlot(void);  // lowest free slot, or 32 when all are in use
+extern void FreeAffineSlot(u16 slot);
 
 // OBJ palette resource: 16 BGR555 entries. Entry 0 is the transparent color and is
 // not uploaded; entries 1-15 fill the OBJ palette bank (see AttachObjectPalette).
