@@ -29,8 +29,8 @@ extern void *const KrawallSamples[278];                // 0x08D229F4
 
 // Thumb veneers into the Krawall IWRAM code: start a sample on a channel, returning its handle,
 // and set that channel's frequency (kramSetFreq).
-extern s32 sub_08049E40(void *sample, s32 arg1, s32 arg2);
-extern void sub_08049E54(s32 handle, u32 freq);
+extern s32 kramPlayVeneer(void *sample, s32 arg1, s32 arg2);
+extern void kramSetFreqVeneer(s32 handle, u32 freq);
 extern s32 IsSoundActive_candidate(s32 handle);
 
 extern s32 PlaySoundById(s32 id);  // returns a handle for StopSoundEffect

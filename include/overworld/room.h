@@ -98,8 +98,56 @@ typedef struct BgTileCacheEntry {
 extern BgTileCacheEntry *g_apBgTileCacheEntries[2];  // 0x400 and 0x200 entries
 extern u16 *g_apBgTileCacheBuckets[2];               // chain heads by tile id & 0x7FF / 0x3FF
 extern u16 *g_apBgTileCacheFreeSlots[2];             // stack of free entry indices
+// Per tile size class: where each tile's compressed pixels start and the Huffman code table
+// shared by all of them (see docs/formats/graphics.md, "The runtime streaming/caching path").
+typedef struct BgTileset {
+    u32 dwUnk00;
+    u32 dwUnk04;
+    u32 *pTileBitOffsets;  // ROM bit offset of each tile's compressed data, indexed by tile id
+    void *pCodeTable;
+} BgTileset;
+extern BgTileset g_aBgTilesets[2];
+extern u16 g_awBgLayerTileCount[4];
+extern u16 g_awBgTileCacheFreeCount[2];
+// BGxCNT as shadowed per BG layer.
+typedef struct RoomBgControl {
+    u32 bPriority : 2;
+    u32 bCharBlock : 2;
+    u32 bUnused : 4;
+    u32 bScreenBlock : 5;  // 2 KB screen block holding the layer's tilemap
+    u32 dwRest : 19;
+} RoomBgControl;
+extern RoomBgControl g_aBgControl[4];
+
+// Per BG layer, a map of 32x32-pixel blocks (u16: block id in the low 11 bits) and a block table:
+// 16 u16 tile ids per block (4x4 tiles), followed by 16 attribute bytes per block, each shifted
+// into bits 10+ of the tile's tilemap entry. g_adwBgBlockAttrOffset holds the attribute bytes' offset.
+typedef struct RoomBgBlockData {
+    u16 *apBlockMaps[4];
+    u16 (*apBlockTiles[4])[16];
+} RoomBgBlockData;
+extern RoomBgBlockData g_RoomBgBlockData;
+extern u32 g_adwBgBlockAttrOffset[4];
+extern s32 g_BgScroll[2];        // scroll position (x, y) the layers' tiles are streamed for
+extern s32 g_BgLoadedScroll[2];  // g_BgScroll as of the last tile load
 extern void InitRoomBgState_candidate(void);
 extern u16 FindBgTileCacheEntry(u16 tileId, u32 sizeClass);
+typedef struct RoomBgAux {
+    u8 bFlags;
+    u8 pad_01[3];
+    s32 aPosA[2];
+    s32 aPosB[2];
+} RoomBgAux;
+extern RoomBgAux g_RoomBgAux;
+extern u16 g_wRoomBgLayer0BlocksWide;
+extern u16 g_wRoomBgLayer1TilesWide;
+extern u16 g_wRoomBgLayer1TilesHigh;
+extern u16 g_wRoomBgLayer1BlocksWide;
+extern u16 g_wRoomBgLayer2BlocksWide;
+extern u16 g_wRoomBgLayer3BlocksWide;
+extern u16 *GetRoomBgBlockMapEntryPtr(u16 x, u16 y, u8 layer);  // the block map entry covering pixel (x, y)
+extern u32 ReleaseBgTileCacheEntry(u16 tileId, u32 sizeClass, u32 layer);
+extern u32 DecompressBgTileToVram_candidate(u32 tileId, u32 sizeClass, u32 arg2, u32 layer);
 extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
 
 extern u16 g_wRoomResourceFlags_candidate;

@@ -183,7 +183,7 @@ typedef struct ObjectFrameCell {
 typedef struct ObjectAssetRecord {
     void *pTileGfx;
     void *pFrameData;
-    void *pPalette;
+    const ObjPalette *pPalette;
     u8 bAnimFrameDelay;
 } ObjectAssetRecord;
 

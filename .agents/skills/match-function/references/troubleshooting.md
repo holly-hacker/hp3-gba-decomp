@@ -149,7 +149,8 @@ only if the roles fit; borrowing a counter for a boolean or timer is not a natur
 `gcse.c` copy propagation may merge identical preheader/body assignments. Separate meaningful
 carried/next values can preserve copy-in/copy-out. Inspect `COPY-PROP` messages in the gcse
 dump; disabling gcse is a diagnostic probe. Different source expressions alone are not proof
-of different RTL. Example context: AddPlaytimeDelta's loop investigations.
+of different RTL. Example context: AddPlaytimeDelta's loop investigations. For a loop that
+has an extra pre-loop copy of its exit test instead, see entry 28.
 
 ## 17. Copy fix triggers unrelated strength reduction
 
@@ -240,6 +241,23 @@ a field expanded base first in either spelling, and an integer sum
 To get the index computed first but the base as the sum's target, add a byte offset to a
 byte-pointer base: `*(u16 *)((const u8 *)&nodes[n] + ((bits & 1) << 1))` (DecompressHuffTree,
 US 0x08024EDC).
+
+## 27. Reload registers (r0-r2) shifted from some point on
+
+`reload1.c:allocate_reload_reg` rotates through reload registers (`last_spill_reg`), so one
+extra or missing reload earlier in insn order shifts every later choice. Causes: a branch
+written out twice and merged by cross-jumping after reload (entry 10), or a REG_EQUIV
+constant pseudo left unallocated and rematerialized just before its use. Example:
+WriteRoomBgTile_candidate, US 0x0803DD7C.
+
+## 28. Rotated loop has an extra pre-loop copy of its exit test
+
+The ROM enters the loop with `b test`; the build also has a copy of the test before it.
+`jump.c:duplicate_loop_exit_test` copies the test, and cross-jumping removes the copy only if
+both are register-identical. A `u16` index compared with `0xFFFF` builds the constant as
+HImode, so the copy and loop.c's hoisted constant land in different registers. Declare it
+`u32` (still loaded with `ldrh`). Check `.greg` for two `const_int 65535` pseudos. Example:
+ReleaseBgTileCacheEntry, US 0x0803DF18.
 
 ## Candidate acceptance and cleanup
 

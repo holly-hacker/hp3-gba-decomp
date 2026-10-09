@@ -12,7 +12,7 @@ void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette 
     if (pPalette != NULL)
     {
         g_aResourceCache[slotIndex].pData = (void *)pPalette;
-        sub_0800D264(&pPalette->aColors[1], slotIndex * 16 + 1, 15);
+        QueueObjPaletteLoad(&pPalette->aColors[1], slotIndex * 16 + 1, 15);
     }
 
     if (obj != NULL)

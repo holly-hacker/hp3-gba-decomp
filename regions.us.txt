@@ -127,7 +127,7 @@ thumb-func 0x08005B44 ShouldRunRoomScriptRow_candidate
 thumb-func 0x08005BCC GetRoomRowColumnCount_candidate
 thumb-func 0x08005C38 sub_08005C38
 thumb-func 0x08005C60 GetRoomObjectField_candidate
-thumb-func 0x08005CAC SetRoomObjectRecordPtr_candidate
+c-file 0x08005CAC 0x08005CE8 src/room/set_room_object_record_ptr.c SetRoomObjectRecordPtr_candidate
 thumb-func 0x08005D88 sub_08005D88
 thumb-func 0x08005DC0 sub_08005DC0
 c-file 0x08005DD0 0x08005E18 src/room/copy_room_blob_header_records.c CopyRoomBlobHeaderRecords_candidate
@@ -283,7 +283,7 @@ c-file 0x0800D120 0x0800D1A4 src/graphics/palette/apply_gamma_to_colors.c ApplyG
 c-file 0x0800D1A4 0x0800D204 src/graphics/palette/init_gamma_palette.c InitGammaPalette
 thumb-func 0x0800D244 sub_0800D244
 thumb-func 0x0800D254 sub_0800D254
-thumb-func 0x0800D264 sub_0800D264
+c-file 0x0800D264 0x0800D29C src/graphics/palette/queue_obj_palette_load.c QueueObjPaletteLoad
 c-file 0x0800D2DC 0x0800D2F4 src/graphics/palette/reset_palette_animations.c ResetPaletteAnimations
 thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
@@ -1156,7 +1156,7 @@ thumb-func 0x0803C610 DarkenScreenPalette
 c-file 0x0803D2C8 0x0803D2E8 src/graphics/init_screen_transition_state.c InitScreenTransitionState_candidate
 thumb-func 0x0803D2E8 SetFadeToBlack
 c-file 0x0803D310 0x0803D338 src/graphics/set_fade_to_white.c SetFadeToWhite
-thumb-func 0x0803D338 SetAlphaBlendTargets
+c-file 0x0803D338 0x0803D350 src/graphics/set_alpha_blend_targets.c SetAlphaBlendTargets
 thumb-func 0x0803D350 SetAlphaBlendCoefficients
 thumb-func 0x0803D3B0 PlayScreenTransitionInByIndex
 thumb-func 0x0803D3E8 PlayScreenTransitionOutByIndex
@@ -1166,10 +1166,12 @@ thumb-func 0x0803DA4C UpdateOverworldCamera_candidate
 thumb-func 0x0803DB68 sub_0803DB68
 thumb-func 0x0803DC44 sub_0803DC44
 thumb-func 0x0803DCDC LoadRoomBgLayer0Extra_candidate
-thumb-func 0x0803DD7C WriteRoomBgTile_candidate
+c-file 0x0803DD7C 0x0803DF18 src/overworld/write_room_bg_tile.c WriteRoomBgTile_candidate
+c-file 0x0803DF18 0x0803E038 src/overworld/release_bg_tile_cache_entry.c ReleaseBgTileCacheEntry
+c-file 0x0803E34C 0x0803E45C src/overworld/decompress_bg_tile_to_vram.c DecompressBgTileToVram_candidate
 c-file 0x0803E4FC 0x0803E588 src/overworld/init_room_bg_state.c InitRoomBgState_candidate
 thumb-func 0x0803E588 SetupRoomBgControlAndWindows_candidate
-thumb-func 0x0803E618 GetCameraPosition
+c-file 0x0803E618 0x0803E628 src/overworld/get_camera_position.c GetCameraPosition
 c-file 0x0803E628 0x0803E638 src/overworld/set_camera_position.c SetCameraPosition
 thumb-func 0x0803E664 LoadRoomBgTilemap1_candidate
 thumb-func 0x0803E6A0 LoadRoomBgTilemap0_candidate
@@ -1178,9 +1180,21 @@ thumb-func 0x0803E72C LoadRoomBgTilemap3_candidate
 thumb-func 0x0803E768 LoadRoomBgLayer1Extra_candidate
 thumb-func 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
 thumb-func 0x0803E880 LoadRoomBgLayer3Extra_candidate
-thumb-func 0x0803E90C sub_0803E90C
+c-file 0x0803E90C 0x0803E924 src/overworld/get_room_bg_block_entry.c GetRoomBgBlockEntry
+c-file 0x0803E924 0x0803E934 src/overworld/set_room_bg_aux_flag_2.c SetRoomBgAuxFlag2
+c-file 0x0803E934 0x0803E944 src/overworld/clear_room_bg_aux_flag_2.c ClearRoomBgAuxFlag2
+c-file 0x0803E944 0x0803E954 src/overworld/set_room_bg_aux_flag_4.c SetRoomBgAuxFlag4
+c-file 0x0803E954 0x0803E964 src/overworld/clear_room_bg_aux_flag_4.c ClearRoomBgAuxFlag4
+c-file 0x0803E964 0x0803E974 src/overworld/set_room_bg_aux_flag_8.c SetRoomBgAuxFlag8
+c-file 0x0803E974 0x0803E984 src/overworld/clear_room_bg_aux_flag_8.c ClearRoomBgAuxFlag8
+c-file 0x0803E984 0x0803E994 src/overworld/set_room_bg_aux_pos_a.c SetRoomBgAuxPosA
+c-file 0x0803E994 0x0803E9A4 src/overworld/set_room_bg_aux_pos_b.c SetRoomBgAuxPosB
+c-file 0x0803E9A4 0x0803E9C0 src/overworld/get_room_bg_layer1_size_pixels.c GetRoomBgLayer1SizePixels
+c-file 0x0803E9C0 0x0803E9D0 src/overworld/disable_bg_layer_scroll.c DisableBgLayerScroll
+c-file 0x0803E9D0 0x0803E9E0 src/overworld/enable_bg_layer_scroll.c EnableBgLayerScroll
 c-file 0x0803E9E0 0x0803EA3C src/overworld/find_bg_tile_cache_entry.c FindBgTileCacheEntry
 thumb-func 0x0803EA3C sub_0803EA3C
+c-file 0x0803EAC4 0x0803EB7C src/overworld/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
 thumb-func 0x0803EEE4 SetLinkCallbacks
 thumb-func 0x0803EEF0 InitLinkSession
 thumb-func 0x0803EF5C TickLinkCommIfActive_candidate
@@ -1333,9 +1347,14 @@ thumb-func 0x08046F5C kramSetSFXVol
 thumb-func 0x08046F7C kramSetMasterVol
 thumb-func 0x080491AC krapCallback
 thumb-func 0x0804923C krapSetMusicVol
-thumb-func 0x08049E3C sub_08049E3C
-thumb-func 0x08049E40 sub_08049E40
-thumb-func 0x08049E54 sub_08049E54
+thumb-func 0x08049E3C kramWorkerVeneer_candidate
+thumb-func 0x08049E40 kramPlayVeneer
+thumb-func 0x08049E44 kramPlayExtVeneer
+thumb-func 0x08049E50 kramStopVeneer
+thumb-func 0x08049E54 kramSetFreqVeneer
+thumb-func 0x08049E58 kramSetVolVeneer
+thumb-func 0x08049E5C kramSetPanVeneer
+thumb-func 0x08049E60 kramSetPosVeneer
 
 asm-file 0x08049E84 0x08049EC4 asm/rt/bios_calls.s               bios_calls
 

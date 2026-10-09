@@ -6,7 +6,7 @@
 void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex)
 {
     ObjectAssetRecord *record;
-    void *palette;
+    const ObjPalette *palette;
 
     record = &obj->aVariantSlots[0].pSpriteVariantTables[tableIndex][variantIndex];
     obj->bSpriteVariantIndex = variantIndex;
@@ -17,8 +17,8 @@ void SetObjectSpriteVariant(Object *obj, s8 tableIndex, s8 variantIndex)
     palette = record->pPalette;
     if (palette != 0) {
         if (g_dwGameModeFlags & 0x10)
-            sub_0800D254(palette, obj->oam.paletteNum << 4, 0x10);
+            sub_0800D254(palette->aColors, obj->oam.paletteNum << 4, 0x10);
         else
-            sub_0800D264(palette, obj->oam.paletteNum << 4, 0x10);
+            QueueObjPaletteLoad(palette->aColors, obj->oam.paletteNum << 4, 0x10);
     }
 }

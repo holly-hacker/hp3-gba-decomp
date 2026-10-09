@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/graphics.h"
 
 // Shared cleanup for a fighter escaping Paralyzed, both on a successful
 // escape roll (RollFighterParalysisEscape) and from CureAilments. Clears
@@ -32,7 +33,7 @@ void ClearParalyzedFighter_candidate(u8 fighterIndex)
             {
                 u8 fighterType = *(u8 *)&object->wObjectType;
                 u8 paletteBank = object->oam.paletteNum;
-                sub_0800D264((u8 *)g_aFighterAnimTable[fighterType].aRecords[0].pPalette + 2,
+                QueueObjPaletteLoad(&g_aFighterAnimTable[fighterType].aRecords[0].pPalette->aColors[1],
                     (paletteBank << 4) + 1, 0xf);
             }
         }

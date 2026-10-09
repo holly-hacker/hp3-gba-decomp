@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/graphics.h"
 
 #define FIGHTER(i) (g_pFightState->pFighters[i])
 #define PENDING(i) (g_pFightState->pPendingFighters_candidate[i])
@@ -65,7 +66,7 @@ void RestoreFighterObjects_candidate(void)
 
             if (FIGHTER(i).bFighterType != Enemy) {
                 SpawnParalysisEffect(FIGHTER(i).pObject);
-                sub_0800D264((u8 *)g_aFighterAnimTable[FIGHTER(i).pObject->wObjectType].aRecords[6].pPalette + 2,
+                QueueObjPaletteLoad(&g_aFighterAnimTable[FIGHTER(i).pObject->wObjectType].aRecords[6].pPalette->aColors[1],
                              (FIGHTER(i).pObject->oam.paletteNum << 4) + 1, 0xF);
             }
         }
@@ -73,7 +74,7 @@ void RestoreFighterObjects_candidate(void)
         if (FIGHTER(i).bStatusFlags & Poisoned) {
             FIGHTER(i).pObject->wActionVariant = 1;
             SpawnParalysisEffect(FIGHTER(i).pObject);
-            sub_0800D264((u8 *)g_aFighterAnimTable[FIGHTER(i).pObject->wObjectType].aRecords[7].pPalette + 2,
+            QueueObjPaletteLoad(&g_aFighterAnimTable[FIGHTER(i).pObject->wObjectType].aRecords[7].pPalette->aColors[1],
                          (FIGHTER(i).pObject->oam.paletteNum << 4) + 1, 0xF);
         }
     }

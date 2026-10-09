@@ -96,6 +96,7 @@
 .set g_dwObjPaletteQueueCount,     0x030022F0  @ u32: queued OBJ palette loads (25 max)
 .set g_dwPaletteEffectCount,       0x030022F4  @ u32: active palette effects
 .set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]; see include/graphics/palette.h
+.set g_aObjPaletteQueue,            0x030023E8  @ ObjPaletteQueueEntry[25]; see include/graphics/palette.h
 .set g_PaletteState,              0x030024B0  @ PaletteState; see include/graphics/palette.h
 .set g_pFightState,                 0x030024E8  @ FightState *, the active battle's state
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride, by FighterType
@@ -385,11 +386,26 @@
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300563C  @ u32: palette step ticks of DarkenScreenPalette/RestoreScreenPalette
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for object visibility
 .set g_RoomSizePixels,           0x03005648  @ RoomSizePixels: width and height of the current room in pixels
+.set g_awBgLayerTileCount,          0x03005898  @ u16[4]: per BG layer, distinct tiles held in the BG tile cache
+.set g_aBgTilesets,                  0x030058A0  @ BgTileset[2]: per tile size class, the tile offset table and Huffman code table
 .set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera_candidate
+.set g_wRoomBgLayer0BlocksWide,    0x030058DC  @ u16: width of layer 0's block map; the four layers' sizes are u16 {tiles wide, tiles high, blocks wide, blocks high} from 0x030058D8, 8 bytes apart
+.set g_wRoomBgLayer1TilesWide,     0x030058E0  @ u16
+.set g_wRoomBgLayer1TilesHigh,     0x030058E2  @ u16
+.set g_wRoomBgLayer1BlocksWide,    0x030058E4  @ u16
+.set g_wRoomBgLayer2BlocksWide,    0x030058EC  @ u16
+.set g_wRoomBgLayer3BlocksWide,    0x030058F4  @ u16
+.set g_BgScroll,                    0x030058F8  @ s32[2]: scroll position (x, y) the BG layers' tiles are streamed for
+.set g_RoomBgAux,                    0x03005900  @ RoomBgAux: flag byte and two positions set by SetRoomBgAuxFlag2 .. SetRoomBgAuxPosB
+.set g_aBgControl,                  0x03005914  @ RoomBgControl[4]: BGxCNT shadow per BG layer
+.set g_RoomBgBlockData,             0x03005934  @ RoomBgBlockData: per-layer block maps and block tile tables
+.set g_adwBgBlockAttrOffset,        0x03005974  @ u32[4]: offset of each layer's block attribute bytes within its block tile table
 .set g_apBgTileCacheEntries,        0x03005988  @ BgTileCacheEntry *[2]; see include/overworld/room.h
 .set g_apBgTileCacheBuckets,        0x03005990  @ u16 *[2]
 .set g_apBgTileCacheFreeSlots,      0x03005998  @ u16 *[2]
+.set g_awBgTileCacheFreeCount,       0x030059A8  @ u16[2]: number of entries in each size class's free slot stack
 .set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState_candidate
+.set g_BgLoadedScroll,              0x030059B8  @ s32[2]: g_BgScroll as of the last tile load; the window VRAM holds
 .set g_awLinkKeysReceived,       0x03005A0C  @ u16[2]: per-player key masks received over the link cable
 .set g_LinkPlayerState,          0x03005A24  @ LinkPlayerState: serial-link session block; see include/link/link.h
 .set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule

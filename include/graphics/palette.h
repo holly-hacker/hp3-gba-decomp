@@ -72,6 +72,14 @@ typedef struct PaletteEffect {
     const u16 *pCurrentFrame;
 } PaletteEffect;
 
+// A pending OBJ palette load: wColorCount colors from pPalette into OBJ palette RAM starting at
+// color firstColor.
+typedef struct ObjPaletteQueueEntry {
+    u16 wFirstColor;
+    u16 wColorCount;
+    const u16 *pPalette;
+} ObjPaletteQueueEntry;
+
 extern u16 *g_pPaletteWorkBuffer;            // 0x030022EC
 extern PaletteState g_PaletteState;          // 0x030024B0
 extern ColorCycle g_aColorCycles[12];        // 0x03002280
@@ -80,6 +88,7 @@ extern u32 g_dwColorCycleCount;              // 0x030022E4
 extern u32 g_dwObjPaletteQueueCount;         // 0x030022F0
 extern u32 g_dwPaletteEffectCount;           // 0x030022F4
 extern PaletteEffect g_aPaletteEffects[12];  // 0x030022F8
+extern ObjPaletteQueueEntry g_aObjPaletteQueue[25];  // 0x030023E8
 
 extern const ColorCycleTable g_ColorCyclesDefault;
 extern const ColorCycleTable g_ColorCyclesRoom12;

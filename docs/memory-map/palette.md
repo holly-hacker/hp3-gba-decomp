@@ -33,7 +33,7 @@ the table from the save header's `bGammaHigh` flag.
 `ResetPaletteAnimations` (called by `InitGammaPalette`) clears both animation
 tables and empties the OBJ palette load queue (`g_dwObjPaletteQueueCount`,
 25 eight-byte `{u16 start, u16 count, src}` entries at `0x030023E8`, filled by
-`sub_0800D264` and flushed by `sub_0800D354`). `TickPaletteAnimations_candidate`
+`QueueObjPaletteLoad` and flushed by `sub_0800D354`). `TickPaletteAnimations_candidate`
 steps both tables; `sub_0800D304` uploads the entries flagged dirty.
 
 **Color cycles** (`g_aColorCycles`, 12 `ColorCycle` slots). Every

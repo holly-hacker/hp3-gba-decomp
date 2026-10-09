@@ -2,6 +2,7 @@
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/graphics.h"
 #include "game/game_modes.h"
 
 typedef struct Vec2 {
@@ -17,20 +18,20 @@ typedef enum {
 
 static inline void PlayActionWindupFlash(Object *obj)
 {
-    void *ptr;
+    const u16 *ptr;
     s32 paletteBank;
     if ((obj->bActionFlags & 1) == 0)
         return;
     if (obj->wActionVariant == 1) {
         SetPlayerObjectAnim(obj, 7);
         paletteBank = obj->oam.paletteNum;
-        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].aRecords[7].pPalette + 2;
-        sub_0800D264(ptr, (paletteBank << 4) + 1, 0xf);
+        ptr = &g_aFighterAnimTable[obj->wObjectType].aRecords[7].pPalette->aColors[1];
+        QueueObjPaletteLoad(ptr, (paletteBank << 4) + 1, 0xf);
     } else if (obj->wActionVariant == 2) {
         SetPlayerObjectAnim(obj, 6);
         paletteBank = obj->oam.paletteNum;
-        ptr = (u8 *)g_aFighterAnimTable[obj->wObjectType].aRecords[6].pPalette + 2;
-        sub_0800D264(ptr, (paletteBank << 4) + 1, 0xf);
+        ptr = &g_aFighterAnimTable[obj->wObjectType].aRecords[6].pPalette->aColors[1];
+        QueueObjPaletteLoad(ptr, (paletteBank << 4) + 1, 0xf);
     } else {
         SetPlayerObjectAnim(obj, 0);
     }

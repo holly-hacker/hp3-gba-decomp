@@ -40,8 +40,8 @@ extern void StopPaletteEffect(s32 handle);
 extern void sub_0800D57C(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData, u32 arg6);  // palette fade/cycle effect
 extern void sub_08006C00(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 srcX, u32 srcY,
                          u32 dstX, u32 dstY, u32 width, u32 height);
-extern s32 sub_0800D264(const void *pColors, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
-extern void sub_0800D254(void *ptr, s16 val1, s16 val2);
+extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
+extern void sub_0800D254(const u16 *ptr, s16 val1, s16 val2);
 extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
 // The colors of a graphic blob's embedded palette, after its two flag bytes
 // (see docs/formats/graphic_blob.md).

@@ -85,6 +85,7 @@
 .set g_dwObjPaletteQueueCount,     0x030022F0  @ u32: queued OBJ palette loads (25 max)
 .set g_dwPaletteEffectCount,       0x030022F4  @ u32: active palette effects
 .set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]; see include/graphics/palette.h
+.set g_aObjPaletteQueue,            0x030023E8  @ see ram_symbols.us.inc
 .set g_PaletteState,              0x030024B0  @ PaletteState; see include/graphics/palette.h
 .set g_pFightState,                 0x030024E8
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride
@@ -367,11 +368,26 @@
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300569C
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for object visibility
 .set g_RoomSizePixels,           0x030056A8  @ see ram_symbols.us.inc
+.set g_awBgLayerTileCount,          0x030058F8  @ see ram_symbols.us.inc
+.set g_aBgTilesets,                  0x03005900  @ see ram_symbols.us.inc
 .set g_adwBgScrollEnabled,              0x03005920
+.set g_wRoomBgLayer0BlocksWide,       0x0300593C  @ see ram_symbols.us.inc
+.set g_wRoomBgLayer1TilesWide,        0x03005940
+.set g_wRoomBgLayer1TilesHigh,        0x03005942
+.set g_wRoomBgLayer1BlocksWide,       0x03005944
+.set g_wRoomBgLayer2BlocksWide,       0x0300594C
+.set g_wRoomBgLayer3BlocksWide,       0x03005954
+.set g_BgScroll,                       0x03005958  @ see ram_symbols.us.inc
+.set g_RoomBgAux,                       0x03005960  @ see ram_symbols.us.inc
+.set g_aBgControl,                     0x03005974
+.set g_RoomBgBlockData,                0x03005994
+.set g_adwBgBlockAttrOffset,           0x030059D4
 .set g_apBgTileCacheEntries,            0x030059E8
 .set g_apBgTileCacheBuckets,            0x030059F0
 .set g_apBgTileCacheFreeSlots,          0x030059F8
+.set g_awBgTileCacheFreeCount,       0x03005A08  @ see ram_symbols.us.inc
 .set g_dwUnk030059AC,                   0x03005A0C
+.set g_BgLoadedScroll,                 0x03005A18
 .set g_awLinkKeysReceived,       0x03005A6C
 .set g_LinkPlayerState,          0x03005A84  @ see include/link/link.h
 .set g_bUnk03005AC0,             0x03005B20

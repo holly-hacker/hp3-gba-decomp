@@ -466,12 +466,13 @@ decompile, which was independently cross-checked and matched exactly):
   passed on for real, for the first and only time.
 - `sub_08030978(slotIndex, obj, resource_ptr)`: bumps the cache slot's
   refcount; if `resource_ptr != 0` (first load), stores it in the slot
-  and calls `sub_0800D264(resource_ptr + 2, slotIndex*16 + 1, 0xF)`.
+  and calls `QueueObjPaletteLoad(&palette->aColors[1], slotIndex*16 + 1, 0xF)`,
+  where `palette` is an `ObjPalette` (`resource_ptr`).
   Also stores `slotIndex` into the upper nibble of the object's
   `+0xD5` byte (matches the `>>4` read of that same field seen
   elsewhere, e.g. `ReleaseObjectPalette` -- consistent cross-reference, good
   sign the slot-index tracking is understood correctly).
-- `sub_0800D264(ptr, val1, val2)`: **not a decoder** -- a deferred
+- `QueueObjPaletteLoad(ptr, val1, val2)`: **not a decoder** -- a deferred
   request queue. Appends `{val1: u16, val2: u16, ptr: void*}` (8-byte
   entries) to a table at `0x030023E8` (max 24 entries, count at
   `0x030022F0`). This is consistent with GBA engines deferring actual
@@ -483,20 +484,11 @@ decompile, which was independently cross-checked and matched exactly):
   pointer, not a literal load) -- static literal-pool tracing stops
   being effective here.
 
-`val2 = 0xF` (15) and the `resource_ptr + 2` skip strongly suggest this
-queued request is a **palette-only upload** -- 15 colors (GBA convention:
-OBJ palette index 0 is transparent/unused, so a real palette often only
-needs to supply
-the other 15), starting 2 bytes into the resource (a 2-byte header
-before the color data, consistent with our palette decode being
-*approximately* right, just off by one index). `val1 = slotIndex*16+1`
-reads as a palette-bank-relative destination. If this reading holds,
-**`resource_ptr` is palette-only data, not a combined palette+tileset
-struct** -- explaining why appending guessed tile data after it never
-rendered coherently. The actual tile graphics for objects using this
-resource are most likely a separate, shared/fixed spritesheet
-referenced elsewhere (a common "one tileset, many palette banks" cheap
-recoloring technique) -- not yet located.
+`val2 = 0xF` (15) and `val1 = slotIndex*16+1` upload entries 1-15 of a
+16-entry `ObjPalette` into the slot's palette bank. Entry 0 is the GBA OBJ
+transparent color and is not uploaded. `resource_ptr` is therefore
+palette-only data, not a combined palette+tileset struct; the object's tile
+graphics are a separate resource (see below).
 
 ### The deferred queue's flush, confirmed live (PROVEN via mGBA debugger)
 
@@ -556,9 +548,8 @@ RAM). The actual ROM-to-EWRAM copy step itself was not caught live (the
 watchpoint was on the palette-RAM destination, not the staging buffer --
 watching writes to `0x0200BEB0` length `0x200` would catch it, not yet
 tried), but there is no evidence or reason to expect it transforms the
-data -- **this closes out the palette question**: `resource_ptr + 2` in
-ROM is confirmed to be the real, final 15-color BGR555 data, exactly as
-read earlier in this doc. No further palette work is needed for the
+data -- **this closes out the palette question**: `&resource_ptr->aColors[1]`
+in ROM is confirmed to be the real, final 15-color BGR555 data. No further palette work is needed for the
 three known examples (`0x08A38108`, `0x08A38FE0`, `0x080BD344` -- the
 third found live via this same debugging session, fired by the
 title-screen "Press Start" prompt, also 16 valid diverse BGR555 colors:
@@ -727,8 +718,8 @@ Live-triggering every asset individually doesn't scale to "extract
 everything" -- the actual goal. Once the mechanism was understood (not
 before), the palette side of it turned out to be fully statically
 enumerable: `sub_08001528`'s `resource_ptr` argument is *always*
-treated as a 2-byte header + 15-color palette by `sub_08030978`
-regardless of the header byte's own value (no branching on it) --
+treated as a 16-entry `ObjPalette` by `sub_08030978`, entries 1-15
+uploaded, with no branching on its contents --
 confirmed by tracing the call chain to the real vblank DMA flush (see
 above). That means every call site's `resource_ptr` literal is a
 palette candidate, findable by walking each call site backward through
@@ -741,8 +732,7 @@ call's `resource_ptr` argument via backward literal-pool/register-copy
 tracing, and decodes+reports each resolved one's palette. Result:
 **14 of 30 resolved to real ROM addresses, all producing genuinely
 diverse palettes** (5-15 distinct colors out of 15, not degenerate
-single-color runs) when decoded with the confirmed 2-byte-header
-convention -- including independently re-deriving the two
+single-color runs) when decoded as `ObjPalette` entries 1-15 -- including independently re-deriving the two
 already-known palettes `0x08A38108`/`0x08A38FE0` as a cross-check.
 Nine new real palette addresses found this way (some referenced by
 more than one call site):
@@ -1264,7 +1254,7 @@ without needing a live trace:
 
 - **`pPalette`: a 32-byte, 16-entry BGR555 palette.** The game uploads
   only entries 1-15, exactly the `sub_08001528` convention already proven
-  above (`resource_ptr + 2` = 15 real colors; index 0 is the GBA OBJ
+  above (`&aColors[1]` = 15 real colors; index 0 is the GBA OBJ
   transparent color). Entry 0 stores a transparent-key color instead,
   `0x7C1F` in 60 of 79 icons.
 - **`pFrameData`: a frame/layout header**, the same generic per-object

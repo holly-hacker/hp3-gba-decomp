@@ -17,16 +17,16 @@ s32 PlaySoundById(s32 id)
     switch (row->mode)
     {
     case SoundModeSample:
-        handle = sub_08049E40(KrawallSamples[g_aSoundSamples[row->index].sampleIndex], 1, 0);
-        sub_08049E54(handle, g_aSoundSamples[row->index].freq);
+        handle = kramPlayVeneer(KrawallSamples[g_aSoundSamples[row->index].sampleIndex], 1, 0);
+        kramSetFreqVeneer(handle, g_aSoundSamples[row->index].freq);
         break;
 
     case SoundModeVariants:
         variant = Mt19937RandMax2(7);
         if (g_aSoundVariants[row->index][variant].sampleIndex != SoundVariantNone)
         {
-            handle = sub_08049E40(KrawallSamples[g_aSoundVariants[row->index][variant].sampleIndex], 1, 0);
-            sub_08049E54(handle, g_aSoundVariants[row->index][variant].freq);
+            handle = kramPlayVeneer(KrawallSamples[g_aSoundVariants[row->index][variant].sampleIndex], 1, 0);
+            kramSetFreqVeneer(handle, g_aSoundVariants[row->index][variant].freq);
         }
         break;
     }

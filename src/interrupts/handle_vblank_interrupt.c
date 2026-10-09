@@ -10,7 +10,7 @@ extern void CommitScanlineEffects(void);
 extern void sub_0801FBBC(void);
 extern void sub_08045988(void);
 extern void sub_0800D304(void);
-extern void sub_08049E3C(void);
+extern void kramWorkerVeneer_candidate(void);
 
 // gIntrTable slot 1 (INTR_FLAG_VBLANK).
 void HandleVBlankInterrupt(void)
@@ -94,7 +94,7 @@ void HandleVBlankInterrupt(void)
 
         REG_IF = 1;
         g_wPendingIntrFlags |= 1;
-        sub_08049E3C();
+        kramWorkerVeneer_candidate();
     }
     g_dwVBlankIntrNestCount--;
 

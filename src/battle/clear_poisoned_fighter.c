@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "graphics/graphics.h"
 
 // CurePoison's shared helper -- clears Poisoned, zeroes the per-turn tick
 // damage, and refreshes the sprite (undoes the poison discoloration/anim).
@@ -29,7 +30,7 @@ void ClearPoisonedFighter_candidate(u8 fighterIndex)
         {
             u8 paletteBank = object->oam.paletteNum;
             u8 fighterType = *(u8 *)&object->wObjectType;
-            sub_0800D264((u8 *)g_aFighterAnimTable[fighterType].aRecords[0].pPalette + 2,
+            QueueObjPaletteLoad(&g_aFighterAnimTable[fighterType].aRecords[0].pPalette->aColors[1],
                 (paletteBank << 4) + 1, 0xf);
         }
     }
