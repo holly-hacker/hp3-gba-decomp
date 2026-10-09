@@ -15,7 +15,7 @@ function. Calls, in order:
 | `TickBgLayers_candidate` | `0x08006EF4` | always |
 | `TickScreenWindows_candidate` | `0x08045970` | always |
 | `TickPaletteAnimations_candidate` | `0x0800D2F4` | always |
-| `TickBgTileAnimations_candidate` | `0x0800A610` | always |
+| `TickBgTileAnimations` | `0x0800A610` | always |
 | `HideUnusedOamEntries` | `0x08030184` | always |
 | `HandleOverworldPauseMenuInput` | `0x0802AEF8` | game mode is 8 |
 
@@ -23,22 +23,22 @@ function. Calls, in order:
 
 - **`TickBgLayers_candidate`**: walks 4 BG layer records (`0x6C` bytes at
   `0x03001E84`, the same array `SetBgPriority` writes through). Flag bits at `+0x18`:
-  `1` scroll tween toward `+0x34/+0x38` over `+0x3C` frames (or `0x0802BF8C` when
-  the duration is 0), `8` sine wobble (`0x08007228`, `g_anSineTable`), `4`
+  `1` scroll tween toward `+0x34/+0x38` over `+0x3C` frames (or `AddOffsetToPoint` of
+  `+0x2C/+0x30` when the duration is 0), `8` sine wobble (`ApplyBgLayerWobble`, `g_anSineTable`), `4`
   ping-pong zoom, `2` rotation, `0x4000` matrix dirty. A dirty matrix is rebuilt
   into the BG affine parameters and reference point (`0x7800`/`0x5000` centre
   constants).
 - **`TickScreenWindows_candidate`**: two hardware-window records (`0x3C` bytes at
-  `0x03006228`, two rects each) tweened or drifted per frame. `sub_08045988`
+  `g_aScreenWindows`, two corners each) tweened or drifted per frame by `TickScreenWindow`. `sub_08045988`
   writes the rects to `WINxH`/`WINxV` (`0x04000040`+) at vblank; the setters are
   `SetScreenWindowRect_candidate` and `SetScreenWindowLayers_candidate`.
-- **`TickPaletteAnimations_candidate`**: steps the 12 color cycles (`0x0800D7E8`)
-  and up to 12 palette effects (`0x0800D9D4`, per-channel 5-bit RGB
+- **`TickPaletteAnimations_candidate`**: steps the 12 color cycles (`TickColorCycles`,
+  `StepColorCycle`) and up to 12 palette effects (`TickPaletteEffects`, `StepPaletteEffect`, per-channel 5-bit RGB
   interpolation). Both mark a dirty flag that the palette flush DMA consumes; see
   [`palette.md`](palette.md).
-- **`TickBgTileAnimations_candidate`**: up to `0x03002168` entries of `0x10` bytes at
+- **`TickBgTileAnimations`**: up to `0x03002168` entries of `0x10` bytes at
   `0x0300216C`; steps a frame index and counter, then re-uploads the tiles with
-  `0x08007F20` (a copy/RLE/LZ77 VRAM loader chosen by header bits) to the VRAM
+  `UnpackTileData` (a copy/RLE/LZ77/GammaLz VRAM loader chosen by header bits) to the VRAM
   address in `0x030021AC[i]`. Entry flag byte: bit 0 active, bit 1 running,
   bit 2 tiles pending upload (`CommitBgTileAnimations`, run by `VBlankCallback`, uploads
   them and clears it), bit 3 (set from `sub_0800A598`'s third argument) uploads the whole

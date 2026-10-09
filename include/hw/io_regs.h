@@ -48,6 +48,10 @@
 // Active-low button state; UpdateKeyInput XORs with 0x3FF for active-high.
 // Also SIOMLT_RECV (player 0's slot) during a multiplayer link session.
 #define REG_KEYINPUT (*(volatile u16 *)0x04000130)
+// Timer 3 control (the link cable's serial pump) and serial communication.
+#define REG_TM3CNT_H     (*(volatile u16 *)0x0400010E)
+#define REG_SIOCNT       (*(volatile u16 *)0x04000128)
+#define REG_SIOMLT_SEND  (*(volatile u16 *)0x0400012A)
 // Interrupt enable and request/acknowledge flags.
 #define REG_IE      (*(volatile u16 *)0x04000200)
 #define REG_IF      (*(volatile u16 *)0x04000202)

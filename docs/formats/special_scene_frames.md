@@ -1,7 +1,7 @@
 # Special scene tile frames
 
 A pool of 128 raw 4 bpp tile frames for the BG tile animation system
-(`TickBgTileAnimations_candidate`, `0x0800A610`), used by
+(`TickBgTileAnimations`, `0x0800A610`), used by
 `RoomScriptOpPlaySpecialSceneEffect`. See [`graphic_blob.md`](graphic_blob.md)
 for the neighbouring blob formats.
 

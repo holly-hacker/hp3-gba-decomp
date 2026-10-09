@@ -101,6 +101,11 @@ each copy's references count toward the variables it uses. When a goto-joined dr
 except for two callee-saved registers swapped, write the shared block out in each branch.
 Example: HandleChestTouch, US 0x0800BF20 (the parameter took r4 only with two copies).
 
+The same copy can account for dead `movs rN,#0` sets (some in a high register) that the
+ROM keeps: each copy's u8 field stores share one zero mask register through the tail. A size
+argument loaded before the data pointer needs a local read before the call, scoped to each
+copy. Example: TickBgTileAnimations, US `0x0800A610`.
+
 A merged tail's register convention is set by whichever branch reaches it needing zero
 fixup moves; the other branch pays the reconciling `adds`. Fix that branch's own tie
 (entry 9) first -- the tail's ordering won't resolve in isolation. Example: UpdateKeyInput,
@@ -258,6 +263,26 @@ both are register-identical. A `u16` index compared with `0xFFFF` builds the con
 HImode, so the copy and loop.c's hoisted constant land in different registers. Declare it
 `u32` (still loaded with `ldrh`). Check `.greg` for two `const_int 65535` pseudos. Example:
 ReleaseBgTileCacheEntry, US 0x0803DF18.
+
+## 29. Two-address op with a copy in front of it (`adds rD, rS, #0; eors rD, rC`)
+
+A byte field read directly (`pCycle->bFlags & X`, `pCycle->bFlags ^= X`) is a QImode load.
+CSE/PRE share that load across blocks, so the op's source is a `(subreg:SI (reg:QI t))`
+operand; `regmove.c` only ties `REG` operands, so the result keeps its own register and reload
+emits the copy. Copying the field into a `u32` local ties them (`eors rS, rC`, no copy). If the
+compare and the op sit after an if/else that only picks the operand, write them out in each arm:
+`jump.c` cross-jumping merges the identical tails after reload, which also yields the
+`b`-to-shared-`cmp` shape. Example: StepColorCycle, US `0x0800D7E8`.
+
+## 30. Inlined helper: copy the standalone copy's exact shape
+
+When the ROM has a standalone function whose body is also inlined into a larger function (here a
+callback holding the same timeout test), match the standalone copy first and inline that exact
+source. `return a > 600;` and `if (a > 600) return 1; return 0;` compile standalone to different
+code, and inlined twice they hoist the literal differently: the `if`/`return 1`/`return 0` form
+shares one constant register hoisted out of both loops in `loop.c` pass 1 (after the address
+copy); `return a > 600;` or a `timeout` local leaves the constant first or per loop. Example:
+RunLinkExchange, US `0x0803F52C`, inlines the test that `LinkPhase2` (`0x0803FBC0`) holds.
 
 ## Candidate acceptance and cleanup
 

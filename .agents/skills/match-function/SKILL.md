@@ -106,9 +106,9 @@ Read the relevant entries in [troubleshooting.md](references/troubleshooting.md)
 | Symptom | Entries |
 | --- | --- |
 | Extra masks, shifts, wrong field accesses | 1–3, 24 |
-| Branch layout, switch shape, duplicated/shared checks | 4–5, 7, 10–11 |
+| Branch layout, switch shape, duplicated/shared checks | 4–5, 7, 10–11, 29 |
 | Spills, wrong registers, unexpected local reuse | 6, 8–9, 13–15, 25–27 |
-| Loop initialization, copies, hoisted loads, extra pre-loop test | 12, 16–19, 23, 28 |
+| Loop initialization, copies, hoisted loads or constants, extra pre-loop test | 12, 16–19, 23, 28, 30 |
 | Pool entries, switch layout, argument extension | 20–22 |
 
 After several experiments fail to explain the same difference, stop respelling blindly.

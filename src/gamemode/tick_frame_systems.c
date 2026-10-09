@@ -16,7 +16,7 @@ void TickFrameSystems(void)
     TickBgLayers_candidate();
     TickScreenWindows_candidate();
     TickPaletteAnimations_candidate();
-    TickBgTileAnimations_candidate();
+    TickBgTileAnimations();
     HideUnusedOamEntries();
 
     if (g_GameModeStackContext.dwCurrentGameMode == Overworld)

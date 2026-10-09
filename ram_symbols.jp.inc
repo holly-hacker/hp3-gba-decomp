@@ -52,6 +52,7 @@
 .set g_aRoomScriptCallStack,        0x03001E00
 
 .set g_aBgScrollState, 0x03001E80  @ see ram_symbols.us.inc
+.set g_aBgLayers,      0x03001E84  @ BgLayer[4]; the g_aBgScrollState array four bytes later
 
 @ Forces one extra sub_08007130 call this vblank; see include/hw/vblank.h.
 .set g_bForcePendingBgWritesFlush,               0x03002038
@@ -388,8 +389,19 @@
 .set g_awBgTileCacheFreeCount,       0x03005A08  @ see ram_symbols.us.inc
 .set g_dwUnk030059AC,                   0x03005A0C
 .set g_BgLoadedScroll,                 0x03005A18
+.set g_dwLinkFlags, 0x03005A38  @ u32: LINK_FLAG_* bits of the link exchange state
+.set g_aLinkRecvMessages, 0x03005A44  @ LinkMessage[2]: latest message received from each peer
+.set g_LinkSendMessage, 0x03005A5C  @ LinkMessage: message queued for the next exchange
+.set g_bLinkTick, 0x03005A68  @ u8: stamped into each queued message; incremented once per processed round
+.set g_abLinkLastRecvSeq, 0x03005A69  @ u8[2]: bSeq of the last message handled from each peer
 .set g_awLinkKeysReceived,       0x03005A6C
+.set g_bLinkSeedReceived, 0x03005A71  @ u8: set once the parent's RNG seed message has been applied
+.set g_dwLinkMode, 0x03005A78  @ u32: 1 while the exchange loop runs each frame
+.set g_bLinkPeerCount, 0x03005A80  @ u8: number of peers in g_aLinkRecvMessages
 .set g_LinkPlayerState,          0x03005A84  @ see include/link/link.h
+.set g_dwLinkExchangeCount, 0x03005AF0  @ u32: completed exchange rounds
+.set g_dwLinkLastExchangeTime, 0x03005AF8  @ u32: dwVBlankCount when the last exchange round finished
+.set g_dwLinkPollFlags_candidate, 0x03005AFC  @ u32: bit 0 selects the message type queued by ExchangeLinkFrame_candidate
 .set g_bUnk03005AC0,             0x03005B20
 .set g_bMusicPaused,             0x03005B21
 .set g_bCurrentMusicModule,      0x03005B22
@@ -413,6 +425,7 @@
 .set FindFreeObjTileRunIwram, 0x030060D8
 .set g_abObjTileAllocBitmap,    0x03006178
 .set g_abObjTileFreeMask,       0x030061F8
+.set g_aScreenWindows,          0x03006278  @ ScreenWindow[2]; see TickScreenWindow
 .set g_pEepromInterface,         0x03006318
 .set gSystemStackTop,            0x03007EA0
 .set gIrqStackTop,               0x03007FA0

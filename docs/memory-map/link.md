@@ -27,6 +27,14 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
   child), and init/teardown reset it to `0xFF` (-1, no session).
   `GetLinkPlayerId` (`0x0803FA94`) returns it; `UpdateKeyInput` uses it to
   pick the local player's key slot. A value above 1 tears the session down.
+- Per-frame exchange (STRUCTURAL MATCH, `TickLinkCommIfActive_candidate`): while
+  `g_dwLinkMode == 1`, `ExchangeLinkFrame_candidate` queues an idle (type 1) or key (type 2)
+  `LinkMessage` with `QueueLinkMessage`, then `RunLinkExchange` busy-waits on
+  `g_dwLinkFlags` bits set by the serial interrupt (600 vblanks maximum), kicks the parent's
+  send words (`0xC0DE` to start, `0xBEEF` to finish a round) and runs `ProcessLinkMessages`
+  to fill `g_awLinkKeysReceived` (and apply a type 3 RNG seed). A timeout clears
+  `LinkSessionActive` and runs `ResetLinkSession`. Message types and `LINK_FLAG_*` roles are in
+  `include/link/link.h`.
 - A 9-entry error vocabulary (`Error: Send Overrun`, `Recv CRC`, `Timeout`,
   `Game Code Recv/Send`, …) sits at `0x08060554` but is currently
   unreferenced — dead debug strings, reached by computed index if at all.

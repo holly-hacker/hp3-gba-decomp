@@ -728,7 +728,7 @@ void InterpretObjectScript(Object *obj)
                     TickParticleEmitters();
                     TickBgLayers_candidate();
                     TickPaletteAnimations_candidate();
-                    TickBgTileAnimations_candidate();
+                    TickBgTileAnimations();
                 }
             }
             break;
@@ -742,7 +742,7 @@ void InterpretObjectScript(Object *obj)
                     TickParticleEmitters();
                     TickBgLayers_candidate();
                     TickPaletteAnimations_candidate();
-                    TickBgTileAnimations_candidate();
+                    TickBgTileAnimations();
                 }
             }
             break;

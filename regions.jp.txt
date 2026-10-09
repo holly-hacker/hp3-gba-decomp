@@ -121,9 +121,10 @@ thumb-func 0x080065D4 sub_080065D4
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
 thumb-func 0x08006A98 sub_08006A98
 thumb-func 0x08006C00 sub_08006C00
-thumb-func 0x08006EF4 TickBgLayers_candidate
+c-file 0x08006EF4 0x08007130 src/graphics/bg/tick_bg_layers.c TickBgLayers_candidate
 
 thumb-func 0x08007130 sub_08007130
+c-file 0x08007228 0x080072B0 src/graphics/bg/apply_bg_layer_wobble.c ApplyBgLayerWobble
 thumb-func 0x080072D0 SetBgControl
 thumb-func 0x080072EC SetBgControlRegister_candidate
 thumb-func 0x08007334 EnableBg
@@ -155,6 +156,7 @@ thumb-func 0x08007CF4 sub_08007CF4
 thumb-func 0x08007D14 sub_08007D14
 thumb-func 0x08007D60 sub_08007D60
 thumb-func 0x08007EB8 SetBgPriority
+c-file 0x08007F20 0x08007F84 src/graphics/unpack_tile_data.c UnpackTileData
 thumb-func 0x08007F84 sub_08007F84
 c-file 0x08008050 0x080080F4 src/gamemode/modes/minigame/riddikulus/initialize_riddikulus_minigame.c InitializeRiddikulusMinigame
 c-file 0x080080F4 0x08008360 src/gamemode/modes/minigame/riddikulus/update_riddikulus_minigame.c UpdateRiddikulusMinigame
@@ -199,7 +201,7 @@ c-file 0x0800A510 0x0800A560 src/gamemode/modes/purple_screen_return_to_menu/ini
 c-file 0x0800A560 0x0800A580 src/gamemode/modes/purple_screen_return_to_menu/update_purple_screen_return_to_menu.c UpdatePurpleScreenReturnToMenu
 c-file 0x0800A580 0x0800A598 src/gamemode/modes/purple_screen_return_to_menu/exit_purple_screen_return_to_menu.c ExitPurpleScreenReturnToMenu
 thumb-func 0x0800A598 sub_0800A598
-thumb-func 0x0800A610 TickBgTileAnimations_candidate
+c-file 0x0800A610 0x0800A6EC src/graphics/tick_bg_tile_animations.c TickBgTileAnimations
 c-file 0x0800A6EC 0x0800A83C src/graphics/commit_bg_tile_animations.c CommitBgTileAnimations
 thumb-func 0x0800A914 sub_0800A914
 c-file 0x0800A950 0x0800AA54 src/gamemode/modes/debug/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
@@ -260,7 +262,7 @@ thumb-func 0x0800D244 sub_0800D244
 thumb-func 0x0800D254 sub_0800D254
 c-file 0x0800D264 0x0800D29C src/graphics/palette/queue_obj_palette_load.c QueueObjPaletteLoad
 c-file 0x0800D2DC 0x0800D2F4 src/graphics/palette/reset_palette_animations.c ResetPaletteAnimations
-thumb-func 0x0800D2F4 TickPaletteAnimations_candidate
+c-file 0x0800D2F4 0x0800D304 src/graphics/palette/tick_palette_animations.c TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
 thumb-func 0x0800D354 sub_0800D354
 thumb-func 0x0800D39C ClearPaletteRam
@@ -271,8 +273,12 @@ thumb-func 0x0800D5DC sub_0800D5DC
 thumb-func 0x0800D62C StopPaletteEffect
 c-file 0x0800D6A4 0x0800D6BC src/graphics/palette/init_palette_buffer.c InitPaletteBuffer
 c-file 0x0800D794 0x0800D7BC src/graphics/palette/reset_color_cycles.c ResetColorCycles
+c-file 0x0800D7BC 0x0800D7E8 src/graphics/palette/tick_color_cycles.c TickColorCycles
+c-file 0x0800D7E8 0x0800D85C src/graphics/palette/step_color_cycle.c StepColorCycle
 c-file 0x0800D944 0x0800D96C src/graphics/palette/reset_palette_effects.c ResetPaletteEffects
 c-file 0x0800D96C 0x0800D98C src/graphics/palette/clear_palette_effect.c ClearPaletteEffect
+c-file 0x0800D98C 0x0800D9D4 src/graphics/palette/tick_palette_effects.c TickPaletteEffects
+c-file 0x0800D9D4 0x0800DB58 src/graphics/palette/step_palette_effect.c StepPaletteEffect
 c-file 0x0800DBAC 0x0800DDB0 src/gamemode/modes/battle/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 0x0800DE50 src/gamemode/modes/battle/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
@@ -744,9 +750,11 @@ c-file 0x0802BE9C 0x0802BEB0 src/math/iwram_divide_signed_remainder.c iwramDivid
 c-file 0x0802BEB0 0x0802BEC4 src/math/iwram_divide_unsigned_unused.c iwramDivideUnsigned_unused
 c-file 0x0802BEC4 0x0802BED8 src/math/sin8_8.c Sin8_8
 c-file 0x0802BED8 0x0802BEF4 src/math/cos8_8.c Cos8_8
+c-file 0x0802BEF4 0x0802BF04 src/math/multiply8_8.c Multiply8_8
 thumb-func 0x0802BF44 FixedMultiply
 c-file 0x0802BF70 0x0802BF90 src/math/fixed_divide.c FixedDivide
 thumb-func 0x0802BF90 sub_0802BF34
+c-file 0x0802BFE8 0x0802BFF8 src/math/add_offset_to_point.c AddOffsetToPoint
 thumb-func 0x0802C074 sub_0802C018
 thumb-func 0x0802C1A4 sub_0802C148
 c-file 0x0802C2B0 0x0802C2C8 src/mem/init_heap.c InitHeap
@@ -818,7 +826,7 @@ c-file 0x080300E4 0x080300F8 src/graphics/oam/set_object_affine_slot_id.c SetObj
 c-file 0x080300F8 0x0803013C src/graphics/oam/alloc_affine_slot.c AllocAffineSlot
 c-file 0x0803013C 0x08030184 src/graphics/oam/free_affine_slot.c FreeAffineSlot
 c-file 0x08030184 0x080301C8 src/graphics/oam/commit_obj_affine_matrices.c CommitObjAffineMatrices
-thumb-func 0x080301C8 HideUnusedOamEntries
+c-file 0x080301C8 0x0803022C src/graphics/oam/hide_unused_oam_entries.c HideUnusedOamEntries
 c-file 0x0803022C 0x08030250 src/graphics/oam/reset_affine_slots.c ResetAffineSlots
 c-file 0x080302B8 0x08030360 src/gamemode/modes/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
 c-file 0x08030360 0x080304BC src/gamemode/modes/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
@@ -1163,14 +1171,20 @@ c-file 0x0803EA38 0x0803EA48 src/overworld/enable_bg_layer_scroll.c EnableBgLaye
 c-file 0x0803EA48 0x0803EAA4 src/overworld/find_bg_tile_cache_entry.c FindBgTileCacheEntry
 thumb-func 0x0803EAA4 sub_0803EA3C
 c-file 0x0803EB2C 0x0803EBE4 src/overworld/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
+c-file 0x0803EE10 0x0803EED8 src/link/process_link_messages.c ProcessLinkMessages
+c-file 0x0803EED8 0x0803EF4C src/link/queue_link_message.c QueueLinkMessage
 thumb-func 0x0803EF4C SetLinkCallbacks
 thumb-func 0x0803EF58 InitLinkSession
-thumb-func 0x0803EFC4 TickLinkCommIfActive_candidate
+c-file 0x0803EFC4 0x0803EFEC src/link/tick_link_comm_if_active.c TickLinkCommIfActive_candidate
 thumb-func 0x0803F084 StartLinkConnection
 thumb-func 0x0803F0B4 TickLinkSession
+c-file 0x0803F0C0 0x0803F104 src/link/reset_link_session.c ResetLinkSession
 thumb-func 0x0803F300 LinkConnect
+c-file 0x0803F594 0x0803F750 src/link/run_link_exchange.c RunLinkExchange
+c-file 0x0803FA34 0x0803FA88 src/link/disable_link_serial.c DisableLinkSerial
 thumb-func 0x0803FAC8 CloseLinkSession
 c-file 0x0803FAFC 0x0803FB0C src/link/get_link_player_id.c GetLinkPlayerId
+c-file 0x0803FB0C 0x0803FB9C src/link/exchange_link_frame.c ExchangeLinkFrame_candidate
 thumb-func 0x0803FBE0 IsLinkUp
 c-file 0x0803FCD0 0x0803FD6C src/audio/play_sound_by_id.c PlaySoundById
 c-file 0x0803FD6C 0x0803FE18 src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
@@ -1301,8 +1315,9 @@ c-file 0x080455B4 0x0804560C src/object/clear_obj_tile_free_mask_bits.c ClearObj
 thumb-func 0x08045734 HideScreenWindow_candidate
 thumb-func 0x08045764 SetScreenWindowLayers_candidate
 thumb-func 0x080457D4 SetScreenWindowRect_candidate
-thumb-func 0x0804589C TickScreenWindows_candidate
+c-file 0x0804589C 0x080458B4 src/graphics/tick_screen_windows.c TickScreenWindows_candidate
 thumb-func 0x080458B4 sub_08045988
+c-file 0x08045980 0x08045A14 src/graphics/tick_screen_window.c TickScreenWindow
 c-file 0x08045A14 0x08045DF8 src/room/objects/SpawnPropObject.c SpawnPropObject
 thumb-func 0x08045DF8 sub_08045ECC
 thumb-func 0x08046448 sub_0804651C

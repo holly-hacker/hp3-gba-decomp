@@ -102,3 +102,7 @@ extern void ResetColorCycles(void);
 extern void ClearColorCycle(ColorCycle *pCycle);
 extern void ResetPaletteEffects(void);
 extern void ClearPaletteEffect(PaletteEffect *pEffect);
+extern void TickColorCycles(void);
+extern void StepColorCycle(ColorCycle *pCycle);
+extern void TickPaletteEffects(void);
+extern void StepPaletteEffect(PaletteEffect *pEffect);

@@ -25,6 +25,17 @@ typedef struct ResourceHeader {
 
 #define RESOURCE_DELTA 8
 
+// The 4-byte header of tile data decoded by UnpackTileData.
+typedef struct TileDataHeader {
+    u8 bUnused : 5;
+    u8 bCodec : 2;  // 0 copy, 1 run-length, 2 LZ77, 3 GammaLz
+    u8 bUnused2 : 1;
+    u8 pad_01;
+    u16 wSize;      // bytes of tile data after the header
+    u8 aData[0];    // the encoded data
+} TileDataHeader;
+extern void UnpackTileData(const TileDataHeader *pHeader, const void *pData, s32 size, void *pDest);
+
 extern u32 GetResourceDecompressedSize(const void *pResource);
 extern u32 DecompressResource(const void *pResource, void *pDest);  // returns the size
 extern u32 DecompressResourceVram(const void *pResource, void *pDest);  // returns the size
