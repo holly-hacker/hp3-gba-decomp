@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "cutscene/linear_cutscene.h"
-#include "graphics/text.h"
+#include "font.h"
 
 // Credits mode's pInitFn: sets up the credits BG layers, then starts the text scroll.
 void InitializeCredits(void)

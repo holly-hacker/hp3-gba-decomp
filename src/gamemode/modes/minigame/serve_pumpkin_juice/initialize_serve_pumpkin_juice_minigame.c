@@ -6,7 +6,7 @@
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
 #include "minigame/serve_pumpkin_juice.h"
-#include "graphics/text.h"
+#include "font.h"
 
 void InitializeUnusedServePumpkinJuiceMinigame(void)
 {

@@ -10,7 +10,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "graphics/scanline_effects.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "graphics/graphics.h"
 #include "gen/graphics/menus.h"
 

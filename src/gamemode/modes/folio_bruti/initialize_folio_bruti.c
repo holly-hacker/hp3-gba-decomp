@@ -4,7 +4,7 @@
 #include "gen/graphics/overworld.h"
 #include "graphics/display.h"
 #include "graphics/object.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "menu/folio_bruti.h"
 
 void InitializeFolioBruti(void)

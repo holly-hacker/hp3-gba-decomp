@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "gen/graphics/menus.h"
 #ifdef VERSION_JP
 #include "gen/graphics/menus/jp.h"

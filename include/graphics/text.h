@@ -38,29 +38,6 @@ typedef enum {
     LanguageDanish    = 7,
 } Language;
 
-// Font descriptor, filled from a font blob by LoadFontDescriptor (see
-// docs/formats/fonts.md). Widths are indexed by (glyphCode - firstCode).
-typedef struct {
-    u8 height;
-    u16 firstCode;
-    u16 lastCode;
-    u8 unk6;                    // per-font value from g_aFontTable
-    const u16 *pGlyphOffsets;
-    const u8 *pWidths;
-#ifdef VERSION_JP
-    const u32 *pGlyphFlags;     // 2 flag bits per glyph (see DrawTextLine)
-#endif
-    const u8 *pBitmaps;
-} FontDescriptor;
-
-// Text renderer state at 0x03003110, partial.
-typedef struct {
-    FontDescriptor *pFont;      // glyph codes <= 0xEF
-    FontDescriptor *pExtFont;   // two-byte glyph codes (first byte > 0xEF)
-    u8 unk8[9];
-    u8 lineHeight;
-} TextRenderState;
-
 extern u8 *gDialogTextBlobBase;
 extern u32 *gDialogTextOffsetTable;
 extern DialogTextTreeNode *gDialogTextTreeNodes;
@@ -68,42 +45,13 @@ extern DialogTextBlob *sDialogTextTable[8];
 extern u8 *gDialogTextScratchBuf;
 extern u8 gCurrentLanguage;
 extern u8 gLocaleThousandsSep;
-extern TextRenderState gTextRenderState;
-extern u8 *sTextMacroTable[4];
 
-// ROM font lists: blob pointer and the value copied to FontDescriptor.unk6.
-// g_aFontTable holds the Latin fonts; JP adds g_aExtFontTable, the
-// two-byte-glyph (kana/kanji) fonts for descriptor slot 1.
-typedef struct {
-    const u8 *pBlob;
-    u32 value;
-} FontTableEntry;
-
-extern const FontTableEntry g_aFontTable[12];
-#ifdef VERSION_JP
-extern const FontTableEntry g_aExtFontTable[12];
-#endif
-// Descriptor pairs, one per font index (slot 0 and slot 1).
-extern FontDescriptor g_aFontDescriptors[12][2];
-void LoadFontDescriptor(u32 index, u32 slot);
-void InitTextMacroTable(void);
 s32 DecompressDialogText(s32 stringId, u8 *outBuf, s32 maxSize);
 void InitDialogTextEngine(void);
 u8 *GetDialogText(s32 stringId);
 u8 *FormatDecimal(s32 value, u8 *pBuf);
-extern u32 GetTextLineHeight(void);
-extern void SetTextLineHeight(u32 lineHeight);
 
 s32 InitDialogTextTable(DialogTextBlob *blob);
-extern u32 GetGlyphWidth(FontDescriptor *font, u16 glyphCode);
-extern u32 MeasureMacroString(const u8 *pStr);
-extern u32 DrawTextLine(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 **ppText, u32 align, s32 *pCharBudget);
-extern u32 PrintTextBox(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 *pText, u32 align);
-extern u32 DrawString(u32 tileCursor, s32 x, s32 y, const u8 *pText);
-extern u32 DrawStringAligned(u32 tileCursor, s32 x, s32 y, const u8 *pText, u32 align);
-extern void SetTextTargetFromBgControl(u32 bgControl);
-extern void SelectTextFont(u32 fontId, u32 color, s32 arg2);
-extern u32 DrawTextLines(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, u8 **ppText, u32 align);
 
 extern u32 GetLanguage(void);
 extern void SetLanguage(u32 languageId);

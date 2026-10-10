@@ -195,9 +195,8 @@
 .set g_aRoomTileAnimations,                            0x03002F24  @ RoomTileAnimation *: 32 entries, allocated by InitRoomTileAnimationTable
 .set g_dwRoomTileAnimationCount,                       0x03002F28  @ u32: entries in use in g_aRoomTileAnimations
 .set g_aFontDescriptors,                                  0x03002F30  @ FontDescriptor[12][2], filled by LoadFontDescriptor
-.set gTextRenderState,                                 0x03003110  @ struct: font descriptor pointers (+0x00/+0x04) and other
-                                                                   @ text-rendering fields (e.g. +0x11 = line height); not
-                                                                   @ fully mapped, see include/graphics/text.h
+.set gTextRenderState,                                 0x03003110  @ TextRenderState, see include/font.h
+.set gSavedTextTarget,                                 0x03003140  @ TextRenderState: target fields saved by SaveTextTarget
 .set sTextMacroTable,                                  0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by InitTextMacroTable) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickObject clears; see src/object/tick_object.c

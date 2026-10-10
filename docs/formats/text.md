@@ -161,26 +161,24 @@ reaches the VWF engine without needing mGBA at all.
 **Anchor**: of the two known plaintext tables, `sDebugCollectorCardNames`
 (`0x0804CEC4`) is actually read by code -- `0x0800BBEC` in
 `build/us/full_disasm.s` loads it, computes a 32-byte-stride entry index
-from a counter at `0x03002238+4`, and calls
-`sub_08020FF8(len=0x1a0, entry_ptr, 1, x=0x78, y=0x10, attr=0xe0)`.
+from a counter at `0x03002238+4`, and passes the entry to `PrintTextBox`.
 (`sPlayableCharacterNames` at `0x0804C4F6`, by contrast, has **zero**
 literal-pool references anywhere in the disassembly -- likely dead/debug
 data, not a useful anchor.)
 
-**`sub_08020FF8`** (`0x08020FF8`): word-wraps and dispatches per
-character -- loops `ldrb r0,[str]`, calls `sub_08020714` once per
-iteration, stops on a null byte. This is the string-consuming outer
-loop of a real text renderer.
+**`PrintTextBox`** (`0x08020FF8`): draws a string one `DrawTextLine` call
+per line until the null byte. The renderer as matched C is summarized under
+"Renderer" in [`fonts.md`](fonts.md).
 
 **`DrawTextLines`** (`0x08020F44`): a level above `PrintTextBox` --
 loops `DrawTextLine` directly, one call per line, advancing Y by
-`DAT_03003121` (line height) each iteration, until the string is
+`gTextRenderState.lineHeight` each iteration, until the string is
 null-terminated or out of vertical room. Multi-line box drawing built on
 the single-line primitive. Found via `ShowBattleMessage`'s `AttackResult`
 case ([`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)).
 
-**`sub_08020714`** (`0x08020714`): the actual per-glyph decode loop.
-Reads one byte at a time and branches on its value:
+**`DrawTextLine`** (`0x08020714`): lays out one line, then draws it with
+`DrawStringAligned`. Reads one byte at a time and branches on its value:
 
 - `byte == 0x40`: **macro prefix**. `@1`-`@4` (next byte `0x31`-`0x34`)
   select slot `code - 0x31` of `sTextMacroTable` (US `0x03003170`, four RAM
@@ -201,7 +199,7 @@ Reads one byte at a time and branches on its value:
   on whether the line width budget (`sl`, the caller's `len` arg) is
   already exceeded.
 
-**`sub_0802136C`** (`0x0802136C`): the glyph-width lookup, called with
+**`GetGlyphWidth`** (`0x0802136C`): the glyph-width lookup, called with
 `(fontDescriptor, glyphCode)`. Font descriptor struct (partial, offsets
 confirmed by this function's field accesses):
 
@@ -274,9 +272,9 @@ over `baserom.us.gba` bytes at the target address).
 
 ## The real dialog string table, decoded (PROVEN -- full round-trip against real content)
 
-Continuing from the two open threads above (`sub_08020FF8`'s other
+Continuing from the two open threads above (`PrintTextBox`'s other
 callers, and what actually reaches the codec dispatchers), grepping for
-all callers of `sub_08020FF8` (not just the one wizard-card-name site)
+all callers of `PrintTextBox` (not just the one wizard-card-name site)
 found the real mechanism.
 
 **Every other caller** (`build/us/full_disasm.s` lines ~39482, 53976,
@@ -297,7 +295,7 @@ pointer to a fixed 0x400-byte output buffer) and calls
 **`sub_08024DC8(id, outBuf, maxSize)`** (`0x08024DC8`): a **Huffman-style
 bitstream decompressor**, decoding directly into `outBuf` up to
 `maxSize` bytes, terminating on a decoded `0x00` byte (matching the
-`0x40` recursion in `sub_08020714`'s string-length role -- ordinary
+`0x40` recursion in `DrawTextLine`'s string-length role -- ordinary
 C-string semantics). Reads three RAM globals as its working state:
 
 - `0x030033C0`: base pointer of the current language's compressed blob.
@@ -317,7 +315,7 @@ already ruled out for this content in approach 2 above) -- reimplemented
 directly from the disassembly, not guessed.
 
 Decoded bytes above `0xEF` are handled with the same 2-byte-glyph
-pairing logic seen in `sub_08020714` (a byte `>0xEF` starts a pending
+pairing logic seen in `DrawTextLine` (a byte `>0xEF` starts a pending
 extended code, the next decoded byte completes it) -- the Huffman
 decoder's output is literally the same glyph-code byte stream the
 renderer consumes, confirming these are the same charmap/encoding on
@@ -372,7 +370,7 @@ are maintained locally in the gitignored `data/text/*.json` resources.
 **String ID scale**: scanning the English (lang 0) offset table for
 sequentially-valid entries found **2767 entries** (IDs `0`-`0xACE`) --
 matching a `cmp r?, #0xACF` boundary check seen near one of the
-`sub_08020FF8` call sites, an independent cross-check that this is the
+`PrintTextBox` call sites, an independent cross-check that this is the
 real, complete string count, not an arbitrary scan cutoff.
 
 ## The extraction pipeline, built and build-integrated (PROVEN -- full-ROM byte-exact)

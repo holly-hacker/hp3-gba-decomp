@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/items.h"
+#include "font.h"
 #include "graphics/text.h"
 #include "menu/dialog.h"
 #include "menu/main_menu.h"

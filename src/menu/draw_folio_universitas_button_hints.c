@@ -1,6 +1,7 @@
 #include "types.h"
 #include "math.h"
 #include "game/game_modes.h"
+#include "font.h"
 #include "graphics/text.h"
 #include "menu/folio_universitas_inline.h"
 

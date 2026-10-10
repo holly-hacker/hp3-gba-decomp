@@ -4,6 +4,7 @@
 #include "hw/io_regs.h"
 #include "hw/mem.h"
 #include "input.h"
+#include "font.h"
 #include "graphics/text.h"
 #include "game/game_modes.h"
 #include "battle/battle.h"

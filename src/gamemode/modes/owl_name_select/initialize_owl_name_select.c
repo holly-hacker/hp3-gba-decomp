@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "gen/graphics/menus.h"
 #include "graphics/display.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "menu/menu.h"
 #include "menu/owl_name_select.h"
 

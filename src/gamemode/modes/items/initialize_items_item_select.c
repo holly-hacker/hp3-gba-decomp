@@ -3,6 +3,7 @@
 #include "menu/in_game_menu.h"
 #include "menu/items_menu.h"
 #include "menu/main_menu.h"
+#include "font.h"
 #include "graphics/text.h"
 
 void InitializeItemsItemSelect(void)

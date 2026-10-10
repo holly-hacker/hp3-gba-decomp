@@ -4,7 +4,7 @@
 #include "game/game_modes.h"
 #include "graphics/graphics.h"
 #include "minigame/riddikulus.h"
-#include "graphics/text.h"
+#include "font.h"
 
 void InitializeRiddikulusMinigame(void)
 {

@@ -804,35 +804,35 @@ c-file 0x08020574 _ src/room/get_room_tile_anim_frame_delay.c GetRoomTileAnimFra
 c-file 0x08020590 _ src/room/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
 c-file 0x080205AC 0x080205E0 src/room/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
 thumb-func 0x080205E0 sub_080205F8
-thumb-func 0x08020650 sub_08020668
-c-file 0x08020654 0x0802086C src/text/draw_text_line.c DrawTextLine
-thumb-func 0x0802086C DrawStringAligned
-thumb-func 0x080209C4 DrawString
-c-file 0x08020C44 0x08020CD4 src/text/load_font_descriptor.c LoadFontDescriptor
-thumb-func 0x08020CD4 sub_08020CC8
-c-file 0x08020D3C 0x08020D74 src/text/init_text_macro_table.c InitTextMacroTable
-thumb-func 0x08020D74 SetTextTargetFromBgControl
-thumb-func 0x08020DA4 sub_08020D90
-thumb-func 0x08020DBC sub_08020DA8
-thumb-func 0x08020DE0 sub_08020DCC
-thumb-func 0x08020E04 SelectTextFont
-thumb-func 0x08020E48 SetTextLineHeight
-c-file 0x08020E54 0x08020EB0 src/text/measure_macro_string.c MeasureMacroString
-thumb-func 0x08020EB0 sub_08020E9C
-thumb-func 0x08020ED8 sub_08020EB8
-thumb-func 0x08020F64 DrawTextLines
-thumb-func 0x08020FD4 sub_08020FB4
-c-file 0x08021018 0x08021068 src/text/print_text_box.c PrintTextBox
-thumb-func 0x08021068 sub_08021048
-thumb-func 0x080210B0 sub_08021090
-c-file 0x080210F8 0x08021210 src/text/text_macro.c SetTextMacroString
-thumb-func 0x08021210 GetTextLineHeight
-thumb-func 0x0802121C sub_080211CC
-thumb-func 0x0802126C sub_0802121C
-thumb-func 0x080212F8 sub_080212A8
-thumb-func 0x08021398 sub_08021348
-c-file 0x080213BC 0x080213EC src/text/get_glyph_width.c GetGlyphWidth
-thumb-func 0x080213EC sub_0802139C
+c-file 0x08020650 _ src/font/insert_text_line_breaks.c InsertTextLineBreaks
+c-file 0x08020654 _ src/font/draw_text_line.c DrawTextLine
+c-file 0x0802086C _ src/font/draw_string_aligned.c DrawStringAligned
+c-file 0x080209C4 _ src/font/draw_string.c DrawString
+c-file 0x08020C44 _ src/font/load_font_descriptor.c LoadFontDescriptor
+c-file 0x08020CD4 _ src/font/flip_tile_horizontally.c FlipTileHorizontally
+c-file 0x08020D3C _ src/font/init_text_macro_table.c InitTextMacroTable
+c-file 0x08020D74 _ src/font/set_text_target_from_bg_control.c SetTextTargetFromBgControl
+c-file 0x08020DA4 _ src/font/set_text_target.c SetTextTarget
+c-file 0x08020DBC _ src/font/save_text_target.c SaveTextTarget
+c-file 0x08020DE0 _ src/font/restore_text_target.c RestoreTextTarget
+c-file 0x08020E04 _ src/font/select_text_font.c SelectTextFont
+c-file 0x08020E48 _ src/font/set_text_line_height.c SetTextLineHeight
+c-file 0x08020E54 _ src/font/measure_macro_string.c MeasureMacroString
+c-file 0x08020EB0 _ src/font/get_text_height.c GetTextHeight
+c-file 0x08020ED8 _ src/font/expand_text_macros.c ExpandTextMacros
+c-file 0x08020F64 _ src/font/draw_text_lines.c DrawTextLines
+c-file 0x08020FD4 _ src/font/draw_text_line_in_height.c DrawTextLineInHeight
+c-file 0x08021018 _ src/font/print_text_box.c PrintTextBox
+c-file 0x08021068 _ src/font/fill_tilemap_row.c FillTilemapRow
+c-file 0x080210B0 _ src/font/clear_tilemap_row.c ClearTilemapRow
+c-file 0x080210F8 _ src/font/text_macro.c SetTextMacroString
+c-file 0x08021210 _ src/font/get_text_line_height.c GetTextLineHeight
+c-file 0x0802121C _ src/font/fill_text_tile_column.c FillTextTileColumn
+c-file 0x0802126C _ src/font/read_text_tile_column.c ReadTextTileColumn
+c-file 0x080212F8 _ src/font/write_text_tile_column.c WriteTextTileColumn
+c-file 0x08021398 _ src/font/get_tilemap_entry_at.c GetTilemapEntryAt
+c-file 0x080213BC _ src/font/get_glyph_width.c GetGlyphWidth
+c-file 0x080213EC _ src/font/set_text_macro4_string.c SetTextMacro4String
 c-file 0x0802141C _ src/save/deserialize_game_state.c DeserializeGameStateFromSaveBuffer
 c-file 0x080214F4 _ src/save/serialize_game_state.c SerializeGameStateToSaveBuffer
 c-file 0x080215BC _ src/noop_init.c NoopInit
@@ -2219,7 +2219,7 @@ c-file 0x0805E1B8 0x0805E1C8 src/gamemode/modes/dialogue/dialogue.globals.c g_aD
 c-file 0x0805EA3C _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EAC8 _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
-c-file 0x08060408 _ src/text/load_font_descriptor.globals.c g_aExtFontTable
+c-file 0x08060408 _ src/font/load_font_descriptor.globals.c g_aExtFontTable
 c-file 0x080604C8 0x080604E0 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
 c-rodata 0x080605AC 0x080605B1 InitJoybusSession
 c-file 0x08060634 0x08060644 src/gamemode/modes/minigame/owl_care_kit/owl_care_kit.globals.c g_dwOwlCareBg3Control

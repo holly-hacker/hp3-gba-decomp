@@ -3,6 +3,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "graphics/graphics.h"
+#include "font.h"
 #include "graphics/text.h"
 #include "menu/dialog.h"
 #include "menu/items_menu.h"

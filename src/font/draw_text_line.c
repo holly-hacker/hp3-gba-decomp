@@ -1,5 +1,6 @@
+#define MEASURE_MACRO_STRING_LINKAGE extern inline
 #include "types.h"
-#include "graphics/text.h"
+#include "font.h"
 
 #ifdef VERSION_JP
 // JP only. Looks up the flag bits of a two-byte glyph in FontDescriptor.pGlyphFlags: a
@@ -34,14 +35,10 @@ u32 DrawTextLine(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 **ppText, 
     const u8 *pCode;
     const u8 *pWrap;
     const u8 *pHyphenWrap;
-    const u8 *pMacro;
     u8 *pOut;
     s32 width;
-    s32 macroWidth;
-    u32 macroCode;
     u16 code;
     FontDescriptor *font;
-    FontDescriptor *macroFont;
 #ifdef VERSION_JP
     u8 lead;
     const u8 *pHeldBreak;
@@ -66,32 +63,7 @@ u32 DrawTextLine(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 **ppText, 
         if (*pCode == 0x40)
         {
             pCode++;
-            pMacro = sTextMacroTable[*pCode - 0x31];
-            macroWidth = 0;
-            while (*pMacro != 0)
-            {
-                if (*pMacro == 0x40)
-                {
-                    pMacro++;
-                    macroWidth += MeasureMacroString(sTextMacroTable[*pMacro - 0x31]);
-                }
-                else
-                {
-                    macroCode = *pMacro;
-                    if (macroCode > 0xEF)
-                    {
-                        macroCode <<= 8;
-                        pMacro++;
-                        macroCode |= *pMacro;
-                        macroFont = gTextRenderState.pExtFont;
-                    }
-                    else
-                        macroFont = gTextRenderState.pFont;
-                    macroWidth += GetGlyphWidth(macroFont, macroCode);
-                }
-                pMacro++;
-            }
-            width += macroWidth;
+            width += MeasureMacroString(sTextMacroTable[*pCode - 0x31]);
 #ifdef VERSION_JP
             if (width >= maxWidth - 8)
             {

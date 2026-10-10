@@ -5,6 +5,7 @@
 #include "game/game_modes.h"
 #include "input.h"
 #include "mt19937.h"
+#include "font.h"
 #include "graphics/text.h"
 
 void UpdateDivinationTeaMinigame(void)

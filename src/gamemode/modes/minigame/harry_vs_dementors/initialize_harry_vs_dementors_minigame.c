@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "minigame/harry_vs_dementors.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "gen/graphics/overworld.h"
 
 void InitializeHarryVsDementorsMinigame(void)

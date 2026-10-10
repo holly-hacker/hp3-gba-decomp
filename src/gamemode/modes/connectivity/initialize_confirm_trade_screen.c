@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/game_modes.h"
+#include "font.h"
 #include "graphics/text.h"
 #include "menu/connectivity.h"
 #include "menu/in_game_menu.h"

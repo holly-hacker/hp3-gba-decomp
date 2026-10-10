@@ -7,7 +7,7 @@
 #include "graphics/object.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "gen/graphics/menus.h"
 
 void InitializeDebugCharacterSelectMenu(void)

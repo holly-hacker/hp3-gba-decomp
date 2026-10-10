@@ -3,7 +3,7 @@
 #include "hw/io_regs.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
 #include "minigame/high_score_name_entry.h"

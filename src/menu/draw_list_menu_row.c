@@ -1,6 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 #include "menu/menu.h"
+#include "font.h"
 #include "graphics/text.h"
 
 void DrawListMenuRow(u32 row)

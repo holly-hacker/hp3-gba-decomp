@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "input.h"
 #include "cutscene/linear_cutscene.h"
-#include "graphics/text.h"
+#include "font.h"
 
 // A advances the text; the object is shown while more text remains, and A on
 // the last page leaves the cutscene.

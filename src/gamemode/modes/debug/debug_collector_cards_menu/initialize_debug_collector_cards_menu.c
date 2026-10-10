@@ -5,7 +5,7 @@
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
 #include "overworld/room.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "minigame/wizard_cracker_pop_it.h"
 
 void InitializeDebugCollectorCardsMenu(void)

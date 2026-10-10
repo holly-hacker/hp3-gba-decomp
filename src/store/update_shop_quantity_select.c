@@ -1,4 +1,5 @@
 #include "types.h"
+#include "font.h"
 #include "game/items.h"
 #include "game/rewards.h"
 #include "game/save.h"

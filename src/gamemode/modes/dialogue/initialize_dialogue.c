@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "graphics/object.h"
 #include "graphics/scanline_effects.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "menu/dialog.h"
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"

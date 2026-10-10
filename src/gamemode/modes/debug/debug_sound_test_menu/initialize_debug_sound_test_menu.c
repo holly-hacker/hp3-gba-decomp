@@ -7,7 +7,7 @@
 #include "hw/io_regs.h"
 #include "graphics/object.h"
 #include "overworld/room.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "gen/graphics/menus.h"
 
 void InitializeDebugSoundTestMenu(void)

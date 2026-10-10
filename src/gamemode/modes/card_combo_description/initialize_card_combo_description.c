@@ -3,6 +3,7 @@
 #include "gen/graphics/cutscenes.h"
 #include "graphics/display.h"
 #include "graphics/object.h"
+#include "font.h"
 #include "graphics/text.h"
 #include "menu/folio_universitas.h"
 #include "menu/main_menu.h"

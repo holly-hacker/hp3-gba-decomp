@@ -1,4 +1,4 @@
-#include "graphics/text.h"
+#include "font.h"
 #include "hw/mem.h"
 
 void InitTextMacroTable(void)

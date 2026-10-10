@@ -1,5 +1,6 @@
 #include "types.h"
 #include "menu/dialog.h"
+#include "font.h"
 #include "graphics/text.h"
 
 // Fill text macro @N (sTextMacroTable slot N - 1) before showing text that uses it.

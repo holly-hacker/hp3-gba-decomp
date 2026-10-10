@@ -3,7 +3,7 @@
 #include "game/save.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "minigame/owlcare.h"
 #include "gen/graphics/minigames/owl_care.h"
 

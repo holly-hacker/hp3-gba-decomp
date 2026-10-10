@@ -183,8 +183,8 @@
 .set g_aRoomTileAnimations,                            0x03002F24
 .set g_dwRoomTileAnimationCount,                       0x03002F28
 .set g_aFontDescriptors,                                  0x03002F30
-.set gTextRenderState,                                 0x03003170  @ text-rendering fields (e.g. +0x11 = line height); not
-                                                                   @ fully mapped, see include/graphics/text.h
+.set gTextRenderState,                                 0x03003170  @ TextRenderState, see include/font.h
+.set gSavedTextTarget,                                 0x030031A0  @ TextRenderState: target fields saved by SaveTextTarget
 .set sTextMacroTable,                                  0x030031D0  @ see ram_symbols.us.inc
 .set g_saveStateBlock,                                 0x030031E0
 .set g_dwUnk03003234,                                  0x03003294  @ see ram_symbols.us.inc

@@ -5,6 +5,7 @@
 #include "input.h"
 #include "menu/main_menu.h"
 #include "mt19937.h"
+#include "font.h"
 #include "graphics/text.h"
 
 void UpdateMainMenu(void)

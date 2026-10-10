@@ -4,7 +4,7 @@
 #include "gen/graphics/minigames/hippogriff.h"
 #include "gen/graphics/menus.h"
 #include "graphics/display.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "menu/folio_universitas.h"
 #include "graphics/display.h"
 

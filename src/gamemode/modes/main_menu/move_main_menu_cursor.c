@@ -3,6 +3,7 @@
 #include "game/game_modes.h"
 #include "input.h"
 #include "menu/main_menu.h"
+#include "font.h"
 #include "graphics/text.h"
 
 static inline void DrawEntry(u32 entry, u32 selectedEntry)

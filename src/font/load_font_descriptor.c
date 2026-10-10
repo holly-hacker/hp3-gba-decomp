@@ -1,4 +1,4 @@
-#include "graphics/text.h"
+#include "font.h"
 
 // Big-endian u16 offset at blob[at], resolved against the blob base.
 #define FONT_BLOB_PTR(blob, at) ((blob) + (((blob)[at] << 8) + (blob)[(at) + 1]))
@@ -9,7 +9,7 @@ void LoadFontDescriptor(u32 index, u32 slot)
     FontDescriptor *desc;
 
 #ifdef VERSION_JP
-    // Slot 1 takes the two-byte-glyph font, slot 0 the Latin font; unk6
+    // Slot 1 takes the two-byte-glyph font, slot 0 the Latin font; the line height
     // always comes from the two-byte-glyph table.
     if (slot == 1)
         blob = g_aExtFontTable[index].pBlob;
@@ -24,9 +24,9 @@ void LoadFontDescriptor(u32 index, u32 slot)
     desc->lastCode = *(const u16 *)&blob[2];
     desc->height = blob[4];
 #ifdef VERSION_JP
-    desc->unk6 = g_aExtFontTable[index].value;
+    desc->lineHeight = g_aExtFontTable[index].lineHeight;
 #else
-    desc->unk6 = g_aFontTable[index].value;
+    desc->lineHeight = g_aFontTable[index].lineHeight;
 #endif
     desc->pGlyphOffsets = (const u16 *)FONT_BLOB_PTR(blob, 6);
     desc->pWidths = FONT_BLOB_PTR(blob, 10);

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "minigame/wizard_cracker_pop_it.h"
-#include "graphics/text.h"
+#include "font.h"
 #include "game/game_modes.h"
 #include "menu/folio_universitas.h"
 #include "gen/graphics/cutscenes.h"
