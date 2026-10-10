@@ -9,7 +9,10 @@ Areas and code blocks come from tools/rom_layout.json. Each code block is
 one unit, and its functions are the manifest's function rows and region
 starts plus the seeds in functions.<ver>.cfg. A function runs to the next
 function start or region boundary; it is matched when it lies in compiled C
-(c-file, c-file-O1). Code bytes are matched when they lie in compiled C.
+(c-file, c-file-O1) or committed assembly (asm-file), which in the code
+areas is ARM code, the ROM header or library assembly. Code bytes are
+matched, and complete (linked from source), on the same terms; a block is a
+complete unit when all of it is.
 
 In the data areas, units are the manifest's region rows plus one
 auto-generated unit per unclaimed gap. A data unit counts as matched (and
@@ -44,6 +47,7 @@ MEASURE_FIELDS = [
     "total_functions", "matched_functions",
 ]
 FUNCTION_DIRECTIVES = {"thumb-func", "arm-func"}
+MATCHED_CODE_DIRECTIVES = C_FILE_DIRECTIVES | {ASM_FILE_DIRECTIVE}
 CFG_DIRECTIVES = {"thumb_func", "arm_func"}
 
 
@@ -123,7 +127,7 @@ def read_functions(ver: str, rows: list[dict], blocks: list) -> list[dict]:
             row = next((r for r in rows if r["start"] <= a < r["end"]), None)
             functions.append({
                 "start": a, "size": end - a, "name": names[a],
-                "matched": row is not None and row["directive"] in C_FILE_DIRECTIVES,
+                "matched": row is not None and row["directive"] in MATCHED_CODE_DIRECTIVES,
             })
     return functions
 
@@ -169,7 +173,7 @@ def unique_name(name: str, seen: dict[str, int]) -> str:
 
 def matched_bytes(rows: list[dict], lo: int, hi: int) -> int:
     return sum(max(0, min(r["end"], hi) - max(r["start"], lo))
-               for r in rows if r["directive"] in C_FILE_DIRECTIVES)
+               for r in rows if r["directive"] in MATCHED_CODE_DIRECTIVES)
 
 
 def block_unit(block, rows: list[dict], functions: list[dict], seen: dict[str, int]) -> dict:
@@ -181,7 +185,7 @@ def block_unit(block, rows: list[dict], functions: list[dict], seen: dict[str, i
     m["complete_units"] = int(complete)
     m["total_code"] = size
     m["matched_code"] = matched
-    m["complete_code"] = size if complete else 0
+    m["complete_code"] = matched
     m["total_functions"] = len(functions)
     m["matched_functions"] = sum(f["matched"] for f in functions)
     return {
