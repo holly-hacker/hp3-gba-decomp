@@ -49,9 +49,13 @@
 // Also SIOMLT_RECV (player 0's slot) during a multiplayer link session.
 #define REG_KEYINPUT (*(volatile u16 *)0x04000130)
 // Timer 3 control (the link cable's serial pump) and serial communication.
+#define REG_TM3CNT_L     (*(volatile u16 *)0x0400010C)
 #define REG_TM3CNT_H     (*(volatile u16 *)0x0400010E)
+// SIOMULTI0-3: the word each multiplayer terminal sent in the last transfer.
+#define REG_SIOMULTI(n)  (((volatile u16 *)0x04000120)[n])
 #define REG_SIOCNT       (*(volatile u16 *)0x04000128)
 #define REG_SIOMLT_SEND  (*(volatile u16 *)0x0400012A)
+#define REG_RCNT         (*(volatile u16 *)0x04000134)
 // Interrupt enable and request/acknowledge flags.
 #define REG_IE      (*(volatile u16 *)0x04000200)
 #define REG_IF      (*(volatile u16 *)0x04000202)

@@ -642,6 +642,7 @@ c-file 0x08025EEC _ src/interrupts/handle_vblank_interrupt.c HandleVBlankInterru
 c-file 0x080260C4 _ src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x08026104 _ src/interrupts/enable_interrupts.c EnableInterrupts
 c-file 0x08026138 0x0802618C src/interrupts/install_interrupt_handler.c InstallInterruptHandler
+thumb-func 0x0802618C SetIntrFunc
 c-file 0x080261B4 0x080261E0 src/interrupts/set_vblank_callback.c SetVBlankCallback
 c-file 0x0802620C _ src/interrupts/set_vcount_callback.c SetVCountCallback
 c-file 0x08026238 _ src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
@@ -1188,20 +1189,44 @@ c-file 0x0803EA48 0x0803EAA4 src/overworld/find_bg_tile_cache_entry.c FindBgTile
 thumb-func 0x0803EAA4 sub_0803EA3C
 c-file 0x0803EB2C 0x0803EBE4 src/overworld/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
 c-file 0x0803EE10 _ src/serial/process_serial_messages.c ProcessSerialMessages
-c-file 0x0803EED8 0x0803EF4C src/serial/queue_serial_message.c QueueSerialMessage
-thumb-func 0x0803EF4C SetSerialCallbacks
-thumb-func 0x0803EF58 InitSerialSession
-c-file 0x0803EFC4 0x0803EFEC src/serial/tick_serial_comm_if_active.c TickSerialCommIfActive_candidate
-thumb-func 0x0803F084 StartSerialConnection
-thumb-func 0x0803F0B4 TickSerialSession
-c-file 0x0803F0C0 0x0803F104 src/serial/reset_serial_session.c ResetSerialSession
-thumb-func 0x0803F300 SerialConnect
-c-file 0x0803F594 0x0803F750 src/serial/run_serial_exchange.c RunSerialExchange
-c-file 0x0803FA34 0x0803FA88 src/serial/disable_serial.c DisableSerial
-thumb-func 0x0803FAC8 CloseSerialSession
+c-file 0x0803EED8 _ src/serial/queue_serial_message.c QueueSerialMessage
+c-file 0x0803EF4C _ src/serial/set_serial_callbacks.c SetSerialCallbacks
+c-file 0x0803EF58 _ src/serial/init_serial_session.c InitSerialSession
+c-file 0x0803EF68 _ src/serial/begin_serial_session.c BeginSerialSession
+c-file 0x0803EFAC _ src/serial/get_serial_mode.c GetSerialMode
+c-file 0x0803EFB8 _ src/serial/set_serial_mode.c SetSerialMode
+c-file 0x0803EFC4 _ src/serial/tick_serial_comm_if_active.c TickSerialCommIfActive_candidate
+c-file 0x0803EFEC _ src/serial/get_mt19937_last_roll_byte.c GetMt19937LastRollByte
+c-file 0x0803EFF8 _ src/serial/get_serial_checksum_roll_byte.c GetSerialChecksumRollByte
+c-file 0x0803F004 _ src/serial/latch_serial_checksum_roll_byte.c LatchSerialChecksumRollByte
+c-file 0x0803F018 _ src/serial/clear_serial_checksum_roll_bytes.c ClearSerialChecksumRollBytes
+c-file 0x0803F02C _ src/serial/start_serial_game_session.c StartSerialGameSession
+c-file 0x0803F084 _ src/serial/start_serial_connection.c StartSerialConnection
+c-file 0x0803F0B4 _ src/serial/tick_serial_session.c TickSerialSession
+c-file 0x0803F0C0 _ src/serial/reset_serial_session.c ResetSerialSession
+c-file 0x0803F104 _ src/serial/is_serial_ready.c IsSerialReady
+c-file 0x0803F110 _ src/serial/init_serial.c InitSerial
+c-file 0x0803F300 _ src/serial/serial_connect.c SerialConnect
+c-file 0x0803F3F8 _ src/serial/update_serial_connection.c UpdateSerialConnection
+c-file 0x0803F4A0 _ src/serial/submit_serial_message.c SubmitSerialMessage
+c-file 0x0803F594 _ src/serial/run_serial_exchange.c RunSerialExchange
+c-file 0x0803F750 _ src/serial/serial_timer3_intr.c SerialTimer3Intr
+c-file 0x0803FA34 _ src/serial/disable_serial.c DisableSerial
+c-file 0x0803FA88 _ src/serial/wait_for_serial_handshake.c WaitForSerialHandshake
+c-file 0x0803FAC8 _ src/serial/close_serial_session.c CloseSerialSession
+c-file 0x0803FAE4 _ src/serial/set_serial_wait_callback.c SetSerialWaitCallback
+c-file 0x0803FAF0 _ src/serial/get_serial_player_count.c GetSerialPlayerCount
 c-file 0x0803FAFC _ src/serial/get_serial_player_id.c GetSerialPlayerId
-c-file 0x0803FB0C 0x0803FB9C src/serial/exchange_serial_frame.c ExchangeSerialFrame_candidate
-thumb-func 0x0803FBE0 IsSerialUp
+c-file 0x0803FB0C _ src/serial/exchange_serial_frame.c ExchangeSerialFrame_candidate
+c-file 0x0803FB9C _ src/serial/sub_0803fb34.c sub_0803FB34
+c-file 0x0803FBA8 _ src/serial/sub_0803fb40.c sub_0803FB40
+c-file 0x0803FBB4 _ src/serial/set_serial_send_keys.c SetSerialSendKeys
+c-file 0x0803FBE0 _ src/serial/is_serial_up.c IsSerialUp
+c-file 0x0803FC08 _ src/serial/is_serial_frame_ready.c IsSerialFrameReady
+c-file 0x0803FC28 _ src/serial/serial_phase2.c SerialPhase2
+c-file 0x0803FC54 _ src/serial/mark_serial_session_closed.c MarkSerialSessionClosed
+c-file 0x0803FC68 _ src/serial/verify_serial_message_checksum.c VerifySerialMessageChecksum
+c-file 0x0803FCB0 _ src/serial/count_serial_connect_retries.c CountSerialConnectRetries
 c-file 0x0803FCD0 _ src/audio/play_sound_by_id.c PlaySoundById
 c-file 0x0803FD6C _ src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
 c-file 0x0803FE18 _ src/audio/kram_install.c kramInstall

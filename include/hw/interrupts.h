@@ -28,5 +28,7 @@ extern void HandleTimer2Interrupt(void);
 extern void IntrDummy(void);
 
 void InstallInterruptHandler(void *handlerCode);
+// Stores a handler in gIntrTable[slot].
+void SetIntrFunc(u32 slot, void (*pfnHandler)(void));
 void InitInterruptSystem(void);
 void EnableInterrupts(void);

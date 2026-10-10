@@ -9,6 +9,6 @@ void DisableSerial(void)
         REG_IE &= ~0x40;
     REG_IE &= ~0x80;
     REG_SIOMLT_SEND = 0xFFFF;
-    g_SerialPlayerState.bUnk_0x04 = 0;
+    g_SerialPlayerState.bPlayerCount = 0;
     g_SerialPlayerState.bPlayerId = -1;
 }

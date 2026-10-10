@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "menu/menu.h"
+#include "serial/serial.h"
 
 // Card value meaning "no card chosen"; real cards are 0-50.
 #define CARD_TRADE_NO_CARD 0x33
@@ -39,13 +40,6 @@ extern const u8 gCardTradeOverlay[];
 extern void ReceiveCardTradeOffer(u32 word, u32 playerId);
 extern u32 GetCardTradeSendWord(void);
 
-extern u32 IsSerialUp(void);
-extern u32 SerialConnect(u32 mode);
-extern void SetSerialCallbacks(void (*pOnReceive)(u32 word, u32 playerId), u32 (*pGetSendWord)(void));
-extern void InitSerialSession(void);
-extern void StartSerialConnection(u32 arg);
-extern void TickSerialSession(u32 arg0, u32 arg1);
-extern void CloseSerialSession(void);
 extern void ClearMenuTextLayer_candidate(void);
 
 extern void ResetCardTradeAfterLinkLoss(void);

@@ -127,6 +127,9 @@ initialize before the guard -- test `p[i]` vs `*p++` based on the target (memset
 candidate short a per-iteration reload+add the ROM repeats (`.loop`: `mult STRIDE add CONST`)
 -- try adding the constant to an already-formed `base+i*stride` sum so the giv reads `add 0`
 (ExitBattle, US 0x0800DE50). Let strength reduction happen when the target's shape matches it.
+The same switch affects a struct base register copied late in a block (`adds r4, r0, #0`): an
+indexed global access in the loop keeps that gcse PRE copy, walking pointers let loop.c drop it
+(SubmitSerialMessage, US 0x0803F438).
 
 ## 13. Value fails to survive calls
 
@@ -283,6 +286,12 @@ code, and inlined twice they hoist the literal differently: the `if`/`return 1`/
 shares one constant register hoisted out of both loops in `loop.c` pass 1 (after the address
 copy); `return a > 600;` or a `timeout` local leaves the constant first or per loop. Example:
 RunSerialExchange, US `0x0803F52C`, inlines the test that `SerialPhase2` (`0x0803FBC0`) holds.
+
+## 31. Load immediately before a constant store (`ldrh rX, [p]; strh rZero, [p]`)
+
+agbcc emits a dead load for a plain `a[i] = 0` on a volatile array element, but not for `*p = 0`
+through a volatile pointer. Keep the field volatile and the indexed store. Example: InitSerial,
+US `0x0803F0A8`.
 
 ## Candidate acceptance and cleanup
 

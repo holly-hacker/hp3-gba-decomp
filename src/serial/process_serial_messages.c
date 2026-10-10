@@ -8,7 +8,7 @@ void ProcessSerialMessages(void)
     u32 i;
     SerialMessage *pMessage;
 
-    g_dwSerialFlags &= ~SERIAL_FLAG_OWN_MESSAGE_SEEN;
+    g_SerialLink.dwFlags &= ~SERIAL_FLAG_OWN_MESSAGE_SEEN;
     for (i = 0; i < g_bSerialPeerCount; i++)
     {
         pMessage = &g_aSerialRecvMessages[i];
@@ -23,12 +23,12 @@ void ProcessSerialMessages(void)
         case SERIAL_MESSAGE_IDLE:
             g_awSerialKeysReceived[i] = 0xFF00;
             if (GetSerialPlayerId() == i)
-                g_dwSerialFlags |= SERIAL_FLAG_OWN_MESSAGE_SEEN;
+                g_SerialLink.dwFlags |= SERIAL_FLAG_OWN_MESSAGE_SEEN;
             break;
         case SERIAL_MESSAGE_KEYS:
             g_awSerialKeysReceived[i] = pMessage->wData;
             if (GetSerialPlayerId() == i)
-                g_dwSerialFlags |= SERIAL_FLAG_OWN_MESSAGE_SEEN;
+                g_SerialLink.dwFlags |= SERIAL_FLAG_OWN_MESSAGE_SEEN;
             break;
         case SERIAL_MESSAGE_SEED:
             Mt19937SetSeed(pMessage->wData);

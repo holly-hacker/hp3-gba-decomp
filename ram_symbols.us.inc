@@ -407,19 +407,33 @@
 .set g_awBgTileCacheFreeCount,       0x030059A8  @ u16[2]: number of entries in each size class's free slot stack
 .set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState_candidate
 .set g_BgLoadedScroll,              0x030059B8  @ s32[2]: g_BgScroll as of the last tile load; the window VRAM holds
-.set g_dwSerialFlags, 0x030059D8  @ u32: SERIAL_FLAG_* bits of the link exchange state
+.set g_SerialLink, 0x030059D8  @ SerialLink: exchange flags and the game's link callbacks; see include/serial/serial.h
 .set g_aSerialRecvMessages, 0x030059E4  @ SerialMessage[2]: latest message received from each peer
 .set g_SerialSendMessage, 0x030059FC  @ SerialMessage: message queued for the next exchange
 .set g_bSerialTick, 0x03005A08  @ u8: stamped into each queued message; incremented once per processed round
 .set g_abSerialLastRecvSeq, 0x03005A09  @ u8[2]: bSeq of the last message handled from each peer
 .set g_awSerialKeysReceived,     0x03005A0C  @ u16[2]: per-player key masks received over the link cable
+.set g_bSerialUnk03005A10, 0x03005A10  @ u8: zeroed with g_bSerialSeedReceived by StartSerialConnection; never read
 .set g_bSerialSeedReceived, 0x03005A11  @ u8: set once the parent's RNG seed message has been applied
+.set g_bSerialChecksumRollByte, 0x03005A14  @ u8: gMt19937LastRollByte latched by SubmitSerialMessage for message checksums
 .set g_dwSerialMode, 0x03005A18  @ u32: 1 while the exchange loop runs each frame
+.set g_dwSerialPlayerCount, 0x03005A1C  @ u32: terminals that answered the last serial interrupt; 5 after a stray protocol word
 .set g_bSerialPeerCount, 0x03005A20  @ u8: number of peers in g_aSerialRecvMessages
+.set g_bSerialLocalPlayerId, 0x03005A21  @ u8: GetSerialPlayerId() latched when the game session starts
+.set g_bSerialPlayerMask, 0x03005A22  @ u8: one bit per multiplayer slot that answered the last serial interrupt
 .set g_SerialPlayerState,        0x03005A24  @ SerialPlayerState: serial-link session block; see include/serial/serial.h
 .set g_dwSerialExchangeCount, 0x03005A90  @ u32: completed exchange rounds
+.set g_dwSerialChecksumExchangeCount, 0x03005A94  @ u32: g_dwSerialExchangeCount latched by SubmitSerialMessage for message checksums
 .set g_dwSerialLastExchangeTime, 0x03005A98  @ u32: dwVBlankCount when the last exchange round finished
 .set g_dwSerialPollFlags_candidate, 0x03005A9C  @ u32: bit 0 selects the message type queued by ExchangeSerialFrame_candidate
+.set g_dwSerialMaxPlayers, 0x03005AA0  @ u32: SerialConnect argument; a higher terminal ID drops the session
+.set g_dwSerialUnk03005AA4, 0x03005AA4  @ u32: zeroed by InitSerial, no other access found
+.set g_dwSerialUnk03005AA8, 0x03005AA8  @ u32: zeroed by InitSerial, no other access found
+.set g_dwSerialUnk03005AAC, 0x03005AAC  @ u32: zeroed by InitSerial, no other access found
+.set g_dwSerialUnk03005AB0, 0x03005AB0  @ u32: zeroed by InitSerial, no other access found
+.set g_dwSerialConnectRetries, 0x03005AB4  @ u32: CountSerialConnectRetries call counter
+.set g_dwSerialUnk03005AB8, 0x03005AB8  @ u32: set by sub_0803FB34, returned by sub_0803FB40; neither has a caller
+.set g_dwSerialUnk03005ABC, 0x03005ABC  @ u32: zeroed by InitSerial, no other access found
 .set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none

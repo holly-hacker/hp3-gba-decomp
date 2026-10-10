@@ -16,30 +16,30 @@ static inline s32 HasSerialExchangeTimedOut(void)
 // next round. Returns 1 if a wait ran longer than SERIAL_TIMEOUT_VBLANKS.
 s32 RunSerialExchange(void)
 {
-    if (g_dwSerialFlags & SERIAL_FLAG_CLOSED)
+    if (g_SerialLink.dwFlags & SERIAL_FLAG_CLOSED)
     {
-        g_dwSerialFlags |= SERIAL_FLAG_CLOSED;
+        g_SerialLink.dwFlags |= SERIAL_FLAG_CLOSED;
         ResetSerialSession();
         return 0;
     }
 
     do
     {
-        while (!(g_dwSerialFlags & SERIAL_FLAG_FRAME_READY))
+        while (!(g_SerialLink.dwFlags & SERIAL_FLAG_FRAME_READY))
         {
             if (HasSerialExchangeTimedOut())
             {
-                g_dwSerialFlags |= SERIAL_FLAG_TIMED_OUT;
+                g_SerialLink.dwFlags |= SERIAL_FLAG_TIMED_OUT;
                 return 1;
             }
         }
 
-        while (!(g_dwSerialFlags & SERIAL_FLAG_TRANSFER_DONE))
+        while (!(g_SerialLink.dwFlags & SERIAL_FLAG_TRANSFER_DONE))
         {
-            if (!(g_dwSerialFlags & SERIAL_FLAG_TRANSFER_STARTED) && g_SerialPlayerState.dwUnk_0x00 == -1)
+            if (!(g_SerialLink.dwFlags & SERIAL_FLAG_TRANSFER_STARTED) && g_SerialPlayerState.dwUnk_0x00 == -1)
             {
-                g_dwSerialFlags |= SERIAL_FLAG_TRANSFER_KICKED;
-                g_dwSerialFlags |= SERIAL_FLAG_TRANSFER_STARTED;
+                g_SerialLink.dwFlags |= SERIAL_FLAG_TRANSFER_KICKED;
+                g_SerialLink.dwFlags |= SERIAL_FLAG_TRANSFER_STARTED;
                 if (g_SerialPlayerState.bPlayerId == 0)
                 {
                     REG_SIOMLT_SEND = 0xC0DE;
@@ -49,18 +49,18 @@ s32 RunSerialExchange(void)
             }
             if (HasSerialExchangeTimedOut())
             {
-                g_dwSerialFlags |= SERIAL_FLAG_TIMED_OUT;
+                g_SerialLink.dwFlags |= SERIAL_FLAG_TIMED_OUT;
                 return 1;
             }
         }
 
-        g_dwSerialFlags &= ~SERIAL_FLAG_TRANSFER_DONE;
-        g_dwSerialFlags &= ~SERIAL_FLAG_TRANSFER_STARTED;
-    } while (!(g_dwSerialFlags & SERIAL_FLAG_ROUND_COMPLETE));
+        g_SerialLink.dwFlags &= ~SERIAL_FLAG_TRANSFER_DONE;
+        g_SerialLink.dwFlags &= ~SERIAL_FLAG_TRANSFER_STARTED;
+    } while (!(g_SerialLink.dwFlags & SERIAL_FLAG_ROUND_COMPLETE));
 
     ProcessSerialMessages();
-    g_dwSerialFlags &= ~SERIAL_FLAG_FRAME_READY;
-    g_dwSerialFlags &= ~SERIAL_FLAG_ROUND_COMPLETE;
+    g_SerialLink.dwFlags &= ~SERIAL_FLAG_FRAME_READY;
+    g_SerialLink.dwFlags &= ~SERIAL_FLAG_ROUND_COMPLETE;
     g_dwSerialExchangeCount++;
     if (g_SerialPlayerState.bPlayerId == 0)
     {

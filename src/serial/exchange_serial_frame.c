@@ -16,7 +16,7 @@ s32 ExchangeSerialFrame_candidate(void)
         if (RunSerialExchange() == 1)
         {
             g_dwGameModeFlags &= ~SerialSessionActive;
-            g_dwSerialFlags |= SERIAL_FLAG_CLOSED;
+            g_SerialLink.dwFlags |= SERIAL_FLAG_CLOSED;
             ResetSerialSession();
             return 1;
         }

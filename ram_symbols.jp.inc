@@ -389,19 +389,33 @@
 .set g_awBgTileCacheFreeCount,       0x03005A08  @ see ram_symbols.us.inc
 .set g_dwUnk030059AC,                   0x03005A0C
 .set g_BgLoadedScroll,                 0x03005A18
-.set g_dwSerialFlags, 0x03005A38  @ u32: SERIAL_FLAG_* bits of the link exchange state
+.set g_SerialLink, 0x03005A38
 .set g_aSerialRecvMessages, 0x03005A44  @ SerialMessage[2]: latest message received from each peer
 .set g_SerialSendMessage, 0x03005A5C  @ SerialMessage: message queued for the next exchange
 .set g_bSerialTick, 0x03005A68  @ u8: stamped into each queued message; incremented once per processed round
 .set g_abSerialLastRecvSeq, 0x03005A69  @ u8[2]: bSeq of the last message handled from each peer
 .set g_awSerialKeysReceived,     0x03005A6C
+.set g_bSerialUnk03005A10, 0x03005A70
 .set g_bSerialSeedReceived, 0x03005A71  @ u8: set once the parent's RNG seed message has been applied
+.set g_bSerialChecksumRollByte, 0x03005A74
 .set g_dwSerialMode, 0x03005A78  @ u32: 1 while the exchange loop runs each frame
+.set g_dwSerialPlayerCount, 0x03005A7C
 .set g_bSerialPeerCount, 0x03005A80  @ u8: number of peers in g_aSerialRecvMessages
+.set g_bSerialLocalPlayerId, 0x03005A81
+.set g_bSerialPlayerMask, 0x03005A82
 .set g_SerialPlayerState,        0x03005A84  @ see include/serial/serial.h
 .set g_dwSerialExchangeCount, 0x03005AF0  @ u32: completed exchange rounds
+.set g_dwSerialChecksumExchangeCount, 0x03005AF4
 .set g_dwSerialLastExchangeTime, 0x03005AF8  @ u32: dwVBlankCount when the last exchange round finished
 .set g_dwSerialPollFlags_candidate, 0x03005AFC  @ u32: bit 0 selects the message type queued by ExchangeSerialFrame_candidate
+.set g_dwSerialMaxPlayers, 0x03005B00
+.set g_dwSerialUnk03005AA4, 0x03005B04
+.set g_dwSerialUnk03005AA8, 0x03005B08
+.set g_dwSerialUnk03005AAC, 0x03005B0C
+.set g_dwSerialUnk03005AB0, 0x03005B10
+.set g_dwSerialConnectRetries, 0x03005B14
+.set g_dwSerialUnk03005AB8, 0x03005B18
+.set g_dwSerialUnk03005ABC, 0x03005B1C
 .set g_bUnk03005AC0,             0x03005B20
 .set g_bMusicPaused,             0x03005B21
 .set g_bCurrentMusicModule,      0x03005B22

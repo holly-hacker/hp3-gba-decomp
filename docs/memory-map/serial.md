@@ -11,26 +11,37 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
 - Transport is GBA multiplayer mode (`SIOCNT = 0x2000`, set by
   `InitSerial`, `0x0803F0A8`), `SIOMLT_SEND` at `0x0400012A`, slave
   words at `0x04000130+`.
-- Everything is Timer3-interrupt-pumped (`SerialTimer3Intr`;
-  `TM3CNT_L = 0xC352`, serial+Timer3 IRQs enabled). No BIOS swap calls.
+- Everything is interrupt-pumped by `SerialTimer3Intr`: the parent from
+  Timer 3 (`TM3CNT_L = 0xC352`), a child from the serial IRQ. No BIOS swap
+  calls.
 - `SerialConnect` (`0x0803F298`) busy-waits the `SIOCNT` start/error bits,
   buddy-checks `0xFFFF`, then exchanges magic words (`0xFEED` out, expects
   `0xFEED`/`0xB0CA` back). Timeout dies via a vblank-counter delta in the
   per-tick pump.
-- Session state, ISR-owned: `g_dwSerialState` (`0x03005A1C`: 0 idle, 2
-  linked, 5 error) and `g_bSerialChildMask` (`0x03005A22`, one bit per
-  connected child). `IsSerialUp` (`0x0803FB78`) is exactly
-  "state == 2 and mask == 3" — a two-player session ready.
+- Session state, ISR-owned: `SerialTimer3Intr` clears
+  `g_dwSerialPlayerCount` (`0x03005A1C`) and `g_bSerialPlayerMask`
+  (`0x03005A22`) each interrupt, then counts slots 1 and 0 whose `SIOMULTI`
+  word is `0xFEED`, `0xB0CA` or `0xAxxx` (data, passed to the receive
+  callback) and sets one mask bit per slot. A round word (`0xBEEF`,
+  `0xC0DE`, `0xBABE`, `0xDEAD`) outside a round sets the count to 5.
+  `IsSerialUp` (`0x0803FB78`) is exactly "count == 2 and mask == 3" — a
+  two-player session ready.
+- Handshake (`SERIAL_FLAG_HANDSHAKE`): a received `0xB0CA` sets the flag. The
+  parent finishes once every child echoes `0xB0CA`; a child echoes the
+  parent's word. Finishing installs `SerialPhase2` as the wait callback,
+  sets `SERIAL_FLAG_CLEARED_ON_RESET` and runs `StartSerialGameSession`,
+  which sets `SerialSessionActive`, latches the peer count and local ID, and
+  has the parent queue a random RNG-seed message (a child queues idle).
 - `g_SerialPlayerState` (`0x03005A24`, `include/serial/serial.h`) holds the session's
   local terminal ID at `+5` (`bPlayerId`, `s8`): `SerialTimer3Intr` stores
-  `(SIOCNT >> 4) & 3` there while `g_dwSerialState != 0` (0 = parent, 1-3 =
+  `(SIOCNT >> 4) & 3` there while `g_dwSerialPlayerCount != 0` (0 = parent, 1-3 =
   child), and init/teardown reset it to `0xFF` (-1, no session).
   `GetSerialPlayerId` (`0x0803FA94`) returns it; `UpdateKeyInput` uses it to
   pick the local player's key slot. A value above 1 tears the session down.
 - Per-frame exchange (STRUCTURAL MATCH, `TickSerialCommIfActive_candidate`): while
   `g_dwSerialMode == 1`, `ExchangeSerialFrame_candidate` queues an idle (type 1) or key (type 2)
   `SerialMessage` with `QueueSerialMessage`, then `RunSerialExchange` busy-waits on
-  `g_dwSerialFlags` bits set by the serial interrupt (600 vblanks maximum), kicks the parent's
+  `g_SerialLink.dwFlags` bits set by the serial interrupt (600 vblanks maximum), kicks the parent's
   send words (`0xC0DE` to start, `0xBEEF` to finish a round) and runs `ProcessSerialMessages`
   to fill `g_awSerialKeysReceived` (and apply a type 3 RNG seed). A timeout clears
   `SerialSessionActive` and runs `ResetSerialSession`. Message types and `SERIAL_FLAG_*` roles are in
@@ -100,4 +111,12 @@ on this path.
 - What, if anything, reads `bUnk07`/`bUnk0B`.
 - The `+0x14` word between `g_dwGameModeState` and `g_dwGameModeTimer`
   (blocks extending `GameModeStackContext_candidate` over these words).
-- Full `g_dwSerialState` value enumeration beyond observed 0/2/5.
+- The role of `g_SerialPlayerState.dwUnk_0x00`. Every access is a store of
+  -1 (init, reset, handshake completion) or a compare with -1 (the parent's
+  transfer kick and the send-buffer swap), so both gates always pass.
+  `pSendCurrent` is likewise never read outside the swap, and nothing fills
+  `awRecvB` after init; the transfer itself runs through the `g_SerialLink`
+  callbacks.
+- `SubmitSerialMessage` (checksummed send staging),
+  `VerifySerialMessageChecksum` and the `g_dwSerialUnk03005AB8` accessors
+  `sub_0803FB34`/`sub_0803FB40` have no callers found.
