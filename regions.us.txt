@@ -1110,7 +1110,7 @@ thumb-func 0x080265B8 sub_080265B8
 thumb-func 0x08026674 sub_08026674
 
 # Item (items, equipment and inventory)
-c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
+c-file 0x080266EC 0x08026754 src/items/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 thumb-func 0x08026754 EquipItemInSlot
 thumb-func 0x080267D0 CanFighterEquipItem
 thumb-func 0x08026870 sub_08026870

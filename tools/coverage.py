@@ -8,31 +8,18 @@ Reads regions.<ver>.txt and buckets every region-bearing row into:
   raw     -- unclaimed, filled from the baserom with .incbin
 "matched" is c-file + asm-file + data, i.e. everything that is not raw.
 
-Each area (code 1, data, code 2) is measured by the bytes of each kind that
-fall inside it; a region straddling an area boundary is split at the boundary.
+Each area (code 1, data, code 2), and with --blocks each code block, is
+measured by the bytes of each kind that fall inside it; a region straddling a
+boundary is split at it. Areas and blocks come from tools/rom_layout.json.
 """
 import argparse
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import rom_layout  # noqa: E402
 from manifest import read_rows  # noqa: E402
 
-# Area boundaries for the ROMs: [start, end) each.
-US_AREAS = [
-    ("code (start)", 0x08000000, 0x0804BDBC),
-    ("data", 0x0804BDBC, 0x08FB0DB0),
-    ("code (krawall)", 0x08FB0DB0, 0x08FB2348),
-    ("data (krawall)", 0x08FB2348, 0x08FB4B40),
-    # ("empty", 0x08FB4B40, 0x09000000),
-]
-JP_AREAS = [
-    ("code (start)", 0x08000000, 0x0804BCE8),
-    ("data", 0x0804BCE8, 0x8F44244),
-    ("code (krawall)", 0x8F44244, 0x8F457DC),
-    ("data (krawall)", 0x8F457DC, 0x8F46A3C),
-    # ("empty", 0x8F46A3C, 0x09000000),
-]
 KINDS = ["c-file", "asm-file", "data", "raw"]
 COLUMNS = ["c-file", "asm-file", "data", "matched", "raw"]
 NON_REGION = {"label", "thumb-func", "arm-func"}
@@ -77,19 +64,20 @@ def measure(regions, lo: int, hi: int) -> dict[str, int]:
 AREA_W, RANGE_W, BYTES_W, PCT_W = 14, 17, 10, 6
 
 
-def fmt_row(label: str, span: str, total: int, sizes: dict[str, int]) -> str:
+def fmt_row(label: str, span: str, total: int, sizes: dict[str, int],
+            label_w: int = AREA_W) -> str:
     sizes = {**sizes, "matched": total - sizes["raw"]}
     cells = "  ".join(
         f"{sizes[k]:>{BYTES_W},} {100 * sizes[k] / total:>{PCT_W - 1}.1f}%"
         for k in COLUMNS
     )
-    return f"{label:<{AREA_W}}  {span:<{RANGE_W}}  {total:>{BYTES_W},}  {cells}"
+    return f"{label:<{label_w}}  {span:<{RANGE_W}}  {total:>{BYTES_W},}  {cells}"
 
 
-def fmt_header() -> str:
+def fmt_header(label: str = "area", label_w: int = AREA_W) -> str:
     cell_w = BYTES_W + 1 + PCT_W
     cells = "  ".join(f"{k:>{cell_w}}" for k in COLUMNS)
-    return f"{'area':<{AREA_W}}  {'range':<{RANGE_W}}  {'bytes':>{BYTES_W}}  {cells}"
+    return f"{label:<{label_w}}  {'range':<{RANGE_W}}  {'bytes':>{BYTES_W}}  {cells}"
 
 
 def main() -> None:
@@ -99,13 +87,17 @@ def main() -> None:
         "--area",
         action="append",
         metavar="NAME:START:END",
-        help="override the default US areas (hex addresses); repeatable",
+        help="override the default areas (hex addresses); repeatable",
     )
+    ap.add_argument("--blocks", action="store_true",
+                    help="also break the code areas down by block")
     ap.add_argument("--list-raw", action="store_true",
                     help="also list the largest unclaimed gaps in each area")
     args = ap.parse_args()
 
-    for (areas, ver) in [(US_AREAS, "us"), (JP_AREAS, "jp")]:
+    for ver in ["us", "jp"]:
+        layout_areas, blocks = rom_layout.load(ver)
+        areas = [(a.name, a.start, a.end) for a in layout_areas]
         if args.area:
             areas = []
             for spec in args.area:
@@ -124,6 +116,14 @@ def main() -> None:
                 total[k] += sizes[k]
             span += hi - lo
         print(fmt_row("total", "", span, total))
+
+        if args.blocks:
+            label_w = max(len(b.name) for b in blocks)
+            print()
+            print(fmt_header("block", label_w))
+            for b in blocks:
+                print(fmt_row(b.name, f"{b.start:08X}-{b.end:08X}", b.end - b.start,
+                              measure(regions, b.start, b.end), label_w))
 
         if args.list_raw:
             for name, lo, hi in areas:

@@ -51,8 +51,9 @@ local asset edits.
 - `build/<ver>/`: generated disassembly, objects, linker script, and ROM.
   Unclaimed manifest ranges are filled from the baserom with `.incbin`.
   `build/cache/` is a safe-to-delete content-addressed cache.
-- `tools/coverage.py`: manifest coverage by ROM area/kind; the per-version
-  code/data area boundaries are defined in the script.
+- `tools/coverage.py`: manifest coverage by ROM area/kind (and by code block
+  with `--blocks`). The per-version code/data areas and named code blocks
+  are in `tools/rom_layout.json`, shared with `tools/progress_report.py`.
 - `docs/README.md`: findings index and confidence definitions.
   `docs/memory-map/` describes code and RAM; `docs/formats/` describes data.
 

@@ -5,17 +5,19 @@ The report follows objdiff's report.proto (version 2), as JSON. It is
 derived from the manifest alone, without building: every c-file row is
 byte-exact because the build compares against the baserom.
 
-Units are the manifest's region rows plus one auto-generated unit per
-unclaimed gap, split at the area boundaries in coverage.py so each unit is
-all code or all data. A unit counts as matched (and complete) when it is
-compiled C (c-file, c-file-O1, c-rodata) or, in a data area, an asm-file
-row or extracted asset directive. asm-file rows in a code area and
-unclaimed gaps count as unmatched.
-Function measures are left at zero: the manifest does not record function
-boundaries.
+Areas and code blocks come from tools/rom_layout.json. Each code block is
+one unit, and its functions are the manifest's function rows and region
+starts plus the seeds in functions.<ver>.cfg. A function runs to the next
+function start or region boundary; it is matched when it lies in compiled C
+(c-file, c-file-O1). Code bytes are matched when they lie in compiled C.
 
-Progress categories: `krawall` for the Krawall areas, `libc` for rows whose
-source is under src/libc/, `game` for everything else.
+In the data areas, units are the manifest's region rows plus one
+auto-generated unit per unclaimed gap. A data unit counts as matched (and
+complete) when it is compiled C (c-file, c-file-O1, c-rodata), an asm-file
+row or an extracted asset directive.
+
+Progress categories: a code block's own category (`krawall`, `libc` or
+`game`); for data, `krawall` in the Krawall data area and `game` elsewhere.
 """
 import argparse
 import json
@@ -23,7 +25,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from coverage import JP_AREAS, US_AREAS  # noqa: E402
+import rom_layout  # noqa: E402
 from manifest import (  # noqa: E402
     ASM_FILE_DIRECTIVE,
     C_FILE_DIRECTIVES,
@@ -34,12 +36,15 @@ from manifest import (  # noqa: E402
 )
 
 REPORT_VERSION = 2
-AREAS = {"us": US_AREAS, "jp": JP_AREAS}
+VERSIONS = ["us", "jp"]
 CATEGORIES = [("game", "Game"), ("libc", "libc"), ("krawall", "Krawall")]
 MEASURE_FIELDS = [
     "total_code", "matched_code", "total_data", "matched_data",
     "complete_code", "complete_data", "total_units", "complete_units",
+    "total_functions", "matched_functions",
 ]
+FUNCTION_DIRECTIVES = {"thumb-func", "arm-func"}
+CFG_DIRECTIVES = {"thumb_func", "arm_func"}
 
 
 def read_units(path: str) -> list[dict]:
@@ -76,13 +81,51 @@ def read_units(path: str) -> list[dict]:
     return rows
 
 
-def is_matched(directive: str | None, is_code: bool) -> bool:
-    if directive is None:
-        return False
-    if directive in C_FILE_DIRECTIVES or directive == C_RODATA_DIRECTIVE:
-        return True
-    # asm-file rows and extracted asset directives.
-    return not is_code
+def read_function_starts(ver: str, rows: list[dict]) -> dict[int, str]:
+    """Returns address -> name for every known function start.
+
+    Names prefer the manifest's function rows, then functions.<ver>.cfg,
+    then the name of the region row starting there.
+    """
+    names: dict[int, str] = {}
+    for row in rows:
+        if row["directive"] in C_FILE_DIRECTIVES or row["directive"] == ASM_FILE_DIRECTIVE:
+            names[row["start"]] = row["name"]
+    with open(f"functions.{ver}.cfg") as f:
+        for line in f:
+            parts = line.split("#", 1)[0].split()
+            if len(parts) >= 2 and parts[0] in CFG_DIRECTIVES:
+                address = int(parts[1], 16)
+                if len(parts) >= 3:
+                    names[address] = parts[2]
+                else:
+                    names.setdefault(address, f"sub_{address:08X}")
+    for _, parts in read_rows(f"regions.{ver}.txt"):
+        if parts[0] in FUNCTION_DIRECTIVES:
+            names[int(parts[1], 16)] = parts[2]
+    return names
+
+
+def read_functions(ver: str, rows: list[dict], blocks: list) -> list[dict]:
+    """Returns the functions in the code blocks: start, size, name, matched.
+
+    A function ends at the next function start, the end of the region row
+    holding it (or the start of the next one) and the end of its block.
+    """
+    names = read_function_starts(ver, rows)
+    bounds = sorted({r["start"] for r in rows} | {r["end"] for r in rows})
+    starts = sorted(names)
+    functions = []
+    for block in blocks:
+        inside = [a for a in starts if block.start <= a < block.end]
+        for a, next_start in zip(inside, inside[1:] + [block.end]):
+            end = min([next_start] + [b for b in bounds if b > a])
+            row = next((r for r in rows if r["start"] <= a < r["end"]), None)
+            functions.append({
+                "start": a, "size": end - a, "name": names[a],
+                "matched": row is not None and row["directive"] in C_FILE_DIRECTIVES,
+            })
+    return functions
 
 
 def category_of(area: str, source: str | None) -> str:
@@ -107,9 +150,7 @@ def finish(m: dict) -> dict:
     out["matched_data_percent"] = pct(m["matched_data"], m["total_data"])
     out["complete_code_percent"] = pct(m["complete_code"], m["total_code"])
     out["complete_data_percent"] = pct(m["complete_data"], m["total_data"])
-    out["total_functions"] = 0
-    out["matched_functions"] = 0
-    out["matched_functions_percent"] = 0.0
+    out["matched_functions_percent"] = pct(m["matched_functions"], m["total_functions"])
     return out
 
 
@@ -118,12 +159,67 @@ def add(dst: dict, src: dict) -> None:
         dst[f] += src[f]
 
 
+def unique_name(name: str, seen: dict[str, int]) -> str:
+    if name in seen:
+        seen[name] += 1
+        return f"{name}.{seen[name]}"
+    seen[name] = 0
+    return name
+
+
+def matched_bytes(rows: list[dict], lo: int, hi: int) -> int:
+    return sum(max(0, min(r["end"], hi) - max(r["start"], lo))
+               for r in rows if r["directive"] in C_FILE_DIRECTIVES)
+
+
+def block_unit(block, rows: list[dict], functions: list[dict], seen: dict[str, int]) -> dict:
+    size = block.end - block.start
+    matched = matched_bytes(rows, block.start, block.end)
+    complete = matched == size
+    m = empty_measures()
+    m["total_units"] = 1
+    m["complete_units"] = int(complete)
+    m["total_code"] = size
+    m["matched_code"] = matched
+    m["complete_code"] = size if complete else 0
+    m["total_functions"] = len(functions)
+    m["matched_functions"] = sum(f["matched"] for f in functions)
+    return {
+        "name": unique_name(block.name, seen),
+        "measures": m,
+        "metadata": {
+            "complete": complete,
+            "progress_categories": [block.category],
+            "auto_generated": False,
+        },
+        "sections": [{
+            "name": ".text",
+            "size": size,
+            "fuzzy_match_percent": 100.0 * matched / size,
+            "metadata": {"virtual_address": block.start},
+        }],
+        "functions": [{
+            "name": f["name"],
+            "size": f["size"],
+            "fuzzy_match_percent": 100.0 if f["matched"] else 0.0,
+            "metadata": {"virtual_address": f["start"]},
+        } for f in functions],
+    }
+
+
 def build_report(ver: str) -> dict:
     rows = read_units(f"regions.{ver}.txt")
+    areas, blocks = rom_layout.load(ver)
+    functions = read_functions(ver, rows, blocks)
     units = []
     seen = {}
-    for area, lo, hi in AREAS[ver]:
-        is_code = area.startswith("code")
+    for block in blocks:
+        inside = [f for f in functions if block.start <= f["start"] < block.end]
+        units.append(block_unit(block, rows, inside, seen))
+    for area in areas:
+        if area.is_code:
+            continue
+        lo, hi = area.start, area.end
         pieces = []
         cur = lo
         for row in rows:
@@ -144,23 +240,18 @@ def build_report(ver: str) -> dict:
             else:
                 name, directive, source = row["name"], row["directive"], row["source"]
             # A row split at an area boundary appears once per area.
-            if name in seen:
-                seen[name] += 1
-                name = f"{name}.{seen[name]}"
-            else:
-                seen[name] = 0
-            matched = is_matched(directive, is_code)
+            name = unique_name(name, seen)
+            matched = directive is not None
             m = empty_measures()
             m["total_units"] = 1
             m["complete_units"] = int(matched)
-            kind = "code" if is_code else "data"
-            m[f"total_{kind}"] = size
+            m["total_data"] = size
             if matched:
-                m[f"matched_{kind}"] = size
-                m[f"complete_{kind}"] = size
+                m["matched_data"] = size
+                m["complete_data"] = size
             metadata = {
                 "complete": matched,
-                "progress_categories": [category_of(area, source)],
+                "progress_categories": [category_of(area.name, source)],
                 "auto_generated": row is None,
             }
             if source:
@@ -170,7 +261,7 @@ def build_report(ver: str) -> dict:
                 "measures": m,
                 "metadata": metadata,
                 "sections": [{
-                    "name": ".text" if is_code else ".data",
+                    "name": ".data",
                     "size": size,
                     "fuzzy_match_percent": 100.0 if matched else 0.0,
                     "metadata": {"virtual_address": s},
@@ -199,7 +290,7 @@ def build_report(ver: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("ver", choices=sorted(AREAS))
+    ap.add_argument("ver", choices=VERSIONS)
     ap.add_argument("-o", "--output", help="default: build/<ver>/report.json")
     args = ap.parse_args()
 
