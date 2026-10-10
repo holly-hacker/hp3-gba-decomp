@@ -41,4 +41,4 @@ extern void ResetKeyInput(void);
 extern void EnableKeyInput(void);
 extern void InitInputSystem(void);
 
-extern u16 g_awLinkKeysReceived[2];  // 0x03005A0C: per-player key masks received over the link cable
+extern u16 g_awSerialKeysReceived[2];  // 0x03005A0C: per-player key masks received over the link cable

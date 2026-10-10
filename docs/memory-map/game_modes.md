@@ -74,8 +74,8 @@ single-purpose fields, same as `dwModeState`/`dwModeTimer`/
 `dwModeSubState`.
 
 `TickGameModeStack` also pumps the link-cable comm packet
-(`TickLinkCommIfActive_candidate`, `0x0803EF5C`) when a link session is
-active (`g_dwGameModeFlags` bit `0x20`) -- see `link.md` for that subsystem.
+(`TickSerialCommIfActive_candidate`, `0x0803EF5C`) when a link session is
+active (`g_dwGameModeFlags` bit `0x20`) -- see `serial.md` for that subsystem.
 
 `InitGameModeStack` (`0x0802C750`, matched: `src/gamemode/init_game_mode_stack.c`)
 zeroes the current mode, seeds pending/previous from it, then pushes
@@ -312,7 +312,7 @@ screen helpers in `src/menu/` (`folio_universitas.h`, `folio_bruti.h`).
 PROVEN from the matched handlers in `src/gamemode/modes/card_trade/` and
 `src/gamemode/modes/gamecube_link/`. Both are Connectivity rows built on a
 `ListMenuDefinition` and keep their link session alive across `dwModeState` steps; see
-[`link.md`](link.md) and [`gcn-link.md`](gcn-link.md) for the protocols.
+[`serial.md`](serial.md) and [`gcn-link.md`](gcn-link.md) for the protocols.
 
 - CardTrade: Init with `dwCurrentGameModeArg1 == 1` returns from a sub-screen at state 2
   with `Arg2` as the local card; otherwise it clears `g_CardTradeState` and fades in from

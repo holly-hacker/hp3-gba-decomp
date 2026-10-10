@@ -5,7 +5,7 @@
 
 void TickGameModeStack(void)
 {
-    TickLinkCommIfActive_candidate();
+    TickSerialCommIfActive_candidate();
     g_dwTickCount++;
 
     if (IsGameModeTransitionPending())

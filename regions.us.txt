@@ -1432,22 +1432,22 @@ thumb-func 0x0803EA3C sub_0803EA3C
 c-file 0x0803EAC4 0x0803EB7C src/overworld/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
 thumb-func 0x0803ECF0 sub_0803ECF0
 
-# Serial? (link), see docs/memory-map/link.md
-c-file 0x0803EDA8 _ src/link/process_link_messages.c ProcessLinkMessages
-c-file 0x0803EE70 0x0803EEE4 src/link/queue_link_message.c QueueLinkMessage
-thumb-func 0x0803EEE4 SetLinkCallbacks
-thumb-func 0x0803EEF0 InitLinkSession
-c-file 0x0803EF5C 0x0803EF84 src/link/tick_link_comm_if_active.c TickLinkCommIfActive_candidate
-thumb-func 0x0803F01C StartLinkConnection
-thumb-func 0x0803F04C TickLinkSession
-c-file 0x0803F058 0x0803F09C src/link/reset_link_session.c ResetLinkSession
-thumb-func 0x0803F298 LinkConnect
-c-file 0x0803F52C 0x0803F6E8 src/link/run_link_exchange.c RunLinkExchange
-c-file 0x0803F9CC 0x0803FA20 src/link/disable_link_serial.c DisableLinkSerial
-thumb-func 0x0803FA60 CloseLinkSession
-c-file 0x0803FA94 _ src/link/get_link_player_id.c GetLinkPlayerId
-c-file 0x0803FAA4 0x0803FB34 src/link/exchange_link_frame.c ExchangeLinkFrame_candidate
-thumb-func 0x0803FB78 IsLinkUp
+# Serial (link cable), see docs/memory-map/serial.md
+c-file 0x0803EDA8 _ src/serial/process_serial_messages.c ProcessSerialMessages
+c-file 0x0803EE70 0x0803EEE4 src/serial/queue_serial_message.c QueueSerialMessage
+thumb-func 0x0803EEE4 SetSerialCallbacks
+thumb-func 0x0803EEF0 InitSerialSession
+c-file 0x0803EF5C 0x0803EF84 src/serial/tick_serial_comm_if_active.c TickSerialCommIfActive_candidate
+thumb-func 0x0803F01C StartSerialConnection
+thumb-func 0x0803F04C TickSerialSession
+c-file 0x0803F058 0x0803F09C src/serial/reset_serial_session.c ResetSerialSession
+thumb-func 0x0803F298 SerialConnect
+c-file 0x0803F52C 0x0803F6E8 src/serial/run_serial_exchange.c RunSerialExchange
+c-file 0x0803F9CC 0x0803FA20 src/serial/disable_serial.c DisableSerial
+thumb-func 0x0803FA60 CloseSerialSession
+c-file 0x0803FA94 _ src/serial/get_serial_player_id.c GetSerialPlayerId
+c-file 0x0803FAA4 0x0803FB34 src/serial/exchange_serial_frame.c ExchangeSerialFrame_candidate
+thumb-func 0x0803FB78 IsSerialUp
 thumb-func 0x0803FC48 sub_0803FC48
 
 # Sound (audio)

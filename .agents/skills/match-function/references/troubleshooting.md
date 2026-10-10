@@ -282,7 +282,7 @@ source. `return a > 600;` and `if (a > 600) return 1; return 0;` compile standal
 code, and inlined twice they hoist the literal differently: the `if`/`return 1`/`return 0` form
 shares one constant register hoisted out of both loops in `loop.c` pass 1 (after the address
 copy); `return a > 600;` or a `timeout` local leaves the constant first or per loop. Example:
-RunLinkExchange, US `0x0803F52C`, inlines the test that `LinkPhase2` (`0x0803FBC0`) holds.
+RunSerialExchange, US `0x0803F52C`, inlines the test that `SerialPhase2` (`0x0803FBC0`) holds.
 
 ## Candidate acceptance and cleanup
 

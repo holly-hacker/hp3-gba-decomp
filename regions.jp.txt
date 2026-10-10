@@ -1187,21 +1187,21 @@ c-file 0x0803EA38 _ src/overworld/enable_bg_layer_scroll.c EnableBgLayerScroll
 c-file 0x0803EA48 0x0803EAA4 src/overworld/find_bg_tile_cache_entry.c FindBgTileCacheEntry
 thumb-func 0x0803EAA4 sub_0803EA3C
 c-file 0x0803EB2C 0x0803EBE4 src/overworld/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
-c-file 0x0803EE10 _ src/link/process_link_messages.c ProcessLinkMessages
-c-file 0x0803EED8 0x0803EF4C src/link/queue_link_message.c QueueLinkMessage
-thumb-func 0x0803EF4C SetLinkCallbacks
-thumb-func 0x0803EF58 InitLinkSession
-c-file 0x0803EFC4 0x0803EFEC src/link/tick_link_comm_if_active.c TickLinkCommIfActive_candidate
-thumb-func 0x0803F084 StartLinkConnection
-thumb-func 0x0803F0B4 TickLinkSession
-c-file 0x0803F0C0 0x0803F104 src/link/reset_link_session.c ResetLinkSession
-thumb-func 0x0803F300 LinkConnect
-c-file 0x0803F594 0x0803F750 src/link/run_link_exchange.c RunLinkExchange
-c-file 0x0803FA34 0x0803FA88 src/link/disable_link_serial.c DisableLinkSerial
-thumb-func 0x0803FAC8 CloseLinkSession
-c-file 0x0803FAFC _ src/link/get_link_player_id.c GetLinkPlayerId
-c-file 0x0803FB0C 0x0803FB9C src/link/exchange_link_frame.c ExchangeLinkFrame_candidate
-thumb-func 0x0803FBE0 IsLinkUp
+c-file 0x0803EE10 _ src/serial/process_serial_messages.c ProcessSerialMessages
+c-file 0x0803EED8 0x0803EF4C src/serial/queue_serial_message.c QueueSerialMessage
+thumb-func 0x0803EF4C SetSerialCallbacks
+thumb-func 0x0803EF58 InitSerialSession
+c-file 0x0803EFC4 0x0803EFEC src/serial/tick_serial_comm_if_active.c TickSerialCommIfActive_candidate
+thumb-func 0x0803F084 StartSerialConnection
+thumb-func 0x0803F0B4 TickSerialSession
+c-file 0x0803F0C0 0x0803F104 src/serial/reset_serial_session.c ResetSerialSession
+thumb-func 0x0803F300 SerialConnect
+c-file 0x0803F594 0x0803F750 src/serial/run_serial_exchange.c RunSerialExchange
+c-file 0x0803FA34 0x0803FA88 src/serial/disable_serial.c DisableSerial
+thumb-func 0x0803FAC8 CloseSerialSession
+c-file 0x0803FAFC _ src/serial/get_serial_player_id.c GetSerialPlayerId
+c-file 0x0803FB0C 0x0803FB9C src/serial/exchange_serial_frame.c ExchangeSerialFrame_candidate
+thumb-func 0x0803FBE0 IsSerialUp
 c-file 0x0803FCD0 _ src/audio/play_sound_by_id.c PlaySoundById
 c-file 0x0803FD6C _ src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
 c-file 0x0803FE18 _ src/audio/kram_install.c kramInstall

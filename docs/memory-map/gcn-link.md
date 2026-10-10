@@ -9,7 +9,7 @@ addresses are US-ROM unless noted. See [`../README.md`](../README.md) for
 the confidence key.
 
 This covers the GBA-side slave only. The GBA-GBA multiplayer side lives in
-[`link.md`](link.md).
+[`serial.md`](serial.md).
 
 ## Transport (PROVEN)
 

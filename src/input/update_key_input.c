@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/input.h"
-#include "link/link.h"
+#include "serial/serial.h"
 #include "hw/io_regs.h"
 #include "game/game_modes.h"
 
@@ -28,12 +28,12 @@ void UpdateKeyInput(void)
     if ((g_dwGameModeFlags & 0x20) != 0)
     {
         s32 i;
-        s32 localPlayer = GetLinkPlayerId();
+        s32 localPlayer = GetSerialPlayerId();
 
-        for (i = 0; i < ARRAY_COUNT(g_awLinkKeysReceived); i++)
+        for (i = 0; i < ARRAY_COUNT(g_awSerialKeysReceived); i++)
         {
             g_awPlayerKeysHeldPrevious[i] = g_awPlayerKeysHeld[i];
-            g_awPlayerKeysHeld[i] = g_awLinkKeysReceived[i];
+            g_awPlayerKeysHeld[i] = g_awSerialKeysReceived[i];
             g_awPlayerKeysPressed[i] = (g_awPlayerKeysHeldPrevious[i] ^ g_awPlayerKeysHeld[i]) & g_awPlayerKeysHeld[i];
             g_awPlayerKeysReleased[i] = (g_awPlayerKeysHeld[i] ^ g_awPlayerKeysHeldPrevious[i]) & g_awPlayerKeysHeldPrevious[i];
         }

@@ -15,5 +15,5 @@ void ExitCardTrade(void)
     FreeAllObjects(&g_ActiveObjectListState.pHead);
 
     if (GetPendingGameMode_candidate() == Connectivity)
-        CloseLinkSession();
+        CloseSerialSession();
 }

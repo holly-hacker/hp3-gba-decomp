@@ -11,7 +11,7 @@ void UpdateOverworld(void)
 
     // TickOverworldControlSlots_candidate always returns 0, so the first branch is dead.
     if (TickOverworldControlSlots_candidate() == 1)
-        g_dwGameModeFlags &= ~LinkSessionActive;
+        g_dwGameModeFlags &= ~SerialSessionActive;
     else
         TickOwlCareKitFromOverworld();
 }

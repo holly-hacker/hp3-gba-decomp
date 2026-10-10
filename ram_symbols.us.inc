@@ -407,19 +407,19 @@
 .set g_awBgTileCacheFreeCount,       0x030059A8  @ u16[2]: number of entries in each size class's free slot stack
 .set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState_candidate
 .set g_BgLoadedScroll,              0x030059B8  @ s32[2]: g_BgScroll as of the last tile load; the window VRAM holds
-.set g_dwLinkFlags, 0x030059D8  @ u32: LINK_FLAG_* bits of the link exchange state
-.set g_aLinkRecvMessages, 0x030059E4  @ LinkMessage[2]: latest message received from each peer
-.set g_LinkSendMessage, 0x030059FC  @ LinkMessage: message queued for the next exchange
-.set g_bLinkTick, 0x03005A08  @ u8: stamped into each queued message; incremented once per processed round
-.set g_abLinkLastRecvSeq, 0x03005A09  @ u8[2]: bSeq of the last message handled from each peer
-.set g_awLinkKeysReceived,       0x03005A0C  @ u16[2]: per-player key masks received over the link cable
-.set g_bLinkSeedReceived, 0x03005A11  @ u8: set once the parent's RNG seed message has been applied
-.set g_dwLinkMode, 0x03005A18  @ u32: 1 while the exchange loop runs each frame
-.set g_bLinkPeerCount, 0x03005A20  @ u8: number of peers in g_aLinkRecvMessages
-.set g_LinkPlayerState,          0x03005A24  @ LinkPlayerState: serial-link session block; see include/link/link.h
-.set g_dwLinkExchangeCount, 0x03005A90  @ u32: completed exchange rounds
-.set g_dwLinkLastExchangeTime, 0x03005A98  @ u32: dwVBlankCount when the last exchange round finished
-.set g_dwLinkPollFlags_candidate, 0x03005A9C  @ u32: bit 0 selects the message type queued by ExchangeLinkFrame_candidate
+.set g_dwSerialFlags, 0x030059D8  @ u32: SERIAL_FLAG_* bits of the link exchange state
+.set g_aSerialRecvMessages, 0x030059E4  @ SerialMessage[2]: latest message received from each peer
+.set g_SerialSendMessage, 0x030059FC  @ SerialMessage: message queued for the next exchange
+.set g_bSerialTick, 0x03005A08  @ u8: stamped into each queued message; incremented once per processed round
+.set g_abSerialLastRecvSeq, 0x03005A09  @ u8[2]: bSeq of the last message handled from each peer
+.set g_awSerialKeysReceived,     0x03005A0C  @ u16[2]: per-player key masks received over the link cable
+.set g_bSerialSeedReceived, 0x03005A11  @ u8: set once the parent's RNG seed message has been applied
+.set g_dwSerialMode, 0x03005A18  @ u32: 1 while the exchange loop runs each frame
+.set g_bSerialPeerCount, 0x03005A20  @ u8: number of peers in g_aSerialRecvMessages
+.set g_SerialPlayerState,        0x03005A24  @ SerialPlayerState: serial-link session block; see include/serial/serial.h
+.set g_dwSerialExchangeCount, 0x03005A90  @ u32: completed exchange rounds
+.set g_dwSerialLastExchangeTime, 0x03005A98  @ u32: dwVBlankCount when the last exchange round finished
+.set g_dwSerialPollFlags_candidate, 0x03005A9C  @ u32: bit 0 selects the message type queued by ExchangeSerialFrame_candidate
 .set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none

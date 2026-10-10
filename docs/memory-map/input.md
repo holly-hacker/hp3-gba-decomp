@@ -20,10 +20,10 @@ if (g_wInputDisabled != 0) {
     // and all four per-player arrays to 0, then returns
 } else if ((g_dwGameModeFlags & 0x20) != 0) {
     // serial-link input: update both players' masks from the link
-    // input buffer (g_awLinkKeysReceived, 0x03005A0C, see
-    // docs/memory-map/link.md), then select the local player's slot
-    // (`GetLinkPlayerId`, US `0x0803FA94`, JP `0x0803FAFC`: the local
-    // multiplayer terminal ID, see link.md)
+    // input buffer (g_awSerialKeysReceived, 0x03005A0C, see
+    // docs/memory-map/serial.md), then select the local player's slot
+    // (`GetSerialPlayerId`, US `0x0803FA94`, JP `0x0803FAFC`: the local
+    // multiplayer terminal ID, see serial.md)
     ...
     g_wKeysHeldPrevious = g_awPlayerKeysHeldPrevious[localPlayer];
     g_wKeysHeld = g_awPlayerKeysHeld[localPlayer];
@@ -82,7 +82,7 @@ All `u16`, standard GBA `KEYINPUT` bit order (active-high once XORed, as
 
 JP addresses (`ram_symbols.jp.inc`): every key-state global sits `0x60` higher
 than its US address, from `g_wKeysHeld` (`0x0300354C`) through
-`g_awPlayerKeysReleased` (`0x03003562`), and `g_awLinkKeysReceived` is
+`g_awPlayerKeysReleased` (`0x03003562`), and `g_awSerialKeysReceived` is
 `0x03005A6C`.
 
 ## Known readers

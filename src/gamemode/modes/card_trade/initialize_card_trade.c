@@ -37,8 +37,8 @@ void InitializeCardTrade(void)
         LoadMenuScreenOverlay(gCardTradeOverlay, 0, 0);
     }
 
-    SetLinkCallbacks(ReceiveCardTradeOffer, GetCardTradeSendWord);
-    InitLinkSession();
-    StartLinkConnection(2);
+    SetSerialCallbacks(ReceiveCardTradeOffer, GetCardTradeSendWord);
+    InitSerialSession();
+    StartSerialConnection(2);
     g_CardTradeState.dwStatus = 1;
 }

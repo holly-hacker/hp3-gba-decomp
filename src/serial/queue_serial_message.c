@@ -2,30 +2,30 @@
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
 #include "hw/mem.h"
-#include "link/link.h"
+#include "serial/serial.h"
 
 // Queues a message for the next exchange unless a message of a higher type is already waiting.
-void QueueLinkMessage(u32 type, u32 data)
+void QueueSerialMessage(u32 type, u32 data)
 {
-    LinkMessage message;
+    SerialMessage message;
 
-    if (type < g_LinkSendMessage.bType)
+    if (type < g_SerialSendMessage.bType)
         return;
 
     memset(&message, 0, sizeof(message));
     message.bType = type;
     switch (type)
     {
-    case LINK_MESSAGE_IDLE:
+    case SERIAL_MESSAGE_IDLE:
         break;
-    case LINK_MESSAGE_KEYS:
+    case SERIAL_MESSAGE_KEYS:
         message.wData = ~REG_KEYINPUT;
         break;
-    case LINK_MESSAGE_SEED:
+    case SERIAL_MESSAGE_SEED:
         message.wData = data;
         break;
     }
-    message.bSeq = g_bLinkTick;
-    CopyMemory(&g_LinkSendMessage, &message, sizeof(message));
+    message.bSeq = g_bSerialTick;
+    CopyMemory(&g_SerialSendMessage, &message, sizeof(message));
     g_dwGameModeFlags |= 0x1000;
 }

@@ -16,17 +16,17 @@ void UpdateCardTrade(void)
 {
     u32 row;
 
-    TickLinkSession(2, 0);
+    TickSerialSession(2, 0);
 
-    if (IsLinkUp() == 0)
+    if (IsSerialUp() == 0)
     {
         g_CardTradeState.bPeerOffer = CARD_TRADE_NO_CARD;
         SetCardTradeSlotCard(1, CARD_TRADE_NO_CARD);
-        LinkConnect(2);
+        SerialConnect(2);
     }
 
     if (g_GameModeStackContext.dwModeState != 0)
-        ShowCardTradeLinkStatus(IsLinkUp());
+        ShowCardTradeLinkStatus(IsSerialUp());
 
     switch (g_GameModeStackContext.dwModeState)
     {
@@ -84,7 +84,7 @@ void UpdateCardTrade(void)
         break;
 
     case 5:
-        if (IsLinkUp() == 0)
+        if (IsSerialUp() == 0)
         {
             ResetCardTradeAfterLinkLoss();
             break;
@@ -124,7 +124,7 @@ void UpdateCardTrade(void)
         break;
 
     case 6:
-        if (IsLinkUp() == 0)
+        if (IsSerialUp() == 0)
         {
             ResetCardTradeAfterLinkLoss();
             break;
@@ -148,7 +148,7 @@ void UpdateCardTrade(void)
         break;
 
     case 7:
-        if (IsLinkUp() == 0)
+        if (IsSerialUp() == 0)
         {
             ResetCardTradeAfterLinkLoss();
             break;

@@ -6,7 +6,7 @@
 // Card value meaning "no card chosen"; real cards are 0-50.
 #define CARD_TRADE_NO_CARD 0x33
 
-// Link card trade session at 0x03005568; see docs/memory-map/link.md.
+// Link card trade session at 0x03005568; see docs/memory-map/serial.md.
 typedef struct {
     u32 dwStatus;       // 0x00: last link result, 0/1
     u8 bConfirmed;      // 0x04
@@ -39,13 +39,13 @@ extern const u8 gCardTradeOverlay[];
 extern void ReceiveCardTradeOffer(u32 word, u32 playerId);
 extern u32 GetCardTradeSendWord(void);
 
-extern u32 IsLinkUp(void);
-extern u32 LinkConnect(u32 mode);
-extern void SetLinkCallbacks(void (*pOnReceive)(u32 word, u32 playerId), u32 (*pGetSendWord)(void));
-extern void InitLinkSession(void);
-extern void StartLinkConnection(u32 arg);
-extern void TickLinkSession(u32 arg0, u32 arg1);
-extern void CloseLinkSession(void);
+extern u32 IsSerialUp(void);
+extern u32 SerialConnect(u32 mode);
+extern void SetSerialCallbacks(void (*pOnReceive)(u32 word, u32 playerId), u32 (*pGetSendWord)(void));
+extern void InitSerialSession(void);
+extern void StartSerialConnection(u32 arg);
+extern void TickSerialSession(u32 arg0, u32 arg1);
+extern void CloseSerialSession(void);
 extern void ClearMenuTextLayer_candidate(void);
 
 extern void ResetCardTradeAfterLinkLoss(void);

@@ -145,7 +145,7 @@ extern s32 IsGameModeTransitionPending(void);
 extern u32 g_dwGameModeFlags;
 
 typedef enum {
-    LinkSessionActive = 0x20,
+    SerialSessionActive = 0x20,
 } GameModeFlags;
 
 // u32: incremented once per TickGameModeStack call, before mode dispatch.
@@ -159,5 +159,5 @@ extern u32 g_dwTickCount;
 extern void TickFrameSystems(void);
 
 // Pumps the link-cable comm packet when a link session is active
-// (g_dwGameModeFlags bit 0x20); see docs/memory-map/link.md.
-extern void TickLinkCommIfActive_candidate(void);
+// (g_dwGameModeFlags bit 0x20); see docs/memory-map/serial.md.
+extern void TickSerialCommIfActive_candidate(void);
