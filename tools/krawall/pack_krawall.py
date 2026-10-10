@@ -25,6 +25,8 @@ import wave
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from manifest import read_rows  # noqa: E402
 from krawall_codec import compress_pattern, derive_song_index, compute_trailing_buffer
 
 LOOP_MODES = {"none": 0, "forward": 1, "pingpong": 2}
@@ -45,24 +47,19 @@ def parse_krawall_rows(ver: str) -> tuple[list[tuple[int, int, str, str]], tuple
     """Returns (module_rows, samples_row) parsed from regions.<ver>.txt."""
     modules = []
     samples_row = None
-    with open(f"regions.{ver}.txt") as f:
-        for lineno, raw_line in enumerate(f, 1):
-            line = raw_line.split("#", 1)[0].strip()
-            if not line:
-                continue
-            parts = line.split()
-            if parts[0] == "krawall-module":
-                if len(parts) != 5:
-                    sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-module <start> <end> <json> <name>'")
-                _, start, end, jsonfile, name = parts
-                modules.append((int(start, 16), int(end, 16), jsonfile, name))
-            elif parts[0] == "krawall-samples":
-                if len(parts) != 5:
-                    sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-samples <start> <end> <dir> <name>'")
-                if samples_row is not None:
-                    sys.exit(f"regions.{ver}.txt:{lineno}: duplicate krawall-samples row")
-                _, start, end, samplesdir, name = parts
-                samples_row = (int(start, 16), int(end, 16), samplesdir, name)
+    for lineno, parts in read_rows(f"regions.{ver}.txt"):
+        if parts[0] == "krawall-module":
+            if len(parts) != 5:
+                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-module <start> <end> <json> <name>'")
+            _, start, end, jsonfile, name = parts
+            modules.append((int(start, 16), int(end, 16), jsonfile, name))
+        elif parts[0] == "krawall-samples":
+            if len(parts) != 5:
+                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-samples <start> <end> <dir> <name>'")
+            if samples_row is not None:
+                sys.exit(f"regions.{ver}.txt:{lineno}: duplicate krawall-samples row")
+            _, start, end, samplesdir, name = parts
+            samples_row = (int(start, 16), int(end, 16), samplesdir, name)
     if samples_row is None:
         sys.exit(f"regions.{ver}.txt: no krawall-samples row found")
     return modules, samples_row

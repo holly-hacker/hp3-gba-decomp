@@ -52,6 +52,7 @@ for sub in ("tools", "tools/graphics", "tools/images", "tools/graphic_blob", "to
     if str(ROOT / sub) not in sys.path:
         sys.path.insert(0, str(ROOT / sub))
 
+from manifest import read_rows  # noqa: E402
 from kinds import fonts, graphic_blobs, image_bank, room_graphics, tile_frames, tile_streams  # noqa: E402
 
 KINDS = {"image-bank": image_bank, "graphic-blobs": graphic_blobs, "tile-streams": tile_streams,
@@ -144,9 +145,8 @@ def rows(ver: str, known: dict[str, Group]) -> list[Row]:
     """The graphics rows of regions.<ver>.txt, in address order."""
     path = ROOT / f"regions.{ver}.txt"
     out = []
-    for lineno, raw in enumerate(path.read_text().splitlines(), 1):
-        parts = raw.split("#", 1)[0].split()
-        if parts and parts[0] == "graphics":
+    for lineno, parts in read_rows(str(path)):
+        if parts[0] == "graphics":
             if len(parts) != 5:
                 raise ValueError(f"{path.name}:{lineno}: expected graphics <start> <end> <feature> <group>")
             group = known.get(parts[4])

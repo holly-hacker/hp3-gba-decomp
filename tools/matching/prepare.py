@@ -3,6 +3,7 @@ import json
 import re
 import shutil
 from pathlib import Path
+from tools.manifest import read_rows
 from .workspace import ROOT
 from .reference import build_target_asm, ram_symbols
 from .compile import run
@@ -27,7 +28,7 @@ def link_binary(obj, out, start, baseline):
 def prepare(ver, name, source=None, end=None, profile_source=None, reference_name=None):
     if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', name):
         raise ValueError('expected a C function name')
-    rows = [line.split('#', 1)[0].split() for line in (ROOT / f'regions.{ver}.txt').read_text().splitlines()]
+    rows = [parts for _, parts in read_rows(str(ROOT / f'regions.{ver}.txt'))]
     row = next((r for r in rows if len(r) == 5 and r[0] in {'c-file', 'c-file-O1'} and r[4] == name), None)
     if not source and row:
         source = row[3]

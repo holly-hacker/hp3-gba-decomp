@@ -12,7 +12,11 @@ Each area (code 1, data, code 2) is measured by the bytes of each kind that
 fall inside it; a region straddling an area boundary is split at the boundary.
 """
 import argparse
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from manifest import read_rows  # noqa: E402
 
 # Area boundaries for the ROMs: [start, end) each.
 US_AREAS = [
@@ -45,16 +49,14 @@ def kind_of(directive: str) -> str:
 def read_regions(path: str) -> list[tuple[int, int, str, str]]:
     """Returns sorted (start, end, kind, name) for every region row."""
     out = []
-    with open(path) as f:
-        for lineno, raw in enumerate(f, 1):
-            parts = raw.split("#", 1)[0].split()
-            if not parts or parts[0] in NON_REGION:
-                continue
-            try:
-                start, end = int(parts[1], 16), int(parts[2], 16)
-            except (IndexError, ValueError):
-                sys.exit(f"{path}:{lineno}: cannot parse region row")
-            out.append((start, end, kind_of(parts[0]), parts[-1]))
+    for lineno, parts in read_rows(path):
+        if parts[0] in NON_REGION:
+            continue
+        try:
+            start, end = int(parts[1], 16), int(parts[2], 16)
+        except (IndexError, ValueError):
+            sys.exit(f"{path}:{lineno}: cannot parse region row")
+        out.append((start, end, kind_of(parts[0]), parts[-1]))
     out.sort()
     for a, b in zip(out, out[1:]):
         if b[0] < a[1]:
