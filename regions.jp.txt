@@ -2426,7 +2426,7 @@ c-file 0x08F44224 0x08F44240 src/shop/shop_stock_lists.c g_apShopStockLists
 # The IWRAM image holds Krawall's ARM mixer code; its rows name the ROM copy
 # with a _Rom suffix, and ram_symbols.<ver>.inc names the IWRAM addresses.
 label 0x08F44240 g_IwramSectionRomImage
-arm-func 0x08F44244 IwramTimer1Handler_Rom
+arm-func 0x08F44244 kradInterrupt_Rom
 arm-func 0x08F442D4 kramPlayExt_Rom
 arm-func 0x08F44560 kramStop_Rom
 arm-func 0x08F44628 kramSetFreq_Rom

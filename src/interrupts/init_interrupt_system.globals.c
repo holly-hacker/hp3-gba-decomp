@@ -6,7 +6,7 @@ const u32 gIntrTableTemplate[13] = {
     (u32)HandleTimer3Interrupt_candidate,
     (u32)HandleVBlankInterrupt,
     (u32)HandleVCountInterrupt,
-    (u32)IwramTimer1Handler,
+    (u32)kradInterrupt,
     (u32)HandleHBlankInterrupt_candidate,
     (u32)HandleTimer0Interrupt_candidate,
     (u32)HandleTimer2Interrupt,

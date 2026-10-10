@@ -23,7 +23,7 @@ extern void HandleTimer3Interrupt_candidate(void);
 extern void HandleVCountInterrupt(void);
 extern void HandleHBlankInterrupt_candidate(void);
 extern void HandleTimer0Interrupt_candidate(void);
-extern void IwramTimer1Handler(void);  // code in the IWRAM image kramInstall copies from ROM
+extern void kradInterrupt(void);  // code in the IWRAM image kramInstall copies from ROM
 extern void HandleTimer2Interrupt(void);
 extern void IntrDummy(void);
 

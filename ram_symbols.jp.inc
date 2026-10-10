@@ -7,7 +7,7 @@
 .set g_EwramSectionEnd,       0x020027F8  @ ClearWorkRam zeroes EWRAM from here
 .set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM
 .set g_IwramSectionStart,     0x03000000  @ IWRAM image kramInstall copies from ROM
-.set IwramTimer1Handler,      0x03000004  @ gIntrTableTemplate's timer 1 handler, in that image
+.set kradInterrupt,           0x03000004  @ gIntrTableTemplate's timer 1 handler, in that image
 @ Krawall IWRAM code at its runtime address; see docs/memory-map/krawall.md
 .set kramPlayExt,             0x03000094
 .set kramStop,                0x03000320

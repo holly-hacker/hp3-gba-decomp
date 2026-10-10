@@ -2,7 +2,7 @@
 #include "hw/interrupts.h"
 #include "hw/io_regs.h"
 
-// Enables the VBlank and Timer 1 (IwramTimer1Handler) interrupts and the
+// Enables the VBlank and Timer 1 (kradInterrupt) interrupts and the
 // VBlank IRQ in DISPSTAT, then turns on IME.
 void EnableInterrupts(void)
 {

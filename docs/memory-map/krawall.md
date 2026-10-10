@@ -600,6 +600,18 @@ offset match, not a structural guess.
 IWRAM code gets installed" watchpoint address above) sits 4 bytes into
 the previous function's literal pool.
 
+### `kradInterrupt` [STRUCTURAL MATCH]
+
+The image's first function (US ROM `0x08FB0DB4`, IWRAM `0x03000004`, JP
+ROM `0x08F44244`) is the Timer 1 handler in `gIntrTableTemplate`. It
+corresponds to `kradInterrupt` in public `lib/directsound_asm.S`: it
+restarts DMA1, restarts DMA2 if it is enabled, then reprograms `TM1` with
+reload `0xFBB0` and stores `bx lr` over the start of that
+reprogram block, so later calls return before it. Differences from the
+public source: it increments a word at `0x020008B0` instead of toggling the
+`dmaBlock` byte, resets DMA on every call, and keeps no backup of the
+patched instruction (no `kradInterruptUndoCodeMod` counterpart follows it).
+
 Named at their IWRAM addresses in `ram_symbols.us.inc` and
 `ram_symbols.jp.inc`; the manifests label the ROM copies with a `_Rom`
 suffix. `mixRight` (`b` into `mixLeft`'s loop) and

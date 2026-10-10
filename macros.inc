@@ -21,11 +21,17 @@
 	.size \name, .-\name
 	.endm
 
+	@ thumb_func_start for a halfword-aligned entry point (gbadisasm output).
+	.macro non_word_aligned_thumb_func_start name
+	.global \name
+	.thumb
+	.thumb_func
+	.type \name, %function
+	.endm
+
 	@ Names a Thumb function entry point inside still-raw incbin territory
-	@ (the `thumb-func` manifest directive), so its address carries the low
-	@ bit real Thumb function pointers always have when taken directly
-	@ (e.g. stored in a function-pointer table) rather than only reached
-	@ via `bl`. Unlike thumb_func_start, byte-free -- no `.align`, since
+	@ (the `thumb-func` manifest directive), so its symbol carries the Thumb
+	@ bit. Unlike thumb_func_start, byte-free -- no `.align`, since
 	@ this sits immediately before raw incbin bytes that must not shift.
 	.macro thumb_func_label name
 	.thumb_func

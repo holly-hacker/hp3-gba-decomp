@@ -7,8 +7,7 @@
 #   A symbol other code can address, see also ram_symbols.us.inc. Code
 #   entry points use `thumb-func` or `arm-func` instead.
 # thumb-func <address> <name>
-#   A Thumb entry point whose address is taken directly (e.g. stored in a
-#   function-pointer table): the symbol carries the Thumb bit.
+#   A Thumb function entry point; the symbol carries the Thumb bit.
 # arm-func <address> <name>
 #   A confirmed ARM entry point.
 # asm-file <start> <end> <path.s> <name>
@@ -2735,7 +2734,7 @@ c-file 0x08FB0D94 0x08FB0DB0 src/shop/shop_stock_lists.c g_apShopStockLists
 # The IWRAM image holds Krawall's ARM mixer code; its rows name the ROM copy
 # with a _Rom suffix, and ram_symbols.<ver>.inc names the IWRAM addresses.
 label 0x08FB0DB0 g_IwramSectionRomImage
-arm-func 0x08FB0DB4 IwramTimer1Handler_Rom
+arm-func 0x08FB0DB4 kradInterrupt_Rom
 arm-func 0x08FB0E44 kramPlayExt_Rom
 arm-func 0x08FB10D0 kramStop_Rom
 arm-func 0x08FB1198 kramSetFreq_Rom
