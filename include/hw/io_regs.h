@@ -2,6 +2,11 @@
 
 #include "types.h"
 
+// REG_JOYCNT flags: JOY reset, receive complete and send complete.
+#define JOYCNT_RESET 0x0001
+#define JOYCNT_RECV  0x0002
+#define JOYCNT_SEND  0x0004
+
 // BIOS-owned RAM mirror of acked interrupt flags (GBATEK "Interrupt Check
 // Flag"), not an MMIO register -- SWI IntrWait/VBlankIntrWait poll it.
 #define REG_IFBIOS  (*(volatile u16 *)0x03007FF8)
@@ -56,6 +61,11 @@
 #define REG_SIOCNT       (*(volatile u16 *)0x04000128)
 #define REG_SIOMLT_SEND  (*(volatile u16 *)0x0400012A)
 #define REG_RCNT         (*(volatile u16 *)0x04000134)
+// JOY Bus (GameCube link) control, receive/transmit words and status.
+#define REG_JOYCNT       (*(volatile u16 *)0x04000140)
+#define REG_JOY_RECV     (*(volatile u32 *)0x04000150)
+#define REG_JOY_TRANS    (*(volatile u32 *)0x04000154)
+#define REG_JOYSTAT      (*(volatile u16 *)0x04000158)
 // Interrupt enable and request/acknowledge flags.
 #define REG_IE      (*(volatile u16 *)0x04000200)
 #define REG_IF      (*(volatile u16 *)0x04000202)

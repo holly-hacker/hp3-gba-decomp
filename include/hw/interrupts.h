@@ -30,5 +30,7 @@ extern void IntrDummy(void);
 void InstallInterruptHandler(void *handlerCode);
 // Stores a handler in gIntrTable[slot].
 void SetIntrFunc(u32 slot, void (*pfnHandler)(void));
+// Restores gIntrTable[slot] from gIntrTableTemplate.
+void ResetIntrFunc(u32 slot);
 void InitInterruptSystem(void);
 void EnableInterrupts(void);

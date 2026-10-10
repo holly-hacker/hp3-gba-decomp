@@ -166,7 +166,7 @@
 .set sTextMacroTable,                                  0x030031D0  @ see ram_symbols.us.inc
 .set g_saveStateBlock,                                 0x030031E0
 .set g_dwUnk03003234,                                  0x03003294  @ see ram_symbols.us.inc
-.set g_GameCubeLinkScreenState, 0x03003298  @ see ram_symbols.us.inc
+.set g_JoybusLinkState,          0x03003298  @ see ram_symbols.us.inc
 .set g_OwlCareKitScreen,        0x030032D0  @ see ram_symbols.us.inc
 .set g_OverworldControlState,                          0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 

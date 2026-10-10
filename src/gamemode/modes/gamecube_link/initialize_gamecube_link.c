@@ -31,8 +31,8 @@ void InitializeGameCubeLink(void)
     StartMainMenuPaletteEffect_candidate();
     ShowGameCubeLinkMessage(0x652);  // "Press the B Button to cancel."
     InitJoybusSession(DispatchGameCubeLinkCommand, 0x43, 0x83);
-    g_GameCubeLinkScreenState.wResultTextId = 0xACF;
-    g_GameCubeLinkScreenState.wStatusTextId = 0xACF;
+    g_JoybusLinkState.wResultTextId = 0xACF;  // no text, so the first result is always drawn
+    g_JoybusLinkState.wStatusTextId = 0xACF;  // no text
 
     if (g_pMenuCursorObject != NULL)
     {

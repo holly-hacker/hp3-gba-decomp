@@ -695,14 +695,20 @@ c-file 0x08021650 _ src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCare
 c-file 0x0802165C _ src/save/process_playtime_tick.c ProcessPlaytimeTick
 c-file 0x08021694 0x080216A0 src/save/set_sickles.c SetSickles
 thumb-func 0x080216A0 AddSickles
-thumb-func 0x080216D4 sub_080216D4
 
 # GameCube (Joybus transport), see docs/memory-map/gcn-link.md
-thumb-func 0x08021748 HandleJoybusCommandWord
-thumb-func 0x08021A58 InitJoybusSession
-thumb-func 0x08021AF4 TickJoybusSession
-thumb-func 0x08021B28 TeardownJoybusHardware
-thumb-func 0x08021BD8 LatchJoybusTransferLength
+c-file 0x080216D4 _ src/gamecube/handle_joybus_interrupt.c HandleJoybusInterrupt
+c-file 0x08021748 _ src/gamecube/handle_joybus_command_word.c HandleJoybusCommandWord
+c-file 0x080218C0 _ src/gamecube/handle_joybus_transmit.c HandleJoybusTransmit
+c-file 0x08021938 _ src/gamecube/setup_joybus_hardware.c SetupJoybusHardware
+c-file 0x080219A8 _ src/gamecube/handle_joybus_data_word.c HandleJoybusDataWord
+c-file 0x08021A00 _ src/gamecube/transmit_joybus_word.c TransmitJoybusWord
+c-file 0x08021A54 _ src/gamecube/joybus_no_op.c JoybusNoOp
+c-file 0x08021A58 _ src/gamecube/init_joybus_session.c InitJoybusSession
+c-file 0x08021AF4 _ src/gamecube/tick_joybus_session.c TickJoybusSession
+c-file 0x08021B28 _ src/gamecube/teardown_joybus_hardware.c TeardownJoybusHardware
+c-file 0x08021B98 _ src/gamecube/tick_joybus_timeout.c TickJoybusTimeout
+c-file 0x08021BD8 _ src/gamecube/handle_joybus_reset.c HandleJoybusReset
 
 # Hedwig? (Owl Care Kit mode)
 c-file 0x08021C08 _ src/gamemode/modes/minigame/owl_care_kit/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
@@ -782,6 +788,7 @@ c-file 0x08026068 _ src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x080260A8 _ src/interrupts/enable_interrupts.c EnableInterrupts
 c-file 0x080260DC 0x08026130 src/interrupts/install_interrupt_handler.c InstallInterruptHandler
 thumb-func 0x08026130 SetIntrFunc
+thumb-func 0x08026140 ResetIntrFunc
 c-file 0x08026158 0x08026184 src/interrupts/set_vblank_callback.c SetVBlankCallback
 c-file 0x080261B0 _ src/interrupts/set_vcount_callback.c SetVCountCallback
 c-file 0x080261DC _ src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
@@ -1772,6 +1779,7 @@ c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScrip
 c-file 0x0805EB9C _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/text/load_font_descriptor.globals.c g_aFontTable
 c-file 0x0806053C 0x08060554 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
+c-rodata 0x08060620 0x08060625 InitJoybusSession
 c-file 0x080606A8 0x080606B8 src/gamemode/modes/minigame/owl_care_kit/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060884 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
 c-file 0x0806088C 0x0806089C src/overworld/party_focus_gfx.c g_PartyFocusGfx_candidate

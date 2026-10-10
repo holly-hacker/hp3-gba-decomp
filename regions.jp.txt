@@ -479,6 +479,7 @@ c-file 0x0801D338 _ src/room/opcodes/room_script_op_consume_room_item.c RoomScri
 c-file 0x0801D348 _ src/room/opcodes/room_script_op_reset_party_leader_selection.c RoomScriptOpResetPartyLeaderSelection
 c-file 0x0801D35C _ src/room/opcodes/room_script_op_set_pending_chain_from_exit_param.c RoomScriptOpSetPendingChainFromExitParam
 c-file 0x0801D38C 0x0801D460 src/room/compare_and_branch_room_script.c CompareAndBranchRoomScript
+thumb-func 0x0801D4A4 ComputeJoybusChecksum
 c-file 0x0801D514 _ src/gamemode/modes/cutscene/credits/initialize_credits.c InitializeCredits
 c-file 0x0801D5C4 0x0801D6D8 src/gamemode/modes/cutscene/credits/update_credits.c UpdateCredits
 thumb-func 0x0801D6D8 sub_0801D6DC
@@ -582,9 +583,18 @@ c-file 0x080216AC _ src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCare
 c-file 0x080216B8 _ src/save/process_playtime_tick.c ProcessPlaytimeTick
 c-file 0x080216F0 0x080216FC src/save/set_sickles.c SetSickles
 thumb-func 0x080216FC AddSickles
-thumb-func 0x08021AB4 InitJoybusSession
-thumb-func 0x08021B50 TickJoybusSession
-thumb-func 0x08021B84 TeardownJoybusHardware
+c-file 0x08021730 _ src/gamecube/handle_joybus_interrupt.c HandleJoybusInterrupt
+c-file 0x080217A4 _ src/gamecube/handle_joybus_command_word.c HandleJoybusCommandWord
+c-file 0x0802191C _ src/gamecube/handle_joybus_transmit.c HandleJoybusTransmit
+c-file 0x08021994 _ src/gamecube/setup_joybus_hardware.c SetupJoybusHardware
+c-file 0x08021A04 _ src/gamecube/handle_joybus_data_word.c HandleJoybusDataWord
+c-file 0x08021A5C _ src/gamecube/transmit_joybus_word.c TransmitJoybusWord
+c-file 0x08021AB0 _ src/gamecube/joybus_no_op.c JoybusNoOp
+c-file 0x08021AB4 _ src/gamecube/init_joybus_session.c InitJoybusSession
+c-file 0x08021B50 _ src/gamecube/tick_joybus_session.c TickJoybusSession
+c-file 0x08021B84 _ src/gamecube/teardown_joybus_hardware.c TeardownJoybusHardware
+c-file 0x08021BF4 _ src/gamecube/tick_joybus_timeout.c TickJoybusTimeout
+c-file 0x08021C34 _ src/gamecube/handle_joybus_reset.c HandleJoybusReset
 c-file 0x08021C64 _ src/gamemode/modes/minigame/owl_care_kit/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
 c-file 0x08021DC8 0x08021E54 src/gamemode/modes/minigame/owl_care_kit/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
 thumb-func 0x08021E54 ProcessOwlCareKitTick
@@ -643,6 +653,7 @@ c-file 0x080260C4 _ src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x08026104 _ src/interrupts/enable_interrupts.c EnableInterrupts
 c-file 0x08026138 0x0802618C src/interrupts/install_interrupt_handler.c InstallInterruptHandler
 thumb-func 0x0802618C SetIntrFunc
+thumb-func 0x0802619C ResetIntrFunc
 c-file 0x080261B4 0x080261E0 src/interrupts/set_vblank_callback.c SetVBlankCallback
 c-file 0x0802620C _ src/interrupts/set_vcount_callback.c SetVCountCallback
 c-file 0x08026238 _ src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
@@ -1466,6 +1477,7 @@ c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScrip
 c-file 0x0805EAC8 _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x08060408 _ src/text/load_font_descriptor.globals.c g_aExtFontTable
 c-file 0x080604C8 0x080604E0 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
+c-rodata 0x080605AC 0x080605B1 InitJoybusSession
 c-file 0x08060634 0x08060644 src/gamemode/modes/minigame/owl_care_kit/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060810 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
 c-file 0x08060818 0x08060828 src/overworld/party_focus_gfx.c g_PartyFocusGfx_candidate
