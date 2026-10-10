@@ -2,8 +2,8 @@
 
 void CancelObjectMove_candidate(Object *obj)
 {
-    obj->nAccelX = 0;
-    obj->nAccelY = 0;
-    obj->nVelX = 0;
-    obj->nVelY = 0;
+    obj->accel.x = 0;
+    obj->accel.y = 0;
+    obj->vel.x = 0;
+    obj->vel.y = 0;
 }

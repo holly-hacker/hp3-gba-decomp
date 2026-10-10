@@ -40,16 +40,16 @@ void SpawnParticle(ParticleEmitter *emitter)
 
         if (emitter->pTarget->bFacing > 4)
         {
-            pos.x = emitter->pTarget->nXPrev - (pos.x << 16);
-            endPos.x = emitter->pTarget->nXPrev - (endPos.x << 16);
+            pos.x = emitter->pTarget->posPrev.x - (pos.x << 16);
+            endPos.x = emitter->pTarget->posPrev.x - (endPos.x << 16);
         }
         else
         {
-            pos.x = emitter->pTarget->nXPrev + (pos.x << 16);
-            endPos.x = emitter->pTarget->nXPrev + (endPos.x << 16);
+            pos.x = emitter->pTarget->posPrev.x + (pos.x << 16);
+            endPos.x = emitter->pTarget->posPrev.x + (endPos.x << 16);
         }
-        pos.y = emitter->pTarget->nYPrev + (pos.y << 16);
-        endPos.y = emitter->pTarget->nYPrev + (endPos.y << 16);
+        pos.y = emitter->pTarget->posPrev.y + (pos.y << 16);
+        endPos.y = emitter->pTarget->posPrev.y + (endPos.y << 16);
 
         dx = endPos.x - pos.x;
         dy = endPos.y - pos.y;
@@ -70,10 +70,10 @@ void SpawnParticle(ParticleEmitter *emitter)
         }
 
         if (emitter->pTarget->bFacing > 4)
-            pos.x = emitter->pTarget->nXPrev - (pos.x << 16);
+            pos.x = emitter->pTarget->posPrev.x - (pos.x << 16);
         else
-            pos.x = emitter->pTarget->nXPrev + (pos.x << 16);
-        pos.y = emitter->pTarget->nYPrev + (pos.y << 16);
+            pos.x = emitter->pTarget->posPrev.x + (pos.x << 16);
+        pos.y = emitter->pTarget->posPrev.y + (pos.y << 16);
         pos.x = (s32)pos.x >> 16;
         pos.y = (s32)pos.y >> 16;
     }
@@ -84,8 +84,8 @@ void SpawnParticle(ParticleEmitter *emitter)
     }
     else
     {
-        pos.x = (s16)(emitter->pTarget->nXPrev >> 16);
-        pos.y = (s16)(emitter->pTarget->nYPrev >> 16);
+        pos.x = (s16)(emitter->pTarget->posPrev.x >> 16);
+        pos.y = (s16)(emitter->pTarget->posPrev.y >> 16);
     }
 
     particle->nX = Mt19937RandRange2(pos.x - spread, pos.x + spread) << 16;

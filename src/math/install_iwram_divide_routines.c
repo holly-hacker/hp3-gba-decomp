@@ -1,4 +1,4 @@
-#include "divide.h"
+#include "math.h"
 #include "hw/bios.h"
 
 // Copies DivideSignedQuotient, DivideSignedRemainder and

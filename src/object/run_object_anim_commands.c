@@ -40,46 +40,46 @@ void RunObjectAnimCommands(Object *obj)
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xFC:
-                obj->nX += cursor[1] << 16;
+                obj->pos.x += cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xFB:
-                obj->nX -= cursor[1] << 16;
+                obj->pos.x -= cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xFA:
-                obj->nY -= cursor[1] << 16;
+                obj->pos.y -= cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xF9:
-                obj->nY += cursor[1] << 16;
+                obj->pos.y += cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xF8:
-                obj->nX += cursor[1] << 16;
-                obj->nY -= cursor[1] << 16;
+                obj->pos.x += cursor[1] << 16;
+                obj->pos.y -= cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xF7:
-                obj->nX += cursor[1] << 16;
-                obj->nY += cursor[1] << 16;
+                obj->pos.x += cursor[1] << 16;
+                obj->pos.y += cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xF6:
-                obj->nX -= cursor[1] << 16;
-                obj->nY -= cursor[1] << 16;
+                obj->pos.x -= cursor[1] << 16;
+                obj->pos.y -= cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
             case 0xF5:
-                obj->nX -= cursor[1] << 16;
-                obj->nY += cursor[1] << 16;
+                obj->pos.x -= cursor[1] << 16;
+                obj->pos.y += cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;
@@ -109,9 +109,9 @@ void RunObjectAnimCommands(Object *obj)
                 break;
             case 0xEF:
                 if (!obj->oam.hFlip)
-                    obj->nX += (s8)cursor[1] << 16;
+                    obj->pos.x += (s8)cursor[1] << 16;
                 else
-                    obj->nX -= (s8)cursor[1] << 16;
+                    obj->pos.x -= (s8)cursor[1] << 16;
                 anim->pAnimFrameCursor += 2;
                 cursor = anim->pAnimFrameCursor;
                 break;

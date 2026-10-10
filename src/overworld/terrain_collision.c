@@ -2,17 +2,13 @@
 #include "graphics/graphics.h"
 #include "graphics/object.h"
 #include "hw/mem.h"
-#include "divide.h"
+#include "math.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/terrain.h"
 
-#define ABS(x) ((x) < 0 ? -(x) : (x))
 #define SEGMENT_DX(segment) ((segment).x1 - (segment).x0)
 #define SEGMENT_DY(segment) ((segment).y1 - (segment).y0)
-
-extern s32 sub_0802BF34(s32 x0, s32 y0, s32 x1, s32 y1);
-extern u8 sub_0802C018(s32 x, s32 y, u32 fourWay);
 
 // Turns an object around: its facing becomes the opposite one and its velocity is negated.
 inline void ReverseObjectDirection(Object *obj)
@@ -24,8 +20,8 @@ inline void ReverseObjectDirection(Object *obj)
     else
         facing = g_abOppositeFacing[facing];
     obj->bFacing = facing;
-    obj->nVelX = -obj->nVelX;
-    obj->nVelY = -obj->nVelY;
+    obj->vel.x = -obj->vel.x;
+    obj->vel.y = -obj->vel.y;
 }
 
 // Sets the velocity that takes the object from its previous position to its move target at
@@ -38,21 +34,21 @@ inline u8 StartMoveVelocity(Object *obj)
     s32 dy;
     u8 direction;
 
-    distance = sub_0802BF34(obj->nMoveTargetX, obj->nMoveTargetY, obj->nXPrev, obj->nYPrev);
+    distance = ApproximateDistance(obj->moveTarget, obj->posPrev);
     steps = ABS(iwramDivideSignedQuotient(distance, obj->dwUnk_0x28));
-    dx = obj->nMoveTargetX - obj->nXPrev;
-    dy = obj->nMoveTargetY - obj->nYPrev;
-    direction = sub_0802C018(obj->nVelX, obj->nVelY, obj->dwFlags & ObjectFlagFourWayDirections_candidate);
-    obj->nVelX = iwramDivideSignedQuotient(dx, steps);
-    obj->nVelY = iwramDivideSignedQuotient(dy, steps);
+    dx = obj->moveTarget.x - obj->posPrev.x;
+    dy = obj->moveTarget.y - obj->posPrev.y;
+    direction = GetDirectionFromVector(obj->vel, obj->dwFlags & ObjectFlagFourWayDirections_candidate);
+    obj->vel.x = iwramDivideSignedQuotient(dx, steps);
+    obj->vel.y = iwramDivideSignedQuotient(dy, steps);
     return direction;
 }
 
 // Fills box with the pixel edges of the object's terrain box around its previous position.
 inline void GetObjectTerrainBox(Object *obj, TerrainBox *box)
 {
-    s32 y = (s16)(obj->nYPrev >> 16);
-    s32 x = (s16)(obj->nXPrev >> 16);
+    s32 y = (s16)(obj->posPrev.y >> 16);
+    s32 x = (s16)(obj->posPrev.x >> 16);
 
     box->top = y + obj->bTerrainBoxTop;
     box->bottom = y + obj->bTerrainBoxBottom;
@@ -184,8 +180,8 @@ void RespondToTerrain(Object *obj, u32 type)
         switch (obj->bUnk_0x7C)
         {
         case 5:
-            obj->nXPrev = obj->nX;
-            obj->nYPrev = obj->nY;
+            obj->posPrev.x = obj->pos.x;
+            obj->posPrev.y = obj->pos.y;
             if (!TrySlideAlongSlope(obj, type))
             {
                 if ((u8)(obj->bActionState - 7) > 6)
@@ -198,13 +194,13 @@ void RespondToTerrain(Object *obj, u32 type)
             }
             break;
         case 1:
-            obj->nXPrev = obj->nX;
-            obj->nYPrev = obj->nY;
+            obj->posPrev.x = obj->pos.x;
+            obj->posPrev.y = obj->pos.y;
             SetObjectActionSubState(obj, 2);
             break;
         case 4:
-            obj->nXPrev = obj->nX;
-            obj->nYPrev = obj->nY;
+            obj->posPrev.x = obj->pos.x;
+            obj->posPrev.y = obj->pos.y;
             SetObjectActionSubState(obj, 5);
             break;
         case 2:
@@ -216,7 +212,7 @@ void RespondToTerrain(Object *obj, u32 type)
     }
 
     obj->bTerrainType = GetCollisionTypeAtPixel_candidate(
-        (PixelPoint){ (s16)(obj->nXPrev >> 16), (s16)(obj->nYPrev >> 16) });
+        (PixelPoint){ (s16)(obj->posPrev.x >> 16), (s16)(obj->posPrev.y >> 16) });
 }
 
 // Moves an object that is blocked by a slope along it, trying the slope's own direction and

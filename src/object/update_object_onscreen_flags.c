@@ -16,8 +16,8 @@ s32 UpdateObjectOnscreenFlags(Object *obj)
         return 1;
     }
 
-    position[0] = (s16)(obj->nX >> 16);
-    position[1] = (s16)(obj->nY >> 16);
+    position[0] = (s16)(obj->pos.x >> 16);
+    position[1] = (s16)(obj->pos.y >> 16);
     bounds = obj->spriteBounds;
 
     if (obj->oam.hFlip) {

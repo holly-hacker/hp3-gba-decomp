@@ -8,7 +8,7 @@ void CheckObjectTerrainCollision(Object *obj)
 {
     u32 flags = obj->dwFlags;
 
-    if (obj->nVelX != 0 || obj->nVelY != 0 || (obj->wFlags_0xAC & 1))
+    if (obj->vel.x != 0 || obj->vel.y != 0 || (obj->wFlags_0xAC & 1))
     {
         if ((flags & (ObjectFlagTerrainDrawLayer | ObjectFlagTerrainCollisionB_candidate
                       | ObjectFlagTerrainCollisionA_candidate))

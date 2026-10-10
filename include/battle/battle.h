@@ -168,8 +168,7 @@ typedef struct FightState {
     // torn down -- exactly 7 slots (the same total as g_apFighterObjects_candidate)
     // fill this to FightState's 0x104C boundary.
     /*0x834*/ Object aSuspendedFighterObjects_candidate[7];
-    /*0x104C*/ u32 nSavedPosX;      // 16.16, from Object+0x2C
-    /*0x1050*/ u32 nSavedPosY;      // 16.16, from Object+0x30
+    /*0x104C*/ FixedPoint savedPos;  // copy of the attacker's Object.pos
     /*0x1054*/ void *pAttackAnimObject_candidate;
     /*0x1058*/ u8 bAttackAnimState_candidate;
     /*0x1059*/ u8 aEnemySlotTurnOrderIndex[4];
@@ -361,12 +360,6 @@ extern void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex);  // 0x08017
 extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
 extern const u8 g_abSpellUnknownByLevel[10][3];  // 0x080538CE, [spellId][level], no known reader
 extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
-// 16.16 position pair. Object+0x2C and FightState+0x104C hold one each, and
-// the battle code copies between them as a single 8-byte unit.
-typedef struct Point1616 {
-    u32 nX;
-    u32 nY;
-} Point1616;
 // Screen anchor an attacker walks to, per target's BattleFighter.bSlotParam,
 // as {x, y} in whole pixels; the monster's own {x, y} extent in
 // g_aMonsterAttackOffset_candidate is subtracted off to get the destination.

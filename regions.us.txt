@@ -782,12 +782,28 @@ c-file 0x0802BE54 0x0802BE68 src/math/iwram_divide_unsigned_unused.c iwramDivide
 c-file 0x0802BE68 0x0802BE7C src/math/sin8_8.c Sin8_8
 c-file 0x0802BE7C 0x0802BE98 src/math/cos8_8.c Cos8_8
 c-file 0x0802BE98 0x0802BEA8 src/math/multiply8_8.c Multiply8_8
-thumb-func 0x0802BEE8 FixedMultiply
+c-file 0x0802BEA8 0x0802BEC8 src/math/divide8_8.c Divide8_8
+c-file 0x0802BEC8 0x0802BEE8 src/math/reciprocal8_8.c Reciprocal8_8
+c-file 0x0802BEE8 0x0802BEF4 src/math/fixed_multiply.c FixedMultiply
+c-file 0x0802BEF4 0x0802BF14 src/math/fixed_reciprocal.c FixedReciprocal
 c-file 0x0802BF14 0x0802BF34 src/math/fixed_divide.c FixedDivide
-thumb-func 0x0802BF34 sub_0802BF34
+c-file 0x0802BF34 0x0802BF44 src/math/approximate_distance.c ApproximateDistance
+c-file 0x0802BF44 0x0802BF78 src/math/approximate_length.c ApproximateLength
+c-file 0x0802BF78 0x0802BF8C src/math/add_offset_to_point_into.c AddOffsetToPointInto
 c-file 0x0802BF8C 0x0802BF9C src/math/add_offset_to_point.c AddOffsetToPoint
-thumb-func 0x0802C018 sub_0802C018
-thumb-func 0x0802C148 sub_0802C148
+c-file 0x0802BF9C 0x0802BFB0 src/math/get_offset_from_point.c GetOffsetFromPoint
+c-file 0x0802BFB0 0x0802BFC0 src/math/get_offset_from_point_in_place.c GetOffsetFromPointInPlace
+c-file 0x0802BFC0 0x0802BFCC src/math/fixed_to_int_point.c FixedToIntPoint
+c-file 0x0802BFCC 0x0802BFD8 src/math/int_to_fixed_point.c IntToFixedPoint
+c-file 0x0802BFD8 0x0802BFF8 src/math/fixed_dot_product.c FixedDotProduct
+c-file 0x0802BFF8 0x0802C018 src/math/fixed_cross_product.c FixedCrossProduct
+c-file 0x0802C018 0x0802C0A0 src/math/get_direction_from_vector.c GetDirectionFromVector
+c-file 0x0802C0A0 0x0802C0CC src/math/get_direction32_from_vector.c GetDirection32FromVector
+c-file 0x0802C0CC 0x0802C10C src/math/step_direction32_toward.c StepDirection32Toward
+c-file 0x0802C10C 0x0802C12C src/math/apply_percent.c ApplyPercent
+c-file 0x0802C12C 0x0802C148 src/math/to_percent.c ToPercent
+c-file 0x0802C148 0x0802C164 src/math/sign_magnitude8_8_to_fixed.c SignMagnitude8_8ToFixed
+c-file 0x0802C164 0x0802C174 src/math/length_squared.c LengthSquared
 c-file 0x0802C254 0x0802C26C src/mem/init_heap.c InitHeap
 c-file 0x0802C26C 0x0802C2EC src/mem/alloc_block.c AllocBlock
 c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
@@ -1480,6 +1496,7 @@ c-file 0x08063C8C 0x08065730 src/room/room_table.c g_aRoomTable
 c-file 0x08065730 0x0806580C src/gamemode/modes/overworld/room_quest_music_override.c g_adwRoomQuestMusicOverride
 c-file 0x0806580C 0x0806581C src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
 c-file 0x0806589C 0x08065C9C src/math/sine_table.c g_anSineTable
+c-rodata 0x08065CA4 0x08065CBC GetDirectionFromVector
 c-file 0x08065CBC 0x0806601C src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control

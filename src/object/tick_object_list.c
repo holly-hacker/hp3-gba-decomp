@@ -54,10 +54,10 @@ u32 TickObjectList(ActiveObjectListState *list, u8 mode)
             if (obj->pOwnerObject != NULL)
                 FollowOwnerObject(obj);
 
-            posX = obj->nXPrev;
-            posY = obj->nYPrev;
-            obj->nX = posX;
-            obj->nY = posY;
+            posX = obj->posPrev.x;
+            posY = obj->posPrev.y;
+            obj->pos.x = posX;
+            obj->pos.y = posY;
             if (orbit != 0)
                 ApplyObjectOrbitMotion(obj);
         }

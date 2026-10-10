@@ -5,10 +5,6 @@
 #include "graphics/graphics.h"
 #include "game/game_modes.h"
 
-typedef struct Vec2 {
-    u32 x, y;
-} Vec2;
-
 // Certain bAttackOutcomeState (Object+0x60) values. States 1-5 stay numeric:
 // their tails differ between cases 0x1a and 0x15, so no one name fits both.
 typedef enum {
@@ -40,9 +36,9 @@ static inline void PlayActionWindupFlash(Object *obj)
 
 static inline void WaitForMoveThenApplyDamageNumber(Object *obj)
 {
-    if (obj->nVelX != 0)
+    if (obj->vel.x != 0)
         return;
-    if (obj->nVelY != 0)
+    if (obj->vel.y != 0)
         return;
     SetObjectActionState(obj, 0);
 }
@@ -169,7 +165,7 @@ void TickPlayerActionState(Object *obj)
                 return;
             }
             fs->bActionDelayCounter_candidate = 0x13;
-            StartObjectMove(obj, g_pFightState->nSavedPosX, g_pFightState->nSavedPosY, 3);
+            StartObjectMove(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
             obj->bActionFlags &= 0xfe;
         }
 
@@ -198,7 +194,7 @@ void TickPlayerActionState(Object *obj)
                 }
                 // Real emits an 8-byte block move (ldr/ldr/str/str off one
                 // base each side), not two independent field stores.
-                *(Vec2 *)&g_pFightState->nSavedPosX = *(Vec2 *)&obj->nX;
+                g_pFightState->savedPos = obj->pos;
                 StartObjectMove(obj, 0xb00000, 0x720000, 3);
                 return;
             } else if (g_pFightState->bActionDelayCounter_candidate != 0) {
@@ -214,7 +210,7 @@ void TickPlayerActionState(Object *obj)
             if (delay > 0xe) {
                 return;
             } else if (delay == 0xe) {
-                SnapObjectPosition(obj, g_pFightState->nSavedPosX, g_pFightState->nSavedPosY);
+                SnapObjectPosition(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y);
                 obj->wMoveDuration = 0;
                 obj->wUnk86 = 0;
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {

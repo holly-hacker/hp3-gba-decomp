@@ -1,5 +1,5 @@
 #include "types.h"
-#include "divide.h"
+#include "math.h"
 #include "menu/folio_universitas_inline.h"
 
 // Fills the three combo slots with the combo under the cursor. Cards that were never collected

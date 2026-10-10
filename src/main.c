@@ -17,7 +17,7 @@
 #include "menu/main_menu.h"
 #include "menu/dialog.h"
 #include "overworld/room.h"
-#include "divide.h"
+#include "math.h"
 #include "game/game_timer.h"
 
 extern void InstallIwramFindFreeObjTileRun(void);

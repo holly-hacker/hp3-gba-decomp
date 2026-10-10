@@ -37,7 +37,7 @@ u8 UpdateObjectOamCells(Object *obj)
     u32 count;
 
     oam = obj->oam;
-    position = *(FixedPoint *)&obj->nXPrev;
+    position = obj->posPrev;
     flags = obj->dwFlags;
     cellFlags = (obj->bDrawFlags & ObjectDrawFlagExtraOamPass) ? 2 : 0;
 
@@ -162,12 +162,12 @@ u8 UpdateObjectOamCells(Object *obj)
     else {
         GetCameraPosition(screenPos);
         if (flags & ObjectFlagHasSpriteCells) {
-            obj->oam.x = (s32)obj->nXPrev >> 16;
-            obj->oam.y = (s32)obj->nYPrev >> 16;
+            obj->oam.x = (s32)obj->posPrev.x >> 16;
+            obj->oam.y = (s32)obj->posPrev.y >> 16;
         }
         else {
-            obj->oam.x = ((s32)obj->nXPrev >> 16) - screenPos[0];
-            obj->oam.y = ((s32)obj->nYPrev >> 16) - screenPos[1];
+            obj->oam.x = ((s32)obj->posPrev.x >> 16) - screenPos[0];
+            obj->oam.y = ((s32)obj->posPrev.y >> 16) - screenPos[1];
         }
         obj->oam.tileNum = obj->wVramTileAllocId;
         for (count = obj->anim.unk_DC.wOamStripCount; count != 0; count--) {

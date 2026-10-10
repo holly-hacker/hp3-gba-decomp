@@ -14,15 +14,15 @@ void ResolveObjectTerrain(Object *obj)
     {
         g_adwEdgeEndpointTypes[0] = 0xFF;
         type = GetObjectTerrainType(obj, &box);
-        if (obj->wObjectType == 0xF && IsBlockingCollisionType(type) && (s32)obj->nVelY <= 0)
+        if (obj->wObjectType == 0xF && IsBlockingCollisionType(type) && (s32)obj->vel.y <= 0)
         {
-            obj->nYPrev += 0x180000;
+            obj->posPrev.y += 0x180000;
             type = GetObjectTerrainType(obj, &box);
-            obj->nYPrev -= 0x180000;
+            obj->posPrev.y -= 0x180000;
         }
         RespondToTerrain(obj, type);
     }
 
     if (obj->dwFlags & ObjectFlagTerrainDrawLayer)
-        obj->oam.priority = GetCollisionLayerAtPixel((PixelPoint){ (s16)(obj->nXPrev >> 16), (s16)(obj->nYPrev >> 16) });
+        obj->oam.priority = GetCollisionLayerAtPixel((PixelPoint){ (s16)(obj->posPrev.x >> 16), (s16)(obj->posPrev.y >> 16) });
 }

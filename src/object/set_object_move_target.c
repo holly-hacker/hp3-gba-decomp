@@ -2,6 +2,6 @@
 
 void SetObjectMoveTarget(Object *obj, u32 x, u32 y)
 {
-    obj->nMoveTargetX = x;
-    obj->nMoveTargetY = y;
+    obj->moveTarget.x = x;
+    obj->moveTarget.y = y;
 }

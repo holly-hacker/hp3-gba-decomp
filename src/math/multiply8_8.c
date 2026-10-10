@@ -1,4 +1,4 @@
-#include "trig.h"
+#include "math.h"
 
 s16 Multiply8_8(s16 a, s16 b)
 {

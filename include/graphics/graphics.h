@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "math.h"
 #include "hw/mem.h"
 #include "graphics/oam.h"
 
@@ -245,7 +246,6 @@ extern const s32 g_aDirection4Vectors[4][2];        // 0x0804BDBC
 extern const s32 g_aDirection8Vectors[8][2];        // 0x0804BDDC
 extern const u8 g_abOppositeDirection8[8];          // 0x08068BFC
 extern const u8 g_abOppositeDirection4[4];          // 0x08068C04
-extern s32 FixedMultiply(s32 a, s32 b);  // 16.16 multiply that keeps 10 bits of each operand
 
 // Takes a particle from the free list, zeroed, and counts it.
 static inline Particle *AllocParticle(void)

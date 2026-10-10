@@ -11,12 +11,12 @@ void SnapObjectXToTileGrid(Object *obj)
 
     SetObjectActionSubState(obj, 12);
     obj->dwStateTimer = 8;
-    obj->nVelX = 0;
-    obj->nVelY = 0;
+    obj->vel.x = 0;
+    obj->vel.y = 0;
 
-    posX = (s16)(obj->nXPrev >> 16);
+    posX = (s16)(obj->posPrev.x >> 16);
     fixedX = (obj->bTerrainBoxLeft + posX + 4) << 16;
     gridX = 0xFFF80000;
     gridX &= fixedX;
-    SnapObjectPosition(obj, ((gridX >> 16) - obj->bTerrainBoxLeft) << 16, obj->nY);
+    SnapObjectPosition(obj, ((gridX >> 16) - obj->bTerrainBoxLeft) << 16, obj->pos.y);
 }

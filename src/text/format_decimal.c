@@ -1,5 +1,5 @@
 #include "types.h"
-#include "divide.h"
+#include "math.h"
 #include "graphics/text.h"
 
 // Writes value as signed decimal text to pBuf and returns pBuf. Leading

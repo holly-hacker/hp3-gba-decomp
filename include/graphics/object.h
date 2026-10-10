@@ -82,12 +82,6 @@ typedef union ObjectSpriteBounds {
     } edges;
 } ObjectSpriteBounds;
 
-// A 16.16 fixed-point position, passed by value.
-typedef struct FixedPoint {
-    s32 x;
-    s32 y;
-} FixedPoint;
-
 // Eight-way direction, clockwise from up (screen y grows downward). Odd
 // values are diagonals. DirectionAtTarget: within tolerance on both axes.
 typedef enum {
@@ -113,7 +107,7 @@ typedef enum {
 
 // One of Object's two collision-box slots, tested by CheckObjectCollisions.
 // dwPackedOffsets is 4 signed bytes: left (byte 0), right (1), top (2) and
-// bottom (3) edge offsets from the integer part of nXPrev/nYPrev (+0x36/+0x3A).
+// bottom (3) edge offsets from the integer part of posPrev (+0x36/+0x3A).
 // Object.oam.hFlip/vFlip mirror an axis: its edges become position minus the
 // opposite offset. GetObjectCollisionBoxRect resolves a slot to an ObjectRect;
 // CheckObjectCollisions does the same math inline. bState is compared == 1 to
@@ -320,21 +314,16 @@ typedef struct Object {
                              // ReleaseParticleEmitter_candidate and zeroed
                              // when nonzero (see ClearParalyzedFighter_candidate)
     u32 dwUnk_0x28;         // 0x28, set to 1 by InitPlayerBattleActor_candidate
-    u32 nX;                 // 0x2C, 16.16
-    u32 nY;                 // 0x30, 16.16
-    u32 nXPrev;             // 0x34, 16.16 pending position: IntegrateObjectVelocity sets it
-                             // to nX plus velocity, and TickObjectList copies it into nX
+    FixedPoint pos;         // 0x2C
+    FixedPoint posPrev;     // 0x34, pending position: IntegrateObjectVelocity sets it
+                             // to pos plus velocity, and TickObjectList copies it into pos
                              // after collisions. See docs/formats/battle_scripts.md's
                              // StartOrbitMotion/ApplyObjectOrbitMotion writeup.
                              // SetObjectPosition/SnapObjectPosition also set this
-                             // equal to nX (no interpolation pending after a teleport)
-    u32 nYPrev;              // 0x38, see nXPrev
-    u32 nVelX;              // 0x3C
-    u32 nVelY;              // 0x40
-    u32 nAccelX;            // 0x44, added to nVelX each tick by IntegrateObjectVelocity
-    u32 nAccelY;            // 0x48
-    u32 nMoveTargetX;       // 0x4C, 16.16; set by SetObjectMoveTarget/StartObjectMove
-    u32 nMoveTargetY;       // 0x50
+                             // equal to pos (no interpolation pending after a teleport)
+    FixedPoint vel;         // 0x3C
+    FixedPoint accel;       // 0x44, added to vel each tick by IntegrateObjectVelocity
+    FixedPoint moveTarget;  // 0x4C, set by SetObjectMoveTarget/StartObjectMove
     union __attribute__((packed)) {
         // 0x54-0x5F, {angleX, angleY, velX, velY, radiusX, radiusY}; see
         // CopyOrbitParamsFromTable and docs/formats/battle_scripts.md

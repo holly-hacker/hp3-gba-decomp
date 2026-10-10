@@ -13,7 +13,7 @@ static inline u32 IsBlockingTerrainType(u32 type)
 u32 NudgeAlongVelocity(Object *obj, PixelVector delta)
 {
     PixelVector nudge;
-    s32 dot = obj->nVelX * delta.x + obj->nVelY * delta.y;
+    s32 dot = obj->vel.x * delta.x + obj->vel.y * delta.y;
 
     if (dot > 0)
     {
@@ -36,22 +36,22 @@ u32 NudgeAlongVelocity(Object *obj, PixelVector delta)
 u32 TryNudgeObject(Object *obj, PixelVector delta)
 {
     TerrainBox box;
-    FixedPoint saved = *(FixedPoint *)&obj->nXPrev;
+    FixedPoint saved = obj->posPrev;
     u32 type;
 
-    obj->nXPrev += delta.x;
-    obj->nYPrev += delta.y;
+    obj->posPrev.x += delta.x;
+    obj->posPrev.y += delta.y;
     type = GetObjectTerrainType(obj, &box);
-    if (obj->wObjectType == 0xF && IsBlockingTerrainType(type) && (s32)obj->nVelY <= 0)
+    if (obj->wObjectType == 0xF && IsBlockingTerrainType(type) && (s32)obj->vel.y <= 0)
     {
-        obj->nYPrev += 0x180000;
+        obj->posPrev.y += 0x180000;
         type = GetObjectTerrainType(obj, &box);
-        obj->nYPrev -= 0x180000;
+        obj->posPrev.y -= 0x180000;
     }
 
     if (IsBlockingTerrainType(type))
     {
-        *(FixedPoint *)&obj->nXPrev = saved;
+        obj->posPrev = saved;
         return 1;
     }
 

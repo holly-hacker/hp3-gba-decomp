@@ -135,22 +135,22 @@ void InterpretObjectScript(Object *obj)
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
             child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
-            SnapObjectPosition(child, obj->nX, obj->nY);
+            SnapObjectPosition(child, obj->pos.x, obj->pos.y);
             break;
         case BSOP_SpawnEffectAtSelf:  // spawns a child at this object's position
             child = CreateEffectScriptObject(args[1], 1);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
             child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
-            SnapObjectPosition(child, obj->nX, obj->nY);
+            SnapObjectPosition(child, obj->pos.x, obj->pos.y);
             break;
         case BSOP_SpawnEffectOffsetDetached:  // spawns a detached child at this object's position plus a scaled offset
             child = CreateEffectScriptObject(args[1], 0);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
             child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
-            x = (s8)args[2] * (args[3] << 16) + obj->nX;
-            y = (s8)args[4] * (args[5] << 16) + obj->nY;
+            x = (s8)args[2] * (args[3] << 16) + obj->pos.x;
+            y = (s8)args[4] * (args[5] << 16) + obj->pos.y;
             SnapObjectPosition(child, x, y);
             break;
         case BSOP_SpawnEffectOffset:  // spawns a child at this object's position plus a scaled offset
@@ -158,8 +158,8 @@ void InterpretObjectScript(Object *obj)
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
             child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
-            x = (s8)args[2] * (args[3] << 16) + obj->nX;
-            y = (s8)args[4] * (args[5] << 16) + obj->nY;
+            x = (s8)args[2] * (args[3] << 16) + obj->pos.x;
+            y = (s8)args[4] * (args[5] << 16) + obj->pos.y;
             SnapObjectPosition(child, x, y);
             break;
         case BSOP_SpawnEffectSharedTiles:  // spawns a child that shares tiles
@@ -177,14 +177,14 @@ void InterpretObjectScript(Object *obj)
             sub_08003788(obj, !sub_08003954(obj));
             break;
         case BSOP_MoveBy:  // moves by a signed (dx, dy) in whole pixels
-            SnapObjectPosition(obj, obj->nX + ((s8)args[1] << 16), obj->nY + ((s8)args[2] << 16));
+            SnapObjectPosition(obj, obj->pos.x + ((s8)args[1] << 16), obj->pos.y + ((s8)args[2] << 16));
             break;
         case BSOP_MoveBy_2:  // moves by a signed (dx, dy) in whole pixels
-            SnapObjectPosition(obj, obj->nX + ((s8)args[1] << 16), obj->nY + ((s8)args[2] << 16));
+            SnapObjectPosition(obj, obj->pos.x + ((s8)args[1] << 16), obj->pos.y + ((s8)args[2] << 16));
             break;
         case BSOP_SnapToCaster:  // snaps to the caster's position, optionally offset
-            pos.x = (s16)(casterFighter->pObject->nX >> 16);
-            pos.y = (s16)(casterFighter->pObject->nY >> 16);
+            pos.x = (s16)(casterFighter->pObject->pos.x >> 16);
+            pos.y = (s16)(casterFighter->pObject->pos.y >> 16);
             if (args[1] != 0)
             {
                 sub_08001AA8(casterFighter->pObject, args[1] - 1, &offset);
@@ -492,7 +492,7 @@ void InterpretObjectScript(Object *obj)
         case BSOP_JitterPosition:
             x = Mt19937RandSigned(args[1]);
             y = Mt19937RandSigned(args[2]);
-            SnapObjectPosition(obj, obj->nX + (x << 16), obj->nY + (y << 16));
+            SnapObjectPosition(obj, obj->pos.x + (x << 16), obj->pos.y + (y << 16));
             break;
         case BSOP_EnableSemiTransparency:  // enables semi-transparency and resets the fade timer
             obj->oam.objMode = 1;
@@ -580,7 +580,7 @@ void InterpretObjectScript(Object *obj)
                 Object *fighterObj;
 
                 fighterObj = casterFighter->pObject;
-                SnapObjectPosition(fighterObj, fighterObj->nX + (args[1] << 16), fighterObj->nY + (args[2] << 16));
+                SnapObjectPosition(fighterObj, fighterObj->pos.x + (args[1] << 16), fighterObj->pos.y + (args[2] << 16));
             }
             break;
         case BSOP_NudgeTarget:  // nudges the target's position
@@ -588,7 +588,7 @@ void InterpretObjectScript(Object *obj)
                 Object *fighterObj;
 
                 fighterObj = targetFighter->pObject;
-                SnapObjectPosition(fighterObj, fighterObj->nX + (args[1] << 16), fighterObj->nY + (args[2] << 16));
+                SnapObjectPosition(fighterObj, fighterObj->pos.x + (args[1] << 16), fighterObj->pos.y + (args[2] << 16));
             }
             break;
         case BSOP_SetCasterPosition:  // sets the caster's position

@@ -1,5 +1,5 @@
 #include "graphics/object.h"
-#include "divide.h"
+#include "math.h"
 
 // Steps a move started by StartObjectMove: sets the velocity that covers the
 // remaining distance in the remaining ticks, snapping to the target once it is
@@ -15,42 +15,42 @@ void TickObjectMove(Object *obj)
 
     obj->wMoveDuration--;
 
-    if ((s32)obj->nMoveTargetX > (s32)obj->nX) {
-        distX = obj->nMoveTargetX - obj->nX;
+    if ((s32)obj->moveTarget.x > (s32)obj->pos.x) {
+        distX = obj->moveTarget.x - obj->pos.x;
         signX = 1;
     }
     else {
-        distX = obj->nX - obj->nMoveTargetX;
+        distX = obj->pos.x - obj->moveTarget.x;
         signX = -1;
     }
 
-    if ((s32)obj->nMoveTargetY > (s32)obj->nY) {
-        distY = obj->nMoveTargetY - obj->nY;
+    if ((s32)obj->moveTarget.y > (s32)obj->pos.y) {
+        distY = obj->moveTarget.y - obj->pos.y;
         signY = 1;
     }
     else {
-        distY = obj->nY - obj->nMoveTargetY;
+        distY = obj->pos.y - obj->moveTarget.y;
         signY = -1;
     }
 
     if ((distX >> 16) == 0 && (distY >> 16) == 0) {
         obj->wMoveDuration = 0;
-        obj->nVelX = 0;
-        obj->nVelY = 0;
-        obj->nX = obj->nMoveTargetX;
-        obj->nY = obj->nMoveTargetY;
-        obj->nXPrev = obj->nMoveTargetX;
-        obj->nYPrev = obj->nMoveTargetY;
+        obj->vel.x = 0;
+        obj->vel.y = 0;
+        obj->pos.x = obj->moveTarget.x;
+        obj->pos.y = obj->moveTarget.y;
+        obj->posPrev.x = obj->moveTarget.x;
+        obj->posPrev.y = obj->moveTarget.y;
     }
 
     if (obj->wMoveDuration != 0) {
         velX = FixedDivide(distX, obj->wMoveDuration << 16) * signX;
         velY = FixedDivide(distY, obj->wMoveDuration << 16) * signY;
-        obj->nVelX = velX;
-        obj->nVelY = velY;
+        obj->vel.x = velX;
+        obj->vel.y = velY;
     }
     else {
-        obj->nVelX = 0;
-        obj->nVelY = 0;
+        obj->vel.x = 0;
+        obj->vel.y = 0;
     }
 }

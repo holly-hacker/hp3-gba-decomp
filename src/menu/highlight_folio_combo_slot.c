@@ -1,5 +1,5 @@
 #include "types.h"
-#include "divide.h"
+#include "math.h"
 #include "game/game_modes.h"
 #include "menu/folio_universitas.h"
 

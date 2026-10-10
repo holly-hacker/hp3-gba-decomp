@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "trig.h"
+#include "math.h"
 
 // Adds a sine offset to the layer's output scroll, one phase accumulator per axis.
 void ApplyBgLayerWobble(u32 bg)

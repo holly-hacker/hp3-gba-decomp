@@ -1,4 +1,4 @@
-#include "trig.h"
+#include "math.h"
 
 // sin(2*pi*i/256) in 16.16 fixed point; cosine reads it a quarter turn (0x40) ahead.
 const s32 g_anSineTable[256] = {

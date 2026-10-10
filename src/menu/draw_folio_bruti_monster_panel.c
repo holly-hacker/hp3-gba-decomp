@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "battle/effect_script.h"
-#include "divide.h"
+#include "math.h"
 #include "game/save.h"
 #include "gen/graphics/overworld.h"
 #include "graphics/display.h"

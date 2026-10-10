@@ -35,7 +35,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
     }
 
     case 0xf:
-        if (obj->nVelX != 0 || obj->nVelY != 0)
+        if (obj->vel.x != 0 || obj->vel.y != 0)
             return;
 
         SetObjectActionState(obj, 0);
@@ -139,7 +139,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 active->bSelectedActionIndex = roll;
             }
 
-            *(Point1616 *)&g_pFightState->nSavedPosX = *(Point1616 *)&obj->nX;
+            g_pFightState->savedPos = obj->pos;
 
             if (MonsterTable[active->bRosterIndex].bSpecialChance == 100) {
                 g_pFightState->bActionDelayCounter_candidate = 5;
@@ -183,7 +183,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
 
             g_pFightState->bActionDelayCounter_candidate = 0x14;
 
-            StartObjectMove(obj, g_pFightState->nSavedPosX, g_pFightState->nSavedPosY, 3);
+            StartObjectMove(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
 
             if (MonsterTable[active->bRosterIndex].bSpecialChance != 100)
                 StartObjectAffineScaleTween(obj, 0x10000, 0x10000, 3);

@@ -65,14 +65,14 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
     case 4:
         g_pPlayerObject->bFacing = 6;
         SetPartyMemberAnim(g_pPlayerObject, PartyAnimWalk);
-        g_pPlayerObject->nVelX = 0xFFFDC71C;
-        g_pPlayerObject->nVelY = 0x00011C72;
+        g_pPlayerObject->vel.x = 0xFFFDC71C;
+        g_pPlayerObject->vel.y = 0x00011C72;
         break;
     case 5:
         g_pPlayerObject->bFacing = 2;
         SetPartyMemberAnim(g_pPlayerObject, PartyAnimWalk);
-        g_pPlayerObject->nVelX = 0x000238E4;
-        g_pPlayerObject->nVelY = 0xFFFEE38E;
+        g_pPlayerObject->vel.x = 0x000238E4;
+        g_pPlayerObject->vel.y = 0xFFFEE38E;
         break;
     }
 }

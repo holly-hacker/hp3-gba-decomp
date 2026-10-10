@@ -52,10 +52,10 @@ void TickObject(Object *obj, u32 mode)
         }
         else
         {
-            posX = obj->nX;
-            posY = obj->nY;
-            obj->nXPrev = posX;
-            obj->nYPrev = posY;
+            posX = obj->pos.x;
+            posY = obj->pos.y;
+            obj->posPrev.x = posX;
+            obj->posPrev.y = posY;
         }
 
         if (IsObjectTickAllowed()
@@ -70,16 +70,16 @@ void TickObject(Object *obj, u32 mode)
         if (g_dwUnk03003234 != 0)
         {
             g_dwUnk03003234 = 0;
-            if (obj->nX != obj->nXPrev || obj->nY != obj->nYPrev)
+            if (obj->pos.x != obj->posPrev.x || obj->pos.y != obj->posPrev.y)
                 PlaySoundById(0x47);
         }
     }
     else
     {
-        posX = obj->nX;
-        posY = obj->nY;
-        obj->nXPrev = posX;
-        obj->nYPrev = posY;
+        posX = obj->pos.x;
+        posY = obj->pos.y;
+        obj->posPrev.x = posX;
+        obj->posPrev.y = posY;
     }
 
     if (mode == 1 && !(flags & ObjectFlagOnscreenForTileAlloc))

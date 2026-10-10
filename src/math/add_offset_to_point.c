@@ -1,5 +1,4 @@
-#include "types.h"
-#include "graphics/display.h"
+#include "math.h"
 
 void AddOffsetToPoint(s32 dx, s32 dy, s32 *pPoint)
 {

@@ -77,8 +77,6 @@ extern BgLayer g_aBgLayers[4];  // 0x03001E84
 #define BG_LAYER_COMMIT       0x8000  // write the scroll registers at the next vblank
 
 extern void ApplyBgLayerWobble(u32 bg);
-// Adds (dx, dy) to the two-word point.
-extern void AddOffsetToPoint(s32 dx, s32 dy, s32 *pPoint);
 extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 
 // Stops the palette effect with the given handle.

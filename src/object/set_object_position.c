@@ -2,8 +2,8 @@
 
 void SetObjectPosition(Object *obj, s32 x, s32 y)
 {
-    obj->nX = x << 16;
-    obj->nY = y << 16;
-    obj->nXPrev = obj->nX;
-    obj->nYPrev = obj->nY;
+    obj->pos.x = x << 16;
+    obj->pos.y = y << 16;
+    obj->posPrev.x = obj->pos.x;
+    obj->posPrev.y = obj->pos.y;
 }

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "divide.h"
+#include "math.h"
 #include "game/game_modes.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "gen/graphics/menus.h"

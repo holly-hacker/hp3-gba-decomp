@@ -1,4 +1,4 @@
-#include "trig.h"
+#include "math.h"
 
 s16 Sin8_8(u8 angle)
 {
