@@ -10,7 +10,7 @@ void InitializeLinearCutscene(void)
 
     cutsceneIndex = g_GameModeStackContext.dwCurrentGameMode - Credits;
     g_dwLinearCutsceneIndex = cutsceneIndex;
-    g_pLinearCutsceneObject = sub_0801D940(0);
+    g_pLinearCutsceneObject = SpawnMenuCursorObject(0);
     sub_0801D77C(cutsceneIndex);
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

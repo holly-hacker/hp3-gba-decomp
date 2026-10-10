@@ -28,7 +28,9 @@ extern MainMenuState g_MainMenuState;  // 0x03005DB8
 extern u32 g_dwMainMenuTextCursor;     // 0x03005DB0: next free text tile, after the copyright lines
 
 extern void ReleaseMenuCursor(Object *pObject);
-extern Object *sub_0801D940(u32 kind);
+// Spawns a shared menu cursor sprite; kind selects its graphics and setup
+// (4 the list cursor, 2 the quantity arrows, 0/1 dialog and loading screen).
+extern Object *SpawnMenuCursorObject(u32 kind);
 
 extern const u32 g_dwMainMenuBg3Control;
 extern const u32 g_dwMainMenuBg2Control;
@@ -60,4 +62,4 @@ extern void InitializeMenuScreen(u32 titleStringId, u32 cursorKind, u32 hasPanel
 extern void BeginMenuScreen(u32 titleStringId, u32 cursorKind, u32 hasPanel);
 extern void sub_0801E0D8(void);
 extern void ExitMenuScreen(void);
-extern void sub_0801DCC4(Object *pObject, s32 x, s32 y);
+extern void SetMenuCursorPosition(Object *pObject, s32 x, s32 y);  // SetObjectPosition

@@ -23,7 +23,7 @@ void UpdateLoadingScreen(void)
         if (StepWrappedSelectionHorizontal_candidate(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 1, 1, 0))
         {
             sub_0800C3FC();
-            sub_0801DCC4(g_LoadingScreenState.pCursorObject,
+            SetMenuCursorPosition(g_LoadingScreenState.pCursorObject,
                          g_GameModeStackContext.dwCurrentGameModeArg2 * 0x50 + 0x4D,
                          0x4E);
             PlaySoundById(0);
@@ -35,7 +35,7 @@ void UpdateLoadingScreen(void)
         if (StepWrappedSelectionHorizontal_candidate(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 2, 1, 0))
         {
             sub_0800C3FC();
-            sub_0801DCC4(g_LoadingScreenState.pCursorObject,
+            SetMenuCursorPosition(g_LoadingScreenState.pCursorObject,
                          g_GameModeStackContext.dwCurrentGameModeArg2 * 0x50 + 0x4D,
                          0x4E);
             PlaySoundById(0);

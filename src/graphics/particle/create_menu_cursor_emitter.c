@@ -3,7 +3,7 @@
 #include "graphics/object.h"
 #include "gen/graphics/menus.h"
 
-// Attaches the sparkle emitter to a menu cursor object (cursor kind 4 of sub_0801D940).
+// Attaches the sparkle emitter to a menu cursor object (cursor kind 4 of SpawnMenuCursorObject).
 // Mode 6 particles take their horizontal speed from Mt19937RandRange on the gameplay RNG
 // cursor, and the emitter's spawn chance is rolled on the visual cursor.
 void CreateMenuCursorEmitter(Object *pCursor)

@@ -437,7 +437,7 @@
 .set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
-.set g_FredAndGeorgesShop,       0x03005AC8  @ FredAndGeorgesShopState; see include/menu/fred_and_georges_shop.h
+.set g_FredAndGeorgesShop,       0x03005AC8  @ FredAndGeorgesShopState; see include/shop.h
 .set g_DivinationTea,            0x03005B28  @ DivinationTeaState
 .set gDialogTextScratchBuf,      0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,           0x03005D0C  @ byte: language ID (0-7) set by SetLanguage

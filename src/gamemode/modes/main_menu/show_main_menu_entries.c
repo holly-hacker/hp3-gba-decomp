@@ -7,7 +7,7 @@ void ShowMainMenuEntries(void)
 {
     u32 entry;
 
-    g_MainMenuState.pCursorObject = sub_0801D940(4);
+    g_MainMenuState.pCursorObject = SpawnMenuCursorObject(4);
     g_MainMenuState.pCursorObject->oam.objMode = 1;
     g_MainMenuState.pCursorObject->oam.hFlip = 1;
     PositionMainMenuCursorObject_candidate(0);

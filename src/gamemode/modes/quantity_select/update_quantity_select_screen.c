@@ -1,4 +1,5 @@
 #include "types.h"
+#include "game/items.h"
 #include "game/game_modes.h"
 #include "game/game_save.h"
 #include "graphics/audio.h"
@@ -29,7 +30,7 @@ void UpdateQuantitySelectScreen(void)
         }
         else if (g_wKeysPressed & KeyRight)
         {
-            if (g_GameModeStackContext.dwModeScratchB < sub_08026E4C(g_dwItemUseItem))
+            if (g_GameModeStackContext.dwModeScratchB < GetItemQuantity(g_dwItemUseItem))
             {
                 g_GameModeStackContext.dwModeScratchB++;
                 sub_0803950C();

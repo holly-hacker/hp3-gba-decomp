@@ -1,4 +1,5 @@
 #include "types.h"
+#include "menu/items_menu.h"
 #include "hw/io_regs.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
@@ -12,7 +13,7 @@ void ExitStatusEquipItemSelect(void)
     BG_PLTT[6] = g_StatusEquipItemSelect.awSavedPalette[2];
 
     if (g_StatusEquipItemSelect.pItemList != NULL)
-        sub_08027BA4();
+        CloseItemList();
 
     ExitMenuScreen();
     FreeAllObjects(&g_ActiveObjectListState.pHead);

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "game/game_modes.h"
+#include "graphics/display.h"
 #include "hw/input.h"
 #include "menu/minigame_menu.h"
 #include "game/save.h"
@@ -57,7 +58,7 @@ void UpdateWizardCrackerPopItMinigame(void)
                 g_saveManager.options.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3] =
                     score;
 
-            sub_080075C0(3, 0, 8, 0x1E, 6, 0);
+            FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
             g_GameModeStackContext.dwModeState = WizardCrackerPopItStateFadeIn;
             g_GameModeStackContext.dwModeTimer = 8;
             g_pWizardCrackerPopIt->dwUnk1A4 = 0;
@@ -109,12 +110,12 @@ void UpdateWizardCrackerPopItMinigame(void)
             if (g_GameModeStackContext.dwModeScratchB == 0)
             {
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateWaitStart;
-                sub_080075C0(3, 0, 8, 0x1E, 6, 0);
+                FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
             }
             else if (g_GameModeStackContext.dwModeScratchB == 1)
             {
                 sub_08032AA8();
-                sub_080075C0(3, 0, 8, 0x1E, 6, 0);
+                FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateFadeIn;
                 g_GameModeStackContext.dwModeTimer = 8;
             }
@@ -127,7 +128,7 @@ void UpdateWizardCrackerPopItMinigame(void)
         {
             PlaySoundById(2);
             g_GameModeStackContext.dwModeState = WizardCrackerPopItStateWaitStart;
-            sub_080075C0(3, 0, 8, 0x1E, 6, 0);
+            FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
         }
         else if (StepWrappedSelectionVertical_candidate(&g_dwListMenuSelection, 0, 2, 1, 0))
         {
@@ -146,7 +147,7 @@ void UpdateWizardCrackerPopItMinigame(void)
             if (g_GameModeStackContext.dwModeScratchB == 0)
             {
                 sub_08032AA8();
-                sub_080075C0(3, 0, 8, 0x1E, 6, 0);
+                FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateFadeIn;
                 g_GameModeStackContext.dwModeTimer = 8;
             }

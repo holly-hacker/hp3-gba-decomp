@@ -80,6 +80,9 @@ groups:
           94: ObjectSprite094
           95: StatusEquipSlotCursor
           96: ObjectSprite096
+          98: ShopIconBuy
+          99: ShopIconSell
+          100: ShopIconExit
           101: DivinationTeaTextFrame
           102: ClockSkipObject1
           104: ObjectSprite104

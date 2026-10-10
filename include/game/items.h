@@ -47,6 +47,11 @@ typedef struct ItemEntry {
 } ItemEntry;
 extern const ItemEntry g_pItemTable[132];  // 0x08060EE4, US only, src/items/items.c
 
+extern void GetItemImageData(u32 item, const void **ppPalette, const void **ppTileData, const void **ppFrameData);
+extern u32 GetItemBuyPrice(u32 item);
+extern u32 GetItemSellPrice(u32 item);
+extern u32 GetItemQuantity(u32 item);  // g_abItemQuantities[item]
+
 // Owned count per item id, indexed by reward id (see rewards.h), which extends
 // past the last real item. See docs/formats/save.md.
 extern u8 g_abItemQuantities[];  // 0x030037B0

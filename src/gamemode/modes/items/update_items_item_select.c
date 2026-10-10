@@ -26,13 +26,13 @@ void UpdateItemsItemSelect(void)
     case 2:
         if (g_ItemsItemSelect.dwHasItems != 0)
         {
-            sub_08027048();
+            TickItemList();
             if (g_wKeysPressed & KeyA)
             {
                 if (sub_08039818())
                 {
                     PlaySoundById(1);
-                    item = sub_08027BDC();
+                    item = GetItemListSelection();
                     SetItemUseItem(item);
                     if (sub_08026D34(item))
                     {

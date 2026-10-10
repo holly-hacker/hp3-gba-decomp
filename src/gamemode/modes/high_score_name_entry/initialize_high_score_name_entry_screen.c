@@ -33,7 +33,7 @@ void InitializeHighScoreNameEntryScreen(void)
     SetBgScroll_candidate(2, 0, 0);
     g_GameModeStackContext.dwModeState = 0;
 
-    pCursor = sub_0801D940(4);
+    pCursor = SpawnMenuCursorObject(4);
     g_HighScoreNameEntry.pCursor = pCursor;
     pCursor->pfnTick = HighScoreNameEntryCursorTick;
     g_HighScoreNameEntry.dwRow = 0;

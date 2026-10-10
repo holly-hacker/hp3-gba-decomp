@@ -1,4 +1,5 @@
 #include "types.h"
+#include "graphics/object.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -32,7 +33,7 @@ void UpdateStatusEquipSlotSelect(void)
         for (i = 0; i < ARRAY_COUNT(g_StatusEquipSlotSelect.apSlotItems); i++)
         {
             if (g_StatusEquipSlotSelect.apSlotItems[i] != NULL)
-                sub_08026FE0(g_StatusEquipSlotSelect.apSlotItems[i],
+                SetObjectScaleStep(g_StatusEquipSlotSelect.apSlotItems[i],
                              g_GameModeStackContext.dwModeSubState);
         }
         if (g_GameModeStackContext.dwModeSubState == 8)
@@ -95,7 +96,7 @@ void UpdateStatusEquipSlotSelect(void)
         for (i = 0; i < ARRAY_COUNT(g_StatusEquipSlotSelect.apSlotItems); i++)
         {
             if (g_StatusEquipSlotSelect.apSlotItems[i] != NULL)
-                sub_08026FE0(g_StatusEquipSlotSelect.apSlotItems[i],
+                SetObjectScaleStep(g_StatusEquipSlotSelect.apSlotItems[i],
                              g_GameModeStackContext.dwModeSubState);
         }
         if (g_GameModeStackContext.dwModeSubState == 0)

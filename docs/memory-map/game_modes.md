@@ -191,6 +191,25 @@ US (0x11 `0x080395D0`-`0x080397A4`, 0x10 `0x080398A8`-`0x080399C8`, 0x12
 `0x080399C8`-`0x08039A68`), taken from JP's dispatch table; the RAM
 globals sit +0x60 from US.
 
+## FredAndGeorgesShop (0x2E)
+
+PROVEN from the matched source in `src/store/` (both versions; declarations
+in `include/shop.h`, data in `fred_and_georges_shop.globals.c`).
+
+`dwModeState` is a `ShopState`: 4 main menu (Buy/Sell/Exit), 6 buy tabs,
+8 sell list, 10 a tab's buy list, 12 quantity, 14 message. Screen changes go
+through `StartShopScreenTransition`, which records the old and new state and
+enters state 1: BG1 fades out, `TickShopFadeOut` runs the old screen's
+`Exit*` and the new screen's `Show*`, then state 2 fades back in. Selling
+everything returns to the main menu (`bSoldItem`); an empty sell list
+otherwise shows text 0x544. Buying Chocolate Frogs grants that many cards
+through `GrantRandomChocolateFrogCard` instead of the item. Exit from the
+main menu (row or B) pushes `Overworld` with `g_bCurrentRoomId`.
+
+Twelve helpers (the screens' `Exit*` functions, `ShowShopSellList`,
+`ShowShopBuyList`, `ShowShopMessage` and the row/quantity drawing) are also
+inlined into their callers; their bodies live in `include/shop_inline.h`.
+
 ## Minigames (0x1B, 0x1C, 0x24, 0x2B, 0x2F, 0x33)
 
 PROVEN from US decompiles; the state names in the headers are provisional.

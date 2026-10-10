@@ -185,6 +185,7 @@ void ProcessPlaytimeTick(void);
 // 0..999999, and returns the new total.
 u32 AddSickles(s32 amount);
 void SetSickles(u32 amount);
+s32 GetSickles(void);  // returns g_saveStateBlock.dwMoney
 
 extern const SaveHeader g_DefaultSaveHeader;
 extern const SaveOptions g_DefaultSaveOptions;

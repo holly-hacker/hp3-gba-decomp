@@ -31,7 +31,7 @@ void DrawFolioBrutiMonsterPanel(void)
         g_FolioBrutiState.pMonster = NULL;
     }
 
-    sub_080075A8(1, 0xF, 0xA, 0xF, 0xA);
+    ClearBgTilemapRect(1, 0xF, 0xA, 0xF, 0xA);
     tileCursor = DrawFolioBrutiSpellLabels(g_FolioBrutiState.dwHeadingTileCursor);
 
     aOrbit[1] = 0;

@@ -7,7 +7,7 @@
 void ExitItemsItemSelect(void)
 {
     if (g_ItemsItemSelect.dwHasItems != 0)
-        sub_08027BA4();
+        CloseItemList();
 
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     ClearBgTilemap(2);

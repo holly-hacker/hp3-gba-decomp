@@ -61,7 +61,6 @@ extern void sub_0803A604(void);
 extern void sub_0803A630(void);
 extern u32 sub_0803A678(void);
 extern void sub_080368CC(u32 slotType);  // sets g_dwStatusEquipSlotType
-extern void sub_08026FE0(Object *obj, u32 blendLevel);
 
 // Item select (mode 0x0F).
 typedef struct {
@@ -81,6 +80,4 @@ extern u32 g_dwStatusEquipSlotType;  // 0x030052C0: equipment type of the chosen
 
 extern void sub_080362D8(void);
 extern u32 sub_080368E4(void);
-extern void sub_08027048(void);
-extern void sub_08027BA4(void);
 extern void StartMenuFadeOut(void);

@@ -54,7 +54,7 @@ void InitializeOptions(void)
     InitializeMenuScreen(0x8CF, 4, 1, gMenuScreenGraphic, 0, 1);  // "Options"
     g_pMenuCursorObject->oam.objMode = 1;
     g_pMenuCursorObject->oam.hFlip = 1;
-    sub_0801DCC4(g_pMenuCursorObject,
+    SetMenuCursorPosition(g_pMenuCursorObject,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nX - 0xE,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nY + 8);
     BuildOptionsScreen_candidate();

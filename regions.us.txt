@@ -176,8 +176,9 @@ thumb-func 0x08007454 ClearBgTilemap
 thumb-func 0x08007464 sub_08007464
 thumb-func 0x08007474 FillBgTilemap_candidate
 thumb-func 0x080074F4 FillBgTile_candidate
-thumb-func 0x080075A8 sub_080075A8
-thumb-func 0x080075C0 sub_080075C0
+thumb-func 0x080075A8 ClearBgTilemapRect
+thumb-func 0x080075C0 FillBgTilemapRect
+thumb-func 0x080075EC FillTilemapRect
 thumb-func 0x0800778C LoadBgGraphic
 thumb-func 0x080077C8 sub_080077C8
 thumb-func 0x08007800 LoadEmbeddedPalette_candidate
@@ -575,10 +576,10 @@ c-file 0x0801D888 _ src/gamemode/modes/cutscene/linear_cutscene/initialize_linea
 c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 
 # Cursor? (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
-thumb-func 0x0801D940 sub_0801D940
+thumb-func 0x0801D940 SpawnMenuCursorObject
 c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 thumb-func 0x0801DC6C ReleaseMenuCursor
-thumb-func 0x0801DCC4 sub_0801DCC4
+thumb-func 0x0801DCC4 SetMenuCursorPosition
 c-file 0x0801DD40 _ src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 c-file 0x0801DD88 _ src/graphics/get_resource_decompressed_size.c GetResourceDecompressedSize
 c-file 0x0801DD90 _ src/graphics/decompress_resource.c DecompressResource
@@ -695,6 +696,7 @@ c-file 0x08021650 _ src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCare
 c-file 0x0802165C _ src/save/process_playtime_tick.c ProcessPlaytimeTick
 c-file 0x08021694 0x080216A0 src/save/set_sickles.c SetSickles
 thumb-func 0x080216A0 AddSickles
+thumb-func 0x080216C8 GetSickles
 
 # GameCube (Joybus transport), see docs/memory-map/gcn-link.md
 c-file 0x080216D4 _ src/gamecube/handle_joybus_interrupt.c HandleJoybusInterrupt
@@ -813,6 +815,9 @@ c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRa
 thumb-func 0x08026870 sub_08026870
 thumb-func 0x080269E0 sub_080269E0
 thumb-func 0x08026B8C GetRewardNameStringId_candidate
+thumb-func 0x08026BCC GetItemImageData
+thumb-func 0x08026C38 GetItemBuyPrice
+thumb-func 0x08026C4C GetItemSellPrice
 thumb-func 0x08026CDC sub_08026CDC
 thumb-func 0x08026CF0 sub_08026CF0
 thumb-func 0x08026D34 sub_08026D34
@@ -822,14 +827,16 @@ c-file 0x08026DA0 _ src/save/serialize_item_quantities.c SerializeItemQuantities
 c-file 0x08026DC0 _ src/save/deserialize_item_quantities.c DeserializeItemQuantities
 c-file 0x08026DE0 0x08026E2C src/items/grant_reward.c GrantReward
 thumb-func 0x08026E2C ConsumeBattleItemSlot
-thumb-func 0x08026E4C sub_08026E4C
+thumb-func 0x08026E4C GetItemQuantity
 thumb-func 0x08026F9C IsFolioPageGroupUnlocked_candidate
-thumb-func 0x08026FE0 sub_08026FE0
-thumb-func 0x08027048 sub_08027048
-thumb-func 0x08027AF4 sub_08027AF4
-thumb-func 0x08027BA4 sub_08027BA4
-thumb-func 0x08027BDC sub_08027BDC
-thumb-func 0x08027C08 sub_08027C08
+thumb-func 0x08026FE0 SetObjectScaleStep
+thumb-func 0x08027048 TickItemList
+thumb-func 0x080271AC SetItemListTranslucent
+thumb-func 0x08027AF4 OpenFilteredItemList
+thumb-func 0x08027B44 OpenItemListFromIds
+thumb-func 0x08027BA4 CloseItemList
+thumb-func 0x08027BDC GetItemListSelection
+thumb-func 0x08027C08 SetItemListCallbacks
 thumb-func 0x08027EF0 sub_08027EF0
 
 # Unused Hogwarts map mode
@@ -1508,23 +1515,41 @@ thumb-func 0x08040114 sub_08040114
 thumb-func 0x08040358 sub_08040358
 thumb-func 0x08040680 sub_08040680
 
-# Store? (Fred and George's shop)
-thumb-func 0x08040720 sub_08040720
-thumb-func 0x080407CC sub_080407CC
-thumb-func 0x08040A38 sub_08040A38
-thumb-func 0x08040CA4 sub_08040CA4
-thumb-func 0x08040F04 sub_08040F04
-c-file 0x0804115C _ src/gamemode/modes/fred_and_georges_shop/initialize_fred_and_georges_shop.c InitializeFredAndGeorgesShop
-c-file 0x080411E0 _ src/gamemode/modes/fred_and_georges_shop/update_fred_and_georges_shop.c UpdateFredAndGeorgesShop
-c-file 0x0804126C 0x08041288 src/gamemode/modes/fred_and_georges_shop/exit_fred_and_georges_shop.c ExitFredAndGeorgesShop
-thumb-func 0x08041288 sub_08041288
-thumb-func 0x0804132C sub_0804132C
-thumb-func 0x08041360 sub_08041360
-thumb-func 0x08041454 sub_08041454
-thumb-func 0x08041590 sub_08041590
-thumb-func 0x080416CC sub_080416CC
-thumb-func 0x080418BC sub_080418BC
-thumb-func 0x080418E0 sub_080418E0
+# Store (Fred and George's shop)
+c-file 0x08040720 _ src/store/show_shop_main_menu.c ShowShopMainMenu
+c-file 0x080407CC _ src/store/update_shop_main_menu.c UpdateShopMainMenu
+c-file 0x080408B4 _ src/store/move_shop_main_menu_cursor.c MoveShopMainMenuCursor
+c-file 0x08040988 _ src/store/show_shop_category_menu.c ShowShopCategoryMenu
+c-file 0x08040A38 _ src/store/update_shop_category_menu.c UpdateShopCategoryMenu
+c-file 0x08040AE4 _ src/store/move_shop_category_cursor.c MoveShopCategoryCursor
+c-file 0x08040B94 _ src/store/show_shop_quantity_select.c ShowShopQuantitySelect
+c-file 0x08040CA4 _ src/store/update_shop_quantity_select.c UpdateShopQuantitySelect
+c-file 0x08040F04 _ src/store/tick_shop_fade_out.c TickShopFadeOut
+c-file 0x0804115C _ src/store/initialize_fred_and_georges_shop.c InitializeFredAndGeorgesShop
+c-file 0x080411E0 _ src/store/update_fred_and_georges_shop.c UpdateFredAndGeorgesShop
+c-file 0x0804126C _ src/store/exit_fred_and_georges_shop.c ExitFredAndGeorgesShop
+c-file 0x08041288 _ src/store/start_shop_screen_transition.c StartShopScreenTransition
+c-file 0x0804132C _ src/store/tick_shop_fade_in.c TickShopFadeIn
+c-file 0x08041360 _ src/store/draw_shop_sickles.c DrawShopSickles
+c-file 0x080413C0 _ src/store/clear_shop_sickles_box.c ClearShopSicklesBox
+c-file 0x080413D8 _ src/store/tick_shop_menu_cursor.c TickShopMenuCursor
+c-file 0x080413F4 _ src/store/draw_shop_main_menu_row.c DrawShopMainMenuRow
+c-file 0x08041454 _ src/store/exit_shop_main_menu.c ExitShopMainMenu
+c-file 0x08041494 _ src/store/draw_shop_category_row.c DrawShopCategoryRow
+c-file 0x080414E8 _ src/store/exit_shop_category_menu.c ExitShopCategoryMenu
+c-file 0x08041524 _ src/store/show_shop_sell_list.c ShowShopSellList
+c-file 0x08041590 _ src/store/update_shop_sell_list.c UpdateShopSellList
+c-file 0x080415FC _ src/store/exit_shop_sell_list.c ExitShopSellList
+c-file 0x0804161C _ src/store/draw_shop_sell_price.c DrawShopSellPrice
+c-file 0x08041680 _ src/store/show_shop_buy_list.c ShowShopBuyList
+c-file 0x080416CC _ src/store/update_shop_buy_list.c UpdateShopBuyList
+c-file 0x08041754 _ src/store/exit_shop_buy_list.c ExitShopBuyList
+c-file 0x08041774 _ src/store/draw_shop_buy_price.c DrawShopBuyPrice
+c-file 0x080417D8 _ src/store/draw_shop_quantity.c DrawShopQuantity
+c-file 0x0804184C _ src/store/exit_shop_quantity_select.c ExitShopQuantitySelect
+c-file 0x08041874 _ src/store/show_shop_message.c ShowShopMessage
+c-file 0x080418BC _ src/store/update_shop_message.c UpdateShopMessage
+c-file 0x080418E0 _ src/store/exit_shop_message.c ExitShopMessage
 
 # Tea (divination tea minigame)
 c-file 0x080418EC _ src/gamemode/modes/minigame/divination_tea/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
@@ -1843,7 +1868,7 @@ c-file 0x0806B8CC _ src/mem/clear_work_ram.globals.c g_pIwramSectionStart
 c-file 0x0806B8DC 0x0806B934 src/room/objects/spawn_spongify_pad_object.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 0x0806BA4C src/shop/shop_stock.c g_aShopStockMisc
 
-c-file 0x0806BAF0 0x0806BAF4 src/gamemode/modes/fred_and_georges_shop/fred_and_georges_shop.globals.c g_dwFredAndGeorgesShopBg1Control
+c-file 0x0806BA4C _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file 0x0806BB00 _ src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
 c-file 0x0806BB70 _ src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD78 _ sDialogTextTable

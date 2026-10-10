@@ -15,7 +15,7 @@ void BuildListMenu(const ListMenuDefinition *pDefinition)
     g_pMenuCursorObject->oam.objMode = 1;
     g_pMenuCursorObject->oam.hFlip = 1;
     g_pMenuCursorObject->pfnTick = ListMenuCursorTick_candidate;
-    sub_0801DCC4(g_pMenuCursorObject,
+    SetMenuCursorPosition(g_pMenuCursorObject,
                  g_ListMenuState.pDefinition->wStrideX * g_GameModeStackContext.dwModeScratchB
                      + g_ListMenuState.pDefinition->wBaseX
                      + g_ListMenuState.pDefinition->wCursorOffsetX,

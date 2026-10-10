@@ -802,7 +802,7 @@ void InterpretObjectScript(Object *obj)
             HideScreenWindow_candidate(args[1]);
             break;
         case BSOP_ResetBgState:  // resets a BG's window, scroll and state
-            sub_080075A8(args[1], 0, 0, 0x20, 0xF);
+            ClearBgTilemapRect(args[1], 0, 0, 0x20, 0xF);
             sub_08007D14(args[1], 0, 0);
             sub_08007AF0(args[1], 0, 0);
             if (args[1] == 1)

@@ -19,7 +19,7 @@ void InitializeUnusedHogwartsMapScreen(void)
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
 
-    g_pUnusedHogwartsMapCursor = sub_0801D940(4);
+    g_pUnusedHogwartsMapCursor = SpawnMenuCursorObject(4);
     g_pUnusedHogwartsMapCursor->oam.hFlip = 1;
 
     SetBgControl(0, g_dwUnusedHogwartsMapBg0Control);

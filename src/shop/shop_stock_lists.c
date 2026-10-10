@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/shop.h"
+#include "shop.h"
 
 // Per-tab pointer table into src/shop/shop_stock.c
 const u32 *const g_apShopStockLists[7] = {

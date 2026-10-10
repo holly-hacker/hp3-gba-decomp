@@ -12,4 +12,3 @@ extern void ExitQuantitySelectScreen(void);
 extern void sub_08039428(void);  // builds the screen: header text, "Use how many?" prompt and arrows
 extern void sub_0803950C(void);  // draws the quantity under the prompt
 extern void sub_08039564(void);  // clears BG2 and frees the screen's objects
-extern u32 sub_08026E4C(u32 item);  // owned count of an item (g_abItemQuantities)

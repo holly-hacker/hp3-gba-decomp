@@ -525,6 +525,8 @@ extern u32 AllocObjectAffineSlot(Object *obj);  // memoized: returns the slot al
                              // oam.affineMode is set (1 or 3), else calls AllocAffineSlot and
                              // stores the result
 extern void SetObjectAffineTransform(Object *obj, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
+// Double-size affine with both scales set to step 0..8 of a table: 0x666, then 0x2000 * step.
+extern void SetObjectScaleStep(Object *obj, u32 step);
 extern void StartObjectAffineScaleTween(Object *obj, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetObjectFlippedX(Object *obj, s32 flip);
 // pAnimTable is the sprite record; the stream starts at command startCommand

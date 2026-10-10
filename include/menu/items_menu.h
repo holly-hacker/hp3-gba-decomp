@@ -38,10 +38,16 @@ extern u32 g_dwItemUseQuantity;  // 0x030054F0: quantity chosen in QuantitySelec
 extern void SetItemUseItem(u32 item);
 extern void sub_08039A20(u32 textId);  // draws the result message under the Items header
 
-// Scrolling item list shared with the Status/Equip item select.
-extern u32 sub_08027AF4(u32 filter, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5, s32 arg6);
-extern u32 sub_08027BDC(void);  // item under the list cursor
-extern void sub_08027C08(void (*onCursorMove)(u32 item), void (*onClear)(void));
+// Scrolling item list shared with the Status/Equip item select and the shop.
+// Each Open* call returns nonzero when the list is not empty.
+extern u32 OpenFilteredItemList(u32 filter, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5, s32 arg6);
+// Lists a 0x84-terminated item id array instead of a filter.
+extern u32 OpenItemListFromIds(const u32 *pItems, s32 x, s32 y, u32 arg3, u32 arg4);
+extern void TickItemList(void);            // Up/Down cursor movement and row scrolling
+extern u32 GetItemListSelection(void);     // item under the list cursor
+extern void SetItemListCallbacks(void (*onCursorMove)(u32 item), void (*onClear)(void));
+extern void SetItemListTranslucent(void);  // rows and cursor join the alpha-blend fade
+extern void CloseItemList(void);
 
 extern u32 sub_08026D34(s32 item);  // g_pItemTable[item].dwUnk20 bit 2
 // Restores the member's Stamina or Magic with the item, consumes the units

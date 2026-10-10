@@ -121,7 +121,7 @@ axis with equal bounds consumes nothing. `dwSpeed` defaults to `0x20000`, whose 
 
 ## Main menu cursor emitter — PROVEN
 
-`ShowMainMenuEntries_candidate` builds the cursor object with `sub_0801D940(4)`, whose kind-4
+`ShowMainMenuEntries_candidate` builds the cursor object with `SpawnMenuCursorObject(4)`, whose kind-4
 branch calls `CreateMenuCursorEmitter`. The emitter is released by `ExitMainMenuScreen` through
 `ReleaseMenuCursor`. Configuration, from the matched C:
 

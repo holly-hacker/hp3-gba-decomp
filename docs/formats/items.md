@@ -60,18 +60,19 @@ cap/robe item carries `0x7` (all three).
 
 ## Shop prices -- `nBuyPrice`/`nSellPrice` (`+0x10`/`+0x14`)
 
-The shop's item-detail screen (`DrawShopItemDetail`, `0x08040B94`) reads
+The shop's quantity screen (`ShowShopQuantitySelect`, `0x08040B94`) reads
 `nBuyPrice`/`nSellPrice` via `GetItemBuyPrice`/`GetItemSellPrice`
-depending on buy/sell mode; `ConfirmShopBuyItem` (`0x080416CC`) compares
+depending on buy/sell mode; `UpdateShopBuyList` (`0x080416CC`) compares
 `nBuyPrice` against the player's Sickle count to gate a purchase.
 
 **Buyability is gated by shop-tab membership, not `nBuyPrice`.** The
-shop (Fred and George's, `UpdateFredAndGeorgesShop`, `0x080411E0`) has 7
+shop (Fred and George's, `src/store/`; see
+[`game_modes.md`](../memory-map/game_modes.md)) has 7
 tabs -- Miscellaneous, Belts, Charms, Gloves, Boots, Hats, Cloaks --
-each a fixed item-id list extracted to `asm/data/shop_stock.s`, pointed
-at by `g_apShopStockLists` (`asm/data/shop_stock_lists.s`,
-`0x08FB0D94`). `HandleShopScreenTransition` (`0x08040F04`) picks a tab's
-list and `LoadShopStockList` (`0x08027B44`) copies it into the display
+each a fixed item-id list in `src/shop/shop_stock.c`, pointed
+at by `g_apShopStockLists` (`src/shop/shop_stock_lists.c`,
+`0x08FB0D94`). `ShowShopBuyList` (`0x08041680`) picks a tab's
+list and `OpenItemListFromIds` copies it into the display
 buffer -- `nBuyPrice` only sets cost once an item is on one of these
 lists. Belts/Gloves/Boots/Hats/Cloaks stock their entire category run;
 Charms stocks 8 of 12 (Bracelet/Beads/Head Band/Remembrall are never

@@ -46,7 +46,7 @@ void UpdateVictoryScreen(void)
         if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0)
         {
             g_GameModeStackContext.dwCurrentGameModeArg2 = 1;
-            sub_080075A8(0, 0, 0x12, 0x1E, 2);
+            ClearBgTilemapRect(0, 0, 0x12, 0x1E, 2);
             SelectTextFont(1, 0, -1);
             pText = GetDialogText(0x647);  // "Press the A Button to continue."
             g_wVictoryTextTileCursor = DrawStringAligned(g_wVictoryTextTileCursor, 0x78, 0x94, pText, 1);

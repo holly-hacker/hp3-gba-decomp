@@ -1,6 +1,7 @@
 #include "types.h"
 #include "math.h"
 #include "game/game_modes.h"
+#include "graphics/display.h"
 #include "graphics/text.h"
 #include "menu/minigame_menu.h"
 #include "menu/folio_universitas.h"
@@ -14,7 +15,7 @@ void DrawFolioUniversitasNames(u32 drawComboName)
 
     if (g_GameModeStackContext.dwCurrentGameModeArg1 != FolioUniversitasPickCombo)
     {
-        sub_080075C0(1, 2, 0xB, 0xD, 3, 0);
+        FillBgTilemapRect(1, 2, 0xB, 0xD, 3, 0);
         SelectTextFont(1, 0, 0);
         nameIndex = g_FolioUniversitasState.dwCategory * 10 + g_FolioUniversitasState.dwSlot;
         PrintTextBox(0x3B, 0x10, 0x58, 0x68, GetDialogText(nameIndex + 0x412), 0);
@@ -22,7 +23,7 @@ void DrawFolioUniversitasNames(u32 drawComboName)
 
     if (drawComboName)
     {
-        sub_080075C0(1, 1, 0xE, 0xF, 3, 0);
+        FillBgTilemapRect(1, 1, 0xE, 0xF, 3, 0);
         iwramDivideSignedRemainder(g_FolioUniversitasState.dwSlot + 1, 10, &nextSlot);
         if (nextSlot != 0)
         {

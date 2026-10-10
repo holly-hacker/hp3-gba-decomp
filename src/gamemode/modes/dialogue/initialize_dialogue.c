@@ -41,7 +41,7 @@ void InitializeDialogue(void)
         g_dwDialogBoxY = DIALOG_BOX_HIDDEN_Y;
         g_pDialogBoxObject = sub_0801F7AC();
         SetObjectPosition(g_pDialogBoxObject, 0, g_dwDialogBoxY + 0x28);
-        g_pDialogCursorObject = sub_0801D940(0);
+        g_pDialogCursorObject = SpawnMenuCursorObject(0);
         QueueScanlineEffectTable(g_aDialogScanlineEffects, 1);
         while (!IsScanlineEffectQueueIdle())
             ;

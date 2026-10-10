@@ -1,6 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "game/game_modes.h"
+#include "graphics/display.h"
 #include "hw/input.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
@@ -73,11 +74,11 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
             switch ((s32)g_ServePumpkinJuice.dwMenuSelection)
             {
             case 0:
-                sub_080075C0(3, 0, 5, 0x1E, 9, 0);
+                FillBgTilemapRect(3, 0, 5, 0x1E, 9, 0);
                 g_GameModeStackContext.dwModeState = ServePumpkinJuiceStateWaitInput;
                 break;
             case 1:
-                sub_080075C0(3, 0, 5, 0x1E, 9, 0);
+                FillBgTilemapRect(3, 0, 5, 0x1E, 9, 0);
                 sub_0803539C();
                 break;
             case 2:
@@ -88,7 +89,7 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
 
         if (g_wKeysPressed & KeyB)
         {
-            sub_080075C0(3, 0, 5, 0x1E, 9, 0);
+            FillBgTilemapRect(3, 0, 5, 0x1E, 9, 0);
             g_GameModeStackContext.dwModeState = ServePumpkinJuiceStateWaitInput;
         }
 

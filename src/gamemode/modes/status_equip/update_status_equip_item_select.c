@@ -1,4 +1,5 @@
 #include "types.h"
+#include "menu/items_menu.h"
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "game/game_save.h"
@@ -20,7 +21,7 @@ void UpdateStatusEquipItemSelect(void)
 
     case 2:
         if (g_StatusEquipItemSelect.pItemList != NULL)
-            sub_08027048();
+            TickItemList();
 
         if (g_wKeysPressed & (KeyA | KeyB))
         {

@@ -139,6 +139,11 @@ extern void HideScreenWindow_candidate(u32 windowId);
 extern void ResetDisplayState(u32 arg);
 extern void FillBgTilemap_candidate(u32 bg, u32 arg1, u32 arg2);
 extern void ClearBgTilemap(u32 bg);
+// Sets a width x height rectangle of tilemap entries at tile (x, y) to `tile`, in a
+// 32-tile-wide tilemap or in the BG layer's tilemap. ClearBgTilemapRect fills with 0.
+extern void FillTilemapRect(u16 *pTilemap, u32 x, u32 y, u32 width, u32 height, u16 tile);
+extern void FillBgTilemapRect(u32 bg, u32 x, u32 y, u32 width, u32 height, u16 tile);
+extern void ClearBgTilemapRect(u32 bg, u32 x, u32 y, u32 width, u32 height);
 
 extern void sub_08007AF0(u32 bg, u32 arg1, u32 arg2);
 extern void sub_08007C2C(u32 bg, u32 arg1, u32 arg2);

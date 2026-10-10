@@ -83,7 +83,6 @@ extern void sub_08003788(Object *obj, s32 flip);
 extern s32 sub_08001AA8(Object *obj, u32 index, ScreenPoint *out);  // returns 0 when the frame has no such anchor
 extern void sub_0801B710(Object *obj, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
-extern void sub_080075A8(u32 a, u32 b, u32 c, u32 d, u32 e);
 extern void sub_0800D244(void *a, u32 b, u32 c);
 extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
 extern void sub_0801B4BC(u32 a, void *b, u32 c, u32 d, void *e);

@@ -27,7 +27,7 @@ void UpdateCredits(void)
         y = ((g_dwCreditsLine << 4) + 0xB0) & 0x1FF;
 
         if (cutsceneIndex == 0)
-            sub_080075C0(1, 0, y >> 3, 0x20, 2, 0);
+            FillBgTilemapRect(1, 0, y >> 3, 0x20, 2, 0);
 
         if (g_dwCreditsLine < g_aLinearCutsceneTable[cutsceneIndex].dwLineCount)
         {
