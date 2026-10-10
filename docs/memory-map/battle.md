@@ -892,7 +892,7 @@ read in `InitializeVictoryDropScreen` (`0x0801456C`, the victory
 screen's second phase) for a `25%` gold bonus (`gold += gold >> 2`,
 matching the `42*2*1.25 = 105` figure recorded earlier), and again in
 `RollBattleItemDrops` (`0x080147C0`, matched in
-`src/battle/roll_battle_item_drops.c`): for up to 4 fainted monsters
+`src/gamemode/modes/victory_screen/roll_battle_item_drops.c`): for up to 4 fainted monsters
 (`g_anFaintedRosterIndices`, sentinel `-1`), one roll per monster, each
 rolling `0`-`99` against `g_pMonsterDropTable[rosterIndex]`'s two
 `(chance, itemId)` slots (adjacent ranges on the same roll, mutually

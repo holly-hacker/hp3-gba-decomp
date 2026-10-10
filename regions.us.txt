@@ -52,9 +52,9 @@ c-file 0x08000F50 _ src/object/get_direction_to_target.c GetDirectionToTarget
 c-file 0x08000FF0 _ src/object/get_unblocked_direction_to_target.c GetUnblockedDirectionToTarget
 c-file 0x08001238 _ src/object/get_object_collision_box_rect.c GetObjectCollisionBoxRect
 c-file 0x08001300 _ src/object/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
-c-file 0x0800143C _ src/mem/init_object_pool.c InitObjectPool
-c-file 0x080014B4 _ src/mem/alloc_object_of_type.c AllocObjectOfType
-c-file 0x080014D4 _ src/mem/alloc_default_object.c AllocDefaultObject
+c-file 0x0800143C _ src/object/init_object_pool.c InitObjectPool
+c-file 0x080014B4 _ src/object/alloc_object_of_type.c AllocObjectOfType
+c-file 0x080014D4 _ src/object/alloc_default_object.c AllocDefaultObject
 c-file 0x08001528 _ src/object/spawn_object.c SpawnObject
 c-file 0x080015B8 _ src/object/tick_active_objects.c TickActiveObjects
 c-file 0x080015D4 _ src/object/free_all_objects.c FreeAllObjects
@@ -264,9 +264,9 @@ c-file 0x0800BA2C 0x0800BAF8 src/gamemode/modes/debug/debug_collector_cards_menu
 thumb-func 0x0800BAF8 sub_0800BAF8
 c-file 0x0800BBF0 _ src/gamemode/modes/debug/debug_collector_cards_menu/update_debug_collector_cards_menu.c UpdateDebugCollectorCardsMenu
 c-file 0x0800BC54 _ src/gamemode/modes/debug/debug_collector_cards_menu/exit_debug_collector_cards_menu.c ExitDebugCollectorCardsMenu
-c-file 0x0800BC6C _ src/room/objects/SpawnChestObject.c SpawnChestObject
-c-file 0x0800BDCC _ src/room/objects/TickChestObject.c TickChestObject
-c-file 0x0800BF20 _ src/room/objects/HandleChestTouch.c HandleChestTouch
+c-file 0x0800BC6C _ src/room/objects/spawn_chest_object.c SpawnChestObject
+c-file 0x0800BDCC _ src/room/objects/tick_chest_object.c TickChestObject
+c-file 0x0800BF20 _ src/room/objects/handle_chest_touch.c HandleChestTouch
 c-file 0x0800C0FC _ src/gamemode/modes/loading_screen/initialize_loading_screen.c InitializeLoadingScreen
 c-file 0x0800C248 0x0800C344 src/gamemode/modes/loading_screen/update_loading_screen.c UpdateLoadingScreen
 thumb-func 0x0800C344 sub_0800C344
@@ -347,7 +347,7 @@ c-file 0x080138F4 0x08013AC8 src/gamemode/modes/victory_screen/update_victory_sc
 thumb-func 0x08013AC8 sub_08013AC8
 thumb-func 0x08014004 sub_08014004
 thumb-func 0x0801456C sub_0801456C
-c-file 0x080147C0 _ src/battle/roll_battle_item_drops.c RollBattleItemDrops
+c-file 0x080147C0 _ src/gamemode/modes/victory_screen/roll_battle_item_drops.c RollBattleItemDrops
 c-file 0x080148A8 0x080148F4 src/gamemode/modes/victory_screen/exit_victory_screen.c ExitVictoryScreen
 thumb-func 0x0801493C sub_0801493C
 thumb-func 0x08014964 ResetCharacterToLevel
@@ -580,7 +580,7 @@ thumb-func 0x080203CC sub_080203CC
 thumb-func 0x080203F0 sub_080203F0
 thumb-func 0x0802042C sub_0802042C
 c-file 0x08020440 _ src/room/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
-c-file 0x08020490 0x08020504 src/room/objects/SpawnRoomTileAnimationObject_candidate.c SpawnRoomTileAnimationObject_candidate
+c-file 0x08020490 0x08020504 src/room/objects/spawn_room_tile_animation_object.c SpawnRoomTileAnimationObject_candidate
 c-file 0x08020570 _ src/room/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
 c-file 0x0802058C _ src/room/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
 c-file 0x080205A8 _ src/room/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
@@ -682,8 +682,8 @@ thumb-func 0x080262BC HandleVCountInterrupt
 thumb-func 0x080262F4 HandleTimer0Interrupt_candidate
 thumb-func 0x0802631C HandleTimer3Interrupt_candidate
 thumb-func 0x08026344 IntrDummy
-c-file 0x08026348 _ src/room/objects/SpawnTriggerRectObject.c SpawnTriggerRectObject
-c-file 0x08026414 0x080264F0 src/room/objects/SpawnTriggerZoneObject.c SpawnTriggerZoneObject
+c-file 0x08026348 _ src/room/objects/spawn_trigger_rect_object.c SpawnTriggerRectObject
+c-file 0x08026414 0x080264F0 src/room/objects/spawn_trigger_zone_object.c SpawnTriggerZoneObject
 thumb-func 0x080264F0 sub_080264F0
 thumb-func 0x080265B8 sub_080265B8
 thumb-func 0x08026674 sub_08026674
@@ -767,9 +767,9 @@ thumb-func 0x0802B58C HandleWanderingMonsterTouch
 thumb-func 0x0802BA0C GetEncounterKindTerrainType
 thumb-func 0x0802BA1C FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BAD0 PickMaxDamageMonster
-c-file 0x0802BB00 0x0802BBAC src/room/objects/SpawnDoorObject.c SpawnDoorObject
+c-file 0x0802BB00 0x0802BBAC src/room/objects/spawn_door_object.c SpawnDoorObject
 thumb-func 0x0802BBAC sub_0802BBAC
-c-file 0x0802BC54 0x0802BC74 src/room/objects/SpawnPortraitDoorObject.c SpawnPortraitDoorObject
+c-file 0x0802BC54 0x0802BC74 src/room/objects/spawn_portrait_door_object.c SpawnPortraitDoorObject
 thumb-func 0x0802BC74 sub_0802BC74
 thumb-func 0x0802BC94 GrantPartyExperience_candidate
 
@@ -859,7 +859,7 @@ c-file 0x0802DF74 _ src/overworld/nudge_object.c NudgeAlongVelocity
 c-file 0x0802E030 0x0802E090 src/overworld/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
 thumb-func 0x0802E2BC sub_0802E2BC
 thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
-c-file 0x0802F500 0x0802F6C0 src/room/objects/SpawnNpcObject.c SpawnNpcObject
+c-file 0x0802F500 0x0802F6C0 src/room/objects/spawn_npc_object.c SpawnNpcObject
 thumb-func 0x0802F6C0 sub_0802F6C0
 thumb-func 0x0802F7F0 sub_0802F7F0
 thumb-func 0x0802FCC0 sub_0802FCC0
@@ -975,7 +975,7 @@ thumb-func 0x08035330 sub_08035330
 thumb-func 0x0803539C sub_0803539C
 thumb-func 0x08035418 sub_08035418
 thumb-func 0x08035474 sub_08035474
-c-file 0x08035540 0x08035664 src/room/objects/SpawnPushResetButtonObject.c SpawnPushResetButtonObject
+c-file 0x08035540 0x08035664 src/room/objects/spawn_push_reset_button_object.c SpawnPushResetButtonObject
 thumb-func 0x08035664 sub_08035664
 thumb-func 0x08035724 sub_08035724
 c-file 0x08035764 0x08035898 src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
@@ -1146,7 +1146,7 @@ c-file 0x0803B560 _ src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B598 _ src/rng/next.c Mt19937Next
 c-file 0x0803B5F4 _ src/rng/next2.c Mt19937Next2
 
-c-file 0x0803B64C 0x0803B71C src/room/objects/SpawnRaisingPlatformObject.c SpawnRaisingPlatformObject
+c-file 0x0803B64C 0x0803B71C src/room/objects/spawn_raising_platform_object.c SpawnRaisingPlatformObject
 thumb-func 0x0803B71C sub_0803B71C
 thumb-func 0x0803BA18 sub_0803BA18
 c-file 0x0803BAF4 _ src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
@@ -1259,7 +1259,7 @@ thumb-func 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0803FF8C IsSoundActive_candidate
 c-file 0x0803FF98 0x0803FFC8 src/audio/apply_audio_volume_settings.c ApplyAudioVolumeSettings
 c-file 0x0804000C _ src/audio/on_krawall_event.c OnKrawallEvent
-c-file 0x08040038 0x08040114 src/room/objects/SpawnSpongifyPadObject.c SpawnSpongifyPadObject
+c-file 0x08040038 0x08040114 src/room/objects/spawn_spongify_pad_object.c SpawnSpongifyPadObject
 thumb-func 0x08040114 sub_08040114
 thumb-func 0x08040358 sub_08040358
 thumb-func 0x08040720 sub_08040720
@@ -1306,13 +1306,13 @@ thumb-func 0x08043308 sub_08043308
 c-file 0x08043450 _ src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
 c-file 0x08043470 _ src/gamemode/modes/main_menu/initialize_main_menu.c InitializeMainMenu
 c-file 0x08043580 _ src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
-c-file 0x08043730 _ src/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
+c-file 0x08043730 _ src/gamemode/modes/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
 c-file 0x08043870 0x080438B4 src/gamemode/modes/main_menu/exit_main_menu_screen.c ExitMainMenuScreen
 thumb-func 0x080438B4 StartMainMenuPaletteEffect_candidate
-c-file 0x080438E4 0x08043940 src/main_menu/show_main_menu_entries.c ShowMainMenuEntries
+c-file 0x080438E4 0x08043940 src/gamemode/modes/main_menu/show_main_menu_entries.c ShowMainMenuEntries
 thumb-func 0x08043940 DrawMainMenuEntry
 thumb-func 0x080439AC DrawMainMenuCopyright_candidate
-c-file 0x08043A20 0x08043A68 src/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
+c-file 0x08043A20 0x08043A68 src/gamemode/modes/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
 thumb-func 0x08043A68 HasLoadableSaveSlot
 thumb-func 0x08043AA4 PositionMainMenuCursorObject_candidate
 c-file 0x08043AF0 0x08043B70 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
@@ -1333,13 +1333,13 @@ thumb-func 0x0804439C BuildOptionsScreen_candidate
 thumb-func 0x080445C0 MoveOptionsCursor_candidate
 thumb-func 0x080446A8 AdjustOptionValue_candidate
 c-file 0x08044774 0x080447E0 src/gamemode/modes/options/exit_options.c ExitOptions
-c-file 0x08044894 0x08044960 src/room/objects/SpawnFlamePillarObject.c SpawnFlamePillarObject
+c-file 0x08044894 0x08044960 src/room/objects/spawn_flame_pillar_object.c SpawnFlamePillarObject
 thumb-func 0x08044960 sub_08044960
 thumb-func 0x08044ADC sub_08044ADC
 c-file 0x08044B00 _ src/gamemode/modes/cutscene/cool_train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
 c-file 0x08044B7C _ src/gamemode/modes/cutscene/cool_train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file 0x08044BF0 _ src/gamemode/modes/cutscene/cool_train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
-c-file 0x08044C00 0x08044D24 src/room/objects/SpawnSwitchObject.c SpawnSwitchObject
+c-file 0x08044C00 0x08044D24 src/room/objects/spawn_switch_object.c SpawnSwitchObject
 thumb-func 0x08044D24 sub_08044D24
 thumb-func 0x08044F54 sub_08044F54
 c-file 0x08045094 _ src/graphics/scanline/init_scanline_effects.c InitScanlineEffects
@@ -1372,7 +1372,7 @@ thumb-func 0x080458A8 SetScreenWindowRect_candidate
 c-file 0x08045970 0x08045988 src/graphics/tick_screen_windows.c TickScreenWindows_candidate
 thumb-func 0x08045988 sub_08045988
 c-file 0x08045A54 _ src/graphics/tick_screen_window.c TickScreenWindow
-c-file 0x08045AE8 0x08045ECC src/room/objects/SpawnPropObject.c SpawnPropObject
+c-file 0x08045AE8 0x08045ECC src/room/objects/spawn_prop_object.c SpawnPropObject
 thumb-func 0x08045ECC sub_08045ECC
 thumb-func 0x0804651C sub_0804651C
 thumb-func 0x080465D4 sub_080465D4
@@ -1426,7 +1426,7 @@ c-file 0x0804C61C 0x0804CA9C src/graphics/assets/portrait_table.c g_apPortraitTa
 c-file 0x0804CE8C _ src/gamemode/modes/debug/debug_sound_test_menu/debug_sound_test_menu.globals.c g_dwDebugSoundTestBg0Control
 c-file 0x0804CEB8 _ src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
 c-file 0x0804CEC4 _ src/menu/debug_collector_card_names.c sDebugCollectorCardNames
-c-file 0x0804D524 _ src/room/objects/SpawnChestObject.globals.c g_RoomChestSprite
+c-file 0x0804D524 _ src/room/objects/spawn_chest_object.globals.c g_RoomChestSprite
 c-file 0x0804D6CC 0x0804D6EC src/gamemode/modes/loading_screen/loading_screen_stages.globals.c g_LoadingScreenTables
 label 0x0804D76A g_abLoadingScreenTwoOptions
 c-file 0x0804D770 0x0804D790 src/gamemode/modes/loading_screen/loading_screen_effects.globals.c g_aLoadingScreenScanlineEffects
@@ -1507,7 +1507,7 @@ c-file 0x08065CBC _ src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchT
 c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066094 0x080660D4 src/overworld/terrain_collision.globals.c g_abOppositeFacing
-c-file 0x08066E44 _ src/room/objects/SpawnNpcObject.globals.c g_adwRoomObjUnk6FrameRows
+c-file 0x08066E44 _ src/room/objects/spawn_npc_object.globals.c g_adwRoomObjUnk6FrameRows
 c-file 0x08066FFC _ src/graphics/assets/object_type_assets.c g_aObjectTypeAssets
 c-file 0x0806788C 0x080678BC src/room/objects/room_obj_unk6_frames.c g_abRoomObjUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
@@ -1521,7 +1521,7 @@ c-file 0x08068D04 0x08068D3C src/gamemode/modes/minigame/wizard_cracker_pop_it/w
 c-file 0x08069184 0x08069194 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
 c-file 0x08069328 _ src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file 0x080693CC 0x080693E4 src/room/objects/SpawnPushResetButtonObject.globals.c g_RoomObjUnk8Sprite
+c-file 0x080693CC 0x080693E4 src/room/objects/spawn_push_reset_button_object.globals.c g_RoomObjUnk8Sprite
 c-file 0x0806945C _ src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C _ src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
 c-file 0x08069568 _ src/gamemode/modes/folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control
@@ -1538,11 +1538,11 @@ c-file 0x0806B2FC _ src/gamemode/modes/status_equip/status_equip_slots.c g_aStat
 c-file 0x0806B35C 0x0806B3AC src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B3CC _ src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B3D8 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
-c-file 0x0806B7D4 _ src/room/objects/SpawnRaisingPlatformObject.globals.c g_RoomRaisingPlatformSprite
+c-file 0x0806B7D4 _ src/room/objects/spawn_raising_platform_object.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B80C _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B8CC _ src/mem/clear_work_ram.globals.c g_pIwramSectionStart
-c-file 0x0806B8DC 0x0806B934 src/room/objects/SpawnSpongifyPadObject.globals.c g_aRoomSpongifyPadSprites
+c-file 0x0806B8DC 0x0806B934 src/room/objects/spawn_spongify_pad_object.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 0x0806BA4C src/shop/shop_stock.c g_aShopStockMisc
 
 c-file 0x0806BAF0 0x0806BAF4 src/gamemode/modes/fred_and_georges_shop/fred_and_georges_shop.globals.c g_dwFredAndGeorgesShopBg1Control
@@ -1554,15 +1554,15 @@ c-file 0x0806BDA4 0x0806BE30 src/gamemode/modes/cutscene/clock_skip_cutscene/clo
 c-file 0x0806BE38 0x0806BF30 src/room/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
 c-file 0x0806BF40 0x0806BF60 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeObjectPos
 c-file 0x0806BFD0 _ src/gamemode/modes/main_menu/main_menu.globals.c g_dwMainMenuBg3Control
-c-file 0x0806BFDC _ src/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
+c-file 0x0806BFDC _ src/gamemode/modes/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BFF4 0x0806C014 src/gamemode/modes/main_menu/main_menu_title_graphics.c g_apMainMenuTitleGraphic
 c-file 0x0806C048 0x0806C108 src/gamemode/modes/options/options_menu_items.c g_aOptionsMenuItems
-c-file 0x0806C12C _ src/room/objects/SpawnFlamePillarObject.globals.c g_aRoomFlamePillarSprites
+c-file 0x0806C12C _ src/room/objects/spawn_flame_pillar_object.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C174 _ src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
-c-file 0x0806C178 0x0806C200 src/room/objects/SpawnSwitchObject.globals.c g_aRoomSwitchSprites
+c-file 0x0806C178 0x0806C200 src/room/objects/spawn_switch_object.globals.c g_aRoomSwitchSprites
 c-file 0x0806C2F0 0x0806C300 src/graphics/scanline/default_scanline_effects.c g_aDefaultScanlineEffects
-c-file 0x0806C304 _ src/room/objects/SpawnPropObject.globals.c g_aRoomObjTriggerSprites
+c-file 0x0806C304 _ src/room/objects/spawn_prop_object.globals.c g_aRoomObjTriggerSprites
 graphics 0x0806E904 _ overworld OverworldSpellEffects
 graphics 0x080781A4 _ battle AllyHeads
 graphics 0x0807E7F8 _ overworld OverworldPlayerSprites

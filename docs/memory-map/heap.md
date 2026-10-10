@@ -57,7 +57,7 @@ by flag changes:
 
 ## Object pool — STRUCTURAL MATCH
 
-`InitObjectPool` (matched, `src/mem/init_object_pool.c`) carves a second,
+`InitObjectPool` (matched, `src/object/init_object_pool.c`) carves a second,
 fixed-size-slot pool out of the heap:
 
 - `g_ObjectPoolState.pBuffer`/`.pFreeListHead` are adjacent words
