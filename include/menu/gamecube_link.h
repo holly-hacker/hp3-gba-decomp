@@ -18,9 +18,6 @@ extern GameCubeLinkScreenState g_GameCubeLinkScreenState;  // 0x03003238
 extern const ListMenuDefinition g_GameCubeLinkMenuDefinition;  // 0x08069A2C: title only, no rows
 
 extern u32 DispatchGameCubeLinkCommand(void *pSendBuf, void *pRecvBuf);
-extern void InitJoybusSession(u32 (*pCommandCallback)(void *, void *), u32 bound1, u32 bound2);
-extern u32 TickJoybusSession(void);
-extern void TeardownJoybusHardware(void);
 
 extern void UpdateGameCubeLinkStatusText(u32 linkEvent);
 extern void ShowGameCubeLinkMessage(u32 stringId);

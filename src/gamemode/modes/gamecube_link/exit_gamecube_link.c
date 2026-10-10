@@ -4,6 +4,7 @@
 #include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "hw/mem.h"
+#include "gamecube.h"
 #include "menu/gamecube_link.h"
 #include "menu/main_menu.h"
 
