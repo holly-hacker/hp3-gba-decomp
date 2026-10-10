@@ -189,17 +189,9 @@ mixer, not a stub. Confident findings:
   functions): read, incremented by per-channel byte fields `+0x1E`/`+0x1F`
   (candidate: a running L/R output-level or position accumulator), and
   written back every active-channel iteration.
-- **The `0x08FA9568` table is word-indexed, not struct-indexed**:
-  `mixReal` computes an index from
-  `(u8)[ch+0x20] + (u8)[ch+0x21]` and reads `table[index]` with a plain
-  `lsl #2` (4-byte stride), then `bx`es through the result. Both real index
-  values observed so far land on slot 7 within an 8-word run -- i.e. this
-  *is* consistent with the "5 addresses + 2 reserved + 1
-  `kramMixChannel` function pointer, per 32-byte bank" reading (see
-  "Effect/mixer-descriptor table" above), reached via `[ch+0x20]` (bank
-  base) + `[ch+0x21]` (slot, `7` = "the mixer function") rather than a
-  fixed offset. What picks a *different* bank (there are only 2 known
-  banks, both landing on the same function) is not understood.
+- **`mixReal` dispatches through `mixPanTable` (`0x08FA9568`)**: it
+  reads `mixPanTable[(u8)[ch+0x20] + (u8)[ch+0x21]]` (`hq` + `mixFunc`,
+  see "`mixPanTable`" below) and `bx`es through the result.
 - **Confirms `0x2C`-stride channel struct fields** beyond `+0x00`
   (mode: `0` selects a simpler "no resampling" copy path at `0x08FB1CBC`,
   nonzero the full resampling path) and `+0x02` (status):
@@ -271,18 +263,16 @@ pattern) appears anywhere between reset and there. So whatever put code at
 `0x03000AB4` did it locally (Krawall's own init), not as part of a global
 runtime-init step; there's nothing broader to find here.
 
-## `kramMixChannel` — the per-channel resample/mix routine [STRUCTURAL MATCH]
+## `mixRampOut` — the per-channel ramp-out mix routine [STRUCTURAL MATCH]
 
-`0x080471FC` (ARM, now seeded in `functions.us.cfg` as `kramMixChannel`) is
+`0x080471FC` (ARM, seeded in `functions.us.cfg` as `mixRampOut`) is
 a 4x-unrolled fixed-point resampling loop, matching a classic software
 audio channel mixer: a fractional sample-position accumulator at struct
 offsets `+0x28`/`+0x2A`, per-channel volume bytes at `+0x1E`/`+0x1F`, and a
 `mul`+`asr #3` volume-scale-and-accumulate into the output buffer (`ldrh
 [lr]` / `strh [lr]`). Its remainder/tail case (`< 4` samples left) falls
-through to `ldr ip, =0x03000AB4; bx ip` — this is the concrete call site
-for the previously-flagged IWRAM address, and it's a real, hot, per-channel
-path (matches `mixReal`' 32-channel scan interpretation).
-The IWRAM target itself is still not disassembled/named.
+through to `ldr ip, =0x03000AB4; bx ip`, a call to `mixBias`, as in public
+Krawall's `mixRampOut`.
 
 ## Effect/mixer-descriptor table at `0x08FA9568` [STRUCTURAL MATCH]
 
@@ -290,12 +280,13 @@ Immediately after the Krawall `$Id` string block sits a two-part table,
 read directly (not via gbadisasm, which can't reach function-pointer-only
 targets):
 
-1. **Two 32-byte "mixer descriptor" entries** (`0x08FA9568`–`0x08FA95A7`):
-   each holds 5 IWRAM buffer addresses, 2 reserved/zero words, and a
-   function pointer — both entries point to `kramMixChannel` above. Two
-   entries lines up with the GBA's two hardware DirectSound FIFOs (A/B), or
-   a ping-pong buffer pair; the 5 buffer addresses per entry are otherwise
-   unconfirmed.
+1. **`mixPanTable`** (`0x08FA9568`–`0x08FA95A7`), 16 mix-function
+   pointers matching public Krawall's `mixer.arm.c`: a normal-quality bank
+   `{mixStereo, mixLeft, mixStereo, mixRight, mixCenter, 0, 0, mixRampOut}`
+   followed by the same layout for the HQ variants (`mixStereoHQ`, ...).
+   Indexed by `mixFunc + hq`, where `hq` is `0` or `8`. Every non-null
+   entry is an ARM entry point in the IWRAM image (see the table under
+   "IWRAM mixer functions") except `mixRampOut`, which runs from ROM.
 2. **A Krawall XM effect-command dispatch table**, starting at `0x08FA95B4`:
    repeating 12-byte entries of `{tick_fn, init_fn, flags}`. At least 40
    populated entries confirmed by direct reads (some `tick`-only, some with
@@ -322,7 +313,7 @@ targets):
    "`KramChannel` field offsets" below.
 
    All 41 addresses (`&~1`'d) are seeded in `functions.us.cfg` as
-   `thumb_func`, plus `kramMixChannel` above as `arm_func`; `just disasm us`
+   `thumb_func`, plus `mixRampOut` above as `arm_func`; `just disasm us`
    and `just compare us` both pass with them.
 
 ## Naming the 41 effect handlers, via `player.c`'s `effects[]`/`effectsVC[]` [STRUCTURAL MATCH, very high confidence]
@@ -457,7 +448,7 @@ confident despite no single function proving all of them at once:
 | `+0x05` | 1 | Channel Volume (0-`0x40`) | same shape, but set by `eff_cvolume`/`ChannelVolSlide` instead -- confirms these are two distinct, both-multiplied-in volume factors, not the same field read two ways |
 | `+0x06` | 1 (s8) | Panning (~-0x40..0x3F) | set/slid by `eff_VC_pan`/`PanSlideLeft`/`PanSlideRight`, combined with a `+0x57` "pan envelope" offset before clamping |
 | `+0x0C` | 2 | Period (live pitch) | read by vibrato as the base to offset from; written directly by the portamento family (`PortaUp*`/`PortaDown*`) |
-| `+0x0E` | 2 | Period, post-vibrato | written only by `eff_VC_vibrato`'s tick path (`period + waveTable[phase]*depth>>7`), consumed downstream (presumably by `kramMixChannel` or a callee) |
+| `+0x0E` | 2 | Period, post-vibrato | written only by `eff_VC_vibrato`'s tick path (`period + waveTable[phase]*depth>>7`), consumed downstream (presumably by the mixer) |
 | `+0x18` | 1 | unclear | compared against small constants (`0x14`, `0x17`, `0x31`) in a handful of handlers; not yet pinned to a specific meaning |
 | `+0x19` | 1 | current effect-column param (`xy`) | read generically as input by nearly all 41 effect-column handlers; several memoize a nonzero value into a handler-specific "remembered param" byte elsewhere in the struct (e.g. `+0x3C`, `+0x3E`, `+0x40`, `+0x44`) |
 | `+0x1A` | 2 | tone-porta target delta | set by `eff_VC_portanote`'s init path from the low nibble of its param |
@@ -561,16 +552,16 @@ Identified by comparing the ROM bodies with the public source's functions:
 | `kramSetMasterVol` | `0x08046F7C` | `0x08046EA8` | `vol >> 16` selects the channel-count patch, then builds the 1024-entry clip table |
 | `krapCallback` | `0x080491AC` | `0x080490D8` | stores the pointer at `0x020025B4`; the player calls through it with event 1 (`timerRoutine`, fade done), 2 (before `krapStop`), 3 (`eff_mark`), 4 and 6 (`advanceRow`) and 5 (`jingleDone`), the public `KRAP_CB_*` numbering |
 
-This also answers "verify whether `0x03000AB4`/`kramMixChannel`'s tail
+This also answers "verify whether `0x03000AB4`/`mixRampOut`'s tail
 target etc. are installed rather than statically linked" from multiple
 sections above: they're installed, via this one `kramInstall` call, not
 per-function.
 
 ## IWRAM mixer functions — identified [PROVEN]
 
-The 10 IWRAM-resident functions flagged throughout this document
-identify cleanly against public krawall's `lib/mixer.arm.c` /
-`lib/mixer_private.arm.c` / `lib/mixer_private.h` -- struct offsets,
+The IWRAM-resident functions identify cleanly against public krawall's
+`lib/mixer.arm.c`, `lib/mixer_private.arm.c` and `lib/mixer_func.S` --
+struct offsets,
 branch shapes, and constants (e.g. `kramStop`'s `vol > 5` ramp-out
 threshold, `mixFunc = 7`) match verbatim. ROM address `X` maps to IWRAM
 runtime address `0x03000000 + (X - 0x08FB0DB0)`, per `kramInstall`'s copy.
@@ -578,7 +569,7 @@ runtime address `0x03000000 + (X - 0x08FB0DB0)`, per `kramInstall`'s copy.
 `kramInstall`'s IWRAM+EWRAM source blob is byte-identical between US
 (`0x08FB0DB0`+) and JP (`0x08F44240`+) except for two unrelated absolute
 addresses in a data table past `mixReal` (`0x08FB1E10`, `0x08FB1EE4`) --
-none of the 10 functions differ, so the JP addresses below are a direct
+none of the functions below differ, so the JP addresses below are a direct
 offset match, not a structural guess.
 
 | name | US ROM | US IWRAM | JP ROM | source |
@@ -589,17 +580,30 @@ offset match, not a structural guess.
 | `kramSetVol` | `0x08FB11E4` | `0x03000434` | `0x08F44674` | `mixer.arm.c` |
 | `kramSetPan` | `0x08FB1264` | `0x030004B4` | `0x08F446F4` | `mixer.arm.c` |
 | `kramSetPos` | `0x08FB1328` | `0x03000578` | `0x08F447B8` | `mixer.arm.c` |
-| `mixBias` | `0x08FB1864` | `0x03000AB4` | `0x08F44CF4` | `mixer_private.arm.c` |
-| `mixClear` | `0x08FB18AC` | `0x03000AFC` | `0x08F44D3C` | `mixer_private.arm.c` |
-| `mix16to8` | `0x08FB18E8` | `0x03000B38` | `0x08F44D78` | `mixer_private.arm.c` |
-| `mix16to8_patch` | `0x08FB19A0` | `0x03000BF0` | `0x08F44E30` | `mixer_private.h` |
+| `kramActive` | `0x08FB1378` | `0x030005C8` | `0x08F44808` | `mixer.arm.c` |
+| `mixLeft` | `0x08FB13B4` | `0x03000604` | `0x08F44844` | `mixer_func.S` |
+| `mixRight` | `0x08FB1434` | `0x03000684` | `0x08F448C4` | `mixer_func.S` |
+| `mixCenter` | `0x08FB1454` | `0x030006A4` | `0x08F448E4` | `mixer_func.S` |
+| `mixStereo` | `0x08FB14D8` | `0x03000728` | `0x08F44968` | `mixer_func.S` |
+| `mixLeftHQ` | `0x08FB1570` | `0x030007C0` | `0x08F44A00` | `mixer_func.S` |
+| `mixRightHQ` | `0x08FB1654` | `0x030008A4` | `0x08F44AE4` | `mixer_func.S` |
+| `mixCenterHQ` | `0x08FB1678` | `0x030008C8` | `0x08F44B08` | `mixer_func.S` |
+| `mixStereoHQ` | `0x08FB1760` | `0x030009B0` | `0x08F44BF0` | `mixer_func.S` |
+| `mixBias` | `0x08FB1864` | `0x03000AB4` | `0x08F44CF4` | `mixer_func.S` |
+| `mixClear` | `0x08FB18AC` | `0x03000AFC` | `0x08F44D3C` | `mixer_func.S` |
+| `mix16to8` | `0x08FB18E8` | `0x03000B38` | `0x08F44D78` | `mixer_func.S` |
+| `mix16to8_patch` | `0x08FB19A0` | `0x03000BF0` | `0x08F44E30` | `mixer_func.S` |
+| `mixReal` | `0x08FB19F8` | `0x03000C48` | `0x08F44E88` | `mixer_private.arm.c` |
+| `kramWorker` | `0x08FB1E18` | `0x03001068` | `0x08F452A8` | `mixer_private.arm.c` |
 
 `kramPlayExt`'s IWRAM entry is `0x03000094`. `0x03000090` (the "Where
 IWRAM code gets installed" watchpoint address above) sits 4 bytes into
 the previous function's literal pool.
 
-Named in `functions.us.cfg` and `functions.jp.cfg`, and labeled at their
-IWRAM addresses in the US Ghidra database.
+Named at their IWRAM addresses in `ram_symbols.us.inc` and
+`ram_symbols.jp.inc`; the manifests label the ROM copies with a `_Rom`
+suffix. `mixRight` (`b` into `mixLeft`'s loop) and
+`mixCenter` are entry points that only `mixPanTable` reaches.
 
 ### How this was tracked down: static search first, then dynamic
 

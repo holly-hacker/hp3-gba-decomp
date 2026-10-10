@@ -8,6 +8,28 @@
 .set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM
 .set g_IwramSectionStart,     0x03000000  @ IWRAM image kramInstall copies from ROM
 .set IwramTimer1Handler,      0x03000004  @ gIntrTableTemplate's timer 1 handler, in that image
+@ Krawall IWRAM code at its runtime address; see docs/memory-map/krawall.md
+.set kramPlayExt,             0x03000094
+.set kramStop,                0x03000320
+.set kramSetFreq,             0x030003E8
+.set kramSetVol,              0x03000434
+.set kramSetPan,              0x030004B4
+.set kramSetPos,              0x03000578
+.set kramActive,              0x030005C8
+.set mixLeft,                 0x03000604
+.set mixRight,                0x03000684
+.set mixCenter,               0x030006A4
+.set mixStereo,               0x03000728
+.set mixLeftHQ,               0x030007C0
+.set mixRightHQ,              0x030008A4
+.set mixCenterHQ,             0x030008C8
+.set mixStereoHQ,             0x030009B0
+.set mixBias,                 0x03000AB4
+.set mixClear,                0x03000AFC
+.set mix16to8,                0x03000B38
+.set mix16to8_patch,          0x03000BF0
+.set mixReal,                 0x03000C48
+.set kramWorker,              0x03001068
 .set g_IwramSectionEnd,       0x03001598  @ end of that image; ClearWorkRam zeroes from here
 
 .set g_pTimer2DebugPc,        0x030015A0  @ see ram_symbols.us.inc
