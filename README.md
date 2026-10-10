@@ -13,6 +13,8 @@ If changed need to be made to this file, it should be proposed to a human so the
 
 # hp3-gba-decomp
 
+[![Code](https://decomp.dev/holly-hacker/hp3-gba-decomp/us.svg?mode=shield&measure=code&label=Code)](https://decomp.dev/holly-hacker/hp3-gba-decomp) [![Data](https://decomp.dev/holly-hacker/hp3-gba-decomp/us.svg?mode=shield&measure=data&label=Data)](https://decomp.dev/holly-hacker/hp3-gba-decomp)
+
 This repo holds a heavily AI-assisted decompilation of Harry Potter and the Prisoner of Azkaban for the Gameboy Advance.
 
 The goal of this project is to both explore automated reverse engineering, and to look into a game I've loved as a
@@ -23,15 +25,6 @@ the ROM. Minor mods can be made by appending modified data to the end of the ROM
 Note that while this project contains mostly AI-generated assets, this README is and will always be written by a human.
 All code under `src/` and `include/` is at the very least checked over by a human. Files under `doc/` and `tools/` will
 almost exclusively be AI-generated and not meant for human consumption.
-
-Current progress:
-
-|        | Game Code | Game Assets | Krawall |
-| ------ | --------: | ----------: | ------: |
-| **US** |    45-50% |       99.6% |      0% |
-| **JP** |    45-50% |       99.6% |      0% |
-
-Note that JP matching may run behind somewhat as it is not the primary focus.
 
 Rough list of current priorities:
 
