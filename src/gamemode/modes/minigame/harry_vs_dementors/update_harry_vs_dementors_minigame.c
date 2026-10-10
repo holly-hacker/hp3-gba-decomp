@@ -3,7 +3,7 @@
 #include "menu/minigame_menu.h"
 #include "game/game_modes.h"
 #include "minigame/harry_vs_dementors.h"
-#include "hw/input.h"
+#include "input.h"
 
 void UpdateHarryVsDementorsMinigame(void)
 {
@@ -55,7 +55,7 @@ void UpdateHarryVsDementorsMinigame(void)
                 break;
             }
         }
-        else if (StepWrappedSelectionVertical_candidate(&g_GameModeStackContext.dwModeScratchB, 0, 1, 1, 0))
+        else if (StepCursorUpDown(&g_GameModeStackContext.dwModeScratchB, 0, 1, 1, 0))
         {
             PlaySoundById(0);
         }
@@ -83,7 +83,7 @@ void UpdateHarryVsDementorsMinigame(void)
             PlaySoundById(2);
             sub_0801EFF4();
         }
-        else if (StepWrappedSelectionVertical_candidate(&g_GameModeStackContext.dwModeScratchB, 0, 2, 1, 0))
+        else if (StepCursorUpDown(&g_GameModeStackContext.dwModeScratchB, 0, 2, 1, 0))
         {
             PlaySoundById(0);
         }

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 

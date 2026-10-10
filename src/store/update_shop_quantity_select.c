@@ -3,7 +3,7 @@
 #include "game/rewards.h"
 #include "game/save.h"
 #include "graphics/audio.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/dialog.h"
 #include "overworld/room_script.h"
 #include "shop.h"

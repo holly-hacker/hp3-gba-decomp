@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 #include "graphics/audio.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/main_menu.h"
 
 void UpdateCardComboDescription(void)

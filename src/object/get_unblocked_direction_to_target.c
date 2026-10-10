@@ -95,7 +95,7 @@ u8 GetUnblockedDirectionToTarget(Object *obj, FixedPoint pos, FixedPoint target,
             probe.x = ((pos.x + tolerance) >> 16) + obj->bTerrainBoxRight + 1;
         }
         else
-            dir = DirectionAtTarget;
+            dir = DirectionNone;
     }
     return dir;
 }

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "menu/debug_menu.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/minigame_menu.h"
 
 void UpdateDebugPortraitsMenu(void)
@@ -9,7 +9,7 @@ void UpdateDebugPortraitsMenu(void)
     if (g_GameModeStackContext.dwModeState != 0)
         return;
 
-    if (StepWrappedSelectionHorizontal_candidate(&g_DebugPortraitsState.dwSelection, 0, 0x86, 1, 0))
+    if (StepCursorLeftRight(&g_DebugPortraitsState.dwSelection, 0, 0x86, 1, 0))
         sub_0800B52C();
 
     if (g_wKeysPressed & KeyA)

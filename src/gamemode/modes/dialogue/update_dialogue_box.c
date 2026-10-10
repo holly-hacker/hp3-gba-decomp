@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "graphics/object.h"
 #include "graphics/scanline_effects.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

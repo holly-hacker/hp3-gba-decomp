@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/minigame_menu.h"
 #include "minigame/riddikulus.h"
 #include "game/save.h"
@@ -94,7 +94,7 @@ void UpdateRiddikulusMinigame(void)
                 break;
             }
         }
-        else if (StepWrappedSelectionVertical_candidate(&g_dwListMenuSelection, 0, 1, 1, 0))
+        else if (StepCursorUpDown(&g_dwListMenuSelection, 0, 1, 1, 0))
         {
             PlaySoundById(0);
         }
@@ -122,7 +122,7 @@ void UpdateRiddikulusMinigame(void)
             PlaySoundById(2);
             sub_08008DFC();
         }
-        else if (StepWrappedSelectionVertical_candidate(&g_dwListMenuSelection, 0, 2, 1, 0))
+        else if (StepCursorUpDown(&g_dwListMenuSelection, 0, 2, 1, 0))
         {
             PlaySoundById(0);
         }

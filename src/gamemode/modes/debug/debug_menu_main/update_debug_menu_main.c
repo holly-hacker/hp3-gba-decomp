@@ -1,7 +1,7 @@
 #include "types.h"
 #include "menu/debug_menu.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
 
@@ -10,7 +10,7 @@ void UpdateDebugMenuMain(void)
     if (g_GameModeStackContext.dwModeState != 0)
         return;
 
-    if (StepWrappedSelectionVertical_candidate(&g_DebugMenuMainState.dwSelection, 0, 5, 1, 0))
+    if (StepCursorUpDown(&g_DebugMenuMainState.dwSelection, 0, 5, 1, 0))
     {
         SetObjectMoveTargetWithDuration_candidate(g_DebugMenuMainState.pCursorObject, 0x78,
                                                   g_DebugMenuMainState.dwSelection * 0x10 + 0x2D, 5);

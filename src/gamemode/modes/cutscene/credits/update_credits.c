@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "cutscene/linear_cutscene.h"
 #include "menu/minigame_menu.h"
 #include "graphics/text.h"

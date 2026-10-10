@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "hw/input.h"
+#include "input.h"
 #include "cutscene/linear_cutscene.h"
 #include "graphics/text.h"
 

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 
 void HandleFolioCardDetailScreenTick(void)
 {

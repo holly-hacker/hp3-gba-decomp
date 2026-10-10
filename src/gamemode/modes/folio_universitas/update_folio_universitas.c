@@ -4,7 +4,7 @@
 #include "game/game_modes.h"
 #include "game/save.h"
 #include "graphics/audio.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/folio_universitas.h"
 #include "menu/minigame_menu.h"
 
@@ -30,7 +30,7 @@ void UpdateFolioUniversitas(void)
         if (g_FolioUniversitasState.dwSlot != 0)
             lastCategory = 4;
 
-        if (StepWrappedSelectionVertical_candidate(&g_FolioUniversitasState.dwCategory, 0, lastCategory, 1, 0))
+        if (StepCursorUpDown(&g_FolioUniversitasState.dwCategory, 0, lastCategory, 1, 0))
         {
             MOVE_CURSOR();
             UpdateFolioComboSlots();
@@ -41,7 +41,7 @@ void UpdateFolioUniversitas(void)
         if (g_GameModeStackContext.dwCurrentGameModeArg1 != FolioUniversitasPickCombo)
         {
             if (g_FolioUniversitasState.dwCategory != 5
-                && StepWrappedSelectionHorizontal_candidate(&g_FolioUniversitasState.dwSlot, 0, 9, 1, 0))
+                && StepCursorLeftRight(&g_FolioUniversitasState.dwSlot, 0, 9, 1, 0))
             {
                 MOVE_CURSOR();
                 if (g_FolioUniversitasState.dwSlot / 3 != prevSlot / 3)

@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "game/game_save.h"
 #include "graphics/display.h"
-#include "hw/input.h"
+#include "input.h"
 #include "hw/mem.h"
 #include "menu/in_game_menu.h"
 #include "menu/owl_name_select.h"

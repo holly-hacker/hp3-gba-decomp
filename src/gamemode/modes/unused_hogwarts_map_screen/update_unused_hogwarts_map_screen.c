@@ -1,6 +1,6 @@
 #include "types.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/minigame_menu.h"
 #include "menu/unused_hogwarts_map_screen.h"
 
@@ -11,8 +11,8 @@ void UpdateUnusedHogwartsMapScreen(void)
     if (g_GameModeStackContext.dwModeState != 0)
         return;
 
-    if (StepWrappedSelectionVertical_candidate(&g_GameModeStackContext.dwCurrentGameModeArg2, 0,
-                                               UNUSED_HOGWARTS_MAP_ENTRY_COUNT - 1, 1, 0))
+    if (StepCursorUpDown(&g_GameModeStackContext.dwCurrentGameModeArg2, 0,
+                         UNUSED_HOGWARTS_MAP_ENTRY_COUNT - 1, 1, 0))
     {
         sub_080280CC();
         SetObjectMoveTargetWithDuration_candidate(g_apUnusedHogwartsMapObjects[prevEntry], 0xDA,

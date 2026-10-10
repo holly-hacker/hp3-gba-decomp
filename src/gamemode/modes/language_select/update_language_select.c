@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "game/save.h"
 #include "graphics/text.h"
 

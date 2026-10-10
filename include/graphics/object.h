@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "direction.h"
 #include "hw/mem.h"
 #include "graphics/graphics.h"
 #include "graphics/oam.h"
@@ -81,29 +82,6 @@ typedef union ObjectSpriteBounds {
         s16 wBottom;
     } edges;
 } ObjectSpriteBounds;
-
-// Eight-way direction, clockwise from up (screen y grows downward). Odd
-// values are diagonals. DirectionAtTarget: within tolerance on both axes.
-typedef enum {
-    DirectionUp,
-    DirectionUpRight,
-    DirectionRight,
-    DirectionDownRight,
-    DirectionDown,
-    DirectionDownLeft,
-    DirectionLeft,
-    DirectionUpLeft,
-    DirectionAtTarget,
-} Direction;
-
-// Four-way direction returned for ObjectFlagFourWayDirections_candidate.
-typedef enum {
-    Direction4Up,
-    Direction4Right,
-    Direction4Down,
-    Direction4Left,
-    Direction4AtTarget,
-} Direction4;
 
 // One of Object's two collision-box slots, tested by CheckObjectCollisions.
 // dwPackedOffsets is 4 signed bytes: left (byte 0), right (1), top (2) and

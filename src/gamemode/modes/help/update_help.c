@@ -3,7 +3,7 @@
 #include "game/game_save.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "hw/input.h"
+#include "input.h"
 #include "hw/io_regs.h"
 #include "hw/mem.h"
 #include "menu/help.h"

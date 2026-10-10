@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/main_menu.h"
 #include "mt19937.h"
 #include "graphics/text.h"

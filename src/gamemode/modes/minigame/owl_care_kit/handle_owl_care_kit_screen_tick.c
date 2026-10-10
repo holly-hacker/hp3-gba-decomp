@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/audio.h"
-#include "hw/input.h"
+#include "input.h"
 #include "minigame/owlcare.h"
 
 void HandleOwlCareKitScreenTick(void)

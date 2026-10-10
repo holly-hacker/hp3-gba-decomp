@@ -1,4 +1,4 @@
-#include "hw/input.h"
+#include "input.h"
 
 void InitInputSystem(void)
 {

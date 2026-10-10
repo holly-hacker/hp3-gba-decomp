@@ -34,7 +34,7 @@ u8 GetDirectionToTarget(u32 objectFlags, FixedPoint pos, FixedPoint target, s32 
             else if (pos.x < target.x - tolerance)
                 dir = Direction4Right;
             else
-                dir = Direction4AtTarget;
+                dir = Direction4None;
         }
     }
     else
@@ -64,7 +64,7 @@ u8 GetDirectionToTarget(u32 objectFlags, FixedPoint pos, FixedPoint target, s32 
             else if (pos.x < target.x - tolerance)
                 dir = DirectionRight;
             else
-                dir = DirectionAtTarget;
+                dir = DirectionNone;
         }
     }
     return dir;

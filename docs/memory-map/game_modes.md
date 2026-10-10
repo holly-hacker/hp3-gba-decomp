@@ -235,7 +235,7 @@ PROVEN from US decompiles; the state names in the headers are provisional.
 - Riddikulus and Harry vs Dementors share a results/pause menu shape:
   `dwModeScratchB` (the word at `0x03003F14`, which Riddikulus and Wizard
   Cracker Pop-it name separately as `g_dwListMenuSelection`) is the
-  selected row, advanced by `StepWrappedSelectionVertical_candidate`; A
+  selected row, advanced by `StepCursorUpDown`; A
   either restarts the minigame with `PushGameMode_3(<mode>, 6, arg2, arg3)`
   or calls the screen's exit helper.
 - `UnusedServePumpkinJuiceMinigame` has handlers in the dispatch table but

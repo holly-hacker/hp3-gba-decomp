@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/main_menu.h"
 #include "menu/options.h"
 #include "overworld/room.h"

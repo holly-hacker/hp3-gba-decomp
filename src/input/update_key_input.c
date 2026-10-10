@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/input.h"
+#include "input.h"
 #include "serial/serial.h"
 #include "hw/io_regs.h"
 #include "game/game_modes.h"

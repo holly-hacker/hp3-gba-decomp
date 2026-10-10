@@ -212,6 +212,13 @@
 .set g_awPlayerKeysPressed,      0x0300355E
 .set g_awPlayerKeysReleased,     0x03003562
 .set g_awPlayerInputDisabled_candidate, 0x03003566
+.set g_dwScrollListRowCount,     0x0300356C
+.set g_dwScrollListTopRow,       0x03003570
+.set g_dwScrollListCursorRow,    0x03003574
+.set g_dwScrollGridColumn,       0x03003580
+.set g_dwScrollGridItemCount,    0x03003584
+.set g_dwScrollGridColumnCount,  0x03003588
+.set g_dwScrollGridVisibleRows,  0x0300358C
 
 .set g_VBlankState, 0x03003590
 

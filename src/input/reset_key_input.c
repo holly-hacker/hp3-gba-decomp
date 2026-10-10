@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/input.h"
+#include "input.h"
 
 void ResetKeyInput(void)
 {

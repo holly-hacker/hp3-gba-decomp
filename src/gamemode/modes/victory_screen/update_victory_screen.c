@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "graphics/text.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "hw/mem.h"
 #include "overworld/room.h"
 #include "battle/effect_script.h"

@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "menu/debug_menu.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/minigame_menu.h"
 
 void UpdateDebugSoundTestMenu(void)
@@ -10,14 +10,14 @@ void UpdateDebugSoundTestMenu(void)
     if (g_GameModeStackContext.dwModeState != 0)
         return;
 
-    if (StepWrappedSelectionVertical_candidate(&g_DebugSoundTestState.dwRow, 0, 1, 1, 0))
+    if (StepCursorUpDown(&g_DebugSoundTestState.dwRow, 0, 1, 1, 0))
     {
         SetObjectMoveTargetWithDuration_candidate(g_DebugSoundTestState.pCursorObject, 0x9C,
                                                   g_DebugSoundTestState.dwRow * 18 + 0x3A, 5);
     }
 
-    if (StepWrappedSelectionHorizontal_candidate(&g_DebugSoundTestState.adwSelection[g_DebugSoundTestState.dwRow],
-                                                 0, g_DebugSoundTestState.dwRow != 0 ? 0x33 : 0xB2, 1, 0))
+    if (StepCursorLeftRight(&g_DebugSoundTestState.adwSelection[g_DebugSoundTestState.dwRow],
+                            0, g_DebugSoundTestState.dwRow != 0 ? 0x33 : 0xB2, 1, 0))
     {
         sub_0800B9BC();
         if (g_DebugSoundTestState.dwRow == 1)

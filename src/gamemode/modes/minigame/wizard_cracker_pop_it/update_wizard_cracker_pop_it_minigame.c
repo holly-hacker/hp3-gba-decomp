@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "graphics/display.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/minigame_menu.h"
 #include "game/save.h"
 #include "minigame/wizard_cracker_pop_it.h"
@@ -130,7 +130,7 @@ void UpdateWizardCrackerPopItMinigame(void)
             g_GameModeStackContext.dwModeState = WizardCrackerPopItStateWaitStart;
             FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
         }
-        else if (StepWrappedSelectionVertical_candidate(&g_dwListMenuSelection, 0, 2, 1, 0))
+        else if (StepCursorUpDown(&g_dwListMenuSelection, 0, 2, 1, 0))
         {
             PlaySoundById(0);
         }
@@ -158,7 +158,7 @@ void UpdateWizardCrackerPopItMinigame(void)
         }
         else if (!(g_wKeysPressed & KeyB))
         {
-            if (StepWrappedSelectionVertical_candidate(&g_GameModeStackContext.dwModeScratchB, 0, 1, 1, 0))
+            if (StepCursorUpDown(&g_GameModeStackContext.dwModeScratchB, 0, 1, 1, 0))
                 PlaySoundById(0);
         }
         break;

@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "graphics/display.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
 #include "minigame/serve_pumpkin_juice.h"
@@ -93,7 +93,7 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
             g_GameModeStackContext.dwModeState = ServePumpkinJuiceStateWaitInput;
         }
 
-        if (StepWrappedSelectionVertical_candidate(&g_ServePumpkinJuice.dwMenuSelection, 0, 2, 1, 0))
+        if (StepCursorUpDown(&g_ServePumpkinJuice.dwMenuSelection, 0, 2, 1, 0))
             sub_08035330();
         break;
     case ServePumpkinJuiceStateWaitInput:

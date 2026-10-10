@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 #include "graphics/audio.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/loading_screen.h"
 #include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
@@ -20,7 +20,7 @@ void UpdateLoadingScreen(void)
 
     if (g_abLoadingScreenTwoOptions[g_LoadingScreenState.bStageRow] != 0)
     {
-        if (StepWrappedSelectionHorizontal_candidate(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 1, 1, 0))
+        if (StepCursorLeftRight(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 1, 1, 0))
         {
             sub_0800C3FC();
             SetMenuCursorPosition(g_LoadingScreenState.pCursorObject,
@@ -32,7 +32,7 @@ void UpdateLoadingScreen(void)
     }
     else
     {
-        if (StepWrappedSelectionHorizontal_candidate(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 2, 1, 0))
+        if (StepCursorLeftRight(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 2, 1, 0))
         {
             sub_0800C3FC();
             SetMenuCursorPosition(g_LoadingScreenState.pCursorObject,

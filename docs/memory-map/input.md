@@ -5,7 +5,11 @@ See [`../README.md`](../README.md) for the confidence-key legend
 
 ## `UpdateKeyInput` / `ResetKeyInput`, PROVEN
 
-Matched (US and JP): `src/input/update_key_input.c`, `src/input/reset_key_input.c`.
+All code from `UpdateKeyInput` through `InitScrollGrid` (US
+`0x080254A8`-`0x08025D28`, JP `0x08025504`-`0x08025D84`; same code, JP
+`+0x5C`) is matched in `src/input/`, declared in `include/input.h`. See
+[Cursor helpers](#cursor-helpers-proven) for the functions after the key
+state.
 
 | Name | US addr | JP addr | Called from |
 |---|---|---|---|
@@ -73,17 +77,70 @@ All `u16`, standard GBA `KEYINPUT` bit order (active-high once XORed, as
 | `g_wKeysHeldPrevious` | `0x030034EE` | Held-key mask from the previous frame's update. |
 | `g_wKeysPressed` | `0x030034F0` | Keys newly pressed this frame: `currentHeld & ~previousHeld`. By far the most-read of these globals (144 cross-references) -- menu, battle, cutscene, and minigame update functions across the ROM test it for edge-triggered button presses. Some consumers clear it to `0` after handling a press, consuming the event for the rest of the frame (e.g. `HandleOverworldPauseMenuInput (0x0802AEF8)`'s Select/Start dispatch). |
 | `g_wKeysReleased` | `0x030034F2` | Keys newly released this frame: `previousHeld & ~currentHeld`. No confirmed readers yet. |
-| `g_wInputDisabled` | `0x030034F4` | Nonzero forces `UpdateKeyInput` to clear all key state instead of reading input. Cleared by `EnableKeyInput` (US `0x08025954`, called from `InitInputSystem`) and set to 1 by `sub_08025978`; both also write the same value to both entries of `g_awPlayerInputDisabled_candidate`. |
-| `g_awPlayerInputDisabled_candidate` | `0x03003506` | `u16[2]`, the per-player counterpart of `g_wInputDisabled` by position and by the two writers above. `sub_08025978` has no callers found, and no reader was found. |
+| `g_wInputDisabled` | `0x030034F4` | Nonzero forces `UpdateKeyInput` to clear all key state instead of reading input. Cleared by `EnableKeyInput` (US `0x08025954`, called from `InitInputSystem`) and set to 1 by `DisableKeyInput`; both also write the same value to both entries of `g_awPlayerInputDisabled_candidate`. |
+| `g_awPlayerInputDisabled_candidate` | `0x03003506` | `u16[2]`, the per-player counterpart of `g_wInputDisabled` by position and by the two writers above. `DisableKeyInput` has no callers found, and no reader was found. |
 | `g_awPlayerKeysHeld` | `0x030034F6` | `u16[2]`, per-player held-key masks, serial-link input path only. |
 | `g_awPlayerKeysHeldPrevious` | `0x030034FA` | `u16[2]`, previous-frame counterpart of the above. |
 | `g_awPlayerKeysPressed` | `0x030034FE` | `u16[2]`, per-player newly-pressed masks. |
 | `g_awPlayerKeysReleased` | `0x03003502` | `u16[2]`, per-player newly-released masks. |
 
-JP addresses (`ram_symbols.jp.inc`): every key-state global sits `0x60` higher
-than its US address, from `g_wKeysHeld` (`0x0300354C`) through
-`g_awPlayerKeysReleased` (`0x03003562`), and `g_awSerialKeysReceived` is
+JP addresses (`ram_symbols.jp.inc`): every global on this page sits `0x60`
+higher than its US address, from `g_wKeysHeld` (`0x0300354C`) through
+`g_dwScrollGridVisibleRows` (`0x0300358C`), and `g_awSerialKeysReceived` is
 `0x03005A6C`.
+
+## Cursor helpers, PROVEN
+
+**`StepCursorByKeys(pValue, min, max, wrap, keys, decrementKeys,
+incrementKeys)`** steps `*pValue` down or up by one when `keys` has a
+decrement or increment key, stopping at `min`/`max`, or wrapping to the
+other end when `wrap` is nonzero. It returns 1 if `*pValue` changed. The six
+variants pass one player's pressed or held keys and a fixed key pair:
+
+| Function | Keys | Pair |
+|---|---|---|
+| `StepCursorUpDown` / `...UpDownHeld` | pressed / held | Up, Down |
+| `StepCursorLeftRight` / `...LeftRightHeld` | pressed / held | Left, Right |
+| `StepCursorShoulder` / `...ShoulderHeld` | pressed / held | L, R |
+
+The ROM compiles `StepCursorByKeys` into every variant and the held
+variants into the `StepScroll*` functions below, while also keeping each
+out of line; `include/input_inline.h` reproduces this with `extern inline`
+definitions. Only the generic `StepCursorByKeys`, the shoulder variants
+and the scroll functions have no callers found.
+
+**Scrolling list and grid.** `InitScrollList(rowCount)` and
+`InitScrollGrid(selection, itemCount, columnCount, visibleRows)` set the
+globals below; `StepScrollListSelection(visibleRows, wrap, player)`,
+`StepScrollGridRow(wrap, player)` and `StepScrollGridColumn(wrap, player)`
+move them with held keys and return the selected row or column. A list that
+fits in its window moves only the cursor; a longer one keeps the cursor near
+the middle and scrolls `g_dwScrollListTopRow`. That scrolling path tests Up
+and treats every other case as Down, so with neither key held it steps down.
+`StepScrollGridColumn` limits the column to the items in the current row,
+and `StepScrollGridRow` pulls the column back when scrolling down onto a
+partial last row. No callers were found for any of these, nor other code
+referencing the globals.
+
+| Symbol | US addr | Meaning |
+|---|---|---|
+| `g_dwScrollListRowCount` | `0x0300350C` | Rows in the list or grid. |
+| `g_dwScrollListTopRow` | `0x03003510` | First visible row. |
+| `g_dwScrollListCursorRow` | `0x03003514` | Cursor row within the window; the selected row is `TopRow + CursorRow`. |
+| `g_dwScrollGridColumn` | `0x03003520` | Grid cursor column. |
+| `g_dwScrollGridItemCount` | `0x03003524` | Grid item count. |
+| `g_dwScrollGridColumnCount` | `0x03003528` | Items per grid row. |
+| `g_dwScrollGridVisibleRows` | `0x0300352C` | Grid rows visible at once. |
+
+**Others.** `DisableKeyInput` (uncalled) is `EnableKeyInput` with 1.
+`GetDpadDirection` maps `g_wKeysHeld`'s D-pad bits through
+`g_abDpadDirection` (US `0x08060E7C`, JP `0x08060E08`, `s8[16]`) to a
+`Direction`, or `DirectionNone` for no key or opposing keys. Both callers
+pass it with an object to `sub_08003FB8` and store that result in the
+object's `bFacing`. `GetAnyPlayerKeysHeld`
+and `GetAnyPlayerKeysPressed` OR together the low byte (A through Down) of
+both players' masks; `ToggleFlag(p)` sets `*p = (*p == 0)`. The last three
+have no callers found.
 
 ## Known readers
 

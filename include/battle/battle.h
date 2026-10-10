@@ -4,7 +4,7 @@
 #include "game/save.h"
 #include "hw/mem.h"
 #include "graphics/object.h"
-#include "hw/input.h"
+#include "input.h"
 #include "game/game_modes.h"
 
 // See docs/memory-map/battle.md.

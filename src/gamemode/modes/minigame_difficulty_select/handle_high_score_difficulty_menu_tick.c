@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "game/save.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
 #include "menu/minigame_difficulty_select.h"

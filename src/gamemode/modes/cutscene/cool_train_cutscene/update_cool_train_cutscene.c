@@ -4,7 +4,7 @@
 #include "cutscene/cool_train_cutscene.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "hw/io_regs.h"
 #include "overworld/room.h"
 

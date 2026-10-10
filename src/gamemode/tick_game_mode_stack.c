@@ -1,6 +1,6 @@
 #include "types.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "hw/vblank.h"
 
 void TickGameModeStack(void)

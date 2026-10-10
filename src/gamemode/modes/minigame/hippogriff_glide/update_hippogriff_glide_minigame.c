@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "minigame/hippogriff_glide.h"
-#include "hw/input.h"
+#include "input.h"
 #include "game/save.h"
 
 void UpdateHippogriffGlideMinigame(void)

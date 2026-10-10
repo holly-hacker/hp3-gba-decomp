@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

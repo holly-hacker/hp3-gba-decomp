@@ -4,7 +4,7 @@
 #include "game/game_modes.h"
 #include "game/game_save.h"
 #include "menu/in_game_menu.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/items_menu.h"
 #include "menu/status_equip.h"
 

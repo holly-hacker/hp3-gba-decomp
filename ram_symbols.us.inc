@@ -226,7 +226,14 @@
 .set g_awPlayerKeysHeldPrevious, 0x030034FA  @ u16[2]: previous-frame counterpart of the above
 .set g_awPlayerKeysPressed,      0x030034FE  @ u16[2]: per-player newly-pressed masks
 .set g_awPlayerKeysReleased,     0x03003502  @ u16[2]: per-player newly-released masks
-.set g_awPlayerInputDisabled_candidate, 0x03003506  @ u16[2]: written with g_wInputDisabled by EnableKeyInput and sub_08025978; no reader found
+.set g_awPlayerInputDisabled_candidate, 0x03003506  @ u16[2]: written with g_wInputDisabled by EnableKeyInput and DisableKeyInput; no reader found
+.set g_dwScrollListRowCount,     0x0300350C  @ u32: row count of the scrolling list/grid
+.set g_dwScrollListTopRow,       0x03003510  @ u32: first visible row
+.set g_dwScrollListCursorRow,    0x03003514  @ u32: cursor row within the visible window
+.set g_dwScrollGridColumn,       0x03003520  @ u32: grid cursor column
+.set g_dwScrollGridItemCount,    0x03003524  @ u32: grid item count
+.set g_dwScrollGridColumnCount,  0x03003528  @ u32: grid columns per row
+.set g_dwScrollGridVisibleRows,  0x0300352C  @ u32: grid rows visible at once
 
 .set g_VBlankState, 0x03003530  @ the object g_pVBlankState is set to point at
 

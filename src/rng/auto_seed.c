@@ -1,4 +1,4 @@
-#include "hw/input.h"
+#include "input.h"
 #include "mt19937.h"
 #include "hw/vblank.h"
 

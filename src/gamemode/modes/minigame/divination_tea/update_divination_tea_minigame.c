@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "minigame/divination_tea.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "mt19937.h"
 #include "graphics/text.h"
 

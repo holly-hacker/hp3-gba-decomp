@@ -2,7 +2,7 @@
 #include "menu/debug_menu.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "hw/input.h"
+#include "input.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
 #include "graphics/object.h"
@@ -43,7 +43,7 @@ void UpdateDebugMapSelectMenu(void)
             sub_08007AF0(1, 0, g_DebugMapSelectState.nScrollY << 16);
         }
 
-        if (sub_08025A18(&g_DebugMapSelectState.dwCursorRow, 0, 0x11, 0, 0))
+        if (StepCursorUpDownHeld(&g_DebugMapSelectState.dwCursorRow, 0, 0x11, 0, 0))
             SetObjectPosition(g_DebugMapSelectState.pCursorObject, 0x78, g_DebugMapSelectState.dwCursorRow * 8 + 0xB);
     }
 

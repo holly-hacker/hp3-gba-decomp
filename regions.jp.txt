@@ -640,13 +640,27 @@ thumb-func 0x080252E0 DrawHighScoreNameEntryKeypad
 c-file 0x080253C4 0x080253F8 src/gamemode/modes/high_score_name_entry/exit_high_score_name_entry.c ExitHighScoreNameEntry
 thumb-func 0x080253F8 HighScoreNameEntryCursorTick
 thumb-func 0x0802546C DrawHighScoreNameEntryPreview
-c-file 0x08025504 0x0802566C src/input/update_key_input.c UpdateKeyInput
+c-file 0x08025504 _ src/input/update_key_input.c UpdateKeyInput
+c-file 0x0802566C _ src/input/step_scroll_list_selection.c StepScrollListSelection
+c-file 0x08025738 _ src/input/step_scroll_grid_row.c StepScrollGridRow
+c-file 0x08025850 _ src/input/step_scroll_grid_column.c StepScrollGridColumn
 c-file 0x08025944 _ src/input/init_input_system.c InitInputSystem
 c-file 0x08025954 _ src/input/reset_key_input.c ResetKeyInput
-c-file 0x080259B0 0x080259D4 src/input/enable_key_input.c EnableKeyInput
-thumb-func 0x08025A74 sub_08025A18
-thumb-func 0x08025AD0 StepWrappedSelectionVertical_candidate
-thumb-func 0x08025B88 StepWrappedSelectionHorizontal_candidate
+c-file 0x080259B0 _ src/input/enable_key_input.c EnableKeyInput
+c-file 0x080259D4 _ src/input/disable_key_input.c DisableKeyInput
+c-file 0x080259F8 _ src/input/get_dpad_direction.c GetDpadDirection
+c-file 0x08025A18 _ src/input/step_cursor_by_keys.c StepCursorByKeys
+c-file 0x08025A74 _ src/input/step_cursor_up_down_held.c StepCursorUpDownHeld
+c-file 0x08025AD0 _ src/input/step_cursor_up_down.c StepCursorUpDown
+c-file 0x08025B2C _ src/input/step_cursor_left_right_held.c StepCursorLeftRightHeld
+c-file 0x08025B88 _ src/input/step_cursor_left_right.c StepCursorLeftRight
+c-file 0x08025BE4 _ src/input/step_cursor_shoulder_held.c StepCursorShoulderHeld
+c-file 0x08025C44 _ src/input/step_cursor_shoulder.c StepCursorShoulder
+c-file 0x08025CA4 _ src/input/toggle_flag.c ToggleFlag
+c-file 0x08025CB8 _ src/input/get_any_player_keys_held.c GetAnyPlayerKeysHeld
+c-file 0x08025CD8 _ src/input/get_any_player_keys_pressed.c GetAnyPlayerKeysPressed
+c-file 0x08025CF8 _ src/input/init_scroll_list.c InitScrollList
+c-file 0x08025D14 _ src/input/init_scroll_grid.c InitScrollGrid
 c-file 0x08025D84 _ src/gamemode/modes/help_topic_screen/initialize_topic_screen.c InitializeTopicScreen
 c-file 0x08025E74 _ src/gamemode/modes/help_topic_screen/update_topic_screen.c UpdateTopicScreen
 c-file 0x08025EE0 _ src/gamemode/modes/help_topic_screen/exit_topic_screen.c ExitTopicScreen
@@ -1509,7 +1523,8 @@ c-file 0x08060810 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_
 c-file 0x08060818 0x08060828 src/overworld/party_focus_gfx.c g_PartyFocusGfx_candidate
 c-file 0x08060878 0x08060AB8 src/overworld/party_assets.c g_aPartyWalkAssets
 c-file 0x08060B80 _ src/overworld/party_anims.c g_abPartyStandFrames
-c-file 0x08060DF0 0x08060E08 src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
+c-file 0x08060DF0 _ src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
+c-file 0x08060E08 _ src/input/dpad_direction.c g_abDpadDirection
 c-file 0x08060E18 0x08060E4C src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file 0x08060E70 0x08062940 src/items/items.c g_pItemTable
 c-file 0x08062944 _ src/gamemode/modes/unused_hogwarts_map_screen/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds

@@ -1,4 +1,4 @@
-#include "hw/input.h"
+#include "input.h"
 
 // Clears g_wInputDisabled, letting UpdateKeyInput read KEYINPUT again.
 void EnableKeyInput(void)

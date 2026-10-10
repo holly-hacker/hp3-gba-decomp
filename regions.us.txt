@@ -770,14 +770,27 @@ thumb-func 0x08025410 DrawHighScoreNameEntryPreview
 thumb-func 0x08025484 sub_08025484
 
 # Input, see docs/memory-map/input.md
-c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
+c-file 0x080254A8 _ src/input/update_key_input.c UpdateKeyInput
+c-file 0x08025610 _ src/input/step_scroll_list_selection.c StepScrollListSelection
+c-file 0x080256DC _ src/input/step_scroll_grid_row.c StepScrollGridRow
+c-file 0x080257F4 _ src/input/step_scroll_grid_column.c StepScrollGridColumn
 c-file 0x080258E8 _ src/input/init_input_system.c InitInputSystem
 c-file 0x080258F8 _ src/input/reset_key_input.c ResetKeyInput
-c-file 0x08025954 0x08025978 src/input/enable_key_input.c EnableKeyInput
-thumb-func 0x08025A18 sub_08025A18
-thumb-func 0x08025A74 StepWrappedSelectionVertical_candidate
-thumb-func 0x08025B2C StepWrappedSelectionHorizontal_candidate
-thumb-func 0x08025CB8 sub_08025CB8
+c-file 0x08025954 _ src/input/enable_key_input.c EnableKeyInput
+c-file 0x08025978 _ src/input/disable_key_input.c DisableKeyInput
+c-file 0x0802599C _ src/input/get_dpad_direction.c GetDpadDirection
+c-file 0x080259BC _ src/input/step_cursor_by_keys.c StepCursorByKeys
+c-file 0x08025A18 _ src/input/step_cursor_up_down_held.c StepCursorUpDownHeld
+c-file 0x08025A74 _ src/input/step_cursor_up_down.c StepCursorUpDown
+c-file 0x08025AD0 _ src/input/step_cursor_left_right_held.c StepCursorLeftRightHeld
+c-file 0x08025B2C _ src/input/step_cursor_left_right.c StepCursorLeftRight
+c-file 0x08025B88 _ src/input/step_cursor_shoulder_held.c StepCursorShoulderHeld
+c-file 0x08025BE8 _ src/input/step_cursor_shoulder.c StepCursorShoulder
+c-file 0x08025C48 _ src/input/toggle_flag.c ToggleFlag
+c-file 0x08025C5C _ src/input/get_any_player_keys_held.c GetAnyPlayerKeysHeld
+c-file 0x08025C7C _ src/input/get_any_player_keys_pressed.c GetAnyPlayerKeysPressed
+c-file 0x08025C9C _ src/input/init_scroll_list.c InitScrollList
+c-file 0x08025CB8 _ src/input/init_scroll_grid.c InitScrollGrid
 
 # Instructions? (help topic screen mode)
 c-file 0x08025D28 _ src/gamemode/modes/help_topic_screen/initialize_topic_screen.c InitializeTopicScreen
@@ -1810,7 +1823,8 @@ c-file 0x08060884 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_
 c-file 0x0806088C 0x0806089C src/overworld/party_focus_gfx.c g_PartyFocusGfx_candidate
 c-file 0x080608EC 0x08060B2C src/overworld/party_assets.c g_aPartyWalkAssets
 c-file 0x08060BF4 _ src/overworld/party_anims.c g_abPartyStandFrames
-c-file 0x08060E64 0x08060E7C src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
+c-file 0x08060E64 _ src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
+c-file 0x08060E7C _ src/input/dpad_direction.c g_abDpadDirection
 c-file 0x08060E8C 0x08060EC0 src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 
 # Item/equipment table, see docs/formats/items.md
