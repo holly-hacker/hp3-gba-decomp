@@ -28,6 +28,7 @@
 #   One language's dialog text, and the table of language pointers, packed
 #   from data/text/.
 
+# Boot and runtime: header, crt0, interrupt dispatch, division, GammaLz decompressor
 asm-file 0x08000000 _ asm/gba_header.s          GBAHeader
 asm-file 0x080000A0 _ asm/rom_header_tail.us.s  ROMHeaderTail
 asm-file 0x080000C0 _ asm/crt0.s                crt0
@@ -40,7 +41,7 @@ asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWo
 asm-file 0x080005B0 _ asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 asm-file 0x080005EC _ asm/decompress_gamma_lz.s      DecompressGammaLz
 
-# actors/objects
+# Actors
 c-file 0x08000918 _ src/object/tick_object_list.c TickObjectList
 c-file 0x08000BC0 _ src/object/commit_queued_object_tile_updates.c CommitQueuedObjectTileUpdates
 c-file 0x08000C48 _ src/object/free_object.c FreeObject
@@ -108,14 +109,22 @@ c-file 0x080038EC 0x08003928 src/object/alloc_object_affine_slot.c AllocObjectAf
 thumb-func 0x08003928 IsObjectFlippedX
 thumb-func 0x08003954 sub_08003954
 c-file 0x08003980 0x080039E8 src/object/apply_object_orbit_motion.c ApplyObjectOrbitMotion
-
 thumb-func 0x080039E8 sub_080039E8
 thumb-func 0x080039F8 sub_080039F8
 thumb-func 0x08003A0C sub_08003A0C
 thumb-func 0x08003A20 CopyOrbitParamsFromTable
 thumb-func 0x08003A30 sub_08003A30
 thumb-func 0x08003A44 sub_08003A44
+thumb-func 0x08003A74 sub_08003A74
+
+# Ai? (NPC movement behaviors)
+thumb-func 0x08003A80 sub_08003A80
+thumb-func 0x08005348 sub_08005348
+
+# Anim? (OAM shape size lookup)
 c-file 0x08005384 0x0800539C src/graphics/oam/get_oam_shape_size_dims.c GetOamShapeSizeDims
+
+# Area? (room loading)
 thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
 c-file 0x08005410 _ src/room/walk_room_switch_state_chain.c WalkRoomSwitchStateChain_candidate
 c-file 0x080055C0 _ src/room/resume_room_switch_state_chain.c ResumeRoomSwitchStateChain_candidate
@@ -139,11 +148,15 @@ thumb-func 0x08005E40 sub_08005E40
 thumb-func 0x08005E84 sub_08005E84
 thumb-func 0x08005EC8 sub_08005EC8
 thumb-func 0x08005EE8 sub_08005EE8
+
+# Area? (object collision and depth sort)
 asm-file 0x08005F10 _ asm/check_object_collisions.s  CheckObjectCollisions
 asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
 asm-file 0x080063B4 _ asm/find_free_obj_tile_run.s    FindFreeObjTileRun
 asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth
+
+# Background (BG layers)
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
 thumb-func 0x080065D4 sub_080065D4
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
@@ -184,6 +197,9 @@ thumb-func 0x08007D60 sub_08007D60
 thumb-func 0x08007EB8 SetBgPriority
 c-file 0x08007F20 0x08007F84 src/graphics/unpack_tile_data.c UnpackTileData
 thumb-func 0x08007F84 sub_08007F84
+thumb-func 0x08007FA8 sub_08007FA8
+
+# Boggart, Buckbeak (minigames)
 c-file 0x08008050 _ src/gamemode/modes/minigame/riddikulus/initialize_riddikulus_minigame.c InitializeRiddikulusMinigame
 c-file 0x080080F4 0x08008360 src/gamemode/modes/minigame/riddikulus/update_riddikulus_minigame.c UpdateRiddikulusMinigame
 thumb-func 0x08008360 sub_08008360
@@ -214,6 +230,8 @@ c-file 0x08009C54 0x08009CA4 src/gamemode/modes/minigame/hippogriff_glide/exit_h
 thumb-func 0x08009D8C sub_08009D8C
 thumb-func 0x08009E1C sub_08009E1C
 thumb-func 0x08009F80 HandleHippogriffGlideExitSelect
+
+# Camera
 thumb-func 0x08009FD8 sub_08009FD8
 thumb-func 0x0800A03C TickCameraFocus_candidate
 thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
@@ -223,13 +241,19 @@ thumb-func 0x0800A3AC SetCameraFollowTarget_candidate
 thumb-func 0x0800A3EC sub_0800A3EC
 thumb-func 0x0800A420 sub_0800A420
 thumb-func 0x0800A4E8 SetRoomScrollBounds
+
+# Purple screen return-to-menu mode
 c-file 0x0800A510 _ src/gamemode/modes/purple_screen_return_to_menu/initialize_purple_screen_return_to_menu.c InitializePurpleScreenReturnToMenu
 c-file 0x0800A560 _ src/gamemode/modes/purple_screen_return_to_menu/update_purple_screen_return_to_menu.c UpdatePurpleScreenReturnToMenu
 c-file 0x0800A580 0x0800A598 src/gamemode/modes/purple_screen_return_to_menu/exit_purple_screen_return_to_menu.c ExitPurpleScreenReturnToMenu
+
+# CharAnim? (BG tile animations)
 thumb-func 0x0800A598 sub_0800A598
 c-file 0x0800A610 _ src/graphics/tick_bg_tile_animations.c TickBgTileAnimations
 c-file 0x0800A6EC 0x0800A83C src/graphics/commit_bg_tile_animations.c CommitBgTileAnimations
 thumb-func 0x0800A914 sub_0800A914
+
+# Cheat (debug menus)
 c-file 0x0800A950 _ src/gamemode/modes/debug/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
 c-file 0x0800AA54 0x0800AB34 src/gamemode/modes/debug/debug_menu_main/update_debug_menu_main.c UpdateDebugMenuMain
 thumb-func 0x0800AB34 ResetDebugPartyFromArgs_candidate
@@ -264,9 +288,13 @@ c-file 0x0800BA2C 0x0800BAF8 src/gamemode/modes/debug/debug_collector_cards_menu
 thumb-func 0x0800BAF8 sub_0800BAF8
 c-file 0x0800BBF0 _ src/gamemode/modes/debug/debug_collector_cards_menu/update_debug_collector_cards_menu.c UpdateDebugCollectorCardsMenu
 c-file 0x0800BC54 _ src/gamemode/modes/debug/debug_collector_cards_menu/exit_debug_collector_cards_menu.c ExitDebugCollectorCardsMenu
+
+# Chest (chest object)
 c-file 0x0800BC6C _ src/room/objects/spawn_chest_object.c SpawnChestObject
 c-file 0x0800BDCC _ src/room/objects/tick_chest_object.c TickChestObject
 c-file 0x0800BF20 _ src/room/objects/handle_chest_touch.c HandleChestTouch
+
+# Loading screen mode
 c-file 0x0800C0FC _ src/gamemode/modes/loading_screen/initialize_loading_screen.c InitializeLoadingScreen
 c-file 0x0800C248 0x0800C344 src/gamemode/modes/loading_screen/update_loading_screen.c UpdateLoadingScreen
 thumb-func 0x0800C344 sub_0800C344
@@ -275,11 +303,19 @@ c-file 0x0800C590 0x0800C618 src/gamemode/modes/loading_screen/exit_loading_scre
 thumb-func 0x0800C618 sub_0800C618
 thumb-func 0x0800C674 sub_0800C674
 thumb-func 0x0800C6D0 sub_0800C6D0
+
+# Clock (playtime)
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
 c-file 0x0800CA70 _ src/save/compare_playtime_field.c ComparePlaytimeField
 c-file 0x0800CAE8 _ src/save/initialize_playtime_struct.c InitializePlaytimeStruct
 c-file 0x0800CAF8 0x0800CB04 src/save/copy_playtime.c CopyPlaytime
+thumb-func 0x0800CB9C sub_0800CB9C
+
+# Unidentified, includes a door object callback
 thumb-func 0x0800CBF0 sub_0800CBF0
+thumb-func 0x0800CFDC sub_0800CFDC
+
+# Color (palette effects), see docs/memory-map/palette.md
 c-file 0x0800D008 0x0800D0A0 src/graphics/palette/apply_gamma_remap_table.c ApplyGammaRemapTable
 thumb-func 0x0800D0A0 SetupColorCycles
 c-file 0x0800D120 _ src/graphics/palette/apply_gamma_to_colors.c ApplyGammaToColors
@@ -305,9 +341,14 @@ c-file 0x0800D944 _ src/graphics/palette/reset_palette_effects.c ResetPaletteEff
 c-file 0x0800D96C _ src/graphics/palette/clear_palette_effect.c ClearPaletteEffect
 c-file 0x0800D98C _ src/graphics/palette/tick_palette_effects.c TickPaletteEffects
 c-file 0x0800D9D4 0x0800DB58 src/graphics/palette/step_palette_effect.c StepPaletteEffect
+thumb-func 0x0800DB58 sub_0800DB58
+
+# Combat (battle mode), see docs/memory-map/battle.md
 c-file 0x0800DBAC _ src/gamemode/modes/battle/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 _ src/gamemode/modes/battle/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
+
+# CombatMenu (battle turn system and UI), see docs/memory-map/battle-ui.md
 thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
 thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
 c-file 0x0800E5B8 _ src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
@@ -342,6 +383,9 @@ thumb-func 0x08012E0C sub_08012E0C
 c-file 0x080130B4 0x08013108 src/battle/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
 thumb-func 0x08013108 sub_08013108
 thumb-func 0x0801319C OpenPendingFighterMenu_candidate
+thumb-func 0x0801345C sub_0801345C
+
+# CombatResult (victory screen mode)
 c-file 0x080134BC _ src/gamemode/modes/victory_screen/initialize_victory_screen.c InitializeVictoryScreen
 c-file 0x080138F4 0x08013AC8 src/gamemode/modes/victory_screen/update_victory_screen.c UpdateVictoryScreen
 thumb-func 0x08013AC8 sub_08013AC8
@@ -349,6 +393,9 @@ thumb-func 0x08014004 sub_08014004
 thumb-func 0x0801456C sub_0801456C
 c-file 0x080147C0 _ src/gamemode/modes/victory_screen/roll_battle_item_drops.c RollBattleItemDrops
 c-file 0x080148A8 0x080148F4 src/gamemode/modes/victory_screen/exit_victory_screen.c ExitVictoryScreen
+
+# CombatSpell? (battle actors, damage, spells and effects)
+thumb-func 0x080148F4 sub_080148F4
 thumb-func 0x0801493C sub_0801493C
 thumb-func 0x08014964 ResetCharacterToLevel
 c-file 0x080149C4 _ src/battle/init_player_battle_actor.c InitPlayerBattleActor
@@ -394,6 +441,9 @@ thumb-func 0x0801B348 sub_0801B348
 c-file 0x0801B430 0x0801B4BC src/battle/try_apply_paralysis.c TryApplyParalysis
 thumb-func 0x0801B4BC sub_0801B4BC
 c-file 0x0801B590 0x0801B5D0 src/battle/spawn_paralysis_effect.c SpawnParalysisEffect
+
+# CombatWait? (battle effect scripts)
+thumb-func 0x0801B5D0 sub_0801B5D0
 thumb-func 0x0801B620 ComputeEffectSpawnPosition
 thumb-func 0x0801B650 WaitFramesTick
 thumb-func 0x0801B684 WaitForCounterTick
@@ -409,11 +459,14 @@ thumb-func 0x0801B9F4 sub_0801B9F4
 thumb-func 0x0801BA2C sub_0801BA2C
 thumb-func 0x0801BA44 sub_0801BA44
 thumb-func 0x0801BCB0 sub_0801BCB0
+thumb-func 0x0801BCDC sub_0801BCDC
+
+# Combo? (card combo description mode)
 c-file 0x0801BD0C _ src/gamemode/modes/card_combo_description/initialize_card_combo_description.c InitializeCardComboDescription
 c-file 0x0801BEA8 _ src/gamemode/modes/card_combo_description/update_card_combo_description.c UpdateCardComboDescription
 c-file 0x0801BEDC _ src/gamemode/modes/card_combo_description/exit_card_combo_description.c ExitCardComboDescription
 
-# room vm opcode handlers
+# Commands? (room script VM: opcode handlers and interpreter)
 c-file 0x0801BEF8 _ src/room/opcodes/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
 c-file 0x0801BF58 _ src/room/opcodes/room_script_op_queue_tile_object_move.c RoomScriptOpQueueTileObjectMove
 c-file 0x0801C04C _ src/room/opcodes/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
@@ -506,8 +559,13 @@ c-file 0x0801D330 _ src/room/opcodes/room_script_op_unmute_all_music_channels.c 
 c-file 0x0801D33C _ src/room/opcodes/room_script_op_consume_room_item.c RoomScriptOpConsumeRoomItem
 c-file 0x0801D34C _ src/room/opcodes/room_script_op_reset_party_leader_selection.c RoomScriptOpResetPartyLeaderSelection
 c-file 0x0801D360 _ src/room/opcodes/room_script_op_set_pending_chain_from_exit_param.c RoomScriptOpSetPendingChainFromExitParam
-
 c-file 0x0801D390 0x0801D464 src/room/compare_and_branch_room_script.c CompareAndBranchRoomScript
+
+# Comms? (Joybus checksum)
+thumb-func 0x0801D464 sub_0801D464
+thumb-func 0x0801D4A8 ComputeJoybusChecksum
+
+# Credits (credits and linear cutscene modes)
 c-file 0x0801D518 _ src/gamemode/modes/cutscene/credits/initialize_credits.c InitializeCredits
 c-file 0x0801D5C8 0x0801D6DC src/gamemode/modes/cutscene/credits/update_credits.c UpdateCredits
 thumb-func 0x0801D6DC sub_0801D6DC
@@ -515,6 +573,8 @@ thumb-func 0x0801D77C sub_0801D77C
 c-file 0x0801D858 _ src/gamemode/modes/cutscene/linear_cutscene/exit_linear_cutscene.c ExitLinearCutscene
 c-file 0x0801D888 _ src/gamemode/modes/cutscene/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
 c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
+
+# Cursor? (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
 thumb-func 0x0801D940 sub_0801D940
 c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 thumb-func 0x0801DC6C ReleaseMenuCursor
@@ -525,6 +585,8 @@ c-file 0x0801DD90 _ src/graphics/decompress_resource.c DecompressResource
 c-file 0x0801DE5C _ src/graphics/decompress_resource_vram.c DecompressResourceVram
 c-file 0x0801DF24 _ src/graphics/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassUnused
 c-file 0x0801DF48 0x0801DF6C src/graphics/apply_resource_delta_pass.c ApplyResourceDeltaPass
+
+# Menu screen frame, see docs/memory-map/menu_screen.md
 thumb-func 0x0801DF6C InitializeMenuScreen
 thumb-func 0x0801DF90 LoadMenuScreenFrame
 thumb-func 0x0801E004 LoadMenuScreenOverlay
@@ -533,6 +595,8 @@ thumb-func 0x0801E05C BeginMenuScreen
 thumb-func 0x0801E0D8 sub_0801E0D8
 thumb-func 0x0801E0DC ExitMenuScreen
 thumb-func 0x0801E118 DrawMenuScreenTitle
+
+# Dementors (Harry vs Dementors minigame)
 c-file 0x0801E174 _ src/gamemode/modes/minigame/harry_vs_dementors/initialize_harry_vs_dementors_minigame.c InitializeHarryVsDementorsMinigame
 c-file 0x0801E280 0x0801E414 src/gamemode/modes/minigame/harry_vs_dementors/update_harry_vs_dementors_minigame.c UpdateHarryVsDementorsMinigame
 thumb-func 0x0801E414 sub_0801E414
@@ -548,9 +612,14 @@ thumb-func 0x0801EF48 sub_0801EF48
 thumb-func 0x0801EFA0 sub_0801EFA0
 thumb-func 0x0801EFF4 sub_0801EFF4
 thumb-func 0x0801F108 sub_0801F108
+thumb-func 0x0801F22C sub_0801F22C
+
+# Startup mode
 c-file 0x0801F264 _ src/gamemode/modes/startup/initialize_startup.c InitializeStartup
 c-file 0x0801F36C _ src/gamemode/modes/startup/update_startup.c UpdateStartup
 c-file 0x0801F524 _ src/gamemode/modes/startup/exit_startup.c ExitStartup
+
+# Dialog (dialogue mode)
 c-file 0x0801F534 _ src/gamemode/modes/dialogue/initialize_dialogue.c InitializeDialogue
 c-file 0x0801F654 0x0801F7AC src/gamemode/modes/dialogue/update_dialogue_box.c UpdateDialogueBox
 thumb-func 0x0801F7AC sub_0801F7AC
@@ -558,6 +627,8 @@ thumb-func 0x0801F968 sub_0801F968
 thumb-func 0x0801FA18 sub_0801FA18
 thumb-func 0x0801FA9C sub_0801FA9C
 c-file 0x0801FAF4 0x0801FB54 src/gamemode/modes/dialogue/exit_dialogue.c ExitDialogue
+
+# DialogBox? (dialog box)
 thumb-func 0x0801FB54 ShowRoomDialogBox_candidate
 c-file 0x0801FB78 0x0801FBA4 src/text/init_dialog_box.c InitDialogBox
 thumb-func 0x0801FBA4 sub_0801FBA4
@@ -567,10 +638,17 @@ thumb-func 0x0801FC58 sub_0801FC58
 thumb-func 0x0801FCFC sub_0801FCFC
 thumb-func 0x0801FD2C sub_0801FD2C
 thumb-func 0x0801FD64 sub_0801FD64
+
+# Display? (display control init)
 c-file 0x0801FDA0 0x0801FDB0 src/graphics/init_display_control.c InitDisplayControl
+
+# Flight? (hippogriff-flies-into-air cutscene mode)
 c-file 0x0801FDE8 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
 c-file 0x0801FED4 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
 c-file 0x0801FF14 0x0801FF30 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
+
+# Flipbook? (room tile animation)
+thumb-func 0x0801FF30 sub_0801FF30
 thumb-func 0x0802018C SpawnScriptEffectObject
 thumb-func 0x080201C8 AddRoomTileAnimation_candidate
 thumb-func 0x08020228 TickRoomTileAnimations_candidate
@@ -586,6 +664,9 @@ c-file 0x0802058C _ src/room/get_room_tile_anim_frame_delay.c GetRoomTileAnimFra
 c-file 0x080205A8 _ src/room/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
 c-file 0x080205C4 0x080205F8 src/room/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
 thumb-func 0x080205F8 sub_080205F8
+
+# Font (text rendering)
+thumb-func 0x08020668 sub_08020668
 c-file 0x08020714 0x080208B4 src/text/draw_text_line.c DrawTextLine
 thumb-func 0x080208B4 DrawStringAligned
 thumb-func 0x080209F0 DrawString
@@ -600,6 +681,9 @@ c-file 0x08020FF8 0x08021048 src/text/print_text_box.c PrintTextBox
 c-file 0x080210D8 0x080211C0 src/text/text_macro.c SetTextMacroString
 thumb-func 0x080211C0 GetTextLineHeight
 c-file 0x0802136C 0x0802139C src/text/get_glyph_width.c GetGlyphWidth
+thumb-func 0x0802139C sub_0802139C
+
+# Game? (game state save and money)
 c-file 0x080213C0 _ src/save/deserialize_game_state.c DeserializeGameStateFromSaveBuffer
 c-file 0x08021498 _ src/save/serialize_game_state.c SerializeGameStateToSaveBuffer
 c-file 0x08021560 _ src/noop_init.c NoopInit
@@ -611,9 +695,16 @@ c-file 0x08021650 _ src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCare
 c-file 0x0802165C _ src/save/process_playtime_tick.c ProcessPlaytimeTick
 c-file 0x08021694 0x080216A0 src/save/set_sickles.c SetSickles
 thumb-func 0x080216A0 AddSickles
+thumb-func 0x080216D4 sub_080216D4
+
+# GameCube (Joybus transport), see docs/memory-map/gcn-link.md
+thumb-func 0x08021748 HandleJoybusCommandWord
 thumb-func 0x08021A58 InitJoybusSession
 thumb-func 0x08021AF4 TickJoybusSession
 thumb-func 0x08021B28 TeardownJoybusHardware
+thumb-func 0x08021BD8 LatchJoybusTransferLength
+
+# Hedwig? (Owl Care Kit mode)
 c-file 0x08021C08 _ src/gamemode/modes/minigame/owl_care_kit/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
 c-file 0x08021D6C 0x08021DF8 src/gamemode/modes/minigame/owl_care_kit/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
 thumb-func 0x08021DF8 ProcessOwlCareKitTick
@@ -629,6 +720,8 @@ thumb-func 0x08022EE4 sub_08022EE4
 thumb-func 0x08022F28 sub_08022F28
 thumb-func 0x08023188 sub_08023188
 thumb-func 0x080233C0 sub_080233C0
+
+# Hero? (player and party)
 thumb-func 0x080233E4 SpawnPlayerObject_candidate
 thumb-func 0x08023644 SyncFollowerLevelToLeader_candidate
 thumb-func 0x080236DC sub_080236DC
@@ -643,20 +736,32 @@ thumb-func 0x08024980 sub_08024980
 thumb-func 0x080249A4 sub_080249A4
 thumb-func 0x080249C8 GetPartyPresenceMask
 thumb-func 0x080249FC GetPartySize
+
+# HeroReward? (rewards)
 c-file 0x08024A30 _ src/items/player_receive_reward.c PlayerReceiveReward
 c-file 0x08024A88 0x08024AEC src/items/player_receive_reward_alt.c PlayerReceiveRewardAlt
+
+# HeroStats? (party stat slots)
 thumb-func 0x08024AEC GetPartyMasterStatsSlot_candidate
 thumb-func 0x08024BD4 sub_08024BD4
+thumb-func 0x08024D9C sub_08024D9C
+
+# Huffman? (dialog text decompression and BG tile codec)
 c-file 0x08024DC8 _ src/text/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024EB8 _ src/text/init_dialog_text_table.c InitDialogTextTable
 c-file 0x08024EDC 0x08024F80 src/graphics/decompress_huff_tree.c DecompressHuffTree
 c-file 0x080250B8 _ src/graphics/install_bg_tile_codec.c InstallBgTileCodec
+
+# Initials? (high score name entry mode)
 c-file 0x080250D4 _ src/gamemode/modes/high_score_name_entry/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
 c-file 0x080251EC 0x08025284 src/gamemode/modes/high_score_name_entry/update_high_score_name_entry.c UpdateHighScoreNameEntry
 thumb-func 0x08025284 DrawHighScoreNameEntryKeypad
 c-file 0x08025368 0x0802539C src/gamemode/modes/high_score_name_entry/exit_high_score_name_entry.c ExitHighScoreNameEntry
 thumb-func 0x0802539C HighScoreNameEntryCursorTick
 thumb-func 0x08025410 DrawHighScoreNameEntryPreview
+thumb-func 0x08025484 sub_08025484
+
+# Input, see docs/memory-map/input.md
 c-file 0x080254A8 0x08025610 src/input/update_key_input.c UpdateKeyInput
 c-file 0x080258E8 _ src/input/init_input_system.c InitInputSystem
 c-file 0x080258F8 _ src/input/reset_key_input.c ResetKeyInput
@@ -664,9 +769,14 @@ c-file 0x08025954 0x08025978 src/input/enable_key_input.c EnableKeyInput
 thumb-func 0x08025A18 sub_08025A18
 thumb-func 0x08025A74 StepWrappedSelectionVertical_candidate
 thumb-func 0x08025B2C StepWrappedSelectionHorizontal_candidate
+thumb-func 0x08025CB8 sub_08025CB8
+
+# Instructions? (help topic screen mode)
 c-file 0x08025D28 _ src/gamemode/modes/help_topic_screen/initialize_topic_screen.c InitializeTopicScreen
 c-file 0x08025E18 _ src/gamemode/modes/help_topic_screen/update_topic_screen.c UpdateTopicScreen
 c-file 0x08025E84 _ src/gamemode/modes/help_topic_screen/exit_topic_screen.c ExitTopicScreen
+
+# Interrupt (interrupt handlers)
 c-file 0x08025E90 _ src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file 0x08026068 _ src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x080260A8 _ src/interrupts/enable_interrupts.c EnableInterrupts
@@ -682,11 +792,15 @@ thumb-func 0x080262BC HandleVCountInterrupt
 thumb-func 0x080262F4 HandleTimer0Interrupt_candidate
 thumb-func 0x0802631C HandleTimer3Interrupt_candidate
 thumb-func 0x08026344 IntrDummy
+
+# Invisible? (trigger objects)
 c-file 0x08026348 _ src/room/objects/spawn_trigger_rect_object.c SpawnTriggerRectObject
 c-file 0x08026414 0x080264F0 src/room/objects/spawn_trigger_zone_object.c SpawnTriggerZoneObject
 thumb-func 0x080264F0 sub_080264F0
 thumb-func 0x080265B8 sub_080265B8
 thumb-func 0x08026674 sub_08026674
+
+# Item (items, equipment and inventory)
 c-file 0x080266EC 0x08026754 src/shop/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 thumb-func 0x08026870 sub_08026870
 thumb-func 0x080269E0 sub_080269E0
@@ -708,6 +822,9 @@ thumb-func 0x08027AF4 sub_08027AF4
 thumb-func 0x08027BA4 sub_08027BA4
 thumb-func 0x08027BDC sub_08027BDC
 thumb-func 0x08027C08 sub_08027C08
+thumb-func 0x08027EF0 sub_08027EF0
+
+# Unused Hogwarts map mode
 c-file 0x08027F40 _ src/gamemode/modes/unused_hogwarts_map_screen/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
 c-file 0x0802804C 0x080280CC src/gamemode/modes/unused_hogwarts_map_screen/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
 thumb-func 0x080280CC sub_080280CC
@@ -715,14 +832,17 @@ thumb-func 0x080281AC sub_080281AC
 c-file 0x08028210 0x08028240 src/gamemode/modes/unused_hogwarts_map_screen/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
 thumb-func 0x08028240 sub_08028240
 thumb-func 0x080282C4 sub_080282C4
+
+# Language (language select mode)
 c-file 0x08028314 _ src/gamemode/modes/language_select/initialize_language_select.c InitializeLanguageSelect
 c-file 0x08028408 _ src/gamemode/modes/language_select/update_language_select.c UpdateLanguageSelect
 c-file 0x08028524 0x08028534 src/gamemode/modes/language_select/exit_language_select.c ExitLanguageSelect
 thumb-func 0x08028534 DrawLanguageSelectPicture_candidate
 thumb-func 0x08028568 DrawLanguageSelectEntries_candidate
 thumb-func 0x08028588 DrawLanguageSelectEntry_candidate
+thumb-func 0x0802867C sub_0802867C
 
-# Heap allocator / object pool, see docs/memory-map/heap.md
+# List (linked lists), see docs/memory-map/heap.md
 c-file 0x080286A0 _ src/mem/build_free_list.c BuildFreeList
 c-file 0x080286D8 _ src/mem/alloc_object_from_free_list.c AllocObjectFromFreeList
 c-file 0x0802870C _ src/mem/list_move_to_head.c List_MoveToHead
@@ -730,6 +850,7 @@ c-file 0x08028728 _ src/mem/list_pop_head.c List_PopHead
 c-file 0x08028748 _ src/mem/list_push_head.c List_PushHead
 c-file 0x08028760 _ src/mem/list_remove.c List_Remove
 
+# Lupin (Lupin potion cutscene mode)
 c-file 0x0802878C _ src/gamemode/modes/cutscene/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene
 c-file 0x0802887C 0x08028AD4 src/gamemode/modes/cutscene/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
 thumb-func 0x08028AD4 sub_08028AD4
@@ -741,7 +862,11 @@ thumb-func 0x08029380 sub_08029380
 c-file 0x08029528 0x08029558 src/gamemode/modes/cutscene/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
 thumb-func 0x08029558 sub_08029558
 thumb-func 0x080295E0 LupinPotionPanelScanlineCallback_candidate
+
+# Main (AgbMain)
 c-file 0x08029690 _ src/main.c AgbMain
+
+# Map (overworld)
 c-file 0x080297A0 _ src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
 c-file 0x0802A14C 0x0802A2A4 src/gamemode/modes/overworld/exit_overworld_screen.c ExitOverworldScreen
 c-file 0x0802A3D4 _ src/save/deserialize_room_object_state.c DeserializeRoomObjectState
@@ -767,13 +892,16 @@ thumb-func 0x0802B58C HandleWanderingMonsterTouch
 thumb-func 0x0802BA0C GetEncounterKindTerrainType
 thumb-func 0x0802BA1C FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BAD0 PickMaxDamageMonster
+
+# MapDoor? (door objects and party experience)
 c-file 0x0802BB00 0x0802BBAC src/room/objects/spawn_door_object.c SpawnDoorObject
 thumb-func 0x0802BBAC sub_0802BBAC
 c-file 0x0802BC54 0x0802BC74 src/room/objects/spawn_portrait_door_object.c SpawnPortraitDoorObject
 thumb-func 0x0802BC74 sub_0802BC74
 thumb-func 0x0802BC94 GrantPartyExperience_candidate
+thumb-func 0x0802BDCC sub_0802BDCC
 
-# math
+# Math
 c-file 0x0802BDEC _ src/math/install_iwram_divide_routines.c InstallIwramDivideRoutines
 c-file 0x0802BE2C _ src/math/iwram_divide_signed_quotient.c iwramDivideSignedQuotient
 c-file 0x0802BE40 _ src/math/iwram_divide_signed_remainder.c iwramDivideSignedRemainder
@@ -804,7 +932,8 @@ c-file 0x0802C12C _ src/math/to_percent.c ToPercent
 c-file 0x0802C148 _ src/math/sign_magnitude8_8_to_fixed.c SignMagnitude8_8ToFixed
 c-file 0x0802C164 0x0802C174 src/math/length_squared.c LengthSquared
 
-# memory management pt. 2
+# Memory (heap), see docs/memory-map/heap.md
+thumb-func 0x0802C174 sub_0802C174
 c-file 0x0802C254 _ src/mem/init_heap.c InitHeap
 c-file 0x0802C26C _ src/mem/alloc_block.c AllocBlock
 c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
@@ -816,7 +945,9 @@ c-file 0x0802C570 _ src/mem/get_free_block_size.c GetFreeBlockSize
 c-file 0x0802C590 _ src/mem/link_block_by_address.c LinkBlockByAddress
 c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
 c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
+thumb-func 0x0802C67C sub_0802C67C
 
+# Game mode stack, see docs/memory-map/game_modes.md
 c-file 0x0802C6B4 _ src/gamemode/tick_game_mode_stack.c TickGameModeStack
 c-file 0x0802C750 0x0802C7A8 src/gamemode/init_game_mode_stack.c InitGameModeStack
 thumb-func 0x0802C7A8 GetCurrentGameMode_candidate
@@ -831,13 +962,19 @@ c-file 0x0802C8A8 _ src/gamemode/dispatch_game_mode_update.c DispatchGameModeUpd
 c-file 0x0802C8D0 0x0802C90C src/gamemode/dispatch_game_mode_destroy.c DispatchGameModeDestroy
 thumb-func 0x0802C90C SpawnMenuIconObject
 c-file 0x0802C984 _ src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
+
+# Minigame/Difficulty? (minigame difficulty select)
 c-file 0x0802C988 0x0802CB80 src/gamemode/modes/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CB80 sub_0802CB80
 thumb-func 0x0802CC44 sub_0802CC44
 c-file 0x0802CCF4 _ src/gamemode/modes/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
 c-file 0x0802CD88 0x0802CDB8 src/gamemode/modes/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
+
+# Minigame/HighScore? (minigame high score helpers)
 thumb-func 0x0802CDB8 sub_0802CDB8
 thumb-func 0x0802CEE4 sub_0802CEE4
+
+# Minigame/Menu? (minigame menu)
 c-file 0x0802CF38 0x0802D08C src/gamemode/modes/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
 thumb-func 0x0802D08C HandleMinigameMenuSelection
 thumb-func 0x0802D148 DrawMinigameSelectMenu
@@ -847,11 +984,16 @@ thumb-func 0x0802D314 BeginMinigameSwitchFade_candidate
 thumb-func 0x0802D334 TickMinigameSwitchFadeOut_candidate
 thumb-func 0x0802D368 SwapMinigameSelection_candidate
 thumb-func 0x0802D384 TickMinigameSwitchFadeIn_candidate
+
+# Mode7? (affine BG and BG priority)
 thumb-func 0x0802D3BC sub_0802D3BC
 c-file 0x0802D544 0x0802D548 src/noop_init3.c NoopInit3
 thumb-func 0x0802D640 sub_0802D640
 thumb-func 0x0802D64C sub_0802D64C
 thumb-func 0x0802D6B8 sub_0802D6B8
+thumb-func 0x0802D6D8 sub_0802D6D8
+
+# Move? (terrain collision and camera focus)
 c-file 0x0802D704 _ src/overworld/resolve_object_terrain.c ResolveObjectTerrain
 c-file 0x0802D7A0 _ src/overworld/terrain_collision.c GetCollisionTypeAtPixel_candidate
 c-file 0x0802DF3C _ src/overworld/apply_room_switch_effect.c ApplyRoomSwitchEffect
@@ -859,12 +1001,18 @@ c-file 0x0802DF74 _ src/overworld/nudge_object.c NudgeAlongVelocity
 c-file 0x0802E030 0x0802E090 src/overworld/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
 thumb-func 0x0802E2BC sub_0802E2BC
 thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
+thumb-func 0x0802F494 sub_0802F494
+
+# Npc (NPC object)
 c-file 0x0802F500 0x0802F6C0 src/room/objects/spawn_npc_object.c SpawnNpcObject
 thumb-func 0x0802F6C0 sub_0802F6C0
 thumb-func 0x0802F7F0 sub_0802F7F0
 thumb-func 0x0802FCC0 sub_0802FCC0
 thumb-func 0x0802FD5C sub_0802FD5C
 thumb-func 0x0802FE04 SetObjectAnimData_candidate
+thumb-func 0x0802FE50 sub_0802FE50
+
+# Oam (OAM submission)
 c-file 0x0802FEAC _ src/graphics/oam/submit_oam_attrs_nudged.c SubmitOamAttrsNudged
 c-file 0x0802FF2C 0x0802FF58 src/graphics/oam/init_oam_system.c InitOamSystem
 c-file 0x0802FFA0 _ src/graphics/oam/queue_oam_entry.c QueueOamEntry
@@ -877,6 +1025,9 @@ c-file 0x080300F8 _ src/graphics/oam/free_affine_slot.c FreeAffineSlot
 c-file 0x08030140 _ src/graphics/oam/commit_obj_affine_matrices.c CommitObjAffineMatrices
 c-file 0x08030184 _ src/graphics/oam/hide_unused_oam_entries.c HideUnusedOamEntries
 c-file 0x080301E8 0x0803020C src/graphics/oam/reset_affine_slots.c ResetAffineSlots
+
+# Owl (owl name select mode)
+thumb-func 0x0803020C sub_0803020C
 c-file 0x08030274 _ src/gamemode/modes/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
 c-file 0x0803031C 0x08030478 src/gamemode/modes/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
 thumb-func 0x08030478 sub_08030478
@@ -886,9 +1037,10 @@ thumb-func 0x080305F0 sub_080305F0
 thumb-func 0x08030644 sub_08030644
 thumb-func 0x080306B8 sub_080306B8
 thumb-func 0x080306F0 sub_080306F0
+
+# Palette? (resource cache)
 c-file 0x0803071C _ src/object/bind_object_effect_data.c BindObjectEffectData
 c-file 0x08030794 _ src/graphics/alloc_resource_cache_slot.c AllocResourceCacheSlot
-
 c-file 0x08030824 0x08030844 src/graphics/clear_resource_cache_slots.c ClearResourceCacheSlots
 thumb-func 0x08030844 sub_08030844
 c-file 0x08030878 0x080308A8 src/object/attach_object_palette.c AttachObjectPalette
@@ -899,6 +1051,8 @@ thumb-func 0x0803094C sub_0803094C
 thumb-func 0x08030960 sub_08030960
 c-file 0x08030978 0x080309D4 src/object/bind_object_to_resource_cache_slot.c BindObjectToResourceCacheSlot
 c-file 0x080309E8 0x08030A1C src/graphics/find_resource_cache_slot.c FindResourceCacheSlot
+
+# Particle? (particles), see docs/memory-map/particles.md
 thumb-func 0x08030A1C sub_08030A1C
 c-file 0x08030B70 _ src/graphics/particle/alloc_particle_emitter.c AllocParticleEmitter
 c-file 0x08030C00 _ src/graphics/particle/bucket_particles_by_priority.c BucketParticlesByPriority
@@ -920,10 +1074,15 @@ c-file 0x080317EC _ src/graphics/particle/tick_particle_layer.c TickParticleLaye
 c-file 0x08031848 _ src/graphics/particle/release_particle.c ReleaseParticle
 c-file 0x0803186C _ src/graphics/particle/draw_particle.c DrawParticle
 c-file 0x0803197C 0x080319B0 src/graphics/particle/update_particle_collision.c UpdateParticleCollision
+thumb-func 0x080319B0 sub_080319B0
+
+# Patronus (Harry Patronus cutscene mode)
 c-file 0x080319FC _ src/gamemode/modes/cutscene/harry_patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file 0x08031B4C _ src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
 c-file 0x08031CA8 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
 c-file 0x08031CC4 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
+
+# Pause (in-game menu and list menu)
 c-file 0x08031D30 _ src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
 c-file 0x08031E7C _ src/menu/build_list_menu.c BuildListMenu
 c-file 0x08031F6C 0x08031FB8 src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
@@ -944,6 +1103,8 @@ thumb-func 0x0803232C sub_0803232C
 thumb-func 0x0803233C DrawPauseMenuObjective
 thumb-func 0x080323AC sub_080323AC
 thumb-func 0x080323B0 sub_080323B0
+
+# Popper? (wizard cracker pop-it minigame)
 c-file 0x080323B4 _ src/gamemode/modes/minigame/wizard_cracker_pop_it/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
 c-file 0x08032534 0x08032894 src/gamemode/modes/minigame/wizard_cracker_pop_it/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
 thumb-func 0x08032894 sub_08032894
@@ -965,6 +1126,8 @@ thumb-func 0x08033CA0 sub_08033CA0
 thumb-func 0x08033CE0 sub_08033CE0
 thumb-func 0x08033D34 sub_08033D34
 thumb-func 0x08033D6C sub_08033D6C
+
+# Pour? (serve pumpkin juice minigame)
 c-file 0x08033DA4 _ src/gamemode/modes/minigame/serve_pumpkin_juice/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
 c-file 0x08033EE0 0x08034174 src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
 thumb-func 0x08034F20 sub_08034F20
@@ -975,9 +1138,14 @@ thumb-func 0x08035330 sub_08035330
 thumb-func 0x0803539C sub_0803539C
 thumb-func 0x08035418 sub_08035418
 thumb-func 0x08035474 sub_08035474
+thumb-func 0x08035520 sub_08035520
+
+# PressurePad? (push-reset button object)
 c-file 0x08035540 0x08035664 src/room/objects/spawn_push_reset_button_object.c SpawnPushResetButtonObject
 thumb-func 0x08035664 sub_08035664
 thumb-func 0x08035724 sub_08035724
+
+# Profile/Character? (pause subscreen: status/equip character select)
 c-file 0x08035764 0x08035898 src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 thumb-func 0x08035A34 sub_08035A34
 c-file 0x08035D08 _ src/gamemode/modes/status_equip/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
@@ -987,12 +1155,17 @@ thumb-func 0x08035D98 sub_08035D98
 thumb-func 0x08035DC0 sub_08035DC0
 thumb-func 0x08035DEC StatusEquipSlotToCharacter
 thumb-func 0x08035E1C StatusEquipCharacterToSlot
+thumb-func 0x08035E3C sub_08035E3C
+
+# Profile/Connect? (pause subscreen: connectivity)
 c-file 0x08035EB0 _ src/gamemode/modes/connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
 c-file 0x08035F7C _ src/gamemode/modes/connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
 c-file 0x08036038 _ src/gamemode/modes/connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
 c-file 0x080360DC _ src/gamemode/modes/connectivity/exit_connectivity.c ExitConnectivity
 c-file 0x08036120 _ src/gamemode/modes/connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
 c-file 0x08036178 _ src/gamemode/modes/connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
+
+# Profile/Equip? (pause subscreen: status/equip)
 c-file 0x080361AC _ src/gamemode/modes/status_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
 c-file 0x08036214 0x080362D8 src/gamemode/modes/status_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
 thumb-func 0x080362D8 sub_080362D8
@@ -1000,9 +1173,13 @@ thumb-func 0x080364A8 DrawEquipItemStatComparison
 c-file 0x08036890 0x080368CC src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x080368CC sub_080368CC
 thumb-func 0x080368E4 sub_080368E4
+
+# Profile/Folio? (pause subscreen: folios)
 c-file 0x0803693C _ src/gamemode/modes/folios/update_folios.c UpdateFolios
 c-file 0x080369CC _ src/gamemode/modes/folios/initialize_folios.c InitializeFolios
 c-file 0x08036A20 _ src/gamemode/modes/folios/exit_folios.c ExitFolios
+
+# Profile/FolioBruti? (pause subscreen: Folio Bruti)
 c-file 0x08036A64 _ src/gamemode/modes/folio_bruti/initialize_folio_bruti.c InitializeFolioBruti
 c-file 0x08036BB8 _ src/gamemode/modes/folio_bruti/update_folio_bruti_grid_cursor.c UpdateFolioBrutiGridCursor
 c-file 0x08036D0C _ src/save/deserialize_monster_dex_levels.c DeserializeMonsterDexLevels
@@ -1015,6 +1192,8 @@ c-file 0x0803715C _ src/menu/draw_folio_bruti_monster_text.c DrawFolioBrutiMonst
 c-file 0x080371E0 _ src/menu/draw_folio_bruti_grid.c DrawFolioBrutiGrid
 c-file 0x0803724C _ src/save/clear_monster_dex_new_flags.c ClearMonsterDexNewFlags
 c-file 0x08037274 _ src/menu/draw_folio_bruti_spell_labels.c DrawFolioBrutiSpellLabels
+
+# Profile/FolioUniversitas? (pause subscreen: Folio Universitas)
 c-file 0x080372B0 _ src/gamemode/modes/folio_universitas/initialize_folio_universitas.c InitializeFolioUniversitas
 c-file 0x080373D4 _ src/gamemode/modes/folio_universitas/update_folio_universitas.c UpdateFolioUniversitas
 c-file 0x0803774C _ src/save/increment_folio_universitas_card.c IncrementFolioUniversitasCard
@@ -1039,6 +1218,8 @@ c-file 0x080381E0 _ src/menu/get_folio_universitas_selected_card.c GetFolioUnive
 c-file 0x080381F4 _ src/save/is_folio_universitas_card_new.c IsFolioUniversitasCardNew
 c-file 0x08038220 _ src/save/clear_folio_universitas_new_cards.c ClearFolioUniversitasNewCards
 c-file 0x08038234 _ src/menu/is_folio_universitas_card_unavailable.c IsFolioUniversitasCardUnavailable
+
+# Profile/GameCube? (pause subscreen: GameCube link), see docs/memory-map/gcn-link.md
 c-file 0x08038290 _ src/gamemode/modes/gamecube_link/initialize_gamecube_link.c InitializeGameCubeLink
 c-file 0x08038320 0x08038400 src/gamemode/modes/gamecube_link/update_gamecube_link.c UpdateGameCubeLink
 thumb-func 0x08038400 UpdateGameCubeLinkStatusText
@@ -1046,6 +1227,9 @@ c-file 0x0803860C 0x08038650 src/gamemode/modes/gamecube_link/exit_gamecube_link
 thumb-func 0x08038650 ShowGameCubeLinkMessage
 thumb-func 0x08038694 SpawnGameCubeLinkIconObjects
 thumb-func 0x080386F0 DispatchGameCubeLinkCommand
+thumb-func 0x080387CC StageGameCubeStatusByte
+
+# Profile/Help? (pause subscreen: help)
 c-file 0x080387DC 0x08038874 src/menu/is_help_topic_unlocked.c IsHelpTopicUnlocked
 thumb-func 0x08038874 StartHelpScreen
 c-file 0x08038970 0x08038B8C src/gamemode/modes/help/update_help.c UpdateHelp
@@ -1061,12 +1245,17 @@ thumb-func 0x08039148 ClearHelpScreen
 thumb-func 0x08039248 TurnToPrevHelpPage
 thumb-func 0x0803927C TurnToNextHelpPage
 thumb-func 0x080392B0 CancelHelpScreen
+thumb-func 0x0803931C sub_0803931C
+
+# Profile/ItemQuantity? (pause subscreen: quantity select)
 c-file 0x08039370 0x08039428 src/gamemode/modes/quantity_select/update_quantity_select_screen.c UpdateQuantitySelectScreen
 thumb-func 0x08039428 sub_08039428
 c-file 0x080394EC _ src/gamemode/modes/quantity_select/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
 c-file 0x08039508 0x0803950C src/gamemode/modes/quantity_select/exit_quantity_select_screen.c ExitQuantitySelectScreen
 thumb-func 0x0803950C sub_0803950C
 thumb-func 0x08039564 sub_08039564
+
+# Profile/Items? (pause subscreen: items)
 c-file 0x0803957C _ src/gamemode/modes/items/update_items_item_select.c UpdateItemsItemSelect
 c-file 0x08039690 _ src/gamemode/modes/items/initialize_items_item_select.c InitializeItemsItemSelect
 c-file 0x08039728 0x08039750 src/gamemode/modes/items/exit_items_item_select.c ExitItemsItemSelect
@@ -1082,6 +1271,8 @@ c-file 0x080399A8 _ src/gamemode/modes/items/update_item_use_screen.c UpdateItem
 c-file 0x08039A04 0x08039A14 src/gamemode/modes/items/exit_item_use_screen.c ExitItemUseScreen
 thumb-func 0x08039A14 SetItemUseItem
 thumb-func 0x08039A20 sub_08039A20
+
+# Profile/Save? (pause subscreen: game save)
 c-file 0x08039A74 _ src/gamemode/modes/game_save/initialize_game_save.c InitializeGameSave
 c-file 0x08039B0C 0x08039C30 src/gamemode/modes/game_save/update_game_save.c UpdateGameSave
 thumb-func 0x08039C30 ResolveSaveConfirmation_candidate
@@ -1089,6 +1280,8 @@ c-file 0x08039CD8 0x08039D08 src/gamemode/modes/game_save/exit_game_save.c ExitG
 thumb-func 0x08039D08 ShowSaveConfirmationPrompt_candidate
 thumb-func 0x08039D44 ShowSavingMessage_candidate
 thumb-func 0x08039D78 ShowGameSavedMessage_candidate
+
+# Profile/Status? (pause subscreen: status)
 c-file 0x08039DD8 0x0803A030 src/gamemode/modes/status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
 thumb-func 0x0803A030 sub_0803A030
 thumb-func 0x0803A0F0 DrawStatusEquipStatsPanel
@@ -1101,6 +1294,8 @@ thumb-func 0x0803A590 sub_0803A590
 thumb-func 0x0803A604 sub_0803A604
 thumb-func 0x0803A630 sub_0803A630
 thumb-func 0x0803A678 sub_0803A678
+
+# Profile/Trade? (pause subscreen: card trade)
 c-file 0x0803A6D0 _ src/gamemode/modes/card_trade/initialize_card_trade.c InitializeCardTrade
 c-file 0x0803A780 0x0803AA50 src/gamemode/modes/card_trade/update_card_trade.c UpdateCardTrade
 thumb-func 0x0803AA50 ResetCardTradeAfterLinkLoss
@@ -1116,11 +1311,15 @@ thumb-func 0x0803AD00 SetCardTradeSlotCard
 thumb-func 0x0803AD78 DrawCardTradeSlotName
 thumb-func 0x0803ADD0 ShowCardTradeMessage
 thumb-func 0x0803AE78 LeaveCardTradeScreen
+
+# Profile/View? (pause subscreen: folio card details)
 c-file 0x0803AEA0 _ src/gamemode/modes/folio_universitas_card_details/initialize_folio_card_detail_screen.c InitializeFolioCardDetailScreen
 c-file 0x0803AFA0 _ src/gamemode/modes/folio_universitas_card_details/handle_folio_card_detail_screen_tick.c HandleFolioCardDetailScreenTick
 c-file 0x0803AFCC _ src/gamemode/modes/folio_universitas_card_details/exit_folio_card_detail_screen.c ExitFolioCardDetailScreen
 c-file 0x0803AFE4 _ src/menu/spawn_folio_card_object.c SpawnFolioCardObject
 c-file 0x0803B03C _ src/menu/draw_folio_card_detail_text.c DrawFolioCardDetailText
+
+# Ram? (memory clear)
 c-file 0x0803B0C0 _ src/mem/clear_system_memory.c ClearSystemMemory
 c-file 0x0803B0D0 _ src/mem/clear_work_ram.c ClearWorkRam
 c-file 0x0803B144 _ src/mem/clear_video_memory.c ClearVideoMemory
@@ -1128,7 +1327,7 @@ c-file 0x0803B158 _ src/mem/clear_vram.c ClearVram
 c-file 0x0803B16C _ src/mem/clear_oam_dma.c ClearOamDma
 c-file 0x0803B190 _ src/mem/clear_palette_ram_dma.c ClearPaletteRamDma
 
-# MT19937 PRNG, see docs/memory-map/rng.md
+# Rand? (MT19937 PRNG), see docs/memory-map/rng.md
 c-file 0x0803B1B8 _ src/rng/regenerate.c Mt19937Regenerate
 c-file 0x0803B314 _ src/rng/alloc_state.c Mt19937AllocState
 c-file 0x0803B330 _ src/rng/auto_seed.c Mt19937AutoSeed
@@ -1146,9 +1345,12 @@ c-file 0x0803B560 _ src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B598 _ src/rng/next.c Mt19937Next
 c-file 0x0803B5F4 _ src/rng/next2.c Mt19937Next2
 
+# Riser? (raising platform object)
 c-file 0x0803B64C 0x0803B71C src/room/objects/spawn_raising_platform_object.c SpawnRaisingPlatformObject
 thumb-func 0x0803B71C sub_0803B71C
 thumb-func 0x0803BA18 sub_0803BA18
+
+# Save (save stream and EEPROM access), see docs/formats/save.md
 c-file 0x0803BAF4 _ src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
 c-file 0x0803BB78 _ src/save/pack_bit_pairs_to_save_stream.c PackBitPairsToSaveStream
 c-file 0x0803BC08 _ src/save/load_save_slot_previews.c LoadSaveSlotPreviews
@@ -1179,6 +1381,9 @@ c-file 0x0803C318 _ src/save/eeprom_read_blocks.c EepromReadBlocks
 c-file 0x0803C348 _ src/save/eeprom_write_blocks.c EepromWriteBlocks
 c-file 0x0803C378 _ src/save/eeprom_transfer_begin.c EepromTransferBegin
 c-file 0x0803C3A8 0x0803C3BC src/save/eeprom_transfer_end.c EepromTransferEnd
+
+# Screen (screen transitions)
+thumb-func 0x0803C3BC sub_0803C3BC
 thumb-func 0x0803C610 DarkenScreenPalette
 c-file 0x0803D2C8 0x0803D2E8 src/graphics/init_screen_transition_state.c InitScreenTransitionState_candidate
 thumb-func 0x0803D2E8 SetFadeToBlack
@@ -1189,6 +1394,9 @@ thumb-func 0x0803D3B0 PlayScreenTransitionInByIndex
 thumb-func 0x0803D3E8 PlayScreenTransitionOutByIndex
 c-file 0x0803D420 0x0803D434 src/graphics/set_screen_darken_params.c SetScreenDarkenParams_candidate
 thumb-func 0x0803D434 RestoreScreenPalette
+thumb-func 0x0803D9D8 sub_0803D9D8
+
+# Scroll (room BG streaming and overworld camera)
 thumb-func 0x0803DA4C UpdateOverworldCamera_candidate
 thumb-func 0x0803DB68 sub_0803DB68
 thumb-func 0x0803DC44 sub_0803DC44
@@ -1222,8 +1430,9 @@ c-file 0x0803E9D0 _ src/overworld/enable_bg_layer_scroll.c EnableBgLayerScroll
 c-file 0x0803E9E0 0x0803EA3C src/overworld/find_bg_tile_cache_entry.c FindBgTileCacheEntry
 thumb-func 0x0803EA3C sub_0803EA3C
 c-file 0x0803EAC4 0x0803EB7C src/overworld/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
+thumb-func 0x0803ECF0 sub_0803ECF0
 
-# link
+# Serial? (link), see docs/memory-map/link.md
 c-file 0x0803EDA8 _ src/link/process_link_messages.c ProcessLinkMessages
 c-file 0x0803EE70 0x0803EEE4 src/link/queue_link_message.c QueueLinkMessage
 thumb-func 0x0803EEE4 SetLinkCallbacks
@@ -1239,7 +1448,9 @@ thumb-func 0x0803FA60 CloseLinkSession
 c-file 0x0803FA94 _ src/link/get_link_player_id.c GetLinkPlayerId
 c-file 0x0803FAA4 0x0803FB34 src/link/exchange_link_frame.c ExchangeLinkFrame_candidate
 thumb-func 0x0803FB78 IsLinkUp
+thumb-func 0x0803FC48 sub_0803FC48
 
+# Sound (audio)
 c-file 0x0803FC68 _ src/audio/play_sound_by_id.c PlaySoundById
 c-file 0x0803FD04 _ src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
 c-file 0x0803FDB0 _ src/audio/kram_install.c kramInstall
@@ -1259,9 +1470,14 @@ thumb-func 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0803FF8C IsSoundActive_candidate
 c-file 0x0803FF98 0x0803FFC8 src/audio/apply_audio_volume_settings.c ApplyAudioVolumeSettings
 c-file 0x0804000C _ src/audio/on_krawall_event.c OnKrawallEvent
+
+# Spongify (spongify pad object)
 c-file 0x08040038 0x08040114 src/room/objects/spawn_spongify_pad_object.c SpawnSpongifyPadObject
 thumb-func 0x08040114 sub_08040114
 thumb-func 0x08040358 sub_08040358
+thumb-func 0x08040680 sub_08040680
+
+# Store? (Fred and George's shop)
 thumb-func 0x08040720 sub_08040720
 thumb-func 0x080407CC sub_080407CC
 thumb-func 0x08040A38 sub_08040A38
@@ -1277,6 +1493,9 @@ thumb-func 0x08041454 sub_08041454
 thumb-func 0x08041590 sub_08041590
 thumb-func 0x080416CC sub_080416CC
 thumb-func 0x080418BC sub_080418BC
+thumb-func 0x080418E0 sub_080418E0
+
+# Tea (divination tea minigame)
 c-file 0x080418EC _ src/gamemode/modes/minigame/divination_tea/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
 c-file 0x08041A60 0x08041D84 src/gamemode/modes/minigame/divination_tea/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
 thumb-func 0x08041D84 sub_08041D84
@@ -1286,24 +1505,42 @@ thumb-func 0x080421B8 sub_080421B8
 c-file 0x0804223C 0x08042288 src/gamemode/modes/minigame/divination_tea/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
 thumb-func 0x08042288 sub_08042288
 thumb-func 0x080422D0 sub_080422D0
+thumb-func 0x0804237C sub_0804237C
+
+# Text (text formatting)
 c-file 0x080423C0 _ src/text/format_decimal.c FormatDecimal
 c-file 0x08042568 _ src/text/init_dialog_text_engine.c InitDialogTextEngine
 c-file 0x08042588 _ src/text/set_language.c SetLanguage
 c-file 0x080425D8 _ src/text/get_language.c GetLanguage
 c-file 0x080425E4 0x08042608 src/text/get_dialog_text.c GetDialogText
+thumb-func 0x08042664 sub_08042664
+
+# TextObj? (text objects)
+thumb-func 0x080426A4 sub_080426A4
+thumb-func 0x08042AA4 sub_08042AA4
+
+# Time? (clock skip and Hogwarts up-night cutscene modes)
 c-file 0x08042AC8 _ src/gamemode/modes/cutscene/clock_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene
 c-file 0x08042B90 _ src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/initialize_hogwarts_up_night_cutscene.c InitializeHogwartsUpNightCutscene
 c-file 0x08042C74 _ src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/update_hogwarts_up_night_cutscene.c UpdateHogwartsUpNightCutscene
 c-file 0x08042D10 _ src/gamemode/modes/cutscene/clock_skip_cutscene/update_clock_skip_cutscene.c UpdateClockSkipCutscene
 c-file 0x08042D74 _ src/gamemode/modes/cutscene/clock_skip_cutscene/exit_clock_skip_cutscene.c ExitClockSkipCutscene
 c-file 0x08042D90 0x08042DC8 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/exit_hogwarts_up_night_cutscene.c ExitHogwartsUpNightCutscene
+
+# Timer (timers)
+thumb-func 0x08042DC8 sub_08042DC8
 c-file 0x08042E2C _ src/timer/reset_all_game_timers.c ResetAllGameTimers
 c-file 0x08042E44 0x08042E70 src/timer/reset_game_timer.c ResetGameTimer
+thumb-func 0x08042E9C sub_08042E9C
+
+# Timeturner? (Harry and Hermione port-in-time cutscene mode)
 c-file 0x08042F08 _ src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
 c-file 0x08042FC0 0x08043114 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
 thumb-func 0x08043114 sub_08043114
 thumb-func 0x08043308 sub_08043308
 c-file 0x08043450 _ src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
+
+# Title (main menu)
 c-file 0x08043470 _ src/gamemode/modes/main_menu/initialize_main_menu.c InitializeMainMenu
 c-file 0x08043580 _ src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
 c-file 0x08043730 _ src/gamemode/modes/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
@@ -1315,11 +1552,15 @@ thumb-func 0x080439AC DrawMainMenuCopyright_candidate
 c-file 0x08043A20 0x08043A68 src/gamemode/modes/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
 thumb-func 0x08043A68 HasLoadableSaveSlot
 thumb-func 0x08043AA4 PositionMainMenuCursorObject_candidate
+
+# TitleLoad? (load game mode)
 c-file 0x08043AF0 0x08043B70 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
 thumb-func 0x08043D40 SelectNewGameSlot_candidate
 thumb-func 0x08043E18 ResolveOverwriteConfirmation_candidate
 c-file 0x08043EC8 _ src/gamemode/modes/load_game/initialize_load_game.c InitializeLoadGame
 c-file 0x08043ED8 _ src/gamemode/modes/load_game/update_load_game.c UpdateLoadGame
+
+# TitleNew? (new game menu and save slot screen)
 c-file 0x08043EEC _ src/gamemode/modes/new_game_menu/initialize_new_game_menu.c InitializeNewGameMenu
 c-file 0x08043EFC _ src/gamemode/modes/new_game_menu/update_new_game_menu.c UpdateNewGameMenu
 c-file 0x08043F5C 0x08043F68 src/gamemode/modes/new_game_menu/exit_new_game_menu.c ExitNewGameMenu
@@ -1327,21 +1568,33 @@ thumb-func 0x08043F68 InitializeSaveSlotScreen_candidate
 thumb-func 0x08043FA4 HandleSaveSlotInput_candidate
 thumb-func 0x08044010 ExitSaveSlotScreen_candidate
 thumb-func 0x08044080 ConfirmLoadGameSlot_candidate
+thumb-func 0x080440DC sub_080440DC
+
+# TitleOptions? (options mode)
 c-file 0x08044134 _ src/gamemode/modes/options/initialize_options.c InitializeOptions
 c-file 0x08044240 0x0804439C src/gamemode/modes/options/update_options.c UpdateOptions
 thumb-func 0x0804439C BuildOptionsScreen_candidate
 thumb-func 0x080445C0 MoveOptionsCursor_candidate
 thumb-func 0x080446A8 AdjustOptionValue_candidate
 c-file 0x08044774 0x080447E0 src/gamemode/modes/options/exit_options.c ExitOptions
+thumb-func 0x0804483C sub_0804483C
+
+# Torch? (flame pillar object)
 c-file 0x08044894 0x08044960 src/room/objects/spawn_flame_pillar_object.c SpawnFlamePillarObject
 thumb-func 0x08044960 sub_08044960
 thumb-func 0x08044ADC sub_08044ADC
+
+# Train (cool train cutscene mode)
 c-file 0x08044B00 _ src/gamemode/modes/cutscene/cool_train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
 c-file 0x08044B7C _ src/gamemode/modes/cutscene/cool_train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file 0x08044BF0 _ src/gamemode/modes/cutscene/cool_train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
+
+# Trigger? (switch object)
 c-file 0x08044C00 0x08044D24 src/room/objects/spawn_switch_object.c SpawnSwitchObject
 thumb-func 0x08044D24 sub_08044D24
 thumb-func 0x08044F54 sub_08044F54
+
+# Video? (scanline effects), see docs/memory-map/scanline_effects.md
 c-file 0x08045094 _ src/graphics/scanline/init_scanline_effects.c InitScanlineEffects
 c-file 0x080450D4 0x08045118 src/graphics/scanline/queue_scanline_effect_table.c QueueScanlineEffectTable
 thumb-func 0x08045210 QueueScanlineEffectEntry
@@ -1353,6 +1606,8 @@ thumb-func 0x080452EC IsScanlineEffectQueueIdle
 c-file 0x08045314 0x08045318 src/graphics/scanline/scanline_effect_nop.c ScanlineEffectNop
 thumb-func 0x08045318 ScanlineEffectVCountCallback
 c-file 0x08045374 _ src/graphics/scanline/clear_scanline_effect_staging.c ClearScanlineEffectStaging
+
+# Vram? (OBJ tile allocator)
 c-file 0x080453B4 _ src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 c-file 0x080453D8 0x0804542C src/object/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x0804542C sub_0804542C
@@ -1366,18 +1621,27 @@ c-file 0x08045588 _ src/object/load_obj_tile_sheet.c LoadObjTileSheet
 c-file 0x080455E4 _ src/object/mark_obj_tiles_in_use.c MarkObjTilesInUse
 c-file 0x08045630 _ src/object/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
 c-file 0x08045688 0x080456E0 src/object/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
+
+# Window (screen windows)
+thumb-func 0x080456E0 sub_080456E0
 thumb-func 0x08045808 HideScreenWindow_candidate
 thumb-func 0x08045838 SetScreenWindowLayers_candidate
 thumb-func 0x080458A8 SetScreenWindowRect_candidate
 c-file 0x08045970 0x08045988 src/graphics/tick_screen_windows.c TickScreenWindows_candidate
 thumb-func 0x08045988 sub_08045988
 c-file 0x08045A54 _ src/graphics/tick_screen_window.c TickScreenWindow
+
+# World? (prop object)
 c-file 0x08045AE8 0x08045ECC src/room/objects/spawn_prop_object.c SpawnPropObject
 thumb-func 0x08045ECC sub_08045ECC
 thumb-func 0x0804651C sub_0804651C
 thumb-func 0x080465D4 sub_080465D4
+thumb-func 0x08046AB0 sub_08046AB0
+
+# WorldGrid? (snap object to tile grid)
 c-file 0x08046C5C 0x08046CA4 src/overworld/snap_object_x_to_tile_grid.c SnapObjectXToTileGrid
 
+# Krawall, see docs/memory-map/krawall.md
 thumb-func 0x08046D0C kragInit
 thumb-func 0x08046EF4 kramQualityMode
 thumb-func 0x08046F5C kramSetSFXVol
@@ -1393,12 +1657,14 @@ thumb-func 0x08049E58 kramSetVolVeneer
 thumb-func 0x08049E5C kramSetPanVeneer
 thumb-func 0x08049E60 kramSetPosVeneer
 
+# BIOS calls
 asm-file 0x08049E84 _ asm/rt/bios_calls.s               bios_calls
 
-# EEPROM save driver -- see docs/formats/save.md
+# EEPROM save driver, see docs/formats/save.md
 c-file-O1 0x08049EC4 _ src/eeprom/eeprom_v124.c EepromV124
 c-file-O1 0x0804A248 _ src/eeprom/eeprom_nowait.c EepromNoWait
 
+# libgcc (docs/compiler.md)
 asm-file 0x0804A2C0 _ asm/rt/call_via_rX.s              _call_via_r0
 asm-file 0x0804A2FC _ asm/rt/divsi3.s                   __divsi3
 asm-file 0x0804A390 0x0804A394 asm/rt/div0.s                    __div0
