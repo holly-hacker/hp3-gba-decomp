@@ -1,0 +1,26 @@
+name: Progress report
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [us, jp]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate progress report
+        run: python3 tools/progress_report.py ${{ matrix.version }} -o build/report.json
+      # decomp.dev picks up artifacts named <version>_report.
+      - name: Upload progress report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.version }}_report
+          path: build/report.json
