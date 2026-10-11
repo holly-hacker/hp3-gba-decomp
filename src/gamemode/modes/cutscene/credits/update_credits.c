@@ -5,7 +5,7 @@
 #include "cutscene/linear_cutscene.h"
 #include "menu/minigame_menu.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 
 // Credits mode's pUpdateFn: each time the scroll passes a new text row, draws
 // the next credits line below it. Any of A/B/Select/Start, or running past the

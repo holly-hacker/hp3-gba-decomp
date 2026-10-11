@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/mem.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "game/save.h"
 
 // Allocates the slot buffer and loads the header, options and slot previews

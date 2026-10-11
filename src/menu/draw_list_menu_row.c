@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "menu/menu.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 
 void DrawListMenuRow(u32 row)
 {

@@ -3,7 +3,7 @@
 #include "types.h"
 #include "game/save.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "menu/folio_bruti.h"
 
 // The ROM compiles these two routines into DrawFolioBrutiMonsterPanel and also keeps an

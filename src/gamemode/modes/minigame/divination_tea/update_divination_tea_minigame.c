@@ -6,7 +6,7 @@
 #include "input.h"
 #include "mt19937.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 
 void UpdateDivinationTeaMinigame(void)
 {

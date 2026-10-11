@@ -4,7 +4,7 @@
 #include "game/game_modes.h"
 #include "input.h"
 #include "game/save.h"
-#include "graphics/text.h"
+#include "text.h"
 
 // The languages form a 2x4 grid: index >> 2 is the column, index & 3 the row.
 void UpdateLanguageSelect(void)

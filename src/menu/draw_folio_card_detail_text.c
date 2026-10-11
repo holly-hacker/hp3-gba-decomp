@@ -1,6 +1,6 @@
 #include "types.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "game/game_modes.h"
 
 #ifdef VERSION_JP

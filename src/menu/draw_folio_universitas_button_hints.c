@@ -2,7 +2,7 @@
 #include "math.h"
 #include "game/game_modes.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "menu/folio_universitas_inline.h"
 
 // Draws the two button hints at the bottom of the screen, and shows or dims the L/R prompts that go with them:

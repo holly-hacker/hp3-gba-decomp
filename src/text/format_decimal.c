@@ -1,6 +1,6 @@
 #include "types.h"
 #include "math.h"
-#include "graphics/text.h"
+#include "text.h"
 
 // Writes value as signed decimal text to pBuf and returns pBuf. Leading
 // zeros are dropped, and gLocaleThousandsSep follows the billions, millions

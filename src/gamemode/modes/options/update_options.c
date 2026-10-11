@@ -7,7 +7,7 @@
 #include "menu/options.h"
 #include "overworld/room.h"
 #include "game/save.h"
-#include "graphics/text.h"
+#include "text.h"
 
 void UpdateOptions(void)
 {

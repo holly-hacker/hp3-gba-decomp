@@ -2060,10 +2060,10 @@ c-file 0x080423C0 _ src/text/format_decimal.c FormatDecimal
 c-file 0x08042568 _ src/text/init_dialog_text_engine.c InitDialogTextEngine
 c-file 0x08042588 _ src/text/set_language.c SetLanguage
 c-file 0x080425D8 _ src/text/get_language.c GetLanguage
-c-file 0x080425E4 0x08042608 src/text/get_dialog_text.c GetDialogText
-thumb-func 0x08042608 sub_08042608
-thumb-func 0x08042638 sub_08042638
-thumb-func 0x08042664 sub_08042664
+c-file 0x080425E4 _ src/text/get_dialog_text.c GetDialogText
+c-file 0x08042608 _ src/text/append_dialog_text.c AppendDialogText
+c-file 0x08042638 _ src/text/append_string.c AppendString
+c-file 0x08042664 0x080426A4 src/text/format_hex.c FormatHex
 
 # TextObj? (text objects)
 thumb-func 0x080426A4 sub_080426A4

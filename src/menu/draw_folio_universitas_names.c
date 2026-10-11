@@ -3,7 +3,7 @@
 #include "game/game_modes.h"
 #include "graphics/display.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "menu/minigame_menu.h"
 #include "menu/folio_universitas.h"
 

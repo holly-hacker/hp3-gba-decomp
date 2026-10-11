@@ -6,7 +6,7 @@
 #include "graphics/object.h"
 #include "menu/options.h"
 #include "game/save.h"
-#include "graphics/text.h"
+#include "text.h"
 
 void InitializeOptions(void)
 {

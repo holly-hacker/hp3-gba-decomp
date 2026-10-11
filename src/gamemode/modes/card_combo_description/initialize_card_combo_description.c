@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "graphics/object.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "menu/folio_universitas.h"
 #include "menu/main_menu.h"
 #include "menu/menu.h"

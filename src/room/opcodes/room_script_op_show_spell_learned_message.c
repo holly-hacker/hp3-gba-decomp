@@ -3,7 +3,7 @@
 #include "menu/dialog.h"
 #include "game/save.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "overworld/room_script.h"
 
 typedef struct ShowSpellLearnedMessageRecord {

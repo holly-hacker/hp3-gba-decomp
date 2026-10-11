@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 
 #define SCREEN_DURATION 0x84
 

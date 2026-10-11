@@ -5,7 +5,7 @@
 #include "game/game_modes.h"
 #include "graphics/graphics.h"
 #include "menu/main_menu.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "gen/graphics/menus.h"
 
 void InitializeMainMenu(void)

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/text.h"
+#include "text.h"
 
 u32 GetLanguage(void)
 {

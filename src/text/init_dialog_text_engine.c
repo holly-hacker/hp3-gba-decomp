@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/mem.h"
-#include "graphics/text.h"
+#include "text.h"
 
 // Selects the default language and allocates the buffer GetDialogText
 // decompresses strings into.

@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "game/save.h"
-#include "graphics/text.h"
+#include "text.h"
 
 void InitializeLanguageSelect(void)
 {

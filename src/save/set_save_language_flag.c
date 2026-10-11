@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "game/save.h"
 
 // Records the current language in the save header and marks it as chosen.

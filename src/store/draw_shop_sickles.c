@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/save.h"
 #include "font.h"
-#include "graphics/text.h"
+#include "text.h"
 #include "menu/dialog.h"
 #include "menu/menu.h"
 #include "shop.h"

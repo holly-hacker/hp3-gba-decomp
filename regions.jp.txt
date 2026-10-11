@@ -1845,10 +1845,10 @@ c-file 0x08042428 _ src/text/format_decimal.c FormatDecimal
 c-file 0x080425D0 _ src/text/init_dialog_text_engine.c InitDialogTextEngine
 c-file 0x080425F0 _ src/text/set_language.c SetLanguage
 c-file 0x08042618 _ src/text/get_language.c GetLanguage
-c-file 0x08042624 0x08042648 src/text/get_dialog_text.c GetDialogText
-thumb-func 0x08042648 sub_08042608
-thumb-func 0x08042678 sub_08042638
-thumb-func 0x080426A4 sub_08042664
+c-file 0x08042624 _ src/text/get_dialog_text.c GetDialogText
+c-file 0x08042648 _ src/text/append_dialog_text.c AppendDialogText
+c-file 0x08042678 _ src/text/append_string.c AppendString
+c-file 0x080426A4 0x080426E4 src/text/format_hex.c FormatHex
 thumb-func 0x080426E4 sub_080426A4
 thumb-func 0x0804277C sub_0804273C
 thumb-func 0x0804280C sub_080427CC
