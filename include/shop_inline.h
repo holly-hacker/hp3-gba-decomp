@@ -166,7 +166,7 @@ EXIT_SHOP_SELL_LIST_LINKAGE void ExitShopSellList(void)
     ClearBgTilemap(1);
     if (g_FredAndGeorgesShop.dwHasListItems)
         CloseItemList();
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
 }
 
 EXIT_SHOP_BUY_LIST_LINKAGE void ExitShopBuyList(void)
@@ -174,7 +174,7 @@ EXIT_SHOP_BUY_LIST_LINKAGE void ExitShopBuyList(void)
     ClearBgTilemap(1);
     if (g_FredAndGeorgesShop.dwHasListItems)
         CloseItemList();
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
 }
 
 EXIT_SHOP_QUANTITY_SELECT_LINKAGE void ExitShopQuantitySelect(void)

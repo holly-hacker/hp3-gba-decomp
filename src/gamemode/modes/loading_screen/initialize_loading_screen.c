@@ -36,8 +36,8 @@ void InitializeLoadingScreen(void)
     while (!IsScanlineEffectQueueIdle())
         ;
     StartScanlineEffects();
-    sub_08030960(1);
-    sub_08030960(2);
+    UnreserveObjPaletteSlot(1);
+    UnreserveObjPaletteSlot(2);
 
     for (stageRow = 0; ; stageRow++)
     {

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/object.h"
-#include "graphics/graphics.h"
+#include "palette.h"
 
 // Drops obj's reference to its OBJ palette cache slot. The slot's palette
 // pointer and flags are saved in the object before the refcount is decremented.
@@ -11,8 +11,8 @@ void ReleaseObjectPalette(Object *obj)
     if (obj->dwFlags & ObjectFlagHasPaletteSlot)
     {
         obj->dwFlags &= ~ObjectFlagHasPaletteSlot;
-        obj->pEffectData = g_aResourceCache[slot].pData;
-        obj->dwEffectFlags = g_aResourceCache[slot].wFlags;
-        DecrementResourceCacheRefcount(slot);
+        obj->pPendingPalette = g_aObjPaletteSlots[slot].pData;
+        obj->dwPendingPaletteFlags = g_aObjPaletteSlots[slot].wFlags;
+        ReleaseObjPaletteSlot(slot);
     }
 }

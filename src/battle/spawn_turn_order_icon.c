@@ -32,7 +32,7 @@ Object *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrd
 
     container->oam.priority = 0;
     container->oam.paletteNum = gfxSlot;
-    container->dwFlags = ObjectFlagSuppressEffectBinding | ObjectFlagHasAnimation | ObjectFlagHasTickLogic | ObjectFlagVisible;
+    container->dwFlags = ObjectFlagKeepPaletteSlot | ObjectFlagHasAnimation | ObjectFlagHasTickLogic | ObjectFlagVisible;
     container->bDepthSortBias = 0x80;
     g_pFightState->apTurnOrderIconObjects[turnOrderIndex] = container;
     return container;

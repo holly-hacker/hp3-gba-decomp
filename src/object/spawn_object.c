@@ -32,7 +32,7 @@ Object *SpawnObject(u32 type, s32 x, s32 y, const ObjPalette *pPalette)
         SnapObjectPosition(obj, x << 16, y << 16);
         obj->wObjectType = type;
         obj->dwFlags = ObjectFlagVisible | ObjectFlagHasTickLogic | ObjectFlagHasAnimation
-            | ObjectFlagSuppressEffectBinding;
+            | ObjectFlagKeepPaletteSlot;
         obj->bDepthSortBias = 0x80;
         if (pPalette != NULL)
             AttachObjectPalette(obj, pPalette);

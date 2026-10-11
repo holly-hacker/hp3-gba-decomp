@@ -29,7 +29,7 @@ Object *SpawnPropObject(u8 bColumn, u8 bRow)
     pObj->pfnTick = sub_08045ECC;
     pObj->apfnCollisionCallback[0] = sub_080465D4;
     pObj->apfnCollisionCallback[1] = sub_0804651C;
-    sub_08030844(pObj, g_apRoomObjTriggerEffectData[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind]);
+    SetObjectPendingPalette(pObj, g_apRoomObjTriggerEffectData[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind]);
     SetObjectAnimData(pObj, g_apRoomObjTriggerAnimFrames[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind],
                       (void *)g_abRoomObjTriggerAnimData[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind], 0);
 

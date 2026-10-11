@@ -396,7 +396,6 @@ extern void ResumeBattleAfterSubmode_candidate(void);
 
 // ExitBattle's remaining callees -- generic engine/graphics teardown run on
 // every battle exit, not battle logic; not otherwise analyzed.
-extern void sub_08030960(s32 arg0);
 extern void FreeAllParticleEmitters(void);
 extern void FreeAllParticles(void);
 extern void sub_08031668(s32 arg0, s32 arg1);

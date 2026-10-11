@@ -102,7 +102,7 @@ void InitializeVictoryScreen(void)
     SetBgControl(0, g_dwVictoryBg0Control);
     ClearBgTilemap(0);
     sub_08013AC8();
-    sub_0803094C(0);
+    ReserveObjPaletteSlot(0);
     sub_0800D254((void *)GRAPHIC_BLOB_PALETTE_COLORS(gEquipCharacterSelect001), 0, 0x10);
     sub_0801493C();
     SetAlphaBlendTargets(4, 0x1F);

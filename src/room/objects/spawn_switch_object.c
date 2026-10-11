@@ -18,7 +18,7 @@ Object *SpawnSwitchObject(u8 bColumn, u8 bRow)
         pObj->oam.objMode = 0;
         pObj->oam.bpp8 = 0;
         pObj->oam.priority = 3;
-        sub_08030844(pObj, g_apRoomSwitchEffectData[pObj->wCharacterId_candidate]);
+        SetObjectPendingPalette(pObj, g_apRoomSwitchEffectData[pObj->wCharacterId_candidate]);
         pObj->bActionState = 0;
         ROOM_OBJECT_WORD_STATE(pObj)->b6D = 0;
         ROOM_OBJECT_WORD_STATE(pObj)->b6C = 1;

@@ -40,8 +40,8 @@ void InitializeMainMenu(void)
 #endif
     SetBgControlRegister_candidate(1, g_dwMainMenuBg1Control);
     ClearBgTilemap(1);
-    ClearResourceCacheSlots();
-    sub_0803094C(0);
+    ClearObjPaletteSlots();
+    ReserveObjPaletteSlot(0);
     QueueObjPaletteLoad((const u16 *)gMainMenuPalette, 0, 0x10);
     StartMainMenuPaletteEffect();
 

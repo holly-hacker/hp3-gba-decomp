@@ -21,5 +21,5 @@ void HandleOwlCareKitScreenExit(void)
     ResetPaletteAnimations();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800A914();
-    sub_08030960(0);
+    UnreserveObjPaletteSlot(0);
 }

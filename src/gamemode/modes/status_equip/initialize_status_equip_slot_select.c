@@ -7,8 +7,8 @@
 
 void InitializeStatusEquipSlotSelect(void)
 {
-    sub_0803094C(14);
-    sub_0803094C(15);
+    ReserveObjPaletteSlot(14);
+    ReserveObjPaletteSlot(15);
     g_GameModeStackContext.dwModeSubState = 0x10;
     g_StatusEquipSlotSelect.pCharacter = sub_0803A030(g_dwStatusEquipCharacter);
     DrawStatusEquipStatsPanel();

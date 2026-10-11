@@ -35,10 +35,10 @@ void RestoreFighterObjects_candidate(void)
         SetObjectAffineSlotId(&obj->oam, 0);
 
         if (FIGHTER(i).pObject->wObjectType > 3)
-            AttachObjectPaletteUnshared_candidate(FIGHTER(i).pObject,
+            AttachObjectPaletteUnshared(FIGHTER(i).pObject,
                                                   g_pMonsterGraphicsTable[FIGHTER(i).pObject->wObjectType - 4].battle.pPalette);
         else
-            AttachObjectPaletteUnshared_candidate(FIGHTER(i).pObject,
+            AttachObjectPaletteUnshared(FIGHTER(i).pObject,
                                                   g_aFighterAnimTable[FIGHTER(i).pObject->wObjectType].aRecords[0].pPalette);
 
         if (sub_08012E0C(i)) {
@@ -93,7 +93,7 @@ void RestoreFighterObjects_candidate(void)
         obj->pWindupParticleEmitter = 0;
         obj->oam.affineMode = 0;
         SetObjectAffineSlotId(&obj->oam, 0);
-        AttachObjectPaletteUnshared_candidate(PENDING(k).pObject,
+        AttachObjectPaletteUnshared(PENDING(k).pObject,
                                               g_aFighterAnimTable[PENDING(k).pObject->wObjectType].aRecords[0].pPalette);
     }
 

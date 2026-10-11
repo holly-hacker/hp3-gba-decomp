@@ -52,11 +52,11 @@ void InitializeOverworld(void)
         sub_08001D90(1);
         sub_0800A914();
         ClearVram();
-        ClearResourceCacheSlots();
+        ClearObjPaletteSlots();
         g_wKeysPressed = 0;
         g_dwGameModeFlags &= ~8;
-        sub_0803094C(1);
-        sub_0803094C(2);
+        ReserveObjPaletteSlot(1);
+        ReserveObjPaletteSlot(2);
         SetVBlankCallback(OverworldVBlankCallback);
         ResetDisplayState(0);
         SetDispcntFlag(0x1000);

@@ -44,7 +44,7 @@ typedef enum {
                                                        // room's collision layer under the object
     ObjectFlagRoomScriptYield          = 0x8000000,  // set by a room script that yielded on this object
     ObjectFlagAnimPaused               = 0x10000000, // TickObjectAnimation's frame counter freezes
-    ObjectFlagSuppressEffectBinding    = 0x20000000, // TickObject skips Claim/BindObjectEffect entirely
+    ObjectFlagKeepPaletteSlot          = 0x20000000, // TickObject skips BindObjectPendingPalette/ReleaseObjectPalette
     ObjectFlagExtraOamPass             = 0x80000000, // TickObjectList's extra UpdateObjectOamCells pass
 } ObjectFlags;
 
@@ -396,8 +396,8 @@ typedef struct Object {
                              // FreeObjectVramTileAllocation; tileNum is copied from
                              // wVramTileAllocId by CommitQueuedObjectTileUpdates; priority is
                              // the draw layer (see SetObjectDrawLayer/SortObjectsByDepth/
-                             // TickObjectList); paletteNum is the graphics-cache slot (see
-                             // ReleaseObjectPalette/BindEffectChannelSlot_candidate).
+                             // TickObjectList); paletteNum is the g_aObjPaletteSlots slot (see
+                             // AttachObjectPalette/ReleaseObjectPalette).
                              // UpdateObjectOamCells fills in x/y each frame
     ObjectAnimState anim;   // 0xD8
     s32 nAffineScaleX;      // 0xEC, 16.16 fixed-point affine scale X (0x10000 = 1.0x); see
@@ -413,10 +413,9 @@ typedef struct Object {
                              // TickObjectAffineEffect running
     u8 bAffineMode;         // 0xFF, mirrors oam.affineMode
     ObjectSpriteBounds spriteBounds;  // 0x100, signed X/Y extent pairs used for visibility
-    void *pEffectData;      // 0x108, direct pointer form of the same graphics-cache resource
-                             // oam.paletteNum indexes (mutually exclusive with
-                             // it -- see ReleaseObjectPalette/BindEffectChannelSlot_candidate)
-    u32 dwEffectFlags;      // 0x10C
+    const void *pPendingPalette;  // 0x108, ObjPalette to bind once onscreen; ReleaseObjectPalette
+                                   // saves the bound palette here while offscreen
+    u32 dwPendingPaletteFlags;    // 0x10C, ObjPaletteSlotFlags of pPendingPalette
     u16 wVramPixelCount;    // 0x110, size of wVramTileAllocId in pixels (0 = none)
     u16 wVramTileAllocId;   // 0x112, VRAM tile allocation id passed to
                              // FreeObjectVramTileAllocation (0xFFFF = none); set to 0xFFFF by
@@ -488,7 +487,6 @@ extern void LoadObjTile(Object *obj, void *tileGfx);
 // Decompresses tileGfx into OBJ VRAM at tile allocId; other arguments are unused.
 extern void LoadObjTileAt(ObjectFrameData *frameData, void *tileGfx, u16 allocId, u16 frame,
                           u16 pixelCount);
-extern void ReleaseObjectPalette(Object *obj);  // 0x080308D8
 extern void SetRoomObjectRecordPtr_candidate(Object *obj, u8 col, u8 row);
 extern Object *SpawnObject(u32 type, s32 x, s32 y, const ObjPalette *pPalette);
 extern void SetObjectPosition(Object *obj, s32 x, s32 y);
@@ -518,7 +516,6 @@ extern void TickObjectMove(Object *obj);
 extern void TickObjectAnimation(Object *obj);
 extern void TickObjectAffineEffect(Object *obj);  // steps the scale tween while bAffineEffectTimer runs
 extern void IntegrateObjectVelocity(Object *obj);
-extern void BindObjectEffectData(Object *obj);  // binds pEffectData to a resource-cache slot, then clears it
 extern u8 UpdateObjectOamCells(Object *obj);
 // Queues the OAM cells of one frame of frameData, copying the other attributes
 // from pTemplate and placing them relative to the screen position pos[0]/pos[1].
@@ -546,37 +543,8 @@ extern void SetObjectAnimSubState_candidate(Object *obj, u8 state);
 // Clears the object's queued move (Object+0x3C..0x48).
 extern void CancelObjectMove_candidate(Object *obj);
 extern void SetObjectAssetRecord(Object *obj, const void *rec);
-// Like AttachObjectPalette, but always binds a newly allocated cache slot
-// instead of sharing one already holding pPalette, and marks the slot
-// ResourceCacheFlagUnshared. Returns the slot index.
-extern u8 AttachObjectPaletteUnshared_candidate(Object *obj, const ObjPalette *pPalette);
 extern Object *SpawnMenuIconObject(u32 slot, u32 arg1);  // allocs a type 0x13 object and files it under slot
-extern u32 AttachObjectPalette(Object *obj, const ObjPalette *pPalette);  // 0x08030878
-extern void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette *pPalette);
 
-// Bodies of AttachObjectPalette and AttachObjectPaletteUnshared_candidate, which the
-// ROM also inlines in BindObjectEffectData.
-static inline u32 AttachSharedPalette(Object *obj, const ObjPalette *pPalette)
-{
-    u32 slot = FindResourceCacheSlot(pPalette);
-
-    if (slot != 0xFF)
-        pPalette = NULL;
-    else
-        slot = AllocResourceCacheSlot();
-
-    BindObjectToResourceCacheSlot(slot, obj, pPalette);
-    return slot;
-}
-
-static inline u32 AttachUnsharedPalette(Object *obj, const ObjPalette *pPalette)
-{
-    u32 slot = AllocResourceCacheSlot();
-
-    BindObjectToResourceCacheSlot(slot, obj, pPalette);
-    g_aResourceCache[slot].wFlags |= ResourceCacheFlagUnshared;
-    return slot;
-}
 extern void sub_080039E8(Object *obj);
 extern void sub_080039F8(Object *obj);
 extern void sub_08003A0C(Object *obj);

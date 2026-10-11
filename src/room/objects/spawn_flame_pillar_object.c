@@ -20,7 +20,7 @@ Object *SpawnFlamePillarObject(u8 bColumn, u8 bRow)
     pObj->modeState.actor.bFollowResumeDistance = pRecord->abArgC[2];
     pObj->scriptState.wScriptPc = pRecord->wArg8;
     pObj->modeState.actor.wStagedDamage = pRecord->wArgA;
-    sub_08030844(pObj, g_apRoomFlamePillarEffectData[pObj->wCharacterId_candidate]);
+    SetObjectPendingPalette(pObj, g_apRoomFlamePillarEffectData[pObj->wCharacterId_candidate]);
     SetObjectAnimData(pObj, g_apRoomFlamePillarAnimFrames[pObj->wCharacterId_candidate], (void *)g_abRoomFlamePillarAnimData, 0);
     pObj->oam.priority = 1;
     pObj->bDepthSortBias = 0x80;

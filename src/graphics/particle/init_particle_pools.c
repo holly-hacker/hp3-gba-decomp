@@ -2,7 +2,7 @@
 #include "hw/mem.h"
 #include "graphics/graphics.h"
 
-void InitResourceCachePools(void)
+void InitParticlePools(void)
 {
     s32 i;
 

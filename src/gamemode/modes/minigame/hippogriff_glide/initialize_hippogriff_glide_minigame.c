@@ -11,8 +11,8 @@
 void InitializeHippogriffGlideMinigame(void)
 {
     g_pHippogriffGlide = AllocZeroed(sizeof(HippogriffGlideState));
-    ClearResourceCacheSlots();
-    sub_0803094C(0);
+    ClearObjPaletteSlots();
+    ReserveObjPaletteSlot(0);
     QueueObjPaletteLoad((const u16 *)gMainMenuPalette, 0, 0x10);
     sub_08009E1C();
     PlayMusicModule(0x30);

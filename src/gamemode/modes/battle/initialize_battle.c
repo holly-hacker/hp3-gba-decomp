@@ -14,7 +14,7 @@ void InitializeBattle(void)
     u8 *uVar7;
     Object *pIconObj;
 
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     g_BattleMessageIconState_candidate.bIndex = 0xFF;
     g_BattleMessageIconState_candidate.dwParam = 0;
     g_dwBattleRewardFlagsSnapshot = 0;

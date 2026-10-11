@@ -10,7 +10,7 @@ void InitializeGameSave(void)
 {
     u32 stringId;
 
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     InitializeMenuScreen(0x533, 9, 0, gSaveMenuBg1Graphic, 0, 0);  // "Save Game"
 
     if (g_saveManager.adwSlotValid[g_saveManager.dwActiveSlot] != 0

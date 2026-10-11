@@ -51,7 +51,7 @@ void AgbMain(void)
     InitGammaPalette();
     NoopInit();
     InitOamSystem();
-    InitResourceCachePools();
+    InitParticlePools();
     InitScreenTransitionState_candidate();
     InitRoomBgState_candidate();
     NoopInit2();
@@ -63,7 +63,7 @@ void AgbMain(void)
     InitDialogBox();
     InitRoomTileAnimationTable();
     InitRoomState();
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     InstallBgTileCodec();
 
     g_dwGameModeFlags = 0;

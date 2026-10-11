@@ -430,7 +430,7 @@ structural scan, `0x08a32800`-`0x08a3a000`):
 - `0x08A38FE0`: same call pattern, different object. 16 valid, diverse
   colors (blue, white, brown, cream, greens, warm oranges/reds) -- also
   a real curated palette.
-- `0x080BD344`: found live via mGBA breakpoint on `sub_08030978`
+- `0x080BD344`: found live via mGBA breakpoint on `BindObjPaletteSlot`
   (triggered by the title screen's "Press Start" prompt). 16 valid,
   diverse colors (warm orange/red fading to white, gold, then a
   repeated gray-brown) -- also real, plausibly a title-screen sparkle/
@@ -451,20 +451,20 @@ decompile, which was independently cross-checked and matched exactly):
   spawner (fixed 0x128-byte slots, doubly-linked free/active lists --
   the allocator itself, `sub_080286D8`, is a textbook intrusive
   free-list-pop/active-list-push pair). `resource_ptr` is not
-  dereferenced here at all -- forwarded untouched to `sub_08030878`.
-- `sub_08030878(obj, resource_ptr)`: also doesn't dereference
-  `resource_ptr` -- passes it to `sub_080309E8` for a cache lookup.
-- `sub_080309E8(resource_ptr)`: a **resource cache lookup**, not a
-  loader. Scans a fixed 15-slot table at `0x03005114` (8-byte stride:
+  dereferenced here at all -- forwarded untouched to `AttachObjectPalette`.
+- `AttachObjectPalette(obj, resource_ptr)`: also doesn't dereference
+  `resource_ptr` -- passes it to `FindObjPaletteSlot` for a cache lookup.
+- `FindObjPaletteSlot(resource_ptr)`: an **OBJ palette cache lookup**, not a
+  loader. Scans a fixed 16-slot table at `0x03005114` (8-byte stride:
   `{void *ptr; u16 refcount; u16 flags;}`) for an existing entry whose
   stored *pointer value* equals `resource_ptr` (plain pointer equality,
   never dereferences `resource_ptr`'s contents). Returns the slot index,
   or `0xFF` if not already cached.
-- Back in `sub_08030878`: on a cache hit, `resource_ptr` is discarded
+- Back in `AttachObjectPalette`: on a cache hit, `resource_ptr` is discarded
   (a `0` is passed onward instead -- no need to re-load). On a miss, a
-  new slot index is allocated (`sub_08030794`) and `resource_ptr` is
+  new slot index is allocated (`AllocObjPaletteSlot`) and `resource_ptr` is
   passed on for real, for the first and only time.
-- `sub_08030978(slotIndex, obj, resource_ptr)`: bumps the cache slot's
+- `BindObjPaletteSlot(slotIndex, obj, resource_ptr)`: bumps the cache slot's
   refcount; if `resource_ptr != 0` (first load), stores it in the slot
   and calls `QueueObjPaletteLoad(&palette->aColors[1], slotIndex*16 + 1, 0xF)`,
   where `palette` is an `ObjPalette` (`resource_ptr`).
@@ -718,7 +718,7 @@ Live-triggering every asset individually doesn't scale to "extract
 everything" -- the actual goal. Once the mechanism was understood (not
 before), the palette side of it turned out to be fully statically
 enumerable: `sub_08001528`'s `resource_ptr` argument is *always*
-treated as a 16-entry `ObjPalette` by `sub_08030978`, entries 1-15
+treated as a 16-entry `ObjPalette` by `BindObjPaletteSlot`, entries 1-15
 uploaded, with no branching on its contents --
 confirmed by tracing the call chain to the real vblank DMA flush (see
 above). That means every call site's `resource_ptr` literal is a

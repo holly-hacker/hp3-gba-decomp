@@ -28,7 +28,7 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 | `TickParticleEmitter` | `0x08030C9C` | `src/graphics/particle/tick_particle_emitter.c` |
 | `SpawnParticle` | `0x08030D90` | `src/graphics/particle/spawn_particle.c` |
 | `ReleaseParticleEmitter_candidate` | `0x080316A4` | `src/graphics/particle/release_particle_emitter.c` |
-| `InitResourceCachePools` | `0x080315A4` | `src/graphics/particle/init_resource_cache_pools.c` |
+| `InitParticlePools` | `0x080315A4` | `src/graphics/particle/init_particle_pools.c` |
 | `ResetParticleState` | `0x08031624` | `src/graphics/particle/reset_particle_state.c` |
 | `FreeAllParticleEmitters` | `0x080316D4` | `src/graphics/particle/free_all_particle_emitters.c` |
 | `FreeAllParticles` | `0x0803171C` | `src/graphics/particle/free_all_particles.c` |
@@ -48,7 +48,7 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 
 JP addresses (same sources, byte-matched): `CreateMenuCursorEmitter` `0x0801DBDC`,
 `AllocParticleEmitter` `0x08030BB4`, `TickParticleEmitter` `0x08030CE0`, `SpawnParticle`
-`0x08030DD4`, `TickParticleEmitters` `0x0803178C`, `InitResourceCachePools` `0x080315E8`,
+`0x08030DD4`, `TickParticleEmitters` `0x0803178C`, `InitParticlePools` `0x080315E8`,
 `ResetParticleState` `0x08031668`, `FreeAllParticleEmitters` `0x08031718`, `FreeAllParticles`
 `0x08031760`, `ReleaseParticle` `0x0803188C`, `FixedMultiply` `0x0802BF44`. The particle
 tick and draw functions above sit `0x44` higher than US (`BucketParticlesByPriority`

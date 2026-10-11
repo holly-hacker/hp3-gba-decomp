@@ -10,7 +10,7 @@
 
 void InitializeCardTrade(void)
 {
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
 
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == 1)
     {

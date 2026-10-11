@@ -21,10 +21,10 @@ void TickObject(Object *obj, u32 mode)
 
     UpdateObjectOnscreenFlags(obj);
     flags = obj->dwFlags;
-    if (!(flags & ObjectFlagSuppressEffectBinding))
+    if (!(flags & ObjectFlagKeepPaletteSlot))
     {
         if (flags & ObjectFlagOnscreen)
-            BindObjectEffectData(obj);
+            BindObjectPendingPalette(obj);
         else
             ReleaseObjectPalette(obj);
     }

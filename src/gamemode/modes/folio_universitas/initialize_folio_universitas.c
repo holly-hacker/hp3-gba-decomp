@@ -31,7 +31,7 @@ void InitializeFolioUniversitas(void)
     SetTextTargetFromBgControl(textBgControl);
     DrawFolioUniversitasHeadings();
     DrawFolioUniversitasNames(1);
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     SpawnFolioUniversitasButtonPrompts();
     SpawnFolioUniversitasCursor();
     DrawFolioUniversitasButtonHints();

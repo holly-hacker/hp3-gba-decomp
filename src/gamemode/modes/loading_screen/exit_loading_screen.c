@@ -25,8 +25,8 @@ void ExitLoadingScreen(void)
     for (i = 0; i < LOADING_SCREEN_OPTION_COUNT; i++)
         FreeObject(g_LoadingScreenState.apOptionObjects[i]);
 
-    sub_0803094C(1);
-    sub_0803094C(2);
+    ReserveObjPaletteSlot(1);
+    ReserveObjPaletteSlot(2);
     if (g_bCurrentRoomId == 1)
         SetAlphaBlendTargets(4, 0x1F);
 }

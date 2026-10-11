@@ -18,7 +18,7 @@ void InitializeDebugMapSelectMenu(void)
     Object *pObject;
 
     StopScanlineEffects();
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     pFillValue = &fillValue;
     *pFillValue = 0;
     bios_CPUSet(pFillValue, VRAM_BASE, 0x01008000);

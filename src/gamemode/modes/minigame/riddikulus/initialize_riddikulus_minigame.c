@@ -10,7 +10,7 @@ void InitializeRiddikulusMinigame(void)
 {
     u32 bgControl;
 
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     g_Riddikulus.dwExitToMenu = 0;
     g_Riddikulus.pCursorObject = NULL;
     g_Riddikulus.dwUnk24 = -1;

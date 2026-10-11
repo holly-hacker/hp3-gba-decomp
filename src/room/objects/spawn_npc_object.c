@@ -20,7 +20,7 @@ Object *SpawnNpcObject(u8 bColumn, u8 bRow)
     pObj->pfnTick = sub_0802F7F0;
     pObj->apfnCollisionCallback[0] = sub_0802FCC0;
     pObj->apfnCollisionCallback[1] = 0;
-    sub_08030844(pObj, g_aObjectTypeAssets[pObj->bFighterIndex].pPalette);
+    SetObjectPendingPalette(pObj, g_aObjectTypeAssets[pObj->bFighterIndex].pPalette);
     pObj->bFacing = pRecord->bFacing >> 1;
     SetObjectAssetRecord(pObj, &g_aObjectTypeAssets[pObj->bFighterIndex]);
     SetObjectAnimFrame(pObj, g_abRoomObjUnk6Frames[g_adwRoomObjUnk6FrameRows[pObj->bFighterIndex]][pObj->bFacing]);

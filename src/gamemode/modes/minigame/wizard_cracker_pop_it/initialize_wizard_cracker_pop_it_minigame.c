@@ -33,7 +33,7 @@ void InitializeWizardCrackerPopItMinigame(void)
     sub_08007D14(1, 0, 0);
     sub_08007D14(2, 0, 0);
     sub_08007D14(3, 0, 0);
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(6, 0, -1);
     SetBgScroll_candidate(0, 0, 0);
@@ -50,8 +50,8 @@ void InitializeWizardCrackerPopItMinigame(void)
         sub_0800D254(pPalette, slotB << 4, 0x10);
         slotA = pEntry->bSlotA;
         sub_0800D254(pPalette, slotA << 4, 0x10);
-        sub_0803094C(slotB);
-        sub_0803094C(slotA);
+        ReserveObjPaletteSlot(slotB);
+        ReserveObjPaletteSlot(slotA);
         pEntry++;
     }
 

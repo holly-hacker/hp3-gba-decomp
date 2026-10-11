@@ -54,3 +54,24 @@ Field roles other than flags, color range, frame count/index and frame
 pointers are UNCONFIRMED.
 
 Shared flag bits are `PALETTE_ANIM_*` in `include/graphics/palette.h`.
+
+## OBJ palette bank cache, PROVEN
+
+Code in `src/palette/`, declared in `include/palette.h`; it spans US
+`0x0803071C`-`0x08030A1C` and JP `0x08030760`-`0x08030A60`.
+`g_aObjPaletteSlots` holds one `ObjPaletteSlot` per OBJ palette bank:
+the `ObjPalette` loaded there, a refcount and flags. `AttachObjectPalette`
+reuses a shared slot already holding the palette or allocates one
+(`AllocObjPaletteSlot`: empty, then unreferenced, then any shared slot,
+else bank 15) and queues colors 1-15 for upload; `AttachObjectPaletteUnshared`
+always allocates and marks the slot unshared. Screens that load a bank
+directly exclude it with `ReserveObjPaletteSlot`.
+
+While an object is offscreen `TickObject` calls `ReleaseObjectPalette`,
+which saves the palette and its unshared flag in `pPendingPalette` and drops
+the reference; back onscreen, `BindObjectPendingPalette` attaches it again.
+Overworld objects (room objects, the player, NPCs, wandering monsters) set
+their palette this way with `SetObjectPendingPalette`, so they take a bank only
+while visible. Objects from `SpawnObject` and list menus attach a palette at
+once and set `ObjectFlagKeepPaletteSlot` to hold it while offscreen. `ObjectFlagKeepPaletteSlot` skips both
+steps.

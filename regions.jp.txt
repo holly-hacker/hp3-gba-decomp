@@ -1290,20 +1290,20 @@ thumb-func 0x08030634 sub_080305F0
 thumb-func 0x08030688 sub_08030644
 thumb-func 0x080306FC sub_080306B8
 thumb-func 0x08030734 sub_080306F0
-c-file 0x08030760 _ src/object/bind_object_effect_data.c BindObjectEffectData
-c-file 0x080307D8 _ src/graphics/alloc_resource_cache_slot.c AllocResourceCacheSlot
-c-file 0x08030868 0x08030888 src/graphics/clear_resource_cache_slots.c ClearResourceCacheSlots
-thumb-func 0x08030888 sub_08030844
-thumb-func 0x080308A0 sub_0803085C
-c-file 0x080308BC 0x080308EC src/object/attach_object_palette.c AttachObjectPalette
-thumb-func 0x080308EC AttachObjectPaletteUnshared_candidate
-c-file 0x0803091C _ src/object/release_object_palette.c ReleaseObjectPalette
-c-file 0x08030968 0x08030990 src/graphics/decrement_resource_cache_refcount.c DecrementResourceCacheRefcount
-thumb-func 0x08030990 sub_0803094C
-thumb-func 0x080309A4 sub_08030960
-c-file 0x080309BC 0x08030A18 src/object/bind_object_to_resource_cache_slot.c BindObjectToResourceCacheSlot
-thumb-func 0x08030A18 sub_080309D4
-c-file 0x08030A2C 0x08030A60 src/graphics/find_resource_cache_slot.c FindResourceCacheSlot
+c-file 0x08030760 _ src/palette/bind_object_pending_palette.c BindObjectPendingPalette
+c-file 0x080307D8 _ src/palette/alloc_obj_palette_slot.c AllocObjPaletteSlot
+c-file 0x08030868 _ src/palette/clear_obj_palette_slots.c ClearObjPaletteSlots
+c-file 0x08030888 _ src/palette/set_object_pending_palette.c SetObjectPendingPalette
+c-file 0x080308A0 _ src/palette/set_object_pending_palette_unshared.c SetObjectPendingPaletteUnshared
+c-file 0x080308BC _ src/palette/attach_object_palette.c AttachObjectPalette
+c-file 0x080308EC _ src/palette/attach_object_palette_unshared.c AttachObjectPaletteUnshared
+c-file 0x0803091C _ src/palette/release_object_palette.c ReleaseObjectPalette
+c-file 0x08030968 _ src/palette/release_obj_palette_slot.c ReleaseObjPaletteSlot
+c-file 0x08030990 _ src/palette/reserve_obj_palette_slot.c ReserveObjPaletteSlot
+c-file 0x080309A4 _ src/palette/unreserve_obj_palette_slot.c UnreserveObjPaletteSlot
+c-file 0x080309BC _ src/palette/bind_obj_palette_slot.c BindObjPaletteSlot
+c-file 0x08030A18 _ src/palette/is_obj_palette_slot_reserved.c IsObjPaletteSlotReserved
+c-file 0x08030A2C 0x08030A60 src/palette/find_obj_palette_slot.c FindObjPaletteSlot
 thumb-func 0x08030A60 sub_08030A1C
 thumb-func 0x08030B0C sub_08030AC8
 c-file 0x08030BB4 _ src/graphics/particle/alloc_particle_emitter.c AllocParticleEmitter
@@ -1315,7 +1315,7 @@ c-file 0x08031478 _ src/graphics/particle/tick_particle_still.c TickParticleStil
 c-file 0x080314C4 _ src/graphics/particle/tick_particle_directional.c TickParticleDirectional
 c-file 0x08031520 _ src/graphics/particle/tick_particle_moving.c TickParticleMoving
 c-file 0x0803157C _ src/graphics/particle/tick_particle_with_gravity.c TickParticleWithGravity
-c-file 0x080315E8 _ src/graphics/particle/init_resource_cache_pools.c InitResourceCachePools
+c-file 0x080315E8 _ src/graphics/particle/init_particle_pools.c InitParticlePools
 c-file 0x08031668 0x080316AC src/graphics/particle/reset_particle_state.c ResetParticleState
 thumb-func 0x080316AC sub_08031668
 c-file 0x080316E8 _ src/graphics/particle/release_particle_emitter.c ReleaseParticleEmitter_candidate

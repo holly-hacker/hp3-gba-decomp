@@ -14,7 +14,7 @@ void ExitMainMenuScreen(void)
     ReleaseMenuCursor(g_MainMenuState.pCursorObject);
     FreeAllParticleEmitters();
     FreeAllParticles();
-    sub_08030960(0);
+    UnreserveObjPaletteSlot(0);
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_08007A90();
     ResetPaletteAnimations();

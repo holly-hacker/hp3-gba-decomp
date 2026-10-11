@@ -4,6 +4,7 @@
 #include "math.h"
 #include "hw/mem.h"
 #include "graphics/oam.h"
+#include "../palette.h"
 
 // See docs/formats/graphics.md.
 
@@ -79,30 +80,6 @@ extern u8 g_abAffineSlotUsed[32];
 extern void ResetAffineSlots(void);
 extern u32 AllocAffineSlot(void);  // lowest free slot, or 32 when all are in use
 extern void FreeAffineSlot(u16 slot);
-
-// OBJ palette resource: 16 BGR555 entries. Entry 0 is the transparent color and is
-// not uploaded; entries 1-15 fill the OBJ palette bank (see AttachObjectPalette).
-typedef struct ObjPalette {
-    u16 aColors[16];
-} ObjPalette;
-
-// The 16-slot OBJ palette bank cache (slot index = OBJ palette bank; see
-// AttachObjectPalette).
-typedef struct ResourceCacheSlot {
-    void *pData;
-    u16 wRefcount;
-    u16 wFlags;  // ResourceCacheFlags
-} ResourceCacheSlot;
-
-typedef enum {
-    ResourceCacheFlagUnshared = 0x1,  // not matched by FindResourceCacheSlot; cleared when
-                                      // wRefcount reaches 0
-    ResourceCacheFlagReserved = 0x2,  // skipped by FindResourceCacheSlot and AllocResourceCacheSlot
-} ResourceCacheFlags;
-extern ResourceCacheSlot g_aResourceCache[16];  // 0x03005114
-extern void ClearResourceCacheSlots(void);
-extern u32 FindResourceCacheSlot(const ObjPalette *pPalette);
-extern u32 AllocResourceCacheSlot(void);
 
 // Particle sprite header, laid out like ObjectFrameData. Reached through the
 // second word of ParticleEmitter.pSprite's record.
@@ -180,7 +157,7 @@ typedef struct ParticleEmitter {
     u16 wParam38;            // 0x38
     u16 wSpawnRollMax;       // 0x3A
     u16 wSpawnRollThreshold; // 0x3C
-    u8 bResourceCacheSlot;   // 0x3E, index into g_aResourceCache
+    u8 bPaletteSlot;   // 0x3E, index into g_aObjPaletteSlots
     u8 bMode;                // 0x3F
     u8 bDirection;           // 0x40
     u8 bSpawnsPerPeriod;     // 0x41
@@ -295,7 +272,7 @@ extern s8 DrawParticle(Particle *particle);
 extern u8 UpdateParticleCollision(Particle *particle);
 extern void CommitObjAffineMatrices(void);
 
-extern void InitResourceCachePools(void);
+extern void InitParticlePools(void);
 extern void ResetParticleState(void);
 extern void FreeAllParticleEmitters(void);
 extern void FreeAllParticles(void);
@@ -308,14 +285,13 @@ extern void TickParticleEmitter(ParticleEmitter *emitter);
 extern void SpawnParticle(ParticleEmitter *emitter);
 extern ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex, u32 entryIndex);
 
-extern void DecrementResourceCacheRefcount(s32 slotIndex);
 extern void ReleaseParticleEmitter_candidate(ParticleEmitter *emitter);
 
-// Drops the emitter's resource-cache reference and returns it to the free list. The ROM
+// Drops the emitter's palette slot reference and returns it to the free list. The ROM
 // inlines this in the emitter tick and in ReleaseParticleEmitter_candidate.
 static inline void FreeParticleEmitter(ParticleEmitter *emitter)
 {
-    DecrementResourceCacheRefcount(emitter->bResourceCacheSlot);
+    ReleaseObjPaletteSlot(emitter->bPaletteSlot);
     List_MoveToHead(&g_pParticleEmitterFreeListHead, &g_pParticleEmitterActiveListHead,
                     &emitter->node);
     g_wActiveParticleEmitterCount--;

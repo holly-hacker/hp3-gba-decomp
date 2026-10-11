@@ -21,10 +21,10 @@ void InitializeLupinPotionCutscene(void)
 
     zero = 0;
     bios_CPUSet((void *)&zero, VRAM_BASE, 0x01008000);
-    ClearResourceCacheSlots();
-    sub_0803094C(0);
-    sub_0803094C(1);
-    sub_0803094C(2);
+    ClearObjPaletteSlots();
+    ReserveObjPaletteSlot(0);
+    ReserveObjPaletteSlot(1);
+    ReserveObjPaletteSlot(2);
     QueueObjPaletteLoad((const u16 *)gMainMenuPalette, 0, 0x10);
     sub_08028AD4();
     sub_08029558();

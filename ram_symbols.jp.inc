@@ -322,9 +322,9 @@
 .set g_abAffineSlotUsed,         0x03005053
 .set g_aObjAffineSetSource, 0x03005074
 
-@ --- Resource cache / particle emitters (see docs/formats/graphics.md and
+@ --- OBJ palette slots / particle emitters (see docs/formats/graphics.md and
 @ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
-.set g_aResourceCache,                 0x03005174  @ see ram_symbols.us.inc
+.set g_aObjPaletteSlots,               0x03005174  @ see ram_symbols.us.inc
 .set g_pParticleEmitterActiveListHead, 0x030051F8  @ see ram_symbols.us.inc
 .set g_wActiveParticleCount,           0x030051FC
 .set g_wParticleHighWaterMark,         0x030051FE

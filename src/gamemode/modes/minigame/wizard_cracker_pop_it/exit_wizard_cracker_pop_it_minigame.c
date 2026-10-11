@@ -22,8 +22,8 @@ void ExitWizardCrackerPopItMinigame(void)
 
     for (i = 0; i < ARRAY_COUNT(g_aWizardCrackerPopItPalettes); i++)
     {
-        sub_08030960(g_aWizardCrackerPopItPalettes[i].bSlotB);
-        sub_08030960(g_aWizardCrackerPopItPalettes[i].bSlotA);
+        UnreserveObjPaletteSlot(g_aWizardCrackerPopItPalettes[i].bSlotB);
+        UnreserveObjPaletteSlot(g_aWizardCrackerPopItPalettes[i].bSlotA);
     }
 
     ResetPaletteAnimations();

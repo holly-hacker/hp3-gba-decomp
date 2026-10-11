@@ -1,17 +1,17 @@
 #include "types.h"
 #include "graphics/object.h"
-#include "graphics/graphics.h"
+#include "palette.h"
 #include "graphics/display.h"
 
 // Adds a reference to slotIndex. A non-NULL pPalette is stored in the slot and its
 // colors 1-15 are queued for upload to OBJ palette bank slotIndex; a non-NULL obj
 // is switched to that bank.
-void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette *pPalette)
+void BindObjPaletteSlot(u32 slotIndex, Object *obj, const ObjPalette *pPalette)
 {
-    g_aResourceCache[slotIndex].wRefcount++;
+    g_aObjPaletteSlots[slotIndex].wRefcount++;
     if (pPalette != NULL)
     {
-        g_aResourceCache[slotIndex].pData = (void *)pPalette;
+        g_aObjPaletteSlots[slotIndex].pData = (void *)pPalette;
         QueueObjPaletteLoad(&pPalette->aColors[1], slotIndex * 16 + 1, 15);
     }
 
@@ -19,7 +19,7 @@ void BindObjectToResourceCacheSlot(u32 slotIndex, Object *obj, const ObjPalette 
     {
         obj->oam.paletteNum = slotIndex;
         obj->dwFlags |= ObjectFlagHasPaletteSlot;
-        obj->pEffectData = NULL;
-        obj->dwEffectFlags = 0;
+        obj->pPendingPalette = NULL;
+        obj->dwPendingPaletteFlags = 0;
     }
 }

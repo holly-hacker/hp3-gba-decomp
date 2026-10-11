@@ -338,15 +338,15 @@
 .set g_abAffineSlotUsed,         0x03004FF3  @ u8[32], one per affine hardware slot; see AllocAffineSlot/FreeAffineSlot
 .set g_aObjAffineSetSource,      0x03005014  @ ObjAffineSource[32] (8-byte stride), fed to bios_ObjAffineSet by CommitObjAffineMatrices
 
-@ --- Resource cache / particle emitters (see docs/formats/graphics.md and
+@ --- OBJ palette slots / particle emitters (see docs/formats/graphics.md and
 @ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
-.set g_aResourceCache,                 0x03005114  @ ResourceCacheSlot[16]
+.set g_aObjPaletteSlots,               0x03005114  @ ObjPaletteSlot[16]
 .set g_pParticleEmitterActiveListHead, 0x03005198  @ ListNode *
 .set g_wActiveParticleCount,           0x0300519C  @ u16
 .set g_wParticleHighWaterMark,         0x0300519E  @ u16
 .set g_wActiveParticleEmitterCount,    0x030051A0  @ u16
 .set g_wParticleEmitterHighWaterMark,  0x030051A2  @ u16
-.set g_aParticles,                    0x030051A4  @ Particle *: MAX_PARTICLES entries, allocated by InitResourceCachePools
+.set g_aParticles,                    0x030051A4  @ Particle *: MAX_PARTICLES entries, allocated by InitParticlePools
 .set g_aParticleEmitters,             0x030051A8  @ ParticleEmitter *: MAX_PARTICLE_EMITTERS entries
 .set g_pParticleFreeListHead,          0x030051AC  @ ListNode *
 .set g_pParticleEmitterFreeListHead,   0x030051B0  @ ListNode *

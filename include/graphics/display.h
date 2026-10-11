@@ -222,7 +222,6 @@ extern const BgTileAnimation128 g_aSpecialSceneBg2;  // 0x08063074
 extern const BgTileAnimation128 g_aSpecialSceneBg0;  // 0x0806347C
 extern const BgTileAnimation128 g_aSpecialSceneBg1;  // 0x08063884
 extern const u32 g_dwSpecialSceneBgControl;          // 0x0805BC00
-extern void sub_0803094C(u32 arg);
 extern void sub_08001D90(u32 arg);
 
 extern const u32 g_dwStartupBg3Control;

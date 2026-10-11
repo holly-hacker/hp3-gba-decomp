@@ -324,9 +324,9 @@ rows, one per `MonsterTable` index. Each row is two `ObjectAssetRecord`s
 | Offset | Record | Readers |
 |---|---|---|
 | `+0x00` | battle sprite | `InitMonsterBattleActor` (`SetObjectAnimData` with `g_pMonsterAnimFrameTable[index * 0x60]`); `DrawFolioBrutiMonsterPanel` (same record and animation table); `RestoreFighterObjects_candidate` (`wObjectType - 4` as index) |
-| `+0x10` | overworld sprite | `SpawnWanderingMonsterObject` (`sub_08030844` with `+0x18`, then `SetObjectAnimData` with `0x0806584C`) |
+| `+0x10` | overworld sprite | `SpawnWanderingMonsterObject` (`SetObjectPendingPalette` with `+0x18`, then `SetObjectAnimData` with `0x0806584C`) |
 
-The battle palette (`+0x08`) goes to `AttachObjectPaletteUnshared_candidate`,
+The battle palette (`+0x08`) goes to `AttachObjectPaletteUnshared`,
 which binds it to a newly allocated, unshared palette cache slot.
 `DrawFolioBrutiMonsterPanel` uses it for monsters already seen and a
 silhouette palette (`0x08069574`) otherwise.

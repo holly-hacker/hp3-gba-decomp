@@ -21,7 +21,7 @@ void ExitBattle(void)
         // Battle ended instead of exiting a menu
         u32 partyIndex;
 
-        sub_08030960(0);
+        UnreserveObjPaletteSlot(0);
         FreeAllParticleEmitters();
         FreeAllParticles();
         FreeAllObjects(&g_ActiveObjectListState.pHead);
@@ -103,7 +103,7 @@ void ExitBattle(void)
             for (fighterIndex = 0; fighterIndex < 7; fighterIndex++)
                 ClearFighterObjectFlag_candidate(fighterIndex);
 
-        sub_08030960(0);
+        UnreserveObjPaletteSlot(0);
         FreeAllParticleEmitters();
         FreeAllParticles();
         FreeAllObjects(&g_ActiveObjectListState.pHead);

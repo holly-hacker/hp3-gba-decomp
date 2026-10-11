@@ -17,7 +17,7 @@ void InitializeHarryHermionePortInTimeCutscene(void)
     bios_CPUSet((void *)&zero, VRAM_BASE, 0x01008000);
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
     InitObjTileAllocBitmaps(0);
     SetAlphaBlendTargets(0, 0x1F);
     SetAlphaBlendCoefficients(9, 10);

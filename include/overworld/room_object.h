@@ -51,7 +51,6 @@ typedef struct RoomObjectRecordUnkC {
 } RoomObjectRecordUnkC;
 
 extern void *sub_08005C38(u8 bColumn, u8 bRow);
-extern void sub_08030844(Object *pObj, const void *pEffectData);
 
 extern const RoomObjectConstructor g_apRoomObjectConstructors[ROOM_OBJECT_TYPE_COUNT];  // ROM 0x0804C054 (US)
 

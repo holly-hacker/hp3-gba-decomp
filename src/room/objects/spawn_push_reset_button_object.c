@@ -34,7 +34,7 @@ Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow)
     ROOM_OBJECT_UNK8_STATE(pObj)->abA[7] = pRecord->abPairs[14];
     ROOM_OBJECT_UNK8_STATE(pObj)->abB[7] = pRecord->abPairs[15];
     pObj->dwFlags = 0x0400221D;
-    sub_08030844(pObj, g_apRoomObjUnk8EffectData[pObj->wCharacterId_candidate]);
+    SetObjectPendingPalette(pObj, g_apRoomObjUnk8EffectData[pObj->wCharacterId_candidate]);
     SetObjectAssetRecord(pObj, g_apRoomObjUnk8AssetRecords[pObj->wCharacterId_candidate]);
     SetObjectAnimFrame(pObj, 0);
     SetObjectActionState(pObj, 0);

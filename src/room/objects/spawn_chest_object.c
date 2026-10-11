@@ -36,7 +36,7 @@ Object *SpawnChestObject(u8 bColumn, u8 bRow)
 
     pObj->pfnTick = TickChestObject;
     pObj->apfnCollisionCallback[0] = HandleChestTouch;
-    sub_08030844(pObj, gChestPalette);
+    SetObjectPendingPalette(pObj, gChestPalette);
     pObj->modeState.chest.bUnk67 = 0;
     pObj->modeState.chest.bUnchaining = 0;
 

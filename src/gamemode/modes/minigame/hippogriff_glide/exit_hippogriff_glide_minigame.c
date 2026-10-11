@@ -9,7 +9,7 @@
 void ExitHippogriffGlideMinigame(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
-    sub_08030960(0);
+    UnreserveObjPaletteSlot(0);
     sub_0802D6B8();
     FreeAllObjects(&g_ActiveObjectListState.pHead);
     sub_0800A914();

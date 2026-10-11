@@ -118,7 +118,7 @@ void SpawnParticle(ParticleEmitter *emitter)
     }
     else
         particle->oam.priority = 2;
-    particle->oam.paletteNum = emitter->bResourceCacheSlot;
+    particle->oam.paletteNum = emitter->bPaletteSlot;
 
     particle->wTileAllocId = emitter->wTileAllocId;
     particle->pSprite = emitter->pSprite;

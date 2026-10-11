@@ -17,7 +17,7 @@ ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex,
         if (g_wActiveParticleEmitterCount > g_wParticleEmitterHighWaterMark)
             g_wParticleEmitterHighWaterMark = g_wActiveParticleEmitterCount;
 
-        emitter->bResourceCacheSlot = AttachObjectPalette(NULL, pPalette);
+        emitter->bPaletteSlot = AttachObjectPalette(NULL, pPalette);
         emitter->wTileAllocId = g_apParticleGfxPools[poolIndex][entryIndex].wTileAllocId;
         emitter->pSprite = g_apParticleGfxPools[poolIndex][entryIndex].pSprite;
         emitter->dwSpeed = 0x20000;

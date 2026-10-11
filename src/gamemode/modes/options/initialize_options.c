@@ -12,7 +12,7 @@ void InitializeOptions(void)
 {
 
     SetAlphaBlendTargets(0, 0);
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
 
 #ifdef VERSION_JP
     g_dwOptionsReturnMode = g_PrevGameModeStackContext.dwCurrentGameMode;

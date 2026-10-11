@@ -11,7 +11,7 @@
 
 void InitializeGameCubeLink(void)
 {
-    ClearResourceCacheSlots();
+    ClearObjPaletteSlots();
 
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == 0)
     {
