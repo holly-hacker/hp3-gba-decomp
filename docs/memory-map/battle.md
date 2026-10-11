@@ -498,7 +498,7 @@ fighter's new `Actor *`. Allocates via `AllocDefaultActor`, records
 `wFighterType`/`bUnk_0x7C = 0`, sets `oam.priority = 1`,
 positions with `SnapActorPosition`/`StartActorMove` at
 `(0xD4 - slot*36) << 16`, `slot*0x40000 + 0x6E0000`, then
-`sub_08003A44(pActor, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `nMoveSpeed = 1`,
+`SetActorOrbitY(pActor, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `nMoveSpeed = 1`,
 `dwFlags = 0x20006011`, attack-anim state `0xF`, `bAnimFrameDelay = 1`,
 `pfnTick = TickPlayerActionState`. Copies the 10 spell slots
 (`i <= 9`) and, outside Folio Universitas returns, the party stats from
@@ -524,7 +524,7 @@ around: the ROM ends in `adds r0,r6,#0`, same as the player counterpart).
 `wFighterType` is `monsterIndex + 4`; positioning is `(slot*36 + 0xCC)` /
 `(0x4E - slot*4)` with a `+0x18` restructure for the move; `dwFlags` is
 `0x20006019` (`0x6019` for the companion) and `bDepthSortBias` is `-0x40`. Types
-3/29/26 get extra `sub_08003A30`/`sub_08003A44` calls on the main actor;
+3/29/26 get extra `SetActorOrbitX`/`SetActorOrbitY` calls on the main actor;
 types 45-47 additionally spawn a shadow `Actor` (own anim tables at
 `0x0804EF54`/`0x08053850`) cross-linked at `+0xA0`/`+0xA8`. The
 `BattleFighter` is filled field-for-field from `MonsterTable` (stride
@@ -989,7 +989,7 @@ unless the previous mode was `FolioUniversitas` or
 opened mid-battle), it decrements `FightState->bScreenShakeTimer_candidate`
 while nonzero (nudging the BG scroll/priority each tick via `sub_0802D640`
 and `g_aBgScrollState[1].nScrollY_candidate`), and the tick that timer reaches `0` it
-resets every fighter's `Actor` (`sub_080039E8`) instead of ticking the
+resets every fighter's `Actor` (`ClearActorOrbit`) instead of ticking the
 turn state machine that frame. Every other case (timer already `0`, or the
 previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).
 

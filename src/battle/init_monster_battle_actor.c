@@ -30,7 +30,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     SnapActorPosition(pActor, (xBase + BATTLE_SLOT_ORIGIN_X) << 16, (BATTLE_SLOT_ORIGIN_Y - slot * 4) << 16);
     StartActorMove(pActor, (xBase + 24) << 16, (BATTLE_SLOT_ORIGIN_Y - slot * 4) << 16, 0x1E);
 
-    sub_08003A44(pActor, 0, 0x400, -0xC);
+    SetActorOrbitY(pActor, 0, 0x400, -0xC);
 
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = -0x40;
@@ -62,8 +62,8 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     if (type == 3 || type == 0x1D || type == 0x1A)
     {
         s32 slot64 = slot * 64;
-        sub_08003A30(pActor, slot64, 0x800, 2);
-        sub_08003A44(pActor, slot64, 0x800, 2);
+        SetActorOrbitX(pActor, slot64, 0x800, 2);
+        SetActorOrbitY(pActor, slot64, 0x800, 2);
     }
     // fire effect monsters? Salamander, Amazonian Salamander, Peruvian Salamander
     else if ((u8)(type - 0x2D) <= 2)
@@ -72,7 +72,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
         pShadowActor->wActorType = actorType;
         pShadowActor->bUnk_0x7C = 0;
 
-        sub_08003A44(pShadowActor, 0, 0x400, -0xC);
+        SetActorOrbitY(pShadowActor, 0, 0x400, -0xC);
 
         pShadowActor->oam.priority = 1;
         pShadowActor->bDepthSortBias = -0x40;

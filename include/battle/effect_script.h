@@ -59,7 +59,7 @@ extern void sub_0801B9BC(u32 *pPayload0, u32 *pPayload1);
 extern void sub_0801B9F4(u32 *pPayload0, u32 *pPayload1);
 extern void sub_0801BA2C(u32 *pPayload0, u32 *pPayload1);
 extern void sub_0801BA44(u32 *pPayload0, u32 *pPayload1);
-extern const s16 g_aEffectOrbitParams_candidate[16][6];      // 0x08053C68
+extern const ActorOrbit g_aEffectOrbitParams_candidate[16];  // 0x08053C68
 extern const u8 g_abEffectRosterIdPair_candidate[2];         // 0x08053D28
 extern const u16 g_awBattleSlotPosX_candidate[7];            // 0x08053D2A, per fighter slot
 extern const u8 g_abBattleSlotPosY_candidate[7];             // 0x08053D38
@@ -71,10 +71,6 @@ extern void WaitForCounterTick(Actor *actor);
 extern void WaitForFieldClearTick(Actor *actor);
 extern void WaitForCasterField86Tick_candidate(Actor *actor);
 extern IntPoint ComputeEffectSpawnPosition(void);
-extern void CopyOrbitParamsFromTable(Actor *actor, const void *row);
-extern s32 IsActorFlippedX(Actor *actor);
-extern s32 sub_08003954(Actor *actor);
-extern void sub_08003788(Actor *actor, s32 flip);
 extern void sub_0801B710(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
 extern void sub_0800D244(void *a, u32 b, u32 c);

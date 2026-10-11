@@ -350,7 +350,6 @@ extern EffectStaging g_effectStaging;                 // 0x03002750
 extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
 extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
 extern void sub_08012B40(void);
-extern void sub_08003A30(void *actor, s32 a, s16 b, s16 c);  // a is shifted << 8 inside and stored to a 16-bit field
 extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);

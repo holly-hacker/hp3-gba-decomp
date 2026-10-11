@@ -4,17 +4,15 @@
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
-// A position or vector with 16.16 fixed-point coordinates, passed by value.
-typedef struct FixedPoint {
+// A position or vector, passed by value. The game uses one type for both 16.16
+// fixed-point and integer coordinates: the route walkers keep a waypoint and a
+// fixed-point target in the same variable. FixedPoint and IntPoint name the units.
+typedef struct Point {
     s32 x;
     s32 y;
-} FixedPoint;
-
-// A position or vector with integer coordinates, passed by value.
-typedef struct IntPoint {
-    s32 x;
-    s32 y;
-} IntPoint;
+} Point;
+typedef Point FixedPoint;
+typedef Point IntPoint;
 
 // Hand-written ARM divide routines in ROM (asm/rt/), copied to IWRAM by
 // InstallIwramDivideRoutines.
@@ -78,6 +76,6 @@ s32 FixedDotProduct(FixedPoint a, FixedPoint b);
 s32 FixedCrossProduct(FixedPoint a, FixedPoint b);
 
 // Returns a Direction, or a Direction4 when fourWay is nonzero.
-u8 GetDirectionFromVector(FixedPoint v, u32 fourWay);
+u32 GetDirectionFromVector(FixedPoint v, u32 fourWay);
 u8 GetDirection32FromVector(FixedPoint v);
 u8 StepDirection32Toward(u8 direction, u8 target, s8 *pStep);

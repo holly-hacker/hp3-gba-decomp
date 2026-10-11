@@ -24,7 +24,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
     posY = slot * 0x40000 + 0x6E0000;
     SnapActorPosition(pActor, 0, posY);
     StartActorMove(pActor, (0xD4 - slot * 9 * 4) << 16, posY, 0x19);
-    sub_08003A44(pActor, 0, 0x400, 0xC);
+    SetActorOrbitY(pActor, 0, 0x400, 0xC);
 
     pActor->bDepthSortBias = 0x40;
     pActor->nMoveSpeed = 1;

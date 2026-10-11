@@ -14,7 +14,7 @@ typedef struct SetTileActorFollowTargetRecord {
     u8 bStopDistance;
 } SetTileActorFollowTargetRecord;
 
-// Action state 0x12 (tick at 0x08005094) follows pShadowActor: while walking it stops within
+// Action state 0x12 (TickActorFollow) follows pShadowActor: while walking it stops within
 // the stop distance, and walks again once farther than both distances.
 void RoomScriptOpSetTileActorFollowTarget(SetTileActorFollowTargetRecord *pRecord)
 {

@@ -74,6 +74,15 @@ typedef enum {
     PartyAnim4 = 4,
 } PartyAnim;
 extern void SetPartyMemberAnim(Actor *actor, u8 anim);
+// Spawns the effect actor of field spell `spell` (an Actor.bFighterIndex value) at
+// the caster's anchor 0.
+extern void SpawnFieldSpellEffect_candidate(Actor *caster, u8 spell);
+// Starts the cast of the selected field spell (action state 0x13).
+extern void StartFieldSpellCast(Actor *actor);
+// Sets (1) or clears (0) ActorFlagVisible on g_pPlayerShadowActor_candidate.
+extern void SetPlayerShadowVisible(u32 visible);
+extern void TickHeldRewardActor(Actor *actor);  // pfnTick of the item TickActorReceiveReward spawns
+extern Actor *g_pPlayerShadowActor_candidate;
 extern const ActorGfxRecord g_UnusedPartyGfx;
 extern const ActorGfxRecord g_PartyFocusGfx_candidate;
 extern const ActorAssetRecord g_aPartyWalkAssets[PARTY_CHARACTER_COUNT];

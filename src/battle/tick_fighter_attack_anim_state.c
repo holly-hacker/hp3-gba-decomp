@@ -70,8 +70,8 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         }
 
         if (actor->wActorType != 0x3a) {
-            sub_080039F8(actor);
-            sub_08003A0C(actor);
+            ClearActorOrbitX(actor);
+            ClearActorOrbitY(actor);
             SetActorVelocity(actor, 0xfffa0000, 0);
         }
 
@@ -196,7 +196,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             if (g_pFightState->bActionDelayCounter_candidate != 0)
                 return;
 
-            actor->wUnk86 = 0;
+            actor->wTimedMoveTicks = 0;
             SetActorVelocity(actor, 0, 0);
             actor->bActionFlags = 1;
             return;

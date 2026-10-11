@@ -51,7 +51,7 @@ toward a target: it probes the pixel ahead of the actor's terrain box
 to the horizontal and then the vertical direction.
 
 - `0x1F`: blocks unless a spell-effect actor is currently active
-  (`DAT_03003FD4`, set by the generic effect-spawner `0x0802E090`) AND
+  (`DAT_03003FD4`, set by `SpawnFieldSpellEffect_candidate`) AND
   the player actor's `field_0x91` is set.
 - `0x29`: blocks every actor except ones with `wActorType==0xF`.
 

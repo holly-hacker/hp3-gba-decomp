@@ -3,7 +3,7 @@
 // Writes the 16.16 position of anchor point `index`, mirrored horizontally
 // when the actor faces left. Returns 0, leaving a zero offset in out, when
 // the frame has no such anchor.
-s32 GetActorAnchorPosition(Actor *actor, u32 index, IntPoint *out)
+s32 GetActorAnchorPosition(Actor *actor, u32 index, FixedPoint *out)
 {
     u32 lastRightFacing;
 

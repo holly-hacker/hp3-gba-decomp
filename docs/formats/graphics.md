@@ -1366,6 +1366,9 @@ through them, but the records themselves are ordinary dialog assets --
     to `Actor+0xC0`.
   - `+0x6` (`u16`): frame count. `GetActorVariantFrameSize`
     (`0x08000E28`) wraps a frame index of -1 to `count - 1`.
+  - `+0x8` (`u16`): byte size of the largest frame's tiles: 32 per tile for
+    the 4bpp actor-type sprites, 64 for the 8bpp portraits (true of all 146
+    distinct sprites); read by `GetAnimMaxFrameTileBytes`.
   - `+0xA` (`u8`): anchor-point count (`0` in every observed portrait).
     Each frame's anchors follow its descriptor at `+0xA`, an `s8` x/y
     pixel offset from the actor's position each; `GetActorFrameAnchor`
@@ -1377,7 +1380,10 @@ through them, but the records themselves are ordinary dialog assets --
   - `+0xC + frame*2` (`u16`): per-frame offset, added to `pFrameData +
     0xC` to get that frame's descriptor base. Only frame 0 has been
     exercised.
-  - Frame descriptor base `+0x0` (`u8`, low 5 bits): cell count.
+  - Frame descriptor base `+0x0` (`u8`): cell count in the low 5 bits; bit 5
+    marks tiles compressed as resource type 3 (RLE), bit 6 type 7 (LzRle),
+    neither type 6 (GammaLz), matching each frame's tile header in every
+    actor-type sprite (`GetFrameTileCodec`).
   - Frame descriptor base `+0x2`/`+0x3` (`u8`): frame width/height in
     pixels. `UpdateActorSpriteFrame` passes `width*height` to the OBJ
     tile allocator (`AllocObjVramTiles`), which divides it by 64 (4bpp) or 32

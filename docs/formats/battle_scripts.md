@@ -276,8 +276,8 @@ All three also unconditionally call `ProcessActorFlagBehaviors` (US
 confirmed: a bit-flag dispatcher on `Actor+0x66` driving several
 unrelated per-actor behaviors (a jitter/wobble adjustment, two
 counter-driven palette-cycle-style calls, a screen-shake-like camera
-adjustment, and a counter-driven call into `FUN_08003A80`'s
-per-"actor kind" dispatch, see "The generation field" era investigation
+adjustment, and a counter-driven call into `TickActorActionState`'s
+per-action-state dispatch, see "The generation field" era investigation
 above for why that dispatch was ruled out as `Actor+0x14`'s writer) --
 confirmed to have no connection to `Actor.pfnTick` or script resumption
 at all.

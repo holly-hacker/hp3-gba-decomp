@@ -62,6 +62,10 @@ typedef struct RoomBlobSubBlock {
 extern RoomBlobHeader *g_pRoomTableBuffer;
 extern RoomBlobTable *g_pRoomActorTable;
 extern RoomBlobTable *g_pRoomWarpTriggerTable;
+// Waypoint routes in g_pRoomWarpTriggerTable; see docs/formats/rooms.md.
+extern u8 GetRoomWarpTriggerByte_candidate(u8 route);  // waypoint count
+extern IntPoint GetRoomWarpTriggerOffset_candidate(u8 route, u8 waypoint);
+extern void ApplyRoomWarpTrigger_candidate(u8 route, u8 waypoint);  // runs the waypoint's chain
 
 // Byte size of an offset array of `count` u16 entries, padded to a multiple of 4.
 extern u16 sub_08005EC8(u16 count);

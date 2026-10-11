@@ -52,6 +52,7 @@
 .set g_pActorPoolAuxBuffer,         0x03001DBC
 .set g_dwActorListTicked_candidate, 0x03001DC0
 .set g_dwUnk03001DC4,                0x03001DC4
+.set g_ReceivedItemGfx,              0x03001DC8
 .set g_adwRoomActorUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room actor constructors
 
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ see ram_symbols.us.inc
@@ -202,6 +203,7 @@
 .set g_bPartyCharId1,                    0x030033ED
 .set g_bPartyCharId2,                    0x030033EE
 .set g_bSelectedFieldSpell,             0x030033EF
+.set g_pPlayerShadowActor_candidate,   0x030033F0
 .set g_pFieldSpellNameActor,           0x03003400
 .set g_pMapNameTextActor,              0x03003404
 .set g_dwUnk030033A8,                   0x03003408

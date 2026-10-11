@@ -1,9 +1,8 @@
 #include "types.h"
 #include "battle/effect_script.h"
 
-// StartOrbitMotion rows: angle X/Y, angular velocity X/Y and radius X/Y, in
-// Actor.orbitState.awOrbit order.
-const s16 g_aEffectOrbitParams_candidate[16][6] = {
+// StartOrbitMotion rows.
+const ActorOrbit g_aEffectOrbitParams_candidate[16] = {
     { -0x4000, -0x8000, 0x200, -0x400, 0, 5 },
     { -0x4000, 0x0, 0x0, 0x0, 20, 0 },
     { 0x0, 0x0, 0x800, -0x800, 2, 2 },

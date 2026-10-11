@@ -50,7 +50,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
             pfnCheckCollisions(g_dwCollisionQueueCount, g_apCollisionQueue);
 
         for (actor = (Actor *)list->pHead; actor != NULL; actor = (Actor *)actor->node.pNext) {
-            orbit = actor->orbitState.fields.dwOrbitRadii;
+            orbit = actor->orbitState.radii.dwOrbitRadii;
             if (actor->pOwnerActor != NULL)
                 FollowOwnerActor(actor);
 

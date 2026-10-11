@@ -63,6 +63,7 @@
 .set g_pActorPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwActorListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveActors, never cleared; gates FreeActor's VRAM tile release
 .set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitActorPool; see include/hw/mem.h
+.set g_ReceivedItemGfx,              0x03001DC8  @ ActorGfxRecord: the item TickActorReceiveReward holds up
 .set g_adwRoomActorUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room actor constructors
 
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ u16: bit 0 = the room also has a second actor/switch row
@@ -214,6 +215,7 @@
 .set g_bPartyCharId1,                    0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2,                    0x0300338E  @ u8: character id of the second follower
 .set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into the field spell table at 0x08060BAC; see include/overworld/overworld.h
+.set g_pPlayerShadowActor_candidate,   0x03003390  @ Actor *: type 0x11 actor SpawnPlayerActor_candidate creates for the player
 .set g_pFieldSpellNameActor,            0x030033A0  @ Actor *: selected field spell name text
 .set g_pMapNameTextActor,               0x030033A4  @ Actor *: room name text of ShowMapNamePopup
 .set g_dwUnk030033A8,                    0x030033A8  @ u32: zeroed by ResetPartyState and sub_080248E8; no reader found

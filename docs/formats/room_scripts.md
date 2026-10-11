@@ -24,8 +24,8 @@ invoking other chains conditionally. It is reached far more broadly
 than just warp tiles: `InitializeOverworld` runs chain `0` (and
 conditionally chain `1`) when a room is entered fresh, and again after an
 actor-state restore that finds the saved state stale; several other
-functions (`FUN_0800483c`, `FUN_08003be4`, `FUN_08004fde`, `FUN_08004d58`,
-`FUN_0800a03c`, `FUN_08004c48`) trigger it too --
+functions (`TickActorWalkRouteOnce`, `TickActorWalkToTarget`, `TickActorScriptWalk`,
+`TickActorPadWalk`, `FUN_0800a03c`, `FUN_08004c48`) trigger it too --
 consistent with "the scripted sequence that runs when this room is
 entered/re-entered", not a lever-specific mechanism.
 
@@ -213,12 +213,12 @@ this generic push/pop (it manages `DAT_030028A0` itself instead).
 **Resuming a yielded chain**, from tracing every real caller of
 `ResumeRoomSwitchStateChain_candidate`: it is not a generic "the dialog
 box closed" callback. Three per-actor tick handlers call it
-(`0x0800483C`, `0x08003BE4`, `0x0800A03C`, each a per-actor-type state
-machine unrelated to room scripts otherwise), and each only does so
+(`TickActorWalkRouteOnce`, `TickActorWalkToTarget`, `0x0800A03C`, each an
+action-state handler unrelated to room scripts otherwise), and each only does so
 once its own actor's animation/movement has reached a specific
 internal state *and* `DAT_03001DE9` (the opcode number latched when the
 chain yielded, see above) matches the one opcode that handler cares
-about -- `0x0800483C` specifically checks for `0x18`
+about -- `TickActorWalkRouteOnce` specifically checks for `0x18`
 (`StartActorAnimSequence`). `StartActorAnimSequence`
 itself sets `Actor+0xC` bit `0x8000000` on its target actor exactly
 when it yields (state `2`); the tick handler clears that same bit right

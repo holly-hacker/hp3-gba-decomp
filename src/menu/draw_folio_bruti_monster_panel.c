@@ -21,7 +21,7 @@ void DrawFolioBrutiMonsterPanel(void)
     u32 spell;
     s32 effectiveness;
     s32 x;
-    u16 aOrbit[6];
+    ActorOrbit orbit;
     u32 isUnseen;
     const void *pPalette;
 
@@ -34,11 +34,11 @@ void DrawFolioBrutiMonsterPanel(void)
     ClearBgTilemapRect(1, 0xF, 0xA, 0xF, 0xA);
     tileCursor = DrawFolioBrutiSpellLabels(g_FolioBrutiState.dwHeadingTileCursor);
 
-    aOrbit[1] = 0;
-    aOrbit[2] = 0x500;
-    aOrbit[3] = 0;
-    aOrbit[4] = 10;
-    aOrbit[5] = 0;
+    orbit.wAngleY = 0;
+    orbit.wAngleVelX = 0x500;
+    orbit.wAngleVelY = 0;
+    orbit.wRadiusX = 10;
+    orbit.wRadiusY = 0;
 
     for (spell = 0; spell < 8; spell++)
     {
@@ -55,13 +55,13 @@ void DrawFolioBrutiMonsterPanel(void)
             SetActorAnimData(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX,
                               g_aFolioBrutiDotUnknownAnim, 0);
             x = 0xB0 << 13;
-            aOrbit[0] = ((spell << 5) & 0xFF) << 8;
+            orbit.wAngleX = ((spell << 5) & 0xFF) << 8;
             if (g_FolioBrutiState.dwUnk0 == 0)
-                CopyOrbitParamsFromTable(g_FolioBrutiState.apSpellDots[spell], aOrbit);
+                CopyOrbitParamsFromTable(g_FolioBrutiState.apSpellDots[spell], &orbit);
         }
         else
         {
-            sub_080039E8(g_FolioBrutiState.apSpellDots[spell]);
+            ClearActorOrbit(g_FolioBrutiState.apSpellDots[spell]);
             SetActorAnimData(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX,
                               g_aFolioBrutiDotAnims[effectiveness / 0x21], 0);
             x = FixedDivide(effectiveness << 16, 0xC8 << 15) * 0x1A + 0x90000;

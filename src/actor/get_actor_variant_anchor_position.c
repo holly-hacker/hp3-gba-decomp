@@ -2,7 +2,7 @@
 
 // GetActorAnchorPosition for the frames of a variant slot's sprite, selected
 // by bAnimSet_candidate and bSpriteVariantIndex.
-s32 GetActorVariantAnchorPosition(Actor *actor, u8 slot, u8 index, IntPoint *out)
+s32 GetActorVariantAnchorPosition(Actor *actor, u8 slot, u8 index, FixedPoint *out)
 {
     u32 lastRightFacing;
 

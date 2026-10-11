@@ -115,7 +115,7 @@ void InterpretActorScript(Actor *actor)
             StartActorMove(actor, x << 16, y << 16, args[3]);
             break;
         case BSOP_StopMove:  // stops movement: clears move duration and velocity
-            actor->wUnk86 = 0;
+            actor->wTimedMoveTicks = 0;
             actor->wMoveDuration = 0;
             SetActorVelocity(actor, 0, 0);
             break;
@@ -175,7 +175,7 @@ void InterpretActorScript(Actor *actor)
             SetActorFlippedX(actor, !IsActorFlippedX(actor));
             break;
         case BSOP_ToggleActorFlipY:  // toggles a second flip state (likely vertical)
-            sub_08003788(actor, !sub_08003954(actor));
+            SetActorFlippedY(actor, !IsActorFlippedY(actor));
             break;
         case BSOP_MoveBy:  // moves by a signed (dx, dy) in whole pixels
             SnapActorPosition(actor, actor->pos.x + ((s8)args[1] << 16), actor->pos.y + ((s8)args[2] << 16));
@@ -359,33 +359,33 @@ void InterpretActorScript(Actor *actor)
             actor->oam.paletteNum = args[1];
             break;
         case BSOP_StartOrbitMotion:
-            CopyOrbitParamsFromTable(actor, g_aEffectOrbitParams_candidate[args[1]]);
-            actor->orbitState.awOrbit[0] += actor->modeState.effect.abLocal[0] * args[2] << 8;
+            CopyOrbitParamsFromTable(actor, &g_aEffectOrbitParams_candidate[args[1]]);
+            actor->orbitState.orbit.wAngleX += actor->modeState.effect.abLocal[0] * args[2] << 8;
             break;
         case BSOP_StartOrbitMotionRandom:  // starts orbit motion with a random angle
-            CopyOrbitParamsFromTable(actor, g_aEffectOrbitParams_candidate[args[1]]);
-            actor->orbitState.awOrbit[0] = Mt19937RandMax(0xFF) << 8;
-            actor->orbitState.awOrbit[1] = -(u16)actor->orbitState.awOrbit[0];
+            CopyOrbitParamsFromTable(actor, &g_aEffectOrbitParams_candidate[args[1]]);
+            actor->orbitState.orbit.wAngleX = Mt19937RandMax(0xFF) << 8;
+            actor->orbitState.orbit.wAngleY = -(u16)actor->orbitState.orbit.wAngleX;
             break;
         case BSOP_SaveOrbit:  // saves the orbit parameters
-            g_effectStaging.awSavedOrbit[0] = actor->orbitState.awOrbit[0];
-            g_effectStaging.awSavedOrbit[1] = actor->orbitState.awOrbit[2];
-            g_effectStaging.awSavedOrbit[2] = actor->orbitState.awOrbit[4];
-            g_effectStaging.awSavedOrbit[3] = actor->orbitState.awOrbit[1];
-            g_effectStaging.awSavedOrbit[4] = actor->orbitState.awOrbit[3];
-            g_effectStaging.awSavedOrbit[5] = actor->orbitState.awOrbit[5];
+            g_effectStaging.awSavedOrbit[0] = actor->orbitState.orbit.wAngleX;
+            g_effectStaging.awSavedOrbit[1] = actor->orbitState.orbit.wAngleVelX;
+            g_effectStaging.awSavedOrbit[2] = actor->orbitState.orbit.wRadiusX;
+            g_effectStaging.awSavedOrbit[3] = actor->orbitState.orbit.wAngleY;
+            g_effectStaging.awSavedOrbit[4] = actor->orbitState.orbit.wAngleVelY;
+            g_effectStaging.awSavedOrbit[5] = actor->orbitState.orbit.wRadiusY;
             break;
         case BSOP_RestoreOrbit:  // restores the saved orbit parameters
-            actor->orbitState.awOrbit[0] = g_effectStaging.awSavedOrbit[0];
-            actor->orbitState.awOrbit[2] = g_effectStaging.awSavedOrbit[1];
-            actor->orbitState.awOrbit[4] = g_effectStaging.awSavedOrbit[2];
-            actor->orbitState.awOrbit[1] = g_effectStaging.awSavedOrbit[3];
-            actor->orbitState.awOrbit[3] = g_effectStaging.awSavedOrbit[4];
-            actor->orbitState.awOrbit[5] = g_effectStaging.awSavedOrbit[5];
+            actor->orbitState.orbit.wAngleX = g_effectStaging.awSavedOrbit[0];
+            actor->orbitState.orbit.wAngleVelX = g_effectStaging.awSavedOrbit[1];
+            actor->orbitState.orbit.wRadiusX = g_effectStaging.awSavedOrbit[2];
+            actor->orbitState.orbit.wAngleY = g_effectStaging.awSavedOrbit[3];
+            actor->orbitState.orbit.wAngleVelY = g_effectStaging.awSavedOrbit[4];
+            actor->orbitState.orbit.wRadiusY = g_effectStaging.awSavedOrbit[5];
             break;
         case BSOP_StartCasterOrbitMotion:
-            CopyOrbitParamsFromTable(casterFighter->pActor, g_aEffectOrbitParams_candidate[args[1]]);
-            casterFighter->pActor->orbitState.awOrbit[0] += actor->modeState.effect.abLocal[0] * args[2] << 8;
+            CopyOrbitParamsFromTable(casterFighter->pActor, &g_aEffectOrbitParams_candidate[args[1]]);
+            casterFighter->pActor->orbitState.orbit.wAngleX += actor->modeState.effect.abLocal[0] * args[2] << 8;
             break;
         case BSOP_SetAffineScale1:  // sets affine scale (mode 1)
             SetActorAffineTransform(actor, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), 0, 1);

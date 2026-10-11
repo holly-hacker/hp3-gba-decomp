@@ -215,8 +215,8 @@ route `i`.
 An NPC (type 6) follows a route when a script puts it into an animation
 sequence (`StartActorAnimSequence`): its operands `bArg64` and `bArg65` are
 stored in Actor `+0x64` (route) and `+0x65` (current waypoint). The sequence
-selector picks the walking mode: `sub_08004500` loops through the waypoints,
-`sub_08004688` ping-pongs, and `sub_0800483C` walks once and stops. Each runs
+selector picks the walking mode: `TickActorWalkRouteLoop` loops through the waypoints,
+`TickActorWalkRoutePingPong` ping-pongs, and `TickActorWalkRouteOnce` walks once and stops. Each runs
 the waypoint's chain on arrival and waits the script's delay between waypoints.
 All 694 `StartActorAnimSequence` uses in the variant chains name a route and
 waypoint that exist. The ROOM_ACTOR records do not choose a route.
@@ -251,8 +251,9 @@ described by these two room-local systems than by the per-`Actor` VM.
 - Type 5 fields other than `kind`, `facing` and `chain`, and the meaning of
   each `kind`; type 3's remaining variants; type 10 and 11 fields marked
   without a role above.
-- `StartActorAnimSequence` selectors that share a walking mode (7/10, 8/11,
-  9/12, 13) differ in `sub_08003A80` pre-checks that are not documented.
+- `StartActorAnimSequence` selectors that share a walking mode (action states 7/10,
+  8/11/13, 9/12) run the same walker in `TickActorActionState`; selector 6 (state 13)
+  also clears `ActorFlagHasAnimation`. Any other difference between them is unknown.
 - Cross-check against a live mGBA session for any of the above.
 
 ## Bounding boxes / walkable-area limits

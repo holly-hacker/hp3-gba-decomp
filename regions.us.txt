@@ -120,56 +120,56 @@ c-file 0x08002C18 _ src/actor/write_actor_oam_cells.c WriteActorOamCells
 c-file 0x08002F28 _ src/actor/update_actor_sprite_frame.c UpdateActorSpriteFrame
 c-file 0x080034B8 _ src/actor/follow_owner_actor.c FollowOwnerActor
 c-file 0x0800351C _ src/actor/tick_actor_move.c TickActorMove
-c-file 0x0800359C 0x080035C0 src/actor/is_actor_tick_allowed.c IsActorTickAllowed
-thumb-func 0x080035C0 sub_080035C0
-thumb-func 0x08003660 sub_08003660
-c-file 0x0800366C 0x08003708 src/actor/set_actor_affine_transform.c SetActorAffineTransform
-thumb-func 0x08003708 SetActorFlippedX
-thumb-func 0x08003788 sub_08003788
-c-file 0x08003808 0x08003848 src/actor/release_actor_affine_slot.c ReleaseActorAffineSlot
-thumb-func 0x08003848 StartActorAffineScaleTween
+c-file 0x0800359C _ src/actor/is_actor_tick_allowed.c IsActorTickAllowed
+c-file 0x080035C0 _ src/actor/tick_actor_timed_move.c TickActorTimedMove
+c-file 0x08003660 _ src/actor/start_actor_timed_move.c StartActorTimedMove
+c-file 0x0800366C _ src/actor/set_actor_affine_transform.c SetActorAffineTransform
+c-file 0x08003708 _ src/actor/set_actor_flipped_x.c SetActorFlippedX
+c-file 0x08003788 _ src/actor/set_actor_flipped_y.c SetActorFlippedY
+c-file 0x08003808 _ src/actor/release_actor_affine_slot.c ReleaseActorAffineSlot
+c-file 0x08003848 _ src/actor/start_actor_affine_scale_tween.c StartActorAffineScaleTween
 c-file 0x080038A0 _ src/actor/tick_actor_affine_effect.c TickActorAffineEffect
-c-file 0x080038EC 0x08003928 src/actor/alloc_actor_affine_slot.c AllocActorAffineSlot
-thumb-func 0x08003928 IsActorFlippedX
-thumb-func 0x08003954 sub_08003954
-c-file 0x08003980 0x080039E8 src/actor/apply_actor_orbit_motion.c ApplyActorOrbitMotion
-thumb-func 0x080039E8 sub_080039E8
-thumb-func 0x080039F8 sub_080039F8
-thumb-func 0x08003A0C sub_08003A0C
-thumb-func 0x08003A20 CopyOrbitParamsFromTable
-thumb-func 0x08003A30 sub_08003A30
-thumb-func 0x08003A44 sub_08003A44
-thumb-func 0x08003A58 sub_08003A58
-thumb-func 0x08003A68 sub_08003A68
-thumb-func 0x08003A74 sub_08003A74
+c-file 0x080038EC _ src/actor/alloc_actor_affine_slot.c AllocActorAffineSlot
+c-file 0x08003928 _ src/actor/is_actor_flipped_x.c IsActorFlippedX
+c-file 0x08003954 _ src/actor/is_actor_flipped_y.c IsActorFlippedY
+c-file 0x08003980 _ src/actor/apply_actor_orbit_motion.c ApplyActorOrbitMotion
+c-file 0x080039E8 _ src/actor/clear_actor_orbit.c ClearActorOrbit
+c-file 0x080039F8 _ src/actor/clear_actor_orbit_x.c ClearActorOrbitX
+c-file 0x08003A0C _ src/actor/clear_actor_orbit_y.c ClearActorOrbitY
+c-file 0x08003A20 _ src/actor/copy_orbit_params_from_table.c CopyOrbitParamsFromTable
+c-file 0x08003A30 _ src/actor/set_actor_orbit_x.c SetActorOrbitX
+c-file 0x08003A44 _ src/actor/set_actor_orbit_y.c SetActorOrbitY
+c-file 0x08003A58 _ src/actor/set_actor_orbit_angles.c SetActorOrbitAngles
+c-file 0x08003A68 _ src/actor/set_actor_orbit_angle_vels.c SetActorOrbitAngleVels
+c-file 0x08003A74 _ src/actor/set_actor_orbit_radii.c SetActorOrbitRadii
 
 # Ai? (NPC movement behaviors)
-thumb-func 0x08003A80 sub_08003A80
-thumb-func 0x08003BE4 sub_08003BE4
-thumb-func 0x08003CD4 sub_08003CD4
-thumb-func 0x08003DF8 sub_08003DF8
-thumb-func 0x08003FB8 sub_08003FB8
-thumb-func 0x08004264 sub_08004264
-thumb-func 0x08004394 sub_08004394
-thumb-func 0x08004430 sub_08004430
-thumb-func 0x08004450 sub_08004450
-thumb-func 0x08004478 sub_08004478
-thumb-func 0x08004490 sub_08004490
-thumb-func 0x08004500 sub_08004500
-thumb-func 0x08004688 sub_08004688
-thumb-func 0x0800483C sub_0800483C
-thumb-func 0x080049F4 sub_080049F4
-thumb-func 0x08004D58 sub_08004D58
-thumb-func 0x08004F50 sub_08004F50
-thumb-func 0x08005094 sub_08005094
-thumb-func 0x080051A8 sub_080051A8
-thumb-func 0x080052B4 sub_080052B4
-thumb-func 0x08005310 sub_08005310
-thumb-func 0x08005318 sub_08005318
-thumb-func 0x08005324 sub_08005324
-thumb-func 0x08005340 sub_08005340
-thumb-func 0x08005348 sub_08005348
-thumb-func 0x0800537C sub_0800537C
+c-file 0x08003A80 _ src/actor/tick_actor_action_state.c TickActorActionState
+c-file 0x08003BE4 _ src/actor/tick_actor_walk_to_target.c TickActorWalkToTarget
+c-file 0x08003CD4 _ src/actor/tick_actor_cast_field_spell.c TickActorCastFieldSpell
+c-file 0x08003DF8 _ src/actor/tick_actor_receive_reward.c TickActorReceiveReward
+c-file 0x08003FB8 _ src/actor/apply_terrain_to_walk_velocity.c ApplyTerrainToWalkVelocity
+c-file 0x08004264 _ src/actor/tick_player_control.c TickPlayerControl
+c-file 0x08004394 _ src/actor/tick_actor_turn_around.c TickActorTurnAround
+c-file 0x08004430 _ src/actor/tick_actor_respawn_row.c TickActorRespawnRow
+c-file 0x08004450 _ src/actor/tick_actor_stop_and_stand.c TickActorStopAndStand
+c-file 0x08004478 _ src/actor/tick_actor_in_dialogue.c TickActorInDialogue
+c-file 0x08004490 _ src/actor/face_actor_toward_move_target.c FaceActorTowardMoveTarget
+c-file 0x08004500 _ src/actor/tick_actor_walk_route_loop.c TickActorWalkRouteLoop
+c-file 0x08004688 _ src/actor/tick_actor_walk_route_ping_pong.c TickActorWalkRoutePingPong
+c-file 0x0800483C _ src/actor/tick_actor_walk_route_once.c TickActorWalkRouteOnce
+c-file 0x080049F4 _ src/actor/tick_actor_spongify_jump.c TickActorSpongifyJump
+c-file 0x08004D58 _ src/actor/tick_actor_pad_walk.c TickActorPadWalk
+c-file 0x08004F50 _ src/actor/tick_actor_script_walk.c TickActorScriptWalk
+c-file 0x08005094 _ src/actor/tick_actor_follow.c TickActorFollow
+c-file 0x080051A8 _ src/actor/tick_actor_follow_simple.c TickActorFollowSimple
+c-file 0x080052B4 _ src/actor/tick_actor_idle.c TickActorIdle
+c-file 0x08005310 _ src/actor/get_anim_max_frame_tile_bytes.c GetAnimMaxFrameTileBytes
+c-file 0x08005318 _ src/actor/get_sprite_max_frame_size.c GetSpriteMaxFrameSize
+c-file 0x08005324 _ src/actor/get_sprite_frame_size.c GetSpriteFrameSize
+c-file 0x08005340 _ src/actor/get_anim_frame_count.c GetAnimFrameCount
+c-file 0x08005348 _ src/actor/get_frame_tile_codec.c GetFrameTileCodec
+c-file 0x0800537C _ src/actor/get_frame_cell_count.c GetFrameCellCount
 
 # Anim? (OAM shape size lookup)
 c-file 0x08005384 0x0800539C src/graphics/oam/get_oam_shape_size_dims.c GetOamShapeSizeDims
@@ -1025,9 +1025,9 @@ c-file 0x08024A88 0x08024AEC src/items/player_receive_reward_alt.c PlayerReceive
 
 # HeroStats? (party stat slots)
 thumb-func 0x08024AEC GetPartyMasterStatsSlot_candidate
-thumb-func 0x08024B38 sub_08024B38
-thumb-func 0x08024B64 sub_08024B64
-thumb-func 0x08024B94 sub_08024B94
+thumb-func 0x08024B38 TickHeldRewardActor
+thumb-func 0x08024B64 SetPlayerShadowVisible
+thumb-func 0x08024B94 StartFieldSpellCast
 thumb-func 0x08024BD4 sub_08024BD4
 thumb-func 0x08024C40 sub_08024C40
 thumb-func 0x08024C90 GetCharPresenceBit
@@ -1389,7 +1389,7 @@ c-file 0x0802D7A0 _ src/overworld/terrain_collision.c GetCollisionTypeAtPixel_ca
 c-file 0x0802DF3C _ src/overworld/apply_room_switch_effect.c ApplyRoomSwitchEffect
 c-file 0x0802DF74 _ src/overworld/nudge_actor.c NudgeAlongVelocity
 c-file 0x0802E030 0x0802E090 src/overworld/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
-thumb-func 0x0802E090 sub_0802E090
+thumb-func 0x0802E090 SpawnFieldSpellEffect_candidate
 thumb-func 0x0802E2BC sub_0802E2BC
 thumb-func 0x0802E644 sub_0802E644
 thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
@@ -2405,6 +2405,7 @@ c-file 0x0804BD5C _ src/libc/memcpy.c memcpy
 
 # Unit direction vectors (16.16 {x, y}) for 4, 8, 16 and 32 directions
 c-file 0x0804BDBC 0x0804BF9C src/graphics/particle/direction_vectors.c g_aDirection4Vectors
+c-file 0x0804BFCC 0x0804BFEC src/actor/action_state_data.c g_abTurnAroundDirection
 c-file 0x0804C024 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804C054 0x0804C08C src/room/room_actor_constructors.c g_apRoomActorConstructors
 c-file 0x0804C1B0 0x0804C1B8 src/gamemode/modes/minigame/riddikulus/riddikulus.globals.c g_dwRiddikulusBg0Control

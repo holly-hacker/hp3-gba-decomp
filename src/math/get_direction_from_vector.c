@@ -3,7 +3,7 @@
 
 // Index bits: 1 = x negative, 2 = y negative, 4 = mostly horizontal,
 // 8 = mostly vertical (eight-way only). Neither 4 nor 8 is a diagonal.
-u8 GetDirectionFromVector(FixedPoint v, u32 fourWay)
+u32 GetDirectionFromVector(FixedPoint v, u32 fourWay)
 {
     u8 index = 0;
     u8 directions8[16] = {

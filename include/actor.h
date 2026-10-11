@@ -125,7 +125,8 @@ typedef struct ActorFrameData {
     u8 bMaxFrameHeight;     // 0x01, pixels: the largest ActorFrameDesc.bHeight
     s8 abTerrainBox[4];     // 0x02, left/right/top/bottom; see Actor.bTerrainBoxLeft
     u16 wFrameCount;        // 0x06
-    u8 unk_8[2];            // -> 0x0A
+    u16 wMaxFrameTileBytes; // 0x08, byte size of the largest frame's tiles (32 per 4bpp tile,
+                             // 64 per 8bpp tile)
     u8 bAnchorCount;        // 0x0A, anchor points after each ActorFrameDesc, two s8 x/y
                              // offsets each; see GetActorFrameAnchor
     u8 bFramePartCount;     // 0x0B, count of 6-byte collision boxes after those u16s: s8
@@ -133,8 +134,17 @@ typedef struct ActorFrameData {
     u16 awFrameOffsets[1];  // 0x0C, wFrameCount entries
 } ActorFrameData;
 
+// How a frame's tiles are compressed, from its ActorFrameDesc.bCellCount bits 5-6; see
+// GetFrameTileCodec. Each matches the type in the tiles' resource header.
+typedef enum {
+    ActorFrameTileCodecGammaLz = 0,  // resource type 6
+    ActorFrameTileCodecRle     = 1,  // bit 5, resource type 3
+    ActorFrameTileCodecLzRle   = 2,  // bit 6, resource type 7
+} ActorFrameTileCodec;
+
 typedef struct ActorFrameDesc {
-    u8 bCellCount;          // 0x00, low 5 bits
+    u8 bCellCount;          // 0x00, low 5 bits; bits 5-6 are the ActorFrameTileCodec of the
+                             // frame's tiles
     u8 unk_1;
     u8 bWidth;              // 0x02, pixels
     u8 bHeight;             // 0x03, pixels
@@ -272,6 +282,17 @@ typedef struct __attribute__((packed)) ActorChestState {
     } pair;                 // 0x68, run instead of a reward above REWARD_ID_GOLD
 } ActorChestState;
 
+// An actor's orbit around its position, run by ApplyActorOrbitMotion: X follows
+// the cosine and Y the sine of its own angle, scaled by its radius.
+typedef struct ActorOrbit {
+    s16 wAngleX;            // 0x00, 8.8 in 256ths of a turn; the high byte indexes g_anSineTable
+    u16 wAngleY;            // 0x02
+    s16 wAngleVelX;         // 0x04, added to the angle each tick
+    s16 wAngleVelY;         // 0x06
+    s16 wRadiusX;           // 0x08, pixels
+    s16 wRadiusY;           // 0x0A
+} ActorOrbit;
+
 // General-purpose sprite/animation actor, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
 // into FightState.aSuspendedFighterActors_candidate -- see battle.h). Only
@@ -292,7 +313,14 @@ typedef struct Actor {
     u8 pad_13[0x01];        // -> 0x14
     u16 wMoveDuration;      // 0x14
     u8 bDepthSortBias;      // 0x16, draw-order bias; see SortActorsByDepth
-    u8 pad_17[0x0D];        // -> 0x24
+    u8 pad_17[0x01];        // -> 0x18
+    u8 bRespawnRow;         // 0x18, RespawnRowAndRunChain_candidate arguments for action
+    u8 bChainRow;           // 0x19   state 0x14 and trigger actors
+    u8 bUnk1A;              // 0x1A
+    u8 bResumeActionState;  // 0x1B, action state to return to after a state 6 pause
+    u16 wPauseDuration;     // 0x1C, ticks a state 6 pause lasts
+    u16 wPauseTimer;        // 0x1E, counted down in action state 6
+    u8 pad_20[0x04];        // -> 0x24
     ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
                              // ReleaseParticleEmitter_candidate and zeroed
                              // when nonzero (see ClearParalyzedFighter_candidate)
@@ -307,24 +335,12 @@ typedef struct Actor {
     FixedPoint vel;         // 0x3C
     FixedPoint accel;       // 0x44, added to vel each tick by IntegrateActorVelocity
     FixedPoint moveTarget;  // 0x4C, set by SetActorMoveTarget/StartActorMove
-    union __attribute__((packed)) {
-        // 0x54-0x5F, {angleX, angleY, velX, velY, radiusX, radiusY}; see
-        // CopyOrbitParamsFromTable and docs/formats/battle_scripts.md
-        u16 awOrbit[6];
-        struct __attribute__((packed)) {
-            u8 pad_54[0x04];        // -> 0x58
-            s16 wUnk58;             // 0x58, scaled (>> 7) by DivinationTea's leaf drift
-            u8 pad_5A[0x02];        // -> 0x5C
-            u32 dwOrbitRadii;       // 0x5C, packed radiusX/radiusY; nonzero runs ApplyActorOrbitMotion
-        } fields;
-        struct __attribute__((packed)) {
-            s16 wAngleX;            // 0x54, 8.8; the high byte indexes g_anSineTable
-            u16 wAngleY;            // 0x56
-            u16 wAngleVelX;         // 0x58
-            u16 wAngleVelY;         // 0x5A
-            s16 wRadiusX;           // 0x5C, pixels
-            s16 wRadiusY;           // 0x5E
-        } orbit;
+    union {
+        ActorOrbit orbit;           // 0x54; see docs/formats/battle_scripts.md
+        struct {
+            u8 pad_54[0x08];        // -> 0x5C
+            u32 dwOrbitRadii;       // 0x5C, both radii at once; nonzero runs ApplyActorOrbitMotion
+        } radii;
     } orbitState;
     ActorScriptState scriptState;  // 0x60: actor script PC or battle outcome/page bytes
     // 0x62-0x6D is per-mode state: the actor view serves fighter and room
@@ -344,17 +360,61 @@ typedef struct Actor {
             u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
             u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
         } actor;
+        struct __attribute__((packed)) {
+            union __attribute__((packed)) {
+                u16 wPair;          // tested as a whole: zero runs nothing
+                struct __attribute__((packed)) {
+                    u8 bRespawnRow;
+                    u8 bChainRow;
+                } rows;
+            } finish;               // 0x62, RespawnRowAndRunChain_candidate arguments run when a
+                                    // walk-once route ends
+            u8 bRoute;              // 0x64, route walked by action states 7-13; see
+                                    // docs/formats/rooms.md's waypoint routes
+            u8 bWaypoint;           // 0x65, next waypoint
+            u8 pad_66[0x03];
+            u8 bForward;            // 0x69, ping-pong walk direction: nonzero toward the last waypoint
+        } route;
+        struct __attribute__((packed)) {
+            u16 wTargetY;           // 0x62, pixels; the X is scriptState.wScriptPc
+            union {
+                u32 dwWord;         // bits 8-23 are tested as a whole: zero runs nothing
+                struct {
+                    u8 bFacing;
+                    u8 bRespawnRow;     // RespawnRowAndRunChain_candidate arguments run on arrival
+                    u8 bChainRow;
+                } bytes;
+            } args;                 // 0x64
+        } scriptWalk;               // action state 15; see RoomScriptOpStartTileActorScript
+        struct __attribute__((packed)) {
+            u8 pad_62[0x06];
+            s32 nCurve;             // 0x68, 100000 * height / width^2 of the parabola
+            u16 wApexX;             // 0x6C, pixels
+        } arc;                      // action state 0x10; see also wArcEndX
         ActorEffectState effect;
         ActorChestState chest;
     } modeState;
-    u8 pad_6E[0x0E];        // -> 0x7C
+    u16 wArcEndX;           // 0x6E, action state 0x10: where the Spongify jump lands (pixels)
+    u16 wArcApexY;          // 0x70
+    u8 pad_72[0x02];        // -> 0x74
+    u32 dwArcRightward;     // 0x74
+    union __attribute__((packed)) {
+        u16 wPair;          // tested as a whole: zero runs nothing
+        struct __attribute__((packed)) {
+            u8 bRespawnRow;
+            u8 bChainRow;
+        } rows;
+    } padFinish;            // 0x78, RespawnRowAndRunChain_candidate arguments run when a
+                            // Spongify pad move ends
+    u8 bPadFinalFacing;     // 0x7A, action state 0x11
+    u8 pad_7B[0x01];        // -> 0x7C
     u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocActorOfType, zeroed by
                              // InitPlayerBattleActor_candidate
     u8 bTerrainType;        // 0x7D, collision type under the actor, set by RespondToTerrain
     u8 pad_7E[0x02];        // -> 0x80
     u32 dwStateTimer;       // 0x80
     u16 wUnk84;             // 0x84, zeroed by the type 6 room actor constructor
-    u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
+    u16 wTimedMoveTicks;    // 0x86, ticks left in a StartActorTimedMove move
     u8 pad_88[0x02];        // -> 0x8a
     u16 wActionVariant;     // 0x8A
     u8 bRoomActorKind_candidate;  // 0x8C, set from the tile record by room actor constructors; 2 selects the second collision box
@@ -495,7 +555,7 @@ extern u32 AllocActorAffineSlot(Actor *actor);  // memoized: returns the slot al
 extern void SetActorAffineTransform(Actor *actor, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 // Double-size affine with both scales set to step 0..8 of a table: 0x666, then 0x2000 * step.
 extern void SetActorScaleStep(Actor *actor, u32 step);
-extern void StartActorAffineScaleTween(Actor *actor, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
+extern void StartActorAffineScaleTween(Actor *actor, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // see actor_inline.h
 extern void SetActorFlippedX(Actor *actor, s32 flip);
 // pAnimTable is the sprite record; the stream starts at command startCommand
 // of pAnimData (see actor_anim.h).
@@ -527,9 +587,12 @@ extern void LoadActorAnimFrameBounds(Actor *actor);
 extern void LoadVariantSlotFrameBounds(Actor *actor);
 extern void SetActorActionState(Actor *actor, u8 state);
 extern void SetActorFlags(Actor *actor, ActorFlags flags);
+extern void ClearActorFlags(Actor *actor, ActorFlags flags);
+extern s32 ActorHasFlags(Actor *actor, ActorFlags flags);  // 1 when every bit of flags is set
 // Starts animation `animId` from the actor's animation table.
 extern void SetActorAnimData_candidate(Actor *actor, u32 animId);
 extern void SetActorActionSubState(Actor *actor, u8 state);
+extern void SetActorFacing(Actor *actor, u8 facing);  // raises bActionFlags bit 0x10 on a change
 extern void SetActorDrawLayer(Actor *actor, u8 layer);
 extern void SetActorPrevActionState(Actor *actor, u8 state);
 // Clears the actor's queued move (Actor+0x3C..0x48).
@@ -553,8 +616,8 @@ extern void SetActorMoveTargetWithDuration(Actor *actor, s32 x, s32 y, u16 durat
 extern s32 GetActorFrameAnchor(Actor *actor, ActorFrameData *frameData, u32 index, IntPoint *out);
 extern s32 GetActorAnchor(Actor *actor, u32 index, IntPoint *out);
 extern s32 GetActorFlippedAnchor(Actor *actor, u32 index, IntPoint *out);
-extern s32 GetActorAnchorPosition(Actor *actor, u32 index, IntPoint *out);
-extern s32 GetActorVariantAnchorPosition(Actor *actor, u8 slot, u8 index, IntPoint *out);
+extern s32 GetActorAnchorPosition(Actor *actor, u32 index, FixedPoint *out);
+extern s32 GetActorVariantAnchorPosition(Actor *actor, u8 slot, u8 index, FixedPoint *out);
 extern void GetActorMaxFrameSize(Actor *actor, u32 *dims);
 extern void GetActorFrameSize(Actor *actor, u32 *dims);
 extern void *GetActorFrameTileGfx(Actor *actor);
@@ -567,9 +630,54 @@ extern s32 ActorIsNullActorType(Actor *actor);
 extern void SetActorAnimSet_candidate(Actor *actor, u8 animSet);
 extern void UnsetActorHasAnimation(Actor *actor);
 
-extern void sub_080039E8(Actor *actor);
-extern void sub_080039F8(Actor *actor);
-extern void sub_08003A0C(Actor *actor);
-extern void sub_08003A44(Actor *actor, s32 a, s32 b, s32 c);
+extern void StartActorTimedMove(Actor *actor, s32 x, s32 y, u16 ticks);
+extern s32 TickActorTimedMove(Actor *actor);  // returns 1 on arrival
+extern void SetActorFlippedY(Actor *actor, s32 flip);
+extern s32 IsActorFlippedX(Actor *actor);
+extern s32 IsActorFlippedY(Actor *actor);
+extern void ClearActorOrbit(Actor *actor);
+extern void ClearActorOrbitX(Actor *actor);
+extern void ClearActorOrbitY(Actor *actor);
+extern void CopyOrbitParamsFromTable(Actor *actor, const ActorOrbit *row);
+extern void SetActorOrbitX(Actor *actor, s32 angle, s16 angleVel, s16 radius);
+extern void SetActorOrbitY(Actor *actor, s32 angle, s16 angleVel, s16 radius);
+extern void SetActorOrbitAngles(Actor *actor, s32 angleX, s32 angleY);
+extern void SetActorOrbitAngleVels(Actor *actor, u16 angleVelX, u16 angleVelY);
+extern void SetActorOrbitRadii(Actor *actor, s16 radiusX, s16 radiusY);
+// Overworld action states (Actor.bActionState), dispatched by TickActorActionState.
+extern void TickActorActionState(Actor *actor);
+extern void TickActorWalkToTarget(Actor *actor);
+extern void TickActorCastFieldSpell(Actor *actor);
+extern void TickActorReceiveReward(Actor *actor);
+// Sets the walk velocity for D-pad `direction`, following stairs and ice under the actor;
+// returns the facing to show.
+extern s8 ApplyTerrainToWalkVelocity(Actor *actor, s8 direction);
+extern void TickPlayerControl(Actor *actor);
+extern void TickActorTurnAround(Actor *actor);
+extern void TickActorRespawnRow(Actor *actor);
+extern void TickActorStopAndStand(Actor *actor);
+extern void TickActorInDialogue(Actor *actor);
+extern s32 FaceActorTowardMoveTarget(Actor *actor);
+extern void TickActorWalkRouteLoop(Actor *actor);
+extern void TickActorWalkRoutePingPong(Actor *actor);
+extern void TickActorWalkRouteOnce(Actor *actor);
+extern void TickActorSpongifyJump(Actor *actor);
+extern void TickActorPadWalk(Actor *actor);
+extern void TickActorScriptWalk(Actor *actor);
+extern void TickActorFollow(Actor *actor);
+extern void TickActorFollowSimple(Actor *actor);
+extern const u8 g_abTurnAroundDirection[8];
+extern const u8 g_abTurnAroundDirection4[4];
+extern const ActorAssetRecord g_CoinIconAsset;
+extern const u8 g_sSpace[];
+extern ActorGfxRecord g_ReceivedItemGfx;
+
+extern u16 GetAnimMaxFrameTileBytes(ActorAnimState *anim);
+extern void GetSpriteMaxFrameSize(const ActorAssetRecord *record, u32 *dims);
+extern void GetSpriteFrameSize(const ActorAssetRecord *record, u32 *dims, u8 frame);
+extern u16 GetAnimFrameCount(ActorAnimState *anim);
+extern u32 GetFrameTileCodec(ActorFrameData *frameData, u16 frame);
+extern u8 GetFrameCellCount(ActorFrameDesc *frameDesc);
+
 extern void sub_0801BCB0(void *linkedActor);
 extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);  // 0x08018BE0

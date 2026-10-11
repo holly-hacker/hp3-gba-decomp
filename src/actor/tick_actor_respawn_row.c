@@ -1,0 +1,12 @@
+#include "types.h"
+#include "actor.h"
+#include "game/game_modes.h"
+#include "overworld/room_script.h"
+
+// Action state 0x14: while g_dwGameModeFlags bit 0x10 is set, runs bRespawnRow and
+// bChainRow every tick.
+void TickActorRespawnRow(Actor *actor)
+{
+    if (g_dwGameModeFlags & 0x10)
+        RespawnRowAndRunChain_candidate(actor->bRespawnRow, actor->bChainRow);
+}

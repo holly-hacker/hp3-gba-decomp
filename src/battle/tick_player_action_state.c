@@ -98,7 +98,7 @@ void TickPlayerActionState(Actor *actor)
     s32 var_8 = -1;  // unconditionally initialized at entry (real: str r0,[sp,#8] right after prologue); only case 0x1a ever reads it back
 
     if (g_pFightState->bScreenShakeTimer_candidate == 0) {
-        sub_080039E8(actor);
+        ClearActorOrbit(actor);
     } else {
         if (g_pFightState->bScreenShakeTimer_candidate > 0xf)
             SetActorFlippedX(actor, 1);
@@ -186,11 +186,11 @@ void TickPlayerActionState(Actor *actor)
             } else if (g_pFightState->bActionDelayCounter_candidate == 3) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     SetActorVelocity(g_pFightState->pFighters[i].pActor, 0, 0);
-                    sub_080039E8(g_pFightState->pFighters[i].pActor);
+                    ClearActorOrbit(g_pFightState->pFighters[i].pActor);
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
                     SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0, 0);
-                    sub_080039E8(g_pFightState->pPendingFighters_candidate[i].pActor);
+                    ClearActorOrbit(g_pFightState->pPendingFighters_candidate[i].pActor);
                 }
                 // Real emits an 8-byte block move (ldr/ldr/str/str off one
                 // base each side), not two independent field stores.
@@ -212,30 +212,30 @@ void TickPlayerActionState(Actor *actor)
             } else if (delay == 0xe) {
                 SnapActorPosition(actor, g_pFightState->savedPos.x, g_pFightState->savedPos.y);
                 actor->wMoveDuration = 0;
-                actor->wUnk86 = 0;
+                actor->wTimedMoveTicks = 0;
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     if (g_pFightState->pFighters[i].bFighterType != Enemy) {
                         SetActorVelocity(g_pFightState->pFighters[i].pActor, 0x10000, 0xFFFDB000);
-                        sub_08003A30(g_pFightState->pFighters[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
+                        SetActorOrbitX(g_pFightState->pFighters[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
                     } else {
                         SetActorVelocity(g_pFightState->pFighters[i].pActor, 0xFFFF8000, 0xFFFEB000);
-                        sub_08003A30(g_pFightState->pFighters[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
+                        SetActorOrbitX(g_pFightState->pFighters[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
                     }
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
                     SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0x10000, 0xFFFDB000);
-                    sub_08003A30(g_pFightState->pPendingFighters_candidate[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
+                    SetActorOrbitX(g_pFightState->pPendingFighters_candidate[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
                 }
                 sub_0802D64C((s16)0xFFFFFDB0);
                 actor->bActionFlags &= 0xfe;
             } else if (delay == 0) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     SetActorVelocity(g_pFightState->pFighters[i].pActor, 0, 0);
-                    sub_080039E8(g_pFightState->pFighters[i].pActor);
+                    ClearActorOrbit(g_pFightState->pFighters[i].pActor);
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
                     SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0, 0);
-                    sub_080039E8(g_pFightState->pPendingFighters_candidate[i].pActor);
+                    ClearActorOrbit(g_pFightState->pPendingFighters_candidate[i].pActor);
                 }
                 sub_0802D64C(0);
                 actor->bActionState = 0;
