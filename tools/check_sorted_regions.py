@@ -6,8 +6,15 @@ region's start address (or the label/thumb-func address). This checks
 those addresses are non-decreasing top to bottom; comments and blank
 lines are ignored, so a comment attached above one entry (see
 regions.us.txt's own conventions) doesn't affect the check.
+
+It also requires a region row's <end> to be `_` when it equals the next
+region row's start, and exits on the first row that spells it out.
 """
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from manifest import LABEL_DIRECTIVES, NEXT_START  # noqa: E402
 
 
 def addr_of(line: str) -> int:
@@ -18,6 +25,7 @@ def check(path: str) -> list[str]:
     errors = []
     prev_addr = None
     prev_lineno = None
+    prev_region = None  # (lineno, explicit end) of the last region row
     with open(path) as f:
         for lineno, raw_line in enumerate(f, 1):
             line = raw_line.strip()
@@ -33,6 +41,20 @@ def check(path: str) -> list[str]:
                     f"(follows {path}:{prev_lineno}'s {prev_addr:#010x})"
                 )
             prev_addr, prev_lineno = addr, lineno
+            fields = line.split("#", 1)[0].split()
+            if fields[0] in LABEL_DIRECTIVES:
+                continue
+            if prev_region is not None and prev_region[1] == addr:
+                sys.exit(
+                    f"{path}:{prev_region[0]}: end {addr:#010x} is the next region row's "
+                    f"start; write it as '{NEXT_START}'"
+                )
+            prev_region = None
+            if len(fields) >= 3 and fields[2] != NEXT_START:
+                try:
+                    prev_region = (lineno, int(fields[2], 16))
+                except ValueError:
+                    pass
     return errors
 
 

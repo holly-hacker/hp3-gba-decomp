@@ -2282,7 +2282,7 @@ c-file 0x0806B798 _ src/save/write_default_save_header.globals.c g_DefaultSaveHe
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B858 _ src/mem/clear_work_ram.globals.c g_pIwramSectionStart
 c-file 0x0806B868 0x0806B8C0 src/room/objects/spawn_spongify_pad_object.globals.c g_aRoomSpongifyPadSprites
-c-file 0x0806B8D0 0x0806B9D8 src/shop/shop_stock.c g_aShopStockMisc
+c-file 0x0806B8D0 _ src/shop/shop_stock.c g_aShopStockMisc
 c-file 0x0806B9D8 _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file 0x0806BA8C _ src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
 c-file 0x0806BAFC _ src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
