@@ -196,7 +196,7 @@ Room19V1Chain2:
     ArmChainYield 1
     QueueTileActorMove 0, 255, 0, 0, 1800, 0
     DespawnRoomRowActors Room19V1Group1_id
-    Unk02 0, 255, 2
+    SetTileActorMoveSpeed 0, 255, 2
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room19V1Route2_id, 0, 1, 0, 0, 0
     End
@@ -212,7 +212,7 @@ Room19V1Chain3:
     @ "Come on, then - back to the common room!"
     ShowRoomDialog 391
     SetQuestState 2, 249
-    Unk02 0, 255, 1
+    SetTileActorMoveSpeed 0, 255, 1
     SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_POTIONS, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 245
     SetTileActorFacing 0, 255, 0
@@ -237,7 +237,7 @@ Room19V1Chain5:
     ArmChainYield 1
     QueueTileActorMove 0, 255, 0, 0, 1800, 0
     DespawnRoomRowActors Room19V1Group1_id
-    Unk02 0, 255, 2
+    SetTileActorMoveSpeed 0, 255, 2
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room19V1Route3_id, 0, 1, 0, 0, 0
     End

@@ -575,7 +575,7 @@ Room29V1Chain11:
     ArmChainYield 1
     CancelActorAnimSequence 0, 255
     SetQuestState 1, 245
-    Unk02 Room29V1Group4_id, 0, 2
+    SetTileActorMoveSpeed Room29V1Group4_id, 0, 2
     PlaySoundById 52
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room29V1Route6_id, 0, 1, 0, 0, 0
@@ -598,8 +598,8 @@ Room29V1Chain14:
     @ "Crookshanks! What is wrong with you?"
     @ "Just keep that cat away from Scabbers!"
     ShowRoomDialog 355
-    Unk02 Room29V1Group4_id, 0, 4
-    Unk02 Room29V1Group4_id, 1, 4
+    SetTileActorMoveSpeed Room29V1Group4_id, 0, 4
+    SetTileActorMoveSpeed Room29V1Group4_id, 1, 4
     QueueTileActorMove Room29V1Group4_id, 0, 0, 0, 1700, 0
     ArmChainYield 0
     StartActorAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route11_id, 0, 1, 0, 0, 0
@@ -689,7 +689,7 @@ Room29V1Chain24:
     @ "Seen Ron around?"
     @ "No, I haven't."
     ShowRoomDialog 496
-    Unk02 Room29V1Group9_id, 3, 2
+    SetTileActorMoveSpeed Room29V1Group9_id, 3, 2
     SetTileActorFacing Room29V1Group9_id, 1, 0
     ArmChainYield 0
     QueueTileActorMove Room29V1Group9_id, 3, 0, 0, 800, 0
@@ -723,7 +723,7 @@ Room29V1Chain27:
     @ "I've never seen Professor McGonagall so angry! Malfoy's definitely for it!"
     @ "Well done, Harry! Ten Galleons to me! Must find Penelope. Excuse me -"
     ShowRoomDialog 501
-    Unk02 Room29V1Group10_id, 2, 2
+    SetTileActorMoveSpeed Room29V1Group10_id, 2, 2
     ArmChainYield 0
     StartActorAnimSequence Room29V1Group10_id, 2, 0, 0, Room29V1Route26_id, 0, 1, 0, 0, 0
     End
@@ -785,7 +785,7 @@ Room29V1Chain34:
     @ "Ron had a nightmare, Professor."
     @ "IT WASN'T A NIGHTMARE! SIRIUS BLACK WAS STANDING OVER ME, HOLDING A KNIFE!"
     ShowRoomDialog 508
-    Unk02 Room29V1Group12_id, 2, 3
+    SetTileActorMoveSpeed Room29V1Group12_id, 2, 3
     ArmChainYield 0
     StartActorAnimSequence Room29V1Group12_id, 2, 0, 0, Room29V1Route35_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room29V1Group12_id, 0, 0, 0, 1000, 0
@@ -895,7 +895,7 @@ Room29V1Chain46:
     @ "You aren't going to ride the Firebolt to Hagrid's hut, are you?"
     @ "If it makes you feel better, I'll carry it."
     ShowRoomDialog 435
-    Unk02 Room29V1Group14_id, 2, 2
+    SetTileActorMoveSpeed Room29V1Group14_id, 2, 2
     ArmChainYield 0
     StartActorAnimSequence Room29V1Group14_id, 2, 0, 0, Room29V1Route47_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room29V1Group16_id, 0, 0, 0, Room29V1Route49_id, 0, 1, 0, 0, 0

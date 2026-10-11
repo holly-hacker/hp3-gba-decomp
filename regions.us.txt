@@ -685,7 +685,7 @@ c-file 0x0801C440 _ src/room/opcodes/room_script_op_start_minigame.c RoomScriptO
 c-file 0x0801C50C _ src/room/opcodes/room_script_op_goto_if_folio_page_group_complete.c RoomScriptOpGotoIfFolioPageGroupComplete
 c-file 0x0801C564 _ src/room/opcodes/room_script_op_goto_if_all_quest_flags_set.c RoomScriptOpGotoIfAllQuestFlagsSet
 c-file 0x0801C5CC _ src/room/opcodes/room_script_op_despawn_tile_actor.c RoomScriptOpDespawnTileActor
-c-file 0x0801C5FC _ src/room/opcodes/room_script_op2.c RoomScriptOp2
+c-file 0x0801C5FC _ src/room/opcodes/room_script_op_set_tile_actor_move_speed.c RoomScriptOpSetTileActorMoveSpeed
 c-file 0x0801C634 _ src/room/opcodes/room_script_op_set_tile_actor_flag_bit.c RoomScriptOpSetTileActorFlagBit
 c-file 0x0801C654 _ src/room/opcodes/room_script_op_clear_tile_actor_flag_bit.c RoomScriptOpClearTileActorFlagBit
 c-file 0x0801C674 _ src/room/opcodes/room_script_op_show_room_dialog.c RoomScriptOpShowRoomDialog

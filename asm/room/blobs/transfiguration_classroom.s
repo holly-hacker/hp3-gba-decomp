@@ -244,12 +244,12 @@ Room03V1Chain13:
     RecruitPartyFollower 7
     DespawnTileActor Room03V1Group8_id, 0
     RecruitPartyFollower 6
-    Unk02 Room03V1Group7_id, 0, 2
-    Unk02 Room03V1Group7_id, 2, 2
-    Unk02 Room03V1Group7_id, 4, 2
-    Unk02 Room03V1Group7_id, 1, 2
-    Unk02 Room03V1Group7_id, 3, 2
-    Unk02 Room03V1Group7_id, 5, 2
+    SetTileActorMoveSpeed Room03V1Group7_id, 0, 2
+    SetTileActorMoveSpeed Room03V1Group7_id, 2, 2
+    SetTileActorMoveSpeed Room03V1Group7_id, 4, 2
+    SetTileActorMoveSpeed Room03V1Group7_id, 1, 2
+    SetTileActorMoveSpeed Room03V1Group7_id, 3, 2
+    SetTileActorMoveSpeed Room03V1Group7_id, 5, 2
     ArmChainYield 0
     StartActorAnimSequence Room03V1Group7_id, 0, 0, 0, Room03V1Route2_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room03V1Group7_id, 1, 0, 0, Room03V1Route2_id, 1, 1, 0, 0, 0
@@ -280,8 +280,8 @@ Room03V1Chain15:
     RespawnRowAndRunChain Room03V1Group4_id, 0
     QueueTileActorMove Room03V1Group4_id, 0, 0, 0, 1500, 0
     DespawnTileActor Room03V1Group1_id, 0
-    Unk02 Room03V1Group4_id, 0, 3
-    Unk02 0, 255, 2
+    SetTileActorMoveSpeed Room03V1Group4_id, 0, 3
+    SetTileActorMoveSpeed 0, 255, 2
     RespawnRowAndRunChain Room03V1Group2_id, 0
     DespawnTileActor Room03V1Group6_id, 1
     ArmChainYield 0
@@ -297,7 +297,7 @@ Room03V1Chain16:
     End
 Room03V1Chain17:
     ArmChainYield 1
-    Unk02 0, 255, 1
+    SetTileActorMoveSpeed 0, 255, 1
     SetQuestState 1, 223
     SetQuestState QUEST_OBJ_FIND_MCGONAGALL, QUEST_OBJECTIVE_INDEX
     ReturnToOverworld 4, 0
@@ -319,7 +319,7 @@ Room03V1Chain20:
     QueueTileActorMove Room03V1Group2_id, 0, 0, 0, 1200, 0
     DespawnTileActor Room03V1Group6_id, 2
     StartTileActorScript 310, 18, 2, 0, 255, 0, 0, 0, 255, 255, 255
-    Unk02 Room03V1Group2_id, 0, 2
+    SetTileActorMoveSpeed Room03V1Group2_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence Room03V1Group2_id, 0, 0, 0, Room03V1Route7_id, 0, 1, 0, 0, 0
     End

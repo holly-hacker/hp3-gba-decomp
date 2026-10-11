@@ -501,9 +501,9 @@ Room15V1Chain2:
     CancelActorAnimSequence 0, 255
     RespawnRowAndRunChain Room15V1Group1_id, 0
     DespawnRoomRowActors Room15V1Group8_id
-    Unk02 Room15V1Group2_id, 1, 2
-    Unk02 Room15V1Group2_id, 2, 2
-    Unk02 Room15V1Group2_id, 0, 2
+    SetTileActorMoveSpeed Room15V1Group2_id, 1, 2
+    SetTileActorMoveSpeed Room15V1Group2_id, 2, 2
+    SetTileActorMoveSpeed Room15V1Group2_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room15V1Route1_id, 0, 1, 0, 0, 0
     End
@@ -694,7 +694,7 @@ Room15V1Chain27:
     @ "This is very easy. I bet you're not dangerous at all, are you, you ugly great brute?"
     ShowRoomDialog 269
     PlaySoundById 57
-    Unk02 Room15V1Group9_id, 1, 8
+    SetTileActorMoveSpeed Room15V1Group9_id, 1, 8
     SetTileActorSpecialFlag Room15V1Group12_id, 0, 1
     SetTileActorSpecialFlag Room15V1Group9_id, 1, 1
     ArmChainYield 0
@@ -808,7 +808,7 @@ Room15V1Chain40:
     @ "Just joking - I'm dreading it as much as you."
     @ "I've heard we're learning how to make a Shrinking Solution today. Let's go."
     ShowRoomDialog 286
-    Unk02 Room15V1Group13_id, 0, 2
+    SetTileActorMoveSpeed Room15V1Group13_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room15V1Route45_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room15V1Group11_id, 0, 0, 0, Room15V1Route46_id, 0, 1, 0, 0, 0
@@ -818,7 +818,7 @@ Room15V1Chain40:
     End
 Room15V1Chain41:
     ArmChainYield 1
-    Unk02 Room15V1Group13_id, 0, 1
+    SetTileActorMoveSpeed Room15V1Group13_id, 0, 1
     DespawnRoomRowActors Room15V1Group13_id
     DespawnRoomRowActors Room15V1Group12_id
     DespawnRoomRowActors Room15V1Group10_id
@@ -951,7 +951,7 @@ Room15V1Chain55:
     End
 Room15V1Chain56:
     ArmChainYield 1
-    Unk02 Room15V1Group9_id, 1, 1
+    SetTileActorMoveSpeed Room15V1Group9_id, 1, 1
     PlayTileActorAnimation Room15V1Group9_id, 1, 16
     DelayedRespawnRowAndRunChain 1, 0, 0
     InvokeChainIfEnabled 0, Room15V1Chain28_id
@@ -1053,8 +1053,8 @@ Room15V1Chain66:
     @ "Ouch! Scabbers bit me!"
     ShowRoomDialog 551
     RespawnRowAndRunChain Room15V1Group18_id, 0
-    Unk02 Room15V1Group18_id, 0, 5
-    Unk02 Room15V1Group18_id, 1, 5
+    SetTileActorMoveSpeed Room15V1Group18_id, 0, 5
+    SetTileActorMoveSpeed Room15V1Group18_id, 1, 5
     @ "Yeowwl!"
     ShowRoomDialog 552
     ArmChainYield 0
@@ -1076,8 +1076,8 @@ Room15V1Chain68:
     End
 Room15V1Chain69:
     ArmChainYield 1
-    Unk02 Room15V1Group19_id, 0, 4
-    Unk02 Room15V1Group20_id, 0, 4
+    SetTileActorMoveSpeed Room15V1Group19_id, 0, 4
+    SetTileActorMoveSpeed Room15V1Group20_id, 0, 4
     SetTileActorSpecialFlag Room15V1Group19_id, 0, 1
     PlaySoundById 48
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
@@ -1097,7 +1097,7 @@ Room15V1Chain70:
     @ "The black dog! It's got Ron!"
     ShowRoomDialog 554
     RespawnRowAndRunChain Room15V1Group28_id, 0
-    Unk02 0, 255, 3
+    SetTileActorMoveSpeed 0, 255, 3
     @ "It's dragging him towards the Whomping Willow! And where's Crookshanks?"
     ShowRoomDialog 556
     ArmChainYield 0
@@ -1105,8 +1105,8 @@ Room15V1Chain70:
     End
 Room15V1Chain71:
     ArmChainYield 1
-    Unk02 Room15V1Group28_id, 0, 3
-    Unk02 Room15V1Group28_id, 1, 3
+    SetTileActorMoveSpeed Room15V1Group28_id, 0, 3
+    SetTileActorMoveSpeed Room15V1Group28_id, 1, 3
     @ "Help!"
     ShowRoomDialog 555
     SetTileActorSpecialFlag Room15V1Group28_id, 1, 1
@@ -1119,7 +1119,7 @@ Room15V1Chain71:
 Room15V1Chain72:
     ArmChainYield 1
     DespawnRoomRowActors Room15V1Group28_id
-    Unk02 0, 255, 1
+    SetTileActorMoveSpeed 0, 255, 1
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "The dog's dragged Ron under the Whomping Willow!"
     @ "If that dog can get in, we can!"

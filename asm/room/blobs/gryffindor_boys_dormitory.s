@@ -140,8 +140,8 @@ Room28V1Chain1:
 Room28V1Chain2:
     ArmChainYield 1
     CancelActorAnimSequence 0, 255
-    Unk02 0, 255, 2
-    Unk02 Room28V0Group0_id, 0, 2
+    SetTileActorMoveSpeed 0, 255, 2
+    SetTileActorMoveSpeed Room28V0Group0_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room28V1Route8_id, 0, 1, 0, 0, 0
     End
@@ -154,7 +154,7 @@ Room28V1Chain3:
     @ "Here! Just now! Slashed the curtains! Woke me up!!"
     @ "We'd better get Professor McGonagall!"
     ShowRoomDialog 506
-    Unk02 Room28V1Group5_id, 0, 2
+    SetTileActorMoveSpeed Room28V1Group5_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence Room28V1Group5_id, 0, 0, 0, Room28V1Route1_id, 0, 1, 0, 0, 0
     End
@@ -162,7 +162,7 @@ Room28V1Chain4:
     ArmChainYield 1
     @ "Don't go without me!"
     ShowRoomDialog 507
-    Unk02 Room28V0Group0_id, 0, 2
+    SetTileActorMoveSpeed Room28V0Group0_id, 0, 2
     QueueTileActorMove 0, 255, 0, 0, 1000, 0
     ArmChainYield 0
     StartActorAnimSequence Room28V1Group5_id, 1, 0, 0, Room28V1Route2_id, 0, 1, 0, 0, 0

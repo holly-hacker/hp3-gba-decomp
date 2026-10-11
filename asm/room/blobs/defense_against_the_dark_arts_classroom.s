@@ -287,7 +287,7 @@ Room00V1Chain14:
     DelayedRespawnRowAndRunChain 1, 0, 0
     RemovePartyFollower 7
     RespawnRowAndRunChain Room00V1Group10_id, 0
-    Unk02 Room00V1Group8_id, 0, 2
+    SetTileActorMoveSpeed Room00V1Group8_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route9_id, 0, 1, 0, 0, 0
     StartActorAnimSequence 0, 255, 0, 0, Room00V1Route16_id, 0, 1, 0, 0, 0

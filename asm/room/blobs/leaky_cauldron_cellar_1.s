@@ -367,8 +367,8 @@ Room38V3Chain1:
     CancelActorAnimSequence 0, 255
     SetQuestState 1, 253
     QueueTileActorMove Room38V3Group3_id, 0, 0, 0, 1200, 0
-    Unk02 Room38V3Group3_id, 0, 4
-    Unk02 Room38V3Group3_id, 1, 4
+    SetTileActorMoveSpeed Room38V3Group3_id, 0, 4
+    SetTileActorMoveSpeed Room38V3Group3_id, 1, 4
     ArmChainYield 0
     StartActorAnimSequence Room38V3Group3_id, 1, 0, 0, Room38V3Route0_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room38V3Group3_id, 0, 0, 0, Room38V3Route1_id, 0, 1, 0, 0, 0

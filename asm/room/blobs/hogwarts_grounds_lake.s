@@ -266,7 +266,7 @@ Room13V1Chain12:
     @ "Well done, Hermione!"
     ShowRoomDialog 596
     DelayedRespawnRowAndRunChain 1, 0, 0
-    Unk02 Room13V1Group7_id, 0, 2
+    SetTileActorMoveSpeed Room13V1Group7_id, 0, 2
     @ "Here comes Lupin! Help, Buckbeak!"
     ShowRoomDialog 597
     ArmChainYield 0

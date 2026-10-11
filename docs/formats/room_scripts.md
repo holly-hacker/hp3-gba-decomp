@@ -6,8 +6,8 @@ document index.
 
 Status: **STRUCTURAL MATCH** for the interpreter, the state machine, and
 the byte format (read directly from disassembly and cross-checked
-between the two entry points below); 91 of 93 opcodes named
-(`0x02` and `0x2A` are not). This is the VM [`rooms.md`](rooms.md) calls "room
+between the two entry points below); 92 of 93 opcodes named
+(`0x2A` is not). This is the VM [`rooms.md`](rooms.md) calls "room
 switch-state chains" -- that document owns the per-room resource-blob
 layout and how a chain index is reached from a warp tile or the
 switch-state actor table; this document owns the interpreter and
@@ -291,7 +291,7 @@ layout as US.
   urgent, but a natural follow-on once dialog blocks are otherwise
   understood.
 
-- Identify the remaining 2 opcodes (`0x02` and `0x2A`, see "Opcodes"
+- Identify the remaining opcode (`0x2A`, see "Opcodes"
   above) -- no systematic pass made yet, only the ones reached
   while tracing the interpreter's own bookkeeping, the handlers
   immediately adjacent to it in memory, and the yield/resume path.

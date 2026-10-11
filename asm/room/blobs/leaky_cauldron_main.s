@@ -98,7 +98,7 @@ Room42TalkFudge1:
     @ "All right, thank you."
     ShowRoomDialog 0
     ArmChainYield 0
-    Unk02 Room42V1Group2_id, 1, 2
+    SetTileActorMoveSpeed Room42V1Group2_id, 1, 2
     StartActorAnimSequence Room42V1Group2_id, 1, 0, 4, Room42V1Route0_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     SetQuestState 1, 224
@@ -553,8 +553,8 @@ Room42V3Chain2:
     End
 Room42V3Chain3:
     ArmChainYield 0
-    Unk02 Room42V3Group0_id, 1, 2
-    Unk02 Room42V3Group0_id, 0, 2
+    SetTileActorMoveSpeed Room42V3Group0_id, 1, 2
+    SetTileActorMoveSpeed Room42V3Group0_id, 0, 2
     StartTileActorScript 523, 140, 1, Room42V3Group0_id, 1, 0, 0, 4, 255, 255, 255
     StartActorAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route3_id, 0, 1, 0, 0, 0
     ArmChainYield 1
@@ -578,8 +578,8 @@ Room42V3Chain4:
     End
 Room42V3Chain5:
     ArmChainYield 0
-    Unk02 Room42V3Group2_id, 1, 3
-    Unk02 Room42V3Group0_id, 1, 3
+    SetTileActorMoveSpeed Room42V3Group2_id, 1, 3
+    SetTileActorMoveSpeed Room42V3Group0_id, 1, 3
     StartActorAnimSequence Room42V3Group0_id, 1, 0, 0, Room42V3Route6_id, 2, 1, 0, 0, 0
     ArmChainYield 1
     QueueTileActorMove Room42V3Group0_id, 1, 0, 0, 1200, 0
@@ -775,7 +775,7 @@ Room42V3Chain42:
     SetQuestState QUEST_OBJ_FIND_CROOKSHANKS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group7_id, Room42V3Chain32_id
     ArmChainYield 1
-    Unk02 Room42V3Group0_id, 0, 3
+    SetTileActorMoveSpeed Room42V3Group0_id, 0, 3
     StartActorAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route11_id, 0, 1, 0, 0, 0
     DespawnTileActor Room42V3Group0_id, 0
     SetTileActorAnimStateWithSpeed 0, 255
@@ -789,7 +789,7 @@ Room42V3Chain43:
     SetQuestState QUEST_OBJ_FIND_SCABBERS_LEAKY_CAULDRON, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group6_id, Room42V3Chain32_id
     ArmChainYield 1
-    Unk02 Room42V3Group2_id, 0, 3
+    SetTileActorMoveSpeed Room42V3Group2_id, 0, 3
     StartActorAnimSequence Room42V3Group2_id, 0, 0, 0, Room42V3Route10_id, 0, 1, 0, 0, 0
     DespawnTileActor Room42V3Group2_id, 0
     SetTileActorAnimStateWithSpeed 0, 255

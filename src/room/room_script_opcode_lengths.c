@@ -6,7 +6,7 @@
 const u8 g_abRoomScriptOpcodeLengths[RSOP_COUNT] = {
     [RSOP_End] = 4,
     [RSOP_DespawnTileActor] = 8,
-    [RSOP_Unk02] = 8,
+    [RSOP_SetTileActorMoveSpeed] = 8,
     [RSOP_SetTileActorFlagBit] = 8,
     [RSOP_ClearTileActorFlagBit] = 8,
     [RSOP_ShowRoomDialog] = 8,

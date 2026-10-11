@@ -7,7 +7,7 @@
 enum RoomScriptOpcode {
     RSOP_End = 0,
     RSOP_DespawnTileActor = 1,
-    RSOP_Unk02 = 2,
+    RSOP_SetTileActorMoveSpeed = 2,
     RSOP_SetTileActorFlagBit = 3,
     RSOP_ClearTileActorFlagBit = 4,
     RSOP_ShowRoomDialog = 5,

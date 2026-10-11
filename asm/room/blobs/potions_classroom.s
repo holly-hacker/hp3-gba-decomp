@@ -175,7 +175,7 @@ Room01V1Chain1:
 Room01V1Chain2:
     ArmChainYield 1
     QueueTileActorMove Room01V1Group2_id, 0, 0, 0, 1850, 0
-    Unk02 Room01V1Group2_id, 1, 5
+    SetTileActorMoveSpeed Room01V1Group2_id, 1, 5
     SetTileActorFacing Room01V1Group2_id, 1, 2
     SetTileActorFacing Room01V1Group2_id, 1, 4
     SetTileActorFacing Room01V1Group2_id, 1, 6
@@ -184,7 +184,7 @@ Room01V1Chain2:
     DespawnTileActor Room01V1Group2_id, 1
     @ "Settle down, settle down. Today we shall be making a new potion, a Shrinking Solution."
     ShowRoomDialog 295
-    Unk02 Room01V1Group2_id, 0, 2
+    SetTileActorMoveSpeed Room01V1Group2_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence Room01V1Group2_id, 0, 0, 0, Room01V1Route0_id, 0, 1, 0, 0, 0
     End
@@ -293,7 +293,7 @@ Room01V1Chain14:
     End
 Room01V1Chain15:
     ArmChainYield 1
-    Unk02 Room01V1Group1_id, 8, 3
+    SetTileActorMoveSpeed Room01V1Group1_id, 8, 3
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
     StartActorAnimSequence Room01V1Group1_id, 8, 0, 0, Room01V1Route1_id, 0, 1, 0, 0, 0
@@ -376,7 +376,7 @@ Room01V1Chain28:
     SetTileActorFacing 0, 255, 0
     SetTileActorFacing Room01V1Group16_id, 0, 6
     SetTileActorFacing Room01V1Group3_id, 0, 4
-    Unk02 Room01V1Group16_id, 0, 1
+    SetTileActorMoveSpeed Room01V1Group16_id, 0, 1
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
     ConsumeRoomItem 63
     ConsumeRoomItem 64
@@ -427,7 +427,7 @@ Room01V1Chain30:
 Room01V1Chain31:
     ArmChainYield 1
     CancelActorAnimSequence 0, 255
-    Unk02 Room01V1Group16_id, 0, 2
+    SetTileActorMoveSpeed Room01V1Group16_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room01V1Route3_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route13_id, 0, 1, 0, 0, 0

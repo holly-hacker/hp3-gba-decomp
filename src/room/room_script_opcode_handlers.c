@@ -9,7 +9,7 @@
 const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[RSOP_COUNT] = {
     [RSOP_End] = 0,
     [RSOP_DespawnTileActor] = (RoomScriptOpcodeHandler)RoomScriptOpDespawnTileActor,
-    [RSOP_Unk02] = (RoomScriptOpcodeHandler)RoomScriptOp2,
+    [RSOP_SetTileActorMoveSpeed] = (RoomScriptOpcodeHandler)RoomScriptOpSetTileActorMoveSpeed,
     [RSOP_SetTileActorFlagBit] = (RoomScriptOpcodeHandler)RoomScriptOpSetTileActorFlagBit,
     [RSOP_ClearTileActorFlagBit] = (RoomScriptOpcodeHandler)RoomScriptOpClearTileActorFlagBit,
     [RSOP_ShowRoomDialog] = (RoomScriptOpcodeHandler)RoomScriptOpShowRoomDialog,

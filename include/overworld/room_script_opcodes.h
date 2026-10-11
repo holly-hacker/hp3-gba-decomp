@@ -5,8 +5,8 @@
 // Room-script opcode handlers, indexed by g_apRoomScriptOpcodeHandlers.
 struct DespawnTileActorRecord;
 void RoomScriptOpDespawnTileActor(struct DespawnTileActorRecord *pRecord);
-struct Op2Record;
-void RoomScriptOp2(struct Op2Record *pRecord);
+struct SetTileActorMoveSpeedRecord;
+void RoomScriptOpSetTileActorMoveSpeed(struct SetTileActorMoveSpeedRecord *pRecord);
 struct SetTileActorFlagBitRecord;
 void RoomScriptOpSetTileActorFlagBit(struct SetTileActorFlagBitRecord *pRecord);
 struct ClearTileActorFlagBitRecord;

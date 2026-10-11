@@ -297,7 +297,7 @@ Room05V1Chain11:
     QueueTileActorMove Room05V1Group7_id, 0, 0, 0, 1500, 1
     DelayedRespawnRowAndRunChain 0, Room05V1Group14_id, 0
     QueueTileActorMove Room05V1Group14_id, 0, 0, 0, 1500, 1
-    Unk02 Room05V1Group14_id, 0, 3
+    SetTileActorMoveSpeed Room05V1Group14_id, 0, 3
     StartTileActorScript 338, 230, 0, Room05V1Group14_id, 0, 0, 0, 0, 255, 255, 255
     SetTileActorFacing Room05V1Group14_id, 0, 0
     @ "None of us is hiding Sirius Black under our cloaks! Go!"
@@ -335,7 +335,7 @@ Room05V1Chain12:
     ShowRoomDialog 157
     PlaySoundById 22
     QueueTileActorMove Room05V1Group14_id, 0, 0, 0, 1500, 1
-    Unk02 Room05V1Group14_id, 0, 3
+    SetTileActorMoveSpeed Room05V1Group14_id, 0, 3
     StartTileActorScript 338, 230, 0, Room05V1Group14_id, 0, 0, 0, 0, 255, 255, 255
     SetTileActorFacing Room05V1Group14_id, 0, 0
     @ "None of us is hiding Sirius Black under our cloaks! Go!"

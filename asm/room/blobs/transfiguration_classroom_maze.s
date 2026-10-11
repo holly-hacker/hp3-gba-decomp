@@ -173,8 +173,8 @@ Room04V1Chain7:
     End
 Room04V1Chain8:
     CancelActorAnimSequence 0, 255
-    Unk02 Room04V1Group1_id, 1, 3
-    Unk02 Room04V1Group1_id, 0, 3
+    SetTileActorMoveSpeed Room04V1Group1_id, 1, 3
+    SetTileActorMoveSpeed Room04V1Group1_id, 0, 3
     StartActorAnimSequence Room04V1Group1_id, 0, 0, 0, Room04V1Route0_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room04V1Group1_id, 1, 0, 0, Room04V1Route1_id, 0, 1, 0, 0, 0
     SetQuestState 23, 5

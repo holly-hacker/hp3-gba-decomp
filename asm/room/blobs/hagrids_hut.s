@@ -229,7 +229,7 @@ Room11V1Chain5:
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
     SetTileActorFacing Room11V1Group3_id, 0, 4
     QueueTileActorMove 0, 255, 0, 0, 1200, 0
-    Unk02 Room11V1Group4_id, 0, 2
+    SetTileActorMoveSpeed Room11V1Group4_id, 0, 2
     InvokeChainIfEnabled 0, Room11V1Chain6_id
     End
 Room11V1Chain6:
@@ -292,7 +292,7 @@ Room11V1Chain14:
 Room11V1Chain15:
     ArmChainYield 1
     RespawnRowAndRunChain Room11V1Group9_id, 0
-    Unk02 Room11V1Group9_id, 0, 3
+    SetTileActorMoveSpeed Room11V1Group9_id, 0, 3
     ArmChainYield 0
     StartActorAnimSequence Room11V1Group9_id, 0, 0, 0, Room11V1Route17_id, 0, 1, 0, 0, 0
     End

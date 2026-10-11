@@ -371,8 +371,8 @@ Room24V1Chain7:
     @ "Could you help us find her?"
     @ "That I shall, milady, and verily so!"
     ShowRoomDialog 376
-    Unk02 0, 255, 3
-    Unk02 Room24V1Group3_id, 2, 2
+    SetTileActorMoveSpeed 0, 255, 3
+    SetTileActorMoveSpeed Room24V1Group3_id, 2, 2
     ArmChainYield 0
     RespawnRowAndRunChain 0, Room24V1Chain10_id
     End
@@ -409,8 +409,8 @@ Room24V1Chain14:
 Room24V1Chain15:
     RespawnRowAndRunChain Room24V1Group5_id, 0
     RespawnRowAndRunChain Room24V1Group4_id, 0
-    Unk02 Room24V1Group4_id, 1, 6
-    Unk02 Room24V1Group4_id, 0, 6
+    SetTileActorMoveSpeed Room24V1Group4_id, 1, 6
+    SetTileActorMoveSpeed Room24V1Group4_id, 0, 6
     End
 Room24V1Chain16:
     PlaySoundById 52

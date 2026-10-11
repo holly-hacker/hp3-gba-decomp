@@ -122,7 +122,7 @@ Room43V1Chain2:
     CancelActorAnimSequence 0, 255
     RemovePartyFollower 6
     RespawnRowAndRunChain Room43V1Group2_id, 0
-    Unk02 Room43V1Group2_id, 0, 2
+    SetTileActorMoveSpeed Room43V1Group2_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room43V1Route0_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room43V1Group2_id, 0, 0, 0, Room43V1Route1_id, 0, 1, 0, 0, 0
@@ -145,7 +145,7 @@ Room43V1Chain4:
 Room43V1Chain5:
     ArmChainYield 1
     SetTileActorFacing Room43V1Group3_id, 1, 0
-    Unk02 Room43V1Group3_id, 1, 1
+    SetTileActorMoveSpeed Room43V1Group3_id, 1, 1
     @ "Where is he, Sirius? Where is Peter Pettigrew?"
     @ "Over there..."
     ShowRoomDialog 573
@@ -194,7 +194,7 @@ Room43V1Chain7:
 Room43V1Chain8:
     ArmChainYield 1
     CancelActorAnimSequence 0, 255
-    Unk02 Room43V1Group3_id, 1, 2
+    SetTileActorMoveSpeed Room43V1Group3_id, 1, 2
     ArmChainYield 0
     StartActorAnimSequence Room43V1Group3_id, 1, 0, 0, Room43V1Route2_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room43V1Group3_id, 1, 0, 0, 800, 0

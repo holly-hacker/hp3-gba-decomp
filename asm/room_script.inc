@@ -97,7 +97,7 @@
 @ include/overworld/room_script_bytecode.h.
 .set RSOP_End, 0
 .set RSOP_DespawnTileActor, 1
-.set RSOP_Unk02, 2
+.set RSOP_SetTileActorMoveSpeed, 2
 .set RSOP_SetTileActorFlagBit, 3
 .set RSOP_ClearTileActorFlagBit, 4
 .set RSOP_ShowRoomDialog, 5
@@ -197,8 +197,8 @@
     .byte RSOP_DespawnTileActor, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
-.macro Unk02 group, member, value
-    .byte RSOP_Unk02, 0, 0, 0, (\group), (\member), (((\value) >> 0) & 0xFF), (((\value) >> 8) & 0xFF)
+.macro SetTileActorMoveSpeed group, member, speed
+    .byte RSOP_SetTileActorMoveSpeed, 0, 0, 0, (\group), (\member), (((\speed) >> 0) & 0xFF), (((\speed) >> 8) & 0xFF)
 .endm
 
 .macro SetTileActorFlagBit group, member, bit

@@ -195,7 +195,7 @@ Room06V1Chain7:
     @ "What's going on? Why's the train stopped?"
     ShowRoomDialog 111
     StartTileActorScript 170, 147, 0, 0, 255, 0, 0, 4, 255, 255, 255
-    Unk02 Room06V1Group9_id, 0, 2
+    SetTileActorMoveSpeed Room06V1Group9_id, 0, 2
     ArmChainYield 0
     StartActorAnimSequence Room06V1Group9_id, 0, 0, 0, Room06V1Route0_id, 0, 1, 0, 0, 0
     SetQuestState 0, 8
