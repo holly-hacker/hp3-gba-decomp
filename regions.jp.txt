@@ -2096,52 +2096,52 @@ c-file-O1 0x0804A174 _ src/eeprom/eeprom_nowait.c EepromNoWait
 asm-file 0x0804A1EC _ asm/rt/call_via_rX.s              _call_via_r0
 asm-file 0x0804A228 _ asm/rt/divsi3.s                   __divsi3
 asm-file 0x0804A2BC 0x0804A2C0 asm/rt/div0.s                    __div0
-thumb-func 0x0804A2C0 sub_0804A394
+thumb-func 0x0804A2C0 __modsi3
 asm-file 0x0804A390 _ asm/rt/udivsi3.s                 __udivsi3
 asm-file 0x0804A408 0x0804A4C8 asm/rt/umodsi3.s                 __umodsi3
-thumb-func 0x0804A4C8 sub_0804A59C
-thumb-func 0x0804A610 sub_0804A6E4
-thumb-func 0x0804A6E8 sub_0804A7BC
-thumb-func 0x0804A954 sub_0804AA28
-thumb-func 0x0804A984 sub_0804AA58
-thumb-func 0x0804A9BC sub_0804AA90
-thumb-func 0x0804AC64 sub_0804AD38
-thumb-func 0x0804ADEC sub_0804AEC0
-thumb-func 0x0804AEEC sub_0804AFC0
-thumb-func 0x0804AF18 sub_0804AFEC
-thumb-func 0x0804AF64 sub_0804B038
-thumb-func 0x0804AFB0 sub_0804B084
-thumb-func 0x0804AFFC sub_0804B0D0
-thumb-func 0x0804B048 sub_0804B11C
-thumb-func 0x0804B094 sub_0804B168
-thumb-func 0x0804B0E0 sub_0804B1B4
-thumb-func 0x0804B15C sub_0804B230
-thumb-func 0x0804B1D0 sub_0804B2A4
-thumb-func 0x0804B1F8 sub_0804B2CC
-thumb-func 0x0804B220 sub_0804B2F4
-thumb-func 0x0804B264 sub_0804B338
-thumb-func 0x0804B31C sub_0804B3F0
-thumb-func 0x0804B398 sub_0804B46C
-thumb-func 0x0804B514 sub_0804B5E8
-thumb-func 0x0804B540 sub_0804B614
-thumb-func 0x0804B574 sub_0804B648
-thumb-func 0x0804B6D8 sub_0804B7AC
-thumb-func 0x0804B7C4 sub_0804B898
-thumb-func 0x0804B8A8 sub_0804B97C
-thumb-func 0x0804B8D0 sub_0804B9A4
-thumb-func 0x0804B918 sub_0804B9EC
-thumb-func 0x0804B960 sub_0804BA34
-thumb-func 0x0804B9A8 sub_0804BA7C
-thumb-func 0x0804B9F0 sub_0804BAC4
-thumb-func 0x0804BA38 sub_0804BB0C
-thumb-func 0x0804BA80 sub_0804BB54
-thumb-func 0x0804BAE0 sub_0804BBB4
-thumb-func 0x0804BB48 sub_0804BC1C
-thumb-func 0x0804BB6C sub_0804BC40
-thumb-func 0x0804BB84 sub_0804BC58
-thumb-func 0x0804BBB0 sub_0804BC84
-thumb-func 0x0804BBE4 sub_0804BCB8
-thumb-func 0x0804BC54 sub_0804BD28
+thumb-func 0x0804A4C8 __pack_d
+thumb-func 0x0804A610 __unpack_d
+thumb-func 0x0804A6E8 _fpadd_parts_d
+thumb-func 0x0804A954 __adddf3
+thumb-func 0x0804A984 __subdf3
+thumb-func 0x0804A9BC __muldf3
+thumb-func 0x0804AC64 __divdf3
+thumb-func 0x0804ADEC __fpcmp_parts_d
+thumb-func 0x0804AEEC __cmpdf2
+thumb-func 0x0804AF18 __eqdf2
+thumb-func 0x0804AF64 __nedf2
+thumb-func 0x0804AFB0 __gtdf2
+thumb-func 0x0804AFFC __gedf2
+thumb-func 0x0804B048 __ltdf2
+thumb-func 0x0804B094 __ledf2
+thumb-func 0x0804B0E0 __floatsidf
+thumb-func 0x0804B15C __fixdfsi
+thumb-func 0x0804B1D0 __negdf2
+thumb-func 0x0804B1F8 __make_dp
+thumb-func 0x0804B220 __truncdfsf2
+thumb-func 0x0804B264 __pack_f
+thumb-func 0x0804B31C __unpack_f
+thumb-func 0x0804B398 _fpadd_parts_f
+thumb-func 0x0804B514 __addsf3
+thumb-func 0x0804B540 __subsf3
+thumb-func 0x0804B574 __mulsf3
+thumb-func 0x0804B6D8 __divsf3
+thumb-func 0x0804B7C4 __fpcmp_parts_f
+thumb-func 0x0804B8A8 __cmpsf2
+thumb-func 0x0804B8D0 __eqsf2
+thumb-func 0x0804B918 __nesf2
+thumb-func 0x0804B960 __gtsf2
+thumb-func 0x0804B9A8 __gesf2
+thumb-func 0x0804B9F0 __ltsf2
+thumb-func 0x0804BA38 __lesf2
+thumb-func 0x0804BA80 __floatsisf
+thumb-func 0x0804BAE0 __fixsfsi
+thumb-func 0x0804BB48 __negsf2
+thumb-func 0x0804BB6C __make_fp
+thumb-func 0x0804BB84 __extendsfdf2
+thumb-func 0x0804BBB0 __lshrdi3
+thumb-func 0x0804BBE4 __muldi3
+thumb-func 0x0804BC54 __negdi2
 
 # newlib, compiled from source by `just compile-c` (docs/compiler.md)
 c-file 0x0804BC6C _ src/libc/bzero.c  bzero
