@@ -36,6 +36,6 @@ void InitializeFolioCardDetailScreen(void)
     LoadEmbeddedPalette_candidate((u8 *)gFolioCardDetailBg3Graphic, 0, 3);
     SetTextTargetFromBgControl(g_dwFolioCardDetailBg1Control);
     DrawFolioCardDetailText();
-    SpawnFolioCardObject(g_GameModeStackContext.dwCurrentGameModeArg2, 0x73, 0x18);
+    SpawnFolioCardActor(g_GameModeStackContext.dwCurrentGameModeArg2, 0x73, 0x18);
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

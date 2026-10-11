@@ -17,7 +17,7 @@ const ListMenuEntry g_aConnectivityOwlCareEntries[2] = {
     { OwlCareMinigame,    0x539, 0, 1 },  // "Owl Care Kit"
 };
 
-const ListMenuRowObject g_aConnectivityRowObjects[2] = {
+const ListMenuRowActor g_aConnectivityRowActors[2] = {
     { (void *)gInGameMenuIconConnectivityTiles, (void *)gInGameMenuIconConnectivityFrames, (const ObjPalette *)gInGameMenuIconConnectivityPalette, 0 },
     { (void *)gInGameMenuIconConnectivityTiles, (void *)gInGameMenuIconConnectivityFrames, (const ObjPalette *)gInGameMenuIconConnectivityPalette, 0 },
 };
@@ -30,10 +30,10 @@ const ListMenuDefinition g_ConnectivityMenuTemplate = {
     72, 26,
     0, 16,
     g_aConnectivityGameCubeEntries,
-    ARRAY_COUNT(g_aConnectivityRowObjects),
+    ARRAY_COUNT(g_aConnectivityRowActors),
     0,
     -32, 0,
-    g_aConnectivityRowObjects,
+    g_aConnectivityRowActors,
     -50, 8,
 };
 

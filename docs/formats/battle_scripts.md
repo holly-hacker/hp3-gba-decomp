@@ -10,9 +10,9 @@ against `gbadisasm`'s own independent disassembly, plus a built,
 byte-exact extraction/pack round-trip -- `just compare us` passes with
 the pipeline below wired in). Opcode *semantics* are worked out for 44 of
 the ~168 possible opcodes (`End`, `Label`, `StatusEffect` with all 29 of its
-own sub-cases named, the 3-opcode `Wait` family, `MoveTo`, `SetObjectAnim`,
-`PlaySound`, `SpawnEffect`/`SpawnEffectDetached`, `ToggleObjectFlipX`,
-`TeleportToSlotPosition`, `HideObject`, `ShowObject`,
+own sub-cases named, the 3-opcode `Wait` family, `MoveTo`, `SetActorAnim`,
+`PlaySound`, `SpawnEffect`/`SpawnEffectDetached`, `ToggleActorFlipX`,
+`TeleportToSlotPosition`, `HideActor`, `ShowActor`,
 `SetEnemiesOamPriority`/`SetAlliesOamPriority`, `JitterPosition`, `Goto`,
 `TeleportTo`, `QueueScanlineEffect`, `SetBgPriority`,
 `PlaySoundOrDefault`, `DarkenScreenPalette`, `RestoreScreenPalette`,
@@ -26,12 +26,12 @@ scripts -- see "What's NOT yet known".
 ## What this is
 
 A bytecode VM that drives per-`Actor` behavior scripts, reached via
-`TickActor`'s generic callback dispatch for any object whose
+`TickActor`'s generic callback dispatch for any actor whose
 tick callback happens to be the script interpreter.
 
-**Battle-only, structurally.** `CreateEffectScriptObject` (`0x08018BE0`)
-is the only function that points a new object's `pfnTick` at
-`InterpretObjectScript`, and it directly indexes `g_pFightState->
+**Battle-only, structurally.** `CreateEffectScriptActor` (`0x08018BE0`)
+is the only function that points a new actor's `pfnTick` at
+`InterpretActorScript`, and it directly indexes `g_pFightState->
 pFighters[...]`. Its only caller, `TriggerBattleEffect` (`0x08018B70`),
 is called exclusively from the documented battle range `0x08015000`-
 `0x08018000` (`RollMonsterSpecialEffect`, `ExecutePlayerAttackSequence`,
@@ -39,7 +39,7 @@ is called exclusively from the documented battle range `0x08015000`-
 [`../memory-map/battle.md`](../memory-map/battle.md)). The only other
 xrefs to the interpreter's entry address are `WaitFramesTick`/
 `WaitForCounterTick`/`WaitForFieldClearTick` restoring `pfnTick` on an
-already-running script object, not new spawns. Consistent with
+already-running script actor, not new spawns. Consistent with
 the 65 effect scripts (`src/battle/effect_scripts/`) all reading as combat content (spells,
 monster attacks, `SpecialHarry`/`SpecialRon` abilities). Static xref
 trace, exhaustive for direct references but not a runtime trace -- see
@@ -48,11 +48,11 @@ is one in-battle consumer among the rest.
 
 ## The interpreter
 
-**`InterpretObjectScript`** (US `0x08018CC0`-`0x0801AE14`, Thumb,
-8532 bytes, matching C in `src/battle/interpret_object_script.c`) is **one function**, reached via `Actor+0x98` (field
+**`InterpretActorScript`** (US `0x08018CC0`-`0x0801AE14`, Thumb,
+8532 bytes, matching C in `src/battle/interpret_actor_script.c`) is **one function**, reached via `Actor+0x98` (field
 `pfnTick`), a generic per-tick callback pointer set by `FUN_08018be0`
-(US `0x08018BE0`) when it spawns a script object
-(`Actor+0x62 = effectId`, `Actor+0x98 = InterpretObjectScript`).
+(US `0x08018BE0`) when it spawns a script actor
+(`Actor+0x62 = effectId`, `Actor+0x98 = InterpretActorScript`).
 `TickActor` calls that pointer every tick.
 
 Before its first opcode fetch, the real entry (`0x08018CC0`) also sets up
@@ -78,10 +78,10 @@ function; `gbadisasm` labels `0x08018CF8` only because those `bl`s target it.
 
 Per opcode:
 
-1. Reads the opcode byte from `g_apEffectScripts[obj->bScriptEffectId]`
-   at offset `obj->wScriptPC` (`Actor` fields `0x62`/`0x60`).
+1. Reads the opcode byte from `g_apEffectScripts[actor->bScriptEffectId]`
+   at offset `actor->wScriptPC` (`Actor` fields `0x62`/`0x60`).
    `wScriptPC`'s low byte (`Actor+0x60`) is reused for an unrelated purpose
-   once script execution for that object finishes: the same byte is what
+   once script execution for that actor finishes: the same byte is what
    `TickPlayerActionState` and `TickFighterAttackAnimState_candidate`
    read/write as a small attack-outcome state counter (see `opcode_30` below
    and [`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)'s
@@ -89,12 +89,12 @@ Per opcode:
    overlap confirmed from both sides, not a struct-offset error.
 2. Copies the opcode byte plus its operand bytes (count from
    `g_abScriptOpcodeLengths`, see below) into a stack buffer.
-3. Advances `obj->wScriptPC` past the instruction.
+3. Advances `actor->wScriptPC` past the instruction.
 4. Bounds-checks the opcode against `0xA7`; opcodes above that are skipped
    (the `switch` falls out to the loop tail, `0x0801ADFA`).
 5. Dispatches via `g_apScriptOpcodeCaseTable` (US `0x08018D64`, `code*[168]`,
    entries `0x00`-`0xA7`) -- a computed jump, **not** separate
-   functions. All 168 targets are labels inside `InterpretObjectScript`
+   functions. All 168 targets are labels inside `InterpretActorScript`
    itself, and `gbadisasm` confirms this independently: its output
    emits the table as real, labeled data (`_08018D64: @ jump table`,
    each entry commented `@ case N`), not raw undecoded bytes -- so there
@@ -109,8 +109,8 @@ function. `movs r5,#0; cmp r5,#0; bne epilogue; bl 0x08018CF8` is the
 equivalent constant), followed by the jump back to the opcode fetch.
 Unused opcodes (`0x14`, `0x15`, `0x3A`, `0x3F`, `0x40`, `0x60`, `0x66`,
 `0x6D`, `0x6E`, `0xA1`) have no code of their own and land here.
-**A single external call into `InterpretObjectScript` executes opcodes
-until one returns** (the `Wait` family, `0x7D`), which hand the object to
+**A single external call into `InterpretActorScript` executes opcodes
+until one returns** (the `Wait` family, `0x7D`), which hand the actor to
 a tick handler and return through the real epilogue (`0x0801AE04`).
 
 Compiler-shaped details in the C: several finishing tails are shared by
@@ -167,50 +167,50 @@ the opcode header" below:
 | Opcode | Name | Operand bytes | Meaning |
 |---|---|---|---|
 | `0x00` | `End` | 0 | Terminates the script. Every one of the 65 scripts' last instruction is `End`, and nothing after it is ever reached -- confirmed by the same walk that validated the length table. |
-| `0x01` | `SetObjectAnim` | 2 (table index, frame offset) | Calls `SetActorAnimData(self, animTable + index*16, frameTable + index*226, frameOffset)` -- `SetActorAnimData` (US `0x080018D8`) is an already-named function taking exactly this 4-argument shape. `animTable`/`frameTable` are two fixed base addresses (`0x08053E64` `g_aEffectAnimAssets`/`0x08054FE2`) read from the handler's own literal pool; `index` (operand 0) selects a 16-byte row from the first and a 226-byte row from the second. Handler at US `0x08019016`. Opcode `0x02` (not otherwise investigated) shares nearly identical code immediately after this handler in memory, plus one extra call -- likely a close sibling. |
+| `0x01` | `SetActorAnim` | 2 (table index, frame offset) | Calls `SetActorAnimData(self, animTable + index*16, frameTable + index*226, frameOffset)` -- `SetActorAnimData` (US `0x080018D8`) is an already-named function taking exactly this 4-argument shape. `animTable`/`frameTable` are two fixed base addresses (`0x08053E64` `g_aEffectAnimAssets`/`0x08054FE2`) read from the handler's own literal pool; `index` (operand 0) selects a 16-byte row from the first and a 226-byte row from the second. Handler at US `0x08019016`. Opcode `0x02` (not otherwise investigated) shares nearly identical code immediately after this handler in memory, plus one extra call -- likely a close sibling. |
 | `0x06` | `PlaySound` | 1 (sound id) | `PlaySoundById(soundId)` -- a direct, single-argument call to the already-named `PlaySoundById` (US `0x0803FC68`). Handler at US `0x0801ADDC`, placed among the interpreter's tail-shared code rather than near the other low-numbered opcodes' handlers. Also reached by `PlaySoundOrDefault` (`0xA4` below) via a shared branch. |
-| `0x08` | `WaitFrames` | 1 (frame count) | Sets `Actor+0x8a = frameCount` (u16 target), zeroes `Actor+0x80` (u16 elapsed), points `Actor.pfnTick` at `WaitFramesTick` (US `0x0801B650`, not discovered by `gbadisasm` -- see "The Wait family" below), and **returns from `InterpretObjectScript`** -- the first case confirmed to actually reach `InterpretObjectScript`'s real epilogue (`0x0801AE04`) instead of continuing the loop, resolving that open question. Handler dispatch at US `0x08019128`. |
-| `0x09` | `WaitForCounter` | 0 | Waits for `Actor+0xdc` (an externally-driven byte, not written by this opcode) to advance past its value at the moment this opcode ran, or for `Actor+0xc` bit `0x40000` to be set (early abort) -- either condition restores `pfnTick` to `InterpretObjectScript`. Tick handler `WaitForCounterTick` (US `0x0801B684`). Handler dispatch at US `0x0801914C`. |
-| `0x0A` | `WaitForFieldClear` | 0 | Waits while `Actor+0x14` (u16) is nonzero (and at least one tick has elapsed), then restores `pfnTick` **and calls `InterpretObjectScript` immediately** (via `ThumbInterworkVeneer_bx_r1`, US `0x0804A2C4` -- see "The Wait family" below) -- unlike its two siblings, this resumes the script the same frame the wait ends. Tick handler `WaitForFieldClearTick` (US `0x0801B6D0`). Handler dispatch at US `0x08019168`. |
-| `0x0C` | `MoveTo` | 5 | Computes a target position -- either from a per-fighter-slot table (`0x08053D2A`/`0x08053D38`, the same tables `TeleportToSlotPosition` reads) or from `sub_0801B620`'s query (a small fallback returning one of 3 fixed screen-coordinate pairs, `(0xB0,0x72)`/`(0x30,0x50)`/`(0x40,0x50)`, keyed on global byte `DAT_03002771` -- candidate: a battle-phase/dialog-state indicator, not identified further), offset by two signed operand bytes -- optionally applies a repeated per-generation offset (`bScriptLocalA` iterations of `sub_08001AA8`, gated by operand 4, which forwards to `sub_08001F98(obj, *(r8+4)->animDescriptor+4, ...)` -- i.e. an offset drawn from `r8`'s linked `Actor`'s current animation data, see "The interpreter" above for `r8`), then calls `StartActorMove` (US `0x08001A84`) with the result and operand 2 as the duration. Handler at US `0x08019184`. `WaitForFieldClear` is how a script waits for this to finish -- see "The Wait family" above. |
-| `0x0E` | `SpawnEffectDetached` | 1 (effect id) | `CreateEffectScriptObject(effectId, 0)` -- same call `SpawnEffect` (`0x0F`) makes, but with `attachToParent = 0` instead of `1`; what that parameter actually changes in `CreateEffectScriptObject` isn't traced here. Handler at US `0x08019236`. One of exactly 5 opcode handlers that call `CreateEffectScriptObject` (`0x0E`, `0x0F`, `0x11`, `0x13`, `0x16`, confirmed via `get_xrefs_to`; see "The script-local bytes" below for the spawn-time `bScriptLocalA`/`bScriptLocalB` copy-and-increment all 5 trigger) -- the other 3 (`0x11`, `0x13`, `0x16`) aren't individually named yet. |
-| `0x0F` | `SpawnEffect` | 1 (effect id) | `CreateEffectScriptObject(effectId, 1)` -- see `SpawnEffectDetached` (`0x0E`) immediately above for the sibling family member and the full 5-opcode spawn family. 155 real-script occurrences, the 3rd most-used opcode overall. `CreateEffectScriptObject` (US `0x08018BE0`) is an already-named function; the returned child `Actor*` is passed into the shared spawn-copy tail (US `0x08019320`, not traced further here). Handler at US `0x08019244`. |
-| `0x17` | `ToggleObjectFlipX` | 0 | Toggles the running object's horizontal-flip state: `SetActorFlippedX(self, !IsActorFlippedX(self))`. Both are already-named functions (US `0x08003708`/`0x08003928`) that branch on `Actor+0xD1 & 3` (a rendering-mode selector, `0` = plain sprite, nonzero = a multi-cell/affine object): in plain mode the flip is a single bit (`0x10`) of `Actor+0xD3`; in the other mode `SetActorFlippedX` negates `Actor+0xEC` (the object's affine/scale-style X parameter, set up by the same helper `StartOrbitMotion`'s neighbors use for cell placement) and re-issues the affine setup call. Traced end-to-end to a real consumer: `WriteActorOamCells` (US `0x08002C18`) reads `Actor+0xEC` at entry and multiplies it against each sub-cell's stored X-offset to compute that cell's on-screen X position, before handing the result to `QueueOamEntry`/`SubmitOamAttrsNudged` (US `0x0802FFA0`/`0x0802FEAC`), which write it into `g_pOamShadowBuffer` (`0x03003FE8`) -- an 8-byte-stride, double-buffered (`+0x0`/`+0x400`) shadow copy of real GBA OAM, matching hardware OAM's exact size (`128 * 8 = 0x400` bytes). Negating a per-cell X-scale multiplier this way is the standard technique for mirroring a multi-cell/affine sprite horizontally on hardware that has no affine H-flip attribute bit -- confirmed by data flow through to the OAM write, not by watching it render. Handler at US `0x0801934C`. |
+| `0x08` | `WaitFrames` | 1 (frame count) | Sets `Actor+0x8a = frameCount` (u16 target), zeroes `Actor+0x80` (u16 elapsed), points `Actor.pfnTick` at `WaitFramesTick` (US `0x0801B650`, not discovered by `gbadisasm` -- see "The Wait family" below), and **returns from `InterpretActorScript`** -- the first case confirmed to actually reach `InterpretActorScript`'s real epilogue (`0x0801AE04`) instead of continuing the loop, resolving that open question. Handler dispatch at US `0x08019128`. |
+| `0x09` | `WaitForCounter` | 0 | Waits for `Actor+0xdc` (an externally-driven byte, not written by this opcode) to advance past its value at the moment this opcode ran, or for `Actor+0xc` bit `0x40000` to be set (early abort) -- either condition restores `pfnTick` to `InterpretActorScript`. Tick handler `WaitForCounterTick` (US `0x0801B684`). Handler dispatch at US `0x0801914C`. |
+| `0x0A` | `WaitForFieldClear` | 0 | Waits while `Actor+0x14` (u16) is nonzero (and at least one tick has elapsed), then restores `pfnTick` **and calls `InterpretActorScript` immediately** (via `ThumbInterworkVeneer_bx_r1`, US `0x0804A2C4` -- see "The Wait family" below) -- unlike its two siblings, this resumes the script the same frame the wait ends. Tick handler `WaitForFieldClearTick` (US `0x0801B6D0`). Handler dispatch at US `0x08019168`. |
+| `0x0C` | `MoveTo` | 5 | Computes a target position -- either from a per-fighter-slot table (`0x08053D2A`/`0x08053D38`, the same tables `TeleportToSlotPosition` reads) or from `sub_0801B620`'s query (a small fallback returning one of 3 fixed screen-coordinate pairs, `(0xB0,0x72)`/`(0x30,0x50)`/`(0x40,0x50)`, keyed on global byte `DAT_03002771` -- candidate: a battle-phase/dialog-state indicator, not identified further), offset by two signed operand bytes -- optionally applies a repeated per-generation offset (`bScriptLocalA` iterations of `sub_08001AA8`, gated by operand 4, which forwards to `sub_08001F98(actor, *(r8+4)->animDescriptor+4, ...)` -- i.e. an offset drawn from `r8`'s linked `Actor`'s current animation data, see "The interpreter" above for `r8`), then calls `StartActorMove` (US `0x08001A84`) with the result and operand 2 as the duration. Handler at US `0x08019184`. `WaitForFieldClear` is how a script waits for this to finish -- see "The Wait family" above. |
+| `0x0E` | `SpawnEffectDetached` | 1 (effect id) | `CreateEffectScriptActor(effectId, 0)` -- same call `SpawnEffect` (`0x0F`) makes, but with `attachToParent = 0` instead of `1`; what that parameter actually changes in `CreateEffectScriptActor` isn't traced here. Handler at US `0x08019236`. One of exactly 5 opcode handlers that call `CreateEffectScriptActor` (`0x0E`, `0x0F`, `0x11`, `0x13`, `0x16`, confirmed via `get_xrefs_to`; see "The script-local bytes" below for the spawn-time `bScriptLocalA`/`bScriptLocalB` copy-and-increment all 5 trigger) -- the other 3 (`0x11`, `0x13`, `0x16`) aren't individually named yet. |
+| `0x0F` | `SpawnEffect` | 1 (effect id) | `CreateEffectScriptActor(effectId, 1)` -- see `SpawnEffectDetached` (`0x0E`) immediately above for the sibling family member and the full 5-opcode spawn family. 155 real-script occurrences, the 3rd most-used opcode overall. `CreateEffectScriptActor` (US `0x08018BE0`) is an already-named function; the returned child `Actor*` is passed into the shared spawn-copy tail (US `0x08019320`, not traced further here). Handler at US `0x08019244`. |
+| `0x17` | `ToggleActorFlipX` | 0 | Toggles the running actor's horizontal-flip state: `SetActorFlippedX(self, !IsActorFlippedX(self))`. Both are already-named functions (US `0x08003708`/`0x08003928`) that branch on `Actor+0xD1 & 3` (a rendering-mode selector, `0` = plain sprite, nonzero = a multi-cell/affine actor): in plain mode the flip is a single bit (`0x10`) of `Actor+0xD3`; in the other mode `SetActorFlippedX` negates `Actor+0xEC` (the actor's affine/scale-style X parameter, set up by the same helper `StartOrbitMotion`'s neighbors use for cell placement) and re-issues the affine setup call. Traced end-to-end to a real consumer: `WriteActorOamCells` (US `0x08002C18`) reads `Actor+0xEC` at entry and multiplies it against each sub-cell's stored X-offset to compute that cell's on-screen X position, before handing the result to `QueueOamEntry`/`SubmitOamAttrsNudged` (US `0x0802FFA0`/`0x0802FEAC`), which write it into `g_pOamShadowBuffer` (`0x03003FE8`) -- an 8-byte-stride, double-buffered (`+0x0`/`+0x400`) shadow copy of real GBA OAM, matching hardware OAM's exact size (`128 * 8 = 0x400` bytes). Negating a per-cell X-scale multiplier this way is the standard technique for mirroring a multi-cell/affine sprite horizontally on hardware that has no affine H-flip attribute bit -- confirmed by data flow through to the OAM write, not by watching it render. Handler at US `0x0801934C`. |
 | `0x1C` | `TeleportToSlotPosition` | 1 (generation-offset count) | Self-targeted, immediate counterpart to `MoveFighterToSlotPosition` (`0x7B` below): looks up `x`/`y` from the same per-fighter-slot tables (`0x08053D2A`/`0x08053D38`, indexed by the byte at global `0x03002770`), optionally adds a repeated per-generation offset (`operand - 1` iterations of `sub_08001AA8`, gated on `operand != 0` -- the same offset mechanism `MoveTo` uses), then calls `SetActorPosition(self, x, y)` -- **an immediate teleport, not an animated move**: `SetActorPosition` (US `0x080019B0`, already named) writes both the current position (`Actor+0x2c`/`0x30`) and the previous position (`Actor+0x34`/`0x38`) to the same value in one call, so there's no interpolation to animate. Handler at US `0x08019402`. |
 | `0x20` | `SetLocal` | 2 (index, value) | `Actor.bScriptLocal<index> = value` (see "The script-local bytes" below). Handler at US `0x080194E0`. Unconditional store, no bounds check on `index`. |
-| `0x21` | `IncrementLocal` | 1 (index) | `Actor.bScriptLocal<index> += 1`. Handler at US `0x080194F4`. **This is a same-object mutation** -- unlike the spawn-time copy (see below), this opcode changes the field on the object that's currently executing, proving the field can change across ticks of one persistent object, not just at spawn. |
+| `0x21` | `IncrementLocal` | 1 (index) | `Actor.bScriptLocal<index> += 1`. Handler at US `0x080194F4`. **This is a same-actor mutation** -- unlike the spawn-time copy (see below), this opcode changes the field on the actor that's currently executing, proving the field can change across ticks of one persistent actor, not just at spawn. |
 | `0x24` | `GotoIfLocalAEqual` | 2 (compare value, label id) | `if (Actor.bScriptLocalA == compareValue) goto Label(labelId)`, via the shared tail at `0x0801A3B2` (`FindScriptLabelOffset` + tail-call into the loop tail). Always reads index 0 specifically (offset `0x63` with no operand-driven add) -- unlike `SetLocal`/`IncrementLocal`, none of the 8 comparison opcodes below take an index operand. Handler at US `0x08019538`. |
 | `0x26` | `GotoIfLocalANotEqual` | 2 (compare value, label id) | `if (Actor.bScriptLocalA != compareValue) goto Label(labelId)` -- the complement of `GotoIfLocalAEqual`. Handler at US `0x08019570`. |
 | `0x27` | `GotoIfFighterRosterMatches` | 1 (label id) | `if (r8's linked BattleFighter's roster index (offset 0x01, per battle.md) is 58 or 59) goto Label(labelId)` -- the only two comparison values come from a **fixed engine constant** (`0x08053D28`, 2 bytes: `0x3B`,`0x3A`), not from script data, unlike every `GotoIfLocalA*` opcode. Calls `FindScriptLabelOffset` directly (not via the shared `0x0801A3B2` tail the other 9 `Goto*` opcodes use). Which characters roster indices 58/59 are isn't identified. Handler at US `0x0801958A`. |
 | `0x28` | `GotoIfLocalAEqual_2` | 2 | Byte-for-byte identical handler body to `GotoIfLocalAEqual` (`0x24`) -- confirmed by direct comparison, not just similar shape. Handler at US `0x080195B4`. No functional difference found; kept as a separate name only because it's a genuinely separate opcode number/table entry. |
 | `0x2A` | `GotoIfLocalANotEqual_2` | 2 | Byte-for-byte identical handler body to `GotoIfLocalANotEqual` (`0x26`). Handler at US `0x080195EC`. |
 | `0x2B` | `GotoIfFighterRosterMatches_2` | 1 (label id) | Byte-for-byte identical handler body to `GotoIfFighterRosterMatches` (`0x27`) (register allocation differs -- `r1` vs `r5` for the loop temp -- but the logic is identical). Never used by any of the 65 real scripts. Handler at US `0x08019606`. |
-| `0x30` | `AdvanceAttackOutcome` | 0 | The single most-used opcode across the 65 real scripts (190 occurrences), but not confidently named -- what it's for isn't known, only its mechanics. Reads `sl`'s linked `BattleFighter`'s `Actor` (`*(sl+4)`, via the same `fighters[]` array/72-byte-stride lookup documented in "The interpreter" above), increments a byte at that `Actor+0x60` by 1, then mirrors state into the global `FightState` (`*(0x030024E8)`, see [`../memory-map/battle.md`](../memory-map/battle.md)): copies the `*(sl's Actor)+0x60` byte (post-increment) into `FightState.field_0x1058`, and latches `*(sl+4)` (the `Actor` pointer itself) into `FightState.field_0x1054`, guarded on that field being currently `0` (a "first writer wins" latch). No other effect -- tail-calls the loop tail immediately. Handler at US `0x08019698`. Real scripts call it in tight, `Wait`-free bursts (e.g. `SpellVerdimilliousUno.txt` calls it twice in a row, does other work, then three more times in a row). `TickFighterAttackAnimState_candidate` (US `0x08015608`, the per-tick attack-animation state machine for the currently-attacking fighter) reads and branches on the same `Actor+0x60` byte as a small state value (checks against `1`/`2`/`4`) to steer attack-outcome handling, and zeroes `Actor+0x60` together with `FightState.field_0x1054`/`field_0x1058` once an attack sequence fully resolves -- all three fields are managed as one unit across the script interpreter and the native attack-animation code -- `sl` is CONFIRMED as the currently-attacking (caster) fighter's own object, see "The interpreter" above. Values `2`/`4` of `Actor+0x60` are written directly by that native code (this opcode only ever adds `1`). See [`../memory-map/battle.md`](../memory-map/battle.md)'s `FightState+0x1054`/`+0x1058` section for what happens (or doesn't) to the accumulated value. |
-| `0x41` | `StartOrbitMotion` | 2 (index, angle tweak) | Copies a 3-dword `{angleX/Y, velX/Y, radiusX/Y}` row (into `Actor+0x54`/`0x58`/`0x5c`) from a table at `0x08053C68` (12-byte stride, selected by operand 0) via `CopyOrbitParamsFromTable` (US `0x08003A20`), then tweaks `angleX` (`Actor+0x54`'s low 16 bits) by `Actor.bScriptLocalA * operand1` (shifted left 8, 8.8 fixed point) -- staggering each spawned generation's starting angle, e.g. to arrange copies evenly around a ring. Fully resolved: `ApplyActorOrbitMotion` (US `0x08003980`, called every tick for every object by `TickActorList`, independent of any opcode) advances `angleX`/`angleY` by `velX`/`velY`, looks up `g_anSineTable` (US `0x0806589C`) (`angleX` read with a quarter-turn phase offset, i.e. cosine; `angleY` raw), scales by `radiusX`/`radiusY`, and adds the result into `Actor+0x34`/`0x38` (`posPrev`) -- i.e. this opcode **starts a 2D orbital motion** (circular or elliptical, per-axis-configurable) around the object's current position. Handler at US `0x0801990C`. |
-| `0x45` | `StartCasterOrbitMotion` | 2 | Same computation as `StartOrbitMotion`, but targets a *different* object -- `*(sl+4)+0x54`, i.e. the caster's own linked `Actor` rather than the running `Actor` itself (see "The interpreter" above for `r8`/`sl`). Handler at US `0x080199E0`. |
-| `0x52` | `HideObject` | 0 | `Actor.dwUnk_0x0c &= ~1` on the running object itself (`r7`) -- reads the field, clears bit `0x1`, stores back, tail-calls the loop tail. Handler at US `0x08019BE8`. Complementary pair with `ShowObject` (`0x53`) immediately below it in the case table. Which behavior bit `0x1` of `Actor+0xc` actually gates isn't identified -- other known bits of this field are `0x2` (checked at `TickFighterAttackAnimState_candidate`'s entry) and `0x40000` (`WaitForCounter`'s "AnimationDone", see "The Wait family" above); bit `0x1` is distinct from both. |
-| `0x53` | `ShowObject` | 0 | `Actor.dwUnk_0x0c \|= 1` on the running object -- the complement of `HideObject` (`0x52`). Handler at US `0x08019BF6`. |
+| `0x30` | `AdvanceAttackOutcome` | 0 | The single most-used opcode across the 65 real scripts (190 occurrences), but not confidently named -- what it's for isn't known, only its mechanics. Reads `sl`'s linked `BattleFighter`'s `Actor` (`*(sl+4)`, via the same `fighters[]` array/72-byte-stride lookup documented in "The interpreter" above), increments a byte at that `Actor+0x60` by 1, then mirrors state into the global `FightState` (`*(0x030024E8)`, see [`../memory-map/battle.md`](../memory-map/battle.md)): copies the `*(sl's Actor)+0x60` byte (post-increment) into `FightState.field_0x1058`, and latches `*(sl+4)` (the `Actor` pointer itself) into `FightState.field_0x1054`, guarded on that field being currently `0` (a "first writer wins" latch). No other effect -- tail-calls the loop tail immediately. Handler at US `0x08019698`. Real scripts call it in tight, `Wait`-free bursts (e.g. `SpellVerdimilliousUno.txt` calls it twice in a row, does other work, then three more times in a row). `TickFighterAttackAnimState_candidate` (US `0x08015608`, the per-tick attack-animation state machine for the currently-attacking fighter) reads and branches on the same `Actor+0x60` byte as a small state value (checks against `1`/`2`/`4`) to steer attack-outcome handling, and zeroes `Actor+0x60` together with `FightState.field_0x1054`/`field_0x1058` once an attack sequence fully resolves -- all three fields are managed as one unit across the script interpreter and the native attack-animation code -- `sl` is CONFIRMED as the currently-attacking (caster) fighter's own actor, see "The interpreter" above. Values `2`/`4` of `Actor+0x60` are written directly by that native code (this opcode only ever adds `1`). See [`../memory-map/battle.md`](../memory-map/battle.md)'s `FightState+0x1054`/`+0x1058` section for what happens (or doesn't) to the accumulated value. |
+| `0x41` | `StartOrbitMotion` | 2 (index, angle tweak) | Copies a 3-dword `{angleX/Y, velX/Y, radiusX/Y}` row (into `Actor+0x54`/`0x58`/`0x5c`) from a table at `0x08053C68` (12-byte stride, selected by operand 0) via `CopyOrbitParamsFromTable` (US `0x08003A20`), then tweaks `angleX` (`Actor+0x54`'s low 16 bits) by `Actor.bScriptLocalA * operand1` (shifted left 8, 8.8 fixed point) -- staggering each spawned generation's starting angle, e.g. to arrange copies evenly around a ring. Fully resolved: `ApplyActorOrbitMotion` (US `0x08003980`, called every tick for every actor by `TickActorList`, independent of any opcode) advances `angleX`/`angleY` by `velX`/`velY`, looks up `g_anSineTable` (US `0x0806589C`) (`angleX` read with a quarter-turn phase offset, i.e. cosine; `angleY` raw), scales by `radiusX`/`radiusY`, and adds the result into `Actor+0x34`/`0x38` (`posPrev`) -- i.e. this opcode **starts a 2D orbital motion** (circular or elliptical, per-axis-configurable) around the actor's current position. Handler at US `0x0801990C`. |
+| `0x45` | `StartCasterOrbitMotion` | 2 | Same computation as `StartOrbitMotion`, but targets a *different* actor -- `*(sl+4)+0x54`, i.e. the caster's own linked `Actor` rather than the running `Actor` itself (see "The interpreter" above for `r8`/`sl`). Handler at US `0x080199E0`. |
+| `0x52` | `HideActor` | 0 | `Actor.dwUnk_0x0c &= ~1` on the running actor itself (`r7`) -- reads the field, clears bit `0x1`, stores back, tail-calls the loop tail. Handler at US `0x08019BE8`. Complementary pair with `ShowActor` (`0x53`) immediately below it in the case table. Which behavior bit `0x1` of `Actor+0xc` actually gates isn't identified -- other known bits of this field are `0x2` (checked at `TickFighterAttackAnimState_candidate`'s entry) and `0x40000` (`WaitForCounter`'s "AnimationDone", see "The Wait family" above); bit `0x1` is distinct from both. |
+| `0x53` | `ShowActor` | 0 | `Actor.dwUnk_0x0c \|= 1` on the running actor -- the complement of `HideActor` (`0x52`). Handler at US `0x08019BF6`. |
 | `0x54` | `SetOamPriority` | 1 | Sets a 2-bit field (bits `0x0C`, i.e. bits 2-3) of the byte at offset `0xD5` of the *running* `Actor` (`r7`) to `(operand & 3) << 2`: `ldrb`, mask off `0x0C`, OR in the shifted operand, `strb` back -- then tail-calls the loop tail. Handler entry at US `0x08019C02`, which tail-jumps directly into `opcode_55`'s own body (both reach the same `adds r3, #0xD5` instruction, just with `r3` pre-loaded from a different source register) -- confirming this is the exact same operation as `0x55`, just targeting `r7` instead of `r8`'s linked `Actor`. `Actor+0xD5`'s *upper* nibble is a separate, already-documented graphics-cache slot index (see `graphics.md`'s `BindObjPaletteSlot` note) -- these bits 2-3 don't overlap that nibble, but what they control isn't identified; not confidently named. Real scripts use values `0`, `1`, and `2` across this opcode and its `0x55`/`0x56`/`0x57` siblings (see those rows), so it's a genuine multi-value field, not a boolean flag. |
-| `0x55` | `SetTargetOamPriority` | 1 | Same operation as `opcode_54`, but targets `r8`'s linked `Actor` (`*(r8+4)`, see "The interpreter" above) instead of the running object. Handler at US `0x08019C0A`. |
+| `0x55` | `SetTargetOamPriority` | 1 | Same operation as `opcode_54`, but targets `r8`'s linked `Actor` (`*(r8+4)`, see "The interpreter" above) instead of the running actor. Handler at US `0x08019C0A`. |
 | `0x56` | `SetEnemiesOamPriority` | 1 | Broadcast form of `opcode_54`/`opcode_55`: loops over every entry in the `fighters[]` array (`*(0x030024E8)[4]`, 72-byte stride, up to the fighter count read from `FightState`), and for each one whose fighter-type-tag byte (offset `0x00`, per [`../memory-map/battle.md`](../memory-map/battle.md)'s `BattleFighter` layout) equals `0xFF` -- i.e. every *enemy* -- applies the identical `Actor+0xD5` bits-2-3 write (skipped if that fighter has no linked `Actor`). Handler at US `0x08019C2A`. Which behavior the bits gate is still unidentified, same caveat as `0x54`/`0x55` -- this opcode only pins down *who* it's applied to, not *what* it does. |
-| `0x57` | `SetAlliesOamPriority` | 1 | Identical loop and bit-write to `SetEnemiesOamPriority`, but the fighter-type-tag check is inverted (`!= 0xFF`) -- applies to every *non-enemy* (party) fighter instead. Handler at US `0x08019C8C`, sharing the same body shape as `0x56` one case entry later. Real call sites bracket a screen-darken effect: e.g. `SpecialHarryUltimateMp.txt` sets all enemies/allies to `2` right after `DarkenScreenPalette`, sets just the target fighter (`opcode_55`) to `1`, runs the visual effect, then resets all enemies/allies back to `1` right before `RestoreScreenPalette` -- suggestive of a per-object brightness/palette-variant selector tied to that darken effect, but not traced to an actual reader, so not folded into the name. |
-| `0x5B` | `JitterPosition` | 2 (x range, y range) | Adds a random offset to the running object's current position and applies it immediately: `x = Mt19937RandSigned(operand0)`, `y = Mt19937RandSigned(operand1)` (`Mt19937RandSigned`, US `0x0803B47C`, an already-named RNG function returning a signed value in range), added to `Actor.pos` (`+0x2c`/`0x30`), then passed to `SnapActorPosition` (US `0x080019A4` -- takes already-shifted 16.16 fixed-point coordinates and writes both the current and previous position fields to the same value, i.e. a teleport with no interpolation, the same primitive `TeleportTo`/`TeleportToSlotPosition` use). Handler at US `0x08019D70`. A screen-space jitter/shake effect. |
+| `0x57` | `SetAlliesOamPriority` | 1 | Identical loop and bit-write to `SetEnemiesOamPriority`, but the fighter-type-tag check is inverted (`!= 0xFF`) -- applies to every *non-enemy* (party) fighter instead. Handler at US `0x08019C8C`, sharing the same body shape as `0x56` one case entry later. Real call sites bracket a screen-darken effect: e.g. `SpecialHarryUltimateMp.txt` sets all enemies/allies to `2` right after `DarkenScreenPalette`, sets just the target fighter (`opcode_55`) to `1`, runs the visual effect, then resets all enemies/allies back to `1` right before `RestoreScreenPalette` -- suggestive of a per-actor brightness/palette-variant selector tied to that darken effect, but not traced to an actual reader, so not folded into the name. |
+| `0x5B` | `JitterPosition` | 2 (x range, y range) | Adds a random offset to the running actor's current position and applies it immediately: `x = Mt19937RandSigned(operand0)`, `y = Mt19937RandSigned(operand1)` (`Mt19937RandSigned`, US `0x0803B47C`, an already-named RNG function returning a signed value in range), added to `Actor.pos` (`+0x2c`/`0x30`), then passed to `SnapActorPosition` (US `0x080019A4` -- takes already-shifted 16.16 fixed-point coordinates and writes both the current and previous position fields to the same value, i.e. a teleport with no interpolation, the same primitive `TeleportTo`/`TeleportToSlotPosition` use). Handler at US `0x08019D70`. A screen-space jitter/shake effect. |
 | `0x60` | `Label` | 1 (label id) | A branch target marker, consumed by `FindScriptLabelOffset` -- not itself an executable effect. |
 | `0x61` | `Goto` | 1 (label id) | Unconditional jump: reads the operand as a label id and branches straight into the shared `0x0801A3B2` tail (`FindScriptLabelOffset` + tail-call into the loop tail) -- the same tail every `GotoIfLocalA*` comparison opcode uses, but with no comparison of its own. Handler at US `0x08019DEA`, just two instructions before the branch. |
 | `0x63` | `GotoLocalIndexedLabel` | 8 (index, then up to 7 embedded label ids) | Reads `Actor.bScriptLocal<index>`, adds `2`, and uses that as a byte offset into *its own operand bytes* to pick one of several embedded label ids, then jumps to it via the same `0x0801A3B2` tail as the other `Goto*` opcodes. In effect a value-indexed jump table baked directly into the instruction's operands. Handler at US `0x08019DF6`. Real scripts always pass index `0`. |
-| `0x7A` | `MoveFighterTo` | 3 (x, y, duration) | Like `MoveTo`, but targets `r8`'s linked `BattleFighter`'s `Actor` (`*(r8+4)`, see "The interpreter" above) instead of the running object itself -- confirmed by comparing register allocation directly against `MoveTo`'s handler, which passes `r7` (the running object) to the same `StartActorMove` call where this opcode passes `r0 = *(r8+4)`. Reads all 3 operand bytes directly as `x`, `y` (each `<<16`, i.e. the operand is the fixed-point integer part) and `duration`, with no offset/lookup/per-generation logic -- calls `StartActorMove(*(r8+4), x<<16, y<<16, duration)` then tail-calls the loop tail. Handler at US `0x08019FF0`. Both real call sites are `MoveFighterTo 120 80 20` (`SpecialHarryReplenishMp.txt`, `SpecialHarryUltimateMp.txt`) -- `(120,80)` is the GBA's `240x160` screen center, consistent with moving a visual effect object (an MP-restore icon/particle) to mid-screen. |
+| `0x7A` | `MoveFighterTo` | 3 (x, y, duration) | Like `MoveTo`, but targets `r8`'s linked `BattleFighter`'s `Actor` (`*(r8+4)`, see "The interpreter" above) instead of the running actor itself -- confirmed by comparing register allocation directly against `MoveTo`'s handler, which passes `r7` (the running actor) to the same `StartActorMove` call where this opcode passes `r0 = *(r8+4)`. Reads all 3 operand bytes directly as `x`, `y` (each `<<16`, i.e. the operand is the fixed-point integer part) and `duration`, with no offset/lookup/per-generation logic -- calls `StartActorMove(*(r8+4), x<<16, y<<16, duration)` then tail-calls the loop tail. Handler at US `0x08019FF0`. Both real call sites are `MoveFighterTo 120 80 20` (`SpecialHarryReplenishMp.txt`, `SpecialHarryUltimateMp.txt`) -- `(120,80)` is the GBA's `240x160` screen center, consistent with moving a visual effect actor (an MP-restore icon/particle) to mid-screen. |
 | `0x7B` | `MoveFighterToSlotPosition` | 1 (duration) | Same target (`*(r8+4)`) and same `StartActorMove` call as `MoveFighterTo`, but `x`/`y` are looked up rather than given as operands: `x` from the halfword table at `0x08053D2A` (2-byte stride, the same table `MoveTo`'s fallback and `TeleportToSlotPosition` read) and `y` from the byte table at `0x08053D38` (1-byte stride, ditto), both indexed by the byte at global `0x03002770` -- one byte before `DAT_03002771`, `MoveTo`'s "battle-phase/dialog-state indicator" candidate global (see the `MoveTo` row above); not confirmed further, but structurally reads like a companion fighter-slot-index byte in the same small global block. Handler at US `0x08019FFC`. |
-| `0x82` | `TeleportTo` | 2 (x, y) | Self-targeted immediate teleport to an absolute position: `SnapActorPosition(self, x<<16, y<<16)` (see `JitterPosition`, `0x5B` above, for `SnapActorPosition`). Handler at US `0x0801A240`. The `MoveTo`/`TeleportTo` naming split mirrors `MoveTo`/`MoveFighterTo`: animated-vs-immediate, not self-vs-fighter here -- both this and `MoveTo` target the running object. |
+| `0x82` | `TeleportTo` | 2 (x, y) | Self-targeted immediate teleport to an absolute position: `SnapActorPosition(self, x<<16, y<<16)` (see `JitterPosition`, `0x5B` above, for `SnapActorPosition`). Handler at US `0x0801A240`. The `MoveTo`/`TeleportTo` naming split mirrors `MoveTo`/`MoveFighterTo`: animated-vs-immediate, not self-vs-fighter here -- both this and `MoveTo` target the running actor. |
 | `0x80` | `QueueScanlineEffect` | 1 (block index) | Looks up a pointer and a length byte from two parallel tables (`0x08053B08`, 4-byte stride; `0x08053B14`, 1-byte stride, both indexed by the operand) and calls `QueueScanlineEffectTable` (US `0x080450D4`) with them, so the operand selects a ROM table of `length` 0x10-byte scanline-effect entries; see [`../memory-map/scanline_effects.md`](../memory-map/scanline_effects.md). Handler at US `0x0801A208`. The opcode name predates that finding and needs revisiting; the tables' contents are not decoded. |
 | `0x83` | `KillTarget` | 0 | Reads `BattleFighter+1` (a species/monster-id byte) and adds `MonsterTable[speciesId].wRewardXp`/`.wRewardGold` straight into `g_nBattleXpReward`/`g_nBattleGoldReward` -- the same two accumulators `ApplyDamageToEnemyFighter` fills on a normal faint (see [`../memory-map/battle.md`](../memory-map/battle.md)'s "XP/reward payout" section), but reached independently of that function. Also zeroes the fighter's current SP (`+8`), sets `+0x48` to `0xFFFF`, sets the fighter's `Actor+0x8D`/`+0x80` attack-state bytes, and sets `FightState+0x1494 = 1`. Handler spans US `0x0801A254`-`0x0801A2C3` (Ghidra mis-splits this into two functions at an internal loop branch, `0x0801A29A`; the real boundary is the whole range, confirmed against `full_disasm.s`). The only script using it, `SpecialHarryTempestJinx` ("Blows one opponent off-screen"), calls it right after teleporting a target off-screen -- consistent with granting that monster's normal kill reward to substitute for the on-faint payout a banished (not damaged-to-0) monster would otherwise never trigger. |
 | `0x86` | `GotoIfLocalAGreater` | 2 (compare value, label id) | `if (Actor.bScriptLocalA > compareValue) goto Label(labelId)` (unsigned `bhi`). Handler at US `0x0801A344`. |
 | `0x87` | `GotoIfLocalALess` | 2 (compare value, label id) | `if (Actor.bScriptLocalA < compareValue) goto Label(labelId)` (unsigned `blo`). Handler at US `0x0801A35C`. |
 | `0x88` | `GotoIfLocalAInRange` | 3 (low, high, label id) | `if (low < Actor.bScriptLocalA < high) goto Label(labelId)` (both bounds exclusive). Handler at US `0x0801A374`, shares its final compare-and-jump tail with `0x89`. |
 | `0x89` | `GotoIfLocalAOutOfRange` | 3 (low, high, label id) | `if (Actor.bScriptLocalA <= low OR Actor.bScriptLocalA >= high) goto Label(labelId)` -- the complement of `GotoIfLocalAInRange`. Handler at US `0x0801A394`. |
-| `0x8C` | `SetBgPriority` | 2 (bg layer, priority) | Calls `SetBgPriority` (US `0x08007EB8`): updates a per-background shadow-register struct (`&DAT_03001e84 + bgLayer*0x6c`) and writes the result straight into the real hardware register array `(&BG0CNT)[bgLayer]`, setting that background's priority field (bits 0-1) to `priority & 3` -- a real GBA `BGxCNT` priority write, not a script-only side effect. After that call, if `bgLayer == 1` it also stores `priority` into global `0x03002776`, and if `bgLayer == 0` into global `0x03002775` (both globals already referenced elsewhere as small object/battle-state scratch bytes) -- a secondary cache of the last-set priority per layer, not traced to a reader. Handler at US `0x0801A428`. |
+| `0x8C` | `SetBgPriority` | 2 (bg layer, priority) | Calls `SetBgPriority` (US `0x08007EB8`): updates a per-background shadow-register struct (`&DAT_03001e84 + bgLayer*0x6c`) and writes the result straight into the real hardware register array `(&BG0CNT)[bgLayer]`, setting that background's priority field (bits 0-1) to `priority & 3` -- a real GBA `BGxCNT` priority write, not a script-only side effect. After that call, if `bgLayer == 1` it also stores `priority` into global `0x03002776`, and if `bgLayer == 0` into global `0x03002775` (both globals already referenced elsewhere as small actor/battle-state scratch bytes) -- a secondary cache of the last-set priority per layer, not traced to a reader. Handler at US `0x0801A428`. |
 | `0x97` | `StatusEffect` | 3 | A sub-dispatch: the first operand byte selects one of 29 cases via `g_apScriptStatusEffectCaseTable` (US `0x0801A650`, `code*[29]`, sub-cases `0x00`-`0x1C`). This is the opcode battle status effects (`BattleFighter.bStatusFlags` bits, extra-XP tracking, etc.) run through -- **see [`../memory-map/battle.md`](../memory-map/battle.md) for the full case-by-case writeup**, not duplicated here. It's the only opcode confirmed (so far) to build its own internal jump table -- see "Is `StatusEffect` unique?" below. |
 | `0x99` | `SetLocalAToPartySize` | 0 | Reads global state at `0x03003EF4` (offsets `+0xc`/`+0x4`); if it matches a specific pattern, sets `Actor.bScriptLocalA = 3`, otherwise sets it to `sub_080249FC()`'s return value. Handler at US `0x0801AB4A`. Not confidently named -- the global's meaning and `sub_080249FC` aren't identified yet, so this isn't folded into the `Local`-family naming despite writing the same field. |
-| `0xA2` | `SetLocalRandom` | 2 (index, max) | `Actor.bScriptLocal<index> = Mt19937RandMax(max)` -- `Mt19937RandMax` is a real, already-named Mersenne Twister RNG function. Handler at US `0x0801ADA0`/`0x0801ADA8` (a `sub_08018CF8`-style split: `0x0801ADA8` gets its own `thumb_func_start` in `gbadisasm`'s output only because `0x0801ADA0` falls through into it with no intervening branch, same fallthrough-labeling artifact documented for `InterpretObjectScript` itself above). |
+| `0xA2` | `SetLocalRandom` | 2 (index, max) | `Actor.bScriptLocal<index> = Mt19937RandMax(max)` -- `Mt19937RandMax` is a real, already-named Mersenne Twister RNG function. Handler at US `0x0801ADA0`/`0x0801ADA8` (a `sub_08018CF8`-style split: `0x0801ADA8` gets its own `thumb_func_start` in `gbadisasm`'s output only because `0x0801ADA0` falls through into it with no intervening branch, same fallthrough-labeling artifact documented for `InterpretActorScript` itself above). |
 | `0xA4` | `PlaySoundOrDefault` | 1 (sound id) | Reads a halfword at a fixed global address (`0x0300276E`, two bytes before the `0x03002770` slot-index byte `TeleportToSlotPosition`/`MoveFighterToSlotPosition` read -- not otherwise identified); if it's `0`, plays a fixed sound (`PlaySoundById(0x4B)`) and tail-calls the loop tail directly. Otherwise it falls straight through into `PlaySound`'s own handler body (`0x0801ADDC`), playing `PlaySoundById(operand)` instead. Handler at US `0x0801ADC8`. What condition the global tracks isn't identified, only the branch's two outcomes. |
 | `0xA5` | `DarkenScreenPalette` | 0 | Calls `DarkenScreenPalette` (US `0x0803C610`): halves every color's brightness in a screen palette buffer (BGR555 `(c & 0x7BDE) >> 1`, the standard channel-safe halving mask) and uploads it via the same palette-DMA-queue mechanism used elsewhere in the engine. Handler at US `0x0801ADE6`. Paired with `RestoreScreenPalette` (`0xA6`) -- a flash/dim visual effect. |
 | `0xA6` | `RestoreScreenPalette` | 0 | Calls `RestoreScreenPalette` (US `0x0803D434`): copies the original (undarkened) palette back and re-uploads it, undoing `DarkenScreenPalette` (`0xA5`). Handler at US `0x0801ADEC`. |
@@ -243,15 +243,15 @@ name; the names below are the `BSSTATUS_*` constants in
 Both other top-level opcodes and the 14 `Local`-prefixed opcodes are
 documented below -- see "What's NOT yet known".
 
-### The Wait family, and how `InterpretObjectScript` actually returns
+### The Wait family, and how `InterpretActorScript` actually returns
 
 `WaitFrames`/`WaitForCounter`/`WaitForFieldClear` (`0x08`-`0x0A`) are the only
-three opcodes confirmed to reach `InterpretObjectScript`'s real epilogue
+three opcodes confirmed to reach `InterpretActorScript`'s real epilogue
 (`0x0801AE04`: pop registers, `bx lr`) instead of continuing the
 loop. The loop tail's exit test never fires (see "The loop tail"), so the
 only way out is a `return`, which is what these opcodes' handlers do.
 
-Each swaps `Actor.pfnTick` away from `InterpretObjectScript` to a small
+Each swaps `Actor.pfnTick` away from `InterpretActorScript` to a small
 dedicated tick handler, then returns -- deferring further script
 execution to whenever `TickActor` next calls that handler and
 it decides to swap `pfnTick` back. **None of these three handler
@@ -264,20 +264,20 @@ functions/plate comments as `WaitFramesTick`, `WaitForCounterTick`,
 
 All three call `TickParticleEmitters` (US `0x08031748`) on entry -- the
 same function
-`InterpretObjectScript`'s own real entry point calls before its first
-opcode fetch. It is unrelated to the calling object: it ticks every emitter on
+`InterpretActorScript`'s own real entry point calls before its first
+opcode fetch. It is unrelated to the calling actor: it ticks every emitter on
 the global active list and spawns their particles, drawing from the visual RNG
 cursor (and, for some particle modes, the gameplay cursor). It is mandatory
 per-tick engine housekeeping that happens to be invoked from these entry
 points. See [`../memory-map/particles.md`](../memory-map/particles.md).
 
-All three also unconditionally call `ProcessObjectFlagBehaviors` (US
+All three also unconditionally call `ProcessActorFlagBehaviors` (US
 `0x0801AF68`) every tick regardless of whether the wait condition is met. Decompiled and
 confirmed: a bit-flag dispatcher on `Actor+0x66` driving several
-unrelated per-object behaviors (a jitter/wobble adjustment, two
+unrelated per-actor behaviors (a jitter/wobble adjustment, two
 counter-driven palette-cycle-style calls, a screen-shake-like camera
 adjustment, and a counter-driven call into `FUN_08003A80`'s
-per-"object kind" dispatch, see "The generation field" era investigation
+per-"actor kind" dispatch, see "The generation field" era investigation
 above for why that dispatch was ruled out as `Actor+0x14`'s writer) --
 confirmed to have no connection to `Actor.pfnTick` or script resumption
 at all.
@@ -285,15 +285,15 @@ at all.
 **Whether the wait resumes the script the same frame it completes is not
 uniform across the family** -- confirmed by decompiling all three
 handlers:
-- `WaitFrames` and `WaitForCounter` only ever call `ProcessObjectFlagBehaviors`;
+- `WaitFrames` and `WaitForCounter` only ever call `ProcessActorFlagBehaviors`;
   on completion they just restore `pfnTick` and return, so the script
-  actually resumes on the object's *next* regular tick.
+  actually resumes on the actor's *next* regular tick.
 - `WaitForFieldClear` is different: on completion it makes an additional,
-  explicit call straight into `InterpretObjectScript` (`0x08018CC1`),
+  explicit call straight into `InterpretActorScript` (`0x08018CC1`),
   reached through `ThumbInterworkVeneer_bx_r1` (US `0x0804A2C4`, one of a
   family of generic ARMv4T/Thumb interworking trampolines already
   documented in `krawall.md`; its "`param_2`" argument is simply the
-  hardcoded `InterpretObjectScript` address). So **`WaitForFieldClear`
+  hardcoded `InterpretActorScript` address). So **`WaitForFieldClear`
   does resume the script in the same frame its wait ends**, unlike its two
   siblings.
 
@@ -322,7 +322,7 @@ The three termination conditions:
   bit `WaitForCounter`'s early-abort checks, and the same bit several
   battle-code call sites (~`0x080168C0`, `0x08016F0E`, `0x0801780C`, not
   otherwise explored) check-and-clear after an attack, consistent with
-  "wait for this object's animation to fully finish" being a shared idiom
+  "wait for this actor's animation to fully finish" being a shared idiom
   across both scripts and native code, not something scripts invented.
 - **`WaitForFieldClear`**: `Actor+0x14` (u16) reads as `0` (and at least
   one tick has elapsed), then resumes the script immediately (see above).
@@ -333,19 +333,19 @@ The three termination conditions:
   it's general-purpose, called from several battle/fighter-animation
   sites (`FUN_080149C4`, `FUN_080161FE`, `FUN_08032C20`,
   `InitMonsterBattleActor`, `TickFighterAttackAnimState_candidate`) as
-  well as from `InterpretObjectScript` itself, via the new opcode
+  well as from `InterpretActorScript` itself, via the new opcode
   `MoveTo` (`0x0C`, see the opcode table -- computes a target position
   from either a per-fighter-slot table or a position-query function,
   optionally offset per `bScriptLocalA` generation, then calls
   `StartActorMove`). `TickActorMove` (US `0x0800351C`) is the
   counterpart that ticks it
   down: **called directly by `TickActor`**, the generic
-  per-object tick loop -- independent of whatever `Actor.pfnTick`
-  currently is, confirming it keeps running while a script object is
+  per-actor tick loop -- independent of whatever `Actor.pfnTick`
+  currently is, confirming it keeps running while a script actor is
   parked in a `Wait`-family handler. At `0`, it zeroes the velocity
   fields (`Actor+0x3c`/`0x40`, the same pair `TickActorMove`'s sibling
   `sub_080019C0` sets directly). So `WaitForFieldClear` is concretely
-  **"wait for this object's current `MoveTo` to finish."**
+  **"wait for this actor's current `MoveTo` to finish."**
 
 ### The script-local bytes (`Actor.bScriptLocalA`/`bScriptLocalB`)
 
@@ -353,7 +353,7 @@ The three termination conditions:
 `index` operand is `0` for `bScriptLocalA`, `1` for `bScriptLocalB` --
 that's the only two values ever seen, see below.
 
-**Two general-purpose per-object script variables, not a dedicated
+**Two general-purpose per-actor script variables, not a dedicated
 "generation counter".** `GotoIfLocalANotEqual` and its two spawn-time
 producer sites on their own would read as a generation counter; the other
 15 opcodes that touch the same bytes are what rule that out -- see below.
@@ -373,21 +373,21 @@ What's actually confirmed:
   check at all (any index byte would be accepted), real content only
   ever addresses these two bytes. That's why the `Actor` struct gets two
   named byte fields, not an array.
-- **Spawn-time behavior**: when a script spawns a child script-object
-  (`CreateEffectScriptObject`, called from exactly 5 opcode handlers --
+- **Spawn-time behavior**: when a script spawns a child script-actor
+  (`CreateEffectScriptActor`, called from exactly 5 opcode handlers --
   `0x0E`, `0x0F`, `0x11`, `0x13`, `0x16`, confirmed via `get_xrefs_to` on
   the function itself; `0x10`, `0x12`, and `0x17` are separate opcodes that
-  don't call it -- `0x17` is `ToggleObjectFlipX`, see its row above), both
+  don't call it -- `0x17` is `ToggleActorFlipX`, see its row above), both
   bytes are copied from parent to child, each incremented by one:
   `child.bScriptLocalA = parent.bScriptLocalA + 1`,
   `child.bScriptLocalB = parent.bScriptLocalB + 1`. This alone would make
   `bScriptLocalA` read like a spawn-depth/generation counter (0 for a
-  script's root object, 1 for its first-generation spawned children, etc.)
+  script's root actor, 1 for its first-generation spawned children, etc.)
   -- and several scripts do use it exactly that way (see below).
-- **But it's also freely read/written by the running object itself**,
+- **But it's also freely read/written by the running actor itself**,
   independent of spawning: `SetLocal` stores an arbitrary operand value
   into either byte; `IncrementLocal` increments either byte **on the
-  currently-executing object**, not a spawned child -- e.g. effect id 19's
+  currently-executing actor**, not a spawned child -- e.g. effect id 19's
   script (`src/battle/effect_scripts/effect19.h`) calls `BS_IncrementLocal(0)` twice in a row, twice, in its own body,
   well before any spawn happens. `SetLocalRandom` stores a Mersenne
   Twister roll into either byte.
@@ -420,7 +420,7 @@ Two real, distinct usage patterns for `bScriptLocalA`, both present in the
    (that script never calls a spawn opcode with anywhere near that
    generation depth); instead, the default body (reached when `localA==0`,
    i.e. none of the ten match) calls `IncrementLocal 0` on itself
-   repeatedly before finishing. This is a same-object tick/step counter
+   repeatedly before finishing. This is a same-actor tick/step counter
    driving a 4-state cycle -- a real state machine, not a spawn-depth
    check.
 
@@ -428,16 +428,16 @@ So "generation counter" was too narrow a name for the mechanism itself
 (it's still an accurate description of *one* convention scripts build on
 top of it), which is why the opcodes carry the neutral `Local`-prefixed
 names above rather than `Generation`-prefixed ones -- the underlying byte
-is a general per-object script variable; auto-incrementing it on spawn is
+is a general per-actor script variable; auto-incrementing it on spawn is
 just the one
 piece of interpreter-provided behavior that makes the "root vs. spawned
 copy" idiom convenient without an explicit `SetLocal` call.
 `bScriptLocalB` is copied/incremented identically at every spawn site,
-and no opcode inside `InterpretObjectScript` reads it back -- but
-**`ProcessObjectFlagBehaviors`** (US `0x0801AF68`, see "The Wait family"
+and no opcode inside `InterpretActorScript` reads it back -- but
+**`ProcessActorFlagBehaviors`** (US `0x0801AF68`, see "The Wait family"
 above) does, three separate ways, all gated by bits of `Actor+0x66`
 (not itself script-controlled -- no opcode was found writing it, so
-presumably set by whatever native code puts an object into one of these
+presumably set by whatever native code puts an actor into one of these
 modes in the first place):
 
 - bit `0x40`: passes `bScriptLocalB` straight to `PlaySoundById` (US
@@ -455,7 +455,7 @@ modes in the first place):
 
 So **`bScriptLocalB` is concretely a hardware alpha-blend fade step
 counter** (`0`-`0x10`, matching `BLDALPHA`'s two coefficients summing to
-that range) when the object is in one of these flag-gated modes -- a
+that range) when the actor is in one of these flag-gated modes -- a
 fade in/out effect -- and separately a message-id when in the `0x40`
 mode. Same pattern as `bScriptLocalA`: one interpreter-provided byte,
 multiple context-dependent uses, none of them "generation" as a literal
@@ -467,7 +467,7 @@ description.
 to `StatusEffect`'s own 29-entry sub-table is a computed jump (`mov pc,
 rX`, preceded by a `lsl`/table-add/`ldr` sequence to compute the
 target); that exact instruction sequence appears **exactly twice** in
-the whole `InterpretObjectScript` function -- once for the main
+the whole `InterpretActorScript` function -- once for the main
 168-opcode dispatch, once for `StatusEffect`'s sub-dispatch. No other
 opcode builds a second internal jump table off one of its own operand
 bytes.
@@ -526,7 +526,7 @@ build inputs).
   scales, `SetVelocity16` magnitudes) take one 16-bit value, e.g. `0x0100` for
   1.0; all other operands are raw bytes. **To name a
   new opcode, rename its enum entry and macro here** (and its `case` in
-  `InterpretObjectScript`).
+  `InterpretActorScript`).
 - `src/battle/effect_scripts/<name>.h` -- one script each, a
   `const u8 g_ab<Name>Script[]` of `BS_*` macros, with a leading comment
   describing the effect. Named by real-world identification where known
@@ -552,7 +552,7 @@ have the same sizes, only the addresses differ.
   opcodes actually used across the 65 scripts are still just `opcode_XX`.
   `StatusEffect`'s own 29 sub-cases are all named (see the table
   above). Working the rest out means reading each of the remaining case
-  handlers inside `InterpretObjectScript`; filling names in incrementally is cheap.
+  handlers inside `InterpretActorScript`; filling names in incrementally is cheap.
 - **`0x99`'s global-state check and `sub_080249FC`.** The opcode that
   conditionally resets `bScriptLocalA` based on `0x03003EF4`'s contents
   (see the opcode table above) isn't named -- what that global represents
@@ -567,7 +567,7 @@ have the same sizes, only the addresses differ.
   2nd/3rd operand bytes, which look related to the `field_0x14a8`
   message-announcement mechanism documented in [`../memory-map/battle.md`](../memory-map/battle.md),
   are just raw bytes here).
-- **Control-flow opcodes.** Fully resolved: `InterpretObjectScript`
+- **Control-flow opcodes.** Fully resolved: `InterpretActorScript`
   contains exactly 3 direct calls to `FindScriptLabelOffset` in its
   entire body (checked exhaustively by grepping the whole function for
   `bl sub_0801B710`) -- one inside the shared `0x0801A3B2` tail (reached
@@ -580,7 +580,7 @@ have the same sizes, only the addresses differ.
 - **Reverse-engineer the remaining opcode handlers.** 74 of 114
   used top-level opcodes are still unnamed (`opcode_XX`); `StatusEffect`'s
   29 sub-cases are all named. Each is a real, bounded chunk of work:
-  read one handler in `InterpretObjectScript`, name it and its operand
+  read one handler in `InterpretActorScript`, name it and its operand
   layout in `include/battle/script_opcodes.h`.
 - ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
   -- all 16 of Harry's cards are now named and mapped to their effect id

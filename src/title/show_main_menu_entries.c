@@ -8,10 +8,10 @@ void ShowMainMenuEntries(void)
 {
     u32 entry;
 
-    g_MainMenuState.pCursorObject = SpawnMenuCursorObject(4);
-    g_MainMenuState.pCursorObject->oam.objMode = 1;
-    g_MainMenuState.pCursorObject->oam.hFlip = 1;
-    PositionMainMenuCursorObject(0);
+    g_MainMenuState.pCursorActor = SpawnMenuCursorActor(4);
+    g_MainMenuState.pCursorActor->oam.objMode = 1;
+    g_MainMenuState.pCursorActor->oam.hFlip = 1;
+    PositionMainMenuCursorActor(0);
 
     for (entry = 0; entry < 4; entry++)
     {

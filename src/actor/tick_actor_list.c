@@ -19,8 +19,8 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
     u32 queueIndex;
     u32 layer;
     u32 anyOamWork;
-    void (*pfnCheckCollisions)(u32, Actor **) = CheckObjectCollisionsIwram;
-    void (*pfnSortObjects)(Actor **, u32) = SortObjectsByDepthIwram;
+    void (*pfnCheckCollisions)(u32, Actor **) = CheckActorCollisionsIwram;
+    void (*pfnSortActors)(Actor **, u32) = SortActorsByDepthIwram;
 
     anyOamWork = 0;
     g_bSpriteFrameQueueCount = 0;
@@ -64,7 +64,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
     }
 
     if (mode == 1 && g_dwActorListActive_candidate != 0 && g_dwOamQueueCount > 1)
-        pfnSortObjects(g_apOamQueue, g_dwOamQueueCount);
+        pfnSortActors(g_apOamQueue, g_dwOamQueueCount);
 
     for (queueIndex = g_bSpriteFrameQueueCount; queueIndex != 0; queueIndex--) {
         actor = g_apSpriteFrameQueue[queueIndex - 1];

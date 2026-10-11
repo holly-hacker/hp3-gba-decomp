@@ -51,10 +51,10 @@ Room08V1Chain2:
     End
 Room08V1Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RecruitPartyFollower 8
     SetQuestState 1, 130
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room08V1Chain4:
     GotoIfQuestStateCompare 130, 5, 1, 0, 0, Room08V1Group2_id, 0

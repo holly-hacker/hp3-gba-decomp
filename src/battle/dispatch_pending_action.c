@@ -20,8 +20,8 @@ void DispatchPendingAction(s32 fighterType)
         ShowBattleMessage(ActionAnnounce, 0, 0);
         spellId = fighter->bSpellId;
         TrackSpellFamiliarity(fighter->bFighterType, spellId, fighter->bSpellLevel, &fighter->wHp);
-        SetActorActionState(fighter->pObject, 0x1A);
-        fighter->pObject->bActionFlags = 0x21;
+        SetActorActionState(fighter->pActor, 0x1A);
+        fighter->pActor->bActionFlags = 0x21;
         break;
 
     case PendingActionSpecialMove:
@@ -29,7 +29,7 @@ void DispatchPendingAction(s32 fighterType)
             fighter->bSpellId = g_nFolioUniversitasSlot;
 
         ShowBattleMessage(SpecialMoveAnnounce, fighter->bSpellId, 0);
-        SetActorActionState(fighter->pObject, 0x15);
+        SetActorActionState(fighter->pActor, 0x15);
 
         if (fighter->bFighterType == Hermione)
             g_pFightState->dwHermioneSpecialUsed = 1;
@@ -40,7 +40,7 @@ void DispatchPendingAction(s32 fighterType)
 
     case PendingActionUseItem:
         ShowBattleMessage(ItemUseAnnounce, fighter->bSpellLevel, 0);
-        SetActorActionState(fighter->pObject, 4);
+        SetActorActionState(fighter->pActor, 4);
         break;
 
     case PendingActionFlee:
@@ -49,7 +49,7 @@ void DispatchPendingAction(s32 fighterType)
             PushGameMode_2(Overworld, 3, g_bCurrentRoomId);
         } else {
             ShowBattleMessage(EscapeBlocked, 0, 0);
-            SetActorActionState(fighter->pObject, 5);
+            SetActorActionState(fighter->pActor, 5);
         }
 
         break;

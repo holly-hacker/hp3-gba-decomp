@@ -201,26 +201,26 @@ Room34V1Chain1:
     End
 Room34V1Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group6_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group6_id
     @ "Let's ask Madam Pince where we can find the book we need."
     ShowRoomDialog 414
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route0_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group6_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group6_id
     @ "Let's ask Madam Pince where we can find the book we need."
     ShowRoomDialog 414
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route1_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain4:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
-    SetTileObjectFacing 0, 255, 0
+    SetTileActorFacing 0, 255, 0
     @ "What can I do for you?"
     @ "We were wondering if you have a good book on werewolves?"
     @ "I'm afraid that our only werewolf reference book had a tussle with 'The Monster Book of Monsters'. As a result, there are pages everywhere..."
@@ -229,14 +229,14 @@ Room34V1Chain4:
     @ "OK, let's get to it."
     ShowRoomDialog 415
     SetQuestState QUEST_OBJ_FIND_BOOK_PAGES, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room34V1Chain5:
     AddQuestState 1, 131
     GotoIfQuestStateCompare 131, 0, 3, Room34V1Chain6_id, 0, 0, 0
     End
 Room34V1Chain6:
-    SetTileObjectAnimState Room34V1Group0_id, 0
+    SetTileActorAnimState Room34V1Group0_id, 0
     GotoIfQuestStateCompare 1, 1, 19, Room34V1Chain28_id, 0, 0, 0
     End
 Room34V1Chain7:
@@ -257,10 +257,10 @@ Room34V1Chain11:
     End
 Room34V1Chain12:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group8_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group8_id
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route2_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain13:
     ArmChainYield 1
@@ -269,40 +269,40 @@ Room34V1Chain13:
     ShowRoomDialog 439
     RespawnRowAndRunChain Room34V1Group9_id, 0
     SetQuestState 3, 230
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room34V1Chain14:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group8_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group8_id
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route3_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain15:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     GrantPartyExperience 10, 65535
     @ "Here's the legal section! It looks like no one's been here in a long time..."
     @ "Let's try and find books that refer to Hippogriff-baiting."
     ShowRoomDialog 440
     RespawnRowAndRunChain Room34V1Group14_id, 0
-    DespawnRoomRowObjects Room34V1Group9_id
+    DespawnRoomRowActors Room34V1Group9_id
     SetQuestState 4, 230
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room34V1Chain16:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RespawnRowAndRunChain Room34V1Group10_id, 0
-    DespawnRoomRowObjects Room34V1Group14_id
+    DespawnRoomRowActors Room34V1Group14_id
     @ "I can't find anything on Hippogriffs!"
     @ "There're certainly a lot of obscure titles here."
     ShowRoomDialog 441
     SetQuestState 5, 230
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room34V1Chain17:
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group10_id
-    DespawnRoomRowObjects Room34V1Group11_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group10_id
+    DespawnRoomRowActors Room34V1Group11_id
     RespawnRowAndRunChain Room34V1Group16_id, 0
     @ "Look, this must be the book Hermione mentioned! It's got a section dealing with the Committee for the Disposal of Dangerous Creatures!"
     @ "Let's have a look!"
@@ -312,7 +312,7 @@ Room34V1Chain17:
     ShowRoomDialog 442
     SetQuestState QUEST_OBJ_FIND_HERMIONE, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 230
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room34V1Chain18:
     @ "We're looking for a book on wizard law, Madam Pince."
@@ -341,37 +341,37 @@ Room34V1Chain21:
     End
 Room34V1Chain22:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "You've done splendidly, but you don't have all the pages. Hurry and get the rest!"
     ShowRoomDialog 416
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room34V1Chain23:
     ArmChainYield 1
     SetQuestState QUEST_OBJ_RETURN_TO_DADA, QUEST_OBJECTIVE_INDEX
     SetStoryStage 9
-    DespawnTileObject Room34V1Group13_id, 0
+    DespawnTileActor Room34V1Group13_id, 0
     End
 Room34V1Chain24:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group6_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group6_id
     @ "Let's ask Madam Pince where we can find the book we need."
     ShowRoomDialog 414
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route6_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain25:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group6_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group6_id
     @ "Let's ask Madam Pince where we can find the book we need."
     ShowRoomDialog 414
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route5_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain26:
-    DespawnRoomRowObjects Room34V1Group6_id
+    DespawnRoomRowActors Room34V1Group6_id
     End
 Room34V1Chain27:
     RespawnRowAndRunChain Room34V1Group11_id, 0
@@ -379,12 +379,12 @@ Room34V1Chain27:
 Room34V1Chain28:
     GrantPartyExperience 10, 65535
     SetQuestState 19, 1
-    DespawnTileObject Room34V1Group5_id, 1
-    DespawnTileObject Room34V1Group5_id, 2
+    DespawnTileActor Room34V1Group5_id, 1
+    DespawnTileActor Room34V1Group5_id, 2
     DelayedRespawnRowAndRunChainFrames 0, 0, Room34V1Chain48_id
     End
 Room34V1Chain29:
-    SetTileObjectAnimState Room34V1Group0_id, 0
+    SetTileActorAnimState Room34V1Group0_id, 0
     End
 Room34V1Chain30:
     GotoIfQuestStateCompare 4, 2, 0, Room34V1Chain20_id, 0, 0, 0
@@ -393,8 +393,8 @@ Room34V1Chain31:
     @ "You two go back to class and stall Snape. I'll write up the research and be there soon."
     @ "OK."
     ShowRoomDialog 419
-    DespawnTileObject Room34V1Group13_id, 1
-    StartObjectAnimSequence Room34V1Group13_id, 0, 0, 0, Room34V1Route4_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room34V1Group13_id, 1
+    StartActorAnimSequence Room34V1Group13_id, 0, 0, 0, Room34V1Route4_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     ArmChainYield 0
     End
@@ -412,19 +412,19 @@ Room34V1Chain35:
     End
 Room34V1Chain36:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group8_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group8_id
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route7_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain37:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room34V1Group6_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room34V1Group6_id
     @ "Let's ask Madam Pince where we can find the book we need."
     ShowRoomDialog 414
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route8_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain38:
     SubtractQuestState 1, 131
@@ -446,16 +446,16 @@ Room34V1Chain42:
     GotoIfQuestStateCompare 4, 0, 5, Room34V1Chain41_id, Room34V1Chain40_id, 0, 0
     End
 Room34V1Chain43:
-    SetTileObjectAnimStateValue Room34V1Group3_id, 3, 5
-    SetTileObjectAnimStateValue Room34V1Group3_id, 4, 5
-    SetTileObjectAnimStateValue Room34V1Group3_id, 5, 5
-    SetTileObjectAnimState Room34V1Group0_id, 0
-    DespawnTileObject Room34V1Group4_id, 0
-    DespawnTileObject Room34V1Group4_id, 6
-    DespawnTileObject Room34V1Group4_id, 7
+    SetTileActorAnimStateValue Room34V1Group3_id, 3, 5
+    SetTileActorAnimStateValue Room34V1Group3_id, 4, 5
+    SetTileActorAnimStateValue Room34V1Group3_id, 5, 5
+    SetTileActorAnimState Room34V1Group0_id, 0
+    DespawnTileActor Room34V1Group4_id, 0
+    DespawnTileActor Room34V1Group4_id, 6
+    DespawnTileActor Room34V1Group4_id, 7
     End
 Room34V1Chain44:
-    SetTileObjectAnimState Room34V1Group5_id, 0
+    SetTileActorAnimState Room34V1Group5_id, 0
     End
 Room34V1Chain45:
     GotoIfQuestStateCompare 230, 0, 5, Room34V1Chain46_id, 0, Room34V1Group11_id, 0
@@ -464,47 +464,47 @@ Room34V1Chain46:
     RespawnRowAndRunChain Room34V1Group10_id, 0
     End
 Room34V1Chain47:
-    SetTileObjectAnimState Room34V1Group5_id, 2
+    SetTileActorAnimState Room34V1Group5_id, 2
     DelayedRespawnRowAndRunChainFrames 10, 0, Room34V1Chain48_id
     End
 Room34V1Chain48:
-    SetTileObjectAnimStateValue Room34V1Group3_id, 3, 5
-    SetTileObjectAnimStateValue Room34V1Group3_id, 4, 5
-    SetTileObjectAnimStateValue Room34V1Group3_id, 5, 5
+    SetTileActorAnimStateValue Room34V1Group3_id, 3, 5
+    SetTileActorAnimStateValue Room34V1Group3_id, 4, 5
+    SetTileActorAnimStateValue Room34V1Group3_id, 5, 5
     End
 Room34V1Chain49:
-    DespawnTileObject Room34V1Group12_id, 0
+    DespawnTileActor Room34V1Group12_id, 0
     GrantPartyExperience 50, 65535
     ResetPartyLeaderSelection
     RemovePartyFollower 7
     RespawnRowAndRunChain Room34V1Group13_id, 0
     RemovePartyFollower 6
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room34V1Route10_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room34V1Group13_id, 0, 0, 0, Room34V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room34V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room34V1Group13_id, 0, 0, 0, Room34V1Route9_id, 0, 1, 0, 0, 0
     End
 Room34V1Chain50:
     @ "Excellent, you have all the pages! Would you like to repair the book now, please?"
     ShowRoomDialog 417
-    CancelObjectAnimSequence 0, 255
-    PlayTileObjectAnimation Room34V1Group13_id, 0, 8
+    CancelActorAnimSequence 0, 255
+    PlayTileActorAnimation Room34V1Group13_id, 0, 8
     ArmChainYield 1
     ArmChainYield 0
     PlaySoundById 73
     End
 Room34V1Chain51:
-    DespawnTileObject Room34V1Group13_id, 2
+    DespawnTileActor Room34V1Group13_id, 2
     RecruitPartyFollower 7
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room34V1Chain52:
-    StartObjectAnimSequence Room34V1Group13_id, 2, 0, 0, Room34V1Route11_id, 0, 1, 0, 0, 0
-    DespawnTileObject Room34V1Group13_id, 1
+    StartActorAnimSequence Room34V1Group13_id, 2, 0, 0, Room34V1Route11_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room34V1Group13_id, 1
     End
 Room34V1Chain53:
-    SetTileObjectAnimState Room34V1Group13_id, 1
+    SetTileActorAnimState Room34V1Group13_id, 1
     DelayedRespawnRowAndRunChainFrames 20, 0, Room34V1Chain21_id
     End
 Room34V1Chain54:

@@ -33,7 +33,7 @@ void UpdateStatusEquipSlotSelect(void)
         for (i = 0; i < ARRAY_COUNT(g_StatusEquipSlotSelect.apSlotItems); i++)
         {
             if (g_StatusEquipSlotSelect.apSlotItems[i] != NULL)
-                SetObjectScaleStep(g_StatusEquipSlotSelect.apSlotItems[i],
+                SetActorScaleStep(g_StatusEquipSlotSelect.apSlotItems[i],
                              g_GameModeStackContext.dwModeSubState);
         }
         if (g_GameModeStackContext.dwModeSubState == 8)
@@ -96,7 +96,7 @@ void UpdateStatusEquipSlotSelect(void)
         for (i = 0; i < ARRAY_COUNT(g_StatusEquipSlotSelect.apSlotItems); i++)
         {
             if (g_StatusEquipSlotSelect.apSlotItems[i] != NULL)
-                SetObjectScaleStep(g_StatusEquipSlotSelect.apSlotItems[i],
+                SetActorScaleStep(g_StatusEquipSlotSelect.apSlotItems[i],
                              g_GameModeStackContext.dwModeSubState);
         }
         if (g_GameModeStackContext.dwModeSubState == 0)

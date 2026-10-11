@@ -130,9 +130,9 @@ Room17V1Chain0:
     End
 Room17V1Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room17V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route1_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain2:
     SetOverworldMonstersDisabled
@@ -140,29 +140,29 @@ Room17V1Chain2:
     End
 Room17V1Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room17V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route0_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain4:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room17V1Route0_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route0_id, 2, 1, 0, 0, 0
     End
 Room17V1Chain5:
     ArmChainYield 1
-    QueueTileObjectMove Room17V1Group1_id, 14, 0, 0, 1600, 0
+    QueueTileActorMove Room17V1Group1_id, 14, 0, 0, 1600, 0
     RemovePartyFollower 7
     RespawnRowAndRunChain Room17V1Group3_id, 0
     RespawnRowAndRunChain Room17V1Group2_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room17V1Group1_id, 14, 0, 0, Room17V1Route2_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room17V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room17V1Group1_id, 14, 0, 0, Room17V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route3_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain6:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "May I see it? Hmm. And there was no note at all, Potter?"
     @ "No."
     @ "I see. Well, I'm afraid I will have to take this, Potter."
@@ -175,32 +175,32 @@ Room17V1Chain6:
     @ "There's nothing wrong with it!"
     ShowRoomDialog 462
     RespawnRowAndRunChain Room17V1Group4_id, 0
-    QueueTileObjectMove Room17V1Group4_id, 0, 0, 0, 2000, 0
+    QueueTileActorMove Room17V1Group4_id, 0, 0, 0, 2000, 0
     @ "Hermione! What did you go running to McGonagall for?"
     @ "Because I thought - and Professor McGonagall agrees with me - that that broom was probably sent to Harry by Sirius Black!"
     ShowRoomDialog 463
-    QueueTileObjectMove Room17V1Group1_id, 12, 0, 0, 1800, 0
+    QueueTileActorMove Room17V1Group1_id, 12, 0, 0, 1800, 0
     @ "Merry Christmas! Sit down, sit down! And now - crackers! Or, to be precise, Wizard Cracker Pop-it! A new game I've just invented!"
     ShowRoomDialog 464
-    DespawnRoomRowObjects Room17V1Group3_id
-    DespawnRoomRowObjects Room17V1Group4_id
-    DespawnRoomRowObjects Room17V1Group2_id
-    DespawnTileObject Room17V1Group1_id, 14
+    DespawnRoomRowActors Room17V1Group3_id
+    DespawnRoomRowActors Room17V1Group4_id
+    DespawnRoomRowActors Room17V1Group2_id
+    DespawnTileActor Room17V1Group1_id, 14
     RespawnRowAndRunChain Room17V1Group5_id, 0
     UnlockMinigame 0
     StartMinigame 0, 0, 1, 0, Room17V1Chain7_id
     End
 Room17V1Chain7:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
     @ "That was a lot of fun."
     @ "Yes, it was!"
     @ "Wizard Cracker Pop-it can now be accessed from the Mini-Games menu found on the Title Screen."
     @ "Let's go to the common room and try and take our minds off losing the Firebolt¸"
     ShowRoomDialog 465
-    QueueTileObjectMove Room17V1Group1_id, 15, 0, 0, 2000, 0
+    QueueTileActorMove Room17V1Group1_id, 15, 0, 0, 2000, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room17V1Group1_id, 15, 0, 0, Room17V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room17V1Group1_id, 15, 0, 0, Room17V1Route4_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain8:
     ArmChainYield 1
@@ -208,23 +208,23 @@ Room17V1Chain8:
     @ "Of course, Professor."
     @ "Very well, then. Meet me in my office on the third floor."
     ShowRoomDialog 483
-    QueueTileObjectMove 0, 255, 0, 0, 1000, 0
+    QueueTileActorMove 0, 255, 0, 0, 1000, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room17V1Group1_id, 15, 0, 0, Room17V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room17V1Group1_id, 15, 0, 0, Room17V1Route5_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain9:
     ArmChainYield 1
-    DespawnTileObject Room17V1Group1_id, 15
-    DespawnTileObject Room17V1Group1_id, 16
-    DespawnTileObject Room17V1Group1_id, 17
-    DespawnTileObject Room17V1Group1_id, 18
-    DespawnTileObject Room17V1Group1_id, 6
-    DespawnTileObject Room17V1Group1_id, 2
-    DespawnTileObject Room17V1Group1_id, 13
+    DespawnTileActor Room17V1Group1_id, 15
+    DespawnTileActor Room17V1Group1_id, 16
+    DespawnTileActor Room17V1Group1_id, 17
+    DespawnTileActor Room17V1Group1_id, 18
+    DespawnTileActor Room17V1Group1_id, 6
+    DespawnTileActor Room17V1Group1_id, 2
+    DespawnTileActor Room17V1Group1_id, 13
     SetQuestState QUEST_OBJ_GO_TO_LUPINS_OFFICE, QUEST_OBJECTIVE_INDEX
     SetQuestState 0, 230
     SetStoryStage 17
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room17V1Chain10:
     SetOverworldMonstersDisabled
@@ -234,7 +234,7 @@ Room17V1Chain11:
     @ "Miss Granger has recently informed me that you have been sent a broomstick, Potter."
     ShowRoomDialog 460
     ArmChainYield 0
-    StartObjectAnimSequence Room17V1Group1_id, 14, 0, 0, Room17V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room17V1Group1_id, 14, 0, 0, Room17V1Route6_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain12:
     @ "I love the Christmas feast!"

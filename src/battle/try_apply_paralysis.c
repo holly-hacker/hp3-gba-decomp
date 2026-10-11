@@ -9,12 +9,12 @@ s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChan
 
     if (!(fighter->bStatusFlags & 0x90))
     {
-        fighter->pObject->wActionVariant = 2;
+        fighter->pActor->wActionVariant = 2;
         fighter->bStatusFlags |= Paralyzed;
         fighter->bParalysisEscapeChance = escapeChance;
-        fighter->pObject->anim.bAnimFrameCounter = 0;
-        if ((u16)(fighter->pObject->wActorType - 0x31) <= 2)
-            fighter->pObject->pShadowActor->anim.bAnimFrameCounter = 0;
+        fighter->pActor->anim.bAnimFrameCounter = 0;
+        if ((u16)(fighter->pActor->wActorType - 0x31) <= 2)
+            fighter->pActor->pShadowActor->anim.bAnimFrameCounter = 0;
         return 1;
     }
 

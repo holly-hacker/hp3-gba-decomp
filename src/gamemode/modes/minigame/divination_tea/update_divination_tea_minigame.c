@@ -11,7 +11,7 @@
 void UpdateDivinationTeaMinigame(void)
 {
     DivinationTeaLeaf *pLeaf;
-    Actor *pObject;
+    Actor *pActor;
     u32 score;
     s32 roll;
     s32 i;
@@ -36,10 +36,10 @@ void UpdateDivinationTeaMinigame(void)
         {
             roll = Mt19937RandRange(1, 2);
             pLeaf = &g_DivinationTea.aLeaves[i];
-            pObject = pLeaf->pObject;
-            pLeaf->wAngle += (roll * (pObject->orbitState.fields.wUnk58 >> 7)) << 8;
+            pActor = pLeaf->pActor;
+            pLeaf->wAngle += (roll * (pActor->orbitState.fields.wUnk58 >> 7)) << 8;
             pLeaf->wAngle = pLeaf->wAngle % 0x10000;
-            SetActorAffineTransform(pObject, (pLeaf->wScaleX / 256) << 16, (pLeaf->wScaleY / 256) << 16,
+            SetActorAffineTransform(pActor, (pLeaf->wScaleX / 256) << 16, (pLeaf->wScaleY / 256) << 16,
                                      pLeaf->wAngle, 1);
         }
     }
@@ -79,8 +79,8 @@ void UpdateDivinationTeaMinigame(void)
             {
                 PlaySoundById(1);
                 sub_08007CD4(2, 1);
-                for (i = 0; i < ARRAY_COUNT(g_DivinationTea.apCupObjects); i++)
-                    SetActorAnimData(g_DivinationTea.apCupObjects[i], &g_DivinationTeaCupSprite,
+                for (i = 0; i < ARRAY_COUNT(g_DivinationTea.apCupActors); i++)
+                    SetActorAnimData(g_DivinationTea.apCupActors[i], &g_DivinationTeaCupSprite,
                                       (void *)g_DivinationTeaCupAnimData, 1);
             }
 
@@ -98,8 +98,8 @@ void UpdateDivinationTeaMinigame(void)
         SetAlphaBlendCoefficients(g_DivinationTea.dwFadeStep, 0x10 - g_DivinationTea.dwFadeStep);
         if (g_DivinationTea.dwFadeStep == 0x10)
         {
-            for (i = 0; i < ARRAY_COUNT(g_DivinationTea.apFadeObjects); i++)
-                g_DivinationTea.apFadeObjects[i]->oam.objMode = 0;
+            for (i = 0; i < ARRAY_COUNT(g_DivinationTea.apFadeActors); i++)
+                g_DivinationTea.apFadeActors[i]->oam.objMode = 0;
 
             g_GameModeStackContext.dwModeState = DivinationTeaStateReveal;
         }

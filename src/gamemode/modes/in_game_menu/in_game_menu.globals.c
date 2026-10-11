@@ -14,7 +14,7 @@ const ListMenuEntry g_aInGameMenuEntries[6] = {
 };
 
 // One icon per row.
-const ListMenuRowObject g_aInGameMenuRowObjects[6] = {
+const ListMenuRowActor g_aInGameMenuRowActors[6] = {
     { (void *)gInGameMenuIconStatusEquipTiles, (void *)gInGameMenuIconStatusEquipFrames, (const ObjPalette *)gInGameMenuIconStatusEquipPalette, 0 },
     { (void *)gInGameMenuIconItemsTiles,   (void *)gInGameMenuIconItemsFrames,   (const ObjPalette *)gInGameMenuIconItemsPalette,   0 },
     { (void *)gInGameMenuIconFoliosTiles, (void *)gInGameMenuIconFoliosFrames, (const ObjPalette *)gInGameMenuIconFoliosPalette, 0 },
@@ -31,9 +31,9 @@ const ListMenuDefinition g_InGameMenuDefinition = {
     72, 26,
     0, 16,
     g_aInGameMenuEntries,
-    ARRAY_COUNT(g_aInGameMenuRowObjects),
+    ARRAY_COUNT(g_aInGameMenuRowActors),
     0,
     -32, 0,
-    g_aInGameMenuRowObjects,
+    g_aInGameMenuRowActors,
     -48, 8,
 };

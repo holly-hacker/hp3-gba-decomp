@@ -36,12 +36,12 @@ void InitializeDialogue(void)
 #endif
         sub_0801FBA4(0);
         sub_0801FBB0(1);
-        SetActorActionState(g_pPlayerObject, 0x24);
+        SetActorActionState(g_pPlayerActor, 0x24);
         g_dwDialogTextId = 0;
         g_dwDialogBoxY = DIALOG_BOX_HIDDEN_Y;
-        g_pDialogBoxObject = sub_0801F7AC();
-        SetActorPosition(g_pDialogBoxObject, 0, g_dwDialogBoxY + 0x28);
-        g_pDialogCursorObject = SpawnMenuCursorObject(0);
+        g_pDialogBoxActor = sub_0801F7AC();
+        SetActorPosition(g_pDialogBoxActor, 0, g_dwDialogBoxY + 0x28);
+        g_pDialogCursorActor = SpawnMenuCursorActor(0);
         QueueScanlineEffectTable(g_aDialogScanlineEffects, 1);
         while (!IsScanlineEffectQueueIdle())
             ;

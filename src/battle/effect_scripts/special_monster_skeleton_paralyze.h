@@ -1,8 +1,8 @@
 // Chance to paralyze the target on a successful attack (Charmed/Jinxed Skeleton).
 const u8 g_abSpecialMonsterSkeletonParalyzeScript[] = {
     BS_SnapToCaster(1),
-    BS_SetObjectAnim(59, 0),
-    BS_ShowObject(),
+    BS_SetActorAnim(59, 0),
+    BS_ShowActor(),
     BS_MoveTo(8, 8, 13, 0, 2),
     BS_WaitForFieldClear(),
     BS_AdvanceAttackOutcome(),
@@ -18,7 +18,7 @@ const u8 g_abSpecialMonsterSkeletonParalyzeScript[] = {
     BS_WaitFrames(3),
     BS_MoveTo(18, 25, 8, 1, 1),
     BS_WaitForFieldClear(),
-    BS_HideObject(),
+    BS_HideActor(),
     BS_WaitFrames(8),
     BS_AdvanceAttackOutcome(),
     BS_AdvanceAttackOutcome(),

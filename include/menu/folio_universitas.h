@@ -58,17 +58,17 @@ extern const u32 g_dwFolioCardDetailBg2Control;  // 0x0806B3D0
 extern const u32 g_dwFolioCardDetailBg1Control;  // 0x0806B3D4
 
 // Spawns the sprite showing a card at the given screen position and loads its palette.
-extern Actor *SpawnFolioCardObject(u32 cardIndex, s32 x, s32 y);
+extern Actor *SpawnFolioCardActor(u32 cardIndex, s32 x, s32 y);
 
 extern const u32 g_dwFolioUniversitasBg3Control;  // 0x080696B0
 extern const u32 g_dwFolioUniversitasBg1Control;  // 0x080696B4
 extern const u32 g_dwFolioUniversitasBg0Control;  // 0x080696B8
 
 // Cursor, button prompts, three unused-looking sprites and the copy-count badges.
-extern const ActorGfxRecord g_aFolioUniversitasObjectGfx[6];  // 0x080696BC
-#define FOLIO_UNIVERSITAS_CURSOR_GFX   (&g_aFolioUniversitasObjectGfx[0])
-#define FOLIO_UNIVERSITAS_PROMPTS_GFX  (&g_aFolioUniversitasObjectGfx[1])
-#define FOLIO_UNIVERSITAS_BADGES_GFX   (&g_aFolioUniversitasObjectGfx[5])
+extern const ActorGfxRecord g_aFolioUniversitasActorGfx[6];  // 0x080696BC
+#define FOLIO_UNIVERSITAS_CURSOR_GFX   (&g_aFolioUniversitasActorGfx[0])
+#define FOLIO_UNIVERSITAS_PROMPTS_GFX  (&g_aFolioUniversitasActorGfx[1])
+#define FOLIO_UNIVERSITAS_BADGES_GFX   (&g_aFolioUniversitasActorGfx[5])
 
 // Indexed by card number; entry 51 is the face-down card.
 extern const ActorAssetRecord g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT + 1];  // 0x080696EC

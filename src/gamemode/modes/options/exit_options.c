@@ -19,10 +19,10 @@ void ExitOptions(void)
 
     ExitMenuScreen();
 
-    for (i = 0; i < ARRAY_COUNT(g_OptionsState.apObjects); i++)
+    for (i = 0; i < ARRAY_COUNT(g_OptionsState.apActors); i++)
     {
-        FreeActor(g_OptionsState.apObjects[i]);
-        g_OptionsState.apObjects[i] = NULL;
+        FreeActor(g_OptionsState.apActors[i]);
+        g_OptionsState.apActors[i] = NULL;
     }
 
     FreeAllActors(&g_ActiveActorListState.pHead);

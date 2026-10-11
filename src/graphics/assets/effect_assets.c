@@ -2,8 +2,8 @@
 #include "actor.h"
 #include "gen/graphics/battle.h"
 
-// Battle effect sprites used by object scripts (docs/formats/battle_scripts.md).
-const ActorAssetRecord g_aEffectObjectAssets[17] = {
+// Battle effect sprites used by actor scripts (docs/formats/battle_scripts.md).
+const ActorAssetRecord g_aEffectActorAssets[17] = {
     { (void *)gBattleEffect005Tiles, (void *)gBattleEffect005Frames, (void *)gBattleEffect005Palette, 3 }, // 0
     { (void *)gBattleEffect006Tiles, (void *)gBattleEffect006Frames, (void *)gBattleEffect005Palette, 3 }, // 1
     { (void *)gBattleEffect007Tiles, (void *)gBattleEffect007Frames, (void *)gBattleEffect005Palette, 3 }, // 2
@@ -31,7 +31,7 @@ void *const g_apEffectPalettes[5] = {
     (void *)gBattleEffect025Palette,
 };
 
-// SetObjectAnim's animation table.
+// SetActorAnim's animation table.
 const ActorAssetRecord g_aEffectAnimAssets[65] = {
     { (void *)gBattleEffect026Tiles, (void *)gBattleEffect026Frames, (void *)gBattleEffect026Palette, 5 }, // 0
     { (void *)gBattleEffect027Tiles, (void *)gBattleEffect027Frames, (void *)gBattleEffect027Palette, 5 }, // 1

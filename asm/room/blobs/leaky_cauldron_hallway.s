@@ -64,11 +64,11 @@ Room40V1Chain2:
     GotoIfStoryStageCompare 0, 8, 0, 0, Room40V1Group2_id, 0
     End
 Room40V1Chain3:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, QUEST_ALT_PRESENTATION
     SetQuestState 1, 231
     ArmChainYield 1
-    StartTileObjectScript 366, 232, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 366, 232, 0, 0, 255, 0, 0, 0, 255, 255, 255
     @ "Here, Harry. Take these collector's cards. They might help you during a magical encounter."
     @ "Thank you, Minister."
     ShowRoomDialog 5
@@ -80,17 +80,17 @@ Room40V1Chain3:
     @ "You've received some collector's cards! Collect all the cards to unlock secrets and items in the Wizard Card Collectors' Club in classroom 5B. Collecting certain groups of cards will allow Harry to use Card Combos during magical encounters. To view your card collection, choose Folios and then Folio Universitas."
     ShowRoomDialog 623
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room40V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room40V1Route0_id, 0, 1, 0, 0, 0
     End
 Room40V1Chain4:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
     @ "C'mon you lot! We need to leave for King's Cross station right away if we want to catch the Hogwarts Express!"
     ShowRoomDialog 77
     ClearQuestStateUpperHalf
     SetStoryStage 7
     ResetPartyLeaderSelection
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState QUEST_OBJ_FIND_YOUR_SEAT, QUEST_OBJECTIVE_INDEX
     SetOverworldMonstersDisabled
     DelayedRespawnRowAndRunChain 1, 0, 0
@@ -100,7 +100,7 @@ Room40V1Chain5:
     RecruitPartyFollower 6
     End
 Room40V1Chain6:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ReturnToOverworld 6, 0
     End
 Room40V1Chain7:

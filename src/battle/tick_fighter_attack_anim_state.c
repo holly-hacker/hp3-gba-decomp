@@ -3,11 +3,11 @@
 #include "battle/battle.h"
 #include "mt19937.h"
 
-// Enemy-side per-object tick dispatcher, mirroring TickPlayerActionState's
+// Enemy-side per-actor tick dispatcher, mirroring TickPlayerActionState's
 // shape: a switch on Actor+0x8D (bActionState), every case branching into
 // a shared no-op tail rather than returning directly. Registered as
-// InitMonsterBattleActor's pObject->pfnTick. See docs/memory-map/battle.md.
-void TickFighterAttackAnimState_candidate(Actor *obj)
+// InitMonsterBattleActor's pActor->pfnTick. See docs/memory-map/battle.md.
+void TickFighterAttackAnimState_candidate(Actor *actor)
 {
     u8 *pFlags;
     s32 fighterType;
@@ -15,94 +15,94 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
     u8 monsterIndex;
     u32 i;
 
-    if (obj->dwFlags & 2)
+    if (actor->dwFlags & 2)
         return;
 
-    UpdateFighterFlashEffect_candidate(obj);
+    UpdateFighterFlashEffect_candidate(actor);
 
-    switch (obj->bActionState) {
+    switch (actor->bActionState) {
     case 0:
     {
-        pFlags = &obj->bActionFlags;
+        pFlags = &actor->bActionFlags;
         if ((*pFlags & 1) == 0)
             return;
 
-        if (obj->wActionVariant != 2)
-            SetMonsterObjectAnim(obj, 0);
+        if (actor->wActionVariant != 2)
+            SetMonsterActorAnim(actor, 0);
 
         *pFlags &= 0xfe;
         return;
     }
 
     case 0xf:
-        if (obj->vel.x != 0 || obj->vel.y != 0)
+        if (actor->vel.x != 0 || actor->vel.y != 0)
             return;
 
-        SetActorActionState(obj, 0);
+        SetActorActionState(actor, 0);
         return;
 
     case 2:
     {
-        pFlags = &obj->bActionFlags;
+        pFlags = &actor->bActionFlags;
         if (*pFlags & 1) {
-            SetMonsterObjectAnim(obj, 7);
+            SetMonsterActorAnim(actor, 7);
             *pFlags &= 0xfe;
         }
 
-        if ((obj->dwFlags & 0x40000) == 0)
+        if ((actor->dwFlags & 0x40000) == 0)
             return;
 
-        SetActorActionState(obj, 0);
+        SetActorActionState(actor, 0);
         return;
     }
 
     case 1:
     {
-        if (obj->bActionFlags & 1) {
-            if (obj->wActorType != 0x3a) {
-                SetActorFlippedX(obj, 1);
+        if (actor->bActionFlags & 1) {
+            if (actor->wActorType != 0x3a) {
+                SetActorFlippedX(actor, 1);
                 PlaySoundById(0x9d);
             } else {
                 PlaySoundById(0x14);
             }
-            obj->dwStateTimer = 0x14;
-            obj->bActionFlags &= 0xfe;
+            actor->dwStateTimer = 0x14;
+            actor->bActionFlags &= 0xfe;
         }
 
-        if (obj->wActorType != 0x3a) {
-            sub_080039F8(obj);
-            sub_08003A0C(obj);
-            SetActorVelocity(obj, 0xfffa0000, 0);
+        if (actor->wActorType != 0x3a) {
+            sub_080039F8(actor);
+            sub_08003A0C(actor);
+            SetActorVelocity(actor, 0xfffa0000, 0);
         }
 
-        if (--obj->dwStateTimer != 0)
+        if (--actor->dwStateTimer != 0)
             return;
 
-        if (obj->pLinkedActor_candidate != 0)
-            sub_0801BCB0(obj->pLinkedActor_candidate);
+        if (actor->pLinkedActor_candidate != 0)
+            sub_0801BCB0(actor->pLinkedActor_candidate);
 
-        if (obj->pShadowActor != 0)
-            obj->pShadowActor->dwFlags |= 0x82;
+        if (actor->pShadowActor != 0)
+            actor->pShadowActor->dwFlags |= 0x82;
 
         if (g_pFightState->bFaintMessageCount_candidate == 0)
-            CheckBattleVictory(obj);
+            CheckBattleVictory(actor);
 
         if (g_pFightState->dwBattleResultPending != 0) {
-            if (obj->wActorType == 0x3a)
+            if (actor->wActorType == 0x3a)
                 return;
-            obj->dwFlags &= 0xfffffffe;
+            actor->dwFlags &= 0xfffffffe;
             return;
         }
 
-        if (obj->wActorType == (fighterType = 0x3a))
+        if (actor->wActorType == (fighterType = 0x3a))
             return;
 
-        obj->dwFlags |= 0x82;
+        actor->dwFlags |= 0x82;
 
-        if ((u16)(obj->wActorType - 0x31) > 2)
+        if ((u16)(actor->wActorType - 0x31) > 2)
             return;
 
-        FreeActor(obj->pShadowActor);
+        FreeActor(actor->pShadowActor);
         return;
     }
 
@@ -111,7 +111,7 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
         active = &g_pFightState->pFighters[g_pFightState->bActiveFighterIndex];
         monsterIndex = active->bRosterIndex;
 
-        if (obj->bActionFlags == 0x21) {
+        if (actor->bActionFlags == 0x21) {
             if (monsterIndex == 0x3f) { // Lupin Werewolf
                 active->bSelectedActionIndex = 0xff;
 
@@ -134,12 +134,12 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                     // `adds rD, rIndex, rBase` operand order.
                     candidate = (BattleFighter *)(roll * sizeof(BattleFighter) + (u32)fighters);
                 } while (candidate->bFighterType == Enemy
-                         || candidate->pObject == 0
+                         || candidate->pActor == 0
                          || (u16)candidate->nFaintedFlag == 0xffff);
                 active->bSelectedActionIndex = roll;
             }
 
-            g_pFightState->savedPos = obj->pos;
+            g_pFightState->savedPos = actor->pos;
 
             if (MonsterTable[active->bRosterIndex].bSpecialChance == 100) {
                 g_pFightState->bActionDelayCounter_candidate = 5;
@@ -153,7 +153,7 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                         destY = 0x540000;
                     }
 
-                    StartActorMove(obj, destX, destY, 3);
+                    StartActorMove(actor, destX, destY, 3);
                 }
             } else {
 
@@ -162,86 +162,86 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                 g_pFightState->bActionDelayCounter_candidate = 10;
                 roster = active->bRosterIndex;
                 targetSlot = g_pFightState->pFighters[active->bSelectedActionIndex].bSlotParam;
-                StartActorMove(obj,
+                StartActorMove(actor,
                     (g_aBattleSlotAnchorPos_candidate[targetSlot][0] - g_aMonsterAttackOffset_candidate[roster][0]) << 16,
                     (g_aBattleSlotAnchorPos_candidate[targetSlot][1] - g_aMonsterAttackOffset_candidate[roster][1]) << 16,
                     8);
 
 
-                SetActorAffineTransform(obj, 0x10000, 0x10000, 0, 3);
+                SetActorAffineTransform(actor, 0x10000, 0x10000, 0, 3);
 
                 if ((u8)(active->bRosterIndex - 0x37) <= 1) {
-                    StartActorAffineScaleTween(obj, 0x13333, 0x13333, 8);
+                    StartActorAffineScaleTween(actor, 0x13333, 0x13333, 8);
                 } else {
-                    StartActorAffineScaleTween(obj, 0x18000, 0x18000, 8);
+                    StartActorAffineScaleTween(actor, 0x18000, 0x18000, 8);
                 }
             }
 
-            obj->bActionFlags &= 0xfe;
-        } else if (obj->bActionFlags == 0x41) {
-            SetMonsterObjectAnim(obj, 0);
+            actor->bActionFlags &= 0xfe;
+        } else if (actor->bActionFlags == 0x41) {
+            SetMonsterActorAnim(actor, 0);
 
             g_pFightState->bActionDelayCounter_candidate = 0x14;
 
-            StartActorMove(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
+            StartActorMove(actor, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
 
             if (MonsterTable[active->bRosterIndex].bSpecialChance != 100)
-                StartActorAffineScaleTween(obj, 0x10000, 0x10000, 3);
+                StartActorAffineScaleTween(actor, 0x10000, 0x10000, 3);
 
-            obj->bActionFlags &= 0xfe;
+            actor->bActionFlags &= 0xfe;
         }
 
-        if (obj->bActionFlags & 0x20) {
+        if (actor->bActionFlags & 0x20) {
             g_pFightState->bActionDelayCounter_candidate--;
             if (g_pFightState->bActionDelayCounter_candidate != 0)
                 return;
 
-            obj->wUnk86 = 0;
-            SetActorVelocity(obj, 0, 0);
-            obj->bActionFlags = 1;
+            actor->wUnk86 = 0;
+            SetActorVelocity(actor, 0, 0);
+            actor->bActionFlags = 1;
             return;
         }
-        if (obj->bActionFlags & 0x40) {
+        if (actor->bActionFlags & 0x40) {
             g_pFightState->bActionDelayCounter_candidate--;
             if (g_pFightState->bActionDelayCounter_candidate != 0)
                 return;
 
-            obj->wMoveDuration = 0;
-            obj->bActionState = 0;
-            obj->bActionFlags |= 1;
+            actor->wMoveDuration = 0;
+            actor->bActionState = 0;
+            actor->bActionFlags |= 1;
 
             PostActionBattleCheck();
-            if (obj->oam.affineMode != 3)
+            if (actor->oam.affineMode != 3)
                 return;
 
-            ReleaseActorAffineSlot(obj);
+            ReleaseActorAffineSlot(actor);
             return;
         }
 
-        if (obj->bActionFlags & 1) {
-            SetMonsterObjectAnim(obj, 0xc);
-            obj->bActionFlags &= 0xfe;
+        if (actor->bActionFlags & 1) {
+            SetMonsterActorAnim(actor, 0xc);
+            actor->bActionFlags &= 0xfe;
         }
 
-        if (obj->dwFlags & 0x8000) {
+        if (actor->dwFlags & 0x8000) {
             if (MonsterTable[monsterIndex].bSpecialChance == 100) {
                 g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, active->bSelectedActionIndex);
                 RollMonsterSpecialEffect(monsterIndex, active->bSelectedActionIndex, g_nLastDamage);
             }
 
-            if (obj->wActorType == 0x3e) {
-                obj->anim.unk_DC.bEnemyAttackPhase_candidate = 0xff;
-                obj->scriptState.bytes.bAttackOutcomeState = 2;
+            if (actor->wActorType == 0x3e) {
+                actor->anim.unk_DC.bEnemyAttackPhase_candidate = 0xff;
+                actor->scriptState.bytes.bAttackOutcomeState = 2;
             }
 
-            obj->dwFlags &= 0xffff7fff;
+            actor->dwFlags &= 0xffff7fff;
         }
 
-        if (((obj->dwFlags & 0x40000) == 0) || (obj->anim.unk_DC.bEnemyAttackPhase_candidate == 0xff)) {
-            if (obj->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
+        if (((actor->dwFlags & 0x40000) == 0) || (actor->anim.unk_DC.bEnemyAttackPhase_candidate == 0xff)) {
+            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
-            if (obj->scriptState.bytes.bAttackOutcomeState != 1)
+            if (actor->scriptState.bytes.bAttackOutcomeState != 1)
                 goto phase2;
         }
         {
@@ -250,7 +250,7 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
             // exactly one of the two ResolveEnemyAttack calls fires per
             // attack (bSpecialChance==100 there, <=99 here), and this tail
             // always reads whichever one just ran.
-            obj->anim.unk_DC.bEnemyAttackPhase_candidate = 0;
+            actor->anim.unk_DC.bEnemyAttackPhase_candidate = 0;
 
             if (MonsterTable[monsterIndex].bSpecialChance <= 99) {
                 g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, active->bSelectedActionIndex);
@@ -264,16 +264,16 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                 PlaySoundById(0x4b);
             }
 
-            obj->bActionFlags = 0x41;
-            obj->dwFlags &= 0xfffbffff;
+            actor->bActionFlags = 0x41;
+            actor->dwFlags &= 0xfffbffff;
 
-            ShowItemUseResult(obj, active->bSelectedActionIndex);
+            ShowItemUseResult(actor, active->bSelectedActionIndex);
 
             phase2:
-            if (obj->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
+            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
-            if (obj->scriptState.bytes.bAttackOutcomeState == 2) {
+            if (actor->scriptState.bytes.bAttackOutcomeState == 2) {
                 if (MonsterTable[monsterIndex].bSpecialChance <= 99) {
                     g_nLastDamage = (u16)ResolveEnemyAttack(
                         g_pFightState->bActiveFighterIndex,
@@ -284,17 +284,17 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                     ShowDamageNumber_candidate(active->bSelectedActionIndex, g_nLastDamage);
 
                 active->bSpellId = Flipendo;
-                ShowItemUseResult(obj, active->bSelectedActionIndex);
+                ShowItemUseResult(actor, active->bSelectedActionIndex);
             }
 
-            if (obj->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
+            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
-            if (obj->scriptState.bytes.bAttackOutcomeState == 4) {
+            if (actor->scriptState.bytes.bAttackOutcomeState == 4) {
                 // Fainted-message sweep: every living non-enemy fighter
                 // resolves once more and queues a faint/HP message.
-                obj->scriptState.bytes.bAttackOutcomeState = 0;
-                g_pFightState->pAttackAnimObject_candidate = 0;
+                actor->scriptState.bytes.bAttackOutcomeState = 0;
+                g_pFightState->pAttackAnimActor_candidate = 0;
                 g_pFightState->bAttackAnimState_candidate = 0;
                 g_pFightState->bFaintMessageCount_candidate = 0;
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
@@ -305,7 +305,7 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                         if (g_nLastDamage > 999) {
                             // Handle crit damage
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wActorType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pActor->wActorType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -313,7 +313,7 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                             ShowFloatingDamageNumber_candidate(g_nLastDamage, 3, i, 0);
                         } else if (g_nLastDamage != 0) {
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wActorType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pActor->wActorType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -323,7 +323,7 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                             // the compiler already holds a register known to
                             // be 0 and reuses it, which is what the ROM does.
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = 0;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wActorType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pActor->wActorType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 1;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -335,24 +335,24 @@ void TickFighterAttackAnimState_candidate(Actor *obj)
                 if (g_pFightState->dwBattleResultPending == 0)
                     ShowBattleMessage(FaintResult, 0, 0);
             }
-            if (obj->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff || obj->scriptState.bytes.bAttackOutcomeState != 3)
+            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff || actor->scriptState.bytes.bAttackOutcomeState != 3)
                 goto skipPhase0;
             goto finish;
         }
 
     skipPhase0:
-        if (obj->wActorType != 0x3e)
+        if (actor->wActorType != 0x3e)
             return;
-        if ((obj->dwFlags & 0x40000) == 0)
+        if ((actor->dwFlags & 0x40000) == 0)
             return;
     finish:
-        g_pFightState->pAttackAnimObject_candidate = 0;
+        g_pFightState->pAttackAnimActor_candidate = 0;
         g_pFightState->bAttackAnimState_candidate = 0;
-        obj->scriptState.bytes.bAttackOutcomeState = 0;
+        actor->scriptState.bytes.bAttackOutcomeState = 0;
         active->bSpellId = Flipendo;
-        obj->anim.unk_DC.bEnemyAttackPhase_candidate = 0;
-        obj->bActionFlags = 0x41;
-        obj->dwFlags &= 0xfffbffff;
+        actor->anim.unk_DC.bEnemyAttackPhase_candidate = 0;
+        actor->bActionFlags = 0x41;
+        actor->dwFlags &= 0xfffbffff;
         return;
     }
     }

@@ -10,17 +10,17 @@ void SetFighterTurnOrderIconActive(s32 fighterIndex)
     u8 i;
 
     if (g_pFightState->pFighters[index].bFighterType == Enemy)
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconObjects[index]->pLinkedActor_candidate, 3);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor_candidate, 3);
     else
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconObjects[index]->pLinkedActor_candidate, 2);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor_candidate, 2);
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
         if (i == index) {
-            g_pFightState->apTurnOrderIconObjects[i]->pLinkedActor_candidate->bDepthSortBias = 0xFD;
-            g_pFightState->apTurnOrderIconObjects[i]->bDepthSortBias = 0x80;
+            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->bDepthSortBias = 0xFD;
+            g_pFightState->apTurnOrderIconActors[i]->bDepthSortBias = 0x80;
         } else {
-            g_pFightState->apTurnOrderIconObjects[i]->pLinkedActor_candidate->bDepthSortBias = 0xFF;
-            g_pFightState->apTurnOrderIconObjects[i]->bDepthSortBias = 0xFE;
+            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->bDepthSortBias = 0xFF;
+            g_pFightState->apTurnOrderIconActors[i]->bDepthSortBias = 0xFE;
         }
     }
 }

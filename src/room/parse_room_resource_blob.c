@@ -22,10 +22,10 @@ void ParseRoomResourceBlob_candidate(const RoomBlobHeader *pBlob)
     pVariant = (const RoomBlobSubBlock *)pTable;
 
     pTable = CopyRoomBlobHeaderRecords_candidate(pBlob, pVariant);
-    g_pRoomObjectTable = (RoomBlobTable *)pTable;
-    pTable = BuildRoomObjectTable_candidate(pDefault, pVariant, pTable);
+    g_pRoomActorTable = (RoomBlobTable *)pTable;
+    pTable = BuildRoomActorTable_candidate(pDefault, pVariant, pTable);
     g_pRoomWarpTriggerTable = (RoomBlobTable *)pTable;
     pTable = BuildRoomWarpTriggerTable_candidate(pDefault, pVariant, pTable);
-    g_pRoomSwitchStateObjectTable = (RoomScriptTable *)pTable;
-    BuildRoomSwitchStateObjectTable_candidate(pDefault, pVariant, pTable);
+    g_pRoomSwitchStateActorTable = (RoomScriptTable *)pTable;
+    BuildRoomSwitchStateActorTable_candidate(pDefault, pVariant, pTable);
 }

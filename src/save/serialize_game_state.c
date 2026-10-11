@@ -3,7 +3,7 @@
 #include "game/save.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
-#include "overworld/room_object.h"
+#include "overworld/room_actor.h"
 
 // Packs the live game state into the slot stream. The first six values are
 // the ones UnpackSaveSlotPreview reads back for the save menus.
@@ -25,7 +25,7 @@ void SerializeGameStateToSaveBuffer(void)
     PackBytesToSaveStream(&g_bSelectedFieldSpell, 1);
     SerializeItemQuantities();
     SerializePartyStats();
-    SerializeRoomObjectState();
+    SerializeRoomActorState();
     PackBytesToSaveStream(g_abOpenedChestFlags, sizeof(g_abOpenedChestFlags));
     PackBytesToSaveStream(g_abQuestEventState, 0x100);
     SerializeMonsterDexLevels();

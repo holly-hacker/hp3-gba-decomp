@@ -12,7 +12,7 @@ void UpdateDebugMenuMain(void)
 
     if (StepCursorUpDown(&g_DebugMenuMainState.dwSelection, 0, 5, 1, 0))
     {
-        SetActorMoveTargetWithDuration_candidate(g_DebugMenuMainState.pCursorObject, 0x78,
+        SetActorMoveTargetWithDuration_candidate(g_DebugMenuMainState.pCursorActor, 0x78,
                                                   g_DebugMenuMainState.dwSelection * 0x10 + 0x2D, 5);
     }
 

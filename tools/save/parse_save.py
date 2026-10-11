@@ -42,11 +42,11 @@ same convention already used for this ROM's globals, e.g. `wHp`,
     a3  array of 3-bit values (each element 0-7), size given by list
         length
 
-Struct-shaped fields (`partyStats`, `roomObjectState`) carry no prefix --
+Struct-shaped fields (`partyStats`, `roomActorState`) carry no prefix --
 a single type/size doesn't describe them. Fields whose real meaning
 isn't identified are named `<prefix>UnknownN`, where N is that field's
 0-based index among its immediate siblings (not a global counter) --
-e.g. `roomObjectState`'s own `unknownN` record tables (see below) are
+e.g. `roomActorState`'s own `unknownN` record tables (see below) are
 indexed separately from the top-level slot fields, and carry no prefix
 since each is a list of fixed-size records, not a scalar/blob. Each
 slot's fields are plain named keys on the slot object, in their on-disk
@@ -601,12 +601,12 @@ def encode_party_member(w: SaveWriter, m: dict):
 
 
 # --------------------------------------------------------------------------
-# Save slot: room-object state (0x0802A570)
+# Save slot: room-actor state (0x0802A570)
 #
-# A snapshot of every non-default object active in the player's current
+# A snapshot of every non-default actor active in the player's current
 # room (spawned monsters, pickups, switches, chests, etc.), restored when
 # the room is re-entered -- not an inventory list, despite the shape of
-# the on-disk field order. See docs/formats/save.md's "Room-object state"
+# the on-disk field order. See docs/formats/save.md's "Room-actor state"
 # section.
 #
 # Fixed header (player position/facing, a room switch flag, and one
@@ -617,9 +617,9 @@ def encode_party_member(w: SaveWriter, m: dict):
 #
 # Each table's record layout was traced byte-for-byte from the two
 # symmetric producer/consumer functions: 0x0802A70C (capture, walks the
-# live room-object list and picks a table per object per its "kind",
-# *(short*)(obj+8)) and 0x0802AB34/0x0802AE64 (restore, respawn each
-# tile's default object via 0x08005B70 then overlay these fields). Most
+# live room-actor list and picks a table per actor per its "kind",
+# *(short*)(actor+8)) and 0x0802AB34/0x0802AE64 (restore, respawn each
+# tile's default actor via 0x08005B70 then overlay these fields). Most
 # fields copy a byte/word/dword straight from a fixed offset of the live
 # `Actor` struct (docs/formats/battle_scripts.md); ones with no
 # identified meaning keep that struct's own offset in their name
@@ -635,19 +635,19 @@ def encode_party_member(w: SaveWriter, m: dict):
 
 SPEC_DEFAULT_KIND = [
     # kind: the fallback/default case (any kind not handled below). The
-    # richest record -- full Actor state, plus 3 linked sub-objects'
+    # richest record -- full Actor state, plus 3 linked sub-actors'
     # tile positions (captured but never restored -- see docs).
-    ("dwObjectFlags", 0x00, "I"),   # Actor+0xc, capture masks off bit 0x00200000
+    ("dwActorFlags", 0x00, "I"),   # Actor+0xc, capture masks off bit 0x00200000
     ("dwUnk_0x28", 0x04, "I"),
     ("dwUnk_0x80", 0x08, "I"),
     ("wUnk_0x86", 0x0C, "H"),
     ("wWaitTarget_0x8a", 0x0E, "H"),  # Actor+0x8a, the WaitFrames/WaitForCounter target (battle_scripts.md)
-    ("bSubObjectATileX", 0x10, "B"),  # tile position of Actor+0xa0's linked object -- capture-only, never restored
-    ("bSubObjectATileY", 0x11, "B"),
-    ("bSubObjectBTileX", 0x12, "B"),  # Actor+0xa4's linked object -- capture-only
-    ("bSubObjectBTileY", 0x13, "B"),
-    ("bSubObjectCTileX", 0x14, "B"),  # Actor+0xa8's linked object -- capture-only
-    ("bSubObjectCTileY", 0x15, "B"),
+    ("bSubActorATileX", 0x10, "B"),  # tile position of Actor+0xa0's linked actor -- capture-only, never restored
+    ("bSubActorATileY", 0x11, "B"),
+    ("bSubActorBTileX", 0x12, "B"),  # Actor+0xa4's linked actor -- capture-only
+    ("bSubActorBTileY", 0x13, "B"),
+    ("bSubActorCTileX", 0x14, "B"),  # Actor+0xa8's linked actor -- capture-only
+    ("bSubActorCTileY", 0x15, "B"),
     ("bFacing", 0x16, "B"),          # Actor+0x12
     ("bUnk_0x8d", 0x17, "B"),
     ("bUnk_0x8f", 0x18, "B"),
@@ -679,7 +679,7 @@ SPEC_KIND_4_OR_7 = [
     ("bTileX", 0x0, "B"),
     ("bTileY", 0x1, "B"),
     ("bUnk_0x8d", 0x3, "B"),
-    ("dwObjectFlags", 0x4, "I"),     # Actor+0xc, captured unmasked (unlike the other tables)
+    ("dwActorFlags", 0x4, "I"),     # Actor+0xc, captured unmasked (unlike the other tables)
     ("dwUnk_0x80", 0x8, "I"),
 ]
 
@@ -691,7 +691,7 @@ SPEC_KIND_5 = [
     ("bUnk_0x67", 0x4, "B"),
     ("bUnk_0x60", 0x5, "B"),
     ("wUnk_0x86", 0x6, "H"),
-    ("dwObjectFlags", 0x8, "I"),     # Actor+0xc, masked off bit 0x00200000
+    ("dwActorFlags", 0x8, "I"),     # Actor+0xc, masked off bit 0x00200000
     ("dwUnk_0xd8", 0xC, "I"),
     ("dwUnk_0xdc", 0x10, "I"),
     ("dwUnk_0xe0", 0x14, "I"),
@@ -707,11 +707,11 @@ SPEC_KIND_5 = [
 
 SPEC_FLOOR_ITEM = [
     # kind 1. The two dwords aren't Actor fields at all: on restore, the
-    # respawned object's own (tile-level) position is used to look up an
+    # respawned actor's own (tile-level) position is used to look up an
     # entry in a separate, static per-map item-drop table (0x08020504),
     # and these two dwords overwrite that table entry -- i.e. this
     # refreshes persistent floor-item state keyed by tile position, not
-    # the spawned object itself.
+    # the spawned actor itself.
     ("bTileX", 0x0, "B"),
     ("bTileY", 0x1, "B"),
     ("dwItemTableField0", 0x4, "I"),
@@ -719,7 +719,7 @@ SPEC_FLOOR_ITEM = [
 ]
 
 SPEC_KIND_5_SWITCH = [
-    # kind 5, sub-kind '3' (Actor+0x61 == ASCII '3') -- a per-object
+    # kind 5, sub-kind '3' (Actor+0x61 == ASCII '3') -- a per-actor
     # toggle, structurally the same idea as the single-instance
     # `bSwitchState` room switch above but with up to 32 independent
     # instances per room. `bTriggered` is encoded inverted: stored as
@@ -745,20 +745,20 @@ SPEC_PICKUP_MARKER = [
 SPEC_PRESENCE_MARKER = [
     # kinds 2, 8, 10 unconditionally, plus kind 5/6 under specific
     # status-bit conditions (see docs/formats/save.md). Just a tile
-    # position -- restore only respawns the tile's default object, no
+    # position -- restore only respawns the tile's default actor, no
     # further state applied.
     ("bTileX", 0x0, "B"),
     ("bTileY", 0x1, "B"),
 ]
 
-ROOM_OBJECT_TABLES = [
+ROOM_ACTOR_TABLES = [
     # (JSON key, record size, field spec) -- order matches the on-disk
     # count/table order.
-    ("defaultKindObjects", 0x6C, SPEC_DEFAULT_KIND),
-    ("kind4Or7Objects", 0x0C, SPEC_KIND_4_OR_7),
-    ("kind5Objects", 0x34, SPEC_KIND_5),
+    ("defaultKindActors", 0x6C, SPEC_DEFAULT_KIND),
+    ("kind4Or7Actors", 0x0C, SPEC_KIND_4_OR_7),
+    ("kind5Actors", 0x34, SPEC_KIND_5),
     ("floorItemStates", 0x0C, SPEC_FLOOR_ITEM),
-    ("kind5SwitchObjects", 0x04, SPEC_KIND_5_SWITCH),
+    ("kind5SwitchActors", 0x04, SPEC_KIND_5_SWITCH),
     ("pickupMarkers", 0x04, SPEC_PICKUP_MARKER),
     ("presenceMarkers", 0x04, SPEC_PRESENCE_MARKER),
 ]
@@ -814,11 +814,11 @@ FIXED_POINT_SHIFT = 65536.0  # 16.16 fixed point; division/multiplication by a
                               # round-trips losslessly.
 
 
-def decode_room_object_state(r: SaveReader) -> dict:
+def decode_room_actor_state(r: SaveReader) -> dict:
     pos_x = struct.unpack("<i", r.read_bytes(4))[0] / FIXED_POINT_SHIFT
     pos_y = struct.unpack("<i", r.read_bytes(4))[0] / FIXED_POINT_SHIFT
     facing = r.read_bytes(1)[0]
-    counts = [r.read_bytes(1)[0] for _ in ROOM_OBJECT_TABLES]
+    counts = [r.read_bytes(1)[0] for _ in ROOM_ACTOR_TABLES]
     switch_state = r.read_bytes(1)[0]
 
     result = {
@@ -827,7 +827,7 @@ def decode_room_object_state(r: SaveReader) -> dict:
         "bPlayerFacing": facing,
         "bSwitchState": switch_state,
     }
-    for (key, rec_size, spec), count in zip(ROOM_OBJECT_TABLES, counts):
+    for (key, rec_size, spec), count in zip(ROOM_ACTOR_TABLES, counts):
         result[key] = [decode_record(r.read_bytes(rec_size), spec, rec_size)
                         for _ in range(count)]
     return result
@@ -838,7 +838,7 @@ def decode_room_object_state(r: SaveReader) -> dict:
 MAX_PICKUP_MARKERS = 16
 
 
-def encode_room_object_state(w: SaveWriter, state: dict):
+def encode_room_actor_state(w: SaveWriter, state: dict):
     if len(state["pickupMarkers"]) > MAX_PICKUP_MARKERS:
         print(f"warning: {len(state['pickupMarkers'])} pickupMarkers exceed the "
               f"{MAX_PICKUP_MARKERS} the game has room for; loading overwrites presenceMarkers",
@@ -846,10 +846,10 @@ def encode_room_object_state(w: SaveWriter, state: dict):
     w.write_bytes(struct.pack("<i", round(state["fxPlayerPosX"] * FIXED_POINT_SHIFT)))
     w.write_bytes(struct.pack("<i", round(state["fxPlayerPosY"] * FIXED_POINT_SHIFT)))
     w.write_bytes(bytes([state["bPlayerFacing"]]))
-    for key, _, _ in ROOM_OBJECT_TABLES:
+    for key, _, _ in ROOM_ACTOR_TABLES:
         w.write_bytes(bytes([len(state[key])]))
     w.write_bytes(bytes([state["bSwitchState"]]))
-    for key, rec_size, spec in ROOM_OBJECT_TABLES:
+    for key, rec_size, spec in ROOM_ACTOR_TABLES:
         for entry in state[key]:
             w.write_bytes(encode_record(entry, spec, rec_size))
 
@@ -990,10 +990,10 @@ def decode_slot_stream(payload: bytes) -> dict:
     slot.update(decode_item_quantities(r))
 
     slot["partyStats"] = [decode_party_member(r) for _ in range(PARTY_MEMBER_COUNT)]
-    slot["roomObjectState"] = decode_room_object_state(r)
+    slot["roomActorState"] = decode_room_actor_state(r)
 
     # 256-bit bitset, one bit per chest flag id, set when that chest is
-    # opened. Persists across room transitions, unlike roomObjectState above.
+    # opened. Persists across room transitions, unlike roomActorState above.
     slot["abOpenedChestFlags"] = r.read_bytes(32).hex()
     # Ghidra: g_abQuestEventState (0x030027a0). Index 25 = bMainMenuObjectiveIndex
     # above. Persistent global state, not per-room (confirmed unchanged
@@ -1068,7 +1068,7 @@ def encode_slot_stream(slot: dict) -> bytes:
     for member in slot["partyStats"]:
         encode_party_member(w, member)
 
-    encode_room_object_state(w, slot["roomObjectState"])
+    encode_room_actor_state(w, slot["roomActorState"])
 
     w.write_bytes(bytes.fromhex(slot["abOpenedChestFlags"]))
     w.write_bytes(bytes(slot["abQuestEventState"]))

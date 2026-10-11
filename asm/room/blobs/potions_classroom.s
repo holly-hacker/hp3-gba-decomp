@@ -167,26 +167,26 @@ Room01V1Chain0:
     GotoIfStoryStageCompare 2, 4, 0, 0, Room01V1Group17_id, 0
     End
 Room01V1Chain1:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RespawnRowAndRunChain Room01V1Group1_id, 0
     DelayedRespawnRowAndRunChainFrames 10, 0, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room01V1Chain2:
     ArmChainYield 1
-    QueueTileObjectMove Room01V1Group2_id, 0, 0, 0, 1850, 0
+    QueueTileActorMove Room01V1Group2_id, 0, 0, 0, 1850, 0
     Unk02 Room01V1Group2_id, 1, 5
-    SetTileObjectFacing Room01V1Group2_id, 1, 2
-    SetTileObjectFacing Room01V1Group2_id, 1, 4
-    SetTileObjectFacing Room01V1Group2_id, 1, 6
-    StartTileObjectScript 218, 210, 0, Room01V1Group2_id, 1, 0, 0, 6, 255, 255, 255
+    SetTileActorFacing Room01V1Group2_id, 1, 2
+    SetTileActorFacing Room01V1Group2_id, 1, 4
+    SetTileActorFacing Room01V1Group2_id, 1, 6
+    StartTileActorScript 218, 210, 0, Room01V1Group2_id, 1, 0, 0, 6, 255, 255, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
-    DespawnTileObject Room01V1Group2_id, 1
+    DespawnTileActor Room01V1Group2_id, 1
     @ "Settle down, settle down. Today we shall be making a new potion, a Shrinking Solution."
     ShowRoomDialog 295
     Unk02 Room01V1Group2_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room01V1Group2_id, 0, 0, 0, Room01V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group2_id, 0, 0, 0, Room01V1Route0_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain3:
     @ "I wonder why Professor Snape appears to dislike Gryffindors so much?"
@@ -210,11 +210,11 @@ Room01V1Chain7:
     End
 Room01V1Chain8:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RemovePartyFollower 5
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group6_id, 0
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group9_id, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1650, 0
+    QueueTileActorMove 0, 255, 0, 0, 1650, 0
     @ "Weasley, while I am reluctant to assign you a task as complex as finding and carrying, I live in hope that you will surprise me."
     @ "I require potion ingredients from the Potions store room. Bring them back here to me Weasley, and take Granger with you."
     @ "The potion requires daisy root, Shrivelfig, rat spleen, dead caterpillar and leech juice."
@@ -223,15 +223,15 @@ Room01V1Chain8:
     ShowRoomDialog 297
     SetQuestState QUEST_OBJ_FIND_POTION_INGREDIENTS, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 225
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room01V1Chain9:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RemovePartyFollower 7
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group7_id, 0
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group10_id, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1650, 0
+    QueueTileActorMove 0, 255, 0, 0, 1650, 0
     @ "Feeling particularly keen today, are we, Potter? Very well..."
     @ "Go to the Potions store room, Potter, retrieve some herbs and then bring them back to me. Take Miss Granger along with you."
     @ "The potion requires daisy root, Shrivelfig, rat spleen, dead caterpillar and leech juice."
@@ -241,7 +241,7 @@ Room01V1Chain9:
     ShowRoomDialog 298
     SetQuestState QUEST_OBJ_FIND_POTION_INGREDIENTS, QUEST_OBJECTIVE_INDEX
     SetQuestState 0, 225
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room01V1Chain10:
     @ "I much prefer Potions to Transfiguration."
@@ -256,39 +256,39 @@ Room01V1Chain12:
     ShowRoomDialog 294
     End
 Room01V1Chain13:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
-    ClearTileObjectFlagBit 0, 255, 9
-    StartTileObjectScript 122, 115, 1, 0, 255, 0, 0, 0, 255, 255, 255
+    ClearTileActorFlagBit 0, 255, 9
+    StartTileActorScript 122, 115, 1, 0, 255, 0, 0, 0, 255, 255, 255
     PlaySoundById 51
     DelayedRespawnRowAndRunChainFrames 2, 0, 0
-    SetTileObjectFacing Room01V1Group1_id, 2, 1
+    SetTileActorFacing Room01V1Group1_id, 2, 1
     DelayedRespawnRowAndRunChainFrames 5, 0, 0
-    SetTileObjectFacing Room01V1Group1_id, 6, 1
+    SetTileActorFacing Room01V1Group1_id, 6, 1
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
-    SetTileObjectFacing 0, 255, 1
+    SetTileActorFacing 0, 255, 1
     DelayedRespawnRowAndRunChainFrames 3, 0, 0
-    SetTileObjectFacing Room01V1Group1_id, 7, 1
-    SetTileObjectFlagBit 0, 255, 9
-    DespawnTileObject Room01V1Group1_id, 1
+    SetTileActorFacing Room01V1Group1_id, 7, 1
+    SetTileActorFlagBit 0, 255, 9
+    DespawnTileActor Room01V1Group1_id, 1
     InvokeChainIfEnabled 0, Room01V1Chain2_id
     End
 Room01V1Chain14:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
-    ClearTileObjectFlagBit 0, 255, 9
-    StartTileObjectScript 239, 121, 1, 0, 255, 0, 0, 0, 255, 255, 255
+    ClearTileActorFlagBit 0, 255, 9
+    StartTileActorScript 239, 121, 1, 0, 255, 0, 0, 0, 255, 255, 255
     PlaySoundById 51
     DelayedRespawnRowAndRunChainFrames 2, 0, 0
-    SetTileObjectFacing Room01V1Group1_id, 3, 1
+    SetTileActorFacing Room01V1Group1_id, 3, 1
     DelayedRespawnRowAndRunChainFrames 5, 0, 0
-    SetTileObjectFacing 0, 255, 1
+    SetTileActorFacing 0, 255, 1
     DelayedRespawnRowAndRunChainFrames 3, 0, 0
-    SetTileObjectFacing Room01V1Group1_id, 4, 1
+    SetTileActorFacing Room01V1Group1_id, 4, 1
     DelayedRespawnRowAndRunChainFrames 3, 0, 0
-    SetTileObjectFacing Room01V1Group1_id, 5, 1
-    DespawnTileObject Room01V1Group1_id, 0
-    SetTileObjectFlagBit 0, 255, 9
+    SetTileActorFacing Room01V1Group1_id, 5, 1
+    DespawnTileActor Room01V1Group1_id, 0
+    SetTileActorFlagBit 0, 255, 9
     InvokeChainIfEnabled 0, Room01V1Chain2_id
     End
 Room01V1Chain15:
@@ -296,10 +296,10 @@ Room01V1Chain15:
     Unk02 Room01V1Group1_id, 8, 3
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room01V1Group1_id, 8, 0, 0, Room01V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group1_id, 8, 0, 0, Room01V1Route1_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain16:
-    StartObjectAnimSequence Room01V1Group2_id, 0, 0, 0, Room01V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group2_id, 0, 0, 0, Room01V1Route2_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain17:
     GotoIfQuestStateCompare 224, 0, 0, Room01V1Chain1_id, 0, Room01V1Group8_id, 0
@@ -313,8 +313,8 @@ Room01V1Chain19:
     RemovePartyFollower 6
     RespawnRowAndRunChain Room01V1Group1_id, 0
     RespawnRowAndRunChain Room01V1Group3_id, 0
-    DespawnTileObject Room01V1Group1_id, 0
-    DespawnTileObject Room01V1Group1_id, 1
+    DespawnTileActor Room01V1Group1_id, 0
+    DespawnTileActor Room01V1Group1_id, 1
     RespawnRowAndRunChain Room01V1Group11_id, 0
     RespawnRowAndRunChain Room01V1Group16_id, 0
     End
@@ -323,7 +323,7 @@ Room01V1Chain20:
     End
 Room01V1Chain21:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 5, 0, 0
     GotoIfQuestStateCompare 231, 4, 4, Room01V1Chain25_id, Room01V1Chain27_id, 0, 0
     End
@@ -332,12 +332,12 @@ Room01V1Chain22:
     End
 Room01V1Chain23:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     GotoIfQuestStateCompare 231, 4, 4, Room01V1Chain24_id, Room01V1Chain26_id, 0, 0
     End
 Room01V1Chain24:
     ArmChainYield 1
-    StartTileObjectScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
     @ "I seem to recall that I requested more herbs than this, Potter. Kindly return to the store room and collect the remaining herbs."
     ShowRoomDialog 299
@@ -346,7 +346,7 @@ Room01V1Chain24:
     End
 Room01V1Chain25:
     ArmChainYield 1
-    StartTileObjectScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
     @ "I seem to recall that I requested more ingredients than this, Weasley. Do not return to me again without all the ingredients."
     ShowRoomDialog 300
@@ -355,7 +355,7 @@ Room01V1Chain25:
     End
 Room01V1Chain26:
     ArmChainYield 1
-    StartTileObjectScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
     @ "Quite remarkable, Potter. You appear to have achieved the task without drawing too much attention to yourself."
     ShowRoomDialog 310
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
@@ -364,7 +364,7 @@ Room01V1Chain26:
     End
 Room01V1Chain27:
     ArmChainYield 1
-    StartTileObjectScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 305, 214, 0, 0, 255, 0, 0, 0, 255, 255, 255
     @ "You surprise me, Mr. Weasley. I was expecting you to return empty handed."
     ShowRoomDialog 311
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
@@ -373,9 +373,9 @@ Room01V1Chain27:
     End
 Room01V1Chain28:
     ArmChainYield 1
-    SetTileObjectFacing 0, 255, 0
-    SetTileObjectFacing Room01V1Group16_id, 0, 6
-    SetTileObjectFacing Room01V1Group3_id, 0, 4
+    SetTileActorFacing 0, 255, 0
+    SetTileActorFacing Room01V1Group16_id, 0, 6
+    SetTileActorFacing Room01V1Group3_id, 0, 4
     Unk02 Room01V1Group16_id, 0, 1
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
     ConsumeRoomItem 63
@@ -407,7 +407,7 @@ Room01V1Chain28:
     GrantPartySpell 7
     ShowSpellLearnedMessage 8, 1
     SetQuestState QUEST_OBJ_GO_TO_STAFF_ROOM, QUEST_OBJECTIVE_INDEX
-    DespawnRoomRowObjects Room01V1Group11_id
+    DespawnRoomRowActors Room01V1Group11_id
     RespawnRowAndRunChain Room01V1Group4_id, 0
     GotoIfQuestStateCompare 225, 1, 0, Room01V1Chain37_id, Room01V1Chain38_id, 0, 0
     End
@@ -426,32 +426,32 @@ Room01V1Chain30:
     End
 Room01V1Chain31:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     Unk02 Room01V1Group16_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room01V1Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route13_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route13_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain32:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Do not think of this as an opportunity to avoid the lesson, Weasley. Tardiness will be punished."
     @ "Yes, Professor."
     ShowRoomDialog 319
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain33:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Do not think of this as an opportunity to avoid the lesson, Potter."
     @ "Yes, Professor."
     ShowRoomDialog 320
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain34:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room01V1Chain35:
     ArmChainYield 1
@@ -459,57 +459,57 @@ Room01V1Chain35:
     ReturnToOverworld 2, 0
     End
 Room01V1Chain36:
-    StartObjectAnimSequence 0, 255, 0, 0, Room01V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route5_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain37:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
-    SetTileObjectFacing 0, 255, 4
+    SetTileActorFacing 0, 255, 4
     ArmChainYield 0
-    StartObjectAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group12_id, 0, 0, 0, Room01V1Route12_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group12_id, 0, 0, 0, Room01V1Route12_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain38:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
-    SetTileObjectFacing 0, 255, 4
+    SetTileActorFacing 0, 255, 4
     ArmChainYield 0
-    StartObjectAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group13_id, 0, 0, 0, Room01V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group13_id, 0, 0, 0, Room01V1Route6_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain39:
     ArmChainYield 1
-    DespawnRoomRowObjects Room01V1Group12_id
-    DespawnRoomRowObjects Room01V1Group16_id
+    DespawnRoomRowActors Room01V1Group12_id
+    DespawnRoomRowActors Room01V1Group16_id
     RecruitPartyFollower 5
     RecruitPartyFollower 6
     InvokeChainIfEnabled 0, Room01V1Chain43_id
     End
 Room01V1Chain40:
     ArmChainYield 1
-    DespawnRoomRowObjects Room01V1Group1_id
-    DespawnRoomRowObjects Room01V1Group3_id
+    DespawnRoomRowActors Room01V1Group1_id
+    DespawnRoomRowActors Room01V1Group3_id
     DelayedRespawnRowAndRunChain 1, 0, 0
     PlaySoundById 23
     ClearQuestStateUpperHalf
     RespawnRowAndRunChain Room01V1Group17_id, 0
     SetStoryStage 5
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room01V1Chain41:
     ArmChainYield 1
-    DespawnRoomRowObjects Room01V1Group13_id
-    DespawnRoomRowObjects Room01V1Group16_id
+    DespawnRoomRowActors Room01V1Group13_id
+    DespawnRoomRowActors Room01V1Group16_id
     RecruitPartyFollower 7
     RecruitPartyFollower 6
     InvokeChainIfEnabled 0, Room01V1Chain43_id
     End
 Room01V1Chain42:
     ArmChainYield 1
-    SetTileObjectFacing Room01V1Group2_id, 0, 4
-    SetTileObjectFacing Room01V1Group1_id, 8, 6
+    SetTileActorFacing Room01V1Group2_id, 0, 4
+    SetTileActorFacing Room01V1Group1_id, 8, 6
     @ "I require a volunteer to gather ingredients for this potion."
     ShowRoomDialog 296
     SetQuestState QUEST_OBJ_FIND_POTION_INGREDIENTS, QUEST_OBJECTIVE_INDEX
@@ -518,13 +518,13 @@ Room01V1Chain42:
     End
 Room01V1Chain43:
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room01V1Route8_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group1_id, 2, 0, 0, Room01V1Route9_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group1_id, 6, 0, 0, Room01V1Route9_id, 3, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group1_id, 3, 0, 0, Room01V1Route9_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group1_id, 4, 0, 0, Room01V1Route10_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group1_id, 7, 0, 0, Room01V1Route10_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room01V1Group1_id, 8, 0, 0, Room01V1Route11_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group1_id, 2, 0, 0, Room01V1Route9_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group1_id, 6, 0, 0, Room01V1Route9_id, 3, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group1_id, 3, 0, 0, Room01V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group1_id, 4, 0, 0, Room01V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group1_id, 7, 0, 0, Room01V1Route10_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group1_id, 8, 0, 0, Room01V1Route11_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain44:
     @ "Good evening, Sirius. How I hoped I would be the one to catch you¸"
@@ -539,6 +539,6 @@ Room01V1Chain46:
     ShowRoomDialog 346
     End
 Room01V1Chain47:
-    StartObjectAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route14_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route14_id, 0, 1, 0, 0, 0
     End
     EndSubBlock Room01V1End

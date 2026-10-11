@@ -8,7 +8,7 @@
 // (such as 0x33) leaves the slot empty.
 void SetFolioComboSlot(u32 cardIndex, u32 slot)
 {
-    Actor *pObject;
+    Actor *pActor;
 
     if (g_FolioUniversitasState.aComboSlots[slot].pCard != NULL)
     {
@@ -25,15 +25,15 @@ void SetFolioComboSlot(u32 cardIndex, u32 slot)
 
     if (cardIndex <= 0x32)
     {
-        pObject = SpawnActor(0x13, slot * 40 + 0x78, 0x58,
+        pActor = SpawnActor(0x13, slot * 40 + 0x78, 0x58,
                               (const ObjPalette *)g_aFolioCardThumbnails[cardIndex].pPalette);
-        SetActorAssetRecord(pObject, &g_aFolioCardThumbnails[cardIndex]);
-        g_FolioUniversitasState.aComboSlots[slot].pCard = pObject;
-        pObject->oam.priority = 1;
+        SetActorAssetRecord(pActor, &g_aFolioCardThumbnails[cardIndex]);
+        g_FolioUniversitasState.aComboSlots[slot].pCard = pActor;
+        pActor->oam.priority = 1;
         g_FolioUniversitasState.aComboSlots[slot].pCard->oam.objMode = 0;
 
         g_FolioUniversitasState.aComboSlots[slot].pCount =
-            SpawnActor(0, slot * 40 + 0x84, 0x80, (const ObjPalette *)gObjectSprite086Palette);
+            SpawnActor(0, slot * 40 + 0x84, 0x80, (const ObjPalette *)gActorSprite086Palette);
         SetActorAssetRecord(g_FolioUniversitasState.aComboSlots[slot].pCount, FOLIO_UNIVERSITAS_BADGES_GFX);
         SetActorAnimFrame(g_FolioUniversitasState.aComboSlots[slot].pCount,
                            g_saveStateBlock.abFolioUniversitasCounts[cardIndex]);

@@ -8,7 +8,7 @@ const u8 g_abFighterIdleAnimData_candidate[6] = {
     ANIM_FRAME(0, 1), ANIM_FRAME(1, 1), ANIM_JUMP(0),
 };
 
-// Animations of the SetObjectAnim script opcodes (0x01/0x02), one per g_aEffectAnimAssets
+// Animations of the SetActorAnim script opcodes (0x01/0x02), one per g_aEffectAnimAssets
 // record.
 const u8 g_aEffectAnimData_candidate[65][226] = {
     {  // 0
@@ -494,7 +494,7 @@ const u8 g_aEffectAnimData_candidate[65][226] = {
     { 0 },  // 64
 };
 
-// Animations of the SetObjectAnimFromTable2 script opcodes (0x03/0x04), one per
+// Animations of the SetActorAnimFromTable2 script opcodes (0x03/0x04), one per
 // g_aEffectAnimAssets2 record.
 const u8 g_aEffectAnimData2_candidate[38][108] = {
     {  // 0

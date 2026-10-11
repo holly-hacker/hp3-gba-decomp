@@ -38,7 +38,7 @@ typedef struct {
 
 extern const StatusEquipSlot g_aStatusEquipSlots[6];  // 0x0806B2FC
 
-// Screen objects and state of the slot select screen.
+// Screen actors and state of the slot select screen.
 typedef struct {
     Actor *pCursor;               // 0x00
     Actor *pCharacter;            // 0x04: portrait of the chosen member

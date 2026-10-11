@@ -12,7 +12,7 @@ void InitializeRiddikulusMinigame(void)
 
     ClearObjPaletteSlots();
     g_Riddikulus.dwExitToMenu = 0;
-    g_Riddikulus.pCursorObject = NULL;
+    g_Riddikulus.pCursorActor = NULL;
     g_Riddikulus.dwUnk24 = -1;
     g_GameModeStackContext.dwModeState = RiddikulusStateIntro;
     g_Riddikulus.dwCountdown = 3;

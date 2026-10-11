@@ -14,10 +14,10 @@ void FreeActor(Actor *actor)
     if (actor->pfnDestructor)
         actor->pfnDestructor(actor);
 
-    ReleaseObjectPalette(actor);
+    ReleaseActorPalette(actor);
 
     if (actor->dwFlags & ActorFlagRoomRecordBound)
-        SetRoomObjectRecordPtr_candidate(0, actor->bRoomTileCol_candidate, actor->bRoomTileRow_candidate);
+        SetRoomActorRecordPtr_candidate(0, actor->bRoomTileCol_candidate, actor->bRoomTileRow_candidate);
 
     actor->wActorType = 0xFFFF;
 

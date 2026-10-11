@@ -142,12 +142,12 @@ Room39V1Chain0:
     SetDefeatWarpSelector 15 @ Leaky Cauldron - Cellar 2
     End
 Room39V1Chain1:
-    SetTileObjectAnimState Room39V0Group0_id, 0
+    SetTileActorAnimState Room39V0Group0_id, 0
     End
 Room39V1Chain2:
-    SetTileObjectAnimState Room39V0Group0_id, 1
+    SetTileActorAnimState Room39V0Group0_id, 1
     DelayedRespawnRowAndRunChain 0, 0, Room39V1Chain42_id
-    DespawnRoomRowObjects Room39V1Group14_id
+    DespawnRoomRowActors Room39V1Group14_id
     End
 Room39V1Chain3:
     End
@@ -185,22 +185,22 @@ Room39V1Chain11:
 Room39V1Chain12:
     @ "Got him! It's OK, Scabbers, you're safe now."
     ShowRoomDialog 50
-    DespawnTileObject Room39V1Group11_id, 5
-    DespawnTileObject Room39V1Group11_id, 3
-    SetTileObjectAnimState Room39V0Group0_id, 0
+    DespawnTileActor Room39V1Group11_id, 5
+    DespawnTileActor Room39V1Group11_id, 3
+    SetTileActorAnimState Room39V0Group0_id, 0
     SetQuestState 1, QUEST_CELLAR2_SCABBERS_CAUGHT
     SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain46_id
     End
 Room39V1Chain13:
     ArmChainYield 1
-    StartTileObjectScript 399, 155, 0, 0, 255, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 399, 155, 0, 0, 255, 0, 0, 2, 255, 255, 255
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain46_id
     @ "Got you, you naughty cat!"
     @ "We'd better go and find Ron."
     ShowRoomDialog 55
-    DespawnTileObject Room39V1Group16_id, 5
-    DespawnTileObject Room39V0Group0_id, 3
+    DespawnTileActor Room39V1Group16_id, 5
+    DespawnTileActor Room39V0Group0_id, 3
     SetQuestState 1, QUEST_CELLAR2_CROOKSHANKS_CAUGHT
     SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room39V1Group5_id, 0
@@ -212,47 +212,47 @@ Room39V1Chain15:
     DelayedRespawnRowAndRunChain 0, 0, 0
     End
 Room39V1Chain16:
-    CancelObjectAnimSequence 0, 255
-    StartObjectAnimSequence Room39V1Group4_id, 0, 0, 0, Room39V1Route0_id, 0, 1, 0, 0, 0
+    CancelActorAnimSequence 0, 255
+    StartActorAnimSequence Room39V1Group4_id, 0, 0, 0, Room39V1Route0_id, 0, 1, 0, 0, 0
     SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     End
 Room39V1Chain17:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 183, 128, 0, Room39V1Group5_id, 0, 0, 0, 0, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 183, 128, 0, Room39V1Group5_id, 0, 0, 0, 0, 255, 255, 255
     @ "I found Crookshanks. Did you manage to find Scabbers?"
     @ "Yes, I did - no thanks to your cat."
     @ "Bad Crookshanks! Don't run away again!"
     ShowRoomDialog 57
-    StartObjectAnimSequence 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room39V1Group5_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
-    DespawnTileObject Room39V1Group5_id, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room39V1Group5_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room39V1Group5_id, 0
     RemovePartyFollower 6
     RecruitPartyFollower 6
     RecruitPartyFollower 7
     SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain35_id
     End
 Room39V1Chain18:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
-    StartTileObjectScript 183, 140, 0, Room39V1Group5_id, 0, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 183, 140, 0, Room39V1Group5_id, 0, 0, 0, 0, 255, 255, 255
     NoOpAlt 0xffffff0a
     @ "I found Crookshanks. Did you manage to find Scabbers?"
     @ "Yes, I did - no thanks to your cat."
     @ "Bad Crookshanks! Don't run away again!"
     ShowRoomDialog 56
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     SetStoryStage 8
     End
 Room39V1Chain19:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
     @ "Scabbers, where are you?"
     ShowRoomDialog 48
-    StartTileObjectScript 89, 100, 0, 0, 255, 0, 0, 2, 255, 255, 255
-    SetTileObjectAnimStateWithSpeed 0, 255
+    StartTileActorScript 89, 100, 0, 0, 255, 0, 0, 2, 255, 255, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     ArmChainYield 0
     End
 Room39V1Chain20:
@@ -262,9 +262,9 @@ Room39V1Chain21:
     End
 Room39V1Chain22:
     ArmChainYield 0
-    StartTileObjectScript 242, 58, 2, Room39V0Group0_id, 0, 0, 0, 6, 255, 255, 255
+    StartTileActorScript 242, 58, 2, Room39V0Group0_id, 0, 0, 0, 6, 255, 255, 255
     ArmChainYield 1
-    StartTileObjectScript 360, 56, 2, Room39V0Group0_id, 0, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 360, 56, 2, Room39V0Group0_id, 0, 0, 0, 0, 255, 255, 255
     DelayedRespawnRowAndRunChain 0, 0, 0
     ArmChainYield 1
     End
@@ -277,19 +277,19 @@ Room39V1Chain24:
     End
 Room39V1Chain25:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "I found Crookshanks. Did you manage to find Scabbers?"
     @ "Yes, I did - no thanks to your cat."
     @ "Bad Crookshanks! Don't run away again!"
     ShowRoomDialog 56
-    StartObjectAnimSequence 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room39V1Group4_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
-    DespawnTileObject Room39V1Group4_id, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room39V1Group4_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room39V1Group4_id, 0
     RemovePartyFollower 7
     RecruitPartyFollower 7
     RecruitPartyFollower 6
     SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain35_id
     End
 Room39V1Chain26:
@@ -301,88 +301,88 @@ Room39V1Chain27:
     ShowRoomDialog 616
     End
 Room39V1Chain28:
-    DespawnRoomRowObjects Room39V1Group11_id
+    DespawnRoomRowActors Room39V1Group11_id
     GotoIfQuestStateCompare 251, 0, 1, Room39V1Chain49_id, 0, 0, 0
     End
 Room39V1Chain29:
-    DespawnRoomRowObjects Room39V1Group12_id
+    DespawnRoomRowActors Room39V1Group12_id
     End
 Room39V1Chain30:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
-    QueueTileObjectMove Room39V1Group2_id, 0, 0, 0, 1200, 0
+    QueueTileActorMove Room39V1Group2_id, 0, 0, 0, 1200, 0
     @ "Thanks!"
     ShowRoomDialog 85
     ArmChainYield 0
-    StartObjectAnimSequence Room39V1Group2_id, 0, 0, 0, Room39V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room39V1Group2_id, 0, 0, 0, Room39V1Route3_id, 0, 1, 0, 0, 0
     End
 Room39V1Chain31:
-    DespawnRoomRowObjects Room39V1Group2_id
+    DespawnRoomRowActors Room39V1Group2_id
     End
 Room39V1Chain32:
     ArmChainYield 1
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room39V1Chain33:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 6
-    QueueTileObjectMove Room39V1Group1_id, 0, 0, 0, 1200, 0
-    PlayTileObjectAnimation Room39V1Group1_id, 0, 4
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 6
+    QueueTileActorMove Room39V1Group1_id, 0, 0, 0, 1200, 0
+    PlayTileActorAnimation Room39V1Group1_id, 0, 4
     DelayedRespawnRowAndRunChain 1, 0, 0
-    PlayTileObjectAnimation Room39V1Group1_id, 0, 4
+    PlayTileActorAnimation Room39V1Group1_id, 0, 4
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectFacing Room39V1Group1_id, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
+    SetTileActorFacing Room39V1Group1_id, 0, 0
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
     @ "Thanks!"
     ShowRoomDialog 85
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room39V1Chain34:
     @ "Locked."
     ShowRoomDialog 624
     End
 Room39V1Chain35:
-    StartObjectAnimSequence 0, 255, 0, 0, Room39V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room39V1Route1_id, 0, 1, 0, 0, 0
     SetQuestState QUEST_OBJ_GREET_WEASLEYS, QUEST_OBJECTIVE_INDEX
     End
 Room39V1Chain36:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "This door's locked!"
     ShowRoomDialog 81
     @ "I can use the Alohomora Spell to unlock it."
     ShowRoomDialog 83
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room39V1Chain37:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "These stairs are broken!"
     ShowRoomDialog 78
     @ "I can fix them with the Reparo Spell."
     ShowRoomDialog 79
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room39V1Chain38:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "These stairs are broken!"
     ShowRoomDialog 78
     @ "I think we should look for another way in."
     ShowRoomDialog 80
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room39V1Chain39:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "This door's locked!"
     ShowRoomDialog 81
     @ "I think we should look for another way in."
     ShowRoomDialog 82
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room39V1Chain40:
     GotoIfQuestStateCompare QUEST_STORY_STAGE, 0, 6, Room39V1Chain48_id, 0, Room39V1Group12_id, Room39V1Group11_id
@@ -415,15 +415,15 @@ Room39V1Chain48:
     DelayedRespawnRowAndRunChainFrames 0, Room39V1Group14_id, 0
     End
 Room39V1Chain49:
-    DespawnTileObject Room39V0Group0_id, 3
+    DespawnTileActor Room39V0Group0_id, 3
     DelayedRespawnRowAndRunChain 0, Room39V1Group5_id, 0
     DelayedRespawnRowAndRunChain 0, Room39V1Group9_id, 0
     End
 Room39V1Chain50:
-    DespawnTileObject Room39V1Group11_id, 6
-    DespawnTileObject Room39V1Group11_id, 5
-    DespawnTileObject Room39V1Group11_id, 3
-    SetTileObjectAnimState Room39V0Group0_id, 0
+    DespawnTileActor Room39V1Group11_id, 6
+    DespawnTileActor Room39V1Group11_id, 5
+    DespawnTileActor Room39V1Group11_id, 3
+    SetTileActorAnimState Room39V0Group0_id, 0
     DelayedRespawnRowAndRunChainFrames 0, Room39V1Group6_id, 0
     End
 Room39V1Chain51:
@@ -436,7 +436,7 @@ Room39V1Chain53:
     GotoIfQuestStateCompare QUEST_CELLAR2_SCABBERS_CAUGHT, 0, 0, 0, 0, Room39V1Group15_id, 0
     End
 Room39V1Chain54:
-    DespawnTileObject Room39V0Group0_id, 3
+    DespawnTileActor Room39V0Group0_id, 3
     DelayedRespawnRowAndRunChain 0, Room39V1Group5_id, 0
     DelayedRespawnRowAndRunChain 0, Room39V1Group9_id, 0
     End

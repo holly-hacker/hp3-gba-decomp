@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "gen/graphics/battle.h"
 
-// One row of ten sprite records per FighterType. SetPlayerObjectAnim selects
+// One row of ten sprite records per FighterType. SetPlayerActorAnim selects
 // a record by animation state; record 0 is the live sprite, 6 and 7 hold the
 // windup flash palettes, and 8 is the fainted sprite.
 const FighterAnimRow g_aFighterAnimTable[4] = {

@@ -10,23 +10,23 @@
 #define SEGMENT_DX(segment) ((segment).x1 - (segment).x0)
 #define SEGMENT_DY(segment) ((segment).y1 - (segment).y0)
 
-// Turns an object around: its facing becomes the opposite one and its velocity is negated.
-inline void ReverseObjectDirection(Actor *obj)
+// Turns an actor around: its facing becomes the opposite one and its velocity is negated.
+inline void ReverseActorDirection(Actor *actor)
 {
-    u32 facing = obj->bFacing;
+    u32 facing = actor->bFacing;
 
-    if (obj->dwFlags & ActorFlagFourWayDirections_candidate)
+    if (actor->dwFlags & ActorFlagFourWayDirections_candidate)
         facing = g_abOppositeFacing[facing * 2] / 2;
     else
         facing = g_abOppositeFacing[facing];
-    obj->bFacing = facing;
-    obj->vel.x = -obj->vel.x;
-    obj->vel.y = -obj->vel.y;
+    actor->bFacing = facing;
+    actor->vel.x = -actor->vel.x;
+    actor->vel.y = -actor->vel.y;
 }
 
-// Sets the velocity that takes the object from its previous position to its move target at
+// Sets the velocity that takes the actor from its previous position to its move target at
 // speed dwUnk_0x28 and returns the direction of the velocity it replaced. Nothing calls it.
-inline u8 StartMoveVelocity(Actor *obj)
+inline u8 StartMoveVelocity(Actor *actor)
 {
     s32 distance;
     s32 steps;
@@ -34,26 +34,26 @@ inline u8 StartMoveVelocity(Actor *obj)
     s32 dy;
     u8 direction;
 
-    distance = ApproximateDistance(obj->moveTarget, obj->posPrev);
-    steps = ABS(iwramDivideSignedQuotient(distance, obj->dwUnk_0x28));
-    dx = obj->moveTarget.x - obj->posPrev.x;
-    dy = obj->moveTarget.y - obj->posPrev.y;
-    direction = GetDirectionFromVector(obj->vel, obj->dwFlags & ActorFlagFourWayDirections_candidate);
-    obj->vel.x = iwramDivideSignedQuotient(dx, steps);
-    obj->vel.y = iwramDivideSignedQuotient(dy, steps);
+    distance = ApproximateDistance(actor->moveTarget, actor->posPrev);
+    steps = ABS(iwramDivideSignedQuotient(distance, actor->dwUnk_0x28));
+    dx = actor->moveTarget.x - actor->posPrev.x;
+    dy = actor->moveTarget.y - actor->posPrev.y;
+    direction = GetDirectionFromVector(actor->vel, actor->dwFlags & ActorFlagFourWayDirections_candidate);
+    actor->vel.x = iwramDivideSignedQuotient(dx, steps);
+    actor->vel.y = iwramDivideSignedQuotient(dy, steps);
     return direction;
 }
 
-// Fills box with the pixel edges of the object's terrain box around its previous position.
-inline void GetObjectTerrainBox(Actor *obj, TerrainBox *box)
+// Fills box with the pixel edges of the actor's terrain box around its previous position.
+inline void GetActorTerrainBox(Actor *actor, TerrainBox *box)
 {
-    s32 y = (s16)(obj->posPrev.y >> 16);
-    s32 x = (s16)(obj->posPrev.x >> 16);
+    s32 y = (s16)(actor->posPrev.y >> 16);
+    s32 x = (s16)(actor->posPrev.x >> 16);
 
-    box->top = y + obj->bTerrainBoxTop;
-    box->bottom = y + obj->bTerrainBoxBottom;
-    box->left = x + obj->bTerrainBoxLeft;
-    box->right = x + obj->bTerrainBoxRight;
+    box->top = y + actor->bTerrainBoxTop;
+    box->bottom = y + actor->bTerrainBoxBottom;
+    box->left = x + actor->bTerrainBoxLeft;
+    box->right = x + actor->bTerrainBoxRight;
 }
 
 // Collision types 1-25 (solid and slope terrain) block movement.
@@ -96,17 +96,17 @@ u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel)
     return type;
 }
 
-// Fills box with the object's terrain box edges and returns the collision type it runs into
+// Fills box with the actor's terrain box edges and returns the collision type it runs into
 // while facing in its current direction (a diagonal facing tries its first edge, then the
 // second), after applying the terrain's side effects.
-u32 GetObjectTerrainType(Actor *obj, TerrainBox *box)
+u32 GetActorTerrainType(Actor *actor, TerrainBox *box)
 {
     u8 facing;
     u32 type;
 
-    GetObjectTerrainBox(obj, box);
+    GetActorTerrainBox(actor, box);
 
-    facing = obj->bFacing;
+    facing = actor->bFacing;
     if (facing & 1)
     {
         type = ScanTerrainEdge(facing & 0xFE, box);
@@ -116,22 +116,22 @@ u32 GetObjectTerrainType(Actor *obj, TerrainBox *box)
     else
         type = ScanTerrainEdge(facing, box);
 
-    type = ApplyTerrainTypeEffect(obj, box, type);
+    type = ApplyTerrainTypeEffect(actor, box, type);
     return type;
 }
 
-// Applies the side effects of the terrain type an object touched and returns the type to
-// treat it as: types the object may not enter become 1.
-u32 ApplyTerrainTypeEffect(Actor *obj, TerrainBox *box, u32 type)
+// Applies the side effects of the terrain type an actor touched and returns the type to
+// treat it as: types the actor may not enter become 1.
+u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type)
 {
-    obj->dwFlags &= ~ActorFlagAnimPaused;
+    actor->dwFlags &= ~ActorFlagAnimPaused;
 
     switch (type)
     {
     case 0x22:
-        if (obj->wActorType == 0)
+        if (actor->wActorType == 0)
             type = 1;
-        else if (obj->wActorType == 5)
+        else if (actor->wActorType == 5)
         {
             if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->left, box->top }) != 0x22)
                 break;
@@ -141,16 +141,16 @@ u32 ApplyTerrainTypeEffect(Actor *obj, TerrainBox *box, u32 type)
                 break;
             if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->right, box->bottom }) != 0x22)
                 break;
-            if (obj->bActionSubState == 1 && !(obj->dwFlags & ActorFlagNoPushTrigger_candidate))
-                SnapObjectXToTileGrid(obj);
+            if (actor->bActionSubState == 1 && !(actor->dwFlags & ActorFlagNoPushTrigger_candidate))
+                SnapActorXToTileGrid(actor);
         }
         break;
     case 0x1F:
-        if (g_dwPendingCameraFocusFlag == 0 || g_pPlayerObject->bFighterIndex != 1)
+        if (g_dwPendingCameraFocusFlag == 0 || g_pPlayerActor->bFighterIndex != 1)
             type = 1;
         break;
     case 0x29:
-        if (obj->wActorType != 0xF)
+        if (actor->wActorType != 0xF)
             type = 1;
         break;
     case 0x23:
@@ -162,87 +162,87 @@ u32 ApplyTerrainTypeEffect(Actor *obj, TerrainBox *box, u32 type)
             ApplyRoomSwitchEffect(1);
         break;
     case 0x2D:
-        if (obj == g_pPlayerObject)
-            obj->dwFlags |= ActorFlagAnimPaused;
+        if (actor == g_pPlayerActor)
+            actor->dwFlags |= ActorFlagAnimPaused;
         break;
     }
 
     return type;
 }
 
-// Reacts to the terrain an object has run into according to bUnk_0x7C: undoes the move,
-// reverses the object's direction, or ends an ice slide. Always records the terrain type under
-// the object.
-void RespondToTerrain(Actor *obj, u32 type)
+// Reacts to the terrain an actor has run into according to bUnk_0x7C: undoes the move,
+// reverses the actor's direction, or ends an ice slide. Always records the terrain type under
+// the actor.
+void RespondToTerrain(Actor *actor, u32 type)
 {
     if (IsBlockingCollisionType(type))
     {
-        switch (obj->bUnk_0x7C)
+        switch (actor->bUnk_0x7C)
         {
         case 5:
-            obj->posPrev.x = obj->pos.x;
-            obj->posPrev.y = obj->pos.y;
-            if (!TrySlideAlongSlope(obj, type))
+            actor->posPrev.x = actor->pos.x;
+            actor->posPrev.y = actor->pos.y;
+            if (!TrySlideAlongSlope(actor, type))
             {
-                if ((u8)(obj->bActionState - 7) > 6)
+                if ((u8)(actor->bActionState - 7) > 6)
                 {
-                    SetActorActionSubState(obj, 2);
-                    CancelActorMove_candidate(obj);
-                    if (obj == g_pPlayerObject)
-                        SetPartyMemberAnim(obj, PartyAnimStand);
+                    SetActorActionSubState(actor, 2);
+                    CancelActorMove_candidate(actor);
+                    if (actor == g_pPlayerActor)
+                        SetPartyMemberAnim(actor, PartyAnimStand);
                 }
             }
             break;
         case 1:
-            obj->posPrev.x = obj->pos.x;
-            obj->posPrev.y = obj->pos.y;
-            SetActorActionSubState(obj, 2);
+            actor->posPrev.x = actor->pos.x;
+            actor->posPrev.y = actor->pos.y;
+            SetActorActionSubState(actor, 2);
             break;
         case 4:
-            obj->posPrev.x = obj->pos.x;
-            obj->posPrev.y = obj->pos.y;
-            SetActorActionSubState(obj, 5);
+            actor->posPrev.x = actor->pos.x;
+            actor->posPrev.y = actor->pos.y;
+            SetActorActionSubState(actor, 5);
             break;
         case 2:
-            ReverseObjectDirection(obj);
+            ReverseActorDirection(actor);
             break;
         case 3:
             break;
         }
     }
 
-    obj->bTerrainType = GetCollisionTypeAtPixel_candidate(
-        (PixelPoint){ (s16)(obj->posPrev.x >> 16), (s16)(obj->posPrev.y >> 16) });
+    actor->bTerrainType = GetCollisionTypeAtPixel_candidate(
+        (PixelPoint){ (s16)(actor->posPrev.x >> 16), (s16)(actor->posPrev.y >> 16) });
 }
 
-// Moves an object that is blocked by a slope along it, trying the slope's own direction and
+// Moves an actor that is blocked by a slope along it, trying the slope's own direction and
 // then the edges of its tile. Returns nonzero if a nudge was accepted.
-u32 TrySlideAlongSlope(Actor *obj, u32 type)
+u32 TrySlideAlongSlope(Actor *actor, u32 type)
 {
     PixelVector delta;
-    u32 edge = obj->bFacing >> 1;
+    u32 edge = actor->bFacing >> 1;
 
     if (type != 1)
     {
         type -= 2;
         delta.x = SEGMENT_DX(g_aSlopeLineSegments[type]);
         delta.y = SEGMENT_DY(g_aSlopeLineSegments[type]);
-        if (!NudgeAlongVelocity(obj, delta))
+        if (!NudgeAlongVelocity(actor, delta))
             return 1;
     }
 
-    if (obj->bFacing & 1)
+    if (actor->bFacing & 1)
     {
         delta.x = SEGMENT_DX(g_aTileEdgeSegments[edge]);
         delta.y = SEGMENT_DY(g_aTileEdgeSegments[edge]);
-        if (!NudgeAlongVelocity(obj, delta))
+        if (!NudgeAlongVelocity(actor, delta))
             return 1;
         edge = (edge + 1) & 3;
     }
 
     delta.x = SEGMENT_DX(g_aTileEdgeSegments[edge]);
     delta.y = SEGMENT_DY(g_aTileEdgeSegments[edge]);
-    if (!NudgeAlongVelocity(obj, delta))
+    if (!NudgeAlongVelocity(actor, delta))
         return 1;
 
     delta.x = SEGMENT_DX(g_aTileEdgeSegments[edge]) << 14;
@@ -251,7 +251,7 @@ u32 TrySlideAlongSlope(Actor *obj, u32 type)
     {
         if (g_adwEdgeEndpointTypes[1] == 0)
         {
-            if (!TryNudgeObject(obj, delta))
+            if (!TryNudgeActor(actor, delta))
                 return 1;
             delta.x = -delta.x;
             delta.y = -delta.y;
@@ -265,13 +265,13 @@ u32 TrySlideAlongSlope(Actor *obj, u32 type)
         delta.y = -delta.y;
     }
 
-    return !TryNudgeObject(obj, delta);
+    return !TryNudgeActor(actor, delta);
 }
 
 // Samples the terrain along one edge of the box in 4-pixel steps (direction 0 = top edge left to
 // right, 2 = right edge top to bottom, 4 = bottom edge right to left, 6 = left edge bottom to top)
 // and returns the type of the first blocking tile, else the last nonzero type found, else the
-// type at the edge's end. The first scan for an object also stores its two end types in
+// type at the edge's end. The first scan for an actor also stores its two end types in
 // g_adwEdgeEndpointTypes. direction is always even; other values leave the probe unset.
 u32 ScanTerrainEdge(u32 direction, TerrainBox *box)
 {

@@ -14,8 +14,8 @@ void InitActorPool(void)
     *pAux = AllocZeroed(0x104);
     g_ActorPoolState.pFreeListHead = BuildFreeList(g_ActorPoolState.pBuffer, 0x69, 0x128);
 
-    bios_CPUSet(SortObjectsByDepth, SortObjectsByDepthIwram, 0x4000031);
-    bios_CPUSet(CheckObjectCollisions, CheckObjectCollisionsIwram, 0x400007D);
+    bios_CPUSet(SortActorsByDepth, SortActorsByDepthIwram, 0x4000031);
+    bios_CPUSet(CheckActorCollisions, CheckActorCollisionsIwram, 0x400007D);
 
     g_dwActorListActive_candidate = 1;
     g_dwUnk03001DC4 = 0;

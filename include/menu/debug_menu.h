@@ -5,28 +5,28 @@
 #include "gen/graphics/menus.h"
 
 typedef struct {
-    Actor *pCursorObject;  // 0x00
+    Actor *pCursorActor;  // 0x00
     u32 dwSelection;        // 0x04: row of the debug main menu
 } DebugMenuMainState;
 
 extern DebugMenuMainState g_DebugMenuMainState;  // 0x030021C0
 
 typedef struct {
-    Actor *pPortraitObject;  // 0x00: sprite showing the selected portrait
+    Actor *pPortraitActor;  // 0x00: sprite showing the selected portrait
     u32 dwSelection;          // 0x04: portrait index, 0..0x86
 } DebugPortraitsState;
 
 extern DebugPortraitsState g_DebugPortraitsState;  // 0x03002210
 
 typedef struct {
-    Actor *pCardObject;  // 0x00: sprite showing the selected card
+    Actor *pCardActor;  // 0x00: sprite showing the selected card
     u32 dwSelection;      // 0x04: card index, 0..0x32
 } DebugCollectorCardsState;
 
 extern DebugCollectorCardsState g_DebugCollectorCardsState;  // 0x03002238
 
 typedef struct {
-    Actor *pCursorObject;   // 0x00
+    Actor *pCursorActor;   // 0x00
     u32 dwRow;               // 0x04: 0 = sound effect, 1 = music module
     u32 adwSelection[2];     // 0x08: chosen sound effect id (0..0xB2) and music module (0..0x33)
     u32 dwTileCursor;        // 0x10: text tile cursor after drawing the row labels
@@ -39,7 +39,7 @@ typedef struct {
 extern DebugSoundTestState g_DebugSoundTestState;  // 0x03002218
 
 typedef struct {
-    Actor *pCursorObject;  // 0x00
+    Actor *pCursorActor;  // 0x00
     u32 dwRow;              // 0x04: 0-2 = character levels, 3 = quest
     u32 adwValue[4];        // 0x08: value of each row, packed into the mode argument (one byte each)
     u32 dwTileCursor;       // 0x18: text tile cursor after drawing the row labels
@@ -48,7 +48,7 @@ typedef struct {
 extern DebugLevelAndQuestSelectState g_DebugLevelAndQuestSelectState;  // 0x030021C8
 
 typedef struct {
-    Actor *pCursorObject;  // 0x00
+    Actor *pCursorActor;  // 0x00
     u32 dwCursorRow;        // 0x04: visible row, 0..0x11
     s32 nScrollY;           // 0x08: BG1 vertical scroll in pixels; the map index is nScrollY / 8 + dwCursorRow
 } DebugMapSelectState;
@@ -56,7 +56,7 @@ typedef struct {
 extern DebugMapSelectState g_DebugMapSelectState;  // 0x030021E8
 
 typedef struct {
-    Actor *pCursorObject;  // 0x00
+    Actor *pCursorActor;  // 0x00
     u32 dwRow;              // 0x04: party slot, 0..2
     u32 adwCharacter[3];    // 0x08: chosen character per slot; 0 = empty, else party character id + 1
     u32 dwTileCursor;       // 0x14: text tile cursor after drawing the slot labels

@@ -2,9 +2,9 @@
 const u8 g_abSpecialMonsterCrabbeAttackScript[] = {
     BS_TeleportToSlotPosition(2),
     BS_WaitFrames(1),
-    BS_SetObjectAnim(54, 0),
+    BS_SetActorAnim(54, 0),
     BS_WaitFrames(1),
-    BS_ShowObject(),
+    BS_ShowActor(),
     BS_WaitForCounter(),
     BS_AdvanceAttackOutcome(),
     BS_End(),

@@ -253,22 +253,22 @@ Room16V1Chain0:
     End
 Room16V1Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ResetPartyLeaderSelection
     SetQuestState 2, 224
-    DespawnTileObject Room16V1Group1_id, 3
-    DespawnTileObject Room16V1Group1_id, 4
+    DespawnTileActor Room16V1Group1_id, 3
+    DespawnTileActor Room16V1Group1_id, 4
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room16V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room16V1Route9_id, 0, 1, 0, 0, 0
     End
 Room16V1Chain2:
-    DespawnTileObject Room16V1Group1_id, 0
+    DespawnTileActor Room16V1Group1_id, 0
     End
 Room16V1Chain3:
-    DespawnTileObject Room16V1Group1_id, 1
+    DespawnTileActor Room16V1Group1_id, 1
     End
 Room16V1Chain4:
-    DespawnTileObject Room16V1Group1_id, 2
+    DespawnTileActor Room16V1Group1_id, 2
     End
 Room16V1Chain5:
     ArmChainYield 1
@@ -276,11 +276,11 @@ Room16V1Chain5:
     RemovePartyFollower 7
     RemovePartyFollower 6
     ArmChainYield 0
-    StartObjectAnimSequence Room16V1Group15_id, 1, 0, 0, Room16V1Route13_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group15_id, 0, 0, 0, Room16V1Route12_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group15_id, 1, 0, 0, Room16V1Route13_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group15_id, 0, 0, 0, Room16V1Route12_id, 0, 1, 0, 0, 0
     End
 Room16V1Chain6:
-    SetTileObjectFacing 0, 255, 6
+    SetTileActorFacing 0, 255, 6
     End
 Room16V1Chain7:
     Unk2A 5, 255, 255, 255
@@ -365,10 +365,10 @@ Room16V1Chain26:
     ShowRoomDialog 632
     End
 Room16V1Chain27:
-    StartObjectAnimSequence Room16V1Group8_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group8_id, 1, 0, 0, Room16V1Route10_id, 5, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group8_id, 2, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group8_id, 3, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group8_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group8_id, 1, 0, 0, Room16V1Route10_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group8_id, 2, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group8_id, 3, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
     End
 Room16V1Chain28:
     @ "The Defense Against the Dark Arts class is on the third floor."
@@ -379,10 +379,10 @@ Room16V1Chain29:
     ShowRoomDialog 333
     End
 Room16V1Chain30:
-    StartObjectAnimSequence Room16V1Group9_id, 0, 0, 0, Room16V1Route10_id, 5, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group9_id, 1, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group9_id, 2, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group9_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group9_id, 0, 0, 0, Room16V1Route10_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group9_id, 1, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group9_id, 2, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group9_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
     End
 Room16V1Chain31:
     @ "Is it true about the Firebolt?"
@@ -506,28 +506,28 @@ Room16V1Chain60:
     End
 Room16V1Chain61:
     ArmChainYield 1
-    SetTileObjectFacing Room16V1Group15_id, 0, 6
-    SetTileObjectFacing Room16V1Group15_id, 1, 6
+    SetTileActorFacing Room16V1Group15_id, 0, 6
+    SetTileActorFacing Room16V1Group15_id, 1, 6
     @ "Hey, Potter, better watch out, the Dementors are coming!"
     @ "Shove off, Malfoy."
     @ "Leave him, Ron, he's not worth it. Let's get to the Gryffindor common room."
     ShowRoomDialog 183
     ArmChainYield 0
-    StartObjectAnimSequence Room16V1Group15_id, 0, 0, 0, Room16V1Route15_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group15_id, 1, 0, 0, Room16V1Route14_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group15_id, 0, 0, 0, Room16V1Route15_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group15_id, 1, 0, 0, Room16V1Route14_id, 0, 1, 0, 0, 0
     End
 Room16V1Chain62:
     ArmChainYield 1
-    DespawnRoomRowObjects Room16V1Group15_id
+    DespawnRoomRowActors Room16V1Group15_id
     RecruitPartyFollower 6
     RecruitPartyFollower 7
     SetQuestState 2, 224
     RespawnRowAndRunChain Room16V1Group2_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room16V1Route16_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group1_id, 0, 0, 0, Room16V1Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group1_id, 2, 0, 0, Room16V1Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group1_id, 1, 0, 0, Room16V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room16V1Route16_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group1_id, 0, 0, 0, Room16V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group1_id, 2, 0, 0, Room16V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group1_id, 1, 0, 0, Room16V1Route5_id, 0, 1, 0, 0, 0
     End
 Room16V1Chain63:
     GotoIfQuestStateCompare 224, 0, 0, Room16V1Chain7_id, 0, 0, 0
@@ -535,18 +535,18 @@ Room16V1Chain63:
 Room16V1Chain64:
     ArmChainYield 1
     ArmChainYield 0
-    StartObjectAnimSequence Room16V1Group1_id, 0, 0, 0, Room16V1Route6_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group1_id, 2, 0, 0, Room16V1Route7_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group1_id, 1, 0, 0, Room16V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group1_id, 0, 0, 0, Room16V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group1_id, 2, 0, 0, Room16V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room16V1Group1_id, 1, 0, 0, Room16V1Route8_id, 0, 1, 0, 0, 0
     End
 Room16V1Chain65:
-    StartObjectAnimSequence Room16V1Group2_id, 0, 0, 0, Room16V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group2_id, 0, 0, 0, Room16V1Route0_id, 0, 0, 0, 0, 0
     End
 Room16V1Chain66:
-    StartObjectAnimSequence Room16V1Group2_id, 1, 0, 0, Room16V1Route2_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group2_id, 1, 0, 0, Room16V1Route2_id, 0, 0, 0, 0, 0
     End
 Room16V1Chain67:
-    StartObjectAnimSequence Room16V1Group2_id, 2, 0, 0, Room16V1Route1_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group2_id, 2, 0, 0, Room16V1Route1_id, 0, 0, 0, 0, 0
     End
 Room16V1Chain68:
     ArmChainYield 1
@@ -568,18 +568,18 @@ Room16V1Chain68:
     RespawnRowAndRunChain 0, Room16V1Chain71_id
     End
 Room16V1Chain69:
-    StartObjectAnimSequence Room16V1Group2_id, 3, 0, 0, Room16V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group2_id, 3, 0, 0, Room16V1Route0_id, 0, 0, 0, 0, 0
     End
 Room16V1Chain70:
-    StartObjectAnimSequence Room16V1Group2_id, 4, 0, 0, Room16V1Route2_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group2_id, 4, 0, 0, Room16V1Route2_id, 0, 0, 0, 0, 0
     End
 Room16V1Chain71:
-    StartObjectAnimSequence Room16V1Group2_id, 5, 0, 0, Room16V1Route1_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group2_id, 5, 0, 0, Room16V1Route1_id, 0, 0, 0, 0, 0
     End
 Room16V1Chain72:
     ArmChainYield 1
     ClearOverworldMonstersDisabled
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     InvokeChainIfEnabled 0, Room16V1Chain68_id
     End
 Room16V1Chain73:
@@ -603,55 +603,55 @@ Room16V1Chain77:
     ShowRoomDialog 371
     End
 Room16V1Chain78:
-    StartObjectAnimSequence Room16V1Group4_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group4_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group4_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group4_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
     End
 Room16V1Chain79:
-    StartObjectAnimSequence Room16V1Group5_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group5_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group5_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group5_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
     End
 Room16V1Chain80:
-    StartObjectAnimSequence Room16V1Group6_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group6_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group6_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group6_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group6_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group6_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group6_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group6_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
     End
 Room16V1Chain81:
-    StartObjectAnimSequence Room16V1Group7_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group7_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group7_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group7_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group7_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group7_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group7_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group7_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
     End
 Room16V1Chain82:
-    StartObjectAnimSequence Room16V1Group16_id, 1, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group16_id, 0, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group16_id, 1, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group16_id, 0, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
     End
 Room16V1Chain83:
-    StartObjectAnimSequence Room16V1Group14_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group14_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group14_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group14_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group14_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group14_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group14_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group14_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
     End
 Room16V1Chain84:
-    StartObjectAnimSequence Room16V1Group11_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group11_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group11_id, 2, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group11_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group11_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group11_id, 2, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
     End
 Room16V1Chain85:
-    StartObjectAnimSequence Room16V1Group12_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group12_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group12_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group12_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group12_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group12_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group12_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group12_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
     End
 Room16V1Chain86:
-    StartObjectAnimSequence Room16V1Group13_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group13_id, 1, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group13_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group13_id, 1, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
     End
 Room16V1Chain87:
-    StartObjectAnimSequence Room16V1Group10_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group10_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group10_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
-    StartObjectAnimSequence Room16V1Group10_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group10_id, 0, 0, 0, Room16V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group10_id, 1, 0, 0, Room16V1Route11_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group10_id, 2, 0, 0, Room16V1Route10_id, 6, 0, 0, 0, 0
+    StartActorAnimSequence Room16V1Group10_id, 3, 0, 0, Room16V1Route11_id, 7, 0, 0, 0, 0
     End
 Room16V1Chain88:
     SetOverworldMonstersDisabled

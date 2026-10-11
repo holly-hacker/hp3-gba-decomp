@@ -15,8 +15,8 @@ void ExitGameCubeLink(void)
     if (GetPendingGameMode_candidate() == OwlCareMinigame)
         PlayScreenTransitionOutByIndex(0x3F, 2);
 
-    ReleaseMenuCursor(g_pMenuCursorObject);
-    g_pMenuCursorObject = NULL;
+    ReleaseMenuCursor(g_pMenuCursorActor);
+    g_pMenuCursorActor = NULL;
     FreeAllActors(&g_ActiveActorListState.pHead);
     FreeAllParticleEmitters();
     FreeAllParticles();

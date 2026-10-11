@@ -6,10 +6,10 @@
 // HippogriffTookToAirCutscene follows.
 void UpdateHippogriffFliesIntoAirCutscene(void)
 {
-    g_pHippogriffFliesIntoAirObject->dwStateTimer--;
-    if (g_pHippogriffFliesIntoAirObject->dwStateTimer == 0xC8)
-        StartActorAffineScaleTween(g_pHippogriffFliesIntoAirObject, 0x1999, 0x1999, 0xFA);
+    g_pHippogriffFliesIntoAirActor->dwStateTimer--;
+    if (g_pHippogriffFliesIntoAirActor->dwStateTimer == 0xC8)
+        StartActorAffineScaleTween(g_pHippogriffFliesIntoAirActor, 0x1999, 0x1999, 0xFA);
 
-    if (g_pHippogriffFliesIntoAirObject->dwStateTimer == 0)
+    if (g_pHippogriffFliesIntoAirActor->dwStateTimer == 0)
         PushGameMode(HippogriffTookToAirCutscene);
 }

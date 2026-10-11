@@ -9,8 +9,8 @@ void ReleaseActorAffineSlot(Actor *actor)
     if (actor->oam.affineMode == 1 || actor->oam.affineMode == 3)
     {
         actor->oam.affineMode = 0;
-        slot = GetObjectAffineSlotId(&actor->oam);
-        SetObjectAffineSlotId(&actor->oam, 0);
+        slot = GetActorAffineSlotId(&actor->oam);
+        SetActorAffineSlotId(&actor->oam, 0);
         FreeAffineSlot(slot);
     }
 }

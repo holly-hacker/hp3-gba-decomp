@@ -46,9 +46,9 @@ Room53V1Route0:
     Offsets Room53V1Chain0
     EndTable
 Room53V1Chain0:
-    SetTileObjectSpecialFlag Room53V1Group0_id, 1, 1
-    PlayTileObjectAnimation Room53V1Group0_id, 1, 22
-    StartObjectAnimSequence Room53V1Group0_id, 1, 0, 0, Room53V1Route0_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room53V1Group0_id, 0, 0, 0, Room53V1Route0_id, 0, 0, 0, 0, 0
+    SetTileActorSpecialFlag Room53V1Group0_id, 1, 1
+    PlayTileActorAnimation Room53V1Group0_id, 1, 22
+    StartActorAnimSequence Room53V1Group0_id, 1, 0, 0, Room53V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room53V1Group0_id, 0, 0, 0, Room53V1Route0_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room53V1End

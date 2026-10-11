@@ -178,8 +178,8 @@ Room23V1Chain13:
     ShowRoomDialog 632
     End
 Room23V1Chain14:
-    StartObjectAnimSequence Room23V1Group6_id, 0, 0, 0, Room23V1Route0_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group6_id, 1, 0, 0, Room23V1Route1_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group6_id, 0, 0, 0, Room23V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group6_id, 1, 0, 0, Room23V1Route1_id, 0, 0, 0, 0, 0
     End
 Room23V1Chain15:
     @ "The Defense Against the Dark Arts class is on the third floor."
@@ -190,8 +190,8 @@ Room23V1Chain16:
     ShowRoomDialog 333
     End
 Room23V1Chain17:
-    StartObjectAnimSequence Room23V1Group8_id, 0, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group8_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group8_id, 0, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group8_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain18:
     @ "I've heard Firebolts are the fastest brooms ever."
@@ -257,51 +257,51 @@ Room23V1Chain33:
     ShowRoomDialog 363
     End
 Room23V1Chain34:
-    StartObjectAnimSequence Room23V1Group7_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group7_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group7_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group7_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain35:
-    StartObjectAnimSequence Room23V1Group2_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group2_id, 0, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group2_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group2_id, 0, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain36:
-    StartObjectAnimSequence Room23V1Group3_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group3_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group3_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group3_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain37:
-    StartObjectAnimSequence Room23V1Group4_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group4_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group4_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group4_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain38:
-    StartObjectAnimSequence Room23V1Group5_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group5_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group5_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group5_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain39:
 .ifdef VERSION_JP
-    StartObjectAnimSequence Room23V1Group1_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group1_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group1_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group1_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
 .else
-    StartObjectAnimSequence Room23V1Group1_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group1_id, 2, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group1_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group1_id, 2, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
 .endif
     End
 Room23V1Chain40:
-    StartObjectAnimSequence Room23V1Group9_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group9_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group9_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group9_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain41:
-    StartObjectAnimSequence Room23V1Group10_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group10_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group10_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group10_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain42:
-    StartObjectAnimSequence Room23V1Group11_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group11_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain43:
-    StartObjectAnimSequence Room23V1Group12_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group12_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group12_id, 0, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group12_id, 1, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
 Room23V1Chain44:
-    StartObjectAnimSequence Room23V1Group13_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room23V1Group13_id, 0, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group13_id, 1, 0, 0, Room23V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room23V1Group13_id, 0, 0, 0, Room23V1Route1_id, 1, 0, 0, 0, 0
     End
     EndSubBlock Room23V1End

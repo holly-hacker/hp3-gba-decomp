@@ -33,7 +33,7 @@ void InitializeDebugCollectorCardsMenu(void)
     sub_08007AF0(0, 0xFFCA0000, 0xFFE20000);
 
     g_DebugCollectorCardsState.dwSelection = 0;
-    g_DebugCollectorCardsState.pCardObject = 0;
+    g_DebugCollectorCardsState.pCardActor = 0;
     g_GameModeStackContext.dwModeState = 0;
     sub_0800BAF8();
 

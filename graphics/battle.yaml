@@ -136,7 +136,7 @@ groups:
         names: {1: MonsterPalette001}
         componentOrder: [palette]
         storedCells: false
-      # g_aEffectObjectAssets records and palettes loaded by code
+      # g_aEffectActorAssets records and palettes loaded by code
       - kind: image-bank
         count: 114
         names: {1: BattleEffect001}
@@ -158,6 +158,6 @@ groups:
 
   - name: BattleEffects2
     runs:
-      # One g_aEffectObjectAssets record
+      # One g_aEffectActorAssets record
       - kind: image-bank
         names: [BattleEffect2_001]

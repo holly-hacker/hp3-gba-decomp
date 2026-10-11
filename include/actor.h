@@ -32,8 +32,8 @@ typedef enum {
     ActorFlagActionAnimDone           = 0x40000,    // set by TickActorAnimation on a non-looping
                                                        // animation's last frame
     ActorFlagFourWayDirections_candidate = 0x100000, // GetDirectionToTarget returns a Direction4
-    ActorFlagHasPaletteSlot           = 0x200000,   // AttachObjectPalette bound a palette cache slot;
-                                                       // ReleaseObjectPalette clears it
+    ActorFlagHasPaletteSlot           = 0x200000,   // AttachActorPalette bound a palette cache slot;
+                                                       // ReleaseActorPalette clears it
     ActorFlagOnscreenForTileAlloc     = 0x400000,   // mirrors ActorFlagOnscreen (set/cleared
                                                        // together by UpdateActorOnscreenFlags)
     ActorFlagRoomRecordBound          = 0x800000,   // FreeActor clears the actor's room record
@@ -44,7 +44,7 @@ typedef enum {
                                                        // room's collision layer under the actor
     ActorFlagRoomScriptYield          = 0x8000000,  // set by a room script that yielded on this actor
     ActorFlagAnimPaused               = 0x10000000, // TickActorAnimation's frame counter freezes
-    ActorFlagKeepPaletteSlot          = 0x20000000, // TickActor skips BindObjectPendingPalette/ReleaseObjectPalette
+    ActorFlagKeepPaletteSlot          = 0x20000000, // TickActor skips BindActorPendingPalette/ReleaseActorPalette
     ActorFlagExtraOamPass             = 0x80000000, // TickActorList's extra UpdateActorOamCells pass
 } ActorFlags;
 
@@ -83,12 +83,12 @@ typedef union ActorSpriteBounds {
     } edges;
 } ActorSpriteBounds;
 
-// One of Actor's two collision-box slots, tested by CheckObjectCollisions.
+// One of Actor's two collision-box slots, tested by CheckActorCollisions.
 // dwPackedOffsets is 4 signed bytes: left (byte 0), right (1), top (2) and
 // bottom (3) edge offsets from the integer part of posPrev (+0x36/+0x3A).
 // Actor.oam.hFlip/vFlip mirror an axis: its edges become position minus the
 // opposite offset. GetActorCollisionBoxRect resolves a slot to an ActorRect;
-// CheckObjectCollisions does the same math inline. bState is compared == 1 to
+// CheckActorCollisions does the same math inline. bState is compared == 1 to
 // take part in the pairwise overlap test; other values are unconfirmed.
 typedef struct ActorCollisionBox {
     union {
@@ -238,7 +238,7 @@ typedef union __attribute__((packed)) ActorScriptState {
 } ActorScriptState;
 
 // Bytes 0x62-0x6D of an effect script actor. Read back each tick by
-// ProcessObjectFlagBehaviors; bBehaviorFlags selects which fields apply.
+// ProcessActorFlagBehaviors; bBehaviorFlags selects which fields apply.
 typedef struct __attribute__((packed)) ActorEffectState {
     u8 bEffectId;           // 0x62, index into g_apEffectScripts
     u8 abLocal[2];          // 0x63-0x64, script variables A and B; spawned children inherit
@@ -251,7 +251,7 @@ typedef struct __attribute__((packed)) ActorEffectState {
 } ActorEffectState;
 
 // Actor 0x62-0x6D for a chest (room actor type 9), from its record; see
-// SpawnChestObject.
+// SpawnChestActor.
 typedef struct __attribute__((packed)) ActorChestState {
     u16 wRewardId;          // 0x62, see rewards.h
     u8 bKind;               // 0x64, 0-3
@@ -269,7 +269,7 @@ typedef struct __attribute__((packed)) ActorChestState {
 
 // General-purpose sprite/animation actor, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
-// into FightState.aSuspendedFighterObjects_candidate -- see battle.h). Only
+// into FightState.aSuspendedFighterActors_candidate -- see battle.h). Only
 // the fields touched by UpdateBattle/TickPlayerActionState/ExitBattle are
 // named; see those files' plate comments for the rest.
 typedef struct Actor {
@@ -281,12 +281,12 @@ typedef struct Actor {
                              // type id) -- see InitPlayerBattleActor/InitMonsterBattleActor
     u16 wCharacterId_candidate;  // 0x0A, party members' character id (compared against a script's character operand)
     ActorFlags dwFlags;    // 0x0C
-    u8 bRoomTileCol_candidate;  // 0x10, SetRoomObjectRecordPtr_candidate's column arg
-    u8 bRoomTileRow_candidate;  // 0x11, SetRoomObjectRecordPtr_candidate's row arg
+    u8 bRoomTileCol_candidate;  // 0x10, SetRoomActorRecordPtr_candidate's column arg
+    u8 bRoomTileRow_candidate;  // 0x11, SetRoomActorRecordPtr_candidate's row arg
     u8 bFacing;             // 0x12, direction/facing index; see SetActorFacing
     u8 pad_13[0x01];        // -> 0x14
     u16 wMoveDuration;      // 0x14
-    u8 bDepthSortBias;      // 0x16, draw-order bias; see SortObjectsByDepth
+    u8 bDepthSortBias;      // 0x16, draw-order bias; see SortActorsByDepth
     u8 pad_17[0x0D];        // -> 0x24
     ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
                              // ReleaseParticleEmitter_candidate and zeroed
@@ -324,18 +324,18 @@ typedef struct Actor {
     ActorScriptState scriptState;  // 0x60: actor script PC or battle outcome/page bytes
     // 0x62-0x6D is per-mode state: the actor view serves fighter and room
     // actors, the effect view serves battle-effect script actors
-    // (see InterpretObjectScript).
+    // (see InterpretActorScript).
     union __attribute__((packed)) {
         struct __attribute__((packed)) {
             u16 wStagedDamage;      // 0x62
             u8 bRoomScriptArg64_candidate;  // 0x64, set by room script animation handlers
             u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
-            u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileObjectScript
-            u8 bRoomObjectArg67_candidate;  // 0x67
+            u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileActorScript
+            u8 bRoomActorArg67_candidate;  // 0x67
             u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
-            u8 bRoomObjectArg69_candidate;  // 0x69
-            u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartObjectAnimSequence
-            u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartObjectAnimSequence
+            u8 bRoomActorArg69_candidate;  // 0x69
+            u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartActorAnimSequence
+            u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartActorAnimSequence
             u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
             u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
         } actor;
@@ -352,7 +352,7 @@ typedef struct Actor {
     u16 wUnk86;             // 0x86, zeroed alongside wMoveDuration
     u8 pad_88[0x02];        // -> 0x8a
     u16 wActionVariant;     // 0x8A
-    u8 bRoomObjectKind_candidate;  // 0x8C, set from the tile record by room actor constructors; 2 selects the second collision box
+    u8 bRoomActorKind_candidate;  // 0x8C, set from the tile record by room actor constructors; 2 selects the second collision box
     u8 bActionState;        // 0x8D, the dispatch key
     u8 bPrevActionState_candidate;  // 0x8E, ExitDialogue restores the player to this action state
     u8 bActionSubState;     // 0x8F, secondary per-actor state; see SetActorActionSubState
@@ -375,12 +375,12 @@ typedef struct Actor {
     u8 pad_AE[0x01];        // -> 0xAF
     u8 bCollisionBoxCount;  // 0xAF, aCollisionBoxes in use: the animation frame's box count,
                              // or 1 or 2 from the room actor constructors
-    ActorCollisionBox aCollisionBoxes[2];  // 0xB0, see CheckObjectCollisions;
+    ActorCollisionBox aCollisionBoxes[2];  // 0xB0, see CheckActorCollisions;
                              // slot 0 at 0xB0, slot 1 at 0xB8
     // 0xC0-0xC3: terrain bounding box, signed pixel offsets from the actor's
     // integer position, copied from the sprite record's ActorFrameData by
     // LoadActorAnimFrameBounds (the same box for every frame).
-    // Terrain probes (GetUnblockedDirectionToTarget, GetObjectTerrainBox) test pixels
+    // Terrain probes (GetUnblockedDirectionToTarget, GetActorTerrainBox) test pixels
     // at these edges.
     s8 bTerrainBoxLeft;     // 0xC0
     s8 bTerrainBoxRight;    // 0xC1
@@ -388,16 +388,16 @@ typedef struct Actor {
     s8 bTerrainBoxBottom;   // 0xC3
     u8 pad_C4[0x04];        // -> 0xC8
     void (*apfnCollisionCallback[2])(struct Actor *self, struct Actor *other);
-                             // 0xC8, called by CheckObjectCollisions on an
+                             // 0xC8, called by CheckActorCollisions on an
                              // overlap of the matching-index box, per actor
     OamEntry oam;           // 0xD0, the actor's base OAM attributes. affineMode holds the
                              // affine-slot allocation state (see ReleaseActorAffineSlot/
                              // FreeActor); objMode is 1 for menu cursors; bpp8 is passed to
-                             // FreeObjectVramTileAllocation; tileNum is copied from
+                             // FreeObjVramTileAllocation; tileNum is copied from
                              // wVramTileAllocId by CommitQueuedActorTileUpdates; priority is
-                             // the draw layer (see SetActorDrawLayer/SortObjectsByDepth/
+                             // the draw layer (see SetActorDrawLayer/SortActorsByDepth/
                              // TickActorList); paletteNum is the g_aObjPaletteSlots slot (see
-                             // AttachObjectPalette/ReleaseObjectPalette).
+                             // AttachActorPalette/ReleaseActorPalette).
                              // UpdateActorOamCells fills in x/y each frame
     ActorAnimState anim;   // 0xD8
     s32 nAffineScaleX;      // 0xEC, 16.16 fixed-point affine scale X (0x10000 = 1.0x); see
@@ -413,12 +413,12 @@ typedef struct Actor {
                              // TickActorAffineEffect running
     u8 bAffineMode;         // 0xFF, mirrors oam.affineMode
     ActorSpriteBounds spriteBounds;  // 0x100, signed X/Y extent pairs used for visibility
-    const void *pPendingPalette;  // 0x108, ObjPalette to bind once onscreen; ReleaseObjectPalette
+    const void *pPendingPalette;  // 0x108, ObjPalette to bind once onscreen; ReleaseActorPalette
                                    // saves the bound palette here while offscreen
     u32 dwPendingPaletteFlags;    // 0x10C, ObjPaletteSlotFlags of pPendingPalette
     u16 wVramPixelCount;    // 0x110, size of wVramTileAllocId in pixels (0 = none)
     u16 wVramTileAllocId;   // 0x112, VRAM tile allocation id passed to
-                             // FreeObjectVramTileAllocation (0xFFFF = none); set to 0xFFFF by
+                             // FreeObjVramTileAllocation (0xFFFF = none); set to 0xFFFF by
                              // ExitBattle when suspending a fighter for the Folio Universitas/
                              // Help resume path
     u8 bForceOnscreen_candidate;  // 0x114, value 1 prevents visibility flags being cleared
@@ -433,32 +433,32 @@ typedef struct Actor {
 } Actor;
 
 // wActorType values used by room/overworld actor spawners (room-tile
-// constructor dispatch at g_apRoomObjectConstructors, 0x0804C054). Several
+// constructor dispatch at g_apRoomActorConstructors, 0x0804C054). Several
 // constructor slots (1-4, 6, 7, 13) forward a per-instance type value already
 // stored in the room's own tile record instead of a fixed constant, so this
 // list only covers the values actually hardcoded in code.
 typedef enum {
-    RoomObjectType_Player           = 0,     // SpawnPlayerObject_candidate
-    RoomObjectType_ScriptedTrigger  = 5,     // sub-behavior picked by a separate per-instance kind field
-    RoomObjectType_Unk8             = 8,
-    RoomObjectType_Chest            = 9,     // SpawnChestObject
-    RoomObjectType_UnkA             = 0xA,
-    RoomObjectType_UnkB             = 0xB,
-    RoomObjectType_UnkC             = 0xC,
-    RoomObjectType_ScriptEffect     = 0xE,   // SpawnScriptEffectObject, e.g. delayed chain runs;
-                                              // reuses the same value as BattleObjectType_FighterSlot0
+    RoomActorType_Player           = 0,     // SpawnPlayerActor_candidate
+    RoomActorType_ScriptedTrigger  = 5,     // sub-behavior picked by a separate per-instance kind field
+    RoomActorType_Unk8             = 8,
+    RoomActorType_Chest            = 9,     // SpawnChestActor
+    RoomActorType_UnkA             = 0xA,
+    RoomActorType_UnkB             = 0xB,
+    RoomActorType_UnkC             = 0xC,
+    RoomActorType_ScriptEffect     = 0xE,   // SpawnScriptEffectActor, e.g. delayed chain runs;
+                                              // reuses the same value as BattleActorType_FighterSlot0
                                               // since room/overworld and battle never run concurrently
-    RoomObjectType_WanderingMonster = 0x10,  // SpawnWanderingMonsterObject; reuses
-                                              // BattleObjectType_FighterSlot0 + 2 for the same reason
-} RoomObjectType;
+    RoomActorType_WanderingMonster = 0x10,  // SpawnWanderingMonsterActor; reuses
+                                              // BattleActorType_FighterSlot0 + 2 for the same reason
+} RoomActorType;
 
-// wActorType values used by battle-mode actor spawners. See RoomObjectType
+// wActorType values used by battle-mode actor spawners. See RoomActorType
 // above for why these overlap with room/overworld values.
 typedef enum {
-    BattleObjectType_FighterSlot0 = 0xE,   // InitializeBattle: + fighter slot index 0-6
-    BattleObjectType_MessageIcon  = 0x15,  // InitializeBattle: FighterSlot0 + 7
-    BattleObjectType_EffectScript = 0x17,  // CreateEffectScriptObject, spell/attack visual effect
-} BattleObjectType;
+    BattleActorType_FighterSlot0 = 0xE,   // InitializeBattle: + fighter slot index 0-6
+    BattleActorType_MessageIcon  = 0x15,  // InitializeBattle: FighterSlot0 + 7
+    BattleActorType_EffectScript = 0x17,  // CreateEffectScriptActor, spell/attack visual effect
+} BattleActorType;
 
 extern Actor *AllocActorOfType(s32 type);
 extern Actor *AllocDefaultActor(void);
@@ -473,7 +473,7 @@ extern u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint
 extern ActorRect GetActorCollisionBoxRect(Actor *actor, s32 boxIndex);
 extern s32 DoActorsOverlap(Actor *a, Actor *b);  // tests collision box 0 of each
 extern void ReleaseActorOffscreenVramTiles(Actor *actor);  // 0x08001300
-extern void SetRoomObjectRecordPtr_candidate(Actor *actor, u8 col, u8 row);
+extern void SetRoomActorRecordPtr_candidate(Actor *actor, u8 col, u8 row);
 extern Actor *SpawnActor(u32 type, s32 x, s32 y, const ObjPalette *pPalette);
 extern void SetActorPosition(Actor *actor, s32 x, s32 y);
 extern void SnapActorPosition(Actor *actor, u32 x, u32 y);
@@ -481,14 +481,14 @@ extern void SetActorVelocity(Actor *actor, u32 velX, u32 velY);
 extern void SetActorMoveTarget(Actor *actor, u32 x, u32 y);
 extern void StartActorMove(Actor *actor, u32 x, u32 y, u16 mode);
 extern void ReleaseActorAffineSlot(Actor *actor);
-extern u32 GetObjectAffineSlotId(OamEntry *oam);
-extern void SetObjectAffineSlotId(OamEntry *oam, u16 slot);
+extern u32 GetActorAffineSlotId(OamEntry *oam);
+extern void SetActorAffineSlotId(OamEntry *oam, u16 slot);
 extern u32 AllocActorAffineSlot(Actor *actor);  // memoized: returns the slot already in oam if
                              // oam.affineMode is set (1 or 3), else calls AllocAffineSlot and
                              // stores the result
 extern void SetActorAffineTransform(Actor *actor, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
 // Double-size affine with both scales set to step 0..8 of a table: 0x666, then 0x2000 * step.
-extern void SetObjectScaleStep(Actor *actor, u32 step);
+extern void SetActorScaleStep(Actor *actor, u32 step);
 extern void StartActorAffineScaleTween(Actor *actor, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // ramps nAffineScaleX/Y to the target over nFrames ticks (0 = set immediately)
 extern void SetActorFlippedX(Actor *actor, s32 flip);
 // pAnimTable is the sprite record; the stream starts at command startCommand
@@ -522,18 +522,18 @@ extern void LoadVariantSlotFrameBounds(Actor *actor);
 extern void SetActorActionState(Actor *actor, u8 state);
 extern void SetActorFlags(Actor *actor, ActorFlags flags);
 // Starts animation `animId` from the actor's animation table.
-extern void SetObjectAnimData_candidate(Actor *actor, u32 animId);
+extern void SetActorAnimData_candidate(Actor *actor, u32 animId);
 extern void SetActorActionSubState(Actor *actor, u8 state);
 extern void SetActorDrawLayer(Actor *actor, u8 layer);
 extern void SetActorAnimSubState_candidate(Actor *actor, u8 state);
 // Clears the actor's queued move (Actor+0x3C..0x48).
 extern void CancelActorMove_candidate(Actor *actor);
 extern void SetActorAssetRecord(Actor *actor, const void *rec);
-extern Actor *SpawnMenuIconObject(u32 slot, u32 arg1);  // allocs a type 0x13 actor and files it under slot
+extern Actor *SpawnMenuIconActor(u32 slot, u32 arg1);  // allocs a type 0x13 actor and files it under slot
 
 extern void sub_080039E8(Actor *actor);
 extern void sub_080039F8(Actor *actor);
 extern void sub_08003A0C(Actor *actor);
 extern void sub_08003A44(Actor *actor, s32 a, s32 b, s32 c);
-extern void sub_0801BCB0(void *linkedObject);
-extern Actor *CreateEffectScriptObject(s32 effectId, s32 kind);  // 0x08018BE0
+extern void sub_0801BCB0(void *linkedActor);
+extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);  // 0x08018BE0

@@ -27,11 +27,11 @@ void InitializeHarryHermionePortInTimeCutscene(void)
     sub_08043308(1);
 
     sub_0800A3EC(aPosition, 0);
-    SetActorPosition(g_HarryHermionePortInTime.pObjectA,
-                      g_aHarryHermionePortInTimeObjectPos[g_HarryHermionePortInTime.dwPositionIndex].nObjectAX,
+    SetActorPosition(g_HarryHermionePortInTime.pActorA,
+                      g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorAX,
                       (aPosition[1] >> 16) + 0x20);
-    SetActorPosition(g_HarryHermionePortInTime.pObjectB,
-                      g_aHarryHermionePortInTimeObjectPos[g_HarryHermionePortInTime.dwPositionIndex].nObjectBX,
+    SetActorPosition(g_HarryHermionePortInTime.pActorB,
+                      g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorBX,
                       (aPosition[1] >> 16) + 0x20);
 
     g_HarryHermionePortInTime.bRising = 1;

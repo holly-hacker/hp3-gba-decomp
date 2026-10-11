@@ -27,7 +27,7 @@ void ResumeRoomSwitchStateChain_candidate(void)
         {
             g_bRoomScriptCurrentRow = g_bRoomScriptPendingChain;
             g_bRoomScriptPendingChain = 0xff;
-            pTable = g_pRoomSwitchStateObjectTable;
+            pTable = g_pRoomSwitchStateActorTable;
             slotOffset = g_bRoomScriptCurrentRow * 2;
             pChainOffsets = pTable->awChainOffsets;
             pNext = (RoomScriptRecord *)((u8 *)pTable + *(u16 *)((u8 *)pChainOffsets + slotOffset));

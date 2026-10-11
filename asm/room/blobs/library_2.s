@@ -74,7 +74,7 @@ Room35V1Chain2:
     GotoIfQuestStateCompare 6, 1, 67, Room35V1Chain17_id, 0, 0, 0
     End
 Room35V1Chain3:
-    SetTileObjectAnimState Room35V1Group1_id, 7
+    SetTileActorAnimState Room35V1Group1_id, 7
     GotoIfQuestStateCompare 6, 1, 67, Room35V1Chain8_id, 0, 0, 0
     PlaySoundById 22
     End
@@ -84,35 +84,35 @@ Room35V1Chain4:
     End
 Room35V1Chain5:
     StartBattle 10, 0, Room35V1Chain20_id
-    DespawnTileObject Room35V1Group1_id, 12
+    DespawnTileActor Room35V1Group1_id, 12
     End
 Room35V1Chain6:
-    SetTileObjectAnimStateValue Room35V1Group1_id, 3, 5
-    SetTileObjectAnimStateValue Room35V1Group1_id, 4, 5
-    DespawnTileObject Room35V1Group1_id, 9
-    SetTileObjectAnimState Room35V1Group1_id, 7
+    SetTileActorAnimStateValue Room35V1Group1_id, 3, 5
+    SetTileActorAnimStateValue Room35V1Group1_id, 4, 5
+    DespawnTileActor Room35V1Group1_id, 9
+    SetTileActorAnimState Room35V1Group1_id, 7
     End
 Room35V1Chain7:
-    PlayTileObjectAnimation Room35V1Group1_id, 12, 25
+    PlayTileActorAnimation Room35V1Group1_id, 12, 25
     SetQuestState 23, 8
     End
 Room35V1Chain8:
     SetQuestState 67, 6
     GrantPartyExperience 10, 65535
-    SetTileObjectAnimStateValue Room35V1Group1_id, 3, 5
-    SetTileObjectAnimStateValue Room35V1Group1_id, 4, 5
-    DespawnTileObject Room35V1Group1_id, 9
+    SetTileActorAnimStateValue Room35V1Group1_id, 3, 5
+    SetTileActorAnimStateValue Room35V1Group1_id, 4, 5
+    DespawnTileActor Room35V1Group1_id, 9
     End
 Room35V1Chain9:
     GotoIfStoryStageCompare 0, 8, Room35V1Chain10_id, 0, Room35V1Group1_id, 0
     GotoIfStoryStageCompare 0, 8, Room35V1Chain18_id, 0, 0, 0
     End
 Room35V1Chain10:
-    DespawnTileObject Room35V1Group0_id, 0
-    DespawnTileObject Room35V1Group0_id, 1
+    DespawnTileActor Room35V1Group0_id, 0
+    DespawnTileActor Room35V1Group0_id, 1
     End
 Room35V1Chain11:
-    DespawnTileObject Room35V1Group0_id, 0
+    DespawnTileActor Room35V1Group0_id, 0
     End
 Room35V1Chain12:
     DelayedRespawnRowAndRunChainFrames 3, 0, Room35V1Chain23_id
@@ -141,14 +141,14 @@ Room35V1Chain18:
     GotoIfQuestStateCompare 12, 1, 27, Room35V1Chain7_id, Room35V1Chain19_id, 0, 0
     End
 Room35V1Chain19:
-    DespawnTileObject Room35V1Group1_id, 12
-    DespawnTileObject Room35V1Group1_id, 11
+    DespawnTileActor Room35V1Group1_id, 12
+    DespawnTileActor Room35V1Group1_id, 11
     End
 Room35V1Chain20:
     SetQuestState 27, 12
     End
 Room35V1Chain21:
-    SetTileObjectAnimState Room35V1Group1_id, 9
+    SetTileActorAnimState Room35V1Group1_id, 9
     End
 Room35V1Chain22:
     GotoIfQuestStateCompare 6, 1, 67, Room35V1Chain21_id, 0, 0, 0

@@ -62,7 +62,7 @@ typedef struct FredAndGeorgesShopState {
     u32 dwMessageTextId;        // 0x14; ShopStateMessage's text
     u32 dwBuyItem;              // 0x18; SHOP_NO_ITEM while selling
     u32 dwSellItem;             // 0x1C; SHOP_NO_ITEM while buying
-    Actor *apRowObjects[7];    // 0x20; icons beside the main menu/category rows
+    Actor *apRowActors[7];    // 0x20; icons beside the main menu/category rows
     Actor *pItemIcon;          // 0x3C; quantity screen
     Actor *pLeftArrow;         // 0x40
     Actor *pRightArrow;        // 0x44

@@ -10,20 +10,20 @@ between the two entry points below); 91 of 93 opcodes named
 (`0x02` and `0x2A` are not). This is the VM [`rooms.md`](rooms.md) calls "room
 switch-state chains" -- that document owns the per-room resource-blob
 layout and how a chain index is reached from a warp tile or the
-switch-state object table; this document owns the interpreter and
+switch-state actor table; this document owns the interpreter and
 opcode format itself.
 
 ## What this is
 
 A second bytecode VM, entirely separate from
-[`battle_scripts.md`](battle_scripts.md)'s `InterpretObjectScript` (no
+[`battle_scripts.md`](battle_scripts.md)'s `InterpretActorScript` (no
 shared tables, no shared entry points). It drives room-local scripted
 sequences: setting flag bits on a tile's spawned `Actor`, opening
 dialog boxes, pausing/resuming/switching the Krawall music module, and
 invoking other chains conditionally. It is reached far more broadly
 than just warp tiles: `InitializeOverworld` runs chain `0` (and
 conditionally chain `1`) when a room is entered fresh, and again after an
-object-state restore that finds the saved state stale; several other
+actor-state restore that finds the saved state stale; several other
 functions (`FUN_0800483c`, `FUN_08003be4`, `FUN_08004fde`, `FUN_08004d58`,
 `FUN_0800a03c`, `FUN_08004c48`) trigger it too --
 consistent with "the scripted sequence that runs when this room is
@@ -54,9 +54,9 @@ Both walk the same record-by-record loop:
 
 ## The byte format
 
-Unlike `InterpretObjectScript`'s script (a `u8` opcode + operand
+Unlike `InterpretActorScript`'s script (a `u8` opcode + operand
 bytes), a room-script record's opcode is a full **`u32`** at record
-offset `0` -- confirmed by the interpreter reading `*(int *)pObject`
+offset `0` -- confirmed by the interpreter reading `*(int *)pActor`
 and the length table's smallest entry being `4` (an opcode with no
 operands still occupies a whole word). Record layout:
 
@@ -82,7 +82,7 @@ read directly from ROM to confirm this boundary, not inferred from one
 alone).
 
 None of these 93 handler addresses were found as `gbadisasm`-seeded
-functions -- like `InterpretObjectScript`'s `Wait`-family handlers (see
+functions -- like `InterpretActorScript`'s `Wait`-family handlers (see
 `battle_scripts.md`), they sit in a region `gbadisasm` didn't
 recognize as code on its own; every address cited below was confirmed
 with `disassemble_bytes` directly.
@@ -94,7 +94,7 @@ Each opcode's operand layout is its `RS_*` macro in
 names and numbers), and its behavior is the handler in
 `src/room/opcodes/room_script_op_*.c`, dispatched through
 `g_apRoomScriptOpcodeHandlers`. Behavior notes live as comments next to those
-handlers. The camera effects of opcodes `0x10` (`QueueTileObjectMove`) and
+handlers. The camera effects of opcodes `0x10` (`QueueTileActorMove`) and
 `0x12` are described in
 [`../memory-map/frame_systems.md`](../memory-map/frame_systems.md).
 
@@ -111,7 +111,7 @@ case"). `ShouldRunRoomScriptRow_candidate(n)` (US `0x08005B44`) is:
 | `>= 2` | always `true` |
 
 Every real script's `InvokeChainIfEnabled` (`0x40`) passes `n = 0` for
-this gate, so its `RespawnRoomObjectsInRow_candidate` call (US
+this gate, so its `RespawnRoomActorsInRow_candidate` call (US
 `0x0800539C`) is dead in every shipped instance -- see `RoomScriptOpInvokeChainIfEnabled`
 above.
 `GotoIfQuestStateCompare`/`GotoIfStoryStageCompare` pass real,
@@ -180,7 +180,7 @@ Global `DAT_0300279C` tracks the VM's run state:
   own loop checks state `2` after every handler call and `break`s,
   latching the *next* instruction's pointer into `DAT_03001DE0` before
   returning to its caller. Only `ShowRoomDialog` (opcode `5`) and
-  `StartObjectAnimSequence` (opcode `0x18`) ever transition state
+  `StartActorAnimSequence` (opcode `0x18`) ever transition state
   `1` to `2` (see `ArmChainYield`, opcode `0x1C`, above) -- both also
   latch the currently-dispatching opcode number into `DAT_03001DE9`
   (only while state is exactly `1`, i.e. at the moment the transition
@@ -212,28 +212,28 @@ this generic push/pop (it manages `DAT_030028A0` itself instead).
 
 **Resuming a yielded chain**, from tracing every real caller of
 `ResumeRoomSwitchStateChain_candidate`: it is not a generic "the dialog
-box closed" callback. Three per-object tick handlers call it
-(`0x0800483C`, `0x08003BE4`, `0x0800A03C`, each a per-object-type state
+box closed" callback. Three per-actor tick handlers call it
+(`0x0800483C`, `0x08003BE4`, `0x0800A03C`, each a per-actor-type state
 machine unrelated to room scripts otherwise), and each only does so
-once its own object's animation/movement has reached a specific
+once its own actor's animation/movement has reached a specific
 internal state *and* `DAT_03001DE9` (the opcode number latched when the
 chain yielded, see above) matches the one opcode that handler cares
 about -- `0x0800483C` specifically checks for `0x18`
-(`StartObjectAnimSequence`). `StartObjectAnimSequence`
-itself sets `Actor+0xC` bit `0x8000000` on its target object exactly
+(`StartActorAnimSequence`). `StartActorAnimSequence`
+itself sets `Actor+0xC` bit `0x8000000` on its target actor exactly
 when it yields (state `2`); the tick handler clears that same bit right
-before resuming. So a yielded chain resumes when **the specific object
-`StartObjectAnimSequence`/`ShowRoomDialog` acted on reaches a
-matching state in its own, unrelated per-object tick logic** -- a
-rendezvous with that object finishing something, not a dialog-box
+before resuming. So a yielded chain resumes when **the specific actor
+`StartActorAnimSequence`/`ShowRoomDialog` acted on reaches a
+matching state in its own, unrelated per-actor tick logic** -- a
+rendezvous with that actor finishing something, not a dialog-box
 close notification as such (a dialog box closing may itself just be
-one way that object-side state gets reached).
+one way that actor-side state gets reached).
 
 ## Chains in C
 
 **PROVEN** the on-ROM chain format is byte-identical to the RAM format
 above: `sub_08005E84` (US `0x08005E84`, the copier
-`BuildRoomSwitchStateObjectTable_candidate` calls per chain, up to and
+`BuildRoomSwitchStateActorTable_candidate` calls per chain, up to and
 including the opcode-0 terminator) is a
 straight byte-for-byte copy loop driven by the same
 `g_abRoomScriptOpcodeLengths` table, with no transformation -- so a
@@ -255,8 +255,8 @@ chainCount    = u8(switchTable + 0)
 chain[i]      = switchTable + u16(switchTable + 2 + i*2)
 ```
 
-**PROVEN** (`BuildRoomSwitchStateObjectTable_candidate`): the runtime table
-`g_pRoomSwitchStateObjectTable` is `{u16 count, u16 offsets[count]}` followed
+**PROVEN** (`BuildRoomSwitchStateActorTable_candidate`): the runtime table
+`g_pRoomSwitchStateActorTable` is `{u16 count, u16 offsets[count]}` followed
 by the chains. Sub-block flags bit 0 (set in every shipped sub-block) makes
 the builder put the *default* sub-block's (entry 0's) chain 0 first and
 shift the variant's chains up by one: `count = chainCount + 1`, runtime
@@ -298,7 +298,7 @@ layout as US.
 - Confirm `DAT_03001DDC`'s role gating chain `1` at room load (`rooms.md`
   and `InitializeOverworld` both treat it as "has this room's one-time
   chain 1 already run", not independently verified against save state).
-- Decode opcode `2`'s `+0x28`/`+0x90` fields against a real object
+- Decode opcode `2`'s `+0x28`/`+0x90` fields against a real actor
   struct definition -- not cross-checked against `Actor`'s known
   layout from `battle_scripts.md` beyond `+0xc` (shared with the
   battle-script `Actor+0xc` flags field: bit `0x82` set by opcode `1`

@@ -35,7 +35,7 @@
 .set g_pTimer2DebugPc,        0x030015A0  @ see ram_symbols.us.inc
 .set g_ActiveActorListState, 0x030015B0
 
-@ --- Per-tick object queues (see include/hw/mem.h and TickActorList) ---
+@ --- Per-tick actor queues (see include/hw/mem.h and TickActorList) ---
 .set g_apOamQueue,             0x030015B8
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760
@@ -46,13 +46,13 @@
 .set g_dwCollisionQueueCount,        0x03001948
 
 @ --- Actor pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
-.set SortObjectsByDepthIwram,            0x0300194C
-.set CheckObjectCollisionsIwram,  0x03001A10
+.set SortActorsByDepthIwram,            0x0300194C
+.set CheckActorCollisionsIwram,  0x03001A10
 .set g_ActorPoolState,              0x03001C08
 .set g_pActorPoolAuxBuffer,         0x03001DBC
 .set g_dwActorListTicked_candidate, 0x03001DC0
 .set g_dwUnk03001DC4,                0x03001DC4
-.set g_adwRoomObjUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room object constructors
+.set g_adwRoomActorUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room actor constructors
 
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ see ram_symbols.us.inc
 
@@ -68,9 +68,9 @@
                                                       @ HandleOverworldPauseMenuInput each frame, which skips the menu check while it is set
 
 @ --- Room-script VM (see include/overworld/room_script.h) ---
-.set g_pRoomObjectTable,            0x03001DF4  @ see ram_symbols.us.inc
+.set g_pRoomActorTable,            0x03001DF4  @ see ram_symbols.us.inc
 .set g_pRoomWarpTriggerTable,       0x03001DF8  @ see ram_symbols.us.inc
-.set g_pRoomSwitchStateObjectTable, 0x03001DFC  @ see ram_symbols.us.inc
+.set g_pRoomSwitchStateActorTable, 0x03001DFC  @ see ram_symbols.us.inc
 .set g_aRoomScriptCallStack,        0x03001E00
 
 .set g_aBgScrollState, 0x03001E80  @ see ram_symbols.us.inc
@@ -113,7 +113,7 @@
 .set g_pFightState,                 0x030024E8
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride
 .set g_bPendingRoomScriptChain,     0x0300260C  @ chain resumed after a game mode
-.set g_bPendingRoomScriptRow,       0x0300260D  @ object row resumed after a game mode
+.set g_bPendingRoomScriptRow,       0x0300260D  @ actor row resumed after a game mode
 .set g_nBattleXpReward,             0x0300260E  @ see ram_symbols.us.inc
 .set g_nBattleGoldReward,           0x03002610  @ see ram_symbols.us.inc
 .set g_dwOverworldMonstersDisabled, 0x03002614
@@ -121,8 +121,8 @@
 @ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618
 .set g_bSelectedFighterSlot_candidate,     0x03002660
-.set g_apFighterObjects_candidate,         0x03002668
-.set g_pBattleMessageIconObject_candidate, 0x03002684
+.set g_apFighterActors_candidate,         0x03002668
+.set g_pBattleMessageIconActor_candidate, 0x03002684
 .set g_BattleMessageIconState_candidate,   0x03002688
 .set g_anFaintedRosterIndices,             0x030026D8  @ see ram_symbols.us.inc
 .set g_dwVictoryUnk26E8,               0x030026E8  @ see ram_symbols.us.inc
@@ -151,7 +151,7 @@
 .set g_dwCreditsLine,         0x030028AC  @ see ram_symbols.us.inc
 .set g_dwCreditsTileCursor,   0x030028B0  @ see ram_symbols.us.inc
 .set g_pLinearCutsceneText,   0x030028B4  @ see ram_symbols.us.inc
-.set g_pLinearCutsceneObject, 0x030028B8  @ see ram_symbols.us.inc
+.set g_pLinearCutsceneActor, 0x030028B8  @ see ram_symbols.us.inc
 .set g_dwLinearCutsceneIndex, 0x030028BC  @ see ram_symbols.us.inc
 
 .set g_pMenuCursorEmitter, 0x030028C0
@@ -163,7 +163,7 @@
 .set g_pDecompressLzRleIwram,   0x030028D4
 .set g_pDecompressGammaLzIwram, 0x03002ACC
 
-.set g_pMenuCursorObject,                              0x03002E08  @ see ram_symbols.us.inc
+.set g_pMenuCursorActor,                              0x03002E08  @ see ram_symbols.us.inc
 .set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ set by StartMinigame
 .set g_HarryVsDementors,                               0x03002E18  @ see ram_symbols.us.inc
 .set g_DialogState_candidate,                          0x03002E88
@@ -173,13 +173,13 @@
 .set g_dwDialogTextId,                                 0x03002ED8  @ see ram_symbols.us.inc
 .set g_dwDialogTextEntry,                              0x03002EDC  @ see ram_symbols.us.inc
 .set g_pDialogBoxTilemap,                              0x03002EE0  @ see ram_symbols.us.inc
-.set g_pDialogBoxObject,                               0x03002EE4  @ see ram_symbols.us.inc
+.set g_pDialogBoxActor,                               0x03002EE4  @ see ram_symbols.us.inc
 .set g_dwDialogBoxY,                                   0x03002EE8  @ see ram_symbols.us.inc
-.set g_pDialogCursorObject,                            0x03002EEC  @ see ram_symbols.us.inc
+.set g_pDialogCursorActor,                            0x03002EEC  @ see ram_symbols.us.inc
 .set g_dwDialogTextActive,                             0x03002EF0  @ see ram_symbols.us.inc
 .set g_dwDialogBoxTileRow,                             0x03002EF4  @ see ram_symbols.us.inc
-.set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ see ram_symbols.us.inc
-.set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C
+.set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ see ram_symbols.us.inc
+.set g_pHippogriffFliesIntoAirActor2,                 0x03002F1C
 .set g_aRoomTileAnimations,                            0x03002F24
 .set g_dwRoomTileAnimationCount,                       0x03002F28
 .set g_aFontDescriptors,                                  0x03002F30
@@ -192,21 +192,21 @@
 .set g_OwlCareKitScreen,        0x030032D0  @ see ram_symbols.us.inc
 .set g_OverworldControlState,                          0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
-@ --- Overworld object tracking (see include/overworld/overworld.h) ---
+@ --- Overworld actor tracking (see include/overworld/overworld.h) ---
 .set g_nCameraYOffset,                  0x030033DC
 .set g_abRoomScriptExitParams_candidate, 0x030033DD  @ see ram_symbols.us.inc
-.set g_pPlayerObject,                    0x030033E0  @ see ram_symbols.us.inc
-.set g_pFollowerObject0,                 0x030033E4
-.set g_pFollowerObject1,                 0x030033E8
+.set g_pPlayerActor,                    0x030033E0  @ see ram_symbols.us.inc
+.set g_pFollowerActor0,                 0x030033E4
+.set g_pFollowerActor1,                 0x030033E8
 .set g_bPartyCharId0,                    0x030033EC
 .set g_bPartyCharId1,                    0x030033ED
 .set g_bPartyCharId2,                    0x030033EE
 .set g_bSelectedFieldSpell,             0x030033EF
-.set g_pFieldSpellNameObject,           0x03003400
-.set g_pMapNameTextObject,              0x03003404
+.set g_pFieldSpellNameActor,           0x03003400
+.set g_pMapNameTextActor,              0x03003404
 .set g_dwUnk030033A8,                   0x03003408
-.set g_pFieldSpellPortraitObject,      0x0300340C
-.set g_pMapNamePopupObject,             0x03003410
+.set g_pFieldSpellPortraitActor,      0x0300340C
+.set g_pMapNamePopupActor,             0x03003410
 
 .set gDialogTextBlobBase,    0x03003420
 .set gDialogTextOffsetTable, 0x03003424
@@ -270,7 +270,7 @@
 .set g_dwUnusedHogwartsMapShownBg,           0x03003AB0
 .set g_pUnusedHogwartsMapCursor,             0x03003AB4
 .set g_pUnusedHogwartsMapBg1Tilemap,         0x03003AB8
-.set g_apUnusedHogwartsMapObjects,           0x03003AC0
+.set g_apUnusedHogwartsMapActors,           0x03003AC0
 .set g_LupinPotionCutscene,                  0x03003AE4  @ see ram_symbols.us.inc
 .set g_aLupinPotionBg2Scroll,                0x03003B9C
 .set g_dwGameModeFlags,                      0x03003BA4  @ u32: broad game-mode flags word
@@ -284,11 +284,11 @@
 .set g_dwRoomBgFlag_candidate,               0x03003BBC
 .set g_dwPauseMenuLocked,                    0x03003BC0  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
 .set g_bRoomSwitchState,                     0x03003BC4  @ see ram_symbols.us.inc
-.set g_pRoomObjectStateBuffer,          0x03003BC8
+.set g_pRoomActorStateBuffer,          0x03003BC8
 .set g_dwPauseMenuCooldown,                  0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003BD0  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
-.set g_pTouchedWanderingMonster,             0x03003BE8  @ Actor *: armed wandering-monster object
+.set g_pTouchedWanderingMonster,             0x03003BE8  @ Actor *: armed wandering-monster actor
 .set g_abIwramDivideCode,                   0x03003BF0
 .set g_pfnIwramDivideSignedQuotient,        0x03003F30
 .set g_pfnIwramDivideSignedRemainder,       0x03003F34
@@ -300,7 +300,7 @@
 .set g_dwPendingGameMode,                    0x03003F78  @ see ram_symbols.us.inc
 .set g_PrevGameModeStackContext,             0x03003F9C
 .set g_dwTickCount,                          0x03003FC0
-.set g_apMenuIconObjects, 0x03003FC8  @ see ram_symbols.us.inc
+.set g_apMenuIconActors, 0x03003FC8  @ see ram_symbols.us.inc
 .set g_dwSelectedMinigame,                   0x03003FE8
 .set g_abBgPriority,                         0x03003FEC  @ see ram_symbols.us.inc
 .set g_dwRoomCollisionPatternCount,           0x03004018  @ see ram_symbols.us.inc
@@ -396,7 +396,7 @@
 .set g_pScreenPaletteBackup,            0x03005684
 .set g_dwUnk03005638,                   0x03005698
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300569C
-.set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for object visibility
+.set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x030056A8  @ see ram_symbols.us.inc
 .set g_awBgLayerTileCount,          0x030058F8  @ see ram_symbols.us.inc
 .set g_aBgTilesets,                  0x03005900  @ see ram_symbols.us.inc
@@ -462,7 +462,7 @@
 .set g_OptionsState,             0x03005E30
 .set g_dwOptionsReturnMode,      0x03005E5C
 .set g_wCoolTrainTimer,          0x03005E64  @ u16: frames left in the Cool Train cutscene
-.set g_bRestoringRoomObjects_candidate, 0x03005E68  @ see ram_symbols.us.inc
+.set g_bRestoringRoomActors_candidate, 0x03005E68  @ see ram_symbols.us.inc
 .set g_ScanlineEffectState,      0x03005E70
 .set g_ScanlineEffectStaging,    0x03005FA8
 .set FindFreeObjTileRunIwram, 0x030060D8

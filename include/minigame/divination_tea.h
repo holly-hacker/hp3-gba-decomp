@@ -9,10 +9,10 @@
 
 #define DIVINATION_TEA_LEAF_COUNT 16
 
-// One tea leaf object. Its affine scale words are fixed-point with 8
+// One tea leaf actor. Its affine scale words are fixed-point with 8
 // fractional bits; wAngle is a 16-bit angle advanced every frame.
 typedef struct {
-    Actor *pObject;  // 0x00
+    Actor *pActor;  // 0x00
     u8 abUnmapped_4[0xC];
     s16 wScaleX;      // 0x10
     s16 wScaleY;      // 0x12
@@ -23,8 +23,8 @@ typedef struct {
 // The mode's screen state at 0x03005B28, driven by g_GameModeStackContext.dwModeState.
 typedef struct {
     DivinationTeaLeaf aLeaves[DIVINATION_TEA_LEAF_COUNT];  // 0x000
-    Actor *apCupObjects[4];   // 0x180; switched to a new animation when B is pressed
-    Actor *apFadeObjects[8];  // 0x190; affine flag bits cleared once the fade-in ends
+    Actor *apCupActors[4];   // 0x180; switched to a new animation when B is pressed
+    Actor *apFadeActors[8];  // 0x190; affine flag bits cleared once the fade-in ends
     u32 dwBlendEvb;            // 0x1B0
     u32 dwBlendEva;            // 0x1B4
     u32 dwFadeStep;            // 0x1B8; 0..0x10, advanced by 2 per frame while fading
@@ -36,7 +36,7 @@ typedef struct {
     u32 dwUnk1D0;              // 0x1D0; starts at 0x40
     u32 dwUnk1D4;              // 0x1D4; dwFrame at the last A press
     u32 dwUnk1D8;              // 0x1D8; nonzero routes the update to sub_080422D0
-    Actor *pCursorObject;     // 0x1DC; released on exit when set
+    Actor *pCursorActor;     // 0x1DC; released on exit when set
 } DivinationTeaState;          // 0x1E0
 
 extern DivinationTeaState g_DivinationTea;  // 0x03005B28

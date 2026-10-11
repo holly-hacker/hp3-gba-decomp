@@ -7,13 +7,13 @@ const u32 g_dwFolioUniversitasBg3Control = 0x3F03;
 const u32 g_dwFolioUniversitasBg1Control = 0x3E0A;
 const u32 g_dwFolioUniversitasBg0Control = 0x1D05;
 
-#define OBJECT_GFX(name) { (void *)g##name##Tiles, (void *)g##name##Frames }
+#define ACTOR_GFX(name) { (void *)g##name##Tiles, (void *)g##name##Frames }
 
-const ActorGfxRecord g_aFolioUniversitasObjectGfx[6] = {
-    OBJECT_GFX(FolioUniversitasCursor),
-    OBJECT_GFX(ButtonPrompts),
-    OBJECT_GFX(ObjectSprite030),
-    OBJECT_GFX(ObjectSprite031),
-    OBJECT_GFX(ObjectSprite032),
-    OBJECT_GFX(FolioUniversitasCountBadges),
+const ActorGfxRecord g_aFolioUniversitasActorGfx[6] = {
+    ACTOR_GFX(FolioUniversitasCursor),
+    ACTOR_GFX(ButtonPrompts),
+    ACTOR_GFX(ActorSprite030),
+    ACTOR_GFX(ActorSprite031),
+    ACTOR_GFX(ActorSprite032),
+    ACTOR_GFX(FolioUniversitasCountBadges),
 };

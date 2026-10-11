@@ -20,7 +20,7 @@ Do not narrow merely to save a register. Inspect `ldr` versus `ldrb`/`ldrh`. Do 
 result the width of the field it is stored in: a `u16` local for a call result stored to a `u16`
 field supplies the `lsls`/`lsrs #16` before a later compare and changed reload choices at a
 bitfield store (UpdateActorSpriteFrame, US 0x08002F28, `allocId`, `slotAllocId`; the callee
-AllocObjectVramTiles returns `u32`).
+AllocObjVramTiles returns `u32`).
 
 Promotion can also let `combine` fold `(a^b)&a` into one `bicsi3` when `a` is a named
 sub-word local, where the same expression over array re-reads (HImode, `subreg`-wrapped)
@@ -231,7 +231,7 @@ A local assigned at several disjoint sites is one pseudo: it sums refs and live_
 and it moves neighbouring pseudos between hard registers (including reload spill-register
 choice). When values at disjoint sites land in different registers than the ROM, test each site
 as block-local versus one function-level variable, and flip the whole group together: single-site
-flips changed nothing while the group flip matched. Examples: InterpretObjectScript, US
+flips changed nothing while the group flip matched. Examples: InterpretActorScript, US
 `0x08018CC0`, opcodes 0x27/0x2B/0x83/0x84/0x85/0x97/0x9D-0xA0 share one signed index;
 UpdateActorSpriteFrame, US 0x08002F28, needs `record`/`frameData` per site.
 

@@ -14,9 +14,9 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addPendingFighter)
     u8 count;
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
-        g_pFightState->apTurnOrderIconObjects[i]->pLinkedActor_candidate->dwFlags |= 0x82;
-        g_pFightState->apTurnOrderIconObjects[i]->dwFlags |= 0x82;
-        g_pFightState->apTurnOrderIconObjects[i] = 0;
+        g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->dwFlags |= 0x82;
+        g_pFightState->apTurnOrderIconActors[i]->dwFlags |= 0x82;
+        g_pFightState->apTurnOrderIconActors[i] = 0;
     }
 
     for (i = 0; i < 3; i++) {
@@ -54,15 +54,15 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addPendingFighter)
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
         g_pFightState->pFighters[i].nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (i + 2);
-        g_pFightState->pFighters[i].pObject->bFighterIndex = i;
+        g_pFightState->pFighters[i].pActor->bFighterIndex = i;
 
         if (g_pFightState->pFighters[i].bFighterType != Enemy) {
             SpawnTurnOrderIcon(g_pFightState->pFighters[i].bFighterType, 1, i,
-                               g_pFightState->pFighters[i].pObject->oam.paletteNum);
+                               g_pFightState->pFighters[i].pActor->oam.paletteNum);
             g_pFightState->aAllySlotTurnOrderIndex[g_pFightState->pFighters[i].bSlotParam] = i;
         } else {
             SpawnTurnOrderIcon(g_pFightState->pFighters[i].bRosterIndex, 0, i,
-                               g_pFightState->pFighters[i].pObject->oam.paletteNum);
+                               g_pFightState->pFighters[i].pActor->oam.paletteNum);
             g_pFightState->aEnemySlotTurnOrderIndex[g_pFightState->pFighters[i].bSlotParam] = i;
         }
     }

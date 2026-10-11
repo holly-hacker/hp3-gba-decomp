@@ -181,43 +181,43 @@ Room11V1Chain1:
     End
 Room11V1Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ResetPartyLeaderSelection
     RespawnRowAndRunChain Room11V1Group5_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room11V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route0_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain3:
     ArmChainYield 1
     RespawnRowAndRunChain Room11V1Group11_id, 0
     @ "Hagrid! Look at my new Firebolt!"
     ShowRoomDialog 436
-    DespawnRoomRowObjects Room11V1Group6_id
+    DespawnRoomRowActors Room11V1Group6_id
     RemovePartyFollower 6
     RespawnRowAndRunChain Room11V1Group3_id, 0
     RemovePartyFollower 7
     RespawnRowAndRunChain Room11V1Group4_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route2_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route1_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room11V1Group5_id, 0, 0, 0, 1000, 0
+    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route1_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room11V1Group5_id, 0, 0, 0, 1000, 0
     End
 Room11V1Chain4:
     ArmChainYield 1
     @ "Yeh've heard!"
     @ "Hagrid, what is it?"
     ShowRoomDialog 437
-    DespawnRoomRowObjects Room11V1Group11_id
+    DespawnRoomRowActors Room11V1Group11_id
     ArmChainYield 0
-    StartObjectAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room11V1Route5_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route6_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route7_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain5:
     ArmChainYield 1
-    SetTileObjectFacing Room11V1Group3_id, 0, 0
+    SetTileActorFacing Room11V1Group3_id, 0, 0
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
     @ "They're going ter put poor Buckbeak on trial fer attackin' Malfoy..."
     @ "Listen, you can't give up. You just need a good defense. You can call us as witnesses."
@@ -227,16 +227,16 @@ Room11V1Chain5:
     @ "Don't worry, we'll work out a defense for Buckbeak. Let's go to the library, Ron."
     ShowRoomDialog 438
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
-    SetTileObjectFacing Room11V1Group3_id, 0, 4
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
+    SetTileActorFacing Room11V1Group3_id, 0, 4
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
     Unk02 Room11V1Group4_id, 0, 2
     InvokeChainIfEnabled 0, Room11V1Chain6_id
     End
 Room11V1Chain6:
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room11V1Route10_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route8_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
     End
 Room11V1Chain7:
     ArmChainYield 1
@@ -244,21 +244,21 @@ Room11V1Chain7:
     SetQuestState 1, 224
     SetQuestState QUEST_OBJ_GO_TO_LIBRARY_FOR_HERMIONE, QUEST_OBJECTIVE_INDEX
     RecruitPartyFollower 7
-    DespawnRoomRowObjects Room11V1Group4_id
-    SetTileObjectAnimStateWithSpeed 0, 255
+    DespawnRoomRowActors Room11V1Group4_id
+    SetTileActorAnimStateWithSpeed 0, 255
     ReturnToOverworld 15, 5
     End
 Room11V1Chain8:
     ArmChainYield 0
-    StartObjectAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route9_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
     End
 Room11V1Chain9:
     ArmChainYield 1
     Unk2A 6, 255, 255, 255
     RespawnRowAndRunChain Room11V1Group2_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room11V1Route11_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route11_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain10:
     ReturnToOverworld 15, 5
@@ -268,13 +268,13 @@ Room11V1Chain11:
     End
 Room11V1Chain12:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room11V1Route13_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room11V1Group7_id, 1, 0, 0, 700, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route13_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room11V1Group7_id, 1, 0, 0, 700, 0
     End
 Room11V1Chain13:
-    StartObjectAnimSequence Room11V1Group7_id, 1, 0, 0, Room11V1Route14_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group7_id, 1, 0, 0, Room11V1Route14_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain14:
     ArmChainYield 1
@@ -286,38 +286,38 @@ Room11V1Chain14:
     RemovePartyFollower 7
     RemovePartyFollower 6
     ArmChainYield 0
-    StartObjectAnimSequence Room11V1Group8_id, 0, 0, 0, Room11V1Route15_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group8_id, 1, 0, 0, Room11V1Route16_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group8_id, 0, 0, 0, Room11V1Route15_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group8_id, 1, 0, 0, Room11V1Route16_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain15:
     ArmChainYield 1
     RespawnRowAndRunChain Room11V1Group9_id, 0
     Unk02 Room11V1Group9_id, 0, 3
     ArmChainYield 0
-    StartObjectAnimSequence Room11V1Group9_id, 0, 0, 0, Room11V1Route17_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group9_id, 0, 0, 0, Room11V1Route17_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain16:
     ArmChainYield 1
-    QueueTileObjectMove Room11V1Group8_id, 0, 0, 0, 1000, 0
+    QueueTileActorMove Room11V1Group8_id, 0, 0, 0, 1000, 0
     @ "Squeak!"
     @ "It's Scabbers! Scabbers, what are you doing here?"
     ShowRoomDialog 547
-    DespawnRoomRowObjects Room11V1Group9_id
+    DespawnRoomRowActors Room11V1Group9_id
     @ "They're comin' - Macnair, the executioner, and Fudge. Yeh'd best leave now."
     @ "We'll be back, Hagrid..."
     ShowRoomDialog 548
     ArmChainYield 0
-    QueueTileObjectMove 0, 255, 0, 0, 1000, 0
-    StartObjectAnimSequence Room11V1Group8_id, 0, 0, 0, Room11V1Route18_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room11V1Group8_id, 1, 0, 0, Room11V1Route19_id, 0, 1, 0, 0, 0
+    QueueTileActorMove 0, 255, 0, 0, 1000, 0
+    StartActorAnimSequence Room11V1Group8_id, 0, 0, 0, Room11V1Route18_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room11V1Group8_id, 1, 0, 0, Room11V1Route19_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain17:
     ArmChainYield 1
     RecruitPartyFollower 7
     RecruitPartyFollower 6
-    DespawnRoomRowObjects Room11V1Group8_id
+    DespawnRoomRowActors Room11V1Group8_id
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room11V1Route20_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route20_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain18:
     @ "They're comin' - Macnair, the executioner, and Fudge. Yeh'd best leave now."
@@ -325,11 +325,11 @@ Room11V1Chain18:
     End
 Room11V1Chain19:
     ArmChainYield 1
-    DespawnTileObject Room11V1Group7_id, 0
+    DespawnTileActor Room11V1Group7_id, 0
     SetQuestState QUEST_OBJ_GO_TO_WHOMPING_WILLOW, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 233
     SetStoryStage 22
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room11V1Chain20:
     GotoIfQuestStateCompare 129, 0, 0, 0, 0, Room11V1Group10_id, Room11V1Group12_id
@@ -342,7 +342,7 @@ Room11V1Chain22:
     DelayedRespawnRowAndRunChainFrames 5, 0, 0
     GotoIfQuestStateCompare 230, 0, 1, Room11V1Chain25_id, 0, 0, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room11V1Group13_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room11V1Group13_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
     End
 Room11V1Chain23:
     @ "Harry. Hurry up!"
@@ -353,6 +353,6 @@ Room11V1Chain24:
     ShowRoomDialog 458
     End
 Room11V1Chain25:
-    DespawnTileObject Room11V1Group13_id, 1
+    DespawnTileActor Room11V1Group13_id, 1
     End
     EndSubBlock Room11V1End

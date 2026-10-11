@@ -96,10 +96,10 @@
 @ Opcode numbers; the same values as enum RoomScriptOpcode in
 @ include/overworld/room_script_bytecode.h.
 .set RSOP_End, 0
-.set RSOP_DespawnTileObject, 1
+.set RSOP_DespawnTileActor, 1
 .set RSOP_Unk02, 2
-.set RSOP_SetTileObjectFlagBit, 3
-.set RSOP_ClearTileObjectFlagBit, 4
+.set RSOP_SetTileActorFlagBit, 3
+.set RSOP_ClearTileActorFlagBit, 4
 .set RSOP_ShowRoomDialog, 5
 .set RSOP_PauseMusic, 6
 .set RSOP_ResumeMusic, 7
@@ -110,26 +110,26 @@
 .set RSOP_SetSoundEffectVolume, 12
 .set RSOP_DelayedRespawnRowAndRunChain, 13
 .set RSOP_SetStoryStage, 14
-.set RSOP_SetTileObjectAnimState, 15
-.set RSOP_QueueTileObjectMove, 16
+.set RSOP_SetTileActorAnimState, 15
+.set RSOP_QueueTileActorMove, 16
 .set RSOP_ReturnToOverworld, 17
 .set RSOP_SetAllQueuedMoveParams, 18
 .set RSOP_ClearAllQueuedMoves, 19
-.set RSOP_SetTileObjectPosition, 20
+.set RSOP_SetTileActorPosition, 20
 .set RSOP_PlayCutscene, 21
 .set RSOP_CloseRoomDialog, 22
-.set RSOP_SetTileObjectFollowTarget, 23
-.set RSOP_StartObjectAnimSequence, 24
-.set RSOP_StartTileObjectScript, 25
-.set RSOP_PlayTileObjectAnimation, 26
+.set RSOP_SetTileActorFollowTarget, 23
+.set RSOP_StartActorAnimSequence, 24
+.set RSOP_StartTileActorScript, 25
+.set RSOP_PlayTileActorAnimation, 26
 .set RSOP_OpenMainMenu, 27
 .set RSOP_ArmChainYield, 28
 .set RSOP_GotoIfQuestStateCompare, 29
 .set RSOP_GotoIfQuestStatePairCompare, 30
 .set RSOP_SetQuestState, 31
 .set RSOP_CopyQuestState, 32
-.set RSOP_CancelObjectAnimSequence, 33
-.set RSOP_SetTileObjectAnimStateWithSpeed, 34
+.set RSOP_CancelActorAnimSequence, 33
+.set RSOP_SetTileActorAnimStateWithSpeed, 34
 .set RSOP_PatchRoomBackgroundTile, 35
 .set RSOP_ShowLoadingScreenTransition, 36
 .set RSOP_PlayScreenTransitionOut, 37
@@ -139,22 +139,22 @@
 .set RSOP_SpawnPartyFollowerAtTile, 41
 .set RSOP_Unk2A, 42
 .set RSOP_StartBattle, 43
-.set RSOP_SetTileObjectAnimStateValue, 44
+.set RSOP_SetTileActorAnimStateValue, 44
 .set RSOP_GrantRoomReward, 45
 .set RSOP_SetBackgroundBlendLayers, 46
 .set RSOP_ShowBackgroundLayer, 47
 .set RSOP_HideBackgroundLayer, 48
 .set RSOP_SetBackgroundPriority, 49
-.set RSOP_SetCameraFollowTileObject, 50
+.set RSOP_SetCameraFollowTileActor, 50
 .set RSOP_PlaySpecialSceneEffect, 51
 .set RSOP_DelayedRespawnRowAndRunChainFrames, 52
-.set RSOP_SetTileObjectAndLinkedVisible, 53
+.set RSOP_SetTileActorAndLinkedVisible, 53
 .set RSOP_GotoIfStoryStageCompare, 54
 .set RSOP_SetRandomQuestState, 55
 .set RSOP_NoOp, 56
 .set RSOP_SetScreenWindow, 57
 .set RSOP_HideScreenWindow, 58
-.set RSOP_SetTileObjectFacing, 59
+.set RSOP_SetTileActorFacing, 59
 .set RSOP_AddQuestState, 60
 .set RSOP_SubtractQuestState, 61
 .set RSOP_ClearQuestStateUpperHalf, 62
@@ -162,17 +162,17 @@
 .set RSOP_InvokeChainIfEnabled, 64
 .set RSOP_GrantPartyExperience, 65
 .set RSOP_SetDefeatWarpSelector, 66
-.set RSOP_SetTileObjectDrawLayer, 67
+.set RSOP_SetTileActorDrawLayer, 67
 .set RSOP_EnterFredAndGeorgesShop, 68
 .set RSOP_FullHealParty, 69
 .set RSOP_RespawnRowAndRunChain, 70
 .set RSOP_StartMinigame, 71
-.set RSOP_DespawnRoomRowObjects, 72
+.set RSOP_DespawnRoomRowActors, 72
 .set RSOP_GrantPartySpell, 73
 .set RSOP_SetOverworldMonstersDisabled, 74
 .set RSOP_ClearOverworldMonstersDisabled, 75
-.set RSOP_SetTileObjectFacingAndScriptPage, 76
-.set RSOP_SetTileObjectSpecialFlag, 77
+.set RSOP_SetTileActorFacingAndScriptPage, 76
+.set RSOP_SetTileActorSpecialFlag, 77
 .set RSOP_UnlockMinigame, 78
 .set RSOP_ShowRewardPickupMessage, 79
 .set RSOP_ShowItemRemovedMessage, 80
@@ -193,20 +193,20 @@
     .byte RSOP_End, 0, 0, 0
 .endm
 
-.macro DespawnTileObject group, member
-    .byte RSOP_DespawnTileObject, 0, 0, 0, (\group), (\member), (255), (255)
+.macro DespawnTileActor group, member
+    .byte RSOP_DespawnTileActor, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
 .macro Unk02 group, member, value
     .byte RSOP_Unk02, 0, 0, 0, (\group), (\member), (((\value) >> 0) & 0xFF), (((\value) >> 8) & 0xFF)
 .endm
 
-.macro SetTileObjectFlagBit group, member, bit
-    .byte RSOP_SetTileObjectFlagBit, 0, 0, 0, (\group), (\member), (\bit), (255)
+.macro SetTileActorFlagBit group, member, bit
+    .byte RSOP_SetTileActorFlagBit, 0, 0, 0, (\group), (\member), (\bit), (255)
 .endm
 
-.macro ClearTileObjectFlagBit group, member, bit
-    .byte RSOP_ClearTileObjectFlagBit, 0, 0, 0, (\group), (\member), (\bit), (255)
+.macro ClearTileActorFlagBit group, member, bit
+    .byte RSOP_ClearTileActorFlagBit, 0, 0, 0, (\group), (\member), (\bit), (255)
 .endm
 
 .macro ShowRoomDialog blockId
@@ -249,12 +249,12 @@
     .byte RSOP_SetStoryStage, 0, 0, 0, (\stage), (255), (255), (255)
 .endm
 
-.macro SetTileObjectAnimState group, member
-    .byte RSOP_SetTileObjectAnimState, 0, 0, 0, (\group), (\member), (255), (255)
+.macro SetTileActorAnimState group, member
+    .byte RSOP_SetTileActorAnimState, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
-.macro QueueTileObjectMove group, member, byte1, byte2, speed, unknown
-    .byte RSOP_QueueTileObjectMove, 0, 0, 0, (\group), (\member), (\byte1), (\byte2), (((\speed) >> 0) & 0xFF), (((\speed) >> 8) & 0xFF), (((\unknown) >> 0) & 0xFF), (((\unknown) >> 8) & 0xFF)
+.macro QueueTileActorMove group, member, byte1, byte2, speed, unknown
+    .byte RSOP_QueueTileActorMove, 0, 0, 0, (\group), (\member), (\byte1), (\byte2), (((\speed) >> 0) & 0xFF), (((\speed) >> 8) & 0xFF), (((\unknown) >> 0) & 0xFF), (((\unknown) >> 8) & 0xFF)
 .endm
 
 .macro ReturnToOverworld exitId, exitParam
@@ -269,8 +269,8 @@
     .byte RSOP_ClearAllQueuedMoves, 0, 0, 0
 .endm
 
-.macro SetTileObjectPosition x, y, group, member, facing, unused
-    .byte RSOP_SetTileObjectPosition, 0, 0, 0, (((\x) >> 0) & 0xFF), (((\x) >> 8) & 0xFF), (((\y) >> 0) & 0xFF), (((\y) >> 8) & 0xFF), (\group), (\member), (\facing), (\unused)
+.macro SetTileActorPosition x, y, group, member, facing, unused
+    .byte RSOP_SetTileActorPosition, 0, 0, 0, (((\x) >> 0) & 0xFF), (((\x) >> 8) & 0xFF), (((\y) >> 0) & 0xFF), (((\y) >> 8) & 0xFF), (\group), (\member), (\facing), (\unused)
 .endm
 
 .macro PlayCutscene cutsceneId, pendingRow, pendingChain
@@ -281,20 +281,20 @@
     .byte RSOP_CloseRoomDialog, 0, 0, 0, (\unused0), (\exitParam), (\unused1), (\unused2)
 .endm
 
-.macro SetTileObjectFollowTarget group, member, targetGroup, targetMember, useTargetTile, resumeDistance, stopDistance, unused
-    .byte RSOP_SetTileObjectFollowTarget, 0, 0, 0, (\group), (\member), (\targetGroup), (\targetMember), (\useTargetTile), (\resumeDistance), (\stopDistance), (\unused)
+.macro SetTileActorFollowTarget group, member, targetGroup, targetMember, useTargetTile, resumeDistance, stopDistance, unused
+    .byte RSOP_SetTileActorFollowTarget, 0, 0, 0, (\group), (\member), (\targetGroup), (\targetMember), (\useTargetTile), (\resumeDistance), (\stopDistance), (\unused)
 .endm
 
-.macro StartObjectAnimSequence group, member, effectId, localA, route, waypoint, animStateSelector, stateByte0x60, flagsA, flagsB
-    .byte RSOP_StartObjectAnimSequence, 0, 0, 0, (\group), (\member), (\effectId), (\localA), (\route), (\waypoint), (\animStateSelector), (\stateByte0x60), (\flagsA), (\flagsB), (255), (255)
+.macro StartActorAnimSequence group, member, effectId, localA, route, waypoint, animStateSelector, stateByte0x60, flagsA, flagsB
+    .byte RSOP_StartActorAnimSequence, 0, 0, 0, (\group), (\member), (\effectId), (\localA), (\route), (\waypoint), (\animStateSelector), (\stateByte0x60), (\flagsA), (\flagsB), (255), (255)
 .endm
 
-.macro StartTileObjectScript scriptPC, effectId, localA, group, member, arg65, arg66, arg64, unused0, unused1, unused2
-    .byte RSOP_StartTileObjectScript, 0, 0, 0, (((\scriptPC) >> 0) & 0xFF), (((\scriptPC) >> 8) & 0xFF), (\effectId), (\localA), (\group), (\member), (\arg65), (\arg66), (\arg64), (\unused0), (\unused1), (\unused2)
+.macro StartTileActorScript scriptPC, effectId, localA, group, member, arg65, arg66, arg64, unused0, unused1, unused2
+    .byte RSOP_StartTileActorScript, 0, 0, 0, (((\scriptPC) >> 0) & 0xFF), (((\scriptPC) >> 8) & 0xFF), (\effectId), (\localA), (\group), (\member), (\arg65), (\arg66), (\arg64), (\unused0), (\unused1), (\unused2)
 .endm
 
-.macro PlayTileObjectAnimation group, member, animId
-    .byte RSOP_PlayTileObjectAnimation, 0, 0, 0, (\group), (\member), (((\animId) >> 0) & 0xFF), (((\animId) >> 8) & 0xFF)
+.macro PlayTileActorAnimation group, member, animId
+    .byte RSOP_PlayTileActorAnimation, 0, 0, 0, (\group), (\member), (((\animId) >> 0) & 0xFF), (((\animId) >> 8) & 0xFF)
 .endm
 
 .macro OpenMainMenu
@@ -321,12 +321,12 @@
     .byte RSOP_CopyQuestState, 0, 0, 0, (\srcIndex), (\dstIndex), (\unused0), (\unused1)
 .endm
 
-.macro CancelObjectAnimSequence group, member
-    .byte RSOP_CancelObjectAnimSequence, 0, 0, 0, (\group), (\member), (255), (255)
+.macro CancelActorAnimSequence group, member
+    .byte RSOP_CancelActorAnimSequence, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
-.macro SetTileObjectAnimStateWithSpeed group, member
-    .byte RSOP_SetTileObjectAnimStateWithSpeed, 0, 0, 0, (\group), (\member), (255), (255)
+.macro SetTileActorAnimStateWithSpeed group, member
+    .byte RSOP_SetTileActorAnimStateWithSpeed, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
 .macro PatchRoomBackgroundTile x, y, tileId, layer, unused
@@ -365,8 +365,8 @@
     .byte RSOP_StartBattle, 0, 0, 0, (\battleId), (\pendingRow), (\pendingChain), (255)
 .endm
 
-.macro SetTileObjectAnimStateValue group, member, actionState
-    .byte RSOP_SetTileObjectAnimStateValue, 0, 0, 0, (\group), (\member), (\actionState), (255)
+.macro SetTileActorAnimStateValue group, member, actionState
+    .byte RSOP_SetTileActorAnimStateValue, 0, 0, 0, (\group), (\member), (\actionState), (255)
 .endm
 
 .macro GrantRoomReward rewardId, variant
@@ -389,8 +389,8 @@
     .byte RSOP_SetBackgroundPriority, 0, 0, 0, (\bg), (\priority), (\unused0), (\unused1)
 .endm
 
-.macro SetCameraFollowTileObject group, member, unused0, unused1
-    .byte RSOP_SetCameraFollowTileObject, 0, 0, 0, (\group), (\member), (\unused0), (\unused1)
+.macro SetCameraFollowTileActor group, member, unused0, unused1
+    .byte RSOP_SetCameraFollowTileActor, 0, 0, 0, (\group), (\member), (\unused0), (\unused1)
 .endm
 
 .macro PlaySpecialSceneEffect mode
@@ -401,8 +401,8 @@
     .byte RSOP_DelayedRespawnRowAndRunChainFrames, 0, 0, 0, (((\delay) >> 0) & 0xFF), (((\delay) >> 8) & 0xFF), (\respawnRow), (\chainRow)
 .endm
 
-.macro SetTileObjectAndLinkedVisible group, member, visible, unused
-    .byte RSOP_SetTileObjectAndLinkedVisible, 0, 0, 0, (\group), (\member), (\visible), (\unused)
+.macro SetTileActorAndLinkedVisible group, member, visible, unused
+    .byte RSOP_SetTileActorAndLinkedVisible, 0, 0, 0, (\group), (\member), (\visible), (\unused)
 .endm
 
 .macro GotoIfStoryStageCompare cmpOp, value, trueChain, falseChain, trueRow, falseRow
@@ -425,8 +425,8 @@
     .byte RSOP_HideScreenWindow, 0, 0, 0, (\windowId), (\unused0), (\unused1), (\unused2)
 .endm
 
-.macro SetTileObjectFacing group, member, facing
-    .byte RSOP_SetTileObjectFacing, 0, 0, 0, (\group), (\member), (\facing), (255)
+.macro SetTileActorFacing group, member, facing
+    .byte RSOP_SetTileActorFacing, 0, 0, 0, (\group), (\member), (\facing), (255)
 .endm
 
 .macro AddQuestState amount, index
@@ -457,8 +457,8 @@
     .byte RSOP_SetDefeatWarpSelector, 0, 0, 0, (\value), (255), (255), (255)
 .endm
 
-.macro SetTileObjectDrawLayer group, member, priority, unused
-    .byte RSOP_SetTileObjectDrawLayer, 0, 0, 0, (\group), (\member), (\priority), (\unused)
+.macro SetTileActorDrawLayer group, member, priority, unused
+    .byte RSOP_SetTileActorDrawLayer, 0, 0, 0, (\group), (\member), (\priority), (\unused)
 .endm
 
 .macro EnterFredAndGeorgesShop modeArg, pendingRow, pendingChain
@@ -477,8 +477,8 @@
     .byte RSOP_StartMinigame, 0, 0, 0, (\minigameId), (\param), (\showHelp), (\pendingRow), (\pendingChain), (255), (255), (255)
 .endm
 
-.macro DespawnRoomRowObjects row
-    .byte RSOP_DespawnRoomRowObjects, 0, 0, 0, (\row), (255), (255), (255)
+.macro DespawnRoomRowActors row
+    .byte RSOP_DespawnRoomRowActors, 0, 0, 0, (\row), (255), (255), (255)
 .endm
 
 .macro GrantPartySpell characterId
@@ -493,12 +493,12 @@
     .byte RSOP_ClearOverworldMonstersDisabled, 0, 0, 0
 .endm
 
-.macro SetTileObjectFacingAndScriptPage group, member, facing, scriptPageHigh
-    .byte RSOP_SetTileObjectFacingAndScriptPage, 0, 0, 0, (\group), (\member), (\facing), (\scriptPageHigh)
+.macro SetTileActorFacingAndScriptPage group, member, facing, scriptPageHigh
+    .byte RSOP_SetTileActorFacingAndScriptPage, 0, 0, 0, (\group), (\member), (\facing), (\scriptPageHigh)
 .endm
 
-.macro SetTileObjectSpecialFlag group, member, set
-    .byte RSOP_SetTileObjectSpecialFlag, 0, 0, 0, (\group), (\member), (\set), (255)
+.macro SetTileActorSpecialFlag group, member, set
+    .byte RSOP_SetTileActorSpecialFlag, 0, 0, 0, (\group), (\member), (\set), (255)
 .endm
 
 .macro UnlockMinigame minigameId

@@ -87,7 +87,7 @@ Room42V1Chain0:
 @ First conversation with Fudge
 Room42TalkFudge1:
     ArmChainYield 1
-    StartTileObjectScript 419, 10, 2, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 419, 10, 2, 0, 255, 0, 0, 0, 255, 255, 255
     @ "There you are, Harry!"
     @ "Um... Hello..."
     @ "I am Cornelius Fudge, Harry, the Minister for Magic."
@@ -99,7 +99,7 @@ Room42TalkFudge1:
     ShowRoomDialog 0
     ArmChainYield 0
     Unk02 Room42V1Group2_id, 1, 2
-    StartObjectAnimSequence Room42V1Group2_id, 1, 0, 4, Room42V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V1Group2_id, 1, 0, 4, Room42V1Route0_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     SetQuestState 1, 224
     SetQuestState 1, QUEST_STORY_STAGE
@@ -110,7 +110,7 @@ Room42TalkPatronBar:
     ShowRoomDialog 7
     End
 Room42V1Chain3:
-    DespawnTileObject Room42V1Group2_id, 1
+    DespawnTileActor Room42V1Group2_id, 1
     End
 @ Try to go to the cellar before the relevant quest is active
 Room42TryVisitCellar:
@@ -240,9 +240,9 @@ Room42V2Chain1:
     DelayedRespawnRowAndRunChain 1, 0, 0
     SetQuestState QUEST_OBJ_FIND_RAT_TONIC, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChainFrames 0, Room42V2Group4_id, 0
-    SetTileObjectFlagBit 0, 255, 9
+    SetTileActorFlagBit 0, 255, 9
     SetStoryStage 3
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     InvokeChainIfEnabled 0, Room42V2Chain9_id
     End
 Room42V2Chain2:
@@ -255,12 +255,12 @@ Room42V2Chain3:
     End
 Room42V2Chain4:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    ClearTileObjectFlagBit 0, 255, 9
-    StartTileObjectScript 548, 166, 1, 0, 255, 0, 0, 0, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    ClearTileActorFlagBit 0, 255, 9
+    StartTileActorScript 548, 166, 1, 0, 255, 0, 0, 0, 255, 255, 255
     ArmChainYield 0
-    StartObjectAnimSequence Room42V2Group2_id, 1, 0, 0, Room42V2Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room42V2Group2_id, 0, 0, 0, Room42V2Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V2Group2_id, 1, 0, 0, Room42V2Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V2Group2_id, 0, 0, 0, Room42V2Route2_id, 0, 1, 0, 0, 0
     End
 Room42V2Chain5:
     @ "Excuse me, Tom, I don't suppose you have any Rat Tonic?"
@@ -287,9 +287,9 @@ Room42V2Chain8:
     ShowRoomDialog 15
     SetQuestState 1, 232
     ArmChainYield 0
-    StartObjectAnimSequence Room42V2Group2_id, 1, 0, 0, Room42V2Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room42V2Group2_id, 0, 0, 0, Room42V2Route5_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room42V2Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V2Group2_id, 1, 0, 0, Room42V2Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V2Group2_id, 0, 0, 0, Room42V2Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room42V2Route0_id, 0, 1, 0, 0, 0
     End
 Room42V2Chain9:
     RespawnRowAndRunChain Room42V2Group4_id, 0
@@ -329,7 +329,7 @@ Room42V2Chain17:
     ShowRoomDialog 14
     End
 Room42V2Chain18:
-    DespawnRoomRowObjects Room42V2Group7_id
+    DespawnRoomRowActors Room42V2Group7_id
     DelayedRespawnRowAndRunChain 0, Room42V2Group8_id, 0
     End
 Room42V2Chain19:
@@ -523,23 +523,23 @@ Room42V3Chain0:
     GotoIfStoryStageCompare 3, 6, Room42V3Chain41_id, 0, 0, 0
     End
 Room42V3Chain1:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 249
     ArmChainYield 1
-    QueueTileObjectMove Room42V3Group1_id, 3, 0, 0, 1350, 0
+    QueueTileActorMove Room42V3Group1_id, 3, 0, 0, 1350, 0
     @ "...makes no sense not to tell him, Molly. Harry's got a right to know."
     @ "Arthur, the truth would terrify him! And Harry will be safe at Hogwarts."
     @ "We thought Azkaban prison was safe. If Black can break out of Azkaban, he can break into Hogwarts. He's deranged, Molly, and he thinks murdering Harry will bring You-Know-Who back to power."
     ShowRoomDialog 41
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 0
+    QueueTileActorMove 0, 255, 0, 0, 1500, 0
     DelayedRespawnRowAndRunChainFrames 1, 0, Room42V3Chain14_id
     End
 Room42V3Chain2:
     ConsumeRoomItem 62
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 688, 129, 1, 0, 255, 0, 0, 2, 255, 255, 255
-    SetTileObjectFacing 0, 255, 2
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 688, 129, 1, 0, 255, 0, 0, 2, 255, 255, 255
+    SetTileActorFacing 0, 255, 2
     @ "There you are, Harry! Did you manage to get any Rat Tonic?"
     @ "Yes. There you go."
     @ "Thanks. This will make you feel better, Scabbers."
@@ -555,17 +555,17 @@ Room42V3Chain3:
     ArmChainYield 0
     Unk02 Room42V3Group0_id, 1, 2
     Unk02 Room42V3Group0_id, 0, 2
-    StartTileObjectScript 523, 140, 1, Room42V3Group0_id, 1, 0, 0, 4, 255, 255, 255
-    StartObjectAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route3_id, 0, 1, 0, 0, 0
+    StartTileActorScript 523, 140, 1, Room42V3Group0_id, 1, 0, 0, 4, 255, 255, 255
+    StartActorAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route3_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     DelayedRespawnRowAndRunChainFrames 30, 0, Room42V3Chain9_id
     End
 Room42V3Chain4:
     ArmChainYield 0
-    StartTileObjectScript 527, 186, 1, Room42V3Group2_id, 1, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 527, 186, 1, Room42V3Group2_id, 1, 0, 0, 0, 255, 255, 255
     ArmChainYield 1
-    StartTileObjectScript 547, 192, 1, Room42V3Group2_id, 0, 0, 0, 0, 255, 255, 255
-    SetTileObjectFacing Room42V3Group2_id, 1, 0
+    StartTileActorScript 547, 192, 1, Room42V3Group2_id, 0, 0, 0, 0, 255, 255, 255
+    SetTileActorFacing Room42V3Group2_id, 1, 0
     @ "Hermione - we were wondering when you'd show up!"
     @ "It's really good to see you both again. I'd like you to meet my new cat, Crookshanks."
     @ "You bought that monster?"
@@ -580,21 +580,21 @@ Room42V3Chain5:
     ArmChainYield 0
     Unk02 Room42V3Group2_id, 1, 3
     Unk02 Room42V3Group0_id, 1, 3
-    StartObjectAnimSequence Room42V3Group0_id, 1, 0, 0, Room42V3Route6_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence Room42V3Group0_id, 1, 0, 0, Room42V3Route6_id, 2, 1, 0, 0, 0
     ArmChainYield 1
-    QueueTileObjectMove Room42V3Group0_id, 1, 0, 0, 1200, 0
+    QueueTileActorMove Room42V3Group0_id, 1, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChainFrames 0, 0, Room42V3Chain13_id
     End
 Room42V3Chain6:
-    DespawnTileObject Room42V3Group2_id, 1
+    DespawnTileActor Room42V3Group2_id, 1
     End
 Room42V3Chain7:
-    DespawnTileObject Room42V3Group0_id, 1
+    DespawnTileActor Room42V3Group0_id, 1
     End
 Room42V3Chain8:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    QueueTileObjectMove 0, 255, 0, 0, 1000, 0
+    CancelActorAnimSequence 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1000, 0
     RespawnRowAndRunChain 0, Room42V3Chain6_id
     ArmChainYield 1
     RespawnRowAndRunChain 0, Room42V3Chain7_id
@@ -608,34 +608,34 @@ Room42V3Chain8:
     ShowRoomDialog 46
     @ "Now you must choose who you want in your party. Ron or Hermione will join you until you complete a given task. Each character has additional spells that can be accessed with the L and R Buttons. You can also equip additional party members and access their statistics by pressing START (which brings up the Main Menu)."
     ShowRoomDialog 621
-    QueueTileObjectMove Room42V3Group0_id, 7, 0, 0, 1200, 0
+    QueueTileActorMove Room42V3Group0_id, 7, 0, 0, 1200, 0
     ShowLoadingScreenTransition 6, 7, 32, 255
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     InvokeChainIfEnabled 0, Room42V3Chain35_id
     End
 Room42V3Chain9:
-    StartObjectAnimSequence 0, 255, 0, 0, Room42V3Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route5_id, 0, 1, 0, 0, 0
     End
 Room42V3Chain10:
-    SetTileObjectFacing Room42V3Group0_id, 1, 4
+    SetTileActorFacing Room42V3Group0_id, 1, 4
     End
 Room42V3Chain11:
-    SetTileObjectFacing Room42V3Group0_id, 0, 4
+    SetTileActorFacing Room42V3Group0_id, 0, 4
     End
 Room42V3Chain12:
     DelayedRespawnRowAndRunChainFrames 19, Room42V3Group2_id, Room42V3Chain4_id
     End
 Room42V3Chain13:
     PlaySoundById 50
-    StartObjectAnimSequence Room42V3Group2_id, 1, 0, 0, Room42V3Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V3Group2_id, 1, 0, 0, Room42V3Route7_id, 0, 1, 0, 0, 0
     End
 Room42V3Chain14:
     ArmChainYield 1
-    StartObjectAnimSequence 0, 255, 0, 0, Room42V3Route0_id, 0, 1, 0, 0, 0
-    SetTileObjectFacing 0, 255, 2
-    SetTileObjectFacing Room42V3Group1_id, 1, 6
-    SetTileObjectFacing Room42V3Group1_id, 0, 6
+    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route0_id, 0, 1, 0, 0, 0
+    SetTileActorFacing 0, 255, 2
+    SetTileActorFacing Room42V3Group1_id, 1, 6
+    SetTileActorFacing Room42V3Group1_id, 0, 6
     @ "I couldn't help hearing. Sorry..."
     @ "That's not the way I'd have chosen for you to find out."
     @ "No - honestly, it's OK. At least I now know what's going on."
@@ -645,12 +645,12 @@ Room42V3Chain14:
     ShowRoomDialog 42
     ArmChainYield 0
     DelayedRespawnRowAndRunChainFrames 14, 0, Room42V3Chain15_id
-    StartObjectAnimSequence Room42V3Group1_id, 1, 0, 0, Room42V3Route1_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room42V3Group1_id, 0, 0, 0, Room42V3Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V3Group1_id, 1, 0, 0, Room42V3Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room42V3Group1_id, 0, 0, 0, Room42V3Route2_id, 0, 1, 0, 0, 0
     DelayedRespawnRowAndRunChain 6, Room42V3Group3_id, 0
     End
 Room42V3Chain15:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room42V3Chain16:
     ArmChainYield 1
@@ -724,7 +724,7 @@ Room42V3Chain31:
     DelayedRespawnRowAndRunChain 0, Room42V3Group6_id, Room42V3Chain32_id
     End
 Room42V3Chain32:
-    DespawnRoomRowObjects Room42V3Group5_id
+    DespawnRoomRowActors Room42V3Group5_id
     End
 Room42V3Chain33:
     @ "Tom - have you seen my rat?"
@@ -744,10 +744,10 @@ Room42V3Chain35:
     GotoIfStoryStageCompare 0, 7, Room42V3Chain43_id, 0, 0, 0
     End
 Room42V3Chain36:
-    DespawnTileObject Room42V3Group1_id, 1
+    DespawnTileActor Room42V3Group1_id, 1
     End
 Room42V3Chain37:
-    DespawnTileObject Room42V3Group1_id, 0
+    DespawnTileActor Room42V3Group1_id, 0
     End
 Room42V3Chain38:
     @ "Hello!"
@@ -761,45 +761,45 @@ Room42V3Chain40:
     RespawnRowAndRunChain Room42V3Group8_id, 0
     End
 Room42V3Chain41:
-    DespawnTileObject Room42V3Group0_id, 2
-    DespawnTileObject Room42V3Group0_id, 0
-    DespawnTileObject Room42V3Group0_id, 1
-    DespawnRoomRowObjects Room42V3Group1_id
+    DespawnTileActor Room42V3Group0_id, 2
+    DespawnTileActor Room42V3Group0_id, 0
+    DespawnTileActor Room42V3Group0_id, 1
+    DespawnRoomRowActors Room42V3Group1_id
     End
 Room42V3Chain42:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartObjectAnimSequence 0, 255, 0, 0, Room42V3Route8_id, 0, 1, 0, 0, 0
-    DespawnTileObject Room42V3Group2_id, 0
+    CancelActorAnimSequence 0, 255
+    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route8_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room42V3Group2_id, 0
     RecruitPartyFollower 6
     SetQuestState QUEST_OBJ_FIND_CROOKSHANKS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group7_id, Room42V3Chain32_id
     ArmChainYield 1
     Unk02 Room42V3Group0_id, 0, 3
-    StartObjectAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route11_id, 0, 1, 0, 0, 0
-    DespawnTileObject Room42V3Group0_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    StartActorAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route11_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room42V3Group0_id, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room42V3Chain43:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartObjectAnimSequence 0, 255, 0, 0, Room42V3Route9_id, 0, 1, 0, 0, 0
-    DespawnTileObject Room42V3Group0_id, 0
+    CancelActorAnimSequence 0, 255
+    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route9_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room42V3Group0_id, 0
     RecruitPartyFollower 7
     SetQuestState QUEST_OBJ_FIND_SCABBERS_LEAKY_CAULDRON, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group6_id, Room42V3Chain32_id
     ArmChainYield 1
     Unk02 Room42V3Group2_id, 0, 3
-    StartObjectAnimSequence Room42V3Group2_id, 0, 0, 0, Room42V3Route10_id, 0, 1, 0, 0, 0
-    DespawnTileObject Room42V3Group2_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    StartActorAnimSequence Room42V3Group2_id, 0, 0, 0, Room42V3Route10_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room42V3Group2_id, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room42V3Chain44:
     @ "Locked."
     ShowRoomDialog 624
     End
 Room42V3Chain45:
-    SetTileObjectFacing 0, 255, 6
+    SetTileActorFacing 0, 255, 6
     End
 Room42V3Chain46:
     @ "Ron Weasley was looking for you, Mr. Potter."

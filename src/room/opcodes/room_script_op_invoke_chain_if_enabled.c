@@ -13,5 +13,5 @@ void RoomScriptOpInvokeChainIfEnabled(InvokeChainIfEnabledRecord *pRecord)
 {
     g_bRoomScriptPendingChain = pRecord->bChain;
     if (ShouldRunRoomScriptRow_candidate(pRecord->bRow))
-        RespawnRoomObjectsInRow_candidate(pRecord->bRow);
+        RespawnRoomActorsInRow_candidate(pRecord->bRow);
 }

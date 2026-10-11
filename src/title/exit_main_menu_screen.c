@@ -11,7 +11,7 @@
 void ExitMainMenuScreen(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
-    ReleaseMenuCursor(g_MainMenuState.pCursorObject);
+    ReleaseMenuCursor(g_MainMenuState.pCursorActor);
     FreeAllParticleEmitters();
     FreeAllParticles();
     UnreserveObjPaletteSlot(0);

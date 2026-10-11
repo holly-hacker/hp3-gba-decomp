@@ -17,13 +17,13 @@ void ExitLoadingScreen(void)
     bios_CPUFastSet(g_awSavedBgPalette0, BG_PLTT, 8);
     SetBgPriority(2, g_LoadingScreenState.bSavedBg2Priority);
     g_abQuestEventState[0x12] = g_abQuestEventState[0];
-    SetActorActionState(g_pPlayerObject, 0x21);
+    SetActorActionState(g_pPlayerActor, 0x21);
     sub_0801FA9C();
     HideScreenWindow_candidate(0);
 
-    FreeActor(g_LoadingScreenState.pCursorObject);
+    FreeActor(g_LoadingScreenState.pCursorActor);
     for (i = 0; i < LOADING_SCREEN_OPTION_COUNT; i++)
-        FreeActor(g_LoadingScreenState.apOptionObjects[i]);
+        FreeActor(g_LoadingScreenState.apOptionActors[i]);
 
     ReserveObjPaletteSlot(1);
     ReserveObjPaletteSlot(2);

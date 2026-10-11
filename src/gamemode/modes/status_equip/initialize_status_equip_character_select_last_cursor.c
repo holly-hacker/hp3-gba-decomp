@@ -12,5 +12,5 @@ void InitializeStatusEquipCharacterSelectLastCursor(void)
     sub_08035A34();
 
     g_bStatusEquipCharacterSlot = StatusEquipCharacterToSlot(g_dwStatusEquipCharacter);
-    SetActorPosition(g_pMenuCursorObject, g_bStatusEquipCharacterSlot * 72 + 24, 68);
+    SetActorPosition(g_pMenuCursorActor, g_bStatusEquipCharacterSlot * 72 + 24, 68);
 }

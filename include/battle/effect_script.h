@@ -42,7 +42,7 @@ extern const EffectStreamList8 g_RainSplashList_candidate;   // 0x08053C20
 
 extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
 extern const u8 g_abScriptOpcodeLengths[168];                // 0x08054F34, operand bytes per opcode
-extern const ActorAssetRecord g_aEffectObjectAssets[17];    // 0x08053D40
+extern const ActorAssetRecord g_aEffectActorAssets[17];    // 0x08053D40
 extern void *const g_apEffectPalettes[5];                    // 0x08053E50
 extern const ActorAssetRecord g_aEffectAnimAssets[65];      // 0x08053E64, opcodes 0x01/0x02
 extern const ActorAssetRecord g_aEffectAnimAssets2[38];     // 0x08054274, opcodes 0x03/0x04
@@ -70,18 +70,18 @@ extern const u16 g_awBattleSlotPosX_candidate[7];            // 0x08053D2A, per 
 extern const u8 g_abBattleSlotPosY_candidate[7];             // 0x08053D38
 extern const EffectBgRecord g_aEffectBgRecords_candidate[166];  // 0x080544D4
 
-extern void InterpretObjectScript(Actor *obj);
-extern void WaitFramesTick(Actor *obj);
-extern void WaitForCounterTick(Actor *obj);
-extern void WaitForFieldClearTick(Actor *obj);
-extern void WaitForCasterField86Tick_candidate(Actor *obj);
+extern void InterpretActorScript(Actor *actor);
+extern void WaitFramesTick(Actor *actor);
+extern void WaitForCounterTick(Actor *actor);
+extern void WaitForFieldClearTick(Actor *actor);
+extern void WaitForCasterField86Tick_candidate(Actor *actor);
 extern ScreenPoint ComputeEffectSpawnPosition(void);
-extern void CopyOrbitParamsFromTable(Actor *obj, const void *row);
-extern s32 IsActorFlippedX(Actor *obj);
-extern s32 sub_08003954(Actor *obj);
-extern void sub_08003788(Actor *obj, s32 flip);
-extern s32 sub_08001AA8(Actor *obj, u32 index, ScreenPoint *out);  // returns 0 when the frame has no such anchor
-extern void sub_0801B710(Actor *obj, u8 label);  // jumps the script to the Label opcode with this id
+extern void CopyOrbitParamsFromTable(Actor *actor, const void *row);
+extern s32 IsActorFlippedX(Actor *actor);
+extern s32 sub_08003954(Actor *actor);
+extern void sub_08003788(Actor *actor, s32 flip);
+extern s32 sub_08001AA8(Actor *actor, u32 index, ScreenPoint *out);  // returns 0 when the frame has no such anchor
+extern void sub_0801B710(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
 extern void sub_0800D244(void *a, u32 b, u32 c);
 extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
@@ -93,12 +93,12 @@ extern void sub_08037104(u32 a);
 extern void ReviveFighter_candidate(u8 pendingIdx);
 extern s32 sub_080189C8(u32 rosterIndex);  // per-monster XP reward
 extern s32 sub_08018AB8(u32 rosterIndex);  // per-monster gold reward
-extern ParticleEmitter *sub_0801B204(Actor *obj, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B2EC(Actor *obj, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B348(Actor *obj, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B774(Actor *obj, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
-extern ParticleEmitter *sub_0801B870(Actor *obj, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
-extern ParticleEmitter *CreateBattleEffectEmitter_candidate(Actor *obj, s32 a1, s32 a2, s32 a3,
+extern ParticleEmitter *sub_0801B204(Actor *actor, u32 a, u32 b);
+extern ParticleEmitter *sub_0801B2EC(Actor *actor, u32 a, u32 b);
+extern ParticleEmitter *sub_0801B348(Actor *actor, u32 a, u32 b);
+extern ParticleEmitter *sub_0801B774(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
+extern ParticleEmitter *sub_0801B870(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
+extern ParticleEmitter *CreateBattleEffectEmitter_candidate(Actor *actor, s32 a1, s32 a2, s32 a3,
                                                              s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                                              s32 a9, s32 a10, s32 a11, s32 a12, s32 a13,
                                                              s32 a14, s32 a15, s32 a16);

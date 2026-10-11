@@ -87,7 +87,7 @@ The bottom-of-screen popup shown on entering a room is
 `InitializeOverworld` whenever `_g_bCurrentRoomId
 != DebugMenuLevelAndQuestSelect`. It computes `stringId =
 _g_bCurrentRoomId + 0x54A`, decodes it via `GetDialogText` (see
-[`text.md`](text.md)), and spawns a text object at screen position
+[`text.md`](text.md)), and spawns a text actor at screen position
 (0x78, 0x98) -- bottom-center.
 
 The debug map-select menu (`InitializeDebugMapSelectMenu` `0x0800AED8` /
@@ -125,7 +125,7 @@ guessed from zero-valued samples.
 | 0x40 | `dwCollisionBehaviorTable` | Collision behavior-table pointer (NOT graphics, despite `LoadRoomSharedTileset_candidate`'s name; decodes into `g_pRoomCollisionBehaviorTable`), see [`collision.md`](collision.md) | PROVEN |
 | 0x44 | `dwCollisionTilemap` | Collision tilemap pointer (same caveat), decodes into `g_pRoomCollisionTilemap`; its first u16 is read back as a pattern count into `DAT_03003FB8` | PROVEN |
 | 0x48/0x4c | `dwUnused_48`/`dwUnused_4c` | Not read by any traced consumer | UNCONFIRMED |
-| 0x50 | `dwRoomResourceBlob` | ROM pointer to a per-room resource blob, parsed by `ParseRoomResourceBlob_candidate` (`0x08005A78`) into the room's default object/chest layout, incl. a quest-stage-gated variant sub-table indexed by `g_abQuestEventState[0]` -- see [`rooms.md`](rooms.md) | STRUCTURAL MATCH |
+| 0x50 | `dwRoomResourceBlob` | ROM pointer to a per-room resource blob, parsed by `ParseRoomResourceBlob_candidate` (`0x08005A78`) into the room's default actor/chest layout, incl. a quest-stage-gated variant sub-table indexed by `g_abQuestEventState[0]` -- see [`rooms.md`](rooms.md) | STRUCTURAL MATCH |
 | 0x54 | `dwBgTilesetA` | BG tileset resource pointer, consumed by `DecodeBgTilesetOffsetTable_candidate` (`0x0803EBA8`). Shared by BG layers 0 and 3 (level-table layer index, see `graphics.md`) | PROVEN |
 | 0x58 | `dwPaletteData` | Raw, uncompressed 256-color (16 banks x 16, BGR555) BG palette array, copied verbatim by `SetupRoomBgControlAndWindows_candidate` -- confirmed byte-exact against a live mGBA memory dump. Index 0 is force-overwritten to black (backdrop color) by a second, separate 1-color copy right after | PROVEN |
 | 0x5c | `dwBgTilesetB` | Second BG tileset resource pointer, same mechanism. Shared by BG layers 1 and 2 | PROVEN |
@@ -139,7 +139,7 @@ guessed from zero-valued samples.
 | 0x74 | `bEncounterCountA` | Overworld wandering-monster spawn count, species slot A, passed to `SpawnOverworldMonsterEncounters` (`0x0802B21C`) | STRUCTURAL MATCH |
 | 0x75 | `bEncounterCountB` | Species slot B | STRUCTURAL MATCH |
 | 0x76 | `bEncounterCountC` | Species slot C | STRUCTURAL MATCH |
-| 0x77 | `bEncounterVariant` | Season/variant selector indexing the encounter-species table at `0x08050C6C` inside `SpawnWanderingMonsterObject` (`0x0802B41C`) | STRUCTURAL MATCH |
+| 0x77 | `bEncounterVariant` | Season/variant selector indexing the encounter-species table at `0x08050C6C` inside `SpawnWanderingMonsterActor` (`0x0802B41C`) | STRUCTURAL MATCH |
 | 0x78 | `bDefaultMusicModule` | Default Krawall module index for this room, `PlayMusicModule(*(byte*)(...+0x78))`. Answers "which track plays on each map by default" | PROVEN |
 | 0x79-0x7b | `bUnused_79`/`7a`/`7b` | Not read by any traced consumer | UNCONFIRMED |
 
@@ -155,20 +155,20 @@ of each 4-byte entry). The other 3 bytes of each entry are unconfirmed
 mechanism itself, field layout beyond the module-index byte
 UNCONFIRMED.
 
-## Room-object / chest state (adjacent system, not part of this table)
+## Room-actor / chest state (adjacent system, not part of this table)
 
-Chest/pickup/switch state per room and the default per-room object
+Chest/pickup/switch state per room and the default per-room actor
 layout are documented in [`rooms.md`](rooms.md) -- `ParseRoomResourceBlob_candidate`
 (reached from `dwRoomResourceBlob` above) plus the save-state cluster
-(`InitializeOverworld`, `CaptureRoomObjectState`/`RestoreRoomObjectState`/
+(`InitializeOverworld`, `CaptureRoomActorState`/`RestoreRoomActorState`/
 etc.) This is the "chests spawn" / per-room switch-state half of the
 original task; it isn't a field of this 124-byte table.
 
 ## Actor behavior scripts per room
 
 Per-room scripted behavior (quest triggers, NPC scripts) runs through
-the generic object bytecode VM documented in
-[`battle_scripts.md`](battle_scripts.md) -- `InterpretObjectScript`
+the generic actor bytecode VM documented in
+[`battle_scripts.md`](battle_scripts.md) -- `InterpretActorScript`
 (`0x08018CC0`) driven by each `Actor`'s `pfnTick`. Nothing in this
 table links a script pointer directly into a room record; script
 assignment is per-`Actor` (placed by room setup code), not a per-room

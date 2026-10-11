@@ -12,34 +12,34 @@ void InitializeBattle(void)
 {
     s32 i;
     u8 *uVar7;
-    Actor *pIconObj;
+    Actor *pIconActor;
 
     ClearObjPaletteSlots();
     g_BattleMessageIconState_candidate.bIndex = 0xFF;
     g_BattleMessageIconState_candidate.dwParam = 0;
     g_dwBattleRewardFlagsSnapshot = 0;
 
-    // Allocate all 6 fighter objects (3 on the player side, 3 on the enemy side)
-    for (i = 0; i < ARRAY_COUNT(g_apFighterObjects_candidate); i++)
+    // Allocate all 6 fighter actors (3 on the player side, 3 on the enemy side)
+    for (i = 0; i < ARRAY_COUNT(g_apFighterActors_candidate); i++)
     {
-        g_apFighterObjects_candidate[i] = AllocActorOfType(i + BattleObjectType_FighterSlot0);
-        SetActorPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
-        g_apFighterObjects_candidate[i]->dwFlags = 0x20000008;
-        g_apFighterObjects_candidate[i]->bDepthSortBias = 0x80;
-        g_apFighterObjects_candidate[i]->oam.paletteNum = i + 9;
+        g_apFighterActors_candidate[i] = AllocActorOfType(i + BattleActorType_FighterSlot0);
+        SetActorPosition(g_apFighterActors_candidate[i], i * 0x16 + 0x60, 0x8A);
+        g_apFighterActors_candidate[i]->dwFlags = 0x20000008;
+        g_apFighterActors_candidate[i]->bDepthSortBias = 0x80;
+        g_apFighterActors_candidate[i]->oam.paletteNum = i + 9;
     }
 
-    g_pBattleMessageIconObject_candidate = AllocActorOfType(i + BattleObjectType_FighterSlot0);
+    g_pBattleMessageIconActor_candidate = AllocActorOfType(i + BattleActorType_FighterSlot0);
     g_bSelectedFighterSlot_candidate = 0;
-    SetActorPosition(g_pBattleMessageIconObject_candidate, i * 0x16 + 0x60, 0x8A);
-    pIconObj = g_pBattleMessageIconObject_candidate;
-    pIconObj->dwFlags = 0x20000008;
-    pIconObj->bDepthSortBias = 0x80;
+    SetActorPosition(g_pBattleMessageIconActor_candidate, i * 0x16 + 0x60, 0x8A);
+    pIconActor = g_pBattleMessageIconActor_candidate;
+    pIconActor->dwFlags = 0x20000008;
+    pIconActor->bDepthSortBias = 0x80;
 
-    g_pBattleMessageIconObject_candidate->oam.bpp8 = 1;
-    g_pBattleMessageIconObject_candidate->oam.objMode = 0;
+    g_pBattleMessageIconActor_candidate->oam.bpp8 = 1;
+    g_pBattleMessageIconActor_candidate->oam.objMode = 0;
 
-    SetActorPosition(g_pBattleMessageIconObject_candidate, 2, 0x75);
+    SetActorPosition(g_pBattleMessageIconActor_candidate, 2, 0x75);
 
     for (i = 0; i < ARRAY_COUNT(g_anFaintedRosterIndices); i++)
         g_anFaintedRosterIndices[i] = -1;
@@ -74,7 +74,7 @@ void InitializeBattle(void)
         // Resume after Folio Universitas, Help, or Folio Bruti (whose exit
         // rewrites the previous mode to Folio Universitas).
         InitBattleBackground_candidate();
-        RestoreFighterObjects_candidate();
+        RestoreFighterActors_candidate();
         uVar7 = GetBattleBackgroundData_candidate();
         LoadEmbeddedPalette_candidate(uVar7, 0, 0x10);
         ResumeBattleAfterSubmode_candidate();

@@ -3,7 +3,7 @@
 #include "battle/battle.h"
 
 // Each party fighter's animation per animation state, paired with the
-// sprites in g_aFighterAnimTable; see SetPlayerObjectAnim.
+// sprites in g_aFighterAnimTable; see SetPlayerActorAnim.
 const u8 g_aFighterAnimDataTable[4][10][58] = {
     {  // Harry
         {  // 0

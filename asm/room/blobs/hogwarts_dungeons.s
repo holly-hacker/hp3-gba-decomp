@@ -165,8 +165,8 @@ Room18V1Chain12:
     ShowRoomDialog 626
     End
 Room18V1Chain13:
-    StartObjectAnimSequence Room18V1Group5_id, 0, 0, 0, Room18V1Route0_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group5_id, 1, 0, 0, Room18V1Route0_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group5_id, 0, 0, 0, Room18V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group5_id, 1, 0, 0, Room18V1Route0_id, 4, 0, 0, 0, 0
     End
 Room18V1Chain14:
     @ "The Defense Against the Dark Arts class is on the third floor."
@@ -177,8 +177,8 @@ Room18V1Chain15:
     ShowRoomDialog 333
     End
 Room18V1Chain16:
-    StartObjectAnimSequence Room18V1Group7_id, 0, 0, 0, Room18V1Route0_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group7_id, 1, 0, 0, Room18V1Route0_id, 4, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group7_id, 0, 0, 0, Room18V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group7_id, 1, 0, 0, Room18V1Route0_id, 4, 0, 0, 0, 0
     End
 Room18V1Chain17:
     @ "Is it true about the Firebolt?"
@@ -241,45 +241,45 @@ Room18V1Chain31:
     ShowRoomDialog 363
     End
 Room18V1Chain32:
-    StartObjectAnimSequence Room18V1Group6_id, 0, 0, 0, Room18V1Route0_id, 2, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group6_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group6_id, 0, 0, 0, Room18V1Route0_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group6_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain33:
-    StartObjectAnimSequence Room18V1Group1_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group1_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group1_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group1_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain34:
-    StartObjectAnimSequence Room18V1Group2_id, 0, 0, 0, Room18V1Route0_id, 3, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group2_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group2_id, 0, 0, 0, Room18V1Route0_id, 3, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group2_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain35:
-    StartObjectAnimSequence Room18V1Group3_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group3_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group3_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group3_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain36:
-    StartObjectAnimSequence Room18V1Group4_id, 0, 0, 0, Room18V1Route0_id, 3, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group4_id, 1, 0, 0, Room18V1Route0_id, 7, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group4_id, 0, 0, 0, Room18V1Route0_id, 3, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group4_id, 1, 0, 0, Room18V1Route0_id, 7, 0, 0, 0, 0
     End
 Room18V1Chain37:
-    StartObjectAnimSequence Room18V1Group13_id, 0, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group13_id, 0, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain38:
-    StartObjectAnimSequence Room18V1Group8_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group8_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group8_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group8_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain39:
-    StartObjectAnimSequence Room18V1Group9_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group9_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group9_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group9_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain40:
-    StartObjectAnimSequence Room18V1Group10_id, 0, 0, 0, Room18V1Route0_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group10_id, 0, 0, 0, Room18V1Route0_id, 2, 0, 0, 0, 0
     End
 Room18V1Chain41:
-    StartObjectAnimSequence Room18V1Group11_id, 0, 0, 0, Room18V1Route0_id, 3, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group11_id, 0, 0, 0, Room18V1Route0_id, 3, 0, 0, 0, 0
     End
 Room18V1Chain42:
-    StartObjectAnimSequence Room18V1Group12_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room18V1Group12_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group12_id, 0, 0, 0, Room18V1Route0_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room18V1Group12_id, 1, 0, 0, Room18V1Route0_id, 5, 0, 0, 0, 0
     End
 Room18V1Chain43:
     GotoIfQuestStateCompare 249, 0, 1, Room18V1Chain37_id, 0, Room18V1Group13_id, 0

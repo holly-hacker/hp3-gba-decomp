@@ -7,10 +7,10 @@
 
 enum BattleScriptOpcode {
     BSOP_End = 0x00,
-    BSOP_SetObjectAnim = 0x01,
-    BSOP_SetObjectAnimAndPalette = 0x02,
-    BSOP_SetObjectAnimFromTable2 = 0x03,
-    BSOP_SetObjectAnimFromTable2AndPalette = 0x04,
+    BSOP_SetActorAnim = 0x01,
+    BSOP_SetActorAnimAndPalette = 0x02,
+    BSOP_SetActorAnimFromTable2 = 0x03,
+    BSOP_SetActorAnimFromTable2AndPalette = 0x04,
     BSOP_SetEffectPalette = 0x05,
     BSOP_PlaySound = 0x06,
     BSOP_UnmuteMusic = 0x07,
@@ -29,8 +29,8 @@ enum BattleScriptOpcode {
     BSOP_Unk14 = 0x14,
     BSOP_Unk15 = 0x15,
     BSOP_SpawnEffectSharedTiles = 0x16,
-    BSOP_ToggleObjectFlipX = 0x17,
-    BSOP_ToggleObjectFlipY = 0x18,
+    BSOP_ToggleActorFlipX = 0x17,
+    BSOP_ToggleActorFlipY = 0x18,
     BSOP_MoveBy = 0x19,
     BSOP_MoveBy_2 = 0x1A,
     BSOP_SnapToCaster = 0x1B,
@@ -88,8 +88,8 @@ enum BattleScriptOpcode {
     BSOP_ReleaseAffineSlot = 0x4F,
     BSOP_ClearAnimFlag = 0x50,
     BSOP_SetAnimFlag = 0x51,
-    BSOP_HideObject = 0x52,
-    BSOP_ShowObject = 0x53,
+    BSOP_HideActor = 0x52,
+    BSOP_ShowActor = 0x53,
     BSOP_SetOamPriority = 0x54,
     BSOP_SetTargetOamPriority = 0x55,
     BSOP_SetEnemiesOamPriority = 0x56,
@@ -215,10 +215,10 @@ enum BattleStatusEffect {
 // number (whole byte first) the macro takes one 16-bit value, e.g. 0x0180 for 1.5.
 
 #define BS_End() BSOP_End
-#define BS_SetObjectAnim(a, b) BSOP_SetObjectAnim, (a), (b)
-#define BS_SetObjectAnimAndPalette(a, b) BSOP_SetObjectAnimAndPalette, (a), (b)
-#define BS_SetObjectAnimFromTable2(a, b) BSOP_SetObjectAnimFromTable2, (a), (b)
-#define BS_SetObjectAnimFromTable2AndPalette(a, b) BSOP_SetObjectAnimFromTable2AndPalette, (a), (b)
+#define BS_SetActorAnim(a, b) BSOP_SetActorAnim, (a), (b)
+#define BS_SetActorAnimAndPalette(a, b) BSOP_SetActorAnimAndPalette, (a), (b)
+#define BS_SetActorAnimFromTable2(a, b) BSOP_SetActorAnimFromTable2, (a), (b)
+#define BS_SetActorAnimFromTable2AndPalette(a, b) BSOP_SetActorAnimFromTable2AndPalette, (a), (b)
 #define BS_SetEffectPalette(a) BSOP_SetEffectPalette, (a)
 #define BS_PlaySound(a) BSOP_PlaySound, (a)
 #define BS_UnmuteMusic() BSOP_UnmuteMusic
@@ -237,8 +237,8 @@ enum BattleStatusEffect {
 #define BS_Unk14(a) BSOP_Unk14, (a)
 #define BS_Unk15(a, b, c, d, e) BSOP_Unk15, (a), (b), (c), (d), (e)
 #define BS_SpawnEffectSharedTiles(a) BSOP_SpawnEffectSharedTiles, (a)
-#define BS_ToggleObjectFlipX() BSOP_ToggleObjectFlipX
-#define BS_ToggleObjectFlipY() BSOP_ToggleObjectFlipY
+#define BS_ToggleActorFlipX() BSOP_ToggleActorFlipX
+#define BS_ToggleActorFlipY() BSOP_ToggleActorFlipY
 #define BS_MoveBy(a, b) BSOP_MoveBy, ((a) & 0xFF), ((b) & 0xFF)
 #define BS_MoveBy_2(a, b) BSOP_MoveBy_2, ((a) & 0xFF), ((b) & 0xFF)
 #define BS_SnapToCaster(a) BSOP_SnapToCaster, (a)
@@ -296,8 +296,8 @@ enum BattleStatusEffect {
 #define BS_ReleaseAffineSlot() BSOP_ReleaseAffineSlot
 #define BS_ClearAnimFlag() BSOP_ClearAnimFlag
 #define BS_SetAnimFlag() BSOP_SetAnimFlag
-#define BS_HideObject() BSOP_HideObject
-#define BS_ShowObject() BSOP_ShowObject
+#define BS_HideActor() BSOP_HideActor
+#define BS_ShowActor() BSOP_ShowActor
 #define BS_SetOamPriority(a) BSOP_SetOamPriority, (a)
 #define BS_SetTargetOamPriority(a) BSOP_SetTargetOamPriority, (a)
 #define BS_SetEnemiesOamPriority(a) BSOP_SetEnemiesOamPriority, (a)

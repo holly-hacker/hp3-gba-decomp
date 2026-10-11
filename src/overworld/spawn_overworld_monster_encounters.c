@@ -62,7 +62,7 @@ void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 enc
                     pEntry->y = pos.y;
                     pEntry++;
                     placedCount++;
-                    SpawnWanderingMonsterObject(monsterId, pos.x, pos.y, encounterId, variant, kind);
+                    SpawnWanderingMonsterActor(monsterId, pos.x, pos.y, encounterId, variant, kind);
                 }
                 i++;
             } while (i < counts[kind]);

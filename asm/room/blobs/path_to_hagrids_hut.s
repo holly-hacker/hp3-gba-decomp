@@ -69,7 +69,7 @@ Room14V1Chain0:
     RespawnRowAndRunChain Room14V1Group1_id, 0
     End
 Room14V1Chain1:
-    SetTileObjectAnimState Room14V1Group0_id, 0
+    SetTileActorAnimState Room14V1Group0_id, 0
     PlaySoundById 32
     End
 Room14V1Chain2:

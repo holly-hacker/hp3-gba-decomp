@@ -42,7 +42,7 @@ static inline u32 FindSharedObjPaletteSlot(void)
     return 0xFF;
 }
 
-// Prefers an empty slot, then one no object references, then any shared slot;
+// Prefers an empty slot, then one no actor references, then any shared slot;
 // reserved slots are skipped. Falls back to the last slot.
 u32 AllocObjPaletteSlot(void)
 {

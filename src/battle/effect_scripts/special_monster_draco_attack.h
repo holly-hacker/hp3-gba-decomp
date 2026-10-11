@@ -2,9 +2,9 @@
 const u8 g_abSpecialMonsterDracoAttackScript[] = {
     BS_TeleportToSlotPosition(0),
     BS_WaitFrames(1),
-    BS_SetObjectAnim(56, 0),
+    BS_SetActorAnim(56, 0),
     BS_WaitFrames(1),
-    BS_ShowObject(),
+    BS_ShowActor(),
     BS_AdvanceAttackOutcome(),
     BS_AdvanceAttackOutcome(),
     BS_WaitForCounter(),

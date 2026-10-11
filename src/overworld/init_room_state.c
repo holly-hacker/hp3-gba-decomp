@@ -7,8 +7,8 @@
 
 void InitRoomState(void)
 {
-    if (g_pRoomObjectStateBuffer == NULL)
-        g_pRoomObjectStateBuffer = AllocZeroed(ROOM_OBJECT_STATE_BUFFER_SIZE);
+    if (g_pRoomActorStateBuffer == NULL)
+        g_pRoomActorStateBuffer = AllocZeroed(ROOM_ACTOR_STATE_BUFFER_SIZE);
     g_GameModeStackContext.dwCurrentGameModeArg1 = 0;
     g_dwColorCycleActiveMask = 0;
     g_bPendingQuestStateOverride_candidate = 0xFF;

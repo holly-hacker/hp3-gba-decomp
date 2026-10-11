@@ -50,7 +50,7 @@ void InitializeDivinationTeaMinigame(void)
 
     g_GameModeStackContext.dwModeState = DivinationTeaStateIntro;
     g_DivinationTea.dwUnk1D8 = 0;
-    g_DivinationTea.pCursorObject = NULL;
+    g_DivinationTea.pCursorActor = NULL;
     g_DivinationTea.dwUnk1C0 = 0;
     g_DivinationTea.dwUnk1C4 = 0;
     g_DivinationTea.pFortuneText = NULL;

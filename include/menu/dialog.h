@@ -61,15 +61,15 @@ extern u32 g_adwSavedBgPriority[2];         // 0x03002ED0, BG0/BG1 priority save
 extern u32 g_dwDialogTextId;                // 0x03002ED8
 extern u32 g_dwDialogTextEntry;             // 0x03002EDC
 extern void *g_pDialogBoxTilemap;           // 0x03002EE0
-extern Actor *g_pDialogBoxObject;          // 0x03002EE4
+extern Actor *g_pDialogBoxActor;          // 0x03002EE4
 extern u32 g_dwDialogBoxY;                  // 0x03002EE8
-extern Actor *g_pDialogCursorObject;       // 0x03002EEC
+extern Actor *g_pDialogCursorActor;       // 0x03002EEC
 extern u32 g_dwDialogTextActive;            // 0x03002EF0
 extern u32 g_dwDialogBoxTileRow;            // 0x03002EF4
 extern const ScanlineEffectEntry g_aDialogScanlineEffects[1];  // 0x0805E28C
 
 extern void sub_0801FC58(u32 *pPayload0, u32 *pPayload1);  // scanline callback of the box panel
-extern Actor *sub_0801F7AC(void);  // allocates the box panel object
+extern Actor *sub_0801F7AC(void);  // allocates the box panel actor
 extern void sub_0801F968(void);
 extern void sub_0801FA18(void);
 extern void sub_0801FCFC(u32 arg);

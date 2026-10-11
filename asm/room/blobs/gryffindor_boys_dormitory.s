@@ -132,18 +132,18 @@ Room28V1Chain0:
     GotoIfStoryStageCompare 0, 21, Room28V1Chain18_id, 0, 0, 0
     End
 Room28V1Chain1:
-    SetTileObjectAnimState Room28V0Group0_id, 2
+    SetTileActorAnimState Room28V0Group0_id, 2
     SetQuestState 1, QUEST_ALT_PRESENTATION
     GotoIfQuestStateCompare 231, 0, 0, 0, 0, Room28V1Group1_id, 0
     GotoIfQuestStateCompare 231, 0, 1, Room28V1Chain11_id, Room28V1Chain18_id, Room28V1Group5_id, 0
     End
 Room28V1Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     Unk02 0, 255, 2
     Unk02 Room28V0Group0_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room28V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route8_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain3:
     ArmChainYield 1
@@ -156,48 +156,48 @@ Room28V1Chain3:
     ShowRoomDialog 506
     Unk02 Room28V1Group5_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room28V1Group5_id, 0, 0, 0, Room28V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room28V1Group5_id, 0, 0, 0, Room28V1Route1_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain4:
     ArmChainYield 1
     @ "Don't go without me!"
     ShowRoomDialog 507
     Unk02 Room28V0Group0_id, 0, 2
-    QueueTileObjectMove 0, 255, 0, 0, 1000, 0
+    QueueTileActorMove 0, 255, 0, 0, 1000, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room28V1Group5_id, 1, 0, 0, Room28V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room28V1Group5_id, 1, 0, 0, Room28V1Route2_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain5:
-    StartObjectAnimSequence Room28V1Group5_id, 0, 0, 0, Room28V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room28V1Group5_id, 0, 0, 0, Room28V1Route3_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain6:
     ArmChainYield 1
-    DespawnRoomRowObjects Room28V1Group1_id
-    DespawnRoomRowObjects Room28V1Group5_id
+    DespawnRoomRowActors Room28V1Group1_id
+    DespawnRoomRowActors Room28V1Group5_id
     SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_LUPIN, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 231
     SetQuestState 2, 230
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room28V1Chain7:
-    SetTileObjectAnimState Room28V0Group0_id, 1
-    SetTileObjectAnimState Room28V0Group0_id, 2
+    SetTileActorAnimState Room28V0Group0_id, 1
+    SetTileActorAnimState Room28V0Group0_id, 2
     SetQuestState 1, QUEST_ALT_PRESENTATION
     GotoIfQuestStateCompare 232, 0, 0, 0, 0, Room28V1Group2_id, 0
     GotoIfQuestStateCompare 232, 0, 1, Room28V1Chain19_id, 0, 0, 0
     End
 Room28V1Chain8:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room28V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route4_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain9:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "It's a lovely night..."
     ShowRoomDialog 527
-    SetTileObjectFacing 0, 255, 0
+    SetTileActorFacing 0, 255, 0
     @ "There's Crookshanks! But what's that walking alongside him?"
     ShowRoomDialog 528
     DelayedRespawnRowAndRunChain 1, 0, 0
@@ -206,21 +206,21 @@ Room28V1Chain9:
     End
 Room28V1Chain10:
     ArmChainYield 1
-    DespawnRoomRowObjects Room28V1Group3_id
-    DespawnRoomRowObjects Room28V1Group2_id
+    DespawnRoomRowActors Room28V1Group3_id
+    DespawnRoomRowActors Room28V1Group2_id
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room28V1Route11_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route11_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain11:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, QUEST_ALT_PRESENTATION
-    SetTileObjectAnimState Room28V0Group0_id, 1
+    SetTileActorAnimState Room28V0Group0_id, 1
     @ "AAARRRGGGHHH! NOOOOOOOOOOOO!"
     ShowRoomDialog 505
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room28V1Route0_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room28V1Group5_id, 1, 0, 0, 2000, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route0_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room28V1Group5_id, 1, 0, 0, 2000, 0
     End
 Room28V1Chain12:
     ArmChainYield 1
@@ -229,14 +229,14 @@ Room28V1Chain12:
     ShowRoomDialog 526
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room28V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route9_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain13:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RespawnRowAndRunChain Room28V1Group4_id, 0
     RespawnRowAndRunChain Room28V1Group3_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room28V1Route12_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route12_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain14:
     ArmChainYield 1
@@ -244,18 +244,18 @@ Room28V1Chain14:
     ShowRoomDialog 530
     @ "Oh, no! They can't do this! Buckbeak isn't dangerous! I have to find Ron and Hermione."
     ShowRoomDialog 531
-    DespawnRoomRowObjects Room28V1Group4_id
+    DespawnRoomRowActors Room28V1Group4_id
     SetStoryStage 21
     SetQuestState QUEST_OBJ_FIND_RON_AND_HERMIONE, QUEST_OBJECTIVE_INDEX
     SetQuestState 0, 232
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room28V1Chain15:
     ArmChainYield 0
-    StartObjectAnimSequence Room28V1Group3_id, 0, 0, 0, Room28V1Route5_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room28V1Group3_id, 2, 0, 0, Room28V1Route7_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room28V1Group3_id, 1, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room28V1Group3_id, 3, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room28V1Group3_id, 0, 0, 0, Room28V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room28V1Group3_id, 2, 0, 0, Room28V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room28V1Group3_id, 1, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room28V1Group3_id, 3, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain16:
     ArmChainYield 1
@@ -268,16 +268,16 @@ Room28V1Chain17:
     ReturnToOverworld 28, 2
     End
 Room28V1Chain18:
-    SetTileObjectAnimState Room28V0Group0_id, 1
+    SetTileActorAnimState Room28V0Group0_id, 1
     End
 Room28V1Chain19:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 4
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 4
     @ "It's a black dog!"
     ShowRoomDialog 529
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room28V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route10_id, 0, 1, 0, 0, 0
     End
     EndSubBlock Room28V1End

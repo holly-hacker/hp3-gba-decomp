@@ -21,7 +21,7 @@ void InitializeDebugPortraitsMenu(void)
     LoadBgGraphic(1, gDebugMenuGraphic, 0, 0, 0, 0);
 
     g_DebugPortraitsState.dwSelection = 0;
-    g_DebugPortraitsState.pPortraitObject = 0;
+    g_DebugPortraitsState.pPortraitActor = 0;
     sub_0800B52C();
     g_GameModeStackContext.dwModeState = 0;
 

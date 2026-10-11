@@ -5,9 +5,9 @@
 
 // Text-and-portrait cutscenes (GameModes Intro through GameCompletedReplayCutscene
 // share one init/update/exit set); Credits shares the exit function and the
-// cutscene object. The cutscene is selected by g_dwLinearCutsceneIndex,
+// cutscene actor. The cutscene is selected by g_dwLinearCutsceneIndex,
 // GameMode - Credits.
-extern Actor *g_pLinearCutsceneObject;  // 0x030028B8
+extern Actor *g_pLinearCutsceneActor;  // 0x030028B8
 extern u8 *g_pLinearCutsceneText;        // 0x030028B4: unread remainder of the cutscene's text
 extern u32 g_dwLinearCutsceneIndex;      // 0x030028BC
 

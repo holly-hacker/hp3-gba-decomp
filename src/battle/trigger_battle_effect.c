@@ -2,11 +2,11 @@
 #include "battle/battle.h"
 
 // Stages a battle effect script into g_effectStaging, spawns the effect
-// object, then clears the attacker's anim state in FightState. Returns the
-// spawned object; no call site uses the value. See docs/memory-map/battle.md.
+// actor, then clears the attacker's anim state in FightState. Returns the
+// spawned actor; no call site uses the value. See docs/memory-map/battle.md.
 Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage)
 {
-    Actor *obj;
+    Actor *actor;
 
     g_effectStaging.bIdStaged_candidate = effectId;
     g_effectStaging.bSlotParam = slotParam;
@@ -18,8 +18,8 @@ Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, 
     g_effectStaging.bStateB_candidate = 1;
     g_effectStaging.wTimer_candidate = 0;
     g_effectStaging.wTimerMax_candidate = 0x1f;
-    obj = CreateEffectScriptObject(effectId, 1);
-    g_pFightState->pAttackAnimObject_candidate = NULL;
+    actor = CreateEffectScriptActor(effectId, 1);
+    g_pFightState->pAttackAnimActor_candidate = NULL;
     g_pFightState->bAttackAnimState_candidate = 0;
-    return obj;
+    return actor;
 }

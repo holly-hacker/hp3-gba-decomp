@@ -179,212 +179,212 @@ Room45V1Chain0:
     End
 Room45V1Chain1:
     PlaySoundById 22
-    SetTileObjectAnimState Room45V0Group0_id, 1
+    SetTileActorAnimState Room45V0Group0_id, 1
     End
 Room45V1Chain2:
     PlaySoundById 22
-    SetTileObjectAnimState Room45V0Group0_id, 0
-    DespawnTileObject Room45V0Group0_id, 0
+    SetTileActorAnimState Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain3:
     PlaySoundById 22
-    SetTileObjectAnimState Room45V0Group0_id, 2
-    DespawnTileObject Room45V0Group0_id, 2
+    SetTileActorAnimState Room45V0Group0_id, 2
+    DespawnTileActor Room45V0Group0_id, 2
     End
 Room45V1Chain4:
-    SetTileObjectAnimState Room45V0Group0_id, 3
-    DespawnTileObject Room45V0Group0_id, 3
+    SetTileActorAnimState Room45V0Group0_id, 3
+    DespawnTileActor Room45V0Group0_id, 3
     PlaySoundById 22
     End
 Room45V1Chain5:
-    SetTileObjectAnimState Room45V0Group0_id, 4
-    DespawnTileObject Room45V0Group0_id, 4
+    SetTileActorAnimState Room45V0Group0_id, 4
+    DespawnTileActor Room45V0Group0_id, 4
     PlaySoundById 22
     End
 Room45V1Chain6:
-    SetTileObjectAnimState Room45V0Group0_id, 5
-    DespawnTileObject Room45V0Group0_id, 5
+    SetTileActorAnimState Room45V0Group0_id, 5
+    DespawnTileActor Room45V0Group0_id, 5
     PlaySoundById 22
     End
 Room45V1Chain7:
-    SetTileObjectAnimState Room45V0Group0_id, 0
-    DespawnTileObject Room45V0Group0_id, 0
+    SetTileActorAnimState Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     PlaySoundById 22
     End
 Room45V1Chain8:
-    SetTileObjectAnimState Room45V0Group0_id, 6
-    DespawnTileObject Room45V0Group0_id, 6
+    SetTileActorAnimState Room45V0Group0_id, 6
+    DespawnTileActor Room45V0Group0_id, 6
     PlaySoundById 22
     End
 Room45V1Chain9:
     DelayedRespawnRowAndRunChain 0, Room45V1Group16_id, 0
     ArmChainYield 1
-    QueueTileObjectMove Room45V1Group16_id, 0, 0, 0, 1450, 0
+    QueueTileActorMove Room45V1Group16_id, 0, 0, 0, 1450, 0
     StartBattle 11, 0, Room45V1Chain44_id
     End
 Room45V1Chain10:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    QueueTileObjectMove Room45V0Group0_id, 1, 0, 0, 1610, 0
+    CancelActorAnimSequence 0, 255
+    QueueTileActorMove Room45V0Group0_id, 1, 0, 0, 1610, 0
     DelayedRespawnRowAndRunChainFrames 48, 0, 0
     DelayedRespawnRowAndRunChain 0, 0, Room45V1Chain1_id
     DelayedRespawnRowAndRunChain 11, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1800, 0
+    QueueTileActorMove 0, 255, 0, 0, 1800, 0
     GotoIfQuestStateCompare 236, 0, 0, Room45V1Chain68_id, 0, 0, 0
     SetQuestState 1, 232
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room45V1Chain11:
     DelayedRespawnRowAndRunChain 0, Room45V1Group17_id, 0
     ArmChainYield 1
-    QueueTileObjectMove Room45V1Group17_id, 0, 0, 0, 1450, 0
+    QueueTileActorMove Room45V1Group17_id, 0, 0, 0, 1450, 0
     StartBattle 11, 0, Room45V1Chain44_id
     End
 Room45V1Chain12:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 2, 231
     SetQuestState 2, 224
-    DespawnRoomRowObjects Room45V1Group21_id
-    DespawnRoomRowObjects Room45V1Group6_id
+    DespawnRoomRowActors Room45V1Group21_id
+    DespawnRoomRowActors Room45V1Group6_id
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group15_id, 0
-    SetTileObjectAnimState Room45V0Group0_id, 3
+    SetTileActorAnimState Room45V0Group0_id, 3
     DelayedRespawnRowAndRunChain 0, 0, Room45V1Chain73_id
     End
 Room45V1Chain13:
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room45V1Group0_id, 8
-    SetTileObjectAnimState Room45V1Group0_id, 7
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room45V1Group0_id, 8
+    SetTileActorAnimState Room45V1Group0_id, 7
     SetQuestState 2, 231
     SetQuestState 2, 224
     ArmChainYield 1
-    StartTileObjectScript 611, 27, 2, 0, 255, 0, 0, 2, 255, 255, 255
-    SetTileObjectFacing 0, 255, 6
+    StartTileActorScript 611, 27, 2, 0, 255, 0, 0, 2, 255, 255, 255
+    SetTileActorFacing 0, 255, 6
     ArmChainYield 0
     DelayedRespawnRowAndRunChain 0, Room45V1Group5_id, 0
     ArmChainYield 1
-    QueueTileObjectMove Room45V1Group5_id, 0, 0, 0, 1200, 0
-    StartObjectAnimSequence Room45V1Group5_id, 0, 0, 33, Room45V1Route1_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room45V1Group5_id, 0, 0, 0, 1200, 0
+    StartActorAnimSequence Room45V1Group5_id, 0, 0, 33, Room45V1Route1_id, 0, 1, 0, 0, 0
     @ "Any luck?"
     @ "No. You?"
     @ "I'm afraid not. They must have gone this way."
     ShowRoomDialog 562
-    StartTileObjectScript 611, 27, 2, Room45V1Group5_id, 0, 0, 0, 4, 255, 255, 255
-    DespawnTileObject Room45V1Group20_id, 0
-    DespawnTileObject Room45V1Group5_id, 0
+    StartTileActorScript 611, 27, 2, Room45V1Group5_id, 0, 0, 0, 4, 255, 255, 255
+    DespawnTileActor Room45V1Group20_id, 0
+    DespawnTileActor Room45V1Group5_id, 0
     RecruitPartyFollower 6
-    QueueTileObjectMove 0, 255, 0, 0, 1600, 0
-    SetTileObjectFacing 0, 255, 4
-    SetTileObjectAnimStateWithSpeed 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1600, 0
+    SetTileActorFacing 0, 255, 4
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room45V1Chain14:
     RespawnRowAndRunChain Room45V1Group3_id, 0
-    DespawnTileObject Room45V1Group1_id, 7
+    DespawnTileActor Room45V1Group1_id, 7
     End
 Room45V1Chain15:
-    DespawnRoomRowObjects Room45V1Group2_id
+    DespawnRoomRowActors Room45V1Group2_id
     End
 Room45V1Chain16:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain17:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain18:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain19:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain20:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain21:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain22:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain23:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain24:
-    DespawnTileObject Room45V0Group0_id, 0
+    DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain25:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 224
     ArmChainYield 1
-    StartTileObjectScript 567, 120, 0, 0, 255, 0, 0, 4, 255, 255, 255
+    StartTileActorScript 567, 120, 0, 0, 255, 0, 0, 4, 255, 255, 255
     @ "We have to find Ron! Maybe we should split up¸"
     ShowRoomDialog 560
-    SetTileObjectFacing 0, 255, 6
+    SetTileActorFacing 0, 255, 6
     DelayedRespawnRowAndRunChainFrames 28, 0, 0
-    SetTileObjectFacing 0, 255, 2
+    SetTileActorFacing 0, 255, 2
     DelayedRespawnRowAndRunChainFrames 20, 0, 0
-    SetTileObjectFacing 0, 255, 6
+    SetTileActorFacing 0, 255, 6
     DelayedRespawnRowAndRunChainFrames 16, 0, 0
-    SetTileObjectFacing 0, 255, 2
+    SetTileActorFacing 0, 255, 2
     DelayedRespawnRowAndRunChainFrames 26, 0, 0
-    SetTileObjectFacing 0, 255, 4
+    SetTileActorFacing 0, 255, 4
     DelayedRespawnRowAndRunChainFrames 4, 0, 0
-    QueueTileObjectMove Room45V1Group0_id, 4, 0, 0, 1500, 0
+    QueueTileActorMove Room45V1Group0_id, 4, 0, 0, 1500, 0
     ShowLoadingScreenTransition 29, 30, 32, 255
     GotoIfStoryStageCompare 0, 29, Room45V1Chain26_id, 0, 0, 0
     GotoIfStoryStageCompare 0, 30, Room45V1Chain27_id, 0, 0, 0
     End
 Room45V1Chain26:
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 0
+    QueueTileActorMove 0, 255, 0, 0, 1500, 0
     RemovePartyFollower 6
     RespawnRowAndRunChain Room45V1Group20_id, 0
-    DespawnTileObject Room45V1Group0_id, 4
-    SetTileObjectAnimStateWithSpeed 0, 255
+    DespawnTileActor Room45V1Group0_id, 4
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room45V1Chain27:
     RemovePartyFollower 5
     ArmChainYield 1
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 0
+    QueueTileActorMove 0, 255, 0, 0, 1500, 0
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group1_id, 0
-    DespawnTileObject Room45V1Group0_id, 4
+    DespawnTileActor Room45V1Group0_id, 4
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group21_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room45V1Chain28:
-    SetTileObjectFacing Room45V1Group4_id, 0, 6
+    SetTileActorFacing Room45V1Group4_id, 0, 6
     End
 Room45V1Chain29:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group18_id, 0
     DelayedRespawnRowAndRunChain 1, 0, Room45V1Chain65_id
     End
 Room45V1Chain30:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group19_id, 0
     DelayedRespawnRowAndRunChain 1, 0, Room45V1Chain66_id
     End
 Room45V1Chain31:
-    CancelObjectAnimSequence 0, 255
-    QueueTileObjectMove Room45V0Group0_id, 3, 0, 60, 1500, 30
+    CancelActorAnimSequence 0, 255
+    QueueTileActorMove Room45V0Group0_id, 3, 0, 60, 1500, 30
     End
 Room45V1Chain32:
-    SetTileObjectFacing Room45V1Group5_id, 0, 2
+    SetTileActorFacing Room45V1Group5_id, 0, 2
     End
 Room45V1Chain33:
     GotoIfQuestStateCompare QUEST_STORY_STAGE, 0, 22, Room45V1Chain58_id, 0, 0, 0
     End
 Room45V1Chain34:
-    DespawnTileObject Room45V1Group7_id, 0
+    DespawnTileActor Room45V1Group7_id, 0
     End
 Room45V1Chain35:
-    DespawnTileObject Room45V1Group8_id, 0
+    DespawnTileActor Room45V1Group8_id, 0
     End
 Room45V1Chain36:
-    DespawnTileObject Room45V1Group9_id, 0
+    DespawnTileActor Room45V1Group9_id, 0
     End
 Room45V1Chain37:
-    DespawnTileObject Room45V1Group10_id, 0
+    DespawnTileActor Room45V1Group10_id, 0
     End
 Room45V1Chain38:
-    DespawnTileObject Room45V1Group11_id, 0
+    DespawnTileActor Room45V1Group11_id, 0
     End
 Room45V1Chain39:
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group7_id, 0
@@ -394,34 +394,34 @@ Room45V1Chain39:
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group15_id, 0
     End
 Room45V1Chain40:
-    DespawnRoomRowObjects Room45V1Group14_id
-    SetTileObjectAnimState Room45V1Group15_id, 1
+    DespawnRoomRowActors Room45V1Group14_id
+    SetTileActorAnimState Room45V1Group15_id, 1
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group9_id, 0
     GotoIfQuestStateCompare 227, 0, 0, Room45V1Chain53_id, 0, 0, 0
     SetQuestState 1, 227
     End
 Room45V1Chain41:
-    DespawnRoomRowObjects Room45V1Group12_id
+    DespawnRoomRowActors Room45V1Group12_id
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group8_id, 0
-    SetTileObjectAnimState Room45V1Group15_id, 0
+    SetTileActorAnimState Room45V1Group15_id, 0
     GotoIfQuestStateCompare 226, 0, 0, Room45V1Chain53_id, 0, 0, 0
     SetQuestState 1, 226
     End
 Room45V1Chain42:
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group10_id, 0
-    SetTileObjectAnimState Room45V1Group15_id, 2
+    SetTileActorAnimState Room45V1Group15_id, 2
     GotoIfQuestStateCompare 226, 0, 0, Room45V1Chain53_id, 0, 0, 0
-    DespawnRoomRowObjects Room45V1Group13_id
+    DespawnRoomRowActors Room45V1Group13_id
     End
 Room45V1Chain43:
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group11_id, 0
-    SetTileObjectAnimState Room45V1Group15_id, 3
+    SetTileActorAnimState Room45V1Group15_id, 3
     SetQuestState 1, 229
     End
 Room45V1Chain44:
-    SetTileObjectAnimStateWithSpeed 0, 255
-    DespawnTileObject Room45V1Group16_id, 0
-    DespawnTileObject Room45V1Group17_id, 0
+    SetTileActorAnimStateWithSpeed 0, 255
+    DespawnTileActor Room45V1Group16_id, 0
+    DespawnTileActor Room45V1Group17_id, 0
     End
 Room45V1Chain45:
     SetStoryStage 23
@@ -440,7 +440,7 @@ Room45V1Chain47:
 Room45V1Chain48:
     End
 Room45V1Chain49:
-    SetTileObjectAnimState Room45V1Group15_id, 1
+    SetTileActorAnimState Room45V1Group15_id, 1
     End
 Room45V1Chain50:
     ArmChainYield 1
@@ -467,50 +467,50 @@ Room45V1Chain55:
     ArmChainYield 0
     End
 Room45V1Chain56:
-    DespawnTileObject Room45V1Group0_id, 3
+    DespawnTileActor Room45V1Group0_id, 3
     RespawnRowAndRunChain Room45V1Group22_id, 0
     End
 Room45V1Chain57:
-    DespawnTileObject Room45V1Group0_id, 2
+    DespawnTileActor Room45V1Group0_id, 2
     RespawnRowAndRunChain Room45V1Group23_id, 0
     End
 Room45V1Chain58:
     GotoIfQuestStateCompare 224, 0, 0, Room45V1Chain25_id, 0, 0, 0
     End
 Room45V1Chain59:
-    DespawnRoomRowObjects Room45V1Group6_id
+    DespawnRoomRowActors Room45V1Group6_id
     PlaySoundById 22
-    SetTileObjectAnimState Room45V0Group0_id, 3
-    QueueTileObjectMove 0, 255, 0, 61, 1500, 0
+    SetTileActorAnimState Room45V0Group0_id, 3
+    QueueTileActorMove 0, 255, 0, 61, 1500, 0
     End
 Room45V1Chain60:
     GrantPartyExperience 50, 65535
     PlayRoomSoundEffect 26
     SetQuestState 1, 231
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group24_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room45V1Chain61:
-    SetTileObjectAnimState Room45V0Group0_id, 3
+    SetTileActorAnimState Room45V0Group0_id, 3
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group24_id, 0
-    DespawnRoomRowObjects Room45V1Group6_id
+    DespawnRoomRowActors Room45V1Group6_id
     End
 Room45V1Chain62:
     DelayedRespawnRowAndRunChainFrames 3, 0, Room45V1Chain67_id
     End
 Room45V1Chain63:
-    DespawnTileObject Room45V1Group6_id, 0
+    DespawnTileActor Room45V1Group6_id, 0
     End
 Room45V1Chain64:
-    DespawnTileObject Room45V1Group6_id, 2
+    DespawnTileActor Room45V1Group6_id, 2
     End
 Room45V1Chain65:
     SetQuestState 1, 233
-    QueueTileObjectMove Room45V1Group18_id, 0, 0, 72, 1500, 60
+    QueueTileActorMove Room45V1Group18_id, 0, 0, 72, 1500, 60
     End
 Room45V1Chain66:
     SetQuestState 1, 234
-    QueueTileObjectMove Room45V1Group19_id, 0, 0, 71, 1500, 60
+    QueueTileActorMove Room45V1Group19_id, 0, 0, 71, 1500, 60
     End
 Room45V1Chain67:
     GotoIfQuestStateCompare 236, 0, 1, Room45V1Chain78_id, 0, 0, 0
@@ -524,11 +524,11 @@ Room45V1Chain69:
     ShowRoomDialog 624
     End
 Room45V1Chain70:
-    DespawnTileObject Room45V1Group19_id, 0
+    DespawnTileActor Room45V1Group19_id, 0
     StartBattle 11, 0, 0
     End
 Room45V1Chain71:
-    DespawnTileObject Room45V1Group18_id, 0
+    DespawnTileActor Room45V1Group18_id, 0
     StartBattle 11, 0, 0
     End
 Room45V1Chain72:
@@ -539,26 +539,26 @@ Room45V1Chain72:
 Room45V1Chain73:
     ArmChainYield 1
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group4_id, 0
-    StartTileObjectScript 588, 27, 2, Room45V1Group4_id, 0, 0, 0, 6, 255, 255, 255
-    SetTileObjectFacing Room45V1Group4_id, 0, 6
-    StartTileObjectScript 573, 27, 2, 0, 255, 0, 0, 2, 255, 255, 255
-    SetTileObjectFacing 0, 255, 2
+    StartTileActorScript 588, 27, 2, Room45V1Group4_id, 0, 0, 0, 6, 255, 255, 255
+    SetTileActorFacing Room45V1Group4_id, 0, 6
+    StartTileActorScript 573, 27, 2, 0, 255, 0, 0, 2, 255, 255, 255
+    SetTileActorFacing 0, 255, 2
     @ "Any luck?"
     @ "No. You?"
     @ "I'm afraid not. They must have gone this way."
     ShowRoomDialog 562
-    StartTileObjectScript 573, 27, 2, Room45V1Group4_id, 0, 0, 0, 2, 255, 255, 255
-    DespawnTileObject Room45V1Group4_id, 0
+    StartTileActorScript 573, 27, 2, Room45V1Group4_id, 0, 0, 0, 2, 255, 255, 255
+    DespawnTileActor Room45V1Group4_id, 0
     RecruitPartyFollower 5
-    SetTileObjectFacing 0, 255, 4
+    SetTileActorFacing 0, 255, 4
     DelayedRespawnRowAndRunChainFrames 0, 0, Room45V1Chain15_id
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room45V1Chain74:
     GotoIfQuestStateCompare 236, 0, 0, Room45V1Chain10_id, 0, 0, 0
     End
 Room45V1Chain75:
-    DespawnRoomRowObjects Room45V1Group6_id
+    DespawnRoomRowActors Room45V1Group6_id
     End
 Room45V1Chain76:
     GotoIfQuestStateCompare 237, 0, 0, Room45V1Chain77_id, 0, 0, 0
@@ -569,6 +569,6 @@ Room45V1Chain77:
     SetQuestState 1, 237
     End
 Room45V1Chain78:
-    SetTileObjectAnimState Room45V0Group0_id, 1
+    SetTileActorAnimState Room45V0Group0_id, 1
     End
     EndSubBlock Room45V1End

@@ -49,160 +49,160 @@ groups:
         count: 4
         names: {1: Unnamed001}
 
-  - name: ObjectSprites
+  - name: ActorSprites
     runs:
-      # Actor and character sprites: g_aObjectTypeAssets and other object records
+      # Actor and character sprites: g_aActorTypeAssets and other actor records
       - kind: image-bank
         count: 107
         names:
-          1: HarryVsDementorsObject18
-          2: HarryVsDementorsObject1C
-          3: ObjectSprite003
+          1: HarryVsDementorsActor18
+          2: HarryVsDementorsActor1C
+          3: ActorSprite003
           19: InGameMenuIconStatusEquip
           20: InGameMenuIconFolios
           21: InGameMenuIconSave
           22: InGameMenuIconConnectivity
           23: InGameMenuIconHelp
-          24: ObjectSprite024
+          24: ActorSprite024
           25: FolioBrutiCursor
           26: FolioBrutiSpellDot
-          27: ObjectSprite027
+          27: ActorSprite027
           28: FolioUniversitasCursor
           29: ButtonPrompts
-          30: ObjectSprite030
+          30: ActorSprite030
           33: FolioUniversitasCountBadges
           34: FolioCardThumbnail001
           85: FolioCardBackThumbnail
-          86: ObjectSprite086
+          86: ActorSprite086
           91: ItemsSectionIconAll
           92: ItemsSectionIconPotions
           93: ItemsSectionIconMisc
-          94: ObjectSprite094
+          94: ActorSprite094
           95: StatusEquipSlotCursor
-          96: ObjectSprite096
+          96: ActorSprite096
           98: ShopIconBuy
           99: ShopIconSell
           100: ShopIconExit
           101: DivinationTeaTextFrame
-          102: ClockSkipObject1
-          104: ObjectSprite104
+          102: ClockSkipActor1
+          104: ActorSprite104
           105: OptionsIconSound
           106: OptionsIconMusic
           107: OptionsIconBrightness
         paletteSources:
-          ObjectSprite031: ObjectSprite096
-          ObjectSprite032: ObjectSprite097
+          ActorSprite031: ActorSprite096
+          ActorSprite032: ActorSprite097
 
-  - name: ObjectSprites2
+  - name: ActorSprites2
     runs:
       - kind: image-bank
         count: 195
         names:
-          1: ObjectSprite2_001
+          1: ActorSprite2_001
           108: Chest
-          109: ObjectSprite2_109
+          109: ActorSprite2_109
           110: Button
           111: RaisingPlatform
           112: SpongifyPadRug001
           114: SpongifyPadLeaves
-          115: ObjectSprite2_115
+          115: ActorSprite2_115
           116: FlamePillar001
           119: PressurePlate
           120: Lever001
-          123: ObjectSprite2_123
+          123: ActorSprite2_123
           127: PushableBlock
-          128: ObjectSprite2_128
+          128: ActorSprite2_128
           130: LockedDoor
-          131: ObjectSprite2_131
-        noPalette: [ObjectSprite2_195]
+          131: ActorSprite2_131
+        noPalette: [ActorSprite2_195]
         paletteSources:
-          ObjectSprite2_022: OverworldPlayer006
-          ObjectSprite2_026: OverworldPlayer005
-          ObjectSprite2_027: OverworldPlayer006
-          ObjectSprite2_034: OverworldPlayer004
-          ObjectSprite2_078: OverworldPlayer006
-          ObjectSprite2_082: OverworldPlayer005
-          ObjectSprite2_083: OverworldPlayer004
+          ActorSprite2_022: OverworldPlayer006
+          ActorSprite2_026: OverworldPlayer005
+          ActorSprite2_027: OverworldPlayer006
+          ActorSprite2_034: OverworldPlayer004
+          ActorSprite2_078: OverworldPlayer006
+          ActorSprite2_082: OverworldPlayer005
+          ActorSprite2_083: OverworldPlayer004
           SpongifyPadRug001: SpongifyPadLeaves
           SpongifyPadRug002: SpongifyPadLeaves
-          FlamePillar001: ObjectPalette050
+          FlamePillar001: ActorPalette050
           FlamePillar002: FlamePillar003
           PressurePlate: Lever003
-          Lever001: ObjectSprite2_123
-          Lever002: ObjectSprite2_124
-          ObjectSprite2_126: ObjectPalette001
-          PushableBlock: ObjectPalette002
-          ObjectSprite2_128: ObjectPalette002
-          ObjectSprite2_129: ObjectPalette003
-          LockedDoor: ObjectPalette004
-          ObjectSprite2_131: ObjectPalette005
-          ObjectSprite2_132: ObjectPalette006
-          ObjectSprite2_133: ObjectPalette007
-          ObjectSprite2_134: ObjectPalette008
-          ObjectSprite2_135: ObjectPalette009
-          ObjectSprite2_136: ObjectPalette010
-          ObjectSprite2_137: ObjectPalette011
-          ObjectSprite2_138: ObjectPalette012
-          ObjectSprite2_139: ObjectPalette013
-          ObjectSprite2_140: ObjectPalette014
-          ObjectSprite2_141: ObjectPalette015
-          ObjectSprite2_142: ObjectPalette016
-          ObjectSprite2_143: ObjectPalette017
-          ObjectSprite2_144: ObjectPalette018
-          ObjectSprite2_145: ObjectPalette019
-          ObjectSprite2_146: ObjectPalette020
-          ObjectSprite2_147: ObjectPalette021
-          ObjectSprite2_148: ObjectPalette022
-          ObjectSprite2_149: ObjectPalette023
-          ObjectSprite2_150: ObjectPalette024
-          ObjectSprite2_151: ObjectPalette024
-          ObjectSprite2_152: ObjectPalette023
-          ObjectSprite2_153: ObjectPalette026
-          ObjectSprite2_154: ObjectPalette027
-          ObjectSprite2_155: ObjectPalette025
-          ObjectSprite2_156: ObjectPalette025
-          ObjectSprite2_157: ObjectPalette025
-          ObjectSprite2_158: ObjectPalette025
-          ObjectSprite2_159: ObjectPalette028
-          ObjectSprite2_160: ObjectSprite2_002
-          ObjectSprite2_161: ObjectPalette025
-          ObjectSprite2_162: ObjectPalette025
-          ObjectSprite2_163: ObjectPalette029
-          ObjectSprite2_164: ObjectPalette030
-          ObjectSprite2_165: ObjectPalette031
-          ObjectSprite2_166: ObjectPalette032
-          ObjectSprite2_168: ObjectPalette033
-          ObjectSprite2_169: ObjectPalette034
-          ObjectSprite2_170: ObjectPalette035
-          ObjectSprite2_171: ObjectPalette036
-          ObjectSprite2_172: ObjectPalette037
-          ObjectSprite2_173: ObjectPalette038
-          ObjectSprite2_174: ObjectPalette039
-          ObjectSprite2_175: ObjectPalette040
-          ObjectSprite2_176: ObjectPalette041
-          ObjectSprite2_177: ObjectPalette042
-          ObjectSprite2_178: ObjectPalette043
-          ObjectSprite2_179: ObjectPalette044
-          ObjectSprite2_180: ObjectPalette045
-          ObjectSprite2_181: ObjectPalette046
-          ObjectSprite2_182: ObjectPalette047
-          ObjectSprite2_183: ObjectPalette048
-          ObjectSprite2_184: ObjectPalette051
-          ObjectSprite2_185: ObjectPalette052
-          ObjectSprite2_186: ObjectPalette053
-          ObjectSprite2_187: ObjectPalette054
-          ObjectSprite2_188: ObjectPalette055
-          ObjectSprite2_189: ObjectPalette056
-          ObjectSprite2_190: ObjectPalette057
-          ObjectSprite2_191: ObjectPalette058
-          ObjectSprite2_192: ObjectPalette059
-          ObjectSprite2_193: ObjectPalette060
-          ObjectSprite2_194: ObjectPalette061
-          ObjectSprite2_195: ObjectPalette062
-      # The palettes g_apRoomObjTriggerEffectData points to
+          Lever001: ActorSprite2_123
+          Lever002: ActorSprite2_124
+          ActorSprite2_126: ActorPalette001
+          PushableBlock: ActorPalette002
+          ActorSprite2_128: ActorPalette002
+          ActorSprite2_129: ActorPalette003
+          LockedDoor: ActorPalette004
+          ActorSprite2_131: ActorPalette005
+          ActorSprite2_132: ActorPalette006
+          ActorSprite2_133: ActorPalette007
+          ActorSprite2_134: ActorPalette008
+          ActorSprite2_135: ActorPalette009
+          ActorSprite2_136: ActorPalette010
+          ActorSprite2_137: ActorPalette011
+          ActorSprite2_138: ActorPalette012
+          ActorSprite2_139: ActorPalette013
+          ActorSprite2_140: ActorPalette014
+          ActorSprite2_141: ActorPalette015
+          ActorSprite2_142: ActorPalette016
+          ActorSprite2_143: ActorPalette017
+          ActorSprite2_144: ActorPalette018
+          ActorSprite2_145: ActorPalette019
+          ActorSprite2_146: ActorPalette020
+          ActorSprite2_147: ActorPalette021
+          ActorSprite2_148: ActorPalette022
+          ActorSprite2_149: ActorPalette023
+          ActorSprite2_150: ActorPalette024
+          ActorSprite2_151: ActorPalette024
+          ActorSprite2_152: ActorPalette023
+          ActorSprite2_153: ActorPalette026
+          ActorSprite2_154: ActorPalette027
+          ActorSprite2_155: ActorPalette025
+          ActorSprite2_156: ActorPalette025
+          ActorSprite2_157: ActorPalette025
+          ActorSprite2_158: ActorPalette025
+          ActorSprite2_159: ActorPalette028
+          ActorSprite2_160: ActorSprite2_002
+          ActorSprite2_161: ActorPalette025
+          ActorSprite2_162: ActorPalette025
+          ActorSprite2_163: ActorPalette029
+          ActorSprite2_164: ActorPalette030
+          ActorSprite2_165: ActorPalette031
+          ActorSprite2_166: ActorPalette032
+          ActorSprite2_168: ActorPalette033
+          ActorSprite2_169: ActorPalette034
+          ActorSprite2_170: ActorPalette035
+          ActorSprite2_171: ActorPalette036
+          ActorSprite2_172: ActorPalette037
+          ActorSprite2_173: ActorPalette038
+          ActorSprite2_174: ActorPalette039
+          ActorSprite2_175: ActorPalette040
+          ActorSprite2_176: ActorPalette041
+          ActorSprite2_177: ActorPalette042
+          ActorSprite2_178: ActorPalette043
+          ActorSprite2_179: ActorPalette044
+          ActorSprite2_180: ActorPalette045
+          ActorSprite2_181: ActorPalette046
+          ActorSprite2_182: ActorPalette047
+          ActorSprite2_183: ActorPalette048
+          ActorSprite2_184: ActorPalette051
+          ActorSprite2_185: ActorPalette052
+          ActorSprite2_186: ActorPalette053
+          ActorSprite2_187: ActorPalette054
+          ActorSprite2_188: ActorPalette055
+          ActorSprite2_189: ActorPalette056
+          ActorSprite2_190: ActorPalette057
+          ActorSprite2_191: ActorPalette058
+          ActorSprite2_192: ActorPalette059
+          ActorSprite2_193: ActorPalette060
+          ActorSprite2_194: ActorPalette061
+          ActorSprite2_195: ActorPalette062
+      # The palettes g_apRoomActorTriggerEffectData points to
       - kind: image-bank
         count: 62
-        names: {1: ObjectPalette001}
+        names: {1: ActorPalette001}
         componentOrder: [palette]
         storedCells: false
 

@@ -6,16 +6,16 @@
 
 void BuildListMenu(const ListMenuDefinition *pDefinition)
 {
-    Actor *pObject;
+    Actor *pActor;
     u32 row;
 
     g_ListMenuState.pDefinition = pDefinition;
 
     BeginMenuScreen(pDefinition->wTitleStringId, 4, 1);
-    g_pMenuCursorObject->oam.objMode = 1;
-    g_pMenuCursorObject->oam.hFlip = 1;
-    g_pMenuCursorObject->pfnTick = ListMenuCursorTick_candidate;
-    SetMenuCursorPosition(g_pMenuCursorObject,
+    g_pMenuCursorActor->oam.objMode = 1;
+    g_pMenuCursorActor->oam.hFlip = 1;
+    g_pMenuCursorActor->pfnTick = ListMenuCursorTick_candidate;
+    SetMenuCursorPosition(g_pMenuCursorActor,
                  g_ListMenuState.pDefinition->wStrideX * g_GameModeStackContext.dwModeScratchB
                      + g_ListMenuState.pDefinition->wBaseX
                      + g_ListMenuState.pDefinition->wCursorOffsetX,
@@ -30,16 +30,16 @@ void BuildListMenu(const ListMenuDefinition *pDefinition)
             DrawListMenuRow(row);
     }
 
-    for (row = 0; row < pDefinition->wRowObjectCount; row++)
+    for (row = 0; row < pDefinition->wRowActorCount; row++)
     {
-        pObject = SpawnMenuIconObject(row, 0);
-        pObject->dwFlags |= ActorFlagKeepPaletteSlot | ActorFlagHasAnimation;
-        SetActorPosition(pObject,
+        pActor = SpawnMenuIconActor(row, 0);
+        pActor->dwFlags |= ActorFlagKeepPaletteSlot | ActorFlagHasAnimation;
+        SetActorPosition(pActor,
                           pDefinition->wStrideX * row + pDefinition->wBaseX
-                              + pDefinition->wRowObjectOffsetX,
+                              + pDefinition->wRowActorOffsetX,
                           pDefinition->wStrideY * row + pDefinition->wBaseY
-                              + pDefinition->wRowObjectOffsetY);
-        AttachObjectPalette(pObject, pDefinition->pRowObjects->pPalette);
-        sub_08001690(pObject, &pDefinition->pRowObjects[row]);
+                              + pDefinition->wRowActorOffsetY);
+        AttachActorPalette(pActor, pDefinition->pRowActors->pPalette);
+        sub_08001690(pActor, &pDefinition->pRowActors[row]);
     }
 }

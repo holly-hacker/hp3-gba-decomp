@@ -54,7 +54,7 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
                      || g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].bAnimFrame != actor->anim.bLastAnimFrameValue)
                     && g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].dwAllocTick != g_dwTickCount) {
                     if (actor->wVramTileAllocId != 0xFFFF) {
-                        FreeObjectVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
+                        FreeObjVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
                                                      actor->oam.bpp8);
                         actor->wVramTileAllocId |= 0xFFFF;
                     }
@@ -62,7 +62,7 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
                         g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[index]++;
                     }
                     g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].pAnimTable = actor->anim.pAnimTable;
-                    allocId = AllocObjectVramTiles(NULL, pixelCount, actor->oam.bpp8);
+                    allocId = AllocObjVramTiles(NULL, pixelCount, actor->oam.bpp8);
                     g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].bAnimFrame = actor->anim.bLastAnimFrameValue;
                     g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].awTileAllocIds[index] = allocId;
                     g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].dwAllocTick = g_dwTickCount;
@@ -77,7 +77,7 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
             else {
                 index = actor->anim.bLastAnimFrameValue;
                 if (g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[index] == 0) {
-                    allocId = AllocObjectVramTiles(NULL, pixelCount, actor->oam.bpp8);
+                    allocId = AllocObjVramTiles(NULL, pixelCount, actor->oam.bpp8);
                     g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].awTileAllocIds[index] = allocId;
                 }
                 else {
@@ -90,7 +90,7 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
                 if (index != prevIndex && actor->wVramTileAllocId != 0xFFFF) {
                     g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[prevIndex]--;
                     if (g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[actor->anim.bAnimFrameIndex_candidate] == 0) {
-                        FreeObjectVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
+                        FreeObjVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
                                                      actor->oam.bpp8);
                         actor->wVramTileAllocId |= 0xFFFF;
                         g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].awTileAllocIds[actor->anim.bAnimFrameIndex_candidate] |= 0xFFFF;
@@ -100,8 +100,8 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
         }
         else {
             if (actor->wVramTileAllocId != 0xFFFF)
-                FreeObjectVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount, actor->oam.bpp8);
-            allocId = AllocObjectVramTiles(NULL, pixelCount, actor->oam.bpp8);
+                FreeObjVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount, actor->oam.bpp8);
+            allocId = AllocObjVramTiles(NULL, pixelCount, actor->oam.bpp8);
 
             if (actor->bDrawFlags & ActorDrawFlagVariantSlots) {
                 for (i = 0; i < ARRAY_COUNT(actor->aVariantSlots); i++) {
@@ -109,10 +109,10 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
                         GetActorVariantFrameSize(actor, dims, i);
                         slotPixelCount = dims[0] * dims[1];
                         if (actor->aVariantSlots[i].wVramTileAllocId != 0xFFFF)
-                            FreeObjectVramTileAllocation(actor->aVariantSlots[i].wVramTileAllocId,
+                            FreeObjVramTileAllocation(actor->aVariantSlots[i].wVramTileAllocId,
                                                          actor->aVariantSlots[i].wVramPixelCount,
                                                          actor->oam.bpp8);
-                        slotAllocId = AllocObjectVramTiles(NULL, slotPixelCount, actor->oam.bpp8);
+                        slotAllocId = AllocObjVramTiles(NULL, slotPixelCount, actor->oam.bpp8);
                         if (slotAllocId != 0xFFFF) {
                             actor->aVariantSlots[i].wVramTileAllocId = slotAllocId;
                             actor->aVariantSlots[i].wVramPixelCount = slotPixelCount;

@@ -16,7 +16,7 @@ typedef enum {
 } MainMenuEntry;
 
 typedef struct {
-    Actor *pCursorObject;         // 0x00
+    Actor *pCursorActor;         // 0x00
     u32 dwLoadGameAvailable;       // 0x04: 1 if a save slot can be loaded
     s32 nPaletteEffectSlot;  // 0x08: handle from StartPaletteEffectWithFrameCount, set by StartMainMenuPaletteEffect
 } MainMenuState;
@@ -42,4 +42,4 @@ void SelectMainMenuEntry(void);
 u32 HasLoadableSaveSlot(void);
 // Moves the cursor sprite beside the selected entry: tween nonzero glides it
 // there over a few frames, zero places it at once.
-void PositionMainMenuCursorObject(u32 tween);
+void PositionMainMenuCursorActor(u32 tween);

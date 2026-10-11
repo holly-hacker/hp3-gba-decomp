@@ -5,7 +5,7 @@
 // Ends the battle in victory once every Enemy fighter is at 0 HP: pushes
 // battle state 7 and shows the victory message. The caller passes the
 // attacking fighter's Actor, which is unused.
-void CheckBattleVictory(Actor *obj)
+void CheckBattleVictory(Actor *actor)
 {
     u32 i;
 

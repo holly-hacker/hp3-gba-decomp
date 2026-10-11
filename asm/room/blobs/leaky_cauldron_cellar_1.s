@@ -111,27 +111,27 @@ Room38V1Chain4:
     End
 Room38V1Chain5:
     GotoIfQuestStateCompare QUEST_CELLAR1_RAT_TONIC_FOUND, 0, 1, 0, 0, 0, 0
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
-    StartTileObjectScript 335, 211, 0, 0, 255, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 335, 211, 0, 0, 255, 0, 0, 2, 255, 255, 255
     @ "There's the Rat Tonic!"
     ShowRoomDialog 35
     ArmChainYield 0
-    PlayTileObjectAnimation Room38V1Group2_id, 0, 0
+    PlayTileActorAnimation Room38V1Group2_id, 0, 0
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 2, 0, 0
     PlaySoundById 41
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    PlayTileObjectAnimation Room38V1Group2_id, 0, 1
+    PlayTileActorAnimation Room38V1Group2_id, 0, 1
     ArmChainYield 1
     @ "Oh! It's had too much Rat Tonic! I'd better get the rest of the Tonic and get out!"
     ShowRoomDialog 37
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     ArmChainYield 0
     End
 Room38V1Chain6:
-    DespawnTileObject Room38V1Group2_id, 0
+    DespawnTileActor Room38V1Group2_id, 0
     StartBattle 1, 0, Room38V1Chain22_id
     End
 Room38V1Chain7:
@@ -167,7 +167,7 @@ Room38V1Chain14:
     GotoIfQuestStateCompare QUEST_CELLAR1_RAT_TONIC_FOUND, 0, 0, 0, 0, Room38V1Group2_id, 0
     End
 Room38V1Chain15:
-    SetTileObjectAnimState Room38V0Group0_id, 1
+    SetTileActorAnimState Room38V0Group0_id, 1
     PlaySoundById 22
     End
 Room38V1Chain16:
@@ -183,14 +183,14 @@ Room38V1Chain19:
     GotoIfQuestStateCompare QUEST_CELLAR1_INTRO_DIALOG_SHOWN, 0, 0, Room38V1Chain3_id, 0, 0, 0
     End
 Room38V1Chain20:
-    PlayTileObjectAnimation Room38V1Group2_id, 0, 1
+    PlayTileActorAnimation Room38V1Group2_id, 0, 1
     End
 Room38V1Chain21:
     GrantPartyExperience 5, 65535
     SetQuestState 2, 236
     End
 Room38V1Chain22:
-    DespawnTileObject Room38V1Group2_id, 2
+    DespawnTileActor Room38V1Group2_id, 2
     SetQuestState 1, QUEST_CELLAR1_RAT_TONIC_FOUND
     FullHealParty
     SetQuestState QUEST_OBJ_DELIVER_RAT_TONIC_TO_RON, QUEST_OBJECTIVE_INDEX
@@ -200,11 +200,11 @@ Room38V1Chain22:
     ShowRewardPickupMessage 62
     End
 Room38V1Chain23:
-    SetTileObjectAnimState Room38V1Group0_id, 17
+    SetTileActorAnimState Room38V1Group0_id, 17
     SetQuestState 2, 224
     GrantPartyExperience 5, 65535
-    DespawnTileObject Room38V1Group0_id, 5
-    DespawnTileObject Room38V0Group0_id, 0
+    DespawnTileActor Room38V1Group0_id, 5
+    DespawnTileActor Room38V0Group0_id, 0
     End
 Room38V1Chain24:
     @ "Locked."
@@ -219,7 +219,7 @@ Room38V1Chain25:
     End
 Room38V1Chain26:
     DelayedRespawnRowAndRunChainFrames 0, Room38V1Group5_id, 0
-    DespawnTileObject Room38V1Group4_id, 0
+    DespawnTileActor Room38V1Group4_id, 0
     End
 Room38V1Chain27:
     GotoIfQuestStateCompare 235, 0, 1, Room38V1Chain25_id, 0, 0, 0
@@ -228,21 +228,21 @@ Room38V1Chain28:
     GotoIfQuestStateCompare 236, 0, 1, Room38V1Chain21_id, 0, 0, 0
     End
 Room38V1Chain29:
-    DespawnTileObject Room38V1Group0_id, 7
-    DespawnTileObject Room38V1Group0_id, 6
-    DespawnTileObject Room38V1Group0_id, 14
-    DespawnTileObject Room38V1Group0_id, 15
+    DespawnTileActor Room38V1Group0_id, 7
+    DespawnTileActor Room38V1Group0_id, 6
+    DespawnTileActor Room38V1Group0_id, 14
+    DespawnTileActor Room38V1Group0_id, 15
     End
 Room38V1Chain30:
-    SetTileObjectAnimState Room38V1Group0_id, 17
-    DespawnTileObject Room38V1Group0_id, 5
-    DespawnTileObject Room38V1Group0_id, 16
+    SetTileActorAnimState Room38V1Group0_id, 17
+    DespawnTileActor Room38V1Group0_id, 5
+    DespawnTileActor Room38V1Group0_id, 16
     End
 Room38V1Chain31:
     SetQuestState 1, 251
     End
 Room38V1Chain32:
-    DespawnRoomRowObjects Room38V1Group4_id
+    DespawnRoomRowActors Room38V1Group4_id
     DelayedRespawnRowAndRunChainFrames 0, Room38V1Group3_id, 0
     End
 Room38V1Chain33:
@@ -306,10 +306,10 @@ Room38V2Chain1:
     End
 Room38V2Chain2:
     ArmChainYield 1
-    QueueTileObjectMove Room38V2Group0_id, 12, 0, 0, 5000, 0
+    QueueTileActorMove Room38V2Group0_id, 12, 0, 0, 5000, 0
     @ "C'mon you lot! We need to leave for King's Cross station right away if we want to catch the Hogwarts Express!"
     ShowRoomDialog 122
-    QueueTileObjectMove 0, 255, 0, 0, 5000, 0
+    QueueTileActorMove 0, 255, 0, 0, 5000, 0
     ArmChainYield 0
     End
 Room38V2Chain3:
@@ -364,27 +364,27 @@ Room38V3Chain0:
     End
 Room38V3Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 253
-    QueueTileObjectMove Room38V3Group3_id, 0, 0, 0, 1200, 0
+    QueueTileActorMove Room38V3Group3_id, 0, 0, 0, 1200, 0
     Unk02 Room38V3Group3_id, 0, 4
     Unk02 Room38V3Group3_id, 1, 4
     ArmChainYield 0
-    StartObjectAnimSequence Room38V3Group3_id, 1, 0, 0, Room38V3Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room38V3Group3_id, 0, 0, 0, Room38V3Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room38V3Group3_id, 1, 0, 0, Room38V3Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room38V3Group3_id, 0, 0, 0, Room38V3Route1_id, 0, 1, 0, 0, 0
     End
 Room38V3Chain2:
-    DespawnTileObject Room38V3Group3_id, 0
+    DespawnTileActor Room38V3Group3_id, 0
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    CancelActorAnimSequence 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room38V3Chain3:
-    DespawnTileObject Room38V3Group3_id, 1
+    DespawnTileActor Room38V3Group3_id, 1
     End
 Room38V3Chain4:
-    SetTileObjectAnimState Room38V0Group0_id, 1
+    SetTileActorAnimState Room38V0Group0_id, 1
     PlaySoundById 22
     End
 Room38V3Chain5:

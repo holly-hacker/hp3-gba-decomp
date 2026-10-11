@@ -10,8 +10,8 @@ void InitializeMinigameMenu(void)
 {
 
     InitializeMenuScreen(0xA4A, 4, 0, NULL, 0, 0);
-    g_pMenuCursorObject->oam.hFlip = 1;
-    SetMenuCursorPosition(g_pMenuCursorObject, g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70);
+    g_pMenuCursorActor->oam.hFlip = 1;
+    SetMenuCursorPosition(g_pMenuCursorActor, g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70);
     SetBgControl(1, g_dwMinigameMenuBg1Control);
     SetBgControl(3, g_dwMinigameMenuBg3Control);
 

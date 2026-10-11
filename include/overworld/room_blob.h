@@ -6,7 +6,7 @@
 
 // Per-room resource blob, see docs/formats/rooms.md. ParseRoomResourceBlob_candidate
 // builds the room's runtime tables from it in one buffer, in the order
-// header records, object table, warp trigger table, switch-state table.
+// header records, actor table, warp trigger table, switch-state table.
 
 typedef struct RoomBlobRecord {
     u32 dwWord0;
@@ -41,7 +41,7 @@ typedef struct RoomBlobTable {
     u16 awOffsets[0];
 } RoomBlobTable;
 
-// Blob-side column of the object table: the row count, then one static record size per row
+// Blob-side column of the actor table: the row count, then one static record size per row
 // (the records follow, starting on a 4-byte boundary).
 typedef struct RoomBlobColumn {
     u8 bCount;
@@ -55,12 +55,12 @@ typedef struct RoomBlobSubBlock {
     u16 wSwitchTableOffset;
     u16 wFlags;  // bit 0 mirrored into g_wRoomResourceFlags_candidate
     u16 wUnknown6;
-    RoomBlobTable objectTable;  // inline at +8
+    RoomBlobTable actorTable;  // inline at +8
 } RoomBlobSubBlock;
 
 // Runtime buffer (0x2200 bytes) and the tables built inside it.
 extern RoomBlobHeader *g_pRoomTableBuffer;
-extern RoomBlobTable *g_pRoomObjectTable;
+extern RoomBlobTable *g_pRoomActorTable;
 extern RoomBlobTable *g_pRoomWarpTriggerTable;
 
 // Byte size of an offset array of `count` u16 entries, padded to a multiple of 4.
@@ -75,10 +75,10 @@ extern u8 *sub_08005E40(const RoomBlobTable *pTable, u8 *pDst, u8 index);
 extern u8 *sub_08005E84(const RoomBlobTable *pTable, u8 *pDst, u8 index);
 
 extern u8 *CopyRoomBlobHeaderRecords_candidate(const RoomBlobHeader *pBlob, const RoomBlobSubBlock *pVariant);
-extern u8 *BuildRoomObjectTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
-extern u8 *BuildRoomObjectColumn_candidate(const RoomBlobTable *pTable, u8 *pOut, u8 index);
+extern u8 *BuildRoomActorTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
+extern u8 *BuildRoomActorColumn_candidate(const RoomBlobTable *pTable, u8 *pOut, u8 index);
 extern u8 *BuildRoomWarpTriggerTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
-extern u8 *BuildRoomSwitchStateObjectTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
+extern u8 *BuildRoomSwitchStateActorTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
 
 extern void ParseRoomResourceBlob_candidate(const RoomBlobHeader *pBlob);
 

@@ -108,8 +108,8 @@ extern ActorPoolAuxRecord *g_pActorPoolAuxBuffer;
 // IWRAM copies of the ARM routines above, made by InitActorPool and
 // InstallIwramFindFreeObjTileRun. They are declared as functions so callers
 // can take their address; the ROM calls them through that pointer.
-extern void SortObjectsByDepthIwram(struct Actor **queue, u32 count);
-extern void CheckObjectCollisionsIwram(u32 count, struct Actor **queue);
+extern void SortActorsByDepthIwram(struct Actor **queue, u32 count);
+extern void CheckActorCollisionsIwram(u32 count, struct Actor **queue);
 extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 startBit);
 u32 FindFreeObjTileRun(const u8 *pBitmap, u32 runLength, u32 startBit);
 extern u32 g_dwActorListActive_candidate;
@@ -147,8 +147,8 @@ extern u32 g_dwUnk03003234;
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
 void FreeAllActors(ListNode **activeListHead);
 
-void SortObjectsByDepth(void);
-void CheckObjectCollisions(void);
+void SortActorsByDepth(void);
+void CheckActorCollisions(void);
 void InitActorPool(void);
 
 // Start/end of the statically linked IWRAM and EWRAM sections, as ROM

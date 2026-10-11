@@ -136,8 +136,8 @@ referencing the globals.
 `GetDpadDirection` maps `g_wKeysHeld`'s D-pad bits through
 `g_abDpadDirection` (US `0x08060E7C`, JP `0x08060E08`, `s8[16]`) to a
 `Direction`, or `DirectionNone` for no key or opposing keys. Both callers
-pass it with an object to `sub_08003FB8` and store that result in the
-object's `bFacing`. `GetAnyPlayerKeysHeld`
+pass it with an actor to `sub_08003FB8` and store that result in the
+actor's `bFacing`. `GetAnyPlayerKeysHeld`
 and `GetAnyPlayerKeysPressed` OR together the low byte (A through Down) of
 both players' masks; `ToggleFlag(p)` sets `*p = (*p == 0)`. The last three
 have no callers found.

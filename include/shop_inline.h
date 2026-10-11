@@ -139,8 +139,8 @@ EXIT_SHOP_MAIN_MENU_LINKAGE void ExitShopMainMenu(void)
     ClearBgTilemap(1);
     for (i = 0; i < 3; i++)
     {
-        FreeActor(g_FredAndGeorgesShop.apRowObjects[i]);
-        g_FredAndGeorgesShop.apRowObjects[i] = NULL;
+        FreeActor(g_FredAndGeorgesShop.apRowActors[i]);
+        g_FredAndGeorgesShop.apRowActors[i] = NULL;
     }
     ReleaseMenuCursor(g_FredAndGeorgesShop.pCursor);
     FreeAllParticleEmitters();
@@ -154,7 +154,7 @@ EXIT_SHOP_CATEGORY_MENU_LINKAGE void ExitShopCategoryMenu(void)
 
     ClearBgTilemap(1);
     for (i = 0; i < 7; i++)
-        FreeActor(g_FredAndGeorgesShop.apRowObjects[i]);
+        FreeActor(g_FredAndGeorgesShop.apRowActors[i]);
     ReleaseMenuCursor(g_FredAndGeorgesShop.pCursor);
     FreeAllParticleEmitters();
     FreeAllParticles();

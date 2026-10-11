@@ -149,8 +149,8 @@ Room04V1Chain2:
     End
 Room04V1Chain3:
     PlaySoundById 22
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room04V1Group0_id, 4
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room04V1Group0_id, 4
     DelayedRespawnRowAndRunChainFrames 3, 0, Room04V1Chain12_id
     GotoIfQuestStateCompare 225, 1, 73, Room04V1Chain21_id, 0, 0, 0
     End
@@ -163,8 +163,8 @@ Room04V1Chain5:
     End
 Room04V1Chain6:
     PlaySoundById 22
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room04V1Group8_id, 4
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room04V1Group8_id, 4
     DelayedRespawnRowAndRunChainFrames 3, 0, Room04V1Chain12_id
     GotoIfQuestStateCompare 229, 1, 19, Room04V1Chain22_id, 0, 0, 0
     End
@@ -172,11 +172,11 @@ Room04V1Chain7:
     StartBattle 4, 0, Room04V1Chain8_id
     End
 Room04V1Chain8:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     Unk02 Room04V1Group1_id, 1, 3
     Unk02 Room04V1Group1_id, 0, 3
-    StartObjectAnimSequence Room04V1Group1_id, 0, 0, 0, Room04V1Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room04V1Group1_id, 1, 0, 0, Room04V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room04V1Group1_id, 0, 0, 0, Room04V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room04V1Group1_id, 1, 0, 0, Room04V1Route1_id, 0, 1, 0, 0, 0
     SetQuestState 23, 5
     GrantPartyExperience 10, 65535
     DelayedRespawnRowAndRunChainFrames 5, 0, Room04V1Chain23_id
@@ -185,36 +185,36 @@ Room04V1Chain9:
     GotoIfQuestStateCompare 5, 1, 23, 0, 0, Room04V1Group1_id, 0
     End
 Room04V1Chain10:
-    DespawnRoomRowObjects Room04V1Group1_id
-    SetTileObjectAnimStateWithSpeed 0, 255
+    DespawnRoomRowActors Room04V1Group1_id
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room04V1Chain11:
-    StartObjectAnimSequence Room04V1Group2_id, 0, 0, 0, Room04V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room04V1Group2_id, 0, 0, 0, Room04V1Route2_id, 0, 1, 0, 0, 0
     End
 Room04V1Chain12:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room04V1Chain13:
-    StartObjectAnimSequence Room04V1Group2_id, 0, 0, 0, Room04V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room04V1Group2_id, 0, 0, 0, Room04V1Route3_id, 0, 1, 0, 0, 0
     End
 Room04V1Chain14:
     GrantPartyExperience 10, 65535
-    CancelObjectAnimSequence 0, 255
-    PlayTileObjectAnimation Room04V1Group2_id, 0, 10
-    DespawnRoomRowObjects Room04V1Group2_id
+    CancelActorAnimSequence 0, 255
+    PlayTileActorAnimation Room04V1Group2_id, 0, 10
+    DespawnRoomRowActors Room04V1Group2_id
     DelayedRespawnRowAndRunChainFrames 0, Room04V1Group3_id, 0
     DelayedRespawnRowAndRunChainFrames 0, Room04V1Group7_id, 0
-    StartObjectAnimSequence Room04V1Group3_id, 0, 0, 0, Room04V1Route4_id, 0, 1, 0, 0, 0
-    SetTileObjectFacing 0, 255, 6
-    SetTileObjectAnimStateValue Room04V1Group9_id, 0, 5
-    SetTileObjectAnimStateValue Room04V1Group9_id, 1, 5
-    SetTileObjectAnimStateValue Room04V1Group9_id, 2, 5
+    StartActorAnimSequence Room04V1Group3_id, 0, 0, 0, Room04V1Route4_id, 0, 1, 0, 0, 0
+    SetTileActorFacing 0, 255, 6
+    SetTileActorAnimStateValue Room04V1Group9_id, 0, 5
+    SetTileActorAnimStateValue Room04V1Group9_id, 1, 5
+    SetTileActorAnimStateValue Room04V1Group9_id, 2, 5
     End
 Room04V1Chain15:
     ArmChainYield 1
-    DespawnTileObject Room04V1Group3_id, 0
+    DespawnTileActor Room04V1Group3_id, 0
     DelayedRespawnRowAndRunChainFrames 0, Room04V1Group5_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     SetQuestState 23, 4
     End
 Room04V1Chain16:
@@ -240,22 +240,22 @@ Room04V1Chain20:
 Room04V1Chain21:
     GrantPartyExperience 5, 65535
     SetQuestState 73, 225
-    SetTileObjectAnimStateValue Room04V1Group0_id, 2, 5
-    SetTileObjectAnimStateValue Room04V1Group0_id, 3, 5
-    DespawnTileObject Room04V1Group0_id, 9
-    DespawnTileObject Room04V1Group0_id, 5
+    SetTileActorAnimStateValue Room04V1Group0_id, 2, 5
+    SetTileActorAnimStateValue Room04V1Group0_id, 3, 5
+    DespawnTileActor Room04V1Group0_id, 9
+    DespawnTileActor Room04V1Group0_id, 5
     End
 Room04V1Chain22:
     GrantPartyExperience 5, 65535
     SetQuestState 19, 229
-    SetTileObjectAnimStateValue Room04V1Group8_id, 9, 5
-    SetTileObjectAnimStateValue Room04V1Group8_id, 10, 5
-    SetTileObjectAnimStateValue Room04V1Group8_id, 8, 5
-    DespawnTileObject Room04V1Group8_id, 11
-    DespawnTileObject Room04V1Group8_id, 12
+    SetTileActorAnimStateValue Room04V1Group8_id, 9, 5
+    SetTileActorAnimStateValue Room04V1Group8_id, 10, 5
+    SetTileActorAnimStateValue Room04V1Group8_id, 8, 5
+    DespawnTileActor Room04V1Group8_id, 11
+    DespawnTileActor Room04V1Group8_id, 12
     End
 Room04V1Chain23:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     End
 Room04V1Chain24:
     SubtractQuestState 1, 226

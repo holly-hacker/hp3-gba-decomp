@@ -46,7 +46,7 @@ void UpdateDialogueBox(void)
             g_DialogState_candidate.bPhase = DialoguePhaseText;
             g_dwDialogBoxY = DIALOG_BOX_SHOWN_Y;
         }
-        SetActorPosition(g_pDialogBoxObject, 0, g_dwDialogBoxY + 0x28);
+        SetActorPosition(g_pDialogBoxActor, 0, g_dwDialogBoxY + 0x28);
         QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, sub_0801FC58);
         break;
 
@@ -56,9 +56,9 @@ void UpdateDialogueBox(void)
         {
             g_DialogState_candidate.bPhase = DialoguePhaseDone;
             g_dwDialogBoxY = DIALOG_BOX_HIDDEN_Y;
-            g_pDialogBoxObject->dwFlags &= ~ActorFlagVisible;
+            g_pDialogBoxActor->dwFlags &= ~ActorFlagVisible;
         }
-        SetActorPosition(g_pDialogBoxObject, 0, g_dwDialogBoxY + 0x28);
+        SetActorPosition(g_pDialogBoxActor, 0, g_dwDialogBoxY + 0x28);
         QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, sub_0801FC58);
         break;
 
@@ -68,5 +68,5 @@ void UpdateDialogueBox(void)
         break;
     }
 
-    TickOverworldBeforeObjects_candidate();
+    TickOverworldBeforeActors_candidate();
 }

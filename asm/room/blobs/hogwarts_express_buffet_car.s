@@ -56,16 +56,16 @@ Room07V1Chain1:
     End
 Room07V1Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Have you seen the conductor?"
     @ "He was going towards the front of the train, looking very cross, I might add."
     ShowRoomDialog 129
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room07V1Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimStateWithSpeed 0, 255
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room07V1Chain4:
     ArmChainYield 1
@@ -77,14 +77,14 @@ Room07V1Chain4:
     ShowRoomDialog 132
     DelayedRespawnRowAndRunChain 0, Room07V1Group3_id, 0
     SetQuestState 1, 246
-    DespawnTileObject Room07V1Group2_id, 2
+    DespawnTileActor Room07V1Group2_id, 2
     End
 Room07V1Chain5:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Better return to your seat, miss. We'll be at Hogsmeade very shortly."
     ShowRoomDialog 133
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
     EndSubBlock Room07V1End
 
@@ -115,34 +115,34 @@ Room07V2Chain0:
     End
 Room07V2Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "I've sold out of chocolate, I'm afraid."
     ShowRoomDialog 137
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room07V2Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 227
     SetQuestState 1, 226
-    QueueTileObjectMove Room07V2Group0_id, 0, 0, 0, 1700, 0
+    QueueTileActorMove Room07V2Group0_id, 0, 0, 0, 1700, 0
     @ "A bar of chocolate, please."
     @ "There you are, my dear. That'll be one Sickle."
     @ "Thanks."
     ShowRoomDialog 136
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 0
+    QueueTileActorMove 0, 255, 0, 0, 1500, 0
     DelayedRespawnRowAndRunChain 0, Room07V2Group2_id, 0
-    DespawnTileObject Room07V2Group1_id, 0
-    DespawnTileObject Room07V2Group1_id, 1
+    DespawnTileActor Room07V2Group1_id, 0
+    DespawnTileActor Room07V2Group1_id, 1
     SetQuestState 1, 246
-    DespawnTileObject Room07V2Group1_id, 2
+    DespawnTileActor Room07V2Group1_id, 2
     SetQuestState 6, 6
     SetQuestState QUEST_OBJ_RETURN_TO_LUPIN, QUEST_OBJECTIVE_INDEX
     GrantRoomReward 76, 0
 .ifdef VERSION_JP
     ShowRewardPickupMessage 76
 .endif
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room07V2Chain3:
     ArmChainYield 1
@@ -162,7 +162,7 @@ Room07V2Chain6:
     GotoIfQuestStateCompare 227, 0, 0, 0, Room07V2Chain7_id, 0, 0
     End
 Room07V2Chain7:
-    DespawnTileObject Room07V2Group1_id, 2
+    DespawnTileActor Room07V2Group1_id, 2
     End
 Room07V2Chain8:
     @ "Sorry, I can't help you at the moment."

@@ -3,12 +3,12 @@
 #include "game/game_modes.h"
 
 // Party-side counterpart to InitMonsterBattleActor: allocates the fighter's
-// Actor, hardwires pObject->pfnTick = TickPlayerActionState, then populates
+// Actor, hardwires pActor->pfnTick = TickPlayerActionState, then populates
 // the BattleFighter from g_aPartyMasterStats (Harry/Hermione/Ron) or from
 // hardcoded values (Buckbeak). See docs/memory-map/battle.md.
 Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex)
 {
-    Actor *pObject;
+    Actor *pActor;
     u8 type = fighterType;
     u8 slot = battleSlotIndex;
     u8 i;
@@ -16,24 +16,24 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
     s32 posY;
     u8 **ppAnimCursor;
 
-    pObject = AllocDefaultActor();
-    pObject->wActorType = type;
-    pObject->bUnk_0x7C = 0;
+    pActor = AllocDefaultActor();
+    pActor->wActorType = type;
+    pActor->bUnk_0x7C = 0;
 
-    pObject->oam.priority = 1;
+    pActor->oam.priority = 1;
     posY = slot * 0x40000 + 0x6E0000;
-    SnapActorPosition(pObject, 0, posY);
-    StartActorMove(pObject, (0xD4 - slot * 9 * 4) << 16, posY, 0x19);
-    sub_08003A44(pObject, 0, 0x400, 0xC);
+    SnapActorPosition(pActor, 0, posY);
+    StartActorMove(pActor, (0xD4 - slot * 9 * 4) << 16, posY, 0x19);
+    sub_08003A44(pActor, 0, 0x400, 0xC);
 
-    pObject->bDepthSortBias = 0x40;
-    pObject->dwUnk_0x28 = 1;
-    pObject->dwFlags = 0x20006011;
+    pActor->bDepthSortBias = 0x40;
+    pActor->dwUnk_0x28 = 1;
+    pActor->dwFlags = 0x20006011;
 
-    SetActorActionState(pObject, 0xF);
+    SetActorActionState(pActor, 0xF);
 
-    pObject->anim.bAnimFrameDelay = 1;
-    pObject->pfnTick = TickPlayerActionState;
+    pActor->anim.bAnimFrameDelay = 1;
+    pActor->pfnTick = TickPlayerActionState;
     fighter->bFighterType = type;
 
     if (type < 3)
@@ -48,7 +48,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
         } while (i <= 9);
     }
 
-    fighter->pObject = pObject;
+    fighter->pActor = pActor;
 
     if (g_PrevGameModeStackContext.dwCurrentGameMode != FolioUniversitas)
     {
@@ -101,24 +101,24 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
 
     if (hp == 0)
     {
-        AttachObjectPaletteUnshared(pObject, g_aFighterAnimTable[type].aRecords[8].pPalette);
-        SetActorAssetRecord(pObject, &g_aFighterAnimTable[type].aRecords[8]);
-        SetActorAnimFrame(pObject, 8);
-        SetActorActionState(pObject, 0);
-        pObject->bActionFlags = hp;  // hp == 0 on this path; keeps hp in sb
-        pObject->dwFlags &= ~0x10;
-        SnapActorPosition(pObject, (0xD4 - slot * 9 * 4) << 16, slot * 0x40000 + 0x6E0000);
+        AttachActorPaletteUnshared(pActor, g_aFighterAnimTable[type].aRecords[8].pPalette);
+        SetActorAssetRecord(pActor, &g_aFighterAnimTable[type].aRecords[8]);
+        SetActorAnimFrame(pActor, 8);
+        SetActorActionState(pActor, 0);
+        pActor->bActionFlags = hp;  // hp == 0 on this path; keeps hp in sb
+        pActor->dwFlags &= ~0x10;
+        SnapActorPosition(pActor, (0xD4 - slot * 9 * 4) << 16, slot * 0x40000 + 0x6E0000);
         fighter->nFaintedFlag = -1;
     }
     else
     {
-        AttachObjectPaletteUnshared(pObject, g_aFighterAnimTable[type].aRecords[0].pPalette);
-        SetActorAnimData(pObject, &g_aFighterAnimTable[type], g_aFighterAnimDataTable[type][0], 0);
+        AttachActorPaletteUnshared(pActor, g_aFighterAnimTable[type].aRecords[0].pPalette);
+        SetActorAnimData(pActor, &g_aFighterAnimTable[type], g_aFighterAnimDataTable[type][0], 0);
         // Via a temp: storing the field directly recolors the function.
         // The [0] reload folds back onto the base register, no extra move.
-        ppAnimCursor = &pObject->anim.pAnimFrameCursor;
-        *ppAnimCursor = pObject->anim.pAnimFrameBase + slot * 4 + 2;
-        SetActorAnimFrame(pObject, (*ppAnimCursor)[0]);
+        ppAnimCursor = &pActor->anim.pAnimFrameCursor;
+        *ppAnimCursor = pActor->anim.pAnimFrameBase + slot * 4 + 2;
+        SetActorAnimFrame(pActor, (*ppAnimCursor)[0]);
     }
-    return pObject;
+    return pActor;
 }

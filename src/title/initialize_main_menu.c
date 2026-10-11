@@ -17,7 +17,7 @@
 void InitializeMainMenu(void)
 {
     ResetSaveStateForNewGame();
-    ClearRoomObjectStateBuffer();
+    ClearRoomActorStateBuffer();
 
     // Arg2 is the entry to highlight first.
     g_GameModeStackContext.dwModeState = 0;

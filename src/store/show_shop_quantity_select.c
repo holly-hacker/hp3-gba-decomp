@@ -23,12 +23,12 @@ void ShowShopQuantitySelect(void)
     g_FredAndGeorgesShop.itemIconGfx.pTileGfx = (void *)tiles;
     g_FredAndGeorgesShop.itemIconGfx.pFrameData = (void *)frames;
     SetActorAssetRecord(g_FredAndGeorgesShop.pItemIcon, &g_FredAndGeorgesShop.itemIconGfx);
-    SetObjectScaleStep(g_FredAndGeorgesShop.pItemIcon, 0);
+    SetActorScaleStep(g_FredAndGeorgesShop.pItemIcon, 0);
 
-    g_FredAndGeorgesShop.pLeftArrow = SpawnMenuCursorObject(2);
+    g_FredAndGeorgesShop.pLeftArrow = SpawnMenuCursorActor(2);
     SetActorAnimFrame(g_FredAndGeorgesShop.pLeftArrow, 3);
     SetMenuCursorPosition(g_FredAndGeorgesShop.pLeftArrow, 0x20, 0x68);
-    g_FredAndGeorgesShop.pRightArrow = SpawnMenuCursorObject(2);
+    g_FredAndGeorgesShop.pRightArrow = SpawnMenuCursorActor(2);
     SetActorAnimFrame(g_FredAndGeorgesShop.pRightArrow, 1);
     SetMenuCursorPosition(g_FredAndGeorgesShop.pRightArrow, 0xD0, 0x68);
 

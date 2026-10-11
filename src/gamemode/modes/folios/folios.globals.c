@@ -7,7 +7,7 @@ const ListMenuEntry g_aFoliosEntries[2] = {
     { FolioBruti,       0x8F4, 0, 1 },  // "Folio Bruti"
 };
 
-const ListMenuRowObject g_aFoliosRowObjects[2] = {
+const ListMenuRowActor g_aFoliosRowActors[2] = {
     { (void *)gInGameMenuIconFoliosTiles, (void *)gInGameMenuIconFoliosFrames, (const ObjPalette *)gInGameMenuIconFoliosPalette, 0 },
     { (void *)gInGameMenuIconFoliosTiles, (void *)gInGameMenuIconFoliosFrames, (const ObjPalette *)gInGameMenuIconFoliosPalette, 0 },
 };
@@ -20,9 +20,9 @@ const ListMenuDefinition g_FoliosMenuDefinition = {
     72, 26,
     0, 16,
     g_aFoliosEntries,
-    ARRAY_COUNT(g_aFoliosRowObjects),
+    ARRAY_COUNT(g_aFoliosRowActors),
     0,
     -32, 0,
-    g_aFoliosRowObjects,
+    g_aFoliosRowActors,
     -48, 8,
 };

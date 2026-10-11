@@ -91,14 +91,14 @@ Room02V1Chain1:
     End
 Room02V1Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     GrantPartyExperience 10, 65535
     PlayRoomSoundEffect 24
     DelayedRespawnRowAndRunChain 0, Room02V1Group1_id, 0
     SetQuestState QUEST_OBJ_RETURN_INGREDIENTS_TO_SNAPE, QUEST_OBJECTIVE_INDEX
     @ "There, we have all the ingredients. Now we need to get them back to class."
     ShowRoomDialog 318
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room02V1Chain3:
     ArmChainYield 1
@@ -106,13 +106,13 @@ Room02V1Chain3:
     ReturnToOverworld 1, 1
     End
 Room02V1Chain4:
-    DespawnTileObject Room02V1Group2_id, 1
+    DespawnTileActor Room02V1Group2_id, 1
     StartBattle 9, 0, Room02V1Chain5_id
     End
 Room02V1Chain5:
     SetQuestState 17, 14
     End
 Room02V1Chain6:
-    StartObjectAnimSequence Room02V1Group2_id, 1, 0, 0, Room02V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room02V1Group2_id, 1, 0, 0, Room02V1Route0_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room02V1End

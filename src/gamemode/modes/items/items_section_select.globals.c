@@ -11,7 +11,7 @@ const ListMenuEntry g_aItemsSectionEntries[3] = {
 
 const u32 g_aItemsSectionFilters[3] = { 0xA, ItemCategoryPotion, ItemCategoryMisc };
 
-const ListMenuRowObject g_aItemsSectionRowObjects[3] = {
+const ListMenuRowActor g_aItemsSectionRowActors[3] = {
     { (void *)gItemsSectionIconAllTiles, (void *)gItemsSectionIconAllFrames, (const ObjPalette *)gItemsSectionIconAllPalette, 0 },
     { (void *)gItemsSectionIconPotionsTiles, (void *)gItemsSectionIconPotionsFrames, (const ObjPalette *)gItemsSectionIconPotionsPalette, 0 },
     { (void *)gItemsSectionIconMiscTiles, (void *)gItemsSectionIconMiscFrames, (const ObjPalette *)gItemsSectionIconMiscPalette, 0 },
@@ -25,9 +25,9 @@ const ListMenuDefinition g_ItemsSectionMenuDefinition = {
     72, 26,
     0, 16,
     g_aItemsSectionEntries,
-    ARRAY_COUNT(g_aItemsSectionRowObjects),
+    ARRAY_COUNT(g_aItemsSectionRowActors),
     0,
     -32, 0,
-    g_aItemsSectionRowObjects,
+    g_aItemsSectionRowActors,
     -48, 8,
 };

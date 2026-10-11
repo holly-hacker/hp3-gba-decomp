@@ -11,10 +11,10 @@ void ExitDivinationTeaMinigame(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     SetAlphaBlendTargets(0, 0);
 
-    if (g_DivinationTea.pCursorObject != NULL)
+    if (g_DivinationTea.pCursorActor != NULL)
     {
-        ReleaseMenuCursor(g_DivinationTea.pCursorObject);
-        g_DivinationTea.pCursorObject = NULL;
+        ReleaseMenuCursor(g_DivinationTea.pCursorActor);
+        g_DivinationTea.pCursorActor = NULL;
         FreeAllParticleEmitters();
         FreeAllParticles();
     }

@@ -22,7 +22,7 @@ void InitializeCardTrade(void)
         BuildListMenu(&g_CardTradeMenuDefinition);
         LoadMenuScreenOverlay(gCardTradeOverlay, 0, 0);
         RefreshCardTradeSlots();
-        SpawnCardTradeCardObjects();
+        SpawnCardTradeCardActors();
         PlayScreenTransitionInByIndex(0x3F, 2);
     }
     else

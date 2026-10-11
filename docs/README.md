@@ -46,8 +46,8 @@ Memory map (live RAM layout and the code that drives it):
   handler), `ShowBattleMessage`'s case→dialog-text table, Harry's 16
   Folio Universitas cards, and Hermione's/Ron's Special Moves.
 - [`memory-map/heap.md`](memory-map/heap.md) — the heap allocator
-  (`MemPool`/`MemBlock`, first-fit alloc/free) and the object pool built
-  on top of it; the two ARM-mode object-list functions and why they're
+  (`MemPool`/`MemBlock`, first-fit alloc/free) and the actor pool built
+  on top of it; the two ARM-mode actor-list functions and why they're
   blocked on the toolchain, not on matching difficulty.
 - [`memory-map/particles.md`](memory-map/particles.md) — particle emitters
   and particles: pools, the per-frame tick, the spawn draw order, which
@@ -88,7 +88,7 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   bestiary grid. Table lives as committed C in `src/battle/monsters.c`.
 - [`formats/graphics.md`](formats/graphics.md) — the generic
   resource-decompression dispatchers and codec inventory, the room
-  resource table, OBJ palette and tile loading, PNG sprite banks, and object
+  resource table, OBJ palette and tile loading, PNG sprite banks, and actor
   animation command streams. Pipeline: `tools/graphics/`, `data/graphics/`.
 - [`formats/items.md`](formats/items.md) — `g_pItemTable`, the item
   record layout, equipment stats, per-character equip eligibility, and

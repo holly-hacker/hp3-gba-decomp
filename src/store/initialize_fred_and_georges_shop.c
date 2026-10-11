@@ -12,8 +12,8 @@ void InitializeFredAndGeorgesShop(void)
 
     g_FredAndGeorgesShop.bSoldItem = 0;
     clear = NULL;
-    for (i = ARRAY_COUNT(g_FredAndGeorgesShop.apRowObjects) - 1; i >= 0; i--)
-        g_FredAndGeorgesShop.apRowObjects[i] = clear;
+    for (i = ARRAY_COUNT(g_FredAndGeorgesShop.apRowActors) - 1; i >= 0; i--)
+        g_FredAndGeorgesShop.apRowActors[i] = clear;
 
     zero = 0;
     InitializeMenuScreen(0x53A, 9, 0, NULL, 0, 0);  // "Fred and George's Shop"

@@ -173,64 +173,64 @@ Room00V1Chain0:
     End
 Room00V1Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnTileObject Room00V1Group5_id, 0
+    CancelActorAnimSequence 0, 255
+    DespawnTileActor Room00V1Group5_id, 0
     @ "Sorry we're late - oh, Professor Snape!"
     ShowRoomDialog 409
     ArmChainYield 0
-    StartObjectAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route5_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room00V1Group1_id, 0, 0, 0, 2200, 0
+    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route5_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room00V1Group1_id, 0, 0, 0, 2200, 0
     End
 Room00V1Chain2:
     ArmChainYield 0
-    StartObjectAnimSequence Room00V1Group4_id, 0, 0, 0, Room00V1Route6_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group4_id, 1, 0, 0, Room00V1Route1_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group4_id, 2, 0, 0, Room00V1Route1_id, 2, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group3_id, 0, 0, 0, Room00V1Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route2_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group2_id, 0, 0, 0, Room00V1Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group4_id, 3, 0, 0, Room00V1Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group4_id, 4, 0, 0, Room00V1Route0_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group4_id, 5, 0, 0, Room00V1Route0_id, 2, 1, 0, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 400, 0
+    StartActorAnimSequence Room00V1Group4_id, 0, 0, 0, Room00V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group4_id, 1, 0, 0, Room00V1Route1_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group4_id, 2, 0, 0, Room00V1Route1_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group3_id, 0, 0, 0, Room00V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group2_id, 0, 0, 0, Room00V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group4_id, 3, 0, 0, Room00V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group4_id, 4, 0, 0, Room00V1Route0_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group4_id, 5, 0, 0, Room00V1Route0_id, 2, 1, 0, 0, 0
+    QueueTileActorMove 0, 255, 0, 0, 400, 0
     End
 Room00V1Chain3:
-    SetTileObjectFacing Room00V1Group3_id, 0, 2
+    SetTileActorFacing Room00V1Group3_id, 0, 2
     End
 Room00V1Chain4:
-    SetTileObjectFacing 0, 255, 4
+    SetTileActorFacing 0, 255, 4
     End
 Room00V1Chain5:
-    SetTileObjectFacing Room00V1Group2_id, 0, 6
+    SetTileActorFacing Room00V1Group2_id, 0, 6
     End
 Room00V1Chain6:
-    DespawnTileObject Room00V1Group4_id, 0
-    DespawnTileObject Room00V1Group4_id, 4
-    DespawnTileObject Room00V1Group4_id, 3
-    DespawnTileObject Room00V1Group4_id, 1
-    DespawnTileObject Room00V1Group4_id, 2
-    DespawnTileObject Room00V1Group4_id, 5
+    DespawnTileActor Room00V1Group4_id, 0
+    DespawnTileActor Room00V1Group4_id, 4
+    DespawnTileActor Room00V1Group4_id, 3
+    DespawnTileActor Room00V1Group4_id, 1
+    DespawnTileActor Room00V1Group4_id, 2
+    DespawnTileActor Room00V1Group4_id, 5
     End
 Room00V1Chain7:
-    DespawnRoomRowObjects Room00V1Group4_id
+    DespawnRoomRowActors Room00V1Group4_id
     ArmChainYield 1
     @ "I've already read a great deal about werewolves... I even know how to imitate a werewolf's howl."
     @ "Well, good for you, Hermione. I'm sure that'll come in really useful one day."
     @ "Let's get going."
     ShowRoomDialog 412
-    StartTileObjectScript 422, 139, 1, 0, 255, 0, 0, 4, 255, 255, 255
-    StartTileObjectScript 422, 139, 1, Room00V1Group2_id, 0, 0, 0, 2, 255, 255, 255
-    DespawnTileObject Room00V1Group2_id, 0
+    StartTileActorScript 422, 139, 1, 0, 255, 0, 0, 4, 255, 255, 255
+    StartTileActorScript 422, 139, 1, Room00V1Group2_id, 0, 0, 0, 2, 255, 255, 255
+    DespawnTileActor Room00V1Group2_id, 0
     RecruitPartyFollower 7
-    StartTileObjectScript 422, 139, 1, Room00V1Group3_id, 0, 0, 0, 2, 255, 255, 255
-    DespawnTileObject Room00V1Group3_id, 0
+    StartTileActorScript 422, 139, 1, Room00V1Group3_id, 0, 0, 0, 2, 255, 255, 255
+    DespawnTileActor Room00V1Group3_id, 0
     RecruitPartyFollower 6
     SetStoryStage 8
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room00V1Chain8:
     ArmChainYield 1
-    SetTileObjectFacing Room00V1Group1_id, 0, 4
+    SetTileActorFacing Room00V1Group1_id, 0, 4
     RespawnRowAndRunChain Room00V1Group3_id, 0
     RespawnRowAndRunChain Room00V1Group2_id, 0
     RemovePartyFollower 6
@@ -238,16 +238,16 @@ Room00V1Chain8:
     @ "This lesson began ten minutes ago, Potter. Sit down."
     ShowRoomDialog 410
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route19_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route19_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain9:
     ArmChainYield 1
-    SetTileObjectFacing Room00V1Group1_id, 0, 2
+    SetTileActorFacing Room00V1Group1_id, 0, 2
     @ "Professor Lupin says he's feeling too ill to teach today."
     @ "I would like you all to go to the library and research the subject of - werewolves. Now, run along."
     ShowRoomDialog 411
     SetQuestState QUEST_OBJ_GO_TO_LIBRARY_FOR_DADA, QUEST_OBJECTIVE_INDEX
-    DespawnRoomRowObjects Room00V1Group6_id
+    DespawnRoomRowActors Room00V1Group6_id
     DelayedRespawnRowAndRunChain 0, Room00V1Group4_id, 0
     InvokeChainIfEnabled 0, Room00V1Chain2_id
     End
@@ -264,103 +264,103 @@ Room00V1Chain11:
     End
 Room00V1Chain12:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ResetPartyLeaderSelection
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route10_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route8_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain13:
     ArmChainYield 1
     @ "Potter, Weasley... where is your research?"
     ShowRoomDialog 423
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route11_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route11_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain14:
     ArmChainYield 1
     RespawnRowAndRunChain Room00V1Group8_id, 0
     @ "Here it is, Professor!"
     ShowRoomDialog 424
-    SetTileObjectFacing 0, 255, 2
-    QueueTileObjectMove Room00V1Group8_id, 0, 0, 0, 1600, 0
+    SetTileActorFacing 0, 255, 2
+    QueueTileActorMove Room00V1Group8_id, 0, 0, 0, 1600, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     RemovePartyFollower 7
     RespawnRowAndRunChain Room00V1Group10_id, 0
     Unk02 Room00V1Group8_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route9_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route16_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route16_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain15:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectFacing Room00V1Group1_id, 0, 2
+    SetTileActorFacing Room00V1Group1_id, 0, 2
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "This is... acceptable."
     ShowRoomDialog 425
-    SetTileObjectFacing 0, 255, 6
+    SetTileActorFacing 0, 255, 6
     GrantPartyExperience 10, 65535
     PlayRoomSoundEffect 24
     DelayedRespawnRowAndRunChain 1, 0, 0
     RemovePartyFollower 6
-    QueueTileObjectMove 0, 255, 0, 0, 1800, 0
-    SetTileObjectFacing 0, 255, 6
+    QueueTileActorMove 0, 255, 0, 0, 1800, 0
+    SetTileActorFacing 0, 255, 6
     ArmChainYield 0
-    StartObjectAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route12_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route12_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain16:
     ArmChainYield 1
-    SetTileObjectFacing Room00V1Group8_id, 0, 2
+    SetTileActorFacing Room00V1Group8_id, 0, 2
     @ "Hermione, how did you write that up so quickly?"
     @ "Umm... like I said, I'd read the book before. See you later..."
     ShowRoomDialog 426
     ArmChainYield 0
-    StartObjectAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route13_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route13_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain17:
     ArmChainYield 1
-    DespawnRoomRowObjects Room00V1Group8_id
+    DespawnRoomRowActors Room00V1Group8_id
     @ "Ever get the feeling there's something funny going on with her?"
     @ "More and more... C'mon, let's get back to the common room."
     ShowRoomDialog 427
     ClearQuestStateUpperHalf
     SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_DADA, QUEST_OBJECTIVE_INDEX
     SetStoryStage 14
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room00V1Chain18:
     ArmChainYield 1
     @ "Uhhh..."
     ShowRoomDialog 428
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route15_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route15_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain19:
     ArmChainYield 1
-    QueueTileObjectMove Room00V1Group1_id, 0, 0, 0, 500, 0
+    QueueTileActorMove Room00V1Group1_id, 0, 0, 0, 500, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route17_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route17_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain20:
     ArmChainYield 1
-    DespawnRoomRowObjects Room00V1Group10_id
-    SetTileObjectFacing Room00V1Group8_id, 0, 6
+    DespawnRoomRowActors Room00V1Group10_id
+    SetTileActorFacing Room00V1Group8_id, 0, 6
     RecruitPartyFollower 7
     RecruitPartyFollower 6
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route18_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route18_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain21:
     @ "Locked."
     ShowRoomDialog 624
     End
 Room00V1Chain22:
-    StartObjectAnimSequence 0, 255, 0, 0, Room00V1Route14_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route14_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain23:
-    StartObjectAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route7_id, 0, 1, 0, 0, 0
     End
     EndSubBlock Room00V1End

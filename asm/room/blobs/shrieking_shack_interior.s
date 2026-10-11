@@ -116,16 +116,16 @@ Room43V1Chain1:
     @ "I think we're in the Shrieking Shack - the most haunted building in Britain."
     @ "Probably a good place for Black to hide. Ron must be here somewhere... we have to find him!"
     ShowRoomDialog 561
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room43V1Chain2:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RemovePartyFollower 6
     RespawnRowAndRunChain Room43V1Group2_id, 0
     Unk02 Room43V1Group2_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room43V1Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room43V1Group2_id, 0, 0, 0, Room43V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room43V1Group2_id, 0, 0, 0, Room43V1Route1_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain3:
     GotoIfStoryStageCompare 0, 23, Room43V1Chain13_id, 0, Room43V1Group1_id, Room43V1Group4_id
@@ -136,78 +136,78 @@ Room43V1Chain4:
     @ "Ron - are you OK? Where's the dog?"
     @ "Not a dog. Harry, it's a trap... Black is the dog... he's an Animagus..."
     ShowRoomDialog 572
-    SetTileObjectFacing Room43V1Group2_id, 0, 2
-    SetTileObjectFacing 0, 255, 2
+    SetTileActorFacing Room43V1Group2_id, 0, 2
+    SetTileActorFacing 0, 255, 2
     ArmChainYield 0
-    QueueTileObjectMove Room43V1Group3_id, 0, 0, 0, 600, 0
-    StartObjectAnimSequence Room43V1Group3_id, 0, 0, 0, Room43V1Route6_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room43V1Group3_id, 0, 0, 0, 600, 0
+    StartActorAnimSequence Room43V1Group3_id, 0, 0, 0, Room43V1Route6_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain5:
     ArmChainYield 1
-    SetTileObjectFacing Room43V1Group3_id, 1, 0
+    SetTileActorFacing Room43V1Group3_id, 1, 0
     Unk02 Room43V1Group3_id, 1, 1
     @ "Where is he, Sirius? Where is Peter Pettigrew?"
     @ "Over there..."
     ShowRoomDialog 573
-    QueueTileObjectMove Room43V1Group1_id, 2, 0, 0, 1200, 0
-    StartTileObjectScript 214, 111, 0, Room43V1Group3_id, 1, 0, 0, 6, 255, 255, 255
-    SetTileObjectFacing Room43V1Group3_id, 1, 6
+    QueueTileActorMove Room43V1Group1_id, 2, 0, 0, 1200, 0
+    StartTileActorScript 214, 111, 0, Room43V1Group3_id, 1, 0, 0, 6, 255, 255, 255
+    SetTileActorFacing Room43V1Group3_id, 1, 6
     @ "Squeak!"
     @ "Ah, there you are, Peter. Ready, Sirius?"
     ShowRoomDialog 574
     ArmChainYield 0
-    StartObjectAnimSequence Room43V1Group3_id, 0, 0, 0, Room43V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room43V1Group3_id, 0, 0, 0, Room43V1Route3_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain6:
     ArmChainYield 1
-    PlayTileObjectAnimation Room43V1Group3_id, 0, 26
-    PlayTileObjectAnimation Room43V1Group3_id, 1, 18
+    PlayTileActorAnimation Room43V1Group3_id, 0, 26
+    PlayTileActorAnimation Room43V1Group3_id, 1, 18
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
     PlaySoundById 41
-    PlayTileObjectAnimation Room43V1Group1_id, 2, 12
+    PlayTileActorAnimation Room43V1Group1_id, 2, 12
     RespawnRowAndRunChain Room43V1Group6_id, 0
-    DespawnTileObject Room43V1Group1_id, 2
+    DespawnTileActor Room43V1Group1_id, 2
     RespawnRowAndRunChain Room43V1Group5_id, 0
     RespawnRowAndRunChain Room43V1Group7_id, 0
-    DespawnRoomRowObjects Room43V1Group3_id
+    DespawnRoomRowActors Room43V1Group3_id
     PlayCutscene 8, 0, Room43V1Chain7_id
     End
 Room43V1Chain7:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
     @ "S-Sirius... R-Remus... My friends... my old friends..."
     @ "I broke out of Azkaban, not to get at you, Harry, but to seek revenge on Pettigrew. It was Pettigrew who betrayed your parents, and made it look like I had betrayed them."
     @ "You don't understand! The Dark Lord was taking over everywhere! He would have killed me!"
     @ "You should have realized. If Voldemort didn't kill you, we would. Goodbye, Peter."
     ShowRoomDialog 575
-    StartTileObjectScript 115, 105, 0, 0, 255, 0, 0, 2, 255, 255, 255
-    SetTileObjectFacing Room43V1Group6_id, 0, 4
-    QueueTileObjectMove 0, 255, 0, 0, 400, 0
+    StartTileActorScript 115, 105, 0, 0, 255, 0, 0, 2, 255, 255, 255
+    SetTileActorFacing Room43V1Group6_id, 0, 4
+    QueueTileActorMove 0, 255, 0, 0, 400, 0
     @ "NO! You can't kill him. I don't reckon my dad would've wanted his best friends to become killers. He can go to Azkaban."
     @ "Very well, Harry. You're the only person who has the right to decide. We'll take him back to Hogwarts."
     ShowRoomDialog 576
     RespawnRowAndRunChain Room43V1Group4_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room43V1Group2_id, 0, 0, 0, Room43V1Route5_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room43V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room43V1Group2_id, 0, 0, 0, Room43V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route7_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain8:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     Unk02 Room43V1Group3_id, 1, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room43V1Group3_id, 1, 0, 0, Room43V1Route2_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room43V1Group3_id, 1, 0, 0, 800, 0
+    StartActorAnimSequence Room43V1Group3_id, 1, 0, 0, Room43V1Route2_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room43V1Group3_id, 1, 0, 0, 800, 0
     End
 Room43V1Chain9:
     ArmChainYield 1
-    DespawnTileObject Room43V1Group2_id, 0
+    DespawnTileActor Room43V1Group2_id, 0
     RecruitPartyFollower 6
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room43V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route8_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain10:
-    StartObjectAnimSequence Room43V1Group3_id, 1, 0, 0, Room43V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room43V1Group3_id, 1, 0, 0, Room43V1Route4_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain11:
     ArmChainYield 1
@@ -218,14 +218,14 @@ Room43V1Chain12:
     ArmChainYield 1
     SetQuestState 1, 235
     SetQuestState QUEST_OBJ_RETURN_TO_HOGWARTS, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room43V1Chain13:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
     SetQuestState QUEST_OBJ_FIND_RON, QUEST_OBJECTIVE_INDEX
-    StartObjectAnimSequence 0, 255, 0, 0, Room43V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route9_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain14:
     ResetPartyLeaderSelection

@@ -47,7 +47,7 @@ typedef struct BattleFighter {
     /*0x01*/ u8 bRosterIndex;
     /*0x02*/ u8 unk02;
     /*0x03*/ u8 bSlotParam;
-    /*0x04*/ Actor *pObject;
+    /*0x04*/ Actor *pActor;
     /*0x08*/ u16 wHp;
     /*0x0A*/ u16 wMp;
     /*0x0C*/ u16 wRewardXp;
@@ -161,15 +161,15 @@ typedef struct FightState {
     // allocated by SpawnTurnOrderIcon; each container's pLinkedActor_candidate
     // is its portrait sprite, which SetActorAnimFrame/SetFighterTurnOrderIconDone
     // actually animate. See docs/memory-map/battle.md.
-    /*0x818*/ Actor *apTurnOrderIconObjects[7];
+    /*0x818*/ Actor *apTurnOrderIconActors[7];
     // ExitBattle's Folio Universitas/Help resume path snapshots every live
     // (0-bFighterCount) then pending (0-bPendingFighterCount_candidate)
-    // fighter's Actor here, densely packed, before the real Objects are
-    // torn down -- exactly 7 slots (the same total as g_apFighterObjects_candidate)
+    // fighter's Actor here, densely packed, before the real Actors are
+    // torn down -- exactly 7 slots (the same total as g_apFighterActors_candidate)
     // fill this to FightState's 0x104C boundary.
-    /*0x834*/ Actor aSuspendedFighterObjects_candidate[7];
+    /*0x834*/ Actor aSuspendedFighterActors_candidate[7];
     /*0x104C*/ FixedPoint savedPos;  // copy of the attacker's Actor.pos
-    /*0x1054*/ void *pAttackAnimObject_candidate;
+    /*0x1054*/ void *pAttackAnimActor_candidate;
     /*0x1058*/ u8 bAttackAnimState_candidate;
     /*0x1059*/ u8 aEnemySlotTurnOrderIndex[4];
     /*0x105D*/ u8 aAllySlotTurnOrderIndex[3];
@@ -234,7 +234,7 @@ extern void sub_0802D640(u8 priority);
 extern void sub_0802D3BC(void);
 
 // One slot per active BattleFighter -- see docs/formats/battle-ui.md.
-extern Actor *g_apFighterObjects_candidate[7];
+extern Actor *g_apFighterActors_candidate[7];
 
 // The Folio Universitas card slot lives at +8 (dwCurrentGameModeArg2) in
 // g_PrevGameModeStackContext (see game_modes.h): PushGameMode_2(0x26, slot, 0) stages
@@ -291,7 +291,7 @@ typedef enum {
 
 extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
 extern s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance);
-extern void SpawnParalysisEffect(Actor *obj);
+extern void SpawnParalysisEffect(Actor *actor);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void OpenEnemyTargetMenu_candidate(u8 fighterIndex);  // bMenuScreen 6, 0x08012B98
 extern void OpenAllyTargetMenu(u8 fighterIndex);             // bMenuScreen 8, 0x080107BC
@@ -299,13 +299,13 @@ extern void OpenPendingFighterMenu_candidate(u8 fighterIndex);  // bMenuScreen 9
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
-extern void UpdateFighterFlashEffect_candidate(Actor *obj);  // 0x08015574
-extern void CheckBattleVictory(Actor *obj);                  // 0x080186E0
+extern void UpdateFighterFlashEffect_candidate(Actor *actor);  // 0x08015574
+extern void CheckBattleVictory(Actor *actor);                  // 0x080186E0
 extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
 extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s32 damage);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void SetPlayerObjectAnim(Actor *obj, s32 state);   // 0x08015484, party fighter anim tables
-extern void SetMonsterObjectAnim(Actor *obj, u8 state);  // 0x0801539C, monster gfx tables + shadow
+extern void SetPlayerActorAnim(Actor *actor, s32 state);   // 0x08015484, party fighter anim tables
+extern void SetMonsterActorAnim(Actor *actor, u8 state);  // 0x0801539C, monster gfx tables + shadow
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
 extern Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
 extern s32 sub_08026CDC(s32 spellLevel);
@@ -327,7 +327,7 @@ extern const u8 g_abSpecialMoveEffectId[3];      // 0x0805150A
 extern u16 g_nLastDamage;                       // 0x0300274A
 extern u8 g_bLastTargetIndex;                   // 0x0300274C
 // Battle-effect staging area at 0x03002750. TriggerBattleEffect fills the
-// fields below before spawning the effect object; the low bytes belong to
+// fields below before spawning the effect actor; the low bytes belong to
 // other battle state (see docs/memory-map/battle.md).
 typedef struct EffectStaging {
     ParticleEmitter *pEmitter_candidate;  // 0x00, emitter spawned by the last emitter opcode
@@ -350,11 +350,11 @@ extern EffectStaging g_effectStaging;                 // 0x03002750
 extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
 extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
 extern void sub_08012B40(void);
-extern void sub_08003A30(void *obj, s32 a, s16 b, s16 c);  // a is shifted << 8 inside and stored to a 16-bit field
+extern void sub_08003A30(void *actor, s32 a, s16 b, s16 c);  // a is shifted << 8 inside and stored to a 16-bit field
 extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void ShowItemUseResult(Actor *obj, s32 targetIndex);
+extern void ShowItemUseResult(Actor *actor, s32 targetIndex);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
 extern void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex);  // 0x08017F98
 extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
@@ -370,7 +370,7 @@ extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
 // per-wActorType windup-flash resource pointer row, stride 0xA0
 // One row per FighterType: sprite records selected by animation state
-// (SetPlayerObjectAnim). Record 0 is the live sprite, 6 and 7 carry the
+// (SetPlayerActorAnim). Record 0 is the live sprite, 6 and 7 carry the
 // windup flash palettes, 8 is the fainted sprite.
 typedef struct FighterAnimRow {
     ActorAssetRecord aRecords[10];
@@ -378,11 +378,11 @@ typedef struct FighterAnimRow {
 extern const FighterAnimRow g_aFighterAnimTable[4];  // 0x08051248, src/graphics/assets/fighter_anim_table.c
 extern const u8 g_aFighterAnimDataTable[4][10][58];  // 0x08051560, [fighter][anim state]
 
-extern void TickPlayerActionState(Actor *obj);
-extern void TickFighterAttackAnimState_candidate(Actor *obj);  // 0x08015608
+extern void TickPlayerActionState(Actor *actor);
+extern void TickFighterAttackAnimState_candidate(Actor *actor);  // 0x08015608
 extern void *memcpy(void *dst, const void *src, u32 n);
 extern void InitBattleBackground_candidate(void);
-extern void RestoreFighterObjects_candidate(void);
+extern void RestoreFighterActors_candidate(void);
 extern void SetupBattleRoster(void);
 extern u32 GetPartyPresenceMask(void);
 extern u32 GetPartySize(void);
@@ -402,12 +402,12 @@ extern void sub_08031668(s32 arg0, s32 arg1);
 extern void sub_08026254(void);
 extern void sub_0802D6B8(void);
 extern void sub_08007A90(void);
-extern void ClearFighterObjectFlag_candidate(u8 fighterIndex);  // 0x08012CB4
-extern void ClearRoomObjectStateBuffer(void);  // memsets g_pRoomObjectStateBuffer (0x20BC bytes); see docs/formats/save.md
+extern void ClearFighterActorFlag_candidate(u8 fighterIndex);  // 0x08012CB4
+extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes); see docs/formats/save.md
 
-// Battle-message icon object (shown alongside ShowBattleMessage's text),
-// distinct from the 7 per-fighter Objects in g_apFighterObjects_candidate.
-extern Actor *g_pBattleMessageIconObject_candidate;  // 0x03002684
+// Battle-message icon actor (shown alongside ShowBattleMessage's text),
+// distinct from the 7 per-fighter Actors in g_apFighterActors_candidate.
+extern Actor *g_pBattleMessageIconActor_candidate;  // 0x03002684
 extern u32 g_bSelectedFighterSlot_candidate;          // 0x03002660
 
 // bIndex/dwParam are adjacent globals (0x03002688/0x0300268C) accessed

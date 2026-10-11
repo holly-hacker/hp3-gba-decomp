@@ -2,7 +2,7 @@
 #include "hw/mem.h"
 #include "game/save.h"
 #include "overworld/room.h"
-#include "overworld/room_object.h"
+#include "overworld/room_actor.h"
 
 #define STARTING_ROOM_ID 0x2A
 

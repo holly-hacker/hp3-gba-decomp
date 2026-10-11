@@ -24,9 +24,9 @@ void TickActor(Actor *actor, u32 mode)
     if (!(flags & ActorFlagKeepPaletteSlot))
     {
         if (flags & ActorFlagOnscreen)
-            BindObjectPendingPalette(actor);
+            BindActorPendingPalette(actor);
         else
-            ReleaseObjectPalette(actor);
+            ReleaseActorPalette(actor);
     }
 
     if (flags & (ActorFlagHasTickLogic | ActorFlagOnscreen))

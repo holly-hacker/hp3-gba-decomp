@@ -16,7 +16,7 @@
 #define CURRENT_ROOM g_aRoomTable[g_GameModeStackContext.dwCurrentGameModeArg2]
 
 // Overworld mode's pInitFn. Sets up video and the room's BG layers, spawns the
-// player, restores or respawns the room's objects and picks the room's music.
+// player, restores or respawns the room's actors and picks the room's music.
 // dwCurrentGameModeArg1 is how the mode was entered; Arg2 is the room id.
 void InitializeOverworld(void)
 {
@@ -113,11 +113,11 @@ void InitializeOverworld(void)
         SetAlphaBlendTargets(0, 0x1f);
         SetAlphaBlendCoefficients(9, 10);
 
-        // Room object blob, player, camera and scroll bounds.
+        // Room actor blob, player, camera and scroll bounds.
         g_OverworldControlState.bSlotCount = 1;
         g_OverworldControlState.bSlotIndex = 0;
         ParseRoomResourceBlob_candidate(CURRENT_ROOM.pRoomResourceBlob);
-        pPlayer = SpawnPlayerObject_candidate(g_bPartyCharId0);
+        pPlayer = SpawnPlayerActor_candidate(g_bPartyCharId0);
         sub_080248E8();
         sub_0800A348(0, 0);
         SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
@@ -127,19 +127,19 @@ void InitializeOverworld(void)
             CURRENT_ROOM.wScrollBoundMaxX,
             CURRENT_ROOM.wScrollBoundMaxY);
 
-        // Fresh entry: spawn the room's objects.
+        // Fresh entry: spawn the room's actors.
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 0)
         {
-            RespawnRoomObjectsInRow_candidate(0);
+            RespawnRoomActorsInRow_candidate(0);
             WalkRoomSwitchStateChain_candidate(0, 0);
             if (g_wRoomResourceFlags_candidate & 1)
             {
-                RespawnRoomObjectsInRow_candidate(1);
+                RespawnRoomActorsInRow_candidate(1);
                 WalkRoomSwitchStateChain_candidate(1, 0);
             }
         }
 
-        // Restore saved object state and spawn wandering monsters.
+        // Restore saved actor state and spawn wandering monsters.
         if (g_dwOverworldMonstersDisabled == 0
             && (g_GameModeStackContext.dwCurrentGameModeArg1 == 0
                 || (g_GameModeStackContext.dwCurrentGameModeArg1 == 2
@@ -151,20 +151,20 @@ void InitializeOverworld(void)
                     == sub_08005DC0(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
                 {
                     g_GameModeStackContext.dwCurrentGameModeArg3 = 0;
-                    RestoreRoomObjectState();
+                    RestoreRoomActorState();
                     sub_0800A348(0, 0);
                     SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
                 }
                 else
                 {
-                    RestoreRoomObjectStateMinimal();
+                    RestoreRoomActorStateMinimal();
                     sub_0800A348(0, 0);
                     SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
-                    RespawnRoomObjectsInRow_candidate(0);
+                    RespawnRoomActorsInRow_candidate(0);
                     WalkRoomSwitchStateChain_candidate(0, 0);
                     if (g_wRoomResourceFlags_candidate & 1)
                     {
-                        RespawnRoomObjectsInRow_candidate(1);
+                        RespawnRoomActorsInRow_candidate(1);
                         WalkRoomSwitchStateChain_candidate(1, 0);
                     }
                 }
@@ -180,20 +180,20 @@ void InitializeOverworld(void)
             if (sub_08005DC0(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
                 == sub_08005DC0(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
             {
-                RestoreRoomObjectState();
+                RestoreRoomActorState();
                 sub_0800A348(0, 0);
                 SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
             }
             else
             {
-                RestoreRoomObjectStateMinimal();
+                RestoreRoomActorStateMinimal();
                 sub_0800A348(0, 0);
                 SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
-                RespawnRoomObjectsInRow_candidate(0);
+                RespawnRoomActorsInRow_candidate(0);
                 WalkRoomSwitchStateChain_candidate(0, 0);
                 if (g_wRoomResourceFlags_candidate & 1)
                 {
-                    RespawnRoomObjectsInRow_candidate(1);
+                    RespawnRoomActorsInRow_candidate(1);
                     WalkRoomSwitchStateChain_candidate(1, 0);
                 }
             }
@@ -385,7 +385,7 @@ void InitializeOverworld(void)
         sub_0801FA9C();
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
-            RespawnRoomObjectsInRow_candidate(g_bPendingRoomScriptRow);
+            RespawnRoomActorsInRow_candidate(g_bPendingRoomScriptRow);
 
         g_abQuestEventState[QUEST_PREV_STORY_STAGE] = g_abQuestEventState[QUEST_STORY_STAGE];
         if (g_bPendingQuestStateOverride_candidate != 0xff)

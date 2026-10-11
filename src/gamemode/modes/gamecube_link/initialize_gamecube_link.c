@@ -18,14 +18,14 @@ void InitializeGameCubeLink(void)
         g_GameModeStackContext.dwModeState = 0;
         StartMenuFadeIn();
         BuildListMenu(&g_GameCubeLinkMenuDefinition);
-        SpawnGameCubeLinkIconObjects();
+        SpawnGameCubeLinkIconActors();
     }
     else
     {
         g_GameModeStackContext.dwModeState = 1;
         BeginPauseMenuScreen(0);
         BuildListMenu(&g_GameCubeLinkMenuDefinition);
-        SpawnGameCubeLinkIconObjects();
+        SpawnGameCubeLinkIconActors();
         PlayScreenTransitionInByIndex(0x3F, 2);
     }
 
@@ -35,9 +35,9 @@ void InitializeGameCubeLink(void)
     g_JoybusLinkState.wResultTextId = 0xACF;  // no text, so the first result is always drawn
     g_JoybusLinkState.wStatusTextId = 0xACF;  // no text
 
-    if (g_pMenuCursorObject != NULL)
+    if (g_pMenuCursorActor != NULL)
     {
-        ReleaseMenuCursor(g_pMenuCursorObject);
+        ReleaseMenuCursor(g_pMenuCursorActor);
         FreeAllParticleEmitters();
         FreeAllParticles();
     }

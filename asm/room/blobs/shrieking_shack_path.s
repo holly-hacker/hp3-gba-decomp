@@ -64,7 +64,7 @@ Room44V1Chain3:
     GotoIfStoryStageCompare 0, 23, Room44V1Chain1_id, 0, Room44V1Group1_id, Room44V1Group3_id
     End
 Room44V1Chain4:
-    DespawnTileObject Room44V1Group2_id, 0
+    DespawnTileActor Room44V1Group2_id, 0
     StartBattle 8, 0, Room44V1Chain2_id
     End
 Room44V1Chain5:
@@ -85,9 +85,9 @@ Room44V1Chain9:
     ShowRoomDialog 624
     End
 Room44V1Chain10:
-    DespawnTileObject Room44V1Group2_id, 0
+    DespawnTileActor Room44V1Group2_id, 0
     End
 Room44V1Chain11:
-    StartObjectAnimSequence Room44V1Group2_id, 0, 0, 0, Room44V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room44V1Group2_id, 0, 0, 0, Room44V1Route0_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room44V1End

@@ -33,6 +33,6 @@ void ShowDamageNumber_candidate(s32 targetIndex, s32 damage)
             ACTIVE_FIGHTER.bSelectedActionIndex = target;
     }
 
-    g_pFightState->pFighters[target].pObject->modeState.actor.wStagedDamage = amount;
-    SetActorActionState(g_pFightState->pFighters[target].pObject, 2);
+    g_pFightState->pFighters[target].pActor->modeState.actor.wStagedDamage = amount;
+    SetActorActionState(g_pFightState->pFighters[target].pActor, 2);
 }

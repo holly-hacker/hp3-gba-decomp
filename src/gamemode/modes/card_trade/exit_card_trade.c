@@ -8,8 +8,8 @@
 void ExitCardTrade(void)
 {
     ClearMenuTextLayer_candidate();
-    ReleaseMenuCursor(g_pMenuCursorObject);
-    g_pMenuCursorObject = NULL;
+    ReleaseMenuCursor(g_pMenuCursorActor);
+    g_pMenuCursorActor = NULL;
     FreeAllParticleEmitters();
     FreeAllParticles();
     FreeAllActors(&g_ActiveActorListState.pHead);

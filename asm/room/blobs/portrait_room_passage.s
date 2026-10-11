@@ -43,16 +43,16 @@ Room32V1Chain0:
     End
 Room32V1Chain1:
     PlayRoomSoundEffect 41
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
     PlaySpecialSceneEffect 4
-    DespawnTileObject Room32V1Group0_id, 1
+    DespawnTileActor Room32V1Group0_id, 1
     End
 Room32V1Chain2:
     PlayRoomSoundEffect 40
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
     PlaySpecialSceneEffect 5
-    DespawnTileObject Room32V1Group0_id, 0
+    DespawnTileActor Room32V1Group0_id, 0
     End
     EndSubBlock Room32V1End

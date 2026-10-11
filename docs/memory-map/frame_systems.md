@@ -9,7 +9,7 @@ function. Calls, in order:
 
 | Call | Addr | Runs when |
 |---|---|---|
-| `TickOverworldBeforeObjects_candidate` | `0x0802B0DC` | current game mode (`0x03003EF4`) is 8 (overworld) |
+| `TickOverworldBeforeActors_candidate` | `0x0802B0DC` | current game mode (`0x03003EF4`) is 8 (overworld) |
 | `TickActiveActors` | `0x080015B8` | always |
 | `TickParticleEmitters` | `0x08031748` | always |
 | `TickBgLayers_candidate` | `0x08006EF4` | always |
@@ -47,7 +47,7 @@ function. Calls, in order:
   `StopAllBgTileAnimations` (`0x0800A83C`) clears bit 0 of every entry,
   `sub_0800A8A8`/`sub_0800A8E0` clear/set bit 1 of every entry. A routine at
   `0x0800A874` that sets bit 0 on every entry has no callers.
-- **`TickOverworldBeforeObjects_candidate`**: three calls. `TickCameraFocus_candidate`
+- **`TickOverworldBeforeActors_candidate`**: three calls. `TickCameraFocus_candidate`
   (`0x0800A03C`, JP `0x0800A03C`) runs slot 0's camera focus and any scripted camera
   effect. `UpdateOverworldCamera_candidate` (`0x0803DA4C`, JP `0x0803DAB4`) turns the
   focus point into `g_CameraPosition_candidate` (focus minus the half screen, clamped to
@@ -64,9 +64,9 @@ function. Calls, in order:
   0). `ApplyRoomTileAnimationAt` (`0x08020440`, JP `0x08020428`) shows a set's first step
   once without an entry; `ApplyRoomSwitchEffect` uses it with sets `0x18`/`0x19`.
   `FindRoomTileAnimation_candidate` (`0x08020504`, JP `0x080204EC`) looks an entry up by
-  tile; room object capture/restore saves and restores its state that way, and
-  `SpawnRoomTileAnimationObject_candidate` (`0x08020490`, JP `0x08020478`) creates the
-  room object that owns one.
+  tile; room actor capture/restore saves and restores its state that way, and
+  `SpawnRoomTileAnimationActor_candidate` (`0x08020490`, JP `0x08020478`) creates the
+  room actor that owns one.
 
 ## Camera focus (`TickCameraFocus_candidate`), STRUCTURAL MATCH
 
@@ -89,10 +89,10 @@ scripted effect started by room script opcodes `0x10` and `0x12`:
 - **1, pan**: `MoveCameraFocusToward_candidate` (`0x0800A1F0`) steps the focus toward
   the target by `nStep` along the angle and returns 8 on arrival. Until `wCounter`
   reaches 0 the focus just holds on the target. On arrival, if the target is the
-  controlled object the effect ends and its velocity and `bActionSubState` are
+  controlled actor the effect ends and its velocity and `bActionSubState` are
   restored. Once, `RespawnRowAndRunChain_candidate(bRespawnRow, bChainRow)` runs, and a
   pending script yield (`dwResumeScript`) resumes through
-  `ResumeRoomSwitchStateChain_candidate`. Opcode `0x10` freezes the controlled object
+  `ResumeRoomSwitchStateChain_candidate`. Opcode `0x10` freezes the controlled actor
   (velocity saved and zeroed) while the pan runs.
 - **3, shake**: the focus follows the target with a `±nStep` offset on Y (vertical) every other frame for
   `dwFramesLeft` frames (forever when `dwRunForever` is set). At the end it runs the
@@ -105,23 +105,23 @@ UNCONFIRMED.
 ## `HandleOverworldPauseMenuInput` (`0x0802AEF8`, JP `0x0802AF54`), PROVEN
 
 Runs last in the overworld frame. It first calls `HandleWanderingMonsterTouch`, then
-opens a menu only when every gate passes: the controlled object's `bActionSubState`
+opens a menu only when every gate passes: the controlled actor's `bActionSubState`
 is not 5, `g_dwRoomChainRanThisFrame_candidate` (`0x03001DF0`) is clear, no game mode
-transition is pending, the slot's queued object move is not active (`bState != 1`),
-`g_dwGameModeFlags & 0x80000811` is clear, the player object is not
+transition is pending, the slot's queued actor move is not active (`bState != 1`),
+`g_dwGameModeFlags & 0x80000811` is clear, the player actor is not
 `ActorFlagAnimPaused`, and its `bActionState` is `0x21`. Then:
 
 - Start (`0x8` in `g_wKeysPressed`) pushes `InGameMenu` (`0x0A`); Select (`0x4`)
   pushes `Options` (`0x05`).
 - While `g_dwPauseMenuLocked` is set, either key only plays sound 3.
 - Otherwise, when `g_dwPauseMenuCooldown` is 0: consume the key, zero the player's
-  velocity, set the cooldown to 4, play sound 1, push the mode and set `g_bRestoringRoomObjects_candidate`.
+  velocity, set the cooldown to 4, play sound 1, push the mode and set `g_bRestoringRoomActors_candidate`.
 
 `g_dwRoomChainRanThisFrame_candidate` is set to 1 by `RespawnRowAndRunChain_candidate`
 (and `sub_08005D30`) around a room chain and cleared unconditionally at the end of
-this function every frame. `g_bRestoringRoomObjects_candidate` is also set to 1 on entry to
-`RestoreRoomObjectState` and cleared on exit. Its readers are the room object constructor
-`sub_08044C00` (a room object spawn-table entry) and its callbacks `sub_08044D24` and
+this function every frame. `g_bRestoringRoomActors_candidate` is also set to 1 on entry to
+`RestoreRoomActorState` and cleared on exit. Its readers are the room actor constructor
+`sub_08044C00` (a room actor spawn-table entry) and its callbacks `sub_08044D24` and
 `sub_08044F54`, which take a different path while it is set.
 
 ## UNCONFIRMED

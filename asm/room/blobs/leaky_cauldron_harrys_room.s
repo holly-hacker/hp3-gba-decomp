@@ -46,36 +46,36 @@ Room41V1Chain0:
     GotoIfQuestStateCompare 244, 0, 2, Room41V1Chain7_id, 0, Room41V1Group1_id, 0
     End
 Room41V1Chain1:
-    SetTileObjectAnimState Room41V0Group0_id, 0
+    SetTileActorAnimState Room41V0Group0_id, 0
     PlayScreenTransitionIn
     @ "Here, Harry. Take these collector's cards. They might help you during a magical encounter."
     @ "Thank you, Minister."
     ShowRoomDialog 5
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room41V1Chain2:
     ArmChainYield 1
     PlayScreenTransitionIn
-    StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 4, 255, 255, 255
+    StartTileActorScript 94, 182, 0, 0, 255, 0, 0, 4, 255, 255, 255
     SetQuestState QUEST_OBJ_GREET_WEASLEYS, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room41V1Chain3:
-    SetTileObjectAnimState Room41V0Group0_id, 0
+    SetTileActorAnimState Room41V0Group0_id, 0
     End
 Room41V1Chain4:
-    SetTileObjectAnimState Room41V0Group0_id, 0
+    SetTileActorAnimState Room41V0Group0_id, 0
     End
 Room41V1Chain5:
     SetQuestState 1, 244
     ArmChainYield 1
     SetStoryStage 2
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "You have a new item. To equip it, press START and then select Status/Equip. Select a character, move the cursor over the boxes surrounding that character, and press the A Button to change items."
     ShowRoomDialog 612
     @ "Thank goodness for that! I think I'll turn in for the night."
     ShowRoomDialog 23
-    StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     PlayRoomSoundEffect 10
     PlayScreenTransitionOut
     SetQuestState 0, QUEST_ALT_PRESENTATION
@@ -83,29 +83,29 @@ Room41V1Chain5:
     End
 Room41V1Chain6:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 103, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 103, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     @ "There's a package on my bed..."
     @ "There's a card... It's from Hagrid! He remembered my birthday!"
     @ "It's a book! 'The Monster Book of Monsters'."
     @ "Uh oh..."
     ShowRoomDialog 20
-    DespawnTileObject Room41V1Group1_id, 1
+    DespawnTileActor Room41V1Group1_id, 1
     @ "You are about to enter a magical encounter. Each character and creature takes a turn to perform an action, however, they can only perform one action per turn. Your characters have Stamina Points and Magic Points. Stamina Points (SP) indicate how healthy your character is and Magic Points (MP) allow a character to cast spells. Each spell uses a different number of points. Click on the Help icon in the Magical Encounter Menu for more information."
     ShowRoomDialog 613
-    PlayTileObjectAnimation Room41V1Group1_id, 0, 11
+    PlayTileActorAnimation Room41V1Group1_id, 0, 11
     SetQuestState 1, 5
     SetQuestState 2, 244
-    DespawnTileObject Room41V1Group1_id, 0
+    DespawnTileActor Room41V1Group1_id, 0
     StartBattle 0, 0, Room41V1Chain5_id
     End
 Room41V1Chain7:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 103, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 103, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
-    PlayTileObjectAnimation Room41V1Group1_id, 0, 11
-    DespawnTileObject Room41V1Group1_id, 0
+    PlayTileActorAnimation Room41V1Group1_id, 0, 11
+    DespawnTileActor Room41V1Group1_id, 0
     StartBattle 0, 0, Room41V1Chain5_id
     End
 Room41V1Chain8:
@@ -136,33 +136,33 @@ Room41V2Chain0:
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
     End
 Room41V2Chain1:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     FullHealParty
     @ "Harry! You must be more careful. Tom found you lying on the floor unconscious. I had to give you some Wiggenweld Potion to make you feel better."
     ShowRoomDialog 44
-    StartTileObjectScript 147, 18, 1, Room41V2Group2_id, 0, 0, 0, 4, 255, 255, 255
-    DespawnTileObject Room41V2Group2_id, 0
+    StartTileActorScript 147, 18, 1, Room41V2Group2_id, 0, 0, 0, 4, 255, 255, 255
+    DespawnTileActor Room41V2Group2_id, 0
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room41V2Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
-    PlayTileObjectAnimation Room41V2Group1_id, 0, 11
+    PlayTileActorAnimation Room41V2Group1_id, 0, 11
     SetStoryStage 31
-    DespawnTileObject Room41V2Group1_id, 0
+    DespawnTileActor Room41V2Group1_id, 0
     StartBattle 0, 0, Room41V2Chain3_id
     End
 Room41V2Chain3:
     ArmChainYield 1
     SetQuestState 0, 5
     SetQuestState 1, 244
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Thank goodness for that! I think I'll turn in for the night."
     ShowRoomDialog 23
-    StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     PlayRoomSoundEffect 10
     SetQuestState 0, QUEST_ALT_PRESENTATION
     PlayScreenTransitionOut
@@ -171,10 +171,10 @@ Room41V2Chain3:
 Room41V2Chain4:
     ArmChainYield 1
     PlayScreenTransitionIn
-    StartTileObjectScript 94, 182, 0, 0, 255, 0, 0, 4, 255, 255, 255
+    StartTileActorScript 94, 182, 0, 0, 255, 0, 0, 4, 255, 255, 255
     SetStoryStage 2
     SetQuestState QUEST_OBJ_GREET_WEASLEYS, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room41V2Chain5:
     @ "You've received some collector's cards! Collect all the cards to unlock secrets and items in the Wizard Card Collectors' Club in classroom 5B. Collecting certain groups of cards will allow Harry to use Card Combos during magical encounters. To view your card collection, choose Folios and then Folio Universitas."

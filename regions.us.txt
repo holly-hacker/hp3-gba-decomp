@@ -175,23 +175,23 @@ thumb-func 0x0800537C sub_0800537C
 c-file 0x08005384 0x0800539C src/graphics/oam/get_oam_shape_size_dims.c GetOamShapeSizeDims
 
 # Area? (room loading)
-thumb-func 0x0800539C RespawnRoomObjectsInRow_candidate
+thumb-func 0x0800539C RespawnRoomActorsInRow_candidate
 c-file 0x08005410 _ src/room/walk_room_switch_state_chain.c WalkRoomSwitchStateChain_candidate
 c-file 0x080055C0 _ src/room/resume_room_switch_state_chain.c ResumeRoomSwitchStateChain_candidate
-c-file 0x0800572C _ src/room/build_room_object_table.c BuildRoomObjectTable_candidate
-c-file 0x08005808 _ src/room/build_room_object_column.c BuildRoomObjectColumn_candidate
+c-file 0x0800572C _ src/room/build_room_actor_table.c BuildRoomActorTable_candidate
+c-file 0x08005808 _ src/room/build_room_actor_column.c BuildRoomActorColumn_candidate
 c-file 0x0800588C _ src/room/build_room_warp_trigger_table.c BuildRoomWarpTriggerTable_candidate
-c-file 0x08005968 _ src/room/build_room_switch_state_object_table.c BuildRoomSwitchStateObjectTable_candidate
+c-file 0x08005968 _ src/room/build_room_switch_state_actor_table.c BuildRoomSwitchStateActorTable_candidate
 c-file 0x08005A44 _ src/room/init_room_script_state.c InitRoomScriptState_candidate
 c-file 0x08005A78 0x08005B00 src/room/parse_room_resource_blob.c ParseRoomResourceBlob_candidate
 thumb-func 0x08005B00 RespawnRowAndRunChain_candidate
 thumb-func 0x08005B44 ShouldRunRoomScriptRow_candidate
-thumb-func 0x08005B70 RespawnRoomObjectAtTile
+thumb-func 0x08005B70 RespawnRoomActorAtTile
 thumb-func 0x08005BCC GetRoomRowColumnCount_candidate
 thumb-func 0x08005BE4 sub_08005BE4
 thumb-func 0x08005C38 sub_08005C38
-thumb-func 0x08005C60 GetRoomObjectField_candidate
-c-file 0x08005CAC 0x08005CE8 src/room/set_room_object_record_ptr.c SetRoomObjectRecordPtr_candidate
+thumb-func 0x08005C60 GetRoomActorField_candidate
+c-file 0x08005CAC 0x08005CE8 src/room/set_room_actor_record_ptr.c SetRoomActorRecordPtr_candidate
 thumb-func 0x08005CE8 GetRoomWarpTriggerByte_candidate
 thumb-func 0x08005D00 GetRoomWarpTriggerOffset_candidate
 thumb-func 0x08005D30 ApplyRoomWarpTrigger_candidate
@@ -204,12 +204,12 @@ thumb-func 0x08005E84 sub_08005E84
 thumb-func 0x08005EC8 sub_08005EC8
 thumb-func 0x08005EE8 sub_08005EE8
 
-# Area? (object collision and depth sort)
-asm-file 0x08005F10 _ asm/check_object_collisions.s  CheckObjectCollisions
+# Area? (actor collision and depth sort)
+asm-file 0x08005F10 _ asm/check_actor_collisions.s  CheckActorCollisions
 asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
 asm-file 0x080063B4 _ asm/find_free_obj_tile_run.s    FindFreeObjTileRun
-asm-file 0x08006440 0x08006508 asm/sort_objects_by_depth.s  SortObjectsByDepth
+asm-file 0x08006440 0x08006508 asm/sort_actors_by_depth.s  SortActorsByDepth
 
 # Background (BG layers)
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
@@ -414,10 +414,10 @@ thumb-func 0x0800BAF8 sub_0800BAF8
 c-file 0x0800BBF0 _ src/gamemode/modes/debug/debug_collector_cards_menu/update_debug_collector_cards_menu.c UpdateDebugCollectorCardsMenu
 c-file 0x0800BC54 _ src/gamemode/modes/debug/debug_collector_cards_menu/exit_debug_collector_cards_menu.c ExitDebugCollectorCardsMenu
 
-# Chest (chest object)
-c-file 0x0800BC6C _ src/room/objects/spawn_chest_object.c SpawnChestObject
-c-file 0x0800BDCC _ src/room/objects/tick_chest_object.c TickChestObject
-c-file 0x0800BF20 _ src/room/objects/handle_chest_touch.c HandleChestTouch
+# Chest (chest actor)
+c-file 0x0800BC6C _ src/room/actors/spawn_chest_actor.c SpawnChestActor
+c-file 0x0800BDCC _ src/room/actors/tick_chest_actor.c TickChestActor
+c-file 0x0800BF20 _ src/room/actors/handle_chest_touch.c HandleChestTouch
 
 # Loading screen mode
 c-file 0x0800C0FC _ src/gamemode/modes/loading_screen/initialize_loading_screen.c InitializeLoadingScreen
@@ -439,7 +439,7 @@ thumb-func 0x0800CB04 sub_0800CB04
 thumb-func 0x0800CB1C sub_0800CB1C
 thumb-func 0x0800CB9C sub_0800CB9C
 
-# Unidentified, includes a door object callback
+# Unidentified, includes a door actor callback
 thumb-func 0x0800CBF0 sub_0800CBF0
 thumb-func 0x0800CCA8 sub_0800CCA8
 thumb-func 0x0800CF74 sub_0800CF74
@@ -504,7 +504,7 @@ c-file 0x0800EA68 _ src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_c
 c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate
 c-file 0x0800EDD8 _ src/battle/setup_battle_roster.c SetupBattleRoster
-c-file 0x0800F16C _ src/battle/restore_fighter_objects.c RestoreFighterObjects_candidate
+c-file 0x0800F16C _ src/battle/restore_fighter_actors.c RestoreFighterActors_candidate
 c-file 0x0800F5F0 _ src/battle/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
 c-file 0x0800F794 _ src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
 c-file 0x0800FEE0 _ src/battle/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
@@ -547,7 +547,7 @@ thumb-func 0x08012B40 sub_08012B40
 thumb-func 0x08012B98 OpenEnemyTargetMenu_candidate
 thumb-func 0x08012C0C sub_08012C0C
 thumb-func 0x08012C60 sub_08012C60
-thumb-func 0x08012CB4 ClearFighterObjectFlag_candidate
+thumb-func 0x08012CB4 ClearFighterActorFlag_candidate
 thumb-func 0x08012CE4 SetupAllyBattleMessageIcon_candidate
 thumb-func 0x08012D2C SetupEnemyBattleMessageIcon_candidate
 thumb-func 0x08012D78 sub_08012D78
@@ -600,8 +600,8 @@ thumb-func 0x080151B0 LevelUpPartyMember_candidate
 thumb-func 0x0801526C InitPartyStatForCurrentLevel
 thumb-func 0x080152CC sub_080152CC
 thumb-func 0x08015334 sub_08015334
-c-file 0x0801539C _ src/battle/set_monster_object_anim.c SetMonsterObjectAnim
-c-file 0x08015484 0x08015574 src/battle/set_player_object_anim.c SetPlayerObjectAnim
+c-file 0x0801539C _ src/battle/set_monster_actor_anim.c SetMonsterActorAnim
+c-file 0x08015484 0x08015574 src/battle/set_player_actor_anim.c SetPlayerActorAnim
 thumb-func 0x08015574 UpdateFighterFlashEffect_candidate
 c-file 0x08015608 0x08015F50 src/battle/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
 thumb-func 0x08015F50 ShowItemUseResult
@@ -634,10 +634,10 @@ thumb-func 0x08018AB8 sub_08018AB8
 c-file 0x08018ACC 0x08018B14 src/battle/post_action_battle_check.c PostActionBattleCheck
 thumb-func 0x08018B14 sub_08018B14
 c-file 0x08018B70 0x08018BE0 src/battle/trigger_battle_effect.c TriggerBattleEffect
-thumb-func 0x08018BE0 CreateEffectScriptObject
-c-file 0x08018CC0 0x0801AE14 src/battle/interpret_object_script.c InterpretObjectScript
+thumb-func 0x08018BE0 CreateEffectScriptActor
+c-file 0x08018CC0 0x0801AE14 src/battle/interpret_actor_script.c InterpretActorScript
 thumb-func 0x0801AE14 CreateBattleEffectEmitter_candidate
-thumb-func 0x0801AF68 ProcessObjectFlagBehaviors
+thumb-func 0x0801AF68 ProcessActorFlagBehaviors
 thumb-func 0x0801B130 sub_0801B130
 thumb-func 0x0801B204 sub_0801B204
 thumb-func 0x0801B2EC sub_0801B2EC
@@ -675,19 +675,19 @@ c-file 0x0801BEDC _ src/gamemode/modes/card_combo_description/exit_card_combo_de
 
 # Commands? (room script VM: opcode handlers and interpreter)
 c-file 0x0801BEF8 _ src/room/opcodes/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
-c-file 0x0801BF58 _ src/room/opcodes/room_script_op_queue_tile_object_move.c RoomScriptOpQueueTileObjectMove
+c-file 0x0801BF58 _ src/room/opcodes/room_script_op_queue_tile_actor_move.c RoomScriptOpQueueTileActorMove
 c-file 0x0801C04C _ src/room/opcodes/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
-c-file 0x0801C0E8 _ src/room/opcodes/room_script_op_start_object_anim_sequence.c RoomScriptOpStartObjectAnimSequence
-c-file 0x0801C1D8 _ src/room/opcodes/room_script_op_start_tile_object_script.c RoomScriptOpStartTileObjectScript
+c-file 0x0801C0E8 _ src/room/opcodes/room_script_op_start_actor_anim_sequence.c RoomScriptOpStartActorAnimSequence
+c-file 0x0801C1D8 _ src/room/opcodes/room_script_op_start_tile_actor_script.c RoomScriptOpStartTileActorScript
 c-file 0x0801C280 _ src/room/opcodes/room_script_op_play_special_scene_effect.c RoomScriptOpPlaySpecialSceneEffect
 c-file 0x0801C3EC _ src/room/opcodes/room_script_op_full_heal_party.c RoomScriptOpFullHealParty
 c-file 0x0801C440 _ src/room/opcodes/room_script_op_start_minigame.c RoomScriptOpStartMinigame
 c-file 0x0801C50C _ src/room/opcodes/room_script_op_goto_if_folio_page_group_complete.c RoomScriptOpGotoIfFolioPageGroupComplete
 c-file 0x0801C564 _ src/room/opcodes/room_script_op_goto_if_all_quest_flags_set.c RoomScriptOpGotoIfAllQuestFlagsSet
-c-file 0x0801C5CC _ src/room/opcodes/room_script_op_despawn_tile_object.c RoomScriptOpDespawnTileObject
+c-file 0x0801C5CC _ src/room/opcodes/room_script_op_despawn_tile_actor.c RoomScriptOpDespawnTileActor
 c-file 0x0801C5FC _ src/room/opcodes/room_script_op2.c RoomScriptOp2
-c-file 0x0801C634 _ src/room/opcodes/room_script_op_set_tile_object_flag_bit.c RoomScriptOpSetTileObjectFlagBit
-c-file 0x0801C654 _ src/room/opcodes/room_script_op_clear_tile_object_flag_bit.c RoomScriptOpClearTileObjectFlagBit
+c-file 0x0801C634 _ src/room/opcodes/room_script_op_set_tile_actor_flag_bit.c RoomScriptOpSetTileActorFlagBit
+c-file 0x0801C654 _ src/room/opcodes/room_script_op_clear_tile_actor_flag_bit.c RoomScriptOpClearTileActorFlagBit
 c-file 0x0801C674 _ src/room/opcodes/room_script_op_show_room_dialog.c RoomScriptOpShowRoomDialog
 c-file 0x0801C6BC _ src/room/opcodes/room_script_op_pause_music.c RoomScriptOpPauseMusic
 c-file 0x0801C6C8 _ src/room/opcodes/room_script_op_resume_music.c RoomScriptOpResumeMusic
@@ -698,22 +698,22 @@ c-file 0x0801C738 _ src/room/opcodes/room_script_op_set_room_music_volume.c Room
 c-file 0x0801C748 _ src/room/opcodes/room_script_op_set_sound_effect_volume.c RoomScriptOpSetSoundEffectVolume
 c-file 0x0801C754 _ src/room/opcodes/room_script_op_delayed_respawn_row_and_run_chain.c RoomScriptOpDelayedRespawnRowAndRunChain
 c-file 0x0801C7B0 _ src/room/opcodes/room_script_op_set_story_stage.c RoomScriptOpSetStoryStage
-c-file 0x0801C7BC _ src/room/opcodes/room_script_op_set_tile_object_anim_state.c RoomScriptOpSetTileObjectAnimState
+c-file 0x0801C7BC _ src/room/opcodes/room_script_op_set_tile_actor_anim_state.c RoomScriptOpSetTileActorAnimState
 c-file 0x0801C7D4 _ src/room/opcodes/room_script_op_return_to_overworld.c RoomScriptOpReturnToOverworld
 c-file 0x0801C810 _ src/room/opcodes/room_script_op_clear_all_queued_moves.c RoomScriptOpClearAllQueuedMoves
-c-file 0x0801C84C _ src/room/opcodes/room_script_op_set_tile_object_position.c RoomScriptOpSetTileObjectPosition
+c-file 0x0801C84C _ src/room/opcodes/room_script_op_set_tile_actor_position.c RoomScriptOpSetTileActorPosition
 c-file 0x0801C87C _ src/room/opcodes/room_script_op_play_cutscene.c RoomScriptOpPlayCutscene
 c-file 0x0801C974 _ src/room/opcodes/room_script_op_close_room_dialog.c RoomScriptOpCloseRoomDialog
-c-file 0x0801C9B0 _ src/room/opcodes/room_script_op_set_tile_object_follow_target.c RoomScriptOpSetTileObjectFollowTarget
-c-file 0x0801CA08 _ src/room/opcodes/room_script_op_play_tile_object_animation.c RoomScriptOpPlayTileObjectAnimation
+c-file 0x0801C9B0 _ src/room/opcodes/room_script_op_set_tile_actor_follow_target.c RoomScriptOpSetTileActorFollowTarget
+c-file 0x0801CA08 _ src/room/opcodes/room_script_op_play_tile_actor_animation.c RoomScriptOpPlayTileActorAnimation
 c-file 0x0801CA4C _ src/room/opcodes/room_script_op_open_main_menu.c RoomScriptOpOpenMainMenu
 c-file 0x0801CA68 _ src/room/opcodes/room_script_op_arm_chain_yield.c RoomScriptOpArmChainYield
 c-file 0x0801CA88 _ src/room/opcodes/room_script_op_goto_if_quest_state_compare.c RoomScriptOpGotoIfQuestStateCompare
 c-file 0x0801CAB8 _ src/room/opcodes/room_script_op_goto_if_quest_state_pair_compare.c RoomScriptOpGotoIfQuestStatePairCompare
 c-file 0x0801CAEC _ src/room/opcodes/room_script_op_set_quest_state.c RoomScriptOpSetQuestState
 c-file 0x0801CAFC _ src/room/opcodes/room_script_op_copy_quest_state.c RoomScriptOpCopyQuestState
-c-file 0x0801CB10 _ src/room/opcodes/room_script_op_cancel_object_anim_sequence.c RoomScriptOpCancelObjectAnimSequence
-c-file 0x0801CB70 _ src/room/opcodes/room_script_op_set_tile_object_anim_state_with_speed.c RoomScriptOpSetTileObjectAnimStateWithSpeed
+c-file 0x0801CB10 _ src/room/opcodes/room_script_op_cancel_actor_anim_sequence.c RoomScriptOpCancelActorAnimSequence
+c-file 0x0801CB70 _ src/room/opcodes/room_script_op_set_tile_actor_anim_state_with_speed.c RoomScriptOpSetTileActorAnimStateWithSpeed
 c-file 0x0801CB9C _ src/room/opcodes/room_script_op_patch_room_background_tile.c RoomScriptOpPatchRoomBackgroundTile
 c-file 0x0801CBB4 _ src/room/opcodes/room_script_op_show_loading_screen_transition.c RoomScriptOpShowLoadingScreenTransition
 c-file 0x0801CBE8 _ src/room/opcodes/room_script_op_play_screen_transition_out.c RoomScriptOpPlayScreenTransitionOut
@@ -723,21 +723,21 @@ c-file 0x0801CC50 _ src/room/opcodes/room_script_op_remove_party_follower.c Room
 c-file 0x0801CC5C _ src/room/opcodes/room_script_op_spawn_party_follower_at_tile.c RoomScriptOpSpawnPartyFollowerAtTile
 c-file 0x0801CC80 _ src/room/opcodes/room_script_op42.c RoomScriptOp42
 c-file 0x0801CC8C _ src/room/opcodes/room_script_op_start_battle.c RoomScriptOpStartBattle
-c-file 0x0801CCC8 _ src/room/opcodes/room_script_op_set_tile_object_anim_state_value.c RoomScriptOpSetTileObjectAnimStateValue
+c-file 0x0801CCC8 _ src/room/opcodes/room_script_op_set_tile_actor_anim_state_value.c RoomScriptOpSetTileActorAnimStateValue
 c-file 0x0801CCEC _ src/room/opcodes/room_script_op_grant_room_reward.c RoomScriptOpGrantRoomReward
 c-file 0x0801CD08 _ src/room/opcodes/room_script_op_set_background_blend_layers.c RoomScriptOpSetBackgroundBlendLayers
 c-file 0x0801CD30 _ src/room/opcodes/room_script_op_show_background_layer.c RoomScriptOpShowBackgroundLayer
 c-file 0x0801CD3C _ src/room/opcodes/room_script_op_hide_background_layer.c RoomScriptOpHideBackgroundLayer
 c-file 0x0801CD48 _ src/room/opcodes/room_script_op_set_background_priority.c RoomScriptOpSetBackgroundPriority
-c-file 0x0801CD58 _ src/room/opcodes/room_script_op_set_camera_follow_tile_object.c RoomScriptOpSetCameraFollowTileObject
+c-file 0x0801CD58 _ src/room/opcodes/room_script_op_set_camera_follow_tile_actor.c RoomScriptOpSetCameraFollowTileActor
 c-file 0x0801CD74 _ src/room/opcodes/room_script_op_delayed_respawn_row_and_run_chain_frames.c RoomScriptOpDelayedRespawnRowAndRunChainFrames
-c-file 0x0801CDCC _ src/room/opcodes/room_script_op_set_tile_object_and_linked_visible.c RoomScriptOpSetTileObjectAndLinkedVisible
+c-file 0x0801CDCC _ src/room/opcodes/room_script_op_set_tile_actor_and_linked_visible.c RoomScriptOpSetTileActorAndLinkedVisible
 c-file 0x0801CE18 _ src/room/opcodes/room_script_op_goto_if_story_stage_compare.c RoomScriptOpGotoIfStoryStageCompare
 c-file 0x0801CE44 _ src/room/opcodes/room_script_op_set_random_quest_state.c RoomScriptOpSetRandomQuestState
 c-file 0x0801CE68 _ src/room/opcodes/room_script_op_no_op.c RoomScriptOpNoOp
 c-file 0x0801CE6C _ src/room/opcodes/room_script_op_set_screen_window.c RoomScriptOpSetScreenWindow
 c-file 0x0801CEA4 _ src/room/opcodes/room_script_op_hide_screen_window.c RoomScriptOpHideScreenWindow
-c-file 0x0801CEB0 _ src/room/opcodes/room_script_op_set_tile_object_facing.c RoomScriptOpSetTileObjectFacing
+c-file 0x0801CEB0 _ src/room/opcodes/room_script_op_set_tile_actor_facing.c RoomScriptOpSetTileActorFacing
 c-file 0x0801CEE0 _ src/room/opcodes/room_script_op_add_quest_state.c RoomScriptOpAddQuestState
 c-file 0x0801CEF4 _ src/room/opcodes/room_script_op_subtract_quest_state.c RoomScriptOpSubtractQuestState
 c-file 0x0801CF08 _ src/room/opcodes/room_script_op_clear_quest_state_upper_half.c RoomScriptOpClearQuestStateUpperHalf
@@ -745,15 +745,15 @@ c-file 0x0801CF24 _ src/room/opcodes/room_script_op_no_op_alt.c RoomScriptOpNoOp
 c-file 0x0801CF28 _ src/room/opcodes/room_script_op_invoke_chain_if_enabled.c RoomScriptOpInvokeChainIfEnabled
 c-file 0x0801CF4C _ src/room/opcodes/room_script_op_grant_party_experience.c RoomScriptOpGrantPartyExperience
 c-file 0x0801CF58 _ src/room/opcodes/room_script_op_set_defeat_warp_selector.c RoomScriptOpSetDefeatWarpSelector
-c-file 0x0801CF64 _ src/room/opcodes/room_script_op_set_tile_object_draw_layer.c RoomScriptOpSetTileObjectDrawLayer
+c-file 0x0801CF64 _ src/room/opcodes/room_script_op_set_tile_actor_draw_layer.c RoomScriptOpSetTileActorDrawLayer
 c-file 0x0801CF94 _ src/room/opcodes/room_script_op_enter_fred_and_georges_shop.c RoomScriptOpEnterFredAndGeorgesShop
 c-file 0x0801CFBC _ src/room/opcodes/room_script_op_respawn_row_and_run_chain.c RoomScriptOpRespawnRowAndRunChain
-c-file 0x0801CFCC _ src/room/opcodes/room_script_op_despawn_room_row_objects.c RoomScriptOpDespawnRoomRowObjects
+c-file 0x0801CFCC _ src/room/opcodes/room_script_op_despawn_room_row_actors.c RoomScriptOpDespawnRoomRowActors
 c-file 0x0801D020 _ src/room/opcodes/room_script_op_grant_party_spell.c RoomScriptOpGrantPartySpell
 c-file 0x0801D04C _ src/room/opcodes/room_script_op_set_overworld_monsters_disabled.c RoomScriptOpSetOverworldMonstersDisabled
 c-file 0x0801D058 _ src/room/opcodes/room_script_op_clear_overworld_monsters_disabled.c RoomScriptOpClearOverworldMonstersDisabled
-c-file 0x0801D064 _ src/room/opcodes/room_script_op_set_tile_object_facing_and_script_page.c RoomScriptOpSetTileObjectFacingAndScriptPage
-c-file 0x0801D0A4 _ src/room/opcodes/room_script_op_set_tile_object_special_flag.c RoomScriptOpSetTileObjectSpecialFlag
+c-file 0x0801D064 _ src/room/opcodes/room_script_op_set_tile_actor_facing_and_script_page.c RoomScriptOpSetTileActorFacingAndScriptPage
+c-file 0x0801D0A4 _ src/room/opcodes/room_script_op_set_tile_actor_special_flag.c RoomScriptOpSetTileActorSpecialFlag
 c-file 0x0801D0C8 _ src/room/opcodes/room_script_op_unlock_minigame.c RoomScriptOpUnlockMinigame
 c-file 0x0801D138 _ src/room/opcodes/room_script_op_show_reward_pickup_message.c RoomScriptOpShowRewardPickupMessage
 c-file 0x0801D1A0 _ src/room/opcodes/room_script_op_show_item_removed_message.c RoomScriptOpShowItemRemovedMessage
@@ -782,7 +782,7 @@ c-file 0x0801D888 _ src/gamemode/modes/cutscene/linear_cutscene/initialize_linea
 c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 
 # Cursor? (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
-thumb-func 0x0801D940 SpawnMenuCursorObject
+thumb-func 0x0801D940 SpawnMenuCursorActor
 c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 thumb-func 0x0801DC6C ReleaseMenuCursor
 thumb-func 0x0801DCC4 SetMenuCursorPosition
@@ -878,7 +878,7 @@ c-file 0x0801FF14 0x0801FF30 src/gamemode/modes/cutscene/hippogriff_flies_into_a
 # Flipbook? (room tile animation)
 thumb-func 0x0801FF30 sub_0801FF30
 thumb-func 0x080200FC sub_080200FC
-thumb-func 0x0802018C SpawnScriptEffectObject
+thumb-func 0x0802018C SpawnScriptEffectActor
 thumb-func 0x080201C8 AddRoomTileAnimation_candidate
 thumb-func 0x08020228 TickRoomTileAnimations_candidate
 c-file 0x08020278 _ src/room/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
@@ -887,7 +887,7 @@ thumb-func 0x080203CC sub_080203CC
 thumb-func 0x080203F0 sub_080203F0
 thumb-func 0x0802042C sub_0802042C
 c-file 0x08020440 _ src/room/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
-c-file 0x08020490 0x08020504 src/room/objects/spawn_room_tile_animation_object.c SpawnRoomTileAnimationObject_candidate
+c-file 0x08020490 0x08020504 src/room/actors/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
 thumb-func 0x08020504 FindRoomTileAnimation_candidate
 thumb-func 0x0802054C sub_0802054C
 c-file 0x08020570 _ src/room/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
@@ -972,7 +972,7 @@ thumb-func 0x08022BEC sub_08022BEC
 thumb-func 0x08022C84 sub_08022C84
 thumb-func 0x08022CF0 sub_08022CF0
 c-file 0x08022D98 0x08022DE8 src/gamemode/modes/minigame/owl_care_kit/handle_owl_care_kit_screen_exit.c HandleOwlCareKitScreenExit
-thumb-func 0x08022DE8 InitializeOwlObjectSprite
+thumb-func 0x08022DE8 InitializeOwlActorSprite
 thumb-func 0x08022E44 SetOwlPaletteRow
 c-file 0x08022E6C _ src/save/deserialize_owl_care_kit.c DeserializeOwlCareKit
 c-file 0x08022EA8 0x08022EE4 src/save/serialize_owl_care_kit.c SerializeOwlCareKit
@@ -997,7 +997,7 @@ thumb-func 0x0802338C sub_0802338C
 thumb-func 0x080233C0 sub_080233C0
 
 # Hero? (player and party)
-thumb-func 0x080233E4 SpawnPlayerObject_candidate
+thumb-func 0x080233E4 SpawnPlayerActor_candidate
 thumb-func 0x08023548 sub_08023548
 thumb-func 0x08023644 SyncFollowerLevelToLeader_candidate
 thumb-func 0x080236DC sub_080236DC
@@ -1005,7 +1005,7 @@ thumb-func 0x080237D0 sub_080237D0
 thumb-func 0x08023868 sub_08023868
 thumb-func 0x080238D8 ShowMapNamePopup
 thumb-func 0x08023A2C sub_08023A2C
-thumb-func 0x08023B44 TickPlayerObject_candidate
+thumb-func 0x08023B44 TickPlayerActor_candidate
 thumb-func 0x08023D00 sub_08023D00
 thumb-func 0x08023F50 sub_08023F50
 thumb-func 0x08024234 CyclePartyLeaderSelection_candidate
@@ -1032,7 +1032,7 @@ thumb-func 0x08024BD4 sub_08024BD4
 thumb-func 0x08024C40 sub_08024C40
 thumb-func 0x08024C90 GetCharPresenceBit
 thumb-func 0x08024CE4 sub_08024CE4
-thumb-func 0x08024D48 TickMapNameObject
+thumb-func 0x08024D48 TickMapNameActor
 thumb-func 0x08024D9C sub_08024D9C
 
 # Huffman? (dialog text decompression and BG tile codec)
@@ -1102,9 +1102,9 @@ thumb-func 0x080262F4 HandleTimer0Interrupt_candidate
 thumb-func 0x0802631C HandleTimer3Interrupt_candidate
 thumb-func 0x08026344 IntrDummy
 
-# Invisible? (trigger objects)
-c-file 0x08026348 _ src/room/objects/spawn_trigger_rect_object.c SpawnTriggerRectObject
-c-file 0x08026414 0x080264F0 src/room/objects/spawn_trigger_zone_object.c SpawnTriggerZoneObject
+# Invisible? (trigger actors)
+c-file 0x08026348 _ src/room/actors/spawn_trigger_rect_actor.c SpawnTriggerRectActor
+c-file 0x08026414 0x080264F0 src/room/actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
 thumb-func 0x080264F0 sub_080264F0
 thumb-func 0x080265B8 sub_080265B8
 thumb-func 0x08026674 sub_08026674
@@ -1145,7 +1145,7 @@ thumb-func 0x08026F34 IsBattleItemSlotUsable
 thumb-func 0x08026F48 sub_08026F48
 thumb-func 0x08026F80 sub_08026F80
 thumb-func 0x08026F9C IsFolioPageGroupUnlocked_candidate
-thumb-func 0x08026FE0 SetObjectScaleStep
+thumb-func 0x08026FE0 SetActorScaleStep
 thumb-func 0x08027004 sub_08027004
 thumb-func 0x08027048 TickItemList
 thumb-func 0x080271AC SetItemListTranslucent
@@ -1233,11 +1233,11 @@ c-file 0x08029690 _ src/main.c AgbMain
 c-file 0x080297A0 _ src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
 c-file 0x0802A14C 0x0802A2A4 src/gamemode/modes/overworld/exit_overworld_screen.c ExitOverworldScreen
 thumb-func 0x0802A2A4 sub_0802A2A4
-c-file 0x0802A3D4 _ src/save/deserialize_room_object_state.c DeserializeRoomObjectState
-c-file 0x0802A570 0x0802A70C src/save/serialize_room_object_state.c SerializeRoomObjectState
-thumb-func 0x0802A70C CaptureRoomObjectState
-thumb-func 0x0802AB34 RestoreRoomObjectState
-thumb-func 0x0802AE64 RestoreRoomObjectStateMinimal
+c-file 0x0802A3D4 _ src/save/deserialize_room_actor_state.c DeserializeRoomActorState
+c-file 0x0802A570 0x0802A70C src/save/serialize_room_actor_state.c SerializeRoomActorState
+thumb-func 0x0802A70C CaptureRoomActorState
+thumb-func 0x0802AB34 RestoreRoomActorState
+thumb-func 0x0802AE64 RestoreRoomActorStateMinimal
 c-file 0x0802AEF8 _ src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
 c-file 0x0802B018 _ src/overworld/init_room_state.c InitRoomState
 c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
@@ -1245,8 +1245,8 @@ thumb-func 0x0802B08C sub_0802B08C
 thumb-func 0x0802B098 sub_0802B098
 thumb-func 0x0802B09C sub_0802B09C
 c-file 0x0802B0A0 _ src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
-c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_objects.c TickOverworldBeforeObjects_candidate
-thumb-func 0x0802B0F4 ClearRoomObjectStateBuffer
+c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
+thumb-func 0x0802B0F4 ClearRoomActorStateBuffer
 c-file 0x0802B110 0x0802B138 src/overworld/room_switch_state.c SetRoomSwitchState
 thumb-func 0x0802B138 sub_0802B138
 thumb-func 0x0802B164 OverworldVBlankCallback
@@ -1255,10 +1255,10 @@ thumb-func 0x0802B20C sub_0802B20C
 thumb-func 0x0802B210 sub_0802B210
 c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 thumb-func 0x0802B344 TrySpawnWanderingMonster
-thumb-func 0x0802B41C SpawnWanderingMonsterObject
+thumb-func 0x0802B41C SpawnWanderingMonsterActor
 thumb-func 0x0802B58C HandleWanderingMonsterTouch
 thumb-func 0x0802B670 sub_0802B670
-thumb-func 0x0802B72C TickWanderingMonsterObject
+thumb-func 0x0802B72C TickWanderingMonsterActor
 thumb-func 0x0802B95C ResetWanderingMonsterTouchState
 thumb-func 0x0802B984 ArmWanderingMonsterTouch_candidate
 thumb-func 0x0802B9CC sub_0802B9CC
@@ -1266,10 +1266,10 @@ thumb-func 0x0802BA0C GetEncounterKindTerrainType
 thumb-func 0x0802BA1C FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BAD0 PickMaxDamageMonster
 
-# MapDoor? (door objects and party experience)
-c-file 0x0802BB00 0x0802BBAC src/room/objects/spawn_door_object.c SpawnDoorObject
+# MapDoor? (door actors and party experience)
+c-file 0x0802BB00 0x0802BBAC src/room/actors/spawn_door_actor.c SpawnDoorActor
 thumb-func 0x0802BBAC sub_0802BBAC
-c-file 0x0802BC54 0x0802BC74 src/room/objects/spawn_portrait_door_object.c SpawnPortraitDoorObject
+c-file 0x0802BC54 0x0802BC74 src/room/actors/spawn_portrait_door_actor.c SpawnPortraitDoorActor
 thumb-func 0x0802BC74 sub_0802BC74
 thumb-func 0x0802BC78 sub_0802BC78
 thumb-func 0x0802BC94 GrantPartyExperience_candidate
@@ -1339,8 +1339,8 @@ c-file 0x0802C860 _ src/gamemode/is_game_mode_transition_pending.c IsGameModeTra
 c-file 0x0802C87C _ src/gamemode/dispatch_game_mode_init.c DispatchGameModeInit
 c-file 0x0802C8A8 _ src/gamemode/dispatch_game_mode_update.c DispatchGameModeUpdate
 c-file 0x0802C8D0 0x0802C90C src/gamemode/dispatch_game_mode_destroy.c DispatchGameModeDestroy
-thumb-func 0x0802C90C SpawnMenuIconObject
-thumb-func 0x0802C944 RegisterMenuIconObject
+thumb-func 0x0802C90C SpawnMenuIconActor
+thumb-func 0x0802C944 RegisterMenuIconActor
 thumb-func 0x0802C960 sub_0802C960
 c-file 0x0802C984 _ src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 
@@ -1384,10 +1384,10 @@ thumb-func 0x0802D6B8 sub_0802D6B8
 thumb-func 0x0802D6D8 sub_0802D6D8
 
 # Move? (terrain collision and camera focus)
-c-file 0x0802D704 _ src/overworld/resolve_object_terrain.c ResolveObjectTerrain
+c-file 0x0802D704 _ src/overworld/resolve_actor_terrain.c ResolveActorTerrain
 c-file 0x0802D7A0 _ src/overworld/terrain_collision.c GetCollisionTypeAtPixel_candidate
 c-file 0x0802DF3C _ src/overworld/apply_room_switch_effect.c ApplyRoomSwitchEffect
-c-file 0x0802DF74 _ src/overworld/nudge_object.c NudgeAlongVelocity
+c-file 0x0802DF74 _ src/overworld/nudge_actor.c NudgeAlongVelocity
 c-file 0x0802E030 0x0802E090 src/overworld/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
 thumb-func 0x0802E090 sub_0802E090
 thumb-func 0x0802E2BC sub_0802E2BC
@@ -1404,13 +1404,13 @@ thumb-func 0x0802F3E4 sub_0802F3E4
 thumb-func 0x0802F434 sub_0802F434
 thumb-func 0x0802F494 sub_0802F494
 
-# Npc (NPC object)
-c-file 0x0802F500 0x0802F6C0 src/room/objects/spawn_npc_object.c SpawnNpcObject
+# Npc (NPC actor)
+c-file 0x0802F500 0x0802F6C0 src/room/actors/spawn_npc_actor.c SpawnNpcActor
 thumb-func 0x0802F6C0 sub_0802F6C0
 thumb-func 0x0802F7F0 sub_0802F7F0
 thumb-func 0x0802FCC0 sub_0802FCC0
 thumb-func 0x0802FD5C sub_0802FD5C
-thumb-func 0x0802FE04 SetObjectAnimData_candidate
+thumb-func 0x0802FE04 SetActorAnimData_candidate
 thumb-func 0x0802FE50 sub_0802FE50
 
 # Oam (OAM submission)
@@ -1421,8 +1421,8 @@ thumb-func 0x0802FF90 sub_0802FF90
 c-file 0x0802FFA0 _ src/graphics/oam/queue_oam_entry.c QueueOamEntry
 c-file 0x0802FFF0 _ src/graphics/oam/hide_oam_entry_on_alternate_vblanks.c HideOamEntryOnAlternateVblanks
 c-file 0x08030014 _ src/graphics/oam/clear_oam_shadow_buffers.c ClearOamShadowBuffers
-c-file 0x08030094 _ src/graphics/oam/get_object_affine_slot_id.c GetObjectAffineSlotId
-c-file 0x080300A0 _ src/graphics/oam/set_object_affine_slot_id.c SetObjectAffineSlotId
+c-file 0x08030094 _ src/graphics/oam/get_actor_affine_slot_id.c GetActorAffineSlotId
+c-file 0x080300A0 _ src/graphics/oam/set_actor_affine_slot_id.c SetActorAffineSlotId
 c-file 0x080300B4 _ src/graphics/oam/alloc_affine_slot.c AllocAffineSlot
 c-file 0x080300F8 _ src/graphics/oam/free_affine_slot.c FreeAffineSlot
 c-file 0x08030140 _ src/graphics/oam/commit_obj_affine_matrices.c CommitObjAffineMatrices
@@ -1443,14 +1443,14 @@ thumb-func 0x080306B8 sub_080306B8
 thumb-func 0x080306F0 sub_080306F0
 
 # Palette (OBJ palette bank cache)
-c-file 0x0803071C _ src/palette/bind_object_pending_palette.c BindObjectPendingPalette
+c-file 0x0803071C _ src/palette/bind_actor_pending_palette.c BindActorPendingPalette
 c-file 0x08030794 _ src/palette/alloc_obj_palette_slot.c AllocObjPaletteSlot
 c-file 0x08030824 _ src/palette/clear_obj_palette_slots.c ClearObjPaletteSlots
-c-file 0x08030844 _ src/palette/set_object_pending_palette.c SetObjectPendingPalette
-c-file 0x0803085C _ src/palette/set_object_pending_palette_unshared.c SetObjectPendingPaletteUnshared
-c-file 0x08030878 _ src/palette/attach_object_palette.c AttachObjectPalette
-c-file 0x080308A8 _ src/palette/attach_object_palette_unshared.c AttachObjectPaletteUnshared
-c-file 0x080308D8 _ src/palette/release_object_palette.c ReleaseObjectPalette
+c-file 0x08030844 _ src/palette/set_actor_pending_palette.c SetActorPendingPalette
+c-file 0x0803085C _ src/palette/set_actor_pending_palette_unshared.c SetActorPendingPaletteUnshared
+c-file 0x08030878 _ src/palette/attach_actor_palette.c AttachActorPalette
+c-file 0x080308A8 _ src/palette/attach_actor_palette_unshared.c AttachActorPaletteUnshared
+c-file 0x080308D8 _ src/palette/release_actor_palette.c ReleaseActorPalette
 c-file 0x08030924 _ src/palette/release_obj_palette_slot.c ReleaseObjPaletteSlot
 c-file 0x0803094C _ src/palette/reserve_obj_palette_slot.c ReserveObjPaletteSlot
 c-file 0x08030960 _ src/palette/unreserve_obj_palette_slot.c UnreserveObjPaletteSlot
@@ -1576,8 +1576,8 @@ thumb-func 0x08035474 sub_08035474
 thumb-func 0x080354C0 sub_080354C0
 thumb-func 0x08035520 sub_08035520
 
-# PressurePad? (push-reset button object)
-c-file 0x08035540 0x08035664 src/room/objects/spawn_push_reset_button_object.c SpawnPushResetButtonObject
+# PressurePad? (push-reset button actor)
+c-file 0x08035540 0x08035664 src/room/actors/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
 thumb-func 0x08035664 sub_08035664
 thumb-func 0x08035724 sub_08035724
 
@@ -1666,7 +1666,7 @@ thumb-func 0x08038400 UpdateGameCubeLinkStatusText
 thumb-func 0x080385B8 StageGameCubeStateBytes
 c-file 0x0803860C 0x08038650 src/gamemode/modes/gamecube_link/exit_gamecube_link.c ExitGameCubeLink
 thumb-func 0x08038650 ShowGameCubeLinkMessage
-thumb-func 0x08038694 SpawnGameCubeLinkIconObjects
+thumb-func 0x08038694 SpawnGameCubeLinkIconActors
 thumb-func 0x080386F0 DispatchGameCubeLinkCommand
 thumb-func 0x08038760 VerifyGameCubeHandshakeBytes
 thumb-func 0x08038784 FlagGameCubeHeaderReceived
@@ -1749,7 +1749,7 @@ thumb-func 0x0803A678 sub_0803A678
 c-file 0x0803A6D0 _ src/gamemode/modes/card_trade/initialize_card_trade.c InitializeCardTrade
 c-file 0x0803A780 0x0803AA50 src/gamemode/modes/card_trade/update_card_trade.c UpdateCardTrade
 thumb-func 0x0803AA50 ResetCardTradeAfterLinkLoss
-thumb-func 0x0803AAA8 SpawnCardTradeCardObjects
+thumb-func 0x0803AAA8 SpawnCardTradeCardActors
 thumb-func 0x0803AB1C SelectCardTradeEntry
 c-file 0x0803ABBC 0x0803ABF8 src/gamemode/modes/card_trade/exit_card_trade.c ExitCardTrade
 thumb-func 0x0803ABF8 ReceiveCardTradeOffer
@@ -1758,7 +1758,7 @@ thumb-func 0x0803AC38 CancelCardTradeOffer
 thumb-func 0x0803AC70 ShowCardTradeLinkStatus
 thumb-func 0x0803ACE0 RefreshCardTradeSlots
 thumb-func 0x0803AD00 SetCardTradeSlotCard
-thumb-func 0x0803AD30 RespawnCardTradeCardObject
+thumb-func 0x0803AD30 RespawnCardTradeCardActor
 thumb-func 0x0803AD78 DrawCardTradeSlotName
 thumb-func 0x0803ADD0 ShowCardTradeMessage
 thumb-func 0x0803AE28 sub_0803AE28
@@ -1768,7 +1768,7 @@ thumb-func 0x0803AE78 LeaveCardTradeScreen
 c-file 0x0803AEA0 _ src/gamemode/modes/folio_universitas_card_details/initialize_folio_card_detail_screen.c InitializeFolioCardDetailScreen
 c-file 0x0803AFA0 _ src/gamemode/modes/folio_universitas_card_details/handle_folio_card_detail_screen_tick.c HandleFolioCardDetailScreenTick
 c-file 0x0803AFCC _ src/gamemode/modes/folio_universitas_card_details/exit_folio_card_detail_screen.c ExitFolioCardDetailScreen
-c-file 0x0803AFE4 _ src/menu/spawn_folio_card_object.c SpawnFolioCardObject
+c-file 0x0803AFE4 _ src/menu/spawn_folio_card_actor.c SpawnFolioCardActor
 c-file 0x0803B03C _ src/menu/draw_folio_card_detail_text.c DrawFolioCardDetailText
 
 # Ram? (memory clear)
@@ -1797,8 +1797,8 @@ c-file 0x0803B560 _ src/rng/seed_array.c Mt19937SeedArray
 c-file 0x0803B598 _ src/rng/next.c Mt19937Next
 c-file 0x0803B5F4 _ src/rng/next2.c Mt19937Next2
 
-# Riser? (raising platform object)
-c-file 0x0803B64C 0x0803B71C src/room/objects/spawn_raising_platform_object.c SpawnRaisingPlatformObject
+# Riser? (raising platform actor)
+c-file 0x0803B64C 0x0803B71C src/room/actors/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
 thumb-func 0x0803B71C sub_0803B71C
 thumb-func 0x0803BA18 sub_0803BA18
 
@@ -1995,8 +1995,8 @@ thumb-func 0x0803FFC8 sub_0803FFC8
 thumb-func 0x0803FFEC sub_0803FFEC
 c-file 0x0804000C _ src/audio/on_krawall_event.c OnKrawallEvent
 
-# Spongify (spongify pad object)
-c-file 0x08040038 0x08040114 src/room/objects/spawn_spongify_pad_object.c SpawnSpongifyPadObject
+# Spongify (spongify pad actor)
+c-file 0x08040038 0x08040114 src/room/actors/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
 thumb-func 0x08040114 sub_08040114
 thumb-func 0x08040358 sub_08040358
 thumb-func 0x0804049C sub_0804049C
@@ -2065,7 +2065,7 @@ c-file 0x08042608 _ src/text/append_dialog_text.c AppendDialogText
 c-file 0x08042638 _ src/text/append_string.c AppendString
 c-file 0x08042664 0x080426A4 src/text/format_hex.c FormatHex
 
-# TextObj? (text objects)
+# TextObj? (text actors)
 thumb-func 0x080426A4 sub_080426A4
 thumb-func 0x0804273C sub_0804273C
 thumb-func 0x080427CC sub_080427CC
@@ -2113,7 +2113,7 @@ c-file 0x08043940 _ src/title/draw_main_menu_entry.c DrawMainMenuEntry
 c-file 0x080439AC _ src/title/draw_main_menu_copyright.c DrawMainMenuCopyright
 c-file 0x08043A20 _ src/title/select_main_menu_entry.c SelectMainMenuEntry
 c-file 0x08043A68 _ src/title/has_loadable_save_slot.c HasLoadableSaveSlot
-c-file 0x08043AA4 _ src/title/position_main_menu_cursor_object.c PositionMainMenuCursorObject
+c-file 0x08043AA4 _ src/title/position_main_menu_cursor_actor.c PositionMainMenuCursorActor
 
 # TitleLoad? (load game mode)
 c-file 0x08043AF0 0x08043B70 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
@@ -2147,8 +2147,8 @@ c-file 0x08044774 0x080447E0 src/gamemode/modes/options/exit_options.c ExitOptio
 thumb-func 0x080447E0 sub_080447E0
 thumb-func 0x0804483C sub_0804483C
 
-# Torch? (flame pillar object)
-c-file 0x08044894 0x08044960 src/room/objects/spawn_flame_pillar_object.c SpawnFlamePillarObject
+# Torch? (flame pillar actor)
+c-file 0x08044894 0x08044960 src/room/actors/spawn_flame_pillar_actor.c SpawnFlamePillarActor
 thumb-func 0x08044960 sub_08044960
 thumb-func 0x08044A94 GrantPickupMarkerItem
 thumb-func 0x08044ADC sub_08044ADC
@@ -2158,8 +2158,8 @@ c-file 0x08044B00 _ src/gamemode/modes/cutscene/cool_train_cutscene/initialize_c
 c-file 0x08044B7C _ src/gamemode/modes/cutscene/cool_train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file 0x08044BF0 _ src/gamemode/modes/cutscene/cool_train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
 
-# Trigger? (switch object)
-c-file 0x08044C00 0x08044D24 src/room/objects/spawn_switch_object.c SpawnSwitchObject
+# Trigger? (switch actor)
+c-file 0x08044C00 0x08044D24 src/room/actors/spawn_switch_actor.c SpawnSwitchActor
 thumb-func 0x08044D24 sub_08044D24
 thumb-func 0x08044F54 sub_08044F54
 
@@ -2183,11 +2183,11 @@ c-file 0x08045374 _ src/graphics/scanline/clear_scanline_effect_staging.c ClearS
 c-file 0x080453B4 _ src/vram/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 c-file 0x080453D8 0x0804542C src/vram/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x0804542C sub_0804542C
-c-file 0x08045450 _ src/vram/alloc_object_vram_tiles.c AllocObjectVramTiles
+c-file 0x08045450 _ src/vram/alloc_obj_vram_tiles.c AllocObjVramTiles
 c-file 0x080454BC _ src/vram/load_obj_tile.c LoadObjTile
 c-file 0x080454DC _ src/vram/load_obj_tile_at.c LoadObjTileAt
-c-file 0x080454F4 _ src/vram/free_object_vram_tile_allocation_now.c FreeObjectVramTileAllocationNow
-c-file 0x08045514 0x08045534 src/vram/free_object_vram_tile_allocation.c FreeObjectVramTileAllocation
+c-file 0x080454F4 _ src/vram/free_obj_vram_tile_allocation_now.c FreeObjVramTileAllocationNow
+c-file 0x08045514 0x08045534 src/vram/free_obj_vram_tile_allocation.c FreeObjVramTileAllocation
 thumb-func 0x08045534 sub_08045534
 c-file 0x0804555C _ src/vram/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
 c-file 0x08045588 _ src/vram/load_obj_tile_sheet.c LoadObjTileSheet
@@ -2212,8 +2212,8 @@ thumb-func 0x080459F4 sub_080459F4
 thumb-func 0x08045A1C sub_08045A1C
 c-file 0x08045A54 _ src/graphics/tick_screen_window.c TickScreenWindow
 
-# World? (prop object)
-c-file 0x08045AE8 0x08045ECC src/room/objects/spawn_prop_object.c SpawnPropObject
+# World? (prop actor)
+c-file 0x08045AE8 0x08045ECC src/room/actors/spawn_prop_actor.c SpawnPropActor
 thumb-func 0x08045ECC sub_08045ECC
 thumb-func 0x080463E8 sub_080463E8
 thumb-func 0x0804651C sub_0804651C
@@ -2221,9 +2221,9 @@ thumb-func 0x080465D4 sub_080465D4
 thumb-func 0x08046A48 sub_08046A48
 thumb-func 0x08046AB0 sub_08046AB0
 
-# WorldGrid? (snap object to tile grid)
-c-file 0x08046C5C 0x08046CA4 src/overworld/snap_object_x_to_tile_grid.c SnapObjectXToTileGrid
-thumb-func 0x08046CA4 MarkRoomObjectConsumed
+# WorldGrid? (snap actor to tile grid)
+c-file 0x08046C5C 0x08046CA4 src/overworld/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
+thumb-func 0x08046CA4 MarkRoomActorConsumed
 
 # Krawall, see docs/memory-map/krawall.md
 thumb-func 0x08046D0C kragInit
@@ -2406,7 +2406,7 @@ c-file 0x0804BD5C _ src/libc/memcpy.c memcpy
 # Unit direction vectors (16.16 {x, y}) indexed by Direction4 and Direction
 c-file 0x0804BDBC 0x0804BE1C src/graphics/particle/direction_vectors.c g_aDirection4Vectors
 c-file 0x0804C024 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
-c-file 0x0804C054 0x0804C08C src/room/room_object_constructors.c g_apRoomObjectConstructors
+c-file 0x0804C054 0x0804C08C src/room/room_actor_constructors.c g_apRoomActorConstructors
 c-file 0x0804C1B0 0x0804C1B8 src/gamemode/modes/minigame/riddikulus/riddikulus.globals.c g_dwRiddikulusBg0Control
 c-file 0x0804C43C 0x0804C440 src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
 c-file 0x0804C444 _ src/gamemode/modes/debug/debug_menu_main/debug_menu_main.globals.c g_dwDebugMenuMainBg0Control
@@ -2418,7 +2418,7 @@ c-file 0x0804C61C 0x0804CA9C src/graphics/assets/portrait_table.c g_apPortraitTa
 c-file 0x0804CE8C _ src/gamemode/modes/debug/debug_sound_test_menu/debug_sound_test_menu.globals.c g_dwDebugSoundTestBg0Control
 c-file 0x0804CEB8 _ src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
 c-file 0x0804CEC4 _ src/menu/debug_collector_card_names.c sDebugCollectorCardNames
-c-file 0x0804D524 _ src/room/objects/spawn_chest_object.globals.c g_RoomChestSprite
+c-file 0x0804D524 _ src/room/actors/spawn_chest_actor.globals.c g_RoomChestSprite
 c-file 0x0804D6CC 0x0804D6EC src/gamemode/modes/loading_screen/loading_screen_stages.globals.c g_LoadingScreenTables
 label 0x0804D76A g_abLoadingScreenTwoOptions
 c-file 0x0804D770 0x0804D790 src/gamemode/modes/loading_screen/loading_screen_effects.globals.c g_aLoadingScreenScanlineEffects
@@ -2456,7 +2456,7 @@ c-file 0x080539A8 _ src/battle/effect_scanline_tables.c g_adwEffectBgControlOver
 c-file 0x08053B18 _ src/graphics/assets/rain_stream_lists.c g_RainStreakList_candidate
 c-file 0x08053C68 _ src/battle/effect_slot_positions.c g_aEffectOrbitParams_candidate
 
-c-file 0x08053D40 _ src/graphics/assets/effect_assets.c g_aEffectObjectAssets
+c-file 0x08053D40 _ src/graphics/assets/effect_assets.c g_aEffectActorAssets
 c-file 0x080544D4 _ src/battle/effect_bg_records.c g_aEffectBgRecords_candidate
 c-file 0x08054F34 _ src/battle/script_opcode_lengths.c g_abScriptOpcodeLengths
 c-file 0x08054FDC _ src/battle/effect_anim_data.c g_abFighterIdleAnimData_candidate
@@ -2501,9 +2501,9 @@ c-file 0x08065CBC _ src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchT
 c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066094 0x080660D4 src/overworld/terrain_collision.globals.c g_abOppositeFacing
-c-file 0x08066E44 _ src/room/objects/spawn_npc_object.globals.c g_adwRoomObjUnk6FrameRows
-c-file 0x08066FFC _ src/graphics/assets/object_type_assets.c g_aObjectTypeAssets
-c-file 0x0806788C 0x080678BC src/room/objects/room_obj_unk6_frames.c g_abRoomObjUnk6Frames
+c-file 0x08066E44 _ src/room/actors/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
+c-file 0x08066FFC _ src/graphics/assets/actor_type_assets.c g_aActorTypeAssets
+c-file 0x0806788C 0x080678BC src/room/actors/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068BF0 _ src/graphics/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068BF8 _ src/gamemode/modes/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
@@ -2515,7 +2515,7 @@ c-file 0x08068D04 0x08068D3C src/gamemode/modes/minigame/wizard_cracker_pop_it/w
 c-file 0x08069184 0x08069194 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
 c-file 0x08069328 _ src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file 0x080693CC 0x080693E4 src/room/objects/spawn_push_reset_button_object.globals.c g_RoomObjUnk8Sprite
+c-file 0x080693CC 0x080693E4 src/room/actors/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
 c-file 0x0806945C _ src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C _ src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
 c-file 0x08069568 _ src/gamemode/modes/folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control
@@ -2532,11 +2532,11 @@ c-file 0x0806B2FC _ src/gamemode/modes/status_equip/status_equip_slots.c g_aStat
 c-file 0x0806B35C 0x0806B3AC src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B3CC _ src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B3D8 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
-c-file 0x0806B7D4 _ src/room/objects/spawn_raising_platform_object.globals.c g_RoomRaisingPlatformSprite
+c-file 0x0806B7D4 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B80C _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B8CC _ src/mem/clear_work_ram.globals.c g_pIwramSectionStart
-c-file 0x0806B8DC 0x0806B934 src/room/objects/spawn_spongify_pad_object.globals.c g_aRoomSpongifyPadSprites
+c-file 0x0806B8DC 0x0806B934 src/room/actors/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 _ src/shop/shop_stock.c g_aShopStockMisc
 
 c-file 0x0806BA4C _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
@@ -2544,28 +2544,28 @@ c-file 0x0806BB00 _ src/gamemode/modes/minigame/divination_tea/divination_tea.gl
 c-file 0x0806BB70 _ src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD78 _ sDialogTextTable
 c-file 0x0806BD98 _ src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
-c-file 0x0806BDA4 0x0806BE30 src/gamemode/modes/cutscene/clock_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipObject1Asset
+c-file 0x0806BDA4 0x0806BE30 src/gamemode/modes/cutscene/clock_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
 c-file 0x0806BE38 0x0806BF30 src/room/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
-c-file 0x0806BF40 0x0806BF60 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeObjectPos
+c-file 0x0806BF40 0x0806BF60 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
 c-file 0x0806BFD0 _ src/gamemode/modes/main_menu/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BFDC _ src/gamemode/modes/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BFF4 0x0806C014 src/gamemode/modes/main_menu/main_menu_title_graphics.c g_apMainMenuTitleGraphic
 c-file 0x0806C048 0x0806C108 src/gamemode/modes/options/options_menu_items.c g_aOptionsMenuItems
-c-file 0x0806C12C _ src/room/objects/spawn_flame_pillar_object.globals.c g_aRoomFlamePillarSprites
+c-file 0x0806C12C _ src/room/actors/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C174 _ src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
-c-file 0x0806C178 0x0806C200 src/room/objects/spawn_switch_object.globals.c g_aRoomSwitchSprites
+c-file 0x0806C178 0x0806C200 src/room/actors/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file 0x0806C2F0 0x0806C300 src/graphics/scanline/default_scanline_effects.c g_aDefaultScanlineEffects
-c-file 0x0806C304 _ src/room/objects/spawn_prop_object.globals.c g_aRoomObjTriggerSprites
+c-file 0x0806C304 _ src/room/actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
 graphics 0x0806E904 _ overworld OverworldSpellEffects
 graphics 0x080781A4 _ battle AllyHeads
 graphics 0x0807E7F8 _ overworld OverworldPlayerSprites
 graphics 0x080A6D54 _ menus ItemAndHelpIcons
 graphics 0x080AC8CC _ overworld MonsterOverworldSprites
 graphics 0x080BC1C4 _ menus MenuSprites
-graphics 0x080BD564 _ overworld ObjectSprites
+graphics 0x080BD564 _ overworld ActorSprites
 graphics 0x080D0B54 _ menus/us OptionIconUs
-graphics 0x080D0C38 _ overworld ObjectSprites2
+graphics 0x080D0C38 _ overworld ActorSprites2
 
 # Room-script chains (room resource blobs)
 asm-file 0x08196408 _ asm/room/blobs/defense_against_the_dark_arts_classroom.s Room00Blob

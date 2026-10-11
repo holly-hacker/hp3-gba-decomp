@@ -57,7 +57,7 @@ void UpdateRiddikulusMinigame(void)
             else
             {
                 sub_08008D4C();
-                g_Riddikulus.pObject->dwFlags |= 0x82;
+                g_Riddikulus.pActor->dwFlags |= 0x82;
                 g_Riddikulus.dwCountdown = 3;
                 g_GameModeStackContext.dwModeState = RiddikulusStateIntro;
             }
@@ -69,7 +69,7 @@ void UpdateRiddikulusMinigame(void)
             sub_08008CA8();
             g_Riddikulus.bUnk35++;
             sub_08008D4C();
-            g_Riddikulus.pObject->dwFlags |= 0x82;
+            g_Riddikulus.pActor->dwFlags |= 0x82;
             g_Riddikulus.dwCountdown = 3;
             g_GameModeStackContext.dwModeState = RiddikulusStateIntro;
         }

@@ -11,10 +11,10 @@ void UpdateHarryVsDementorsMinigame(void)
         sub_0801ED48(g_HarryVsDementors.dwEventArg64);
 
     if (g_HarryVsDementors.dwHideTimer5C != 0 && --g_HarryVsDementors.dwHideTimer5C == 0)
-        g_HarryVsDementors.pObject18->dwFlags &= ~ActorFlagVisible;
+        g_HarryVsDementors.pActor18->dwFlags &= ~ActorFlagVisible;
 
     if (g_HarryVsDementors.dwHideTimer68 != 0 && --g_HarryVsDementors.dwHideTimer68 == 0)
-        g_HarryVsDementors.pObject1C->dwFlags &= ~ActorFlagVisible;
+        g_HarryVsDementors.pActor1C->dwFlags &= ~ActorFlagVisible;
 
     switch (g_GameModeStackContext.dwModeState)
     {

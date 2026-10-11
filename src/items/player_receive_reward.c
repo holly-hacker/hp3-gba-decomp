@@ -10,12 +10,12 @@ void PlayerReceiveReward(u32 rewardId)
 {
     u32 amount;
 
-    CancelActorMove_candidate(g_pPlayerObject);
-    g_pPlayerObject->anim.bAnimFrameCounter = 0;
-    SetActorActionState(g_pPlayerObject, 0x17);
-    SetActorActionSubState(g_pPlayerObject, 0);
-    g_pPlayerObject->dwStateTimer = 1;
-    g_pPlayerObject->bReceivedRewardId = rewardId;
+    CancelActorMove_candidate(g_pPlayerActor);
+    g_pPlayerActor->anim.bAnimFrameCounter = 0;
+    SetActorActionState(g_pPlayerActor, 0x17);
+    SetActorActionSubState(g_pPlayerActor, 0);
+    g_pPlayerActor->dwStateTimer = 1;
+    g_pPlayerActor->bReceivedRewardId = rewardId;
 
     if (rewardId == REWARD_ID_GOLD)
         amount = Mt19937RandRange(30, 60);

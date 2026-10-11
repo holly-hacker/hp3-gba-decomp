@@ -10,7 +10,7 @@
 #include "overworld/room_script.h"
 
 // Overworld mode's pDestroyFn. Plays the outgoing screen transition, then
-// tears down the overworld's objects, palettes and lists. The mode being
+// tears down the overworld's actors, palettes and lists. The mode being
 // pushed (pending) decides the transition and which state is kept for the
 // mode that returns to the overworld.
 void ExitOverworldScreen(void)

@@ -24,7 +24,7 @@ void UpdateBattle(void)
                 return;
 
             for (i = 0; i < g_pFightState->bFighterCount; i++)
-                sub_080039E8(g_pFightState->pFighters[i].pObject);
+                sub_080039E8(g_pFightState->pFighters[i].pActor);
             return;
         }
     }

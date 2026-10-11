@@ -133,17 +133,17 @@ Room51V1Chain0:
     DelayedRespawnRowAndRunChain 0, 0, Room51V1Chain1_id
     End
 Room51V1Chain1:
-    StartObjectAnimSequence Room51V1Group0_id, 0, 0, 0, Room51V1Route0_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 1, 0, 0, Room51V1Route1_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 2, 0, 0, Room51V1Route2_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 3, 0, 0, Room51V1Route3_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 8, 0, 0, Room51V1Route4_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 12, 0, 0, Room51V1Route6_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 13, 0, 0, Room51V1Route7_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 14, 0, 0, Room51V1Route8_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 15, 0, 0, Room51V1Route9_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 16, 0, 0, Room51V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room51V1Group0_id, 17, 0, 0, Room51V1Route11_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 0, 0, 0, Room51V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 1, 0, 0, Room51V1Route1_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 2, 0, 0, Room51V1Route2_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 3, 0, 0, Room51V1Route3_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 8, 0, 0, Room51V1Route4_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 12, 0, 0, Room51V1Route6_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 13, 0, 0, Room51V1Route7_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 14, 0, 0, Room51V1Route8_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 15, 0, 0, Room51V1Route9_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 16, 0, 0, Room51V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room51V1Group0_id, 17, 0, 0, Room51V1Route11_id, 0, 0, 0, 0, 0
     End
 Room51V1Chain2:
     UnlockMinigame 0

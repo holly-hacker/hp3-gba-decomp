@@ -63,7 +63,7 @@ Room33V1Chain1:
     End
 Room33V1Chain2:
     ArmChainYield 1
-    StartTileObjectScript 170, 3, 1, 0, 255, 0, 0, 6, 255, 255, 255
+    StartTileActorScript 170, 3, 1, 0, 255, 0, 0, 6, 255, 255, 255
     @ "What we need is more time."
     @ "Miss Granger, three turns should do it. Good luck."
     ShowRoomDialog 587
@@ -72,14 +72,14 @@ Room33V1Chain2:
     End
 Room33V1Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChain 3, 0, 0
     PlayCutscene 9, 0, Room33V1Chain5_id
     End
 Room33V1Chain4:
     ArmChainYield 1
     RecruitPartyFollower 6
-    DespawnTileObject Room33V1Group1_id, 0
+    DespawnTileActor Room33V1Group1_id, 0
     SetQuestState QUEST_OBJ_SECRET_PATH_TO_HAGRIDS_HUT, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, QUEST_ALT_PRESENTATION
     SetStoryStage 25
@@ -87,18 +87,18 @@ Room33V1Chain4:
     End
 Room33V1Chain5:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence Room33V1Group1_id, 1, 0, 0, Room33V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room33V1Group1_id, 1, 0, 0, Room33V1Route0_id, 0, 1, 0, 0, 0
     End
 Room33V1Chain6:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "What are we supposed to do?"
     @ "We're going to use the Time-Turner to go back three hours, rescue Buckbeak and then release Sirius from the West Tower."
     ShowRoomDialog 588
     ArmChainYield 0
-    StartObjectAnimSequence Room33V1Group1_id, 0, 0, 0, Room33V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room33V1Group1_id, 0, 0, 0, Room33V1Route1_id, 0, 1, 0, 0, 0
     End
 Room33V1Chain7:
     GotoIfQuestStateCompare QUEST_SCRATCH_RESULT, 0, 1, Room33V1Chain1_id, 0, 0, 0

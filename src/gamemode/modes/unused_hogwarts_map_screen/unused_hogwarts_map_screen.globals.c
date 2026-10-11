@@ -21,6 +21,6 @@ const u32 g_dwUnusedHogwartsMapBg2Control = 0xD902;
 const u32 g_dwUnusedHogwartsMapBg3Control = 0x1D0B;
 
 const ActorGfxRecord g_UnusedHogwartsMapEntryGfx = {
-    (void *)gObjectSprite015Tiles,
-    (void *)gObjectSprite015Frames,
+    (void *)gActorSprite015Tiles,
+    (void *)gActorSprite015Frames,
 };

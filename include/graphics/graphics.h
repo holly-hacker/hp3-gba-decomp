@@ -66,7 +66,7 @@ void InstallBgTileCodec(void);
 // scale (8.8 fixed) plus rotation angle; the trailing pad word gives
 // each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage
 // g_abAffineSlotUsed/g_bAffineSlotHighWaterMark (see ram_symbols.us.inc);
-// GetObjectAffineSlotId/SetObjectAffineSlotId read/write the allocated
+// GetActorAffineSlotId/SetActorAffineSlotId read/write the allocated
 // index in an OamEntry's affine index bits (see OAM_ATTR1).
 typedef struct ObjAffineSource {
     s16 sx;
@@ -136,7 +136,7 @@ typedef enum {
 // undecoded.
 typedef struct ParticleEmitter {
     ListNode node;           // 0x00
-    struct Actor *pTarget;  // 0x08, object the emitter follows
+    struct Actor *pTarget;  // 0x08, actor the emitter follows
     const ParticleSprite *pSprite;  // 0x0C
     s32 nVelX;               // 0x10, mode 8 direction vector
     s32 nVelY;               // 0x14

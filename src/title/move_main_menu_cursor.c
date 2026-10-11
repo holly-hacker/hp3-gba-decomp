@@ -32,5 +32,5 @@ void MoveMainMenuCursor(void)
 
     DrawMainMenuEntry(previous, g_GameModeStackContext.dwModeScratchB);
     DrawMainMenuEntry(g_GameModeStackContext.dwModeScratchB, g_GameModeStackContext.dwModeScratchB);
-    PositionMainMenuCursorObject(1);
+    PositionMainMenuCursorActor(1);
 }

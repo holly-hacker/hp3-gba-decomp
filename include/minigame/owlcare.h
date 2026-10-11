@@ -14,7 +14,7 @@ void ProcessOwlCareKitTick(s32 nGrowCounters);
 // InitializeOwlCareKitScreen. The persistent care data lives in
 // g_saveStateBlock.owlCareKit.
 typedef struct {
-    Actor *pOwl;                 // 0x00; the owl object
+    Actor *pOwl;                 // 0x00; the owl actor
     Actor *pCursor;              // 0x04; the menu cursor, released on exit
     void *pUnk08;                 // 0x08; handed to sub_080233C0 on exit
     u8 abUnmapped_0C[0xC8];

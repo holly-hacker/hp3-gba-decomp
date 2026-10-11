@@ -12,13 +12,13 @@ typedef struct {
     u32 dwImmediate;   // 0x08: nonzero pushes the mode right away with a screen transition
 } ListMenuEntry;
 
-// One 16-byte record of a list menu's row objects, read by sub_08001690.
+// One 16-byte record of a list menu's row actors, read by sub_08001690.
 typedef struct {
     void *pTileGfx;
     void *pFrameData;            // 0x04
     const ObjPalette *pPalette;  // 0x08
     u32 dwUnkC;
-} ListMenuRowObject;
+} ListMenuRowActor;
 
 // Layout of a list menu, 0x24 bytes. Rows are drawn at
 // (wBaseX + row * wStrideX, wBaseY + row * wStrideY).
@@ -32,11 +32,11 @@ typedef struct {
     u16 wStrideX;           // 0x0C
     u16 wStrideY;           // 0x0E
     const ListMenuEntry *pEntries;  // 0x10
-    u16 wRowObjectCount;    // 0x14: one object per row, created from pRowObjects
+    u16 wRowActorCount;    // 0x14: one actor per row, created from pRowActors
     u16 wUnk16;
-    u16 wRowObjectOffsetX;  // 0x18
-    u16 wRowObjectOffsetY;  // 0x1A
-    const ListMenuRowObject *pRowObjects;  // 0x1C
+    u16 wRowActorOffsetX;  // 0x18
+    u16 wRowActorOffsetY;  // 0x1A
+    const ListMenuRowActor *pRowActors;  // 0x1C
     u16 wCursorOffsetX;     // 0x20
     u16 wCursorOffsetY;     // 0x22
 } ListMenuDefinition;
@@ -50,7 +50,7 @@ extern ListMenuState g_ListMenuState;  // 0x03005220
 
 extern const u32 g_dwCommonBg2Control;  // 0x0805E10C: BG2 control word, the text target for list menu rows
 
-extern void ListMenuCursorTick_candidate(Actor *pObject);
+extern void ListMenuCursorTick_candidate(Actor *pActor);
 extern void BuildListMenu(const ListMenuDefinition *pDefinition);
 extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);

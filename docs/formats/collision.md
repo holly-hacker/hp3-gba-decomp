@@ -27,11 +27,11 @@ fields, see [`levels.md`](levels.md)) decompresses two resources:
 its tile-type byte (out-of-bounds = solid, type 1). The **low 6 bits**
 of that byte are the tile type (below); the **top 2 bits** are a
 separate value, read by `GetCollisionLayerAtPixel` (`0x0802E030`) and written into `oam.priority` (the draw layer)
-(`Actor+0xD5` bits 2-3, see `SetActorDrawLayer`) by `ResolveObjectTerrain`. STRUCTURAL MATCH:
-`SortObjectsByDepth` folds it into the draw-order sort key,
+(`Actor+0xD5` bits 2-3, see `SetActorDrawLayer`) by `ResolveActorTerrain`. STRUCTURAL MATCH:
+`SortActorsByDepth` folds it into the draw-order sort key,
 and `TickActorList` flushes a per-layer queued particle list
 (`FUN_080317ec`/`FUN_08031358`) as it crosses each layer boundary while
-walking the depth-sorted object list. UNCONFIRMED: the previously
+walking the depth-sorted actor list. UNCONFIRMED: the previously
 recorded "user-verified: layer=1 is an occlusion flag" claim has no
 evidence trail here and wasn't reproduced by the above.
 
@@ -40,24 +40,24 @@ evidence trail here and wasn't reproduced by the above.
 Only types **1-25** trigger the actual position-revert/blocking
 response in the movement-resolution function. **Types 26+ are passable
 by default** -- `ApplyTerrainTypeEffect` (`0x0802D8F4`, run by
-`GetObjectTerrainType`, `0x0802D868`, on what `ScanTerrainEdge`
-(`0x0802DC3C`) found along an edge of the object's terrain box, sampled in
+`GetActorTerrainType`, `0x0802D868`, on what `ScanTerrainEdge`
+(`0x0802DC3C`) found along an edge of the actor's terrain box, sampled in
 4px steps) only force-blocks two of them, and only conditionally:
 
 `IsBlockingCollisionType` (`0x0802DF28`) is the shared 1-25 test.
-`GetUnblockedDirectionToTarget` (`0x08000FF0`) uses it to steer an object
-toward a target: it probes the pixel ahead of the object's terrain box
+`GetUnblockedDirectionToTarget` (`0x08000FF0`) uses it to steer an actor
+toward a target: it probes the pixel ahead of the actor's terrain box
 (`Actor` bytes `0xC0`-`0xC3`) and, when a diagonal is blocked, falls back
 to the horizontal and then the vertical direction.
 
-- `0x1F`: blocks unless a spell-effect object is currently active
+- `0x1F`: blocks unless a spell-effect actor is currently active
   (`DAT_03003FD4`, set by the generic effect-spawner `0x0802E090`) AND
-  the player object's `field_0x91` is set.
-- `0x29`: blocks every object except ones with `wActorType==0xF`.
+  the player actor's `field_0x91` is set.
+- `0x29`: blocks every actor except ones with `wActorType==0xF`.
 
-`0x22` force-blocks objects with `wActorType==0` specifically (exempts
+`0x22` force-blocks actors with `wActorType==0` specifically (exempts
 everything else, with an extra 4-corner pushable-adjacent check for
-`wActorType==5`) -- code doesn't independently confirm what game-object
+`wActorType==5`) -- code doesn't independently confirm what actor
 class `wActorType==0` is, but user-verified "0x22 is unwalkable water"
 is consistent with it being the player/common-character type.
 
@@ -96,9 +96,9 @@ Confirmed byte-exact against the ROM along the way (geometry, indexing,
 table data, pattern bounds), which is what let the live-play check settle
 this as a game bug rather than a modeling error:
 
-- `RespondToTerrain` (`0x0802DA20`) is the per-object state machine behind the
+- `RespondToTerrain` (`0x0802DA20`) is the per-actor state machine behind the
   ice/Glacius puzzle (type `0x2D`), keyed on `Actor.bUnk_0x7C` states 1/2/4/5;
-  state 5 slides the object along the slope with `TrySlideAlongSlope`
+  state 5 slides the actor along the slope with `TrySlideAlongSlope`
   (`0x0802DB20`) -- not a second geometry consumer; it indexes
   `g_aSlopeLineSegments` the same way the real solidity test does.
 - `GetCollisionTypeAtPixel_candidate` (`0x0802D7A0`) is the real per-pixel
@@ -122,7 +122,7 @@ Code-confirmed meanings:
 | `0x23` (35) | Room switch-state toggle A |
 | `0x24` (36) | Room switch-state toggle B |
 | `0x29` (41) | Blocks everything except `wActorType==0xF` |
-| `0x2D` (45) | Sets a flag bit on the player object |
+| `0x2D` (45) | Sets a flag bit on the player actor |
 
 User-verified (live gameplay against the rendered collision maps):
 
@@ -160,6 +160,6 @@ aid only, not build input. The collision data itself is built from
 
 ## Not yet located
 
-- Which game-object class `wActorType==0` and `wActorType==0xF` are.
+- Which actor class `wActorType==0` and `wActorType==0xF` are.
 - Layer values 2 and 3's meaning.
 - JP-ROM addresses; everything above is US-only.

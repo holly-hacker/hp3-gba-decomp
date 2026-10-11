@@ -60,10 +60,10 @@ Room26V1Chain1:
 Room26V1Chain2:
     ArmChainYield 1
     SetQuestState 1, 230
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room26V1Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room26V1Group1_id, 0, 0, 0, Room26V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room26V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room26V1Group1_id, 0, 0, 0, Room26V1Route1_id, 0, 1, 0, 0, 0
     End
 Room26V1Chain3:
     ArmChainYield 1
@@ -90,11 +90,11 @@ Room26V1Chain4:
     @ "I thought I did, Harry. You'd better get off to your common room. It's getting late."
     @ "Bye, Professor."
     ShowRoomDialog 494
-    DespawnTileObject Room26V1Group1_id, 1
+    DespawnTileActor Room26V1Group1_id, 1
     SetQuestState 1, 230
     SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_LUPIN, QUEST_OBJECTIVE_INDEX
     SetStoryStage 18
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room26V1Chain5:
     @ "I'd advise you to go to your common room."

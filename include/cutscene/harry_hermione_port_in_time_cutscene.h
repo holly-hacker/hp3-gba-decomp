@@ -4,27 +4,27 @@
 #include "actor.h"
 
 // The mode's screen state at 0x03005D98 (US). Fields used by the mode handlers;
-// the object setup helpers sub_08043114/sub_08043308 own the rest.
+// the actor setup helpers sub_08043114/sub_08043308 own the rest.
 typedef struct {
     u32 dwUnk0;           // 0x00: first argument of sub_0800A420
     s32 nProgress;        // 0x04: 16.16 fixed-point, second argument of sub_0800A420
     u32 bRising;          // 0x08: 1 while progress rises, 0 once it falls back
-    Actor *pObjectA;     // 0x0C
-    Actor *pObjectB;     // 0x10
-    u32 dwPositionIndex;  // 0x14: row of g_aHarryHermionePortInTimeObjectPos
+    Actor *pActorA;     // 0x0C
+    Actor *pActorB;     // 0x10
+    u32 dwPositionIndex;  // 0x14: row of g_aHarryHermionePortInTimeActorPos
 } HarryHermionePortInTimeState;
 
 extern HarryHermionePortInTimeState g_HarryHermionePortInTime;  // 0x03005D98
 
-// One row per position index: the x coordinate of object A at +0x00 and of object B at +0x08.
+// One row per position index: the x coordinate of actor A at +0x00 and of actor B at +0x08.
 typedef struct {
-    s32 nObjectAX;    // 0x00
+    s32 nActorAX;    // 0x00
     s32 dwUnk4;       // 0x04
-    s32 nObjectBX;    // 0x08
+    s32 nActorBX;    // 0x08
     s32 dwUnk0xC;     // 0x0C
 } HarryHermionePortInTimePosition;
 
-extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeObjectPos[2];  // 0x0806BF40
+extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeActorPos[2];  // 0x0806BF40
 
 extern void sub_08043114(u32 arg);
 extern void sub_08043308(u32 arg);

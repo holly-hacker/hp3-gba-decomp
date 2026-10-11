@@ -5,7 +5,7 @@
 // bActionFlags bit 0x01, the generic "action state just changed" flag each
 // actor type's own tick function checks on its next tick (e.g.
 // TickFighterAttackAnimState_candidate for battle fighters,
-// TickObjectActionState_candidate and TickWanderingMonsterObject elsewhere).
+// TickActorActionState_candidate and TickWanderingMonsterActor elsewhere).
 void SetActorActionState(Actor *actor, u8 state)
 {
     if (actor->bActionState != state)

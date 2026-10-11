@@ -7,9 +7,9 @@ void ExitLinearCutscene(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     sub_08007D14(1, 0, 0);
 
-    if (g_pLinearCutsceneObject != NULL)
+    if (g_pLinearCutsceneActor != NULL)
     {
-        FreeActor(g_pLinearCutsceneObject);
-        g_pLinearCutsceneObject = NULL;
+        FreeActor(g_pLinearCutsceneActor);
+        g_pLinearCutsceneActor = NULL;
     }
 }

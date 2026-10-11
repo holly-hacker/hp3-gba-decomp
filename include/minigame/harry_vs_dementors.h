@@ -11,12 +11,12 @@ extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set
 // The mode's screen state at 0x03002E18, driven by g_GameModeStackContext.dwModeState.
 typedef struct {
     u8 abUnmapped_0[0x14];
-    Actor *pCursorObject;   // 0x14; released on exit when set
-    Actor *pObject18;       // 0x18; hidden when dwHideTimer5C expires
-    Actor *pObject1C;       // 0x1C; hidden when dwHideTimer68 expires
-    void *pObjectGroup20;    // 0x20; freed on exit
-    void *pObjectGroup24;    // 0x24; freed on exit
-    void *pObjectGroup28;    // 0x28; freed on exit
+    Actor *pCursorActor;   // 0x14; released on exit when set
+    Actor *pActor18;       // 0x18; hidden when dwHideTimer5C expires
+    Actor *pActor1C;       // 0x1C; hidden when dwHideTimer68 expires
+    void *pActorGroup20;    // 0x20; freed on exit
+    void *pActorGroup24;    // 0x24; freed on exit
+    void *pActorGroup28;    // 0x28; freed on exit
     u32 dwUnk2C;
     u8 abUnmapped_30[0x10];
     s32 dwUnk40;
@@ -28,15 +28,15 @@ typedef struct {
     u8 bUnk54;
     u8 abUnmapped_55[3];
     u32 dwUnk58;
-    u32 dwHideTimer5C;       // 0x5C; frames until pObject18 is hidden
+    u32 dwHideTimer5C;       // 0x5C; frames until pActor18 is hidden
     u32 dwEventTimer60;      // 0x60; frames until sub_0801ED48(dwEventArg64) runs
     u32 dwEventArg64;
-    u32 dwHideTimer68;       // 0x68; frames until pObject1C is hidden
+    u32 dwHideTimer68;       // 0x68; frames until pActor1C is hidden
 } HarryVsDementorsState;
 
 extern HarryVsDementorsState g_HarryVsDementors;  // 0x03002E18
 
-// BG control words, per-level BG0 graphics and the two spawned objects' data.
+// BG control words, per-level BG0 graphics and the two spawned actors' data.
 extern const u32 g_dwHarryVsDementorsBg0Control;  // 0x0805E174
 extern const u32 g_dwHarryVsDementorsBg3Control;  // 0x0805E178
 

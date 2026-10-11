@@ -25,7 +25,7 @@ void HandleMinigameSelectMenuConfirm(void)
     case 0:
         if (StepCursorLeftRight(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 3, 1, 0))
         {
-            SetActorMoveTargetWithDuration_candidate(g_pMenuCursorObject,
+            SetActorMoveTargetWithDuration_candidate(g_pMenuCursorActor,
                                                       g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70, 8);
             BeginMinigameSwitchFade_candidate();
             g_GameModeStackContext.dwModeState = 1;

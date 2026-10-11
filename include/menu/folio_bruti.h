@@ -10,9 +10,9 @@ extern const u32 g_dwFolioBrutiBg1Control;  // 0x08069570
 extern const u16 g_aFolioBrutiBlankObjPalette[16];  // 0x08069574
 
 // The grid cursor and the spell-effectiveness dot.
-extern const ActorGfxRecord g_aFolioBrutiObjectGfx[2];  // 0x08069594
-#define FOLIO_BRUTI_CURSOR_GFX    (&g_aFolioBrutiObjectGfx[0])
-#define FOLIO_BRUTI_SPELL_DOT_GFX (&g_aFolioBrutiObjectGfx[1])
+extern const ActorGfxRecord g_aFolioBrutiActorGfx[2];  // 0x08069594
+#define FOLIO_BRUTI_CURSOR_GFX    (&g_aFolioBrutiActorGfx[0])
+#define FOLIO_BRUTI_SPELL_DOT_GFX (&g_aFolioBrutiActorGfx[1])
 
 extern const u8 g_aFolioBrutiCursorAnim[];          // 0x080695A4
 extern const u8 g_aFolioBrutiDotUnknownAnim[14];    // 0x080695CE

@@ -40,7 +40,7 @@ void UpdateCardTrade(void)
                 StartMenuFadeIn();
                 BuildListMenu(&g_CardTradeMenuDefinition);
                 RefreshCardTradeSlots();
-                SpawnCardTradeCardObjects();
+                SpawnCardTradeCardActors();
                 g_GameModeStackContext.dwModeState = 1;
             }
             else
@@ -106,12 +106,12 @@ void UpdateCardTrade(void)
                 DrawCardTradeSlotName(0, CARD_TRADE_NO_CARD);
                 DrawCardTradeSlotName(1, CARD_TRADE_NO_CARD);
 
-                if (g_apMenuIconObjects[0] != NULL)
-                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconObjects[0],
+                if (g_apMenuIconActors[0] != NULL)
+                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconActors[0],
                         g_aCardTradeSlotPositions[1].bX, g_aCardTradeSlotPositions[1].bY, 30);
 
-                if (g_apMenuIconObjects[1] != NULL)
-                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconObjects[1],
+                if (g_apMenuIconActors[1] != NULL)
+                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconActors[1],
                         g_aCardTradeSlotPositions[0].bX, g_aCardTradeSlotPositions[0].bY, 30);
 
                 ShowCardTradeMessage(0xACF);  // no text: clears the message box

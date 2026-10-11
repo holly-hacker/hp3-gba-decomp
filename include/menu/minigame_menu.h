@@ -13,7 +13,7 @@ extern u32 g_dwListMenuSelection;  // 0x03003F14: the same word as g_GameModeSta
 
 // Shared by the minigame screens.
 extern void sub_0800A598(const void *pTable, const void *pBgControls, u32 count);
-extern void sub_0802CEE4(void *pObjectGroup);  // frees the objects a group owns
+extern void sub_0802CEE4(void *pActorGroup);  // frees the actors a group owns
 extern void sub_0803FF04(void);
 
 // Shared minigame exit teardown: DisableKrawall, SyncSaveOptionsIfDirty, EnableKrawall.
@@ -25,4 +25,4 @@ extern void BeginMinigameSwitchFade_candidate(void);
 extern u32 TickMinigameSwitchFadeOut_candidate(void);
 extern void SwapMinigameSelection_candidate(void);
 extern void TickMinigameSwitchFadeIn_candidate(void);
-extern void SetActorMoveTargetWithDuration_candidate(Actor *pObject, s32 x, s32 y, s32 duration);
+extern void SetActorMoveTargetWithDuration_candidate(Actor *pActor, s32 x, s32 y, s32 duration);

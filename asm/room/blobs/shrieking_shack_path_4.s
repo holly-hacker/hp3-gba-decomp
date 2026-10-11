@@ -58,7 +58,7 @@ Room47V1Chain0:
     End
 Room47V1Chain1:
     SetQuestState 1, 230
-    DespawnTileObject Room47V1Group2_id, 0
+    DespawnTileActor Room47V1Group2_id, 0
     GrantRoomReward 75, 0
     ShowRewardPickupMessage 75
     End
@@ -67,17 +67,17 @@ Room47V1Chain2:
     End
 Room47V1Chain3:
     ArmChainYield 1
-    DespawnTileObject Room47V1Group3_id, 0
-    DespawnRoomRowObjects Room47V1Group4_id
+    DespawnTileActor Room47V1Group3_id, 0
+    DespawnRoomRowActors Room47V1Group4_id
     SetQuestState 2, 230
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room47V0Group0_id, 1
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room47V0Group0_id, 1
     DelayedRespawnRowAndRunChain 2, 0, 0
     PlaySoundById 39
-    QueueTileObjectMove Room47V1Group0_id, 1, 0, 0, 1200, 0
-    SetTileObjectAnimState Room47V0Group0_id, 2
+    QueueTileActorMove Room47V1Group0_id, 1, 0, 0, 1200, 0
+    SetTileActorAnimState Room47V0Group0_id, 2
     DelayedRespawnRowAndRunChain 2, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
     ConsumeRoomItem 75
 .ifdef VERSION_JP
     ShowItemRemovedMessage 75
@@ -85,7 +85,7 @@ Room47V1Chain3:
     DelayedRespawnRowAndRunChain 1, 0, 0
     UnmuteAllMusicChannels
     RespawnRowAndRunChain Room47V1Group1_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room47V1Chain4:
     ArmChainYield 1
@@ -97,11 +97,11 @@ Room47V1Chain5:
     PlaySoundById 37
     End
 Room47V1Chain6:
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room47V0Group0_id, 1
-    SetTileObjectAnimState Room47V0Group0_id, 2
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room47V0Group0_id, 1
+    SetTileActorAnimState Room47V0Group0_id, 2
     DelayedRespawnRowAndRunChainFrames 0, Room47V1Group1_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room47V1Chain7:
     End

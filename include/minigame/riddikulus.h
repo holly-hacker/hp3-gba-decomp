@@ -11,11 +11,11 @@ extern u32 g_dwRiddikulusMinigameScriptFlag_candidate;  // 0x03002040; set by St
 // The mode's screen state at 0x03002048, driven by g_GameModeStackContext.dwModeState.
 typedef struct {
     u8 abUnmapped_0[0x10];
-    Actor *pObject;         // 0x10; despawned when a round ends
+    Actor *pActor;         // 0x10; despawned when a round ends
     u32 dwUnk14;
-    Actor *pCursorObject;   // 0x18; released on exit when set
-    void *pObjectGroup1C;    // 0x1C; freed on exit
-    void *pObjectGroup20;    // 0x20; freed on exit
+    Actor *pCursorActor;   // 0x18; released on exit when set
+    void *pActorGroup1C;    // 0x1C; freed on exit
+    void *pActorGroup20;    // 0x20; freed on exit
     s32 dwUnk24;
     u8 abUnmapped_28[4];
     u32 dwScore;             // 0x2C; compared against the saved high score

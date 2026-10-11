@@ -12,7 +12,7 @@
 
 static inline void MoveCursorToSelectedRow(void)
 {
-    Actor *pCursor = g_pMenuCursorObject;
+    Actor *pCursor = g_pMenuCursorActor;
     u32 row = g_GameModeStackContext.dwModeScratchB;
     s32 x = 0x74;
     s32 y;

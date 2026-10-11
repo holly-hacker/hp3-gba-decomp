@@ -4,15 +4,15 @@
 #include "cutscene/clock_skip_cutscene.h"
 #include "gen/graphics/overworld.h"
 
-const ActorAssetRecord g_ClockSkipObject1Asset = {
-    (void *)gClockSkipObject1Tiles, (void *)gClockSkipObject1Frames, (void *)gClockSkipObject1Palette, 0,
+const ActorAssetRecord g_ClockSkipActor1Asset = {
+    (void *)gClockSkipActor1Tiles, (void *)gClockSkipActor1Frames, (void *)gClockSkipActor1Palette, 0,
 };
 
-const ActorAssetRecord g_ClockSkipObject2Asset = {
-    (void *)gClockSkipObject2Tiles, (void *)gClockSkipObject2Frames, (void *)gClockSkipObject2Palette, 0,
+const ActorAssetRecord g_ClockSkipActor2Asset = {
+    (void *)gClockSkipActor2Tiles, (void *)gClockSkipActor2Frames, (void *)gClockSkipActor2Palette, 0,
 };
 
-// One animation per object.
+// One animation per actor.
 const u8 g_ClockSkipAnimData[2][54] = {
     {
         ANIM_FRAME(0, 1), ANIM_FRAME(1, 1), ANIM_FRAME(2, 1), ANIM_FRAME(3, 1),

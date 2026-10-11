@@ -5,7 +5,7 @@
 #include "cutscene/linear_cutscene.h"
 #include "font.h"
 
-// A advances the text; the object is shown while more text remains, and A on
+// A advances the text; the actor is shown while more text remains, and A on
 // the last page leaves the cutscene.
 void UpdateLinearCutscene(void)
 {
@@ -19,9 +19,9 @@ void UpdateLinearCutscene(void)
             DrawTextLines(1, 2, 0x7A, 0xE6, 0x24, &g_pLinearCutsceneText, 0);
 
             if (*g_pLinearCutsceneText != 0)
-                g_pLinearCutsceneObject->dwFlags |= ActorFlagVisible;
+                g_pLinearCutsceneActor->dwFlags |= ActorFlagVisible;
             else
-                g_pLinearCutsceneObject->dwFlags &= ~ActorFlagVisible;
+                g_pLinearCutsceneActor->dwFlags &= ~ActorFlagVisible;
         }
         else
             sub_0801D6DC();

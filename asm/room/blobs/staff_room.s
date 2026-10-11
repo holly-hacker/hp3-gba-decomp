@@ -115,9 +115,9 @@ Room27V1Chain1:
     RemovePartyFollower 7
     RespawnRowAndRunChain Room27V1Group3_id, 0
     RemovePartyFollower 6
-    StartTileObjectScript 207, 15, 1, Room27V1Group2_id, 0, 0, 0, 6, 255, 255, 255
-    StartTileObjectScript 213, 32, 1, Room27V1Group3_id, 0, 0, 0, 6, 255, 255, 255
-    QueueTileObjectMove Room27V1Group1_id, 1, 0, 0, 1400, 0
+    StartTileActorScript 207, 15, 1, Room27V1Group2_id, 0, 0, 0, 6, 255, 255, 255
+    StartTileActorScript 213, 32, 1, Room27V1Group3_id, 0, 0, 0, 6, 255, 255, 255
+    QueueTileActorMove Room27V1Group1_id, 1, 0, 0, 1400, 0
     @ "Good afternoon. Today's will be a practical lesson."
     @ "I draw your attention to this wardrobe. There's a Boggart in there. Now, what is a Boggart?"
     @ "It's a shape-shifter. It can take the shape of whatever it thinks will frighten us most."
@@ -130,16 +130,16 @@ Room27V1Chain1:
     End
 Room27V1Chain2:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Now, please return to your common room."
     @ "The Riddikulus Boggart Challenge can now be accessed from the Mini-Games menu found on the Title Screen."
     ShowRoomDialog 351
     ArmChainYield 0
     RespawnRowAndRunChain 0, Room27V1Chain3_id
     ArmChainYield 1
-    QueueTileObjectMove 0, 255, 0, 0, 1600, 0
+    QueueTileActorMove 0, 255, 0, 0, 1600, 0
     DelayedRespawnRowAndRunChain 8, 0, 0
-    StartTileObjectScript 127, 7, 1, 0, 255, 0, 0, 5, 255, 255, 255
+    StartTileActorScript 127, 7, 1, 0, 255, 0, 0, 5, 255, 255, 255
     RespawnRowAndRunChain 0, Room27V1Chain4_id
     @ "Anything worrying you, Harry?"
     @ "Yes. Why didn't you let me fight the Boggart?"
@@ -152,58 +152,58 @@ Room27V1Chain2:
     ShowRoomDialog 352
     RespawnRowAndRunChain Room27V1Group4_id, 0
     SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_POTIONS, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room27V1Chain3:
-    StartObjectAnimSequence Room27V1Group1_id, 0, 0, 0, Room27V1Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group1_id, 5, 0, 0, Room27V1Route0_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group1_id, 2, 0, 0, Room27V1Route0_id, 2, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group1_id, 3, 0, 0, Room27V1Route0_id, 3, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group1_id, 4, 0, 0, Room27V1Route1_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group1_id, 6, 0, 0, Room27V1Route1_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group1_id, 7, 0, 0, Room27V1Route1_id, 2, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group2_id, 0, 0, 0, Room27V1Route2_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group3_id, 0, 0, 0, Room27V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 0, 0, 0, Room27V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 5, 0, 0, Room27V1Route0_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 2, 0, 0, Room27V1Route0_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 3, 0, 0, Room27V1Route0_id, 3, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 4, 0, 0, Room27V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 6, 0, 0, Room27V1Route1_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 7, 0, 0, Room27V1Route1_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group2_id, 0, 0, 0, Room27V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group3_id, 0, 0, 0, Room27V1Route3_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain4:
-    DespawnTileObject Room27V1Group1_id, 0
-    DespawnTileObject Room27V1Group1_id, 4
-    DespawnTileObject Room27V1Group1_id, 2
-    DespawnTileObject Room27V1Group1_id, 6
-    DespawnTileObject Room27V1Group1_id, 7
-    DespawnTileObject Room27V1Group1_id, 3
-    DespawnTileObject Room27V1Group1_id, 5
+    DespawnTileActor Room27V1Group1_id, 0
+    DespawnTileActor Room27V1Group1_id, 4
+    DespawnTileActor Room27V1Group1_id, 2
+    DespawnTileActor Room27V1Group1_id, 6
+    DespawnTileActor Room27V1Group1_id, 7
+    DespawnTileActor Room27V1Group1_id, 3
+    DespawnTileActor Room27V1Group1_id, 5
     End
 Room27V1Chain5:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 288, 21, 1, 0, 255, 0, 0, 2, 255, 255, 255
-    StartTileObjectScript 288, 21, 1, Room27V1Group3_id, 0, 0, 0, 2, 255, 255, 255
-    StartTileObjectScript 288, 21, 1, Room27V1Group2_id, 0, 0, 0, 2, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 288, 21, 1, 0, 255, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 288, 21, 1, Room27V1Group3_id, 0, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 288, 21, 1, Room27V1Group2_id, 0, 0, 0, 2, 255, 255, 255
     RecruitPartyFollower 7
-    DespawnTileObject Room27V1Group2_id, 0
+    DespawnTileActor Room27V1Group2_id, 0
     RecruitPartyFollower 6
-    DespawnTileObject Room27V1Group3_id, 0
-    DespawnTileObject Room27V1Group4_id, 0
-    DespawnTileObject Room27V1Group4_id, 1
-    DespawnTileObject Room27V1Group4_id, 2
+    DespawnTileActor Room27V1Group3_id, 0
+    DespawnTileActor Room27V1Group4_id, 0
+    DespawnTileActor Room27V1Group4_id, 1
+    DespawnTileActor Room27V1Group4_id, 2
     SetStoryStage 6
     ClearQuestStateUpperHalf
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room27V1Chain6:
-    SetTileObjectFacing Room27V1Group3_id, 0, 6
+    SetTileActorFacing Room27V1Group3_id, 0, 6
     End
 Room27V1Chain7:
-    SetTileObjectFacing Room27V1Group2_id, 0, 6
+    SetTileActorFacing Room27V1Group2_id, 0, 6
     End
 Room27V1Chain8:
-    StartObjectAnimSequence Room27V1Group1_id, 0, 0, 0, Room27V1Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group1_id, 4, 0, 0, Room27V1Route6_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room27V1Group2_id, 0, 0, 0, Room27V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 0, 0, 0, Room27V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 4, 0, 0, Room27V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group2_id, 0, 0, 0, Room27V1Route5_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain9:
-    StartObjectAnimSequence Room27V1Group1_id, 2, 0, 0, Room27V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room27V1Group1_id, 2, 0, 0, Room27V1Route7_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain10:
     ArmChainYield 1
@@ -223,15 +223,15 @@ Room27V1Chain11:
     End
 Room27V1Chain12:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnTileObject Room27V1Group1_id, 8
-    DespawnTileObject Room27V1Group1_id, 9
+    CancelActorAnimSequence 0, 255
+    DespawnTileActor Room27V1Group1_id, 8
+    DespawnTileActor Room27V1Group1_id, 9
     SetQuestState 1, 229
     InvokeChainIfEnabled 0, Room27V1Chain13_id
     End
 Room27V1Chain13:
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room27V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room27V1Route8_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain14:
     SetOverworldMonstersDisabled

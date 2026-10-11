@@ -12,17 +12,17 @@ void InitializeHippogriffFliesIntoAirCutscene(void)
     SetDispcntFlag(0x1000);
     LoadBgGraphic(0, gHippogriffFliesIntoAirGraphic, 0, 0, 0, 0);
 
-    g_pHippogriffFliesIntoAirObject2 = SpawnActor(0, 0x30, 0xA8, (const ObjPalette *)gHippogriffFliesIntoAir2Palette);
-    g_pHippogriffFliesIntoAirObject2->oam.priority = 2;
-    sub_08001690(g_pHippogriffFliesIntoAirObject2, &g_HippogriffFliesIntoAirAsset2);
+    g_pHippogriffFliesIntoAirActor2 = SpawnActor(0, 0x30, 0xA8, (const ObjPalette *)gHippogriffFliesIntoAir2Palette);
+    g_pHippogriffFliesIntoAirActor2->oam.priority = 2;
+    sub_08001690(g_pHippogriffFliesIntoAirActor2, &g_HippogriffFliesIntoAirAsset2);
 
-    g_pHippogriffFliesIntoAirObject = SpawnActor(0, 0x78, 0x3C, (const ObjPalette *)gHippogriffFliesIntoAirPalette);
-    g_pHippogriffFliesIntoAirObject->oam.priority = 2;
-    sub_08001690(g_pHippogriffFliesIntoAirObject, &g_HippogriffFliesIntoAirAsset);
-    SetActorAffineTransform(g_pHippogriffFliesIntoAirObject, 0x18000, 0x18000, 0, 3);
-    StartActorAffineScaleTween(g_pHippogriffFliesIntoAirObject, 0x10000, 0x10000, 0x64);
-    StartActorMove(g_pHippogriffFliesIntoAirObject, 0xA00000, 0x280000, 0x15E);
-    g_pHippogriffFliesIntoAirObject->dwStateTimer = 0x12C;
+    g_pHippogriffFliesIntoAirActor = SpawnActor(0, 0x78, 0x3C, (const ObjPalette *)gHippogriffFliesIntoAirPalette);
+    g_pHippogriffFliesIntoAirActor->oam.priority = 2;
+    sub_08001690(g_pHippogriffFliesIntoAirActor, &g_HippogriffFliesIntoAirAsset);
+    SetActorAffineTransform(g_pHippogriffFliesIntoAirActor, 0x18000, 0x18000, 0, 3);
+    StartActorAffineScaleTween(g_pHippogriffFliesIntoAirActor, 0x10000, 0x10000, 0x64);
+    StartActorMove(g_pHippogriffFliesIntoAirActor, 0xA00000, 0x280000, 0x15E);
+    g_pHippogriffFliesIntoAirActor->dwStateTimer = 0x12C;
 
     PlayMusicModule(0x32);
     PlayScreenTransitionInByIndex(0x3F, 2);

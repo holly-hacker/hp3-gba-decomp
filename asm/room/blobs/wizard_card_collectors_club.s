@@ -133,18 +133,18 @@ Room37V1Chain20:
     ShowPartyLevelUpMessage 1
     End
 Room37V1Chain21:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     GotoIfAllQuestFlagsSet Room37V1Chain34_id, Room37V1Chain24_id, 0, 0
     End
 Room37V1Chain22:
     @ "Welcome back to the Wizard Card Collectors' Club! You can trade cards with your friends here, or anywhere in and around Hogwarts. And, when you've collected all the cards in a category, one of the chests at the back of the room will unlock. You can open the chest to get special prizes!"
     ShowRoomDialog 650
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room37V1Chain23:
     @ "I see that you've collected all of the cards in one of the categories. Go to the back of the room and unlock the corresponding chest!"
     ShowRoomDialog 651
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room37V1Chain24:
     GotoIfQuestStateCompare QUEST_FOLIO_REWARD_FIRST, 0, 1, Room37V1Chain25_id, Room37V1Chain29_id, 0, 0
@@ -179,6 +179,6 @@ Room37V1Chain33:
 Room37V1Chain34:
     @ "Congratulations, you got all the cards! There's nothing more to unlock here."
     ShowRoomDialog 652
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
     EndSubBlock Room37V1End

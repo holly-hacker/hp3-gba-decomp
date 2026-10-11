@@ -242,7 +242,7 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   no known pusher; its menu rows leave through
   `PushGameMode_2(MinigameDifficultySelect, 6, arg2)`.
 - `DivinationTeaMinigame` writes BG2's affine parameters directly, drives
-  16 leaf objects through `SetActorAffineTransform` (scale words have 8
+  16 leaf actors through `SetActorAffineTransform` (scale words have 8
   fractional bits) and shows a random fortune: dialog text `0xA5F` plus
   `Mt19937RandRange(0, 0x5A)`. Its final state pushes `MinigameMenu` with cursor entry 3.
 
@@ -268,9 +268,9 @@ PROVEN from the matched handlers in `src/gamemode/modes/purple_screen_return_to_
 A placeholder screen: Init clears VRAM, enables the object layer
 (`SetDispcntFlag(0x1000)`), sets BG0's control word
 (`g_dwPurpleScreenBg0Control`, `0x3F03`), zeroes `dwCurrentGameModeArg2` and fades in. No
-graphics or objects are loaded, so the backdrop is the backdrop colour. Update
+graphics or actors are loaded, so the backdrop is the backdrop colour. Update
 pushes `MainMenu` as soon as any of A/B/Select/Start (`g_wKeysPressed & 0xF`)
-is pressed; Exit fades out and frees all objects. No `PushGameMode*` call with a
+is pressed; Exit fades out and frees all actors. No `PushGameMode*` call with a
 literal `0x32` exists in the ROM and no mode-table scanned (in-game menu, items,
 status/equip next-mode fields) names it, so no pusher is known (UNCONFIRMED:
 possibly reachable only through a data-driven mode id).

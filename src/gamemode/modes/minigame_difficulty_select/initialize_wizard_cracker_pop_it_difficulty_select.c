@@ -13,8 +13,8 @@ void InitializeWizardCrackerPopItDifficultySelect(void)
 
     SetAlphaBlendTargets(0, 0);
     InitializeMenuScreen(g_dwSelectedMinigame + 0xA4A, 4, 1, gMenuScreenGraphic, 0, 0);  // minigame name
-    g_pMenuCursorObject->oam.hFlip = 1;
-    SetMenuCursorPosition(g_pMenuCursorObject, 0x60, 0x30);
+    g_pMenuCursorActor->oam.hFlip = 1;
+    SetMenuCursorPosition(g_pMenuCursorActor, 0x60, 0x30);
 
     if (g_PrevGameModeStackContext.dwCurrentGameMode != MinigameMenu)
         PlayMusicModule(0x21);

@@ -11,11 +11,11 @@ typedef struct Op2Record {
 // Unnamed; reads like an animation or movement speed with a special case for the player.
 void RoomScriptOp2(Op2Record *pRecord)
 {
-    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
 
-    if (pObject->wActorType == RoomObjectType_Player)
-        pObject->dwUnk_0x28 = pRecord->nValue * 5 << 14;
+    if (pActor->wActorType == RoomActorType_Player)
+        pActor->dwUnk_0x28 = pRecord->nValue * 5 << 14;
     else
-        pObject->dwUnk_0x28 = pRecord->nValue << 16;
-    pObject->bActionFlags |= 8;
+        pActor->dwUnk_0x28 = pRecord->nValue << 16;
+    pActor->bActionFlags |= 8;
 }

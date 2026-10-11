@@ -502,7 +502,7 @@ Room29V1Chain1:
     ArmChainYield 1
     SetQuestState 1, 1
     SetQuestState 0, 129
-    QueueTileObjectMove Room29V1Group1_id, 0, 0, 0, 1500, 0
+    QueueTileActorMove Room29V1Group1_id, 0, 0, 0, 1500, 0
     RemovePartyFollower 6
     RespawnRowAndRunChain Room29V1Group2_id, 0
     @ "Attention, please. I have a couple of announcements to make..."
@@ -511,8 +511,8 @@ Room29V1Chain1:
     @ "I think that's everything of importance. Hermione Granger, please come and speak to me immediately."
     ShowRoomDialog 184
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group1_id, 0, 0, 0, Room29V1Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 0, 0, 0, Room29V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route1_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain2:
     ResetPartyLeaderSelection
@@ -520,34 +520,34 @@ Room29V1Chain2:
     End
 Room29V1Chain3:
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group1_id, 2, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group1_id, 3, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group1_id, 4, 0, 0, Room29V1Route54_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group1_id, 5, 0, 0, Room29V1Route54_id, 2, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group1_id, 6, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group1_id, 7, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route53_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group1_id, 0, 0, 0, Room29V1Route52_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 2, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 3, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 4, 0, 0, Room29V1Route54_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 5, 0, 0, Room29V1Route54_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 6, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 7, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route53_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group1_id, 0, 0, 0, Room29V1Route52_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain4:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ResetPartyLeaderSelection
     ArmChainYield 0
     InvokeChainIfEnabled 0, Room29V1Chain5_id
     End
 Room29V1Chain5:
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route3_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain6:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 600, 0
+    QueueTileActorMove 0, 255, 0, 0, 600, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "I hope she isn't in trouble."
     ShowRoomDialog 185
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route2_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain7:
     ArmChainYield 1
@@ -559,12 +559,12 @@ Room29V1Chain7:
     End
 Room29V1Chain8:
     ArmChainYield 1
-    DespawnRoomRowObjects Room29V1Group1_id
-    DespawnRoomRowObjects Room29V1Group2_id
+    DespawnRoomRowActors Room29V1Group1_id
+    DespawnRoomRowActors Room29V1Group2_id
     PlayCutscene 1, 0, Room29V1Chain17_id
     End
 Room29V1Chain9:
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route4_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain10:
     ArmChainYield 1
@@ -573,24 +573,24 @@ Room29V1Chain10:
     End
 Room29V1Chain11:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 245
     Unk02 Room29V1Group4_id, 0, 2
     PlaySoundById 52
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route6_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route7_id, 0, 1, 20, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route7_id, 0, 1, 20, 0, 0
     End
 Room29V1Chain12:
-    StartObjectAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route8_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain13:
     ArmChainYield 1
     @ "Meowrr!"
     ShowRoomDialog 354
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route9_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route10_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain14:
     ArmChainYield 1
@@ -600,35 +600,35 @@ Room29V1Chain14:
     ShowRoomDialog 355
     Unk02 Room29V1Group4_id, 0, 4
     Unk02 Room29V1Group4_id, 1, 4
-    QueueTileObjectMove Room29V1Group4_id, 0, 0, 0, 1700, 0
+    QueueTileActorMove Room29V1Group4_id, 0, 0, 0, 1700, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route11_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route12_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route13_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route11_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route12_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route13_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain15:
     ArmChainYield 1
     RemovePartyFollower 6
     RespawnRowAndRunChain Room29V1Group7_id, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1700, 0
-    DespawnRoomRowObjects Room29V1Group4_id
+    QueueTileActorMove 0, 255, 0, 0, 1700, 0
+    DespawnRoomRowActors Room29V1Group4_id
     @ "Scabbers, come back!"
     @ "I'll help you get him, Ron."
     ShowRoomDialog 356
     SetQuestState QUEST_OBJ_FIND_SCABBERS_COMMON_ROOM, QUEST_OBJECTIVE_INDEX
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain16:
     End
 Room29V1Chain17:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RemovePartyFollower 7
     RespawnRowAndRunChain Room29V1Group20_id, 0
     RespawnRowAndRunChain Room29V1Group17_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group17_id, 0, 0, 0, Room29V1Route55_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route57_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group17_id, 0, 0, 0, Room29V1Route55_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route57_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain18:
     @ "Did you know that you can visit our shop on the seventh floor? You can buy items from George and me at very reasonable prices..."
@@ -636,10 +636,10 @@ Room29V1Chain18:
     End
 Room29V1Chain19:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group8_id, 0, 0, 0, Room29V1Route15_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route60_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group8_id, 0, 0, 0, Room29V1Route15_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route60_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain20:
     ArmChainYield 1
@@ -654,19 +654,19 @@ Room29V1Chain20:
     @ "That class does seem to take a toll on its teachers. Let's get going."
     ShowRoomDialog 408
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group8_id, 0, 0, 0, Room29V1Route58_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route59_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group8_id, 0, 0, 0, Room29V1Route58_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route59_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain21:
     GotoIfQuestStateCompare 230, 0, 1, 0, 0, Room29V1Group9_id, 0
     End
 Room29V1Chain22:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetOverworldMonstersDisabled
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route17_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group9_id, 2, 0, 0, Room29V1Route18_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route17_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group9_id, 2, 0, 0, Room29V1Route18_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain23:
     ArmChainYield 1
@@ -675,26 +675,26 @@ Room29V1Chain23:
     @ "I can have it back? Seriously?"
     @ "Seriously. And Potter - do try and win, won't you?"
     ShowRoomDialog 495
-    DespawnRoomRowObjects Room29V1Group18_id
+    DespawnRoomRowActors Room29V1Group18_id
     GrantRoomReward 67, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group9_id, 2, 0, 0, Room29V1Route20_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route19_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group9_id, 1, 0, 0, Room29V1Route16_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room29V1Group9_id, 1, 0, 0, 800, 0
+    StartActorAnimSequence Room29V1Group9_id, 2, 0, 0, Room29V1Route20_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route19_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group9_id, 1, 0, 0, Room29V1Route16_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room29V1Group9_id, 1, 0, 0, 800, 0
     End
 Room29V1Chain24:
     ArmChainYield 1
-    DespawnTileObject Room29V1Group9_id, 2
+    DespawnTileActor Room29V1Group9_id, 2
     @ "Seen Ron around?"
     @ "No, I haven't."
     ShowRoomDialog 496
     Unk02 Room29V1Group9_id, 3, 2
-    SetTileObjectFacing Room29V1Group9_id, 1, 0
+    SetTileActorFacing Room29V1Group9_id, 1, 0
     ArmChainYield 0
-    QueueTileObjectMove Room29V1Group9_id, 3, 0, 0, 800, 0
-    StartObjectAnimSequence Room29V1Group9_id, 3, 0, 0, Room29V1Route21_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route23_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room29V1Group9_id, 3, 0, 0, 800, 0
+    StartActorAnimSequence Room29V1Group9_id, 3, 0, 0, Room29V1Route21_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route23_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain25:
     ArmChainYield 1
@@ -705,15 +705,15 @@ Room29V1Chain25:
     @ "Let's go to the Quidditch pitch. The walk and the fresh air will clear our heads..."
     ShowRoomDialog 499
     ArmChainYield 0
-    QueueTileObjectMove 0, 255, 0, 0, 1400, 0
-    StartObjectAnimSequence Room29V1Group9_id, 3, 0, 0, Room29V1Route65_id, 0, 1, 0, 0, 0
+    QueueTileActorMove 0, 255, 0, 0, 1400, 0
+    StartActorAnimSequence Room29V1Group9_id, 3, 0, 0, Room29V1Route65_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain26:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnRoomRowObjects Room29V1Group9_id
+    CancelActorAnimSequence 0, 255
+    DespawnRoomRowActors Room29V1Group9_id
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route24_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route24_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain27:
     ArmChainYield 1
@@ -725,7 +725,7 @@ Room29V1Chain27:
     ShowRoomDialog 501
     Unk02 Room29V1Group10_id, 2, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group10_id, 2, 0, 0, Room29V1Route26_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 2, 0, 0, Room29V1Route26_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain28:
     ArmChainYield 1
@@ -734,39 +734,39 @@ Room29V1Chain28:
     @ "You gave Malfoy one heck of a fright!"
     ShowRoomDialog 503
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group10_id, 5, 0, 0, Room29V1Route27_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 5, 0, 0, Room29V1Route27_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain29:
-    DespawnTileObject Room29V1Group10_id, 2
-    StartObjectAnimSequence Room29V1Group10_id, 3, 0, 0, Room29V1Route25_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room29V1Group10_id, 2
+    StartActorAnimSequence Room29V1Group10_id, 3, 0, 0, Room29V1Route25_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain30:
     ArmChainYield 1
     @ "I know that you all want to celebrate, but I think we've had quite enough excitement for one day. Off to your dormitories, please!"
     ShowRoomDialog 504
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group10_id, 5, 0, 0, Room29V1Route29_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group10_id, 3, 0, 0, Room29V1Route61_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group10_id, 7, 0, 0, Room29V1Route31_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group10_id, 1, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group10_id, 0, 0, 0, Room29V1Route28_id, 2, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group10_id, 4, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group10_id, 6, 0, 0, Room29V1Route28_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group10_id, 8, 0, 0, Room29V1Route32_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 5, 0, 0, Room29V1Route29_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 3, 0, 0, Room29V1Route61_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 7, 0, 0, Room29V1Route31_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 1, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 0, 0, 0, Room29V1Route28_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 4, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 6, 0, 0, Room29V1Route28_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group10_id, 8, 0, 0, Room29V1Route32_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain31:
     ArmChainYield 1
-    DespawnTileObject Room29V1Group10_id, 5
-    DespawnTileObject Room29V1Group10_id, 4
-    DespawnTileObject Room29V1Group10_id, 6
-    DespawnTileObject Room29V1Group10_id, 1
-    DespawnTileObject Room29V1Group10_id, 0
-    DespawnTileObject Room29V1Group10_id, 8
+    DespawnTileActor Room29V1Group10_id, 5
+    DespawnTileActor Room29V1Group10_id, 4
+    DespawnTileActor Room29V1Group10_id, 6
+    DespawnTileActor Room29V1Group10_id, 1
+    DespawnTileActor Room29V1Group10_id, 0
+    DespawnTileActor Room29V1Group10_id, 8
     SetQuestState 2, 230
     SetQuestState 1, QUEST_ALT_PRESENTATION
     SetQuestState QUEST_OBJ_GO_TO_BOYS_DORMITORY, QUEST_OBJECTIVE_INDEX
     SetStoryStage 19
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain32:
     RespawnRowAndRunChain Room29V1Group12_id, 0
@@ -774,10 +774,10 @@ Room29V1Chain32:
     End
 Room29V1Chain33:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route34_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 0, 0, 0, Room29V1Route33_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route34_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 0, 0, 0, Room29V1Route33_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain34:
     ArmChainYield 1
@@ -787,8 +787,8 @@ Room29V1Chain34:
     ShowRoomDialog 508
     Unk02 Room29V1Group12_id, 2, 3
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group12_id, 2, 0, 0, Room29V1Route35_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room29V1Group12_id, 0, 0, 0, 1000, 0
+    StartActorAnimSequence Room29V1Group12_id, 2, 0, 0, Room29V1Route35_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room29V1Group12_id, 0, 0, 0, 1000, 0
     End
 Room29V1Chain35:
     ArmChainYield 1
@@ -798,49 +798,49 @@ Room29V1Chain35:
     @ "Which abysmally foolish person wrote down the password and left it lying around?"
     ShowRoomDialog 509
     ArmChainYield 0
-    QueueTileObjectMove Room29V1Group12_id, 3, 0, 0, 1000, 0
-    StartObjectAnimSequence Room29V1Group12_id, 3, 0, 0, Room29V1Route36_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room29V1Group12_id, 3, 0, 0, 1000, 0
+    StartActorAnimSequence Room29V1Group12_id, 3, 0, 0, Room29V1Route36_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain36:
     ArmChainYield 1
     @ "I - erm - well, I..."
     @ "I see. From tonight, Sir Cadogan is sacked and the Fat Lady will return. Security will be increased. Everyone, please be more careful. Now, back to bed."
     ShowRoomDialog 510
-    QueueTileObjectMove 0, 255, 0, 0, 1000, 0
+    QueueTileActorMove 0, 255, 0, 0, 1000, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group12_id, 7, 0, 0, Room29V1Route40_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 0, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 1, 0, 0, Room29V1Route37_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 3, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 4, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 6, 0, 0, Room29V1Route64_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 5, 0, 0, Room29V1Route38_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group12_id, 2, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 7, 0, 0, Room29V1Route40_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 0, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 1, 0, 0, Room29V1Route37_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 3, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 4, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 6, 0, 0, Room29V1Route64_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 5, 0, 0, Room29V1Route38_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group12_id, 2, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain37:
     GotoIfQuestStateCompare 231, 0, 2, Room29V1Chain32_id, 0, 0, 0
     End
 Room29V1Chain38:
     ArmChainYield 1
-    DespawnRoomRowObjects Room29V1Group11_id
-    DespawnTileObject Room29V1Group12_id, 7
-    DespawnTileObject Room29V1Group12_id, 4
-    DespawnTileObject Room29V1Group12_id, 0
-    DespawnTileObject Room29V1Group12_id, 3
-    DespawnTileObject Room29V1Group12_id, 2
-    DespawnTileObject Room29V1Group12_id, 1
+    DespawnRoomRowActors Room29V1Group11_id
+    DespawnTileActor Room29V1Group12_id, 7
+    DespawnTileActor Room29V1Group12_id, 4
+    DespawnTileActor Room29V1Group12_id, 0
+    DespawnTileActor Room29V1Group12_id, 3
+    DespawnTileActor Room29V1Group12_id, 2
+    DespawnTileActor Room29V1Group12_id, 1
     SetQuestState 2, 231
     SetQuestState QUEST_OBJ_GO_TO_BOYS_DORMITORY, QUEST_OBJECTIVE_INDEX
     SetStoryStage 20
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain39:
     GotoIfQuestStateCompare 233, 0, 0, Room29V1Chain61_id, 0, Room29V1Group13_id, 0
     End
 Room29V1Chain40:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route41_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route41_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain41:
     ArmChainYield 1
@@ -852,14 +852,14 @@ Room29V1Chain41:
     End
 Room29V1Chain42:
     ArmChainYield 1
-    DespawnRoomRowObjects Room29V1Group13_id
+    DespawnRoomRowActors Room29V1Group13_id
     RecruitPartyFollower 7
     RecruitPartyFollower 6
     SetQuestState QUEST_OBJ_GO_TO_HAGRIDS_HUT_SECOND, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 233
     SetQuestState 1, QUEST_ALT_PRESENTATION
     ClearOverworldMonstersDisabled
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain43:
     GotoIfQuestStateCompare 245, 0, 0, 0, 0, Room29V1Group14_id, 0
@@ -868,16 +868,16 @@ Room29V1Chain44:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route45_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route45_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain45:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 2, 0, 0
-    QueueTileObjectMove Room29V1Group14_id, 2, 0, 0, 1400, 0
+    QueueTileActorMove Room29V1Group14_id, 2, 0, 0, 1400, 0
     @ "Something wrong?"
     ShowRoomDialog 430
-    DespawnTileObject Room29V1Group14_id, 1
-    DespawnTileObject Room29V1Group14_id, 0
+    DespawnTileActor Room29V1Group14_id, 1
+    DespawnTileActor Room29V1Group14_id, 0
     RespawnRowAndRunChain Room29V1Group16_id, 0
     RespawnRowAndRunChain Room29V1Group15_id, 0
     RemovePartyFollower 7
@@ -887,7 +887,7 @@ Room29V1Chain45:
     @ "Wingardium Leviosa!"
     ShowRoomDialog 432
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route48_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route48_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain46:
     ArmChainYield 1
@@ -897,25 +897,25 @@ Room29V1Chain46:
     ShowRoomDialog 435
     Unk02 Room29V1Group14_id, 2, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group14_id, 2, 0, 0, Room29V1Route47_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group16_id, 0, 0, 0, Room29V1Route49_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route46_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group14_id, 2, 0, 0, Room29V1Route47_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group16_id, 0, 0, 0, Room29V1Route49_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route46_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain47:
     ArmChainYield 1
-    QueueTileObjectMove 0, 255, 0, 0, 2000, 0
+    QueueTileActorMove 0, 255, 0, 0, 2000, 0
     RecruitPartyFollower 7
-    DespawnRoomRowObjects Room29V1Group16_id
+    DespawnRoomRowActors Room29V1Group16_id
     RecruitPartyFollower 6
-    DespawnTileObject Room29V1Group14_id, 2
+    DespawnTileActor Room29V1Group14_id, 2
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route51_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route51_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain48:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectFacing 0, 255, 7
-    QueueTileObjectMove 0, 255, 0, 0, 2000, 0
+    SetTileActorFacing 0, 255, 7
+    QueueTileActorMove 0, 255, 0, 0, 2000, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "I don't believe it - it's a Firebolt racing broom! There's no card, though. I wonder who sent it?"
     @ "Wait 'til Malfoy sees you on this! He'll be sick as a pig!"
@@ -923,9 +923,9 @@ Room29V1Chain48:
     @ "I know who it could've been - Lupin!"
     @ "I can't see Lupin affording something like this."
     ShowRoomDialog 433
-    QueueTileObjectMove Room29V1Group14_id, 2, 0, 0, 2000, 0
+    QueueTileActorMove Room29V1Group14_id, 2, 0, 0, 2000, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
-    DespawnRoomRowObjects Room29V1Group15_id
+    DespawnRoomRowActors Room29V1Group15_id
     @ "It's a bit odd, isn't it? Maybe we should get Professor McGonagall to check it out?"
     @ "I'm sure it's all right, Hermione. I can't wait to show Hagrid. Let's go find him!"
     ShowRoomDialog 434
@@ -933,9 +933,9 @@ Room29V1Chain48:
     End
 Room29V1Chain49:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route50_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route50_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain50:
     ArmChainYield 1
@@ -943,33 +943,33 @@ Room29V1Chain50:
     @ "Okay, let's go."
     ShowRoomDialog 197
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group17_id, 0, 0, 0, Room29V1Route56_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group20_id, 0, 0, 0, Room29V1Route62_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group17_id, 0, 0, 0, Room29V1Route56_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group20_id, 0, 0, 0, Room29V1Route62_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain51:
     ArmChainYield 1
     SetQuestState QUEST_OBJ_GO_TO_TRANSFIGURATION, QUEST_OBJECTIVE_INDEX
     SetStoryStage 1
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain52:
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route5_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain53:
     ArmChainYield 1
     RecruitPartyFollower 5
-    DespawnRoomRowObjects Room29V1Group8_id
+    DespawnRoomRowActors Room29V1Group8_id
     RecruitPartyFollower 7
-    DespawnRoomRowObjects Room29V1Group19_id
+    DespawnRoomRowActors Room29V1Group19_id
     SetQuestState QUEST_OBJ_GO_TO_DADA, QUEST_OBJECTIVE_INDEX
     SetStoryStage 7
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain54:
-    DespawnTileObject Room29V1Group10_id, 7
+    DespawnTileActor Room29V1Group10_id, 7
     End
 Room29V1Chain55:
-    DespawnTileObject Room29V1Group10_id, 3
+    DespawnTileActor Room29V1Group10_id, 3
     End
 Room29V1Chain56:
     ArmChainYield 1
@@ -979,31 +979,31 @@ Room29V1Chain56:
     GrantRoomReward 67, 0
     ClearOverworldMonstersDisabled
     SetStoryStage 15
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain57:
     ArmChainYield 1
     RecruitPartyFollower 7
-    DespawnRoomRowObjects Room29V1Group20_id
+    DespawnRoomRowActors Room29V1Group20_id
     RecruitPartyFollower 6
-    DespawnRoomRowObjects Room29V1Group17_id
+    DespawnRoomRowActors Room29V1Group17_id
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route63_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route63_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain58:
-    DespawnTileObject Room29V1Group12_id, 5
+    DespawnTileActor Room29V1Group12_id, 5
     End
 Room29V1Chain59:
-    DespawnTileObject Room29V1Group12_id, 6
+    DespawnTileActor Room29V1Group12_id, 6
     End
 Room29V1Chain60:
     ArmChainYield 1
     @ "Let's go!"
     ShowRoomDialog 533
     ArmChainYield 0
-    StartObjectAnimSequence Room29V1Group13_id, 1, 0, 0, Room29V1Route43_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room29V1Group13_id, 2, 0, 0, Room29V1Route42_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room29V1Route44_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group13_id, 1, 0, 0, Room29V1Route43_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room29V1Group13_id, 2, 0, 0, Room29V1Route42_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route44_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain61:
     SetQuestState 0, QUEST_ALT_PRESENTATION

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/graphics.h"
 
-// Called per OAM priority so particles interleave with objects of that priority.
+// Called per OAM priority so particles interleave with actors of that priority.
 s8 TickParticleLayer(u8 priority)
 {
     s32 result;

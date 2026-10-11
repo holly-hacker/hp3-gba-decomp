@@ -11,25 +11,25 @@
 void ClearPoisonedFighter_candidate(u8 fighterIndex)
 {
     BattleFighter *fighter = &g_pFightState->pFighters[fighterIndex];
-    Actor *object = fighter->pObject;
+    Actor *actor = fighter->pActor;
 
     if (fighter->bStatusFlags & Poisoned)
     {
         fighter->bStatusFlags &= ~Poisoned;
         fighter->bPoisonDamage = 0;
-        object->wActionVariant = 0;
+        actor->wActionVariant = 0;
 
-        SetPlayerObjectAnim(object, 0);
+        SetPlayerActorAnim(actor, 0);
 
-        if (object->pWindupParticleEmitter != NULL)
+        if (actor->pWindupParticleEmitter != NULL)
         {
-            ReleaseParticleEmitter_candidate(object->pWindupParticleEmitter);
-            object->pWindupParticleEmitter = NULL;
+            ReleaseParticleEmitter_candidate(actor->pWindupParticleEmitter);
+            actor->pWindupParticleEmitter = NULL;
         }
 
         {
-            u8 paletteBank = object->oam.paletteNum;
-            u8 fighterType = *(u8 *)&object->wActorType;
+            u8 paletteBank = actor->oam.paletteNum;
+            u8 fighterType = *(u8 *)&actor->wActorType;
             QueueObjPaletteLoad(&g_aFighterAnimTable[fighterType].aRecords[0].pPalette->aColors[1],
                 (paletteBank << 4) + 1, 0xf);
         }

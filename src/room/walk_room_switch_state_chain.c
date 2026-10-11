@@ -38,7 +38,7 @@ void WalkRoomSwitchStateChain_candidate(u32 chain, s32 resumeFromSaved)
         }
         else
         {
-            pTable = g_pRoomSwitchStateObjectTable;
+            pTable = g_pRoomSwitchStateActorTable;
             slotOffset = g_bRoomScriptCurrentRow * 2;
             pChainOffsets = pTable->awChainOffsets;
             pNext = (RoomScriptRecord *)((u8 *)pTable + *(u16 *)((u8 *)pChainOffsets + slotOffset));

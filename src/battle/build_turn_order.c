@@ -76,15 +76,15 @@ void BuildTurnOrder(void)
     // record its position for target-redirect lookups.
     innerIdx = 0;
     while (innerIdx < g_pFightState->bFighterCount) {
-        SLOT(innerIdx).pObject->bFighterIndex = innerIdx;
+        SLOT(innerIdx).pActor->bFighterIndex = innerIdx;
 
         if (SLOT(innerIdx).bFighterType != Enemy) {
             SpawnTurnOrderIcon(SLOT(innerIdx).bFighterType, 1, innerIdx,
-                               SLOT(innerIdx).pObject->oam.paletteNum);
+                               SLOT(innerIdx).pActor->oam.paletteNum);
             g_pFightState->aAllySlotTurnOrderIndex[SLOT(innerIdx).bSlotParam] = innerIdx;
         } else {
             SpawnTurnOrderIcon(SLOT(innerIdx).bRosterIndex, 0, innerIdx,
-                               SLOT(innerIdx).pObject->oam.paletteNum);
+                               SLOT(innerIdx).pActor->oam.paletteNum);
             g_pFightState->aEnemySlotTurnOrderIndex[SLOT(innerIdx).bSlotParam] = innerIdx;
         }
 

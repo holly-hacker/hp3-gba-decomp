@@ -14,7 +14,7 @@ extern u8 g_abTouchedMonsterRecords[20];
 extern Actor *g_pTouchedWanderingMonster;
 
 // 8-byte wandering-monster spawn-position record, two words.
-// Only the low halves reach SpawnWanderingMonsterObject;
+// Only the low halves reach SpawnWanderingMonsterActor;
 // FindWanderingMonsterSpawnPosition fills both words.
 typedef struct SpawnPosition {
     u32 x;
@@ -34,13 +34,13 @@ u32 GetEncounterKindTerrainType(u32 kind);
 s32 FindWanderingMonsterSpawnPosition(u32 *pOutPos, u32 terrainType, SpawnPosition *pPlacedPositions, u32 placedCount);
 // Strongest-damage monster id among one variant cell's slots 0-2.
 u32 PickMaxDamageMonster(const u8 *pSlots);
-// Create one wandering-monster object.
-void SpawnWanderingMonsterObject(u8 monsterId, u16 x, u16 y, u8 encounterId, u8 variant, u8 kind);
+// Create one wandering-monster actor.
+void SpawnWanderingMonsterActor(u8 monsterId, u16 x, u16 y, u8 encounterId, u8 variant, u8 kind);
 
 // Controllable-character slots: each 16-byte entry starts with the Actor the
 // player steers; only slot 0 is ever populated.
 typedef struct OverworldControlSlot {
-    Actor *pObject;
+    Actor *pActor;
     u8 aUnknown4[12];
 } OverworldControlSlot;
 
@@ -54,10 +54,10 @@ typedef struct OverworldControlState {
 
 extern OverworldControlState g_OverworldControlState;
 
-extern Actor *g_pPlayerObject;
-// The two party followers' objects; NULL while the slot is empty.
-extern Actor *g_pFollowerObject0;
-extern Actor *g_pFollowerObject1;
+extern Actor *g_pPlayerActor;
+// The two party followers' actors; NULL while the slot is empty.
+extern Actor *g_pFollowerActor0;
+extern Actor *g_pFollowerActor1;
 // Character ids of the leader and the two follower slots.
 extern u8 g_bPartyCharId0;
 extern u8 g_bPartyCharId1;
@@ -73,7 +73,7 @@ typedef enum {
     PartyAnim3 = 3,
     PartyAnim4 = 4,
 } PartyAnim;
-extern void SetPartyMemberAnim(Actor *obj, u8 anim);
+extern void SetPartyMemberAnim(Actor *actor, u8 anim);
 extern const ActorGfxRecord g_UnusedPartyGfx;
 extern const ActorGfxRecord g_PartyFocusGfx_candidate;
 extern const ActorAssetRecord g_aPartyWalkAssets[PARTY_CHARACTER_COUNT];
@@ -95,22 +95,22 @@ extern const ActorGfxRecord g_UnusedPartyGfx2;
 // and Spongify for Ron; Diffindo and Spongify need 5 known spells, Glacius 6.
 // CyclePartyLeaderSelection_candidate steps it; it is saved with the party.
 extern u8 g_bSelectedFieldSpell;
-// HUD objects, cleared by ResetPartyState and freed by sub_08024BD4.
-extern Actor *g_pFieldSpellNameObject;       // selected spell's name text (sub_08023A2C)
-extern Actor *g_pMapNameTextObject;          // room name text (ShowMapNamePopup)
-extern Actor *g_pFieldSpellPortraitObject;   // face portrait of the spell's character (sub_08023A2C)
-extern Actor *g_pMapNamePopupObject;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
+// HUD actors, cleared by ResetPartyState and freed by sub_08024BD4.
+extern Actor *g_pFieldSpellNameActor;       // selected spell's name text (sub_08023A2C)
+extern Actor *g_pMapNameTextActor;          // room name text (ShowMapNamePopup)
+extern Actor *g_pFieldSpellPortraitActor;   // face portrait of the spell's character (sub_08023A2C)
+extern Actor *g_pMapNamePopupActor;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
 extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
 
 extern void ResetPartyState(void);
 
 // Per-slot scripted camera effect, started by room script opcodes 0x10
-// (QueueTileObjectMove: pan the camera focus to an object) and 0x12
+// (QueueTileActorMove: pan the camera focus to an actor) and 0x12
 // (SetAllQueuedMoveParams: shake). One 0x2C-byte record per control slot,
 // ticked by TickCameraFocus_candidate. See docs/memory-map/frame_systems.md.
 typedef struct CameraEffect {
     Actor *pTarget;           // 0x00, pan target
-    FixedPoint savedVel;       // 0x04, the controlled object's velocity, restored when the pan ends
+    FixedPoint savedVel;       // 0x04, the controlled actor's velocity, restored when the pan ends
     u8 pad_0C[0x08];           // -> 0x14
     s32 nStep;                 // 0x14, pan speed; shake amplitude (posX << 16) in state 3
     u32 dwFramesLeft;          // 0x18, shake duration in frames
@@ -120,7 +120,7 @@ typedef struct CameraEffect {
     u8 bRespawnRow;            // 0x23, first argument to RespawnRowAndRunChain_candidate
     u8 bChainRow;              // 0x24, second argument to RespawnRowAndRunChain_candidate
     u8 bState;                 // 0x25, 0 = idle, 1 = pan, 3 = shake
-    u8 bSavedActionSubState;   // 0x26, controlled object's bActionSubState when the pan began
+    u8 bSavedActionSubState;   // 0x26, controlled actor's bActionSubState when the pan began
     u8 bChainRan;              // 0x27, set once the pan's chain has run
     u32 dwResumeScript;        // 0x28, nonzero: resume the yielded room script when the pan ends
 } CameraEffect;
@@ -137,7 +137,7 @@ typedef struct CameraFocusSlot {
     s32 nLatchedX;             // 0x18, copy of the focus point; see SetCameraFollowTarget_candidate
     s32 nLatchedY;             // 0x1C
     u8 pad_20[0x10];           // -> 0x30
-    Actor *pTarget;           // 0x30, object the focus follows
+    Actor *pTarget;           // 0x30, actor the focus follows
     u16 wPinned;               // 0x34, 0 = follow pTarget every frame, 1 = hold
     u8 pad_36[0x02];           // -> 0x38
 } CameraFocusSlot;
@@ -155,11 +155,11 @@ extern void sub_0800A3EC(s32 *pPosition, u32 arg1);  // writes the camera focus 
 extern void sub_0800A420(u32 arg0, s32 progress, u32 arg2);
 
 extern u8 g_bControlSlotTicks_candidate;
-extern void TickOverworldBeforeObjects_candidate(void);
-// Ticks slot's camera focus: follows the target object, or runs the active pan/shake
+extern void TickOverworldBeforeActors_candidate(void);
+// Ticks slot's camera focus: follows the target actor, or runs the active pan/shake
 // effect and its completion chain.
 extern void TickCameraFocus_candidate(u8 slot);
-// Updates g_CameraPosition_candidate from the followed object and streams BG
+// Updates g_CameraPosition_candidate from the followed actor and streams BG
 // tiles on demand as it crosses tile boundaries.
 extern void UpdateOverworldCamera_candidate(u32 mode);
 // Counts down the room's timed tile-change entries and applies each one when it expires.
@@ -168,10 +168,10 @@ extern void HandleOverworldPauseMenuInput(void);
 // Set by the room chain runner while it processes a chain; consumed (cleared)
 // once per frame by HandleOverworldPauseMenuInput.
 extern u32 g_dwRoomChainRanThisFrame_candidate;
-// 1 while RestoreRoomObjectState respawns the room's saved objects, and set
-// when the overworld pushes a pause menu; the room object constructed by
+// 1 while RestoreRoomActorState respawns the room's saved actors, and set
+// when the overworld pushes a pause menu; the room actor constructed by
 // sub_08044C00 and its callbacks branch on it.
-extern u8 g_bRestoringRoomObjects_candidate;
+extern u8 g_bRestoringRoomActors_candidate;
 // Records wandering-monster touches and respawns replacements; see the
 // wandering-monster notes above.
 extern void HandleWanderingMonsterTouch(void);

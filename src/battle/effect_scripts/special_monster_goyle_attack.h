@@ -2,9 +2,9 @@
 const u8 g_abSpecialMonsterGoyleAttackScript[] = {
     BS_TeleportToSlotPosition(2),
     BS_WaitFrames(1),
-    BS_SetObjectAnim(55, 0),
+    BS_SetActorAnim(55, 0),
     BS_WaitFrames(1),
-    BS_ShowObject(),
+    BS_ShowActor(),
     BS_AdvanceAttackOutcome(),
     BS_AdvanceAttackOutcome(),
     BS_WaitForCounter(),

@@ -20,7 +20,7 @@ typedef struct {
     u8 bUnk0B;          // 0x0B: always CARD_TRADE_NO_CARD, never read
 } CardTradeState;
 
-// Where each side's card object parks, in screen pixels.
+// Where each side's card actor parks, in screen pixels.
 typedef struct {
     u8 bX;
     u8 bY;
@@ -28,8 +28,8 @@ typedef struct {
 } CardTradeSlotPosition;
 
 extern CardTradeState g_CardTradeState;  // 0x03005568
-extern Actor *g_apMenuIconObjects[];    // 0x03003F68: list menu row icons (SpawnMenuIconObject) and objects
-                                         // registered by slot (RegisterMenuIconObject)
+extern Actor *g_apMenuIconActors[];    // 0x03003F68: list menu row icons (SpawnMenuIconActor) and actors
+                                         // registered by slot (RegisterMenuIconActor)
 
 extern const ListMenuEntry g_aCardTradeEntries[3];                    // 0x0806B35C
 extern const ListMenuDefinition g_CardTradeMenuDefinition;            // 0x0806B380
@@ -43,7 +43,7 @@ extern u32 GetCardTradeSendWord(void);
 extern void ClearMenuTextLayer_candidate(void);
 
 extern void ResetCardTradeAfterLinkLoss(void);
-extern void SpawnCardTradeCardObjects(void);
+extern void SpawnCardTradeCardActors(void);
 extern void SelectCardTradeEntry(void);
 extern void CancelCardTradeOffer(void);
 extern void ShowCardTradeLinkStatus(u32 linkUp);

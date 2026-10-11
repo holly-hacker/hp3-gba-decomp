@@ -71,7 +71,7 @@ and so do the battle script wait handlers. It walks the active list; an emitter 
    `wSpawnPeriod + 1` ticks, and resets it.
 2. On a fire, makes up to `bSpawnsPerPeriod` attempts. An attempt needs
    `g_wActiveParticleCount <= 0x3E`, `g_bParticleSpawnBlocked == 0`, no
-   `ParticleEmitterFlagSpawnDisabled`, and either the target object onscreen
+   `ParticleEmitterFlagSpawnDisabled`, and either the target actor onscreen
    (`ActorFlagOnscreenForTileAlloc`) or `ParticleEmitterFlagScreenPosition`.
 3. With `ParticleEmitterFlagSpawnRoll`, an attempt spawns only if
    `Mt19937RandMax2(wSpawnRollMax) < wSpawnRollThreshold` (cursor 2).
@@ -82,8 +82,8 @@ Particles are ticked and drawn from `TickActorList`'s mode 1 pass, not from the 
 tick. `BucketParticlesByPriority` sorts the active particles into one bucket per OAM
 priority (`g_apParticlesByPriority`, counts in `g_abParticlesByPriorityCount`); a particle
 with `ParticleEmitterFlagPriorityAbove` goes into the bucket below its own priority. As the
-depth-sorted objects are drawn, `TickParticleLayer(n)` runs each particle of bucket `n`
-through `TickParticle`, so particles are queued among the objects of their priority.
+depth-sorted actors are drawn, `TickParticleLayer(n)` runs each particle of bucket `n`
+through `TickParticle`, so particles are queued among the actors of their priority.
 `ParticleEmitterFlagSkipTick` marks a particle as bucketed until `TickParticleLayer` clears it.
 
 `TickParticle`:
@@ -121,7 +121,7 @@ axis with equal bounds consumes nothing. `dwSpeed` defaults to `0x20000`, whose 
 
 ## Main menu cursor emitter — PROVEN
 
-`ShowMainMenuEntries_candidate` builds the cursor object with `SpawnMenuCursorObject(4)`, whose kind-4
+`ShowMainMenuEntries_candidate` builds the cursor actor with `SpawnMenuCursorActor(4)`, whose kind-4
 branch calls `CreateMenuCursorEmitter`. The emitter is released by `ExitMainMenuScreen` through
 `ReleaseMenuCursor`. Configuration, from the matched C:
 
@@ -133,7 +133,7 @@ branch calls `CreateMenuCursorEmitter`. The emitter is released by `ExitMainMenu
 | `bMode` | 6 (random velocity, `abVelRange` = -40, 40, 0, 0) |
 | `wLifetimeBase`, `wLifetimeRange` | `0x23`, 5 (fixed 40-frame lifetime, no draw) |
 | `wSpread` | 1 |
-| Spawn position | the cursor object's integer position (no `Mt19937` draw for the base point) |
+| Spawn position | the cursor actor's integer position (no `Mt19937` draw for the base point) |
 
 Each fire that passes the gates therefore costs one cursor-2 roll, and a successful roll
 costs three more cursor-2 draws (x, y) plus **one cursor-1 draw**, the x velocity; the y
@@ -143,7 +143,7 @@ per 12 frames while the cursor is on screen. On the boot path the emitter is cre
 
 ## Cursor 2 in the main menu — STRUCTURAL MATCH
 
-Derived from a static call graph over direct `bl` edges only. Indirect calls (object tick
+Derived from a static call graph over direct `bl` edges only. Indirect calls (actor tick
 pointers, animation opcodes, interrupt handlers) are not followed, and nothing was checked in an
 emulator.
 
@@ -154,7 +154,7 @@ emulator.
   `0x3A`, `0x3C`, `0x8C`, `0x9B`, `0x9D`, `0x9F`, `0xA0`, `0xA2`, `0xA3`, `0xA5`, `0xA6`, `0xA8`,
   `0xA9`.
 - The sounds reachable from the main menu are `0` (cursor move), `1` (START and select) and `0x47`
-  (`TickActor`, when an object's position changed). All are sample rows. The boot path before the menu
+  (`TickActor`, when an actor's position changed). All are sample rows. The boot path before the menu
   plays `0`, `1` and `2` in the language select, also sample rows. `sub_0803FD04` has no direct-call path
   from the menu. The cursor's animation streams (`0x0805E0D0`, `0x0805E0E0`) contain no `0xFD`
   sound opcode (`RunActorAnimCommands` case 14 plays `PlaySoundById`).
@@ -162,7 +162,7 @@ emulator.
   are the only ones on the boot path.
 
 So on the boot path, after `Mt19937AutoSeed`, the emitter is the only thing that advances either
-cursor. Per fire (every 6th frame while the cursor object is onscreen) cursor 2 consumes one draw for
+cursor. Per fire (every 6th frame while the cursor actor is onscreen) cursor 2 consumes one draw for
 the spawn roll, plus two more on a pass; cursor 1 consumes one on a pass. Both cursors read the same
 seeded array from word 1 until cursor 1's first regeneration (`Mt19937SetSeed` sets its remaining
 count to `MT_N - 1`), so cursor 2's first roll tempers the same word as cursor 1's first draw.

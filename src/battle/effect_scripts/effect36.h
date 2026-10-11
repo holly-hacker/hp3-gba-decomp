@@ -40,9 +40,9 @@ const u8 g_abEffect36Script[] = {
     BS_SetDepthBias(2),
     BS_TeleportToSlotPosition(0),
     BS_MoveBy(0, -20),
-    BS_SetObjectAnimFromTable2AndPalette(21, 0),
+    BS_SetActorAnimFromTable2AndPalette(21, 0),
     BS_WaitFrames(1),
-    BS_ShowObject(),
+    BS_ShowActor(),
     BS_WaitFrames(100),
     BS_End(),
 };

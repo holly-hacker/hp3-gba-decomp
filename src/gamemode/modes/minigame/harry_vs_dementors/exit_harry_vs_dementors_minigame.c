@@ -10,16 +10,16 @@ void ExitHarryVsDementorsMinigame(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
 
-    if (g_HarryVsDementors.pCursorObject != NULL)
+    if (g_HarryVsDementors.pCursorActor != NULL)
     {
-        ReleaseMenuCursor(g_HarryVsDementors.pCursorObject);
-        g_HarryVsDementors.pCursorObject = NULL;
+        ReleaseMenuCursor(g_HarryVsDementors.pCursorActor);
+        g_HarryVsDementors.pCursorActor = NULL;
         FreeAllParticles();
     }
 
-    sub_0802CEE4(g_HarryVsDementors.pObjectGroup20);
-    sub_0802CEE4(g_HarryVsDementors.pObjectGroup24);
-    sub_0802CEE4(g_HarryVsDementors.pObjectGroup28);
+    sub_0802CEE4(g_HarryVsDementors.pActorGroup20);
+    sub_0802CEE4(g_HarryVsDementors.pActorGroup24);
+    sub_0802CEE4(g_HarryVsDementors.pActorGroup28);
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
 }

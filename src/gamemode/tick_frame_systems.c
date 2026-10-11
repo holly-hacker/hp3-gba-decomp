@@ -9,7 +9,7 @@
 void TickFrameSystems(void)
 {
     if (g_GameModeStackContext.dwCurrentGameMode == Overworld)
-        TickOverworldBeforeObjects_candidate();
+        TickOverworldBeforeActors_candidate();
 
     TickActiveActors();
     TickParticleEmitters();

@@ -5,7 +5,7 @@
 
 void SpawnFolioUniversitasButtonPrompts(void)
 {
-    const ObjPalette *pPalette = (const ObjPalette *)gObjectSprite087Palette;
+    const ObjPalette *pPalette = (const ObjPalette *)gActorSprite087Palette;
 
     g_FolioUniversitasState.pPrevArrow = SpawnActor(0, 0x10, 0x98, pPalette);
     SetActorAnimData(g_FolioUniversitasState.pPrevArrow, FOLIO_UNIVERSITAS_PROMPTS_GFX, g_aFolioButtonPromptAnims[0], 0);

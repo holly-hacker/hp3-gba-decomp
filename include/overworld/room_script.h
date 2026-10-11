@@ -6,7 +6,7 @@
 // Room-script VM; see docs/formats/room_scripts.md. A chain is a sequence of
 // records, each starting with a u32 opcode (0 ends the chain).
 
-// Chain index -> chain offset table, reached through g_pRoomSwitchStateObjectTable.
+// Chain index -> chain offset table, reached through g_pRoomSwitchStateActorTable.
 typedef struct RoomScriptTable {
     u16 wHeader;
     u16 awChainOffsets[0];
@@ -43,7 +43,7 @@ extern const u8 g_abRoomScriptOpcodeLengths[93];  // ROM 0x0805EB34
 // 0 = idle, 1 = resuming a yielded chain, 2 = yielded (the walk stops after
 // the current record), 3 = walking while a yielded chain is pending, 4 = disabled.
 extern u32 g_dwRoomScriptRunState;
-extern RoomScriptTable *g_pRoomSwitchStateObjectTable;
+extern RoomScriptTable *g_pRoomSwitchStateActorTable;
 // Chain the VM is walking; 0xFF in g_bRoomScriptPendingChain means no jump pending.
 extern u8 g_bRoomScriptCurrentRow;
 extern u8 g_bRoomScriptPendingChain;
@@ -59,12 +59,12 @@ extern RoomScriptCallFrame g_aRoomScriptCallStack[];
 // frame on top of the call stack instead.
 extern void WalkRoomSwitchStateChain_candidate(u32 chain, s32 resumeFromSaved);
 extern void ResumeRoomSwitchStateChain_candidate(void);
-extern void RespawnRoomObjectsInRow_candidate(u32 row);
+extern void RespawnRoomActorsInRow_candidate(u32 row);
 
-// Live object at tile (x, y); every script targets (0, 0xFF), the player slot.
+// Live actor at tile (x, y); every script targets (0, 0xFF), the player slot.
 // x == 0 with y >= 0xFE selects a slot of the array at 0x03003358 instead of a tile; every
 // script uses (0, 255).
-extern Actor *GetRoomObjectField_candidate(u32 x, u32 y);
+extern Actor *GetRoomActorField_candidate(u32 x, u32 y);
 
 // cmpOp values for CompareAndBranchRoomScript (room_script_branch.h).
 enum {
@@ -99,17 +99,17 @@ extern void *g_pPendingCameraFocus_candidate;
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
 extern void RespawnRowAndRunChain_candidate(u32 respawnRow, u32 chainRow);
-// Allocates a RoomObjectType_ScriptEffect object of the given kind (Actor+0x8C),
+// Allocates a RoomActorType_ScriptEffect actor of the given kind (Actor+0x8C),
 // ticked by the kind's entry in the script-effect tick table. Kind 1 (the delayed respawn timer,
 // tick at 0x080200FC) counts dwStateTimer down, then runs the row/chain, or resumes the yielded
 // chain if the walk yielded on a delayed-respawn opcode.
-extern Actor *SpawnScriptEffectObject(u32 kind);
+extern Actor *SpawnScriptEffectActor(u32 kind);
 extern void WriteRoomBgTile_candidate(u16 x, u16 y, u16 tileId, u8 layer);
 extern u16 GetRoomBgBlockEntry(u16 x, u16 y, u8 layer);  // the room BG entry WriteRoomBgTile_candidate writes
 extern void ConsumeBattleItemSlot(u32 itemId, u32 count);
 extern void sub_080236DC(u32 characterId);
 extern void sub_080237D0(u32 arg0);
 
-// Chain and object row queued by PlayCutscene for the transition back.
+// Chain and actor row queued by PlayCutscene for the transition back.
 extern u8 g_bPendingRoomScriptChain;
 extern u8 g_bPendingRoomScriptRow;

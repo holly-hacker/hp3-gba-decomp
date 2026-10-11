@@ -26,7 +26,7 @@ void ReleaseActorOffscreenVramTiles(Actor *actor)
 
             if (--g_pActorPoolAuxBuffer[auxSlot].abRefCounts[index] == 0) {
                 g_pActorPoolAuxBuffer[auxSlot].awTileAllocIds[index] = 0xFFFF;
-                FreeObjectVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
+                FreeObjVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
                                              actor->oam.bpp8);
             }
 
@@ -36,7 +36,7 @@ void ReleaseActorOffscreenVramTiles(Actor *actor)
     }
     else {
         if (actor->wVramTileAllocId != 0xFFFF) {
-            FreeObjectVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
+            FreeObjVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
                                          actor->oam.bpp8);
             actor->wVramTileAllocId = 0xFFFF;
             actor->wVramPixelCount = 0;
@@ -46,7 +46,7 @@ void ReleaseActorOffscreenVramTiles(Actor *actor)
             for (i = 0; i < ARRAY_COUNT(actor->aVariantSlots); i++) {
                 variantSlot = &actor->aVariantSlots[i];
                 if (variantSlot->wVramTileAllocId != 0xFFFF) {
-                    FreeObjectVramTileAllocation(variantSlot->wVramTileAllocId, variantSlot->wVramPixelCount,
+                    FreeObjVramTileAllocation(variantSlot->wVramTileAllocId, variantSlot->wVramPixelCount,
                                                  actor->oam.bpp8);
                     variantSlot->wVramTileAllocId = 0xFFFF;
                     variantSlot->wVramPixelCount = 0;

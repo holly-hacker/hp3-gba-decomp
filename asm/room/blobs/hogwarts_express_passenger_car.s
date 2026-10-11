@@ -128,19 +128,19 @@ Room06V1Chain0:
     End
 Room06V1Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    ClearTileObjectFlagBit 0, 255, 9
-    StartTileObjectScript 174, 153, 0, 0, 255, 0, 0, 7, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    ClearTileActorFlagBit 0, 255, 9
+    StartTileActorScript 174, 153, 0, 0, 255, 0, 0, 7, 255, 255, 255
     RespawnRowAndRunChain Room06V1Group2_id, 0
     RemovePartyFollower 7
     RemovePartyFollower 6
     ArmChainYield 0
-    StartObjectAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route2_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route5_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain2:
     PlaySoundById 63
-    PlayTileObjectAnimation Room06V1Group0_id, 0, 7
+    PlayTileActorAnimation Room06V1Group0_id, 0, 7
     SetQuestState 1, 224
     SetQuestState QUEST_OBJ_FIND_YOUR_SEAT, QUEST_OBJECTIVE_INDEX
     InvokeChainIfEnabled 0, Room06V1Chain3_id
@@ -148,79 +148,79 @@ Room06V1Chain2:
     End
 Room06V1Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 6
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 6
     @ "We'd better hurry up and find seats."
     ShowRoomDialog 86
-    StartTileObjectScript 570, 184, 0, Room06V1Group3_id, 1, 0, 0, 6, 255, 255, 255
-    StartTileObjectScript 590, 184, 0, Room06V1Group3_id, 1, 0, 0, 6, 255, 255, 255
-    DespawnTileObject Room06V1Group3_id, 1
+    StartTileActorScript 570, 184, 0, Room06V1Group3_id, 1, 0, 0, 6, 255, 255, 255
+    StartTileActorScript 590, 184, 0, Room06V1Group3_id, 1, 0, 0, 6, 255, 255, 255
+    DespawnTileActor Room06V1Group3_id, 1
     RecruitPartyFollower 7
-    StartTileObjectScript 590, 184, 0, Room06V1Group3_id, 0, 0, 0, 2, 255, 255, 255
-    DespawnTileObject Room06V1Group3_id, 0
+    StartTileActorScript 590, 184, 0, Room06V1Group3_id, 0, 0, 0, 2, 255, 255, 255
+    DespawnTileActor Room06V1Group3_id, 0
     RecruitPartyFollower 6
     SetDefeatWarpSelector 1 @ Hogwarts Express - Passenger Car
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V1Chain4:
-    SetTileObjectAnimState Room06V0Group0_id, 0
-    CancelObjectAnimSequence 0, 255
+    SetTileActorAnimState Room06V0Group0_id, 0
+    CancelActorAnimSequence 0, 255
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V1Chain27_id
     End
 Room06V1Chain5:
-    SetTileObjectAnimState Room06V0Group0_id, 1
-    CancelObjectAnimSequence 0, 255
+    SetTileActorAnimState Room06V0Group0_id, 1
+    CancelActorAnimSequence 0, 255
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V1Chain27_id
     End
 Room06V1Chain6:
-    SetTileObjectAnimState Room06V0Group0_id, 2
-    CancelObjectAnimSequence 0, 255
+    SetTileActorAnimState Room06V0Group0_id, 2
+    CancelActorAnimSequence 0, 255
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V1Chain27_id
     End
 Room06V1Chain7:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     UnmuteAllMusicChannels
     PlaySpecialSceneEffect 1
     DelayedRespawnRowAndRunChain 5, 0, 0
-    StartTileObjectScript 168, 124, 0, 0, 255, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 168, 124, 0, 0, 255, 0, 0, 0, 255, 255, 255
     SetQuestState 1, 6
     SetQuestState 15, 235
     ClearAllQueuedMoves
-    SetTileObjectFacing 0, 255, 0
+    SetTileActorFacing 0, 255, 0
     RespawnRowAndRunChain Room06V1Group9_id, 0
     @ "What's going on? Why's the train stopped?"
     ShowRoomDialog 111
-    StartTileObjectScript 170, 147, 0, 0, 255, 0, 0, 4, 255, 255, 255
+    StartTileActorScript 170, 147, 0, 0, 255, 0, 0, 4, 255, 255, 255
     Unk02 Room06V1Group9_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room06V1Group9_id, 0, 0, 0, Room06V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room06V1Group9_id, 0, 0, 0, Room06V1Route0_id, 0, 1, 0, 0, 0
     SetQuestState 0, 8
     End
 Room06V1Chain8:
-    PlayTileObjectAnimation Room06V1Group0_id, 0, 7
+    PlayTileActorAnimation Room06V1Group0_id, 0, 7
     End
 Room06V1Chain9:
     End
 Room06V1Chain10:
-    DespawnTileObject Room06V1Group7_id, 0
+    DespawnTileActor Room06V1Group7_id, 0
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
     End
 Room06V1Chain11:
     ArmChainYield 1
-    SetTileObjectFacing Room06V1Group9_id, 0, 6
-    StartTileObjectScript 175, 239, 0, 0, 255, 0, 0, 2, 255, 255, 255
-    StartTileObjectScript 195, 239, 0, 0, 255, 0, 0, 2, 255, 255, 255
-    SetTileObjectFacing 0, 255, 2
+    SetTileActorFacing Room06V1Group9_id, 0, 6
+    StartTileActorScript 175, 239, 0, 0, 255, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 195, 239, 0, 0, 255, 0, 0, 2, 255, 255, 255
+    SetTileActorFacing 0, 255, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route3_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain12:
-    DespawnTileObject Room06V1Group0_id, 0
+    DespawnTileActor Room06V1Group0_id, 0
     End
 Room06V1Chain13:
     GotoIfQuestStateCompare 6, 3, 3, Room06V1Chain12_id, 0, 0, 0
@@ -286,25 +286,25 @@ Room06V1Chain26:
     ShowRoomDialog 108
     End
 Room06V1Chain27:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V1Chain28:
-    SetTileObjectFacing Room06V1Group2_id, 1, 6
+    SetTileActorFacing Room06V1Group2_id, 1, 6
     ArmChainYield 1
-    QueueTileObjectMove Room06V1Group0_id, 0, 0, 0, 1100, 0
+    QueueTileActorMove Room06V1Group0_id, 0, 0, 0, 1100, 0
     @ "These look like the only empty seats."
     @ "Who d'you reckon he is?"
     @ "Professor R. J. Lupin. He's the new Defense Against the Dark Arts teacher."
     @ "Zzzzzz¸"
     ShowRoomDialog 109
-    QueueTileObjectMove 0, 255, 9, 0, 1500, 0
+    QueueTileActorMove 0, 255, 9, 0, 1500, 0
     InvokeChainIfEnabled 0, Room06V1Chain7_id
     End
 Room06V1Chain29:
-    SetTileObjectFacing Room06V1Group2_id, 0, 6
+    SetTileActorFacing Room06V1Group2_id, 0, 6
     End
 Room06V1Chain30:
-    SetTileObjectFacing Room06V1Group2_id, 1, 2
+    SetTileActorFacing Room06V1Group2_id, 1, 2
     ArmChainYield 1
     @ "Harry, I can't find my toad, Trevor. Can you help me find him?"
     @ "Where did you last see him?"
@@ -312,31 +312,31 @@ Room06V1Chain30:
     @ "Don't worry, Neville, we'll find him for you."
     @ "Thanks, Harry. I'll wait here for you."
     ShowRoomDialog 143
-    StartObjectAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route1_id, 0, 1, 0, 0, 0
-    SetTileObjectFacing Room06V1Group2_id, 0, 2
-    StartObjectAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route1_id, 0, 1, 0, 0, 0
+    SetTileActorFacing Room06V1Group2_id, 0, 2
+    StartActorAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route6_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain31:
-    SetTileObjectFacing Room06V1Group2_id, 1, 2
+    SetTileActorFacing Room06V1Group2_id, 1, 2
     RecruitPartyFollower 6
-    DespawnTileObject Room06V1Group2_id, 1
+    DespawnTileActor Room06V1Group2_id, 1
     RecruitPartyFollower 7
-    DespawnTileObject Room06V1Group2_id, 0
+    DespawnTileActor Room06V1Group2_id, 0
     SetQuestState QUEST_OBJ_FIND_TREVOR, QUEST_OBJECTIVE_INDEX
-    SetTileObjectFlagBit 0, 255, 9
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorFlagBit 0, 255, 9
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V1Chain32:
-    SetTileObjectFacing Room06V1Group2_id, 0, 2
+    SetTileActorFacing Room06V1Group2_id, 0, 2
     End
 Room06V1Chain33:
-    StartObjectAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route4_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain34:
     Unk2A 5, 255, 255, 255
     RemovePartyFollower 7
     RemovePartyFollower 6
-    SetTileObjectFacing 0, 255, 6
+    SetTileActorFacing 0, 255, 6
     End
 Room06V1Chain35:
     PlaySoundById 63
@@ -379,23 +379,23 @@ Room06V2Chain2:
     End
 Room06V2Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
     @ "Here's the chocolate, Professor!"
     @ "Well done, Mr. Weasley."
     ShowRoomDialog 138
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V2Chain4:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
-    StartTileObjectScript 173, 216, 0, 0, 255, 0, 0, 4, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
+    StartTileActorScript 173, 216, 0, 0, 255, 0, 0, 4, 255, 255, 255
     End
 Room06V2Chain5:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
     @ "There you are, Harry!"
     @ "Um... Hello..."
     @ "I am Cornelius Fudge, Harry, the Minister for Magic."
@@ -405,35 +405,35 @@ Room06V2Chain5:
     @ "Oh, that Sirius Black - well, no, not yet, but it's only a matter of time. The Azkaban guards have never yet failed. Now, allow me to escort you to your room. Follow me closely - we don't want you getting lost¸"
     @ "All right, thank you."
     ShowRoomDialog 0
-    StartTileObjectScript 173, 216, 0, 0, 255, 0, 0, 4, 255, 255, 255
-    SetTileObjectAnimStateWithSpeed 0, 255
+    StartTileActorScript 173, 216, 0, 0, 255, 0, 0, 4, 255, 255, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V2Chain6:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
     @ "Job done, Professor Lupin."
     @ "Thank you, Miss Granger."
     ShowRoomDialog 139
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V2Chain7:
     DelayedRespawnRowAndRunChain 0, Room06V2Group3_id, 0
     SetAllQueuedMoveParams 0, 1, 0, 0, 65535
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 190, 148, 0, 0, 255, 0, 0, 6, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 190, 148, 0, 0, 255, 0, 0, 6, 255, 255, 255
     @ "Job done, Professor Lupin."
     @ "Thank you, Miss Granger."
     ShowRoomDialog 139
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V2Chain8:
     DelayedRespawnRowAndRunChain 0, Room06V2Group4_id, 0
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    StartTileObjectScript 187, 126, 0, 0, 255, 0, 0, 5, 255, 255, 255
-    StartTileObjectScript 182, 232, 0, 0, 255, 0, 0, 4, 255, 255, 255
+    CancelActorAnimSequence 0, 255
+    StartTileActorScript 187, 126, 0, 0, 255, 0, 0, 5, 255, 255, 255
+    StartTileActorScript 182, 232, 0, 0, 255, 0, 0, 4, 255, 255, 255
     End
 Room06V2Chain9:
     GotoIfQuestStateCompare 227, 0, 0, Room06V2Chain2_id, 0, 0, 0
@@ -528,20 +528,20 @@ Room06V3Chain0:
     DelayedRespawnRowAndRunChain 0, 0, Room06V3Chain16_id
     End
 Room06V3Chain1:
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room06V0Group0_id, 0
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room06V0Group0_id, 0
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V3Chain23_id
     End
 Room06V3Chain2:
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room06V0Group0_id, 1
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room06V0Group0_id, 1
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V3Chain23_id
     End
 Room06V3Chain3:
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectAnimState Room06V0Group0_id, 2
+    CancelActorAnimSequence 0, 255
+    SetTileActorAnimState Room06V0Group0_id, 2
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V3Chain23_id
     End
@@ -594,10 +594,10 @@ Room06V3Chain15:
     ShowRoomDialog 98
     End
 Room06V3Chain16:
-    StartObjectAnimSequence Room06V3Group0_id, 4, 0, 0, Room06V3Route0_id, 0, 0, 60, 0, 0
-    StartObjectAnimSequence Room06V3Group0_id, 9, 0, 0, Room06V3Route1_id, 0, 0, 60, 0, 0
-    StartObjectAnimSequence Room06V3Group0_id, 12, 0, 0, Room06V3Route2_id, 0, 0, 60, 0, 0
-    StartObjectAnimSequence Room06V3Group0_id, 16, 0, 0, Room06V3Route3_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room06V3Group0_id, 4, 0, 0, Room06V3Route0_id, 0, 0, 60, 0, 0
+    StartActorAnimSequence Room06V3Group0_id, 9, 0, 0, Room06V3Route1_id, 0, 0, 60, 0, 0
+    StartActorAnimSequence Room06V3Group0_id, 12, 0, 0, Room06V3Route2_id, 0, 0, 60, 0, 0
+    StartActorAnimSequence Room06V3Group0_id, 16, 0, 0, Room06V3Route3_id, 0, 0, 0, 0, 0
     End
 Room06V3Chain17:
     SetStoryStage 0
@@ -607,7 +607,7 @@ Room06V3Chain18:
     GotoIfQuestStateCompare 6, 0, 11, Room06V3Chain22_id, Room06V3Chain21_id, 0, 0
     End
 Room06V3Chain19:
-    DespawnTileObject Room06V3Group1_id, 0
+    DespawnTileActor Room06V3Group1_id, 0
     StartBattle 13, 0, Room06V3Chain20_id
     End
 Room06V3Chain20:
@@ -625,7 +625,7 @@ Room06V3Chain22:
     ReturnToOverworld 5, 0
     End
 Room06V3Chain23:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room06V3Chain24:
     GotoIfQuestStateCompare 250, 3, 1, Room06V3Chain25_id, Room06V3Chain21_id, 0, 0
@@ -643,7 +643,7 @@ Room06V3Chain27:
     ShowRoomDialog 624
     End
 Room06V3Chain28:
-    StartObjectAnimSequence Room06V3Group1_id, 0, 0, 0, Room06V3Route4_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room06V3Group1_id, 0, 0, 0, Room06V3Route4_id, 0, 0, 0, 0, 0
     End
 Room06V3Chain29:
     PlaySpecialSceneEffect 3

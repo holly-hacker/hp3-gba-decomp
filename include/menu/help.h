@@ -21,7 +21,7 @@ typedef struct {
 
 // Array capacities are the gaps between the fields in IWRAM.
 typedef struct {
-    Actor *pTitleObject;                // 0x00
+    Actor *pTitleActor;                // 0x00
     s32 dwPaletteEffect;                 // 0x04; palette effect handle, -1 when none
     HelpPageFrame aPageStack[12];        // 0x08
     u8 bPageDepth;                       // 0x68; pages opened from menus, 0 on the root menu
@@ -56,7 +56,7 @@ extern void SetHelpExitMode(GameMode mode, s32 arg1, s32 arg2, s32 arg3);
 // Pushes the stored mode and starts the screen transition out.
 extern void LeaveHelpScreen(void);
 
-// Frees the screen's objects and particles.
+// Frees the screen's actors and particles.
 extern void FreeHelpScreen(void);
 
 // Removes the current page's text, cursor and sprites.

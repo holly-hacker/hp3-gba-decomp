@@ -11,35 +11,35 @@ void ClearParalyzedFighter_candidate(u8 fighterIndex)
 {
     if (g_pFightState->pFighters[fighterIndex].bStatusFlags & Paralyzed)
     {
-        Actor *object;
+        Actor *actor;
 
         g_pFightState->pFighters[fighterIndex].bStatusFlags &= ~Paralyzed;
         g_pFightState->pFighters[fighterIndex].bStatusFlags |= 0x80;
         g_pFightState->pFighters[fighterIndex].bParalysisEscapeChance = 100;
-        g_pFightState->pFighters[fighterIndex].pObject->wActionVariant = 0;
+        g_pFightState->pFighters[fighterIndex].pActor->wActionVariant = 0;
 
         if (g_pFightState->pFighters[fighterIndex].bFighterType != Enemy)
         {
-            if (g_pFightState->pFighters[fighterIndex].pObject->pWindupParticleEmitter != NULL)
+            if (g_pFightState->pFighters[fighterIndex].pActor->pWindupParticleEmitter != NULL)
             {
-                ReleaseParticleEmitter_candidate(g_pFightState->pFighters[fighterIndex].pObject->pWindupParticleEmitter);
-                g_pFightState->pFighters[fighterIndex].pObject->pWindupParticleEmitter = NULL;
+                ReleaseParticleEmitter_candidate(g_pFightState->pFighters[fighterIndex].pActor->pWindupParticleEmitter);
+                g_pFightState->pFighters[fighterIndex].pActor->pWindupParticleEmitter = NULL;
             }
 
-            object = g_pFightState->pFighters[fighterIndex].pObject;
-            SetPlayerObjectAnim(object, 0);
+            actor = g_pFightState->pFighters[fighterIndex].pActor;
+            SetPlayerActorAnim(actor, 0);
 
-            object = g_pFightState->pFighters[fighterIndex].pObject;
+            actor = g_pFightState->pFighters[fighterIndex].pActor;
             {
-                u8 fighterType = *(u8 *)&object->wActorType;
-                u8 paletteBank = object->oam.paletteNum;
+                u8 fighterType = *(u8 *)&actor->wActorType;
+                u8 paletteBank = actor->oam.paletteNum;
                 QueueObjPaletteLoad(&g_aFighterAnimTable[fighterType].aRecords[0].pPalette->aColors[1],
                     (paletteBank << 4) + 1, 0xf);
             }
         }
         else
         {
-            SetMonsterObjectAnim(g_pFightState->pFighters[fighterIndex].pObject, 0);
+            SetMonsterActorAnim(g_pFightState->pFighters[fighterIndex].pActor, 0);
         }
     }
 }

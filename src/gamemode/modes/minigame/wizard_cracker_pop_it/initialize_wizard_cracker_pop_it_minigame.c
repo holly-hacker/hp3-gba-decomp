@@ -39,7 +39,7 @@ void InitializeWizardCrackerPopItMinigame(void)
     SetBgScroll_candidate(0, 0, 0);
     SetBgScroll_candidate(1, 0, 0);
 
-    g_pWizardCrackerPopIt->pObject0 = NULL;
+    g_pWizardCrackerPopIt->pActor0 = NULL;
     g_pWizardCrackerPopIt->dwScore = 0;
 
     pEntry = g_aWizardCrackerPopItPalettes;

@@ -35,9 +35,9 @@ void ExitBattle(void)
         ClearPaletteRam();
         sub_0804542C();
 
-        for (slot = 0; slot < ARRAY_COUNT(g_apFighterObjects_candidate); slot++)
-            g_apFighterObjects_candidate[slot] = NULL;
-        g_pBattleMessageIconObject_candidate = NULL;
+        for (slot = 0; slot < ARRAY_COUNT(g_apFighterActors_candidate); slot++)
+            g_apFighterActors_candidate[slot] = NULL;
+        g_pBattleMessageIconActor_candidate = NULL;
 
         FreeBlock(g_pFightState->pFighters);
         FreeBlock(g_pFightState->pStagingFighters);
@@ -52,7 +52,7 @@ void ExitBattle(void)
         }
         else if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFE)
         {
-            ClearRoomObjectStateBuffer();
+            ClearRoomActorStateBuffer();
             g_dwPendingGameMode.dwCurrentGameModeArg1 = 0;
             g_GameModeStackContext.dwCurrentGameModeArg1 = 2;
             g_GameModeStackContext.dwCurrentGameMode = FolioUniversitas;
@@ -78,31 +78,31 @@ void ExitBattle(void)
 
         for (fighterIndex = 0; fighterIndex < g_pFightState->bFighterCount; fighterIndex++)
         {
-            if (g_pFightState->pFighters[fighterIndex].pObject->oam.affineMode)
-                ReleaseActorAffineSlot(g_pFightState->pFighters[fighterIndex].pObject);
+            if (g_pFightState->pFighters[fighterIndex].pActor->oam.affineMode)
+                ReleaseActorAffineSlot(g_pFightState->pFighters[fighterIndex].pActor);
 
-            g_pFightState->pFighters[fighterIndex].pObject->wVramTileAllocId = 0xFFFF;
+            g_pFightState->pFighters[fighterIndex].pActor->wVramTileAllocId = 0xFFFF;
 
-            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
-                   g_pFightState->pFighters[fighterIndex].pObject, sizeof(Actor));
+            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterActors_candidate),
+                   g_pFightState->pFighters[fighterIndex].pActor, sizeof(Actor));
         }
 
         for (pendingIndex = 0;
              pendingIndex < g_pFightState->bPendingFighterCount_candidate;
              pendingIndex++, fighterIndex++)
         {
-            if (g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->oam.affineMode)
-                ReleaseActorAffineSlot(g_pFightState->pPendingFighters_candidate[pendingIndex].pObject);
+            if (g_pFightState->pPendingFighters_candidate[pendingIndex].pActor->oam.affineMode)
+                ReleaseActorAffineSlot(g_pFightState->pPendingFighters_candidate[pendingIndex].pActor);
 
-            g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->wVramTileAllocId = 0xFFFF;
+            g_pFightState->pPendingFighters_candidate[pendingIndex].pActor->wVramTileAllocId = 0xFFFF;
 
-            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
-                   g_pFightState->pPendingFighters_candidate[pendingIndex].pObject, sizeof(Actor));
+            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterActors_candidate),
+                   g_pFightState->pPendingFighters_candidate[pendingIndex].pActor, sizeof(Actor));
         }
 
         if (g_pFightState->bMenuScreen != 0)
             for (fighterIndex = 0; fighterIndex < 7; fighterIndex++)
-                ClearFighterObjectFlag_candidate(fighterIndex);
+                ClearFighterActorFlag_candidate(fighterIndex);
 
         UnreserveObjPaletteSlot(0);
         FreeAllParticleEmitters();
@@ -117,8 +117,8 @@ void ExitBattle(void)
         ClearPaletteRam();
         sub_0804542C();
 
-        for (slot = 0; slot < ARRAY_COUNT(g_apFighterObjects_candidate); slot++)
-            g_apFighterObjects_candidate[slot] = NULL;
-        g_pBattleMessageIconObject_candidate = NULL;
+        for (slot = 0; slot < ARRAY_COUNT(g_apFighterActors_candidate); slot++)
+            g_apFighterActors_candidate[slot] = NULL;
+        g_pBattleMessageIconActor_candidate = NULL;
     }
 }

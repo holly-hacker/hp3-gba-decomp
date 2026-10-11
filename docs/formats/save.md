@@ -45,7 +45,7 @@ the 8KB one.
 The driver is two library objects, identified by the strings at the start
 of their read-only data, and is built from one source file per object:
 
-| Actor | Source | Code | Read-only data |
+| Object | Source | Code | Read-only data |
 |---|---|---|---|
 | `EEPROM_V124` | `src/eeprom/eeprom_v124.c` | `EepromSelectInterface`-`EepromWriteBlockRetryLoop`, `0x08049EC4`-`0x0804A248` | `0x08FAA7D0`-`0x08FAA810` |
 | `EEPROM_NOWAIT` | `src/eeprom/eeprom_nowait.c` | `EepromWriteBlockGuarded`, `EepromWriteBlockVerified`, `0x0804A248`-`0x0804A2C0` | `0x08FAA810`-`0x08FAA824` |
@@ -173,12 +173,12 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | `0x030027B9` (`g_bMainMenuObjectiveIndex`) | `bMainMenuObjectiveIndex` | Index into the main-menu current-objective string table. Confirmed across 24 real saves to be the exact same live byte as `abQuestEventState[25]` below -- serialized twice. |
 | `g_pPartyMasterStats_candidate[0].bLevel + 1` | `bPartyLeaderDisplayLevel` | derived value (party leader's display level, not a raw field) |
 | `0x0300338C`-`0x0300338E` | `bOverworldSprite0`-`bOverworldSprite2` | Per the user: which overworld sprite each party slot's follower uses. Observed values: `3` = Harry (Lumos, headless -- likely rendered as a separate overlay), `4` = Harry (GBC), `5` = Harry, `7` = Ron, `8` = Buckbeak; `9` is out of bounds (severe graphical corruption, crashes the game). |
-| `0x03002614` (`g_dwOverworldMonstersDisabled`) | `flOverworldMonstersDisabled` | Per the user: disables overworld random encounters with regular monsters (bosses still trigger). Packed as a single bit, not a byte. **PROVEN** against code: `InitializeOverworld` only calls `SpawnOverworldMonsterEncounters` on room load along the branch taken when this flag is `0`; the nonzero branch restores room object state but never spawns encounters. Set/cleared by room-script opcodes `SetOverworldMonstersDisabled`/`ClearOverworldMonstersDisabled` (`0x4A`/`0x4B`, see [`room_scripts.md`](room_scripts.md)) -- the only located writers besides save load/new-game reset. |
+| `0x03002614` (`g_dwOverworldMonstersDisabled`) | `flOverworldMonstersDisabled` | Per the user: disables overworld random encounters with regular monsters (bosses still trigger). Packed as a single bit, not a byte. **PROVEN** against code: `InitializeOverworld` only calls `SpawnOverworldMonsterEncounters` on room load along the branch taken when this flag is `0`; the nonzero branch restores room actor state but never spawns encounters. Set/cleared by room-script opcodes `SetOverworldMonstersDisabled`/`ClearOverworldMonstersDisabled` (`0x4A`/`0x4B`, see [`room_scripts.md`](room_scripts.md)) -- the only located writers besides save load/new-game reset. |
 | `0x0300338F` | `bSelectedOverworldSpell` | Per the user: the currently-selected spell in the overworld (as opposed to in battle). |
 | `0x030037B0` (`g_abItemQuantities`), 152 bytes | `itemQuantities` + `equippedItems` | see "Item quantities and equipment" below |
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
-| **room-object state** (`SerializeRoomObjectState`, `0x0802A570`), variable-length | `roomObjectState` | data-dependent, see below |
-| `0x03002240` (`g_abOpenedChestFlags`) | `abOpenedChestFlags` (32 bytes) | **PROVEN**. A 256-bit bitset with one bit per chest `flag_id` ([`rooms.md`](rooms.md)'s "Chests"). `TickChestObject` sets a chest's bit when it is opened, and `SpawnChestObject` spawns a chest whose bit is set as already open. Zeroed by `ResetQuestStateForNewGame`; copied in and out of the save stream as one block. |
+| **room-actor state** (`SerializeRoomActorState`, `0x0802A570`), variable-length | `roomActorState` | data-dependent, see below |
+| `0x03002240` (`g_abOpenedChestFlags`) | `abOpenedChestFlags` (32 bytes) | **PROVEN**. A 256-bit bitset with one bit per chest `flag_id` ([`rooms.md`](rooms.md)'s "Chests"). `TickChestActor` sets a chest's bit when it is opened, and `SpawnChestActor` spawns a chest whose bit is set as already open. Zeroed by `ResetQuestStateForNewGame`; copied in and out of the save stream as one block. |
 | `0x030027A0` (`g_abQuestEventState`) | `abQuestEventState` (256 bytes) | Index 25 = `bMainMenuObjectiveIndex` above. Persistent global quest/event state, not per-room -- confirmed unchanged (byte-for-byte) across a real room-to-room border crossing. Indices ~224-254 hold flags/counters (e.g. one index counts kills of one specific boss species) that all reset to 0 together at a specific story-progression checkpoint (not on ordinary room transitions), while index 25 didn't reset there. Bulk load/save through `DeserializeGameStateFromSaveBuffer` and `SerializeGameStateToSaveBuffer`; zeroed whole by `ResetQuestStateForNewGame`. Index 0 (**PROVEN**, story-stage index): read by `InitializeLoadingScreen` (`0x0800C1DA`) to look up a story-stage table entry and cached into `DAT_03003F00`; written by the room-load dispatch handler `switchD_08029d60::caseD_19` (`0x0802A09C`, part of `FUN_08029abc`, the per-room-entry setup switch) which first copies the outgoing value to index `0x12` (`g_abQuestEventState[0x12] = g_abQuestEventState[0]`) then, if a pending override (`DAT_03003B5A`) is set, applies it and clears the override; also reset to `0` by `FUN_08005aa44`, an unidentified subsystem-init routine, and resynced from `g_bBuckbeakLevel` by `FUN_0800ab34` (party level-reset routine), which additionally re-zeroes indices `0xE0`-`0xFF` whenever the Buckbeak level changed. Indices 0 and `0x10` are also written by `CheckBattleDefeat` -- see [`battle.md`](battle.md). Per-index roles: see "Quest event state" below. |
 | **monster-dex levels** (`SerializeMonsterDexLevels`, `0x080370A0`) | `a3FolioBrutiLevels` + `a3BossMonsterLevels` | per-monster 3-bit value, one `g_abMonsterDocLevel_candidate[i]` entry per monster, LSB-first bit order. Per the user: split into the first 53 entries (`a3FolioBrutiLevels`, matching [`folio_bruti.md`](folio_bruti.md)'s already-established `FOLIO_BRUTI_COUNT` grid boundary) and the remaining 16 (`a3BossMonsterLevels`, indices 53-68) -- in the one save sampled the 53 bestiary entries read `3` and the 16 boss entries read `0`, and the boss entries are never visible in game. |
 | `0x030031D8`, 51 nibbles (`FUN_08037FB8` via `PackNibblesToSaveStream`/`0x0803BAF4`) | `anFolioUniversitasCounts` (51 nibbles) | Per the user: Folio Universitas (Harry's card collection) per-card count, one nibble per card. A card is only shown in-game once its count reaches at least 1. |
@@ -204,7 +204,7 @@ in C or assembly.
 | `0x00` | Story stage. Selects the room blob variant ([`rooms.md`](rooms.md)), is compared by `GotoIfStoryStageCompare` in 36 rooms, and is set by `SetStoryStage` and by the loading-screen choice (see below). `InitRoomScriptState_candidate` resets it to `0`; `CheckBattleDefeat` sets it to `0x1F` | **PROVEN** |
 | `0x10` | Defeat-warp selector, written by `SetDefeatWarpSelector` (values `0`-`7`, `10`, `15`-`19` occur in the room scripts). `CheckBattleDefeat` indexes the defeat-warp table with it and compares it with `0x13` | **PROVEN** |
 | `0x11` | Castle area number: the dungeons set `0`, the entrance hall and great hall `1`, the second to seventh floors `2`-`7`. No C, assembly or script (compare, copy, random) access reads it | **PROVEN** (writers), **UNCONFIRMED** (use) |
-| `0x12` | Previous story stage: `InitializeOverworld` and `ExitLoadingScreen` copy index `0` here. On returning to the overworld (game-mode argument 3 = `0xFF`), `InitializeOverworld` maps both stages through the room blob's stage-to-variant table (`sub_08005DC0`): equal variants run `RestoreRoomObjectState`, different ones `RestoreRoomObjectStateMinimal` | **PROVEN** |
+| `0x12` | Previous story stage: `InitializeOverworld` and `ExitLoadingScreen` copy index `0` here. On returning to the overworld (game-mode argument 3 = `0xFF`), `InitializeOverworld` maps both stages through the room blob's stage-to-variant table (`sub_08005DC0`): equal variants run `RestoreRoomActorState`, different ones `RestoreRoomActorStateMinimal` | **PROVEN** |
 | `0x14`-`0x18` | One flag per Folio Universitas page group `0`-`4`, set to `1` by `SetQuestState 1, 20+group` in the Wizard Card Collectors Club script after that group's reward is granted. `GotoIfAllQuestFlagsSet` branches on all five being nonzero, and `HandleChestTouch` reads `[0x14 + group]` | **PROVEN** |
 | `0x19` | Main-menu objective index (`g_bMainMenuObjectiveIndex`, serialized twice): `DrawPauseMenuObjective` draws dialog text `0x924 + [0x19]`. Set in 28 rooms | **PROVEN** |
 | `0x1A` | Alternate presentation flag for rooms `8`-`15`: when nonzero and the current room id is `8`-`15`, battle setup uses the alternate background data (`0x08882CFC`/`0x08886004` instead of the per-room `0x0804E09C` table), and `InitializeOverworld` plays the music module from the table at `0x08065730` ([`levels.md`](levels.md)), and `SetupRoomBgControlAndWindows_candidate` calls `sub_0802A2A4`, which loads an alternate 16-colour BG palette (embedded palettes at `0x08854EE0`-`0x0885650C`, `0x081B2E98` for room `6`) for room ids `5`-`0x29`. Set to `1` by `PlaySpecialSceneEffect` mode `3`; scripts in 10 rooms set it to `0` or `1` | **PROVEN** (readers/writers), **PROVEN** that the palette at `0x08854EE0` (room `0x29`, Harry's room) is a blue night-time recolour of that room; **UNCONFIRMED** for the other 11 blobs |
@@ -214,7 +214,7 @@ in C or assembly.
 | `0x80`-`0xFF` | `ClearQuestStateUpperHalf` zeroes this range (used three times in the baggage car script). `ResetDebugPartyFromArgs_candidate` zeroes `0xE0`-`0xFF` when the Buckbeak level argument changes | **PROVEN** |
 | `0x80`-`0x83` | Script-only counters (`Add`/`Subtract` by 1, compared against `0`-`3`) in a few rooms | **UNCONFIRMED** (meaning) |
 | `0xDF`-`0xFD` | Chapter-scoped scratch flags and small counters, mostly compared against `0` and `1`. Room scripts reuse one index with different meanings in different chapters (`ClearQuestStateUpperHalf` clears them at 14 chapter boundaries, e.g. `249` is the "portraits are uneasy" state on the castle floors but a train/Leaky Cauldron event elsewhere). Named only where every use belongs to one event: `0xEE`/`0xEF` (cellar 2 experience-given flags), `0xF2` (Crookshanks caught), `0xF3` (cellar 1 rat tonic found), `0xF7` (cellar 1 intro dialog shown), `0xFC` (Scabbers caught). Written by `SetQuestState` right after the matching event in each case | **PROVEN** (named indices' triggers), **UNCONFIRMED** (the rest) |
-| `0xFE` | Copy of `g_abRoomScriptExitParams_candidate[0]` written by `SpawnPlayerObject_candidate`, cleared by the debug map-select menu. No C, assembly or script access reads it | **PROVEN** (writers), **UNCONFIRMED** (use) |
+| `0xFE` | Copy of `g_abRoomScriptExitParams_candidate[0]` written by `SpawnPlayerActor_candidate`, cleared by the debug map-select menu. No C, assembly or script access reads it | **PROVEN** (writers), **UNCONFIRMED** (use) |
 | `0xFF` | `RoomScriptOpFullHealParty` sets it to `1` when any party member was below max HP/MP before the heal, else `0` (the hospital wing script branches on it). `UpdateLoadingScreen` also stores the selected option index (`0`-`2`) here | **PROVEN** (full heal), **STRUCTURAL MATCH** (loading screen) |
 
 Indices `1`, `2`, `4`, `5`, `6`, `8`, `12` and `14` are set and compared
@@ -273,14 +273,14 @@ Reached from the pause menu's **Connectivity** submenu (`Trade Cards` / `Owl Car
 
 Game-mode dispatch table: base `0x08065CBC`, 3 pointers (12 bytes) per mode -- offset `0x0` = init (called once, right after the mode variable updates to the new mode), offset `0x4` = tick (called every frame), offset `0x8` = exit (called once, on the *old* mode, right before the mode variable updates). Confirmed via the three dispatcher call sites in `TickGameModeStack` (`FUN_0802C87C`/`FUN_0802C8A8`/`FUN_0802C8D0`), cross-checked against raw literal-pool bytes rather than decompiler-inferred symbol names.
 
-Mode `0x29`'s init (`FUN_08021C08`) `memset`s a `0xE8`-byte object-state buffer, then checks `owlCareKit.flVisited`: clear -- first visit -- resets `careCounters` to `125` each and sets the flag; already set -- keeps the existing values. This is why Owl Care Kit's state needs save-slot persistence at all: it's meant to carry across every visit for the life of the save, the same way a real pet's care state would, not reset each session.
+Mode `0x29`'s init (`FUN_08021C08`) `memset`s a `0xE8`-byte actor-state buffer, then checks `owlCareKit.flVisited`: clear -- first visit -- resets `careCounters` to `125` each and sets the flag; already set -- keeps the existing values. This is why Owl Care Kit's state needs save-slot persistence at all: it's meant to carry across every visit for the life of the save, the same way a real pet's care state would, not reset each session.
 
 | JSON key | Size | Notes |
 |---|---|---|
 | `flVisited` | 1 bit | Set on first visit to the care screen (mode `0x29`'s init, see above); gates whether `careCounters` reset to defaults or carry over. **PROVEN**. |
 | `bFlagsUnknown` | 3 bits | Remaining bits of the same nibble as `flVisited`. No confirmed meaning. |
 | `bNameIndex` | 1 nibble (0-13) | The chosen owl's name, into a 14-name ROM list. **PROVEN**: `GetDialogText(0x676 + bNameIndex)` resolves to (in order) Fiddletick, Pollylolly, Beryl, Newt, Crackers, Farnsworth, Glum, Squeak, Poot, Mildred, Eek, Scragg, Gimlet, Dumpy -- confirmed against `data/text/en_us.json`, and the read site's index register confirmed via raw disassembly to be `0x0300321D` (`0x03003180 + 0x9D`). Picked once, at the "Select Owl Name" prompt (dialog string `0x672`), shown only on the save's first visit. |
-| `bTypeIndex` | 1 nibble (0-2) | The chosen owl's color/type: White Owl / Brown Owl / Gray Owl. **PROVEN**: `GetDialogText(0x673 + bTypeIndex)`, confirmed against `data/text/en_us.json`; also selects which of 3 ROM ($08FAA86C$) ...</br>graphics entries the owl object spawns with (`FUN_0802246C`/`FUN_08022DE8`). Picked at the "Select Owl Type" prompt (dialog string `0x671`). |
+| `bTypeIndex` | 1 nibble (0-2) | The chosen owl's color/type: White Owl / Brown Owl / Gray Owl. **PROVEN**: `GetDialogText(0x673 + bTypeIndex)`, confirmed against `data/text/en_us.json`; also selects which of 3 ROM ($08FAA86C$) ...</br>graphics entries the owl actor spawns with (`FUN_0802246C`/`FUN_08022DE8`). Picked at the "Select Owl Type" prompt (dialog string `0x671`). |
 | `nUnknown3` | 1 nibble | No evidence found at all -- not even known to be read anywhere. |
 | `abStatMeters` | 3 bytes | The 3 on-screen status-bar icons, named directly in the in-game help text (dialog string `0x915`): "The three status bars ... Mind, Body and Spirit." **STRUCTURAL MATCH**: the 3-meter identity and their derivation from `careCounters` (a weighted average via a fixed ROM table, `FUN_080222F0`, smoothly interpolating toward the target by +-1/tick) are proven; this array's index-to-name order (assumed Mind/Body/Spirit, matching the help text's listing order) is not independently confirmed per-index. |
 | `careCounters.b<Action>Counter` (x6: Feed/Clean/Pet/Groom/Exercise/Teach) | 6 bytes | One "need" counter per care action, each capped at `0xFA`=250, lowered when that action is performed (`FUN_08022284`, halved or reduced by ~1/8 depending on how full it was) and regrown over time by `wElapsedTicks`' overflow. **PROVEN index order**: the care-screen's menu-drawing code and its confirm-button switch (`FUN_08022134`) both index off the same cursor variable (`g_dwCurrentGameMode_candidate+0x20`, i.e. `0x03003F14`) -- the drawer resolves each entry's label via `GetDialogText(0x669 + cursor)` (Feed, Clean, Pet, Groom, Exercise, Teach, Mail, Upload, confirmed against `data/text/en_us.json`), and the switch's cases `0`-`5` each call `FUN_08022284(case_index)` on the matching byte of this array -- proving case-index-for-array-index alignment directly, not just by plausible string adjacency. Case `6` ("Mail") checks all 6 counters are below `0xBB`=187 before letting the owl fly off (matches the help text, dialog string `0x91D`: "Mail - sends your owl off to fetch an item... check back in a few minutes"); case `7` ("Upload") pushes game mode `0x41`, the GameCube-link Owl Races screen (dialog string `0x91E`). |
@@ -363,31 +363,31 @@ See [`items.md`](items.md)'s "The table as committed C source" and "Item icons"
 sections for how `g_pItemTable` itself (not the `itemQuantities`/
 `equippedItems` save fields above) and its icons are built.
 
-**Room-object state** (`roomObjectState`, packed by `SerializeRoomObjectState`
-(`0x0802A570`), unpacked by `DeserializeRoomObjectState` (`0x0802A3D4`)):
+**Room-actor state** (`roomActorState`, packed by `SerializeRoomActorState`
+(`0x0802A570`), unpacked by `DeserializeRoomActorState` (`0x0802A3D4`)):
 this is **not an inventory list** -- it's a snapshot of every non-default
-object currently active in the room the player is standing in (spawned
+actor currently active in the room the player is standing in (spawned
 monsters, pickups, switches, chests, etc.), keyed by world-tile position,
 so re-entering a room restores it to how the player left it. **STRUCTURAL
 MATCH**: confirmed by finding the exact symmetric producer,
-`CaptureRoomObjectState` (`0x0802A70C`), which walks the live
-`g_ActiveActorListState` linked list of room objects and re-populates
-`g_pRoomObjectStateBuffer` (`0x03003B68`) every time the room state is
-captured (e.g. before a save or a room transition); `RestoreRoomObjectState`/
-`RestoreRoomObjectStateMinimal` (`0x0802AB34`/`0x0802AE64`) are the
+`CaptureRoomActorState` (`0x0802A70C`), which walks the live
+`g_ActiveActorListState` linked list of room actors and re-populates
+`g_pRoomActorStateBuffer` (`0x03003B68`) every time the room state is
+captured (e.g. before a save or a room transition); `RestoreRoomActorState`/
+`RestoreRoomActorStateMinimal` (`0x0802AB34`/`0x0802AE64`) are the
 load-side counterparts that walk it back out, respawning each tile's
-default object via `RespawnRoomObjectAtTile` (`0x08005B70`, looks up the
-room's static per-tile object-type table and instantiates it) and then
+default actor via `RespawnRoomActorAtTile` (`0x08005B70`, looks up the
+room's static per-tile actor-type table and instantiates it) and then
 overwriting specific fields on top with the saved deltas.
 
 Fixed 17-byte header (packed in this exact, non-sequential field order):
 
-| Offset (from `g_pRoomObjectStateBuffer`) | Size | JSON key | Notes |
+| Offset (from `g_pRoomActorStateBuffer`) | Size | JSON key | Notes |
 |---|---|---|---|
-| 0x0 | 1 | `bPlayerFacing` | Read from/written to `g_pPlayerObject->field_0x12` on both the capture and restore side. Not a table count -- despite occupying the position a naive read of the packing order might suggest. Per the user: confirmed as an 8-direction facing enum -- `4` = facing down, `3` = facing down-right (consistent with a clockwise, 45-degrees-per-step enum covering all 8 directions). |
-| 0xC | 4 | `fxPlayerPosX` | **STRUCTURAL MATCH**: `g_pPlayerObject->pos.x` (per [`battle_scripts.md`](battle_scripts.md)'s already-identified `Actor` layout), copied verbatim -- already in the engine's 16.16 fixed-point form, unlike the per-tile `u16` coordinates the tables below store (which get `<<0x10` on restore). Passed straight to `SnapActorPosition` when restoring. Decoded as a JSON float (raw `/ 65536`); confirmed against a real save (`bak.sav`), whose raw values (`0x05D17900`/`0x01F4B980`) divide out to plausible, unremarkable-looking world coordinates (`1489.47`/`500.72`) rather than the odd-looking large integers the raw hex represents. |
-| 0x10 | 4 | `fxPlayerPosY` | Same as above, `g_pPlayerObject->pos.y`. |
-| 0x9 | 1 | `bSwitchState` | **STRUCTURAL MATCH**: not read from the player `Actor` at all -- it's `g_bRoomSwitchState` (`0x03003B64`), get/set via `GetRoomSwitchState`/`SetRoomSwitchState` (`0x0802B12C`/`0x0802B110`). The setter is called from the room's tile-collision dispatcher (`0x0802D8F4`) for two specific trigger tile IDs (`0x23`/`0x24`) that set it to `0`/`1` respectively; only when the value actually *changes* does it call `ApplyRoomSwitchEffect` (`0x0802DF3C`), which plays a sound (`0x0803D338`, args `5,0x1f` for state 0 / `4,0x1f` for state 1) and swaps a tile graphic between two frames (effect IDs `0x19`/`0x18`) at a fixed screen position (`0xE0,0x220`) via `0x08020440`. Being a single scalar (not an array/table), this mechanic supports **at most one such lever/switch per room** -- a room needing several independently-stateful toggles instead uses the `kind5SwitchObjects` table below (kind-`5` objects with sub-kind `'3'`, up to 32 entries, one toggle bit each). |
+| 0x0 | 1 | `bPlayerFacing` | Read from/written to `g_pPlayerActor->field_0x12` on both the capture and restore side. Not a table count -- despite occupying the position a naive read of the packing order might suggest. Per the user: confirmed as an 8-direction facing enum -- `4` = facing down, `3` = facing down-right (consistent with a clockwise, 45-degrees-per-step enum covering all 8 directions). |
+| 0xC | 4 | `fxPlayerPosX` | **STRUCTURAL MATCH**: `g_pPlayerActor->pos.x` (per [`battle_scripts.md`](battle_scripts.md)'s already-identified `Actor` layout), copied verbatim -- already in the engine's 16.16 fixed-point form, unlike the per-tile `u16` coordinates the tables below store (which get `<<0x10` on restore). Passed straight to `SnapActorPosition` when restoring. Decoded as a JSON float (raw `/ 65536`); confirmed against a real save (`bak.sav`), whose raw values (`0x05D17900`/`0x01F4B980`) divide out to plausible, unremarkable-looking world coordinates (`1489.47`/`500.72`) rather than the odd-looking large integers the raw hex represents. |
+| 0x10 | 4 | `fxPlayerPosY` | Same as above, `g_pPlayerActor->pos.y`. |
+| 0x9 | 1 | `bSwitchState` | **STRUCTURAL MATCH**: not read from the player `Actor` at all -- it's `g_bRoomSwitchState` (`0x03003B64`), get/set via `GetRoomSwitchState`/`SetRoomSwitchState` (`0x0802B12C`/`0x0802B110`). The setter is called from the room's tile-collision dispatcher (`0x0802D8F4`) for two specific trigger tile IDs (`0x23`/`0x24`) that set it to `0`/`1` respectively; only when the value actually *changes* does it call `ApplyRoomSwitchEffect` (`0x0802DF3C`), which plays a sound (`0x0803D338`, args `5,0x1f` for state 0 / `4,0x1f` for state 1) and swaps a tile graphic between two frames (effect IDs `0x19`/`0x18`) at a fixed screen position (`0xE0,0x220`) via `0x08020440`. Being a single scalar (not an array/table), this mechanic supports **at most one such lever/switch per room** -- a room needing several independently-stateful toggles instead uses the `kind5SwitchActors` table below (kind-`5` actors with sub-kind `'3'`, up to 32 entries, one toggle bit each). |
 | remaining bytes (1, 2, 3, 4, 5, 6, 7) | 1 each | *(none)* | Entry counts for the 7 saved tables below -- not represented as their own JSON field, since each is exactly the corresponding table's list length (recomputed on encode). |
 
 7 variable-length record tables follow, each holding up to 32 entries
@@ -396,8 +396,8 @@ base pointer. Each is a plain JSON array of objects -- one field per
 named struct member (see below), no count/size/table-index metadata
 alongside it (that's implied by the key name and array length). Every
 record's field layout is traced byte-for-byte from the two symmetric
-producer/consumer functions (`CaptureRoomObjectState` capture; `RestoreRoomObjectState`/
-`RestoreRoomObjectStateMinimal` restore) and cross-checked against a real save (`bak.sav`);
+producer/consumer functions (`CaptureRoomActorState` capture; `RestoreRoomActorState`/
+`RestoreRoomActorStateMinimal` restore) and cross-checked against a real save (`bak.sav`);
 most fields are a straight copy of one fixed offset of the live `Actor`
 struct ([`battle_scripts.md`](battle_scripts.md)) -- ones with no identified
 purpose keep that struct's own offset in their name (`bUnk_0xNN`/
@@ -407,26 +407,26 @@ always zero in practice, since the capture side memsets the whole
 buffer before writing) round-trip through an `abPadding` key, omitted
 like a slot's `abTailPadding` when all-zero.
 
-| JSON key | Offset | Record size | Max entries | Selected (capture side, `CaptureRoomObjectState`) for room-object "kind" (`*(short*)(obj+8)`) |
+| JSON key | Offset | Record size | Max entries | Selected (capture side, `CaptureRoomActorState`) for room-actor "kind" (`*(short*)(actor+8)`) |
 |---|---|---|---|---|
-| `defaultKindObjects` | 0x14 | 0x6C (108) | 32 | the fallback/default case -- any kind not one of the values below. The richest record: full `Actor` state, plus the tile positions of up to 3 linked sub-objects (`Actor+0xa0`/`+0xa4`/`+0xa8`) -- captured but **never restored** (the load side reads no such fields for this table). |
-| `kind4Or7Objects` | 0xD94 | 0xC (12) | 32 | kinds `4`, `7`. Captures `Actor+0xc` (flags) **unmasked** -- the only table that doesn't clear bit `0x00200000` before saving it. |
-| `kind5Objects` | 0xF14 | 0x34 (52) | 32 | kind `5`, when the object's byte at `+0x61` is *not* the ASCII char `'3'` |
-| `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Actor` fields at all -- on restore, the respawned object's own tile position is used to look up an entry in a separate, static per-map item-drop table (`LookupFloorItemStateEntry`), and these two dwords overwrite that entry. Refreshes persistent floor-item state keyed by tile position, not the spawned object itself. |
-| `kind5SwitchObjects` | 0x1714 | 0x4 | 32 | kind `5`, when `+0x61 == '3'` -- structurally the per-object counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Actor+0xc)`); a stored `1` makes restore call `MarkRoomObjectConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
+| `defaultKindActors` | 0x14 | 0x6C (108) | 32 | the fallback/default case -- any kind not one of the values below. The richest record: full `Actor` state, plus the tile positions of up to 3 linked sub-actors (`Actor+0xa0`/`+0xa4`/`+0xa8`) -- captured but **never restored** (the load side reads no such fields for this table). |
+| `kind4Or7Actors` | 0xD94 | 0xC (12) | 32 | kinds `4`, `7`. Captures `Actor+0xc` (flags) **unmasked** -- the only table that doesn't clear bit `0x00200000` before saving it. |
+| `kind5Actors` | 0xF14 | 0x34 (52) | 32 | kind `5`, when the actor's byte at `+0x61` is *not* the ASCII char `'3'` |
+| `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Actor` fields at all -- on restore, the respawned actor's own tile position is used to look up an entry in a separate, static per-map item-drop table (`LookupFloorItemStateEntry`), and these two dwords overwrite that entry. Refreshes persistent floor-item state keyed by tile position, not the spawned actor itself. |
+| `kind5SwitchActors` | 0x1714 | 0x4 | 32 | kind `5`, when `+0x61 == '3'` -- structurally the per-actor counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Actor+0xc)`); a stored `1` makes restore call `MarkRoomActorConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
 | `pickupMarkers` | 0x1794 | 0x4 | 16 (the table ends at `presenceMarkers`) | kind `0xB`. `bUnk_0x80` round-trips with a `+1` offset applied only on restore (`Actor+0x80` becomes `bUnk_0x80 + 1`); captured verbatim (`Actor+0x80`'s raw low byte) on save. `bUnk_0x8f`, when it equals `8` on restore, triggers an item-grant popup callback (`GrantPickupMarkerItem`). |
-| `presenceMarkers` | 0x17D4 | 0x4 | 570 (theoretical span; see below) | kinds `2`, `8`, `10` unconditionally, plus kind `5`/`6` under specific status-bit conditions -- just a tile position (`bTileX`/`bTileY`), no extra state: restore only respawns the tile's default object. |
+| `presenceMarkers` | 0x17D4 | 0x4 | 570 (theoretical span; see below) | kinds `2`, `8`, `10` unconditionally, plus kind `5`/`6` under specific status-bit conditions -- just a tile position (`bTileX`/`bTileY`), no extra state: restore only respawns the tile's default actor. |
 
 None of the numeric "kind" values above are tied to a named enum yet --
 the table names above describe which capture-side branch produces which
 JSON table, not what each kind represents in game terms.
 
-**Not part of the save.** `g_pRoomObjectStateBuffer[8]` (a byte the pack/unpack
+**Not part of the save.** `g_pRoomActorStateBuffer[8]` (a byte the pack/unpack
 functions never touch) and the region at offset `0x19B4` (record size
 `0x24` = 36, inside the nominal span of `presenceMarkers`' table) form an
-eighth, purely in-memory table: captured only for room objects flagged
-`+0x10 == 0xFF` and kind `0x10` (`CaptureRoomObjectState`), and restored by both
-`RestoreRoomObjectState` and `RestoreRoomObjectStateMinimal` independent of any `Unpack*` call.
+eighth, purely in-memory table: captured only for room actors flagged
+`+0x10 == 0xFF` and kind `0x10` (`CaptureRoomActorState`), and restored by both
+`RestoreRoomActorState` and `RestoreRoomActorStateMinimal` independent of any `Unpack*` call.
 `0x0802B0F4` (`memset`s the whole `0x20BC`-byte buffer to 0) runs after
 every restore, and the `Unpack*`-driven load path (`0x0802A3D4`) never
 populates this table at all -- so whatever it holds only survives a room
@@ -436,7 +436,7 @@ transition within the same play session, never a save/reload. This means
 table's storage during normal (non-serialized) play.
 
 `InitRoomState` (`0x0802B018`) allocates the whole `0x20BC`-byte buffer
-once (`g_pRoomObjectStateBuffer`) with `AllocZeroed`.
+once (`g_pRoomActorStateBuffer`) with `AllocZeroed`.
 
 ## `SaveManager` (IWRAM, `0x03005598`)
 
@@ -514,7 +514,7 @@ own writer, not that it replicates `UnpackBytesFromSaveStream` et al.
 line-for-line.
 
 **JSON shape.** Each field is a plain named key on its containing object
-(header, options, a slot, or `roomObjectState`), in on-disk order -- no
+(header, options, a slot, or `roomActorState`), in on-disk order -- no
 separate index/wrapper object. Every non-struct
 field's key carries a Hungarian-notation type/size prefix, the same
 convention already used for this ROM's globals (`wHp`, `bLevel`,
@@ -533,12 +533,12 @@ convention already used for this ROM's globals (`wHp`, `bLevel`,
 | `a3` | array of 3-bit values (each element 0-7) -- size given by list length |
 | `a1` | array of 1-bit values (each element 0/1), unpacked LSB-first from its packed byte storage -- size given by list length |
 
-Struct-shaped fields (`partyStats`, `roomObjectState`) carry no prefix,
+Struct-shaped fields (`partyStats`, `roomActorState`) carry no prefix,
 since a single type/size doesn't describe them. Fields whose real
 name/meaning isn't identified are named `<prefix>UnknownN`, where `N` is
 that field's 0-based position among its immediate siblings sharing that
 prefix (top-level slot fields are indexed separately from, e.g.,
-`roomObjectState`'s own `unknownN` record tables, each a plain JSON
+`roomActorState`'s own `unknownN` record tables, each a plain JSON
 array of fixed-size hex-encoded records with no prefix -- the array
 carries no single scalar type/size) -- not a global counter across the
 whole file.
@@ -564,12 +564,12 @@ a slot's content past its checksum.
   from the in-game help text's listing order, not confirmed per-index) and find
   a reader/writer for `owlCareKit.nUnknown3` and `owlCareKit.bFlagsUnknown`, if any.
 - Name the remaining `bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN` fields in the
-  7 room-object-state tables (see "Room-object state" above) -- their
+  7 room-actor-state tables (see "Room-actor state" above) -- their
   byte offsets are traced precisely, but most still only carry their
   raw `Actor` struct offset rather than a real name; cross-referencing
   [`battle_scripts.md`](battle_scripts.md) as more `Actor` fields there get
   identified should resolve several of these directly.
-- Identify the room-object "kind" enum (`*(short*)(obj+8)`) that
+- Identify the room-actor "kind" enum (`*(short*)(actor+8)`) that
   `0x0802A70C` switches on to pick a table -- would let each table above
   get a real name instead of `unknownN`.
 - Confirm the full 8-direction `bPlayerFacing` enum beyond the two

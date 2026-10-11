@@ -3,7 +3,7 @@
 #include "gen/graphics/battle.h"
 
 // Creates the turn-order icon for the fighter at turnOrderIndex: a container
-// Actor (stored in apTurnOrderIconObjects) carrying the fighter's icon
+// Actor (stored in apTurnOrderIconActors) carrying the fighter's icon
 // graphic, with a linked portrait-frame sprite on top. Icons are laid out
 // right-aligned, 20 pixels apart. isAlly selects the party or enemy asset
 // table and the idle frame; gfxSlot is the fighter Actor's palette slot.
@@ -34,6 +34,6 @@ Actor *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrde
     container->oam.paletteNum = gfxSlot;
     container->dwFlags = ActorFlagKeepPaletteSlot | ActorFlagHasAnimation | ActorFlagHasTickLogic | ActorFlagVisible;
     container->bDepthSortBias = 0x80;
-    g_pFightState->apTurnOrderIconObjects[turnOrderIndex] = container;
+    g_pFightState->apTurnOrderIconActors[turnOrderIndex] = container;
     return container;
 }

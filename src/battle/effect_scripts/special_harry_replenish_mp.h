@@ -2,11 +2,11 @@
 const u8 g_abSpecialHarryReplenishMpScript[] = {
     BS_GotoIfLocalAEqual(0, 39),
     BS_TeleportTo(120, 64),
-    BS_SetObjectAnim(48, 0),
+    BS_SetActorAnim(48, 0),
     BS_StartOrbitMotionRandom(14),
     BS_StartDelayedChain(1, 1, 1),
     BS_WaitFrames(1),
-    BS_ShowObject(),
+    BS_ShowActor(),
     BS_WaitFrames(60),
     BS_PlaySound(145),
     BS_WaitFrames(20),

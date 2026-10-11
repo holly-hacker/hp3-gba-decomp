@@ -248,17 +248,17 @@ Room25V1Chain1:
     SetDefeatWarpSelector 6 @ Rooftop
     End
 Room25V1Chain2:
-    SetTileObjectAnimState Room25V0Group0_id, 4
+    SetTileActorAnimState Room25V0Group0_id, 4
     DelayedRespawnRowAndRunChainFrames 2, 0, Room25V1Chain9_id
     DelayedRespawnRowAndRunChainFrames 1, Room25V1Group2_id, 0
     End
 Room25V1Chain3:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 225
-    DespawnTileObject Room25V1Group0_id, 0
-    DespawnTileObject Room25V0Group0_id, 0
+    DespawnTileActor Room25V1Group0_id, 0
+    DespawnTileActor Room25V0Group0_id, 0
     ArmChainYield 1
-    StartObjectAnimSequence 0, 255, 0, 0, Room25V1Route24_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room25V1Route24_id, 0, 1, 0, 0, 0
     ArmChainYield 0
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group20_id, 0
     RemovePartyFollower 6
@@ -272,32 +272,32 @@ Room25V1Chain3:
     GotoIfStoryStageCompare 0, 28, Room25V1Chain44_id, 0, 0, 0
     End
 Room25V1Chain4:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RemovePartyFollower 5
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group22_id, 0
     ArmChainYield 1
-    StartObjectAnimSequence 0, 255, 0, 0, Room25V1Route25_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group22_id, 0, 0, 0, Room25V1Route25_id, 0, 1, 0, 0, 0
-    DespawnRoomRowObjects Room25V1Group22_id
+    StartActorAnimSequence 0, 255, 0, 0, Room25V1Route25_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group22_id, 0, 0, 0, Room25V1Route25_id, 0, 1, 0, 0, 0
+    DespawnRoomRowActors Room25V1Group22_id
     Unk2A 5, 255, 255, 255
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group23_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain5:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RemovePartyFollower 5
     DelayedRespawnRowAndRunChain 0, Room25V1Group11_id, 0
     DelayedRespawnRowAndRunChain 0, Room25V1Group22_id, 0
     ArmChainYield 1
-    StartObjectAnimSequence Room25V1Group22_id, 0, 0, 0, Room25V1Route26_id, 0, 1, 0, 0, 0
-    DespawnRoomRowObjects Room25V1Group22_id
-    SetTileObjectAnimStateWithSpeed 0, 255
+    StartActorAnimSequence Room25V1Group22_id, 0, 0, 0, Room25V1Route26_id, 0, 1, 0, 0, 0
+    DespawnRoomRowActors Room25V1Group22_id
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain6:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 225
-    DespawnTileObject Room25V1Group0_id, 6
-    DespawnTileObject Room25V1Group0_id, 0
+    DespawnTileActor Room25V1Group0_id, 6
+    DespawnTileActor Room25V1Group0_id, 0
     ArmChainYield 1
     @ "A pipe must have burst here. Maybe we should split up?"
     ShowRoomDialog 605
@@ -310,37 +310,37 @@ Room25V1Chain6:
     End
 Room25V1Chain7:
     RespawnRowAndRunChain Room25V1Group3_id, 0
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetDefeatWarpSelector 19 @ Rooftop
-    DespawnTileObject Room25V1Group8_id, 1
-    StartObjectAnimSequence 0, 255, 0, 0, Room25V1Route0_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room25V1Group8_id, 1
+    StartActorAnimSequence 0, 255, 0, 0, Room25V1Route0_id, 0, 1, 0, 0, 0
     ArmChainYield 1
-    StartTileObjectScript 315, 63, 1, Room25V1Group3_id, 0, 0, 0, 6, 255, 255, 255
+    StartTileActorScript 315, 63, 1, Room25V1Group3_id, 0, 0, 0, 6, 255, 255, 255
     @ "Hermione! You got here quickly! We must get to Sirius. The Dementors are coming!"
     ShowRoomDialog 608
-    StartTileObjectScript 290, 57, 1, Room25V1Group3_id, 0, 0, 0, 6, 255, 255, 255
-    DespawnTileObject Room25V1Group3_id, 0
+    StartTileActorScript 290, 57, 1, Room25V1Group3_id, 0, 0, 0, 6, 255, 255, 255
+    DespawnTileActor Room25V1Group3_id, 0
     RecruitPartyFollower 6
     SetQuestState 2, 225
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group19_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain8:
     RespawnRowAndRunChain Room25V1Group4_id, 0
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetDefeatWarpSelector 19 @ Rooftop
-    DespawnTileObject Room25V1Group8_id, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room25V1Route1_id, 0, 1, 0, 0, 0
+    DespawnTileActor Room25V1Group8_id, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room25V1Route1_id, 0, 1, 0, 0, 0
     ArmChainYield 1
-    StartTileObjectScript 465, 58, 1, Room25V1Group4_id, 0, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 465, 58, 1, Room25V1Group4_id, 0, 0, 0, 2, 255, 255, 255
     @ "Hermione! You got here quickly! We must get to Sirius. The Dementors are coming!"
     ShowRoomDialog 609
-    StartTileObjectScript 484, 58, 1, Room25V1Group4_id, 0, 0, 0, 6, 255, 255, 255
-    DespawnTileObject Room25V1Group4_id, 0
+    StartTileActorScript 484, 58, 1, Room25V1Group4_id, 0, 0, 0, 6, 255, 255, 255
+    DespawnTileActor Room25V1Group4_id, 0
     RecruitPartyFollower 5
     SetQuestState 2, 225
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group19_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain9:
     DelayedRespawnRowAndRunChainFrames 0, 0, Room25V1Chain10_id
@@ -373,13 +373,13 @@ Room25TalkMalfoy:
     @ "Stay out of the way, Malfoy."
     ShowRoomDialog 610
     ArmChainYield 0
-    DespawnTileObject Room25V1Group0_id, 2
+    DespawnTileActor Room25V1Group0_id, 2
     StartBattle 5, 0, Room25V1Chain17_id
     End
 Room25V1Chain17:
     PauseMusic
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group10_id, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room25V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room25V1Route2_id, 0, 1, 0, 0, 0
     End
 Room25V1Chain18:
     GotoIfQuestStateCompare 225, 0, 1, 0, 0, Room25V1Group8_id, 0
@@ -406,148 +406,148 @@ Room25V1Chain22:
 Room25V1Chain23:
     ArmChainYield 1
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group12_id, 0
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 2
-    QueueTileObjectMove Room25V1Group12_id, 1, 0, 0, 1200, 0
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 2
+    QueueTileActorMove Room25V1Group12_id, 1, 0, 0, 1200, 0
     PlayMusicModuleAndFlagIfChain1 9
     ArmChainYield 0
-    StartObjectAnimSequence Room25V1Group12_id, 0, 0, 0, Room25V1Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group12_id, 1, 0, 0, Room25V1Route4_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group12_id, 2, 0, 0, Room25V1Route5_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group12_id, 5, 0, 0, Room25V1Route11_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group12_id, 6, 0, 0, Room25V1Route12_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group12_id, 7, 0, 0, Room25V1Route13_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group12_id, 0, 0, 0, Room25V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group12_id, 1, 0, 0, Room25V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group12_id, 2, 0, 0, Room25V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group12_id, 5, 0, 0, Room25V1Route11_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group12_id, 6, 0, 0, Room25V1Route12_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group12_id, 7, 0, 0, Room25V1Route13_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 2, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain24:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group14_id, 0
-    SetTileObjectFacing 0, 255, 6
-    QueueTileObjectMove Room25V1Group14_id, 1, 0, 0, 1200, 0
+    SetTileActorFacing 0, 255, 6
+    QueueTileActorMove Room25V1Group14_id, 1, 0, 0, 1200, 0
     PlayMusicModuleAndFlagIfChain1 9
     ArmChainYield 0
-    StartObjectAnimSequence Room25V1Group14_id, 0, 0, 0, Room25V1Route6_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group14_id, 1, 0, 0, Room25V1Route7_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group14_id, 2, 0, 0, Room25V1Route8_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group14_id, 5, 0, 0, Room25V1Route14_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group14_id, 6, 0, 0, Room25V1Route15_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group14_id, 7, 0, 0, Room25V1Route16_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group14_id, 0, 0, 0, Room25V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group14_id, 1, 0, 0, Room25V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group14_id, 2, 0, 0, Room25V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group14_id, 5, 0, 0, Room25V1Route14_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group14_id, 6, 0, 0, Room25V1Route15_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group14_id, 7, 0, 0, Room25V1Route16_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 2, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain25:
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group15_id, 0
-    DespawnRoomRowObjects Room25V1Group14_id
+    DespawnRoomRowActors Room25V1Group14_id
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 0
-    QueueTileObjectMove Room25V1Group15_id, 4, 0, 0, 1200, 0
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 0
+    QueueTileActorMove Room25V1Group15_id, 4, 0, 0, 1200, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room25V1Group15_id, 0, 0, 0, Room25V1Route17_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group15_id, 1, 0, 0, Room25V1Route18_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group15_id, 2, 0, 0, Room25V1Route19_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group15_id, 4, 0, 0, Room25V1Route20_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group15_id, 5, 0, 0, Room25V1Route21_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room25V1Group15_id, 6, 0, 0, Room25V1Route22_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group15_id, 0, 0, 0, Room25V1Route17_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group15_id, 1, 0, 0, Room25V1Route18_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group15_id, 2, 0, 0, Room25V1Route19_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group15_id, 4, 0, 0, Room25V1Route20_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group15_id, 5, 0, 0, Room25V1Route21_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room25V1Group15_id, 6, 0, 0, Room25V1Route22_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 2, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain26:
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group16_id, 0
-    DespawnRoomRowObjects Room25V1Group12_id
+    DespawnRoomRowActors Room25V1Group12_id
     End
 Room25V1Chain27:
-    SetTileObjectFacing Room25V1Group12_id, 0, 0
+    SetTileActorFacing Room25V1Group12_id, 0, 0
     End
 Room25V1Chain28:
-    SetTileObjectFacing Room25V1Group12_id, 1, 0
+    SetTileActorFacing Room25V1Group12_id, 1, 0
     End
 Room25V1Chain29:
-    SetTileObjectFacing Room25V1Group12_id, 2, 0
+    SetTileActorFacing Room25V1Group12_id, 2, 0
     End
 Room25V1Chain30:
-    SetTileObjectFacing Room25V1Group18_id, 0, 0
+    SetTileActorFacing Room25V1Group18_id, 0, 0
     End
 Room25V1Chain31:
-    SetTileObjectFacing Room25V1Group17_id, 0, 0
+    SetTileActorFacing Room25V1Group17_id, 0, 0
     End
 Room25V1Chain32:
-    SetTileObjectFacing Room25V1Group14_id, 0, 0
+    SetTileActorFacing Room25V1Group14_id, 0, 0
     End
 Room25V1Chain33:
-    SetTileObjectFacing Room25V1Group14_id, 1, 0
+    SetTileActorFacing Room25V1Group14_id, 1, 0
     End
 Room25V1Chain34:
-    SetTileObjectFacing Room25V1Group14_id, 2, 0
+    SetTileActorFacing Room25V1Group14_id, 2, 0
     End
 Room25V1Chain35:
-    SetTileObjectFacing Room25V1Group15_id, 0, 0
+    SetTileActorFacing Room25V1Group15_id, 0, 0
     End
 Room25V1Chain36:
-    SetTileObjectFacing Room25V1Group15_id, 1, 0
+    SetTileActorFacing Room25V1Group15_id, 1, 0
     End
 Room25V1Chain37:
-    SetTileObjectFacing Room25V1Group15_id, 2, 0
+    SetTileActorFacing Room25V1Group15_id, 2, 0
     End
 Room25V1Chain38:
-    SetTileObjectFacing Room25V1Group16_id, 0, 0
+    SetTileActorFacing Room25V1Group16_id, 0, 0
     End
 Room25V1Chain39:
-    SetTileObjectFacing Room25V1Group16_id, 1, 0
+    SetTileActorFacing Room25V1Group16_id, 1, 0
     End
 Room25V1Chain40:
-    SetTileObjectFacing Room25V1Group16_id, 2, 0
+    SetTileActorFacing Room25V1Group16_id, 2, 0
     End
 Room25V1Chain41:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group18_id, 0
-    SetTileObjectFacing 0, 255, 2
-    QueueTileObjectMove Room25V1Group18_id, 0, 0, 0, 1200, 0
-    StartObjectAnimSequence Room25V1Group18_id, 0, 0, 0, Room25V1Route9_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorFacing 0, 255, 2
+    QueueTileActorMove Room25V1Group18_id, 0, 0, 0, 1200, 0
+    StartActorAnimSequence Room25V1Group18_id, 0, 0, 0, Room25V1Route9_id, 0, 1, 0, 0, 0
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain42:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group17_id, 0
-    SetTileObjectFacing 0, 255, 2
-    QueueTileObjectMove Room25V1Group17_id, 0, 0, 0, 1200, 0
-    StartObjectAnimSequence Room25V1Group17_id, 0, 0, 0, Room25V1Route10_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorFacing 0, 255, 2
+    QueueTileActorMove Room25V1Group17_id, 0, 0, 0, 1200, 0
+    StartActorAnimSequence Room25V1Group17_id, 0, 0, 0, Room25V1Route10_id, 0, 1, 0, 0, 0
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain43:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
-    StartObjectAnimSequence Room25V1Group20_id, 0, 0, 0, Room25V1Route23_id, 0, 1, 0, 0, 0
-    DespawnRoomRowObjects Room25V1Group20_id
-    SetTileObjectAnimStateWithSpeed 0, 255
+    StartActorAnimSequence Room25V1Group20_id, 0, 0, 0, Room25V1Route23_id, 0, 1, 0, 0, 0
+    DespawnRoomRowActors Room25V1Group20_id
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain44:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 1
-    StartObjectAnimSequence Room25V1Group20_id, 0, 0, 0, Room25V1Route24_id, 0, 1, 0, 0, 0
-    DespawnRoomRowObjects Room25V1Group20_id
+    StartActorAnimSequence Room25V1Group20_id, 0, 0, 0, Room25V1Route24_id, 0, 1, 0, 0, 0
+    DespawnRoomRowActors Room25V1Group20_id
     Unk2A 6, 255, 255, 255
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group21_id, 0
     DelayedRespawnRowAndRunChain 0, Room25V1Group11_id, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room25V1Chain45:
-    DespawnRoomRowObjects Room25V1Group21_id
+    DespawnRoomRowActors Room25V1Group21_id
     End
 Room25V1Chain46:
-    DespawnRoomRowObjects Room25V1Group23_id
+    DespawnRoomRowActors Room25V1Group23_id
     End
 Room25V1Chain47:
     PlaySoundById 166

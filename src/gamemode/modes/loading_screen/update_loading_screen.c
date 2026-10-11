@@ -23,7 +23,7 @@ void UpdateLoadingScreen(void)
         if (StepCursorLeftRight(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 1, 1, 0))
         {
             sub_0800C3FC();
-            SetMenuCursorPosition(g_LoadingScreenState.pCursorObject,
+            SetMenuCursorPosition(g_LoadingScreenState.pCursorActor,
                          g_GameModeStackContext.dwCurrentGameModeArg2 * 0x50 + 0x4D,
                          0x4E);
             PlaySoundById(0);
@@ -35,7 +35,7 @@ void UpdateLoadingScreen(void)
         if (StepCursorLeftRight(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 2, 1, 0))
         {
             sub_0800C3FC();
-            SetMenuCursorPosition(g_LoadingScreenState.pCursorObject,
+            SetMenuCursorPosition(g_LoadingScreenState.pCursorActor,
                          g_GameModeStackContext.dwCurrentGameModeArg2 * 0x50 + 0x4D,
                          0x4E);
             PlaySoundById(0);

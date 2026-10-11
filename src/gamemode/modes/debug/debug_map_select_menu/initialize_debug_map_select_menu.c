@@ -15,7 +15,7 @@ void InitializeDebugMapSelectMenu(void)
     u16 fillValue;
     u16 *pFillValue;
     u32 bgCtrl1;
-    Actor *pObject;
+    Actor *pActor;
 
     StopScanlineEffects();
     ClearObjPaletteSlots();
@@ -36,9 +36,9 @@ void InitializeDebugMapSelectMenu(void)
 
     g_DebugMapSelectState.dwCursorRow = 0;
     g_DebugMapSelectState.nScrollY = 0;
-    pObject = SpawnActor(0x17, 0x78, 0xB, (const ObjPalette *)gDebugMenuCursorPalette);
-    g_DebugMapSelectState.pCursorObject = pObject;
-    SetActorAnimData(pObject, &g_DebugMapSelectAnimFrames, (void *)g_DebugMapSelectAnimData, 0);
+    pActor = SpawnActor(0x17, 0x78, 0xB, (const ObjPalette *)gDebugMenuCursorPalette);
+    g_DebugMapSelectState.pCursorActor = pActor;
+    SetActorAnimData(pActor, &g_DebugMapSelectAnimFrames, (void *)g_DebugMapSelectAnimData, 0);
 
     sub_0800B120();
     g_GameModeStackContext.dwModeTimer = 2;

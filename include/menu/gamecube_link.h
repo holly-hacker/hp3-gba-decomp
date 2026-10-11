@@ -12,4 +12,4 @@ extern u32 DispatchGameCubeLinkCommand(u32 command, u16 *pLength, u16 *pBuffer);
 
 extern void UpdateGameCubeLinkStatusText(u32 linkEvent);
 extern void ShowGameCubeLinkMessage(u32 stringId);
-extern void SpawnGameCubeLinkIconObjects(void);
+extern void SpawnGameCubeLinkIconActors(void);

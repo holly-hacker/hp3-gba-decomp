@@ -3,7 +3,7 @@
 #include "hw/mem.h"
 
 // Same body as AllocDefaultActor, inlined here.
-static inline Actor *AllocDefaultObjectInline(void)
+static inline Actor *AllocDefaultActorInline(void)
 {
     Actor *actor = (Actor *)AllocObjectFromFreeList(
         (ListNode **)&g_ActorPoolState.pFreeListHead,
@@ -22,10 +22,10 @@ static inline Actor *AllocDefaultObjectInline(void)
 
 // Allocates an actor of the given type at pixel position (x, y) with the
 // standard visible/animated flags. pPalette, when present, is passed to
-// AttachObjectPalette. Returns the new actor.
+// AttachActorPalette. Returns the new actor.
 Actor *SpawnActor(u32 type, s32 x, s32 y, const ObjPalette *pPalette)
 {
-    Actor *actor = AllocDefaultObjectInline();
+    Actor *actor = AllocDefaultActorInline();
 
     if (actor != NULL)
     {
@@ -35,7 +35,7 @@ Actor *SpawnActor(u32 type, s32 x, s32 y, const ObjPalette *pPalette)
             | ActorFlagKeepPaletteSlot;
         actor->bDepthSortBias = 0x80;
         if (pPalette != NULL)
-            AttachObjectPalette(actor, pPalette);
+            AttachActorPalette(actor, pPalette);
     }
     return actor;
 }

@@ -287,11 +287,11 @@ Room24V1Chain0:
     End
 Room24V1Chain1:
     ArmChainYield 1
-    DespawnTileObject Room24V1Group1_id, 7
-    DespawnTileObject Room24V1Group1_id, 8
+    DespawnTileActor Room24V1Group1_id, 7
+    DespawnTileActor Room24V1Group1_id, 8
     SetQuestState 1, 240
     SetQuestState 1, 241
-    SetTileObjectFacing Room24V1Group1_id, 9, 4
+    SetTileActorFacing Room24V1Group1_id, 9, 4
     @ "Why isn't everyone going into the common room?"
     @ "Oh, my... haven't you heard, Harry?"
     @ "Heard what?"
@@ -300,10 +300,10 @@ Room24V1Chain1:
     @ "The Fat Lady's gone and we can't get into the common room..."
     ShowRoomDialog 373
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route0_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group1_id, 9, 0, 0, Room24V1Route1_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group6_id, 0, 0, 0, Room24V1Route2_id, 0, 1, 0, 0, 0
-    QueueTileObjectMove Room24V1Group21_id, 1, 0, 0, 1200, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group1_id, 9, 0, 0, Room24V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group6_id, 0, 0, 0, Room24V1Route2_id, 0, 1, 0, 0, 0
+    QueueTileActorMove Room24V1Group21_id, 1, 0, 0, 1200, 0
     End
 Room24V1Chain2:
     ArmChainYield 1
@@ -312,55 +312,55 @@ Room24V1Chain2:
     End
 Room24V1Chain3:
     ArmChainYield 1
-    DespawnRoomRowObjects Room24V1Group7_id
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
-    SetTileObjectFacing 0, 255, 7
-    SetTileObjectFacing Room24V1Group6_id, 0, 0
+    DespawnRoomRowActors Room24V1Group7_id
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
+    SetTileActorFacing 0, 255, 7
+    SetTileActorFacing Room24V1Group6_id, 0, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "We need to find her! Come on, Ron. Harry, why don't you stay here in case she comes back?"
     ShowRoomDialog 374
     @ "OK."
     ShowRoomDialog 375
     ArmChainYield 0
-    StartObjectAnimSequence Room24V1Group1_id, 9, 0, 0, Room24V1Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group6_id, 0, 0, 0, Room24V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group1_id, 9, 0, 0, Room24V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group6_id, 0, 0, 0, Room24V1Route4_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain4:
     ArmChainYield 1
-    SetTileObjectFacing Room24V1Group1_id, 9, 4
-    SetTileObjectFacing Room24V1Group6_id, 0, 0
-    SetTileObjectFacing 0, 255, 2
+    SetTileActorFacing Room24V1Group1_id, 9, 4
+    SetTileActorFacing Room24V1Group6_id, 0, 0
+    SetTileActorFacing 0, 255, 2
     @ "How can we find Sir Cadogan?"
     @ "Let's ask the portraits. Maybe they saw him go by."
     ShowRoomDialog 377
     ArmChainYield 0
-    StartTileObjectScript 302, 28, 2, Room24V1Group1_id, 9, 0, 0, 2, 255, 255, 255
-    StartTileObjectScript 302, 28, 2, Room24V1Group6_id, 0, 0, 0, 2, 255, 255, 255
-    StartTileObjectScript 302, 28, 2, 0, 255, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 302, 28, 2, Room24V1Group1_id, 9, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 302, 28, 2, Room24V1Group6_id, 0, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 302, 28, 2, 0, 255, 0, 0, 2, 255, 255, 255
     ArmChainYield 1
     Unk2A 6, 255, 255, 255
-    DespawnTileObject Room24V1Group6_id, 0
-    DespawnTileObject Room24V1Group1_id, 9
+    DespawnTileActor Room24V1Group6_id, 0
+    DespawnTileActor Room24V1Group1_id, 9
     RecruitPartyFollower 7
     RespawnRowAndRunChain Room24V1Group2_id, 0
-    StartTileObjectScript 270, 28, 2, Room24V1Group2_id, 0, 0, 0, 0, 255, 255, 255
+    StartTileActorScript 270, 28, 2, Room24V1Group2_id, 0, 0, 0, 0, 255, 255, 255
     SetQuestState QUEST_OBJ_FIND_FAT_LADY, QUEST_OBJECTIVE_INDEX
     SetQuestState 1, 249
     RespawnRowAndRunChain Room24V1Group12_id, 0
     RespawnRowAndRunChain Room24V1Group23_id, Room24V1Chain73_id
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room24V1Chain5:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route5_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain6:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room24V1Chain7:
     ArmChainYield 1
-    SetTileObjectFacing Room24V1Group3_id, 2, 4
+    SetTileActorFacing Room24V1Group3_id, 2, 4
     @ "Have at thee, scurvy knave!"
     @ "The Fat Lady must be in another portrait..."
     @ "Why don't we ask Sir Cadogan? He's bonkers, but he knows all about this floor."
@@ -377,34 +377,34 @@ Room24V1Chain7:
     RespawnRowAndRunChain 0, Room24V1Chain10_id
     End
 Room24V1Chain8:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route6_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain9:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 10, Room24V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 10, Room24V1Route7_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain10:
-    StartObjectAnimSequence Room24V1Group3_id, 2, 0, 0, Room24V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group3_id, 2, 0, 0, Room24V1Route8_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain11:
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route9_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain12:
-    StartObjectAnimSequence Room24V1Group3_id, 2, 0, 0, Room24V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group3_id, 2, 0, 0, Room24V1Route10_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain13:
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route11_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route11_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain14:
     ArmChainYield 1
-    DespawnTileObject Room24V1Group3_id, 2
-    DespawnTileObject Room24V1Group3_id, 0
-    DespawnTileObject Room24V1Group3_id, 1
+    DespawnTileActor Room24V1Group3_id, 2
+    DespawnTileActor Room24V1Group3_id, 0
+    DespawnTileActor Room24V1Group3_id, 1
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room24V1Chain15:
     RespawnRowAndRunChain Room24V1Group5_id, 0
@@ -414,10 +414,10 @@ Room24V1Chain15:
     End
 Room24V1Chain16:
     PlaySoundById 52
-    StartObjectAnimSequence Room24V1Group4_id, 1, 0, 0, Room24V1Route12_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group4_id, 1, 0, 0, Room24V1Route12_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain17:
-    DespawnRoomRowObjects Room24V1Group4_id
+    DespawnRoomRowActors Room24V1Group4_id
     End
 Room24V1Chain18:
     ArmChainYield 1
@@ -428,31 +428,31 @@ Room24V1Chain18:
     @ "Scabbers! There you are!"
     @ "Let's get back to the common room."
     ShowRoomDialog 357
-    DespawnRoomRowObjects Room24V1Group5_id
-    DespawnRoomRowObjects Room24V1Group4_id
-    DespawnTileObject Room24V1Group0_id, 1
+    DespawnRoomRowActors Room24V1Group5_id
+    DespawnRoomRowActors Room24V1Group4_id
+    DespawnTileActor Room24V1Group0_id, 1
     SetQuestState 2, 245
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     InvokeChainIfEnabled 0, Room24V1Chain2_id
     End
 Room24V1Chain19:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route14_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route14_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain20:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route15_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route15_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain21:
     ArmChainYield 1
     RemovePartyFollower 7
     RespawnRowAndRunChain Room24V1Group6_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence Room24V1Group6_id, 0, 0, 0, Room24V1Route16_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group6_id, 0, 0, 0, Room24V1Route16_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain22:
     End
@@ -469,7 +469,7 @@ Room24V1Chain23:
     @ "That I shall, milady, and verily so!"
     ShowRoomDialog 376
     DelayedRespawnRowAndRunChain 1, 0, 0
-    DespawnRoomRowObjects Room24V1Group21_id
+    DespawnRoomRowActors Room24V1Group21_id
     InvokeChainIfEnabled 0, Room24V1Chain3_id
     End
 Room24V1Chain24:
@@ -531,8 +531,8 @@ Room24V1Chain37:
     ShowRoomDialog 631
     End
 Room24V1Chain38:
-    StartObjectAnimSequence Room24V1Group13_id, 1, 0, 0, Room24V1Route18_id, 3, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group13_id, 0, 0, 0, Room24V1Route19_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group13_id, 1, 0, 0, Room24V1Route18_id, 3, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group13_id, 0, 0, 0, Room24V1Route19_id, 0, 0, 0, 0, 0
     End
 Room24V1Chain39:
     @ "The Defense Against the Dark Arts class is on the third floor."
@@ -543,8 +543,8 @@ Room24V1Chain40:
     ShowRoomDialog 333
     End
 Room24V1Chain41:
-    StartObjectAnimSequence Room24V1Group15_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group15_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group15_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group15_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain42:
     @ "Is it true about the Firebolt?"
@@ -628,28 +628,28 @@ Room24V1Chain60:
     ShowRoomDialog 385
     End
 Room24V1Chain61:
-    DespawnTileObject Room24V1Group0_id, 1
+    DespawnTileActor Room24V1Group0_id, 1
     GotoIfStoryStageCompare 0, 17, Room24V1Chain76_id, 0, 0, 0
     GotoIfStoryStageCompare 0, 18, Room24V1Chain76_id, 0, 0, 0
     End
 Room24V1Chain62:
     PlaySoundById 52
-    StartObjectAnimSequence Room24V1Group4_id, 0, 0, 0, Room24V1Route13_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room24V1Group4_id, 0, 0, 0, Room24V1Route13_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain63:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route21_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route21_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain64:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route22_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route22_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain65:
-    StartObjectAnimSequence Room24V1Group19_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group19_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
     End
 Room24V1Chain66:
     @ "It's come to something when even a portrait's not safe around here..."
@@ -660,54 +660,54 @@ Room24V1Chain67:
     ShowRoomDialog 366
     End
 Room24V1Chain68:
-    StartObjectAnimSequence Room24V1Group14_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group14_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group14_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group14_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain69:
-    StartObjectAnimSequence Room24V1Group8_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group8_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group8_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group8_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain70:
-    StartObjectAnimSequence Room24V1Group9_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group9_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group9_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group9_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain71:
-    StartObjectAnimSequence Room24V1Group10_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group10_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group10_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group10_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain72:
-    StartObjectAnimSequence Room24V1Group11_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group11_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group11_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group11_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain73:
-    StartObjectAnimSequence Room24V1Group23_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group23_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group23_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group23_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain74:
-    StartObjectAnimSequence Room24V1Group16_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group16_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group16_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group16_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain75:
-    StartObjectAnimSequence Room24V1Group17_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group17_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group17_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group17_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain76:
-    StartObjectAnimSequence Room24V1Group18_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group18_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group18_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group18_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain77:
-    StartObjectAnimSequence Room24V1Group20_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room24V1Group20_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group20_id, 0, 0, 0, Room24V1Route18_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room24V1Group20_id, 1, 0, 0, Room24V1Route19_id, 2, 0, 0, 0, 0
     End
 Room24V1Chain78:
     ReturnToOverworld 29, 0
     End
 Room24V1Chain79:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 1, 129
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room24V1Route23_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room24V1Route23_id, 0, 1, 0, 0, 0
     End
 Room24V1Chain80:
     GotoIfQuestStateCompare 129, 0, 0, 0, 0, Room24V1Group24_id, 0

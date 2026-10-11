@@ -8,10 +8,10 @@
 
 void ExitDialogue(void)
 {
-    SetActorActionState(g_pPlayerObject, g_pPlayerObject->bPrevActionState_candidate);
-    FreeActor(g_pDialogBoxObject);
-    ReleaseMenuCursor(g_pDialogCursorObject);
-    g_pDialogCursorObject = NULL;
+    SetActorActionState(g_pPlayerActor, g_pPlayerActor->bPrevActionState_candidate);
+    FreeActor(g_pDialogBoxActor);
+    ReleaseMenuCursor(g_pDialogCursorActor);
+    g_pDialogCursorActor = NULL;
     ClearScanlineEffects();
     StopScanlineEffects();
     g_DialogState_candidate.dwState = 2;

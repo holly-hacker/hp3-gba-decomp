@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 #include "overworld/room_script.h"
-#include "overworld/room_object_state.h"
+#include "overworld/room_actor_state.h"
 #include "overworld/terrain.h"
 
 // A BG tileset and its palette. Tileset A (layers 0 and 3) and tileset B
@@ -299,12 +299,12 @@ extern u32 GetRoomTileAnimFrameDelay(const RoomTileAnimation *pAnim);
 extern u32 GetRoomTileAnimFrameLayerMask(const RoomTileAnimation *pAnim);
 extern void GetRoomTileAnimFrameBlockPos(const RoomTileAnimation *pAnim, u32 index, u16 *pX, u16 *pY);
 
-// Snapshot of the current room's non-default objects; see docs/formats/save.md.
-#define ROOM_OBJECT_STATE_BUFFER_SIZE 0x20BC
+// Snapshot of the current room's non-default actors; see docs/formats/save.md.
+#define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
 extern void InitRoomState(void);
 extern void InitRoomScriptState_candidate(void);
-extern void RestoreRoomObjectState(void);
-extern void RestoreRoomObjectStateMinimal(void);
+extern void RestoreRoomActorState(void);
+extern void RestoreRoomActorStateMinimal(void);
 extern u8 sub_08005DC0(u32 questState, const void *pRoomResourceBlob);
 extern u8 g_bRoomSwitchState;  // 0 or 1
 extern u32 SetRoomSwitchState(u32 state);  // returns nonzero if the state changed
@@ -324,7 +324,7 @@ extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctr
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
 extern void SetRoomScrollBounds(u32 minX, u32 minY, u32 maxX, u32 maxY);
-extern Actor *SpawnPlayerObject_candidate(u32 charId);
+extern Actor *SpawnPlayerActor_candidate(u32 charId);
 extern void SetCameraFollowTarget_candidate(Actor *pTarget, CameraFocusOffset offset, u32 slot);
 extern void sub_0800A348(u32 arg0, u32 arg1);
 extern void sub_080248E8(void);

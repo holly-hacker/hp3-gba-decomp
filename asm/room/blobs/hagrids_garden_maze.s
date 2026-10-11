@@ -176,11 +176,11 @@ Room12V1Chain1:
     GotoIfQuestStateCompare 224, 0, 0, Room12V1Chain2_id, 0, Room12V1Group2_id, 0
     End
 Room12V1Chain2:
-    StartObjectAnimSequence Room12V1Group2_id, 0, 0, 0, Room12V1Route5_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room12V1Group2_id, 0, 0, 0, Room12V1Route5_id, 0, 0, 0, 0, 0
     End
 Room12V1Chain3:
     ArmChainYield 1
-    DespawnRoomRowObjects Room12V1Group2_id
+    DespawnRoomRowActors Room12V1Group2_id
     StartBattle 6, 0, Room12V1Chain4_id
     End
 Room12V1Chain4:
@@ -191,11 +191,11 @@ Room12V1Chain5:
     GotoIfQuestStateCompare 225, 0, 0, Room12V1Chain6_id, 0, Room12V1Group3_id, 0
     End
 Room12V1Chain6:
-    StartObjectAnimSequence Room12V1Group3_id, 0, 0, 0, Room12V1Route7_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room12V1Group3_id, 0, 0, 0, Room12V1Route7_id, 0, 0, 0, 0, 0
     End
 Room12V1Chain7:
     ArmChainYield 1
-    DespawnTileObject Room12V1Group3_id, 0
+    DespawnTileActor Room12V1Group3_id, 0
     StartBattle 6, 0, Room12V1Chain8_id
     End
 Room12V1Chain8:
@@ -206,11 +206,11 @@ Room12V1Chain9:
     GotoIfQuestStateCompare 226, 0, 0, Room12V1Chain10_id, 0, Room12V1Group1_id, 0
     End
 Room12V1Chain10:
-    StartObjectAnimSequence Room12V1Group1_id, 0, 0, 0, Room12V1Route8_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room12V1Group1_id, 0, 0, 0, Room12V1Route8_id, 0, 0, 0, 0, 0
     End
 Room12V1Chain11:
     ArmChainYield 1
-    DespawnTileObject Room12V1Group1_id, 0
+    DespawnTileActor Room12V1Group1_id, 0
     StartBattle 6, 0, Room12V1Chain12_id
     End
 Room12V1Chain12:
@@ -221,11 +221,11 @@ Room12V1Chain13:
     GotoIfQuestStateCompare 227, 0, 0, Room12V1Chain14_id, 0, Room12V1Group4_id, 0
     End
 Room12V1Chain14:
-    StartObjectAnimSequence Room12V1Group4_id, 0, 0, 0, Room12V1Route6_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room12V1Group4_id, 0, 0, 0, Room12V1Route6_id, 0, 0, 0, 0, 0
     End
 Room12V1Chain15:
     ArmChainYield 1
-    DespawnTileObject Room12V1Group4_id, 0
+    DespawnTileActor Room12V1Group4_id, 0
     StartBattle 6, 0, Room12V1Chain16_id
     End
 Room12V1Chain16:
@@ -236,11 +236,11 @@ Room12V1Chain17:
     GotoIfQuestStateCompare 228, 0, 0, Room12V1Chain18_id, 0, Room12V1Group5_id, 0
     End
 Room12V1Chain18:
-    StartObjectAnimSequence Room12V1Group5_id, 0, 0, 0, Room12V1Route9_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room12V1Group5_id, 0, 0, 0, Room12V1Route9_id, 0, 0, 0, 0, 0
     End
 Room12V1Chain19:
     ArmChainYield 1
-    DespawnTileObject Room12V1Group5_id, 0
+    DespawnTileActor Room12V1Group5_id, 0
     StartBattle 6, 0, Room12V1Chain20_id
     End
 Room12V1Chain20:
@@ -254,33 +254,33 @@ Room12V1Chain21:
     End
 Room12V1Chain22:
     ArmChainYield 1
-    ClearTileObjectFlagBit 0, 255, 9
-    ClearTileObjectFlagBit 0, 255, 4
-    CancelObjectAnimSequence 0, 255
+    ClearTileActorFlagBit 0, 255, 9
+    ClearTileActorFlagBit 0, 255, 4
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
     RemovePartyFollower 6
     RemovePartyFollower 7
     ArmChainYield 1
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room12V1Route0_id, 0, 6, 0, 0, 0
-    StartObjectAnimSequence Room12V1Group0_id, 34, 0, 0, Room12V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room12V1Route0_id, 0, 6, 0, 0, 0
+    StartActorAnimSequence Room12V1Group0_id, 34, 0, 0, Room12V1Route0_id, 0, 1, 0, 0, 0
     End
 Room12V1Chain23:
-    SetTileObjectAnimStateValue Room12V1Group0_id, 34, 5
-    SetTileObjectAnimStateWithSpeed 0, 255
-    SetTileObjectFlagBit 0, 255, 9
+    SetTileActorAnimStateValue Room12V1Group0_id, 34, 5
+    SetTileActorAnimStateWithSpeed 0, 255
+    SetTileActorFlagBit 0, 255, 9
     RecruitPartyFollower 7
     RecruitPartyFollower 6
     SetPauseMenuLocked 0, 255, 255, 255
     End
 Room12V1Chain24:
-    SetTileObjectAnimState Room12V0Group0_id, 4
-    DespawnTileObject Room12V1Group0_id, 46
+    SetTileActorAnimState Room12V0Group0_id, 4
+    DespawnTileActor Room12V1Group0_id, 46
     ArmChainYield 0
     RespawnRowAndRunChain 0, Room12V1Chain44_id
     End
 Room12V1Chain25:
-    DespawnTileObject Room12V1Group8_id, 0
+    DespawnTileActor Room12V1Group8_id, 0
     StartBattle 7, 0, Room12V1Chain34_id
     End
 Room12V1Chain26:
@@ -296,13 +296,13 @@ Room12V1Chain28:
 Room12V1Chain29:
     @ "I can use Spongify to make these pads rubbery so we can bounce over this."
     ShowRoomDialog 262
-    DespawnTileObject Room12V0Group0_id, 0
-    DespawnTileObject Room12V0Group0_id, 0
+    DespawnTileActor Room12V0Group0_id, 0
+    DespawnTileActor Room12V0Group0_id, 0
     End
 Room12V1Chain30:
     @ "I can cast Glacius to turn the water into ice so that we can cross this."
     ShowRoomDialog 263
-    DespawnTileObject Room12V0Group0_id, 0
+    DespawnTileActor Room12V0Group0_id, 0
     End
 Room12V1Chain31:
     ArmChainYield 1
@@ -311,11 +311,11 @@ Room12V1Chain31:
     DelayedRespawnRowAndRunChainFrames 7, 0, Room12V1Chain24_id
     End
 Room12V1Chain32:
-    StartObjectAnimSequence Room12V1Group8_id, 0, 0, 0, Room12V1Route4_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room12V1Group8_id, 0, 0, 0, Room12V1Route4_id, 0, 0, 0, 0, 0
     End
 Room12V1Chain33:
     GrantPartyExperience 10, 65535
-    DespawnTileObject Room12V0Group0_id, 0
+    DespawnTileActor Room12V0Group0_id, 0
     End
 Room12V1Chain34:
     SetQuestState 1, 251
@@ -348,17 +348,17 @@ Room12V1Chain41:
     RespawnRowAndRunChain 0, 0
     End
 Room12V1Chain42:
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetPauseMenuLocked 1, 255, 255, 255
-    ClearTileObjectFlagBit 0, 255, 2
+    ClearTileActorFlagBit 0, 255, 2
     RespawnRowAndRunChain 0, Room12V1Chain31_id
     End
 Room12V1Chain43:
-    SetTileObjectAnimState Room12V0Group0_id, 4
+    SetTileActorAnimState Room12V0Group0_id, 4
     End
 Room12V1Chain44:
     SetPauseMenuLocked 0, 255, 255, 255
-    SetTileObjectFlagBit 0, 255, 2
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorFlagBit 0, 255, 2
+    SetTileActorAnimStateWithSpeed 0, 255
     End
     EndSubBlock Room12V1End

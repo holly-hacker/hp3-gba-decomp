@@ -4,7 +4,7 @@
 #include "game/save.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
-#include "overworld/room_object.h"
+#include "overworld/room_actor.h"
 
 // Rebuilds the live game state from the slot buffer, in the order
 // SerializeGameStateToSaveBuffer wrote it.
@@ -28,7 +28,7 @@ void DeserializeGameStateFromSaveBuffer(void)
     UnpackBytesFromSaveStream(&g_bSelectedFieldSpell, 1);
     DeserializeItemQuantities();
     DeserializePartyStats();
-    DeserializeRoomObjectState();
+    DeserializeRoomActorState();
     UnpackBytesFromSaveStream(g_abOpenedChestFlags, sizeof(g_abOpenedChestFlags));
     UnpackBytesFromSaveStream(g_abQuestEventState, 0x100);
     DeserializeMonsterDexLevels();

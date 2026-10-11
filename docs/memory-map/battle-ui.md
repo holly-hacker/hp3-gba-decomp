@@ -15,7 +15,7 @@ The two layers are genuinely decoupled: **no menu confirm handler calls
 the effect-trigger function (`FUN_08018b70`) directly.** Every screen
 writes a handful of `BattleFighter` fields (`bSpellId`, `bSpellLevel`,
 `bSelectedActionIndex`, `bPendingActionKind_candidate`, `bSlotParam`)
-and closes the menu; the effects fire afterwards, in the object-tick
+and closes the menu; the effects fire afterwards, in the actor-tick
 execution layer [`battle.md`](battle.md) documents.
 
 ## The battle menu itself -- PROVEN
@@ -148,7 +148,7 @@ own confirm handlers call the effect-trigger function
 thing: write a handful of `BattleFighter` fields (`bSpellId`,
 `bSpellLevel`, `bSelectedActionIndex`, `field_0x3b`, `bSlotParam`) and
 set `field_0x1070 = 0` to close the menu. The actual effect calls all
-happen afterward, in the object-tick execution layer
+happen afterward, in the actor-tick execution layer
 [`battle.md`](battle.md) covers (`TickPlayerActionState`'s
 case `0x1a` =
 `HandleScriptedDamageEvent_candidate`, and its `0x40000`/`0x8000`
@@ -403,15 +403,15 @@ identities):
 **The "Tick" call chain is PROVEN:**
 `InitMonsterBattleActor` (`0x08014C88`) writes this function's address
 into `Actor+0x98` (a callback-registration slot, not a direct call).
-**`TickActor`** (`0x08001FD8`) is a per-object per-update-pass
+**`TickActor`** (`0x08001FD8`) is a per-actor per-update-pass
 function: it reads `Actor+0x98`, and if non-null (and a gating check,
 `IsActorTickAllowed`, passes), calls **`ThumbInterworkVeneer_bx_r1`**
 (`0x0804A2C4`, see `krawall.md`) to invoke it. **`TickActorList`**
-(`0x08000918`) walks the linked list of all active objects, calling
-`TickActor` once per object per call. So the chain is
-`TickActorList` -> (per object) `TickActor` ->
+(`0x08000918`) walks the linked list of all active actors, calling
+`TickActor` once per actor per call. So the chain is
+`TickActorList` -> (per actor) `TickActor` ->
 `ThumbInterworkVeneer_bx_r1` -> `TickFighterAttackAnimState_candidate`, a
-generic per-object-per-frame callback dispatch -- "AttackAnimState" is
+generic per-actor-per-frame callback dispatch -- "AttackAnimState" is
 arguably too narrow given case `0x1a`'s broader turn/action-execution
 content (target selection, `ResolveEnemyAttack`, message/reward
 dispatch), not renamed further.
@@ -461,7 +461,7 @@ every entry resolves to a genuinely separate, cleanly-bounded function:
 
 | Case | Address | Function |
 |---|---|---|
-| `0` | `0x080160FC` | `PlayActionWindupFlash` -- queues a palette-flash cue via `FUN_0800d264` (the same palette-refresh/fade queue used to undo poison discoloration), keyed by an anim-table entry and `Actor+0xd5`'s high nibble, plus an anim-data-table switch via `SetPlayerObjectAnim` (`0x08015484`) -- the windup flash before the swing/cast animation starts |
+| `0` | `0x080160FC` | `PlayActionWindupFlash` -- queues a palette-flash cue via `FUN_0800d264` (the same palette-refresh/fade queue used to undo poison discoloration), keyed by an anim-table entry and `Actor+0xd5`'s high nibble, plus an anim-data-table switch via `SetPlayerActorAnim` (`0x08015484`) -- the windup flash before the swing/cast animation starts |
 | `1` | `0x08017A7C` | `PlayFighterImpactSound` -- per-fighter-type sound (`Actor+8`) plus a shared impact sound, the moment the attack/spell visually connects |
 | `2` | `0x080161A2` | `ApplyDamageNumberAnimState` -- commits a damage number previously staged at `Actor+0x62` by `ShowDamageNumber_candidate`: sound, a HUD refresh, then (once flag `0x40000` is set) resets the anim state and applies the damage via `ApplyDamageToAllyFighter` |
 | `3`, `6`-`14`, `16`-`20`, `22`-`25` | `0x08017B42` | `TickPlayerActionStateNoOp` -- shared no-op default, also every other case's own tail branch target |
@@ -475,7 +475,7 @@ every entry resolves to a genuinely separate, cleanly-bounded function:
 (`HandleScriptedDamageEvent_candidate`) matching source, is the low byte of
 `wScriptPC` (see [`../formats/battle_scripts.md`](../formats/battle_scripts.md)'s
 "The interpreter" section) -- a real storage-reuse overlap, not two
-conflicting offset claims: the byte holds the object's script bytecode
+conflicting offset claims: the byte holds the actor's script bytecode
 position while a behavior script is running, then gets reused as a small
 attack-outcome state counter (values `0`-`6`) once native code takes over
 for that tick. `TickPlayerActionState` never reads the high byte
@@ -488,7 +488,7 @@ real-bytes confirmed), which is the low byte of the script interpreter's
 `bScriptEffectId` (`Actor+0x62`, 1 byte) plus the low byte of
 `bScriptLocalA` (`Actor+0x63`, 1 byte) taken together -- the whole
 `0x60`-`0x64` span is native tick code's post-script scratch area, reused
-byte-for-byte with different types/meanings once a script for that object
+byte-for-byte with different types/meanings once a script for that actor
 finishes running.
 
 Only `TickPlayerActionState` (`0x0801602C`) and
@@ -541,7 +541,7 @@ Move script: for Harry, it reads `(&g_abHarryCardEffectId)[DAT_03003f44]`
 Harry. For Hermione, it reads
 `(&g_abHermioneLectureEffectId_candidate)[bSpellId]` (her lecture
 selection, stored in the same `bSpellId` field spells use) and does the
-same. For Ron/Buckbeak, this branch just calls `SetPlayerObjectAnim(unaff_r7,0)` (`0x08015484`)
+same. For Ron/Buckbeak, this branch just calls `SetPlayerActorAnim(unaff_r7,0)` (`0x08015484`)
 and returns -- no `g_ab*EffectId`-style table lookup happens here at all.
 
 A separate, unconditional-of-fighter-type `0x8000`-flag branch reads
@@ -619,7 +619,7 @@ this: `FUN_08018b70(effectId, ...)` (the anim/effect trigger already
 documented above) calls `FUN_08018be0(effectId, ...)`, which spawns a
 new `Actor` and sets `Actor+0x62 = effectId` and `Actor+0x98` to a
 generic dispatcher (`0x08018cc1`); `TickActor` then
-interprets that object's script every tick via `FUN_08018cf8`
+interprets that actor's script every tick via `FUN_08018cf8`
 (`0x08018cf8`), which looks up the script buffer as
 `g_apEffectScripts_candidate[Actor+0x62]` --
 `g_apEffectScripts_candidate` (`0x0805b978`) is an array of 60+ script
@@ -731,9 +731,9 @@ via the real jump table, see below).
 - **`PrepareBattleMessageDisplay_candidate`** (`0x08012FD4`) -- called
   at the top of every `ShowBattleMessage` case. Draws/positions the
   message window and clears a status bit on every active fighter's
-  sprite `Actor` via **`ClearFighterObjectFlag_candidate`**
+  sprite `Actor` via **`ClearFighterActorFlag_candidate`**
   (`0x08012CB4`), which indexes a 7-slot array,
-  **`g_apFighterObjects_candidate`** (`0x03002668`, `Actor*[7]`, likely
+  **`g_apFighterActors_candidate`** (`0x03002668`, `Actor*[7]`, likely
   one slot per active `BattleFighter`).
 - `0x0804A2C4` (**`ThumbInterworkVeneer_bx_r1`**) is one of a family of
   generic ARMv4T-Thumb interworking veneers (`0x0804A2C0`-`0x0804A2E4`,

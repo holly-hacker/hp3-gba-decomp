@@ -163,22 +163,22 @@ Room52V1Chain0:
     DelayedRespawnRowAndRunChain 0, 0, Room52V1Chain1_id
     End
 Room52V1Chain1:
-    StartObjectAnimSequence Room52V1Group0_id, 0, 0, 0, Room52V1Route0_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 1, 0, 0, Room52V1Route1_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 2, 0, 0, Room52V1Route2_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 3, 0, 0, Room52V1Route3_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 4, 0, 0, Room52V1Route4_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 5, 0, 0, Room52V1Route5_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 6, 0, 0, Room52V1Route6_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 7, 0, 0, Room52V1Route7_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 8, 0, 0, Room52V1Route8_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 9, 0, 0, Room52V1Route9_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 11, 0, 0, Room52V1Route10_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 12, 0, 0, Room52V1Route11_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 13, 0, 0, Room52V1Route12_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 14, 0, 0, Room52V1Route13_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 15, 0, 0, Room52V1Route14_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 16, 0, 0, Room52V1Route15_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room52V1Group0_id, 17, 0, 0, Room52V1Route16_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 0, 0, 0, Room52V1Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 1, 0, 0, Room52V1Route1_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 2, 0, 0, Room52V1Route2_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 3, 0, 0, Room52V1Route3_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 4, 0, 0, Room52V1Route4_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 5, 0, 0, Room52V1Route5_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 6, 0, 0, Room52V1Route6_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 7, 0, 0, Room52V1Route7_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 8, 0, 0, Room52V1Route8_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 9, 0, 0, Room52V1Route9_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 11, 0, 0, Room52V1Route10_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 12, 0, 0, Room52V1Route11_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 13, 0, 0, Room52V1Route12_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 14, 0, 0, Room52V1Route13_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 15, 0, 0, Room52V1Route14_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 16, 0, 0, Room52V1Route15_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room52V1Group0_id, 17, 0, 0, Room52V1Route16_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room52V1End

@@ -21,7 +21,7 @@ void RoomScriptOpDelayedRespawnRowAndRunChainFrames(DelayedRespawnRowAndRunChain
     {
         if (g_dwRoomScriptRunState == 1 && pNextRecord->dwOpcode != 0)
             g_dwRoomScriptRunState = 2;
-        pTimer = SpawnScriptEffectObject(1);
+        pTimer = SpawnScriptEffectActor(1);
         pTimer->dwStateTimer = pRecord->wDelay;
         pTimer->modeState.actor.bDelayedRespawnRow = pRecord->bRespawnRow;
         pTimer->modeState.actor.bDelayedChainRow = pRecord->bChainRow;

@@ -162,7 +162,7 @@ void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort
 
 // Every effect call funnels through TriggerBattleEffect (0x08018B70), which
 // stages its args into the 0x03002750 area (`EffectStaging` in
-// include/battle/battle.h), spawns the effect object via CreateEffectScriptObject,
+// include/battle/battle.h), spawns the effect actor via CreateEffectScriptActor,
 // then clears the attacker's anim state in FightState. Signature PROVEN by
 // caller/callee codegen -- (u8 effectId, s32 x4, u16 damage): effectId is
 // the only narrow param (u8 entry extend at 0x08018B74; params 2-4 have
@@ -181,7 +181,7 @@ void ApplyDamageToEnemyFighter(short damage, uchar fighterIndex) {   // 0x08017F
         g_nBattleGoldReward += MonsterTable[f->bRosterIndex].reward_gold;
         f->wHp = 0;
         f->nFaintedFlag = -1;
-        SetFighterAttackAnimState(f->pObject, 1);
+        SetFighterAttackAnimState(f->pActor, 1);
     }
 }
 
@@ -193,23 +193,23 @@ void DispatchPendingAction(int fighterIndex) {                  // 0x080100a0
     case None: case Informus:
         ShowBattleMessage(ActionAnnounce, 0, 0);
         TrackSpellFamiliarity(f->bFighterType, f->bSpellId, f->bSpellLevel, &f->wHp);
-        SetFighterAttackAnimState(f->pObject, 0x1a);    // -> ExecutePlayerAttackSequence
+        SetFighterAttackAnimState(f->pActor, 0x1a);    // -> ExecutePlayerAttackSequence
         break;
     case UseItem:
         ShowBattleMessage(ItemUseAnnounce, f->bSpellLevel, 0);
-        SetFighterAttackAnimState(f->pObject, 0x04);
+        SetFighterAttackAnimState(f->pActor, 0x04);
         break;
     case SpecialMove:
         if (f->bFighterType == Harry) f->bSpellId = (SpellId)g_nFolioUniversitasSlot;
         ShowBattleMessage(SpecialMoveAnnounce, f->bSpellId, 0);
-        SetFighterAttackAnimState(f->pObject, 0x15);
+        SetFighterAttackAnimState(f->pActor, 0x15);
         if (f->bFighterType == Hermione) dwHermioneSpecialUsed = 1;
         else if (f->bFighterType == Ron)  dwRonSpecialUsed = 1;
         break;
     case Flee:
         if (Mt19937Chance(0x4b) == 0) {
             ShowBattleMessage(EscapeBlocked, 0, 0);
-            SetFighterAttackAnimState(f->pObject, 0x05);
+            SetFighterAttackAnimState(f->pActor, 0x05);
         } else {
             PlaySoundById(0x9d);
             PushGameMode(8, 3, DAT_03003b50);          // leaves the battle
@@ -240,7 +240,7 @@ void ExecutePlayerAttackSequence(int attackerIndex) {            // 0x080161FE
         // Master stats, not the live pFighters copy (g_aPartyMasterStats
         // is 0x030024EC; bLevel sits at BattleFighter+0x0E).
         g_nLastDamage = (g_aPartyMasterStats[Harry].bLevel >> 1) + 30;
-        SetFighterAttackAnimState(targetObject, 2);
+        SetFighterAttackAnimState(targetActor, 2);
         ShowBattleMessage(AttackResult, g_nLastDamage, 0);
         if (bPendingStatusMessageVariant != NO_PENDING_STATUS_MESSAGE_VARIANT)
             ShowBattleMessage(AttackResult, 0, bPendingStatusMessageVariant);
@@ -386,7 +386,7 @@ Notes on pieces the pseudocode above elides:
           roll = Mt19937RandMax(g_pFightState->bFighterCount - 1);
           candidate = &g_pFightState->pFighters[roll];
       } while (candidate->bFighterType == Enemy
-                || candidate->pObject == NULL
+                || candidate->pActor == NULL
                 || candidate->nFaintedFlag == -1);
       target = roll;
   }
@@ -423,7 +423,7 @@ monster's record from `MonsterTable`; `InitPlayerBattleActor_candidate`
 | `0x00` | u8 | `bFighterType` (enum, see below) | PROVEN |
 | `0x01` | u8 | `bRosterIndex` (enemy/hero index) | STRUCTURAL MATCH |
 | `0x03` | u8 | `bSlotParam` -- fixed UI slot (enemy `0-3` / ally `0-2`, separate spaces) | PROVEN |
-| `0x04` | u32 | `pObject` -- pointer to this fighter's sprite `Actor` | PROVEN |
+| `0x04` | u32 | `pActor` -- pointer to this fighter's sprite `Actor` | PROVEN |
 | `0x08` | u16 | `wHp` | PROVEN |
 | `0x0A` | u16 | `wMp` | PROVEN |
 | `0x0C` | u16 | `wRewardXp` (`MonsterTable+0x10`) | PROVEN |
@@ -451,7 +451,7 @@ monster's record from `MonsterTable`; `InitPlayerBattleActor_candidate`
 | `0x44` | u8 | `bParalysisEscapeChance` -- starting/ratcheting escape % | PROVEN |
 
 `InitMonsterBattleActor` also wires each fighter's sprite `Actor`
-(anim table, effect-channel pointers) and hardwires `pObject->pfnTick =
+(anim table, effect-channel pointers) and hardwires `pActor->pfnTick =
 TickFighterAttackAnimState_candidate` -- the reason every `Enemy`
 resolves via `ResolveEnemyAttack` rather than `ResolvePlayerAttack`; see
 "The NPC-vs-PC split" below.
@@ -470,7 +470,7 @@ the fighter's `Actor` at init. `InitMonsterBattleActor` hardcodes
 `TickFighterAttackAnimState_candidate` (`0x08015608`) into every enemy
 `Actor`; its case `0x1A` calls `ResolveEnemyAttack` (additionally gated
 on `bFighterType == 0xFF` at the call site). `InitPlayerBattleActor_candidate`
-(`0x080149C4`) hardwires `pObject->pfnTick = TickPlayerActionState`
+(`0x080149C4`) hardwires `pActor->pfnTick = TickPlayerActionState`
 (`0x0801602D`) unconditionally for every non-enemy fighter, including
 Buckbeak -- so Buckbeak's turn runs the same state machine as the three
 spellcasters, but his damage bypasses `ResolvePlayerAttack` entirely (see
@@ -498,7 +498,7 @@ fighter's new `Actor *`. Allocates via `AllocDefaultActor`, records
 `wFighterType`/`bUnk_0x7C = 0`, sets `oam.priority = 1`,
 positions with `SnapActorPosition`/`StartActorMove` at
 `(0xD4 - slot*36) << 16`, `slot*0x40000 + 0x6E0000`, then
-`sub_08003A44(pObject, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `dwUnk_0x28 = 1`,
+`sub_08003A44(pActor, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `dwUnk_0x28 = 1`,
 `dwFlags = 0x20006011`, attack-anim state `0xF`, `bAnimFrameDelay = 1`,
 `pfnTick = TickPlayerActionState`. Copies the 10 spell slots
 (`i <= 9`) and, outside Folio Universitas returns, the party stats from
@@ -524,7 +524,7 @@ around: the ROM ends in `adds r0,r6,#0`, same as the player counterpart).
 `wFighterType` is `monsterIndex + 4`; positioning is `(slot*36 + 0xCC)` /
 `(0x4E - slot*4)` with a `+0x18` restructure for the move; `dwFlags` is
 `0x20006019` (`0x6019` for the companion) and `bDepthSortBias` is `-0x40`. Types
-3/29/26 get extra `sub_08003A30`/`sub_08003A44` calls on the main object;
+3/29/26 get extra `sub_08003A30`/`sub_08003A44` calls on the main actor;
 types 45-47 additionally spawn a shadow `Actor` (own anim tables at
 `0x0804EF54`/`0x08053850`) cross-linked at `+0xA0`/`+0xA8`. The
 `BattleFighter` is filled field-for-field from `MonsterTable` (stride
@@ -599,7 +599,7 @@ above; all four are visual/Actor plumbing, no combat-mechanical state:
   `0x0804E09C`, with a fixed boss-room blob substituted when
   `g_abQuestEventState[0x1a]` is set and the room id is `8`-`15`), camera/BG
   scroll init, and the battle dialog-box palette block.
-- **`RestoreFighterObjects_candidate`** (`0x0800F16C`): only called on the
+- **`RestoreFighterActors_candidate`** (`0x0800F16C`): only called on the
   submode-return path, not for a fresh battle. Rebuilds every fighter's
   sprite `Actor` from the `0x128`-byte backup image `FightState` stashed
   at `+0x834` per fighter (Battle's own `Actor`s get torn down while
@@ -641,10 +641,10 @@ else forced to `0`. Its confirm handler,
 `bSelectedActionIndex = bMenuCursor` directly -- unlike the enemy/ally
 menus, with no `aEnemySlotTurnOrderIndex`/`aAllySlotTurnOrderIndex`
 translation, consistent with indexing straight into the separate pending
-pool. `RestoreFighterObjects_candidate` (`0x0800F16C`) spawns this pool's
+pool. `RestoreFighterActors_candidate` (`0x0800F16C`) spawns this pool's
 `Actor`s the same way it does for `pFighters`, and `TickPlayerActionState`
 (matched, `src/battle/tick_player_action_state.c`) pans every
-`pPendingFighters_candidate[i].pObject` alongside the regular roster
+`pPendingFighters_candidate[i].pActor` alongside the regular roster
 during the Special Move windup/return camera move (`bActionState == 0x1a`,
 `bActionFlags == 0x21`/`0x40` cases) -- pending fighters are real,
 on-screen `Actor`s, not placeholder data.
@@ -711,7 +711,7 @@ hardcoded to `10`.
 ## `BattleFighter+0x42` (`bStatusFlags`), PROVEN
 
 All 8 bits are claimed by a combat-mechanical effect, each set by one of
-opcode `0x97`'s (`StatusEffect`) sub-cases, run by the object/spell
+opcode `0x97`'s (`StatusEffect`) sub-cases, run by the actor/spell
 behavior-script interpreter (`0x08018cf8`, see
 [`../formats/battle_scripts.md`](../formats/battle_scripts.md)).
 
@@ -767,9 +767,9 @@ called from five `StatusEffect` sub-cases. It sets the bit only when
 for an enemy monster already protected by either bit, it announces
 `ImmuneToParalysis`.
 
-The helper also sets the target object's `wActionVariant` to `2`, stores
+The helper also sets the target actor's `wActionVariant` to `2`, stores
 the starting escape chance at `BattleFighter+0x44`, and resets the
-object's animation frame counter (including its shadow for object types
+actor's animation frame counter (including its shadow for actor types
 `0x31`-`0x33`). A zero or `1001` effect-context value prevents the
 attempt when `isEnemyMonster` is false. On success the
 monster-paralysis case can call `SpawnParalysisEffect` (US `0x0801B590`,
@@ -785,14 +785,14 @@ animation frame counter at `Actor+0xD8`. If this happens after animation
 flag, so the damage remains unapplied. Later hits can overwrite the staged
 damage, but setting state `2` again does not restart the animation.
 
-Informus opens Folio Bruti, whose return path restores fighter objects in
+Informus opens Folio Bruti, whose return path restores fighter actors in
 `pFighters` (turn) order rather than the initial party-first allocation
 order: `ExitFolioBruti` (`0x08037048`) makes `InitializeBattle` call
-`RestoreFighterObjects_candidate` (`0x0800F16C`). `TickActorList` visits
-older objects first. When an Armor actor precedes its target in this
-order, its attack spawns the paralysis-script object and stages damage;
+`RestoreFighterActors_candidate` (`0x0800F16C`). `TickActorList` visits
+older actors first. When an Armor actor precedes its target in this
+order, its attack spawns the paralysis-script actor and stages damage;
 the target starts animation `4` later in the same pass. The newly spawned
-script object then ticks after the target and clears its frame counter.
+script actor then ticks after the target and clears its frame counter.
 The Cavalier Armor has a 10% chance on a damaging hit to run script 60,
 `StatusEffect 22 25 0; End`, producing this sequence. With the initial
 party-first allocation, the target starts animation `4` on the next pass,
@@ -908,7 +908,7 @@ discarded. Granted rewards (gold, items, Folio Universitas cards) go through
 
 ### `FightState+0x1054`/`+0x1058`: write-only, purpose unknown
 
-Incremented/mirrored by the object-script interpreter's opcode `0x30`
+Incremented/mirrored by the actor-script interpreter's opcode `0x30`
 (tracks `Actor+0x60`, also read by
 `TickFighterAttackAnimState_candidate` as an attack-outcome state value)
 and reset to zero at several attack-boundary transitions
@@ -974,7 +974,7 @@ effect, not a gold bonus; see `FightState->bBonusRewardFlags` above).
 `g_nBattleXpReward` is consumed by `InitializeVictoryScreen` (see "End-of-battle
 flow" below); what consumes `g_nBattleGoldReward` isn't traced.
 
-A second, independent path exists: `KillTarget` (object-script
+A second, independent path exists: `KillTarget` (actor-script
 opcode `0x83`, `0x0801A254`) adds a species' `wRewardXp`/`wRewardGold`
 straight into the same accumulators, bypassing `ApplyDamageToEnemyFighter`
 entirely -- used by Harry's `Tempest Jinx` (banishes a monster without
@@ -1075,7 +1075,7 @@ countdown whose meaning is local to that state.
 - **1 -- per-fighter turn-order advance.** On entry, calls
   `SetFighterTurnOrderIconDone(bActiveFighterIndex)`, advances
   `bActiveFighterIndex`, and starts a 16-tick timer; once it expires,
-  waits for every fighter's own `pObject->pLinkedActor_candidate`
+  waits for every fighter's own `pActor->pLinkedActor_candidate`
   (`Actor+0xA4`, not yet identified -- distinct from the turn-order icon
   below) to clear, then transitions to state `2` once every fighter has
   acted, otherwise to state `4` (`Enemy`) or `3` (player) for the next
@@ -1085,9 +1085,9 @@ countdown whose meaning is local to that state.
   its idle frame (`0` ally/`1` enemy) via `SetActorAnimFrame`; `SetFighterTurnOrderIconActive`
   sets the next fighter's icon to its highlighted frame (`2`/`3`) the same
   way and also restacks `bDepthSortBias` across all icons through
-  `apTurnOrderIconObjects` (`FightState+0x818`), a 7-entry array of the icon
-  *container* Objects `SpawnTurnOrderIcon` allocates, one per active fighter
-  slot -- distinct from each fighter's own `pObject`. Each container's
+  `apTurnOrderIconActors` (`FightState+0x818`), a 7-entry array of the icon
+  *container* Actors `SpawnTurnOrderIcon` allocates, one per active fighter
+  slot -- distinct from each fighter's own `pActor`. Each container's
   `pLinkedActor_candidate` is its portrait sprite, which is what
   `SetActorAnimFrame` actually animates.
 - **2 -- end-of-round status tick, PROVEN as `EndOfRoundStatusTick`**
@@ -1118,15 +1118,15 @@ countdown whose meaning is local to that state.
 
 ### Fighter `Actor.bActionState` machines
 
-Each fighter's own `Actor` runs a second, per-object state machine via its
+Each fighter's own `Actor` runs a second, per-actor state machine via its
 `pfnTick` -- `TickPlayerActionState` for player-side fighters,
 `TickFighterAttackAnimState_candidate` for enemies. Case *numbers* are not
 semantically aligned between the two: player state `1` is a lightweight
 sound+pose reaction, while enemy state `1` is a much larger
 return-to-position/victory-check/free-on-faint tail. Confirmed per-frame
-ordering: `TickBattleTurnStateMachine` runs before these object ticks each
+ordering: `TickBattleTurnStateMachine` runs before these actor ticks each
 frame (`TickFrameSystems` calls `TickActiveActors` *after*
-`DispatchGameModeUpdate`), so an object's own state changes this frame are
+`DispatchGameModeUpdate`), so an actor's own state changes this frame are
 only visible to the turn state machine on the next.
 
 ```mermaid
@@ -1164,7 +1164,7 @@ stateDiagram-v2
     Hit --> Idle : dwFlags & ActorFlagActionAnimDone observed
     note right of Settle
         Settle = faint reaction: return to position,
-        CheckBattleVictory, free shadow object, then
+        CheckBattleVictory, free shadow actor, then
         ActorFlagPendingDestroy -- terminal, the
         Actor is freed, no exit edge exists.
     end note
@@ -1177,7 +1177,7 @@ control flow: `Actor+0xDC`'s (`bEnemyAttackPhase_candidate`) and `dwFlags`
 bit `0x8000`/`0x40000` transitions come from the fighter's own windup/attack
 animation's command stream (opcodes `0xFF`/`0xF0`); `Actor+0x60`'s
 (`bAttackOutcomeState`) increments come from the attack-effect script's own
-opcode `0x30`, run on the *caster's* object (see
+opcode `0x30`, run on the *caster's* actor (see
 [`../formats/battle_scripts.md`](../formats/battle_scripts.md)).
 
 ## Player spell/action damage -- `ResolvePlayerAttack` (`0x08017C24`)

@@ -17,15 +17,15 @@ void ExitRiddikulusMinigame(void)
 
     PlayScreenTransitionOutByIndex(0x3F, 2);
 
-    if (g_Riddikulus.pCursorObject != NULL)
+    if (g_Riddikulus.pCursorActor != NULL)
     {
-        ReleaseMenuCursor(g_Riddikulus.pCursorObject);
-        g_Riddikulus.pCursorObject = NULL;
+        ReleaseMenuCursor(g_Riddikulus.pCursorActor);
+        g_Riddikulus.pCursorActor = NULL;
         FreeAllParticles();
     }
 
-    sub_0802CEE4(g_Riddikulus.pObjectGroup1C);
-    sub_0802CEE4(g_Riddikulus.pObjectGroup20);
+    sub_0802CEE4(g_Riddikulus.pActorGroup1C);
+    sub_0802CEE4(g_Riddikulus.pActorGroup20);
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
     sub_0802CDB8();

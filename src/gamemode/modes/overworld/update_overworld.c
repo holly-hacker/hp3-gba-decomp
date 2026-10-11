@@ -3,7 +3,7 @@
 #include "overworld/overworld.h"
 
 // Overworld mode's pUpdateFn (per-frame tick). Room logic runs in the room's
-// objects, so this only ticks the pause-menu cooldown and Owl Care Kit clock.
+// actors, so this only ticks the pause-menu cooldown and Owl Care Kit clock.
 void UpdateOverworld(void)
 {
     if (g_dwPauseMenuCooldown != 0)

@@ -44,7 +44,7 @@ void DrawFolioBrutiMonsterPanel(void)
     {
         if (g_FolioBrutiState.apSpellDots[spell] == NULL)
         {
-            g_FolioBrutiState.apSpellDots[spell] = SpawnActor(0, 0, 0, (const ObjPalette *)gObjectSprite027Palette);
+            g_FolioBrutiState.apSpellDots[spell] = SpawnActor(0, 0, 0, (const ObjPalette *)gActorSprite027Palette);
             SetActorAssetRecord(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX);
             g_FolioBrutiState.apSpellDots[spell]->oam.priority = 1;
         }

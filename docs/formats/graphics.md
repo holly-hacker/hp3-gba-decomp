@@ -14,10 +14,10 @@ results. **PROVEN** for the `DecompressGammaLz` codec's decode mechanism
 byte-for-byte against the ROM implementations on real resources.
 **PROVEN** that three other real palettes
 (`0x08A38108`, `0x08A38FE0`, `0x080BD344`) are genuine final color data
-for their objects, traced through a deferred per-frame queue to the
+for their actors, traced through a deferred per-frame queue to the
 vblank DMA that writes real hardware OBJ palette RAM. **PROVEN** that
 this palette mechanism is statically extractable at scale, not just
-one-at-a-time via live triggering: `tools/graphics/find_object_palettes.py`
+one-at-a-time via live triggering: `tools/graphics/find_actor_palettes.py`
 found 14 real palettes (9 new) with zero gameplay. **PROVEN and
 extracted end-to-end for one whole tile-data-consuming resource class**:
 every real item's icon (`ItemEntry.pPalette/pTileData/pFrameData`, see "Item
@@ -51,7 +51,7 @@ portraits -- only 2 further non-BG tile resources are confirmed (the
 spark and the wand), both via live tracing.
 **STRUCTURAL MATCH** for three earlier candidate art regions from
 static ROM scanning, none code-confirmed and one (`0x08933000`-area's
-sibling `0x080BCA24`) a **false positive** for the object it resembles
+sibling `0x080BCA24`) a **false positive** for the actor it resembles
 -- see "The wand cursor sprite" for why pixel-shape plausibility isn't
 sufficient evidence on its own. Standing caveat throughout this doc:
 rendered content using a fake grayscale ramp palette must only be
@@ -409,7 +409,7 @@ Unlike everything above, these were found by tracing forward from
 actual code, not by scanning ROM bytes -- tracing where decompressed
 resource buffers get copied into VRAM (recommended next step 2) led
 instead to a **separate, uncompressed resource path** entirely, used by
-what looks like a generic object/sprite-spawn function,
+what looks like a generic actor/sprite-spawn function,
 `sub_08001528(type, x, y, resource_ptr)` (called from e.g.
 `DrawFighterStatsUi_candidate` via `FUN_080078a4`, and from `sub_0801BA54`). Three
 `resource_ptr` values found via direct literal-pool grep for `0x08a3`
@@ -427,7 +427,7 @@ structural scan, `0x08a32800`-`0x08a3a000`):
   genuinely diverse BGR555 colors (cyan/green/teal/blue progression,
   then red/orange tones, black-filled tail) -- a real curated palette,
   not a placeholder.
-- `0x08A38FE0`: same call pattern, different object. 16 valid, diverse
+- `0x08A38FE0`: same call pattern, different actor. 16 valid, diverse
   colors (blue, white, brown, cream, greens, warm oranges/reds) -- also
   a real curated palette.
 - `0x080BD344`: found live via mGBA breakpoint on `BindObjPaletteSlot`
@@ -447,12 +447,12 @@ function that touches it, to resolve the mismatch above. Verified
 against the actual disassembly at each hop (not just Ghidra's
 decompile, which was independently cross-checked and matched exactly):
 
-- `sub_08001528(type, x, y, resource_ptr)`: a generic pooled-object
+- `sub_08001528(type, x, y, resource_ptr)`: a generic pooled-actor
   spawner (fixed 0x128-byte slots, doubly-linked free/active lists --
   the allocator itself, `sub_080286D8`, is a textbook intrusive
   free-list-pop/active-list-push pair). `resource_ptr` is not
-  dereferenced here at all -- forwarded untouched to `AttachObjectPalette`.
-- `AttachObjectPalette(obj, resource_ptr)`: also doesn't dereference
+  dereferenced here at all -- forwarded untouched to `AttachActorPalette`.
+- `AttachActorPalette(actor, resource_ptr)`: also doesn't dereference
   `resource_ptr` -- passes it to `FindObjPaletteSlot` for a cache lookup.
 - `FindObjPaletteSlot(resource_ptr)`: an **OBJ palette cache lookup**, not a
   loader. Scans a fixed 16-slot table at `0x03005114` (8-byte stride:
@@ -460,17 +460,17 @@ decompile, which was independently cross-checked and matched exactly):
   stored *pointer value* equals `resource_ptr` (plain pointer equality,
   never dereferences `resource_ptr`'s contents). Returns the slot index,
   or `0xFF` if not already cached.
-- Back in `AttachObjectPalette`: on a cache hit, `resource_ptr` is discarded
+- Back in `AttachActorPalette`: on a cache hit, `resource_ptr` is discarded
   (a `0` is passed onward instead -- no need to re-load). On a miss, a
   new slot index is allocated (`AllocObjPaletteSlot`) and `resource_ptr` is
   passed on for real, for the first and only time.
-- `BindObjPaletteSlot(slotIndex, obj, resource_ptr)`: bumps the cache slot's
+- `BindObjPaletteSlot(slotIndex, actor, resource_ptr)`: bumps the cache slot's
   refcount; if `resource_ptr != 0` (first load), stores it in the slot
   and calls `QueueObjPaletteLoad(&palette->aColors[1], slotIndex*16 + 1, 0xF)`,
   where `palette` is an `ObjPalette` (`resource_ptr`).
-  Also stores `slotIndex` into the upper nibble of the object's
+  Also stores `slotIndex` into the upper nibble of the actor's
   `+0xD5` byte (matches the `>>4` read of that same field seen
-  elsewhere, e.g. `ReleaseObjectPalette` -- consistent cross-reference, good
+  elsewhere, e.g. `ReleaseActorPalette` -- consistent cross-reference, good
   sign the slot-index tracking is understood correctly).
 - `QueueObjPaletteLoad(ptr, val1, val2)`: **not a decoder** -- a deferred
   request queue. Appends `{val1: u16, val2: u16, ptr: void*}` (8-byte
@@ -487,7 +487,7 @@ decompile, which was independently cross-checked and matched exactly):
 `val2 = 0xF` (15) and `val1 = slotIndex*16+1` upload entries 1-15 of a
 16-entry `ObjPalette` into the slot's palette bank. Entry 0 is the GBA OBJ
 transparent color and is not uploaded. `resource_ptr` is therefore
-palette-only data, not a combined palette+tileset struct; the object's tile
+palette-only data, not a combined palette+tileset struct; the actor's tile
 graphics are a separate resource (see below).
 
 ### The deferred queue's flush, confirmed live (PROVEN via mGBA debugger)
@@ -557,7 +557,7 @@ warm orange/red fading to white, gold, and a repeated gray-brown).
 
 **Update -- the tile source is now found, live, via the same technique.**
 See the next section: not the shared-tileset hypothesis originally
-guessed here, but real per-object BIOS-compressed tile data via the
+guessed here, but real per-actor BIOS-compressed tile data via the
 *same* generic dispatcher (`DecompressResourceVram`) documented above, which
 turns out to also be exercised for
 OBJ (sprite) tiles, not only BG/level graphics as first assumed.
@@ -606,8 +606,8 @@ this whole investigation confirmed by direct decode of a live-traced
 real resource, rather than by statistical guessing over raw ROM bytes.
 
 **Not yet done**: this specific tile's correct palette (three real
-candidates exist; which one actually pairs with this specific object
-hasn't been confirmed -- would need to read the object's palette-slot
+candidates exist; which one actually pairs with this specific actor
+hasn't been confirmed -- would need to read the actor's palette-slot
 field, or catch a palette hit and a tile hit in the same session close
 together in time/context). Finding the rest of the sprite's tiles is
 done -- see next section.
@@ -726,7 +726,7 @@ palette candidate, findable by walking each call site backward through
 its enclosing function for the last assignment to the argument
 register, without running the game at all.
 
-**`tools/graphics/find_object_palettes.py`** (new): finds every `bl
+**`tools/graphics/find_actor_palettes.py`** (new): finds every `bl
 sub_08001528` in `build/us/full_disasm.s` (30 total), resolves each
 call's `resource_ptr` argument via backward literal-pool/register-copy
 tracing, and decodes+reports each resolved one's palette. Result:
@@ -766,25 +766,25 @@ indirect/literal-pool references to its address exist anywhere else in
 the disassembly, so the wand's live-traced call necessarily went through
 one of these 3. They are not all level/BG-only:
 
-- `sub_080454BC(objStruct, resourcePtr)` (`0x080454BC`): computes
-  `dest = 0x06010000 + tileIndexField(objStruct)*32` and calls
+- `sub_080454BC(actor, resourcePtr)` (`0x080454BC`): computes
+  `dest = 0x06010000 + tileIndexField(actor)*32` and calls
   `DecompressResourceVram(resourcePtr, dest)` -- a **generic single-resource OBJ
-  tile loader**, keyed off a tile-index field read from the object
+  tile loader**, keyed off a tile-index field read from the actor
   struct, not level-table data.
 - `sub_080454DC(resourcePtr, ...)` (`0x080454DC`): same shape, dest
-  computed from an argument rather than an object-struct field.
-- `sub_08045588(objStruct, ...)` (`0x08045588`): a **loop** over a
-  per-object sub-resource table (entries read at `objStruct[6]`'s
+  computed from an argument rather than an actor-struct field.
+- `sub_08045588(record, ...)` (`0x08045588`): a **loop** over a
+  per-record sub-resource table (entries read at `record[6]`'s
   struct, fields include `w:u8, h:u8` tile-dimensions and a `u16`
   source-blob offset), computing per-entry VRAM destinations
   cumulatively and calling `DecompressResourceVram` once per entry -- i.e. a real,
   generic **multi-tile sprite-sheet loader**, exactly the missing
-  "many tiles per object" mechanism.
+  "many tiles per actor" mechanism.
 
 Both `sub_080454BC` (`LoadObjTile`) and `sub_080454DC` (`LoadObjTileAt`)
-are called from deep inside object-update/animation code
+are called from deep inside actor-update/animation code
 (`build/us/full_disasm.s` around line 5156/5183, inside a large unnamed
-function reading per-object animation-frame fields) -- not the 124-byte
+function reading per-actor animation-frame fields) -- not the 124-byte
 level table at all. This is a genuine, reusable, generic OBJ tile-loading
 path, analogous to `sub_08001528` for palettes, but **the resource
 pointer's own source within that caller hasn't been traced back to a
@@ -1056,7 +1056,7 @@ derives everything else.
   frame fills its cell's top-left corner, `size` pixels (`[w, h]`, the
   frame descriptor's `+0x2`/`+0x3`) when smaller than the cell; every
   other sheet pixel must be index 0.
-- **`offset`**: the canvas's top-left pixel relative to the object's
+- **`offset`**: the canvas's top-left pixel relative to the actor's
   anchor; it becomes the frame descriptor's `+0x6`/`+0x8` and each cell's
   X/Y.
 - **`compression`**: `lzrle` (`DecompressResourceVram` type 7), `rle`
@@ -1138,9 +1138,9 @@ swatches. The gauge palette at `0x08A38FE0` just before them belongs to
 
 ### Actor-type sprites and coin icon (PROVEN, extracted)
 
-`g_aObjectTypeAssets` (137 `ActorAssetRecord`s, ending at the next table
-`sub_0802F6C0` reads) holds sprites for spawned objects: `sub_0802F6C0`
-indexes it through a per-type byte table, and `SetObjectAnimData_candidate`
+`g_aActorTypeAssets` (137 `ActorAssetRecord`s, ending at the next table
+`sub_0802F6C0` reads) holds sprites for spawned actors: `sub_0802F6C0`
+indexes it through a per-type byte table, and `SetActorAnimData_candidate`
 uses its records from 110 on. `0x080B9A84`-`0x080BC1C4`, directly after
 the overworld monster sprites, holds, in order: a 21-frame rat (Scabbers)
 with its palette (records 0, 4, 112), a standalone palette (record 107
@@ -1159,7 +1159,7 @@ icon with its palette, referenced from two other records
 boxes, plain and highlighted) with its palette, then two gauges draining
 from green to red (25 frames at 16x32 and 17 frames at 8x24). The two
 gauges are the records `sub_0801BA54` passes to `SetActorAssetRecord`
-(the four words after `g_apEffectScripts`), and it spawns their object
+(the four words after `g_apEffectScripts`), and it spawns their actor
 with the palette at `0x08A38FE0`, stored after the second gauge. The
 `BattleHudItems` `image-bank` row claims the range as `BattleHudItem001`-
 `BattleHudItem003` (stored cells, `tiles`, `frames`, `palette` order; the
@@ -1222,7 +1222,7 @@ sprite's palette in these banks is the one its records use.
 
 The battle effect records are 16-byte `ActorAssetRecord`s (animation delay
 3 or 5) at `0x08053D40`-`0x08053E50` and `0x08053E64`-`0x080544D4` (JP
-`0x08053C6C`-`0x08054400`), which `CreateEffectScriptObject` reads, with
+`0x08053C6C`-`0x08054400`), which `CreateEffectScriptActor` reads, with
 five palette pointers between the two runs. Every pointer in these runs
 lands on a component boundary in the effect ranges. The palette-only
 entries are palettes those pointers or battle code literals (for example
@@ -1233,7 +1233,7 @@ The status/equip screen's `sub_0803A030` reads the three
 
 These record tables are C with generated labels: `g_aBattleHudAssets`
 (`src/graphics/assets/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
-fighter, `src/graphics/assets/fighter_anim_table.c`), `g_aEffectObjectAssets`,
+fighter, `src/graphics/assets/fighter_anim_table.c`), `g_aEffectActorAssets`,
 `g_apEffectPalettes`, `g_aEffectAnimAssets`, and `g_aEffectAnimAssets2`
 (`src/graphics/assets/effect_assets.c`), and `g_aStatusCharacterAssets`
 (`src/graphics/assets/status_character_assets.c`).
@@ -1245,7 +1245,7 @@ table, `+0x04/+0x08/+0x0C`) is a second, fully statically-walkable instance of
 the OBJ tile-loading path described above -- found by decompiling
 `GetItemImageData` (`0x08026bcc`, called by `FUN_08027384`, an item-spawn
 function), which reads exactly these 3 fields and hands them to
-`SpawnActor` (`0x08001528`, the same generic pooled-object spawner
+`SpawnActor` (`0x08001528`, the same generic pooled-actor spawner
 documented above) as `resource_ptr`, then to `LoadObjTile`/
 `LoadObjTileSheet` (`0x080454BC`/`0x08045588`). Unlike the general case,
 every item's `resourcePtr` is a clean literal at its own table entry, so
@@ -1257,15 +1257,15 @@ without needing a live trace:
   above (`&aColors[1]` = 15 real colors; index 0 is the GBA OBJ
   transparent color). Entry 0 stores a transparent-key color instead,
   `0x7C1F` in 60 of 79 icons.
-- **`pFrameData`: a frame/layout header**, the same generic per-object
-  animation-frame format `LoadObjTileSheet`/`LoadObjectAnimFrameCells` (renders the
-  in-world sprite these items also spawn) read from `objStruct+0xe0`.
+- **`pFrameData`: a frame/layout header**, the same generic per-actor
+  animation-frame format `LoadObjTileSheet`/`LoadActorAnimFrameCells` (renders the
+  in-world sprite these items also spawn) read from `actor+0xe0`.
   Fixed 12-byte part; `+0x06` is a `u16` frame count (every one of the
   79 real items has exactly 1). One `u16` offset per frame follows at
   `+0x0C`, relative to that same `+0x0C` base, pointing at a small
   record: pixel width (`+0x02`, `u8`), height (`+0x03`, `u8`), and a
   `u16` source offset (`+0x04`) into `pTileData`.
-  - Corroborates open thread 1 below (`sub_08045588`'s per-object
+  - Corroborates open thread 1 below (`sub_08045588`'s per-actor
     sub-resource table): its `w:u8, h:u8, source-blob-offset:u16`
     fields are exactly what's decoded here, now against 79 real,
     named, concrete instances rather than one traced dataflow guess.
@@ -1326,7 +1326,7 @@ addresses. See `docs/formats/items.md`.
 
 `g_aHelpSpriteAssets` (22 `ActorAssetRecord`s) and
 `g_apHelpSpritePalettes` (22 palette pointers, directly after it) are read
-by `sub_08039020(x, y, index)`, which spawns object type `index` with
+by `sub_08039020(x, y, index)`, which spawns actor type `index` with
 palette `g_apHelpSpritePalettes[index]` and then passes
 `&g_aHelpSpriteAssets[index]` to `sub_08001690`. Twenty records reuse item
 icons. Record 14 is a 32x32 `lzrle` sprite in `tiles`, `frames`, `palette`
@@ -1352,7 +1352,7 @@ through them, but the records themselves are ordinary dialog assets --
   `LoadObjTile` -> `DecompressResourceVram` (`0x0801DE5C`), whose type 7
   is the `DecompressLzRle` codec (`DecompressLzRle`, ARM, `0x08006108`; see "The
   resource-decompression dispatchers"). Verified against 71 real images.
-- **`pFrameData`**: an uncompressed per-object frame/OAM-cell
+- **`pFrameData`**: an uncompressed per-actor frame/OAM-cell
   descriptor, read directly -- despite `pTileGfx`'s neighboring header
   superficially inviting the same treatment, this pointer is never
   routed through either decompression dispatcher. Layout (byte offsets
@@ -1375,14 +1375,14 @@ through them, but the records themselves are ordinary dialog assets --
   - Frame descriptor base `+0x0` (`u8`, low 5 bits): cell count.
   - Frame descriptor base `+0x2`/`+0x3` (`u8`): frame width/height in
     pixels. `UpdateActorSpriteFrame` passes `width*height` to the OBJ
-    tile allocator (`AllocObjectVramTiles`), which divides it by 64 (4bpp) or 32
+    tile allocator (`AllocObjVramTiles`), which divides it by 64 (4bpp) or 32
     (8bpp, 32-byte units); every item icon's values are `32x32` or
     `16x32`, matching their decoded sizes.
   - Frame descriptor base `+0x4` (`u16`): byte offset of the frame's
     tile data from `pTileGfx` (`GetActorVariantFrameTileGfx`,
     `0x08000EC0`, and `UpdateActorSpriteFrame`'s `LoadObjTile` path).
   - Frame descriptor base `+0x6`/`+0x8` (`s16`): x/y of the frame's
-    top-left corner relative to the object. With the width and height
+    top-left corner relative to the actor. With the width and height
     they give `Actor.spriteBounds`.
   - Cell table starts at frame-descriptor-base `+ 0xA +
     extra_count*2 + box_count*6` (`+0xA` for every portrait). Each cell is 4 bytes
@@ -1396,8 +1396,8 @@ through them, but the records themselves are ordinary dialog assets --
       are stored back-to-back with no padding: cell *n*'s offset always
       equals the sum of every earlier cell's own `w*h` tile count.
     - X = `sign9((b1 & 1) << 8 | b0)`, Y = `sign9((b2 & 3) << 7 | (b1
-      >> 1))` -- signed 9-bit pixel offsets relative to the object's own
-      on-screen anchor, doubled for a double-size affine object. C type
+      >> 1))` -- signed 9-bit pixel offsets relative to the actor's own
+      on-screen anchor, doubled for a double-size affine actor. C type
       `ActorFrameCell`, a packed bitfield word, decoded by
       `UpdateActorOamCells` (`0x08002618`, matched). `WriteActorOamCells`
       (`0x08002C18`, matched) decodes the same bytes into a live OAM
@@ -1427,7 +1427,7 @@ through them, but the records themselves are ordinary dialog assets --
 
 ### Actor animation command streams (STRUCTURAL MATCH, from `RunActorAnimCommands`)
 
-`SetActorAnimData(obj, record, data, start)` points an object at a byte
+`SetActorAnimData(actor, record, data, start)` points an actor at a byte
 stream (`data + start * 2`); `RunActorAnimCommands` reads it two bytes at a time. A
 first byte up to `0xEE` shows that frame for the second byte's count of ticks
 (0 holds it); `0xEF`-`0xFF` run immediately, in sequence, until the next
@@ -1445,7 +1445,7 @@ the ROM's animation tables use.
 | `0xFE` | jump to command `n` of the stream | `n` |
 | `0xFF` | event marker: sets `ActorFlagSpecialMoveTrigger`, stores the operand at `Actor+0xDC`, holds one tick | marker |
 
-Tables that keep several streams per row (room object kinds, monsters, effect
+Tables that keep several streams per row (room actor kinds, monsters, effect
 animations) pad each row with zeros to a fixed stride.
 
 ## Open threads
@@ -1464,8 +1464,8 @@ resource-pointer trace.
    and the character-portrait table (`g_apPortraitTable`, see
    "Character portraits" below) -- both confirmed by tracing
    `resourcePtr` back to a table with named fields, not just
-   dataflow. Other object types spawned outside those two tables (most
-   world/battle objects) still aren't enumerated this way.
+   dataflow. Other actor types spawned outside those two tables (most
+   world/battle actors) still aren't enumerated this way.
 3. **The wand's palette** (bank 1) has no located ROM source. All four
    glow-frame streams (`0x080BC9CC`, `0x080BCADC`, `0x080BCBD0`,
    `0x080BCCD8`) decode to 128 bytes and match the ARM codec output.

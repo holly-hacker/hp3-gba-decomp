@@ -181,11 +181,11 @@ Room19V1Chain0:
     End
 Room19V1Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnTileObject Room19V1Group1_id, 0
-    DespawnTileObject Room19V1Group1_id, 2
-    DespawnTileObject Room19V1Group1_id, 1
-    QueueTileObjectMove Room19V1Group1_id, 6, 0, 0, 1200, 0
+    CancelActorAnimSequence 0, 255
+    DespawnTileActor Room19V1Group1_id, 0
+    DespawnTileActor Room19V1Group1_id, 2
+    DespawnTileActor Room19V1Group1_id, 1
+    QueueTileActorMove Room19V1Group1_id, 6, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "The lady is found!"
     ShowRoomDialog 390
@@ -194,11 +194,11 @@ Room19V1Chain1:
     End
 Room19V1Chain2:
     ArmChainYield 1
-    QueueTileObjectMove 0, 255, 0, 0, 1800, 0
-    DespawnRoomRowObjects Room19V1Group1_id
+    QueueTileActorMove 0, 255, 0, 0, 1800, 0
+    DespawnRoomRowActors Room19V1Group1_id
     Unk02 0, 255, 2
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room19V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room19V1Route2_id, 0, 1, 0, 0, 0
     End
 Room19V1Chain3:
     ArmChainYield 1
@@ -215,18 +215,18 @@ Room19V1Chain3:
     Unk02 0, 255, 1
     SetQuestState QUEST_OBJ_GO_TO_COMMON_ROOM_AFTER_POTIONS, QUEST_OBJECTIVE_INDEX
     SetQuestState 2, 245
-    SetTileObjectFacing 0, 255, 0
+    SetTileActorFacing 0, 255, 0
     GrantPartyExperience 10, 65535
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room19V1Chain4:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    DespawnTileObject Room19V1Group1_id, 0
-    DespawnTileObject Room19V1Group1_id, 2
-    DespawnTileObject Room19V1Group1_id, 1
-    QueueTileObjectMove Room19V1Group1_id, 5, 0, 0, 1200, 0
+    CancelActorAnimSequence 0, 255
+    DespawnTileActor Room19V1Group1_id, 0
+    DespawnTileActor Room19V1Group1_id, 2
+    DespawnTileActor Room19V1Group1_id, 1
+    QueueTileActorMove Room19V1Group1_id, 5, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     @ "The lady is found!"
     ShowRoomDialog 390
@@ -235,11 +235,11 @@ Room19V1Chain4:
     End
 Room19V1Chain5:
     ArmChainYield 1
-    QueueTileObjectMove 0, 255, 0, 0, 1800, 0
-    DespawnRoomRowObjects Room19V1Group1_id
+    QueueTileActorMove 0, 255, 0, 0, 1800, 0
+    DespawnRoomRowActors Room19V1Group1_id
     Unk02 0, 255, 2
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room19V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room19V1Route3_id, 0, 1, 0, 0, 0
     End
 Room19V1Chain6:
     GotoIfQuestStateCompare 249, 3, 1, Room19V1Chain42_id, Room19V1Chain55_id, Room19V1Group11_id, 0
@@ -293,29 +293,29 @@ Room19V1Chain18:
     ShowRoomDialog 631
     End
 Room19V1Chain19:
-    StartObjectAnimSequence Room19V1Group6_id, 0, 0, 0, Room19V1Route5_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group6_id, 1, 0, 0, Room19V1Route4_id, 3, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group6_id, 0, 0, 0, Room19V1Route5_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group6_id, 1, 0, 0, Room19V1Route4_id, 3, 0, 0, 0, 0
     End
 Room19V1Chain20:
     GotoIfQuestStateCompare 230, 0, 1, 0, 0, Room19V1Group8_id, 0
     End
 Room19V1Chain21:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RespawnRowAndRunChain Room19V1Group9_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room19V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room19V1Route6_id, 0, 1, 0, 0, 0
     End
 Room19V1Chain22:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RespawnRowAndRunChain Room19V1Group9_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room19V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room19V1Route7_id, 0, 1, 0, 0, 0
     End
 Room19V1Chain23:
     ArmChainYield 1
-    DespawnRoomRowObjects Room19V1Group8_id
+    DespawnRoomRowActors Room19V1Group8_id
     @ "Did you find out anything?"
     @ "Nothing very positive, I'm afraid."
     @ "Oh, poor Hagrid - and poor Buckbeak. Let's go back to the common room."
@@ -327,7 +327,7 @@ Room19V1Chain23:
     SetQuestState 2, 230
     SetQuestState QUEST_OBJ_GO_TO_GREAT_HALL, QUEST_OBJECTIVE_INDEX
     SetStoryStage 16
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room19V1Chain24:
     @ "The Defense Against the Dark Arts class is on the third floor."
@@ -338,8 +338,8 @@ Room19V1Chain25:
     ShowRoomDialog 333
     End
 Room19V1Chain26:
-    StartObjectAnimSequence Room19V1Group10_id, 0, 0, 0, Room19V1Route4_id, 0, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group10_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group10_id, 0, 0, 0, Room19V1Route4_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group10_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain27:
     @ "I heard somebody got a Firebolt for Christmas!"
@@ -400,9 +400,9 @@ Room19V1Chain40:
 Room19V1Chain41:
     RespawnRowAndRunChain Room19V1Group9_id, 0
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room19V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room19V1Route8_id, 0, 1, 0, 0, 0
     End
 Room19V1Chain42:
     GotoIfQuestStateCompare 249, 0, 1, Room19V1Chain49_id, 0, Room19V1Group1_id, 0
@@ -412,48 +412,48 @@ Room19V1Chain43:
     ShowRoomDialog 372
     End
 Room19V1Chain44:
-    StartObjectAnimSequence Room19V1Group7_id, 0, 0, 0, Room19V1Route4_id, 3, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group7_id, 1, 0, 0, Room19V1Route5_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group7_id, 0, 0, 0, Room19V1Route4_id, 3, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group7_id, 1, 0, 0, Room19V1Route5_id, 1, 0, 0, 0, 0
     End
 Room19V1Chain45:
-    StartObjectAnimSequence Room19V1Group2_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group2_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group2_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group2_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain46:
-    StartObjectAnimSequence Room19V1Group3_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group3_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group3_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group3_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain47:
-    StartObjectAnimSequence Room19V1Group4_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group4_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group4_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group4_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain48:
-    StartObjectAnimSequence Room19V1Group5_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group5_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group5_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group5_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain49:
-    StartObjectAnimSequence Room19V1Group18_id, 0, 0, 0, Room19V1Route4_id, 5, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group18_id, 0, 0, 0, Room19V1Route4_id, 5, 0, 0, 0, 0
     End
 Room19V1Chain50:
-    StartObjectAnimSequence Room19V1Group12_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group12_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group12_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group12_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain51:
-    StartObjectAnimSequence Room19V1Group13_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group13_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group13_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group13_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain52:
-    StartObjectAnimSequence Room19V1Group14_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group14_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
     End
 Room19V1Chain53:
-    StartObjectAnimSequence Room19V1Group15_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group15_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group15_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group15_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain54:
-    StartObjectAnimSequence Room19V1Group16_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
-    StartObjectAnimSequence Room19V1Group16_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group16_id, 0, 0, 0, Room19V1Route4_id, 1, 0, 0, 0, 0
+    StartActorAnimSequence Room19V1Group16_id, 1, 0, 0, Room19V1Route5_id, 2, 0, 0, 0, 0
     End
 Room19V1Chain55:
-    DespawnRoomRowObjects Room19V1Group18_id
+    DespawnRoomRowActors Room19V1Group18_id
     End
     EndSubBlock Room19V1End

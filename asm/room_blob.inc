@@ -78,8 +78,8 @@
     .byte 0, 0, 0xFF, 0xFF
 .endm
 
-@ A group of `count` objects: the member count, each member's size, padding
-@ to 4 bytes, then the records (emitted by the object macros).
+@ A group of `count` actors: the member count, each member's size, padding
+@ to 4 bytes, then the records (emitted by the actor macros).
 .macro Group name, count
     .set _gid, _gid + 1
     .set _mk, 0
@@ -99,7 +99,7 @@
 
 @ ---- offset tables --------------------------------------------------------
 @ A table of u16 offsets from the table start: OffsetTable, then Offsets lines
-@ (any number), then EndTable. Used for object groups, routes and chains.
+@ (any number), then EndTable. Used for actor groups, routes and chains.
 @ Each listed label also gets a <label>_id symbol holding its runtime number:
 @ the position in the table plus `base`. The runtime tables put the default
 @ sub-block's group and chain 0 first and the selected variant's after them,
@@ -133,7 +133,7 @@
     _tablepad _tcount
 .endm
 
-@ ---- object records ------------------------------------------------------
+@ ---- actor records ------------------------------------------------------
 @ Each macro emits one record and registers its size with the enclosing Group.
 @ Fields after the positional ones default to the value most records use.
 

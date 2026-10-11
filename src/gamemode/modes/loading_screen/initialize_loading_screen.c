@@ -51,12 +51,12 @@ void InitializeLoadingScreen(void)
     g_LoadingScreenState.abOptionStage[0] = g_GameModeStackContext.dwCurrentGameModeArg1;
     g_LoadingScreenState.abOptionStage[1] = g_GameModeStackContext.dwCurrentGameModeArg2;
     g_LoadingScreenState.abOptionStage[2] = g_GameModeStackContext.dwCurrentGameModeArg3;
-    g_LoadingScreenState.pCursorObject = SpawnMenuCursorObject(1);
+    g_LoadingScreenState.pCursorActor = SpawnMenuCursorActor(1);
     sub_0800C344();
 
     g_GameModeStackContext.dwModeState = 0;
     g_GameModeStackContext.dwCurrentGameModeArg3 = g_abQuestEventState[0];
-    SetActorActionState(g_pPlayerObject, 0x24);
+    SetActorActionState(g_pPlayerActor, 0x24);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
     g_GameModeStackContext.dwModeTimer = 5;
     sub_0800C3FC();

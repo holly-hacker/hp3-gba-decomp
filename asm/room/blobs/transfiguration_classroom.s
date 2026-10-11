@@ -166,27 +166,27 @@ Room03V1Chain2:
     ArmChainYield 1
     RespawnRowAndRunChain Room03V1Group3_id, 0
     RemovePartyFollower 7
-    SetTileObjectFacing Room03V1Group3_id, 0, 0
-    SetTileObjectFacing 0, 255, 0
+    SetTileActorFacing Room03V1Group3_id, 0, 0
+    SetTileActorFacing 0, 255, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
-    QueueTileObjectMove Room03V1Group1_id, 0, 0, 0, 1400, 0
+    QueueTileActorMove Room03V1Group1_id, 0, 0, 0, 1400, 0
     @ "Attention, class! Today's lesson will concern Animagi."
     @ "Animagi are wizards who can transform at will into animals. Like this..."
     ShowRoomDialog 198
-    DespawnRoomRowObjects Room03V1Group2_id
-    DespawnRoomRowObjects Room03V1Group3_id
+    DespawnRoomRowActors Room03V1Group2_id
+    DespawnRoomRowActors Room03V1Group3_id
     RespawnRowAndRunChain Room03V1Group6_id, 0
-    PlayTileObjectAnimation Room03V1Group1_id, 0, 9
-    StartTileObjectScript 310, 93, 2, 0, 255, 0, 0, 0, 255, 255, 255
+    PlayTileActorAnimation Room03V1Group1_id, 0, 9
+    StartTileActorScript 310, 93, 2, 0, 255, 0, 0, 0, 255, 255, 255
     PauseMusic
     PlaySoundById 62
-    QueueTileObjectMove Room03V1Group5_id, 7, 0, 0, 1200, 0
-    QueueTileObjectMove Room03V1Group5_id, 6, 0, 0, 600, 0
+    QueueTileActorMove Room03V1Group5_id, 7, 0, 0, 1200, 0
+    QueueTileActorMove Room03V1Group5_id, 6, 0, 0, 600, 0
     DelayedRespawnRowAndRunChainFrames 15, 0, 0
-    QueueTileObjectMove Room03V1Group5_id, 7, 0, 0, 600, 0
-    QueueTileObjectMove Room03V1Group1_id, 0, 0, 0, 1200, 0
+    QueueTileActorMove Room03V1Group5_id, 7, 0, 0, 600, 0
+    QueueTileActorMove Room03V1Group1_id, 0, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
-    PlayTileObjectAnimation Room03V1Group1_id, 0, 10
+    PlayTileActorAnimation Room03V1Group1_id, 0, 10
     UnmuteAllMusicChannels
     ResumeMusic
     @ "What's got into you all today? That's the first time my transformation's not got applause from a class."
@@ -229,10 +229,10 @@ Room03V1Chain10:
     End
 Room03V1Chain11:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     ResetPartyLeaderSelection
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room03V1Route0_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route0_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain12:
     RespawnRowAndRunChain Room03V1Group2_id, 0
@@ -240,9 +240,9 @@ Room03V1Chain12:
     End
 Room03V1Chain13:
     ArmChainYield 1
-    DespawnTileObject Room03V1Group3_id, 0
+    DespawnTileActor Room03V1Group3_id, 0
     RecruitPartyFollower 7
-    DespawnTileObject Room03V1Group8_id, 0
+    DespawnTileActor Room03V1Group8_id, 0
     RecruitPartyFollower 6
     Unk02 Room03V1Group7_id, 0, 2
     Unk02 Room03V1Group7_id, 2, 2
@@ -251,17 +251,17 @@ Room03V1Chain13:
     Unk02 Room03V1Group7_id, 3, 2
     Unk02 Room03V1Group7_id, 5, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room03V1Group7_id, 0, 0, 0, Room03V1Route2_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room03V1Group7_id, 1, 0, 0, Room03V1Route2_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room03V1Group7_id, 2, 0, 0, Room03V1Route2_id, 2, 1, 0, 0, 0
-    StartObjectAnimSequence Room03V1Group7_id, 4, 0, 0, Room03V1Route3_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence Room03V1Group7_id, 3, 0, 0, Room03V1Route3_id, 1, 1, 0, 0, 0
-    StartObjectAnimSequence Room03V1Group7_id, 5, 0, 0, Room03V1Route5_id, 0, 1, 0, 0, 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room03V1Route4_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group7_id, 0, 0, 0, Room03V1Route2_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group7_id, 1, 0, 0, Room03V1Route2_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group7_id, 2, 0, 0, Room03V1Route2_id, 2, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group7_id, 4, 0, 0, Room03V1Route3_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group7_id, 3, 0, 0, Room03V1Route3_id, 1, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group7_id, 5, 0, 0, Room03V1Route5_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route4_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain14:
     ArmChainYield 1
-    DespawnRoomRowObjects Room03V1Group7_id
+    DespawnRoomRowActors Room03V1Group7_id
     @ "It's time for Care of Magical Creatures class with Hagrid - come on!"
     @ "I just hope he isn't too nervous..."
     @ "I'm really looking forward to this. Let's go."
@@ -270,30 +270,30 @@ Room03V1Chain14:
     SetQuestState QUEST_OBJ_GO_TO_CARE_OF_MAGICAL_CREATURES, QUEST_OBJECTIVE_INDEX
     RespawnRowAndRunChain Room03V1Group9_id, 0
     SetStoryStage 2
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room03V1Chain15:
     ArmChainYield 1
     @ "Mr. Potter, Miss Granger, I shall enter a maze. You must find your own way into the maze and locate me as quickly as you can. Ready... Begin!"
     ShowRoomDialog 200
-    PlayTileObjectAnimation Room03V1Group1_id, 0, 9
+    PlayTileActorAnimation Room03V1Group1_id, 0, 9
     RespawnRowAndRunChain Room03V1Group4_id, 0
-    QueueTileObjectMove Room03V1Group4_id, 0, 0, 0, 1500, 0
-    DespawnTileObject Room03V1Group1_id, 0
+    QueueTileActorMove Room03V1Group4_id, 0, 0, 0, 1500, 0
+    DespawnTileActor Room03V1Group1_id, 0
     Unk02 Room03V1Group4_id, 0, 3
     Unk02 0, 255, 2
     RespawnRowAndRunChain Room03V1Group2_id, 0
-    DespawnTileObject Room03V1Group6_id, 1
+    DespawnTileActor Room03V1Group6_id, 1
     ArmChainYield 0
-    StartObjectAnimSequence Room03V1Group4_id, 0, 0, 0, Room03V1Route1_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group4_id, 0, 0, 0, Room03V1Route1_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain16:
     ArmChainYield 1
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
     RecruitPartyFollower 6
-    DespawnTileObject Room03V1Group2_id, 0
+    DespawnTileActor Room03V1Group2_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room03V1Route6_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route6_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain17:
     ArmChainYield 1
@@ -307,21 +307,21 @@ Room03V1Chain18:
     End
 Room03V1Chain19:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     RespawnRowAndRunChain Room03V1Group7_id, 0
     RespawnRowAndRunChain Room03V1Group3_id, 0
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room03V1Route8_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route8_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain20:
     ArmChainYield 1
-    DespawnTileObject Room03V1Group4_id, 0
-    QueueTileObjectMove Room03V1Group2_id, 0, 0, 0, 1200, 0
-    DespawnTileObject Room03V1Group6_id, 2
-    StartTileObjectScript 310, 18, 2, 0, 255, 0, 0, 0, 255, 255, 255
+    DespawnTileActor Room03V1Group4_id, 0
+    QueueTileActorMove Room03V1Group2_id, 0, 0, 0, 1200, 0
+    DespawnTileActor Room03V1Group6_id, 2
+    StartTileActorScript 310, 18, 2, 0, 255, 0, 0, 0, 255, 255, 255
     Unk02 Room03V1Group2_id, 0, 2
     ArmChainYield 0
-    StartObjectAnimSequence Room03V1Group2_id, 0, 0, 0, Room03V1Route7_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group2_id, 0, 0, 0, Room03V1Route7_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain21:
     SetOverworldMonstersDisabled
@@ -341,14 +341,14 @@ Room03V1Chain23:
     GrantPartySpell 5
     ShowSpellLearnedMessage 7, 1
     ArmChainYield 0
-    StartObjectAnimSequence 0, 255, 0, 0, Room03V1Route10_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route10_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain24:
     ArmChainYield 1
     RespawnRowAndRunChain Room03V1Group8_id, 0
     RemovePartyFollower 6
     ArmChainYield 0
-    StartObjectAnimSequence Room03V1Group8_id, 0, 0, 0, Room03V1Route9_id, 0, 1, 0, 0, 0
+    StartActorAnimSequence Room03V1Group8_id, 0, 0, 0, Room03V1Route9_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain25:
     ClearOverworldMonstersDisabled

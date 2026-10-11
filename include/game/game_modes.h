@@ -153,7 +153,7 @@ typedef enum {
 // its shared VRAM tile allocation cache.
 extern u32 g_dwTickCount;
 
-// Ticks active objects, particle emitters, and several other per-frame
+// Ticks active actors, particle emitters, and several other per-frame
 // subsystems; called once/frame from TickGameModeStack after
 // DispatchGameModeUpdate. See docs/memory-map/frame_systems.md.
 extern void TickFrameSystems(void);

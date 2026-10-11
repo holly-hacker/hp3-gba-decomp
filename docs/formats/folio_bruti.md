@@ -76,7 +76,7 @@ it passes to `GetDialogText` (`0x080425E4`, see `docs/formats/text.md`):
 
 ```
 for spell_index in 0..7:
-    sprite = per-slot sprite object (allocated once, OBJ template 0x080C2E78)
+    sprite = per-slot sprite actor (allocated once, OBJ template 0x080C2E78)
     effectiveness = sub_0801890C(monster_index, spell_index)   ; r0=r7, r1=r6
     if effectiveness == -1  OR  ram[0x03003190 + monster_index] <= 2:
         ; monster not yet Informus-analyzed (0x03003190 = g_abMonsterDocLevel_candidate,
@@ -323,10 +323,10 @@ rows, one per `MonsterTable` index. Each row is two `ActorAssetRecord`s
 
 | Offset | Record | Readers |
 |---|---|---|
-| `+0x00` | battle sprite | `InitMonsterBattleActor` (`SetActorAnimData` with `g_pMonsterAnimFrameTable[index * 0x60]`); `DrawFolioBrutiMonsterPanel` (same record and animation table); `RestoreFighterObjects_candidate` (`wActorType - 4` as index) |
-| `+0x10` | overworld sprite | `SpawnWanderingMonsterObject` (`SetObjectPendingPalette` with `+0x18`, then `SetActorAnimData` with `0x0806584C`) |
+| `+0x00` | battle sprite | `InitMonsterBattleActor` (`SetActorAnimData` with `g_pMonsterAnimFrameTable[index * 0x60]`); `DrawFolioBrutiMonsterPanel` (same record and animation table); `RestoreFighterActors_candidate` (`wActorType - 4` as index) |
+| `+0x10` | overworld sprite | `SpawnWanderingMonsterActor` (`SetActorPendingPalette` with `+0x18`, then `SetActorAnimData` with `0x0806584C`) |
 
-The battle palette (`+0x08`) goes to `AttachObjectPaletteUnshared`,
+The battle palette (`+0x08`) goes to `AttachActorPaletteUnshared`,
 which binds it to a newly allocated, unshared palette cache slot.
 `DrawFolioBrutiMonsterPanel` uses it for monsters already seen and a
 silhouette palette (`0x08069574`) otherwise.

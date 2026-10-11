@@ -14,8 +14,8 @@ The shared frame of the options, save, minigame-select and card-combo screens
 | `InitializeMenuScreen` | `0x0801DF6C` | `(titleStringId, cursorKind, pulseSelection, pOverlayGraphic, overlayX, overlayY)`: `LoadMenuScreenFrame`, then `BeginMenuScreen`. |
 | `LoadMenuScreenFrame` | `0x0801DF90` | Resets the display, loads the palette embedded in `gMenuBg3Graphic` (rows 0-15) and the palette-less frame blob `0x08DC1EFC` onto BG0, then `LoadMenuScreenOverlay`. |
 | `LoadMenuScreenOverlay` | `0x0801E004` | If a graphic is given, loads it onto BG1 at tile offset `0x70` (palette bank 0). |
-| `BeginMenuScreen` | `0x0801E05C` | Clears BG2, `DrawMenuScreenTitle`, spawns the cursor object into `g_pMenuCursorObject` (`cursorKind` 9 spawns none), and, if `pulseSelection`, starts a palette effect pulsing colors 6-8 between the first two frames of `gMenuSelectionPalette`, keeping its slot at `0x03002E0C` (-1 when none). |
-| `ExitMenuScreen` | `0x0801E0DC` | Releases the cursor object, stops that palette effect and frees the particles. |
+| `BeginMenuScreen` | `0x0801E05C` | Clears BG2, `DrawMenuScreenTitle`, spawns the cursor actor into `g_pMenuCursorActor` (`cursorKind` 9 spawns none), and, if `pulseSelection`, starts a palette effect pulsing colors 6-8 between the first two frames of `gMenuSelectionPalette`, keeping its slot at `0x03002E0C` (-1 when none). |
+| `ExitMenuScreen` | `0x0801E0DC` | Releases the cursor actor, stops that palette effect and frees the particles. |
 | `DrawMenuScreenTitle` | `0x0801E118` | Clears a text rectangle on BG2 and draws the string, except for string id `0xACF`. |
 
 `BuildListMenu` and `InitializeItemsItemSelect` call `BeginMenuScreen` without

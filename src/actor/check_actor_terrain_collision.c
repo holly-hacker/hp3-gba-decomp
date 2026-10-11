@@ -2,7 +2,7 @@
 #include "actor.h"
 #include "overworld/terrain.h"
 
-// Runs ResolveObjectTerrain for an actor that is moving or was flagged to be rechecked, unless
+// Runs ResolveActorTerrain for an actor that is moving or was flagged to be rechecked, unless
 // the terrain pass is skipped for this tick, then clears the one-tick flags.
 void CheckActorTerrainCollision(Actor *actor)
 {
@@ -13,7 +13,7 @@ void CheckActorTerrainCollision(Actor *actor)
         if ((flags & (ActorFlagTerrainDrawLayer | ActorFlagTerrainCollisionB_candidate
                       | ActorFlagTerrainCollisionA_candidate))
             && !(flags & ActorFlagSkipTerrainOnce_candidate))
-            ResolveObjectTerrain(actor);
+            ResolveActorTerrain(actor);
     }
 
     actor->wFlags_0xAC = 0;

@@ -133,36 +133,36 @@ Room05V1Chain0:
     End
 Room05V1Chain1:
     ArmChainYield 1
-    DespawnTileObject Room05V0Group0_id, 7
-    DespawnTileObject Room05V0Group0_id, 9
+    DespawnTileActor Room05V0Group0_id, 7
+    DespawnTileActor Room05V0Group0_id, 9
     DelayedRespawnRowAndRunChain 0, Room05V1Group1_id, 0
-    SetTileObjectAnimState Room05V1Group1_id, 0
+    SetTileActorAnimState Room05V1Group1_id, 0
     DelayedRespawnRowAndRunChain 0, 0, Room05V1Chain11_id
     End
 Room05V1Chain2:
     RespawnRowAndRunChain Room05V1Group3_id, 0
-    SetTileObjectAnimState Room05V1Group3_id, 0
-    DespawnTileObject Room05V1Group3_id, 0
+    SetTileActorAnimState Room05V1Group3_id, 0
+    DespawnTileActor Room05V1Group3_id, 0
     RespawnRowAndRunChain Room05V1Group4_id, 0
     End
 Room05V1Chain3:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState QUEST_OBJ_FIND_TREVOR, QUEST_OBJECTIVE_INDEX
     @ "There he is!"
     @ "Let's get him and get back to..."
     ShowRoomDialog 146
     DelayedRespawnRowAndRunChain 0, Room05V1Group5_id, 0
-    QueueTileObjectMove Room05V1Group17_id, 0, 0, 0, 1500, 1
+    QueueTileActorMove Room05V1Group17_id, 0, 0, 0, 1500, 1
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetTileObjectAnimState Room05V1Group5_id, 0
+    SetTileActorAnimState Room05V1Group5_id, 0
     DelayedRespawnRowAndRunChain 3, Room05V1Group8_id, 0
-    DespawnTileObject Room05V1Group5_id, 0
-    SetTileObjectAnimState Room05V1Group8_id, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 1
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    DespawnTileActor Room05V1Group5_id, 0
+    SetTileActorAnimState Room05V1Group8_id, 0
+    QueueTileActorMove 0, 255, 0, 0, 1500, 1
+    SetTileActorAnimState Room05V0Group0_id, 8
     PlayScreenTransitionOut
-    DespawnTileObject Room05V1Group19_id, 0
+    DespawnTileActor Room05V1Group19_id, 0
     RemovePartyFollower 5
     PlaySoundById 156
     DelayedRespawnRowAndRunChain 1, Room05V1Group18_id, 0
@@ -173,59 +173,59 @@ Room05V1Chain3:
     @ "Harry!"
     ShowRoomDialog 147
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    SetTileActorAnimState Room05V0Group0_id, 8
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    DespawnTileObject Room05V1Group0_id, 0
-    DespawnTileObject Room05V1Group0_id, 1
+    DespawnTileActor Room05V1Group0_id, 0
+    DespawnTileActor Room05V1Group0_id, 1
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group24_id, 0
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group27_id, 0
     ArmChainYield 1
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    SetTileActorAnimState Room05V0Group0_id, 8
     DelayedRespawnRowAndRunChain 1, 0, 0
     GotoIfQuestStateCompare 128, 0, 1, Room05V1Chain6_id, 0, 0, 0
     @ "It's trying to get in! We have to bar the door!"
     ShowRoomDialog 148
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    SetTileActorAnimState Room05V0Group0_id, 8
     GotoIfQuestStateCompare 128, 0, 1, Room05V1Chain6_id, 0, 0, 0
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    SetTileActorAnimState Room05V0Group0_id, 8
     DelayedRespawnRowAndRunChain 3, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    SetTileActorAnimState Room05V0Group0_id, 8
     GotoIfQuestStateCompare 128, 0, 1, Room05V1Chain6_id, Room05V1Chain7_id, 0, 0
     End
 Room05V1Chain4:
     ArmChainYield 1
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
-    SetTileObjectFacing 0, 255, 0
-    DespawnTileObject Room05V0Group0_id, 8
+    SetTileActorFacing 0, 255, 0
+    DespawnTileActor Room05V0Group0_id, 8
     DelayedRespawnRowAndRunChain 0, Room05V1Group12_id, 0
-    DespawnTileObject Room05V0Group0_id, 6
-    SetTileObjectAnimState Room05V1Group12_id, 0
+    DespawnTileActor Room05V0Group0_id, 6
+    SetTileActorAnimState Room05V1Group12_id, 0
     SetQuestState 5, 224
     PlaySoundById 32
     DelayedRespawnRowAndRunChain 0, Room05V1Group13_id, 0
-    QueueTileObjectMove Room05V1Group13_id, 0, 0, 0, 1500, 2
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 0
+    QueueTileActorMove Room05V1Group13_id, 0, 0, 0, 1500, 2
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group14_id, 0
     @ "Oh no! It's broken through!"
     ShowRoomDialog 158
-    QueueTileObjectMove Room05V1Group14_id, 0, 0, 0, 1500, 1
+    QueueTileActorMove Room05V1Group14_id, 0, 0, 0, 1500, 1
     PlaySoundById 22
-    StartTileObjectScript 154, 25, 1, Room05V1Group14_id, 0, 0, 0, 2, 255, 255, 255
-    StartTileObjectScript 165, 230, 0, Room05V1Group14_id, 0, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 154, 25, 1, Room05V1Group14_id, 0, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 165, 230, 0, Room05V1Group14_id, 0, 0, 0, 2, 255, 255, 255
     @ "None of us is hiding Sirius Black under our cloaks! Go!"
     ShowRoomDialog 159
-    StartTileObjectScript 184, 183, 0, Room05V1Group13_id, 0, 0, 0, 6, 255, 255, 255
-    DespawnTileObject Room05V1Group13_id, 0
+    StartTileActorScript 184, 183, 0, Room05V1Group13_id, 0, 0, 0, 6, 255, 255, 255
+    DespawnTileActor Room05V1Group13_id, 0
     PlayMusicModuleAndFlagIfChain1 51
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 1
+    QueueTileActorMove 0, 255, 0, 0, 1500, 1
     DelayedRespawnRowAndRunChain 1, 0, Room05V1Chain13_id
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     @ "What was that thing? And what's the matter with Harry?"
     @ "That was a Dementor. One of the Dementors of Azkaban. For some reason its presence caused Harry to collapse."
     @ "Can't we do something?"
@@ -234,9 +234,9 @@ Room05V1Chain4:
     @ "Miss Granger, I'd like you to go and find the conductor and get the train going again."
     ShowRoomDialog 114
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group21_id, 0
-    DespawnTileObject Room05V1Group24_id, 0
-    DespawnTileObject Room05V1Group27_id, 0
-    DespawnTileObject Room05V1Group0_id, 2
+    DespawnTileActor Room05V1Group24_id, 0
+    DespawnTileActor Room05V1Group27_id, 0
+    DespawnTileActor Room05V1Group0_id, 2
     InvokeChainIfEnabled 0, Room05V1Chain16_id
     End
 Room05V1Chain5:
@@ -252,10 +252,10 @@ Room05V1Chain7:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
     DelayedRespawnRowAndRunChain 3, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    SetTileActorAnimState Room05V0Group0_id, 8
     GotoIfQuestStateCompare 128, 0, 1, Room05V1Chain6_id, 0, 0, 0
     DelayedRespawnRowAndRunChain 5, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 8
+    SetTileActorAnimState Room05V0Group0_id, 8
     DelayedRespawnRowAndRunChain 2, 0, 0
     GotoIfQuestStateCompare 128, 0, 1, Room05V1Chain6_id, Room05V1Chain4_id, 0, 0
     End
@@ -267,10 +267,10 @@ Room05V1Chain8:
 Room05V1Chain9:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 9
+    SetTileActorAnimState Room05V0Group0_id, 9
     DelayedRespawnRowAndRunChain 1, 0, 0
     DelayedRespawnRowAndRunChain 4, 0, 0
-    SetTileObjectAnimState Room05V0Group0_id, 9
+    SetTileActorAnimState Room05V0Group0_id, 9
     DelayedRespawnRowAndRunChain 3, 0, 0
     GotoIfQuestStateCompare 249, 0, 1, Room05V1Chain11_id, Room05V1Chain12_id, 0, 0
     End
@@ -282,32 +282,32 @@ Room05V1Chain10:
 Room05V1Chain11:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 0, Room05V1Group2_id, 0
-    DespawnTileObject Room05V1Group27_id, 0
-    SetTileObjectAnimState Room05V1Group2_id, 0
+    DespawnTileActor Room05V1Group27_id, 0
+    SetTileActorAnimState Room05V1Group2_id, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
-    DespawnTileObject Room05V1Group2_id, 0
-    DespawnTileObject Room05V0Group0_id, 7
-    DespawnTileObject Room05V0Group0_id, 9
+    DespawnTileActor Room05V1Group2_id, 0
+    DespawnTileActor Room05V0Group0_id, 7
+    DespawnTileActor Room05V0Group0_id, 9
     DelayedRespawnRowAndRunChain 0, Room05V1Group1_id, 0
-    SetTileObjectAnimState Room05V1Group1_id, 0
+    SetTileActorAnimState Room05V1Group1_id, 0
     PlaySoundById 32
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 0
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group7_id, 0
-    QueueTileObjectMove Room05V1Group7_id, 0, 0, 0, 1500, 1
+    QueueTileActorMove Room05V1Group7_id, 0, 0, 0, 1500, 1
     DelayedRespawnRowAndRunChain 0, Room05V1Group14_id, 0
-    QueueTileObjectMove Room05V1Group14_id, 0, 0, 0, 1500, 1
+    QueueTileActorMove Room05V1Group14_id, 0, 0, 0, 1500, 1
     Unk02 Room05V1Group14_id, 0, 3
-    StartTileObjectScript 338, 230, 0, Room05V1Group14_id, 0, 0, 0, 0, 255, 255, 255
-    SetTileObjectFacing Room05V1Group14_id, 0, 0
+    StartTileActorScript 338, 230, 0, Room05V1Group14_id, 0, 0, 0, 0, 255, 255, 255
+    SetTileActorFacing Room05V1Group14_id, 0, 0
     @ "None of us is hiding Sirius Black under our cloaks! Go!"
     ShowRoomDialog 159
-    StartTileObjectScript 324, 189, 0, Room05V1Group7_id, 0, 0, 0, 6, 255, 255, 255
-    DespawnTileObject Room05V1Group7_id, 0
+    StartTileActorScript 324, 189, 0, Room05V1Group7_id, 0, 0, 0, 6, 255, 255, 255
+    DespawnTileActor Room05V1Group7_id, 0
     PlayMusicModuleAndFlagIfChain1 51
     DelayedRespawnRowAndRunChain 1, 0, 0
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 1
-    SetTileObjectAnimStateWithSpeed 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1500, 1
+    SetTileActorAnimStateWithSpeed 0, 255
     @ "What was that thing? And what's the matter with Harry?"
     @ "That was a Dementor. One of the Dementors of Azkaban. For some reason its presence caused Harry to collapse."
     @ "Can't we do something?"
@@ -320,32 +320,32 @@ Room05V1Chain11:
 Room05V1Chain12:
     ArmChainYield 1
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
-    SetTileObjectFacing 0, 255, 0
-    DespawnTileObject Room05V0Group0_id, 7
-    DespawnTileObject Room05V0Group0_id, 9
+    SetTileActorFacing 0, 255, 0
+    DespawnTileActor Room05V0Group0_id, 7
+    DespawnTileActor Room05V0Group0_id, 9
     DelayedRespawnRowAndRunChain 0, Room05V1Group1_id, 0
-    SetTileObjectAnimState Room05V1Group1_id, 0
-    CancelObjectAnimSequence 0, 255
-    SetTileObjectFacing 0, 255, 0
+    SetTileActorAnimState Room05V1Group1_id, 0
+    CancelActorAnimSequence 0, 255
+    SetTileActorFacing 0, 255, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group7_id, 0
-    QueueTileObjectMove Room05V1Group7_id, 0, 0, 0, 1500, 2
+    QueueTileActorMove Room05V1Group7_id, 0, 0, 0, 1500, 2
     PlaySoundById 32
     DelayedRespawnRowAndRunChain 0, Room05V1Group14_id, 0
     @ "The Dementor's inside!"
     ShowRoomDialog 157
     PlaySoundById 22
-    QueueTileObjectMove Room05V1Group14_id, 0, 0, 0, 1500, 1
+    QueueTileActorMove Room05V1Group14_id, 0, 0, 0, 1500, 1
     Unk02 Room05V1Group14_id, 0, 3
-    StartTileObjectScript 338, 230, 0, Room05V1Group14_id, 0, 0, 0, 0, 255, 255, 255
-    SetTileObjectFacing Room05V1Group14_id, 0, 0
+    StartTileActorScript 338, 230, 0, Room05V1Group14_id, 0, 0, 0, 0, 255, 255, 255
+    SetTileActorFacing Room05V1Group14_id, 0, 0
     @ "None of us is hiding Sirius Black under our cloaks! Go!"
     ShowRoomDialog 159
-    StartTileObjectScript 322, 189, 0, Room05V1Group7_id, 0, 0, 0, 6, 255, 255, 255
-    DespawnTileObject Room05V1Group7_id, 0
+    StartTileActorScript 322, 189, 0, Room05V1Group7_id, 0, 0, 0, 6, 255, 255, 255
+    DespawnTileActor Room05V1Group7_id, 0
     PlayMusicModuleAndFlagIfChain1 51
-    QueueTileObjectMove 0, 255, 0, 0, 1500, 1
+    QueueTileActorMove 0, 255, 0, 0, 1500, 1
     DelayedRespawnRowAndRunChain 1, 0, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     @ "What was that thing? And what's the matter with Harry?"
     @ "That was a Dementor. One of the Dementors of Azkaban. For some reason its presence caused Harry to collapse."
     @ "Can't we do something?"
@@ -353,7 +353,7 @@ Room05V1Chain12:
     @ "What can I do to help, Professor?"
     @ "Miss Granger, I'd like you to go and find the conductor and get the train going again."
     ShowRoomDialog 114
-    DespawnTileObject Room05V1Group27_id, 0
+    DespawnTileActor Room05V1Group27_id, 0
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group26_id, 0
     InvokeChainIfEnabled 0, Room05V1Chain16_id
     End
@@ -362,8 +362,8 @@ Room05V1Chain13:
     End
 Room05V1Chain14:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
+    CancelActorAnimSequence 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     RemovePartyFollower 6
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group23_id, 0
@@ -373,12 +373,12 @@ Room05V1Chain14:
     SetQuestState QUEST_OBJ_FIND_CHOCOLATE, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room05V1Group20_id, 0
     PlayScreenTransitionIn
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room05V1Chain15:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
-    QueueTileObjectMove 0, 255, 0, 0, 1200, 0
+    CancelActorAnimSequence 0, 255
+    QueueTileActorMove 0, 255, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     RemovePartyFollower 7
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group22_id, 0
@@ -389,30 +389,30 @@ Room05V1Chain15:
     SetQuestState 1, 250
     DelayedRespawnRowAndRunChain 0, Room05V1Group20_id, 0
     PlayScreenTransitionIn
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room05V1Chain16:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     SetQuestState 0, 246
     SetQuestState 0, QUEST_CAMERA_Y_OFFSET
-    DespawnRoomRowObjects Room05V1Group28_id
+    DespawnRoomRowActors Room05V1Group28_id
     SetDefeatWarpSelector 18 @ Hogwarts Express - Baggage Car
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group17_id, 0
-    QueueTileObjectMove Room05V1Group17_id, 8, 0, 0, 1200, 0
+    QueueTileActorMove Room05V1Group17_id, 8, 0, 0, 1200, 0
     ShowLoadingScreenTransition 9, 10, 32, 255
     PlayScreenTransitionOut
     GotoIfStoryStageCompare 0, 9, Room05V1Chain15_id, Room05V1Chain14_id, 0, 0
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     End
 Room05V1Chain17:
     SetPauseMenuLocked 1, 255, 255, 255
     PlayMusicModuleAndFlagIfChain1 9
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     DelayedRespawnRowAndRunChain 0, Room05V1Group17_id, 0
     SetQuestState 0, 249
-    StartTileObjectScript 196, 23, 1, 0, 255, 0, 0, 2, 255, 255, 255
+    StartTileActorScript 196, 23, 1, 0, 255, 0, 0, 2, 255, 255, 255
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group28_id, 0
     InvokeChainIfEnabled 0, Room05V1Chain3_id
     End
@@ -428,9 +428,9 @@ Room05V1Chain19:
     ReturnToOverworld 5, 0
     End
 Room05V1Chain20:
-    DespawnTileObject Room05V1Group0_id, 1
-    DespawnTileObject Room05V1Group0_id, 0
-    DespawnTileObject Room05V1Group0_id, 2
+    DespawnTileActor Room05V1Group0_id, 1
+    DespawnTileActor Room05V1Group0_id, 0
+    DespawnTileActor Room05V1Group0_id, 2
     RespawnRowAndRunChain Room05V1Group21_id, 0
     End
 Room05V1Chain21:
@@ -443,10 +443,10 @@ Room05V1Chain22:
     ShowRoomDialog 155
     DelayedRespawnRowAndRunChain 0, Room05V1Group10_id, 0
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetTileObjectAnimState Room05V1Group10_id, 0
+    SetTileActorAnimState Room05V1Group10_id, 0
     DelayedRespawnRowAndRunChain 2, 0, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group9_id, 0
-    SetTileObjectAnimState Room05V1Group9_id, 0
+    SetTileActorAnimState Room05V1Group9_id, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     DelayedRespawnRowAndRunChain 1, 0, Room05V1Chain9_id
     End
@@ -454,10 +454,10 @@ Room05V1Chain23:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 0, Room05V1Group10_id, 0
     DelayedRespawnRowAndRunChain 2, 0, 0
-    SetTileObjectAnimState Room05V1Group10_id, 0
+    SetTileActorAnimState Room05V1Group10_id, 0
     DelayedRespawnRowAndRunChain 2, 0, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group9_id, 0
-    SetTileObjectAnimState Room05V1Group9_id, 0
+    SetTileActorAnimState Room05V1Group9_id, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     DelayedRespawnRowAndRunChain 1, 0, Room05V1Chain9_id
     End
@@ -510,12 +510,12 @@ Room05V2Chain0:
     End
 Room05V2Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Job done, Professor Lupin."
     @ "Thank you, Miss Granger."
     ShowRoomDialog 139
     DelayedRespawnRowAndRunChainFrames 3, 0, 0
-    DespawnTileObject Room05V2Group0_id, 1
+    DespawnTileActor Room05V2Group0_id, 1
     DelayedRespawnRowAndRunChain 0, Room05V2Group2_id, 0
     @ "Harry, are you all right?"
     @ "W-what? What happened? Where's that - that thing? Who screamed?"
@@ -530,7 +530,7 @@ Room05V2Chain1:
     PlayCutscene 5, 0, Room05V2Chain2_id
     End
 Room05V2Chain2:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     ReturnToOverworld 16, 0
     End
 Room05V2Chain3:
@@ -546,11 +546,11 @@ Room05V2Chain4:
     End
 Room05V2Chain5:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Here's the chocolate, Professor!"
     @ "Well done, Mr. Weasley."
     ShowRoomDialog 138
-    DespawnTileObject Room05V2Group0_id, 1
+    DespawnTileActor Room05V2Group0_id, 1
     DelayedRespawnRowAndRunChain 0, Room05V2Group2_id, 0
     @ "Harry, are you all right?"
     @ "W-what? What happened? Where's that - that thing? Who screamed?"
@@ -607,13 +607,13 @@ Room05V3Chain0:
     End
 Room05V3Chain1:
     ArmChainYield 1
-    CancelObjectAnimSequence 0, 255
+    CancelActorAnimSequence 0, 255
     @ "Here's the chocolate, Professor!"
     @ "Well done, Mr. Weasley."
     ShowRoomDialog 138
     ConsumeRoomItem 76
     ShowItemRemovedMessage 76
-    DespawnTileObject Room05V3Group0_id, 2
+    DespawnTileActor Room05V3Group0_id, 2
     DelayedRespawnRowAndRunChain 0, Room05V3Group1_id, 0
     @ "Harry, are you all right?"
     @ "W-what? What happened? Where's that - that thing? Who screamed?"
@@ -628,7 +628,7 @@ Room05V3Chain1:
     PlayCutscene 5, 0, Room05V3Chain4_id
     End
 Room05V3Chain2:
-    DespawnTileObject Room05V3Group0_id, 1
+    DespawnTileActor Room05V3Group0_id, 1
     End
 Room05V3Chain3:
     ArmChainYield 1
@@ -637,7 +637,7 @@ Room05V3Chain3:
     ReturnToOverworld 6, 0
     End
 Room05V3Chain4:
-    SetTileObjectAnimStateWithSpeed 0, 255
+    SetTileActorAnimStateWithSpeed 0, 255
     ReturnToOverworld 16, 0
     End
 Room05V3Chain5:
@@ -693,7 +693,7 @@ Room05V4Chain5:
     ReturnToOverworld 7, 0
     End
 Room05V4Chain6:
-    DespawnTileObject Room05V4Group1_id, 0
+    DespawnTileActor Room05V4Group1_id, 0
     StartBattle 12, 0, Room05V4Chain7_id
     End
 Room05V4Chain7:
@@ -726,6 +726,6 @@ Room05V4Chain13:
     GotoIfQuestStateCompare 250, 0, 2, Room05V4Chain9_id, Room05V4Chain12_id, 0, 0
     End
 Room05V4Chain14:
-    StartObjectAnimSequence Room05V4Group1_id, 0, 0, 0, Room05V4Route0_id, 0, 0, 0, 0, 0
+    StartActorAnimSequence Room05V4Group1_id, 0, 0, 0, Room05V4Route0_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room05V4End
