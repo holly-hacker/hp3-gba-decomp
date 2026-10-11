@@ -10,7 +10,7 @@ extern const u32 g_dwFolioBrutiBg1Control;  // 0x08069570
 extern const u16 g_aFolioBrutiBlankObjPalette[16];  // 0x08069574
 
 // The grid cursor and the spell-effectiveness dot.
-extern const ObjectGfxRecord g_aFolioBrutiObjectGfx[2];  // 0x08069594
+extern const ActorGfxRecord g_aFolioBrutiObjectGfx[2];  // 0x08069594
 #define FOLIO_BRUTI_CURSOR_GFX    (&g_aFolioBrutiObjectGfx[0])
 #define FOLIO_BRUTI_SPELL_DOT_GFX (&g_aFolioBrutiObjectGfx[1])
 
@@ -28,9 +28,9 @@ typedef struct {
     u32 dwHeadingTileCursor;   // 0x08: first free text tile after the heading
     u32 dwRow;                 // 0x0C
     u32 dwColumn;              // 0x10
-    Object *pCursor;           // 0x14
-    Object *pMonster;          // 0x18: the selected monster's sprite
-    Object *apSpellDots[8];    // 0x1C: one marker per spell on the effectiveness bars
+    Actor *pCursor;           // 0x14
+    Actor *pMonster;          // 0x18: the selected monster's sprite
+    Actor *apSpellDots[8];    // 0x1C: one marker per spell on the effectiveness bars
     void *pGridTilemap;        // 0x3C: tilemap of the grid background, whose tiles mark each monster's state
 } FolioBrutiState;
 extern FolioBrutiState g_FolioBrutiState;  // 0x03005300

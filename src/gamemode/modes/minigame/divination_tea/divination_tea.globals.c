@@ -23,14 +23,14 @@ const u32 g_dwDivinationTeaBg2Control = 0x7F83;
 const u32 g_dwDivinationTeaBg0Control = 0x1E0C;
 const u32 g_dwDivinationTeaBg1Control = 0x1C86;
 
-const ObjectGfxRecord g_DivinationTeaLeafSprite = {
+const ActorGfxRecord g_DivinationTeaLeafSprite = {
     (void *)gDivinationTeaLeafTiles, (void *)gDivinationTeaLeafFrames,
 };
 
-const ObjectGfxRecord g_DivinationTeaCupSprite = {
+const ActorGfxRecord g_DivinationTeaCupSprite = {
     (void *)gDivinationTeaCupTiles, (void *)gDivinationTeaCupFrames,
 };
 
-const ObjectAssetRecord g_DivinationTeaTextFrameAsset = {
+const ActorAssetRecord g_DivinationTeaTextFrameAsset = {
     (void *)gDivinationTeaTextFrameTiles, (void *)gDivinationTeaTextFrameFrames, (void *)gDivinationTeaTextFramePalette, 0,
 };

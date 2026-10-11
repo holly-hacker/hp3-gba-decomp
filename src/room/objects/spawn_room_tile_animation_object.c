@@ -2,12 +2,12 @@
 #include "overworld/room_object.h"
 
 // Room object constructor for tile objType 1; see docs/formats/rooms.md.
-Object *SpawnRoomTileAnimationObject_candidate(u8 bColumn, u8 bRow)
+Actor *SpawnRoomTileAnimationObject_candidate(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk1 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(pRecord->dwObjectType);
+    Actor *pObj = AllocActorOfType(pRecord->dwObjectType);
 
-    SetObjectPosition(pObj, pRecord->nPixelX, pRecord->nPixelY);
+    SetActorPosition(pObj, pRecord->nPixelX, pRecord->nPixelY);
     pObj->dwFlags = 0x200C;
     AddRoomTileAnimation_candidate(pRecord->bAnimId, pRecord->nPixelX, pRecord->nPixelY, 0);
 

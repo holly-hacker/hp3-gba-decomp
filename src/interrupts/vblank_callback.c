@@ -6,6 +6,6 @@
 // The default vblank callback installed by AgbMain.
 void VBlankCallback(void)
 {
-    CommitQueuedObjectTileUpdates();
+    CommitQueuedActorTileUpdates();
     CommitBgTileAnimations();
 }

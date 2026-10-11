@@ -11,7 +11,7 @@ typedef struct DelayedRespawnRowAndRunChainRecord {
 void RoomScriptOpDelayedRespawnRowAndRunChain(DelayedRespawnRowAndRunChainRecord *pRecord)
 {
     RoomScriptRecord *pNextRecord = g_pRoomScriptNextRecord;
-    Object *pTimer;
+    Actor *pTimer;
 
     if (pRecord->wDelay == 0)
     {

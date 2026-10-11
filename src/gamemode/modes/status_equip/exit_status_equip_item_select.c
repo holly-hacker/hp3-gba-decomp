@@ -16,5 +16,5 @@ void ExitStatusEquipItemSelect(void)
         CloseItemList();
 
     ExitMenuScreen();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
 }

@@ -47,9 +47,9 @@ void InitializeFolioBruti(void)
     DrawFolioBrutiMonsterText();
     StartPaletteEffectWithFrameCount(0x3E, 2, 0xA, 0, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gFolioBrutiBg3Graphic) + 0x30, 4);
 
-    g_FolioBrutiState.pCursor = SpawnObject(0, (g_FolioBrutiState.dwColumn + 3) * 8, (g_FolioBrutiState.dwRow + 3) * 8,
+    g_FolioBrutiState.pCursor = SpawnActor(0, (g_FolioBrutiState.dwColumn + 3) * 8, (g_FolioBrutiState.dwRow + 3) * 8,
                                             (const ObjPalette *)gFolioBrutiSpellDotPalette);
-    SetObjectAnimData(g_FolioBrutiState.pCursor, FOLIO_BRUTI_CURSOR_GFX, g_aFolioBrutiCursorAnim, 0);
+    SetActorAnimData(g_FolioBrutiState.pCursor, FOLIO_BRUTI_CURSOR_GFX, g_aFolioBrutiCursorAnim, 0);
     g_FolioBrutiState.pCursor->oam.priority = 1;
 
     SetAlphaBlendTargets(0, 0x1F);

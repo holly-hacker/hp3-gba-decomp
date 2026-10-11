@@ -74,7 +74,7 @@ void UpdateCardTrade(void)
             if (g_GameModeStackContext.dwModeState == 4)
             {
                 ClearBgTilemap(2);
-                FreeAllObjects(&g_ActiveObjectListState.pHead);
+                FreeAllActors(&g_ActiveActorListState.pHead);
                 StartMenuOverlayFadeOut();
                 g_GameModeStackContext.dwModeState = 3;
             }
@@ -107,11 +107,11 @@ void UpdateCardTrade(void)
                 DrawCardTradeSlotName(1, CARD_TRADE_NO_CARD);
 
                 if (g_apMenuIconObjects[0] != NULL)
-                    SetObjectMoveTargetWithDuration_candidate(g_apMenuIconObjects[0],
+                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconObjects[0],
                         g_aCardTradeSlotPositions[1].bX, g_aCardTradeSlotPositions[1].bY, 30);
 
                 if (g_apMenuIconObjects[1] != NULL)
-                    SetObjectMoveTargetWithDuration_candidate(g_apMenuIconObjects[1],
+                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconObjects[1],
                         g_aCardTradeSlotPositions[0].bX, g_aCardTradeSlotPositions[0].bY, 30);
 
                 ShowCardTradeMessage(0xACF);  // no text: clears the message box

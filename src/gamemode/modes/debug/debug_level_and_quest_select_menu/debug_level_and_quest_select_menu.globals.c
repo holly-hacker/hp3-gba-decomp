@@ -9,7 +9,7 @@ const u8 g_abDebugLevelAndQuestMax[4] = { 99, 99, 99, 26 };
 const u32 g_dwDebugLevelAndQuestBg0Control = 0x1E02;
 const u32 g_dwDebugLevelAndQuestBg1Control = 0x1F09;
 
-const ObjectAssetRecord g_DebugLevelAndQuestAnimFrames = {
+const ActorAssetRecord g_DebugLevelAndQuestAnimFrames = {
     (void *)gDebugMenuCursorTiles, (void *)gDebugMenuCursorFrames, (void *)gDebugMenuCursorPalette, 1,
 };
 

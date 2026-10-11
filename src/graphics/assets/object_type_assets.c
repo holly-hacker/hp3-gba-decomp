@@ -5,7 +5,7 @@
 #include "gen/graphics/overworld.h"
 
 // Sprites of spawned objects, indexed by object kind; see docs/formats/graphics.md.
-const ObjectAssetRecord g_aObjectTypeAssets[137] = {
+const ActorAssetRecord g_aObjectTypeAssets[137] = {
     { (void *)gUnnamed001Tiles, (void *)gUnnamed001Frames, (void *)gUnnamed001Palette, 0 },  // 0
     { (void *)gObjectSprite2_021Tiles, (void *)gObjectSprite2_021Frames, (void *)gObjectSprite2_021Palette, 0 },  // 1
     { (void *)gObjectSprite2_022Tiles, (void *)gObjectSprite2_022Frames, (void *)gOverworldPlayer006Palette, 0 },  // 2

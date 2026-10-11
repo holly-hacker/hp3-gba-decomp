@@ -72,13 +72,13 @@ and so do the battle script wait handlers. It walks the active list; an emitter 
 2. On a fire, makes up to `bSpawnsPerPeriod` attempts. An attempt needs
    `g_wActiveParticleCount <= 0x3E`, `g_bParticleSpawnBlocked == 0`, no
    `ParticleEmitterFlagSpawnDisabled`, and either the target object onscreen
-   (`ObjectFlagOnscreenForTileAlloc`) or `ParticleEmitterFlagScreenPosition`.
+   (`ActorFlagOnscreenForTileAlloc`) or `ParticleEmitterFlagScreenPosition`.
 3. With `ParticleEmitterFlagSpawnRoll`, an attempt spawns only if
    `Mt19937RandMax2(wSpawnRollMax) < wSpawnRollThreshold` (cursor 2).
-4. Releases the emitter when the target has `ObjectFlagPendingDestroy`, or when
+4. Releases the emitter when the target has `ActorFlagPendingDestroy`, or when
    `ParticleEmitterFlagRelease` is set and `wDuration` counts down past zero.
 
-Particles are ticked and drawn from `TickObjectList`'s mode 1 pass, not from the emitter
+Particles are ticked and drawn from `TickActorList`'s mode 1 pass, not from the emitter
 tick. `BucketParticlesByPriority` sorts the active particles into one bucket per OAM
 priority (`g_apParticlesByPriority`, counts in `g_abParticlesByPriorityCount`); a particle
 with `ParticleEmitterFlagPriorityAbove` goes into the bucket below its own priority. As the
@@ -154,10 +154,10 @@ emulator.
   `0x3A`, `0x3C`, `0x8C`, `0x9B`, `0x9D`, `0x9F`, `0xA0`, `0xA2`, `0xA3`, `0xA5`, `0xA6`, `0xA8`,
   `0xA9`.
 - The sounds reachable from the main menu are `0` (cursor move), `1` (START and select) and `0x47`
-  (`TickObject`, when an object's position changed). All are sample rows. The boot path before the menu
+  (`TickActor`, when an object's position changed). All are sample rows. The boot path before the menu
   plays `0`, `1` and `2` in the language select, also sample rows. `sub_0803FD04` has no direct-call path
   from the menu. The cursor's animation streams (`0x0805E0D0`, `0x0805E0E0`) contain no `0xFD`
-  sound opcode (`RunObjectAnimCommands` case 14 plays `PlaySoundById`).
+  sound opcode (`RunActorAnimCommands` case 14 plays `PlaySoundById`).
 - No other `Mt19937*` caller is reachable from the menu. `Mt19937AutoSeed` (on START) and the emitter
   are the only ones on the boot path.
 

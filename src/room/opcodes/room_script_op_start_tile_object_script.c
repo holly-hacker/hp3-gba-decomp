@@ -16,7 +16,7 @@ typedef struct StartTileObjectScriptRecord {
 
 void RoomScriptOpStartTileObjectScript(StartTileObjectScriptRecord *pRecord)
 {
-    Object *pObject;
+    Actor *pObject;
 
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
@@ -28,19 +28,19 @@ void RoomScriptOpStartTileObjectScript(StartTileObjectScriptRecord *pRecord)
     if (g_dwPendingCameraFocusFlag != 0)
         RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
     if (g_dwRoomScriptRunState == 2)
-        pObject->dwFlags |= ObjectFlagRoomScriptYield;
+        pObject->dwFlags |= ActorFlagRoomScriptYield;
 
     pObject->scriptState.wScriptPc = pRecord->wScriptPc;
     pObject->modeState.actor.wStagedDamage = pRecord->wScriptData;
     pObject->modeState.actor.bFollowResumeDistance = pRecord->bArg65;
     pObject->modeState.actor.bRoomScriptArg66_candidate = pRecord->bArg66;
-    SetObjectActionState(pObject, 15);
+    SetActorActionState(pObject, 15);
 
-    if (pObject->dwFlags & ObjectFlagFourWayDirections_candidate)
+    if (pObject->dwFlags & ActorFlagFourWayDirections_candidate)
         pObject->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64 >> 1;
     else
         pObject->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64;
 
-    SetObjectFlags(pObject, ObjectFlagHasTickLogic);
-    SetObjectActionSubState(pObject, 0);
+    SetActorFlags(pObject, ActorFlagHasTickLogic);
+    SetActorActionSubState(pObject, 0);
 }

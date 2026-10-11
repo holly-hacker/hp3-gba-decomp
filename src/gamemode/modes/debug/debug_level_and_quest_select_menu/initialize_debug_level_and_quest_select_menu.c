@@ -14,7 +14,7 @@ void InitializeDebugLevelAndQuestSelectMenu(void)
     u16 fillValue;
     u16 *pFillValue;
     u32 bgCtrl1;
-    Object *pObject;
+    Actor *pObject;
     u32 args;
 
     StopScanlineEffects();
@@ -38,10 +38,10 @@ void InitializeDebugLevelAndQuestSelectMenu(void)
     g_DebugLevelAndQuestSelectState.adwValue[0] = 0;
     g_DebugLevelAndQuestSelectState.adwValue[1] = 0;
     g_DebugLevelAndQuestSelectState.adwValue[2] = 0;
-    pObject = SpawnObject(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
+    pObject = SpawnActor(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugLevelAndQuestSelectState.pCursorObject = pObject;
-    pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, &g_DebugLevelAndQuestAnimFrames, (void *)g_DebugLevelAndQuestAnimData, 0);
+    pObject->dwFlags |= ActorFlagHasSpriteCells;
+    SetActorAnimData(pObject, &g_DebugLevelAndQuestAnimFrames, (void *)g_DebugLevelAndQuestAnimData, 0);
 
     args = g_GameModeStackContext.dwCurrentGameModeArg2;
     g_DebugLevelAndQuestSelectState.adwValue[0] = (u8)(args >> 16);

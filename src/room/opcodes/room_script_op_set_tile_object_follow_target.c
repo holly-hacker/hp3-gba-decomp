@@ -14,18 +14,18 @@ typedef struct SetTileObjectFollowTargetRecord {
     u8 bStopDistance;
 } SetTileObjectFollowTargetRecord;
 
-// Action state 0x12 (tick at 0x08005094) follows pShadowObject: while walking it stops within
+// Action state 0x12 (tick at 0x08005094) follows pShadowActor: while walking it stops within
 // the stop distance, and walks again once farther than both distances.
 void RoomScriptOpSetTileObjectFollowTarget(SetTileObjectFollowTargetRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
-    Object *pTarget;
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pTarget;
 
     if (pRecord->bUseTargetTile != 0)
         pTarget = GetRoomObjectField_candidate(pRecord->bTargetTileX, pRecord->bTargetTileY);
     else
         pTarget = g_OverworldControlState.aSlots[0].pObject;
-    pObject->pShadowObject = pTarget;
+    pObject->pShadowActor = pTarget;
     // Codegen construct: the ROM re-reads bUseTargetTile here and discards it, the trace of a
     // second test whose identical arms were merged. The original arms are unknown.
     if (pRecord->bUseTargetTile != 0)
@@ -33,6 +33,6 @@ void RoomScriptOpSetTileObjectFollowTarget(SetTileObjectFollowTargetRecord *pRec
     else
         pObject->modeState.actor.bFollowResumeDistance = pRecord->bResumeDistance;
     pObject->modeState.actor.bFollowStopDistance = pRecord->bStopDistance;
-    SetObjectActionSubState(pObject, 6);
-    SetObjectActionState(pObject, 0x12);
+    SetActorActionSubState(pObject, 6);
+    SetActorActionState(pObject, 0x12);
 }

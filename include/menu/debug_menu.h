@@ -5,28 +5,28 @@
 #include "gen/graphics/menus.h"
 
 typedef struct {
-    Object *pCursorObject;  // 0x00
+    Actor *pCursorObject;  // 0x00
     u32 dwSelection;        // 0x04: row of the debug main menu
 } DebugMenuMainState;
 
 extern DebugMenuMainState g_DebugMenuMainState;  // 0x030021C0
 
 typedef struct {
-    Object *pPortraitObject;  // 0x00: sprite showing the selected portrait
+    Actor *pPortraitObject;  // 0x00: sprite showing the selected portrait
     u32 dwSelection;          // 0x04: portrait index, 0..0x86
 } DebugPortraitsState;
 
 extern DebugPortraitsState g_DebugPortraitsState;  // 0x03002210
 
 typedef struct {
-    Object *pCardObject;  // 0x00: sprite showing the selected card
+    Actor *pCardObject;  // 0x00: sprite showing the selected card
     u32 dwSelection;      // 0x04: card index, 0..0x32
 } DebugCollectorCardsState;
 
 extern DebugCollectorCardsState g_DebugCollectorCardsState;  // 0x03002238
 
 typedef struct {
-    Object *pCursorObject;   // 0x00
+    Actor *pCursorObject;   // 0x00
     u32 dwRow;               // 0x04: 0 = sound effect, 1 = music module
     u32 adwSelection[2];     // 0x08: chosen sound effect id (0..0xB2) and music module (0..0x33)
     u32 dwTileCursor;        // 0x10: text tile cursor after drawing the row labels
@@ -39,7 +39,7 @@ typedef struct {
 extern DebugSoundTestState g_DebugSoundTestState;  // 0x03002218
 
 typedef struct {
-    Object *pCursorObject;  // 0x00
+    Actor *pCursorObject;  // 0x00
     u32 dwRow;              // 0x04: 0-2 = character levels, 3 = quest
     u32 adwValue[4];        // 0x08: value of each row, packed into the mode argument (one byte each)
     u32 dwTileCursor;       // 0x18: text tile cursor after drawing the row labels
@@ -48,7 +48,7 @@ typedef struct {
 extern DebugLevelAndQuestSelectState g_DebugLevelAndQuestSelectState;  // 0x030021C8
 
 typedef struct {
-    Object *pCursorObject;  // 0x00
+    Actor *pCursorObject;  // 0x00
     u32 dwCursorRow;        // 0x04: visible row, 0..0x11
     s32 nScrollY;           // 0x08: BG1 vertical scroll in pixels; the map index is nScrollY / 8 + dwCursorRow
 } DebugMapSelectState;
@@ -56,7 +56,7 @@ typedef struct {
 extern DebugMapSelectState g_DebugMapSelectState;  // 0x030021E8
 
 typedef struct {
-    Object *pCursorObject;  // 0x00
+    Actor *pCursorObject;  // 0x00
     u32 dwRow;              // 0x04: party slot, 0..2
     u32 adwCharacter[3];    // 0x08: chosen character per slot; 0 = empty, else party character id + 1
     u32 dwTileCursor;       // 0x14: text tile cursor after drawing the slot labels
@@ -72,22 +72,22 @@ extern const u32 g_dwDebugCollectorCardsBg1Control;  // 0x0804CEBC
 extern const u32 g_dwDebugCollectorCardsBg2Control;  // 0x0804CEB8
 extern const u32 g_dwDebugSoundTestBg0Control;  // 0x0804CE8C
 extern const u32 g_dwDebugSoundTestBg1Control;  // 0x0804CE90
-extern const ObjectAssetRecord g_DebugSoundTestAnimFrames;  // 0x0804CE94
+extern const ActorAssetRecord g_DebugSoundTestAnimFrames;  // 0x0804CE94
 extern const u8 g_DebugSoundTestAnimData[18];    // 0x0804CEA4
 extern const u8 g_abDebugLevelAndQuestMax[4];        // 0x0804C470: largest value of each row
 extern const u32 g_dwDebugLevelAndQuestBg0Control;  // 0x0804C474
 extern const u32 g_dwDebugLevelAndQuestBg1Control;  // 0x0804C478
-extern const ObjectAssetRecord g_DebugLevelAndQuestAnimFrames;  // 0x0804C47C
+extern const ActorAssetRecord g_DebugLevelAndQuestAnimFrames;  // 0x0804C47C
 extern const u8 g_DebugLevelAndQuestAnimData[18];    // 0x0804C48C
 extern const u32 g_dwDebugMapSelectBg0Control;  // 0x0804C4A0
 extern const u32 g_dwDebugMapSelectBg1Control;  // 0x0804C4A4
-extern const ObjectAssetRecord g_DebugMapSelectAnimFrames;  // 0x0804C4A8
+extern const ActorAssetRecord g_DebugMapSelectAnimFrames;  // 0x0804C4A8
 extern const u8 g_DebugMapSelectAnimData[18];    // 0x0804C4B8
 extern const u32 g_dwDebugCharacterSelectBg0Control;  // 0x0804C4CC
 extern const u32 g_dwDebugCharacterSelectBg1Control;  // 0x0804C4D0
-extern const ObjectAssetRecord g_DebugCharacterSelectAnimFrames;  // 0x0804C4D4
+extern const ActorAssetRecord g_DebugCharacterSelectAnimFrames;  // 0x0804C4D4
 extern const u8 g_DebugCharacterSelectAnimData[18];    // 0x0804C4E4
-extern const ObjectAssetRecord g_DebugMenuMainAnimFrames;  // 0x0804C44C
+extern const ActorAssetRecord g_DebugMenuMainAnimFrames;  // 0x0804C44C
 extern const u8 g_DebugMenuMainAnimData[18];    // 0x0804C45C
 
 extern void ResetDebugPartyFromArgs_candidate(void);

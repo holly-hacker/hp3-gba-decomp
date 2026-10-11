@@ -47,7 +47,7 @@ typedef struct BattleFighter {
     /*0x01*/ u8 bRosterIndex;
     /*0x02*/ u8 unk02;
     /*0x03*/ u8 bSlotParam;
-    /*0x04*/ Object *pObject;
+    /*0x04*/ Actor *pObject;
     /*0x08*/ u16 wHp;
     /*0x0A*/ u16 wMp;
     /*0x0C*/ u16 wRewardXp;
@@ -137,16 +137,16 @@ extern const CharacterLevelEntry g_pHermioneLevelTable[];  // 0x080507B0, src/ch
 
 // One row per MonsterTable entry; see docs/formats/folio_bruti.md.
 typedef struct MonsterGfxRow {
-    ObjectAssetRecord battle;     // 0x00, battle and Folio Bruti sprite
-    ObjectAssetRecord overworld;  // 0x10, wandering-monster sprite
+    ActorAssetRecord battle;     // 0x00, battle and Folio Bruti sprite
+    ActorAssetRecord overworld;  // 0x10, wandering-monster sprite
 } MonsterGfxRow;
 extern const MonsterGfxRow g_pMonsterGraphicsTable[69];  // 0x0804E6B4, src/graphics/assets/monster_graphics_table.c
 extern const u8 g_pMonsterAnimFrameTable[69][96];  // 0x08051E70
 // Companion sprite InitMonsterBattleActor spawns for monsters 45-47.
-extern const ObjectAssetRecord g_MonsterShadowGfxRow;               // 0x0804EF54
-extern const ObjectAssetRecord g_aEnemyTurnOrderIconAssets[69];     // 0x0804EF64
-extern const ObjectAssetRecord g_aAllyTurnOrderIconAssets[4];       // 0x0804F3B4
-extern const ObjectAssetRecord g_TurnOrderIconContainerAsset;       // 0x0804F3F4
+extern const ActorAssetRecord g_MonsterShadowGfxRow;               // 0x0804EF54
+extern const ActorAssetRecord g_aEnemyTurnOrderIconAssets[69];     // 0x0804EF64
+extern const ActorAssetRecord g_aAllyTurnOrderIconAssets[4];       // 0x0804F3B4
+extern const ActorAssetRecord g_TurnOrderIconContainerAsset;       // 0x0804F3F4
 extern const u8 g_MonsterShadowAnimData[96];     // 0x08053850
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
@@ -157,18 +157,18 @@ typedef struct FightState {
     /*0x04*/ BattleFighter *pFighters;
     /*0x08*/ BattleFighter *pPendingFighters_candidate;  // front-popped reinforcement queue, count at +0x1491
     /*0x0C*/ u8 pad_0C[0x818 - 0x0C];
-    // One turn-order-icon container Object* per active fighter slot,
-    // allocated by SpawnTurnOrderIcon; each container's pLinkedObject_candidate
-    // is its portrait sprite, which SetObjectAnimFrame/SetFighterTurnOrderIconDone
+    // One turn-order-icon container Actor* per active fighter slot,
+    // allocated by SpawnTurnOrderIcon; each container's pLinkedActor_candidate
+    // is its portrait sprite, which SetActorAnimFrame/SetFighterTurnOrderIconDone
     // actually animate. See docs/memory-map/battle.md.
-    /*0x818*/ Object *apTurnOrderIconObjects[7];
+    /*0x818*/ Actor *apTurnOrderIconObjects[7];
     // ExitBattle's Folio Universitas/Help resume path snapshots every live
     // (0-bFighterCount) then pending (0-bPendingFighterCount_candidate)
-    // fighter's Object here, densely packed, before the real Objects are
+    // fighter's Actor here, densely packed, before the real Objects are
     // torn down -- exactly 7 slots (the same total as g_apFighterObjects_candidate)
     // fill this to FightState's 0x104C boundary.
-    /*0x834*/ Object aSuspendedFighterObjects_candidate[7];
-    /*0x104C*/ FixedPoint savedPos;  // copy of the attacker's Object.pos
+    /*0x834*/ Actor aSuspendedFighterObjects_candidate[7];
+    /*0x104C*/ FixedPoint savedPos;  // copy of the attacker's Actor.pos
     /*0x1054*/ void *pAttackAnimObject_candidate;
     /*0x1058*/ u8 bAttackAnimState_candidate;
     /*0x1059*/ u8 aEnemySlotTurnOrderIndex[4];
@@ -234,7 +234,7 @@ extern void sub_0802D640(u8 priority);
 extern void sub_0802D3BC(void);
 
 // One slot per active BattleFighter -- see docs/formats/battle-ui.md.
-extern Object *g_apFighterObjects_candidate[7];
+extern Actor *g_apFighterObjects_candidate[7];
 
 // The Folio Universitas card slot lives at +8 (dwCurrentGameModeArg2) in
 // g_PrevGameModeStackContext (see game_modes.h): PushGameMode_2(0x26, slot, 0) stages
@@ -291,7 +291,7 @@ typedef enum {
 
 extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
 extern s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance);
-extern void SpawnParalysisEffect(Object *obj);
+extern void SpawnParalysisEffect(Actor *obj);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void OpenEnemyTargetMenu_candidate(u8 fighterIndex);  // bMenuScreen 6, 0x08012B98
 extern void OpenAllyTargetMenu(u8 fighterIndex);             // bMenuScreen 8, 0x080107BC
@@ -299,15 +299,15 @@ extern void OpenPendingFighterMenu_candidate(u8 fighterIndex);  // bMenuScreen 9
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
-extern void UpdateFighterFlashEffect_candidate(Object *obj);  // 0x08015574
-extern void CheckBattleVictory(Object *obj);                  // 0x080186E0
+extern void UpdateFighterFlashEffect_candidate(Actor *obj);  // 0x08015574
+extern void CheckBattleVictory(Actor *obj);                  // 0x080186E0
 extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
 extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s32 damage);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void SetPlayerObjectAnim(Object *obj, s32 state);   // 0x08015484, party fighter anim tables
-extern void SetMonsterObjectAnim(Object *obj, u8 state);  // 0x0801539C, monster gfx tables + shadow
+extern void SetPlayerObjectAnim(Actor *obj, s32 state);   // 0x08015484, party fighter anim tables
+extern void SetMonsterObjectAnim(Actor *obj, u8 state);  // 0x0801539C, monster gfx tables + shadow
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
-extern Object *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
+extern Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
 extern s32 sub_08026CDC(s32 spellLevel);
 extern s32 sub_08026CF0(s32 spellLevel);
 extern u16 sub_08015334(s32 x, s32 fighterIndex);
@@ -315,7 +315,7 @@ extern u16 sub_080152CC(s32 x, s32 fighterIndex);
 extern void ClearPoisonedFighter_candidate(u8 fighterIndex);  // clears Poisoned, zeroes bPoisonDamage; CurePoison's shared helper
 extern void ClearParalyzedFighter_candidate(u8 fighterIndex);
 extern void PostActionBattleCheck(void);
-extern s32 sub_08012E0C(u8 fighterIndex);  // 1 if the fighter has a shadow Object (monsters 45-47)
+extern s32 sub_08012E0C(u8 fighterIndex);  // 1 if the fighter has a shadow Actor (monsters 45-47)
 extern void PushBattleState(s32 state);
 extern void TrackSpellFamiliarity(u8 fighterType, u8 spellId, u8 spellLevel, u16 *pHp);  // 0x08010008
 extern void DecrementFolioUniversitasCard(s32 slot);
@@ -354,7 +354,7 @@ extern void sub_08003A30(void *obj, s32 a, s16 b, s16 c);  // a is shifted << 8 
 extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void ShowItemUseResult(Object *obj, s32 targetIndex);
+extern void ShowItemUseResult(Actor *obj, s32 targetIndex);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
 extern void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex);  // 0x08017F98
 extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
@@ -368,18 +368,18 @@ extern const u8 g_aMonsterAttackOffset_candidate[69][2];  // 0x0804FB9C, [roster
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
-// per-wObjectType windup-flash resource pointer row, stride 0xA0
+// per-wActorType windup-flash resource pointer row, stride 0xA0
 // One row per FighterType: sprite records selected by animation state
 // (SetPlayerObjectAnim). Record 0 is the live sprite, 6 and 7 carry the
 // windup flash palettes, 8 is the fainted sprite.
 typedef struct FighterAnimRow {
-    ObjectAssetRecord aRecords[10];
+    ActorAssetRecord aRecords[10];
 } FighterAnimRow;
 extern const FighterAnimRow g_aFighterAnimTable[4];  // 0x08051248, src/graphics/assets/fighter_anim_table.c
 extern const u8 g_aFighterAnimDataTable[4][10][58];  // 0x08051560, [fighter][anim state]
 
-extern void TickPlayerActionState(Object *obj);
-extern void TickFighterAttackAnimState_candidate(Object *obj);  // 0x08015608
+extern void TickPlayerActionState(Actor *obj);
+extern void TickFighterAttackAnimState_candidate(Actor *obj);  // 0x08015608
 extern void *memcpy(void *dst, const void *src, u32 n);
 extern void InitBattleBackground_candidate(void);
 extern void RestoreFighterObjects_candidate(void);
@@ -388,9 +388,9 @@ extern u32 GetPartyPresenceMask(void);
 extern u32 GetPartySize(void);
 extern void JitterEnemyTurnOrder(void);
 extern void BuildTurnOrder(void);
-extern Object *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
-extern Object *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
-extern Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
+extern Actor *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
+extern Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
+extern Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
 extern u8 *GetBattleBackgroundData_candidate(void);
 extern void ResumeBattleAfterSubmode_candidate(void);
 
@@ -407,7 +407,7 @@ extern void ClearRoomObjectStateBuffer(void);  // memsets g_pRoomObjectStateBuff
 
 // Battle-message icon object (shown alongside ShowBattleMessage's text),
 // distinct from the 7 per-fighter Objects in g_apFighterObjects_candidate.
-extern Object *g_pBattleMessageIconObject_candidate;  // 0x03002684
+extern Actor *g_pBattleMessageIconObject_candidate;  // 0x03002684
 extern u32 g_bSelectedFighterSlot_candidate;          // 0x03002660
 
 // bIndex/dwParam are adjacent globals (0x03002688/0x0300268C) accessed

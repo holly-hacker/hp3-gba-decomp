@@ -4,7 +4,7 @@
 
 // Rebinds the palette ReleaseObjectPalette saved in pPendingPalette, keeping its
 // unshared flag, then clears the saved state.
-void BindObjectPendingPalette(Object *obj)
+void BindObjectPendingPalette(Actor *obj)
 {
     const ObjPalette *pPalette = obj->pPendingPalette;
 

@@ -28,7 +28,7 @@ void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex)
             ClearParalyzedFighter_candidate(idx);
         }
 
-        SetObjectActionState(g_pFightState->pFighters[fighterIndex].pObject, 1);
+        SetActorActionState(g_pFightState->pFighters[fighterIndex].pObject, 1);
 
         if (g_pFightState->bMenuScreen != 0 && g_pFightState->bMenuFighterIndex == fighterIndex)
         {

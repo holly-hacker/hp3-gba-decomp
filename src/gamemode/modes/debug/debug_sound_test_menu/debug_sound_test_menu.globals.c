@@ -6,7 +6,7 @@
 const u32 g_dwDebugSoundTestBg0Control = 0x1E02;
 const u32 g_dwDebugSoundTestBg1Control = 0x1F09;
 
-const ObjectAssetRecord g_DebugSoundTestAnimFrames = {
+const ActorAssetRecord g_DebugSoundTestAnimFrames = {
     (void *)gDebugMenuCursorTiles, (void *)gDebugMenuCursorFrames, (void *)gDebugMenuCursorPalette, 1,
 };
 

@@ -12,7 +12,7 @@ void ExitFolioBruti(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     SetAlphaBlendTargets(0, 0);
     ResetPaletteAnimations();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
 
     g_FolioBrutiState.pMonster = NULL;
     g_FolioBrutiState.pCursor = NULL;

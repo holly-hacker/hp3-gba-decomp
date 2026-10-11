@@ -13,5 +13,5 @@ void ExitHogwartsUpNightCutscene(void)
     zero = 0;
     bios_CPUSet((void *)&zero, VRAM_BASE, 0x01008000);
     UnmuteAllMusicChannels();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
 }

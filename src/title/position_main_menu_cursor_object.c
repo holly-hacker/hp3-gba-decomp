@@ -14,7 +14,7 @@ void PositionMainMenuCursorObject(u32 tween)
         slot--;
 
     if (tween)
-        SetObjectMoveTargetWithDuration_candidate(g_MainMenuState.pCursorObject, 0x10, slot * 0xC + 0x5B, 3);
+        SetActorMoveTargetWithDuration_candidate(g_MainMenuState.pCursorObject, 0x10, slot * 0xC + 0x5B, 3);
     else
         SetMenuCursorPosition(g_MainMenuState.pCursorObject, 0x10, slot * 0xC + 0x5B);
 }

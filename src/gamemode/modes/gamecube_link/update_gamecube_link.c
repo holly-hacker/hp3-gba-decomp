@@ -65,7 +65,7 @@ void UpdateGameCubeLink(void)
                     break;
                 case 1:
                     ClearBgTilemap(2);
-                    FreeAllObjects(&g_ActiveObjectListState.pHead);
+                    FreeAllActors(&g_ActiveActorListState.pHead);
                     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
                     StartMenuOverlayFadeOut();
                     break;

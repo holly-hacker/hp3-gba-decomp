@@ -9,7 +9,7 @@
 // Allocated by InitializeWizardCrackerPopItMinigame, freed by
 // ExitWizardCrackerPopItMinigame.
 typedef struct {
-    Object *pObject0;         // 0x00; released on exit
+    Actor *pObject0;         // 0x00; released on exit
     u8 abUnmapped_4[0x17C];
     u8 bUnk180;
     u8 abUnmapped_181[0xB];

@@ -10,7 +10,7 @@ typedef struct SetTileObjectFlagBitRecord {
 
 void RoomScriptOpSetTileObjectFlagBit(SetTileObjectFlagBitRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     pObject->dwFlags |= 1 << pRecord->bBit;
 }

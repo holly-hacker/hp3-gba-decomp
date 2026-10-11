@@ -12,7 +12,7 @@
 #endif
 
 typedef struct {
-    Object *apObjects[OPTIONS_MENU_ITEM_COUNT];  // 0x00
+    Actor *apObjects[OPTIONS_MENU_ITEM_COUNT];  // 0x00
     u32 dwMusicVolume;     // US 0x20, JP 0x1C
     u32 dwSoundVolume;     // US 0x24, JP 0x20
     u32 dwGammaHigh;       // US 0x28, JP 0x24

@@ -15,9 +15,9 @@ void UpdateUnusedHogwartsMapScreen(void)
                          UNUSED_HOGWARTS_MAP_ENTRY_COUNT - 1, 1, 0))
     {
         sub_080280CC();
-        SetObjectMoveTargetWithDuration_candidate(g_apUnusedHogwartsMapObjects[prevEntry], 0xDA,
+        SetActorMoveTargetWithDuration_candidate(g_apUnusedHogwartsMapObjects[prevEntry], 0xDA,
                                                   (s16)(g_apUnusedHogwartsMapObjects[prevEntry]->pos.y >> 16), 3);
-        SetObjectMoveTargetWithDuration_candidate(
+        SetActorMoveTargetWithDuration_candidate(
             g_apUnusedHogwartsMapObjects[g_GameModeStackContext.dwCurrentGameModeArg2], 0xD2,
             (s16)(g_apUnusedHogwartsMapObjects[g_GameModeStackContext.dwCurrentGameModeArg2]->pos.y >> 16), 3);
         sub_08028240();

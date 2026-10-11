@@ -3,12 +3,12 @@
 
 // Room object constructor for tile objType 8, a button that a spell presses to
 // respawn a push puzzle's objects. See docs/formats/rooms.md.
-Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow)
+Actor *SpawnPushResetButtonObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk8 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(RoomObjectType_Unk8);
+    Actor *pObj = AllocActorOfType(RoomObjectType_Unk8);
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->oam.objMode = 0;
     pObj->oam.bpp8 = 0;
     pObj->oam.priority = 1;
@@ -35,8 +35,8 @@ Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow)
     ROOM_OBJECT_UNK8_STATE(pObj)->abB[7] = pRecord->abPairs[15];
     pObj->dwFlags = 0x0400221D;
     SetObjectPendingPalette(pObj, g_apRoomObjUnk8EffectData[pObj->wCharacterId_candidate]);
-    SetObjectAssetRecord(pObj, g_apRoomObjUnk8AssetRecords[pObj->wCharacterId_candidate]);
-    SetObjectAnimFrame(pObj, 0);
-    SetObjectActionState(pObj, 0);
+    SetActorAssetRecord(pObj, g_apRoomObjUnk8AssetRecords[pObj->wCharacterId_candidate]);
+    SetActorAnimFrame(pObj, 0);
+    SetActorActionState(pObj, 0);
     return pObj;
 }

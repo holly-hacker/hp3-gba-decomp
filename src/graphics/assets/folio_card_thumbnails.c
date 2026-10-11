@@ -7,7 +7,7 @@
     { (void *)g##name##Tiles, (void *)g##name##Frames, (void *)g##name##Palette, 0 }
 
 // The 51 card portraits, then the face-down card.
-const ObjectAssetRecord g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT + 1] = {
+const ActorAssetRecord g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT + 1] = {
     FOLIO_THUMBNAIL(FolioCardThumbnail001),  // "Fulbert the Fearful"
     FOLIO_THUMBNAIL(FolioCardThumbnail002),  // "Beatrix Bloxam"
     FOLIO_THUMBNAIL(FolioCardThumbnail003),  // "Merwyn the Malicious"

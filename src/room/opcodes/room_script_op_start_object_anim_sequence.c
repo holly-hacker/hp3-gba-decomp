@@ -19,7 +19,7 @@ typedef struct StartObjectAnimSequenceRecord {
 
 void RoomScriptOpStartObjectAnimSequence(StartObjectAnimSequenceRecord *pRecord)
 {
-    Object *pObject;
+    Actor *pObject;
     u8 actionState = 0;
     u8 *pScriptData;
     u8 scriptDataLow;
@@ -32,7 +32,7 @@ void RoomScriptOpStartObjectAnimSequence(StartObjectAnimSequenceRecord *pRecord)
 
     pObject = GetRoomObjectField_candidate(pRecord->bX, pRecord->bY);
     if (g_dwRoomScriptRunState == 2)
-        pObject->dwFlags |= ObjectFlagRoomScriptYield;
+        pObject->dwFlags |= ActorFlagRoomScriptYield;
 
     switch (pRecord->bActionSelector)
     {
@@ -56,11 +56,11 @@ void RoomScriptOpStartObjectAnimSequence(StartObjectAnimSequenceRecord *pRecord)
         break;
     case 6:
         actionState = 13;
-        pObject->dwFlags &= ~ObjectFlagHasAnimation;
+        pObject->dwFlags &= ~ActorFlagHasAnimation;
         break;
     }
 
-    SetObjectActionState(pObject, actionState);
+    SetActorActionState(pObject, actionState);
     scriptDataLow = pRecord->bScriptDataLow;
     pScriptData = (u8 *)&pObject->modeState.actor.wStagedDamage;
     *pScriptData = scriptDataLow;
@@ -72,6 +72,6 @@ void RoomScriptOpStartObjectAnimSequence(StartObjectAnimSequenceRecord *pRecord)
     pObject->scriptState.wScriptPc = pRecord->bScriptPc;
     pObject->modeState.actor.bRoomScriptArg6A_candidate = pRecord->bArg6A;
     pObject->modeState.actor.bRoomScriptArg6B_candidate = pRecord->bArg6B;
-    SetObjectActionSubState(pObject, 0);
-    pObject->dwFlags |= ObjectFlagHasTickLogic;
+    SetActorActionSubState(pObject, 0);
+    pObject->dwFlags |= ActorFlagHasTickLogic;
 }

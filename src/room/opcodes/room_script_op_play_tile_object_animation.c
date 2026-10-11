@@ -10,13 +10,13 @@ typedef struct PlayTileObjectAnimationRecord {
 
 void RoomScriptOpPlayTileObjectAnimation(PlayTileObjectAnimationRecord *pRecord)
 {
-    Object *pObject;
+    Actor *pObject;
 
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
     pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
     if (g_dwRoomScriptRunState == 2)
-        pObject->dwFlags |= ObjectFlagRoomScriptYield;
+        pObject->dwFlags |= ActorFlagRoomScriptYield;
     SetObjectAnimData_candidate(pObject, pRecord->wAnimId);
-    pObject->dwFlags |= ObjectFlagHasAnimation;
+    pObject->dwFlags |= ActorFlagHasAnimation;
 }

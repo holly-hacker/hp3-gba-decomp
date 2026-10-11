@@ -2,14 +2,14 @@
 #include "actor.h"
 
 // Returns the direction from pos toward target. An axis counts as aligned
-// while pos is within tolerance of target on it. Four-way objects resolve
+// while pos is within tolerance of target on it. Four-way actors resolve
 // diagonals to one axis: up-left to left, up-right to up, down-left to down,
 // down-right to right.
-u8 GetDirectionToTarget(u32 objectFlags, FixedPoint pos, FixedPoint target, s32 tolerance)
+u8 GetDirectionToTarget(u32 actorFlags, FixedPoint pos, FixedPoint target, s32 tolerance)
 {
     u8 dir;
 
-    if (objectFlags & ObjectFlagFourWayDirections_candidate)
+    if (actorFlags & ActorFlagFourWayDirections_candidate)
     {
         if (pos.y > target.y + tolerance)
         {

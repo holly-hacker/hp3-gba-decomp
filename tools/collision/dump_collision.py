@@ -43,10 +43,10 @@ UPSCALE = 3
 CONDITIONAL_BLOCK_TYPES = {0x1F, 0x29}
 KNOWN_EFFECT_NAMES = {
     0x1F: "Lumos crossing (user-verified) / conditional block",
-    0x22: "unwalkable water (user-verified) / force-blocks wObjectType==0",
+    0x22: "unwalkable water (user-verified) / force-blocks wActorType==0",
     0x23: "switch-state toggle A",
     0x24: "switch-state toggle B",
-    0x29: "blocks all but wObjectType==0xF",
+    0x29: "blocks all but wActorType==0xF",
     0x2D: "ice, Glacius puzzle surface (user-verified)",
     0x1B: "stairs, horizontal, bottom-left/top-right (user-verified)",
     0x1C: "stairs, horizontal, bottom-right/top-left (user-verified)",

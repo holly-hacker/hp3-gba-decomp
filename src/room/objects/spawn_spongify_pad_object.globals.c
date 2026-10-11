@@ -3,7 +3,7 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_aRoomSpongifyPadSprites[4] = {
+const ActorGfxRecord g_aRoomSpongifyPadSprites[4] = {
     { (void *)gSpongifyPadRug001Tiles, (void *)gSpongifyPadRug001Frames },
     { (void *)gSpongifyPadRug002Tiles, (void *)gSpongifyPadRug002Frames },
     { (void *)gSpongifyPadLeavesTiles, (void *)gSpongifyPadLeavesFrames },
@@ -11,7 +11,7 @@ const ObjectGfxRecord g_aRoomSpongifyPadSprites[4] = {
 };
 
 // Indexed by the object's character id.
-const ObjectGfxRecord *const g_apRoomSpongifyPadAnimFrames[3] = {
+const ActorGfxRecord *const g_apRoomSpongifyPadAnimFrames[3] = {
     &g_aRoomSpongifyPadSprites[0],
     &g_aRoomSpongifyPadSprites[1],
     &g_aRoomSpongifyPadSprites[2],

@@ -33,24 +33,24 @@
 .set g_IwramSectionEnd,       0x03001598  @ end of that image; ClearWorkRam zeroes from here
 
 .set g_pTimer2DebugPc,        0x030015A0  @ see ram_symbols.us.inc
-.set g_ActiveObjectListState, 0x030015B0
+.set g_ActiveActorListState, 0x030015B0
 
-@ --- Per-tick object queues (see include/hw/mem.h and TickObjectList) ---
+@ --- Per-tick object queues (see include/hw/mem.h and TickActorList) ---
 .set g_apOamQueue,             0x030015B8
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760
 .set g_bSpriteFrameQueueCount, 0x0300179C
 
-.set g_dwObjectListActive_candidate, 0x030017A0
+.set g_dwActorListActive_candidate, 0x030017A0
 .set g_apCollisionQueue,             0x030017A4
 .set g_dwCollisionQueueCount,        0x03001948
 
-@ --- Object pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
+@ --- Actor pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
 .set SortObjectsByDepthIwram,            0x0300194C
 .set CheckObjectCollisionsIwram,  0x03001A10
-.set g_ObjectPoolState,              0x03001C08
-.set g_pObjectPoolAuxBuffer,         0x03001DBC
-.set g_dwObjectListTicked_candidate, 0x03001DC0
+.set g_ActorPoolState,              0x03001C08
+.set g_pActorPoolAuxBuffer,         0x03001DBC
+.set g_dwActorListTicked_candidate, 0x03001DC0
 .set g_dwUnk03001DC4,                0x03001DC4
 .set g_adwRoomObjUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room object constructors
 
@@ -288,7 +288,7 @@
 .set g_dwPauseMenuCooldown,                  0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003BD0  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
-.set g_pTouchedWanderingMonster,             0x03003BE8  @ Object *: armed wandering-monster object
+.set g_pTouchedWanderingMonster,             0x03003BE8  @ Actor *: armed wandering-monster object
 .set g_abIwramDivideCode,                   0x03003BF0
 .set g_pfnIwramDivideSignedQuotient,        0x03003F30
 .set g_pfnIwramDivideSignedRemainder,       0x03003F34

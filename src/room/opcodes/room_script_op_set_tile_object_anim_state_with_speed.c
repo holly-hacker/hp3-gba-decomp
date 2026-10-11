@@ -9,12 +9,12 @@ typedef struct SetTileObjectAnimStateWithSpeedRecord {
 
 void RoomScriptOpSetTileObjectAnimStateWithSpeed(SetTileObjectAnimStateWithSpeedRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pObject != NULL)
     {
-        SetObjectActionState(pObject, 0x21);
-        SetObjectAnimSubState_candidate(pObject, 0x21);
+        SetActorActionState(pObject, 0x21);
+        SetActorAnimSubState_candidate(pObject, 0x21);
         pObject->dwUnk_0x28 = 0x28000;
     }
 }

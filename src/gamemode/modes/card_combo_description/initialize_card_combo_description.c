@@ -22,7 +22,7 @@ void InitializeCardComboDescription(void)
     u32 firstCard = GetFolioUniversitasSelectedCombo();
     u32 tileCursor;
     s32 slot;
-    Object *pObject;
+    Actor *pObject;
     u8 *pText;
 
     InitializeMenuScreen(0x40C, 9, 1, gCardComboDescriptionPanel, 5, 5);  // "Card Combo"
@@ -40,15 +40,15 @@ void InitializeCardComboDescription(void)
         {
             if (IsFolioUniversitasCardSeen(firstCard + slot))
             {
-                pObject = SpawnObject(0, 0x40 + slot * 0x28, 0x30,
+                pObject = SpawnActor(0, 0x40 + slot * 0x28, 0x30,
                                       (const ObjPalette *)g_aFolioCardThumbnails[firstCard + slot].pPalette);
-                SetObjectAssetRecord(pObject, &g_aFolioCardThumbnails[firstCard + slot]);
+                SetActorAssetRecord(pObject, &g_aFolioCardThumbnails[firstCard + slot]);
             }
             else
             {
-                pObject = SpawnObject(0, 0x40 + slot * 0x28, 0x30,
+                pObject = SpawnActor(0, 0x40 + slot * 0x28, 0x30,
                                       (const ObjPalette *)g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT].pPalette);
-                SetObjectAssetRecord(pObject, &g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT]);
+                SetActorAssetRecord(pObject, &g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT]);
                 pObject->oam.objMode = 1;
             }
         }
@@ -57,14 +57,14 @@ void InitializeCardComboDescription(void)
     {
         if (IsFolioUniversitasCardSeen(firstCard))
         {
-            pObject = SpawnObject(0, 0x68, 0x30, (const ObjPalette *)g_aFolioCardThumbnails[firstCard].pPalette);
-            SetObjectAssetRecord(pObject, &g_aFolioCardThumbnails[firstCard]);
+            pObject = SpawnActor(0, 0x68, 0x30, (const ObjPalette *)g_aFolioCardThumbnails[firstCard].pPalette);
+            SetActorAssetRecord(pObject, &g_aFolioCardThumbnails[firstCard]);
         }
         else
         {
-            pObject = SpawnObject(0, 0x68, 0x30,
+            pObject = SpawnActor(0, 0x68, 0x30,
                                   (const ObjPalette *)g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT].pPalette);
-            SetObjectAssetRecord(pObject, &g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT]);
+            SetActorAssetRecord(pObject, &g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT]);
             pObject->oam.objMode = 1;
         }
     }

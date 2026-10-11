@@ -149,7 +149,7 @@ typedef enum {
 } GameModeFlags;
 
 // u32: incremented once per TickGameModeStack call, before mode dispatch.
-// Also used by UpdateObjectSpriteFrame as a per-tick generation stamp for
+// Also used by UpdateActorSpriteFrame as a per-tick generation stamp for
 // its shared VRAM tile allocation cache.
 extern u32 g_dwTickCount;
 

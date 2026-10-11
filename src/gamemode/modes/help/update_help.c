@@ -77,7 +77,7 @@ void UpdateHelp(void)
             if (g_HelpState.bPageDepth == 0)
             {
                 ClearHelpScreen();
-                FreeAllObjects(&g_ActiveObjectListState.pHead);
+                FreeAllActors(&g_ActiveActorListState.pHead);
                 while (!(REG_DISPSTAT & 2))
                     ;
                 g_GameModeStackContext.dwModeSubState = 0;

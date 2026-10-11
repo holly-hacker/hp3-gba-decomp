@@ -3,17 +3,17 @@
 
 // Room object constructor for tile objType 7, a trigger zone with explicit
 // edges. See docs/formats/rooms.md.
-Object *SpawnTriggerRectObject(u8 bColumn, u8 bRow)
+Actor *SpawnTriggerRectObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk7 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(pRecord->dwObjectType);
+    Actor *pObj = AllocActorOfType(pRecord->dwObjectType);
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x200C;
     pObj->bRoomObjectKind_candidate = pRecord->bKind;
     ROOM_OBJECT_WORD_STATE(pObj)->n60 = pRecord->wArgC * 30;
     ROOM_OBJECT_WORD_STATE(pObj)->b70 = pRecord->bArgF;
-    SetObjectActionState(pObj, 0);
+    SetActorActionState(pObj, 0);
     pObj->apfnCollisionCallback[0] = sub_080265B8;
     pObj->pfnTick = sub_080264F0;
     pObj->aCollisionBoxes[0].offsets.edges.bLeft = pRecord->bLeft;

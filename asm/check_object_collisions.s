@@ -1,13 +1,13 @@
 .text
 
 @ Per-frame pairwise object collision check. r0: object count. r1: pointer to
-@ an array of `Object *`. ARM-mode (see docs/compiler.md's "ARM-mode code"
-@ section) and only ever taken by address, never `bl` -- InitObjectPool
+@ an array of `Actor *`. ARM-mode (see docs/compiler.md's "ARM-mode code"
+@ section) and only ever taken by address, never `bl` -- InitActorPool
 @ relocates it into IWRAM via bios_CPUSet (CheckObjectCollisionsIwram).
 @
-@ Each object carries two ObjectCollisionBox slots (include/actor.h,
-@ Object.aCollisionBoxes at +0xB0/+0xB8) and a matching 2-entry callback
-@ array (Object.apfnCollisionCallback at +0xC8/+0xCC). For every ordered
+@ Each object carries two ActorCollisionBox slots (include/actor.h,
+@ Actor.aCollisionBoxes at +0xB0/+0xB8) and a matching 2-entry callback
+@ array (Actor.apfnCollisionCallback at +0xC8/+0xCC). For every ordered
 @ pair (i, j>i) and each box slot (1 then 0), if slot `n` is active
 @ (bState == 1) on object i, this resolves both objects' axis-aligned
 @ boxes for that slot (position +0x36/+0x3A, box offsets flipped per
@@ -37,11 +37,11 @@ CheckObjectCollisions:              @ 0x08005F10
 	ldr r3, [sp, #0xc]
 	ldr r0, [sp, #0xc]
 	add r2, r6, r3, lsl #3         @ r2 = &objects[i]->aCollisionBoxes[slot]
-	ldrsb r3, [r2, #0xb4]          @ ObjectCollisionBox.bState
+	ldrsb r3, [r2, #0xb4]          @ ActorCollisionBox.bState
 	sub r8, r0, #1                 @ r8 = slot-1, preloaded for the next iteration
 	cmp r3, #1
 	bne .Lslot_continue            @ skip this slot: not active
-	ldr r2, [r2, #0xb0]            @ r2 = ObjectCollisionBox.dwPackedOffsets
+	ldr r2, [r2, #0xb0]            @ r2 = ActorCollisionBox.dwPackedOffsets
 	ldrb r3, [r6, #0xd3]           @ bAffineFlagsHigh (X/Y-flip bits)
 	ldrsh r1, [r6, #0x3a]          @ r1 = object i's integer Y
 	tst r3, #0x20                  @ Y-flip

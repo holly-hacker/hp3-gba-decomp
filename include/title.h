@@ -16,7 +16,7 @@ typedef enum {
 } MainMenuEntry;
 
 typedef struct {
-    Object *pCursorObject;         // 0x00
+    Actor *pCursorObject;         // 0x00
     u32 dwLoadGameAvailable;       // 0x04: 1 if a save slot can be loaded
     s32 nPaletteEffectSlot;  // 0x08: handle from StartPaletteEffectWithFrameCount, set by StartMainMenuPaletteEffect
 } MainMenuState;

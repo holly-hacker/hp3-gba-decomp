@@ -4,15 +4,15 @@
 
 // Room object constructor for tile objType 3, a two-state switch (button,
 // pressure plate or lever). See docs/formats/rooms.md.
-Object *SpawnSwitchObject(u8 bColumn, u8 bRow)
+Actor *SpawnSwitchObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk3 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocDefaultObject();
+    Actor *pObj = AllocDefaultActor();
 
     if (pObj != 0)
     {
-        SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
-        pObj->wObjectType = pRecord->dwObjectType;
+        SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+        pObj->wActorType = pRecord->dwObjectType;
         pObj->dwFlags = 0x808;
         pObj->wCharacterId_candidate = pRecord->bVariant;
         pObj->oam.objMode = 0;
@@ -28,12 +28,12 @@ Object *SpawnSwitchObject(u8 bColumn, u8 bRow)
 
         if (pObj->wCharacterId_candidate <= 10)
         {
-            SetObjectAssetRecord(pObj, g_apRoomSwitchAssetRecords[pObj->wCharacterId_candidate]);
+            SetActorAssetRecord(pObj, g_apRoomSwitchAssetRecords[pObj->wCharacterId_candidate]);
 
             if ((pObj->wCharacterId_candidate == 9 || pObj->wCharacterId_candidate == 10) && pRecord->bFlagC != 0)
-                SetObjectAnimFrame(pObj, 1);
+                SetActorAnimFrame(pObj, 1);
             else
-                SetObjectAnimFrame(pObj, 0);
+                SetActorAnimFrame(pObj, 0);
 
             if (g_bRestoringRoomObjects_candidate == 0)
                 pObj->bActionFlags = 0;

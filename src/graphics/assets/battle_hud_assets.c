@@ -5,7 +5,7 @@
 // Battle UI sprites, indexed by sub_08012CE4 and sub_08012D2C: records 0-71
 // are the portraits shown when a fighter attacks, 72-132 the battle-menu
 // action icons. Repeated entries share one sprite.
-const ObjectAssetRecord g_aBattleHudAssets[133] = {
+const ActorAssetRecord g_aBattleHudAssets[133] = {
     { (void *)gBattleFace001Tiles, (void *)gBattleFace001Frames, (void *)gBattleFace001Palette, 0 }, // 0
     { (void *)gBattleFace002Tiles, (void *)gBattleFace002Frames, (void *)gBattleFace002Palette, 0 }, // 1
     { (void *)gBattleFace003Tiles, (void *)gBattleFace003Frames, (void *)gBattleFace003Palette, 0 }, // 2

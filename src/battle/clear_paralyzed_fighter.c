@@ -11,7 +11,7 @@ void ClearParalyzedFighter_candidate(u8 fighterIndex)
 {
     if (g_pFightState->pFighters[fighterIndex].bStatusFlags & Paralyzed)
     {
-        Object *object;
+        Actor *object;
 
         g_pFightState->pFighters[fighterIndex].bStatusFlags &= ~Paralyzed;
         g_pFightState->pFighters[fighterIndex].bStatusFlags |= 0x80;
@@ -31,7 +31,7 @@ void ClearParalyzedFighter_candidate(u8 fighterIndex)
 
             object = g_pFightState->pFighters[fighterIndex].pObject;
             {
-                u8 fighterType = *(u8 *)&object->wObjectType;
+                u8 fighterType = *(u8 *)&object->wActorType;
                 u8 paletteBank = object->oam.paletteNum;
                 QueueObjPaletteLoad(&g_aFighterAnimTable[fighterType].aRecords[0].pPalette->aColors[1],
                     (paletteBank << 4) + 1, 0xf);

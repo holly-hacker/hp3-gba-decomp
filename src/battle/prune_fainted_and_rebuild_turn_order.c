@@ -14,7 +14,7 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addPendingFighter)
     u8 count;
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
-        g_pFightState->apTurnOrderIconObjects[i]->pLinkedObject_candidate->dwFlags |= 0x82;
+        g_pFightState->apTurnOrderIconObjects[i]->pLinkedActor_candidate->dwFlags |= 0x82;
         g_pFightState->apTurnOrderIconObjects[i]->dwFlags |= 0x82;
         g_pFightState->apTurnOrderIconObjects[i] = 0;
     }

@@ -4,7 +4,7 @@
 
 // Help screen sprites, drawn by sub_08039020 with the palette of the same
 // index; see docs/formats/graphics.md.
-const ObjectAssetRecord g_aHelpSpriteAssets[22] = {
+const ActorAssetRecord g_aHelpSpriteAssets[22] = {
     { (void *)gMenuSprite006Tiles, (void *)gMenuSprite006Frames, (void *)gMenuSprite006Palette, 0 },  // 0
     { (void *)gItem063Tiles, (void *)gItem063Frames, (void *)gItem063Palette, 0 },  // 1
     { (void *)gItem068Tiles, (void *)gItem068Frames, (void *)gItem068Palette, 0 },  // 2

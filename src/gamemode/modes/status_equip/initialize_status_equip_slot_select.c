@@ -14,7 +14,7 @@ void InitializeStatusEquipSlotSelect(void)
     DrawStatusEquipStatsPanel();
     g_GameModeStackContext.dwModeState = 1;
 
-    g_StatusEquipSlotSelect.pCursor = SpawnObject(10, g_aStatusEquipSlots[g_bStatusEquipSlot].nX + 20,
+    g_StatusEquipSlotSelect.pCursor = SpawnActor(10, g_aStatusEquipSlots[g_bStatusEquipSlot].nX + 20,
                                                   g_aStatusEquipSlots[g_bStatusEquipSlot].nY,
                                                   (const ObjPalette *)gStatusEquipSlotCursorPalette);
     g_StatusEquipSlotSelect.pCursor->pfnTick = TickStatusEquipSlotCursor;

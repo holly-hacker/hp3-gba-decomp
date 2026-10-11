@@ -6,7 +6,7 @@
 // Allocates a run of OBJ VRAM tiles large enough for pixelCount pixels and, when
 // record is given, loads its tile sheet there. Returns the first tile, or 0xFFFF
 // when no run is free.
-u32 AllocObjectVramTiles(ObjectAssetRecord *record, u32 pixelCount, u32 is8bpp)
+u32 AllocObjectVramTiles(ActorAssetRecord *record, u32 pixelCount, u32 is8bpp)
 {
     u32 (*pfnFindFreeObjTileRun)(const u8 *, u32, u32) = FindFreeObjTileRunIwram;
     u32 tileCount;

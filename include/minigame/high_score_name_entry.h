@@ -14,7 +14,7 @@
 #define HIGH_SCORE_KEYPAD_COLUMNS 6
 
 typedef struct {
-    Object *pCursor;                              // 0x00; the menu cursor object
+    Actor *pCursor;                              // 0x00; the menu cursor object
     s32 dwRow;                                    // 0x04; keypad row, 6 is the "Done" row
     s32 dwColumn;                                 // 0x08; keypad column
     u8 abName[HIGH_SCORE_NAME_LENGTH + 1];        // 0x0C; entered characters, NUL-terminated
@@ -33,4 +33,4 @@ extern const u8 g_abHighScoreNameEntryDoneText[];     // 0x08060E74
 
 extern void DrawHighScoreNameEntryKeypad(void);
 extern void DrawHighScoreNameEntryPreview(void);
-extern void HighScoreNameEntryCursorTick(Object *pObject);
+extern void HighScoreNameEntryCursorTick(Actor *pObject);

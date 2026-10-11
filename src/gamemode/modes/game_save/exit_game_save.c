@@ -12,6 +12,6 @@ void ExitGameSave(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     SetScreenDarkenParams_candidate(0, 8);
     ExitMenuScreen();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     ResetPaletteAnimations();
 }

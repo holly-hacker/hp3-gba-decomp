@@ -11,10 +11,10 @@ typedef struct SetTileObjectFacingAndScriptPageRecord {
 
 void RoomScriptOpSetTileObjectFacingAndScriptPage(SetTileObjectFacingAndScriptPageRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
-    SetObjectActionState(pObject, 0x1b);
-    SetObjectActionSubState(pObject, 0);
+    SetActorActionState(pObject, 0x1b);
+    SetActorActionSubState(pObject, 0);
     if (pObject->dwFlags & 0x100000)
         pObject->bFacing = pRecord->bFacing >> 1;
     else

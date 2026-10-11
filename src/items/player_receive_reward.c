@@ -10,10 +10,10 @@ void PlayerReceiveReward(u32 rewardId)
 {
     u32 amount;
 
-    CancelObjectMove_candidate(g_pPlayerObject);
+    CancelActorMove_candidate(g_pPlayerObject);
     g_pPlayerObject->anim.bAnimFrameCounter = 0;
-    SetObjectActionState(g_pPlayerObject, 0x17);
-    SetObjectActionSubState(g_pPlayerObject, 0);
+    SetActorActionState(g_pPlayerObject, 0x17);
+    SetActorActionSubState(g_pPlayerObject, 0);
     g_pPlayerObject->dwStateTimer = 1;
     g_pPlayerObject->bReceivedRewardId = rewardId;
 

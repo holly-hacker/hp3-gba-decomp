@@ -8,7 +8,7 @@ void InitializeFredAndGeorgesShop(void)
 {
     s32 i;
     u32 zero;
-    Object *clear;
+    Actor *clear;
 
     g_FredAndGeorgesShop.bSoldItem = 0;
     clear = NULL;

@@ -45,7 +45,7 @@ the 8KB one.
 The driver is two library objects, identified by the strings at the start
 of their read-only data, and is built from one source file per object:
 
-| Object | Source | Code | Read-only data |
+| Actor | Source | Code | Read-only data |
 |---|---|---|---|
 | `EEPROM_V124` | `src/eeprom/eeprom_v124.c` | `EepromSelectInterface`-`EepromWriteBlockRetryLoop`, `0x08049EC4`-`0x0804A248` | `0x08FAA7D0`-`0x08FAA810` |
 | `EEPROM_NOWAIT` | `src/eeprom/eeprom_nowait.c` | `EepromWriteBlockGuarded`, `EepromWriteBlockVerified`, `0x0804A248`-`0x0804A2C0` | `0x08FAA810`-`0x08FAA824` |
@@ -371,7 +371,7 @@ monsters, pickups, switches, chests, etc.), keyed by world-tile position,
 so re-entering a room restores it to how the player left it. **STRUCTURAL
 MATCH**: confirmed by finding the exact symmetric producer,
 `CaptureRoomObjectState` (`0x0802A70C`), which walks the live
-`g_ActiveObjectListState` linked list of room objects and re-populates
+`g_ActiveActorListState` linked list of room objects and re-populates
 `g_pRoomObjectStateBuffer` (`0x03003B68`) every time the room state is
 captured (e.g. before a save or a room transition); `RestoreRoomObjectState`/
 `RestoreRoomObjectStateMinimal` (`0x0802AB34`/`0x0802AE64`) are the
@@ -385,9 +385,9 @@ Fixed 17-byte header (packed in this exact, non-sequential field order):
 | Offset (from `g_pRoomObjectStateBuffer`) | Size | JSON key | Notes |
 |---|---|---|---|
 | 0x0 | 1 | `bPlayerFacing` | Read from/written to `g_pPlayerObject->field_0x12` on both the capture and restore side. Not a table count -- despite occupying the position a naive read of the packing order might suggest. Per the user: confirmed as an 8-direction facing enum -- `4` = facing down, `3` = facing down-right (consistent with a clockwise, 45-degrees-per-step enum covering all 8 directions). |
-| 0xC | 4 | `fxPlayerPosX` | **STRUCTURAL MATCH**: `g_pPlayerObject->pos.x` (per [`battle_scripts.md`](battle_scripts.md)'s already-identified `Object` layout), copied verbatim -- already in the engine's 16.16 fixed-point form, unlike the per-tile `u16` coordinates the tables below store (which get `<<0x10` on restore). Passed straight to `SnapObjectPosition` when restoring. Decoded as a JSON float (raw `/ 65536`); confirmed against a real save (`bak.sav`), whose raw values (`0x05D17900`/`0x01F4B980`) divide out to plausible, unremarkable-looking world coordinates (`1489.47`/`500.72`) rather than the odd-looking large integers the raw hex represents. |
+| 0xC | 4 | `fxPlayerPosX` | **STRUCTURAL MATCH**: `g_pPlayerObject->pos.x` (per [`battle_scripts.md`](battle_scripts.md)'s already-identified `Actor` layout), copied verbatim -- already in the engine's 16.16 fixed-point form, unlike the per-tile `u16` coordinates the tables below store (which get `<<0x10` on restore). Passed straight to `SnapActorPosition` when restoring. Decoded as a JSON float (raw `/ 65536`); confirmed against a real save (`bak.sav`), whose raw values (`0x05D17900`/`0x01F4B980`) divide out to plausible, unremarkable-looking world coordinates (`1489.47`/`500.72`) rather than the odd-looking large integers the raw hex represents. |
 | 0x10 | 4 | `fxPlayerPosY` | Same as above, `g_pPlayerObject->pos.y`. |
-| 0x9 | 1 | `bSwitchState` | **STRUCTURAL MATCH**: not read from the player `Object` at all -- it's `g_bRoomSwitchState` (`0x03003B64`), get/set via `GetRoomSwitchState`/`SetRoomSwitchState` (`0x0802B12C`/`0x0802B110`). The setter is called from the room's tile-collision dispatcher (`0x0802D8F4`) for two specific trigger tile IDs (`0x23`/`0x24`) that set it to `0`/`1` respectively; only when the value actually *changes* does it call `ApplyRoomSwitchEffect` (`0x0802DF3C`), which plays a sound (`0x0803D338`, args `5,0x1f` for state 0 / `4,0x1f` for state 1) and swaps a tile graphic between two frames (effect IDs `0x19`/`0x18`) at a fixed screen position (`0xE0,0x220`) via `0x08020440`. Being a single scalar (not an array/table), this mechanic supports **at most one such lever/switch per room** -- a room needing several independently-stateful toggles instead uses the `kind5SwitchObjects` table below (kind-`5` objects with sub-kind `'3'`, up to 32 entries, one toggle bit each). |
+| 0x9 | 1 | `bSwitchState` | **STRUCTURAL MATCH**: not read from the player `Actor` at all -- it's `g_bRoomSwitchState` (`0x03003B64`), get/set via `GetRoomSwitchState`/`SetRoomSwitchState` (`0x0802B12C`/`0x0802B110`). The setter is called from the room's tile-collision dispatcher (`0x0802D8F4`) for two specific trigger tile IDs (`0x23`/`0x24`) that set it to `0`/`1` respectively; only when the value actually *changes* does it call `ApplyRoomSwitchEffect` (`0x0802DF3C`), which plays a sound (`0x0803D338`, args `5,0x1f` for state 0 / `4,0x1f` for state 1) and swaps a tile graphic between two frames (effect IDs `0x19`/`0x18`) at a fixed screen position (`0xE0,0x220`) via `0x08020440`. Being a single scalar (not an array/table), this mechanic supports **at most one such lever/switch per room** -- a room needing several independently-stateful toggles instead uses the `kind5SwitchObjects` table below (kind-`5` objects with sub-kind `'3'`, up to 32 entries, one toggle bit each). |
 | remaining bytes (1, 2, 3, 4, 5, 6, 7) | 1 each | *(none)* | Entry counts for the 7 saved tables below -- not represented as their own JSON field, since each is exactly the corresponding table's list length (recomputed on encode). |
 
 7 variable-length record tables follow, each holding up to 32 entries
@@ -398,7 +398,7 @@ alongside it (that's implied by the key name and array length). Every
 record's field layout is traced byte-for-byte from the two symmetric
 producer/consumer functions (`CaptureRoomObjectState` capture; `RestoreRoomObjectState`/
 `RestoreRoomObjectStateMinimal` restore) and cross-checked against a real save (`bak.sav`);
-most fields are a straight copy of one fixed offset of the live `Object`
+most fields are a straight copy of one fixed offset of the live `Actor`
 struct ([`battle_scripts.md`](battle_scripts.md)) -- ones with no identified
 purpose keep that struct's own offset in their name (`bUnk_0xNN`/
 `wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing `bUnk_0x0F`-style
@@ -409,12 +409,12 @@ like a slot's `abTailPadding` when all-zero.
 
 | JSON key | Offset | Record size | Max entries | Selected (capture side, `CaptureRoomObjectState`) for room-object "kind" (`*(short*)(obj+8)`) |
 |---|---|---|---|---|
-| `defaultKindObjects` | 0x14 | 0x6C (108) | 32 | the fallback/default case -- any kind not one of the values below. The richest record: full `Object` state, plus the tile positions of up to 3 linked sub-objects (`Object+0xa0`/`+0xa4`/`+0xa8`) -- captured but **never restored** (the load side reads no such fields for this table). |
-| `kind4Or7Objects` | 0xD94 | 0xC (12) | 32 | kinds `4`, `7`. Captures `Object+0xc` (flags) **unmasked** -- the only table that doesn't clear bit `0x00200000` before saving it. |
+| `defaultKindObjects` | 0x14 | 0x6C (108) | 32 | the fallback/default case -- any kind not one of the values below. The richest record: full `Actor` state, plus the tile positions of up to 3 linked sub-objects (`Actor+0xa0`/`+0xa4`/`+0xa8`) -- captured but **never restored** (the load side reads no such fields for this table). |
+| `kind4Or7Objects` | 0xD94 | 0xC (12) | 32 | kinds `4`, `7`. Captures `Actor+0xc` (flags) **unmasked** -- the only table that doesn't clear bit `0x00200000` before saving it. |
 | `kind5Objects` | 0xF14 | 0x34 (52) | 32 | kind `5`, when the object's byte at `+0x61` is *not* the ASCII char `'3'` |
-| `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Object` fields at all -- on restore, the respawned object's own tile position is used to look up an entry in a separate, static per-map item-drop table (`LookupFloorItemStateEntry`), and these two dwords overwrite that entry. Refreshes persistent floor-item state keyed by tile position, not the spawned object itself. |
-| `kind5SwitchObjects` | 0x1714 | 0x4 | 32 | kind `5`, when `+0x61 == '3'` -- structurally the per-object counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Object+0xc)`); a stored `1` makes restore call `MarkRoomObjectConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
-| `pickupMarkers` | 0x1794 | 0x4 | 16 (the table ends at `presenceMarkers`) | kind `0xB`. `bUnk_0x80` round-trips with a `+1` offset applied only on restore (`Object+0x80` becomes `bUnk_0x80 + 1`); captured verbatim (`Object+0x80`'s raw low byte) on save. `bUnk_0x8f`, when it equals `8` on restore, triggers an item-grant popup callback (`GrantPickupMarkerItem`). |
+| `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Actor` fields at all -- on restore, the respawned object's own tile position is used to look up an entry in a separate, static per-map item-drop table (`LookupFloorItemStateEntry`), and these two dwords overwrite that entry. Refreshes persistent floor-item state keyed by tile position, not the spawned object itself. |
+| `kind5SwitchObjects` | 0x1714 | 0x4 | 32 | kind `5`, when `+0x61 == '3'` -- structurally the per-object counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Actor+0xc)`); a stored `1` makes restore call `MarkRoomObjectConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
+| `pickupMarkers` | 0x1794 | 0x4 | 16 (the table ends at `presenceMarkers`) | kind `0xB`. `bUnk_0x80` round-trips with a `+1` offset applied only on restore (`Actor+0x80` becomes `bUnk_0x80 + 1`); captured verbatim (`Actor+0x80`'s raw low byte) on save. `bUnk_0x8f`, when it equals `8` on restore, triggers an item-grant popup callback (`GrantPickupMarkerItem`). |
 | `presenceMarkers` | 0x17D4 | 0x4 | 570 (theoretical span; see below) | kinds `2`, `8`, `10` unconditionally, plus kind `5`/`6` under specific status-bit conditions -- just a tile position (`bTileX`/`bTileY`), no extra state: restore only respawns the tile's default object. |
 
 None of the numeric "kind" values above are tied to a named enum yet --
@@ -566,8 +566,8 @@ a slot's content past its checksum.
 - Name the remaining `bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN` fields in the
   7 room-object-state tables (see "Room-object state" above) -- their
   byte offsets are traced precisely, but most still only carry their
-  raw `Object` struct offset rather than a real name; cross-referencing
-  [`battle_scripts.md`](battle_scripts.md) as more `Object` fields there get
+  raw `Actor` struct offset rather than a real name; cross-referencing
+  [`battle_scripts.md`](battle_scripts.md) as more `Actor` fields there get
   identified should resolve several of these directly.
 - Identify the room-object "kind" enum (`*(short*)(obj+8)`) that
   `0x0802A70C` switches on to pick a table -- would let each table above

@@ -5,14 +5,14 @@
 #include "graphics/graphics.h"
 #include "game/game_modes.h"
 
-// Certain bAttackOutcomeState (Object+0x60) values. States 1-5 stay numeric:
+// Certain bAttackOutcomeState (Actor+0x60) values. States 1-5 stay numeric:
 // their tails differ between cases 0x1a and 0x15, so no one name fits both.
 typedef enum {
     AttackOutcome_None = 0,    // idle/reset: nothing pending
     AttackOutcome_Buckbeak = 6, // Buckbeak's level-scaled damage tail
 } AttackOutcomeState;
 
-static inline void PlayActionWindupFlash(Object *obj)
+static inline void PlayActionWindupFlash(Actor *obj)
 {
     const u16 *ptr;
     s32 paletteBank;
@@ -21,12 +21,12 @@ static inline void PlayActionWindupFlash(Object *obj)
     if (obj->wActionVariant == 1) {
         SetPlayerObjectAnim(obj, 7);
         paletteBank = obj->oam.paletteNum;
-        ptr = &g_aFighterAnimTable[obj->wObjectType].aRecords[7].pPalette->aColors[1];
+        ptr = &g_aFighterAnimTable[obj->wActorType].aRecords[7].pPalette->aColors[1];
         QueueObjPaletteLoad(ptr, (paletteBank << 4) + 1, 0xf);
     } else if (obj->wActionVariant == 2) {
         SetPlayerObjectAnim(obj, 6);
         paletteBank = obj->oam.paletteNum;
-        ptr = &g_aFighterAnimTable[obj->wObjectType].aRecords[6].pPalette->aColors[1];
+        ptr = &g_aFighterAnimTable[obj->wActorType].aRecords[6].pPalette->aColors[1];
         QueueObjPaletteLoad(ptr, (paletteBank << 4) + 1, 0xf);
     } else {
         SetPlayerObjectAnim(obj, 0);
@@ -34,37 +34,37 @@ static inline void PlayActionWindupFlash(Object *obj)
     obj->bActionFlags &= 0xfe;
 }
 
-static inline void WaitForMoveThenApplyDamageNumber(Object *obj)
+static inline void WaitForMoveThenApplyDamageNumber(Actor *obj)
 {
     if (obj->vel.x != 0)
         return;
     if (obj->vel.y != 0)
         return;
-    SetObjectActionState(obj, 0);
+    SetActorActionState(obj, 0);
 }
 
-static inline void ApplyDamageNumberAnimState(Object *obj)
+static inline void ApplyDamageNumberAnimState(Actor *obj)
 {
     if (obj->bActionFlags & 1) {
-        sub_08018B14(obj->modeState.actor.wStagedDamage, (u8)obj->wObjectType);
+        sub_08018B14(obj->modeState.actor.wStagedDamage, (u8)obj->wActorType);
         PlaySoundById(0x9b);
         SetPlayerObjectAnim(obj, 4);
         obj->bActionFlags &= 0xfe;
     }
 
     // Damage remains staged until the hit animation signals completion.
-    if ((obj->dwFlags & ObjectFlagActionAnimDone) == 0)
+    if ((obj->dwFlags & ActorFlagActionAnimDone) == 0)
         return;
 
-    SetObjectActionState(obj, 0);
+    SetActorActionState(obj, 0);
     ApplyDamageToAllyFighter(obj->modeState.actor.wStagedDamage, obj->bFighterIndex);
 }
 
-static inline void PlayFighterImpactSound(Object *obj)
+static inline void PlayFighterImpactSound(Actor *obj)
 {
     if ((obj->bActionFlags & 1) == 0)
         return;
-    switch (obj->wObjectType) {
+    switch (obj->wActorType) {
     case 0: PlaySoundById(0xa1); break;
     case 1: PlaySoundById(0xa7); break;
     case 2: PlaySoundById(0xa4); break;
@@ -75,24 +75,24 @@ static inline void PlayFighterImpactSound(Object *obj)
     PlaySoundById(0x9c);
 }
 
-static inline void ReturnFighterToPosition(Object *obj)
+static inline void ReturnFighterToPosition(Actor *obj)
 {
     if (obj->bActionFlags & 1) {
         obj->bActionFlags &= 0xfe;
         obj->dwStateTimer = 0x1e;
-        SetObjectFlippedX(obj, 1);
+        SetActorFlippedX(obj, 1);
         return;
     }
     obj->dwStateTimer -= 1;
     if (obj->dwStateTimer != 0)
         return;
     ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
-    SetObjectFlippedX(obj, 0);
-    SetObjectActionState(obj, 0);
+    SetActorFlippedX(obj, 0);
+    SetActorActionState(obj, 0);
     PushBattleState(1);
 }
 
-void TickPlayerActionState(Object *obj)
+void TickPlayerActionState(Actor *obj)
 {
     u8 state;
     s32 var_8 = -1;  // unconditionally initialized at entry (real: str r0,[sp,#8] right after prologue); only case 0x1a ever reads it back
@@ -101,9 +101,9 @@ void TickPlayerActionState(Object *obj)
         sub_080039E8(obj);
     } else {
         if (g_pFightState->bScreenShakeTimer_candidate > 0xf)
-            SetObjectFlippedX(obj, 1);
+            SetActorFlippedX(obj, 1);
         else
-            SetObjectFlippedX(obj, 0);
+            SetActorFlippedX(obj, 0);
     }
 
     state = obj->bActionState;
@@ -148,12 +148,12 @@ void TickPlayerActionState(Object *obj)
             g_pFightState->bActionDelayCounter_candidate = 0x12;
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
                 if (g_pFightState->pFighters[i].bFighterType != Enemy)
-                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0xFFFF0000, 0x25000);
+                    SetActorVelocity(g_pFightState->pFighters[i].pObject, 0xFFFF0000, 0x25000);
                 else
-                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0x8000, 0x15000);
+                    SetActorVelocity(g_pFightState->pFighters[i].pObject, 0x8000, 0x15000);
             }
             for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++)
-                SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0xFFFF0000, 0x25000);
+                SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0xFFFF0000, 0x25000);
             obj->bActionFlags &= 0xfe;
             sub_0802D64C(0x250);
         } else if (flags == 0x41) {
@@ -165,7 +165,7 @@ void TickPlayerActionState(Object *obj)
                 return;
             }
             fs->bActionDelayCounter_candidate = 0x13;
-            StartObjectMove(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
+            StartActorMove(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
             obj->bActionFlags &= 0xfe;
         }
 
@@ -185,22 +185,22 @@ void TickPlayerActionState(Object *obj)
                 sub_0802D64C(0);
             } else if (g_pFightState->bActionDelayCounter_candidate == 3) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
-                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0, 0);
+                    SetActorVelocity(g_pFightState->pFighters[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pFighters[i].pObject);
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
+                    SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pPendingFighters_candidate[i].pObject);
                 }
                 // Real emits an 8-byte block move (ldr/ldr/str/str off one
                 // base each side), not two independent field stores.
                 g_pFightState->savedPos = obj->pos;
-                StartObjectMove(obj, 0xb00000, 0x720000, 3);
+                StartActorMove(obj, 0xb00000, 0x720000, 3);
                 return;
             } else if (g_pFightState->bActionDelayCounter_candidate != 0) {
                 return;
             } else {
-                SetObjectVelocity(obj, 0, 0);
+                SetActorVelocity(obj, 0, 0);
                 obj->bActionFlags = 1;
                 return;
             }
@@ -210,31 +210,31 @@ void TickPlayerActionState(Object *obj)
             if (delay > 0xe) {
                 return;
             } else if (delay == 0xe) {
-                SnapObjectPosition(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y);
+                SnapActorPosition(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y);
                 obj->wMoveDuration = 0;
                 obj->wUnk86 = 0;
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     if (g_pFightState->pFighters[i].bFighterType != Enemy) {
-                        SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0x10000, 0xFFFDB000);
+                        SetActorVelocity(g_pFightState->pFighters[i].pObject, 0x10000, 0xFFFDB000);
                         sub_08003A30(g_pFightState->pFighters[i].pObject, 0, (s16)0xFFFFFC00, 0xc);
                     } else {
-                        SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0xFFFF8000, 0xFFFEB000);
+                        SetActorVelocity(g_pFightState->pFighters[i].pObject, 0xFFFF8000, 0xFFFEB000);
                         sub_08003A30(g_pFightState->pFighters[i].pObject, 0, (s16)0xFFFFFC00, 0xc);
                     }
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0x10000, 0xFFFDB000);
+                    SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0x10000, 0xFFFDB000);
                     sub_08003A30(g_pFightState->pPendingFighters_candidate[i].pObject, 0, (s16)0xFFFFFC00, 0xc);
                 }
                 sub_0802D64C((s16)0xFFFFFDB0);
                 obj->bActionFlags &= 0xfe;
             } else if (delay == 0) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
-                    SetObjectVelocity(g_pFightState->pFighters[i].pObject, 0, 0);
+                    SetActorVelocity(g_pFightState->pFighters[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pFighters[i].pObject);
                 }
                 for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    SetObjectVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
+                    SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pObject, 0, 0);
                     sub_080039E8(g_pFightState->pPendingFighters_candidate[i].pObject);
                 }
                 sub_0802D64C(0);
@@ -275,14 +275,14 @@ void TickPlayerActionState(Object *obj)
         if (obj->dwFlags & 0x8000) {
             // Buckbeak carve-out 1/4: skips the special-move effect; the flag
             // clear below still runs.
-            if (obj->wObjectType != Buckbeak)
+            if (obj->wActorType != Buckbeak)
                 TriggerBattleEffect(1, ACTIVE_FIGHTER.bSlotParam,
                                     0, g_pFightState->bActiveFighterIndex, 0, 0);
             obj->dwFlags &= 0xffff7fff;
         }
         if (obj->dwFlags & 0x40000) {
             obj->dwFlags &= 0xfffbffff;
-            if (obj->wObjectType != Buckbeak) {
+            if (obj->wActorType != Buckbeak) {
                 var_8 = g_abSpellEffectScriptId[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 ACTIVE_FIGHTER.wMp -= g_awSpellMpCost[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 g_aPartyMasterStats[ACTIVE_FIGHTER.bFighterType].wMp = ACTIVE_FIGHTER.wMp;
@@ -302,7 +302,7 @@ void TickPlayerActionState(Object *obj)
                                     g_pFightState->bActiveFighterIndex,
                                     g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex],
                                     g_nLastDamage);
-            } else if (obj->wObjectType != Buckbeak) {
+            } else if (obj->wActorType != Buckbeak) {
                 // Buckbeak carve-out 3/4: Fumos has no fighter check, so it still
                 // triggers; every other spell skips the cast VFX for Buckbeak.
                 if (ACTIVE_FIGHTER.bSelectedActionIndex != 0xfe)
@@ -352,10 +352,10 @@ void TickPlayerActionState(Object *obj)
                     continue;
                 g_nLastDamage = ResolvePlayerAttack(g_pFightState->bActiveFighterIndex, i);
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = (u8)((Object *)g_pFightState->pFighters[i].pObject)->wObjectType;
+                g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = (u8)((Actor *)g_pFightState->pFighters[i].pObject)->wActorType;
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                 g_pFightState->bFaintMessageCount_candidate += 1;
-                SetObjectActionState(g_pFightState->pFighters[i].pObject, 2);
+                SetActorActionState(g_pFightState->pFighters[i].pObject, 2);
                 if (g_nLastDamage > 999) {
                     g_nLastDamage -= 999;
                     ShowFloatingDamageNumber_candidate(g_nLastDamage, 3, i, 0); // crit
@@ -395,7 +395,7 @@ void TickPlayerActionState(Object *obj)
             if (ACTIVE_FIGHTER.bStatusFlags & SpellPowerBoost)
                 g_nLastDamage = (g_nLastDamage * 4) / 3;
 
-            SetObjectActionState(
+            SetActorActionState(
                 g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject,
                 2);
 
@@ -538,7 +538,7 @@ void TickPlayerActionState(Object *obj)
             sub_08012B40();
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
-            SetObjectActionState(obj, 0);
+            SetActorActionState(obj, 0);
             PostActionBattleCheck();
         }
         if (obj->scriptState.bytes.bAttackOutcomeState == 2) {
@@ -549,7 +549,7 @@ void TickPlayerActionState(Object *obj)
                 StopBgTileAnimationsAfterCard_candidate();
             sub_08012B40();
             g_nLastDamage = 5;
-            SetObjectActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
+            SetActorActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
             ShowBattleMessage(AttackResult, g_nLastDamage, 0);
             if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -557,7 +557,7 @@ void TickPlayerActionState(Object *obj)
             ApplyDamageToEnemyFighter(g_nLastDamage, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
-            SetObjectActionState(obj, 0);
+            SetActorActionState(obj, 0);
         }
         if (obj->scriptState.bytes.bAttackOutcomeState == 3) {
             g_pFightState->pAttackAnimObject_candidate = 0;
@@ -567,7 +567,7 @@ void TickPlayerActionState(Object *obj)
                 StopBgTileAnimationsAfterCard_candidate();
             sub_08012B40();
             g_nLastDamage = 0x14;
-            SetObjectActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
+            SetActorActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pObject, 2);
             ShowBattleMessage(AttackResult, g_nLastDamage, 0);
             if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -575,7 +575,7 @@ void TickPlayerActionState(Object *obj)
             ApplyDamageToEnemyFighter(g_nLastDamage, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
-            SetObjectActionState(obj, 0);
+            SetActorActionState(obj, 0);
         }
         if (obj->scriptState.bytes.bAttackOutcomeState == 4) {
             g_pFightState->pAttackAnimObject_candidate = 0;
@@ -588,8 +588,8 @@ void TickPlayerActionState(Object *obj)
             g_pFightState->bFaintMessageCount_candidate = 0;
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
                 if (g_pFightState->pFighters[i].bFighterType == Enemy) {
-                    SetObjectActionState(g_pFightState->pFighters[i].pObject, 2);
-                    g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Object *)g_pFightState->pFighters[i].pObject)->wObjectType;
+                    SetActorActionState(g_pFightState->pFighters[i].pObject, 2);
+                    g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Actor *)g_pFightState->pFighters[i].pObject)->wActorType;
                     g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                     g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
                     ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, i, 0);
@@ -605,7 +605,7 @@ void TickPlayerActionState(Object *obj)
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             if (obj->bActionState == 0x15)
-                SetObjectActionState(obj, 0);
+                SetActorActionState(obj, 0);
         }
         if (obj->scriptState.bytes.bAttackOutcomeState != 5)
             return;
@@ -615,7 +615,7 @@ void TickPlayerActionState(Object *obj)
         g_pFightState->bFaintMessageCount_candidate = 0;
         for (i = 0; i < g_pFightState->bFighterCount; i++) {
             g_nLastDamage = 0x2d;
-            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Object *)g_pFightState->pFighters[i].pObject)->wObjectType;
+            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = ((Actor *)g_pFightState->pFighters[i].pObject)->wActorType;
             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
             if (g_pFightState->pFighters[i].bFighterType == Enemy) {
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
@@ -627,7 +627,7 @@ void TickPlayerActionState(Object *obj)
                     g_nLastDamage = g_pFightState->pFighters[i].wHp - 1;
                 else
                     g_nLastDamage = 0xf;
-                ((Object *)g_pFightState->pFighters[i].pObject)->modeState.actor.wStagedDamage = g_nLastDamage;
+                ((Actor *)g_pFightState->pFighters[i].pObject)->modeState.actor.wStagedDamage = g_nLastDamage;
                 g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
                 ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, i, 0);
                 ShowDamageNumber_candidate(i, g_nLastDamage);
@@ -642,7 +642,7 @@ void TickPlayerActionState(Object *obj)
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
         if (obj->bActionState != 0x15)
             return;
-        SetObjectActionState(obj, 0);
+        SetActorActionState(obj, 0);
         return;
     }
     case 4: // ApplyStatusRestoreItemEffect?
@@ -718,7 +718,7 @@ void TickPlayerActionState(Object *obj)
         }
 
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
-        SetObjectActionState(obj, 0);
+        SetActorActionState(obj, 0);
         SetPlayerObjectAnim(obj, 0);
         PostActionBattleCheck();
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;

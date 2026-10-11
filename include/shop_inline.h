@@ -139,13 +139,13 @@ EXIT_SHOP_MAIN_MENU_LINKAGE void ExitShopMainMenu(void)
     ClearBgTilemap(1);
     for (i = 0; i < 3; i++)
     {
-        FreeObject(g_FredAndGeorgesShop.apRowObjects[i]);
+        FreeActor(g_FredAndGeorgesShop.apRowObjects[i]);
         g_FredAndGeorgesShop.apRowObjects[i] = NULL;
     }
     ReleaseMenuCursor(g_FredAndGeorgesShop.pCursor);
     FreeAllParticleEmitters();
     FreeAllParticles();
-    FreeObject(g_FredAndGeorgesShop.pCursor);
+    FreeActor(g_FredAndGeorgesShop.pCursor);
 }
 
 EXIT_SHOP_CATEGORY_MENU_LINKAGE void ExitShopCategoryMenu(void)
@@ -154,11 +154,11 @@ EXIT_SHOP_CATEGORY_MENU_LINKAGE void ExitShopCategoryMenu(void)
 
     ClearBgTilemap(1);
     for (i = 0; i < 7; i++)
-        FreeObject(g_FredAndGeorgesShop.apRowObjects[i]);
+        FreeActor(g_FredAndGeorgesShop.apRowObjects[i]);
     ReleaseMenuCursor(g_FredAndGeorgesShop.pCursor);
     FreeAllParticleEmitters();
     FreeAllParticles();
-    FreeObject(g_FredAndGeorgesShop.pCursor);
+    FreeActor(g_FredAndGeorgesShop.pCursor);
 }
 
 EXIT_SHOP_SELL_LIST_LINKAGE void ExitShopSellList(void)
@@ -180,9 +180,9 @@ EXIT_SHOP_BUY_LIST_LINKAGE void ExitShopBuyList(void)
 EXIT_SHOP_QUANTITY_SELECT_LINKAGE void ExitShopQuantitySelect(void)
 {
     ClearBgTilemap(1);
-    FreeObject(g_FredAndGeorgesShop.pItemIcon);
-    FreeObject(g_FredAndGeorgesShop.pLeftArrow);
-    FreeObject(g_FredAndGeorgesShop.pRightArrow);
+    FreeActor(g_FredAndGeorgesShop.pItemIcon);
+    FreeActor(g_FredAndGeorgesShop.pLeftArrow);
+    FreeActor(g_FredAndGeorgesShop.pRightArrow);
 }
 
 EXIT_SHOP_MESSAGE_LINKAGE void ExitShopMessage(void)

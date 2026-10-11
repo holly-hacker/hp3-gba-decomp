@@ -3,7 +3,7 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_RoomRaisingPlatformSprite = {
+const ActorGfxRecord g_RoomRaisingPlatformSprite = {
     (void *)gRaisingPlatformTiles, (void *)gRaisingPlatformFrames,
 };
 

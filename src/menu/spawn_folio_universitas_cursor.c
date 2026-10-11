@@ -10,12 +10,12 @@ void SpawnFolioUniversitasCursor(void)
     u32 column = pState->dwSlot;
 
     column += column / 3;
-    pState->pCursor = SpawnObject(0, column * 8 + 0x78, pState->dwCategory * 8 + 0x20,
+    pState->pCursor = SpawnActor(0, column * 8 + 0x78, pState->dwCategory * 8 + 0x20,
                                   (const ObjPalette *)gFolioBrutiSpellDotPalette);
     pState->pCursor->oam.priority = 0;
 
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == FolioUniversitasPickCombo)
-        SetObjectAnimData(pState->pCursor, FOLIO_UNIVERSITAS_CURSOR_GFX, g_aFolioUniversitasBattleCursorAnim, 0);
+        SetActorAnimData(pState->pCursor, FOLIO_UNIVERSITAS_CURSOR_GFX, g_aFolioUniversitasBattleCursorAnim, 0);
     else
-        SetObjectAnimData(pState->pCursor, FOLIO_UNIVERSITAS_CURSOR_GFX, g_aFolioUniversitasCursorAnim, 0);
+        SetActorAnimData(pState->pCursor, FOLIO_UNIVERSITAS_CURSOR_GFX, g_aFolioUniversitasCursorAnim, 0);
 }

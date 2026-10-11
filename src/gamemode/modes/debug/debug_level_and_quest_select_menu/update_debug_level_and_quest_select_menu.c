@@ -11,7 +11,7 @@ void UpdateDebugLevelAndQuestSelectMenu(void)
 
     if (StepCursorUpDown(&g_DebugLevelAndQuestSelectState.dwRow, 0, 3, 1, 0))
     {
-        SetObjectMoveTargetWithDuration_candidate(g_DebugLevelAndQuestSelectState.pCursorObject, 0x9C,
+        SetActorMoveTargetWithDuration_candidate(g_DebugLevelAndQuestSelectState.pCursorObject, 0x9C,
                                                   g_DebugLevelAndQuestSelectState.dwRow * 18 + 0x3A, 5);
     }
 

@@ -67,10 +67,10 @@ void UpdateHarryHermionePortInTimeCutscene(void)
 
     sub_0800A420(g_HarryHermionePortInTime.dwUnk0, g_HarryHermionePortInTime.nProgress, 0);
     sub_0800A3EC(aPosition, 0);
-    SetObjectPosition(g_HarryHermionePortInTime.pObjectA,
+    SetActorPosition(g_HarryHermionePortInTime.pObjectA,
                       g_aHarryHermionePortInTimeObjectPos[g_HarryHermionePortInTime.dwPositionIndex].nObjectAX,
                       (aPosition[1] >> 16) + 0x20);
-    SetObjectPosition(g_HarryHermionePortInTime.pObjectB,
+    SetActorPosition(g_HarryHermionePortInTime.pObjectB,
                       g_aHarryHermionePortInTimeObjectPos[g_HarryHermionePortInTime.dwPositionIndex].nObjectBX,
                       (aPosition[1] >> 16) + 0x20);
     UpdateOverworldCamera_candidate(0);

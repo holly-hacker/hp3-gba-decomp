@@ -40,22 +40,22 @@ extern const StatusEquipSlot g_aStatusEquipSlots[6];  // 0x0806B2FC
 
 // Screen objects and state of the slot select screen.
 typedef struct {
-    Object *pCursor;               // 0x00
-    Object *pCharacter;            // 0x04: portrait of the chosen member
-    Object *apSlotFrames[6];       // 0x08
-    Object *apSlotItems[6];        // 0x20: equipped item icon per slot, or NULL
-    void *apItemGfx[6][2];         // 0x38: tile/frame record passed to SetObjectAssetRecord
+    Actor *pCursor;               // 0x00
+    Actor *pCharacter;            // 0x04: portrait of the chosen member
+    Actor *apSlotFrames[6];       // 0x08
+    Actor *apSlotItems[6];        // 0x20: equipped item icon per slot, or NULL
+    void *apItemGfx[6][2];         // 0x38: tile/frame record passed to SetActorAssetRecord
     GameMode nextMode;             // 0x68: mode pushed once the fade-out finishes
 } StatusEquipSlotSelectState;
 
 extern StatusEquipSlotSelectState g_StatusEquipSlotSelect;  // 0x030054F8
 extern s8 g_bStatusEquipSlot;  // 0x03005564: selected index into g_aStatusEquipSlots
 
-extern Object *sub_0803A030(u32 character);
+extern Actor *sub_0803A030(u32 character);
 extern void DrawStatusEquipStatsPanel(void);
 extern void sub_0803A3A0(void);
 extern void sub_0803A534(void);
-extern void TickStatusEquipSlotCursor(Object *pCursor);
+extern void TickStatusEquipSlotCursor(Actor *pCursor);
 extern void sub_0803A590(void);
 extern void sub_0803A604(void);
 extern void sub_0803A630(void);
@@ -71,7 +71,7 @@ typedef struct {
     u32 dwHasItems;            // 0x10: nonzero when an item list was built
     void *pItemList;           // 0x14: item list menu, or NULL
     u32 dwUnk18;               // 0x18
-    Object *apStatArrows[3];   // 0x1C: Def/Agi/M.Def up/down arrows
+    Actor *apStatArrows[3];   // 0x1C: Def/Agi/M.Def up/down arrows
     u16 awSavedPalette[3];     // 0x28: BG palette colors 4-6, restored on exit
 } StatusEquipItemSelectState;
 

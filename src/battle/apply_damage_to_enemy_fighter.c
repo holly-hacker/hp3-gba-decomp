@@ -6,7 +6,7 @@
 
 // Applies a player attack's damage to an enemy. At 0 HP (or on HP underflow)
 // the enemy faints: its roster index is queued in g_anFaintedRosterIndices,
-// its XP and gold are added to the battle rewards, and its Object enters
+// its XP and gold are added to the battle rewards, and its Actor enters
 // action state 1. Unlike ApplyDamageToAllyFighter, this does not strip the
 // critical-hit sentinel from the damage.
 void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex)
@@ -35,6 +35,6 @@ void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex)
         g_nBattleGoldReward = MonsterTable[FIGHTER(fighterIndex).bRosterIndex].wRewardGold + g_nBattleGoldReward;
         FIGHTER(fighterIndex).wHp = 0;
         FIGHTER(fighterIndex).nFaintedFlag = -1;
-        SetObjectActionState(FIGHTER(fighterIndex).pObject, 1);
+        SetActorActionState(FIGHTER(fighterIndex).pObject, 1);
     }
 }

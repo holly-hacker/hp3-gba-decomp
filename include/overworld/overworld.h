@@ -11,7 +11,7 @@
 // SpawnOverworldMonsterEncounters below.
 extern u8 g_bTouchedMonsterRecordCount;
 extern u8 g_abTouchedMonsterRecords[20];
-extern Object *g_pTouchedWanderingMonster;
+extern Actor *g_pTouchedWanderingMonster;
 
 // 8-byte wandering-monster spawn-position record, two words.
 // Only the low halves reach SpawnWanderingMonsterObject;
@@ -37,10 +37,10 @@ u32 PickMaxDamageMonster(const u8 *pSlots);
 // Create one wandering-monster object.
 void SpawnWanderingMonsterObject(u8 monsterId, u16 x, u16 y, u8 encounterId, u8 variant, u8 kind);
 
-// Controllable-character slots: each 16-byte entry starts with the Object the
+// Controllable-character slots: each 16-byte entry starts with the Actor the
 // player steers; only slot 0 is ever populated.
 typedef struct OverworldControlSlot {
-    Object *pObject;
+    Actor *pObject;
     u8 aUnknown4[12];
 } OverworldControlSlot;
 
@@ -54,17 +54,17 @@ typedef struct OverworldControlState {
 
 extern OverworldControlState g_OverworldControlState;
 
-extern Object *g_pPlayerObject;
+extern Actor *g_pPlayerObject;
 // The two party followers' objects; NULL while the slot is empty.
-extern Object *g_pFollowerObject0;
-extern Object *g_pFollowerObject1;
+extern Actor *g_pFollowerObject0;
+extern Actor *g_pFollowerObject1;
 // Character ids of the leader and the two follower slots.
 extern u8 g_bPartyCharId0;
 extern u8 g_bPartyCharId1;
 extern u8 g_bPartyCharId2;
 
 // Party member sprites and animations, set by SetPartyMemberAnim. The record arrays are
-// indexed by character id, the animation tables by Object.bFacing.
+// indexed by character id, the animation tables by Actor.bFacing.
 #define PARTY_CHARACTER_COUNT 9
 typedef enum {
     PartyAnimStand = 0,
@@ -73,13 +73,13 @@ typedef enum {
     PartyAnim3 = 3,
     PartyAnim4 = 4,
 } PartyAnim;
-extern void SetPartyMemberAnim(Object *obj, u8 anim);
-extern const ObjectGfxRecord g_UnusedPartyGfx;
-extern const ObjectGfxRecord g_PartyFocusGfx_candidate;
-extern const ObjectAssetRecord g_aPartyWalkAssets[PARTY_CHARACTER_COUNT];
-extern const ObjectAssetRecord g_aPartyAnim3Assets[PARTY_CHARACTER_COUNT];
-extern const ObjectAssetRecord g_aPartyCastAssets[PARTY_CHARACTER_COUNT];
-extern const ObjectAssetRecord g_aPartyAnim4Assets[PARTY_CHARACTER_COUNT];
+extern void SetPartyMemberAnim(Actor *obj, u8 anim);
+extern const ActorGfxRecord g_UnusedPartyGfx;
+extern const ActorGfxRecord g_PartyFocusGfx_candidate;
+extern const ActorAssetRecord g_aPartyWalkAssets[PARTY_CHARACTER_COUNT];
+extern const ActorAssetRecord g_aPartyAnim3Assets[PARTY_CHARACTER_COUNT];
+extern const ActorAssetRecord g_aPartyCastAssets[PARTY_CHARACTER_COUNT];
+extern const ActorAssetRecord g_aPartyAnim4Assets[PARTY_CHARACTER_COUNT];
 extern const u8 g_abPartyStandFrames[8];
 extern const u8 g_abPartyStandFramesChar8[8];
 extern const u8 g_aPartyWalkAnims[8][18];
@@ -88,7 +88,7 @@ extern const u8 g_aPartyWalkAnimsChar4[8][18];
 extern const u8 g_aPartyCastAnims[8][18];
 extern const u8 g_aPartyAnim4Anims[8][4];
 extern const u8 g_abPartyAnim3Anim[22];
-extern const ObjectGfxRecord g_UnusedPartyGfx2;
+extern const ActorGfxRecord g_UnusedPartyGfx2;
 // Index into the 9-entry field spell table at 0x08060BAC: {u32 spell,
 // u8 FighterType, u8 minimum bKnownSpellCount}. Flipendo, Lumos and Diffindo
 // for Harry, Flipendo, Reparo and Glacius for Hermione, Flipendo, Alohomora
@@ -96,10 +96,10 @@ extern const ObjectGfxRecord g_UnusedPartyGfx2;
 // CyclePartyLeaderSelection_candidate steps it; it is saved with the party.
 extern u8 g_bSelectedFieldSpell;
 // HUD objects, cleared by ResetPartyState and freed by sub_08024BD4.
-extern Object *g_pFieldSpellNameObject;       // selected spell's name text (sub_08023A2C)
-extern Object *g_pMapNameTextObject;          // room name text (ShowMapNamePopup)
-extern Object *g_pFieldSpellPortraitObject;   // face portrait of the spell's character (sub_08023A2C)
-extern Object *g_pMapNamePopupObject;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
+extern Actor *g_pFieldSpellNameObject;       // selected spell's name text (sub_08023A2C)
+extern Actor *g_pMapNameTextObject;          // room name text (ShowMapNamePopup)
+extern Actor *g_pFieldSpellPortraitObject;   // face portrait of the spell's character (sub_08023A2C)
+extern Actor *g_pMapNamePopupObject;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
 extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
 
 extern void ResetPartyState(void);
@@ -109,7 +109,7 @@ extern void ResetPartyState(void);
 // (SetAllQueuedMoveParams: shake). One 0x2C-byte record per control slot,
 // ticked by TickCameraFocus_candidate. See docs/memory-map/frame_systems.md.
 typedef struct CameraEffect {
-    Object *pTarget;           // 0x00, pan target
+    Actor *pTarget;           // 0x00, pan target
     FixedPoint savedVel;       // 0x04, the controlled object's velocity, restored when the pan ends
     u8 pad_0C[0x08];           // -> 0x14
     s32 nStep;                 // 0x14, pan speed; shake amplitude (posX << 16) in state 3
@@ -137,7 +137,7 @@ typedef struct CameraFocusSlot {
     s32 nLatchedX;             // 0x18, copy of the focus point; see SetCameraFollowTarget_candidate
     s32 nLatchedY;             // 0x1C
     u8 pad_20[0x10];           // -> 0x30
-    Object *pTarget;           // 0x30, object the focus follows
+    Actor *pTarget;           // 0x30, object the focus follows
     u16 wPinned;               // 0x34, 0 = follow pTarget every frame, 1 = hold
     u8 pad_36[0x02];           // -> 0x38
 } CameraFocusSlot;

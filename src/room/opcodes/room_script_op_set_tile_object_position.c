@@ -12,7 +12,7 @@ typedef struct SetTileObjectPositionRecord {
 
 void RoomScriptOpSetTileObjectPosition(SetTileObjectPositionRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     pObject->pos.x = pRecord->nX << 16;
     pObject->pos.y = pRecord->nY << 16;

@@ -21,11 +21,11 @@ void ExitOptions(void)
 
     for (i = 0; i < ARRAY_COUNT(g_OptionsState.apObjects); i++)
     {
-        FreeObject(g_OptionsState.apObjects[i]);
+        FreeActor(g_OptionsState.apObjects[i]);
         g_OptionsState.apObjects[i] = NULL;
     }
 
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     DisableKrawall();
     SyncSaveHeaderIfDirty();
     EnableKrawall();

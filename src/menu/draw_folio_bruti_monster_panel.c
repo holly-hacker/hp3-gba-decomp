@@ -27,7 +27,7 @@ void DrawFolioBrutiMonsterPanel(void)
 
     if (g_FolioBrutiState.pMonster != NULL)
     {
-        g_FolioBrutiState.pMonster->dwFlags = (g_FolioBrutiState.pMonster->dwFlags & ~ObjectFlagVisible) | 0x82;
+        g_FolioBrutiState.pMonster->dwFlags = (g_FolioBrutiState.pMonster->dwFlags & ~ActorFlagVisible) | 0x82;
         g_FolioBrutiState.pMonster = NULL;
     }
 
@@ -44,15 +44,15 @@ void DrawFolioBrutiMonsterPanel(void)
     {
         if (g_FolioBrutiState.apSpellDots[spell] == NULL)
         {
-            g_FolioBrutiState.apSpellDots[spell] = SpawnObject(0, 0, 0, (const ObjPalette *)gObjectSprite027Palette);
-            SetObjectAssetRecord(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX);
+            g_FolioBrutiState.apSpellDots[spell] = SpawnActor(0, 0, 0, (const ObjPalette *)gObjectSprite027Palette);
+            SetActorAssetRecord(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX);
             g_FolioBrutiState.apSpellDots[spell]->oam.priority = 1;
         }
 
         effectiveness = GetMonsterSpellEffectiveness(monster, spell);
         if (effectiveness == -1 || g_saveStateBlock.abMonsterDocLevel[monster] <= 2)
         {
-            SetObjectAnimData(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX,
+            SetActorAnimData(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX,
                               g_aFolioBrutiDotUnknownAnim, 0);
             x = 0xB0 << 13;
             aOrbit[0] = ((spell << 5) & 0xFF) << 8;
@@ -62,12 +62,12 @@ void DrawFolioBrutiMonsterPanel(void)
         else
         {
             sub_080039E8(g_FolioBrutiState.apSpellDots[spell]);
-            SetObjectAnimData(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX,
+            SetActorAnimData(g_FolioBrutiState.apSpellDots[spell], FOLIO_BRUTI_SPELL_DOT_GFX,
                               g_aFolioBrutiDotAnims[effectiveness / 0x21], 0);
             x = FixedDivide(effectiveness << 16, 0xC8 << 15) * 0x1A + 0x90000;
         }
 
-        SnapObjectPosition(g_FolioBrutiState.apSpellDots[spell], x, (0xB0 + spell * 16) << 15);
+        SnapActorPosition(g_FolioBrutiState.apSpellDots[spell], x, (0xB0 + spell * 16) << 15);
     }
 
     if (g_saveStateBlock.abMonsterDocLevel[monster] <= 2)
@@ -90,13 +90,13 @@ void DrawFolioBrutiMonsterPanel(void)
             isUnseen = 1;
         }
 
-        g_FolioBrutiState.pMonster = SpawnObject(0, 0xB8, 0x4C, (const ObjPalette *)pPalette);
-        SetObjectAnimData(g_FolioBrutiState.pMonster, &g_pMonsterGraphicsTable[monster],
+        g_FolioBrutiState.pMonster = SpawnActor(0, 0xB8, 0x4C, (const ObjPalette *)pPalette);
+        SetActorAnimData(g_FolioBrutiState.pMonster, &g_pMonsterGraphicsTable[monster],
                           g_pMonsterAnimFrameTable[monster], 0);
         g_FolioBrutiState.pMonster->oam.priority = 1;
         if (isUnseen)
             g_FolioBrutiState.pMonster->oam.objMode = 1;
-        SetObjectAffineTransform(g_FolioBrutiState.pMonster, g_adwFolioBrutiMonsterScale[monster],
+        SetActorAffineTransform(g_FolioBrutiState.pMonster, g_adwFolioBrutiMonsterScale[monster],
                                  g_adwFolioBrutiMonsterScale[monster], 0, 3);
 
         DrawFolioBrutiMonsterText();

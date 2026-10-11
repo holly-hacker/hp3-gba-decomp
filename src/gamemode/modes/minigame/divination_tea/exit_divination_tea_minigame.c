@@ -20,6 +20,6 @@ void ExitDivinationTeaMinigame(void)
     }
 
     ResetPaletteAnimations();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0800A914();
 }

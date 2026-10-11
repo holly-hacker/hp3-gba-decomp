@@ -10,7 +10,7 @@ void ExitWizardCrackerPopItDifficultySelect(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     SetAlphaBlendTargets(0, 0);
     ExitMenuScreen();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     sub_08007A90();
     FreeAllParticles();
     StopScanlineEffects();

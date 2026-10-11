@@ -2,7 +2,7 @@
 #include "menu/minigame_menu.h"
 #include "shop.h"
 
-void TickShopMenuCursor(Object *pCursor)
+void TickShopMenuCursor(Actor *pCursor)
 {
-    SetObjectMoveTargetWithDuration_candidate(pCursor, 0x1E, g_FredAndGeorgesShop.bCursor * 16 + 0x28, 2);
+    SetActorMoveTargetWithDuration_candidate(pCursor, 0x1E, g_FredAndGeorgesShop.bCursor * 16 + 0x28, 2);
 }

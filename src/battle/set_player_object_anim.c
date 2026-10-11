@@ -3,29 +3,29 @@
 #include "mt19937.h"
 
 // state 0 (idle) re-rolls one of 2 random idle starting frames.
-void SetPlayerObjectAnim(Object *obj, s32 state)
+void SetPlayerObjectAnim(Actor *obj, s32 state)
 {
-    if (obj->dwFlags & ObjectFlagVisible)
+    if (obj->dwFlags & ActorFlagVisible)
     {
-        obj->dwFlags &= ~(ObjectFlagVisible | ObjectFlagActionAnimDone);
+        obj->dwFlags &= ~(ActorFlagVisible | ActorFlagActionAnimDone);
         if (state == 0)
         {
-            SetObjectAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wObjectType] + state * 0x10,
-                               g_aFighterAnimDataTable[obj->wObjectType][state], 0);
+            SetActorAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wActorType] + state * 0x10,
+                               g_aFighterAnimDataTable[obj->wActorType][state], 0);
             obj->anim.pAnimFrameCursor = obj->anim.pAnimFrameBase + Mt19937RandMax(2) * 4;
-            SetObjectAnimFrame(obj, *obj->anim.pAnimFrameCursor);
+            SetActorAnimFrame(obj, *obj->anim.pAnimFrameCursor);
         }
         else
         {
-            SetObjectAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wObjectType] + state * 0x10,
-                               g_aFighterAnimDataTable[obj->wObjectType][state], 0);
+            SetActorAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wActorType] + state * 0x10,
+                               g_aFighterAnimDataTable[obj->wActorType][state], 0);
         }
-        obj->dwFlags |= ObjectFlagVisible;
+        obj->dwFlags |= ActorFlagVisible;
     }
     else
     {
-        obj->dwFlags &= ~ObjectFlagActionAnimDone;
-        SetObjectAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wObjectType] + state * 0x10,
-                           g_aFighterAnimDataTable[obj->wObjectType][state], 0);
+        obj->dwFlags &= ~ActorFlagActionAnimDone;
+        SetActorAnimData(obj, (u8 *)&g_aFighterAnimTable[obj->wActorType] + state * 0x10,
+                           g_aFighterAnimDataTable[obj->wActorType][state], 0);
     }
 }

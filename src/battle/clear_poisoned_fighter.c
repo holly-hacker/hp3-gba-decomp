@@ -11,7 +11,7 @@
 void ClearPoisonedFighter_candidate(u8 fighterIndex)
 {
     BattleFighter *fighter = &g_pFightState->pFighters[fighterIndex];
-    Object *object = fighter->pObject;
+    Actor *object = fighter->pObject;
 
     if (fighter->bStatusFlags & Poisoned)
     {
@@ -29,7 +29,7 @@ void ClearPoisonedFighter_candidate(u8 fighterIndex)
 
         {
             u8 paletteBank = object->oam.paletteNum;
-            u8 fighterType = *(u8 *)&object->wObjectType;
+            u8 fighterType = *(u8 *)&object->wActorType;
             QueueObjPaletteLoad(&g_aFighterAnimTable[fighterType].aRecords[0].pPalette->aColors[1],
                 (paletteBank << 4) + 1, 0xf);
         }

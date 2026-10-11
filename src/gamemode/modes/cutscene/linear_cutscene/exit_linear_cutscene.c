@@ -9,7 +9,7 @@ void ExitLinearCutscene(void)
 
     if (g_pLinearCutsceneObject != NULL)
     {
-        FreeObject(g_pLinearCutsceneObject);
+        FreeActor(g_pLinearCutsceneObject);
         g_pLinearCutsceneObject = NULL;
     }
 }

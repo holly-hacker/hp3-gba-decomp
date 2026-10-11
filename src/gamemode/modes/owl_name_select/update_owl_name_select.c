@@ -63,7 +63,7 @@ void UpdateOwlNameSelect(void)
                 {
                     ClearBgTilemap(2);
                     sub_08007434(0x1000);
-                    FreeAllObjects(&g_ActiveObjectListState.pHead);
+                    FreeAllActors(&g_ActiveActorListState.pHead);
                     g_GameModeStackContext.dwModeSubState = 0;
                     SetAlphaBlendTargets(8, 3);
                     SetAlphaBlendCoefficients(0x10 - g_GameModeStackContext.dwModeSubState,

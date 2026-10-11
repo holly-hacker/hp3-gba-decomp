@@ -56,7 +56,7 @@ void InitializeLoadingScreen(void)
 
     g_GameModeStackContext.dwModeState = 0;
     g_GameModeStackContext.dwCurrentGameModeArg3 = g_abQuestEventState[0];
-    SetObjectActionState(g_pPlayerObject, 0x24);
+    SetActorActionState(g_pPlayerObject, 0x24);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
     g_GameModeStackContext.dwModeTimer = 5;
     sub_0800C3FC();

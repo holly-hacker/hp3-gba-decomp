@@ -1091,7 +1091,7 @@ frames; `header` is signed bytes, zero for derived sprites), one `u16`
 descriptor offset per frame, then per frame in order the descriptor
 `{cellCount | flags, 0, width, height, tileOffset, offsetX, offsetY}`,
 `extraCount` `u16`s, `partCount` 6-byte parts (signed bytes; meaning not
-decoded), and one 4-byte `ObjectFrameCell` per cell, then zero bytes to a word
+decoded), and one 4-byte `ActorFrameCell` per cell, then zero bytes to a word
 boundary (records with 6-byte parts can end on a halfword). `tileOffset` is the
 frame's stream position within the sprite's tiles. Bits 5-7 of
 `bCellCount` are `0x40` on every `lzrle` frame, `0x20` on every `rle`
@@ -1136,9 +1136,9 @@ the palette-only `MonsterPalettes` bank as `MonsterPaletteNNN.png`
 swatches. The gauge palette at `0x08A38FE0` just before them belongs to
 `BattleHudItems`, and a tile stream follows them.
 
-### Object-type sprites and coin icon (PROVEN, extracted)
+### Actor-type sprites and coin icon (PROVEN, extracted)
 
-`g_aObjectTypeAssets` (137 `ObjectAssetRecord`s, ending at the next table
+`g_aObjectTypeAssets` (137 `ActorAssetRecord`s, ending at the next table
 `sub_0802F6C0` reads) holds sprites for spawned objects: `sub_0802F6C0`
 indexes it through a per-type byte table, and `SetObjectAnimData_candidate`
 uses its records from 110 on. `0x080B9A84`-`0x080BC1C4`, directly after
@@ -1158,7 +1158,7 @@ icon with its palette, referenced from two other records
 `g_TurnOrderIconContainerAsset`'s sprite (four 24x24 frames: green and red
 boxes, plain and highlighted) with its palette, then two gauges draining
 from green to red (25 frames at 16x32 and 17 frames at 8x24). The two
-gauges are the records `sub_0801BA54` passes to `SetObjectAssetRecord`
+gauges are the records `sub_0801BA54` passes to `SetActorAssetRecord`
 (the four words after `g_apEffectScripts`), and it spawns their object
 with the palette at `0x08A38FE0`, stored after the second gauge. The
 `BattleHudItems` `image-bank` row claims the range as `BattleHudItem001`-
@@ -1220,7 +1220,7 @@ sprite's palette in these banks is the one its records use.
 | `BattleEffects2` | `0x08D7C480`-`0x08D7E528` | `0x08D7C2B0`-`0x08D7E358` | one more battle effect sprite |
 | `StatusCharacters` | `0x08DF3918`-`0x08E1D5DC` | `0x08DF3748`-`0x08E1D40C` | Harry, Hermione, and Ron rotating in 32 frames each, 8bpp |
 
-The battle effect records are 16-byte `ObjectAssetRecord`s (animation delay
+The battle effect records are 16-byte `ActorAssetRecord`s (animation delay
 3 or 5) at `0x08053D40`-`0x08053E50` and `0x08053E64`-`0x080544D4` (JP
 `0x08053C6C`-`0x08054400`), which `CreateEffectScriptObject` reads, with
 five palette pointers between the two runs. Every pointer in these runs
@@ -1245,7 +1245,7 @@ table, `+0x04/+0x08/+0x0C`) is a second, fully statically-walkable instance of
 the OBJ tile-loading path described above -- found by decompiling
 `GetItemImageData` (`0x08026bcc`, called by `FUN_08027384`, an item-spawn
 function), which reads exactly these 3 fields and hands them to
-`SpawnObject` (`0x08001528`, the same generic pooled-object spawner
+`SpawnActor` (`0x08001528`, the same generic pooled-object spawner
 documented above) as `resource_ptr`, then to `LoadObjTile`/
 `LoadObjTileSheet` (`0x080454BC`/`0x08045588`). Unlike the general case,
 every item's `resourcePtr` is a clean literal at its own table entry, so
@@ -1324,7 +1324,7 @@ addresses. See `docs/formats/items.md`.
 
 ### Help screen sprites (PROVEN, partly extracted)
 
-`g_aHelpSpriteAssets` (22 `ObjectAssetRecord`s) and
+`g_aHelpSpriteAssets` (22 `ActorAssetRecord`s) and
 `g_apHelpSpritePalettes` (22 palette pointers, directly after it) are read
 by `sub_08039020(x, y, index)`, which spawns object type `index` with
 palette `g_apHelpSpritePalettes[index]` and then passes
@@ -1339,7 +1339,7 @@ main-menu graphics after `g_MainMenuPalette` (not extracted).
 
 ### Character portraits (PROVEN, extracted)
 
-`g_apPortraitTable` (US `0x0804C61C`, 72 `ObjectAssetRecord` entries, 16
+`g_apPortraitTable` (US `0x0804C61C`, 72 `ActorAssetRecord` entries, 16
 bytes each: `{pTileGfx, pFrameData, pPalette, reserved(0)}`) holds the
 game's dialog-portrait art. It's reachable from
 `InitializeDebugPortraitsMenu` (`0x0800B5A8`), a debug menu for paging
@@ -1347,8 +1347,8 @@ through them, but the records themselves are ordinary dialog assets --
 "debug" describes the viewer, not the data.
 
 - **`pTileGfx`**: 8bpp OBJ tile data, header type 7. Consumed via
-  `SetObjectAssetRecord` (`0x0800187C`, stores `&PortraitRecord` into
-  `Object+0xE0`) -> `UpdateObjectSpriteFrame` (`0x08002F28`) ->
+  `SetActorAssetRecord` (`0x0800187C`, stores `&PortraitRecord` into
+  `Actor+0xE0`) -> `UpdateActorSpriteFrame` (`0x08002F28`) ->
   `LoadObjTile` -> `DecompressResourceVram` (`0x0801DE5C`), whose type 7
   is the `DecompressLzRle` codec (`DecompressLzRle`, ARM, `0x08006108`; see "The
   resource-decompression dispatchers"). Verified against 71 real images.
@@ -1356,34 +1356,34 @@ through them, but the records themselves are ordinary dialog assets --
   descriptor, read directly -- despite `pTileGfx`'s neighboring header
   superficially inviting the same treatment, this pointer is never
   routed through either decompression dispatcher. Layout (byte offsets
-  from `pFrameData`; C types `ObjectFrameData`/`ObjectFrameDesc` in
+  from `pFrameData`; C types `ActorFrameData`/`ActorFrameDesc` in
   `include/actor.h`):
   - `+0x2`-`+0x5` (`s8` each): terrain box left/right/top/bottom, the same
-    for every frame. `LoadObjectAnimFrameBounds` (`0x080023B4`) copies it
-    to `Object+0xC0`.
-  - `+0x6` (`u16`): frame count. `GetObjectVariantFrameSize`
+    for every frame. `LoadActorAnimFrameBounds` (`0x080023B4`) copies it
+    to `Actor+0xC0`.
+  - `+0x6` (`u16`): frame count. `GetActorVariantFrameSize`
     (`0x08000E28`) wraps a frame index of -1 to `count - 1`.
   - `+0xA` (`u8`): count of extra `u16`s after each frame descriptor
     (`0` in every observed portrait).
   - `+0xB` (`u8`): collision-box count (`0` in every observed portrait).
     Each frame's boxes follow its extra `u16`s, 6 bytes each: `s8`
     left/right/top/bottom and a state byte, copied into
-    `Object.aCollisionBoxes` with the count in `Object+0xAF`.
+    `Actor.aCollisionBoxes` with the count in `Actor+0xAF`.
   - `+0xC + frame*2` (`u16`): per-frame offset, added to `pFrameData +
     0xC` to get that frame's descriptor base. Only frame 0 has been
     exercised.
   - Frame descriptor base `+0x0` (`u8`, low 5 bits): cell count.
   - Frame descriptor base `+0x2`/`+0x3` (`u8`): frame width/height in
-    pixels. `UpdateObjectSpriteFrame` passes `width*height` to the OBJ
+    pixels. `UpdateActorSpriteFrame` passes `width*height` to the OBJ
     tile allocator (`AllocObjectVramTiles`), which divides it by 64 (4bpp) or 32
     (8bpp, 32-byte units); every item icon's values are `32x32` or
     `16x32`, matching their decoded sizes.
   - Frame descriptor base `+0x4` (`u16`): byte offset of the frame's
-    tile data from `pTileGfx` (`GetObjectVariantFrameTileGfx`,
-    `0x08000EC0`, and `UpdateObjectSpriteFrame`'s `LoadObjTile` path).
+    tile data from `pTileGfx` (`GetActorVariantFrameTileGfx`,
+    `0x08000EC0`, and `UpdateActorSpriteFrame`'s `LoadObjTile` path).
   - Frame descriptor base `+0x6`/`+0x8` (`s16`): x/y of the frame's
     top-left corner relative to the object. With the width and height
-    they give `Object.spriteBounds`.
+    they give `Actor.spriteBounds`.
   - Cell table starts at frame-descriptor-base `+ 0xA +
     extra_count*2 + box_count*6` (`+0xA` for every portrait). Each cell is 4 bytes
     `{b0, b1, b2, b3}`:
@@ -1398,8 +1398,8 @@ through them, but the records themselves are ordinary dialog assets --
     - X = `sign9((b1 & 1) << 8 | b0)`, Y = `sign9((b2 & 3) << 7 | (b1
       >> 1))` -- signed 9-bit pixel offsets relative to the object's own
       on-screen anchor, doubled for a double-size affine object. C type
-      `ObjectFrameCell`, a packed bitfield word, decoded by
-      `UpdateObjectOamCells` (`0x08002618`, matched). `WriteObjectOamCells`
+      `ActorFrameCell`, a packed bitfield word, decoded by
+      `UpdateActorOamCells` (`0x08002618`, matched). `WriteActorOamCells`
       (`0x08002C18`, matched) decodes the same bytes into a live OAM
       entry's position/shape/tile fields.
   - Confirmed against real hardware, not just the struct shape: for
@@ -1425,10 +1425,10 @@ through them, but the records themselves are ordinary dialog assets --
   repeated records share their original image. Both regions are
   verified by the whole-ROM comparison; JP addresses are not yet mapped.
 
-### Object animation command streams (STRUCTURAL MATCH, from `RunObjectAnimCommands`)
+### Actor animation command streams (STRUCTURAL MATCH, from `RunActorAnimCommands`)
 
-`SetObjectAnimData(obj, record, data, start)` points an object at a byte
-stream (`data + start * 2`); `RunObjectAnimCommands` reads it two bytes at a time. A
+`SetActorAnimData(obj, record, data, start)` points an object at a byte
+stream (`data + start * 2`); `RunActorAnimCommands` reads it two bytes at a time. A
 first byte up to `0xEE` shows that frame for the second byte's count of ticks
 (0 holds it); `0xEF`-`0xFF` run immediately, in sequence, until the next
 frame. `include/actor_anim.h` spells them as `ANIM_*` macros, which
@@ -1437,13 +1437,13 @@ the ROM's animation tables use.
 | Byte | Command | Operand |
 |---|---|---|
 | `0xEF` | move x forward (mirrored when h-flipped) | signed pixels |
-| `0xF0` | set `ObjectFlagActionAnimDone`, stay here | ignored (0, or `0xFF` in some monster animations) |
+| `0xF0` | set `ActorFlagActionAnimDone`, stay here | ignored (0, or `0xFF` in some monster animations) |
 | `0xF1` / `0xF2` | toggle v-flip / h-flip | -- |
-| `0xF3` / `0xF4` | set / clear `ObjectFlagVisible` | -- |
+| `0xF3` / `0xF4` | set / clear `ActorFlagVisible` | -- |
 | `0xF5`-`0xFC` | move down-left, up-left, down-right, up-right, down, up, left, right | pixels |
 | `0xFD` | `PlaySoundById` | sound id |
 | `0xFE` | jump to command `n` of the stream | `n` |
-| `0xFF` | event marker: sets `ObjectFlagSpecialMoveTrigger`, stores the operand at `Object+0xDC`, holds one tick | marker |
+| `0xFF` | event marker: sets `ActorFlagSpecialMoveTrigger`, stores the operand at `Actor+0xDC`, holds one tick | marker |
 
 Tables that keep several streams per row (room object kinds, monsters, effect
 animations) pad each row with zeros to a fixed stride.

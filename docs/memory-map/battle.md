@@ -146,7 +146,7 @@ int ResolveEnemyAttack(int attackerIndex, int defenderIndex) {   // 0x08017E44
         }
     }
 
-    return damage;                 // enemy hit is staged on its target's Object; see below
+    return damage;                 // enemy hit is staged on its target's Actor; see below
 }
 
 void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort damage) {  // 0x08015020
@@ -167,7 +167,7 @@ void RollMonsterSpecialEffect(byte monsterIndex, byte targetFighterIndex, ushort
 // caller/callee codegen -- (u8 effectId, s32 x4, u16 damage): effectId is
 // the only narrow param (u8 entry extend at 0x08018B74; params 2-4 have
 // none), damage is u16 (callers extend with lsl/lsr #0x10). Returns the
-// spawned Object*; no call site uses it.
+// spawned Actor*; no call site uses it.
 
 // ---- Player-to-enemy damage application ----
 
@@ -219,12 +219,12 @@ void DispatchPendingAction(int fighterIndex) {                  // 0x080100a0
 
 // case 0x1A of TickPlayerActionState's jump table, see battle-ui.md.
 // A camera windup/approach-and-return pan (a separate sub-state machine on
-// Object+0x90, not modeled here) runs before this for every spell except
+// Actor+0x90, not modeled here) runs before this for every spell except
 // Fumos. Fumos skips only that camera pan, not the cast itself -- MP
 // deduction, target resolution, ResolvePlayerAttack, and its own
 // TriggerBattleEffect cast VFX all still run for it below, exactly like
 // any other spell (confirmed by decompiling 0x080161FE directly: its
-// bSpellId==8 early-out only short-circuits the Object+0x90 state-0x21/
+// bSpellId==8 early-out only short-circuits the Actor+0x90 state-0x21/
 // 0x41 camera-pan branches, and falls through into this same shared tail).
 void ExecutePlayerAttackSequence(int attackerIndex) {            // 0x080161FE
     Fighter *f = &pFighters[attackerIndex];
@@ -369,11 +369,11 @@ Notes on pieces the pseudocode above elides:
   effectively always `0xFF`, so the redirect above fires every time and
   reassigns him to a real living enemy -- his own roll is discarded noise;
   the shared redirect is what actually picks his target
-  (`build/us/full_disasm.s:37180-37182` confirms the `Object+8 == 3`
+  (`build/us/full_disasm.s:37180-37182` confirms the `Actor+8 == 3`
   branch that skips straight past the MP-deduction/`ResolvePlayerAttack`
-  block into his own hardcoded-damage sub-state, `Object+0x60 == 6`).
+  block into his own hardcoded-damage sub-state, `Actor+0x60 == 6`).
 - **Enemy target selection**, matched in `src/battle/tick_fighter_attack_anim_state.c`
-  (`TickFighterAttackAnimState_candidate` case `0x1A`, `Object+0x90 == 0x21`
+  (`TickFighterAttackAnimState_candidate` case `0x1A`, `Actor+0x90 == 0x21`
   sub-branch -- not case `0`, which is just the post-hit flash-clear tail):
   ```c
   if (attacker->bRosterIndex == 0x3F) {   // Lupin Werewolf only
@@ -423,7 +423,7 @@ monster's record from `MonsterTable`; `InitPlayerBattleActor_candidate`
 | `0x00` | u8 | `bFighterType` (enum, see below) | PROVEN |
 | `0x01` | u8 | `bRosterIndex` (enemy/hero index) | STRUCTURAL MATCH |
 | `0x03` | u8 | `bSlotParam` -- fixed UI slot (enemy `0-3` / ally `0-2`, separate spaces) | PROVEN |
-| `0x04` | u32 | `pObject` -- pointer to this fighter's sprite `Object` | PROVEN |
+| `0x04` | u32 | `pObject` -- pointer to this fighter's sprite `Actor` | PROVEN |
 | `0x08` | u16 | `wHp` | PROVEN |
 | `0x0A` | u16 | `wMp` | PROVEN |
 | `0x0C` | u16 | `wRewardXp` (`MonsterTable+0x10`) | PROVEN |
@@ -450,7 +450,7 @@ monster's record from `MonsterTable`; `InitPlayerBattleActor_candidate`
 | `0x43` | u8 | `bPoisonDamage` -- per-turn poison tick damage | PROVEN; monster fighters' value origin unknown (not copied from `MonsterTable`) |
 | `0x44` | u8 | `bParalysisEscapeChance` -- starting/ratcheting escape % | PROVEN |
 
-`InitMonsterBattleActor` also wires each fighter's sprite `Object`
+`InitMonsterBattleActor` also wires each fighter's sprite `Actor`
 (anim table, effect-channel pointers) and hardwires `pObject->pfnTick =
 TickFighterAttackAnimState_candidate` -- the reason every `Enemy`
 resolves via `ResolveEnemyAttack` rather than `ResolvePlayerAttack`; see
@@ -466,16 +466,16 @@ string match: "Harry"/"Hermione"/"Ron" at `0x8ec`-`0x8ee`, "Buckbeak" at
 ### The NPC-vs-PC split -- which damage formula a fighter uses, PROVEN
 
 Not a per-turn decision: it's which `pfnTick` callback got registered on
-the fighter's `Object` at init. `InitMonsterBattleActor` hardcodes
+the fighter's `Actor` at init. `InitMonsterBattleActor` hardcodes
 `TickFighterAttackAnimState_candidate` (`0x08015608`) into every enemy
-`Object`; its case `0x1A` calls `ResolveEnemyAttack` (additionally gated
+`Actor`; its case `0x1A` calls `ResolveEnemyAttack` (additionally gated
 on `bFighterType == 0xFF` at the call site). `InitPlayerBattleActor_candidate`
 (`0x080149C4`) hardwires `pObject->pfnTick = TickPlayerActionState`
 (`0x0801602D`) unconditionally for every non-enemy fighter, including
 Buckbeak -- so Buckbeak's turn runs the same state machine as the three
 spellcasters, but his damage bypasses `ResolvePlayerAttack` entirely (see
 "Buckbeak" above): he's driven by the shared player dispatcher, but with
-a fully separate, level-scaled damage sub-state (`Object+0x60 == 6`) no
+a fully separate, level-scaled damage sub-state (`Actor+0x60 == 6`) no
 other fighter type reaches.
 
 **`TickBattleTurnStateMachine`'s case 4** confirms this at the
@@ -494,9 +494,9 @@ not combat math.
 ### `InitPlayerBattleActor` (`0x080149C4`), PROVEN
 
 `(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex)` returns the
-fighter's new `Object *`. Allocates via `AllocDefaultObject`, records
+fighter's new `Actor *`. Allocates via `AllocDefaultActor`, records
 `wFighterType`/`bUnk_0x7C = 0`, sets `oam.priority = 1`,
-positions with `SnapObjectPosition`/`StartObjectMove` at
+positions with `SnapActorPosition`/`StartActorMove` at
 `(0xD4 - slot*36) << 16`, `slot*0x40000 + 0x6E0000`, then
 `sub_08003A44(pObject, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `dwUnk_0x28 = 1`,
 `dwFlags = 0x20006011`, attack-anim state `0xF`, `bAnimFrameDelay = 1`,
@@ -519,13 +519,13 @@ against that source.
 ### `InitMonsterBattleActor` (`0x08014C88`), PROVEN
 
 `(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex)` returns
-the fighter's main `Object *` (despite the `void` prototype floating
+the fighter's main `Actor *` (despite the `void` prototype floating
 around: the ROM ends in `adds r0,r6,#0`, same as the player counterpart).
 `wFighterType` is `monsterIndex + 4`; positioning is `(slot*36 + 0xCC)` /
 `(0x4E - slot*4)` with a `+0x18` restructure for the move; `dwFlags` is
 `0x20006019` (`0x6019` for the companion) and `bDepthSortBias` is `-0x40`. Types
 3/29/26 get extra `sub_08003A30`/`sub_08003A44` calls on the main object;
-types 45-47 additionally spawn a shadow `Object` (own anim tables at
+types 45-47 additionally spawn a shadow `Actor` (own anim tables at
 `0x0804EF54`/`0x08053850`) cross-linked at `+0xA0`/`+0xA8`. The
 `BattleFighter` is filled field-for-field from `MonsterTable` (stride
 `0x18`); `wHp`/`wHp_max` share one load, `bRosterIndex` is the monster
@@ -592,7 +592,7 @@ fighter had a pending `SpecialMove` (cleared back to `None` here), else
 
 Called from `InitializeBattle` (`0x0800DBAC`, matched in
 `src/gamemode/modes/battle/initialize_battle.c`) ahead of `ResumeBattleAfterSubmode_candidate`
-above; all four are visual/Object plumbing, no combat-mechanical state:
+above; all four are visual/Actor plumbing, no combat-mechanical state:
 
 - **`InitBattleBackground_candidate`** (`0x0800EBAC`): VBlank callback,
   VRAM clear, loads both battle background layers (room-indexed table at
@@ -601,10 +601,10 @@ above; all four are visual/Object plumbing, no combat-mechanical state:
   scroll init, and the battle dialog-box palette block.
 - **`RestoreFighterObjects_candidate`** (`0x0800F16C`): only called on the
   submode-return path, not for a fresh battle. Rebuilds every fighter's
-  sprite `Object` from the `0x128`-byte backup image `FightState` stashed
-  at `+0x834` per fighter (Battle's own `Object`s get torn down while
+  sprite `Actor` from the `0x128`-byte backup image `FightState` stashed
+  at `+0x834` per fighter (Battle's own `Actor`s get torn down while
   `FolioUniversitas`/`HelpTopicScreen` is active), spawns/links animated
-  shadow `Object`s for monster types `>= 4` that have one, and re-applies
+  shadow `Actor`s for monster types `>= 4` that have one, and re-applies
   the `Paralyzed`/`Poisoned` visual pose and status-particle attachment
   from each `BattleFighter.bStatusFlags`.
 - **`GetBattleBackgroundData_candidate`** (`0x08012AC0`): the same
@@ -642,12 +642,12 @@ else forced to `0`. Its confirm handler,
 menus, with no `aEnemySlotTurnOrderIndex`/`aAllySlotTurnOrderIndex`
 translation, consistent with indexing straight into the separate pending
 pool. `RestoreFighterObjects_candidate` (`0x0800F16C`) spawns this pool's
-`Object`s the same way it does for `pFighters`, and `TickPlayerActionState`
+`Actor`s the same way it does for `pFighters`, and `TickPlayerActionState`
 (matched, `src/battle/tick_player_action_state.c`) pans every
 `pPendingFighters_candidate[i].pObject` alongside the regular roster
 during the Special Move windup/return camera move (`bActionState == 0x1a`,
 `bActionFlags == 0x21`/`0x40` cases) -- pending fighters are real,
-on-screen `Object`s, not placeholder data.
+on-screen `Actor`s, not placeholder data.
 
 `TickPlayerActionState`'s own Special-Move-resolution case confirms
 `bMenuScreen = 9` is reached exactly when `g_aCardTargetingMeta[slot][0]
@@ -694,7 +694,7 @@ hardcoded to `10`.
   (`0x40`/`0x30`/`0x20`) -- PROVEN as written, but no reader of this
   numeric value (as opposed to the `-1`/fainted sentinel value, which
   `TickFighterAttackAnimState` does read) has been traced; its purpose is
-  UNCONFIRMED. A last pass over `pFighters` writes each `Object`'s
+  UNCONFIRMED. A last pass over `pFighters` writes each `Actor`'s
   `bFighterIndex`, spawns its turn-order icon (`SpawnTurnOrderIcon`,
   `0x08014F1C`, UI only), and populates
   `aEnemySlotTurnOrderIndex[bSlotParam] = turnOrderIndex` for every `Enemy`
@@ -776,19 +776,19 @@ monster-paralysis case can call `SpawnParalysisEffect` (US `0x0801B590`,
 JP `0x0801B58C`), which creates a particle emitter and sets its byte
 at `+0x49` to `1`; that byte's further effect is not yet traced.
 
-Enemy-to-player damage is staged in the target's `Object+0x62` by
+Enemy-to-player damage is staged in the target's `Actor+0x62` by
 `ShowDamageNumber_candidate` (`0x08017B5C`). Player action state `2` starts
 hit animation `4` and calls `ApplyDamageToAllyFighter` (`0x08018094`) only
-after `ObjectFlagActionAnimDone` is set. `TryApplyParalysis` clears the
-animation frame counter at `Object+0xD8`. If this happens after animation
-`4` starts, `TickObjectAnimation` cannot advance it or set the completion
+after `ActorFlagActionAnimDone` is set. `TryApplyParalysis` clears the
+animation frame counter at `Actor+0xD8`. If this happens after animation
+`4` starts, `TickActorAnimation` cannot advance it or set the completion
 flag, so the damage remains unapplied. Later hits can overwrite the staged
 damage, but setting state `2` again does not restart the animation.
 
 Informus opens Folio Bruti, whose return path restores fighter objects in
 `pFighters` (turn) order rather than the initial party-first allocation
 order: `ExitFolioBruti` (`0x08037048`) makes `InitializeBattle` call
-`RestoreFighterObjects_candidate` (`0x0800F16C`). `TickObjectList` visits
+`RestoreFighterObjects_candidate` (`0x0800F16C`). `TickActorList` visits
 older objects first. When an Armor actor precedes its target in this
 order, its attack spawns the paralysis-script object and stages damage;
 the target starts animation `4` later in the same pass. The newly spawned
@@ -909,7 +909,7 @@ discarded. Granted rewards (gold, items, Folio Universitas cards) go through
 ### `FightState+0x1054`/`+0x1058`: write-only, purpose unknown
 
 Incremented/mirrored by the object-script interpreter's opcode `0x30`
-(tracks `Object+0x60`, also read by
+(tracks `Actor+0x60`, also read by
 `TickFighterAttackAnimState_candidate` as an attack-outcome state value)
 and reset to zero at several attack-boundary transitions
 (`TriggerBattleEffect`, `ShowItemUseResult`, inside `ExecutePlayerAttackSequence`).
@@ -989,7 +989,7 @@ unless the previous mode was `FolioUniversitas` or
 opened mid-battle), it decrements `FightState->bScreenShakeTimer_candidate`
 while nonzero (nudging the BG scroll/priority each tick via `sub_0802D640`
 and `g_aBgScrollState[1].nScrollY_candidate`), and the tick that timer reaches `0` it
-resets every fighter's `Object` (`sub_080039E8`) instead of ticking the
+resets every fighter's `Actor` (`sub_080039E8`) instead of ticking the
 turn state machine that frame. Every other case (timer already `0`, or the
 previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).
 
@@ -1031,7 +1031,7 @@ previously misidentified as a draw function), which tears down
 ```mermaid
 stateDiagram-v2
     [*] --> S0
-    S0 --> S1 : external -- PostActionBattleCheck,\nfrom the acting Object's own pfnTick
+    S0 --> S1 : external -- PostActionBattleCheck,\nfrom the acting Actor's own pfnTick
     S1 --> S1 : icon(s) still active / 16-tick timer running
     S1 --> S2 : bActiveFighterIndex >= bFighterCount
     S1 --> S3 : next fighter != Enemy
@@ -1075,21 +1075,21 @@ countdown whose meaning is local to that state.
 - **1 -- per-fighter turn-order advance.** On entry, calls
   `SetFighterTurnOrderIconDone(bActiveFighterIndex)`, advances
   `bActiveFighterIndex`, and starts a 16-tick timer; once it expires,
-  waits for every fighter's own `pObject->pLinkedObject_candidate`
-  (`Object+0xA4`, not yet identified -- distinct from the turn-order icon
+  waits for every fighter's own `pObject->pLinkedActor_candidate`
+  (`Actor+0xA4`, not yet identified -- distinct from the turn-order icon
   below) to clear, then transitions to state `2` once every fighter has
   acted, otherwise to state `4` (`Enemy`) or `3` (player) for the next
   active fighter.
 
   `SetFighterTurnOrderIconDone` sets the ending fighter's turn-order icon to
-  its idle frame (`0` ally/`1` enemy) via `SetObjectAnimFrame`; `SetFighterTurnOrderIconActive`
+  its idle frame (`0` ally/`1` enemy) via `SetActorAnimFrame`; `SetFighterTurnOrderIconActive`
   sets the next fighter's icon to its highlighted frame (`2`/`3`) the same
   way and also restacks `bDepthSortBias` across all icons through
   `apTurnOrderIconObjects` (`FightState+0x818`), a 7-entry array of the icon
   *container* Objects `SpawnTurnOrderIcon` allocates, one per active fighter
   slot -- distinct from each fighter's own `pObject`. Each container's
-  `pLinkedObject_candidate` is its portrait sprite, which is what
-  `SetObjectAnimFrame` actually animates.
+  `pLinkedActor_candidate` is its portrait sprite, which is what
+  `SetActorAnimFrame` actually animates.
 - **2 -- end-of-round status tick, PROVEN as `EndOfRoundStatusTick`**
   (see "Poison's per-turn tick" below): on entry, ticks poison damage for
   every `Poisoned` fighter and starts a delay timer; once expired,
@@ -1116,16 +1116,16 @@ countdown whose meaning is local to that state.
   0, bDefeatWarpTarget)`.
 - **7 -- victory.** After a 30-tick delay, pushes `PushGameMode(VictoryScreen)`.
 
-### Fighter `Object.bActionState` machines
+### Fighter `Actor.bActionState` machines
 
-Each fighter's own `Object` runs a second, per-object state machine via its
+Each fighter's own `Actor` runs a second, per-object state machine via its
 `pfnTick` -- `TickPlayerActionState` for player-side fighters,
 `TickFighterAttackAnimState_candidate` for enemies. Case *numbers* are not
 semantically aligned between the two: player state `1` is a lightweight
 sound+pose reaction, while enemy state `1` is a much larger
 return-to-position/victory-check/free-on-faint tail. Confirmed per-frame
 ordering: `TickBattleTurnStateMachine` runs before these object ticks each
-frame (`TickFrameSystems` calls `TickActiveObjects` *after*
+frame (`TickFrameSystems` calls `TickActiveActors` *after*
 `DispatchGameModeUpdate`), so an object's own state changes this frame are
 only visible to the turn state machine on the next.
 
@@ -1145,10 +1145,10 @@ stateDiagram-v2
     Idle --> Impact : faint branch only (ApplyDamageToAllyFighter)
     Impact --> Idle : ReviveFighter_candidate
     Idle --> Dmg : set externally by the attacker's own resolve code\n(this fighter is the defender)
-    Dmg --> Idle : dwFlags & ObjectFlagActionAnimDone observed
+    Dmg --> Idle : dwFlags & ActorFlagActionAnimDone observed
     note right of Impact
         Player Impact = PlayFighterImpactSound
-        (sound+pose only; Object is never freed --
+        (sound+pose only; Actor is never freed --
         fainted party members stay visible)
     end note
 ```
@@ -1161,21 +1161,21 @@ stateDiagram-v2
     Attack --> Idle : return-flight tail, delay==0 -- PostActionBattleCheck()
     Idle --> Settle : faint branch only (ApplyDamageToEnemyFighter)
     Idle --> Hit : set externally by the attacker's own resolve code\n(this enemy is the defender)
-    Hit --> Idle : dwFlags & ObjectFlagActionAnimDone observed
+    Hit --> Idle : dwFlags & ActorFlagActionAnimDone observed
     note right of Settle
         Settle = faint reaction: return to position,
         CheckBattleVictory, free shadow object, then
-        ObjectFlagPendingDestroy -- terminal, the
-        Object is freed, no exit edge exists.
+        ActorFlagPendingDestroy -- terminal, the
+        Actor is freed, no exit edge exists.
     end note
 ```
 
 `Attack`'s internal phases (target selection, `dwFlags`/`bAttackOutcomeState`
 gating, `ResolveEnemyAttack`/`ResolvePlayerAttack` timing) are content-driven
 by each fighter's own animation data and attack-effect script, not further
-control flow: `Object+0xDC`'s (`bEnemyAttackPhase_candidate`) and `dwFlags`
+control flow: `Actor+0xDC`'s (`bEnemyAttackPhase_candidate`) and `dwFlags`
 bit `0x8000`/`0x40000` transitions come from the fighter's own windup/attack
-animation's command stream (opcodes `0xFF`/`0xF0`); `Object+0x60`'s
+animation's command stream (opcodes `0xFF`/`0xF0`); `Actor+0x60`'s
 (`bAttackOutcomeState`) increments come from the attack-effect script's own
 opcode `0x30`, run on the *caster's* object (see
 [`../formats/battle_scripts.md`](../formats/battle_scripts.md)).

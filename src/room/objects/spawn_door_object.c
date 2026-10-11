@@ -3,16 +3,16 @@
 
 // Room object constructor for tile objType 2, a door to another room.
 // See docs/formats/rooms.md.
-Object *SpawnDoorObject(u8 bColumn, u8 bRow)
+Actor *SpawnDoorObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk2 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(pRecord->dwObjectType);
+    Actor *pObj = AllocActorOfType(pRecord->dwObjectType);
     u8 *pDst;
     u8 i;
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x2004;
-    SetObjectActionState(pObj, 0);
+    SetActorActionState(pObj, 0);
     ROOM_OBJECT_BOX_STATE(pObj)->w60 = pRecord->bB;
 
     for (i = 0, pDst = ROOM_OBJECT_BOX_STATE(pObj)->ab62; i < 2; i++)

@@ -3,15 +3,15 @@
 
 // Room object constructor for tile objType 5, a scripted prop whose kind selects
 // its sprite and behavior. See docs/formats/rooms.md.
-Object *SpawnPropObject(u8 bColumn, u8 bRow)
+Actor *SpawnPropObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk5 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(RoomObjectType_ScriptedTrigger);
+    Actor *pObj = AllocActorOfType(RoomObjectType_ScriptedTrigger);
     u32 kind;
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x04002215;
-    SetObjectActionState(pObj, 0);
+    SetActorActionState(pObj, 0);
     pObj->bUnk_0x7C = 5;
     pObj->anim.bAnimFrameDelay = 1;
     ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind = pRecord->bKind;
@@ -30,7 +30,7 @@ Object *SpawnPropObject(u8 bColumn, u8 bRow)
     pObj->apfnCollisionCallback[0] = sub_080465D4;
     pObj->apfnCollisionCallback[1] = sub_0804651C;
     SetObjectPendingPalette(pObj, g_apRoomObjTriggerEffectData[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind]);
-    SetObjectAnimData(pObj, g_apRoomObjTriggerAnimFrames[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind],
+    SetActorAnimData(pObj, g_apRoomObjTriggerAnimFrames[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind],
                       (void *)g_abRoomObjTriggerAnimData[ROOM_OBJECT_TRIGGER_STATE(pObj)->bKind], 0);
 
     if (kind - 0x1A <= 0xC)
@@ -69,16 +69,16 @@ Object *SpawnPropObject(u8 bColumn, u8 bRow)
         pObj->dwFlags &= ~0x200;
         break;
     case 0:
-        SetObjectAnimFrame(pObj, g_abRoomObjTriggerFacingFrames[pObj->bFacing]);
+        SetActorAnimFrame(pObj, g_abRoomObjTriggerFacingFrames[pObj->bFacing]);
         pObj->oam.hFlip = pObj->bFacing > 4;
-        pObj->pShadowObject = sub_0802FD5C(pObj);
+        pObj->pShadowActor = sub_0802FD5C(pObj);
         break;
     case 18:
     case 20:
         pObj->oam.objMode = 1;
         break;
     case 21:
-        pObj->bDrawFlags |= ObjectDrawFlagBlink;
+        pObj->bDrawFlags |= ActorDrawFlagBlink;
         break;
     case 1:
         pObj->dwFlags |= 8;
@@ -89,12 +89,12 @@ Object *SpawnPropObject(u8 bColumn, u8 bRow)
         pObj->dwFlags &= ~0x04000000;
 
         if (ROOM_OBJECT_TRIGGER_STATE(pObj)->b63 == 0)
-            SetObjectAnimFrame(pObj, 1);
+            SetActorAnimFrame(pObj, 1);
 
         break;
     case 82:
         pObj->dwFlags &= ~0x04000204;
-        SetObjectDrawLayer(pObj, 1);
+        SetActorDrawLayer(pObj, 1);
         break;
     case 14:
     case 15:

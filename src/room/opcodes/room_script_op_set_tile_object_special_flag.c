@@ -10,7 +10,7 @@ typedef struct SetTileObjectSpecialFlagRecord {
 
 void RoomScriptOpSetTileObjectSpecialFlag(SetTileObjectSpecialFlagRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pRecord->bSet != 0)
         pObject->bFlags_0x94_candidate |= 4;

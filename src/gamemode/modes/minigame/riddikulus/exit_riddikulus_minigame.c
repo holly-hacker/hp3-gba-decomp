@@ -26,7 +26,7 @@ void ExitRiddikulusMinigame(void)
 
     sub_0802CEE4(g_Riddikulus.pObjectGroup1C);
     sub_0802CEE4(g_Riddikulus.pObjectGroup20);
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
     sub_0802CDB8();
 }

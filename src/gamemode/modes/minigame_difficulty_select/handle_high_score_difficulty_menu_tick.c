@@ -12,7 +12,7 @@
 
 static inline void MoveCursorToSelectedRow(void)
 {
-    Object *pCursor = g_pMenuCursorObject;
+    Actor *pCursor = g_pMenuCursorObject;
     u32 row = g_GameModeStackContext.dwModeScratchB;
     s32 x = 0x74;
     s32 y;
@@ -25,7 +25,7 @@ static inline void MoveCursorToSelectedRow(void)
     else
         y = g_GameModeStackContext.dwModeScratchB * 16 + 0x48;
 
-    SetObjectMoveTargetWithDuration_candidate(pCursor, x, y, 5);
+    SetActorMoveTargetWithDuration_candidate(pCursor, x, y, 5);
 }
 
 void HandleHighScoreDifficultyMenuTick(void)

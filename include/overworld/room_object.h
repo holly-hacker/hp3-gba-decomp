@@ -6,7 +6,7 @@
 // Per-tile room object constructors, selected by the u16 objType at +8 of a
 // tile record; see docs/formats/rooms.md. The caller stores the returned
 // object in the record and sets its tile column (+0x10) and row (+0x11).
-typedef Object *(*RoomObjectConstructor)(u8 bColumn, u8 bRow);
+typedef Actor *(*RoomObjectConstructor)(u8 bColumn, u8 bRow);
 
 #define ROOM_OBJECT_TYPE_COUNT 14
 
@@ -18,7 +18,7 @@ typedef struct RoomObjectRecordUnk8 {
     s16 nPixelX;
     s16 nPixelY;
     u8 bVariant;  // 0x08
-    u8 abPairs[16];  // 0x09, eight {A, B} pairs, copied to Object 0x60 (A) and 0x68 (B)
+    u8 abPairs[16];  // 0x09, eight {A, B} pairs, copied to Actor 0x60 (A) and 0x68 (B)
 } RoomObjectRecordUnk8;
 
 typedef struct RoomObjectRecordUnkB {
@@ -54,34 +54,34 @@ extern void *sub_08005C38(u8 bColumn, u8 bRow);
 
 extern const RoomObjectConstructor g_apRoomObjectConstructors[ROOM_OBJECT_TYPE_COUNT];  // ROM 0x0804C054 (US)
 
-extern Object *SpawnRoomTileAnimationObject_candidate(u8 bColumn, u8 bRow);
-extern Object *SpawnDoorObject(u8 bColumn, u8 bRow);
-extern Object *SpawnSwitchObject(u8 bColumn, u8 bRow);
-extern Object *SpawnTriggerZoneObject(u8 bColumn, u8 bRow);
-extern Object *SpawnPropObject(u8 bColumn, u8 bRow);
-extern Object *SpawnNpcObject(u8 bColumn, u8 bRow);
-extern Object *SpawnTriggerRectObject(u8 bColumn, u8 bRow);
-extern Object *SpawnPushResetButtonObject(u8 bColumn, u8 bRow);
-extern Object *SpawnChestObject(u8 bColumn, u8 bRow);
-extern Object *SpawnSpongifyPadObject(u8 bColumn, u8 bRow);
-extern Object *SpawnFlamePillarObject(u8 bColumn, u8 bRow);
-extern Object *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow);
-extern Object *SpawnPortraitDoorObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnRoomTileAnimationObject_candidate(u8 bColumn, u8 bRow);
+extern Actor *SpawnDoorObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnSwitchObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnTriggerZoneObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnPropObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnNpcObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnTriggerRectObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnPushResetButtonObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnChestObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnSpongifyPadObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnFlamePillarObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow);
+extern Actor *SpawnPortraitDoorObject(u8 bColumn, u8 bRow);
 
-extern void sub_08044960(Object *pObj);
-extern void sub_08044ADC(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_aRoomFlamePillarSprites[3];             // ROM 0x0806C12C (US)
-extern const ObjectGfxRecord *const g_apRoomFlamePillarAnimFrames[3];  // ROM 0x0806C144 (US)
+extern void sub_08044960(Actor *pObj);
+extern void sub_08044ADC(Actor *pSelf, Actor *pOther);
+extern const ActorGfxRecord g_aRoomFlamePillarSprites[3];             // ROM 0x0806C12C (US)
+extern const ActorGfxRecord *const g_apRoomFlamePillarAnimFrames[3];  // ROM 0x0806C144 (US)
 extern const void *const g_apRoomFlamePillarEffectData[3];             // ROM 0x0806C150 (US)
 extern const u8 g_abRoomFlamePillarAnimData[22];                       // ROM 0x0806C15C (US)
 
-extern void sub_08035664(Object *pObj);
-extern void sub_08035724(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_RoomObjUnk8Sprite;                    // ROM 0x080693CC (US)
-extern const ObjectGfxRecord *const g_apRoomObjUnk8AssetRecords[2];  // ROM 0x080693D4 (US)
+extern void sub_08035664(Actor *pObj);
+extern void sub_08035724(Actor *pSelf, Actor *pOther);
+extern const ActorGfxRecord g_RoomObjUnk8Sprite;                    // ROM 0x080693CC (US)
+extern const ActorGfxRecord *const g_apRoomObjUnk8AssetRecords[2];  // ROM 0x080693D4 (US)
 extern const void *const g_apRoomObjUnk8EffectData[2];               // ROM 0x080693DC (US)
 
-// Object bytes 0x60-0x6F as written by the type 8 constructor.
+// Actor bytes 0x60-0x6F as written by the type 8 constructor.
 typedef struct RoomObjectUnk8State {
     u8 abA[8];
     u8 abB[8];
@@ -89,7 +89,7 @@ typedef struct RoomObjectUnk8State {
 
 #define ROOM_OBJECT_UNK8_STATE(pObj) ((RoomObjectUnk8State *)&(pObj)->scriptState)
 
-// Object bytes 0x60-0x6D as word-sized state, written by the type 10 and 12 constructors.
+// Actor bytes 0x60-0x6D as word-sized state, written by the type 10 and 12 constructors.
 typedef struct RoomObjectWordState {
     s32 n60;
     s32 n64;
@@ -106,17 +106,17 @@ typedef struct RoomObjectWordState {
 // Three words zeroed whenever a type 10 or 12 object is constructed.
 extern u32 g_adwRoomObjUnkACState[3];
 
-extern void sub_08040114(Object *pObj);
-extern void sub_08040358(Object *pSelf, Object *pOther);
+extern void sub_08040114(Actor *pObj);
+extern void sub_08040358(Actor *pSelf, Actor *pOther);
 // [3] is the spell effect sprite of sub_08040680.
-extern const ObjectGfxRecord g_aRoomSpongifyPadSprites[4];             // ROM 0x0806B8DC (US)
-extern const ObjectGfxRecord *const g_apRoomSpongifyPadAnimFrames[3];  // ROM 0x0806B8FC (US)
+extern const ActorGfxRecord g_aRoomSpongifyPadSprites[4];             // ROM 0x0806B8DC (US)
+extern const ActorGfxRecord *const g_apRoomSpongifyPadAnimFrames[3];  // ROM 0x0806B8FC (US)
 extern const void *const g_apRoomSpongifyPadEffectData[3];             // ROM 0x0806B908 (US)
 extern const u8 g_abRoomSpongifyPadAnimData[30];                       // ROM 0x0806B914 (US)
 
-extern void sub_0803B71C(Object *pObj);
-extern void sub_0803BA18(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_RoomRaisingPlatformSprite;  // ROM 0x0806B7D4 (US)
+extern void sub_0803B71C(Actor *pObj);
+extern void sub_0803BA18(Actor *pSelf, Actor *pOther);
+extern const ActorGfxRecord g_RoomRaisingPlatformSprite;  // ROM 0x0806B7D4 (US)
 extern const u8 g_abRoomRaisingPlatformAnimData[46];       // ROM 0x0806B7DC (US)
 
 // Types 2, 4 and 7 take their runtime object type from the first word of the record.
@@ -139,7 +139,7 @@ typedef struct RoomObjectRecordUnk4 {
     s16 nPixelY;
     u8 bHalfWidth;   // 0x08
     u8 bHalfHeight;  // 0x09
-    u16 wArgA;       // 0x0A, scaled by 30 into Object 0x60
+    u16 wArgA;       // 0x0A, scaled by 30 into Actor 0x60
     u8 bKind;        // 0x0C
     u8 bArgD;        // 0x0D
 } RoomObjectRecordUnk4;
@@ -152,12 +152,12 @@ typedef struct RoomObjectRecordUnk7 {
     u8 bTop;         // 0x09
     u8 bRight;       // 0x0A
     u8 bBottom;      // 0x0B
-    u16 wArgC;       // 0x0C, scaled by 30 into Object 0x60
+    u16 wArgC;       // 0x0C, scaled by 30 into Actor 0x60
     u8 bKind;        // 0x0E
     u8 bArgF;        // 0x0F
 } RoomObjectRecordUnk7;
 
-// Object bytes 0x60-0x70 as written by the type 2, 4 and 7 constructors.
+// Actor bytes 0x60-0x70 as written by the type 2, 4 and 7 constructors.
 typedef struct RoomObjectBoxState {
     u16 w60;
     u8 ab62[2];
@@ -165,12 +165,12 @@ typedef struct RoomObjectBoxState {
 
 #define ROOM_OBJECT_BOX_STATE(pObj) ((RoomObjectBoxState *)&(pObj)->scriptState)
 
-extern void sub_0800CBF0(Object *pSelf, Object *pOther);
-extern void sub_0802BC74(Object *pObj);
-extern void sub_0802BBAC(Object *pSelf, Object *pOther);
-extern void sub_080265B8(Object *pSelf, Object *pOther);
-extern void sub_08026674(Object *pSelf, Object *pOther);
-extern void sub_080264F0(Object *pObj);
+extern void sub_0800CBF0(Actor *pSelf, Actor *pOther);
+extern void sub_0802BC74(Actor *pObj);
+extern void sub_0802BBAC(Actor *pSelf, Actor *pOther);
+extern void sub_080265B8(Actor *pSelf, Actor *pOther);
+extern void sub_08026674(Actor *pSelf, Actor *pOther);
+extern void sub_080264F0(Actor *pObj);
 
 typedef struct RoomObjectRecordUnk1 {
     u32 dwObjectType;
@@ -183,7 +183,7 @@ typedef struct RoomObjectRecordUnk1 {
 extern void AddRoomTileAnimation_candidate(u8 bAnimId, s32 x, s32 y, u8 bArg);
 extern void sub_080203F0(s32 x, s32 y);
 extern void sub_0802042C(s32 x, s32 y);
-extern void sub_080205F8(Object *pObj);
+extern void sub_080205F8(Actor *pObj);
 
 typedef struct RoomObjectRecordUnk3 {
     u32 dwObjectType;
@@ -191,19 +191,19 @@ typedef struct RoomObjectRecordUnk3 {
     s16 nPixelY;
     u8 pad_8;
     u8 bVariant;   // 0x09, index into the asset and effect tables; 0-10
-    u16 wArgA;     // 0x0A, scaled by 30 into Object 0x60
+    u16 wArgA;     // 0x0A, scaled by 30 into Actor 0x60
     u8 bFlagC;     // 0x0C
     u8 bArgD;      // 0x0D
 } RoomObjectRecordUnk3;
 
-extern void sub_08044D24(Object *pObj);
-extern void sub_08044F54(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_aRoomSwitchSprites[5];                // ROM 0x0806C178 (US)
-extern const ObjectGfxRecord *const g_apRoomSwitchAssetRecords[12];  // ROM 0x0806C1A0 (US)
+extern void sub_08044D24(Actor *pObj);
+extern void sub_08044F54(Actor *pSelf, Actor *pOther);
+extern const ActorGfxRecord g_aRoomSwitchSprites[5];                // ROM 0x0806C178 (US)
+extern const ActorGfxRecord *const g_apRoomSwitchAssetRecords[12];  // ROM 0x0806C1A0 (US)
 extern const void *const g_apRoomSwitchEffectData[12];               // ROM 0x0806C1D0 (US)
 
 // Scripted trigger object. bKind (0-82) selects the sprite, draw flags and
-// collision behavior; the remaining record bytes become Object bytes 0x62-0x68.
+// collision behavior; the remaining record bytes become Actor bytes 0x62-0x68.
 typedef struct RoomObjectRecordUnk5 {
     u32 dwObjectType;
     s16 nPixelX;
@@ -220,7 +220,7 @@ typedef struct RoomObjectRecordUnk5 {
     u8 b68;        // 0x14
 } RoomObjectRecordUnk5;
 
-// Object bytes 0x60-0x6A as written by the type 5 constructor.
+// Actor bytes 0x60-0x6A as written by the type 5 constructor.
 typedef struct RoomObjectTriggerState {
     u8 b60;
     u8 bKind;
@@ -237,16 +237,16 @@ typedef struct RoomObjectTriggerState {
 
 #define ROOM_OBJECT_TRIGGER_STATE(pObj) ((RoomObjectTriggerState *)&(pObj)->scriptState)
 
-extern Object *sub_0802FD5C(Object *pObj);
-extern void sub_08045ECC(Object *pObj);
-extern void sub_080465D4(Object *pSelf, Object *pOther);
-extern void sub_0804651C(Object *pSelf, Object *pOther);
-extern const ObjectGfxRecord g_aRoomObjTriggerSprites[80];             // ROM 0x0806C304 (US)
-extern const ObjectGfxRecord *const g_apRoomObjTriggerAnimFrames[91];  // ROM 0x0806C584 (US)
+extern Actor *sub_0802FD5C(Actor *pObj);
+extern void sub_08045ECC(Actor *pObj);
+extern void sub_080465D4(Actor *pSelf, Actor *pOther);
+extern void sub_0804651C(Actor *pSelf, Actor *pOther);
+extern const ActorGfxRecord g_aRoomObjTriggerSprites[80];             // ROM 0x0806C304 (US)
+extern const ActorGfxRecord *const g_apRoomObjTriggerAnimFrames[91];  // ROM 0x0806C584 (US)
 extern const void *const g_apRoomObjTriggerEffectData[91];             // ROM 0x0806C6F0 (US)
 extern const s32 g_aRoomObjTriggerPushVelocity[8][2];                  // ROM 0x0806C85C (US)
 extern const u32 g_adwRoomObjTriggerPushFacing[8];                     // ROM 0x0806C89C (US)
-extern const ObjectGfxRecord g_aRoomObjTriggerEffectSprites[7];        // ROM 0x0806C8BC (US)
+extern const ActorGfxRecord g_aRoomObjTriggerEffectSprites[7];        // ROM 0x0806C8BC (US)
 extern const u8 g_abRoomObjTriggerAnimData[91][90];                    // ROM 0x0806C8F4 (US)
 extern const u8 g_abRoomObjTriggerFacingFrames[8];                     // ROM 0x0806E8F2 (US)
 extern const u8 g_abRoomObjTriggerFacingAnimStart[8];                  // ROM 0x0806E8FA (US)
@@ -261,13 +261,13 @@ typedef struct RoomObjectRecordUnk6 {
     union {
         u32 dwWord;
         u8 bFirst;
-    } argC;        // 0x0C; bFirst goes to Object 0x8C, bytes 1 and 2 are tested as a pair
+    } argC;        // 0x0C; bFirst goes to Actor 0x8C, bytes 1 and 2 are tested as a pair
 } RoomObjectRecordUnk6;
 
-extern void sub_0802F7F0(Object *pObj);
-extern void sub_0802FCC0(Object *pSelf, Object *pOther);
+extern void sub_0802F7F0(Actor *pObj);
+extern void sub_0802FCC0(Actor *pSelf, Actor *pOther);
 extern const u32 g_adwRoomObjUnk6FrameRows[110];          // ROM 0x08066E44 (US)
-extern const ObjectAssetRecord g_aObjectTypeAssets[137];  // ROM 0x08066FFC (US), indexed by an object kind
+extern const ActorAssetRecord g_aObjectTypeAssets[137];  // ROM 0x08066FFC (US), indexed by an object kind
 extern const u8 g_abRoomObjUnk6Frames[12][4];             // ROM 0x0806788C (US)
 
 // Chest record. wFlagId is the chest's bit in g_abOpenedChestFlags.
@@ -285,9 +285,9 @@ typedef struct RoomObjectRecordUnk9 {
 
 // One bit per chest flag id, set when that chest is opened. Saved with the game.
 extern u8 g_abOpenedChestFlags[32];
-extern void TickChestObject(Object *pObj);
-extern void HandleChestTouch(Object *pSelf, Object *pOther);
-extern void sub_0802E2BC(Object *pSpell, Object *pTarget);  // overworld spell effect hits a room object
-extern const ObjectGfxRecord g_RoomChestSprite;                  // ROM 0x0804D524 (US)
-extern const ObjectGfxRecord *const g_apRoomChestAnimFrames[4];  // ROM 0x0804D52C (US)
+extern void TickChestObject(Actor *pObj);
+extern void HandleChestTouch(Actor *pSelf, Actor *pOther);
+extern void sub_0802E2BC(Actor *pSpell, Actor *pTarget);  // overworld spell effect hits a room object
+extern const ActorGfxRecord g_RoomChestSprite;                  // ROM 0x0804D524 (US)
+extern const ActorGfxRecord *const g_apRoomChestAnimFrames[4];  // ROM 0x0804D52C (US)
 extern const u8 g_abRoomChestAnimData[4][100];                   // ROM 0x0804D53C (US)

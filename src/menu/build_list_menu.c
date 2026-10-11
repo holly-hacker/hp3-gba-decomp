@@ -6,7 +6,7 @@
 
 void BuildListMenu(const ListMenuDefinition *pDefinition)
 {
-    Object *pObject;
+    Actor *pObject;
     u32 row;
 
     g_ListMenuState.pDefinition = pDefinition;
@@ -33,8 +33,8 @@ void BuildListMenu(const ListMenuDefinition *pDefinition)
     for (row = 0; row < pDefinition->wRowObjectCount; row++)
     {
         pObject = SpawnMenuIconObject(row, 0);
-        pObject->dwFlags |= ObjectFlagKeepPaletteSlot | ObjectFlagHasAnimation;
-        SetObjectPosition(pObject,
+        pObject->dwFlags |= ActorFlagKeepPaletteSlot | ActorFlagHasAnimation;
+        SetActorPosition(pObject,
                           pDefinition->wStrideX * row + pDefinition->wBaseX
                               + pDefinition->wRowObjectOffsetX,
                           pDefinition->wStrideY * row + pDefinition->wBaseY

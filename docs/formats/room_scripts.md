@@ -18,7 +18,7 @@ opcode format itself.
 A second bytecode VM, entirely separate from
 [`battle_scripts.md`](battle_scripts.md)'s `InterpretObjectScript` (no
 shared tables, no shared entry points). It drives room-local scripted
-sequences: setting flag bits on a tile's spawned `Object`, opening
+sequences: setting flag bits on a tile's spawned `Actor`, opening
 dialog boxes, pausing/resuming/switching the Krawall music module, and
 invoking other chains conditionally. It is reached far more broadly
 than just warp tiles: `InitializeOverworld` runs chain `0` (and
@@ -220,7 +220,7 @@ internal state *and* `DAT_03001DE9` (the opcode number latched when the
 chain yielded, see above) matches the one opcode that handler cares
 about -- `0x0800483C` specifically checks for `0x18`
 (`StartObjectAnimSequence`). `StartObjectAnimSequence`
-itself sets `Object+0xC` bit `0x8000000` on its target object exactly
+itself sets `Actor+0xC` bit `0x8000000` on its target object exactly
 when it yields (state `2`); the tick handler clears that same bit right
 before resuming. So a yielded chain resumes when **the specific object
 `StartObjectAnimSequence`/`ShowRoomDialog` acted on reaches a
@@ -299,8 +299,8 @@ layout as US.
   and `InitializeOverworld` both treat it as "has this room's one-time
   chain 1 already run", not independently verified against save state).
 - Decode opcode `2`'s `+0x28`/`+0x90` fields against a real object
-  struct definition -- not cross-checked against `Object`'s known
+  struct definition -- not cross-checked against `Actor`'s known
   layout from `battle_scripts.md` beyond `+0xc` (shared with the
-  battle-script `Object+0xc` flags field: bit `0x82` set by opcode `1`
+  battle-script `Actor+0xc` flags field: bit `0x82` set by opcode `1`
   overlaps neither of that document's identified bits `0x1`/`0x2`/
   `0x40000`, so still open).

@@ -16,7 +16,7 @@ void InitializeDebugMenuMain(void)
     u16 fillValue;
     u16 *pFillValue;
     u32 bgCtrl1;
-    Object *pObject;
+    Actor *pObject;
     u32 i;
 
     StopScanlineEffects();
@@ -36,10 +36,10 @@ void InitializeDebugMenuMain(void)
     SetBgScroll_candidate(1, 0, 0);
 
     g_DebugMenuMainState.dwSelection = 0;
-    pObject = SpawnObject(10, 0x78, 0x2D, (const ObjPalette *)gDebugMenuCursorPalette);
+    pObject = SpawnActor(10, 0x78, 0x2D, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugMenuMainState.pCursorObject = pObject;
-    pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, &g_DebugMenuMainAnimFrames, (void *)g_DebugMenuMainAnimData, 0);
+    pObject->dwFlags |= ActorFlagHasSpriteCells;
+    SetActorAnimData(pObject, &g_DebugMenuMainAnimFrames, (void *)g_DebugMenuMainAnimData, 0);
 
     g_GameModeStackContext.dwModeState = 0;
     DrawDebugMenuMainEntries_candidate();

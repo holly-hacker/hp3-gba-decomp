@@ -8,7 +8,7 @@
 
 // Collision callback of a chest (room object type 9): decides whether the
 // player or a spell effect opens it. See docs/formats/rooms.md.
-void HandleChestTouch(Object *pSelf, Object *pOther)
+void HandleChestTouch(Actor *pSelf, Actor *pOther)
 {
     u8 kind = pSelf->modeState.chest.bKind;
     u8 opened = pSelf->modeState.chest.bOpened;
@@ -18,7 +18,7 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
     if (g_DialogState_candidate.dwState != 0)
         return;
 
-    switch (pOther->wObjectType)
+    switch (pOther->wActorType)
     {
     case RoomObjectType_Player:
         if (pOther->bActionState != 0x21)
@@ -27,13 +27,13 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
         if (kind == 0 && opened == 0 && (g_wKeysPressed & KeyA))
         {
             pSelf->modeState.chest.bOpened = 1;
-            SetObjectActionSubState(pSelf, 8);
-            CancelObjectMove_candidate(pOther);
+            SetActorActionSubState(pSelf, 8);
+            CancelActorMove_candidate(pOther);
             pOther->anim.bAnimFrameCounter = kind;
-            if (pOther->pLinkedObject_candidate != NULL)
-                pOther->pLinkedObject_candidate->anim.bAnimFrameCounter = kind;
-            SetObjectActionState(pOther, 0);
-            SetObjectAnimSubState_candidate(pOther, 0);
+            if (pOther->pLinkedActor_candidate != NULL)
+                pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = kind;
+            SetActorActionState(pOther, 0);
+            SetActorAnimSubState_candidate(pOther, 0);
         }
 
         if (kind == 3 && opened == 0)
@@ -51,13 +51,13 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
                 if (canOpen)
                 {
                     pSelf->modeState.chest.bOpened = 1;
-                    SetObjectActionSubState(pSelf, 8);
-                    CancelObjectMove_candidate(pOther);
+                    SetActorActionSubState(pSelf, 8);
+                    CancelActorMove_candidate(pOther);
                     pOther->anim.bAnimFrameCounter = opened;
-                    if (pOther->pLinkedObject_candidate != NULL)
-                        pOther->pLinkedObject_candidate->anim.bAnimFrameCounter = opened;
-                    SetObjectActionState(pOther, 0);
-                    SetObjectAnimSubState_candidate(pOther, 0);
+                    if (pOther->pLinkedActor_candidate != NULL)
+                        pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = opened;
+                    SetActorActionState(pOther, 0);
+                    SetActorAnimSubState_candidate(pOther, 0);
                 }
                 else if (pSelf->modeState.chest.pair.wPair != 0)
                 {
@@ -71,13 +71,13 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
                  && pOther->bFighterIndex == 1 && kind == 2 && opened == 0)
         {
             pSelf->modeState.chest.bOpened = 1;
-            SetObjectActionSubState(pSelf, 8);
-            CancelObjectMove_candidate(pOther);
+            SetActorActionSubState(pSelf, 8);
+            CancelActorMove_candidate(pOther);
             pOther->anim.bAnimFrameCounter = opened;
-            if (pOther->pLinkedObject_candidate != NULL)
-                pOther->pLinkedObject_candidate->anim.bAnimFrameCounter = opened;
-            SetObjectActionState(pOther, 0);
-            SetObjectAnimSubState_candidate(pOther, 0);
+            if (pOther->pLinkedActor_candidate != NULL)
+                pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = opened;
+            SetActorActionState(pOther, 0);
+            SetActorAnimSubState_candidate(pOther, 0);
         }
         break;
 
@@ -89,14 +89,14 @@ void HandleChestTouch(Object *pSelf, Object *pOther)
         if (kind == 1 && opened == 0 && pSelf->modeState.chest.bUnchaining == 0)
         {
             pSelf->modeState.chest.bUnchaining = kind;
-            SetObjectAnimData(pSelf, g_apRoomChestAnimFrames[kind], g_abRoomChestAnimData[kind], 10);
+            SetActorAnimData(pSelf, g_apRoomChestAnimFrames[kind], g_abRoomChestAnimData[kind], 10);
             pSelf->modeState.chest.bKind = 0;
-            CancelObjectMove_candidate(g_pPlayerObject);
+            CancelActorMove_candidate(g_pPlayerObject);
             g_pPlayerObject->anim.bAnimFrameCounter = 0;
-            if (g_pPlayerObject->pLinkedObject_candidate != NULL)
-                g_pPlayerObject->pLinkedObject_candidate->anim.bAnimFrameCounter = 0;
-            SetObjectActionState(g_pPlayerObject, 0);
-            SetObjectAnimSubState_candidate(g_pPlayerObject, 0);
+            if (g_pPlayerObject->pLinkedActor_candidate != NULL)
+                g_pPlayerObject->pLinkedActor_candidate->anim.bAnimFrameCounter = 0;
+            SetActorActionState(g_pPlayerObject, 0);
+            SetActorAnimSubState_candidate(g_pPlayerObject, 0);
         }
         sub_0802E2BC(pOther, pSelf);
         break;

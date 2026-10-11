@@ -50,7 +50,7 @@ extern ListMenuState g_ListMenuState;  // 0x03005220
 
 extern const u32 g_dwCommonBg2Control;  // 0x0805E10C: BG2 control word, the text target for list menu rows
 
-extern void ListMenuCursorTick_candidate(Object *pObject);
+extern void ListMenuCursorTick_candidate(Actor *pObject);
 extern void BuildListMenu(const ListMenuDefinition *pDefinition);
 extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);

@@ -8,8 +8,8 @@ void ShowShopMainMenu(void)
 
     for (i = 0; i < 3; i++)
     {
-        g_FredAndGeorgesShop.apRowObjects[i] = SpawnObject(i, 0x24, 0x20 + i * 16, g_aShopMainMenuIcons[i].pPalette);
-        SetObjectAnimData(g_FredAndGeorgesShop.apRowObjects[i], &g_aShopMainMenuIcons[i], g_abShopMenuIconAnim, 0);
+        g_FredAndGeorgesShop.apRowObjects[i] = SpawnActor(i, 0x24, 0x20 + i * 16, g_aShopMainMenuIcons[i].pPalette);
+        SetActorAnimData(g_FredAndGeorgesShop.apRowObjects[i], &g_aShopMainMenuIcons[i], g_abShopMenuIconAnim, 0);
         DrawShopMainMenuRow(i, i == g_FredAndGeorgesShop.bCursor ? 6 : 0);
     }
 

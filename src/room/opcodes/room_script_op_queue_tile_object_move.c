@@ -15,8 +15,8 @@ typedef struct QueueTileObjectMoveRecord {
 
 void RoomScriptOpQueueTileObjectMove(QueueTileObjectMoveRecord *pRecord)
 {
-    Object *pControlled = g_OverworldControlState.aSlots[g_OverworldControlState.bSlotIndex].pObject;
-    Object *pTarget;
+    Actor *pControlled = g_OverworldControlState.aSlots[g_OverworldControlState.bSlotIndex].pObject;
+    Actor *pTarget;
 
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;

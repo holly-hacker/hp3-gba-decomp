@@ -3,12 +3,12 @@
 
 // Room object constructor for tile objType 6, an NPC; see docs/formats/rooms.md.
 // bFighterIndex doubles as the kind index into the asset tables.
-Object *SpawnNpcObject(u8 bColumn, u8 bRow)
+Actor *SpawnNpcObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk6 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(pRecord->dwObjectType);
+    Actor *pObj = AllocActorOfType(pRecord->dwObjectType);
 
-    SetObjectPosition(pObj, pRecord->nPixelX, pRecord->nPixelY);
+    SetActorPosition(pObj, pRecord->nPixelX, pRecord->nPixelY);
     pObj->dwFlags = 0x04102015;
     pObj->anim.bAnimFrameDelay = 0;
     pObj->bFighterIndex = pRecord->bKind;
@@ -22,13 +22,13 @@ Object *SpawnNpcObject(u8 bColumn, u8 bRow)
     pObj->apfnCollisionCallback[1] = 0;
     SetObjectPendingPalette(pObj, g_aObjectTypeAssets[pObj->bFighterIndex].pPalette);
     pObj->bFacing = pRecord->bFacing >> 1;
-    SetObjectAssetRecord(pObj, &g_aObjectTypeAssets[pObj->bFighterIndex]);
-    SetObjectAnimFrame(pObj, g_abRoomObjUnk6Frames[g_adwRoomObjUnk6FrameRows[pObj->bFighterIndex]][pObj->bFacing]);
+    SetActorAssetRecord(pObj, &g_aObjectTypeAssets[pObj->bFighterIndex]);
+    SetActorAnimFrame(pObj, g_abRoomObjUnk6Frames[g_adwRoomObjUnk6FrameRows[pObj->bFighterIndex]][pObj->bFacing]);
     pObj->oam.priority = 1;
     pObj->bDepthSortBias = 0x80;
     pObj->dwUnk_0x28 = 0x10000;
-    SetObjectAnimSubState_candidate(pObj, 0);
-    SetObjectActionState(pObj, 0);
+    SetActorAnimSubState_candidate(pObj, 0);
+    SetActorActionState(pObj, 0);
     pObj->wUnk84 = 0;
 
     if (pObj->bFighterIndex == 0x21)
@@ -42,7 +42,7 @@ Object *SpawnNpcObject(u8 bColumn, u8 bRow)
     }
     else
     {
-        pObj->pLinkedObject_candidate = sub_0802FD5C(pObj);
+        pObj->pLinkedActor_candidate = sub_0802FD5C(pObj);
     }
 
     if (pObj->bFighterIndex != 0x5F)
@@ -51,7 +51,7 @@ Object *SpawnNpcObject(u8 bColumn, u8 bRow)
     pObj->bFlags_0x94_candidate &= ~4;
 
     if ((u8)(pObj->bFighterIndex - 0x69) <= 1)
-        SetObjectAffineTransform(pObj, 0x1C000, 0x1C000, 0, 3);
+        SetActorAffineTransform(pObj, 0x1C000, 0x1C000, 0, 3);
 
     if (pObj->bFighterIndex == 5)
         pObj->dwFlags &= ~4;

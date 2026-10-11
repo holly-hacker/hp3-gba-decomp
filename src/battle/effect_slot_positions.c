@@ -2,7 +2,7 @@
 #include "battle/effect_script.h"
 
 // StartOrbitMotion rows: angle X/Y, angular velocity X/Y and radius X/Y, in
-// Object.orbitState.awOrbit order.
+// Actor.orbitState.awOrbit order.
 const s16 g_aEffectOrbitParams_candidate[16][6] = {
     { -0x4000, -0x8000, 0x200, -0x400, 0, 5 },
     { -0x4000, 0x0, 0x0, 0x0, 20, 0 },

@@ -57,16 +57,16 @@ typedef struct FredAndGeorgesShopState {
     u32 dwNextState;            // 0x04; ShopState faded into
     s8 bCursor;                 // 0x08; selected main menu or category row
     s8 bCategory;               // 0x09; chosen buy tab
-    Object *pCursor;            // 0x0C; main menu/category cursor
+    Actor *pCursor;            // 0x0C; main menu/category cursor
     u32 dwHasListItems;         // 0x10; nonzero when the sell/buy list is not empty
     u32 dwMessageTextId;        // 0x14; ShopStateMessage's text
     u32 dwBuyItem;              // 0x18; SHOP_NO_ITEM while selling
     u32 dwSellItem;             // 0x1C; SHOP_NO_ITEM while buying
-    Object *apRowObjects[7];    // 0x20; icons beside the main menu/category rows
-    Object *pItemIcon;          // 0x3C; quantity screen
-    Object *pLeftArrow;         // 0x40
-    Object *pRightArrow;        // 0x44
-    ObjectGfxRecord itemIconGfx;  // 0x48
+    Actor *apRowObjects[7];    // 0x20; icons beside the main menu/category rows
+    Actor *pItemIcon;          // 0x3C; quantity screen
+    Actor *pLeftArrow;         // 0x40
+    Actor *pRightArrow;        // 0x44
+    ActorGfxRecord itemIconGfx;  // 0x48
     s32 nQuantity;              // 0x50
     s32 nUnitPrice;             // 0x54
     u32 dwItem;                 // 0x58; item being traded
@@ -74,8 +74,8 @@ typedef struct FredAndGeorgesShopState {
 } FredAndGeorgesShopState;
 extern FredAndGeorgesShopState g_FredAndGeorgesShop;  // 0x03005AC8
 
-extern const ObjectAssetRecord g_aShopMainMenuIcons[3];  // 0x0806BA4C
-extern const ObjectAssetRecord g_aShopCategoryIcons[7];  // 0x0806BA7C
+extern const ActorAssetRecord g_aShopMainMenuIcons[3];  // 0x0806BA4C
+extern const ActorAssetRecord g_aShopCategoryIcons[7];  // 0x0806BA7C
 extern const u8 g_abShopMenuIconAnim[2];                 // 0x0806BAEC
 extern const u32 g_dwFredAndGeorgesShopBg1Control;      // 0x0806BAF0
 
@@ -103,7 +103,7 @@ void StartShopScreenTransition(ShopScreen screen);
 void TickShopFadeIn(void);
 void DrawShopSickles(void);
 void ClearShopSicklesBox(void);
-void TickShopMenuCursor(Object *pCursor);
+void TickShopMenuCursor(Actor *pCursor);
 void DrawShopMainMenuRow(s32 row, u32 color);
 void ExitShopMainMenu(void);
 void DrawShopCategoryRow(s32 row, u32 color);

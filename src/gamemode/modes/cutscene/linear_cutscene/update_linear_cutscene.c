@@ -19,9 +19,9 @@ void UpdateLinearCutscene(void)
             DrawTextLines(1, 2, 0x7A, 0xE6, 0x24, &g_pLinearCutsceneText, 0);
 
             if (*g_pLinearCutsceneText != 0)
-                g_pLinearCutsceneObject->dwFlags |= ObjectFlagVisible;
+                g_pLinearCutsceneObject->dwFlags |= ActorFlagVisible;
             else
-                g_pLinearCutsceneObject->dwFlags &= ~ObjectFlagVisible;
+                g_pLinearCutsceneObject->dwFlags &= ~ActorFlagVisible;
         }
         else
             sub_0801D6DC();

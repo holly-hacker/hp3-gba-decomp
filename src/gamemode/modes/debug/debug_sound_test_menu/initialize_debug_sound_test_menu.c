@@ -15,7 +15,7 @@ void InitializeDebugSoundTestMenu(void)
     u16 fillValue;
     u16 *pFillValue;
     u32 bgCtrl1;
-    Object *pObject;
+    Actor *pObject;
 
     StopScanlineEffects();
     pFillValue = &fillValue;
@@ -42,10 +42,10 @@ void InitializeDebugSoundTestMenu(void)
         StopMusic();
     g_bCurrentMusicModule = 0xFF;
 
-    pObject = SpawnObject(10, 0x9C, g_DebugSoundTestState.dwRow * 18 + 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
+    pObject = SpawnActor(10, 0x9C, g_DebugSoundTestState.dwRow * 18 + 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugSoundTestState.pCursorObject = pObject;
-    pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, &g_DebugSoundTestAnimFrames, (void *)g_DebugSoundTestAnimData, 0);
+    pObject->dwFlags |= ActorFlagHasSpriteCells;
+    SetActorAnimData(pObject, &g_DebugSoundTestAnimFrames, (void *)g_DebugSoundTestAnimData, 0);
 
     g_GameModeStackContext.dwModeState = 0;
     sub_0800B8F0();

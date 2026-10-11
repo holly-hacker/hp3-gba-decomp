@@ -12,7 +12,7 @@ void InitializeBattle(void)
 {
     s32 i;
     u8 *uVar7;
-    Object *pIconObj;
+    Actor *pIconObj;
 
     ClearObjPaletteSlots();
     g_BattleMessageIconState_candidate.bIndex = 0xFF;
@@ -22,16 +22,16 @@ void InitializeBattle(void)
     // Allocate all 6 fighter objects (3 on the player side, 3 on the enemy side)
     for (i = 0; i < ARRAY_COUNT(g_apFighterObjects_candidate); i++)
     {
-        g_apFighterObjects_candidate[i] = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
-        SetObjectPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
+        g_apFighterObjects_candidate[i] = AllocActorOfType(i + BattleObjectType_FighterSlot0);
+        SetActorPosition(g_apFighterObjects_candidate[i], i * 0x16 + 0x60, 0x8A);
         g_apFighterObjects_candidate[i]->dwFlags = 0x20000008;
         g_apFighterObjects_candidate[i]->bDepthSortBias = 0x80;
         g_apFighterObjects_candidate[i]->oam.paletteNum = i + 9;
     }
 
-    g_pBattleMessageIconObject_candidate = AllocObjectOfType(i + BattleObjectType_FighterSlot0);
+    g_pBattleMessageIconObject_candidate = AllocActorOfType(i + BattleObjectType_FighterSlot0);
     g_bSelectedFighterSlot_candidate = 0;
-    SetObjectPosition(g_pBattleMessageIconObject_candidate, i * 0x16 + 0x60, 0x8A);
+    SetActorPosition(g_pBattleMessageIconObject_candidate, i * 0x16 + 0x60, 0x8A);
     pIconObj = g_pBattleMessageIconObject_candidate;
     pIconObj->dwFlags = 0x20000008;
     pIconObj->bDepthSortBias = 0x80;
@@ -39,7 +39,7 @@ void InitializeBattle(void)
     g_pBattleMessageIconObject_candidate->oam.bpp8 = 1;
     g_pBattleMessageIconObject_candidate->oam.objMode = 0;
 
-    SetObjectPosition(g_pBattleMessageIconObject_candidate, 2, 0x75);
+    SetActorPosition(g_pBattleMessageIconObject_candidate, 2, 0x75);
 
     for (i = 0; i < ARRAY_COUNT(g_anFaintedRosterIndices); i++)
         g_anFaintedRosterIndices[i] = -1;

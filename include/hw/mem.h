@@ -65,91 +65,91 @@ void List_MoveToHead(ListNode **destListHead, ListNode **srcListHead, ListNode *
 void *memset(void *dst, int val, u32 len);
 void *CopyMemory(void *dst, const void *src, u32 len);
 
-// Object pool: a 0x69-slot, 0x128-byte-stride free list carved out of a
-// bulk AllocZeroed'd buffer by InitObjectPool, plus a small auxiliary
-// buffer and IWRAM-relocated copies of the two per-frame object-list
+// Actor pool: a 0x69-slot, 0x128-byte-stride free list carved out of a
+// bulk AllocZeroed'd buffer by InitActorPool, plus a small auxiliary
+// buffer and IWRAM-relocated copies of the two per-frame actor-list
 // passes (see docs/memory-map/heap.md).
 // pBuffer/pFreeListHead are adjacent words (0x03001C08/0x03001C0C) --
-// InitObjectPool's real code loads pBuffer's address once and reaches
+// InitActorPool's real code loads pBuffer's address once and reaches
 // pFreeListHead through it at +4, so this stays one struct rather than
 // two independent globals.
 //
-// The rest of the state follows: a queue that TickObjectList fills with the
-// objects whose UpdateObjectOamCells result was 2, and a byte that gates its
+// The rest of the state follows: a queue that TickActorList fills with the
+// actors whose UpdateActorOamCells result was 2, and a byte that gates its
 // extra OAM pass (see docs/memory-map/heap.md).
-typedef struct ObjectPoolState {
+typedef struct ActorPoolState {
     void *pBuffer;
     void *pFreeListHead;
-    u8 bTileUpdateQueueCount;  // 0x08, consumed and reset by CommitQueuedObjectTileUpdates
+    u8 bTileUpdateQueueCount;  // 0x08, consumed and reset by CommitQueuedActorTileUpdates
     u8 pad_9[0x03];            // -> 0x0C
-    struct Object *apTileUpdateQueue[0x69];  // 0x0C, objects whose OAM update returned 2
-    u8 bExtraOamPassEnabled_candidate;   // 0x1B0, nonzero enables TickObjectList's extra pass;
+    struct Actor *apTileUpdateQueue[0x69];  // 0x0C, actors whose OAM update returned 2
+    u8 bExtraOamPassEnabled_candidate;   // 0x1B0, nonzero enables TickActorList's extra pass;
                                          // bits 0-1 are the OAM priority of the vertically
                                          // mirrored, alternate-vblank copies it draws
     u8 pad_1B1[0x03];
-} ObjectPoolState;
-extern ObjectPoolState g_ObjectPoolState;
+} ActorPoolState;
+extern ActorPoolState g_ActorPoolState;
 
-// One 0x34-byte record of g_pObjectPoolAuxBuffer (5 records), selected by
-// Object.bObjectPoolAuxSlot. Tracks VRAM tile allocations shared between
-// objects: abRefCounts[i] counts the objects holding the allocation whose id
+// One 0x34-byte record of g_pActorPoolAuxBuffer (5 records), selected by
+// Actor.bActorPoolAuxSlot. Tracks VRAM tile allocations shared between
+// actors: abRefCounts[i] counts the actors holding the allocation whose id
 // is in awTileAllocIds[i] (0xFFFF = none). Index 0 is the ShareTiles
 // allocation; ShareFrameTiles indexes by animation frame.
-typedef struct ObjectPoolAuxRecord {
+typedef struct ActorPoolAuxRecord {
     u8 pad_00[0x04];
-    struct ObjectAssetRecord *pAnimTable;  // 0x04, sprite record of the ShareTiles allocation
+    struct ActorAssetRecord *pAnimTable;  // 0x04, sprite record of the ShareTiles allocation
     u16 awTileAllocIds[12];  // 0x08
     u8 abRefCounts[12];      // 0x20
     u8 bAnimFrame;           // 0x2C, animation frame of the ShareTiles allocation
     u8 pad_2D[0x03];         // -> 0x30
     u32 dwAllocTick;         // 0x30, g_dwTickCount when the ShareTiles allocation was made
-} ObjectPoolAuxRecord;
-extern ObjectPoolAuxRecord *g_pObjectPoolAuxBuffer;
-// IWRAM copies of the ARM routines above, made by InitObjectPool and
+} ActorPoolAuxRecord;
+extern ActorPoolAuxRecord *g_pActorPoolAuxBuffer;
+// IWRAM copies of the ARM routines above, made by InitActorPool and
 // InstallIwramFindFreeObjTileRun. They are declared as functions so callers
 // can take their address; the ROM calls them through that pointer.
-extern void SortObjectsByDepthIwram(struct Object **queue, u32 count);
-extern void CheckObjectCollisionsIwram(u32 count, struct Object **queue);
+extern void SortObjectsByDepthIwram(struct Actor **queue, u32 count);
+extern void CheckObjectCollisionsIwram(u32 count, struct Actor **queue);
 extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 startBit);
 u32 FindFreeObjTileRun(const u8 *pBitmap, u32 runLength, u32 startBit);
-extern u32 g_dwObjectListActive_candidate;
-// Rounding bias for WriteObjectOamCells' scaled cell offsets; always 0.
+extern u32 g_dwActorListActive_candidate;
+// Rounding bias for WriteActorOamCells' scaled cell offsets; always 0.
 extern u32 g_dwUnk03001DC4;
-// Set to 1 by every TickActiveObjects call and never cleared, so it is 0
-// only until the active list's first tick. FreeObject releases the object's
-// shared VRAM tile allocation (ReleaseObjectOffscreenVramTiles) only when it
-// is 1; those allocations are made by UpdateObjectSpriteFrame during a tick.
-extern u32 g_dwObjectListTicked_candidate;
+// Set to 1 by every TickActiveActors call and never cleared, so it is 0
+// only until the active list's first tick. FreeActor releases the actor's
+// shared VRAM tile allocation (ReleaseActorOffscreenVramTiles) only when it
+// is 1; those allocations are made by UpdateActorSpriteFrame during a tick.
+extern u32 g_dwActorListTicked_candidate;
 
-// pHead/pUnk4 are adjacent words (0x030015B0/0x030015B4) -- FreeObject loads
+// pHead/pUnk4 are adjacent words (0x030015B0/0x030015B4) -- FreeActor loads
 // the base address once and reaches pUnk4 through it at +4, so this stays
-// one struct rather than two independent globals (see ObjectPoolState for
+// one struct rather than two independent globals (see ActorPoolState for
 // the same pattern).
-typedef struct ActiveObjectListState {
-    ListNode *pHead;  // objects join it via AllocObjectFromFreeList and List_MoveToHead
-    ListNode *pUnk4;  // FreeObject advances this to the freed object's pPrev when
-                       // it points at that object. Not enough evidence yet for a real name.
-} ActiveObjectListState;
-extern ActiveObjectListState g_ActiveObjectListState;
+typedef struct ActiveActorListState {
+    ListNode *pHead;  // actors join it via AllocObjectFromFreeList and List_MoveToHead
+    ListNode *pUnk4;  // FreeActor advances this to the freed actor's pPrev when
+                       // it points at that actor. Not enough evidence yet for a real name.
+} ActiveActorListState;
+extern ActiveActorListState g_ActiveActorListState;
 
-// Per-tick queues TickObject fills from the active list and TickObjectList drains.
-// Counts are reset at the start of every TickObjectList call.
-extern struct Object *g_apSpriteFrameQueue[15];  // 0x03001760, visible objects with sprite cells
+// Per-tick queues TickActor fills from the active list and TickActorList drains.
+// Counts are reset at the start of every TickActorList call.
+extern struct Actor *g_apSpriteFrameQueue[15];  // 0x03001760, visible actors with sprite cells
 extern u8 g_bSpriteFrameQueueCount;              // 0x0300179C
-extern struct Object *g_apOamQueue[0x69];        // 0x030015B8, onscreen objects drawn by depth order
+extern struct Actor *g_apOamQueue[0x69];        // 0x030015B8, onscreen actors drawn by depth order
 extern u32 g_dwOamQueueCount;                    // 0x0300175C
-extern struct Object *g_apCollisionQueue[0x69];  // 0x030017A4, objects awaiting the pairwise check
+extern struct Actor *g_apCollisionQueue[0x69];  // 0x030017A4, actors awaiting the pairwise check
 extern u32 g_dwCollisionQueueCount;              // 0x03001948
-// Cleared by the next TickObject pass that ticks an object's movement; that
-// object plays sound 0x47 if its position changed. Its writer is unidentified.
+// Cleared by the next TickActor pass that ticks an actor's movement; that
+// actor plays sound 0x47 if its position changed. Its writer is unidentified.
 extern u32 g_dwUnk03003234;
 
 void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
-void FreeAllObjects(ListNode **activeListHead);
+void FreeAllActors(ListNode **activeListHead);
 
 void SortObjectsByDepth(void);
 void CheckObjectCollisions(void);
-void InitObjectPool(void);
+void InitActorPool(void);
 
 // Start/end of the statically linked IWRAM and EWRAM sections, as ROM
 // pointer constants. kramInstall copies the ROM image of these sections

@@ -7,7 +7,7 @@
 // use the same palette. Gamma, color cycles and palette effects are in
 // graphics/palette.h.
 
-struct Object;
+struct Actor;
 
 // OBJ palette resource: 16 BGR555 entries. Entry 0 is the transparent color and is
 // not uploaded; entries 1-15 fill the OBJ palette bank (see AttachObjectPalette).
@@ -32,29 +32,29 @@ extern ObjPaletteSlot g_aObjPaletteSlots[16];  // 0x03005114
 
 // Rebinds the palette ReleaseObjectPalette saved in the object's pending
 // palette, then clears it.
-extern void BindObjectPendingPalette(struct Object *obj);
+extern void BindObjectPendingPalette(struct Actor *obj);
 extern u32 AllocObjPaletteSlot(void);
 extern void ClearObjPaletteSlots(void);
-// Sets the palette the object binds once it is onscreen (see TickObject).
-extern void SetObjectPendingPalette(struct Object *obj, const void *pPalette);
+// Sets the palette the object binds once it is onscreen (see TickActor).
+extern void SetObjectPendingPalette(struct Actor *obj, const void *pPalette);
 // Like SetObjectPendingPalette, but the palette is bound to an unshared slot.
-extern void SetObjectPendingPaletteUnshared(struct Object *obj, const void *pPalette);
-extern u32 AttachObjectPalette(struct Object *obj, const ObjPalette *pPalette);
+extern void SetObjectPendingPaletteUnshared(struct Actor *obj, const void *pPalette);
+extern u32 AttachObjectPalette(struct Actor *obj, const ObjPalette *pPalette);
 // Like AttachObjectPalette, but always binds a newly allocated slot
 // instead of sharing one already holding pPalette, and marks the slot
 // ObjPaletteSlotFlagUnshared. Returns the slot index.
-extern u32 AttachObjectPaletteUnshared(struct Object *obj, const ObjPalette *pPalette);
-extern void ReleaseObjectPalette(struct Object *obj);
+extern u32 AttachObjectPaletteUnshared(struct Actor *obj, const ObjPalette *pPalette);
+extern void ReleaseObjectPalette(struct Actor *obj);
 extern void ReleaseObjPaletteSlot(s32 slotIndex);
 extern void ReserveObjPaletteSlot(u32 slotIndex);
 extern void UnreserveObjPaletteSlot(u32 slotIndex);
-extern void BindObjPaletteSlot(u32 slotIndex, struct Object *obj, const ObjPalette *pPalette);
+extern void BindObjPaletteSlot(u32 slotIndex, struct Actor *obj, const ObjPalette *pPalette);
 extern u32 IsObjPaletteSlotReserved(u32 slotIndex);
 extern u32 FindObjPaletteSlot(const ObjPalette *pPalette);
 
 // Bodies of AttachObjectPalette and AttachObjectPaletteUnshared, which the
 // ROM also inlines in BindObjectPendingPalette.
-static inline u32 AttachSharedPalette(struct Object *obj, const ObjPalette *pPalette)
+static inline u32 AttachSharedPalette(struct Actor *obj, const ObjPalette *pPalette)
 {
     u32 slot = FindObjPaletteSlot(pPalette);
 
@@ -67,7 +67,7 @@ static inline u32 AttachSharedPalette(struct Object *obj, const ObjPalette *pPal
     return slot;
 }
 
-static inline u32 AttachUnsharedPalette(struct Object *obj, const ObjPalette *pPalette)
+static inline u32 AttachUnsharedPalette(struct Actor *obj, const ObjPalette *pPalette)
 {
     u32 slot = AllocObjPaletteSlot();
 

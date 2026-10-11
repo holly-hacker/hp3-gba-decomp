@@ -45,13 +45,13 @@ void UpdateConfirmTradeScreen(void)
             if (g_GameModeStackContext.dwModeScratchB == 0)
             {
                 ClearBgTilemap(2);
-                FreeAllObjects(&g_ActiveObjectListState.pHead);
+                FreeAllActors(&g_ActiveActorListState.pHead);
                 PushGameMode(Connectivity);
             }
             else if (g_GameModeStackContext.dwModeScratchB == 1)
             {
                 ClearBgTilemap(2);
-                FreeAllObjects(&g_ActiveObjectListState.pHead);
+                FreeAllActors(&g_ActiveActorListState.pHead);
                 PushGameMode(CardTrade);
             }
         }

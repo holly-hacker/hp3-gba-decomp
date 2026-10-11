@@ -3,16 +3,16 @@
 
 // Room object constructor for tile objType 10, a Spongify pad that launches the
 // party to a target point. See docs/formats/rooms.md.
-Object *SpawnSpongifyPadObject(u8 bColumn, u8 bRow)
+Actor *SpawnSpongifyPadObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnkA *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(RoomObjectType_UnkA);
+    Actor *pObj = AllocActorOfType(RoomObjectType_UnkA);
     u32 i;
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x200D;
-    SetObjectActionState(pObj, 0);
-    SetObjectActionSubState(pObj, 1);
+    SetActorActionState(pObj, 0);
+    SetActorActionSubState(pObj, 1);
     pObj->anim.bAnimFrameDelay = 1;
     pObj->pfnTick = sub_08040114;
     pObj->apfnCollisionCallback[0] = sub_08040358;
@@ -23,7 +23,7 @@ Object *SpawnSpongifyPadObject(u8 bColumn, u8 bRow)
     ROOM_OBJECT_WORD_STATE(pObj)->b6D = pRecord->abArgD[1];
     ROOM_OBJECT_WORD_STATE(pObj)->n68 = 0;
     SetObjectPendingPalette(pObj, g_apRoomSpongifyPadEffectData[pObj->wCharacterId_candidate]);
-    SetObjectAnimData(pObj, g_apRoomSpongifyPadAnimFrames[pObj->wCharacterId_candidate], (void *)g_abRoomSpongifyPadAnimData, 0);
+    SetActorAnimData(pObj, g_apRoomSpongifyPadAnimFrames[pObj->wCharacterId_candidate], (void *)g_abRoomSpongifyPadAnimData, 0);
     pObj->oam.priority = 3;
     pObj->bDepthSortBias = 0x80;
 

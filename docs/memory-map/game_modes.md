@@ -62,7 +62,7 @@ struct assignments (`g_PrevGameModeStackContext = g_GameModeStackContext;
 g_GameModeStackContext = g_dwPendingGameMode;`), confirmed to compile to the
 real ROM's `ldmia`/`stmia` block copies. `g_dwTickCount` (`0x03003F60`,
 right after the three blocks) increments once per call, before dispatch;
-`UpdateObjectSpriteFrame` also reads/writes it as a per-tick generation
+`UpdateActorSpriteFrame` also reads/writes it as a per-tick generation
 stamp for a shared VRAM tile allocation cache.
 
 `GameModeStackContext`'s two scratch words (`dwModeScratchA` at
@@ -242,7 +242,7 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   no known pusher; its menu rows leave through
   `PushGameMode_2(MinigameDifficultySelect, 6, arg2)`.
 - `DivinationTeaMinigame` writes BG2's affine parameters directly, drives
-  16 leaf objects through `SetObjectAffineTransform` (scale words have 8
+  16 leaf objects through `SetActorAffineTransform` (scale words have 8
   fractional bits) and shows a random fortune: dialog text `0xA5F` plus
   `Mt19937RandRange(0, 0x5A)`. Its final state pushes `MinigameMenu` with cursor entry 3.
 

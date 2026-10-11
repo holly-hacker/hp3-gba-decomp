@@ -2,7 +2,7 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_aRoomSwitchSprites[5] = {
+const ActorGfxRecord g_aRoomSwitchSprites[5] = {
     { (void *)gButtonTiles, (void *)gButtonFrames },
     { (void *)gPressurePlateTiles, (void *)gPressurePlateFrames },
     { (void *)gLever001Tiles, (void *)gLever001Frames },
@@ -11,7 +11,7 @@ const ObjectGfxRecord g_aRoomSwitchSprites[5] = {
 };
 
 // Indexed by the object's character id, 0-10; both lists end with NULL.
-const ObjectGfxRecord *const g_apRoomSwitchAssetRecords[12] = {
+const ActorGfxRecord *const g_apRoomSwitchAssetRecords[12] = {
     &g_aRoomSwitchSprites[1],
     &g_aRoomSwitchSprites[1],
     &g_aRoomSwitchSprites[1],

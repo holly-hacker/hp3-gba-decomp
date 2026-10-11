@@ -3,14 +3,14 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_aRoomFlamePillarSprites[3] = {
+const ActorGfxRecord g_aRoomFlamePillarSprites[3] = {
     { (void *)gFlamePillar001Tiles, (void *)gFlamePillar001Frames },
     { (void *)gFlamePillar002Tiles, (void *)gFlamePillar002Frames },
     { (void *)gFlamePillar003Tiles, (void *)gFlamePillar003Frames },
 };
 
 // Indexed by the object's character id.
-const ObjectGfxRecord *const g_apRoomFlamePillarAnimFrames[3] = {
+const ActorGfxRecord *const g_apRoomFlamePillarAnimFrames[3] = {
     &g_aRoomFlamePillarSprites[0],
     &g_aRoomFlamePillarSprites[1],
     &g_aRoomFlamePillarSprites[2],

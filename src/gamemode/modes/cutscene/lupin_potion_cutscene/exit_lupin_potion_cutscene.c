@@ -8,7 +8,7 @@ void ExitLupinPotionCutscene(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     StopScanlineEffects();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     UnreserveObjPaletteSlot(0);
     UnreserveObjPaletteSlot(1);
     UnreserveObjPaletteSlot(2);

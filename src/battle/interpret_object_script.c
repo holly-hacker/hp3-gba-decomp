@@ -16,7 +16,7 @@
 // Runs an effect object's bytecode script (docs/formats/battle_scripts.md).
 // Each call executes opcodes until one returns: the wait opcodes hand the
 // object to a tick handler that resumes the interpreter later.
-void InterpretObjectScript(Object *obj)
+void InterpretObjectScript(Actor *obj)
 {
     BattleFighter *targetFighter;
     BattleFighter *casterFighter;
@@ -31,7 +31,7 @@ void InterpretObjectScript(Object *obj)
     s32 n;
     ScreenPoint pos;
     ScreenPoint offset;
-    Object *child;
+    Actor *child;
     u32 done;
 
     targetFighter = g_pFightState->pFighters + g_effectStaging.bTargetIndex;
@@ -49,24 +49,24 @@ void InterpretObjectScript(Object *obj)
         switch (opcode)
         {
         case BSOP_End:
-            obj->dwFlags = (obj->dwFlags & ~ObjectFlagVisible) | ObjectFlagPendingDestroy | ObjectFlagAnimFrameLoaded;
+            obj->dwFlags = (obj->dwFlags & ~ActorFlagVisible) | ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             return;
         case BSOP_SetObjectAnim:
-            SetObjectAnimData(obj, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData_candidate[args[1]], args[2]);
+            SetActorAnimData(obj, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData_candidate[args[1]], args[2]);
             break;
         case BSOP_SetObjectAnimAndPalette:  // SetObjectAnim, then swaps in that animation's palette
-            SetObjectAnimData(obj, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData_candidate[args[1]], args[2]);
+            SetActorAnimData(obj, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData_candidate[args[1]], args[2]);
             ReleaseObjectPalette(obj);
             AttachObjectPalette(obj, g_aEffectAnimAssets[args[1]].pPalette);
             break;
         case BSOP_SetObjectAnimFromTable2:  // sets asset record and animation from the second table
-            SetObjectAssetRecord(obj, &g_aEffectAnimAssets2[args[1]]);
-            SetObjectAnimData(obj, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2_candidate[args[1]], args[2]);
-            obj->anim.pAnimTable = (ObjectAssetRecord *)&g_aEffectAnimAssets2[args[1]];
+            SetActorAssetRecord(obj, &g_aEffectAnimAssets2[args[1]]);
+            SetActorAnimData(obj, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2_candidate[args[1]], args[2]);
+            obj->anim.pAnimTable = (ActorAssetRecord *)&g_aEffectAnimAssets2[args[1]];
             break;
         case BSOP_SetObjectAnimFromTable2AndPalette:  // like 0x03, then swaps in the palette
-            SetObjectAssetRecord(obj, &g_aEffectAnimAssets2[args[1]]);
-            SetObjectAnimData(obj, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2_candidate[args[1]], args[2]);
+            SetActorAssetRecord(obj, &g_aEffectAnimAssets2[args[1]]);
+            SetActorAnimData(obj, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2_candidate[args[1]], args[2]);
             ReleaseObjectPalette(obj);
             AttachObjectPalette(obj, g_aEffectAnimAssets2[args[1]].pPalette);
             break;
@@ -92,7 +92,7 @@ void InterpretObjectScript(Object *obj)
         case BSOP_MoveToAbsolute:  // moves to absolute (x, y) over a duration
             x = args[1];
             y = args[2];
-            StartObjectMove(obj, x << 16, y << 16, args[3]);
+            StartActorMove(obj, x << 16, y << 16, args[3]);
             break;
         case BSOP_MoveTo:
             if (args[4] == 0)
@@ -112,76 +112,76 @@ void InterpretObjectScript(Object *obj)
                 x += offset.x;
                 y += offset.y;
             }
-            StartObjectMove(obj, x << 16, y << 16, args[3]);
+            StartActorMove(obj, x << 16, y << 16, args[3]);
             break;
         case BSOP_StopMove:  // stops movement: clears move duration and velocity
             obj->wUnk86 = 0;
             obj->wMoveDuration = 0;
-            SetObjectVelocity(obj, 0, 0);
+            SetActorVelocity(obj, 0, 0);
             break;
         case BSOP_SpawnEffectDetached:
             child = CreateEffectScriptObject(args[1], 0);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
-            child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
+            child->pLinkedActor_candidate = obj->pLinkedActor_candidate;
             break;
         case BSOP_SpawnEffect:
             child = CreateEffectScriptObject(args[1], 1);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
-            child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
+            child->pLinkedActor_candidate = obj->pLinkedActor_candidate;
             break;
         case BSOP_SpawnEffectAtSelfDetached:  // spawns a detached child at this object's position
             child = CreateEffectScriptObject(args[1], 0);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
-            child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
-            SnapObjectPosition(child, obj->pos.x, obj->pos.y);
+            child->pLinkedActor_candidate = obj->pLinkedActor_candidate;
+            SnapActorPosition(child, obj->pos.x, obj->pos.y);
             break;
         case BSOP_SpawnEffectAtSelf:  // spawns a child at this object's position
             child = CreateEffectScriptObject(args[1], 1);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
-            child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
-            SnapObjectPosition(child, obj->pos.x, obj->pos.y);
+            child->pLinkedActor_candidate = obj->pLinkedActor_candidate;
+            SnapActorPosition(child, obj->pos.x, obj->pos.y);
             break;
         case BSOP_SpawnEffectOffsetDetached:  // spawns a detached child at this object's position plus a scaled offset
             child = CreateEffectScriptObject(args[1], 0);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
-            child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
+            child->pLinkedActor_candidate = obj->pLinkedActor_candidate;
             x = (s8)args[2] * (args[3] << 16) + obj->pos.x;
             y = (s8)args[4] * (args[5] << 16) + obj->pos.y;
-            SnapObjectPosition(child, x, y);
+            SnapActorPosition(child, x, y);
             break;
         case BSOP_SpawnEffectOffset:  // spawns a child at this object's position plus a scaled offset
             child = CreateEffectScriptObject(args[1], 1);
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
-            child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
+            child->pLinkedActor_candidate = obj->pLinkedActor_candidate;
             x = (s8)args[2] * (args[3] << 16) + obj->pos.x;
             y = (s8)args[4] * (args[5] << 16) + obj->pos.y;
-            SnapObjectPosition(child, x, y);
+            SnapActorPosition(child, x, y);
             break;
         case BSOP_SpawnEffectSharedTiles:  // spawns a child that shares tiles
             child = CreateEffectScriptObject(args[1], 1);
-            child->bObjectPoolAuxSlot = 0;
-            child->bDrawFlags |= ObjectDrawFlagShareTiles;
+            child->bActorPoolAuxSlot = 0;
+            child->bDrawFlags |= ActorDrawFlagShareTiles;
             child->modeState.effect.abLocal[0] = obj->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = obj->modeState.effect.abLocal[1] + 1;
-            child->pLinkedObject_candidate = obj->pLinkedObject_candidate;
+            child->pLinkedActor_candidate = obj->pLinkedActor_candidate;
             break;
         case BSOP_ToggleObjectFlipX:
-            SetObjectFlippedX(obj, !IsObjectFlippedX(obj));
+            SetActorFlippedX(obj, !IsActorFlippedX(obj));
             break;
         case BSOP_ToggleObjectFlipY:  // toggles a second flip state (likely vertical)
             sub_08003788(obj, !sub_08003954(obj));
             break;
         case BSOP_MoveBy:  // moves by a signed (dx, dy) in whole pixels
-            SnapObjectPosition(obj, obj->pos.x + ((s8)args[1] << 16), obj->pos.y + ((s8)args[2] << 16));
+            SnapActorPosition(obj, obj->pos.x + ((s8)args[1] << 16), obj->pos.y + ((s8)args[2] << 16));
             break;
         case BSOP_MoveBy_2:  // moves by a signed (dx, dy) in whole pixels
-            SnapObjectPosition(obj, obj->pos.x + ((s8)args[1] << 16), obj->pos.y + ((s8)args[2] << 16));
+            SnapActorPosition(obj, obj->pos.x + ((s8)args[1] << 16), obj->pos.y + ((s8)args[2] << 16));
             break;
         case BSOP_SnapToCaster:  // snaps to the caster's position, optionally offset
             pos.x = (s16)(casterFighter->pObject->pos.x >> 16);
@@ -192,7 +192,7 @@ void InterpretObjectScript(Object *obj)
                 pos.x += offset.x;
                 pos.y += offset.y;
             }
-            SetObjectPosition(obj, pos.x, pos.y);
+            SetActorPosition(obj, pos.x, pos.y);
             break;
         case BSOP_TeleportToSlotPosition:
             x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam];
@@ -203,10 +203,10 @@ void InterpretObjectScript(Object *obj)
                 x += offset.x;
                 y += offset.y;
             }
-            SetObjectPosition(obj, x, y);
+            SetActorPosition(obj, x, y);
             break;
         case BSOP_SetVelocity:  // sets velocity from signed whole-pixel values
-            SetObjectVelocity(obj, (s8)args[1] << 16, (s8)args[2] << 16);
+            SetActorVelocity(obj, (s8)args[1] << 16, (s8)args[2] << 16);
             break;
         case BSOP_SetVelocity16:  // sets velocity from signed 8.8-style values
             {
@@ -221,7 +221,7 @@ void InterpretObjectScript(Object *obj)
                     velY = -((args[5] << 16) + (args[6] << 8));
                 else
                     velY = (args[5] << 16) + (args[6] << 8);
-                SetObjectVelocity(obj, velX, velY);
+                SetActorVelocity(obj, velX, velY);
             }
             break;
         case BSOP_Unk1F:  // BG helper call with signed x and y
@@ -388,10 +388,10 @@ void InterpretObjectScript(Object *obj)
             casterFighter->pObject->orbitState.awOrbit[0] += obj->modeState.effect.abLocal[0] * args[2] << 8;
             break;
         case BSOP_SetAffineScale1:  // sets affine scale (mode 1)
-            SetObjectAffineTransform(obj, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), 0, 1);
+            SetActorAffineTransform(obj, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), 0, 1);
             break;
         case BSOP_SetAffineScale3:  // sets affine scale (mode 3)
-            SetObjectAffineTransform(obj, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), 0, 3);
+            SetActorAffineTransform(obj, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), 0, 3);
             break;
         case BSOP_StartAffineWobble:  // sets a rotating affine transform and behavior flag 2
             obj->modeState.effect.bBehaviorFlags |= 2;
@@ -399,7 +399,7 @@ void InterpretObjectScript(Object *obj)
             obj->modeState.effect.abParams[0] = args[6];
             obj->modeState.effect.abParams[1] = args[7];
             obj->modeState.effect.abParams[2] = args[8];
-            SetObjectAffineTransform(obj, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), args[5] * -0x7FF, 3);
+            SetActorAffineTransform(obj, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), args[5] * -0x7FF, 3);
             break;
         case BSOP_StopAffineWobble:  // clears behavior flag 2 and its parameters
             obj->modeState.effect.bBehaviorFlags &= ~2;
@@ -409,36 +409,36 @@ void InterpretObjectScript(Object *obj)
             obj->modeState.effect.abParams[3] = 0;
             break;
         case BSOP_SetAffineScaleTween:  // sets affine scale and tweens to a second scale
-            SetObjectAffineTransform(obj, (s8)args[1] * ((args[2] << 16) + (args[3] << 8)), (s8)args[4] * ((args[5] << 16) + (args[6] << 8)), 0, 3);
-            StartObjectAffineScaleTween(obj, (s8)args[7] * ((args[8] << 16) + (args[9] << 8)), (s8)args[10] * ((args[11] << 16) + (args[12] << 8)), args[13]);
+            SetActorAffineTransform(obj, (s8)args[1] * ((args[2] << 16) + (args[3] << 8)), (s8)args[4] * ((args[5] << 16) + (args[6] << 8)), 0, 3);
+            StartActorAffineScaleTween(obj, (s8)args[7] * ((args[8] << 16) + (args[9] << 8)), (s8)args[10] * ((args[11] << 16) + (args[12] << 8)), args[13]);
             break;
         case BSOP_SetAffineRotation1:  // mode 1
-            SetObjectAffineTransform(obj, 0x10000, 0x10000, args[1] * -0x7FF, 1);
+            SetActorAffineTransform(obj, 0x10000, 0x10000, args[1] * -0x7FF, 1);
             break;
         case BSOP_SetAffineRotation3:  // mode 3
-            SetObjectAffineTransform(obj, 0x10000, 0x10000, args[1] * -0x7FF, 3);
+            SetActorAffineTransform(obj, 0x10000, 0x10000, args[1] * -0x7FF, 3);
             break;
         case BSOP_SetAffineScaleRotation1:  // scales and rotates (mode 1)
-            SetObjectAffineTransform(obj, (args[2] << 16) + (args[3] << 8), (args[4] << 16) + (args[5] << 8), args[1] * -0x7FF, 1);
+            SetActorAffineTransform(obj, (args[2] << 16) + (args[3] << 8), (args[4] << 16) + (args[5] << 8), args[1] * -0x7FF, 1);
             break;
         case BSOP_SetAffineScaleRotation3:  // scales and rotates (mode 3)
-            SetObjectAffineTransform(obj, (args[2] << 16) + (args[3] << 8), (args[4] << 16) + (args[5] << 8), args[1] * -0x7FF, 3);
+            SetActorAffineTransform(obj, (args[2] << 16) + (args[3] << 8), (args[4] << 16) + (args[5] << 8), args[1] * -0x7FF, 3);
             break;
         case BSOP_ReleaseAffineSlot:  // releases the affine slot
             if (obj->oam.affineMode != 0)
-                ReleaseObjectAffineSlot(obj);
+                ReleaseActorAffineSlot(obj);
             break;
         case BSOP_ClearAnimFlag:  // clears the animation flag
-            obj->dwFlags &= ~ObjectFlagHasAnimation;
+            obj->dwFlags &= ~ActorFlagHasAnimation;
             break;
         case BSOP_SetAnimFlag:  // sets the animation flag
-            obj->dwFlags |= ObjectFlagHasAnimation;
+            obj->dwFlags |= ActorFlagHasAnimation;
             break;
         case BSOP_HideObject:  // hides the object
-            obj->dwFlags &= ~ObjectFlagVisible;
+            obj->dwFlags &= ~ActorFlagVisible;
             break;
         case BSOP_ShowObject:  // shows the object
-            obj->dwFlags |= ObjectFlagVisible;
+            obj->dwFlags |= ActorFlagVisible;
             break;
         case BSOP_SetOamPriority:  // sets this object's OAM priority
             obj->oam.priority = args[1];
@@ -477,7 +477,7 @@ void InterpretObjectScript(Object *obj)
 
                 x = (s16)(Mt19937RandSigned(args[1]) + g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam]);
                 py = Mt19937RandSigned(args[2]) + g_abBattleSlotPosY_candidate[args[3]];
-                SnapObjectPosition(obj, x << 16, py << 16);
+                SnapActorPosition(obj, x << 16, py << 16);
             }
             break;
         case BSOP_SnapToRandomAroundSpawn:  // snaps to a random offset around the spawn position
@@ -487,13 +487,13 @@ void InterpretObjectScript(Object *obj)
                 pos = ComputeEffectSpawnPosition();
                 x = Mt19937RandSigned(args[1]) + pos.x;
                 py = pos.y + Mt19937RandSigned(args[2]);
-                SnapObjectPosition(obj, x << 16, py << 16);
+                SnapActorPosition(obj, x << 16, py << 16);
             }
             break;
         case BSOP_JitterPosition:
             x = Mt19937RandSigned(args[1]);
             y = Mt19937RandSigned(args[2]);
-            SnapObjectPosition(obj, obj->pos.x + (x << 16), obj->pos.y + (y << 16));
+            SnapActorPosition(obj, obj->pos.x + (x << 16), obj->pos.y + (y << 16));
             break;
         case BSOP_EnableSemiTransparency:  // enables semi-transparency and resets the fade timer
             obj->oam.objMode = 1;
@@ -559,78 +559,78 @@ void InterpretObjectScript(Object *obj)
             break;
         case BSOP_SetTargetVelocityScaled:  // sets the target's velocity (scaled by 1/16)
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 fighterObj = targetFighter->pObject;
-                SetObjectVelocity(fighterObj, (s8)args[1] << 12, (s8)args[2] << 12);
+                SetActorVelocity(fighterObj, (s8)args[1] << 12, (s8)args[2] << 12);
             }
             break;
         case BSOP_SetTargetVelocity:  // sets the target's velocity
-            SetObjectVelocity(targetFighter->pObject, (s8)args[1] << 16, (s8)args[2] << 16);
+            SetActorVelocity(targetFighter->pObject, (s8)args[1] << 16, (s8)args[2] << 16);
             break;
         case BSOP_SetCasterVelocityProduct:  // sets the caster's velocity from operand products
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 fighterObj = casterFighter->pObject;
-                SetObjectVelocity(fighterObj, ((s8)args[1] * (s8)args[2]) << 12, ((s8)args[3] * (s8)args[4]) << 12);
+                SetActorVelocity(fighterObj, ((s8)args[1] * (s8)args[2]) << 12, ((s8)args[3] * (s8)args[4]) << 12);
             }
             break;
         case BSOP_NudgeCaster:  // nudges the caster's position
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 fighterObj = casterFighter->pObject;
-                SnapObjectPosition(fighterObj, fighterObj->pos.x + (args[1] << 16), fighterObj->pos.y + (args[2] << 16));
+                SnapActorPosition(fighterObj, fighterObj->pos.x + (args[1] << 16), fighterObj->pos.y + (args[2] << 16));
             }
             break;
         case BSOP_NudgeTarget:  // nudges the target's position
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 fighterObj = targetFighter->pObject;
-                SnapObjectPosition(fighterObj, fighterObj->pos.x + (args[1] << 16), fighterObj->pos.y + (args[2] << 16));
+                SnapActorPosition(fighterObj, fighterObj->pos.x + (args[1] << 16), fighterObj->pos.y + (args[2] << 16));
             }
             break;
         case BSOP_SetCasterPosition:  // sets the caster's position
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 fighterObj = casterFighter->pObject;
-                SnapObjectPosition(fighterObj, args[1] << 16, args[2] << 16);
+                SnapActorPosition(fighterObj, args[1] << 16, args[2] << 16);
             }
             break;
         case BSOP_SetTargetPosition:  // sets the target's position
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 fighterObj = targetFighter->pObject;
-                SnapObjectPosition(fighterObj, args[1] << 16, args[2] << 16);
+                SnapActorPosition(fighterObj, args[1] << 16, args[2] << 16);
             }
             break;
         case BSOP_MoveFighterTo:
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 x = args[1];
                 y = args[2];
                 fighterObj = targetFighter->pObject;
-                StartObjectMove(fighterObj, x << 16, y << 16, args[3]);
+                StartActorMove(fighterObj, x << 16, y << 16, args[3]);
             }
             break;
         case BSOP_MoveFighterToSlotPosition:
             x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam];
             y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam];
-            StartObjectMove(targetFighter->pObject, x << 16, y << 16, args[1]);
+            StartActorMove(targetFighter->pObject, x << 16, y << 16, args[1]);
             break;
         case BSOP_SnapTargetToSlot:  // snaps the target to its slot position
             x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam];
             y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam];
-            SnapObjectPosition(targetFighter->pObject, x << 16, y << 16);
+            SnapActorPosition(targetFighter->pObject, x << 16, y << 16);
             break;
         case BSOP_SnapCasterToSpawn:  // snaps the caster to the spawn position
             pos = ComputeEffectSpawnPosition();
-            SnapObjectPosition(casterFighter->pObject, pos.x << 16, pos.y << 16);
+            SnapActorPosition(casterFighter->pObject, pos.x << 16, pos.y << 16);
             break;
         case BSOP_MoveCasterTo:  // moves the caster to a computed position
             if (args[4] == 0)
@@ -650,13 +650,13 @@ void InterpretObjectScript(Object *obj)
                 x += offset.x;
                 y += offset.y;
             }
-            StartObjectMove(casterFighter->pObject, x << 16, y << 16, args[3]);
+            StartActorMove(casterFighter->pObject, x << 16, y << 16, args[3]);
             break;
         case BSOP_WaitForCasterField86:  // waits on the caster's field 0x86 (returns)
             obj->pfnTick = WaitForCasterField86Tick_candidate;
             return;
         case BSOP_SetCasterAnim:  // sets the caster's animation; monster object types are 4 + monster index
-            SetObjectAnimData(casterFighter->pObject, &g_pMonsterGraphicsTable[casterFighter->pObject->wObjectType - 4],
+            SetActorAnimData(casterFighter->pObject, &g_pMonsterGraphicsTable[casterFighter->pObject->wActorType - 4],
                               g_aEffectAnimData_candidate[args[1]], args[2]);
             break;
         case BSOP_LoadBgEffect:  // loads a BG effect record
@@ -694,7 +694,7 @@ void InterpretObjectScript(Object *obj)
             g_effectStaging.bBgEffectId_candidate = args[1];
             break;
         case BSOP_TeleportTo:
-            SnapObjectPosition(obj, args[1] << 16, args[2] << 16);
+            SnapActorPosition(obj, args[1] << 16, args[2] << 16);
             break;
         case BSOP_KillTarget:  // faints the target and grants its XP and gold
             {
@@ -817,11 +817,11 @@ void InterpretObjectScript(Object *obj)
             break;
         case BSOP_FlipTargetFacing:  // flips the target's facing unless it is type 0x3A
             {
-                Object *fighterObj;
+                Actor *fighterObj;
 
                 fighterObj = targetFighter->pObject;
-                if (fighterObj->wObjectType != 0x3A && g_effectStaging.wContextValue != 0)
-                    SetObjectFlippedX(fighterObj, !IsObjectFlippedX(fighterObj));
+                if (fighterObj->wActorType != 0x3A && g_effectStaging.wContextValue != 0)
+                    SetActorFlippedX(fighterObj, !IsActorFlippedX(fighterObj));
             }
             break;
         case BSOP_SetDispcntBit15:  // turns DISPCNT bit 15 on and sets OAM mode 2
@@ -870,7 +870,7 @@ void InterpretObjectScript(Object *obj)
                 }
                 break;
             case BSSTATUS_AttackWeakened:
-                targetFighter->pObject->bDrawFlags |= ObjectDrawFlagPostActionFlash;
+                targetFighter->pObject->bDrawFlags |= ActorDrawFlagPostActionFlash;
                 targetFighter->bStatusFlags |= AttackWeakened;
                 ShowBattleMessage(AttackWeakenedMessage, 0, 0);
                 break;
@@ -878,12 +878,12 @@ void InterpretObjectScript(Object *obj)
                 targetFighter->bStatusFlags |= PoisonImmune;
                 break;
             case BSSTATUS_HiddenSecondary:
-                targetFighter->pObject->bDrawFlags = ObjectDrawFlagBlink;
+                targetFighter->pObject->bDrawFlags = ActorDrawFlagBlink;
                 targetFighter->bStatusFlags |= Hidden;
                 ShowBattleMessage(HiddenFromView, 0, g_effectStaging.bTargetIndex);
                 break;
             case BSSTATUS_HiddenMain:
-                targetFighter->pObject->bDrawFlags = ObjectDrawFlagBlink;
+                targetFighter->pObject->bDrawFlags = ActorDrawFlagBlink;
                 targetFighter->bStatusFlags |= Hidden;
                 ShowBattleMessage(HiddenFromView, 1, g_effectStaging.bTargetIndex);
                 break;
@@ -928,7 +928,7 @@ void InterpretObjectScript(Object *obj)
                     for (n = 0; n < g_pFightState->bFighterCount; n++)
                     {
                         if (g_pFightState->pFighters[n].bFighterType == Enemy)
-                            g_pFightState->pFighters[n].pObject->bDrawFlags |= ObjectDrawFlagPostActionFlash;
+                            g_pFightState->pFighters[n].pObject->bDrawFlags |= ActorDrawFlagPostActionFlash;
                     }
                 }
                 break;
@@ -937,7 +937,7 @@ void InterpretObjectScript(Object *obj)
                     for (n = 0; n < g_pFightState->bFighterCount; n++)
                     {
                         if (g_pFightState->pFighters[n].bFighterType == Enemy && (g_pFightState->pFighters[n].bStatusFlags & AttackWeakened) == 0)
-                            g_pFightState->pFighters[n].pObject->bDrawFlags &= ~ObjectDrawFlagPostActionFlash;
+                            g_pFightState->pFighters[n].pObject->bDrawFlags &= ~ActorDrawFlagPostActionFlash;
                     }
                 }
                 break;
@@ -947,8 +947,8 @@ void InterpretObjectScript(Object *obj)
             case BSSTATUS_ToggleUltimateVisual:
                 if (args[2] == 0)
                 {
-                    SetObjectAnimData(targetFighter->pObject, &g_aFighterAnimTable[targetFighter->pObject->wObjectType].aRecords[4], (void *)g_abFighterIdleAnimData_candidate, 0);
-                    SetObjectAnimFrame(targetFighter->pObject, 0);
+                    SetActorAnimData(targetFighter->pObject, &g_aFighterAnimTable[targetFighter->pObject->wActorType].aRecords[4], (void *)g_abFighterIdleAnimData_candidate, 0);
+                    SetActorAnimFrame(targetFighter->pObject, 0);
                 }
                 else
                 {
@@ -970,13 +970,13 @@ void InterpretObjectScript(Object *obj)
             case BSSTATUS_PaletteFlash:
                 if (args[2] == 0)
                 {
-                    SetObjectAffineTransform(targetFighter->pObject, 0x10000, 0x10000, 0, 3);
-                    StartObjectAffineScaleTween(targetFighter->pObject, 0x18000, 0x4000, 4);
+                    SetActorAffineTransform(targetFighter->pObject, 0x10000, 0x10000, 0, 3);
+                    StartActorAffineScaleTween(targetFighter->pObject, 0x18000, 0x4000, 4);
                 }
                 else if (args[2] == 1)
-                    StartObjectAffineScaleTween(targetFighter->pObject, 0x10000, 0x10000, 10);
+                    StartActorAffineScaleTween(targetFighter->pObject, 0x10000, 0x10000, 10);
                 else if (args[2] == 2)
-                    ReleaseObjectAffineSlot(targetFighter->pObject);
+                    ReleaseActorAffineSlot(targetFighter->pObject);
                 break;
             case BSSTATUS_ReplenishPartySp:
                 {

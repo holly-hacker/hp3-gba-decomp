@@ -3,17 +3,17 @@
 
 // Room object constructor for tile objType 4, a trigger zone sized by half
 // extents. See docs/formats/rooms.md.
-Object *SpawnTriggerZoneObject(u8 bColumn, u8 bRow)
+Actor *SpawnTriggerZoneObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk4 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(pRecord->dwObjectType);
+    Actor *pObj = AllocActorOfType(pRecord->dwObjectType);
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x200C;
     pObj->bRoomObjectKind_candidate = pRecord->bKind;
     ROOM_OBJECT_WORD_STATE(pObj)->n60 = pRecord->wArgA * 30;
     ROOM_OBJECT_WORD_STATE(pObj)->b70 = pRecord->bArgD;
-    SetObjectActionState(pObj, 0);
+    SetActorActionState(pObj, 0);
     pObj->apfnCollisionCallback[0] = sub_080265B8;
     pObj->aCollisionBoxes[0].offsets.edges.bLeft = -pRecord->bHalfWidth;
     pObj->aCollisionBoxes[0].offsets.edges.bTop = -pRecord->bHalfHeight;

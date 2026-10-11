@@ -19,24 +19,24 @@ void DrawFolioUniversitasButtonHints(void)
         if (IsFolioUniversitasCardSeen(cardIndex))
         {
             SelectTextFont(1, 0, -1);
-            g_FolioUniversitasState.pPrevArrow->dwFlags |= ObjectFlagVisible;
+            g_FolioUniversitasState.pPrevArrow->dwFlags |= ActorFlagVisible;
         }
         else
         {
             SelectTextFont(1, 2, -1);
-            g_FolioUniversitasState.pPrevArrow->dwFlags &= ~ObjectFlagVisible;
+            g_FolioUniversitasState.pPrevArrow->dwFlags &= ~ActorFlagVisible;
         }
         DrawString(0x8B, 0x18, 0x94, GetDialogText(0x40E));  // "Card Details"
 
         if (cardIndex % 10 <= 8)
         {
             SelectTextFont(1, 0, -1);
-            g_FolioUniversitasState.pNextArrow->dwFlags |= ObjectFlagVisible;
+            g_FolioUniversitasState.pNextArrow->dwFlags |= ActorFlagVisible;
         }
         else
         {
             SelectTextFont(1, 2, -1);
-            g_FolioUniversitasState.pNextArrow->dwFlags &= ~ObjectFlagVisible;
+            g_FolioUniversitasState.pNextArrow->dwFlags &= ~ActorFlagVisible;
         }
         DrawString(0xB3, 0x8C, 0x94, GetDialogText(0x40C));  // "Card Combo"
     }
@@ -53,12 +53,12 @@ void DrawFolioUniversitasButtonHints(void)
         if (hasCombo)
         {
             SelectTextFont(1, 0, -1);
-            g_FolioUniversitasState.pPrevArrow->dwFlags |= ObjectFlagVisible;
+            g_FolioUniversitasState.pPrevArrow->dwFlags |= ActorFlagVisible;
         }
         else
         {
             SelectTextFont(1, 2, -1);
-            g_FolioUniversitasState.pPrevArrow->dwFlags &= ~ObjectFlagVisible;
+            g_FolioUniversitasState.pPrevArrow->dwFlags &= ~ActorFlagVisible;
         }
         DrawString(0x8B, 0x18, 0x94, GetDialogText(0x40F));  // "Use Combo"
 
@@ -71,24 +71,24 @@ void DrawFolioUniversitasButtonHints(void)
         if (g_saveStateBlock.abFolioUniversitasCounts[cardIndex] != 0)
         {
             SelectTextFont(1, 0, -1);
-            g_FolioUniversitasState.pPrevArrow->dwFlags |= ObjectFlagVisible;
+            g_FolioUniversitasState.pPrevArrow->dwFlags |= ActorFlagVisible;
         }
         else
         {
             SelectTextFont(1, 2, -1);
-            g_FolioUniversitasState.pPrevArrow->dwFlags &= ~ObjectFlagVisible;
+            g_FolioUniversitasState.pPrevArrow->dwFlags &= ~ActorFlagVisible;
         }
         DrawString(0x8B, 0x18, 0x94, GetDialogText(0x411));  // "Select"
 
         if (cardIndex % 10 <= 8)
         {
             SelectTextFont(1, 0, -1);
-            g_FolioUniversitasState.pNextArrow->dwFlags |= ObjectFlagVisible;
+            g_FolioUniversitasState.pNextArrow->dwFlags |= ActorFlagVisible;
         }
         else
         {
             SelectTextFont(1, 2, -1);
-            g_FolioUniversitasState.pNextArrow->dwFlags &= ~ObjectFlagVisible;
+            g_FolioUniversitasState.pNextArrow->dwFlags &= ~ActorFlagVisible;
         }
         DrawString(0xB3, 0x8C, 0x94, GetDialogText(0x40C));  // "Card Combo"
     }

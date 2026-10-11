@@ -9,6 +9,6 @@ void ExitOwlNameSelect(void)
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == 1)
         PlayScreenTransitionOutByIndex(0x3F, 2);
 
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     DisableBg(3);
 }

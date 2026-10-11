@@ -25,7 +25,7 @@ void InitializeOverworld(void)
     u32 bgCtrl2;
     u32 bgCtrl1;
     u32 bgCtrl0;
-    Object *pPlayer;
+    Actor *pPlayer;
     const RoomTableEntry *pRoom;
 
     // Entry: block the pause menu briefly and drop a stale script run state.

@@ -9,7 +9,7 @@
 #include "menu/minigame_menu.h"
 
 #define MOVE_CURSOR()                                                                              \
-    SetObjectMoveTargetWithDuration_candidate(                                                     \
+    SetActorMoveTargetWithDuration_candidate(                                                     \
         g_FolioUniversitasState.pCursor,                                                           \
         (g_FolioUniversitasState.dwSlot + g_FolioUniversitasState.dwSlot / 3) * 8 + 0x78,          \
         g_FolioUniversitasState.dwCategory * 8 + 0x20, 5)

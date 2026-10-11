@@ -4,10 +4,10 @@
 #include "mt19937.h"
 
 // Enemy-side per-object tick dispatcher, mirroring TickPlayerActionState's
-// shape: a switch on Object+0x8D (bActionState), every case branching into
+// shape: a switch on Actor+0x8D (bActionState), every case branching into
 // a shared no-op tail rather than returning directly. Registered as
 // InitMonsterBattleActor's pObject->pfnTick. See docs/memory-map/battle.md.
-void TickFighterAttackAnimState_candidate(Object *obj)
+void TickFighterAttackAnimState_candidate(Actor *obj)
 {
     u8 *pFlags;
     s32 fighterType;
@@ -38,7 +38,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         if (obj->vel.x != 0 || obj->vel.y != 0)
             return;
 
-        SetObjectActionState(obj, 0);
+        SetActorActionState(obj, 0);
         return;
 
     case 2:
@@ -52,15 +52,15 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         if ((obj->dwFlags & 0x40000) == 0)
             return;
 
-        SetObjectActionState(obj, 0);
+        SetActorActionState(obj, 0);
         return;
     }
 
     case 1:
     {
         if (obj->bActionFlags & 1) {
-            if (obj->wObjectType != 0x3a) {
-                SetObjectFlippedX(obj, 1);
+            if (obj->wActorType != 0x3a) {
+                SetActorFlippedX(obj, 1);
                 PlaySoundById(0x9d);
             } else {
                 PlaySoundById(0x14);
@@ -69,40 +69,40 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             obj->bActionFlags &= 0xfe;
         }
 
-        if (obj->wObjectType != 0x3a) {
+        if (obj->wActorType != 0x3a) {
             sub_080039F8(obj);
             sub_08003A0C(obj);
-            SetObjectVelocity(obj, 0xfffa0000, 0);
+            SetActorVelocity(obj, 0xfffa0000, 0);
         }
 
         if (--obj->dwStateTimer != 0)
             return;
 
-        if (obj->pLinkedObject_candidate != 0)
-            sub_0801BCB0(obj->pLinkedObject_candidate);
+        if (obj->pLinkedActor_candidate != 0)
+            sub_0801BCB0(obj->pLinkedActor_candidate);
 
-        if (obj->pShadowObject != 0)
-            obj->pShadowObject->dwFlags |= 0x82;
+        if (obj->pShadowActor != 0)
+            obj->pShadowActor->dwFlags |= 0x82;
 
         if (g_pFightState->bFaintMessageCount_candidate == 0)
             CheckBattleVictory(obj);
 
         if (g_pFightState->dwBattleResultPending != 0) {
-            if (obj->wObjectType == 0x3a)
+            if (obj->wActorType == 0x3a)
                 return;
             obj->dwFlags &= 0xfffffffe;
             return;
         }
 
-        if (obj->wObjectType == (fighterType = 0x3a))
+        if (obj->wActorType == (fighterType = 0x3a))
             return;
 
         obj->dwFlags |= 0x82;
 
-        if ((u16)(obj->wObjectType - 0x31) > 2)
+        if ((u16)(obj->wActorType - 0x31) > 2)
             return;
 
-        FreeObject(obj->pShadowObject);
+        FreeActor(obj->pShadowActor);
         return;
     }
 
@@ -153,7 +153,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                         destY = 0x540000;
                     }
 
-                    StartObjectMove(obj, destX, destY, 3);
+                    StartActorMove(obj, destX, destY, 3);
                 }
             } else {
 
@@ -162,18 +162,18 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 g_pFightState->bActionDelayCounter_candidate = 10;
                 roster = active->bRosterIndex;
                 targetSlot = g_pFightState->pFighters[active->bSelectedActionIndex].bSlotParam;
-                StartObjectMove(obj,
+                StartActorMove(obj,
                     (g_aBattleSlotAnchorPos_candidate[targetSlot][0] - g_aMonsterAttackOffset_candidate[roster][0]) << 16,
                     (g_aBattleSlotAnchorPos_candidate[targetSlot][1] - g_aMonsterAttackOffset_candidate[roster][1]) << 16,
                     8);
 
 
-                SetObjectAffineTransform(obj, 0x10000, 0x10000, 0, 3);
+                SetActorAffineTransform(obj, 0x10000, 0x10000, 0, 3);
 
                 if ((u8)(active->bRosterIndex - 0x37) <= 1) {
-                    StartObjectAffineScaleTween(obj, 0x13333, 0x13333, 8);
+                    StartActorAffineScaleTween(obj, 0x13333, 0x13333, 8);
                 } else {
-                    StartObjectAffineScaleTween(obj, 0x18000, 0x18000, 8);
+                    StartActorAffineScaleTween(obj, 0x18000, 0x18000, 8);
                 }
             }
 
@@ -183,10 +183,10 @@ void TickFighterAttackAnimState_candidate(Object *obj)
 
             g_pFightState->bActionDelayCounter_candidate = 0x14;
 
-            StartObjectMove(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
+            StartActorMove(obj, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
 
             if (MonsterTable[active->bRosterIndex].bSpecialChance != 100)
-                StartObjectAffineScaleTween(obj, 0x10000, 0x10000, 3);
+                StartActorAffineScaleTween(obj, 0x10000, 0x10000, 3);
 
             obj->bActionFlags &= 0xfe;
         }
@@ -197,7 +197,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 return;
 
             obj->wUnk86 = 0;
-            SetObjectVelocity(obj, 0, 0);
+            SetActorVelocity(obj, 0, 0);
             obj->bActionFlags = 1;
             return;
         }
@@ -214,7 +214,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
             if (obj->oam.affineMode != 3)
                 return;
 
-            ReleaseObjectAffineSlot(obj);
+            ReleaseActorAffineSlot(obj);
             return;
         }
 
@@ -229,7 +229,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                 RollMonsterSpecialEffect(monsterIndex, active->bSelectedActionIndex, g_nLastDamage);
             }
 
-            if (obj->wObjectType == 0x3e) {
+            if (obj->wActorType == 0x3e) {
                 obj->anim.unk_DC.bEnemyAttackPhase_candidate = 0xff;
                 obj->scriptState.bytes.bAttackOutcomeState = 2;
             }
@@ -305,7 +305,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                         if (g_nLastDamage > 999) {
                             // Handle crit damage
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wObjectType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wActorType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -313,7 +313,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                             ShowFloatingDamageNumber_candidate(g_nLastDamage, 3, i, 0);
                         } else if (g_nLastDamage != 0) {
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wObjectType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wActorType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -323,7 +323,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
                             // the compiler already holds a register known to
                             // be 0 and reuses it, which is what the ROM does.
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = 0;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wObjectType;
+                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pObject->wActorType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 1;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
@@ -341,7 +341,7 @@ void TickFighterAttackAnimState_candidate(Object *obj)
         }
 
     skipPhase0:
-        if (obj->wObjectType != 0x3e)
+        if (obj->wActorType != 0x3e)
             return;
         if ((obj->dwFlags & 0x40000) == 0)
             return;

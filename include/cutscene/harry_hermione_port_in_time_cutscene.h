@@ -9,8 +9,8 @@ typedef struct {
     u32 dwUnk0;           // 0x00: first argument of sub_0800A420
     s32 nProgress;        // 0x04: 16.16 fixed-point, second argument of sub_0800A420
     u32 bRising;          // 0x08: 1 while progress rises, 0 once it falls back
-    Object *pObjectA;     // 0x0C
-    Object *pObjectB;     // 0x10
+    Actor *pObjectA;     // 0x0C
+    Actor *pObjectB;     // 0x10
     u32 dwPositionIndex;  // 0x14: row of g_aHarryHermionePortInTimeObjectPos
 } HarryHermionePortInTimeState;
 

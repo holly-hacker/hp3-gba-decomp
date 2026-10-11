@@ -1,40 +1,40 @@
 #include "actor.h"
 
-// LoadObjectAnimFrameBounds for objects drawn from variant slots: a slot with
-// ObjectVariantSlotFlagBounds supplies the terrain box, collision boxes and (slot
+// LoadActorAnimFrameBounds for actors drawn from variant slots: a slot with
+// ActorVariantSlotFlagBounds supplies the terrain box, collision boxes and (slot
 // 0 only) sprite bounds from its own current frame. Only the slot frame's boxes
 // with a nonzero state are copied.
-void LoadVariantSlotFrameBounds(Object *obj)
+void LoadVariantSlotFrameBounds(Actor *actor)
 {
     u8 i;
     u8 tableIndex;
     u8 variantIndex;
-    ObjectFrameData *frameData;
-    ObjectFrameDesc *frameDesc;
+    ActorFrameData *frameData;
+    ActorFrameDesc *frameDesc;
     s16 *origin;
     s8 *box;
     u32 wrap;
     s32 frame;
     s32 j;
 
-    for (i = 0; i < ARRAY_COUNT(obj->aVariantSlots); i++) {
-        if (obj->aVariantSlots[i].pSpriteVariantTables == NULL)
+    for (i = 0; i < ARRAY_COUNT(actor->aVariantSlots); i++) {
+        if (actor->aVariantSlots[i].pSpriteVariantTables == NULL)
             continue;
-        if (!(obj->aVariantSlots[i].bFrameFlags & ObjectVariantSlotFlagBounds))
+        if (!(actor->aVariantSlots[i].bFrameFlags & ActorVariantSlotFlagBounds))
             continue;
 
-        variantIndex = obj->bSpriteVariantIndex;
-        tableIndex = obj->bSpriteVariantTableIndex;
-        frameData = obj->aVariantSlots[i].pSpriteVariantTables[tableIndex][variantIndex].pFrameData;
+        variantIndex = actor->bSpriteVariantIndex;
+        tableIndex = actor->bSpriteVariantTableIndex;
+        frameData = actor->aVariantSlots[i].pSpriteVariantTables[tableIndex][variantIndex].pFrameData;
 
-        obj->bTerrainBoxLeft = frameData->abTerrainBox[0];
-        obj->bTerrainBoxRight = frameData->abTerrainBox[1];
-        obj->bTerrainBoxTop = frameData->abTerrainBox[2];
-        obj->bTerrainBoxBottom = frameData->abTerrainBox[3];
+        actor->bTerrainBoxLeft = frameData->abTerrainBox[0];
+        actor->bTerrainBoxRight = frameData->abTerrainBox[1];
+        actor->bTerrainBoxTop = frameData->abTerrainBox[2];
+        actor->bTerrainBoxBottom = frameData->abTerrainBox[3];
 
-        wrap = obj->aVariantSlots[i].bFrameFlags & ObjectVariantSlotFlagPrevFrameWrap;
-        if (wrap || (obj->aVariantSlots[i].bFrameFlags & ObjectVariantSlotFlagPrevFrameClamp)) {
-            frame = obj->anim.bLastAnimFrameValue - 1;
+        wrap = actor->aVariantSlots[i].bFrameFlags & ActorVariantSlotFlagPrevFrameWrap;
+        if (wrap || (actor->aVariantSlots[i].bFrameFlags & ActorVariantSlotFlagPrevFrameClamp)) {
+            frame = actor->anim.bLastAnimFrameValue - 1;
             if (frame < 0) {
                 if (wrap)
                     frame = frameData->wFrameCount - 1;
@@ -43,29 +43,29 @@ void LoadVariantSlotFrameBounds(Object *obj)
             }
         }
         else {
-            frame = obj->anim.bLastAnimFrameValue;
+            frame = actor->anim.bLastAnimFrameValue;
         }
 
-        frameDesc = (ObjectFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
+        frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
 
         if (i == 0) {
             origin = frameDesc->awOrigin;
-            obj->spriteBounds.edges.wLeft = origin[0];
-            obj->spriteBounds.edges.wRight = origin[0] + frameDesc->bWidth;
-            obj->spriteBounds.edges.wTop = origin[1];
-            obj->spriteBounds.edges.wBottom = origin[1] + frameDesc->bHeight;
+            actor->spriteBounds.edges.wLeft = origin[0];
+            actor->spriteBounds.edges.wRight = origin[0] + frameDesc->bWidth;
+            actor->spriteBounds.edges.wTop = origin[1];
+            actor->spriteBounds.edges.wBottom = origin[1] + frameDesc->bHeight;
         }
 
         box = (s8 *)frameDesc + (frameData->bFrameHeaderExtra * 2 + 10);
         for (j = 0; j < frameData->bFramePartCount; j++) {
             if (box[j * 6 + 4] != 0) {
-                obj->aCollisionBoxes[j].offsets.edges.bLeft = box[j * 6 + 0];
-                obj->aCollisionBoxes[j].offsets.edges.bTop = box[j * 6 + 2];
-                obj->aCollisionBoxes[j].offsets.edges.bRight = box[j * 6 + 1];
-                obj->aCollisionBoxes[j].offsets.edges.bBottom = box[j * 6 + 3];
-                obj->aCollisionBoxes[j].state.bState = box[j * 6 + 4];
-                if (obj->bCollisionBoxCount <= j)
-                    obj->bCollisionBoxCount++;
+                actor->aCollisionBoxes[j].offsets.edges.bLeft = box[j * 6 + 0];
+                actor->aCollisionBoxes[j].offsets.edges.bTop = box[j * 6 + 2];
+                actor->aCollisionBoxes[j].offsets.edges.bRight = box[j * 6 + 1];
+                actor->aCollisionBoxes[j].offsets.edges.bBottom = box[j * 6 + 3];
+                actor->aCollisionBoxes[j].state.bState = box[j * 6 + 4];
+                if (actor->bCollisionBoxCount <= j)
+                    actor->bCollisionBoxCount++;
             }
         }
     }

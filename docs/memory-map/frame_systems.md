@@ -10,7 +10,7 @@ function. Calls, in order:
 | Call | Addr | Runs when |
 |---|---|---|
 | `TickOverworldBeforeObjects_candidate` | `0x0802B0DC` | current game mode (`0x03003EF4`) is 8 (overworld) |
-| `TickActiveObjects` | `0x080015B8` | always |
+| `TickActiveActors` | `0x080015B8` | always |
 | `TickParticleEmitters` | `0x08031748` | always |
 | `TickBgLayers_candidate` | `0x08006EF4` | always |
 | `TickScreenWindows_candidate` | `0x08045970` | always |
@@ -109,7 +109,7 @@ opens a menu only when every gate passes: the controlled object's `bActionSubSta
 is not 5, `g_dwRoomChainRanThisFrame_candidate` (`0x03001DF0`) is clear, no game mode
 transition is pending, the slot's queued object move is not active (`bState != 1`),
 `g_dwGameModeFlags & 0x80000811` is clear, the player object is not
-`ObjectFlagAnimPaused`, and its `bActionState` is `0x21`. Then:
+`ActorFlagAnimPaused`, and its `bActionState` is `0x21`. Then:
 
 - Start (`0x8` in `g_wKeysPressed`) pushes `InGameMenu` (`0x0A`); Select (`0x4`)
   pushes `Options` (`0x05`).

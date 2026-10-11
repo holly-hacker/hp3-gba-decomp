@@ -9,12 +9,12 @@ typedef struct DespawnTileObjectRecord {
 
 void RoomScriptOpDespawnTileObject(DespawnTileObjectRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pObject != NULL)
     {
-        if (pObject->pLinkedObject_candidate != NULL)
-            pObject->pLinkedObject_candidate->dwFlags |= 0x82;
+        if (pObject->pLinkedActor_candidate != NULL)
+            pObject->pLinkedActor_candidate->dwFlags |= 0x82;
         pObject->dwFlags |= 0x82;
     }
 }

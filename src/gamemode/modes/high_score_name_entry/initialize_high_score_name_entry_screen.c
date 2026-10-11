@@ -14,7 +14,7 @@ void InitializeHighScoreNameEntryScreen(void)
 {
     volatile u16 zero;
     u32 bgControl;
-    Object *pCursor;
+    Actor *pCursor;
 
     zero = 0;
     bios_CPUSet((void *)&zero, VRAM_BASE, 0x01008000);
@@ -45,7 +45,7 @@ void InitializeHighScoreNameEntryScreen(void)
     g_HighScoreNameEntry.abName[0] = 0;
     g_HighScoreNameEntry.dwTileCursor = 0;
     g_HighScoreNameEntry.dwNameLength = 0;
-    SetObjectPosition(pCursor, 0x19, 0x20);
+    SetActorPosition(pCursor, 0x19, 0x20);
 
     DrawHighScoreNameEntryKeypad();
     DrawHighScoreNameEntryPreview();

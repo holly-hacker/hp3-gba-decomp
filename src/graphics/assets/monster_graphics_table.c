@@ -286,10 +286,10 @@ const MonsterGfxRow g_pMonsterGraphicsTable[69] = {
     },
 };
 
-const ObjectAssetRecord g_MonsterShadowGfxRow = { (void *)gBattleIcon001Tiles, (void *)gBattleIcon001Frames, (void *)gBattleIcon001Palette, 0 };
+const ActorAssetRecord g_MonsterShadowGfxRow = { (void *)gBattleIcon001Tiles, (void *)gBattleIcon001Frames, (void *)gBattleIcon001Palette, 0 };
 
 // Indexed by bRosterIndex.
-const ObjectAssetRecord g_aEnemyTurnOrderIconAssets[69] = {
+const ActorAssetRecord g_aEnemyTurnOrderIconAssets[69] = {
     { (void *)gBattleIcon002Tiles, (void *)gBattleIcon002Frames, (void *)gMonsterBattle001Palette, 0 }, // 0: Ruby Fire Crab
     { (void *)gBattleIcon002Tiles, (void *)gBattleIcon002Frames, (void *)gMonsterPalette001Palette, 0 }, // 1: Emerald Fire Crab
     { (void *)gBattleIcon002Tiles, (void *)gBattleIcon002Frames, (void *)gMonsterPalette002Palette, 0 }, // 2: Sapphire Fire Crab
@@ -362,11 +362,11 @@ const ObjectAssetRecord g_aEnemyTurnOrderIconAssets[69] = {
 };
 
 // Indexed by FighterType: Harry, Hermione, Ron, Buckbeak.
-const ObjectAssetRecord g_aAllyTurnOrderIconAssets[4] = {
+const ActorAssetRecord g_aAllyTurnOrderIconAssets[4] = {
     { (void *)gAllyHead001Tiles, (void *)gAllyHead001Frames, (void *)gBattleIcon037Palette, 0 },
     { (void *)gAllyHead002Tiles, (void *)gAllyHead002Frames, (void *)gBattleIcon037Palette, 0 },
     { (void *)gAllyHead003Tiles, (void *)gAllyHead003Frames, (void *)gBattleIcon038Palette, 0 },
     { (void *)gBattleIcon039Tiles, (void *)gBattleIcon039Frames, (void *)gBattleIcon039Palette, 0 },
 };
 
-const ObjectAssetRecord g_TurnOrderIconContainerAsset = { (void *)gBattleHudItem001Tiles, (void *)gBattleHudItem001Frames, (void *)gBattleHudItem001Palette, 0 };
+const ActorAssetRecord g_TurnOrderIconContainerAsset = { (void *)gBattleHudItem001Tiles, (void *)gBattleHudItem001Frames, (void *)gBattleHudItem001Palette, 0 };

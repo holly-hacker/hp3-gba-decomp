@@ -206,7 +206,7 @@ switch, the XP/gold payout, `RollMonsterSpecialEffect_candidate`).
 
 **The `bLevel` note.** `BattleFighter+0xE` is a proven level counter for
 *player* fighters. No monster ever reaches either code path that reads
-it (every monster's `Object` is wired to the melee-only tick callback,
+it (every monster's `Actor` is wired to the melee-only tick callback,
 and `ResolveEnemyAttack` doesn't touch the offset), so a monster's own
 value at `+0x02` has no traced reader -- it is the same field at the
 same offset, filled the same way as every other column here, just never
@@ -317,14 +317,14 @@ from scratch and mistake it for bestiary data.
 ### Monster graphics table (PROVEN)
 
 `g_pMonsterGraphicsTable` (`0x0804E6B4`-`0x0804EF54`) has **69** 32-byte
-rows, one per `MonsterTable` index. Each row is two `ObjectAssetRecord`s
+rows, one per `MonsterTable` index. Each row is two `ActorAssetRecord`s
 (`{pTileGfx, pFrameData, pPalette, 0}`, see
 [`graphics.md`](graphics.md)'s "Character portraits"):
 
 | Offset | Record | Readers |
 |---|---|---|
-| `+0x00` | battle sprite | `InitMonsterBattleActor` (`SetObjectAnimData` with `g_pMonsterAnimFrameTable[index * 0x60]`); `DrawFolioBrutiMonsterPanel` (same record and animation table); `RestoreFighterObjects_candidate` (`wObjectType - 4` as index) |
-| `+0x10` | overworld sprite | `SpawnWanderingMonsterObject` (`SetObjectPendingPalette` with `+0x18`, then `SetObjectAnimData` with `0x0806584C`) |
+| `+0x00` | battle sprite | `InitMonsterBattleActor` (`SetActorAnimData` with `g_pMonsterAnimFrameTable[index * 0x60]`); `DrawFolioBrutiMonsterPanel` (same record and animation table); `RestoreFighterObjects_candidate` (`wActorType - 4` as index) |
+| `+0x10` | overworld sprite | `SpawnWanderingMonsterObject` (`SetObjectPendingPalette` with `+0x18`, then `SetActorAnimData` with `0x0806584C`) |
 
 The battle palette (`+0x08`) goes to `AttachObjectPaletteUnshared`,
 which binds it to a newly allocated, unshared palette cache slot.
@@ -346,14 +346,14 @@ and rows 66-68 repeat row 58 exactly. The other pointers fall in
 [`graphics.md`](graphics.md)'s "Overworld monster sprites" and "Battle
 sprites, turn-order icons, and ally heads").
 
-The 16-byte `ObjectAssetRecord`s that follow, up to `0x0804F404`:
+The 16-byte `ActorAssetRecord`s that follow, up to `0x0804F404`:
 
 | Address | Label | Contents |
 |---|---|---|
 | `0x0804EF54` | `g_MonsterShadowGfxRow` | companion sprite `InitMonsterBattleActor` spawns for monsters 45-47 |
 | `0x0804EF64` | `g_aEnemyTurnOrderIconAssets` | 69 records, indexed by `bRosterIndex` in `SpawnTurnOrderIcon`; 62 reuse the battle palette |
 | `0x0804F3B4` | `g_aAllyTurnOrderIconAssets` | 4 records, indexed by `FighterType` (Harry, Hermione, Ron, Buckbeak) |
-| `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `sub_08001690`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnObject` palette |
+| `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `sub_08001690`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnActor` palette |
 
 The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table.
 

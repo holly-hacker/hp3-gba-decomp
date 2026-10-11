@@ -11,9 +11,9 @@ extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set
 // The mode's screen state at 0x03002E18, driven by g_GameModeStackContext.dwModeState.
 typedef struct {
     u8 abUnmapped_0[0x14];
-    Object *pCursorObject;   // 0x14; released on exit when set
-    Object *pObject18;       // 0x18; hidden when dwHideTimer5C expires
-    Object *pObject1C;       // 0x1C; hidden when dwHideTimer68 expires
+    Actor *pCursorObject;   // 0x14; released on exit when set
+    Actor *pObject18;       // 0x18; hidden when dwHideTimer5C expires
+    Actor *pObject1C;       // 0x1C; hidden when dwHideTimer68 expires
     void *pObjectGroup20;    // 0x20; freed on exit
     void *pObjectGroup24;    // 0x24; freed on exit
     void *pObjectGroup28;    // 0x28; freed on exit

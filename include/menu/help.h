@@ -21,20 +21,20 @@ typedef struct {
 
 // Array capacities are the gaps between the fields in IWRAM.
 typedef struct {
-    Object *pTitleObject;                // 0x00
+    Actor *pTitleObject;                // 0x00
     s32 dwPaletteEffect;                 // 0x04; palette effect handle, -1 when none
     HelpPageFrame aPageStack[12];        // 0x08
     u8 bPageDepth;                       // 0x68; pages opened from menus, 0 on the root menu
     u8 bPageKind;                        // 0x69; HelpPageKind of the page on screen
     u8 abPad_6A[2];
     const u32 *pPendingPage;             // 0x6C; page to load on the next frame, or NULL
-    Object *pCursor;                     // 0x70; the menu cursor, NULL on text pages
+    Actor *pCursor;                     // 0x70; the menu cursor, NULL on text pages
     u32 dwEntryCount;                    // 0x74
     HelpMenuEntry aEntries[14];          // 0x78
     u8 bSelectedEntry;                   // 0x120
     u8 abPad_121[3];
     u32 dwTextLines;                     // 0x124; DrawTextLines state of the page's text
-    Object *apSprites[8];                // 0x128; the page's arrow sprites
+    Actor *apSprites[8];                // 0x128; the page's arrow sprites
     u32 dwSpriteCount;                   // 0x148
     const u32 *pNextPage;                // 0x14C; HELP_NEXT_PAGE
     const u32 *pPrevPage;                // 0x150; HELP_PREV_PAGE

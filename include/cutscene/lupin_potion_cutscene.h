@@ -9,8 +9,8 @@
 typedef struct {
     u8 abUnk00[0x88];
     u32 bParallaxScroll;  // 0x88: nonzero scrolls BGs 1-3 at different speeds, otherwise only the camera y
-    Object *apPanelObject[8];  // 0x8C: one object per 32 pixels of screen width
-    Object *pPanelObject8;     // 0xAC: placed at x = 0
+    Actor *apPanelObject[8];  // 0x8C: one object per 32 pixels of screen width
+    Actor *pPanelObject8;     // 0xAC: placed at x = 0
     u8 abUnkB0[4];
     s32 nPanelOffset;     // 0xB4: panel's y offset from its resting position (0 = raised, 0x28 = lowered)
 } LupinPotionCutsceneState;

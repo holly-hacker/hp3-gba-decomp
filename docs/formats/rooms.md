@@ -74,7 +74,7 @@ runtime chain 0 is the default's chain 0). The warp table takes all of the
 default's columns first, then the variant's. Without the bit the runtime
 tables hold only the variant's entries.
 
-## Object groups and records
+## Actor groups and records
 
 **STRUCTURAL MATCH**, confirmed field-by-field via `GetRoomObjectRecordPtr_candidate`'s
 consumers. `g_pRoomObjectTable` (RAM `0x03001DF4`) is a two-level offset
@@ -99,7 +99,7 @@ write from other call sites); `objType` (offset `+8`, i.e.
 `GetRoomObjectRecordPtr_candidate`'s return value) selects a
 constructor from `g_apRoomObjectConstructors` (`src/room/room_object_constructors.c`,
 US `0x0804C054`, JP `0x0804BF80`; constructors take `(column, row)` and return
-the new `Object *`; a 14-entry
+the new `Actor *`; a 14-entry
 function-pointer array, indices 0-13 -- entries beyond 13 fail to parse
 as valid pointers, so 14 is the full object-type count). The static
 fields after `objType` vary in layout per object type; for type 9 (see
@@ -214,7 +214,7 @@ route `i`.
 
 An NPC (type 6) follows a route when a script puts it into an animation
 sequence (`StartObjectAnimSequence`): its operands `bArg64` and `bArg65` are
-stored in Object `+0x64` (route) and `+0x65` (current waypoint). The sequence
+stored in Actor `+0x64` (route) and `+0x65` (current waypoint). The sequence
 selector picks the walking mode: `sub_08004500` loops through the waypoints,
 `sub_08004688` ping-pongs, and `sub_0800483C` walks once and stops. Each runs
 the waypoint's chain on arrival and waits the script's delay between waypoints.
@@ -241,10 +241,10 @@ VM that *runs* it.
 **RESOLVED: separate systems, meeting only incidentally.** Neither the
 per-tile object table nor the warp-trigger table stores a pointer into
 `InterpretObjectScript`'s opcode format. A chest keeps its flag id in the
-Object's `wScriptPc` slot, but no object script runs it. The
+Actor's `wScriptPc` slot, but no object script runs it. The
 room-script VM ([`room_scripts.md`](room_scripts.md)) uses its own,
 separate bytecode format. "Scripts that run in each area" is better
-described by these two room-local systems than by the per-`Object` VM.
+described by these two room-local systems than by the per-`Actor` VM.
 
 ## Further work
 

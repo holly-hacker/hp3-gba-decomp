@@ -3,7 +3,7 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_aRoomObjTriggerSprites[80] = {
+const ActorGfxRecord g_aRoomObjTriggerSprites[80] = {
     { (void *)gObjectSprite2_126Tiles, (void *)gObjectSprite2_126Frames },  // 0
     { (void *)gPushableBlockTiles, (void *)gPushableBlockFrames },  // 1
     { (void *)gObjectSprite2_128Tiles, (void *)gObjectSprite2_128Frames },  // 2
@@ -87,7 +87,7 @@ const ObjectGfxRecord g_aRoomObjTriggerSprites[80] = {
 };
 
 // Indexed by the object's kind.
-const ObjectGfxRecord *const g_apRoomObjTriggerAnimFrames[91] = {
+const ActorGfxRecord *const g_apRoomObjTriggerAnimFrames[91] = {
     &g_aRoomObjTriggerSprites[0],
     &g_aRoomObjTriggerSprites[1],
     &g_aRoomObjTriggerSprites[2],
@@ -293,7 +293,7 @@ const u32 g_adwRoomObjTriggerPushFacing[8] = {
     DirectionDown, DirectionLeft, DirectionLeft, DirectionLeft,
 };
 
-const ObjectGfxRecord g_aRoomObjTriggerEffectSprites[7] = {
+const ActorGfxRecord g_aRoomObjTriggerEffectSprites[7] = {
     { (void *)gOverworldSpellEffect021Tiles, (void *)gOverworldSpellEffect021Frames },
     { (void *)gOverworldSpellEffect022Tiles, (void *)gOverworldSpellEffect022Frames },
     { (void *)gOverworldSpellEffect023Tiles, (void *)gOverworldSpellEffect023Frames },

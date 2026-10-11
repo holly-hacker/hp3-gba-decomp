@@ -23,7 +23,7 @@ void TickParticleEmitter(ParticleEmitter *emitter)
                     continue;
                 if (emitter->wFlags & ParticleEmitterFlagSpawnDisabled)
                     continue;
-                if (!(emitter->pTarget->dwFlags & ObjectFlagOnscreenForTileAlloc)
+                if (!(emitter->pTarget->dwFlags & ActorFlagOnscreenForTileAlloc)
                     && !(emitter->wFlags & ParticleEmitterFlagScreenPosition))
                     continue;
 
@@ -35,7 +35,7 @@ void TickParticleEmitter(ParticleEmitter *emitter)
         }
     }
 
-    if ((emitter->pTarget->dwFlags & ObjectFlagPendingDestroy)
+    if ((emitter->pTarget->dwFlags & ActorFlagPendingDestroy)
         || ((emitter->wFlags & ParticleEmitterFlagRelease) && --emitter->wDuration == 0xFFFF))
         FreeParticleEmitter(emitter);
 }

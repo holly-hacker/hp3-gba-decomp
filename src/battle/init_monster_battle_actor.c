@@ -2,33 +2,33 @@
 #include "battle/battle.h"
 
 // Monster-side counterpart to InitPlayerBattleActor: allocates the fighter's
-// Object, hardwires pObject->pfnTick = TickFighterAttackAnimState_candidate,
+// Actor, hardwires pObject->pfnTick = TickFighterAttackAnimState_candidate,
 // then populates the BattleFighter from MonsterTable. See docs/memory-map/battle.md.
 
 #define BATTLE_SLOT_ORIGIN_X 204
 #define BATTLE_SLOT_ORIGIN_Y 78
 
-Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex)
+Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex)
 {
-    Object *pObject;
+    Actor *pObject;
     u8 type = monsterIndex;
     u8 slot = battleSlotIndex;
     s32 xBase;
     s32 objType;
     s32 slotX2;
-    Object *pShadowObject;
+    Actor *pShadowActor;
     u8 **ppAnimCursor;
     u8 **ppBase;
 
-    pObject = AllocDefaultObject();
+    pObject = AllocDefaultActor();
     objType = type + 4;
-    pObject->wObjectType = objType;
+    pObject->wActorType = objType;
     pObject->bUnk_0x7C = 0;
 
     // Slot anchor in pixels, stored 16.16; the move target reuses X + 24.
     xBase = slot * 36;
-    SnapObjectPosition(pObject, (xBase + BATTLE_SLOT_ORIGIN_X) << 16, (BATTLE_SLOT_ORIGIN_Y - slot * 4) << 16);
-    StartObjectMove(pObject, (xBase + 24) << 16, (BATTLE_SLOT_ORIGIN_Y - slot * 4) << 16, 0x1E);
+    SnapActorPosition(pObject, (xBase + BATTLE_SLOT_ORIGIN_X) << 16, (BATTLE_SLOT_ORIGIN_Y - slot * 4) << 16);
+    StartActorMove(pObject, (xBase + 24) << 16, (BATTLE_SLOT_ORIGIN_Y - slot * 4) << 16, 0x1E);
 
     sub_08003A44(pObject, 0, 0x400, -0xC);
 
@@ -37,13 +37,13 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     pObject->dwUnk_0x28 = 1;
     pObject->dwFlags = 0x20006019;
 
-    SetObjectActionState(pObject, 0xF);
+    SetActorActionState(pObject, 0xF);
 
     pObject->anim.bAnimFrameDelay = 1;
     pObject->pfnTick = TickFighterAttackAnimState_candidate; // contains `Mt19937RandMax` call every enemy turn to determine target
 
     AttachObjectPaletteUnshared(pObject, g_pMonsterGraphicsTable[type].battle.pPalette);
-    SetObjectAnimData(pObject, &g_pMonsterGraphicsTable[type].battle, g_pMonsterAnimFrameTable[type], 0);
+    SetActorAnimData(pObject, &g_pMonsterGraphicsTable[type].battle, g_pMonsterAnimFrameTable[type], 0);
 
     ppAnimCursor = &pObject->anim.pAnimFrameCursor;
     ppBase = &pObject->anim.pAnimFrameBase;
@@ -56,7 +56,7 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     if (slot > 4)
         *ppAnimCursor = *ppBase + 2;
 
-    SetObjectAnimFrame(pObject, **ppAnimCursor);
+    SetActorAnimFrame(pObject, **ppAnimCursor);
 
     // certain flying monsters? Cornish Pixie, Bat, Dragonfly
     if (type == 3 || type == 0x1D || type == 0x1A)
@@ -68,30 +68,30 @@ Object *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 bat
     // fire effect monsters? Salamander, Amazonian Salamander, Peruvian Salamander
     else if ((u8)(type - 0x2D) <= 2)
     {
-        pShadowObject = AllocDefaultObject();
-        pShadowObject->wObjectType = objType;
-        pShadowObject->bUnk_0x7C = 0;
+        pShadowActor = AllocDefaultActor();
+        pShadowActor->wActorType = objType;
+        pShadowActor->bUnk_0x7C = 0;
 
-        sub_08003A44(pShadowObject, 0, 0x400, -0xC);
+        sub_08003A44(pShadowActor, 0, 0x400, -0xC);
 
-        pShadowObject->oam.priority = 1;
-        pShadowObject->bDepthSortBias = -0x40;
-        pShadowObject->dwUnk_0x28 = 1;
-        pShadowObject->dwFlags = 0x6019;
-        pShadowObject->anim.bAnimFrameDelay = 1;
+        pShadowActor->oam.priority = 1;
+        pShadowActor->bDepthSortBias = -0x40;
+        pShadowActor->dwUnk_0x28 = 1;
+        pShadowActor->dwFlags = 0x6019;
+        pShadowActor->anim.bAnimFrameDelay = 1;
 
-        AttachObjectPalette(pShadowObject, g_MonsterShadowGfxRow.pPalette);
-        SetObjectAnimData(pShadowObject, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, 0);
+        AttachObjectPalette(pShadowActor, g_MonsterShadowGfxRow.pPalette);
+        SetActorAnimData(pShadowActor, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, 0);
 
-        pShadowObject->anim.pAnimFrameCursor = pShadowObject->anim.pAnimFrameBase + slotX2 + 2;
+        pShadowActor->anim.pAnimFrameCursor = pShadowActor->anim.pAnimFrameBase + slotX2 + 2;
 
         if (slot > 4)
-            pShadowObject->anim.pAnimFrameCursor = pShadowObject->anim.pAnimFrameBase + 2;
+            pShadowActor->anim.pAnimFrameCursor = pShadowActor->anim.pAnimFrameBase + 2;
 
-        SetObjectAnimFrame(pShadowObject, pShadowObject->anim.pAnimFrameCursor[0]);
+        SetActorAnimFrame(pShadowActor, pShadowActor->anim.pAnimFrameCursor[0]);
 
-        pShadowObject->pOwnerObject = pObject;
-        pObject->pShadowObject = pShadowObject;
+        pShadowActor->pOwnerActor = pObject;
+        pObject->pShadowActor = pShadowActor;
     }
     fighter->bFighterType = Enemy;
     fighter->pObject = pObject;

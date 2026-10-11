@@ -10,7 +10,7 @@ void ExitUnusedHogwartsMapScreen(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     ReleaseMenuCursor(g_pUnusedHogwartsMapCursor);
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     FreeAllParticleEmitters();
     FreeAllParticles();
     ResetPaletteAnimations();

@@ -4,7 +4,7 @@
 #include "gen/graphics/overworld.h"
 #include "overworld/overworld.h"
 
-// Indexed by Object.bFacing; see SetPartyMemberAnim. Facings 5-7 mirror 3-1 with
+// Indexed by Actor.bFacing; see SetPartyMemberAnim. Facings 5-7 mirror 3-1 with
 // oam.hFlip set.
 
 const u8 g_abPartyStandFrames[8] = { 4, 3, 2, 1, 0, 1, 2, 3 };
@@ -192,6 +192,6 @@ const u8 g_abPartyAnim3Anim[22] = {
     ANIM_EVENT(0), ANIM_FRAME(7, 10), ANIM_END,
 };
 
-const ObjectGfxRecord g_UnusedPartyGfx2 = {
+const ActorGfxRecord g_UnusedPartyGfx2 = {
     (void *)gOverworldPlayer019Tiles, (void *)gOverworldPlayer019Frames,
 };

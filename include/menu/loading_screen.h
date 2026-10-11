@@ -10,8 +10,8 @@
 #define LOADING_SCREEN_OPTION_COUNT 3
 
 typedef struct LoadingScreenState {
-    Object *pCursorObject;                              // 0x00
-    Object *apOptionObjects[LOADING_SCREEN_OPTION_COUNT];  // 0x04
+    Actor *pCursorObject;                              // 0x00
+    Actor *apOptionObjects[LOADING_SCREEN_OPTION_COUNT];  // 0x04
     void *pBgTilemap;                                   // 0x10, BG2 panel graphic
     u8 abOptionStage[LOADING_SCREEN_OPTION_COUNT];      // 0x14, story stage each option selects
     u8 bPreviousStage;                                  // 0x17, story stage before the choice

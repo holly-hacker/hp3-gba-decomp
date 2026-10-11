@@ -6,7 +6,7 @@
 const u32 g_dwDebugCharacterSelectBg0Control = 0x1E02;
 const u32 g_dwDebugCharacterSelectBg1Control = 0x1F09;
 
-const ObjectAssetRecord g_DebugCharacterSelectAnimFrames = {
+const ActorAssetRecord g_DebugCharacterSelectAnimFrames = {
     (void *)gDebugMenuCursorTiles, (void *)gDebugMenuCursorFrames, (void *)gDebugMenuCursorPalette, 1,
 };
 

@@ -32,11 +32,11 @@ void UpdateLupinPotionCutscene(void)
         for (i = 0; i < ARRAY_COUNT(g_LupinPotionCutscene.apPanelObject); i++)
         {
             if (g_LupinPotionCutscene.apPanelObject[i] != NULL)
-                SetObjectPosition(g_LupinPotionCutscene.apPanelObject[i], i << 5,
+                SetActorPosition(g_LupinPotionCutscene.apPanelObject[i], i << 5,
                                   g_LupinPotionCutscene.nPanelOffset + 0x9F);
         }
         if (g_LupinPotionCutscene.pPanelObject8 != NULL)
-            SetObjectPosition(g_LupinPotionCutscene.pPanelObject8, 0, g_LupinPotionCutscene.nPanelOffset + 0x9F);
+            SetActorPosition(g_LupinPotionCutscene.pPanelObject8, 0, g_LupinPotionCutscene.nPanelOffset + 0x9F);
         if ((g_wKeysPressed & (KeySelect | KeyStart)) != 0)
         {
             g_GameModeStackContext.dwModeState = 4;
@@ -53,11 +53,11 @@ void UpdateLupinPotionCutscene(void)
         for (i = 0; i < ARRAY_COUNT(g_LupinPotionCutscene.apPanelObject); i++)
         {
             if (g_LupinPotionCutscene.apPanelObject[i] != NULL)
-                SetObjectPosition(g_LupinPotionCutscene.apPanelObject[i], i << 5,
+                SetActorPosition(g_LupinPotionCutscene.apPanelObject[i], i << 5,
                                   g_LupinPotionCutscene.nPanelOffset + 0x9F);
         }
         if (g_LupinPotionCutscene.pPanelObject8 != NULL)
-            SetObjectPosition(g_LupinPotionCutscene.pPanelObject8, 0, g_LupinPotionCutscene.nPanelOffset + 0x9F);
+            SetActorPosition(g_LupinPotionCutscene.pPanelObject8, 0, g_LupinPotionCutscene.nPanelOffset + 0x9F);
         if ((g_wKeysPressed & (KeySelect | KeyStart)) != 0)
         {
             g_GameModeStackContext.dwModeState = 4;

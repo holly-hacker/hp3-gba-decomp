@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 
-// Pixel edges of an object's terrain box (Object.bTerrainBox*) around its integer position.
+// Pixel edges of an object's terrain box (Actor.bTerrainBox*) around its integer position.
 typedef struct TerrainBox {
     s32 left;
     s32 right;
@@ -56,21 +56,21 @@ extern const SlopeLineSegment g_aTileEdgeSegments[4];
 // ROM 0x080660A4 (US): terrain types 2-25, see docs/formats/collision.md.
 extern const SlopeLineSegment g_aSlopeLineSegments[24];
 
-extern void ResolveObjectTerrain(Object *obj);  // 0x0802D704
-extern u32 GetObjectTerrainType(Object *obj, TerrainBox *box);  // 0x0802D868
-extern u32 ApplyTerrainTypeEffect(Object *obj, TerrainBox *box, u32 type);  // 0x0802D8F4
-extern void RespondToTerrain(Object *obj, u32 type);  // 0x0802DA20
-extern u32 TrySlideAlongSlope(Object *obj, u32 type);  // 0x0802DB20
+extern void ResolveObjectTerrain(Actor *obj);  // 0x0802D704
+extern u32 GetObjectTerrainType(Actor *obj, TerrainBox *box);  // 0x0802D868
+extern u32 ApplyTerrainTypeEffect(Actor *obj, TerrainBox *box, u32 type);  // 0x0802D8F4
+extern void RespondToTerrain(Actor *obj, u32 type);  // 0x0802DA20
+extern u32 TrySlideAlongSlope(Actor *obj, u32 type);  // 0x0802DB20
 extern u32 ScanTerrainEdge(u32 direction, TerrainBox *box);  // 0x0802DC3C
-extern u32 NudgeAlongVelocity(Object *obj, PixelVector delta);  // 0x0802DF74
-extern u32 TryNudgeObject(Object *obj, PixelVector delta);  // 0x0802DFB4
+extern u32 NudgeAlongVelocity(Actor *obj, PixelVector delta);  // 0x0802DF74
+extern u32 TryNudgeObject(Actor *obj, PixelVector delta);  // 0x0802DFB4
 extern u32 GetCollisionLayerAtPixel(PixelPoint pixel);  // 0x0802E030
 extern void SetRoomCollisionPattern(u16 x, u16 y, u16 patternId);  // 0x0802DDD4
 extern u16 GetRoomCollisionPattern(u16 x, u16 y);  // 0x0802DE00
-extern void ReverseObjectDirection(Object *obj);  // 0x0802DE28
-extern u8 StartMoveVelocity(Object *obj);  // 0x0802DE68
-extern void GetObjectTerrainBox(Object *obj, TerrainBox *box);  // 0x0802DEE0
+extern void ReverseObjectDirection(Actor *obj);  // 0x0802DE28
+extern u8 StartMoveVelocity(Actor *obj);  // 0x0802DE68
+extern void GetObjectTerrainBox(Actor *obj, TerrainBox *box);  // 0x0802DEE0
 extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
 extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
 
-extern void SnapObjectXToTileGrid(Object *obj);
+extern void SnapObjectXToTileGrid(Actor *obj);

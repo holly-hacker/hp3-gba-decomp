@@ -2,12 +2,12 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_RoomObjUnk8Sprite = {
+const ActorGfxRecord g_RoomObjUnk8Sprite = {
     (void *)gButtonTiles, (void *)gButtonFrames,
 };
 
 // Indexed by the object's character id.
-const ObjectGfxRecord *const g_apRoomObjUnk8AssetRecords[2] = {
+const ActorGfxRecord *const g_apRoomObjUnk8AssetRecords[2] = {
     &g_RoomObjUnk8Sprite,
     &g_RoomObjUnk8Sprite,
 };

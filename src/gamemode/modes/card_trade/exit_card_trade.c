@@ -12,7 +12,7 @@ void ExitCardTrade(void)
     g_pMenuCursorObject = NULL;
     FreeAllParticleEmitters();
     FreeAllParticles();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
 
     if (GetPendingGameMode_candidate() == Connectivity)
         CloseSerialSession();

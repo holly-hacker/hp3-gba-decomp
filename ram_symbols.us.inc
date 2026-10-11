@@ -44,25 +44,25 @@
 .set g_pTimer2DebugPc,        0x030015A0  @ code ptr: IntrMain stores [sp,#0x14] here on a Timer 2 IRQ
                                           @ (saved lr per the BIOS IRQ frame, unverified); read by
                                           @ HandleTimer2Interrupt
-.set g_ActiveObjectListState, 0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/hw/mem.h
+.set g_ActiveActorListState, 0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/hw/mem.h
 
-@ --- Per-tick object queues (see include/hw/mem.h and TickObjectList) ---
-.set g_apOamQueue,             0x030015B8  @ Object *[0x69]: onscreen objects drawn in depth order
+@ --- Per-tick object queues (see include/hw/mem.h and TickActorList) ---
+.set g_apOamQueue,             0x030015B8  @ Actor *[0x69]: onscreen objects drawn in depth order
 .set g_dwOamQueueCount,        0x0300175C
-.set g_apSpriteFrameQueue,     0x03001760  @ Object *[15]: visible objects with sprite cells
+.set g_apSpriteFrameQueue,     0x03001760  @ Actor *[15]: visible objects with sprite cells
 .set g_bSpriteFrameQueueCount, 0x0300179C  @ u8
 
-.set g_dwObjectListActive_candidate, 0x030017A0
-.set g_apCollisionQueue,             0x030017A4  @ Object *[0x69]: objects awaiting the pairwise check
+.set g_dwActorListActive_candidate, 0x030017A0
+.set g_apCollisionQueue,             0x030017A4  @ Actor *[0x69]: objects awaiting the pairwise check
 .set g_dwCollisionQueueCount,        0x03001948
 
-@ --- Object pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
+@ --- Actor pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
 .set SortObjectsByDepthIwram,            0x0300194C  @ IWRAM copy of SortObjectsByDepth
 .set CheckObjectCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckObjectCollisions
-.set g_ObjectPoolState,              0x03001C08  @ ObjectPoolState, 0x1B4 bytes; see include/hw/mem.h
-.set g_pObjectPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
-.set g_dwObjectListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveObjects, never cleared; gates FreeObject's VRAM tile release
-.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitObjectPool; see include/hw/mem.h
+.set g_ActorPoolState,              0x03001C08  @ ActorPoolState, 0x1B4 bytes; see include/hw/mem.h
+.set g_pActorPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
+.set g_dwActorListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveActors, never cleared; gates FreeActor's VRAM tile release
+.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitActorPool; see include/hw/mem.h
 .set g_adwRoomObjUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room object constructors
 
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ u16: bit 0 = the room also has a second object/switch row
@@ -101,13 +101,13 @@
 .set g_apBgTileAnimationBuffers,                 0x030021AC  @ void *[4]: decoded tile buffer of each BG tile animation
 
 @ --- Dialog/UI text engine (US only) ---
-.set g_DebugMenuMainState,            0x030021C0  @ DebugMenuMainState: {Object *pCursorObject; u32 dwSelection}; see include/menu/debug_menu.h
+.set g_DebugMenuMainState,            0x030021C0  @ DebugMenuMainState: {Actor *pCursorObject; u32 dwSelection}; see include/menu/debug_menu.h
 .set g_DebugLevelAndQuestSelectState, 0x030021C8  @ DebugLevelAndQuestSelectState; see include/menu/debug_menu.h
 .set g_DebugMapSelectState,           0x030021E8  @ DebugMapSelectState; see include/menu/debug_menu.h
 .set g_DebugCharacterSelectState,     0x030021F8  @ DebugCharacterSelectState; see include/menu/debug_menu.h
-.set g_DebugPortraitsState,           0x03002210  @ DebugPortraitsState: {Object *pPortraitObject; u32 dwSelection}; see include/menu/debug_menu.h
+.set g_DebugPortraitsState,           0x03002210  @ DebugPortraitsState: {Actor *pPortraitObject; u32 dwSelection}; see include/menu/debug_menu.h
 .set g_DebugSoundTestState,           0x03002218  @ DebugSoundTestState; see include/menu/debug_menu.h
-.set g_DebugCollectorCardsState,      0x03002238  @ DebugCollectorCardsState: {Object *pCardObject; u32 dwSelection}; see include/menu/debug_menu.h
+.set g_DebugCollectorCardsState,      0x03002238  @ DebugCollectorCardsState: {Actor *pCardObject; u32 dwSelection}; see include/menu/debug_menu.h
 
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
 .set g_LoadingScreenState,         0x03002260  @ LoadingScreenState; see include/menu/loading_screen.h
@@ -132,8 +132,8 @@
 @ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 .set g_bSelectedFighterSlot_candidate,     0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
-.set g_apFighterObjects_candidate,         0x03002668  @ Object*[7]; one slot per active BattleFighter
-.set g_pBattleMessageIconObject_candidate, 0x03002684  @ Object *: icon shown alongside ShowBattleMessage's text
+.set g_apFighterObjects_candidate,         0x03002668  @ Actor*[7]; one slot per active BattleFighter
+.set g_pBattleMessageIconObject_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_anFaintedRosterIndices,             0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
 .set g_dwVictoryUnk26E8,                    0x030026E8  @ u32: zeroed by InitializeVictoryScreen; no reader found
@@ -163,7 +163,7 @@
 .set g_dwCreditsLine,         0x030028AC  @ u32: next credits text line to draw
 .set g_dwCreditsTileCursor,   0x030028B0  @ u32: next free credits text tile
 .set g_pLinearCutsceneText,   0x030028B4  @ u8 *: unread remainder of the cutscene's text
-.set g_pLinearCutsceneObject, 0x030028B8  @ Object *; see include/cutscene/linear_cutscene.h
+.set g_pLinearCutsceneObject, 0x030028B8  @ Actor *; see include/cutscene/linear_cutscene.h
 .set g_dwLinearCutsceneIndex, 0x030028BC  @ u32: GameMode - Credits
 
 .set g_pMenuCursorEmitter, 0x030028C0  @ ParticleEmitter *: emitter of the cursor object built by sub_0801D940(4)
@@ -175,7 +175,7 @@
 .set g_pDecompressLzRleIwram,   0x030028D4  @ u8[0x1F8]: IWRAM copy of DecompressLzRle
 .set g_pDecompressGammaLzIwram, 0x03002ACC  @ u8[0x33C]: IWRAM copy of DecompressGammaLz
 
-.set g_pMenuCursorObject,                              0x03002E08  @ Object *: cursor object created by BeginMenuScreen; see include/menu/main_menu.h
+.set g_pMenuCursorObject,                              0x03002E08  @ Actor *: cursor object created by BeginMenuScreen; see include/menu/main_menu.h
 .set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ u32: set by StartMinigame
 .set g_HarryVsDementors,                               0x03002E18  @ HarryVsDementorsState
 .set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/menu/dialog.h
@@ -185,13 +185,13 @@
 .set g_dwDialogTextId,                                 0x03002ED8  @ u32: dialog string id of the line being shown
 .set g_dwDialogTextEntry,                              0x03002EDC  @ u32: first word of the dialog text table entry for g_dwDialogTextId
 .set g_pDialogBoxTilemap,                              0x03002EE0  @ void *: tilemap of the dialog box BG graphic
-.set g_pDialogBoxObject,                               0x03002EE4  @ Object *: dialog box panel sprite
+.set g_pDialogBoxObject,                               0x03002EE4  @ Actor *: dialog box panel sprite
 .set g_dwDialogBoxY,                                   0x03002EE8  @ u32: screen line of the dialog box's top edge, 0x9F hidden .. 0x7B shown
-.set g_pDialogCursorObject,                            0x03002EEC  @ Object *: menu cursor of the dialog box
+.set g_pDialogCursorObject,                            0x03002EEC  @ Actor *: menu cursor of the dialog box
 .set g_dwDialogTextActive,                             0x03002EF0  @ u32: nonzero once the box's text has started
 .set g_dwDialogBoxTileRow,                             0x03002EF4  @ u32: BG1 tile row the box's tilemap is drawn at
-.set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ Object *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
-.set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C  @ Object *
+.set g_pHippogriffFliesIntoAirObject,                  0x03002F18  @ Actor *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
+.set g_pHippogriffFliesIntoAirObject2,                 0x03002F1C  @ Actor *
 .set g_aRoomTileAnimations,                            0x03002F24  @ RoomTileAnimation *: 32 entries, allocated by InitRoomTileAnimationTable
 .set g_dwRoomTileAnimationCount,                       0x03002F28  @ u32: entries in use in g_aRoomTileAnimations
 .set g_aFontDescriptors,                                  0x03002F30  @ FontDescriptor[12][2], filled by LoadFontDescriptor
@@ -199,7 +199,7 @@
 .set gSavedTextTarget,                                 0x03003140  @ TextRenderState: target fields saved by SaveTextTarget
 .set sTextMacroTable,                                  0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by InitTextMacroTable) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
-.set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickObject clears; see src/actor/tick_object.c
+.set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickActor clears; see src/actor/tick_actor.c
 .set g_JoybusLinkState,          0x03003238  @ JoybusLinkState: GameCube link (JOYBUS) session state, see include/gamecube.h
 .set g_OwlCareKitScreen,        0x03003270  @ OwlCareKitScreenState: live state of the Owl Care Kit care screen, see include/minigame/owlcare.h
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
@@ -207,18 +207,18 @@
 @ --- Overworld object tracking (see include/overworld/overworld.h) ---
 .set g_nCameraYOffset,               0x0300337C  @ s8: camera Y offset in pixels; 18 after InitRoomBgState_candidate
 .set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
-.set g_pPlayerObject,                    0x03003380  @ Object *: the player's overworld object
-.set g_pFollowerObject0,                 0x03003384  @ Object *: first party follower, NULL while empty
-.set g_pFollowerObject1,                 0x03003388  @ Object *: second party follower, NULL while empty
+.set g_pPlayerObject,                    0x03003380  @ Actor *: the player's overworld object
+.set g_pFollowerObject0,                 0x03003384  @ Actor *: first party follower, NULL while empty
+.set g_pFollowerObject1,                 0x03003388  @ Actor *: second party follower, NULL while empty
 .set g_bPartyCharId0,                    0x0300338C  @ u8: character id of the party leader
 .set g_bPartyCharId1,                    0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2,                    0x0300338E  @ u8: character id of the second follower
 .set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into the field spell table at 0x08060BAC; see include/overworld/overworld.h
-.set g_pFieldSpellNameObject,            0x030033A0  @ Object *: selected field spell name text
-.set g_pMapNameTextObject,               0x030033A4  @ Object *: room name text of ShowMapNamePopup
+.set g_pFieldSpellNameObject,            0x030033A0  @ Actor *: selected field spell name text
+.set g_pMapNameTextObject,               0x030033A4  @ Actor *: room name text of ShowMapNamePopup
 .set g_dwUnk030033A8,                    0x030033A8  @ u32: zeroed by ResetPartyState and sub_080248E8; no reader found
-.set g_pFieldSpellPortraitObject,        0x030033AC  @ Object *: face portrait of the selected field spell's character
-.set g_pMapNamePopupObject,             0x030033B0  @ Object *: 240x16 bar sprite behind the room name text
+.set g_pFieldSpellPortraitObject,        0x030033AC  @ Actor *: face portrait of the selected field spell's character
+.set g_pMapNamePopupObject,             0x030033B0  @ Actor *: 240x16 bar sprite behind the room name text
 
 .set gDialogTextBlobBase,    0x030033C0  @ active language blob's base pointer (0 = none installed)
 .set gDialogTextOffsetTable, 0x030033C4  @ pointer to the active blob's per-string-ID u32[] offset table
@@ -283,9 +283,9 @@
 .set g_bOamDmaHalfToggle,                    0x030037AC
 .set g_abItemQuantities,                     0x030037B0  @ u8[132]: owned count per item id, see docs/formats/save.md
 .set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32; see include/menu/unused_hogwarts_map_screen.h
-.set g_pUnusedHogwartsMapCursor,             0x03003A54  @ Object *
+.set g_pUnusedHogwartsMapCursor,             0x03003A54  @ Actor *
 .set g_pUnusedHogwartsMapBg1Tilemap,         0x03003A58  @ void *
-.set g_apUnusedHogwartsMapObjects,           0x03003A60  @ Object *[9]
+.set g_apUnusedHogwartsMapObjects,           0x03003A60  @ Actor *[9]
 .set g_LupinPotionCutscene,                  0x03003A84  @ LupinPotionCutsceneState
 .set g_aLupinPotionBg2Scroll,                0x03003B3C  @ s32[2]
 .set g_dwGameModeFlags,                      0x03003B44  @ u32: broad flags word read/written across
@@ -304,7 +304,7 @@
 .set g_dwPauseMenuCooldown,                  0x03003B6C  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003B70  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003B74  @ u8[20]: 5 x 4-byte touched-monster records
-.set g_pTouchedWanderingMonster,             0x03003B88  @ Object *: armed wandering-monster object
+.set g_pTouchedWanderingMonster,             0x03003B88  @ Actor *: armed wandering-monster object
 .set g_abIwramDivideCode,                   0x03003B90  @ u8[0x340]: IWRAM copy of the ARM divide routines (InstallIwramDivideRoutines)
 .set g_pfnIwramDivideSignedQuotient,        0x03003ED0  @ IWRAM entry of DivideSignedQuotient
 .set g_pfnIwramDivideSignedRemainder,       0x03003ED4  @ IWRAM entry of DivideSignedRemainder
@@ -316,7 +316,7 @@
 .set g_dwPendingGameMode,                    0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
 .set g_PrevGameModeStackContext,             0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
-.set g_apMenuIconObjects, 0x03003F68  @ Object *[]: objects registered by index via RegisterMenuIconObject
+.set g_apMenuIconObjects, 0x03003F68  @ Actor *[]: objects registered by index via RegisterMenuIconObject
 .set g_dwSelectedMinigame,                   0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
 .set g_abBgPriority,                         0x03003F8C  @ u8[]; [4] == 0x03003F90
 .set g_dwRoomCollisionPatternCount,           0x03003FB8  @ u32: pattern count from the collision tilemap header
@@ -476,7 +476,7 @@
 
 @ --- Dialog/UI text engine (US only) ---
 .set g_nMainMenuTextCursor,     0x03005DB0  @ s32: text tile cursor returned by the main menu's copyright text; see include/title.h
-.set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot}; see include/title.h
+.set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Actor *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot}; see include/title.h
 .set g_bSaveSlotScreenResult,    0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
 .set g_OptionsState,             0x03005DD0  @ OptionsState: 8 object pointers, then music, sound and gamma settings; see include/menu/options.h
 .set g_dwOptionsReturnMode,      0x03005E04  @ u32: GameMode that opened the options screen

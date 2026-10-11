@@ -25,10 +25,10 @@ void InitializeHarryVsDementorsMinigame(void)
     g_HarryVsDementors.dwUnk40 = -1;
     g_HarryVsDementors.bUnk54 = 0;
 
-    g_HarryVsDementors.pObject18 = SpawnObject(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsObject18Palette);
-    g_HarryVsDementors.pObject18->dwFlags &= ~ObjectFlagVisible;
-    g_HarryVsDementors.pObject1C = SpawnObject(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsObject1CPalette);
-    g_HarryVsDementors.pObject1C->dwFlags &= ~ObjectFlagVisible;
+    g_HarryVsDementors.pObject18 = SpawnActor(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsObject18Palette);
+    g_HarryVsDementors.pObject18->dwFlags &= ~ActorFlagVisible;
+    g_HarryVsDementors.pObject1C = SpawnActor(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsObject1CPalette);
+    g_HarryVsDementors.pObject1C->dwFlags &= ~ActorFlagVisible;
 
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);

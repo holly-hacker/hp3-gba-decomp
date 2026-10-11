@@ -4,15 +4,15 @@
 
 // Room object constructor for tile objType 12, a platform that lifts the party.
 // See docs/formats/rooms.md.
-Object *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow)
+Actor *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnkC *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(RoomObjectType_UnkC);
+    Actor *pObj = AllocActorOfType(RoomObjectType_UnkC);
     u32 i;
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x1D;
-    SetObjectActionSubState(pObj, 0xA);
+    SetActorActionSubState(pObj, 0xA);
     pObj->anim.bAnimFrameDelay = 1;
     pObj->pfnTick = sub_0803B71C;
     pObj->apfnCollisionCallback[0] = sub_0803BA18;
@@ -22,9 +22,9 @@ Object *SpawnRaisingPlatformObject(u8 bColumn, u8 bRow)
     SetObjectPendingPalette(pObj, gRaisingPlatformPalette);
 
     if (ROOM_OBJECT_WORD_STATE(pObj)->n60 == 0)
-        SetObjectAnimData(pObj, &g_RoomRaisingPlatformSprite, (void *)g_abRoomRaisingPlatformAnimData, 2);
+        SetActorAnimData(pObj, &g_RoomRaisingPlatformSprite, (void *)g_abRoomRaisingPlatformAnimData, 2);
     else
-        SetObjectAnimData(pObj, &g_RoomRaisingPlatformSprite, (void *)g_abRoomRaisingPlatformAnimData, 0);
+        SetActorAnimData(pObj, &g_RoomRaisingPlatformSprite, (void *)g_abRoomRaisingPlatformAnimData, 0);
 
     for (i = 0; i < ARRAY_COUNT(g_adwRoomObjUnkACState); i++)
         g_adwRoomObjUnkACState[i] = 0;

@@ -164,14 +164,14 @@ layout are documented in [`rooms.md`](rooms.md) -- `ParseRoomResourceBlob_candid
 etc.) This is the "chests spawn" / per-room switch-state half of the
 original task; it isn't a field of this 124-byte table.
 
-## Object behavior scripts per room
+## Actor behavior scripts per room
 
 Per-room scripted behavior (quest triggers, NPC scripts) runs through
 the generic object bytecode VM documented in
 [`battle_scripts.md`](battle_scripts.md) -- `InterpretObjectScript`
-(`0x08018CC0`) driven by each `Object`'s `pfnTick`. Nothing in this
+(`0x08018CC0`) driven by each `Actor`'s `pfnTick`. Nothing in this
 table links a script pointer directly into a room record; script
-assignment is per-`Object` (placed by room setup code), not a per-room
+assignment is per-`Actor` (placed by room setup code), not a per-room
 table field. See [`rooms.md`](rooms.md) for what is and isn't confirmed
 about how room content is placed.
 

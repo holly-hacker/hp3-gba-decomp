@@ -3,7 +3,7 @@
 #include "gen/graphics/battle.h"
 
 // Battle effect sprites used by object scripts (docs/formats/battle_scripts.md).
-const ObjectAssetRecord g_aEffectObjectAssets[17] = {
+const ActorAssetRecord g_aEffectObjectAssets[17] = {
     { (void *)gBattleEffect005Tiles, (void *)gBattleEffect005Frames, (void *)gBattleEffect005Palette, 3 }, // 0
     { (void *)gBattleEffect006Tiles, (void *)gBattleEffect006Frames, (void *)gBattleEffect005Palette, 3 }, // 1
     { (void *)gBattleEffect007Tiles, (void *)gBattleEffect007Frames, (void *)gBattleEffect005Palette, 3 }, // 2
@@ -32,7 +32,7 @@ void *const g_apEffectPalettes[5] = {
 };
 
 // SetObjectAnim's animation table.
-const ObjectAssetRecord g_aEffectAnimAssets[65] = {
+const ActorAssetRecord g_aEffectAnimAssets[65] = {
     { (void *)gBattleEffect026Tiles, (void *)gBattleEffect026Frames, (void *)gBattleEffect026Palette, 5 }, // 0
     { (void *)gBattleEffect027Tiles, (void *)gBattleEffect027Frames, (void *)gBattleEffect027Palette, 5 }, // 1
     { (void *)gBattleEffect028Tiles, (void *)gBattleEffect028Frames, (void *)gBattleEffect028Palette, 5 }, // 2
@@ -101,7 +101,7 @@ const ObjectAssetRecord g_aEffectAnimAssets[65] = {
 };
 
 // Animation table for script opcodes 0x03 and 0x04.
-const ObjectAssetRecord g_aEffectAnimAssets2[38] = {
+const ActorAssetRecord g_aEffectAnimAssets2[38] = {
     { (void *)gBattleEffect079Tiles, (void *)gBattleEffect079Frames, (void *)gBattleEffect079Palette, 5 }, // 0
     { (void *)gBattleEffect080Tiles, (void *)gBattleEffect080Frames, (void *)gBattleEffect080Palette, 5 }, // 1
     { (void *)gBattleEffect081Tiles, (void *)gBattleEffect081Frames, (void *)gBattleEffect081Palette, 5 }, // 2

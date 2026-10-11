@@ -10,7 +10,7 @@ static inline u32 IsBlockingTerrainType(u32 type)
 // Nudges an object's previous position by delta quarter pixels along or against its
 // velocity, whichever the dot product favors. Returns nonzero if the nudge was refused (or the
 // velocity is perpendicular to it).
-u32 NudgeAlongVelocity(Object *obj, PixelVector delta)
+u32 NudgeAlongVelocity(Actor *obj, PixelVector delta)
 {
     PixelVector nudge;
     s32 dot = obj->vel.x * delta.x + obj->vel.y * delta.y;
@@ -33,7 +33,7 @@ u32 NudgeAlongVelocity(Object *obj, PixelVector delta)
 
 // Adds (dx, dy) to the object's previous position and checks the terrain there. Returns nonzero
 // and undoes the move if the terrain blocks it.
-u32 TryNudgeObject(Object *obj, PixelVector delta)
+u32 TryNudgeObject(Actor *obj, PixelVector delta)
 {
     TerrainBox box;
     FixedPoint saved = obj->posPrev;
@@ -42,7 +42,7 @@ u32 TryNudgeObject(Object *obj, PixelVector delta)
     obj->posPrev.x += delta.x;
     obj->posPrev.y += delta.y;
     type = GetObjectTerrainType(obj, &box);
-    if (obj->wObjectType == 0xF && IsBlockingTerrainType(type) && (s32)obj->vel.y <= 0)
+    if (obj->wActorType == 0xF && IsBlockingTerrainType(type) && (s32)obj->vel.y <= 0)
     {
         obj->posPrev.y += 0x180000;
         type = GetObjectTerrainType(obj, &box);

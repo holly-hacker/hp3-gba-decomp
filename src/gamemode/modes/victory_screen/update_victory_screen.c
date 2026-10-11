@@ -74,7 +74,7 @@ void UpdateVictoryScreen(void)
         {
             ClearBgTilemap(1);
             ClearBgTilemap(2);
-            FreeAllObjects(&g_ActiveObjectListState.pHead);
+            FreeAllActors(&g_ActiveActorListState.pHead);
             sub_0801456C();
             SetAlphaBlendTargets(0x11, 8);
             SetAlphaBlendCoefficients(0, 0x10);

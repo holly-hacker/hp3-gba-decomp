@@ -51,7 +51,7 @@ groups:
 
   - name: ObjectSprites
     runs:
-      # Object and character sprites: g_aObjectTypeAssets and other object records
+      # Actor and character sprites: g_aObjectTypeAssets and other object records
       - kind: image-bank
         count: 107
         names:

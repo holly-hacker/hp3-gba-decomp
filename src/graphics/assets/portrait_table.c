@@ -3,7 +3,7 @@
 
 // 72 portrait records; repeated entries share the same image resource.
 // The generated symbols track component positions within the portrait bank.
-const ObjectAssetRecord g_apPortraitTable[72] = {
+const ActorAssetRecord g_apPortraitTable[72] = {
     { (void *)gPortrait001Tiles, (void *)gPortrait001Frames, (void *)gPortrait001Palette, 0 }, // 0
     { (void *)gPortrait002Tiles, (void *)gPortrait002Frames, (void *)gPortrait002Palette, 0 }, // 1
     { (void *)gPortrait003Tiles, (void *)gPortrait003Frames, (void *)gPortrait003Palette, 0 }, // 2

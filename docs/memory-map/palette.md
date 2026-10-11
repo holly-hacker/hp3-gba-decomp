@@ -67,11 +67,11 @@ else bank 15) and queues colors 1-15 for upload; `AttachObjectPaletteUnshared`
 always allocates and marks the slot unshared. Screens that load a bank
 directly exclude it with `ReserveObjPaletteSlot`.
 
-While an object is offscreen `TickObject` calls `ReleaseObjectPalette`,
+While an object is offscreen `TickActor` calls `ReleaseObjectPalette`,
 which saves the palette and its unshared flag in `pPendingPalette` and drops
 the reference; back onscreen, `BindObjectPendingPalette` attaches it again.
 Overworld objects (room objects, the player, NPCs, wandering monsters) set
 their palette this way with `SetObjectPendingPalette`, so they take a bank only
-while visible. Objects from `SpawnObject` and list menus attach a palette at
-once and set `ObjectFlagKeepPaletteSlot` to hold it while offscreen. `ObjectFlagKeepPaletteSlot` skips both
+while visible. Objects from `SpawnActor` and list menus attach a palette at
+once and set `ActorFlagKeepPaletteSlot` to hold it while offscreen. `ActorFlagKeepPaletteSlot` skips both
 steps.

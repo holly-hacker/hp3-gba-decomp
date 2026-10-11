@@ -5,7 +5,7 @@
 #include "vram.h"
 
 // Decompresses an object's frame tiles into its allocation in OBJ VRAM.
-void LoadObjTile(Object *obj, void *tileGfx)
+void LoadObjTile(Actor *obj, void *tileGfx)
 {
     DecompressResourceVram(tileGfx, OBJ_VRAM_TILES + obj->wVramTileAllocId * 32);
 }

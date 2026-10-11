@@ -10,7 +10,7 @@ void ExitConfirmTradeScreen(void)
     ClearBgTilemap(2);
     ReleaseMenuCursor(g_pMenuCursorObject);
     g_pMenuCursorObject = NULL;
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     FreeAllParticleEmitters();
     FreeAllParticles();
     ResetPaletteAnimations();

@@ -10,18 +10,18 @@ typedef struct SetTileObjectAndLinkedVisibleRecord {
 
 void RoomScriptOpSetTileObjectAndLinkedVisible(SetTileObjectAndLinkedVisibleRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pRecord->bVisible != 0)
     {
-        pObject->dwFlags |= ObjectFlagVisible;
-        if (pObject->pLinkedObject_candidate != NULL)
-            pObject->pLinkedObject_candidate->dwFlags |= ObjectFlagVisible;
+        pObject->dwFlags |= ActorFlagVisible;
+        if (pObject->pLinkedActor_candidate != NULL)
+            pObject->pLinkedActor_candidate->dwFlags |= ActorFlagVisible;
     }
     else
     {
-        pObject->dwFlags &= ~ObjectFlagVisible;
-        if (pObject->pLinkedObject_candidate != NULL)
-            pObject->pLinkedObject_candidate->dwFlags &= ~ObjectFlagVisible;
+        pObject->dwFlags &= ~ActorFlagVisible;
+        if (pObject->pLinkedActor_candidate != NULL)
+            pObject->pLinkedActor_candidate->dwFlags &= ~ActorFlagVisible;
     }
 }

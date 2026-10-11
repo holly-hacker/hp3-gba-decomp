@@ -75,7 +75,7 @@ void ExitOverworldScreen(void)
     FreeAllParticles();
     UnreserveObjPaletteSlot(1);
     UnreserveObjPaletteSlot(2);
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     ResetPaletteAnimations();
     sub_08007AA8(0);
     sub_080203CC();

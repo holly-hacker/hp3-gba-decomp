@@ -10,9 +10,9 @@ typedef struct SetTileObjectFacingRecord {
 
 void RoomScriptOpSetTileObjectFacing(SetTileObjectFacingRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
-    SetObjectActionState(pObject, 3);
+    SetActorActionState(pObject, 3);
     if (pObject->dwFlags & 0x100000)
         pObject->bFacing = pRecord->bFacing >> 1;
     else

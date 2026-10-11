@@ -9,7 +9,7 @@ const u32 g_dwFolioUniversitasBg0Control = 0x1D05;
 
 #define OBJECT_GFX(name) { (void *)g##name##Tiles, (void *)g##name##Frames }
 
-const ObjectGfxRecord g_aFolioUniversitasObjectGfx[6] = {
+const ActorGfxRecord g_aFolioUniversitasObjectGfx[6] = {
     OBJECT_GFX(FolioUniversitasCursor),
     OBJECT_GFX(ButtonPrompts),
     OBJECT_GFX(ObjectSprite030),

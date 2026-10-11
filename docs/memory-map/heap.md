@@ -55,22 +55,22 @@ by flag changes:
   `pFreeListHeadSlot` — a `goto`-flattened loop weighs every reference
   as depth 1 and loses that tie.
 
-## Object pool — STRUCTURAL MATCH
+## Actor pool — STRUCTURAL MATCH
 
-`InitObjectPool` (matched, `src/actor/init_object_pool.c`) carves a second,
+`InitActorPool` (matched, `src/actor/init_actor_pool.c`) carves a second,
 fixed-size-slot pool out of the heap:
 
-- `g_ObjectPoolState.pBuffer`/`.pFreeListHead` are adjacent words
-  (`0x03001C08`/`0x03001C0C`, modeled as one `ObjectPoolState` struct in
+- `g_ActorPoolState.pBuffer`/`.pFreeListHead` are adjacent words
+  (`0x03001C08`/`0x03001C0C`, modeled as one `ActorPoolState` struct in
   `include/hw/mem.h` since the real code reaches the second through the
   first at `+4`) — a 0x7968-byte `AllocZeroed`'d buffer (0x69 objects *
   0x128-byte stride), carved into a free list by `BuildFreeList`.
-- `g_pObjectPoolAuxBuffer` (`0x03001DBC`) — a second, 0x104-byte
-  `AllocZeroed`'d buffer; `InitObjectPool`'s only write to it. Five
-  `ObjectPoolAuxRecord`s of 0x34 bytes, indexed by `Object.bObjectPoolAuxSlot`:
+- `g_pActorPoolAuxBuffer` (`0x03001DBC`) — a second, 0x104-byte
+  `AllocZeroed`'d buffer; `InitActorPool`'s only write to it. Five
+  `ActorPoolAuxRecord`s of 0x34 bytes, indexed by `Actor.bActorPoolAuxSlot`:
   `awTileAllocIds[12]` at `+8` and `abRefCounts[20]` at `+0x20`. Objects whose
   `bDrawFlags & 3` is nonzero share VRAM tiles through a record;
-  `ReleaseObjectOffscreenVramTiles` (matched, `src/actor/`) decrements the
+  `ReleaseActorOffscreenVramTiles` (matched, `src/actor/`) decrements the
   refcount and calls `FreeObjectVramTileAllocation` (`0x08045514`) when it
   reaches 0. Objects with `bDrawFlags & 3 == 0` free their own allocation and
   the variant slot's (when bit `0x40` is set) directly. Record fields beyond
@@ -79,21 +79,21 @@ fixed-size-slot pool out of the heap:
   `0x03001A10`) — `SortObjectsByDepth`/
   `CheckObjectCollisions` relocated into IWRAM via
   `bios_CPUSet`, the standard GBA hot-loop-in-IWRAM pattern.
-- `g_dwObjectListActive_candidate` (`0x030017A0`) — set to 1 by
-  `InitObjectPool`, also written by `FUN_08001d90`; read by
-  `TickObjectList`.
-- `ObjectPoolState` continues past the two pointers: `+0x08` is the count
+- `g_dwActorListActive_candidate` (`0x030017A0`) — set to 1 by
+  `InitActorPool`, also written by `FUN_08001d90`; read by
+  `TickActorList`.
+- `ActorPoolState` continues past the two pointers: `+0x08` is the count
   byte and `+0x0C` the 0x69-entry queue of objects whose
-  `UpdateObjectOamCells` result was 2, drained by
-  `CommitQueuedObjectTileUpdates` on vblanks that swap the OAM buffers;
-  `+0x1B0` (`0x03001DB8`) is a byte enabling `TickObjectList`'s extra OAM pass.
+  `UpdateActorOamCells` result was 2, drained by
+  `CommitQueuedActorTileUpdates` on vblanks that swap the OAM buffers;
+  `+0x1B0` (`0x03001DB8`) is a byte enabling `TickActorList`'s extra OAM pass.
   Its low two bits set the OAM priority of the pass's copies, which
-  `WriteObjectOamCells` mirrors vertically and hides on alternate vblanks
-  (`SetExtraOamPassPriority`, unused). `ClearObjectPoolAuxBuffer` (unused)
-  zeroes `g_pObjectPoolAuxBuffer`.
-  The queue is a struct member: `TickObjectList` (matched,
-  `src/actor/tick_object_list.c`) indexes it through the struct.
-- `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. `WriteObjectOamCells`
+  `WriteActorOamCells` mirrors vertically and hides on alternate vblanks
+  (`SetExtraOamPassPriority`, unused). `ClearActorPoolAuxBuffer` (unused)
+  zeroes `g_pActorPoolAuxBuffer`.
+  The queue is a struct member: `TickActorList` (matched,
+  `src/actor/tick_actor_list.c`) indexes it through the struct.
+- `g_dwUnk03001DC4` — zeroed by `InitActorPool`. `WriteActorOamCells`
   adds it to the magnitude of a 16.16 scaled cell offset before shifting
   out the fraction, a rounding bias. No other literal reference exists in
   US code, so it is presumably always 0; not enough evidence for a real
@@ -101,22 +101,22 @@ fixed-size-slot pool out of the heap:
 
 ## Per-tick object queues — PROVEN
 
-`TickObjectList(list, mode)` (US/JP `0x08000918`, matched) resets these
-counts, runs `TickObject` over the list (which fills the queues), then drains
+`TickActorList(list, mode)` (US/JP `0x08000918`, matched) resets these
+counts, runs `TickActor` over the list (which fills the queues), then drains
 them. `mode == 1` is the full pass that also updates OAM.
 
 | Queue | Array | Count | Drained by |
 | --- | --- | --- | --- |
-| OAM (depth-sorted) | `g_apOamQueue` `0x030015B8`[0x69] | u32 `0x0300175C` | `SortObjectsByDepth` (mode 1, `g_dwObjectListActive_candidate` set, count > 1), then `UpdateObjectSpriteFrame` + `UpdateObjectOamCells` per object |
+| OAM (depth-sorted) | `g_apOamQueue` `0x030015B8`[0x69] | u32 `0x0300175C` | `SortObjectsByDepth` (mode 1, `g_dwActorListActive_candidate` set, count > 1), then `UpdateActorSpriteFrame` + `UpdateActorOamCells` per object |
 | Sprite frame | `g_apSpriteFrameQueue` `0x03001760`[15] | u8 `0x0300179C` | same per-object updates, walked tail to head before the OAM queue |
 | Collision | `g_apCollisionQueue` `0x030017A4`[0x69] | u32 `0x03001948` | `CheckObjectCollisions(count, array)`, active list only, skipped when game-mode flag `0x800` is set |
 
-Before draining the sorted OAM queue, `TickObjectList` buckets the live particles by OAM
+Before draining the sorted OAM queue, `TickActorList` buckets the live particles by OAM
 priority (`BucketParticlesByPriority`). While draining it, it calls `TickParticleLayer(n)`
-for each draw layer `n` (`Object.oam.priority`) the sort has passed, then for the
+for each draw layer `n` (`Actor.oam.priority`) the sort has passed, then for the
 remaining layers up to 3, so particles are queued among the objects of their priority
 (see [`particles.md`](particles.md)). Mode 1 ends with `CommitObjAffineMatrices`. It
-returns 1 if any queue-drain `UpdateObjectOamCells` call returned nonzero.
+returns 1 if any queue-drain `UpdateActorOamCells` call returned nonzero.
 
 ## Generic intrusive list / active-object list — PROVEN
 
@@ -142,11 +142,11 @@ object list, also uses. All four matched in `src/mem/`.
   *AllocObjectFromFreeList(ListNode **freeListHead, ListNode
   **activeListHead, uint size)`. Pops a node off `freeListHead`, zeroes
   it, pushes it onto `activeListHead`, returns it (`NULL` if the free
-  list was empty). Called by `AllocDefaultObject`/`SpawnObject` with `&g_ObjectPoolState.pFreeListHead` and
-  `&g_ActiveObjectListState.pHead` — the real "allocate an object" entry point,
-  one level above `AllocObjectOfType`/`AllocDefaultObject`.
-- `g_ActiveObjectListState` (`0x030015B0`) — `pHead` is the head of the
-  active-object list objects join via `AllocObjectFromFreeList`; `TickObjectList`
+  list was empty). Called by `AllocDefaultActor`/`SpawnActor` with `&g_ActorPoolState.pFreeListHead` and
+  `&g_ActiveActorListState.pHead` — the real "allocate an object" entry point,
+  one level above `AllocActorOfType`/`AllocDefaultActor`.
+- `g_ActiveActorListState` (`0x030015B0`) — `pHead` is the head of the
+  active-object list objects join via `AllocObjectFromFreeList`; `TickActorList`
   walks `pUnk4` (`+4`) backwards via `pPrev`, so it is likely the tail.
 
 ## `SortObjectsByDepth` / `CheckObjectCollisions` — ARM-mode
@@ -158,7 +158,7 @@ Both are **confirmed ARM-mode** by disassembly (`arm_func` seeds in
 `0x08005EE8`-`0x08006508` span, alongside two other unnamed ARM/Thumb
 functions in between that aren't part of this pair). Neither is reachable
 via `bl` anywhere in the ROM -- they're only ever taken by address
-(`InitObjectPool` passes both to `bios_CPUSet` to relocate into IWRAM),
+(`InitActorPool` passes both to `bios_CPUSet` to relocate into IWRAM),
 which is why `gbadisasm`'s branch-following never found their boundaries
 on its own; they needed explicit seeding.
 
@@ -169,9 +169,9 @@ pointers. **PROVEN** by decompile: the key is `(oam.priority << 24)`
 then descending screen Y.
 
 `CheckObjectCollisions` does the per-frame pairwise collision pass.
-**PROVEN** by decompile: each object has two `ObjectCollisionBox` slots
-(`Object.aCollisionBoxes`, `include/actor.h`) and a matching 2-entry
-callback array (`Object.apfnCollisionCallback`). On AABB overlap, gated
+**PROVEN** by decompile: each object has two `ActorCollisionBox` slots
+(`Actor.aCollisionBoxes`, `include/actor.h`) and a matching 2-entry
+callback array (`Actor.apfnCollisionCallback`). On AABB overlap, gated
 on `g_GameModeStackContext.dwCurrentGameMode == Overworld`, it calls
 each object's callback for the overlapping box slot with the other
 object as the argument.

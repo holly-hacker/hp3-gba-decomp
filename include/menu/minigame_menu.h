@@ -25,4 +25,4 @@ extern void BeginMinigameSwitchFade_candidate(void);
 extern u32 TickMinigameSwitchFadeOut_candidate(void);
 extern void SwapMinigameSelection_candidate(void);
 extern void TickMinigameSwitchFadeIn_candidate(void);
-extern void SetObjectMoveTargetWithDuration_candidate(Object *pObject, s32 x, s32 y, s32 duration);
+extern void SetActorMoveTargetWithDuration_candidate(Actor *pObject, s32 x, s32 y, s32 duration);

@@ -621,7 +621,7 @@ def encode_party_member(w: SaveWriter, m: dict):
 # *(short*)(obj+8)) and 0x0802AB34/0x0802AE64 (restore, respawn each
 # tile's default object via 0x08005B70 then overlay these fields). Most
 # fields copy a byte/word/dword straight from a fixed offset of the live
-# `Object` struct (docs/formats/battle_scripts.md); ones with no
+# `Actor` struct (docs/formats/battle_scripts.md); ones with no
 # identified meaning keep that struct's own offset in their name
 # (`bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing
 # `bUnk_0x0F`-style convention for unnamed fields. A record's leftover,
@@ -635,20 +635,20 @@ def encode_party_member(w: SaveWriter, m: dict):
 
 SPEC_DEFAULT_KIND = [
     # kind: the fallback/default case (any kind not handled below). The
-    # richest record -- full Object state, plus 3 linked sub-objects'
+    # richest record -- full Actor state, plus 3 linked sub-objects'
     # tile positions (captured but never restored -- see docs).
-    ("dwObjectFlags", 0x00, "I"),   # Object+0xc, capture masks off bit 0x00200000
+    ("dwObjectFlags", 0x00, "I"),   # Actor+0xc, capture masks off bit 0x00200000
     ("dwUnk_0x28", 0x04, "I"),
     ("dwUnk_0x80", 0x08, "I"),
     ("wUnk_0x86", 0x0C, "H"),
-    ("wWaitTarget_0x8a", 0x0E, "H"),  # Object+0x8a, the WaitFrames/WaitForCounter target (battle_scripts.md)
-    ("bSubObjectATileX", 0x10, "B"),  # tile position of Object+0xa0's linked object -- capture-only, never restored
+    ("wWaitTarget_0x8a", 0x0E, "H"),  # Actor+0x8a, the WaitFrames/WaitForCounter target (battle_scripts.md)
+    ("bSubObjectATileX", 0x10, "B"),  # tile position of Actor+0xa0's linked object -- capture-only, never restored
     ("bSubObjectATileY", 0x11, "B"),
-    ("bSubObjectBTileX", 0x12, "B"),  # Object+0xa4's linked object -- capture-only
+    ("bSubObjectBTileX", 0x12, "B"),  # Actor+0xa4's linked object -- capture-only
     ("bSubObjectBTileY", 0x13, "B"),
-    ("bSubObjectCTileX", 0x14, "B"),  # Object+0xa8's linked object -- capture-only
+    ("bSubObjectCTileX", 0x14, "B"),  # Actor+0xa8's linked object -- capture-only
     ("bSubObjectCTileY", 0x15, "B"),
-    ("bFacing", 0x16, "B"),          # Object+0x12
+    ("bFacing", 0x16, "B"),          # Actor+0x12
     ("bUnk_0x8d", 0x17, "B"),
     ("bUnk_0x8f", 0x18, "B"),
     ("bUnk_0x8c", 0x19, "B"),
@@ -667,10 +667,10 @@ SPEC_DEFAULT_KIND = [
     ("dwUnk_0x70", 0x50, "I"),
     ("dwUnk_0x74", 0x54, "I"),
     ("dwUnk_0x78", 0x58, "I"),
-    ("wUnk_0x4cHi", 0x5C, "H"),      # Object+0x4c's high 16 bits only (integer/tile part)
-    ("wUnk_0x50Hi", 0x5E, "H"),      # Object+0x50's high 16 bits only
-    ("wPosXTile", 0x60, "H"),        # Object+0x2c's high 16 bits -- tile-level X, sub-tile part not saved
-    ("wPosYTile", 0x62, "H"),        # Object+0x30's high 16 bits
+    ("wUnk_0x4cHi", 0x5C, "H"),      # Actor+0x4c's high 16 bits only (integer/tile part)
+    ("wUnk_0x50Hi", 0x5E, "H"),      # Actor+0x50's high 16 bits only
+    ("wPosXTile", 0x60, "H"),        # Actor+0x2c's high 16 bits -- tile-level X, sub-tile part not saved
+    ("wPosYTile", 0x62, "H"),        # Actor+0x30's high 16 bits
     ("dwUnk_0x3c", 0x64, "I"),
     ("dwUnk_0x40", 0x68, "I"),
 ]
@@ -679,7 +679,7 @@ SPEC_KIND_4_OR_7 = [
     ("bTileX", 0x0, "B"),
     ("bTileY", 0x1, "B"),
     ("bUnk_0x8d", 0x3, "B"),
-    ("dwObjectFlags", 0x4, "I"),     # Object+0xc, captured unmasked (unlike the other tables)
+    ("dwObjectFlags", 0x4, "I"),     # Actor+0xc, captured unmasked (unlike the other tables)
     ("dwUnk_0x80", 0x8, "I"),
 ]
 
@@ -691,14 +691,14 @@ SPEC_KIND_5 = [
     ("bUnk_0x67", 0x4, "B"),
     ("bUnk_0x60", 0x5, "B"),
     ("wUnk_0x86", 0x6, "H"),
-    ("dwObjectFlags", 0x8, "I"),     # Object+0xc, masked off bit 0x00200000
+    ("dwObjectFlags", 0x8, "I"),     # Actor+0xc, masked off bit 0x00200000
     ("dwUnk_0xd8", 0xC, "I"),
     ("dwUnk_0xdc", 0x10, "I"),
     ("dwUnk_0xe0", 0x14, "I"),
     ("dwUnk_0xe4", 0x18, "I"),
     ("dwUnk_0xe8", 0x1C, "I"),
-    ("wPosXTile", 0x20, "H"),        # Object+0x2e (high half of current X) -- tile-level only
-    ("wPosYTile", 0x22, "H"),        # Object+0x32
+    ("wPosXTile", 0x20, "H"),        # Actor+0x2e (high half of current X) -- tile-level only
+    ("wPosYTile", 0x22, "H"),        # Actor+0x32
     ("dwUnk_0x3c", 0x24, "I"),
     ("dwUnk_0x40", 0x28, "I"),
     ("dwUnk_0x44", 0x2C, "I"),
@@ -706,7 +706,7 @@ SPEC_KIND_5 = [
 ]
 
 SPEC_FLOOR_ITEM = [
-    # kind 1. The two dwords aren't Object fields at all: on restore, the
+    # kind 1. The two dwords aren't Actor fields at all: on restore, the
     # respawned object's own (tile-level) position is used to look up an
     # entry in a separate, static per-map item-drop table (0x08020504),
     # and these two dwords overwrite that table entry -- i.e. this
@@ -719,11 +719,11 @@ SPEC_FLOOR_ITEM = [
 ]
 
 SPEC_KIND_5_SWITCH = [
-    # kind 5, sub-kind '3' (Object+0x61 == ASCII '3') -- a per-object
+    # kind 5, sub-kind '3' (Actor+0x61 == ASCII '3') -- a per-object
     # toggle, structurally the same idea as the single-instance
     # `bSwitchState` room switch above but with up to 32 independent
     # instances per room. `bTriggered` is encoded inverted: stored as
-    # NOT(bit 0x4 of Object+0xc); a stored `1` makes restore call
+    # NOT(bit 0x4 of Actor+0xc); a stored `1` makes restore call
     # 0x08046CA4, which plays a "consumed/vanish" animation and clears
     # that same bit -- i.e. `1` means "already triggered, redisplay as such".
     ("bTileX", 0x0, "B"),
@@ -733,8 +733,8 @@ SPEC_KIND_5_SWITCH = [
 
 SPEC_PICKUP_MARKER = [
     # kind 0xB. `bUnk_0x80` round-trips with a +1 offset applied only on
-    # restore (Object+0x80 becomes this value + 1); captured verbatim
-    # (Object+0x80's raw low byte) on save. `bUnk_0x8f`, when it equals
+    # restore (Actor+0x80 becomes this value + 1); captured verbatim
+    # (Actor+0x80's raw low byte) on save. `bUnk_0x8f`, when it equals
     # `8` on restore, triggers an item-grant popup (0x08044A94).
     ("bTileX", 0x0, "B"),
     ("bTileY", 0x1, "B"),

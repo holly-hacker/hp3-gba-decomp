@@ -7,7 +7,7 @@
 
 // Per-frame tick of a chest (room object type 9). HandleChestTouch starts the
 // opening in action substate 8; see docs/formats/rooms.md.
-void TickChestObject(Object *pObj)
+void TickChestObject(Actor *pObj)
 {
     u8 kind = pObj->modeState.chest.bKind;
     u32 flagId;
@@ -21,28 +21,28 @@ void TickChestObject(Object *pObj)
         break;
 
     case 5:
-        if (pObj->pLinkedObject_candidate != NULL)
-            pObj->pLinkedObject_candidate->dwFlags |= ObjectFlagPendingDestroy | ObjectFlagAnimFrameLoaded;
-        pObj->dwFlags |= ObjectFlagPendingDestroy | ObjectFlagAnimFrameLoaded;
+        if (pObj->pLinkedActor_candidate != NULL)
+            pObj->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        pObj->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         break;
 
     case 8:
         PlaySoundById(0x1d);
-        SetObjectActionSubState(pObj, 11);
-        SetObjectAnimData(pObj, g_apRoomChestAnimFrames[kind], g_abRoomChestAnimData[kind], 2);
+        SetActorActionSubState(pObj, 11);
+        SetActorAnimData(pObj, g_apRoomChestAnimFrames[kind], g_abRoomChestAnimData[kind], 2);
         break;
 
     case 11:
         // When the opening animation ends, grant the reward and mark the
         // chest opened.
-        if (pObj->dwFlags & ObjectFlagActionAnimDone)
+        if (pObj->dwFlags & ActorFlagActionAnimDone)
         {
             if (pObj->modeState.chest.wRewardId <= REWARD_ID_GOLD)
                 PlayerReceiveReward(pObj->modeState.chest.wRewardId);
             else if (pObj->modeState.chest.pair.wPair != 0)
                 RespawnRowAndRunChain_candidate(pObj->modeState.chest.pair.bytes.bRespawnGroup,
                                                 pObj->modeState.chest.pair.bytes.bChain);
-            SetObjectActionSubState(pObj, 10);
+            SetActorActionSubState(pObj, 10);
             pObj->dwStateTimer = 0;
             flagId = pObj->scriptState.wScriptPc;
             index = flagId >> 3;
@@ -55,10 +55,10 @@ void TickChestObject(Object *pObj)
         // After 12 more frames, release the player and run the pair.
         if (pObj->dwStateTimer++ > 11)
         {
-            SetObjectActionState(g_pPlayerObject, 0x21);
-            SetObjectAnimSubState_candidate(g_pPlayerObject, 0x21);
+            SetActorActionState(g_pPlayerObject, 0x21);
+            SetActorAnimSubState_candidate(g_pPlayerObject, 0x21);
             pObj->dwStateTimer = 0;
-            SetObjectActionSubState(pObj, 1);
+            SetActorActionSubState(pObj, 1);
             if (pObj->modeState.chest.pair.wPair != 0)
                 RespawnRowAndRunChain_candidate(pObj->modeState.chest.pair.bytes.bRespawnGroup,
                                                 pObj->modeState.chest.pair.bytes.bChain);

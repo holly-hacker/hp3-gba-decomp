@@ -15,7 +15,7 @@ void ExitMainMenuScreen(void)
     FreeAllParticleEmitters();
     FreeAllParticles();
     UnreserveObjPaletteSlot(0);
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     sub_08007A90();
     ResetPaletteAnimations();
     g_dwPendingGameMode.dwCurrentGameModeArg1 = 0;

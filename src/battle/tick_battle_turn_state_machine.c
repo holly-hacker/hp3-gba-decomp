@@ -39,9 +39,9 @@ void TickBattleTurnStateMachine(void)
                 SetFighterTurnOrderIconActive(g_pFightState->bActiveFighterIndex);
         }
         else if (g_pFightState->wBattleStateTimer == 0) {
-            // wait for every fighter's turn-order icon (pObject->pLinkedObject_candidate) to clear
+            // wait for every fighter's turn-order icon (pObject->pLinkedActor_candidate) to clear
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
-                if (g_pFightState->pFighters[i].pObject->pLinkedObject_candidate != 0)
+                if (g_pFightState->pFighters[i].pObject->pLinkedActor_candidate != 0)
                     break;
             }
 
@@ -162,7 +162,7 @@ void TickBattleTurnStateMachine(void)
                 break;
             }
             ShowBattleMessage(4, 0, 0);
-            SetObjectActionState(ACTIVE_FIGHTER.pObject, 0x1a);
+            SetActorActionState(ACTIVE_FIGHTER.pObject, 0x1a);
             ACTIVE_FIGHTER.pObject->bActionFlags = 0x21;
             TransitionBattleState(0);
         } else {

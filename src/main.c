@@ -47,7 +47,7 @@ void AgbMain(void)
     InitDialogTextEngine();
     InitSaveSystem();
     InitGameModeStack();
-    InitObjectPool();
+    InitActorPool();
     InitGammaPalette();
     NoopInit();
     InitOamSystem();

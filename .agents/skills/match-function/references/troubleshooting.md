@@ -19,7 +19,7 @@ An unsigned value may remove it. Sub-word locals can introduce masks because Thu
 Do not narrow merely to save a register. Inspect `ldr` versus `ldrb`/`ldrh`. Do give a call
 result the width of the field it is stored in: a `u16` local for a call result stored to a `u16`
 field supplies the `lsls`/`lsrs #16` before a later compare and changed reload choices at a
-bitfield store (UpdateObjectSpriteFrame, US 0x08002F28, `allocId`, `slotAllocId`; the callee
+bitfield store (UpdateActorSpriteFrame, US 0x08002F28, `allocId`, `slotAllocId`; the callee
 AllocObjectVramTiles returns `u32`).
 
 Promotion can also let `combine` fold `(a^b)&a` into one `bicsi3` when `a` is a named
@@ -82,7 +82,7 @@ justify unexplained casts. See compiler-investigation for pseudo-to-hard-registe
 A plain `(x & ~3) | (y & 3)` also narrows `~3` to `movs r0, #0xfc`; a real bitfield store never
 narrows and always builds it as `movs r0, #4` + `negs r0, r0`. The latter in the ROM means a
 real C bitfield -- overlay one on the byte via a local pointer cast. Example:
-SetObjectAffineTransform, US `0x0800366C`.
+SetActorAffineTransform, US `0x0800366C`.
 
 For an equal-refs tie between two same-shaped pseudos, the one whose last use comes first
 in source wins the shorter live_length and the preferred hard register. Reorder the two
@@ -205,7 +205,7 @@ inside `if (kind == 1)`) gives `ldr base; adds #offset` where `table[1]` pools `
 
 Passing an `s16` field as an argument loads with `ldrh` when the parameter is `u16` and with
 `ldrsh` (no extension) when it is `s16`; a cast at the call site does not change this. The
-SetObjectAffineTransform angle parameter is `s16` for that reason.
+SetActorAffineTransform angle parameter is `s16` for that reason.
 
 ## 23. Array base loaded early and hoisted instead of a neighboring constant
 
@@ -213,7 +213,7 @@ SetObjectAffineTransform angle parameter is `s16` for that reason.
 `loop.c` hoists it (longer lifetime) and the struct base stays in the loop. If the ROM loads the
 array literal after the count store, the array is likely a member of the same struct
 (`s.arr[s.count++]`, pooled as `s+offset`). The hoisted base then changes global allocation and
-exit-test duplication. Example: TickObjectList, US 0x08000918.
+exit-test duplication. Example: TickActorList, US 0x08000918.
 
 ## 24. Bitfield read emits `ldr` instead of `ldrb`
 
@@ -221,7 +221,7 @@ Casting a byte to a bitfield struct (`((Bits *)&obj->b)->f`) reads in SImode bec
 structs are word-aligned. A bitfield member declared directly in the containing struct reads
 with `ldrb` and writes with `ldrb`/`strb`. The base type still matters: a single-use compare of
 a `u8` field at bit 0 folds to `ands`, a `u32` field keeps the ROM's `lsl`/`lsr` pair. Test both.
-Examples: `Object.bDrawLayer` (u8, TickObjectList), `Object.bAffineSlotState` (u32,
+Examples: `Actor.bDrawLayer` (u8, TickActorList), `Actor.bAffineSlotState` (u32,
 TickFighterAttackAnimState).
 
 ## 25. One shared local versus per-site locals
@@ -233,7 +233,7 @@ choice). When values at disjoint sites land in different registers than the ROM,
 as block-local versus one function-level variable, and flip the whole group together: single-site
 flips changed nothing while the group flip matched. Examples: InterpretObjectScript, US
 `0x08018CC0`, opcodes 0x27/0x2B/0x83/0x84/0x85/0x97/0x9D-0xA0 share one signed index;
-UpdateObjectSpriteFrame, US 0x08002F28, needs `record`/`frameData` per site.
+UpdateActorSpriteFrame, US 0x08002F28, needs `record`/`frameData` per site.
 
 ## 26. Base and index of an address add swapped (`adds rD, rBase, rIdx`)
 

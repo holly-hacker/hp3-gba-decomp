@@ -64,7 +64,7 @@ extern void RespawnRoomObjectsInRow_candidate(u32 row);
 // Live object at tile (x, y); every script targets (0, 0xFF), the player slot.
 // x == 0 with y >= 0xFE selects a slot of the array at 0x03003358 instead of a tile; every
 // script uses (0, 255).
-extern Object *GetRoomObjectField_candidate(u32 x, u32 y);
+extern Actor *GetRoomObjectField_candidate(u32 x, u32 y);
 
 // cmpOp values for CompareAndBranchRoomScript (room_script_branch.h).
 enum {
@@ -89,7 +89,7 @@ extern u8 g_abRoomScriptExitParams_candidate[2];
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
 extern void sub_08024980(u32 characterId);  // fills follower slot 0
 extern void sub_080249A4(u32 characterId);  // fills follower slot 1
-extern Object *sub_0802F6C0(u32 characterId);
+extern Actor *sub_0802F6C0(u32 characterId);
 // Starts the player's receive-item action and grants one of the reward (30-60 Sickles for
 // REWARD_ID_GOLD).
 extern void PlayerReceiveReward(u32 rewardId);
@@ -97,13 +97,13 @@ extern void PlayerReceiveRewardAlt(u32 rewardId);  // also sets the action timer
 extern void RestorePendingCameraFocus_candidate(void *pFocus);
 extern void *g_pPendingCameraFocus_candidate;
 extern void GrantPartyExperience_candidate(u32 xp);
-extern void CyclePartyLeaderSelection_candidate(Object *pLeader, u32 direction);
+extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
 extern void RespawnRowAndRunChain_candidate(u32 respawnRow, u32 chainRow);
-// Allocates a RoomObjectType_ScriptEffect object of the given kind (Object+0x8C),
+// Allocates a RoomObjectType_ScriptEffect object of the given kind (Actor+0x8C),
 // ticked by the kind's entry in the script-effect tick table. Kind 1 (the delayed respawn timer,
 // tick at 0x080200FC) counts dwStateTimer down, then runs the row/chain, or resumes the yielded
 // chain if the walk yielded on a delayed-respawn opcode.
-extern Object *SpawnScriptEffectObject(u32 kind);
+extern Actor *SpawnScriptEffectObject(u32 kind);
 extern void WriteRoomBgTile_candidate(u16 x, u16 y, u16 tileId, u8 layer);
 extern u16 GetRoomBgBlockEntry(u16 x, u16 y, u8 layer);  // the room BG entry WriteRoomBgTile_candidate writes
 extern void ConsumeBattleItemSlot(u32 itemId, u32 count);

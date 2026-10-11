@@ -3,12 +3,12 @@
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectGfxRecord g_RoomChestSprite = {
+const ActorGfxRecord g_RoomChestSprite = {
     (void *)gChestTiles, (void *)gChestFrames,
 };
 
 // Indexed by the object's kind.
-const ObjectGfxRecord *const g_apRoomChestAnimFrames[4] = {
+const ActorGfxRecord *const g_apRoomChestAnimFrames[4] = {
     &g_RoomChestSprite,
     &g_RoomChestSprite,
     &g_RoomChestSprite,

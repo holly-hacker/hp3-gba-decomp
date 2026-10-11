@@ -19,7 +19,7 @@ void HandleOwlCareKitScreenExit(void)
     FreeAllParticles();
     FreeAllParticleEmitters();
     ResetPaletteAnimations();
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0800A914();
     UnreserveObjPaletteSlot(0);
 }

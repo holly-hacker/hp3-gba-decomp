@@ -4,11 +4,11 @@
 #include "cutscene/clock_skip_cutscene.h"
 #include "gen/graphics/overworld.h"
 
-const ObjectAssetRecord g_ClockSkipObject1Asset = {
+const ActorAssetRecord g_ClockSkipObject1Asset = {
     (void *)gClockSkipObject1Tiles, (void *)gClockSkipObject1Frames, (void *)gClockSkipObject1Palette, 0,
 };
 
-const ObjectAssetRecord g_ClockSkipObject2Asset = {
+const ActorAssetRecord g_ClockSkipObject2Asset = {
     (void *)gClockSkipObject2Tiles, (void *)gClockSkipObject2Frames, (void *)gClockSkipObject2Palette, 0,
 };
 

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 
-// Shows `damage` over fighter `targetIndex` and puts its Object into action
+// Shows `damage` over fighter `targetIndex` and puts its Actor into action
 // state 2. An out-of-range target is retargeted to the first living fighter
 // on the opposite side from the active fighter (none: nothing is shown), and
 // the active fighter's bSelectedActionIndex is updated to it.
@@ -34,5 +34,5 @@ void ShowDamageNumber_candidate(s32 targetIndex, s32 damage)
     }
 
     g_pFightState->pFighters[target].pObject->modeState.actor.wStagedDamage = amount;
-    SetObjectActionState(g_pFightState->pFighters[target].pObject, 2);
+    SetActorActionState(g_pFightState->pFighters[target].pObject, 2);
 }

@@ -4,19 +4,19 @@
 
 // Room object constructor for tile objType 9, the chest.
 // See docs/formats/rooms.md.
-Object *SpawnChestObject(u8 bColumn, u8 bRow)
+Actor *SpawnChestObject(u8 bColumn, u8 bRow)
 {
     RoomObjectRecordUnk9 *pRecord = sub_08005C38(bColumn, bRow);
-    Object *pObj = AllocObjectOfType(RoomObjectType_Chest);
+    Actor *pObj = AllocActorOfType(RoomObjectType_Chest);
     u32 kind;
     u32 mask;
     u8 index;
     u32 flagId;
 
-    SnapObjectPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
+    SnapActorPosition(pObj, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pObj->dwFlags = 0x04002015;
-    SetObjectActionState(pObj, 0);
-    SetObjectActionSubState(pObj, 1);
+    SetActorActionState(pObj, 0);
+    SetActorActionSubState(pObj, 1);
     pObj->bUnk_0x7C = 1;
     pObj->anim.bAnimFrameDelay = 1;
     // The flag id is kept in the object script PC slot.
@@ -42,18 +42,18 @@ Object *SpawnChestObject(u8 bColumn, u8 bRow)
 
     // Kind 2 spawns hidden and untouchable.
     if (kind == 2)
-        pObj->dwFlags &= ~(ObjectFlagVisible | ObjectFlagWantsCollisionCheck);
+        pObj->dwFlags &= ~(ActorFlagVisible | ActorFlagWantsCollisionCheck);
 
     if (pObj->modeState.chest.bOpened != 0)
     {
         if (kind == 2)
-            pObj->dwFlags |= ObjectFlagPendingDestroy | ObjectFlagAnimFrameLoaded;
+            pObj->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         else
-            SetObjectAnimData(pObj, g_apRoomChestAnimFrames[kind], (void *)g_abRoomChestAnimData[kind], 8);
+            SetActorAnimData(pObj, g_apRoomChestAnimFrames[kind], (void *)g_abRoomChestAnimData[kind], 8);
     }
     else
     {
-        SetObjectAnimData(pObj, g_apRoomChestAnimFrames[kind], (void *)g_abRoomChestAnimData[kind], 0);
+        SetActorAnimData(pObj, g_apRoomChestAnimFrames[kind], (void *)g_abRoomChestAnimData[kind], 0);
     }
 
     pObj->oam.priority = 1;

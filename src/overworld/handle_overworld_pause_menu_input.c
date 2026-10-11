@@ -7,7 +7,7 @@
 
 void HandleOverworldPauseMenuInput(void)
 {
-    Object *controlled;
+    Actor *controlled;
 
     controlled = g_OverworldControlState.aSlots[g_OverworldControlState.bSlotIndex].pObject;
     HandleWanderingMonsterTouch();
@@ -17,7 +17,7 @@ void HandleOverworldPauseMenuInput(void)
         && IsGameModeTransitionPending() == 0
         && g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bState != 1
         && (g_dwGameModeFlags & 0x80000811) == 0
-        && (g_pPlayerObject->dwFlags & ObjectFlagAnimPaused) == 0
+        && (g_pPlayerObject->dwFlags & ActorFlagAnimPaused) == 0
         && g_pPlayerObject->bActionState == 0x21) {
         if (g_wKeysPressed & KeyStart) {
             if (g_dwPauseMenuLocked != 0) {
@@ -25,7 +25,7 @@ void HandleOverworldPauseMenuInput(void)
             }
             else if (g_dwPauseMenuCooldown == 0) {
                 g_wKeysPressed = 0;
-                SetObjectVelocity(g_pPlayerObject, 0, 0);
+                SetActorVelocity(g_pPlayerObject, 0, 0);
                 g_dwPauseMenuCooldown = 4;
                 PlaySoundById(1);
                 PushGameMode(InGameMenu);
@@ -38,7 +38,7 @@ void HandleOverworldPauseMenuInput(void)
             }
             else if (g_dwPauseMenuCooldown == 0) {
                 g_wKeysPressed = 0;
-                SetObjectVelocity(g_pPlayerObject, 0, 0);
+                SetActorVelocity(g_pPlayerObject, 0, 0);
                 g_dwPauseMenuCooldown = 4;
                 PlaySoundById(1);
                 PushGameMode(Options);

@@ -15,7 +15,7 @@ void InitializeDebugCharacterSelectMenu(void)
     u16 fillValue;
     u16 *pFillValue;
     u32 bgCtrl1;
-    Object *pObject;
+    Actor *pObject;
 
     StopScanlineEffects();
     pFillValue = &fillValue;
@@ -37,10 +37,10 @@ void InitializeDebugCharacterSelectMenu(void)
     g_DebugCharacterSelectState.adwCharacter[0] = 0;
     g_DebugCharacterSelectState.adwCharacter[1] = 0;
     g_DebugCharacterSelectState.adwCharacter[2] = 0;
-    pObject = SpawnObject(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
+    pObject = SpawnActor(10, 0x9C, 0x3A, (const ObjPalette *)gDebugMenuCursorPalette);
     g_DebugCharacterSelectState.pCursorObject = pObject;
-    pObject->dwFlags |= ObjectFlagHasSpriteCells;
-    SetObjectAnimData(pObject, &g_DebugCharacterSelectAnimFrames, (void *)g_DebugCharacterSelectAnimData, 0);
+    pObject->dwFlags |= ActorFlagHasSpriteCells;
+    SetActorAnimData(pObject, &g_DebugCharacterSelectAnimFrames, (void *)g_DebugCharacterSelectAnimData, 0);
 
     g_DebugCharacterSelectState.adwCharacter[0] = g_bPartyCharId0 == 0xFF ? 0 : g_bPartyCharId0 + 1;
     g_DebugCharacterSelectState.adwCharacter[1] = g_bPartyCharId1 == 0xFF ? 0 : g_bPartyCharId1 + 1;

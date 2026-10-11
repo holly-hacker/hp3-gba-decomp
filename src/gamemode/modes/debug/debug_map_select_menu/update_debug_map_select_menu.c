@@ -44,7 +44,7 @@ void UpdateDebugMapSelectMenu(void)
         }
 
         if (StepCursorUpDownHeld(&g_DebugMapSelectState.dwCursorRow, 0, 0x11, 0, 0))
-            SetObjectPosition(g_DebugMapSelectState.pCursorObject, 0x78, g_DebugMapSelectState.dwCursorRow * 8 + 0xB);
+            SetActorPosition(g_DebugMapSelectState.pCursorObject, 0x78, g_DebugMapSelectState.dwCursorRow * 8 + 0xB);
     }
 
     if (g_wKeysPressed & KeyA)

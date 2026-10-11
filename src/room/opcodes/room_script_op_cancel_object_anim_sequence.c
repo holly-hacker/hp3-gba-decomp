@@ -11,17 +11,17 @@ typedef struct CancelObjectAnimSequenceRecord {
 
 void RoomScriptOpCancelObjectAnimSequence(CancelObjectAnimSequenceRecord *pRecord)
 {
-    Object *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pObject = GetRoomObjectField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pObject != NULL)
     {
-        CancelObjectMove_candidate(pObject);
+        CancelActorMove_candidate(pObject);
         pObject->anim.bAnimFrameCounter = 0;
-        if (pObject->pLinkedObject_candidate != NULL)
-            pObject->pLinkedObject_candidate->anim.bAnimFrameCounter = 0;
+        if (pObject->pLinkedActor_candidate != NULL)
+            pObject->pLinkedActor_candidate->anim.bAnimFrameCounter = 0;
         if (g_dwPendingCameraFocusFlag != 0)
             RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
-        SetObjectActionState(pObject, 0);
-        SetObjectAnimSubState_candidate(g_pPlayerObject, 0);
+        SetActorActionState(pObject, 0);
+        SetActorAnimSubState_candidate(g_pPlayerObject, 0);
     }
 }

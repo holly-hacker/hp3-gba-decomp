@@ -10,18 +10,18 @@
 // Folio Universitas screen state. The grid has one row per category (cards 10 * row ... 10 * row + 9)
 // and cards are grouped three to a combo within a row; the last row holds only the 51st card.
 typedef struct {
-    Object *pCard;   // thumbnail of the combo's card
-    Object *pCount;  // badge showing how many copies are owned
+    Actor *pCard;   // thumbnail of the combo's card
+    Actor *pCount;  // badge showing how many copies are owned
 } FolioComboSlot;
 
 typedef struct {
     u32 dwCategory;                // 0x00: row of the selected card, 0-5
     u32 dwSlot;                    // 0x04: column of the selected card within its row, 0-9
     FolioComboSlot aComboSlots[3]; // 0x08: the selected combo's cards
-    Object *pCursor;               // 0x20
+    Actor *pCursor;               // 0x20
     void *pGridTilemap;            // 0x24: tilemap of the card grid background, whose tiles mark each card's state
-    Object *pPrevArrow;            // 0x28
-    Object *pNextArrow;            // 0x2C
+    Actor *pPrevArrow;            // 0x28
+    Actor *pNextArrow;            // 0x2C
 } FolioUniversitasState;
 extern FolioUniversitasState g_FolioUniversitasState;  // 0x03005340
 
@@ -48,7 +48,7 @@ typedef enum {
 // combo, blue otherwise.
 typedef struct {
     u32 dwFrame;  // FolioCardFrame
-    ObjectAssetRecord asset;
+    ActorAssetRecord asset;
 } FolioCardAsset;
 
 extern const FolioCardAsset g_aFolioCardAssets[FOLIO_UNIVERSITAS_CARD_COUNT];  // 0x0806B3D8
@@ -58,20 +58,20 @@ extern const u32 g_dwFolioCardDetailBg2Control;  // 0x0806B3D0
 extern const u32 g_dwFolioCardDetailBg1Control;  // 0x0806B3D4
 
 // Spawns the sprite showing a card at the given screen position and loads its palette.
-extern Object *SpawnFolioCardObject(u32 cardIndex, s32 x, s32 y);
+extern Actor *SpawnFolioCardObject(u32 cardIndex, s32 x, s32 y);
 
 extern const u32 g_dwFolioUniversitasBg3Control;  // 0x080696B0
 extern const u32 g_dwFolioUniversitasBg1Control;  // 0x080696B4
 extern const u32 g_dwFolioUniversitasBg0Control;  // 0x080696B8
 
 // Cursor, button prompts, three unused-looking sprites and the copy-count badges.
-extern const ObjectGfxRecord g_aFolioUniversitasObjectGfx[6];  // 0x080696BC
+extern const ActorGfxRecord g_aFolioUniversitasObjectGfx[6];  // 0x080696BC
 #define FOLIO_UNIVERSITAS_CURSOR_GFX   (&g_aFolioUniversitasObjectGfx[0])
 #define FOLIO_UNIVERSITAS_PROMPTS_GFX  (&g_aFolioUniversitasObjectGfx[1])
 #define FOLIO_UNIVERSITAS_BADGES_GFX   (&g_aFolioUniversitasObjectGfx[5])
 
 // Indexed by card number; entry 51 is the face-down card.
-extern const ObjectAssetRecord g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT + 1];  // 0x080696EC
+extern const ActorAssetRecord g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT + 1];  // 0x080696EC
 
 extern const u8 g_aFolioUniversitasCursorAnim[];        // 0x08069614
 extern const u8 g_aFolioUniversitasBattleCursorAnim[];  // 0x0806963E
@@ -83,7 +83,7 @@ extern u32 IsFolioUniversitasCardSeen(u32 cardIndex);
 extern u32 IsFolioUniversitasCardNew(u32 cardIndex);
 extern void ClearFolioUniversitasNewCards(void);
 extern u32 IsFolioUniversitasCardUnavailable(s32 cardIndex);
-extern Object *SpawnFolioCardThumbnail(u32 cardIndex, s32 x, s32 y);
+extern Actor *SpawnFolioCardThumbnail(u32 cardIndex, s32 x, s32 y);
 extern void DrawFolioCardSlot(u32 cardIndex);
 extern void DrawFolioUniversitasCardSlots(void);
 extern void DrawFolioUniversitasHeadings(void);

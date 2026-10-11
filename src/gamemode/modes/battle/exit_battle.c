@@ -25,7 +25,7 @@ void ExitBattle(void)
         UnreserveObjPaletteSlot(0);
         FreeAllParticleEmitters();
         FreeAllParticles();
-        FreeAllObjects(&g_ActiveObjectListState.pHead);
+        FreeAllActors(&g_ActiveActorListState.pHead);
         ResetPaletteAnimations();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
@@ -69,7 +69,7 @@ void ExitBattle(void)
     else
     {
         // Suspending for a Folio/Help submode: snapshot every live
-        // then pending fighter's Object (densely packed) instead of tearing
+        // then pending fighter's Actor (densely packed) instead of tearing
         // the battle down, so it can be restored by InitializeBattle's resume
         // path on return. `fighterIndex` keeps counting across both loops as
         // the destination slot index.
@@ -79,12 +79,12 @@ void ExitBattle(void)
         for (fighterIndex = 0; fighterIndex < g_pFightState->bFighterCount; fighterIndex++)
         {
             if (g_pFightState->pFighters[fighterIndex].pObject->oam.affineMode)
-                ReleaseObjectAffineSlot(g_pFightState->pFighters[fighterIndex].pObject);
+                ReleaseActorAffineSlot(g_pFightState->pFighters[fighterIndex].pObject);
 
             g_pFightState->pFighters[fighterIndex].pObject->wVramTileAllocId = 0xFFFF;
 
-            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Object) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
-                   g_pFightState->pFighters[fighterIndex].pObject, sizeof(Object));
+            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
+                   g_pFightState->pFighters[fighterIndex].pObject, sizeof(Actor));
         }
 
         for (pendingIndex = 0;
@@ -92,12 +92,12 @@ void ExitBattle(void)
              pendingIndex++, fighterIndex++)
         {
             if (g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->oam.affineMode)
-                ReleaseObjectAffineSlot(g_pFightState->pPendingFighters_candidate[pendingIndex].pObject);
+                ReleaseActorAffineSlot(g_pFightState->pPendingFighters_candidate[pendingIndex].pObject);
 
             g_pFightState->pPendingFighters_candidate[pendingIndex].pObject->wVramTileAllocId = 0xFFFF;
 
-            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Object) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
-                   g_pFightState->pPendingFighters_candidate[pendingIndex].pObject, sizeof(Object));
+            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterObjects_candidate),
+                   g_pFightState->pPendingFighters_candidate[pendingIndex].pObject, sizeof(Actor));
         }
 
         if (g_pFightState->bMenuScreen != 0)
@@ -107,7 +107,7 @@ void ExitBattle(void)
         UnreserveObjPaletteSlot(0);
         FreeAllParticleEmitters();
         FreeAllParticles();
-        FreeAllObjects(&g_ActiveObjectListState.pHead);
+        FreeAllActors(&g_ActiveActorListState.pHead);
         ResetPaletteAnimations();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);

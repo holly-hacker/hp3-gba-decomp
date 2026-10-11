@@ -20,6 +20,6 @@ void ExitInGameMenu(void)
 
     ExitMenuScreen();
     sub_08007464(1, 0x6F);
-    FreeAllObjects(&g_ActiveObjectListState.pHead);
+    FreeAllActors(&g_ActiveActorListState.pHead);
     ResetPaletteAnimations();
 }

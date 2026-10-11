@@ -11,7 +11,7 @@ void TickFrameSystems(void)
     if (g_GameModeStackContext.dwCurrentGameMode == Overworld)
         TickOverworldBeforeObjects_candidate();
 
-    TickActiveObjects();
+    TickActiveActors();
     TickParticleEmitters();
     TickBgLayers_candidate();
     TickScreenWindows_candidate();

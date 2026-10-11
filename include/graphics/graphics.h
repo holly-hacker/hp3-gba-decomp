@@ -81,7 +81,7 @@ extern void ResetAffineSlots(void);
 extern u32 AllocAffineSlot(void);  // lowest free slot, or 32 when all are in use
 extern void FreeAffineSlot(u16 slot);
 
-// Particle sprite header, laid out like ObjectFrameData. Reached through the
+// Particle sprite header, laid out like ActorFrameData. Reached through the
 // second word of ParticleEmitter.pSprite's record.
 typedef struct ParticleSpriteHeader {
     u8 pad_00[0x06];
@@ -136,7 +136,7 @@ typedef enum {
 // undecoded.
 typedef struct ParticleEmitter {
     ListNode node;           // 0x00
-    struct Object *pTarget;  // 0x08, object the emitter follows
+    struct Actor *pTarget;  // 0x08, object the emitter follows
     const ParticleSprite *pSprite;  // 0x0C
     s32 nVelX;               // 0x10, mode 8 direction vector
     s32 nVelY;               // 0x14
@@ -280,7 +280,7 @@ extern void ReleaseParticle(Particle *particle);
 
 extern ParticleEmitter *g_pMenuCursorEmitter;       // 0x030028C0
 
-extern void CreateMenuCursorEmitter(struct Object *pCursor);
+extern void CreateMenuCursorEmitter(struct Actor *pCursor);
 extern void TickParticleEmitter(ParticleEmitter *emitter);
 extern void SpawnParticle(ParticleEmitter *emitter);
 extern ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex, u32 entryIndex);

@@ -11,7 +11,7 @@
 void UpdateDivinationTeaMinigame(void)
 {
     DivinationTeaLeaf *pLeaf;
-    Object *pObject;
+    Actor *pObject;
     u32 score;
     s32 roll;
     s32 i;
@@ -39,7 +39,7 @@ void UpdateDivinationTeaMinigame(void)
             pObject = pLeaf->pObject;
             pLeaf->wAngle += (roll * (pObject->orbitState.fields.wUnk58 >> 7)) << 8;
             pLeaf->wAngle = pLeaf->wAngle % 0x10000;
-            SetObjectAffineTransform(pObject, (pLeaf->wScaleX / 256) << 16, (pLeaf->wScaleY / 256) << 16,
+            SetActorAffineTransform(pObject, (pLeaf->wScaleX / 256) << 16, (pLeaf->wScaleY / 256) << 16,
                                      pLeaf->wAngle, 1);
         }
     }
@@ -80,7 +80,7 @@ void UpdateDivinationTeaMinigame(void)
                 PlaySoundById(1);
                 sub_08007CD4(2, 1);
                 for (i = 0; i < ARRAY_COUNT(g_DivinationTea.apCupObjects); i++)
-                    SetObjectAnimData(g_DivinationTea.apCupObjects[i], &g_DivinationTeaCupSprite,
+                    SetActorAnimData(g_DivinationTea.apCupObjects[i], &g_DivinationTeaCupSprite,
                                       (void *)g_DivinationTeaCupAnimData, 1);
             }
 

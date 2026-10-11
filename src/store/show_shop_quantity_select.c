@@ -18,18 +18,18 @@ void ShowShopQuantitySelect(void)
     g_FredAndGeorgesShop.nUnitPrice = g_FredAndGeorgesShop.dwBuyItem == SHOP_NO_ITEM ? GetItemSellPrice(g_FredAndGeorgesShop.dwItem) : GetItemBuyPrice(g_FredAndGeorgesShop.dwItem);
 
     GetItemImageData(g_FredAndGeorgesShop.dwItem, &palette, &tiles, &frames);
-    g_FredAndGeorgesShop.pItemIcon = SpawnObject(0xD, 0x20, 0x30, palette);
+    g_FredAndGeorgesShop.pItemIcon = SpawnActor(0xD, 0x20, 0x30, palette);
     g_FredAndGeorgesShop.pItemIcon->oam.priority = 2;
     g_FredAndGeorgesShop.itemIconGfx.pTileGfx = (void *)tiles;
     g_FredAndGeorgesShop.itemIconGfx.pFrameData = (void *)frames;
-    SetObjectAssetRecord(g_FredAndGeorgesShop.pItemIcon, &g_FredAndGeorgesShop.itemIconGfx);
+    SetActorAssetRecord(g_FredAndGeorgesShop.pItemIcon, &g_FredAndGeorgesShop.itemIconGfx);
     SetObjectScaleStep(g_FredAndGeorgesShop.pItemIcon, 0);
 
     g_FredAndGeorgesShop.pLeftArrow = SpawnMenuCursorObject(2);
-    SetObjectAnimFrame(g_FredAndGeorgesShop.pLeftArrow, 3);
+    SetActorAnimFrame(g_FredAndGeorgesShop.pLeftArrow, 3);
     SetMenuCursorPosition(g_FredAndGeorgesShop.pLeftArrow, 0x20, 0x68);
     g_FredAndGeorgesShop.pRightArrow = SpawnMenuCursorObject(2);
-    SetObjectAnimFrame(g_FredAndGeorgesShop.pRightArrow, 1);
+    SetActorAnimFrame(g_FredAndGeorgesShop.pRightArrow, 1);
     SetMenuCursorPosition(g_FredAndGeorgesShop.pRightArrow, 0xD0, 0x68);
 
     SelectTextFont(2, 0, -1);

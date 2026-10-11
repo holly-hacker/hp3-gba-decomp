@@ -15,7 +15,7 @@ entry is one of:
 
 Components: palette (2**bpp BGR555 entries from the PNG palette), tiles
 (each frame's cell tiles, compressed, one stream per frame), and frames
-(an ObjectFrameData record).
+(an ActorFrameData record).
 """
 import hashlib
 import os
@@ -280,7 +280,7 @@ def _body_length(stream: bytes, compression: str, raw: bytes) -> int:
 
 
 def encode_frames(frames: list[dict], header: list[int]) -> bytes:
-    """ObjectFrameData for frames of {width, height, offset, compression, cells, parts, extra},
+    """ActorFrameData for frames of {width, height, offset, compression, cells, parts, extra},
     each frame's tiles being its own stream of the given byte lengths."""
     extra_count = len(frames[0]["extra"])
     part_count = len(frames[0]["parts"])
@@ -328,7 +328,7 @@ def _sign9(value: int) -> int:
 
 
 def decode_frames(data: bytes) -> dict:
-    """Parse an ObjectFrameData record; returns its fields and byte length,
+    """Parse an ActorFrameData record; returns its fields and byte length,
     including the zero padding to a word boundary."""
     width, height = data[0], data[1]
     header = list(struct.unpack_from("<4b", data, 2))

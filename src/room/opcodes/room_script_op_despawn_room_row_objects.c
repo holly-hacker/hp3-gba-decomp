@@ -11,7 +11,7 @@ void RoomScriptOpDespawnRoomRowObjects(DespawnRoomRowObjectsRecord *pRecord)
     u8 row = pRecord->bRow;
     u16 columnCount;
     u8 col;
-    Object *pObject;
+    Actor *pObject;
 
     if (ShouldRunRoomScriptRow_candidate(row))
     {
@@ -21,8 +21,8 @@ void RoomScriptOpDespawnRoomRowObjects(DespawnRoomRowObjectsRecord *pRecord)
             pObject = GetRoomObjectField_candidate(row, col);
             if (pObject != NULL)
             {
-                if (pObject->pLinkedObject_candidate != NULL)
-                    pObject->pLinkedObject_candidate->dwFlags |= 0x82;
+                if (pObject->pLinkedActor_candidate != NULL)
+                    pObject->pLinkedActor_candidate->dwFlags |= 0x82;
                 pObject->dwFlags |= 0x82;
             }
         }
