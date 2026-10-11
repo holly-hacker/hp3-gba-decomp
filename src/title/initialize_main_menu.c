@@ -4,9 +4,15 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "graphics/graphics.h"
-#include "menu/main_menu.h"
+#include "game/save.h"
+#include "title.h"
 #include "text.h"
 #include "gen/graphics/menus.h"
+#ifdef VERSION_JP
+#include "gen/graphics/menus/jp.h"
+#else
+#include "gen/graphics/menus/us.h"
+#endif
 
 void InitializeMainMenu(void)
 {
@@ -37,7 +43,7 @@ void InitializeMainMenu(void)
     ClearResourceCacheSlots();
     sub_0803094C(0);
     QueueObjPaletteLoad((const u16 *)gMainMenuPalette, 0, 0x10);
-    StartMainMenuPaletteEffect_candidate();
+    StartMainMenuPaletteEffect();
 
     PlayMusicModule(0x21);
     PlayScreenTransitionInByIndex(0x3F, 2);

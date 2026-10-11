@@ -475,8 +475,8 @@
 .set g_HarryHermionePortInTime,  0x03005D98  @ HarryHermionePortInTimeState
 
 @ --- Dialog/UI text engine (US only) ---
-.set g_dwMainMenuTextCursor,     0x03005DB0  @ u32: text tile cursor returned by the main menu's copyright text; see include/menu/main_menu.h
-.set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot_candidate}; see include/menu/main_menu.h
+.set g_nMainMenuTextCursor,     0x03005DB0  @ s32: text tile cursor returned by the main menu's copyright text; see include/title.h
+.set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Object *pCursorObject; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot}; see include/title.h
 .set g_bSaveSlotScreenResult,    0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
 .set g_OptionsState,             0x03005DD0  @ OptionsState: 8 object pointers, then music, sound and gamma settings; see include/menu/options.h
 .set g_dwOptionsReturnMode,      0x03005E04  @ u32: GameMode that opened the options screen

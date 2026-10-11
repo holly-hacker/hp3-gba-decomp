@@ -25,7 +25,7 @@ void InitializeFolioUniversitas(void)
     ClearBgTilemap(1);
     SetBgControl(0, g_dwFolioUniversitasBg0Control);
     g_FolioUniversitasState.pGridTilemap = LoadBgGraphic(0, gFolioUniversitasBg0Graphic, 1, 0, 0, 0);
-    sub_0800D57C(0xB6, 5, 0xA, 0, 0x19, (const u8 *)gFolioUniversitasBg3Graphic + 0x162, 4);
+    StartPaletteEffectWithFrameCount(0xB6, 5, 0xA, 0, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gFolioUniversitasBg3Graphic) + 0xB0, 4);
 
     DrawFolioUniversitasCardSlots();
     SetTextTargetFromBgControl(textBgControl);
@@ -38,7 +38,7 @@ void InitializeFolioUniversitas(void)
     UpdateFolioComboSlots();
     HighlightFolioComboSlot();
 
-    sub_0800D57C(g_FolioUniversitasState.pCursor->oam.paletteNum * 16, 0x10, 0xF, 0, 0x1D,
+    StartPaletteEffectWithFrameCount(g_FolioUniversitasState.pCursor->oam.paletteNum * 16, 0x10, 0xF, 0, 0x1D,
                  GRAPHIC_BLOB_PALETTE_COLORS(gMenuCursor001), 6);
     SetAlphaBlendTargets(0, 0x1F);
     SetAlphaBlendCoefficients(8, 8);

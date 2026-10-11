@@ -7,6 +7,7 @@
 #include "mt19937.h"
 #include "minigame/serve_pumpkin_juice.h"
 #include "font.h"
+#include "gen/graphics/menus.h"
 
 void InitializeUnusedServePumpkinJuiceMinigame(void)
 {
@@ -30,7 +31,7 @@ void InitializeUnusedServePumpkinJuiceMinigame(void)
     sub_0800A598(&g_ServePumpkinJuiceTable, &g_dwServePumpkinJuiceBg2Control, 8);
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(5, 0, -1);
-    sub_0800D57C(3, 1, 8, 0x10, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gServePumpkinJuicePanelPalette), 6);
+    StartPaletteEffectWithFrameCount(3, 1, 8, 0x10, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gMenuSelectionPalette), 6);
     Mt19937AutoSeed();
 
     g_ServePumpkinJuice.dwUnk2C = 0xA8;

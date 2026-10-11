@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/main_menu.h"
+#include "title.h"
 #include "gen/graphics/menus/us.h"
 
 // The title graphic per Language; both English versions share one. The JP

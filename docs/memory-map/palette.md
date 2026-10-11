@@ -48,7 +48,9 @@ The upload copies the shadow to palette RAM rotated so shadow color
 **Palette effects** (`g_aPaletteEffects`, 12 `PaletteEffect` slots, counted
 by `g_dwPaletteEffectCount`). An effect interpolates a color range toward
 16-color frames read from `pFrames`, optionally looping over `bFrameCount`
-frames; `sub_0800D5DC` allocates one. Field roles other than flags, color
-range, frame count/index and frame pointers are UNCONFIRMED.
+frames; `sub_0800D5DC` allocates one and returns its slot, and
+`StartPaletteEffectWithFrameCount` does the same and also sets `bFrameCount`.
+Field roles other than flags, color range, frame count/index and frame
+pointers are UNCONFIRMED.
 
 Shared flag bits are `PALETTE_ANIM_*` in `include/graphics/palette.h`.

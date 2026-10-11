@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
+#include "title.h"
 #include "hw/mem.h"
 #include "graphics/object.h"
 #include "graphics/palette.h"

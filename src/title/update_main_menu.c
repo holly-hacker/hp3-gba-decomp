@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "input.h"
-#include "menu/main_menu.h"
+#include "title.h"
 #include "mt19937.h"
 #include "font.h"
 #include "text.h"
@@ -35,7 +35,7 @@ void UpdateMainMenu(void)
             EnableBg(1);
             if (g_PrevGameModeStackContext.dwCurrentGameMode == Startup)
             {
-                DrawMainMenuCopyright_candidate();
+                DrawMainMenuCopyright();
                 g_GameModeStackContext.dwModeState = 3;
             }
             else
@@ -56,9 +56,9 @@ void UpdateMainMenu(void)
 
     case 2:
         if (g_wKeysPressed & (KeyA | KeyStart))
-            SelectMainMenuEntry_candidate();
+            SelectMainMenuEntry();
         else if (g_wKeysPressed & (KeyUp | KeyDown))
-            MoveMainMenuCursor_candidate();
+            MoveMainMenuCursor();
         break;
 
     case 3:
@@ -80,7 +80,7 @@ void UpdateMainMenu(void)
             {
                 SelectTextFont(2, 6, -1);
                 pText = GetDialogText(0x8E8);  // "Press START"
-                DrawTextLines(g_dwMainMenuTextCursor, 0x78, 0x8D, 0xB4, 0x10, &pText, 1);
+                DrawTextLines(g_nMainMenuTextCursor, 0x78, 0x8D, 0xB4, 0x10, &pText, 1);
             }
         }
         else if (g_wKeysPressed & KeyStart)

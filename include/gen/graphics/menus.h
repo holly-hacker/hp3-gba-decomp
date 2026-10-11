@@ -303,6 +303,9 @@ extern const u8 gFolioCardFramePurple[];
 extern const u8 gDebugMenu005[];
 extern const u8 gMenuPanel001[];
 
+/* MenuSelectionPalette */
+extern const u8 gMenuSelectionPalette[];
+
 /* StatusCharacters */
 extern const u8 gStatusCharacter001Tiles[];
 extern const u8 gStatusCharacter001Frames[];

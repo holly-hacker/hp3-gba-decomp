@@ -1,9 +1,9 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "game/game_modes.h"
-#include "menu/main_menu.h"
+#include "title.h"
 
-void SelectMainMenuEntry_candidate(void)
+void SelectMainMenuEntry(void)
 {
     switch (g_GameModeStackContext.dwModeScratchB)
     {

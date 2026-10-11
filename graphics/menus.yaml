@@ -60,6 +60,18 @@ groups:
       - kind: graphic-blobs
         names: [MenuPanel001]
 
+  # Palette-effect frames (16 colors each): the selected menu entry's text
+  # colors pulse between frames 0 and 1; other screens use further frames
+  - name: MenuSelectionPalette
+    runs:
+      - kind: image-bank
+        names: [MenuSelection]
+        bpp: 8
+        componentOrder: [palette]
+        storedCells: false
+        paletteHeader: [0xa1, 0x0]
+        paletteTrailer: [0x0, 0x0]
+
   - name: StatusCharacters
     runs:
       # Status/equip screen character rotations: g_aStatusCharacterAssets

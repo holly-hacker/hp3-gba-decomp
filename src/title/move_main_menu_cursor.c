@@ -2,30 +2,9 @@
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "input.h"
-#include "menu/main_menu.h"
-#include "font.h"
-#include "text.h"
+#include "title_inline.h"
 
-static inline void DrawEntry(u32 entry, u32 selectedEntry)
-{
-    u32 slot;
-    u32 color;
-
-    // Load Game's row is skipped when it is unavailable.
-    slot = entry;
-    if (!g_MainMenuState.dwLoadGameAvailable && slot > 1)
-        slot--;
-
-    color = 0;
-    if (entry == selectedEntry)
-        color = 6;
-
-    SetTextTargetFromBgControl(g_dwMainMenuBg1Control);
-    SelectTextFont(2, color, -1);
-    DrawStringAligned(slot * 0x30 + 0x118, 0x20, slot * 0xC + 0x58, GetDialogText(entry + 0x8CD), 0);
-}
-
-void MoveMainMenuCursor_candidate(void)
+void MoveMainMenuCursor(void)
 {
     u32 previous;
 
@@ -51,7 +30,7 @@ void MoveMainMenuCursor_candidate(void)
             g_GameModeStackContext.dwModeScratchB = 0;
     }
 
-    DrawEntry(previous, g_GameModeStackContext.dwModeScratchB);
-    DrawEntry(g_GameModeStackContext.dwModeScratchB, g_GameModeStackContext.dwModeScratchB);
-    PositionMainMenuCursorObject_candidate(1);
+    DrawMainMenuEntry(previous, g_GameModeStackContext.dwModeScratchB);
+    DrawMainMenuEntry(g_GameModeStackContext.dwModeScratchB, g_GameModeStackContext.dwModeScratchB);
+    PositionMainMenuCursorObject(1);
 }

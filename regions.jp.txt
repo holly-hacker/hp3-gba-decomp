@@ -414,7 +414,7 @@ c-file 0x0800D4E4 0x0800D4F4 src/graphics/palette/clear_color_cycle.c ClearColor
 thumb-func 0x0800D4F4 sub_0800D4F4
 thumb-func 0x0800D514 sub_0800D514
 thumb-func 0x0800D53C sub_0800D53C
-thumb-func 0x0800D57C sub_0800D57C
+thumb-func 0x0800D57C StartPaletteEffectWithFrameCount
 thumb-func 0x0800D5A8 sub_0800D5A8
 thumb-func 0x0800D5DC sub_0800D5DC
 thumb-func 0x0800D62C StopPaletteEffect
@@ -1878,17 +1878,17 @@ c-file 0x08043000 0x08043154 src/gamemode/modes/cutscene/harry_hermione_port_in_
 thumb-func 0x08043154 sub_08043114
 thumb-func 0x08043348 sub_08043308
 c-file 0x08043490 _ src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
-c-file 0x080434B0 _ src/gamemode/modes/main_menu/initialize_main_menu.c InitializeMainMenu
-c-file 0x0804359C _ src/gamemode/modes/main_menu/update_main_menu.c UpdateMainMenu
-c-file 0x0804374C _ src/gamemode/modes/main_menu/move_main_menu_cursor.c MoveMainMenuCursor_candidate
-c-file 0x0804388C 0x080438D0 src/gamemode/modes/main_menu/exit_main_menu_screen.c ExitMainMenuScreen
-thumb-func 0x080438D0 StartMainMenuPaletteEffect_candidate
-c-file 0x08043900 0x0804395C src/gamemode/modes/main_menu/show_main_menu_entries.c ShowMainMenuEntries
-thumb-func 0x0804395C DrawMainMenuEntry
-thumb-func 0x080439C8 DrawMainMenuCopyright_candidate
-c-file 0x08043A40 0x08043A88 src/gamemode/modes/main_menu/select_main_menu_entry.c SelectMainMenuEntry_candidate
-thumb-func 0x08043A88 HasLoadableSaveSlot
-thumb-func 0x08043AC4 PositionMainMenuCursorObject_candidate
+c-file 0x080434B0 _ src/title/initialize_main_menu.c InitializeMainMenu
+c-file 0x0804359C _ src/title/update_main_menu.c UpdateMainMenu
+c-file 0x0804374C _ src/title/move_main_menu_cursor.c MoveMainMenuCursor
+c-file 0x0804388C _ src/title/exit_main_menu_screen.c ExitMainMenuScreen
+c-file 0x080438D0 _ src/title/start_main_menu_palette_effect.c StartMainMenuPaletteEffect
+c-file 0x08043900 _ src/title/show_main_menu_entries.c ShowMainMenuEntries
+c-file 0x0804395C _ src/title/draw_main_menu_entry.c DrawMainMenuEntry
+c-file 0x080439C8 _ src/title/draw_main_menu_copyright.c DrawMainMenuCopyright
+c-file 0x08043A40 _ src/title/select_main_menu_entry.c SelectMainMenuEntry
+c-file 0x08043A88 _ src/title/has_loadable_save_slot.c HasLoadableSaveSlot
+c-file 0x08043AC4 _ src/title/position_main_menu_cursor_object.c PositionMainMenuCursorObject
 c-file 0x08043B10 0x08043B90 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
 thumb-func 0x08043B90 sub_08043B70
 thumb-func 0x08043C44 sub_08043C24
@@ -2440,7 +2440,7 @@ graphics 0x08D7E358 _ minigames/wizard_cracker WizardCrackerPopIt
 graphics 0x08D80C9C _ minigames/wizard_cracker WizardCrackerSprites
 graphics 0x08D8E61C 0x08D9A130 minigames/pumpkin PumpkinGraphics
 graphics 0x08D9A190 _ menus DebugMenu
-graphics 0x08DA06EC _ minigames/pumpkin ServePumpkinJuicePanel
+graphics 0x08DA06EC _ menus MenuSelectionPalette
 graphics 0x08DA08F0 _ cutscenes CutsceneDrawings
 graphics 0x08DC7EB4 _ minigames/hippogriff HippogriffLanguageMinigameBgs
 graphics 0x08DF3748 _ menus StatusCharacters

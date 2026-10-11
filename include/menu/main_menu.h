@@ -3,20 +3,6 @@
 #include "types.h"
 #include "graphics/object.h"
 
-// Entry indices of the menu; also the cursor position in dwModeScratchB.
-typedef enum {
-    MainMenuNewGame   = 0,
-    MainMenuLoadGame  = 1,
-    MainMenuOptions   = 2,
-    MainMenuMiniGames = 3,
-} MainMenuEntry;
-
-typedef struct {
-    Object *pCursorObject;         // 0x00
-    u32 dwLoadGameAvailable;       // 0x04: 1 if a save slot can be loaded
-    s32 nPaletteEffectSlot_candidate;  // 0x08: handle from sub_0800D57C, set by StartMainMenuPaletteEffect_candidate
-} MainMenuState;
-
 // Result of the save slot screen, set by HandleSaveSlotInput_candidate.
 typedef enum {
     SaveSlotResultConfirmed = 1,
@@ -24,30 +10,11 @@ typedef enum {
 } SaveSlotScreenResult;
 
 extern u8 g_bSaveSlotScreenResult;  // 0x03005DC4
-extern MainMenuState g_MainMenuState;  // 0x03005DB8
-extern u32 g_dwMainMenuTextCursor;     // 0x03005DB0: next free text tile, after the copyright lines
 
 extern void ReleaseMenuCursor(Object *pObject);
 // Spawns a shared menu cursor sprite; kind selects its graphics and setup
 // (4 the list cursor, 2 the quantity arrows, 0/1 dialog and loading screen).
 extern Object *SpawnMenuCursorObject(u32 kind);
-
-extern const u32 g_dwMainMenuBg3Control;
-extern const u32 g_dwMainMenuBg2Control;
-extern const u32 g_dwMainMenuBg1Control;
-extern const u8 gMainMenuBg2Graphic[];
-extern const u8 *const g_apMainMenuTitleGraphic[8];
-extern const u32 g_adwMainMenuStateTimeouts[6];
-
-extern void ResetSaveStateForNewGame(void);
-extern u32 HasLoadableSaveSlot(void);
-extern void StartMainMenuPaletteEffect_candidate(void);
-extern void DrawMainMenuCopyright_candidate(void);
-extern void ShowMainMenuEntries(void);
-extern void SelectMainMenuEntry_candidate(void);
-extern void MoveMainMenuCursor_candidate(void);
-extern void DrawMainMenuEntry(u32 entry, u32 selectedEntry);
-extern void PositionMainMenuCursorObject_candidate(u32 tween);
 
 extern void InitializeSaveSlotScreen_candidate(u32 titleStringId);
 extern u32 HandleSaveSlotInput_candidate(void);
@@ -58,8 +25,8 @@ extern void ConfirmLoadGameSlot_candidate(void);
 extern void InitRoomState(void);
 
 extern Object *g_pMenuCursorObject;  // 0x03002E08
-extern void InitializeMenuScreen(u32 titleStringId, u32 cursorKind, u32 hasPanel, const u8 *pOverlayGraphic, u32 overlayX, u32 overlayY);
-extern void BeginMenuScreen(u32 titleStringId, u32 cursorKind, u32 hasPanel);
+extern void InitializeMenuScreen(u32 titleStringId, u32 cursorKind, u32 pulseSelection, const u8 *pOverlayGraphic, u32 overlayX, u32 overlayY);
+extern void BeginMenuScreen(u32 titleStringId, u32 cursorKind, u32 pulseSelection);
 extern void sub_0801E0D8(void);
 extern void ExitMenuScreen(void);
 extern void SetMenuCursorPosition(Object *pObject, s32 x, s32 y);  // SetObjectPosition

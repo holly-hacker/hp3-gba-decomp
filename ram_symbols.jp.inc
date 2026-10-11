@@ -456,7 +456,7 @@
 .set g_adwHippogriffGlideUnk,    0x03005D70  @ see ram_symbols.us.inc
 .set g_aGameTimers,                     0x03005DB8
 .set g_HarryHermionePortInTime,  0x03005DF8  @ see ram_symbols.us.inc
-.set g_dwMainMenuTextCursor,     0x03005E10
+.set g_nMainMenuTextCursor,     0x03005E10
 .set g_MainMenuState,            0x03005E18
 .set g_bSaveSlotScreenResult,    0x03005E24
 .set g_OptionsState,             0x03005E30

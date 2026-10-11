@@ -3,6 +3,7 @@
 #include "game/game_modes.h"
 #include "input.h"
 #include "menu/main_menu.h"
+#include "title.h"
 #include "menu/minigame_menu.h"
 #include "game/save.h"
 

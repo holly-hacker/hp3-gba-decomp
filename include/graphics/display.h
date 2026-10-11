@@ -83,7 +83,8 @@ extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 extern void StopPaletteEffect(s32 handle);
 // Copies a w x h rectangle of tiles from (srcX, srcY) of a loaded BG tilemap to (dstX, dstY) of the
 // given BG, adding tileOffset to the tile numbers and palBank to their palette.
-extern void sub_0800D57C(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData, u32 arg6);  // palette fade/cycle effect
+// Starts a palette effect through sub_0800D5DC and sets its bFrameCount; returns its slot.
+extern s32 StartPaletteEffectWithFrameCount(u32 startColor, u32 colorCount, u32 stepTicks, u32 delay, u32 flags, const u16 *pFrames, u32 frameCount);
 extern void sub_08006C00(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 srcX, u32 srcY,
                          u32 dstX, u32 dstY, u32 width, u32 height);
 extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full

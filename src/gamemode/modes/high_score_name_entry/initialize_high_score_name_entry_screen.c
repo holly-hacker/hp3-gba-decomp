@@ -8,7 +8,7 @@
 #include "menu/main_menu.h"
 #include "minigame/high_score_name_entry.h"
 #include "gen/graphics/minigames/wizard_cracker.h"
-#include "gen/graphics/minigames/pumpkin.h"
+#include "gen/graphics/menus.h"
 
 void InitializeHighScoreNameEntryScreen(void)
 {
@@ -29,7 +29,7 @@ void InitializeHighScoreNameEntryScreen(void)
     ClearBgTilemap(0);
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(5, 0, -1);
-    sub_0800D57C(3, 1, 8, 0x10, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gServePumpkinJuicePanelPalette), 6);
+    StartPaletteEffectWithFrameCount(3, 1, 8, 0x10, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gMenuSelectionPalette), 6);
     SetBgScroll_candidate(2, 0, 0);
     g_GameModeStackContext.dwModeState = 0;
 
