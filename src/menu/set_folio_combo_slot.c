@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/save.h"
 #include "gen/graphics/overworld.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "menu/folio_universitas.h"
 
 // Shows card `cardIndex` in one of the three combo slots; any index past the last card

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "gen/graphics/battle.h"
 
 // Battle effect sprites used by object scripts (docs/formats/battle_scripts.md).

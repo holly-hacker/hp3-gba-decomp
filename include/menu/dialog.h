@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "graphics/scanline_effects.h"
 
 // Dialog box state at 0x03002E88; only the fields room scripts touch and the lifetime

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 void SetObjectAffineSlotId(OamEntry *oam, u16 slot)
 {

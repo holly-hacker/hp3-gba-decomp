@@ -5,6 +5,7 @@
 #include "hw/mem.h"
 #include "graphics/graphics.h"
 #include "graphics/palette.h"
+#include "vram.h"
 
 // Battle mode's pDestroyFn. See docs/memory-map/battle.md.
 void ExitBattle(void)

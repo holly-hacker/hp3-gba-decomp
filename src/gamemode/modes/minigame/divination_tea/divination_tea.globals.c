@@ -1,6 +1,6 @@
 #include "types.h"
-#include "graphics/object.h"
-#include "graphics/object_anim.h"
+#include "actor.h"
+#include "actor_anim.h"
 #include "minigame/divination_tea.h"
 #include "gen/graphics/overworld.h"
 

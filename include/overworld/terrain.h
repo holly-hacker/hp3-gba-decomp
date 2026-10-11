@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Pixel edges of an object's terrain box (Object.bTerrainBox*) around its integer position.
 typedef struct TerrainBox {

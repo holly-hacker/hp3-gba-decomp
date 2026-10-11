@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Text-and-portrait cutscenes (GameModes Intro through GameCompletedReplayCutscene
 // share one init/update/exit set); Credits shares the exit function and the

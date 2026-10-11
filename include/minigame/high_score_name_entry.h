@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // High score name entry, game mode 0x1D (HighScoreNameEntryUnused). A 6x6 keypad
 // of letters and digits plus a row holding the "Done" entry; nothing in the

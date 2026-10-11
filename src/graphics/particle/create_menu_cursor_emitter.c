@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "gen/graphics/menus.h"
 
 // Attaches the sparkle emitter to a menu cursor object (cursor kind 4 of SpawnMenuCursorObject).

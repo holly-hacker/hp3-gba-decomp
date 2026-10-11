@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/terrain.h"
 
 // Runs the terrain pass for one object: finds the terrain under its box, applies the response

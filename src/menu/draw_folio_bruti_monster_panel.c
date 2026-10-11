@@ -5,7 +5,7 @@
 #include "game/save.h"
 #include "gen/graphics/overworld.h"
 #include "graphics/display.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "graphics/text.h"
 #include "menu/folio_bruti.h"
 #include "menu/folio_bruti_inline.h"

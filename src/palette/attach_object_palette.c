@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "palette.h"
 
 // Gives obj an OBJ palette bank for pPalette, whose colors 1-15 are loaded into

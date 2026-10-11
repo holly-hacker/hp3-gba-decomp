@@ -3,7 +3,7 @@
 #include "gen/graphics/minigames/hippogriff.h"
 #include "gen/graphics/overworld.h"
 #include "graphics/display.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "font.h"
 #include "menu/folio_bruti.h"
 

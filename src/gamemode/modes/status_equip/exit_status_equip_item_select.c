@@ -3,7 +3,7 @@
 #include "hw/io_regs.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "menu/status_equip.h"
 
 void ExitStatusEquipItemSelect(void)

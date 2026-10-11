@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object_anim.h"
+#include "actor_anim.h"
 #include "overworld/room_object.h"
 #include "gen/graphics/overworld.h"
 

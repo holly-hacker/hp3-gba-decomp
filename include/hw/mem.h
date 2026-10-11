@@ -112,17 +112,6 @@ extern void SortObjectsByDepthIwram(struct Object **queue, u32 count);
 extern void CheckObjectCollisionsIwram(u32 count, struct Object **queue);
 extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 startBit);
 u32 FindFreeObjTileRun(const u8 *pBitmap, u32 runLength, u32 startBit);
-// OBJ VRAM tile allocator bitmaps, one bit per 32-byte tile (1024 tiles).
-// A set bit in g_abObjTileAllocBitmap marks a tile in use. Freeing a run
-// clears its bits in g_abObjTileFreeMask only; ApplyDeferredObjTileFrees
-// folds the mask into the bitmap on a vblank that swaps the OAM buffers.
-extern u8 g_abObjTileAllocBitmap[128];
-extern u8 g_abObjTileFreeMask[128];
-void ApplyDeferredObjTileFrees(void);
-// Range helpers on the OBJ tile bitmaps; firstTile 0xFFFF (no allocation) is ignored by the clears.
-void MarkObjTilesInUse(u16 firstTile, u16 tileCount);
-void ClearObjTileAllocBits(u16 firstTile, u16 tileCount);
-void ClearObjTileFreeMaskBits(u16 firstTile, u16 tileCount);
 extern u32 g_dwObjectListActive_candidate;
 // Rounding bias for WriteObjectOamCells' scaled cell offsets; always 0.
 extern u32 g_dwUnk03001DC4;

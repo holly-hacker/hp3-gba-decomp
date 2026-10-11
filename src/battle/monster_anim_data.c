@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object_anim.h"
+#include "actor_anim.h"
 #include "battle/battle.h"
 
 // Each monster's battle animation, played with its g_pMonsterGraphicsTable

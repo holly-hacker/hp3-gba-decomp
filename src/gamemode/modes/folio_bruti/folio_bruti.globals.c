@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "menu/folio_bruti.h"
 #include "gen/graphics/overworld.h"
 

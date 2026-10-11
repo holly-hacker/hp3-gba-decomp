@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Stops an object that has come to rest on a tile and moves it horizontally so
 // the left edge of its terrain box lies on the nearest 8-pixel column.

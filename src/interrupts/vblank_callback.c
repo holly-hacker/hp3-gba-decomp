@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "hw/vblank.h"
 
 // The default vblank callback installed by AgbMain.

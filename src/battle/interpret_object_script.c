@@ -11,6 +11,7 @@
 #include "hw/vblank.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
+#include "vram.h"
 
 // Runs an effect object's bytecode script (docs/formats/battle_scripts.md).
 // Each call executes opcodes until one returns: the wait opcodes hand the

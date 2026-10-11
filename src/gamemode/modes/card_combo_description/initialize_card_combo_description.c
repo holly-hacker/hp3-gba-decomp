@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "gen/graphics/cutscenes.h"
 #include "graphics/display.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "font.h"
 #include "text.h"
 #include "menu/folio_universitas.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "game/save.h"
 
 // Number of collector's cards in the Folio Universitas, indexed 0-50.

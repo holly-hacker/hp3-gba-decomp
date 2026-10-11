@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // The mode's screen state at 0x03005D98 (US). Fields used by the mode handlers;
 // the object setup helpers sub_08043114/sub_08043308 own the rest.

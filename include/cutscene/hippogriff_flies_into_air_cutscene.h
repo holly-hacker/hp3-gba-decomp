@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "gen/graphics/minigames/hippogriff.h"
 
 extern Object *g_pHippogriffFliesIntoAirObject;   // 0x03002F18: the hippogriff; scaled and moved into the air

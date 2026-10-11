@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "gen/graphics/battle.h"
 
 // Battle UI sprites, indexed by sub_08012CE4 and sub_08012D2C: records 0-71

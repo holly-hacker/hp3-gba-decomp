@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 #include "gen/graphics/overworld.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "menu/folio_universitas.h"
 
 void SpawnFolioUniversitasCursor(void)

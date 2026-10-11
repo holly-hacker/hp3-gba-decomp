@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "palette.h"
 
 // Rebinds the palette ReleaseObjectPalette saved in pPendingPalette, keeping its

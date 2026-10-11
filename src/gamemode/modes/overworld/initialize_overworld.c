@@ -10,6 +10,7 @@
 #include "overworld/room.h"
 #include "overworld/room_blob.h"
 #include "hw/vblank.h"
+#include "vram.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.
 #define CURRENT_ROOM g_aRoomTable[g_GameModeStackContext.dwCurrentGameModeArg2]

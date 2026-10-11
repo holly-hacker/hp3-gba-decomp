@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
 

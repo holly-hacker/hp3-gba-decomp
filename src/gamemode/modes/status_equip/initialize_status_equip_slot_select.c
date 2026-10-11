@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "menu/status_equip.h"
 #include "gen/graphics/overworld.h"
 

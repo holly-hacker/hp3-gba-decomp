@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "game/game_modes.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Pause menu Status/Equip screen, game modes 0x0C-0x0F; see
 // docs/memory-map/game_modes.md.

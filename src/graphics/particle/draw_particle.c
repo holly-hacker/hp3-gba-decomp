@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/room.h"
 
 // Returns 2 when offscreen, else QueueOamEntry's result. Only the low byte of

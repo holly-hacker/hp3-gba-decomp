@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "menu/dialog.h"

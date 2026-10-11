@@ -1,0 +1,14 @@
+#include "types.h"
+#include "actor.h"
+
+// See SortObjectsByDepth and TickObjectList's per-layer particle flush.
+void SetObjectDrawLayer(Object *obj, u8 layer)
+{
+    u32 type;
+
+    if (obj == NULL)
+        return;
+
+    type = layer;
+    obj->oam.priority = type;
+}

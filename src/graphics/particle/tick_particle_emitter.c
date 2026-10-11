@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "mt19937.h"
 
 // Advances one emitter by a frame: spawns particles every wSpawnPeriod + 1 ticks (up to

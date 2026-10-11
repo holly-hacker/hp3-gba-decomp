@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/room_script.h"
 #include "overworld/room_object_state.h"
 #include "overworld/terrain.h"
@@ -331,7 +331,6 @@ extern void sub_080248E8(void);
 extern void sub_0801FA9C(void);
 extern void StopScanlineEffects(void);
 extern void sub_0802B20C(void);
-extern void InitObjTileAllocBitmaps(u8 bgMode);
 extern void ShowMapNamePopup(void);
 extern void OverworldVBlankCallback(void);
 extern void ClearScanlineEffects(void);

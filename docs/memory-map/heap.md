@@ -57,7 +57,7 @@ by flag changes:
 
 ## Object pool — STRUCTURAL MATCH
 
-`InitObjectPool` (matched, `src/object/init_object_pool.c`) carves a second,
+`InitObjectPool` (matched, `src/actor/init_object_pool.c`) carves a second,
 fixed-size-slot pool out of the heap:
 
 - `g_ObjectPoolState.pBuffer`/`.pFreeListHead` are adjacent words
@@ -70,7 +70,7 @@ fixed-size-slot pool out of the heap:
   `ObjectPoolAuxRecord`s of 0x34 bytes, indexed by `Object.bObjectPoolAuxSlot`:
   `awTileAllocIds[12]` at `+8` and `abRefCounts[20]` at `+0x20`. Objects whose
   `bDrawFlags & 3` is nonzero share VRAM tiles through a record;
-  `ReleaseObjectOffscreenVramTiles` (matched, `src/object/`) decrements the
+  `ReleaseObjectOffscreenVramTiles` (matched, `src/actor/`) decrements the
   refcount and calls `FreeObjectVramTileAllocation` (`0x08045514`) when it
   reaches 0. Objects with `bDrawFlags & 3 == 0` free their own allocation and
   the variant slot's (when bit `0x40` is set) directly. Record fields beyond
@@ -92,7 +92,7 @@ fixed-size-slot pool out of the heap:
   (`SetExtraOamPassPriority`, unused). `ClearObjectPoolAuxBuffer` (unused)
   zeroes `g_pObjectPoolAuxBuffer`.
   The queue is a struct member: `TickObjectList` (matched,
-  `src/object/tick_object_list.c`) indexes it through the struct.
+  `src/actor/tick_object_list.c`) indexes it through the struct.
 - `g_dwUnk03001DC4` — zeroed by `InitObjectPool`. `WriteObjectOamCells`
   adds it to the magnitude of a 16.16 scaled cell offset before shifting
   out the fraction, a rounding bias. No other literal reference exists in
@@ -170,7 +170,7 @@ then descending screen Y.
 
 `CheckObjectCollisions` does the per-frame pairwise collision pass.
 **PROVEN** by decompile: each object has two `ObjectCollisionBox` slots
-(`Object.aCollisionBoxes`, `include/graphics/object.h`) and a matching 2-entry
+(`Object.aCollisionBoxes`, `include/actor.h`) and a matching 2-entry
 callback array (`Object.apfnCollisionCallback`). On AABB overlap, gated
 on `g_GameModeStackContext.dwCurrentGameMode == Overworld`, it calls
 each object's callback for the overlapping box slot with the other

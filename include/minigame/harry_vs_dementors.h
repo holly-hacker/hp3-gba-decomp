@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "gen/graphics/minigames/riddikulus.h"
 
 extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame

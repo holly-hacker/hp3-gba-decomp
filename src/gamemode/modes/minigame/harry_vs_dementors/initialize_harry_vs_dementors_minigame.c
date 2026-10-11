@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/audio.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "minigame/harry_vs_dementors.h"

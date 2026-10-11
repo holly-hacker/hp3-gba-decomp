@@ -5,7 +5,7 @@
 #include "input.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 

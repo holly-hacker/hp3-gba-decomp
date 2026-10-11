@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 extern const u32 g_dwFolioBrutiBg3Control;  // 0x08069568
 extern const u32 g_dwFolioBrutiBg2Control;  // 0x0806956C

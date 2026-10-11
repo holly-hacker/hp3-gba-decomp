@@ -2,7 +2,7 @@
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "graphics/display.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "graphics/scanline_effects.h"
 #include "font.h"
 #include "menu/dialog.h"

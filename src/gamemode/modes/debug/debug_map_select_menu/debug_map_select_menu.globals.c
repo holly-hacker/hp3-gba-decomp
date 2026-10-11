@@ -1,6 +1,6 @@
 #include "types.h"
-#include "graphics/object.h"
-#include "graphics/object_anim.h"
+#include "actor.h"
+#include "actor_anim.h"
 #include "menu/debug_menu.h"
 
 const u32 g_dwDebugMapSelectBg0Control = 0x1D02;

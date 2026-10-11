@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "game/game_modes.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // One row of a list menu, 12 bytes each.
 typedef struct {

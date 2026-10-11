@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/room_blob.h"
 
 // Points the room object table's record at tile (col, row) to `obj`, marking the object as bound

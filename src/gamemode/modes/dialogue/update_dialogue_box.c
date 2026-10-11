@@ -1,6 +1,6 @@
 #include "types.h"
 #include "game/game_modes.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "graphics/scanline_effects.h"
 #include "input.h"
 #include "menu/dialog.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Shop tab stock lists, defined in src/shop/shop_stock.c and consumed as a
 // pointer table by src/shop/shop_stock_lists.c. See docs/formats/items.md's

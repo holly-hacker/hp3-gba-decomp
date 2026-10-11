@@ -1,6 +1,6 @@
 #include "types.h"
 #include "shop.h"
-#include "graphics/object_anim.h"
+#include "actor_anim.h"
 #include "gen/graphics/overworld.h"
 
 const ObjectAssetRecord g_aShopMainMenuIcons[3] = {

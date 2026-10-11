@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Per-tile room object constructors, selected by the u16 objType at +8 of a
 // tile record; see docs/formats/rooms.md. The caller stores the returned

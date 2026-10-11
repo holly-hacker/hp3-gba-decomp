@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
 #include "title.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 void ShowMainMenuEntries(void)
 {

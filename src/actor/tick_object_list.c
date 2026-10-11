@@ -1,0 +1,129 @@
+#include "types.h"
+#include "actor.h"
+#include "hw/mem.h"
+#include "game/game_modes.h"
+
+// Runs one update pass over an object list. TickObject runs for every object
+// (from the tail when the mode flags allow the full pass), then the objects
+// TickObject queued are drawn: the sprite-frame queue, then the depth-sorted OAM
+// queue, flushing each draw layer's particles as the sort crosses its boundary.
+// Returns 1 if any object's OAM update reported work.
+u32 TickObjectList(ActiveObjectListState *list, u8 mode)
+{
+    Object *obj;
+    Object *next;
+    u32 orbit;
+    u32 posX;
+    u32 posY;
+    u32 oamResult;
+    u32 queueIndex;
+    u32 layer;
+    u32 anyOamWork;
+    void (*pfnCheckCollisions)(u32, Object **) = CheckObjectCollisionsIwram;
+    void (*pfnSortObjects)(Object **, u32) = SortObjectsByDepthIwram;
+
+    anyOamWork = 0;
+    g_bSpriteFrameQueueCount = 0;
+    g_dwOamQueueCount = 0;
+    g_ObjectPoolState.bTileUpdateQueueCount = 0;
+    g_dwCollisionQueueCount = 0;
+    layer = 0;
+
+    if ((g_dwGameModeFlags & 0x40008) == 8) {
+        obj = (Object *)list->pHead;
+        while (obj != NULL) {
+            next = (Object *)obj->node.pNext;
+            TickObject(obj, mode);
+            obj = next;
+        }
+    }
+    else {
+        obj = (Object *)list->pUnk4;
+        while (obj != NULL) {
+            next = (Object *)obj->node.pPrev;
+            TickObject(obj, mode);
+            obj = next;
+        }
+
+        if (!(g_dwGameModeFlags & 0x800) && g_dwCollisionQueueCount != 0 &&
+            list == &g_ActiveObjectListState)
+            pfnCheckCollisions(g_dwCollisionQueueCount, g_apCollisionQueue);
+
+        for (obj = (Object *)list->pHead; obj != NULL; obj = (Object *)obj->node.pNext) {
+            orbit = obj->orbitState.fields.dwOrbitRadii;
+            if (obj->pOwnerObject != NULL)
+                FollowOwnerObject(obj);
+
+            posX = obj->posPrev.x;
+            posY = obj->posPrev.y;
+            obj->pos.x = posX;
+            obj->pos.y = posY;
+            if (orbit != 0)
+                ApplyObjectOrbitMotion(obj);
+        }
+    }
+
+    if (mode == 1 && g_dwObjectListActive_candidate != 0 && g_dwOamQueueCount > 1)
+        pfnSortObjects(g_apOamQueue, g_dwOamQueueCount);
+
+    for (queueIndex = g_bSpriteFrameQueueCount; queueIndex != 0; queueIndex--) {
+        obj = g_apSpriteFrameQueue[queueIndex - 1];
+        if (!(obj->dwFlags & ObjectFlagSkipSpriteFrameUpdate))
+            UpdateObjectSpriteFrame(obj, mode);
+
+        if (mode == 1) {
+            oamResult = UpdateObjectOamCells(obj);
+            if (oamResult != 0) {
+                anyOamWork = 1;
+                if (oamResult == 2)
+                    g_ObjectPoolState.apTileUpdateQueue[g_ObjectPoolState.bTileUpdateQueueCount++] = obj;
+            }
+        }
+    }
+
+    BucketParticlesByPriority();
+
+    for (queueIndex = 0; queueIndex < g_dwOamQueueCount; queueIndex++) {
+        obj = g_apOamQueue[queueIndex];
+        if (!(obj->dwFlags & ObjectFlagSkipSpriteFrameUpdate))
+            UpdateObjectSpriteFrame(obj, mode);
+
+        if (mode == 1) {
+            oamResult = UpdateObjectOamCells(obj);
+            if (obj->oam.priority != layer)
+                while (layer < obj->oam.priority) {
+                    TickParticleLayer(layer);
+                    layer++;
+                }
+
+            if (oamResult != 0) {
+                anyOamWork = 1;
+                if (oamResult == 2)
+                    g_ObjectPoolState.apTileUpdateQueue[g_ObjectPoolState.bTileUpdateQueueCount++] = obj;
+            }
+        }
+    }
+
+    if (mode == 1) {
+        if (g_ObjectPoolState.bExtraOamPassEnabled_candidate != 0) {
+            for (queueIndex = 0; queueIndex < g_dwOamQueueCount; queueIndex++) {
+                obj = g_apOamQueue[queueIndex];
+                if (obj->dwFlags & ObjectFlagExtraOamPass) {
+                    obj->bDrawFlags |= ObjectDrawFlagExtraOamPass;
+                    UpdateObjectOamCells(obj);
+                    obj->bDrawFlags &= ~ObjectDrawFlagExtraOamPass;
+                }
+            }
+        }
+
+        while (layer <= 3) {
+            TickParticleLayer(layer);
+            layer++;
+        }
+    }
+
+    if (mode == 1)
+        CommitObjAffineMatrices();
+
+    return anyOamWork;
+}

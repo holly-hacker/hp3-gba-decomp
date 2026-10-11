@@ -13,44 +13,44 @@ asm-file 0x080002A4 _ asm/rt/divide_signed_remainder.s DivideSignedRemainder
 asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
 asm-file 0x080005B0 _ asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 asm-file 0x080005EC _ asm/decompress_gamma_lz.s      DecompressGammaLz
-c-file 0x08000918 _ src/object/tick_object_list.c TickObjectList
-c-file 0x08000BC0 _ src/object/commit_queued_object_tile_updates.c CommitQueuedObjectTileUpdates
-c-file 0x08000C48 _ src/object/free_object.c FreeObject
-c-file 0x08000CD8 _ src/object/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
-c-file 0x08000DA4 _ src/object/set_object_sprite_variant.c SetObjectSpriteVariant
-c-file 0x08000E28 _ src/object/get_object_variant_frame_size.c GetObjectVariantFrameSize
-c-file 0x08000EC0 _ src/object/get_object_variant_frame_tile_gfx.c GetObjectVariantFrameTileGfx
-c-file 0x08000F50 _ src/object/get_direction_to_target.c GetDirectionToTarget
-c-file 0x08000FF0 _ src/object/get_unblocked_direction_to_target.c GetUnblockedDirectionToTarget
-c-file 0x08001238 _ src/object/get_object_collision_box_rect.c GetObjectCollisionBoxRect
-c-file 0x08001300 _ src/object/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
-c-file 0x0800143C _ src/object/init_object_pool.c InitObjectPool
-c-file 0x080014B4 _ src/object/alloc_object_of_type.c AllocObjectOfType
-c-file 0x080014D4 _ src/object/alloc_default_object.c AllocDefaultObject
-c-file 0x08001528 _ src/object/spawn_object.c SpawnObject
-c-file 0x080015B8 _ src/object/tick_active_objects.c TickActiveObjects
-c-file 0x080015D4 _ src/object/free_all_objects.c FreeAllObjects
-c-file 0x080015F8 _ src/object/active_object_flags.c SetActiveObjectsFlags
-c-file 0x0800163C 0x08001664 src/object/object_pool_settings.c ClearObjectPoolAuxBuffer
+c-file 0x08000918 _ src/actor/tick_object_list.c TickObjectList
+c-file 0x08000BC0 _ src/actor/commit_queued_object_tile_updates.c CommitQueuedObjectTileUpdates
+c-file 0x08000C48 _ src/actor/free_object.c FreeObject
+c-file 0x08000CD8 _ src/actor/update_object_onscreen_flags.c UpdateObjectOnscreenFlags
+c-file 0x08000DA4 _ src/actor/set_object_sprite_variant.c SetObjectSpriteVariant
+c-file 0x08000E28 _ src/actor/get_object_variant_frame_size.c GetObjectVariantFrameSize
+c-file 0x08000EC0 _ src/actor/get_object_variant_frame_tile_gfx.c GetObjectVariantFrameTileGfx
+c-file 0x08000F50 _ src/actor/get_direction_to_target.c GetDirectionToTarget
+c-file 0x08000FF0 _ src/actor/get_unblocked_direction_to_target.c GetUnblockedDirectionToTarget
+c-file 0x08001238 _ src/actor/get_object_collision_box_rect.c GetObjectCollisionBoxRect
+c-file 0x08001300 _ src/actor/release_object_offscreen_vram_tiles.c ReleaseObjectOffscreenVramTiles
+c-file 0x0800143C _ src/actor/init_object_pool.c InitObjectPool
+c-file 0x080014B4 _ src/actor/alloc_object_of_type.c AllocObjectOfType
+c-file 0x080014D4 _ src/actor/alloc_default_object.c AllocDefaultObject
+c-file 0x08001528 _ src/actor/spawn_object.c SpawnObject
+c-file 0x080015B8 _ src/actor/tick_active_objects.c TickActiveObjects
+c-file 0x080015D4 _ src/actor/free_all_objects.c FreeAllObjects
+c-file 0x080015F8 _ src/actor/active_object_flags.c SetActiveObjectsFlags
+c-file 0x0800163C 0x08001664 src/actor/object_pool_settings.c ClearObjectPoolAuxBuffer
 thumb-func 0x08001664 sub_08001664
 thumb-func 0x08001690 sub_08001690
-c-file 0x080016E8 _ src/object/object_variant_slots.c EnableObjectVariantSlots
-c-file 0x0800187C 0x080018A0 src/object/set_object_asset_record.c SetObjectAssetRecord
+c-file 0x080016E8 _ src/actor/object_variant_slots.c EnableObjectVariantSlots
+c-file 0x0800187C 0x080018A0 src/actor/set_object_asset_record.c SetObjectAssetRecord
 thumb-func 0x080018A0 sub_080018A0
-c-file 0x080018D8 0x08001918 src/object/set_object_anim_data.c SetObjectAnimData
+c-file 0x080018D8 0x08001918 src/actor/set_object_anim_data.c SetObjectAnimData
 thumb-func 0x08001918 sub_08001918
-c-file 0x08001958 _ src/object/set_object_anim_frame.c SetObjectAnimFrame
-c-file 0x0800199C _ src/object/set_object_move_target.c SetObjectMoveTarget
-c-file 0x080019A4 _ src/object/snap_object_position.c SnapObjectPosition
-c-file 0x080019B0 _ src/object/set_object_position.c SetObjectPosition
-c-file 0x080019C0 0x080019C8 src/object/set_object_velocity.c SetObjectVelocity
+c-file 0x08001958 _ src/actor/set_object_anim_frame.c SetObjectAnimFrame
+c-file 0x0800199C _ src/actor/set_object_move_target.c SetObjectMoveTarget
+c-file 0x080019A4 _ src/actor/snap_object_position.c SnapObjectPosition
+c-file 0x080019B0 _ src/actor/set_object_position.c SetObjectPosition
+c-file 0x080019C0 0x080019C8 src/actor/set_object_velocity.c SetObjectVelocity
 thumb-func 0x080019C8 sub_080019C8
 thumb-func 0x080019E0 sub_080019E0
 thumb-func 0x080019F8 sub_080019F8
 thumb-func 0x08001A34 sub_08001A34
 thumb-func 0x08001A58 sub_08001A58
-c-file 0x08001A78 _ src/object/cancel_object_move.c CancelObjectMove_candidate
-c-file 0x08001A84 0x08001A94 src/object/start_object_move.c StartObjectMove
+c-file 0x08001A78 _ src/actor/cancel_object_move.c CancelObjectMove_candidate
+c-file 0x08001A84 0x08001A94 src/actor/start_object_move.c StartObjectMove
 thumb-func 0x08001A94 SetObjectMoveTargetWithDuration_candidate
 thumb-func 0x08001AA8 sub_08001AA8
 thumb-func 0x08001AC4 sub_08001AC4
@@ -65,47 +65,47 @@ thumb-func 0x08001CA0 sub_08001CA0
 thumb-func 0x08001CE8 sub_08001CE8
 thumb-func 0x08001D3C sub_08001D3C
 thumb-func 0x08001D90 sub_08001D90
-c-file 0x08001D9C 0x08001DF8 src/object/do_objects_overlap.c DoObjectsOverlap
+c-file 0x08001D9C 0x08001DF8 src/actor/do_objects_overlap.c DoObjectsOverlap
 thumb-func 0x08001DF8 ObjectIsNullObjectType
 thumb-func 0x08001E0C sub_08001E0C
 thumb-func 0x08001E4C UnsetObjectHasAnimation
-c-file 0x08001E58 _ src/object/set_object_action_sub_state.c SetObjectActionSubState
-c-file 0x08001E7C 0x08001EA0 src/object/set_object_action_state.c SetObjectActionState
+c-file 0x08001E58 _ src/actor/set_object_action_sub_state.c SetObjectActionSubState
+c-file 0x08001E7C 0x08001EA0 src/actor/set_object_action_state.c SetObjectActionState
 thumb-func 0x08001EA0 SetObjectAnimSubState_candidate
-c-file 0x08001EA8 _ src/object/set_object_facing.c SetObjectFacing
-c-file 0x08001EC8 _ src/object/set_object_facing_unused.c SetObjectFacing_unused
-c-file 0x08001EE8 _ src/object/set_object_flags.c SetObjectFlags
-c-file 0x08001EF0 _ src/object/clear_object_flags.c ClearObjectFlags
-c-file 0x08001EF8 _ src/object/object_has_flags.c ObjectHasFlags
-c-file 0x08001F0C _ src/object/set_object_draw_layer.c SetObjectDrawLayer
-c-file 0x08001F30 _ src/object/set_object_depth_sort_bias.c SetObjectDepthSortBias
+c-file 0x08001EA8 _ src/actor/set_object_facing.c SetObjectFacing
+c-file 0x08001EC8 _ src/actor/set_object_facing_unused.c SetObjectFacing_unused
+c-file 0x08001EE8 _ src/actor/set_object_flags.c SetObjectFlags
+c-file 0x08001EF0 _ src/actor/clear_object_flags.c ClearObjectFlags
+c-file 0x08001EF8 _ src/actor/object_has_flags.c ObjectHasFlags
+c-file 0x08001F0C _ src/actor/set_object_draw_layer.c SetObjectDrawLayer
+c-file 0x08001F30 _ src/actor/set_object_depth_sort_bias.c SetObjectDepthSortBias
 
-c-file 0x08001F40 0x08001F98 src/object/check_object_terrain_collision.c CheckObjectTerrainCollision
+c-file 0x08001F40 0x08001F98 src/actor/check_object_terrain_collision.c CheckObjectTerrainCollision
 thumb-func 0x08001F98 sub_08001F98
-c-file 0x08001FD8 _ src/object/tick_object.c TickObject
-c-file 0x08002154 _ src/object/tick_object_animation.c TickObjectAnimation
-c-file 0x080021F4 _ src/object/run_object_anim_commands.c RunObjectAnimCommands
-c-file 0x080023B4 _ src/object/load_object_anim_frame_bounds.c LoadObjectAnimFrameBounds
-c-file 0x080024B0 _ src/object/load_variant_slot_frame_bounds.c LoadVariantSlotFrameBounds
-c-file 0x080025F8 _ src/object/integrate_object_velocity.c IntegrateObjectVelocity
-c-file 0x08002618 _ src/object/update_object_oam_cells.c UpdateObjectOamCells
-c-file 0x08002C18 _ src/object/write_object_oam_cells.c WriteObjectOamCells
-c-file 0x08002F28 _ src/object/update_object_sprite_frame.c UpdateObjectSpriteFrame
-c-file 0x080034B8 _ src/object/follow_owner_object.c FollowOwnerObject
-c-file 0x0800351C _ src/object/tick_object_move.c TickObjectMove
-c-file 0x0800359C 0x080035C0 src/object/is_object_tick_allowed.c IsObjectTickAllowed
+c-file 0x08001FD8 _ src/actor/tick_object.c TickObject
+c-file 0x08002154 _ src/actor/tick_object_animation.c TickObjectAnimation
+c-file 0x080021F4 _ src/actor/run_object_anim_commands.c RunObjectAnimCommands
+c-file 0x080023B4 _ src/actor/load_object_anim_frame_bounds.c LoadObjectAnimFrameBounds
+c-file 0x080024B0 _ src/actor/load_variant_slot_frame_bounds.c LoadVariantSlotFrameBounds
+c-file 0x080025F8 _ src/actor/integrate_object_velocity.c IntegrateObjectVelocity
+c-file 0x08002618 _ src/actor/update_object_oam_cells.c UpdateObjectOamCells
+c-file 0x08002C18 _ src/actor/write_object_oam_cells.c WriteObjectOamCells
+c-file 0x08002F28 _ src/actor/update_object_sprite_frame.c UpdateObjectSpriteFrame
+c-file 0x080034B8 _ src/actor/follow_owner_object.c FollowOwnerObject
+c-file 0x0800351C _ src/actor/tick_object_move.c TickObjectMove
+c-file 0x0800359C 0x080035C0 src/actor/is_object_tick_allowed.c IsObjectTickAllowed
 thumb-func 0x080035C0 sub_080035C0
 thumb-func 0x08003660 sub_08003660
-c-file 0x0800366C 0x08003708 src/object/set_object_affine_transform.c SetObjectAffineTransform
+c-file 0x0800366C 0x08003708 src/actor/set_object_affine_transform.c SetObjectAffineTransform
 thumb-func 0x08003708 SetObjectFlippedX
 thumb-func 0x08003788 sub_08003788
-c-file 0x08003808 0x08003848 src/object/release_object_affine_slot.c ReleaseObjectAffineSlot
+c-file 0x08003808 0x08003848 src/actor/release_object_affine_slot.c ReleaseObjectAffineSlot
 thumb-func 0x08003848 StartObjectAffineScaleTween
-c-file 0x080038A0 _ src/object/tick_object_affine_effect.c TickObjectAffineEffect
-c-file 0x080038EC 0x08003928 src/object/alloc_object_affine_slot.c AllocObjectAffineSlot
+c-file 0x080038A0 _ src/actor/tick_object_affine_effect.c TickObjectAffineEffect
+c-file 0x080038EC 0x08003928 src/actor/alloc_object_affine_slot.c AllocObjectAffineSlot
 thumb-func 0x08003928 IsObjectFlippedX
 thumb-func 0x08003954 sub_08003954
-c-file 0x08003980 0x080039E8 src/object/apply_object_orbit_motion.c ApplyObjectOrbitMotion
+c-file 0x08003980 0x080039E8 src/actor/apply_object_orbit_motion.c ApplyObjectOrbitMotion
 thumb-func 0x080039E8 sub_080039E8
 thumb-func 0x080039F8 sub_080039F8
 thumb-func 0x08003A0C sub_08003A0C
@@ -1939,20 +1939,20 @@ thumb-func 0x08045230 GetScanlineEffectLine
 c-file 0x08045240 0x08045244 src/graphics/scanline/scanline_effect_nop.c ScanlineEffectNop
 thumb-func 0x08045244 ScanlineEffectVCountCallback
 c-file 0x080452A0 _ src/graphics/scanline/clear_scanline_effect_staging.c ClearScanlineEffectStaging
-c-file 0x080452E0 _ src/object/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
-c-file 0x08045304 0x08045358 src/object/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
+c-file 0x080452E0 _ src/vram/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
+c-file 0x08045304 0x08045358 src/vram/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
 thumb-func 0x08045358 sub_0804542C
-c-file 0x0804537C _ src/object/alloc_object_vram_tiles.c AllocObjectVramTiles
-c-file 0x080453E8 _ src/object/load_obj_tile.c LoadObjTile
-c-file 0x08045408 _ src/object/load_obj_tile_at.c LoadObjTileAt
-c-file 0x08045420 _ src/object/free_object_vram_tile_allocation_now.c FreeObjectVramTileAllocationNow
-c-file 0x08045440 0x08045460 src/object/free_object_vram_tile_allocation.c FreeObjectVramTileAllocation
+c-file 0x0804537C _ src/vram/alloc_object_vram_tiles.c AllocObjectVramTiles
+c-file 0x080453E8 _ src/vram/load_obj_tile.c LoadObjTile
+c-file 0x08045408 _ src/vram/load_obj_tile_at.c LoadObjTileAt
+c-file 0x08045420 _ src/vram/free_object_vram_tile_allocation_now.c FreeObjectVramTileAllocationNow
+c-file 0x08045440 0x08045460 src/vram/free_object_vram_tile_allocation.c FreeObjectVramTileAllocation
 thumb-func 0x08045460 sub_08045534
-c-file 0x08045488 _ src/object/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
-c-file 0x080454B4 _ src/object/load_obj_tile_sheet.c LoadObjTileSheet
-c-file 0x08045510 _ src/object/mark_obj_tiles_in_use.c MarkObjTilesInUse
-c-file 0x0804555C _ src/object/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
-c-file 0x080455B4 0x0804560C src/object/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
+c-file 0x08045488 _ src/vram/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
+c-file 0x080454B4 _ src/vram/load_obj_tile_sheet.c LoadObjTileSheet
+c-file 0x08045510 _ src/vram/mark_obj_tiles_in_use.c MarkObjTilesInUse
+c-file 0x0804555C _ src/vram/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
+c-file 0x080455B4 0x0804560C src/vram/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
 thumb-func 0x0804560C sub_080456E0
 thumb-func 0x080456A0 sub_08045774
 thumb-func 0x08045734 HideScreenWindow_candidate

@@ -20,8 +20,8 @@
 #include "overworld/room.h"
 #include "math.h"
 #include "game/game_timer.h"
+#include "vram.h"
 
-extern void InstallIwramFindFreeObjTileRun(void);
 extern void InstallIwramDecompressCodecs(void);
 extern void InitSaveSystem(void);
 extern void NoopInit(void);

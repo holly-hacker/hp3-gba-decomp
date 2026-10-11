@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "palette.h"
 
 // Drops obj's reference to its OBJ palette cache slot. The slot's palette

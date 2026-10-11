@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "graphics/scanline_effects.h"
 
 // Game mode 0x1A (LoadingScreen): the story-stage choice pushed by the room script op

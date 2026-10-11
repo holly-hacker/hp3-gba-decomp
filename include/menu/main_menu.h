@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Result of the save slot screen, set by HandleSaveSlotInput_candidate.
 typedef enum {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Room-script VM; see docs/formats/room_scripts.md. A chain is a sequence of
 // records, each starting with a u32 opcode (0 ends the chain).

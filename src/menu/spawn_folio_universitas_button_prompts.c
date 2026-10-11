@@ -1,6 +1,6 @@
 #include "types.h"
 #include "gen/graphics/overworld.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "menu/folio_universitas.h"
 
 void SpawnFolioUniversitasButtonPrompts(void)

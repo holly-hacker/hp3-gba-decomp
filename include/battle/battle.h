@@ -3,7 +3,7 @@
 #include "types.h"
 #include "game/save.h"
 #include "hw/mem.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "input.h"
 #include "game/game_modes.h"
 
@@ -402,7 +402,6 @@ extern void sub_08031668(s32 arg0, s32 arg1);
 extern void sub_08026254(void);
 extern void sub_0802D6B8(void);
 extern void sub_08007A90(void);
-extern void sub_0804542C(void);
 extern void ClearFighterObjectFlag_candidate(u8 fighterIndex);  // 0x08012CB4
 extern void ClearRoomObjectStateBuffer(void);  // memsets g_pRoomObjectStateBuffer (0x20BC bytes); see docs/formats/save.md
 

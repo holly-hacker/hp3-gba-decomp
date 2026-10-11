@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "hw/io_regs.h"
 #include "menu/minigame_menu.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"

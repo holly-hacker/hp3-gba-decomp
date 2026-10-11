@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Per-tick Owl Care Kit clock, a no-op until the care screen has been visited.
 // Counts down the Mail flight timer, otherwise advances the elapsed-tick counter;

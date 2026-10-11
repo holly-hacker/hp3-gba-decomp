@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "hw/mem.h"
 #include "math.h"
 #include "overworld/overworld.h"

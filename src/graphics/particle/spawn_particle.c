@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/effect_script.h"
 #include "graphics/graphics.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "mt19937.h"
 
 // Spawns one particle from an emitter. Position, lifetime and direction draws use the visual RNG

@@ -1357,7 +1357,7 @@ through them, but the records themselves are ordinary dialog assets --
   superficially inviting the same treatment, this pointer is never
   routed through either decompression dispatcher. Layout (byte offsets
   from `pFrameData`; C types `ObjectFrameData`/`ObjectFrameDesc` in
-  `include/graphics/object.h`):
+  `include/actor.h`):
   - `+0x2`-`+0x5` (`s8` each): terrain box left/right/top/bottom, the same
     for every frame. `LoadObjectAnimFrameBounds` (`0x080023B4`) copies it
     to `Object+0xC0`.
@@ -1431,7 +1431,7 @@ through them, but the records themselves are ordinary dialog assets --
 stream (`data + start * 2`); `RunObjectAnimCommands` reads it two bytes at a time. A
 first byte up to `0xEE` shows that frame for the second byte's count of ticks
 (0 holds it); `0xEF`-`0xFF` run immediately, in sequence, until the next
-frame. `include/graphics/object_anim.h` spells them as `ANIM_*` macros, which
+frame. `include/actor_anim.h` spells them as `ANIM_*` macros, which
 the ROM's animation tables use.
 
 | Byte | Command | Operand |

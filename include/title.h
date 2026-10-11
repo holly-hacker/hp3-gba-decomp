@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // The title screen (MainMenu game mode): the copyright and "Press START"
 // screen shown after boot, then the New Game / Load Game / Options /

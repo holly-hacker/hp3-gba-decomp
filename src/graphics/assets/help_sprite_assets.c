@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "gen/graphics/menus.h"
 
 // Help screen sprites, drawn by sub_08039020 with the palette of the same

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "graphics/object.h"
-#include "graphics/object_anim.h"
+#include "actor.h"
+#include "actor_anim.h"
 #include "cutscene/clock_skip_cutscene.h"
 #include "gen/graphics/overworld.h"
 

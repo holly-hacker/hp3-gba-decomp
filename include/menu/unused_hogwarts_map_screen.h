@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Game mode 0x25 (UnusedHogwartsMapScreen), a list of nine entries drawn as sprites down the right
 // edge, one 16-pixel row each. dwCurrentGameModeArg2 is the selected entry: Up/Down moves it and

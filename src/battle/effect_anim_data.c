@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object_anim.h"
+#include "actor_anim.h"
 #include "battle/effect_script.h"
 
 // A fighter's idle loop, played on g_aFighterAnimTable's record 4 when an

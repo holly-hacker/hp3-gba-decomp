@@ -9,6 +9,7 @@
 #include "mt19937.h"
 #include "overworld/room.h"
 #include "font.h"
+#include "vram.h"
 
 void InitializeDivinationTeaMinigame(void)
 {

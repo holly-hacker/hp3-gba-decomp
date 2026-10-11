@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/object_anim.h"
+#include "actor_anim.h"
 #include "menu/folio_bruti.h"
 #include "menu/folio_universitas.h"
 

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // The reverse of each Direction and Direction4; a directional particle
 // travels away from its emitter's facing.

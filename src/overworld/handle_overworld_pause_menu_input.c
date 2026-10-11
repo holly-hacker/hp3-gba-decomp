@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "input.h"
 #include "graphics/audio.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "overworld/overworld.h"
 
 void HandleOverworldPauseMenuInput(void)

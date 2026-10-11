@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "game/game_modes.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 // Help-screen engine shared by the Help and HelpTopicScreen game modes.
 

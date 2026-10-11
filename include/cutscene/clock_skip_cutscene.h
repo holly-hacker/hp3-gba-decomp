@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "graphics/graphics.h"
-#include "graphics/object.h"
+#include "actor.h"
 #include "gen/graphics/cutscenes.h"
 
 extern const ObjectAssetRecord g_ClockSkipObject1Asset;  // 0x0806BDA4

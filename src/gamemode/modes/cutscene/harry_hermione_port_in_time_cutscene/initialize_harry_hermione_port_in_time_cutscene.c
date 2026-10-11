@@ -7,6 +7,7 @@
 #include "hw/io_regs.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
+#include "vram.h"
 
 void InitializeHarryHermionePortInTimeCutscene(void)
 {

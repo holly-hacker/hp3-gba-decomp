@@ -4,7 +4,7 @@
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
-#include "graphics/object.h"
+#include "actor.h"
 
 void InitializeMinigameMenu(void)
 {
