@@ -9,8 +9,8 @@
 void SpawnParticle(ParticleEmitter *emitter)
 {
     Particle *particle;
-    ScreenPoint pos;
-    ScreenPoint endPos;
+    IntPoint pos;
+    IntPoint endPos;
     s32 spread;
     s32 t;
     s32 dx;
@@ -27,12 +27,12 @@ void SpawnParticle(ParticleEmitter *emitter)
     else if (emitter->bMode == ParticleModeStillAlt
              || emitter->bMode == ParticleModeRandomDirectionAlt)
     {
-        if (!sub_08001AA8(emitter->pTarget, 2, &pos))
+        if (!GetActorAnchor(emitter->pTarget, 2, &pos))
         {
             FreeParticle(particle);
             return;
         }
-        if (!sub_08001AA8(emitter->pTarget, 3, &endPos))
+        if (!GetActorAnchor(emitter->pTarget, 3, &endPos))
         {
             FreeParticle(particle);
             return;
@@ -63,7 +63,7 @@ void SpawnParticle(ParticleEmitter *emitter)
     }
     else if (emitter->wFlags & ParticleEmitterFlagAnchorPosition)
     {
-        if (!sub_08001AA8(emitter->pTarget, emitter->bParam43, &pos))
+        if (!GetActorAnchor(emitter->pTarget, emitter->bParam43, &pos))
         {
             FreeParticle(particle);
             return;

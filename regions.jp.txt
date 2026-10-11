@@ -31,47 +31,47 @@ c-file 0x08001528 _ src/actor/spawn_actor.c SpawnActor
 c-file 0x080015B8 _ src/actor/tick_active_actors.c TickActiveActors
 c-file 0x080015D4 _ src/actor/free_all_actors.c FreeAllActors
 c-file 0x080015F8 _ src/actor/active_actor_flags.c SetActiveActorsFlags
-c-file 0x0800163C 0x08001664 src/actor/actor_pool_settings.c ClearActorPoolAuxBuffer
-thumb-func 0x08001664 sub_08001664
-thumb-func 0x08001690 sub_08001690
+c-file 0x0800163C _ src/actor/actor_pool_settings.c ClearActorPoolAuxBuffer
+c-file 0x08001664 _ src/actor/alloc_actor_vram_tiles.c AllocActorVramTiles
+c-file 0x08001690 _ src/actor/set_actor_sprite.c SetActorSprite
 c-file 0x080016E8 _ src/actor/actor_variant_slots.c EnableActorVariantSlots
-c-file 0x0800187C 0x080018A0 src/actor/set_actor_asset_record.c SetActorAssetRecord
-thumb-func 0x080018A0 sub_080018A0
-c-file 0x080018D8 0x08001918 src/actor/set_actor_anim_data.c SetActorAnimData
-thumb-func 0x08001918 sub_08001918
+c-file 0x0800187C _ src/actor/set_actor_asset_record.c SetActorAssetRecord
+c-file 0x080018A0 _ src/actor/set_actor_anim_stream.c SetActorAnimStream
+c-file 0x080018D8 _ src/actor/set_actor_anim_data.c SetActorAnimData
+c-file 0x08001918 _ src/actor/set_actor_anim_data_at_command.c SetActorAnimDataAtCommand
 c-file 0x08001958 _ src/actor/set_actor_anim_frame.c SetActorAnimFrame
 c-file 0x0800199C _ src/actor/set_actor_move_target.c SetActorMoveTarget
 c-file 0x080019A4 _ src/actor/snap_actor_position.c SnapActorPosition
 c-file 0x080019B0 _ src/actor/set_actor_position.c SetActorPosition
-c-file 0x080019C0 0x080019C8 src/actor/set_actor_velocity.c SetActorVelocity
-thumb-func 0x080019C8 sub_080019C8
-thumb-func 0x080019E0 sub_080019E0
-thumb-func 0x080019F8 sub_080019F8
-thumb-func 0x08001A34 sub_08001A34
-thumb-func 0x08001A58 sub_08001A58
+c-file 0x080019C0 _ src/actor/set_actor_velocity.c SetActorVelocity
+c-file 0x080019C8 _ src/actor/set_actor_local_velocity_x.c SetActorLocalVelocityX
+c-file 0x080019E0 _ src/actor/set_actor_local_velocity_y.c SetActorLocalVelocityY
+c-file 0x080019F8 _ src/actor/set_actor_accel_in_direction16.c SetActorAccelInDirection16
+c-file 0x08001A34 _ src/actor/set_actor_velocity_from_facing.c SetActorVelocityFromFacing
+c-file 0x08001A58 _ src/actor/offset_actor_position.c OffsetActorPosition
 c-file 0x08001A78 _ src/actor/cancel_actor_move.c CancelActorMove_candidate
-c-file 0x08001A84 0x08001A94 src/actor/start_actor_move.c StartActorMove
-thumb-func 0x08001A94 SetActorMoveTargetWithDuration_candidate
-thumb-func 0x08001AA8 sub_08001AA8
-thumb-func 0x08001AC4 sub_08001AC4
-thumb-func 0x08001AF8 sub_08001AF8
-thumb-func 0x08001B58 sub_08001B58
-thumb-func 0x08001BF0 sub_08001BF0
-thumb-func 0x08001C00 sub_08001C00
-thumb-func 0x08001C24 sub_08001C24
-thumb-func 0x08001C44 sub_08001C44
-thumb-func 0x08001C58 sub_08001C58
-thumb-func 0x08001CA0 sub_08001CA0
-thumb-func 0x08001CE8 sub_08001CE8
-thumb-func 0x08001D3C sub_08001D3C
-thumb-func 0x08001D90 sub_08001D90
-c-file 0x08001D9C 0x08001DF8 src/actor/do_actors_overlap.c DoActorsOverlap
-thumb-func 0x08001DF8 ActorIsNullActorType
-thumb-func 0x08001E0C sub_08001E0C
-thumb-func 0x08001E4C UnsetActorHasAnimation
+c-file 0x08001A84 _ src/actor/start_actor_move.c StartActorMove
+c-file 0x08001A94 _ src/actor/set_actor_move_target_with_duration.c SetActorMoveTargetWithDuration
+c-file 0x08001AA8 _ src/actor/get_actor_anchor.c GetActorAnchor
+c-file 0x08001AC4 _ src/actor/get_actor_flipped_anchor.c GetActorFlippedAnchor
+c-file 0x08001AF8 _ src/actor/get_actor_anchor_position.c GetActorAnchorPosition
+c-file 0x08001B58 _ src/actor/get_actor_variant_anchor_position.c GetActorVariantAnchorPosition
+c-file 0x08001BF0 _ src/actor/get_actor_max_frame_size.c GetActorMaxFrameSize
+c-file 0x08001C00 _ src/actor/get_actor_frame_size.c GetActorFrameSize
+c-file 0x08001C24 _ src/actor/get_actor_frame_tile_gfx.c GetActorFrameTileGfx
+c-file 0x08001C44 _ src/actor/get_actor_oam_position.c GetActorOamPosition
+c-file 0x08001C58 _ src/actor/get_direction_to_actor.c GetDirectionToActor
+c-file 0x08001CA0 _ src/actor/get_direction_from_actor.c GetDirectionFromActor
+c-file 0x08001CE8 _ src/actor/get_direction_vector.c GetDirectionVector
+c-file 0x08001D3C _ src/actor/find_actors_by_type.c FindActorsByType
+c-file 0x08001D90 _ src/actor/set_actor_list_active.c SetActorListActive_candidate
+c-file 0x08001D9C _ src/actor/do_actors_overlap.c DoActorsOverlap
+c-file 0x08001DF8 _ src/actor/actor_is_null_actor_type.c ActorIsNullActorType
+c-file 0x08001E0C _ src/actor/set_actor_anim_set.c SetActorAnimSet_candidate
+c-file 0x08001E4C _ src/actor/unset_actor_has_animation.c UnsetActorHasAnimation
 c-file 0x08001E58 _ src/actor/set_actor_action_sub_state.c SetActorActionSubState
-c-file 0x08001E7C 0x08001EA0 src/actor/set_actor_action_state.c SetActorActionState
-thumb-func 0x08001EA0 SetActorAnimSubState_candidate
+c-file 0x08001E7C _ src/actor/set_actor_action_state.c SetActorActionState
+c-file 0x08001EA0 _ src/actor/set_actor_prev_action_state.c SetActorPrevActionState
 c-file 0x08001EA8 _ src/actor/set_actor_facing.c SetActorFacing
 c-file 0x08001EC8 _ src/actor/set_actor_facing_unused.c SetActorFacing_unused
 c-file 0x08001EE8 _ src/actor/set_actor_flags.c SetActorFlags
@@ -80,8 +80,8 @@ c-file 0x08001EF8 _ src/actor/actor_has_flags.c ActorHasFlags
 c-file 0x08001F0C _ src/actor/set_actor_draw_layer.c SetActorDrawLayer
 c-file 0x08001F30 _ src/actor/set_actor_depth_sort_bias.c SetActorDepthSortBias
 
-c-file 0x08001F40 0x08001F98 src/actor/check_actor_terrain_collision.c CheckActorTerrainCollision
-thumb-func 0x08001F98 sub_08001F98
+c-file 0x08001F40 _ src/actor/check_actor_terrain_collision.c CheckActorTerrainCollision
+c-file 0x08001F98 _ src/actor/get_actor_frame_anchor.c GetActorFrameAnchor
 c-file 0x08001FD8 _ src/actor/tick_actor.c TickActor
 c-file 0x08002154 _ src/actor/tick_actor_animation.c TickActorAnimation
 c-file 0x080021F4 _ src/actor/run_actor_anim_commands.c RunActorAnimCommands
@@ -2149,8 +2149,8 @@ c-file 0x0804BC88 _ src/libc/memcpy.c memcpy
 
 # End of main code section, start of data section
 
-# Unit direction vectors (16.16 {x, y}) indexed by Direction4 and Direction
-c-file 0x0804BCE8 0x0804BD48 src/graphics/particle/direction_vectors.c g_aDirection4Vectors
+# Unit direction vectors (16.16 {x, y}) for 4, 8, 16 and 32 directions
+c-file 0x0804BCE8 0x0804BEC8 src/graphics/particle/direction_vectors.c g_aDirection4Vectors
 c-file 0x0804BF50 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804BF80 0x0804BFB8 src/room/room_actor_constructors.c g_apRoomActorConstructors
 c-file 0x0804C0DC 0x0804C0E4 src/gamemode/modes/minigame/riddikulus/riddikulus.globals.c g_dwRiddikulusBg0Control

@@ -498,7 +498,7 @@ fighter's new `Actor *`. Allocates via `AllocDefaultActor`, records
 `wFighterType`/`bUnk_0x7C = 0`, sets `oam.priority = 1`,
 positions with `SnapActorPosition`/`StartActorMove` at
 `(0xD4 - slot*36) << 16`, `slot*0x40000 + 0x6E0000`, then
-`sub_08003A44(pActor, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `dwUnk_0x28 = 1`,
+`sub_08003A44(pActor, 0, 0x400, 0xC)`, `bDepthSortBias = 0x40`, `nMoveSpeed = 1`,
 `dwFlags = 0x20006011`, attack-anim state `0xF`, `bAnimFrameDelay = 1`,
 `pfnTick = TickPlayerActionState`. Copies the 10 spell slots
 (`i <= 9`) and, outside Folio Universitas returns, the party stats from

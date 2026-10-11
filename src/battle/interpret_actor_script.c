@@ -29,8 +29,8 @@ void InterpretActorScript(Actor *actor)
     s32 x;
     s32 y;
     s32 n;
-    ScreenPoint pos;
-    ScreenPoint offset;
+    IntPoint pos;
+    IntPoint offset;
     Actor *child;
     u32 done;
 
@@ -108,7 +108,7 @@ void InterpretActorScript(Actor *actor)
             }
             if (args[5] != 0)
             {
-                sub_08001AA8(targetFighter->pActor, args[5] - 1, &offset);
+                GetActorAnchor(targetFighter->pActor, args[5] - 1, &offset);
                 x += offset.x;
                 y += offset.y;
             }
@@ -188,7 +188,7 @@ void InterpretActorScript(Actor *actor)
             pos.y = (s16)(casterFighter->pActor->pos.y >> 16);
             if (args[1] != 0)
             {
-                sub_08001AA8(casterFighter->pActor, args[1] - 1, &offset);
+                GetActorAnchor(casterFighter->pActor, args[1] - 1, &offset);
                 pos.x += offset.x;
                 pos.y += offset.y;
             }
@@ -199,7 +199,7 @@ void InterpretActorScript(Actor *actor)
             y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam];
             if (args[1] != 0)
             {
-                sub_08001AA8(targetFighter->pActor, args[1] - 1, &offset);
+                GetActorAnchor(targetFighter->pActor, args[1] - 1, &offset);
                 x += offset.x;
                 y += offset.y;
             }
@@ -646,7 +646,7 @@ void InterpretActorScript(Actor *actor)
             }
             if (args[5] != 0)
             {
-                sub_08001AA8(targetFighter->pActor, args[5] - 1, &offset);
+                GetActorAnchor(targetFighter->pActor, args[5] - 1, &offset);
                 x += offset.x;
                 y += offset.y;
             }
@@ -809,11 +809,11 @@ void InterpretActorScript(Actor *actor)
             if (args[1] == 1)
                 sub_080065D4(1, sub_08012A84(), 0x180);
             break;
-        case BSOP_Unk94:  // sub_08001D90(1)
-            sub_08001D90(1);
+        case BSOP_Unk94:  // SetActorListActive_candidate(1)
+            SetActorListActive_candidate(1);
             break;
-        case BSOP_Unk95:  // sub_08001D90(0)
-            sub_08001D90(0);
+        case BSOP_Unk95:  // SetActorListActive_candidate(0)
+            SetActorListActive_candidate(0);
             break;
         case BSOP_FlipTargetFacing:  // flips the target's facing unless it is type 0x3A
             {

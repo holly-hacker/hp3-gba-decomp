@@ -14,8 +14,8 @@ void RoomScriptOp2(Op2Record *pRecord)
     Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
 
     if (pActor->wActorType == RoomActorType_Player)
-        pActor->dwUnk_0x28 = pRecord->nValue * 5 << 14;
+        pActor->nMoveSpeed = pRecord->nValue * 5 << 14;
     else
-        pActor->dwUnk_0x28 = pRecord->nValue << 16;
+        pActor->nMoveSpeed = pRecord->nValue << 16;
     pActor->bActionFlags |= 8;
 }

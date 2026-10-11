@@ -21,7 +21,7 @@ void WriteActorOamCells(ActorFrameData *frameData, u16 frame, u8 cellFlags, s32 
 
     frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
     frameCell = (ActorFrameCell *)((u8 *)frameDesc + (frameData->bFramePartCount * 6 + 10)
-                                    + frameData->bFrameHeaderExtra * 2);
+                                    + frameData->bAnchorCount * 2);
     scaleX = actor->nAffineScaleX;
     scaleY = actor->nAffineScaleY;
 

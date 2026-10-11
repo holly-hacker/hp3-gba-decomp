@@ -26,8 +26,8 @@ Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
     SetActorAnimFrame(pActor, g_abRoomActorUnk6Frames[g_adwRoomActorUnk6FrameRows[pActor->bFighterIndex]][pActor->bFacing]);
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = 0x80;
-    pActor->dwUnk_0x28 = 0x10000;
-    SetActorAnimSubState_candidate(pActor, 0);
+    pActor->nMoveSpeed = 0x10000;
+    SetActorPrevActionState(pActor, 0);
     SetActorActionState(pActor, 0);
     pActor->wUnk84 = 0;
 

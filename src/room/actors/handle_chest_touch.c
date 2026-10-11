@@ -33,7 +33,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
             if (pOther->pLinkedActor_candidate != NULL)
                 pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = kind;
             SetActorActionState(pOther, 0);
-            SetActorAnimSubState_candidate(pOther, 0);
+            SetActorPrevActionState(pOther, 0);
         }
 
         if (kind == 3 && opened == 0)
@@ -57,7 +57,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
                     if (pOther->pLinkedActor_candidate != NULL)
                         pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = opened;
                     SetActorActionState(pOther, 0);
-                    SetActorAnimSubState_candidate(pOther, 0);
+                    SetActorPrevActionState(pOther, 0);
                 }
                 else if (pSelf->modeState.chest.pair.wPair != 0)
                 {
@@ -77,7 +77,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
             if (pOther->pLinkedActor_candidate != NULL)
                 pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = opened;
             SetActorActionState(pOther, 0);
-            SetActorAnimSubState_candidate(pOther, 0);
+            SetActorPrevActionState(pOther, 0);
         }
         break;
 
@@ -96,7 +96,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
             if (g_pPlayerActor->pLinkedActor_candidate != NULL)
                 g_pPlayerActor->pLinkedActor_candidate->anim.bAnimFrameCounter = 0;
             SetActorActionState(g_pPlayerActor, 0);
-            SetActorAnimSubState_candidate(g_pPlayerActor, 0);
+            SetActorPrevActionState(g_pPlayerActor, 0);
         }
         sub_0802E2BC(pOther, pSelf);
         break;

@@ -1328,7 +1328,7 @@ addresses. See `docs/formats/items.md`.
 `g_apHelpSpritePalettes` (22 palette pointers, directly after it) are read
 by `sub_08039020(x, y, index)`, which spawns actor type `index` with
 palette `g_apHelpSpritePalettes[index]` and then passes
-`&g_aHelpSpriteAssets[index]` to `sub_08001690`. Twenty records reuse item
+`&g_aHelpSpriteAssets[index]` to `SetActorSprite`. Twenty records reuse item
 icons. Record 14 is a 32x32 `lzrle` sprite in `tiles`, `frames`, `palette`
 order stored directly after the item icons; the `HelpSprites`
 `image-bank` row claims it as `Help001.png`. Page commands (opcode 8:
@@ -1358,15 +1358,20 @@ through them, but the records themselves are ordinary dialog assets --
   routed through either decompression dispatcher. Layout (byte offsets
   from `pFrameData`; C types `ActorFrameData`/`ActorFrameDesc` in
   `include/actor.h`):
+  - `+0x0`/`+0x1` (`u8`): the largest frame width/height in pixels (true
+    of all 146 distinct sprites in `g_aActorTypeAssets` and the portrait
+    table); read by `GetActorMaxFrameSize` (`0x08001BF0`).
   - `+0x2`-`+0x5` (`s8` each): terrain box left/right/top/bottom, the same
     for every frame. `LoadActorAnimFrameBounds` (`0x080023B4`) copies it
     to `Actor+0xC0`.
   - `+0x6` (`u16`): frame count. `GetActorVariantFrameSize`
     (`0x08000E28`) wraps a frame index of -1 to `count - 1`.
-  - `+0xA` (`u8`): count of extra `u16`s after each frame descriptor
-    (`0` in every observed portrait).
+  - `+0xA` (`u8`): anchor-point count (`0` in every observed portrait).
+    Each frame's anchors follow its descriptor at `+0xA`, an `s8` x/y
+    pixel offset from the actor's position each; `GetActorFrameAnchor`
+    (`0x08001F98`) reads one, for example where battle effects attach.
   - `+0xB` (`u8`): collision-box count (`0` in every observed portrait).
-    Each frame's boxes follow its extra `u16`s, 6 bytes each: `s8`
+    Each frame's boxes follow its anchors, 6 bytes each: `s8`
     left/right/top/bottom and a state byte, copied into
     `Actor.aCollisionBoxes` with the count in `Actor+0xAF`.
   - `+0xC + frame*2` (`u16`): per-frame offset, added to `pFrameData +
@@ -1385,7 +1390,7 @@ through them, but the records themselves are ordinary dialog assets --
     top-left corner relative to the actor. With the width and height
     they give `Actor.spriteBounds`.
   - Cell table starts at frame-descriptor-base `+ 0xA +
-    extra_count*2 + box_count*6` (`+0xA` for every portrait). Each cell is 4 bytes
+    anchor_count*2 + box_count*6` (`+0xA` for every portrait). Each cell is 4 bytes
     `{b0, b1, b2, b3}`:
     - size = `(b2 & 0xF) >> 2`, shape = `(b2 & 0x3F) >> 4` (2 bits
       each) -- the standard GBA OAM shape/size pair, decoding to

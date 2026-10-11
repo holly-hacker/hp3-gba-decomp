@@ -25,7 +25,7 @@ static inline void MoveCursorToSelectedRow(void)
     else
         y = g_GameModeStackContext.dwModeScratchB * 16 + 0x48;
 
-    SetActorMoveTargetWithDuration_candidate(pCursor, x, y, 5);
+    SetActorMoveTargetWithDuration(pCursor, x, y, 5);
 }
 
 void HandleHighScoreDifficultyMenuTick(void)

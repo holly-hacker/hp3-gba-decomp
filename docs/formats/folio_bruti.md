@@ -353,7 +353,7 @@ The 16-byte `ActorAssetRecord`s that follow, up to `0x0804F404`:
 | `0x0804EF54` | `g_MonsterShadowGfxRow` | companion sprite `InitMonsterBattleActor` spawns for monsters 45-47 |
 | `0x0804EF64` | `g_aEnemyTurnOrderIconAssets` | 69 records, indexed by `bRosterIndex` in `SpawnTurnOrderIcon`; 62 reuse the battle palette |
 | `0x0804F3B4` | `g_aAllyTurnOrderIconAssets` | 4 records, indexed by `FighterType` (Harry, Hermione, Ron, Buckbeak) |
-| `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `sub_08001690`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnActor` palette |
+| `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `SetActorSprite`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnActor` palette |
 
 The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table.
 

@@ -22,6 +22,6 @@ void RoomScriptOpCancelActorAnimSequence(CancelActorAnimSequenceRecord *pRecord)
         if (g_dwPendingCameraFocusFlag != 0)
             RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
         SetActorActionState(pActor, 0);
-        SetActorAnimSubState_candidate(g_pPlayerActor, 0);
+        SetActorPrevActionState(g_pPlayerActor, 0);
     }
 }

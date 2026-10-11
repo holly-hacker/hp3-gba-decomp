@@ -61,7 +61,7 @@ void UpdateFolioBrutiGridCursor(void)
             } while (g_FolioBrutiState.dwColumn == 8 && g_FolioBrutiState.dwRow == 5);
         }
 
-        SetActorMoveTargetWithDuration_candidate(g_FolioBrutiState.pCursor, (g_FolioBrutiState.dwColumn + 3) * 8,
+        SetActorMoveTargetWithDuration(g_FolioBrutiState.pCursor, (g_FolioBrutiState.dwColumn + 3) * 8,
                                                   (g_FolioBrutiState.dwRow + 3) * 8, 5);
         DrawFolioBrutiMonsterPanel();
     }

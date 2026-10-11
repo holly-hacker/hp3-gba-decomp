@@ -56,7 +56,7 @@ void LoadVariantSlotFrameBounds(Actor *actor)
             actor->spriteBounds.edges.wBottom = origin[1] + frameDesc->bHeight;
         }
 
-        box = (s8 *)frameDesc + (frameData->bFrameHeaderExtra * 2 + 10);
+        box = (s8 *)frameDesc + (frameData->bAnchorCount * 2 + 10);
         for (j = 0; j < frameData->bFramePartCount; j++) {
             if (box[j * 6 + 4] != 0) {
                 actor->aCollisionBoxes[j].offsets.edges.bLeft = box[j * 6 + 0];

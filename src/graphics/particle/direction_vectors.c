@@ -1,7 +1,8 @@
 #include "types.h"
 #include "graphics/graphics.h"
 
-// Unit vectors in 16.16 fixed point, indexed by Direction4 and Direction.
+// Unit vectors in 16.16 fixed point, indexed by Direction4 and Direction, then
+// 16 and 32 evenly spaced directions clockwise from up.
 // Diagonals are scaled by 0xB504 (1/sqrt(2)); screen y grows downward.
 const s32 g_aDirection4Vectors[4][2] = {
     {        0, -0x10000 },  // Up
@@ -19,4 +20,58 @@ const s32 g_aDirection8Vectors[8][2] = {
     { -0xB504,   0xB504 },  // DownLeft
     { -0x10000,       0 },  // Left
     { -0xB504,  -0xB504 },  // UpLeft
+};
+
+const s32 g_aDirection16Vectors[16][2] = {
+    {        0, -0x10000 },
+    {   0x61F7,  -0xEC83 },
+    {   0xB504,  -0xB504 },
+    {   0xEC83,  -0x61F7 },
+    {  0x10000,        0 },
+    {   0xEC83,   0x61F7 },
+    {   0xB504,   0xB504 },
+    {   0x61F7,   0xEC83 },
+    {        0,  0x10000 },
+    {  -0x61F7,   0xEC83 },
+    {  -0xB504,   0xB504 },
+    {  -0xEC83,   0x61F7 },
+    { -0x10000,        0 },
+    {  -0xEC83,  -0x61F7 },
+    {  -0xB504,  -0xB504 },
+    {  -0x61F7,  -0xEC83 },
+};
+
+const s32 g_aDirection32Vectors[32][2] = {
+    {        0, -0x10000 },
+    {   0x31F1,  -0xFB14 },
+    {   0x61F7,  -0xEC83 },
+    {   0x8E39,  -0xD4DB },
+    {   0xB504,  -0xB504 },
+    {   0xD4DB,  -0x8E39 },
+    {   0xEC83,  -0x61F7 },
+    {   0xFB14,  -0x31F1 },
+    {  0x10000,        0 },
+    {   0xFB14,   0x31F1 },
+    {   0xEC83,   0x61F7 },
+    {   0xD4DB,   0x8E39 },
+    {   0xB504,   0xB504 },
+    {   0x8E39,   0xD4DB },
+    {   0x61F7,   0xEC83 },
+    {   0x31F1,   0xFB14 },
+    {        0,  0x10000 },
+    {  -0x31F1,   0xFB14 },
+    {  -0x61F7,   0xEC83 },
+    {  -0x8E39,   0xD4DB },
+    {  -0xB504,   0xB504 },
+    {  -0xD4DB,   0x8E39 },
+    {  -0xEC83,   0x61F7 },
+    {  -0xFB14,   0x31F1 },
+    { -0x10000,        0 },
+    {  -0xFB14,  -0x31F1 },
+    {  -0xEC83,  -0x61F7 },
+    {  -0xD4DB,  -0x8E39 },
+    {  -0xB504,  -0xB504 },
+    {  -0x8E39,  -0xD4DB },
+    {  -0x61F7,  -0xEC83 },
+    {  -0x31F1,  -0xFB14 },
 };

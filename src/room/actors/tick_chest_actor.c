@@ -56,7 +56,7 @@ void TickChestActor(Actor *pActor)
         if (pActor->dwStateTimer++ > 11)
         {
             SetActorActionState(g_pPlayerActor, 0x21);
-            SetActorAnimSubState_candidate(g_pPlayerActor, 0x21);
+            SetActorPrevActionState(g_pPlayerActor, 0x21);
             pActor->dwStateTimer = 0;
             SetActorActionSubState(pActor, 1);
             if (pActor->modeState.chest.pair.wPair != 0)

@@ -33,7 +33,7 @@ void LoadActorAnimFrameBounds(Actor *actor)
         actor->spriteBounds.edges.wTop = origin[1];
         actor->spriteBounds.edges.wBottom = origin[1] + frameDesc->bHeight;
 
-        box = (u8 *)frameDesc + (frameData->bFrameHeaderExtra * 2 + 10);
+        box = (u8 *)frameDesc + (frameData->bAnchorCount * 2 + 10);
         for (i = 0; i < frameData->bFramePartCount; i++) {
             actor->aCollisionBoxes[i].offsets.edges.bLeft = box[i * 6 + 0];
             actor->aCollisionBoxes[i].offsets.edges.bTop = box[i * 6 + 2];

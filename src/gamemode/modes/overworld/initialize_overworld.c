@@ -50,7 +50,7 @@ void InitializeOverworld(void)
     else
     {
         // Video, VRAM and VBlank setup.
-        sub_08001D90(1);
+        SetActorListActive_candidate(1);
         sub_0800A914();
         ClearVram();
         ClearObjPaletteSlots();

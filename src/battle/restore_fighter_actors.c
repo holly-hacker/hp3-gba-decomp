@@ -47,7 +47,7 @@ void RestoreFighterActors_candidate(void)
             shadow->bUnk_0x7C = 0;
             shadow->oam.priority = 1;
             shadow->bDepthSortBias = 0xC8;
-            shadow->dwUnk_0x28 = 1;
+            shadow->nMoveSpeed = 1;
             shadow->dwFlags = 0x6019;
             shadow->anim.bAnimFrameDelay = 1;
             AttachActorPalette(shadow, g_MonsterShadowGfxRow.pPalette);

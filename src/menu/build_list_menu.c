@@ -40,6 +40,6 @@ void BuildListMenu(const ListMenuDefinition *pDefinition)
                           pDefinition->wStrideY * row + pDefinition->wBaseY
                               + pDefinition->wRowActorOffsetY);
         AttachActorPalette(pActor, pDefinition->pRowActors->pPalette);
-        sub_08001690(pActor, &pDefinition->pRowActors[row]);
+        SetActorSprite(pActor, &pDefinition->pRowActors[row]);
     }
 }

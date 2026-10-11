@@ -34,7 +34,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
 
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = -0x40;
-    pActor->dwUnk_0x28 = 1;
+    pActor->nMoveSpeed = 1;
     pActor->dwFlags = 0x20006019;
 
     SetActorActionState(pActor, 0xF);
@@ -76,7 +76,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
 
         pShadowActor->oam.priority = 1;
         pShadowActor->bDepthSortBias = -0x40;
-        pShadowActor->dwUnk_0x28 = 1;
+        pShadowActor->nMoveSpeed = 1;
         pShadowActor->dwFlags = 0x6019;
         pShadowActor->anim.bAnimFrameDelay = 1;
 

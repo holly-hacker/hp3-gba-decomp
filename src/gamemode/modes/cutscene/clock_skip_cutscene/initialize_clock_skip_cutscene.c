@@ -22,11 +22,11 @@ void InitializeClockSkipCutscene(void)
     LoadBgGraphic(0, gClockSkipGraphic, 1, 0, 0, 0);
 
     pActor = SpawnActor(0x17, 0x78, 0x50, (const ObjPalette *)gClockSkipActor1Palette);
-    sub_08001690(pActor, &g_ClockSkipActor1Asset);
+    SetActorSprite(pActor, &g_ClockSkipActor1Asset);
     SetActorAnimData(pActor, &g_ClockSkipActor1Asset, (void *)g_ClockSkipAnimData[0], 0);
 
     pActor = SpawnActor(0x17, 0x78, 0x50, (const ObjPalette *)gClockSkipActor2Palette);
-    sub_08001690(pActor, &g_ClockSkipActor2Asset);
+    SetActorSprite(pActor, &g_ClockSkipActor2Asset);
     SetActorAnimData(pActor, &g_ClockSkipActor2Asset, (void *)g_ClockSkipAnimData[1], 0);
 
     PlayMusicModule(0x19);

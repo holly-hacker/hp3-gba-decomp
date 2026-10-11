@@ -11,7 +11,7 @@ void UpdateDebugCharacterSelectMenu(void)
 
     if (StepCursorUpDown(&g_DebugCharacterSelectState.dwRow, 0, 2, 1, 0))
     {
-        SetActorMoveTargetWithDuration_candidate(g_DebugCharacterSelectState.pCursorActor, 0x9C,
+        SetActorMoveTargetWithDuration(g_DebugCharacterSelectState.pCursorActor, 0x9C,
                                                   g_DebugCharacterSelectState.dwRow * 18 + 0x3A, 5);
     }
 

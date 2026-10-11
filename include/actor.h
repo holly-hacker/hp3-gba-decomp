@@ -45,6 +45,9 @@ typedef enum {
     ActorFlagRoomScriptYield          = 0x8000000,  // set by a room script that yielded on this actor
     ActorFlagAnimPaused               = 0x10000000, // TickActorAnimation's frame counter freezes
     ActorFlagKeepPaletteSlot          = 0x20000000, // TickActor skips BindActorPendingPalette/ReleaseActorPalette
+    ActorFlagSixteenWayDirections     = 0x40000000, // GetDirectionVector reads bFacing as one of 16
+                                                       // directions; takes precedence over
+                                                       // ActorFlagFourWayDirections_candidate
     ActorFlagExtraOamPass             = 0x80000000, // TickActorList's extra UpdateActorOamCells pass
 } ActorFlags;
 
@@ -118,11 +121,13 @@ typedef struct ActorRect {
 // Each awFrameOffsets entry is a byte offset from awFrameOffsets itself to
 // that frame's ActorFrameDesc.
 typedef struct ActorFrameData {
-    u8 unk_0[2];
+    u8 bMaxFrameWidth;      // 0x00, pixels: the largest ActorFrameDesc.bWidth
+    u8 bMaxFrameHeight;     // 0x01, pixels: the largest ActorFrameDesc.bHeight
     s8 abTerrainBox[4];     // 0x02, left/right/top/bottom; see Actor.bTerrainBoxLeft
     u16 wFrameCount;        // 0x06
     u8 unk_8[2];            // -> 0x0A
-    u8 bFrameHeaderExtra;   // 0x0A, count of extra u16s after each ActorFrameDesc
+    u8 bAnchorCount;        // 0x0A, anchor points after each ActorFrameDesc, two s8 x/y
+                             // offsets each; see GetActorFrameAnchor
     u8 bFramePartCount;     // 0x0B, count of 6-byte collision boxes after those u16s: s8
                              // left/right/top/bottom, then a state byte and a byte the actor does not copy
     u16 awFrameOffsets[1];  // 0x0C, wFrameCount entries
@@ -136,7 +141,7 @@ typedef struct ActorFrameDesc {
     u16 wTileGfxOffset;     // 0x04, byte offset of this frame's tiles from pTileGfx
     s16 awOrigin[2];        // 0x06, x/y of the frame's top-left corner, relative to the actor.
                              // The frame's ActorFrameCells start at 0x0A, after
-                             // ActorFrameData.bFramePartCount parts and bFrameHeaderExtra u16s
+                             // ActorFrameData.bFramePartCount parts and bAnchorCount anchors
 } ActorFrameDesc;
 
 // One OAM cell of an animation frame, positioned relative to the actor. x/y are
@@ -291,7 +296,7 @@ typedef struct Actor {
     ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
                              // ReleaseParticleEmitter_candidate and zeroed
                              // when nonzero (see ClearParalyzedFighter_candidate)
-    u32 dwUnk_0x28;         // 0x28, set to 1 by InitPlayerBattleActor_candidate
+    s32 nMoveSpeed;         // 0x28, 16.16 pixels per tick; see SetActorVelocityFromFacing
     FixedPoint pos;         // 0x2C
     FixedPoint posPrev;     // 0x34, pending position: IntegrateActorVelocity sets it
                              // to pos plus velocity, and TickActorList copies it into pos
@@ -425,7 +430,8 @@ typedef struct Actor {
     u8 bDrawFlags;          // 0x115, ActorDrawFlags
     u8 bActorPoolAuxSlot;  // 0x116, index into g_pActorPoolAuxBuffer's 0x34-byte-stride
                              // records; see ReleaseActorOffscreenVramTiles
-    u8 pad_117[0x01];       // -> 0x118
+    s8 bAnimSet_candidate;  // 0x117, set by SetActorAnimSet_candidate; GetActorVariantAnchorPosition
+                             // selects the slot's variant table with it. Nothing else uses it
     ActorVariantSlot aVariantSlots[1];  // 0x118
     s8 bSpriteVariantTableIndex;  // 0x124, shared by every variant slot
     s8 bSpriteVariantIndex;       // 0x125
@@ -514,7 +520,7 @@ extern void ApplyActorOrbitMotion(Actor *actor);
 // Moves an actor to its pOwnerActor's pending position and draw layer.
 extern void FollowOwnerActor(Actor *actor);
 extern void CommitQueuedActorTileUpdates(void);  // run from vblank callbacks
-extern void sub_08001690(Actor *actor, const void *pAssetRecord);
+extern void SetActorSprite(Actor *actor, const void *pRecord);  // an ActorAssetRecord
 extern void SetActorAnimFrame(Actor *actor, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
 extern void RunActorAnimCommands(Actor *actor);
 extern void LoadActorAnimFrameBounds(Actor *actor);
@@ -525,11 +531,41 @@ extern void SetActorFlags(Actor *actor, ActorFlags flags);
 extern void SetActorAnimData_candidate(Actor *actor, u32 animId);
 extern void SetActorActionSubState(Actor *actor, u8 state);
 extern void SetActorDrawLayer(Actor *actor, u8 layer);
-extern void SetActorAnimSubState_candidate(Actor *actor, u8 state);
+extern void SetActorPrevActionState(Actor *actor, u8 state);
 // Clears the actor's queued move (Actor+0x3C..0x48).
 extern void CancelActorMove_candidate(Actor *actor);
 extern void SetActorAssetRecord(Actor *actor, const void *rec);
 extern Actor *SpawnMenuIconActor(u32 slot, u32 arg1);  // allocs a type 0x13 actor and files it under slot
+
+extern void AllocActorVramTiles(Actor *actor, ActorAssetRecord *record);
+extern void SetActorAnimStream(Actor *actor, const void *pAnimData, u8 startCommand);
+extern void SetActorAnimDataAtCommand(Actor *actor, const void *pAnimTable, const void *pAnimData,
+                                      u8 startCommand);
+// Velocity components mirrored on the axis the sprite is flipped on.
+extern void SetActorLocalVelocityX(Actor *actor, s32 velX);
+extern void SetActorLocalVelocityY(Actor *actor, s32 velY);
+extern void SetActorAccelInDirection16(Actor *actor, u32 direction, s32 magnitude);
+extern void SetActorVelocityFromFacing(Actor *actor);
+extern void OffsetActorPosition(Actor *actor, s32 dx, s32 dy);
+extern void SetActorMoveTargetWithDuration(Actor *actor, s32 x, s32 y, u16 duration);
+// Anchor points: per-frame pixel offsets from the actor's position, such as
+// where effects attach. Each returns 0 when the frame has no such anchor.
+extern s32 GetActorFrameAnchor(Actor *actor, ActorFrameData *frameData, u32 index, IntPoint *out);
+extern s32 GetActorAnchor(Actor *actor, u32 index, IntPoint *out);
+extern s32 GetActorFlippedAnchor(Actor *actor, u32 index, IntPoint *out);
+extern s32 GetActorAnchorPosition(Actor *actor, u32 index, IntPoint *out);
+extern s32 GetActorVariantAnchorPosition(Actor *actor, u8 slot, u8 index, IntPoint *out);
+extern void GetActorMaxFrameSize(Actor *actor, u32 *dims);
+extern void GetActorFrameSize(Actor *actor, u32 *dims);
+extern void *GetActorFrameTileGfx(Actor *actor);
+extern void GetActorOamPosition(Actor *actor, IntPoint *out);
+extern u8 GetDirectionToActor(Actor *actor, Actor *target);
+extern u8 GetDirectionFromActor(Actor *actor, Actor *source);
+extern void GetDirectionVector(FixedPoint *out, u32 actorFlags, u32 direction, s32 speed);
+extern u8 FindActorsByType(u8 type, u8 characterId, Actor **out, u8 maxCount);
+extern s32 ActorIsNullActorType(Actor *actor);
+extern void SetActorAnimSet_candidate(Actor *actor, u8 animSet);
+extern void UnsetActorHasAnimation(Actor *actor);
 
 extern void sub_080039E8(Actor *actor);
 extern void sub_080039F8(Actor *actor);

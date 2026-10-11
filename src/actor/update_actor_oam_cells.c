@@ -67,7 +67,7 @@ u8 UpdateActorOamCells(Actor *actor)
                                             + frameData->awFrameOffsets[actor->anim.bLastAnimFrameValue]);
             count = frameDesc->bCellCount & 0x1F;
             frameCell = (ActorFrameCell *)((u8 *)frameDesc + (frameData->bFramePartCount * 6 + 10)
-                                            + frameData->bFrameHeaderExtra * 2);
+                                            + frameData->bAnchorCount * 2);
             if (!actor->oam.bpp8)
                 tileBase = (frameDesc->wTileGfxOffset >> 5) + actor->wVramTileAllocId;
             else

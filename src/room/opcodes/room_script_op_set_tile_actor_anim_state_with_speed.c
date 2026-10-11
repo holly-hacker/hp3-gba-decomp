@@ -14,7 +14,7 @@ void RoomScriptOpSetTileActorAnimStateWithSpeed(SetTileActorAnimStateWithSpeedRe
     if (pActor != NULL)
     {
         SetActorActionState(pActor, 0x21);
-        SetActorAnimSubState_candidate(pActor, 0x21);
-        pActor->dwUnk_0x28 = 0x28000;
+        SetActorPrevActionState(pActor, 0x21);
+        pActor->nMoveSpeed = 0x28000;
     }
 }

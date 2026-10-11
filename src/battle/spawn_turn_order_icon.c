@@ -18,7 +18,7 @@ Actor *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrde
     x = 240 - (g_pFightState->bFighterCount - turnOrderIndex) * 20;
     container->pLinkedActor_candidate = SpawnActor(0x2A, x, 20, (const ObjPalette *)gBattleHudItem001Palette);
     container->pLinkedActor_candidate->bDepthSortBias = 0xFF;
-    sub_08001690(container->pLinkedActor_candidate, &g_TurnOrderIconContainerAsset);
+    SetActorSprite(container->pLinkedActor_candidate, &g_TurnOrderIconContainerAsset);
 
     if (isAlly) {
         SnapActorPosition(container, x << 16, 24 << 16);

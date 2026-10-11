@@ -638,7 +638,7 @@ SPEC_DEFAULT_KIND = [
     # richest record -- full Actor state, plus 3 linked sub-actors'
     # tile positions (captured but never restored -- see docs).
     ("dwActorFlags", 0x00, "I"),   # Actor+0xc, capture masks off bit 0x00200000
-    ("dwUnk_0x28", 0x04, "I"),
+    ("nMoveSpeed", 0x04, "I"),
     ("dwUnk_0x80", 0x08, "I"),
     ("wUnk_0x86", 0x0C, "H"),
     ("wWaitTarget_0x8a", 0x0E, "H"),  # Actor+0x8a, the WaitFrames/WaitForCounter target (battle_scripts.md)

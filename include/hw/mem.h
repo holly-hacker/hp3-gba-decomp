@@ -112,7 +112,9 @@ extern void SortActorsByDepthIwram(struct Actor **queue, u32 count);
 extern void CheckActorCollisionsIwram(u32 count, struct Actor **queue);
 extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 startBit);
 u32 FindFreeObjTileRun(const u8 *pBitmap, u32 runLength, u32 startBit);
+// Nonzero lets TickActorList depth-sort the OAM queue.
 extern u32 g_dwActorListActive_candidate;
+extern void SetActorListActive_candidate(u32 active);
 // Rounding bias for WriteActorOamCells' scaled cell offsets; always 0.
 extern u32 g_dwUnk03001DC4;
 // Set to 1 by every TickActiveActors call and never cleared, so it is 0

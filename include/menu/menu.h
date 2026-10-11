@@ -12,7 +12,7 @@ typedef struct {
     u32 dwImmediate;   // 0x08: nonzero pushes the mode right away with a screen transition
 } ListMenuEntry;
 
-// One 16-byte record of a list menu's row actors, read by sub_08001690.
+// One 16-byte record of a list menu's row actors, read by SetActorSprite.
 typedef struct {
     void *pTileGfx;
     void *pFrameData;            // 0x04

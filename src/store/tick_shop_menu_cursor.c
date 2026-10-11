@@ -4,5 +4,5 @@
 
 void TickShopMenuCursor(Actor *pCursor)
 {
-    SetActorMoveTargetWithDuration_candidate(pCursor, 0x1E, g_FredAndGeorgesShop.bCursor * 16 + 0x28, 2);
+    SetActorMoveTargetWithDuration(pCursor, 0x1E, g_FredAndGeorgesShop.bCursor * 16 + 0x28, 2);
 }

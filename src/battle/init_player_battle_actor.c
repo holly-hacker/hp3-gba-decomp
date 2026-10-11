@@ -27,7 +27,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
     sub_08003A44(pActor, 0, 0x400, 0xC);
 
     pActor->bDepthSortBias = 0x40;
-    pActor->dwUnk_0x28 = 1;
+    pActor->nMoveSpeed = 1;
     pActor->dwFlags = 0x20006011;
 
     SetActorActionState(pActor, 0xF);

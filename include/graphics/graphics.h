@@ -221,6 +221,8 @@ extern ListNode *g_pParticleFreeListHead;           // 0x030051AC
 extern ListNode *g_pParticleActiveListHead;         // 0x030051CC
 extern const s32 g_aDirection4Vectors[4][2];        // 0x0804BDBC
 extern const s32 g_aDirection8Vectors[8][2];        // 0x0804BDDC
+extern const s32 g_aDirection16Vectors[16][2];      // 0x0804BE1C
+extern const s32 g_aDirection32Vectors[32][2];      // 0x0804BE9C
 extern const u8 g_abOppositeDirection8[8];          // 0x08068BFC
 extern const u8 g_abOppositeDirection4[4];          // 0x08068C04
 

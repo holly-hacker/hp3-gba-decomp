@@ -25,7 +25,7 @@ inline void ReverseActorDirection(Actor *actor)
 }
 
 // Sets the velocity that takes the actor from its previous position to its move target at
-// speed dwUnk_0x28 and returns the direction of the velocity it replaced. Nothing calls it.
+// speed nMoveSpeed and returns the direction of the velocity it replaced. Nothing calls it.
 inline u8 StartMoveVelocity(Actor *actor)
 {
     s32 distance;
@@ -35,7 +35,7 @@ inline u8 StartMoveVelocity(Actor *actor)
     u8 direction;
 
     distance = ApproximateDistance(actor->moveTarget, actor->posPrev);
-    steps = ABS(iwramDivideSignedQuotient(distance, actor->dwUnk_0x28));
+    steps = ABS(iwramDivideSignedQuotient(distance, actor->nMoveSpeed));
     dx = actor->moveTarget.x - actor->posPrev.x;
     dy = actor->moveTarget.y - actor->posPrev.y;
     direction = GetDirectionFromVector(actor->vel, actor->dwFlags & ActorFlagFourWayDirections_candidate);

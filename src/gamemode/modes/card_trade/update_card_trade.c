@@ -107,11 +107,11 @@ void UpdateCardTrade(void)
                 DrawCardTradeSlotName(1, CARD_TRADE_NO_CARD);
 
                 if (g_apMenuIconActors[0] != NULL)
-                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconActors[0],
+                    SetActorMoveTargetWithDuration(g_apMenuIconActors[0],
                         g_aCardTradeSlotPositions[1].bX, g_aCardTradeSlotPositions[1].bY, 30);
 
                 if (g_apMenuIconActors[1] != NULL)
-                    SetActorMoveTargetWithDuration_candidate(g_apMenuIconActors[1],
+                    SetActorMoveTargetWithDuration(g_apMenuIconActors[1],
                         g_aCardTradeSlotPositions[0].bX, g_aCardTradeSlotPositions[0].bY, 30);
 
                 ShowCardTradeMessage(0xACF);  // no text: clears the message box

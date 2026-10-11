@@ -8,11 +8,6 @@
 
 // Battle-effect script interpreter; see docs/formats/battle_scripts.md.
 
-// Whole-pixel screen position pair.
-typedef struct ScreenPoint {
-    s32 x;
-    s32 y;
-} ScreenPoint;
 
 // One 0x10-byte background record read by script opcodes 0x7F, 0x8A and 0x8B.
 typedef struct EffectBgRecord {
@@ -75,12 +70,11 @@ extern void WaitFramesTick(Actor *actor);
 extern void WaitForCounterTick(Actor *actor);
 extern void WaitForFieldClearTick(Actor *actor);
 extern void WaitForCasterField86Tick_candidate(Actor *actor);
-extern ScreenPoint ComputeEffectSpawnPosition(void);
+extern IntPoint ComputeEffectSpawnPosition(void);
 extern void CopyOrbitParamsFromTable(Actor *actor, const void *row);
 extern s32 IsActorFlippedX(Actor *actor);
 extern s32 sub_08003954(Actor *actor);
 extern void sub_08003788(Actor *actor, s32 flip);
-extern s32 sub_08001AA8(Actor *actor, u32 index, ScreenPoint *out);  // returns 0 when the frame has no such anchor
 extern void sub_0801B710(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
 extern void sub_0800D244(void *a, u32 b, u32 c);

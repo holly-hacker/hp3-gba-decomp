@@ -12,7 +12,7 @@ void UpdateDebugSoundTestMenu(void)
 
     if (StepCursorUpDown(&g_DebugSoundTestState.dwRow, 0, 1, 1, 0))
     {
-        SetActorMoveTargetWithDuration_candidate(g_DebugSoundTestState.pCursorActor, 0x9C,
+        SetActorMoveTargetWithDuration(g_DebugSoundTestState.pCursorActor, 0x9C,
                                                   g_DebugSoundTestState.dwRow * 18 + 0x3A, 5);
     }
 
