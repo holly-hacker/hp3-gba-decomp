@@ -1,6 +1,7 @@
 """Tile frames: a 16-bit kind and byte size, then that many bytes of 4 bpp tile
-data, raw or (kind bits 5-6 = 3) a GammaLz stream without its outer header; kind
-bit 7 marks 8 bpp tiles (see docs/formats/special_scene_frames.md).
+data, raw, (kind bits 5-6 = 1) a BIOS RLE stream followed by 1-4 zero bytes to a word, or (kind
+bits 5-6 = 3) a GammaLz stream without its outer header; kind bit 7 marks
+8 bpp tiles (see docs/formats/special_scene_frames.md).
 
 A frame is edited as <name>.png, a sheet of its tiles, 8 per row, in
 grayscale (the real palette is not known). A pixel is the 4-bit (or, for an
@@ -17,10 +18,14 @@ import blobs
 from blobs import ROM_BASE, decode_gamma_lz_stream, encode_gamma_lz_stream
 from tile_streams import GRAY, TILES_PER_ROW, sheet, tiles_from_sheet  # noqa: F401
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "graphics"))
+from decode_bios import rl_uncomp  # noqa: E402
+from encode_bios_rle import encode_bios_rle  # noqa: E402
+
 GRAY8 = [(i, i, i) for i in range(256)]
 
 
-CODEC_RAW, CODEC_GAMMA_LZ = 0, 3
+CODEC_RAW, CODEC_RLE, CODEC_GAMMA_LZ = 0, 1, 3
 KIND_8BPP = 0x80
 
 
@@ -33,6 +38,11 @@ def parse(rom: bytes, addr: int):
     if codec == CODEC_RAW:
         data = rom[pos + 4:pos + 4 + size]
         end = ROM_BASE + pos + 4 + size
+    elif codec == CODEC_RLE:
+        data = rl_uncomp(rom, addr + 4)
+        end = ROM_BASE + pos + 4 + size
+        if rom[pos + 4:pos + 8] != encode_bios_rle(data)[:4]:
+            raise ValueError(f"{addr:#x}: RLE stream lacks its BIOS header")
     elif codec == CODEC_GAMMA_LZ:
         data, end = decode_gamma_lz_stream(rom, addr + 4)
         if end - addr - 4 != size:
@@ -46,4 +56,7 @@ def build(kind: int, tiles) -> bytes:
     data = blobs._pack_tiles(tiles, bool(kind & KIND_8BPP))
     if (kind >> 5) & 3 == CODEC_GAMMA_LZ:
         data = encode_gamma_lz_stream(data)
+    elif (kind >> 5) & 3 == CODEC_RLE:
+        data = encode_bios_rle(data)
+        data += bytes(4 - len(data) % 4)
     return struct.pack("<HH", kind, len(data)) + data

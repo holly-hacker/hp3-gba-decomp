@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/effect_script.h"
 
-// BG control words sub_0800A598 takes for an effect BG record's animation,
+// BG control words RegisterBgTileAnimation takes for an effect BG record's animation,
 // chosen by the BG it targets.
 const u32 g_adwEffectBgControlOverride_candidate[4] = { 0x0E02, 0x0F08, 0x0D08, 0x0C00 };
 

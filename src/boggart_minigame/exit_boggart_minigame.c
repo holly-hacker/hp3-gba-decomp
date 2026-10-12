@@ -28,5 +28,5 @@ void ExitBoggartMinigame(void)
     FreeMinigameTextPanel(g_BoggartMinigame.pLivesPanel);
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
-    sub_0802CDB8();
+    SyncSaveOptionsPausingKrawall();
 }

@@ -32,7 +32,7 @@ void InitializeFolioCardDetailScreen(void)
         break;
     }
 
-    sub_080077C8(3, gFolioCardDetailBg3Graphic, 1, 0, 0, 0);
+    LoadGraphicBlob(3, gFolioCardDetailBg3Graphic, 1, 0, 0, 0);
     LoadEmbeddedPalette_candidate((u8 *)gFolioCardDetailBg3Graphic, 0, 3);
     SetTextTargetFromBgControl(g_dwFolioCardDetailBg1Control);
     DrawFolioCardDetailText();

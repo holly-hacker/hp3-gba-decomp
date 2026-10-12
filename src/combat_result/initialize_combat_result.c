@@ -14,7 +14,7 @@
 // Copies the portrait of the party member in stats slot g_abCombatResultPartySlots[partyPos]
 // from the loaded BG graphic to the screen position of portrait index pos.
 #define COPY_PORTRAIT(bg, pTilemap, rects, positions, partyPos, pos)                              \
-    sub_08006C00(bg, pTilemap, 1, 0, rects[g_abCombatResultPartySlots[partyPos]].bSrcX,                \
+    CopyBgTilemapRect(bg, pTilemap, 1, 0, rects[g_abCombatResultPartySlots[partyPos]].bSrcX,                \
                  rects[g_abCombatResultPartySlots[partyPos]].bSrcY, positions[pos].bDstX,              \
                  positions[pos].bDstY, rects[g_abCombatResultPartySlots[partyPos]].bWidth,             \
                  rects[g_abCombatResultPartySlots[partyPos]].bHeight)

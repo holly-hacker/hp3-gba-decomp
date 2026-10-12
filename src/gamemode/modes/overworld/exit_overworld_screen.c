@@ -79,7 +79,7 @@ void ExitOverworldScreen(void)
     ResetPaletteAnimations();
     sub_08007AA8(0);
     sub_080203CC();
-    sub_0800A914();
+    FreeBgTileAnimations();
 
     g_dwGameModeFlags &= ~0x40000000;
 }

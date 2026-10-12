@@ -308,7 +308,8 @@
 .set g_dwTickCount,                          0x03003FC0
 .set g_apMenuIconActors, 0x03003FC8  @ see ram_symbols.us.inc
 .set g_dwSelectedMinigame,                   0x03003FE8
-.set g_abBgPriority,                         0x03003FEC  @ see ram_symbols.us.inc
+.set g_FloorEffect,                          0x03003FEC  @ see ram_symbols.us.inc
+.set g_pFloorAffineTable_candidate,          0x0300400C  @ see ram_symbols.us.inc
 .set g_dwRoomCollisionPatternCount,           0x03004018  @ see ram_symbols.us.inc
 .set g_adwEdgeEndpointTypes,                  0x03004020  @ see ram_symbols.us.inc
 .set g_pRoomCollisionTilemapBuffer,           0x03004028  @ see ram_symbols.us.inc
@@ -459,7 +460,7 @@
 .set gDialogTextScratchBuf,      0x03005D68
 .set gCurrentLanguage,           0x03005D6C
 .set gLocaleThousandsSep,        0x03005D6D  @ see ram_symbols.us.inc
-.set g_adwBuckbeakMinigameUnk,    0x03005D70  @ see ram_symbols.us.inc
+.set g_apTextActors,              0x03005D70  @ see ram_symbols.us.inc
 .set g_aGameTimers,                     0x03005DB8
 .set g_HarryHermionePortInTime,  0x03005DF8  @ see ram_symbols.us.inc
 .set g_nMainMenuTextCursor,     0x03005E10

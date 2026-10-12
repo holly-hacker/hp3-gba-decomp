@@ -12,7 +12,7 @@ void ExitFolioUniversitas(void)
     SetAlphaBlendTargets(0, 0);
     ResetPaletteAnimations();
     FreeAllActors(&g_ActiveActorListState.pHead);
-    sub_0800A914();
+    FreeBgTileAnimations();
 
     g_FolioUniversitasState.pCursor = NULL;
     for (i = 0; i < ARRAY_COUNT(g_FolioUniversitasState.aComboSlots); i++)

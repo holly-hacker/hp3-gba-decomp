@@ -4,17 +4,38 @@
 #include "types.h"
 
 /* BuckbeakMinigameGraphics */
-extern const u8 gBuckbeakMinigameSprite001Palette[];
-extern const u8 gBuckbeakMinigameSprite002Tiles[];
-extern const u8 gBuckbeakMinigameSprite002Frames[];
-extern const u8 gBuckbeakMinigameSprite003Tiles[];
-extern const u8 gBuckbeakMinigameSprite003Frames[];
-extern const u8 gBuckbeakMinigameSprite004Tiles[];
-extern const u8 gBuckbeakMinigameSprite004Frames[];
-extern const u8 gBuckbeakMinigame001[];
-extern const u8 gBuckbeakMinigame002[];
-extern const u8 gBuckbeakMinigame003[];
-extern const u8 gBuckbeakMinigame004[];
-extern const u8 gBuckbeakMinigame005[];
-extern const u8 gBuckbeakMinigame006[];
-extern const u8 gBuckbeakMinigame007[];
+extern const u8 gBuckbeakMinigamePalette001Palette[];
+extern const u8 gBuckbeakMinigameBuckbeakTiles[];
+extern const u8 gBuckbeakMinigameBuckbeakFrames[];
+extern const u8 gBuckbeakMinigameBuckbeakTurningTiles[];
+extern const u8 gBuckbeakMinigameBuckbeakTurningFrames[];
+extern const u8 gBuckbeakMinigameBatTiles[];
+extern const u8 gBuckbeakMinigameBatFrames[];
+extern const u8 gBuckbeakMinigameEasyBg1Graphic[];
+extern const u8 gBuckbeakMinigameEasyBg0Graphic[];
+extern const u8 gBuckbeakMinigameMediumBg1Graphic[];
+extern const u8 gBuckbeakMinigameMediumBg0Graphic[];
+extern const u8 gBuckbeakMinigameHardBg1Graphic[];
+extern const u8 gBuckbeakMinigameHardBg0Graphic[];
+extern const u8 gBuckbeakMinigameGroundGraphic[];
+extern const u8 gBuckbeakMinigamePalette002Palette[];
+extern const u8 gBuckbeakMinigamePalette003Palette[];
+extern const u8 gBuckbeakMinigamePalette004Palette[];
+
+/* BuckbeakMinigameWaterFrames */
+extern const u8 gBuckbeakMinigameWaterFrame001[];
+extern const u8 gBuckbeakMinigameWaterFrame002[];
+extern const u8 gBuckbeakMinigameWaterFrame003[];
+extern const u8 gBuckbeakMinigameWaterFrame004[];
+extern const u8 gBuckbeakMinigameWaterFrame005[];
+extern const u8 gBuckbeakMinigameWaterFrame006[];
+extern const u8 gBuckbeakMinigameWaterFrame007[];
+extern const u8 gBuckbeakMinigameWaterFrame008[];
+extern const u8 gBuckbeakMinigameWaterFrame009[];
+extern const u8 gBuckbeakMinigameWaterFrame010[];
+extern const u8 gBuckbeakMinigameWaterFrame011[];
+extern const u8 gBuckbeakMinigameWaterFrame012[];
+extern const u8 gBuckbeakMinigameWaterFrame013[];
+extern const u8 gBuckbeakMinigameWaterFrame014[];
+extern const u8 gBuckbeakMinigameWaterFrame015[];
+extern const u8 gBuckbeakMinigameWaterFrame016[];

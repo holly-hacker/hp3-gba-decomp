@@ -28,7 +28,7 @@ void InitializeUnusedServePumpkinJuiceMinigame(void)
     g_ServePumpkinJuice.pBg1Tilemap = LoadBgGraphic(1, gServePumpkinJuiceBg1Graphic, 1, 0, 0, 0);
     LoadBgGraphic(2, gServePumpkinJuiceBg2Graphic, 1, 0, 0, 0);
     sub_08007AF0(2, 0, 0x100000);
-    sub_0800A598(&g_ServePumpkinJuiceTable, &g_dwServePumpkinJuiceBg2Control, 8);
+    RegisterBgTileAnimation(&g_ServePumpkinJuiceTable, &g_dwServePumpkinJuiceBg2Control, 8);
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(5, 0, -1);
     StartPaletteEffectWithFrameCount(3, 1, 8, 0x10, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gMenuSelectionPalette), 6);

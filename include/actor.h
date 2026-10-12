@@ -642,7 +642,7 @@ extern void CopyOrbitParamsFromTable(Actor *actor, const ActorOrbit *row);
 extern void SetActorOrbitX(Actor *actor, s32 angle, s16 angleVel, s16 radius);
 extern void SetActorOrbitY(Actor *actor, s32 angle, s16 angleVel, s16 radius);
 extern void SetActorOrbitAngles(Actor *actor, s32 angleX, s32 angleY);
-extern void SetActorOrbitAngleVels(Actor *actor, u16 angleVelX, u16 angleVelY);
+extern void SetActorOrbitAngleVels(Actor *actor, s16 angleVelX, s16 angleVelY);
 extern void SetActorOrbitRadii(Actor *actor, s16 radiusX, s16 radiusY);
 // Overworld action states (Actor.bActionState), dispatched by TickActorActionState.
 extern void TickActorActionState(Actor *actor);

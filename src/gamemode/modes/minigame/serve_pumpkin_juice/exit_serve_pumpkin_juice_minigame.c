@@ -12,5 +12,5 @@ void ExitUnusedServePumpkinJuiceMinigame(void)
     ResetPaletteAnimations();
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
-    sub_0800A914();
+    FreeBgTileAnimations();
 }

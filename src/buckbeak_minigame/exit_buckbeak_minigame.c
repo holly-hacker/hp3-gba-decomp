@@ -10,9 +10,9 @@ void ExitBuckbeakMinigame(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     UnreserveObjPaletteSlot(0);
-    sub_0802D6B8();
+    FreeFloorEffect();
     FreeAllActors(&g_ActiveActorListState.pHead);
-    sub_0800A914();
+    FreeBgTileAnimations();
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 != 2)
     {
@@ -21,5 +21,5 @@ void ExitBuckbeakMinigame(void)
     }
 
     FreeBlock(g_pBuckbeakMinigame);
-    sub_0802CDB8();
+    SyncSaveOptionsPausingKrawall();
 }

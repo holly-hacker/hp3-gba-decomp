@@ -77,7 +77,6 @@ extern BgLayer g_aBgLayers[4];  // 0x03001E84
 #define BG_LAYER_COMMIT       0x8000  // write the scroll registers at the next vblank
 
 extern void ApplyBgLayerWobble(u32 bg);
-extern u8 g_abBgPriority[];     // 0x03003F8C; [4] == 0x03003F90
 
 // Stops the palette effect with the given handle.
 extern void StopPaletteEffect(s32 handle);
@@ -85,7 +84,7 @@ extern void StopPaletteEffect(s32 handle);
 // given BG, adding tileOffset to the tile numbers and palBank to their palette.
 // Starts a palette effect through sub_0800D5DC and sets its bFrameCount; returns its slot.
 extern s32 StartPaletteEffectWithFrameCount(u32 startColor, u32 colorCount, u32 stepTicks, u32 delay, u32 flags, const u16 *pFrames, u32 frameCount);
-extern void sub_08006C00(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 srcX, u32 srcY,
+extern void CopyBgTilemapRect(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 srcX, u32 srcY,
                          u32 dstX, u32 dstY, u32 width, u32 height);
 extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
 extern void sub_0800D254(const u16 *ptr, s16 val1, s16 val2);
@@ -157,14 +156,26 @@ extern void sub_08007F84(u32 bg, s32 *pOut0, s32 *pOut1);
 // Allocates a slot in the palette-effect table at 0x030022F8.
 extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData);
 extern void *LoadBgGraphic(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
-// Loads a graphic's tiles and palette without drawing its tilemap; returns the tilemap for sub_08006C00.
+// Loads a graphic's tiles and palette without drawing its tilemap; returns the tilemap for CopyBgTilemapRect.
 extern void *LoadBgGraphicTiles_candidate(u32 bg, const void *pResource, u32 tileOffset, u32 palBank);
+// Loads a graphic blob (embedded palette; docs/formats/graphic_blob.md) and draws its tilemap, like
+// LoadBgGraphic. palBank is added to the tilemap's palette banks.
+extern void *LoadGraphicBlob(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
+// Loads a graphic blob's palette and tiles on a BG; returns the tilemap for CopyBgTilemapRect or
+// WriteBgGraphicTilemap_candidate.
+extern void *LoadGraphicBlobTiles(u32 bg, const void *pResource, u32 tileOffset);
 // Draws a loaded graphic's tilemap (LoadBgGraphicTiles_candidate's result) on a BG at tile (x, y).
 extern void WriteBgGraphicTilemap_candidate(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 x, u32 y);
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);
-extern void sub_0800A914(void);
+extern void FreeBgTileAnimations(void);
+// Rewrites BGxCNT from each BG's stored control word when its BG_LAYER_COMMIT and 0x200 flags are set.
+extern void RewriteBgControlRegisters_candidate(void);
+extern void PauseBgTileAnimations(void);  // clears bit 1 (running) of every BG tile animation
+extern void ResumeBgTileAnimations(void);  // sets bit 1 of every BG tile animation
+// Sets the BG mode bits of DISPCNT.
+extern void SetBgMode(u32 mode);
 // One frame of a BG tile animation: its tile data and how many ticks it shows
 // (0 holds it).
 typedef struct BgTileAnimFrame {
@@ -172,7 +183,7 @@ typedef struct BgTileAnimFrame {
     u32 dwDuration;
 } BgTileAnimFrame;
 
-// A BG tile animation registered by sub_0800A598 and stepped by
+// A BG tile animation registered by RegisterBgTileAnimation and stepped by
 // TickBgTileAnimations; see docs/memory-map/frame_systems.md.
 #define BG_TILE_ANIMATION(frameCount) struct {                       \
     u8 bFlags;                                                        \

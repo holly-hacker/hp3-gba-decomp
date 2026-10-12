@@ -28,7 +28,7 @@ void InitializeDebugCollectorCardsMenu(void)
     SetTextTargetFromBgControl(bgCtrl2);
     LoadBgGraphic(0, gFolioCardFrameRed, 0, 0, 0, 0);
     pGraphic = gDebugMenuGraphic;
-    sub_080077C8(1, pGraphic, 0, 0, 0, 0);
+    LoadGraphicBlob(1, pGraphic, 0, 0, 0, 0);
     LoadEmbeddedPalette_candidate((u8 *)pGraphic, 0, 3);
     sub_08007AF0(0, 0xFFCA0000, 0xFFE20000);
 

@@ -169,7 +169,7 @@ enum BattleScriptOpcode {
     BSOP_SelectNextLiveEnemy = 0xA0,
     BSOP_UnkA1 = 0xA1,
     BSOP_SetLocalRandom = 0xA2,
-    BSOP_UnkA3 = 0xA3,
+    BSOP_ReloadBattleBackgroundTiles = 0xA3,
     BSOP_PlaySoundOrDefault = 0xA4,
     BSOP_DarkenScreenPalette = 0xA5,
     BSOP_RestoreScreenPalette = 0xA6,
@@ -377,7 +377,7 @@ enum BattleStatusEffect {
 #define BS_SelectNextLiveEnemy() BSOP_SelectNextLiveEnemy
 #define BS_UnkA1() BSOP_UnkA1
 #define BS_SetLocalRandom(a, b) BSOP_SetLocalRandom, (a), (b)
-#define BS_UnkA3() BSOP_UnkA3
+#define BS_ReloadBattleBackgroundTiles() BSOP_ReloadBattleBackgroundTiles
 #define BS_PlaySoundOrDefault(a) BSOP_PlaySoundOrDefault, (a)
 #define BS_DarkenScreenPalette() BSOP_DarkenScreenPalette
 #define BS_RestoreScreenPalette() BSOP_RestoreScreenPalette

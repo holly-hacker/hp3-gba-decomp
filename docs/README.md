@@ -109,7 +109,7 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   room (maps, blocks, collision, tilesets, palettes): ROM layout, tileset codec,
   and how they are extracted and built. Tools: `tools/room_graphics/`.
 - [`formats/graphic_blob.md`](formats/graphic_blob.md) — the palette, tilemap
-  and tile-stream blob loaded by `sub_080065D4`; battle backgrounds use it.
+  and tile-stream blob loaded by `LoadGraphicBlobTiles`; battle backgrounds use it.
 - [`formats/special_scene_frames.md`](formats/special_scene_frames.md) — the 128 raw
   tile frames and animation tables of the special scene effect.
 - [`formats/fonts.md`](formats/fonts.md) — the ten 2 bpp text fonts, their

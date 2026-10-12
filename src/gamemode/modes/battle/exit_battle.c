@@ -30,7 +30,7 @@ void ExitBattle(void)
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
         sub_08026254();
-        sub_0802D6B8();
+        FreeFloorEffect();
         sub_08007A90();
         ClearPaletteRam();
         sub_0804542C();
@@ -112,7 +112,7 @@ void ExitBattle(void)
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
         sub_08026254();
-        sub_0802D6B8();
+        FreeFloorEffect();
         sub_08007A90();
         ClearPaletteRam();
         sub_0804542C();

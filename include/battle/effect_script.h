@@ -1,5 +1,6 @@
 #pragma once
 
+#include "graphics/display.h"
 #include "types.h"
 #include "actor.h"
 #include "graphics/graphics.h"
@@ -77,8 +78,9 @@ extern void sub_0800D244(void *a, u32 b, u32 c);
 extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
 extern void sub_0801B4BC(u32 a, void *b, u32 c, u32 d, void *e);
 extern void sub_08012A00(void);
-extern void *sub_08012A84(void);
-extern void sub_080065D4(u32 a, void *b, u32 c);
+// The room's battle background graphic blob: the second entry of g_aBattleBackgroundPairs, or a
+// fixed alternate blob for rooms 8-15 under one battle-state condition.
+extern void *GetBattleBackgroundGraphic(void);
 extern void sub_08037104(u32 a);
 extern void ReviveFighter_candidate(u8 pendingIdx);
 extern s32 sub_080189C8(u32 rosterIndex);  // per-monster XP reward

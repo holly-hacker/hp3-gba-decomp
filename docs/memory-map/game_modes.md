@@ -238,8 +238,16 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   the minigame menu passes in `dwCurrentGameModeArg3`, and sit at
   `SaveManager+0x10`/`+0x1C`/`+0x28` (`docs/formats/save.md`). Wizard
   Cracker Pop-it raises its entry in its results state and when a round is
-  won, Riddikulus on A/Start in its results state, Hippogriff Glide in its
+  won, Riddikulus on A/Start in its results state, Buckbeak's Hippogriff Glide in its
   finish state.
+- Buckbeak's Hippogriff Glide (`src/buckbeak_minigame/`, PROVEN from the matched
+  C) flies over a perspective floor drawn with one BG affine record per
+  scanline (`g_FloorEffect`, `include/graphics/floor_effect.h`). Each frame
+  `ProcessBuckbeakMinigameFrame` steers Buckbeak (A climbs, Left/Right bank),
+  advances the camera and clock, and `HasBuckbeakMinigameRingBeenReached` tests
+  the next of nine rings; each ring adds a point and `dwTimeBonus` (shrinking
+  by a fifth) to the 8.8-second clock. Its results menu uses `g_apTextActors`
+  slots 0-2 (`SpawnTextActor` spawns a text actor into a slot).
 - Riddikulus and Harry vs Dementors share a results/pause menu shape:
   `dwModeScratchB` (the word at `0x03003F14`, which Riddikulus and Wizard
   Cracker Pop-it name separately as `g_dwListMenuSelection`) is the

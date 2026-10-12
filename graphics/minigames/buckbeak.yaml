@@ -3,8 +3,26 @@ groups:
     runs:
       - kind: image-bank
         count: 4
-        names: {1: BuckbeakMinigameSprite001}
-        noPalette: [BuckbeakMinigameSprite004]
+        names: [BuckbeakMinigamePalette001, BuckbeakMinigameBuckbeak, BuckbeakMinigameBuckbeakTurning, BuckbeakMinigameBat]
+        noPalette: [BuckbeakMinigameBat]
+      # Per difficulty: BG1 then BG0, then the ground
       - kind: graphic-blobs
-        count: 7
-        names: {1: BuckbeakMinigame001}
+        names:
+          - BuckbeakMinigameEasyBg1Graphic
+          - BuckbeakMinigameEasyBg0Graphic
+          - BuckbeakMinigameMediumBg1Graphic
+          - BuckbeakMinigameMediumBg0Graphic
+          - BuckbeakMinigameHardBg1Graphic
+          - BuckbeakMinigameHardBg0Graphic
+          - BuckbeakMinigameGroundGraphic
+      # OBJ palettes: Buckbeak, the bats of a ring, and the bats of the next ring to fly through
+      - kind: image-bank
+        count: 3
+        names: [BuckbeakMinigamePalette002, BuckbeakMinigamePalette003, BuckbeakMinigamePalette004]
+
+  - name: BuckbeakMinigameWaterFrames
+    runs:
+      # BG2 lake water animation
+      - kind: tile-frames
+        count: 16
+        names: {1: BuckbeakMinigameWaterFrame001}

@@ -24,20 +24,20 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
     switch (pRecord->bMode)
     {
     case 2:
-        sub_0800A914();
-        sub_0800A598(&g_aSpecialSceneBg2, &g_dwSpecialSceneBgControl, 0);
+        FreeBgTileAnimations();
+        RegisterBgTileAnimation(&g_aSpecialSceneBg2, &g_dwSpecialSceneBgControl, 0);
         sub_0802B138();
         g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 0;
         break;
     case 0:
-        sub_0800A914();
+        FreeBgTileAnimations();
         bgResource = &g_aSpecialSceneBg0;
         goto installBg;
     case 1:
-        sub_0800A914();
+        FreeBgTileAnimations();
         bgResource = &g_aSpecialSceneBg1;
     installBg:
-        sub_0800A598(bgResource, &g_dwSpecialSceneBgControl, 0);
+        RegisterBgTileAnimation(bgResource, &g_dwSpecialSceneBgControl, 0);
         g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 1;
         g_aCameraEffects_candidate[0].bState = 0;
         g_aCameraEffects_candidate[0].dwFramesLeft = 0;

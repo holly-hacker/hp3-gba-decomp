@@ -155,7 +155,7 @@ void TickPlayerActionState(Actor *actor)
             for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++)
                 SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0xFFFF0000, 0x25000);
             actor->bActionFlags &= 0xfe;
-            sub_0802D64C(0x250);
+            SetFloorForwardSpeed(0x250);
         } else if (flags == 0x41) {
             if (fs->pFighters[fs->bActiveFighterIndex].bSpellId == Fumos) {
                 actor->bActionState = 0;
@@ -178,11 +178,11 @@ void TickPlayerActionState(Actor *actor)
         if (phase != 0) {
             g_pFightState->bActionDelayCounter_candidate -= 1;
             if (g_pFightState->bActionDelayCounter_candidate > 4) {
-                sub_0802D640((u8)(g_abBgPriority[4] - 1));
+                SetFloorHeading((u8)(g_FloorEffect.bHeading - 1));
                 g_aBgScrollState[1].nScrollY_candidate += 0xFFFD0000;
                 g_pFightState->bCameraZoomStep_candidate += 1;
             } else if (g_pFightState->bActionDelayCounter_candidate == 4) {
-                sub_0802D64C(0);
+                SetFloorForwardSpeed(0);
             } else if (g_pFightState->bActionDelayCounter_candidate == 3) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     SetActorVelocity(g_pFightState->pFighters[i].pActor, 0, 0);
@@ -226,7 +226,7 @@ void TickPlayerActionState(Actor *actor)
                     SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0x10000, 0xFFFDB000);
                     SetActorOrbitX(g_pFightState->pPendingFighters_candidate[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
                 }
-                sub_0802D64C((s16)0xFFFFFDB0);
+                SetFloorForwardSpeed((s16)0xFFFFFDB0);
                 actor->bActionFlags &= 0xfe;
             } else if (delay == 0) {
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
@@ -237,7 +237,7 @@ void TickPlayerActionState(Actor *actor)
                     SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0, 0);
                     ClearActorOrbit(g_pFightState->pPendingFighters_candidate[i].pActor);
                 }
-                sub_0802D64C(0);
+                SetFloorForwardSpeed(0);
                 actor->bActionState = 0;
                 actor->bActionFlags |= 1;
                 PostActionBattleCheck();
@@ -246,7 +246,7 @@ void TickPlayerActionState(Actor *actor)
                 ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
                 return;
             } else {
-                sub_0802D640((u8)(g_abBgPriority[4] + 1));
+                SetFloorHeading((u8)(g_FloorEffect.bHeading + 1));
                 g_aBgScrollState[1].nScrollY_candidate += 0x30000;
                 g_pFightState->bCameraZoomStep_candidate -= 1;
             }

@@ -26,6 +26,8 @@ Promotion can also let `combine` fold `(a^b)&a` into one `bicsi3` when `a` is a 
 sub-word local, where the same expression over array re-reads (HImode, `subreg`-wrapped)
 doesn't fold. An unwanted `bic` versus a reference's `eors`+`ands` pair: drop the local,
 re-read the array. Example: UpdateKeyInput, US `0x080254A8`.
+To keep the ROM's `ldrsh` plus register mask for `s16field & 0xFF` (which otherwise narrows to `ldrh`),
+assign inside the expression: `table[(angle = s.field) & 0xFF]`. Example: ProcessBuckbeakMinigameFrame.
 
 ## 3. Cached field/address
 
@@ -206,6 +208,8 @@ inside `if (kind == 1)`) gives `ldr base; adds #offset` where `table[1]` pools `
 Passing an `s16` field as an argument loads with `ldrh` when the parameter is `u16` and with
 `ldrsh` (no extension) when it is `s16`; a cast at the call site does not change this. The
 SetActorAffineTransform angle parameter is `s16` for that reason.
+A constant argument follows the same rule: `-0x100` to a `u16` parameter is `0xFF00`
+(`movs`/`lsls`), to an `s16` parameter the pooled SImode `0xFFFFFF00` (SetActorOrbitAngleVels).
 
 ## 23. Array base loaded early and hoisted instead of a neighboring constant
 
@@ -292,6 +296,13 @@ RunSerialExchange, US `0x0803F52C`, inlines the test that `SerialPhase2` (`0x080
 agbcc emits a dead load for a plain `a[i] = 0` on a volatile array element, but not for `*p = 0`
 through a volatile pointer. Keep the field volatile and the indexed store. Example: InitSerial,
 US `0x0803F0A8`.
+
+## 32. Constant kept in a register for compare and store (`cmp r2, r1`; `str r2`)
+
+`bank = 2; if (bank != s->field) { s->field = bank; ... &table[bank] ... }` keeps the constant in
+a register when `bank` is also an index. Written with the literal (`field != 2`, `table[2]`) the
+compare takes an immediate and the address folds into the pool. Example: ProcessBuckbeakMinigameFrame,
+US `0x08009144`.
 
 ## Candidate acceptance and cleanup
 

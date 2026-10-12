@@ -21,7 +21,7 @@ void DrawFolioBrutiGrid(void)
             {
                 u32 level = g_saveStateBlock.abMonsterDocLevel[monster];
 
-                sub_08006C00(3, g_FolioBrutiState.pGridTilemap, 1, 0, level, 0x14, column + 3, row + 3, 1, 1);
+                CopyBgTilemapRect(3, g_FolioBrutiState.pGridTilemap, 1, 0, level, 0x14, column + 3, row + 3, 1, 1);
             }
             monster++;
         }

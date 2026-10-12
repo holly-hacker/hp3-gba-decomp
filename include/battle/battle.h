@@ -6,6 +6,7 @@
 #include "actor.h"
 #include "input.h"
 #include "game/game_modes.h"
+#include "graphics/floor_effect.h"
 
 // See docs/memory-map/battle.md.
 
@@ -230,9 +231,6 @@ typedef enum {
 extern u32 g_dwBattleRewardFlagsSnapshot;
 extern s32 g_anFaintedRosterIndices[4];
 
-extern void sub_0802D640(u8 priority);
-extern void sub_0802D3BC(void);
-
 // One slot per active BattleFighter -- see docs/formats/battle-ui.md.
 extern Actor *g_apFighterActors_candidate[7];
 
@@ -350,7 +348,6 @@ extern EffectStaging g_effectStaging;                 // 0x03002750
 extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
 extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
 extern void sub_08012B40(void);
-extern void sub_0802D64C(s16 delta);
 extern void sub_08012A38(void);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern void ShowItemUseResult(Actor *actor, s32 targetIndex);
@@ -399,7 +396,7 @@ extern void FreeAllParticleEmitters(void);
 extern void FreeAllParticles(void);
 extern void sub_08031668(s32 arg0, s32 arg1);
 extern void sub_08026254(void);
-extern void sub_0802D6B8(void);
+extern void FreeFloorEffect(void);
 extern void sub_08007A90(void);
 extern void ClearFighterActorFlag_candidate(u8 fighterIndex);  // 0x08012CB4
 extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes); see docs/formats/save.md

@@ -98,7 +98,7 @@ void HandleHighScoreDifficultyMenuTick(void)
             sub_0802CB80(g_GameModeStackContext.dwModeScratchB, 6);
             sub_0802CC44(g_GameModeStackContext.dwModeScratchB);
             MoveCursorToSelectedRow();
-            sub_0802CDB8();
+            SyncSaveOptionsPausingKrawall();
         }
     }
     else if (g_wKeysPressed & KeyB)

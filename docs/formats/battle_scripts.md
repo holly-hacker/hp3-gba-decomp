@@ -480,7 +480,7 @@ trivially similar code rather than distinct behavior:
 - **Opcode `0x7F`** (handler `0x0801A158`) reads its 2nd operand byte
   and does a 4-way `cmp` chain (values `0`-`3`) -- but all four targets
   just pick a different string/data pointer before falling into one
-  shared tail (`sub_0800A598`). It's a **value selector** (closer to "an
+  shared tail (`RegisterBgTileAnimation`). It's a **value selector** (closer to "an
   operand with a 4-value enum domain"), not a dispatch to different
   behavior.
 - **Opcode `0x8C`** (handler `0x0801A428`) reads its 1st operand byte

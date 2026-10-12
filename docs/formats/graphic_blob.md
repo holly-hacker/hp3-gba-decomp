@@ -1,13 +1,13 @@
 # Graphic blobs
 
 A self-contained BG graphic: optional palette, tilemap and tile data in one
-byte string, loaded by `sub_080065D4` (via `sub_080077C8`, which then writes
+byte string, loaded by `LoadGraphicBlobTiles` (via `LoadGraphicBlob`, which then writes
 the tilemap with `WriteBgGraphicTilemap_candidate`). Users include the battle
 backgrounds, the Wizard Cracker minigame, the Lupin potion cutscene and the
 debug collector-cards menu. `LoadEmbeddedPalette_candidate` reads the same
 header for the palette alone.
 
-## Layout (PROVEN for the battle background blob at `0x08856710`; other flag combinations are read from `sub_080065D4`, STRUCTURAL MATCH)
+## Layout (PROVEN for the battle background blob at `0x08856710`; other flag combinations are read from `LoadGraphicBlobTiles`, STRUCTURAL MATCH)
 
 ```
 u8   flags0

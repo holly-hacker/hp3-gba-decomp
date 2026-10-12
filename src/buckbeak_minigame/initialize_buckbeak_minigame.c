@@ -14,17 +14,17 @@ void InitializeBuckbeakMinigame(void)
     ClearObjPaletteSlots();
     ReserveObjPaletteSlot(0);
     QueueObjPaletteLoad((const u16 *)gMainMenuPalette, 0, 0x10);
-    sub_08009E1C();
+    ClearBuckbeakMinigameRings();
     PlayMusicModule(0x30);
     g_pBuckbeakMinigame->dwScore = 0;
-    sub_0800907C();
-    sub_08008E88();
+    ResetBuckbeakMinigame();
+    SetUpBuckbeakMinigameScene();
     g_GameModeStackContext.dwModeState = BuckbeakMinigameStateFlying;
-    g_adwBuckbeakMinigameUnk[0] = 0;
-    g_adwBuckbeakMinigameUnk[1] = 0;
-    g_adwBuckbeakMinigameUnk[2] = 0;
-    g_pBuckbeakMinigame->dwUnk10 = 0;
-    sub_08009D8C();
-    sub_0800975C();
+    g_apTextActors[BuckbeakMinigameTextResume] = NULL;
+    g_apTextActors[BuckbeakMinigameTextReplay] = NULL;
+    g_apTextActors[BuckbeakMinigameTextExit] = NULL;
+    g_pBuckbeakMinigame->pCursor = NULL;
+    DrawBuckbeakMinigameScore();
+    DrawBuckbeakMinigameTime();
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

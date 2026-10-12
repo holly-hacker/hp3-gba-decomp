@@ -324,7 +324,8 @@
 .set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
 .set g_apMenuIconActors, 0x03003F68  @ Actor *[]: actors registered by index via RegisterMenuIconActor
 .set g_dwSelectedMinigame,                   0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
-.set g_abBgPriority,                         0x03003F8C  @ u8[]; [4] == 0x03003F90
+.set g_FloorEffect,                          0x03003F8C  @ FloorEffectState: camera of the per-scanline floor; see include/graphics/floor_effect.h
+.set g_pFloorAffineTable_candidate,          0x03003FAC  @ u8 *: 0xA00 bytes, one 16-byte BG affine record per scanline
 .set g_dwRoomCollisionPatternCount,           0x03003FB8  @ u32: pattern count from the collision tilemap header
 .set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]: see include/overworld/terrain.h
 .set g_pRoomCollisionTilemapBuffer,           0x03003FC8  @ u8 *: decompressed collision tilemap resource, 4-byte header then the pattern ids
@@ -476,7 +477,7 @@
 .set gDialogTextScratchBuf,      0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,           0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,        0x03005D0D  @ byte: locale-specific number-formatting separator
-.set g_adwBuckbeakMinigameUnk,    0x03005D10  @ u32[3]: cleared on init, meaning not yet established
+.set g_apTextActors,              0x03005D10  @ Actor *[17]: slots filled by SpawnTextActor; its destructor clears the slot
 .set g_aGameTimers,                0x03005D58  @ GameTimer[4]; see include/game/game_timer.h
 .set g_HarryHermionePortInTime,  0x03005D98  @ HarryHermionePortInTimeState
 

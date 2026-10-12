@@ -213,11 +213,11 @@ asm-file 0x08006440 0x08006508 asm/sort_actors_by_depth.s  SortActorsByDepth
 
 # Background (BG layers)
 thumb-func 0x08006508 LoadBgGraphicTiles_candidate
-thumb-func 0x080065D4 sub_080065D4
+thumb-func 0x080065D4 LoadGraphicBlobTiles
 thumb-func 0x080066BC sub_080066BC
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
 thumb-func 0x08006A98 sub_08006A98
-thumb-func 0x08006C00 sub_08006C00
+thumb-func 0x08006C00 CopyBgTilemapRect
 c-file 0x08006EF4 0x08007130 src/graphics/bg/tick_bg_layers.c TickBgLayers_candidate
 thumb-func 0x08007130 sub_08007130
 c-file 0x08007228 0x080072B0 src/graphics/bg/apply_bg_layer_wobble.c ApplyBgLayerWobble
@@ -226,11 +226,11 @@ thumb-func 0x080072D0 SetBgControl
 thumb-func 0x080072EC SetBgControlRegister_candidate
 thumb-func 0x08007334 EnableBg
 thumb-func 0x08007348 DisableBg
-thumb-func 0x0800735C sub_0800735C
+thumb-func 0x0800735C RewriteBgControlRegisters_candidate
 thumb-func 0x0800739C sub_0800739C
 thumb-func 0x080073B0 sub_080073B0
 thumb-func 0x080073BC ResetDisplayState
-thumb-func 0x08007404 sub_08007404
+thumb-func 0x08007404 SetBgMode
 thumb-func 0x0800741C sub_0800741C
 thumb-func 0x08007434 sub_08007434
 thumb-func 0x08007444 SetDispcntFlag
@@ -248,7 +248,7 @@ thumb-func 0x080076A4 sub_080076A4
 thumb-func 0x08007714 sub_08007714
 thumb-func 0x08007774 sub_08007774
 thumb-func 0x0800778C LoadBgGraphic
-thumb-func 0x080077C8 sub_080077C8
+thumb-func 0x080077C8 LoadGraphicBlob
 thumb-func 0x08007800 LoadEmbeddedPalette_candidate
 thumb-func 0x08007854 sub_08007854
 thumb-func 0x080078A4 sub_080078A4
@@ -319,33 +319,33 @@ c-file 0x08008D4C _ src/boggart_minigame/reset_boggart_minigame_actors.c ResetBo
 c-file 0x08008D80 _ src/boggart_minigame/has_boggart_minigame_boggart_returned_to_center.c HasBoggartMinigameBoggartReturnedToCenter
 c-file 0x08008DD8 _ src/boggart_minigame/move_boggart_minigame_menu_cursor.c MoveBoggartMinigameMenuCursor
 c-file 0x08008DFC _ src/boggart_minigame/resume_boggart_minigame.c ResumeBoggartMinigame
-c-file 0x08008E48 0x08008E88 src/boggart_minigame/leave_boggart_minigame.c LeaveBoggartMinigame
-thumb-func 0x08008E88 sub_08008E88
-thumb-func 0x0800907C sub_0800907C
-thumb-func 0x08009144 ProcessBuckbeakMinigameFrame
-thumb-func 0x080094C8 InitializeBuckbeakMinigameResultsMenu
-thumb-func 0x0800960C sub_0800960C
-thumb-func 0x080096A0 HandleBuckbeakMinigameResultsMenuSelect
-thumb-func 0x0800975C sub_0800975C
-thumb-func 0x08009834 sub_08009834
-thumb-func 0x08009930 sub_08009930
-thumb-func 0x08009A78 sub_08009A78
+c-file 0x08008E48 _ src/boggart_minigame/leave_boggart_minigame.c LeaveBoggartMinigame
+c-file 0x08008E88 _ src/buckbeak_minigame/set_up_buckbeak_minigame_scene.c SetUpBuckbeakMinigameScene
+c-file 0x0800907C _ src/buckbeak_minigame/reset_buckbeak_minigame.c ResetBuckbeakMinigame
+c-file 0x08009144 _ src/buckbeak_minigame/process_buckbeak_minigame_frame.c ProcessBuckbeakMinigameFrame
+c-file 0x080094C8 _ src/buckbeak_minigame/initialize_buckbeak_minigame_results_menu.c InitializeBuckbeakMinigameResultsMenu
+c-file 0x0800960C _ src/buckbeak_minigame/close_buckbeak_minigame_results_menu.c CloseBuckbeakMinigameResultsMenu
+c-file 0x080096A0 _ src/buckbeak_minigame/handle_buckbeak_minigame_results_menu_select.c HandleBuckbeakMinigameResultsMenuSelect
+c-file 0x0800975C _ src/buckbeak_minigame/draw_buckbeak_minigame_time.c DrawBuckbeakMinigameTime
+c-file 0x08009834 _ src/buckbeak_minigame/spawn_buckbeak_minigame_ring.c SpawnBuckbeakMinigameRing
+c-file 0x08009930 _ src/buckbeak_minigame/update_buckbeak_minigame_ring.c UpdateBuckbeakMinigameRing
+c-file 0x08009A78 _ src/buckbeak_minigame/project_buckbeak_minigame_point.c ProjectBuckbeakMinigamePoint
 c-file 0x08009B70 _ src/buckbeak_minigame/initialize_buckbeak_minigame.c InitializeBuckbeakMinigame
 c-file 0x08009BE0 _ src/buckbeak_minigame/update_buckbeak_minigame.c UpdateBuckbeakMinigame
-c-file 0x08009C54 0x08009CA4 src/buckbeak_minigame/exit_buckbeak_minigame.c ExitBuckbeakMinigame
-thumb-func 0x08009CA4 sub_08009CA4
-thumb-func 0x08009CE0 sub_08009CE0
-thumb-func 0x08009D18 sub_08009D18
-thumb-func 0x08009D44 sub_08009D44
-thumb-func 0x08009D8C sub_08009D8C
-thumb-func 0x08009E00 sub_08009E00
-thumb-func 0x08009E1C sub_08009E1C
-thumb-func 0x08009E38 sub_08009E38
-thumb-func 0x08009E64 sub_08009E64
-thumb-func 0x08009ED0 sub_08009ED0
-thumb-func 0x08009F3C sub_08009F3C
-thumb-func 0x08009F64 sub_08009F64
-thumb-func 0x08009F80 HandleBuckbeakMinigameExitSelect
+c-file 0x08009C54 _ src/buckbeak_minigame/exit_buckbeak_minigame.c ExitBuckbeakMinigame
+c-file 0x08009CA4 _ src/buckbeak_minigame/begin_buckbeak_minigame_ground_scanline.c BeginBuckbeakMinigameGroundScanline
+c-file 0x08009CE0 _ src/buckbeak_minigame/end_buckbeak_minigame_ground_scanline.c EndBuckbeakMinigameGroundScanline
+c-file 0x08009D18 _ src/buckbeak_minigame/set_buckbeak_minigame_sky_scroll.c SetBuckbeakMinigameSkyScroll
+c-file 0x08009D44 _ src/buckbeak_minigame/place_buckbeak_minigame_buckbeak.c PlaceBuckbeakMinigameBuckbeak
+c-file 0x08009D8C _ src/buckbeak_minigame/draw_buckbeak_minigame_score.c DrawBuckbeakMinigameScore
+c-file 0x08009E00 _ src/buckbeak_minigame/move_buckbeak_minigame_menu_cursor.c MoveBuckbeakMinigameMenuCursor
+c-file 0x08009E1C _ src/buckbeak_minigame/clear_buckbeak_minigame_rings.c ClearBuckbeakMinigameRings
+c-file 0x08009E38 _ src/buckbeak_minigame/find_free_buckbeak_minigame_ring.c FindFreeBuckbeakMinigameRing
+c-file 0x08009E64 _ src/buckbeak_minigame/has_buckbeak_minigame_ring_been_reached.c HasBuckbeakMinigameRingBeenReached
+c-file 0x08009ED0 _ src/buckbeak_minigame/rotate_buckbeak_minigame_offset.c RotateBuckbeakMinigameOffset
+c-file 0x08009F3C _ src/buckbeak_minigame/get_buckbeak_minigame_ring_frame_row.c GetBuckbeakMinigameRingFrameRow
+c-file 0x08009F64 _ src/buckbeak_minigame/release_buckbeak_minigame_actor.c ReleaseBuckbeakMinigameActor
+c-file 0x08009F80 0x08009FD8 src/buckbeak_minigame/handle_buckbeak_minigame_exit_select.c HandleBuckbeakMinigameExitSelect
 
 # Camera
 thumb-func 0x08009FD8 sub_08009FD8
@@ -369,14 +369,14 @@ c-file 0x0800A560 _ src/gamemode/modes/purple_screen_return_to_menu/update_purpl
 c-file 0x0800A580 0x0800A598 src/gamemode/modes/purple_screen_return_to_menu/exit_purple_screen_return_to_menu.c ExitPurpleScreenReturnToMenu
 
 # CharAnim? (BG tile animations)
-thumb-func 0x0800A598 sub_0800A598
+thumb-func 0x0800A598 RegisterBgTileAnimation
 c-file 0x0800A610 _ src/graphics/tick_bg_tile_animations.c TickBgTileAnimations
 c-file 0x0800A6EC 0x0800A83C src/graphics/commit_bg_tile_animations.c CommitBgTileAnimations
 thumb-func 0x0800A83C StopAllBgTileAnimations
 thumb-func 0x0800A874 sub_0800A874
-thumb-func 0x0800A8A8 sub_0800A8A8
-thumb-func 0x0800A8E0 sub_0800A8E0
-thumb-func 0x0800A914 sub_0800A914
+thumb-func 0x0800A8A8 PauseBgTileAnimations
+thumb-func 0x0800A8E0 ResumeBgTileAnimations
+thumb-func 0x0800A914 FreeBgTileAnimations
 
 # Cheat (debug menus)
 c-file 0x0800A950 _ src/gamemode/modes/debug/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
@@ -540,7 +540,7 @@ thumb-func 0x08012994 InitCharacterSpells_candidate
 thumb-func 0x080129F4 StopBgTileAnimationsAfterCard_candidate
 thumb-func 0x08012A00 sub_08012A00
 thumb-func 0x08012A38 sub_08012A38
-thumb-func 0x08012A84 sub_08012A84
+thumb-func 0x08012A84 GetBattleBackgroundGraphic
 thumb-func 0x08012AC0 GetBattleBackgroundData_candidate
 c-file 0x08012AFC 0x08012B40 src/battle/push_battle_state.c PushBattleState
 thumb-func 0x08012B40 sub_08012B40
@@ -1352,7 +1352,7 @@ c-file 0x0802CCF4 _ src/gamemode/modes/minigame_difficulty_select/initialize_wiz
 c-file 0x0802CD88 0x0802CDB8 src/gamemode/modes/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
 
 # Minigame/HighScore? (minigame high score helpers)
-thumb-func 0x0802CDB8 sub_0802CDB8
+thumb-func 0x0802CDB8 SyncSaveOptionsPausingKrawall
 thumb-func 0x0802CDCC SpawnMinigameTextPanel
 thumb-func 0x0802CEE4 FreeMinigameTextPanel
 
@@ -1369,19 +1369,19 @@ thumb-func 0x0802D368 SwapMinigameSelection_candidate
 thumb-func 0x0802D384 TickMinigameSwitchFadeIn_candidate
 
 # Mode7? (affine BG and BG priority)
-thumb-func 0x0802D3BC sub_0802D3BC
-thumb-func 0x0802D464 sub_0802D464
+thumb-func 0x0802D3BC UpdateFloorAffineTable
+thumb-func 0x0802D464 BuildFloorAffineTable
 c-file 0x0802D544 0x0802D548 src/noop_init3.c NoopInit3
 thumb-func 0x0802D548 sub_0802D548
-thumb-func 0x0802D614 sub_0802D614
+thumb-func 0x0802D614 SetFloorHorizonLineAndSkyScroll
 thumb-func 0x0802D628 sub_0802D628
-thumb-func 0x0802D640 sub_0802D640
-thumb-func 0x0802D64C sub_0802D64C
+thumb-func 0x0802D640 SetFloorHeading
+thumb-func 0x0802D64C SetFloorForwardSpeed
 thumb-func 0x0802D658 sub_0802D658
-thumb-func 0x0802D668 sub_0802D668
-thumb-func 0x0802D674 sub_0802D674
-thumb-func 0x0802D6B8 sub_0802D6B8
-thumb-func 0x0802D6D8 sub_0802D6D8
+thumb-func 0x0802D668 SetFloorHorizonOffset
+thumb-func 0x0802D674 InitFloorEffect
+thumb-func 0x0802D6B8 FreeFloorEffect
+thumb-func 0x0802D6D8 StartFloorAffineHBlankDma
 
 # Move? (terrain collision and camera focus)
 c-file 0x0802D704 _ src/overworld/resolve_actor_terrain.c ResolveActorTerrain
@@ -2070,12 +2070,12 @@ thumb-func 0x080426A4 sub_080426A4
 thumb-func 0x0804273C sub_0804273C
 thumb-func 0x080427CC sub_080427CC
 thumb-func 0x080428EC sub_080428EC
-thumb-func 0x08042948 sub_08042948
+thumb-func 0x08042948 SpawnTextActor
 thumb-func 0x080429C0 sub_080429C0
-thumb-func 0x080429D4 sub_080429D4
+thumb-func 0x080429D4 SetTextActorCenterPosition_candidate
 thumb-func 0x080429F0 sub_080429F0
 thumb-func 0x08042A88 sub_08042A88
-thumb-func 0x08042AA4 sub_08042AA4
+thumb-func 0x08042AA4 ClearTextActorSlot
 
 # Time? (clock skip and Hogwarts up-night cutscene modes)
 c-file 0x08042AC8 _ src/gamemode/modes/cutscene/clock_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene
@@ -2408,7 +2408,8 @@ c-file 0x0804BDBC 0x0804BF9C src/graphics/particle/direction_vectors.c g_aDirect
 c-file 0x0804BFCC 0x0804BFEC src/actor/action_state_data.c g_abTurnAroundDirection
 c-file 0x0804C024 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804C054 0x0804C08C src/room/room_actor_constructors.c g_apRoomActorConstructors
-c-file 0x0804C0AC 0x0804C284 src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
+c-file 0x0804C0AC _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
+c-file 0x0804C284 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
 c-file 0x0804C43C 0x0804C440 src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
 c-file 0x0804C444 _ src/gamemode/modes/debug/debug_menu_main/debug_menu_main.globals.c g_dwDebugMenuMainBg0Control
 c-file 0x0804C470 _ src/gamemode/modes/debug/debug_level_and_quest_select_menu/debug_level_and_quest_select_menu.globals.c g_abDebugLevelAndQuestMax
@@ -2688,8 +2689,9 @@ krawall-samples 0x08AEF7FC _ data/audio/samples KrawallSamples
 krawall-module 0x08D22E4C _ data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 _ data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C _ data/audio/modules/MusTitle.json MusTitle
-krawall-module 0x08D3C784 0x08D3EFFC data/audio/modules/MusPause.json MusPause
+krawall-module 0x08D3C784 _ data/audio/modules/MusPause.json MusPause
 
+graphics 0x08D3EFFC _ minigames/buckbeak BuckbeakMinigameWaterFrames
 graphics 0x08D3F2B4 _ cutscenes PatronusCutscene
 graphics 0x08D48D74 _ minigames/pumpkin ServePumpkinJuiceFrames
 graphics 0x08D4A410 _ minigames/divination_tea DivinationTeaFrames
@@ -2709,7 +2711,7 @@ graphics 0x08E1D5DC _ cutscenes HogwartsUpNight
 graphics 0x08E3254C _ menus/us MainMenuTitles
 graphics 0x08E359C0 _ cutscenes CoolTrain
 graphics 0x08E36D88 0x08E3D010 minigames/divination_tea DivinationTeaGraphics
-graphics 0x08E3D030 0x08E52904 minigames/buckbeak BuckbeakMinigameGraphics
+graphics 0x08E3D030 _ minigames/buckbeak BuckbeakMinigameGraphics
 graphics 0x08E52964 _ minigames/boggart BoggartGraphics
 graphics 0x08E65D6C _ menus FontsAndPortraits
 dialog-text 0x08EAC798 _ data/text/en_us.json DialogTextEnUs
@@ -2724,7 +2726,8 @@ dialog-text 0x08F37D1C _ data/text/da.json DialogTextDa
 graphics 0x08F4BEDC 0x08FA953C menus FamousWizardCards
 
 c-rodata 0x08FAA7D0 _ EepromV124
-c-rodata 0x08FAA810 0x08FAA824 EepromNoWait
+c-rodata 0x08FAA810 _ EepromNoWait
+c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
 
 c-file 0x08FAAEF8 0x08FAAF10 src/gamemode/modes/cutscene/harry_patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows

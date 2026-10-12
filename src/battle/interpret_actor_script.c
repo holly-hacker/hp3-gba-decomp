@@ -550,12 +550,12 @@ void InterpretActorScript(Actor *actor)
         case BSOP_ScrollBgUp:  // scrolls a BG up 2 pixels and shifts its priority
             g_aBgScrollState[args[1]].nScrollY_candidate -= 0x20000;
             g_aBgScrollState[args[1]].dwFlags |= 0x8000;
-            sub_0802D640(g_abBgPriority[4] - 3);
+            SetFloorHeading(g_FloorEffect.bHeading - 3);
             break;
         case BSOP_ScrollBgDown:  // scrolls a BG down 2 pixels and shifts its priority
             g_aBgScrollState[args[1]].nScrollY_candidate += 0x20000;
             g_aBgScrollState[args[1]].dwFlags |= 0x8000;
-            sub_0802D640(g_abBgPriority[4] + 3);
+            SetFloorHeading(g_FloorEffect.bHeading + 3);
             break;
         case BSOP_SetTargetVelocityScaled:  // sets the target's velocity (scaled by 1/16)
             {
@@ -672,16 +672,16 @@ void InterpretActorScript(Actor *actor)
                     switch (args[1])
                     {
                     case 1:
-                        sub_0800A598(pControls, &g_adwEffectBgControlOverride_candidate[1], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[1], 8);
                         break;
                     case 0:
-                        sub_0800A598(pControls, &g_adwEffectBgControlOverride_candidate[2], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[2], 8);
                         break;
                     case 2:
-                        sub_0800A598(pControls, &g_adwEffectBgControlOverride_candidate[0], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[0], 8);
                         break;
                     case 3:
-                        sub_0800A598(pControls, &g_adwEffectBgControlOverride_candidate[3], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[3], 8);
                         break;
                     }
                 }
@@ -807,7 +807,7 @@ void InterpretActorScript(Actor *actor)
             sub_08007D14(args[1], 0, 0);
             sub_08007AF0(args[1], 0, 0);
             if (args[1] == 1)
-                sub_080065D4(1, sub_08012A84(), 0x180);
+                LoadGraphicBlobTiles(1, GetBattleBackgroundGraphic(), 0x180);
             break;
         case BSOP_Unk94:  // SetActorListActive_candidate(1)
             SetActorListActive_candidate(1);
@@ -1081,8 +1081,8 @@ void InterpretActorScript(Actor *actor)
         case BSOP_SetLocalRandom:
             actor->modeState.effect.abLocal[args[1]] = Mt19937RandMax(args[2]);
             break;
-        case BSOP_UnkA3:  // sub_080065D4 call
-            sub_080065D4(1, sub_08012A84(), 0x180);
+        case BSOP_ReloadBattleBackgroundTiles:  // reloads the room's battle background tiles on BG1
+            LoadGraphicBlobTiles(1, GetBattleBackgroundGraphic(), 0x180);
             break;
         case BSOP_PlaySoundOrDefault:  // PlaySound, or sound 0x4B when the context value is 0
             if (g_effectStaging.wContextValue == 0)
