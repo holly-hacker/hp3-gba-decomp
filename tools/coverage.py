@@ -82,7 +82,8 @@ def fmt_header(label: str = "area", label_w: int = AREA_W) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("ver", nargs="?", default="us")
+    ap.add_argument("ver", nargs="?", default="us", choices=["us", "jp", "all"],
+                    help="version to report (default: us)")
     ap.add_argument(
         "--area",
         action="append",
@@ -95,7 +96,10 @@ def main() -> None:
                     help="also list the largest unclaimed gaps in each area")
     args = ap.parse_args()
 
-    for ver in ["us", "jp"]:
+    versions = ["us", "jp"] if args.ver == "all" else [args.ver]
+    for ver in versions:
+        if len(versions) > 1:
+            print(f"[{ver}]")
         layout_areas, blocks = rom_layout.load(ver)
         areas = [(a.name, a.start, a.end) for a in layout_areas]
         if args.area:
