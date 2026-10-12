@@ -2,6 +2,9 @@
 
 #include "types.h"
 #include "actor.h"
+#include "menu/minigame_menu.h"
+#include "math.h"
+#include "palette.h"
 #include "gen/graphics/minigames/boggart.h"
 
 extern u32 g_dwBoggartMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame
@@ -10,27 +13,44 @@ extern u32 g_dwBoggartMinigameScriptFlag_candidate;  // 0x03002040; set by Start
 
 // The mode's screen state at 0x03002048, driven by g_GameModeStackContext.dwModeState.
 typedef struct {
-    u8 abUnmapped_0[0x10];
-    Actor *pActor;         // 0x10; despawned when a round ends
-    u32 dwUnk14;
+    Actor *apStudents[4];  // 0x00; indexed by direction 0-3
+    Actor *pActor;         // 0x10; the Boggart
+    Actor *pCastEffectActor;  // 0x14; spark spawned on a successful cast
     Actor *pCursorActor;   // 0x18; released on exit when set
-    void *pActorGroup1C;    // 0x1C; freed on exit
-    void *pActorGroup20;    // 0x20; freed on exit
-    s32 dwUnk24;
-    u8 abUnmapped_28[4];
-    u32 dwScore;             // 0x2C; compared against the saved high score
+    MinigameTextPanel *pScorePanel;   // 0x1C; freed on exit
+    MinigameTextPanel *pLivesPanel;   // 0x20; freed on exit
+    s32 dwBoggartDirection;  // 0x24; -1 before the first round
+    u32 dwChosenDirection;   // 0x28; direction the player cast
+    s32 dwScore;             // 0x2C; compared against the saved high score
     s32 dwCountdown;         // 0x30; frames until the current state advances
-    u8 bUnk34;
-    u8 bUnk35;
+    u8 bLives;               // 0x34
+    u8 bRound;               // 0x35
     u8 abUnmapped_36[2];
     u32 dwExitToMenu;        // 0x38; 1 requests a return to the minigame menu
 } BoggartMinigameState;
 
 extern BoggartMinigameState g_BoggartMinigame;  // 0x03002048
 
-// BG control words and the BG0 graphic.
-extern const u32 g_dwBoggartMinigameBg0Control;  // 0x0804C1B0
-extern const u32 g_dwBoggartMinigameBg3Control;  // 0x0804C1B4
+// Sprite resources, indexed by direction. The form and form palette tables have
+// a fifth entry for the form the Boggart takes once the charm lands.
+extern const ActorAssetRecord g_aBoggartStudentAssets[4];          // US 0x0804C0AC
+extern const ObjPalette *const g_apBoggartStudentPalettes[4];      // US 0x0804C0EC
+extern const ActorAssetRecord g_aBoggartCastEffectAssets[4];       // US 0x0804C0FC
+extern const ObjPalette *const g_apBoggartCastEffectPalettes[4];   // US 0x0804C13C
+extern const ActorAssetRecord g_aBoggartFormAssets[5];             // US 0x0804C14C
+extern const ObjPalette *const g_apBoggartFormPalettes[5];         // US 0x0804C19C
+
+extern const u32 g_dwBoggartMinigameBg0Control;  // US 0x0804C1B0
+extern const u32 g_dwBoggartMinigameBg3Control;  // US 0x0804C1B4
+
+extern const IntPoint g_aBoggartStudentPositions[4];  // US 0x0804C1B8
+
+// Animation command streams; see actor_anim.h.
+extern const u8 g_abBoggartStudentCastAnimData[14];  // US 0x0804C1D8
+extern const u8 g_abBoggartCastEffectAnimData[12];   // US 0x0804C1E6
+extern const u8 g_abBoggartStopAnimData[2];          // US 0x0804C1F2
+extern const u8 g_aabBoggartWalkAnimData[4][30];     // US 0x0804C1F4
+extern const u8 g_aabBoggartHitAnimData[4][6];       // US 0x0804C26C
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.
@@ -45,18 +65,24 @@ typedef enum {
     BoggartMinigameStatePauseMenu = 7,
 } BoggartMinigameMode;
 
-extern void sub_08008360(void);
-extern void sub_08008404(void);
-extern u32 sub_08008604(void);
-extern void sub_08008698(void);
-extern void sub_08008968(void);
-extern void sub_08008A18(void);
-extern void sub_08008B2C(u32 direction);
-extern void sub_08008B84(void);
-extern void sub_08008BD8(void);
-extern void sub_08008C4C(void);
-extern void sub_08008CA8(void);
-extern void sub_08008D4C(void);
-extern u32 sub_08008D80(void);
-extern void sub_08008DFC(void);
-extern void sub_08008E48(void);
+extern void SpawnBoggartMinigameActors(void);
+extern void StartBoggartMinigameBoggartMotion(void);
+extern u32 CheckBoggartMinigameBoggartReachedStudent(void);
+extern void ResolveBoggartMinigameCast(void);
+extern void HandleBoggartMinigameMiss(u32 playSound);
+extern void HandleBoggartMinigameHit(void);
+extern s32 GetBoggartMinigameBoggartVelocity(u32 forward);
+extern s32 GetBoggartMinigameRoundPoints(void);
+extern void AddBoggartMinigameScore(s32 points);
+extern void ShowBoggartMinigameResultsMenu(void);
+extern void ShowBoggartMinigamePauseMenu(void);
+extern void StartBoggartMinigameCast(u32 direction);
+extern void DrawBoggartMinigameScore(void);
+extern void DrawBoggartMinigameLives(void);
+extern void SpawnBoggartMinigameBoggart(void);
+extern void ClearBoggartMinigameMessage(void);
+extern void ResetBoggartMinigameActors(void);
+extern u32 HasBoggartMinigameBoggartReturnedToCenter(void);
+extern void MoveBoggartMinigameMenuCursor(Actor *pCursor);
+extern void ResumeBoggartMinigame(void);
+extern void LeaveBoggartMinigame(void);

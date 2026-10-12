@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
+#include "menu/minigame_menu.h"
 #include "gen/graphics/minigames/boggart.h"
 
 extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
@@ -14,9 +15,9 @@ typedef struct {
     Actor *pCursorActor;   // 0x14; released on exit when set
     Actor *pActor18;       // 0x18; hidden when dwHideTimer5C expires
     Actor *pActor1C;       // 0x1C; hidden when dwHideTimer68 expires
-    void *pActorGroup20;    // 0x20; freed on exit
-    void *pActorGroup24;    // 0x24; freed on exit
-    void *pActorGroup28;    // 0x28; freed on exit
+    MinigameTextPanel *pTextPanel20;  // 0x20; freed on exit
+    MinigameTextPanel *pTextPanel24;  // 0x24; freed on exit
+    MinigameTextPanel *pTextPanel28;  // 0x28; freed on exit
     u32 dwUnk2C;
     u8 abUnmapped_30[0x10];
     s32 dwUnk40;

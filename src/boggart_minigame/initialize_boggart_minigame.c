@@ -13,13 +13,13 @@ void InitializeBoggartMinigame(void)
     ClearObjPaletteSlots();
     g_BoggartMinigame.dwExitToMenu = 0;
     g_BoggartMinigame.pCursorActor = NULL;
-    g_BoggartMinigame.dwUnk24 = -1;
+    g_BoggartMinigame.dwBoggartDirection = -1;
     g_GameModeStackContext.dwModeState = BoggartMinigameStateIntro;
     g_BoggartMinigame.dwCountdown = 3;
-    g_BoggartMinigame.bUnk34 = 3;
-    g_BoggartMinigame.dwUnk14 = 0;
+    g_BoggartMinigame.bLives = 3;
+    g_BoggartMinigame.pCastEffectActor = NULL;
     g_BoggartMinigame.dwScore = 0;
-    g_BoggartMinigame.bUnk35 = 0;
+    g_BoggartMinigame.bRound = 0;
 
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
@@ -30,9 +30,9 @@ void InitializeBoggartMinigame(void)
     SetTextTargetFromBgControl(bgControl);
     LoadBgGraphic(0, gBoggartBgGraphic, 1, 0, 0, 0);
 
-    sub_08008B84();
-    sub_08008BD8();
-    sub_08008360();
+    DrawBoggartMinigameScore();
+    DrawBoggartMinigameLives();
+    SpawnBoggartMinigameActors();
     PlayScreenTransitionInByIndex(0x3F, 2);
     PlayMusicModule(0xE);
 }

@@ -13,7 +13,19 @@ extern u32 g_dwListMenuSelection;  // 0x03003F14: the same word as g_GameModeSta
 
 // Shared by the minigame screens.
 extern void sub_0800A598(const void *pTable, const void *pBgControls, u32 count);
-extern void sub_0802CEE4(void *pActorGroup);  // frees the actors a group owns
+// A horizontal panel of actors drawn behind a minigame's HUD text: end caps at
+// x and x + widthTiles * 8 (the right one flipped) and widthTiles - 4 middle
+// pieces between them. The Boggart minigame puts one behind the score and one
+// behind the lives counter.
+typedef struct MinigameTextPanel {
+    Actor *pLeftCap;
+    Actor *pRightCap;
+    Actor **ppMiddlePieces;  // NULL when there are none
+    s32 middleCount;
+} MinigameTextPanel;
+
+extern MinigameTextPanel *SpawnMinigameTextPanel(s32 x, s32 y, s32 widthTiles, u32 priority);
+extern void FreeMinigameTextPanel(MinigameTextPanel *pPanel);
 extern void sub_0803FF04(void);
 
 // Shared minigame exit teardown: DisableKrawall, SyncSaveOptionsIfDirty, EnableKrawall.

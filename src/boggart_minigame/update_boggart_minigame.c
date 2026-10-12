@@ -13,7 +13,7 @@ void UpdateBoggartMinigame(void)
     case BoggartMinigameStateIntro:
         if (--g_BoggartMinigame.dwCountdown == 0)
         {
-            sub_08008C4C();
+            SpawnBoggartMinigameBoggart();
             g_BoggartMinigame.dwCountdown = 3;
             g_GameModeStackContext.dwModeState = BoggartMinigameStateAwaitInput;
         }
@@ -22,41 +22,41 @@ void UpdateBoggartMinigame(void)
         if (--g_BoggartMinigame.dwCountdown == 0)
         {
             g_GameModeStackContext.dwModeState = BoggartMinigameStateInput;
-            sub_08008404();
+            StartBoggartMinigameBoggartMotion();
         }
         // fall through
     case BoggartMinigameStateInput:
-        if (sub_08008604())
+        if (CheckBoggartMinigameBoggartReachedStudent())
             break;
         if (g_wKeysPressed & KeyLeft)
-            sub_08008B2C(0);
+            StartBoggartMinigameCast(0);
         else if (g_wKeysPressed & KeyRight)
-            sub_08008B2C(2);
+            StartBoggartMinigameCast(2);
         else if (g_wKeysPressed & KeyDown)
-            sub_08008B2C(3);
+            StartBoggartMinigameCast(3);
         else if (g_wKeysPressed & KeyUp)
-            sub_08008B2C(1);
+            StartBoggartMinigameCast(1);
         else if (g_wKeysPressed & KeyStart)
-            sub_08008A18();
+            ShowBoggartMinigamePauseMenu();
         break;
     case BoggartMinigameStateResolve:
-        if (sub_08008604())
+        if (CheckBoggartMinigameBoggartReachedStudent())
             break;
 
         if (--g_BoggartMinigame.dwCountdown == 0)
-            sub_08008698();
+            ResolveBoggartMinigameCast();
         break;
     case BoggartMinigameStateRoundEnd:
         if (--g_BoggartMinigame.dwCountdown == 0)
         {
-            sub_08008CA8();
-            if (g_BoggartMinigame.bUnk34 == 0)
+            ClearBoggartMinigameMessage();
+            if (g_BoggartMinigame.bLives == 0)
             {
-                sub_08008968();
+                ShowBoggartMinigameResultsMenu();
             }
             else
             {
-                sub_08008D4C();
+                ResetBoggartMinigameActors();
                 g_BoggartMinigame.pActor->dwFlags |= 0x82;
                 g_BoggartMinigame.dwCountdown = 3;
                 g_GameModeStackContext.dwModeState = BoggartMinigameStateIntro;
@@ -64,11 +64,11 @@ void UpdateBoggartMinigame(void)
         }
         break;
     case BoggartMinigameStateNextRound:
-        if (sub_08008D80())
+        if (HasBoggartMinigameBoggartReturnedToCenter())
         {
-            sub_08008CA8();
-            g_BoggartMinigame.bUnk35++;
-            sub_08008D4C();
+            ClearBoggartMinigameMessage();
+            g_BoggartMinigame.bRound++;
+            ResetBoggartMinigameActors();
             g_BoggartMinigame.pActor->dwFlags |= 0x82;
             g_BoggartMinigame.dwCountdown = 3;
             g_GameModeStackContext.dwModeState = BoggartMinigameStateIntro;
@@ -90,7 +90,7 @@ void UpdateBoggartMinigame(void)
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 1:
-                sub_08008E48();
+                LeaveBoggartMinigame();
                 break;
             }
         }
@@ -106,21 +106,21 @@ void UpdateBoggartMinigame(void)
             switch (g_GameModeStackContext.dwModeScratchB)
             {
             case 0:
-                sub_08008DFC();
+                ResumeBoggartMinigame();
                 break;
             case 1:
                 PushGameMode_3(BoggartMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 2:
-                sub_08008E48();
+                LeaveBoggartMinigame();
                 break;
             }
         }
         else if (g_wKeysPressed & (KeyB | KeyStart))
         {
             PlaySoundById(2);
-            sub_08008DFC();
+            ResumeBoggartMinigame();
         }
         else if (StepCursorUpDown(&g_dwListMenuSelection, 0, 2, 1, 0))
         {

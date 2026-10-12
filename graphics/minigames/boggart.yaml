@@ -7,7 +7,19 @@ groups:
         names:
           1: HippogriffFliesIntoAir
           2: HippogriffFliesIntoAir2
-          3: HippogriffBoggart003
+          3: BoggartStudent0
+          4: BoggartStudent1
+          5: BoggartStudent2
+          6: BoggartStudent3
+          7: BoggartCastEffect0
+          8: BoggartCastEffect1
+          9: BoggartCastEffect2
+          10: BoggartCastEffect3
+          11: BoggartForm0
+          12: BoggartForm1
+          13: BoggartForm2
+          14: BoggartForm3
+          15: BoggartRidiculousForm
       # levels 0 and 1
       # level 2
       - kind: graphic-blobs

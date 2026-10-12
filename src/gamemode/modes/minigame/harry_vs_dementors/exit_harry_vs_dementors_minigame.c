@@ -17,9 +17,9 @@ void ExitHarryVsDementorsMinigame(void)
         FreeAllParticles();
     }
 
-    sub_0802CEE4(g_HarryVsDementors.pActorGroup20);
-    sub_0802CEE4(g_HarryVsDementors.pActorGroup24);
-    sub_0802CEE4(g_HarryVsDementors.pActorGroup28);
+    FreeMinigameTextPanel(g_HarryVsDementors.pTextPanel20);
+    FreeMinigameTextPanel(g_HarryVsDementors.pTextPanel24);
+    FreeMinigameTextPanel(g_HarryVsDementors.pTextPanel28);
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
 }

@@ -225,7 +225,15 @@ PROVEN from US decompiles; the state names in the headers are provisional.
 
 - Each update handler is a `switch` on `dwModeState`; the handlers only
   drive the state machine and call the screen's own helpers, which are not
-  decompiled yet (`sub_` names in the headers).
+  decompiled yet (`sub_` names in the headers), except for
+  `BoggartMinigame`, which is decompiled in `src/boggart_minigame/`.
+- `BoggartMinigame` (Riddikulus Boggart Challenge): four students sit at the
+  positions in `g_aBoggartStudentPositions`, one per direction, and the
+  Boggart spawns at `(0x78, 0x65)` and walks toward the student of its
+  direction. A cast in the matching direction turns it into the ridiculous
+  form and sends it back at triple speed; any other cast, or reaching the
+  student, costs a life. `SpawnMinigameTextPanel` (shared with
+  Harry vs Dementors) draws the actor panels behind the score and lives text.
 - The three-entry high score arrays are indexed by the difficulty, which
   the minigame menu passes in `dwCurrentGameModeArg3`, and sit at
   `SaveManager+0x10`/`+0x1C`/`+0x28` (`docs/formats/save.md`). Wizard

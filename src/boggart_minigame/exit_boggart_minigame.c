@@ -24,8 +24,8 @@ void ExitBoggartMinigame(void)
         FreeAllParticles();
     }
 
-    sub_0802CEE4(g_BoggartMinigame.pActorGroup1C);
-    sub_0802CEE4(g_BoggartMinigame.pActorGroup20);
+    FreeMinigameTextPanel(g_BoggartMinigame.pScorePanel);
+    FreeMinigameTextPanel(g_BoggartMinigame.pLivesPanel);
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
     sub_0802CDB8();

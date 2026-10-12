@@ -297,29 +297,29 @@ thumb-func 0x08008040 sub_08008040
 
 # Boggart, Buckbeak (minigames)
 c-file 0x08008050 _ src/boggart_minigame/initialize_boggart_minigame.c InitializeBoggartMinigame
-c-file 0x080080F4 0x08008360 src/boggart_minigame/update_boggart_minigame.c UpdateBoggartMinigame
-thumb-func 0x08008360 sub_08008360
-thumb-func 0x08008404 sub_08008404
-thumb-func 0x0800848C sub_0800848C
-thumb-func 0x08008604 sub_08008604
-thumb-func 0x08008698 sub_08008698
-thumb-func 0x08008708 sub_08008708
-thumb-func 0x0800882C sub_0800882C
-thumb-func 0x08008968 sub_08008968
-thumb-func 0x08008A18 sub_08008A18
-c-file 0x08008AD0 0x08008B2C src/boggart_minigame/exit_boggart_minigame.c ExitBoggartMinigame
-thumb-func 0x08008B2C sub_08008B2C
-thumb-func 0x08008B84 sub_08008B84
-thumb-func 0x08008BD8 sub_08008BD8
-thumb-func 0x08008C4C sub_08008C4C
-thumb-func 0x08008CA8 sub_08008CA8
-thumb-func 0x08008CC4 sub_08008CC4
-thumb-func 0x08008D2C sub_08008D2C
-thumb-func 0x08008D4C sub_08008D4C
-thumb-func 0x08008D80 sub_08008D80
-thumb-func 0x08008DD8 sub_08008DD8
-thumb-func 0x08008DFC sub_08008DFC
-thumb-func 0x08008E48 sub_08008E48
+c-file 0x080080F4 _ src/boggart_minigame/update_boggart_minigame.c UpdateBoggartMinigame
+c-file 0x08008360 _ src/boggart_minigame/spawn_boggart_minigame_actors.c SpawnBoggartMinigameActors
+c-file 0x08008404 _ src/boggart_minigame/start_boggart_minigame_boggart_motion.c StartBoggartMinigameBoggartMotion
+c-file 0x0800848C _ src/boggart_minigame/get_boggart_minigame_boggart_velocity.c GetBoggartMinigameBoggartVelocity
+c-file 0x08008604 _ src/boggart_minigame/check_boggart_minigame_boggart_reached_student.c CheckBoggartMinigameBoggartReachedStudent
+c-file 0x08008698 _ src/boggart_minigame/resolve_boggart_minigame_cast.c ResolveBoggartMinigameCast
+c-file 0x08008708 _ src/boggart_minigame/handle_boggart_minigame_miss.c HandleBoggartMinigameMiss
+c-file 0x0800882C _ src/boggart_minigame/handle_boggart_minigame_hit.c HandleBoggartMinigameHit
+c-file 0x08008968 _ src/boggart_minigame/show_boggart_minigame_results_menu.c ShowBoggartMinigameResultsMenu
+c-file 0x08008A18 _ src/boggart_minigame/show_boggart_minigame_pause_menu.c ShowBoggartMinigamePauseMenu
+c-file 0x08008AD0 _ src/boggart_minigame/exit_boggart_minigame.c ExitBoggartMinigame
+c-file 0x08008B2C _ src/boggart_minigame/start_boggart_minigame_cast.c StartBoggartMinigameCast
+c-file 0x08008B84 _ src/boggart_minigame/draw_boggart_minigame_score.c DrawBoggartMinigameScore
+c-file 0x08008BD8 _ src/boggart_minigame/draw_boggart_minigame_lives.c DrawBoggartMinigameLives
+c-file 0x08008C4C _ src/boggart_minigame/spawn_boggart_minigame_boggart.c SpawnBoggartMinigameBoggart
+c-file 0x08008CA8 _ src/boggart_minigame/clear_boggart_minigame_message.c ClearBoggartMinigameMessage
+c-file 0x08008CC4 _ src/boggart_minigame/add_boggart_minigame_score.c AddBoggartMinigameScore
+c-file 0x08008D2C _ src/boggart_minigame/get_boggart_minigame_round_points.c GetBoggartMinigameRoundPoints
+c-file 0x08008D4C _ src/boggart_minigame/reset_boggart_minigame_actors.c ResetBoggartMinigameActors
+c-file 0x08008D80 _ src/boggart_minigame/has_boggart_minigame_boggart_returned_to_center.c HasBoggartMinigameBoggartReturnedToCenter
+c-file 0x08008DD8 _ src/boggart_minigame/move_boggart_minigame_menu_cursor.c MoveBoggartMinigameMenuCursor
+c-file 0x08008DFC _ src/boggart_minigame/resume_boggart_minigame.c ResumeBoggartMinigame
+c-file 0x08008E48 0x08008E88 src/boggart_minigame/leave_boggart_minigame.c LeaveBoggartMinigame
 thumb-func 0x08008E88 sub_08008E88
 thumb-func 0x0800907C sub_0800907C
 thumb-func 0x08009144 ProcessHippogriffGlideMinigameFrame
@@ -1353,8 +1353,8 @@ c-file 0x0802CD88 0x0802CDB8 src/gamemode/modes/minigame_difficulty_select/exit_
 
 # Minigame/HighScore? (minigame high score helpers)
 thumb-func 0x0802CDB8 sub_0802CDB8
-thumb-func 0x0802CDCC sub_0802CDCC
-thumb-func 0x0802CEE4 sub_0802CEE4
+thumb-func 0x0802CDCC SpawnMinigameTextPanel
+thumb-func 0x0802CEE4 FreeMinigameTextPanel
 
 # Minigame/Menu? (minigame menu)
 c-file 0x0802CF38 0x0802D08C src/gamemode/modes/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
@@ -2408,7 +2408,7 @@ c-file 0x0804BDBC 0x0804BF9C src/graphics/particle/direction_vectors.c g_aDirect
 c-file 0x0804BFCC 0x0804BFEC src/actor/action_state_data.c g_abTurnAroundDirection
 c-file 0x0804C024 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804C054 0x0804C08C src/room/room_actor_constructors.c g_apRoomActorConstructors
-c-file 0x0804C1B0 0x0804C1B8 src/boggart_minigame/boggart_minigame.globals.c g_dwBoggartMinigameBg0Control
+c-file 0x0804C0AC 0x0804C284 src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C43C 0x0804C440 src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
 c-file 0x0804C444 _ src/gamemode/modes/debug/debug_menu_main/debug_menu_main.globals.c g_dwDebugMenuMainBg0Control
 c-file 0x0804C470 _ src/gamemode/modes/debug/debug_level_and_quest_select_menu/debug_level_and_quest_select_menu.globals.c g_abDebugLevelAndQuestMax
