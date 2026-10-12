@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "camera.h"
 #include "battle/battle.h"
 #include "battle/encounters.h"
 
@@ -113,61 +114,11 @@ extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no r
 
 extern void ResetPartyState(void);
 
-// Per-slot scripted camera effect, started by room script opcodes 0x10
-// (QueueTileActorMove: pan the camera focus to an actor) and 0x12
-// (SetAllQueuedMoveParams: shake). One 0x2C-byte record per control slot,
-// ticked by TickCameraFocus_candidate. See docs/memory-map/frame_systems.md.
-typedef struct CameraEffect {
-    Actor *pTarget;           // 0x00, pan target
-    FixedPoint savedVel;       // 0x04, the controlled actor's velocity, restored when the pan ends
-    u8 pad_0C[0x08];           // -> 0x14
-    s32 nStep;                 // 0x14, pan speed; shake amplitude (posX << 16) in state 3
-    u32 dwFramesLeft;          // 0x18, shake duration in frames
-    u32 dwRunForever;          // 0x1C, shake: nonzero when the duration operand was 0
-    u16 wCounter;              // 0x20, pan: frames to wait; shake: 0/1 toggle
-    u8 pad_22;                 // -> 0x23
-    u8 bRespawnRow;            // 0x23, first argument to RespawnRowAndRunChain_candidate
-    u8 bChainRow;              // 0x24, second argument to RespawnRowAndRunChain_candidate
-    u8 bState;                 // 0x25, 0 = idle, 1 = pan, 3 = shake
-    u8 bSavedActionSubState;   // 0x26, controlled actor's bActionSubState when the pan began
-    u8 bChainRan;              // 0x27, set once the pan's chain has run
-    u32 dwResumeScript;        // 0x28, nonzero: resume the yielded room script when the pan ends
-} CameraEffect;
-extern CameraEffect g_aCameraEffects_candidate[];
 // Starts the first slot's camera-shake effect and plays its cue.
 extern void sub_0802B138(void);
 
-// Per-slot camera focus point: what UpdateOverworldCamera_candidate centres the
-// screen on (16.16 world coordinates). Follows pTarget unless wPinned is nonzero.
-typedef struct CameraFocusSlot {
-    s32 nX;                    // 0x00
-    s32 nY;                    // 0x04
-    u8 pad_08[0x10];           // -> 0x18
-    s32 nLatchedX;             // 0x18, copy of the focus point; see SetCameraFollowTarget_candidate
-    s32 nLatchedY;             // 0x1C
-    u8 pad_20[0x10];           // -> 0x30
-    Actor *pTarget;           // 0x30, actor the focus follows
-    u16 wPinned;               // 0x34, 0 = follow pTarget every frame, 1 = hold
-    u8 pad_36[0x02];           // -> 0x38
-} CameraFocusSlot;
-extern CameraFocusSlot g_aCameraFocusSlots[];
-
-typedef struct {
-    s32 aCoordinates[2];  // 16.16 X and Y
-} CameraFocusPosition;
-
-// Resets a camera focus slot and its effect state; the focus then holds (wPinned = 1).
-extern void sub_08009FD8(u32 slot);
-// Stores a position into a slot's focus point.
-extern void sub_0800A38C(CameraFocusPosition position, u8 slot);
-extern void sub_0800A3EC(s32 *pPosition, u32 arg1);  // writes the camera focus as two 16.16 words
-extern void sub_0800A420(u32 arg0, s32 progress, u32 arg2);
-
 extern u8 g_bControlSlotTicks_candidate;
 extern void TickOverworldBeforeActors_candidate(void);
-// Ticks slot's camera focus: follows the target actor, or runs the active pan/shake
-// effect and its completion chain.
-extern void TickCameraFocus_candidate(u8 slot);
 // Updates g_CameraPosition_candidate from the followed actor and streams BG
 // tiles on demand as it crosses tile boundaries.
 extern void UpdateOverworldCamera_candidate(u32 mode);

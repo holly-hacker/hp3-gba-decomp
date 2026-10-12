@@ -119,7 +119,7 @@ void InitializeOverworld(void)
         ParseRoomResourceBlob_candidate(CURRENT_ROOM.pRoomResourceBlob);
         pPlayer = SpawnPlayerActor_candidate(g_bPartyCharId0);
         sub_080248E8();
-        sub_0800A348(0, 0);
+        SetCameraFocusPinned(0, 0);
         SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
         SetRoomScrollBounds(
             CURRENT_ROOM.wScrollBoundMinX,
@@ -152,13 +152,13 @@ void InitializeOverworld(void)
                 {
                     g_GameModeStackContext.dwCurrentGameModeArg3 = 0;
                     RestoreRoomActorState();
-                    sub_0800A348(0, 0);
+                    SetCameraFocusPinned(0, 0);
                     SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
                 }
                 else
                 {
                     RestoreRoomActorStateMinimal();
-                    sub_0800A348(0, 0);
+                    SetCameraFocusPinned(0, 0);
                     SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
                     RespawnRoomActorsInRow_candidate(0);
                     WalkRoomSwitchStateChain_candidate(0, 0);
@@ -181,13 +181,13 @@ void InitializeOverworld(void)
                 == sub_08005DC0(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
             {
                 RestoreRoomActorState();
-                sub_0800A348(0, 0);
+                SetCameraFocusPinned(0, 0);
                 SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
             }
             else
             {
                 RestoreRoomActorStateMinimal();
-                sub_0800A348(0, 0);
+                SetCameraFocusPinned(0, 0);
                 SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
                 RespawnRoomActorsInRow_candidate(0);
                 WalkRoomSwitchStateChain_candidate(0, 0);

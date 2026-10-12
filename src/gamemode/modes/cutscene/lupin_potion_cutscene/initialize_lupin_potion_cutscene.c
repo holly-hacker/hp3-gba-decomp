@@ -17,7 +17,7 @@
 void InitializeLupinPotionCutscene(void)
 {
     volatile u16 zero;
-    CameraFocusPosition position;
+    FixedPoint position;
 
     zero = 0;
     bios_CPUSet((void *)&zero, VRAM_BASE, 0x01008000);
@@ -34,14 +34,14 @@ void InitializeLupinPotionCutscene(void)
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
     g_GameModeStackContext.dwCurrentGameModeArg3 = 0xFFFE8000;
     g_LupinPotionCutscene.bParallaxScroll = 1;
-    sub_08009FD8(0);
+    ResetCameraFocusSlot(0);
 
-    position.aCoordinates[0] = 0x960000;
-    position.aCoordinates[1] = 0;
-    sub_0800A38C(position, 0);
-    position.aCoordinates[0] >>= 16;
-    position.aCoordinates[1] >>= 16;
-    SetCameraPosition(position.aCoordinates);
+    position.x = 0x960000;
+    position.y = 0;
+    SetCameraFocusPosition(position, 0);
+    position.x >>= 16;
+    position.y >>= 16;
+    SetCameraPosition(&position.x);
 
     SetTextTargetFromBgControl(g_dwLupinPotionTextBgControl);
     SelectTextFont(7, 0, 0);

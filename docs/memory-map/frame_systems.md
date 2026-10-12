@@ -75,13 +75,13 @@ Two slots (the control slots), all three arrays adjacent in IWRAM:
 | Array | Addr | Layout |
 |---|---|---|
 | `g_aCameraEffects_candidate` | `0x03002090` | `CameraEffect`, `0x2C` bytes |
-| `g_aCameraFocusSlots` | `0x030020E8` | `CameraFocusSlot`, `0x38` bytes: focus `nX/nY` (16.16), latched copy, `pTarget`, `wPinned` |
+| `g_aCameraFocusSlots` | `0x030020E8` | `CameraFocusSlot`, `0x38` bytes: `focus` (16.16), `latched` copy, room scroll bounds (slot 0), `pTarget`, `wPinned` |
 | `g_aCameraFollowOffsets` | `0x03002158` | per-slot `(X, Y)` offset set by `SetCameraFollowTarget_candidate` |
 
-`sub_0800A38C` stores a two-word 16.16 position into the selected focus slot.
-Its matching C declaration takes the position struct by value and the slot index as a
-byte; the callee truncates the index to eight bits. This declaration makes
-`InitializeLupinPotionCutscene` match both ROMs byte for byte.
+The camera accessors live in `src/camera/` and `include/camera.h`: `ResetCameraFocusSlot`,
+`SetCameraFocusPosition`, `SnapCameraFocus`, `OffsetCameraFocus`, `GetCameraFocusPosition`,
+`SetCameraFocusPinned`, the follow-offset accessors and `Get`/`SetRoomScrollBounds`. They take
+positions by value and the slot index as a byte; the callee truncates the index to eight bits.
 
 The focus follows `pTarget` unless `wPinned` is set. `CameraEffect.bState` selects a
 scripted effect started by room script opcodes `0x10` and `0x12`:

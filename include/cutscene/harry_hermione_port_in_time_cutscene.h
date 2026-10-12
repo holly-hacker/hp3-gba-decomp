@@ -2,12 +2,12 @@
 
 #include "types.h"
 #include "actor.h"
+#include "math.h"
 
 // The mode's screen state at 0x03005D98 (US). Fields used by the mode handlers;
 // the actor setup helpers sub_08043114/sub_08043308 own the rest.
 typedef struct {
-    u32 dwUnk0;           // 0x00: first argument of sub_0800A420
-    s32 nProgress;        // 0x04: 16.16 fixed-point, second argument of sub_0800A420
+    FixedPoint cameraDelta;  // 0x00: passed to OffsetCameraFocus; y is the 16.16 fixed-point progress
     u32 bRising;          // 0x08: 1 while progress rises, 0 once it falls back
     Actor *pActorA;     // 0x0C
     Actor *pActorB;     // 0x10

@@ -162,6 +162,7 @@
 .set g_dwRoomScriptRunState,    0x0300279C  @ u32: room script run state; InitializeOverworld resets 4 to 0 and only resumes a chain in state 2
 .set g_abQuestEventState,       0x030027A0  @ u8[]: quest event state bytes, see docs/formats/save.md
 .set g_bRoomScriptPendingChain, 0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none
+.set g_bCameraShakeSoundHandle,   0x030028A4  @ u8: sound handle TickCameraFocus_candidate stops when a camera shake ends
 
 @ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
 .set g_dwCreditsScrollRow,    0x030028A8  @ u32: last credits text row the scroll reached

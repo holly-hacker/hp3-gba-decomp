@@ -345,23 +345,23 @@ c-file 0x08009E64 _ src/buckbeak_minigame/has_buckbeak_minigame_ring_been_reache
 c-file 0x08009ED0 _ src/buckbeak_minigame/rotate_buckbeak_minigame_offset.c RotateBuckbeakMinigameOffset
 c-file 0x08009F3C _ src/buckbeak_minigame/get_buckbeak_minigame_ring_frame_row.c GetBuckbeakMinigameRingFrameRow
 c-file 0x08009F64 _ src/buckbeak_minigame/release_buckbeak_minigame_actor.c ReleaseBuckbeakMinigameActor
-c-file 0x08009F80 0x08009FD8 src/buckbeak_minigame/handle_buckbeak_minigame_exit_select.c HandleBuckbeakMinigameExitSelect
+c-file 0x08009F80 _ src/buckbeak_minigame/handle_buckbeak_minigame_exit_select.c HandleBuckbeakMinigameExitSelect
 
 # Camera
-thumb-func 0x08009FD8 sub_08009FD8
+c-file 0x08009FD8 0x0800A03C src/camera/reset_camera_focus_slot.c ResetCameraFocusSlot
 thumb-func 0x0800A03C TickCameraFocus_candidate
 thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
-thumb-func 0x0800A320 sub_0800A320
-thumb-func 0x0800A348 sub_0800A348
-thumb-func 0x0800A38C sub_0800A38C
-thumb-func 0x0800A3AC SetCameraFollowTarget_candidate
-thumb-func 0x0800A3EC sub_0800A3EC
-thumb-func 0x0800A408 sub_0800A408
-thumb-func 0x0800A420 sub_0800A420
-thumb-func 0x0800A458 sub_0800A458
-thumb-func 0x0800A46C sub_0800A46C
-thumb-func 0x0800A4A4 GetRoomScrollBounds
-thumb-func 0x0800A4E8 SetRoomScrollBounds
+c-file 0x0800A320 _ src/camera/snap_camera_focus.c SnapCameraFocus
+c-file 0x0800A348 _ src/camera/set_camera_focus_pinned.c SetCameraFocusPinned
+c-file 0x0800A38C _ src/camera/set_camera_focus_position.c SetCameraFocusPosition
+c-file 0x0800A3AC _ src/camera/set_camera_follow_target.c SetCameraFollowTarget_candidate
+c-file 0x0800A3EC _ src/camera/get_camera_focus_position.c GetCameraFocusPosition
+c-file 0x0800A408 _ src/camera/get_camera_follow_offset.c GetCameraFollowOffset
+c-file 0x0800A420 _ src/camera/offset_camera_focus.c OffsetCameraFocus
+c-file 0x0800A458 _ src/camera/set_camera_follow_offset.c SetCameraFollowOffset
+c-file 0x0800A46C _ src/camera/get_camera_focus_screen_position.c GetCameraFocusScreenPosition
+c-file 0x0800A4A4 _ src/camera/get_room_scroll_bounds.c GetRoomScrollBounds
+c-file 0x0800A4E8 _ src/camera/set_room_scroll_bounds.c SetRoomScrollBounds
 
 # Purple screen return-to-menu mode
 c-file 0x0800A510 _ src/gamemode/modes/purple_screen_return_to_menu/initialize_purple_screen_return_to_menu.c InitializePurpleScreenReturnToMenu

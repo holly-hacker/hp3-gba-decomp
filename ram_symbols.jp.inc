@@ -150,6 +150,7 @@
 .set g_dwRoomScriptRunState,    0x0300279C  @ room script run state
 .set g_abQuestEventState,       0x030027A0  @ quest event state bytes
 .set g_bRoomScriptPendingChain, 0x030028A0
+.set g_bCameraShakeSoundHandle,   0x030028A4  @ see ram_symbols.us.inc
 
 @ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
 .set g_dwCreditsScrollRow,    0x030028A8  @ see ram_symbols.us.inc

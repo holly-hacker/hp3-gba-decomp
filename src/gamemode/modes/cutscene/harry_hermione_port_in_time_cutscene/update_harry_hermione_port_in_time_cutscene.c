@@ -13,7 +13,7 @@
 void UpdateHarryHermionePortInTimeCutscene(void)
 {
     s32 fade = 0;
-    s32 aPosition[2];
+    FixedPoint position;
 
     if ((g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart)) != 0)
     {
@@ -24,32 +24,32 @@ void UpdateHarryHermionePortInTimeCutscene(void)
     if (g_HarryHermionePortInTime.bRising != 0)
     {
         if (g_GameModeStackContext.dwCurrentGameModeArg2 > 0x1E)
-            g_HarryHermionePortInTime.nProgress += 0xCCC;
+            g_HarryHermionePortInTime.cameraDelta.y += 0xCCC;
         else
             g_GameModeStackContext.dwCurrentGameModeArg2++;
 
-        if (g_HarryHermionePortInTime.nProgress > 0x7E666)
-            g_HarryHermionePortInTime.nProgress = 0x7E666;
+        if (g_HarryHermionePortInTime.cameraDelta.y > 0x7E666)
+            g_HarryHermionePortInTime.cameraDelta.y = 0x7E666;
 
-        fade = (g_HarryHermionePortInTime.nProgress << 2) >> 16;
-        sub_0800A3EC(aPosition, 0);
-        if (aPosition[1] > 0x1F40000)
+        fade = (g_HarryHermionePortInTime.cameraDelta.y << 2) >> 16;
+        GetCameraFocusPosition(&position, 0);
+        if (position.y > 0x1F40000)
         {
             SetFadeToWhite(0x2F, 0x10);
             sub_0803EA3C();
             sub_08043114(1);
             g_HarryHermionePortInTime.bRising = 0;
-            g_HarryHermionePortInTime.dwUnk0 = 0;
-            g_HarryHermionePortInTime.nProgress = 0x70000;
+            g_HarryHermionePortInTime.cameraDelta.x = 0;
+            g_HarryHermionePortInTime.cameraDelta.y = 0x70000;
             g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
         }
     }
     else
     {
-        g_HarryHermionePortInTime.nProgress -= 0xCCC;
-        if (g_HarryHermionePortInTime.nProgress < 0)
+        g_HarryHermionePortInTime.cameraDelta.y -= 0xCCC;
+        if (g_HarryHermionePortInTime.cameraDelta.y < 0)
         {
-            g_HarryHermionePortInTime.nProgress = 0;
+            g_HarryHermionePortInTime.cameraDelta.y = 0;
             g_GameModeStackContext.dwCurrentGameModeArg2++;
             if (g_GameModeStackContext.dwCurrentGameModeArg2 > 0x1E)
             {
@@ -57,7 +57,7 @@ void UpdateHarryHermionePortInTimeCutscene(void)
                 PushGameMode_2(Overworld, 0, 0xE);
             }
         }
-        fade = (g_HarryHermionePortInTime.nProgress * 3) >> 16;
+        fade = (g_HarryHermionePortInTime.cameraDelta.y * 3) >> 16;
     }
 
     if (fade > 0x10)
@@ -65,14 +65,14 @@ void UpdateHarryHermionePortInTimeCutscene(void)
     if (fade < 0)
         fade = 0;
 
-    sub_0800A420(g_HarryHermionePortInTime.dwUnk0, g_HarryHermionePortInTime.nProgress, 0);
-    sub_0800A3EC(aPosition, 0);
+    OffsetCameraFocus(g_HarryHermionePortInTime.cameraDelta, 0);
+    GetCameraFocusPosition(&position, 0);
     SetActorPosition(g_HarryHermionePortInTime.pActorA,
                       g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorAX,
-                      (aPosition[1] >> 16) + 0x20);
+                      (position.y >> 16) + 0x20);
     SetActorPosition(g_HarryHermionePortInTime.pActorB,
                       g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorBX,
-                      (aPosition[1] >> 16) + 0x20);
+                      (position.y >> 16) + 0x20);
     UpdateOverworldCamera_candidate(0);
     SetFadeToWhite(0x2F, (u16)fade);
 }

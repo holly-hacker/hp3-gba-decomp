@@ -12,12 +12,12 @@
 // cutscene (state 4) back in the overworld via exit 0xD. The camera delta scrolls the BGs.
 void UpdateLupinPotionCutscene(void)
 {
-    s32 aPreviousCamera[2];
-    s32 aCamera[2];
+    FixedPoint previousCamera;
+    FixedPoint camera;
     s32 aDelta[2];
     s32 i;
 
-    sub_0800A3EC(aPreviousCamera, 0);
+    GetCameraFocusPosition(&previousCamera, 0);
 
     switch (g_GameModeStackContext.dwModeState)
     {
@@ -89,9 +89,9 @@ void UpdateLupinPotionCutscene(void)
         break;
     }
 
-    sub_0800A3EC(aCamera, 0);
-    aDelta[0] = aCamera[0] - aPreviousCamera[0];
-    aDelta[1] = aCamera[1] - aPreviousCamera[1];
+    GetCameraFocusPosition(&camera, 0);
+    aDelta[0] = camera.x - previousCamera.x;
+    aDelta[1] = camera.y - previousCamera.y;
     sub_08007D14(0, aDelta[0], aDelta[1]);
     if (g_LupinPotionCutscene.bParallaxScroll != 0)
     {
@@ -106,7 +106,7 @@ void UpdateLupinPotionCutscene(void)
         sub_08007D60(3, aDelta[1]);
     }
     sub_08007F84(2, &g_aLupinPotionBg2Scroll[0], &g_aLupinPotionBg2Scroll[1]);
-    aCamera[0] >>= 16;
-    aCamera[1] >>= 16;
-    SetCameraPosition(aCamera);
+    camera.x >>= 16;
+    camera.y >>= 16;
+    SetCameraPosition(&camera.x);
 }

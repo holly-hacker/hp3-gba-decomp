@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "camera.h"
 #include "actor.h"
 #include "overworld/room_script.h"
 #include "overworld/room_actor_state.h"
@@ -69,11 +70,6 @@ extern const u32 g_dwBg1Control;
 extern const u32 g_dwBg3Control;
 extern const u32 g_dwBg0Control;
 
-// Camera offset applied to the player's follow target.
-typedef struct CameraFocusOffset {
-    s32 nX;
-    s32 nY;
-} CameraFocusOffset;
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 extern CameraFocusOffset g_CameraPosition_candidate;
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
@@ -323,10 +319,7 @@ extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctr
                                                    RoomBgResources resourcesA, RoomBgResources resourcesB);
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
-extern void SetRoomScrollBounds(u32 minX, u32 minY, u32 maxX, u32 maxY);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
-extern void SetCameraFollowTarget_candidate(Actor *pTarget, CameraFocusOffset offset, u32 slot);
-extern void sub_0800A348(u32 arg0, u32 arg1);
 extern void sub_080248E8(void);
 extern void sub_0801FA9C(void);
 extern void StopScanlineEffects(void);
