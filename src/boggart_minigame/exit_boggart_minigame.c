@@ -5,11 +5,11 @@
 #include "menu/main_menu.h"
 #include "hw/mem.h"
 #include "menu/minigame_menu.h"
-#include "minigame/riddikulus.h"
+#include "boggart_minigame.h"
 
-void ExitRiddikulusMinigame(void)
+void ExitBoggartMinigame(void)
 {
-    if (g_Riddikulus.dwExitToMenu == 1)
+    if (g_BoggartMinigame.dwExitToMenu == 1)
     {
         g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
         g_dwPendingGameMode.dwCurrentGameModeArg3 = 0xFF;
@@ -17,15 +17,15 @@ void ExitRiddikulusMinigame(void)
 
     PlayScreenTransitionOutByIndex(0x3F, 2);
 
-    if (g_Riddikulus.pCursorActor != NULL)
+    if (g_BoggartMinigame.pCursorActor != NULL)
     {
-        ReleaseMenuCursor(g_Riddikulus.pCursorActor);
-        g_Riddikulus.pCursorActor = NULL;
+        ReleaseMenuCursor(g_BoggartMinigame.pCursorActor);
+        g_BoggartMinigame.pCursorActor = NULL;
         FreeAllParticles();
     }
 
-    sub_0802CEE4(g_Riddikulus.pActorGroup1C);
-    sub_0802CEE4(g_Riddikulus.pActorGroup20);
+    sub_0802CEE4(g_BoggartMinigame.pActorGroup1C);
+    sub_0802CEE4(g_BoggartMinigame.pActorGroup20);
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
     sub_0802CDB8();

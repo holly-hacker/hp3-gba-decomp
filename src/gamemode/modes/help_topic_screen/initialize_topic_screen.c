@@ -18,8 +18,8 @@ void InitializeTopicScreen(void)
         SetHelpExitMode(HippogriffGlideMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
         break;
     case 2:
-        StartHelpScreen(g_aHelpRiddikulus, 1);
-        SetHelpExitMode(RiddikulusMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
+        StartHelpScreen(g_aHelpBoggart, 1);
+        SetHelpExitMode(BoggartMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
         break;
     case 3:
         StartHelpScreen(g_aHelpTeaLeafDivination, 1);

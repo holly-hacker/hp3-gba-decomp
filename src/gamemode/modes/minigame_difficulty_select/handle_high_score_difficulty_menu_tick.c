@@ -7,7 +7,7 @@
 #include "menu/minigame_menu.h"
 #include "menu/minigame_difficulty_select.h"
 #include "minigame/hippogriff_glide.h"
-#include "minigame/riddikulus.h"
+#include "boggart_minigame.h"
 #include "minigame/wizard_cracker_pop_it.h"
 
 static inline void MoveCursorToSelectedRow(void)
@@ -80,7 +80,7 @@ void HandleHighScoreDifficultyMenuTick(void)
                 g_dwHippogriffForceOverworldExit = 0;
                 break;
             case 2:
-                g_dwRiddikulusMinigameScriptFlag_candidate = 0;
+                g_dwBoggartMinigameScriptFlag_candidate = 0;
                 break;
             }
 

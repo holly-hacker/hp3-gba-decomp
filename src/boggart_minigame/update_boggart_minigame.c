@@ -3,29 +3,29 @@
 #include "game/game_modes.h"
 #include "input.h"
 #include "menu/minigame_menu.h"
-#include "minigame/riddikulus.h"
+#include "boggart_minigame.h"
 #include "game/save.h"
 
-void UpdateRiddikulusMinigame(void)
+void UpdateBoggartMinigame(void)
 {
     switch (g_GameModeStackContext.dwModeState)
     {
-    case RiddikulusStateIntro:
-        if (--g_Riddikulus.dwCountdown == 0)
+    case BoggartMinigameStateIntro:
+        if (--g_BoggartMinigame.dwCountdown == 0)
         {
             sub_08008C4C();
-            g_Riddikulus.dwCountdown = 3;
-            g_GameModeStackContext.dwModeState = RiddikulusStateAwaitInput;
+            g_BoggartMinigame.dwCountdown = 3;
+            g_GameModeStackContext.dwModeState = BoggartMinigameStateAwaitInput;
         }
         break;
-    case RiddikulusStateAwaitInput:
-        if (--g_Riddikulus.dwCountdown == 0)
+    case BoggartMinigameStateAwaitInput:
+        if (--g_BoggartMinigame.dwCountdown == 0)
         {
-            g_GameModeStackContext.dwModeState = RiddikulusStateInput;
+            g_GameModeStackContext.dwModeState = BoggartMinigameStateInput;
             sub_08008404();
         }
         // fall through
-    case RiddikulusStateInput:
+    case BoggartMinigameStateInput:
         if (sub_08008604())
             break;
         if (g_wKeysPressed & KeyLeft)
@@ -39,54 +39,54 @@ void UpdateRiddikulusMinigame(void)
         else if (g_wKeysPressed & KeyStart)
             sub_08008A18();
         break;
-    case RiddikulusStateResolve:
+    case BoggartMinigameStateResolve:
         if (sub_08008604())
             break;
 
-        if (--g_Riddikulus.dwCountdown == 0)
+        if (--g_BoggartMinigame.dwCountdown == 0)
             sub_08008698();
         break;
-    case RiddikulusStateRoundEnd:
-        if (--g_Riddikulus.dwCountdown == 0)
+    case BoggartMinigameStateRoundEnd:
+        if (--g_BoggartMinigame.dwCountdown == 0)
         {
             sub_08008CA8();
-            if (g_Riddikulus.bUnk34 == 0)
+            if (g_BoggartMinigame.bUnk34 == 0)
             {
                 sub_08008968();
             }
             else
             {
                 sub_08008D4C();
-                g_Riddikulus.pActor->dwFlags |= 0x82;
-                g_Riddikulus.dwCountdown = 3;
-                g_GameModeStackContext.dwModeState = RiddikulusStateIntro;
+                g_BoggartMinigame.pActor->dwFlags |= 0x82;
+                g_BoggartMinigame.dwCountdown = 3;
+                g_GameModeStackContext.dwModeState = BoggartMinigameStateIntro;
             }
         }
         break;
-    case RiddikulusStateNextRound:
+    case BoggartMinigameStateNextRound:
         if (sub_08008D80())
         {
             sub_08008CA8();
-            g_Riddikulus.bUnk35++;
+            g_BoggartMinigame.bUnk35++;
             sub_08008D4C();
-            g_Riddikulus.pActor->dwFlags |= 0x82;
-            g_Riddikulus.dwCountdown = 3;
-            g_GameModeStackContext.dwModeState = RiddikulusStateIntro;
+            g_BoggartMinigame.pActor->dwFlags |= 0x82;
+            g_BoggartMinigame.dwCountdown = 3;
+            g_GameModeStackContext.dwModeState = BoggartMinigameStateIntro;
         }
         break;
-    case RiddikulusStateResultsMenu:
+    case BoggartMinigameStateResultsMenu:
         if (g_wKeysPressed & (KeyA | KeyStart))
         {
-            if (g_Riddikulus.dwScore >
-                g_saveManager.options.aadwHighScores[HighScoreRiddikulus][g_GameModeStackContext.dwCurrentGameModeArg3])
-                g_saveManager.options.aadwHighScores[HighScoreRiddikulus][g_GameModeStackContext.dwCurrentGameModeArg3] =
-                    g_Riddikulus.dwScore;
+            if (g_BoggartMinigame.dwScore >
+                g_saveManager.options.aadwHighScores[HighScoreBoggart][g_GameModeStackContext.dwCurrentGameModeArg3])
+                g_saveManager.options.aadwHighScores[HighScoreBoggart][g_GameModeStackContext.dwCurrentGameModeArg3] =
+                    g_BoggartMinigame.dwScore;
 
             PlaySoundById(1);
             switch (g_GameModeStackContext.dwModeScratchB)
             {
             case 0:
-                PushGameMode_3(RiddikulusMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
+                PushGameMode_3(BoggartMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 1:
@@ -99,7 +99,7 @@ void UpdateRiddikulusMinigame(void)
             PlaySoundById(0);
         }
         break;
-    case RiddikulusStatePauseMenu:
+    case BoggartMinigameStatePauseMenu:
         if (g_wKeysPressed & KeyA)
         {
             PlaySoundById(1);
@@ -109,7 +109,7 @@ void UpdateRiddikulusMinigame(void)
                 sub_08008DFC();
                 break;
             case 1:
-                PushGameMode_3(RiddikulusMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
+                PushGameMode_3(BoggartMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 2:

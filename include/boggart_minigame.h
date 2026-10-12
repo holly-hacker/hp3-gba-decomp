@@ -2,11 +2,11 @@
 
 #include "types.h"
 #include "actor.h"
-#include "gen/graphics/minigames/riddikulus.h"
+#include "gen/graphics/minigames/boggart.h"
 
-extern u32 g_dwRiddikulusMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame
+extern u32 g_dwBoggartMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame
 
-// Riddikulus Boggart Challenge, game mode 0x2F (RiddikulusMinigame).
+// Riddikulus Boggart Challenge, game mode 0x2F (BoggartMinigame).
 
 // The mode's screen state at 0x03002048, driven by g_GameModeStackContext.dwModeState.
 typedef struct {
@@ -24,26 +24,26 @@ typedef struct {
     u8 bUnk35;
     u8 abUnmapped_36[2];
     u32 dwExitToMenu;        // 0x38; 1 requests a return to the minigame menu
-} RiddikulusState;
+} BoggartMinigameState;
 
-extern RiddikulusState g_Riddikulus;  // 0x03002048
+extern BoggartMinigameState g_BoggartMinigame;  // 0x03002048
 
 // BG control words and the BG0 graphic.
-extern const u32 g_dwRiddikulusBg0Control;  // 0x0804C1B0
-extern const u32 g_dwRiddikulusBg3Control;  // 0x0804C1B4
+extern const u32 g_dwBoggartMinigameBg0Control;  // 0x0804C1B0
+extern const u32 g_dwBoggartMinigameBg3Control;  // 0x0804C1B4
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.
 typedef enum {
-    RiddikulusStateIntro = 0,
-    RiddikulusStateAwaitInput = 1,
-    RiddikulusStateInput = 2,
-    RiddikulusStateResolve = 3,
-    RiddikulusStateRoundEnd = 4,
-    RiddikulusStateNextRound = 5,
-    RiddikulusStateResultsMenu = 6,
-    RiddikulusStatePauseMenu = 7,
-} RiddikulusMode;
+    BoggartMinigameStateIntro = 0,
+    BoggartMinigameStateAwaitInput = 1,
+    BoggartMinigameStateInput = 2,
+    BoggartMinigameStateResolve = 3,
+    BoggartMinigameStateRoundEnd = 4,
+    BoggartMinigameStateNextRound = 5,
+    BoggartMinigameStateResultsMenu = 6,
+    BoggartMinigameStatePauseMenu = 7,
+} BoggartMinigameMode;
 
 extern void sub_08008360(void);
 extern void sub_08008404(void);

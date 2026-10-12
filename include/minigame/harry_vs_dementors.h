@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
-#include "gen/graphics/minigames/riddikulus.h"
+#include "gen/graphics/minigames/boggart.h"
 
 extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
 

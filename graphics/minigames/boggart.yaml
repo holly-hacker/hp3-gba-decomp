@@ -1,0 +1,14 @@
+groups:
+  - name: BoggartGraphics
+    runs:
+      # Hippogriff flying cutscene actors and Boggart minigame sprites
+      - kind: image-bank
+        count: 15
+        names:
+          1: HippogriffFliesIntoAir
+          2: HippogriffFliesIntoAir2
+          3: HippogriffBoggart003
+      # levels 0 and 1
+      # level 2
+      - kind: graphic-blobs
+        names: [BoggartBgGraphic, HarryVsDementorsBgGraphicA, HarryVsDementorsBgGraphicB]

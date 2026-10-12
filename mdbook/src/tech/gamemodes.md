@@ -135,13 +135,13 @@ Arguments:
 
 ### `HippogriffGlideMinigame` (0x2B)
 
-### `VictoryScreen` (0x2C)
+### `CombatResult` (0x2C)
 
 ### `FolioBruti` (0x2D)
 
 ### `FredAndGeorgesShop` (0x2E)
 
-### `RiddikulusMinigame` (0x2F)
+### `BoggartMinigame` (0x2F)
 
 ### `ClockSkipCutscene` (0x30)
 

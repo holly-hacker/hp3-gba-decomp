@@ -37,7 +37,7 @@ void ExitOverworldScreen(void)
     if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Battle
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == InGameMenu
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Options
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == RiddikulusMinigame
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == BoggartMinigame
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HarryVsDementorsMinigame
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == WizardCrackerPopItMinigame
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HelpTopicScreen

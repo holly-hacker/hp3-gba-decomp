@@ -613,10 +613,10 @@ const u32 g_aHelpHippogriffGlide[] = {
     HELP_END,
 };
 
-const u32 g_aHelpRiddikulus[] = {
+const u32 g_aHelpBoggart[] = {
     // page 1/4
     HELP_HEADER(HelpPageText),
-    HELP_NEXT_PAGE(&g_aHelpRiddikulus[14]),
+    HELP_NEXT_PAGE(&g_aHelpBoggart[14]),
     HELP_TITLE(0xA4C),  // "Riddikulus Boggart Challenge"
     // "The object of the game is to survive as many encounters with the Boggart as possible."
     HELP_TEXT(12, 48, 212, 104, 0x5F0),
@@ -630,8 +630,8 @@ const u32 g_aHelpRiddikulus[] = {
 
     // page 2/4
     HELP_HEADER(HelpPageText),
-    HELP_PREV_PAGE(g_aHelpRiddikulus),
-    HELP_NEXT_PAGE(&g_aHelpRiddikulus[28]),
+    HELP_PREV_PAGE(g_aHelpBoggart),
+    HELP_NEXT_PAGE(&g_aHelpBoggart[28]),
     HELP_TITLE(0xA4C),  // "Riddikulus Boggart Challenge"
     // "To cast the Riddikulus Charm and get rid of the Boggart, press the +Control Pad in the
     //  direction you want the student to cast. For example, to make the student at the top of the
@@ -644,8 +644,8 @@ const u32 g_aHelpRiddikulus[] = {
 
     // page 3/4
     HELP_HEADER(HelpPageText),
-    HELP_PREV_PAGE(&g_aHelpRiddikulus[14]),
-    HELP_NEXT_PAGE(&g_aHelpRiddikulus[45]),
+    HELP_PREV_PAGE(&g_aHelpBoggart[14]),
+    HELP_NEXT_PAGE(&g_aHelpBoggart[45]),
     HELP_TITLE(0xA4C),  // "Riddikulus Boggart Challenge"
     // "The Boggart will move more quickly when it reappears after each successful Riddikulus
     //  cast."
@@ -659,7 +659,7 @@ const u32 g_aHelpRiddikulus[] = {
 
     // page 4/4
     HELP_HEADER(HelpPageText),
-    HELP_PREV_PAGE(&g_aHelpRiddikulus[28]),
+    HELP_PREV_PAGE(&g_aHelpBoggart[28]),
     HELP_TITLE(0xA4C),  // "Riddikulus Boggart Challenge"
     // "Hint: Keep calm, especially during later rounds. Noting the direction the Boggart is facing
     //  before it moves will give you an advantage."
@@ -1245,7 +1245,7 @@ const u32 g_aHelpMenuMiniGames[] = {
     HELP_HEADER(HelpPageMenu),
     HELP_MENU_LINK_IF(0xA4A, g_aHelpWizardCrackerPopIt, IsHelpTopicUnlocked),  // "Wizard Cracker Pop-it"
     HELP_MENU_LINK_IF(0xA4B, g_aHelpHippogriffGlide, IsHelpTopicUnlocked),  // "Buckbeak's Hippogriff Glide"
-    HELP_MENU_LINK_IF(0xA4C, g_aHelpRiddikulus, IsHelpTopicUnlocked),  // "Riddikulus Boggart Challenge"
+    HELP_MENU_LINK_IF(0xA4C, g_aHelpBoggart, IsHelpTopicUnlocked),  // "Riddikulus Boggart Challenge"
     HELP_MENU_LINK_IF(0xA4D, g_aHelpTeaLeafDivination, IsHelpTopicUnlocked),  // "Tea Leaf Divination"
     HELP_MENU_LINK_IF(0xA4E, g_aHelpDementors, IsHelpTopicUnlocked),  // "Dementor Challenge"
     HELP_MENU_LINK_IF(0x3F6, g_aHelpOwlCareKit, IsHelpTopicUnlocked),  // "Owl Care Kit"

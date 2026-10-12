@@ -90,8 +90,8 @@
 
 @ Forces one extra sub_08007130 call this vblank; see include/hw/vblank.h.
 .set g_bForcePendingBgWritesFlush,               0x03002038
-.set g_dwRiddikulusMinigameScriptFlag_candidate, 0x03002040  @ u32: set by StartMinigame
-.set g_Riddikulus,                               0x03002048  @ RiddikulusState
+.set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ u32: set by StartMinigame
+.set g_BoggartMinigame,                          0x03002048  @ BoggartMinigameState
 .set g_dwHippogriffForceOverworldExit,           0x03002084  @ u32: set by StartMinigame
 .set g_pHippogriffGlide,                         0x03002088  @ HippogriffGlideState *: allocated for the minigame's duration
 .set g_aCameraEffects_candidate,                 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot

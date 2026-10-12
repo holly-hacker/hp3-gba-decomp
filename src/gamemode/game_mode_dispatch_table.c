@@ -47,7 +47,7 @@ extern void ExitOverworldScreen();
 extern void ExitOwlNameSelect();
 extern void ExitPurpleScreenReturnToMenu();
 extern void ExitQuantitySelectScreen();
-extern void ExitRiddikulusMinigame();
+extern void ExitBoggartMinigame();
 extern void ExitStartup();
 extern void ExitStatusEquipCharacterSelect();
 extern void ExitStatusEquipSlotSelect();
@@ -118,7 +118,7 @@ extern void InitializeOwlCareKitScreen();
 extern void InitializeOwlNameSelect();
 extern void InitializePurpleScreenReturnToMenu();
 extern void InitializeQuantitySelectScreen();
-extern void InitializeRiddikulusMinigame();
+extern void InitializeBoggartMinigame();
 extern void InitializeStartup();
 extern void InitializeStatusEquipCharacterSelect();
 extern void InitializeStatusEquipCharacterSelectLastCursor();
@@ -176,7 +176,7 @@ extern void UpdateOverworld();
 extern void UpdateOwlNameSelect();
 extern void UpdatePurpleScreenReturnToMenu();
 extern void UpdateQuantitySelectScreen();
-extern void UpdateRiddikulusMinigame();
+extern void UpdateBoggartMinigame();
 extern void UpdateStartup();
 extern void UpdateStatusEquipCharacterSelect();
 extern void UpdateStatusEquipSlotSelect();
@@ -236,7 +236,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeCombatResult, UpdateCombatResult, ExitCombatResult },
     { InitializeFolioBruti, UpdateFolioBrutiGridCursor, ExitFolioBruti },
     { InitializeFredAndGeorgesShop, UpdateFredAndGeorgesShop, ExitFredAndGeorgesShop },
-    { InitializeRiddikulusMinigame, UpdateRiddikulusMinigame, ExitRiddikulusMinigame },
+    { InitializeBoggartMinigame, UpdateBoggartMinigame, ExitBoggartMinigame },
     { InitializeClockSkipCutscene, UpdateClockSkipCutscene, ExitClockSkipCutscene },
     { InitializeHogwartsUpNightCutscene, UpdateHogwartsUpNightCutscene, ExitHogwartsUpNightCutscene },
     { InitializePurpleScreenReturnToMenu, UpdatePurpleScreenReturnToMenu, ExitPurpleScreenReturnToMenu },

@@ -296,8 +296,8 @@ thumb-func 0x08008030 sub_08008030
 thumb-func 0x08008040 sub_08008040
 
 # Boggart, Buckbeak (minigames)
-c-file 0x08008050 _ src/gamemode/modes/minigame/riddikulus/initialize_riddikulus_minigame.c InitializeRiddikulusMinigame
-c-file 0x080080F4 0x08008360 src/gamemode/modes/minigame/riddikulus/update_riddikulus_minigame.c UpdateRiddikulusMinigame
+c-file 0x08008050 _ src/boggart_minigame/initialize_boggart_minigame.c InitializeBoggartMinigame
+c-file 0x080080F4 0x08008360 src/boggart_minigame/update_boggart_minigame.c UpdateBoggartMinigame
 thumb-func 0x08008360 sub_08008360
 thumb-func 0x08008404 sub_08008404
 thumb-func 0x0800848C sub_0800848C
@@ -307,7 +307,7 @@ thumb-func 0x08008708 sub_08008708
 thumb-func 0x0800882C sub_0800882C
 thumb-func 0x08008968 sub_08008968
 thumb-func 0x08008A18 sub_08008A18
-c-file 0x08008AD0 0x08008B2C src/gamemode/modes/minigame/riddikulus/exit_riddikulus_minigame.c ExitRiddikulusMinigame
+c-file 0x08008AD0 0x08008B2C src/boggart_minigame/exit_boggart_minigame.c ExitBoggartMinigame
 thumb-func 0x08008B2C sub_08008B2C
 thumb-func 0x08008B84 sub_08008B84
 thumb-func 0x08008BD8 sub_08008BD8
@@ -2408,7 +2408,7 @@ c-file 0x0804BDBC 0x0804BF9C src/graphics/particle/direction_vectors.c g_aDirect
 c-file 0x0804BFCC 0x0804BFEC src/actor/action_state_data.c g_abTurnAroundDirection
 c-file 0x0804C024 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804C054 0x0804C08C src/room/room_actor_constructors.c g_apRoomActorConstructors
-c-file 0x0804C1B0 0x0804C1B8 src/gamemode/modes/minigame/riddikulus/riddikulus.globals.c g_dwRiddikulusBg0Control
+c-file 0x0804C1B0 0x0804C1B8 src/boggart_minigame/boggart_minigame.globals.c g_dwBoggartMinigameBg0Control
 c-file 0x0804C43C 0x0804C440 src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
 c-file 0x0804C444 _ src/gamemode/modes/debug/debug_menu_main/debug_menu_main.globals.c g_dwDebugMenuMainBg0Control
 c-file 0x0804C470 _ src/gamemode/modes/debug/debug_level_and_quest_select_menu/debug_level_and_quest_select_menu.globals.c g_abDebugLevelAndQuestMax
@@ -2710,7 +2710,7 @@ graphics 0x08E3254C _ menus/us MainMenuTitles
 graphics 0x08E359C0 _ cutscenes CoolTrain
 graphics 0x08E36D88 0x08E3D010 minigames/divination_tea DivinationTeaGraphics
 graphics 0x08E3D030 0x08E52904 minigames/hippogriff HippogriffGlideGraphics
-graphics 0x08E52964 _ minigames/riddikulus RiddikulusGraphics
+graphics 0x08E52964 _ minigames/boggart BoggartGraphics
 graphics 0x08E65D6C _ menus FontsAndPortraits
 dialog-text 0x08EAC798 _ data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 _ data/text/en_gb.json DialogTextEnGb

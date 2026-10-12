@@ -7,7 +7,7 @@ typedef struct {
     u8 bOwlCareKitUnlocked : 1;
     u8 bWizardCrackerPopItUnlocked : 1;
     u8 bHippogriffGlideUnlocked : 1;
-    u8 bRiddikulusUnlocked : 1;
+    u8 bBoggartUnlocked : 1;
     u8 bTeaLeafDivinationUnlocked : 1;
     u8 bHarryVsDementorsUnlocked : 1;
     u8 bTeaLeafDivinationIntroShown : 1;
@@ -44,7 +44,7 @@ typedef enum {
     flOwlCareKitUnlocked           = 0x01,
     flWizardCrackerPopItUnlocked   = 0x02,
     flHippogriffGlideUnlocked      = 0x04,
-    flRiddikulusUnlocked           = 0x08,
+    flBoggartUnlocked              = 0x08,
     flTeaLeafDivinationUnlocked    = 0x10,
     flHarryVsDementorsUnlocked     = 0x20,  // gates its Help topic only; no minigame menu entry
     flTeaLeafDivinationIntroShown  = 0x40,
@@ -55,7 +55,7 @@ typedef enum {
 typedef enum {
     HighScoreWizardCrackerPopIt = 0,
     HighScoreHippogriffGlide = 1,
-    HighScoreRiddikulus = 2,
+    HighScoreBoggart = 2,
 } HighScoreMinigame;
 
 // The file-level options block (blocks 2-6), holding the minigame high

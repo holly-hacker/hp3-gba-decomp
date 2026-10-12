@@ -51,7 +51,7 @@ typedef enum {
     CombatResult                     = 0x2C,
     FolioBruti                       = 0x2D,
     FredAndGeorgesShop               = 0x2E,
-    RiddikulusMinigame               = 0x2F,
+    BoggartMinigame                  = 0x2F,
     ClockSkipCutscene                = 0x30,
     HogwartsUpNightCutscene          = 0x31,
     PurpleScreenReturnToMenu         = 0x32,

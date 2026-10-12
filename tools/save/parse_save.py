@@ -247,7 +247,7 @@ HEADER_FLAG_BITS = {
     "flOwlCareKitUnlocked": 0x01,
     "flWizardCrackerPopItUnlocked": 0x02,
     "flHippogriffGlideUnlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
-    "flRiddikulusUnlocked": 0x08,
+    "flBoggartUnlocked": 0x08,
     "flTeaLeafDivinationUnlocked": 0x10,
     # Harry vs Dementors: UnlockMinigame index 4 sets it. Only the Help menu
     # reads it (IsHelpTopicUnlocked, "Dementor Challenge" topic); the minigame
@@ -377,7 +377,7 @@ def encode_header(h: dict) -> bytes:
 OPTIONS_MINIGAME_NAMES = [
     "WizardCrackerPopIt",
     "BuckbeaksHippogriffGlide",
-    "RiddikulusBoggartChallenge",
+    "BoggartChallenge",
 ]
 OPTIONS_DIFFICULTY_NAMES = ["Easy", "Medium", "Hard"]
 

@@ -40,7 +40,7 @@ void HandleMinigameSelectMenuConfirm(void)
                  : g_GameModeStackContext.dwCurrentGameModeArg2 == 1
                      ? g_saveManager.header.bHeaderFlags.all & flHippogriffGlideUnlocked
                  : g_GameModeStackContext.dwCurrentGameModeArg2 == 2
-                     ? g_saveManager.header.bHeaderFlags.all & flRiddikulusUnlocked
+                     ? g_saveManager.header.bHeaderFlags.all & flBoggartUnlocked
                      : g_saveManager.header.bHeaderFlags.all & flTeaLeafDivinationUnlocked) != 0)
             {
                 PlaySoundById(1);
