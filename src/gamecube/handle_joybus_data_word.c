@@ -1,4 +1,5 @@
 #include "types.h"
+#include "checksum.h"
 #include "gamecube.h"
 
 // Appends the halfword in bits 8-23 of a JOYBUS_WORD_DATA word to the receive buffer after

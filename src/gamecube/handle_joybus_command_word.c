@@ -1,5 +1,6 @@
 #include "types.h"
 #include "hw/io_regs.h"
+#include "checksum.h"
 #include "gamecube.h"
 
 // Handles a word the GameCube wrote to JOY_RECV. Before the link is up the only accepted word is

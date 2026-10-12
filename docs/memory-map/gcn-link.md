@@ -101,9 +101,10 @@ Each GameCube word is dispatched on its low byte:
   buffer and its byte count; `HandleJoybusTransmit`/`TransmitJoybusWord`
   (`0x08021A00`) then emit one `0xA0` word per halfword plus checksum.
 
-`ComputeJoybusChecksum` (`0x0801D4A8`) folds a halfword to a checksum byte,
-CRC-flavored (constants `0xCC`/`0xCD`, 8+7 shift-xor rounds). Its only
-callers are the five JOYBUS functions above.
+`ComputeJoybusChecksum` (`0x0801D4A8`, `src/checksum/compute_joybus_checksum.c`) is a CRC-8 with
+polynomial `0x1CD` over the halfword's low byte, then its high byte, each
+MSB first, followed by eight zero-bit rounds. Its only callers are the
+five JOYBUS functions above.
 
 ## Link commands (PROVEN behavior)
 
@@ -134,4 +135,3 @@ pointer, length-into-code, or unclamped callback dispatch.
 - Exact protocol meaning of the `0x40`/`0x41` handshake bytes and the
   `wRecvCommandMax`/`wSendCommandMax` contract with the GameCube title.
 - Readers of `dwPeerGameCode` and the `0x08FAA830` error-string table.
-- The exact checksum polynomial behind `ComputeJoybusChecksum`.

@@ -83,7 +83,6 @@ extern JoybusLinkState g_JoybusLinkState;
 // This cartridge's header game code (0x080000AC), read as one word.
 extern const u32 g_dwRomHeaderGameCode;
 
-extern u8 ComputeJoybusChecksum(u16 value);
 extern void HandleJoybusInterrupt(void);
 extern u32 HandleJoybusCommandWord(u32 word);
 extern u32 HandleJoybusTransmit(void);
