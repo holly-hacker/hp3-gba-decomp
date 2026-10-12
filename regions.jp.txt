@@ -517,13 +517,13 @@ thumb-func 0x08013364 sub_08013360
 thumb-func 0x080133B0 sub_080133AC
 thumb-func 0x08013428 sub_08013424
 thumb-func 0x08013460 sub_0801345C
-c-file 0x080134C0 _ src/gamemode/modes/victory_screen/initialize_victory_screen.c InitializeVictoryScreen
-c-file 0x080138F8 0x08013ACC src/gamemode/modes/victory_screen/update_victory_screen.c UpdateVictoryScreen
+c-file 0x080134C0 _ src/combat_result/initialize_combat_result.c InitializeCombatResult
+c-file 0x080138F8 0x08013ACC src/combat_result/update_combat_result.c UpdateCombatResult
 thumb-func 0x08013ACC sub_08013AC8
 thumb-func 0x08013FF0 sub_08014004
 thumb-func 0x08014558 sub_0801456C
-c-file 0x080147AC _ src/gamemode/modes/victory_screen/roll_battle_item_drops.c RollBattleItemDrops
-c-file 0x08014894 0x080148E0 src/gamemode/modes/victory_screen/exit_victory_screen.c ExitVictoryScreen
+c-file 0x080147AC _ src/combat_result/roll_battle_item_drops.c RollBattleItemDrops
+c-file 0x08014894 0x080148E0 src/combat_result/exit_combat_result.c ExitCombatResult
 thumb-func 0x080148E0 sub_080148F4
 thumb-func 0x08014928 sub_0801493C
 thumb-func 0x08014950 ResetCharacterToLevel
@@ -2175,8 +2175,8 @@ c-file 0x0804D750 0x0804DFA0 src/graphics/assets/battle_hud_assets.c g_aBattleHu
 c-file 0x0804DFC8 _ src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
 c-file 0x0804E180 0x0804E1C8 src/battle/battle_music.c g_abBattleMusicByRoom
 c-file 0x0804E50C 0x0804E518 src/battle/spell_leveling.c g_abSpellMaxLevel
-c-file 0x0804E52C 0x0804E53C src/gamemode/modes/victory_screen/victory_screen.globals.c g_dwVictoryBg2Control
-c-file 0x0804E56C 0x0804E5A0 src/gamemode/modes/victory_screen/victory_screen_portraits.globals.c g_aVictoryBg1PortraitRects
+c-file 0x0804E52C 0x0804E53C src/combat_result/combat_result.globals.c g_dwCombatResultBg2Control
+c-file 0x0804E56C 0x0804E5A0 src/combat_result/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects
 c-file 0x0804E5E0 0x0804F330 src/graphics/assets/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table -- content proven byte-identical to the

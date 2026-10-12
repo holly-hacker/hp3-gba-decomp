@@ -887,12 +887,12 @@ cases above. `ExitBattle` (`0x0800DE50`, `Battle`'s `pDestroyFn` in
 `g_pGameModeDispatchTable`) snapshots it into
 `g_dwBattleRewardFlagsSnapshot` right before `FightState` is freed. Bits
 `0x01`/`0x02` (`ExtraExpBonus`/`GrantExtraXp`) scale the XP shown by
-`InitializeVictoryXpScreen` (x3/x1.5). Bit `0x04` (`ForceItemDrop`) is
-read in `InitializeVictoryDropScreen` (`0x0801456C`, the victory
+`InitializeCombatResultXp` (x3/x1.5). Bit `0x04` (`ForceItemDrop`) is
+read in `InitializeCombatResultDrops` (`0x0801456C`, the victory
 screen's second phase) for a `25%` gold bonus (`gold += gold >> 2`,
 matching the `42*2*1.25 = 105` figure recorded earlier), and again in
 `RollBattleItemDrops` (`0x080147C0`, matched in
-`src/gamemode/modes/victory_screen/roll_battle_item_drops.c`): for up to 4 fainted monsters
+`src/combat_result/roll_battle_item_drops.c`): for up to 4 fainted monsters
 (`g_anFaintedRosterIndices`, sentinel `-1`), one roll per monster, each
 rolling `0`-`99` against `g_pMonsterDropTable[rosterIndex]`'s two
 `(chance, itemId)` slots (adjacent ranges on the same roll, mutually
@@ -971,7 +971,7 @@ Spiders (`reward_xp=8`, `reward_gold=42`) awarded exactly `16` XP
 (`42*2*1.25 = 105` exactly) -- the source of that `25%` gold figure isn't
 determined (`Wizard Cracker`'s own description states an item-drop
 effect, not a gold bonus; see `FightState->bBonusRewardFlags` above).
-`g_nBattleXpReward` is consumed by `InitializeVictoryScreen` (see "End-of-battle
+`g_nBattleXpReward` is consumed by `InitializeCombatResult` (see "End-of-battle
 flow" below); what consumes `g_nBattleGoldReward` isn't traced.
 
 A second, independent path exists: `KillTarget` (actor-script
@@ -1011,15 +1011,15 @@ and the array's other indices are in
 [`../formats/save.md`](../formats/save.md#quest-event-state).
 
 State `6` calls `PushGameMode_2(Overworld, 0, bDefeatWarpTarget)` after a
-150-tick delay; state `7` calls `PushGameMode(VictoryScreen)` after a
-30-tick delay. `VictoryScreen` (`GameMode` `0x2C`) is an INIT/TICK/EXIT
+150-tick delay; state `7` calls `PushGameMode(CombatResult)` after a
+30-tick delay. `CombatResult` (`GameMode` `0x2C`) is an INIT/TICK/EXIT
 mode-dispatch entry (`GameModeDispatchEntry_ARRAY_08065cbc`, stride
-`0xC`) with two internal phases, both driven by `UpdateVictoryScreen`'s
-(`0x080138F4`) own state byte: an XP phase (`InitializeVictoryXpScreen`/
-`TickVictoryXpCounter`, rolling XP counter with level-up sound/animation)
-then a drop phase (`InitializeVictoryDropScreen`, "The fleeing enemy
+`0xC`) with two internal phases, both driven by `UpdateCombatResult`'s
+(`0x080138F4`) own state byte: an XP phase (`InitializeCombatResultXp`/
+`TickCombatResultXpCounter`, rolling XP counter with level-up sound/animation)
+then a drop phase (`InitializeCombatResultDrops`, "The fleeing enemy
 dropped:" plus up to 2 items from `RollBattleItemDrops` and the gold
-total, see `bBonusRewardFlags` above). `ExitVictoryScreen`
+total, see `bBonusRewardFlags` above). `ExitCombatResult`
 (`0x080148A8`) returns to `Battle` mode. `g_dwBattleRewardFlagsSnapshot`
 is set by `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler,
 previously misidentified as a draw function), which tears down
@@ -1114,7 +1114,7 @@ countdown whose meaning is local to that state.
   `bSavedBattleState` -- resuming whichever state transitioned here.
 - **6 -- defeat.** After a 150-tick delay, pushes `PushGameMode_2(Overworld,
   0, bDefeatWarpTarget)`.
-- **7 -- victory.** After a 30-tick delay, pushes `PushGameMode(VictoryScreen)`.
+- **7 -- victory.** After a 30-tick delay, pushes `PushGameMode(CombatResult)`.
 
 ### Fighter `Actor.bActionState` machines
 

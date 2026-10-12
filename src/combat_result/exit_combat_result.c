@@ -3,7 +3,7 @@
 #include "game/game_modes.h"
 #include "hw/mem.h"
 
-void ExitVictoryScreen(void)
+void ExitCombatResult(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     FreeAllActors(&g_ActiveActorListState.pHead);

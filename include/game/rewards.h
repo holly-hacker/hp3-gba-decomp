@@ -5,7 +5,7 @@
 #include "game/items.h"
 #include "game/save.h"
 
-// Rewards earned this battle, paid out by the victory screen. The XP total is
+// Rewards earned this battle, paid out by the combat result screen. The XP total is
 // one pool shared by the whole party; reward grants also stage their Sickles
 // amount in the gold variable.
 extern u16 g_nBattleXpReward;    // 0x0300260E

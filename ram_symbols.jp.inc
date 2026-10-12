@@ -126,17 +126,17 @@
 .set g_pBattleMessageIconActor_candidate, 0x03002684
 .set g_BattleMessageIconState_candidate,   0x03002688
 .set g_anFaintedRosterIndices,             0x030026D8  @ see ram_symbols.us.inc
-.set g_dwVictoryUnk26E8,               0x030026E8  @ see ram_symbols.us.inc
-.set g_dwVictoryUnk26EC,               0x030026EC  @ see ram_symbols.us.inc
-.set g_dwVictoryXpRemaining,           0x030026F0  @ see ram_symbols.us.inc
-.set g_dwVictoryUnk26F4,               0x030026F4  @ see ram_symbols.us.inc
-.set g_dwVictoryUnk26F8,               0x030026F8  @ see ram_symbols.us.inc
-.set g_dwVictoryUnk26FC,               0x030026FC  @ see ram_symbols.us.inc
-.set g_abVictoryPartySlots,            0x03002700  @ see ram_symbols.us.inc
-.set g_pVictoryBg2Tilemap,             0x03002704  @ see ram_symbols.us.inc
-.set g_pVictoryBg1Tilemap,             0x03002708  @ see ram_symbols.us.inc
-.set g_wVictoryTextTileCursor,         0x0300270C  @ see ram_symbols.us.inc
-.set g_wVictoryUnk2734,                0x03002734  @ see ram_symbols.us.inc
+.set g_dwCombatResultUnk26E8,               0x030026E8  @ see ram_symbols.us.inc
+.set g_dwCombatResultUnk26EC,               0x030026EC  @ see ram_symbols.us.inc
+.set g_dwCombatResultXpRemaining,           0x030026F0  @ see ram_symbols.us.inc
+.set g_dwCombatResultUnk26F4,               0x030026F4  @ see ram_symbols.us.inc
+.set g_dwCombatResultUnk26F8,               0x030026F8  @ see ram_symbols.us.inc
+.set g_dwCombatResultUnk26FC,               0x030026FC  @ see ram_symbols.us.inc
+.set g_abCombatResultPartySlots,            0x03002700  @ see ram_symbols.us.inc
+.set g_pCombatResultBg2Tilemap,             0x03002704  @ see ram_symbols.us.inc
+.set g_pCombatResultBg1Tilemap,             0x03002708  @ see ram_symbols.us.inc
+.set g_wCombatResultTextTileCursor,         0x0300270C  @ see ram_symbols.us.inc
+.set g_wCombatResultUnk2734,                0x03002734  @ see ram_symbols.us.inc
 .set g_bDefeatWarpParam,                   0x03002748  @ see ram_symbols.us.inc
 .set g_bSpellMissStreak,                   0x03002749
 .set g_nLastDamage,                        0x0300274A

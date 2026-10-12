@@ -58,7 +58,7 @@ extern void ExitWizardCrackerPopItDifficultySelect();
 extern void ExitTopicScreen();
 extern void ExitWizardCrackerPopItMinigame();
 extern void ExitBattle();
-extern void ExitVictoryScreen();
+extern void ExitCombatResult();
 extern void HandleConnectivityMenuTick();
 extern void HandleFolioCardDetailScreenTick();
 extern void HandleGameModeNoneNoOp();
@@ -126,7 +126,7 @@ extern void InitializeStatusEquipSlotSelect();
 extern void InitializeStatusEquipItemSelect();
 extern void InitializeUnusedHogwartsMapScreen();
 extern void InitializeUnusedServePumpkinJuiceMinigame();
-extern void InitializeVictoryScreen();
+extern void InitializeCombatResult();
 extern void InitializeWizardCrackerPopItDifficultySelect();
 extern void InitializeTopicScreen();
 extern void InitializeWizardCrackerPopItMinigame();
@@ -183,7 +183,7 @@ extern void UpdateStatusEquipSlotSelect();
 extern void UpdateStatusEquipItemSelect();
 extern void UpdateUnusedHogwartsMapScreen();
 extern void UpdateUnusedServePumpkinJuiceMinigame();
-extern void UpdateVictoryScreen();
+extern void UpdateCombatResult();
 extern void UpdateTopicScreen();
 extern void UpdateWizardCrackerPopItMinigame();
 
@@ -233,7 +233,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeOwlCareKitScreen, HandleOwlCareKitScreenTick, HandleOwlCareKitScreenExit },
     { InitializeDebugCharacterSelectMenu, UpdateDebugCharacterSelectMenu, ExitDebugCharacterSelectMenu },
     { InitializeHippogriffGlideMinigame, UpdateHippogriffGlideMinigame, ExitHippogriffGlideMinigame },
-    { InitializeVictoryScreen, UpdateVictoryScreen, ExitVictoryScreen },
+    { InitializeCombatResult, UpdateCombatResult, ExitCombatResult },
     { InitializeFolioBruti, UpdateFolioBrutiGridCursor, ExitFolioBruti },
     { InitializeFredAndGeorgesShop, UpdateFredAndGeorgesShop, ExitFredAndGeorgesShop },
     { InitializeRiddikulusMinigame, UpdateRiddikulusMinigame, ExitRiddikulusMinigame },

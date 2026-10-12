@@ -207,7 +207,7 @@ void TickBattleTurnStateMachine(void)
         }
         if (--g_pFightState->wBattleStateTimer == 0xffff) {
             g_pFightState->wBattleStateTimer = 0xff;
-            PushGameMode(VictoryScreen);
+            PushGameMode(CombatResult);
         }
         break;
     }

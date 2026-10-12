@@ -137,17 +137,17 @@
 .set g_pBattleMessageIconActor_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_anFaintedRosterIndices,             0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
-.set g_dwVictoryUnk26E8,                    0x030026E8  @ u32: zeroed by InitializeVictoryScreen; no reader found
-.set g_dwVictoryUnk26EC,                    0x030026EC  @ u32: 0x78 after InitializeVictoryScreen; no reader found
-.set g_dwVictoryXpRemaining,                0x030026F0  @ u32: XP still to be counted up on the victory screen, see include/battle/victory_screen.h
-.set g_dwVictoryUnk26F4,                    0x030026F4  @ u32: zeroed by InitializeVictoryScreen
-.set g_dwVictoryUnk26F8,                    0x030026F8  @ u32: zeroed by InitializeVictoryScreen
-.set g_dwVictoryUnk26FC,                    0x030026FC  @ u32: zeroed by InitializeVictoryScreen
-.set g_abVictoryPartySlots,                 0x03002700  @ u8[3]: party stats slot shown per portrait position, see include/battle/victory_screen.h
-.set g_pVictoryBg2Tilemap,                  0x03002704  @ void *: BG2 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
-.set g_pVictoryBg1Tilemap,                  0x03002708  @ void *: BG1 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
-.set g_wVictoryTextTileCursor,              0x0300270C  @ u16: next free text tile of the victory screen
-.set g_wVictoryUnk2734,                     0x03002734  @ u16: zeroed by InitializeVictoryScreen
+.set g_dwCombatResultUnk26E8,                    0x030026E8  @ u32: zeroed by InitializeCombatResult; no reader found
+.set g_dwCombatResultUnk26EC,                    0x030026EC  @ u32: 0x78 after InitializeCombatResult; no reader found
+.set g_dwCombatResultXpRemaining,                0x030026F0  @ u32: XP still to be counted up on the combat result screen, see include/combat_result.h
+.set g_dwCombatResultUnk26F4,                    0x030026F4  @ u32: zeroed by InitializeCombatResult
+.set g_dwCombatResultUnk26F8,                    0x030026F8  @ u32: zeroed by InitializeCombatResult
+.set g_dwCombatResultUnk26FC,                    0x030026FC  @ u32: zeroed by InitializeCombatResult
+.set g_abCombatResultPartySlots,                 0x03002700  @ u8[3]: party stats slot shown per portrait position, see include/combat_result.h
+.set g_pCombatResultBg2Tilemap,                  0x03002704  @ void *: BG2 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
+.set g_pCombatResultBg1Tilemap,                  0x03002708  @ void *: BG1 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
+.set g_wCombatResultTextTileCursor,              0x0300270C  @ u16: next free text tile of the combat result screen
+.set g_wCombatResultUnk2734,                     0x03002734  @ u16: zeroed by InitializeCombatResult
 .set g_bDefeatWarpParam,                   0x03002748  @ byte
 .set g_bSpellMissStreak,                   0x03002749  @ byte: consecutive-miss streak breaker
 .set g_nLastDamage,                        0x0300274A  @ u16: last computed attack/status damage
