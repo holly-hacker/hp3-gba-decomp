@@ -10,7 +10,7 @@ const u32 g_adwMinigameDifficultyTextIds[4] = {
 
 const GameMode g_aeMinigameDifficultyModes[4] = {
     WizardCrackerPopItMinigame,
-    HippogriffGlideMinigame,
+    BuckbeakMinigame,
     BoggartMinigame,
     DivinationTeaMinigame,
 };

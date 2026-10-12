@@ -2,11 +2,11 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "minigame/hippogriff_glide.h"
+#include "buckbeak_minigame.h"
 #include "hw/mem.h"
 #include "menu/minigame_menu.h"
 
-void ExitHippogriffGlideMinigame(void)
+void ExitBuckbeakMinigame(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     UnreserveObjPaletteSlot(0);
@@ -20,6 +20,6 @@ void ExitHippogriffGlideMinigame(void)
         g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
     }
 
-    FreeBlock(g_pHippogriffGlide);
+    FreeBlock(g_pBuckbeakMinigame);
     sub_0802CDB8();
 }

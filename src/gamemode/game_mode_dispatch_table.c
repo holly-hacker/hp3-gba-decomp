@@ -29,7 +29,7 @@ extern void ExitHarryVsDementorsMinigame();
 extern void ExitHelpScreen();
 extern void ExitHighScoreNameEntry();
 extern void ExitHippogriffFliesIntoAirCutscene();
-extern void ExitHippogriffGlideMinigame();
+extern void ExitBuckbeakMinigame();
 extern void ExitHogwartsUpNightCutscene();
 extern void ExitInGameMenu();
 extern void ExitItemUseScreen();
@@ -97,7 +97,7 @@ extern void InitializeHarryVsDementorsMinigame();
 extern void InitializeHelp();
 extern void InitializeHighScoreNameEntryScreen();
 extern void InitializeHippogriffFliesIntoAirCutscene();
-extern void InitializeHippogriffGlideMinigame();
+extern void InitializeBuckbeakMinigame();
 extern void InitializeHogwartsUpNightCutscene();
 extern void InitializeInGameMenu();
 extern void InitializeInGameMenuFadeIn();
@@ -158,7 +158,7 @@ extern void UpdateHarryVsDementorsMinigame();
 extern void UpdateHelp();
 extern void UpdateHighScoreNameEntry();
 extern void UpdateHippogriffFliesIntoAirCutscene();
-extern void UpdateHippogriffGlideMinigame();
+extern void UpdateBuckbeakMinigame();
 extern void UpdateHogwartsUpNightCutscene();
 extern void UpdateInGameMenu();
 extern void UpdateItemUseScreen();
@@ -232,7 +232,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeFolioCardDetailScreen, HandleFolioCardDetailScreenTick, ExitFolioCardDetailScreen },
     { InitializeOwlCareKitScreen, HandleOwlCareKitScreenTick, HandleOwlCareKitScreenExit },
     { InitializeDebugCharacterSelectMenu, UpdateDebugCharacterSelectMenu, ExitDebugCharacterSelectMenu },
-    { InitializeHippogriffGlideMinigame, UpdateHippogriffGlideMinigame, ExitHippogriffGlideMinigame },
+    { InitializeBuckbeakMinigame, UpdateBuckbeakMinigame, ExitBuckbeakMinigame },
     { InitializeCombatResult, UpdateCombatResult, ExitCombatResult },
     { InitializeFolioBruti, UpdateFolioBrutiGridCursor, ExitFolioBruti },
     { InitializeFredAndGeorgesShop, UpdateFredAndGeorgesShop, ExitFredAndGeorgesShop },

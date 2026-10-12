@@ -116,7 +116,7 @@ extern const u32 g_aHelpMagicalEncounters[];
 extern const u32 g_aHelpEquipItems[];
 extern const u32 g_aHelpUsingItems[];
 extern const u32 g_aHelpWizardCrackerPopIt[];
-extern const u32 g_aHelpHippogriffGlide[];
+extern const u32 g_aHelpBuckbeakMinigame[];
 extern const u32 g_aHelpBoggart[];
 extern const u32 g_aHelpTeaLeafDivination[];
 extern const u32 g_aHelpDementors[];

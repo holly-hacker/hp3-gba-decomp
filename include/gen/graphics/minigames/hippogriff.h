@@ -35,19 +35,3 @@ extern const u8 gFolioBrutiBg2Graphic[];
 extern const u8 gFolioUniversitasBg3Graphic[];
 extern const u8 gFolioUniversitasBg0Graphic[];
 extern const u8 gSaveMenuBg1Graphic[];
-
-/* HippogriffGlideGraphics */
-extern const u8 gHippogriffGlide001Palette[];
-extern const u8 gHippogriffGlide002Tiles[];
-extern const u8 gHippogriffGlide002Frames[];
-extern const u8 gHippogriffGlide003Tiles[];
-extern const u8 gHippogriffGlide003Frames[];
-extern const u8 gHippogriffGlide004Tiles[];
-extern const u8 gHippogriffGlide004Frames[];
-extern const u8 gHippogriffMinigame001[];
-extern const u8 gHippogriffMinigame002[];
-extern const u8 gHippogriffMinigame003[];
-extern const u8 gHippogriffMinigame004[];
-extern const u8 gHippogriffMinigame005[];
-extern const u8 gHippogriffMinigame006[];
-extern const u8 gHippogriffMinigame007[];

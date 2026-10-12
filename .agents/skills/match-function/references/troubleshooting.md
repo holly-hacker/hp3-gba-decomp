@@ -186,7 +186,7 @@ index sum (`[i + pendingI]`). Example: ExitBattle, US 0x0800DE50 loop 2.
 
 `p = &g.array[i]` folds the member offset into the literal pool (`.word g+0x1c`). Reading and
 writing `g.array[i]` directly, in both the compare and the store, keeps the plain symbol in the
-pool and emits `adds rX, #offset` after the index shift. Example: UpdateHippogriffGlideMinigame,
+pool and emits `adds rX, #offset` after the index shift. Example: UpdateBuckbeakMinigame,
 US 0x08009BE0. Likewise, indexing with a variable the branch has already fixed (`table[kind]`
 inside `if (kind == 1)`) gives `ldr base; adds #offset` where `table[1]` pools `base+offset`
 (HandleChestTouch, US 0x0800BF20).

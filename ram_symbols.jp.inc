@@ -81,8 +81,8 @@
 .set g_bForcePendingBgWritesFlush,               0x03002038
 .set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ set by StartMinigame
 .set g_BoggartMinigame,                          0x03002048  @ see ram_symbols.us.inc
-.set g_dwHippogriffForceOverworldExit,           0x03002084  @ set by StartMinigame
-.set g_pHippogriffGlide,                         0x03002088  @ see ram_symbols.us.inc
+.set g_dwBuckbeakMinigameForceOverworldExit,           0x03002084  @ set by StartMinigame
+.set g_pBuckbeakMinigame,                         0x03002088  @ see ram_symbols.us.inc
 .set g_aCameraEffects_candidate,                 0x03002090  @ see ram_symbols.us.inc
 .set g_aCameraFocusSlots,                        0x030020E8  @ see ram_symbols.us.inc
 .set g_aCameraFollowOffsets,                     0x03002158  @ see ram_symbols.us.inc
@@ -459,7 +459,7 @@
 .set gDialogTextScratchBuf,      0x03005D68
 .set gCurrentLanguage,           0x03005D6C
 .set gLocaleThousandsSep,        0x03005D6D  @ see ram_symbols.us.inc
-.set g_adwHippogriffGlideUnk,    0x03005D70  @ see ram_symbols.us.inc
+.set g_adwBuckbeakMinigameUnk,    0x03005D70  @ see ram_symbols.us.inc
 .set g_aGameTimers,                     0x03005DB8
 .set g_HarryHermionePortInTime,  0x03005DF8  @ see ram_symbols.us.inc
 .set g_nMainMenuTextCursor,     0x03005E10

@@ -47,7 +47,7 @@ typedef enum {
     FolioUniversitasCardDetails      = 0x28,
     OwlCareMinigame                  = 0x29,
     DebugMenuCharacterSelect         = 0x2A,
-    HippogriffGlideMinigame          = 0x2B,
+    BuckbeakMinigame                 = 0x2B,
     CombatResult                     = 0x2C,
     FolioBruti                       = 0x2D,
     FredAndGeorgesShop               = 0x2E,

@@ -133,7 +133,7 @@ Arguments:
 
 ### `DebugMenuCharacterSelect` (0x2A)
 
-### `HippogriffGlideMinigame` (0x2B)
+### `BuckbeakMinigame` (0x2B)
 
 ### `CombatResult` (0x2C)
 

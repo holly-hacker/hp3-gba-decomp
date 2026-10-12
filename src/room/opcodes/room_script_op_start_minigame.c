@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 #include "minigame/harry_vs_dementors.h"
-#include "minigame/hippogriff_glide.h"
+#include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
 #include "overworld/room_script.h"
 #include "minigame/wizard_cracker_pop_it.h"
@@ -37,11 +37,11 @@ void RoomScriptOpStartMinigame(StartMinigameRecord *pRecord)
             PushGameMode_3(BoggartMinigame, 6, 0, pRecord->bParam);
         break;
     case 1:
-        g_dwHippogriffForceOverworldExit = 1;
+        g_dwBuckbeakMinigameForceOverworldExit = 1;
         if (pRecord->bShowHelp)
             PushGameMode_3(HelpTopicScreen, 6, 1, pRecord->bParam);
         else
-            PushGameMode_3(HippogriffGlideMinigame, 6, 0, pRecord->bParam);
+            PushGameMode_3(BuckbeakMinigame, 6, 0, pRecord->bParam);
         break;
     case 4:
         g_dwHarryVsDementorsMinigameScriptFlag_candidate = 1;

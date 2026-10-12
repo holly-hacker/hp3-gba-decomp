@@ -322,17 +322,17 @@ c-file 0x08008DFC _ src/boggart_minigame/resume_boggart_minigame.c ResumeBoggart
 c-file 0x08008E48 0x08008E88 src/boggart_minigame/leave_boggart_minigame.c LeaveBoggartMinigame
 thumb-func 0x08008E88 sub_08008E88
 thumb-func 0x0800907C sub_0800907C
-thumb-func 0x08009144 ProcessHippogriffGlideMinigameFrame
-thumb-func 0x080094C8 InitializeHippogriffGlideResultsMenu
+thumb-func 0x08009144 ProcessBuckbeakMinigameFrame
+thumb-func 0x080094C8 InitializeBuckbeakMinigameResultsMenu
 thumb-func 0x0800960C sub_0800960C
-thumb-func 0x080096A0 HandleHippogriffGlideResultsMenuSelect
+thumb-func 0x080096A0 HandleBuckbeakMinigameResultsMenuSelect
 thumb-func 0x0800975C sub_0800975C
 thumb-func 0x08009834 sub_08009834
 thumb-func 0x08009930 sub_08009930
 thumb-func 0x08009A78 sub_08009A78
-c-file 0x08009B70 _ src/gamemode/modes/minigame/hippogriff_glide/initialize_hippogriff_glide_minigame.c InitializeHippogriffGlideMinigame
-c-file 0x08009BE0 _ src/gamemode/modes/minigame/hippogriff_glide/update_hippogriff_glide_minigame.c UpdateHippogriffGlideMinigame
-c-file 0x08009C54 0x08009CA4 src/gamemode/modes/minigame/hippogriff_glide/exit_hippogriff_glide_minigame.c ExitHippogriffGlideMinigame
+c-file 0x08009B70 _ src/buckbeak_minigame/initialize_buckbeak_minigame.c InitializeBuckbeakMinigame
+c-file 0x08009BE0 _ src/buckbeak_minigame/update_buckbeak_minigame.c UpdateBuckbeakMinigame
+c-file 0x08009C54 0x08009CA4 src/buckbeak_minigame/exit_buckbeak_minigame.c ExitBuckbeakMinigame
 thumb-func 0x08009CA4 sub_08009CA4
 thumb-func 0x08009CE0 sub_08009CE0
 thumb-func 0x08009D18 sub_08009D18
@@ -345,7 +345,7 @@ thumb-func 0x08009E64 sub_08009E64
 thumb-func 0x08009ED0 sub_08009ED0
 thumb-func 0x08009F3C sub_08009F3C
 thumb-func 0x08009F64 sub_08009F64
-thumb-func 0x08009F80 HandleHippogriffGlideExitSelect
+thumb-func 0x08009F80 HandleBuckbeakMinigameExitSelect
 
 # Camera
 thumb-func 0x08009FD8 sub_08009FD8
@@ -2709,7 +2709,7 @@ graphics 0x08E1D5DC _ cutscenes HogwartsUpNight
 graphics 0x08E3254C _ menus/us MainMenuTitles
 graphics 0x08E359C0 _ cutscenes CoolTrain
 graphics 0x08E36D88 0x08E3D010 minigames/divination_tea DivinationTeaGraphics
-graphics 0x08E3D030 0x08E52904 minigames/hippogriff HippogriffGlideGraphics
+graphics 0x08E3D030 0x08E52904 minigames/buckbeak BuckbeakMinigameGraphics
 graphics 0x08E52964 _ minigames/boggart BoggartGraphics
 graphics 0x08E65D6C _ menus FontsAndPortraits
 dialog-text 0x08EAC798 _ data/text/en_us.json DialogTextEnUs

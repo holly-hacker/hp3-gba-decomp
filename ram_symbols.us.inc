@@ -92,8 +92,8 @@
 .set g_bForcePendingBgWritesFlush,               0x03002038
 .set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ u32: set by StartMinigame
 .set g_BoggartMinigame,                          0x03002048  @ BoggartMinigameState
-.set g_dwHippogriffForceOverworldExit,           0x03002084  @ u32: set by StartMinigame
-.set g_pHippogriffGlide,                         0x03002088  @ HippogriffGlideState *: allocated for the minigame's duration
+.set g_dwBuckbeakMinigameForceOverworldExit,           0x03002084  @ u32: set by StartMinigame
+.set g_pBuckbeakMinigame,                         0x03002088  @ BuckbeakMinigameState *: allocated for the minigame's duration
 .set g_aCameraEffects_candidate,                 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot
 .set g_aCameraFocusSlots,                        0x030020E8  @ CameraFocusSlot[2]: 0x38 bytes each
 .set g_aCameraFollowOffsets,                     0x03002158  @ s32[2][2]: per-slot (X, Y) offset set by SetCameraFollowTarget_candidate
@@ -476,7 +476,7 @@
 .set gDialogTextScratchBuf,      0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,           0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,        0x03005D0D  @ byte: locale-specific number-formatting separator
-.set g_adwHippogriffGlideUnk,    0x03005D10  @ u32[3]: cleared on init, meaning not yet established
+.set g_adwBuckbeakMinigameUnk,    0x03005D10  @ u32[3]: cleared on init, meaning not yet established
 .set g_aGameTimers,                0x03005D58  @ GameTimer[4]; see include/game/game_timer.h
 .set g_HarryHermionePortInTime,  0x03005D98  @ HarryHermionePortInTimeState
 

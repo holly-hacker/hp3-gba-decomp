@@ -6,7 +6,7 @@
 #include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
 #include "menu/minigame_difficulty_select.h"
-#include "minigame/hippogriff_glide.h"
+#include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
 #include "minigame/wizard_cracker_pop_it.h"
 
@@ -77,7 +77,7 @@ void HandleHighScoreDifficultyMenuTick(void)
                 g_dwWizardCrackerPopItForceOverworldExit = 0;
                 break;
             case 1:
-                g_dwHippogriffForceOverworldExit = 0;
+                g_dwBuckbeakMinigameForceOverworldExit = 0;
                 break;
             case 2:
                 g_dwBoggartMinigameScriptFlag_candidate = 0;

@@ -38,7 +38,7 @@ void HandleMinigameSelectMenuConfirm(void)
             if ((g_GameModeStackContext.dwCurrentGameModeArg2 == 0
                      ? g_saveManager.header.bHeaderFlags.all & flWizardCrackerPopItUnlocked
                  : g_GameModeStackContext.dwCurrentGameModeArg2 == 1
-                     ? g_saveManager.header.bHeaderFlags.all & flHippogriffGlideUnlocked
+                     ? g_saveManager.header.bHeaderFlags.all & flBuckbeakUnlocked
                  : g_GameModeStackContext.dwCurrentGameModeArg2 == 2
                      ? g_saveManager.header.bHeaderFlags.all & flBoggartUnlocked
                      : g_saveManager.header.bHeaderFlags.all & flTeaLeafDivinationUnlocked) != 0)

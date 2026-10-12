@@ -246,7 +246,7 @@ HEADER_FLAG_BITS = {
     # (0x08036038), which picks the Connectivity submenu's list variant.
     "flOwlCareKitUnlocked": 0x01,
     "flWizardCrackerPopItUnlocked": 0x02,
-    "flHippogriffGlideUnlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
+    "flBuckbeakUnlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
     "flBoggartUnlocked": 0x08,
     "flTeaLeafDivinationUnlocked": 0x10,
     # Harry vs Dementors: UnlockMinigame index 4 sets it. Only the Help menu

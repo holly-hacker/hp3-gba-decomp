@@ -6,7 +6,7 @@
 typedef struct {
     u8 bOwlCareKitUnlocked : 1;
     u8 bWizardCrackerPopItUnlocked : 1;
-    u8 bHippogriffGlideUnlocked : 1;
+    u8 bBuckbeakUnlocked : 1;
     u8 bBoggartUnlocked : 1;
     u8 bTeaLeafDivinationUnlocked : 1;
     u8 bHarryVsDementorsUnlocked : 1;
@@ -43,7 +43,7 @@ typedef struct {
 typedef enum {
     flOwlCareKitUnlocked           = 0x01,
     flWizardCrackerPopItUnlocked   = 0x02,
-    flHippogriffGlideUnlocked      = 0x04,
+    flBuckbeakUnlocked             = 0x04,
     flBoggartUnlocked              = 0x08,
     flTeaLeafDivinationUnlocked    = 0x10,
     flHarryVsDementorsUnlocked     = 0x20,  // gates its Help topic only; no minigame menu entry
@@ -54,7 +54,7 @@ typedef enum {
 // Row of SaveOptions.aadwHighScores; also the minigame index of the minigame menu.
 typedef enum {
     HighScoreWizardCrackerPopIt = 0,
-    HighScoreHippogriffGlide = 1,
+    HighScoreBuckbeak = 1,
     HighScoreBoggart = 2,
 } HighScoreMinigame;
 

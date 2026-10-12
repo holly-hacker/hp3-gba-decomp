@@ -15,7 +15,7 @@ void RoomScriptOpUnlockMinigame(UnlockMinigameRecord *pRecord)
         g_saveManager.header.bHeaderFlags.bits.bWizardCrackerPopItUnlocked = 1;
         break;
     case 1:
-        g_saveManager.header.bHeaderFlags.bits.bHippogriffGlideUnlocked = 1;
+        g_saveManager.header.bHeaderFlags.bits.bBuckbeakUnlocked = 1;
         break;
     case 2:
         g_saveManager.header.bHeaderFlags.bits.bBoggartUnlocked = 1;

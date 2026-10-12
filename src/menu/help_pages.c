@@ -598,7 +598,7 @@ const u32 g_aHelpWizardCrackerPopIt[] = {
     HELP_END,
 };
 
-const u32 g_aHelpHippogriffGlide[] = {
+const u32 g_aHelpBuckbeakMinigame[] = {
     // page 1/1
     HELP_HEADER(HelpPageText),
     HELP_TITLE(0xA4B),  // "Buckbeak's Hippogriff Glide"
@@ -1244,7 +1244,7 @@ const u32 g_aHelpMenuItems[] = {
 const u32 g_aHelpMenuMiniGames[] = {
     HELP_HEADER(HelpPageMenu),
     HELP_MENU_LINK_IF(0xA4A, g_aHelpWizardCrackerPopIt, IsHelpTopicUnlocked),  // "Wizard Cracker Pop-it"
-    HELP_MENU_LINK_IF(0xA4B, g_aHelpHippogriffGlide, IsHelpTopicUnlocked),  // "Buckbeak's Hippogriff Glide"
+    HELP_MENU_LINK_IF(0xA4B, g_aHelpBuckbeakMinigame, IsHelpTopicUnlocked),  // "Buckbeak's Hippogriff Glide"
     HELP_MENU_LINK_IF(0xA4C, g_aHelpBoggart, IsHelpTopicUnlocked),  // "Riddikulus Boggart Challenge"
     HELP_MENU_LINK_IF(0xA4D, g_aHelpTeaLeafDivination, IsHelpTopicUnlocked),  // "Tea Leaf Divination"
     HELP_MENU_LINK_IF(0xA4E, g_aHelpDementors, IsHelpTopicUnlocked),  // "Dementor Challenge"

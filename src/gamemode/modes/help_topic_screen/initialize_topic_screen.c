@@ -14,8 +14,8 @@ void InitializeTopicScreen(void)
         SetHelpExitMode(WizardCrackerPopItMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
         break;
     case 1:
-        StartHelpScreen(g_aHelpHippogriffGlide, 1);
-        SetHelpExitMode(HippogriffGlideMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
+        StartHelpScreen(g_aHelpBuckbeakMinigame, 1);
+        SetHelpExitMode(BuckbeakMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
         break;
     case 2:
         StartHelpScreen(g_aHelpBoggart, 1);

@@ -57,7 +57,7 @@ void ExitOverworldScreen(void)
         && g_dwPendingGameMode.dwCurrentGameModeArg1 == 1)
         sub_0802B08C();
 
-    if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HippogriffGlideMinigame
+    if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == BuckbeakMinigame
         && g_dwPendingGameMode.dwCurrentGameModeArg3 != 2)
         sub_0802B08C();
 

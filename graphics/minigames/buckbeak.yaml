@@ -1,0 +1,10 @@
+groups:
+  - name: BuckbeakMinigameGraphics
+    runs:
+      - kind: image-bank
+        count: 4
+        names: {1: BuckbeakMinigameSprite001}
+        noPalette: [BuckbeakMinigameSprite004]
+      - kind: graphic-blobs
+        count: 7
+        names: {1: BuckbeakMinigame001}
