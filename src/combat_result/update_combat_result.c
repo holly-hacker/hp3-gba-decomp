@@ -28,11 +28,11 @@ void UpdateCombatResult(void)
             if (g_dwCombatResultXpRemaining & 1)
                 PlaySoundById(0x1A);
 
-            sub_08014004();
+            TickCombatResultXpCounter();
             if (g_wKeysPressed & KeyA)
             {
                 while (g_dwCombatResultXpRemaining != 0)
-                    sub_08014004();
+                    TickCombatResultXpCounter();
             }
 
             if (g_dwCombatResultXpRemaining != 0)
@@ -75,7 +75,7 @@ void UpdateCombatResult(void)
             ClearBgTilemap(1);
             ClearBgTilemap(2);
             FreeAllActors(&g_ActiveActorListState.pHead);
-            sub_0801456C();
+            InitializeCombatResultDrops();
             SetAlphaBlendTargets(0x11, 8);
             SetAlphaBlendCoefficients(0, 0x10);
             g_GameModeStackContext.dwModeState = CombatResultStateFadeInDrops;

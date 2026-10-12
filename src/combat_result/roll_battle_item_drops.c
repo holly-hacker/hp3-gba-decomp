@@ -4,7 +4,7 @@
 #include "mt19937.h"
 #include "battle/monster_drop_table.h"
 
-#define NO_ITEM 0x85
+#define NO_ITEM COMBAT_RESULT_NO_ITEM
 #define MAX_FAINTED_MONSTERS 4
 
 #define ROSTER_INDEX (*(s32 *)((u8 *)g_anFaintedRosterIndices + offset))

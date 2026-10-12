@@ -886,9 +886,9 @@ A 3-bit "bonus reward for this encounter" byte, written by the three
 cases above. `ExitBattle` (`0x0800DE50`, `Battle`'s `pDestroyFn` in
 `g_pGameModeDispatchTable`) snapshots it into
 `g_dwBattleRewardFlagsSnapshot` right before `FightState` is freed. Bits
-`0x01`/`0x02` (`ExtraExpBonus`/`GrantExtraXp`) scale the XP shown by
-`InitializeCombatResultXp` (x3/x1.5). Bit `0x04` (`ForceItemDrop`) is
-read in `InitializeCombatResultDrops` (`0x0801456C`, the victory
+`0x01`/`0x02` (`ExtraExpBonus`/`GrantExtraXp`) scale the XP counted by
+`InitializeCombatResult` (x3/x1.5). Bit `0x04` (`ForceItemDrop`) is
+read in `InitializeCombatResultDrops` (`0x0801456C`, the combat result
 screen's second phase) for a `25%` gold bonus (`gold += gold >> 2`,
 matching the `42*2*1.25 = 105` figure recorded earlier), and again in
 `RollBattleItemDrops` (`0x080147C0`, matched in
@@ -1015,11 +1015,13 @@ State `6` calls `PushGameMode_2(Overworld, 0, bDefeatWarpTarget)` after a
 30-tick delay. `CombatResult` (`GameMode` `0x2C`) is an INIT/TICK/EXIT
 mode-dispatch entry (`GameModeDispatchEntry_ARRAY_08065cbc`, stride
 `0xC`) with two internal phases, both driven by `UpdateCombatResult`'s
-(`0x080138F4`) own state byte: an XP phase (`InitializeCombatResultXp`/
-`TickCombatResultXpCounter`, rolling XP counter with level-up sound/animation)
-then a drop phase (`InitializeCombatResultDrops`, "The fleeing enemy
-dropped:" plus up to 2 items from `RollBattleItemDrops` and the gold
-total, see `bBonusRewardFlags` above). `ExitCombatResult`
+(`0x080138F4`) own state byte: an XP phase (`InitializeCombatResultXp`,
+`0x08013AC8`, draws each party member's Exp/Level/Next rows;
+`TickCombatResultXpCounter`, `0x08014004`, counts one XP point per tick
+with level-up sound and sparkle) then a drop phase
+(`InitializeCombatResultDrops`, "The fleeing enemy dropped:" plus up to 2
+items from `RollBattleItemDrops` and the gold total, see
+`bBonusRewardFlags` above). `ExitCombatResult`
 (`0x080148A8`) returns to `Battle` mode. `g_dwBattleRewardFlagsSnapshot`
 is set by `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler,
 previously misidentified as a draw function), which tears down
@@ -1247,8 +1249,11 @@ Lvl5, no equipment):
 - Displayed next-level XP is the *cumulative* sum of
   `wXpDeltaForLevel` across rows `0..bLevel`, not any single
   row and not what `LevelUpFighter_candidate` writes into `wRewardXp` (a
-  plain overwrite with the new row's delta alone). What compares real XP
-  against that cumulative threshold isn't located.
+  plain overwrite with the new row's delta alone). `GetPartyMemberTotalXp`
+  (`0x08015110`) computes the cumulative total (the rows below `bLevel`
+  plus the current row's delta minus the stored `wRewardXp`, which counts
+  down to the next level); `GetPartyMemberXpToNextLevel` (`0x08018858`)
+  returns the stored `wRewardXp` for a party slot.
 
 **`bMagicDefensePercent` is display-only in damage math.** Tracked
 identically to `bDefenseFactorPercent` (reset to `100`, reduced by gear,

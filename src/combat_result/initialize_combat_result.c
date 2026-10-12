@@ -25,10 +25,10 @@ void InitializeCombatResult(void)
     u32 xp;
     u32 flags;
 
-    g_wCombatResultUnk2734 = 0;
-    g_dwCombatResultUnk26F4 = 0;
-    g_dwCombatResultUnk26F8 = 0;
-    g_dwCombatResultUnk26FC = 0;
+    g_wCombatResultXpNumberX = 0;
+    g_pCombatResultCoinActor = 0;
+    g_pCombatResultItem0Actor = 0;
+    g_pCombatResultItem1Actor = 0;
 
     g_dwCombatResultXpRemaining = xp = g_nBattleXpReward;
     flags = g_dwBattleRewardFlagsSnapshot;
@@ -101,7 +101,7 @@ void InitializeCombatResult(void)
     EnableBg(2);
     SetBgControl(0, g_dwCombatResultBg0Control);
     ClearBgTilemap(0);
-    sub_08013AC8();
+    InitializeCombatResultXp();
     ReserveObjPaletteSlot(0);
     sub_0800D254((void *)GRAPHIC_BLOB_PALETTE_COLORS(gEquipCharacterSelect001), 0, 0x10);
     sub_0801493C();
@@ -109,8 +109,8 @@ void InitializeCombatResult(void)
     SetAlphaBlendCoefficients(9, 7);
     PlayScreenTransitionInByIndex(0x3F, 2);
 
-    g_dwCombatResultUnk26E8 = 0;
-    g_dwCombatResultUnk26EC = 0x78;
+    g_dwCombatResultUnusedCounter = 0;
+    g_dwCombatResultUnusedDelay = 0x78;
     g_GameModeStackContext.dwModeState = CombatResultStateIntroDelay;
     g_GameModeStackContext.dwCurrentGameModeArg2 = 1;
     g_GameModeStackContext.dwModeTimer = 0x3C;
