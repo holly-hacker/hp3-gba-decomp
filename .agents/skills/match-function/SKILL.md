@@ -9,13 +9,18 @@ Produce idiomatic C that documents the game and accurately recreates its ROM.
 Both readable meaning and matching output are acceptance criteria. The original
 implementation establishes that a solution exists in the original build context;
 a stalled attempt means the reconstruction or context needs more investigation.
-Report an unresolved mismatch precisely; do not declare matching impossible. Before reporting
-any function as unmatched, read [troubleshooting.md](references/troubleshooting.md) and test
-every entry that fits the remaining symptom.
+Report an unresolved mismatch precisely; do not declare matching impossible.
+
+**Always read [troubleshooting.md](references/troubleshooting.md) in full before the first
+compile of any function, matched or not.** It is not a last resort: its entries (spills,
+rematerialized constants, loop shapes, argument order) explain most first-draft mismatches, so
+reading it only after experiments stall wastes the work. Before reporting a function as
+unmatched, also test every entry that fits the remaining symptom.
 
 ## Working agreement
 
-- Read repository guidance and [style-guide.md](references/style-guide.md) before writing C.
+- Read repository guidance, [style-guide.md](references/style-guide.md) and
+  [troubleshooting.md](references/troubleshooting.md) before writing C.
 - Use the pinned compiler and production flags. Diagnostic flag changes stay in experiments.
 - Prefer meaningful variables, typed fields, normal expressions and structured control flow.
   Explicit register assignments, excessive casts/gotos, dummy work and allocator-only
@@ -101,7 +106,7 @@ Use a short loop:
 4. Snapshot meaningful candidates with distinct names. To restore one, copy its
    `candidates/NAME/current/candidate.c` back into `current/`, then recompile.
 
-Read the relevant entries in [troubleshooting.md](references/troubleshooting.md):
+Re-read the entries in [troubleshooting.md](references/troubleshooting.md) that fit the symptom:
 
 | Symptom | Entries |
 | --- | --- |
@@ -111,6 +116,7 @@ Read the relevant entries in [troubleshooting.md](references/troubleshooting.md)
 | Unexplained load before a store | 31 |
 | Loop initialization, copies, hoisted loads or constants, extra pre-loop test, late base-register copy | 12, 16–19, 23, 28, 30 |
 | Pool entries, switch layout, argument extension | 20–22 |
+| Constant argument materialized after the stack stores | 33 |
 
 After several experiments fail to explain the same difference, stop respelling blindly.
 Revisit the outer control-flow split, types, caching, loop form and compiler context.

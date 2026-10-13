@@ -304,6 +304,15 @@ a register when `bank` is also an index. Written with the literal (`field != 2`,
 compare takes an immediate and the address folds into the pool. Example: ProcessBuckbeakMinigameFrame,
 US `0x08009144`.
 
+## 33. Constant argument materialized after the stack-argument stores
+
+A literal register argument above 255 (`movs`+`lsls`) is forced into a pseudo while arguments
+are evaluated, so it precedes the stack stores whatever locals or casts surround it. When the ROM
+loads it just before the call, the argument was a parameter of an inlined helper: inline expansion
+substitutes the constant at the load. Move the call into a `static inline` helper taking that
+value. A helper index parameter also reproduces a constant that stays on one term of an index
+expression, which `i = K` assignments only imitate. Example: DrawChooseCharacterSelection, US `0x0800C3FC`.
+
 ## Candidate acceptance and cleanup
 
 A diff improvement is evidence, not permission to land a proxy. Selective one-field inline
