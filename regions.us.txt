@@ -421,13 +421,13 @@ c-file 0x0800BF20 _ src/room/actors/handle_chest_touch.c HandleChestTouch
 
 # Choose party member(s)
 c-file 0x0800C0FC _ src/gamemode/modes/choose_character/initialize_choose_character.c InitializeChooseCharacter
-c-file 0x0800C248 0x0800C344 src/gamemode/modes/choose_character/update_choose_character.c UpdateChooseCharacter
-thumb-func 0x0800C344 sub_0800C344
-thumb-func 0x0800C3FC sub_0800C3FC
-c-file 0x0800C590 0x0800C618 src/gamemode/modes/choose_character/exit_choose_character.c ExitChooseCharacter
-thumb-func 0x0800C618 sub_0800C618
-thumb-func 0x0800C674 sub_0800C674
-thumb-func 0x0800C6D0 sub_0800C6D0
+c-file 0x0800C248 _ src/gamemode/modes/choose_character/update_choose_character.c UpdateChooseCharacter
+c-file 0x0800C344 _ src/gamemode/modes/choose_character/spawn_choose_character_option_actors.c SpawnChooseCharacterOptionActors
+c-file 0x0800C3FC _ src/gamemode/modes/choose_character/draw_choose_character_selection.c DrawChooseCharacterSelection
+c-file 0x0800C590 _ src/gamemode/modes/choose_character/exit_choose_character.c ExitChooseCharacter
+c-file 0x0800C618 _ src/gamemode/modes/choose_character/begin_choose_character_panel_scanline.c BeginChooseCharacterPanelScanline
+c-file 0x0800C674 _ src/gamemode/modes/choose_character/end_choose_character_panel_scanline.c EndChooseCharacterPanelScanline
+c-file 0x0800C6D0 _ src/gamemode/modes/choose_character/get_choose_character_panel_bg_row.c GetChooseCharacterPanelBgRow
 
 # Clock (playtime)
 c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
@@ -2421,8 +2421,7 @@ c-file 0x0804CE8C _ src/gamemode/modes/debug/debug_sound_test_menu/debug_sound_t
 c-file 0x0804CEB8 _ src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
 c-file 0x0804CEC4 _ src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 c-file 0x0804D524 _ src/room/actors/spawn_chest_actor.globals.c g_RoomChestSprite
-c-file 0x0804D6CC 0x0804D6EC src/gamemode/modes/choose_character/choose_character_stages.globals.c g_ChooseCharacterTables
-label 0x0804D76A g_abChooseCharacterTwoOptions
+c-file 0x0804D6CC _ src/gamemode/modes/choose_character/choose_character_stages.globals.c g_abChooseCharacterStages
 c-file 0x0804D770 0x0804D790 src/gamemode/modes/choose_character/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
 c-file 0x0804D798 0x0804D7F8 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D824 0x0804E074 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets

@@ -22,16 +22,21 @@ typedef struct ChooseCharacterState {
 extern ChooseCharacterState g_ChooseCharacterState;  // 0x03002260
 extern u32 g_dwChooseCharacterBgRow;             // 0x0300227C, BG2 tile row of the panel
 
-// Per stage row (a stage's position in abStages): the text variant shown for each option
-// selection (0 = none), then a bitmask of the options present.
-typedef struct ChooseCharacterTables {
-    u8 abStages[7];             // story stage per row, ended by 0xFF
-    u8 aabOptionRows[6][4];
-} ChooseCharacterTables;
-extern const ChooseCharacterTables g_ChooseCharacterTables;  // 0x0804D6CC
+// Story stage per row, ended by 0xFF. A row is the current stage's position in this list.
+extern const u8 g_abChooseCharacterStages[7];  // 0x0804D6CC
 
-// Per stage row: 1 when only two options are offered. A label inside the raw data that
-// precedes the scanline table.
+// Per stage row: the name variant shown for each cursor position (0 = none; 1 Harry, 2 Hermione,
+// 3 Harry and Hermione, 4 Ron, 5 Harry and Ron, 6 Ron and Hermione), then a bitmask of the
+// option actors present.
+extern const u8 g_aabChooseCharacterOptionRows[6][4];  // 0x0804D6D3
+
+// Per stage row and cursor position: the objective text shown under the character name.
+extern const u32 g_aadwChooseCharacterObjectiveTextIds[6][CHOOSE_CHARACTER_OPTION_COUNT];  // 0x0804D6EC
+
+// The X pixel of each option actor, indexed [stage row][cursor position][option actor].
+extern const u8 g_aaabChooseCharacterActorX[6][3][3];  // 0x0804D734
+
+// Per stage row: 1 when only two options are offered.
 extern const u8 g_abChooseCharacterTwoOptions[6];  // 0x0804D76A
 extern const ScanlineEffectEntry g_aChooseCharacterScanlineEffects[2];  // 0x0804D770
 
@@ -39,8 +44,9 @@ extern void InitializeChooseCharacter(void);
 extern void UpdateChooseCharacter(void);
 extern void ExitChooseCharacter(void);
 
-extern void sub_0800C344(void);  // creates the option actors
-extern void sub_0800C3FC(void);  // draws the panel and text for the current selection
-extern void sub_0800C618(u32 *pPayload0, u32 *pPayload1);
-extern void sub_0800C674(u32 *pPayload0, u32 *pPayload1);
-extern s32 sub_0800C6D0(void);  // BG tile row of the panel from the camera Y
+extern void SpawnChooseCharacterOptionActors(void);  // one actor per option; hides those absent from the row's bitmask
+extern void DrawChooseCharacterSelection(void);  // redraws the panel, name, objective and actor positions
+// Scanline callbacks at lines 0x3F and 0x7F: show the panel through window 0, then restore BG2.
+extern void BeginChooseCharacterPanelScanline(u32 *pPayload0, u32 *pPayload1);
+extern void EndChooseCharacterPanelScanline(u32 *pPayload0, u32 *pPayload1);
+extern s32 GetChooseCharacterPanelBgRow(void);  // BG tile row of the panel from the camera Y

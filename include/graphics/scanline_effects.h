@@ -36,3 +36,5 @@ extern void QueueScanlineEffectEntry(u32 index, u16 line, u32 param,
                                      void (*pfnCallback)(u32 *pPayload0, u32 *pPayload1));
 extern void StartScanlineEffects(void);
 extern u32 IsScanlineEffectQueueIdle(void);
+// The VCOUNT line of live table entry `index`.
+extern u32 GetScanlineEffectLine(u32 index);

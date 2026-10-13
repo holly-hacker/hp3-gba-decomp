@@ -26,6 +26,10 @@
 #define REG_BG1CNT  (*(volatile u16 *)0x0400000A)
 #define REG_BG2CNT  (*(volatile u16 *)0x0400000C)
 
+// BG2 scroll offsets.
+#define REG_BG2HOFS (*(volatile u16 *)0x04000018)
+#define REG_BG2VOFS (*(volatile u16 *)0x0400001A)
+
 // BG2 affine parameters (fixed-point 8.8) and reference point. The reference
 // point registers are 32-bit; only the low halves are written here.
 #define REG_BG2PA   (*(volatile u16 *)0x04000020)

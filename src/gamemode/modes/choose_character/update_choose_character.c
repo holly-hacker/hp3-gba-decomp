@@ -21,7 +21,7 @@ void UpdateChooseCharacter(void)
     {
         if (StepCursorLeftRight(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 1, 1, 0))
         {
-            sub_0800C3FC();
+            DrawChooseCharacterSelection();
             SetMenuCursorPosition(g_ChooseCharacterState.pCursorActor,
                          g_GameModeStackContext.dwCurrentGameModeArg2 * 0x50 + 0x4D,
                          0x4E);
@@ -33,7 +33,7 @@ void UpdateChooseCharacter(void)
     {
         if (StepCursorLeftRight(&g_GameModeStackContext.dwCurrentGameModeArg2, 0, 2, 1, 0))
         {
-            sub_0800C3FC();
+            DrawChooseCharacterSelection();
             SetMenuCursorPosition(g_ChooseCharacterState.pCursorActor,
                          g_GameModeStackContext.dwCurrentGameModeArg2 * 0x50 + 0x4D,
                          0x4E);

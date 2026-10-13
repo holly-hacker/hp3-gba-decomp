@@ -23,7 +23,7 @@ void InitializeChooseCharacter(void)
     bios_CPUSet(BG_PLTT, g_awSavedBgPalette0, 0x10);
     g_ChooseCharacterState.bSavedBg2Priority = REG_BG2CNT & 3;
     sub_08024BD4();
-    bgRow = sub_0800C6D0();
+    bgRow = GetChooseCharacterPanelBgRow();
     g_dwChooseCharacterBgRow = bgRow;
 
     REG_WININ = (REG_WININ & 0xFF00) | 0x14;
@@ -41,7 +41,7 @@ void InitializeChooseCharacter(void)
 
     for (stageRow = 0; ; stageRow++)
     {
-        if (g_ChooseCharacterTables.abStages[stageRow] == g_abQuestEventState[0])
+        if (g_abChooseCharacterStages[stageRow] == g_abQuestEventState[0])
         {
             g_ChooseCharacterState.bStageRow = stageRow;
             break;
@@ -52,14 +52,14 @@ void InitializeChooseCharacter(void)
     g_ChooseCharacterState.abOptionStage[1] = g_GameModeStackContext.dwCurrentGameModeArg2;
     g_ChooseCharacterState.abOptionStage[2] = g_GameModeStackContext.dwCurrentGameModeArg3;
     g_ChooseCharacterState.pCursorActor = SpawnMenuCursorActor(1);
-    sub_0800C344();
+    SpawnChooseCharacterOptionActors();
 
     g_GameModeStackContext.dwModeState = 0;
     g_GameModeStackContext.dwCurrentGameModeArg3 = g_abQuestEventState[0];
     SetActorActionState(g_pPlayerActor, 0x24);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
     g_GameModeStackContext.dwModeTimer = 5;
-    sub_0800C3FC();
+    DrawChooseCharacterSelection();
     SetBgPriority(2, 0);
     g_ChooseCharacterState.bInputDelay = 10;
 }
