@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "game/items.h"
 #include "graphics/display.h"
 #include "font.h"

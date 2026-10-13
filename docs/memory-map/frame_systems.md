@@ -12,7 +12,7 @@ function. Calls, in order:
 | `TickOverworldBeforeActors_candidate` | `0x0802B0DC` | current game mode (`0x03003EF4`) is 8 (overworld) |
 | `TickActiveActors` | `0x080015B8` | always |
 | `TickParticleEmitters` | `0x08031748` | always |
-| `TickBgLayers_candidate` | `0x08006EF4` | always |
+| `TickBgLayers` | `0x08006EF4` | always |
 | `TickScreenWindows_candidate` | `0x08045970` | always |
 | `TickPaletteAnimations_candidate` | `0x0800D2F4` | always |
 | `TickBgTileAnimations` | `0x0800A610` | always |
@@ -21,7 +21,7 @@ function. Calls, in order:
 
 ## Callees, STRUCTURAL MATCH (roles read from the code; names carry `_candidate`)
 
-- **`TickBgLayers_candidate`**: walks 4 BG layer records (`0x6C` bytes at
+- **`TickBgLayers`**: walks 4 BG layer records (`0x6C` bytes at
   `0x03001E84`, the same array `SetBgPriority` writes through). Flag bits at `+0x18`:
   `1` scroll tween toward `+0x34/+0x38` over `+0x3C` frames (or `AddOffsetToPoint` of
   `+0x2C/+0x30` when the duration is 0), `8` sine wobble (`ApplyBgLayerWobble`, `g_anSineTable`), `4`

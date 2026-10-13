@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
@@ -43,8 +44,8 @@ void InitializeDivinationTeaMinigame(void)
     SelectTextFont(5, 0, -1);
 
     g_DivinationTea.dwUnk1D0 = 0x40;
-    sub_08007C2C(2, 0, 0x40);
-    sub_08007CB4(2, 1, 0x800);
+    SetBgRotation(2, 0, 0x40);
+    SetBgZoomRange(2, 1, 0x800);
     sub_08041D84();
     Mt19937AutoSeed();
 

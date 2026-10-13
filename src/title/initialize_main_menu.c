@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
@@ -31,14 +32,14 @@ void InitializeMainMenu(void)
     SetDispcntFlag(0x1000);
     SetBgControl(3, g_dwMainMenuBg3Control);
     LoadBgGraphic(3, gMenuBg3Graphic, 0, 0, 0, 0);
-    SetBgScrollX_candidate(3, 0x80000);
-    SetBgControlRegister_candidate(2, g_dwMainMenuBg2Control);
+    SetBgScrollFixedX(3, 0x80000);
+    SetBgControlRegister(2, g_dwMainMenuBg2Control);
     ClearBgTilemap(2);
     LoadBgGraphic(2, gMainMenuBg2Graphic, 1, 0, 1, 1);
 #ifndef VERSION_JP
     LoadBgGraphic(2, g_apMainMenuTitleGraphic[GetLanguage()], 0xC8, 0, 0xF, 9);
 #endif
-    SetBgControlRegister_candidate(1, g_dwMainMenuBg1Control);
+    SetBgControlRegister(1, g_dwMainMenuBg1Control);
     ClearBgTilemap(1);
     ClearObjPaletteSlots();
     ReserveObjPaletteSlot(0);

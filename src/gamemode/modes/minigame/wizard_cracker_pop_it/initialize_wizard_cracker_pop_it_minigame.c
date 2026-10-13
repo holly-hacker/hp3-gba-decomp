@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -29,15 +30,15 @@ void InitializeWizardCrackerPopItMinigame(void)
     bgControl = g_dwWizardCrackerPopItBg3Control;
     SetBgControl(3, bgControl);
     ClearBgTilemap(3);
-    sub_08007D14(0, 0, 0);
-    sub_08007D14(1, 0, 0);
-    sub_08007D14(2, 0, 0);
-    sub_08007D14(3, 0, 0);
+    SetBgScrollStep(0, 0, 0);
+    SetBgScrollStep(1, 0, 0);
+    SetBgScrollStep(2, 0, 0);
+    SetBgScrollStep(3, 0, 0);
     ClearObjPaletteSlots();
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(6, 0, -1);
-    SetBgScroll_candidate(0, 0, 0);
-    SetBgScroll_candidate(1, 0, 0);
+    SetBgScroll(0, 0, 0);
+    SetBgScroll(1, 0, 0);
 
     g_pWizardCrackerPopIt->pActor0 = NULL;
     g_pWizardCrackerPopIt->dwScore = 0;

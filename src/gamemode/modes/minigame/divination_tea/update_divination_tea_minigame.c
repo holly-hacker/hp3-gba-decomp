@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "minigame/divination_tea.h"
@@ -78,7 +79,7 @@ void UpdateDivinationTeaMinigame(void)
             if (g_DivinationTea.dwUnk1C0 == 0)
             {
                 PlaySoundById(1);
-                sub_08007CD4(2, 1);
+                SetBgZoomStep(2, 1);
                 for (i = 0; i < ARRAY_COUNT(g_DivinationTea.apCupActors); i++)
                     SetActorAnimData(g_DivinationTea.apCupActors[i], &g_DivinationTeaCupSprite,
                                       (void *)g_DivinationTeaCupAnimData, 1);

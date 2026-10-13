@@ -19,30 +19,15 @@ extern void TickPaletteAnimations_candidate(void);
 extern void TickBgTileAnimations(void);
 extern void CommitBgTileAnimations(void);  // run from the vblank callback
 
-// Per-BG scroll/affine state, 0x6C bytes per BG starting at g_aBgScrollState.
-typedef struct BgScrollState {
-    u8 pad_00[0x08];
-    void *pBgGraphicResult_candidate;  // 0x08, LoadBgGraphic's result for this BG, as stored by the owl care screen
-    u8 pad_0C[0x10];
-    u32 dwFlags;                 // 0x1C, bit 0x8000 asks for a scroll update
-    u8 pad_20[0x08];
-    u32 nScrollY_candidate;      // 0x28, 16.16
-    u8 pad_2C[0x40];
-} BgScrollState;
-extern BgScrollState g_aBgScrollState[];  // 0x03001E80; [1].nScrollY_candidate == 0x03001F14
-// BgLayer, the same array four bytes later, is in background.h.
-
 // Stops the palette effect with the given handle.
 extern void StopPaletteEffect(s32 handle);
 // Copies a w x h rectangle of tiles from (srcX, srcY) of a loaded BG tilemap to (dstX, dstY) of the
 // given BG, adding tileOffset to the tile numbers and palBank to their palette.
 // Starts a palette effect through sub_0800D5DC and sets its bFrameCount; returns its slot.
 extern s32 StartPaletteEffectWithFrameCount(u32 startColor, u32 colorCount, u32 stepTicks, u32 delay, u32 flags, const u16 *pFrames, u32 frameCount);
-extern void CopyBgTilemapRect(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 srcX, u32 srcY,
-                         u32 dstX, u32 dstY, u32 width, u32 height);
 extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
+extern void sub_0800D244(const void *pColors, u32 firstColor, u32 colorCount);  // queues a BG palette load
 extern void sub_0800D254(const u16 *ptr, s16 val1, s16 val2);
-extern void LoadEmbeddedPalette_candidate(u8 *blob, s32 paletteRowOffset, s32 rowCount);
 // The colors of a graphic blob's embedded palette, after its two flag bytes
 // (see docs/formats/graphic_blob.md).
 #define GRAPHIC_BLOB_PALETTE_COLORS(blob) ((const u16 *)((const u8 *)(blob) + 2))
@@ -52,13 +37,6 @@ extern void PlayScreenTransitionInByIndex(u32 blendArg, u32 transitionIndex);
 // Dispatches through the parallel 15-entry handler table at 0x0806B880 by transitionIndex.
 extern void PlayScreenTransitionOutByIndex(u32 blendArg, u32 transitionIndex);
 
-// ORs into / clears DISPCNT bits.
-extern void SetDispcntFlag(u32 flags);
-// Writes BGxCNT for BG `bg` and enables the layer.
-extern void SetBgControl(u32 bg, u32 control);
-extern void EnableBg(u32 bg);
-extern void DisableBg(u32 bg);
-extern void SetBgPriority(u32 bg, u8 priority);
 extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
 // Sets BLDCNT (layer mask | fade mode) and BLDY (amount, at most 0x10).
 extern void SetFadeToWhite(u16 layerMask, u16 amount);
@@ -90,46 +68,16 @@ extern void SetScreenWindowLayers_candidate(u32 windowId, u32 winIn, u32 winOut)
 extern void SetScreenWindowRect_candidate(u32 windowId, s32 x0, s32 y0, s32 x1, s32 y1);
 extern void HideScreenWindow_candidate(u32 windowId);
 
-extern void ResetDisplayState(u32 arg);
-extern void FillBgTilemap_candidate(u32 bg, u32 arg1, u32 arg2);
-extern void ClearBgTilemap(u32 bg);
-// Sets a width x height rectangle of tilemap entries at tile (x, y) to `tile`, in a
-// 32-tile-wide tilemap or in the BG layer's tilemap. ClearBgTilemapRect fills with 0.
-extern void FillTilemapRect(u16 *pTilemap, u32 x, u32 y, u32 width, u32 height, u16 tile);
-extern void FillBgTilemapRect(u32 bg, u32 x, u32 y, u32 width, u32 height, u16 tile);
-extern void ClearBgTilemapRect(u32 bg, u32 x, u32 y, u32 width, u32 height);
 
-extern void sub_08007AF0(u32 bg, u32 arg1, u32 arg2);
-extern void sub_08007C2C(u32 bg, u32 arg1, u32 arg2);
-extern void sub_08007C94(u32 bg, s32 arg1, u32 arg2);
-extern void sub_08007CF4(u32 bg, s32 arg1);
-extern void sub_08007D14(u32 bg, u32 arg1, u32 arg2);
-extern void sub_08007D60(u32 bg, s32 arg1);
-extern void sub_08007F84(u32 bg, s32 *pOut0, s32 *pOut1);
 
 // Allocates a slot in the palette-effect table at 0x030022F8.
 extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData);
-extern void *LoadBgGraphic(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
-// Loads a graphic's tiles and palette without drawing its tilemap; returns the tilemap for CopyBgTilemapRect.
-extern void *LoadBgGraphicTiles_candidate(u32 bg, const void *pResource, u32 tileOffset, u32 palBank);
-// Loads a graphic blob (embedded palette; docs/formats/graphic_blob.md) and draws its tilemap, like
-// LoadBgGraphic. palBank is added to the tilemap's palette banks.
-extern void *LoadGraphicBlob(u32 bg, const void *pResource, u32 tileOffset, u32 palBank, u32 x, u32 y);
-// Loads a graphic blob's palette and tiles on a BG; returns the tilemap for CopyBgTilemapRect or
-// WriteBgGraphicTilemap_candidate.
-extern void *LoadGraphicBlobTiles(u32 bg, const void *pResource, u32 tileOffset);
-// Draws a loaded graphic's tilemap (LoadBgGraphicTiles_candidate's result) on a BG at tile (x, y).
-extern void WriteBgGraphicTilemap_candidate(u32 bg, const void *pTilemap, u32 tileOffset, u32 palBank, u32 x, u32 y);
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);
 extern void FreeBgTileAnimations(void);
-// Rewrites BGxCNT from each BG's stored control word when its BG_LAYER_COMMIT and 0x200 flags are set.
-extern void RewriteBgControlRegisters_candidate(void);
 extern void PauseBgTileAnimations(void);  // clears bit 1 (running) of every BG tile animation
 extern void ResumeBgTileAnimations(void);  // sets bit 1 of every BG tile animation
-// Sets the BG mode bits of DISPCNT.
-extern void SetBgMode(u32 mode);
 // One frame of a BG tile animation: its tile data and how many ticks it shows
 // (0 holds it).
 typedef struct BgTileAnimFrame {
@@ -195,17 +143,12 @@ extern const u32 g_dwLanguageSelectBg3Control;
 extern const u32 g_dwLanguageSelectBg2Control;
 extern const u32 g_dwLanguageSelectBg1Control;
 
-// Sets both current and target scroll (both axes snap instantly, no interpolation).
-extern void SetBgScroll_candidate(u32 bg, s32 x, s32 y);
-extern void sub_08007464(u32 bg, u16 tile);
 extern void DrawLanguageSelectEntries_candidate(void);
 extern void DrawLanguageSelectEntry_candidate(u32 index, u32 selectedIndex);
 extern void DrawLanguageSelectPicture_candidate(u32 selectedIndex);
 // The write-only half of SetBgControl: writes BGxCNT and the tilemap/charblock
 // VRAM bases, without enabling the layer via SetDispcntFlag.
-extern void SetBgControlRegister_candidate(u32 bg, u32 control);
-// X-only counterpart of SetBgScroll; `position` is already 16.16 fixed-point.
-extern void SetBgScrollX_candidate(u32 bg, s32 position);
+extern void SetBgControlRegister(u32 bg, u32 control);
 // Set by SetScreenDarkenParams_candidate (every caller passes 0, 8).
 // DarkenScreenPalette and RestoreScreenPalette pass the step ticks to the
 // palette effect they start (PaletteEffect.bStepTicks_candidate); no reader

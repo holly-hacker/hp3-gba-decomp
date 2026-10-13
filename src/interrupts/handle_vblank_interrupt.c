@@ -1,10 +1,10 @@
+#include "background.h"
 #include "hw/vblank.h"
 #include "hw/interrupts.h"
 #include "hw/io_regs.h"
 #include "hw/dma.h"
 #include "graphics/oam.h"
 
-extern void sub_08007130(void);
 extern void sub_0800D354(void);
 extern void CommitScanlineEffects(void);
 extern void sub_0801FBBC(void);
@@ -22,7 +22,7 @@ void HandleVBlankInterrupt(void)
 
         if (g_pVBlankState->wOamFrameReady != 0 || g_bForcePendingBgWritesFlush != 0)
         {
-            sub_08007130();
+            CommitBgLayers();
             g_bForcePendingBgWritesFlush = 0;
         }
 

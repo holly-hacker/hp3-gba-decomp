@@ -85,10 +85,9 @@
 .set g_pRoomSwitchStateActorTable, 0x03001DFC  @ RoomScriptTable *: current room's chain offset table
 .set g_aRoomScriptCallStack,        0x03001E00  @ RoomScriptCallFrame[]: saved callers, indexed by depth
 
-.set g_aBgScrollState, 0x03001E80  @ u32[]; [0x25] == 0x03001F14
-.set g_aBgLayers,      0x03001E84  @ BgLayer[4]; the g_aBgScrollState array four bytes later
+.set g_BgState,        0x03001E80  @ BgState: dwFlags, then the BgLayer[4] array that g_aBgLayers addresses
 
-@ Forces one extra sub_08007130 call this vblank; see include/hw/vblank.h.
+@ Forces one extra CommitBgLayers call this vblank; see include/hw/vblank.h.
 .set g_bForcePendingBgWritesFlush,               0x03002038
 .set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ u32: set by StartMinigame
 .set g_BoggartMinigame,                          0x03002048  @ BoggartMinigameState
@@ -144,8 +143,8 @@
 .set g_pCombatResultItem0Actor,                  0x030026F8  @ Actor *: icon of the first dropped item, NULL without a drop
 .set g_pCombatResultItem1Actor,                  0x030026FC  @ Actor *: icon of the second dropped item, NULL without a second drop
 .set g_abCombatResultPartySlots,                 0x03002700  @ u8[3]: party stats slot shown per portrait position, see include/combat_result.h
-.set g_pCombatResultBg2Tilemap,                  0x03002704  @ void *: BG2 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
-.set g_pCombatResultBg1Tilemap,                  0x03002708  @ void *: BG1 graphic (LoadBgGraphicTiles_candidate result), partly copied per party member
+.set g_pCombatResultBg2Tilemap,                  0x03002704  @ void *: BG2 graphic (LoadBgGraphicTiles result), partly copied per party member
+.set g_pCombatResultBg1Tilemap,                  0x03002708  @ void *: BG1 graphic (LoadBgGraphicTiles result), partly copied per party member
 .set g_wCombatResultTextTileCursor,              0x0300270C  @ u16: next free text tile of the combat result screen
 .set g_wCombatResultXpTileCursor,                0x0300270E  @ u16: first tile of the XP number, redrawn each TickCombatResultXpCounter
 .set g_aCombatResultPartyRows,                   0x03002710  @ CombatResultPartyRow[3], see include/combat_result.h

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "input.h"
@@ -12,9 +13,9 @@ void UpdateHogwartsUpNightCutscene(void)
 
     if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0x20)
     {
-        sub_08007D14(0, 0, 0xFFFF0000);
-        sub_08007D14(1, 0, 0xFFFEA070);
-        sub_08007D14(2, 0, 0x10000);
+        SetBgScrollStep(0, 0, 0xFFFF0000);
+        SetBgScrollStep(1, 0, 0xFFFEA070);
+        SetBgScrollStep(2, 0, 0x10000);
     }
     else if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0x68)
     {
@@ -22,9 +23,9 @@ void UpdateHogwartsUpNightCutscene(void)
     }
     else if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0x80)
     {
-        sub_08007D14(0, 0, 0);
-        sub_08007D14(1, 0, 0);
-        sub_08007D14(2, 0, 0);
+        SetBgScrollStep(0, 0, 0);
+        SetBgScrollStep(1, 0, 0);
+        SetBgScrollStep(2, 0, 0);
     }
 
     if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0xC0

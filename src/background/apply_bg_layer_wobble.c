@@ -7,16 +7,16 @@ void ApplyBgLayerWobble(u32 bg)
 {
     BgLayer *pLayer;
 
-    pLayer = &g_aBgLayers[bg];
-    if (pLayer->nWobbleSpeedX != 0)
+    pLayer = &g_BgState.aLayers[bg];
+    if (pLayer->wobble.nSpeedX != 0)
     {
-        pLayer->wWobblePhaseX += pLayer->nWobbleSpeedX;
-        pLayer->nOutX += g_anSineTable[(((s16)pLayer->wWobblePhaseX >> 8) + 0x40) & 0xFF] * pLayer->nWobbleAmpX;
+        pLayer->wobble.wPhaseX += pLayer->wobble.nSpeedX;
+        pLayer->out.x += g_anSineTable[(((s16)pLayer->wobble.wPhaseX >> 8) + 0x40) & 0xFF] * pLayer->wobble.nAmpX;
     }
 
-    if (pLayer->nWobbleSpeedY != 0)
+    if (pLayer->wobble.nSpeedY != 0)
     {
-        pLayer->wWobblePhaseY += pLayer->nWobbleSpeedY;
-        pLayer->nOutY += g_anSineTable[pLayer->wWobblePhaseY >> 8] * pLayer->nWobbleAmpY;
+        pLayer->wobble.wPhaseY += pLayer->wobble.nSpeedY;
+        pLayer->out.y += g_anSineTable[pLayer->wobble.wPhaseY >> 8] * pLayer->wobble.nAmpY;
     }
 }

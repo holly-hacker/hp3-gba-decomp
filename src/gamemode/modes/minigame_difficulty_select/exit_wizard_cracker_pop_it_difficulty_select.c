@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "menu/main_menu.h"
@@ -11,7 +12,7 @@ void ExitWizardCrackerPopItDifficultySelect(void)
     SetAlphaBlendTargets(0, 0);
     ExitMenuScreen();
     FreeAllActors(&g_ActiveActorListState.pHead);
-    sub_08007A90();
+    ResetBgLayers();
     FreeAllParticles();
     StopScanlineEffects();
 }

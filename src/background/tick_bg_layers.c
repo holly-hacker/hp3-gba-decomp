@@ -5,7 +5,7 @@
 // Steps each active BG layer: scroll tween or drift, wobble, zoom bounce and rotation, and
 // rebuilds the affine matrix when it changed. Layers with BG_LAYER_COMMIT set are written to the
 // scroll registers at the next vblank.
-void TickBgLayers_candidate(void)
+void TickBgLayers(void)
 {
     u32 i;
     BgLayer *pLayer;
@@ -16,7 +16,7 @@ void TickBgLayers_candidate(void)
 
     for (i = 0; i < 4; i++)
     {
-        pLayer = &g_aBgLayers[i];
+        pLayer = &g_BgState.aLayers[i];
         if (!(pLayer->dwFlags & (BG_LAYER_TWEEN | BG_LAYER_ROTATE | BG_LAYER_ZOOM_BOUNCE | BG_LAYER_MATRIX_DIRTY)))
             continue;
 
@@ -26,23 +26,23 @@ void TickBgLayers_candidate(void)
             {
                 if (pLayer->wTweenFrames == 1)
                 {
-                    pLayer->nScrollX = pLayer->nTargetX;
-                    pLayer->nScrollY = pLayer->nTargetY;
+                    pLayer->scroll.x = pLayer->target.x;
+                    pLayer->scroll.y = pLayer->target.y;
                     pLayer->dwFlags &= ~BG_LAYER_TWEEN;
                 }
                 else
                 {
-                    pLayer->nScrollX += iwramDivideSignedQuotient(pLayer->nTargetX - pLayer->nScrollX, pLayer->wTweenFrames);
-                    pLayer->nScrollY += iwramDivideSignedQuotient(pLayer->nTargetY - pLayer->nScrollY, pLayer->wTweenFrames);
+                    pLayer->scroll.x += iwramDivideSignedQuotient(pLayer->target.x - pLayer->scroll.x, pLayer->wTweenFrames);
+                    pLayer->scroll.y += iwramDivideSignedQuotient(pLayer->target.y - pLayer->scroll.y, pLayer->wTweenFrames);
                 }
                 pLayer->wTweenFrames--;
             }
             else
-                AddOffsetToPoint(pLayer->nStepX, pLayer->nStepY, &pLayer->nScrollX);
+                AddOffsetToPoint(pLayer->step.x, pLayer->step.y, &pLayer->scroll.x);
         }
 
-        pLayer->nOutX = pLayer->nScrollX;
-        pLayer->nOutY = pLayer->nScrollY;
+        pLayer->out.x = pLayer->scroll.x;
+        pLayer->out.y = pLayer->scroll.y;
         if (pLayer->dwFlags & BG_LAYER_WOBBLE)
             ApplyBgLayerWobble(i);
 

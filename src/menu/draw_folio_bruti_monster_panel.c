@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "battle/effect_script.h"
 #include "math.h"

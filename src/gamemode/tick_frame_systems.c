@@ -14,7 +14,7 @@ void TickFrameSystems(void)
 
     TickActiveActors();
     TickParticleEmitters();
-    TickBgLayers_candidate();
+    TickBgLayers();
     TickScreenWindows_candidate();
     TickPaletteAnimations_candidate();
     TickBgTileAnimations();

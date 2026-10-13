@@ -42,7 +42,7 @@ extern volatile u32 g_dwVBlankIntrNestCount;
 // XORed with 1 once per serviced vblank; selects which 0x400-byte half of
 // the current 0x800-byte OAM shadow buffer gets DMA'd out.
 extern u32 g_bOamDmaHalfToggle;
-// Nonzero forces one extra sub_08007130 call this vblank; cleared right after.
+// Nonzero forces one extra CommitBgLayers call this vblank; cleared right after.
 extern u32 g_bForcePendingBgWritesFlush;
 // Sticky software copy of acked hardware IF bits, ORed in by every
 // interrupt handler after acking its own bit in IF.

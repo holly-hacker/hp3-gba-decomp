@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "menu/debug_menu.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -35,12 +36,12 @@ void UpdateDebugMapSelectMenu(void)
                 g_DebugMapSelectState.nScrollY = 0;
                 g_DebugMapSelectState.dwCursorRow = 0;
             }
-            sub_08007AF0(1, 0, g_DebugMapSelectState.nScrollY << 16);
+            SetBgScrollFixed(1, 0, g_DebugMapSelectState.nScrollY << 16);
         }
         else if (g_wKeysHeld & KeyRight)
         {
             g_DebugMapSelectState.nScrollY += 0x88;
-            sub_08007AF0(1, 0, g_DebugMapSelectState.nScrollY << 16);
+            SetBgScrollFixed(1, 0, g_DebugMapSelectState.nScrollY << 16);
         }
 
         if (StepCursorUpDownHeld(&g_DebugMapSelectState.dwCursorRow, 0, 0x11, 0, 0))

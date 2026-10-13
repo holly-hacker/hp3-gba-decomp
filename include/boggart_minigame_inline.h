@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "font.h"
 #include "text.h"

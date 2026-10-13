@@ -19,7 +19,7 @@ typedef struct {
     u32 dwSlot;                    // 0x04: column of the selected card within its row, 0-9
     FolioComboSlot aComboSlots[3]; // 0x08: the selected combo's cards
     Actor *pCursor;               // 0x20
-    void *pGridTilemap;            // 0x24: tilemap of the card grid background, whose tiles mark each card's state
+    const u16 *pGridTilemap;        // 0x24: tilemap of the card grid background, whose tiles mark each card's state
     Actor *pPrevArrow;            // 0x28
     Actor *pNextArrow;            // 0x2C
 } FolioUniversitasState;

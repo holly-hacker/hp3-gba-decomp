@@ -25,7 +25,7 @@ typedef struct {
     u32 dwUnk3C;          // 0x3C; starts at 0xC8
     u32 dwUnk40;          // 0x40; starts at 0xA8
     u8 abUnmapped_44[0x14];
-    void *pBg1Tilemap;    // 0x58; LoadBgGraphic's result for BG1
+    const u16 *pBg1Tilemap;// 0x58; LoadBgGraphic's result for BG1
 } ServePumpkinJuiceState;
 
 extern ServePumpkinJuiceState g_ServePumpkinJuice;  // 0x03005238

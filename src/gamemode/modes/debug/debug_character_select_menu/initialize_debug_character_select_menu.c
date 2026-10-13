@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "menu/debug_menu.h"
 #include "graphics/display.h"
@@ -30,8 +31,8 @@ void InitializeDebugCharacterSelectMenu(void)
     ClearBgTilemap(1);
     SetTextTargetFromBgControl(bgCtrl1);
     SelectTextFont(5, 0, -1);
-    SetBgScroll_candidate(0, 0, 0);
-    SetBgScroll_candidate(1, 0, 0);
+    SetBgScroll(0, 0, 0);
+    SetBgScroll(1, 0, 0);
 
     g_DebugCharacterSelectState.dwRow = 0;
     g_DebugCharacterSelectState.adwCharacter[0] = 0;

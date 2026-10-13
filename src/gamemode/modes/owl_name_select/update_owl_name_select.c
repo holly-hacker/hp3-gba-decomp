@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "game/game_modes.h"
 #include "game/game_save.h"
 #include "graphics/display.h"
@@ -62,7 +63,7 @@ void UpdateOwlNameSelect(void)
                 if (g_GameModeStackContext.dwCurrentGameModeArg1 == 0)
                 {
                     ClearBgTilemap(2);
-                    sub_08007434(0x1000);
+                    ClearDispcntFlag(0x1000);
                     FreeAllActors(&g_ActiveActorListState.pHead);
                     g_GameModeStackContext.dwModeSubState = 0;
                     SetAlphaBlendTargets(8, 3);

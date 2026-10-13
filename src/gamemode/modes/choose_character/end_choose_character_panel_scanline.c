@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"
 #include "menu/choose_character.h"
@@ -8,7 +9,7 @@ void EndChooseCharacterPanelScanline(u32 *pPayload0, u32 *pPayload1)
 {
     s32 scroll[2];
 
-    sub_08007F84(2, &scroll[0], &scroll[1]);
+    GetBgScroll(2, &scroll[0], &scroll[1]);
     scroll[0] >>= 16;
     scroll[1] >>= 16;
 

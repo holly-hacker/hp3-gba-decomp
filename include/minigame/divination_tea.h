@@ -61,8 +61,6 @@ typedef enum {
     DivinationTeaStateShowFortune = 4,
 } DivinationTeaMode;
 
-extern void sub_08007CB4(u32 bg, u32 arg1, u32 arg2);
-extern void sub_08007CD4(u32 bg, u32 arg1);
 extern void sub_08041D84(void);
 extern void sub_08041FA0(void);
 extern void sub_0804200C(void);

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "input.h"
@@ -92,20 +93,20 @@ void UpdateLupinPotionCutscene(void)
     GetCameraFocusPosition(&camera, 0);
     aDelta[0] = camera.x - previousCamera.x;
     aDelta[1] = camera.y - previousCamera.y;
-    sub_08007D14(0, aDelta[0], aDelta[1]);
+    SetBgScrollStep(0, aDelta[0], aDelta[1]);
     if (g_LupinPotionCutscene.bParallaxScroll != 0)
     {
-        sub_08007D14(1, aDelta[0] >> 2, aDelta[1]);
-        sub_08007D14(2, -aDelta[0] >> 1, aDelta[1]);
-        sub_08007D14(3, -aDelta[0] >> 3, aDelta[1]);
+        SetBgScrollStep(1, aDelta[0] >> 2, aDelta[1]);
+        SetBgScrollStep(2, -aDelta[0] >> 1, aDelta[1]);
+        SetBgScrollStep(3, -aDelta[0] >> 3, aDelta[1]);
     }
     else
     {
-        sub_08007D60(1, aDelta[1]);
-        sub_08007D60(2, aDelta[1]);
-        sub_08007D60(3, aDelta[1]);
+        SetBgScrollStepY(1, aDelta[1]);
+        SetBgScrollStepY(2, aDelta[1]);
+        SetBgScrollStepY(3, aDelta[1]);
     }
-    sub_08007F84(2, &g_aLupinPotionBg2Scroll[0], &g_aLupinPotionBg2Scroll[1]);
+    GetBgScroll(2, &g_aLupinPotionBg2Scroll[0], &g_aLupinPotionBg2Scroll[1]);
     camera.x >>= 16;
     camera.y >>= 16;
     SetCameraPosition(&camera.x);

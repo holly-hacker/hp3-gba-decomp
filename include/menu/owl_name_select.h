@@ -11,7 +11,6 @@ extern void InitializeOwlNameSelect(void);
 extern void UpdateOwlNameSelect(void);
 extern void ExitOwlNameSelect(void);
 
-extern void sub_08007434(u32 flags);  // clears DISPCNT bits
 extern void sub_08030478(void);  // Left/Right: changes the highlighted name or type
 extern void sub_08030594(void);  // creates the owl and arrow actors
 extern void sub_080305F0(void);  // draws the page heading

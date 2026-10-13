@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "game/game_modes.h"
@@ -26,10 +27,10 @@ void InitializeUnusedHogwartsMapScreen(void)
     SetBgControl(1, g_dwUnusedHogwartsMapBg1Control);
     SetBgControl(2, g_dwUnusedHogwartsMapBg2Control);
     SetBgControl(3, g_dwUnusedHogwartsMapBg3Control);
-    sub_08007AF0(0, 0, 0);
-    sub_08007AF0(1, 0, 0);
-    sub_08007AF0(2, 0, 0);
-    sub_08007AF0(3, 0, 0);
+    SetBgScrollFixed(0, 0, 0);
+    SetBgScrollFixed(1, 0, 0);
+    SetBgScrollFixed(2, 0, 0);
+    SetBgScrollFixed(3, 0, 0);
 
     LoadBgGraphic(0, gHippogriffLanguageMinigameBgs011, 1, 0, 0, 0);
     g_pUnusedHogwartsMapBg1Tilemap = LoadBgGraphic(1, gHippogriffLanguageMinigameBgs012, 0x181, 0, 0, 0);

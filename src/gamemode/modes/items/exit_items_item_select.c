@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "menu/items_menu.h"
 #include "hw/mem.h"

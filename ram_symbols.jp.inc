@@ -74,10 +74,9 @@
 .set g_pRoomSwitchStateActorTable, 0x03001DFC  @ see ram_symbols.us.inc
 .set g_aRoomScriptCallStack,        0x03001E00
 
-.set g_aBgScrollState, 0x03001E80  @ see ram_symbols.us.inc
-.set g_aBgLayers,      0x03001E84  @ BgLayer[4]; the g_aBgScrollState array four bytes later
+.set g_BgState,        0x03001E80  @ see ram_symbols.us.inc
 
-@ Forces one extra sub_08007130 call this vblank; see include/hw/vblank.h.
+@ Forces one extra CommitBgLayers call this vblank; see include/hw/vblank.h.
 .set g_bForcePendingBgWritesFlush,               0x03002038
 .set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ set by StartMinigame
 .set g_BoggartMinigame,                          0x03002048  @ see ram_symbols.us.inc

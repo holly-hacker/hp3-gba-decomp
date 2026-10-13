@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -13,8 +14,8 @@ void InitializeLanguageSelect(void)
     SetBgControl(1, g_dwLanguageSelectBg1Control);
 
     LoadBgGraphic(3, gMenuBg3Graphic, 1, 0, 0, 0);
-    SetBgScroll_candidate(3, 8, 0);
-    sub_08007464(2, 0x78);
+    SetBgScroll(3, 8, 0);
+    FillBgTilemapWithTile(2, 0x78);
     LoadBgGraphic(2, gLanguageSelectBg2Graphic, 0x79, 0, 0, 10);
     ClearBgTilemap(1);
     LoadBgGraphic(1, gLanguageSelectBg1Graphic, 1, 0, 0, 0x14);

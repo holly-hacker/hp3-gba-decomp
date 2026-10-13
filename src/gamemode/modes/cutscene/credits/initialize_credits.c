@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "cutscene/linear_cutscene.h"
@@ -15,12 +16,12 @@ void InitializeCredits(void)
     SetBgControl(0, g_dwLinearCutsceneBg0Control);
     bgControl1 = g_dwLinearCutsceneBg1Control;
     SetBgControl(1, bgControl1);
-    FillBgTilemap_candidate(1, 0, 0);
+    FillBgTilemap(1, 0, 0);
     LoadBgGraphic(0, g_aLinearCutsceneTable[cutsceneIndex].pGraphic, 0, 0, 0, 0);
     SetTextTargetFromBgControl(bgControl1);
     SelectTextFont(4, 0, 0);
-    sub_08007AF0(1, 0, 0);
-    sub_08007D14(1, 0, 0x18000);
+    SetBgScrollFixed(1, 0, 0);
+    SetBgScrollStep(1, 0, 0x18000);
     g_dwCreditsScrollRow = 0xFF;
     g_dwCreditsLine = 0;
     g_dwCreditsTileCursor = 1;

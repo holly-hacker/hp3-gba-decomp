@@ -48,5 +48,3 @@ extern void sub_08022EE4(void);
 extern void sub_08022F28(void);
 extern void sub_08023188(void);  // first visit: sets the visited flag and resets the care counters
 extern void sub_080233C0(void *pUnk);
-extern void sub_08006A98(u32 bg, const void *pTilemap, u32 arg2, u32 arg3, u32 arg4, u32 arg5, u32 arg6, u32 arg7,
-                         u32 width, u32 height);  // 30 x 20 tiles: a full screen

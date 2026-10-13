@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"
@@ -52,7 +53,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
             WaitForVBlank();
         }
         g_abQuestEventState[QUEST_ALT_PRESENTATION] = 1;
-        LoadEmbeddedPalette_candidate((u8 *)gTrainWindowNightPalette, 0, 16);
+        LoadEmbeddedPalette((u8 *)gTrainWindowNightPalette, 0, 16);
         PlayMusicModule(9);
         for (i = 0; i <= 9; i++)
         {

@@ -209,91 +209,91 @@ asm-file 0x08005F10 _ asm/check_actor_collisions.s  CheckActorCollisions
 asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
 asm-file 0x080063B4 _ asm/find_free_obj_tile_run.s    FindFreeObjTileRun
-asm-file 0x08006440 0x08006508 asm/sort_actors_by_depth.s  SortActorsByDepth
+asm-file 0x08006440 _ asm/sort_actors_by_depth.s  SortActorsByDepth
 
 # Background (BG layers)
-thumb-func 0x08006508 LoadBgGraphicTiles_candidate
+c-file 0x08006508 0x080065D4 src/background/load_bg_graphic_tiles.c LoadBgGraphicTiles
 thumb-func 0x080065D4 LoadGraphicBlobTiles
-thumb-func 0x080066BC sub_080066BC
+c-file 0x080066BC 0x08006788 src/background/get_graphic_blob_tile_load.c GetGraphicBlobTileLoad
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
 thumb-func 0x08006A98 sub_08006A98
 thumb-func 0x08006C00 CopyBgTilemapRect
-c-file 0x08006EF4 0x08007130 src/background/tick_bg_layers.c TickBgLayers_candidate
-thumb-func 0x08007130 sub_08007130
-c-file 0x08007228 0x080072B0 src/background/apply_bg_layer_wobble.c ApplyBgLayerWobble
-thumb-func 0x080072B0 sub_080072B0
-thumb-func 0x080072D0 SetBgControl
-thumb-func 0x080072EC SetBgControlRegister_candidate
-thumb-func 0x08007334 EnableBg
-thumb-func 0x08007348 DisableBg
+c-file 0x08006EF4 _ src/background/tick_bg_layers.c TickBgLayers
+c-file 0x08007130 _ src/background/commit_bg_layers.c CommitBgLayers
+c-file 0x08007228 _ src/background/apply_bg_layer_wobble.c ApplyBgLayerWobble
+c-file 0x080072B0 _ src/background/init_background.c InitBackground
+c-file 0x080072D0 _ src/background/set_bg_control.c SetBgControl
+c-file 0x080072EC _ src/background/set_bg_control_register.c SetBgControlRegister
+c-file 0x08007334 _ src/background/enable_bg.c EnableBg
+c-file 0x08007348 0x0800735C src/background/disable_bg.c DisableBg
 thumb-func 0x0800735C RewriteBgControlRegisters_candidate
-thumb-func 0x0800739C sub_0800739C
-thumb-func 0x080073B0 sub_080073B0
-thumb-func 0x080073BC ResetDisplayState
-thumb-func 0x08007404 SetBgMode
-thumb-func 0x0800741C sub_0800741C
-thumb-func 0x08007434 sub_08007434
-thumb-func 0x08007444 SetDispcntFlag
-thumb-func 0x08007454 ClearBgTilemap
-thumb-func 0x08007464 sub_08007464
-thumb-func 0x08007474 FillBgTilemap_candidate
-thumb-func 0x080074F4 FillBgTile_candidate
-thumb-func 0x08007568 sub_08007568
-thumb-func 0x080075A8 ClearBgTilemapRect
-thumb-func 0x080075C0 FillBgTilemapRect
-thumb-func 0x080075EC FillTilemapRect
-thumb-func 0x08007628 sub_08007628
-thumb-func 0x08007678 sub_08007678
-thumb-func 0x080076A4 sub_080076A4
-thumb-func 0x08007714 sub_08007714
-thumb-func 0x08007774 sub_08007774
-thumb-func 0x0800778C LoadBgGraphic
-thumb-func 0x080077C8 LoadGraphicBlob
-thumb-func 0x08007800 LoadEmbeddedPalette_candidate
-thumb-func 0x08007854 sub_08007854
-thumb-func 0x080078A4 sub_080078A4
-thumb-func 0x080078E8 sub_080078E8
-thumb-func 0x0800794C sub_0800794C
-thumb-func 0x080079AC CopyBgTilemapRect_candidate
-thumb-func 0x08007A04 sub_08007A04
-thumb-func 0x08007A6C sub_08007A6C
-thumb-func 0x08007A90 sub_08007A90
-thumb-func 0x08007AA8 sub_08007AA8
-thumb-func 0x08007AF0 sub_08007AF0
-thumb-func 0x08007B30 SetBgScrollX_candidate
-thumb-func 0x08007B5C sub_08007B5C
-thumb-func 0x08007B88 SetBgScroll_candidate
-thumb-func 0x08007BCC sub_08007BCC
-thumb-func 0x08007BFC sub_08007BFC
-thumb-func 0x08007C2C sub_08007C2C
-thumb-func 0x08007C54 sub_08007C54
-thumb-func 0x08007C74 sub_08007C74
-thumb-func 0x08007C94 sub_08007C94
-thumb-func 0x08007CB4 sub_08007CB4
-thumb-func 0x08007CD4 sub_08007CD4
-thumb-func 0x08007CF4 sub_08007CF4
-thumb-func 0x08007D14 sub_08007D14
-thumb-func 0x08007D40 sub_08007D40
-thumb-func 0x08007D60 sub_08007D60
-thumb-func 0x08007D80 sub_08007D80
-thumb-func 0x08007DB0 sub_08007DB0
-thumb-func 0x08007DD0 sub_08007DD0
-thumb-func 0x08007DF0 sub_08007DF0
-thumb-func 0x08007E14 sub_08007E14
-thumb-func 0x08007E40 sub_08007E40
-thumb-func 0x08007E6C sub_08007E6C
-thumb-func 0x08007E88 sub_08007E88
-thumb-func 0x08007EA0 sub_08007EA0
-thumb-func 0x08007EB8 SetBgPriority
-thumb-func 0x08007EF0 sub_08007EF0
-c-file 0x08007F20 0x08007F84 src/background/unpack_tile_data.c UnpackTileData
-thumb-func 0x08007F84 sub_08007F84
-thumb-func 0x08007FA8 sub_08007FA8
-thumb-func 0x08007FFC sub_08007FFC
-thumb-func 0x08008010 sub_08008010
-thumb-func 0x08008020 sub_08008020
-thumb-func 0x08008030 sub_08008030
-thumb-func 0x08008040 sub_08008040
+c-file 0x0800739C _ src/background/is_bg8bpp.c IsBg8bpp
+c-file 0x080073B0 _ src/background/get_bg_mode.c GetBgMode
+c-file 0x080073BC _ src/background/reset_display_state.c ResetDisplayState
+c-file 0x08007404 _ src/background/set_bg_mode.c SetBgMode
+c-file 0x0800741C _ src/background/set_dispcnt_layer_enables.c SetDispcntLayerEnables
+c-file 0x08007434 _ src/background/clear_dispcnt_flag.c ClearDispcntFlag
+c-file 0x08007444 _ src/background/set_dispcnt_flag.c SetDispcntFlag
+c-file 0x08007454 _ src/background/clear_bg_tilemap.c ClearBgTilemap
+c-file 0x08007464 _ src/background/fill_bg_tilemap_with_tile.c FillBgTilemapWithTile
+c-file 0x08007474 _ src/background/fill_bg_tilemap.c FillBgTilemap
+c-file 0x080074F4 _ src/background/fill_bg_tile.c FillBgTile
+c-file 0x08007568 _ src/background/copy_bg_tiles.c CopyBgTiles
+c-file 0x080075A8 _ src/background/clear_bg_tilemap_rect.c ClearBgTilemapRect
+c-file 0x080075C0 _ src/background/fill_bg_tilemap_rect.c FillBgTilemapRect
+c-file 0x080075EC _ src/background/fill_tilemap_rect.c FillTilemapRect
+c-file 0x08007628 _ src/background/fill_tilemap_rect_ascending.c FillTilemapRectAscending
+c-file 0x08007678 0x080076A4 src/background/set_bg_tilemap_rect_palette.c SetBgTilemapRectPalette
+thumb-func 0x080076A4 SetTilemapRectPalette
+c-file 0x08007714 0x08007774 src/background/get_bg_size_pixels.c GetBgSizePixels
+thumb-func 0x08007774 GetTilemapCell
+c-file 0x0800778C _ src/background/load_bg_graphic.c LoadBgGraphic
+c-file 0x080077C8 _ src/background/load_graphic_blob.c LoadGraphicBlob
+c-file 0x08007800 _ src/background/load_embedded_palette.c LoadEmbeddedPalette
+c-file 0x08007854 _ src/background/load_embedded_palette_from_row.c LoadEmbeddedPaletteFromRow
+c-file 0x080078A4 0x080078E8 src/background/get_graphic_blob_tilemap.c GetGraphicBlobTilemap
+thumb-func 0x080078E8 CopyLoadedTilemapToBuffer_candidate
+c-file 0x0800794C _ src/background/copy_tilemap_rect.c CopyTilemapRect
+c-file 0x080079AC 0x08007A04 src/background/copy_bg_screen_rect.c CopyBgScreenRect
+thumb-func 0x08007A04 CopyLoadedTilemapRect_candidate
+c-file 0x08007A6C _ src/background/set_bg_scroll_target.c SetBgScrollTarget
+c-file 0x08007A90 _ src/background/reset_bg_layers.c ResetBgLayers
+c-file 0x08007AA8 _ src/background/reset_bg_layer.c ResetBgLayer
+c-file 0x08007AF0 _ src/background/set_bg_scroll_fixed.c SetBgScrollFixed
+c-file 0x08007B30 _ src/background/set_bg_scroll_x.c SetBgScrollFixedX
+c-file 0x08007B5C _ src/background/set_bg_scroll_y.c SetBgScrollFixedY
+c-file 0x08007B88 _ src/background/set_bg_scroll.c SetBgScroll
+c-file 0x08007BCC _ src/background/set_bg_scroll_x_pixels.c SetBgScrollXPixels
+c-file 0x08007BFC _ src/background/set_bg_scroll_y_pixels.c SetBgScrollYPixels
+c-file 0x08007C2C _ src/background/set_bg_rotation.c SetBgRotation
+c-file 0x08007C54 _ src/background/set_bg_angle.c SetBgAngle
+c-file 0x08007C74 _ src/background/set_bg_angle_step.c SetBgAngleStep
+c-file 0x08007C94 _ src/background/set_bg_rotation_center.c SetBgRotationCenter
+c-file 0x08007CB4 _ src/background/set_bg_zoom_range.c SetBgZoomRange
+c-file 0x08007CD4 _ src/background/set_bg_zoom_step.c SetBgZoomStep
+c-file 0x08007CF4 _ src/background/set_bg_zoom.c SetBgZoom
+c-file 0x08007D14 _ src/background/set_bg_scroll_step.c SetBgScrollStep
+c-file 0x08007D40 _ src/background/set_bg_scroll_step_x.c SetBgScrollStepX
+c-file 0x08007D60 _ src/background/set_bg_scroll_step_y.c SetBgScrollStepY
+c-file 0x08007D80 _ src/background/clear_bg_wobble.c ClearBgWobble
+c-file 0x08007DB0 _ src/background/clear_bg_wobble_x.c ClearBgWobbleX
+c-file 0x08007DD0 _ src/background/clear_bg_wobble_y.c ClearBgWobbleY
+c-file 0x08007DF0 _ src/background/set_bg_wobble.c SetBgWobble
+c-file 0x08007E14 _ src/background/set_bg_wobble_x.c SetBgWobbleX
+c-file 0x08007E40 _ src/background/set_bg_wobble_y.c SetBgWobbleY
+c-file 0x08007E6C _ src/background/set_bg_wobble_phase.c SetBgWobblePhase
+c-file 0x08007E88 _ src/background/set_bg_wobble_speed.c SetBgWobbleSpeed
+c-file 0x08007EA0 _ src/background/set_bg_wobble_amplitude.c SetBgWobbleAmplitude
+c-file 0x08007EB8 _ src/background/set_bg_priority.c SetBgPriority
+c-file 0x08007EF0 _ src/background/set_bg_scroll_step_pixels.c SetBgScrollStepPixels
+c-file 0x08007F20 _ src/background/unpack_tile_data.c UnpackTileData
+c-file 0x08007F84 _ src/background/get_bg_scroll.c GetBgScroll
+c-file 0x08007FA8 _ src/background/copy_tilemap_rect_offset.c CopyTilemapRectOffset
+c-file 0x08007FFC _ src/background/clear_bg_state_flag0.c ClearBgStateFlag0
+c-file 0x08008010 _ src/background/set_bg_state_flag0.c SetBgStateFlag0
+c-file 0x08008020 _ src/background/test_bg_state_flags.c TestBgStateFlags
+c-file 0x08008030 _ src/background/clear_bg_state_flags.c ClearBgStateFlags
+c-file 0x08008040 _ src/background/set_bg_state_flags.c SetBgStateFlags
 
 # Boggart, Buckbeak (minigames)
 c-file 0x08008050 _ src/boggart_minigame/initialize_boggart_minigame.c InitializeBoggartMinigame
@@ -1896,7 +1896,7 @@ c-file 0x0803E4FC 0x0803E588 src/overworld/init_room_bg_state.c InitRoomBgState_
 thumb-func 0x0803E588 SetupRoomBgControlAndWindows_candidate
 c-file 0x0803E618 _ src/overworld/get_camera_position.c GetCameraPosition
 c-file 0x0803E628 0x0803E638 src/overworld/set_camera_position.c SetCameraPosition
-thumb-func 0x0803E638 sub_0803E638
+thumb-func 0x0803E638 ResetCameraPosition
 thumb-func 0x0803E648 sub_0803E648
 thumb-func 0x0803E664 LoadRoomBgTilemap1_candidate
 thumb-func 0x0803E6A0 LoadRoomBgTilemap0_candidate
@@ -2498,7 +2498,8 @@ c-file 0x08063074 _ src/room/special_scene_bg_animations.c g_aSpecialSceneBg2
 c-file 0x08063C8C _ src/room/room_table.c g_aRoomTable
 c-file 0x08065730 _ src/gamemode/modes/overworld/room_quest_music_override.c g_adwRoomQuestMusicOverride
 c-file 0x0806580C 0x0806581C src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
-c-file 0x0806589C 0x08065C9C src/math/sine_table.c g_anSineTable
+c-file 0x0806589C _ src/math/sine_table.c g_anSineTable
+c-rodata 0x08065C9C _ ResetBgLayer
 c-rodata 0x08065CA4 _ GetDirectionFromVector
 c-file 0x08065CBC _ src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds

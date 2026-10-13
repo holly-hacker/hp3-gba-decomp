@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
@@ -179,7 +180,7 @@ void TickPlayerActionState(Actor *actor)
             g_pFightState->bActionDelayCounter_candidate -= 1;
             if (g_pFightState->bActionDelayCounter_candidate > 4) {
                 SetFloorHeading((u8)(g_FloorEffect.bHeading - 1));
-                g_aBgScrollState[1].nScrollY_candidate += 0xFFFD0000;
+                g_BgState.aLayers[1].scroll.x += 0xFFFD0000;
                 g_pFightState->bCameraZoomStep_candidate += 1;
             } else if (g_pFightState->bActionDelayCounter_candidate == 4) {
                 SetFloorForwardSpeed(0);
@@ -247,7 +248,7 @@ void TickPlayerActionState(Actor *actor)
                 return;
             } else {
                 SetFloorHeading((u8)(g_FloorEffect.bHeading + 1));
-                g_aBgScrollState[1].nScrollY_candidate += 0x30000;
+                g_BgState.aLayers[1].scroll.x += 0x30000;
                 g_pFightState->bCameraZoomStep_candidate -= 1;
             }
         } else if (flags & 1) {

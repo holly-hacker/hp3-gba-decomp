@@ -77,6 +77,7 @@ extern CameraFocusOffset g_CameraPosition_candidate;
 extern u32 g_bCurrentRoomId;                // 0x03003B50
 extern void GetCameraPosition(s32 *pPosition);  // copies g_CameraPosition_candidate out
 extern void SetCameraPosition(const s32 *pPosition);  // copies a two-word position into g_CameraPosition_candidate
+extern void ResetCameraPosition(void);  // zeroes g_CameraPosition_candidate
 // Signed camera Y offset in pixels, added to quest event state 0x1B (sub_0803E45C).
 extern s8 g_nCameraYOffset;
 // Nonzero for each BG layer UpdateOverworldCamera_candidate scrolls.

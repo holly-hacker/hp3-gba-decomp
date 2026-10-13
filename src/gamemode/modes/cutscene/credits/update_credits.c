@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "input.h"
@@ -19,7 +20,7 @@ void UpdateCredits(void)
     u8 *pText;
 
     cutsceneIndex = g_GameModeStackContext.dwCurrentGameMode - Credits;
-    sub_08007F84(1, &aScroll[0], &aScroll[1]);
+    GetBgScroll(1, &aScroll[0], &aScroll[1]);
     row = aScroll[1] >> 20;
 
     if (row != g_dwCreditsScrollRow)

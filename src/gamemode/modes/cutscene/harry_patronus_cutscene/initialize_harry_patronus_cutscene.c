@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -19,15 +20,15 @@ void InitializeHarryPatronusCutscene(void)
 
     g_swPatronusBgParam = 0x180;
     g_nPatronusBgOffset = 0xFFB00000;
-    sub_08007AF0(2, 0, 0);
-    sub_08007C94(2, g_nPatronusBgOffset >> 16, 0);
-    sub_08007CF4(2, g_swPatronusBgParam);
-    sub_08007C2C(2, 0, 0);
-    sub_08007C2C(2, 0, 0);
-    sub_08007AF0(3, 0, 0);
-    sub_08007C94(3, g_nPatronusBgOffset >> 16, 0);
-    sub_08007CF4(3, g_swPatronusBgParam);
-    sub_08007C2C(3, 0, 0);
+    SetBgScrollFixed(2, 0, 0);
+    SetBgRotationCenter(2, g_nPatronusBgOffset >> 16, 0);
+    SetBgZoom(2, g_swPatronusBgParam);
+    SetBgRotation(2, 0, 0);
+    SetBgRotation(2, 0, 0);
+    SetBgScrollFixed(3, 0, 0);
+    SetBgRotationCenter(3, g_nPatronusBgOffset >> 16, 0);
+    SetBgZoom(3, g_swPatronusBgParam);
+    SetBgRotation(3, 0, 0);
 
     LoadBgGraphic(2, g_apPatronusGraphics[0], 0, 0, 0, 0);
     LoadBgGraphic(3, g_apPatronusGraphics[1], 0, 0, 0, 0);

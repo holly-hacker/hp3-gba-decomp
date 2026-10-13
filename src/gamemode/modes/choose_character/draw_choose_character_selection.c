@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "actor.h"
 #include "font.h"
 #include "game/game_modes.h"

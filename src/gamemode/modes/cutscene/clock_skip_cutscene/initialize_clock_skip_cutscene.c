@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "hw/bios.h"
 #include "cutscene/clock_skip_cutscene.h"

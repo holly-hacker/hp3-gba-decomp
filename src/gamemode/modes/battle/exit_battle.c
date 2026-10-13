@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -31,7 +32,7 @@ void ExitBattle(void)
         PlayScreenTransitionOutByIndex(0x3F, 2);
         sub_08026254();
         FreeFloorEffect();
-        sub_08007A90();
+        ResetBgLayers();
         ClearPaletteRam();
         sub_0804542C();
 
@@ -113,7 +114,7 @@ void ExitBattle(void)
         PlayScreenTransitionOutByIndex(0x3F, 2);
         sub_08026254();
         FreeFloorEffect();
-        sub_08007A90();
+        ResetBgLayers();
         ClearPaletteRam();
         sub_0804542C();
 

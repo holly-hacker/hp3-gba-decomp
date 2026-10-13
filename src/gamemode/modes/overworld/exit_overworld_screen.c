@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "graphics/palette.h"
@@ -77,7 +78,7 @@ void ExitOverworldScreen(void)
     UnreserveObjPaletteSlot(2);
     FreeAllActors(&g_ActiveActorListState.pHead);
     ResetPaletteAnimations();
-    sub_08007AA8(0);
+    ResetBgLayer(0);
     sub_080203CC();
     FreeBgTileAnimations();
 

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "graphics/audio.h"
@@ -69,16 +70,16 @@ void InitializeCombatResult(void)
     if (GetPartySize() == 3)
     {
         LoadBgGraphic(1, gEquipCharacterSelect002, 1, 0, 0, 1);
-        sub_08007AF0(1, 0, 0x100000);
+        SetBgScrollFixed(1, 0, 0x100000);
         LoadBgGraphic(2, gEquipCharacterSelect003, 1, 0, 0, 0);
-        sub_08007AF0(2, 0, 0xFFF60000);
+        SetBgScrollFixed(2, 0, 0xFFF60000);
     }
     else
     {
-        g_pCombatResultBg1Tilemap = LoadBgGraphicTiles_candidate(1, gEquipCharacterSelect002, 1, 0);
-        sub_08007AF0(1, 0, 0);
-        g_pCombatResultBg2Tilemap = LoadBgGraphicTiles_candidate(2, gEquipCharacterSelect003, 1, 0);
-        sub_08007AF0(2, 0, 0);
+        g_pCombatResultBg1Tilemap = LoadBgGraphicTiles(1, gEquipCharacterSelect002, 1, 0);
+        SetBgScrollFixed(1, 0, 0);
+        g_pCombatResultBg2Tilemap = LoadBgGraphicTiles(2, gEquipCharacterSelect003, 1, 0);
+        SetBgScrollFixed(2, 0, 0);
 
         if (GetPartySize() == 2)
         {
@@ -86,14 +87,14 @@ void InitializeCombatResult(void)
             COPY_PORTRAIT(1, g_pCombatResultBg1Tilemap, g_aCombatResultBg1PortraitRects, g_aCombatResultBg1PortraitPositions, 1, 1);
             COPY_PORTRAIT(2, g_pCombatResultBg2Tilemap, g_aCombatResultBg2PortraitRects, g_aCombatResultBg2PortraitPositions, 0, 0);
             COPY_PORTRAIT(2, g_pCombatResultBg2Tilemap, g_aCombatResultBg2PortraitRects, g_aCombatResultBg2PortraitPositions, 1, 1);
-            sub_08007AF0(2, 0, 0xFFFE0000);
+            SetBgScrollFixed(2, 0, 0xFFFE0000);
         }
         else
         {
             COPY_PORTRAIT(1, g_pCombatResultBg1Tilemap, g_aCombatResultBg1PortraitRects, g_aCombatResultBg1PortraitPositions, 2, 2);
             COPY_PORTRAIT(2, g_pCombatResultBg2Tilemap, g_aCombatResultBg2PortraitRects, g_aCombatResultBg2PortraitPositions, 2, 2);
-            sub_08007AF0(2, 0, 0xFFFE0000);
-            sub_08007AF0(1, g_abCombatResultPortraitScrollX[g_abCombatResultPartySlots[2]] << 16, 0);
+            SetBgScrollFixed(2, 0, 0xFFFE0000);
+            SetBgScrollFixed(1, g_abCombatResultPortraitScrollX[g_abCombatResultPartySlots[2]] << 16, 0);
         }
     }
 

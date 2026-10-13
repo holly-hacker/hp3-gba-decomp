@@ -70,8 +70,8 @@ extern Actor *g_pCombatResultCoinActor;   // 0x030026F4
 extern Actor *g_pCombatResultItem0Actor;  // 0x030026F8
 extern Actor *g_pCombatResultItem1Actor;  // 0x030026FC
 extern u8 g_abCombatResultPartySlots[3];  // 0x03002700: by party position, 3-member party: 1, 2, 0
-extern void *g_pCombatResultBg2Tilemap;   // 0x03002704
-extern void *g_pCombatResultBg1Tilemap;   // 0x03002708
+extern const u16 *g_pCombatResultBg2Tilemap;   // 0x03002704
+extern const u16 *g_pCombatResultBg1Tilemap;   // 0x03002708
 extern u16 g_wCombatResultTextTileCursor;  // 0x0300270C
 extern u16 g_wCombatResultXpTileCursor;    // 0x0300270E: start of the XP number's tiles
 extern CombatResultPartyRow g_aCombatResultPartyRows[3];  // 0x03002710, by party position

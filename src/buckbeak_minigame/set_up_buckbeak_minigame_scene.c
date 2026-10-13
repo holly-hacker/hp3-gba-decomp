@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "graphics/display.h"
@@ -13,7 +14,7 @@ void SetUpBuckbeakMinigameScene(void)
 {
     u16 zero;
     u16 *pZero;
-    void *pTilemap;
+    const u16 *pTilemap;
     s32 i;
     s32 heading;
     const BuckbeakMinigameWorldPos *pPositions;
@@ -28,11 +29,11 @@ void SetUpBuckbeakMinigameScene(void)
 
     SetBgControl(0, g_dwBuckbeakMinigameBg0Control);
     LoadBgGraphic(0, g_aapBuckbeakMinigameBgGraphics[g_pBuckbeakMinigame->bDifficulty][1], 0xC0, 0, 0, 0);
-    SetBgScroll_candidate(0, g_pBuckbeakMinigame->dwHeading.parts.wWhole * 2, 0xC0);
+    SetBgScroll(0, g_pBuckbeakMinigame->dwHeading.parts.wWhole * 2, 0xC0);
 
     SetBgControl(1, g_dwBuckbeakMinigameBg1Control);
     LoadGraphicBlob(1, g_aapBuckbeakMinigameBgGraphics[g_pBuckbeakMinigame->bDifficulty][0], 0x60, 0, 0, 0);
-    SetBgScroll_candidate(1, g_pBuckbeakMinigame->dwHeading.parts.wWhole * 4, 0x20);
+    SetBgScroll(1, g_pBuckbeakMinigame->dwHeading.parts.wWhole * 4, 0x20);
 
     SetBgControl(2, g_dwBuckbeakMinigameBg2Control);
     SelectTextFont(6, 0, 0);

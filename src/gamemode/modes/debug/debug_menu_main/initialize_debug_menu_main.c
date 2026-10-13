@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "hw/bios.h"
 #include "menu/debug_menu.h"
@@ -32,8 +33,8 @@ void InitializeDebugMenuMain(void)
     ClearBgTilemap(1);
     SetTextTargetFromBgControl(bgCtrl1);
     SelectTextFont(7, 0, -1);
-    SetBgScroll_candidate(0, 0, 0);
-    SetBgScroll_candidate(1, 0, 0);
+    SetBgScroll(0, 0, 0);
+    SetBgScroll(1, 0, 0);
 
     g_DebugMenuMainState.dwSelection = 0;
     pActor = SpawnActor(10, 0x78, 0x2D, (const ObjPalette *)gDebugMenuCursorPalette);

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/io_regs.h"
 #include "graphics/display.h"
 #include "graphics/floor_effect.h"

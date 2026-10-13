@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "graphics/audio.h"
@@ -30,7 +31,7 @@ void InitializeHighScoreNameEntryScreen(void)
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(5, 0, -1);
     StartPaletteEffectWithFrameCount(3, 1, 8, 0x10, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gMenuSelectionPalette), 6);
-    SetBgScroll_candidate(2, 0, 0);
+    SetBgScroll(2, 0, 0);
     g_GameModeStackContext.dwModeState = 0;
 
     pCursor = SpawnMenuCursorActor(4);

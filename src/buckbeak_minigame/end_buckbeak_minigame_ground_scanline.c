@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "buckbeak_minigame.h"
 
@@ -6,7 +7,7 @@
 void EndBuckbeakMinigameGroundScanline(u32 *pPayload0, u32 *pPayload1)
 {
     SetBgMode(0);
-    SetBgControlRegister_candidate(2, g_dwBuckbeakMinigameBg2GroundControl);
+    SetBgControlRegister(2, g_dwBuckbeakMinigameBg2GroundControl);
     RewriteBgControlRegisters_candidate();
-    SetBgScroll_candidate(2, g_pBuckbeakMinigame->dwHeading.parts.wWhole * 3, 0x20);
+    SetBgScroll(2, g_pBuckbeakMinigame->dwHeading.parts.wWhole * 3, 0x20);
 }

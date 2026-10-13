@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "menu/debug_menu.h"
 #include "graphics/display.h"
@@ -29,8 +30,8 @@ void InitializeDebugCollectorCardsMenu(void)
     LoadBgGraphic(0, gFolioCardFrameRed, 0, 0, 0, 0);
     pGraphic = gDebugMenuGraphic;
     LoadGraphicBlob(1, pGraphic, 0, 0, 0, 0);
-    LoadEmbeddedPalette_candidate((u8 *)pGraphic, 0, 3);
-    sub_08007AF0(0, 0xFFCA0000, 0xFFE20000);
+    LoadEmbeddedPalette((u8 *)pGraphic, 0, 3);
+    SetBgScrollFixed(0, 0xFFCA0000, 0xFFE20000);
 
     g_DebugCollectorCardsState.dwSelection = 0;
     g_DebugCollectorCardsState.pCardActor = 0;

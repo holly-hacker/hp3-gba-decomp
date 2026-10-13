@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "math.h"
 #include "graphics/display.h"
 #include "menu/folio_universitas_inline.h"

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "game/save.h"
 #include "graphics/display.h"
 #include "menu/folio_bruti.h"

@@ -12,7 +12,7 @@
 typedef struct ChooseCharacterState {
     Actor *pCursorActor;                                // 0x00
     Actor *apOptionActors[CHOOSE_CHARACTER_OPTION_COUNT];// 0x04
-    void *pBgTilemap;                                   // 0x10, BG2 panel graphic
+    const u16 *pBgTilemap;                                   // 0x10, BG2 panel graphic
     u8 abOptionStage[CHOOSE_CHARACTER_OPTION_COUNT];    // 0x14, story stage each option selects
     u8 bPreviousStage;                                  // 0x17, story stage before the choice
     u8 bStageRow;                                       // 0x18, index of the current stage in g_abChooseCharacterStages

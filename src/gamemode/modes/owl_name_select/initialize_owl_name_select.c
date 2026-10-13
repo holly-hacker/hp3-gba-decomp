@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "game/game_modes.h"
 #include "gen/graphics/menus.h"
 #include "graphics/display.h"
@@ -16,7 +17,7 @@ void InitializeOwlNameSelect(void)
 
     DisableBg(2);
     bg2Control = g_dwCommonBg2Control;
-    SetBgControlRegister_candidate(2, bg2Control);
+    SetBgControlRegister(2, bg2Control);
     ClearBgTilemap(2);
 
     g_GameModeStackContext.dwModeSubState = 0x10;
@@ -27,8 +28,8 @@ void InitializeOwlNameSelect(void)
     SetBgControl(3, g_dwOwlNameSelectBg3Control);
     ClearBgTilemap(3);
     LoadBgGraphic(3, gDialogBackgrounds002, 0x2E9, 0, 0, 6);
-    SetBgScroll_candidate(3, 8, 0);
-    sub_08007434(0x1000);
+    SetBgScroll(3, 8, 0);
+    ClearDispcntFlag(0x1000);
 
     sub_08030594();
     SetTextTargetFromBgControl(bg2Control);

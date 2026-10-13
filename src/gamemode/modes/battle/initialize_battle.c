@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
@@ -66,7 +67,7 @@ void InitializeBattle(void)
         InitBattleBackground_candidate();
         SetupBattleRoster();
         uVar7 = GetBattleBackgroundData_candidate();
-        LoadEmbeddedPalette_candidate(uVar7, 0, 0x10);
+        LoadEmbeddedPalette(uVar7, 0, 0x10);
         ResumeBattleAfterSubmode_candidate();
     }
     else
@@ -76,7 +77,7 @@ void InitializeBattle(void)
         InitBattleBackground_candidate();
         RestoreFighterActors_candidate();
         uVar7 = GetBattleBackgroundData_candidate();
-        LoadEmbeddedPalette_candidate(uVar7, 0, 0x10);
+        LoadEmbeddedPalette(uVar7, 0, 0x10);
         ResumeBattleAfterSubmode_candidate();
     }
 

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "game/game_modes.h"
 #include "game/save.h"
 #include "graphics/audio.h"
@@ -35,9 +36,9 @@ void InitializeOwlCareKitScreen(void)
     bgControl = g_dwOwlCareBg0Control;
     SetTextTargetFromBgControl(bgControl);
     SetBgControl(3, g_dwOwlCareBg3Control);
-    g_aBgScrollState[3].pBgGraphicResult_candidate = LoadBgGraphic(3, gOwlCareGraphic001, 0, 0, 0, 0);
+    g_BgState.aLayers[3].pTilemap = LoadBgGraphic(3, gOwlCareGraphic001, 0, 0, 0, 0);
     SetBgControl(2, g_dwOwlCareBg2Control);
-    sub_08006A98(2, g_aBgScrollState[3].pBgGraphicResult_candidate, 0, 0, 0, 0, 0, 0, 30, 20);
+    sub_08006A98(2, g_BgState.aLayers[3].pTilemap, 0, 0, 0, 0, 0, 0, 30, 20);
     SetBgControl(1, g_dwOwlCareBg1Control);
     LoadBgGraphic(1, gOwlCareGraphic002, 0x28, 0, 0, 0);
     SetBgControl(0, bgControl);

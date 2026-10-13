@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "minigame/wizard_cracker_pop_it.h"
 #include "font.h"
@@ -33,7 +34,7 @@ void InitializeFolioCardDetailScreen(void)
     }
 
     LoadGraphicBlob(3, gFolioCardDetailBg3Graphic, 1, 0, 0, 0);
-    LoadEmbeddedPalette_candidate((u8 *)gFolioCardDetailBg3Graphic, 0, 3);
+    LoadEmbeddedPalette((u8 *)gFolioCardDetailBg3Graphic, 0, 3);
     SetTextTargetFromBgControl(g_dwFolioCardDetailBg1Control);
     DrawFolioCardDetailText();
     SpawnFolioCardActor(g_GameModeStackContext.dwCurrentGameModeArg2, 0x73, 0x18);

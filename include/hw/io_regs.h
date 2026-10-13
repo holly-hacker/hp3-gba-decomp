@@ -21,10 +21,17 @@
 // https://problemkaputt.de/gbatek.htm#lcdiointerruptsandstatus
 #define REG_VCOUNT  (*(volatile u16 *)0x04000006)
 
+// BG0-BG3 control, indexed by BG number.
+#define REG_BGCNT(n) (((volatile u16 *)0x04000008)[n])
+
 // BG0-BG2 control: priority in bits 0-1.
 #define REG_BG0CNT  (*(volatile u16 *)0x04000008)
 #define REG_BG1CNT  (*(volatile u16 *)0x0400000A)
 #define REG_BG2CNT  (*(volatile u16 *)0x0400000C)
+
+// BG0-BG3 scroll offsets, indexed by BG number.
+#define REG_BGHOFS(n) (*(volatile u16 *)(0x04000010 + (n) * 4))
+#define REG_BGVOFS(n) (*(volatile u16 *)(0x04000012 + (n) * 4))
 
 // BG2 scroll offsets.
 #define REG_BG2HOFS (*(volatile u16 *)0x04000018)
@@ -37,7 +44,11 @@
 #define REG_BG2PC   (*(volatile u16 *)0x04000024)
 #define REG_BG2PD   (*(volatile u16 *)0x04000026)
 #define REG_BG2X_L  (*(volatile u16 *)0x04000028)
+#define REG_BG2X_H  (*(volatile u16 *)0x0400002A)
 #define REG_BG2Y_L  (*(volatile u16 *)0x0400002C)
+
+// BG3 affine parameters; the reference point follows PD as BG2's does.
+#define REG_BG3PA   (*(volatile u16 *)0x04000030)
 
 // Window 0/1 inside layer enables.
 #define REG_WININ (*(volatile u16 *)0x04000048)

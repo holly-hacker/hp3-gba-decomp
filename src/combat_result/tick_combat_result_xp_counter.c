@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "actor.h"
 #include "battle/battle.h"
 #include "font.h"

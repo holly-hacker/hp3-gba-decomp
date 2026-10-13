@@ -31,7 +31,7 @@ typedef struct {
     Actor *pCursor;           // 0x14
     Actor *pMonster;          // 0x18: the selected monster's sprite
     Actor *apSpellDots[8];    // 0x1C: one marker per spell on the effectiveness bars
-    void *pGridTilemap;        // 0x3C: tilemap of the grid background, whose tiles mark each monster's state
+    const u16 *pGridTilemap;    // 0x3C: tilemap of the grid background, whose tiles mark each monster's state
 } FolioBrutiState;
 extern FolioBrutiState g_FolioBrutiState;  // 0x03005300
 

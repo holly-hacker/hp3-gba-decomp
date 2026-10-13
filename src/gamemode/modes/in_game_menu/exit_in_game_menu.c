@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "graphics/palette.h"
@@ -19,7 +20,7 @@ void ExitInGameMenu(void)
     }
 
     ExitMenuScreen();
-    sub_08007464(1, 0x6F);
+    FillBgTilemapWithTile(1, 0x6F);
     FreeAllActors(&g_ActiveActorListState.pHead);
     ResetPaletteAnimations();
 }

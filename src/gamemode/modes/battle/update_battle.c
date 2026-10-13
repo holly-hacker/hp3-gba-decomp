@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -18,7 +19,7 @@ void UpdateBattle(void)
         {
             g_pFightState->bScreenShakeTimer_candidate = timer - 1;
             SetFloorHeading((u8)(g_FloorEffect.bHeading + 3));
-            g_aBgScrollState[1].nScrollY_candidate += 0x80000;
+            g_BgState.aLayers[1].scroll.x += 0x80000;
 
             if (g_pFightState->bScreenShakeTimer_candidate != 0)
                 return;

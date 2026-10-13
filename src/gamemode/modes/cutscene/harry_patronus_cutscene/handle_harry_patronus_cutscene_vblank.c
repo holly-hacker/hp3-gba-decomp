@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "graphics/display.h"
 #include "cutscene/harry_patronus_cutscene.h"
 #include "actor.h"
@@ -6,10 +7,10 @@
 void HandleHarryPatronusCutsceneVBlank(void)
 {
     CommitQueuedActorTileUpdates();
-    sub_08007C94(2, g_nPatronusBgOffset >> 16, 0);
-    sub_08007C94(3, g_nPatronusBgOffset >> 16, 0);
-    sub_08007CF4(2, g_swPatronusBgParam);
-    sub_08007CF4(3, g_swPatronusBgParam);
+    SetBgRotationCenter(2, g_nPatronusBgOffset >> 16, 0);
+    SetBgRotationCenter(3, g_nPatronusBgOffset >> 16, 0);
+    SetBgZoom(2, g_swPatronusBgParam);
+    SetBgZoom(3, g_swPatronusBgParam);
 
     if (g_dwPatronusSwapPending != 0)
     {

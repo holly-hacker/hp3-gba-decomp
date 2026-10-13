@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -20,8 +21,8 @@ void InitializeHogwartsUpNightCutscene(void)
     LoadBgGraphic(1, gHogwartsUpNightBg1Graphic, 0x258, 0, 0, 0);
     LoadBgGraphic(2, gHogwartsUpNightBg2Graphic, 0x313, 0, 0, 0);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
-    sub_08007AF0(0, 0, 0x480000);
-    sub_08007AF0(1, 0, 0xFFD00000);
+    SetBgScrollFixed(0, 0, 0x480000);
+    SetBgScrollFixed(1, 0, 0xFFD00000);
     PlayScreenTransitionInByIndex(0x3F, 2);
     sub_0800D5DC(0, 0x100, 0x10, 10, 0x31, GRAPHIC_BLOB_PALETTE_COLORS(gHogwartsUpNightFadeGraphic));
 }

@@ -226,7 +226,7 @@ void InterpretActorScript(Actor *actor)
             }
             break;
         case BSOP_Unk1F:  // BG helper call with signed x and y
-            sub_08007D14(args[1], (s8)args[1] << 16, (s8)args[2] << 16);
+            SetBgScrollStep(args[1], (s8)args[1] << 16, (s8)args[2] << 16);
             break;
         case BSOP_SetLocal:
             actor->modeState.effect.abLocal[args[1]] = args[2];
@@ -548,14 +548,14 @@ void InterpretActorScript(Actor *actor)
         case BSOP_SetDepthBiasLocalA:  // depth bias = local A
             actor->bDepthSortBias = actor->modeState.effect.abLocal[0];
             break;
-        case BSOP_ScrollBgUp:  // scrolls a BG up 2 pixels and shifts its priority
-            g_aBgScrollState[args[1]].nScrollY_candidate -= 0x20000;
-            g_aBgScrollState[args[1]].dwFlags |= 0x8000;
+        case BSOP_ScrollBgUp:  // scrolls a BG 2 pixels back horizontally and shifts its priority
+            g_BgState.aLayers[args[1]].scroll.x -= 0x20000;
+            g_BgState.aLayers[args[1]].dwFlags |= BG_LAYER_COMMIT;
             SetFloorHeading(g_FloorEffect.bHeading - 3);
             break;
-        case BSOP_ScrollBgDown:  // scrolls a BG down 2 pixels and shifts its priority
-            g_aBgScrollState[args[1]].nScrollY_candidate += 0x20000;
-            g_aBgScrollState[args[1]].dwFlags |= 0x8000;
+        case BSOP_ScrollBgDown:  // scrolls a BG 2 pixels forward horizontally and shifts its priority
+            g_BgState.aLayers[args[1]].scroll.x += 0x20000;
+            g_BgState.aLayers[args[1]].dwFlags |= BG_LAYER_COMMIT;
             SetFloorHeading(g_FloorEffect.bHeading + 3);
             break;
         case BSOP_SetTargetVelocityScaled:  // sets the target's velocity (scaled by 1/16)
@@ -665,7 +665,7 @@ void InterpretActorScript(Actor *actor)
                 const void *pControls;
 
                 sub_0801B4BC(args[1], g_aEffectBgRecords_candidate[args[2]].pGfx, g_aEffectBgRecords_candidate[args[2]].wUnk0C, args[3], g_pFightState->pad_0C);
-                sub_08007AF0(args[1], g_aEffectBgRecords_candidate[args[2]].wUnk04 << 16, g_aEffectBgRecords_candidate[args[2]].wUnk06 << 16);
+                SetBgScrollFixed(args[1], g_aEffectBgRecords_candidate[args[2]].wUnk04 << 16, g_aEffectBgRecords_candidate[args[2]].wUnk06 << 16);
                 g_effectStaging.bBgEffectId_candidate = args[2];
                 pControls = g_aEffectBgRecords_candidate[args[2]].pControls;
                 if (pControls != NULL)
@@ -728,7 +728,7 @@ void InterpretActorScript(Actor *actor)
                     REG_BLDY = n;
                     WaitForVBlankIntr();
                     TickParticleEmitters();
-                    TickBgLayers_candidate();
+                    TickBgLayers();
                     TickPaletteAnimations_candidate();
                     TickBgTileAnimations();
                 }
@@ -742,7 +742,7 @@ void InterpretActorScript(Actor *actor)
                     REG_BLDY = n;
                     WaitForVBlankIntr();
                     TickParticleEmitters();
-                    TickBgLayers_candidate();
+                    TickBgLayers();
                     TickPaletteAnimations_candidate();
                     TickBgTileAnimations();
                 }
@@ -805,8 +805,8 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_ResetBgState:  // resets a BG's window, scroll and state
             ClearBgTilemapRect(args[1], 0, 0, 0x20, 0xF);
-            sub_08007D14(args[1], 0, 0);
-            sub_08007AF0(args[1], 0, 0);
+            SetBgScrollStep(args[1], 0, 0);
+            SetBgScrollFixed(args[1], 0, 0);
             if (args[1] == 1)
                 LoadGraphicBlobTiles(1, GetBattleBackgroundGraphic(), 0x180);
             break;
@@ -1013,7 +1013,7 @@ void InterpretActorScript(Actor *actor)
                 actor->modeState.effect.abLocal[0] = GetPartySize();
             break;
         case BSOP_Unk9A:  // BG helper call with x
-            sub_08007D14(args[1], args[2] << 16, 0);
+            SetBgScrollStep(args[1], args[2] << 16, 0);
             break;
         case BSOP_SelectFirstAlly:  // selects the first ally as target
             {

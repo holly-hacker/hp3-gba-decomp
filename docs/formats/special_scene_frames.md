@@ -9,7 +9,7 @@ for the neighbouring blob formats.
 
 | Part | Size | Contents |
 |---|---|---|
-| `gTrainWindowNightPalette` | `0x204` | flags `0xA1 0x00`, 512 bytes of colors, a zero halfword; `LoadEmbeddedPalette_candidate` reads the colors |
+| `gTrainWindowNightPalette` | `0x204` | flags `0xA1 0x00`, 512 bytes of colors, a zero halfword; `LoadEmbeddedPalette` reads the colors |
 | 128 frames | `0x504` each | `u16 kind` (always `0x0010`), `u16 size` (always `0x0500`), then `size` bytes of 4 bpp tiles |
 
 `0x204 + 128 * 0x504` is exactly the 164,868-byte span (**PROVEN**). The `SpecialSceneFrames`

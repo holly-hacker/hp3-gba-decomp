@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -27,7 +28,7 @@ void InitializeUnusedServePumpkinJuiceMinigame(void)
     LoadBgGraphic(0, gServePumpkinJuiceBg0Graphic, 1, 0, 0, 0);
     g_ServePumpkinJuice.pBg1Tilemap = LoadBgGraphic(1, gServePumpkinJuiceBg1Graphic, 1, 0, 0, 0);
     LoadBgGraphic(2, gServePumpkinJuiceBg2Graphic, 1, 0, 0, 0);
-    sub_08007AF0(2, 0, 0x100000);
+    SetBgScrollFixed(2, 0, 0x100000);
     RegisterBgTileAnimation(&g_ServePumpkinJuiceTable, &g_dwServePumpkinJuiceBg2Control, 8);
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(5, 0, -1);

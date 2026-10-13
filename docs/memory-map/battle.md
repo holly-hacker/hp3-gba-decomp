@@ -611,8 +611,8 @@ above; all four are visual/Actor plumbing, no combat-mechanical state:
   room -> background-blob selection `InitBattleBackground_candidate`
   inlines for its first layer, factored out standalone so
   `InitializeBattle` can also feed the blob into
-  `LoadEmbeddedPalette_candidate` to pull its embedded palette.
-- **`LoadEmbeddedPalette_candidate`** (`0x08007800`, `(u8 *blob, s32
+  `LoadEmbeddedPalette` to pull its embedded palette.
+- **`LoadEmbeddedPalette`** (`0x08007800`, `(u8 *blob, s32
   paletteRowOffset, s32 rowCount)`): reads `blob[0]` as a flags byte --
   bit `0` set means `blob` holds a raw palette block starting at
   `blob+2`, loaded via `SetPaletteColorsThunk_candidate`; bit `1` (with
@@ -988,7 +988,7 @@ unless the previous mode was `FolioUniversitas` or
 `HelpTopicScreen` (returning from a card-detail/help screen
 opened mid-battle), it decrements `FightState->bScreenShakeTimer_candidate`
 while nonzero (nudging the BG scroll/priority each tick via `sub_0802D640`
-and `g_aBgScrollState[1].nScrollY_candidate`), and the tick that timer reaches `0` it
+and `g_BgState.aLayers[1].nScrollX`), and the tick that timer reaches `0` it
 resets every fighter's `Actor` (`ClearActorOrbit`) instead of ticking the
 turn state machine that frame. Every other case (timer already `0`, or the
 previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).

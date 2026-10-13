@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "hw/bios.h"
 #include "menu/debug_menu.h"
 #include "graphics/display.h"
@@ -31,8 +32,8 @@ void InitializeDebugLevelAndQuestSelectMenu(void)
     SetTextTargetFromBgControl(bgCtrl1);
     SelectTextFont(5, 0, -1);
     SetTextLineHeight(GetTextLineHeight() + 5);
-    SetBgScroll_candidate(0, 0, 0);
-    SetBgScroll_candidate(1, 0, 0);
+    SetBgScroll(0, 0, 0);
+    SetBgScroll(1, 0, 0);
 
     g_DebugLevelAndQuestSelectState.dwRow = 0;
     g_DebugLevelAndQuestSelectState.adwValue[0] = 0;

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
@@ -16,7 +17,7 @@ void ExitMainMenuScreen(void)
     FreeAllParticles();
     UnreserveObjPaletteSlot(0);
     FreeAllActors(&g_ActiveActorListState.pHead);
-    sub_08007A90();
+    ResetBgLayers();
     ResetPaletteAnimations();
     g_dwPendingGameMode.dwCurrentGameModeArg1 = 0;
 }

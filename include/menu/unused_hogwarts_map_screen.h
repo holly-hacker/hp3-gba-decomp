@@ -18,7 +18,7 @@ extern const ActorGfxRecord g_UnusedHogwartsMapEntryGfx;                        
 
 extern u32 g_dwUnusedHogwartsMapShownBg;  // 0x03003A50: entry whose background was loaded last
 extern Actor *g_pUnusedHogwartsMapCursor;  // 0x03003A54
-extern void *g_pUnusedHogwartsMapBg1Tilemap;  // 0x03003A58: LoadBgGraphic result for BG1
+extern const u16 *g_pUnusedHogwartsMapBg1Tilemap;  // 0x03003A58: LoadBgGraphic result for BG1
 extern Actor *g_apUnusedHogwartsMapActors[UNUSED_HOGWARTS_MAP_ENTRY_COUNT];  // 0x03003A60
 
 extern void InitializeUnusedHogwartsMapScreen(void);

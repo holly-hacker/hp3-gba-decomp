@@ -397,7 +397,6 @@ extern void FreeAllParticles(void);
 extern void sub_08031668(s32 arg0, s32 arg1);
 extern void sub_08026254(void);
 extern void FreeFloorEffect(void);
-extern void sub_08007A90(void);
 extern void ClearFighterActorFlag_candidate(u8 fighterIndex);  // 0x08012CB4
 extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes); see docs/formats/save.md
 

@@ -154,5 +154,4 @@ extern void FreeRoomSharedTileset(void);
 extern void sub_0802B210(void);
 extern void sub_0802B08C(void);
 extern void sub_08024918(void);
-extern void sub_08007AA8(u32 arg0);
 extern void sub_080203CC(void);
