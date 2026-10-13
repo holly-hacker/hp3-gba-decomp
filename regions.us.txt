@@ -419,7 +419,7 @@ c-file 0x0800BC6C _ src/room/actors/spawn_chest_actor.c SpawnChestActor
 c-file 0x0800BDCC _ src/room/actors/tick_chest_actor.c TickChestActor
 c-file 0x0800BF20 _ src/room/actors/handle_chest_touch.c HandleChestTouch
 
-# Loading screen mode
+# Choose party member(s)
 c-file 0x0800C0FC _ src/gamemode/modes/loading_screen/initialize_loading_screen.c InitializeLoadingScreen
 c-file 0x0800C248 0x0800C344 src/gamemode/modes/loading_screen/update_loading_screen.c UpdateLoadingScreen
 thumb-func 0x0800C344 sub_0800C344
