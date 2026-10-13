@@ -175,12 +175,12 @@ asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
 asm-file 0x080063B4 _ asm/find_free_obj_tile_run.s    FindFreeObjTileRun
 asm-file 0x08006440 _ asm/sort_actors_by_depth.s  SortActorsByDepth
-c-file 0x08006508 0x080065D4 src/background/load_bg_graphic_tiles.c LoadBgGraphicTiles
-thumb-func 0x080065D4 LoadGraphicBlobTiles
+c-file 0x08006508 _ src/background/load_bg_graphic_tiles.c LoadBgGraphicTiles
+c-file 0x080065D4 _ src/background/load_graphic_blob_tiles.c LoadGraphicBlobTiles
 c-file 0x080066BC 0x08006788 src/background/get_graphic_blob_tile_load.c GetGraphicBlobTileLoad
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
-thumb-func 0x08006A98 sub_08006A98
-thumb-func 0x08006C00 CopyBgTilemapRect
+c-file 0x08006A98 _ src/background/copy_bg_tilemap_rect_by_cell.c CopyBgTilemapRectByCell
+c-file 0x08006C00 _ src/background/copy_bg_tilemap_rect.c CopyBgTilemapRect
 c-file 0x08006EF4 _ src/background/tick_bg_layers.c TickBgLayers
 
 c-file 0x08007130 _ src/background/commit_bg_layers.c CommitBgLayers
@@ -189,8 +189,8 @@ c-file 0x080072B0 _ src/background/init_background.c InitBackground
 c-file 0x080072D0 _ src/background/set_bg_control.c SetBgControl
 c-file 0x080072EC _ src/background/set_bg_control_register.c SetBgControlRegister
 c-file 0x08007334 _ src/background/enable_bg.c EnableBg
-c-file 0x08007348 0x0800735C src/background/disable_bg.c DisableBg
-thumb-func 0x0800735C RewriteBgControlRegisters_candidate
+c-file 0x08007348 _ src/background/disable_bg.c DisableBg
+c-file 0x0800735C _ src/background/rewrite_bg_control_registers.c RewriteBgControlRegisters
 c-file 0x0800739C _ src/background/is_bg8bpp.c IsBg8bpp
 c-file 0x080073B0 _ src/background/get_bg_mode.c GetBgMode
 c-file 0x080073BC _ src/background/reset_display_state.c ResetDisplayState
@@ -207,19 +207,19 @@ c-file 0x080075A8 _ src/background/clear_bg_tilemap_rect.c ClearBgTilemapRect
 c-file 0x080075C0 _ src/background/fill_bg_tilemap_rect.c FillBgTilemapRect
 c-file 0x080075EC _ src/background/fill_tilemap_rect.c FillTilemapRect
 c-file 0x08007628 _ src/background/fill_tilemap_rect_ascending.c FillTilemapRectAscending
-c-file 0x08007678 0x080076A4 src/background/set_bg_tilemap_rect_palette.c SetBgTilemapRectPalette
-thumb-func 0x080076A4 SetTilemapRectPalette
-c-file 0x08007714 0x08007774 src/background/get_bg_size_pixels.c GetBgSizePixels
-thumb-func 0x08007774 GetTilemapCell
+c-file 0x08007678 _ src/background/set_bg_tilemap_rect_palette.c SetBgTilemapRectPalette
+c-file 0x080076A4 _ src/background/set_tilemap_rect_palette.c SetTilemapRectPalette
+c-file 0x08007714 _ src/background/get_bg_size_pixels.c GetBgSizePixels
+c-file 0x08007774 _ src/background/get_tilemap_cell.c GetTilemapCell
 c-file 0x0800778C _ src/background/load_bg_graphic.c LoadBgGraphic
 c-file 0x080077C8 _ src/background/load_graphic_blob.c LoadGraphicBlob
 c-file 0x08007800 _ src/background/load_embedded_palette.c LoadEmbeddedPalette
 c-file 0x08007854 _ src/background/load_embedded_palette_from_row.c LoadEmbeddedPaletteFromRow
-c-file 0x080078A4 0x080078E8 src/background/get_graphic_blob_tilemap.c GetGraphicBlobTilemap
-thumb-func 0x080078E8 CopyLoadedTilemapToBuffer_candidate
+c-file 0x080078A4 _ src/background/get_graphic_blob_tilemap.c GetGraphicBlobTilemap
+c-file 0x080078E8 _ src/background/copy_loaded_tilemap_to_buffer.c CopyLoadedTilemapToBuffer
 c-file 0x0800794C _ src/background/copy_tilemap_rect.c CopyTilemapRect
-c-file 0x080079AC 0x08007A04 src/background/copy_bg_screen_rect.c CopyBgScreenRect
-thumb-func 0x08007A04 CopyLoadedTilemapRect_candidate
+c-file 0x080079AC _ src/background/copy_bg_screen_rect.c CopyBgScreenRect
+c-file 0x08007A04 _ src/background/copy_loaded_tilemap_rect.c CopyLoadedTilemapRect
 c-file 0x08007A6C _ src/background/set_bg_scroll_target.c SetBgScrollTarget
 c-file 0x08007A90 _ src/background/reset_bg_layers.c ResetBgLayers
 c-file 0x08007AA8 _ src/background/reset_bg_layer.c ResetBgLayer

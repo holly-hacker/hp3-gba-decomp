@@ -312,6 +312,35 @@ loads it just before the call, the argument was a parameter of an inlined helper
 substitutes the constant at the load. Move the call into a `static inline` helper taking that
 value. A helper index parameter also reproduces a constant that stays on one term of an index
 expression, which `i = K` assignments only imitate. Example: DrawChooseCharacterSelection, US `0x0800C3FC`.
+The same helper also stops loop.c hoisting: identical constant movables are combined into one
+pseudo that takes a register early, but `integrate.c:try_constants` folds the constant into
+`(plus reg const)` when inlined, so there is nothing to hoist (CopyBgTilemapRectByCell, US `0x08006A98`).
+
+## 34. Parameter copy and base register kept as separate pseudos
+
+When the ROM leaves a parameter's entry copy (`adds r4, r0, #0`, or `adds r0, r2, #0` in front of a
+`muls`) and parks a value in a callee-saved register that nothing needs to survive a call, combine
+did not fold the copies: the parameter pseudo is set more than once. Assign the result back to the
+parameter (`pTilemap = pTilemap + y * stride + x; return *pTilemap;`). A fresh local folds away.
+Example: GetTilemapCell, US `0x08007774`. The "set more than once" part is inferred from the RTL
+dumps, not read out of `combine.c`.
+
+## 35. Clamp written as a ternary versus set-then-override
+
+`v = 32; if (x <= 31) v = x;` loads `x` after `movs #32`. The ROM order `ldrh; movs rV,#32; cmp;
+bhi; adds rV, r0` is `v = x <= 31 ? x : 32;` with the field read in all three places.
+Example: CopyLoadedTilemapToBuffer, US `0x080078E8`.
+
+## 36. Insns that combine deletes still count
+
+`insn_count` in `loop.c:move_movables` and `REG_LIVE_LENGTH` in `flow.c` are computed before
+combine. A hoist is made only when `threshold * savings * lifetime >= insn_count` (threshold 26
+without calls), so deleted zero-extends can keep a 1x1 movable in the loop: a `u16` cell built in
+two steps (`cell = *p & 0xFFF; cell |= pal << 12; *p++ = cell;`) takes the outer loop from 24 to 28
+insns (check the `Loop from ... real insns` lines in `.loop`; SetTilemapRectPalette, US
+`0x080076A4`). The same effect lengthens a pseudo and drops its `allocno_compare` priority below a
+close neighbour: `s32 length` with `length / 2` (signed-rounding insns, removed later) put
+LoadGraphicBlobTiles's pDest ahead of length (US `0x080065D4`).
 
 ## Candidate acceptance and cleanup
 

@@ -18,6 +18,13 @@ typedef struct BgControl {
     u32 dwUnused : 16;
 } BgControl;
 
+// The same word with its register half addressable as a halfword.
+typedef union BgControlRegister {
+    BgControl bits;
+    u16 wRegister;
+    u8 abBytes[2];
+} BgControlRegister;
+
 // Sine wobble added to a layer's scroll; phases are 8.8, one sine period per 0x100 units.
 typedef struct BgWobble {
     u16 wPhaseX;
@@ -38,7 +45,7 @@ typedef struct BgTileLoadInfo {
 
 // State of one BG layer, 0x6C bytes per layer.
 typedef struct BgLayer {
-    BgControl control;    // 0x00
+    BgControlRegister control;  // 0x00
     const u16 *pTilemap;  // 0x04: LoadBgGraphic's result: u16 width, u16 height, then the cells
     u16 *pTilemapBuffer;  // 0x08
     u16 *pScreenBase;     // 0x0C: VRAM screen block selected by dwControl
@@ -94,7 +101,7 @@ extern void ResetDisplayState(u16 mode);  // DISPCNT = mode | OBJ 1D mapping, re
 extern void SetBgControl(u32 bg, u32 control);  // writes BGxCNT and enables the layer
 extern void EnableBg(u32 bg);
 extern void DisableBg(u32 bg);
-extern void RewriteBgControlRegisters_candidate(void);  // layers with BG_LAYER_COMMIT and 0x200 set
+extern void RewriteBgControlRegisters(void);  // layers with BG_LAYER_COMMIT and 0x200 set
 extern u32 IsBg8bpp(u32 bg);
 extern u32 GetBgMode(void);
 extern void SetBgMode(u16 mode);
@@ -132,10 +139,12 @@ extern u32 LoadEmbeddedPaletteFromRow(const u8 *pBlob, u32 row);
 extern void WriteBgGraphicTilemap_candidate(u32 bg, const u16 *pTilemap, u32 tileOffset, u32 palBank, s32 x, s32 y);
 extern void CopyBgTilemapRect(u32 bg, const u16 *pTilemap, u16 tileOffset, u16 palBank, u32 srcX, u32 srcY,
                               u32 dstX, u32 dstY, u32 w, u32 h);
-extern void sub_08006A98(u32 bg, const u16 *pTilemap, u16 tileOffset, u16 palBank, u32 srcX, u32 srcY, u32 dstX,
-                         u32 dstY, u32 w, u32 h);
-extern void CopyLoadedTilemapToBuffer_candidate(u32 bg);
-extern void CopyLoadedTilemapRect_candidate(u32 bg, s32 w, s32 h, u32 srcX, u32 srcY, u32 dstX, u32 dstY);
+// Same arguments as CopyBgTilemapRect, but addresses each cell through the layer size and has no
+// affine-BG path.
+extern void CopyBgTilemapRectByCell(u32 bg, const u16 *pTilemap, u16 tileOffset, u16 palBank, u32 srcX,
+                                    u32 srcY, u32 dstX, u32 dstY, u32 w, u32 h);
+extern void CopyLoadedTilemapToBuffer(u32 bg);
+extern void CopyLoadedTilemapRect(u32 bg, s32 w, s32 h, u32 srcX, u32 srcY, u32 dstX, u32 dstY);
 extern void CopyBgScreenRect(u32 bg, s32 w, s32 h, u32 srcX, u32 srcY, u32 dstX, u32 dstY);
 extern void CopyTilemapRect(s32 w, s32 h, u32 srcX, u32 srcY, u32 srcStride, const u16 *pSrc, u32 dstX, u32 dstY,
                             u32 dstStride, u16 *pDest);
@@ -173,7 +182,7 @@ extern void SetBgWobbleSpeed(u32 bg, s32 speedX, s32 speedY);
 extern void SetBgWobbleAmplitude(u32 bg, s32 ampX, s32 ampY);
 
 // BgState.dwFlags helpers. Nothing in the ROM calls them or reads the word: bit 0 is only touched
-// by the Flag0 pair, bits 1-4 are only set by CopyLoadedTilemapToBuffer_candidate.
+// by the Flag0 pair, bits 1-4 are only set by CopyLoadedTilemapToBuffer.
 extern void ClearBgStateFlag0(void);
 extern void SetBgStateFlag0(void);
 extern u32 TestBgStateFlags(u32 mask);

@@ -38,7 +38,7 @@ void InitializeOwlCareKitScreen(void)
     SetBgControl(3, g_dwOwlCareBg3Control);
     g_BgState.aLayers[3].pTilemap = LoadBgGraphic(3, gOwlCareGraphic001, 0, 0, 0, 0);
     SetBgControl(2, g_dwOwlCareBg2Control);
-    sub_08006A98(2, g_BgState.aLayers[3].pTilemap, 0, 0, 0, 0, 0, 0, 30, 20);
+    CopyBgTilemapRectByCell(2, g_BgState.aLayers[3].pTilemap, 0, 0, 0, 0, 0, 0, 30, 20);
     SetBgControl(1, g_dwOwlCareBg1Control);
     LoadBgGraphic(1, gOwlCareGraphic002, 0x28, 0, 0, 0);
     SetBgControl(0, bgControl);

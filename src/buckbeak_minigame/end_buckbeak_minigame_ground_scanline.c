@@ -8,6 +8,6 @@ void EndBuckbeakMinigameGroundScanline(u32 *pPayload0, u32 *pPayload1)
 {
     SetBgMode(0);
     SetBgControlRegister(2, g_dwBuckbeakMinigameBg2GroundControl);
-    RewriteBgControlRegisters_candidate();
+    RewriteBgControlRegisters();
     SetBgScroll(2, g_pBuckbeakMinigame->dwHeading.parts.wWhole * 3, 0x20);
 }

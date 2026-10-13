@@ -9,10 +9,10 @@ void FillBgTilemap(u32 bg, u16 tile, u16 color)
     u16 fill;
 
     FillBgTile(bg, tile, color);
-    if (!pLayer->control.b8bpp)
+    if (!pLayer->control.bits.b8bpp)
         tile |= (color >> 4) << 12;
 
-    switch (pLayer->control.bSize)
+    switch (pLayer->control.bits.bSize)
     {
     case 0:
         size = 0x800;

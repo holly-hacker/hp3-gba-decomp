@@ -41,7 +41,7 @@ const u16 *GetGraphicBlobTileLoad(u32 bg, const u8 *pBlob, u16 tileOffset, BgTil
             pData = (const u8 *)pTilemap + (cells * 2 + 4);
         }
 
-        pDest = (u8 *)VRAM_BASE + pLayer->control.bCharBlock * 0x4000;
+        pDest = (u8 *)VRAM_BASE + pLayer->control.bits.bCharBlock * 0x4000;
         pInfo->pDest = pDest;
         if (!(pBlob[0] & 0x80))
             pInfo->pDest = pDest + tileOffset * 32;

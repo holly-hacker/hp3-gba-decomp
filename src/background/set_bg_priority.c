@@ -6,6 +6,6 @@ void SetBgPriority(u32 bg, u8 priority)
 {
     BgLayer *pLayer = &g_BgState.aLayers[bg];
 
-    pLayer->control.bPriority = priority;
-    REG_BGCNT(bg) = *(u16 *)&pLayer->control;
+    pLayer->control.bits.bPriority = priority;
+    REG_BGCNT(bg) = pLayer->control.wRegister;
 }

@@ -3,7 +3,7 @@
 
 void GetBgSizePixels(u32 bg, u16 *pWidth, u16 *pHeight)
 {
-    switch (g_BgState.aLayers[bg].control.bSize)
+    switch (g_BgState.aLayers[bg].control.bits.bSize)
     {
     case 1:
         *pWidth = 0x200;

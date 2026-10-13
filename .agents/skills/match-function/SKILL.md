@@ -114,9 +114,11 @@ Re-read the entries in [troubleshooting.md](references/troubleshooting.md) that 
 | Branch layout, switch shape, duplicated/shared checks | 4–5, 7, 10–11, 29 |
 | Spills, wrong registers, unexpected local reuse, constant held in a register | 6, 8–9, 13–15, 25–27, 32 |
 | Unexplained load before a store | 31 |
-| Loop initialization, copies, hoisted loads or constants, extra pre-loop test, late base-register copy | 12, 16–19, 23, 28, 30 |
+| Loop initialization, copies, hoisted loads or constants, extra pre-loop test, late base-register copy | 12, 16–19, 23, 28, 30, 33 |
 | Pool entries, switch layout, argument extension | 20–22 |
 | Constant argument materialized after the stack stores | 33 |
+| Parameter copy left in place, clamp load order | 34–35 |
+| Invariant hoisted versus ROM, or a close allocation priority tie | 36 |
 
 After several experiments fail to explain the same difference, stop respelling blindly.
 Revisit the outer control-flow split, types, caching, loop form and compiler context.

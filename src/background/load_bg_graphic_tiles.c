@@ -34,7 +34,7 @@ const u16 *LoadBgGraphicTiles(u32 bg, const u8 *pBlob, u16 tileOffset, u16 palBa
             pData = (const u8 *)pTilemap + (cells * 2 + 4);
         }
 
-        pDest = (u8 *)VRAM_BASE + pLayer->control.bCharBlock * 0x4000;
+        pDest = (u8 *)VRAM_BASE + pLayer->control.bits.bCharBlock * 0x4000;
         if (!(pBlob[0] & 0x80))
             pDest += tileOffset * 32;
         else
