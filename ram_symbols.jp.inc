@@ -100,8 +100,8 @@
 .set g_DebugCollectorCardsState,      0x03002238
 
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
-.set g_LoadingScreenState,         0x03002260  @ see ram_symbols.us.inc
-.set g_dwLoadingScreenBgRow,       0x0300227C  @ see ram_symbols.us.inc
+.set g_ChooseCharacterState,       0x03002260  @ see ram_symbols.us.inc
+.set g_dwChooseCharacterBgRow,     0x0300227C  @ see ram_symbols.us.inc
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset

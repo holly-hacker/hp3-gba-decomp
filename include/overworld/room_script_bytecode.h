@@ -41,7 +41,7 @@ enum RoomScriptOpcode {
     RSOP_CancelActorAnimSequence = 33,
     RSOP_SetTileActorAnimStateWithSpeed = 34,
     RSOP_PatchRoomBackgroundTile = 35,
-    RSOP_ShowLoadingScreenTransition = 36,
+    RSOP_ShowChooseCharacter = 36,
     RSOP_PlayScreenTransitionOut = 37,
     RSOP_PlayScreenTransitionIn = 38,
     RSOP_RecruitPartyFollower = 39,

@@ -400,7 +400,7 @@ Room05V1Chain16:
     SetDefeatWarpSelector 18 @ Hogwarts Express - Baggage Car
     DelayedRespawnRowAndRunChainFrames 0, Room05V1Group17_id, 0
     QueueTileActorMove Room05V1Group17_id, 8, 0, 0, 1200, 0
-    ShowLoadingScreenTransition 9, 10, 32, 255
+    ShowChooseCharacter 9, 10, 32, 255
     PlayScreenTransitionOut
     GotoIfStoryStageCompare 0, 9, Room05V1Chain15_id, Room05V1Chain14_id, 0, 0
     SetTileActorAnimStateWithSpeed 0, 255

@@ -267,7 +267,7 @@ Room25V1Chain3:
     @ "Hermione, I'll go this way. Maybe you could try looking around for a faster route?"
     @ "Okay. I'll meet up with you at the tower."
     ShowRoomDialog 606
-    ShowLoadingScreenTransition 27, 28, 32, 255
+    ShowChooseCharacter 27, 28, 32, 255
     GotoIfStoryStageCompare 0, 27, Room25V1Chain43_id, 0, 0, 0
     GotoIfStoryStageCompare 0, 28, Room25V1Chain44_id, 0, 0, 0
     End
@@ -304,7 +304,7 @@ Room25V1Chain6:
     @ "I bet I can get through very quickly this way. Why don't you peek around the other side and see if there's anything you missed?"
     @ "Okay. I'll meet up with you at the tower."
     ShowRoomDialog 607
-    ShowLoadingScreenTransition 27, 28, 32, 255
+    ShowChooseCharacter 27, 28, 32, 255
     GotoIfStoryStageCompare 0, 27, Room25V1Chain4_id, 0, 0, 0
     GotoIfStoryStageCompare 0, 28, Room25V1Chain5_id, 0, 0, 0
     End

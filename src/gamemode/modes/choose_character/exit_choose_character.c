@@ -4,26 +4,26 @@
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "menu/dialog.h"
-#include "menu/loading_screen.h"
+#include "menu/choose_character.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 
-void ExitLoadingScreen(void)
+void ExitChooseCharacter(void)
 {
     s32 i;
 
     ClearScanlineEffects();
     StopScanlineEffects();
     bios_CPUFastSet(g_awSavedBgPalette0, BG_PLTT, 8);
-    SetBgPriority(2, g_LoadingScreenState.bSavedBg2Priority);
+    SetBgPriority(2, g_ChooseCharacterState.bSavedBg2Priority);
     g_abQuestEventState[0x12] = g_abQuestEventState[0];
     SetActorActionState(g_pPlayerActor, 0x21);
     sub_0801FA9C();
     HideScreenWindow_candidate(0);
 
-    FreeActor(g_LoadingScreenState.pCursorActor);
-    for (i = 0; i < LOADING_SCREEN_OPTION_COUNT; i++)
-        FreeActor(g_LoadingScreenState.apOptionActors[i]);
+    FreeActor(g_ChooseCharacterState.pCursorActor);
+    for (i = 0; i < CHOOSE_CHARACTER_OPTION_COUNT; i++)
+        FreeActor(g_ChooseCharacterState.apOptionActors[i]);
 
     ReserveObjPaletteSlot(1);
     ReserveObjPaletteSlot(2);

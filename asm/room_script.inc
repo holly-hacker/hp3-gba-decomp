@@ -131,7 +131,7 @@
 .set RSOP_CancelActorAnimSequence, 33
 .set RSOP_SetTileActorAnimStateWithSpeed, 34
 .set RSOP_PatchRoomBackgroundTile, 35
-.set RSOP_ShowLoadingScreenTransition, 36
+.set RSOP_ShowChooseCharacter, 36
 .set RSOP_PlayScreenTransitionOut, 37
 .set RSOP_PlayScreenTransitionIn, 38
 .set RSOP_RecruitPartyFollower, 39
@@ -333,8 +333,8 @@
     .byte RSOP_PatchRoomBackgroundTile, 0, 0, 0, (((\x) >> 0) & 0xFF), (((\x) >> 8) & 0xFF), (((\y) >> 0) & 0xFF), (((\y) >> 8) & 0xFF), (((\tileId) >> 0) & 0xFF), (((\tileId) >> 8) & 0xFF), (\layer), (\unused)
 .endm
 
-.macro ShowLoadingScreenTransition modeArg1, modeArg2, modeArg3, unused
-    .byte RSOP_ShowLoadingScreenTransition, 0, 0, 0, (\modeArg1), (\modeArg2), (\modeArg3), (\unused)
+.macro ShowChooseCharacter modeArg1, modeArg2, modeArg3, unused
+    .byte RSOP_ShowChooseCharacter, 0, 0, 0, (\modeArg1), (\modeArg2), (\modeArg3), (\unused)
 .endm
 
 .macro PlayScreenTransitionOut

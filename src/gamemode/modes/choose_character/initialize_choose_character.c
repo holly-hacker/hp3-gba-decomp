@@ -6,13 +6,13 @@
 #include "graphics/scanline_effects.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "menu/loading_screen.h"
+#include "menu/choose_character.h"
 #include "menu/main_menu.h"
 #include "menu/dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 
-void InitializeLoadingScreen(void)
+void InitializeChooseCharacter(void)
 {
     s32 stageRow;
     s32 bgRow;
@@ -21,18 +21,18 @@ void InitializeLoadingScreen(void)
         SetAlphaBlendTargets(0, 0);
 
     bios_CPUSet(BG_PLTT, g_awSavedBgPalette0, 0x10);
-    g_LoadingScreenState.bSavedBg2Priority = REG_BG2CNT & 3;
+    g_ChooseCharacterState.bSavedBg2Priority = REG_BG2CNT & 3;
     sub_08024BD4();
     bgRow = sub_0800C6D0();
-    g_dwLoadingScreenBgRow = bgRow;
+    g_dwChooseCharacterBgRow = bgRow;
 
     REG_WININ = (REG_WININ & 0xFF00) | 0x14;
     REG_WINOUT = (REG_WINOUT & 0xFF00) | 0x3F;
     SetScreenWindowRect_candidate(0, 0, 0x400000, 0xF00000, 0x800000);
 
-    g_LoadingScreenState.pBgTilemap =
-        LoadBgGraphic(2, gMenuPanel001, 0x200, 0, 0, g_dwLoadingScreenBgRow);
-    QueueScanlineEffectTable(g_aLoadingScreenScanlineEffects, 2);
+    g_ChooseCharacterState.pBgTilemap =
+        LoadBgGraphic(2, gMenuPanel001, 0x200, 0, 0, g_dwChooseCharacterBgRow);
+    QueueScanlineEffectTable(g_aChooseCharacterScanlineEffects, 2);
     while (!IsScanlineEffectQueueIdle())
         ;
     StartScanlineEffects();
@@ -41,17 +41,17 @@ void InitializeLoadingScreen(void)
 
     for (stageRow = 0; ; stageRow++)
     {
-        if (g_LoadingScreenTables.abStages[stageRow] == g_abQuestEventState[0])
+        if (g_ChooseCharacterTables.abStages[stageRow] == g_abQuestEventState[0])
         {
-            g_LoadingScreenState.bStageRow = stageRow;
+            g_ChooseCharacterState.bStageRow = stageRow;
             break;
         }
     }
 
-    g_LoadingScreenState.abOptionStage[0] = g_GameModeStackContext.dwCurrentGameModeArg1;
-    g_LoadingScreenState.abOptionStage[1] = g_GameModeStackContext.dwCurrentGameModeArg2;
-    g_LoadingScreenState.abOptionStage[2] = g_GameModeStackContext.dwCurrentGameModeArg3;
-    g_LoadingScreenState.pCursorActor = SpawnMenuCursorActor(1);
+    g_ChooseCharacterState.abOptionStage[0] = g_GameModeStackContext.dwCurrentGameModeArg1;
+    g_ChooseCharacterState.abOptionStage[1] = g_GameModeStackContext.dwCurrentGameModeArg2;
+    g_ChooseCharacterState.abOptionStage[2] = g_GameModeStackContext.dwCurrentGameModeArg3;
+    g_ChooseCharacterState.pCursorActor = SpawnMenuCursorActor(1);
     sub_0800C344();
 
     g_GameModeStackContext.dwModeState = 0;
@@ -61,5 +61,5 @@ void InitializeLoadingScreen(void)
     g_GameModeStackContext.dwModeTimer = 5;
     sub_0800C3FC();
     SetBgPriority(2, 0);
-    g_LoadingScreenState.bInputDelay = 10;
+    g_ChooseCharacterState.bInputDelay = 10;
 }

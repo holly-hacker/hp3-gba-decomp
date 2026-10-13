@@ -609,7 +609,7 @@ Room42V3Chain8:
     @ "Now you must choose who you want in your party. Ron or Hermione will join you until you complete a given task. Each character has additional spells that can be accessed with the L and R Buttons. You can also equip additional party members and access their statistics by pressing START (which brings up the Main Menu)."
     ShowRoomDialog 621
     QueueTileActorMove Room42V3Group0_id, 7, 0, 0, 1200, 0
-    ShowLoadingScreenTransition 6, 7, 32, 255
+    ShowChooseCharacter 6, 7, 32, 255
     QueueTileActorMove 0, 255, 0, 0, 1200, 0
     SetTileActorAnimStateWithSpeed 0, 255
     InvokeChainIfEnabled 0, Room42V3Chain35_id

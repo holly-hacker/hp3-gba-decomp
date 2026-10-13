@@ -328,7 +328,7 @@ Room45V1Chain25:
     SetTileActorFacing 0, 255, 4
     DelayedRespawnRowAndRunChainFrames 4, 0, 0
     QueueTileActorMove Room45V1Group0_id, 4, 0, 0, 1500, 0
-    ShowLoadingScreenTransition 29, 30, 32, 255
+    ShowChooseCharacter 29, 30, 32, 255
     GotoIfStoryStageCompare 0, 29, Room45V1Chain26_id, 0, 0, 0
     GotoIfStoryStageCompare 0, 30, Room45V1Chain27_id, 0, 0, 0
     End

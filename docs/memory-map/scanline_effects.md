@@ -53,14 +53,14 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 ## Users, PROVEN (call sites)
 
 - `QueueScanlineEffectTable` + `StartScanlineEffects` (+ `IsScanlineEffectQueueIdle`
-  spin): `InitializeLoadingScreen`, `InitBattleBackground_candidate`,
+  spin): `InitializeChooseCharacter`, `InitBattleBackground_candidate`,
   `InitializeDialogue`, `InitializeLupinPotionCutscene`, `InitFloorEffect`; the table
   alone from `sub_08008E88`, `sub_08012A00`, `sub_08012B40`, `sub_08018CF8`.
 - Battle script op `0x80` (`QueueScanlineEffect`, handler `0x0801A208`) queues one
   of the ROM tables at `0x08053B08`; see
   [`../formats/battle_scripts.md`](../formats/battle_scripts.md).
-- `ClearScanlineEffects`: `ExitLoadingScreen`, `ExitDialogue`, `ExitMinigameMenu`,
-  `FreeFloorEffect`. `StopScanlineEffects`: the debug-menu, loading-screen, dialogue,
+- `ClearScanlineEffects`: `ExitChooseCharacter`, `ExitDialogue`, `ExitMinigameMenu`,
+  `FreeFloorEffect`. `StopScanlineEffects`: the debug-menu, choose-character, dialogue,
   Lupin-potion, overworld and Wizard Cracker Pop-It exit/init paths.
 
 ## UNCONFIRMED

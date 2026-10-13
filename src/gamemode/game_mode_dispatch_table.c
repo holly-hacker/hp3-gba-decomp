@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 
-extern void ExitLoadingScreen();
+extern void ExitChooseCharacter();
 extern void ExitCardComboDescription();
 extern void ExitCardTrade();
 extern void ExitClockSkipCutscene();
@@ -68,7 +68,7 @@ extern void HandleOwlCareKitScreenExit();
 extern void HandleOwlCareKitScreenTick();
 extern void HandleSaveLoadContinuation();
 extern void InitializeBattle();
-extern void InitializeLoadingScreen();
+extern void InitializeChooseCharacter();
 extern void InitializeCardComboDescription();
 extern void InitializeCardTrade();
 extern void InitializeClockSkipCutscene();
@@ -131,7 +131,7 @@ extern void InitializeWizardCrackerPopItDifficultySelect();
 extern void InitializeTopicScreen();
 extern void InitializeWizardCrackerPopItMinigame();
 extern void UpdateBattle();
-extern void UpdateLoadingScreen();
+extern void UpdateChooseCharacter();
 extern void UpdateCardComboDescription();
 extern void UpdateCardTrade();
 extern void UpdateClockSkipCutscene();
@@ -215,7 +215,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeHelp, UpdateHelp, ExitHelpScreen },
     { InitializeDialogue, UpdateDialogueBox, ExitDialogue },
     { InitializeDebugMenuMain, UpdateDebugMenuMain, ExitDebugMenuMain },
-    { InitializeLoadingScreen, UpdateLoadingScreen, ExitLoadingScreen },
+    { InitializeChooseCharacter, UpdateChooseCharacter, ExitChooseCharacter },
     { InitializeWizardCrackerPopItMinigame, UpdateWizardCrackerPopItMinigame, ExitWizardCrackerPopItMinigame },
     { InitializeDivinationTeaMinigame, UpdateDivinationTeaMinigame, ExitDivinationTeaMinigame },
     { InitializeHighScoreNameEntryScreen, UpdateHighScoreNameEntry, ExitHighScoreNameEntry },

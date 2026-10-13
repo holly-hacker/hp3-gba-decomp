@@ -1,7 +1,7 @@
 #include "types.h"
-#include "menu/loading_screen.h"
+#include "menu/choose_character.h"
 
-const LoadingScreenTables g_LoadingScreenTables = {
+const ChooseCharacterTables g_ChooseCharacterTables = {
     { 0x00, 0x05, 0x08, 0x04, 0x16, 0x1A, 0xFF },
     {
         { 2, 4, 0, 0x6 },

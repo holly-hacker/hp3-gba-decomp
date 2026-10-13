@@ -13,7 +13,7 @@ extern u8 g_bSaveSlotScreenResult;  // 0x03005DC4
 
 extern void ReleaseMenuCursor(Actor *pActor);
 // Spawns a shared menu cursor sprite; kind selects its graphics and setup
-// (4 the list cursor, 2 the quantity arrows, 0/1 dialog and loading screen).
+// (4 the list cursor, 2 the quantity arrows, 0/1 dialog and choose-character screen).
 extern Actor *SpawnMenuCursorActor(u32 kind);
 
 extern void InitializeSaveSlotScreen_candidate(u32 titleStringId);

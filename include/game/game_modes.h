@@ -30,7 +30,7 @@ typedef enum {
     Help                             = 0x17,
     Dialogue                         = 0x18,
     DebugMenuMain                    = 0x19,
-    LoadingScreen                    = 0x1A,
+    ChooseCharacter                  = 0x1A,
     WizardCrackerPopItMinigame       = 0x1B,
     DivinationTeaMinigame            = 0x1C,
     HighScoreNameEntryUnused         = 0x1D,

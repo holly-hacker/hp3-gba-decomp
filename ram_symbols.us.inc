@@ -111,8 +111,8 @@
 .set g_DebugCollectorCardsState,      0x03002238  @ DebugCollectorCardsState: {Actor *pCardActor; u32 dwSelection}; see include/menu/debug_menu.h
 
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
-.set g_LoadingScreenState,         0x03002260  @ LoadingScreenState; see include/menu/loading_screen.h
-.set g_dwLoadingScreenBgRow,       0x0300227C  @ u32: BG2 tile row of the loading screen panel
+.set g_ChooseCharacterState,       0x03002260  @ ChooseCharacterState; see include/menu/choose_character.h
+.set g_dwChooseCharacterBgRow,     0x0300227C  @ u32: BG2 tile row of the choose-character screen panel
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
@@ -186,7 +186,7 @@
 .set g_HarryVsDementors,                               0x03002E18  @ HarryVsDementorsState
 .set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/menu/dialog.h
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8  @ u8 *: 0x400-byte buffer, allocated by InitDialogBox
-.set g_awSavedBgPalette0,                              0x03002EAC  @ u16[16]: BG palette bank 0 saved by InitializeDialogue and InitializeLoadingScreen, restored by their exits
+.set g_awSavedBgPalette0,                              0x03002EAC  @ u16[16]: BG palette bank 0 saved by InitializeDialogue and InitializeChooseCharacter, restored by their exits
 .set g_adwSavedBgPriority,                             0x03002ED0  @ u32[2]: BG0/BG1 priority saved by InitializeDialogue, restored by ExitDialogue
 .set g_dwDialogTextId,                                 0x03002ED8  @ u32: dialog string id of the line being shown
 .set g_dwDialogTextEntry,                              0x03002EDC  @ u32: first word of the dialog text table entry for g_dwDialogTextId

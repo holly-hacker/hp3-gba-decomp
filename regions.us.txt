@@ -420,11 +420,11 @@ c-file 0x0800BDCC _ src/room/actors/tick_chest_actor.c TickChestActor
 c-file 0x0800BF20 _ src/room/actors/handle_chest_touch.c HandleChestTouch
 
 # Choose party member(s)
-c-file 0x0800C0FC _ src/gamemode/modes/loading_screen/initialize_loading_screen.c InitializeLoadingScreen
-c-file 0x0800C248 0x0800C344 src/gamemode/modes/loading_screen/update_loading_screen.c UpdateLoadingScreen
+c-file 0x0800C0FC _ src/gamemode/modes/choose_character/initialize_choose_character.c InitializeChooseCharacter
+c-file 0x0800C248 0x0800C344 src/gamemode/modes/choose_character/update_choose_character.c UpdateChooseCharacter
 thumb-func 0x0800C344 sub_0800C344
 thumb-func 0x0800C3FC sub_0800C3FC
-c-file 0x0800C590 0x0800C618 src/gamemode/modes/loading_screen/exit_loading_screen.c ExitLoadingScreen
+c-file 0x0800C590 0x0800C618 src/gamemode/modes/choose_character/exit_choose_character.c ExitChooseCharacter
 thumb-func 0x0800C618 sub_0800C618
 thumb-func 0x0800C674 sub_0800C674
 thumb-func 0x0800C6D0 sub_0800C6D0
@@ -715,7 +715,7 @@ c-file 0x0801CAFC _ src/room/opcodes/room_script_op_copy_quest_state.c RoomScrip
 c-file 0x0801CB10 _ src/room/opcodes/room_script_op_cancel_actor_anim_sequence.c RoomScriptOpCancelActorAnimSequence
 c-file 0x0801CB70 _ src/room/opcodes/room_script_op_set_tile_actor_anim_state_with_speed.c RoomScriptOpSetTileActorAnimStateWithSpeed
 c-file 0x0801CB9C _ src/room/opcodes/room_script_op_patch_room_background_tile.c RoomScriptOpPatchRoomBackgroundTile
-c-file 0x0801CBB4 _ src/room/opcodes/room_script_op_show_loading_screen_transition.c RoomScriptOpShowLoadingScreenTransition
+c-file 0x0801CBB4 _ src/room/opcodes/room_script_op_show_choose_character.c RoomScriptOpShowChooseCharacter
 c-file 0x0801CBE8 _ src/room/opcodes/room_script_op_play_screen_transition_out.c RoomScriptOpPlayScreenTransitionOut
 c-file 0x0801CBF8 _ src/room/opcodes/room_script_op_play_screen_transition_in.c RoomScriptOpPlayScreenTransitionIn
 c-file 0x0801CC08 _ src/room/opcodes/room_script_op_recruit_party_follower.c RoomScriptOpRecruitPartyFollower
@@ -2421,9 +2421,9 @@ c-file 0x0804CE8C _ src/gamemode/modes/debug/debug_sound_test_menu/debug_sound_t
 c-file 0x0804CEB8 _ src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
 c-file 0x0804CEC4 _ src/menu/debug_collector_card_names.c sDebugCollectorCardNames
 c-file 0x0804D524 _ src/room/actors/spawn_chest_actor.globals.c g_RoomChestSprite
-c-file 0x0804D6CC 0x0804D6EC src/gamemode/modes/loading_screen/loading_screen_stages.globals.c g_LoadingScreenTables
-label 0x0804D76A g_abLoadingScreenTwoOptions
-c-file 0x0804D770 0x0804D790 src/gamemode/modes/loading_screen/loading_screen_effects.globals.c g_aLoadingScreenScanlineEffects
+c-file 0x0804D6CC 0x0804D6EC src/gamemode/modes/choose_character/choose_character_stages.globals.c g_ChooseCharacterTables
+label 0x0804D76A g_abChooseCharacterTwoOptions
+c-file 0x0804D770 0x0804D790 src/gamemode/modes/choose_character/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
 c-file 0x0804D798 0x0804D7F8 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D824 0x0804E074 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804E09C _ src/battle/battle_backgrounds.c g_aBattleBackgroundPairs

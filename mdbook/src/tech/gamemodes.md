@@ -99,7 +99,7 @@ Arguments:
 
 ### `DebugMenuMain` (0x19)
 
-### `LoadingScreen` (0x1A)
+### `ChooseCharacter` (0x1A)
 
 ### `WizardCrackerPopItMinigame` (0x1B)
 

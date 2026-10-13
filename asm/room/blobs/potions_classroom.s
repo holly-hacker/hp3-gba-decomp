@@ -513,7 +513,7 @@ Room01V1Chain42:
     @ "I require a volunteer to gather ingredients for this potion."
     ShowRoomDialog 296
     SetQuestState QUEST_OBJ_FIND_POTION_INGREDIENTS, QUEST_OBJECTIVE_INDEX
-    ShowLoadingScreenTransition 5, 6, 32, 255
+    ShowChooseCharacter 5, 6, 32, 255
     GotoIfStoryStageCompare 0, 5, Room01V1Chain9_id, Room01V1Chain8_id, 0, 0
     End
 Room01V1Chain43:
