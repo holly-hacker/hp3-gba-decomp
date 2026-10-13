@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Load tools/rom_layout.json: the ROM's areas and its code blocks.
 
-Areas split each ROM into code and data ranges. Blocks are contiguous,
-named runs of code (one subsystem or screen each) that tile the code areas;
-a block ends where the next one starts, or at the end of its area. Both are
-analysis-only groupings for tools such as coverage.py and progress_report.py,
-not build inputs.
+Areas split each ROM into code and data ranges; each area ends where the
+next starts, the last at `end`. Blocks are contiguous, named runs of
+code (one subsystem or screen each) that tile the code areas; a block ends
+where the next one starts, or at the end of its area. Every entry carries a
+`us` and `jp` address. Both are analysis-only groupings for tools such as
+coverage.py and progress_report.py, not build inputs.
 """
 import json
 import os
@@ -37,14 +38,12 @@ class Block:
 def load(ver: str) -> tuple[list[Area], list[Block]]:
     """Returns the areas and blocks of `ver`, sorted by address."""
     with open(LAYOUT_PATH) as f:
-        layout = json.load(f)[ver]
-    areas = [Area(a["name"], int(a["start"], 16), int(a["end"], 16))
-             for a in layout["areas"]]
-    for a, b in zip(areas, areas[1:]):
-        if a.end != b.start:
-            raise ValueError(f"{ver}: areas {a.name!r} and {b.name!r} are not adjacent")
+        layout = json.load(f)
+    starts = [int(a[ver], 16) for a in layout["areas"]]
+    ends = starts[1:] + [int(layout["end"][ver], 16)]
+    areas = [Area(a["name"], s, e) for a, s, e in zip(layout["areas"], starts, ends)]
 
-    starts = [(int(b["start"], 16), b["name"], b.get("category", DEFAULT_CATEGORY))
+    starts = [(int(b[ver], 16), b["name"], b.get("category", DEFAULT_CATEGORY))
               for b in layout["blocks"]]
     if starts != sorted(starts):
         raise ValueError(f"{ver}: blocks are not sorted by address")
