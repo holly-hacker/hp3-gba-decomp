@@ -218,9 +218,9 @@ thumb-func 0x080066BC sub_080066BC
 thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
 thumb-func 0x08006A98 sub_08006A98
 thumb-func 0x08006C00 CopyBgTilemapRect
-c-file 0x08006EF4 0x08007130 src/graphics/bg/tick_bg_layers.c TickBgLayers_candidate
+c-file 0x08006EF4 0x08007130 src/background/tick_bg_layers.c TickBgLayers_candidate
 thumb-func 0x08007130 sub_08007130
-c-file 0x08007228 0x080072B0 src/graphics/bg/apply_bg_layer_wobble.c ApplyBgLayerWobble
+c-file 0x08007228 0x080072B0 src/background/apply_bg_layer_wobble.c ApplyBgLayerWobble
 thumb-func 0x080072B0 sub_080072B0
 thumb-func 0x080072D0 SetBgControl
 thumb-func 0x080072EC SetBgControlRegister_candidate
@@ -286,7 +286,7 @@ thumb-func 0x08007E88 sub_08007E88
 thumb-func 0x08007EA0 sub_08007EA0
 thumb-func 0x08007EB8 SetBgPriority
 thumb-func 0x08007EF0 sub_08007EF0
-c-file 0x08007F20 0x08007F84 src/graphics/unpack_tile_data.c UnpackTileData
+c-file 0x08007F20 0x08007F84 src/background/unpack_tile_data.c UnpackTileData
 thumb-func 0x08007F84 sub_08007F84
 thumb-func 0x08007FA8 sub_08007FA8
 thumb-func 0x08007FFC sub_08007FFC

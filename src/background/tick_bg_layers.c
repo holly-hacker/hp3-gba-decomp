@@ -1,6 +1,6 @@
 #include "types.h"
 #include "math.h"
-#include "graphics/display.h"
+#include "background.h"
 
 // Steps each active BG layer: scroll tween or drift, wobble, zoom bounce and rotation, and
 // rebuilds the affine matrix when it changed. Layers with BG_LAYER_COMMIT set are written to the

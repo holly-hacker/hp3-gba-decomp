@@ -3,6 +3,7 @@
 #include "battle/effect_script.h"
 #include "battle/script_opcodes.h"
 #include "game/rewards.h"
+#include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "graphics/graphics.h"
