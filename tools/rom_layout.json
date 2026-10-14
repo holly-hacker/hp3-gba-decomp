@@ -126,11 +126,11 @@
     {"us": "0x080456E0", "jp": "0x0804560C", "name": "Screen windows"},
     {"us": "0x08045AE8", "jp": "0x08045A14", "name": "Prop actor"},
     {"us": "0x08046C5C", "jp": "0x08046B88", "name": "strays: SnapActorXToTileGrid, MarkRoomActorConsumed"},
-    {"us": "0x08046D0C", "jp": "0x08046C38", "name": "Krawall", "category": "krawall"},
-    {"us": "0x08049E84", "jp": "0x08049DB0", "name": "BIOS calls"},
-    {"us": "0x08049EC4", "jp": "0x08049DF0", "name": "EEPROM library"},
-    {"us": "0x0804A2C0", "jp": "0x0804A1EC", "name": "libgcc"},
-    {"us": "0x0804BD40", "jp": "0x0804BC6C", "name": "newlib", "category": "libc"},
-    {"us": "0x08FB0DB0", "jp": "0x08F44240", "name": "Krawall IWRAM image", "category": "krawall"}
+    {"us": "0x08046D0C", "jp": "0x08046C38", "name": "Krawall", "category": "library"},
+    {"us": "0x08049E84", "jp": "0x08049DB0", "name": "BIOS calls", "category": "library"},
+    {"us": "0x08049EC4", "jp": "0x08049DF0", "name": "EEPROM library", "category": "library"},
+    {"us": "0x0804A2C0", "jp": "0x0804A1EC", "name": "libgcc", "category": "library"},
+    {"us": "0x0804BD40", "jp": "0x0804BC6C", "name": "newlib", "category": "library"},
+    {"us": "0x08FB0DB0", "jp": "0x08F44240", "name": "Krawall IWRAM image", "category": "library"}
   ]
 }

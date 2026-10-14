@@ -19,8 +19,8 @@ auto-generated unit per unclaimed gap. A data unit counts as matched (and
 complete) when it is compiled C (c-file, c-file-O1, c-rodata), an asm-file
 row or an extracted asset directive.
 
-Progress categories: a code block's own category (`krawall`, `libc` or
-`game`); for data, `krawall` in the Krawall data area and `game` elsewhere.
+Progress categories: a code block's own category (`library` or
+`game`); for data, `library` in the Krawall data area and `game` elsewhere.
 """
 import argparse
 import json
@@ -40,7 +40,7 @@ from manifest import (  # noqa: E402
 
 REPORT_VERSION = 2
 VERSIONS = ["us", "jp"]
-CATEGORIES = [("game", "Game"), ("libc", "libc"), ("krawall", "Krawall")]
+CATEGORIES = [("game", "Game"), ("library", "Library")]
 MEASURE_FIELDS = [
     "total_code", "matched_code", "total_data", "matched_data",
     "complete_code", "complete_data", "total_units", "complete_units",
@@ -134,9 +134,9 @@ def read_functions(ver: str, rows: list[dict], blocks: list) -> list[dict]:
 
 def category_of(area: str, source: str | None) -> str:
     if "krawall" in area:
-        return "krawall"
+        return "library"
     if source and source.startswith("src/libc/"):
-        return "libc"
+        return "library"
     return "game"
 
 
