@@ -19,7 +19,7 @@ void UpdateCheatLevelAndQuest(void)
             &g_CheatLevelAndQuestState.adwValue[g_CheatLevelAndQuestState.dwRow], 0,
             g_abCheatLevelAndQuestMax[g_CheatLevelAndQuestState.dwRow], 1, 0))
     {
-        sub_0800AE68();
+        DrawCheatLevelAndQuestValues();
     }
 
     if (g_wKeysPressed & KeyA)

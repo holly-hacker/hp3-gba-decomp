@@ -1,0 +1,2 @@
+#define DRAW_CHEAT_LEVEL_AND_QUEST_VALUES_LINKAGE
+#include "cheat_level_and_quest_inline.h"

@@ -50,7 +50,7 @@ void InitializeCheatLevelAndQuest(void)
     g_CheatLevelAndQuestState.adwValue[2] = (u8)args;
     g_CheatLevelAndQuestState.adwValue[3] = args >> 24;
     g_GameModeStackContext.dwModeState = 0;
-    sub_0800AD94();
+    DrawCheatLevelAndQuestRows();
 
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

@@ -340,10 +340,10 @@ c-file 0x0800AB34 _ src/cheat/reset_cheat_party_from_args.c ResetCheatPartyFromA
 c-file 0x0800AB88 _ src/cheat/exit_cheat.c ExitCheat
 c-file 0x0800ABA0 _ src/cheat/draw_cheat_entries.c DrawCheatEntries
 c-file 0x0800ABD8 _ src/cheat_level_and_quest/initialize_cheat_level_and_quest.c InitializeCheatLevelAndQuest
-c-file 0x0800ACE4 0x0800AD94 src/cheat_level_and_quest/update_cheat_level_and_quest.c UpdateCheatLevelAndQuest
-thumb-func 0x0800AD94 sub_0800AD94
-c-file 0x0800AE50 0x0800AE68 src/cheat_level_and_quest/exit_cheat_level_and_quest.c ExitCheatLevelAndQuest
-thumb-func 0x0800AE68 sub_0800AE68
+c-file 0x0800ACE4 _ src/cheat_level_and_quest/update_cheat_level_and_quest.c UpdateCheatLevelAndQuest
+c-file 0x0800AD94 _ src/cheat_level_and_quest/draw_cheat_level_and_quest_rows.c DrawCheatLevelAndQuestRows
+c-file 0x0800AE50 _ src/cheat_level_and_quest/exit_cheat_level_and_quest.c ExitCheatLevelAndQuest
+c-file 0x0800AE68 _ src/cheat_level_and_quest/draw_cheat_level_and_quest_values.c DrawCheatLevelAndQuestValues
 c-file 0x0800AED8 _ src/cheat_map/initialize_cheat_map.c InitializeCheatMap
 c-file 0x0800AFB4 _ src/cheat_map/update_cheat_map.c UpdateCheatMap
 c-file 0x0800B108 0x0800B120 src/cheat_map/exit_cheat_map.c ExitCheatMap
