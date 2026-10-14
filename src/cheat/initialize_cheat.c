@@ -43,8 +43,8 @@ void InitializeCheat(void)
     SetActorAnimData(pActor, &g_CheatAnimFrames, (void *)g_CheatAnimData, 0);
 
     g_GameModeStackContext.dwModeState = 0;
-    DrawCheatEntries_candidate();
-    ResetCheatPartyFromArgs_candidate();
+    DrawCheatEntries();
+    ResetCheatPartyFromArgs();
     g_dwOverworldMonstersDisabled = 0;
 
     for (i = 0; i < 3; i++)

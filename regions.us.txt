@@ -380,10 +380,10 @@ thumb-func 0x0800A914 FreeBgTileAnimations
 
 # Cheat (debug menus)
 c-file 0x0800A950 _ src/cheat/initialize_cheat.c InitializeCheat
-c-file 0x0800AA54 0x0800AB34 src/cheat/update_cheat.c UpdateCheat
-thumb-func 0x0800AB34 ResetCheatPartyFromArgs_candidate
-c-file 0x0800AB88 0x0800ABA0 src/cheat/exit_cheat.c ExitCheat
-thumb-func 0x0800ABA0 DrawCheatEntries_candidate
+c-file 0x0800AA54 _ src/cheat/update_cheat.c UpdateCheat
+c-file 0x0800AB34 _ src/cheat/reset_cheat_party_from_args.c ResetCheatPartyFromArgs
+c-file 0x0800AB88 _ src/cheat/exit_cheat.c ExitCheat
+c-file 0x0800ABA0 _ src/cheat/draw_cheat_entries.c DrawCheatEntries
 c-file 0x0800ABD8 _ src/cheat_level_and_quest/initialize_cheat_level_and_quest.c InitializeCheatLevelAndQuest
 c-file 0x0800ACE4 0x0800AD94 src/cheat_level_and_quest/update_cheat_level_and_quest.c UpdateCheatLevelAndQuest
 thumb-func 0x0800AD94 sub_0800AD94
