@@ -49,6 +49,6 @@ void InitializeCheatSoundTest(void)
     SetActorAnimData(pActor, &g_CheatSoundTestAnimFrames, (void *)g_CheatSoundTestAnimData, 0);
 
     g_GameModeStackContext.dwModeState = 0;
-    sub_0800B8F0();
+    DrawCheatSoundTestRows();
     PlayScreenTransitionInByIndex(0x3F, 2);
 }
