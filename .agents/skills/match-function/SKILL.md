@@ -130,7 +130,12 @@ that the function cannot match.
 
 ## 4. Optional permuter experiments
 
-Use only after manual analysis has a concrete remaining question. First snapshot the
+Avoid the permuter for general improvement: its score does not track a natural source, and
+its best mutations are usually wrapper loops, dead or dropped logic, or uninitialized reads.
+Reserve it for the last step of a candidate that is already structurally correct and
+differs only by a small residual register or ordering difference, after the fitting
+troubleshooting entries have been tested. Use only after manual analysis has a concrete
+remaining question. First snapshot the
 candidate, then `permuter-setup WORKSPACE`; it refuses to overwrite earlier inputs/results.
 Run `permuter-run WORKSPACE` for at most 120 seconds by default, with two workers.
 Short experiments may use `--seconds 180`. Do not chain repeated short runs to evade

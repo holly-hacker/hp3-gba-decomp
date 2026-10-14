@@ -238,6 +238,9 @@ as block-local versus one function-level variable, and flip the whole group toge
 flips changed nothing while the group flip matched. Examples: InterpretActorScript, US
 `0x08018CC0`, opcodes 0x27/0x2B/0x83/0x84/0x85/0x97/0x9D-0xA0 share one signed index;
 UpdateActorSpriteFrame, US 0x08002F28, needs `record`/`frameData` per site.
+The shared local can be a two-word struct copied whole (`pos = pTarget->pos`, then
+`dst.x = pos.x; dst.y = pos.y`) instead of two scalar temporaries; flipping both sites matched,
+either alone did not. Example: TickCameraFocus_candidate, US 0x0800A03C.
 
 ## 26. Base and index of an address add swapped (`adds rD, rBase, rIdx`)
 
