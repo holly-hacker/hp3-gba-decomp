@@ -348,8 +348,8 @@ c-file 0x08009F64 _ src/buckbeak_minigame/release_buckbeak_minigame_actor.c Rele
 c-file 0x08009F80 _ src/buckbeak_minigame/handle_buckbeak_minigame_exit_select.c HandleBuckbeakMinigameExitSelect
 
 # Camera
-c-file 0x08009FD8 0x0800A03C src/camera/reset_camera_focus_slot.c ResetCameraFocusSlot
-thumb-func 0x0800A03C TickCameraFocus_candidate
+c-file 0x08009FD8 _ src/camera/reset_camera_focus_slot.c ResetCameraFocusSlot
+c-file 0x0800A03C 0x0800A1F0 src/camera/tick_camera_focus.c TickCameraFocus_candidate
 thumb-func 0x0800A1F0 MoveCameraFocusToward_candidate
 c-file 0x0800A320 _ src/camera/snap_camera_focus.c SnapCameraFocus
 c-file 0x0800A348 _ src/camera/set_camera_focus_pinned.c SetCameraFocusPinned
