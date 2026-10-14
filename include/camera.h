@@ -17,8 +17,8 @@ typedef struct CameraEffect {
     u32 dwRunForever;          // 0x1C, shake: nonzero when the duration operand was 0
     u16 wCounter;              // 0x20, pan: frames to wait; shake: 0/1 toggle
     u8 pad_22;                 // -> 0x23
-    u8 bRespawnRow;            // 0x23, first argument to RespawnRowAndRunChain_candidate
-    u8 bChainRow;              // 0x24, second argument to RespawnRowAndRunChain_candidate
+    u8 bRespawnRow;            // 0x23, first argument to RespawnGroupAndRunChain
+    u8 bChainRow;              // 0x24, second argument to RespawnGroupAndRunChain
     u8 bState;                 // 0x25, 0 = idle, 1 = pan, 3 = shake
     u8 bSavedActionSubState;   // 0x26, controlled actor's bActionSubState when the pan began
     u8 bChainRan;              // 0x27, set once the pan's chain has run

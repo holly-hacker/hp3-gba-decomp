@@ -4,7 +4,7 @@
 #include "overworld/room_blob.h"
 
 // Rebuilds the runtime room tables from a room's resource blob.
-void ParseRoomResourceBlob_candidate(const RoomBlobHeader *pBlob)
+void ParseRoomResourceBlob(const RoomBlobHeader *pBlob)
 {
     const RoomBlobStageIndex *pStageIndex;
     const RoomBlobSubBlock *pDefault;
@@ -21,11 +21,11 @@ void ParseRoomResourceBlob_candidate(const RoomBlobHeader *pBlob)
     pTable = (u8 *)pBlob + pStageIndex->aEntries[pStageIndex->abStageToVariant[g_abQuestEventState[QUEST_STORY_STAGE]]].wSubBlockOffset;
     pVariant = (const RoomBlobSubBlock *)pTable;
 
-    pTable = CopyRoomBlobHeaderRecords_candidate(pBlob, pVariant);
+    pTable = CopyRoomBlobHeaderRecords(pBlob, pVariant);
     g_pRoomActorTable = (RoomBlobTable *)pTable;
-    pTable = BuildRoomActorTable_candidate(pDefault, pVariant, pTable);
-    g_pRoomWarpTriggerTable = (RoomBlobTable *)pTable;
-    pTable = BuildRoomWarpTriggerTable_candidate(pDefault, pVariant, pTable);
-    g_pRoomSwitchStateActorTable = (RoomScriptTable *)pTable;
-    BuildRoomSwitchStateActorTable_candidate(pDefault, pVariant, pTable);
+    pTable = BuildRoomActorTable(pDefault, pVariant, pTable);
+    g_pRoomRouteTable = (RoomBlobTable *)pTable;
+    pTable = BuildRoomRouteTable(pDefault, pVariant, pTable);
+    g_pRoomScriptChainTable = (RoomScriptTable *)pTable;
+    BuildRoomScriptChainTable(pDefault, pVariant, pTable);
 }

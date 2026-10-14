@@ -2,7 +2,7 @@
 #include "overworld/room_blob.h"
 
 // Builds one column of the room actor table at pOut; returns its end.
-u8 *BuildRoomActorColumn_candidate(const RoomBlobTable *pTable, u8 *pOut, u8 index)
+u8 *BuildRoomActorGroup(const RoomBlobTable *pTable, u8 *pOut, u8 index)
 {
     const RoomBlobColumn *pColumn;
     RoomBlobTable *pOutColumn;
@@ -19,16 +19,16 @@ u8 *BuildRoomActorColumn_candidate(const RoomBlobTable *pTable, u8 *pOut, u8 ind
     pOutColumn->wCount = count;
 
     // Row sizes follow the count, then the records start on a 4-byte boundary.
-    step = sub_08005EE8(count + 2);
+    step = AlignRoomSizeTo4(count + 2);
     pSrc += step;
-    step = sub_08005EC8(count + 1);
+    step = GetRoomOffsetTableSize(count + 1);
 
     for (i = 0; i < count; i++)
     {
         pOut += step;
         pOutColumn->awOffsets[i] = pOut - (u8 *)pOutColumn;
         step = pColumn->abRowSizes[i];
-        sub_08005E18(pSrc, pOut, step);
+        CopyRoomActorStaticBytes(pSrc, pOut, step);
         pSrc += step;
         step += 8;
     }

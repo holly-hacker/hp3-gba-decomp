@@ -58,7 +58,7 @@ void AgbMain(void)
     InitInputSystem();
     ResetAllGameTimers();
     InitDisplayControl();
-    InitRoomScriptState_candidate();
+    InitRoomScriptState();
     NoopInit3();
     InitDialogBox();
     InitRoomTileAnimationTable();

@@ -46,7 +46,7 @@ void InitializeOverworld(void)
                 || g_bRoomScriptYieldOpcode == 0x50 || g_bRoomScriptYieldOpcode == 0x51
                 || g_bRoomScriptYieldOpcode == 0x54 || g_bRoomScriptYieldOpcode == 0x55
                 || g_bRoomScriptYieldOpcode == 0x56))
-            ResumeRoomSwitchStateChain_candidate();
+            ResumeRoomScriptChain();
     }
     else
     {
@@ -117,7 +117,7 @@ void InitializeOverworld(void)
         // Room actor blob, player, camera and scroll bounds.
         g_OverworldControlState.bSlotCount = 1;
         g_OverworldControlState.bSlotIndex = 0;
-        ParseRoomResourceBlob_candidate(CURRENT_ROOM.pRoomResourceBlob);
+        ParseRoomResourceBlob(CURRENT_ROOM.pRoomResourceBlob);
         pPlayer = SpawnPlayerActor_candidate(g_bPartyCharId0);
         sub_080248E8();
         SetCameraFocusPinned(0, 0);
@@ -131,12 +131,12 @@ void InitializeOverworld(void)
         // Fresh entry: spawn the room's actors.
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 0)
         {
-            RespawnRoomActorsInRow_candidate(0);
-            WalkRoomSwitchStateChain_candidate(0, 0);
+            SpawnMissingRoomGroupActors(0);
+            RunRoomScriptChain(0, 0);
             if (g_wRoomResourceFlags_candidate & 1)
             {
-                RespawnRoomActorsInRow_candidate(1);
-                WalkRoomSwitchStateChain_candidate(1, 0);
+                SpawnMissingRoomGroupActors(1);
+                RunRoomScriptChain(1, 0);
             }
         }
 
@@ -148,8 +148,8 @@ void InitializeOverworld(void)
         {
             if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
             {
-                if (sub_08005DC0(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
-                    == sub_08005DC0(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
+                if (GetRoomBlobStageVariant(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
+                    == GetRoomBlobStageVariant(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
                 {
                     g_GameModeStackContext.dwCurrentGameModeArg3 = 0;
                     RestoreRoomActorState();
@@ -161,12 +161,12 @@ void InitializeOverworld(void)
                     RestoreRoomActorStateMinimal();
                     SetCameraFocusPinned(0, 0);
                     SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
-                    RespawnRoomActorsInRow_candidate(0);
-                    WalkRoomSwitchStateChain_candidate(0, 0);
+                    SpawnMissingRoomGroupActors(0);
+                    RunRoomScriptChain(0, 0);
                     if (g_wRoomResourceFlags_candidate & 1)
                     {
-                        RespawnRoomActorsInRow_candidate(1);
-                        WalkRoomSwitchStateChain_candidate(1, 0);
+                        SpawnMissingRoomGroupActors(1);
+                        RunRoomScriptChain(1, 0);
                     }
                 }
             }
@@ -178,8 +178,8 @@ void InitializeOverworld(void)
         }
         else if (g_GameModeStackContext.dwCurrentGameModeArg1 - 2 < 2)
         {
-            if (sub_08005DC0(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
-                == sub_08005DC0(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
+            if (GetRoomBlobStageVariant(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
+                == GetRoomBlobStageVariant(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
             {
                 RestoreRoomActorState();
                 SetCameraFocusPinned(0, 0);
@@ -190,12 +190,12 @@ void InitializeOverworld(void)
                 RestoreRoomActorStateMinimal();
                 SetCameraFocusPinned(0, 0);
                 SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
-                RespawnRoomActorsInRow_candidate(0);
-                WalkRoomSwitchStateChain_candidate(0, 0);
+                SpawnMissingRoomGroupActors(0);
+                RunRoomScriptChain(0, 0);
                 if (g_wRoomResourceFlags_candidate & 1)
                 {
-                    RespawnRoomActorsInRow_candidate(1);
-                    WalkRoomSwitchStateChain_candidate(1, 0);
+                    SpawnMissingRoomGroupActors(1);
+                    RunRoomScriptChain(1, 0);
                 }
             }
         }
@@ -386,7 +386,7 @@ void InitializeOverworld(void)
         sub_0801FA9C();
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
-            RespawnRoomActorsInRow_candidate(g_bPendingRoomScriptRow);
+            SpawnMissingRoomGroupActors(g_bPendingRoomScriptRow);
 
         g_abQuestEventState[QUEST_PREV_STORY_STAGE] = g_abQuestEventState[QUEST_STORY_STAGE];
         if (g_bPendingQuestStateOverride_candidate != 0xff)
@@ -404,7 +404,7 @@ void InitializeOverworld(void)
         g_dwPendingCameraFocusFlag = 0;
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
-            WalkRoomSwitchStateChain_candidate(g_bPendingRoomScriptChain, 0);
+            RunRoomScriptChain(g_bPendingRoomScriptChain, 0);
     }
 
     // The entry kind is consumed.

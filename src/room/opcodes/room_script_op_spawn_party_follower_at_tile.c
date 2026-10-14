@@ -13,5 +13,5 @@ void RoomScriptOpSpawnPartyFollowerAtTile(SpawnPartyFollowerAtTileRecord *pRecor
     Actor *pActor = sub_0802F6C0(pRecord->bCharacterId);
 
     sub_080236DC(pRecord->bCharacterId);
-    SetRoomActorRecordPtr_candidate(pActor, pRecord->bTileX, pRecord->bTileY);
+    SetRoomActorPtr(pActor, pRecord->bTileX, pRecord->bTileY);
 }

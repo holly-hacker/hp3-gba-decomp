@@ -20,7 +20,7 @@ void TickActorWalkRoutePingPong(Actor *actor)
 
     route = actor->modeState.route.bRoute;
     waypoint = actor->modeState.route.bWaypoint;
-    waypointCount = GetRoomWarpTriggerByte_candidate(route);
+    waypointCount = GetRoomRouteWaypointCount(route);
     forward = actor->modeState.route.bForward;
     subState = actor->bActionSubState;
     facing = actor->bFacing;
@@ -32,14 +32,14 @@ void TickActorWalkRoutePingPong(Actor *actor)
         // while bForward is 0 first walks backward to waypoint 0.
         actor->modeState.route.bForward = 1;
         actor->dwStateTimer = 0;
-        target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+        target = GetRoomRouteWaypointPos(route, waypoint);
         IntToFixedPoint(target, &actor->moveTarget);
         break;
     case 10:
         if (--actor->dwStateTimer == -1) {
             SetActorActionSubState(actor, 3);
             actor->dwStateTimer = 0;
-            target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+            target = GetRoomRouteWaypointPos(route, waypoint);
             IntToFixedPoint(target, &actor->moveTarget);
         }
         break;
@@ -49,7 +49,7 @@ void TickActorWalkRoutePingPong(Actor *actor)
         direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
         if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
             || direction == DirectionNone) {
-            ApplyRoomWarpTrigger_candidate(route, waypoint);
+            RunRoomRouteWaypointChain(route, waypoint);
             if (forward)
                 waypoint++;
             else if (waypoint != 0)
@@ -60,7 +60,7 @@ void TickActorWalkRoutePingPong(Actor *actor)
                 forward = 1;
             actor->dwStateTimer = actor->scriptState.wScriptPc;
             SetActorActionSubState(actor, 10);
-            target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+            target = GetRoomRouteWaypointPos(route, waypoint);
             IntToFixedPoint(target, &actor->moveTarget);
         }
         else if (direction != facing) {

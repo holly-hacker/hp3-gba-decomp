@@ -31,7 +31,7 @@ void ExitOverworldScreen(void)
         PlayScreenTransitionOutByIndex(0x3F, 2);
     }
 
-    sub_08005D88();
+    StopRoomScriptChains();
     FreeRoomSharedTileset();
     sub_0802B210();
 

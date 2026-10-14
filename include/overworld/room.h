@@ -299,10 +299,10 @@ extern void GetRoomTileAnimFrameBlockPos(const RoomTileAnimation *pAnim, u32 ind
 // Snapshot of the current room's non-default actors; see docs/formats/save.md.
 #define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
 extern void InitRoomState(void);
-extern void InitRoomScriptState_candidate(void);
+extern void InitRoomScriptState(void);
 extern void RestoreRoomActorState(void);
 extern void RestoreRoomActorStateMinimal(void);
-extern u8 sub_08005DC0(u32 questState, const void *pRoomResourceBlob);
+extern u8 GetRoomBlobStageVariant(u32 questState, const void *pRoomResourceBlob);
 extern u8 g_bRoomSwitchState;  // 0 or 1
 extern u32 SetRoomSwitchState(u32 state);  // returns nonzero if the state changed
 extern u32 GetRoomSwitchState(void);

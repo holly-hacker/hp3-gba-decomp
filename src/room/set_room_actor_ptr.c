@@ -4,7 +4,7 @@
 
 // Points the room actor table's record at tile (col, row) to `actor`, marking the actor as bound
 // to that record. Passing a null `actor` clears the record.
-void SetRoomActorRecordPtr_candidate(Actor *actor, u8 col, u8 row)
+void SetRoomActorPtr(Actor *actor, u8 col, u8 row)
 {
     RoomBlobTable *pColumn;
     Actor **ppRecord;

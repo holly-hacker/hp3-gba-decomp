@@ -10,7 +10,7 @@ typedef struct ClearTileActorFlagBitRecord {
 
 void RoomScriptOpClearTileActorFlagBit(ClearTileActorFlagBitRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     pActor->dwFlags &= ~(1 << pRecord->bBit);
 }

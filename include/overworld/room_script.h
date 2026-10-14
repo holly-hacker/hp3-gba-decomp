@@ -6,7 +6,7 @@
 // Room-script VM; see docs/formats/room_scripts.md. A chain is a sequence of
 // records, each starting with a u32 opcode (0 ends the chain).
 
-// Chain index -> chain offset table, reached through g_pRoomSwitchStateActorTable.
+// Chain index -> chain offset table, reached through g_pRoomScriptChainTable.
 typedef struct RoomScriptTable {
     u16 wHeader;
     u16 awChainOffsets[0];
@@ -43,9 +43,9 @@ extern const u8 g_abRoomScriptOpcodeLengths[93];  // ROM 0x0805EB34
 // 0 = idle, 1 = resuming a yielded chain, 2 = yielded (the walk stops after
 // the current record), 3 = walking while a yielded chain is pending, 4 = disabled.
 extern u32 g_dwRoomScriptRunState;
-extern RoomScriptTable *g_pRoomSwitchStateActorTable;
+extern RoomScriptTable *g_pRoomScriptChainTable;
 // Chain the VM is walking; 0xFF in g_bRoomScriptPendingChain means no jump pending.
-extern u8 g_bRoomScriptCurrentRow;
+extern u8 g_bRoomScriptCurrentChain;
 extern u8 g_bRoomScriptPendingChain;
 // Record after the one being dispatched.
 extern RoomScriptRecord *g_pRoomScriptNextRecord;
@@ -57,14 +57,14 @@ extern RoomScriptCallFrame g_aRoomScriptCallStack[];
 
 // Starts chain `chain`; with resumeFromSaved it continues the saved caller
 // frame on top of the call stack instead.
-extern void WalkRoomSwitchStateChain_candidate(u32 chain, s32 resumeFromSaved);
-extern void ResumeRoomSwitchStateChain_candidate(void);
-extern void RespawnRoomActorsInRow_candidate(u32 row);
+extern void RunRoomScriptChain(u32 chain, s32 resumeFromSaved);
+extern void ResumeRoomScriptChain(void);
+extern void SpawnMissingRoomGroupActors(u32 row);
 
 // Live actor at tile (x, y); every script targets (0, 0xFF), the player slot.
 // x == 0 with y >= 0xFE selects a slot of the array at 0x03003358 instead of a tile; every
 // script uses (0, 255).
-extern Actor *GetRoomActorField_candidate(u32 x, u32 y);
+extern Actor *GetRoomActorPtr(u32 x, u32 y);
 
 // cmpOp values for CompareAndBranchRoomScript (room_script_branch.h).
 enum {
@@ -80,8 +80,8 @@ extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, 
                                        u8 falseRow);
 // Whether chain row `row` may run; false for 0, true from 2 up, and for 1 only
 // while g_wRoomResourceFlags_candidate bit 0 is set.
-extern u32 ShouldRunRoomScriptRow_candidate(u32 row);
-extern u16 GetRoomRowColumnCount_candidate(u32 row);
+extern u32 ShouldRunRoomIndex(u32 row);
+extern u16 GetRoomGroupMemberCount(u32 row);
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
 extern u32 IsFolioPageGroupUnlocked_candidate(u32 pageGroupId);
 extern void LevelUpPartyMember_candidate(u32 fighterType);
@@ -98,7 +98,7 @@ extern void RestorePendingCameraFocus_candidate(void *pFocus);
 extern void *g_pPendingCameraFocus_candidate;
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
-extern void RespawnRowAndRunChain_candidate(u32 respawnRow, u32 chainRow);
+extern void RespawnGroupAndRunChain(u32 respawnRow, u32 chainRow);
 // Allocates a RoomActorType_ScriptEffect actor of the given kind (Actor+0x8C),
 // ticked by the kind's entry in the script-effect tick table. Kind 1 (the delayed respawn timer,
 // tick at 0x080200FC) counts dwStateTimer down, then runs the row/chain, or resumes the yielded

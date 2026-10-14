@@ -9,5 +9,5 @@ typedef struct RespawnRowAndRunChainRecord {
 
 void RoomScriptOpRespawnRowAndRunChain(RespawnRowAndRunChainRecord *pRecord)
 {
-    RespawnRowAndRunChain_candidate(pRecord->bRespawnRow, pRecord->bChainRow);
+    RespawnGroupAndRunChain(pRecord->bRespawnRow, pRecord->bChainRow);
 }

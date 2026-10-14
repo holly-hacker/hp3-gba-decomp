@@ -10,7 +10,7 @@ typedef struct SetTileActorAnimStateValueRecord {
 
 void RoomScriptOpSetTileActorAnimStateValue(SetTileActorAnimStateValueRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     SetActorActionState(pActor, pRecord->bActionState);
     SetActorActionSubState(pActor, 0);

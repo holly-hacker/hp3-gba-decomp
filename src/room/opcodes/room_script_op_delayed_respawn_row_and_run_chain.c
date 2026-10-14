@@ -15,7 +15,7 @@ void RoomScriptOpDelayedRespawnRowAndRunChain(DelayedRespawnRowAndRunChainRecord
 
     if (pRecord->wDelay == 0)
     {
-        RespawnRowAndRunChain_candidate(pRecord->bRespawnRow, pRecord->bChainRow);
+        RespawnGroupAndRunChain(pRecord->bRespawnRow, pRecord->bChainRow);
     }
     else
     {

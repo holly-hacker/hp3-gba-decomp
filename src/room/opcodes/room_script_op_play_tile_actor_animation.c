@@ -14,7 +14,7 @@ void RoomScriptOpPlayTileActorAnimation(PlayTileActorAnimationRecord *pRecord)
 
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
     if (g_dwRoomScriptRunState == 2)
         pActor->dwFlags |= ActorFlagRoomScriptYield;
     SetActorAnimData_candidate(pActor, pRecord->wAnimId);

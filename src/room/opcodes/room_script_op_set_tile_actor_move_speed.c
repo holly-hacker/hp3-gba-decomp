@@ -12,7 +12,7 @@ typedef struct SetTileActorMoveSpeedRecord {
 // bActionFlags bit 0x8.
 void RoomScriptOpSetTileActorMoveSpeed(SetTileActorMoveSpeedRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     if (pActor->wActorType == RoomActorType_Player)
         pActor->nMoveSpeed = pRecord->nSpeed * 5 << 14;

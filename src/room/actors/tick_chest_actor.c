@@ -40,7 +40,7 @@ void TickChestActor(Actor *pActor)
             if (pActor->modeState.chest.wRewardId <= REWARD_ID_GOLD)
                 PlayerReceiveReward(pActor->modeState.chest.wRewardId);
             else if (pActor->modeState.chest.pair.wPair != 0)
-                RespawnRowAndRunChain_candidate(pActor->modeState.chest.pair.bytes.bRespawnGroup,
+                RespawnGroupAndRunChain(pActor->modeState.chest.pair.bytes.bRespawnGroup,
                                                 pActor->modeState.chest.pair.bytes.bChain);
             SetActorActionSubState(pActor, 10);
             pActor->dwStateTimer = 0;
@@ -60,7 +60,7 @@ void TickChestActor(Actor *pActor)
             pActor->dwStateTimer = 0;
             SetActorActionSubState(pActor, 1);
             if (pActor->modeState.chest.pair.wPair != 0)
-                RespawnRowAndRunChain_candidate(pActor->modeState.chest.pair.bytes.bRespawnGroup,
+                RespawnGroupAndRunChain(pActor->modeState.chest.pair.bytes.bRespawnGroup,
                                                 pActor->modeState.chest.pair.bytes.bChain);
         }
         break;

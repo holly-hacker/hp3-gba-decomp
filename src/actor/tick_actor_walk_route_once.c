@@ -24,7 +24,7 @@ void TickActorWalkRouteOnce(Actor *actor)
     switch (subState) {
     case 0:
         SetActorActionSubState(actor, 3);
-        target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+        target = GetRoomRouteWaypointPos(route, waypoint);
         IntToFixedPoint(target, &actor->moveTarget);
         break;
     case 3:
@@ -33,16 +33,16 @@ void TickActorWalkRouteOnce(Actor *actor)
         direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
         if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
             || direction == DirectionNone) {
-            ApplyRoomWarpTrigger_candidate(route, waypoint);
+            RunRoomRouteWaypointChain(route, waypoint);
             waypoint++;
-            if (waypoint == GetRoomWarpTriggerByte_candidate(route)) {
+            if (waypoint == GetRoomRouteWaypointCount(route)) {
                 direction = actor->bFacing;
                 CancelActorMove_candidate(actor);
                 SetActorActionSubState(actor, 14);
             }
             else {
                 actor->modeState.route.bWaypoint = waypoint;
-                target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+                target = GetRoomRouteWaypointPos(route, waypoint);
                 IntToFixedPoint(target, &actor->moveTarget);
                 // BUG: target is in pixels but pos is 16.16, so this faces the actor toward the
                 // room's top-left corner for a tick, until case 3 faces it toward the waypoint.
@@ -58,7 +58,7 @@ void TickActorWalkRouteOnce(Actor *actor)
         break;
     case 14:
         if (actor->modeState.route.finish.wPair != 0)
-            RespawnRowAndRunChain_candidate(actor->modeState.route.finish.rows.bRespawnRow,
+            RespawnGroupAndRunChain(actor->modeState.route.finish.rows.bRespawnRow,
                                             actor->modeState.route.finish.rows.bChainRow);
         else {
             SetActorActionState(actor, 3);
@@ -66,7 +66,7 @@ void TickActorWalkRouteOnce(Actor *actor)
         }
         if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartActorAnimSequence) {
             actor->dwFlags &= ~ActorFlagRoomScriptYield;
-            ResumeRoomSwitchStateChain_candidate();
+            ResumeRoomScriptChain();
         }
         break;
     default:

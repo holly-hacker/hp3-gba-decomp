@@ -21,7 +21,7 @@ void RoomScriptOpStartTileActorScript(StartTileActorScriptRecord *pRecord)
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
 
-    pActor = GetRoomActorField_candidate(pRecord->bX, pRecord->bY);
+    pActor = GetRoomActorPtr(pRecord->bX, pRecord->bY);
     if (pActor == NULL)
         return;
 

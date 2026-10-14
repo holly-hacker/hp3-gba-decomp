@@ -14,7 +14,7 @@ per-room resource blob.
 
 **PROVEN**, from disassembly and a scan of all 55 rooms (US). The level
 table's offset-`0x50` field (`docs/formats/levels.md`) points to a per-room
-blob, parsed by `ParseRoomResourceBlob_candidate` (`0x08005A78`) into a
+blob, parsed by `ParseRoomResourceBlob` (`0x08005A78`) into a
 0x2200-byte RAM buffer (`g_pRoomTableBuffer`, zeroed at the start of every
 room load). Types: `include/overworld/room_blob.h`.
 
@@ -42,29 +42,29 @@ is the variant sub-block. **Extent proof:** in every room the lowest
 sub-block offset equals `wSize + 0x24 + 8 * variantCount`, so the stage
 index is followed immediately by the first sub-block.
 
-`ParseRoomResourceBlob_candidate` runs four builders in sequence. Each writes
+`ParseRoomResourceBlob` runs four builders in sequence. Each writes
 into the buffer at its cursor; the address it returns is the next builder's
 cursor. Runtime tables start with a `u16` count and `u16` offsets from the
 table start.
 
-  1. `CopyRoomBlobHeaderRecords_candidate` (`0x08005DD0`) copies the header
+  1. `CopyRoomBlobHeaderRecords` (`0x08005DD0`) copies the header
      (`wSize`, `wRecordCount`, the 8-byte records) to the buffer start and
      returns the buffer plus `wSize`, the start of the actor table. The
      records are the player entry points, see "Player entry points". Its
      second parameter is unused.
-  2. `BuildRoomActorTable_candidate` (`0x0800572C`) builds
+  2. `BuildRoomActorTable` (`0x0800572C`) builds
      `g_pRoomActorTable` (`0x03001DF4`) from the sub-block's inline table,
-     one column at a time through `BuildRoomActorColumn_candidate`
+     one column at a time through `BuildRoomActorGroup`
      (`0x08005808`). Each column lists its rows; a row is an 8-byte zeroed
      runtime prefix followed by the static record (see "Static per-tile
      actor table").
-  3. `BuildRoomWarpTriggerTable_candidate` (`0x0800588C`) builds
-     `g_pRoomWarpTriggerTable` (`0x03001DF8`), read by the accessors in
+  3. `BuildRoomRouteTable` (`0x0800588C`) builds
+     `g_pRoomRouteTable` (`0x03001DF8`), read by the accessors in
      "Warp/trigger tiles". Each column is `{u32 count; 8-byte records}`
-     copied by `sub_08005E40`.
-  4. `BuildRoomSwitchStateActorTable_candidate` (`0x08005968`) builds
-     `g_pRoomSwitchStateActorTable` (`0x03001DFC`); chains are copied by
-     `sub_08005E84`, see "Room switch-state chains".
+     copied by `CopyRoomRouteWaypoints`.
+  4. `BuildRoomScriptChainTable` (`0x08005968`) builds
+     `g_pRoomScriptChainTable` (`0x03001DFC`); chains are copied by
+     `CopyRoomScriptChain`, see "Room switch-state chains".
 
 **Default prepend.** With flags bit 0 set (always, in the shipped data) the
 tables combine both sub-blocks: the actor and switch tables get the default
@@ -76,27 +76,27 @@ tables hold only the variant's entries.
 
 ## Actor groups and records
 
-**STRUCTURAL MATCH**, confirmed field-by-field via `GetRoomActorRecordPtr_candidate`'s
+**STRUCTURAL MATCH**, confirmed field-by-field via `GetRoomActorStaticRecord`'s
 consumers. `g_pRoomActorTable` (RAM `0x03001DF4`) is a two-level offset
 table: `table[2+g*2]` (`u16`) gives group `g`'s member table; that table's
 `[2+m*2]` gives member `m`'s record offset. A group is a set of actors that
 is spawned together; scripts and actors address an actor as
 `(group, member)`. The code's names for these indices are `(column, row)` and,
 in script opcodes, `(tileX, tileY)`; they are not positions.
-`RespawnRoomActorsInRow_candidate(g)` spawns every member of group `g`, and
+`SpawnMissingRoomGroupActors(g)` spawns every member of group `g` whose actor slot is empty, and
 `RespawnRowAndRunChain(group, chain)` spawns a group and then runs a chain.
 Room entry spawns group 0 and, with flags bit 0 set, group 1. Runtime group 0
 is the default sub-block's only group; variant group `i` is runtime group
-`i + 1`. Groups range from 0 to 47 members. `RespawnRoomActorAtTile`
-(`0x08005B70`) and `GetRoomActorRecordPtr_candidate` (`0x08005C38`) both do this lookup;
+`i + 1`. Groups range from 0 to 47 members. `SpawnRoomGroupMember`
+(`0x08005B70`) and `GetRoomActorStaticRecord` (`0x08005C38`) both do this lookup;
 the latter is called by every actor-type constructor to fetch its own
 record.
 
 A tile record is `{u32 actorPtr; u16 actorType; ...static fields...}` --
-`actorPtr` (offset `+0`) is written by `RespawnRoomActorAtTile` after
-construction (`SetRoomActorRecordPtr_candidate` performs the same
+`actorPtr` (offset `+0`) is written by `SpawnRoomGroupMember` after
+construction (`SetRoomActorPtr` performs the same
 write from other call sites); `actorType` (offset `+8`, i.e.
-`GetRoomActorRecordPtr_candidate`'s return value) selects a
+`GetRoomActorStaticRecord`'s return value) selects a
 constructor from `g_apRoomActorConstructors` (`src/room/room_actor_constructors.c`,
 US `0x0804C054`, JP `0x0804BF80`; constructors take `(column, row)` and return
 the new `Actor *`; a 14-entry
@@ -194,23 +194,23 @@ refers to a group, member and chain that exist.
 
 **PROVEN** for the lookup. The blob header's records are the room's player
 spawn points. `SpawnPlayerActor_candidate` finds the record whose `entryId`
-equals `g_abRoomScriptExitParams_candidate[0]` (`sub_08005BE4`) and places the
+equals `g_abRoomScriptExitParams_candidate[0]` (`FindRoomEntryPoint`) and places the
 player at `(x, y)` facing `facing`; with no match it uses a default record
 table at US `0x0804C08C`. Doors set the exit parameter before the room
 change.
 
 ## Waypoint routes
 
-**STRUCTURAL MATCH.** The "warp trigger" table (`g_pRoomWarpTriggerTable`) is a
+**STRUCTURAL MATCH.** The "warp trigger" table (`g_pRoomRouteTable`) is a
 set of walking routes for NPC actors. A route is a list of
 `{s16 x, s16 y, u8 chain}` waypoints (8 bytes each: four padding bytes after
 the chain byte, which are `FF`). A route's group counts here are separate from
 actor groups: the default sub-block has none, and variant route `i` is runtime
 route `i`.
 
-- `GetRoomWarpTriggerByte_candidate` (`0x08005CE8`): waypoint count.
-- `GetRoomWarpTriggerOffset_candidate` (`0x08005D00`): waypoint `(x, y)`.
-- `ApplyRoomWarpTrigger_candidate` (`0x08005D30`): runs the waypoint's chain.
+- `GetRoomRouteWaypointCount` (`0x08005CE8`): waypoint count.
+- `GetRoomRouteWaypointPos` (`0x08005D00`): waypoint `(x, y)`.
+- `RunRoomRouteWaypointChain` (`0x08005D30`): runs the waypoint's chain.
 
 An NPC (type 6) follows a route when a script puts it into an animation
 sequence (`StartActorAnimSequence`): its operands `bArg64` and `bArg65` are
@@ -224,9 +224,9 @@ waypoint that exist. The ROOM_ACTOR records do not choose a route.
 ## Room switch-state chains
 
 **STRUCTURAL MATCH, and a second bytecode VM distinct from
-`InterpretActorScript`.** `g_pRoomSwitchStateActorTable` holds, per
-switch-state index, a chain walked by `WalkRoomSwitchStateChain_candidate`
-(`0x08005410`) and `ResumeRoomSwitchStateChain_candidate` (`0x080055C0`).
+`InterpretActorScript`.** `g_pRoomScriptChainTable` holds, per
+switch-state index, a chain walked by `RunRoomScriptChain`
+(`0x08005410`) and `ResumeRoomScriptChain` (`0x080055C0`).
 This is the room-script bytecode VM: the interpreter, its byte format,
 its opcode table, and the known opcodes (tile-actor flag bits, dialog
 boxes, music control, chained calls between chains) are documented in

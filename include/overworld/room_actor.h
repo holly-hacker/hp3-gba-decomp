@@ -10,7 +10,7 @@ typedef Actor *(*RoomActorConstructor)(u8 bColumn, u8 bRow);
 
 #define ROOM_ACTOR_TYPE_COUNT 14
 
-// Static tile record returned by sub_08005C38. The layout after nPixelY is
+// Static tile record returned by GetRoomActorStaticRecord. The layout after nPixelY is
 // specific to each actorType; every constructor reads it through its own struct.
 typedef struct RoomActorRecordUnk8 {
     u16 wActorType;
@@ -50,7 +50,7 @@ typedef struct RoomActorRecordUnkC {
     u8 abArg8[3];
 } RoomActorRecordUnkC;
 
-extern void *sub_08005C38(u8 bColumn, u8 bRow);
+extern void *GetRoomActorStaticRecord(u8 bColumn, u8 bRow);
 
 extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];  // ROM 0x0804C054 (US)
 

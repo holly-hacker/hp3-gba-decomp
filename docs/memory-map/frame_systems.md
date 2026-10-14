@@ -90,9 +90,9 @@ scripted effect started by room script opcodes `0x10` and `0x12`:
   the target by `nStep` along the angle and returns 8 on arrival. Until `wCounter`
   reaches 0 the focus just holds on the target. On arrival, if the target is the
   controlled actor the effect ends and its velocity and `bActionSubState` are
-  restored. Once, `RespawnRowAndRunChain_candidate(bRespawnRow, bChainRow)` runs, and a
+  restored. Once, `RespawnGroupAndRunChain(bRespawnRow, bChainRow)` runs, and a
   pending script yield (`dwResumeScript`) resumes through
-  `ResumeRoomSwitchStateChain_candidate`. Opcode `0x10` freezes the controlled actor
+  `ResumeRoomScriptChain`. Opcode `0x10` freezes the controlled actor
   (velocity saved and zeroed) while the pan runs.
 - **3, shake**: the focus follows the target with a `±nStep` offset on Y (vertical) every other frame for
   `dwFramesLeft` frames (forever when `dwRunForever` is set). At the end it runs the
@@ -117,7 +117,7 @@ transition is pending, the slot's queued actor move is not active (`bState != 1`
 - Otherwise, when `g_dwPauseMenuCooldown` is 0: consume the key, zero the player's
   velocity, set the cooldown to 4, play sound 1, push the mode and set `g_bRestoringRoomActors_candidate`.
 
-`g_dwRoomChainRanThisFrame_candidate` is set to 1 by `RespawnRowAndRunChain_candidate`
+`g_dwRoomChainRanThisFrame_candidate` is set to 1 by `RespawnGroupAndRunChain`
 (and `sub_08005D30`) around a room chain and cleared unconditionally at the end of
 this function every frame. `g_bRestoringRoomActors_candidate` is also set to 1 on entry to
 `RestoreRoomActorState` and cleared on exit. Its readers are the room actor constructor

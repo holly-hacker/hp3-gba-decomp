@@ -20,7 +20,7 @@ void RoomScriptOpQueueTileActorMove(QueueTileActorMoveRecord *pRecord)
 
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    pTarget = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    pTarget = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
     if (g_dwRoomScriptRunState == 2)
         g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].dwResumeScript = 1;
     g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].nStep = SignMagnitude8_8ToFixed(pRecord->nSpeed);

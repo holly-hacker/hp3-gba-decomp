@@ -6,7 +6,7 @@
 // queues a jump through g_bRoomScriptPendingChain starts that chain next; unless the
 // opcode is 0x40 the caller is saved and the walk returns to it once the callee ends.
 // resumeFromSaved instead continues the caller saved on top of the call stack.
-void WalkRoomSwitchStateChain_candidate(u32 chain, s32 resumeFromSaved)
+void RunRoomScriptChain(u32 chain, s32 resumeFromSaved)
 {
     RoomScriptRecord *pRecord;
     RoomScriptRecord *pNext;
@@ -28,7 +28,7 @@ void WalkRoomSwitchStateChain_candidate(u32 chain, s32 resumeFromSaved)
 
     while (1)
     {
-        g_bRoomScriptCurrentRow = g_bRoomScriptPendingChain;
+        g_bRoomScriptCurrentChain = g_bRoomScriptPendingChain;
         g_bRoomScriptPendingChain = 0xff;
         // First record of the chain, or where the saved caller left off.
         if (resumeFromSaved != 0)
@@ -38,8 +38,8 @@ void WalkRoomSwitchStateChain_candidate(u32 chain, s32 resumeFromSaved)
         }
         else
         {
-            pTable = g_pRoomSwitchStateActorTable;
-            slotOffset = g_bRoomScriptCurrentRow * 2;
+            pTable = g_pRoomScriptChainTable;
+            slotOffset = g_bRoomScriptCurrentChain * 2;
             pChainOffsets = pTable->awChainOffsets;
             pNext = (RoomScriptRecord *)((u8 *)pTable + *(u16 *)((u8 *)pChainOffsets + slotOffset));
         }
@@ -90,7 +90,7 @@ void WalkRoomSwitchStateChain_candidate(u32 chain, s32 resumeFromSaved)
     if (g_bRoomScriptCallStackDepth != 0 && pushedFrames != 0)
     {
         g_bRoomScriptCallStackDepth -= pushedFrames;
-        WalkRoomSwitchStateChain_candidate(g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth + 1].bRow, 1);
+        RunRoomScriptChain(g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth + 1].bRow, 1);
     }
 
     if (pRecord->dwOpcode != 0)

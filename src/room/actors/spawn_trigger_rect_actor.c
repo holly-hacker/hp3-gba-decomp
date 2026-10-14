@@ -5,7 +5,7 @@
 // edges. See docs/formats/rooms.md.
 Actor *SpawnTriggerRectActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk7 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk7 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(pRecord->dwActorType);
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);

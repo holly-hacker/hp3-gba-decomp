@@ -25,7 +25,7 @@ void TickActorWalkToTarget(Actor *actor)
             SetPartyMemberAnim(actor, PartyAnimStand);
             if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartTileActorScript) {
                 ClearActorFlags(actor, ActorFlagRoomScriptYield | ActorFlagHasTickLogic);
-                ResumeRoomSwitchStateChain_candidate();
+                ResumeRoomScriptChain();
             }
         }
         else {

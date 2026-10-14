@@ -17,7 +17,7 @@ void FreeActor(Actor *actor)
     ReleaseActorPalette(actor);
 
     if (actor->dwFlags & ActorFlagRoomRecordBound)
-        SetRoomActorRecordPtr_candidate(0, actor->bRoomTileCol_candidate, actor->bRoomTileRow_candidate);
+        SetRoomActorPtr(0, actor->bRoomTileCol_candidate, actor->bRoomTileRow_candidate);
 
     actor->wActorType = 0xFFFF;
 

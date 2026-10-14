@@ -201,10 +201,10 @@ in C or assembly.
 
 | Index | Role | Confidence |
 |---|---|---|
-| `0x00` | Story stage. Selects the room blob variant ([`rooms.md`](rooms.md)), is compared by `GotoIfStoryStageCompare` in 36 rooms, and is set by `SetStoryStage` and by the choose-character choice (see below). `InitRoomScriptState_candidate` resets it to `0`; `CheckBattleDefeat` sets it to `0x1F` | **PROVEN** |
+| `0x00` | Story stage. Selects the room blob variant ([`rooms.md`](rooms.md)), is compared by `GotoIfStoryStageCompare` in 36 rooms, and is set by `SetStoryStage` and by the choose-character choice (see below). `InitRoomScriptState` resets it to `0`; `CheckBattleDefeat` sets it to `0x1F` | **PROVEN** |
 | `0x10` | Defeat-warp selector, written by `SetDefeatWarpSelector` (values `0`-`7`, `10`, `15`-`19` occur in the room scripts). `CheckBattleDefeat` indexes the defeat-warp table with it and compares it with `0x13` | **PROVEN** |
 | `0x11` | Castle area number: the dungeons set `0`, the entrance hall and great hall `1`, the second to seventh floors `2`-`7`. No C, assembly or script (compare, copy, random) access reads it | **PROVEN** (writers), **UNCONFIRMED** (use) |
-| `0x12` | Previous story stage: `InitializeOverworld` and `ExitChooseCharacter` copy index `0` here. On returning to the overworld (game-mode argument 3 = `0xFF`), `InitializeOverworld` maps both stages through the room blob's stage-to-variant table (`sub_08005DC0`): equal variants run `RestoreRoomActorState`, different ones `RestoreRoomActorStateMinimal` | **PROVEN** |
+| `0x12` | Previous story stage: `InitializeOverworld` and `ExitChooseCharacter` copy index `0` here. On returning to the overworld (game-mode argument 3 = `0xFF`), `InitializeOverworld` maps both stages through the room blob's stage-to-variant table (`GetRoomBlobStageVariant`): equal variants run `RestoreRoomActorState`, different ones `RestoreRoomActorStateMinimal` | **PROVEN** |
 | `0x14`-`0x18` | One flag per Folio Universitas page group `0`-`4`, set to `1` by `SetQuestState 1, 20+group` in the Wizard Card Collectors Club script after that group's reward is granted. `GotoIfAllQuestFlagsSet` branches on all five being nonzero, and `HandleChestTouch` reads `[0x14 + group]` | **PROVEN** |
 | `0x19` | Main-menu objective index (`g_bMainMenuObjectiveIndex`, serialized twice): `DrawPauseMenuObjective` draws dialog text `0x924 + [0x19]`. Set in 28 rooms | **PROVEN** |
 | `0x1A` | Alternate presentation flag for rooms `8`-`15`: when nonzero and the current room id is `8`-`15`, battle setup uses the alternate background data (`0x08882CFC`/`0x08886004` instead of the per-room `0x0804E09C` table), and `InitializeOverworld` plays the music module from the table at `0x08065730` ([`levels.md`](levels.md)), and `SetupRoomBgControlAndWindows_candidate` calls `sub_0802A2A4`, which loads an alternate 16-colour BG palette (embedded palettes at `0x08854EE0`-`0x0885650C`, `0x081B2E98` for room `6`) for room ids `5`-`0x29`. Set to `1` by `PlaySpecialSceneEffect` mode `3`; scripts in 10 rooms set it to `0` or `1` | **PROVEN** (readers/writers), **PROVEN** that the palette at `0x08854EE0` (room `0x29`, Harry's room) is a blue night-time recolour of that room; **UNCONFIRMED** for the other 11 blobs |
@@ -376,7 +376,7 @@ MATCH**: confirmed by finding the exact symmetric producer,
 captured (e.g. before a save or a room transition); `RestoreRoomActorState`/
 `RestoreRoomActorStateMinimal` (`0x0802AB34`/`0x0802AE64`) are the
 load-side counterparts that walk it back out, respawning each tile's
-default actor via `RespawnRoomActorAtTile` (`0x08005B70`, looks up the
+default actor via `SpawnRoomGroupMember` (`0x08005B70`, looks up the
 room's static per-tile actor-type table and instantiates it) and then
 overwriting specific fields on top with the saved deltas.
 

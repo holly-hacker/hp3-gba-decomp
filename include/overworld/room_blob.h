@@ -4,7 +4,7 @@
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 
-// Per-room resource blob, see docs/formats/rooms.md. ParseRoomResourceBlob_candidate
+// Per-room resource blob, see docs/formats/rooms.md. ParseRoomResourceBlob
 // builds the room's runtime tables from it in one buffer, in the order
 // header records, actor table, warp trigger table, switch-state table.
 
@@ -61,30 +61,30 @@ typedef struct RoomBlobSubBlock {
 // Runtime buffer (0x2200 bytes) and the tables built inside it.
 extern RoomBlobHeader *g_pRoomTableBuffer;
 extern RoomBlobTable *g_pRoomActorTable;
-extern RoomBlobTable *g_pRoomWarpTriggerTable;
-// Waypoint routes in g_pRoomWarpTriggerTable; see docs/formats/rooms.md.
-extern u8 GetRoomWarpTriggerByte_candidate(u8 route);  // waypoint count
-extern IntPoint GetRoomWarpTriggerOffset_candidate(u8 route, u8 waypoint);
-extern void ApplyRoomWarpTrigger_candidate(u8 route, u8 waypoint);  // runs the waypoint's chain
+extern RoomBlobTable *g_pRoomRouteTable;
+// Waypoint routes in g_pRoomRouteTable; see docs/formats/rooms.md.
+extern u8 GetRoomRouteWaypointCount(u8 route);  // waypoint count
+extern IntPoint GetRoomRouteWaypointPos(u8 route, u8 waypoint);
+extern void RunRoomRouteWaypointChain(u8 route, u8 waypoint);  // runs the waypoint's chain
 
 // Byte size of an offset array of `count` u16 entries, padded to a multiple of 4.
-extern u16 sub_08005EC8(u16 count);
+extern u16 GetRoomOffsetTableSize(u16 count);
 // `size` rounded up to a multiple of 4.
-extern u16 sub_08005EE8(u16 size);
+extern u16 AlignRoomSizeTo4(u16 size);
 // Copies `size` bytes of static tile data to `pDst + 8`.
-extern void sub_08005E18(const u8 *pSrc, u8 *pDst, u8 size);
+extern void CopyRoomActorStaticBytes(const u8 *pSrc, u8 *pDst, u8 size);
 // Copies a warp trigger list ({u32 count, 8-byte records}); returns the end.
-extern u8 *sub_08005E40(const RoomBlobTable *pTable, u8 *pDst, u8 index);
+extern u8 *CopyRoomRouteWaypoints(const RoomBlobTable *pTable, u8 *pDst, u8 index);
 // Copies a room-script chain up to and including its terminator; returns the end.
-extern u8 *sub_08005E84(const RoomBlobTable *pTable, u8 *pDst, u8 index);
+extern u8 *CopyRoomScriptChain(const RoomBlobTable *pTable, u8 *pDst, u8 index);
 
-extern u8 *CopyRoomBlobHeaderRecords_candidate(const RoomBlobHeader *pBlob, const RoomBlobSubBlock *pVariant);
-extern u8 *BuildRoomActorTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
-extern u8 *BuildRoomActorColumn_candidate(const RoomBlobTable *pTable, u8 *pOut, u8 index);
-extern u8 *BuildRoomWarpTriggerTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
-extern u8 *BuildRoomSwitchStateActorTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
+extern u8 *CopyRoomBlobHeaderRecords(const RoomBlobHeader *pBlob, const RoomBlobSubBlock *pVariant);
+extern u8 *BuildRoomActorTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
+extern u8 *BuildRoomActorGroup(const RoomBlobTable *pTable, u8 *pOut, u8 index);
+extern u8 *BuildRoomRouteTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
+extern u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
 
-extern void ParseRoomResourceBlob_candidate(const RoomBlobHeader *pBlob);
+extern void ParseRoomResourceBlob(const RoomBlobHeader *pBlob);
 
 // Each room's resource blob, in room table order.
 extern const u8 Room00Blob[];

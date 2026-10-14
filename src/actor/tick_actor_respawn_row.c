@@ -8,5 +8,5 @@
 void TickActorRespawnRow(Actor *actor)
 {
     if (g_dwGameModeFlags & 0x10)
-        RespawnRowAndRunChain_candidate(actor->bRespawnRow, actor->bChainRow);
+        RespawnGroupAndRunChain(actor->bRespawnRow, actor->bChainRow);
 }

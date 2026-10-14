@@ -6,7 +6,7 @@
 // See docs/formats/rooms.md.
 Actor *SpawnChestActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk9 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk9 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(RoomActorType_Chest);
     u32 kind;
     u32 mask;

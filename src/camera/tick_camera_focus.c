@@ -32,13 +32,13 @@ void TickCameraFocus_candidate(u8 slot)
                     if (g_aCameraEffects_candidate[index].bChainRan == 0)
                     {
                         g_aCameraEffects_candidate[index].bChainRan = 1;
-                        RespawnRowAndRunChain_candidate(g_aCameraEffects_candidate[index].bRespawnRow, g_aCameraEffects_candidate[index].bChainRow);
+                        RespawnGroupAndRunChain(g_aCameraEffects_candidate[index].bRespawnRow, g_aCameraEffects_candidate[index].bChainRow);
                     }
 
                     if (g_aCameraEffects_candidate[index].dwResumeScript != 0)
                     {
                         g_aCameraEffects_candidate[index].dwResumeScript = 0;
-                        ResumeRoomSwitchStateChain_candidate();
+                        ResumeRoomScriptChain();
                     }
                 }
                 else
@@ -71,7 +71,7 @@ void TickCameraFocus_candidate(u8 slot)
         else
         {
             g_aCameraEffects_candidate[index].bState = 0;
-            RespawnRowAndRunChain_candidate(g_aCameraEffects_candidate[index].bRespawnRow, g_aCameraEffects_candidate[index].bChainRow);
+            RespawnGroupAndRunChain(g_aCameraEffects_candidate[index].bRespawnRow, g_aCameraEffects_candidate[index].bChainRow);
             StopSoundEffect(g_bCameraShakeSoundHandle);
         }
     }

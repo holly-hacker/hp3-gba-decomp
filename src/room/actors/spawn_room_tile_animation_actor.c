@@ -4,7 +4,7 @@
 // Room actor constructor for tile actorType 1; see docs/formats/rooms.md.
 Actor *SpawnRoomTileAnimationActor_candidate(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk1 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk1 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(pRecord->dwActorType);
 
     SetActorPosition(pActor, pRecord->nPixelX, pRecord->nPixelY);

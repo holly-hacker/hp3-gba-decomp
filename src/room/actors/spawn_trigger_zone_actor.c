@@ -5,7 +5,7 @@
 // extents. See docs/formats/rooms.md.
 Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk4 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk4 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(pRecord->dwActorType);
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);

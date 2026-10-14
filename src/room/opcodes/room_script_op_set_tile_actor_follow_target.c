@@ -18,11 +18,11 @@ typedef struct SetTileActorFollowTargetRecord {
 // the stop distance, and walks again once farther than both distances.
 void RoomScriptOpSetTileActorFollowTarget(SetTileActorFollowTargetRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
     Actor *pTarget;
 
     if (pRecord->bUseTargetTile != 0)
-        pTarget = GetRoomActorField_candidate(pRecord->bTargetTileX, pRecord->bTargetTileY);
+        pTarget = GetRoomActorPtr(pRecord->bTargetTileX, pRecord->bTargetTileY);
     else
         pTarget = g_OverworldControlState.aSlots[0].pActor;
     pActor->pShadowActor = pTarget;

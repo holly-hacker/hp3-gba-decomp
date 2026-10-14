@@ -5,7 +5,7 @@
 // its sprite and behavior. See docs/formats/rooms.md.
 Actor *SpawnPropActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk5 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk5 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(RoomActorType_ScriptedTrigger);
     u32 kind;
 

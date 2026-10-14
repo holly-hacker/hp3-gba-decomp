@@ -10,7 +10,7 @@ typedef struct SetTileActorAndLinkedVisibleRecord {
 
 void RoomScriptOpSetTileActorAndLinkedVisible(SetTileActorAndLinkedVisibleRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     if (pRecord->bVisible != 0)
     {

@@ -13,7 +13,7 @@
 
 // Compares lhs against rhs with cmpOp and queues the taken side's chain in
 // g_bRoomScriptPendingChain (a zero falseChain means no jump), then respawns the
-// taken side's actor row if ShouldRunRoomScriptRow_candidate allows it.
+// taken side's actor row if ShouldRunRoomIndex allows it.
 ROOM_SCRIPT_BRANCH_LINKAGE void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, u8 falseChain,
                                                            u8 trueRow, u8 falseRow)
 {
@@ -51,13 +51,13 @@ ROOM_SCRIPT_BRANCH_LINKAGE void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8
     if (result)
     {
         g_bRoomScriptPendingChain = trueChain;
-        if (ShouldRunRoomScriptRow_candidate(trueRow))
-            RespawnRoomActorsInRow_candidate(trueRow);
+        if (ShouldRunRoomIndex(trueRow))
+            SpawnMissingRoomGroupActors(trueRow);
     }
     else
     {
         g_bRoomScriptPendingChain = falseChain;
-        if (ShouldRunRoomScriptRow_candidate(falseRow))
-            RespawnRoomActorsInRow_candidate(falseRow);
+        if (ShouldRunRoomIndex(falseRow))
+            SpawnMissingRoomGroupActors(falseRow);
     }
 }

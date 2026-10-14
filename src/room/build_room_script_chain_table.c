@@ -1,8 +1,8 @@
 #include "types.h"
 #include "overworld/room_blob.h"
 
-// Builds g_pRoomSwitchStateActorTable at pOut; returns its end.
-u8 *BuildRoomSwitchStateActorTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut)
+// Builds g_pRoomScriptChainTable at pOut; returns its end.
+u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut)
 {
     const RoomBlobTable *pChains;
     u16 offset;
@@ -14,31 +14,31 @@ u8 *BuildRoomSwitchStateActorTable_candidate(const RoomBlobSubBlock *pDefault, c
     count = pChains->wCount;
 
     if (g_wRoomResourceFlags_candidate & 1)
-        g_pRoomSwitchStateActorTable->wHeader = count + 1;
+        g_pRoomScriptChainTable->wHeader = count + 1;
     else
-        g_pRoomSwitchStateActorTable->wHeader = count;
+        g_pRoomScriptChainTable->wHeader = count;
 
-    offset = sub_08005EC8(g_pRoomSwitchStateActorTable->wHeader + 1);
+    offset = GetRoomOffsetTableSize(g_pRoomScriptChainTable->wHeader + 1);
     pOut += offset;
 
     if (g_wRoomResourceFlags_candidate & 1)
     {
-        g_pRoomSwitchStateActorTable->awChainOffsets[0] = offset;
+        g_pRoomScriptChainTable->awChainOffsets[0] = offset;
         offset = pDefault->wSwitchTableOffset;
         pChains = (const RoomBlobTable *)((const u8 *)pDefault + offset);
-        pOut = sub_08005E84(pChains, pOut, 0);
+        pOut = CopyRoomScriptChain(pChains, pOut, 0);
     }
 
     offset = pVariant->wSwitchTableOffset;
     pChains = (const RoomBlobTable *)((const u8 *)pVariant + offset);
     for (i = 0; i < count;)
     {
-        offset = pOut - (u8 *)g_pRoomSwitchStateActorTable;
+        offset = pOut - (u8 *)g_pRoomScriptChainTable;
         if (g_wRoomResourceFlags_candidate & 1)
-            g_pRoomSwitchStateActorTable->awChainOffsets[i + 1] = offset;
+            g_pRoomScriptChainTable->awChainOffsets[i + 1] = offset;
         else
-            g_pRoomSwitchStateActorTable->awChainOffsets[i] = offset;
-        pOut = sub_08005E84(pChains, pOut, i);
+            g_pRoomScriptChainTable->awChainOffsets[i] = offset;
+        pOut = CopyRoomScriptChain(pChains, pOut, i);
         i++;
     }
     return pOut;

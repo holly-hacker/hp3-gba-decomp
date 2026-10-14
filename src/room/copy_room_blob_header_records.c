@@ -2,7 +2,7 @@
 #include "overworld/room_blob.h"
 
 // Copies the blob header into the runtime buffer; returns where the actor table goes.
-u8 *CopyRoomBlobHeaderRecords_candidate(const RoomBlobHeader *pBlob, const RoomBlobSubBlock *pVariant)
+u8 *CopyRoomBlobHeaderRecords(const RoomBlobHeader *pBlob, const RoomBlobSubBlock *pVariant)
 {
     u16 i;
     u16 size;

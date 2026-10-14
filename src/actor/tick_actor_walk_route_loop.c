@@ -19,7 +19,7 @@ void TickActorWalkRouteLoop(Actor *actor)
 
     route = actor->modeState.route.bRoute;
     waypoint = actor->modeState.route.bWaypoint;
-    waypointCount = GetRoomWarpTriggerByte_candidate(route);
+    waypointCount = GetRoomRouteWaypointCount(route);
     subState = actor->bActionSubState;
     facing = actor->bFacing;
 
@@ -27,14 +27,14 @@ void TickActorWalkRouteLoop(Actor *actor)
     case 0:
         SetActorActionSubState(actor, 3);
         actor->dwStateTimer = 0;
-        target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+        target = GetRoomRouteWaypointPos(route, waypoint);
         IntToFixedPoint(target, &actor->moveTarget);
         break;
     case 10:
         if (--actor->dwStateTimer == -1) {
             SetActorActionSubState(actor, 3);
             actor->dwStateTimer = 0;
-            target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+            target = GetRoomRouteWaypointPos(route, waypoint);
             IntToFixedPoint(target, &actor->moveTarget);
         }
         break;
@@ -44,7 +44,7 @@ void TickActorWalkRouteLoop(Actor *actor)
         direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
         if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
             || direction == DirectionNone) {
-            ApplyRoomWarpTrigger_candidate(route, waypoint);
+            RunRoomRouteWaypointChain(route, waypoint);
             waypoint = ++actor->modeState.route.bWaypoint;
             if (waypoint >= waypointCount) {
                 actor->modeState.route.bWaypoint = 0;
@@ -52,7 +52,7 @@ void TickActorWalkRouteLoop(Actor *actor)
             }
             actor->dwStateTimer = actor->scriptState.wScriptPc;
             SetActorActionSubState(actor, 10);
-            target = GetRoomWarpTriggerOffset_candidate(route, waypoint);
+            target = GetRoomRouteWaypointPos(route, waypoint);
             IntToFixedPoint(target, &actor->moveTarget);
         }
         else if (direction != facing) {

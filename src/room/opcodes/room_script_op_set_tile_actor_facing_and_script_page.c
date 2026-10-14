@@ -11,7 +11,7 @@ typedef struct SetTileActorFacingAndScriptPageRecord {
 
 void RoomScriptOpSetTileActorFacingAndScriptPage(SetTileActorFacingAndScriptPageRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     SetActorActionState(pActor, 0x1b);
     SetActorActionSubState(pActor, 0);

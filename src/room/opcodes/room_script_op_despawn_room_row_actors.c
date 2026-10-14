@@ -13,12 +13,12 @@ void RoomScriptOpDespawnRoomRowActors(DespawnRoomRowActorsRecord *pRecord)
     u8 col;
     Actor *pActor;
 
-    if (ShouldRunRoomScriptRow_candidate(row))
+    if (ShouldRunRoomIndex(row))
     {
-        columnCount = GetRoomRowColumnCount_candidate(row);
+        columnCount = GetRoomGroupMemberCount(row);
         for (col = 0; col < columnCount; col++)
         {
-            pActor = GetRoomActorField_candidate(row, col);
+            pActor = GetRoomActorPtr(row, col);
             if (pActor != NULL)
             {
                 if (pActor->pLinkedActor_candidate != NULL)

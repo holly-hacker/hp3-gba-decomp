@@ -15,5 +15,5 @@ void RoomScriptOpSetCameraFollowTileActor(SetCameraFollowTileActorRecord *pRecor
     // the current record's address at dispatch.
     CameraFocusOffset offset;
 
-    SetCameraFollowTarget_candidate(GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY), offset, 0);
+    SetCameraFollowTarget_candidate(GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY), offset, 0);
 }

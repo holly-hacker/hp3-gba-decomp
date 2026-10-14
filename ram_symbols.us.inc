@@ -69,20 +69,20 @@
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ u16: bit 0 = the room also has a second actor/switch row
 
 @ --- Room-script VM (see include/overworld/room_script.h) ---
-.set g_bRoomScriptCurrentRow,        0x03001DDE  @ u8: chain the VM is walking
+.set g_bRoomScriptCurrentChain,        0x03001DDE  @ u8: chain the VM is walking
 .set g_pRoomScriptYieldContinuation, 0x03001DE0  @ u32 *: record to resume at after a yield, or 0
 .set g_pRoomScriptNextRecord,        0x03001DE4  @ u32 *: record following the one being dispatched
 .set g_bRoomScriptCallStackDepth,    0x03001DE8  @ u8: nested chain calls in flight
 
 .set g_bRoomScriptYieldOpcode,            0x03001DE9  @ u8: opcode a running room script yielded on
 .set g_pRoomTableBuffer,                  0x03001DEC  @ RoomBlobHeader *: 0x2200-byte buffer holding the room's runtime tables
-.set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ u32: set to 1 by RespawnRowAndRunChain_candidate while it runs a room chain; cleared by
+.set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ u32: set to 1 by RespawnGroupAndRunChain while it runs a room chain; cleared by
                                                       @ HandleOverworldPauseMenuInput each frame, which skips the menu check while it is set
 
 @ --- Room-script VM (see include/overworld/room_script.h) ---
 .set g_pRoomActorTable,            0x03001DF4  @ RoomBlobTable *: per-column, per-row tile records
-.set g_pRoomWarpTriggerTable,       0x03001DF8  @ RoomBlobTable *: per-column warp trigger lists
-.set g_pRoomSwitchStateActorTable, 0x03001DFC  @ RoomScriptTable *: current room's chain offset table
+.set g_pRoomRouteTable,       0x03001DF8  @ RoomBlobTable *: per-route waypoint lists
+.set g_pRoomScriptChainTable, 0x03001DFC  @ RoomScriptTable *: current room's chain offset table
 .set g_aRoomScriptCallStack,        0x03001E00  @ RoomScriptCallFrame[]: saved callers, indexed by depth
 
 .set g_BgState,        0x03001E80  @ BgState: dwFlags, then the BgLayer[4] array that g_aBgLayers addresses

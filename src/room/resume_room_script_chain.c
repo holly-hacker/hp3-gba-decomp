@@ -2,9 +2,9 @@
 #include "overworld/room_script.h"
 
 // Room-script VM entry that continues the walk stopped at g_pRoomScriptYieldContinuation.
-// Otherwise identical to WalkRoomSwitchStateChain_candidate, except that jumps save the
-// chain being walked (g_bRoomScriptCurrentRow) as the caller.
-void ResumeRoomSwitchStateChain_candidate(void)
+// Otherwise identical to RunRoomScriptChain, except that jumps save the
+// chain being walked (g_bRoomScriptCurrentChain) as the caller.
+void ResumeRoomScriptChain(void)
 {
     RoomScriptRecord *pRecord;
     RoomScriptRecord *pNext;
@@ -25,10 +25,10 @@ void ResumeRoomSwitchStateChain_candidate(void)
     {
         if (pNext != g_pRoomScriptYieldContinuation)
         {
-            g_bRoomScriptCurrentRow = g_bRoomScriptPendingChain;
+            g_bRoomScriptCurrentChain = g_bRoomScriptPendingChain;
             g_bRoomScriptPendingChain = 0xff;
-            pTable = g_pRoomSwitchStateActorTable;
-            slotOffset = g_bRoomScriptCurrentRow * 2;
+            pTable = g_pRoomScriptChainTable;
+            slotOffset = g_bRoomScriptCurrentChain * 2;
             pChainOffsets = pTable->awChainOffsets;
             pNext = (RoomScriptRecord *)((u8 *)pTable + *(u16 *)((u8 *)pChainOffsets + slotOffset));
         }
@@ -55,7 +55,7 @@ void ResumeRoomSwitchStateChain_candidate(void)
                 if (pRecord->dwOpcode != 0x40)
                 {
                     g_bRoomScriptCallStackDepth++;
-                    g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth].bRow = g_bRoomScriptCurrentRow;
+                    g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth].bRow = g_bRoomScriptCurrentChain;
                     g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth].pReturn = pNext;
                     pushedFrames++;
                 }
@@ -81,6 +81,6 @@ void ResumeRoomSwitchStateChain_candidate(void)
     if (g_bRoomScriptCallStackDepth != 0 && pushedFrames != 0)
     {
         g_bRoomScriptCallStackDepth -= pushedFrames;
-        WalkRoomSwitchStateChain_candidate(g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth + 1].bRow, 1);
+        RunRoomScriptChain(g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth + 1].bRow, 1);
     }
 }

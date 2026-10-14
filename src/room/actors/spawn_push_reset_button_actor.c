@@ -5,7 +5,7 @@
 // respawn a push puzzle's actors. See docs/formats/rooms.md.
 Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk8 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk8 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(RoomActorType_Unk8);
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);

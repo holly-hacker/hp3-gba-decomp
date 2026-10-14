@@ -33,10 +33,10 @@ entered/re-entered", not a lever-specific mechanism.
 
 Two entry points share one opcode loop:
 
-- **`WalkRoomSwitchStateChain_candidate`** (US `0x08005410`) starts a
+- **`RunRoomScriptChain`** (US `0x08005410`) starts a
   chain fresh, given a chain index (`param_1`) and a `resumeFromSaved`
   flag (`param_2`).
-- **`ResumeRoomSwitchStateChain_candidate`** (US `0x080055C0`) resumes
+- **`ResumeRoomScriptChain`** (US `0x080055C0`) resumes
   whatever chain was left paused (see "Pause/resume" below) with no
   arguments of its own.
 
@@ -98,11 +98,11 @@ handlers. The camera effects of opcodes `0x10` (`QueueTileActorMove`) and
 `0x12` are described in
 [`../memory-map/frame_systems.md`](../memory-map/frame_systems.md).
 
-### The row gate (`ShouldRunRoomScriptRow_candidate`)
+### The row gate (`ShouldRunRoomIndex`)
 
 **PROVEN**, worked out with a truth table rather than by inspection
 (the boolean expression reads deceptively like "`n == 0` is the normal
-case"). `ShouldRunRoomScriptRow_candidate(n)` (US `0x08005B44`) is:
+case"). `ShouldRunRoomIndex(n)` (US `0x08005B44`) is:
 
 | `n` | Result |
 |---|---|
@@ -111,16 +111,16 @@ case"). `ShouldRunRoomScriptRow_candidate(n)` (US `0x08005B44`) is:
 | `>= 2` | always `true` |
 
 Every real script's `InvokeChainIfEnabled` (`0x40`) passes `n = 0` for
-this gate, so its `RespawnRoomActorsInRow_candidate` call (US
+this gate, so its `SpawnMissingRoomGroupActors` call (US
 `0x0800539C`) is dead in every shipped instance -- see `RoomScriptOpInvokeChainIfEnabled`
 above.
 `GotoIfQuestStateCompare`/`GotoIfStoryStageCompare` pass real,
 often-nonzero row values here instead, so the same gate is genuinely
 exercised for those two. This gate is **unrelated** to
 `InitializeOverworld`'s own chain-`0`/chain-`1` room-load logic
-(`WalkRoomSwitchStateChain_candidate(0, 0)` unconditionally, chain `1`
+(`RunRoomScriptChain(0, 0)` unconditionally, chain `1`
 only if `DAT_03001DDC` bit `0` is *set*) -- that code never calls
-`ShouldRunRoomScriptRow_candidate` at all; it's a separate, direct code path that happens
+`ShouldRunRoomIndex` at all; it's a separate, direct code path that happens
 to test the same bit with the opposite sense.
 
 ## The dialog-block indirection
@@ -169,14 +169,14 @@ identified.
 **STRUCTURAL MATCH**, from decompiling both entry points side by side.
 Global `DAT_0300279C` tracks the VM's run state:
 
-- `4`: disabled -- both `WalkRoomSwitchStateChain_candidate` and
-  `ResumeRoomSwitchStateChain_candidate` bail immediately if set. A
+- `4`: disabled -- both `RunRoomScriptChain` and
+  `ResumeRoomScriptChain` bail immediately if set. A
   re-entrancy guard (candidate: set while some other system, e.g. a
   cutscene, owns execution -- not traced to a writer here).
 - `0`: idle/fresh walk.
-- `1`: set at the top of `ResumeRoomSwitchStateChain_candidate` --
+- `1`: set at the top of `ResumeRoomScriptChain` --
   "currently resuming a previously-paused chain".
-- `2`: the walk genuinely stops here -- `WalkRoomSwitchStateChain_candidate`'s
+- `2`: the walk genuinely stops here -- `RunRoomScriptChain`'s
   own loop checks state `2` after every handler call and `break`s,
   latching the *next* instruction's pointer into `DAT_03001DE0` before
   returning to its caller. Only `ShowRoomDialog` (opcode `5`) and
@@ -186,7 +186,7 @@ Global `DAT_0300279C` tracks the VM's run state:
   (only while state is exactly `1`, i.e. at the moment the transition
   happens). See "Resuming a yielded chain" below for the actual
   resume condition.
-- `3`: set by `WalkRoomSwitchStateChain_candidate` only when entered
+- `3`: set by `RunRoomScriptChain` only when entered
   while state was already `2`; transitions back to `2` once the walk
   it started finishes fully draining. Bridges a paused chain with a
   freshly-started one running concurrently (see nesting below).
@@ -205,13 +205,13 @@ caller.
 *current* continuation point pushed onto this stack before the jump is
 taken, and once the jumped-to chain itself terminates (`opcode 0` and
 the stack is non-empty), the walk pops back and calls
-`WalkRoomSwitchStateChain_candidate` again with the saved chain index
+`RunRoomScriptChain` again with the saved chain index
 to resume it -- i.e. **one room-script chain can call into another and
 return**, with `0x40` (`InvokeChainIfEnabled`) explicitly opting out of
 this generic push/pop (it manages `DAT_030028A0` itself instead).
 
 **Resuming a yielded chain**, from tracing every real caller of
-`ResumeRoomSwitchStateChain_candidate`: it is not a generic "the dialog
+`ResumeRoomScriptChain`: it is not a generic "the dialog
 box closed" callback. Three per-actor tick handlers call it
 (`TickActorWalkRouteOnce`, `TickActorWalkToTarget`, `0x0800A03C`, each an
 action-state handler unrelated to room scripts otherwise), and each only does so
@@ -232,8 +232,8 @@ one way that actor-side state gets reached).
 ## Chains in C
 
 **PROVEN** the on-ROM chain format is byte-identical to the RAM format
-above: `sub_08005E84` (US `0x08005E84`, the copier
-`BuildRoomSwitchStateActorTable_candidate` calls per chain, up to and
+above: `CopyRoomScriptChain` (US `0x08005E84`, the copier
+`BuildRoomScriptChainTable` calls per chain, up to and
 including the opcode-0 terminator) is a
 straight byte-for-byte copy loop driven by the same
 `g_abRoomScriptOpcodeLengths` table, with no transformation -- so a
@@ -243,7 +243,7 @@ without emulating anything.
 Unlike `battle_scripts.md`'s VM, there is no single global pointer
 table -- each room's chains live inside that room's own resource blob
 (`RoomTableEntry+0x50`, see [`levels.md`](levels.md)), reached through
-the same header `ParseRoomResourceBlob_candidate` walks (see
+the same header `ParseRoomResourceBlob` walks (see
 [`rooms.md`](rooms.md)):
 
 ```
@@ -255,13 +255,13 @@ chainCount    = u8(switchTable + 0)
 chain[i]      = switchTable + u16(switchTable + 2 + i*2)
 ```
 
-**PROVEN** (`BuildRoomSwitchStateActorTable_candidate`): the runtime table
-`g_pRoomSwitchStateActorTable` is `{u16 count, u16 offsets[count]}` followed
+**PROVEN** (`BuildRoomScriptChainTable`): the runtime table
+`g_pRoomScriptChainTable` is `{u16 count, u16 offsets[count]}` followed
 by the chains. Sub-block flags bit 0 (set in every shipped sub-block) makes
 the builder put the *default* sub-block's (entry 0's) chain 0 first and
 shift the variant's chains up by one: `count = chainCount + 1`, runtime
 chain 0 is the default's chain 0, and runtime chain `i + 1` is the variant's
-chain `i`. The chain indices scripts use (`WalkRoomSwitchStateChain_candidate`,
+chain `i`. The chain indices scripts use (`RunRoomScriptChain`,
 `goto` operands) are runtime indices. The C chain names below use the
 variant's own index `N`, one lower than the runtime index. Blob layout and extent proof:
 [`rooms.md`](rooms.md).

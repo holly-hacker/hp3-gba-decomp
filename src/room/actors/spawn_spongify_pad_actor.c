@@ -5,7 +5,7 @@
 // party to a target point. See docs/formats/rooms.md.
 Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnkA *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnkA *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(RoomActorType_UnkA);
     u32 i;
 

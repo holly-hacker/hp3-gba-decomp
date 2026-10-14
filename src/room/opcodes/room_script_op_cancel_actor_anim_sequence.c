@@ -11,7 +11,7 @@ typedef struct CancelActorAnimSequenceRecord {
 
 void RoomScriptOpCancelActorAnimSequence(CancelActorAnimSequenceRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     if (pActor != NULL)
     {

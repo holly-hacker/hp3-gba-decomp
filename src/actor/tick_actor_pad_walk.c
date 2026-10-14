@@ -64,11 +64,11 @@ void TickActorPadWalk(Actor *actor)
         actor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate;
         SetActorActionState(actor, 0x21);
         if (actor->padFinish.wPair != 0)
-            RespawnRowAndRunChain_candidate(actor->padFinish.rows.bRespawnRow,
+            RespawnGroupAndRunChain(actor->padFinish.rows.bRespawnRow,
                                             actor->padFinish.rows.bChainRow);
         if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartTileActorScript) {
             actor->dwFlags &= ~ActorFlagRoomScriptYield;
-            ResumeRoomSwitchStateChain_candidate();
+            ResumeRoomScriptChain();
         }
         break;
     default:

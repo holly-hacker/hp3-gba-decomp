@@ -1,8 +1,8 @@
 #include "types.h"
 #include "overworld/room_blob.h"
 
-// Builds g_pRoomWarpTriggerTable at pOut; returns its end.
-u8 *BuildRoomWarpTriggerTable_candidate(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut)
+// Builds g_pRoomRouteTable at pOut; returns its end.
+u8 *BuildRoomRouteTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut)
 {
     const RoomBlobTable *pDefaultTable;
     const RoomBlobTable *pVariantTable;
@@ -19,16 +19,16 @@ u8 *BuildRoomWarpTriggerTable_candidate(const RoomBlobSubBlock *pDefault, const 
     }
     pVariantTable = (const RoomBlobTable *)((const u8 *)pVariant + pVariant->wWarpTableOffset);
     defaultCount += pVariantTable->wCount;
-    g_pRoomWarpTriggerTable->wCount = defaultCount;
-    pOut += sub_08005EC8(defaultCount + 1);
+    g_pRoomRouteTable->wCount = defaultCount;
+    pOut += GetRoomOffsetTableSize(defaultCount + 1);
 
     if (g_wRoomResourceFlags_candidate & 1)
     {
         for (i = 0; i < pDefaultTable->wCount; i++)
         {
-            offset = pOut - (u8 *)g_pRoomWarpTriggerTable;
-            g_pRoomWarpTriggerTable->awOffsets[i] = offset;
-            pOut = sub_08005E40(pDefaultTable, pOut, i);
+            offset = pOut - (u8 *)g_pRoomRouteTable;
+            g_pRoomRouteTable->awOffsets[i] = offset;
+            pOut = CopyRoomRouteWaypoints(pDefaultTable, pOut, i);
         }
         defaultCount = pDefaultTable->wCount;
     }
@@ -37,9 +37,9 @@ u8 *BuildRoomWarpTriggerTable_candidate(const RoomBlobSubBlock *pDefault, const 
 
     for (i = 0; i < pVariantTable->wCount; i++)
     {
-        offset = pOut - (u8 *)g_pRoomWarpTriggerTable;
-        g_pRoomWarpTriggerTable->awOffsets[i + defaultCount] = offset;
-        pOut = sub_08005E40(pVariantTable, pOut, i);
+        offset = pOut - (u8 *)g_pRoomRouteTable;
+        g_pRoomRouteTable->awOffsets[i + defaultCount] = offset;
+        pOut = CopyRoomRouteWaypoints(pVariantTable, pOut, i);
     }
     return pOut;
 }

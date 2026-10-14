@@ -36,7 +36,7 @@ void TickActorScriptWalk(Actor *actor)
         break;
     case 14:
         if (actor->modeState.scriptWalk.args.dwWord & 0xFFFF00)
-            RespawnRowAndRunChain_candidate(actor->modeState.scriptWalk.args.bytes.bRespawnRow,
+            RespawnGroupAndRunChain(actor->modeState.scriptWalk.args.bytes.bRespawnRow,
                                             actor->modeState.scriptWalk.args.bytes.bChainRow);
         else {
             SetActorActionState(actor, 3);
@@ -44,7 +44,7 @@ void TickActorScriptWalk(Actor *actor)
         }
         if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartTileActorScript) {
             actor->dwFlags &= ~ActorFlagRoomScriptYield;
-            ResumeRoomSwitchStateChain_candidate();
+            ResumeRoomScriptChain();
         }
         break;
     default:

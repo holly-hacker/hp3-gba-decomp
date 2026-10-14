@@ -58,7 +58,7 @@
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ see ram_symbols.us.inc
 
 @ --- Room-script VM (see include/overworld/room_script.h) ---
-.set g_bRoomScriptCurrentRow,        0x03001DDE
+.set g_bRoomScriptCurrentChain,        0x03001DDE
 .set g_pRoomScriptYieldContinuation, 0x03001DE0
 .set g_pRoomScriptNextRecord,        0x03001DE4
 .set g_bRoomScriptCallStackDepth,    0x03001DE8
@@ -70,8 +70,8 @@
 
 @ --- Room-script VM (see include/overworld/room_script.h) ---
 .set g_pRoomActorTable,            0x03001DF4  @ see ram_symbols.us.inc
-.set g_pRoomWarpTriggerTable,       0x03001DF8  @ see ram_symbols.us.inc
-.set g_pRoomSwitchStateActorTable, 0x03001DFC  @ see ram_symbols.us.inc
+.set g_pRoomRouteTable,       0x03001DF8  @ see ram_symbols.us.inc
+.set g_pRoomScriptChainTable, 0x03001DFC  @ see ram_symbols.us.inc
 .set g_aRoomScriptCallStack,        0x03001E00
 
 .set g_BgState,        0x03001E80  @ see ram_symbols.us.inc

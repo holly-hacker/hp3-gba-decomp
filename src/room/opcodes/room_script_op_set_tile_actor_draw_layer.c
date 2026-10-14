@@ -10,7 +10,7 @@ typedef struct SetTileActorDrawLayerRecord {
 
 void RoomScriptOpSetTileActorDrawLayer(SetTileActorDrawLayerRecord *pRecord)
 {
-    Actor *pActor = GetRoomActorField_candidate(pRecord->bTileX, pRecord->bTileY);
+    Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     if (pActor != NULL)
         pActor->oam.priority = pRecord->bPriority;

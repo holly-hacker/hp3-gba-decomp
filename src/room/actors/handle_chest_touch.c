@@ -61,7 +61,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
                 }
                 else if (pSelf->modeState.chest.pair.wPair != 0)
                 {
-                    RespawnRowAndRunChain_candidate(pSelf->modeState.chest.pair.bytes.bRespawnGroup,
+                    RespawnGroupAndRunChain(pSelf->modeState.chest.pair.bytes.bRespawnGroup,
                                                     pSelf->modeState.chest.pair.bytes.bChain);
                 }
             }

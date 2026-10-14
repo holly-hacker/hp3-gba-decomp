@@ -307,14 +307,14 @@ typedef struct Actor {
                              // type id) -- see InitPlayerBattleActor/InitMonsterBattleActor
     u16 wCharacterId_candidate;  // 0x0A, party members' character id (compared against a script's character operand)
     ActorFlags dwFlags;    // 0x0C
-    u8 bRoomTileCol_candidate;  // 0x10, SetRoomActorRecordPtr_candidate's column arg
-    u8 bRoomTileRow_candidate;  // 0x11, SetRoomActorRecordPtr_candidate's row arg
+    u8 bRoomTileCol_candidate;  // 0x10, SetRoomActorPtr's column arg
+    u8 bRoomTileRow_candidate;  // 0x11, SetRoomActorPtr's row arg
     u8 bFacing;             // 0x12, direction/facing index; see SetActorFacing
     u8 pad_13[0x01];        // -> 0x14
     u16 wMoveDuration;      // 0x14
     u8 bDepthSortBias;      // 0x16, draw-order bias; see SortActorsByDepth
     u8 pad_17[0x01];        // -> 0x18
-    u8 bRespawnRow;         // 0x18, RespawnRowAndRunChain_candidate arguments for action
+    u8 bRespawnRow;         // 0x18, RespawnGroupAndRunChain arguments for action
     u8 bChainRow;           // 0x19   state 0x14 and trigger actors
     u8 bUnk1A;              // 0x1A
     u8 bResumeActionState;  // 0x1B, action state to return to after a state 6 pause
@@ -357,7 +357,7 @@ typedef struct Actor {
             u8 bRoomActorArg69_candidate;  // 0x69
             u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartActorAnimSequence
             u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartActorAnimSequence
-            u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnRowAndRunChain_candidate
+            u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnGroupAndRunChain
             u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
         } actor;
         struct __attribute__((packed)) {
@@ -367,7 +367,7 @@ typedef struct Actor {
                     u8 bRespawnRow;
                     u8 bChainRow;
                 } rows;
-            } finish;               // 0x62, RespawnRowAndRunChain_candidate arguments run when a
+            } finish;               // 0x62, RespawnGroupAndRunChain arguments run when a
                                     // walk-once route ends
             u8 bRoute;              // 0x64, route walked by action states 7-13; see
                                     // docs/formats/rooms.md's waypoint routes
@@ -381,7 +381,7 @@ typedef struct Actor {
                 u32 dwWord;         // bits 8-23 are tested as a whole: zero runs nothing
                 struct {
                     u8 bFacing;
-                    u8 bRespawnRow;     // RespawnRowAndRunChain_candidate arguments run on arrival
+                    u8 bRespawnRow;     // RespawnGroupAndRunChain arguments run on arrival
                     u8 bChainRow;
                 } bytes;
             } args;                 // 0x64
@@ -404,7 +404,7 @@ typedef struct Actor {
             u8 bRespawnRow;
             u8 bChainRow;
         } rows;
-    } padFinish;            // 0x78, RespawnRowAndRunChain_candidate arguments run when a
+    } padFinish;            // 0x78, RespawnGroupAndRunChain arguments run when a
                             // Spongify pad move ends
     u8 bPadFinalFacing;     // 0x7A, action state 0x11
     u8 pad_7B[0x01];        // -> 0x7C
@@ -539,7 +539,7 @@ extern u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint
 extern ActorRect GetActorCollisionBoxRect(Actor *actor, s32 boxIndex);
 extern s32 DoActorsOverlap(Actor *a, Actor *b);  // tests collision box 0 of each
 extern void ReleaseActorOffscreenVramTiles(Actor *actor);  // 0x08001300
-extern void SetRoomActorRecordPtr_candidate(Actor *actor, u8 col, u8 row);
+extern void SetRoomActorPtr(Actor *actor, u8 col, u8 row);
 extern Actor *SpawnActor(u32 type, s32 x, s32 y, const ObjPalette *pPalette);
 extern void SetActorPosition(Actor *actor, s32 x, s32 y);
 extern void SnapActorPosition(Actor *actor, u32 x, u32 y);

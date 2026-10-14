@@ -5,7 +5,7 @@
 // See docs/formats/rooms.md.
 Actor *SpawnDoorActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk2 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk2 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(pRecord->dwActorType);
     u8 *pDst;
     u8 i;

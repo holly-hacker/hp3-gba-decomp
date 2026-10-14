@@ -121,7 +121,7 @@ void TickActorSpongifyJump(Actor *actor)
         }
 
         if (actor->padFinish.wPair != 0) {
-            RespawnRowAndRunChain_candidate(actor->padFinish.rows.bRespawnRow,
+            RespawnGroupAndRunChain(actor->padFinish.rows.bRespawnRow,
                                             actor->padFinish.rows.bChainRow);
             actor->dwStateTimer = 16;
         }
@@ -131,7 +131,7 @@ void TickActorSpongifyJump(Actor *actor)
 
         if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartTileActorScript) {
             actor->dwFlags &= ~ActorFlagRoomScriptYield;
-            ResumeRoomSwitchStateChain_candidate();
+            ResumeRoomScriptChain();
             actor->dwStateTimer = 16;
         }
         else if (actor->dwStateTimer != 16) {

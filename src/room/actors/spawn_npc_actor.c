@@ -5,7 +5,7 @@
 // bFighterIndex doubles as the kind index into the asset tables.
 Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk6 *pRecord = sub_08005C38(bColumn, bRow);
+    RoomActorRecordUnk6 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(pRecord->dwActorType);
 
     SetActorPosition(pActor, pRecord->nPixelX, pRecord->nPixelY);
