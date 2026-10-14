@@ -85,12 +85,12 @@ selections -- the same field layout, reused at small scale.
 The bottom-of-screen popup shown on entering a room is
 **`ShowMapNamePopup`** (US `0x080238D8`), called from the tail of
 `InitializeOverworld` whenever `_g_bCurrentRoomId
-!= DebugMenuLevelAndQuestSelect`. It computes `stringId =
+!= CheatLevelAndQuest`. It computes `stringId =
 _g_bCurrentRoomId + 0x54A`, decodes it via `GetDialogText` (see
 [`text.md`](text.md)), and spawns a text actor at screen position
 (0x78, 0x98) -- bottom-center.
 
-The debug map-select menu (`InitializeDebugMapSelectMenu` `0x0800AED8` /
+The debug map-select menu (`InitializeCheatMap` `0x0800AED8` /
 `FUN_0800B120` `0x0800B120`) independently draws all 55 names by looping
 `GetDialogText(i + 0x54A)` for `i` in `0..0x36`, confirming both the
 `0x54A` base and the exact 55-entry count from a second, independent

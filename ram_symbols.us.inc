@@ -100,18 +100,23 @@
 .set g_aBgTileAnimations,                        0x0300216C  @ BgTileAnimEntry[4]: 0x10 bytes each; size inferred from the span up to g_apBgTileAnimationBuffers
 .set g_apBgTileAnimationBuffers,                 0x030021AC  @ void *[4]: decoded tile buffer of each BG tile animation
 
-@ --- Dialog/UI text engine (US only) ---
-.set g_DebugMenuMainState,            0x030021C0  @ DebugMenuMainState: {Actor *pCursorActor; u32 dwSelection}; see include/menu/debug_menu.h
-.set g_DebugLevelAndQuestSelectState, 0x030021C8  @ DebugLevelAndQuestSelectState; see include/menu/debug_menu.h
-.set g_DebugMapSelectState,           0x030021E8  @ DebugMapSelectState; see include/menu/debug_menu.h
-.set g_DebugCharacterSelectState,     0x030021F8  @ DebugCharacterSelectState; see include/menu/debug_menu.h
-.set g_DebugPortraitsState,           0x03002210  @ DebugPortraitsState: {Actor *pPortraitActor; u32 dwSelection}; see include/menu/debug_menu.h
-.set g_DebugSoundTestState,           0x03002218  @ DebugSoundTestState; see include/menu/debug_menu.h
-.set g_DebugCollectorCardsState,      0x03002238  @ DebugCollectorCardsState: {Actor *pCardActor; u32 dwSelection}; see include/menu/debug_menu.h
+@ --- Cheat menus (see include/cheat.h and include/cheat_*.h) ---
+.set g_CheatState,                     0x030021C0  @ CheatState: {Actor *pCursorActor; u32 dwSelection}; see include/cheat.h
+.set g_CheatLevelAndQuestState,        0x030021C8  @ CheatLevelAndQuestState; see include/cheat_level_and_quest.h
+.set g_CheatMapState,                  0x030021E8  @ CheatMapState; see include/cheat_map.h
+.set g_CheatPartyState,                0x030021F8  @ CheatPartyState; see include/cheat_party.h
+.set g_CheatPortraitsState,            0x03002210  @ CheatPortraitsState: {Actor *pPortraitActor; u32 dwSelection}; see include/cheat_portraits.h
+.set g_CheatSoundTestState,            0x03002218  @ CheatSoundTestState; see include/cheat_sound_test.h
+.set g_CheatWizardCardsState,          0x03002238  @ CheatWizardCardsState: {Actor *pCardActor; u32 dwSelection}; see include/cheat_wizard_cards.h
 
+@ --- Chests ---
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
+
+@ --- Choose character (see include/menu/choose_character.h) ---
 .set g_ChooseCharacterState,       0x03002260  @ ChooseCharacterState; see include/menu/choose_character.h
 .set g_dwChooseCharacterBgRow,     0x0300227C  @ u32: BG2 tile row of the choose-character screen panel
+
+@ --- Palette (see include/graphics/palette.h) ---
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
@@ -121,12 +126,20 @@
 .set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]; see include/graphics/palette.h
 .set g_aObjPaletteQueue,            0x030023E8  @ ObjPaletteQueueEntry[25]; see include/graphics/palette.h
 .set g_PaletteState,              0x030024B0  @ PaletteState; see include/graphics/palette.h
+
+@ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_pFightState,                 0x030024E8  @ FightState *, the active battle's state
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride, by FighterType
+
+@ --- Room-script resume transition ---
 .set g_bPendingRoomScriptChain,     0x0300260C  @ u8: switch-state chain to walk on a resume transition
 .set g_bPendingRoomScriptRow,       0x0300260D  @ u8: actor row to respawn on a resume transition
+
+@ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_nBattleXpReward,             0x0300260E  @ u16: XP earned this battle, one pool shared by the whole party
 .set g_nBattleGoldReward,           0x03002610  @ u16: Sickles earned this battle; also the scratch amount for gold reward grants
+
+@ --- Overworld ---
 .set g_dwOverworldMonstersDisabled, 0x03002614  @ u32: nonzero suppresses wandering-monster spawns
 
 @ --- Battle system (see docs/memory-map/battle.md) ---
@@ -377,7 +390,7 @@
 .set g_pWizardCrackerPopIt,                    0x03005230  @ WizardCrackerPopItState *: allocated for the minigame's duration
 .set g_ServePumpkinJuice,                      0x03005238  @ ServePumpkinJuiceState
 
-@ --- Dialog/UI text engine (US only) ---
+@ --- In-game menu screens (see include/menu/) ---
 .set g_StatusEquipReturnMode,      0x03005298  @ GameMode: StatusEquipCharacterSelect returns to on B (InGameMenu, InGameMenuFadeIn or ItemsItemSelect)
 .set g_StatusEquipNextMode,        0x0300529C  @ GameMode: StatusEquipCharacterSelect advances to on A (StatusEquipSlotSelect or QuantitySelectScreen)
 .set g_dwStatusEquipCharacter,     0x030052A0  @ u32: FighterType chosen in StatusEquipCharacterSelect, read by the slot/item screens and ItemUseScreen
@@ -415,13 +428,20 @@
 .set gMt19937AutoSeedCallCount, 0x03005590  @ increments each AutoSeed call (purpose unconfirmed)
 .set gMt19937SeedValue,         0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 
+@ --- Save manager and EEPROM ---
 .set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/game/save.h and docs/formats/save.md
 .set g_wEepromSavedDispstat,     0x0300561C  @ u16: DISPSTAT saved across EEPROM transfers (EepromTransferBegin/End)
+
+@ --- Screen darken ---
 .set g_pScreenPaletteBackup,        0x03005624  @ u16 *: 0x400-byte palette copy kept by DarkenScreenPalette
 .set g_dwUnk03005638,                      0x03005638  @ u32: set by SetScreenDarkenParams_candidate; no reader found
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300563C  @ u32: palette step ticks of DarkenScreenPalette/RestoreScreenPalette
+
+@ --- Camera and room size ---
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x03005648  @ RoomSizePixels: width and height of the current room in pixels
+
+@ --- Room BG layers and tile cache (see include/overworld/room.h) ---
 .set g_awBgLayerTileCount,          0x03005898  @ u16[4]: per BG layer, distinct tiles held in the BG tile cache
 .set g_aBgTilesets,                  0x030058A0  @ BgTileset[2]: per tile size class, the tile offset table and Huffman code table
 .set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera_candidate
@@ -442,6 +462,8 @@
 .set g_awBgTileCacheFreeCount,       0x030059A8  @ u16[2]: number of entries in each size class's free slot stack
 .set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState_candidate
 .set g_BgLoadedScroll,              0x030059B8  @ s32[2]: g_BgScroll as of the last tile load; the window VRAM holds
+
+@ --- Serial link (see include/serial/) ---
 .set g_SerialLink, 0x030059D8  @ SerialLink: exchange flags and the game's link callbacks; see include/serial/serial.h
 .set g_aSerialRecvMessages, 0x030059E4  @ SerialMessage[2]: latest message received from each peer
 .set g_SerialSendMessage, 0x030059FC  @ SerialMessage: message queued for the next exchange
@@ -469,19 +491,31 @@
 .set g_dwSerialConnectRetries, 0x03005AB4  @ u32: CountSerialConnectRetries call counter
 .set g_dwSerialUnk03005AB8, 0x03005AB8  @ u32: set by sub_0803FB34, returned by sub_0803FB40; neither has a caller
 .set g_dwSerialUnk03005ABC, 0x03005ABC  @ u32: zeroed by InitSerial, no other access found
+
+@ --- Music ---
 .set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
+
+@ --- Shops (see include/shop.h) ---
 .set g_FredAndGeorgesShop,       0x03005AC8  @ FredAndGeorgesShopState; see include/shop.h
+
+@ --- Divination tea minigame ---
 .set g_DivinationTea,            0x03005B28  @ DivinationTeaState
+
+@ --- Dialog text and language ---
 .set gDialogTextScratchBuf,      0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,           0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,        0x03005D0D  @ byte: locale-specific number-formatting separator
 .set g_apTextActors,              0x03005D10  @ Actor *[17]: slots filled by SpawnTextActor; its destructor clears the slot
+
+@ --- Game timers (see include/game/game_timer.h) ---
 .set g_aGameTimers,                0x03005D58  @ GameTimer[4]; see include/game/game_timer.h
+
+@ --- Harry and Hermione port-in-time ---
 .set g_HarryHermionePortInTime,  0x03005D98  @ HarryHermionePortInTimeState
 
-@ --- Dialog/UI text engine (US only) ---
+@ --- Main menu and options (see include/menu/main_menu.h and include/menu/options.h) ---
 .set g_nMainMenuTextCursor,     0x03005DB0  @ s32: text tile cursor returned by the main menu's copyright text; see include/title.h
 .set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Actor *pCursorActor; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot}; see include/title.h
 .set g_bSaveSlotScreenResult,    0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
@@ -492,15 +526,26 @@
 .set g_bOptionsSavedGammaHigh,   0x03005E0A  @ u8
 .set g_dwOptionsEntryLanguage,   0x03005E0C  @ u32: language when the options screen was entered
 
+@ --- Cool Train cutscene and room actor restore ---
 .set g_wCoolTrainTimer,          0x03005E14  @ u16: frames left in the Cool Train cutscene
 .set g_bRestoringRoomActors_candidate, 0x03005E18  @ u8: 1 while RestoreRoomActorState respawns actors; also set when the overworld pushes a pause menu
+
+@ --- Scanline effects (see docs/memory-map/scanline_effects.md) ---
 .set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging,    0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
+
+@ --- OBJ tile allocator ---
 .set FindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun
 .set g_abObjTileAllocBitmap,    0x03006128  @ u8[128]: set bit = tile in use
 .set g_abObjTileFreeMask,       0x030061A8  @ u8[128]: clear bit = free pending the next OAM swap
+
+@ --- Screen windows ---
 .set g_aScreenWindows,          0x03006228  @ ScreenWindow[2]; see TickScreenWindow
+
+@ --- EEPROM ---
 .set g_pEepromInterface,         0x030062C8  @ EepromInterface *: chosen by EepromSelectInterface
+
+@ --- System stacks and interrupt vector ---
 .set gSystemStackTop,            0x03007EA0  @ top of the AGB system-mode stack
 .set gIrqStackTop,               0x03007FA0  @ top of the AGB IRQ-mode stack
 .set gIntrVectorPtr,             0x03007FFC  @ BIOS-called user interrupt handler pointer

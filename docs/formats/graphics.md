@@ -1342,7 +1342,7 @@ main-menu graphics after `g_MainMenuPalette` (not extracted).
 `g_apPortraitTable` (US `0x0804C61C`, 72 `ActorAssetRecord` entries, 16
 bytes each: `{pTileGfx, pFrameData, pPalette, reserved(0)}`) holds the
 game's dialog-portrait art. It's reachable from
-`InitializeDebugPortraitsMenu` (`0x0800B5A8`), a debug menu for paging
+`InitializeCheatPortraits` (`0x0800B5A8`), a debug menu for paging
 through them, but the records themselves are ordinary dialog assets --
 "debug" describes the viewer, not the data.
 

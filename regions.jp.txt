@@ -334,40 +334,40 @@ thumb-func 0x0800A874 sub_0800A874
 thumb-func 0x0800A8A8 PauseBgTileAnimations
 thumb-func 0x0800A8E0 ResumeBgTileAnimations
 thumb-func 0x0800A914 FreeBgTileAnimations
-c-file 0x0800A950 _ src/gamemode/modes/debug/debug_menu_main/initialize_debug_menu_main.c InitializeDebugMenuMain
-c-file 0x0800AA54 0x0800AB34 src/gamemode/modes/debug/debug_menu_main/update_debug_menu_main.c UpdateDebugMenuMain
-thumb-func 0x0800AB34 ResetDebugPartyFromArgs_candidate
-c-file 0x0800AB88 0x0800ABA0 src/gamemode/modes/debug/debug_menu_main/exit_debug_menu_main.c ExitDebugMenuMain
-thumb-func 0x0800ABA0 DrawDebugMenuMainEntries_candidate
-c-file 0x0800ABD8 _ src/gamemode/modes/debug/debug_level_and_quest_select_menu/initialize_debug_level_and_quest_select_menu.c InitializeDebugLevelAndQuestSelectMenu
-c-file 0x0800ACE4 0x0800AD94 src/gamemode/modes/debug/debug_level_and_quest_select_menu/update_debug_level_and_quest_select_menu.c UpdateDebugLevelAndQuestSelectMenu
+c-file 0x0800A950 _ src/cheat/initialize_cheat.c InitializeCheat
+c-file 0x0800AA54 0x0800AB34 src/cheat/update_cheat.c UpdateCheat
+thumb-func 0x0800AB34 ResetCheatPartyFromArgs_candidate
+c-file 0x0800AB88 0x0800ABA0 src/cheat/exit_cheat.c ExitCheat
+thumb-func 0x0800ABA0 DrawCheatEntries_candidate
+c-file 0x0800ABD8 _ src/cheat_level_and_quest/initialize_cheat_level_and_quest.c InitializeCheatLevelAndQuest
+c-file 0x0800ACE4 0x0800AD94 src/cheat_level_and_quest/update_cheat_level_and_quest.c UpdateCheatLevelAndQuest
 thumb-func 0x0800AD94 sub_0800AD94
-c-file 0x0800AE50 0x0800AE68 src/gamemode/modes/debug/debug_level_and_quest_select_menu/exit_debug_level_and_quest_select_menu.c ExitDebugLevelAndQuestSelectMenu
+c-file 0x0800AE50 0x0800AE68 src/cheat_level_and_quest/exit_cheat_level_and_quest.c ExitCheatLevelAndQuest
 thumb-func 0x0800AE68 sub_0800AE68
-c-file 0x0800AED8 _ src/gamemode/modes/debug/debug_map_select_menu/initialize_debug_map_select_menu.c InitializeDebugMapSelectMenu
-c-file 0x0800AFB4 _ src/gamemode/modes/debug/debug_map_select_menu/update_debug_map_select_menu.c UpdateDebugMapSelectMenu
-c-file 0x0800B108 0x0800B120 src/gamemode/modes/debug/debug_map_select_menu/exit_debug_map_select_menu.c ExitDebugMapSelectMenu
+c-file 0x0800AED8 _ src/cheat_map/initialize_cheat_map.c InitializeCheatMap
+c-file 0x0800AFB4 _ src/cheat_map/update_cheat_map.c UpdateCheatMap
+c-file 0x0800B108 0x0800B120 src/cheat_map/exit_cheat_map.c ExitCheatMap
 thumb-func 0x0800B120 sub_0800B120
 thumb-func 0x0800B158 sub_0800B158
-c-file 0x0800B198 _ src/gamemode/modes/debug/debug_character_select_menu/initialize_debug_character_select_menu.c InitializeDebugCharacterSelectMenu
-c-file 0x0800B2C8 0x0800B344 src/gamemode/modes/debug/debug_character_select_menu/update_debug_character_select_menu.c UpdateDebugCharacterSelectMenu
+c-file 0x0800B198 _ src/cheat_party/initialize_cheat_party.c InitializeCheatParty
+c-file 0x0800B2C8 0x0800B344 src/cheat_party/update_cheat_party.c UpdateCheatParty
 thumb-func 0x0800B344 sub_0800B344
 thumb-func 0x0800B40C sub_0800B40C
-c-file 0x0800B494 0x0800B4B0 src/gamemode/modes/debug/debug_character_select_menu/exit_debug_character_select_menu.c ExitDebugCharacterSelectMenu
+c-file 0x0800B494 0x0800B4B0 src/cheat_party/exit_cheat_party.c ExitCheatParty
 thumb-func 0x0800B4B0 sub_0800B4B0
 thumb-func 0x0800B52C sub_0800B52C
-c-file 0x0800B5A8 _ src/gamemode/modes/debug/debug_portraits_menu/initialize_debug_portraits_menu.c InitializeDebugPortraitsMenu
-c-file 0x0800B620 _ src/gamemode/modes/debug/debug_portraits_menu/update_debug_portraits_menu.c UpdateDebugPortraitsMenu
-c-file 0x0800B684 _ src/gamemode/modes/debug/debug_portraits_menu/exit_debug_portraits_menu.c ExitDebugPortraitsMenu
-c-file 0x0800B69C _ src/gamemode/modes/debug/debug_sound_test_menu/initialize_debug_sound_test_menu.c InitializeDebugSoundTestMenu
-c-file 0x0800B7A8 0x0800B8F0 src/gamemode/modes/debug/debug_sound_test_menu/update_debug_sound_test_menu.c UpdateDebugSoundTestMenu
+c-file 0x0800B5A8 _ src/cheat_portraits/initialize_cheat_portraits.c InitializeCheatPortraits
+c-file 0x0800B620 _ src/cheat_portraits/update_cheat_portraits.c UpdateCheatPortraits
+c-file 0x0800B684 _ src/cheat_portraits/exit_cheat_portraits.c ExitCheatPortraits
+c-file 0x0800B69C _ src/cheat_sound_test/initialize_cheat_sound_test.c InitializeCheatSoundTest
+c-file 0x0800B7A8 0x0800B8F0 src/cheat_sound_test/update_cheat_sound_test.c UpdateCheatSoundTest
 thumb-func 0x0800B8F0 sub_0800B8F0
-c-file 0x0800B9A0 0x0800B9BC src/gamemode/modes/debug/debug_sound_test_menu/exit_debug_sound_test_menu.c ExitDebugSoundTestMenu
+c-file 0x0800B9A0 0x0800B9BC src/cheat_sound_test/exit_cheat_sound_test.c ExitCheatSoundTest
 thumb-func 0x0800B9BC sub_0800B9BC
-c-file 0x0800BA2C 0x0800BAF8 src/gamemode/modes/debug/debug_collector_cards_menu/initialize_debug_collector_cards_menu.c InitializeDebugCollectorCardsMenu
+c-file 0x0800BA2C 0x0800BAF8 src/cheat_wizard_cards/initialize_cheat_wizard_cards.c InitializeCheatWizardCards
 thumb-func 0x0800BAF8 sub_0800BAF8
-c-file 0x0800BBF0 _ src/gamemode/modes/debug/debug_collector_cards_menu/update_debug_collector_cards_menu.c UpdateDebugCollectorCardsMenu
-c-file 0x0800BC54 _ src/gamemode/modes/debug/debug_collector_cards_menu/exit_debug_collector_cards_menu.c ExitDebugCollectorCardsMenu
+c-file 0x0800BBF0 _ src/cheat_wizard_cards/update_cheat_wizard_cards.c UpdateCheatWizardCards
+c-file 0x0800BC54 _ src/cheat_wizard_cards/exit_cheat_wizard_cards.c ExitCheatWizardCards
 c-file 0x0800BC6C _ src/room/actors/spawn_chest_actor.c SpawnChestActor
 c-file 0x0800BDCC _ src/room/actors/tick_chest_actor.c TickChestActor
 c-file 0x0800BF20 _ src/room/actors/handle_chest_touch.c HandleChestTouch
@@ -2157,15 +2157,15 @@ c-file 0x0804BF80 0x0804BFB8 src/room/room_actor_constructors.c g_apRoomActorCon
 c-file 0x0804BFD8 _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C1B0 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
 c-file 0x0804C368 0x0804C36C src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
-c-file 0x0804C370 _ src/gamemode/modes/debug/debug_menu_main/debug_menu_main.globals.c g_dwDebugMenuMainBg0Control
-c-file 0x0804C39C _ src/gamemode/modes/debug/debug_level_and_quest_select_menu/debug_level_and_quest_select_menu.globals.c g_abDebugLevelAndQuestMax
-c-file 0x0804C3CC _ src/gamemode/modes/debug/debug_map_select_menu/debug_map_select_menu.globals.c g_dwDebugMapSelectBg0Control
-c-file 0x0804C3F8 _ src/gamemode/modes/debug/debug_character_select_menu/debug_character_select_menu.globals.c g_dwDebugCharacterSelectBg0Control
-c-file 0x0804C544 _ src/gamemode/modes/debug/debug_portraits_menu/debug_portraits_menu.globals.c g_dwDebugPortraitsBg1Control
+c-file 0x0804C370 _ src/cheat/cheat.globals.c g_dwCheatBg0Control
+c-file 0x0804C39C _ src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_abCheatLevelAndQuestMax
+c-file 0x0804C3CC _ src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control
+c-file 0x0804C3F8 _ src/cheat_party/cheat_party.globals.c g_dwCheatPartyBg0Control
+c-file 0x0804C544 _ src/cheat_portraits/cheat_portraits.globals.c g_dwCheatPortraitsBg1Control
 c-file 0x0804C548 0x0804C9C8 src/graphics/assets/portrait_table.c g_apPortraitTable
-c-file 0x0804CDB8 _ src/gamemode/modes/debug/debug_sound_test_menu/debug_sound_test_menu.globals.c g_dwDebugSoundTestBg0Control
-c-file 0x0804CDE4 _ src/gamemode/modes/debug/debug_collector_cards_menu/debug_collector_cards_menu.globals.c g_dwDebugCollectorCardsBg2Control
-c-file 0x0804CDF0 _ src/menu/debug_collector_card_names.c sDebugCollectorCardNames
+c-file 0x0804CDB8 _ src/cheat_sound_test/cheat_sound_test.globals.c g_dwCheatSoundTestBg0Control
+c-file 0x0804CDE4 _ src/cheat_wizard_cards/cheat_wizard_cards.globals.c g_dwCheatWizardCardsBg2Control
+c-file 0x0804CDF0 _ src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWizardCardNames
 
 c-file 0x0804D450 _ src/room/actors/spawn_chest_actor.globals.c g_RoomChestSprite
 c-file 0x0804D5F8 _ src/gamemode/modes/choose_character/choose_character_stages.globals.c g_abChooseCharacterStages

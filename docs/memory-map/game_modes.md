@@ -38,13 +38,13 @@ Values for the debug-menu modes (`GameMode` enum, US ROM):
 
 | Mode | `mode` |
 |---|---|
-| `DebugMenuMain` | `0x19` |
-| `DebugMenuMapSelect` | `0x1F` |
-| `DebugMenuLevelAndQuestSelect` | `0x20` |
-| `DebugMenuSoundTest` | `0x21` |
-| `DebugMenuCollectorCards` | `0x22` |
-| `DebugMenuPortraits` | `0x23` |
-| `DebugMenuCharacterSelect` | `0x2A` |
+| `Cheat` | `0x19` |
+| `CheatMap` | `0x1F` |
+| `CheatLevelAndQuest` | `0x20` |
+| `CheatSoundTest` | `0x21` |
+| `CheatWizardCards` | `0x22` |
+| `CheatPortraits` | `0x23` |
+| `CheatParty` | `0x2A` |
 
 Full enum (71 values, `Startup`=1 through `ConfirmTradeScreen`=0x47) is in
 `include/game/game_modes.h`, mirroring Ghidra's `GameMode` data type -- not
@@ -274,7 +274,7 @@ Juice (`0x03005298`).
 
 ## Not yet located
 
-- Whether `DebugMenuMain` is reachable/meaningful from every game state,
+- Whether `Cheat` is reachable/meaningful from every game state,
   or only from specific ones (e.g. title screen) -- untested.
 - JP addresses for `g_dwPendingGameMode`/`g_dwCurrentGameMode`.
 

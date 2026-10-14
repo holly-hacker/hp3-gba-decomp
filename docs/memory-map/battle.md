@@ -619,7 +619,7 @@ above; all four are visual/Actor plumbing, no combat-mechanical state:
   bit `0` clear) loads one fixed 16-color row instead; neither bit is a
   no-op. Not battle-specific -- also called from
   `InitializeLupinPotionCutscene`, `InitializeFolioCardDetailScreen`,
-  `InitializeDebugCollectorCardsMenu`, `PlaySpecialSceneEffect`, and
+  `InitializeCheatWizardCards`, `PlaySpecialSceneEffect`, and
   three other non-battle sites, confirming it as a general graphics-blob
   palette loader, not something written for `InitializeBattle`. The blobs
 the background table points at are described in

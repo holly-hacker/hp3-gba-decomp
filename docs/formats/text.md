@@ -111,7 +111,7 @@ string table. No candidate resembled "7 parallel per-language tables" or
 found by this method.**
 
 One incidental find: `0x0800BBEC` contains a direct literal-pool pointer
-to `sDebugCollectorCardNames` (`0x0804CEC4`), confirming ordinary
+to `sFamousWizardCardNames` (`0x0804CEC4`), confirming ordinary
 armcc-style PC-relative literal-pool references are how code reaches
 known data -- a viable pattern to search for elsewhere, but not itself a
 new lead.
@@ -158,7 +158,7 @@ Static tracing *forward* from the one available piece of ground truth (a
 real ASCII string genuinely read by code, not just present in the ROM)
 reaches the VWF engine without needing mGBA at all.
 
-**Anchor**: of the two known plaintext tables, `sDebugCollectorCardNames`
+**Anchor**: of the two known plaintext tables, `sFamousWizardCardNames`
 (`0x0804CEC4`) is actually read by code -- `0x0800BBEC` in
 `build/us/full_disasm.s` loads it, computes a 32-byte-stride entry index
 from a counter at `0x03002238+4`, and passes the entry to `PrintTextBox`.

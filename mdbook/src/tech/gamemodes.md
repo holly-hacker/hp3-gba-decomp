@@ -97,7 +97,7 @@ Arguments:
 
 ### `Dialogue` (0x18)
 
-### `DebugMenuMain` (0x19)
+### `Cheat` (0x19)
 
 ### `ChooseCharacter` (0x1A)
 
@@ -109,15 +109,15 @@ Arguments:
 
 ### `MinigameDifficultySelect` (0x1E)
 
-### `DebugMenuMapSelect` (0x1F)
+### `CheatMap` (0x1F)
 
-### `DebugMenuLevelAndQuestSelect` (0x20)
+### `CheatLevelAndQuest` (0x20)
 
-### `DebugMenuSoundTest` (0x21)
+### `CheatSoundTest` (0x21)
 
-### `DebugMenuCollectorCards` (0x22)
+### `CheatWizardCards` (0x22)
 
-### `DebugMenuPortraits` (0x23)
+### `CheatPortraits` (0x23)
 
 ### `UnusedServePumpkinJuiceMinigame` (0x24)
 
@@ -131,7 +131,7 @@ Arguments:
 
 ### `OwlCareMinigame` (0x29)
 
-### `DebugMenuCharacterSelect` (0x2A)
+### `CheatParty` (0x2A)
 
 ### `BuckbeakMinigame` (0x2B)
 

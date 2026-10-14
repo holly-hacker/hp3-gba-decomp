@@ -89,18 +89,23 @@
 .set g_aBgTileAnimations,                        0x0300216C  @ see ram_symbols.us.inc
 .set g_apBgTileAnimationBuffers,                 0x030021AC  @ see ram_symbols.us.inc
 
-@ --- Dialog/UI text engine ---
-.set g_DebugMenuMainState,            0x030021C0
-.set g_DebugLevelAndQuestSelectState, 0x030021C8
-.set g_DebugMapSelectState,           0x030021E8
-.set g_DebugCharacterSelectState,     0x030021F8
-.set g_DebugPortraitsState,           0x03002210
-.set g_DebugSoundTestState,           0x03002218
-.set g_DebugCollectorCardsState,      0x03002238
+@ --- Cheat menus (see include/cheat.h and include/cheat_*.h) ---
+.set g_CheatState,                     0x030021C0
+.set g_CheatLevelAndQuestState,        0x030021C8
+.set g_CheatMapState,                  0x030021E8
+.set g_CheatPartyState,                0x030021F8
+.set g_CheatPortraitsState,            0x03002210
+.set g_CheatSoundTestState,            0x03002218
+.set g_CheatWizardCardsState,          0x03002238
 
+@ --- Chests ---
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
+
+@ --- Choose character (see include/menu/choose_character.h) ---
 .set g_ChooseCharacterState,       0x03002260  @ see ram_symbols.us.inc
 .set g_dwChooseCharacterBgRow,     0x0300227C  @ see ram_symbols.us.inc
+
+@ --- Palette (see include/graphics/palette.h) ---
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/graphics/palette.h
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
@@ -110,12 +115,20 @@
 .set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]; see include/graphics/palette.h
 .set g_aObjPaletteQueue,            0x030023E8  @ see ram_symbols.us.inc
 .set g_PaletteState,              0x030024B0  @ PaletteState; see include/graphics/palette.h
+
+@ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_pFightState,                 0x030024E8
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride
+
+@ --- Room-script resume transition ---
 .set g_bPendingRoomScriptChain,     0x0300260C  @ chain resumed after a game mode
 .set g_bPendingRoomScriptRow,       0x0300260D  @ actor row resumed after a game mode
+
+@ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_nBattleXpReward,             0x0300260E  @ see ram_symbols.us.inc
 .set g_nBattleGoldReward,           0x03002610  @ see ram_symbols.us.inc
+
+@ --- Overworld ---
 .set g_dwOverworldMonstersDisabled, 0x03002614
 
 @ --- Battle system (see docs/memory-map/battle.md) ---
@@ -361,7 +374,7 @@
 .set g_pWizardCrackerPopIt,                    0x03005290  @ see ram_symbols.us.inc
 .set g_ServePumpkinJuice,                      0x03005298  @ see ram_symbols.us.inc
 
-@ --- Dialog/UI text engine ---
+@ --- In-game menu screens (see include/menu/) ---
 .set g_StatusEquipReturnMode,      0x030052F8  @ see ram_symbols.us.inc
 .set g_StatusEquipNextMode,        0x030052FC  @ see ram_symbols.us.inc
 .set g_dwStatusEquipCharacter,     0x03005300  @ see ram_symbols.us.inc
@@ -398,13 +411,20 @@
 .set gMt19937AutoSeedCallCount, 0x030055F0
 .set gMt19937SeedValue,         0x030055F4
 
+@ --- Save manager and EEPROM ---
 .set g_saveManager,              0x030055F8  @ see ram_symbols.us.inc
 .set g_wEepromSavedDispstat,     0x0300567C  @ see ram_symbols.us.inc
+
+@ --- Screen darken ---
 .set g_pScreenPaletteBackup,            0x03005684
 .set g_dwUnk03005638,                   0x03005698
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300569C
+
+@ --- Camera and room size ---
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x030056A8  @ see ram_symbols.us.inc
+
+@ --- Room BG layers and tile cache (see include/overworld/room.h) ---
 .set g_awBgLayerTileCount,          0x030058F8  @ see ram_symbols.us.inc
 .set g_aBgTilesets,                  0x03005900  @ see ram_symbols.us.inc
 .set g_adwBgScrollEnabled,              0x03005920
@@ -425,6 +445,8 @@
 .set g_awBgTileCacheFreeCount,       0x03005A08  @ see ram_symbols.us.inc
 .set g_dwUnk030059AC,                   0x03005A0C
 .set g_BgLoadedScroll,                 0x03005A18
+
+@ --- Serial link (see include/serial/) ---
 .set g_SerialLink, 0x03005A38
 .set g_aSerialRecvMessages, 0x03005A44  @ SerialMessage[2]: latest message received from each peer
 .set g_SerialSendMessage, 0x03005A5C  @ SerialMessage: message queued for the next exchange
@@ -452,31 +474,57 @@
 .set g_dwSerialConnectRetries, 0x03005B14
 .set g_dwSerialUnk03005AB8, 0x03005B18
 .set g_dwSerialUnk03005ABC, 0x03005B1C
+
+@ --- Music ---
 .set g_bUnk03005AC0,             0x03005B20
 .set g_bMusicPaused,             0x03005B21
 .set g_bCurrentMusicModule,      0x03005B22
+
+@ --- Shops (see include/shop.h) ---
 .set g_FredAndGeorgesShop,       0x03005B28
+
+@ --- Divination tea minigame ---
 .set g_DivinationTea,            0x03005B88  @ see ram_symbols.us.inc
+
+@ --- Dialog text and language ---
 .set gDialogTextScratchBuf,      0x03005D68
 .set gCurrentLanguage,           0x03005D6C
 .set gLocaleThousandsSep,        0x03005D6D  @ see ram_symbols.us.inc
 .set g_apTextActors,              0x03005D70  @ see ram_symbols.us.inc
+
+@ --- Game timers (see include/game/game_timer.h) ---
 .set g_aGameTimers,                     0x03005DB8
+
+@ --- Harry and Hermione port-in-time ---
 .set g_HarryHermionePortInTime,  0x03005DF8  @ see ram_symbols.us.inc
+
+@ --- Main menu and options (see include/menu/main_menu.h and include/menu/options.h) ---
 .set g_nMainMenuTextCursor,     0x03005E10
 .set g_MainMenuState,            0x03005E18
 .set g_bSaveSlotScreenResult,    0x03005E24
 .set g_OptionsState,             0x03005E30
 .set g_dwOptionsReturnMode,      0x03005E5C
+
+@ --- Cool Train cutscene and room actor restore ---
 .set g_wCoolTrainTimer,          0x03005E64  @ u16: frames left in the Cool Train cutscene
 .set g_bRestoringRoomActors_candidate, 0x03005E68  @ see ram_symbols.us.inc
+
+@ --- Scanline effects (see docs/memory-map/scanline_effects.md) ---
 .set g_ScanlineEffectState,      0x03005E70
 .set g_ScanlineEffectStaging,    0x03005FA8
+
+@ --- OBJ tile allocator ---
 .set FindFreeObjTileRunIwram, 0x030060D8
 .set g_abObjTileAllocBitmap,    0x03006178
 .set g_abObjTileFreeMask,       0x030061F8
+
+@ --- Screen windows ---
 .set g_aScreenWindows,          0x03006278  @ ScreenWindow[2]; see TickScreenWindow
+
+@ --- EEPROM ---
 .set g_pEepromInterface,         0x03006318
+
+@ --- System stacks and interrupt vector ---
 .set gSystemStackTop,            0x03007EA0
 .set gIrqStackTop,               0x03007FA0
 .set gIntrVectorPtr,             0x03007FFC
