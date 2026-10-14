@@ -56,7 +56,7 @@ groups:
           2: FolioCardFrameRed
           3: FolioCardFrameBlue
           4: FolioCardFramePurple
-          5: DebugMenu005
+          5: FolioCardFrameSilver
       - kind: graphic-blobs
         names: [MenuPanel001]
 

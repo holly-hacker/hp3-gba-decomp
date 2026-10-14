@@ -300,7 +300,7 @@ extern const u8 gDebugMenuGraphic[];
 extern const u8 gFolioCardFrameRed[];
 extern const u8 gFolioCardFrameBlue[];
 extern const u8 gFolioCardFramePurple[];
-extern const u8 gDebugMenu005[];
+extern const u8 gFolioCardFrameSilver[];
 extern const u8 gMenuPanel001[];
 
 /* MenuSelectionPalette */

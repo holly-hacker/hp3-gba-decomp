@@ -10,7 +10,7 @@ void UpdateCheatWizardCards(void)
         return;
 
     if (StepCursorLeftRight(&g_CheatWizardCardsState.dwSelection, 0, 0x32, 1, 0))
-        sub_0800BAF8();
+        ShowCheatWizardCard();
 
     if (g_wKeysPressed & KeyA)
         PushGameMode_2(Cheat, 0, g_GameModeStackContext.dwCurrentGameModeArg2);

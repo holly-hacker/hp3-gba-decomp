@@ -36,7 +36,7 @@ void InitializeCheatWizardCards(void)
     g_CheatWizardCardsState.dwSelection = 0;
     g_CheatWizardCardsState.pCardActor = 0;
     g_GameModeStackContext.dwModeState = 0;
-    sub_0800BAF8();
+    ShowCheatWizardCard();
 
     PlayScreenTransitionInByIndex(0x3F, 2);
 }
