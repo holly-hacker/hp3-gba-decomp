@@ -41,7 +41,7 @@ void InitializeCheatMap(void)
     g_CheatMapState.pCursorActor = pActor;
     SetActorAnimData(pActor, &g_CheatMapAnimFrames, (void *)g_CheatMapAnimData, 0);
 
-    sub_0800B120();
+    DrawCheatMapNames();
     g_GameModeStackContext.dwModeTimer = 2;
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

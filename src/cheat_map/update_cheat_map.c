@@ -22,11 +22,11 @@ void UpdateCheatMap(void)
 
         if ((g_wKeysHeld & KeyDown) && g_CheatMapState.dwCursorRow == 0x11 && mapIndex <= 0x35)
         {
-            sub_0800B158(0);
+            ScrollCheatMap(0);
         }
         else if ((g_wKeysHeld & KeyUp) && g_CheatMapState.dwCursorRow == 0 && mapIndex > 0)
         {
-            sub_0800B158(1);
+            ScrollCheatMap(1);
         }
         else if (g_wKeysHeld & KeyLeft)
         {

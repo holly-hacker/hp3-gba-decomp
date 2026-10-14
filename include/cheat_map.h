@@ -16,5 +16,5 @@ extern const u32 g_dwCheatMapBg1Control;  // 0x0804C4A4
 extern const ActorAssetRecord g_CheatMapAnimFrames;  // 0x0804C4A8
 extern const u8 g_CheatMapAnimData[18];    // 0x0804C4B8
 
-extern void sub_0800B120(void);
-extern void sub_0800B158(u32 scrollUp);
+extern void DrawCheatMapNames(void);
+extern void ScrollCheatMap(u32 scrollUp);

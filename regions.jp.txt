@@ -346,9 +346,9 @@ c-file 0x0800AE50 _ src/cheat_level_and_quest/exit_cheat_level_and_quest.c ExitC
 c-file 0x0800AE68 _ src/cheat_level_and_quest/draw_cheat_level_and_quest_values.c DrawCheatLevelAndQuestValues
 c-file 0x0800AED8 _ src/cheat_map/initialize_cheat_map.c InitializeCheatMap
 c-file 0x0800AFB4 _ src/cheat_map/update_cheat_map.c UpdateCheatMap
-c-file 0x0800B108 0x0800B120 src/cheat_map/exit_cheat_map.c ExitCheatMap
-thumb-func 0x0800B120 sub_0800B120
-thumb-func 0x0800B158 sub_0800B158
+c-file 0x0800B108 _ src/cheat_map/exit_cheat_map.c ExitCheatMap
+c-file 0x0800B120 _ src/cheat_map/draw_cheat_map_names.c DrawCheatMapNames
+c-file 0x0800B158 _ src/cheat_map/scroll_cheat_map.c ScrollCheatMap
 c-file 0x0800B198 _ src/cheat_party/initialize_cheat_party.c InitializeCheatParty
 c-file 0x0800B2C8 0x0800B344 src/cheat_party/update_cheat_party.c UpdateCheatParty
 thumb-func 0x0800B344 sub_0800B344
