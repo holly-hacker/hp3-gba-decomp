@@ -64,5 +64,5 @@ code from open source libraries:
   referenced was pulled from [the Internet Archive](http://web.archive.org/web/20060925155413id_/http://www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c).
   - `tools/graphics/pucrunch_gammalz.py` implements parts of its compression algorithm
 
-Most other code assets in this repo are based on the rom of Harry Potter and the Prisoner of Azkaban, as part of a clean
-room reverse engineering effort. Raw art assets are currently not included in this repo.
+Most other code assets in this repo are based on the rom of Harry Potter and the Prisoner of Azkaban through reverse
+engineering and decompilation. Raw art assets are currently not included in this repo.
