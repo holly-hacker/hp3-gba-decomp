@@ -350,12 +350,12 @@ c-file 0x0800B108 _ src/cheat_map/exit_cheat_map.c ExitCheatMap
 c-file 0x0800B120 _ src/cheat_map/draw_cheat_map_names.c DrawCheatMapNames
 c-file 0x0800B158 _ src/cheat_map/scroll_cheat_map.c ScrollCheatMap
 c-file 0x0800B198 _ src/cheat_party/initialize_cheat_party.c InitializeCheatParty
-c-file 0x0800B2C8 0x0800B344 src/cheat_party/update_cheat_party.c UpdateCheatParty
-thumb-func 0x0800B344 sub_0800B344
-thumb-func 0x0800B40C sub_0800B40C
-c-file 0x0800B494 0x0800B4B0 src/cheat_party/exit_cheat_party.c ExitCheatParty
-thumb-func 0x0800B4B0 sub_0800B4B0
-thumb-func 0x0800B52C sub_0800B52C
+c-file 0x0800B2C8 _ src/cheat_party/update_cheat_party.c UpdateCheatParty
+c-file 0x0800B344 _ src/cheat_party/draw_cheat_party_rows.c DrawCheatPartyRows
+c-file 0x0800B40C _ src/cheat_party/apply_cheat_party.c ApplyCheatParty
+c-file 0x0800B494 _ src/cheat_party/exit_cheat_party.c ExitCheatParty
+c-file 0x0800B4B0 _ src/cheat_party/draw_cheat_party_characters.c DrawCheatPartyCharacters
+c-file 0x0800B52C _ src/cheat_portraits/show_cheat_portrait.c ShowCheatPortrait
 c-file 0x0800B5A8 _ src/cheat_portraits/initialize_cheat_portraits.c InitializeCheatPortraits
 c-file 0x0800B620 _ src/cheat_portraits/update_cheat_portraits.c UpdateCheatPortraits
 c-file 0x0800B684 _ src/cheat_portraits/exit_cheat_portraits.c ExitCheatPortraits

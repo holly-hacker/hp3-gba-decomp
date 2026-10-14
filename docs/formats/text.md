@@ -162,9 +162,9 @@ reaches the VWF engine without needing mGBA at all.
 (`0x0804CEC4`) is actually read by code -- `0x0800BBEC` in
 `build/us/full_disasm.s` loads it, computes a 32-byte-stride entry index
 from a counter at `0x03002238+4`, and passes the entry to `PrintTextBox`.
-(`sPlayableCharacterNames` at `0x0804C4F6`, by contrast, has **zero**
-literal-pool references anywhere in the disassembly -- likely dead/debug
-data, not a useful anchor.)
+(`sPlayableCharacterNames` at `0x0804C4F6` is read by
+`DrawCheatPartyCharacters`; the literal pool holds the table base minus
+`0x20`, because the index is the one-based slot value.)
 
 **`PrintTextBox`** (`0x08020FF8`): draws a string one `DrawTextLine` call
 per line until the null byte. The renderer as matched C is summarized under

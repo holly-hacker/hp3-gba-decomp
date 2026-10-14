@@ -17,6 +17,7 @@ extern const u32 g_dwCheatPartyBg1Control;  // 0x0804C4D0
 extern const ActorAssetRecord g_CheatPartyAnimFrames;  // 0x0804C4D4
 extern const u8 g_CheatPartyAnimData[18];    // 0x0804C4E4
 
-extern void sub_0800B344(void);
-extern void sub_0800B40C(void);
-extern void sub_0800B4B0(void);
+extern void DrawCheatPartyRows(void);
+extern void ApplyCheatParty(void);
+extern void DrawCheatPartyCharacters(void);
+extern const u8 sPlayableCharacterNames[9][32];  // 0x0804C4F6

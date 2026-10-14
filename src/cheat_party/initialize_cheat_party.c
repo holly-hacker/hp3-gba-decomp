@@ -47,7 +47,7 @@ void InitializeCheatParty(void)
     g_CheatPartyState.adwCharacter[1] = g_bPartyCharId1 == 0xFF ? 0 : g_bPartyCharId1 + 1;
     g_CheatPartyState.adwCharacter[2] = g_bPartyCharId2 == 0xFF ? 0 : g_bPartyCharId2 + 1;
     g_GameModeStackContext.dwModeState = 0;
-    sub_0800B344();
+    DrawCheatPartyRows();
 
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

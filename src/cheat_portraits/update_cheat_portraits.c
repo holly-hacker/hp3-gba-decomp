@@ -10,7 +10,7 @@ void UpdateCheatPortraits(void)
         return;
 
     if (StepCursorLeftRight(&g_CheatPortraitsState.dwSelection, 0, 0x86, 1, 0))
-        sub_0800B52C();
+        ShowCheatPortrait();
 
     if (g_wKeysPressed & KeyA)
         PushGameMode_2(Cheat, 0, g_GameModeStackContext.dwCurrentGameModeArg2);

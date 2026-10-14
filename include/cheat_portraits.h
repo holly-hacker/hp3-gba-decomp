@@ -12,4 +12,4 @@ typedef struct {
 extern CheatPortraitsState g_CheatPortraitsState;  // 0x03002210
 extern const u32 g_dwCheatPortraitsBg1Control;  // 0x0804C618
 
-extern void sub_0800B52C(void);
+extern void ShowCheatPortrait(void);

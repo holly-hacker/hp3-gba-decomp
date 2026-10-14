@@ -18,7 +18,7 @@ void UpdateCheatParty(void)
     if (StepCursorLeftRight(
             &g_CheatPartyState.adwCharacter[g_CheatPartyState.dwRow], 0, 9, 1, 0))
     {
-        sub_0800B4B0();
+        DrawCheatPartyCharacters();
     }
 
     if (g_wKeysPressed & (KeyA | KeyB))

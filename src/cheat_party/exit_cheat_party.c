@@ -6,6 +6,6 @@
 void ExitCheatParty(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
-    sub_0800B40C();
+    ApplyCheatParty();
     FreeAllActors(&g_ActiveActorListState.pHead);
 }

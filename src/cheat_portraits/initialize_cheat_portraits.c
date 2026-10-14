@@ -23,7 +23,7 @@ void InitializeCheatPortraits(void)
 
     g_CheatPortraitsState.dwSelection = 0;
     g_CheatPortraitsState.pPortraitActor = 0;
-    sub_0800B52C();
+    ShowCheatPortrait();
     g_GameModeStackContext.dwModeState = 0;
 
     PlayScreenTransitionInByIndex(0x3F, 2);
