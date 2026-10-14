@@ -22,4 +22,4 @@ extern const ActorAssetRecord g_CheatSoundTestAnimFrames;  // 0x0804CE94
 extern const u8 g_CheatSoundTestAnimData[18];    // 0x0804CEA4
 
 extern void DrawCheatSoundTestRows(void);
-extern void sub_0800B9BC(void);
+extern void DrawCheatSoundTestValues(void);

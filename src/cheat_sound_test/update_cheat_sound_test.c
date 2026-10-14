@@ -19,7 +19,7 @@ void UpdateCheatSoundTest(void)
     if (StepCursorLeftRight(&g_CheatSoundTestState.adwSelection[g_CheatSoundTestState.dwRow],
                             0, g_CheatSoundTestState.dwRow != 0 ? 0x33 : 0xB2, 1, 0))
     {
-        sub_0800B9BC();
+        DrawCheatSoundTestValues();
         if (g_CheatSoundTestState.dwRow == 1)
         {
             if (g_bMusicPaused)

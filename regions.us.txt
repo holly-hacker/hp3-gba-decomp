@@ -407,8 +407,8 @@ c-file 0x0800B684 _ src/cheat_portraits/exit_cheat_portraits.c ExitCheatPortrait
 c-file 0x0800B69C _ src/cheat_sound_test/initialize_cheat_sound_test.c InitializeCheatSoundTest
 c-file 0x0800B7A8 _ src/cheat_sound_test/update_cheat_sound_test.c UpdateCheatSoundTest
 c-file 0x0800B8F0 _ src/cheat_sound_test/draw_cheat_sound_test_rows.c DrawCheatSoundTestRows
-c-file 0x0800B9A0 0x0800B9BC src/cheat_sound_test/exit_cheat_sound_test.c ExitCheatSoundTest
-thumb-func 0x0800B9BC sub_0800B9BC
+c-file 0x0800B9A0 _ src/cheat_sound_test/exit_cheat_sound_test.c ExitCheatSoundTest
+c-file 0x0800B9BC _ src/cheat_sound_test/draw_cheat_sound_test_values.c DrawCheatSoundTestValues
 c-file 0x0800BA2C 0x0800BAF8 src/cheat_wizard_cards/initialize_cheat_wizard_cards.c InitializeCheatWizardCards
 thumb-func 0x0800BAF8 sub_0800BAF8
 c-file 0x0800BBF0 _ src/cheat_wizard_cards/update_cheat_wizard_cards.c UpdateCheatWizardCards
