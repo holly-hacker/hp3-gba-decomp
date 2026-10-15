@@ -249,7 +249,7 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   finish state.
 - Buckbeak's Hippogriff Glide (`src/buckbeak_minigame/`, PROVEN from the matched
   C) flies over a perspective floor drawn with one BG affine record per
-  scanline (`g_FloorEffect`, `include/graphics/floor_effect.h`). Each frame
+  scanline (`g_FloorEffect`, `include/mode7.h`). Each frame
   `ProcessBuckbeakMinigameFrame` steers Buckbeak (A climbs, Left/Right bank),
   advances the camera and clock, and `HasBuckbeakMinigameRingBeenReached` tests
   the next of nine rings; each ring adds a point and `dwTimeBonus` (shrinking

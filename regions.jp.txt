@@ -1226,19 +1226,19 @@ thumb-func 0x0802D358 BeginMinigameSwitchFade_candidate
 thumb-func 0x0802D378 TickMinigameSwitchFadeOut_candidate
 thumb-func 0x0802D3AC SwapMinigameSelection_candidate
 thumb-func 0x0802D3C8 TickMinigameSwitchFadeIn_candidate
-thumb-func 0x0802D400 UpdateFloorAffineTable
-thumb-func 0x0802D4A8 BuildFloorAffineTable
-c-file 0x0802D588 0x0802D58C src/noop_init3.c NoopInit3
-thumb-func 0x0802D58C sub_0802D548
-thumb-func 0x0802D658 SetFloorHorizonLineAndSkyScroll
-thumb-func 0x0802D66C sub_0802D628
-thumb-func 0x0802D684 SetFloorHeading
-thumb-func 0x0802D690 SetFloorForwardSpeed
-thumb-func 0x0802D69C sub_0802D658
-thumb-func 0x0802D6AC SetFloorHorizonOffset
-thumb-func 0x0802D6B8 InitFloorEffect
-thumb-func 0x0802D6FC FreeFloorEffect
-thumb-func 0x0802D71C StartFloorAffineHBlankDma
+c-file 0x0802D400 _ src/mode7/update_floor_affine_table.c UpdateFloorAffineTable
+c-file 0x0802D4A8 _ src/mode7/build_floor_affine_table.c BuildFloorAffineTable
+c-file 0x0802D588 _ src/mode7/noop_init3.c NoopInit3
+c-file 0x0802D58C _ src/mode7/init_floor_display.c InitFloorDisplay
+c-file 0x0802D658 _ src/mode7/set_floor_horizon_line_and_sky_scroll.c SetFloorHorizonLineAndSkyScroll
+c-file 0x0802D66C _ src/mode7/set_floor_camera_position_and_heading.c SetFloorCameraPositionAndHeading
+c-file 0x0802D684 _ src/mode7/set_floor_heading.c SetFloorHeading
+c-file 0x0802D690 _ src/mode7/set_floor_forward_speed.c SetFloorForwardSpeed
+c-file 0x0802D69C _ src/mode7/set_floor_camera_height.c SetFloorCameraHeight
+c-file 0x0802D6AC _ src/mode7/set_floor_horizon_offset.c SetFloorHorizonOffset
+c-file 0x0802D6B8 _ src/mode7/init_floor_effect.c InitFloorEffect
+c-file 0x0802D6FC _ src/mode7/free_floor_effect.c FreeFloorEffect
+c-file 0x0802D71C _ src/mode7/start_floor_affine_hblank_dma.c StartFloorAffineHBlankDma
 c-file 0x0802D748 _ src/overworld/resolve_actor_terrain.c ResolveActorTerrain
 c-file 0x0802D7E4 _ src/overworld/terrain_collision.c GetCollisionTypeAtPixel_candidate
 c-file 0x0802DF80 _ src/overworld/apply_room_switch_effect.c ApplyRoomSwitchEffect
@@ -2252,6 +2252,7 @@ c-rodata 0x08065C30 _ GetDirectionFromVector
 c-file 0x08065C48 _ src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x08065FA8 0x08065FC8 src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x08065FE8 0x08065FF0 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
+c-file 0x08066010 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file 0x08066020 0x08066060 src/overworld/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066DD0 _ src/room/actors/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
 c-file 0x08066F88 _ src/graphics/assets/actor_type_assets.c g_aActorTypeAssets

@@ -2,13 +2,13 @@
 #include "background.h"
 #include "hw/io_regs.h"
 #include "graphics/display.h"
-#include "graphics/floor_effect.h"
+#include "mode7.h"
 #include "buckbeak_minigame.h"
 
 // Runs at the horizon line: switches BG2 to the ground.
 void BeginBuckbeakMinigameGroundScanline(u32 *pPayload0, u32 *pPayload1)
 {
-    StartFloorAffineHBlankDma();
+    StartFloorAffineHBlankDma(pPayload0, pPayload1);
 
     while (!(REG_DISPSTAT & 2))
         ;

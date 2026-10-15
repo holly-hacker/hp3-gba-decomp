@@ -6,7 +6,7 @@
 #include "actor.h"
 #include "input.h"
 #include "game/game_modes.h"
-#include "graphics/floor_effect.h"
+#include "mode7.h"
 
 // See docs/memory-map/battle.md.
 

@@ -4,7 +4,7 @@
 #include "actor.h"
 #include "math.h"
 #include "graphics/display.h"
-#include "graphics/floor_effect.h"
+#include "mode7.h"
 #include "graphics/scanline_effects.h"
 #include "menu/minigame_menu.h"
 #include "gen/graphics/minigames/buckbeak.h"

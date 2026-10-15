@@ -340,8 +340,10 @@
 .set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
 .set g_apMenuIconActors, 0x03003F68  @ Actor *[]: actors registered by index via RegisterMenuIconActor
 .set g_dwSelectedMinigame,                   0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
-.set g_FloorEffect,                          0x03003F8C  @ FloorEffectState: camera of the per-scanline floor; see include/graphics/floor_effect.h
-.set g_pFloorAffineTable_candidate,          0x03003FAC  @ u8 *: 0xA00 bytes, one 16-byte BG affine record per scanline
+.set g_FloorEffect,                          0x03003F8C  @ FloorEffectState: camera of the per-scanline floor; see include/mode7.h
+.set g_pFloorAffineTable,                    0x03003FAC  @ BgAffineDst *: one BG2 affine record per scanline; see include/mode7.h
+.set g_nFloorHorizonLine,                    0x03003FB0  @ s32: first floor scanline; see include/mode7.h
+.set g_dwFloorScrollSky,                     0x03003FB4  @ u32: nonzero scrolls BG1 with the floor heading
 .set g_dwRoomCollisionPatternCount,           0x03003FB8  @ u32: pattern count from the collision tilemap header
 .set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]: see include/overworld/terrain.h
 .set g_pRoomCollisionTilemapBuffer,           0x03003FC8  @ u8 *: decompressed collision tilemap resource, 4-byte header then the pattern ids

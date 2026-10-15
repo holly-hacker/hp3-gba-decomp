@@ -325,7 +325,9 @@
 .set g_apMenuIconActors, 0x03003FC8  @ see ram_symbols.us.inc
 .set g_dwSelectedMinigame,                   0x03003FE8
 .set g_FloorEffect,                          0x03003FEC  @ see ram_symbols.us.inc
-.set g_pFloorAffineTable_candidate,          0x0300400C  @ see ram_symbols.us.inc
+.set g_pFloorAffineTable,                    0x0300400C  @ see ram_symbols.us.inc
+.set g_nFloorHorizonLine,                    0x03004010  @ see ram_symbols.us.inc
+.set g_dwFloorScrollSky,                     0x03004014  @ see ram_symbols.us.inc
 .set g_dwRoomCollisionPatternCount,           0x03004018  @ see ram_symbols.us.inc
 .set g_adwEdgeEndpointTypes,                  0x03004020  @ see ram_symbols.us.inc
 .set g_pRoomCollisionTilemapBuffer,           0x03004028  @ see ram_symbols.us.inc

@@ -19,7 +19,7 @@ void SetUpBuckbeakMinigameScene(void)
     s32 heading;
     const BuckbeakMinigameWorldPos *pPositions;
 
-    g_pFloorAffineTable_candidate = AllocZeroed(0xA00);
+    g_pFloorAffineTable = AllocZeroed(FLOOR_SCANLINE_COUNT * sizeof(BgAffineDst));
     pZero = &zero;
     *pZero = 0;
     bios_CPUSet(pZero, VRAM_BASE, 0x01008000);

@@ -26,11 +26,11 @@
 #include "math.h"
 #include "game/game_timer.h"
 #include "vram.h"
+#include "mode7.h"
 
 extern void InitSaveSystem(void);
 extern void NoopInit(void);
 extern void NoopInit2(void);
-extern void NoopInit3(void);
 
 // agbcc special-cases a C function literally named `main`, inserting an
 // implicit call to `__gccmain` at entry that the real ROM code doesn't
