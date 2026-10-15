@@ -67,7 +67,6 @@ typedef struct ItemEntry {
     u32 dwUnk2C;             // 0x2C -- unidentified
     s32 nMagicDefense;       // 0x30 -- M.Def stat
 } ItemEntry;
-extern const ItemEntry g_pItemTable[ITEM_COUNT];  // src/items/items.c
 
 // BuildFilteredItemList filters besides a plain ItemCategory.
 #define ITEM_FILTER_NON_EQUIPMENT 10  // categories from ItemCategoryPotion up

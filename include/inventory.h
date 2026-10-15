@@ -3,6 +3,10 @@
 #include "types.h"
 #include "game/items.h"
 
+// Defined const in src/items/items.c. Declared without const, as the ROM's
+// inventory code was compiled: UseRestorePotion re-reads a field after a call.
+extern ItemEntry g_pItemTable[ITEM_COUNT];
+
 // Rolls one Folio Universitas card for a bought Chocolate Frogs and adds it to
 // the collection; returns the rolled reward id.
 u32 GrantRandomChocolateFrogCard(void);

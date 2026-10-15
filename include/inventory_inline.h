@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "game/items.h"
+#include "inventory.h"
 
 // Inventory logic that the ROM compiles inline into other inventory routines.
 
@@ -25,4 +26,10 @@ static inline u32 RemoveItemsInline(u32 item, u32 count)
     *pQuantity -= count;
 
     return *pQuantity;
+}
+
+// GetItemQuantity with the byte-sized result the ROM's callers test.
+static inline u8 GetItemQuantityInline(u32 item)
+{
+    return g_ItemInventory.abQuantities[item];
 }

@@ -1110,12 +1110,12 @@ thumb-func 0x080265B8 sub_080265B8
 thumb-func 0x08026674 sub_08026674
 
 # Inventory (items and equipment)
-c-file 0x080266EC 0x08026754 src/inventory/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
-thumb-func 0x08026754 EquipItemInSlot
-c-file 0x080267D0 0x08026870 src/inventory/can_fighter_equip_item.c CanFighterEquipItem
-thumb-func 0x08026870 ApplyEquipmentStatModifiers
-c-file 0x0802695C 0x080269E0 src/inventory/unequip_item_from_slot.c UnequipItemFromSlot
-thumb-func 0x080269E0 UseRestorePotion
+c-file 0x080266EC _ src/inventory/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
+c-file 0x08026754 _ src/inventory/equip_item_in_slot.c EquipItemInSlot
+c-file 0x080267D0 _ src/inventory/can_fighter_equip_item.c CanFighterEquipItem
+c-file 0x08026870 _ src/inventory/apply_equipment_stat_modifiers.c ApplyEquipmentStatModifiers
+c-file 0x0802695C _ src/inventory/unequip_item_from_slot.c UnequipItemFromSlot
+c-file 0x080269E0 _ src/inventory/use_restore_potion.c UseRestorePotion
 c-file 0x08026B10 _ src/inventory/debug_grant_all_items.c DebugGrantAllItems
 c-file 0x08026B8C _ src/inventory/get_reward_name_string_id.c GetRewardNameStringId_candidate
 c-file 0x08026BCC _ src/inventory/get_item_image_data.c GetItemImageData
@@ -1138,8 +1138,8 @@ c-file 0x08026DC0 _ src/inventory/deserialize_item_quantities.c DeserializeItemQ
 c-file 0x08026DE0 _ src/inventory/grant_reward.c GrantReward
 c-file 0x08026E2C _ src/inventory/remove_items.c RemoveItems
 c-file 0x08026E4C _ src/inventory/get_item_quantity.c GetItemQuantity
-c-file 0x08026E58 0x08026EC0 src/inventory/build_filtered_item_list.c BuildFilteredItemList
-thumb-func 0x08026EC0 BuildBattleItemList_candidate
+c-file 0x08026E58 _ src/inventory/build_filtered_item_list.c BuildFilteredItemList
+c-file 0x08026EC0 _ src/inventory/build_battle_item_list.c BuildBattleItemList_candidate
 c-file 0x08026F10 _ src/inventory/count_owned_potion_kinds.c CountOwnedPotionKinds
 c-file 0x08026F34 _ src/inventory/is_battle_item_slot_usable.c IsBattleItemSlotUsable
 c-file 0x08026F48 _ src/inventory/owns_item_in_category.c OwnsItemInCategory
