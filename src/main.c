@@ -1,6 +1,6 @@
 #include "hw/vblank.h"
+#include "interrupts.h"
 #include "graphics/display.h"
-#include "hw/interrupts.h"
 #include "hw/io_regs.h"
 #include "hw/mem.h"
 #include "input.h"

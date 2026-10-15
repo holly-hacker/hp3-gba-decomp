@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/interrupts.h"
+#include "interrupts.h"
 #include "mt19937.h"
 #include "serial/serial.h"
 

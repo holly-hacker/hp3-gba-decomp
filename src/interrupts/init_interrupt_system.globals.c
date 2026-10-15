@@ -1,6 +1,5 @@
 #include "types.h"
-#include "hw/interrupts.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 
 const u32 gIntrTableTemplate[13] = {
     (u32)HandleTimer3Interrupt_candidate,

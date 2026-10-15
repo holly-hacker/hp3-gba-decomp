@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "hw/mem.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 #include "vram.h"
 
 // Runs from vblank callbacks. Tile changes that TickActorList queued take

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/mem.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 #include "graphics/scanline_effects.h"
 
 // Waits until the previously queued table has been committed, then stages

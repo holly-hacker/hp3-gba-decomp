@@ -1,5 +1,4 @@
-#include "hw/vblank.h"
-#include "hw/interrupts.h"
+#include "interrupts.h"
 #include "hw/io_regs.h"
 
 // Enables the VBlank and Timer 1 (kradInterrupt) interrupts and the

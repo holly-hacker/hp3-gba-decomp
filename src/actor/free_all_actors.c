@@ -2,7 +2,7 @@
 #include "hw/mem.h"
 #include "actor.h"
 #include "graphics/oam.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 
 // Frees every actor on the active list, then clears leftover sprites from OAM and waits
 // for VBlank so the empty screen is displayed. Game modes call this on exit.

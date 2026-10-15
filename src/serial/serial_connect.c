@@ -1,7 +1,6 @@
 #include "types.h"
-#include "hw/interrupts.h"
+#include "interrupts.h"
 #include "hw/io_regs.h"
-#include "hw/vblank.h"
 #include "serial/serial.h"
 
 // Waits for the multiplayer line to become ready, announces this terminal with SERIAL_WORD_CONNECT

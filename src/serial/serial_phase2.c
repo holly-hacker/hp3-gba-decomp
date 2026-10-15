@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 #include "serial/serial.h"
 
 // Wait callback installed once the handshake completes: true once SERIAL_TIMEOUT_VBLANKS have

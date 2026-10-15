@@ -5,7 +5,7 @@
 #include "game/game_modes.h"
 #include "cutscene/harry_patronus_cutscene.h"
 #include "hw/io_regs.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 
 void InitializeHarryPatronusCutscene(void)
 {

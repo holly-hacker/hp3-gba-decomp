@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/oam.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 
 // Hides every entry not queued this frame in both halves of the current
 // shadow buffer, then flags the buffer as ready for HandleVBlankInterrupt.

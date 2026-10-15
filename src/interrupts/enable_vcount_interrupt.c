@@ -1,4 +1,4 @@
-#include "hw/vblank.h"
+#include "interrupts.h"
 #include "hw/io_regs.h"
 
 // Enables the VCount interrupt and its DISPSTAT IRQ, adding `line` to the

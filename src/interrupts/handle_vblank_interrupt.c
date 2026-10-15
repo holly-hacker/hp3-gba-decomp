@@ -1,6 +1,5 @@
 #include "background.h"
-#include "hw/vblank.h"
-#include "hw/interrupts.h"
+#include "interrupts.h"
 #include "hw/io_regs.h"
 #include "hw/dma.h"
 #include "graphics/oam.h"

@@ -9,7 +9,7 @@
 #include "graphics/graphics.h"
 #include "graphics/scanline_effects.h"
 #include "hw/io_regs.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
 #include "vram.h"

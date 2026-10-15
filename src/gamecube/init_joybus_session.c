@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/interrupts.h"
+#include "interrupts.h"
 #include "hw/io_regs.h"
 #include "hw/mem.h"
 #include "gamecube.h"

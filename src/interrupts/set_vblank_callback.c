@@ -1,5 +1,4 @@
-#include "hw/vblank.h"
-#include "hw/interrupts.h"
+#include "interrupts.h"
 
 // A NULL callback installs IntrDummy rather than clearing the slot.
 void SetVBlankCallback(void *callback)

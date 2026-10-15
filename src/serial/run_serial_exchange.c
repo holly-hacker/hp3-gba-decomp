@@ -1,7 +1,7 @@
 #include "types.h"
 #include "hw/io_regs.h"
 #include "hw/mem.h"
-#include "hw/vblank.h"
+#include "interrupts.h"
 #include "serial/serial.h"
 
 // True once more than SERIAL_TIMEOUT_VBLANKS vblanks have passed since the last exchange.
