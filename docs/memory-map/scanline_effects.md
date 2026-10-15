@@ -39,7 +39,7 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 |---|---|---|
 | `InitScanlineEffects` | `0x08045094` | Called once from `AgbMain`: clears the index, `ClearScanlineEffectStaging`, queues the default table (`0x0806C2F0`, one entry with line 0 and `ScanlineEffectNop`), copies staging to live, installs the VCount callback, `StartScanlineEffects`. |
 | `QueueScanlineEffectTable` | `0x080450D4` | `(entries, count)`: waits for the pending flag to clear (one vblank per spin), clears staging, copies `count * 0x10` bytes into it, sets the pending flag. |
-| `QueueScanlineEffectEntry` | `0x08045210` | `(index, line, param, callback)`: waits for idle, then overwrites staging entry `index`'s line, `+2` word and callback and sets the pending flag. Its one caller (`UpdateDialogueBox`) passes callback `0x0801FC59`. |
+| `QueueScanlineEffectEntry` | `0x08045210` | `(index, line, param, callback)`: waits for idle, then overwrites staging entry `index`'s line, `+2` word and callback and sets the pending flag. Its one caller (`UpdateDialogBox`) passes callback `0x0801FC59`. |
 | `CommitScanlineEffects` | `0x08045260` | Called from `HandleVBlankInterrupt`: if the pending flag is set, copies staging over the live table and clears the flag and the index. |
 | `StartScanlineEffects` | `0x0804528C` | Resets the index and enables the VCount interrupt at entry 0's line (`EnableVCountInterrupt`, `0x080261F8`). |
 | `StopScanlineEffects` | `0x080452A8` | Clears IE bit 2, acknowledges IF bit 2, clears `DISPSTAT` bit 5. |
@@ -54,13 +54,13 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 
 - `QueueScanlineEffectTable` + `StartScanlineEffects` (+ `IsScanlineEffectQueueIdle`
   spin): `InitializeChooseCharacter`, `InitBattleBackground_candidate`,
-  `InitializeDialogue`, `InitializeLupinPotionCutscene`, `InitFloorEffect`; the table
+  `InitializeDialog`, `InitializeLupinPotionCutscene`, `InitFloorEffect`; the table
   alone from `sub_08008E88`, `sub_08012A00`, `sub_08012B40`, `sub_08018CF8`.
 - Battle script op `0x80` (`QueueScanlineEffect`, handler `0x0801A208`) queues one
   of the ROM tables at `0x08053B08`; see
   [`../formats/battle_scripts.md`](../formats/battle_scripts.md).
-- `ClearScanlineEffects`: `ExitChooseCharacter`, `ExitDialogue`, `ExitMinigameMenu`,
-  `FreeFloorEffect`. `StopScanlineEffects`: the debug-menu, choose-character, dialogue,
+- `ClearScanlineEffects`: `ExitChooseCharacter`, `ExitDialog`, `ExitMinigameMenu`,
+  `FreeFloorEffect`. `StopScanlineEffects`: the debug-menu, choose-character, dialog,
   Lupin-potion, overworld and Wizard Cracker Pop-It exit/init paths.
 
 ## UNCONFIRMED

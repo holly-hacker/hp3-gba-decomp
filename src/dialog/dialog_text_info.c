@@ -1,5 +1,5 @@
 #include "types.h"
-#include "dialogue.h"
+#include "dialog.h"
 
 const DialogTextInfo g_aDialogTextInfo[2767] = {
     { 4, NULL },  // 0x0: "There you are, Harry!"

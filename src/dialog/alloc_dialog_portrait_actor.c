@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "dialogue.h"
+#include "dialog.h"
 
 Actor *AllocDialogPortraitActor(void)
 {

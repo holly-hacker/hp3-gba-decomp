@@ -9,7 +9,7 @@
 #include "hw/io_regs.h"
 #include "menu/choose_character.h"
 #include "menu/main_menu.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "cursor.h"

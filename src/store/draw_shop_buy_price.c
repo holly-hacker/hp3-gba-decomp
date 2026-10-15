@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "font.h"
 #include "text.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "shop.h"
 #include "inventory.h"
 

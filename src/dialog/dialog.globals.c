@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "gen/graphics/menus.h"
 
 const ScanlineEffectEntry g_aDialogScanlineEffects[1] = {

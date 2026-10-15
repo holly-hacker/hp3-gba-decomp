@@ -7,12 +7,12 @@
 // Dialog box state at 0x03002E88; only the fields room scripts touch and the lifetime
 // functions use are named.
 typedef struct DialogState {
-    u32 dwState;                // 0x00, 0 = no box, 1 = open (InitializeDialogue), 2 = closed by
-                                //       ExitDialogue; the next vblank's sub_0801FBBC resets 2 to 0
+    u32 dwState;                // 0x00, 0 = no box, 1 = open (InitializeDialog), 2 = closed by
+                                //       ExitDialog; the next vblank's sub_0801FBBC resets 2 to 0
     const u8 *pText;            // 0x04, text still to be drawn; ShowDialogLine sets it, 0 byte = end
     const u8 *pLineStart;       // 0x08, start of the line being revealed
     u16 wBlockId;               // 0x0C, g_aDialogBlocks index, set by ShowRoomDialogBox_candidate
-    u16 wLineIndex;             // 0x0E, line of the block being shown, cleared by InitializeDialogue
+    u16 wLineIndex;             // 0x0E, line of the block being shown, cleared by InitializeDialog
     u16 wRevealCount;           // 0x10, characters of the current line revealed so far
     u16 wTextHeightLeft;        // 0x12, pixels left below the last drawn line
     u16 wTileCursor;            // 0x14, next free text tile
@@ -20,7 +20,7 @@ typedef struct DialogState {
     u8 bArg18;                  // 0x18, set by sub_0801FBA4
     u8 bArg19;                  // 0x19, set by sub_0801FBB0
     u8 bTextY;                  // 0x1A, pixel row of the next text line
-    u8 bPhase;                  // 0x1B, DialoguePhase
+    u8 bPhase;                  // 0x1B, DialogPhase
     u8 bArg1C;     // 0x1C, forwarded from room-script dialog opcodes
     u8 bArg1D;     // 0x1D
 } DialogState;
@@ -40,14 +40,14 @@ extern void ShowRoomDialogBox_candidate(u32 blockId);
 extern void sub_0801FBA4(u32 arg);  // stores a byte at DialogState + 0x18
 extern void sub_0801FBB0(u32 arg);  // stores a byte at DialogState + 0x19
 
-// DialogState.bPhase, stepped by UpdateDialogueBox.
+// DialogState.bPhase, stepped by UpdateDialogBox.
 typedef enum {
-    DialoguePhaseText = 0,      // text is being shown
-    DialoguePhaseTextStart = 1, // same, but the first text of the box
-    DialoguePhaseSlideUp = 2,   // the box rises into place
-    DialoguePhaseSlideDown = 3, // the box drops out of view
-    DialoguePhaseDone = 4,      // pops the dialogue mode
-} DialoguePhase;
+    DialogPhaseText = 0,      // text is being shown
+    DialogPhaseTextStart = 1, // same, but the first text of the box
+    DialogPhaseSlideUp = 2,   // the box rises into place
+    DialogPhaseSlideDown = 3, // the box drops out of view
+    DialogPhaseDone = 4,      // pops the dialog mode
+} DialogPhase;
 
 // Vertical position of the dialog box panel while it is hidden and when fully shown.
 #define DIALOG_BOX_HIDDEN_Y 0x9F
@@ -85,9 +85,9 @@ extern const u8 g_abPartySlotDialogPortraits[4];             // US 0x0805E29C
 extern const ActorAssetRecord g_aDialogPortraits[135];       // US 0x0805E2A0
 extern const DialogTextInfo g_aDialogTextInfo[2767];         // US 0x08FAAF10
 
-extern void InitializeDialogue(void);
-extern void UpdateDialogueBox(void);
-extern void ExitDialogue(void);
+extern void InitializeDialog(void);
+extern void UpdateDialogBox(void);
+extern void ExitDialog(void);
 
 extern Actor *AllocDialogPortraitActor(void);
 extern void SetDialogPortrait(Actor *actor);

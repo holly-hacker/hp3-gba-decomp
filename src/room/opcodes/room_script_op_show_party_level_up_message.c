@@ -1,6 +1,6 @@
 #include "types.h"
 #include "font.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "overworld/room_script.h"
 
 typedef struct ShowPartyLevelUpMessageRecord {

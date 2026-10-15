@@ -63,7 +63,7 @@ void TickActorActionState(Actor *actor)
         TickActorCastFieldSpell(actor);
         break;
     case 0x24:
-        TickActorInDialogue(actor);
+        TickActorInDialog(actor);
         break;
     }
 }

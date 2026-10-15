@@ -3,7 +3,7 @@
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "graphics/graphics.h"
 #include "graphics/palette.h"
 #include "game/game_modes.h"

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "mem.h"
-#include "dialogue.h"
+#include "dialog.h"
 
 void InitDialogBox(void)
 {

@@ -6,7 +6,7 @@
 #include "graphics/audio.h"
 #include "input.h"
 #include "inventory.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "overworld/room_script.h"
 #include "shop.h"
 #include "shop_inline.h"

@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "background.h"
-#include "dialogue.h"
+#include "dialog.h"
 
 // Clears the box and starts drawing the rest of pText as a new page.
 static inline void StartDialogPage(void)

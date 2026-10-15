@@ -2,7 +2,7 @@
 #include "background.h"
 #include "hw/bios.h"
 #include "font.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "overworld/room.h"
 #include "gen/graphics/cutscenes.h"
 

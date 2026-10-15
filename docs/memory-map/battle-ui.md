@@ -416,9 +416,9 @@ content (target selection, `ResolveEnemyAttack`, message/reward
 dispatch), not renamed further.
 
 **`IsActorTickAllowed`** (the `TickActor` gate) returns true iff
-`g_GameModeStackContext.dwCurrentGameMode` (`0x03003EF4`) `!= Dialogue`
+`g_GameModeStackContext.dwCurrentGameMode` (`0x03003EF4`) `!= Dialog`
 (`0x18`) AND it equals `g_dwPendingGameMode` (`0x03003F18`) -- "no mode
-transition in flight, and not in Dialogue mode". See
+transition in flight, and not in Dialog mode". See
 [`game_modes.md`](game_modes.md) for the full `GameMode` enum.
 
 **`FightState` fields**, from decompiling this dispatcher and

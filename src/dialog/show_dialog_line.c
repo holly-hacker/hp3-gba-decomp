@@ -1,8 +1,8 @@
 #include "types.h"
 #include "background.h"
 #include "font.h"
-#include "dialogue.h"
-#include "dialogue_inline.h"
+#include "dialog.h"
+#include "dialog_inline.h"
 
 // Shows line wLineIndex of block wBlockId with its speaker's portrait.
 void ShowDialogLine(void)

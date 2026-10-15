@@ -6,13 +6,13 @@
 #include "actor.h"
 #include "graphics/scanline_effects.h"
 #include "font.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "cursor.h"
 
-void InitializeDialogue(void)
+void InitializeDialog(void)
 {
     s32 cameraPosition[2];
     s32 row;
@@ -49,7 +49,7 @@ void InitializeDialogue(void)
             ;
         StartScanlineEffects();
         g_DialogState_candidate.wLineIndex = 0;
-        g_DialogState_candidate.bPhase = DialoguePhaseSlideUp;
+        g_DialogState_candidate.bPhase = DialogPhaseSlideUp;
         ShowDialogLine();
     }
 }

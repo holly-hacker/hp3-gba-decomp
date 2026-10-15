@@ -19,7 +19,7 @@ extern void ExitCombatResult();
 extern void ExitConfirmTradeScreen();
 extern void ExitConnectivity();
 extern void ExitCoolTrainCutscene();
-extern void ExitDialogue();
+extern void ExitDialog();
 extern void ExitDivinationTeaMinigame();
 extern void ExitFolioBruti();
 extern void ExitFolioCardDetailScreen();
@@ -86,7 +86,7 @@ extern void InitializeConfirmTradeScreen();
 extern void InitializeConnectivityMenu();
 extern void InitializeCoolTrainCutscene();
 extern void InitializeCredits();
-extern void InitializeDialogue();
+extern void InitializeDialog();
 extern void InitializeDivinationTeaMinigame();
 extern void InitializeFolioBruti();
 extern void InitializeFolioCardDetailScreen();
@@ -148,7 +148,7 @@ extern void UpdateCombatResult();
 extern void UpdateConfirmTradeScreen();
 extern void UpdateCoolTrainCutscene();
 extern void UpdateCredits();
-extern void UpdateDialogueBox();
+extern void UpdateDialogBox();
 extern void UpdateDivinationTeaMinigame();
 extern void UpdateFolioBrutiGridCursor();
 extern void UpdateFolioUniversitas();
@@ -213,7 +213,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeCardTrade, UpdateCardTrade, ExitCardTrade },
     { InitializeConnectivityMenu, HandleConnectivityMenuTick, ExitConnectivity },
     { InitializeHelp, UpdateHelp, ExitHelpScreen },
-    { InitializeDialogue, UpdateDialogueBox, ExitDialogue },
+    { InitializeDialog, UpdateDialogBox, ExitDialog },
     { InitializeCheat, UpdateCheat, ExitCheat },
     { InitializeChooseCharacter, UpdateChooseCharacter, ExitChooseCharacter },
     { InitializeWizardCrackerPopItMinigame, UpdateWizardCrackerPopItMinigame, ExitWizardCrackerPopItMinigame },

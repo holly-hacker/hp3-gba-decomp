@@ -2,13 +2,13 @@
 #include "background.h"
 #include "graphics/display.h"
 #include "actor.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "cursor.h"
 
-void ExitDialogue(void)
+void ExitDialog(void)
 {
     SetActorActionState(g_pPlayerActor, g_pPlayerActor->bPrevActionState_candidate);
     FreeActor(g_pDialogPortraitActor);

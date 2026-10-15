@@ -1,6 +1,6 @@
 #include "types.h"
 #include "font.h"
-#include "dialogue.h"
+#include "dialog.h"
 
 // Draws up to charBudget characters of the next line. A line drawn in full moves the
 // text down a line; otherwise the line is redrawn from its start next time. Returns

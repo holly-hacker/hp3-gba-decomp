@@ -6,7 +6,7 @@
 #include "graphics/graphics.h"
 #include "font.h"
 #include "text.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "menu/items_menu.h"
 #include "menu/main_menu.h"
 #include "shop.h"

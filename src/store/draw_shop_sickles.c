@@ -2,7 +2,7 @@
 #include "game/save.h"
 #include "font.h"
 #include "text.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "menu/menu.h"
 #include "shop.h"
 

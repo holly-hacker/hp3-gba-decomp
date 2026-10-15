@@ -28,7 +28,7 @@ typedef enum {
     CardTrade                        = 0x15,
     Connectivity                     = 0x16,
     Help                             = 0x17,
-    Dialogue                         = 0x18,
+    Dialog                           = 0x18,
     Cheat                            = 0x19,
     ChooseCharacter                  = 0x1A,
     WizardCrackerPopItMinigame       = 0x1B,

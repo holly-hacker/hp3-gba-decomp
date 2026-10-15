@@ -2,8 +2,8 @@
 #include "actor.h"
 #include "overworld/overworld.h"
 
-// Action state 0x24, held during dialogue: stops and stands.
-void TickActorInDialogue(Actor *actor)
+// Action state 0x24, held during dialog: stops and stands.
+void TickActorInDialog(Actor *actor)
 {
     CancelActorMove_candidate(actor);
     SetPartyMemberAnim(actor, PartyAnimStand);

@@ -153,7 +153,7 @@ c-file 0x08004264 _ src/actor/tick_player_control.c TickPlayerControl
 c-file 0x08004394 _ src/actor/tick_actor_turn_around.c TickActorTurnAround
 c-file 0x08004430 _ src/actor/tick_actor_respawn_row.c TickActorRespawnRow
 c-file 0x08004450 _ src/actor/tick_actor_stop_and_stand.c TickActorStopAndStand
-c-file 0x08004478 _ src/actor/tick_actor_in_dialogue.c TickActorInDialogue
+c-file 0x08004478 _ src/actor/tick_actor_in_dialog.c TickActorInDialog
 c-file 0x08004490 _ src/actor/face_actor_toward_move_target.c FaceActorTowardMoveTarget
 c-file 0x08004500 _ src/actor/tick_actor_walk_route_loop.c TickActorWalkRouteLoop
 c-file 0x08004688 _ src/actor/tick_actor_walk_route_ping_pong.c TickActorWalkRoutePingPong
@@ -838,16 +838,16 @@ c-file 0x0801F264 _ src/gamemode/modes/startup/initialize_startup.c InitializeSt
 c-file 0x0801F36C _ src/gamemode/modes/startup/update_startup.c UpdateStartup
 c-file 0x0801F524 _ src/gamemode/modes/startup/exit_startup.c ExitStartup
 
-# Dialog (dialogue mode)
-c-file 0x0801F534 _ src/dialogue/initialize_dialogue.c InitializeDialogue
-c-file 0x0801F654 _ src/dialogue/update_dialogue_box.c UpdateDialogueBox
-c-file 0x0801F7AC _ src/dialogue/alloc_dialog_portrait_actor.c AllocDialogPortraitActor
-c-file 0x0801F824 _ src/dialogue/set_dialog_portrait.c SetDialogPortrait
-c-file 0x0801F8EC _ src/dialogue/draw_dialog_text_line.c DrawDialogTextLine
-c-file 0x0801F968 _ src/dialogue/show_dialog_line.c ShowDialogLine
-c-file 0x0801FA18 _ src/dialogue/advance_dialog.c AdvanceDialog
-c-file 0x0801FA9C _ src/dialogue/load_dialog_box_graphics.c LoadDialogBoxGraphics
-c-file 0x0801FAF4 0x0801FB54 src/dialogue/exit_dialogue.c ExitDialogue
+# Dialog (dialog mode)
+c-file 0x0801F534 _ src/dialog/initialize_dialog.c InitializeDialog
+c-file 0x0801F654 _ src/dialog/update_dialog_box.c UpdateDialogBox
+c-file 0x0801F7AC _ src/dialog/alloc_dialog_portrait_actor.c AllocDialogPortraitActor
+c-file 0x0801F824 _ src/dialog/set_dialog_portrait.c SetDialogPortrait
+c-file 0x0801F8EC _ src/dialog/draw_dialog_text_line.c DrawDialogTextLine
+c-file 0x0801F968 _ src/dialog/show_dialog_line.c ShowDialogLine
+c-file 0x0801FA18 _ src/dialog/advance_dialog.c AdvanceDialog
+c-file 0x0801FA9C _ src/dialog/load_dialog_box_graphics.c LoadDialogBoxGraphics
+c-file 0x0801FAF4 0x0801FB54 src/dialog/exit_dialog.c ExitDialog
 
 # DialogBox? (dialog box)
 thumb-func 0x0801FB54 ShowRoomDialogBox_candidate
@@ -2467,13 +2467,13 @@ c-file 0x0805994C 0x0805BA7C src/battle/effect_scripts.c g_apEffectScripts
 
 c-file 0x0805BA8C _ src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BC00 _ src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
-c-file 0x0805BC04 _ src/dialogue/dialogue_blocks.c g_adwDialogBlockTextIds
+c-file 0x0805BC04 _ src/dialog/dialog_blocks.c g_adwDialogBlockTextIds
 c-file 0x0805E020 _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805E0A0 0x0805E104 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E10C _ src/menu/common_bg2_control.c g_dwCommonBg2Control
 c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file 0x0805E280 _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
-c-file 0x0805E28C _ src/dialogue/dialogue.globals.c g_aDialogScanlineEffects
+c-file 0x0805E28C _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
 c-file 0x0805EB10 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EB9C _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
@@ -2733,7 +2733,7 @@ c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
 
 c-file 0x08FAAEF8 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
-c-file 0x08FAAF10 _ src/dialogue/dialogue_text_info.c g_aDialogTextInfo
+c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows
 c-file 0x08FB0588 _ src/audio/sound_samples.c g_aSoundSamples
 c-file 0x08FB0818 _ src/audio/sound_variants.c g_aSoundVariants

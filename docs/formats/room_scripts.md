@@ -127,7 +127,7 @@ to test the same bit with the opposite sense.
 
 **PROVEN.** `ShowRoomDialog`'s operand is a *dialog block id*
 (`g_DialogState_candidate.wBlockId`), not a `GetDialogText` string id.
-`g_aDialogBlocks` (`src/dialogue/dialogue_blocks.c`) maps each block to its
+`g_aDialogBlocks` (`src/dialog/dialog_blocks.c`) maps each block to its
 lines' text ids in `g_adwDialogBlockTextIds`; `ShowDialogLine` shows line
 `wLineIndex` and `AdvanceDialog` steps to the next one when the player
 presses A. A block with no lines still shows its first id. For example, block

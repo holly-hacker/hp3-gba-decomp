@@ -1,6 +1,6 @@
 #include "types.h"
 #include "input.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_actor.h"

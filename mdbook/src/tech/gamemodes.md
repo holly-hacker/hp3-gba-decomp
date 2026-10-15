@@ -95,7 +95,7 @@ Arguments:
 
 ### `Help` (0x17)
 
-### `Dialogue` (0x18)
+### `Dialog` (0x18)
 
 ### `Cheat` (0x19)
 

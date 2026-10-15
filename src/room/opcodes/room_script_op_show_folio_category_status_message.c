@@ -1,5 +1,5 @@
 #include "types.h"
-#include "dialogue.h"
+#include "dialog.h"
 #include "font.h"
 #include "text.h"
 #include "overworld/room_script.h"

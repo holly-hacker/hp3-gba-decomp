@@ -419,7 +419,7 @@ typedef struct Actor {
     u16 wActionVariant;     // 0x8A
     u8 bRoomActorKind_candidate;  // 0x8C, set from the tile record by room actor constructors; 2 selects the second collision box
     u8 bActionState;        // 0x8D, the dispatch key
-    u8 bPrevActionState_candidate;  // 0x8E, ExitDialogue restores the player to this action state
+    u8 bPrevActionState_candidate;  // 0x8E, ExitDialog restores the player to this action state
     u8 bActionSubState;     // 0x8F, secondary per-actor state; see SetActorActionSubState
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91
@@ -733,7 +733,7 @@ extern void TickPlayerControl(Actor *actor);
 extern void TickActorTurnAround(Actor *actor);
 extern void TickActorRespawnRow(Actor *actor);
 extern void TickActorStopAndStand(Actor *actor);
-extern void TickActorInDialogue(Actor *actor);
+extern void TickActorInDialog(Actor *actor);
 extern s32 FaceActorTowardMoveTarget(Actor *actor);
 extern void TickActorWalkRouteLoop(Actor *actor);
 extern void TickActorWalkRoutePingPong(Actor *actor);
