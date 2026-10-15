@@ -273,10 +273,10 @@ extern void TickParticleEmitter(ParticleEmitter *emitter);
 extern void SpawnParticle(ParticleEmitter *emitter);
 extern ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex, u32 entryIndex);
 
-extern void ReleaseParticleEmitter_candidate(ParticleEmitter *emitter);
+extern void ReleaseParticleEmitter(ParticleEmitter *emitter);
 
 // Drops the emitter's palette slot reference and returns it to the free list. The ROM
-// inlines this in the emitter tick and in ReleaseParticleEmitter_candidate.
+// inlines this in the emitter tick and in ReleaseParticleEmitter.
 static inline void FreeParticleEmitter(ParticleEmitter *emitter)
 {
     ReleaseObjPaletteSlot(emitter->bPaletteSlot);

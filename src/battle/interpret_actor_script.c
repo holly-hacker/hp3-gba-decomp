@@ -332,7 +332,7 @@ void InterpretActorScript(Actor *actor)
             FreeAllParticles();
             break;
         case BSOP_ReleaseWindupEmitter:  // releases this actor's windup emitter
-            ReleaseParticleEmitter_candidate(actor->pWindupParticleEmitter);
+            ReleaseParticleEmitter(actor->pWindupParticleEmitter);
             break;
         case BSOP_ReleaseKind2Emitters:  // releases every kind-2 emitter
             {
@@ -343,7 +343,7 @@ void InterpretActorScript(Actor *actor)
                 {
                     next = node->pNext;
                     if (((ParticleEmitter *)node)->bParalysisEffectFlag_candidate == 2)
-                        ReleaseParticleEmitter_candidate((ParticleEmitter *)node);
+                        ReleaseParticleEmitter((ParticleEmitter *)node);
                 }
             }
             break;

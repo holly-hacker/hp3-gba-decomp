@@ -453,8 +453,8 @@ c-file 0x0800D1A4 0x0800D204 src/graphics/palette/init_gamma_palette.c InitGamma
 thumb-func 0x0800D204 sub_0800D204
 thumb-func 0x0800D244 sub_0800D244
 thumb-func 0x0800D254 sub_0800D254
-c-file 0x0800D264 0x0800D29C src/graphics/palette/queue_obj_palette_load.c QueueObjPaletteLoad
-thumb-func 0x0800D29C sub_0800D29C
+c-file 0x0800D264 _ src/graphics/palette/queue_obj_palette_load.c QueueObjPaletteLoad
+c-file 0x0800D29C _ src/graphics/palette/queue_obj_palette_load_at_offset.c QueueObjPaletteLoadAtOffset
 c-file 0x0800D2DC _ src/graphics/palette/reset_palette_animations.c ResetPaletteAnimations
 c-file 0x0800D2F4 0x0800D304 src/graphics/palette/tick_palette_animations.c TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
@@ -779,15 +779,15 @@ thumb-func 0x0801D6DC sub_0801D6DC
 thumb-func 0x0801D77C sub_0801D77C
 c-file 0x0801D858 _ src/gamemode/modes/cutscene/linear_cutscene/exit_linear_cutscene.c ExitLinearCutscene
 c-file 0x0801D888 _ src/gamemode/modes/cutscene/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
-c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
+c-file 0x0801D8C0 _ src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 
 # Cursor? (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
-thumb-func 0x0801D940 SpawnMenuCursorActor
-c-file 0x0801DBE0 0x0801DC6C src/cursor/create_menu_cursor_emitter.c CreateMenuCursorEmitter
-thumb-func 0x0801DC6C ReleaseMenuCursor
-thumb-func 0x0801DCC4 SetMenuCursorPosition
-thumb-func 0x0801DCD0 SetMenuCursorVisible
-thumb-func 0x0801DD20 sub_0801DD20
+c-file 0x0801D940 _ src/cursor/spawn_menu_cursor_actor.c SpawnMenuCursorActor
+c-file 0x0801DBE0 _ src/cursor/create_menu_cursor_emitter.c CreateMenuCursorEmitter
+c-file 0x0801DC6C _ src/cursor/release_menu_cursor.c ReleaseMenuCursor
+c-file 0x0801DCC4 _ src/cursor/set_menu_cursor_position.c SetMenuCursorPosition
+c-file 0x0801DCD0 _ src/cursor/set_menu_cursor_visible.c SetMenuCursorVisible
+c-file 0x0801DD20 _ src/cursor/load_menu_cursor_8bpp_colors.c LoadMenuCursor8bppColors
 c-file 0x0801DD40 _ src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
 c-file 0x0801DD88 _ src/graphics/get_resource_decompressed_size.c GetResourceDecompressedSize
 c-file 0x0801DD90 _ src/graphics/decompress_resource.c DecompressResource
@@ -1473,7 +1473,7 @@ c-file 0x08031538 _ src/graphics/particle/tick_particle_with_gravity.c TickParti
 c-file 0x080315A4 _ src/graphics/particle/init_particle_pools.c InitParticlePools
 c-file 0x08031624 0x08031668 src/graphics/particle/reset_particle_state.c ResetParticleState
 thumb-func 0x08031668 sub_08031668
-c-file 0x080316A4 _ src/graphics/particle/release_particle_emitter.c ReleaseParticleEmitter_candidate
+c-file 0x080316A4 _ src/graphics/particle/release_particle_emitter.c ReleaseParticleEmitter
 c-file 0x080316D4 _ src/graphics/particle/free_all_particle_emitters.c FreeAllParticleEmitters
 c-file 0x0803171C _ src/graphics/particle/free_all_particles.c FreeAllParticles
 c-file 0x08031748 0x08031798 src/graphics/particle/tick_particle_emitters.c TickParticleEmitters
@@ -2467,7 +2467,8 @@ c-file 0x0805994C 0x0805BA7C src/battle/effect_scripts.c g_apEffectScripts
 
 c-file 0x0805BA8C _ src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BC00 0x0805BC04 src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
-c-file 0x0805E020 0x0805E0A0 src/gamemode/modes/cutscene/linear_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
+c-file 0x0805E020 _ src/gamemode/modes/cutscene/linear_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
+c-file 0x0805E0A0 0x0805E104 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E10C 0x0805E110 src/menu/common_bg2_control.c g_dwCommonBg2Control
 c-file 0x0805E174 0x0805E17C src/gamemode/modes/minigame/harry_vs_dementors/harry_vs_dementors.globals.c g_dwHarryVsDementorsBg0Control
 c-file 0x0805E280 _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control

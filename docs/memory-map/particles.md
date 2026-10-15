@@ -27,7 +27,7 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 | `AllocParticleEmitter` | `0x08030B70` | `src/graphics/particle/alloc_particle_emitter.c` |
 | `TickParticleEmitter` | `0x08030C9C` | `src/graphics/particle/tick_particle_emitter.c` |
 | `SpawnParticle` | `0x08030D90` | `src/graphics/particle/spawn_particle.c` |
-| `ReleaseParticleEmitter_candidate` | `0x080316A4` | `src/graphics/particle/release_particle_emitter.c` |
+| `ReleaseParticleEmitter` | `0x080316A4` | `src/graphics/particle/release_particle_emitter.c` |
 | `InitParticlePools` | `0x080315A4` | `src/graphics/particle/init_particle_pools.c` |
 | `ResetParticleState` | `0x08031624` | `src/graphics/particle/reset_particle_state.c` |
 | `FreeAllParticleEmitters` | `0x080316D4` | `src/graphics/particle/free_all_particle_emitters.c` |
@@ -156,7 +156,7 @@ emulator.
 - The sounds reachable from the main menu are `0` (cursor move), `1` (START and select) and `0x47`
   (`TickActor`, when an actor's position changed). All are sample rows. The boot path before the menu
   plays `0`, `1` and `2` in the language select, also sample rows. `sub_0803FD04` has no direct-call path
-  from the menu. The cursor's animation streams (`0x0805E0D0`, `0x0805E0E0`) contain no `0xFD`
+  from the menu. The cursor's animation stream (`g_MenuCursorSparkleAnimData`, `src/cursor/cursor.globals.c`) contains no `0xFD`
   sound opcode (`RunActorAnimCommands` case 14 plays `PlaySoundById`).
 - No other `Mt19937*` caller is reachable from the menu. `Mt19937AutoSeed` (on START) and the emitter
   are the only ones on the boot path.

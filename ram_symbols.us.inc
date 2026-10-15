@@ -185,6 +185,8 @@
 .set g_dwLinearCutsceneIndex, 0x030028BC  @ u32: GameMode - Credits
 
 .set g_pMenuCursorEmitter, 0x030028C0  @ ParticleEmitter *: emitter of the cursor actor built by SpawnMenuCursorActor(4)
+.set g_nMenuCursorPaletteEffect, 0x030028C4  @ s32: SpawnMenuCursorActor(4)'s palette effect handle, -1 = none
+.set g_dwMenuCursorParticleGfxLoaded, 0x030028C8  @ u32: the cursor's particle graphics pool is loaded
 
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
 @ "resource-decompression dispatcher") ---

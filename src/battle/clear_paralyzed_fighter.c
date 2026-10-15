@@ -22,7 +22,7 @@ void ClearParalyzedFighter_candidate(u8 fighterIndex)
         {
             if (g_pFightState->pFighters[fighterIndex].pActor->pWindupParticleEmitter != NULL)
             {
-                ReleaseParticleEmitter_candidate(g_pFightState->pFighters[fighterIndex].pActor->pWindupParticleEmitter);
+                ReleaseParticleEmitter(g_pFightState->pFighters[fighterIndex].pActor->pWindupParticleEmitter);
                 g_pFightState->pFighters[fighterIndex].pActor->pWindupParticleEmitter = NULL;
             }
 

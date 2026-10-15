@@ -479,7 +479,7 @@ decompile, which was independently cross-checked and matched exactly):
   VRAM/palette-RAM writes to vblank rather than writing immediately.
   **Nothing in the disassembly reads this table via a literal address**
   -- every one of the handful of `=0x030023E8`/`=0x030022F0` references
-  is a write, from this function and one sibling (`sub_0800D29C`). The
+  is a write, from this function and one sibling (`QueueObjPaletteLoadAtOffset`). The
   actual processor is reached some other way (a runtime-computed base
   pointer, not a literal load) -- static literal-pool tracing stops
   being effective here.

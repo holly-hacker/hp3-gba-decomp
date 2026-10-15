@@ -23,7 +23,7 @@ void ClearPoisonedFighter_candidate(u8 fighterIndex)
 
         if (actor->pWindupParticleEmitter != NULL)
         {
-            ReleaseParticleEmitter_candidate(actor->pWindupParticleEmitter);
+            ReleaseParticleEmitter(actor->pWindupParticleEmitter);
             actor->pWindupParticleEmitter = NULL;
         }
 

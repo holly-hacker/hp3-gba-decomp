@@ -173,6 +173,8 @@
 .set g_dwLinearCutsceneIndex, 0x030028BC  @ see ram_symbols.us.inc
 
 .set g_pMenuCursorEmitter, 0x030028C0
+.set g_nMenuCursorPaletteEffect, 0x030028C4  @ see ram_symbols.us.inc
+.set g_dwMenuCursorParticleGfxLoaded, 0x030028C8  @ see ram_symbols.us.inc
 
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
 @ "resource-decompression dispatcher") ---

@@ -322,7 +322,7 @@ typedef struct Actor {
     u16 wPauseTimer;        // 0x1E, counted down in action state 6
     u8 pad_20[0x04];        // -> 0x24
     ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
-                             // ReleaseParticleEmitter_candidate and zeroed
+                             // ReleaseParticleEmitter and zeroed
                              // when nonzero (see ClearParalyzedFighter_candidate)
     s32 nMoveSpeed;         // 0x28, 16.16 pixels per tick; see SetActorVelocityFromFacing
     FixedPoint pos;         // 0x2C

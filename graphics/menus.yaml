@@ -26,7 +26,8 @@ groups:
       - kind: graphic-blobs
         names: [MenuCursor001]
       # The menu cursor's palette (also its sparkle emitter's), then the
-      # 16-palette set sub_0801DD20 loads rows 3-15 of
+      # 256-color palette of the 8bpp cursor (MenuSprite005) as 16 rows;
+      # LoadMenuCursor8bppColors loads color 0 of rows 3-15
       - kind: image-bank
         count: 17
         names:
