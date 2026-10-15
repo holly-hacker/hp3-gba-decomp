@@ -150,4 +150,3 @@ extern void SetScreenDarkenParams_candidate(u32 arg0, u32 stepTicks);
 // RestoreScreenPalette restores.
 extern u16 *g_pScreenPaletteBackup;
 extern void InitScreenTransitionState_candidate(void);
-extern void InitDisplayControl(void);

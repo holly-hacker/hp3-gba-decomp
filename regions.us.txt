@@ -865,7 +865,7 @@ c-file 0x0801FD90 _ src/dialog_box/set_dialog_reveal_step.c SetDialogRevealStep
 c-file 0x0801FD9C _ src/dialog_box/dialog_box_nop.c DialogBoxNop
 
 # Display? (display control init)
-c-file 0x0801FDA0 0x0801FDB0 src/graphics/init_display_control.c InitDisplayControl
+c-file 0x0801FDA0 0x0801FDB0 src/display/init_display_control.c InitDisplayControl
 thumb-func 0x0801FDB0 sub_0801FDB0
 thumb-func 0x0801FDBC sub_0801FDBC
 thumb-func 0x0801FDD4 sub_0801FDD4

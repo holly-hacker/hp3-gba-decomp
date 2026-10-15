@@ -1,6 +1,7 @@
 #include "hw/vblank.h"
 #include "interrupts.h"
 #include "graphics/display.h"
+#include "display.h"
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "actor.h"
