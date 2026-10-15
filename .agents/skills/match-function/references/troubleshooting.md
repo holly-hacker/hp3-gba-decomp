@@ -276,6 +276,9 @@ both are register-identical. A `u16` index compared with `0xFFFF` builds the con
 HImode, so the copy and loop.c's hoisted constant land in different registers. Declare it
 `u32` (still loaded with `ldrh`). Check `.greg` for two `const_int 65535` pseudos. Example:
 ReleaseBgTileCacheEntry, US 0x0803DF18.
+The copy also stays when the loop ends an `if` arm whose exit label is followed only by the
+jump past the `else`; ending that arm with its own `return` let cross-jumping remove it
+(MoveMemory, US `0x0802C174`, whose forward branch is CopyMemory's body).
 
 ## 29. Two-address op with a copy in front of it (`adds rD, rS, #0; eors rD, rC`)
 

@@ -1304,27 +1304,27 @@ c-file 0x0802C0CC _ src/math/step_direction32_toward.c StepDirection32Toward
 c-file 0x0802C10C _ src/math/apply_percent.c ApplyPercent
 c-file 0x0802C12C _ src/math/to_percent.c ToPercent
 c-file 0x0802C148 _ src/math/sign_magnitude8_8_to_fixed.c SignMagnitude8_8ToFixed
-c-file 0x0802C164 0x0802C174 src/math/length_squared.c LengthSquared
+c-file 0x0802C164 _ src/math/length_squared.c LengthSquared
 
 # Memory (heap), see docs/memory-map/heap.md
-thumb-func 0x0802C174 sub_0802C174
+c-file 0x0802C174 _ src/mem/move_memory.c MoveMemory
 c-file 0x0802C254 _ src/mem/init_heap.c InitHeap
 c-file 0x0802C26C _ src/mem/alloc_block.c AllocBlock
-c-file 0x0802C2EC 0x0802C390 src/mem/alloc_zeroed.c AllocZeroed
-thumb-func 0x0802C390 FreeBlock
-thumb-func 0x0802C3B8 sub_0802C3B8
+c-file 0x0802C2EC _ src/mem/alloc_zeroed.c AllocZeroed
+c-file 0x0802C390 _ src/mem/free_block.c FreeBlock
+c-file 0x0802C3B8 _ src/mem/resize_block.c ResizeBlock
 c-file 0x0802C450 _ src/mem/memset.c memset
-c-file 0x0802C4BC 0x0802C524 src/mem/copy_memory.c CopyMemory
-thumb-func 0x0802C524 sub_0802C524
+c-file 0x0802C4BC _ src/mem/copy_memory.c CopyMemory
+c-file 0x0802C524 _ src/mem/heap_stub_return_one.c HeapStubReturnOne
 c-file 0x0802C528 _ src/mem/init_memory_pool.c InitMemoryPool
 c-file 0x0802C570 _ src/mem/get_free_block_size.c GetFreeBlockSize
 c-file 0x0802C590 _ src/mem/link_block_by_address.c LinkBlockByAddress
-c-file 0x0802C5A4 0x0802C5B8 src/mem/link_free_block.c LinkFreeBlock
-thumb-func 0x0802C5B8 sub_0802C5B8
-thumb-func 0x0802C5DC sub_0802C5DC
-c-file 0x0802C608 0x0802C638 src/mem/unlink_free_block.c UnlinkFreeBlock
-thumb-func 0x0802C638 sub_0802C638
-thumb-func 0x0802C67C sub_0802C67C
+c-file 0x0802C5A4 _ src/mem/link_free_block.c LinkFreeBlock
+c-file 0x0802C5B8 _ src/mem/push_free_block.c PushFreeBlock
+c-file 0x0802C5DC _ src/mem/unlink_block_by_address.c UnlinkBlockByAddress
+c-file 0x0802C608 _ src/mem/unlink_free_block.c UnlinkFreeBlock
+c-file 0x0802C638 _ src/mem/merge_into_prev_free_block.c MergeIntoPrevFreeBlock
+c-file 0x0802C67C _ src/mem/absorb_next_free_block.c AbsorbNextFreeBlock
 
 # Game mode stack, see docs/memory-map/game_modes.md
 c-file 0x0802C6B4 _ src/gamemode/tick_game_mode_stack.c TickGameModeStack

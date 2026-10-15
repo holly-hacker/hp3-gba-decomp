@@ -17,11 +17,22 @@ registered (by `InitHeap`, spanning ~all of EWRAM):
   allocated) in address order; `pNextFree`/`pPrevFree` thread only the
   free ones. An allocated block repurposes the free-list fields: `+8`
   becomes the owning pool index, `+0xC` becomes `-1` as a live marker.
-- `InitMemoryPool`, `GetFreeBlockSize`, `LinkBlockByAddress`,
-  `LinkFreeBlock`, `UnlinkFreeBlock`, `memset`, `AllocBlock`,
-  `AllocZeroed` are all matched in `src/mem/`. Types in `include/mem.h`.
-  See also "Generic intrusive list / active-actor list" below for
-  `BuildFreeList` and the `List_*` functions.
+- Every function in the block (US `0x0802C174`-`0x0802C6B4`) is matched in
+  `src/mem/`. Types in `include/mem.h`. See also "Generic intrusive list /
+  active-actor list" below for `BuildFreeList` and the `List_*` functions.
+- `FreeBlock` pushes the block onto its pool's free list
+  (`PushFreeBlock`), absorbs the next block by address if that one is free
+  (`AbsorbNextFreeBlock`), then folds itself into the previous block by
+  address if that one is free (`MergeIntoPrevFreeBlock`).
+- `ResizeBlock` (no callers) resizes an allocated block in place:
+  shrinking splits the tail off as a free block, growing takes space from
+  the next block if it is free and large enough (unlinking it with
+  `UnlinkFreeBlock` and `UnlinkBlockByAddress`), else returns `NULL`.
+- `MoveMemory` is `CopyMemory` with overlap handling: it copies backwards
+  unless `src` lies after `dst` or the source range ends before `dst`. Its
+  backward word path copies the 0-3 leftover bytes from the start of the
+  buffers instead of the end.
+- `HeapStubReturnOne` returns 1 and has no callers.
 
 `memset` (`0x0802C450`) is **not** the vendored newlib copy in `src/libc/`,
 despite being the classic newlib shape (byte-fill to alignment, word-fill

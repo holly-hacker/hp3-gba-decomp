@@ -44,14 +44,21 @@ u32 GetFreeBlockSize(MemBlock *block, u32 poolIndex);
 void LinkBlockByAddress(MemBlock *afterBlock, MemBlock *newBlock);
 void LinkFreeBlock(MemBlock *afterBlock, MemBlock *newBlock);
 void UnlinkFreeBlock(MemBlock *block, u32 poolIndex);
+void PushFreeBlock(MemBlock *block, u32 poolIndex);
+void UnlinkBlockByAddress(MemBlock *block, u32 poolIndex);
+void MergeIntoPrevFreeBlock(MemBlock *block, u32 poolIndex);
+void AbsorbNextFreeBlock(MemBlock *block, u32 poolIndex);
 void *AllocBlock(u32 size);
 void *AllocZeroed(u32 size);
 void FreeBlock(void *ptr);
+void *ResizeBlock(void *ptr, u32 size);
+u32 HeapStubReturnOne(void);
 
 // Ordinary game code, not the vendored newlib copy in src/libc/ -- see
 // docs/memory-map/heap.md.
 void *memset(void *dst, int val, u32 len);
 void *CopyMemory(void *dst, const void *src, u32 len);
+void *MoveMemory(void *dst, const void *src, u32 len);
 
 // Start of pool 0, which InitHeap spans to EWRAM_END.
 extern u8 g_abEwramHeap[];  // 0x02002800

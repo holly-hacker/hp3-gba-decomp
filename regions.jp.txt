@@ -1173,25 +1173,25 @@ c-file 0x0802C128 _ src/math/step_direction32_toward.c StepDirection32Toward
 c-file 0x0802C168 _ src/math/apply_percent.c ApplyPercent
 c-file 0x0802C188 _ src/math/to_percent.c ToPercent
 c-file 0x0802C1A4 _ src/math/sign_magnitude8_8_to_fixed.c SignMagnitude8_8ToFixed
-c-file 0x0802C1C0 0x0802C1D0 src/math/length_squared.c LengthSquared
-thumb-func 0x0802C1D0 sub_0802C174
+c-file 0x0802C1C0 _ src/math/length_squared.c LengthSquared
+c-file 0x0802C1D0 _ src/mem/move_memory.c MoveMemory
 c-file 0x0802C2B0 _ src/mem/init_heap.c InitHeap
 c-file 0x0802C2C8 _ src/mem/alloc_block.c AllocBlock
-c-file 0x0802C348 0x0802C3EC src/mem/alloc_zeroed.c AllocZeroed
-thumb-func 0x0802C3EC FreeBlock
-thumb-func 0x0802C414 sub_0802C3B8
+c-file 0x0802C348 _ src/mem/alloc_zeroed.c AllocZeroed
+c-file 0x0802C3EC _ src/mem/free_block.c FreeBlock
+c-file 0x0802C414 _ src/mem/resize_block.c ResizeBlock
 c-file 0x0802C4AC _ src/mem/memset.c memset
-c-file 0x0802C518 0x0802C580 src/mem/copy_memory.c CopyMemory
-thumb-func 0x0802C580 sub_0802C524
+c-file 0x0802C518 _ src/mem/copy_memory.c CopyMemory
+c-file 0x0802C580 _ src/mem/heap_stub_return_one.c HeapStubReturnOne
 c-file 0x0802C584 _ src/mem/init_memory_pool.c InitMemoryPool
 c-file 0x0802C5CC _ src/mem/get_free_block_size.c GetFreeBlockSize
 c-file 0x0802C5EC _ src/mem/link_block_by_address.c LinkBlockByAddress
-c-file 0x0802C600 0x0802C614 src/mem/link_free_block.c LinkFreeBlock
-thumb-func 0x0802C614 sub_0802C5B8
-thumb-func 0x0802C638 sub_0802C5DC
-c-file 0x0802C664 0x0802C694 src/mem/unlink_free_block.c UnlinkFreeBlock
-thumb-func 0x0802C694 sub_0802C638
-thumb-func 0x0802C6D8 sub_0802C67C
+c-file 0x0802C600 _ src/mem/link_free_block.c LinkFreeBlock
+c-file 0x0802C614 _ src/mem/push_free_block.c PushFreeBlock
+c-file 0x0802C638 _ src/mem/unlink_block_by_address.c UnlinkBlockByAddress
+c-file 0x0802C664 _ src/mem/unlink_free_block.c UnlinkFreeBlock
+c-file 0x0802C694 _ src/mem/merge_into_prev_free_block.c MergeIntoPrevFreeBlock
+c-file 0x0802C6D8 _ src/mem/absorb_next_free_block.c AbsorbNextFreeBlock
 c-file 0x0802C710 _ src/gamemode/tick_game_mode_stack.c TickGameModeStack
 c-file 0x0802C7AC 0x0802C7EC src/gamemode/init_game_mode_stack.c InitGameModeStack
 thumb-func 0x0802C7EC GetCurrentGameMode_candidate
