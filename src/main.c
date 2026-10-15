@@ -12,6 +12,7 @@
 #include "battle/battle.h"
 #include "mt19937.h"
 #include "game/save.h"
+#include "decompress.h"
 #include "graphics/graphics.h"
 #include "graphics/oam.h"
 #include "graphics/palette.h"
@@ -24,7 +25,6 @@
 #include "game/game_timer.h"
 #include "vram.h"
 
-extern void InstallIwramDecompressCodecs(void);
 extern void InitSaveSystem(void);
 extern void NoopInit(void);
 extern void NoopInit2(void);

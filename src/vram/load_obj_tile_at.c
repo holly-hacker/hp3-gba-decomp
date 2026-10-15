@@ -1,4 +1,5 @@
 #include "types.h"
+#include "decompress.h"
 #include "graphics/graphics.h"
 #include "actor.h"
 #include "hw/io_regs.h"

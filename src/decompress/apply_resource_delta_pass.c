@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "decompress.h"
 
 // Integrates delta-coded halfwords in place: each becomes the running sum.
 void ApplyResourceDeltaPass(u16 *pData, u32 size)

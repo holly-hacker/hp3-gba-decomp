@@ -1,5 +1,5 @@
 #include "arm_routines.h"
-#include "graphics/graphics.h"
+#include "decompress.h"
 #include "hw/bios.h"
 
 void InstallIwramDecompressCodecs(void)

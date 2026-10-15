@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "decompress.h"
 
 u32 GetResourceDecompressedSize(const void *pResource)
 {

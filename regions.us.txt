@@ -788,12 +788,12 @@ c-file 0x0801DC6C _ src/cursor/release_menu_cursor.c ReleaseMenuCursor
 c-file 0x0801DCC4 _ src/cursor/set_menu_cursor_position.c SetMenuCursorPosition
 c-file 0x0801DCD0 _ src/cursor/set_menu_cursor_visible.c SetMenuCursorVisible
 c-file 0x0801DD20 _ src/cursor/load_menu_cursor_8bpp_colors.c LoadMenuCursor8bppColors
-c-file 0x0801DD40 _ src/graphics/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
-c-file 0x0801DD88 _ src/graphics/get_resource_decompressed_size.c GetResourceDecompressedSize
-c-file 0x0801DD90 _ src/graphics/decompress_resource.c DecompressResource
-c-file 0x0801DE5C _ src/graphics/decompress_resource_vram.c DecompressResourceVram
-c-file 0x0801DF24 _ src/graphics/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassUnused
-c-file 0x0801DF48 0x0801DF6C src/graphics/apply_resource_delta_pass.c ApplyResourceDeltaPass
+c-file 0x0801DD40 _ src/decompress/install_iwram_decompress_codecs.c InstallIwramDecompressCodecs
+c-file 0x0801DD88 _ src/decompress/get_resource_decompressed_size.c GetResourceDecompressedSize
+c-file 0x0801DD90 _ src/decompress/decompress_resource.c DecompressResource
+c-file 0x0801DE5C _ src/decompress/decompress_resource_vram.c DecompressResourceVram
+c-file 0x0801DF24 _ src/decompress/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassUnused
+c-file 0x0801DF48 0x0801DF6C src/decompress/apply_resource_delta_pass.c ApplyResourceDeltaPass
 
 # Menu screen frame, see docs/memory-map/menu_screen.md
 thumb-func 0x0801DF6C InitializeMenuScreen

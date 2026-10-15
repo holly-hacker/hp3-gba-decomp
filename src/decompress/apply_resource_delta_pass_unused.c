@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "decompress.h"
 
 // An unreferenced copy of ApplyResourceDeltaPass.
 void ApplyResourceDeltaPassUnused(u16 *pData, u32 size)

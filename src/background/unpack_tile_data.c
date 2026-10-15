@@ -1,5 +1,6 @@
 #include "types.h"
 #include "background.h"
+#include "decompress.h"
 #include "graphics/graphics.h"
 #include "hw/bios.h"
 
