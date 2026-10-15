@@ -1,6 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "hw/mem.h"
+#include "list.h"
 
 // Same body as AllocDefaultActor, inlined here.
 static inline Actor *AllocDefaultActorInline(void)

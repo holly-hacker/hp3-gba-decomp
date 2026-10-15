@@ -1,5 +1,6 @@
 #include "types.h"
 #include "hw/mem.h"
+#include "list.h"
 #include "graphics/graphics.h"
 
 void InitParticlePools(void)

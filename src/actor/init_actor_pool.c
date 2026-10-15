@@ -1,4 +1,5 @@
 #include "hw/mem.h"
+#include "list.h"
 #include "hw/bios.h"
 
 // Carves the actor free list out of g_ActorPoolState.pBuffer (0x69 actors,

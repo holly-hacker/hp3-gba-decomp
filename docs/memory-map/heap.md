@@ -18,11 +18,10 @@ registered (by `InitHeap`, spanning ~all of EWRAM):
   free ones. An allocated block repurposes the free-list fields: `+8`
   becomes the owning pool index, `+0xC` becomes `-1` as a live marker.
 - `InitMemoryPool`, `GetFreeBlockSize`, `LinkBlockByAddress`,
-  `LinkFreeBlock`, `UnlinkFreeBlock`, `List_PushHead`, `memset`,
-  `BuildFreeList`, `AllocBlock`, `AllocZeroed` are all matched in
-  `src/mem/`. Types in `include/hw/mem.h`. See also "Generic intrusive list
-  / active-actor list" below for `List_PopHead`/`List_Remove`/
-  `List_MoveToHead`/`AllocObjectFromFreeList`.
+  `LinkFreeBlock`, `UnlinkFreeBlock`, `memset`, `AllocBlock`,
+  `AllocZeroed` are all matched in `src/mem/`. Types in `include/hw/mem.h`.
+  See also "Generic intrusive list / active-actor list" below for
+  `BuildFreeList` and the `List_*` functions.
 
 `memset` (`0x0802C450`) is **not** the vendored newlib copy in `src/libc/`,
 despite being the classic newlib shape (byte-fill to alignment, word-fill
@@ -121,8 +120,9 @@ returns 1 if any queue-drain `UpdateActorOamCells` call returned nonzero.
 ## Generic intrusive list / active-actor list — PROVEN
 
 The actor pool's free list is built on a small generic doubly-linked-list
-library (`ListNode` in `include/hw/mem.h`) that a *second* list, the active
-actor list, also uses. All four matched in `src/mem/`.
+library (`ListNode` in `include/list.h`) that a *second* list, the active
+actor list, also uses. `BuildFreeList`, `AllocObjectFromFreeList`, and the
+`List_*` functions are matched in `src/list/`.
 
 - `List_PopHead` (`0x08028728`) — `ListNode *List_PopHead(ListNode
   **listHead)`. Pops and returns the head node, fixing up the new head's

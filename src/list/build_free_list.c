@@ -1,4 +1,5 @@
 #include "hw/mem.h"
+#include "list.h"
 
 // Zeroes buffer and pushes each stride-byte slot onto a singly-linked
 // free list; used to carve fixed-size object pools out of a bulk

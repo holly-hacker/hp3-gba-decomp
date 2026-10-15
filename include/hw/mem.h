@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "list.h"
 
 // See docs/memory-map/heap.md.
 
@@ -46,19 +47,6 @@ void UnlinkFreeBlock(MemBlock *block, u32 poolIndex);
 void *AllocBlock(u32 size);
 void *AllocZeroed(u32 size);
 void FreeBlock(void *ptr);
-void *BuildFreeList(void *buffer, u32 count, s32 stride);
-
-// Generic intrusive doubly-linked-list node: List_PushHead's `node`
-// argument must point at one of these.
-typedef struct ListNode {
-    struct ListNode *pNext;
-    struct ListNode *pPrev;
-} ListNode;
-
-void List_PushHead(ListNode **listHead, ListNode *node);
-ListNode *List_PopHead(ListNode **listHead);
-void List_Remove(ListNode **listHead, ListNode *node);
-void List_MoveToHead(ListNode **destListHead, ListNode **srcListHead, ListNode *node);
 
 // Ordinary game code, not the vendored newlib copy in src/libc/ -- see
 // docs/memory-map/heap.md.
@@ -146,7 +134,6 @@ extern u32 g_dwCollisionQueueCount;              // 0x03001948
 // actor plays sound 0x47 if its position changed. Its writer is unidentified.
 extern u32 g_dwUnk03003234;
 
-void *AllocObjectFromFreeList(ListNode **freeListHead, ListNode **activeListHead, u32 size);
 void FreeAllActors(ListNode **activeListHead);
 
 void SortActorsByDepth(void);

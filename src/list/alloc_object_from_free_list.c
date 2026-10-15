@@ -1,4 +1,5 @@
 #include "hw/mem.h"
+#include "list.h"
 
 // Pops a node off freeListHead, zeroes it, pushes it onto
 // activeListHead, and returns it (NULL if freeListHead was empty).

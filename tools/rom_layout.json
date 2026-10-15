@@ -67,7 +67,7 @@
     {"us": "0x08027F40", "jp": "0x08027F9C", "name": "Unused Hogwarts map"},
     {"us": "0x08028314", "jp": "0x08028370", "name": "Language select"},
     {"us": "0x080285F8", "jp": "0x08028654", "name": "Display status helpers"},
-    {"us": "0x080286A0", "jp": "0x080286FC", "name": "Linked lists"},
+    {"us": "0x080286A0", "jp": "0x080286FC", "name": "List"},
     {"us": "0x0802878C", "jp": "0x080287E8", "name": "Lupin potion cutscene"},
     {"us": "0x08029690", "jp": "0x080296EC", "name": "Main"},
     {"us": "0x080297A0", "jp": "0x080297FC", "name": "Overworld"},

@@ -1,5 +1,6 @@
 #include "actor.h"
 #include "hw/mem.h"
+#include "list.h"
 
 // Pops an actor off the free list and resets its default sentinel fields
 // (no type, no room-tile binding, no VRAM tile allocation).

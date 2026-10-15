@@ -1075,12 +1075,12 @@ thumb-func 0x0802868C sub_08028630
 thumb-func 0x080286A0 sub_08028644
 thumb-func 0x080286B0 sub_08028654
 thumb-func 0x080286D8 sub_0802867C
-c-file 0x080286FC _ src/mem/build_free_list.c BuildFreeList
-c-file 0x08028734 _ src/mem/alloc_object_from_free_list.c AllocObjectFromFreeList
-c-file 0x08028768 _ src/mem/list_move_to_head.c List_MoveToHead
-c-file 0x08028784 _ src/mem/list_pop_head.c List_PopHead
-c-file 0x080287A4 _ src/mem/list_push_head.c List_PushHead
-c-file 0x080287BC _ src/mem/list_remove.c List_Remove
+c-file 0x080286FC _ src/list/build_free_list.c BuildFreeList
+c-file 0x08028734 _ src/list/alloc_object_from_free_list.c AllocObjectFromFreeList
+c-file 0x08028768 _ src/list/list_move_to_head.c List_MoveToHead
+c-file 0x08028784 _ src/list/list_pop_head.c List_PopHead
+c-file 0x080287A4 _ src/list/list_push_head.c List_PushHead
+c-file 0x080287BC _ src/list/list_remove.c List_Remove
 
 c-file 0x080287E8 _ src/gamemode/modes/cutscene/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene
 c-file 0x080288D8 0x08028B30 src/gamemode/modes/cutscene/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene

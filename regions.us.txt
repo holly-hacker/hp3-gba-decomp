@@ -1200,12 +1200,12 @@ thumb-func 0x08028654 sub_08028654
 thumb-func 0x0802867C sub_0802867C
 
 # List (linked lists), see docs/memory-map/heap.md
-c-file 0x080286A0 _ src/mem/build_free_list.c BuildFreeList
-c-file 0x080286D8 _ src/mem/alloc_object_from_free_list.c AllocObjectFromFreeList
-c-file 0x0802870C _ src/mem/list_move_to_head.c List_MoveToHead
-c-file 0x08028728 _ src/mem/list_pop_head.c List_PopHead
-c-file 0x08028748 _ src/mem/list_push_head.c List_PushHead
-c-file 0x08028760 _ src/mem/list_remove.c List_Remove
+c-file 0x080286A0 _ src/list/build_free_list.c BuildFreeList
+c-file 0x080286D8 _ src/list/alloc_object_from_free_list.c AllocObjectFromFreeList
+c-file 0x0802870C _ src/list/list_move_to_head.c List_MoveToHead
+c-file 0x08028728 _ src/list/list_pop_head.c List_PopHead
+c-file 0x08028748 _ src/list/list_push_head.c List_PushHead
+c-file 0x08028760 _ src/list/list_remove.c List_Remove
 
 # Lupin (Lupin potion cutscene mode)
 c-file 0x0802878C _ src/gamemode/modes/cutscene/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene

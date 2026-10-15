@@ -1,4 +1,4 @@
-#include "hw/mem.h"
+#include "list.h"
 
 // Unlinks node from wherever it sits in the list headed by listHead:
 // patches *listHead if node was first, patches both neighbors, clears

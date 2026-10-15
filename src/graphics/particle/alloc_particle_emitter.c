@@ -1,5 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
+#include "list.h"
 #include "actor.h"
 
 // Takes an emitter from the free list (at most 9 are live at once) and binds it to entry
