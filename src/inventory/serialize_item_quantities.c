@@ -1,6 +1,7 @@
 #include "types.h"
 #include "game/items.h"
 #include "game/save.h"
+#include "inventory.h"
 
 // Writes the item quantity array (SAVE_ITEM_QUANTITIES_SIZE bytes), a word at
 // a time.

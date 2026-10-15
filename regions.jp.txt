@@ -991,7 +991,7 @@ c-file 0x08026470 0x0802654C src/room/actors/spawn_trigger_zone_actor.c SpawnTri
 thumb-func 0x0802654C sub_080264F0
 thumb-func 0x08026614 sub_080265B8
 thumb-func 0x080266D0 sub_08026674
-c-file 0x08026748 0x080267B0 src/items/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
+c-file 0x08026748 0x080267B0 src/inventory/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 thumb-func 0x080267B0 EquipItemInSlot
 thumb-func 0x0802682C CanFighterEquipItem
 thumb-func 0x080268CC sub_08026870
@@ -1012,11 +1012,11 @@ thumb-func 0x08026D4C sub_08026CF0
 thumb-func 0x08026D60 GetItemBit0
 thumb-func 0x08026D78 GetItemBit1
 thumb-func 0x08026D90 sub_08026D34
-c-file 0x08026DA8 0x08026DB4 src/save/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame_candidate
+c-file 0x08026DA8 0x08026DB4 src/inventory/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame_candidate
 thumb-func 0x08026DB4 ClearItemInventory
-c-file 0x08026DFC _ src/save/serialize_item_quantities.c SerializeItemQuantities
-c-file 0x08026E1C _ src/save/deserialize_item_quantities.c DeserializeItemQuantities
-c-file 0x08026E3C 0x08026E88 src/items/grant_reward.c GrantReward
+c-file 0x08026DFC _ src/inventory/serialize_item_quantities.c SerializeItemQuantities
+c-file 0x08026E1C _ src/inventory/deserialize_item_quantities.c DeserializeItemQuantities
+c-file 0x08026E3C 0x08026E88 src/inventory/grant_reward.c GrantReward
 thumb-func 0x08026E88 ConsumeBattleItemSlot
 thumb-func 0x08026EA8 GetItemQuantity
 thumb-func 0x08026EB4 sub_08026E58

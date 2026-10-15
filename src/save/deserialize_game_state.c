@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "hw/mem.h"
 #include "game/save.h"
+#include "inventory.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_actor.h"

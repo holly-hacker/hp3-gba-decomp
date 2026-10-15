@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "inventory.h"
 
 void ClearItemInventoryForNewGame_candidate(void)
 {

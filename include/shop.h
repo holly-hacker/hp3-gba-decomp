@@ -16,10 +16,6 @@ extern const u32 g_aShopStockHats[];
 extern const u32 g_aShopStockCloaks[];
 extern const u32 *const g_apShopStockLists[7];  // indexed by FredAndGeorgesShopState.bCategory
 
-// Rolls one Folio Universitas card for a bought Chocolate Frogs and adds it to
-// the collection; returns the rolled reward id.
-u32 GrantRandomChocolateFrogCard(void);
-
 // Game mode 0x2E (FredAndGeorgesShop), the Weasleys' Wizard Wheezes shop,
 // src/store/. dwModeState is a ShopState; screen
 // changes fade BG1 out (ShopStateFadeOut), swap the screens and fade back in

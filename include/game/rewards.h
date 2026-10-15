@@ -18,11 +18,6 @@ extern u16 g_nBattleGoldReward;  // 0x03002610
 #define REWARD_ID_GOLD (REWARD_ID_FIRST_CARD + FOLIO_UNIVERSITAS_CARD_COUNT)
 #define MAX_ITEM_QUANTITY 250
 
-// Gives `amount` of a reward and returns how many of it the player now has:
-// the Sickles total, a card's copy count (amount is ignored), or the item
-// count, capped at MAX_ITEM_QUANTITY.
-u32 GrantReward(s32 rewardId, u32 amount);
-
 // The same logic as GrantReward, for functions that carry their own inlined
 // copy of it. Keep the two in sync.
 static inline u32 GrantRewardInline(s32 rewardId, u32 amount)

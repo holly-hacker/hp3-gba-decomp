@@ -1,6 +1,7 @@
 #include "types.h"
 #include "hw/mem.h"
 #include "game/save.h"
+#include "inventory.h"
 #include "overworld/room.h"
 #include "overworld/room_actor.h"
 

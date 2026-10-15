@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/rewards.h"
+#include "inventory.h"
 #include "mt19937.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"

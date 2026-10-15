@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "font.h"
 #include "text.h"
+#include "inventory.h"
 #include "game/items.h"
 #include "game/rewards.h"
 #include "game/save.h"
