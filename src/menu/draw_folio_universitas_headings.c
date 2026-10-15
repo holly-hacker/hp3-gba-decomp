@@ -4,7 +4,7 @@
 #include "menu/folio_universitas.h"
 
 #ifdef VERSION_JP
-#define CATEGORY_FONT 0xB
+#define CATEGORY_FONT 11
 #else
 #define CATEGORY_FONT 1
 #endif

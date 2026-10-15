@@ -11,8 +11,8 @@ extern Actor *g_pLinearCutsceneActor;  // 0x030028B8
 extern u8 *g_pLinearCutsceneText;        // 0x030028B4: unread remainder of the cutscene's text
 extern u32 g_dwLinearCutsceneIndex;      // 0x030028BC
 
-extern void sub_0801D77C(u32 cutsceneIndex);
-extern void sub_0801D6DC(void);
+extern void SetUpLinearCutscene(u32 cutsceneIndex);
+extern void FinishLinearCutscene(void);
 
 // One entry per cutscene (index 0 is the credits): the BG0 graphic, the first
 // dialog text id, and how many text lines or pages it has.

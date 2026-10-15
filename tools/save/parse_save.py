@@ -280,7 +280,7 @@ def encode_header_flags(h: dict) -> int:
 # 0x0803C0A8, checks only the checksum). Bit 1: consumed one-shot by
 # HandleSaveLoadContinuation (0x08043AF0) -- if set, continuing this save
 # restarts the intro/fresh-start sequence instead of resuming normally; set
-# together with bit 2 by HandleEndingSequenceTransition (0x0801D6DC) at game
+# together with bit 2 by FinishLinearCutscene (0x0801D6DC) at game
 # completion, alongside starting New Game+. Bit 2: set at the same instant as
 # bit 1 but has no reader anywhere in the program -- an exhaustive xref search
 # on this byte's storage address accounts for all 10 accesses in the ROM and

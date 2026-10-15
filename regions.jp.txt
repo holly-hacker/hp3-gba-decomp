@@ -701,9 +701,9 @@ c-file 0x0801D38C _ src/room/compare_and_branch_room_script.c CompareAndBranchRo
 c-file 0x0801D460 _ src/checksum/compute_crc8.c ComputeCrc8
 c-file 0x0801D4A4 _ src/checksum/compute_joybus_checksum.c ComputeJoybusChecksum
 c-file 0x0801D514 _ src/cutscene/initialize_credits.c InitializeCredits
-c-file 0x0801D5C4 0x0801D6D8 src/cutscene/update_credits.c UpdateCredits
-thumb-func 0x0801D6D8 sub_0801D6DC
-thumb-func 0x0801D778 sub_0801D77C
+c-file 0x0801D5C4 _ src/cutscene/update_credits.c UpdateCredits
+c-file 0x0801D6D8 _ src/cutscene/finish_linear_cutscene.c FinishLinearCutscene
+c-file 0x0801D778 _ src/cutscene/set_up_linear_cutscene.c SetUpLinearCutscene
 c-file 0x0801D854 _ src/cutscene/exit_linear_cutscene.c ExitLinearCutscene
 c-file 0x0801D884 _ src/cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
 c-file 0x0801D8BC _ src/cutscene/update_linear_cutscene.c UpdateLinearCutscene

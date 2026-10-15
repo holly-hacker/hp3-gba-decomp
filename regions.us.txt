@@ -774,9 +774,9 @@ c-file 0x0801D4A8 _ src/checksum/compute_joybus_checksum.c ComputeJoybusChecksum
 
 # Credits (credits and linear cutscene modes)
 c-file 0x0801D518 _ src/cutscene/initialize_credits.c InitializeCredits
-c-file 0x0801D5C8 0x0801D6DC src/cutscene/update_credits.c UpdateCredits
-thumb-func 0x0801D6DC sub_0801D6DC
-thumb-func 0x0801D77C sub_0801D77C
+c-file 0x0801D5C8 _ src/cutscene/update_credits.c UpdateCredits
+c-file 0x0801D6DC _ src/cutscene/finish_linear_cutscene.c FinishLinearCutscene
+c-file 0x0801D77C _ src/cutscene/set_up_linear_cutscene.c SetUpLinearCutscene
 c-file 0x0801D858 _ src/cutscene/exit_linear_cutscene.c ExitLinearCutscene
 c-file 0x0801D888 _ src/cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
 c-file 0x0801D8C0 _ src/cutscene/update_linear_cutscene.c UpdateLinearCutscene

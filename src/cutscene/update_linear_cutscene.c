@@ -25,6 +25,6 @@ void UpdateLinearCutscene(void)
                 g_pLinearCutsceneActor->dwFlags &= ~ActorFlagVisible;
         }
         else
-            sub_0801D6DC();
+            FinishLinearCutscene();
     }
 }

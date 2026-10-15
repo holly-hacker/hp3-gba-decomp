@@ -17,7 +17,7 @@
 #endif
 
 #ifdef VERSION_JP
-#define SPELL_LABEL_FONT 0xB
+#define SPELL_LABEL_FONT 11
 #define SPELL_LABEL_COLOR 3
 #else
 #define SPELL_LABEL_FONT 9

@@ -52,5 +52,5 @@ void UpdateCredits(void)
 
     if (g_dwCreditsLine >= g_aLinearCutsceneTable[cutsceneIndex].dwLineCount + 0x14
         || (g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart)) != 0)
-        sub_0801D6DC();
+        FinishLinearCutscene();
 }
