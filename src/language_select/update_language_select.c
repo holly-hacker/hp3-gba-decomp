@@ -5,6 +5,7 @@
 #include "input.h"
 #include "game/save.h"
 #include "text.h"
+#include "language_select.h"
 
 // The languages form a 2x4 grid: index >> 2 is the column, index & 3 the row.
 void UpdateLanguageSelect(void)

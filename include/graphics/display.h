@@ -139,13 +139,7 @@ extern const u32 g_dwSpecialSceneBgControl;          // 0x0805BC00
 extern const u32 g_dwStartupBg3Control;
 extern const u32 g_dwStartupBg2Control;
 extern const u32 g_dwStartupBg1Control;
-extern const u32 g_dwLanguageSelectBg3Control;
-extern const u32 g_dwLanguageSelectBg2Control;
-extern const u32 g_dwLanguageSelectBg1Control;
 
-extern void DrawLanguageSelectEntries_candidate(void);
-extern void DrawLanguageSelectEntry_candidate(u32 index, u32 selectedIndex);
-extern void DrawLanguageSelectPicture_candidate(u32 selectedIndex);
 // The write-only half of SetBgControl: writes BGxCNT and the tilemap/charblock
 // VRAM bases, without enabling the layer via SetDispcntFlag.
 extern void SetBgControlRegister(u32 bg, u32 control);

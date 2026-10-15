@@ -5,6 +5,7 @@
 #include "game/game_modes.h"
 #include "game/save.h"
 #include "text.h"
+#include "language_select.h"
 
 void InitializeLanguageSelect(void)
 {

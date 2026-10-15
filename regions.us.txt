@@ -1185,9 +1185,9 @@ thumb-func 0x08028240 sub_08028240
 thumb-func 0x080282C4 sub_080282C4
 
 # Language (language select mode)
-c-file 0x08028314 _ src/gamemode/modes/language_select/initialize_language_select.c InitializeLanguageSelect
-c-file 0x08028408 _ src/gamemode/modes/language_select/update_language_select.c UpdateLanguageSelect
-c-file 0x08028524 0x08028534 src/gamemode/modes/language_select/exit_language_select.c ExitLanguageSelect
+c-file 0x08028314 _ src/language_select/initialize_language_select.c InitializeLanguageSelect
+c-file 0x08028408 _ src/language_select/update_language_select.c UpdateLanguageSelect
+c-file 0x08028524 0x08028534 src/language_select/exit_language_select.c ExitLanguageSelect
 thumb-func 0x08028534 DrawLanguageSelectPicture_candidate
 thumb-func 0x08028568 DrawLanguageSelectEntries_candidate
 thumb-func 0x08028588 DrawLanguageSelectEntry_candidate
@@ -2490,7 +2490,7 @@ c-file 0x08060E8C 0x08060EC0 src/interrupts/init_interrupt_system.globals.c gInt
 # Item/equipment table, see docs/formats/items.md
 c-file 0x08060EE4 0x080629B4 src/items/items.c g_pItemTable
 c-file 0x080629B8 _ src/gamemode/modes/unused_hogwarts_map_screen/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
-c-file 0x080629F4 0x08062A00 src/gamemode/modes/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
+c-file 0x080629F4 0x08062A00 src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 
 c-file 0x08062A08 0x08062A38 src/gamemode/modes/cutscene/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
 c-file 0x08063064 _ src/gamemode/modes/overworld/overworld.globals.c g_dwBg2Control
