@@ -18,7 +18,7 @@ const ActorAssetRecord g_aActorTypeAssets[137] = {
     { (void *)gActorSprite2_029Tiles, (void *)gActorSprite2_029Frames, (void *)gActorSprite2_029Palette, 0 },  // 9
     { (void *)gActorSprite2_030Tiles, (void *)gActorSprite2_030Frames, (void *)gActorSprite2_030Palette, 0 },  // 10
     { (void *)gActorSprite2_031Tiles, (void *)gActorSprite2_031Frames, (void *)gActorSprite2_031Palette, 0 },  // 11
-    { (void *)gActorSprite2_002Tiles, (void *)gActorSprite2_002Frames, (void *)gActorSprite2_002Palette, 0 },  // 12
+    { (void *)gDementorTiles, (void *)gDementorFrames, (void *)gDementorPalette, 0 },  // 12
     { (void *)gActorSprite2_032Tiles, (void *)gActorSprite2_032Frames, (void *)gActorSprite2_032Palette, 0 },  // 13
     { (void *)gActorSprite2_033Tiles, (void *)gActorSprite2_033Frames, (void *)gActorSprite2_033Palette, 0 },  // 14
     { (void *)gActorSprite2_007Tiles, (void *)gActorSprite2_007Frames, (void *)gActorSprite2_007Palette, 0 },  // 15
@@ -37,7 +37,7 @@ const ActorAssetRecord g_aActorTypeAssets[137] = {
     { (void *)gActorSprite2_046Tiles, (void *)gActorSprite2_046Frames, (void *)gActorSprite2_046Palette, 0 },  // 28
     { (void *)gActorSprite2_047Tiles, (void *)gActorSprite2_047Frames, (void *)gActorSprite2_047Palette, 0 },  // 29
     { (void *)gActorSprite2_048Tiles, (void *)gActorSprite2_048Frames, (void *)gActorSprite2_048Palette, 0 },  // 30
-    { (void *)gActorSprite2_003Tiles, (void *)gActorSprite2_003Frames, (void *)gOverworldPlayer004Palette, 0 },  // 31
+    { (void *)gHarryWalkTiles, (void *)gHarryWalkFrames, (void *)gOverworldPlayer004Palette, 0 },  // 31
     { (void *)gActorSprite2_008Tiles, (void *)gActorSprite2_008Frames, (void *)gOverworldPlayer006Palette, 0 },  // 32
     { (void *)gActorSprite2_049Tiles, (void *)gActorSprite2_049Frames, (void *)gActorSprite2_049Palette, 0 },  // 33
     { (void *)gActorSprite2_009Tiles, (void *)gActorSprite2_009Frames, (void *)gOverworldPlayer005Palette, 0 },  // 34

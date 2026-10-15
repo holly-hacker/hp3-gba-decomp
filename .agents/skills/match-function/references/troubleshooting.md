@@ -344,6 +344,10 @@ insns (check the `Loop from ... real insns` lines in `.loop`; SetTilemapRectPale
 `0x080076A4`). The same effect lengthens a pseudo and drops its `allocno_compare` priority below a
 close neighbour: `s32 length` with `length / 2` (signed-rounding insns, removed later) put
 LoadGraphicBlobTiles's pDest ahead of length (US `0x080065D4`).
+A giv that the ROM strength-reduces but the build recomputes shows in `.loop` as `giv of insn N not
+worth while, A vs B` (B is insn_count): `(s16)(pActor->pos.x >> 16)` and `pActor->pos.x >> 16`
+both become `ldrsh`, but the cast's extra insns pushed a loop from 120 to 131
+(UpdateDementorMinigameDementors, US `0x0801E8CC`).
 
 ## Candidate acceptance and cleanup
 

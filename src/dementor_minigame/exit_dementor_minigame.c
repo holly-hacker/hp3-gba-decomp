@@ -18,9 +18,9 @@ void ExitDementorMinigame(void)
         FreeAllParticles();
     }
 
-    FreeMinigameTextPanel(g_DementorMinigame.pTextPanel20);
-    FreeMinigameTextPanel(g_DementorMinigame.pTextPanel24);
-    FreeMinigameTextPanel(g_DementorMinigame.pTextPanel28);
+    FreeMinigameTextPanel(g_DementorMinigame.pScorePanel);
+    FreeMinigameTextPanel(g_DementorMinigame.pLivesPanel);
+    FreeMinigameTextPanel(g_DementorMinigame.pMissesPanel);
     FreeAllActors(&g_ActiveActorListState.pHead);
     sub_0803FF04();
 }

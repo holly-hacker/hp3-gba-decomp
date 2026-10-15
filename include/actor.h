@@ -582,6 +582,7 @@ extern void FollowOwnerActor(Actor *actor);
 extern void CommitQueuedActorTileUpdates(void);  // run from vblank callbacks
 extern void SetActorSprite(Actor *actor, const void *pRecord);  // an ActorAssetRecord
 extern void SetActorAnimFrame(Actor *actor, u8 bFrameIndex);  // sets bLastAnimFrameValue, reloading cells if changed
+extern void SetActorDepthSortBias(Actor *actor, u8 bias);
 extern void RunActorAnimCommands(Actor *actor);
 extern void LoadActorAnimFrameBounds(Actor *actor);
 extern void LoadVariantSlotFrameBounds(Actor *actor);

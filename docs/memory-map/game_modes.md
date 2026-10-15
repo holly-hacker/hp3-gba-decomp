@@ -226,7 +226,8 @@ PROVEN from US decompiles; the state names in the headers are provisional.
 - Each update handler is a `switch` on `dwModeState`; the handlers only
   drive the state machine and call the screen's own helpers, which are not
   decompiled yet (`sub_` names in the headers), except for
-  `BoggartMinigame`, which is decompiled in `src/boggart_minigame/`.
+  `BoggartMinigame` and `DementorMinigame`, decompiled in
+  `src/boggart_minigame/` and `src/dementor_minigame/`.
 - `BoggartMinigame` (Riddikulus Boggart Challenge): four students sit at the
   positions in `g_aBoggartStudentPositions`, one per direction, and the
   Boggart spawns at `(0x78, 0x65)` and walks toward the student of its
@@ -234,6 +235,12 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   form and sends it back at triple speed; any other cast, or reaching the
   student, costs a life. `SpawnMinigameTextPanel` (shared with
   Harry vs Dementors) draws the actor panels behind the score and lives text.
+- `DementorMinigame` (Harry vs Dementors): four Dementors start at
+  `g_aDementorStartPositions`, one per direction, and fly toward Harry at
+  `(0x78, 0x78)`. A cast toward an approaching Dementor drives it back and
+  scores; one reaching Harry costs a life, and every third cast at nothing
+  costs one too. After 15 and 55 repelled, up to two and three Dementors fly
+  at once.
 - The three-entry high score arrays are indexed by the difficulty, which
   the minigame menu passes in `dwCurrentGameModeArg3`, and sit at
   `SaveManager+0x10`/`+0x1C`/`+0x28` (`docs/formats/save.md`). Wizard
@@ -262,7 +269,7 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   fractional bits) and shows a random fortune: dialog text `0xA5F` plus
   `Mt19937RandRange(0, 0x5A)`. Its final state pushes `MinigameMenu` with cursor entry 3.
 
-Handlers are matched in `src/gamemode/modes/minigame/<minigame>/` for both versions.
+The other handlers are matched in `src/gamemode/modes/minigame/<minigame>/` for both versions.
 JP handlers (init/update/exit, from JP's dispatch table): 0x1B
 `0x080323F8`/`0x08032578`/`0x080338E8`, 0x1C
 `0x08041954`/`0x08041AC8`/`0x080422A4`, 0x24

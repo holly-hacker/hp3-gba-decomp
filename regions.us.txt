@@ -807,31 +807,31 @@ thumb-func 0x0801E118 DrawMenuScreenTitle
 
 # Dementors (Harry vs Dementors minigame)
 c-file 0x0801E174 _ src/dementor_minigame/initialize_dementor_minigame.c InitializeDementorMinigame
-c-file 0x0801E280 0x0801E414 src/dementor_minigame/update_dementor_minigame.c UpdateDementorMinigame
-thumb-func 0x0801E414 sub_0801E414
-thumb-func 0x0801E564 sub_0801E564
-thumb-func 0x0801E5F4 sub_0801E5F4
-thumb-func 0x0801E6A0 sub_0801E6A0
-thumb-func 0x0801E76C sub_0801E76C
-thumb-func 0x0801E8CC sub_0801E8CC
-thumb-func 0x0801EA74 sub_0801EA74
-thumb-func 0x0801EAF8 sub_0801EAF8
-thumb-func 0x0801EC34 sub_0801EC34
-thumb-func 0x0801ED48 sub_0801ED48
-c-file 0x0801EE1C 0x0801EE64 src/dementor_minigame/exit_dementor_minigame.c ExitDementorMinigame
-thumb-func 0x0801EE64 sub_0801EE64
-thumb-func 0x0801EEAC sub_0801EEAC
-thumb-func 0x0801EEEC sub_0801EEEC
-thumb-func 0x0801EF48 sub_0801EF48
-thumb-func 0x0801EFA0 sub_0801EFA0
-thumb-func 0x0801EFF4 sub_0801EFF4
-thumb-func 0x0801F064 sub_0801F064
-thumb-func 0x0801F0E4 sub_0801F0E4
-thumb-func 0x0801F108 sub_0801F108
-thumb-func 0x0801F164 sub_0801F164
-thumb-func 0x0801F194 sub_0801F194
-thumb-func 0x0801F1FC sub_0801F1FC
-thumb-func 0x0801F22C sub_0801F22C
+c-file 0x0801E280 _ src/dementor_minigame/update_dementor_minigame.c UpdateDementorMinigame
+c-file 0x0801E414 _ src/dementor_minigame/spawn_dementor_minigame_actors.c SpawnDementorMinigameActors
+c-file 0x0801E564 _ src/dementor_minigame/show_dementor_minigame_results_menu.c ShowDementorMinigameResultsMenu
+c-file 0x0801E5F4 _ src/dementor_minigame/show_dementor_minigame_pause_menu.c ShowDementorMinigamePauseMenu
+c-file 0x0801E6A0 _ src/dementor_minigame/update_dementor_minigame_launches.c UpdateDementorMinigameLaunches
+c-file 0x0801E76C _ src/dementor_minigame/get_dementor_minigame_dementor_velocity.c GetDementorMinigameDementorVelocity
+c-file 0x0801E8CC _ src/dementor_minigame/update_dementor_minigame_dementors.c UpdateDementorMinigameDementors
+c-file 0x0801EA74 _ src/dementor_minigame/start_dementor_minigame_dementor_retreat.c StartDementorMinigameDementorRetreat
+c-file 0x0801EAF8 _ src/dementor_minigame/cast_dementor_minigame_spell.c CastDementorMinigameSpell
+c-file 0x0801EC34 _ src/dementor_minigame/reset_dementor_minigame_actors.c ResetDementorMinigameActors
+c-file 0x0801ED48 _ src/dementor_minigame/show_dementor_minigame_spell.c ShowDementorMinigameSpell
+c-file 0x0801EE1C _ src/dementor_minigame/exit_dementor_minigame.c ExitDementorMinigame
+c-file 0x0801EE64 _ src/dementor_minigame/leave_dementor_minigame.c LeaveDementorMinigame
+c-file 0x0801EEAC _ src/dementor_minigame/repel_dementor_minigame_dementor.c RepelDementorMinigameDementor
+c-file 0x0801EEEC _ src/dementor_minigame/launch_random_dementor_minigame_dementor.c LaunchRandomDementorMinigameDementor
+c-file 0x0801EF48 _ src/dementor_minigame/draw_dementor_minigame_lives.c DrawDementorMinigameLives
+c-file 0x0801EFA0 _ src/dementor_minigame/draw_dementor_minigame_score.c DrawDementorMinigameScore
+c-file 0x0801EFF4 _ src/dementor_minigame/resume_dementor_minigame.c ResumeDementorMinigame
+c-file 0x0801F064 _ src/dementor_minigame/start_dementor_minigame_dementor_approach.c StartDementorMinigameDementorApproach
+c-file 0x0801F0E4 _ src/dementor_minigame/move_dementor_minigame_menu_cursor.c MoveDementorMinigameMenuCursor
+c-file 0x0801F108 _ src/dementor_minigame/draw_dementor_minigame_misses.c DrawDementorMinigameMisses
+c-file 0x0801F164 _ src/dementor_minigame/show_dementor_minigame_damage.c ShowDementorMinigameDamage
+c-file 0x0801F194 _ src/dementor_minigame/add_dementor_minigame_score.c AddDementorMinigameScore
+c-file 0x0801F1FC _ src/dementor_minigame/get_dementor_minigame_round_points.c GetDementorMinigameRoundPoints
+c-file 0x0801F22C _ src/dementor_minigame/launch_dementor_minigame_dementor.c LaunchDementorMinigameDementor
 
 # Startup mode
 c-file 0x0801F264 _ src/gamemode/modes/startup/initialize_startup.c InitializeStartup
@@ -2469,8 +2469,8 @@ c-file 0x0805BA8C _ src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeH
 c-file 0x0805BC00 0x0805BC04 src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805E020 _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805E0A0 0x0805E104 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
-c-file 0x0805E10C 0x0805E110 src/menu/common_bg2_control.c g_dwCommonBg2Control
-c-file 0x0805E174 0x0805E17C src/dementor_minigame/dementor_minigame.globals.c g_dwDementorMinigameBg0Control
+c-file 0x0805E10C _ src/menu/common_bg2_control.c g_dwCommonBg2Control
+c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file 0x0805E280 _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E28C 0x0805E29C src/gamemode/modes/dialogue/dialogue.globals.c g_aDialogScanlineEffects
 c-file 0x0805EB10 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control

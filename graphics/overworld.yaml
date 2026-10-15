@@ -55,8 +55,8 @@ groups:
       - kind: image-bank
         count: 107
         names:
-          1: HarryVsDementorsActor18
-          2: HarryVsDementorsActor1C
+          1: DementorMinigameSpell
+          2: DementorMinigameDamage
           3: ActorSprite003
           19: InGameMenuIconStatusEquip
           20: InGameMenuIconFolios
@@ -99,6 +99,9 @@ groups:
         count: 195
         names:
           1: ActorSprite2_001
+          2: Dementor
+          3: HarryWalk
+          4: ActorSprite2_004
           108: Chest
           109: ActorSprite2_109
           110: Button
@@ -164,7 +167,7 @@ groups:
           ActorSprite2_157: ActorPalette025
           ActorSprite2_158: ActorPalette025
           ActorSprite2_159: ActorPalette028
-          ActorSprite2_160: ActorSprite2_002
+          ActorSprite2_160: Dementor
           ActorSprite2_161: ActorPalette025
           ActorSprite2_162: ActorPalette025
           ActorSprite2_163: ActorPalette029

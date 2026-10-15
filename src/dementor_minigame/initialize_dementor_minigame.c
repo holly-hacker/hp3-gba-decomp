@@ -12,24 +12,26 @@ void InitializeDementorMinigame(void)
 {
     u32 bgControl;
 
-    g_DementorMinigame.dwEventTimer60 = 0;
-    g_DementorMinigame.dwHideTimer5C = 0;
+    g_DementorMinigame.dwSpellTimer = 0;
+    g_DementorMinigame.dwSpellHideTimer = 0;
     g_DementorMinigame.pCursorActor = NULL;
     g_GameModeStackContext.dwModeState = DementorMinigameStatePlaying;
-    g_DementorMinigame.dwUnk48 = 1;
+    g_DementorMinigame.dwStartDelay = 1;
     g_GameModeStackContext.dwModeTimer = 20;
-    g_DementorMinigame.bUnk4C = 3;
-    g_DementorMinigame.dwUnk44 = 0;
-    g_DementorMinigame.dwUnk50 = 0;
-    g_DementorMinigame.dwUnk58 = 0;
-    g_DementorMinigame.dwUnk2C = 1;
-    g_DementorMinigame.dwUnk40 = -1;
-    g_DementorMinigame.bUnk54 = 0;
+    g_DementorMinigame.bLives = 3;
+    g_DementorMinigame.dwScore = 0;
+    g_DementorMinigame.dwRepelled = 0;
+    g_DementorMinigame.dwPhase = 0;
+    g_DementorMinigame.dwHarryDirection = 1;
+    g_DementorMinigame.dwLastDementor = -1;
+    g_DementorMinigame.bMisses = 0;
 
-    g_DementorMinigame.pActor18 = SpawnActor(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsActor18Palette);
-    g_DementorMinigame.pActor18->dwFlags &= ~ActorFlagVisible;
-    g_DementorMinigame.pActor1C = SpawnActor(0, 0x78, 0x78, (const ObjPalette *)gHarryVsDementorsActor1CPalette);
-    g_DementorMinigame.pActor1C->dwFlags &= ~ActorFlagVisible;
+    g_DementorMinigame.pSpellActor = SpawnActor(0, 0x78, 0x78,
+                                                (const ObjPalette *)gDementorMinigameSpellPalette);
+    g_DementorMinigame.pSpellActor->dwFlags &= ~ActorFlagVisible;
+    g_DementorMinigame.pDamageActor = SpawnActor(0, 0x78, 0x78,
+                                                 (const ObjPalette *)gDementorMinigameDamagePalette);
+    g_DementorMinigame.pDamageActor->dwFlags &= ~ActorFlagVisible;
 
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
@@ -52,10 +54,10 @@ void InitializeDementorMinigame(void)
         break;
     }
 
-    sub_0801EFA0();
-    sub_0801EF48();
-    sub_0801F108();
-    sub_0801E414();
+    DrawDementorMinigameScore();
+    DrawDementorMinigameLives();
+    DrawDementorMinigameMisses();
+    SpawnDementorMinigameActors();
     PlayScreenTransitionInByIndex(0x3F, 2);
     PlayMusicModule(0x1E);
 }

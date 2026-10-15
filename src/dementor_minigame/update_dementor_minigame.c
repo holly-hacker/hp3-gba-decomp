@@ -7,38 +7,38 @@
 
 void UpdateDementorMinigame(void)
 {
-    if (g_DementorMinigame.dwEventTimer60 != 0 && --g_DementorMinigame.dwEventTimer60 == 0)
-        sub_0801ED48(g_DementorMinigame.dwEventArg64);
+    if (g_DementorMinigame.dwSpellTimer != 0 && --g_DementorMinigame.dwSpellTimer == 0)
+        ShowDementorMinigameSpell(g_DementorMinigame.dwSpellDirection);
 
-    if (g_DementorMinigame.dwHideTimer5C != 0 && --g_DementorMinigame.dwHideTimer5C == 0)
-        g_DementorMinigame.pActor18->dwFlags &= ~ActorFlagVisible;
+    if (g_DementorMinigame.dwSpellHideTimer != 0 && --g_DementorMinigame.dwSpellHideTimer == 0)
+        g_DementorMinigame.pSpellActor->dwFlags &= ~ActorFlagVisible;
 
-    if (g_DementorMinigame.dwHideTimer68 != 0 && --g_DementorMinigame.dwHideTimer68 == 0)
-        g_DementorMinigame.pActor1C->dwFlags &= ~ActorFlagVisible;
+    if (g_DementorMinigame.dwDamageHideTimer != 0 && --g_DementorMinigame.dwDamageHideTimer == 0)
+        g_DementorMinigame.pDamageActor->dwFlags &= ~ActorFlagVisible;
 
     switch (g_GameModeStackContext.dwModeState)
     {
     case DementorMinigameStatePlaying:
         if (g_wKeysPressed & KeyStart)
         {
-            sub_0801E5F4();
+            ShowDementorMinigamePauseMenu();
             break;
         }
 
-        sub_0801E8CC();
+        UpdateDementorMinigameDementors();
         if (g_wKeysPressed & KeyRight)
-            sub_0801EAF8(0);
+            CastDementorMinigameSpell(0);
         else if (g_wKeysPressed & KeyLeft)
-            sub_0801EAF8(2);
+            CastDementorMinigameSpell(2);
         else if (g_wKeysPressed & KeyUp)
-            sub_0801EAF8(3);
+            CastDementorMinigameSpell(3);
         else if (g_wKeysPressed & KeyDown)
-            sub_0801EAF8(1);
+            CastDementorMinigameSpell(1);
 
-        if (g_DementorMinigame.bUnk4C == 0)
-            sub_0801E564();
+        if (g_DementorMinigame.bLives == 0)
+            ShowDementorMinigameResultsMenu();
         else
-            sub_0801E6A0();
+            UpdateDementorMinigameLaunches();
         break;
     case DementorMinigameStateResultsMenu:
         if (g_wKeysPressed & (KeyA | KeyStart))
@@ -51,7 +51,7 @@ void UpdateDementorMinigame(void)
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 1:
-                sub_0801EE64();
+                LeaveDementorMinigame();
                 break;
             }
         }
@@ -67,21 +67,21 @@ void UpdateDementorMinigame(void)
             switch (g_GameModeStackContext.dwModeScratchB)
             {
             case 0:
-                sub_0801EFF4();
+                ResumeDementorMinigame();
                 break;
             case 1:
                 PushGameMode_3(DementorMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 2:
-                sub_0801EE64();
+                LeaveDementorMinigame();
                 break;
             }
         }
         else if (g_wKeysPressed & (KeyB | KeyStart))
         {
             PlaySoundById(2);
-            sub_0801EFF4();
+            ResumeDementorMinigame();
         }
         else if (StepCursorUpDown(&g_GameModeStackContext.dwModeScratchB, 0, 2, 1, 0))
         {
