@@ -411,7 +411,7 @@ resource buffers get copied into VRAM (recommended next step 2) led
 instead to a **separate, uncompressed resource path** entirely, used by
 what looks like a generic actor/sprite-spawn function,
 `sub_08001528(type, x, y, resource_ptr)` (called from e.g.
-`DrawFighterStatsUi_candidate` via `FUN_080078a4`, and from `sub_0801BA54`). Three
+`DrawFighterStatsUi_candidate` via `FUN_080078a4`, and from `SpawnSpGauge`). Three
 `resource_ptr` values found via direct literal-pool grep for `0x08a3`
 addresses (the same ROM neighborhood as the UI-panel candidate from the
 structural scan, `0x08a32800`-`0x08a3a000`):
@@ -1158,7 +1158,7 @@ icon with its palette, referenced from two other records
 `g_TurnOrderIconContainerAsset`'s sprite (four 24x24 frames: green and red
 boxes, plain and highlighted) with its palette, then two gauges draining
 from green to red (25 frames at 16x32 and 17 frames at 8x24). The two
-gauges are the records `sub_0801BA54` passes to `SetActorAssetRecord`
+gauges are the records `SpawnSpGauge` passes to `SetActorAssetRecord`
 (the four words after `g_apEffectScripts`), and it spawns their actor
 with the palette at `0x08A38FE0`, stored after the second gauge. The
 `BattleHudItems` `image-bank` row claims the range as `BattleHudItem001`-

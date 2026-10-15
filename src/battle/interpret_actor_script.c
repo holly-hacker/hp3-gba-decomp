@@ -239,65 +239,65 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_GotoIfContextLow:  // jumps to a label when the context value is <= 2 or 0x3E9
             if (g_effectStaging.wContextValue <= 2 || g_effectStaging.wContextValue == 0x3E9)
-                sub_0801B710(actor, args[1]);
+                JumpToScriptLabel(actor, args[1]);
             break;
         case BSOP_GotoIfLocalAEqual:
             if (actor->modeState.effect.abLocal[0] == args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfScriptParamEqual:  // jumps to a label when the script param equals the operand
             if (g_effectStaging.bScriptParam == args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfLocalANotEqual:
             if (actor->modeState.effect.abLocal[0] != args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfFighterRosterMatches:
             {
                 for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair_candidate); n++)
                 {
                     if (g_abEffectRosterIdPair_candidate[n] == targetFighter->bRosterIndex)
-                        sub_0801B710(actor, args[1]);
+                        JumpToScriptLabel(actor, args[1]);
                 }
             }
             break;
         case BSOP_GotoIfLocalAEqual_2:
             if (actor->modeState.effect.abLocal[0] == args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfScriptParamEqual_2:  // jumps to a label when the script param equals the operand
             if (g_effectStaging.bScriptParam == args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfLocalANotEqual_2:
             if (actor->modeState.effect.abLocal[0] != args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfFighterRosterMatches_2:
             {
                 for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair_candidate); n++)
                 {
                     if (g_abEffectRosterIdPair_candidate[n] == targetFighter->bRosterIndex)
-                        sub_0801B710(actor, args[1]);
+                        JumpToScriptLabel(actor, args[1]);
                 }
             }
             break;
         case BSOP_GotoIfLocalBEqual:  // jumps to a label when local B equals the operand
             if (actor->modeState.effect.abLocal[1] == args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfLocalBNotEqual:  // jumps to a label when local B differs from the operand
             if (actor->modeState.effect.abLocal[1] != args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfLocalBEqual_2:  // jumps to a label when local B equals the operand
             if (actor->modeState.effect.abLocal[1] == args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfLocalBNotEqual_2:  // jumps to a label when local B differs from the operand
             if (actor->modeState.effect.abLocal[1] != args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_AdvanceAttackOutcome:  // advances the caster's attack-outcome counter and publishes it
             g_pFightState->pFighters[g_effectStaging.bCasterIndex].pActor->scriptState.bytes.bAttackOutcomeState++;
@@ -306,11 +306,11 @@ void InterpretActorScript(Actor *actor)
                 g_pFightState->pAttackAnimActor_candidate = g_pFightState->pFighters[g_effectStaging.bCasterIndex].pActor;
             break;
         case BSOP_CreateEmitter12:  // creates an emitter (12 operands)
-            g_effectStaging.pEmitter_candidate = sub_0801B774(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
+            g_effectStaging.pEmitter_candidate = CreateScriptEmitter12(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
             g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
             break;
         case BSOP_CreateEmitter8:  // creates an emitter (8 operands)
-            g_effectStaging.pEmitter_candidate = sub_0801B870(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+            g_effectStaging.pEmitter_candidate = CreateScriptEmitter8(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
             g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
             break;
         case BSOP_CreateEmitterOnSelf:  // creates an emitter on this actor
@@ -510,13 +510,13 @@ void InterpretActorScript(Actor *actor)
             SetAlphaBlendCoefficients(args[1], args[2]);
             break;
         case BSOP_Goto:
-            sub_0801B710(actor, args[1]);
+            JumpToScriptLabel(actor, args[1]);
             break;
         case BSOP_Goto_2:  // jumps to a label
-            sub_0801B710(actor, args[1]);
+            JumpToScriptLabel(actor, args[1]);
             break;
         case BSOP_GotoLocalIndexedLabel:
-            sub_0801B710(actor, args[actor->modeState.effect.abLocal[args[1]] + 2]);
+            JumpToScriptLabel(actor, args[actor->modeState.effect.abLocal[args[1]] + 2]);
             break;
         case BSOP_FreeTileAllocation:  // frees the tile allocation
             FreeObjVramTileAllocationNow(actor->wVramTileAllocId, actor->wVramPixelCount, actor->oam.bpp8);
@@ -750,19 +750,19 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_GotoIfLocalAGreater:
             if (actor->modeState.effect.abLocal[0] > args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfLocalALess:
             if (actor->modeState.effect.abLocal[0] < args[1])
-                sub_0801B710(actor, args[2]);
+                JumpToScriptLabel(actor, args[2]);
             break;
         case BSOP_GotoIfLocalAInRange:
             if (actor->modeState.effect.abLocal[0] > args[1] && actor->modeState.effect.abLocal[0] < args[2])
-                sub_0801B710(actor, args[3]);
+                JumpToScriptLabel(actor, args[3]);
             break;
         case BSOP_GotoIfLocalAOutOfRange:
             if (actor->modeState.effect.abLocal[0] <= args[1] || actor->modeState.effect.abLocal[0] >= args[2])
-                sub_0801B710(actor, args[3]);
+                JumpToScriptLabel(actor, args[3]);
             break;
         case BSOP_SetBgPaletteColors:  // sets palette colors of a BG record
             sub_0800D244((u8 *)g_aEffectBgRecords_candidate[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);

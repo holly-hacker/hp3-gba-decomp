@@ -679,5 +679,5 @@ extern u16 GetAnimFrameCount(ActorAnimState *anim);
 extern u32 GetFrameTileCodec(ActorFrameData *frameData, u16 frame);
 extern u8 GetFrameCellCount(ActorFrameDesc *frameDesc);
 
-extern void sub_0801BCB0(void *linkedActor);
+extern void DestroyLinkedActor(void *linkedActor);
 extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);  // 0x08018BE0

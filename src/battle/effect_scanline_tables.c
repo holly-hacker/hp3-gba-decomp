@@ -8,28 +8,28 @@ const u32 g_adwEffectBgControlOverride_candidate[4] = { 0x0E02, 0x0F08, 0x0D08, 
 // Scanline effect tables queued by the QueueScanlineEffect script opcode;
 // each is followed by unused null entries.
 const ScanlineEffectEntry g_aEffectScanlineTable0[6] = {
-    {   0, 0, 0, 0, sub_0801BA44 },
-    {  88, 0, 0, 0, sub_0801B9F4 },
+    {   0, 0, 0, 0, EffectScanlineStopHBlankDma },
+    {  88, 0, 0, 0, EffectScanlineCopyTilemap },
     { 112, 0, 0, 0, sub_0801B130 },
-    { 160, 0, 0, 0, sub_0801BA2C },
+    { 160, 0, 0, 0, EffectScanlineEnableBlend },
 };
 
 const ScanlineEffectEntry g_aEffectScanlineTable1[9] = {
-    {   0, 0, 0, 0, sub_0801B9BC },
-    {  15, 0, 0, 1, sub_0801B9BC },
-    {  23, 0, 0, 2, sub_0801B9BC },
-    {  31, 0, 0, 3, sub_0801B9BC },
-    {  64, 0, 0, 0, sub_0801B9F4 },
+    {   0, 0, 0, 0, EffectScanlineSetBandScroll },
+    {  15, 0, 0, 1, EffectScanlineSetBandScroll },
+    {  23, 0, 0, 2, EffectScanlineSetBandScroll },
+    {  31, 0, 0, 3, EffectScanlineSetBandScroll },
+    {  64, 0, 0, 0, EffectScanlineCopyTilemap },
     { 112, 0, 0, 0, sub_0801B130 },
-    { 125, 0, 0, 0, sub_0801B998 },
-    { 160, 0, 0, 0, sub_0801BA2C },
+    { 125, 0, 0, 0, EffectScanlineAdvanceScroll },
+    { 160, 0, 0, 0, EffectScanlineEnableBlend },
 };
 
 const ScanlineEffectEntry g_aEffectScanlineTable2[6] = {
-    {   0, 0, 0, 0, sub_0801B950 },
-    {  88, 0, 0, 0, sub_0801B9F4 },
+    {   0, 0, 0, 0, EffectScanlineRestoreBgs },
+    {  88, 0, 0, 0, EffectScanlineCopyTilemap },
     { 112, 0, 0, 0, sub_0801B130 },
-    { 160, 0, 0, 0, sub_0801BA2C },
+    { 160, 0, 0, 0, EffectScanlineEnableBlend },
 };
 
 const ScanlineEffectEntry *const g_apEffectScanlineTables_candidate[3] = {

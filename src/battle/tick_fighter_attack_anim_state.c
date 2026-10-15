@@ -79,7 +79,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             return;
 
         if (actor->pLinkedActor_candidate != 0)
-            sub_0801BCB0(actor->pLinkedActor_candidate);
+            DestroyLinkedActor(actor->pLinkedActor_candidate);
 
         if (actor->pShadowActor != 0)
             actor->pShadowActor->dwFlags |= 0x82;

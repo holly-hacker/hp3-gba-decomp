@@ -54,12 +54,12 @@ extern const u8 g_abEffectScanlineTableSizes_candidate[3];    // 0x08053B14
 
 // Scanline callbacks of the effect tables.
 extern void sub_0801B130(u32 *pPayload0, u32 *pPayload1);
-extern void sub_0801B950(u32 *pPayload0, u32 *pPayload1);
-extern void sub_0801B998(u32 *pPayload0, u32 *pPayload1);
-extern void sub_0801B9BC(u32 *pPayload0, u32 *pPayload1);
-extern void sub_0801B9F4(u32 *pPayload0, u32 *pPayload1);
-extern void sub_0801BA2C(u32 *pPayload0, u32 *pPayload1);
-extern void sub_0801BA44(u32 *pPayload0, u32 *pPayload1);
+extern void EffectScanlineRestoreBgs(u32 *pPayload0, u32 *pPayload1);
+extern void EffectScanlineAdvanceScroll(u32 *pPayload0, u32 *pPayload1);
+extern void EffectScanlineSetBandScroll(u32 *pPayload0, u32 *pPayload1);
+extern void EffectScanlineCopyTilemap(u32 *pPayload0, u32 *pPayload1);
+extern void EffectScanlineEnableBlend(u32 *pPayload0, u32 *pPayload1);
+extern void EffectScanlineStopHBlankDma(u32 *pPayload0, u32 *pPayload1);
 extern const ActorOrbit g_aEffectOrbitParams_candidate[16];  // 0x08053C68
 extern const u8 g_abEffectRosterIdPair_candidate[2];         // 0x08053D28
 extern const u16 g_awBattleSlotPosX_candidate[7];            // 0x08053D2A, per fighter slot
@@ -72,7 +72,7 @@ extern void WaitForCounterTick(Actor *actor);
 extern void WaitForFieldClearTick(Actor *actor);
 extern void WaitForCasterField86Tick_candidate(Actor *actor);
 extern IntPoint ComputeEffectSpawnPosition(void);
-extern void sub_0801B710(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
+extern void JumpToScriptLabel(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
 extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
 extern void sub_0801B4BC(u32 a, void *b, u32 c, u32 d, void *e);
@@ -87,8 +87,8 @@ extern s32 sub_08018AB8(u32 rosterIndex);  // per-monster gold reward
 extern ParticleEmitter *sub_0801B204(Actor *actor, u32 a, u32 b);
 extern ParticleEmitter *sub_0801B2EC(Actor *actor, u32 a, u32 b);
 extern ParticleEmitter *sub_0801B348(Actor *actor, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B774(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
-extern ParticleEmitter *sub_0801B870(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
+extern ParticleEmitter *CreateScriptEmitter12(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
+extern ParticleEmitter *CreateScriptEmitter8(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
 extern ParticleEmitter *CreateBattleEffectEmitter_candidate(Actor *actor, s32 a1, s32 a2, s32 a3,
                                                              s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                                              s32 a9, s32 a10, s32 a11, s32 a12, s32 a13,

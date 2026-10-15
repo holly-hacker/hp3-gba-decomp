@@ -646,29 +646,29 @@ c-file 0x0801B430 0x0801B4BC src/battle/try_apply_paralysis.c TryApplyParalysis
 thumb-func 0x0801B4BC sub_0801B4BC
 c-file 0x0801B590 0x0801B5D0 src/battle/spawn_paralysis_effect.c SpawnParalysisEffect
 
-# CombatWait? (battle effect scripts)
-thumb-func 0x0801B5D0 sub_0801B5D0
+# Battle effect-script helpers, scanline callbacks, HP gauge
+thumb-func 0x0801B5D0 FlushQueuedBattleDma
 thumb-func 0x0801B620 ComputeEffectSpawnPosition
 thumb-func 0x0801B650 WaitFramesTick
 thumb-func 0x0801B684 WaitForCounterTick
 thumb-func 0x0801B6D0 WaitForFieldClearTick
-thumb-func 0x0801B710 sub_0801B710
-thumb-func 0x0801B774 sub_0801B774
-thumb-func 0x0801B870 sub_0801B870
+thumb-func 0x0801B710 JumpToScriptLabel
+thumb-func 0x0801B774 CreateScriptEmitter12
+thumb-func 0x0801B870 CreateScriptEmitter8
 thumb-func 0x0801B904 WaitForCasterField86Tick_candidate
-thumb-func 0x0801B950 sub_0801B950
-thumb-func 0x0801B998 sub_0801B998
-thumb-func 0x0801B9BC sub_0801B9BC
-thumb-func 0x0801B9F4 sub_0801B9F4
-thumb-func 0x0801BA2C sub_0801BA2C
-thumb-func 0x0801BA44 sub_0801BA44
-thumb-func 0x0801BA54 sub_0801BA54
-thumb-func 0x0801BB58 sub_0801BB58
-thumb-func 0x0801BC68 sub_0801BC68
-thumb-func 0x0801BCB0 sub_0801BCB0
-thumb-func 0x0801BCDC sub_0801BCDC
+thumb-func 0x0801B950 EffectScanlineRestoreBgs
+thumb-func 0x0801B998 EffectScanlineAdvanceScroll
+thumb-func 0x0801B9BC EffectScanlineSetBandScroll
+thumb-func 0x0801B9F4 EffectScanlineCopyTilemap
+thumb-func 0x0801BA2C EffectScanlineEnableBlend
+thumb-func 0x0801BA44 EffectScanlineStopHBlankDma
+thumb-func 0x0801BA54 SpawnSpGauge
+thumb-func 0x0801BB58 TickSpGauge
+thumb-func 0x0801BC68 DestroySlotSpGauge
+thumb-func 0x0801BCB0 DestroyLinkedActor
+thumb-func 0x0801BCDC UpdateSpGaugeFrame
 
-# Combo? (card combo description mode)
+# CardComboDescription game mode
 c-file 0x0801BD0C _ src/gamemode/modes/card_combo_description/initialize_card_combo_description.c InitializeCardComboDescription
 c-file 0x0801BEA8 _ src/gamemode/modes/card_combo_description/update_card_combo_description.c UpdateCardComboDescription
 c-file 0x0801BEDC _ src/gamemode/modes/card_combo_description/exit_card_combo_description.c ExitCardComboDescription

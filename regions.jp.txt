@@ -582,26 +582,26 @@ thumb-func 0x0801B344 sub_0801B348
 c-file 0x0801B42C 0x0801B4B8 src/battle/try_apply_paralysis.c TryApplyParalysis
 thumb-func 0x0801B4B8 sub_0801B4BC
 c-file 0x0801B58C 0x0801B5CC src/battle/spawn_paralysis_effect.c SpawnParalysisEffect
-thumb-func 0x0801B5CC sub_0801B5D0
+thumb-func 0x0801B5CC FlushQueuedBattleDma
 thumb-func 0x0801B61C ComputeEffectSpawnPosition
 thumb-func 0x0801B64C WaitFramesTick
 thumb-func 0x0801B680 WaitForCounterTick
 thumb-func 0x0801B6CC WaitForFieldClearTick
-thumb-func 0x0801B70C sub_0801B710
-thumb-func 0x0801B770 sub_0801B774
-thumb-func 0x0801B86C sub_0801B870
+thumb-func 0x0801B70C JumpToScriptLabel
+thumb-func 0x0801B770 CreateScriptEmitter12
+thumb-func 0x0801B86C CreateScriptEmitter8
 thumb-func 0x0801B900 WaitForCasterField86Tick_candidate
-thumb-func 0x0801B94C sub_0801B950
-thumb-func 0x0801B994 sub_0801B998
-thumb-func 0x0801B9B8 sub_0801B9BC
-thumb-func 0x0801B9F0 sub_0801B9F4
-thumb-func 0x0801BA28 sub_0801BA2C
-thumb-func 0x0801BA40 sub_0801BA44
-thumb-func 0x0801BA50 sub_0801BA54
-thumb-func 0x0801BB54 sub_0801BB58
-thumb-func 0x0801BC64 sub_0801BC68
-thumb-func 0x0801BCAC sub_0801BCB0
-thumb-func 0x0801BCD8 sub_0801BCDC
+thumb-func 0x0801B94C EffectScanlineRestoreBgs
+thumb-func 0x0801B994 EffectScanlineAdvanceScroll
+thumb-func 0x0801B9B8 EffectScanlineSetBandScroll
+thumb-func 0x0801B9F0 EffectScanlineCopyTilemap
+thumb-func 0x0801BA28 EffectScanlineEnableBlend
+thumb-func 0x0801BA40 EffectScanlineStopHBlankDma
+thumb-func 0x0801BA50 SpawnSpGauge
+thumb-func 0x0801BB54 TickSpGauge
+thumb-func 0x0801BC64 DestroySlotSpGauge
+thumb-func 0x0801BCAC DestroyLinkedActor
+thumb-func 0x0801BCD8 UpdateSpGaugeFrame
 c-file 0x0801BD08 _ src/gamemode/modes/card_combo_description/initialize_card_combo_description.c InitializeCardComboDescription
 c-file 0x0801BEA4 _ src/gamemode/modes/card_combo_description/update_card_combo_description.c UpdateCardComboDescription
 c-file 0x0801BED8 _ src/gamemode/modes/card_combo_description/exit_card_combo_description.c ExitCardComboDescription
