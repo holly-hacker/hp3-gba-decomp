@@ -5,6 +5,7 @@
 #include "graphics/palette.h"
 #include "hw/mem.h"
 #include "menu/main_menu.h"
+#include "cursor.h"
 
 void ExitConfirmTradeScreen(void)
 {

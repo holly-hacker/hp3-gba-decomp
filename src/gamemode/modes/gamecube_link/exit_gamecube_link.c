@@ -7,6 +7,7 @@
 #include "gamecube.h"
 #include "menu/gamecube_link.h"
 #include "menu/main_menu.h"
+#include "cursor.h"
 
 void ExitGameCubeLink(void)
 {

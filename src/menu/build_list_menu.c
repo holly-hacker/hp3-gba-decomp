@@ -3,6 +3,7 @@
 #include "menu/main_menu.h"
 #include "menu/menu.h"
 #include "actor.h"
+#include "cursor.h"
 
 void BuildListMenu(const ListMenuDefinition *pDefinition)
 {

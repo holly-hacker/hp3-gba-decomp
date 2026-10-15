@@ -6,6 +6,7 @@
 #include "font.h"
 #include "game/game_modes.h"
 #include "boggart_minigame.h"
+#include "cursor.h"
 
 void ResumeBoggartMinigame(void)
 {

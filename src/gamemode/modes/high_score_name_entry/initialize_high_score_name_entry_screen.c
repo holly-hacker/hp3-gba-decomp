@@ -10,6 +10,7 @@
 #include "minigame/high_score_name_entry.h"
 #include "gen/graphics/minigames/wizard_cracker.h"
 #include "gen/graphics/menus.h"
+#include "cursor.h"
 
 void InitializeHighScoreNameEntryScreen(void)
 {

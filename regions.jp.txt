@@ -708,7 +708,7 @@ c-file 0x0801D854 _ src/gamemode/modes/cutscene/linear_cutscene/exit_linear_cuts
 c-file 0x0801D884 _ src/gamemode/modes/cutscene/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
 c-file 0x0801D8BC 0x0801D93C src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 thumb-func 0x0801D93C SpawnMenuCursorActor
-c-file 0x0801DBDC 0x0801DC68 src/graphics/particle/create_menu_cursor_emitter.c CreateMenuCursorEmitter
+c-file 0x0801DBDC 0x0801DC68 src/cursor/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 thumb-func 0x0801DC68 ReleaseMenuCursor
 thumb-func 0x0801DCC0 SetMenuCursorPosition
 thumb-func 0x0801DCCC SetMenuCursorVisible

@@ -3,6 +3,7 @@
 #include "graphics/graphics.h"
 #include "menu/help.h"
 #include "menu/main_menu.h"
+#include "cursor.h"
 
 void ExitHelpScreen(void)
 {

@@ -4,6 +4,7 @@
 #include "hw/mem.h"
 #include "menu/card_trade.h"
 #include "menu/main_menu.h"
+#include "cursor.h"
 
 void ExitCardTrade(void)
 {

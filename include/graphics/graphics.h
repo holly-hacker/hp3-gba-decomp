@@ -269,9 +269,6 @@ extern void FreeAllParticleEmitters(void);
 extern void FreeAllParticles(void);
 extern void ReleaseParticle(Particle *particle);
 
-extern ParticleEmitter *g_pMenuCursorEmitter;       // 0x030028C0
-
-extern void CreateMenuCursorEmitter(struct Actor *pCursor);
 extern void TickParticleEmitter(ParticleEmitter *emitter);
 extern void SpawnParticle(ParticleEmitter *emitter);
 extern ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex, u32 entryIndex);

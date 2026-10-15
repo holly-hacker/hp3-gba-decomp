@@ -12,6 +12,7 @@
 #include "menu/dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
+#include "cursor.h"
 
 void InitializeChooseCharacter(void)
 {

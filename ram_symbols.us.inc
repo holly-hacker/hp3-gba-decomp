@@ -184,7 +184,7 @@
 .set g_pLinearCutsceneActor, 0x030028B8  @ Actor *; see include/cutscene/linear_cutscene.h
 .set g_dwLinearCutsceneIndex, 0x030028BC  @ u32: GameMode - Credits
 
-.set g_pMenuCursorEmitter, 0x030028C0  @ ParticleEmitter *: emitter of the cursor actor built by sub_0801D940(4)
+.set g_pMenuCursorEmitter, 0x030028C0  @ ParticleEmitter *: emitter of the cursor actor built by SpawnMenuCursorActor(4)
 
 @ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
 @ "resource-decompression dispatcher") ---

@@ -7,6 +7,7 @@
 #include "hw/mem.h"
 #include "menu/connectivity.h"
 #include "menu/main_menu.h"
+#include "cursor.h"
 
 void ExitConnectivity(void)
 {

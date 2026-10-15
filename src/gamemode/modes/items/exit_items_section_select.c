@@ -7,6 +7,7 @@
 #include "menu/items_menu.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
+#include "cursor.h"
 
 void ExitItemsSectionSelect(void)
 {

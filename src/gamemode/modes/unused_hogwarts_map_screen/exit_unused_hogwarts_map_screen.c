@@ -5,6 +5,7 @@
 #include "hw/mem.h"
 #include "menu/main_menu.h"
 #include "menu/unused_hogwarts_map_screen.h"
+#include "cursor.h"
 
 void ExitUnusedHogwartsMapScreen(void)
 {

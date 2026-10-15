@@ -8,6 +8,7 @@
 #include "menu/main_menu.h"
 #include "menu/unused_hogwarts_map_screen.h"
 #include "mt19937.h"
+#include "cursor.h"
 
 void InitializeUnusedHogwartsMapScreen(void)
 {

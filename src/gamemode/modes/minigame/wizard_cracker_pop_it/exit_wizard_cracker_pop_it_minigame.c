@@ -7,6 +7,7 @@
 #include "hw/mem.h"
 #include "menu/minigame_menu.h"
 #include "minigame/wizard_cracker_pop_it.h"
+#include "cursor.h"
 
 void ExitWizardCrackerPopItMinigame(void)
 {

@@ -3,6 +3,7 @@
 #include "menu/main_menu.h"
 #include "title.h"
 #include "actor.h"
+#include "cursor.h"
 
 void ShowMainMenuEntries(void)
 {

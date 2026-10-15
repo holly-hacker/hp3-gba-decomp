@@ -6,6 +6,7 @@
 #include "hw/mem.h"
 #include "menu/minigame_menu.h"
 #include "boggart_minigame.h"
+#include "cursor.h"
 
 void ExitBoggartMinigame(void)
 {

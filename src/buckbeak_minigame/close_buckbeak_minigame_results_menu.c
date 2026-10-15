@@ -3,6 +3,7 @@
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
 #include "buckbeak_minigame.h"
+#include "cursor.h"
 
 // Removes the results menu and sets the rings spinning again.
 void CloseBuckbeakMinigameResultsMenu(void)

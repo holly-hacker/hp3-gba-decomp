@@ -3,6 +3,7 @@
 #include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
 #include "title.h"
+#include "cursor.h"
 
 void PositionMainMenuCursorActor(u32 tween)
 {

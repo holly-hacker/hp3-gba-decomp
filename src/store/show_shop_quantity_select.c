@@ -5,6 +5,7 @@
 #include "menu/dialog.h"
 #include "menu/main_menu.h"
 #include "shop.h"
+#include "cursor.h"
 
 void ShowShopQuantitySelect(void)
 {

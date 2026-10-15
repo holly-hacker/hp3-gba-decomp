@@ -6,6 +6,7 @@
 #include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
 #include "actor.h"
+#include "cursor.h"
 
 void InitializeMinigameMenu(void)
 {

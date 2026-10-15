@@ -8,6 +8,7 @@
 #include "menu/main_menu.h"
 #include "title.h"
 #include "battle/battle.h"
+#include "cursor.h"
 
 void InitializeGameCubeLink(void)
 {

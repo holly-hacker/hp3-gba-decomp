@@ -3,6 +3,7 @@
 #include "game/game_modes.h"
 #include "cutscene/linear_cutscene.h"
 #include "menu/main_menu.h"
+#include "cursor.h"
 
 void InitializeLinearCutscene(void)
 {

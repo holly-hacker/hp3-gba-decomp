@@ -11,11 +11,6 @@ typedef enum {
 
 extern u8 g_bSaveSlotScreenResult;  // 0x03005DC4
 
-extern void ReleaseMenuCursor(Actor *pActor);
-// Spawns a shared menu cursor sprite; kind selects its graphics and setup
-// (4 the list cursor, 2 the quantity arrows, 0/1 dialog and choose-character screen).
-extern Actor *SpawnMenuCursorActor(u32 kind);
-
 extern void InitializeSaveSlotScreen_candidate(u32 titleStringId);
 extern u32 HandleSaveSlotInput_candidate(void);
 extern void SelectNewGameSlot_candidate(void);
@@ -29,4 +24,3 @@ extern void InitializeMenuScreen(u32 titleStringId, u32 cursorKind, u32 pulseSel
 extern void BeginMenuScreen(u32 titleStringId, u32 cursorKind, u32 pulseSelection);
 extern void sub_0801E0D8(void);
 extern void ExitMenuScreen(void);
-extern void SetMenuCursorPosition(Actor *pActor, s32 x, s32 y);  // SetActorPosition

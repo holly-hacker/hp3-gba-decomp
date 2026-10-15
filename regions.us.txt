@@ -783,7 +783,7 @@ c-file 0x0801D8C0 0x0801D940 src/gamemode/modes/cutscene/linear_cutscene/update_
 
 # Cursor? (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
 thumb-func 0x0801D940 SpawnMenuCursorActor
-c-file 0x0801DBE0 0x0801DC6C src/graphics/particle/create_menu_cursor_emitter.c CreateMenuCursorEmitter
+c-file 0x0801DBE0 0x0801DC6C src/cursor/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 thumb-func 0x0801DC6C ReleaseMenuCursor
 thumb-func 0x0801DCC4 SetMenuCursorPosition
 thumb-func 0x0801DCD0 SetMenuCursorVisible

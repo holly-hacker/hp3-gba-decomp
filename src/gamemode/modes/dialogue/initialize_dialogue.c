@@ -10,6 +10,7 @@
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
+#include "cursor.h"
 
 void InitializeDialogue(void)
 {

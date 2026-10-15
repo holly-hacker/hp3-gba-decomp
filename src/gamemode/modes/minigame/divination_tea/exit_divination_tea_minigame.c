@@ -5,6 +5,7 @@
 #include "minigame/divination_tea.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
+#include "cursor.h"
 
 void ExitDivinationTeaMinigame(void)
 {

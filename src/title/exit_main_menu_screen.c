@@ -8,6 +8,7 @@
 #include "hw/mem.h"
 #include "actor.h"
 #include "graphics/palette.h"
+#include "cursor.h"
 
 void ExitMainMenuScreen(void)
 {

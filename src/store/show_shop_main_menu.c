@@ -1,6 +1,7 @@
 #include "types.h"
 #include "menu/main_menu.h"
 #include "shop.h"
+#include "cursor.h"
 
 void ShowShopMainMenu(void)
 {

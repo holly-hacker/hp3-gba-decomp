@@ -6,6 +6,7 @@
 #include "hw/mem.h"
 #include "menu/main_menu.h"
 #include "minigame/owlcare.h"
+#include "cursor.h"
 
 void HandleOwlCareKitScreenExit(void)
 {

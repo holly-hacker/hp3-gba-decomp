@@ -7,6 +7,7 @@
 #include "menu/options.h"
 #include "game/save.h"
 #include "text.h"
+#include "cursor.h"
 
 void InitializeOptions(void)
 {

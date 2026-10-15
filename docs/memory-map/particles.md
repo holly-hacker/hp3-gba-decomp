@@ -43,7 +43,7 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 | `TickParticleWithGravity` | `0x08031538` | `src/graphics/particle/tick_particle_with_gravity.c` |
 | `DrawParticle` | `0x0803186C` | `src/graphics/particle/draw_particle.c` |
 | `UpdateParticleCollision` | `0x0803197C` | `src/graphics/particle/update_particle_collision.c` |
-| `CreateMenuCursorEmitter` | `0x0801DBE0` | `src/graphics/particle/create_menu_cursor_emitter.c` |
+| `CreateMenuCursorEmitter` | `0x0801DBE0` | `src/cursor/create_menu_cursor_emitter.c` |
 | `FixedMultiply` | `0x0802BEE8` | asm; `((a >> 6) * (b >> 6)) >> 4` |
 
 JP addresses (same sources, byte-matched): `CreateMenuCursorEmitter` `0x0801DBDC`,

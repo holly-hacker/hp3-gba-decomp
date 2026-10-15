@@ -8,6 +8,7 @@
 #include "font.h"
 #include "text.h"
 #include "boggart_minigame.h"
+#include "cursor.h"
 
 void ShowBoggartMinigameResultsMenu(void)
 {
