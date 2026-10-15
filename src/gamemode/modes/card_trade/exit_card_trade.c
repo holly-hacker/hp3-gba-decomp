@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "game/game_modes.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/card_trade.h"
 #include "menu/main_menu.h"
 #include "cursor.h"

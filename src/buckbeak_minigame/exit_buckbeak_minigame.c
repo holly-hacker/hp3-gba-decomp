@@ -4,6 +4,7 @@
 #include "game/game_modes.h"
 #include "buckbeak_minigame.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/minigame_menu.h"
 
 void ExitBuckbeakMinigame(void)

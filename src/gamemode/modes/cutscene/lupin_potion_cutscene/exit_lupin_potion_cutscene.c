@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "overworld/room.h"
 
 void ExitLupinPotionCutscene(void)

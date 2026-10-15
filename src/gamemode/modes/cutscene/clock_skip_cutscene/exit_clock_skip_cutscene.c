@@ -2,6 +2,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "hw/mem.h"
+#include "actor.h"
 
 void ExitClockSkipCutscene(void)
 {

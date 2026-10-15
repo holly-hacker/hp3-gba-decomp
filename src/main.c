@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "hw/io_regs.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "mem_clear.h"
 #include "input.h"
 #include "font.h"

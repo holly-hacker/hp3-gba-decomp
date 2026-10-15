@@ -2,6 +2,7 @@
 #include "cheat_party.h"
 #include "graphics/display.h"
 #include "hw/mem.h"
+#include "actor.h"
 
 void ExitCheatParty(void)
 {

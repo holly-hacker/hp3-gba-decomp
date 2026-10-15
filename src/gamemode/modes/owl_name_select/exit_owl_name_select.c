@@ -3,6 +3,7 @@
 #include "game/game_modes.h"
 #include "graphics/display.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/owl_name_select.h"
 
 void ExitOwlNameSelect(void)

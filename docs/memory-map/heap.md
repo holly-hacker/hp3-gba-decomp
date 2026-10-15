@@ -61,7 +61,7 @@ fixed-size-slot pool out of the heap:
 
 - `g_ActorPoolState.pBuffer`/`.pFreeListHead` are adjacent words
   (`0x03001C08`/`0x03001C0C`, modeled as one `ActorPoolState` struct in
-  `include/hw/mem.h` since the real code reaches the second through the
+  `include/actor.h` since the real code reaches the second through the
   first at `+4`) — a 0x7968-byte `AllocZeroed`'d buffer (0x69 actors *
   0x128-byte stride), carved into a free list by `BuildFreeList`.
 - `g_pActorPoolAuxBuffer` (`0x03001DBC`) — a second, 0x104-byte

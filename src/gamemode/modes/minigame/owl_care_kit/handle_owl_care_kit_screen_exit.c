@@ -4,6 +4,7 @@
 #include "graphics/palette.h"
 #include "battle/battle.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/main_menu.h"
 #include "minigame/owlcare.h"
 #include "cursor.h"

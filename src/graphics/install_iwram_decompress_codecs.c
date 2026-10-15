@@ -1,3 +1,4 @@
+#include "arm_routines.h"
 #include "graphics/graphics.h"
 #include "hw/bios.h"
 

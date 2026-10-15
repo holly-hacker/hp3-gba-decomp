@@ -2,6 +2,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "hw/mem.h"
+#include "actor.h"
 
 void ExitCombatResult(void)
 {

@@ -4,7 +4,7 @@
 
 // OBJ VRAM tile allocator (ROM 0x080453B4-0x080456E0 US): tiles are handed out
 // in runs tracked by one bit per 32-byte tile (1024 tiles). The ARM search
-// routine FindFreeObjTileRun and its IWRAM copy are declared in hw/mem.h.
+// routine FindFreeObjTileRun and its IWRAM copy are declared in arm_routines.h.
 
 struct Actor;
 struct ActorAssetRecord;

@@ -4,6 +4,7 @@
 #include "dementor_minigame.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/minigame_menu.h"
 #include "cursor.h"
 

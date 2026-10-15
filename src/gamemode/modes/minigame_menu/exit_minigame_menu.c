@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "overworld/room.h"
 
 void ExitMinigameMenu(void)

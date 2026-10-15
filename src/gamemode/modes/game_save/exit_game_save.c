@@ -5,6 +5,7 @@
 #include "game/game_save.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
+#include "actor.h"
 
 void ExitGameSave(void)
 {

@@ -6,6 +6,7 @@
 #include "game/game_save.h"
 #include "input.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "gamecube.h"
 #include "menu/gamecube_link.h"
 #include "menu/in_game_menu.h"

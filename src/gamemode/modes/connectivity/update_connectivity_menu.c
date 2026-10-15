@@ -6,6 +6,7 @@
 #include "game/game_save.h"
 #include "input.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/connectivity.h"
 #include "menu/in_game_menu.h"
 

@@ -16,7 +16,6 @@
 // resource-decompression dispatcher calls through those, not the ROM
 // copies directly.
 typedef void (*DecompressFunc)(const void *src, void *dst, u32 *pSize);
-void DecompressLzRle(const void *src, void *dst, u32 *pSize);
 void DecompressGammaLz(const void *src, void *dst, u32 *pSize);
 // The 4-byte header of a compressed resource. type selects the codec per
 // dispatcher; RESOURCE_DELTA in type requests ApplyResourceDeltaPass afterwards.
@@ -43,13 +42,10 @@ typedef struct HuffTreeNode {
 extern void DecompressHuffTree(const HuffTreeNode *pTree, void *dst, s32 size);
 extern DecompressFunc g_pDecompressLzRleEntry;
 extern DecompressFunc g_pDecompressGammaLzEntry;
-extern u8 g_pDecompressLzRleIwram[0x1F8];
 extern u8 g_pDecompressGammaLzIwram[0x33C];
 
-// Huffman BG tile decoder (ARM), copied to IWRAM by InstallBgTileCodec; see
-// docs/formats/graphics.md ("On-demand per-tile BG streaming").
-void DecompressBgTile(void);
-extern u8 g_aDecompressBgTileIwram[0x100];
+// Copies DecompressBgTile to IWRAM; see docs/formats/graphics.md
+// ("On-demand per-tile BG streaming").
 void InstallBgTileCodec(void);
 
 // bios_ObjAffineSet's input struct (see include/hw/bios.h): reciprocal

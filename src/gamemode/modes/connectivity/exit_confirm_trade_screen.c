@@ -4,6 +4,7 @@
 #include "graphics/display.h"
 #include "graphics/palette.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/main_menu.h"
 #include "cursor.h"
 

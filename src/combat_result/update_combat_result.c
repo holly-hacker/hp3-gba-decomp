@@ -7,6 +7,7 @@
 #include "game/game_modes.h"
 #include "input.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "overworld/room.h"
 #include "battle/effect_script.h"
 #include "combat_result.h"

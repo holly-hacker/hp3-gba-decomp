@@ -8,6 +8,7 @@
 #include "game/save.h"
 #include "input.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/card_trade.h"
 #include "menu/folio_universitas.h"
 #include "menu/in_game_menu.h"

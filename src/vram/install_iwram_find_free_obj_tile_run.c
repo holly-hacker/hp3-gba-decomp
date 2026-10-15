@@ -1,3 +1,4 @@
+#include "arm_routines.h"
 #include "hw/mem.h"
 #include "overworld/room.h"
 #include "hw/bios.h"

@@ -7,6 +7,7 @@
 #include "menu/in_game_menu.h"
 #include "menu/main_menu.h"
 #include "hw/mem.h"
+#include "actor.h"
 
 void ExitInGameMenu(void)
 {

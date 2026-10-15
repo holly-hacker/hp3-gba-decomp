@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "menu/items_menu.h"
 #include "hw/mem.h"
+#include "actor.h"
 #include "menu/status_equip.h"
 
 void ExitItemsItemSelect(void)
