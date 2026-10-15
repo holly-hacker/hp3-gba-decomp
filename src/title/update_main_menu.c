@@ -12,7 +12,7 @@
 void UpdateMainMenu(void)
 {
     u32 timeout;
-    u8 *pText;
+    const u8 *pText;
 
     timeout = g_adwMainMenuStateTimeouts[g_GameModeStackContext.dwModeState];
     if (timeout != 0)

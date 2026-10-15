@@ -73,7 +73,7 @@ void SetTextLineHeight(u32 lineHeight);
 u32 MeasureMacroString(const u8 *pStr);
 u32 GetTextHeight(const u8 *pStr);
 u8 *ExpandTextMacros(u8 *pDest, const u8 *pSrc, s32 maxLen);
-u32 DrawTextLines(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, u8 **ppText, u32 align);
+u32 DrawTextLines(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, const u8 **ppText, u32 align);
 u32 DrawTextLineInHeight(u32 tileCursor, s32 x, s32 y, s32 maxWidth, s32 height, const u8 **ppText, u32 align, s32 *pCharBudget);
 u32 PrintTextBox(u32 tileCursor, s32 x, s32 y, s32 maxWidth, const u8 *pText, u32 align);
 void FillTilemapRow(s32 left, s32 row, s32 right, u16 entry);

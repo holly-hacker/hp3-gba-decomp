@@ -3,6 +3,7 @@
 #include "hw/bios.h"
 #include "font.h"
 #include "dialog.h"
+#include "dialog_box.h"
 #include "overworld/room.h"
 #include "gen/graphics/cutscenes.h"
 
@@ -16,6 +17,6 @@ void LoadDialogBoxGraphics(void)
 #else
     SelectTextFont(7, 0, -1);
 #endif
-    sub_0801FBA4(0);
-    sub_0801FBB0(1);
+    SetDialogTextAlign(0);
+    SetDialogTextReveal(1);
 }

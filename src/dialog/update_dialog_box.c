@@ -4,6 +4,7 @@
 #include "graphics/scanline_effects.h"
 #include "input.h"
 #include "dialog.h"
+#include "dialog_box.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 
@@ -13,27 +14,27 @@ void UpdateDialogBox(void)
     {
     case DialogPhaseText:
     case DialogPhaseTextStart:
-        if (g_dwDialogPageFull == 0 && g_DialogState_candidate.bArg19 == 0)
+        if (g_dwDialogPageFull == 0 && g_DialogState_candidate.bRevealText == 0)
         {
-            sub_0801FD2C();
+            DrawDialogTextPage();
             g_dwDialogPageFull = 1;
         }
         else
-            sub_0801FD64();
+            StepDialogTextReveal();
 
         if (g_dwDialogPageFull != 0)
         {
             if (g_wKeysPressed & KeyA)
                 AdvanceDialog();
             else
-                sub_0801FCFC(*g_DialogState_candidate.pText != 0);
+                SetDialogCursorVisible(*g_DialogState_candidate.pText != 0);
         }
         else
         {
-            sub_0801FCFC(0);
-            if ((g_wKeysPressed & KeyA) || g_DialogState_candidate.bArg19 == 0)
+            SetDialogCursorVisible(0);
+            if ((g_wKeysPressed & KeyA) || g_DialogState_candidate.bRevealText == 0)
             {
-                sub_0801FD2C();
+                DrawDialogTextPage();
                 g_dwDialogPageFull = 1;
             }
         }
@@ -47,7 +48,7 @@ void UpdateDialogBox(void)
             g_dwDialogBoxY = DIALOG_BOX_SHOWN_Y;
         }
         SetActorPosition(g_pDialogPortraitActor, 0, g_dwDialogBoxY + 0x28);
-        QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, sub_0801FC58);
+        QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, BeginDialogBoxPanelScanline);
         break;
 
     case DialogPhaseSlideDown:
@@ -59,7 +60,7 @@ void UpdateDialogBox(void)
             g_pDialogPortraitActor->dwFlags &= ~ActorFlagVisible;
         }
         SetActorPosition(g_pDialogPortraitActor, 0, g_dwDialogBoxY + 0x28);
-        QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, sub_0801FC58);
+        QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, BeginDialogBoxPanelScanline);
         break;
 
     case DialogPhaseDone:

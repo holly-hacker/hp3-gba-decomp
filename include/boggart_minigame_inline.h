@@ -20,7 +20,7 @@
 
 DRAW_BOGGART_MINIGAME_SCORE_LINKAGE void DrawBoggartMinigameScore(void)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearBgTilemapRect(3, 0, 0, 10, 4);
     SelectTextFont(5, 0, -1);
@@ -31,7 +31,7 @@ DRAW_BOGGART_MINIGAME_SCORE_LINKAGE void DrawBoggartMinigameScore(void)
 
 DRAW_BOGGART_MINIGAME_LIVES_LINKAGE void DrawBoggartMinigameLives(void)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearBgTilemapRect(3, 0x14, 0x10, 10, 4);
     if (g_GameModeStackContext.dwCurrentGameModeArg3 == 2)
@@ -45,7 +45,7 @@ DRAW_BOGGART_MINIGAME_LIVES_LINKAGE void DrawBoggartMinigameLives(void)
 
 extern inline void DrawBoggartMinigameMessage(s32 textId)
 {
-    u8 *text;
+    const u8 *text;
 
     SelectTextFont(5, 7, -1);
     text = GetDialogText(textId);  // 0x58D "Failed!" or 0x58F "Great!"

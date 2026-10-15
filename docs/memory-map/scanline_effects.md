@@ -39,7 +39,7 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 |---|---|---|
 | `InitScanlineEffects` | `0x08045094` | Called once from `AgbMain`: clears the index, `ClearScanlineEffectStaging`, queues the default table (`0x0806C2F0`, one entry with line 0 and `ScanlineEffectNop`), copies staging to live, installs the VCount callback, `StartScanlineEffects`. |
 | `QueueScanlineEffectTable` | `0x080450D4` | `(entries, count)`: waits for the pending flag to clear (one vblank per spin), clears staging, copies `count * 0x10` bytes into it, sets the pending flag. |
-| `QueueScanlineEffectEntry` | `0x08045210` | `(index, line, param, callback)`: waits for idle, then overwrites staging entry `index`'s line, `+2` word and callback and sets the pending flag. Its one caller (`UpdateDialogBox`) passes callback `0x0801FC59`. |
+| `QueueScanlineEffectEntry` | `0x08045210` | `(index, line, param, callback)`: waits for idle, then overwrites staging entry `index`'s line, `+2` word and callback and sets the pending flag. Its one caller (`UpdateDialogBox`) passes callback `BeginDialogBoxPanelScanline` (`0x0801FC58`). |
 | `CommitScanlineEffects` | `0x08045260` | Called from `HandleVBlankInterrupt`: if the pending flag is set, copies staging over the live table and clears the flag and the index. |
 | `StartScanlineEffects` | `0x0804528C` | Resets the index and enables the VCount interrupt at entry 0's line (`EnableVCountInterrupt`, `0x080261F8`). |
 | `StopScanlineEffects` | `0x080452A8` | Clears IE bit 2, acknowledges IF bit 2, clears `DISPSTAT` bit 5. |
@@ -65,7 +65,7 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 
 ## UNCONFIRMED
 
-What the individual callbacks draw (the one decoded table entry, line 159 with
-callback `0x0801FC59`, busy-waits for HBlank via `DISPSTAT` and rewrites video
-registers, so the mechanism reads as a per-scanline video-register effect) and the
-role of the `+2` halfword. Its tables hold entries of this format.
+What the remaining callbacks draw, and the role of the `+2` halfword. The decoded
+dialog-box entry (line 159, `BeginDialogBoxPanelScanline`) waits for HBlank via
+`DISPSTAT`, then DMAs the box's palette to BG palette bank 0 and rewrites the BG0/BG1
+priorities and BG1 scroll; see `include/dialog_box.h`. Its tables hold entries of this format.

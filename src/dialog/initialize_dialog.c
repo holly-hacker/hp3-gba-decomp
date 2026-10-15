@@ -7,6 +7,7 @@
 #include "graphics/scanline_effects.h"
 #include "font.h"
 #include "dialog.h"
+#include "dialog_box.h"
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
@@ -36,8 +37,8 @@ void InitializeDialog(void)
 #else
         SelectTextFont(7, 0, -1);
 #endif
-        sub_0801FBA4(0);
-        sub_0801FBB0(1);
+        SetDialogTextAlign(0);
+        SetDialogTextReveal(1);
         SetActorActionState(g_pPlayerActor, 0x24);
         g_dwDialogTextId = 0;
         g_dwDialogBoxY = DIALOG_BOX_HIDDEN_Y;

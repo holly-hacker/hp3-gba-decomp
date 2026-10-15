@@ -21,7 +21,7 @@
 
 DRAW_DEMENTOR_MINIGAME_SCORE_LINKAGE void DrawDementorMinigameScore(void)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearBgTilemapRect(3, 0, 2, 10, 2);
     SelectTextFont(5, 0, -1);
@@ -32,7 +32,7 @@ DRAW_DEMENTOR_MINIGAME_SCORE_LINKAGE void DrawDementorMinigameScore(void)
 
 DRAW_DEMENTOR_MINIGAME_LIVES_LINKAGE void DrawDementorMinigameLives(void)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearBgTilemapRect(3, 0x13, 0x12, 10, 2);
     SelectTextFont(5, 0, -1);
@@ -44,7 +44,7 @@ DRAW_DEMENTOR_MINIGAME_LIVES_LINKAGE void DrawDementorMinigameLives(void)
 // Macro 2 holds the misses that cost a life, which the English text omits.
 DRAW_DEMENTOR_MINIGAME_MISSES_LINKAGE void DrawDementorMinigameMisses(void)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearBgTilemapRect(3, 0, 0x12, 10, 2);
     SelectTextFont(5, 0, -1);

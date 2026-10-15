@@ -13,7 +13,7 @@ void ShowShopQuantitySelect(void)
     const void *palette;
     const void *tiles;
     const void *frames;
-    u8 *text;
+    const u8 *text;
 
     g_FredAndGeorgesShop.dwItem = g_FredAndGeorgesShop.dwBuyItem != SHOP_NO_ITEM ? g_FredAndGeorgesShop.dwBuyItem : g_FredAndGeorgesShop.dwSellItem;
     g_FredAndGeorgesShop.nQuantity = 1;

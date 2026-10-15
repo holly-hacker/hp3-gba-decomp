@@ -1,6 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "dialog.h"
+#include "dialog_box.h"
 #include "game/save.h"
 #include "font.h"
 #include "text.h"

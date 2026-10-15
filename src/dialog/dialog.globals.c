@@ -1,10 +1,11 @@
 #include "types.h"
 #include "actor.h"
 #include "dialog.h"
+#include "dialog_box.h"
 #include "gen/graphics/menus.h"
 
 const ScanlineEffectEntry g_aDialogScanlineEffects[1] = {
-    { 0x9F, 0, 0, 0, sub_0801FC58 },
+    { 0x9F, 0, 0, 0, BeginDialogBoxPanelScanline },
 };
 
 // g_aDialogPortraits index for each party slot (GetPartyMasterStatsSlot_candidate).

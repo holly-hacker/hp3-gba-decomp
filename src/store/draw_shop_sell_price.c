@@ -10,7 +10,7 @@
 
 void DrawShopSellPrice(u32 item)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearBgTilemapRect(1, 0x11, 0x10, 0xC, 3);
     SetTextTargetFromBgControl(g_dwFredAndGeorgesShopBg1Control);

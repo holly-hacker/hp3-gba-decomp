@@ -8,7 +8,7 @@
 // cutscene actor. The cutscene is selected by g_dwLinearCutsceneIndex,
 // GameMode - Credits.
 extern Actor *g_pLinearCutsceneActor;  // 0x030028B8
-extern u8 *g_pLinearCutsceneText;        // 0x030028B4: unread remainder of the cutscene's text
+extern const u8 *g_pLinearCutsceneText;  // 0x030028B4: unread remainder of the cutscene's text
 extern u32 g_dwLinearCutsceneIndex;      // 0x030028BC
 
 extern void SetUpLinearCutscene(u32 cutsceneIndex);

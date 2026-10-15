@@ -9,7 +9,7 @@
 
 void UpdateStartup(void)
 {
-    u8 *pText;
+    const u8 *pText;
 
     g_GameModeStackContext.dwModeTimer++;
     g_GameModeStackContext.dwModeSubState += 2;

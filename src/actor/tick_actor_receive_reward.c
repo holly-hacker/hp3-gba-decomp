@@ -6,6 +6,7 @@
 #include "game/rewards.h"
 #include "graphics/audio.h"
 #include "dialog.h"
+#include "dialog_box.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
@@ -37,8 +38,8 @@ void TickActorReceiveReward(Actor *actor)
         break;
     case 10:
         if (actor->dwFlags & ActorFlagSpecialMoveTrigger) {
-            sub_0801FBA4(1);
-            sub_0801FBB0(0);
+            SetDialogTextAlign(1);
+            SetDialogTextReveal(0);
             PlaySoundById(0x19);
             if (g_nBattleGoldReward != 0) {
                 SetTextMacro1Number(g_nBattleGoldReward);
@@ -80,7 +81,7 @@ void TickActorReceiveReward(Actor *actor)
         }
         else if (actor->dwFlags & ActorFlagActionAnimDone) {
             SetActorActionState(actor, 0x24);
-            sub_0801FBA4(0);
+            SetDialogTextAlign(0);
         }
         break;
     }

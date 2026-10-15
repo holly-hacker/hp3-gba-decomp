@@ -10,11 +10,11 @@ u32 DrawDialogTextLine(s32 charBudget)
     u32 tileCursor;
 
     tileCursor = DrawTextLineInHeight(g_DialogState_candidate.wTileCursor,
-                                      g_DialogState_candidate.bArg18 * 56 + 0x40,
+                                      g_DialogState_candidate.bTextAlign * 56 + 0x40,
                                       g_DialogState_candidate.bTextY, DIALOG_TEXT_MAX_WIDTH,
                                       g_DialogState_candidate.wTextHeightLeft,
                                       &g_DialogState_candidate.pText,
-                                      g_DialogState_candidate.bArg18, &charBudget);
+                                      g_DialogState_candidate.bTextAlign, &charBudget);
     if (charBudget != 0)
     {
         g_DialogState_candidate.wRevealCount = 0;

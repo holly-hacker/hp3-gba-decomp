@@ -83,7 +83,7 @@ SHOW_SHOP_SELL_LIST_LINKAGE void ShowShopSellList(void)
 
 SHOW_SHOP_MESSAGE_LINKAGE void ShowShopMessage(void)
 {
-    u8 *text;
+    const u8 *text;
 
     SetTextTargetFromBgControl(g_dwFredAndGeorgesShopBg1Control);
     SelectTextFont(2, 0, -1);
@@ -102,7 +102,7 @@ SHOW_SHOP_BUY_LIST_LINKAGE void ShowShopBuyList(void)
 DRAW_SHOP_MAIN_MENU_ROW_LINKAGE void DrawShopMainMenuRow(s32 row, u32 color)
 {
     ShopMainMenuTextIds textIds = g_ShopMainMenuTextIds;
-    u8 *text;
+    const u8 *text;
 
     SetTextTargetFromBgControl(g_dwFredAndGeorgesShopBg1Control);
     SelectTextFont(4, color, -1);
@@ -112,7 +112,7 @@ DRAW_SHOP_MAIN_MENU_ROW_LINKAGE void DrawShopMainMenuRow(s32 row, u32 color)
 
 DRAW_SHOP_CATEGORY_ROW_LINKAGE void DrawShopCategoryRow(s32 row, u32 color)
 {
-    u8 *text;
+    const u8 *text;
 
     SetTextTargetFromBgControl(g_dwFredAndGeorgesShopBg1Control);
     SelectTextFont(4, color, -1);
@@ -122,7 +122,7 @@ DRAW_SHOP_CATEGORY_ROW_LINKAGE void DrawShopCategoryRow(s32 row, u32 color)
 
 DRAW_SHOP_QUANTITY_LINKAGE void DrawShopQuantity(void)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearBgTilemapRect(1, 0, 0xC, 0x1E, 2);
     SetTextTargetFromBgControl(g_dwFredAndGeorgesShopBg1Control);

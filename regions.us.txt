@@ -847,22 +847,22 @@ c-file 0x0801F8EC _ src/dialog/draw_dialog_text_line.c DrawDialogTextLine
 c-file 0x0801F968 _ src/dialog/show_dialog_line.c ShowDialogLine
 c-file 0x0801FA18 _ src/dialog/advance_dialog.c AdvanceDialog
 c-file 0x0801FA9C _ src/dialog/load_dialog_box_graphics.c LoadDialogBoxGraphics
-c-file 0x0801FAF4 0x0801FB54 src/dialog/exit_dialog.c ExitDialog
+c-file 0x0801FAF4 _ src/dialog/exit_dialog.c ExitDialog
 
 # DialogBox? (dialog box)
-thumb-func 0x0801FB54 ShowRoomDialogBox_candidate
-c-file 0x0801FB78 0x0801FBA4 src/text/init_dialog_box.c InitDialogBox
-thumb-func 0x0801FBA4 sub_0801FBA4
-thumb-func 0x0801FBB0 sub_0801FBB0
-thumb-func 0x0801FBBC sub_0801FBBC
-thumb-func 0x0801FC00 sub_0801FC00
-thumb-func 0x0801FC28 GetDialogLineText
-thumb-func 0x0801FC58 sub_0801FC58
-thumb-func 0x0801FCFC sub_0801FCFC
-thumb-func 0x0801FD2C sub_0801FD2C
-thumb-func 0x0801FD64 sub_0801FD64
-thumb-func 0x0801FD90 sub_0801FD90
-thumb-func 0x0801FD9C sub_0801FD9C
+c-file 0x0801FB54 _ src/dialog_box/show_room_dialog_box.c ShowRoomDialogBox_candidate
+c-file 0x0801FB78 _ src/dialog_box/init_dialog_box.c InitDialogBox
+c-file 0x0801FBA4 _ src/dialog_box/set_dialog_text_align.c SetDialogTextAlign
+c-file 0x0801FBB0 _ src/dialog_box/set_dialog_text_reveal.c SetDialogTextReveal
+c-file 0x0801FBBC _ src/dialog_box/restore_bg_above_dialog_box.c RestoreBgAboveDialogBox
+c-file 0x0801FC00 _ src/dialog_box/get_dialog_box_tile_row.c GetDialogBoxTileRow
+c-file 0x0801FC28 _ src/dialog_box/get_dialog_line_text.c GetDialogLineText
+c-file 0x0801FC58 _ src/dialog_box/begin_dialog_box_panel_scanline.c BeginDialogBoxPanelScanline
+c-file 0x0801FCFC _ src/dialog_box/set_dialog_cursor_visible.c SetDialogCursorVisible
+c-file 0x0801FD2C _ src/dialog_box/draw_dialog_text_page.c DrawDialogTextPage
+c-file 0x0801FD64 _ src/dialog_box/step_dialog_text_reveal.c StepDialogTextReveal
+c-file 0x0801FD90 _ src/dialog_box/set_dialog_reveal_step.c SetDialogRevealStep
+c-file 0x0801FD9C _ src/dialog_box/dialog_box_nop.c DialogBoxNop
 
 # Display? (display control init)
 c-file 0x0801FDA0 0x0801FDB0 src/graphics/init_display_control.c InitDisplayControl

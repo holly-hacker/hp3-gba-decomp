@@ -10,7 +10,7 @@ void InitializeStartup(void)
 {
     u32 bgCtrl2;
     u32 cursor;
-    u8 *pText;
+    const u8 *pText;
 
     ResetDisplayState(0);
     SetBgControl(3, g_dwStartupBg3Control);

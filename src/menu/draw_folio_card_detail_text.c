@@ -13,7 +13,7 @@
 void DrawFolioCardDetailText(void)
 {
     u32 tileCursor = 1;
-    u8 *pText[1];
+    const u8 *pText[1];
 
     SelectTextFont(3, 0, 0);
     SetTextLineHeight(GetTextLineHeight());

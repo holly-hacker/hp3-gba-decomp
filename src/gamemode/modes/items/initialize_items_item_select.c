@@ -8,7 +8,7 @@
 
 void InitializeItemsItemSelect(void)
 {
-    u8 *text;
+    const u8 *text;
 
     g_GameModeStackContext.dwModeState = 1;
     StartMenuFadeIn();

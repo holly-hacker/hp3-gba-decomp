@@ -8,7 +8,7 @@
 
 void DrawShopSickles(void)
 {
-    u8 *text;
+    const u8 *text;
 
     ClearShopSicklesBox();
     SetTextTargetFromBgControl(g_dwCommonBg2Control);

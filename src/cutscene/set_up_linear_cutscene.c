@@ -16,7 +16,7 @@
 void SetUpLinearCutscene(u32 cutsceneIndex)
 {
     u32 bgControl1;
-    u8 **ppText;
+    const u8 **ppText;
 
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);

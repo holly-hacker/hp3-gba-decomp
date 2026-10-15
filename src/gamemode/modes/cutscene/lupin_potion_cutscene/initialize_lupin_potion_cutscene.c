@@ -3,6 +3,7 @@
 #include "graphics/audio.h"
 #include "hw/bios.h"
 #include "dialog.h"
+#include "dialog_box.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
@@ -46,7 +47,7 @@ void InitializeLupinPotionCutscene(void)
 
     SetTextTargetFromBgControl(g_dwLupinPotionTextBgControl);
     SelectTextFont(7, 0, 0);
-    sub_0801FBA4(0);
+    SetDialogTextAlign(0);
     LoadEmbeddedPalette((u8 *)gDialogBoxGraphic, 0, 1);
     PlayMusicModule(0x10);
     QueueScanlineEffectTable(g_aLupinPotionScanlineTable, 2);

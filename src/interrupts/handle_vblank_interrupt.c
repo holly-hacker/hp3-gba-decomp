@@ -3,10 +3,10 @@
 #include "hw/io_regs.h"
 #include "hw/dma.h"
 #include "graphics/oam.h"
+#include "dialog_box.h"
 
 extern void sub_0800D354(void);
 extern void CommitScanlineEffects(void);
-extern void sub_0801FBBC(void);
 extern void sub_08045988(void);
 extern void sub_0800D304(void);
 extern void kramWorkerVeneer_candidate(void);
@@ -73,7 +73,7 @@ void HandleVBlankInterrupt(void)
         }
 
         CommitScanlineEffects();
-        sub_0801FBBC();
+        RestoreBgAboveDialogBox();
         sub_08045988();
 
         if (g_pVBlankState->pVBlankCallback != NULL)

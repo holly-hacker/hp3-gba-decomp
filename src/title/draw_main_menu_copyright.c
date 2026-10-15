@@ -11,7 +11,7 @@
 
 void DrawMainMenuCopyright(void)
 {
-    u8 *pText;
+    const u8 *pText;
 
     SetTextTargetFromBgControl(g_dwMainMenuBg1Control);
     SelectTextFont(0, 0, -1);

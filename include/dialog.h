@@ -8,7 +8,7 @@
 // functions use are named.
 typedef struct DialogState {
     u32 dwState;                // 0x00, 0 = no box, 1 = open (InitializeDialog), 2 = closed by
-                                //       ExitDialog; the next vblank's sub_0801FBBC resets 2 to 0
+                                //       ExitDialog; the next vblank's RestoreBgAboveDialogBox resets 2 to 0
     const u8 *pText;            // 0x04, text still to be drawn; ShowDialogLine sets it, 0 byte = end
     const u8 *pLineStart;       // 0x08, start of the line being revealed
     u16 wBlockId;               // 0x0C, g_aDialogBlocks index, set by ShowRoomDialogBox_candidate
@@ -16,9 +16,9 @@ typedef struct DialogState {
     u16 wRevealCount;           // 0x10, characters of the current line revealed so far
     u16 wTextHeightLeft;        // 0x12, pixels left below the last drawn line
     u16 wTileCursor;            // 0x14, next free text tile
-    u16 wRevealStep_candidate;  // 0x16, added to wRevealCount per reveal step (sub_0801FD64); defaults to 1
-    u8 bArg18;                  // 0x18, set by sub_0801FBA4
-    u8 bArg19;                  // 0x19, set by sub_0801FBB0
+    u16 wRevealStep;            // 0x16, added to wRevealCount per StepDialogTextReveal; defaults to 1
+    u8 bTextAlign;              // 0x18, text drawers' align argument; the text starts at x 0x40 + 56 * this
+    u8 bRevealText;             // 0x19, nonzero reveals text gradually, 0 draws each page at once
     u8 bTextY;                  // 0x1A, pixel row of the next text line
     u8 bPhase;                  // 0x1B, DialogPhase
     u8 bArg1C;     // 0x1C, forwarded from room-script dialog opcodes
@@ -30,15 +30,6 @@ extern DialogState g_DialogState_candidate;
 // before it is drawn (ExpandTextMacros); allocated once by InitDialogBox.
 #define DIALOG_MACRO_EXPAND_BUFFER_SIZE 0x400
 extern u8 *g_pDialogMacroExpandBuffer;
-
-extern void InitDialogBox(void);
-
-// Dialog string id for a reward id (item, card or Sickles).
-// Sets the dialog block to show and pushes the dialog game mode.
-extern void ShowRoomDialogBox_candidate(u32 blockId);
-
-extern void sub_0801FBA4(u32 arg);  // stores a byte at DialogState + 0x18
-extern void sub_0801FBB0(u32 arg);  // stores a byte at DialogState + 0x19
 
 // DialogState.bPhase, stepped by UpdateDialogBox.
 typedef enum {
@@ -109,9 +100,4 @@ extern u32 g_dwDialogBoxTileRow;            // 0x03002EF4
 extern u16 g_awDialogBoxPalette[16];        // 0x03002EF8
 extern const ScanlineEffectEntry g_aDialogScanlineEffects[1];  // 0x0805E28C
 
-extern void sub_0801FC58(u32 *pPayload0, u32 *pPayload1);  // scanline callback of the box panel
-extern const u8 *GetDialogLineText(u32 textId);  // GetDialogText after filling macro @1 from g_aDialogTextInfo
-extern void sub_0801FCFC(u32 arg);
-extern void sub_0801FD2C(void);
-extern void sub_0801FD64(void);
 extern void sub_08024BD4(void);
