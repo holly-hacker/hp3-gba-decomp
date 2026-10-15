@@ -2,7 +2,7 @@
 #include "background.h"
 #include "graphics/audio.h"
 #include "hw/bios.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "hw/io_regs.h"

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/audio.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "overworld/room_script.h"
 
 typedef struct ShowRoomDialogRecord {

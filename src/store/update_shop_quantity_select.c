@@ -5,7 +5,7 @@
 #include "game/save.h"
 #include "graphics/audio.h"
 #include "input.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "overworld/room_script.h"
 #include "shop.h"
 #include "shop_inline.h"

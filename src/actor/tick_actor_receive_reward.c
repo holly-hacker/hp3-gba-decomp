@@ -5,7 +5,7 @@
 #include "game/items.h"
 #include "game/rewards.h"
 #include "graphics/audio.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"

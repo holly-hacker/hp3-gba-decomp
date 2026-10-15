@@ -3,7 +3,7 @@
 #include "actor.h"
 #include "graphics/scanline_effects.h"
 #include "input.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 

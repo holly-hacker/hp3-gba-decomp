@@ -198,7 +198,7 @@
 .set g_pMenuCursorActor,                              0x03002E08  @ Actor *: cursor actor created by BeginMenuScreen; see include/menu/main_menu.h
 .set g_dwDementorMinigameScriptFlag_candidate,         0x03002E10  @ u32: set by StartMinigame
 .set g_DementorMinigame,                               0x03002E18  @ DementorMinigameState
-.set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/menu/dialog.h
+.set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/dialogue.h
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8  @ u8 *: 0x400-byte buffer, allocated by InitDialogBox
 .set g_awSavedBgPalette0,                              0x03002EAC  @ u16[16]: BG palette bank 0 saved by InitializeDialogue and InitializeChooseCharacter, restored by their exits
 .set g_adwSavedBgPriority,                             0x03002ED0  @ u32[2]: BG0/BG1 priority saved by InitializeDialogue, restored by ExitDialogue

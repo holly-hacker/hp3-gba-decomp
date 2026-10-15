@@ -2,7 +2,7 @@
 #include "background.h"
 #include "graphics/display.h"
 #include "actor.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

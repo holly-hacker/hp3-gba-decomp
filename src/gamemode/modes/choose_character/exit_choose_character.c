@@ -4,7 +4,7 @@
 #include "actor.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "menu/choose_character.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

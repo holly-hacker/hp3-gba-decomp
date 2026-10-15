@@ -6,7 +6,7 @@
 #include "actor.h"
 #include "graphics/scanline_effects.h"
 #include "font.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

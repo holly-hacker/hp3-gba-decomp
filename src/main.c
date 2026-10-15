@@ -16,7 +16,7 @@
 #include "graphics/audio.h"
 #include "graphics/scanline_effects.h"
 #include "menu/main_menu.h"
-#include "menu/dialog.h"
+#include "dialogue.h"
 #include "overworld/room.h"
 #include "math.h"
 #include "game/game_timer.h"

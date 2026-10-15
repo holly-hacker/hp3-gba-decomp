@@ -756,15 +756,15 @@ c-file 0x0801F228 _ src/dementor_minigame/launch_dementor_minigame_dementor.c La
 c-file 0x0801F260 _ src/gamemode/modes/startup/initialize_startup.c InitializeStartup
 c-file 0x0801F368 _ src/gamemode/modes/startup/update_startup.c UpdateStartup
 c-file 0x0801F50C _ src/gamemode/modes/startup/exit_startup.c ExitStartup
-c-file 0x0801F51C _ src/gamemode/modes/dialogue/initialize_dialogue.c InitializeDialogue
-c-file 0x0801F63C 0x0801F794 src/gamemode/modes/dialogue/update_dialogue_box.c UpdateDialogueBox
+c-file 0x0801F51C _ src/dialogue/initialize_dialogue.c InitializeDialogue
+c-file 0x0801F63C 0x0801F794 src/dialogue/update_dialogue_box.c UpdateDialogueBox
 thumb-func 0x0801F794 sub_0801F7AC
 thumb-func 0x0801F80C sub_0801F824
 thumb-func 0x0801F8D4 sub_0801F8EC
 thumb-func 0x0801F950 sub_0801F968
 thumb-func 0x0801FA00 sub_0801FA18
 thumb-func 0x0801FA84 sub_0801FA9C
-c-file 0x0801FADC 0x0801FB3C src/gamemode/modes/dialogue/exit_dialogue.c ExitDialogue
+c-file 0x0801FADC 0x0801FB3C src/dialogue/exit_dialogue.c ExitDialogue
 thumb-func 0x0801FB3C ShowRoomDialogBox_candidate
 c-file 0x0801FB60 0x0801FB8C src/text/init_dialog_box.c InitDialogBox
 thumb-func 0x0801FB8C sub_0801FBA4
@@ -2219,7 +2219,7 @@ c-file 0x0805DFCC 0x0805E030 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E038 _ src/menu/common_bg2_control.c g_dwCommonBg2Control
 c-file 0x0805E03C _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file 0x0805E1AC _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
-c-file 0x0805E1B8 0x0805E1C8 src/gamemode/modes/dialogue/dialogue.globals.c g_aDialogScanlineEffects
+c-file 0x0805E1B8 0x0805E1C8 src/dialogue/dialogue.globals.c g_aDialogScanlineEffects
 c-file 0x0805EA3C _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EAC8 _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
