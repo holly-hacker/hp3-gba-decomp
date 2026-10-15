@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/io_regs.h"
-#include "checksum.h"
+#include "crc.h"
 #include "gamecube.h"
 
 // Loads the next send-buffer halfword into JOY_TRANS as a JOYBUS_WORD_SEND_DATA word with its

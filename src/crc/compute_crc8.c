@@ -1,4 +1,4 @@
-#include "checksum.h"
+#include "crc.h"
 
 u8 ComputeCrc8(const u8 *data, u32 len)
 {

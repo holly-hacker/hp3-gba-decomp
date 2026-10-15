@@ -101,7 +101,7 @@ Each GameCube word is dispatched on its low byte:
   buffer and its byte count; `HandleJoybusTransmit`/`TransmitJoybusWord`
   (`0x08021A00`) then emit one `0xA0` word per halfword plus checksum.
 
-`ComputeJoybusChecksum` (`0x0801D4A8`, `src/checksum/compute_joybus_checksum.c`) is a CRC-8 with
+`ComputeJoybusChecksum` (`0x0801D4A8`, `src/crc/compute_joybus_checksum.c`) is a CRC-8 with
 polynomial `0x1CD` over the halfword's low byte, then its high byte, each
 MSB first, followed by eight zero-bit rounds. Its only callers are the
 five JOYBUS functions above.

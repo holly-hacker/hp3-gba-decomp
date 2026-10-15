@@ -769,8 +769,8 @@ c-file 0x0801D360 _ src/room/opcodes/room_script_op_set_pending_chain_from_exit_
 c-file 0x0801D390 _ src/room/compare_and_branch_room_script.c CompareAndBranchRoomScript
 
 # Comms? (Joybus checksum)
-c-file 0x0801D464 _ src/checksum/compute_crc8.c ComputeCrc8
-c-file 0x0801D4A8 _ src/checksum/compute_joybus_checksum.c ComputeJoybusChecksum
+c-file 0x0801D464 _ src/crc/compute_crc8.c ComputeCrc8
+c-file 0x0801D4A8 _ src/crc/compute_joybus_checksum.c ComputeJoybusChecksum
 
 # Credits (credits and linear cutscene modes)
 c-file 0x0801D518 _ src/cutscene/initialize_credits.c InitializeCredits

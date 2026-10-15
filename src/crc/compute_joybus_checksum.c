@@ -1,4 +1,4 @@
-#include "checksum.h"
+#include "crc.h"
 
 u8 ComputeJoybusChecksum(u16 value)
 {
