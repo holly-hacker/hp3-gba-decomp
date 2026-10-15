@@ -27,7 +27,7 @@ void InitializeTopicScreen(void)
         break;
     case 4:
         StartHelpScreen(g_aHelpDementors, 1);
-        SetHelpExitMode(HarryVsDementorsMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
+        SetHelpExitMode(DementorMinigame, 6, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
         break;
     case 6:
         StartHelpScreen(g_aHelpMenuMain, 1);

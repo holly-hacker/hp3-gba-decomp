@@ -727,8 +727,8 @@ thumb-func 0x0801E058 BeginMenuScreen
 thumb-func 0x0801E0D4 sub_0801E0D8
 thumb-func 0x0801E0D8 ExitMenuScreen
 thumb-func 0x0801E114 DrawMenuScreenTitle
-c-file 0x0801E170 _ src/gamemode/modes/minigame/harry_vs_dementors/initialize_harry_vs_dementors_minigame.c InitializeHarryVsDementorsMinigame
-c-file 0x0801E27C 0x0801E410 src/gamemode/modes/minigame/harry_vs_dementors/update_harry_vs_dementors_minigame.c UpdateHarryVsDementorsMinigame
+c-file 0x0801E170 _ src/dementor_minigame/initialize_dementor_minigame.c InitializeDementorMinigame
+c-file 0x0801E27C 0x0801E410 src/dementor_minigame/update_dementor_minigame.c UpdateDementorMinigame
 thumb-func 0x0801E410 sub_0801E414
 thumb-func 0x0801E560 sub_0801E564
 thumb-func 0x0801E5F0 sub_0801E5F4
@@ -739,7 +739,7 @@ thumb-func 0x0801EA70 sub_0801EA74
 thumb-func 0x0801EAF4 sub_0801EAF8
 thumb-func 0x0801EC30 sub_0801EC34
 thumb-func 0x0801ED44 sub_0801ED48
-c-file 0x0801EE18 0x0801EE60 src/gamemode/modes/minigame/harry_vs_dementors/exit_harry_vs_dementors_minigame.c ExitHarryVsDementorsMinigame
+c-file 0x0801EE18 0x0801EE60 src/dementor_minigame/exit_dementor_minigame.c ExitDementorMinigame
 thumb-func 0x0801EE60 sub_0801EE64
 thumb-func 0x0801EEA8 sub_0801EEAC
 thumb-func 0x0801EEE8 sub_0801EEEC
@@ -2217,7 +2217,7 @@ c-file 0x0805BB2C 0x0805BB30 src/room/special_scene_bg_control.c g_dwSpecialScen
 c-file 0x0805DF4C _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805DFCC 0x0805E030 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E038 0x0805E03C src/menu/common_bg2_control.c g_dwCommonBg2Control
-c-file 0x0805E0A0 0x0805E0A8 src/gamemode/modes/minigame/harry_vs_dementors/harry_vs_dementors.globals.c g_dwHarryVsDementorsBg0Control
+c-file 0x0805E0A0 0x0805E0A8 src/dementor_minigame/dementor_minigame.globals.c g_dwDementorMinigameBg0Control
 c-file 0x0805E1AC _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E1B8 0x0805E1C8 src/gamemode/modes/dialogue/dialogue.globals.c g_aDialogScanlineEffects
 c-file 0x0805EA3C _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control

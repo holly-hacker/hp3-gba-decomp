@@ -1,6 +1,6 @@
 #include "types.h"
 #include "game/game_modes.h"
-#include "minigame/harry_vs_dementors.h"
+#include "dementor_minigame.h"
 #include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
 #include "overworld/room_script.h"
@@ -44,11 +44,11 @@ void RoomScriptOpStartMinigame(StartMinigameRecord *pRecord)
             PushGameMode_3(BuckbeakMinigame, 6, 0, pRecord->bParam);
         break;
     case 4:
-        g_dwHarryVsDementorsMinigameScriptFlag_candidate = 1;
+        g_dwDementorMinigameScriptFlag_candidate = 1;
         if (pRecord->bShowHelp)
             PushGameMode_3(HelpTopicScreen, 6, 4, pRecord->bParam);
         else
-            PushGameMode_3(HarryVsDementorsMinigame, 6, 0, pRecord->bParam);
+            PushGameMode_3(DementorMinigame, 6, 0, pRecord->bParam);
         break;
     }
 }

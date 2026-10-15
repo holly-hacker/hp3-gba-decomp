@@ -30,7 +30,7 @@ extern void ExitGameCubeLink();
 extern void ExitGameSave();
 extern void ExitHarryHermionePortInTimeCutscene();
 extern void ExitHarryPatronusCutscene();
-extern void ExitHarryVsDementorsMinigame();
+extern void ExitDementorMinigame();
 extern void ExitHelpScreen();
 extern void ExitHighScoreNameEntry();
 extern void ExitHippogriffFliesIntoAirCutscene();
@@ -97,7 +97,7 @@ extern void InitializeGameCubeLink();
 extern void InitializeGameSave();
 extern void InitializeHarryHermionePortInTimeCutscene();
 extern void InitializeHarryPatronusCutscene();
-extern void InitializeHarryVsDementorsMinigame();
+extern void InitializeDementorMinigame();
 extern void InitializeHelp();
 extern void InitializeHighScoreNameEntryScreen();
 extern void InitializeHippogriffFliesIntoAirCutscene();
@@ -158,7 +158,7 @@ extern void UpdateGameCubeLink();
 extern void UpdateGameSave();
 extern void UpdateHarryHermionePortInTimeCutscene();
 extern void UpdateHarryPatronusCutscene();
-extern void UpdateHarryVsDementorsMinigame();
+extern void UpdateDementorMinigame();
 extern void UpdateHelp();
 extern void UpdateHighScoreNameEntry();
 extern void UpdateHippogriffFliesIntoAirCutscene();
@@ -240,7 +240,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeClockSkipCutscene, UpdateClockSkipCutscene, ExitClockSkipCutscene },
     { InitializeHogwartsUpNightCutscene, UpdateHogwartsUpNightCutscene, ExitHogwartsUpNightCutscene },
     { InitializePurpleScreenReturnToMenu, UpdatePurpleScreenReturnToMenu, ExitPurpleScreenReturnToMenu },
-    { InitializeHarryVsDementorsMinigame, UpdateHarryVsDementorsMinigame, ExitHarryVsDementorsMinigame },
+    { InitializeDementorMinigame, UpdateDementorMinigame, ExitDementorMinigame },
     { InitializeHarryHermionePortInTimeCutscene, UpdateHarryHermionePortInTimeCutscene, ExitHarryHermionePortInTimeCutscene },
     { InitializeHarryPatronusCutscene, UpdateHarryPatronusCutscene, ExitHarryPatronusCutscene },
     { InitializeLupinPotionCutscene, UpdateLupinPotionCutscene, ExitLupinPotionCutscene },

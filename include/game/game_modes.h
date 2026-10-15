@@ -55,7 +55,7 @@ typedef enum {
     ClockSkipCutscene                = 0x30,
     HogwartsUpNightCutscene          = 0x31,
     PurpleScreenReturnToMenu         = 0x32,
-    HarryVsDementorsMinigame         = 0x33,
+    DementorMinigame                 = 0x33,
     HarryHermionePortInTimeCutscene  = 0x34,
     HarryPatronusCutscene            = 0x35,
     LupinPotionCutscene              = 0x36,

@@ -39,7 +39,7 @@ void ExitOverworldScreen(void)
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == InGameMenu
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Options
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == BoggartMinigame
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HarryVsDementorsMinigame
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == DementorMinigame
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == WizardCrackerPopItMinigame
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HelpTopicScreen
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == ClockSkipCutscene

@@ -2,23 +2,23 @@
 #include "graphics/audio.h"
 #include "menu/minigame_menu.h"
 #include "game/game_modes.h"
-#include "minigame/harry_vs_dementors.h"
+#include "dementor_minigame.h"
 #include "input.h"
 
-void UpdateHarryVsDementorsMinigame(void)
+void UpdateDementorMinigame(void)
 {
-    if (g_HarryVsDementors.dwEventTimer60 != 0 && --g_HarryVsDementors.dwEventTimer60 == 0)
-        sub_0801ED48(g_HarryVsDementors.dwEventArg64);
+    if (g_DementorMinigame.dwEventTimer60 != 0 && --g_DementorMinigame.dwEventTimer60 == 0)
+        sub_0801ED48(g_DementorMinigame.dwEventArg64);
 
-    if (g_HarryVsDementors.dwHideTimer5C != 0 && --g_HarryVsDementors.dwHideTimer5C == 0)
-        g_HarryVsDementors.pActor18->dwFlags &= ~ActorFlagVisible;
+    if (g_DementorMinigame.dwHideTimer5C != 0 && --g_DementorMinigame.dwHideTimer5C == 0)
+        g_DementorMinigame.pActor18->dwFlags &= ~ActorFlagVisible;
 
-    if (g_HarryVsDementors.dwHideTimer68 != 0 && --g_HarryVsDementors.dwHideTimer68 == 0)
-        g_HarryVsDementors.pActor1C->dwFlags &= ~ActorFlagVisible;
+    if (g_DementorMinigame.dwHideTimer68 != 0 && --g_DementorMinigame.dwHideTimer68 == 0)
+        g_DementorMinigame.pActor1C->dwFlags &= ~ActorFlagVisible;
 
     switch (g_GameModeStackContext.dwModeState)
     {
-    case HarryVsDementorsStatePlaying:
+    case DementorMinigameStatePlaying:
         if (g_wKeysPressed & KeyStart)
         {
             sub_0801E5F4();
@@ -35,19 +35,19 @@ void UpdateHarryVsDementorsMinigame(void)
         else if (g_wKeysPressed & KeyDown)
             sub_0801EAF8(1);
 
-        if (g_HarryVsDementors.bUnk4C == 0)
+        if (g_DementorMinigame.bUnk4C == 0)
             sub_0801E564();
         else
             sub_0801E6A0();
         break;
-    case HarryVsDementorsStateResultsMenu:
+    case DementorMinigameStateResultsMenu:
         if (g_wKeysPressed & (KeyA | KeyStart))
         {
             PlaySoundById(1);
             switch (g_GameModeStackContext.dwModeScratchB)
             {
             case 0:
-                PushGameMode_3(HarryVsDementorsMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
+                PushGameMode_3(DementorMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 1:
@@ -60,7 +60,7 @@ void UpdateHarryVsDementorsMinigame(void)
             PlaySoundById(0);
         }
         break;
-    case HarryVsDementorsStatePauseMenu:
+    case DementorMinigameStatePauseMenu:
         if (g_wKeysPressed & KeyA)
         {
             PlaySoundById(1);
@@ -70,7 +70,7 @@ void UpdateHarryVsDementorsMinigame(void)
                 sub_0801EFF4();
                 break;
             case 1:
-                PushGameMode_3(HarryVsDementorsMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
+                PushGameMode_3(DementorMinigame, 6, g_GameModeStackContext.dwCurrentGameModeArg2,
                                g_GameModeStackContext.dwCurrentGameModeArg3);
                 break;
             case 2:

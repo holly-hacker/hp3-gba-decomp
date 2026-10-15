@@ -184,8 +184,8 @@
 .set g_pDecompressGammaLzIwram, 0x03002ACC
 
 .set g_pMenuCursorActor,                              0x03002E08  @ see ram_symbols.us.inc
-.set g_dwHarryVsDementorsMinigameScriptFlag_candidate, 0x03002E10  @ set by StartMinigame
-.set g_HarryVsDementors,                               0x03002E18  @ see ram_symbols.us.inc
+.set g_dwDementorMinigameScriptFlag_candidate,         0x03002E10  @ set by StartMinigame
+.set g_DementorMinigame,                               0x03002E18  @ see ram_symbols.us.inc
 .set g_DialogState_candidate,                          0x03002E88
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8
 .set g_awSavedBgPalette0,                              0x03002EAC  @ see ram_symbols.us.inc

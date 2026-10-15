@@ -5,9 +5,9 @@
 #include "menu/minigame_menu.h"
 #include "gen/graphics/minigames/boggart.h"
 
-extern u32 g_dwHarryVsDementorsMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
+extern u32 g_dwDementorMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
 
-// Harry vs Dementors, game mode 0x33 (HarryVsDementorsMinigame).
+// Harry vs Dementors, game mode 0x33 (DementorMinigame).
 
 // The mode's screen state at 0x03002E18, driven by g_GameModeStackContext.dwModeState.
 typedef struct {
@@ -33,21 +33,21 @@ typedef struct {
     u32 dwEventTimer60;      // 0x60; frames until sub_0801ED48(dwEventArg64) runs
     u32 dwEventArg64;
     u32 dwHideTimer68;       // 0x68; frames until pActor1C is hidden
-} HarryVsDementorsState;
+} DementorMinigameState;
 
-extern HarryVsDementorsState g_HarryVsDementors;  // 0x03002E18
+extern DementorMinigameState g_DementorMinigame;  // 0x03002E18
 
 // BG control words, per-level BG0 graphics and the two spawned actors' data.
-extern const u32 g_dwHarryVsDementorsBg0Control;  // 0x0805E174
-extern const u32 g_dwHarryVsDementorsBg3Control;  // 0x0805E178
+extern const u32 g_dwDementorMinigameBg0Control;  // 0x0805E174
+extern const u32 g_dwDementorMinigameBg3Control;  // 0x0805E178
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.
 typedef enum {
-    HarryVsDementorsStatePlaying = 0,
-    HarryVsDementorsStateResultsMenu = 1,
-    HarryVsDementorsStatePauseMenu = 2,
-} HarryVsDementorsMode;
+    DementorMinigameStatePlaying = 0,
+    DementorMinigameStateResultsMenu = 1,
+    DementorMinigameStatePauseMenu = 2,
+} DementorMinigameMode;
 
 extern void sub_0801E414(void);
 extern void sub_0801E564(void);

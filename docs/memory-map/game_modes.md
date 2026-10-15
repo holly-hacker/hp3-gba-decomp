@@ -221,7 +221,7 @@ PROVEN from US decompiles; the state names in the headers are provisional.
 | 0x24 `UnusedServePumpkinJuiceMinigame` | `g_ServePumpkinJuice` (`0x03005238`) | `include/minigame/serve_pumpkin_juice.h` | none |
 | 0x2B `BuckbeakMinigame` | `*g_pBuckbeakMinigame` (`0x03002088`, allocated 0x1F0 bytes) | `include/buckbeak_minigame.h` | `aadwHighScores[HighScoreBuckbeak]` |
 | 0x2F `BoggartMinigame` | `g_BoggartMinigame` (`0x03002048`) | `include/boggart_minigame.h` | `aadwHighScores[HighScoreBoggart]` |
-| 0x33 `HarryVsDementorsMinigame` | `g_HarryVsDementors` (`0x03002E18`) | `include/minigame/harry_vs_dementors.h` | none |
+| 0x33 `DementorMinigame` | `g_DementorMinigame` (`0x03002E18`) | `include/dementor_minigame.h` | none |
 
 - Each update handler is a `switch` on `dwModeState`; the handlers only
   drive the state machine and call the screen's own helpers, which are not

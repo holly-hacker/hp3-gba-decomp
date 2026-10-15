@@ -149,7 +149,7 @@ Arguments:
 
 ### `PurpleScreenReturnToMenu` (0x32)
 
-### `HarryVsDementorsMinigame` (0x33)
+### `DementorMinigame` (0x33)
 
 ### `HarryHermionePortInTimeCutscene` (0x34)
 
