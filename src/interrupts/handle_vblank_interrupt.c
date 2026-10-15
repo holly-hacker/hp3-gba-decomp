@@ -77,7 +77,7 @@ void HandleVBlankInterrupt(void)
         sub_08045988();
 
         if (g_pVBlankState->pVBlankCallback != NULL)
-            ((void (*)(void))g_pVBlankState->pVBlankCallback)();
+            g_pVBlankState->pVBlankCallback();
 
         sub_0800D304();
 

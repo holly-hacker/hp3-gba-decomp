@@ -76,7 +76,7 @@
 
 .set g_BgState,        0x03001E80  @ see ram_symbols.us.inc
 
-@ Forces one extra CommitBgLayers call this vblank; see include/hw/vblank.h.
+@ Forces one extra CommitBgLayers call this vblank; see include/interrupts.h.
 .set g_bForcePendingBgWritesFlush,               0x03002038
 .set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ set by StartMinigame
 .set g_BoggartMinigame,                          0x03002048  @ see ram_symbols.us.inc
@@ -268,7 +268,7 @@
 
 @ Set by InitInterruptSystem to &g_VBlankState; read by every interrupt
 @ handler (HandleVBlankInterrupt, HandleHBlankInterrupt,
-@ HandleTimer0Interrupt, HandleTimer3OrSerialInterrupt,
+@ HandleTimer0Interrupt, HandleTimer3Interrupt,
 @ HandleVCountInterrupt), not just vblank-related code -- Mt19937AutoSeed
 @ also reads its dwVBlankCount field for entropy, but that's a secondary
 @ consumer, not what the struct is for.
@@ -279,14 +279,14 @@
                                     @ points here
 
 @ Sticky software copy of acked hardware IF bits, ORed by every interrupt
-@ handler after acking its own bit in IF. See include/hw/vblank.h.
+@ handler after acking its own bit in IF. See include/interrupts.h.
 .set g_wPendingIntrFlags, 0x03003804  @ see ram_symbols.us.inc
 
 @ Reentrancy guard for HandleVBlankInterrupt; body only runs while this
-@ reads back as 1. See include/hw/vblank.h.
+@ reads back as 1. See include/interrupts.h.
 .set g_dwVBlankIntrNestCount, 0x03003808
 
-@ OAM DMA half-toggle; see include/hw/vblank.h.
+@ OAM DMA half-toggle; see include/interrupts.h.
 .set g_bOamDmaHalfToggle,                    0x0300380C
 .set g_ItemInventory,                     0x03003810
 .set g_dwUnusedHogwartsMapShownBg,           0x03003AB0

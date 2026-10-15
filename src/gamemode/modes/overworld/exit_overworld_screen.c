@@ -2,6 +2,7 @@
 #include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "interrupts.h"
 #include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "hw/mem.h"
@@ -66,7 +67,7 @@ void ExitOverworldScreen(void)
         RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
 
     sub_08024918();
-    sub_08026254();
+    RestoreDefaultVBlankCallback();
 
     if (g_dwGameModeFlags & 0x80000)
         g_dwGameModeFlags |= 0x400000;

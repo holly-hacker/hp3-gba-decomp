@@ -1,10 +1,7 @@
 #include "interrupts.h"
+#include "interrupts_inline.h"
 
-// A NULL callback installs IntrDummy rather than clearing the slot.
-void SetVBlankCallback(void *callback)
+void SetVBlankCallback(void (*callback)(void))
 {
-    if (callback == NULL)
-        g_pVBlankState->pVBlankCallback = IntrDummy;
-    else
-        g_pVBlankState->pVBlankCallback = callback;
+    SetVBlankCallbackInline(callback);
 }

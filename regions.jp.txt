@@ -970,22 +970,22 @@ c-file 0x08025EE0 _ src/gamemode/modes/help_topic_screen/exit_topic_screen.c Exi
 c-file 0x08025EEC _ src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file 0x080260C4 _ src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x08026104 _ src/interrupts/enable_interrupts.c EnableInterrupts
-c-file 0x08026138 0x0802618C src/interrupts/install_interrupt_handler.c InstallInterruptHandler
-thumb-func 0x0802618C SetIntrFunc
-thumb-func 0x0802619C ResetIntrFunc
-c-file 0x080261B4 0x080261E0 src/interrupts/set_vblank_callback.c SetVBlankCallback
-thumb-func 0x080261E0 sub_08026184
+c-file 0x08026138 _ src/interrupts/install_interrupt_handler.c InstallInterruptHandler
+c-file 0x0802618C _ src/interrupts/set_intr_func.c SetIntrFunc
+c-file 0x0802619C _ src/interrupts/reset_intr_func.c ResetIntrFunc
+c-file 0x080261B4 _ src/interrupts/set_vblank_callback.c SetVBlankCallback
+c-file 0x080261E0 _ src/interrupts/set_hblank_callback.c SetHBlankCallback
 c-file 0x0802620C _ src/interrupts/set_vcount_callback.c SetVCountCallback
 c-file 0x08026238 _ src/interrupts/wait_for_vblank_intr.c WaitForVBlankIntr
-c-file 0x08026254 0x08026278 src/interrupts/enable_vcount_interrupt.c EnableVCountInterrupt
-thumb-func 0x08026278 sub_0802621C
-c-file 0x080262A0 0x080262B0 src/interrupts/vblank_callback.c VBlankCallback
-thumb-func 0x080262B0 sub_08026254
-thumb-func 0x080262E0 HandleHBlankInterrupt_candidate
-thumb-func 0x08026318 HandleVCountInterrupt
-thumb-func 0x08026350 HandleTimer0Interrupt_candidate
-thumb-func 0x08026378 HandleTimer3Interrupt_candidate
-thumb-func 0x080263A0 IntrDummy
+c-file 0x08026254 _ src/interrupts/enable_vcount_interrupt.c EnableVCountInterrupt
+c-file 0x08026278 _ src/interrupts/disable_vcount_interrupt.c DisableVCountInterrupt
+c-file 0x080262A0 _ src/interrupts/vblank_callback.c VBlankCallback
+c-file 0x080262B0 _ src/interrupts/restore_default_vblank_callback.c RestoreDefaultVBlankCallback
+c-file 0x080262E0 _ src/interrupts/handle_hblank_interrupt.c HandleHBlankInterrupt
+c-file 0x08026318 _ src/interrupts/handle_vcount_interrupt.c HandleVCountInterrupt
+c-file 0x08026350 _ src/interrupts/handle_timer0_interrupt.c HandleTimer0Interrupt
+c-file 0x08026378 _ src/interrupts/handle_timer3_interrupt.c HandleTimer3Interrupt
+c-file 0x080263A0 _ src/interrupts/intr_dummy.c IntrDummy
 c-file 0x080263A4 _ src/room/actors/spawn_trigger_rect_actor.c SpawnTriggerRectActor
 c-file 0x08026470 0x0802654C src/room/actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
 thumb-func 0x0802654C sub_080264F0

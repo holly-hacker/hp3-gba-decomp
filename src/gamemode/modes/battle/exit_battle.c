@@ -2,6 +2,7 @@
 #include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "interrupts.h"
 #include "game/game_modes.h"
 #include "hw/mem.h"
 #include "graphics/graphics.h"
@@ -30,7 +31,7 @@ void ExitBattle(void)
         ResetPaletteAnimations();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
-        sub_08026254();
+        RestoreDefaultVBlankCallback();
         FreeFloorEffect();
         ResetBgLayers();
         ClearPaletteRam();
@@ -112,7 +113,7 @@ void ExitBattle(void)
         ResetPaletteAnimations();
         sub_08031668(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
-        sub_08026254();
+        RestoreDefaultVBlankCallback();
         FreeFloorEffect();
         ResetBgLayers();
         ClearPaletteRam();
