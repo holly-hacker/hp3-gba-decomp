@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "serial/serial.h"
 
 // Queues a message for the next exchange unless a message of a higher type is already waiting.

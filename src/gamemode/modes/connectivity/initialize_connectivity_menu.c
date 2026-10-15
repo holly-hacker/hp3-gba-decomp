@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "game/save.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "menu/connectivity.h"
 #include "menu/in_game_menu.h"
 

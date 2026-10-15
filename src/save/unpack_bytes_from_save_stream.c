@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/save.h"
 
 // Copies len bytes out of the slot stream, first skipping to the next byte

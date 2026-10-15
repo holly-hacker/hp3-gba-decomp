@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/game_modes.h"
 #include "graphics/palette.h"
 #include "overworld/overworld.h"

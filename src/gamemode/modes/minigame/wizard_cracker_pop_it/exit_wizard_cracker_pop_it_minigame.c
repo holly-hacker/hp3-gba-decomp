@@ -4,7 +4,7 @@
 #include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/minigame_menu.h"
 #include "minigame/wizard_cracker_pop_it.h"

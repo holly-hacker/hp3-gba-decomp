@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "graphics/audio.h"
 
 // Runs one actor's per-frame update for TickActorList: frees it if marked for

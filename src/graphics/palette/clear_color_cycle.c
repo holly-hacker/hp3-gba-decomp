@@ -1,5 +1,5 @@
 #include "graphics/palette.h"
-#include "hw/mem.h"
+#include "mem.h"
 
 void ClearColorCycle(ColorCycle *pCycle)
 {

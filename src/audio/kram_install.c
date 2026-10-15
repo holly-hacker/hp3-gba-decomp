@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "mem_clear.h"
 #include "graphics/audio.h"
 

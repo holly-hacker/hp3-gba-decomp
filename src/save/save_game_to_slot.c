@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "graphics/audio.h"
 #include "game/save.h"
 #include "game/save_slot_preview.h"

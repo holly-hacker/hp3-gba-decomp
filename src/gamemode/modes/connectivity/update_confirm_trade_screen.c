@@ -5,7 +5,7 @@
 #include "game/game_modes.h"
 #include "game/game_save.h"
 #include "input.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/connectivity.h"
 #include "menu/in_game_menu.h"

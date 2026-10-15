@@ -1,5 +1,5 @@
 #include "font.h"
-#include "hw/mem.h"
+#include "mem.h"
 
 void InitTextMacroTable(void)
 {

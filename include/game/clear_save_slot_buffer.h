@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/save.h"
 
 // Zeroes the slot buffer.

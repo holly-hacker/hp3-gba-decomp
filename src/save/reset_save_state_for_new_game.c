@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/save.h"
 
 // Clears the live save state and starts a fresh quest state, for the main

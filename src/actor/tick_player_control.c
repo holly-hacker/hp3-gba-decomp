@@ -1,7 +1,7 @@
 #include "types.h"
 #include "input.h"
 #include "actor.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "graphics/oam.h"
-#include "hw/mem.h"
+#include "mem.h"
 
 // cellFlags bit 1 (TickActorList's extra OAM pass) mirrors the sprite
 // vertically; bits 0-1 show the cells on alternate vblanks only.

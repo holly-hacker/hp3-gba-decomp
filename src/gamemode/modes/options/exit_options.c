@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "menu/main_menu.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/options.h"
 #include "game/save.h"

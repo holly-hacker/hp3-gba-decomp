@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "direction.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "graphics/graphics.h"
 #include "graphics/oam.h"
 

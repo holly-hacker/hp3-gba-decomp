@@ -19,7 +19,7 @@ registered (by `InitHeap`, spanning ~all of EWRAM):
   becomes the owning pool index, `+0xC` becomes `-1` as a live marker.
 - `InitMemoryPool`, `GetFreeBlockSize`, `LinkBlockByAddress`,
   `LinkFreeBlock`, `UnlinkFreeBlock`, `memset`, `AllocBlock`,
-  `AllocZeroed` are all matched in `src/mem/`. Types in `include/hw/mem.h`.
+  `AllocZeroed` are all matched in `src/mem/`. Types in `include/mem.h`.
   See also "Generic intrusive list / active-actor list" below for
   `BuildFreeList` and the `List_*` functions.
 

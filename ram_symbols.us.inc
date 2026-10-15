@@ -11,7 +11,7 @@
 @ The dialog-text-engine symbols have no JP counterpart at all (that
 @ engine isn't present in the JP ROM -- see docs/formats/text.md).
 
-@ --- Statically linked RAM sections (see include/hw/mem.h and ClearWorkRam) ---
+@ --- Statically linked RAM sections (see include/mem_clear.h and ClearWorkRam) ---
 .set g_EwramSectionStart,     0x02000000
 .set g_EwramSectionEnd,       0x020027F8  @ ClearWorkRam zeroes EWRAM from here
 .set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM
@@ -44,9 +44,9 @@
 .set g_pTimer2DebugPc,        0x030015A0  @ code ptr: IntrMain stores [sp,#0x14] here on a Timer 2 IRQ
                                           @ (saved lr per the BIOS IRQ frame, unverified); read by
                                           @ HandleTimer2Interrupt
-.set g_ActiveActorListState, 0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/hw/mem.h
+.set g_ActiveActorListState, 0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/actor.h
 
-@ --- Per-tick actor queues (see include/hw/mem.h and TickActorList) ---
+@ --- Per-tick actor queues (see include/actor.h and TickActorList) ---
 .set g_apOamQueue,             0x030015B8  @ Actor *[0x69]: onscreen actors drawn in depth order
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760  @ Actor *[15]: visible actors with sprite cells
@@ -56,13 +56,13 @@
 .set g_apCollisionQueue,             0x030017A4  @ Actor *[0x69]: actors awaiting the pairwise check
 .set g_dwCollisionQueueCount,        0x03001948
 
-@ --- Actor pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
+@ --- Actor pool (see docs/memory-map/heap.md and include/actor.h) ---
 .set SortActorsByDepthIwram,            0x0300194C  @ IWRAM copy of SortActorsByDepth
 .set CheckActorCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckActorCollisions
-.set g_ActorPoolState,              0x03001C08  @ ActorPoolState, 0x1B4 bytes; see include/hw/mem.h
+.set g_ActorPoolState,              0x03001C08  @ ActorPoolState, 0x1B4 bytes; see include/actor.h
 .set g_pActorPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwActorListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveActors, never cleared; gates FreeActor's VRAM tile release
-.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitActorPool; see include/hw/mem.h
+.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitActorPool; see include/actor.h
 .set g_ReceivedItemGfx,              0x03001DC8  @ ActorGfxRecord: the item TickActorReceiveReward holds up
 .set g_adwRoomActorUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room actor constructors
 

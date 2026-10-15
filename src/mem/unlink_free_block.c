@@ -1,4 +1,4 @@
-#include "hw/mem.h"
+#include "mem.h"
 
 // Removes block from pool poolIndex's free list.
 void UnlinkFreeBlock(MemBlock *block, u32 poolIndex)

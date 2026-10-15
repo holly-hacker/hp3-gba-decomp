@@ -5,7 +5,7 @@
 #include "graphics/graphics.h"
 #include "buckbeak_minigame.h"
 #include "menu/main_menu.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "gen/graphics/menus.h"
 
 void InitializeBuckbeakMinigame(void)

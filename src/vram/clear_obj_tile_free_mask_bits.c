@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "vram.h"
 
 // Clears tileCount OBJ tiles from firstTile in the pending-free mask; the tiles

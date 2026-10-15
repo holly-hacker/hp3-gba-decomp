@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "game/save.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "input.h"
 #include "game/game_modes.h"

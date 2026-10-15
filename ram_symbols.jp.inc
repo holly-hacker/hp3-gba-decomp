@@ -2,7 +2,7 @@
 @ ram_symbols.us.inc for the full explanation. JP-side values, laid out
 @ like the US file. Symbols with no JP counterpart yet are omitted.
 
-@ --- Statically linked RAM sections (see include/hw/mem.h and ClearWorkRam) ---
+@ --- Statically linked RAM sections (see include/mem_clear.h and ClearWorkRam) ---
 .set g_EwramSectionStart,     0x02000000
 .set g_EwramSectionEnd,       0x020027F8  @ ClearWorkRam zeroes EWRAM from here
 .set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM
@@ -35,7 +35,7 @@
 .set g_pTimer2DebugPc,        0x030015A0  @ see ram_symbols.us.inc
 .set g_ActiveActorListState, 0x030015B0
 
-@ --- Per-tick actor queues (see include/hw/mem.h and TickActorList) ---
+@ --- Per-tick actor queues (see include/actor.h and TickActorList) ---
 .set g_apOamQueue,             0x030015B8
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760
@@ -45,7 +45,7 @@
 .set g_apCollisionQueue,             0x030017A4
 .set g_dwCollisionQueueCount,        0x03001948
 
-@ --- Actor pool (see docs/memory-map/heap.md and include/hw/mem.h) ---
+@ --- Actor pool (see docs/memory-map/heap.md and include/actor.h) ---
 .set SortActorsByDepthIwram,            0x0300194C
 .set CheckActorCollisionsIwram,  0x03001A10
 .set g_ActorPoolState,              0x03001C08

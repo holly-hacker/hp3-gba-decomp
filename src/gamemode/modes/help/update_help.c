@@ -5,7 +5,7 @@
 #include "graphics/display.h"
 #include "input.h"
 #include "hw/io_regs.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/help.h"
 #include "menu/in_game_menu.h"

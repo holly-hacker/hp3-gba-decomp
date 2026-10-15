@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/save.h"
 
 // Unpacks the preview of a valid slot from the slot buffer, or clears the

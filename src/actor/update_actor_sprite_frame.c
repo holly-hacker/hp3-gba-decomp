@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/game_modes.h"
 #include "vram.h"
 

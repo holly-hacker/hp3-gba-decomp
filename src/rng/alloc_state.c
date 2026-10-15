@@ -1,5 +1,5 @@
 #include "mt19937.h"
-#include "hw/mem.h"
+#include "mem.h"
 
 void Mt19937AllocState(void)
 {

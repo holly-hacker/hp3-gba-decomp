@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "interrupts.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 
 void ExitHippogriffFliesIntoAirCutscene(void)

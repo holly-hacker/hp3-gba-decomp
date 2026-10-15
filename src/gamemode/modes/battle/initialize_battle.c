@@ -5,7 +5,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "game/rewards.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "overworld/room.h"
 
 // Battle mode's pInitFn. See docs/memory-map/battle.md.

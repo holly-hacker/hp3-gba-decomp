@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "interrupts.h"
 #include "graphics/scanline_effects.h"
 

@@ -5,7 +5,7 @@
 #include "game/game_modes.h"
 #include "game/game_save.h"
 #include "input.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "gamecube.h"
 #include "menu/gamecube_link.h"

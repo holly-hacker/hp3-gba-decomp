@@ -2,7 +2,7 @@
 #include "menu/items_menu.h"
 #include "hw/io_regs.h"
 #include "menu/main_menu.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/status_equip.h"
 

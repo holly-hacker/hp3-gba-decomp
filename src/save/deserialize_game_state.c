@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/save.h"
 #include "inventory.h"
 #include "overworld/overworld.h"

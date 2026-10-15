@@ -2,7 +2,7 @@
 // middle, byte-fill the remainder), but compiled as ordinary game code,
 // not part of the vendored libc block src/libc/ matches.
 
-#include "hw/mem.h"
+#include "mem.h"
 
 void *memset(void *dst0, int val, u32 len)
 {

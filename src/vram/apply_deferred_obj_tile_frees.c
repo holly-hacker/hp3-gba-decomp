@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "vram.h"
 
 // Returns the tiles freed since the last OAM buffer swap to the allocator

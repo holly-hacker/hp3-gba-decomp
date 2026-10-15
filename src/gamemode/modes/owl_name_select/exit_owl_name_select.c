@@ -2,7 +2,7 @@
 #include "background.h"
 #include "game/game_modes.h"
 #include "graphics/display.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/owl_name_select.h"
 

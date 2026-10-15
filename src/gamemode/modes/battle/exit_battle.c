@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "interrupts.h"
 #include "game/game_modes.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "graphics/graphics.h"
 #include "graphics/palette.h"

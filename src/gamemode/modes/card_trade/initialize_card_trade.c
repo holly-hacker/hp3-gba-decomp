@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "game/game_modes.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "menu/card_trade.h"
 #include "menu/in_game_menu.h"
 #include "menu/main_menu.h"

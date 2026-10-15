@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "game/game_modes.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/main_menu.h"
 #include "minigame/high_score_name_entry.h"

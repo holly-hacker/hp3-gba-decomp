@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/graphics.h"
 #include "actor.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "math.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

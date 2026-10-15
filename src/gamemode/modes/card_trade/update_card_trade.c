@@ -7,7 +7,7 @@
 #include "game/game_save.h"
 #include "game/save.h"
 #include "input.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/card_trade.h"
 #include "menu/folio_universitas.h"

@@ -1,4 +1,4 @@
-#include "hw/mem.h"
+#include "mem.h"
 #include "hw/io_regs.h"
 
 // Registers pool 0 over EWRAM above the statically linked EWRAM section.

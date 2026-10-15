@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "graphics/palette.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/minigame_menu.h"
 

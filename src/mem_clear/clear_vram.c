@@ -1,4 +1,4 @@
-#include "hw/mem.h"
+#include "mem.h"
 #include "mem_clear.h"
 #include "hw/io_regs.h"
 

@@ -1,7 +1,7 @@
 #include "arm_routines.h"
 #include "types.h"
 #include "actor.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "game/game_modes.h"
 
 // Runs one update pass over an actor list. TickActor runs for every actor

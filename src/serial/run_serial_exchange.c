@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/io_regs.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "interrupts.h"
 #include "serial/serial.h"
 

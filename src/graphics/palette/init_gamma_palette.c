@@ -1,7 +1,7 @@
 #include "graphics/palette.h"
 #include "game/save.h"
 #include "hw/io_regs.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "menu/options.h"
 
 void InitGammaPalette(void)

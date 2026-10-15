@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 
 // Copies len bytes, a word at a time when both pointers are word-aligned.
 void *CopyMemory(void *dst, const void *src, u32 len)

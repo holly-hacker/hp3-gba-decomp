@@ -3,7 +3,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "menu/main_menu.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "overworld/room.h"
 

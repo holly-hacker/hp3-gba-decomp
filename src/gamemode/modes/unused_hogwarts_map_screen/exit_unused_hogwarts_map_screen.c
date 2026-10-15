@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "graphics/palette.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "menu/main_menu.h"
 #include "menu/unused_hogwarts_map_screen.h"

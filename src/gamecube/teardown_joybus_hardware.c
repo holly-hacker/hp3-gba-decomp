@@ -1,7 +1,7 @@
 #include "types.h"
 #include "interrupts.h"
 #include "hw/io_regs.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "gamecube.h"
 
 // Ends the session: returns the link port to general-purpose mode, disables the JOY interrupt

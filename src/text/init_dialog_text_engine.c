@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "text.h"
 
 // Selects the default language and allocates the buffer GetDialogText

@@ -3,7 +3,7 @@
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 
 void ExitHogwartsUpNightCutscene(void)

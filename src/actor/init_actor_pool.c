@@ -1,5 +1,5 @@
 #include "arm_routines.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "list.h"
 #include "hw/bios.h"

@@ -6,7 +6,7 @@
 #include "game/game_modes.h"
 #include "menu/items_menu.h"
 #include "menu/main_menu.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 #include "cursor.h"
 

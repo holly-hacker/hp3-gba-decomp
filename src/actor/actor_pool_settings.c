@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "hw/mem.h"
+#include "mem.h"
 
 // Zeroes the actor pool's shared VRAM tile records. Unused.
 void ClearActorPoolAuxBuffer(void)

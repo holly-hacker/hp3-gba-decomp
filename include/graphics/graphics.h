@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "math.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "list.h"
 #include "graphics/oam.h"
 #include "../palette.h"

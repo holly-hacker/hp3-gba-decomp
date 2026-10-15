@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "vram.h"
 
 // Marks tileCount OBJ tiles from firstTile as in use. Whole aligned bytes

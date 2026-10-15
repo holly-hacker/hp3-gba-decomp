@@ -4,7 +4,7 @@
 #include "graphics/palette.h"
 #include "game/game_save.h"
 #include "menu/main_menu.h"
-#include "hw/mem.h"
+#include "mem.h"
 #include "actor.h"
 
 void ExitGameSave(void)
