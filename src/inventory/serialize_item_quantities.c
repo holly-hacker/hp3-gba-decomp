@@ -7,7 +7,7 @@
 // a time.
 void SerializeItemQuantities(void)
 {
-    u8 *pQuantities = g_abItemQuantities;
+    u8 *pQuantities = g_ItemInventory.abQuantities;
     s32 i;
 
     for (i = SAVE_ITEM_QUANTITIES_SIZE / 4 - 1; i >= 0; i--)

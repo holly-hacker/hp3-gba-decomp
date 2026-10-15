@@ -140,3 +140,6 @@
 #define ITEM_CARD_HARRY_POTTER                        130
 
 // 131 is unused padding
+
+// The equipment item list's "Remove" row.
+#define ITEM_REMOVE                                   134

@@ -6,6 +6,7 @@
 #include "input.h"
 #include "menu/items_menu.h"
 #include "shop.h"
+#include "inventory.h"
 
 void UpdateShopBuyList(void)
 {

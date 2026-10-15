@@ -241,7 +241,6 @@ void StartNewGamePlaytime(void);
 extern void ResetPartyHpMpAndStats(void);
 extern void ResetAllPartyLevelsTo1(void);
 extern void InitPartyStatForCurrentLevel(u32 index);
-extern void sub_08026870(void);
 void DeserializeGameStateFromSaveBuffer(void);
 void PackBytesToSaveStream(const void *src, u32 len);
 void PackBitsToSaveStream(const u8 *src, u32 count);

@@ -34,7 +34,6 @@ extern u8 *g_pDialogMacroExpandBuffer;
 extern void InitDialogBox(void);
 
 // Dialog string id for a reward id (item, card or Sickles).
-extern u32 GetRewardNameStringId_candidate(u32 rewardId);
 // Sets the dialog block to show and pushes the dialog game mode.
 extern void ShowRoomDialogBox_candidate(u32 blockId);
 

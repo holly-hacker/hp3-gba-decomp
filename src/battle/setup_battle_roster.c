@@ -156,11 +156,11 @@ void SetupBattleRoster(void)
 
     // `pStagingFighters` is now sorted so that fainted enemies (and unitialized/missing ones) are at the back
 
-    // randomly shift enemy speed values, clamp everyone's speed to [5, 251]
+    // randomly shift enemy agility values, clamp everyone's agility to [5, 251]
     // this still advances the RNG for players, but the value is unused
     JitterEnemyTurnOrder();
 
-    // build actual turn order based on speed (low to high)
+    // build actual turn order based on agility (low to high)
     // ties get resolved by index
     BuildTurnOrder();
 }

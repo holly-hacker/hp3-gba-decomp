@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "hw/mem.h"
 #include "game/save.h"
+#include "inventory.h"
 
 // Reads the three party members' saved fields and then derives their
 // level-dependent stats.
@@ -23,5 +24,5 @@ void DeserializePartyStats(void)
         UnpackBytesFromSaveStream(pStats->aSpellUsageProgress, 10);
         InitPartyStatForCurrentLevel(i);
     }
-    sub_08026870();
+    ApplyEquipmentStatModifiers();
 }

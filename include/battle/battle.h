@@ -59,7 +59,7 @@ typedef struct BattleFighter {
     /*0x24*/ u16 wHp_max;
     /*0x26*/ u16 wMp_max;
     /*0x28*/ u16 wRewardGold;
-    /*0x2A*/ u8 bSpeed;
+    /*0x2A*/ u8 bAgility;
     /*0x2B*/ u8 bAccuracy;
     /*0x2C*/ u8 bCritChance;
     /*0x2D*/ u8 unk2D;
@@ -100,7 +100,7 @@ typedef enum {
 typedef struct MonsterTableRow {
     u16 wHp;                 // 0x00
     u8 bLevel;               // 0x02
-    u8 bSpeed;               // 0x03
+    u8 bAgility;             // 0x03
     u8 bAccuracy;            // 0x04
     u8 bCritChance;          // 0x05
     u16 wDamageMin;          // 0x06
@@ -126,7 +126,7 @@ typedef struct CharacterLevelEntry {
     u16 wHp_max;
     u16 wMp_max;
     u16 wXpDeltaForLevel;
-    u8 bSpeed;
+    u8 bAgility;
     u8 bAccuracy;
     u8 bDefenseFactorPercent;
     u8 bMagicDefensePercent;
@@ -306,8 +306,6 @@ extern void SetPlayerActorAnim(Actor *actor, s32 state);   // 0x08015484, party 
 extern void SetMonsterActorAnim(Actor *actor, u8 state);  // 0x0801539C, monster gfx tables + shadow
 extern void sub_08018B14(u16 damage, s32 fighterIndex);
 extern Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
-extern s32 sub_08026CDC(s32 spellLevel);
-extern s32 sub_08026CF0(s32 spellLevel);
 extern u16 sub_08015334(s32 x, s32 fighterIndex);
 extern u16 sub_080152CC(s32 x, s32 fighterIndex);
 extern void ClearPoisonedFighter_candidate(u8 fighterIndex);  // clears Poisoned, zeroes bPoisonDamage; CurePoison's shared helper
@@ -361,6 +359,7 @@ extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
 // g_aMonsterAttackOffset_candidate is subtracted off to get the destination.
 extern const u8 g_aBattleSlotAnchorPos_candidate[3][2];  // 0x080539A0, [bSlotParam]
 extern const u8 g_aMonsterAttackOffset_candidate[69][2];  // 0x0804FB9C, [rosterIndex]
+extern void RecomputeBaseStatsFromLevel_candidate(u32 character);
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 

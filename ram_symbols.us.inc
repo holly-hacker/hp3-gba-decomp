@@ -303,7 +303,7 @@
 
 @ OAM DMA half-toggle; see include/hw/vblank.h.
 .set g_bOamDmaHalfToggle,                    0x030037AC
-.set g_abItemQuantities,                     0x030037B0  @ u8[132]: owned count per item id, see docs/formats/save.md
+.set g_ItemInventory,                     0x030037B0  @ ItemInventory: item counts and equipped items, see include/game/items.h
 .set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32; see include/menu/unused_hogwarts_map_screen.h
 .set g_pUnusedHogwartsMapCursor,             0x03003A54  @ Actor *
 .set g_pUnusedHogwartsMapBg1Tilemap,         0x03003A58  @ void *

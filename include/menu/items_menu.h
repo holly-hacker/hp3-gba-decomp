@@ -49,7 +49,3 @@ extern void SetItemListCallbacks(void (*onCursorMove)(u32 item), void (*onClear)
 extern void SetItemListTranslucent(void);  // rows and cursor join the alpha-blend fade
 extern void CloseItemList(void);
 
-extern u32 sub_08026D34(s32 item);  // g_pItemTable[item].dwUnk20 bit 2
-// Restores the member's Stamina or Magic with the item, consumes the units
-// needed and returns the result message (0x400 Stamina, 0x401 Magic, 0x403 full).
-extern u32 sub_080269E0(u8 character, s32 item, s32 quantity);

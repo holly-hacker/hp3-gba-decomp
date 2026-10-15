@@ -5,6 +5,7 @@
 #include "overworld/room.h"
 #include "overworld/room_actor.h"
 #include "overworld/room_script.h"
+#include "inventory.h"
 
 // Collision callback of a chest (room actor type 9): decides whether the
 // player or a spell effect opens it. See docs/formats/rooms.md.
@@ -45,7 +46,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
             if (g_wKeysPressed & KeyA)
             {
                 pageGroup = pSelf->modeState.chest.wRewardId + 0x79;
-                canOpen = IsFolioPageGroupUnlocked_candidate(pageGroup);
+                canOpen = IsFolioPageGroupComplete(pageGroup);
                 if (canOpen)
                     canOpen = g_abQuestEventState[pageGroup + 0x14] == 0;
                 if (canOpen)

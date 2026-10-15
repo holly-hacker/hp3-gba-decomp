@@ -127,7 +127,7 @@ PROVEN from US decompiles and ROM tables.
   B pushes `g_StatusEquipReturnMode`, both set by the caller:
   - Pause menu row 0 (`g_aInGameMenuEntries[0]`, text 0x530 "Status/Equip"):
     next `StatusEquipSlotSelect`, return `InGameMenu`/`InGameMenuFadeIn`.
-  - `UpdateItemsItemSelect`, for items with `dwUnk20` bit 2: next
+  - `UpdateItemsItemSelect`, for items with `dwFlags` bit 2: next
     `QuantitySelectScreen` (whose A leads to `ItemUseScreen`), return
     `ItemsItemSelect`. The header shows text 0x531 "Items" instead.
 
@@ -177,7 +177,7 @@ PROVEN from US decompiles, ROM tables and dialog text.
   of the item under the cursor ("Restores @1 Stamina/Magic Points." or
   "You can't use this item now..."). An empty list shows text 0x667 and
   any of A/B returns to 0x10. A on a Stamina/Magic item (item field `+0x24`
-  1 or 2) stores it in `g_dwItemUseItem`; items with `dwUnk20` bit 2 go
+  1 or 2) stores it in `g_dwItemUseItem`; items with `dwFlags` bit 2 go
   through `StatusEquipCharacterSelect` and `QuantitySelectScreen` (which
   sets `g_dwItemUseQuantity`) first, others go straight to 0x12. Other
   items play sound 3.

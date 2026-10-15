@@ -62,7 +62,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
             fighter->wHp_max = g_aPartyMasterStats[type].wHp_max;
             fighter->wMp = g_aPartyMasterStats[type].wMp;
             fighter->wMp_max = g_aPartyMasterStats[type].wMp_max;
-            fighter->bSpeed = g_aPartyMasterStats[type].bSpeed;
+            fighter->bAgility = g_aPartyMasterStats[type].bAgility;
             fighter->bAccuracy = g_aPartyMasterStats[type].bAccuracy;
             fighter->bDefenseFactorPercent = g_aPartyMasterStats[type].bDefenseFactorPercent;
             fighter->bMagicDefensePercent = g_aPartyMasterStats[type].bMagicDefensePercent;
@@ -81,7 +81,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
             fighter->wHp_max = 400;
             fighter->wMp = 999;
             fighter->wMp_max = 999;
-            fighter->bSpeed = 10;
+            fighter->bAgility = 10;
             fighter->bAccuracy = 101;
             fighter->bDefenseFactorPercent = 100;
             fighter->bMagicDefensePercent = 100;

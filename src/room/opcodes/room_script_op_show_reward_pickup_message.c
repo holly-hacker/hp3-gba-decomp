@@ -4,6 +4,7 @@
 #include "font.h"
 #include "text.h"
 #include "overworld/room_script.h"
+#include "inventory.h"
 
 typedef struct ShowRewardPickupMessageRecord {
     u32 dwOpcode;

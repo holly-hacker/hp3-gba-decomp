@@ -12,7 +12,7 @@ const ActorAssetRecord g_aHelpSpriteAssets[22] = {
     { (void *)gItem069Tiles, (void *)gItem069Frames, (void *)gItem069Palette, 0 },  // 4
     { (void *)gItem072Tiles, (void *)gItem072Frames, (void *)gItem072Palette, 0 },  // 5
     { (void *)gItem074Tiles, (void *)gItem074Frames, (void *)gItem074Palette, 0 },  // 6
-    { (void *)gItem071Tiles, (void *)gItem071Frames, (void *)gItem071Palette, 0 },  // 7
+    { (void *)gItemChocolateFrogsTiles, (void *)gItemChocolateFrogsFrames, (void *)gItemChocolateFrogsPalette, 0 },  // 7
     { (void *)gItem073Tiles, (void *)gItem073Frames, (void *)gItem073Palette, 0 },  // 8
     { (void *)gItem078Tiles, (void *)gItem078Frames, (void *)gItem078Palette, 0 },  // 9
     { (void *)gItem064Tiles, (void *)gItem064Frames, (void *)gItem064Palette, 0 },  // 10
@@ -37,7 +37,7 @@ const void *const g_apHelpSpritePalettes[22] = {
     gItem069Palette,
     gItem072Palette,
     gItem074Palette,
-    gItem071Palette,
+    gItemChocolateFrogsPalette,
     gItem073Palette,
     gItem078Palette,
     gItem064Palette,

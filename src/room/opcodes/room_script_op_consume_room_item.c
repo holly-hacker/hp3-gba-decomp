@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room_script.h"
+#include "inventory.h"
 
 typedef struct ConsumeRoomItemRecord {
     u32 dwOpcode;
@@ -8,5 +9,5 @@ typedef struct ConsumeRoomItemRecord {
 
 void RoomScriptOpConsumeRoomItem(ConsumeRoomItemRecord *pRecord)
 {
-    ConsumeBattleItemSlot(pRecord->bItemId, 1);
+    RemoveItems(pRecord->bItemId, 1);
 }

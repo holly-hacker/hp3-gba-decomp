@@ -13,7 +13,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 0: Ruby Fire Crab
         .wHp = 36,
         .bLevel = 10,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 5,
@@ -28,7 +28,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 1: Emerald Fire Crab
         .wHp = 50,
         .bLevel = 12,
-        .bSpeed = 200,
+        .bAgility = 200,
         .bAccuracy = 75,
         .bCritChance = 3,
         .wDamageMin = 20,
@@ -43,7 +43,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 2: Sapphire Fire Crab
         .wHp = 120,
         .bLevel = 15,
-        .bSpeed = 178,
+        .bAgility = 178,
         .bAccuracy = 65,
         .bCritChance = 10,
         .wDamageMin = 42,
@@ -58,7 +58,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 3: Cornish Pixie
         .wHp = 28,
         .bLevel = 7,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 4,
@@ -73,7 +73,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 4: Rat
         .wHp = 18,
         .bLevel = 1,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 75,
         .bCritChance = 5,
         .wDamageMin = 2,
@@ -88,7 +88,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 5: Albino Rat
         .wHp = 25,
         .bLevel = 2,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 75,
         .bCritChance = 5,
         .wDamageMin = 3,
@@ -103,7 +103,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 6: Plague Rat
         .wHp = 35,
         .bLevel = 3,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 75,
         .bCritChance = 5,
         .wDamageMin = 4,
@@ -118,7 +118,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 7: Clabbert
         .wHp = 80,
         .bLevel = 13,
-        .bSpeed = 254,
+        .bAgility = 254,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 25,
@@ -133,7 +133,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 8: Suit of Armor (Footman)
         .wHp = 40,
         .bLevel = 14,
-        .bSpeed = 254,
+        .bAgility = 254,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 8,
@@ -148,7 +148,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 9: Suit of Armor (Cavalier)
         .wHp = 80,
         .bLevel = 16,
-        .bSpeed = 254,
+        .bAgility = 254,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 32,
@@ -163,7 +163,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 10: Suit of Armor (Paladin)
         .wHp = 35,
         .bLevel = 8,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 6,
@@ -178,7 +178,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 11: Suit of Armor (Squire)
         .wHp = 65,
         .bLevel = 16,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 25,
@@ -193,7 +193,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 12: Suit of Armor (Swordsman)
         .wHp = 180,
         .bLevel = 37,
-        .bSpeed = 254,
+        .bAgility = 254,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 35,
@@ -208,7 +208,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 13: Suit of Armor (Crusader)
         .wHp = 75,
         .bLevel = 20,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 16,
@@ -223,7 +223,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 14: Suit of Armor (Knight)
         .wHp = 160,
         .bLevel = 38,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 48,
@@ -238,7 +238,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 15: Funnelweb Spider
         .wHp = 16,
         .bLevel = 3,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 2,
@@ -253,7 +253,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 16: Brown Recluse Spider
         .wHp = 23,
         .bLevel = 5,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 6,
@@ -268,7 +268,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 17: Large Spider
         .wHp = 45,
         .bLevel = 8,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 9,
@@ -283,7 +283,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 18: Redback Spider
         .wHp = 67,
         .bLevel = 10,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 20,
@@ -298,7 +298,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 19: Giant Spider
         .wHp = 40,
         .bLevel = 11,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 12,
@@ -313,7 +313,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 20: Cocoon Spider
         .wHp = 100,
         .bLevel = 25,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 40,
@@ -328,7 +328,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 21: Whitetail Spider
         .wHp = 130,
         .bLevel = 30,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 48,
@@ -343,7 +343,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 22: Flobberworm
         .wHp = 45,
         .bLevel = 10,
-        .bSpeed = 200,
+        .bAgility = 200,
         .bAccuracy = 75,
         .bCritChance = 3,
         .wDamageMin = 8,
@@ -358,7 +358,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 23: Snail
         .wHp = 80,
         .bLevel = 15,
-        .bSpeed = 254,
+        .bAgility = 254,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 25,
@@ -373,7 +373,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 24: Large Orange Snail
         .wHp = 100,
         .bLevel = 18,
-        .bSpeed = 250,
+        .bAgility = 250,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 30,
@@ -388,7 +388,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 25: Flailtail Snail
         .wHp = 160,
         .bLevel = 25,
-        .bSpeed = 250,
+        .bAgility = 250,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 46,
@@ -403,7 +403,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 26: Bat
         .wHp = 16,
         .bLevel = 2,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 2,
@@ -418,7 +418,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 27: Fruitbat
         .wHp = 22,
         .bLevel = 4,
-        .bSpeed = 235,
+        .bAgility = 235,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 3,
@@ -433,7 +433,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 28: Mortis Bat
         .wHp = 40,
         .bLevel = 13,
-        .bSpeed = 235,
+        .bAgility = 235,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 12,
@@ -448,7 +448,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 29: Dragonfly
         .wHp = 44,
         .bLevel = 10,
-        .bSpeed = 250,
+        .bAgility = 250,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 5,
@@ -463,7 +463,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 30: Imperial Dragonfly
         .wHp = 87,
         .bLevel = 20,
-        .bSpeed = 250,
+        .bAgility = 250,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 15,
@@ -478,7 +478,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 31: Horklump
         .wHp = 75,
         .bLevel = 15,
-        .bSpeed = 250,
+        .bAgility = 250,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 28,
@@ -493,7 +493,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 32: Snake
         .wHp = 55,
         .bLevel = 10,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 12,
@@ -508,7 +508,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 33: Spitting Snake
         .wHp = 140,
         .bLevel = 24,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 38,
@@ -523,7 +523,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 34: Wasp
         .wHp = 37,
         .bLevel = 13,
-        .bSpeed = 235,
+        .bAgility = 235,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 8,
@@ -538,7 +538,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 35: Tarantula Hawk Wasp
         .wHp = 78,
         .bLevel = 16,
-        .bSpeed = 235,
+        .bAgility = 235,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 20,
@@ -553,7 +553,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 36: Bowtruckle
         .wHp = 45,
         .bLevel = 14,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 20,
@@ -568,7 +568,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 37: Oaken Bowtruckle
         .wHp = 150,
         .bLevel = 28,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 48,
@@ -583,7 +583,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 38: Doxy
         .wHp = 40,
         .bLevel = 16,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 10,
@@ -598,7 +598,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 39: Doxy Queen
         .wHp = 200,
         .bLevel = 35,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 50,
@@ -613,7 +613,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 40: Hinkypunk
         .wHp = 130,
         .bLevel = 24,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 48,
@@ -628,7 +628,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 41: Gytrash
         .wHp = 55,
         .bLevel = 11,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 10,
@@ -643,7 +643,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 42: Grindylow
         .wHp = 80,
         .bLevel = 24,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 24,
@@ -658,7 +658,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 43: Red Cap
         .wHp = 20,
         .bLevel = 2,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 2,
@@ -673,7 +673,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 44: Armored Red Cap
         .wHp = 160,
         .bLevel = 24,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 60,
@@ -688,7 +688,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 45: Salamander
         .wHp = 45,
         .bLevel = 12,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 8,
@@ -703,7 +703,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 46: Amazonian Salamander
         .wHp = 100,
         .bLevel = 18,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 36,
@@ -718,7 +718,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 47: Peruvian Salamander
         .wHp = 160,
         .bLevel = 24,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 55,
@@ -733,7 +733,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 48: Charmed Skeleton
         .wHp = 80,
         .bLevel = 23,
-        .bSpeed = 230,
+        .bAgility = 230,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 32,
@@ -748,7 +748,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 49: Jinxed Skeleton
         .wHp = 125,
         .bLevel = 22,
-        .bSpeed = 220,
+        .bAgility = 220,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 40,
@@ -763,7 +763,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 50: Tree Frog
         .wHp = 55,
         .bLevel = 24,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 11,
@@ -778,7 +778,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 51: Wide-mouth Toad
         .wHp = 75,
         .bLevel = 24,
-        .bSpeed = 240,
+        .bAgility = 240,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 24,
@@ -793,7 +793,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 52: Bullfrog
         .wHp = 145,
         .bLevel = 30,
-        .bSpeed = 230,
+        .bAgility = 230,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 50,
@@ -808,7 +808,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 53: Flesh-eating Slug (not in game, needs to be in file for coders - no need to translate)
         .wHp = 50,
         .bLevel = 25,
-        .bSpeed = 254,
+        .bAgility = 254,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 8,
@@ -823,7 +823,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 54: Whomping Willow
         .wHp = 650,
         .bLevel = 50,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 72,
@@ -838,7 +838,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 55: Forest Troll
         .wHp = 800,
         .bLevel = 55,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 87,
@@ -853,7 +853,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 56: River Troll
         .wHp = 375,
         .bLevel = 20,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 52,
@@ -868,7 +868,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 57: Venemous Tentacula
         .wHp = 290,
         .bLevel = 14,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 90,
         .bCritChance = 5,
         .wDamageMin = 40,
@@ -883,7 +883,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 58: 'The Monster Book of Monsters'
         .wHp = 25,
         .bLevel = 2,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 85,
         .bCritChance = 5,
         .wDamageMin = 4,
@@ -898,7 +898,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 59: Giant Rat
         .wHp = 45,
         .bLevel = 5,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 85,
         .bCritChance = 5,
         .wDamageMin = 12,
@@ -913,7 +913,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 60: Crabbe
         .wHp = 90,
         .bLevel = 12,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 10,
@@ -928,7 +928,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 61: Draco
         .wHp = 975,
         .bLevel = 60,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 5,
         .wDamageMin = 93,
@@ -943,7 +943,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 62: Goyle
         .wHp = 90,
         .bLevel = 10,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 15,
@@ -958,7 +958,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 63: Lupin Werewolf
         .wHp = 600,
         .bLevel = 55,
-        .bSpeed = 20,
+        .bAgility = 20,
         .bAccuracy = 99,
         .bCritChance = 10,
         .wDamageMin = 70,
@@ -973,7 +973,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 64: Snake
         .wHp = 30,
         .bLevel = 6,
-        .bSpeed = 245,
+        .bAgility = 245,
         .bAccuracy = 85,
         .bCritChance = 3,
         .wDamageMin = 4,
@@ -988,7 +988,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 65: Brown Recluse Spider
         .wHp = 20,
         .bLevel = 5,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 80,
         .bCritChance = 5,
         .wDamageMin = 6,
@@ -1003,7 +1003,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 66: 'The Monster Book of Monsters'
         .wHp = 180,
         .bLevel = 12,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 85,
         .bCritChance = 5,
         .wDamageMin = 25,
@@ -1018,7 +1018,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 67: 'The Monster Book of Monsters'
         .wHp = 575,
         .bLevel = 25,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 85,
         .bCritChance = 5,
         .wDamageMin = 67,
@@ -1033,7 +1033,7 @@ const MonsterTableRow MonsterTable[] = {
     { // 68: Native of Fiji. Has a heavily jeweled shell.
         .wHp = 25,
         .bLevel = 2,
-        .bSpeed = 252,
+        .bAgility = 252,
         .bAccuracy = 85,
         .bCritChance = 5,
         .wDamageMin = 4,

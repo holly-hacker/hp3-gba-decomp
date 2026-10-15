@@ -5,6 +5,7 @@
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "game/game_modes.h"
+#include "inventory.h"
 
 // Certain bAttackOutcomeState (Actor+0x60) values. States 1-5 stay numeric:
 // their tails differ between cases 0x1a and 0x15, so no one name fits both.
@@ -660,7 +661,7 @@ void TickPlayerActionState(Actor *actor)
         }
         if (actor->dwFlags & 0x40000) {
             actor->dwFlags &= 0xfffbffff;
-            result = sub_08026CDC(ACTIVE_FIGHTER.bSpellLevel);
+            result = GetPotionEffect(ACTIVE_FIGHTER.bSpellLevel);
             switch (result) {
             case 1:
                 TriggerBattleEffect(8, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex, g_pFightState->bActiveFighterIndex, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
@@ -691,10 +692,10 @@ void TickPlayerActionState(Actor *actor)
             u8 spellLevel = ACTIVE_FIGHTER.bSpellLevel;
             u8 fighterIndex = g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex];
 
-            result = sub_08026CDC(spellLevel);
+            result = GetPotionEffect(spellLevel);
             switch (result) {
             case 1: {
-                s32 x = sub_08026CF0(spellLevel);
+                s32 x = GetPotionMagnitude(spellLevel);
                 amount = sub_080152CC(x, fighterIndex);
                 ShowFloatingDamageNumber_candidate(amount, 0xd, fighterIndex, 1);
                 code = 9;
@@ -702,7 +703,7 @@ void TickPlayerActionState(Actor *actor)
                 break;
             }
             case 2: {
-                s32 x = sub_08026CF0(spellLevel);
+                s32 x = GetPotionMagnitude(spellLevel);
                 amount = sub_08015334(x, fighterIndex);
                 ShowFloatingDamageNumber_candidate(amount, 6, fighterIndex, 1);
                 code = 0xa;

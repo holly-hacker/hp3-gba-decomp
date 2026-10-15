@@ -6,6 +6,7 @@
 #include "menu/main_menu.h"
 #include "shop.h"
 #include "cursor.h"
+#include "inventory.h"
 
 void ShowShopQuantitySelect(void)
 {

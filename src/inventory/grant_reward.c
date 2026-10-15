@@ -15,8 +15,8 @@ u32 GrantReward(s32 rewardId, u32 amount)
     if (rewardId >= REWARD_ID_FIRST_CARD && rewardId < REWARD_ID_GOLD)
         return IncrementFolioUniversitasCard(rewardId - REWARD_ID_FIRST_CARD);
 
-    if (MAX_ITEM_QUANTITY - amount < g_abItemQuantities[rewardId])
-        amount = MAX_ITEM_QUANTITY - g_abItemQuantities[rewardId];
-    g_abItemQuantities[rewardId] = g_abItemQuantities[rewardId] + amount;
-    return g_abItemQuantities[rewardId];
+    if (MAX_ITEM_QUANTITY - amount < g_ItemInventory.abQuantities[rewardId])
+        amount = MAX_ITEM_QUANTITY - g_ItemInventory.abQuantities[rewardId];
+    g_ItemInventory.abQuantities[rewardId] = g_ItemInventory.abQuantities[rewardId] + amount;
+    return g_ItemInventory.abQuantities[rewardId];
 }

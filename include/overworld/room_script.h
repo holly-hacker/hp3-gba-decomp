@@ -83,7 +83,6 @@ extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, 
 extern u32 ShouldRunRoomIndex(u32 row);
 extern u16 GetRoomGroupMemberCount(u32 row);
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
-extern u32 IsFolioPageGroupUnlocked_candidate(u32 pageGroupId);
 extern void LevelUpPartyMember_candidate(u32 fighterType);
 extern u8 g_abRoomScriptExitParams_candidate[2];
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
@@ -106,7 +105,6 @@ extern void RespawnGroupAndRunChain(u32 respawnRow, u32 chainRow);
 extern Actor *SpawnScriptEffectActor(u32 kind);
 extern void WriteRoomBgTile_candidate(u16 x, u16 y, u16 tileId, u8 layer);
 extern u16 GetRoomBgBlockEntry(u16 x, u16 y, u8 layer);  // the room BG entry WriteRoomBgTile_candidate writes
-extern void ConsumeBattleItemSlot(u32 itemId, u32 count);
 extern void sub_080236DC(u32 characterId);
 extern void sub_080237D0(u32 arg0);
 

@@ -205,9 +205,9 @@ genuinely two separate layers, not just two ends of one function).
   Pellet`/`Wizard Cracker`, the spell target-select path above, and
   Hermione's non-self lectures.
 - **`field_0x1070==7`** (`FUN_08012eac`, item-list confirm): checks
-  `FUN_08026f34(cursor)` (item usable/available -- refuses with a beep if
+  `IsBattleItemSlotUsable(cursor)` (owns that potion -- refuses with a beep if
   not), then `field_0x3b=1`, `bSpellLevel = cursor + 0x38` (matches
-  `FUN_08011520`'s item-name text lookup, `FUN_08026b8c(cursor+0x38)`) --
+  `FUN_08011520`'s item-name text lookup, `GetRewardNameStringId_candidate(cursor+0x38)`) --
   **items are addressed by the same `bSpellLevel` field spell levels
   use, offset by `0x38`** into `g_pItemTable` (the item database
   below). Then calls `FUN_080107bc` (below) to
@@ -224,8 +224,7 @@ genuinely two separate layers, not just two ends of one function).
   confirm): same shape as state 6's confirm -- vsync wait, writes
   `bSelectedActionIndex = cursor`, `field_0x1070 = 0` -- plus, if
   `field_0x3b==1` (the `Use Item` marker set above), calls
-  `FUN_08026e2c(itemIndex, 1)` (presumably consumes/decrements the used
-  item; not traced further).
+  `RemoveItems(itemIndex, 1)`, consuming the used item.
 
 `Use Item`'s actual effect resolution happens later, in
 `TickPlayerActionState`'s `Actor+0x60` sub-state `2`
@@ -465,7 +464,7 @@ every entry resolves to a genuinely separate, cleanly-bounded function:
 | `1` | `0x08017A7C` | `PlayFighterImpactSound` -- per-fighter-type sound (`Actor+8`) plus a shared impact sound, the moment the attack/spell visually connects |
 | `2` | `0x080161A2` | `ApplyDamageNumberAnimState` -- commits a damage number previously staged at `Actor+0x62` by `ShowDamageNumber_candidate`: sound, a HUD refresh, then (once flag `0x40000` is set) resets the anim state and applies the damage via `ApplyDamageToAllyFighter` |
 | `3`, `6`-`14`, `16`-`20`, `22`-`25` | `0x08017B42` | `TickPlayerActionStateNoOp` -- shared no-op default, also every other case's own tail branch target |
-| `4` | `0x080177D8` | `ApplyStatusRestoreItemEffect` -- resolves a restorative-item/status-cure effect: `FUN_08026cdc(bSpellLevel)` selects among MP restore, SP restore, a cure call, or lifting `Paralyzed`, each with its own `TriggerBattleEffect` id and cost/message |
+| `4` | `0x080177D8` | `ApplyStatusRestoreItemEffect` -- resolves a restorative-item/status-cure effect: `GetPotionEffect(bSpellLevel)` selects among MP restore, SP restore, a cure call, or lifting `Paralyzed`, each with its own `TriggerBattleEffect` id and cost/message |
 | `5` | `0x08017ADE` | `ReturnFighterToPosition` -- post-action wait/return-to-formation state: flips the sprite and arms a 30-frame counter on entry, then on expiry clears `bSelectedActionIndex`, un-flips, and resets the anim state |
 | `15` (`0xF`) | `0x0801618A` | `WaitForMoveThenApplyDamageNumber` -- gated on `Actor+0x3c`/`+0x40` both being zero (the velocity fields a `MoveTo` zeroes on completion, per [`../formats/battle_scripts.md`](../formats/battle_scripts.md)) -- waits for the fighter's current move to finish, then falls straight through into `ApplyDamageNumberAnimState`'s body (case `2`) with no branch in between |
 | `21` (`0x15`) | `0x08016E64` | `HandleScriptedDamageEvent_candidate` (spans `0x08016E64`-`0x0801732C`, one function despite the address gap -- the shared-epilogue false-split pattern documented elsewhere in this codebase). Its *tail* (`Actor+0x60` status byte, 5 sub-states) dispatches fixed-damage crit/faint-sequence handling (scripted/special-event damage, no RNG, no `Mt19937RandRange` call anywhere in this dispatcher's range). Its *head* (`Actor+0xc` flag bits `0x40000`/`0x8000`) is the Special Move trigger -- see below |

@@ -69,7 +69,7 @@ void UpdateShopQuantitySelect(void)
         PlaySoundById(1);
         if (g_FredAndGeorgesShop.dwBuyItem == SHOP_NO_ITEM)
         {
-            ConsumeBattleItemSlot(g_FredAndGeorgesShop.dwItem, g_FredAndGeorgesShop.nQuantity);
+            RemoveItems(g_FredAndGeorgesShop.dwItem, g_FredAndGeorgesShop.nQuantity);
             AddSickles(g_FredAndGeorgesShop.nQuantity * g_FredAndGeorgesShop.nUnitPrice);
         }
         else if (g_FredAndGeorgesShop.dwBuyItem == SHOP_ITEM_CHOCOLATE_FROGS)

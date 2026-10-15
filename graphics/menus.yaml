@@ -3,7 +3,7 @@ groups:
     runs:
       - kind: image-bank
         count: 80
-        names: {1: Item001}
+        names: {1: Item001, 71: ItemChocolateFrogs, 72: Item072, 80: ItemRemove}
         componentOrder: [palette, tiles, frames]
         storedCells: false
       # g_aHelpSpriteAssets[14]

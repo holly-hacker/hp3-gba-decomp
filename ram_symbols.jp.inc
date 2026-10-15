@@ -288,7 +288,7 @@
 
 @ OAM DMA half-toggle; see include/hw/vblank.h.
 .set g_bOamDmaHalfToggle,                    0x0300380C
-.set g_abItemQuantities,                     0x03003810
+.set g_ItemInventory,                     0x03003810
 .set g_dwUnusedHogwartsMapShownBg,           0x03003AB0
 .set g_pUnusedHogwartsMapCursor,             0x03003AB4
 .set g_pUnusedHogwartsMapBg1Tilemap,         0x03003AB8

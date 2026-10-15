@@ -4,46 +4,46 @@
 #define STAGING(i) (g_pFightState->pStagingFighters[i])
 #define SLOT(i) (g_pFightState->pFighters[i])
 
-// Selection-sorts pStagingFighters into pFighters ascending by bSpeed
+// Selection-sorts pStagingFighters into pFighters ascending by bAgility
 // (lower = earlier turn), then spawns each fighter's turn-order icon and
 // populates aEnemySlotTurnOrderIndex[bSlotParam]/aAllySlotTurnOrderIndex[bSlotParam].
-// Duplicate bSpeed values are broken by nudging the loser's stored
-// speed up by 1 the first time it ties an already-found winner, keeping the
+// Duplicate bAgility values are broken by nudging the loser's stored
+// agility up by 1 the first time it ties an already-found winner, keeping the
 // sort stable/deterministic. See docs/memory-map/battle.md.
 void BuildTurnOrder(void)
 {
     u8 outerIdx;
     u8 winnerIdx;
-    u8 prevWinnerSpeed;
-    u8 bestSpeed;
+    u8 prevWinnerAgility;
+    u8 bestAgility;
     u8 innerIdx;
 
     winnerIdx = 0;
-    prevWinnerSpeed = 0;
+    prevWinnerAgility = 0;
     outerIdx = 0;
 
     // Selection sort, bFighterCount-1 passes; the last fighter is handled
     // by the leftover pass below.
     while (outerIdx < g_pFightState->bFighterCount - 1) {
-        bestSpeed = 0xff;
+        bestAgility = 0xff;
         innerIdx = 0;
 
         while (innerIdx < g_pFightState->bFighterCount) {
             if (STAGING(innerIdx).wHp == 0) {
                 STAGING(innerIdx).nFaintedFlag = -1;
-            } else if (STAGING(innerIdx).bSpeed < bestSpeed && STAGING(innerIdx).bSpeed > prevWinnerSpeed) {
-                bestSpeed = STAGING(innerIdx).bSpeed;
+            } else if (STAGING(innerIdx).bAgility < bestAgility && STAGING(innerIdx).bAgility > prevWinnerAgility) {
+                bestAgility = STAGING(innerIdx).bAgility;
                 winnerIdx = innerIdx;
-            } else if (STAGING(innerIdx).bSpeed == bestSpeed && (u16)STAGING(innerIdx).nFaintedFlag == 0) {
-                // Tie with the current best: bump this fighter's speed by 1
+            } else if (STAGING(innerIdx).bAgility == bestAgility && (u16)STAGING(innerIdx).nFaintedFlag == 0) {
+                // Tie with the current best: bump this fighter's agility by 1
                 // so it sorts after its twin instead of being picked again.
-                STAGING(innerIdx).bSpeed = STAGING(innerIdx).bSpeed + 1;
+                STAGING(innerIdx).bAgility = STAGING(innerIdx).bAgility + 1;
             }
 
             innerIdx = innerIdx + 1;
         }
 
-        // place the lowest speed at the start
+        // place the lowest agility at the start
         SLOT(outerIdx) = STAGING(winnerIdx);
 
         // Use nFaintedFlag to mark the enemy as placed
@@ -51,7 +51,7 @@ void BuildTurnOrder(void)
         // by a static value doesn't accomplish anything.
         SLOT(outerIdx).nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
 
-        prevWinnerSpeed = STAGING(winnerIdx).bSpeed;
+        prevWinnerAgility = STAGING(winnerIdx).bAgility;
         STAGING(winnerIdx).nFaintedFlag = SLOT(outerIdx).nFaintedFlag;
 
         outerIdx = outerIdx + 1;

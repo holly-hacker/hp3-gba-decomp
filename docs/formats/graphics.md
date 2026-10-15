@@ -1314,10 +1314,11 @@ span with zero gaps between items, in table order -- confirmed by checking
 each `pPalette`/`pTileData`/`pFrameData` extent against the next. One more
 icon in the same format follows directly: `GetItemImageData` returns it for
 the pseudo-item id `0x86` instead of reading the item table (a 24x24 gold
-curved arrow, requested from the status/equip screen code). `regions.us.txt`'s `ItemIcons`
-`image-bank` row claims the 80 icons as 4-bit `ItemNNN.png` sprites in
-`palette`, `tiles`, `frames` order (see "Graphics build format"), the
-id-`0x86` icon last as `Item080`; 11 icons use `rle`, the rest `lzrle`.
+curved arrow, the equipment list's "Remove" row). The `ItemAndHelpIcons`
+group in `graphics/menus.yaml` claims the 80 icons as 4-bit `ItemNNN.png`
+sprites in `palette`, `tiles`, `frames` order (see "Graphics build format"),
+except `ItemChocolateFrogs` (71st, which card rewards also use) and the
+id-`0x86` icon last as `ItemRemove`; 11 icons use `rle`, the rest `lzrle`.
 `src/items/items.c` includes the generated `include/gen/graphics/menus.h` and
 references the `gItemNNNPalette/Tiles/Frames` labels instead of literal
 addresses. See `docs/formats/items.md`.

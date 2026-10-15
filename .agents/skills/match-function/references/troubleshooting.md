@@ -132,6 +132,9 @@ candidate short a per-iteration reload+add the ROM repeats (`.loop`: `mult STRID
 The same switch affects a struct base register copied late in a block (`adds r4, r0, #0`): an
 indexed global access in the loop keeps that gcse PRE copy, walking pointers let loop.c drop it
 (SubmitSerialMessage, US 0x0803F438).
+A pointer walking down from `&a[N - 1]` with a signed `cmp ptr, base` came from an up-counting
+`for (i = 0; i < N; i++)` that loop.c reversed; written counting down, the giv was "not worth
+while" and the counter stayed (ClearItemInventory, US 0x08026D58).
 
 ## 13. Value fails to survive calls
 

@@ -7,6 +7,7 @@
 #include "input.h"
 #include "menu/items_menu.h"
 #include "menu/status_equip.h"
+#include "inventory.h"
 
 void UpdateItemsItemSelect(void)
 {
@@ -34,7 +35,7 @@ void UpdateItemsItemSelect(void)
                     PlaySoundById(1);
                     item = GetItemListSelection();
                     SetItemUseItem(item);
-                    if (sub_08026D34(item))
+                    if (IsItemConsumable(item))
                     {
                         // Choose which party member uses it first.
                         g_ItemsItemSelect.nextMode = StatusEquipCharacterSelect;

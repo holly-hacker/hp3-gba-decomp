@@ -175,7 +175,7 @@ against both `baserom.us.sav` and `baserom.jp.sav`):
 | `0x0300338C`-`0x0300338E` | `bOverworldSprite0`-`bOverworldSprite2` | Per the user: which overworld sprite each party slot's follower uses. Observed values: `3` = Harry (Lumos, headless -- likely rendered as a separate overlay), `4` = Harry (GBC), `5` = Harry, `7` = Ron, `8` = Buckbeak; `9` is out of bounds (severe graphical corruption, crashes the game). |
 | `0x03002614` (`g_dwOverworldMonstersDisabled`) | `flOverworldMonstersDisabled` | Per the user: disables overworld random encounters with regular monsters (bosses still trigger). Packed as a single bit, not a byte. **PROVEN** against code: `InitializeOverworld` only calls `SpawnOverworldMonsterEncounters` on room load along the branch taken when this flag is `0`; the nonzero branch restores room actor state but never spawns encounters. Set/cleared by room-script opcodes `SetOverworldMonstersDisabled`/`ClearOverworldMonstersDisabled` (`0x4A`/`0x4B`, see [`room_scripts.md`](room_scripts.md)) -- the only located writers besides save load/new-game reset. |
 | `0x0300338F` | `bSelectedOverworldSpell` | Per the user: the currently-selected spell in the overworld (as opposed to in battle). |
-| `0x030037B0` (`g_abItemQuantities`), 152 bytes | `itemQuantities` + `equippedItems` | see "Item quantities and equipment" below |
+| `0x030037B0` (`g_ItemInventory`), 152 bytes | `itemQuantities` + `equippedItems` | see "Item quantities and equipment" below |
 | **party stats** (`SerializePartyStats`, `0x080187EC`) | `partyStats` | 3 x 28 = 84 bytes, see below |
 | **room-actor state** (`SerializeRoomActorState`, `0x0802A570`), variable-length | `roomActorState` | data-dependent, see below |
 | `0x03002240` (`g_abOpenedChestFlags`) | `abOpenedChestFlags` (32 bytes) | **PROVEN**. A 256-bit bitset with one bit per chest `flag_id` ([`rooms.md`](rooms.md)'s "Chests"). `TickChestActor` sets a chest's bit when it is opened, and `SpawnChestActor` spawns a chest whose bit is set as already open. Zeroed by `ResetQuestStateForNewGame`; copied in and out of the save stream as one block. |
@@ -319,17 +319,17 @@ field):
 
 `wHp_max` and `wMp_max` are *not* saved -- both are pure functions of
 `bLevel` (recomputed from the per-character level table on load), so
-persisting them would be redundant. Equipment/`bSpeed`/`bAccuracy`/
+persisting them would be redundant. Equipment/`bAgility`/`bAccuracy`/
 defense are likewise not saved here, consistent with
-`ApplyEquipmentStatModifiers_candidate` recomputing them from
+`ApplyEquipmentStatModifiers` recomputing them from
 equipped-item data at battle entry.
 
-**Item quantities and equipment** (`g_abItemQuantities`, `0x030037B0`,
+**Item quantities and equipment** (`g_ItemInventory`, `0x030037B0`,
 152 bytes): a flat item-ID-indexed quantity array. **PROVEN**: item ID
 == index into `g_pItemTable` (the ROM-resident item/equipment database
 -- record layout, equip stats, categories, and the extraction pipeline
 are all covered in [`items.md`](items.md), not here) == index into
-`g_abItemQuantities`. Each entry's `nNameTextId` field resolves through
+`g_ItemInventory`. Each entry's `nNameTextId` field resolves through
 the decoded dialog/UI string table (`data/text/en_us.json`'s 2767
 `strings`) to that item's real display name -- every one of the 79 real
 entries decodes to a sensible item name, and 6 of them were
@@ -346,11 +346,9 @@ there's no gap to justify one) using their real names; the remainder
 (79-131, real slots of the same array but with no item data in them --
 see [`items.md`](items.md)) are `bItemQuantityNNN`-style placeholders.
 
-Indices 132-149 are `g_abEquippedItemIds` (Ghidra: typed `EquippedItemSlots[3]`,
-though the global keeps its `ab`-prefixed name -- a known checker bug
-rejects `st`/struct-typed global names, same as `SaveManager`), an alias
-into this same array (not a separate allocation): 3 fighters x 6 equip
-slots, item ID or `0xff` (empty), exposed as `equippedItems.harry`/
+Indices 132-149 are `g_ItemInventory.aabEquipped` (`ItemInventory` in
+`include/game/items.h`): 3 fighters x 6 equip slots, item ID or `0xff`
+(empty), exposed as `equippedItems.harry`/
 `.hermione`/`.ron`, each `{belt, charm, gloves, boots, hat, cloak}`.
 Fighter order confirmed from a real save with distinct per-character
 counts (Harry 0 items, Hermione 4, Ron 1 -- unambiguous). **Slot order

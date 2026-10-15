@@ -993,41 +993,41 @@ thumb-func 0x08026614 sub_080265B8
 thumb-func 0x080266D0 sub_08026674
 c-file 0x08026748 0x080267B0 src/inventory/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 thumb-func 0x080267B0 EquipItemInSlot
-thumb-func 0x0802682C CanFighterEquipItem
-thumb-func 0x080268CC sub_08026870
-thumb-func 0x080269B8 UnequipItemFromSlot
-thumb-func 0x08026A3C sub_080269E0
-thumb-func 0x08026B6C sub_08026B10
-thumb-func 0x08026BE8 GetRewardNameStringId_candidate
-thumb-func 0x08026C28 GetItemImageData
-thumb-func 0x08026C94 GetItemBuyPrice
-thumb-func 0x08026CA8 GetItemSellPrice
-thumb-func 0x08026CBC GetItemCategory
-thumb-func 0x08026CD0 GetItemCharacterMask
-thumb-func 0x08026CF8 GetItemDefenseBoost
-thumb-func 0x08026D10 GetItemAgility
-thumb-func 0x08026D24 GetItemMagicDefense
-thumb-func 0x08026D38 sub_08026CDC
-thumb-func 0x08026D4C sub_08026CF0
-thumb-func 0x08026D60 GetItemBit0
-thumb-func 0x08026D78 GetItemBit1
-thumb-func 0x08026D90 sub_08026D34
-c-file 0x08026DA8 0x08026DB4 src/inventory/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame_candidate
-thumb-func 0x08026DB4 ClearItemInventory
+c-file 0x0802682C 0x080268CC src/inventory/can_fighter_equip_item.c CanFighterEquipItem
+thumb-func 0x080268CC ApplyEquipmentStatModifiers
+c-file 0x080269B8 0x08026A3C src/inventory/unequip_item_from_slot.c UnequipItemFromSlot
+thumb-func 0x08026A3C UseRestorePotion
+c-file 0x08026B6C _ src/inventory/debug_grant_all_items.c DebugGrantAllItems
+c-file 0x08026BE8 _ src/inventory/get_reward_name_string_id.c GetRewardNameStringId_candidate
+c-file 0x08026C28 _ src/inventory/get_item_image_data.c GetItemImageData
+c-file 0x08026C94 _ src/inventory/get_item_buy_price.c GetItemBuyPrice
+c-file 0x08026CA8 _ src/inventory/get_item_sell_price.c GetItemSellPrice
+c-file 0x08026CBC _ src/inventory/get_item_category.c GetItemCategory
+c-file 0x08026CD0 _ src/inventory/get_item_character_mask.c GetItemCharacterMask
+c-file 0x08026CF8 _ src/inventory/get_item_defense_boost.c GetItemDefenseBoost
+c-file 0x08026D10 _ src/inventory/get_item_agility.c GetItemAgility
+c-file 0x08026D24 _ src/inventory/get_item_magic_defense.c GetItemMagicDefense
+c-file 0x08026D38 _ src/inventory/get_potion_effect.c GetPotionEffect
+c-file 0x08026D4C _ src/inventory/get_potion_magnitude.c GetPotionMagnitude
+c-file 0x08026D60 _ src/inventory/is_item_usable_in_battle.c IsItemUsableInBattle_candidate
+c-file 0x08026D78 _ src/inventory/is_item_listed_in_items_menu.c IsItemListedInItemsMenu_candidate
+c-file 0x08026D90 _ src/inventory/is_item_consumable.c IsItemConsumable
+c-file 0x08026DA8 _ src/inventory/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame_candidate
+c-file 0x08026DB4 _ src/inventory/clear_item_inventory.c ClearItemInventory
 c-file 0x08026DFC _ src/inventory/serialize_item_quantities.c SerializeItemQuantities
 c-file 0x08026E1C _ src/inventory/deserialize_item_quantities.c DeserializeItemQuantities
-c-file 0x08026E3C 0x08026E88 src/inventory/grant_reward.c GrantReward
-thumb-func 0x08026E88 ConsumeBattleItemSlot
-thumb-func 0x08026EA8 GetItemQuantity
-thumb-func 0x08026EB4 sub_08026E58
-thumb-func 0x08026F1C sub_08026EC0
-thumb-func 0x08026F6C sub_08026F10
-thumb-func 0x08026F90 IsBattleItemSlotUsable
-thumb-func 0x08026FA4 sub_08026F48
-thumb-func 0x08026FDC sub_08026F80
-thumb-func 0x08026FF8 IsFolioPageGroupUnlocked_candidate
-thumb-func 0x0802703C SetActorScaleStep
-thumb-func 0x08027060 sub_08027004
+c-file 0x08026E3C _ src/inventory/grant_reward.c GrantReward
+c-file 0x08026E88 _ src/inventory/remove_items.c RemoveItems
+c-file 0x08026EA8 _ src/inventory/get_item_quantity.c GetItemQuantity
+c-file 0x08026EB4 0x08026F1C src/inventory/build_filtered_item_list.c BuildFilteredItemList
+thumb-func 0x08026F1C BuildBattleItemList_candidate
+c-file 0x08026F6C _ src/inventory/count_owned_potion_kinds.c CountOwnedPotionKinds
+c-file 0x08026F90 _ src/inventory/is_battle_item_slot_usable.c IsBattleItemSlotUsable
+c-file 0x08026FA4 _ src/inventory/owns_item_in_category.c OwnsItemInCategory
+c-file 0x08026FDC _ src/inventory/get_equipped_item.c GetEquippedItem
+c-file 0x08026FF8 _ src/inventory/is_folio_page_group_complete.c IsFolioPageGroupComplete
+c-file 0x0802703C _ src/inventory/set_actor_scale_step.c SetActorScaleStep
+c-file 0x08027060 0x080270A4 src/inventory/get_party_member_name.c GetPartyMemberName
 thumb-func 0x080270A4 TickItemList
 thumb-func 0x08027208 SetItemListTranslucent
 thumb-func 0x08027290 sub_08027234
@@ -2234,7 +2234,8 @@ c-file 0x08060878 0x08060AB8 src/overworld/party_assets.c g_aPartyWalkAssets
 c-file 0x08060B80 _ src/overworld/party_anims.c g_abPartyStandFrames
 c-file 0x08060DF0 _ src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
 c-file 0x08060E08 _ src/input/dpad_direction.c g_abDpadDirection
-c-file 0x08060E18 0x08060E4C src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
+c-file 0x08060E18 _ src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
+c-file 0x08060E4C _ src/inventory/actor_scale_steps.c g_adwActorScaleSteps
 c-file 0x08060E70 0x08062940 src/items/items.c g_pItemTable
 c-file 0x08062944 _ src/gamemode/modes/unused_hogwarts_map_screen/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file 0x08062980 0x0806298C src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control

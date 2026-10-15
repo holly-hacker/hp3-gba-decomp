@@ -97,7 +97,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     fighter->pActor = pActor;
     fighter->wHp = MonsterTable[type].wHp;
     fighter->wHp_max = MonsterTable[type].wHp;
-    fighter->bSpeed = MonsterTable[type].bSpeed;
+    fighter->bAgility = MonsterTable[type].bAgility;
     fighter->bAccuracy = MonsterTable[type].bAccuracy;
     fighter->bCritChance = MonsterTable[type].bCritChance;
     fighter->wDamageRollMin = MonsterTable[type].wDamageMin;

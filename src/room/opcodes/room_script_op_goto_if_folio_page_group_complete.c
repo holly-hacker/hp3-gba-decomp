@@ -1,6 +1,7 @@
 #include "types.h"
 #include "overworld/room_script.h"
 #include "overworld/room_script_branch.h"
+#include "inventory.h"
 
 typedef struct GotoIfFolioPageGroupCompleteRecord {
     u32 dwOpcode;
@@ -13,6 +14,6 @@ typedef struct GotoIfFolioPageGroupCompleteRecord {
 
 void RoomScriptOpGotoIfFolioPageGroupComplete(GotoIfFolioPageGroupCompleteRecord *pRecord)
 {
-    CompareAndBranchRoomScript(IsFolioPageGroupUnlocked_candidate(pRecord->bPageGroupId), RoomScriptCompareEqual, 1,
+    CompareAndBranchRoomScript(IsFolioPageGroupComplete(pRecord->bPageGroupId), RoomScriptCompareEqual, 1,
                                pRecord->bTrueChain, pRecord->bFalseChain, pRecord->bTrueRow, pRecord->bFalseRow);
 }
