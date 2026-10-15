@@ -1064,10 +1064,10 @@ thumb-func 0x0802829C sub_08028240
 thumb-func 0x08028320 sub_080282C4
 c-file 0x08028370 _ src/language_select/initialize_language_select.c InitializeLanguageSelect
 c-file 0x08028464 _ src/language_select/update_language_select.c UpdateLanguageSelect
-c-file 0x08028580 0x08028590 src/language_select/exit_language_select.c ExitLanguageSelect
-thumb-func 0x08028590 DrawLanguageSelectPicture_candidate
-thumb-func 0x080285C4 DrawLanguageSelectEntries_candidate
-thumb-func 0x080285E4 DrawLanguageSelectEntry_candidate
+c-file 0x08028580 _ src/language_select/exit_language_select.c ExitLanguageSelect
+c-file 0x08028590 _ src/language_select/draw_language_select_flag.c DrawLanguageSelectFlag
+c-file 0x080285C4 _ src/language_select/draw_language_select_entries.c DrawLanguageSelectEntries
+c-file 0x080285E4 0x08028654 src/language_select/draw_language_select_entry.c DrawLanguageSelectEntry
 thumb-func 0x08028654 sub_080285F8
 thumb-func 0x08028664 sub_08028608
 thumb-func 0x08028674 sub_08028618

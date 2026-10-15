@@ -24,8 +24,8 @@ void InitializeLanguageSelect(void)
     g_GameModeStackContext.dwModeScratchB =
         g_saveManager.header.language.flLanguageConfigured ? GetLanguage() : 0;
 
-    DrawLanguageSelectEntries_candidate();
-    DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB);
+    DrawLanguageSelectEntries();
+    DrawLanguageSelectFlag(g_GameModeStackContext.dwModeScratchB);
 
     if (g_PrevGameModeStackContext.dwCurrentGameMode == 0)
         PlayScreenTransitionInByIndex(0x3F, 1);

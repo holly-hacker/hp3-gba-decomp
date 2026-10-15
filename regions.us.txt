@@ -1187,10 +1187,10 @@ thumb-func 0x080282C4 sub_080282C4
 # Language (language select mode)
 c-file 0x08028314 _ src/language_select/initialize_language_select.c InitializeLanguageSelect
 c-file 0x08028408 _ src/language_select/update_language_select.c UpdateLanguageSelect
-c-file 0x08028524 0x08028534 src/language_select/exit_language_select.c ExitLanguageSelect
-thumb-func 0x08028534 DrawLanguageSelectPicture_candidate
-thumb-func 0x08028568 DrawLanguageSelectEntries_candidate
-thumb-func 0x08028588 DrawLanguageSelectEntry_candidate
+c-file 0x08028524 _ src/language_select/exit_language_select.c ExitLanguageSelect
+c-file 0x08028534 _ src/language_select/draw_language_select_flag.c DrawLanguageSelectFlag
+c-file 0x08028568 _ src/language_select/draw_language_select_entries.c DrawLanguageSelectEntries
+c-file 0x08028588 0x080285F8 src/language_select/draw_language_select_entry.c DrawLanguageSelectEntry
 thumb-func 0x080285F8 sub_080285F8
 thumb-func 0x08028608 sub_08028608
 thumb-func 0x08028618 sub_08028618

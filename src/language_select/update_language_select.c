@@ -30,10 +30,10 @@ void UpdateLanguageSelect(void)
         if (g_wKeysPressed & KeyDown)
             selected = (selected & 3) == 3 ? selected - 3 : selected + 1;
 
-        DrawLanguageSelectEntry_candidate(g_GameModeStackContext.dwModeScratchB, selected);
+        DrawLanguageSelectEntry(g_GameModeStackContext.dwModeScratchB, selected);
         g_GameModeStackContext.dwModeScratchB = selected;
-        DrawLanguageSelectEntry_candidate(selected, selected);
-        DrawLanguageSelectPicture_candidate(g_GameModeStackContext.dwModeScratchB);
+        DrawLanguageSelectEntry(selected, selected);
+        DrawLanguageSelectFlag(g_GameModeStackContext.dwModeScratchB);
     }
     else if ((g_wKeysPressed & KeyA)
              || ((g_wKeysPressed & KeyB) && g_PrevGameModeStackContext.dwCurrentGameMode != 0))
