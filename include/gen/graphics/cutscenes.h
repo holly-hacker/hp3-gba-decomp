@@ -28,7 +28,7 @@ extern const u8 gCutsceneDrawingsStartup013[];
 extern const u8 gStartupBg3Graphic[];
 extern const u8 gStartupBg2Graphic[];
 extern const u8 gStartupNoticeGraphic[];
-extern const u8 gLupinPotionEmbeddedPalette[];
+extern const u8 gDialogBoxGraphic[];
 
 /* HogwartsUpNight */
 extern const u8 gCardTradeOverlay[];

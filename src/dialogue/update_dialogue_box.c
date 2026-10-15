@@ -13,18 +13,18 @@ void UpdateDialogueBox(void)
     {
     case DialoguePhaseText:
     case DialoguePhaseTextStart:
-        if (g_dwDialogTextActive == 0 && g_DialogState_candidate.bArg19 == 0)
+        if (g_dwDialogPageFull == 0 && g_DialogState_candidate.bArg19 == 0)
         {
             sub_0801FD2C();
-            g_dwDialogTextActive = 1;
+            g_dwDialogPageFull = 1;
         }
         else
             sub_0801FD64();
 
-        if (g_dwDialogTextActive != 0)
+        if (g_dwDialogPageFull != 0)
         {
             if (g_wKeysPressed & KeyA)
-                sub_0801FA18();
+                AdvanceDialog();
             else
                 sub_0801FCFC(*g_DialogState_candidate.pText != 0);
         }
@@ -34,7 +34,7 @@ void UpdateDialogueBox(void)
             if ((g_wKeysPressed & KeyA) || g_DialogState_candidate.bArg19 == 0)
             {
                 sub_0801FD2C();
-                g_dwDialogTextActive = 1;
+                g_dwDialogPageFull = 1;
             }
         }
         break;
@@ -46,7 +46,7 @@ void UpdateDialogueBox(void)
             g_DialogState_candidate.bPhase = DialoguePhaseText;
             g_dwDialogBoxY = DIALOG_BOX_SHOWN_Y;
         }
-        SetActorPosition(g_pDialogBoxActor, 0, g_dwDialogBoxY + 0x28);
+        SetActorPosition(g_pDialogPortraitActor, 0, g_dwDialogBoxY + 0x28);
         QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, sub_0801FC58);
         break;
 
@@ -56,9 +56,9 @@ void UpdateDialogueBox(void)
         {
             g_DialogState_candidate.bPhase = DialoguePhaseDone;
             g_dwDialogBoxY = DIALOG_BOX_HIDDEN_Y;
-            g_pDialogBoxActor->dwFlags &= ~ActorFlagVisible;
+            g_pDialogPortraitActor->dwFlags &= ~ActorFlagVisible;
         }
-        SetActorPosition(g_pDialogBoxActor, 0, g_dwDialogBoxY + 0x28);
+        SetActorPosition(g_pDialogPortraitActor, 0, g_dwDialogBoxY + 0x28);
         QueueScanlineEffectEntry(0, g_dwDialogBoxY, 0, sub_0801FC58);
         break;
 

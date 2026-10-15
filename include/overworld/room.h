@@ -322,7 +322,6 @@ extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable,
 extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
 extern void sub_080248E8(void);
-extern void sub_0801FA9C(void);
 extern void StopScanlineEffects(void);
 extern void sub_0802B20C(void);
 extern void ShowMapNamePopup(void);

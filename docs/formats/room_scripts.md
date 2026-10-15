@@ -125,44 +125,19 @@ to test the same bit with the opposite sense.
 
 ## The dialog-block indirection
 
-**PROVEN.** `ShowRoomDialog`'s operand is a *dialog block id*, not a
-`GetDialogText` string id -- confirmed by tracing `DAT_03002E94` (the
-value the opcode stores) forward into the `Dialogue` game mode's
-per-line tick (`FUN_0801F96C`, US `0x0801F96C`) and its line-render
-call (`FUN_0801FC28`, US `0x0801FC28`), which is the actual site that
-calls `GetDialogText`.
+**PROVEN.** `ShowRoomDialog`'s operand is a *dialog block id*
+(`g_DialogState_candidate.wBlockId`), not a `GetDialogText` string id.
+`g_aDialogBlocks` (`src/dialogue/dialogue_blocks.c`) maps each block to its
+lines' text ids in `g_adwDialogBlockTextIds`; `ShowDialogLine` shows line
+`wLineIndex` and `AdvanceDialog` steps to the next one when the player
+presses A. A block with no lines still shows its first id. For example, block
+`426` (`ShowRoomDialog 426 0 0` in the Potions Classroom) is text ids `618`/`619`,
+"Hermione, how did you write that up so quickly?" / "Umm... like I said, I'd
+read the book before." The `@ "..."` comments on `ShowRoomDialog` records in
+`asm/room/blobs/` come from this lookup.
 
-`0x0805CB50` (US) is an 8-byte-stride table, indexed directly by the
-block id (no bounds check found, same as the opcode itself):
-
-```
-linesPtr  : u32   @ blockId*8 + 0    -- ROM pointer to a u32[lineCount] array
-lineCount : u32   @ blockId*8 + 4
-```
-
-`linesPtr[i]` (`i` in `0..lineCount-1`) is the real `GetDialogText`
-string id for that block's `i`-th line, advanced one at a time as the
-player pages through the dialog box (`FUN_0801FA18`, US `0x0801FA18`,
-increments the line cursor `DAT_03002E96` and re-runs `FUN_0801F96C`
-each time the current line finishes). Confirmed concretely: block id
-`426` (a real `ShowRoomDialog 426 0 0` operand from the Potions
-Classroom's chains) resolves to `{linesPtr=0x0805C5B4, lineCount=2}` ->
-string ids `618`/`619` -> "Hermione, how did you write that up so
-quickly?" / "Umm... like I said, I'd read the book before." --
-Potions-classroom-appropriate content, unlike what decoding `426`
-*directly* as a string id gives (a real but unrelated line from
-elsewhere in the string table -- the bug this section exists to head
-off; the decoded `@ "..."` comments above `ShowRoomDialog` records in
-`asm/room/blobs/` come from the two-level lookup above, not a direct
-`decode_dialog_text(426)` call).
-
-A second table at `0x08FAAF10` (same 8-byte stride, but indexed by the
-resolved per-line string id -- `DAT_03002ED8` above -- not the block
-id) is read by `FUN_0801F96C` into `DAT_03002EDC` on every line;
-candidate: a per-message portrait pointer list, since `ShowRoomDialog`'s
-own trailing operand bytes are unused padding (see the `ShowRoomDialog` macro in `asm/room_script.inc`), leaving this as the only other portrait-shaped candidate found
-so far. Not decoded or extracted -- worth a pass once more of the VM is
-identified.
+Each line's speaker portrait comes from `g_aDialogTextInfo` (indexed by text
+id) into `g_aDialogPortraits`; see `SetDialogPortrait`.
 
 ## State machine (pause/resume/nesting)
 
@@ -286,10 +261,6 @@ variant 1 (one chain each), which differ by a few records and use
 layout as US.
 
 ## Further work
-
-- Decode and extract the `0x08FAAF10` per-line portrait table -- not
-  urgent, but a natural follow-on once dialog blocks are otherwise
-  understood.
 
 - Identify the remaining opcode (`0x2A`, see "Opcodes"
   above) -- no systematic pass made yet, only the ones reached

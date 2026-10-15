@@ -11,7 +11,7 @@
 void ExitDialogue(void)
 {
     SetActorActionState(g_pPlayerActor, g_pPlayerActor->bPrevActionState_candidate);
-    FreeActor(g_pDialogBoxActor);
+    FreeActor(g_pDialogPortraitActor);
     ReleaseMenuCursor(g_pDialogCursorActor);
     g_pDialogCursorActor = NULL;
     ClearScanlineEffects();

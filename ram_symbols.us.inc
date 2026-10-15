@@ -203,13 +203,14 @@
 .set g_awSavedBgPalette0,                              0x03002EAC  @ u16[16]: BG palette bank 0 saved by InitializeDialogue and InitializeChooseCharacter, restored by their exits
 .set g_adwSavedBgPriority,                             0x03002ED0  @ u32[2]: BG0/BG1 priority saved by InitializeDialogue, restored by ExitDialogue
 .set g_dwDialogTextId,                                 0x03002ED8  @ u32: dialog string id of the line being shown
-.set g_dwDialogTextEntry,                              0x03002EDC  @ u32: first word of the dialog text table entry for g_dwDialogTextId
+.set g_dwDialogPortrait,                               0x03002EDC  @ u32: g_aDialogPortraits index of the line being shown
 .set g_pDialogBoxTilemap,                              0x03002EE0  @ void *: tilemap of the dialog box BG graphic
-.set g_pDialogBoxActor,                               0x03002EE4  @ Actor *: dialog box panel sprite
+.set g_pDialogPortraitActor,                          0x03002EE4  @ Actor *: speaker portrait sprite of the dialog box
 .set g_dwDialogBoxY,                                   0x03002EE8  @ u32: screen line of the dialog box's top edge, 0x9F hidden .. 0x7B shown
 .set g_pDialogCursorActor,                            0x03002EEC  @ Actor *: menu cursor of the dialog box
-.set g_dwDialogTextActive,                             0x03002EF0  @ u32: nonzero once the box's text has started
+.set g_dwDialogPageFull,                               0x03002EF0  @ u32: nonzero once the box's text page is fully drawn
 .set g_dwDialogBoxTileRow,                             0x03002EF4  @ u32: BG1 tile row the box's tilemap is drawn at
+.set g_awDialogBoxPalette,                             0x03002EF8  @ u16[16]: dialog box BG palette, DMAed to bank 0 at the box's top line
 .set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ Actor *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
 .set g_pHippogriffFliesIntoAirActor2,                 0x03002F1C  @ Actor *
 .set g_aRoomTileAnimations,                            0x03002F24  @ RoomTileAnimation *: 32 entries, allocated by InitRoomTileAnimationTable

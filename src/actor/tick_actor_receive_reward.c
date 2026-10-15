@@ -41,7 +41,7 @@ void TickActorReceiveReward(Actor *actor)
             PlaySoundById(0x19);
             if (g_nBattleGoldReward != 0) {
                 SetTextMacro1Number(g_nBattleGoldReward);
-                ShowRoomDialogBox_candidate(0x7D);
+                ShowRoomDialogBox_candidate(0x7D);  // "You Receive: \n @1 Sickles"
             }
             else {
                 SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(g_pPlayerActor->bReceivedRewardId)));
@@ -49,7 +49,7 @@ void TickActorReceiveReward(Actor *actor)
                     SetTextMacro2String(GetDialogText(0x646));
                 else
                     SetTextMacro2String(g_sSpace);
-                ShowRoomDialogBox_candidate(0x7C);
+                ShowRoomDialogBox_candidate(0x7C);  // "You Receive: \n @1 @2"
             }
             g_DialogState_candidate.bArg1C = 0;
             g_DialogState_candidate.bArg1D = 0;

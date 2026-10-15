@@ -3,6 +3,7 @@
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
+#include "dialogue.h"
 #include "graphics/graphics.h"
 #include "graphics/palette.h"
 #include "game/game_modes.h"
@@ -383,7 +384,7 @@ void InitializeOverworld(void)
         }
 
         // Finish: quest state, screen transition and map name popup.
-        sub_0801FA9C();
+        LoadDialogBoxGraphics();
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
             SpawnMissingRoomGroupActors(g_bPendingRoomScriptRow);

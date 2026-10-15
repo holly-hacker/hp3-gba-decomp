@@ -191,13 +191,14 @@
 .set g_awSavedBgPalette0,                              0x03002EAC  @ see ram_symbols.us.inc
 .set g_adwSavedBgPriority,                             0x03002ED0  @ see ram_symbols.us.inc
 .set g_dwDialogTextId,                                 0x03002ED8  @ see ram_symbols.us.inc
-.set g_dwDialogTextEntry,                              0x03002EDC  @ see ram_symbols.us.inc
+.set g_dwDialogPortrait,                               0x03002EDC  @ see ram_symbols.us.inc
 .set g_pDialogBoxTilemap,                              0x03002EE0  @ see ram_symbols.us.inc
-.set g_pDialogBoxActor,                               0x03002EE4  @ see ram_symbols.us.inc
+.set g_pDialogPortraitActor,                          0x03002EE4  @ see ram_symbols.us.inc
 .set g_dwDialogBoxY,                                   0x03002EE8  @ see ram_symbols.us.inc
 .set g_pDialogCursorActor,                            0x03002EEC  @ see ram_symbols.us.inc
-.set g_dwDialogTextActive,                             0x03002EF0  @ see ram_symbols.us.inc
+.set g_dwDialogPageFull,                               0x03002EF0  @ see ram_symbols.us.inc
 .set g_dwDialogBoxTileRow,                             0x03002EF4  @ see ram_symbols.us.inc
+.set g_awDialogBoxPalette,                             0x03002EF8  @ see ram_symbols.us.inc
 .set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ see ram_symbols.us.inc
 .set g_pHippogriffFliesIntoAirActor2,                 0x03002F1C
 .set g_aRoomTileAnimations,                            0x03002F24

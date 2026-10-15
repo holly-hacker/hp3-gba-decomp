@@ -36,7 +36,7 @@ groups:
           CardComboDescriptionPanel: MenuBg3Graphic
           CutsceneDrawingsStartup013: MenuBg3Graphic
       - kind: graphic-blobs
-        names: [LupinPotionEmbeddedPalette]
+        names: [DialogBoxGraphic]
 
   - name: HogwartsUpNight
     runs:

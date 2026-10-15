@@ -19,7 +19,7 @@ void ExitChooseCharacter(void)
     SetBgPriority(2, g_ChooseCharacterState.bSavedBg2Priority);
     g_abQuestEventState[0x12] = g_abQuestEventState[0];
     SetActorActionState(g_pPlayerActor, 0x21);
-    sub_0801FA9C();
+    LoadDialogBoxGraphics();
     HideScreenWindow_candidate(0);
 
     FreeActor(g_ChooseCharacterState.pCursorActor);

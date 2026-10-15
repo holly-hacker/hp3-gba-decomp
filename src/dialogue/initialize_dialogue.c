@@ -30,7 +30,7 @@ void InitializeDialogue(void)
 
         bios_CPUSet(BG_PLTT, g_awSavedBgPalette0, 0x10);
         g_DialogState_candidate.dwState = 1;
-        WriteBgGraphicTilemap_candidate(1, g_pDialogBoxTilemap, 0x210, 0, 0, g_dwDialogBoxTileRow);
+        WriteBgGraphicTilemap_candidate(1, g_pDialogBoxTilemap, DIALOG_BOX_FIRST_TILE, 0, 0, g_dwDialogBoxTileRow);
 #ifdef VERSION_JP
         SelectTextFont(10, 0, -1);
 #else
@@ -41,8 +41,8 @@ void InitializeDialogue(void)
         SetActorActionState(g_pPlayerActor, 0x24);
         g_dwDialogTextId = 0;
         g_dwDialogBoxY = DIALOG_BOX_HIDDEN_Y;
-        g_pDialogBoxActor = sub_0801F7AC();
-        SetActorPosition(g_pDialogBoxActor, 0, g_dwDialogBoxY + 0x28);
+        g_pDialogPortraitActor = AllocDialogPortraitActor();
+        SetActorPosition(g_pDialogPortraitActor, 0, g_dwDialogBoxY + 0x28);
         g_pDialogCursorActor = SpawnMenuCursorActor(0);
         QueueScanlineEffectTable(g_aDialogScanlineEffects, 1);
         while (!IsScanlineEffectQueueIdle())
@@ -50,6 +50,6 @@ void InitializeDialogue(void)
         StartScanlineEffects();
         g_DialogState_candidate.wLineIndex = 0;
         g_DialogState_candidate.bPhase = DialoguePhaseSlideUp;
-        sub_0801F968();
+        ShowDialogLine();
     }
 }

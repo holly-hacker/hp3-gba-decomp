@@ -840,13 +840,13 @@ c-file 0x0801F524 _ src/gamemode/modes/startup/exit_startup.c ExitStartup
 
 # Dialog (dialogue mode)
 c-file 0x0801F534 _ src/dialogue/initialize_dialogue.c InitializeDialogue
-c-file 0x0801F654 0x0801F7AC src/dialogue/update_dialogue_box.c UpdateDialogueBox
-thumb-func 0x0801F7AC sub_0801F7AC
-thumb-func 0x0801F824 sub_0801F824
-thumb-func 0x0801F8EC sub_0801F8EC
-thumb-func 0x0801F968 sub_0801F968
-thumb-func 0x0801FA18 sub_0801FA18
-thumb-func 0x0801FA9C sub_0801FA9C
+c-file 0x0801F654 _ src/dialogue/update_dialogue_box.c UpdateDialogueBox
+c-file 0x0801F7AC _ src/dialogue/alloc_dialog_portrait_actor.c AllocDialogPortraitActor
+c-file 0x0801F824 _ src/dialogue/set_dialog_portrait.c SetDialogPortrait
+c-file 0x0801F8EC _ src/dialogue/draw_dialog_text_line.c DrawDialogTextLine
+c-file 0x0801F968 _ src/dialogue/show_dialog_line.c ShowDialogLine
+c-file 0x0801FA18 _ src/dialogue/advance_dialog.c AdvanceDialog
+c-file 0x0801FA9C _ src/dialogue/load_dialog_box_graphics.c LoadDialogBoxGraphics
 c-file 0x0801FAF4 0x0801FB54 src/dialogue/exit_dialogue.c ExitDialogue
 
 # DialogBox? (dialog box)
@@ -856,7 +856,7 @@ thumb-func 0x0801FBA4 sub_0801FBA4
 thumb-func 0x0801FBB0 sub_0801FBB0
 thumb-func 0x0801FBBC sub_0801FBBC
 thumb-func 0x0801FC00 sub_0801FC00
-thumb-func 0x0801FC28 sub_0801FC28
+thumb-func 0x0801FC28 GetDialogLineText
 thumb-func 0x0801FC58 sub_0801FC58
 thumb-func 0x0801FCFC sub_0801FCFC
 thumb-func 0x0801FD2C sub_0801FD2C
@@ -2466,13 +2466,14 @@ c-file 0x08054FDC _ src/battle/effect_anim_data.c g_abFighterIdleAnimData_candid
 c-file 0x0805994C 0x0805BA7C src/battle/effect_scripts.c g_apEffectScripts
 
 c-file 0x0805BA8C _ src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
-c-file 0x0805BC00 0x0805BC04 src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
+c-file 0x0805BC00 _ src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
+c-file 0x0805BC04 _ src/dialogue/dialogue_blocks.c g_adwDialogBlockTextIds
 c-file 0x0805E020 _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805E0A0 0x0805E104 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E10C _ src/menu/common_bg2_control.c g_dwCommonBg2Control
 c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file 0x0805E280 _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
-c-file 0x0805E28C 0x0805E29C src/dialogue/dialogue.globals.c g_aDialogScanlineEffects
+c-file 0x0805E28C _ src/dialogue/dialogue.globals.c g_aDialogScanlineEffects
 c-file 0x0805EB10 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EB9C _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
@@ -2730,7 +2731,8 @@ c-rodata 0x08FAA7D0 _ EepromV124
 c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
 
-c-file 0x08FAAEF8 0x08FAAF10 src/gamemode/modes/cutscene/harry_patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
+c-file 0x08FAAEF8 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
+c-file 0x08FAAF10 _ src/dialogue/dialogue_text_info.c g_aDialogTextInfo
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows
 c-file 0x08FB0588 _ src/audio/sound_samples.c g_aSoundSamples
 c-file 0x08FB0818 _ src/audio/sound_variants.c g_aSoundVariants
