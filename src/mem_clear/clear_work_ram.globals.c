@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hw/mem.h"
+#include "mem_clear.h"
 
 u8 *const g_pIwramSectionStart = g_IwramSectionStart;
 u8 *const g_pIwramSectionEnd = g_IwramSectionEnd;

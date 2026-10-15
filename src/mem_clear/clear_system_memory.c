@@ -1,5 +1,4 @@
-#include "hw/mem.h"
-#include "graphics/display.h"
+#include "mem_clear.h"
 
 void ClearSystemMemory(void)
 {

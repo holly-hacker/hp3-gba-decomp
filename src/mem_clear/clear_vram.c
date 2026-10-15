@@ -1,5 +1,5 @@
 #include "hw/mem.h"
-#include "graphics/display.h"
+#include "mem_clear.h"
 #include "hw/io_regs.h"
 
 void ClearVram(void)

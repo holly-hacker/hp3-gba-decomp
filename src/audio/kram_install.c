@@ -1,5 +1,6 @@
 #include "types.h"
 #include "hw/mem.h"
+#include "mem_clear.h"
 #include "graphics/audio.h"
 
 // Copies the ROM images of the statically linked IWRAM and EWRAM sections

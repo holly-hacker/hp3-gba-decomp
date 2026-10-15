@@ -1772,12 +1772,12 @@ c-file 0x0803AFE4 _ src/menu/spawn_folio_card_actor.c SpawnFolioCardActor
 c-file 0x0803B03C _ src/menu/draw_folio_card_detail_text.c DrawFolioCardDetailText
 
 # Ram? (memory clear)
-c-file 0x0803B0C0 _ src/mem/clear_system_memory.c ClearSystemMemory
-c-file 0x0803B0D0 _ src/mem/clear_work_ram.c ClearWorkRam
-c-file 0x0803B144 _ src/mem/clear_video_memory.c ClearVideoMemory
-c-file 0x0803B158 _ src/mem/clear_vram.c ClearVram
-c-file 0x0803B16C _ src/mem/clear_oam_dma.c ClearOamDma
-c-file 0x0803B190 _ src/mem/clear_palette_ram_dma.c ClearPaletteRamDma
+c-file 0x0803B0C0 _ src/mem_clear/clear_system_memory.c ClearSystemMemory
+c-file 0x0803B0D0 _ src/mem_clear/clear_work_ram.c ClearWorkRam
+c-file 0x0803B144 _ src/mem_clear/clear_video_memory.c ClearVideoMemory
+c-file 0x0803B158 _ src/mem_clear/clear_vram.c ClearVram
+c-file 0x0803B16C _ src/mem_clear/clear_oam_dma.c ClearOamDma
+c-file 0x0803B190 _ src/mem_clear/clear_palette_ram_dma.c ClearPaletteRamDma
 
 # Rand? (MT19937 PRNG), see docs/memory-map/rng.md
 c-file 0x0803B1B8 _ src/rng/regenerate.c Mt19937Regenerate
@@ -2542,7 +2542,7 @@ c-file 0x0806B3D8 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
 c-file 0x0806B7D4 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B80C _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
-c-file 0x0806B8CC _ src/mem/clear_work_ram.globals.c g_pIwramSectionStart
+c-file 0x0806B8CC _ src/mem_clear/clear_work_ram.globals.c g_pIwramSectionStart
 c-file 0x0806B8DC 0x0806B934 src/room/actors/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 _ src/shop/shop_stock.c g_aShopStockMisc
 

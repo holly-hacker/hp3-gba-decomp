@@ -6,12 +6,7 @@
 
 // Display registers and BG layers. sub_ names are still unidentified.
 
-extern void ClearVram(void);
 extern void ClearPaletteRam(void);
-extern void ClearOamDma(void);
-extern void ClearPaletteRamDma(void);
-// ClearVram, ClearOamDma, then ClearPaletteRamDma.
-extern void ClearVideoMemory(void);
 
 // Per-frame ticks run by TickFrameSystems; see docs/memory-map/frame_systems.md.
 extern void TickScreenWindows_candidate(void);

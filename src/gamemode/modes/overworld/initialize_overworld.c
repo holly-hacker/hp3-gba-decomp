@@ -12,6 +12,7 @@
 #include "overworld/room.h"
 #include "overworld/room_blob.h"
 #include "interrupts.h"
+#include "mem_clear.h"
 #include "vram.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.

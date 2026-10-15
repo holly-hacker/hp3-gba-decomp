@@ -91,6 +91,9 @@
 #define EWRAM_BASE ((u8 *)0x02000000)
 #define EWRAM_END  ((u8 *)0x02040000)
 #define IWRAM_BASE ((u8 *)0x03000000)
+// Upper IWRAM holding the IRQ and system stacks (gIrqStackTop,
+// gSystemStackTop) and the BIOS area; ClearWorkRam stops here.
+#define IWRAM_STACKS ((u8 *)0x03007D00)
 
 // Background palette RAM, 256 colors.
 #define BG_PLTT ((volatile u16 *)0x05000000)
