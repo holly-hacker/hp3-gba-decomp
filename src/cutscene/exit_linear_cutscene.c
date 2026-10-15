@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "cutscene/linear_cutscene.h"
+#include "cutscene.h"
 
 void ExitLinearCutscene(void)
 {

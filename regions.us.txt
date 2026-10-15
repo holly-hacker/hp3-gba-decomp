@@ -773,13 +773,13 @@ c-file 0x0801D464 _ src/checksum/compute_crc8.c ComputeCrc8
 c-file 0x0801D4A8 _ src/checksum/compute_joybus_checksum.c ComputeJoybusChecksum
 
 # Credits (credits and linear cutscene modes)
-c-file 0x0801D518 _ src/gamemode/modes/cutscene/credits/initialize_credits.c InitializeCredits
-c-file 0x0801D5C8 0x0801D6DC src/gamemode/modes/cutscene/credits/update_credits.c UpdateCredits
+c-file 0x0801D518 _ src/cutscene/initialize_credits.c InitializeCredits
+c-file 0x0801D5C8 0x0801D6DC src/cutscene/update_credits.c UpdateCredits
 thumb-func 0x0801D6DC sub_0801D6DC
 thumb-func 0x0801D77C sub_0801D77C
-c-file 0x0801D858 _ src/gamemode/modes/cutscene/linear_cutscene/exit_linear_cutscene.c ExitLinearCutscene
-c-file 0x0801D888 _ src/gamemode/modes/cutscene/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
-c-file 0x0801D8C0 _ src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
+c-file 0x0801D858 _ src/cutscene/exit_linear_cutscene.c ExitLinearCutscene
+c-file 0x0801D888 _ src/cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
+c-file 0x0801D8C0 _ src/cutscene/update_linear_cutscene.c UpdateLinearCutscene
 
 # Cursor? (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
 c-file 0x0801D940 _ src/cursor/spawn_menu_cursor_actor.c SpawnMenuCursorActor
@@ -2467,7 +2467,7 @@ c-file 0x0805994C 0x0805BA7C src/battle/effect_scripts.c g_apEffectScripts
 
 c-file 0x0805BA8C _ src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BC00 0x0805BC04 src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
-c-file 0x0805E020 _ src/gamemode/modes/cutscene/linear_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
+c-file 0x0805E020 _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805E0A0 0x0805E104 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E10C 0x0805E110 src/menu/common_bg2_control.c g_dwCommonBg2Control
 c-file 0x0805E174 0x0805E17C src/gamemode/modes/minigame/harry_vs_dementors/harry_vs_dementors.globals.c g_dwHarryVsDementorsBg0Control

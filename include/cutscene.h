@@ -30,4 +30,3 @@ extern const u32 g_dwLinearCutsceneBg1Control;                // 0x0805E024
 extern u32 g_dwCreditsScrollRow;   // 0x030028A8: last text row the scroll reached
 extern u32 g_dwCreditsLine;        // 0x030028AC: next text line to draw
 extern u32 g_dwCreditsTileCursor;  // 0x030028B0: next free text tile
-

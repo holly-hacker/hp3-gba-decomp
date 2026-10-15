@@ -1,5 +1,5 @@
 #include "types.h"
-#include "cutscene/linear_cutscene.h"
+#include "cutscene.h"
 #include "gen/graphics/cutscenes.h"
 
 const u32 g_dwLinearCutsceneBg0Control = 0x3D03;

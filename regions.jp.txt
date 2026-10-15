@@ -700,13 +700,13 @@ c-file 0x0801D35C _ src/room/opcodes/room_script_op_set_pending_chain_from_exit_
 c-file 0x0801D38C _ src/room/compare_and_branch_room_script.c CompareAndBranchRoomScript
 c-file 0x0801D460 _ src/checksum/compute_crc8.c ComputeCrc8
 c-file 0x0801D4A4 _ src/checksum/compute_joybus_checksum.c ComputeJoybusChecksum
-c-file 0x0801D514 _ src/gamemode/modes/cutscene/credits/initialize_credits.c InitializeCredits
-c-file 0x0801D5C4 0x0801D6D8 src/gamemode/modes/cutscene/credits/update_credits.c UpdateCredits
+c-file 0x0801D514 _ src/cutscene/initialize_credits.c InitializeCredits
+c-file 0x0801D5C4 0x0801D6D8 src/cutscene/update_credits.c UpdateCredits
 thumb-func 0x0801D6D8 sub_0801D6DC
 thumb-func 0x0801D778 sub_0801D77C
-c-file 0x0801D854 _ src/gamemode/modes/cutscene/linear_cutscene/exit_linear_cutscene.c ExitLinearCutscene
-c-file 0x0801D884 _ src/gamemode/modes/cutscene/linear_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
-c-file 0x0801D8BC _ src/gamemode/modes/cutscene/linear_cutscene/update_linear_cutscene.c UpdateLinearCutscene
+c-file 0x0801D854 _ src/cutscene/exit_linear_cutscene.c ExitLinearCutscene
+c-file 0x0801D884 _ src/cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
+c-file 0x0801D8BC _ src/cutscene/update_linear_cutscene.c UpdateLinearCutscene
 c-file 0x0801D93C _ src/cursor/spawn_menu_cursor_actor.c SpawnMenuCursorActor
 c-file 0x0801DBDC _ src/cursor/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 c-file 0x0801DC68 _ src/cursor/release_menu_cursor.c ReleaseMenuCursor
@@ -2214,7 +2214,7 @@ c-file 0x08054F08 _ src/battle/effect_anim_data.c g_abFighterIdleAnimData_candid
 c-file 0x08059878 0x0805B9A8 src/battle/effect_scripts.c g_apEffectScripts
 c-file 0x0805B9B8 _ src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BB2C 0x0805BB30 src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
-c-file 0x0805DF4C _ src/gamemode/modes/cutscene/linear_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
+c-file 0x0805DF4C _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805DFCC 0x0805E030 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E038 0x0805E03C src/menu/common_bg2_control.c g_dwCommonBg2Control
 c-file 0x0805E0A0 0x0805E0A8 src/gamemode/modes/minigame/harry_vs_dementors/harry_vs_dementors.globals.c g_dwHarryVsDementorsBg0Control

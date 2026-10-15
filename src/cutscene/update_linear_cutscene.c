@@ -3,7 +3,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "input.h"
-#include "cutscene/linear_cutscene.h"
+#include "cutscene.h"
 #include "font.h"
 
 // A advances the text; the actor is shown while more text remains, and A on

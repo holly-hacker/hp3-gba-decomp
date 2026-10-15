@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "cutscene/linear_cutscene.h"
+#include "cutscene.h"
 #include "menu/main_menu.h"
 #include "cursor.h"
 

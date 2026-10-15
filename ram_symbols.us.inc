@@ -181,7 +181,7 @@
 .set g_dwCreditsLine,         0x030028AC  @ u32: next credits text line to draw
 .set g_dwCreditsTileCursor,   0x030028B0  @ u32: next free credits text tile
 .set g_pLinearCutsceneText,   0x030028B4  @ u8 *: unread remainder of the cutscene's text
-.set g_pLinearCutsceneActor, 0x030028B8  @ Actor *; see include/cutscene/linear_cutscene.h
+.set g_pLinearCutsceneActor, 0x030028B8  @ Actor *; see include/cutscene.h
 .set g_dwLinearCutsceneIndex, 0x030028BC  @ u32: GameMode - Credits
 
 .set g_pMenuCursorEmitter, 0x030028C0  @ ParticleEmitter *: emitter of the cursor actor built by SpawnMenuCursorActor(4)
