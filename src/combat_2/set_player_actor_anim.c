@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "mt19937.h"
 
 // state 0 (idle) re-rolls one of 2 random idle starting frames.

@@ -757,4 +757,3 @@ extern u8 GetFrameCellCount(ActorFrameDesc *frameDesc);
 extern void GetOamShapeSizeDims(u32 shape, u32 size, s32 *dims);
 
 extern void DestroyLinkedActor(void *linkedActor);
-extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);  // 0x08018BE0

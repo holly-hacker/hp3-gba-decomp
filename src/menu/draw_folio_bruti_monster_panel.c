@@ -2,6 +2,7 @@
 #include "background.h"
 #include "battle/battle.h"
 #include "battle/effect_script.h"
+#include "combat_2.h"
 #include "math.h"
 #include "game/save.h"
 #include "gen/graphics/overworld.h"

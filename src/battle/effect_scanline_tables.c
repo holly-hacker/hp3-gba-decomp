@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/effect_script.h"
+#include "combat_2.h"
 
 // BG control words RegisterBgTileAnimation takes for an effect BG record's animation,
 // chosen by the BG it targets.

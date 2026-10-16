@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "inventory.h"
 
 // Recomputes each party member's base stats from their level, then lowers

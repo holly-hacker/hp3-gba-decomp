@@ -49,7 +49,7 @@ is one in-battle consumer among the rest.
 ## The interpreter
 
 **`InterpretActorScript`** (US `0x08018CC0`-`0x0801AE14`, Thumb,
-8532 bytes, matching C in `src/battle/interpret_actor_script.c`) is **one function**, reached via `Actor+0x98` (field
+8532 bytes, matching C in `src/combat_2/interpret_actor_script.c`) is **one function**, reached via `Actor+0x98` (field
 `pfnTick`), a generic per-tick callback pointer set by `FUN_08018be0`
 (US `0x08018BE0`) when it spawns a script actor
 (`Actor+0x62 = effectId`, `Actor+0x98 = InterpretActorScript`).

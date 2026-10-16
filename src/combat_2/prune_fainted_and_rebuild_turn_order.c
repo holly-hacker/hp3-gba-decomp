@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 
 // Removes every fighter marked fainted (nFaintedFlag == -1) from pFighters,
 // queueing non-Enemy ones onto pPendingFighters_candidate, then tears down

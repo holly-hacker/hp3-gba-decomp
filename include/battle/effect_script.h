@@ -53,7 +53,6 @@ extern const ScanlineEffectEntry *const g_apEffectScanlineTables_candidate[3];  
 extern const u8 g_abEffectScanlineTableSizes_candidate[3];    // 0x08053B14
 
 // Scanline callbacks of the effect tables.
-extern void sub_0801B130(u32 *pPayload0, u32 *pPayload1);
 extern void EffectScanlineRestoreBgs(u32 *pPayload0, u32 *pPayload1);
 extern void EffectScanlineAdvanceScroll(u32 *pPayload0, u32 *pPayload1);
 extern void EffectScanlineSetBandScroll(u32 *pPayload0, u32 *pPayload1);
@@ -66,7 +65,6 @@ extern const u16 g_awBattleSlotPosX_candidate[7];            // 0x08053D2A, per 
 extern const u8 g_abBattleSlotPosY_candidate[7];             // 0x08053D38
 extern const EffectBgRecord g_aEffectBgRecords_candidate[166];  // 0x080544D4
 
-extern void InterpretActorScript(Actor *actor);
 extern void WaitFramesTick(Actor *actor);
 extern void WaitForCounterTick(Actor *actor);
 extern void WaitForFieldClearTick(Actor *actor);
@@ -74,23 +72,13 @@ extern void WaitForCasterField86Tick_candidate(Actor *actor);
 extern IntPoint ComputeEffectSpawnPosition(void);
 extern void JumpToScriptLabel(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
-extern void sub_0801B4BC(u32 a, void *b, u32 c, u32 d, void *e);
 extern void sub_08012A00(void);
 // The room's battle background graphic blob: the second entry of g_aBattleBackgroundPairs, or a
 // fixed alternate blob for rooms 8-15 under one battle-state condition.
 extern void *GetBattleBackgroundGraphic(void);
 extern void sub_08037104(u32 a);
 extern void ReviveFighter_candidate(u8 pendingIdx);
-extern s32 sub_080189C8(u32 rosterIndex);  // per-monster XP reward
-extern s32 sub_08018AB8(u32 rosterIndex);  // per-monster gold reward
-extern ParticleEmitter *sub_0801B204(Actor *actor, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B2EC(Actor *actor, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B348(Actor *actor, u32 a, u32 b);
 extern ParticleEmitter *CreateScriptEmitter12(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
 extern ParticleEmitter *CreateScriptEmitter8(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
-extern ParticleEmitter *CreateBattleEffectEmitter_candidate(Actor *actor, s32 a1, s32 a2, s32 a3,
-                                                             s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
-                                                             s32 a9, s32 a10, s32 a11, s32 a12, s32 a13,
-                                                             s32 a14, s32 a15, s32 a16);
 extern void DarkenScreenPalette(void);
 extern void RestoreScreenPalette(void);

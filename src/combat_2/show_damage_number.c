@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 
 // Shows `damage` over fighter `targetIndex` and puts its Actor into action
 // state 2. An out-of-range target is retargeted to the first living fighter

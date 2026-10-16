@@ -112,8 +112,6 @@ typedef struct MonsterTableRow {
     u8 bSpecialId;           // 0x15, not copied to BattleFighter
     u16 wPad_0x16;           // 0x16
 } MonsterTableRow;
-// The spell's effectiveness (0-100) against a monster, or -1 for a spell the monster has no entry for.
-extern s32 GetMonsterSpellEffectiveness(s32 monsterIndex, s32 spellIndex);
 extern const MonsterTableRow MonsterTable[];  // 0x0804F410, src/battle/monsters.c
 
 // One per-level row of Harry/Ron/Hermione's level-up stat tables, 12 bytes
@@ -249,10 +247,6 @@ extern void TickBattleTurnStateMachine(void);
 extern void SetFighterTurnOrderIconDone(s32 fighterIndex);  // sets fighterIndex's turn-order icon to its idle frame
 extern void SetFighterTurnOrderIconActive(s32 fighterIndex);  // sets fighterIndex's turn-order icon to its highlighted frame, bringing it to the front
 extern void sub_08013108(u8 fighterIndex);        // cursor/highlight-to-fighter
-extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighterIndex, s32 flag);
-extern void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex);
-extern void CheckBattleDefeat(void);
-extern void PruneFaintedAndRebuildTurnOrder_candidate(s32 arg0);
 extern u8 RollFighterParalysisEscape(u8 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
 extern void DrawFighterStatsUi_candidate(s32 fighterType, s32 panelSlot);
 // ShowBattleMessage's first parameter; what each case renders is in
@@ -288,8 +282,6 @@ typedef enum {
 #define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
 
 extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
-extern s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance);
-extern void SpawnParalysisEffect(Actor *actor);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void OpenEnemyTargetMenu_candidate(u8 fighterIndex);  // bMenuScreen 6, 0x08012B98
 extern void OpenAllyTargetMenu(u8 fighterIndex);             // bMenuScreen 8, 0x080107BC
@@ -297,20 +289,8 @@ extern void OpenPendingFighterMenu_candidate(u8 fighterIndex);  // bMenuScreen 9
 extern void TickBattleMenuInput(void);
 extern void DispatchPendingAction(s32 fighterIndex);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
-extern void UpdateFighterFlashEffect_candidate(Actor *actor);  // 0x08015574
-extern void CheckBattleVictory(Actor *actor);                  // 0x080186E0
-extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
-extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s32 damage);
-extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void SetPlayerActorAnim(Actor *actor, s32 state);   // 0x08015484, party fighter anim tables
-extern void SetMonsterActorAnim(Actor *actor, u8 state);  // 0x0801539C, monster gfx tables + shadow
-extern void sub_08018B14(u16 damage, s32 fighterIndex);
-extern Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
-extern u16 sub_08015334(s32 x, s32 fighterIndex);
-extern u16 sub_080152CC(s32 x, s32 fighterIndex);
 extern void ClearPoisonedFighter_candidate(u8 fighterIndex);  // clears Poisoned, zeroes bPoisonDamage; CurePoison's shared helper
 extern void ClearParalyzedFighter_candidate(u8 fighterIndex);
-extern void PostActionBattleCheck(void);
 extern s32 sub_08012E0C(u8 fighterIndex);  // 1 if the fighter has a shadow Actor (monsters 45-47)
 extern void PushBattleState(s32 state);
 extern void TrackSpellFamiliarity(u8 fighterType, u8 spellId, u8 spellLevel, u16 *pHp);  // 0x08010008
@@ -347,10 +327,6 @@ extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
 extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
 extern void sub_08012B40(void);
 extern void sub_08012A38(void);
-extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
-extern void ShowItemUseResult(Actor *actor, s32 targetIndex);
-extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
-extern void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex);  // 0x08017F98
 extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
 extern const u8 g_abSpellUnknownByLevel[10][3];  // 0x080538CE, [spellId][level], no known reader
 extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
@@ -359,7 +335,6 @@ extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
 // g_aMonsterAttackOffset_candidate is subtracted off to get the destination.
 extern const u8 g_aBattleSlotAnchorPos_candidate[3][2];  // 0x080539A0, [bSlotParam]
 extern const u8 g_aMonsterAttackOffset_candidate[69][2];  // 0x0804FB9C, [rosterIndex]
-extern void RecomputeBaseStatsFromLevel_candidate(u32 character);
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
@@ -373,8 +348,6 @@ typedef struct FighterAnimRow {
 extern const FighterAnimRow g_aFighterAnimTable[4];  // 0x08051248, src/graphics/assets/fighter_anim_table.c
 extern const u8 g_aFighterAnimDataTable[4][10][58];  // 0x08051560, [fighter][anim state]
 
-extern void TickPlayerActionState(Actor *actor);
-extern void TickFighterAttackAnimState_candidate(Actor *actor);  // 0x08015608
 extern void *memcpy(void *dst, const void *src, u32 n);
 extern void InitBattleBackground_candidate(void);
 extern void RestoreFighterActors_candidate(void);
@@ -383,9 +356,6 @@ extern u32 GetPartyPresenceMask(void);
 extern u32 GetPartySize(void);
 extern void JitterEnemyTurnOrder(void);
 extern void BuildTurnOrder(void);
-extern Actor *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
-extern Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
-extern Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
 extern u8 *GetBattleBackgroundData_candidate(void);
 extern void ResumeBattleAfterSubmode_candidate(void);
 

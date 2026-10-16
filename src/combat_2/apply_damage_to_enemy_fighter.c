@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "game/rewards.h"
 
 #define FIGHTER(i) (g_pFightState->pFighters[i])

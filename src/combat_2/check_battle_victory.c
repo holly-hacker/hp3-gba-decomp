@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "graphics/audio.h"
 
 // Ends the battle in victory once every Enemy fighter is at 0 HP: pushes

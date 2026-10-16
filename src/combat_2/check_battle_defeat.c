@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "graphics/audio.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

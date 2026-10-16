@@ -372,7 +372,7 @@ Notes on pieces the pseudocode above elides:
   (`build/us/full_disasm.s:37180-37182` confirms the `Actor+8 == 3`
   branch that skips straight past the MP-deduction/`ResolvePlayerAttack`
   block into his own hardcoded-damage sub-state, `Actor+0x60 == 6`).
-- **Enemy target selection**, matched in `src/battle/tick_fighter_attack_anim_state.c`
+- **Enemy target selection**, matched in `src/combat_2/tick_fighter_attack_anim_state.c`
   (`TickFighterAttackAnimState_candidate` case `0x1A`, `Actor+0x90 == 0x21`
   sub-branch -- not case `0`, which is just the post-hit flash-clear tail):
   ```c
@@ -510,7 +510,7 @@ defenses `100`) plus a backup `memcpy` of the record into slot 3
 branch (anim data row `type * 0x244`, cursor `base + slot*4 + 2`).
 `bSelectedActionIndex` inits to `0xFF` at `+0x3A`, which is why that offset
 is the action index and `+0x3C` the spell id. The decompilation
-(`src/battle/init_player_battle_actor.c`, byte-identical) folds the flag
+(`src/combat_2/init_player_battle_actor.c`, byte-identical) folds the flag
 update through the mask temp itself (`mask &= maskVal`); a separate dest
 pseudo would tie to the loaded value in regmove and steal `r0` from the
 mask. No JP row exists for this range, so the JP bytes here are unverified
@@ -531,7 +531,7 @@ types 45-47 additionally spawn a shadow `Actor` (own anim tables at
 `0x18`); `wHp`/`wHp_max` share one load, `bRosterIndex` is the monster
 index, `bFighterType` is `Enemy`, `unk3E` is assigned `-1` directly (no
 read-modify-write), and there is no faint branch. The decompilation
-(`src/battle/init_monster_battle_actor.c`, byte-identical) holds the
+(`src/combat_2/init_monster_battle_actor.c`, byte-identical) holds the
 cursor addresses in two temps to reproduce ROM's computation order, and
 writes the slot doubling as `slot + slot` (`slot * 2` splits the copy and
 shift across `r3`/`r0`).
@@ -548,7 +548,7 @@ background/palette load. Three cases on `g_PrevGameModeStackContext`:
   `g_aCardTargetingMeta[g_GameModeArg2][0]` -- **already a named, matched
   global** (`extern u8 g_aCardTargetingMeta[][2]`, `0x080514DE`,
   `include/battle/battle.h:374`), used from `TickPlayerActionState`'s own
-  Special-Move-resolution case in `src/battle/tick_player_action_state.c`.
+  Special-Move-resolution case in `src/combat_2/tick_player_action_state.c`.
   Indexed by the raw Folio Universitas card slot `0`-`15`; `[0]` is the
   target-type byte this function reads, `[1]` is a second, independently
   read boolean -- gates a `StopBgTileAnimationsAfterCard_candidate()` call
@@ -643,7 +643,7 @@ menus, with no `aEnemySlotTurnOrderIndex`/`aAllySlotTurnOrderIndex`
 translation, consistent with indexing straight into the separate pending
 pool. `RestoreFighterActors_candidate` (`0x0800F16C`) spawns this pool's
 `Actor`s the same way it does for `pFighters`, and `TickPlayerActionState`
-(matched, `src/battle/tick_player_action_state.c`) pans every
+(matched, `src/combat_2/tick_player_action_state.c`) pans every
 `pPendingFighters_candidate[i].pActor` alongside the regular roster
 during the Special Move windup/return camera move (`bActionState == 0x1a`,
 `bActionFlags == 0x21`/`0x40` cases) -- pending fighters are real,

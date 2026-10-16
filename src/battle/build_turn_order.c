@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 
 #define STAGING(i) (g_pFightState->pStagingFighters[i])
 #define SLOT(i) (g_pFightState->pFighters[i])

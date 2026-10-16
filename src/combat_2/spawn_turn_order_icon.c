@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "gen/graphics/battle.h"
 
 // Creates the turn-order icon for the fighter at turnOrderIndex: a container

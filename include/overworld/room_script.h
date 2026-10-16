@@ -68,7 +68,6 @@ enum {
 extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, u8 falseChain, u8 trueRow,
                                        u8 falseRow);
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
-extern void LevelUpPartyMember_candidate(u32 fighterType);
 extern u8 g_abRoomScriptExitParams_candidate[2];
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
 extern void sub_08024980(u32 characterId);  // fills follower slot 0

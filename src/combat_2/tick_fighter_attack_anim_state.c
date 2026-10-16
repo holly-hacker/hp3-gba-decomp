@@ -1,4 +1,5 @@
 #include "types.h"
+#include "combat_2.h"
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "mt19937.h"

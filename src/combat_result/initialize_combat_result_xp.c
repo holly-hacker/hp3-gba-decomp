@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "font.h"
 #include "text.h"
 #include "combat_result.h"

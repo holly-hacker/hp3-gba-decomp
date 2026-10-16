@@ -83,8 +83,4 @@ extern void RollBattleItemDrops(int *pItemId0, int *pItemId1);  // 0x080147C0
 extern void InitializeCombatResultXp(void);       // 0x08013AC8: draws the party's Exp/Level/Next rows
 extern void TickCombatResultXpCounter(void);      // 0x08014004: one tick of the XP counter
 extern void InitializeCombatResultDrops(void);    // 0x0801456C: rolls and lists the drops and the gold
-extern void sub_0801493C(void);
 
-// Experience and level-up helpers outside this block, by party stats slot.
-extern s32 GetPartyMemberTotalXp(u32 slot);        // XP earned so far, 0x08015110
-extern s32 GetPartyMemberXpToNextLevel(u32 slot);  // XP still needed for the next level, 0x08018858

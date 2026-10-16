@@ -2,6 +2,7 @@
 #include "background.h"
 #include "actor.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "font.h"
 #include "text.h"
 #include "graphics/audio.h"

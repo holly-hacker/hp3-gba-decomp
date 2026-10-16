@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "battle/encounters.h"
+#include "combat_2.h"
 #include "game/game_modes.h"
 
 // The random-encounter cell for the current mode-stack args: id/kind/variant

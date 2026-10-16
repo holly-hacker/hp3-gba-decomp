@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 
 s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance)
 {

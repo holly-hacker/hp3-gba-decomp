@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 
 // Applies enemy attack damage and poison ticks to an ally. Unlike
 // ApplyDamageToEnemyFighter, this also updates the party's stored HP

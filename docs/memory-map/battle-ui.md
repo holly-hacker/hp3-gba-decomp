@@ -448,7 +448,7 @@ dispatch, not investigated further.
 
 ### `TickPlayerActionState` (`0x0801602C`) -- player/Buckbeak side
 
-Matched byte-exact by `src/battle/tick_player_action_state.c`
+Matched byte-exact by `src/combat_2/tick_player_action_state.c`
 (`0x0801602C`-`0x08017B5C`): reads `Actor+0x8D`, dispatches a 27-entry
 `switch` over the table at `0x08016090` (case labels in source order `0`,
 `0xf`, `2`, `0x1a`, `0x15`, `4`, `1`, `5`, matching agbcc's

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "mt19937.h"
 
 // Plays animation `state` on a monster's Actor (wActorType is the monster id + 4), and
