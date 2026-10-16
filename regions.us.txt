@@ -172,14 +172,14 @@ c-file 0x08005384 0x0800539C src/actor/get_oam_shape_size_dims.c GetOamShapeSize
 
 # Area (room loading)
 thumb-func 0x0800539C SpawnMissingRoomGroupActors
-c-file 0x08005410 _ src/room/run_room_script_chain.c RunRoomScriptChain
-c-file 0x080055C0 _ src/room/resume_room_script_chain.c ResumeRoomScriptChain
-c-file 0x0800572C _ src/room/build_room_actor_table.c BuildRoomActorTable
-c-file 0x08005808 _ src/room/build_room_actor_group.c BuildRoomActorGroup
-c-file 0x0800588C _ src/room/build_room_route_table.c BuildRoomRouteTable
-c-file 0x08005968 _ src/room/build_room_script_chain_table.c BuildRoomScriptChainTable
-c-file 0x08005A44 _ src/room/init_room_script_state.c InitRoomScriptState
-c-file 0x08005A78 0x08005B00 src/room/parse_room_resource_blob.c ParseRoomResourceBlob
+c-file 0x08005410 _ src/area/run_room_script_chain.c RunRoomScriptChain
+c-file 0x080055C0 _ src/area/resume_room_script_chain.c ResumeRoomScriptChain
+c-file 0x0800572C _ src/area/build_room_actor_table.c BuildRoomActorTable
+c-file 0x08005808 _ src/area/build_room_actor_group.c BuildRoomActorGroup
+c-file 0x0800588C _ src/area/build_room_route_table.c BuildRoomRouteTable
+c-file 0x08005968 _ src/area/build_room_script_chain_table.c BuildRoomScriptChainTable
+c-file 0x08005A44 _ src/area/init_room_script_state.c InitRoomScriptState
+c-file 0x08005A78 0x08005B00 src/area/parse_room_resource_blob.c ParseRoomResourceBlob
 thumb-func 0x08005B00 RespawnGroupAndRunChain
 thumb-func 0x08005B44 ShouldRunRoomIndex
 thumb-func 0x08005B70 SpawnRoomGroupMember
@@ -187,13 +187,13 @@ thumb-func 0x08005BCC GetRoomGroupMemberCount
 thumb-func 0x08005BE4 FindRoomEntryPoint
 thumb-func 0x08005C38 GetRoomActorStaticRecord
 thumb-func 0x08005C60 GetRoomActorPtr
-c-file 0x08005CAC 0x08005CE8 src/room/set_room_actor_ptr.c SetRoomActorPtr
+c-file 0x08005CAC 0x08005CE8 src/area/set_room_actor_ptr.c SetRoomActorPtr
 thumb-func 0x08005CE8 GetRoomRouteWaypointCount
 thumb-func 0x08005D00 GetRoomRouteWaypointPos
 thumb-func 0x08005D30 RunRoomRouteWaypointChain
 thumb-func 0x08005D88 StopRoomScriptChains
 thumb-func 0x08005DC0 GetRoomBlobStageVariant
-c-file 0x08005DD0 0x08005E18 src/room/copy_room_blob_header_records.c CopyRoomBlobHeaderRecords
+c-file 0x08005DD0 0x08005E18 src/area/copy_room_blob_header_records.c CopyRoomBlobHeaderRecords
 thumb-func 0x08005E18 CopyRoomActorStaticBytes
 thumb-func 0x08005E40 CopyRoomRouteWaypoints
 thumb-func 0x08005E84 CopyRoomScriptChain

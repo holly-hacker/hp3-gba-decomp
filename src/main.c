@@ -1,3 +1,4 @@
+#include "area.h"
 #include "hw/vblank.h"
 #include "interrupts.h"
 #include "graphics/display.h"

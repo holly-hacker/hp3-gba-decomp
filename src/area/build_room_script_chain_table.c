@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "overworld/room_blob.h"
 
 // Builds g_pRoomScriptChainTable at pOut; returns its end.

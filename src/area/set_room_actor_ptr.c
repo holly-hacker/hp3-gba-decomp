@@ -1,5 +1,6 @@
 #include "types.h"
 #include "actor.h"
+#include "area.h"
 #include "overworld/room_blob.h"
 
 // Points the room actor table's record at tile (col, row) to `actor`, marking the actor as bound

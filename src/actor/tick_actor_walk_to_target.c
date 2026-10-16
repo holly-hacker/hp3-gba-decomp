@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "math.h"
 #include "graphics/graphics.h"
 #include "actor.h"

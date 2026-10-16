@@ -50,8 +50,6 @@ typedef struct RoomActorRecordUnkC {
     u8 abArg8[3];
 } RoomActorRecordUnkC;
 
-extern void *GetRoomActorStaticRecord(u8 bColumn, u8 bRow);
-
 extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];  // ROM 0x0804C054 (US)
 
 extern Actor *SpawnRoomTileAnimationActor_candidate(u8 bColumn, u8 bRow);

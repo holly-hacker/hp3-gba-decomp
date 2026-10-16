@@ -1,3 +1,4 @@
+#include "area.h"
 #include "camera.h"
 #include "graphics/audio.h"
 #include "overworld/overworld.h"

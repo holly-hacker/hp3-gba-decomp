@@ -55,17 +55,6 @@ extern RoomScriptRecord *g_pRoomScriptYieldContinuation;
 extern u8 g_bRoomScriptCallStackDepth;
 extern RoomScriptCallFrame g_aRoomScriptCallStack[];
 
-// Starts chain `chain`; with resumeFromSaved it continues the saved caller
-// frame on top of the call stack instead.
-extern void RunRoomScriptChain(u32 chain, s32 resumeFromSaved);
-extern void ResumeRoomScriptChain(void);
-extern void SpawnMissingRoomGroupActors(u32 row);
-
-// Live actor at tile (x, y); every script targets (0, 0xFF), the player slot.
-// x == 0 with y >= 0xFE selects a slot of the array at 0x03003358 instead of a tile; every
-// script uses (0, 255).
-extern Actor *GetRoomActorPtr(u32 x, u32 y);
-
 // cmpOp values for CompareAndBranchRoomScript (room_script_branch.h).
 enum {
     RoomScriptCompareEqual,
@@ -78,10 +67,6 @@ enum {
 
 extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, u8 falseChain, u8 trueRow,
                                        u8 falseRow);
-// Whether chain row `row` may run; false for 0, true from 2 up, and for 1 only
-// while g_wRoomResourceFlags_candidate bit 0 is set.
-extern u32 ShouldRunRoomIndex(u32 row);
-extern u16 GetRoomGroupMemberCount(u32 row);
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
 extern void LevelUpPartyMember_candidate(u32 fighterType);
 extern u8 g_abRoomScriptExitParams_candidate[2];
@@ -97,7 +82,6 @@ extern void RestorePendingCameraFocus_candidate(void *pFocus);
 extern void *g_pPendingCameraFocus_candidate;
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
-extern void RespawnGroupAndRunChain(u32 respawnRow, u32 chainRow);
 // Allocates a RoomActorType_ScriptEffect actor of the given kind (Actor+0x8C),
 // ticked by the kind's entry in the script-effect tick table. Kind 1 (the delayed respawn timer,
 // tick at 0x080200FC) counts dwStateTimer down, then runs the row/chain, or resumes the yielded

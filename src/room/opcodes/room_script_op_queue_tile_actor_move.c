@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "math.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"

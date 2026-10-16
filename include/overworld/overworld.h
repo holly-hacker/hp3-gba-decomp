@@ -149,7 +149,6 @@ s32 TickOverworldControlSlots_candidate(void);
 void TickOwlCareKitFromOverworld(void);
 
 // Overworld teardown helpers called by ExitOverworldScreen.
-extern void StopRoomScriptChains(void);
 extern void FreeRoomSharedTileset(void);
 extern void sub_0802B210(void);
 extern void sub_0802B08C(void);

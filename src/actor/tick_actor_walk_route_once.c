@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "math.h"
 #include "actor.h"
 #include "actor_inline.h"

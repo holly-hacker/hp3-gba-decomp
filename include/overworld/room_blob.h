@@ -62,30 +62,6 @@ typedef struct RoomBlobSubBlock {
 extern RoomBlobHeader *g_pRoomTableBuffer;
 extern RoomBlobTable *g_pRoomActorTable;
 extern RoomBlobTable *g_pRoomRouteTable;
-// Waypoint routes in g_pRoomRouteTable; see docs/formats/rooms.md.
-extern u8 GetRoomRouteWaypointCount(u8 route);  // waypoint count
-extern IntPoint GetRoomRouteWaypointPos(u8 route, u8 waypoint);
-extern void RunRoomRouteWaypointChain(u8 route, u8 waypoint);  // runs the waypoint's chain
-
-// Byte size of an offset array of `count` u16 entries, padded to a multiple of 4.
-extern u16 GetRoomOffsetTableSize(u16 count);
-// `size` rounded up to a multiple of 4.
-extern u16 AlignRoomSizeTo4(u16 size);
-// Copies `size` bytes of static tile data to `pDst + 8`.
-extern void CopyRoomActorStaticBytes(const u8 *pSrc, u8 *pDst, u8 size);
-// Copies a warp trigger list ({u32 count, 8-byte records}); returns the end.
-extern u8 *CopyRoomRouteWaypoints(const RoomBlobTable *pTable, u8 *pDst, u8 index);
-// Copies a room-script chain up to and including its terminator; returns the end.
-extern u8 *CopyRoomScriptChain(const RoomBlobTable *pTable, u8 *pDst, u8 index);
-
-extern u8 *CopyRoomBlobHeaderRecords(const RoomBlobHeader *pBlob, const RoomBlobSubBlock *pVariant);
-extern u8 *BuildRoomActorTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
-extern u8 *BuildRoomActorGroup(const RoomBlobTable *pTable, u8 *pOut, u8 index);
-extern u8 *BuildRoomRouteTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
-extern u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock *pVariant, u8 *pOut);
-
-extern void ParseRoomResourceBlob(const RoomBlobHeader *pBlob);
-
 // Each room's resource blob, in room table order.
 extern const u8 Room00Blob[];
 extern const u8 Room01Blob[];

@@ -614,7 +614,6 @@ extern u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint
 extern ActorRect GetActorCollisionBoxRect(Actor *actor, s32 boxIndex);
 extern s32 DoActorsOverlap(Actor *a, Actor *b);  // tests collision box 0 of each
 extern void ReleaseActorOffscreenVramTiles(Actor *actor);  // 0x08001300
-extern void SetRoomActorPtr(Actor *actor, u8 col, u8 row);
 extern Actor *SpawnActor(u32 type, s32 x, s32 y, const ObjPalette *pPalette);
 extern void SetActorPosition(Actor *actor, s32 x, s32 y);
 extern void SnapActorPosition(Actor *actor, u32 x, u32 y);

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "overworld/room_actor.h"
 
 // Room actor constructor for tile actorType 11, a flame jet that cycles on and

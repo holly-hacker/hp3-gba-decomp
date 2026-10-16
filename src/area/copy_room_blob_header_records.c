@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "overworld/room_blob.h"
 
 // Copies the blob header into the runtime buffer; returns where the actor table goes.

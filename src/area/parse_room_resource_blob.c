@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "mem.h"
 #include "overworld/overworld.h"
 #include "overworld/room_blob.h"

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "math.h"
 #include "hw/bios.h"
 #include "actor.h"

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "area.h"
 #include "overworld/room_script.h"
 
 // The room-script conditional branch shared by the Goto* opcodes. Handlers that

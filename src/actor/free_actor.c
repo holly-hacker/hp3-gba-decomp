@@ -1,5 +1,6 @@
 #include "types.h"
 #include "actor.h"
+#include "area.h"
 #include "mem.h"
 #include "list.h"
 

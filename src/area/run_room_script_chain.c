@@ -1,10 +1,13 @@
 #include "types.h"
+#include "area.h"
 #include "overworld/room_script.h"
 
-// Room-script VM entry that continues the walk stopped at g_pRoomScriptYieldContinuation.
-// Otherwise identical to RunRoomScriptChain, except that jumps save the
-// chain being walked (g_bRoomScriptCurrentChain) as the caller.
-void ResumeRoomScriptChain(void)
+// Room-script VM entry (see docs/formats/room_scripts.md). Walks chain `chain`
+// record by record until it ends or a handler yields (run state 2). A handler that
+// queues a jump through g_bRoomScriptPendingChain starts that chain next; unless the
+// opcode is 0x40 the caller is saved and the walk returns to it once the callee ends.
+// resumeFromSaved instead continues the caller saved on top of the call stack.
+void RunRoomScriptChain(u32 chain, s32 resumeFromSaved)
 {
     RoomScriptRecord *pRecord;
     RoomScriptRecord *pNext;
@@ -17,16 +20,25 @@ void ResumeRoomScriptChain(void)
     if (g_dwRoomScriptRunState == 4)
         return;
 
-    g_dwRoomScriptRunState = 1;
     pushedFrames = 0;
-    pNext = g_pRoomScriptYieldContinuation;
+    g_bRoomScriptPendingChain = chain;
+    if (g_dwRoomScriptRunState == 2)
+        g_dwRoomScriptRunState = 3;
+    else
+        g_dwRoomScriptRunState = 0;
 
     while (1)
     {
-        if (pNext != g_pRoomScriptYieldContinuation)
+        g_bRoomScriptCurrentChain = g_bRoomScriptPendingChain;
+        g_bRoomScriptPendingChain = 0xff;
+        // First record of the chain, or where the saved caller left off.
+        if (resumeFromSaved != 0)
         {
-            g_bRoomScriptCurrentChain = g_bRoomScriptPendingChain;
-            g_bRoomScriptPendingChain = 0xff;
+            resumeFromSaved = 0;
+            pNext = g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth + 1].pReturn;
+        }
+        else
+        {
             pTable = g_pRoomScriptChainTable;
             slotOffset = g_bRoomScriptCurrentChain * 2;
             pChainOffsets = pTable->awChainOffsets;
@@ -55,7 +67,7 @@ void ResumeRoomScriptChain(void)
                 if (pRecord->dwOpcode != 0x40)
                 {
                     g_bRoomScriptCallStackDepth++;
-                    g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth].bRow = g_bRoomScriptCurrentChain;
+                    g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth].bRow = chain;
                     g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth].pReturn = pNext;
                     pushedFrames++;
                 }
@@ -69,10 +81,8 @@ void ResumeRoomScriptChain(void)
     }
 
     // Remember where a yielded walk stops.
-    if (g_dwRoomScriptRunState == 2)
+    if (g_dwRoomScriptRunState == 2 && g_pRoomScriptYieldContinuation == NULL)
         g_pRoomScriptYieldContinuation = pNext;
-    else
-        g_pRoomScriptYieldContinuation = NULL;
 
     if (pRecord->dwOpcode != 0)
         return;
@@ -83,4 +93,10 @@ void ResumeRoomScriptChain(void)
         g_bRoomScriptCallStackDepth -= pushedFrames;
         RunRoomScriptChain(g_aRoomScriptCallStack[g_bRoomScriptCallStackDepth + 1].bRow, 1);
     }
+
+    if (pRecord->dwOpcode != 0)
+        return;
+
+    if (g_dwRoomScriptRunState == 3)
+        g_dwRoomScriptRunState = 2;
 }

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "overworld/room_blob.h"
 
 // Builds one column of the room actor table at pOut; returns its end.

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "overworld/room_script.h"
 
 typedef struct SetTileActorFlagBitRecord {
