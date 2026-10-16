@@ -41,7 +41,7 @@
     {"us": "0x0801D518", "jp": "0x0801D514", "name": "Cutscene"},
     {"us": "0x0801D940", "jp": "0x0801D93C", "name": "Cursor"},
     {"us": "0x0801DD40", "jp": "0x0801DD3C", "name": "Decompress"},
-    {"us": "0x0801DF6C", "jp": "0x0801DF68", "name": "Menu screen frame"},
+    {"us": "0x0801DF6C", "jp": "0x0801DF68", "name": "Default menu"},
     {"us": "0x0801E174", "jp": "0x0801E170", "name": "Dementor Minigame"},
     {"us": "0x0801F264", "jp": "0x0801F260", "name": "Developer logos"},
     {"us": "0x0801F534", "jp": "0x0801F51C", "name": "Dialog"},

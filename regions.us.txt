@@ -795,7 +795,7 @@ c-file 0x0801DE5C _ src/decompress/decompress_resource_vram.c DecompressResource
 c-file 0x0801DF24 _ src/decompress/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassUnused
 c-file 0x0801DF48 0x0801DF6C src/decompress/apply_resource_delta_pass.c ApplyResourceDeltaPass
 
-# Menu screen frame, see docs/memory-map/menu_screen.md
+# Default menu, see docs/memory-map/menu_screen.md
 thumb-func 0x0801DF6C InitializeMenuScreen
 thumb-func 0x0801DF90 LoadMenuScreenFrame
 thumb-func 0x0801E004 LoadMenuScreenOverlay
