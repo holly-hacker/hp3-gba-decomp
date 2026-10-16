@@ -2150,10 +2150,10 @@ c-file 0x0804BC88 _ src/libc/memcpy.c memcpy
 # End of main code section, start of data section
 
 # Unit direction vectors (16.16 {x, y}) for 4, 8, 16 and 32 directions
-c-file 0x0804BCE8 0x0804BEC8 src/graphics/particle/direction_vectors.c g_aDirection4Vectors
+c-file 0x0804BCE8 0x0804BEC8 src/actor/direction_vectors.c g_aDirection4Vectors
 c-file 0x0804BEF8 0x0804BF18 src/actor/action_state_data.c g_abTurnAroundDirection
-c-file 0x0804BF50 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
-c-file 0x0804BF80 0x0804BFB8 src/room/room_actor_constructors.c g_apRoomActorConstructors
+c-file 0x0804BF50 _ src/actor/oam_shape_sizes.c g_aOamShapeSizes
+c-file 0x0804BF80 0x0804BFB8 src/area/room_actor_constructors.c g_apRoomActorConstructors
 c-file 0x0804BFD8 _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C1B0 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
 c-file 0x0804C368 0x0804C36C src/unused_challenge/unused_minigame.globals.c g_dwUnusedMinigameBg0Control

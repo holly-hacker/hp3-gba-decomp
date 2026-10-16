@@ -1,4 +1,5 @@
 #include "types.h"
+#include "area.h"
 #include "chest_actor.h"
 #include "overworld/room_actor.h"
 

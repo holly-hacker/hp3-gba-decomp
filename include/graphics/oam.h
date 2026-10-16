@@ -68,4 +68,3 @@ typedef struct OamShapeSize {
     u8 bHeight;           // pixels
     u16 wTileBytes4bpp;   // bWidth * bHeight / 2
 } OamShapeSize;
-extern const OamShapeSize g_aOamShapeSizes[3][4];

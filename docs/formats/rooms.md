@@ -97,7 +97,7 @@ A tile record is `{u32 actorPtr; u16 actorType; ...static fields...}` --
 construction (`SetRoomActorPtr` performs the same
 write from other call sites); `actorType` (offset `+8`, i.e.
 `GetRoomActorStaticRecord`'s return value) selects a
-constructor from `g_apRoomActorConstructors` (`src/room/room_actor_constructors.c`,
+constructor from `g_apRoomActorConstructors` (`src/area/room_actor_constructors.c`,
 US `0x0804C054`, JP `0x0804BF80`; constructors take `(column, row)` and return
 the new `Actor *`; a 14-entry
 function-pointer array, indices 0-13 -- entries beyond 13 fail to parse

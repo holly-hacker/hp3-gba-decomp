@@ -701,6 +701,11 @@ extern void GetActorOamPosition(Actor *actor, IntPoint *out);
 extern u8 GetDirectionToActor(Actor *actor, Actor *target);
 extern u8 GetDirectionFromActor(Actor *actor, Actor *source);
 extern void GetDirectionVector(FixedPoint *out, u32 actorFlags, u32 direction, s32 speed);
+// Unit vectors in 16.16 fixed point, see src/actor/direction_vectors.c.
+extern const s32 g_aDirection4Vectors[4][2];        // 0x0804BDBC
+extern const s32 g_aDirection8Vectors[8][2];        // 0x0804BDDC
+extern const s32 g_aDirection16Vectors[16][2];      // 0x0804BE1C
+extern const s32 g_aDirection32Vectors[32][2];      // 0x0804BE9C
 extern u8 FindActorsByType(u8 type, u8 characterId, Actor **out, u8 maxCount);
 extern s32 ActorIsNullActorType(Actor *actor);
 extern void SetActorAnimSet_candidate(Actor *actor, u8 animSet);
@@ -755,5 +760,6 @@ extern u16 GetAnimFrameCount(ActorAnimState *anim);
 extern u32 GetFrameTileCodec(ActorFrameData *frameData, u16 frame);
 extern u8 GetFrameCellCount(ActorFrameDesc *frameDesc);
 extern void GetOamShapeSizeDims(u32 shape, u32 size, s32 *dims);
+extern const OamShapeSize g_aOamShapeSizes[3][4];
 
 extern void DestroyLinkedActor(void *linkedActor);

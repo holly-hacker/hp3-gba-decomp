@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "actor.h"
 
 // Unit vectors in 16.16 fixed point, indexed by Direction4 and Direction, then
 // 16 and 32 evenly spaced directions clockwise from up.

@@ -2,10 +2,14 @@
 
 #include "types.h"
 #include "actor.h"
+#include "overworld/room_actor.h"
 #include "overworld/room_blob.h"
 
 // Area loading: builds the current room's runtime tables from its resource blob
 // and runs its room-script chains; see docs/formats/rooms.md.
+
+// Room tile actorType -> constructor table.
+extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];  // ROM 0x0804C054 (US)
 
 extern void SpawnMissingRoomGroupActors(u32 row);
 // Starts chain `chain`; with resumeFromSaved it continues the saved caller

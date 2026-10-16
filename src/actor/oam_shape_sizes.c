@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/oam.h"
+#include "actor.h"
 
 const OamShapeSize g_aOamShapeSizes[3][4] = {
     // square
