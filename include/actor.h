@@ -182,7 +182,6 @@ typedef struct ActorGfxRecord {
     void *pFrameData;
 } ActorGfxRecord;
 
-extern const ActorAssetRecord g_apPortraitTable[72];  // US 0x0804C61C
 extern const ActorAssetRecord g_aHelpSpriteAssets[22];  // US 0x08069AB8
 extern const void *const g_apHelpSpritePalettes[22];    // US 0x08069C18
 

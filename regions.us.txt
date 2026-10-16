@@ -2430,7 +2430,7 @@ c-file 0x0804C470 _ src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_
 c-file 0x0804C4A0 _ src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control
 c-file 0x0804C4CC _ src/cheat_party/cheat_party.globals.c g_dwCheatPartyBg0Control
 c-file 0x0804C618 _ src/cheat_portraits/cheat_portraits.globals.c g_dwCheatPortraitsBg1Control
-c-file 0x0804C61C 0x0804CA9C src/graphics/assets/portrait_table.c g_apPortraitTable
+c-file 0x0804C61C 0x0804CA9C src/cheat_portraits/portrait_table.c g_apPortraitTable
 c-file 0x0804CE8C _ src/cheat_sound_test/cheat_sound_test.globals.c g_dwCheatSoundTestBg0Control
 c-file 0x0804CEB8 _ src/cheat_wizard_cards/cheat_wizard_cards.globals.c g_dwCheatWizardCardsBg2Control
 c-file 0x0804CEC4 _ src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWizardCardNames
@@ -2438,10 +2438,10 @@ c-file 0x0804D524 _ src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprit
 c-file 0x0804D6CC _ src/choose_party_member/choose_character_stages.globals.c g_abChooseCharacterStages
 c-file 0x0804D770 0x0804D790 src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
 c-file 0x0804D798 0x0804D7F8 src/color/gamma_remap_tables.c g_abGammaNormalRemap
-c-file 0x0804D824 0x0804E074 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
-c-file 0x0804E09C _ src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
-c-file 0x0804E254 0x0804E29C src/battle/battle_music.c g_abBattleMusicByRoom
-c-file 0x0804E5E0 0x0804E5EC src/battle/spell_leveling.c g_abSpellMaxLevel
+c-file 0x0804D824 0x0804E074 src/combat_menu/battle_hud_assets.c g_aBattleHudAssets
+c-file 0x0804E09C _ src/combat_menu/battle_backgrounds.c g_aBattleBackgroundPairs
+c-file 0x0804E254 0x0804E29C src/combat_menu/battle_music.c g_abBattleMusicByRoom
+c-file 0x0804E5E0 0x0804E5EC src/combat_menu/spell_leveling.c g_abSpellMaxLevel
 c-file 0x0804E600 _ src/combat_result/combat_result.globals.c g_dwCombatResultBg2Control
 c-file 0x0804E610 _ src/combat_result/combat_result_assets.globals.c g_CombatResultCoinAsset
 c-file 0x0804E640 _ src/combat_result/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects

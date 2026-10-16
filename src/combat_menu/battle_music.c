@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 
 // Music module started by InitializeBattle when the battle was entered from a room
 // (dwCurrentGameModeArg3 != 0xFF).

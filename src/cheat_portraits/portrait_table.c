@@ -1,4 +1,5 @@
 #include "actor.h"
+#include "cheat_portraits.h"
 #include "gen/graphics/menus.h"
 
 // 72 portrait records; repeated entries share the same image resource.

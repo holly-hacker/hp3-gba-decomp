@@ -1232,7 +1232,7 @@ The status/equip screen's `sub_0803A030` reads the three
 `StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
 
 These record tables are C with generated labels: `g_aBattleHudAssets`
-(`src/graphics/assets/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
+(`src/combat_menu/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
 fighter, `src/graphics/assets/fighter_anim_table.c`), `g_aEffectActorAssets`,
 `g_apEffectPalettes`, `g_aEffectAnimAssets`, and `g_aEffectAnimAssets2`
 (`src/graphics/assets/effect_assets.c`), and `g_aStatusCharacterAssets`
@@ -1432,7 +1432,7 @@ through them, but the records themselves are ordinary dialog assets --
   table order: table pointers delimit each tile and frame component, and
   each 512-byte palette ends at the next resource. The `Portraits`
   `image-bank` row claims all 131,576 bytes as 8-bit `PortraitNNN.png`
-  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/graphics/assets/portrait_table.c` reconstructs the 72
+  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/cheat_portraits/portrait_table.c` reconstructs the 72
   records at `0x0804C61C`-`0x0804CA9C`, referencing generated labels so
   repeated records share their original image. Both regions are
   verified by the whole-ROM comparison; JP addresses are not yet mapped.
