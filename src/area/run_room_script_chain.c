@@ -1,5 +1,6 @@
 #include "types.h"
 #include "area.h"
+#include "commands.h"
 #include "overworld/room_script.h"
 
 // Room-script VM entry (see docs/formats/room_scripts.md). Walks chain `chain`

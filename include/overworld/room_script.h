@@ -36,7 +36,6 @@ typedef struct RoomScriptCallFrame {
 
 typedef void (*RoomScriptOpcodeHandler)(RoomScriptRecord *pRecord);
 
-extern const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93];  // ROM 0x0805BA8C
 // Total record length in bytes, opcode word included, per opcode.
 extern const u8 g_abRoomScriptOpcodeLengths[93];  // ROM 0x0805EB34
 
@@ -55,18 +54,6 @@ extern RoomScriptRecord *g_pRoomScriptYieldContinuation;
 extern u8 g_bRoomScriptCallStackDepth;
 extern RoomScriptCallFrame g_aRoomScriptCallStack[];
 
-// cmpOp values for CompareAndBranchRoomScript (room_script_branch.h).
-enum {
-    RoomScriptCompareEqual,
-    RoomScriptCompareNotEqual,
-    RoomScriptCompareGreater,
-    RoomScriptCompareGreaterEqual,
-    RoomScriptCompareLess,
-    RoomScriptCompareLessEqual
-};
-
-extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, u8 falseChain, u8 trueRow,
-                                       u8 falseRow);
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
 extern u8 g_abRoomScriptExitParams_candidate[2];
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);

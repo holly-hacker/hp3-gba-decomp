@@ -1,0 +1,81 @@
+#include "types.h"
+#include "background.h"
+#include "char_block.h"
+#include "commands.h"
+#include "graphics/audio.h"
+#include "graphics/display.h"
+#include "hw/io_regs.h"
+#include "menu/minigame_menu.h"
+#include "actor.h"
+#include "overworld/overworld.h"
+#include "overworld/room.h"
+#include "overworld/room_script.h"
+#include "hw/vblank.h"
+#include "gen/graphics/overworld.h"
+
+typedef struct SpecialSceneEffectRecord {
+    u32 dwOpcode;
+    u8 bMode;
+} SpecialSceneEffectRecord;
+
+void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
+{
+    volatile u16 savedBlendControl;
+    u32 i;
+    const void *bgResource;
+
+    switch (pRecord->bMode)
+    {
+    case 2:
+        FreeBgTileAnimations();
+        RegisterBgTileAnimation(&g_aSpecialSceneBg2, &g_dwSpecialSceneBgControl, 0);
+        sub_0802B138();
+        g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 0;
+        break;
+    case 0:
+        FreeBgTileAnimations();
+        bgResource = &g_aSpecialSceneBg0;
+        goto installBg;
+    case 1:
+        FreeBgTileAnimations();
+        bgResource = &g_aSpecialSceneBg1;
+    installBg:
+        RegisterBgTileAnimation(bgResource, &g_dwSpecialSceneBgControl, 0);
+        g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 1;
+        g_aCameraEffects_candidate[0].bState = 0;
+        g_aCameraEffects_candidate[0].dwFramesLeft = 0;
+        g_aCameraEffects_candidate[0].dwRunForever = 0;
+        break;
+    case 3:
+        savedBlendControl = REG_BLDCNT;
+        PlaySoundById(0x45);
+        for (i = 0; i <= 8; i++)
+        {
+            SetFadeToWhite(0x3f, (i & 2) << 4);
+            WaitForVBlank();
+        }
+        g_abQuestEventState[QUEST_ALT_PRESENTATION] = 1;
+        LoadEmbeddedPalette((u8 *)gTrainWindowNightPalette, 0, 16);
+        PlayMusicModule(9);
+        for (i = 0; i <= 9; i++)
+        {
+            SetFadeToWhite(0x3f, (i & 2) << 4);
+            WaitForVBlank();
+        }
+        REG_BLDCNT = savedBlendControl;
+        REG_BLDY = 0;
+        break;
+    case 4:
+        g_pPlayerActor->bFacing = 6;
+        SetPartyMemberAnim(g_pPlayerActor, PartyAnimWalk);
+        g_pPlayerActor->vel.x = 0xFFFDC71C;
+        g_pPlayerActor->vel.y = 0x00011C72;
+        break;
+    case 5:
+        g_pPlayerActor->bFacing = 2;
+        SetPartyMemberAnim(g_pPlayerActor, PartyAnimWalk);
+        g_pPlayerActor->vel.x = 0x000238E4;
+        g_pPlayerActor->vel.y = 0xFFFEE38E;
+        break;
+    }
+}
