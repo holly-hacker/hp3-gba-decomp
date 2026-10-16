@@ -3,9 +3,9 @@
 #include "graphics/display.h"
 #include "graphics/palette.h"
 #include "game/game_save.h"
-#include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
+#include "default_menu.h"
 
 void ExitGameSave(void)
 {

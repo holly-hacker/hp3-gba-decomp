@@ -2,11 +2,11 @@
 #include "game/game_modes.h"
 #include "graphics/audio.h"
 #include "input.h"
-#include "menu/main_menu.h"
+#include "default_menu.h"
 
 void UpdateCardComboDescription(void)
 {
-    sub_0801E0D8();
+    UpdateMenuScreen();
 
     if (g_wKeysPressed & (KeyA | KeyB))
     {

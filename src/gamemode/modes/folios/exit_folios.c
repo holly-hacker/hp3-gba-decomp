@@ -7,8 +7,8 @@
 #include "mem.h"
 #include "actor.h"
 #include "menu/folios.h"
-#include "menu/main_menu.h"
 #include "cursor.h"
+#include "default_menu.h"
 
 void ExitFolios(void)
 {

@@ -6,8 +6,8 @@
 #include "font.h"
 #include "text.h"
 #include "menu/folio_universitas.h"
-#include "menu/main_menu.h"
 #include "menu/menu.h"
+#include "default_menu.h"
 
 #ifdef VERSION_JP
 #define DESCRIPTION_Y 0x6A

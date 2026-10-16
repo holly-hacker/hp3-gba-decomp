@@ -793,17 +793,17 @@ c-file 0x0801DD88 _ src/decompress/get_resource_decompressed_size.c GetResourceD
 c-file 0x0801DD90 _ src/decompress/decompress_resource.c DecompressResource
 c-file 0x0801DE5C _ src/decompress/decompress_resource_vram.c DecompressResourceVram
 c-file 0x0801DF24 _ src/decompress/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassUnused
-c-file 0x0801DF48 0x0801DF6C src/decompress/apply_resource_delta_pass.c ApplyResourceDeltaPass
+c-file 0x0801DF48 _ src/decompress/apply_resource_delta_pass.c ApplyResourceDeltaPass
 
 # Default menu, see docs/memory-map/menu_screen.md
-thumb-func 0x0801DF6C InitializeMenuScreen
-thumb-func 0x0801DF90 LoadMenuScreenFrame
-thumb-func 0x0801E004 LoadMenuScreenOverlay
-thumb-func 0x0801E04C ClearMenuTextLayer_candidate
-thumb-func 0x0801E05C BeginMenuScreen
-thumb-func 0x0801E0D8 sub_0801E0D8
-thumb-func 0x0801E0DC ExitMenuScreen
-thumb-func 0x0801E118 DrawMenuScreenTitle
+c-file 0x0801DF6C _ src/default_menu/initialize_menu_screen.c InitializeMenuScreen
+c-file 0x0801DF90 _ src/default_menu/load_menu_screen_frame.c LoadMenuScreenFrame
+c-file 0x0801E004 _ src/default_menu/load_menu_screen_overlay.c LoadMenuScreenOverlay
+c-file 0x0801E04C _ src/default_menu/clear_menu_screen_overlay.c ClearMenuScreenOverlay
+c-file 0x0801E05C _ src/default_menu/begin_menu_screen.c BeginMenuScreen
+c-file 0x0801E0D8 _ src/default_menu/update_menu_screen.c UpdateMenuScreen
+c-file 0x0801E0DC _ src/default_menu/exit_menu_screen.c ExitMenuScreen
+c-file 0x0801E118 _ src/default_menu/draw_menu_screen_title.c DrawMenuScreenTitle
 
 # Dementors (Harry vs Dementors minigame)
 c-file 0x0801E174 _ src/dementor_minigame/initialize_dementor_minigame.c InitializeDementorMinigame
@@ -2469,8 +2469,8 @@ c-file 0x0805BA8C _ src/room/room_script_opcode_handlers.c g_apRoomScriptOpcodeH
 c-file 0x0805BC00 _ src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805BC04 _ src/dialog/dialog_blocks.c g_adwDialogBlockTextIds
 c-file 0x0805E020 _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
-c-file 0x0805E0A0 0x0805E104 src/cursor/cursor.globals.c g_MenuCursor8bppAsset
-c-file 0x0805E10C _ src/menu/common_bg2_control.c g_dwCommonBg2Control
+c-file 0x0805E0A0 _ src/cursor/cursor.globals.c g_MenuCursor8bppAsset
+c-file 0x0805E104 _ src/default_menu/default_menu.globals.c g_dwCommonBg0Control
 c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file 0x0805E280 _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E28C _ src/dialog/dialog.globals.c g_aDialogScanlineEffects

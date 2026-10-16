@@ -2,14 +2,14 @@
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "input.h"
-#include "menu/main_menu.h"
 #include "title.h"
 #include "menu/minigame_menu.h"
 #include "game/save.h"
+#include "default_menu.h"
 
 void HandleMinigameSelectMenuConfirm(void)
 {
-    sub_0801E0D8();
+    UpdateMenuScreen();
 
     switch (g_GameModeStackContext.dwModeState)
     {

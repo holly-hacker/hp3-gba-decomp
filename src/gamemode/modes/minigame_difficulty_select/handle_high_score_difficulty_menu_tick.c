@@ -3,12 +3,12 @@
 #include "game/game_modes.h"
 #include "game/save.h"
 #include "input.h"
-#include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
 #include "menu/minigame_difficulty_select.h"
 #include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
 #include "minigame/wizard_cracker_pop_it.h"
+#include "default_menu.h"
 
 static inline void MoveCursorToSelectedRow(void)
 {
@@ -33,7 +33,7 @@ void HandleHighScoreDifficultyMenuTick(void)
     u32 lastRow;
     s32 i;
 
-    sub_0801E0D8();
+    UpdateMenuScreen();
 
     if (g_wKeysPressed & (KeyUp | KeyDown))
     {

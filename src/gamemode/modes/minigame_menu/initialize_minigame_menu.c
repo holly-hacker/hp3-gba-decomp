@@ -3,10 +3,10 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
-#include "menu/main_menu.h"
 #include "menu/minigame_menu.h"
 #include "actor.h"
 #include "cursor.h"
+#include "default_menu.h"
 
 void InitializeMinigameMenu(void)
 {

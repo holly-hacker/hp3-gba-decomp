@@ -7,8 +7,8 @@
 #include "actor.h"
 #include "gamecube.h"
 #include "menu/gamecube_link.h"
-#include "menu/main_menu.h"
 #include "cursor.h"
+#include "default_menu.h"
 
 void ExitGameCubeLink(void)
 {

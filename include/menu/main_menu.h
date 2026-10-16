@@ -1,7 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "actor.h"
 
 // Result of the save slot screen, set by HandleSaveSlotInput_candidate.
 typedef enum {
@@ -18,9 +17,3 @@ extern void ResolveOverwriteConfirmation_candidate(void);
 extern void ExitSaveSlotScreen_candidate(void);
 extern void ConfirmLoadGameSlot_candidate(void);
 extern void InitRoomState(void);
-
-extern Actor *g_pMenuCursorActor;  // 0x03002E08
-extern void InitializeMenuScreen(u32 titleStringId, u32 cursorKind, u32 pulseSelection, const u8 *pOverlayGraphic, u32 overlayX, u32 overlayY);
-extern void BeginMenuScreen(u32 titleStringId, u32 cursorKind, u32 pulseSelection);
-extern void sub_0801E0D8(void);
-extern void ExitMenuScreen(void);

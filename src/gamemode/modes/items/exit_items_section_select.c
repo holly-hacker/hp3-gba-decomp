@@ -5,10 +5,10 @@
 #include "graphics/palette.h"
 #include "game/game_modes.h"
 #include "menu/items_menu.h"
-#include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
 #include "cursor.h"
+#include "default_menu.h"
 
 void ExitItemsSectionSelect(void)
 {

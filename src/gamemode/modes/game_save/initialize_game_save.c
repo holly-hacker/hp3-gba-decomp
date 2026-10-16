@@ -3,8 +3,8 @@
 #include "game/game_modes.h"
 #include "game/game_save.h"
 #include "graphics/graphics.h"
-#include "menu/main_menu.h"
 #include "game/save.h"
+#include "default_menu.h"
 
 void InitializeGameSave(void)
 {

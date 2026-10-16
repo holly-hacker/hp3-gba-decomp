@@ -4,6 +4,7 @@
 #include "text.h"
 #include "menu/connectivity.h"
 #include "menu/in_game_menu.h"
+#include "default_menu.h"
 
 void InitializeConfirmTradeScreen(void)
 {

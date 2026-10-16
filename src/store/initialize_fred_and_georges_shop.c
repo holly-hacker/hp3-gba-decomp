@@ -2,8 +2,8 @@
 #include "background.h"
 #include "game/game_modes.h"
 #include "graphics/display.h"
-#include "menu/main_menu.h"
 #include "shop.h"
+#include "default_menu.h"
 
 void InitializeFredAndGeorgesShop(void)
 {

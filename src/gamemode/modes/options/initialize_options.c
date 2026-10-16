@@ -2,12 +2,12 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "graphics/graphics.h"
-#include "menu/main_menu.h"
 #include "actor.h"
 #include "menu/options.h"
 #include "game/save.h"
 #include "text.h"
 #include "cursor.h"
+#include "default_menu.h"
 
 void InitializeOptions(void)
 {

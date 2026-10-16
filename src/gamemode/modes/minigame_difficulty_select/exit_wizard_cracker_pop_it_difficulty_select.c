@@ -2,10 +2,10 @@
 #include "background.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
-#include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
 #include "overworld/room.h"
+#include "default_menu.h"
 
 void ExitWizardCrackerPopItDifficultySelect(void)
 {

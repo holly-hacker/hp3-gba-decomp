@@ -28,13 +28,13 @@ groups:
           10: HippogriffTookToAirCutsceneGraphic
           11: GameCompletedReplayCutsceneGraphic
           12: MenuBg3Graphic
-          13: CutsceneDrawingsStartup013
+          13: MenuScreenFrameGraphic
           14: StartupBg3Graphic
           15: StartupBg2Graphic
           16: StartupNoticeGraphic
         paletteSources:
           CardComboDescriptionPanel: MenuBg3Graphic
-          CutsceneDrawingsStartup013: MenuBg3Graphic
+          MenuScreenFrameGraphic: MenuBg3Graphic
       - kind: graphic-blobs
         names: [DialogBoxGraphic]
 

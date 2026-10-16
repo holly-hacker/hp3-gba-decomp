@@ -5,10 +5,10 @@
 #include "gamecube.h"
 #include "menu/gamecube_link.h"
 #include "menu/in_game_menu.h"
-#include "menu/main_menu.h"
 #include "title.h"
 #include "battle/battle.h"
 #include "cursor.h"
+#include "default_menu.h"
 
 void InitializeGameCubeLink(void)
 {

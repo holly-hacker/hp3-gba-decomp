@@ -195,7 +195,8 @@
 .set g_pDecompressLzRleIwram,   0x030028D4  @ u8[0x1F8]: IWRAM copy of DecompressLzRle
 .set g_pDecompressGammaLzIwram, 0x03002ACC  @ u8[0x33C]: IWRAM copy of DecompressGammaLz
 
-.set g_pMenuCursorActor,                              0x03002E08  @ Actor *: cursor actor created by BeginMenuScreen; see include/menu/main_menu.h
+.set g_pMenuCursorActor,                              0x03002E08  @ Actor *: cursor actor created by BeginMenuScreen; see include/default_menu.h
+.set g_nMenuScreenPaletteEffectSlot,                  0x03002E0C  @ s32: selection pulse palette effect of BeginMenuScreen, -1 when none
 .set g_dwDementorMinigameScriptFlag_candidate,         0x03002E10  @ u32: set by StartMinigame
 .set g_DementorMinigame,                               0x03002E18  @ DementorMinigameState
 .set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/dialog.h

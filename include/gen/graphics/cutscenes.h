@@ -24,7 +24,7 @@ extern const u8 gTimeTurnerPermissionCutsceneGraphic[];
 extern const u8 gHippogriffTookToAirCutsceneGraphic[];
 extern const u8 gGameCompletedReplayCutsceneGraphic[];
 extern const u8 gMenuBg3Graphic[];
-extern const u8 gCutsceneDrawingsStartup013[];
+extern const u8 gMenuScreenFrameGraphic[];
 extern const u8 gStartupBg3Graphic[];
 extern const u8 gStartupBg2Graphic[];
 extern const u8 gStartupNoticeGraphic[];

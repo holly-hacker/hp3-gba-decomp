@@ -48,11 +48,8 @@ typedef struct {
 
 extern ListMenuState g_ListMenuState;  // 0x03005220
 
-extern const u32 g_dwCommonBg2Control;  // 0x0805E10C: BG2 control word, the text target for list menu rows
 
 extern void ListMenuCursorTick_candidate(Actor *pActor);
 extern void BuildListMenu(const ListMenuDefinition *pDefinition);
 extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);
-extern void DrawMenuScreenTitle(u32 stringId);
-extern void LoadMenuScreenOverlay(const u8 *pGraphic, u32 arg1, u32 arg2);

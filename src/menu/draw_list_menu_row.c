@@ -3,6 +3,7 @@
 #include "menu/menu.h"
 #include "font.h"
 #include "text.h"
+#include "default_menu.h"
 
 void DrawListMenuRow(u32 row)
 {

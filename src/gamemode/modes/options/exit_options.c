@@ -1,11 +1,11 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
 #include "menu/options.h"
 #include "game/save.h"
+#include "default_menu.h"
 
 void ExitOptions(void)
 {

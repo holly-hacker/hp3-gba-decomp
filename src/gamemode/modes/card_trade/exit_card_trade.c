@@ -4,12 +4,12 @@
 #include "mem.h"
 #include "actor.h"
 #include "menu/card_trade.h"
-#include "menu/main_menu.h"
 #include "cursor.h"
+#include "default_menu.h"
 
 void ExitCardTrade(void)
 {
-    ClearMenuTextLayer_candidate();
+    ClearMenuScreenOverlay();
     ReleaseMenuCursor(g_pMenuCursorActor);
     g_pMenuCursorActor = NULL;
     FreeAllParticleEmitters();

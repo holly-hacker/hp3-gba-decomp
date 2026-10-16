@@ -3,12 +3,12 @@
 #include "battle/battle.h"
 #include "game/game_modes.h"
 #include "input.h"
-#include "menu/main_menu.h"
 #include "title.h"
 #include "menu/options.h"
 #include "overworld/room.h"
 #include "game/save.h"
 #include "text.h"
+#include "default_menu.h"
 
 void UpdateOptions(void)
 {
@@ -18,7 +18,7 @@ void UpdateOptions(void)
         return;
     }
 
-    sub_0801E0D8();
+    UpdateMenuScreen();
 
     if (g_GameModeStackContext.dwModeState != 0)
         return;

@@ -6,12 +6,12 @@
 #include "game/game_save.h"
 #include "menu/in_game_menu.h"
 #include "input.h"
-#include "menu/main_menu.h"
 #include "overworld/room.h"
+#include "default_menu.h"
 
 void UpdateInGameMenu(void)
 {
-    sub_0801E0D8();
+    UpdateMenuScreen();
 
     switch (g_GameModeStackContext.dwModeState)
     {
