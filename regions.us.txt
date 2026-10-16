@@ -2480,7 +2480,7 @@ c-file 0x08054FDC _ src/combat_2/effect_anim_data.c g_abFighterIdleAnimData_cand
 c-file 0x0805994C 0x0805BA7C src/combat_2/effect_scripts.c g_apEffectScripts
 
 c-file 0x0805BA8C _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
-c-file 0x0805BC00 _ src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
+c-file 0x0805BC00 _ src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805BC04 _ src/dialog/dialog_blocks.c g_adwDialogBlockTextIds
 c-file 0x0805E020 _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805E0A0 _ src/cursor/cursor.globals.c g_MenuCursor8bppAsset

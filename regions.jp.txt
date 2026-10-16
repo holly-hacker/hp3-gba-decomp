@@ -2213,7 +2213,7 @@ c-file 0x08054E60 _ src/combat_2/script_opcode_lengths.c g_abScriptOpcodeLengths
 c-file 0x08054F08 _ src/combat_2/effect_anim_data.c g_abFighterIdleAnimData_candidate
 c-file 0x08059878 0x0805B9A8 src/combat_2/effect_scripts.c g_apEffectScripts
 c-file 0x0805B9B8 _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
-c-file 0x0805BB2C _ src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl
+c-file 0x0805BB2C _ src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805BB30 _ src/dialog/dialog_blocks.c g_adwDialogBlockTextIds
 c-file 0x0805DF4C _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805DFCC _ src/cursor/cursor.globals.c g_MenuCursor8bppAsset
