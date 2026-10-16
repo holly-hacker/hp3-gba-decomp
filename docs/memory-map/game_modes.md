@@ -331,7 +331,7 @@ screen transition instead of the fade. Exit saves `dwModeScratchB` (the cursor r
 ## FolioUniversitas (0x26), FolioUniversitasCardDetails (0x28), CardComboDescription (0x46), FolioBruti (0x2D)
 
 PROVEN from the matched code in `src/gamemode/modes/folio_universitas/`,
-`folio_universitas_card_details/`, `card_combo_description/` and `folio_bruti/`, and the
+`folio_universitas_card_details/`, `folio_bruti/` and `src/combo_info/`, and the
 screen helpers in `src/menu/` (`folio_universitas.h`, `folio_bruti.h`).
 
 - Folio Universitas lays the 51 cards out in rows of ten (`g_FolioUniversitasState`:

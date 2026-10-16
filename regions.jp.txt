@@ -602,9 +602,9 @@ thumb-func 0x0801BB54 TickSpGauge
 thumb-func 0x0801BC64 DestroySlotSpGauge
 thumb-func 0x0801BCAC DestroyLinkedActor
 thumb-func 0x0801BCD8 UpdateSpGaugeFrame
-c-file 0x0801BD08 _ src/gamemode/modes/card_combo_description/initialize_card_combo_description.c InitializeCardComboDescription
-c-file 0x0801BEA4 _ src/gamemode/modes/card_combo_description/update_card_combo_description.c UpdateCardComboDescription
-c-file 0x0801BED8 _ src/gamemode/modes/card_combo_description/exit_card_combo_description.c ExitCardComboDescription
+c-file 0x0801BD08 _ src/combo_info/initialize_card_combo_description.c InitializeCardComboDescription
+c-file 0x0801BEA4 _ src/combo_info/update_card_combo_description.c UpdateCardComboDescription
+c-file 0x0801BED8 _ src/combo_info/exit_card_combo_description.c ExitCardComboDescription
 c-file 0x0801BEF4 _ src/room/opcodes/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
 c-file 0x0801BF54 _ src/room/opcodes/room_script_op_queue_tile_actor_move.c RoomScriptOpQueueTileActorMove
 c-file 0x0801C048 _ src/room/opcodes/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "combo_info.h"
 #include "game/game_modes.h"
 #include "graphics/audio.h"
 #include "input.h"
