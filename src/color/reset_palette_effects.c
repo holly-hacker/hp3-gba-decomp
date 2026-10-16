@@ -1,4 +1,4 @@
-#include "graphics/palette.h"
+#include "color.h"
 
 void ResetPaletteEffects(void)
 {

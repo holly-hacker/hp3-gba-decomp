@@ -1,4 +1,5 @@
 #include "types.h"
+#include "color.h"
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "menu/help.h"

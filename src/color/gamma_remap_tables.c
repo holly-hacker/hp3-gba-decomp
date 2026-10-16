@@ -1,4 +1,5 @@
 #include "types.h"
+#include "color.h"
 #include "menu/options.h"
 
 // 5-bit color channel remaps for the options screen's gamma setting; see

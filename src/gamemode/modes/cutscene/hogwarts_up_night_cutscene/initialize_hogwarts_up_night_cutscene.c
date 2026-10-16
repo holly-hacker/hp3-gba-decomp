@@ -1,5 +1,6 @@
 #include "types.h"
 #include "background.h"
+#include "color.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"

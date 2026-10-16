@@ -53,7 +53,7 @@ frames; `sub_0800D5DC` allocates one and returns its slot, and
 Field roles other than flags, color range, frame count/index and frame
 pointers are UNCONFIRMED.
 
-Shared flag bits are `PALETTE_ANIM_*` in `include/graphics/palette.h`.
+Shared flag bits are `PALETTE_ANIM_*` in `include/color.h`.
 
 ## OBJ palette bank cache, PROVEN
 

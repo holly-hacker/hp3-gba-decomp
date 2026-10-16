@@ -6,22 +6,11 @@
 
 // Display registers and BG layers. sub_ names are still unidentified.
 
-extern void ClearPaletteRam(void);
-
 // Per-frame ticks run by TickFrameSystems; see docs/memory-map/frame_systems.md.
 extern void TickScreenWindows_candidate(void);
-extern void TickPaletteAnimations_candidate(void);
 
-// Stops the palette effect with the given handle.
-extern void StopPaletteEffect(s32 handle);
 // Copies a w x h rectangle of tiles from (srcX, srcY) of a loaded BG tilemap to (dstX, dstY) of the
 // given BG, adding tileOffset to the tile numbers and palBank to their palette.
-// Starts a palette effect through sub_0800D5DC and sets its bFrameCount; returns its slot.
-extern s32 StartPaletteEffectWithFrameCount(u32 startColor, u32 colorCount, u32 stepTicks, u32 delay, u32 flags, const u16 *pFrames, u32 frameCount);
-extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
-extern s32 QueueObjPaletteLoadAtOffset(const u8 *pPalettes, u32 byteOffset, u32 firstColor, u32 colorCount);  // QueueObjPaletteLoad from pPalettes + byteOffset
-extern void sub_0800D244(const void *pColors, u32 firstColor, u32 colorCount);  // queues a BG palette load
-extern void sub_0800D254(const u16 *ptr, s16 val1, s16 val2);
 // The colors of a graphic blob's embedded palette, after its two flag bytes
 // (see docs/formats/graphic_blob.md).
 #define GRAPHIC_BLOB_PALETTE_COLORS(blob) ((const u16 *)((const u8 *)(blob) + 2))
@@ -64,8 +53,6 @@ extern void HideScreenWindow_candidate(u32 windowId);
 
 
 
-// Allocates a slot in the palette-effect table at 0x030022F8.
-extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData);
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);

@@ -1,4 +1,4 @@
-#include "graphics/palette.h"
+#include "color.h"
 #include "mem.h"
 
 void ClearPaletteEffect(PaletteEffect *pEffect)

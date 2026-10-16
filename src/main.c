@@ -1,4 +1,5 @@
 #include "area.h"
+#include "color.h"
 #include "hw/vblank.h"
 #include "interrupts.h"
 #include "graphics/display.h"
@@ -17,7 +18,6 @@
 #include "decompress.h"
 #include "graphics/graphics.h"
 #include "graphics/oam.h"
-#include "graphics/palette.h"
 #include "graphics/audio.h"
 #include "graphics/scanline_effects.h"
 #include "menu/main_menu.h"

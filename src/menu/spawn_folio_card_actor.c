@@ -1,4 +1,5 @@
 #include "types.h"
+#include "color.h"
 #include "graphics/display.h"
 #include "actor.h"
 #include "menu/folio_universitas.h"

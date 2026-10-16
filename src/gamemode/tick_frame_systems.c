@@ -1,5 +1,6 @@
 #include "types.h"
 #include "char_block.h"
+#include "color.h"
 #include "game/game_modes.h"
 #include "background.h"
 #include "graphics/display.h"

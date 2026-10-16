@@ -93,8 +93,27 @@ extern ObjPaletteQueueEntry g_aObjPaletteQueue[25];  // 0x030023E8
 extern const ColorCycleTable g_ColorCyclesDefault;
 extern const ColorCycleTable g_ColorCyclesRoom12;
 
+extern const u8 g_abGammaNormalRemap[32];  // 0x0804D798
+extern const u8 g_abGammaHighRemap[32];    // 0x0804D7B8
+// Approximate inverse of g_abGammaHighRemap, used to undo it.
+extern const u8 g_abGammaHighInverseRemap[32];  // 0x0804D7D8
+
+extern void ApplyGammaRemapTable(const u8 *pTable);
 extern void InitGammaPalette(void);
 extern u16 *ApplyGammaToColors(u16 *pDst, const u16 *pSrc, u32 size);
+extern void sub_0800D244(const void *pColors, u32 firstColor, u32 colorCount);  // queues a BG palette load
+extern void sub_0800D254(const u16 *ptr, s16 val1, s16 val2);
+extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
+extern s32 QueueObjPaletteLoadAtOffset(const u8 *pPalettes, u32 byteOffset, u32 firstColor, u32 colorCount);  // QueueObjPaletteLoad from pPalettes + byteOffset
+extern void TickPaletteAnimations_candidate(void);  // run by TickFrameSystems
+extern void ClearPaletteRam(void);
+extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
+// Starts a palette effect through sub_0800D5DC and sets its bFrameCount; returns its slot.
+extern s32 StartPaletteEffectWithFrameCount(u32 startColor, u32 colorCount, u32 stepTicks, u32 delay, u32 flags, const u16 *pFrames, u32 frameCount);
+// Allocates a slot in the palette-effect table at 0x030022F8.
+extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const void *pData);
+// Stops the palette effect with the given handle.
+extern void StopPaletteEffect(s32 handle);
 extern void InitPaletteBuffer(PaletteBuffer *pBuffer, volatile u16 *pPaletteRam);
 extern void ResetPaletteAnimations(void);
 extern void SetupColorCycles(const ColorCycleTable *pTable);

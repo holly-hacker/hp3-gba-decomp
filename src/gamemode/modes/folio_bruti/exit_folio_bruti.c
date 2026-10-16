@@ -1,7 +1,7 @@
 #include "types.h"
+#include "color.h"
 #include "game/game_modes.h"
 #include "graphics/display.h"
-#include "graphics/palette.h"
 #include "mem.h"
 #include "actor.h"
 #include "menu/folio_bruti.h"

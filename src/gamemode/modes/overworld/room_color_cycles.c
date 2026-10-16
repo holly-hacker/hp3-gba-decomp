@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/palette.h"
+#include "color.h"
 
 // Rotates BG palette colors 0x08-0x0F (room 12: 0x68-0x6F) one step every
 // 4 ticks.

@@ -1,13 +1,13 @@
 #include "types.h"
 #include "background.h"
 #include "battle/battle.h"
+#include "color.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
 #include "title.h"
 #include "mem.h"
 #include "actor.h"
-#include "graphics/palette.h"
 #include "cursor.h"
 
 void ExitMainMenuScreen(void)

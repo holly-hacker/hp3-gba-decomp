@@ -1,4 +1,4 @@
-#include "graphics/palette.h"
+#include "color.h"
 
 // Advances the cycle's current color every bDelay + 1 ticks and marks it for upload.
 void StepColorCycle(ColorCycle *pCycle)

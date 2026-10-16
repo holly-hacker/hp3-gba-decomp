@@ -1,5 +1,6 @@
 #include "types.h"
 #include "background.h"
+#include "color.h"
 #include "graphics/audio.h"
 #include "hw/bios.h"
 #include "dialog.h"

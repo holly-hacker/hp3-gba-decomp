@@ -39,12 +39,6 @@ extern u8 g_bOptionsSavedSoundVolume;  // 0x03005E09
 extern u8 g_bOptionsSavedGammaHigh;    // 0x03005E0A
 extern u32 g_dwOptionsEntryLanguage;   // 0x03005E0C: language when the screen was entered
 
-extern const u8 g_abGammaNormalRemap[32];  // 0x0804D798
-extern const u8 g_abGammaHighRemap[32];    // 0x0804D7B8
-// Approximate inverse of g_abGammaHighRemap, used to undo it.
-extern const u8 g_abGammaHighInverseRemap[32];  // 0x0804D7D8
-
-extern void ApplyGammaRemapTable(const u8 *pTable);
 extern void MoveOptionsCursor_candidate(void);
 extern void AdjustOptionValue_candidate(void);
 extern void BuildOptionsScreen_candidate(void);

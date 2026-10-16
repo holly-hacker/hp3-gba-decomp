@@ -1,5 +1,6 @@
 #include "types.h"
 #include "background.h"
+#include "color.h"
 #include "cursor.h"
 #include "default_menu.h"
 #include "graphics/display.h"

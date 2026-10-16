@@ -450,17 +450,17 @@ thumb-func 0x0800CF74 sub_0800CF74
 thumb-func 0x0800CFDC sub_0800CFDC
 
 # Color (palette effects), see docs/memory-map/palette.md
-c-file 0x0800D008 0x0800D0A0 src/graphics/palette/apply_gamma_remap_table.c ApplyGammaRemapTable
+c-file 0x0800D008 0x0800D0A0 src/color/apply_gamma_remap_table.c ApplyGammaRemapTable
 thumb-func 0x0800D0A0 SetupColorCycles
-c-file 0x0800D120 _ src/graphics/palette/apply_gamma_to_colors.c ApplyGammaToColors
-c-file 0x0800D1A4 0x0800D204 src/graphics/palette/init_gamma_palette.c InitGammaPalette
+c-file 0x0800D120 _ src/color/apply_gamma_to_colors.c ApplyGammaToColors
+c-file 0x0800D1A4 0x0800D204 src/color/init_gamma_palette.c InitGammaPalette
 thumb-func 0x0800D204 sub_0800D204
 thumb-func 0x0800D244 sub_0800D244
 thumb-func 0x0800D254 sub_0800D254
-c-file 0x0800D264 _ src/graphics/palette/queue_obj_palette_load.c QueueObjPaletteLoad
-c-file 0x0800D29C _ src/graphics/palette/queue_obj_palette_load_at_offset.c QueueObjPaletteLoadAtOffset
-c-file 0x0800D2DC _ src/graphics/palette/reset_palette_animations.c ResetPaletteAnimations
-c-file 0x0800D2F4 0x0800D304 src/graphics/palette/tick_palette_animations.c TickPaletteAnimations_candidate
+c-file 0x0800D264 _ src/color/queue_obj_palette_load.c QueueObjPaletteLoad
+c-file 0x0800D29C _ src/color/queue_obj_palette_load_at_offset.c QueueObjPaletteLoadAtOffset
+c-file 0x0800D2DC _ src/color/reset_palette_animations.c ResetPaletteAnimations
+c-file 0x0800D2F4 0x0800D304 src/color/tick_palette_animations.c TickPaletteAnimations_candidate
 thumb-func 0x0800D304 sub_0800D304
 thumb-func 0x0800D354 sub_0800D354
 thumb-func 0x0800D39C ClearPaletteRam
@@ -469,7 +469,7 @@ thumb-func 0x0800D404 sub_0800D404
 thumb-func 0x0800D460 sub_0800D460
 thumb-func 0x0800D478 sub_0800D478
 thumb-func 0x0800D4A4 sub_0800D4A4
-c-file 0x0800D4E4 0x0800D4F4 src/graphics/palette/clear_color_cycle.c ClearColorCycle
+c-file 0x0800D4E4 0x0800D4F4 src/color/clear_color_cycle.c ClearColorCycle
 thumb-func 0x0800D4F4 sub_0800D4F4
 thumb-func 0x0800D514 sub_0800D514
 thumb-func 0x0800D53C sub_0800D53C
@@ -478,19 +478,19 @@ thumb-func 0x0800D5A8 sub_0800D5A8
 thumb-func 0x0800D5DC sub_0800D5DC
 thumb-func 0x0800D62C StopPaletteEffect
 thumb-func 0x0800D648 sub_0800D648
-c-file 0x0800D6A4 0x0800D6BC src/graphics/palette/init_palette_buffer.c InitPaletteBuffer
+c-file 0x0800D6A4 0x0800D6BC src/color/init_palette_buffer.c InitPaletteBuffer
 thumb-func 0x0800D6BC SetPaletteColors_candidate
 thumb-func 0x0800D73C sub_0800D73C
 thumb-func 0x0800D784 sub_0800D784
-c-file 0x0800D794 _ src/graphics/palette/reset_color_cycles.c ResetColorCycles
-c-file 0x0800D7BC _ src/graphics/palette/tick_color_cycles.c TickColorCycles
-c-file 0x0800D7E8 0x0800D85C src/graphics/palette/step_color_cycle.c StepColorCycle
+c-file 0x0800D794 _ src/color/reset_color_cycles.c ResetColorCycles
+c-file 0x0800D7BC _ src/color/tick_color_cycles.c TickColorCycles
+c-file 0x0800D7E8 0x0800D85C src/color/step_color_cycle.c StepColorCycle
 thumb-func 0x0800D85C sub_0800D85C
 thumb-func 0x0800D904 sub_0800D904
-c-file 0x0800D944 _ src/graphics/palette/reset_palette_effects.c ResetPaletteEffects
-c-file 0x0800D96C _ src/graphics/palette/clear_palette_effect.c ClearPaletteEffect
-c-file 0x0800D98C _ src/graphics/palette/tick_palette_effects.c TickPaletteEffects
-c-file 0x0800D9D4 0x0800DB58 src/graphics/palette/step_palette_effect.c StepPaletteEffect
+c-file 0x0800D944 _ src/color/reset_palette_effects.c ResetPaletteEffects
+c-file 0x0800D96C _ src/color/clear_palette_effect.c ClearPaletteEffect
+c-file 0x0800D98C _ src/color/tick_palette_effects.c TickPaletteEffects
+c-file 0x0800D9D4 0x0800DB58 src/color/step_palette_effect.c StepPaletteEffect
 thumb-func 0x0800DB58 sub_0800DB58
 
 # Combat (battle mode), see docs/memory-map/battle.md
@@ -2437,7 +2437,7 @@ c-file 0x0804CEC4 _ src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWiza
 c-file 0x0804D524 _ src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprite
 c-file 0x0804D6CC _ src/choose_party_member/choose_character_stages.globals.c g_abChooseCharacterStages
 c-file 0x0804D770 0x0804D790 src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
-c-file 0x0804D798 0x0804D7F8 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap
+c-file 0x0804D798 0x0804D7F8 src/color/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D824 0x0804E074 src/graphics/assets/battle_hud_assets.c g_aBattleHudAssets
 c-file 0x0804E09C _ src/battle/battle_backgrounds.c g_aBattleBackgroundPairs
 c-file 0x0804E254 0x0804E29C src/battle/battle_music.c g_abBattleMusicByRoom

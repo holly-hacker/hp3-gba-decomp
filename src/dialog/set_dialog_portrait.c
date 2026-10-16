@@ -1,5 +1,6 @@
 #include "types.h"
 #include "actor.h"
+#include "color.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "dialog.h"

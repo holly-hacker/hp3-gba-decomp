@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/palette.h"
+#include "color.h"
 
 // QueueObjPaletteLoad with the source given as a byte offset into pPalettes.
 s32 QueueObjPaletteLoadAtOffset(const u8 *pPalettes, u32 byteOffset, u32 firstColor, u32 colorCount)

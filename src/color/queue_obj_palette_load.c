@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/palette.h"
+#include "color.h"
 
 // Queues a load of `colorCount` colors from `pPalette` into OBJ palette RAM at color `firstColor`.
 // Returns 1 if the queue (25 entries) is full, otherwise 0.

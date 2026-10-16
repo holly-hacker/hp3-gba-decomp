@@ -74,7 +74,6 @@ extern void WaitForCasterField86Tick_candidate(Actor *actor);
 extern IntPoint ComputeEffectSpawnPosition(void);
 extern void JumpToScriptLabel(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
-extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
 extern void sub_0801B4BC(u32 a, void *b, u32 c, u32 d, void *e);
 extern void sub_08012A00(void);
 // The room's battle background graphic blob: the second entry of g_aBattleBackgroundPairs, or a

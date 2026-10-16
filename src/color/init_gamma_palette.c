@@ -1,4 +1,4 @@
-#include "graphics/palette.h"
+#include "color.h"
 #include "game/save.h"
 #include "hw/io_regs.h"
 #include "mem.h"

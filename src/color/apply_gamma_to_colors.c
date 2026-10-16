@@ -1,4 +1,4 @@
-#include "graphics/palette.h"
+#include "color.h"
 
 // Copies `size` bytes of BGR555 colors, remapping each channel through the
 // active gamma table. pDst may equal pSrc.

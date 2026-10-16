@@ -1,5 +1,6 @@
 #include "types.h"
 #include "background.h"
+#include "color.h"
 #include "math.h"
 #include "game/game_modes.h"
 #include "gen/graphics/minigames/hippogriff.h"

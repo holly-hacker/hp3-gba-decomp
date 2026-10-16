@@ -1,4 +1,4 @@
-#include "graphics/palette.h"
+#include "color.h"
 #include "graphics/display.h"
 
 void TickPaletteAnimations_candidate(void)

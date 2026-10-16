@@ -1,5 +1,6 @@
 #include "types.h"
 #include "background.h"
+#include "color.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "graphics/audio.h"
