@@ -142,8 +142,6 @@ c-file 0x08003A44 _ src/actor/set_actor_orbit_y.c SetActorOrbitY
 c-file 0x08003A58 _ src/actor/set_actor_orbit_angles.c SetActorOrbitAngles
 c-file 0x08003A68 _ src/actor/set_actor_orbit_angle_vels.c SetActorOrbitAngleVels
 c-file 0x08003A74 _ src/actor/set_actor_orbit_radii.c SetActorOrbitRadii
-
-# Ai? (NPC movement behaviors)
 c-file 0x08003A80 _ src/actor/tick_actor_action_state.c TickActorActionState
 c-file 0x08003BE4 _ src/actor/tick_actor_walk_to_target.c TickActorWalkToTarget
 c-file 0x08003CD4 _ src/actor/tick_actor_cast_field_spell.c TickActorCastFieldSpell
@@ -170,11 +168,9 @@ c-file 0x08005324 _ src/actor/get_sprite_frame_size.c GetSpriteFrameSize
 c-file 0x08005340 _ src/actor/get_anim_frame_count.c GetAnimFrameCount
 c-file 0x08005348 _ src/actor/get_frame_tile_codec.c GetFrameTileCodec
 c-file 0x0800537C _ src/actor/get_frame_cell_count.c GetFrameCellCount
+c-file 0x08005384 0x0800539C src/actor/get_oam_shape_size_dims.c GetOamShapeSizeDims
 
-# Anim? (OAM shape size lookup)
-c-file 0x08005384 0x0800539C src/graphics/oam/get_oam_shape_size_dims.c GetOamShapeSizeDims
-
-# Area? (room loading)
+# Area (room loading)
 thumb-func 0x0800539C SpawnMissingRoomGroupActors
 c-file 0x08005410 _ src/room/run_room_script_chain.c RunRoomScriptChain
 c-file 0x080055C0 _ src/room/resume_room_script_chain.c ResumeRoomScriptChain
@@ -204,7 +200,7 @@ thumb-func 0x08005E84 CopyRoomScriptChain
 thumb-func 0x08005EC8 GetRoomOffsetTableSize
 thumb-func 0x08005EE8 AlignRoomSizeTo4
 
-# Area? (actor collision and depth sort)
+# ARM routines
 asm-file 0x08005F10 _ asm/check_actor_collisions.s  CheckActorCollisions
 asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
@@ -295,7 +291,7 @@ c-file 0x08008020 _ src/background/test_bg_state_flags.c TestBgStateFlags
 c-file 0x08008030 _ src/background/clear_bg_state_flags.c ClearBgStateFlags
 c-file 0x08008040 _ src/background/set_bg_state_flags.c SetBgStateFlags
 
-# Boggart, Buckbeak (minigames)
+# Boggart minigame
 c-file 0x08008050 _ src/boggart_minigame/initialize_boggart_minigame.c InitializeBoggartMinigame
 c-file 0x080080F4 _ src/boggart_minigame/update_boggart_minigame.c UpdateBoggartMinigame
 c-file 0x08008360 _ src/boggart_minigame/spawn_boggart_minigame_actors.c SpawnBoggartMinigameActors
@@ -320,6 +316,8 @@ c-file 0x08008D80 _ src/boggart_minigame/has_boggart_minigame_boggart_returned_t
 c-file 0x08008DD8 _ src/boggart_minigame/move_boggart_minigame_menu_cursor.c MoveBoggartMinigameMenuCursor
 c-file 0x08008DFC _ src/boggart_minigame/resume_boggart_minigame.c ResumeBoggartMinigame
 c-file 0x08008E48 _ src/boggart_minigame/leave_boggart_minigame.c LeaveBoggartMinigame
+
+# Buckbeak minigame
 c-file 0x08008E88 _ src/buckbeak_minigame/set_up_buckbeak_minigame_scene.c SetUpBuckbeakMinigameScene
 c-file 0x0800907C _ src/buckbeak_minigame/reset_buckbeak_minigame.c ResetBuckbeakMinigame
 c-file 0x08009144 _ src/buckbeak_minigame/process_buckbeak_minigame_frame.c ProcessBuckbeakMinigameFrame
@@ -363,10 +361,10 @@ c-file 0x0800A46C _ src/camera/get_camera_focus_screen_position.c GetCameraFocus
 c-file 0x0800A4A4 _ src/camera/get_room_scroll_bounds.c GetRoomScrollBounds
 c-file 0x0800A4E8 _ src/camera/set_room_scroll_bounds.c SetRoomScrollBounds
 
-# Purple screen return-to-menu mode
-c-file 0x0800A510 _ src/gamemode/modes/purple_screen_return_to_menu/initialize_purple_screen_return_to_menu.c InitializePurpleScreenReturnToMenu
-c-file 0x0800A560 _ src/gamemode/modes/purple_screen_return_to_menu/update_purple_screen_return_to_menu.c UpdatePurpleScreenReturnToMenu
-c-file 0x0800A580 0x0800A598 src/gamemode/modes/purple_screen_return_to_menu/exit_purple_screen_return_to_menu.c ExitPurpleScreenReturnToMenu
+# Challenge (unused)
+c-file 0x0800A510 _ src/unused_challenge/initialize_unused_minigame.c InitializeUnusedMinigame
+c-file 0x0800A560 _ src/unused_challenge/update_unused_minigame.c UpdateUnusedMinigame
+c-file 0x0800A580 0x0800A598 src/unused_challenge/exit_unused_minigame.c ExitUnusedMinigame
 
 # CharAnim? (BG tile animations)
 thumb-func 0x0800A598 RegisterBgTileAnimation
@@ -384,31 +382,37 @@ c-file 0x0800AA54 _ src/cheat/update_cheat.c UpdateCheat
 c-file 0x0800AB34 _ src/cheat/reset_cheat_party_from_args.c ResetCheatPartyFromArgs
 c-file 0x0800AB88 _ src/cheat/exit_cheat.c ExitCheat
 c-file 0x0800ABA0 _ src/cheat/draw_cheat_entries.c DrawCheatEntries
+
 c-file 0x0800ABD8 _ src/cheat_level_and_quest/initialize_cheat_level_and_quest.c InitializeCheatLevelAndQuest
 c-file 0x0800ACE4 _ src/cheat_level_and_quest/update_cheat_level_and_quest.c UpdateCheatLevelAndQuest
 c-file 0x0800AD94 _ src/cheat_level_and_quest/draw_cheat_level_and_quest_rows.c DrawCheatLevelAndQuestRows
 c-file 0x0800AE50 _ src/cheat_level_and_quest/exit_cheat_level_and_quest.c ExitCheatLevelAndQuest
 c-file 0x0800AE68 _ src/cheat_level_and_quest/draw_cheat_level_and_quest_values.c DrawCheatLevelAndQuestValues
+
 c-file 0x0800AED8 _ src/cheat_map/initialize_cheat_map.c InitializeCheatMap
 c-file 0x0800AFB4 _ src/cheat_map/update_cheat_map.c UpdateCheatMap
 c-file 0x0800B108 _ src/cheat_map/exit_cheat_map.c ExitCheatMap
 c-file 0x0800B120 _ src/cheat_map/draw_cheat_map_names.c DrawCheatMapNames
 c-file 0x0800B158 _ src/cheat_map/scroll_cheat_map.c ScrollCheatMap
+
 c-file 0x0800B198 _ src/cheat_party/initialize_cheat_party.c InitializeCheatParty
 c-file 0x0800B2C8 _ src/cheat_party/update_cheat_party.c UpdateCheatParty
 c-file 0x0800B344 _ src/cheat_party/draw_cheat_party_rows.c DrawCheatPartyRows
 c-file 0x0800B40C _ src/cheat_party/apply_cheat_party.c ApplyCheatParty
 c-file 0x0800B494 _ src/cheat_party/exit_cheat_party.c ExitCheatParty
 c-file 0x0800B4B0 _ src/cheat_party/draw_cheat_party_characters.c DrawCheatPartyCharacters
+
 c-file 0x0800B52C _ src/cheat_portraits/show_cheat_portrait.c ShowCheatPortrait
 c-file 0x0800B5A8 _ src/cheat_portraits/initialize_cheat_portraits.c InitializeCheatPortraits
 c-file 0x0800B620 _ src/cheat_portraits/update_cheat_portraits.c UpdateCheatPortraits
 c-file 0x0800B684 _ src/cheat_portraits/exit_cheat_portraits.c ExitCheatPortraits
+
 c-file 0x0800B69C _ src/cheat_sound_test/initialize_cheat_sound_test.c InitializeCheatSoundTest
 c-file 0x0800B7A8 _ src/cheat_sound_test/update_cheat_sound_test.c UpdateCheatSoundTest
 c-file 0x0800B8F0 _ src/cheat_sound_test/draw_cheat_sound_test_rows.c DrawCheatSoundTestRows
 c-file 0x0800B9A0 _ src/cheat_sound_test/exit_cheat_sound_test.c ExitCheatSoundTest
 c-file 0x0800B9BC _ src/cheat_sound_test/draw_cheat_sound_test_values.c DrawCheatSoundTestValues
+
 c-file 0x0800BA2C _ src/cheat_wizard_cards/initialize_cheat_wizard_cards.c InitializeCheatWizardCards
 c-file 0x0800BAF8 _ src/cheat_wizard_cards/show_cheat_wizard_card.c ShowCheatWizardCard
 c-file 0x0800BBF0 _ src/cheat_wizard_cards/update_cheat_wizard_cards.c UpdateCheatWizardCards
@@ -419,7 +423,7 @@ c-file 0x0800BC6C _ src/room/actors/spawn_chest_actor.c SpawnChestActor
 c-file 0x0800BDCC _ src/room/actors/tick_chest_actor.c TickChestActor
 c-file 0x0800BF20 _ src/room/actors/handle_chest_touch.c HandleChestTouch
 
-# Choose party member(s)
+# Choose characters
 c-file 0x0800C0FC _ src/gamemode/modes/choose_character/initialize_choose_character.c InitializeChooseCharacter
 c-file 0x0800C248 _ src/gamemode/modes/choose_character/update_choose_character.c UpdateChooseCharacter
 c-file 0x0800C344 _ src/gamemode/modes/choose_character/spawn_choose_character_option_actors.c SpawnChooseCharacterOptionActors
@@ -439,7 +443,7 @@ thumb-func 0x0800CB04 sub_0800CB04
 thumb-func 0x0800CB1C sub_0800CB1C
 thumb-func 0x0800CB9C sub_0800CB9C
 
-# Unidentified, includes a door actor callback
+# Collision
 thumb-func 0x0800CBF0 sub_0800CBF0
 thumb-func 0x0800CCA8 sub_0800CCA8
 thumb-func 0x0800CF74 sub_0800CF74
@@ -2410,7 +2414,7 @@ c-file 0x0804C024 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804C054 0x0804C08C src/room/room_actor_constructors.c g_apRoomActorConstructors
 c-file 0x0804C0AC _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C284 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
-c-file 0x0804C43C 0x0804C440 src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
+c-file 0x0804C43C 0x0804C440 src/unused_challenge/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
 c-file 0x0804C444 _ src/cheat/cheat.globals.c g_dwCheatBg0Control
 c-file 0x0804C470 _ src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_abCheatLevelAndQuestMax
 c-file 0x0804C4A0 _ src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control

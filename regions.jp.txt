@@ -141,7 +141,7 @@ c-file 0x08005324 _ src/actor/get_sprite_frame_size.c GetSpriteFrameSize
 c-file 0x08005340 _ src/actor/get_anim_frame_count.c GetAnimFrameCount
 c-file 0x08005348 _ src/actor/get_frame_tile_codec.c GetFrameTileCodec
 c-file 0x0800537C _ src/actor/get_frame_cell_count.c GetFrameCellCount
-c-file 0x08005384 0x0800539C src/graphics/oam/get_oam_shape_size_dims.c GetOamShapeSizeDims
+c-file 0x08005384 0x0800539C src/actor/get_oam_shape_size_dims.c GetOamShapeSizeDims
 thumb-func 0x0800539C SpawnMissingRoomGroupActors
 c-file 0x08005410 _ src/room/run_room_script_chain.c RunRoomScriptChain
 c-file 0x080055C0 _ src/room/resume_room_script_chain.c ResumeRoomScriptChain
@@ -323,9 +323,9 @@ c-file 0x0800A458 _ src/camera/set_camera_follow_offset.c SetCameraFollowOffset
 c-file 0x0800A46C _ src/camera/get_camera_focus_screen_position.c GetCameraFocusScreenPosition
 c-file 0x0800A4A4 _ src/camera/get_room_scroll_bounds.c GetRoomScrollBounds
 c-file 0x0800A4E8 _ src/camera/set_room_scroll_bounds.c SetRoomScrollBounds
-c-file 0x0800A510 _ src/gamemode/modes/purple_screen_return_to_menu/initialize_purple_screen_return_to_menu.c InitializePurpleScreenReturnToMenu
-c-file 0x0800A560 _ src/gamemode/modes/purple_screen_return_to_menu/update_purple_screen_return_to_menu.c UpdatePurpleScreenReturnToMenu
-c-file 0x0800A580 0x0800A598 src/gamemode/modes/purple_screen_return_to_menu/exit_purple_screen_return_to_menu.c ExitPurpleScreenReturnToMenu
+c-file 0x0800A510 _ src/unused_challenge/initialize_unused_minigame.c InitializeUnusedMinigame
+c-file 0x0800A560 _ src/unused_challenge/update_unused_minigame.c UpdateUnusedMinigame
+c-file 0x0800A580 0x0800A598 src/unused_challenge/exit_unused_minigame.c ExitUnusedMinigame
 thumb-func 0x0800A598 RegisterBgTileAnimation
 c-file 0x0800A610 _ src/graphics/tick_bg_tile_animations.c TickBgTileAnimations
 c-file 0x0800A6EC 0x0800A83C src/graphics/commit_bg_tile_animations.c CommitBgTileAnimations
@@ -2156,7 +2156,7 @@ c-file 0x0804BF50 _ src/graphics/oam/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804BF80 0x0804BFB8 src/room/room_actor_constructors.c g_apRoomActorConstructors
 c-file 0x0804BFD8 _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C1B0 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
-c-file 0x0804C368 0x0804C36C src/gamemode/modes/purple_screen_return_to_menu/purple_screen_return_to_menu.globals.c g_dwPurpleScreenBg0Control
+c-file 0x0804C368 0x0804C36C src/unused_challenge/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
 c-file 0x0804C370 _ src/cheat/cheat.globals.c g_dwCheatBg0Control
 c-file 0x0804C39C _ src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_abCheatLevelAndQuestMax
 c-file 0x0804C3CC _ src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control

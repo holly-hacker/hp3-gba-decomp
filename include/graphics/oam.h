@@ -69,5 +69,3 @@ typedef struct OamShapeSize {
     u16 wTileBytes4bpp;   // bWidth * bHeight / 2
 } OamShapeSize;
 extern const OamShapeSize g_aOamShapeSizes[3][4];
-
-extern void GetOamShapeSizeDims(u32 shape, u32 size, s32 *dims);

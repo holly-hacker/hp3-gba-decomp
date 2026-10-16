@@ -755,6 +755,7 @@ extern void GetSpriteFrameSize(const ActorAssetRecord *record, u32 *dims, u8 fra
 extern u16 GetAnimFrameCount(ActorAnimState *anim);
 extern u32 GetFrameTileCodec(ActorFrameData *frameData, u16 frame);
 extern u8 GetFrameCellCount(ActorFrameDesc *frameDesc);
+extern void GetOamShapeSizeDims(u32 shape, u32 size, s32 *dims);
 
 extern void DestroyLinkedActor(void *linkedActor);
 extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);  // 0x08018BE0

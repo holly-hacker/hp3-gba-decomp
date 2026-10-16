@@ -285,18 +285,27 @@ Juice (`0x03005298`).
   or only from specific ones (e.g. title screen) -- untested.
 - JP addresses for `g_dwPendingGameMode`/`g_dwCurrentGameMode`.
 
-## PurpleScreenReturnToMenu (0x32)
+## UnusedMinigame (0x32)
 
-PROVEN from the matched handlers in `src/gamemode/modes/purple_screen_return_to_menu/`.
-A placeholder screen: Init clears VRAM, enables the object layer
+PROVEN from the matched handlers in `src/unused_challenge/`.
+A placeholder screen: Init clears BG VRAM, enables only the object layer
 (`SetDispcntFlag(0x1000)`), sets BG0's control word
-(`g_dwPurpleScreenBg0Control`, `0x3F03`), zeroes `dwCurrentGameModeArg2` and fades in. No
-graphics or actors are loaded, so the backdrop is the backdrop colour. Update
+(`g_dwUnusedMinigameBg0Control`, `0x3F03`) without enabling BG0, zeroes
+`dwCurrentGameModeArg2` and fades in. No palette, graphics, actors or music are
+loaded, so the screen shows BG palette colour 0 left by the previous mode. Update
 pushes `MainMenu` as soon as any of A/B/Select/Start (`g_wKeysPressed & 0xF`)
-is pressed; Exit fades out and frees all actors. No `PushGameMode*` call with a
-literal `0x32` exists in the ROM and no mode-table scanned (in-game menu, items,
-status/equip next-mode fields) names it, so no pusher is known (UNCONFIRMED:
-possibly reachable only through a data-driven mode id).
+is pressed; Exit fades out and frees all actors.
+
+Init and Exit follow the opening of `InitializeBoggartMinigame`/
+`InitializeDementorMinigame` and their exits (same calls, same `0x3F03` BG0
+control word, transition 2), so this is likely a minigame mode left as a stub
+(UNCONFIRMED).
+
+No pusher is known. The dispatch table is the only reference to its handlers, no
+`PushGameMode*` call passes a literal `0x32`, and none of the data-driven mode
+sources (in-game menu, items, status/equip, connectivity, folios, card trade,
+confirm-trade, minigame difficulty, help exit mode, room script cutscene ids)
+yields it.
 
 ## Folios (0x13), Connectivity (0x16), ConfirmTradeScreen (0x47)
 

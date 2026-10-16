@@ -54,7 +54,7 @@ typedef enum {
     BoggartMinigame                  = 0x2F,
     ClockSkipCutscene                = 0x30,
     HogwartsUpNightCutscene          = 0x31,
-    PurpleScreenReturnToMenu         = 0x32,
+    UnusedMinigame                   = 0x32,
     DementorMinigame                 = 0x33,
     HarryHermionePortInTimeCutscene  = 0x34,
     HarryPatronusCutscene            = 0x35,

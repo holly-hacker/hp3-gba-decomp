@@ -147,7 +147,7 @@ Arguments:
 
 ### `HogwartsUpNightCutscene` (0x31)
 
-### `PurpleScreenReturnToMenu` (0x32)
+### `UnusedMinigame` (0x32)
 
 ### `DementorMinigame` (0x33)
 

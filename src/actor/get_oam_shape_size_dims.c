@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/oam.h"
+#include "actor.h"
 
 void GetOamShapeSizeDims(u32 shape, u32 size, s32 *dims)
 {

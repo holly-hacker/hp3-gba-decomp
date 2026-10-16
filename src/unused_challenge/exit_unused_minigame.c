@@ -3,7 +3,7 @@
 #include "mem.h"
 #include "actor.h"
 
-void ExitPurpleScreenReturnToMenu(void)
+void ExitUnusedMinigame(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
     FreeAllActors(&g_ActiveActorListState.pHead);

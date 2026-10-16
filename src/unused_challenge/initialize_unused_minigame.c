@@ -4,9 +4,9 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
-#include "menu/purple_screen.h"
+#include "unused_challenge.h"
 
-void InitializePurpleScreenReturnToMenu(void)
+void InitializeUnusedMinigame(void)
 {
     u16 fillValue;
     u16 *pFillValue;
@@ -16,7 +16,7 @@ void InitializePurpleScreenReturnToMenu(void)
     bios_CPUSet(pFillValue, VRAM_BASE, 0x01008000);
     ResetDisplayState(0);
     SetDispcntFlag(0x1000);
-    SetBgControl(0, g_dwPurpleScreenBg0Control);
+    SetBgControl(0, g_dwUnusedMinigameBg0Control);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

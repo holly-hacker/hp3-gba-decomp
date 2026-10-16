@@ -48,7 +48,6 @@ extern void ExitNewGameMenu();
 extern void ExitOptions();
 extern void ExitOverworldScreen();
 extern void ExitOwlNameSelect();
-extern void ExitPurpleScreenReturnToMenu();
 extern void ExitQuantitySelectScreen();
 extern void ExitStartup();
 extern void ExitStatusEquipCharacterSelect();
@@ -56,6 +55,7 @@ extern void ExitStatusEquipItemSelect();
 extern void ExitStatusEquipSlotSelect();
 extern void ExitTopicScreen();
 extern void ExitUnusedHogwartsMapScreen();
+extern void ExitUnusedMinigame();
 extern void ExitUnusedServePumpkinJuiceMinigame();
 extern void ExitWizardCrackerPopItDifficultySelect();
 extern void ExitWizardCrackerPopItMinigame();
@@ -118,7 +118,6 @@ extern void InitializeOptions();
 extern void InitializeOverworld();
 extern void InitializeOwlCareKitScreen();
 extern void InitializeOwlNameSelect();
-extern void InitializePurpleScreenReturnToMenu();
 extern void InitializeQuantitySelectScreen();
 extern void InitializeStartup();
 extern void InitializeStatusEquipCharacterSelect();
@@ -127,6 +126,7 @@ extern void InitializeStatusEquipItemSelect();
 extern void InitializeStatusEquipSlotSelect();
 extern void InitializeTopicScreen();
 extern void InitializeUnusedHogwartsMapScreen();
+extern void InitializeUnusedMinigame();
 extern void InitializeUnusedServePumpkinJuiceMinigame();
 extern void InitializeWizardCrackerPopItDifficultySelect();
 extern void InitializeWizardCrackerPopItMinigame();
@@ -176,7 +176,6 @@ extern void UpdateNewGameMenu();
 extern void UpdateOptions();
 extern void UpdateOverworld();
 extern void UpdateOwlNameSelect();
-extern void UpdatePurpleScreenReturnToMenu();
 extern void UpdateQuantitySelectScreen();
 extern void UpdateStartup();
 extern void UpdateStatusEquipCharacterSelect();
@@ -184,6 +183,7 @@ extern void UpdateStatusEquipItemSelect();
 extern void UpdateStatusEquipSlotSelect();
 extern void UpdateTopicScreen();
 extern void UpdateUnusedHogwartsMapScreen();
+extern void UpdateUnusedMinigame();
 extern void UpdateUnusedServePumpkinJuiceMinigame();
 extern void UpdateWizardCrackerPopItMinigame();
 
@@ -239,7 +239,7 @@ const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { InitializeBoggartMinigame, UpdateBoggartMinigame, ExitBoggartMinigame },
     { InitializeClockSkipCutscene, UpdateClockSkipCutscene, ExitClockSkipCutscene },
     { InitializeHogwartsUpNightCutscene, UpdateHogwartsUpNightCutscene, ExitHogwartsUpNightCutscene },
-    { InitializePurpleScreenReturnToMenu, UpdatePurpleScreenReturnToMenu, ExitPurpleScreenReturnToMenu },
+    { InitializeUnusedMinigame, UpdateUnusedMinigame, ExitUnusedMinigame },
     { InitializeDementorMinigame, UpdateDementorMinigame, ExitDementorMinigame },
     { InitializeHarryHermionePortInTimeCutscene, UpdateHarryHermionePortInTimeCutscene, ExitHarryHermionePortInTimeCutscene },
     { InitializeHarryPatronusCutscene, UpdateHarryPatronusCutscene, ExitHarryPatronusCutscene },
