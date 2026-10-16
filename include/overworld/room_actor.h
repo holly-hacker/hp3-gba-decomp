@@ -60,7 +60,6 @@ extern Actor *SpawnPropActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnNpcActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnTriggerRectActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow);
-extern Actor *SpawnChestActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow);
@@ -268,24 +267,4 @@ extern const u32 g_adwRoomActorUnk6FrameRows[110];          // ROM 0x08066E44 (U
 extern const ActorAssetRecord g_aActorTypeAssets[137];  // ROM 0x08066FFC (US), indexed by an actor kind
 extern const u8 g_abRoomActorUnk6Frames[12][4];             // ROM 0x0806788C (US)
 
-// Chest record. wFlagId is the chest's bit in g_abOpenedChestFlags.
-typedef struct RoomActorRecordUnk9 {
-    u16 wActorType;
-    u16 wUnk2;
-    s16 nPixelX;
-    s16 nPixelY;
-    u16 wFlagId;        // 0x08
-    u8 bKind;           // 0x0A, 0-3; 2 despawns once opened
-    u8 bRewardId;       // 0x0B, see rewards.h; above REWARD_ID_GOLD runs the pair instead
-    u8 bChain;          // 0x0C
-    u8 bRespawnGroup;   // 0x0D
-} RoomActorRecordUnk9;
-
-// One bit per chest flag id, set when that chest is opened. Saved with the game.
-extern u8 g_abOpenedChestFlags[32];
-extern void TickChestActor(Actor *pActor);
-extern void HandleChestTouch(Actor *pSelf, Actor *pOther);
 extern void sub_0802E2BC(Actor *pSpell, Actor *pTarget);  // overworld spell effect hits a room actor
-extern const ActorGfxRecord g_RoomChestSprite;                  // ROM 0x0804D524 (US)
-extern const ActorGfxRecord *const g_apRoomChestAnimFrames[4];  // ROM 0x0804D52C (US)
-extern const u8 g_abRoomChestAnimData[4][100];                   // ROM 0x0804D53C (US)

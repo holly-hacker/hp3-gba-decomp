@@ -1,5 +1,6 @@
 #include "types.h"
 #include "actor_anim.h"
+#include "chest_actor.h"
 #include "overworld/room_actor.h"
 #include "gen/graphics/overworld.h"
 

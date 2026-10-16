@@ -368,9 +368,9 @@ c-file 0x0800BA2C _ src/cheat_wizard_cards/initialize_cheat_wizard_cards.c Initi
 c-file 0x0800BAF8 _ src/cheat_wizard_cards/show_cheat_wizard_card.c ShowCheatWizardCard
 c-file 0x0800BBF0 _ src/cheat_wizard_cards/update_cheat_wizard_cards.c UpdateCheatWizardCards
 c-file 0x0800BC54 _ src/cheat_wizard_cards/exit_cheat_wizard_cards.c ExitCheatWizardCards
-c-file 0x0800BC6C _ src/room/actors/spawn_chest_actor.c SpawnChestActor
-c-file 0x0800BDCC _ src/room/actors/tick_chest_actor.c TickChestActor
-c-file 0x0800BF20 _ src/room/actors/handle_chest_touch.c HandleChestTouch
+c-file 0x0800BC6C _ src/chest_actor/spawn_chest_actor.c SpawnChestActor
+c-file 0x0800BDCC _ src/chest_actor/tick_chest_actor.c TickChestActor
+c-file 0x0800BF20 _ src/chest_actor/handle_chest_touch.c HandleChestTouch
 c-file 0x0800C0FC _ src/gamemode/modes/choose_character/initialize_choose_character.c InitializeChooseCharacter
 c-file 0x0800C248 _ src/gamemode/modes/choose_character/update_choose_character.c UpdateChooseCharacter
 c-file 0x0800C344 _ src/gamemode/modes/choose_character/spawn_choose_character_option_actors.c SpawnChooseCharacterOptionActors
@@ -2167,7 +2167,7 @@ c-file 0x0804CDB8 _ src/cheat_sound_test/cheat_sound_test.globals.c g_dwCheatSou
 c-file 0x0804CDE4 _ src/cheat_wizard_cards/cheat_wizard_cards.globals.c g_dwCheatWizardCardsBg2Control
 c-file 0x0804CDF0 _ src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWizardCardNames
 
-c-file 0x0804D450 _ src/room/actors/spawn_chest_actor.globals.c g_RoomChestSprite
+c-file 0x0804D450 _ src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprite
 c-file 0x0804D5F8 _ src/gamemode/modes/choose_character/choose_character_stages.globals.c g_abChooseCharacterStages
 c-file 0x0804D69C 0x0804D6BC src/gamemode/modes/choose_character/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
 c-file 0x0804D6C4 0x0804D724 src/graphics/palette/gamma_remap_tables.c g_abGammaNormalRemap

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "chest_actor.h"
 #include "overworld/room_actor.h"
 
 // Room tile actorType -> constructor table; see docs/formats/rooms.md.

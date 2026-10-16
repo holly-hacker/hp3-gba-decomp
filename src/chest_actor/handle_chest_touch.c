@@ -1,5 +1,6 @@
 #include "types.h"
 #include "area.h"
+#include "chest_actor.h"
 #include "input.h"
 #include "dialog.h"
 #include "overworld/overworld.h"

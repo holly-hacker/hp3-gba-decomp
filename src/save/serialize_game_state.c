@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "chest_actor.h"
 #include "game/save.h"
 #include "inventory.h"
 #include "overworld/overworld.h"

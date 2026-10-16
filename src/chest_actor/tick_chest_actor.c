@@ -1,5 +1,6 @@
 #include "types.h"
 #include "area.h"
+#include "chest_actor.h"
 #include "game/rewards.h"
 #include "graphics/audio.h"
 #include "overworld/overworld.h"

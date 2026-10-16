@@ -1,4 +1,5 @@
 #include "types.h"
+#include "chest_actor.h"
 #include "mem.h"
 #include "game/save.h"
 #include "inventory.h"
