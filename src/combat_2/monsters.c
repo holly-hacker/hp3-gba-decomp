@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 
 // Folio Bruti monster stat table, 69 records. See docs/formats/folio_bruti.md
 // for how each field was identified. Content is byte-identical between

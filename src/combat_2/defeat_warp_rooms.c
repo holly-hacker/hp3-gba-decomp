@@ -1,4 +1,5 @@
 #include "battle/battle.h"
+#include "combat_2.h"
 
 // Room id the overworld warps to after a battle defeat, indexed by
 // g_abQuestEventState[QUEST_DEFEAT_WARP_SELECTOR] (set by the

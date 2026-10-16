@@ -1,4 +1,5 @@
 #include "battle/encounters.h"
+#include "combat_2.h"
 
 // Random-encounter roster: g_dwCurrentGameModeArg1 selects the id,
 // g_dwCurrentGameModeArg3 the kind, g_dwCurrentGameModeArg2 the pre-picked variant.

@@ -11,5 +11,3 @@
 // spellLevel. See docs/memory-map/battle.md.
 #define SPELL_LEVELS 3
 
-extern const u16 g_awSpellPowerBase[SPELL_COUNT][SPELL_LEVELS];
-extern const u16 g_awSpellPowerScale[SPELL_COUNT][SPELL_LEVELS];

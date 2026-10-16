@@ -1,4 +1,5 @@
 #include "types.h"
+#include "combat_2.h"
 #include "constants/spells.h"
 #include "battle/battle.h"
 

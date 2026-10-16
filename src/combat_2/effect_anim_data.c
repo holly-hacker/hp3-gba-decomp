@@ -1,6 +1,7 @@
 #include "types.h"
 #include "actor_anim.h"
 #include "battle/effect_script.h"
+#include "combat_2.h"
 
 // A fighter's idle loop, played on g_aFighterAnimTable's record 4 when an
 // effect script restores it.

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "actor_anim.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 
 // Each monster's battle animation, played with its g_pMonsterGraphicsTable
 // battle sprite.

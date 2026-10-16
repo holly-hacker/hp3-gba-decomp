@@ -112,7 +112,6 @@ typedef struct MonsterTableRow {
     u8 bSpecialId;           // 0x15, not copied to BattleFighter
     u16 wPad_0x16;           // 0x16
 } MonsterTableRow;
-extern const MonsterTableRow MonsterTable[];  // 0x0804F410, src/battle/monsters.c
 
 // One per-level row of Harry/Ron/Hermione's level-up stat tables, 12 bytes
 // (last 2 always zero, not a real field). LevelUpFighter_candidate indexes
@@ -130,23 +129,12 @@ typedef struct CharacterLevelEntry {
     u8 bMagicDefensePercent;
     u8 pad_0A[2];
 } CharacterLevelEntry;
-extern const CharacterLevelEntry g_pHarryLevelTable[];     // 0x0804FE50, src/character/harry_levels.c
-extern const CharacterLevelEntry g_pRonLevelTable[];       // 0x08050300, src/character/ron_levels.c
-extern const CharacterLevelEntry g_pHermioneLevelTable[];  // 0x080507B0, src/character/hermione_levels.c
 
 // One row per MonsterTable entry; see docs/formats/folio_bruti.md.
 typedef struct MonsterGfxRow {
     ActorAssetRecord battle;     // 0x00, battle and Folio Bruti sprite
     ActorAssetRecord overworld;  // 0x10, wandering-monster sprite
 } MonsterGfxRow;
-extern const MonsterGfxRow g_pMonsterGraphicsTable[69];  // 0x0804E6B4, src/graphics/assets/monster_graphics_table.c
-extern const u8 g_pMonsterAnimFrameTable[69][96];  // 0x08051E70
-// Companion sprite InitMonsterBattleActor spawns for monsters 45-47.
-extern const ActorAssetRecord g_MonsterShadowGfxRow;               // 0x0804EF54
-extern const ActorAssetRecord g_aEnemyTurnOrderIconAssets[69];     // 0x0804EF64
-extern const ActorAssetRecord g_aAllyTurnOrderIconAssets[4];       // 0x0804F3B4
-extern const ActorAssetRecord g_TurnOrderIconContainerAsset;       // 0x0804F3F4
-extern const u8 g_MonsterShadowAnimData[96];     // 0x08053850
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
 // ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate;
@@ -295,11 +283,6 @@ extern s32 sub_08012E0C(u8 fighterIndex);  // 1 if the fighter has a shadow Acto
 extern void PushBattleState(s32 state);
 extern void TrackSpellFamiliarity(u8 fighterType, u8 spellId, u8 spellLevel, u16 *pHp);  // 0x08010008
 extern void DecrementFolioUniversitasCard(s32 slot);
-extern const u8 g_abHarryCardEffectId[22];      // 0x080514C8
-extern const u8 g_aCardTargetingMeta[22][2];     // 0x080514DE
-extern const u8 g_abHermioneLectureEffectId[3];  // 0x0805150D
-extern const u32 g_aDefeatWarpRoomId[20];       // 0x08051510
-extern const u8 g_abSpecialMoveEffectId[3];      // 0x0805150A
 extern u16 g_nLastDamage;                       // 0x0300274A
 extern u8 g_bLastTargetIndex;                   // 0x0300274C
 // Battle-effect staging area at 0x03002750. TriggerBattleEffect fills the
@@ -327,14 +310,6 @@ extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
 extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
 extern void sub_08012B40(void);
 extern void sub_08012A38(void);
-extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
-extern const u8 g_abSpellUnknownByLevel[10][3];  // 0x080538CE, [spellId][level], no known reader
-extern u16 g_awSpellMpCost[][3];                // 0x08053964, [spellId][level]
-// Screen anchor an attacker walks to, per target's BattleFighter.bSlotParam,
-// as {x, y} in whole pixels; the monster's own {x, y} extent in
-// g_aMonsterAttackOffset_candidate is subtracted off to get the destination.
-extern const u8 g_aBattleSlotAnchorPos_candidate[3][2];  // 0x080539A0, [bSlotParam]
-extern const u8 g_aMonsterAttackOffset_candidate[69][2];  // 0x0804FB9C, [rosterIndex]
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
@@ -345,8 +320,6 @@ extern u8 g_bDefeatWarpParam;                   // 0x03002748
 typedef struct FighterAnimRow {
     ActorAssetRecord aRecords[10];
 } FighterAnimRow;
-extern const FighterAnimRow g_aFighterAnimTable[4];  // 0x08051248, src/graphics/assets/fighter_anim_table.c
-extern const u8 g_aFighterAnimDataTable[4][10][58];  // 0x08051560, [fighter][anim state]
 
 extern void *memcpy(void *dst, const void *src, u32 n);
 extern void InitBattleBackground_candidate(void);

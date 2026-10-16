@@ -1,9 +1,9 @@
 # Encounter roster tables
 
 PROVEN. Read by `SetupBattleRoster` (`0x0800EDD8` US) to populate the enemy
-half of the battle roster. Committed as hand-written C in `src/battle/` via
-`c-file` manifest rows (`random_encounters.c`, `scripted_encounters.c`,
-`include/battle/encounters.h`); `just compare` proves byte-exactness for both
+half of the battle roster. Committed as hand-written C in `src/combat_2/` via
+`c-file` manifest rows (`random_encounters.c`, `scripted_encounters.c`; types in
+`include/battle/encounters.h`, declarations in `include/combat_2.h`); `just compare` proves byte-exactness for both
 versions.
 
 ## Layouts

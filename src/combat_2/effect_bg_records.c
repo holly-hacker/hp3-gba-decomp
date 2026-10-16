@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/effect_script.h"
+#include "combat_2.h"
 #include "gen/graphics/battle.h"
 
 // Effect backgrounds, indexed by the script opcodes 0x7F, 0x8A and 0x8B. The

@@ -1,7 +1,8 @@
+#include "combat_2.h"
 #include "constants/items.h"
 #include "battle/monster_drop_table.h"
 
-// Monster drop table, following the standard monster order (see src/battle/monsters.c).
+// Monster drop table, following the standard monster order (see src/combat_2/monsters.c).
 // See docs/memory-map/battle.md.
 const MonsterDropEntry g_pMonsterDropTable[69] = {
     { { { 30, ITEM_GRAND_WIGGENWELD_POTION }, { 10, ITEM_PEPPERUP_POTION } } },    // Ruby Fire Crab

@@ -2,6 +2,7 @@
 #include "battle/effect_script.h"
 #include "battle/script_opcodes.h"
 
+#include "combat_2.h"
 #include "effect_scripts/special_monster_fire_crab_attack.h"
 #include "effect_scripts/effect1.h"
 #include "effect_scripts/spell_flipendo_uno.h"

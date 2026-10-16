@@ -16,6 +16,3 @@ typedef struct {
     RandomEncounterKind aKinds[3];
 } RandomEncounter;
 
-// One fight's four enemy slots; 255 (0xFF) = empty slot.
-extern const u8 g_aScriptedEncounters[15][4];
-extern const RandomEncounter g_aRandomEncounters[30];

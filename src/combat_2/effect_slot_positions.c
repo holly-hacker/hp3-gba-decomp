@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/effect_script.h"
+#include "combat_2.h"
 
 // StartOrbitMotion rows.
 const ActorOrbit g_aEffectOrbitParams_candidate[16] = {

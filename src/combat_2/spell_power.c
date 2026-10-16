@@ -1,4 +1,5 @@
 #include "types.h"
+#include "combat_2.h"
 #include "constants/spells.h"
 
 const u16 g_awSpellPowerBase[SPELL_COUNT][SPELL_LEVELS] = {

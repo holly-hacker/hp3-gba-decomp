@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/effect_script.h"
 #include "battle/script_opcodes.h"
+#include "combat_2.h"
 
 // Operand byte count for each script opcode; see docs/formats/battle_scripts.md.
 const u8 g_abScriptOpcodeLengths[BSOP_COUNT] = {

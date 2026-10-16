@@ -2446,38 +2446,38 @@ c-file 0x0804E600 _ src/combat_result/combat_result.globals.c g_dwCombatResultBg
 c-file 0x0804E610 _ src/combat_result/combat_result_assets.globals.c g_CombatResultCoinAsset
 c-file 0x0804E640 _ src/combat_result/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects
 c-file 0x0804E674 _ src/combat_result/combat_result_level_up_sparkle.globals.c g_abCombatResultLevelUpSparkleAnim
-c-file 0x0804E6B4 0x0804F404 src/graphics/assets/monster_graphics_table.c g_pMonsterGraphicsTable
+c-file 0x0804E6B4 0x0804F404 src/combat_2/monster_graphics_table.c g_pMonsterGraphicsTable
 
 # Folio Bruti monster stat table, decompiled to C
-c-file 0x0804F410 _ src/battle/monsters.c MonsterTable
-c-file 0x0804FA88 _ src/graphics/assets/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
-c-file 0x0804FB9C _ src/battle/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
+c-file 0x0804F410 _ src/combat_2/monsters.c MonsterTable
+c-file 0x0804FA88 _ src/combat_2/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
+c-file 0x0804FB9C _ src/combat_2/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
 
-c-file 0x0804FC28 _ src/battle/monster_drop_table.c g_pMonsterDropTable
-c-file 0x0804FE50 _ src/character/harry_levels.c g_pHarryLevelTable
-c-file 0x08050300 _ src/character/ron_levels.c g_pRonLevelTable
-c-file 0x080507B0 0x08050C60 src/character/hermione_levels.c g_pHermioneLevelTable
+c-file 0x0804FC28 _ src/combat_2/monster_drop_table.c g_pMonsterDropTable
+c-file 0x0804FE50 _ src/combat_2/harry_levels.c g_pHarryLevelTable
+c-file 0x08050300 _ src/combat_2/ron_levels.c g_pRonLevelTable
+c-file 0x080507B0 0x08050C60 src/combat_2/hermione_levels.c g_pHermioneLevelTable
 
 # Encounter roster tables, see docs/formats/encounters.md
-c-file 0x08050C6C _ src/battle/random_encounters.c g_aRandomEncounters
-c-file 0x0805120C _ src/battle/scripted_encounters.c g_aScriptedEncounters
-c-file 0x08051248 _ src/graphics/assets/fighter_anim_table.c g_aFighterAnimTable
-c-file 0x080514C8 _ src/battle/battle_effect_id_tables.c g_abHarryCardEffectId
-c-file 0x08051510 _ src/battle/defeat_warp_rooms.c g_aDefeatWarpRoomId
-c-file 0x08051560 _ src/battle/fighter_anim_data.c g_aFighterAnimDataTable
-c-file 0x08051E70 _ src/battle/monster_anim_data.c g_pMonsterAnimFrameTable
-c-file 0x080538B0 _ src/battle/spell_effect_scripts.c g_abSpellEffectScriptId
-c-file 0x080538EC _ src/battle/spell_power.c g_awSpellPowerBase
-c-file 0x080539A0 _ src/battle/battle_slot_anchor_pos.c g_aBattleSlotAnchorPos_candidate
-c-file 0x080539A8 _ src/battle/effect_scanline_tables.c g_adwEffectBgControlOverride_candidate
-c-file 0x08053B18 _ src/graphics/assets/rain_stream_lists.c g_RainStreakList_candidate
-c-file 0x08053C68 _ src/battle/effect_slot_positions.c g_aEffectOrbitParams_candidate
+c-file 0x08050C6C _ src/combat_2/random_encounters.c g_aRandomEncounters
+c-file 0x0805120C _ src/combat_2/scripted_encounters.c g_aScriptedEncounters
+c-file 0x08051248 _ src/combat_2/fighter_anim_table.c g_aFighterAnimTable
+c-file 0x080514C8 _ src/combat_2/battle_effect_id_tables.c g_abHarryCardEffectId
+c-file 0x08051510 _ src/combat_2/defeat_warp_rooms.c g_aDefeatWarpRoomId
+c-file 0x08051560 _ src/combat_2/fighter_anim_data.c g_aFighterAnimDataTable
+c-file 0x08051E70 _ src/combat_2/monster_anim_data.c g_pMonsterAnimFrameTable
+c-file 0x080538B0 _ src/combat_2/spell_effect_scripts.c g_abSpellEffectScriptId
+c-file 0x080538EC _ src/combat_2/spell_power.c g_awSpellPowerBase
+c-file 0x080539A0 _ src/combat_2/battle_slot_anchor_pos.c g_aBattleSlotAnchorPos_candidate
+c-file 0x080539A8 _ src/combat_2/effect_scanline_tables.c g_adwEffectBgControlOverride_candidate
+c-file 0x08053B18 _ src/combat_2/rain_stream_lists.c g_RainStreakList_candidate
+c-file 0x08053C68 _ src/combat_2/effect_slot_positions.c g_aEffectOrbitParams_candidate
 
-c-file 0x08053D40 _ src/graphics/assets/effect_assets.c g_aEffectActorAssets
-c-file 0x080544D4 _ src/battle/effect_bg_records.c g_aEffectBgRecords_candidate
-c-file 0x08054F34 _ src/battle/script_opcode_lengths.c g_abScriptOpcodeLengths
-c-file 0x08054FDC _ src/battle/effect_anim_data.c g_abFighterIdleAnimData_candidate
-c-file 0x0805994C 0x0805BA7C src/battle/effect_scripts.c g_apEffectScripts
+c-file 0x08053D40 _ src/combat_2/effect_assets.c g_aEffectActorAssets
+c-file 0x080544D4 _ src/combat_2/effect_bg_records.c g_aEffectBgRecords_candidate
+c-file 0x08054F34 _ src/combat_2/script_opcode_lengths.c g_abScriptOpcodeLengths
+c-file 0x08054FDC _ src/combat_2/effect_anim_data.c g_abFighterIdleAnimData_candidate
+c-file 0x0805994C 0x0805BA7C src/combat_2/effect_scripts.c g_apEffectScripts
 
 c-file 0x0805BA8C _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BC00 _ src/room/special_scene_bg_control.c g_dwSpecialSceneBgControl

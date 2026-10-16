@@ -1,5 +1,6 @@
 #include "types.h"
 #include "actor.h"
+#include "combat_2.h"
 #include "gen/graphics/battle.h"
 
 // Battle effect sprites used by actor scripts (docs/formats/battle_scripts.md).

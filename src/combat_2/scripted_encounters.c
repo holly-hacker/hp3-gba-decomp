@@ -1,4 +1,5 @@
 #include "battle/encounters.h"
+#include "combat_2.h"
 
 // Scripted-fight enemy roster: g_dwCurrentGameModeArg1 selects the row
 // when g_dwCurrentGameModeArg3 == 0xFF. Trigger rooms from quest-stage-0

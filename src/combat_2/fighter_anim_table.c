@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "gen/graphics/battle.h"
 
 // One row of ten sprite records per FighterType. SetPlayerActorAnim selects

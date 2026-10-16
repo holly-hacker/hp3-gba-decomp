@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/encounters.h"
+#include "combat_2.h"
 #include "mem.h"
 #include "mt19937.h"
 #include "overworld/overworld.h"

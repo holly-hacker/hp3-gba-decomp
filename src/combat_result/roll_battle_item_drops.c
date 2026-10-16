@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "combat_result.h"
 #include "mt19937.h"
 #include "battle/monster_drop_table.h"

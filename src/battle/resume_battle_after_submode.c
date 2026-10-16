@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_2.h"
 #include "game/game_modes.h"
 
 // Re-enters the battle after returning from a submode (or starting a fresh

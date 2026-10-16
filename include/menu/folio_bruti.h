@@ -18,7 +18,6 @@ extern const u8 g_aFolioBrutiCursorAnim[];          // 0x080695A4
 extern const u8 g_aFolioBrutiDotUnknownAnim[14];    // 0x080695CE
 extern const u8 g_aFolioBrutiDotAnims[4][14];       // 0x080695DC
 
-extern const u32 g_adwFolioBrutiMonsterScale[69];  // 0x0804FA88
 
 // Folio Bruti screen state: the grid has 9 columns by 6 rows, the monster at (column, row) being
 // MonsterTable[row * 9 + column]; the last cell is unused, so only the first 53 monsters show.

@@ -1213,8 +1213,8 @@ identified) runs `LevelUpFighter_candidate` for all 3 party members,
 event), not an automatic threshold check against accumulated XP.
 
 Three `CharacterLevelEntry[100]` tables, 12-byte rows, matched
-byte-exact as curated C source (`src/character/harry_levels.c`,
-`src/character/ron_levels.c`, `src/character/hermione_levels.c`):
+byte-exact as curated C source (`src/combat_2/harry_levels.c`,
+`src/combat_2/ron_levels.c`, `src/combat_2/hermione_levels.c`):
 
 | Table | US address |
 |---|---|
@@ -1358,7 +1358,7 @@ below).
 Its companion byte array at the same index, `g_abSpellEffectId_candidate`
 (`0x080538B0`), holds a per-`(spellId, level)` effect-script id fed into
 `TriggerBattleEffect`. All 30 entries are named in
-`src/battle/effect_scripts/`:
+`src/combat_2/effect_scripts/`:
 
 | `SpellId` | Spell | Effect ids (Uno/Duo/Tria) | Max level | Has `StatusEffect`? |
 |---|---|---|---|---|
