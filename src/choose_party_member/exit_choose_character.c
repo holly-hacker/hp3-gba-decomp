@@ -1,11 +1,11 @@
 #include "types.h"
 #include "background.h"
+#include "choose_party_member.h"
 #include "graphics/display.h"
 #include "actor.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "dialog.h"
-#include "menu/choose_character.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 

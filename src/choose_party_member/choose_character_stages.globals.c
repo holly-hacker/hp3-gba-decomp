@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/choose_character.h"
+#include "choose_party_member.h"
 
 const u8 g_abChooseCharacterStages[7] = { 0x00, 0x05, 0x08, 0x04, 0x16, 0x1A, 0xFF };
 

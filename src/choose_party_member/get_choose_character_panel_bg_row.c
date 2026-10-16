@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/choose_character.h"
+#include "choose_party_member.h"
 #include "overworld/room.h"
 
 // The BG tile row the panel is drawn at, from the camera's Y within its 256-pixel wrap.

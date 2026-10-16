@@ -1,10 +1,10 @@
 #include "types.h"
 #include "background.h"
 #include "actor.h"
+#include "choose_party_member.h"
 #include "font.h"
 #include "game/game_modes.h"
 #include "graphics/display.h"
-#include "menu/choose_character.h"
 #include "overworld/room.h"
 #include "text.h"
 

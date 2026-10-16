@@ -101,7 +101,7 @@
 @ --- Chests ---
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
 
-@ --- Choose character (see include/menu/choose_character.h) ---
+@ --- Choose character (see include/choose_party_member.h) ---
 .set g_ChooseCharacterState,       0x03002260  @ see ram_symbols.us.inc
 .set g_dwChooseCharacterBgRow,     0x0300227C  @ see ram_symbols.us.inc
 

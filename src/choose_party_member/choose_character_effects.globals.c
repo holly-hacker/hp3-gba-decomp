@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/choose_character.h"
+#include "choose_party_member.h"
 
 const ScanlineEffectEntry g_aChooseCharacterScanlineEffects[2] = {
     { 0x3F, 0, 0, 0, BeginChooseCharacterPanelScanline },

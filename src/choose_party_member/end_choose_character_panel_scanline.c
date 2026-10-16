@@ -1,8 +1,8 @@
 #include "types.h"
 #include "background.h"
+#include "choose_party_member.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"
-#include "menu/choose_character.h"
 
 // Runs at the bottom of the panel: turns window 0 off and restores BG2's own scroll.
 void EndChooseCharacterPanelScanline(u32 *pPayload0, u32 *pPayload1)

@@ -1,7 +1,7 @@
 #include "types.h"
+#include "choose_party_member.h"
 #include "graphics/scanline_effects.h"
 #include "hw/io_regs.h"
-#include "menu/choose_character.h"
 
 // Runs at the top of the panel: turns window 0 on and scrolls BG2 so the panel row sits at
 // the current scanline.
