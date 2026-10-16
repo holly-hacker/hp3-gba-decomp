@@ -1,4 +1,5 @@
 #include "types.h"
+#include "char_block.h"
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "menu/main_menu.h"

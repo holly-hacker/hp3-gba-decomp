@@ -11,8 +11,6 @@ extern s32 g_dwSelectedMinigame;  // 0x03003F88: minigame index passed to the di
 extern u32 g_dwListMenuSelection;  // 0x03003F14: the same word as g_GameModeStackContext.dwModeScratchB,
                                    // the selected row of a minigame's results/pause menu
 
-// Shared by the minigame screens.
-extern void RegisterBgTileAnimation(const void *pTable, const void *pBgControls, u32 count);
 // A horizontal panel of actors drawn behind a minigame's HUD text: end caps at
 // x and x + widthTiles * 8 (the right one flipped) and widthTiles - 4 middle
 // pieces between them. The Boggart minigame puts one behind the score and one

@@ -11,8 +11,6 @@ extern void ClearPaletteRam(void);
 // Per-frame ticks run by TickFrameSystems; see docs/memory-map/frame_systems.md.
 extern void TickScreenWindows_candidate(void);
 extern void TickPaletteAnimations_candidate(void);
-extern void TickBgTileAnimations(void);
-extern void CommitBgTileAnimations(void);  // run from the vblank callback
 
 // Stops the palette effect with the given handle.
 extern void StopPaletteEffect(s32 handle);
@@ -71,9 +69,6 @@ extern void sub_0800D5DC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, const
 extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
 extern void sub_0803DB68(void);
 extern void sub_0803DC44(void);
-extern void FreeBgTileAnimations(void);
-extern void PauseBgTileAnimations(void);  // clears bit 1 (running) of every BG tile animation
-extern void ResumeBgTileAnimations(void);  // sets bit 1 of every BG tile animation
 // One frame of a BG tile animation: its tile data and how many ticks it shows
 // (0 holds it).
 typedef struct BgTileAnimFrame {

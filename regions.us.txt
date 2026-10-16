@@ -368,8 +368,8 @@ c-file 0x0800A580 0x0800A598 src/unused_challenge/exit_unused_minigame.c ExitUnu
 
 # Character block/animations (BG tile animations)
 thumb-func 0x0800A598 RegisterBgTileAnimation
-c-file 0x0800A610 _ src/graphics/tick_bg_tile_animations.c TickBgTileAnimations
-c-file 0x0800A6EC 0x0800A83C src/graphics/commit_bg_tile_animations.c CommitBgTileAnimations
+c-file 0x0800A610 _ src/char_block/tick_bg_tile_animations.c TickBgTileAnimations
+c-file 0x0800A6EC 0x0800A83C src/char_block/commit_bg_tile_animations.c CommitBgTileAnimations
 thumb-func 0x0800A83C StopAllBgTileAnimations
 thumb-func 0x0800A874 sub_0800A874
 thumb-func 0x0800A8A8 PauseBgTileAnimations

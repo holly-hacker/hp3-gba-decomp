@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "battle/effect_script.h"
 #include "battle/script_opcodes.h"
+#include "char_block.h"
 #include "game/rewards.h"
 #include "background.h"
 #include "graphics/audio.h"

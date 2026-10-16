@@ -2,6 +2,7 @@
 #include "area.h"
 #include "background.h"
 #include "battle/battle.h"
+#include "char_block.h"
 #include "graphics/display.h"
 #include "interrupts.h"
 #include "graphics/palette.h"
