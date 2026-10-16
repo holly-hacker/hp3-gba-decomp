@@ -72,6 +72,9 @@ extern const ActorAssetRecord g_MonsterShadowGfxRow;               // 0x0804EF54
 extern const ActorAssetRecord g_aEnemyTurnOrderIconAssets[69];     // 0x0804EF64
 extern const ActorAssetRecord g_aAllyTurnOrderIconAssets[4];       // 0x0804F3B4
 extern const ActorAssetRecord g_TurnOrderIconContainerAsset;       // 0x0804F3F4
+// Sound played when a party fighter takes damage, per FighterType: [0] for a light hit, [1] for more
+// than a third of max HP damage (or 1000/1001); [2] has no reader found.
+extern const u8 g_aabFighterHurtSoundIds[4][3];  // 0x0804F404
 extern const MonsterTableRow MonsterTable[];  // 0x0804F410, src/combat_2/monsters.c
 extern const u32 g_adwFolioBrutiMonsterScale[69];  // 0x0804FA88
 extern const u8 g_aMonsterAttackOffset_candidate[69][2];  // 0x0804FB9C, [rosterIndex]
@@ -79,6 +82,7 @@ extern const MonsterDropEntry g_pMonsterDropTable[69];
 extern const CharacterLevelEntry g_pHarryLevelTable[];     // 0x0804FE50, src/combat_2/harry_levels.c
 extern const CharacterLevelEntry g_pRonLevelTable[];       // 0x08050300, src/combat_2/ron_levels.c
 extern const CharacterLevelEntry g_pHermioneLevelTable[];  // 0x080507B0, src/combat_2/hermione_levels.c
+extern const CharacterLevelEntry *const g_apCharacterLevelTables[3];  // 0x08050C60, Harry, Hermione, Ron
 extern const RandomEncounter g_aRandomEncounters[30];
 // One fight's four enemy slots; 255 (0xFF) = empty slot.
 extern const u8 g_aScriptedEncounters[15][4];

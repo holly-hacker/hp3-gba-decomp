@@ -355,7 +355,8 @@ The 16-byte `ActorAssetRecord`s that follow, up to `0x0804F404`:
 | `0x0804F3B4` | `g_aAllyTurnOrderIconAssets` | 4 records, indexed by `FighterType` (Harry, Hermione, Ron, Buckbeak) |
 | `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `SetActorSprite`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnActor` palette |
 
-The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table.
+The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table:
+`g_aabFighterHurtSoundIds` (`src/combat_2/fighter_hurt_sounds.c`).
 
 `src/combat_2/monster_graphics_table.c` reconstructs `0x0804E6B4`-`0x0804F404`
 (JP `0x0804E5E0`-`0x0804F330`, same content) with every pointer a

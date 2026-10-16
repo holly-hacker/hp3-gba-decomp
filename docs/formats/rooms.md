@@ -196,7 +196,7 @@ refers to a group, member and chain that exist.
 spawn points. `SpawnPlayerActor_candidate` finds the record whose `entryId`
 equals `g_abRoomScriptExitParams_candidate[0]` (`FindRoomEntryPoint`) and places the
 player at `(x, y)` facing `facing`; with no match it uses a default record
-table at US `0x0804C08C`. Doors set the exit parameter before the room
+table, `g_aDefaultRoomEntryPoints` (US `0x0804C08C`, `src/area/default_room_entry_points.c`). Doors set the exit parameter before the room
 change.
 
 ## Waypoint routes

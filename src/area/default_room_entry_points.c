@@ -1,0 +1,7 @@
+#include "types.h"
+#include "area.h"
+
+const RoomEntryPoint g_aDefaultRoomEntryPoints[2] = {
+    { 0x1E, 0x50, 0xFF, 0, 4, 0xFF },
+    { 0x2D, 0x50, 0xFF, 1, 4, 0xFF },
+};

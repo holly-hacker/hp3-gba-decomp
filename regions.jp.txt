@@ -471,8 +471,8 @@ thumb-func 0x08011EBC ConfirmSpecialMoveMenu
 thumb-func 0x08011FA4 ConfirmSpellTierMenu
 thumb-func 0x080120F0 ConfirmEnemyTargetMenu
 thumb-func 0x0801217C ConfirmAllyTargetMenu
-thumb-func 0x08012240 sub_0801223C
-thumb-func 0x08012340 sub_0801233C
+thumb-func 0x08012240 CancelEnemyTargetMenu
+thumb-func 0x08012340 CancelAllyTargetMenu
 thumb-func 0x08012480 sub_0801247C
 thumb-func 0x0801250C sub_08012508
 thumb-func 0x08012598 sub_08012594
@@ -494,12 +494,12 @@ thumb-func 0x08012D30 SetupEnemyBattleMessageIcon_candidate
 thumb-func 0x08012D7C sub_08012D78
 thumb-func 0x08012E10 sub_08012E0C
 thumb-func 0x08012E3C sub_08012E38
-thumb-func 0x08012E54 sub_08012E50
+thumb-func 0x08012E54 CancelBattleTopMenu
 thumb-func 0x08012E58 ConfirmSpellChoiceMenu
 thumb-func 0x08012EB0 ConfirmItemMenu
-thumb-func 0x08012F10 sub_08012F0C
-thumb-func 0x08012F50 sub_08012F4C
-thumb-func 0x08012FD4 sub_08012FD0
+thumb-func 0x08012F10 CancelToBattleTopMenu
+thumb-func 0x08012F50 CancelSpellTierMenu
+thumb-func 0x08012FD4 IgnoreBattleMenuInput
 thumb-func 0x08012FD8 PrepareBattleMessageDisplay_candidate
 thumb-func 0x08013018 sub_08013014
 thumb-func 0x08013038 sub_08013034
@@ -509,7 +509,7 @@ thumb-func 0x08013110 TogglePendingFighterCursor_candidate
 thumb-func 0x0801314C sub_08013148
 thumb-func 0x080131A0 OpenPendingFighterMenu_candidate
 thumb-func 0x08013210 ConfirmPendingFighterMenu_candidate
-thumb-func 0x08013294 sub_08013290
+thumb-func 0x08013294 CancelPendingFighterMenu_candidate
 thumb-func 0x080132F8 sub_080132F4
 thumb-func 0x08013324 sub_08013320
 thumb-func 0x08013344 sub_08013340
@@ -2153,7 +2153,8 @@ c-file 0x0804BC88 _ src/libc/memcpy.c memcpy
 c-file 0x0804BCE8 0x0804BEC8 src/actor/direction_vectors.c g_aDirection4Vectors
 c-file 0x0804BEF8 0x0804BF18 src/actor/action_state_data.c g_abTurnAroundDirection
 c-file 0x0804BF50 _ src/actor/oam_shape_sizes.c g_aOamShapeSizes
-c-file 0x0804BF80 0x0804BFB8 src/area/room_actor_constructors.c g_apRoomActorConstructors
+c-file 0x0804BF80 _ src/area/room_actor_constructors.c g_apRoomActorConstructors
+c-file 0x0804BFB8 0x0804BFC8 src/area/default_room_entry_points.c g_aDefaultRoomEntryPoints
 c-file 0x0804BFD8 _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C1B0 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
 c-file 0x0804C368 0x0804C36C src/unused_challenge/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
@@ -2170,16 +2171,26 @@ c-file 0x0804CDF0 _ src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWiza
 c-file 0x0804D450 _ src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprite
 c-file 0x0804D5F8 _ src/choose_party_member/choose_character_stages.globals.c g_abChooseCharacterStages
 c-file 0x0804D69C 0x0804D6BC src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
-c-file 0x0804D6C4 0x0804D724 src/color/gamma_remap_tables.c g_abGammaNormalRemap
-c-file 0x0804D750 0x0804DFA0 src/combat_menu/battle_hud_assets.c g_aBattleHudAssets
+c-file 0x0804D6C4 _ src/color/gamma_remap_tables.c g_abGammaNormalRemap
+c-file 0x0804D724 _ src/combat_menu/battle_effect001_asset.c g_BattleEffect001Asset
+c-file 0x0804D734 _ src/combat_menu/battle_top_menu_text.c g_adwBattleTopMenuTextIds
+c-file 0x0804D750 _ src/combat_menu/battle_hud_assets.c g_aBattleHudAssets
+c-file 0x0804DFA0 _ src/combat_menu/battle_bg_controls.c g_dwBattleFloorBgControl
+c-file 0x0804DFB0 _ src/combat_menu/fighter_spell_menus.c g_aabFighterSpellMenu
 c-file 0x0804DFC8 _ src/combat_menu/battle_backgrounds.c g_aBattleBackgroundPairs
-c-file 0x0804E180 0x0804E1C8 src/combat_menu/battle_music.c g_abBattleMusicByRoom
-c-file 0x0804E50C 0x0804E518 src/combat_menu/spell_leveling.c g_abSpellMaxLevel
+c-file 0x0804E180 _ src/combat_menu/battle_music.c g_abBattleMusicByRoom
+c-file 0x0804E1C8 _ src/combat_menu/menu_sprite003_asset.c g_MenuSprite003Asset_candidate
+c-file 0x0804E1D8 _ src/combat_menu/battle_scanline_effects.c g_aBattleScanlineEffects
+c-file 0x0804E218 _ src/combat_menu/battle_menu_input_handlers.c g_apfnBattleMenuConfirmHandlers
+c-file 0x0804E270 _ src/combat_menu/battle_message_text.c g_adwFighterActionTextIds
+c-file 0x0804E50C _ src/combat_menu/spell_leveling.c g_abSpellMaxLevel
+c-file 0x0804E518 _ src/combat_menu/battle_status_text.c g_adwFighterCantMoveTextIds
 c-file 0x0804E52C _ src/combat_result/combat_result.globals.c g_dwCombatResultBg2Control
 c-file 0x0804E53C _ src/combat_result/combat_result_assets.globals.c g_CombatResultCoinAsset
 c-file 0x0804E56C _ src/combat_result/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects
 c-file 0x0804E5A0 _ src/combat_result/combat_result_level_up_sparkle.globals.c g_abCombatResultLevelUpSparkleAnim
-c-file 0x0804E5E0 0x0804F330 src/combat_2/monster_graphics_table.c g_pMonsterGraphicsTable
+c-file 0x0804E5E0 _ src/combat_2/monster_graphics_table.c g_pMonsterGraphicsTable
+c-file 0x0804F330 _ src/combat_2/fighter_hurt_sounds.c g_aabFighterHurtSoundIds
 
 # Folio Bruti monster stat table -- content proven byte-identical to the
 # US table (0x0804F410), just at a different address; one C source serves
@@ -2190,7 +2201,8 @@ c-file 0x0804FAC8 _ src/combat_2/monster_attack_offsets.c g_aMonsterAttackOffset
 c-file 0x0804FB54 _ src/combat_2/monster_drop_table.c g_pMonsterDropTable
 c-file 0x0804FD7C _ src/combat_2/harry_levels.c g_pHarryLevelTable
 c-file 0x0805022C _ src/combat_2/ron_levels.c g_pRonLevelTable
-c-file 0x080506DC 0x08050B8C src/combat_2/hermione_levels.c g_pHermioneLevelTable
+c-file 0x080506DC _ src/combat_2/hermione_levels.c g_pHermioneLevelTable
+c-file 0x08050B8C _ src/combat_2/character_level_tables.c g_apCharacterLevelTables
 
 # Encounter roster tables, see docs/formats/encounters.md
 c-file 0x08050B98 _ src/combat_2/random_encounters.c g_aRandomEncounters
@@ -2211,7 +2223,8 @@ c-file 0x08053C6C _ src/combat_2/effect_assets.c g_aEffectActorAssets
 c-file 0x08054400 _ src/combat_2/effect_bg_records.c g_aEffectBgRecords_candidate
 c-file 0x08054E60 _ src/combat_2/script_opcode_lengths.c g_abScriptOpcodeLengths
 c-file 0x08054F08 _ src/combat_2/effect_anim_data.c g_abFighterIdleAnimData_candidate
-c-file 0x08059878 0x0805B9A8 src/combat_2/effect_scripts.c g_apEffectScripts
+c-file 0x08059878 _ src/combat_2/effect_scripts.c g_apEffectScripts
+c-file 0x0805B9A8 _ src/combat_effect_scripts/sp_gauge_gfx.c g_aSpGaugeGfx
 c-file 0x0805B9B8 _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BB2C _ src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805BB30 _ src/dialog/dialog_blocks.c g_adwDialogBlockTextIds

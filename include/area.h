@@ -11,6 +11,20 @@
 // Room tile actorType -> constructor table.
 extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];  // ROM 0x0804C054 (US)
 
+// A player spawn point: a room blob header record, or a default record. FindRoomEntryPoint
+// matches bEntryId and bIndex against its two arguments.
+typedef struct RoomEntryPoint {
+    s16 nX;
+    s16 nY;
+    u8 bEntryId;
+    u8 bIndex;   // also indexes g_aDefaultRoomEntryPoints; both callers pass 0
+    u8 bFacing;
+    u8 pad_07;
+} RoomEntryPoint;
+
+// Used by FindRoomEntryPoint when the room has no record for the entry id.
+extern const RoomEntryPoint g_aDefaultRoomEntryPoints[2];  // ROM 0x0804C08C (US)
+
 extern void SpawnMissingRoomGroupActors(u32 row);
 // Starts chain `chain`; with resumeFromSaved it continues the saved caller
 // frame on top of the call stack instead.
