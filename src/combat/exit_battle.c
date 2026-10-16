@@ -2,6 +2,7 @@
 #include "background.h"
 #include "battle/battle.h"
 #include "color.h"
+#include "combat.h"
 #include "graphics/display.h"
 #include "interrupts.h"
 #include "game/game_modes.h"

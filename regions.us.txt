@@ -494,9 +494,9 @@ c-file 0x0800D9D4 0x0800DB58 src/color/step_palette_effect.c StepPaletteEffect
 thumb-func 0x0800DB58 sub_0800DB58
 
 # Combat (battle mode), see docs/memory-map/battle.md
-c-file 0x0800DBAC _ src/gamemode/modes/battle/initialize_battle.c InitializeBattle
-c-file 0x0800DDB0 _ src/gamemode/modes/battle/update_battle.c UpdateBattle
-c-file 0x0800DE50 0x0800E0CC src/gamemode/modes/battle/exit_battle.c ExitBattle
+c-file 0x0800DBAC _ src/combat/initialize_battle.c InitializeBattle
+c-file 0x0800DDB0 _ src/combat/update_battle.c UpdateBattle
+c-file 0x0800DE50 0x0800E0CC src/combat/exit_battle.c ExitBattle
 
 # CombatMenu (battle turn system and UI), see docs/memory-map/battle-ui.md
 thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
