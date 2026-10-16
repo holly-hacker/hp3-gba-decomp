@@ -1,3 +1,4 @@
+#include "clock.h"
 #include "game/save.h"
 
 u32 ComparePlaytimeField(const Playtime *playtime, const Playtime *mask, u32 fieldMask)

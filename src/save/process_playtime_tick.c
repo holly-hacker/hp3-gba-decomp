@@ -1,3 +1,4 @@
+#include "clock.h"
 #include "game/save.h"
 
 void ProcessPlaytimeTick(void)

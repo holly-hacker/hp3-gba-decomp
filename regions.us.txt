@@ -434,11 +434,11 @@ c-file 0x0800C674 _ src/choose_party_member/end_choose_character_panel_scanline.
 c-file 0x0800C6D0 _ src/choose_party_member/get_choose_character_panel_bg_row.c GetChooseCharacterPanelBgRow
 
 # Clock (playtime)
-c-file 0x0800C6EC 0x0800C844 src/save/add_playtime_delta.c AddPlaytimeDelta
+c-file 0x0800C6EC 0x0800C844 src/clock/add_playtime_delta.c AddPlaytimeDelta
 thumb-func 0x0800C844 sub_0800C844
-c-file 0x0800CA70 _ src/save/compare_playtime_field.c ComparePlaytimeField
-c-file 0x0800CAE8 _ src/save/initialize_playtime_struct.c InitializePlaytimeStruct
-c-file 0x0800CAF8 0x0800CB04 src/save/copy_playtime.c CopyPlaytime
+c-file 0x0800CA70 _ src/clock/compare_playtime_field.c ComparePlaytimeField
+c-file 0x0800CAE8 _ src/clock/initialize_playtime_struct.c InitializePlaytimeStruct
+c-file 0x0800CAF8 0x0800CB04 src/clock/copy_playtime.c CopyPlaytime
 thumb-func 0x0800CB04 sub_0800CB04
 thumb-func 0x0800CB1C sub_0800CB1C
 thumb-func 0x0800CB9C sub_0800CB9C

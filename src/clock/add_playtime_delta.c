@@ -1,3 +1,4 @@
+#include "clock.h"
 #include "game/save.h"
 
 // Adds a small delta to a running playtime counter, normalising each field

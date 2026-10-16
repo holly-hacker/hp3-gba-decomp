@@ -1,4 +1,5 @@
 #include "types.h"
+#include "clock.h"
 #include "game/save.h"
 
 // Starts the playtime counter at zero and marks the save as started, then

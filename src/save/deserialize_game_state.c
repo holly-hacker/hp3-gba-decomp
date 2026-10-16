@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "chest_actor.h"
+#include "clock.h"
 #include "mem.h"
 #include "game/save.h"
 #include "inventory.h"

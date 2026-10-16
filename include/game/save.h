@@ -177,8 +177,6 @@ extern const Playtime g_stPlaytimeZero;
 extern const Playtime g_stPlaytimeFrameDelta;
 extern const Playtime g_stPlaytimeHourLimit;
 
-u32 AddPlaytimeDelta(Playtime *playtime, const Playtime *toAdd);
-u32 ComparePlaytimeField(const Playtime *playtime, const Playtime *mask, u32 fieldMask);
 void ProcessPlaytimeTick(void);
 
 // Adds a signed amount of Sickles to the player's money, clamped to
@@ -233,8 +231,6 @@ void DeserializeFolioUniversitas(void);
 void DeserializeOwlCareKit(void);
 void PackNibblesToSaveStream(const u8 *src, u32 count);
 void PackBitPairsToSaveStream(const u8 *src, u32 count);
-void InitializePlaytimeStruct(Playtime *playtime);
-void CopyPlaytime(Playtime *dst, const Playtime *src);
 void ResetSaveStateForNewGame(void);
 void ResetQuestStateForNewGame(u32 newGamePlus);
 void StartNewGamePlaytime(void);
