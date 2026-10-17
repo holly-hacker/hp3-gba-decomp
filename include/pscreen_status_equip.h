@@ -19,6 +19,8 @@ typedef struct {
     u8 bRight;     // 0x0F
 } StatusEquipSlot;
 
+// Status/equip screen character rotations, indexed by sub_0803A030.
+extern const ActorAssetRecord g_aStatusCharacterAssets[3];  // 0x0806B250
 extern const StatusEquipSlot g_aStatusEquipSlots[6];  // 0x0806B2FC
 
 // Screen actors and state of the slot select screen.

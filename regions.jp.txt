@@ -2294,7 +2294,7 @@ c-file 0x08069A44 _ src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAs
 c-file 0x08069BFC _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B11C 0x0806B1A0 src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B1C4 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
-c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
+c-file 0x0806B1DC 0x0806B20C src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B288 _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B2E8 0x0806B338 src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B358 _ src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control

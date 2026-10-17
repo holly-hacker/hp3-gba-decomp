@@ -1236,7 +1236,7 @@ These record tables are C with generated labels: `g_aBattleHudAssets`
 fighter, `src/combat_2/fighter_anim_table.c`), `g_aEffectActorAssets`,
 `g_apEffectPalettes`, `g_aEffectAnimAssets`, and `g_aEffectAnimAssets2`
 (`src/combat_2/effect_assets.c`), and `g_aStatusCharacterAssets`
-(`src/graphics/assets/status_character_assets.c`).
+(`src/pscreen_status_equip/status_character_assets.c`).
 
 ### Item icons (PROVEN, extracted)
 
