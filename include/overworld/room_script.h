@@ -57,7 +57,6 @@ extern RoomScriptCallFrame g_aRoomScriptCallStack[];
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
 extern u8 g_abRoomScriptExitParams_candidate[2];
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
-extern Actor *sub_0802F6C0(u32 characterId);
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
 // Allocates a RoomActorType_ScriptEffect actor of the given kind (Actor+0x8C),

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "overworld/room_actor.h"
+#include "npc_actor.h"
 
 // An NPC's animation frame for each Direction4 facing.
 const u8 g_abRoomActorUnk6Frames[12][4] = {

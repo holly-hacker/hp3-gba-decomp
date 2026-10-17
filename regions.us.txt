@@ -1421,7 +1421,7 @@ thumb-func 0x0802F434 sub_0802F434
 thumb-func 0x0802F494 sub_0802F494
 
 # NPC Actor
-c-file 0x0802F500 0x0802F6C0 src/room/actors/spawn_npc_actor.c SpawnNpcActor
+c-file 0x0802F500 0x0802F6C0 src/npc_actor/spawn_npc_actor.c SpawnNpcActor
 thumb-func 0x0802F6C0 sub_0802F6C0
 thumb-func 0x0802F7F0 sub_0802F7F0
 thumb-func 0x0802FCC0 sub_0802FCC0
@@ -2536,9 +2536,9 @@ c-file 0x0806601C 0x0806603C src/minigame_difficulty_select/minigame_difficulty_
 c-file 0x0806605C 0x08066064 src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066084 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file 0x08066094 0x080660D4 src/move/terrain_collision.globals.c g_abOppositeFacing
-c-file 0x08066E44 _ src/room/actors/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
-c-file 0x08066FFC _ src/graphics/assets/actor_type_assets.c g_aActorTypeAssets
-c-file 0x0806788C 0x080678BC src/room/actors/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
+c-file 0x08066E44 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
+c-file 0x08066FFC _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
+c-file 0x0806788C 0x080678BC src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068BF0 _ src/graphics/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068BF8 _ src/gamemode/modes/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control

@@ -52,7 +52,6 @@ typedef struct RoomActorRecordUnkC {
 
 extern Actor *SpawnSwitchActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPropActor(u8 bColumn, u8 bRow);
-extern Actor *SpawnNpcActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow);
@@ -231,24 +230,5 @@ extern const ActorGfxRecord g_aRoomActorTriggerEffectSprites[7];        // ROM 0
 extern const u8 g_abRoomActorTriggerAnimData[91][90];                    // ROM 0x0806C8F4 (US)
 extern const u8 g_abRoomActorTriggerFacingFrames[8];                     // ROM 0x0806E8F2 (US)
 extern const u8 g_abRoomActorTriggerFacingAnimStart[8];                  // ROM 0x0806E8FA (US)
-
-typedef struct RoomActorRecordUnk6 {
-    u32 dwActorType;
-    s16 nPixelX;
-    s16 nPixelY;
-    u8 bKind;      // 0x08, index into the asset tables
-    u8 bFacing;    // 0x09, stored halved
-    u8 pad_A[2];
-    union {
-        u32 dwWord;
-        u8 bFirst;
-    } argC;        // 0x0C; bFirst goes to Actor 0x8C, bytes 1 and 2 are tested as a pair
-} RoomActorRecordUnk6;
-
-extern void sub_0802F7F0(Actor *pActor);
-extern void sub_0802FCC0(Actor *pSelf, Actor *pOther);
-extern const u32 g_adwRoomActorUnk6FrameRows[110];          // ROM 0x08066E44 (US)
-extern const ActorAssetRecord g_aActorTypeAssets[137];  // ROM 0x08066FFC (US), indexed by an actor kind
-extern const u8 g_abRoomActorUnk6Frames[12][4];             // ROM 0x0806788C (US)
 
 extern void sub_0802E2BC(Actor *pSpell, Actor *pTarget);  // overworld spell effect hits a room actor

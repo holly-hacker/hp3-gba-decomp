@@ -661,8 +661,6 @@ extern void SetActorActionState(Actor *actor, u8 state);
 extern void SetActorFlags(Actor *actor, ActorFlags flags);
 extern void ClearActorFlags(Actor *actor, ActorFlags flags);
 extern s32 ActorHasFlags(Actor *actor, ActorFlags flags);  // 1 when every bit of flags is set
-// Starts animation `animId` from the actor's animation table.
-extern void SetActorAnimData_candidate(Actor *actor, u32 animId);
 extern void SetActorActionSubState(Actor *actor, u8 state);
 extern void SetActorFacing(Actor *actor, u8 facing);  // raises bActionFlags bit 0x10 on a change
 extern void SetActorDrawLayer(Actor *actor, u8 layer);

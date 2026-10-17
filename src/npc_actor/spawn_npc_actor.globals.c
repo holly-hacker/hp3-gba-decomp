@@ -1,5 +1,5 @@
 #include "types.h"
-#include "overworld/room_actor.h"
+#include "npc_actor.h"
 
 // Row of g_abRoomActorUnk6Frames for each NPC kind.
 const u32 g_adwRoomActorUnk6FrameRows[110] = {

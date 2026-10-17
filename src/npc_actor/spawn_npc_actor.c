@@ -1,6 +1,7 @@
 #include "types.h"
 #include "area.h"
 #include "overworld/room_actor.h"
+#include "npc_actor.h"
 
 // Room actor constructor for tile actorType 6, an NPC; see docs/formats/rooms.md.
 // bFighterIndex doubles as the kind index into the asset tables.

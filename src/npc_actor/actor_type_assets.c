@@ -1,8 +1,8 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/room_actor.h"
 #include "gen/graphics/battle.h"
 #include "gen/graphics/overworld.h"
+#include "npc_actor.h"
 
 // Sprites of spawned actors, indexed by actor kind; see docs/formats/graphics.md.
 const ActorAssetRecord g_aActorTypeAssets[137] = {

@@ -2,6 +2,7 @@
 #include "area.h"
 #include "commands.h"
 #include "overworld/room_script.h"
+#include "npc_actor.h"
 
 typedef struct SpawnPartyFollowerAtTileRecord {
     u32 dwOpcode;
