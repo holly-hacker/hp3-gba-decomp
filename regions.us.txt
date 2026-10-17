@@ -2561,8 +2561,9 @@ c-file 0x080696EC _ src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFol
 c-file 0x08069A2C 0x08069A50 src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069AB8 _ src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x08069C70 _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
-c-file 0x0806B190 0x0806B214 src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
-c-file 0x0806B238 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
+c-file 0x0806B190 _ src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
+c-file 0x0806B214 _ src/pscreen_save/save_confirmation_menu.c g_SaveConfirmationMenuDefinition
+c-file 0x0806B238 _ src/pscreen_save/no_yes_entries.c g_aNoYesEntries
 c-file 0x0806B250 0x0806B280 src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B2FC _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B35C 0x0806B3AC src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
@@ -2586,6 +2587,7 @@ c-file 0x0806BF40 0x0806BF60 src/timeturner_cutscene/harry_hermione_port_in_time
 c-file 0x0806BFD0 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BFDC _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BFF4 0x0806C014 src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
+c-file 0x0806C024 _ src/title_load/new_game_slot_confirmation_menu.c g_NewGameSlotConfirmationMenuDefinition
 c-file 0x0806C048 0x0806C108 src/title_options/options_menu_items.c g_aOptionsMenuItems
 c-file 0x0806C12C _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control

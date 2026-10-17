@@ -327,7 +327,7 @@ screen transition instead of the fade. Exit saves `dwModeScratchB` (the cursor r
   `OwlNameSelect`, otherwise `OwlCareMinigame` (an immediate row). `InitializeConnectivityMenu`
   copies `g_ConnectivityMenuTemplate` to `g_ConnectivityMenu` and swaps `pEntries`. B
   stores -1 in `dwCurrentGameModeArg2` and returns to `InGameMenuFadeIn`.
-- ConfirmTradeScreen: a two-row prompt (`g_aConfirmTradeEntries`); row 0, also forced by
+- ConfirmTradeScreen: a two-row prompt (`g_aNoYesEntries`); row 0, also forced by
   B, returns to `Connectivity`, row 1 continues to `CardTrade`.
 
 ## FolioUniversitas (0x26), FolioUniversitasCardDetails (0x28), CardComboDescription (0x46), FolioBruti (0x2D)

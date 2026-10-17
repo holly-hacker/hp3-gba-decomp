@@ -1,6 +1,7 @@
 #include "types.h"
 #include "pscreen_connectivity.h"
 #include "gen/graphics/overworld.h"
+#include "pscreen_save.h"
 
 const ListMenuEntry g_aConnectivityGameCubeEntries[2] = {
     { ConfirmTradeScreen, 0x538, 0 },  // "Trade Cards"
@@ -35,13 +36,16 @@ const ListMenuDefinition g_ConnectivityMenuTemplate = {
     { -50, 8 },
 };
 
+// A copy of g_NewGameSlotConfirmationMenuDefinition, title included.
 const ListMenuDefinition g_ConfirmTradeMenuDefinition = {
+    // BUG: the trade confirmation screen shows "New Game" as its title; it should
+    // be 0x538 ("Trade Cards").
     0x8CD,  // title: "New Game"
     2,
     2,
     { 112, 80 },
     { 0, 12 },
-    g_aConfirmTradeEntries,
+    g_aNoYesEntries,
     0,
     { 0, 0 },
     0,
