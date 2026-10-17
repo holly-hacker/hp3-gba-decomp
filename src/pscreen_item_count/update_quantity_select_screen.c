@@ -5,7 +5,7 @@
 #include "graphics/audio.h"
 #include "input.h"
 #include "pause_menu.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "pscreen_item_count.h"
 #include "items.h"
 

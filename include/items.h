@@ -61,3 +61,14 @@ extern void SetActorScaleStep(Actor *actor, u32 step);
 u8 *GetPartyMemberName(s32 character);
 
 extern const u32 g_adwActorScaleSteps[9];
+
+// Scrolling item list shared with the Status/Equip item select and the shop.
+// Each Open* call returns nonzero when the list is not empty.
+extern u32 OpenFilteredItemList(u32 filter, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5, s32 arg6);
+// Lists a 0x84-terminated item id array instead of a filter.
+extern u32 OpenItemListFromIds(const u32 *pItems, s32 x, s32 y, u32 arg3, u32 arg4);
+extern void TickItemList(void);            // Up/Down cursor movement and row scrolling
+extern u32 GetItemListSelection(void);     // item under the list cursor
+extern void SetItemListCallbacks(void (*onCursorMove)(u32 item), void (*onClear)(void));
+extern void SetItemListTranslucent(void);  // rows and cursor join the alpha-blend fade
+extern void CloseItemList(void);

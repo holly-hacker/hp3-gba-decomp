@@ -5,7 +5,7 @@
 #include "game/game_save.h"
 #include "pause_menu.h"
 #include "input.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "menu/status_equip.h"
 #include "items.h"
 #include "pscreen_character.h"

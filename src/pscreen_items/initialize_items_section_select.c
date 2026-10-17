@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "pause_menu.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 
 void InitializeItemsSectionSelect(void)
 {

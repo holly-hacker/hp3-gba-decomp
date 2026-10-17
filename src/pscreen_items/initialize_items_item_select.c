@@ -1,10 +1,11 @@
 #include "types.h"
 #include "modes.h"
 #include "pause_menu.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "font.h"
 #include "text.h"
 #include "default_menu.h"
+#include "items.h"
 
 void InitializeItemsItemSelect(void)
 {

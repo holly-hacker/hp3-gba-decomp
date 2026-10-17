@@ -1721,19 +1721,19 @@ thumb-func 0x0803950C sub_0803950C
 thumb-func 0x08039564 sub_08039564
 
 # Profile/Items? (pause subscreen: items)
-c-file 0x0803957C _ src/gamemode/modes/items/update_items_item_select.c UpdateItemsItemSelect
-c-file 0x08039690 _ src/gamemode/modes/items/initialize_items_item_select.c InitializeItemsItemSelect
-c-file 0x08039728 0x08039750 src/gamemode/modes/items/exit_items_item_select.c ExitItemsItemSelect
+c-file 0x0803957C _ src/pscreen_items/update_items_item_select.c UpdateItemsItemSelect
+c-file 0x08039690 _ src/pscreen_items/initialize_items_item_select.c InitializeItemsItemSelect
+c-file 0x08039728 0x08039750 src/pscreen_items/exit_items_item_select.c ExitItemsItemSelect
 thumb-func 0x08039750 SetItemsItemSelectFilter
 thumb-func 0x0803975C sub_0803975C
 thumb-func 0x080397FC sub_080397FC
 thumb-func 0x08039818 sub_08039818
-c-file 0x08039854 _ src/gamemode/modes/items/update_items_section_select.c UpdateItemsSectionSelect
-c-file 0x08039904 _ src/gamemode/modes/items/initialize_items_section_select.c InitializeItemsSectionSelect
-c-file 0x08039930 _ src/gamemode/modes/items/exit_items_section_select.c ExitItemsSectionSelect
-c-file 0x08039974 _ src/gamemode/modes/items/initialize_item_use_screen.c InitializeItemUseScreen
-c-file 0x080399A8 _ src/gamemode/modes/items/update_item_use_screen.c UpdateItemUseScreen
-c-file 0x08039A04 0x08039A14 src/gamemode/modes/items/exit_item_use_screen.c ExitItemUseScreen
+c-file 0x08039854 _ src/pscreen_items/update_items_section_select.c UpdateItemsSectionSelect
+c-file 0x08039904 _ src/pscreen_items/initialize_items_section_select.c InitializeItemsSectionSelect
+c-file 0x08039930 _ src/pscreen_items/exit_items_section_select.c ExitItemsSectionSelect
+c-file 0x08039974 _ src/pscreen_items/initialize_item_use_screen.c InitializeItemUseScreen
+c-file 0x080399A8 _ src/pscreen_items/update_item_use_screen.c UpdateItemUseScreen
+c-file 0x08039A04 0x08039A14 src/pscreen_items/exit_item_use_screen.c ExitItemUseScreen
 thumb-func 0x08039A14 SetItemUseItem
 thumb-func 0x08039A20 sub_08039A20
 
@@ -2561,7 +2561,7 @@ c-file 0x080696EC _ src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFol
 c-file 0x08069A2C 0x08069A50 src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069AB8 _ src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x08069C70 _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
-c-file 0x0806B190 0x0806B214 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
+c-file 0x0806B190 0x0806B214 src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B238 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B2FC _ src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots

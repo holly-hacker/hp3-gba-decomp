@@ -1,8 +1,9 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "input.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "shop.h"
+#include "items.h"
 
 void UpdateShopSellList(void)
 {

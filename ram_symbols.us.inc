@@ -409,7 +409,7 @@
 .set g_FolioBrutiState,            0x03005300  @ FolioBrutiState: the Folio Bruti screen state; see include/pscreen_folio_bruti.h
 .set g_FolioUniversitasState,      0x03005340  @ FolioUniversitasState: the Folio Universitas screen state; see include/pscreen_folio_universitas.h
 .set g_HelpState,                 0x03005370  @ HelpState: the Help / HelpTopicScreen engine state; see include/pscreen_information.h
-.set g_ItemsItemSelect,            0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/menu/items_menu.h
+.set g_ItemsItemSelect,            0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/pscreen_items.h
 .set g_ItemsSectionSelectNextMode, 0x030054E4  @ GameMode: pushed once the Items section select fades out
 .set g_bItemsSectionCursor,        0x030054E8  @ s8: Items section select row saved on exit
 .set g_dwItemUseItem,              0x030054EC  @ u32: item chosen in ItemsItemSelect, used by ItemUseScreen

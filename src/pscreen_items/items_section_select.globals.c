@@ -1,6 +1,6 @@
 #include "types.h"
 #include "game/items.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "gen/graphics/overworld.h"
 
 const ListMenuEntry g_aItemsSectionEntries[3] = {

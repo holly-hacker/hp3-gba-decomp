@@ -4,7 +4,7 @@
 #include "color.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "mem.h"
 #include "actor.h"
 #include "cursor.h"

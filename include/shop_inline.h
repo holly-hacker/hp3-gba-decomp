@@ -7,10 +7,11 @@
 #include "font.h"
 #include "text.h"
 #include "dialog.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "menu/main_menu.h"
 #include "shop.h"
 #include "cursor.h"
+#include "items.h"
 
 // The ROM compiles these into TickShopFadeOut, MoveShopMainMenuCursor,
 // MoveShopCategoryCursor and UpdateShopQuantitySelect and also keeps an

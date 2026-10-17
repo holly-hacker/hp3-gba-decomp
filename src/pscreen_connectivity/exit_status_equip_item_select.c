@@ -1,10 +1,11 @@
 #include "types.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "actor.h"
 #include "default_menu.h"
 #include "pscreen_connectivity.h"
+#include "items.h"
 
 void ExitStatusEquipItemSelect(void)
 {

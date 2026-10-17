@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "menu/status_equip.h"
 #include "items.h"
 #include "pscreen_character.h"

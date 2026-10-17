@@ -14,6 +14,10 @@ extern const u32 g_aItemsSectionFilters[3];                    // 0x0806B1B4
 extern const ListMenuRowActor g_aItemsSectionRowActors[3];   // 0x0806B1C0
 extern const ListMenuDefinition g_ItemsSectionMenuDefinition;  // 0x0806B1F0
 
+extern void UpdateItemsSectionSelect(void);
+extern void InitializeItemsSectionSelect(void);
+extern void ExitItemsSectionSelect(void);
+
 extern GameMode g_ItemsSectionSelectNextMode;  // 0x030054E4: mode pushed once the fade-out finishes
 extern s8 g_bItemsSectionCursor;               // 0x030054E8: section row saved on exit
 
@@ -26,6 +30,9 @@ typedef struct {
 
 extern ItemsItemSelectState g_ItemsItemSelect;  // 0x030054D8
 
+extern void UpdateItemsItemSelect(void);
+extern void InitializeItemsItemSelect(void);
+extern void ExitItemsItemSelect(void);
 extern void SetItemsItemSelectFilter(u32 filter);
 extern void sub_0803975C(u32 item);  // draws the description of the item under the cursor
 extern void sub_080397FC(void);      // clears the description box
@@ -35,17 +42,8 @@ extern u32 sub_08039818(void);       // nonzero when the item under the cursor r
 extern u32 g_dwItemUseItem;      // 0x030054EC: item chosen in item select
 extern u32 g_dwItemUseQuantity;  // 0x030054F0: quantity chosen in QuantitySelectScreen
 
+extern void InitializeItemUseScreen(void);
+extern void UpdateItemUseScreen(void);
+extern void ExitItemUseScreen(void);
 extern void SetItemUseItem(u32 item);
 extern void sub_08039A20(u32 textId);  // draws the result message under the Items header
-
-// Scrolling item list shared with the Status/Equip item select and the shop.
-// Each Open* call returns nonzero when the list is not empty.
-extern u32 OpenFilteredItemList(u32 filter, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5, s32 arg6);
-// Lists a 0x84-terminated item id array instead of a filter.
-extern u32 OpenItemListFromIds(const u32 *pItems, s32 x, s32 y, u32 arg3, u32 arg4);
-extern void TickItemList(void);            // Up/Down cursor movement and row scrolling
-extern u32 GetItemListSelection(void);     // item under the list cursor
-extern void SetItemListCallbacks(void (*onCursorMove)(u32 item), void (*onClear)(void));
-extern void SetItemListTranslucent(void);  // rows and cursor join the alpha-blend fade
-extern void CloseItemList(void);
-

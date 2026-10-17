@@ -1,11 +1,12 @@
 #include "types.h"
-#include "menu/items_menu.h"
+#include "pscreen_items.h"
 #include "graphics/audio.h"
 #include "modes.h"
 #include "game/game_save.h"
 #include "pause_menu.h"
 #include "input.h"
 #include "pscreen_connectivity.h"
+#include "items.h"
 
 void UpdateStatusEquipItemSelect(void)
 {

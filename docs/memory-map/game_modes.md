@@ -187,8 +187,8 @@ PROVEN from US decompiles, ROM tables and dialog text.
   `g_dwStatusEquipCharacter` and shows the result (text 0x400/0x401/0x403);
   A or B returns to 0x11.
 
-Types are in `include/menu/items_menu.h`; the handlers are matched in
-`src/gamemode/modes/items/` for both versions. JP handlers sit +0x54 from
+Types are in `include/pscreen_items.h`; the handlers are matched in
+`src/pscreen_items/` for both versions. JP handlers sit +0x54 from
 US (0x11 `0x080395D0`-`0x080397A4`, 0x10 `0x080398A8`-`0x080399C8`, 0x12
 `0x080399C8`-`0x08039A68`), taken from JP's dispatch table; the RAM
 globals sit +0x60 from US.
