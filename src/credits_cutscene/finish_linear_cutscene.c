@@ -4,7 +4,7 @@
 #include "game_state.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
-#include "cutscene.h"
+#include "credits_cutscene.h"
 
 // Pushes the mode after a cutscene: the intro enters room 0x2A, the ending runs
 // hippogriff, credits, replay, then the save screen with New Game+ armed. Other

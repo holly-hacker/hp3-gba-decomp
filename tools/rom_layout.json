@@ -37,7 +37,7 @@
     {"us": "0x0801BD0C", "jp": "0x0801BD08", "name": "Combo"},
     {"us": "0x0801BEF8", "jp": "0x0801BEF4", "name": "Commands"},
     {"us": "0x0801D464", "jp": "0x0801D460", "name": "CRC"},
-    {"us": "0x0801D518", "jp": "0x0801D514", "name": "Credits"},
+    {"us": "0x0801D518", "jp": "0x0801D514", "name": "Credits cutscene"},
     {"us": "0x0801D940", "jp": "0x0801D93C", "name": "Cursor"},
     {"us": "0x0801DD40", "jp": "0x0801DD3C", "name": "Decompress"},
     {"us": "0x0801DF6C", "jp": "0x0801DF68", "name": "Default menu"},

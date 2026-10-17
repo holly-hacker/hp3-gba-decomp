@@ -777,13 +777,13 @@ c-file 0x0801D464 _ src/crc/compute_crc8.c ComputeCrc8
 c-file 0x0801D4A8 _ src/crc/compute_joybus_checksum.c ComputeJoybusChecksum
 
 # Credits/cutscenes
-c-file 0x0801D518 _ src/cutscene/initialize_credits.c InitializeCredits
-c-file 0x0801D5C8 _ src/cutscene/update_credits.c UpdateCredits
-c-file 0x0801D6DC _ src/cutscene/finish_linear_cutscene.c FinishLinearCutscene
-c-file 0x0801D77C _ src/cutscene/set_up_linear_cutscene.c SetUpLinearCutscene
-c-file 0x0801D858 _ src/cutscene/exit_linear_cutscene.c ExitLinearCutscene
-c-file 0x0801D888 _ src/cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
-c-file 0x0801D8C0 _ src/cutscene/update_linear_cutscene.c UpdateLinearCutscene
+c-file 0x0801D518 _ src/credits_cutscene/initialize_credits.c InitializeCredits
+c-file 0x0801D5C8 _ src/credits_cutscene/update_credits.c UpdateCredits
+c-file 0x0801D6DC _ src/credits_cutscene/finish_linear_cutscene.c FinishLinearCutscene
+c-file 0x0801D77C _ src/credits_cutscene/set_up_linear_cutscene.c SetUpLinearCutscene
+c-file 0x0801D858 _ src/credits_cutscene/exit_linear_cutscene.c ExitLinearCutscene
+c-file 0x0801D888 _ src/credits_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
+c-file 0x0801D8C0 _ src/credits_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 
 # Cursor (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
 c-file 0x0801D940 _ src/cursor/spawn_menu_cursor_actor.c SpawnMenuCursorActor
@@ -2495,7 +2495,7 @@ c-file 0x0805BA7C _ src/combat_effect_scripts/sp_gauge_gfx.c g_aSpGaugeGfx
 c-file 0x0805BA8C _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BC00 _ src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805BC04 _ src/dialog/dialog_blocks.c g_adwDialogBlockTextIds
-c-file 0x0805E020 _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
+c-file 0x0805E020 _ src/credits_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805E0A0 _ src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E104 _ src/default_menu/default_menu.globals.c g_dwCommonBg0Control
 c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite

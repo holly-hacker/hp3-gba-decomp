@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "cutscene.h"
+#include "credits_cutscene.h"
 #include "cursor.h"
 #include "screen_transitions.h"
 

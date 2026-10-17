@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "cutscene.h"
+#include "credits_cutscene.h"
 #include "screen_transitions.h"
 
 void ExitLinearCutscene(void)
