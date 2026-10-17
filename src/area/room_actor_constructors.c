@@ -3,6 +3,7 @@
 #include "chest_actor.h"
 #include "overworld/room_actor.h"
 #include "flipbook.h"
+#include "invisible_actors.h"
 
 // Room tile actorType -> constructor table; see docs/formats/rooms.md.
 // Type 0 is unused.

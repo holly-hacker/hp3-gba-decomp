@@ -1,6 +1,7 @@
 #include "types.h"
 #include "area.h"
 #include "overworld/room_actor.h"
+#include "invisible_actors.h"
 
 // Room actor constructor for tile actorType 4, a trigger zone sized by half
 // extents. See docs/formats/rooms.md.

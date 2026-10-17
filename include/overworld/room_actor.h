@@ -52,10 +52,8 @@ typedef struct RoomActorRecordUnkC {
 
 extern Actor *SpawnDoorActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnSwitchActor(u8 bColumn, u8 bRow);
-extern Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPropActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnNpcActor(u8 bColumn, u8 bRow);
-extern Actor *SpawnTriggerRectActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow);
@@ -162,9 +160,6 @@ typedef struct RoomActorBoxState {
 extern void sub_0800CBF0(Actor *pSelf, Actor *pOther);
 extern void sub_0802BC74(Actor *pActor);
 extern void sub_0802BBAC(Actor *pSelf, Actor *pOther);
-extern void sub_080265B8(Actor *pSelf, Actor *pOther);
-extern void sub_08026674(Actor *pSelf, Actor *pOther);
-extern void sub_080264F0(Actor *pActor);
 
 typedef struct RoomActorRecordUnk1 {
     u32 dwActorType;

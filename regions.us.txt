@@ -1115,8 +1115,8 @@ c-file 0x0802631C _ src/interrupts/handle_timer3_interrupt.c HandleTimer3Interru
 c-file 0x08026344 _ src/interrupts/intr_dummy.c IntrDummy
 
 # Invisible actors? (trigger actors)
-c-file 0x08026348 _ src/room/actors/spawn_trigger_rect_actor.c SpawnTriggerRectActor
-c-file 0x08026414 0x080264F0 src/room/actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
+c-file 0x08026348 _ src/invisible_actors/spawn_trigger_rect_actor.c SpawnTriggerRectActor
+c-file 0x08026414 0x080264F0 src/invisible_actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
 thumb-func 0x080264F0 sub_080264F0
 thumb-func 0x080265B8 sub_080265B8
 thumb-func 0x08026674 sub_08026674
