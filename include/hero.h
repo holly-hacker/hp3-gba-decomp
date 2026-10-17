@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
+#include "camera.h"
 
 // Party member sprites and animations, set by SetPartyMemberAnim. The record arrays are
 // indexed by character id, the animation tables by Actor.bFacing.
@@ -41,3 +42,5 @@ extern const u8 g_aPartyCastAnims[8][18];
 extern const u8 g_aPartyAnim4Anims[8][4];
 extern const u8 g_abPartyAnim3Anim[22];
 extern const ActorGfxRecord g_UnusedPartyGfx2;
+
+extern const CameraFocusOffset g_PlayerCameraFocusOffset;

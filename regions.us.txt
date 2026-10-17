@@ -2502,13 +2502,13 @@ c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_Dementor
 c-file 0x0805E280 _ src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E28C _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
 c-file 0x0805EB10 _ src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
-c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
+c-file 0x0805EB34 0x0805EB94 src/event_actors/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EB9C _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/font/load_font_descriptor.globals.c g_aFontTable
 c-file 0x0806053C 0x08060554 src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
 c-rodata 0x08060620 0x08060625 InitJoybusSession
 c-file 0x080606A8 0x080606B8 src/hedwig_minigame/owl_care_kit.globals.c g_dwOwlCareBg3Control
-c-file 0x08060884 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
+c-file 0x08060884 _ src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
 c-file 0x0806088C 0x0806089C src/hero/party_focus_gfx.c g_PartyFocusGfx_candidate
 c-file 0x080608EC 0x08060B2C src/hero/party_assets.c g_aPartyWalkAssets
 c-file 0x08060BF4 _ src/hero/party_anims.c g_abPartyStandFrames

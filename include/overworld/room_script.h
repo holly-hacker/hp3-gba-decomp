@@ -36,9 +36,6 @@ typedef struct RoomScriptCallFrame {
 
 typedef void (*RoomScriptOpcodeHandler)(RoomScriptRecord *pRecord);
 
-// Total record length in bytes, opcode word included, per opcode.
-extern const u8 g_abRoomScriptOpcodeLengths[93];  // ROM 0x0805EB34
-
 // 0 = idle, 1 = resuming a yielded chain, 2 = yielded (the walk stops after
 // the current record), 3 = walking while a yielded chain is pending, 4 = disabled.
 extern u32 g_dwRoomScriptRunState;

@@ -49,7 +49,6 @@ typedef struct RoomTableEntry {
     u8 bUnused_7b;
 } RoomTableEntry;
 
-extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
 // plate comment describes elsewhere -- real source likely declares it int.
 extern u32 g_bCurrentRoomId;                // 0x03003B50

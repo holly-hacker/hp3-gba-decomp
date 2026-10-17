@@ -66,7 +66,7 @@ operand_bytes : u8[N]   -- N = g_abRoomScriptOpcodeLengths[opcode] - 4
 ```
 
 **`g_abRoomScriptOpcodeLengths`** (US `0x0805EB34`, `byte[93]`, padded
-to a `u32`-aligned 96 bytes; C in `src/room/room_script_opcode_lengths.c`,
+to a `u32`-aligned 96 bytes; C in `src/event_actors/room_script_opcode_lengths.c`,
 opcode enum and `RS_*` record macros in `include/overworld/room_script_bytecode.h`): gives each opcode's *total* record length
 (opcode word included), always a multiple of 4. Index `0`'s entry (`4`)
 is never actually consulted for advancing past a real instruction,
@@ -252,7 +252,7 @@ source, `asm/room/blobs/<room_name>.s`, with room names from the string table:
   opcode, taking named operands). `V` is the variant entry (0 = default) and
   `N` the chain's index in that table. Decoded dialog lines are `@` comments
   above `ShowRoomDialog`.
-- `g_abRoomScriptOpcodeLengths` is in `src/room/room_script_opcode_lengths.c`.
+- `g_abRoomScriptOpcodeLengths` is in `src/event_actors/room_script_opcode_lengths.c`.
 
 Scripts are byte-identical between US and JP except five chains: room 7
 variant 2, room 15 variant 1, room 22 variant 1, room 23 variant 1 and room 47

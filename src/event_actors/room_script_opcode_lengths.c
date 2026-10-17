@@ -1,5 +1,5 @@
 #include "types.h"
-#include "overworld/room_script.h"
+#include "event_actors.h"
 #include "overworld/room_script_bytecode.h"
 
 // Total record length in bytes (opcode word included) for each room-script opcode.
