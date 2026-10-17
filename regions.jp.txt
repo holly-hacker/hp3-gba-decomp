@@ -1572,11 +1572,11 @@ thumb-func 0x0803ADD8 DrawCardTradeSlotName
 thumb-func 0x0803AE38 ShowCardTradeMessage
 thumb-func 0x0803AE90 sub_0803AE28
 thumb-func 0x0803AEE0 LeaveCardTradeScreen
-c-file 0x0803AF08 _ src/gamemode/modes/folio_universitas_card_details/initialize_folio_card_detail_screen.c InitializeFolioCardDetailScreen
-c-file 0x0803B008 _ src/gamemode/modes/folio_universitas_card_details/handle_folio_card_detail_screen_tick.c HandleFolioCardDetailScreenTick
-c-file 0x0803B034 _ src/gamemode/modes/folio_universitas_card_details/exit_folio_card_detail_screen.c ExitFolioCardDetailScreen
-c-file 0x0803B04C _ src/menu/spawn_folio_card_actor.c SpawnFolioCardActor
-c-file 0x0803B0A4 _ src/menu/draw_folio_card_detail_text.c DrawFolioCardDetailText
+c-file 0x0803AF08 _ src/pscreen_wizard_cards/initialize_folio_card_detail_screen.c InitializeFolioCardDetailScreen
+c-file 0x0803B008 _ src/pscreen_wizard_cards/handle_folio_card_detail_screen_tick.c HandleFolioCardDetailScreenTick
+c-file 0x0803B034 _ src/pscreen_wizard_cards/exit_folio_card_detail_screen.c ExitFolioCardDetailScreen
+c-file 0x0803B04C _ src/pscreen_wizard_cards/spawn_folio_card_actor.c SpawnFolioCardActor
+c-file 0x0803B0A4 _ src/pscreen_wizard_cards/draw_folio_card_detail_text.c DrawFolioCardDetailText
 c-file 0x0803B128 _ src/mem_clear/clear_system_memory.c ClearSystemMemory
 c-file 0x0803B138 _ src/mem_clear/clear_work_ram.c ClearWorkRam
 c-file 0x0803B1AC _ src/mem_clear/clear_video_memory.c ClearVideoMemory
@@ -2297,8 +2297,8 @@ c-file 0x0806B1C4 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aC
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B288 _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B2E8 0x0806B338 src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
-c-file 0x0806B358 _ src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
-c-file 0x0806B364 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
+c-file 0x0806B358 _ src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
+c-file 0x0806B364 _ src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAssets
 c-file 0x0806B760 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B798 _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions

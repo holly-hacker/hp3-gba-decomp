@@ -2,6 +2,7 @@
 #include "font.h"
 #include "text.h"
 #include "modes.h"
+#include "pscreen_wizard_cards.h"
 
 #ifdef VERSION_JP
 #define CARD_NAME_Y 4

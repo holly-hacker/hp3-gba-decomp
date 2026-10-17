@@ -27,3 +27,8 @@ extern const u32 g_dwFolioCardDetailBg1Control;  // 0x0806B3D4
 
 // Spawns the sprite showing a card at the given screen position and loads its palette.
 extern Actor *SpawnFolioCardActor(u32 cardIndex, s32 x, s32 y);
+
+extern void InitializeFolioCardDetailScreen(void);
+extern void HandleFolioCardDetailScreenTick(void);
+extern void ExitFolioCardDetailScreen(void);
+extern void DrawFolioCardDetailText(void);

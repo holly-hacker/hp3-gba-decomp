@@ -333,7 +333,7 @@ screen transition instead of the fade. Exit saves `dwModeScratchB` (the cursor r
 ## FolioUniversitas (0x26), FolioUniversitasCardDetails (0x28), CardComboDescription (0x46), FolioBruti (0x2D)
 
 PROVEN from the matched code in `src/pscreen_folio_universitas/`,
-`src/pscreen_folio_bruti/`, `src/gamemode/modes/folio_universitas_card_details/`
+`src/pscreen_folio_bruti/`, `src/pscreen_wizard_cards/`
 and `src/combo_info/`, with declarations in `include/pscreen_folio_universitas.h`,
 `include/pscreen_folio_bruti.h` and `include/pscreen_wizard_cards.h`.
 

@@ -2,6 +2,7 @@
 #include "graphics/audio.h"
 #include "modes.h"
 #include "input.h"
+#include "pscreen_wizard_cards.h"
 
 void HandleFolioCardDetailScreenTick(void)
 {

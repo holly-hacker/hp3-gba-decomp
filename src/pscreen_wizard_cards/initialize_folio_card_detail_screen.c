@@ -9,8 +9,6 @@
 #include "gen/graphics/menus.h"
 #include "pscreen_wizard_cards.h"
 
-extern void DrawFolioCardDetailText(void);
-
 void InitializeFolioCardDetailScreen(void)
 {
     ResetDisplayState(0);
