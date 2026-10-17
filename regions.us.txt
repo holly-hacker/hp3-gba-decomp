@@ -1593,7 +1593,7 @@ thumb-func 0x080354C0 sub_080354C0
 thumb-func 0x08035520 sub_08035520
 
 # PressurePad? (push-reset button actor)
-c-file 0x08035540 0x08035664 src/room/actors/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
+c-file 0x08035540 0x08035664 src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
 thumb-func 0x08035664 sub_08035664
 thumb-func 0x08035724 sub_08035724
 
@@ -2550,7 +2550,7 @@ c-file 0x08068D04 0x08068D3C src/pop_it_minigame/wizard_cracker_pop_it.globals.c
 c-file 0x08069184 0x08069194 src/pouring_minigame/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
 c-file 0x08069328 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file 0x080693CC 0x080693E4 src/room/actors/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
+c-file 0x080693CC 0x080693E4 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
 c-file 0x0806945C _ src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C _ src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
 c-file 0x08069568 _ src/gamemode/modes/folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control

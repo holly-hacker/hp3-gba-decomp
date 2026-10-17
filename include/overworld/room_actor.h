@@ -12,15 +12,6 @@ typedef Actor *(*RoomActorConstructor)(u8 bColumn, u8 bRow);
 
 // Static tile record returned by GetRoomActorStaticRecord. The layout after nPixelY is
 // specific to each actorType; every constructor reads it through its own struct.
-typedef struct RoomActorRecordUnk8 {
-    u16 wActorType;
-    u16 wUnk2;
-    s16 nPixelX;
-    s16 nPixelY;
-    u8 bVariant;  // 0x08
-    u8 abPairs[16];  // 0x09, eight {A, B} pairs, copied to Actor 0x60 (A) and 0x68 (B)
-} RoomActorRecordUnk8;
-
 typedef struct RoomActorRecordUnkB {
     u16 wActorType;
     u16 wUnk2;
@@ -52,7 +43,6 @@ typedef struct RoomActorRecordUnkC {
 
 extern Actor *SpawnSwitchActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPropActor(u8 bColumn, u8 bRow);
-extern Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow);
@@ -63,20 +53,6 @@ extern const ActorGfxRecord g_aRoomFlamePillarSprites[3];             // ROM 0x0
 extern const ActorGfxRecord *const g_apRoomFlamePillarAnimFrames[3];  // ROM 0x0806C144 (US)
 extern const void *const g_apRoomFlamePillarEffectData[3];             // ROM 0x0806C150 (US)
 extern const u8 g_abRoomFlamePillarAnimData[22];                       // ROM 0x0806C15C (US)
-
-extern void sub_08035664(Actor *pActor);
-extern void sub_08035724(Actor *pSelf, Actor *pOther);
-extern const ActorGfxRecord g_RoomActorUnk8Sprite;                    // ROM 0x080693CC (US)
-extern const ActorGfxRecord *const g_apRoomActorUnk8AssetRecords[2];  // ROM 0x080693D4 (US)
-extern const void *const g_apRoomActorUnk8EffectData[2];               // ROM 0x080693DC (US)
-
-// Actor bytes 0x60-0x6F as written by the type 8 constructor.
-typedef struct RoomActorUnk8State {
-    u8 abA[8];
-    u8 abB[8];
-} RoomActorUnk8State;
-
-#define ROOM_ACTOR_UNK8_STATE(pActor) ((RoomActorUnk8State *)&(pActor)->scriptState)
 
 // Actor bytes 0x60-0x6D as word-sized state, written by the type 10 and 12 constructors.
 typedef struct RoomActorWordState {

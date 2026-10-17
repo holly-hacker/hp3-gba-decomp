@@ -1,6 +1,6 @@
 #include "types.h"
-#include "overworld/room_actor.h"
 #include "gen/graphics/overworld.h"
+#include "pressure_pad_actor.h"
 
 const ActorGfxRecord g_RoomActorUnk8Sprite = {
     (void *)gButtonTiles, (void *)gButtonFrames,
