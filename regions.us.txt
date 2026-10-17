@@ -2112,11 +2112,11 @@ thumb-func 0x08042EE0 sub_08042EE0
 thumb-func 0x08042EF8 sub_08042EF8
 
 # Time turner cutscene
-c-file 0x08042F08 _ src/time_turner_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
-c-file 0x08042FC0 0x08043114 src/time_turner_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
+c-file 0x08042F08 _ src/timeturner_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
+c-file 0x08042FC0 0x08043114 src/timeturner_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
 thumb-func 0x08043114 sub_08043114
 thumb-func 0x08043308 sub_08043308
-c-file 0x08043450 _ src/time_turner_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
+c-file 0x08043450 _ src/timeturner_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
 
 # Title (main menu)
 c-file 0x08043470 _ src/title/initialize_main_menu.c InitializeMainMenu
@@ -2581,8 +2581,8 @@ c-file 0x0806BB70 _ src/tea_leaves_minigame/divination_tea_bg_animation.c g_Divi
 dialog-text-table 0x0806BD78 _ sDialogTextTable
 c-file 0x0806BD98 _ src/time_skip_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
 c-file 0x0806BDA4 0x0806BE30 src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
-c-file 0x0806BE38 0x0806BF30 src/time_turner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
-c-file 0x0806BF40 0x0806BF60 src/time_turner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
+c-file 0x0806BE38 0x0806BF30 src/timeturner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
+c-file 0x0806BF40 0x0806BF60 src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
 c-file 0x0806BFD0 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BFDC _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BFF4 0x0806C014 src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic

@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "particles.h"
-#include "time_turner_cutscene.h"
+#include "timeturner_cutscene.h"
 #include "hw/io_regs.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

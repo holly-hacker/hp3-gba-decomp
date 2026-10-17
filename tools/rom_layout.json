@@ -119,7 +119,7 @@
     {"us": "0x080426A4", "jp": "0x080426E4", "name": "Text Actor"},
     {"us": "0x08042AC8", "jp": "0x08042B08", "name": "Time Skip Cutscene"},
     {"us": "0x08042DC8", "jp": "0x08042E08", "name": "Timers"},
-    {"us": "0x08042F08", "jp": "0x08042F48", "name": "TimeTurner cutscene"},
+    {"us": "0x08042F08", "jp": "0x08042F48", "name": "Timeturner cutscene"},
     {"us": "0x08043470", "jp": "0x080434B0", "name": "Title"},
     {"us": "0x08043AF0", "jp": "0x08043B10", "name": "Title Load"},
     {"us": "0x08043EEC", "jp": "0x08043F0C", "name": "Title New"},

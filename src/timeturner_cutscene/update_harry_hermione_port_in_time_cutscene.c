@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "time_turner_cutscene.h"
+#include "timeturner_cutscene.h"
 #include "input.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

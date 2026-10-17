@@ -92,7 +92,7 @@ assembled BG layers and a merged view to `extracted/graphics/rooms/`, straight
 from the baserom. It is a viewing aid, not build input.
 
 The Time-Turner cutscene's two-entry table (`g_aTimeTurnerCutsceneRoomTable`,
-`src/time_turner_cutscene/time_turner_room_table.c`) uses the same entry layout and no data of
+`src/timeturner_cutscene/time_turner_room_table.c`) uses the same entry layout and no data of
 its own: entry 0 refers to the resources of room 33 and entry 1 to those of room
 14, with its own music and encounter values. The small coordinate table that
 follows it is still raw.
