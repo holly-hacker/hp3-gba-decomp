@@ -56,13 +56,6 @@ typedef enum {
 #define DIALOG_TEXT_FIRST_TILE 0x248
 #define DIALOG_BOX_FIRST_TILE 0x210
 
-// Room script dialog blocks: each shows its lines' text ids in turn. A block with
-// no lines still shows pTextIds[0].
-typedef struct DialogBlock {
-    const u32 *pTextIds;
-    u8 bLineCount;
-} DialogBlock;
-
 // Per dialog text id: the speaker's g_aDialogPortraits index, and a number to
 // fill macro @1 with (its absolute value) before the text is drawn.
 typedef struct DialogTextInfo {
@@ -70,8 +63,6 @@ typedef struct DialogTextInfo {
     const s16 *pMacroNumber;
 } DialogTextInfo;
 
-extern const u32 g_adwDialogBlockTextIds[979];              // US 0x0805BC04
-extern const DialogBlock g_aDialogBlocks[666];               // US 0x0805CB50
 extern const u8 g_abPartySlotDialogPortraits[4];             // US 0x0805E29C
 extern const ActorAssetRecord g_aDialogPortraits[135];       // US 0x0805E2A0
 extern const DialogTextInfo g_aDialogTextInfo[2767];         // US 0x08FAAF10

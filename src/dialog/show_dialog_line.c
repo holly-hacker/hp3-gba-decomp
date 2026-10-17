@@ -1,6 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "font.h"
+#include "conversation.h"
 #include "dialog.h"
 #include "dialog_box.h"
 #include "dialog_inline.h"

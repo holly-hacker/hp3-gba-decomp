@@ -2494,7 +2494,7 @@ c-file 0x0805BA7C _ src/combat_effect_scripts/sp_gauge_gfx.c g_aSpGaugeGfx
 
 c-file 0x0805BA8C _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BC00 _ src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
-c-file 0x0805BC04 _ src/dialog/dialog_blocks.c g_adwDialogBlockTextIds
+c-file 0x0805BC04 _ src/conversation/dialog_blocks.c g_adwDialogBlockTextIds
 c-file 0x0805E020 _ src/credits_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file 0x0805E0A0 _ src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E104 _ src/default_menu/default_menu.globals.c g_dwCommonBg0Control

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "dialog.h"
+#include "conversation.h"
 
 // Text ids of the dialog blocks' lines; g_aDialogBlocks points into this table.
 const u32 g_adwDialogBlockTextIds[979] = {
