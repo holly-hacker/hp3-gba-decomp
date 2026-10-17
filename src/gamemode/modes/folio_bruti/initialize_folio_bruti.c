@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "color.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "gen/graphics/overworld.h"
 #include "graphics/display.h"

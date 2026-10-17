@@ -1,6 +1,6 @@
 #include "types.h"
 #include "choose_party_member.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "graphics/audio.h"
 #include "input.h"
 #include "menu/main_menu.h"

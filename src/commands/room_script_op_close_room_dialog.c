@@ -1,6 +1,6 @@
 #include "types.h"
 #include "commands.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "overworld/room_script.h"
 
 typedef struct CloseRoomDialogRecord {

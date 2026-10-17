@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "serial/serial.h"
 
 void TickSerialCommIfActive_candidate(void)

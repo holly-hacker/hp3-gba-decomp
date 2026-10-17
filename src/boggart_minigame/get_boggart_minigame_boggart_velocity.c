@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "boggart_minigame.h"
 
 // Speed in pixels per tick is base + round * step, by difficulty.

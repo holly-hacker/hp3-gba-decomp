@@ -8,7 +8,7 @@
 #include "graphics/display.h"
 #include "dialog.h"
 #include "graphics/graphics.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "input.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

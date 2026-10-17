@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/menu.h"
 
 // Pause menu Items screen, game modes 0x10-0x12; see

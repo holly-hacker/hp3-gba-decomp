@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "game/game_modes.h"
+#include "modes.h"
 
 // Collision type 1 frees the particle. A full OAM queue sets
 // g_bParticleSpawnBlocked.

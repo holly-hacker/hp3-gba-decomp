@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/folio_universitas.h"
 
 // Cards that cannot be picked from battle right now: the first combos until the battle's resume

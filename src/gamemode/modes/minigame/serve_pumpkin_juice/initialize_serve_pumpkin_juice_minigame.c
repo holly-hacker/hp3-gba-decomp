@@ -4,7 +4,7 @@
 #include "color.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "hw/io_regs.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"

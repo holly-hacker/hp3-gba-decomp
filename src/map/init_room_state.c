@@ -1,7 +1,7 @@
 #include "types.h"
 #include "color.h"
 #include "mem.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "hero.h"

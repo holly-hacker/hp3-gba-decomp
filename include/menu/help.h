@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "actor.h"
 
 // Help-screen engine shared by the Help and HelpTopicScreen game modes.

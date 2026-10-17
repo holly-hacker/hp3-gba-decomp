@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "dementor_minigame.h"
 
 // Points for a repelled Dementor: one level per four repelled, up to 20.

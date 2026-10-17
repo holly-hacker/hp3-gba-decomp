@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "graphics/graphics.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "gamecube.h"
 #include "menu/gamecube_link.h"
 #include "menu/in_game_menu.h"

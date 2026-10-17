@@ -7,7 +7,7 @@
 #include "combat_menu.h"
 #include "graphics/display.h"
 #include "graphics/graphics.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "items.h"
 
 // Certain bAttackOutcomeState (Actor+0x60) values. States 1-5 stay numeric:

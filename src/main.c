@@ -11,7 +11,7 @@
 #include "input.h"
 #include "font.h"
 #include "text.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "battle/battle.h"
 #include "mt19937.h"
 #include "game/save.h"

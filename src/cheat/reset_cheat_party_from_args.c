@@ -1,7 +1,7 @@
 #include "types.h"
 #include "cheat.h"
 #include "combat_2.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "game/save.h"
 #include "overworld/room.h"
 

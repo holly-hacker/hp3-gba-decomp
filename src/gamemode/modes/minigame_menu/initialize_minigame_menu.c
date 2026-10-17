@@ -2,7 +2,7 @@
 #include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/minigame_menu.h"
 #include "actor.h"
 #include "cursor.h"

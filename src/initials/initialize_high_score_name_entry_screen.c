@@ -6,7 +6,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "font.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/main_menu.h"
 #include "initials.h"
 #include "gen/graphics/minigames/wizard_cracker.h"

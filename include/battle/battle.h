@@ -5,7 +5,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "input.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "mode7.h"
 
 // See docs/memory-map/battle.md.
@@ -221,7 +221,7 @@ extern s32 g_anFaintedRosterIndices[4];
 extern Actor *g_apFighterActors_candidate[7];
 
 // The Folio Universitas card slot lives at +8 (dwCurrentGameModeArg2) in
-// g_PrevGameModeStackContext (see game_modes.h): PushGameMode_2(0x26, slot, 0) stages
+// g_PrevGameModeStackContext (see modes.h): PushGameMode_2(0x26, slot, 0) stages
 // the chosen card in the pending context's arg2, TickGameModeStack shifts
 // pending -> current -> previous on pop, and battle code reads it back out
 // of g_PrevGameModeStackContext once the Folio Universitas screen has returned.

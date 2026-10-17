@@ -2,7 +2,7 @@
 #include "dev_logos.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "font.h"
 #include "text.h"
 

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "battle/battle.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/main_menu.h"
 #include "overworld/room.h"
 #include "game/save.h"

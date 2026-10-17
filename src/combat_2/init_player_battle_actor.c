@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_2.h"
-#include "game/game_modes.h"
+#include "modes.h"
 
 // Party-side counterpart to InitMonsterBattleActor: allocates the fighter's
 // Actor, hardwires pActor->pfnTick = TickPlayerActionState, then populates

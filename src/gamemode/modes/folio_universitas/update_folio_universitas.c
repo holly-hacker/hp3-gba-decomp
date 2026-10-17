@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "math.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "game/save.h"
 #include "graphics/audio.h"
 #include "input.h"

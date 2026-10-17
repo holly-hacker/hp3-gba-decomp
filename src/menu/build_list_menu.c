@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/menu.h"
 #include "actor.h"
 #include "cursor.h"

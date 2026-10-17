@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 
 extern void ExitBattle();
 extern void ExitBoggartMinigame();
@@ -61,7 +61,6 @@ extern void ExitWizardCrackerPopItDifficultySelect();
 extern void ExitWizardCrackerPopItMinigame();
 extern void HandleConnectivityMenuTick();
 extern void HandleFolioCardDetailScreenTick();
-extern void HandleGameModeNoneNoOp();
 extern void HandleHighScoreDifficultyMenuTick();
 extern void HandleMinigameSelectMenuConfirm();
 extern void HandleOwlCareKitScreenExit();

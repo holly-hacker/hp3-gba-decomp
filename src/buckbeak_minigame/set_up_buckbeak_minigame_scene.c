@@ -6,7 +6,7 @@
 #include "graphics/display.h"
 #include "graphics/scanline_effects.h"
 #include "font.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "mt19937.h"
 #include "buckbeak_minigame.h"
 

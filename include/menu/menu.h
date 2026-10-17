@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "actor.h"
 
 // One row of a list menu, 12 bytes each.

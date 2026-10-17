@@ -1,6 +1,6 @@
 #include "types.h"
 #include "combo_info.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "gen/graphics/cutscenes.h"
 #include "graphics/display.h"
 #include "actor.h"

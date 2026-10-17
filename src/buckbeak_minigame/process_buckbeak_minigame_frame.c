@@ -1,7 +1,7 @@
 #include "types.h"
 #include "math.h"
 #include "input.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "graphics/audio.h"
 #include "buckbeak_minigame.h"
 

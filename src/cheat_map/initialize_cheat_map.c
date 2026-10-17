@@ -3,7 +3,7 @@
 #include "hw/bios.h"
 #include "cheat_map.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "graphics/graphics.h"
 #include "hw/io_regs.h"
 #include "actor.h"

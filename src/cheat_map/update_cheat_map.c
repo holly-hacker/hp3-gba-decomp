@@ -2,7 +2,7 @@
 #include "background.h"
 #include "cheat_map.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "input.h"
 #include "menu/minigame_menu.h"
 #include "mt19937.h"

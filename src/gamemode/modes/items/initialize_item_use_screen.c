@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/items_menu.h"
 #include "menu/status_equip.h"
 #include "items.h"

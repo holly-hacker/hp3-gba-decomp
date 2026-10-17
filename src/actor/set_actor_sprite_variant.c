@@ -1,7 +1,7 @@
 #include "types.h"
 #include "color.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "actor.h"
 
 void SetActorSpriteVariant(Actor *actor, s8 tableIndex, s8 variantIndex)

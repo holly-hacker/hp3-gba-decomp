@@ -6,7 +6,7 @@
 #include "cutscene/hogwarts_up_night_cutscene.h"
 #include "actor.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "hw/io_regs.h"
 #include "gen/graphics/overworld.h"
 

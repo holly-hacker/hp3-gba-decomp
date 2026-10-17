@@ -4,7 +4,7 @@
 #include "hw/bios.h"
 #include "cheat_sound_test.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "hw/io_regs.h"
 #include "actor.h"
 #include "overworld/room.h"

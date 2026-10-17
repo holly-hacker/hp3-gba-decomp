@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "cutscene/harry_hermione_port_in_time_cutscene.h"
 #include "input.h"
 #include "overworld/overworld.h"

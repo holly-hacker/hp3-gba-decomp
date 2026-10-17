@@ -1,7 +1,7 @@
 #include "types.h"
 #include "color.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "actor.h"
 
 // Applies an ActorAssetRecord: its frame delay, its tiles and frames, and its

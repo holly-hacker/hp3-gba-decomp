@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 
 // Minigame difficulty select, game mode 0x1E (MinigameDifficultySelect). Rows 0-2 pick
 // Easy/Medium/Hard for the minigame in g_dwSelectedMinigame; row 3, "Erase High Scores",

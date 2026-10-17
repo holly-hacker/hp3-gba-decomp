@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "graphics/audio.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "font.h"
 #include "text.h"
 #include "dementor_minigame.h"

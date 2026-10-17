@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "combat_menu.h"
 #include "combat_2.h"
-#include "game/game_modes.h"
+#include "modes.h"
 
 // Re-enters the battle after returning from a submode (or starting a fresh
 // battle): applies a Folio Universitas card choice, sets up the first round,

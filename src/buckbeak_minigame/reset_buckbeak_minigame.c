@@ -1,6 +1,6 @@
 #include "types.h"
 #include "math.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "buckbeak_minigame.h"
 
 const s32 g_aBuckbeakMinigameStartTimes[3] = { 0xB00, 0xA00, 0x900 };

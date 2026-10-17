@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "menu/minigame_menu.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "dementor_minigame.h"
 #include "input.h"
 

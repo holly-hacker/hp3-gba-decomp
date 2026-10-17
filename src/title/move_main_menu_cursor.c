@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/audio.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "input.h"
 #include "title_inline.h"
 

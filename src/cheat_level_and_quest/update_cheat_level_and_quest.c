@@ -1,6 +1,6 @@
 #include "types.h"
 #include "cheat_level_and_quest.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "input.h"
 #include "menu/minigame_menu.h"
 

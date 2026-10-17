@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "graphics/display.h"
 #include "shop.h"
 #include "shop_inline.h"

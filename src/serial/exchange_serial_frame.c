@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "serial/serial.h"
 
 // Queues this frame's message and runs one exchange round. Returns 1 and drops the session if the

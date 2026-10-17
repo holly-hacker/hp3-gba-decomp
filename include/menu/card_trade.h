@@ -28,8 +28,6 @@ typedef struct {
 } CardTradeSlotPosition;
 
 extern CardTradeState g_CardTradeState;  // 0x03005568
-extern Actor *g_apMenuIconActors[];    // 0x03003F68: list menu row icons (SpawnMenuIconActor) and actors
-                                         // registered by slot (RegisterMenuIconActor)
 
 extern const ListMenuEntry g_aCardTradeEntries[3];                    // 0x0806B35C
 extern const ListMenuDefinition g_CardTradeMenuDefinition;            // 0x0806B380

@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "color.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "mem.h"
 #include "actor.h"
 #include "gamecube.h"

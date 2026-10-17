@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "mem.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "vram.h"
 
 // ActorDrawFlagShareTiles: one allocation per pool aux record, reloaded at

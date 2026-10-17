@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "dementor_minigame.h"
 
 // Speed in pixels per tick is base + level * step, by difficulty, where level

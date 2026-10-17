@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "font.h"
 #include "text.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "input.h"
 #include "mem.h"
 #include "actor.h"

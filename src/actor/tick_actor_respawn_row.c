@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "area.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "overworld/room_script.h"
 
 // Action state 0x14: while g_dwGameModeFlags bit 0x10 is set, runs bRespawnRow and

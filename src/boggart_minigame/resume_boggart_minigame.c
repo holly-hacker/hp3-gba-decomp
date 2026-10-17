@@ -4,7 +4,7 @@
 #include "graphics/graphics.h"
 #include "menu/main_menu.h"
 #include "font.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "boggart_minigame.h"
 #include "cursor.h"
 

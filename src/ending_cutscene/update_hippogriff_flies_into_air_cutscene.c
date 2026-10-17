@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "ending_cutscene.h"
 
 // dwStateTimer counts down from 0x12C; at 0xC8 the hippogriff starts shrinking, at 0 the

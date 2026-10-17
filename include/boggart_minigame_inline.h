@@ -5,7 +5,7 @@
 #include "graphics/display.h"
 #include "font.h"
 #include "text.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "boggart_minigame.h"
 
 // The ROM inlines the HUD and message drawing below into the round handlers and

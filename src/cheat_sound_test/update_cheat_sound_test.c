@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "cheat_sound_test.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "input.h"
 #include "menu/minigame_menu.h"
 

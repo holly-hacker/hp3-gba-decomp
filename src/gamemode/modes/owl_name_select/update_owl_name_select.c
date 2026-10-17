@@ -1,6 +1,6 @@
 #include "types.h"
 #include "background.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "game/game_save.h"
 #include "graphics/display.h"
 #include "input.h"

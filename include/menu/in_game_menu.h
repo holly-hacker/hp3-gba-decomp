@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/menu.h"
 
 extern const ListMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38

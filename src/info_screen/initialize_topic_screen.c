@@ -1,7 +1,7 @@
 #include "types.h"
 #include "info_screen.h"
 #include "battle/battle.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/help.h"
 
 // Argument 2 of the pushed mode selects the topic: the minigame whose instructions to show,

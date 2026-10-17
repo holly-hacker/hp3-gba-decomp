@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "game/save.h"
 #include "mem.h"
 #include "menu/connectivity.h"

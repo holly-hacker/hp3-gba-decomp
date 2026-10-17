@@ -2,7 +2,7 @@
 #include "input.h"
 #include "serial/serial.h"
 #include "hw/io_regs.h"
-#include "game/game_modes.h"
+#include "modes.h"
 
 void UpdateKeyInput(void)
 {

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "math.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "menu/folio_universitas.h"
 
 // Dims the combo slots, then lights the one the cursor is on.

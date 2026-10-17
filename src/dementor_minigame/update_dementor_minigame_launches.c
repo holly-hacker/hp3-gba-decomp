@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "dementor_minigame.h"
 
 // Launches the next Dementor once fewer than dwPhase + 1 are flying.

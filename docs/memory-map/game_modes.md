@@ -47,7 +47,7 @@ Values for the debug-menu modes (`GameMode` enum, US ROM):
 | `CheatParty` | `0x2A` |
 
 Full enum (71 values, `Startup`=1 through `ConfirmTradeScreen`=0x47) is in
-`include/game/game_modes.h`, mirroring Ghidra's `GameMode` data type -- not
+`include/modes.h`, mirroring Ghidra's `GameMode` data type -- not
 reproduced in full here since it covers every screen/cutscene in the
 game, not just debug menus.
 

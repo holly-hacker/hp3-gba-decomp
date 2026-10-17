@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "mem.h"
 #include "actor.h"
 #include "menu/card_trade.h"

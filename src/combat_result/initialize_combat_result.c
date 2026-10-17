@@ -6,7 +6,7 @@
 #include "hw/io_regs.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "game/game_modes.h"
+#include "modes.h"
 #include "game/rewards.h"
 #include "battle/battle.h"
 #include "overworld/overworld.h"
