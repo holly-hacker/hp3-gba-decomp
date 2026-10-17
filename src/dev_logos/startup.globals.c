@@ -1,4 +1,5 @@
 #include "types.h"
+#include "dev_logos.h"
 #include "graphics/display.h"
 
 const u32 g_dwStartupBg3Control = 0x3F03;

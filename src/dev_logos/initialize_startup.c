@@ -1,4 +1,5 @@
 #include "types.h"
+#include "dev_logos.h"
 #include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"

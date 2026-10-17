@@ -113,10 +113,6 @@ extern const BgTileAnimation128 g_aSpecialSceneBg2;  // 0x08063074
 extern const BgTileAnimation128 g_aSpecialSceneBg0;  // 0x0806347C
 extern const BgTileAnimation128 g_aSpecialSceneBg1;  // 0x08063884
 
-extern const u32 g_dwStartupBg3Control;
-extern const u32 g_dwStartupBg2Control;
-extern const u32 g_dwStartupBg1Control;
-
 // The write-only half of SetBgControl: writes BGxCNT and the tilemap/charblock
 // VRAM bases, without enabling the layer via SetDispcntFlag.
 extern void SetBgControlRegister(u32 bg, u32 control);

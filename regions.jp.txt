@@ -753,9 +753,9 @@ c-file 0x0801F160 _ src/dementor_minigame/show_dementor_minigame_damage.c ShowDe
 c-file 0x0801F190 _ src/dementor_minigame/add_dementor_minigame_score.c AddDementorMinigameScore
 c-file 0x0801F1F8 _ src/dementor_minigame/get_dementor_minigame_round_points.c GetDementorMinigameRoundPoints
 c-file 0x0801F228 _ src/dementor_minigame/launch_dementor_minigame_dementor.c LaunchDementorMinigameDementor
-c-file 0x0801F260 _ src/gamemode/modes/startup/initialize_startup.c InitializeStartup
-c-file 0x0801F368 _ src/gamemode/modes/startup/update_startup.c UpdateStartup
-c-file 0x0801F50C _ src/gamemode/modes/startup/exit_startup.c ExitStartup
+c-file 0x0801F260 _ src/dev_logos/initialize_startup.c InitializeStartup
+c-file 0x0801F368 _ src/dev_logos/update_startup.c UpdateStartup
+c-file 0x0801F50C _ src/dev_logos/exit_startup.c ExitStartup
 c-file 0x0801F51C _ src/dialog/initialize_dialog.c InitializeDialog
 c-file 0x0801F63C _ src/dialog/update_dialog_box.c UpdateDialogBox
 c-file 0x0801F794 _ src/dialog/alloc_dialog_portrait_actor.c AllocDialogPortraitActor
@@ -2232,7 +2232,7 @@ c-file 0x0805DF4C _ src/cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0
 c-file 0x0805DFCC _ src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file 0x0805E030 _ src/default_menu/default_menu.globals.c g_dwCommonBg0Control
 c-file 0x0805E03C _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
-c-file 0x0805E1AC _ src/gamemode/modes/startup/startup.globals.c g_dwStartupBg3Control
+c-file 0x0805E1AC _ src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E1B8 _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
 c-file 0x0805EA3C _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
