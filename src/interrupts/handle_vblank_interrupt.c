@@ -2,7 +2,7 @@
 #include "interrupts.h"
 #include "hw/io_regs.h"
 #include "hw/dma.h"
-#include "graphics/oam.h"
+#include "oam.h"
 #include "dialog_box.h"
 
 extern void sub_0800D354(void);

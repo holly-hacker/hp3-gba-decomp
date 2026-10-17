@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/oam.h"
+#include "oam.h"
 
 s32 QueueOamEntry(u8 index, OamEntry *pEntry)
 {

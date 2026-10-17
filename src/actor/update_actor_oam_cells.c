@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "overworld/room.h"
-#include "graphics/oam.h"
+#include "oam.h"
 
 // Queues this frame's OAM entries for an actor. Returns 0 without drawing when
 // ActorFlagOnscreenForTileAlloc is clear and 2 when the actor has no VRAM tile

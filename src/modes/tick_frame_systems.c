@@ -6,7 +6,7 @@
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "actor.h"
-#include "graphics/oam.h"
+#include "oam.h"
 #include "overworld/overworld.h"
 #include "map.h"
 

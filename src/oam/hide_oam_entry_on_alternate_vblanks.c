@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/oam.h"
+#include "oam.h"
 
 void HideOamEntryOnAlternateVblanks(u32 index)
 {

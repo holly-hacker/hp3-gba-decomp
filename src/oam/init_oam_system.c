@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "graphics/oam.h"
+#include "oam.h"
 
 void InitOamSystem(void)
 {

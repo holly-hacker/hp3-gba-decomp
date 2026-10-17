@@ -1,7 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "actor.h"
-#include "graphics/oam.h"
+#include "oam.h"
 #include "interrupts.h"
 
 // Frees every actor on the active list, then clears leftover sprites from OAM and waits

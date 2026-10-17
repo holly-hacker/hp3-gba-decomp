@@ -337,7 +337,7 @@
 .set g_dwPendingCameraFocusFlag,             0x03004034  @ see ram_symbols.us.inc
 .set g_pPendingCameraFocus_candidate,        0x03004038  @ see ram_symbols.us.inc
 
-@ --- OAM shadow buffer, see include/graphics/oam.h ---
+@ --- OAM shadow buffer, see include/oam.h ---
 .set g_pOamShadowBuffer,    0x03004048
 .set g_pOamDmaShadowBuffer, 0x0300404C
 .set g_OamShadowBufferA,    0x03004050

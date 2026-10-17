@@ -1265,20 +1265,20 @@ thumb-func 0x0802FD04 sub_0802FCC0
 thumb-func 0x0802FDA0 sub_0802FD5C
 thumb-func 0x0802FE48 SetActorAnimData_candidate
 thumb-func 0x0802FE94 sub_0802FE50
-c-file 0x0802FEF0 _ src/graphics/oam/submit_oam_attrs_nudged.c SubmitOamAttrsNudged
-c-file 0x0802FF70 0x0802FF9C src/graphics/oam/init_oam_system.c InitOamSystem
+c-file 0x0802FEF0 _ src/oam/submit_oam_attrs_nudged.c SubmitOamAttrsNudged
+c-file 0x0802FF70 0x0802FF9C src/oam/init_oam_system.c InitOamSystem
 thumb-func 0x0802FF9C sub_0802FF58
 thumb-func 0x0802FFD4 sub_0802FF90
-c-file 0x0802FFE4 _ src/graphics/oam/queue_oam_entry.c QueueOamEntry
-c-file 0x08030034 _ src/graphics/oam/hide_oam_entry_on_alternate_vblanks.c HideOamEntryOnAlternateVblanks
-c-file 0x08030058 _ src/graphics/oam/clear_oam_shadow_buffers.c ClearOamShadowBuffers
-c-file 0x080300D8 _ src/graphics/oam/get_actor_affine_slot_id.c GetActorAffineSlotId
-c-file 0x080300E4 _ src/graphics/oam/set_actor_affine_slot_id.c SetActorAffineSlotId
-c-file 0x080300F8 _ src/graphics/oam/alloc_affine_slot.c AllocAffineSlot
-c-file 0x0803013C _ src/graphics/oam/free_affine_slot.c FreeAffineSlot
-c-file 0x08030184 _ src/graphics/oam/commit_obj_affine_matrices.c CommitObjAffineMatrices
-c-file 0x080301C8 _ src/graphics/oam/hide_unused_oam_entries.c HideUnusedOamEntries
-c-file 0x0803022C 0x08030250 src/graphics/oam/reset_affine_slots.c ResetAffineSlots
+c-file 0x0802FFE4 _ src/oam/queue_oam_entry.c QueueOamEntry
+c-file 0x08030034 _ src/oam/hide_oam_entry_on_alternate_vblanks.c HideOamEntryOnAlternateVblanks
+c-file 0x08030058 _ src/oam/clear_oam_shadow_buffers.c ClearOamShadowBuffers
+c-file 0x080300D8 _ src/oam/get_actor_affine_slot_id.c GetActorAffineSlotId
+c-file 0x080300E4 _ src/oam/set_actor_affine_slot_id.c SetActorAffineSlotId
+c-file 0x080300F8 _ src/oam/alloc_affine_slot.c AllocAffineSlot
+c-file 0x0803013C _ src/oam/free_affine_slot.c FreeAffineSlot
+c-file 0x08030184 _ src/oam/commit_obj_affine_matrices.c CommitObjAffineMatrices
+c-file 0x080301C8 _ src/oam/hide_unused_oam_entries.c HideUnusedOamEntries
+c-file 0x0803022C 0x08030250 src/oam/reset_affine_slots.c ResetAffineSlots
 thumb-func 0x08030250 sub_0803020C
 thumb-func 0x08030280 sub_0803023C
 c-file 0x080302B8 _ src/gamemode/modes/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
@@ -2271,7 +2271,7 @@ c-file 0x08066DD0 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6Fr
 c-file 0x08066F88 _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
 c-file 0x08067818 0x08067848 src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
-c-file 0x08068B7C _ src/graphics/oam/hidden_oam_entry.c g_HiddenOamEntry
+c-file 0x08068B7C _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068B84 _ src/gamemode/modes/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file 0x08068B88 0x08068B94 src/graphics/particle/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068B9C _ src/graphics/particle/oam_dims_attrs.c g_abOamSizeForDims

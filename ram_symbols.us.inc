@@ -353,7 +353,7 @@
 .set g_dwPendingCameraFocusFlag,             0x03003FD4  @ u32: cleared on room entry
 .set g_pPendingCameraFocus_candidate,        0x03003FD8  @ void *: argument RestorePendingCameraFocus_candidate is called with
 
-@ --- OAM shadow buffer, see include/graphics/oam.h ---
+@ --- OAM shadow buffer, see include/oam.h ---
 .set g_pOamShadowBuffer,         0x03003FE8
 .set g_pOamDmaShadowBuffer,      0x03003FEC
 .set g_OamShadowBufferA,         0x03003FF0

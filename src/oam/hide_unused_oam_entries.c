@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/oam.h"
+#include "oam.h"
 #include "interrupts.h"
 
 // Hides every entry not queued this frame in both halves of the current

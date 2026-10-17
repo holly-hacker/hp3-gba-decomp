@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/oam.h"
+#include "oam.h"
 #include "hw/dma.h"
 
 // Defined const in ROM (hidden_oam_entry.c), but this file's declaration

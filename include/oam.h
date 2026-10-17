@@ -62,6 +62,29 @@ extern s32 QueueOamEntry(u8 index, OamEntry *pEntry);
 extern s32 SubmitOamAttrsNudged(u8 index, OamEntry *pEntry);
 // Hides the entry in the second half only.
 extern void HideOamEntryOnAlternateVblanks(u32 index);
+
+// bios_ObjAffineSet's input struct (see include/hw/bios.h): reciprocal
+// scale (8.8 fixed) plus rotation angle; the trailing pad word gives
+// each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage
+// g_abAffineSlotUsed/g_bAffineSlotHighWaterMark (see ram_symbols.us.inc);
+// GetActorAffineSlotId/SetActorAffineSlotId read/write the allocated
+// index in an OamEntry's affine index bits (see OAM_ATTR1).
+typedef struct ObjAffineSource {
+    s16 sx;
+    s16 sy;
+    u16 theta;
+    u16 pad6;
+} ObjAffineSource;
+extern ObjAffineSource g_aObjAffineSetSource[32];  // 0x03005014
+extern u8 g_bAffineSlotHighWaterMark;
+extern u8 g_abAffineSlotUsed[32];
+extern void ResetAffineSlots(void);
+extern u32 AllocAffineSlot(void);  // lowest free slot, or 32 when all are in use
+extern void FreeAffineSlot(u16 slot);
+extern void CommitObjAffineMatrices(void);
+extern u32 GetActorAffineSlotId(OamEntry *oam);
+extern void SetActorAffineSlotId(OamEntry *oam, u16 slot);
+
 // Dimensions of each OAM shape/size pair, indexed [shape][size].
 typedef struct OamShapeSize {
     u8 bWidth;            // pixels

@@ -18,7 +18,7 @@
 #include "game_state.h"
 #include "decompress.h"
 #include "graphics/graphics.h"
-#include "graphics/oam.h"
+#include "oam.h"
 #include "graphics/audio.h"
 #include "graphics/scanline_effects.h"
 #include "menu/main_menu.h"

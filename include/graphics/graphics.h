@@ -4,29 +4,10 @@
 #include "math.h"
 #include "mem.h"
 #include "list.h"
-#include "graphics/oam.h"
+#include "oam.h"
 #include "../palette.h"
 
 // See docs/formats/graphics.md.
-
-// bios_ObjAffineSet's input struct (see include/hw/bios.h): reciprocal
-// scale (8.8 fixed) plus rotation angle; the trailing pad word gives
-// each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage
-// g_abAffineSlotUsed/g_bAffineSlotHighWaterMark (see ram_symbols.us.inc);
-// GetActorAffineSlotId/SetActorAffineSlotId read/write the allocated
-// index in an OamEntry's affine index bits (see OAM_ATTR1).
-typedef struct ObjAffineSource {
-    s16 sx;
-    s16 sy;
-    u16 theta;
-    u16 pad6;
-} ObjAffineSource;
-extern ObjAffineSource g_aObjAffineSetSource[32];  // 0x03005014
-extern u8 g_bAffineSlotHighWaterMark;
-extern u8 g_abAffineSlotUsed[32];
-extern void ResetAffineSlots(void);
-extern u32 AllocAffineSlot(void);  // lowest free slot, or 32 when all are in use
-extern void FreeAffineSlot(u16 slot);
 
 // Particle sprite header, laid out like ActorFrameData. Reached through the
 // second word of ParticleEmitter.pSprite's record.
@@ -215,7 +196,6 @@ extern void TickParticleMoving(Particle *particle);
 extern void TickParticleWithGravity(Particle *particle);
 extern s8 DrawParticle(Particle *particle);
 extern u8 UpdateParticleCollision(Particle *particle);
-extern void CommitObjAffineMatrices(void);
 
 extern void InitParticlePools(void);
 extern void ResetParticleState(void);

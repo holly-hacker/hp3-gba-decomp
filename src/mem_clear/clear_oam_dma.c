@@ -1,6 +1,6 @@
 #include "mem_clear.h"
 #include "hw/dma.h"
-#include "graphics/oam.h"
+#include "oam.h"
 
 void ClearOamDma(void)
 {

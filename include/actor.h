@@ -4,7 +4,7 @@
 #include "direction.h"
 #include "mem.h"
 #include "graphics/graphics.h"
-#include "graphics/oam.h"
+#include "oam.h"
 
 // See docs/formats/graphics.md.
 
@@ -620,8 +620,6 @@ extern void SetActorVelocity(Actor *actor, u32 velX, u32 velY);
 extern void SetActorMoveTarget(Actor *actor, u32 x, u32 y);
 extern void StartActorMove(Actor *actor, u32 x, u32 y, u16 mode);
 extern void ReleaseActorAffineSlot(Actor *actor);
-extern u32 GetActorAffineSlotId(OamEntry *oam);
-extern void SetActorAffineSlotId(OamEntry *oam, u16 slot);
 extern u32 AllocActorAffineSlot(Actor *actor);  // memoized: returns the slot already in oam if
                              // oam.affineMode is set (1 or 3), else calls AllocAffineSlot and
                              // stores the result
