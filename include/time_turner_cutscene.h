@@ -3,6 +3,7 @@
 #include "types.h"
 #include "actor.h"
 #include "math.h"
+#include "overworld/room.h"
 
 // The mode's screen state at 0x03005D98 (US). Fields used by the mode handlers;
 // the actor setup helpers sub_08043114/sub_08043308 own the rest.
@@ -26,5 +27,11 @@ typedef struct {
 
 extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeActorPos[2];  // 0x0806BF40
 
+// Entries 0 and 1 of the Time-Turner cutscene's own table, ROM 0x0806BE38 (US).
+extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
+
+void InitializeHarryHermionePortInTimeCutscene(void);
+void UpdateHarryHermionePortInTimeCutscene(void);
 extern void sub_08043114(u32 arg);
 extern void sub_08043308(u32 arg);
+void ExitHarryHermionePortInTimeCutscene(void);

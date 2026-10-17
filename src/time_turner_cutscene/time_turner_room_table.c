@@ -2,6 +2,7 @@
 #include "gen/graphics/rooms.h"
 #include "overworld/room_blob.h"
 #include "overworld/room.h"
+#include "time_turner_cutscene.h"
 
 // The room table entries of the two backgrounds of the Harry and Hermione Time-Turner
 // cutscene. They reuse the resources of rooms 33 (hospital_wing) and 14 (path_to_hagrids_hut).

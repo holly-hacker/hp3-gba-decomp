@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "particles.h"
-#include "cutscene/harry_hermione_port_in_time_cutscene.h"
+#include "time_turner_cutscene.h"
 #include "hw/io_regs.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

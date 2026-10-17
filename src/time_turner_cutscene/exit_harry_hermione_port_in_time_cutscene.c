@@ -7,6 +7,7 @@
 #include "move.h"
 #include "screen_transitions.h"
 #include "scroll.h"
+#include "time_turner_cutscene.h"
 
 void ExitHarryHermionePortInTimeCutscene(void)
 {

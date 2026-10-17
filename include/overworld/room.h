@@ -49,9 +49,6 @@ typedef struct RoomTableEntry {
     u8 bUnused_7b;
 } RoomTableEntry;
 
-// Entries 0 and 1 of the Time-Turner cutscene's own table, ROM 0x0806BE38 (US).
-extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
-
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
 // plate comment describes elsewhere -- real source likely declares it int.
