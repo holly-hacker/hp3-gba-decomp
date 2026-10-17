@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 u32 sub_0803FB40(void)
 {

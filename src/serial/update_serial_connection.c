@@ -1,7 +1,7 @@
 #include "types.h"
 #include "hw/io_regs.h"
 #include "interrupts.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Returns 0 without a session, 6 if this terminal's ID is out of range (dropping the session),
 // otherwise the number of answering terminals. A session that stops exchanging is restarted.

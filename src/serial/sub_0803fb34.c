@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 void sub_0803FB34(u32 value)
 {

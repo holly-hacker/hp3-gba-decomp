@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 u32 GetSerialPlayerCount(void)
 {

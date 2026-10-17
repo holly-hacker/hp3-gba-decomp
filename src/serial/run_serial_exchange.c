@@ -2,7 +2,7 @@
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "interrupts.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // True once more than SERIAL_TIMEOUT_VBLANKS vblanks have passed since the last exchange.
 static inline s32 HasSerialExchangeTimedOut(void)

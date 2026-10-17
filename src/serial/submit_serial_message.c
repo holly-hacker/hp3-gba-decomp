@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Copies each player's received buffer out to pRecvOut, then checksums pMessage and stages it as
 // the next message to send. Mixing the exchange count and the RNG's last roll byte into the

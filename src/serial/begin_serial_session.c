@@ -1,7 +1,7 @@
 #include "types.h"
 #include "interrupts.h"
 #include "random.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Resets the link hardware when the exchange loop is enabled, reseeds the RNG and forgets every
 // peer's last message sequence number.

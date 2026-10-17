@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 void SetSerialCallbacks(void (*pfnReceive)(u32 word, u32 playerId), u32 (*pfnGetSendWord)(void))
 {

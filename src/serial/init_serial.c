@@ -1,7 +1,7 @@
 #include "types.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Puts the link port in multiplayer mode with both link interrupts off and resets every piece of
 // session state.

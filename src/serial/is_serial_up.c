@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // True while exactly two terminals, in slots 0 and 1, answer the serial interrupt.
 u32 IsSerialUp(void)

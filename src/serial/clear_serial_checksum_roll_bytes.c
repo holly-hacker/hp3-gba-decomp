@@ -1,6 +1,6 @@
 #include "types.h"
 #include "random.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 void ClearSerialChecksumRollBytes(void)
 {

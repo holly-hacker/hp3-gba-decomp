@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // True if the message's checksum matches its bytes, the sender's exchange count and RNG byte as
 // latched locally.

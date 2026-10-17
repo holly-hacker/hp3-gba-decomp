@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // The argument is ignored; the connection is always opened for two players.
 u32 StartSerialConnection(u32 unused)

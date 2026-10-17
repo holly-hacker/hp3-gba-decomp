@@ -1,6 +1,6 @@
 #include "types.h"
 #include "input.h"
-#include "serial/serial.h"
+#include "serial.h"
 #include "hw/io_regs.h"
 #include "modes.h"
 

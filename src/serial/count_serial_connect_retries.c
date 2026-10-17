@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Initial wait callback: lets SerialConnect wait 10 times, then aborts it and starts over.
 s32 CountSerialConnectRetries(void)

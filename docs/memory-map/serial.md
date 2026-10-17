@@ -32,7 +32,7 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
   sets `SERIAL_FLAG_CLEARED_ON_RESET` and runs `StartSerialGameSession`,
   which sets `SerialSessionActive`, latches the peer count and local ID, and
   has the parent queue a random RNG-seed message (a child queues idle).
-- `g_SerialPlayerState` (`0x03005A24`, `include/serial/serial.h`) holds the session's
+- `g_SerialPlayerState` (`0x03005A24`, `include/serial.h`) holds the session's
   local terminal ID at `+5` (`bPlayerId`, `s8`): `SerialTimer3Intr` stores
   `(SIOCNT >> 4) & 3` there while `g_dwSerialPlayerCount != 0` (0 = parent, 1-3 =
   child), and init/teardown reset it to `0xFF` (-1, no session).
@@ -45,7 +45,7 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
   send words (`0xC0DE` to start, `0xBEEF` to finish a round) and runs `ProcessSerialMessages`
   to fill `g_awSerialKeysReceived` (and apply a type 3 RNG seed). A timeout clears
   `SerialSessionActive` and runs `ResetSerialSession`. Message types and `SERIAL_FLAG_*` roles are in
-  `include/serial/serial.h`.
+  `include/serial.h`.
 - A 9-entry error vocabulary (`Error: Send Overrun`, `Recv CRC`, `Timeout`,
   `Game Code Recv/Send`, …) sits at `0x08060554` but is currently
   unreferenced — dead debug strings, reached by computed index if at all.

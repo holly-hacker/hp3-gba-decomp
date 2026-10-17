@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "input.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 void ResetSerialSession(void)
 {

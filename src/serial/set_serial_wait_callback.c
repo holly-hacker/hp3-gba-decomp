@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 void SetSerialWaitCallback(s32 (*pfnWaitCallback)(void))
 {

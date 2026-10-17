@@ -470,7 +470,7 @@
 .set g_BgLoadedScroll,              0x030059B8  @ s32[2]: g_BgScroll as of the last tile load; the window VRAM holds
 
 @ --- Serial link (see include/serial/) ---
-.set g_SerialLink, 0x030059D8  @ SerialLink: exchange flags and the game's link callbacks; see include/serial/serial.h
+.set g_SerialLink, 0x030059D8  @ SerialLink: exchange flags and the game's link callbacks; see include/serial.h
 .set g_aSerialRecvMessages, 0x030059E4  @ SerialMessage[2]: latest message received from each peer
 .set g_SerialSendMessage, 0x030059FC  @ SerialMessage: message queued for the next exchange
 .set g_bSerialTick, 0x03005A08  @ u8: stamped into each queued message; incremented once per processed round
@@ -484,7 +484,7 @@
 .set g_bSerialPeerCount, 0x03005A20  @ u8: number of peers in g_aSerialRecvMessages
 .set g_bSerialLocalPlayerId, 0x03005A21  @ u8: GetSerialPlayerId() latched when the game session starts
 .set g_bSerialPlayerMask, 0x03005A22  @ u8: one bit per multiplayer slot that answered the last serial interrupt
-.set g_SerialPlayerState,        0x03005A24  @ SerialPlayerState: serial-link session block; see include/serial/serial.h
+.set g_SerialPlayerState,        0x03005A24  @ SerialPlayerState: serial-link session block; see include/serial.h
 .set g_dwSerialExchangeCount, 0x03005A90  @ u32: completed exchange rounds
 .set g_dwSerialChecksumExchangeCount, 0x03005A94  @ u32: g_dwSerialExchangeCount latched by SubmitSerialMessage for message checksums
 .set g_dwSerialLastExchangeTime, 0x03005A98  @ u32: dwVBlankCount when the last exchange round finished

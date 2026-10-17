@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "random.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Runs once the handshake completes: the parent picks the shared RNG seed and sends it, a child
 // answers with an idle message.

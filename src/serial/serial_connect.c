@@ -1,7 +1,7 @@
 #include "types.h"
 #include "interrupts.h"
 #include "hw/io_regs.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Waits for the multiplayer line to become ready, announces this terminal with SERIAL_WORD_CONNECT
 // and installs SerialTimer3Intr: the parent drives transfers from Timer 3, a child answers from

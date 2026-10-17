@@ -1,7 +1,7 @@
 #include "types.h"
 #include "hw/io_regs.h"
 #include "interrupts.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // The parent (SIOCNT bit 2 clear) starts the next transfer and restarts the Timer 3 pump.
 static inline void StartSerialTransferIfParent(void)

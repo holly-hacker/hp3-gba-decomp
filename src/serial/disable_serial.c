@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 #include "hw/io_regs.h"
 
 // Stops the link serial pump and marks the session as absent.

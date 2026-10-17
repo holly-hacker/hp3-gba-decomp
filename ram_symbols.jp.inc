@@ -467,7 +467,7 @@
 .set g_bSerialPeerCount, 0x03005A80  @ u8: number of peers in g_aSerialRecvMessages
 .set g_bSerialLocalPlayerId, 0x03005A81
 .set g_bSerialPlayerMask, 0x03005A82
-.set g_SerialPlayerState,        0x03005A84  @ see include/serial/serial.h
+.set g_SerialPlayerState,        0x03005A84  @ see include/serial.h
 .set g_dwSerialExchangeCount, 0x03005AF0  @ u32: completed exchange rounds
 .set g_dwSerialChecksumExchangeCount, 0x03005AF4
 .set g_dwSerialLastExchangeTime, 0x03005AF8  @ u32: dwVBlankCount when the last exchange round finished

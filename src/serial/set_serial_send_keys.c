@@ -1,5 +1,5 @@
 #include "types.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Selects whether ExchangeSerialFrame_candidate sends the held keys or idle messages.
 void SetSerialSendKeys(u32 enable)

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "random.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Applies the message received from each peer this round: key masks, idle markers and the RNG seed.
 void ProcessSerialMessages(void)

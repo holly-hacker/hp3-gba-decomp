@@ -1,6 +1,6 @@
 #include "types.h"
 #include "interrupts.h"
-#include "serial/serial.h"
+#include "serial.h"
 
 // Requests the 0xB0CA handshake and waits for it to complete, for at least 20 frames.
 void WaitForSerialHandshake(void)
