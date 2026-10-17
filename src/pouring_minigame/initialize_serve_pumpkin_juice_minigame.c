@@ -8,7 +8,7 @@
 #include "hw/io_regs.h"
 #include "minigame_menu.h"
 #include "mt19937.h"
-#include "minigame/serve_pumpkin_juice.h"
+#include "pouring_minigame.h"
 #include "font.h"
 #include "gen/graphics/menus.h"
 

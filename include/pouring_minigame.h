@@ -50,6 +50,9 @@ typedef enum {
     ServePumpkinJuiceStateRoundOver = 5,
 } ServePumpkinJuiceMode;
 
+extern void InitializeUnusedServePumpkinJuiceMinigame(void);
+extern void UpdateUnusedServePumpkinJuiceMinigame(void);
+extern void ExitUnusedServePumpkinJuiceMinigame(void);
 extern void sub_08034F20(s32 arg0, u32 arg1, u32 arg2);
 extern void sub_0803518C(void);
 extern void sub_0803526C(void);

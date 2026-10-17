@@ -1387,8 +1387,8 @@ thumb-func 0x08033CE4 sub_08033CA0
 thumb-func 0x08033D24 sub_08033CE0
 thumb-func 0x08033D78 sub_08033D34
 thumb-func 0x08033DB0 sub_08033D6C
-c-file 0x08033DE8 _ src/gamemode/modes/minigame/serve_pumpkin_juice/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
-c-file 0x08033F24 0x080341B8 src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
+c-file 0x08033DE8 _ src/pouring_minigame/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
+c-file 0x08033F24 0x080341B8 src/pouring_minigame/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
 thumb-func 0x080341B8 sub_08034174
 thumb-func 0x080342B4 sub_08034270
 thumb-func 0x080343A8 sub_08034364
@@ -1402,7 +1402,7 @@ thumb-func 0x08034EE0 sub_08034E9C
 thumb-func 0x08034F64 sub_08034F20
 thumb-func 0x080350B0 sub_0803506C
 thumb-func 0x080351D0 sub_0803518C
-c-file 0x08035284 0x080352B0 src/gamemode/modes/minigame/serve_pumpkin_juice/exit_serve_pumpkin_juice_minigame.c ExitUnusedServePumpkinJuiceMinigame
+c-file 0x08035284 0x080352B0 src/pouring_minigame/exit_serve_pumpkin_juice_minigame.c ExitUnusedServePumpkinJuiceMinigame
 thumb-func 0x080352B0 sub_0803526C
 thumb-func 0x0803530C sub_080352C8
 thumb-func 0x08035370 sub_0803532C
@@ -2278,9 +2278,9 @@ c-file 0x08068B9C _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068BBC _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068BC4 _ src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file 0x08068C90 0x08068CC8 src/pop_it_minigame/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
-c-file 0x08069110 0x08069120 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
-c-file 0x080692B4 _ src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
-c-file 0x0806933C _ src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
+c-file 0x08069110 0x08069120 src/pouring_minigame/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
+c-file 0x080692B4 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
+c-file 0x0806933C _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x08069358 0x08069370 src/room/actors/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
 c-file 0x080693E8 _ src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x08069498 _ src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries

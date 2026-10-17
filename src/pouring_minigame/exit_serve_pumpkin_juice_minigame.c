@@ -7,6 +7,7 @@
 #include "actor.h"
 #include "minigame_menu.h"
 #include "graphics/audio.h"
+#include "pouring_minigame.h"
 
 void ExitUnusedServePumpkinJuiceMinigame(void)
 {

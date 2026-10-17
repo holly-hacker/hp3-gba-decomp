@@ -218,7 +218,7 @@ PROVEN from US decompiles; the state names in the headers are provisional.
 |---|---|---|---|
 | 0x1B `WizardCrackerPopItMinigame` | `*g_pWizardCrackerPopIt` (`0x03005230`, allocated 0x1AC bytes) | `include/pop_it_minigame.h` | `aadwHighScores[HighScoreWizardCrackerPopIt]` |
 | 0x1C `DivinationTeaMinigame` | `g_DivinationTea` (`0x03005B28`) | `include/minigame/divination_tea.h` | none |
-| 0x24 `UnusedServePumpkinJuiceMinigame` | `g_ServePumpkinJuice` (`0x03005238`) | `include/minigame/serve_pumpkin_juice.h` | none |
+| 0x24 `UnusedServePumpkinJuiceMinigame` | `g_ServePumpkinJuice` (`0x03005238`) | `include/pouring_minigame.h` | none |
 | 0x2B `BuckbeakMinigame` | `*g_pBuckbeakMinigame` (`0x03002088`, allocated 0x1F0 bytes) | `include/buckbeak_minigame.h` | `aadwHighScores[HighScoreBuckbeak]` |
 | 0x2F `BoggartMinigame` | `g_BoggartMinigame` (`0x03002048`) | `include/boggart_minigame.h` | `aadwHighScores[HighScoreBoggart]` |
 | 0x33 `DementorMinigame` | `g_DementorMinigame` (`0x03002E18`) | `include/dementor_minigame.h` | none |

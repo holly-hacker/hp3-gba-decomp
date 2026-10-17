@@ -176,7 +176,7 @@
 .set g_bRoomScriptPendingChain, 0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none
 .set g_bCameraShakeSoundHandle,   0x030028A4  @ u8: sound handle TickCameraFocus_candidate stops when a camera shake ends
 
-@ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
+@ --- Serve Pumpkin Juice minigame (see include/pouring_minigame.h) ---
 .set g_dwCreditsScrollRow,    0x030028A8  @ u32: last credits text row the scroll reached
 .set g_dwCreditsLine,         0x030028AC  @ u32: next credits text line to draw
 .set g_dwCreditsTileCursor,   0x030028B0  @ u32: next free credits text tile
@@ -382,7 +382,7 @@
 .set g_bParticleSpawnBlocked,          0x030051D0  @ u8: set when a particle's OAM submit fails (queue full); blocks spawning until TickParticleEmitters clears it
 .set g_apParticleGfxPools,             0x030051D8  @ ParticleGfxEntry *[]
 
-@ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
+@ --- Serve Pumpkin Juice minigame (see include/pouring_minigame.h) ---
 .set g_dwPatronusBgFront,     0x030051E4  @ u32; see include/patronus_cutscene.h
 .set g_dwPatronusBgBack,      0x030051E8  @ u32
 .set g_dwPatronusSwapPending, 0x030051EC  @ u32

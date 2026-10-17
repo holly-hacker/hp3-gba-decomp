@@ -164,7 +164,7 @@
 .set g_bRoomScriptPendingChain, 0x030028A0
 .set g_bCameraShakeSoundHandle,   0x030028A4  @ see ram_symbols.us.inc
 
-@ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
+@ --- Serve Pumpkin Juice minigame (see include/pouring_minigame.h) ---
 .set g_dwCreditsScrollRow,    0x030028A8  @ see ram_symbols.us.inc
 .set g_dwCreditsLine,         0x030028AC  @ see ram_symbols.us.inc
 .set g_dwCreditsTileCursor,   0x030028B0  @ see ram_symbols.us.inc
@@ -366,7 +366,7 @@
 .set g_bParticleSpawnBlocked,          0x03005230
 .set g_apParticleGfxPools,             0x03005238
 
-@ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
+@ --- Serve Pumpkin Juice minigame (see include/pouring_minigame.h) ---
 .set g_dwPatronusBgFront,     0x03005244  @ see ram_symbols.us.inc
 .set g_dwPatronusBgBack,      0x03005248
 .set g_dwPatronusSwapPending, 0x0300524C

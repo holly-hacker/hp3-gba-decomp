@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "minigame/serve_pumpkin_juice.h"
+#include "pouring_minigame.h"
 #include "gen/graphics/minigames/pumpkin.h"
 
 // BG2's animation, registered with g_dwServePumpkinJuiceBg2Control.
