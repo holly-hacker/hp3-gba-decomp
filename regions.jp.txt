@@ -1601,7 +1601,7 @@ c-file 0x0803B594 _ src/random/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B5C8 _ src/random/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 _ src/random/next.c Mt19937Next
 c-file 0x0803B65C _ src/random/next2.c Mt19937Next2
-c-file 0x0803B6B4 0x0803B784 src/room/actors/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
+c-file 0x0803B6B4 0x0803B784 src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
 thumb-func 0x0803B784 sub_0803B71C
 thumb-func 0x0803BA80 sub_0803BA18
 c-file 0x0803BB5C _ src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
@@ -2299,7 +2299,7 @@ c-file 0x0806B288 _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquip
 c-file 0x0806B2E8 0x0806B338 src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B358 _ src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B364 _ src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAssets
-c-file 0x0806B760 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
+c-file 0x0806B760 _ src/rising_platform_actor/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B798 _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B858 _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart

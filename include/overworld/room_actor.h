@@ -33,19 +33,10 @@ typedef struct RoomActorRecordUnkA {
     u8 abArgD[2];
 } RoomActorRecordUnkA;
 
-typedef struct RoomActorRecordUnkC {
-    u16 wActorType;
-    u16 wUnk2;
-    s16 nPixelX;
-    s16 nPixelY;
-    u8 abArg8[3];
-} RoomActorRecordUnkC;
-
 extern Actor *SpawnSwitchActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPropActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow);
-extern Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow);
 
 extern void sub_08044960(Actor *pActor);
 extern void sub_08044ADC(Actor *pSelf, Actor *pOther);
@@ -78,11 +69,6 @@ extern const ActorGfxRecord g_aRoomSpongifyPadSprites[4];             // ROM 0x0
 extern const ActorGfxRecord *const g_apRoomSpongifyPadAnimFrames[3];  // ROM 0x0806B8FC (US)
 extern const void *const g_apRoomSpongifyPadEffectData[3];             // ROM 0x0806B908 (US)
 extern const u8 g_abRoomSpongifyPadAnimData[30];                       // ROM 0x0806B914 (US)
-
-extern void sub_0803B71C(Actor *pActor);
-extern void sub_0803BA18(Actor *pSelf, Actor *pOther);
-extern const ActorGfxRecord g_RoomRaisingPlatformSprite;  // ROM 0x0806B7D4 (US)
-extern const u8 g_abRoomRaisingPlatformAnimData[46];       // ROM 0x0806B7DC (US)
 
 // Types 2, 4 and 7 take their runtime actor type from the first word of the record.
 typedef struct RoomActorRecordUnk2 {

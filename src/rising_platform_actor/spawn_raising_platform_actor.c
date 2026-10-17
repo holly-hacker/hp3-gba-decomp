@@ -1,6 +1,7 @@
 #include "types.h"
 #include "area.h"
 #include "overworld/room_actor.h"
+#include "rising_platform_actor.h"
 #include "gen/graphics/overworld.h"
 
 // Room actor constructor for tile actorType 12, a platform that lifts the party.

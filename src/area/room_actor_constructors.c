@@ -7,6 +7,7 @@
 #include "map_doors.h"
 #include "npc_actor.h"
 #include "pressure_pad_actor.h"
+#include "rising_platform_actor.h"
 
 // Room tile actorType -> constructor table; see docs/formats/rooms.md.
 // Type 0 is unused.

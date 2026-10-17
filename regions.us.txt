@@ -1814,7 +1814,7 @@ c-file 0x0803B598 _ src/random/next.c Mt19937Next
 c-file 0x0803B5F4 _ src/random/next2.c Mt19937Next2
 
 # Riser? (raising platform actor)
-c-file 0x0803B64C 0x0803B71C src/room/actors/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
+c-file 0x0803B64C 0x0803B71C src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
 thumb-func 0x0803B71C sub_0803B71C
 thumb-func 0x0803BA18 sub_0803BA18
 
@@ -2568,7 +2568,7 @@ c-file 0x0806B2FC _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquip
 c-file 0x0806B35C 0x0806B3AC src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B3CC _ src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B3D8 _ src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAssets
-c-file 0x0806B7D4 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
+c-file 0x0806B7D4 _ src/rising_platform_actor/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B80C _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B8CC _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
