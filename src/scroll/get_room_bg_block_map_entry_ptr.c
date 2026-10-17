@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 // Returns a pointer to the block map entry covering pixel (x, y) on BG `layer`, or the first
 // entry of a null map for an invalid layer.

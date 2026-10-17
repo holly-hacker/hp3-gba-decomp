@@ -17,6 +17,7 @@
 #include "particles.h"
 #include "gen/graphics/menus.h"
 #include "screen_transitions.h"
+#include "scroll.h"
 
 void InitializeLupinPotionCutscene(void)
 {

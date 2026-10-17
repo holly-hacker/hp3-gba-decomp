@@ -4,6 +4,7 @@
 #include "hw/dma.h"
 #include "hw/io_regs.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 // Vblank upload of the BG tile animations whose decoded frame changed (flag 4). Flag 8 copies the
 // whole buffer to the character block in one DMA; otherwise each tile goes to the VRAM slot the

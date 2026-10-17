@@ -1,6 +1,7 @@
 #include "types.h"
 #include "hw/io_regs.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 // Replaces the 32x32-pixel block covering pixel (x, y) on BG `layer` with block `blockId`.
 // Each of the block's 4x4 tiles inside the loaded tile window releases the old block's tile

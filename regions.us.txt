@@ -1901,17 +1901,17 @@ thumb-func 0x0803DA4C UpdateOverworldCamera_candidate
 thumb-func 0x0803DB68 sub_0803DB68
 thumb-func 0x0803DC44 sub_0803DC44
 thumb-func 0x0803DCDC LoadRoomBgLayer0Extra_candidate
-c-file 0x0803DD7C _ src/overworld/write_room_bg_tile.c WriteRoomBgTile_candidate
-c-file 0x0803DF18 0x0803E038 src/overworld/release_bg_tile_cache_entry.c ReleaseBgTileCacheEntry
+c-file 0x0803DD7C _ src/scroll/write_room_bg_tile.c WriteRoomBgTile_candidate
+c-file 0x0803DF18 0x0803E038 src/scroll/release_bg_tile_cache_entry.c ReleaseBgTileCacheEntry
 thumb-func 0x0803E038 sub_0803E038
 thumb-func 0x0803E0F8 sub_0803E0F8
 thumb-func 0x0803E220 LoadBgTileOnDemand_candidate
-c-file 0x0803E34C 0x0803E45C src/overworld/decompress_bg_tile_to_vram.c DecompressBgTileToVram_candidate
+c-file 0x0803E34C 0x0803E45C src/scroll/decompress_bg_tile_to_vram.c DecompressBgTileToVram_candidate
 thumb-func 0x0803E45C sub_0803E45C
-c-file 0x0803E4FC 0x0803E588 src/overworld/init_room_bg_state.c InitRoomBgState_candidate
+c-file 0x0803E4FC 0x0803E588 src/scroll/init_room_bg_state.c InitRoomBgState_candidate
 thumb-func 0x0803E588 SetupRoomBgControlAndWindows_candidate
-c-file 0x0803E618 _ src/overworld/get_camera_position.c GetCameraPosition
-c-file 0x0803E628 0x0803E638 src/overworld/set_camera_position.c SetCameraPosition
+c-file 0x0803E618 _ src/scroll/get_camera_position.c GetCameraPosition
+c-file 0x0803E628 0x0803E638 src/scroll/set_camera_position.c SetCameraPosition
 thumb-func 0x0803E638 ResetCameraPosition
 thumb-func 0x0803E648 sub_0803E648
 thumb-func 0x0803E664 LoadRoomBgTilemap1_candidate
@@ -1921,23 +1921,23 @@ thumb-func 0x0803E72C LoadRoomBgTilemap3_candidate
 thumb-func 0x0803E768 LoadRoomBgLayer1Extra_candidate
 thumb-func 0x0803E7F4 LoadRoomBgLayer2Extra_candidate
 thumb-func 0x0803E880 LoadRoomBgLayer3Extra_candidate
-c-file 0x0803E90C _ src/overworld/get_room_bg_block_entry.c GetRoomBgBlockEntry
-c-file 0x0803E924 _ src/overworld/set_room_bg_aux_flag_2.c SetRoomBgAuxFlag2
-c-file 0x0803E934 _ src/overworld/clear_room_bg_aux_flag_2.c ClearRoomBgAuxFlag2
-c-file 0x0803E944 _ src/overworld/set_room_bg_aux_flag_4.c SetRoomBgAuxFlag4
-c-file 0x0803E954 _ src/overworld/clear_room_bg_aux_flag_4.c ClearRoomBgAuxFlag4
-c-file 0x0803E964 _ src/overworld/set_room_bg_aux_flag_8.c SetRoomBgAuxFlag8
-c-file 0x0803E974 _ src/overworld/clear_room_bg_aux_flag_8.c ClearRoomBgAuxFlag8
-c-file 0x0803E984 _ src/overworld/set_room_bg_aux_pos_a.c SetRoomBgAuxPosA
-c-file 0x0803E994 _ src/overworld/set_room_bg_aux_pos_b.c SetRoomBgAuxPosB
-c-file 0x0803E9A4 _ src/overworld/get_room_bg_layer1_size_pixels.c GetRoomBgLayer1SizePixels
-c-file 0x0803E9C0 _ src/overworld/disable_bg_layer_scroll.c DisableBgLayerScroll
-c-file 0x0803E9D0 _ src/overworld/enable_bg_layer_scroll.c EnableBgLayerScroll
-c-file 0x0803E9E0 0x0803EA3C src/overworld/find_bg_tile_cache_entry.c FindBgTileCacheEntry
+c-file 0x0803E90C _ src/scroll/get_room_bg_block_entry.c GetRoomBgBlockEntry
+c-file 0x0803E924 _ src/scroll/set_room_bg_aux_flag_2.c SetRoomBgAuxFlag2
+c-file 0x0803E934 _ src/scroll/clear_room_bg_aux_flag_2.c ClearRoomBgAuxFlag2
+c-file 0x0803E944 _ src/scroll/set_room_bg_aux_flag_4.c SetRoomBgAuxFlag4
+c-file 0x0803E954 _ src/scroll/clear_room_bg_aux_flag_4.c ClearRoomBgAuxFlag4
+c-file 0x0803E964 _ src/scroll/set_room_bg_aux_flag_8.c SetRoomBgAuxFlag8
+c-file 0x0803E974 _ src/scroll/clear_room_bg_aux_flag_8.c ClearRoomBgAuxFlag8
+c-file 0x0803E984 _ src/scroll/set_room_bg_aux_pos_a.c SetRoomBgAuxPosA
+c-file 0x0803E994 _ src/scroll/set_room_bg_aux_pos_b.c SetRoomBgAuxPosB
+c-file 0x0803E9A4 _ src/scroll/get_room_bg_layer1_size_pixels.c GetRoomBgLayer1SizePixels
+c-file 0x0803E9C0 _ src/scroll/disable_bg_layer_scroll.c DisableBgLayerScroll
+c-file 0x0803E9D0 _ src/scroll/enable_bg_layer_scroll.c EnableBgLayerScroll
+c-file 0x0803E9E0 0x0803EA3C src/scroll/find_bg_tile_cache_entry.c FindBgTileCacheEntry
 thumb-func 0x0803EA3C sub_0803EA3C
 thumb-func 0x0803EA58 sub_0803EA58
 thumb-func 0x0803EA74 sub_0803EA74
-c-file 0x0803EAC4 0x0803EB7C src/overworld/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
+c-file 0x0803EAC4 0x0803EB7C src/scroll/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
 thumb-func 0x0803EB7C sub_0803EB7C
 thumb-func 0x0803EBA8 DecodeBgTilesetOffsetTable_candidate
 thumb-func 0x0803EC68 sub_0803EC68

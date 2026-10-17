@@ -6,14 +6,7 @@
 #include "overworld/room_script.h"
 #include "overworld/room_actor_state.h"
 #include "move.h"
-
-// A BG tileset and its palette. Tileset A (layers 0 and 3) and tileset B
-// (layers 1 and 2) each pair with one; the second pair's palette is not
-// confirmed to be read.
-typedef struct RoomBgResources {
-    const void *pTileset;
-    const void *pPalette;
-} RoomBgResources;
+#include "scroll.h"
 
 // One 124-byte record per room, indexed by room id; 55 entries. See
 // docs/formats/levels.md. The pointers reference ROM resources.
@@ -59,84 +52,12 @@ typedef struct RoomTableEntry {
 // Entries 0 and 1 of the Time-Turner cutscene's own table, ROM 0x0806BE38 (US).
 extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
 
-
-
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
 // plate comment describes elsewhere -- real source likely declares it int.
 extern u32 g_bCurrentRoomId;                // 0x03003B50
-extern void GetCameraPosition(s32 *pPosition);  // copies g_CameraPosition_candidate out
-extern void SetCameraPosition(const s32 *pPosition);  // copies a two-word position into g_CameraPosition_candidate
-extern void ResetCameraPosition(void);  // zeroes g_CameraPosition_candidate
 // Signed camera Y offset in pixels, added to quest event state 0x1B (sub_0803E45C).
 extern s8 g_nCameraYOffset;
-// Nonzero for each BG layer UpdateOverworldCamera_candidate scrolls.
-extern u32 g_adwBgScrollEnabled[4];
-extern u32 g_dwUnk030059AC;  // zeroed by InitRoomBgState_candidate; no other literal reference found
-
-// Room BG tile VRAM cache, per tile-size class (layers 0/3 and 1/2): see
-// docs/formats/graphics.md ("The runtime streaming/caching path").
-typedef struct BgTileCacheEntry {
-    u16 wRefcount;
-    u16 wTileId;
-    u16 wNext;  // next entry in the hash chain, 0xFFFF ends it
-    u16 pad_06;
-} BgTileCacheEntry;
-extern BgTileCacheEntry *g_apBgTileCacheEntries[2];  // 0x400 and 0x200 entries
-extern u16 *g_apBgTileCacheBuckets[2];               // chain heads by tile id & 0x7FF / 0x3FF
-extern u16 *g_apBgTileCacheFreeSlots[2];             // stack of free entry indices
-// Per tile size class: where each tile's compressed pixels start and the Huffman code table
-// shared by all of them (see docs/formats/graphics.md, "The runtime streaming/caching path").
-typedef struct BgTileset {
-    u32 dwUnk00;
-    u32 dwUnk04;
-    u32 *pTileBitOffsets;  // ROM bit offset of each tile's compressed data, indexed by tile id
-    void *pCodeTable;
-} BgTileset;
-extern BgTileset g_aBgTilesets[2];
-extern u16 g_awBgLayerTileCount[4];
-extern u16 g_awBgTileCacheFreeCount[2];
-// BGxCNT as shadowed per BG layer.
-typedef struct RoomBgControl {
-    u32 bPriority : 2;
-    u32 bCharBlock : 2;
-    u32 bUnused : 4;
-    u32 bScreenBlock : 5;  // 2 KB screen block holding the layer's tilemap
-    u32 dwRest : 19;
-} RoomBgControl;
-extern RoomBgControl g_aBgControl[4];
-
-// Per BG layer, a map of 32x32-pixel blocks (u16: block id in the low 11 bits) and a block table:
-// 16 u16 tile ids per block (4x4 tiles), followed by 16 attribute bytes per block, each shifted
-// into bits 10+ of the tile's tilemap entry. g_adwBgBlockAttrOffset holds the attribute bytes' offset.
-typedef struct RoomBgBlockData {
-    u16 *apBlockMaps[4];
-    u16 (*apBlockTiles[4])[16];
-} RoomBgBlockData;
-extern RoomBgBlockData g_RoomBgBlockData;
-extern u32 g_adwBgBlockAttrOffset[4];
-extern s32 g_BgScroll[2];        // scroll position (x, y) the layers' tiles are streamed for
-extern s32 g_BgLoadedScroll[2];  // g_BgScroll as of the last tile load
-extern void InitRoomBgState_candidate(void);
-extern u16 FindBgTileCacheEntry(u16 tileId, u32 sizeClass);
-typedef struct RoomBgAux {
-    u8 bFlags;
-    u8 pad_01[3];
-    s32 aPosA[2];
-    s32 aPosB[2];
-} RoomBgAux;
-extern RoomBgAux g_RoomBgAux;
-extern u16 g_wRoomBgLayer0BlocksWide;
-extern u16 g_wRoomBgLayer1TilesWide;
-extern u16 g_wRoomBgLayer1TilesHigh;
-extern u16 g_wRoomBgLayer1BlocksWide;
-extern u16 g_wRoomBgLayer2BlocksWide;
-extern u16 g_wRoomBgLayer3BlocksWide;
-extern u16 *GetRoomBgBlockMapEntryPtr(u16 x, u16 y, u8 layer);  // the block map entry covering pixel (x, y)
-extern u32 ReleaseBgTileCacheEntry(u16 tileId, u32 sizeClass, u32 layer);
-extern u32 DecompressBgTileToVram_candidate(u32 tileId, u32 sizeClass, u32 arg2, u32 layer);
-extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
-
 extern u16 g_wRoomResourceFlags_candidate;
 extern u8 g_abQuestEventState[];
 
@@ -235,16 +156,6 @@ extern u32 g_dwRoomBgFlag_candidate;
 #define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
 extern u8 g_bRoomSwitchState;  // 0 or 1
 extern u32 GetRoomSwitchState(void);
-
-extern void LoadRoomBgTilemap0_candidate(const void *pTilemap);
-extern void LoadRoomBgTilemap1_candidate(const void *pTilemap);
-extern void LoadRoomBgTilemap2_candidate(const void *pTilemap);
-extern void LoadRoomBgTilemap3_candidate(const void *pTilemap);
-extern void LoadRoomBgLayer1Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);
-extern void LoadRoomBgLayer2Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);
-extern void LoadRoomBgLayer3Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);
-extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctrl2, u32 ctrl0,
-                                                   RoomBgResources resourcesA, RoomBgResources resourcesB);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
 extern void StopScanlineEffects(void);
 extern void ShowMapNamePopup(void);

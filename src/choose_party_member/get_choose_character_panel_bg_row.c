@@ -1,6 +1,7 @@
 #include "types.h"
 #include "choose_party_member.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 // The BG tile row the panel is drawn at, from the camera's Y within its 256-pixel wrap.
 s32 GetChooseCharacterPanelBgRow(void)

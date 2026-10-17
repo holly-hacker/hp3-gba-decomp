@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 void SetRoomBgAuxPosB(const s32 *pos)
 {

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 // Drops one reference to `tileId` in the room BG tile cache of the given size class. When the last
 // reference goes, the entry is unlinked from its hash chain and returned to the free slot stack.

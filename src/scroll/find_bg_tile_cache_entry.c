@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 // Looks `tileId` up in the room BG tile cache of the given size class (0: 0x7FF hash buckets,
 // 1: 0x3FF) and returns its entry index, which is also its VRAM slot, or 0xFFFF if not cached.

@@ -447,7 +447,7 @@
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x03005648  @ RoomSizePixels: width and height of the current room in pixels
 
-@ --- Room BG layers and tile cache (see include/overworld/room.h) ---
+@ --- Room BG layers and tile cache (see include/scroll.h) ---
 .set g_awBgLayerTileCount,          0x03005898  @ u16[4]: per BG layer, distinct tiles held in the BG tile cache
 .set g_aBgTilesets,                  0x030058A0  @ BgTileset[2]: per tile size class, the tile offset table and Huffman code table
 .set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera_candidate

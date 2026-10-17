@@ -33,6 +33,7 @@
 #include "huffman.h"
 #include "map.h"
 #include "screen_transitions.h"
+#include "scroll.h"
 
 extern void InitSaveSystem(void);
 extern void NoopInit(void);

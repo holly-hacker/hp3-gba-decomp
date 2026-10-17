@@ -3,6 +3,7 @@
 #include "hw/io_regs.h"
 #include "particles.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 typedef void (*BgTileDecoder)(u32 bitOffset, void *dest, u32 size, const void *codeTable);
 

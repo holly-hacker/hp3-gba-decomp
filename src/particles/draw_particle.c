@@ -2,6 +2,7 @@
 #include "particles.h"
 #include "actor.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 // Returns 2 when offscreen, else QueueOamEntry's result. Only the low byte of
 // the frame offset is used.

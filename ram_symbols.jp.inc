@@ -430,7 +430,7 @@
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x030056A8  @ see ram_symbols.us.inc
 
-@ --- Room BG layers and tile cache (see include/overworld/room.h) ---
+@ --- Room BG layers and tile cache (see include/scroll.h) ---
 .set g_awBgLayerTileCount,          0x030058F8  @ see ram_symbols.us.inc
 .set g_aBgTilesets,                  0x03005900  @ see ram_symbols.us.inc
 .set g_adwBgScrollEnabled,              0x03005920

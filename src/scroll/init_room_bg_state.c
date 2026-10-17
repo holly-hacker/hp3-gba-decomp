@@ -2,6 +2,7 @@
 #include "mem.h"
 #include "graphics/display.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 void InitRoomBgState_candidate(void)
 {
