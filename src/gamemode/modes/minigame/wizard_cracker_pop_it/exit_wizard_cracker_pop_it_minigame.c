@@ -9,6 +9,7 @@
 #include "menu/minigame_menu.h"
 #include "minigame/wizard_cracker_pop_it.h"
 #include "cursor.h"
+#include "minigame_difficulty_select.h"
 
 void ExitWizardCrackerPopItMinigame(void)
 {

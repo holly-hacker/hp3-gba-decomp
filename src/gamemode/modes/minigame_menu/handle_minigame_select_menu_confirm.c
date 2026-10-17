@@ -6,6 +6,7 @@
 #include "menu/minigame_menu.h"
 #include "game/save.h"
 #include "default_menu.h"
+#include "minigame_difficulty_select.h"
 
 void HandleMinigameSelectMenuConfirm(void)
 {

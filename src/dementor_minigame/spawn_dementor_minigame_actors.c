@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "menu/minigame_menu.h"
 #include "dementor_minigame.h"
+#include "minigame_difficulty_select.h"
 
 void SpawnDementorMinigameActors(void)
 {

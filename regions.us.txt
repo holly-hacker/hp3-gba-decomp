@@ -1361,11 +1361,11 @@ thumb-func 0x0802C960 sub_0802C960
 c-file 0x0802C984 _ src/modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 
 # Minigame/Difficulty? (minigame difficulty select)
-c-file 0x0802C988 0x0802CB80 src/gamemode/modes/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
+c-file 0x0802C988 0x0802CB80 src/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CB80 sub_0802CB80
 thumb-func 0x0802CC44 sub_0802CC44
-c-file 0x0802CCF4 _ src/gamemode/modes/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
-c-file 0x0802CD88 0x0802CDB8 src/gamemode/modes/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
+c-file 0x0802CCF4 _ src/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
+c-file 0x0802CD88 0x0802CDB8 src/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
 
 # Minigame/HighScore? (minigame high score helpers)
 thumb-func 0x0802CDB8 SyncSaveOptionsPausingKrawall
@@ -2532,7 +2532,7 @@ c-file 0x0806589C _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C9C _ ResetBgLayer
 c-rodata 0x08065CA4 _ GetDirectionFromVector
 c-file 0x08065CBC _ src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTable
-c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
+c-file 0x0806601C 0x0806603C src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066084 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file 0x08066094 0x080660D4 src/overworld/terrain_collision.globals.c g_abOppositeFacing

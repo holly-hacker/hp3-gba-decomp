@@ -1208,11 +1208,11 @@ thumb-func 0x0802C950 SpawnMenuIconActor
 thumb-func 0x0802C988 RegisterMenuIconActor
 thumb-func 0x0802C9A4 sub_0802C960
 c-file 0x0802C9C8 _ src/modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
-c-file 0x0802C9CC 0x0802CBC4 src/gamemode/modes/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
+c-file 0x0802C9CC 0x0802CBC4 src/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
 thumb-func 0x0802CBC4 sub_0802CB80
 thumb-func 0x0802CC88 sub_0802CC44
-c-file 0x0802CD38 _ src/gamemode/modes/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
-c-file 0x0802CDCC 0x0802CDFC src/gamemode/modes/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
+c-file 0x0802CD38 _ src/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
+c-file 0x0802CDCC 0x0802CDFC src/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
 thumb-func 0x0802CDFC SyncSaveOptionsPausingKrawall
 thumb-func 0x0802CE10 SpawnMinigameTextPanel
 thumb-func 0x0802CF28 FreeMinigameTextPanel
@@ -2263,7 +2263,7 @@ c-file 0x08065828 _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C28 _ ResetBgLayer
 c-rodata 0x08065C30 _ GetDirectionFromVector
 c-file 0x08065C48 _ src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTable
-c-file 0x08065FA8 0x08065FC8 src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
+c-file 0x08065FA8 0x08065FC8 src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x08065FE8 0x08065FF0 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066010 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file 0x08066020 0x08066060 src/overworld/terrain_collision.globals.c g_abOppositeFacing

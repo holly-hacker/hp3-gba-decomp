@@ -8,6 +8,7 @@
 #include "menu/minigame_menu.h"
 #include "boggart_minigame.h"
 #include "cursor.h"
+#include "minigame_difficulty_select.h"
 
 void ExitBoggartMinigame(void)
 {

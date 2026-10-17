@@ -4,7 +4,7 @@
 #include "game/save.h"
 #include "input.h"
 #include "menu/minigame_menu.h"
-#include "menu/minigame_difficulty_select.h"
+#include "minigame_difficulty_select.h"
 #include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
 #include "minigame/wizard_cracker_pop_it.h"

@@ -3,7 +3,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "menu/minigame_menu.h"
-#include "menu/minigame_difficulty_select.h"
+#include "minigame_difficulty_select.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "cursor.h"
 #include "default_menu.h"
