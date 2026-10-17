@@ -2239,6 +2239,8 @@ thumb-func 0x08046AB0 sub_08046AB0
 c-file 0x08046C5C 0x08046CA4 src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
 thumb-func 0x08046CA4 MarkRoomActorConsumed
 
+# End of game code section, start of 3rd party code section
+
 # Krawall, see docs/memory-map/krawall.md
 thumb-func 0x08046D0C kragInit
 thumb-func 0x08046D2C sub_08046D2C
@@ -2415,9 +2417,9 @@ thumb-func 0x0804BD28 __negdi2
 c-file 0x0804BD40 _ src/libc/bzero.c  bzero
 c-file 0x0804BD5C _ src/libc/memcpy.c memcpy
 
-# End of main code section, start of data section
+# End of main code section
 
-# Unit direction vectors (16.16 {x, y}) for 4, 8, 16 and 32 directions
+# Start of data section
 c-file 0x0804BDBC 0x0804BF9C src/actor/direction_vectors.c g_aDirection4Vectors
 c-file 0x0804BFCC 0x0804BFEC src/actor/action_state_data.c g_abTurnAroundDirection
 c-file 0x0804C024 _ src/actor/oam_shape_sizes.c g_aOamShapeSizes
@@ -2458,19 +2460,14 @@ c-file 0x0804E640 _ src/combat_result/combat_result_portraits.globals.c g_aComba
 c-file 0x0804E674 _ src/combat_result/combat_result_level_up_sparkle.globals.c g_abCombatResultLevelUpSparkleAnim
 c-file 0x0804E6B4 _ src/combat_2/monster_graphics_table.c g_pMonsterGraphicsTable
 c-file 0x0804F404 _ src/combat_2/fighter_hurt_sounds.c g_aabFighterHurtSoundIds
-
-# Folio Bruti monster stat table, decompiled to C
 c-file 0x0804F410 _ src/combat_2/monsters.c MonsterTable
 c-file 0x0804FA88 _ src/combat_2/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
 c-file 0x0804FB9C _ src/combat_2/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
-
 c-file 0x0804FC28 _ src/combat_2/monster_drop_table.c g_pMonsterDropTable
 c-file 0x0804FE50 _ src/combat_2/harry_levels.c g_pHarryLevelTable
 c-file 0x08050300 _ src/combat_2/ron_levels.c g_pRonLevelTable
 c-file 0x080507B0 _ src/combat_2/hermione_levels.c g_pHermioneLevelTable
 c-file 0x08050C60 _ src/combat_2/character_level_tables.c g_apCharacterLevelTables
-
-# Encounter roster tables, see docs/formats/encounters.md
 c-file 0x08050C6C _ src/combat_2/random_encounters.c g_aRandomEncounters
 c-file 0x0805120C _ src/combat_2/scripted_encounters.c g_aScriptedEncounters
 c-file 0x08051248 _ src/combat_2/fighter_anim_table.c g_aFighterAnimTable
@@ -2484,14 +2481,12 @@ c-file 0x080539A0 _ src/combat_2/battle_slot_anchor_pos.c g_aBattleSlotAnchorPos
 c-file 0x080539A8 _ src/combat_2/effect_scanline_tables.c g_adwEffectBgControlOverride_candidate
 c-file 0x08053B18 _ src/combat_2/rain_stream_lists.c g_RainStreakList_candidate
 c-file 0x08053C68 _ src/combat_2/effect_slot_positions.c g_aEffectOrbitParams_candidate
-
 c-file 0x08053D40 _ src/combat_2/effect_assets.c g_aEffectActorAssets
 c-file 0x080544D4 _ src/combat_2/effect_bg_records.c g_aEffectBgRecords_candidate
 c-file 0x08054F34 _ src/combat_2/script_opcode_lengths.c g_abScriptOpcodeLengths
 c-file 0x08054FDC _ src/combat_2/effect_anim_data.c g_abFighterIdleAnimData_candidate
 c-file 0x0805994C _ src/combat_2/effect_scripts.c g_apEffectScripts
 c-file 0x0805BA7C _ src/combat_effect_scripts/sp_gauge_gfx.c g_aSpGaugeGfx
-
 c-file 0x0805BA8C _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BC00 _ src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805BC04 _ src/conversation/dialog_blocks.c g_adwDialogBlockTextIds
@@ -2516,12 +2511,9 @@ c-file 0x08060E64 _ src/initials/high_score_name_entry.globals.c g_dwHighScoreNa
 c-file 0x08060E7C _ src/input/dpad_direction.c g_abDpadDirection
 c-file 0x08060E8C _ src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file 0x08060EC0 _ src/items/actor_scale_steps.c g_adwActorScaleSteps
-
-# Item/equipment table, see docs/formats/items.md
 c-file 0x08060EE4 0x080629B4 src/items/items.c g_pItemTable
 c-file 0x080629B8 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file 0x080629F4 0x08062A00 src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
-
 c-file 0x08062A08 0x08062A38 src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
 c-file 0x08063064 _ src/map/overworld.globals.c g_dwBg2Control
 c-file 0x08063074 _ src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
@@ -2539,7 +2531,6 @@ c-file 0x08066094 0x080660D4 src/move/terrain_collision.globals.c g_abOppositeFa
 c-file 0x08066E44 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
 c-file 0x08066FFC _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
 c-file 0x0806788C 0x080678BC src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
-# Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068BF0 _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068BF8 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file 0x08068BFC 0x08068C08 src/particles/opposite_directions.c g_abOppositeDirection8
@@ -2576,7 +2567,6 @@ c-file 0x0806B8BC _ src/serial/serial_magic.c g_adwSerialMagic
 c-file 0x0806B8CC _ src/sound/sound_sections.c g_pKrawallIwramStart
 c-file 0x0806B8DC 0x0806B934 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 _ src/store/shop_stock.c g_aShopStockMisc
-
 c-file 0x0806BA4C _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file 0x0806BB00 _ src/tea_leaves_minigame/divination_tea.globals.c g_DivinationTeaCupAnimData
 c-file 0x0806BB70 _ src/tea_leaves_minigame/divination_tea_bg_animation.c g_DivinationTeaTable
@@ -2592,10 +2582,11 @@ c-file 0x0806C024 _ src/title_load/new_game_slot_confirmation_menu.c g_NewGameSl
 c-file 0x0806C048 0x0806C108 src/title_options/options_menu_items.c g_aOptionsMenuItems
 c-file 0x0806C12C _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
-
 c-file 0x0806C178 0x0806C200 src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file 0x0806C2F0 0x0806C300 src/video/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file 0x0806C304 _ src/world_actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
+
+# Graphics section 1
 graphics 0x0806E904 _ overworld OverworldSpellEffects
 graphics 0x080781A4 _ battle AllyHeads
 graphics 0x0807E7F8 _ overworld OverworldPlayerSprites
@@ -2663,6 +2654,7 @@ asm-file 0x081B26EC _ asm/room/blobs/diagon_alley_test_map_3.s Room52Blob
 asm-file 0x081B2C8C _ asm/room/blobs/diagon_alley_test_map_4.s Room53Blob
 asm-file 0x081B2DC4 _ asm/room/blobs/diagon_alley_test_map_5.s Room54Blob
 
+# Graphics section 2
 graphics 0x081B2E98 _ overworld SpecialSceneFrames
 graphics 0x081DB29C _ rooms RoomGraphics
 graphics 0x08854EE0 _ overworld RoomAltPalettes
@@ -2672,6 +2664,8 @@ graphics 0x089AE030 _ battle BattleSprites
 graphics 0x08A31ADC _ overworld LumosParticles
 graphics 0x08A326DC _ menus EquipCharacterSelect
 graphics 0x08A37DA4 _ battle BattleHudAndEffects
+
+# Audio
 krawall-module 0x08A9C6D0 _ data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module 0x08AA0A54 _ data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module 0x08AA4E08 _ data/audio/modules/MusBattle.json MusBattle
@@ -2726,6 +2720,7 @@ krawall-module 0x08D250B0 _ data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C _ data/audio/modules/MusTitle.json MusTitle
 krawall-module 0x08D3C784 _ data/audio/modules/MusPause.json MusPause
 
+# Graphics section 3
 graphics 0x08D3EFFC _ minigames/buckbeak BuckbeakMinigameWaterFrames
 graphics 0x08D3F2B4 _ cutscenes PatronusCutscene
 graphics 0x08D48D74 _ minigames/pumpkin ServePumpkinJuiceFrames
@@ -2749,6 +2744,8 @@ graphics 0x08E36D88 0x08E3D010 minigames/divination_tea DivinationTeaGraphics
 graphics 0x08E3D030 _ minigames/buckbeak BuckbeakMinigameGraphics
 graphics 0x08E52964 _ minigames/boggart BoggartGraphics
 graphics 0x08E65D6C _ menus FontsAndPortraits
+
+# Dialog
 dialog-text 0x08EAC798 _ data/text/en_us.json DialogTextEnUs
 dialog-text 0x08EBFE84 _ data/text/en_gb.json DialogTextEnGb
 dialog-text 0x08ED3574 _ data/text/fr.json DialogTextFr
@@ -2758,23 +2755,21 @@ dialog-text 0x08F0FB84 _ data/text/it.json DialogTextIt
 dialog-text 0x08F24704 _ data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C _ data/text/da.json DialogTextDa
 
+# Graphics section 4
 graphics 0x08F4BEDC 0x08FA953C menus FamousWizardCards
 
+# Random data?
 c-rodata 0x08FAA7D0 _ EepromV124
 c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
-
 c-file 0x08FAAEF8 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
-# PlaySoundById tables: sample records, random-variant records and the per-sound config rows
 c-file 0x08FB0588 _ src/sound/sound_samples.c g_aSoundSamples
 c-file 0x08FB0818 _ src/sound/sound_variants.c g_aSoundVariants
 c-file 0x08FB09F8 0x08FB0CC4 src/sound/sound_config.c g_aSoundConfig
 c-file 0x08FB0D94 0x08FB0DB0 src/store/shop_stock_lists.c g_apShopStockLists
 
-# ROM images of the IWRAM and EWRAM sections, which kramInstall copies to RAM.
-# The IWRAM image holds Krawall's ARM mixer code; its rows name the ROM copy
-# with a _Rom suffix, and ram_symbols.<ver>.inc names the IWRAM addresses.
+# Krawall code section, will be copied into IWRAM
 label 0x08FB0DB0 g_KrawallIwramRomImage
 arm-func 0x08FB0DB4 kradInterrupt_Rom
 arm-func 0x08FB0E44 kramPlayExt_Rom
@@ -2798,4 +2793,6 @@ arm-func 0x08FB18E8 mix16to8_Rom
 arm-func 0x08FB19A0 mix16to8_patch_Rom
 arm-func 0x08FB19F8 mixReal_Rom
 arm-func 0x08FB1E18 kramWorker_Rom
+
+# Krawall data section, will be copied into EWRAM
 label 0x08FB2348 g_KrawallEwramRomImage
