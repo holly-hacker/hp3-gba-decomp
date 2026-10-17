@@ -10,7 +10,6 @@ typedef Actor *(*RoomActorConstructor)(u8 bColumn, u8 bRow);
 
 #define ROOM_ACTOR_TYPE_COUNT 14
 
-extern Actor *SpawnSwitchActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnPropActor(u8 bColumn, u8 bRow);
 
 // Actor bytes 0x60-0x6D as word-sized state, written by the type 10 and 12 constructors.
@@ -85,24 +84,6 @@ typedef struct RoomActorRecordUnk1 {
     u8 bAnimId;     // 0x08
     u8 bFlag;       // 0x09, nonzero: sub_080203F0, zero: sub_0802042C
 } RoomActorRecordUnk1;
-
-
-typedef struct RoomActorRecordUnk3 {
-    u32 dwActorType;
-    s16 nPixelX;
-    s16 nPixelY;
-    u8 pad_8;
-    u8 bVariant;   // 0x09, index into the asset and effect tables; 0-10
-    u16 wArgA;     // 0x0A, scaled by 30 into Actor 0x60
-    u8 bFlagC;     // 0x0C
-    u8 bArgD;      // 0x0D
-} RoomActorRecordUnk3;
-
-extern void sub_08044D24(Actor *pActor);
-extern void sub_08044F54(Actor *pSelf, Actor *pOther);
-extern const ActorGfxRecord g_aRoomSwitchSprites[5];                // ROM 0x0806C178 (US)
-extern const ActorGfxRecord *const g_apRoomSwitchAssetRecords[12];  // ROM 0x0806C1A0 (US)
-extern const void *const g_apRoomSwitchEffectData[12];               // ROM 0x0806C1D0 (US)
 
 // Scripted trigger actor. bKind (0-82) selects the sprite, draw flags and
 // collision behavior; the remaining record bytes become Actor bytes 0x62-0x68.

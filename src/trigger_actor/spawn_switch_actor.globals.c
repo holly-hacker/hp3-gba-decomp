@@ -1,5 +1,5 @@
 #include "types.h"
-#include "overworld/room_actor.h"
+#include "trigger_actor.h"
 #include "gen/graphics/overworld.h"
 
 const ActorGfxRecord g_aRoomSwitchSprites[5] = {

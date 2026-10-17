@@ -10,6 +10,7 @@
 #include "rising_platform_actor.h"
 #include "spongify_pad_actor.h"
 #include "torch_actor.h"
+#include "trigger_actor.h"
 
 // Room tile actorType -> constructor table; see docs/formats/rooms.md.
 // Type 0 is unused.

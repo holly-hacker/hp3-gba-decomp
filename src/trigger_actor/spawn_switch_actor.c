@@ -2,6 +2,7 @@
 #include "area.h"
 #include "overworld/overworld.h"
 #include "overworld/room_actor.h"
+#include "trigger_actor.h"
 
 // Room actor constructor for tile actorType 3, a two-state switch (button,
 // pressure plate or lever). See docs/formats/rooms.md.

@@ -1922,7 +1922,7 @@ thumb-func 0x08044A08 sub_08044ADC
 c-file 0x08044A2C _ src/train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
 c-file 0x08044AA8 _ src/train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file 0x08044B1C _ src/train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
-c-file 0x08044B2C 0x08044C50 src/room/actors/spawn_switch_actor.c SpawnSwitchActor
+c-file 0x08044B2C 0x08044C50 src/trigger_actor/spawn_switch_actor.c SpawnSwitchActor
 thumb-func 0x08044C50 sub_08044D24
 thumb-func 0x08044E80 sub_08044F54
 c-file 0x08044FC0 _ src/graphics/scanline/init_scanline_effects.c InitScanlineEffects
@@ -2319,7 +2319,7 @@ c-file 0x0806BF9C 0x0806C044 src/title_options/options_menu_items.c g_aOptionsMe
 c-file 0x0806C068 _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C0B0 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
-c-file 0x0806C0B4 0x0806C13C src/room/actors/spawn_switch_actor.globals.c g_aRoomSwitchSprites
+c-file 0x0806C0B4 0x0806C13C src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file 0x0806C22C 0x0806C23C src/graphics/scanline/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file 0x0806C240 _ src/room/actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
 graphics 0x0806E840 _ overworld OverworldSpellEffects
