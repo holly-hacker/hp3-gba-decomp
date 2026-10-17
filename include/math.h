@@ -14,6 +14,13 @@ typedef struct Point {
 typedef Point FixedPoint;
 typedef Point IntPoint;
 
+// A 16-bit position or offset pair. Callers read the halves unsigned; negative
+// offsets are stored wrapped.
+typedef struct ShortPoint {
+    u16 x;
+    u16 y;
+} ShortPoint;
+
 // Hand-written ARM divide routines in ROM (asm/rt/), copied to IWRAM by
 // InstallIwramDivideRoutines.
 extern void DivideSignedQuotient(void);

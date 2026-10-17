@@ -5,12 +5,12 @@
 
 // The pause menu's rows.
 const ListMenuEntry g_aInGameMenuEntries[6] = {
-    { StatusEquipCharacterSelect, 0x530, 0, 0 },  // "Status/Equip"
-    { ItemsSectionSelect,         0x531, 0, 0 },  // "Items"
-    { Folios,                     0x532, 0, 0 },  // "Folios"
-    { GameSave,                   0x533, 0, 1 },  // "Save Game"
-    { Connectivity,               0x534, 0, 0 },  // "Connectivity"
-    { Help,                       0x535, 0, 0 },  // "Help"
+    { StatusEquipCharacterSelect, 0x530, 0 },  // "Status/Equip"
+    { ItemsSectionSelect,         0x531, 0 },  // "Items"
+    { Folios,                     0x532, 0 },  // "Folios"
+    { GameSave,                   0x533, 1 },  // "Save Game"
+    { Connectivity,               0x534, 0 },  // "Connectivity"
+    { Help,                       0x535, 0 },  // "Help"
 };
 
 // One icon per row.
@@ -27,13 +27,11 @@ const ListMenuDefinition g_InGameMenuDefinition = {
     0x537,  // title: "Menu"
     ARRAY_COUNT(g_aInGameMenuEntries),
     4,
-    0,
-    72, 26,
-    0, 16,
+    { 72, 26 },
+    { 0, 16 },
     g_aInGameMenuEntries,
     ARRAY_COUNT(g_aInGameMenuRowActors),
-    0,
-    -32, 0,
+    { -32, 0 },
     g_aInGameMenuRowActors,
-    -48, 8,
+    { -48, 8 },
 };
