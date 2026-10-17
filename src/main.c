@@ -1,6 +1,5 @@
 #include "area.h"
 #include "color.h"
-#include "hw/vblank.h"
 #include "interrupts.h"
 #include "graphics/display.h"
 #include "display.h"

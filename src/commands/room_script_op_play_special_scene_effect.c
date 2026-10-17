@@ -10,9 +10,9 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
-#include "hw/vblank.h"
 #include "gen/graphics/overworld.h"
 #include "hero.h"
+#include "main.h"
 #include "map.h"
 #include "screen_transitions.h"
 
