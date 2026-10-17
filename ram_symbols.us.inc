@@ -212,7 +212,7 @@
 .set g_dwDialogPageFull,                               0x03002EF0  @ u32: nonzero once the box's text page is fully drawn
 .set g_dwDialogBoxTileRow,                             0x03002EF4  @ u32: BG1 tile row the box's tilemap is drawn at
 .set g_awDialogBoxPalette,                             0x03002EF8  @ u16[16]: dialog box BG palette, DMAed to bank 0 at the box's top line
-.set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ Actor *; see include/cutscene/hippogriff_flies_into_air_cutscene.h
+.set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ Actor *; see include/ending_cutscene.h
 .set g_pHippogriffFliesIntoAirActor2,                 0x03002F1C  @ Actor *
 .set g_aRoomTileAnimations,                            0x03002F24  @ RoomTileAnimation *: 32 entries, allocated by InitRoomTileAnimationTable
 .set g_dwRoomTileAnimationCount,                       0x03002F28  @ u32: entries in use in g_aRoomTileAnimations

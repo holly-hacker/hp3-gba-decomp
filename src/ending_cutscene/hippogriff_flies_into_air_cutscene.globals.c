@@ -1,5 +1,5 @@
 #include "types.h"
-#include "cutscene/hippogriff_flies_into_air_cutscene.h"
+#include "ending_cutscene.h"
 #include "gen/graphics/minigames/boggart.h"
 
 const u32 g_dwHippogriffFliesIntoAirBg0Control = 0x3D03;

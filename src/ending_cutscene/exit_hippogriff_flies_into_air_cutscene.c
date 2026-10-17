@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ending_cutscene.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "interrupts.h"

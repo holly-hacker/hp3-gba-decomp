@@ -877,9 +877,9 @@ c-file 0x0801FDBC _ src/display/set_dispcnt_mode.c SetDispcntMode
 c-file 0x0801FDD4 _ src/display/set_dispcnt_except_mode.c SetDispcntExceptMode
 
 # Ending cutscene (hippogriff-flies-into-air cutscene mode)
-c-file 0x0801FDE8 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
-c-file 0x0801FED4 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
-c-file 0x0801FF14 0x0801FF30 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
+c-file 0x0801FDE8 _ src/ending_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
+c-file 0x0801FED4 _ src/ending_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
+c-file 0x0801FF14 0x0801FF30 src/ending_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
 
 # Event actors?
 thumb-func 0x0801FF30 TickCameraCutawayActor
@@ -2501,7 +2501,7 @@ c-file 0x0805E104 _ src/default_menu/default_menu.globals.c g_dwCommonBg0Control
 c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file 0x0805E280 _ src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E28C _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
-c-file 0x0805EB10 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
+c-file 0x0805EB10 _ src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EB9C _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/font/load_font_descriptor.globals.c g_aFontTable

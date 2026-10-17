@@ -782,9 +782,9 @@ c-file 0x0801FD88 _ src/display/init_display_control.c InitDisplayControl
 c-file 0x0801FD98 _ src/display/get_dispcnt_mode.c GetDispcntMode
 c-file 0x0801FDA4 _ src/display/set_dispcnt_mode.c SetDispcntMode
 c-file 0x0801FDBC _ src/display/set_dispcnt_except_mode.c SetDispcntExceptMode
-c-file 0x0801FDD0 _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
-c-file 0x0801FEBC _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
-c-file 0x0801FEFC 0x0801FF18 src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
+c-file 0x0801FDD0 _ src/ending_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
+c-file 0x0801FEBC _ src/ending_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
+c-file 0x0801FEFC 0x0801FF18 src/ending_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
 thumb-func 0x0801FF18 sub_0801FF30
 thumb-func 0x080200E4 sub_080200FC
 thumb-func 0x08020174 SpawnScriptEffectActor
@@ -2234,7 +2234,7 @@ c-file 0x0805E030 _ src/default_menu/default_menu.globals.c g_dwCommonBg0Control
 c-file 0x0805E03C _ src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file 0x0805E1AC _ src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E1B8 _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
-c-file 0x0805EA3C _ src/gamemode/modes/cutscene/hippogriff_flies_into_air_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
+c-file 0x0805EA3C _ src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EAC8 _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x08060408 _ src/font/load_font_descriptor.globals.c g_aExtFontTable

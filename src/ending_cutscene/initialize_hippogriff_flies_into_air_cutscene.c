@@ -2,7 +2,7 @@
 #include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "cutscene/hippogriff_flies_into_air_cutscene.h"
+#include "ending_cutscene.h"
 #include "actor.h"
 #include "gen/graphics/minigames/boggart.h"
 

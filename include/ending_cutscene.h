@@ -4,6 +4,10 @@
 #include "actor.h"
 #include "gen/graphics/minigames/hippogriff.h"
 
+extern void InitializeHippogriffFliesIntoAirCutscene(void);
+extern void UpdateHippogriffFliesIntoAirCutscene(void);
+extern void ExitHippogriffFliesIntoAirCutscene(void);
+
 extern Actor *g_pHippogriffFliesIntoAirActor;   // 0x03002F18: the hippogriff; scaled and moved into the air
 extern Actor *g_pHippogriffFliesIntoAirActor2;  // 0x03002F1C
 
