@@ -6,7 +6,7 @@
 #include "gen/graphics/minigames/hippogriff.h"
 #include "graphics/display.h"
 #include "menu/main_menu.h"
-#include "menu/unused_hogwarts_map_screen.h"
+#include "landmarks.h"
 #include "mt19937.h"
 #include "cursor.h"
 

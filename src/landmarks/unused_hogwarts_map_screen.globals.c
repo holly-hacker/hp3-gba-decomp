@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "gen/graphics/overworld.h"
-#include "menu/unused_hogwarts_map_screen.h"
+#include "landmarks.h"
 
 const u8 *const g_apUnusedHogwartsMapBackgrounds[UNUSED_HOGWARTS_MAP_ENTRY_COUNT] = {
     gHippogriffLanguageMinigameBgs002,

@@ -65,7 +65,7 @@
     {"us": "0x08025E90", "jp": "0x08025EEC", "name": "Interrupts"},
     {"us": "0x08026348", "jp": "0x080263A4", "name": "Invisible actors"},
     {"us": "0x080266EC", "jp": "0x08026748", "name": "Items"},
-    {"us": "0x08027F40", "jp": "0x08027F9C", "name": "Hogwarts map (unused)"},
+    {"us": "0x08027F40", "jp": "0x08027F9C", "name": "Landmarks (Unused Hogwarts map)"},
     {"us": "0x08028314", "jp": "0x08028370", "name": "Language select"},
     {"us": "0x080285F8", "jp": "0x08028654", "name": "LCD"},
     {"us": "0x080286A0", "jp": "0x080286FC", "name": "List"},

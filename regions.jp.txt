@@ -1055,11 +1055,11 @@ thumb-func 0x08027EBC sub_08027E60
 thumb-func 0x08027EFC sub_08027EA0
 thumb-func 0x08027F0C sub_08027EB0
 thumb-func 0x08027F4C sub_08027EF0
-c-file 0x08027F9C _ src/gamemode/modes/unused_hogwarts_map_screen/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
-c-file 0x080280A8 0x08028128 src/gamemode/modes/unused_hogwarts_map_screen/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
+c-file 0x08027F9C _ src/landmarks/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
+c-file 0x080280A8 0x08028128 src/landmarks/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028128 sub_080280CC
 thumb-func 0x08028208 sub_080281AC
-c-file 0x0802826C 0x0802829C src/gamemode/modes/unused_hogwarts_map_screen/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
+c-file 0x0802826C 0x0802829C src/landmarks/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
 thumb-func 0x0802829C sub_08028240
 thumb-func 0x08028320 sub_080282C4
 c-file 0x08028370 _ src/language_select/initialize_language_select.c InitializeLanguageSelect
@@ -2250,7 +2250,7 @@ c-file 0x08060E08 _ src/input/dpad_direction.c g_abDpadDirection
 c-file 0x08060E18 _ src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file 0x08060E4C _ src/items/actor_scale_steps.c g_adwActorScaleSteps
 c-file 0x08060E70 0x08062940 src/items/items.c g_pItemTable
-c-file 0x08062944 _ src/gamemode/modes/unused_hogwarts_map_screen/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
+c-file 0x08062944 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file 0x08062980 0x0806298C src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 
 c-file 0x08062994 0x080629C4 src/gamemode/modes/cutscene/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable

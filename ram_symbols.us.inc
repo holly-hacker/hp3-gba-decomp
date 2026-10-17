@@ -305,7 +305,7 @@
 @ OAM DMA half-toggle; see include/interrupts.h.
 .set g_bOamDmaHalfToggle,                    0x030037AC
 .set g_ItemInventory,                     0x030037B0  @ ItemInventory: item counts and equipped items, see include/game/items.h
-.set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32; see include/menu/unused_hogwarts_map_screen.h
+.set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32; see include/landmarks.h
 .set g_pUnusedHogwartsMapCursor,             0x03003A54  @ Actor *
 .set g_pUnusedHogwartsMapBg1Tilemap,         0x03003A58  @ void *
 .set g_apUnusedHogwartsMapActors,           0x03003A60  @ Actor *[9]

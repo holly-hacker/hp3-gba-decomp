@@ -1188,11 +1188,11 @@ thumb-func 0x08027EB0 sub_08027EB0
 thumb-func 0x08027EF0 sub_08027EF0
 
 # Hogwarts map (original name not known, maybe "landmarks"?)
-c-file 0x08027F40 _ src/gamemode/modes/unused_hogwarts_map_screen/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
-c-file 0x0802804C 0x080280CC src/gamemode/modes/unused_hogwarts_map_screen/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
+c-file 0x08027F40 _ src/landmarks/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
+c-file 0x0802804C 0x080280CC src/landmarks/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
 thumb-func 0x080280CC sub_080280CC
 thumb-func 0x080281AC sub_080281AC
-c-file 0x08028210 0x08028240 src/gamemode/modes/unused_hogwarts_map_screen/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
+c-file 0x08028210 0x08028240 src/landmarks/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
 thumb-func 0x08028240 sub_08028240
 thumb-func 0x080282C4 sub_080282C4
 
@@ -2519,7 +2519,7 @@ c-file 0x08060EC0 _ src/items/actor_scale_steps.c g_adwActorScaleSteps
 
 # Item/equipment table, see docs/formats/items.md
 c-file 0x08060EE4 0x080629B4 src/items/items.c g_pItemTable
-c-file 0x080629B8 _ src/gamemode/modes/unused_hogwarts_map_screen/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
+c-file 0x080629B8 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file 0x080629F4 0x08062A00 src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 
 c-file 0x08062A08 0x08062A38 src/gamemode/modes/cutscene/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
