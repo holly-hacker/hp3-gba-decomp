@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "input.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "landmarks.h"
 
 void UpdateUnusedHogwartsMapScreen(void)

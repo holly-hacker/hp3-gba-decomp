@@ -5,6 +5,7 @@
 #include "actor.h"
 #include "overworld/room.h"
 #include "default_menu.h"
+#include "minigame_menu.h"
 
 void ExitMinigameMenu(void)
 {

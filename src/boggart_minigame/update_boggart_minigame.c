@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "modes.h"
 #include "input.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "boggart_minigame.h"
 #include "game/save.h"
 

@@ -6,7 +6,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "hw/io_regs.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "mt19937.h"
 #include "minigame/serve_pumpkin_juice.h"
 #include "font.h"

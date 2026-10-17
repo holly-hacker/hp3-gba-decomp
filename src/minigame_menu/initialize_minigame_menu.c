@@ -3,7 +3,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "actor.h"
 #include "cursor.h"
 #include "default_menu.h"

@@ -4,7 +4,7 @@
 #include "modes.h"
 #include "graphics/display.h"
 #include "input.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "game/save.h"
 #include "minigame/wizard_cracker_pop_it.h"
 

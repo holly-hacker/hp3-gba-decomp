@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "menu/main_menu.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "title.h"
 #include "cursor.h"
 

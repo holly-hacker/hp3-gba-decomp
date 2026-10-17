@@ -5,9 +5,10 @@
 #include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "cursor.h"
 #include "minigame_difficulty_select.h"
+#include "graphics/audio.h"
 
 void ExitDementorMinigame(void)
 {

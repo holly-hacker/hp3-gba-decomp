@@ -2,7 +2,8 @@
 #include "graphics/display.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
+#include "graphics/audio.h"
 
 void ExitCheatSoundTest(void)
 {

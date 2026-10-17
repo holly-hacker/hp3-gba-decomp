@@ -335,7 +335,7 @@
 .set gMemPool,                               0x03003EE0  @ MemPool[]; only pool 0 (index 0) is ever registered
 .set gMemPoolCount,                          0x03003EF0  @ u32: live pool count, incremented by InitMemoryPool
 .set g_GameModeStackContext,                 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
-.set g_dwListMenuSelection,                  0x03003F14  @ u32: selected row of the current list menu; see include/menu/minigame_menu.h
+.set g_dwListMenuSelection,                  0x03003F14  @ u32: selected row of the current list menu; see include/modes.h
 .set g_dwPendingGameMode,                    0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
 .set g_PrevGameModeStackContext,             0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md

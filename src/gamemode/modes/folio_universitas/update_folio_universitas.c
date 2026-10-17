@@ -6,7 +6,7 @@
 #include "graphics/audio.h"
 #include "input.h"
 #include "menu/folio_universitas.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 
 #define MOVE_CURSOR()                                                                              \
     SetActorMoveTargetWithDuration(                                                     \

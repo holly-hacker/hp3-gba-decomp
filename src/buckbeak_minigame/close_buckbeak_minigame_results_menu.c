@@ -5,6 +5,7 @@
 #include "menu/main_menu.h"
 #include "buckbeak_minigame.h"
 #include "cursor.h"
+#include "text_actor.h"
 
 // Removes the results menu and sets the rings spinning again.
 void CloseBuckbeakMinigameResultsMenu(void)

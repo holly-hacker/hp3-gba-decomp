@@ -9,13 +9,14 @@
 #include "modes.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 #include "flipbook.h"
 #include "hero.h"
 #include "map.h"
+#include "graphics/audio.h"
 
 // Overworld mode's pDestroyFn. Plays the outgoing screen transition, then
 // tears down the overworld's actors, palettes and lists. The mode being

@@ -6,6 +6,7 @@
 #include "text.h"
 #include "buckbeak_minigame.h"
 #include "cursor.h"
+#include "text_actor.h"
 
 // Opens the results menu: Resume Game (only while there is time), Replay and Exit Game.
 void InitializeBuckbeakMinigameResultsMenu(void)

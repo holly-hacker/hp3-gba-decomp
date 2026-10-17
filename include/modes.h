@@ -104,6 +104,8 @@ typedef struct {
                                    // reuse pattern as dwModeScratchA
 } GameModeStackContext;
 extern GameModeStackContext g_GameModeStackContext;  // 0x03003EF4
+extern u32 g_dwListMenuSelection;  // 0x03003F14: the same word as g_GameModeStackContext.dwModeScratchB,
+                                   // the selected row of a minigame's results/pause menu
 
 // Mirrors g_GameModeStackContext's layout for the not-yet-applied mode --
 // PushGameMode/PushGameMode_2/PushGameMode_3 stage here, TickGameModeStack

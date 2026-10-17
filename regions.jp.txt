@@ -1216,12 +1216,12 @@ c-file 0x0802CDCC 0x0802CDFC src/minigame_difficulty_select/exit_wizard_cracker_
 thumb-func 0x0802CDFC SyncSaveOptionsPausingKrawall
 thumb-func 0x0802CE10 SpawnMinigameTextPanel
 thumb-func 0x0802CF28 FreeMinigameTextPanel
-c-file 0x0802CF7C 0x0802D0D0 src/gamemode/modes/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
+c-file 0x0802CF7C 0x0802D0D0 src/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
 thumb-func 0x0802D0D0 HandleMinigameMenuSelection
 thumb-func 0x0802D18C DrawMinigameSelectMenu
 thumb-func 0x0802D20C ShowMinigameLockedMessageIfNeeded
-c-file 0x0802D2A8 _ src/gamemode/modes/minigame_menu/initialize_minigame_menu.c InitializeMinigameMenu
-c-file 0x0802D334 0x0802D358 src/gamemode/modes/minigame_menu/exit_minigame_menu.c ExitMinigameMenu
+c-file 0x0802D2A8 _ src/minigame_menu/initialize_minigame_menu.c InitializeMinigameMenu
+c-file 0x0802D334 0x0802D358 src/minigame_menu/exit_minigame_menu.c ExitMinigameMenu
 thumb-func 0x0802D358 BeginMinigameSwitchFade_candidate
 thumb-func 0x0802D378 TickMinigameSwitchFadeOut_candidate
 thumb-func 0x0802D3AC SwapMinigameSelection_candidate
@@ -2264,7 +2264,7 @@ c-rodata 0x08065C28 _ ResetBgLayer
 c-rodata 0x08065C30 _ GetDirectionFromVector
 c-file 0x08065C48 _ src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x08065FA8 0x08065FC8 src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
-c-file 0x08065FE8 0x08065FF0 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
+c-file 0x08065FE8 0x08065FF0 src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066010 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file 0x08066020 0x08066060 src/overworld/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066DD0 _ src/room/actors/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows

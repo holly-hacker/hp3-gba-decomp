@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "math.h"
 #include "gen/graphics/minigames/boggart.h"
 #include "gen/graphics/overworld.h"

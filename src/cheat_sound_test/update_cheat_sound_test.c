@@ -3,7 +3,7 @@
 #include "cheat_sound_test.h"
 #include "modes.h"
 #include "input.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 
 void UpdateCheatSoundTest(void)
 {

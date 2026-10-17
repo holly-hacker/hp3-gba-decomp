@@ -7,7 +7,7 @@
 #include "minigame/divination_tea.h"
 #include "modes.h"
 #include "hw/io_regs.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "mt19937.h"
 #include "overworld/room.h"
 #include "font.h"

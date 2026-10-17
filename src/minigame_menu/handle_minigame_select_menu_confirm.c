@@ -3,7 +3,7 @@
 #include "modes.h"
 #include "input.h"
 #include "title.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "game/save.h"
 #include "default_menu.h"
 #include "minigame_difficulty_select.h"

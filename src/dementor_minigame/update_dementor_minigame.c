@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/audio.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "modes.h"
 #include "dementor_minigame.h"
 #include "input.h"

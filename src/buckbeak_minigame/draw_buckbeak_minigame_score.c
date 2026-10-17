@@ -2,6 +2,7 @@
 #include "font.h"
 #include "text.h"
 #include "buckbeak_minigame.h"
+#include "text_actor.h"
 
 void DrawBuckbeakMinigameScore(void)
 {

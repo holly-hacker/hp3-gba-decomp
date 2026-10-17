@@ -34,6 +34,7 @@ extern void kramSetFreqVeneer(s32 handle, u32 freq);
 extern s32 IsSoundActive_candidate(s32 handle);
 
 extern s32 PlaySoundById(s32 id);  // returns a handle for StopSoundEffect
+extern void sub_0803FF04(void);
 // Returns handle unchanged while it is still playing, otherwise plays the sound like PlaySoundById.
 extern s32 PlaySoundByIdUnlessActive_candidate(s32 id, s32 handle);
 extern void PlayMusicModule(u8 moduleId);

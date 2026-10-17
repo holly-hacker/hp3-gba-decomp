@@ -6,7 +6,7 @@
 #include "graphics/display.h"
 #include "mode7.h"
 #include "graphics/scanline_effects.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "gen/graphics/minigames/buckbeak.h"
 
 extern u32 g_dwBuckbeakMinigameForceOverworldExit;  // 0x03002084; set by StartMinigame

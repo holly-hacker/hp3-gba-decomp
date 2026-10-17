@@ -4,7 +4,7 @@
 #include "modes.h"
 #include "input.h"
 #include "cutscene.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "font.h"
 #include "text.h"
 

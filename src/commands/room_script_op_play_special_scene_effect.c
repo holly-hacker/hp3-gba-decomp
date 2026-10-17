@@ -5,7 +5,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"
-#include "menu/minigame_menu.h"
+#include "minigame_menu.h"
 #include "actor.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

@@ -4,6 +4,7 @@
 #include "hw/bios.h"
 #include "graphics/audio.h"
 #include "buckbeak_minigame.h"
+#include "text_actor.h"
 
 void DrawBuckbeakMinigameTime(void)
 {
