@@ -857,8 +857,8 @@ c-file 0x08021B50 _ src/gamecube/tick_joybus_session.c TickJoybusSession
 c-file 0x08021B84 _ src/gamecube/teardown_joybus_hardware.c TeardownJoybusHardware
 c-file 0x08021BF4 _ src/gamecube/tick_joybus_timeout.c TickJoybusTimeout
 c-file 0x08021C34 _ src/gamecube/handle_joybus_reset.c HandleJoybusReset
-c-file 0x08021C64 _ src/gamemode/modes/minigame/owl_care_kit/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
-c-file 0x08021DC8 0x08021E54 src/gamemode/modes/minigame/owl_care_kit/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
+c-file 0x08021C64 _ src/hedwig_minigame/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
+c-file 0x08021DC8 0x08021E54 src/hedwig_minigame/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
 thumb-func 0x08021E54 ProcessOwlCareKitTick
 thumb-func 0x08021EDC sub_08021E80
 thumb-func 0x08022040 ProcessOwlMailReward
@@ -872,11 +872,11 @@ thumb-func 0x08022B9C sub_08022B40
 thumb-func 0x08022C48 sub_08022BEC
 thumb-func 0x08022CE0 sub_08022C84
 thumb-func 0x08022D4C sub_08022CF0
-c-file 0x08022DF4 0x08022E44 src/gamemode/modes/minigame/owl_care_kit/handle_owl_care_kit_screen_exit.c HandleOwlCareKitScreenExit
+c-file 0x08022DF4 0x08022E44 src/hedwig_minigame/handle_owl_care_kit_screen_exit.c HandleOwlCareKitScreenExit
 thumb-func 0x08022E44 InitializeOwlActorSprite
 thumb-func 0x08022EA0 SetOwlPaletteRow
-c-file 0x08022EC8 _ src/save/deserialize_owl_care_kit.c DeserializeOwlCareKit
-c-file 0x08022F04 0x08022F40 src/save/serialize_owl_care_kit.c SerializeOwlCareKit
+c-file 0x08022EC8 _ src/hedwig_minigame/deserialize_owl_care_kit.c DeserializeOwlCareKit
+c-file 0x08022F04 0x08022F40 src/hedwig_minigame/serialize_owl_care_kit.c SerializeOwlCareKit
 thumb-func 0x08022F40 sub_08022EE4
 thumb-func 0x08022F84 sub_08022F28
 thumb-func 0x08022FA0 sub_08022F44
@@ -2240,7 +2240,7 @@ c-file 0x0805EAC8 _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x08060408 _ src/font/load_font_descriptor.globals.c g_aExtFontTable
 c-file 0x080604C8 0x080604E0 src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
 c-rodata 0x080605AC 0x080605B1 InitJoybusSession
-c-file 0x08060634 0x08060644 src/gamemode/modes/minigame/owl_care_kit/owl_care_kit.globals.c g_dwOwlCareBg3Control
+c-file 0x08060634 0x08060644 src/hedwig_minigame/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060810 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
 c-file 0x08060818 0x08060828 src/overworld/party_focus_gfx.c g_PartyFocusGfx_candidate
 c-file 0x08060878 0x08060AB8 src/overworld/party_assets.c g_aPartyWalkAssets

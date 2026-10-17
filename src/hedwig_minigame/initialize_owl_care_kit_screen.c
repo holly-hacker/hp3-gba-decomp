@@ -5,7 +5,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "font.h"
-#include "minigame/owlcare.h"
+#include "hedwig_minigame.h"
 #include "gen/graphics/minigames/owl_care.h"
 
 extern void *memset(void *dest, int value, u32 size);

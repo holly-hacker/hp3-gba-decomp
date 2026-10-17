@@ -7,7 +7,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "menu/main_menu.h"
-#include "minigame/owlcare.h"
+#include "hedwig_minigame.h"
 #include "cursor.h"
 
 void HandleOwlCareKitScreenExit(void)

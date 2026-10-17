@@ -8,6 +8,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_actor.h"
+#include "hedwig_minigame.h"
 
 // Packs the live game state into the slot stream. The first six values are
 // the ones UnpackSaveSlotPreview reads back for the save menus.

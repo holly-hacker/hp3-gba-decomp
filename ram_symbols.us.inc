@@ -223,7 +223,7 @@
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickActor clears; see src/actor/tick_actor.c
 .set g_JoybusLinkState,          0x03003238  @ JoybusLinkState: GameCube link (JOYBUS) session state, see include/gamecube.h
-.set g_OwlCareKitScreen,        0x03003270  @ OwlCareKitScreenState: live state of the Owl Care Kit care screen, see include/minigame/owlcare.h
+.set g_OwlCareKitScreen,        0x03003270  @ OwlCareKitScreenState: live state of the Owl Care Kit care screen, see include/hedwig_minigame.h
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
 @ --- Overworld actor tracking (see include/overworld/overworld.h) ---

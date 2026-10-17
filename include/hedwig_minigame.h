@@ -3,6 +3,12 @@
 #include "types.h"
 #include "actor.h"
 
+void InitializeOwlCareKitScreen(void);
+void HandleOwlCareKitScreenTick(void);
+void HandleOwlCareKitScreenExit(void);
+void DeserializeOwlCareKit(void);
+void SerializeOwlCareKit(void);
+
 // Per-tick Owl Care Kit clock, a no-op until the care screen has been visited.
 // Counts down the Mail flight timer, otherwise advances the elapsed-tick counter;
 // each time that passes 0x95 it resets and, if nGrowCounters is set, raises all

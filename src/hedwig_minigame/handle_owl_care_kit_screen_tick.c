@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/audio.h"
 #include "input.h"
-#include "minigame/owlcare.h"
+#include "hedwig_minigame.h"
 
 void HandleOwlCareKitScreenTick(void)
 {

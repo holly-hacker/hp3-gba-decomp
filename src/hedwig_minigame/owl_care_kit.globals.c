@@ -1,5 +1,5 @@
 #include "types.h"
-#include "minigame/owlcare.h"
+#include "hedwig_minigame.h"
 
 const u32 g_dwOwlCareBg3Control = 0x2F83;
 const u32 g_dwOwlCareBg2Control = 0x3083;
