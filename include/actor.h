@@ -1,7 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "direction.h"
 #include "mem.h"
 #include "particles.h"
 #include "oam.h"

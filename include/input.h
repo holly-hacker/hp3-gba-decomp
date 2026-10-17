@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "direction.h"
+#include "math.h"
 
 // Controller input state maintained by UpdateKeyInput, called once per
 // game-loop iteration from TickGameModeStack, and the menu-cursor helpers
