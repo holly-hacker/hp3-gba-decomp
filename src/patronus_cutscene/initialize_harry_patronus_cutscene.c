@@ -6,6 +6,7 @@
 #include "patronus_cutscene.h"
 #include "hw/io_regs.h"
 #include "interrupts.h"
+#include "screen_transitions.h"
 
 void InitializeHarryPatronusCutscene(void)
 {

@@ -4,6 +4,7 @@
 #include "actor.h"
 #include "minigame_menu.h"
 #include "graphics/audio.h"
+#include "screen_transitions.h"
 
 void ExitCheatSoundTest(void)
 {

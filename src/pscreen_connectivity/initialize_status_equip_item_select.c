@@ -3,6 +3,7 @@
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "pscreen_connectivity.h"
+#include "screen_transitions.h"
 
 void InitializeStatusEquipItemSelect(void)
 {

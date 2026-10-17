@@ -6,6 +6,7 @@
 #include "modes.h"
 #include "cutscene/hogwarts_up_night_cutscene.h"
 #include "hw/io_regs.h"
+#include "screen_transitions.h"
 
 void InitializeHogwartsUpNightCutscene(void)
 {

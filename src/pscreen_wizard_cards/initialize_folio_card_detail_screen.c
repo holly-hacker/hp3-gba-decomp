@@ -8,6 +8,7 @@
 #include "gen/graphics/cutscenes.h"
 #include "gen/graphics/menus.h"
 #include "pscreen_wizard_cards.h"
+#include "screen_transitions.h"
 
 void InitializeFolioCardDetailScreen(void)
 {

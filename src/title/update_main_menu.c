@@ -8,6 +8,7 @@
 #include "random.h"
 #include "font.h"
 #include "text.h"
+#include "screen_transitions.h"
 
 void UpdateMainMenu(void)
 {

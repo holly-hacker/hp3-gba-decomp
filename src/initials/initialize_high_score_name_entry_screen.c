@@ -12,6 +12,7 @@
 #include "gen/graphics/minigames/wizard_cracker.h"
 #include "gen/graphics/menus.h"
 #include "cursor.h"
+#include "screen_transitions.h"
 
 void InitializeHighScoreNameEntryScreen(void)
 {

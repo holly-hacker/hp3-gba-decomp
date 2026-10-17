@@ -10,6 +10,7 @@
 #include "overworld/room.h"
 #include "font.h"
 #include "gen/graphics/menus.h"
+#include "screen_transitions.h"
 
 void InitializeCheatMap(void)
 {

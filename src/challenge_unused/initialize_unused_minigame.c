@@ -5,6 +5,7 @@
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "challenge_unused.h"
+#include "screen_transitions.h"
 
 void InitializeUnusedMinigame(void)
 {

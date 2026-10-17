@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "interrupts.h"
 #include "patronus_cutscene.h"
+#include "screen_transitions.h"
 
 void ExitHarryPatronusCutscene(void)
 {

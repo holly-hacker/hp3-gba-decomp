@@ -9,21 +9,9 @@
 // Per-frame ticks run by TickFrameSystems; see docs/memory-map/frame_systems.md.
 extern void TickScreenWindows_candidate(void);
 
-// Copies a w x h rectangle of tiles from (srcX, srcY) of a loaded BG tilemap to (dstX, dstY) of the
-// given BG, adding tileOffset to the tile numbers and palBank to their palette.
 // The colors of a graphic blob's embedded palette, after its two flag bytes
 // (see docs/formats/graphic_blob.md).
 #define GRAPHIC_BLOB_PALETTE_COLORS(blob) ((const u16 *)((const u8 *)(blob) + 2))
-// Dispatches through the 15-entry handler table at 0x0806B844 by transitionIndex. Entry 2
-// (0x0803C450) is a blocking full-screen palette fade that keeps the normal per-frame tick running.
-extern void PlayScreenTransitionInByIndex(u32 blendArg, u32 transitionIndex);
-// Dispatches through the parallel 15-entry handler table at 0x0806B880 by transitionIndex.
-extern void PlayScreenTransitionOutByIndex(u32 blendArg, u32 transitionIndex);
-
-extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
-// Sets BLDCNT (layer mask | fade mode) and BLDY (amount, at most 0x10).
-extern void SetFadeToWhite(u16 layerMask, u16 amount);
-extern void SetFadeToBlack(u16 layerMask, u16 amount);
 
 // One corner of a hardware window rectangle, positions in 16.16.
 typedef struct WindowCorner {
@@ -51,11 +39,6 @@ extern void SetScreenWindowLayers_candidate(u32 windowId, u32 winIn, u32 winOut)
 extern void SetScreenWindowRect_candidate(u32 windowId, s32 x0, s32 y0, s32 x1, s32 y1);
 extern void HideScreenWindow_candidate(u32 windowId);
 
-
-
-extern void SetAlphaBlendTargets(u8 arg0, u32 arg1);
-extern void sub_0803DB68(void);
-extern void sub_0803DC44(void);
 // One frame of a BG tile animation: its tile data and how many ticks it shows
 // (0 holds it).
 typedef struct BgTileAnimFrame {
@@ -112,14 +95,3 @@ typedef BG_TILE_ANIMATION(128) BgTileAnimation128;
 // The write-only half of SetBgControl: writes BGxCNT and the tilemap/charblock
 // VRAM bases, without enabling the layer via SetDispcntFlag.
 extern void SetBgControlRegister(u32 bg, u32 control);
-// Set by SetScreenDarkenParams_candidate (every caller passes 0, 8).
-// DarkenScreenPalette and RestoreScreenPalette pass the step ticks to the
-// palette effect they start (PaletteEffect.bStepTicks_candidate); no reader
-// of g_dwUnk03005638 has been found.
-extern u32 g_dwUnk03005638;
-extern u32 g_dwScreenDarkenStepTicks_candidate;
-extern void SetScreenDarkenParams_candidate(u32 arg0, u32 stepTicks);
-// 0x400-byte copy of the BG+OBJ palette that DarkenScreenPalette saves and
-// RestoreScreenPalette restores.
-extern u16 *g_pScreenPaletteBackup;
-extern void InitScreenTransitionState_candidate(void);

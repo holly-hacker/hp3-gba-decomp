@@ -7,6 +7,7 @@
 #include "menu/options.h"
 #include "save.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void ExitOptions(void)
 {

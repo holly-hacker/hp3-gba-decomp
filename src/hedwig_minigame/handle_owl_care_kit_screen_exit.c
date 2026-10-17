@@ -9,6 +9,7 @@
 #include "menu/main_menu.h"
 #include "hedwig_minigame.h"
 #include "cursor.h"
+#include "screen_transitions.h"
 
 void HandleOwlCareKitScreenExit(void)
 {

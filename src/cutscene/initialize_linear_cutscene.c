@@ -4,6 +4,7 @@
 #include "cutscene.h"
 #include "menu/main_menu.h"
 #include "cursor.h"
+#include "screen_transitions.h"
 
 void InitializeLinearCutscene(void)
 {

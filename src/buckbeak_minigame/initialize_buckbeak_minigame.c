@@ -9,6 +9,7 @@
 #include "mem.h"
 #include "gen/graphics/menus.h"
 #include "text_actor.h"
+#include "screen_transitions.h"
 
 void InitializeBuckbeakMinigame(void)
 {

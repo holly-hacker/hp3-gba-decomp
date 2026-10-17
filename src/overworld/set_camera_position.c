@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "scroll.h"
 
 void SetCameraPosition(const s32 *pPosition)
 {

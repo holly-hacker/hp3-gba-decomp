@@ -5,6 +5,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "overworld/room.h"
+#include "screen_transitions.h"
 
 void ExitLupinPotionCutscene(void)
 {

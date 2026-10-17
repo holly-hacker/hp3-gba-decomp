@@ -8,6 +8,7 @@
 #include "actor.h"
 #include "minigame_menu.h"
 #include "minigame_difficulty_select.h"
+#include "screen_transitions.h"
 
 void ExitBuckbeakMinigame(void)
 {

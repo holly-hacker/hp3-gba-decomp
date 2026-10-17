@@ -7,6 +7,7 @@
 #include "pause_menu.h"
 #include "gen/graphics/cutscenes.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void InitializeCardTrade(void)
 {

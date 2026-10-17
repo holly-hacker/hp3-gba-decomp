@@ -7,6 +7,7 @@
 #include "font.h"
 #include "hedwig_minigame.h"
 #include "gen/graphics/minigames/owl_care.h"
+#include "screen_transitions.h"
 
 extern void *memset(void *dest, int value, u32 size);
 

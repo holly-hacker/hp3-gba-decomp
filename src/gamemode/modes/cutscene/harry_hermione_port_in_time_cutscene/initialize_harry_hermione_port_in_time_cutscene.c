@@ -9,6 +9,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "vram.h"
+#include "screen_transitions.h"
 
 void InitializeHarryHermionePortInTimeCutscene(void)
 {

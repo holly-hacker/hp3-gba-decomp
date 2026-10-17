@@ -5,6 +5,7 @@
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "actor.h"
+#include "screen_transitions.h"
 
 void ExitHogwartsUpNightCutscene(void)
 {

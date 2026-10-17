@@ -8,6 +8,7 @@
 #include "text.h"
 #include "cursor.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void InitializeOptions(void)
 {

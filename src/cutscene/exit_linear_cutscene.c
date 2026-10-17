@@ -2,6 +2,7 @@
 #include "background.h"
 #include "graphics/display.h"
 #include "cutscene.h"
+#include "screen_transitions.h"
 
 void ExitLinearCutscene(void)
 {

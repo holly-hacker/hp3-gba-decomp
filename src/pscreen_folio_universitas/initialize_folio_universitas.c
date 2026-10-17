@@ -9,6 +9,7 @@
 #include "font.h"
 #include "pscreen_folio_universitas.h"
 #include "graphics/display.h"
+#include "screen_transitions.h"
 
 void InitializeFolioUniversitas(void)
 {

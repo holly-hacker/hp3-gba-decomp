@@ -8,6 +8,7 @@
 #include "dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
+#include "screen_transitions.h"
 
 void ExitChooseCharacter(void)
 {

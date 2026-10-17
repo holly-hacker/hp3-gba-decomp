@@ -9,6 +9,7 @@
 #include "actor.h"
 #include "pscreen_information.h"
 #include "pause_menu.h"
+#include "screen_transitions.h"
 
 void UpdateHelp(void)
 {

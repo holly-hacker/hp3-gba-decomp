@@ -4,6 +4,7 @@
 #include "modes.h"
 #include "cutscene.h"
 #include "font.h"
+#include "screen_transitions.h"
 
 // Credits mode's pInitFn: sets up the credits BG layers, then starts the text scroll.
 void InitializeCredits(void)

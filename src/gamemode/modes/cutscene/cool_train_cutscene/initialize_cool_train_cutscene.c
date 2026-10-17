@@ -5,6 +5,7 @@
 #include "cutscene/cool_train_cutscene.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"
+#include "screen_transitions.h"
 
 void InitializeCoolTrainCutscene(void)
 {

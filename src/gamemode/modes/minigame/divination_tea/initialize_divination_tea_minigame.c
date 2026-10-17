@@ -12,6 +12,7 @@
 #include "overworld/room.h"
 #include "font.h"
 #include "vram.h"
+#include "screen_transitions.h"
 
 void InitializeDivinationTeaMinigame(void)
 {

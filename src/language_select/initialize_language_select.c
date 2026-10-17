@@ -6,6 +6,7 @@
 #include "save.h"
 #include "text.h"
 #include "language_select.h"
+#include "screen_transitions.h"
 
 void InitializeLanguageSelect(void)
 {

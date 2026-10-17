@@ -32,6 +32,7 @@
 #include "flipbook.h"
 #include "huffman.h"
 #include "map.h"
+#include "screen_transitions.h"
 
 extern void InitSaveSystem(void);
 extern void NoopInit(void);

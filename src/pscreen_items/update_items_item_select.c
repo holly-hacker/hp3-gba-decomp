@@ -9,6 +9,7 @@
 #include "pscreen_status_equip.h"
 #include "items.h"
 #include "pscreen_character.h"
+#include "screen_transitions.h"
 
 void UpdateItemsItemSelect(void)
 {

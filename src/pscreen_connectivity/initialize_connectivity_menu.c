@@ -5,6 +5,7 @@
 #include "mem.h"
 #include "pscreen_connectivity.h"
 #include "pause_menu.h"
+#include "screen_transitions.h"
 
 void InitializeConnectivityMenu(void)
 {

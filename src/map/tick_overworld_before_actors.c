@@ -2,6 +2,7 @@
 #include "overworld/overworld.h"
 #include "flipbook.h"
 #include "map.h"
+#include "scroll.h"
 
 void TickOverworldBeforeActors_candidate(void)
 {

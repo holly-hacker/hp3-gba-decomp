@@ -1,5 +1,6 @@
 #include "types.h"
 #include "move.h"
+#include "scroll.h"
 
 // Returns the draw layer (1-4) stored in the top two bits of the collision behavior byte at a
 // room pixel; 1 outside the room.

@@ -9,6 +9,7 @@
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "gen/graphics/overworld.h"
+#include "screen_transitions.h"
 
 void InitializeClockSkipCutscene(void)
 {

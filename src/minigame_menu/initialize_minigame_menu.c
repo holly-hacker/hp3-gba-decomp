@@ -7,6 +7,7 @@
 #include "actor.h"
 #include "cursor.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void InitializeMinigameMenu(void)
 {

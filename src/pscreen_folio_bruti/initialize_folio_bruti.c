@@ -8,6 +8,7 @@
 #include "actor.h"
 #include "font.h"
 #include "pscreen_folio_bruti.h"
+#include "screen_transitions.h"
 
 void InitializeFolioBruti(void)
 {

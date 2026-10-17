@@ -8,6 +8,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "cursor.h"
+#include "screen_transitions.h"
 
 void ExitDivinationTeaMinigame(void)
 {

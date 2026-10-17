@@ -7,6 +7,7 @@
 #include "menu/main_menu.h"
 #include "landmarks.h"
 #include "cursor.h"
+#include "screen_transitions.h"
 
 void ExitUnusedHogwartsMapScreen(void)
 {

@@ -6,6 +6,7 @@
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "overworld/room.h"
+#include "screen_transitions.h"
 
 void InitializeCheatPortraits(void)
 {

@@ -12,6 +12,7 @@
 #include "particles.h"
 #include "vram.h"
 #include "map.h"
+#include "screen_transitions.h"
 
 // Battle mode's pDestroyFn. See docs/memory-map/battle.md.
 void ExitBattle(void)

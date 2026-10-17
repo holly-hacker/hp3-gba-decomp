@@ -62,7 +62,6 @@ extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
 
 
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
-extern CameraFocusOffset g_CameraPosition_candidate;
 // Read here as a full word, not the byte docs/memory-map/game_modes.md's
 // plate comment describes elsewhere -- real source likely declares it int.
 extern u32 g_bCurrentRoomId;                // 0x03003B50
@@ -241,7 +240,6 @@ extern void LoadRoomBgTilemap0_candidate(const void *pTilemap);
 extern void LoadRoomBgTilemap1_candidate(const void *pTilemap);
 extern void LoadRoomBgTilemap2_candidate(const void *pTilemap);
 extern void LoadRoomBgTilemap3_candidate(const void *pTilemap);
-extern void LoadRoomBgLayer0Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);
 extern void LoadRoomBgLayer1Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);
 extern void LoadRoomBgLayer2Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);
 extern void LoadRoomBgLayer3Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);

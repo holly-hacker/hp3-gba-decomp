@@ -12,6 +12,7 @@
 #include "title.h"
 #include "text.h"
 #include "gen/graphics/menus.h"
+#include "screen_transitions.h"
 #ifdef VERSION_JP
 #include "gen/graphics/menus/jp.h"
 #else

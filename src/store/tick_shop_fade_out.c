@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "shop.h"
 #include "shop_inline.h"
+#include "screen_transitions.h"
 
 void TickShopFadeOut(void)
 {

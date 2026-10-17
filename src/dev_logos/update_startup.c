@@ -5,6 +5,7 @@
 #include "modes.h"
 #include "font.h"
 #include "text.h"
+#include "screen_transitions.h"
 
 #define SCREEN_DURATION 0x84
 

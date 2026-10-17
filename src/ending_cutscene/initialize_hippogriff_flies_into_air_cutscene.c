@@ -5,6 +5,7 @@
 #include "ending_cutscene.h"
 #include "actor.h"
 #include "gen/graphics/minigames/boggart.h"
+#include "screen_transitions.h"
 
 void InitializeHippogriffFliesIntoAirCutscene(void)
 {

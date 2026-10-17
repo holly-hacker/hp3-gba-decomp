@@ -51,5 +51,3 @@ extern IntPoint ComputeEffectSpawnPosition(void);
 extern void JumpToScriptLabel(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern ParticleEmitter *CreateScriptEmitter12(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
 extern ParticleEmitter *CreateScriptEmitter8(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
-extern void DarkenScreenPalette(void);
-extern void RestoreScreenPalette(void);

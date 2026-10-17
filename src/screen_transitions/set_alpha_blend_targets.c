@@ -1,5 +1,6 @@
 #include "types.h"
 #include "hw/io_regs.h"
+#include "screen_transitions.h"
 
 // Selects alpha blending with the layers in the `firstTargets` mask as the first target and
 // those in `secondTargets` as the second.

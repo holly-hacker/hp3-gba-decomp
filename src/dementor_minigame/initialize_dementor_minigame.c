@@ -7,6 +7,7 @@
 #include "dementor_minigame.h"
 #include "font.h"
 #include "gen/graphics/overworld.h"
+#include "screen_transitions.h"
 
 void InitializeDementorMinigame(void)
 {

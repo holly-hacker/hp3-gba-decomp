@@ -12,6 +12,7 @@
 #include "save.h"
 #include "font.h"
 #include "gen/graphics/menus.h"
+#include "screen_transitions.h"
 
 void InitializeCheat(void)
 {

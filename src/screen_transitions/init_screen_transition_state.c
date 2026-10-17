@@ -1,6 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "graphics/display.h"
+#include "screen_transitions.h"
 
 void InitScreenTransitionState_candidate(void)
 {

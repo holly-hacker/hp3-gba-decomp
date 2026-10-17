@@ -11,6 +11,7 @@
 #include "overworld/room.h"
 #include "battle/effect_script.h"
 #include "combat_result.h"
+#include "screen_transitions.h"
 
 void UpdateCombatResult(void)
 {

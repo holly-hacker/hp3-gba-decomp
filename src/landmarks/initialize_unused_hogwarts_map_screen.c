@@ -9,6 +9,7 @@
 #include "landmarks.h"
 #include "random.h"
 #include "cursor.h"
+#include "screen_transitions.h"
 
 void InitializeUnusedHogwartsMapScreen(void)
 {

@@ -6,6 +6,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void ExitGameSave(void)
 {

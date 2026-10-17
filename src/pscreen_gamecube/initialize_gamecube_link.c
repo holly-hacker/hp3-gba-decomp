@@ -9,6 +9,7 @@
 #include "battle/battle.h"
 #include "cursor.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void InitializeGameCubeLink(void)
 {

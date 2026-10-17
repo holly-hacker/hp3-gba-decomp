@@ -14,6 +14,7 @@
 #include "gen/graphics/overworld.h"
 #include "hero.h"
 #include "map.h"
+#include "screen_transitions.h"
 
 typedef struct SpecialSceneEffectRecord {
     u32 dwOpcode;

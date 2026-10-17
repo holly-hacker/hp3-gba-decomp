@@ -53,9 +53,6 @@ extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no r
 
 
 extern u8 g_bControlSlotTicks_candidate;
-// Updates g_CameraPosition_candidate from the followed actor and streams BG
-// tiles on demand as it crosses tile boundaries.
-extern void UpdateOverworldCamera_candidate(u32 mode);
 // Set by the room chain runner while it processes a chain; consumed (cleared)
 // once per frame by HandleOverworldPauseMenuInput.
 extern u32 g_dwRoomChainRanThisFrame_candidate;

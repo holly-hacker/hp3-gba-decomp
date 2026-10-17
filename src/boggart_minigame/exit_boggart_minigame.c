@@ -10,6 +10,7 @@
 #include "cursor.h"
 #include "minigame_difficulty_select.h"
 #include "graphics/audio.h"
+#include "screen_transitions.h"
 
 void ExitBoggartMinigame(void)
 {

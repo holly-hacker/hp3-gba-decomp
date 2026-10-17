@@ -5,6 +5,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "move.h"
+#include "screen_transitions.h"
 
 void ExitHarryHermionePortInTimeCutscene(void)
 {

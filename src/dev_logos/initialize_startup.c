@@ -6,6 +6,7 @@
 #include "modes.h"
 #include "font.h"
 #include "text.h"
+#include "screen_transitions.h"
 
 void InitializeStartup(void)
 {

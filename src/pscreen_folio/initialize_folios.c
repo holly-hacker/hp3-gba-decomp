@@ -3,6 +3,7 @@
 #include "modes.h"
 #include "pscreen_folio.h"
 #include "pause_menu.h"
+#include "screen_transitions.h"
 
 void InitializeFolios(void)
 {

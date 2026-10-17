@@ -31,16 +31,9 @@ typedef struct PixelVector {
     s32 y;
 } PixelVector;
 
-// Pixel size of the current room.
-typedef struct RoomSizePixels {
-    u32 dwWidth;
-    u32 dwHeight;
-} RoomSizePixels;
-
 // The pattern id is the low 12 bits of a collision tilemap entry.
 #define COLLISION_BLOCK_PATTERN_ID(entry) ((u32)(entry) << 20 >> 20)
 
-extern RoomSizePixels g_RoomSizePixels;
 // Terrain types at the far and near end of the first edge ScanTerrainEdge samples for an actor;
 // ResolveActorTerrain sets [0] to 0xFF to mark them as not yet sampled.
 extern u32 g_adwEdgeEndpointTypes[2];

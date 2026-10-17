@@ -6,6 +6,7 @@
 #include "particles.h"
 #include "boggart_minigame.h"
 #include "font.h"
+#include "screen_transitions.h"
 
 void InitializeBoggartMinigame(void)
 {

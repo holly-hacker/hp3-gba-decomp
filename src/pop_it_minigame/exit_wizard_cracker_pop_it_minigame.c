@@ -10,6 +10,7 @@
 #include "pop_it_minigame.h"
 #include "cursor.h"
 #include "minigame_difficulty_select.h"
+#include "screen_transitions.h"
 
 void ExitWizardCrackerPopItMinigame(void)
 {

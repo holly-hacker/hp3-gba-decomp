@@ -7,6 +7,7 @@
 #include "gen/graphics/minigames/hippogriff.h"
 #include "cursor.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void InitializeWizardCrackerPopItDifficultySelect(void)
 {

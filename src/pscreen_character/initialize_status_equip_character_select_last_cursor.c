@@ -4,6 +4,7 @@
 #include "actor.h"
 #include "default_menu.h"
 #include "pscreen_character.h"
+#include "screen_transitions.h"
 
 void InitializeStatusEquipCharacterSelectLastCursor(void)
 {

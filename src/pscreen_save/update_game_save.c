@@ -7,6 +7,7 @@
 #include "menu/main_menu.h"
 #include "pause_menu.h"
 #include "save.h"
+#include "screen_transitions.h"
 
 void UpdateGameSave(void)
 {

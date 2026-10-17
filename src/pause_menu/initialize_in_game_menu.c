@@ -2,6 +2,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "pause_menu.h"
+#include "screen_transitions.h"
 
 void InitializeInGameMenu(void)
 {

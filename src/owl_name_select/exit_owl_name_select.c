@@ -5,6 +5,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "owl_name_select.h"
+#include "screen_transitions.h"
 
 void ExitOwlNameSelect(void)
 {

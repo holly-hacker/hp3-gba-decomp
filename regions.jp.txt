@@ -1654,16 +1654,16 @@ thumb-func 0x0803CEBC sub_0803CE54
 thumb-func 0x0803CF8C sub_0803CF24
 thumb-func 0x0803D05C sub_0803CFF4
 thumb-func 0x0803D1CC sub_0803D164
-c-file 0x0803D330 0x0803D350 src/graphics/init_screen_transition_state.c InitScreenTransitionState_candidate
+c-file 0x0803D330 0x0803D350 src/screen_transitions/init_screen_transition_state.c InitScreenTransitionState_candidate
 thumb-func 0x0803D350 SetFadeToBlack
-c-file 0x0803D378 _ src/graphics/set_fade_to_white.c SetFadeToWhite
-c-file 0x0803D3A0 0x0803D3B8 src/graphics/set_alpha_blend_targets.c SetAlphaBlendTargets
+c-file 0x0803D378 _ src/screen_transitions/set_fade_to_white.c SetFadeToWhite
+c-file 0x0803D3A0 0x0803D3B8 src/screen_transitions/set_alpha_blend_targets.c SetAlphaBlendTargets
 thumb-func 0x0803D3B8 SetAlphaBlendCoefficients
 thumb-func 0x0803D3E0 sub_0803D378
 thumb-func 0x0803D404 sub_0803D39C
 thumb-func 0x0803D418 PlayScreenTransitionInByIndex
 thumb-func 0x0803D450 PlayScreenTransitionOutByIndex
-c-file 0x0803D488 0x0803D49C src/graphics/set_screen_darken_params.c SetScreenDarkenParams_candidate
+c-file 0x0803D488 0x0803D49C src/screen_transitions/set_screen_darken_params.c SetScreenDarkenParams_candidate
 thumb-func 0x0803D49C RestoreScreenPalette
 thumb-func 0x0803D4F0 sub_0803D488
 thumb-func 0x0803D510 sub_0803D4A8

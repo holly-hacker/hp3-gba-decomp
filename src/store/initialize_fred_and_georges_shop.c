@@ -4,6 +4,7 @@
 #include "graphics/display.h"
 #include "shop.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 void InitializeFredAndGeorgesShop(void)
 {

@@ -11,6 +11,7 @@
 #include "huffman.h"
 #include "pscreen_folio_bruti.h"
 #include "pscreen_folio_bruti_inline.h"
+#include "screen_transitions.h"
 
 // Redraws the detail panel for the monster under the cursor: its sprite, the eight spell names
 // with a marker on each effectiveness bar, and its name and description. Monsters that have not

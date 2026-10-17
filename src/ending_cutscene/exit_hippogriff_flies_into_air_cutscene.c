@@ -5,6 +5,7 @@
 #include "interrupts.h"
 #include "mem.h"
 #include "actor.h"
+#include "screen_transitions.h"
 
 void ExitHippogriffFliesIntoAirCutscene(void)
 {

@@ -9,6 +9,7 @@
 #include "pscreen_folio_universitas.h"
 #include "pause_menu.h"
 #include "default_menu.h"
+#include "screen_transitions.h"
 
 #ifdef VERSION_JP
 #define DESCRIPTION_Y 0x6A

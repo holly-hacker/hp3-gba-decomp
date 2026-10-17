@@ -8,6 +8,7 @@
 #include "minigame_menu.h"
 #include "graphics/audio.h"
 #include "pouring_minigame.h"
+#include "screen_transitions.h"
 
 void ExitUnusedServePumpkinJuiceMinigame(void)
 {

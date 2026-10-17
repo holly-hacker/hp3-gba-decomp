@@ -8,6 +8,7 @@
 #include "actor.h"
 #include "pause_menu.h"
 #include "owl_name_select.h"
+#include "screen_transitions.h"
 
 void UpdateOwlNameSelect(void)
 {
