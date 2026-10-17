@@ -18,6 +18,7 @@
 #include "mt19937.h"
 #include "vram.h"
 #include "hero.h"
+#include "pscreen_folio_bruti.h"
 
 // Runs an effect actor's bytecode script (docs/formats/battle_scripts.md).
 // Each call executes opcodes until one returns: the wait opcodes hand the

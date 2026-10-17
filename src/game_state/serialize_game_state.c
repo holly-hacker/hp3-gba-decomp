@@ -10,6 +10,8 @@
 #include "overworld/room_actor.h"
 #include "hedwig_minigame.h"
 #include "map.h"
+#include "pscreen_folio_bruti.h"
+#include "pscreen_folio_universitas.h"
 
 // Packs the live game state into the slot stream. The first six values are
 // the ones UnpackSaveSlotPreview reads back for the save menus.

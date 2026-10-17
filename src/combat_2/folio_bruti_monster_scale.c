@@ -1,6 +1,6 @@
 #include "types.h"
 #include "combat_2.h"
-#include "menu/folio_bruti.h"
+#include "pscreen_folio_bruti.h"
 
 // The monster sprite's scale on the Folio Bruti detail panel, 16.16 fixed point: most monsters are drawn
 // at full size, a few at 0.5 or 0.85 to fit.

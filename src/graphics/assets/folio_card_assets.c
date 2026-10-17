@@ -1,6 +1,7 @@
 #include "types.h"
-#include "menu/folio_universitas.h"
+#include "pscreen_folio_universitas.h"
 #include "gen/graphics/menus.h"
+#include "pscreen_wizard_cards.h"
 
 #define FOLIO_CARD(n, frame)                                                                      \
     {                                                                                             \

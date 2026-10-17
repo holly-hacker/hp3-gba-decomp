@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "menu/folio_universitas.h"
+#include "pscreen_folio_universitas.h"
 #include "game/items.h"
 #include "game/save.h"
 #include "game_state.h"

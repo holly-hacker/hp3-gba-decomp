@@ -311,7 +311,7 @@ yields it.
 
 ## Folios (0x13), Connectivity (0x16), ConfirmTradeScreen (0x47)
 
-PROVEN from the matched handlers in `src/gamemode/modes/folios/` and
+PROVEN from the matched handlers in `src/pscreen_folio/` and
 `src/pscreen_connectivity/`. All three are pause-menu submenus built from a
 `ListMenuDefinition` (`include/pause_menu.h`) and share `UpdateInGameMenu`'s shape:
 `dwModeState` 1 waits for the blend fade (`dwModeSubState` 0), 2 handles A
@@ -332,9 +332,10 @@ screen transition instead of the fade. Exit saves `dwModeScratchB` (the cursor r
 
 ## FolioUniversitas (0x26), FolioUniversitasCardDetails (0x28), CardComboDescription (0x46), FolioBruti (0x2D)
 
-PROVEN from the matched code in `src/gamemode/modes/folio_universitas/`,
-`folio_universitas_card_details/`, `folio_bruti/` and `src/combo_info/`, and the
-screen helpers in `src/menu/` (`folio_universitas.h`, `folio_bruti.h`).
+PROVEN from the matched code in `src/pscreen_folio_universitas/`,
+`src/pscreen_folio_bruti/`, `src/gamemode/modes/folio_universitas_card_details/`
+and `src/combo_info/`, with declarations in `include/pscreen_folio_universitas.h`,
+`include/pscreen_folio_bruti.h` and `include/pscreen_wizard_cards.h`.
 
 - Folio Universitas lays the 51 cards out in rows of ten (`g_FolioUniversitasState`:
   `dwCategory` is the row, `dwSlot` the column): Jinx, Defense/Protection, General,

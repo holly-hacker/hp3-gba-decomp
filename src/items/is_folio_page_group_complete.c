@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/folio_universitas_inline.h"
+#include "pscreen_folio_universitas_inline.h"
 #include "items.h"
 
 // Nonzero when all ten cards of a Folio Universitas row have been seen.

@@ -4,9 +4,10 @@
 #include "pop_it_minigame.h"
 #include "font.h"
 #include "modes.h"
-#include "menu/folio_universitas.h"
+#include "pscreen_folio_universitas.h"
 #include "gen/graphics/cutscenes.h"
 #include "gen/graphics/menus.h"
+#include "pscreen_wizard_cards.h"
 
 extern void DrawFolioCardDetailText(void);
 

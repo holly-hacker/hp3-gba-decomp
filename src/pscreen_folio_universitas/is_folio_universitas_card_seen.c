@@ -1,0 +1,2 @@
+#define FOLIO_UNIVERSITAS_CARD_SEEN_LINKAGE
+#include "pscreen_folio_universitas_inline.h"

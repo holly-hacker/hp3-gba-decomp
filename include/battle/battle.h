@@ -263,7 +263,6 @@ typedef enum {
 // skips the second message while it holds.
 #define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
 
-extern void DecrementFolioUniversitasCard(s32 slot);
 extern u16 g_nLastDamage;                       // 0x0300274A
 extern u8 g_bLastTargetIndex;                   // 0x0300274C
 // Battle-effect staging area at 0x03002750. TriggerBattleEffect fills the

@@ -6,7 +6,7 @@
 #include "actor.h"
 #include "font.h"
 #include "text.h"
-#include "menu/folio_universitas.h"
+#include "pscreen_folio_universitas.h"
 #include "pause_menu.h"
 #include "default_menu.h"
 
