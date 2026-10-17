@@ -214,7 +214,7 @@ layout is untested.
 | Codec | Where | Format | Repo decoder |
 |---|---|---|---|
 | BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python); RLE encoder `encode_bios_rle.py` |
-| `DecompressHuffTree` | Thumb, ROM (`src/graphics/decompress_huff_tree.c`) | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `DecompressDialogText` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (no resource seen) | none |
+| `DecompressHuffTree` | Thumb, ROM (`src/huffman/decompress_huff_tree.c`) | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `DecompressDialogText` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (no resource seen) | none |
 | `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py`; encoder `encode_lz_rle.py` (see "Sprite images") |
 | `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | Pucrunch 1.11 token format in a proprietary container (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Python); encoder `encode_gamma_lz.py` |
 | `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Python) |

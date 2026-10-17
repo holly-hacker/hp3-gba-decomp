@@ -30,6 +30,7 @@
 #include "vram.h"
 #include "mode7.h"
 #include "flipbook.h"
+#include "huffman.h"
 
 extern void InitSaveSystem(void);
 extern void NoopInit(void);

@@ -34,3 +34,14 @@ extern DialogTextBlob *sDialogTextTable[8];
 s32 DecompressDialogText(s32 stringId, u8 *outBuf, s32 maxSize);
 
 s32 InitDialogTextTable(DialogTextBlob *blob);
+
+// DecompressHuffTree's input: a u16 node count padded to 4 bytes, the nodes, then the
+// bitstream. A child below 0x100 is a leaf byte; otherwise it is 0x100 + node index.
+typedef struct HuffTreeNode {
+    u16 awChildren[2];  // indexed by the next bit
+} HuffTreeNode;
+extern void DecompressHuffTree(const HuffTreeNode *pTree, void *dst, s32 size);
+
+// Copies DecompressBgTile to IWRAM; see docs/formats/graphics.md
+// ("On-demand per-tile BG streaming").
+void InstallBgTileCodec(void);

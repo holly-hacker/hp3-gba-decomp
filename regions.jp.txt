@@ -929,12 +929,12 @@ thumb-func 0x08024CEC GetCharPresenceBit
 thumb-func 0x08024D40 sub_08024CE4
 thumb-func 0x08024DA4 TickMapNameActor
 thumb-func 0x08024DF8 sub_08024D9C
-c-file 0x08024E24 _ src/text/decompress_dialog_text.c DecompressDialogText
-c-file 0x08024F14 _ src/text/init_dialog_text_table.c InitDialogTextTable
-c-file 0x08024F38 0x08024FDC src/graphics/decompress_huff_tree.c DecompressHuffTree
+c-file 0x08024E24 _ src/huffman/decompress_dialog_text.c DecompressDialogText
+c-file 0x08024F14 _ src/huffman/init_dialog_text_table.c InitDialogTextTable
+c-file 0x08024F38 0x08024FDC src/huffman/decompress_huff_tree.c DecompressHuffTree
 thumb-func 0x08024FDC sub_08024F80
 thumb-func 0x08025080 sub_08025024
-c-file 0x08025114 _ src/graphics/install_bg_tile_codec.c InstallBgTileCodec
+c-file 0x08025114 _ src/huffman/install_bg_tile_codec.c InstallBgTileCodec
 c-file 0x08025130 _ src/gamemode/modes/high_score_name_entry/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
 c-file 0x08025248 0x080252E0 src/gamemode/modes/high_score_name_entry/update_high_score_name_entry.c UpdateHighScoreNameEntry
 thumb-func 0x080252E0 DrawHighScoreNameEntryKeypad

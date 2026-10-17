@@ -120,7 +120,7 @@ doubles the first two). A residual "extra register-cached global" diff is
 therefore still closable by hand: match real's exact statement and branch
 order (not just its logic) so the surrounding loop's cost numbers drop the
 merged candidate back under threshold. `DecompressDialogText`
-(`src/text/decompress_dialog_text.c`) is a worked example -- initializing
+(`src/huffman/decompress_dialog_text.c`) is a worked example -- initializing
 `pending`/`pendingFlag` before the null check, and writing the
 pending/pendingFlag update as `if (decodedByte > 0xef && !pendingFlag)
 {...} else if (pendingFlag) {...} else {...}` (matching real's exact

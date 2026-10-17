@@ -8,7 +8,7 @@
 #include "gen/graphics/overworld.h"
 #include "graphics/display.h"
 #include "actor.h"
-#include "graphics/text.h"
+#include "huffman.h"
 #include "menu/folio_bruti.h"
 #include "menu/folio_bruti_inline.h"
 

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/text.h"
+#include "huffman.h"
 #include "text.h"
 
 // Selects the active language's dialog text blob and the thousands separator

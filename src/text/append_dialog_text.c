@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/text.h"
+#include "huffman.h"
 #include "text.h"
 
 // Decodes dialog string stringId onto the end of pDest. Returns pDest, or 0
