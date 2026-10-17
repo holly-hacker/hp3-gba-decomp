@@ -1089,9 +1089,9 @@ c-file 0x08025C9C _ src/input/init_scroll_list.c InitScrollList
 c-file 0x08025CB8 _ src/input/init_scroll_grid.c InitScrollGrid
 
 # Info screens (help topics)
-c-file 0x08025D28 _ src/info_screen/initialize_topic_screen.c InitializeTopicScreen
-c-file 0x08025E18 _ src/info_screen/update_topic_screen.c UpdateTopicScreen
-c-file 0x08025E84 _ src/info_screen/exit_topic_screen.c ExitTopicScreen
+c-file 0x08025D28 _ src/instructions_screen/initialize_topic_screen.c InitializeTopicScreen
+c-file 0x08025E18 _ src/instructions_screen/update_topic_screen.c UpdateTopicScreen
+c-file 0x08025E84 _ src/instructions_screen/exit_topic_screen.c ExitTopicScreen
 
 # Interrupt (interrupt handlers)
 c-file 0x08025E90 _ src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt

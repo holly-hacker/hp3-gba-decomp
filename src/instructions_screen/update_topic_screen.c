@@ -1,5 +1,5 @@
 #include "types.h"
-#include "info_screen.h"
+#include "instructions_screen.h"
 #include "sound.h"
 #include "modes.h"
 #include "input.h"

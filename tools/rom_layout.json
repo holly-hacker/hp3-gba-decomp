@@ -61,7 +61,7 @@
     {"us": "0x08024DC8", "jp": "0x08024E24", "name": "Huffman"},
     {"us": "0x080250D4", "jp": "0x08025130", "name": "Initials entry"},
     {"us": "0x080254A8", "jp": "0x08025504", "name": "Input"},
-    {"us": "0x08025D28", "jp": "0x08025D84", "name": "Instructions"},
+    {"us": "0x08025D28", "jp": "0x08025D84", "name": "Instructions screen"},
     {"us": "0x08025E90", "jp": "0x08025EEC", "name": "Interrupts"},
     {"us": "0x08026348", "jp": "0x080263A4", "name": "Invisible actors"},
     {"us": "0x080266EC", "jp": "0x08026748", "name": "Items"},
