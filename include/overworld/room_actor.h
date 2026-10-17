@@ -50,7 +50,6 @@ typedef struct RoomActorRecordUnkC {
     u8 abArg8[3];
 } RoomActorRecordUnkC;
 
-extern Actor *SpawnRoomTileAnimationActor_candidate(u8 bColumn, u8 bRow);
 extern Actor *SpawnDoorActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnSwitchActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow);
@@ -175,10 +174,6 @@ typedef struct RoomActorRecordUnk1 {
     u8 bFlag;       // 0x09, nonzero: sub_080203F0, zero: sub_0802042C
 } RoomActorRecordUnk1;
 
-extern void AddRoomTileAnimation_candidate(u8 bAnimId, s32 x, s32 y, u8 bArg);
-extern void sub_080203F0(s32 x, s32 y);
-extern void sub_0802042C(s32 x, s32 y);
-extern void sub_080205F8(Actor *pActor);
 
 typedef struct RoomActorRecordUnk3 {
     u32 dwActorType;

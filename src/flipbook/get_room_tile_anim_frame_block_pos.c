@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "flipbook.h"
 
 // Returns the pixel position of block index of the animation's current step.
 void GetRoomTileAnimFrameBlockPos(const RoomTileAnimation *pAnim, u32 index, u16 *pX, u16 *pY)

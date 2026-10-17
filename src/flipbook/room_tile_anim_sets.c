@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "flipbook.h"
 
 // Room tile animation sets; see docs/memory-map/frame_systems.md.
 

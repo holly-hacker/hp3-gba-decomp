@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "flipbook.h"
 
 // Shows the animation's current step, then advances it. Each block's tiles on the
 // frame's BG layers (and its collision pattern, if requested) are copied to the

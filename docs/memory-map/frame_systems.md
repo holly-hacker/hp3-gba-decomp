@@ -57,7 +57,7 @@ function. Calls, in order:
   (count at `0x03002F28`) added by `AddRoomTileAnimation_candidate` (`0x080201C8`, JP
   `0x080201B0`). When an entry's delay hits 0, `ApplyRoomTileAnimationFrame`
   (`0x08020278`, JP `0x08020260`) shows its current step and advances it. Steps come
-  from `g_apRoomTileAnimSets` (`src/room/room_tile_anim_sets.c`, 55 sets indexed by the
+  from `g_apRoomTileAnimSets` (`src/flipbook/room_tile_anim_sets.c`, 55 sets indexed by the
   entry's set): each frame lists 32x32-pixel source blocks, whose tiles on the BG layers
   in the frame's mask (bit 4: collision patterns too) are copied to the entry's position,
   offset from the first block. Delay `0xFF` restarts the set, `0xFE` halts it (flags bit

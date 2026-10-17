@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/overworld.h"
+#include "flipbook.h"
 
 void TickOverworldBeforeActors_candidate(void)
 {

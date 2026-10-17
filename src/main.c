@@ -28,6 +28,7 @@
 #include "game/game_timer.h"
 #include "vram.h"
 #include "mode7.h"
+#include "flipbook.h"
 
 extern void InitSaveSystem(void);
 extern void NoopInit(void);

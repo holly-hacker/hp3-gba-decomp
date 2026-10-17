@@ -13,6 +13,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
+#include "flipbook.h"
 
 // Overworld mode's pDestroyFn. Plays the outgoing screen transition, then
 // tears down the overworld's actors, palettes and lists. The mode being

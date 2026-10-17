@@ -889,19 +889,19 @@ thumb-func 0x0802018C SpawnScriptEffectActor
 # Flipbook animations
 thumb-func 0x080201C8 AddRoomTileAnimation_candidate
 thumb-func 0x08020228 TickRoomTileAnimations_candidate
-c-file 0x08020278 _ src/room/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
-c-file 0x080203A8 0x080203CC src/room/init_room_tile_animation_table.c InitRoomTileAnimationTable
+c-file 0x08020278 _ src/flipbook/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
+c-file 0x080203A8 0x080203CC src/flipbook/init_room_tile_animation_table.c InitRoomTileAnimationTable
 thumb-func 0x080203CC sub_080203CC
 thumb-func 0x080203F0 sub_080203F0
 thumb-func 0x0802042C sub_0802042C
-c-file 0x08020440 _ src/room/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
-c-file 0x08020490 0x08020504 src/room/actors/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
+c-file 0x08020440 _ src/flipbook/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
+c-file 0x08020490 0x08020504 src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
 thumb-func 0x08020504 FindRoomTileAnimation_candidate
 thumb-func 0x0802054C RewindRoomTileAnimationStep
-c-file 0x08020570 _ src/room/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
-c-file 0x0802058C _ src/room/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
-c-file 0x080205A8 _ src/room/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
-c-file 0x080205C4 0x080205F8 src/room/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
+c-file 0x08020570 _ src/flipbook/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
+c-file 0x0802058C _ src/flipbook/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
+c-file 0x080205A8 _ src/flipbook/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
+c-file 0x080205C4 0x080205F8 src/flipbook/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
 thumb-func 0x080205F8 sub_080205F8
 
 # Font (text rendering)
@@ -2503,7 +2503,7 @@ c-file 0x0805E280 _ src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E28C _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
 c-file 0x0805EB10 _ src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
-c-file 0x0805EB9C _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
+c-file 0x0805EB9C _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/font/load_font_descriptor.globals.c g_aFontTable
 c-file 0x0806053C 0x08060554 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
 c-rodata 0x08060620 0x08060625 InitJoybusSession

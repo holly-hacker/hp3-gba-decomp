@@ -790,19 +790,19 @@ thumb-func 0x080200E4 sub_080200FC
 thumb-func 0x08020174 SpawnScriptEffectActor
 thumb-func 0x080201B0 AddRoomTileAnimation_candidate
 thumb-func 0x08020210 TickRoomTileAnimations_candidate
-c-file 0x08020260 _ src/room/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
-c-file 0x08020390 0x080203B4 src/room/init_room_tile_animation_table.c InitRoomTileAnimationTable
+c-file 0x08020260 _ src/flipbook/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
+c-file 0x08020390 0x080203B4 src/flipbook/init_room_tile_animation_table.c InitRoomTileAnimationTable
 thumb-func 0x080203B4 sub_080203CC
 thumb-func 0x080203D8 sub_080203F0
 thumb-func 0x08020414 sub_0802042C
-c-file 0x08020428 _ src/room/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
-c-file 0x08020478 0x080204EC src/room/actors/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
+c-file 0x08020428 _ src/flipbook/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
+c-file 0x08020478 0x080204EC src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
 thumb-func 0x080204EC FindRoomTileAnimation_candidate
 thumb-func 0x08020534 sub_0802054C
-c-file 0x08020558 _ src/room/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
-c-file 0x08020574 _ src/room/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
-c-file 0x08020590 _ src/room/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
-c-file 0x080205AC 0x080205E0 src/room/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
+c-file 0x08020558 _ src/flipbook/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
+c-file 0x08020574 _ src/flipbook/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
+c-file 0x08020590 _ src/flipbook/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
+c-file 0x080205AC 0x080205E0 src/flipbook/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
 thumb-func 0x080205E0 sub_080205F8
 c-file 0x08020650 _ src/font/insert_text_line_breaks.c InsertTextLineBreaks
 c-file 0x08020654 _ src/font/draw_text_line.c DrawTextLine
@@ -2236,7 +2236,7 @@ c-file 0x0805E1AC _ src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E1B8 _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
 c-file 0x0805EA3C _ src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file 0x0805EA60 0x0805EAC0 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
-c-file 0x0805EAC8 _ src/room/room_tile_anim_sets.c g_apRoomTileAnimSets
+c-file 0x0805EAC8 _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x08060408 _ src/font/load_font_descriptor.globals.c g_aExtFontTable
 c-file 0x080604C8 0x080604E0 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
 c-rodata 0x080605AC 0x080605B1 InitJoybusSession

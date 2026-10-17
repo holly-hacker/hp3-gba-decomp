@@ -2,6 +2,7 @@
 #include "graphics/display.h"
 #include "overworld/room.h"
 #include "overworld/terrain.h"
+#include "flipbook.h"
 
 // Shows the effect of a room switch state: the two states use consecutive effect ids.
 void ApplyRoomSwitchEffect(u32 state)
