@@ -4,6 +4,7 @@
 #include "modes.h"
 #include "input.h"
 #include "overworld/room.h"
+#include "time_skip_cutscene.h"
 
 // Arg2 counts frames. The layers scroll from frame 0x20 to 0x80; the cutscene
 // ends at frame 0xC0 or on A/B/Select/Start, back in the current room.

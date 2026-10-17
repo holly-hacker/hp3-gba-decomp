@@ -1859,12 +1859,12 @@ thumb-func 0x08042A14 SetTextActorCenterPosition_candidate
 thumb-func 0x08042A30 sub_080429F0
 thumb-func 0x08042AC8 sub_08042A88
 thumb-func 0x08042AE4 ClearTextActorSlot
-c-file 0x08042B08 _ src/gamemode/modes/cutscene/clock_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene
-c-file 0x08042BD0 _ src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/initialize_hogwarts_up_night_cutscene.c InitializeHogwartsUpNightCutscene
-c-file 0x08042CB4 _ src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/update_hogwarts_up_night_cutscene.c UpdateHogwartsUpNightCutscene
-c-file 0x08042D50 _ src/gamemode/modes/cutscene/clock_skip_cutscene/update_clock_skip_cutscene.c UpdateClockSkipCutscene
-c-file 0x08042DB4 _ src/gamemode/modes/cutscene/clock_skip_cutscene/exit_clock_skip_cutscene.c ExitClockSkipCutscene
-c-file 0x08042DD0 0x08042E08 src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/exit_hogwarts_up_night_cutscene.c ExitHogwartsUpNightCutscene
+c-file 0x08042B08 _ src/time_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene
+c-file 0x08042BD0 _ src/time_skip_cutscene/initialize_hogwarts_up_night_cutscene.c InitializeHogwartsUpNightCutscene
+c-file 0x08042CB4 _ src/time_skip_cutscene/update_hogwarts_up_night_cutscene.c UpdateHogwartsUpNightCutscene
+c-file 0x08042D50 _ src/time_skip_cutscene/update_clock_skip_cutscene.c UpdateClockSkipCutscene
+c-file 0x08042DB4 _ src/time_skip_cutscene/exit_clock_skip_cutscene.c ExitClockSkipCutscene
+c-file 0x08042DD0 0x08042E08 src/time_skip_cutscene/exit_hogwarts_up_night_cutscene.c ExitHogwartsUpNightCutscene
 thumb-func 0x08042E08 sub_08042DC8
 c-file 0x08042E6C _ src/timer/reset_all_game_timers.c ResetAllGameTimers
 c-file 0x08042E84 0x08042EB0 src/timer/reset_game_timer.c ResetGameTimer
@@ -2309,8 +2309,8 @@ c-file 0x0806B9D8 _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIco
 c-file 0x0806BA8C _ src/tea_leaves_minigame/divination_tea.globals.c g_DivinationTeaCupAnimData
 c-file 0x0806BAFC _ src/tea_leaves_minigame/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD04 _ sDialogTextTable
-c-file 0x0806BD08 _ src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
-c-file 0x0806BD14 0x0806BDA0 src/gamemode/modes/cutscene/clock_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
+c-file 0x0806BD08 _ src/time_skip_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
+c-file 0x0806BD14 0x0806BDA0 src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
 c-file 0x0806BDA8 0x0806BEA0 src/room/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
 c-file 0x0806BEB0 0x0806BED0 src/gamemode/modes/cutscene/harry_hermione_port_in_time_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
 c-file 0x0806BF40 _ src/gamemode/modes/main_menu/main_menu.globals.c g_dwMainMenuBg3Control

@@ -2,14 +2,13 @@
 #include "background.h"
 #include "sound.h"
 #include "hw/bios.h"
-#include "cutscene/clock_skip_cutscene.h"
-#include "cutscene/hogwarts_up_night_cutscene.h"
 #include "actor.h"
 #include "graphics/display.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "gen/graphics/overworld.h"
 #include "screen_transitions.h"
+#include "time_skip_cutscene.h"
 
 void InitializeClockSkipCutscene(void)
 {

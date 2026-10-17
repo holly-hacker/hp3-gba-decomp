@@ -1,8 +1,8 @@
 #include "types.h"
 #include "actor.h"
 #include "actor_anim.h"
-#include "cutscene/clock_skip_cutscene.h"
 #include "gen/graphics/overworld.h"
+#include "time_skip_cutscene.h"
 
 const ActorAssetRecord g_ClockSkipActor1Asset = {
     (void *)gClockSkipActor1Tiles, (void *)gClockSkipActor1Frames, (void *)gClockSkipActor1Palette, 0,
