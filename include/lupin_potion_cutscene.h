@@ -5,6 +5,10 @@
 #include "graphics/scanline_effects.h"
 #include "gen/graphics/cutscenes.h"
 
+extern void InitializeLupinPotionCutscene(void);
+extern void UpdateLupinPotionCutscene(void);
+extern void ExitLupinPotionCutscene(void);
+
 // The mode's screen state at 0x03003A84. Only the fields the mode handlers use are named.
 typedef struct {
     u8 abUnk00[0x88];

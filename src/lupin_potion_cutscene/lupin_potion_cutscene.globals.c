@@ -1,5 +1,5 @@
 #include "types.h"
-#include "cutscene/lupin_potion_cutscene.h"
+#include "lupin_potion_cutscene.h"
 #include "graphics/scanline_effects.h"
 
 const ScanlineEffectEntry g_aLupinPotionScanlineTable[2] = {

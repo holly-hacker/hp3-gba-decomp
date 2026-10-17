@@ -1,4 +1,5 @@
 #include "types.h"
+#include "lupin_potion_cutscene.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "mem.h"

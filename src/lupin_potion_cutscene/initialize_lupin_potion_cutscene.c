@@ -8,7 +8,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
-#include "cutscene/lupin_potion_cutscene.h"
+#include "lupin_potion_cutscene.h"
 #include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
