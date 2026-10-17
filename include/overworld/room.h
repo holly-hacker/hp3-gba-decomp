@@ -265,7 +265,6 @@ extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctr
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
-extern void sub_080248E8(void);
 extern void StopScanlineEffects(void);
 extern void sub_0802B20C(void);
 extern void ShowMapNamePopup(void);

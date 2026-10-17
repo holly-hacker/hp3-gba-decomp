@@ -4,10 +4,11 @@
 #include "mt19937.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
+#include "hero.h"
 
-// Stops the player, starts the receive-item action showing rewardId and
-// grants one of it, or 30-60 Sickles.
-void PlayerReceiveReward(u32 rewardId)
+// PlayerReceiveReward, but starts the receive-item action's timer at 0x42
+// instead of 1; what that changes in the action is unknown.
+void PlayerReceiveRewardAlt(u32 rewardId)
 {
     u32 amount;
 
@@ -23,4 +24,5 @@ void PlayerReceiveReward(u32 rewardId)
     else
         amount = 1;
     GrantReward(rewardId, amount);
+    g_pPlayerActor->dwStateTimer = 0x42;
 }

@@ -908,17 +908,17 @@ thumb-func 0x08023BA0 TickPlayerActor_candidate
 thumb-func 0x08023D5C sub_08023D00
 thumb-func 0x08023FAC sub_08023F50
 thumb-func 0x08024290 CyclePartyLeaderSelection_candidate
-c-file 0x08024574 0x08024794 src/overworld/set_party_member_anim.c SetPartyMemberAnim
+c-file 0x08024574 0x08024794 src/hero/set_party_member_anim.c SetPartyMemberAnim
 thumb-func 0x08024794 sub_08024738
-c-file 0x080248E4 0x08024944 src/overworld/reset_party_state.c ResetPartyState
+c-file 0x080248E4 0x08024944 src/hero/reset_party_state.c ResetPartyState
 thumb-func 0x08024944 sub_080248E8
 thumb-func 0x08024974 sub_08024918
 thumb-func 0x080249DC sub_08024980
 thumb-func 0x08024A00 sub_080249A4
 thumb-func 0x08024A24 GetPartyPresenceMask
 thumb-func 0x08024A58 GetPartySize
-c-file 0x08024A8C _ src/items/player_receive_reward.c PlayerReceiveReward
-c-file 0x08024AE4 0x08024B48 src/items/player_receive_reward_alt.c PlayerReceiveRewardAlt
+c-file 0x08024A8C _ src/hero/player_receive_reward.c PlayerReceiveReward
+c-file 0x08024AE4 0x08024B48 src/hero/player_receive_reward_alt.c PlayerReceiveRewardAlt
 thumb-func 0x08024B48 GetPartyMasterStatsSlot_candidate
 thumb-func 0x08024B94 TickHeldRewardActor
 thumb-func 0x08024BC0 SetPlayerShadowVisible
@@ -2242,9 +2242,9 @@ c-file 0x080604C8 0x080604E0 src/game_state/process_playtime_tick.globals.c g_st
 c-rodata 0x080605AC 0x080605B1 InitJoybusSession
 c-file 0x08060634 0x08060644 src/hedwig_minigame/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060810 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset
-c-file 0x08060818 0x08060828 src/overworld/party_focus_gfx.c g_PartyFocusGfx_candidate
-c-file 0x08060878 0x08060AB8 src/overworld/party_assets.c g_aPartyWalkAssets
-c-file 0x08060B80 _ src/overworld/party_anims.c g_abPartyStandFrames
+c-file 0x08060818 0x08060828 src/hero/party_focus_gfx.c g_PartyFocusGfx_candidate
+c-file 0x08060878 0x08060AB8 src/hero/party_assets.c g_aPartyWalkAssets
+c-file 0x08060B80 _ src/hero/party_anims.c g_abPartyStandFrames
 c-file 0x08060DF0 _ src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
 c-file 0x08060E08 _ src/input/dpad_direction.c g_abDpadDirection
 c-file 0x08060E18 _ src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate

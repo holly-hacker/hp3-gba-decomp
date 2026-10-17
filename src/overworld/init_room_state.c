@@ -4,6 +4,7 @@
 #include "game/game_modes.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
+#include "hero.h"
 
 void InitRoomState(void)
 {

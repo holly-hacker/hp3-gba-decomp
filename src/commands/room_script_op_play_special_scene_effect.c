@@ -12,6 +12,7 @@
 #include "overworld/room_script.h"
 #include "hw/vblank.h"
 #include "gen/graphics/overworld.h"
+#include "hero.h"
 
 typedef struct SpecialSceneEffectRecord {
     u32 dwOpcode;

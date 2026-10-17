@@ -6,6 +6,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"
+#include "hero.h"
 
 // Action state 0x20: walks around obstacles to moveTarget, then stands in action state 0.
 void TickActorWalkToTarget(Actor *actor)

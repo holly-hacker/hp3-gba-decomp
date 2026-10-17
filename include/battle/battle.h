@@ -300,8 +300,6 @@ typedef struct FighterAnimRow {
 } FighterAnimRow;
 
 extern void *memcpy(void *dst, const void *src, u32 n);
-extern u32 GetPartyPresenceMask(void);
-extern u32 GetPartySize(void);
 
 // ExitBattle's remaining callees -- generic engine/graphics teardown run on
 // every battle exit, not battle logic; not otherwise analyzed.

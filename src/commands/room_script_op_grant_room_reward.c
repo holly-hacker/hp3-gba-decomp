@@ -1,6 +1,7 @@
 #include "types.h"
 #include "commands.h"
 #include "overworld/room_script.h"
+#include "hero.h"
 
 typedef struct GrantRoomRewardRecord {
     u32 dwOpcode;

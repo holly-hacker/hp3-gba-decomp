@@ -1,6 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "overworld/overworld.h"
+#include "hero.h"
 
 // Action state 0x13: plays the cast animation, then spawns the effect of the field
 // spell in bFighterIndex on the animation event and returns to bPrevActionState_candidate

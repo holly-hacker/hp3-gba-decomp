@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "gen/graphics/overworld.h"
 #include "overworld/overworld.h"
+#include "hero.h"
 
 // Indexed by party character id; see SetPartyMemberAnim.
 const ActorAssetRecord g_aPartyWalkAssets[PARTY_CHARACTER_COUNT] = {

@@ -17,6 +17,7 @@
 #include "menu/minigame_menu.h"
 #include "mt19937.h"
 #include "vram.h"
+#include "hero.h"
 
 // Runs an effect actor's bytecode script (docs/formats/battle_scripts.md).
 // Each call executes opcodes until one returns: the wait opcodes hand the

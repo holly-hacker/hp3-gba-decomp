@@ -6,6 +6,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room_actor.h"
 #include "overworld/room_script.h"
+#include "hero.h"
 
 // Per-frame tick of a chest (room actor type 9). HandleChestTouch starts the
 // opening in action substate 8; see docs/formats/rooms.md.

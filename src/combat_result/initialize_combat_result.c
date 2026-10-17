@@ -13,6 +13,7 @@
 #include "overworld/room_script.h"
 #include "combat_result.h"
 #include "gen/graphics/menus.h"
+#include "hero.h"
 
 // Copies the portrait of the party member in stats slot g_abCombatResultPartySlots[partyPos]
 // from the loaded BG graphic to the screen position of portrait index pos.

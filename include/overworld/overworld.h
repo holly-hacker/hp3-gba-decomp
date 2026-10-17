@@ -64,17 +64,6 @@ extern u8 g_bPartyCharId0;
 extern u8 g_bPartyCharId1;
 extern u8 g_bPartyCharId2;
 
-// Party member sprites and animations, set by SetPartyMemberAnim. The record arrays are
-// indexed by character id, the animation tables by Actor.bFacing.
-#define PARTY_CHARACTER_COUNT 9
-typedef enum {
-    PartyAnimStand = 0,
-    PartyAnimWalk = 1,
-    PartyAnimCast = 2,  // ends on ANIM_EVENT, which triggers the field spell
-    PartyAnim3 = 3,
-    PartyAnim4 = 4,
-} PartyAnim;
-extern void SetPartyMemberAnim(Actor *actor, u8 anim);
 // Spawns the effect actor of field spell `spell` (an Actor.bFighterIndex value) at
 // the caster's anchor 0.
 extern void SpawnFieldSpellEffect_candidate(Actor *caster, u8 spell);
@@ -84,21 +73,6 @@ extern void StartFieldSpellCast(Actor *actor);
 extern void SetPlayerShadowVisible(u32 visible);
 extern void TickHeldRewardActor(Actor *actor);  // pfnTick of the item TickActorReceiveReward spawns
 extern Actor *g_pPlayerShadowActor_candidate;
-extern const ActorGfxRecord g_UnusedPartyGfx;
-extern const ActorGfxRecord g_PartyFocusGfx_candidate;
-extern const ActorAssetRecord g_aPartyWalkAssets[PARTY_CHARACTER_COUNT];
-extern const ActorAssetRecord g_aPartyAnim3Assets[PARTY_CHARACTER_COUNT];
-extern const ActorAssetRecord g_aPartyCastAssets[PARTY_CHARACTER_COUNT];
-extern const ActorAssetRecord g_aPartyAnim4Assets[PARTY_CHARACTER_COUNT];
-extern const u8 g_abPartyStandFrames[8];
-extern const u8 g_abPartyStandFramesChar8[8];
-extern const u8 g_aPartyWalkAnims[8][18];
-extern const u8 g_aPartyWalkAnimsChar8[8][14];
-extern const u8 g_aPartyWalkAnimsChar4[8][18];
-extern const u8 g_aPartyCastAnims[8][18];
-extern const u8 g_aPartyAnim4Anims[8][4];
-extern const u8 g_abPartyAnim3Anim[22];
-extern const ActorGfxRecord g_UnusedPartyGfx2;
 // Index into the 9-entry field spell table at 0x08060BAC: {u32 spell,
 // u8 FighterType, u8 minimum bKnownSpellCount}. Flipendo, Lumos and Diffindo
 // for Harry, Flipendo, Reparo and Glacius for Hermione, Flipendo, Alohomora
@@ -112,7 +86,6 @@ extern Actor *g_pFieldSpellPortraitActor;   // face portrait of the spell's char
 extern Actor *g_pMapNamePopupActor;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
 extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
 
-extern void ResetPartyState(void);
 
 // Starts the first slot's camera-shake effect and plays its cue.
 extern void sub_0802B138(void);
@@ -148,4 +121,3 @@ s32 TickOverworldControlSlots_candidate(void);
 extern void FreeRoomSharedTileset(void);
 extern void sub_0802B210(void);
 extern void sub_0802B08C(void);
-extern void sub_08024918(void);

@@ -16,6 +16,7 @@
 #include "interrupts.h"
 #include "mem_clear.h"
 #include "vram.h"
+#include "hero.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.
 #define CURRENT_ROOM g_aRoomTable[g_GameModeStackContext.dwCurrentGameModeArg2]
