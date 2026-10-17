@@ -1915,7 +1915,7 @@ thumb-func 0x08044614 AdjustOptionValue_candidate
 c-file 0x080446DC 0x08044748 src/title_options/exit_options.c ExitOptions
 thumb-func 0x08044748 sub_080447E0
 thumb-func 0x080447A4 sub_0804483C
-c-file 0x080447C0 0x0804488C src/room/actors/spawn_flame_pillar_actor.c SpawnFlamePillarActor
+c-file 0x080447C0 0x0804488C src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
 thumb-func 0x0804488C sub_08044960
 thumb-func 0x080449C0 GrantPickupMarkerItem
 thumb-func 0x08044A08 sub_08044ADC
@@ -2316,7 +2316,7 @@ c-file 0x0806BEB0 0x0806BED0 src/time_turner_cutscene/harry_hermione_port_in_tim
 c-file 0x0806BF40 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BF4C 0x0806BF64 src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BF9C 0x0806C044 src/title_options/options_menu_items.c g_aOptionsMenuItems
-c-file 0x0806C068 _ src/room/actors/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
+c-file 0x0806C068 _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C0B0 _ src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
 c-file 0x0806C0B4 0x0806C13C src/room/actors/spawn_switch_actor.globals.c g_aRoomSwitchSprites

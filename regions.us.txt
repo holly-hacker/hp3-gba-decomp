@@ -2164,7 +2164,7 @@ thumb-func 0x080447E0 sub_080447E0
 thumb-func 0x0804483C sub_0804483C
 
 # Torch? (flame pillar actor)
-c-file 0x08044894 0x08044960 src/room/actors/spawn_flame_pillar_actor.c SpawnFlamePillarActor
+c-file 0x08044894 0x08044960 src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
 thumb-func 0x08044960 sub_08044960
 thumb-func 0x08044A94 GrantPickupMarkerItem
 thumb-func 0x08044ADC sub_08044ADC
@@ -2587,7 +2587,7 @@ c-file 0x0806BFD0 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BFDC _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BFF4 0x0806C014 src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
 c-file 0x0806C048 0x0806C108 src/title_options/options_menu_items.c g_aOptionsMenuItems
-c-file 0x0806C12C _ src/room/actors/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
+c-file 0x0806C12C _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C174 _ src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
 c-file 0x0806C178 0x0806C200 src/room/actors/spawn_switch_actor.globals.c g_aRoomSwitchSprites
