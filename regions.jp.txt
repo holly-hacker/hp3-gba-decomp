@@ -2304,7 +2304,7 @@ c-file 0x0806B760 _ src/rising_platform_actor/spawn_raising_platform_actor.globa
 c-file 0x0806B798 _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B848 _ src/serial/serial_magic.c g_adwSerialMagic
-c-file 0x0806B858 _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
+c-file 0x0806B858 _ src/sound/sound_sections.c g_pKrawallIwramStart
 c-file 0x0806B868 0x0806B8C0 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 _ src/store/shop_stock.c g_aShopStockMisc
 c-file 0x0806B9D8 _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
@@ -2499,7 +2499,7 @@ c-file 0x08F44224 0x08F44240 src/store/shop_stock_lists.c g_apShopStockLists
 # ROM images of the IWRAM and EWRAM sections, which kramInstall copies to RAM.
 # The IWRAM image holds Krawall's ARM mixer code; its rows name the ROM copy
 # with a _Rom suffix, and ram_symbols.<ver>.inc names the IWRAM addresses.
-label 0x08F44240 g_IwramSectionRomImage
+label 0x08F44240 g_KrawallIwramRomImage
 arm-func 0x08F44244 kradInterrupt_Rom
 arm-func 0x08F442D4 kramPlayExt_Rom
 arm-func 0x08F44560 kramStop_Rom
@@ -2522,4 +2522,4 @@ arm-func 0x08F44D78 mix16to8_Rom
 arm-func 0x08F44E30 mix16to8_patch_Rom
 arm-func 0x08F44E88 mixReal_Rom
 arm-func 0x08F452A8 kramWorker_Rom
-label 0x08F457D8 g_EwramSectionRomImage
+label 0x08F457D8 g_KrawallEwramRomImage

@@ -56,3 +56,18 @@ extern void OnKrawallEvent(s32 event, s32 param);
 
 extern void DisableKrawall(void);
 extern void EnableKrawall(void);
+
+// Start/end of the statically linked IWRAM and EWRAM sections: Krawall's ARM
+// mixer code and its engine state. kramInstall copies their ROM images to RAM;
+// ClearWorkRam zeroes the RAM above them through the pointer constants.
+extern u8 g_KrawallIwramStart[];  // 0x03000000
+extern u8 g_KrawallIwramEnd[];    // 0x03001598
+extern u8 g_KrawallEwramStart[];  // 0x02000000
+extern u8 g_KrawallEwramEnd[];    // 0x020027F8
+// ROM images of those sections, stored back to back.
+extern const u8 g_KrawallIwramRomImage[];
+extern const u8 g_KrawallEwramRomImage[];
+extern u8 *const g_pKrawallIwramStart;
+extern u8 *const g_pKrawallIwramEnd;
+extern u8 *const g_pKrawallEwramStart;
+extern u8 *const g_pKrawallEwramEnd;

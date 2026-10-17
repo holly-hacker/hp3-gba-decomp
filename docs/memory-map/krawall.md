@@ -528,7 +528,7 @@ caller statically nail down the whole picture:
     at the call site rather than stored as plain lengths -- reads like
     linker-generated region-end symbols (`__iwram_end`, `__ewram_end`)
     rather than hand-written constants. The same four bounds are stored as
-    ROM pointers (`g_pIwramSectionStart` etc., US `0x0806B8CC`) that
+    ROM pointers (`g_pKrawallIwramStart` etc., US `0x0806B8CC`) that
     `ClearWorkRam` uses to zero the RAM above both sections.
   - Also writes byte `8` to `g_bUnk03005AC0` (`0x03005AC0`) just before the
     copies; `PlayMusicModule` writes the same value and an uncalled setter

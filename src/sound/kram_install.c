@@ -1,6 +1,5 @@
 #include "types.h"
 #include "mem.h"
-#include "ram_clear.h"
 #include "sound.h"
 
 // Copies the ROM images of the statically linked IWRAM and EWRAM sections
@@ -10,7 +9,7 @@
 void kramInstall(void)
 {
     g_bUnk03005AC0 = 8;
-    CopyMemory(g_IwramSectionStart, g_IwramSectionRomImage, (u32)g_IwramSectionEnd & 0xFFFFFF);
-    CopyMemory(g_EwramSectionStart, g_EwramSectionRomImage, (u32)g_EwramSectionEnd & 0xFFFFFF);
+    CopyMemory(g_KrawallIwramStart, g_KrawallIwramRomImage, (u32)g_KrawallIwramEnd & 0xFFFFFF);
+    CopyMemory(g_KrawallEwramStart, g_KrawallEwramRomImage, (u32)g_KrawallEwramEnd & 0xFFFFFF);
     InitAudio();
 }
