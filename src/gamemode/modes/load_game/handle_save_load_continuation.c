@@ -5,6 +5,7 @@
 #include "menu/main_menu.h"
 #include "overworld/room.h"
 #include "game/save.h"
+#include "map.h"
 
 void HandleSaveLoadContinuation(void)
 {

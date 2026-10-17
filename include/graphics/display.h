@@ -108,10 +108,6 @@ typedef BG_TILE_ANIMATION(16) BgTileAnimation16;
 typedef BG_TILE_ANIMATION(64) BgTileAnimation64;
 typedef BG_TILE_ANIMATION(128) BgTileAnimation128;
 
-// Scene-effect resources selected by room-script opcode 0x33.
-extern const BgTileAnimation128 g_aSpecialSceneBg2;  // 0x08063074
-extern const BgTileAnimation128 g_aSpecialSceneBg0;  // 0x0806347C
-extern const BgTileAnimation128 g_aSpecialSceneBg1;  // 0x08063884
 
 // The write-only half of SetBgControl: writes BGxCNT and the tilemap/charblock
 // VRAM bases, without enabling the layer via SetDispcntFlag.

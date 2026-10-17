@@ -11,6 +11,7 @@
 #include "actor.h"
 #include "graphics/graphics.h"
 #include "vram.h"
+#include "map.h"
 
 // Battle mode's pDestroyFn. See docs/memory-map/battle.md.
 void ExitBattle(void)

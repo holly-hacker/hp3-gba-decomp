@@ -1,6 +1,7 @@
 #include "types.h"
 #include "game/save.h"
 #include "overworld/room.h"
+#include "map.h"
 
 // Writes g_pRoomActorStateBuffer's room-actor snapshot: the
 // player's position and switch state, then each table's entry count followed

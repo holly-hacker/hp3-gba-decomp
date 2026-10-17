@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "map.h"
 
 // Records the room switch state and returns nonzero if it changed.
 u32 SetRoomSwitchState(u32 state)

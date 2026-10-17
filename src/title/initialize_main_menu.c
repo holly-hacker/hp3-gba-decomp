@@ -8,6 +8,7 @@
 #include "graphics/graphics.h"
 #include "game/save.h"
 #include "game_state.h"
+#include "map.h"
 #include "title.h"
 #include "text.h"
 #include "gen/graphics/menus.h"

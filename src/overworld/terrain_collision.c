@@ -8,6 +8,7 @@
 #include "overworld/room.h"
 #include "overworld/terrain.h"
 #include "hero.h"
+#include "map.h"
 
 #define SEGMENT_DX(segment) ((segment).x1 - (segment).x0)
 #define SEGMENT_DY(segment) ((segment).y1 - (segment).y0)

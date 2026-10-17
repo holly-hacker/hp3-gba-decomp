@@ -8,6 +8,7 @@
 #include "actor.h"
 #include "graphics/oam.h"
 #include "overworld/overworld.h"
+#include "map.h"
 
 void TickFrameSystems(void)
 {

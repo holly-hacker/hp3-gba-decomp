@@ -7,6 +7,7 @@
 #include "graphics/display.h"
 #include "overworld/room.h"
 #include "text.h"
+#include "map.h"
 
 static inline void DrawPanel(u32 tileOffset)
 {

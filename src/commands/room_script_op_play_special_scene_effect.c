@@ -13,6 +13,7 @@
 #include "hw/vblank.h"
 #include "gen/graphics/overworld.h"
 #include "hero.h"
+#include "map.h"
 
 typedef struct SpecialSceneEffectRecord {
     u32 dwOpcode;

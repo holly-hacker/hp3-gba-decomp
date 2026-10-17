@@ -11,6 +11,7 @@
 #include "overworld/room.h"
 #include "overworld/room_actor.h"
 #include "hedwig_minigame.h"
+#include "map.h"
 
 // Rebuilds the live game state from the slot buffer, in the order
 // SerializeGameStateToSaveBuffer wrote it.

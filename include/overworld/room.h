@@ -56,19 +56,10 @@ typedef struct RoomTableEntry {
     u8 bUnused_7b;
 } RoomTableEntry;
 
-extern const RoomTableEntry g_aRoomTable[55];  // ROM 0x08063C8C
 // Entries 0 and 1 of the Time-Turner cutscene's own table, ROM 0x0806BE38 (US).
 extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
 
-// Krawall module id per room, read as a byte at [room * 4]; used instead of
-// bDefaultMusicModule while quest event state 0x1A is set.
-extern const u32 g_adwRoomQuestMusicOverride[55];
 
-// BGxCNT values applied to each BG layer at room load.
-extern const u32 g_dwBg2Control;
-extern const u32 g_dwBg1Control;
-extern const u32 g_dwBg3Control;
-extern const u32 g_dwBg0Control;
 
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 extern CameraFocusOffset g_CameraPosition_candidate;
@@ -244,11 +235,7 @@ extern u32 g_dwPendingCameraFocusFlag;
 
 // Snapshot of the current room's non-default actors; see docs/formats/save.md.
 #define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
-extern void InitRoomState(void);
-extern void RestoreRoomActorState(void);
-extern void RestoreRoomActorStateMinimal(void);
 extern u8 g_bRoomSwitchState;  // 0 or 1
-extern u32 SetRoomSwitchState(u32 state);  // returns nonzero if the state changed
 extern u32 GetRoomSwitchState(void);
 extern void ApplyRoomSwitchEffect(u32 state);
 
@@ -263,10 +250,7 @@ extern void LoadRoomBgLayer3Extra_candidate(const void *pExtra, u32 arg1, u32 ar
 extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctrl2, u32 ctrl0,
                                                    RoomBgResources resourcesA, RoomBgResources resourcesB);
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
-extern void ApplyRoomBgControlOverride_candidate(const void *pOverride);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
 extern void StopScanlineEffects(void);
-extern void sub_0802B20C(void);
 extern void ShowMapNamePopup(void);
-extern void OverworldVBlankCallback(void);
 extern void ClearScanlineEffects(void);

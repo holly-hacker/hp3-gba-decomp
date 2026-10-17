@@ -1,6 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "gen/graphics/overworld.h"
+#include "map.h"
 
 // The overworld's special-scene BG animations, one 128-frame film per mode of
 // room-script opcode 0x33. Bg2 is also the pBgControlOverrideA of rooms 5-7.

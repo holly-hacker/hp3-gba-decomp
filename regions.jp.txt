@@ -1100,30 +1100,30 @@ thumb-func 0x080295E0 sub_08029584
 thumb-func 0x08029620 sub_080295C4
 thumb-func 0x0802963C LupinPotionPanelScanlineCallback_candidate
 c-file 0x080296EC _ src/main.c AgbMain
-c-file 0x080297FC _ src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
-c-file 0x0802A1A8 0x0802A300 src/gamemode/modes/overworld/exit_overworld_screen.c ExitOverworldScreen
+c-file 0x080297FC _ src/map/initialize_overworld.c InitializeOverworld
+c-file 0x0802A1A8 0x0802A300 src/map/exit_overworld_screen.c ExitOverworldScreen
 thumb-func 0x0802A300 sub_0802A2A4
-c-file 0x0802A430 _ src/save/deserialize_room_actor_state.c DeserializeRoomActorState
-c-file 0x0802A5CC 0x0802A768 src/save/serialize_room_actor_state.c SerializeRoomActorState
+c-file 0x0802A430 _ src/map/deserialize_room_actor_state.c DeserializeRoomActorState
+c-file 0x0802A5CC 0x0802A768 src/map/serialize_room_actor_state.c SerializeRoomActorState
 thumb-func 0x0802A768 CaptureRoomActorState
 thumb-func 0x0802AB90 RestoreRoomActorState
 thumb-func 0x0802AEC0 RestoreRoomActorStateMinimal
-c-file 0x0802AF54 _ src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
-c-file 0x0802B074 _ src/overworld/init_room_state.c InitRoomState
-c-file 0x0802B0B4 0x0802B0E8 src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
+c-file 0x0802AF54 _ src/map/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
+c-file 0x0802B074 _ src/map/init_room_state.c InitRoomState
+c-file 0x0802B0B4 0x0802B0E8 src/map/update_overworld.c UpdateOverworld
 thumb-func 0x0802B0E8 sub_0802B08C
 thumb-func 0x0802B0F4 sub_0802B098
 thumb-func 0x0802B0F8 sub_0802B09C
-c-file 0x0802B0FC _ src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
-c-file 0x0802B138 0x0802B150 src/overworld/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
+c-file 0x0802B0FC _ src/map/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
+c-file 0x0802B138 0x0802B150 src/map/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
 thumb-func 0x0802B150 ClearRoomActorStateBuffer
-c-file 0x0802B16C 0x0802B194 src/overworld/room_switch_state.c SetRoomSwitchState
+c-file 0x0802B16C 0x0802B194 src/map/room_switch_state.c SetRoomSwitchState
 thumb-func 0x0802B194 sub_0802B138
 thumb-func 0x0802B1C0 OverworldVBlankCallback
 thumb-func 0x0802B1D0 ApplyRoomBgControlOverride_candidate
 thumb-func 0x0802B268 sub_0802B20C
 thumb-func 0x0802B26C sub_0802B210
-c-file 0x0802B278 0x0802B3A0 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
+c-file 0x0802B278 0x0802B3A0 src/map/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 thumb-func 0x0802B3A0 TrySpawnWanderingMonster
 thumb-func 0x0802B478 SpawnWanderingMonsterActor
 thumb-func 0x0802B5E8 HandleWanderingMonsterTouch
@@ -2254,11 +2254,11 @@ c-file 0x08062944 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnuse
 c-file 0x08062980 0x0806298C src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 
 c-file 0x08062994 0x080629C4 src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
-c-file 0x08062FF0 _ src/gamemode/modes/overworld/overworld.globals.c g_dwBg2Control
-c-file 0x08063000 _ src/room/special_scene_bg_animations.c g_aSpecialSceneBg2
-c-file 0x08063C18 _ src/room/room_table.c g_aRoomTable
-c-file 0x080656BC _ src/gamemode/modes/overworld/room_quest_music_override.c g_adwRoomQuestMusicOverride
-c-file 0x08065798 0x080657A8 src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
+c-file 0x08062FF0 _ src/map/overworld.globals.c g_dwBg2Control
+c-file 0x08063000 _ src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
+c-file 0x08063C18 _ src/map/room_table.c g_aRoomTable
+c-file 0x080656BC _ src/map/room_quest_music_override.c g_adwRoomQuestMusicOverride
+c-file 0x08065798 0x080657A8 src/map/room_color_cycles.c g_ColorCyclesDefault
 c-file 0x08065828 _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C28 _ ResetBgLayer
 c-rodata 0x08065C30 _ GetDirectionFromVector

@@ -83,7 +83,7 @@ The `RoomGraphics` group holds the 55 rooms in room table order, as items `Room0
 whose 14 contiguous resources are labeled `gRoom<NN>BgMap0`,
 `gRoom<NN>BgBlocks0`, `gRoom<NN>CollisionBehavior`, `gRoom<NN>CollisionMap`,
 `gRoom<NN>TilesetA`, `gRoom<NN>PaletteA`, ..., which
-`src/room/room_table.c` (`g_aRoomTable`) refers to, through
+`src/map/room_table.c` (`g_aRoomTable`) refers to, through
 `include/gen/graphics/rooms.h`. Code: `tools/room_graphics/` and
 `tools/graphics/kinds/room_graphics.py`.
 

@@ -4,6 +4,7 @@
 #include "graphics/audio.h"
 #include "actor.h"
 #include "overworld/overworld.h"
+#include "map.h"
 
 void HandleOverworldPauseMenuInput(void)
 {

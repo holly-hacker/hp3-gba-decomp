@@ -3,6 +3,7 @@
 #include "overworld/room_blob.h"
 #include "graphics/display.h"
 #include "overworld/room.h"
+#include "map.h"
 
 // One entry per room id. Each room's resources are the Room<NN>... symbols of its
 // graphics region (data/room_graphics/) and blob region (asm/room/blobs/).

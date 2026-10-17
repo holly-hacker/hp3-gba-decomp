@@ -5,39 +5,6 @@
 #include "battle/battle.h"
 #include "battle/encounters.h"
 
-// Wandering-monster overworld state (see docs/formats/encounters.md).
-// Touching a wandering monster records its encounter id and kind here;
-// every fifth touch respawns replacements via TrySpawnWanderingMonster
-// (see HandleWanderingMonsterTouch). Cleared on room load by
-// SpawnOverworldMonsterEncounters below.
-extern u8 g_bTouchedMonsterRecordCount;
-extern u8 g_abTouchedMonsterRecords[20];
-extern Actor *g_pTouchedWanderingMonster;
-
-// 8-byte wandering-monster spawn-position record, two words.
-// Only the low halves reach SpawnWanderingMonsterActor;
-// FindWanderingMonsterSpawnPosition fills both words.
-typedef struct SpawnPosition {
-    u32 x;
-    u32 y;
-} SpawnPosition;
-
-// Room load: spawn each kind's level-table count (offsets 0x74-0x76) of
-// wandering monsters for encounter id (level-table offset 0x77), picking
-// each spawn's random variant up front. See docs/formats/encounters.md.
-void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 encounterId);
-// Collision-type table lookup by encounter kind, selecting the spawn
-// terrain for that kind.
-u32 GetEncounterKindTerrainType(u32 kind);
-// Find a valid spawn position for one monster, recording it in the
-// placed-position buffer for overlap checks. Returns 0 after 200 failed
-// attempts.
-s32 FindWanderingMonsterSpawnPosition(u32 *pOutPos, u32 terrainType, SpawnPosition *pPlacedPositions, u32 placedCount);
-// Strongest-damage monster id among one variant cell's slots 0-2.
-u32 PickMaxDamageMonster(const u8 *pSlots);
-// Create one wandering-monster actor.
-void SpawnWanderingMonsterActor(u8 monsterId, u16 x, u16 y, u8 encounterId, u8 variant, u8 kind);
-
 // Controllable-character slots: each 16-byte entry starts with the Actor the
 // player steers; only slot 0 is ever populated.
 typedef struct OverworldControlSlot {
@@ -87,15 +54,11 @@ extern Actor *g_pMapNamePopupActor;         // 240x16 bar sprite behind the room
 extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
 
 
-// Starts the first slot's camera-shake effect and plays its cue.
-extern void sub_0802B138(void);
 
 extern u8 g_bControlSlotTicks_candidate;
-extern void TickOverworldBeforeActors_candidate(void);
 // Updates g_CameraPosition_candidate from the followed actor and streams BG
 // tiles on demand as it crosses tile boundaries.
 extern void UpdateOverworldCamera_candidate(u32 mode);
-extern void HandleOverworldPauseMenuInput(void);
 // Set by the room chain runner while it processes a chain; consumed (cleared)
 // once per frame by HandleOverworldPauseMenuInput.
 extern u32 g_dwRoomChainRanThisFrame_candidate;
@@ -103,9 +66,6 @@ extern u32 g_dwRoomChainRanThisFrame_candidate;
 // when the overworld pushes a pause menu; the room actor constructed by
 // sub_08044C00 and its callbacks branch on it.
 extern u8 g_bRestoringRoomActors_candidate;
-// Records wandering-monster touches and respawns replacements; see the
-// wandering-monster notes above.
-extern void HandleWanderingMonsterTouch(void);
 
 // Nonzero blocks the overworld Start/Select menus (SetPauseMenuLocked).
 extern u32 g_dwPauseMenuLocked;
@@ -113,11 +73,6 @@ extern u32 g_dwPauseMenuLocked;
 // each menu open, counted down by UpdateOverworld.
 extern u32 g_dwPauseMenuCooldown;
 
-// Multi-slot bookkeeping that only acts when the slot count exceeds 1.
-// Always returns 0.
-s32 TickOverworldControlSlots_candidate(void);
 
 // Overworld teardown helpers called by ExitOverworldScreen.
 extern void FreeRoomSharedTileset(void);
-extern void sub_0802B210(void);
-extern void sub_0802B08C(void);

@@ -1244,30 +1244,30 @@ thumb-func 0x080295E0 LupinPotionPanelScanlineCallback_candidate
 c-file 0x08029690 _ src/main.c AgbMain
 
 # Map (overworld)
-c-file 0x080297A0 _ src/gamemode/modes/overworld/initialize_overworld.c InitializeOverworld
-c-file 0x0802A14C 0x0802A2A4 src/gamemode/modes/overworld/exit_overworld_screen.c ExitOverworldScreen
+c-file 0x080297A0 _ src/map/initialize_overworld.c InitializeOverworld
+c-file 0x0802A14C 0x0802A2A4 src/map/exit_overworld_screen.c ExitOverworldScreen
 thumb-func 0x0802A2A4 sub_0802A2A4
-c-file 0x0802A3D4 _ src/save/deserialize_room_actor_state.c DeserializeRoomActorState
-c-file 0x0802A570 0x0802A70C src/save/serialize_room_actor_state.c SerializeRoomActorState
+c-file 0x0802A3D4 _ src/map/deserialize_room_actor_state.c DeserializeRoomActorState
+c-file 0x0802A570 0x0802A70C src/map/serialize_room_actor_state.c SerializeRoomActorState
 thumb-func 0x0802A70C CaptureRoomActorState
 thumb-func 0x0802AB34 RestoreRoomActorState
 thumb-func 0x0802AE64 RestoreRoomActorStateMinimal
-c-file 0x0802AEF8 _ src/overworld/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
-c-file 0x0802B018 _ src/overworld/init_room_state.c InitRoomState
-c-file 0x0802B058 0x0802B08C src/gamemode/modes/overworld/update_overworld.c UpdateOverworld
+c-file 0x0802AEF8 _ src/map/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
+c-file 0x0802B018 _ src/map/init_room_state.c InitRoomState
+c-file 0x0802B058 0x0802B08C src/map/update_overworld.c UpdateOverworld
 thumb-func 0x0802B08C sub_0802B08C
 thumb-func 0x0802B098 sub_0802B098
 thumb-func 0x0802B09C sub_0802B09C
-c-file 0x0802B0A0 _ src/overworld/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
-c-file 0x0802B0DC 0x0802B0F4 src/overworld/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
+c-file 0x0802B0A0 _ src/map/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
+c-file 0x0802B0DC 0x0802B0F4 src/map/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
 thumb-func 0x0802B0F4 ClearRoomActorStateBuffer
-c-file 0x0802B110 0x0802B138 src/overworld/room_switch_state.c SetRoomSwitchState
+c-file 0x0802B110 0x0802B138 src/map/room_switch_state.c SetRoomSwitchState
 thumb-func 0x0802B138 sub_0802B138
 thumb-func 0x0802B164 OverworldVBlankCallback
 thumb-func 0x0802B174 ApplyRoomBgControlOverride_candidate
 thumb-func 0x0802B20C sub_0802B20C
 thumb-func 0x0802B210 sub_0802B210
-c-file 0x0802B21C 0x0802B344 src/overworld/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
+c-file 0x0802B21C 0x0802B344 src/map/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
 thumb-func 0x0802B344 TrySpawnWanderingMonster
 thumb-func 0x0802B41C SpawnWanderingMonsterActor
 thumb-func 0x0802B58C HandleWanderingMonsterTouch
@@ -2523,11 +2523,11 @@ c-file 0x080629B8 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnuse
 c-file 0x080629F4 0x08062A00 src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 
 c-file 0x08062A08 0x08062A38 src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
-c-file 0x08063064 _ src/gamemode/modes/overworld/overworld.globals.c g_dwBg2Control
-c-file 0x08063074 _ src/room/special_scene_bg_animations.c g_aSpecialSceneBg2
-c-file 0x08063C8C _ src/room/room_table.c g_aRoomTable
-c-file 0x08065730 _ src/gamemode/modes/overworld/room_quest_music_override.c g_adwRoomQuestMusicOverride
-c-file 0x0806580C 0x0806581C src/gamemode/modes/overworld/room_color_cycles.c g_ColorCyclesDefault
+c-file 0x08063064 _ src/map/overworld.globals.c g_dwBg2Control
+c-file 0x08063074 _ src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
+c-file 0x08063C8C _ src/map/room_table.c g_aRoomTable
+c-file 0x08065730 _ src/map/room_quest_music_override.c g_adwRoomQuestMusicOverride
+c-file 0x0806580C 0x0806581C src/map/room_color_cycles.c g_ColorCyclesDefault
 c-file 0x0806589C _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C9C _ ResetBgLayer
 c-rodata 0x08065CA4 _ GetDirectionFromVector

@@ -190,7 +190,7 @@ about how room content is placed.
 ## Not yet located
 
 - The table and everything it points at are build input: see
-  [`room_graphics.md`](room_graphics.md) and `src/room/room_table.c`. Which of the
+  [`room_graphics.md`](room_graphics.md) and `src/map/room_table.c`. Which of the
   `Unused` fields are padding versus unread by the traced consumers is still
   unconfirmed; the table writes them as zero, which the ROM matches.
 - The `(tag, value)` byte run immediately preceding `g_pRoomTable`

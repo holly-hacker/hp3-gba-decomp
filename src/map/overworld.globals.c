@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room.h"
+#include "map.h"
 
 const u32 g_dwBg2Control = 0x1F0A;
 const u32 g_dwBg1Control = 0x1E09;

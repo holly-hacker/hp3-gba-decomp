@@ -7,6 +7,7 @@
 #include "items.h"
 #include "overworld/room.h"
 #include "overworld/room_actor.h"
+#include "map.h"
 
 #define STARTING_ROOM_ID 0x2A
 

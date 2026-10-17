@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "mt19937.h"
 #include "overworld/overworld.h"
+#include "map.h"
 
 // Room load: spawn each kind's level-table count of wandering monsters,
 // picking each spawn's random variant up front (see

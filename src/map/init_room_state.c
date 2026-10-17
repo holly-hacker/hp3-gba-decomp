@@ -5,6 +5,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "hero.h"
+#include "map.h"
 
 void InitRoomState(void)
 {

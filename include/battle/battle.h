@@ -307,7 +307,6 @@ extern void FreeAllParticleEmitters(void);
 extern void FreeAllParticles(void);
 extern void sub_08031668(s32 arg0, s32 arg1);
 extern void FreeFloorEffect(void);
-extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes); see docs/formats/save.md
 
 // Battle-message icon actor (shown alongside ShowBattleMessage's text),
 // distinct from the 7 per-fighter Actors in g_apFighterActors_candidate.

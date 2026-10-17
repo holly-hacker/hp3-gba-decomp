@@ -6,6 +6,7 @@
 #include "dialog_box.h"
 #include "overworld/room.h"
 #include "gen/graphics/cutscenes.h"
+#include "map.h"
 
 void LoadDialogBoxGraphics(void)
 {

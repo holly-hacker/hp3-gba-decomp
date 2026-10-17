@@ -16,4 +16,3 @@ extern void SelectNewGameSlot_candidate(void);
 extern void ResolveOverwriteConfirmation_candidate(void);
 extern void ExitSaveSlotScreen_candidate(void);
 extern void ConfirmLoadGameSlot_candidate(void);
-extern void InitRoomState(void);
