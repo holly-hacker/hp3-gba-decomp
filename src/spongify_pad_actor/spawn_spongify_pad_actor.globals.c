@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor_anim.h"
-#include "overworld/room_actor.h"
+#include "spongify_pad_actor.h"
 #include "gen/graphics/overworld.h"
 
 const ActorGfxRecord g_aRoomSpongifyPadSprites[4] = {

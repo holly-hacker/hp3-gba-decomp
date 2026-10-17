@@ -2012,7 +2012,7 @@ thumb-func 0x0803FFEC sub_0803FFEC
 c-file 0x0804000C _ src/sound/on_krawall_event.c OnKrawallEvent
 
 # Spongify (spongify pad actor)
-c-file 0x08040038 0x08040114 src/room/actors/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
+c-file 0x08040038 0x08040114 src/spongify_pad_actor/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
 thumb-func 0x08040114 sub_08040114
 thumb-func 0x08040358 sub_08040358
 thumb-func 0x0804049C sub_0804049C
@@ -2572,7 +2572,7 @@ c-file 0x0806B7D4 _ src/rising_platform_actor/spawn_raising_platform_actor.globa
 c-file 0x0806B80C _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B8CC _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
-c-file 0x0806B8DC 0x0806B934 src/room/actors/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
+c-file 0x0806B8DC 0x0806B934 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 _ src/shop/shop_stock.c g_aShopStockMisc
 
 c-file 0x0806BA4C _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons

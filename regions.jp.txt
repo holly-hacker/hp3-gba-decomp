@@ -1787,7 +1787,7 @@ c-file 0x08040000 0x08040030 src/sound/apply_audio_volume_settings.c ApplyAudioV
 thumb-func 0x08040030 sub_0803FFC8
 thumb-func 0x08040054 sub_0803FFEC
 c-file 0x08040074 _ src/sound/on_krawall_event.c OnKrawallEvent
-c-file 0x080400A0 0x0804017C src/room/actors/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
+c-file 0x080400A0 0x0804017C src/spongify_pad_actor/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
 thumb-func 0x0804017C sub_08040114
 thumb-func 0x080403C0 sub_08040358
 thumb-func 0x08040504 sub_0804049C
@@ -2303,7 +2303,7 @@ c-file 0x0806B760 _ src/rising_platform_actor/spawn_raising_platform_actor.globa
 c-file 0x0806B798 _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B858 _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
-c-file 0x0806B868 0x0806B8C0 src/room/actors/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
+c-file 0x0806B868 0x0806B8C0 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 _ src/shop/shop_stock.c g_aShopStockMisc
 c-file 0x0806B9D8 _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file 0x0806BA8C _ src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
