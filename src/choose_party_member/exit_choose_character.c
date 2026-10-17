@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "choose_party_member.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"

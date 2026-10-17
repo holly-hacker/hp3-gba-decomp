@@ -2,7 +2,6 @@
 #include "background.h"
 #include "modes.h"
 #include "pscreen_save.h"
-#include "graphics/display.h"
 #include "input.h"
 #include "mem.h"
 #include "actor.h"

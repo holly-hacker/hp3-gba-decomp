@@ -4,7 +4,6 @@
 #include "combat_menu.h"
 #include "hw/bios.h"
 #include "cheat.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "actor.h"

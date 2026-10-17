@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "modes.h"
-#include "graphics/display.h"
 #include "mem.h"
 #include "actor.h"
 #include "owl_name_select.h"

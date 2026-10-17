@@ -1,6 +1,5 @@
 #include "types.h"
 #include "color.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "pscreen_folio_universitas.h"
 #include "pscreen_wizard_cards.h"

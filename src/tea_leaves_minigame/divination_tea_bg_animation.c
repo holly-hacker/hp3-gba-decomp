@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/display.h"
+#include "char_block.h"
 #include "tea_leaves_minigame.h"
 
 // BG2's animation, registered with g_dwDivinationTeaBg2Control.

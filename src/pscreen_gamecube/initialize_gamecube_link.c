@@ -1,5 +1,4 @@
 #include "types.h"
-#include "graphics/display.h"
 #include "particles.h"
 #include "modes.h"
 #include "gamecube.h"

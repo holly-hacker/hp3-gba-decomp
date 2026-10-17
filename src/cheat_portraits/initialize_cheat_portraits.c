@@ -2,7 +2,6 @@
 #include "background.h"
 #include "hw/bios.h"
 #include "cheat_portraits.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "overworld/room.h"

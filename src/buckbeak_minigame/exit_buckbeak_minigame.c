@@ -1,7 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "char_block.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "buckbeak_minigame.h"
 #include "mem.h"

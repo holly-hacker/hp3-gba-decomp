@@ -3,7 +3,6 @@
 #include "char_block.h"
 #include "commands.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "hw/io_regs.h"
 #include "minigame_menu.h"
 #include "actor.h"

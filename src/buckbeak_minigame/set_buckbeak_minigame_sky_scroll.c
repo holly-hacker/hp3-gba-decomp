@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "battle/battle.h"
-#include "graphics/display.h"
 #include "buckbeak_minigame.h"
 
 // Scrolls the two sky layers at different rates with the heading.

@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "font.h"
 #include "text.h"
 #include "modes.h"

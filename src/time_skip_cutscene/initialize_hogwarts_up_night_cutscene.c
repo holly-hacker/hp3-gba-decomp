@@ -2,7 +2,7 @@
 #include "background.h"
 #include "color.h"
 #include "hw/bios.h"
-#include "graphics/display.h"
+#include "gen/graphics/cutscenes.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "screen_transitions.h"

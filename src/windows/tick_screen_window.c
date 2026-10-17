@@ -1,6 +1,5 @@
 #include "types.h"
 #include "math.h"
-#include "graphics/display.h"
 #include "windows.h"
 
 // Advances both corners of one window: tweens toward the target over wFrames

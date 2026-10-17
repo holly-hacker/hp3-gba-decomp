@@ -3,7 +3,6 @@
 #include "combat_menu.h"
 #include "color.h"
 #include "combat_2.h"
-#include "graphics/display.h"
 #include "particles.h"
 #include "combat.h"
 

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "mem.h"
 #include "actor.h"
 #include "screen_transitions.h"

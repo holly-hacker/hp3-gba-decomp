@@ -1,7 +1,6 @@
 #include "area.h"
 #include "color.h"
 #include "interrupts.h"
-#include "graphics/display.h"
 #include "display.h"
 #include "hw/io_regs.h"
 #include "mem.h"

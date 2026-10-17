@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/display.h"
 #include "pop_it_minigame.h"
 #include "font.h"
 #include "modes.h"

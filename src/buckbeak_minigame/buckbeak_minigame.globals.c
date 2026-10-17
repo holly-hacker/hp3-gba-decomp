@@ -2,7 +2,7 @@
 #include "actor.h"
 #include "actor_anim.h"
 #include "buckbeak_minigame.h"
-#include "graphics/display.h"
+#include "char_block.h"
 #include "video.h"
 
 const u32 g_dwBuckbeakMinigameBg2Control = 0xF881;

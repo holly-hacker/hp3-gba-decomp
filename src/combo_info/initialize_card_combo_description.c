@@ -2,7 +2,6 @@
 #include "combo_info.h"
 #include "modes.h"
 #include "gen/graphics/cutscenes.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "font.h"
 #include "text.h"

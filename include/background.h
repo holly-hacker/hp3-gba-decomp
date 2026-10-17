@@ -101,6 +101,11 @@ extern void ResetBgLayer(u32 bg);            // scroll, step and flags back to z
 // Display registers. Bits 8-11 of DISPCNT enable BG0-3.
 extern void ResetDisplayState(u16 mode);  // DISPCNT = mode | OBJ 1D mapping, resets every layer
 extern void SetBgControl(u32 bg, u32 control);  // writes BGxCNT and enables the layer
+// The write-only half of SetBgControl: writes BGxCNT and the tilemap/charblock
+// VRAM bases, without enabling the layer via SetDispcntFlag.
+// HACK: unprototyped so callers can pass the control word as a u32, while the
+// definition takes it as a 4-byte struct (BgControlArg), which it needs to match.
+extern void SetBgControlRegister();
 extern void EnableBg(u32 bg);
 extern void DisableBg(u32 bg);
 extern void RewriteBgControlRegisters(void);  // layers with BG_LAYER_COMMIT and 0x200 set
@@ -127,6 +132,10 @@ extern void SetBgTilemapRectPalette(u32 bg, u32 x, u32 y, s32 w, s32 h, u16 palB
 extern void SetTilemapRectPalette(u16 *pTilemap, u32 x, u32 y, s32 w, s32 h, u16 palBank);
 extern void GetBgSizePixels(u32 bg, u16 *pWidth, u16 *pHeight);
 extern u16 GetTilemapCell(const u16 *pTilemap, u32 x, u32 y, u32 stride);
+
+// The colors of a graphic blob's embedded palette, after its two flag bytes
+// (see docs/formats/graphic_blob.md).
+#define GRAPHIC_BLOB_PALETTE_COLORS(blob) ((const u16 *)((const u8 *)(blob) + 2))
 
 // Graphic loading; the blob layout is in docs/formats/graphic_blob.md. The tilemap result is
 // width, height, then the cells.

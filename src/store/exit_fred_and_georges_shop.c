@@ -1,5 +1,4 @@
 #include "types.h"
-#include "graphics/display.h"
 #include "store.h"
 #include "screen_transitions.h"
 

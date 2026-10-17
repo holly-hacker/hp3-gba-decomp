@@ -1,7 +1,6 @@
 #include "types.h"
 #include "sound.h"
 #include "battle/battle.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "pscreen_save.h"
 #include "pause_menu.h"

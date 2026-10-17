@@ -2,7 +2,6 @@
 #include "battle/battle.h"
 #include "char_block.h"
 #include "color.h"
-#include "graphics/display.h"
 #include "mem.h"
 #include "actor.h"
 #include "minigame_menu.h"

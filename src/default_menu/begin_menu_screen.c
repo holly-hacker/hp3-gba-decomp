@@ -3,7 +3,6 @@
 #include "color.h"
 #include "cursor.h"
 #include "default_menu.h"
-#include "graphics/display.h"
 #include "gen/graphics/menus.h"
 
 void BeginMenuScreen(u32 titleStringId, u32 cursorKind, u32 pulseSelection)

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "char_block.h"
-#include "graphics/display.h"
 #include "hw/io_regs.h"
 #include "overworld/room.h"
 #include "scroll.h"

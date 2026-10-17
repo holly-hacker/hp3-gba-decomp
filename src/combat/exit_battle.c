@@ -4,7 +4,6 @@
 #include "combat_menu.h"
 #include "color.h"
 #include "combat.h"
-#include "graphics/display.h"
 #include "interrupts.h"
 #include "modes.h"
 #include "mem.h"

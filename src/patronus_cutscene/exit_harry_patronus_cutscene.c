@@ -1,6 +1,5 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "graphics/display.h"
 #include "interrupts.h"
 #include "patronus_cutscene.h"
 #include "screen_transitions.h"

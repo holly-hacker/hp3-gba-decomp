@@ -3,7 +3,6 @@
 #include "color.h"
 #include "modes.h"
 #include "background.h"
-#include "graphics/display.h"
 #include "particles.h"
 #include "actor.h"
 #include "oam.h"

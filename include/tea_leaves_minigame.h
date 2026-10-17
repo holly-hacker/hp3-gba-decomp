@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/display.h"
+#include "char_block.h"
 #include "actor.h"
 #include "gen/graphics/minigames/divination_tea.h"
 

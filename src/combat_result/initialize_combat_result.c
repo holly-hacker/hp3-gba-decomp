@@ -5,7 +5,6 @@
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "items.h"
 #include "game/rewards.h"

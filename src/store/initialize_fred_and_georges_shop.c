@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "modes.h"
-#include "graphics/display.h"
 #include "store.h"
 #include "default_menu.h"
 #include "screen_transitions.h"

@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "math.h"
-#include "graphics/display.h"
 #include "pscreen_folio_universitas_inline.h"
 #include "overworld/room_script.h"
 #include "items.h"

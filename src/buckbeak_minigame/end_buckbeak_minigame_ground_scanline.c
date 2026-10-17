@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/display.h"
 #include "buckbeak_minigame.h"
 
 // Runs at the first vblank line: restores BG2 for the next frame.

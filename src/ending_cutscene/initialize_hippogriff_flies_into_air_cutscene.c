@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "sound.h"
-#include "graphics/display.h"
+#include "gen/graphics/minigames/hippogriff.h"
 #include "ending_cutscene.h"
 #include "actor.h"
 #include "gen/graphics/minigames/boggart.h"

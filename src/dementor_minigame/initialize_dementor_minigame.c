@@ -2,7 +2,6 @@
 #include "background.h"
 #include "sound.h"
 #include "actor.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "dementor_minigame.h"
 #include "font.h"

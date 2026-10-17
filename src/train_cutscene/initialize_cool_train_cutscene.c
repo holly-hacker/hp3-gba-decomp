@@ -3,7 +3,7 @@
 #include "sound.h"
 #include "hw/bios.h"
 #include "train_cutscene.h"
-#include "graphics/display.h"
+#include "gen/graphics/cutscenes.h"
 #include "hw/io_regs.h"
 #include "screen_transitions.h"
 

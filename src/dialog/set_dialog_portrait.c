@@ -2,7 +2,6 @@
 #include "actor.h"
 #include "color.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"

@@ -3,7 +3,6 @@
 #include "char_block.h"
 #include "sound.h"
 #include "hw/bios.h"
-#include "graphics/display.h"
 #include "tea_leaves_minigame.h"
 #include "modes.h"
 #include "hw/io_regs.h"

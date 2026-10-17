@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "color.h"
-#include "graphics/display.h"
 
 u32 LoadEmbeddedPaletteFromRow(const u8 *pBlob, u32 row)
 {

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "graphics/display.h"
 #include "dementor_minigame.h"
 #include "mem.h"
 #include "actor.h"

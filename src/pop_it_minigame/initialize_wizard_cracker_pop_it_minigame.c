@@ -2,7 +2,6 @@
 #include "background.h"
 #include "color.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "particles.h"
 #include "mem.h"

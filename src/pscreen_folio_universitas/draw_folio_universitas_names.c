@@ -2,7 +2,6 @@
 #include "background.h"
 #include "math.h"
 #include "modes.h"
-#include "graphics/display.h"
 #include "font.h"
 #include "text.h"
 #include "minigame_menu.h"

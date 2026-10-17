@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 #include "color.h"
-#include "graphics/display.h"
+#include "char_block.h"
 #include "overworld/room.h"
 #include "overworld/room_actor_state.h"
 

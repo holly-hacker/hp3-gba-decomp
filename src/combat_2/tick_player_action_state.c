@@ -5,7 +5,6 @@
 #include "sound.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
-#include "graphics/display.h"
 #include "particles.h"
 #include "modes.h"
 #include "items.h"

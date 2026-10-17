@@ -2,7 +2,6 @@
 #include "actor.h"
 #include "color.h"
 #include "palette.h"
-#include "graphics/display.h"
 
 // Adds a reference to slotIndex. A non-NULL pPalette is stored in the slot and its
 // colors 1-15 are queued for upload to OBJ palette bank slotIndex; a non-NULL actor

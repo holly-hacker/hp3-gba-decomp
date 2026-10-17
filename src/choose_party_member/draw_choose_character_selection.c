@@ -4,7 +4,6 @@
 #include "choose_party_member.h"
 #include "font.h"
 #include "modes.h"
-#include "graphics/display.h"
 #include "overworld/room.h"
 #include "text.h"
 #include "map.h"

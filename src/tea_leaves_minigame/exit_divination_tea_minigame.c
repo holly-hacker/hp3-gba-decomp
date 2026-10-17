@@ -2,7 +2,6 @@
 #include "battle/battle.h"
 #include "char_block.h"
 #include "color.h"
-#include "graphics/display.h"
 #include "tea_leaves_minigame.h"
 #include "mem.h"
 #include "actor.h"

@@ -3,7 +3,7 @@
 #include "sound.h"
 #include "hw/bios.h"
 #include "actor.h"
-#include "graphics/display.h"
+#include "gen/graphics/cutscenes.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "gen/graphics/overworld.h"

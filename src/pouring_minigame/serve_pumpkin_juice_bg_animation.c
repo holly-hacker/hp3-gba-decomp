@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/display.h"
+#include "char_block.h"
 #include "pouring_minigame.h"
 #include "gen/graphics/minigames/pumpkin.h"
 

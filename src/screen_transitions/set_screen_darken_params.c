@@ -1,5 +1,4 @@
 #include "types.h"
-#include "graphics/display.h"
 #include "screen_transitions.h"
 
 void SetScreenDarkenParams_candidate(u32 arg0, u32 stepTicks)

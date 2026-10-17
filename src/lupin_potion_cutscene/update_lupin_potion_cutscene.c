@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "input.h"
 #include "lupin_potion_cutscene.h"

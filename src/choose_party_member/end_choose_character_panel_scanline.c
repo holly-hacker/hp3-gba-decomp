@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "choose_party_member.h"
-#include "graphics/display.h"
 #include "hw/io_regs.h"
 
 // Runs at the bottom of the panel: turns window 0 off and restores BG2's own scroll.

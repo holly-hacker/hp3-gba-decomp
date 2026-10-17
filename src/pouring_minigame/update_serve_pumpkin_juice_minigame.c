@@ -2,7 +2,6 @@
 #include "background.h"
 #include "sound.h"
 #include "modes.h"
-#include "graphics/display.h"
 #include "input.h"
 #include "minigame_menu.h"
 #include "random.h"

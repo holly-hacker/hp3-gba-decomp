@@ -1,6 +1,5 @@
 #pragma once
 
-#include "graphics/display.h"
 #include "types.h"
 #include "actor.h"
 #include "particles.h"

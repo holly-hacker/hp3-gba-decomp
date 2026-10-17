@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "commands.h"
-#include "graphics/display.h"
 #include "overworld/room_script.h"
 
 typedef struct HideBackgroundLayerRecord {

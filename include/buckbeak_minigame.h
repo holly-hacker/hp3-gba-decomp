@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 #include "math.h"
-#include "graphics/display.h"
+#include "char_block.h"
 #include "mode7.h"
 #include "video.h"
 #include "minigame_menu.h"

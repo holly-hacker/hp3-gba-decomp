@@ -3,7 +3,6 @@
 #include "modes.h"
 #include "save.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "font.h"
 #include "hedwig_minigame.h"
 #include "gen/graphics/minigames/owl_care.h"

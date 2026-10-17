@@ -2,7 +2,6 @@
 #include "modes.h"
 #include "pscreen_save.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "input.h"
 #include "hw/io_regs.h"
 #include "mem.h"

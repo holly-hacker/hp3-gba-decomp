@@ -4,7 +4,6 @@
 #include "choose_party_member.h"
 #include "modes.h"
 #include "gen/graphics/menus.h"
-#include "graphics/display.h"
 #include "video.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"

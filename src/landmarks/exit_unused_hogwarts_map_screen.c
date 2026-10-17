@@ -1,6 +1,5 @@
 #include "types.h"
 #include "color.h"
-#include "graphics/display.h"
 #include "particles.h"
 #include "mem.h"
 #include "actor.h"

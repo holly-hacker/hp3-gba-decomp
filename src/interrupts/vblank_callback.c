@@ -1,6 +1,5 @@
 #include "types.h"
 #include "char_block.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "interrupts.h"
 

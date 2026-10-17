@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/display.h"
+#include "gen/graphics/minigames/hippogriff.h"
 #include "modes.h"
 #include "pscreen_save.h"
 #include "particles.h"

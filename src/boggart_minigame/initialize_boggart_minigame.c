@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "particles.h"
 #include "boggart_minigame.h"

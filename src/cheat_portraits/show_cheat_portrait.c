@@ -2,7 +2,6 @@
 #include "actor.h"
 #include "cheat_portraits.h"
 #include "color.h"
-#include "graphics/display.h"
 
 void ShowCheatPortrait(void)
 {

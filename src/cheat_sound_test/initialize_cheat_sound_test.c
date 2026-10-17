@@ -3,7 +3,6 @@
 #include "sound.h"
 #include "hw/bios.h"
 #include "cheat_sound_test.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "actor.h"

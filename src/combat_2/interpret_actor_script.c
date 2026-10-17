@@ -10,7 +10,6 @@
 #include "game/rewards.h"
 #include "background.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "particles.h"
 #include "video.h"
 #include "hw/io_regs.h"

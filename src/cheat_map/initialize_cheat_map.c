@@ -2,7 +2,6 @@
 #include "background.h"
 #include "hw/bios.h"
 #include "cheat_map.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "particles.h"
 #include "hw/io_regs.h"

@@ -6,7 +6,6 @@
 #include "math.h"
 #include "save.h"
 #include "gen/graphics/overworld.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "huffman.h"
 #include "pscreen_folio_bruti.h"

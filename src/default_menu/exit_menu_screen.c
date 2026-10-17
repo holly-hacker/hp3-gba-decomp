@@ -2,7 +2,6 @@
 #include "color.h"
 #include "cursor.h"
 #include "default_menu.h"
-#include "graphics/display.h"
 #include "particles.h"
 
 void ExitMenuScreen(void)

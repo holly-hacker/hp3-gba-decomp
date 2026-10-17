@@ -3,7 +3,7 @@
 #include "hw/bios.h"
 #include "math.h"
 
-// Defined old-style: callers pass the heading promoted to int, the definition narrows it.
+// HACK: defined old-style: callers pass the heading promoted to int, the definition narrows it.
 void BuildFloorAffineTable(heading, cameraX, cameraY, cameraHeight, viewDistance, horizonOffset)
     u8 heading;
     s32 cameraX;

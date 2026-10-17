@@ -1,6 +1,5 @@
 #include "types.h"
 #include "color.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "actor.h"
 #include "main.h"

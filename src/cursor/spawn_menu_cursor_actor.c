@@ -4,7 +4,7 @@
 #include "palette.h"
 #include "cursor.h"
 #include "battle/effect_script.h"
-#include "graphics/display.h"
+#include "background.h"
 #include "gen/graphics/menus.h"
 
 Actor *SpawnMenuCursorActor(u32 kind)

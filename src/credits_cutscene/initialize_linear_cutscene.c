@@ -1,5 +1,4 @@
 #include "types.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "credits_cutscene.h"
 #include "cursor.h"

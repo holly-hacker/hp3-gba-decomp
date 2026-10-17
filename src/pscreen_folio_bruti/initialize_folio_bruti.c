@@ -4,7 +4,6 @@
 #include "modes.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "gen/graphics/overworld.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "font.h"
 #include "pscreen_folio_bruti.h"

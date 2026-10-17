@@ -4,7 +4,6 @@
 #include "combat_menu.h"
 #include "sound.h"
 #include "battle/battle.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "items.h"
 #include "game/rewards.h"

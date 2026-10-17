@@ -2,7 +2,6 @@
 #include "background.h"
 #include "modes.h"
 #include "gen/graphics/menus.h"
-#include "graphics/display.h"
 #include "font.h"
 #include "pause_menu.h"
 #include "owl_name_select.h"

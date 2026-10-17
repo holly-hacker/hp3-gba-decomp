@@ -5,7 +5,7 @@
 #include "hw/bios.h"
 #include "dialog.h"
 #include "dialog_box.h"
-#include "graphics/display.h"
+#include "gen/graphics/cutscenes.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "lupin_potion_cutscene.h"

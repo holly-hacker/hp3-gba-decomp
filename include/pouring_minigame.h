@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/display.h"
+#include "char_block.h"
 #include "gen/graphics/minigames/pumpkin.h"
 
 // Serve Pumpkin Juice, game mode 0x24 (UnusedServePumpkinJuiceMinigame). No

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "dialog.h"
 #include "overworld/overworld.h"

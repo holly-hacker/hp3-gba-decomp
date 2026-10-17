@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "credits_cutscene.h"
 #include "font.h"

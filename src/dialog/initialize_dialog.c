@@ -2,7 +2,6 @@
 #include "background.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "graphics/display.h"
 #include "actor.h"
 #include "video.h"
 #include "font.h"

@@ -3,7 +3,7 @@
 #include "color.h"
 #include "sound.h"
 #include "battle/battle.h"
-#include "graphics/display.h"
+#include "gen/graphics/cutscenes.h"
 #include "modes.h"
 #include "particles.h"
 #include "save.h"

@@ -4,7 +4,6 @@
 #include "hw/io_regs.h"
 #include "modes.h"
 #include "gen/graphics/minigames/hippogriff.h"
-#include "graphics/display.h"
 #include "landmarks.h"
 #include "random.h"
 #include "cursor.h"

@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "hw/bios.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "particles.h"
 #include "timeturner_cutscene.h"

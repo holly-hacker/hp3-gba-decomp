@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "cheat_map.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "input.h"
 #include "minigame_menu.h"

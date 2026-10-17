@@ -1,6 +1,5 @@
 #include "types.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "input.h"
 #include "save.h"

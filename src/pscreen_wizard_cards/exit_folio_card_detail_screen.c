@@ -1,5 +1,4 @@
 #include "types.h"
-#include "graphics/display.h"
 #include "mem.h"
 #include "actor.h"
 #include "pscreen_wizard_cards.h"

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "modes.h"
-#include "graphics/display.h"
 #include "store.h"
 #include "screen_transitions.h"
 

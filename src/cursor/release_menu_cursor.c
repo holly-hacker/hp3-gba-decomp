@@ -3,7 +3,6 @@
 #include "color.h"
 #include "cursor.h"
 #include "battle/effect_script.h"
-#include "graphics/display.h"
 #include "particles.h"
 
 void ReleaseMenuCursor(Actor *pActor)

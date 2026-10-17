@@ -2,7 +2,6 @@
 #include "background.h"
 #include "actor.h"
 #include "sound.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "font.h"
 #include "text.h"

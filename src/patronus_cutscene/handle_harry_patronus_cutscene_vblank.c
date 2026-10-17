@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/display.h"
 #include "patronus_cutscene.h"
 #include "actor.h"
 

@@ -3,7 +3,6 @@
 #include "char_block.h"
 #include "color.h"
 #include "hw/bios.h"
-#include "graphics/display.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "minigame_menu.h"

@@ -1,5 +1,4 @@
 #include "types.h"
-#include "graphics/display.h"
 #include "pause_menu.h"
 #include "actor.h"
 #include "default_menu.h"
