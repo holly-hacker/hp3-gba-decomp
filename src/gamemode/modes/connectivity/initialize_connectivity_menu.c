@@ -4,7 +4,7 @@
 #include "game/save.h"
 #include "mem.h"
 #include "menu/connectivity.h"
-#include "menu/in_game_menu.h"
+#include "pause_menu.h"
 
 void InitializeConnectivityMenu(void)
 {

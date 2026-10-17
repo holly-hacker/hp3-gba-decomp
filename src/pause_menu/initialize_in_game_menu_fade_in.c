@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "menu/in_game_menu.h"
+#include "pause_menu.h"
 
 void InitializeInGameMenuFadeIn(void)
 {

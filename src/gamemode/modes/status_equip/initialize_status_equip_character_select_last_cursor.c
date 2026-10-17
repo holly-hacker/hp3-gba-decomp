@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "menu/in_game_menu.h"
+#include "pause_menu.h"
 #include "actor.h"
 #include "menu/status_equip.h"
 #include "default_menu.h"

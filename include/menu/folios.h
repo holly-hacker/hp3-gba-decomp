@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 
 extern const ListMenuEntry g_aFoliosEntries[2];             // 0x0806950C
 extern const ListMenuRowActor g_aFoliosRowActors[2];      // 0x08069524

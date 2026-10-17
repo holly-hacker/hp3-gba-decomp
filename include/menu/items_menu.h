@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "modes.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 
 // Pause menu Items screen, game modes 0x10-0x12; see
 // docs/memory-map/game_modes.md.

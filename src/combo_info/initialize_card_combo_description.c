@@ -7,7 +7,7 @@
 #include "font.h"
 #include "text.h"
 #include "menu/folio_universitas.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 #include "default_menu.h"
 
 #ifdef VERSION_JP

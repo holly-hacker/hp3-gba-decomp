@@ -47,9 +47,28 @@ typedef struct {
 } ListMenuState;
 
 extern ListMenuState g_ListMenuState;  // 0x03005220
-
-
 extern void ListMenuCursorTick_candidate(Actor *pActor);
 extern void BuildListMenu(const ListMenuDefinition *pDefinition);
 extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);
+
+extern const ListMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38
+extern const ListMenuRowActor g_aInGameMenuRowActors[6];  // 0x08068C80
+extern const ListMenuDefinition g_InGameMenuDefinition;  // 0x08068CE0
+
+extern void UpdateInGameMenu(void);
+extern void InitializeInGameMenu(void);
+extern void InitializeInGameMenuFadeIn(void);
+extern void ExitInGameMenu(void);
+extern void BeginPauseMenuScreen(u32 arg);
+extern void StartMenuFadeIn(void);
+extern void StartMenuOverlayFadeIn(void);
+extern void TickMenuFadeIn(void);
+extern void StartMenuFadeOut(void);
+extern void StartMenuOverlayFadeOut(void);
+extern void TickMenuFadeOut(void);
+extern void SelectInGameMenuEntry_candidate(void);
+extern void sub_0803232C(void);
+extern void DrawPauseMenuObjective(void);
+extern void sub_080323AC(void);
+extern void sub_080323B0(void);

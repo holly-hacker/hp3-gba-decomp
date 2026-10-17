@@ -1507,13 +1507,13 @@ c-file 0x08031CA8 _ src/patronus_cutscene/exit_harry_patronus_cutscene.c ExitHar
 c-file 0x08031CC4 _ src/patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
 
 # Pause (in-game menu and list menu)
-c-file 0x08031D30 _ src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
-c-file 0x08031E7C _ src/menu/build_list_menu.c BuildListMenu
-c-file 0x08031F6C 0x08031FB8 src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
+c-file 0x08031D30 _ src/pause_menu/update_in_game_menu.c UpdateInGameMenu
+c-file 0x08031E7C _ src/pause_menu/build_list_menu.c BuildListMenu
+c-file 0x08031F6C 0x08031FB8 src/pause_menu/initialize_in_game_menu.c InitializeInGameMenu
 thumb-func 0x08031FB8 BeginPauseMenuScreen
-c-file 0x08031FF4 0x08032030 src/gamemode/modes/in_game_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
+c-file 0x08031FF4 0x08032030 src/pause_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
 thumb-func 0x08032030 sub_08032030
-c-file 0x08032054 0x080320A4 src/gamemode/modes/in_game_menu/exit_in_game_menu.c ExitInGameMenu
+c-file 0x08032054 0x080320A4 src/pause_menu/exit_in_game_menu.c ExitInGameMenu
 thumb-func 0x080320A4 StartMenuFadeIn
 thumb-func 0x080320E8 StartMenuOverlayFadeIn
 thumb-func 0x08032114 TickMenuFadeIn
@@ -1522,8 +1522,8 @@ thumb-func 0x0803217C StartMenuOverlayFadeOut
 thumb-func 0x080321A8 TickMenuFadeOut
 thumb-func 0x080321CC ListMenuCursorTick_candidate
 thumb-func 0x08032204 SelectInGameMenuEntry_candidate
-c-file 0x0803227C _ src/menu/move_list_menu_cursor.c MoveListMenuCursor
-c-file 0x080322BC 0x0803232C src/menu/draw_list_menu_row.c DrawListMenuRow
+c-file 0x0803227C _ src/pause_menu/move_list_menu_cursor.c MoveListMenuCursor
+c-file 0x080322BC 0x0803232C src/pause_menu/draw_list_menu_row.c DrawListMenuRow
 thumb-func 0x0803232C sub_0803232C
 thumb-func 0x0803233C DrawPauseMenuObjective
 thumb-func 0x080323AC sub_080323AC
@@ -2545,7 +2545,7 @@ c-file 0x08068BF8 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSel
 c-file 0x08068BFC 0x08068C08 src/particles/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068C10 _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068C30 _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
-c-file 0x08068C38 _ src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries
+c-file 0x08068C38 _ src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file 0x08068D04 0x08068D3C src/gamemode/modes/minigame/wizard_cracker_pop_it/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
 c-file 0x08069184 0x08069194 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
 c-file 0x08069328 _ src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable

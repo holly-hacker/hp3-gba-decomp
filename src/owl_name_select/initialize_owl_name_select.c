@@ -4,7 +4,7 @@
 #include "gen/graphics/menus.h"
 #include "graphics/display.h"
 #include "font.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 #include "owl_name_select.h"
 #include "default_menu.h"
 

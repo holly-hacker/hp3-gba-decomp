@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "menu/in_game_menu.h"
+#include "pause_menu.h"
 
 void InitializeInGameMenu(void)
 {

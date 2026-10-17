@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "gamecube.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 
 // The mode's text ids live in g_JoybusLinkState (gamecube.h).
 

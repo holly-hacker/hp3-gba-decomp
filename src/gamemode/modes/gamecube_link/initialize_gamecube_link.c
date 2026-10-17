@@ -4,7 +4,7 @@
 #include "modes.h"
 #include "gamecube.h"
 #include "menu/gamecube_link.h"
-#include "menu/in_game_menu.h"
+#include "pause_menu.h"
 #include "title.h"
 #include "battle/battle.h"
 #include "cursor.h"

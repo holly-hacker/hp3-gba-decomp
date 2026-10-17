@@ -4,7 +4,7 @@
 #include "font.h"
 #include "text.h"
 #include "dialog.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 #include "shop.h"
 #include "default_menu.h"
 

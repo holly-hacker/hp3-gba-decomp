@@ -4,7 +4,7 @@
 #include "modes.h"
 #include "mem.h"
 #include "menu/card_trade.h"
-#include "menu/in_game_menu.h"
+#include "pause_menu.h"
 #include "gen/graphics/cutscenes.h"
 #include "default_menu.h"
 

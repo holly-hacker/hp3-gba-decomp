@@ -1332,13 +1332,13 @@ c-file 0x08031A40 _ src/patronus_cutscene/initialize_harry_patronus_cutscene.c I
 c-file 0x08031B90 _ src/patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
 c-file 0x08031CEC _ src/patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
 c-file 0x08031D08 _ src/patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
-c-file 0x08031D74 _ src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
-c-file 0x08031EC0 _ src/menu/build_list_menu.c BuildListMenu
-c-file 0x08031FB0 0x08031FFC src/gamemode/modes/in_game_menu/initialize_in_game_menu.c InitializeInGameMenu
+c-file 0x08031D74 _ src/pause_menu/update_in_game_menu.c UpdateInGameMenu
+c-file 0x08031EC0 _ src/pause_menu/build_list_menu.c BuildListMenu
+c-file 0x08031FB0 0x08031FFC src/pause_menu/initialize_in_game_menu.c InitializeInGameMenu
 thumb-func 0x08031FFC BeginPauseMenuScreen
-c-file 0x08032038 0x08032074 src/gamemode/modes/in_game_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
+c-file 0x08032038 0x08032074 src/pause_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
 thumb-func 0x08032074 sub_08032030
-c-file 0x08032098 0x080320E8 src/gamemode/modes/in_game_menu/exit_in_game_menu.c ExitInGameMenu
+c-file 0x08032098 0x080320E8 src/pause_menu/exit_in_game_menu.c ExitInGameMenu
 thumb-func 0x080320E8 StartMenuFadeIn
 thumb-func 0x0803212C StartMenuOverlayFadeIn
 thumb-func 0x08032158 TickMenuFadeIn
@@ -1347,8 +1347,8 @@ thumb-func 0x080321C0 StartMenuOverlayFadeOut
 thumb-func 0x080321EC TickMenuFadeOut
 thumb-func 0x08032210 ListMenuCursorTick_candidate
 thumb-func 0x08032248 SelectInGameMenuEntry_candidate
-c-file 0x080322C0 _ src/menu/move_list_menu_cursor.c MoveListMenuCursor
-c-file 0x08032300 0x08032370 src/menu/draw_list_menu_row.c DrawListMenuRow
+c-file 0x080322C0 _ src/pause_menu/move_list_menu_cursor.c MoveListMenuCursor
+c-file 0x08032300 0x08032370 src/pause_menu/draw_list_menu_row.c DrawListMenuRow
 thumb-func 0x08032370 sub_0803232C
 thumb-func 0x08032380 DrawPauseMenuObjective
 thumb-func 0x080323F0 sub_080323AC
@@ -2276,7 +2276,7 @@ c-file 0x08068B84 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSel
 c-file 0x08068B88 0x08068B94 src/particles/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068B9C _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068BBC _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
-c-file 0x08068BC4 _ src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries
+c-file 0x08068BC4 _ src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file 0x08068C90 0x08068CC8 src/gamemode/modes/minigame/wizard_cracker_pop_it/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
 c-file 0x08069110 0x08069120 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
 c-file 0x080692B4 _ src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable

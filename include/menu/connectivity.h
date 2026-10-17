@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 
 // Rows of the Connectivity submenu: "Trade Cards" plus a second row that depends on the
 // Owl Care Kit's state. InitializeConnectivityMenu points g_ConnectivityMenu.pEntries at

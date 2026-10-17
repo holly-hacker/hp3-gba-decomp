@@ -7,6 +7,9 @@
 // Pause menu Status/Equip screen, game modes 0x0C-0x0F; see
 // docs/memory-map/game_modes.md.
 
+extern GameMode g_StatusEquipReturnMode;  // 0x03005298: StatusEquipCharacterSelect's B target
+extern GameMode g_StatusEquipNextMode;    // 0x0300529C: StatusEquipCharacterSelect's A target
+
 // Character select (modes 0x0C/0x0D). Its three slots show, left to right,
 // Hermione, Harry and Ron.
 typedef struct {
@@ -80,4 +83,3 @@ extern u32 g_dwStatusEquipSlotType;  // 0x030052C0: equipment type of the chosen
 
 extern void sub_080362D8(void);
 extern u32 sub_080368E4(void);
-extern void StartMenuFadeOut(void);

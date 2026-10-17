@@ -311,7 +311,7 @@ yields it.
 
 PROVEN from the matched handlers in `src/gamemode/modes/folios/` and
 `src/gamemode/modes/connectivity/`. All three are pause-menu submenus built from a
-`ListMenuDefinition` (`include/menu/menu.h`) and share `UpdateInGameMenu`'s shape:
+`ListMenuDefinition` (`include/pause_menu.h`) and share `UpdateInGameMenu`'s shape:
 `dwModeState` 1 waits for the blend fade (`dwModeSubState` 0), 2 handles A
 (`SelectInGameMenuEntry_candidate`), Up/Down (`MoveListMenuCursor`) and B, 4 waits for
 the fade-out (`dwModeSubState == 0x10`) before pushing the next mode. `dwCurrentGameModeArg1 == 1` starts directly in state 2 with a

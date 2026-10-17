@@ -2,7 +2,7 @@
 #include "modes.h"
 #include "input.h"
 #include "menu/main_menu.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 
 void UpdateNewGameMenu(void)
 {

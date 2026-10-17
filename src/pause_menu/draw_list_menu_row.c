@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 #include "font.h"
 #include "text.h"
 #include "default_menu.h"

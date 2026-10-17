@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 #include "serial/serial.h"
 
 // Card value meaning "no card chosen"; real cards are 0-50.

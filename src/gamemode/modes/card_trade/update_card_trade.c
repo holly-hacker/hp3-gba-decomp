@@ -11,7 +11,7 @@
 #include "actor.h"
 #include "menu/card_trade.h"
 #include "menu/folio_universitas.h"
-#include "menu/in_game_menu.h"
+#include "pause_menu.h"
 #include "minigame_menu.h"
 
 void UpdateCardTrade(void)

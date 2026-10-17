@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "modes.h"
 #include "input.h"
-#include "menu/menu.h"
+#include "pause_menu.h"
 
 void MoveListMenuCursor(void)
 {
