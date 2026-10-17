@@ -1,6 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "game/save.h"
+#include "game_state.h"
 
 // Loads and validates each slot, unpacking the preview of a valid one and
 // clearing the preview of an invalid one.

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "game/save.h"
+#include "game_state.h"
 
 // Clears the live save state and starts a fresh quest state, for the main
 // menu's new-game path.

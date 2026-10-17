@@ -936,16 +936,16 @@ c-file 0x0802136C _ src/font/get_glyph_width.c GetGlyphWidth
 c-file 0x0802139C _ src/font/set_text_macro4_string.c SetTextMacro4String
 
 # Game state (game state save and money)
-c-file 0x080213C0 _ src/save/deserialize_game_state.c DeserializeGameStateFromSaveBuffer
-c-file 0x08021498 _ src/save/serialize_game_state.c SerializeGameStateToSaveBuffer
-c-file 0x08021560 _ src/noop_init.c NoopInit
-c-file 0x08021564 _ src/save/reset_save_state_for_new_game.c ResetSaveStateForNewGame
-c-file 0x08021580 _ src/save/reset_quest_state_for_new_game.c ResetQuestStateForNewGame
-c-file 0x080215DC _ src/save/start_new_game_playtime.c StartNewGamePlaytime
-c-file 0x08021604 _ src/save/unpack_save_slot_preview.c UnpackSaveSlotPreview
-c-file 0x08021650 _ src/overworld/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
-c-file 0x0802165C _ src/save/process_playtime_tick.c ProcessPlaytimeTick
-c-file 0x08021694 0x080216A0 src/save/set_sickles.c SetSickles
+c-file 0x080213C0 _ src/game_state/deserialize_game_state.c DeserializeGameStateFromSaveBuffer
+c-file 0x08021498 _ src/game_state/serialize_game_state.c SerializeGameStateToSaveBuffer
+c-file 0x08021560 _ src/game_state/noop_init.c NoopInit
+c-file 0x08021564 _ src/game_state/reset_save_state_for_new_game.c ResetSaveStateForNewGame
+c-file 0x08021580 _ src/game_state/reset_quest_state_for_new_game.c ResetQuestStateForNewGame
+c-file 0x080215DC _ src/game_state/start_new_game_playtime.c StartNewGamePlaytime
+c-file 0x08021604 _ src/game_state/unpack_save_slot_preview.c UnpackSaveSlotPreview
+c-file 0x08021650 _ src/game_state/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
+c-file 0x0802165C _ src/game_state/process_playtime_tick.c ProcessPlaytimeTick
+c-file 0x08021694 0x080216A0 src/game_state/set_sickles.c SetSickles
 thumb-func 0x080216A0 AddSickles
 thumb-func 0x080216C8 GetSickles
 
@@ -2505,7 +2505,7 @@ c-file 0x0805EB10 _ src/ending_cutscene/hippogriff_flies_into_air_cutscene.globa
 c-file 0x0805EB34 0x0805EB94 src/room/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
 c-file 0x0805EB9C _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/font/load_font_descriptor.globals.c g_aFontTable
-c-file 0x0806053C 0x08060554 src/save/process_playtime_tick.globals.c g_stPlaytimeZero
+c-file 0x0806053C 0x08060554 src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
 c-rodata 0x08060620 0x08060625 InitJoybusSession
 c-file 0x080606A8 0x080606B8 src/gamemode/modes/minigame/owl_care_kit/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060884 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_PlayerCameraFocusOffset

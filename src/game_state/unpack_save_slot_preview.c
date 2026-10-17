@@ -1,6 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "game/save.h"
+#include "game_state.h"
 
 // Unpacks the leading fields SerializeGameStateToSaveBuffer writes into a
 // slot's stream (money, playtime, room, save flags, objective, leader level).

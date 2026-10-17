@@ -3,6 +3,7 @@
 #include "chest_actor.h"
 #include "combat_2.h"
 #include "game/save.h"
+#include "game_state.h"
 #include "inventory.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

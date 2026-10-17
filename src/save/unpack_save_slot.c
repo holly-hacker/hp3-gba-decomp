@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/save.h"
+#include "game_state.h"
 
 // Deserializes the game state from the slot buffer (already loaded by the
 // caller; slot is unused) and records how much of the slot the stream used.

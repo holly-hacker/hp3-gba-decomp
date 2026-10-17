@@ -173,18 +173,6 @@ typedef struct {
 
 extern SaveStateBlock g_saveStateBlock;
 
-extern const Playtime g_stPlaytimeZero;
-extern const Playtime g_stPlaytimeFrameDelta;
-extern const Playtime g_stPlaytimeHourLimit;
-
-void ProcessPlaytimeTick(void);
-
-// Adds a signed amount of Sickles to the player's money, clamped to
-// 0..999999, and returns the new total.
-u32 AddSickles(s32 amount);
-void SetSickles(u32 amount);
-s32 GetSickles(void);  // returns g_saveStateBlock.dwMoney
-
 extern const SaveHeader g_DefaultSaveHeader;
 extern const SaveOptions g_DefaultSaveOptions;
 
@@ -202,7 +190,6 @@ void InitSaveSystem(void);
 void LoadSaveSlotPreviews(void);
 void ClearSaveSlotBuffer(void);
 void UnpackBytesFromSaveStream(void *dst, u32 len);
-void UnpackSaveSlotPreview(SaveSlotPreview *preview);
 u32 ValidateSaveHeader(void);
 void WriteDefaultSaveHeader(void);
 u32 ValidateSaveOptions(void);
@@ -218,7 +205,6 @@ void SaveGameToSlot(u32 slot);
 void PackAndChecksumSaveSlot(void);
 void UnpackSaveSlot(u32 slot);
 void RefreshSaveSlotPreview(u32 slot);
-void SerializeGameStateToSaveBuffer(void);
 void SerializeRoomActorState(void);
 void SerializeMonsterDexLevels(void);
 void SerializeFolioUniversitas(void);
@@ -229,10 +215,6 @@ void DeserializeFolioUniversitas(void);
 void DeserializeOwlCareKit(void);
 void PackNibblesToSaveStream(const u8 *src, u32 count);
 void PackBitPairsToSaveStream(const u8 *src, u32 count);
-void ResetSaveStateForNewGame(void);
-void ResetQuestStateForNewGame(u32 newGamePlus);
-void StartNewGamePlaytime(void);
-void DeserializeGameStateFromSaveBuffer(void);
 void PackBytesToSaveStream(const void *src, u32 len);
 void PackBitsToSaveStream(const u8 *src, u32 count);
 void UnpackNibblesFromSaveStream(u8 *dst, u32 count);

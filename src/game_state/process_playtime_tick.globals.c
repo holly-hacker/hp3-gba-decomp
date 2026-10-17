@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/save.h"
+#include "game_state.h"
 
 // The playtime a new game starts from.
 const Playtime g_stPlaytimeZero = { 0 };

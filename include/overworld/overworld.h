@@ -143,8 +143,6 @@ extern u32 g_dwPauseMenuCooldown;
 // Multi-slot bookkeeping that only acts when the slot count exceeds 1.
 // Always returns 0.
 s32 TickOverworldControlSlots_candidate(void);
-// Advances the Owl Care Kit's timers and need counters while walking around.
-void TickOwlCareKitFromOverworld(void);
 
 // Overworld teardown helpers called by ExitOverworldScreen.
 extern void FreeRoomSharedTileset(void);

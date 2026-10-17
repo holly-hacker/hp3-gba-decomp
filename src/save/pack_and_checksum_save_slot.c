@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/save.h"
+#include "game_state.h"
 #include "game/clear_save_slot_buffer.h"
 
 // Serializes the game state into the cleared slot buffer and stores the

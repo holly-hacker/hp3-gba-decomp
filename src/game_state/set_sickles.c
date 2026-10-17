@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/save.h"
+#include "game_state.h"
 
 // Sets the player's money to an exact amount.
 void SetSickles(u32 amount)

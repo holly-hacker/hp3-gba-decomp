@@ -15,6 +15,7 @@
 #include "battle/battle.h"
 #include "mt19937.h"
 #include "game/save.h"
+#include "game_state.h"
 #include "decompress.h"
 #include "graphics/graphics.h"
 #include "graphics/oam.h"
