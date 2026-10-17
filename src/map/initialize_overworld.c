@@ -18,6 +18,7 @@
 #include "vram.h"
 #include "hero.h"
 #include "map.h"
+#include "move.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.
 #define CURRENT_ROOM g_aRoomTable[g_GameModeStackContext.dwCurrentGameModeArg2]

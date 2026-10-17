@@ -6,7 +6,8 @@
 #include "math.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
-#include "overworld/terrain.h"
+#include "move.h"
+#include "world_actors.h"
 #include "hero.h"
 #include "map.h"
 

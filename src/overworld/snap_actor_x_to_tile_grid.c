@@ -1,5 +1,6 @@
 #include "types.h"
 #include "actor.h"
+#include "world_actors.h"
 
 // Stops an actor that has come to rest on a tile and moves it horizontally so
 // the left edge of its terrain box lies on the nearest 8-pixel column.

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "overworld/terrain.h"
+#include "move.h"
 
 const u8 g_abOppositeFacing[8] = { 4, 5, 6, 7, 0, 1, 2, 3 };
 

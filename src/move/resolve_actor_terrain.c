@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/terrain.h"
+#include "move.h"
 
 // Runs the terrain pass for one actor: finds the terrain under its box, applies the response
 // to blocking terrain and, for actors that follow the room's depth layers, updates the draw

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/terrain.h"
+#include "move.h"
 
 // Runs ResolveActorTerrain for an actor that is moving or was flagged to be rechecked, unless
 // the terrain pass is skipped for this tick, then clears the one-tick flags.

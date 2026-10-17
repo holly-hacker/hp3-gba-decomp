@@ -4,6 +4,7 @@
 #include "actor.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
+#include "move.h"
 
 void ExitHarryHermionePortInTimeCutscene(void)
 {

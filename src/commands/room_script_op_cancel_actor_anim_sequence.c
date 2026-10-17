@@ -4,6 +4,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
+#include "move.h"
 
 typedef struct CancelActorAnimSequenceRecord {
     u32 dwOpcode;

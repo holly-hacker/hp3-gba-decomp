@@ -17,6 +17,7 @@
 #include "hero.h"
 #include "map.h"
 #include "graphics/audio.h"
+#include "move.h"
 
 // Overworld mode's pDestroyFn. Plays the outgoing screen transition, then
 // tears down the overworld's actors, palettes and lists. The mode being

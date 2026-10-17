@@ -5,7 +5,7 @@
 #include "actor.h"
 #include "overworld/room_script.h"
 #include "overworld/room_actor_state.h"
-#include "overworld/terrain.h"
+#include "move.h"
 
 // A BG tileset and its palette. Tileset A (layers 0 and 3) and tileset B
 // (layers 1 and 2) each pair with one; the second pair's palette is not
@@ -231,13 +231,11 @@ extern u8 g_abQuestEventState[];
 extern u32 g_dwOverworldMonstersDisabled;
 extern u8 g_bPendingQuestStateOverride_candidate;
 extern u32 g_dwRoomBgFlag_candidate;
-extern u32 g_dwPendingCameraFocusFlag;
 
 // Snapshot of the current room's non-default actors; see docs/formats/save.md.
 #define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
 extern u8 g_bRoomSwitchState;  // 0 or 1
 extern u32 GetRoomSwitchState(void);
-extern void ApplyRoomSwitchEffect(u32 state);
 
 extern void LoadRoomBgTilemap0_candidate(const void *pTilemap);
 extern void LoadRoomBgTilemap1_candidate(const void *pTilemap);
@@ -249,7 +247,6 @@ extern void LoadRoomBgLayer2Extra_candidate(const void *pExtra, u32 arg1, u32 ar
 extern void LoadRoomBgLayer3Extra_candidate(const void *pExtra, u32 arg1, u32 arg2);
 extern void SetupRoomBgControlAndWindows_candidate(u32 ctrl3, u32 ctrl1, u32 ctrl2, u32 ctrl0,
                                                    RoomBgResources resourcesA, RoomBgResources resourcesB);
-extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
 extern void StopScanlineEffects(void);
 extern void ShowMapNamePopup(void);

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "overworld/terrain.h"
+#include "move.h"
 
 // Returns the draw layer (1-4) stored in the top two bits of the collision behavior byte at a
 // room pixel; 1 outside the room.

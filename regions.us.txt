@@ -1400,11 +1400,11 @@ c-file 0x0802D6B8 _ src/mode7/free_floor_effect.c FreeFloorEffect
 c-file 0x0802D6D8 _ src/mode7/start_floor_affine_hblank_dma.c StartFloorAffineHBlankDma
 
 # Move? (terrain collision and camera focus)
-c-file 0x0802D704 _ src/overworld/resolve_actor_terrain.c ResolveActorTerrain
-c-file 0x0802D7A0 _ src/overworld/terrain_collision.c GetCollisionTypeAtPixel_candidate
-c-file 0x0802DF3C _ src/overworld/apply_room_switch_effect.c ApplyRoomSwitchEffect
-c-file 0x0802DF74 _ src/overworld/nudge_actor.c NudgeAlongVelocity
-c-file 0x0802E030 0x0802E090 src/overworld/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
+c-file 0x0802D704 _ src/move/resolve_actor_terrain.c ResolveActorTerrain
+c-file 0x0802D7A0 _ src/move/terrain_collision.c GetCollisionTypeAtPixel_candidate
+c-file 0x0802DF3C _ src/move/apply_room_switch_effect.c ApplyRoomSwitchEffect
+c-file 0x0802DF74 _ src/move/nudge_actor.c NudgeAlongVelocity
+c-file 0x0802E030 0x0802E090 src/move/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
 thumb-func 0x0802E090 SpawnFieldSpellEffect_candidate
 thumb-func 0x0802E2BC sub_0802E2BC
 thumb-func 0x0802E644 sub_0802E644
@@ -2535,7 +2535,7 @@ c-file 0x08065CBC _ src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTabl
 c-file 0x0806601C 0x0806603C src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066084 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
-c-file 0x08066094 0x080660D4 src/overworld/terrain_collision.globals.c g_abOppositeFacing
+c-file 0x08066094 0x080660D4 src/move/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066E44 _ src/room/actors/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
 c-file 0x08066FFC _ src/graphics/assets/actor_type_assets.c g_aActorTypeAssets
 c-file 0x0806788C 0x080678BC src/room/actors/room_actor_unk6_frames.c g_abRoomActorUnk6Frames

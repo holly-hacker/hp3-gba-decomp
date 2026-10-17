@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/graphics.h"
-#include "overworld/terrain.h"
+#include "move.h"
 
 // Also sets the OAM priority from bits 6-7 of the collision byte, plus 1.
 u8 UpdateParticleCollision(Particle *particle)

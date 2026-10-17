@@ -3,6 +3,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "hero.h"
+#include "move.h"
 
 // Sets a party member's sprite set and animation for its facing. Facings 5-7 use the
 // frames of 3-1, horizontally flipped.

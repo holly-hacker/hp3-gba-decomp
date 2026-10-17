@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/terrain.h"
+#include "move.h"
 
 static inline u32 IsBlockingTerrainType(u32 type)
 {

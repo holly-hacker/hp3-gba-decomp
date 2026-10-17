@@ -72,5 +72,14 @@ extern u8 StartMoveVelocity(Actor *actor);  // 0x0802DE68
 extern void GetActorTerrainBox(Actor *actor, TerrainBox *box);  // 0x0802DEE0
 extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
 extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
+extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
+// Called by ExitOverworldScreen.
+extern void FreeRoomSharedTileset(void);
+extern void ApplyRoomSwitchEffect(u32 state);
+// Spawns the effect actor of field spell `spell` (an Actor.bFighterIndex value) at
+// the caster's anchor 0.
+extern void SpawnFieldSpellEffect_candidate(Actor *caster, u8 spell);
 
-extern void SnapActorXToTileGrid(Actor *actor);
+extern u32 g_dwPendingCameraFocusFlag;
+extern void *g_pPendingCameraFocus_candidate;
+extern void RestorePendingCameraFocus_candidate(void *pFocus);

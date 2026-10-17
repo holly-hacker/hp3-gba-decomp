@@ -346,7 +346,7 @@
 .set g_nFloorHorizonLine,                    0x03003FB0  @ s32: first floor scanline; see include/mode7.h
 .set g_dwFloorScrollSky,                     0x03003FB4  @ u32: nonzero scrolls BG1 with the floor heading
 .set g_dwRoomCollisionPatternCount,           0x03003FB8  @ u32: pattern count from the collision tilemap header
-.set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]: see include/overworld/terrain.h
+.set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]: see include/move.h
 .set g_pRoomCollisionTilemapBuffer,           0x03003FC8  @ u8 *: decompressed collision tilemap resource, 4-byte header then the pattern ids
 .set g_pRoomCollisionBehaviorTable,           0x03003FCC  @ u8 *: 16 collision bytes per pattern, see docs/formats/collision.md
 .set g_pRoomCollisionTilemap,                 0x03003FD0  @ u16 *: pattern ids of the 32x32-pixel blocks, g_pRoomCollisionTilemapBuffer + 4

@@ -1239,11 +1239,11 @@ c-file 0x0802D6AC _ src/mode7/set_floor_horizon_offset.c SetFloorHorizonOffset
 c-file 0x0802D6B8 _ src/mode7/init_floor_effect.c InitFloorEffect
 c-file 0x0802D6FC _ src/mode7/free_floor_effect.c FreeFloorEffect
 c-file 0x0802D71C _ src/mode7/start_floor_affine_hblank_dma.c StartFloorAffineHBlankDma
-c-file 0x0802D748 _ src/overworld/resolve_actor_terrain.c ResolveActorTerrain
-c-file 0x0802D7E4 _ src/overworld/terrain_collision.c GetCollisionTypeAtPixel_candidate
-c-file 0x0802DF80 _ src/overworld/apply_room_switch_effect.c ApplyRoomSwitchEffect
-c-file 0x0802DFB8 _ src/overworld/nudge_actor.c NudgeAlongVelocity
-c-file 0x0802E074 0x0802E0D4 src/overworld/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
+c-file 0x0802D748 _ src/move/resolve_actor_terrain.c ResolveActorTerrain
+c-file 0x0802D7E4 _ src/move/terrain_collision.c GetCollisionTypeAtPixel_candidate
+c-file 0x0802DF80 _ src/move/apply_room_switch_effect.c ApplyRoomSwitchEffect
+c-file 0x0802DFB8 _ src/move/nudge_actor.c NudgeAlongVelocity
+c-file 0x0802E074 0x0802E0D4 src/move/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
 thumb-func 0x0802E0D4 SpawnFieldSpellEffect_candidate
 thumb-func 0x0802E300 sub_0802E2BC
 thumb-func 0x0802E688 sub_0802E644
@@ -2266,7 +2266,7 @@ c-file 0x08065C48 _ src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTabl
 c-file 0x08065FA8 0x08065FC8 src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x08065FE8 0x08065FF0 src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066010 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
-c-file 0x08066020 0x08066060 src/overworld/terrain_collision.globals.c g_abOppositeFacing
+c-file 0x08066020 0x08066060 src/move/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066DD0 _ src/room/actors/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
 c-file 0x08066F88 _ src/graphics/assets/actor_type_assets.c g_aActorTypeAssets
 c-file 0x08067818 0x08067848 src/room/actors/room_actor_unk6_frames.c g_abRoomActorUnk6Frames

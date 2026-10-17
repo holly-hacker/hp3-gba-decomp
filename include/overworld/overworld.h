@@ -31,9 +31,6 @@ extern u8 g_bPartyCharId0;
 extern u8 g_bPartyCharId1;
 extern u8 g_bPartyCharId2;
 
-// Spawns the effect actor of field spell `spell` (an Actor.bFighterIndex value) at
-// the caster's anchor 0.
-extern void SpawnFieldSpellEffect_candidate(Actor *caster, u8 spell);
 // Starts the cast of the selected field spell (action state 0x13).
 extern void StartFieldSpellCast(Actor *actor);
 // Sets (1) or clears (0) ActorFlagVisible on g_pPlayerShadowActor_candidate.
@@ -73,6 +70,3 @@ extern u32 g_dwPauseMenuLocked;
 // each menu open, counted down by UpdateOverworld.
 extern u32 g_dwPauseMenuCooldown;
 
-
-// Overworld teardown helpers called by ExitOverworldScreen.
-extern void FreeRoomSharedTileset(void);

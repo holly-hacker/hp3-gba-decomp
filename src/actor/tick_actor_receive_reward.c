@@ -12,6 +12,7 @@
 #include "overworld/room_script.h"
 #include "items.h"
 #include "hero.h"
+#include "move.h"
 
 // Action state 0x17: after dwStateTimer ticks, the player holds up the received reward
 // (bReceivedRewardId, or g_nBattleGoldReward Sickles) with a dialog box naming it.
