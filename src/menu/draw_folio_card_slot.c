@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "menu/folio_universitas_inline.h"
 #include "overworld/room_script.h"
-#include "inventory.h"
+#include "items.h"
 
 // Draws one card's tile in the card grid. Each category is a row; each group of three cards (one
 // combo) is followed by a gap column. The last card of an unlocked row also gets a 2-wide tile.

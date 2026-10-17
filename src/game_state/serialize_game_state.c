@@ -4,7 +4,7 @@
 #include "combat_2.h"
 #include "game/save.h"
 #include "game_state.h"
-#include "inventory.h"
+#include "items.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_actor.h"

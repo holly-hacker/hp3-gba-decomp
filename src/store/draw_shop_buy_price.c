@@ -6,7 +6,7 @@
 #include "text.h"
 #include "dialog.h"
 #include "shop.h"
-#include "inventory.h"
+#include "items.h"
 
 void DrawShopBuyPrice(u32 item)
 {

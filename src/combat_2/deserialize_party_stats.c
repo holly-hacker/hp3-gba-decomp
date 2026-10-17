@@ -3,7 +3,7 @@
 #include "combat_2.h"
 #include "mem.h"
 #include "game/save.h"
-#include "inventory.h"
+#include "items.h"
 
 // Reads the three party members' saved fields and then derives their
 // level-dependent stats.

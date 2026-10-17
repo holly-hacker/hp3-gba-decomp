@@ -6,7 +6,7 @@
 #include "game_state.h"
 #include "graphics/audio.h"
 #include "input.h"
-#include "inventory.h"
+#include "items.h"
 #include "dialog.h"
 #include "overworld/room_script.h"
 #include "shop.h"

@@ -10,7 +10,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
-#include "inventory.h"
+#include "items.h"
 #include "hero.h"
 
 // Action state 0x17: after dwStateTimer ticks, the player holds up the received reward

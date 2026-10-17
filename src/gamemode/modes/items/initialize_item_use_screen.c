@@ -2,7 +2,7 @@
 #include "game/game_modes.h"
 #include "menu/items_menu.h"
 #include "menu/status_equip.h"
-#include "inventory.h"
+#include "items.h"
 
 void InitializeItemUseScreen(void)
 {

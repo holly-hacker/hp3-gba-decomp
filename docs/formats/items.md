@@ -14,7 +14,7 @@ and equipment" section.
 ## Record layout
 
 `0x34` bytes (`ItemEntry` in `include/game/items.h`), read by the
-inventory functions in `src/inventory/`:
+inventory functions in `src/items/`:
 
 | Offset | Field | Reader |
 |---|---|---|

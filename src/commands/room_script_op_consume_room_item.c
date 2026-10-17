@@ -1,7 +1,7 @@
 #include "types.h"
 #include "commands.h"
 #include "overworld/room_script.h"
-#include "inventory.h"
+#include "items.h"
 
 typedef struct ConsumeRoomItemRecord {
     u32 dwOpcode;

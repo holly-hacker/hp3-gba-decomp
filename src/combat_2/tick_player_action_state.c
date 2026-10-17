@@ -8,7 +8,7 @@
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "game/game_modes.h"
-#include "inventory.h"
+#include "items.h"
 
 // Certain bAttackOutcomeState (Actor+0x60) values. States 1-5 stay numeric:
 // their tails differ between cases 0x1a and 0x15, so no one name fits both.

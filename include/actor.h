@@ -626,9 +626,6 @@ extern u32 AllocActorAffineSlot(Actor *actor);  // memoized: returns the slot al
                              // oam.affineMode is set (1 or 3), else calls AllocAffineSlot and
                              // stores the result
 extern void SetActorAffineTransform(Actor *actor, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode);
-// Double-size affine with both scales set to step 0..8 of a table: 0x666, then 0x2000 * step.
-extern void SetActorScaleStep(Actor *actor, u32 step);
-extern const u32 g_adwActorScaleSteps[9];
 extern void StartActorAffineScaleTween(Actor *actor, u32 nTargetScaleX, u32 nTargetScaleY, s32 nFrames);  // see actor_inline.h
 extern void SetActorFlippedX(Actor *actor, s32 flip);
 // pAnimTable is the sprite record; the stream starts at command startCommand

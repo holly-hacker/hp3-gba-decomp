@@ -7,7 +7,7 @@
 #include "menu/in_game_menu.h"
 #include "menu/items_menu.h"
 #include "menu/quantity_select.h"
-#include "inventory.h"
+#include "items.h"
 
 void UpdateQuantitySelectScreen(void)
 {

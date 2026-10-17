@@ -7,6 +7,7 @@
 #include "menu/in_game_menu.h"
 #include "input.h"
 #include "menu/status_equip.h"
+#include "items.h"
 
 void UpdateStatusEquipSlotSelect(void)
 {
