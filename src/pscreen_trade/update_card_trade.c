@@ -9,7 +9,7 @@
 #include "input.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/card_trade.h"
+#include "pscreen_trade.h"
 #include "pscreen_folio_universitas.h"
 #include "pause_menu.h"
 #include "minigame_menu.h"

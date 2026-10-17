@@ -1762,12 +1762,12 @@ thumb-func 0x0803A630 sub_0803A630
 thumb-func 0x0803A678 sub_0803A678
 
 # Profile/Trade? (pause subscreen: card trade)
-c-file 0x0803A6D0 _ src/gamemode/modes/card_trade/initialize_card_trade.c InitializeCardTrade
-c-file 0x0803A780 0x0803AA50 src/gamemode/modes/card_trade/update_card_trade.c UpdateCardTrade
+c-file 0x0803A6D0 _ src/pscreen_trade/initialize_card_trade.c InitializeCardTrade
+c-file 0x0803A780 0x0803AA50 src/pscreen_trade/update_card_trade.c UpdateCardTrade
 thumb-func 0x0803AA50 ResetCardTradeAfterLinkLoss
 thumb-func 0x0803AAA8 SpawnCardTradeCardActors
 thumb-func 0x0803AB1C SelectCardTradeEntry
-c-file 0x0803ABBC 0x0803ABF8 src/gamemode/modes/card_trade/exit_card_trade.c ExitCardTrade
+c-file 0x0803ABBC 0x0803ABF8 src/pscreen_trade/exit_card_trade.c ExitCardTrade
 thumb-func 0x0803ABF8 ReceiveCardTradeOffer
 thumb-func 0x0803AC1C GetCardTradeSendWord
 thumb-func 0x0803AC38 CancelCardTradeOffer
@@ -2565,7 +2565,7 @@ c-file 0x0806B190 0x0806B214 src/pscreen_items/items_section_select.globals.c g_
 c-file 0x0806B238 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B2FC _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
-c-file 0x0806B35C 0x0806B3AC src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
+c-file 0x0806B35C 0x0806B3AC src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B3CC _ src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B3D8 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
 c-file 0x0806B7D4 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite

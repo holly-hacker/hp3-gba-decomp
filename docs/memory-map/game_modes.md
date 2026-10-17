@@ -363,7 +363,7 @@ and `src/combo_info/`, with declarations in `include/pscreen_folio_universitas.h
 
 ## CardTrade (0x15) and GameCubeLink (0x41)
 
-PROVEN from the matched handlers in `src/gamemode/modes/card_trade/` and
+PROVEN from the matched handlers in `src/pscreen_trade/` and
 `src/pscreen_gamecube/`. Both are Connectivity rows built on a
 `ListMenuDefinition` and keep their link session alive across `dwModeState` steps; see
 [`serial.md`](serial.md) and [`gcn-link.md`](gcn-link.md) for the protocols.

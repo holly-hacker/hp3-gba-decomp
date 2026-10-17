@@ -38,7 +38,9 @@ extern const u8 gCardTradeOverlay[];
 extern void ReceiveCardTradeOffer(u32 word, u32 playerId);
 extern u32 GetCardTradeSendWord(void);
 
-
+extern void InitializeCardTrade(void);
+extern void UpdateCardTrade(void);
+extern void ExitCardTrade(void);
 extern void ResetCardTradeAfterLinkLoss(void);
 extern void SpawnCardTradeCardActors(void);
 extern void SelectCardTradeEntry(void);

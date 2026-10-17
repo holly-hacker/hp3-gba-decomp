@@ -1555,12 +1555,12 @@ thumb-func 0x0803A5F0 sub_0803A590
 thumb-func 0x0803A664 sub_0803A604
 thumb-func 0x0803A690 sub_0803A630
 thumb-func 0x0803A6D8 sub_0803A678
-c-file 0x0803A730 _ src/gamemode/modes/card_trade/initialize_card_trade.c InitializeCardTrade
-c-file 0x0803A7E0 0x0803AAB0 src/gamemode/modes/card_trade/update_card_trade.c UpdateCardTrade
+c-file 0x0803A730 _ src/pscreen_trade/initialize_card_trade.c InitializeCardTrade
+c-file 0x0803A7E0 0x0803AAB0 src/pscreen_trade/update_card_trade.c UpdateCardTrade
 thumb-func 0x0803AAB0 ResetCardTradeAfterLinkLoss
 thumb-func 0x0803AB08 SpawnCardTradeCardActors
 thumb-func 0x0803AB7C SelectCardTradeEntry
-c-file 0x0803AC1C 0x0803AC58 src/gamemode/modes/card_trade/exit_card_trade.c ExitCardTrade
+c-file 0x0803AC1C 0x0803AC58 src/pscreen_trade/exit_card_trade.c ExitCardTrade
 thumb-func 0x0803AC58 ReceiveCardTradeOffer
 thumb-func 0x0803AC7C GetCardTradeSendWord
 thumb-func 0x0803AC98 CancelCardTradeOffer
@@ -2296,7 +2296,7 @@ c-file 0x0806B11C 0x0806B1A0 src/pscreen_items/items_section_select.globals.c g_
 c-file 0x0806B1C4 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B288 _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
-c-file 0x0806B2E8 0x0806B338 src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
+c-file 0x0806B2E8 0x0806B338 src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B358 _ src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B364 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
 c-file 0x0806B760 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite

@@ -3,7 +3,7 @@
 #include "modes.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/card_trade.h"
+#include "pscreen_trade.h"
 #include "cursor.h"
 #include "default_menu.h"
 

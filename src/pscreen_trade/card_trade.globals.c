@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/card_trade.h"
+#include "pscreen_trade.h"
 
 const ListMenuEntry g_aCardTradeEntries[3] = {
     { FolioUniversitas, 0x8C7, 0, 1 },  // "Choose Card"
