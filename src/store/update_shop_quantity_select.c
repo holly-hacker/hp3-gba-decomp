@@ -9,8 +9,8 @@
 #include "items.h"
 #include "dialog.h"
 #include "overworld/room_script.h"
-#include "shop.h"
-#include "shop_inline.h"
+#include "store.h"
+#include "store_inline.h"
 
 void UpdateShopQuantitySelect(void)
 {

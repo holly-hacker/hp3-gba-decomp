@@ -3,8 +3,8 @@
 #include "types.h"
 #include "actor.h"
 
-// Shop tab stock lists, defined in src/shop/shop_stock.c and consumed as a
-// pointer table by src/shop/shop_stock_lists.c. See docs/formats/items.md's
+// Shop tab stock lists, defined in src/store/shop_stock.c and consumed as a
+// pointer table by src/store/shop_stock_lists.c. See docs/formats/items.md's
 // "Shop prices" section.
 
 extern const u32 g_aShopStockMisc[];
@@ -82,7 +82,7 @@ typedef struct {
 extern const ShopMainMenuTextIds g_ShopMainMenuTextIds;  // 0x0806BAF4
 
 // In ROM order, one per file under src/store/. Bodies that the ROM also
-// inlines into callers live in shop_inline.h.
+// inlines into callers live in store_inline.h.
 void ShowShopMainMenu(void);
 void UpdateShopMainMenu(void);
 void MoveShopMainMenuCursor(s32 row);

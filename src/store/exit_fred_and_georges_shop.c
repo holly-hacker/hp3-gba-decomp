@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "shop.h"
+#include "store.h"
 #include "screen_transitions.h"
 
 void ExitFredAndGeorgesShop(void)

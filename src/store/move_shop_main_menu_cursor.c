@@ -1,6 +1,6 @@
 #include "types.h"
-#include "shop.h"
-#include "shop_inline.h"
+#include "store.h"
+#include "store_inline.h"
 
 void MoveShopMainMenuCursor(s32 row)
 {

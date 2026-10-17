@@ -196,7 +196,7 @@ globals sit +0x60 from US.
 ## FredAndGeorgesShop (0x2E)
 
 PROVEN from the matched source in `src/store/` (both versions; declarations
-in `include/shop.h`, data in `fred_and_georges_shop.globals.c`).
+in `include/store.h`, data in `fred_and_georges_shop.globals.c`).
 
 `dwModeState` is a `ShopState`: 4 main menu (Buy/Sell/Exit), 6 buy tabs,
 8 sell list, 10 a tab's buy list, 12 quantity, 14 message. Screen changes go
@@ -210,7 +210,7 @@ main menu (row or B) pushes `Overworld` with `g_bCurrentRoomId`.
 
 Twelve helpers (the screens' `Exit*` functions, `ShowShopSellList`,
 `ShowShopBuyList`, `ShowShopMessage` and the row/quantity drawing) are also
-inlined into their callers; their bodies live in `include/shop_inline.h`.
+inlined into their callers; their bodies live in `include/store_inline.h`.
 
 ## Minigames (0x1B, 0x1C, 0x24, 0x2B, 0x2F, 0x33)
 

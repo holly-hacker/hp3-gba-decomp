@@ -5,7 +5,7 @@
 #include "font.h"
 #include "text.h"
 #include "dialog.h"
-#include "shop.h"
+#include "store.h"
 #include "items.h"
 
 void DrawShopBuyPrice(u32 item)

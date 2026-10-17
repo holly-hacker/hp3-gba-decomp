@@ -68,8 +68,8 @@ depending on buy/sell mode; `UpdateShopBuyList` (`0x080416CC`) compares
 shop (Fred and George's, `src/store/`; see
 [`game_modes.md`](../memory-map/game_modes.md)) has 7
 tabs -- Miscellaneous, Belts, Charms, Gloves, Boots, Hats, Cloaks --
-each a fixed item-id list in `src/shop/shop_stock.c`, pointed
-at by `g_apShopStockLists` (`src/shop/shop_stock_lists.c`,
+each a fixed item-id list in `src/store/shop_stock.c`, pointed
+at by `g_apShopStockLists` (`src/store/shop_stock_lists.c`,
 `0x08FB0D94`). `ShowShopBuyList` (`0x08041680`) picks a tab's
 list and `OpenItemListFromIds` copies it into the display
 buffer -- `nBuyPrice` only sets cost once an item is on one of these

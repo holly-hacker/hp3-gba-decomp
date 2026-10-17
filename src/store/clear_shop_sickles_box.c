@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "shop.h"
+#include "store.h"
 
 void ClearShopSicklesBox(void)
 {

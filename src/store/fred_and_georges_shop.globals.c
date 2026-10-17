@@ -1,5 +1,5 @@
 #include "types.h"
-#include "shop.h"
+#include "store.h"
 #include "actor_anim.h"
 #include "gen/graphics/overworld.h"
 

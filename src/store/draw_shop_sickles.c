@@ -5,7 +5,7 @@
 #include "text.h"
 #include "dialog.h"
 #include "pause_menu.h"
-#include "shop.h"
+#include "store.h"
 #include "default_menu.h"
 
 void DrawShopSickles(void)

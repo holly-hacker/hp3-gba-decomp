@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "shop.h"
+#include "store.h"
 
 void UpdateFredAndGeorgesShop(void)
 {

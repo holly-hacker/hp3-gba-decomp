@@ -6,7 +6,7 @@
 #include "sound.h"
 #include "input.h"
 #include "pscreen_items.h"
-#include "shop.h"
+#include "store.h"
 #include "items.h"
 
 void UpdateShopBuyList(void)

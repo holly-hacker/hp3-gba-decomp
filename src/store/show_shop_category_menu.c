@@ -1,6 +1,6 @@
 #include "types.h"
 #include "menu/main_menu.h"
-#include "shop.h"
+#include "store.h"
 #include "cursor.h"
 
 void ShowShopCategoryMenu(void)

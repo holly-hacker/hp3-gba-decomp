@@ -9,7 +9,7 @@
 #include "dialog.h"
 #include "pscreen_items.h"
 #include "menu/main_menu.h"
-#include "shop.h"
+#include "store.h"
 #include "cursor.h"
 #include "items.h"
 

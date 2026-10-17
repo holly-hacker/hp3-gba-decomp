@@ -2573,7 +2573,7 @@ c-file 0x0806B80C _ src/save/write_default_save_header.globals.c g_DefaultSaveHe
 c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file 0x0806B8CC _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
 c-file 0x0806B8DC 0x0806B934 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
-c-file 0x0806B944 _ src/shop/shop_stock.c g_aShopStockMisc
+c-file 0x0806B944 _ src/store/shop_stock.c g_aShopStockMisc
 
 c-file 0x0806BA4C _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file 0x0806BB00 _ src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
@@ -2767,7 +2767,7 @@ c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file 0x08FB0588 _ src/sound/sound_samples.c g_aSoundSamples
 c-file 0x08FB0818 _ src/sound/sound_variants.c g_aSoundVariants
 c-file 0x08FB09F8 0x08FB0CC4 src/sound/sound_config.c g_aSoundConfig
-c-file 0x08FB0D94 0x08FB0DB0 src/shop/shop_stock_lists.c g_apShopStockLists
+c-file 0x08FB0D94 0x08FB0DB0 src/store/shop_stock_lists.c g_apShopStockLists
 
 # ROM images of the IWRAM and EWRAM sections, which kramInstall copies to RAM.
 # The IWRAM image holds Krawall's ARM mixer code; its rows name the ROM copy

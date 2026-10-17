@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "graphics/display.h"
-#include "shop.h"
+#include "store.h"
 #include "screen_transitions.h"
 
 void TickShopFadeIn(void)

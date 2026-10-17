@@ -1,7 +1,7 @@
 #include "types.h"
 #include "sound.h"
 #include "input.h"
-#include "shop.h"
+#include "store.h"
 
 void UpdateShopCategoryMenu(void)
 {

@@ -3,7 +3,7 @@
 #include "sound.h"
 #include "input.h"
 #include "overworld/room.h"
-#include "shop.h"
+#include "store.h"
 
 void UpdateShopMainMenu(void)
 {
