@@ -1,5 +1,5 @@
 #include "types.h"
-#include "cutscene/harry_patronus_cutscene.h"
+#include "patronus_cutscene.h"
 #include "gen/graphics/cutscenes.h"
 
 // BG graphics the cutscene cycles through (see g_bPatronusGraphicIndex).

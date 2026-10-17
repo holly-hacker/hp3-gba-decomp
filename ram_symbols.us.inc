@@ -383,7 +383,7 @@
 .set g_apParticleGfxPools,             0x030051D8  @ ParticleGfxEntry *[]
 
 @ --- Serve Pumpkin Juice minigame (see include/minigame/serve_pumpkin_juice.h) ---
-.set g_dwPatronusBgFront,     0x030051E4  @ u32; see include/cutscene/harry_patronus_cutscene.h
+.set g_dwPatronusBgFront,     0x030051E4  @ u32; see include/patronus_cutscene.h
 .set g_dwPatronusBgBack,      0x030051E8  @ u32
 .set g_dwPatronusSwapPending, 0x030051EC  @ u32
 .set g_bPatronusGraphicIndex, 0x030051F0  @ u8

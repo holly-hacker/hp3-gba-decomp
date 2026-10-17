@@ -3,7 +3,7 @@
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "cutscene/harry_patronus_cutscene.h"
+#include "patronus_cutscene.h"
 #include "hw/io_regs.h"
 #include "interrupts.h"
 

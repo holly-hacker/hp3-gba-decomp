@@ -1501,10 +1501,10 @@ c-file 0x0803197C 0x080319B0 src/particles/update_particle_collision.c UpdatePar
 thumb-func 0x080319B0 sub_080319B0
 
 # Patronus (Harry Patronus cutscene mode)
-c-file 0x080319FC _ src/gamemode/modes/cutscene/harry_patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
-c-file 0x08031B4C _ src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
-c-file 0x08031CA8 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
-c-file 0x08031CC4 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
+c-file 0x080319FC _ src/patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
+c-file 0x08031B4C _ src/patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
+c-file 0x08031CA8 _ src/patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
+c-file 0x08031CC4 _ src/patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
 
 # Pause (in-game menu and list menu)
 c-file 0x08031D30 _ src/gamemode/modes/in_game_menu/update_in_game_menu.c UpdateInGameMenu
@@ -2544,7 +2544,7 @@ c-file 0x08068BF0 _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068BF8 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file 0x08068BFC 0x08068C08 src/particles/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068C10 _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
-c-file 0x08068C30 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
+c-file 0x08068C30 _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068C38 _ src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file 0x08068D04 0x08068D3C src/gamemode/modes/minigame/wizard_cracker_pop_it/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
 c-file 0x08069184 0x08069194 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
@@ -2760,7 +2760,7 @@ c-rodata 0x08FAA7D0 _ EepromV124
 c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
 
-c-file 0x08FAAEF8 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
+c-file 0x08FAAEF8 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows
 c-file 0x08FB0588 _ src/audio/sound_samples.c g_aSoundSamples

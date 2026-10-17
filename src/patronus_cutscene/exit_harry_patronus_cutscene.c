@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "interrupts.h"
+#include "patronus_cutscene.h"
 
 void ExitHarryPatronusCutscene(void)
 {

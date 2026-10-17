@@ -15,4 +15,7 @@ extern const u32 g_dwPatronusBg2Control;             // 0x08068C30
 extern const u32 g_dwPatronusBg3Control;             // 0x08068C34
 extern const u8 *const g_apPatronusGraphics[6];      // 0x08FAAEF8
 
+extern void InitializeHarryPatronusCutscene(void);
+extern void UpdateHarryPatronusCutscene(void);
+extern void ExitHarryPatronusCutscene(void);
 extern void HandleHarryPatronusCutsceneVBlank(void);
