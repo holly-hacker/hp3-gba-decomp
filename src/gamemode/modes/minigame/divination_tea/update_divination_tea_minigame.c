@@ -5,7 +5,7 @@
 #include "minigame/divination_tea.h"
 #include "modes.h"
 #include "input.h"
-#include "mt19937.h"
+#include "random.h"
 #include "font.h"
 #include "text.h"
 

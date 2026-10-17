@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_2.h"
-#include "mt19937.h"
+#include "random.h"
 #include "constants/spells.h"
 
 #define ATTACKER (g_pFightState->pFighters[attackerIndex])

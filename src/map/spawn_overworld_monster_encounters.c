@@ -2,7 +2,7 @@
 #include "battle/encounters.h"
 #include "combat_2.h"
 #include "mem.h"
-#include "mt19937.h"
+#include "random.h"
 #include "overworld/overworld.h"
 #include "map.h"
 

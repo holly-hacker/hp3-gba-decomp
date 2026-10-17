@@ -1,5 +1,5 @@
 #include "types.h"
-#include "mt19937.h"
+#include "random.h"
 #include "dementor_minigame.h"
 
 // Launches a random idle Dementor, if one other than the last launched is idle.

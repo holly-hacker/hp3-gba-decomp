@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 
 #define MT_M 397
 #define MATRIX_A   0x9908B0DFu

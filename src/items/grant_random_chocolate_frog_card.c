@@ -1,5 +1,5 @@
 #include "types.h"
-#include "mt19937.h"
+#include "random.h"
 #include "game/rewards.h"
 #include "items.h"
 

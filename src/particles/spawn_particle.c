@@ -2,7 +2,7 @@
 #include "battle/effect_script.h"
 #include "particles.h"
 #include "actor.h"
-#include "mt19937.h"
+#include "random.h"
 
 // Spawns one particle from an emitter. Position, lifetime and direction draws use the visual RNG
 // cursor (Mt19937*2); modes 6, 7 and 8 draw their velocity from the gameplay cursor.

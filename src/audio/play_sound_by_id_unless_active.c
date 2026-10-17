@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/audio.h"
-#include "mt19937.h"
+#include "random.h"
 
 s32 PlaySoundByIdUnlessActive_candidate(s32 id, s32 handle)
 {

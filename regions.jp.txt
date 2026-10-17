@@ -1585,22 +1585,22 @@ c-file 0x0803B1D4 _ src/ram_clear/clear_oam_dma.c ClearOamDma
 c-file 0x0803B1F8 _ src/ram_clear/clear_palette_ram_dma.c ClearPaletteRamDma
 
 # MT19937 PRNG, see docs/memory-map/rng.md
-c-file 0x0803B220 _ src/rng/regenerate.c Mt19937Regenerate
-c-file 0x0803B37C _ src/rng/alloc_state.c Mt19937AllocState
-c-file 0x0803B398 _ src/rng/auto_seed.c Mt19937AutoSeed
-c-file 0x0803B414 _ src/rng/set_seed.c Mt19937SetSeed
-c-file 0x0803B448 _ src/rng/rand_range.c Mt19937RandRange
-c-file 0x0803B474 _ src/rng/rand_range2.c Mt19937RandRange2
-c-file 0x0803B49C _ src/rng/rand_max.c Mt19937RandMax
-c-file 0x0803B4C0 _ src/rng/rand_max2.c Mt19937RandMax2
-c-file 0x0803B4E4 _ src/rng/rand_signed.c Mt19937RandSigned
-c-file 0x0803B510 _ src/rng/rand_signed2.c Mt19937RandSigned2
-c-file 0x0803B53C _ src/rng/chance.c Mt19937Chance
-c-file 0x0803B568 _ src/rng/chance2.c Mt19937Chance2
-c-file 0x0803B594 _ src/rng/chance_noisy.c Mt19937ChanceNoisy
-c-file 0x0803B5C8 _ src/rng/seed_array.c Mt19937SeedArray
-c-file 0x0803B600 _ src/rng/next.c Mt19937Next
-c-file 0x0803B65C _ src/rng/next2.c Mt19937Next2
+c-file 0x0803B220 _ src/random/regenerate.c Mt19937Regenerate
+c-file 0x0803B37C _ src/random/alloc_state.c Mt19937AllocState
+c-file 0x0803B398 _ src/random/auto_seed.c Mt19937AutoSeed
+c-file 0x0803B414 _ src/random/set_seed.c Mt19937SetSeed
+c-file 0x0803B448 _ src/random/rand_range.c Mt19937RandRange
+c-file 0x0803B474 _ src/random/rand_range2.c Mt19937RandRange2
+c-file 0x0803B49C _ src/random/rand_max.c Mt19937RandMax
+c-file 0x0803B4C0 _ src/random/rand_max2.c Mt19937RandMax2
+c-file 0x0803B4E4 _ src/random/rand_signed.c Mt19937RandSigned
+c-file 0x0803B510 _ src/random/rand_signed2.c Mt19937RandSigned2
+c-file 0x0803B53C _ src/random/chance.c Mt19937Chance
+c-file 0x0803B568 _ src/random/chance2.c Mt19937Chance2
+c-file 0x0803B594 _ src/random/chance_noisy.c Mt19937ChanceNoisy
+c-file 0x0803B5C8 _ src/random/seed_array.c Mt19937SeedArray
+c-file 0x0803B600 _ src/random/next.c Mt19937Next
+c-file 0x0803B65C _ src/random/next2.c Mt19937Next2
 c-file 0x0803B6B4 0x0803B784 src/room/actors/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
 thumb-func 0x0803B784 sub_0803B71C
 thumb-func 0x0803BA80 sub_0803BA18

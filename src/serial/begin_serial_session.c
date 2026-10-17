@@ -1,6 +1,6 @@
 #include "types.h"
 #include "interrupts.h"
-#include "mt19937.h"
+#include "random.h"
 #include "serial/serial.h"
 
 // Resets the link hardware when the exchange loop is enabled, reseeds the RNG and forgets every

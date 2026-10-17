@@ -3,7 +3,7 @@
 #include "graphics/audio.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
-#include "mt19937.h"
+#include "random.h"
 
 // Enemy-side per-actor tick dispatcher, mirroring TickPlayerActionState's
 // shape: a switch on Actor+0x8D (bActionState), every case branching into

@@ -8,7 +8,7 @@
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "minigame_menu.h"
-#include "mt19937.h"
+#include "random.h"
 #include "overworld/room.h"
 #include "font.h"
 #include "vram.h"

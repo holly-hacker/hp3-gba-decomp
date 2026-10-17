@@ -3,7 +3,7 @@
 #include "combat_menu.h"
 #include "modes.h"
 #include "graphics/audio.h"
-#include "mt19937.h"
+#include "random.h"
 #include "overworld/room.h"
 
 // Starts the active fighter's queued menu action (spell, item, Special Move

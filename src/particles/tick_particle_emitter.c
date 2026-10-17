@@ -1,7 +1,7 @@
 #include "types.h"
 #include "particles.h"
 #include "actor.h"
-#include "mt19937.h"
+#include "random.h"
 
 // Advances one emitter by a frame: spawns particles every wSpawnPeriod + 1 ticks (up to
 // bSpawnsPerPeriod attempts), and releases the emitter when its target is being destroyed

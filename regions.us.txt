@@ -1796,22 +1796,22 @@ c-file 0x0803B16C _ src/ram_clear/clear_oam_dma.c ClearOamDma
 c-file 0x0803B190 _ src/ram_clear/clear_palette_ram_dma.c ClearPaletteRamDma
 
 # Rand? (MT19937 PRNG), see docs/memory-map/rng.md
-c-file 0x0803B1B8 _ src/rng/regenerate.c Mt19937Regenerate
-c-file 0x0803B314 _ src/rng/alloc_state.c Mt19937AllocState
-c-file 0x0803B330 _ src/rng/auto_seed.c Mt19937AutoSeed
-c-file 0x0803B3AC _ src/rng/set_seed.c Mt19937SetSeed
-c-file 0x0803B3E0 _ src/rng/rand_range.c Mt19937RandRange
-c-file 0x0803B40C _ src/rng/rand_range2.c Mt19937RandRange2
-c-file 0x0803B434 _ src/rng/rand_max.c Mt19937RandMax
-c-file 0x0803B458 _ src/rng/rand_max2.c Mt19937RandMax2
-c-file 0x0803B47C _ src/rng/rand_signed.c Mt19937RandSigned
-c-file 0x0803B4A8 _ src/rng/rand_signed2.c Mt19937RandSigned2
-c-file 0x0803B4D4 _ src/rng/chance.c Mt19937Chance
-c-file 0x0803B500 _ src/rng/chance2.c Mt19937Chance2
-c-file 0x0803B52C _ src/rng/chance_noisy.c Mt19937ChanceNoisy
-c-file 0x0803B560 _ src/rng/seed_array.c Mt19937SeedArray
-c-file 0x0803B598 _ src/rng/next.c Mt19937Next
-c-file 0x0803B5F4 _ src/rng/next2.c Mt19937Next2
+c-file 0x0803B1B8 _ src/random/regenerate.c Mt19937Regenerate
+c-file 0x0803B314 _ src/random/alloc_state.c Mt19937AllocState
+c-file 0x0803B330 _ src/random/auto_seed.c Mt19937AutoSeed
+c-file 0x0803B3AC _ src/random/set_seed.c Mt19937SetSeed
+c-file 0x0803B3E0 _ src/random/rand_range.c Mt19937RandRange
+c-file 0x0803B40C _ src/random/rand_range2.c Mt19937RandRange2
+c-file 0x0803B434 _ src/random/rand_max.c Mt19937RandMax
+c-file 0x0803B458 _ src/random/rand_max2.c Mt19937RandMax2
+c-file 0x0803B47C _ src/random/rand_signed.c Mt19937RandSigned
+c-file 0x0803B4A8 _ src/random/rand_signed2.c Mt19937RandSigned2
+c-file 0x0803B4D4 _ src/random/chance.c Mt19937Chance
+c-file 0x0803B500 _ src/random/chance2.c Mt19937Chance2
+c-file 0x0803B52C _ src/random/chance_noisy.c Mt19937ChanceNoisy
+c-file 0x0803B560 _ src/random/seed_array.c Mt19937SeedArray
+c-file 0x0803B598 _ src/random/next.c Mt19937Next
+c-file 0x0803B5F4 _ src/random/next2.c Mt19937Next2
 
 # Riser? (raising platform actor)
 c-file 0x0803B64C 0x0803B71C src/room/actors/spawn_raising_platform_actor.c SpawnRaisingPlatformActor

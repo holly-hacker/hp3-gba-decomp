@@ -1,5 +1,5 @@
 #include "input.h"
-#include "mt19937.h"
+#include "random.h"
 #include "interrupts.h"
 
 // g_wKeysHeld (0x030034EC) is the live held-key bitmask maintained by

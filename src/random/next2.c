@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 
 // A secondary `next` impl for a secondary RNG that doesn't regenerate. Used for purely visual effects so it doesn't
 // advance the gameplay RNG.

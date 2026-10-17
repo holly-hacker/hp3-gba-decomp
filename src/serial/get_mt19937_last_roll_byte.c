@@ -1,5 +1,5 @@
 #include "types.h"
-#include "mt19937.h"
+#include "random.h"
 #include "serial/serial.h"
 
 s16 GetMt19937LastRollByte(void)

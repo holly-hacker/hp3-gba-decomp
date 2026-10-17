@@ -1,6 +1,6 @@
 #include "types.h"
 #include "commands.h"
-#include "mt19937.h"
+#include "random.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 

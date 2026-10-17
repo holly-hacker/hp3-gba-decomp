@@ -5,7 +5,7 @@
 #include "modes.h"
 #include "input.h"
 #include "title.h"
-#include "mt19937.h"
+#include "random.h"
 #include "font.h"
 #include "text.h"
 

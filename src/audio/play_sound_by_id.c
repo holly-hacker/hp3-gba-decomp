@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/audio.h"
-#include "mt19937.h"
+#include "random.h"
 
 // Plays sound `id` and returns the Krawall handle, or 0 when a random variant plays nothing.
 // A variant row draws Mt19937RandMax2(7): the visual RNG cursor, not the gameplay one.

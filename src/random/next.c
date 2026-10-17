@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 
 s32 Mt19937Next(void)
 {

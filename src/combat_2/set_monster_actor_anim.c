@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_2.h"
-#include "mt19937.h"
+#include "random.h"
 
 // Plays animation `state` on a monster's Actor (wActorType is the monster id + 4), and
 // on its companion shadow Actor for monsters 45-47. State 0 (idle) starts

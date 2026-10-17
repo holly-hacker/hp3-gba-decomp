@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 
 u16 Mt19937RandMax(u16 max)
 {

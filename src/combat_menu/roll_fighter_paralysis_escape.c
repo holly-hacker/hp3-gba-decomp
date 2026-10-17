@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
-#include "mt19937.h"
+#include "random.h"
 
 // Not-paralyzed fighters act normally (0). A paralyzed fighter rolls its
 // escape chance: on failure the chance ratchets up by 25 for next time (1,

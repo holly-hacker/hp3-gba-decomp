@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 #include "mem.h"
 
 void Mt19937AllocState(void)

@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 
 void Mt19937SetSeed(u32 seed)
 {

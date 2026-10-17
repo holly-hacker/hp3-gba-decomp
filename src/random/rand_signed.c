@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 
 s16 Mt19937RandSigned(s16 max)
 {

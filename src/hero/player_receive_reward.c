@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/rewards.h"
 #include "items.h"
-#include "mt19937.h"
+#include "random.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
 #include "hero.h"

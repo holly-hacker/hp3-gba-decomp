@@ -1,9 +1,10 @@
-#include "mt19937.h"
+#include "random.h"
+#include "hw/io_regs.h"
 
-// Return a random bool of roughly `percent` chance.
-s32 Mt19937Chance(u16 percent)
+// Return a random bool of roughly `percent` chance, adding extra entropy from VCOUNT.
+s32 Mt19937ChanceNoisy(u16 percent)
 {
-    u32 draw = Mt19937Next() & 0x7FFFu;
+    u32 draw = (Mt19937Next() + REG_VCOUNT) & 0x7FFFu;
 
     // BUG: This should be 100, not 101.
     u32 threshold = (draw * 101) >> 15;

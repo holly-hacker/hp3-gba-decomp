@@ -15,7 +15,7 @@
 #include "hw/io_regs.h"
 #include "interrupts.h"
 #include "minigame_menu.h"
-#include "mt19937.h"
+#include "random.h"
 #include "vram.h"
 #include "hero.h"
 #include "pscreen_folio_bruti.h"

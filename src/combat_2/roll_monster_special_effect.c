@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_2.h"
-#include "mt19937.h"
+#include "random.h"
 
 // Rolls a monster's MonsterTable special effect: 100% fires unconditionally,
 // anything lower fires only on a hit. Success runs the effect script, then

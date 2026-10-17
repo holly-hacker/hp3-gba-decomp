@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
-#include "mt19937.h"
+#include "random.h"
 
 // The ROM compiles StartActorAffineScaleTween into SetActorFlippedX/Y and also
 // keeps an out-of-line copy, as one translation unit with an inline definition

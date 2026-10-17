@@ -7,7 +7,7 @@
 #include "graphics/scanline_effects.h"
 #include "font.h"
 #include "modes.h"
-#include "mt19937.h"
+#include "random.h"
 #include "buckbeak_minigame.h"
 
 // Sets up the BGs, the floor, Buckbeak and the rings.

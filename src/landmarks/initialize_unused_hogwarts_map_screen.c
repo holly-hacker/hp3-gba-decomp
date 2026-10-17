@@ -7,7 +7,7 @@
 #include "graphics/display.h"
 #include "menu/main_menu.h"
 #include "landmarks.h"
-#include "mt19937.h"
+#include "random.h"
 #include "cursor.h"
 
 void InitializeUnusedHogwartsMapScreen(void)

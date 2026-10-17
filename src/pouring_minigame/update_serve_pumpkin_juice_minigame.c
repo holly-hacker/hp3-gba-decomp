@@ -5,7 +5,7 @@
 #include "graphics/display.h"
 #include "input.h"
 #include "minigame_menu.h"
-#include "mt19937.h"
+#include "random.h"
 #include "pouring_minigame.h"
 #include "font.h"
 

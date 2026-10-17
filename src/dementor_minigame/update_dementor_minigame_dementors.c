@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "graphics/audio.h"
-#include "mt19937.h"
+#include "random.h"
 #include "dementor_minigame_inline.h"
 
 // A Dementor within 16 pixels of Harry costs a life and retreats; a retreating one

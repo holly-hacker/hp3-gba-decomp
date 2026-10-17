@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "random.h"
 
 s32 Mt19937RandRange2(s32 min, s32 max)
 {

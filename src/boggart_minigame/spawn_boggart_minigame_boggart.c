@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "mt19937.h"
+#include "random.h"
 #include "boggart_minigame.h"
 
 void SpawnBoggartMinigameBoggart(void)

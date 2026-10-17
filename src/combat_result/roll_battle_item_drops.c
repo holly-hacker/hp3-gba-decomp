@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "combat_2.h"
 #include "combat_result.h"
-#include "mt19937.h"
+#include "random.h"
 #include "battle/monster_drop_table.h"
 
 #define NO_ITEM COMBAT_RESULT_NO_ITEM
