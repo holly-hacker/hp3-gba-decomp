@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "actor.h"
-#include "menu/status_equip.h"
+#include "pscreen_status_equip.h"
 #include "gen/graphics/overworld.h"
 #include "pscreen_character.h"
 

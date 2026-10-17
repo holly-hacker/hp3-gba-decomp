@@ -34,6 +34,9 @@ typedef struct {
 extern StatusEquipSlotSelectState g_StatusEquipSlotSelect;  // 0x030054F8
 extern s8 g_bStatusEquipSlot;  // 0x03005564: selected index into g_aStatusEquipSlots
 
+extern void UpdateStatusEquipSlotSelect(void);
+extern void InitializeStatusEquipSlotSelect(void);
+extern void ExitStatusEquipSlotSelect(void);
 extern Actor *sub_0803A030(u32 character);
 extern void DrawStatusEquipStatsPanel(void);
 extern void sub_0803A3A0(void);

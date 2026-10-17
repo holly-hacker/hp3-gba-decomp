@@ -414,7 +414,7 @@
 .set g_bItemsSectionCursor,        0x030054E8  @ s8: Items section select row saved on exit
 .set g_dwItemUseItem,              0x030054EC  @ u32: item chosen in ItemsItemSelect, used by ItemUseScreen
 .set g_dwItemUseQuantity,          0x030054F0  @ u32: quantity chosen in QuantitySelectScreen, used by ItemUseScreen
-.set g_StatusEquipSlotSelect,      0x030054F8  @ StatusEquipSlotSelectState: slot select screen actors and pending mode; see include/menu/status_equip.h
+.set g_StatusEquipSlotSelect,      0x030054F8  @ StatusEquipSlotSelectState: slot select screen actors and pending mode; see include/pscreen_status_equip.h
 .set g_bStatusEquipSlot,           0x03005564  @ s8: selected equipment slot in StatusEquipSlotSelect
 .set g_CardTradeState, 0x03005568  @ CardTradeState: link card trade session; see include/menu/card_trade.h
 

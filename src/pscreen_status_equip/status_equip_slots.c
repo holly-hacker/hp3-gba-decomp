@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/status_equip.h"
+#include "pscreen_status_equip.h"
 
 // Two columns of three slots; bUp/bDown/bLeft/bRight wrap around the grid.
 const StatusEquipSlot g_aStatusEquipSlots[6] = {

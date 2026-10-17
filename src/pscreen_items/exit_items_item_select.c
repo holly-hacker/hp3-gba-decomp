@@ -4,7 +4,7 @@
 #include "pscreen_items.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/status_equip.h"
+#include "pscreen_status_equip.h"
 #include "items.h"
 
 void ExitItemsItemSelect(void)

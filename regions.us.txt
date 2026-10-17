@@ -1747,12 +1747,12 @@ thumb-func 0x08039D44 ShowSavingMessage_candidate
 thumb-func 0x08039D78 ShowGameSavedMessage_candidate
 
 # Profile/Status? (pause subscreen: status)
-c-file 0x08039DD8 0x0803A030 src/gamemode/modes/status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
+c-file 0x08039DD8 0x0803A030 src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
 thumb-func 0x0803A030 sub_0803A030
 thumb-func 0x0803A0F0 DrawStatusEquipStatsPanel
 thumb-func 0x0803A3A0 sub_0803A3A0
-c-file 0x0803A4AC _ src/gamemode/modes/status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
-c-file 0x0803A524 0x0803A528 src/gamemode/modes/status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
+c-file 0x0803A4AC _ src/pscreen_status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
+c-file 0x0803A524 0x0803A528 src/pscreen_status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
 thumb-func 0x0803A528 sub_0803A528
 thumb-func 0x0803A534 sub_0803A534
 thumb-func 0x0803A568 TickStatusEquipSlotCursor
@@ -2564,7 +2564,7 @@ c-file 0x08069C70 _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B190 0x0806B214 src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B238 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
-c-file 0x0806B2FC _ src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
+c-file 0x0806B2FC _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B35C 0x0806B3AC src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B3CC _ src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B3D8 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets

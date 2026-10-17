@@ -6,7 +6,7 @@
 #include "pause_menu.h"
 #include "input.h"
 #include "pscreen_items.h"
-#include "menu/status_equip.h"
+#include "pscreen_status_equip.h"
 #include "items.h"
 #include "pscreen_character.h"
 

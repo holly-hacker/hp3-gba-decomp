@@ -1542,12 +1542,12 @@ c-file 0x08039D2C 0x08039D5C src/pscreen_save/exit_game_save.c ExitGameSave
 thumb-func 0x08039D5C ShowSaveConfirmationPrompt_candidate
 thumb-func 0x08039D98 ShowSavingMessage_candidate
 thumb-func 0x08039DCC ShowGameSavedMessage_candidate
-c-file 0x08039E2C 0x0803A084 src/gamemode/modes/status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
+c-file 0x08039E2C 0x0803A084 src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
 thumb-func 0x0803A084 sub_0803A030
 thumb-func 0x0803A144 DrawStatusEquipStatsPanel
 thumb-func 0x0803A400 sub_0803A3A0
-c-file 0x0803A50C _ src/gamemode/modes/status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
-c-file 0x0803A584 0x0803A588 src/gamemode/modes/status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
+c-file 0x0803A50C _ src/pscreen_status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
+c-file 0x0803A584 0x0803A588 src/pscreen_status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
 thumb-func 0x0803A588 sub_0803A528
 thumb-func 0x0803A594 sub_0803A534
 thumb-func 0x0803A5C8 TickStatusEquipSlotCursor
@@ -2295,7 +2295,7 @@ c-file 0x08069BFC _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B11C 0x0806B1A0 src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B1C4 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
-c-file 0x0806B288 _ src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
+c-file 0x0806B288 _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B2E8 0x0806B338 src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B358 _ src/gamemode/modes/folio_universitas_card_details/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B364 _ src/graphics/assets/folio_card_assets.c g_aFolioCardAssets
