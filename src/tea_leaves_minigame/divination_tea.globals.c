@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "actor_anim.h"
-#include "minigame/divination_tea.h"
+#include "tea_leaves_minigame.h"
 #include "gen/graphics/overworld.h"
 
 // Command 0 holds the first frame; the cups play from command 1 once B is

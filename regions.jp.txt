@@ -1828,15 +1828,15 @@ c-file 0x080418B4 _ src/store/exit_shop_quantity_select.c ExitShopQuantitySelect
 c-file 0x080418DC _ src/store/show_shop_message.c ShowShopMessage
 c-file 0x08041924 _ src/store/update_shop_message.c UpdateShopMessage
 c-file 0x08041948 _ src/store/exit_shop_message.c ExitShopMessage
-c-file 0x08041954 _ src/gamemode/modes/minigame/divination_tea/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
-c-file 0x08041AC8 0x08041DEC src/gamemode/modes/minigame/divination_tea/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
+c-file 0x08041954 _ src/tea_leaves_minigame/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
+c-file 0x08041AC8 0x08041DEC src/tea_leaves_minigame/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
 thumb-func 0x08041DEC sub_08041D84
 thumb-func 0x08042008 sub_08041FA0
 thumb-func 0x08042074 sub_0804200C
 thumb-func 0x08042114 sub_080420AC
 thumb-func 0x080421D4 sub_0804216C
 thumb-func 0x08042220 sub_080421B8
-c-file 0x080422A4 0x080422F0 src/gamemode/modes/minigame/divination_tea/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
+c-file 0x080422A4 0x080422F0 src/tea_leaves_minigame/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
 thumb-func 0x080422F0 sub_08042288
 thumb-func 0x08042338 sub_080422D0
 thumb-func 0x080423A8 sub_08042340
@@ -2306,8 +2306,8 @@ c-file 0x0806B858 _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
 c-file 0x0806B868 0x0806B8C0 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 _ src/store/shop_stock.c g_aShopStockMisc
 c-file 0x0806B9D8 _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
-c-file 0x0806BA8C _ src/gamemode/modes/minigame/divination_tea/divination_tea.globals.c g_DivinationTeaCupAnimData
-c-file 0x0806BAFC _ src/gamemode/modes/minigame/divination_tea/divination_tea_bg_animation.c g_DivinationTeaTable
+c-file 0x0806BA8C _ src/tea_leaves_minigame/divination_tea.globals.c g_DivinationTeaCupAnimData
+c-file 0x0806BAFC _ src/tea_leaves_minigame/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD04 _ sDialogTextTable
 c-file 0x0806BD08 _ src/gamemode/modes/cutscene/hogwarts_up_night_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
 c-file 0x0806BD14 0x0806BDA0 src/gamemode/modes/cutscene/clock_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset

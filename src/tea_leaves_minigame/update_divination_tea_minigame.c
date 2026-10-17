@@ -2,7 +2,7 @@
 #include "background.h"
 #include "sound.h"
 #include "graphics/display.h"
-#include "minigame/divination_tea.h"
+#include "tea_leaves_minigame.h"
 #include "modes.h"
 #include "input.h"
 #include "random.h"

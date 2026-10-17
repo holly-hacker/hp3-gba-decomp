@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "minigame/divination_tea.h"
+#include "tea_leaves_minigame.h"
 
 // BG2's animation, registered with g_dwDivinationTeaBg2Control.
 const BgTileAnimation64 g_DivinationTeaTable = {

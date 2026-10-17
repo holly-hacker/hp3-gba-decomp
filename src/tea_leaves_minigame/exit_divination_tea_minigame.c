@@ -3,7 +3,7 @@
 #include "char_block.h"
 #include "color.h"
 #include "graphics/display.h"
-#include "minigame/divination_tea.h"
+#include "tea_leaves_minigame.h"
 #include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"

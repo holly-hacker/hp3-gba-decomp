@@ -61,9 +61,12 @@ typedef enum {
     DivinationTeaStateShowFortune = 4,
 } DivinationTeaMode;
 
+void InitializeDivinationTeaMinigame(void);
+void UpdateDivinationTeaMinigame(void);
 extern void sub_08041D84(void);
 extern void sub_08041FA0(void);
 extern void sub_0804200C(void);
 extern void sub_080421B8(void);
+void ExitDivinationTeaMinigame(void);
 extern void sub_08042288(u32 arg);
 extern void sub_080422D0(void);

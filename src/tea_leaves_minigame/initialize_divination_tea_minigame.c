@@ -4,7 +4,7 @@
 #include "sound.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
-#include "minigame/divination_tea.h"
+#include "tea_leaves_minigame.h"
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "minigame_menu.h"
