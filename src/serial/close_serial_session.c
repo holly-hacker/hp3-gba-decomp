@@ -1,4 +1,3 @@
-#include "types.h"
 #include "serial.h"
 
 void CloseSerialSession(void)

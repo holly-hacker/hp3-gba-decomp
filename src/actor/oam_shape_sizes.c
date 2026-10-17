@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 
 const OamShapeSize g_aOamShapeSizes[3][4] = {

@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 
 void TickActorAffineEffect(Actor *actor)

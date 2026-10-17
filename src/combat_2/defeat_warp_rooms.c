@@ -1,4 +1,3 @@
-#include "battle/battle.h"
 #include "combat_2.h"
 
 // Room id the overworld warps to after a battle defeat, indexed by

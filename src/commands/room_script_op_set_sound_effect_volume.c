@@ -1,7 +1,6 @@
 #include "types.h"
 #include "commands.h"
 #include "sound.h"
-#include "overworld/room_script.h"
 
 typedef struct SetSoundEffectVolumeRecord {
     u32 dwOpcode;

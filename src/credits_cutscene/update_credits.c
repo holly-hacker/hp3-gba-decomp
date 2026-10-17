@@ -3,7 +3,6 @@
 #include "modes.h"
 #include "input.h"
 #include "credits_cutscene.h"
-#include "minigame_menu.h"
 #include "font.h"
 #include "text.h"
 

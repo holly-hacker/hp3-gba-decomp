@@ -1,6 +1,4 @@
-#include "types.h"
 #include "modes.h"
-#include "pscreen_save.h"
 #include "pause_menu.h"
 #include "input.h"
 

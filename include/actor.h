@@ -1,9 +1,9 @@
 #pragma once
 
 #include "types.h"
-#include "mem.h"
 #include "particles.h"
 #include "oam.h"
+#include "math.h"
 
 // See docs/formats/graphics.md.
 

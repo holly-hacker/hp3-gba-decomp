@@ -1,4 +1,3 @@
-#include "types.h"
 #include "gen/graphics/overworld.h"
 #include "actor.h"
 #include "pscreen_folio_universitas.h"

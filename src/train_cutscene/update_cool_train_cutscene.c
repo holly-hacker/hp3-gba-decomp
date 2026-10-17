@@ -6,7 +6,6 @@
 #include "modes.h"
 #include "input.h"
 #include "hw/io_regs.h"
-#include "overworld/room.h"
 #include "map.h"
 
 // Runs for 0x78 frames, or until A is pressed, then returns to the overworld

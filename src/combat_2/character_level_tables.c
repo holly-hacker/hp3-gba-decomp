@@ -1,4 +1,3 @@
-#include "types.h"
 #include "combat_2.h"
 
 const CharacterLevelEntry *const g_apCharacterLevelTables[3] = {

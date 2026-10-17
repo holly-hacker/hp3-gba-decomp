@@ -1,6 +1,7 @@
 #include "types.h"
 #include "buckbeak_minigame.h"
 #include "random.h"
+#include "gen/graphics/minigames/buckbeak.h"
 
 // Spawns ring `index` at `position`. Its three parts orbit the center a third
 // of a turn apart and start on a random frame of the ring animation.

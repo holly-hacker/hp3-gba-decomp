@@ -6,7 +6,6 @@
 #include "font.h"
 #include "text.h"
 #include "sound.h"
-#include "overworld/room_script.h"
 #include "palette.h"
 #include "combat_result.h"
 #include "hero.h"

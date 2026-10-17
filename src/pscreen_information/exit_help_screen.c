@@ -1,4 +1,3 @@
-#include "types.h"
 #include "color.h"
 #include "particles.h"
 #include "pscreen_information.h"

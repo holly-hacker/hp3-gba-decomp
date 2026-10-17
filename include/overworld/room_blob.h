@@ -1,8 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
 
 // Per-room resource blob, see docs/formats/rooms.md. ParseRoomResourceBlob
 // builds the room's runtime tables from it in one buffer, in the order

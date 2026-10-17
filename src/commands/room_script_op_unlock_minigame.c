@@ -1,7 +1,6 @@
 #include "types.h"
 #include "commands.h"
 #include "save.h"
-#include "overworld/room_script.h"
 
 typedef struct UnlockMinigameRecord {
     u32 dwOpcode;

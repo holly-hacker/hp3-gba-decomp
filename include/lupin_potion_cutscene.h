@@ -3,7 +3,6 @@
 #include "types.h"
 #include "actor.h"
 #include "video.h"
-#include "gen/graphics/cutscenes.h"
 
 extern void InitializeLupinPotionCutscene(void);
 extern void UpdateLupinPotionCutscene(void);

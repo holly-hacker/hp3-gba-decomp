@@ -1,6 +1,4 @@
-#include "types.h"
 #include "modes.h"
-#include "overworld/room.h"
 #include "boggart_minigame.h"
 #include "map.h"
 

@@ -4,7 +4,6 @@
 #include "modes.h"
 #include "font.h"
 #include "text.h"
-#include "minigame_menu.h"
 #include "pscreen_folio_universitas.h"
 
 // Prints the selected card's name and, when asked, its combo's name. The card name is left alone

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/room.h"
 #include "scroll.h"
 
 s32 UpdateActorOnscreenFlags(Actor *actor)

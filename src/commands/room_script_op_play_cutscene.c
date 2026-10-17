@@ -2,7 +2,6 @@
 #include "commands.h"
 #include "sound.h"
 #include "modes.h"
-#include "overworld/room_script.h"
 #include "combat.h"
 
 typedef struct PlayCutsceneRecord {

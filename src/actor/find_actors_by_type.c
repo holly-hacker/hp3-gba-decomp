@@ -1,5 +1,4 @@
 #include "types.h"
-#include "mem.h"
 #include "actor.h"
 
 // Collects up to maxCount active actors with the given wActorType and

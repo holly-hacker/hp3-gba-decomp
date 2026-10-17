@@ -1,7 +1,5 @@
-#include "types.h"
 #include "modes.h"
 #include "sound.h"
-#include "overworld/room.h"
 #include "dementor_minigame.h"
 #include "map.h"
 

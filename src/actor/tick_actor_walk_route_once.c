@@ -3,8 +3,6 @@
 #include "math.h"
 #include "actor.h"
 #include "actor_inline.h"
-#include "overworld/room_blob.h"
-#include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"
 
 // Action states 8, 11 and 13: walks the route's waypoints once, then stops and runs the

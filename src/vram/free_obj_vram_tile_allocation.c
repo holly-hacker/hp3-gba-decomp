@@ -1,6 +1,4 @@
 #include "types.h"
-#include "mem.h"
-#include "actor.h"
 #include "vram.h"
 
 // Releases an allocation from AllocObjVramTiles. The tiles go back to the

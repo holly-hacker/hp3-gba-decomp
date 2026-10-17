@@ -5,7 +5,6 @@
 #include "dialog_box.h"
 #include "font.h"
 #include "text.h"
-#include "overworld/room_script.h"
 #include "items.h"
 
 typedef struct ShowRewardPickupMessageRecord {

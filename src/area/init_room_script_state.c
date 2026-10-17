@@ -1,10 +1,6 @@
-#include "types.h"
 #include "area.h"
 #include "mem.h"
-#include "overworld/overworld.h"
 #include "overworld/room.h"
-#include "overworld/room_blob.h"
-#include "overworld/room_script.h"
 #include "commands.h"
 #include "trigger_actor.h"
 

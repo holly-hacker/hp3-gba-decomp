@@ -6,7 +6,6 @@
 #include "sound.h"
 #include "input.h"
 #include "pscreen_folio_universitas.h"
-#include "minigame_menu.h"
 #include "combat.h"
 #include "game_state.h"
 

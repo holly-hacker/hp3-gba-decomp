@@ -1,4 +1,3 @@
-#include "types.h"
 #include "modes.h"
 #include "pscreen_item_count.h"
 

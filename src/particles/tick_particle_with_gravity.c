@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 
 // Tick for ParticleModeRandomVelocity. Frames last one tick longer than in

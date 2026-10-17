@@ -1,5 +1,4 @@
 #include "math.h"
-#include "actor.h"
 
 // Index bits: 1 = x negative, 2 = y negative, 4 = mostly horizontal,
 // 8 = mostly vertical (eight-way only). Neither 4 nor 8 is a diagonal.

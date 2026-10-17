@@ -1,5 +1,4 @@
 #include "types.h"
-#include "pscreen_folio_universitas.h"
 #include "pscreen_wizard_cards.h"
 
 const u32 g_dwFolioCardDetailBg3Control = 0x3E03;

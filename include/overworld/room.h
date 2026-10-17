@@ -1,11 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "camera.h"
 #include "actor.h"
-#include "overworld/room_script.h"
-#include "overworld/room_actor_state.h"
-#include "move.h"
 #include "scroll.h"
 
 // One 124-byte record per room, indexed by room id; 55 entries. See

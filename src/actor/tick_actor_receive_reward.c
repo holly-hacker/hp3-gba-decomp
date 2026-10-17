@@ -2,17 +2,14 @@
 #include "font.h"
 #include "text.h"
 #include "actor.h"
-#include "game/items.h"
 #include "items.h"
-#include "game/rewards.h"
 #include "sound.h"
 #include "dialog.h"
 #include "dialog_box.h"
 #include "overworld/overworld.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
 #include "hero.h"
 #include "move.h"
+#include "combat.h"
 
 // Action state 0x17: after dwStateTimer ticks, the player holds up the received reward
 // (bReceivedRewardId, or g_nBattleGoldReward Sickles) with a dialog box naming it.

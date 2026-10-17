@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 
 // Identical to TickParticleMoving.

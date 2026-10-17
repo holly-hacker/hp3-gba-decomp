@@ -1,6 +1,5 @@
 #include "types.h"
 #include "mem.h"
-#include "overworld/room.h"
 #include "vram.h"
 
 // Resets the OBJ tile allocator for a display using BG mode bgMode. In the

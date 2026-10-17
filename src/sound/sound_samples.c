@@ -1,4 +1,3 @@
-#include "types.h"
 #include "sound.h"
 
 // One entry per sound played by PlaySoundById's sample mode: the Krawall sample and its

@@ -1,10 +1,7 @@
 #include "types.h"
-#include "save.h"
 #include "game_state.h"
 #include "font.h"
 #include "text.h"
-#include "dialog.h"
-#include "pause_menu.h"
 #include "store.h"
 #include "default_menu.h"
 

@@ -1,4 +1,3 @@
-#include "types.h"
 #include "trigger_actor.h"
 #include "gen/graphics/overworld.h"
 

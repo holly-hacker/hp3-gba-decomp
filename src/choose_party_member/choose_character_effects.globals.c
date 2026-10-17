@@ -1,4 +1,3 @@
-#include "types.h"
 #include "choose_party_member.h"
 
 const ScanlineEffectEntry g_aChooseCharacterScanlineEffects[2] = {

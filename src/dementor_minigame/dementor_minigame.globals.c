@@ -1,8 +1,8 @@
 #include "types.h"
-#include "actor.h"
 #include "actor_anim.h"
 #include "math.h"
 #include "dementor_minigame.h"
+#include "gen/graphics/overworld.h"
 
 const DementorMinigameSprite g_DementorMinigameDementorSprite = {
     { (void *)gDementorTiles, (void *)gDementorFrames, (void *)gDementorPalette, 0 },

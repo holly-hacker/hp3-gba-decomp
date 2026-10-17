@@ -1,9 +1,9 @@
 #include "types.h"
 #include "area.h"
 #include "mem.h"
-#include "overworld/overworld.h"
 #include "overworld/room_blob.h"
 #include "commands.h"
+#include "overworld/room.h"
 
 // Rebuilds the runtime room tables from a room's resource blob.
 void ParseRoomResourceBlob(const RoomBlobHeader *pBlob)

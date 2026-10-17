@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "particles.h"
 #include "hw/io_regs.h"
 
 const u16 *LoadGraphicBlobTiles(u32 bg, const u8 *pBlob, u16 tileOffset)

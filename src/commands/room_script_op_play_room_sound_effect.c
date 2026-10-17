@@ -1,8 +1,6 @@
 #include "types.h"
 #include "commands.h"
 #include "sound.h"
-#include "modes.h"
-#include "overworld/room_script.h"
 #include "area.h"
 #include "main.h"
 

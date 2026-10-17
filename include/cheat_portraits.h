@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "actor.h"
-#include "gen/graphics/menus.h"
 
 typedef struct {
     Actor *pPortraitActor;  // 0x00: sprite showing the selected portrait

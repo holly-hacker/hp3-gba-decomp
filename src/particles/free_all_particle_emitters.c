@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 
 void FreeAllParticleEmitters(void)

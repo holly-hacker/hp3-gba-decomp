@@ -1,5 +1,4 @@
 #include "types.h"
-#include "overworld/room.h"
 #include "flipbook.h"
 
 // Returns the pixel position of block index of the animation's current step.

@@ -1,6 +1,4 @@
-#include "types.h"
 #include "actor.h"
-#include "overworld/overworld.h"
 #include "hero.h"
 #include "move.h"
 

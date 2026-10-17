@@ -1,5 +1,5 @@
-#include "types.h"
 #include "buckbeak_minigame.h"
+#include "mem.h"
 
 void ClearBuckbeakMinigameRings(void)
 {

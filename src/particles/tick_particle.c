@@ -1,6 +1,5 @@
 #include "types.h"
 #include "particles.h"
-#include "modes.h"
 #include "main.h"
 
 // Collision type 1 frees the particle. A full OAM queue sets

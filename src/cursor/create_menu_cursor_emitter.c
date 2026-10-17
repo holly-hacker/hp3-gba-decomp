@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 #include "actor.h"
 #include "cursor.h"

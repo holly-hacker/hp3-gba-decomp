@@ -1,6 +1,5 @@
 #include "types.h"
 #include "math.h"
-#include "particles.h"
 #include "actor.h"
 
 // Accelerates the actor along one of 16 directions, clockwise from up.

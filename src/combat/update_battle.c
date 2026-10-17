@@ -4,6 +4,7 @@
 #include "combat_menu.h"
 #include "combat.h"
 #include "modes.h"
+#include "mode7.h"
 
 // Battle mode's pUpdateFn (per-frame tick). See docs/memory-map/battle.md.
 void UpdateBattle(void)

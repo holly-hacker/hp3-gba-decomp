@@ -1,4 +1,3 @@
-#include "types.h"
 #include "background.h"
 #include "particles.h"
 #include "font.h"

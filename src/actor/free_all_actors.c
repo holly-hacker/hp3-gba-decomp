@@ -1,5 +1,3 @@
-#include "types.h"
-#include "mem.h"
 #include "actor.h"
 #include "oam.h"
 #include "interrupts.h"

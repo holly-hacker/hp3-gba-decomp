@@ -1,5 +1,4 @@
 #include "types.h"
-#include "dialog.h"
 #include "font.h"
 #include "text.h"
 

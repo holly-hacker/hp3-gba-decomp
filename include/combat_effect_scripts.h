@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.h"
 #include "actor.h"
 
 // The SP gauge sprites spawned by SpawnSpGauge.

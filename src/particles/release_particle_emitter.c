@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 
 // Drops the emitter's palette slot reference, unlinks it from the

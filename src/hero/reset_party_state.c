@@ -1,5 +1,3 @@
-#include "types.h"
-#include "overworld/overworld.h"
 #include "hero.h"
 
 void ResetPartyState(void)

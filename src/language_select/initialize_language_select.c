@@ -1,6 +1,4 @@
-#include "types.h"
 #include "background.h"
-#include "sound.h"
 #include "gen/graphics/cutscenes.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "modes.h"

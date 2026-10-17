@@ -1,8 +1,4 @@
-#include "types.h"
-#include "mem.h"
 #include "actor.h"
-#include "overworld/overworld.h"
-#include "overworld/room.h"
 #include "move.h"
 #include "screen_transitions.h"
 #include "scroll.h"

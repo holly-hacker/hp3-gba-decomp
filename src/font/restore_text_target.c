@@ -1,4 +1,3 @@
-#include "types.h"
 #include "font.h"
 
 void RestoreTextTarget(void)

@@ -1,5 +1,3 @@
-#include "types.h"
-#include "background.h"
 #include "font.h"
 #include "conversation.h"
 #include "dialog.h"

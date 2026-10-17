@@ -1,4 +1,3 @@
-#include "types.h"
 #include "modes.h"
 #include "boggart_minigame.h"
 #include "buckbeak_minigame.h"

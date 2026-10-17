@@ -1,6 +1,4 @@
-#include "arm_routines.h"
 #include "types.h"
-#include "mem.h"
 #include "actor.h"
 #include "vram.h"
 

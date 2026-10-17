@@ -1,6 +1,5 @@
 #include "types.h"
 #include "area.h"
-#include "overworld/overworld.h"
 #include "overworld/room_actor.h"
 #include "trigger_actor.h"
 

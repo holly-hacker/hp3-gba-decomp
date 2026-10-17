@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/room.h"
+#include "move.h"
 
 // Returns the eight-way direction from pos toward target, like
 // GetDirectionToTarget, but checks the room terrain in front of the actor's

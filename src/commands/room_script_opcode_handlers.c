@@ -1,4 +1,3 @@
-#include "types.h"
 #include "commands.h"
 #include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"

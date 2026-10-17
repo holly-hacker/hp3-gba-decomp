@@ -1,5 +1,5 @@
 #include "types.h"
-#include "particles.h"
+#include "oam.h"
 
 void FreeAffineSlot(u16 slot)
 {

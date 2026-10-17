@@ -1,8 +1,6 @@
-#include "types.h"
 #include "color.h"
 #include "mem.h"
 #include "modes.h"
-#include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "hero.h"
 #include "map.h"

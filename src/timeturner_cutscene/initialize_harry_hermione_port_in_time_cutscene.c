@@ -2,11 +2,8 @@
 #include "background.h"
 #include "hw/bios.h"
 #include "modes.h"
-#include "particles.h"
 #include "timeturner_cutscene.h"
 #include "hw/io_regs.h"
-#include "overworld/overworld.h"
-#include "overworld/room.h"
 #include "vram.h"
 #include "screen_transitions.h"
 

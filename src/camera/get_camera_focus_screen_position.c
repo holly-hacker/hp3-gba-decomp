@@ -1,6 +1,5 @@
 #include "camera.h"
 
-#include "overworld/room.h"
 #include "scroll.h"
 
 void GetCameraFocusScreenPosition(s32 *pPosition, u8 slot)

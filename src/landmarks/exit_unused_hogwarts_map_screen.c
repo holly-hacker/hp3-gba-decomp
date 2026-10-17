@@ -1,7 +1,5 @@
-#include "types.h"
 #include "color.h"
 #include "particles.h"
-#include "mem.h"
 #include "actor.h"
 #include "landmarks.h"
 #include "cursor.h"

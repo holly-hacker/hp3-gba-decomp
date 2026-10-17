@@ -2,7 +2,6 @@
 #include "actor.h"
 #include "actor_inline.h"
 #include "area.h"
-#include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"
 
 // Action state 15, started by RoomScriptOpStartTileActorScript: walks to the pixel

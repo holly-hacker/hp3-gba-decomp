@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "actor_anim.h"
 #include "cheat_level_and_quest.h"
+#include "gen/graphics/menus.h"
 
 // Largest value of each row: three character levels, then the quest.
 const u8 g_abCheatLevelAndQuestMax[4] = { 99, 99, 99, 26 };

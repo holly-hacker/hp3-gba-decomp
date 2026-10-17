@@ -5,8 +5,6 @@
 #include "particles.h"
 #include "font.h"
 #include "text.h"
-#include "dialog.h"
-#include "pscreen_items.h"
 #include "store.h"
 #include "cursor.h"
 #include "items.h"

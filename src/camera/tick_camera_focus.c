@@ -2,7 +2,6 @@
 #include "camera.h"
 #include "sound.h"
 #include "overworld/overworld.h"
-#include "overworld/room_script.h"
 #include "commands.h"
 #include "hero.h"
 

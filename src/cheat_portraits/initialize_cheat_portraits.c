@@ -4,9 +4,9 @@
 #include "cheat_portraits.h"
 #include "modes.h"
 #include "hw/io_regs.h"
-#include "overworld/room.h"
 #include "screen_transitions.h"
 #include "video.h"
+#include "gen/graphics/menus.h"
 
 void InitializeCheatPortraits(void)
 {

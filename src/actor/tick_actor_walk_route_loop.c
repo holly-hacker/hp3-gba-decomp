@@ -3,7 +3,6 @@
 #include "math.h"
 #include "actor.h"
 #include "actor_inline.h"
-#include "overworld/room_blob.h"
 
 // Action states 7 and 10: walks the route's waypoints in order, wrapping to the
 // first, and waits scriptState.wScriptPc ticks at each.

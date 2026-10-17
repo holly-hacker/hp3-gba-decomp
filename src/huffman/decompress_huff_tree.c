@@ -1,5 +1,4 @@
 #include "types.h"
-#include "particles.h"
 #include "huffman.h"
 
 // Decodes size bytes; bits are read LSB-first from u16s and the bytes paired into

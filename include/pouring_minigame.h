@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "char_block.h"
-#include "gen/graphics/minigames/pumpkin.h"
 
 // Serve Pumpkin Juice, game mode 0x24 (UnusedServePumpkinJuiceMinigame). No
 // screen pushes this mode, but its handlers are present in the dispatch table.

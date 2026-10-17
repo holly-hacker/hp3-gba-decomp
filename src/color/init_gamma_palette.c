@@ -2,7 +2,6 @@
 #include "save.h"
 #include "hw/io_regs.h"
 #include "mem.h"
-#include "title_options.h"
 
 void InitGammaPalette(void)
 {

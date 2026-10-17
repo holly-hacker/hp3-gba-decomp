@@ -2,7 +2,6 @@
 #include "actor.h"
 #include "actor_anim.h"
 #include "gen/graphics/overworld.h"
-#include "overworld/overworld.h"
 #include "hero.h"
 
 // Indexed by Actor.bFacing; see SetPartyMemberAnim. Facings 5-7 mirror 3-1 with

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "commands_inline.h"
-#include "overworld/room_script.h"
 #include "items.h"
 
 typedef struct GotoIfFolioPageGroupCompleteRecord {

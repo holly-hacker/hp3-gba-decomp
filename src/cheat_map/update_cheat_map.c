@@ -3,11 +3,9 @@
 #include "cheat_map.h"
 #include "modes.h"
 #include "input.h"
-#include "minigame_menu.h"
 #include "random.h"
 #include "actor.h"
 #include "overworld/room.h"
-#include "overworld/room_script.h"
 #include "commands.h"
 #include "hero.h"
 

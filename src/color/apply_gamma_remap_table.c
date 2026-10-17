@@ -1,7 +1,6 @@
 #include "color.h"
 #include "hw/io_regs.h"
 #include "mem.h"
-#include "title_options.h"
 
 // Makes pTable the active gamma remap and re-filters palette RAM and both
 // shadow palettes with it, first undoing the high-gamma table if it was

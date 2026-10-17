@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "actor.h"
-#include "gen/graphics/minigames/wizard_cracker.h"
 
 // Wizard Cracker Pop-it, game mode 0x1B (WizardCrackerPopItMinigame).
 

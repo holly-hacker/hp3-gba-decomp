@@ -1,7 +1,6 @@
 #include "types.h"
 #include "actor.h"
 #include "choose_party_member.h"
-#include "overworld/overworld.h"
 #include "palette.h"
 #include "hero.h"
 

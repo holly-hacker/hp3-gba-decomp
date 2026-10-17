@@ -2,8 +2,6 @@
 #include "items.h"
 #include "game/rewards.h"
 #include "random.h"
-#include "overworld/overworld.h"
-#include "overworld/room_script.h"
 #include "hero.h"
 
 // Stops the player, starts the receive-item action showing rewardId and

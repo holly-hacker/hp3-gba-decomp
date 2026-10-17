@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.h"
 #include "interrupts.h"
 
 // Interrupt logic that the ROM compiles inline into other interrupt routines.

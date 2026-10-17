@@ -1,5 +1,3 @@
-#include "types.h"
-#include "particles.h"
 #include "modes.h"
 #include "mem.h"
 #include "pscreen_trade.h"
@@ -7,6 +5,7 @@
 #include "gen/graphics/cutscenes.h"
 #include "default_menu.h"
 #include "screen_transitions.h"
+#include "serial.h"
 
 void InitializeCardTrade(void)
 {

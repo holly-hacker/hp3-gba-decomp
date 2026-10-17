@@ -1,4 +1,3 @@
-#include "types.h"
 #include "game_state.h"
 
 // Empty subsystem initializer; AgbMain calls it once at startup.

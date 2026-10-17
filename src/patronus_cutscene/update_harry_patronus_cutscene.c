@@ -3,8 +3,6 @@
 #include "modes.h"
 #include "patronus_cutscene.h"
 #include "input.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
 #include "screen_transitions.h"
 #include "hero.h"
 #include "map.h"

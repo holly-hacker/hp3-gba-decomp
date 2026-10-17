@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/battle.h"
 #include "combat_2.h"
 #include "random.h"
 

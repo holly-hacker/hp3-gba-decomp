@@ -1,6 +1,4 @@
-#include "types.h"
 #include "sound.h"
-#include "mem.h"
 #include "actor.h"
 #include "screen_transitions.h"
 #include "time_skip_cutscene.h"

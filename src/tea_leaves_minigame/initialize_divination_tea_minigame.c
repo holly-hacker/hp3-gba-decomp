@@ -6,12 +6,11 @@
 #include "tea_leaves_minigame.h"
 #include "modes.h"
 #include "hw/io_regs.h"
-#include "minigame_menu.h"
 #include "random.h"
-#include "overworld/room.h"
 #include "font.h"
 #include "vram.h"
 #include "screen_transitions.h"
+#include "gen/graphics/minigames/divination_tea.h"
 
 void InitializeDivinationTeaMinigame(void)
 {

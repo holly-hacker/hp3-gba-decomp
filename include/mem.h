@@ -1,7 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "list.h"
 
 // See docs/memory-map/heap.md.
 

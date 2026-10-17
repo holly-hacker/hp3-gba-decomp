@@ -1,8 +1,6 @@
-#include "types.h"
 #include "mode7.h"
 #include "hw/io_regs.h"
 #include "mem.h"
-#include "overworld/room.h"
 #include "video.h"
 
 void FreeFloorEffect(void)

@@ -3,7 +3,6 @@
 #include "font.h"
 #include "dialog.h"
 #include "dialog_box.h"
-#include "overworld/room_script.h"
 
 typedef struct ShowPartyLevelUpMessageRecord {
     u32 dwOpcode;

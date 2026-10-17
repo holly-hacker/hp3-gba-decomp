@@ -1,8 +1,8 @@
 #include "types.h"
 #include "actor.h"
-#include "minigame_menu.h"
 #include "dementor_minigame.h"
 #include "minigame_difficulty_select.h"
+#include "gen/graphics/overworld.h"
 
 void SpawnDementorMinigameActors(void)
 {

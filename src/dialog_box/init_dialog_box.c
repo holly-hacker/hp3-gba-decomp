@@ -1,4 +1,3 @@
-#include "types.h"
 #include "mem.h"
 #include "dialog.h"
 #include "dialog_box.h"

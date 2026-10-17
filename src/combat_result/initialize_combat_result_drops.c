@@ -3,12 +3,9 @@
 #include "font.h"
 #include "text.h"
 #include "items.h"
-#include "game/items.h"
 #include "game/rewards.h"
-#include "save.h"
 #include "game_state.h"
 #include "sound.h"
-#include "dialog.h"
 #include "battle/battle.h"
 #include "combat_result.h"
 

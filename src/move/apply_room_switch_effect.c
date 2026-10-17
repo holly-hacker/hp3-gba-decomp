@@ -1,5 +1,4 @@
 #include "types.h"
-#include "overworld/room.h"
 #include "move.h"
 #include "flipbook.h"
 #include "screen_transitions.h"

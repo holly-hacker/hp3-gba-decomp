@@ -2,7 +2,6 @@
 #include "gen/graphics/minigames/hippogriff.h"
 #include "modes.h"
 #include "pscreen_save.h"
-#include "particles.h"
 #include "save.h"
 #include "default_menu.h"
 #include "screen_transitions.h"

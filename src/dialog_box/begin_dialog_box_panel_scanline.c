@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "interrupts.h"
 #include "video.h"
 #include "hw/io_regs.h"
 #include "dialog.h"

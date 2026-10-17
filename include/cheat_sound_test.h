@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "actor.h"
-#include "gen/graphics/menus.h"
 
 typedef struct {
     Actor *pCursorActor;   // 0x00

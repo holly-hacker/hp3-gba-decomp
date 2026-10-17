@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 #include "boggart_minigame.h"
 

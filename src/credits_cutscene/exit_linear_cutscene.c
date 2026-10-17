@@ -1,4 +1,3 @@
-#include "types.h"
 #include "background.h"
 #include "credits_cutscene.h"
 #include "screen_transitions.h"

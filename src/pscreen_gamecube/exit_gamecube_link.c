@@ -1,8 +1,5 @@
-#include "types.h"
-#include "battle/battle.h"
 #include "color.h"
 #include "modes.h"
-#include "mem.h"
 #include "actor.h"
 #include "gamecube.h"
 #include "pscreen_gamecube.h"

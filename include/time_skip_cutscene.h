@@ -1,9 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "particles.h"
 #include "actor.h"
-#include "gen/graphics/cutscenes.h"
 
 // BG0-BG2 control words shared by the Hogwarts Up Night and Clock Skip cutscenes.
 extern const u32 g_dwUpNightBg0Control;  // 0x0806BD98

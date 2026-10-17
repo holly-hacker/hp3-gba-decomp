@@ -1,5 +1,4 @@
 #include "types.h"
-#include "actor.h"
 #include "items.h"
 
 const u32 g_adwActorScaleSteps[9] = {

@@ -1,4 +1,3 @@
-#include "types.h"
 #include "title_load.h"
 #include "title_new.h"
 

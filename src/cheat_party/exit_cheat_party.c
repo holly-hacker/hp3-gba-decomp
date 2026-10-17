@@ -1,6 +1,4 @@
-#include "types.h"
 #include "cheat_party.h"
-#include "mem.h"
 #include "actor.h"
 #include "screen_transitions.h"
 

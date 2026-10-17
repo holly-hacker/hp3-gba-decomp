@@ -1,5 +1,4 @@
 #include "actor.h"
-#include "actor_anim.h"
 #include "sound.h"
 
 // Runs the commands at the animation cursor until it reaches a frame, which

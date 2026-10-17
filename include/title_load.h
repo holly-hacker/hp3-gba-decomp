@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.h"
 #include "pause_menu.h"
 
 // The No/Yes prompt shown by SelectNewGameSlot_candidate.

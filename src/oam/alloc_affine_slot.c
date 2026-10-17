@@ -1,5 +1,5 @@
 #include "types.h"
-#include "particles.h"
+#include "oam.h"
 
 // Returns ARRAY_COUNT(g_abAffineSlotUsed) when every slot is in use.
 u32 AllocAffineSlot(void)

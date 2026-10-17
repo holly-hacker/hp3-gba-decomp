@@ -1,4 +1,3 @@
-#include "types.h"
 #include "pscreen_status_equip.h"
 
 // Two columns of three slots; bUp/bDown/bLeft/bRight wrap around the grid.

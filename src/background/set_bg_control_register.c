@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "hw/io_regs.h"
-#include "mem.h"
 
 // The control word as the 4-byte aggregate it is passed as; callers pass a u32.
 typedef struct BgControlArg {

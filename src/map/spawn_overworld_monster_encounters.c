@@ -1,9 +1,7 @@
 #include "types.h"
-#include "battle/encounters.h"
 #include "combat_2.h"
 #include "mem.h"
 #include "random.h"
-#include "overworld/overworld.h"
 #include "map.h"
 
 // Room load: spawn each kind's level-table count of wandering monsters,

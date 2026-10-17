@@ -2,10 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
-#include "minigame_menu.h"
 #include "math.h"
-#include "gen/graphics/minigames/boggart.h"
-#include "gen/graphics/overworld.h"
 #include "minigame_difficulty_select.h"
 
 extern u32 g_dwDementorMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame

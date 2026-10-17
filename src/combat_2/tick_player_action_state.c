@@ -5,11 +5,11 @@
 #include "sound.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
-#include "particles.h"
 #include "modes.h"
 #include "items.h"
 #include "pscreen_folio_universitas.h"
 #include "combat.h"
+#include "mode7.h"
 
 // Certain bAttackOutcomeState (Actor+0x60) values. States 1-5 stay numeric:
 // their tails differ between cases 0x1a and 0x15, so no one name fits both.

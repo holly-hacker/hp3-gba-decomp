@@ -1,6 +1,4 @@
-#include "types.h"
 #include "commands.h"
-#include "overworld/overworld.h"
 #include "overworld/room_script.h"
 #include "hero.h"
 

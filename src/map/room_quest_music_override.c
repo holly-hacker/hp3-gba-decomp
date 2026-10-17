@@ -1,5 +1,4 @@
 #include "types.h"
-#include "overworld/room.h"
 #include "map.h"
 
 // Music module per room while QUEST_ALT_PRESENTATION is set.

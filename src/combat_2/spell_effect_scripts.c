@@ -1,7 +1,6 @@
 #include "types.h"
 #include "combat_2.h"
 #include "constants/spells.h"
-#include "battle/battle.h"
 
 // The effect script a spell cast plays, by spell and cast level.
 const u8 g_abSpellEffectScriptId[SPELL_COUNT][SPELL_LEVELS] = {

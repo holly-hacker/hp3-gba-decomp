@@ -3,8 +3,6 @@
 #include "types.h"
 #include "actor.h"
 #include "particles.h"
-#include "battle/battle.h"
-#include "video.h"
 
 // Battle-effect script interpreter; see docs/formats/battle_scripts.md.
 

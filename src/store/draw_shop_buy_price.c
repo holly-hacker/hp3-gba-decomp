@@ -1,9 +1,7 @@
 #include "types.h"
 #include "background.h"
-#include "game/items.h"
 #include "font.h"
 #include "text.h"
-#include "dialog.h"
 #include "store.h"
 #include "items.h"
 

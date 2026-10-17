@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 #include "modes.h"
 #include "dementor_minigame.h"

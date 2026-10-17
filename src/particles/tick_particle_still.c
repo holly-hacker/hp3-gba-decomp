@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 
 // Tick for ParticleModeStill: animation only.

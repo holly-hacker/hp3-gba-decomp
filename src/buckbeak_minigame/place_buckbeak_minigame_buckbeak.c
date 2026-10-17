@@ -1,4 +1,3 @@
-#include "types.h"
 #include "buckbeak_minigame.h"
 
 // Draws Buckbeak at his projected height, shifted sideways as he turns.

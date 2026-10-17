@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.h"
 
 // Rows of every per-spell table, in spell-id order: Flipendo, Informus,
 // Verdimillious, Diffindo, Incendio, WingardiumLeviosa, PetrificusTotalus,

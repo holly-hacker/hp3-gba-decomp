@@ -1,4 +1,3 @@
-#include "types.h"
 #include "char_block.h"
 #include "actor.h"
 #include "interrupts.h"

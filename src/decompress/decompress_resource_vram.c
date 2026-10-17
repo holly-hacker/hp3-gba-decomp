@@ -1,6 +1,5 @@
 #include "types.h"
 #include "decompress.h"
-#include "particles.h"
 #include "hw/bios.h"
 #include "huffman.h"
 

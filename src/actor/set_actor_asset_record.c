@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 
 void SetActorAssetRecord(Actor *actor, const void *rec)

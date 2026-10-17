@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 
 // Action state 0x1B: turns the actor around every scriptState.bytes.bScriptPageHigh_candidate

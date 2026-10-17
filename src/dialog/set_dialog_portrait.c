@@ -3,7 +3,6 @@
 #include "color.h"
 #include "sound.h"
 #include "dialog.h"
-#include "overworld/overworld.h"
 #include "overworld/room_script.h"
 #include "hero.h"
 

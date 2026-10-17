@@ -1,10 +1,8 @@
-#include "types.h"
 #include "background.h"
 #include "hw/bios.h"
 #include "font.h"
 #include "dialog.h"
 #include "dialog_box.h"
-#include "overworld/room.h"
 #include "gen/graphics/cutscenes.h"
 #include "map.h"
 

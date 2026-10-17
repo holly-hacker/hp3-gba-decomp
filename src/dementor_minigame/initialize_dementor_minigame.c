@@ -7,6 +7,7 @@
 #include "font.h"
 #include "gen/graphics/overworld.h"
 #include "screen_transitions.h"
+#include "gen/graphics/minigames/boggart.h"
 
 void InitializeDementorMinigame(void)
 {

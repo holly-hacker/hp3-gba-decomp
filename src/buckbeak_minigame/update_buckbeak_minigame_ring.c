@@ -2,6 +2,7 @@
 #include "palette.h"
 #include "buckbeak_minigame.h"
 #include "math.h"
+#include "gen/graphics/minigames/buckbeak.h"
 
 // Places ring `index`'s three parts on screen and sizes them by distance, or hides
 // them when the ring is out of view.

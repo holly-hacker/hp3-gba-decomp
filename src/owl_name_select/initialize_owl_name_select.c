@@ -3,7 +3,6 @@
 #include "modes.h"
 #include "gen/graphics/menus.h"
 #include "font.h"
-#include "pause_menu.h"
 #include "owl_name_select.h"
 #include "default_menu.h"
 #include "screen_transitions.h"

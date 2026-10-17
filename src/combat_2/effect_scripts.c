@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/effect_script.h"
 #include "battle/script_opcodes.h"
 
 #include "combat_2.h"

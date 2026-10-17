@@ -1,4 +1,3 @@
-#include "types.h"
 #include "save.h"
 
 // Full volume, the first language not yet confirmed, and nothing unlocked.

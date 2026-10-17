@@ -2,10 +2,10 @@
 #include "background.h"
 #include "sound.h"
 #include "modes.h"
-#include "particles.h"
 #include "boggart_minigame.h"
 #include "font.h"
 #include "screen_transitions.h"
+#include "gen/graphics/minigames/boggart.h"
 
 void InitializeBoggartMinigame(void)
 {

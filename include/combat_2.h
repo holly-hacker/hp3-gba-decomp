@@ -7,6 +7,7 @@
 #include "battle/encounters.h"
 #include "battle/monster_drop_table.h"
 #include "constants/spells.h"
+#include "video.h"
 
 // Combat actors, damage, spells and effects.
 

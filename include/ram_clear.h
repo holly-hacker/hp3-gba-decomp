@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.h"
 
 void ClearSystemMemory(void);
 void ClearWorkRam(void);

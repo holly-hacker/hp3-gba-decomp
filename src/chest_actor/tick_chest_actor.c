@@ -1,12 +1,8 @@
 #include "types.h"
 #include "area.h"
 #include "chest_actor.h"
-#include "items.h"
 #include "game/rewards.h"
 #include "sound.h"
-#include "overworld/overworld.h"
-#include "overworld/room_actor.h"
-#include "overworld/room_script.h"
 #include "hero.h"
 
 // Per-frame tick of a chest (room actor type 9). HandleChestTouch starts the

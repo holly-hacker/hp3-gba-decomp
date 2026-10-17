@@ -1,8 +1,5 @@
-#include "types.h"
 #include "modes.h"
 #include "sound.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
 #include "buckbeak_minigame.h"
 #include "hero.h"
 #include "map.h"

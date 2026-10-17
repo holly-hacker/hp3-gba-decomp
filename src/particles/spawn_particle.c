@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/effect_script.h"
 #include "particles.h"
 #include "actor.h"
 #include "random.h"

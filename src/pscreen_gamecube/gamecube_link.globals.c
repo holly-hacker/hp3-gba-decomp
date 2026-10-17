@@ -1,4 +1,3 @@
-#include "types.h"
 #include "pscreen_gamecube.h"
 
 const ListMenuDefinition g_GameCubeLinkMenuDefinition = {

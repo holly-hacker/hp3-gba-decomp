@@ -2,7 +2,6 @@
 #include "background.h"
 #include "math.h"
 #include "pscreen_folio_universitas_inline.h"
-#include "overworld/room_script.h"
 #include "items.h"
 
 // Draws one card's tile in the card grid. Each category is a row; each group of three cards (one

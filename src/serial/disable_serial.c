@@ -1,4 +1,3 @@
-#include "types.h"
 #include "serial.h"
 #include "hw/io_regs.h"
 

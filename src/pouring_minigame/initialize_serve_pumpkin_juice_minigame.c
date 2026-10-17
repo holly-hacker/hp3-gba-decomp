@@ -3,14 +3,13 @@
 #include "char_block.h"
 #include "color.h"
 #include "hw/bios.h"
-#include "modes.h"
 #include "hw/io_regs.h"
-#include "minigame_menu.h"
 #include "random.h"
 #include "pouring_minigame.h"
 #include "font.h"
 #include "gen/graphics/menus.h"
 #include "screen_transitions.h"
+#include "gen/graphics/minigames/pumpkin.h"
 
 void InitializeUnusedServePumpkinJuiceMinigame(void)
 {

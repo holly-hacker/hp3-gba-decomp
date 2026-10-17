@@ -1,4 +1,3 @@
-#include "types.h"
 #include "dialog.h"
 
 const DialogTextInfo g_aDialogTextInfo[2767] = {

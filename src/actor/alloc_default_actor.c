@@ -1,5 +1,4 @@
 #include "actor.h"
-#include "mem.h"
 #include "list.h"
 
 // Pops an actor off the free list and resets its default sentinel fields

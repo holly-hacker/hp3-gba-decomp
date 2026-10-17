@@ -1,9 +1,5 @@
-#include "types.h"
 #include "lupin_potion_cutscene.h"
-#include "battle/battle.h"
-#include "mem.h"
 #include "actor.h"
-#include "overworld/room.h"
 #include "screen_transitions.h"
 #include "video.h"
 

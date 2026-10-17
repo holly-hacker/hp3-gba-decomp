@@ -3,6 +3,7 @@
 #include "actor_anim.h"
 #include "tea_leaves_minigame.h"
 #include "gen/graphics/overworld.h"
+#include "gen/graphics/minigames/divination_tea.h"
 
 // Command 0 holds the first frame; the cups play from command 1 once B is
 // pressed and stop on their last frame.

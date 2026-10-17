@@ -1,8 +1,6 @@
 #include "types.h"
-#include "game/items.h"
 #include "font.h"
 #include "text.h"
-#include "dialog.h"
 #include "store.h"
 #include "cursor.h"
 #include "items.h"

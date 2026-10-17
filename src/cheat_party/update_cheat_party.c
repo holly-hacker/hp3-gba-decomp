@@ -1,8 +1,6 @@
-#include "types.h"
 #include "cheat_party.h"
 #include "modes.h"
 #include "input.h"
-#include "minigame_menu.h"
 
 void UpdateCheatParty(void)
 {

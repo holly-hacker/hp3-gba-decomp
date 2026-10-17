@@ -1,4 +1,3 @@
-#include "types.h"
 #include "modes.h"
 
 void PushGameMode(GameMode mode)

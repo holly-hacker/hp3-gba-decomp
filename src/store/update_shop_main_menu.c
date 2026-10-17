@@ -1,8 +1,6 @@
-#include "types.h"
 #include "modes.h"
 #include "sound.h"
 #include "input.h"
-#include "overworld/room.h"
 #include "store.h"
 #include "map.h"
 

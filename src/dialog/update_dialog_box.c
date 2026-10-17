@@ -1,12 +1,9 @@
-#include "types.h"
 #include "modes.h"
 #include "actor.h"
 #include "video.h"
 #include "input.h"
 #include "dialog.h"
 #include "dialog_box.h"
-#include "overworld/overworld.h"
-#include "overworld/room.h"
 #include "map.h"
 #include "main.h"
 

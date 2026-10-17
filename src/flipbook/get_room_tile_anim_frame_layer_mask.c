@@ -1,5 +1,4 @@
 #include "types.h"
-#include "overworld/room.h"
 #include "flipbook.h"
 
 u32 GetRoomTileAnimFrameLayerMask(const RoomTileAnimation *pAnim)

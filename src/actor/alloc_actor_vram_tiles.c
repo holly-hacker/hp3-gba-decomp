@@ -1,4 +1,3 @@
-#include "types.h"
 #include "vram.h"
 #include "actor.h"
 

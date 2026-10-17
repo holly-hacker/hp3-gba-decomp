@@ -1,4 +1,3 @@
-#include "types.h"
 #include "pause_menu.h"
 #include "pscreen_save.h"
 

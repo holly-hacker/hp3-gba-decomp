@@ -1,6 +1,5 @@
 #include "types.h"
 #include "dialog_box.h"
-#include "overworld/room.h"
 #include "scroll.h"
 
 u32 GetDialogBoxTileRow(void)

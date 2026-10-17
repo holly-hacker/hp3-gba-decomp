@@ -1,6 +1,5 @@
 #include "types.h"
 #include "area.h"
-#include "overworld/room_actor.h"
 #include "pressure_pad_actor.h"
 
 // Room actor constructor for tile actorType 8, a button that a spell presses to

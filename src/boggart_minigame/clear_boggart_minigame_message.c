@@ -1,4 +1,3 @@
-#include "types.h"
 #include "background.h"
 
 void ClearBoggartMinigameMessage(void)

@@ -1,8 +1,8 @@
-#include "types.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
 #include "combat_2.h"
 #include "combat.h"
+#include "modes.h"
 
 // Runs after a fighter's action resolves: checks for party defeat and, unless
 // that ended the battle, returns the state machine to state 1 (next fighter),

@@ -1,4 +1,3 @@
-#include "types.h"
 #include "dev_logos.h"
 #include "screen_transitions.h"
 

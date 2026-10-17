@@ -1,6 +1,5 @@
 #include "types.h"
 #include "commands.h"
-#include "overworld/room_script.h"
 #include "screen_transitions.h"
 
 typedef struct SetBackgroundBlendLayersRecord {

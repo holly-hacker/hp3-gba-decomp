@@ -1,4 +1,3 @@
-#include "types.h"
 #include "screen_transitions.h"
 
 void ExitLanguageSelect(void)

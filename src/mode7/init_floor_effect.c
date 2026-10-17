@@ -1,4 +1,3 @@
-#include "types.h"
 #include "mode7.h"
 #include "video.h"
 

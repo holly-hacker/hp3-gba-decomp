@@ -1,8 +1,6 @@
-#include "types.h"
 #include "cheat_wizard_cards.h"
 #include "modes.h"
 #include "input.h"
-#include "minigame_menu.h"
 
 void UpdateCheatWizardCards(void)
 {

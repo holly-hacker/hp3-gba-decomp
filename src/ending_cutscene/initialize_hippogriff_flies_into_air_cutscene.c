@@ -1,4 +1,3 @@
-#include "types.h"
 #include "background.h"
 #include "sound.h"
 #include "gen/graphics/minigames/hippogriff.h"

@@ -1,7 +1,6 @@
 #include "types.h"
 #include "actor.h"
 #include "area.h"
-#include "mem.h"
 #include "list.h"
 
 // Releases actor back to the actor pool's free list; a no-op if it was

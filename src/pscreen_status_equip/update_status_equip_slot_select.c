@@ -1,8 +1,6 @@
 #include "types.h"
-#include "actor.h"
 #include "sound.h"
 #include "modes.h"
-#include "pscreen_save.h"
 #include "pause_menu.h"
 #include "input.h"
 #include "pscreen_status_equip.h"

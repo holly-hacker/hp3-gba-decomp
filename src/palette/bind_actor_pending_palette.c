@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 #include "palette.h"
 

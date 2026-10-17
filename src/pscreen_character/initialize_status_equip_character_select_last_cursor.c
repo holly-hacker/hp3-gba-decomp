@@ -1,4 +1,3 @@
-#include "types.h"
 #include "pause_menu.h"
 #include "actor.h"
 #include "default_menu.h"

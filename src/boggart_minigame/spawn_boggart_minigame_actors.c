@@ -1,6 +1,5 @@
 #include "types.h"
 #include "actor.h"
-#include "minigame_menu.h"
 #include "boggart_minigame.h"
 #include "minigame_difficulty_select.h"
 

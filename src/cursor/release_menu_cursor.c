@@ -1,8 +1,6 @@
-#include "types.h"
 #include "actor.h"
 #include "color.h"
 #include "cursor.h"
-#include "battle/effect_script.h"
 #include "particles.h"
 
 void ReleaseMenuCursor(Actor *pActor)

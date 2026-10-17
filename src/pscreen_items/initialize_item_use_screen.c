@@ -1,7 +1,5 @@
-#include "types.h"
 #include "modes.h"
 #include "pscreen_items.h"
-#include "pscreen_status_equip.h"
 #include "items.h"
 #include "pscreen_character.h"
 

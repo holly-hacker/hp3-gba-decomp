@@ -4,7 +4,6 @@
 #include "modes.h"
 #include "sound.h"
 #include "random.h"
-#include "overworld/room.h"
 #include "combat.h"
 #include "map.h"
 

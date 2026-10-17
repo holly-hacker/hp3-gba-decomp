@@ -4,6 +4,7 @@
 #include "modes.h"
 #include "sound.h"
 #include "buckbeak_minigame.h"
+#include "mode7.h"
 
 // Steers Buckbeak, advances the camera and the clock, and checks for rings.
 void ProcessBuckbeakMinigameFrame(void)

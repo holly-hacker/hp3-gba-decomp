@@ -1,6 +1,4 @@
-#include "types.h"
 #include "mem.h"
-#include "overworld/room.h"
 #include "flipbook.h"
 
 void InitRoomTileAnimationTable(void)

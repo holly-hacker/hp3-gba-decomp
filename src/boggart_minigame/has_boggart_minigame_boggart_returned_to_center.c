@@ -1,5 +1,4 @@
 #include "types.h"
-#include "modes.h"
 #include "boggart_minigame.h"
 
 u32 HasBoggartMinigameBoggartReturnedToCenter(void)

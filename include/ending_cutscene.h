@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "actor.h"
-#include "gen/graphics/minigames/hippogriff.h"
 
 extern void InitializeHippogriffFliesIntoAirCutscene(void);
 extern void UpdateHippogriffFliesIntoAirCutscene(void);

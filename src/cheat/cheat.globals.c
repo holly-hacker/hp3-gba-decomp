@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "actor_anim.h"
 #include "cheat.h"
+#include "gen/graphics/menus.h"
 
 const u32 g_dwCheatBg0Control = 0x1E02;
 const u32 g_dwCheatBg1Control = 0x1F09;

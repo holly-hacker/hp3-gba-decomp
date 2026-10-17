@@ -1,9 +1,7 @@
-#include "types.h"
 #include "sound.h"
 #include "cheat_sound_test.h"
 #include "modes.h"
 #include "input.h"
-#include "minigame_menu.h"
 
 void UpdateCheatSoundTest(void)
 {

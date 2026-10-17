@@ -1,6 +1,5 @@
 #include "types.h"
 #include "save.h"
-#include "overworld/room.h"
 #include "map.h"
 
 // Reads the saved room-actor snapshot into g_pRoomActorStateBuffer: the

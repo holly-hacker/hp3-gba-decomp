@@ -1,5 +1,6 @@
 #include "types.h"
 #include "pop_it_minigame.h"
+#include "gen/graphics/minigames/wizard_cracker.h"
 
 const u32 g_dwWizardCrackerPopItBg1Control = 0x1F03;
 const u32 g_dwWizardCrackerPopItBg2Control = 0x1E06;

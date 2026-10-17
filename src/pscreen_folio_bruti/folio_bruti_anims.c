@@ -1,7 +1,6 @@
 #include "types.h"
 #include "actor_anim.h"
 #include "pscreen_folio_bruti.h"
-#include "pscreen_folio_universitas.h"
 
 const u8 g_aFolioBrutiCursorAnim[] = {
     ANIM_FRAME(0, 5), ANIM_FRAME(1, 5), ANIM_FRAME(2, 5), ANIM_FRAME(3, 5),

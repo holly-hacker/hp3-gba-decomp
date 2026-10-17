@@ -4,6 +4,7 @@
 #include "actor.h"
 #include "overworld/room_actor.h"
 #include "overworld/room_blob.h"
+#include "overworld/room_script.h"
 
 // Area loading: builds the current room's runtime tables from its resource blob
 // and runs its room-script chains; see docs/formats/rooms.md.

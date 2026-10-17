@@ -1,7 +1,5 @@
-#include "types.h"
 #include "actor.h"
 #include "gen/graphics/overworld.h"
-#include "overworld/overworld.h"
 #include "hero.h"
 
 const ActorGfxRecord g_UnusedPartyGfx = {

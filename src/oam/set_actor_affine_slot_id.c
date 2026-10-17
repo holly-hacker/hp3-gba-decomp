@@ -1,5 +1,5 @@
 #include "types.h"
-#include "actor.h"
+#include "oam.h"
 
 void SetActorAffineSlotId(OamEntry *oam, u16 slot)
 {

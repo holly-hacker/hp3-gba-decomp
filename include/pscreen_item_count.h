@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.h"
 
 // Game mode 0x43 (QuantitySelectScreen): choose how many of g_dwItemUseItem to use. Left/Right
 // change the quantity (dwModeScratchB, 1 up to the owned count), A confirms into

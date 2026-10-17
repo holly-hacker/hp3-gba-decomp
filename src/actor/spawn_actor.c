@@ -1,6 +1,5 @@
 #include "types.h"
 #include "actor.h"
-#include "mem.h"
 #include "list.h"
 
 // Same body as AllocDefaultActor, inlined here.

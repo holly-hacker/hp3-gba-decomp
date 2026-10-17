@@ -1,4 +1,3 @@
-#include "types.h"
 #include "video.h"
 
 const ScanlineEffectEntry g_aDefaultScanlineEffects[1] = {

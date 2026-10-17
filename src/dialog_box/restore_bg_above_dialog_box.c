@@ -1,4 +1,3 @@
-#include "types.h"
 #include "background.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"

@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 
 // Ticks every active emitter once per frame and clears the per-frame flags. An emitter

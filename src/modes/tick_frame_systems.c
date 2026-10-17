@@ -1,4 +1,3 @@
-#include "types.h"
 #include "char_block.h"
 #include "color.h"
 #include "modes.h"
@@ -6,7 +5,6 @@
 #include "particles.h"
 #include "actor.h"
 #include "oam.h"
-#include "overworld/overworld.h"
 #include "map.h"
 #include "windows.h"
 

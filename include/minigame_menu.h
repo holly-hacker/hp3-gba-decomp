@@ -1,7 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "actor.h"
 
 extern const u32 g_dwMinigameMenuBg3Control;  // 0x0806605C
 extern const u32 g_dwMinigameMenuBg1Control;  // 0x08066060

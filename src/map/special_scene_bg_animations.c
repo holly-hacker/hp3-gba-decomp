@@ -1,4 +1,3 @@
-#include "types.h"
 #include "char_block.h"
 #include "gen/graphics/overworld.h"
 #include "map.h"

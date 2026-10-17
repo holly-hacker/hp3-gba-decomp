@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 #include "pscreen_information.h"
 #include "gen/graphics/menus.h"

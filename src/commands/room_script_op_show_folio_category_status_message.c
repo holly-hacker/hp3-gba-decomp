@@ -4,7 +4,6 @@
 #include "dialog_box.h"
 #include "font.h"
 #include "text.h"
-#include "overworld/room_script.h"
 
 typedef struct ShowFolioCategoryStatusMessageRecord {
     u32 dwOpcode;

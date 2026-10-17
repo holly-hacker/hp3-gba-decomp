@@ -1,4 +1,3 @@
-#include "types.h"
 #include "modes.h"
 #include "pscreen_folio.h"
 #include "pause_menu.h"

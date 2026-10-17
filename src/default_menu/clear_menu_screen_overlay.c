@@ -1,4 +1,3 @@
-#include "types.h"
 #include "background.h"
 #include "default_menu.h"
 

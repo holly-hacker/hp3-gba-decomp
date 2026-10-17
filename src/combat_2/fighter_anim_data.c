@@ -1,6 +1,5 @@
 #include "types.h"
 #include "actor_anim.h"
-#include "battle/battle.h"
 #include "combat_2.h"
 
 // Each party fighter's animation per animation state, paired with the

@@ -1,7 +1,5 @@
-#include "types.h"
 #include "sound.h"
 #include "input.h"
-#include "pscreen_items.h"
 #include "store.h"
 #include "items.h"
 

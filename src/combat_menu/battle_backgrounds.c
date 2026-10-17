@@ -1,5 +1,3 @@
-#include "types.h"
-#include "battle/battle.h"
 #include "combat_menu.h"
 #include "gen/graphics/battle.h"
 

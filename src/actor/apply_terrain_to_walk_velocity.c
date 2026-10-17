@@ -1,6 +1,5 @@
 #include "types.h"
 #include "math.h"
-#include "particles.h"
 #include "actor.h"
 #include "overworld/overworld.h"
 

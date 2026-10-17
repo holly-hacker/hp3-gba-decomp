@@ -7,8 +7,6 @@
 #include "font.h"
 #include "dialog.h"
 #include "dialog_box.h"
-#include "overworld/overworld.h"
-#include "overworld/room.h"
 #include "cursor.h"
 #include "scroll.h"
 #include "hero.h"

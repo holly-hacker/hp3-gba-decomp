@@ -1,4 +1,3 @@
-#include "types.h"
 #include "sound.h"
 #include "modes.h"
 #include "pscreen_save.h"

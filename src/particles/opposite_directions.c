@@ -1,6 +1,6 @@
 #include "types.h"
 #include "particles.h"
-#include "actor.h"
+#include "math.h"
 
 // The reverse of each Direction and Direction4; a directional particle
 // travels away from its emitter's facing.

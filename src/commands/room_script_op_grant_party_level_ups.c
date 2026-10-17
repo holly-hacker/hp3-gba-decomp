@@ -1,7 +1,6 @@
 #include "types.h"
 #include "combat_2.h"
 #include "commands.h"
-#include "overworld/room_script.h"
 
 typedef struct GrantPartyLevelUpsRecord {
     u32 dwOpcode;

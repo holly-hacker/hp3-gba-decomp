@@ -1,4 +1,3 @@
-#include "types.h"
 #include "instructions_screen.h"
 #include "battle/battle.h"
 #include "modes.h"

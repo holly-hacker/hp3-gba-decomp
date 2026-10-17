@@ -1,12 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "save.h"
-#include "mem.h"
 #include "actor.h"
-#include "input.h"
-#include "modes.h"
-#include "mode7.h"
 
 // See docs/memory-map/battle.md.
 

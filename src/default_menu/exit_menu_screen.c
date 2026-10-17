@@ -1,4 +1,3 @@
-#include "types.h"
 #include "color.h"
 #include "cursor.h"
 #include "default_menu.h"

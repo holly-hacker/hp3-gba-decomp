@@ -1,6 +1,5 @@
-#include "types.h"
-#include "particles.h"
 #include "hw/bios.h"
+#include "oam.h"
 
 void CommitObjAffineMatrices(void)
 {

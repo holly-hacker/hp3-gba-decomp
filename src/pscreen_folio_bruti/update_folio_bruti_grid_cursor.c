@@ -3,7 +3,6 @@
 #include "sound.h"
 #include "input.h"
 #include "pscreen_folio_bruti.h"
-#include "minigame_menu.h"
 
 void UpdateFolioBrutiGridCursor(void)
 {

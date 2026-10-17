@@ -4,6 +4,7 @@
 #include "combat_2.h"
 #include "modes.h"
 #include "combat.h"
+#include "input.h"
 
 static inline void TransitionBattleState(int newState)
 {

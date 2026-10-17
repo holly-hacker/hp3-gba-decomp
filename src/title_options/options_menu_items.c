@@ -1,4 +1,3 @@
-#include "types.h"
 #include "title_options.h"
 #include "gen/graphics/menus.h"
 #include "gen/graphics/overworld.h"

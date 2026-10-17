@@ -1,7 +1,6 @@
 #include "types.h"
 #include "particles.h"
 #include "list.h"
-#include "actor.h"
 
 // Takes an emitter from the free list (at most 9 are live at once) and binds it to entry
 // `entryIndex` of graphics pool `poolIndex`. Returns NULL when the emitter limit is reached.

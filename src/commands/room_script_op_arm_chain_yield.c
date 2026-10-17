@@ -1,6 +1,5 @@
 #include "types.h"
 #include "commands.h"
-#include "overworld/room_script.h"
 
 typedef struct ArmChainYieldRecord {
     u32 dwOpcode;

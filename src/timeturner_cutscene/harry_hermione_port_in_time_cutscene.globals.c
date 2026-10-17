@@ -1,4 +1,3 @@
-#include "types.h"
 #include "timeturner_cutscene.h"
 
 const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeActorPos[2] = {

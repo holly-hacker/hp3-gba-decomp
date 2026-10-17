@@ -3,7 +3,6 @@
 #include "sound.h"
 #include "modes.h"
 #include "input.h"
-#include "minigame_menu.h"
 #include "save.h"
 #include "pop_it_minigame.h"
 

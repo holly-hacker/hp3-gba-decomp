@@ -1,7 +1,4 @@
-#include "types.h"
-#include "mem.h"
 #include "actor.h"
-#include "minigame_menu.h"
 #include "sound.h"
 #include "screen_transitions.h"
 

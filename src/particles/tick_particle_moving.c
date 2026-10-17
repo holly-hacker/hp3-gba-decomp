@@ -1,4 +1,3 @@
-#include "types.h"
 #include "particles.h"
 
 // Tick for ParticleModeRandomDirection and every mode without its own tick.

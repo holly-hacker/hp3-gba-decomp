@@ -3,7 +3,6 @@
 #include "modes.h"
 #include "save.h"
 #include "input.h"
-#include "minigame_menu.h"
 #include "minigame_difficulty_select.h"
 #include "buckbeak_minigame.h"
 #include "boggart_minigame.h"

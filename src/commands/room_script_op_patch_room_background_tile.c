@@ -1,6 +1,5 @@
 #include "types.h"
 #include "commands.h"
-#include "overworld/room_script.h"
 #include "scroll.h"
 
 typedef struct PatchRoomBackgroundTileRecord {

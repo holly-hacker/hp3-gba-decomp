@@ -1,4 +1,3 @@
-#include "types.h"
 #include "color.h"
 #include "background.h"
 #include "title.h"

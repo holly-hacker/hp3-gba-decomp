@@ -1,8 +1,6 @@
 #include "types.h"
 #include "commands.h"
 #include "random.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
 
 typedef struct SetRandomQuestStateRecord {
     u32 dwOpcode;

@@ -3,11 +3,11 @@
 #include "color.h"
 #include "sound.h"
 #include "modes.h"
-#include "particles.h"
 #include "mem.h"
 #include "font.h"
 #include "pop_it_minigame.h"
 #include "screen_transitions.h"
+#include "gen/graphics/minigames/wizard_cracker.h"
 
 void InitializeWizardCrackerPopItMinigame(void)
 {

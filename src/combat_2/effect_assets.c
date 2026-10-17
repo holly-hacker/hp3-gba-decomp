@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 #include "combat_2.h"
 #include "gen/graphics/battle.h"

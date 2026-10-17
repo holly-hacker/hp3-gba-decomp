@@ -1,6 +1,4 @@
-#include "types.h"
 #include "modes.h"
-#include "overworld/overworld.h"
 #include "game_state.h"
 #include "map.h"
 #include "main.h"

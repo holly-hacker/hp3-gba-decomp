@@ -1,4 +1,3 @@
-#include "types.h"
 #include "combat_menu.h"
 
 // Indexed by bMenuScreen.

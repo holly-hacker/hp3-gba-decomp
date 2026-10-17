@@ -1,4 +1,3 @@
-#include "types.h"
 #include "gen/graphics/overworld.h"
 #include "pressure_pad_actor.h"
 

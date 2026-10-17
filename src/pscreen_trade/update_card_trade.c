@@ -1,17 +1,14 @@
 #include "types.h"
 #include "background.h"
 #include "sound.h"
-#include "battle/battle.h"
 #include "modes.h"
-#include "pscreen_save.h"
 #include "save.h"
 #include "input.h"
-#include "mem.h"
 #include "actor.h"
 #include "pscreen_trade.h"
 #include "pscreen_folio_universitas.h"
 #include "pause_menu.h"
-#include "minigame_menu.h"
+#include "serial.h"
 
 void UpdateCardTrade(void)
 {

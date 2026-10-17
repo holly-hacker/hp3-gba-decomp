@@ -5,9 +5,10 @@
 #include "hw/io_regs.h"
 #include "video.h"
 #include "font.h"
-#include "modes.h"
-#include "random.h"
 #include "buckbeak_minigame.h"
+#include "gen/graphics/minigames/buckbeak.h"
+#include "mode7.h"
+#include "mem.h"
 
 // Sets up the BGs, the floor, Buckbeak and the rings.
 void SetUpBuckbeakMinigameScene(void)

@@ -1,4 +1,3 @@
-#include "types.h"
 #include "actor.h"
 
 // Runs the overworld behavior of the actor's bActionState.

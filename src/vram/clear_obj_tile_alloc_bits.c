@@ -1,5 +1,4 @@
 #include "types.h"
-#include "mem.h"
 #include "vram.h"
 
 // Clears tileCount OBJ tiles from firstTile in the allocation bitmap, making them

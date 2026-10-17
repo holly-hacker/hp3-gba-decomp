@@ -1,4 +1,3 @@
-#include "types.h"
 #include "oam.h"
 
 // OAM entry with the OBJ disabled (attribute 0 affine mode 2), copied into

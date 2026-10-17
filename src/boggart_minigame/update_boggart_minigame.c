@@ -1,8 +1,6 @@
-#include "types.h"
 #include "sound.h"
 #include "modes.h"
 #include "input.h"
-#include "minigame_menu.h"
 #include "boggart_minigame.h"
 #include "save.h"
 

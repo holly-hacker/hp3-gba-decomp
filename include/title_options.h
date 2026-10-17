@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "actor.h"
-#include "gen/graphics/minigames/hippogriff.h"
 
 // US adds a Language row.
 #ifdef VERSION_JP

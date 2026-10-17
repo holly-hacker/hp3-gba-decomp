@@ -4,6 +4,7 @@
 #include "buckbeak_minigame.h"
 #include "char_block.h"
 #include "video.h"
+#include "gen/graphics/minigames/buckbeak.h"
 
 const u32 g_dwBuckbeakMinigameBg2Control = 0xF881;
 const u32 g_dwBuckbeakMinigameBg1Control = 0x760A;

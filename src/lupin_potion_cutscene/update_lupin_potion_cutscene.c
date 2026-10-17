@@ -3,9 +3,6 @@
 #include "modes.h"
 #include "input.h"
 #include "lupin_potion_cutscene.h"
-#include "overworld/overworld.h"
-#include "overworld/room_script.h"
-#include "overworld/room.h"
 #include "scroll.h"
 #include "hero.h"
 

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "math.h"
-#include "mem.h"
 #include "list.h"
 #include "oam.h"
 #include "palette.h"

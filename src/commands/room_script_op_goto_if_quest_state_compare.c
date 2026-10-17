@@ -1,7 +1,5 @@
 #include "types.h"
 #include "commands.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
 
 typedef struct GotoIfQuestStateCompareRecord {
     u32 dwOpcode;

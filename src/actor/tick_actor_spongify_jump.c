@@ -4,8 +4,6 @@
 #include "hw/bios.h"
 #include "actor.h"
 #include "sound.h"
-#include "overworld/overworld.h"
-#include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"
 #include "hero.h"
 #include "map.h"

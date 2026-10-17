@@ -3,7 +3,6 @@
 #include "color.h"
 #include "palette.h"
 #include "cursor.h"
-#include "battle/effect_script.h"
 #include "background.h"
 #include "gen/graphics/menus.h"
 

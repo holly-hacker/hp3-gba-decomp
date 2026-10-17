@@ -1,7 +1,5 @@
-#include "types.h"
 #include "particles.h"
 #include "modes.h"
-#include "mem.h"
 #include "actor.h"
 #include "initials.h"
 #include "cursor.h"

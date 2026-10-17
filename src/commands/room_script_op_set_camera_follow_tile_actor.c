@@ -1,8 +1,7 @@
 #include "types.h"
 #include "area.h"
 #include "commands.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
+#include "camera.h"
 
 typedef struct SetCameraFollowTileActorRecord {
     u32 dwOpcode;

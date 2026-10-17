@@ -1,8 +1,6 @@
-#include "types.h"
 #include "cheat_portraits.h"
 #include "modes.h"
 #include "input.h"
-#include "minigame_menu.h"
 
 void UpdateCheatPortraits(void)
 {

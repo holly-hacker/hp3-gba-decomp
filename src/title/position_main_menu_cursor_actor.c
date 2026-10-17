@@ -1,6 +1,5 @@
 #include "types.h"
 #include "modes.h"
-#include "minigame_menu.h"
 #include "title.h"
 #include "cursor.h"
 

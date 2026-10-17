@@ -1,4 +1,3 @@
-#include "types.h"
 #include "area.h"
 
 const RoomEntryPoint g_aDefaultRoomEntryPoints[2] = {

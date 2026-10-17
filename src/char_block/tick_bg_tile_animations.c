@@ -1,7 +1,6 @@
 #include "types.h"
 #include "background.h"
 #include "char_block.h"
-#include "particles.h"
 
 // Steps each running BG tile animation's frame timer and decodes the frame's tiles into the
 // animation's buffer; CommitBgTileAnimations uploads them at vblank.

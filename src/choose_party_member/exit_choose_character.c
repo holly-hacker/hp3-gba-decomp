@@ -5,8 +5,6 @@
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "dialog.h"
-#include "overworld/overworld.h"
-#include "overworld/room.h"
 #include "screen_transitions.h"
 #include "video.h"
 #include "windows.h"

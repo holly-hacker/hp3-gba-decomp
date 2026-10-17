@@ -1,7 +1,6 @@
 #include "types.h"
 #include "color.h"
 #include "actor.h"
-#include "pscreen_folio_universitas.h"
 #include "pscreen_wizard_cards.h"
 
 Actor *SpawnFolioCardActor(u32 cardIndex, s32 x, s32 y)

@@ -1,7 +1,6 @@
 #include "types.h"
 #include "color.h"
 #include "sound.h"
-#include "mem.h"
 #include "actor.h"
 #include "title_options.h"
 #include "save.h"

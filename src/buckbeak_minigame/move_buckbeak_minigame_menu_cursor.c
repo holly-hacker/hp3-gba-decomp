@@ -1,4 +1,3 @@
-#include "types.h"
 #include "buckbeak_minigame.h"
 
 void MoveBuckbeakMinigameMenuCursor(Actor *pCursor)

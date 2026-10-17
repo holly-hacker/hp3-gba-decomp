@@ -1,4 +1,3 @@
-#include "types.h"
 #include "modes.h"
 #include "input.h"
 #include "interrupts.h"

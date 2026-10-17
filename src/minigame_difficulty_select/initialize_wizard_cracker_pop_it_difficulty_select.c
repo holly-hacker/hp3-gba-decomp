@@ -1,7 +1,6 @@
 #include "types.h"
 #include "sound.h"
 #include "modes.h"
-#include "minigame_menu.h"
 #include "minigame_difficulty_select.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "cursor.h"

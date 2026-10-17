@@ -1,7 +1,6 @@
 #include "types.h"
 #include "area.h"
 #include "commands.h"
-#include "overworld/room_script.h"
 
 typedef struct SetTileActorSpecialFlagRecord {
     u32 dwOpcode;

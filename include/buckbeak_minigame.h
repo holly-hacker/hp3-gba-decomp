@@ -4,10 +4,7 @@
 #include "actor.h"
 #include "math.h"
 #include "char_block.h"
-#include "mode7.h"
 #include "video.h"
-#include "minigame_menu.h"
-#include "gen/graphics/minigames/buckbeak.h"
 
 extern u32 g_dwBuckbeakMinigameForceOverworldExit;  // 0x03002084; set by StartMinigame
 

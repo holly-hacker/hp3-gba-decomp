@@ -1,4 +1,3 @@
-#include "types.h"
 #include "constants/items.h"
 #include "game/items.h"
 #include "gen/graphics/menus.h"

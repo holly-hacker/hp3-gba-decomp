@@ -1,6 +1,5 @@
 #include "types.h"
 #include "actor.h"
-#include "mem.h"
 #include "vram.h"
 
 // Drops the actor's hold on its sprite VRAM tiles. An actor sharing tiles

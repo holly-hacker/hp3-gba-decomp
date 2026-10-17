@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "pause_menu.h"
-#include "serial.h"
 
 // Card value meaning "no card chosen"; real cards are 0-50.
 #define CARD_TRADE_NO_CARD 0x33

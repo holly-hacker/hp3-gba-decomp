@@ -1,4 +1,3 @@
-#include "types.h"
 #include "modes.h"
 #include "actor.h"
 #include "pscreen_status_equip.h"

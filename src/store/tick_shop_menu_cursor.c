@@ -1,5 +1,3 @@
-#include "types.h"
-#include "minigame_menu.h"
 #include "store.h"
 
 void TickShopMenuCursor(Actor *pCursor)

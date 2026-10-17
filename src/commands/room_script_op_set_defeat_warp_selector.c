@@ -1,7 +1,6 @@
 #include "types.h"
 #include "commands.h"
 #include "overworld/room.h"
-#include "overworld/room_script.h"
 
 typedef struct SetDefeatWarpSelectorRecord {
     u32 dwOpcode;

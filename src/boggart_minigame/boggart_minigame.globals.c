@@ -3,6 +3,7 @@
 #include "actor_anim.h"
 #include "math.h"
 #include "boggart_minigame.h"
+#include "gen/graphics/minigames/boggart.h"
 
 const ActorAssetRecord g_aBoggartStudentAssets[4] = {
     { (void *)gBoggartStudent0Tiles, (void *)gBoggartStudent0Frames, (void *)gBoggartStudent0Palette, 0 },

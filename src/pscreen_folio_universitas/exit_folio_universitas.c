@@ -1,7 +1,6 @@
 #include "types.h"
 #include "char_block.h"
 #include "color.h"
-#include "mem.h"
 #include "actor.h"
 #include "pscreen_folio_universitas.h"
 #include "screen_transitions.h"

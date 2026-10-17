@@ -1,4 +1,3 @@
-#include "types.h"
 #include "buckbeak_minigame.h"
 
 void ReleaseBuckbeakMinigameActor(Actor **ppActor)

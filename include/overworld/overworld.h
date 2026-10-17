@@ -1,9 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "camera.h"
-#include "battle/battle.h"
-#include "battle/encounters.h"
+#include "actor.h"
 
 // Controllable-character slots: each 16-byte entry starts with the Actor the
 // player steers; only slot 0 is ever populated.

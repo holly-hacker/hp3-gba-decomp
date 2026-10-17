@@ -1,4 +1,3 @@
-#include "types.h"
 #include "combo_info.h"
 #include "modes.h"
 #include "sound.h"

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
-#include "battle/battle.h"
 #include "buckbeak_minigame.h"
+#include "mode7.h"
 
 // Scrolls the two sky layers at different rates with the heading.
 void SetBuckbeakMinigameSkyScroll(u8 heading)

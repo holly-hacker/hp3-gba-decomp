@@ -1,6 +1,5 @@
 #include "types.h"
 #include "math.h"
-#include "particles.h"
 #include "actor.h"
 
 // Writes the vector of length `speed` in a direction: a 16-way direction or a

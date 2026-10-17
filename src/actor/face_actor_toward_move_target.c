@@ -1,6 +1,5 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/overworld.h"
 #include "hero.h"
 
 // Faces the actor toward moveTarget; returns 1, facing down and stopped, once it is

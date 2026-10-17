@@ -1,7 +1,6 @@
 #include "types.h"
 #include "area.h"
 #include "chest_actor.h"
-#include "overworld/room_actor.h"
 #include "gen/graphics/overworld.h"
 
 // Room actor constructor for tile actorType 9, the chest.

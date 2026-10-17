@@ -1,6 +1,5 @@
 #include "types.h"
 #include "actor.h"
-#include "overworld/room.h"
 #include "oam.h"
 #include "scroll.h"
 

@@ -1,8 +1,5 @@
-#include "types.h"
 #include "background.h"
-#include "battle/battle.h"
 #include "color.h"
-#include "mem.h"
 #include "actor.h"
 #include "cursor.h"
 #include "default_menu.h"

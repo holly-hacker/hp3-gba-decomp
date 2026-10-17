@@ -1,5 +1,3 @@
-#include "types.h"
-#include "background.h"
 #include "conversation.h"
 #include "dialog.h"
 #include "dialog_inline.h"

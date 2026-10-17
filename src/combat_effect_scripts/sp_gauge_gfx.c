@@ -1,4 +1,3 @@
-#include "types.h"
 #include "combat_effect_scripts.h"
 #include "gen/graphics/battle.h"
 

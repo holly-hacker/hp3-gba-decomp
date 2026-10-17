@@ -1,5 +1,4 @@
 #include "types.h"
-#include "overworld/room.h"
 #include "scroll.h"
 
 // Looks `tileId` up in the room BG tile cache of the given size class (0: 0x7FF hash buckets,

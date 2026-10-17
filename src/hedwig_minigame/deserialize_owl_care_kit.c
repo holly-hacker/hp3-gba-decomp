@@ -1,4 +1,3 @@
-#include "types.h"
 #include "save.h"
 #include "hedwig_minigame.h"
 #include "game_state.h"

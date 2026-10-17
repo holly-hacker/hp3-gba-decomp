@@ -2,7 +2,6 @@
 #include "background.h"
 #include "font.h"
 #include "cheat_wizard_cards.h"
-#include "pscreen_folio_universitas.h"
 #include "gen/graphics/menus.h"
 #include "pscreen_wizard_cards.h"
 

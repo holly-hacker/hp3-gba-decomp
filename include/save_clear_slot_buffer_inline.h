@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.h"
 #include "mem.h"
 #include "save.h"
 

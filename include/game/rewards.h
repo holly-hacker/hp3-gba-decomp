@@ -2,10 +2,9 @@
 
 #include "types.h"
 #include "pscreen_folio_universitas.h"
-#include "game/items.h"
-#include "save.h"
 #include "game_state.h"
 #include "combat.h"
+#include "../items.h"
 
 // Reward ids share one number space with item ids: 0x00-0x4F are items,
 // 0x50-0x82 are Folio Universitas cards (id - 0x50 is the card index), 0x83

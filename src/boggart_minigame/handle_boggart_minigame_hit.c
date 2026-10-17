@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "modes.h"
 #include "boggart_minigame_inline.h"
+#include "gen/graphics/minigames/boggart.h"
 
 void HandleBoggartMinigameHit(void)
 {

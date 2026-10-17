@@ -2,7 +2,6 @@
 #include "color.h"
 #include "sound.h"
 #include "modes.h"
-#include "particles.h"
 #include "buckbeak_minigame.h"
 #include "mem.h"
 #include "gen/graphics/menus.h"

@@ -1,8 +1,6 @@
-#include "types.h"
 #include "background.h"
 #include "modes.h"
 #include "input.h"
-#include "overworld/room.h"
 #include "time_skip_cutscene.h"
 #include "map.h"
 

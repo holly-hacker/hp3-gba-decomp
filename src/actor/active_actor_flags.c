@@ -1,6 +1,4 @@
-#include "types.h"
 #include "actor.h"
-#include "mem.h"
 
 // Sets `flags` on every actor on the active list. Unused.
 void SetActiveActorsFlags(ActorFlags flags)

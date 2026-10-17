@@ -2,10 +2,8 @@
 
 #include "types.h"
 #include "actor.h"
-#include "minigame_menu.h"
 #include "math.h"
 #include "palette.h"
-#include "gen/graphics/minigames/boggart.h"
 #include "minigame_difficulty_select.h"
 
 extern u32 g_dwBoggartMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame

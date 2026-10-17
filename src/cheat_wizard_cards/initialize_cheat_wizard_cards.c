@@ -4,11 +4,10 @@
 #include "cheat_wizard_cards.h"
 #include "modes.h"
 #include "hw/io_regs.h"
-#include "overworld/room.h"
 #include "font.h"
-#include "pop_it_minigame.h"
 #include "screen_transitions.h"
 #include "video.h"
+#include "gen/graphics/menus.h"
 
 void InitializeCheatWizardCards(void)
 {

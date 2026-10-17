@@ -1,5 +1,5 @@
 #include "types.h"
-#include "actor.h"
+#include "oam.h"
 
 u32 GetActorAffineSlotId(OamEntry *oam)
 {

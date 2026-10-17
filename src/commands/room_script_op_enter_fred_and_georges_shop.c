@@ -1,7 +1,6 @@
 #include "types.h"
 #include "commands.h"
 #include "modes.h"
-#include "overworld/room_script.h"
 #include "combat.h"
 
 typedef struct EnterFredAndGeorgesShopRecord {

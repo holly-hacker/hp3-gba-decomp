@@ -2,8 +2,6 @@
 #include "actor.h"
 #include "area.h"
 #include "commands.h"
-#include "overworld/room.h"
-#include "overworld/room_script.h"
 #include "move.h"
 
 typedef struct StartTileActorScriptRecord {

@@ -1,4 +1,3 @@
-#include "types.h"
 #include "clock.h"
 #include "combat_2.h"
 #include "save.h"

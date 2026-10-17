@@ -1,8 +1,5 @@
-#include "types.h"
 #include "sound.h"
-#include "battle/battle.h"
 #include "modes.h"
-#include "overworld/room.h"
 #include "save.h"
 #include "map.h"
 #include "title_load.h"

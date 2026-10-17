@@ -4,17 +4,14 @@
 #include "combat_2.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "sound.h"
 #include "modes.h"
-#include "items.h"
-#include "game/rewards.h"
 #include "battle/battle.h"
-#include "overworld/overworld.h"
 #include "overworld/room_script.h"
 #include "combat_result.h"
 #include "gen/graphics/menus.h"
 #include "hero.h"
 #include "screen_transitions.h"
+#include "combat.h"
 
 // Copies the portrait of the party member in stats slot g_abCombatResultPartySlots[partyPos]
 // from the loaded BG graphic to the screen position of portrait index pos.
