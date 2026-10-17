@@ -2221,12 +2221,12 @@ thumb-func 0x080458A8 SetScreenWindowRect_candidate
 thumb-func 0x080458F0 sub_080458F0
 thumb-func 0x08045920 sub_08045920
 thumb-func 0x08045944 sub_08045944
-c-file 0x08045970 0x08045988 src/graphics/tick_screen_windows.c TickScreenWindows_candidate
+c-file 0x08045970 0x08045988 src/windows/tick_screen_windows.c TickScreenWindows_candidate
 thumb-func 0x08045988 sub_08045988
 thumb-func 0x080459E4 sub_080459E4
 thumb-func 0x080459F4 sub_080459F4
 thumb-func 0x08045A1C sub_08045A1C
-c-file 0x08045A54 _ src/graphics/tick_screen_window.c TickScreenWindow
+c-file 0x08045A54 _ src/windows/tick_screen_window.c TickScreenWindow
 
 # World actors
 c-file 0x08045AE8 0x08045ECC src/room/actors/spawn_prop_actor.c SpawnPropActor

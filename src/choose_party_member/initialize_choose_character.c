@@ -13,6 +13,7 @@
 #include "overworld/room.h"
 #include "cursor.h"
 #include "screen_transitions.h"
+#include "windows.h"
 
 void InitializeChooseCharacter(void)
 {

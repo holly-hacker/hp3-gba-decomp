@@ -10,6 +10,7 @@
 #include "overworld/room.h"
 #include "screen_transitions.h"
 #include "video.h"
+#include "windows.h"
 
 void ExitChooseCharacter(void)
 {

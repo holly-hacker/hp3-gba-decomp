@@ -2,6 +2,7 @@
 #include "commands.h"
 #include "graphics/display.h"
 #include "overworld/room_script.h"
+#include "windows.h"
 
 typedef struct SetScreenWindowRecord {
     u32 dwOpcode;

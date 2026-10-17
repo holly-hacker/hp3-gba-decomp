@@ -9,6 +9,7 @@
 #include "oam.h"
 #include "overworld/overworld.h"
 #include "map.h"
+#include "windows.h"
 
 void TickFrameSystems(void)
 {

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
+#include "windows.h"
 
 void TickScreenWindows_candidate(void)
 {

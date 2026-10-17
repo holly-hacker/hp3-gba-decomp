@@ -1962,12 +1962,12 @@ thumb-func 0x080457D4 SetScreenWindowRect_candidate
 thumb-func 0x0804581C sub_080458F0
 thumb-func 0x0804584C sub_08045920
 thumb-func 0x08045870 sub_08045944
-c-file 0x0804589C 0x080458B4 src/graphics/tick_screen_windows.c TickScreenWindows_candidate
+c-file 0x0804589C 0x080458B4 src/windows/tick_screen_windows.c TickScreenWindows_candidate
 thumb-func 0x080458B4 sub_08045988
 thumb-func 0x08045910 sub_080459E4
 thumb-func 0x08045920 sub_080459F4
 thumb-func 0x08045948 sub_08045A1C
-c-file 0x08045980 _ src/graphics/tick_screen_window.c TickScreenWindow
+c-file 0x08045980 _ src/windows/tick_screen_window.c TickScreenWindow
 c-file 0x08045A14 0x08045DF8 src/room/actors/spawn_prop_actor.c SpawnPropActor
 thumb-func 0x08045DF8 sub_08045ECC
 thumb-func 0x08046314 sub_080463E8
