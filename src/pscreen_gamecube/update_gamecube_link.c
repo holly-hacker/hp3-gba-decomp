@@ -8,7 +8,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "gamecube.h"
-#include "menu/gamecube_link.h"
+#include "pscreen_gamecube.h"
 #include "pause_menu.h"
 
 void UpdateGameCubeLink(void)

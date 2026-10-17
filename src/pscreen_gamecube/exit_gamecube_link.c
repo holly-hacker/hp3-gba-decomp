@@ -6,7 +6,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "gamecube.h"
-#include "menu/gamecube_link.h"
+#include "pscreen_gamecube.h"
 #include "cursor.h"
 #include "default_menu.h"
 

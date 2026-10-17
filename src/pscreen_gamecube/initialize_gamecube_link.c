@@ -3,7 +3,7 @@
 #include "particles.h"
 #include "modes.h"
 #include "gamecube.h"
-#include "menu/gamecube_link.h"
+#include "pscreen_gamecube.h"
 #include "pause_menu.h"
 #include "title.h"
 #include "battle/battle.h"

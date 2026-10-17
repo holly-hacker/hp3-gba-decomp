@@ -1481,11 +1481,11 @@ c-file 0x08038224 _ src/pscreen_folio_universitas/get_folio_universitas_selected
 c-file 0x08038238 _ src/pscreen_folio_universitas/is_folio_universitas_card_new.c IsFolioUniversitasCardNew
 c-file 0x08038264 _ src/pscreen_folio_universitas/clear_folio_universitas_new_cards.c ClearFolioUniversitasNewCards
 c-file 0x08038278 _ src/pscreen_folio_universitas/is_folio_universitas_card_unavailable.c IsFolioUniversitasCardUnavailable
-c-file 0x080382D4 _ src/gamemode/modes/gamecube_link/initialize_gamecube_link.c InitializeGameCubeLink
-c-file 0x08038364 0x08038444 src/gamemode/modes/gamecube_link/update_gamecube_link.c UpdateGameCubeLink
+c-file 0x080382D4 _ src/pscreen_gamecube/initialize_gamecube_link.c InitializeGameCubeLink
+c-file 0x08038364 0x08038444 src/pscreen_gamecube/update_gamecube_link.c UpdateGameCubeLink
 thumb-func 0x08038444 UpdateGameCubeLinkStatusText
 thumb-func 0x080385FC StageGameCubeStateBytes
-c-file 0x08038650 0x08038694 src/gamemode/modes/gamecube_link/exit_gamecube_link.c ExitGameCubeLink
+c-file 0x08038650 0x08038694 src/pscreen_gamecube/exit_gamecube_link.c ExitGameCubeLink
 thumb-func 0x08038694 ShowGameCubeLinkMessage
 thumb-func 0x080386D8 SpawnGameCubeLinkIconActors
 thumb-func 0x08038734 DispatchGameCubeLinkCommand
@@ -2289,7 +2289,7 @@ c-file 0x08069530 _ src/pscreen_folio_bruti/folio_bruti_anims.c g_aFolioBrutiCur
 c-file 0x080695A0 _ src/pscreen_folio_universitas/folio_universitas_anims.c g_aFolioUniversitasCursorAnim
 c-file 0x0806963C _ src/pscreen_folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
 c-file 0x08069678 _ src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFolioCardThumbnails
-c-file 0x080699B8 0x080699DC src/gamemode/modes/gamecube_link/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
+c-file 0x080699B8 0x080699DC src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069A44 _ src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x08069BFC _ src/menu/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B11C 0x0806B1A0 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries

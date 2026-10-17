@@ -8,6 +8,10 @@
 
 extern const ListMenuDefinition g_GameCubeLinkMenuDefinition;  // 0x08069A2C: title only, no rows
 
+extern void InitializeGameCubeLink(void);
+extern void UpdateGameCubeLink(void);
+extern void ExitGameCubeLink(void);
+
 extern u32 DispatchGameCubeLinkCommand(u32 command, u16 *pLength, u16 *pBuffer);
 
 extern void UpdateGameCubeLinkStatusText(u32 linkEvent);

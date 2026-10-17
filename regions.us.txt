@@ -1676,11 +1676,11 @@ c-file 0x08038220 _ src/pscreen_folio_universitas/clear_folio_universitas_new_ca
 c-file 0x08038234 _ src/pscreen_folio_universitas/is_folio_universitas_card_unavailable.c IsFolioUniversitasCardUnavailable
 
 # Profile/GameCube? (pause subscreen: GameCube link), see docs/memory-map/gcn-link.md
-c-file 0x08038290 _ src/gamemode/modes/gamecube_link/initialize_gamecube_link.c InitializeGameCubeLink
-c-file 0x08038320 0x08038400 src/gamemode/modes/gamecube_link/update_gamecube_link.c UpdateGameCubeLink
+c-file 0x08038290 _ src/pscreen_gamecube/initialize_gamecube_link.c InitializeGameCubeLink
+c-file 0x08038320 0x08038400 src/pscreen_gamecube/update_gamecube_link.c UpdateGameCubeLink
 thumb-func 0x08038400 UpdateGameCubeLinkStatusText
 thumb-func 0x080385B8 StageGameCubeStateBytes
-c-file 0x0803860C 0x08038650 src/gamemode/modes/gamecube_link/exit_gamecube_link.c ExitGameCubeLink
+c-file 0x0803860C 0x08038650 src/pscreen_gamecube/exit_gamecube_link.c ExitGameCubeLink
 thumb-func 0x08038650 ShowGameCubeLinkMessage
 thumb-func 0x08038694 SpawnGameCubeLinkIconActors
 thumb-func 0x080386F0 DispatchGameCubeLinkCommand
@@ -2558,7 +2558,7 @@ c-file 0x080695A4 _ src/pscreen_folio_bruti/folio_bruti_anims.c g_aFolioBrutiCur
 c-file 0x08069614 _ src/pscreen_folio_universitas/folio_universitas_anims.c g_aFolioUniversitasCursorAnim
 c-file 0x080696B0 _ src/pscreen_folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
 c-file 0x080696EC _ src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFolioCardThumbnails
-c-file 0x08069A2C 0x08069A50 src/gamemode/modes/gamecube_link/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
+c-file 0x08069A2C 0x08069A50 src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069AB8 _ src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x08069C70 _ src/menu/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B190 0x0806B214 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
