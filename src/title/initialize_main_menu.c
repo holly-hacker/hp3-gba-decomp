@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "color.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "modes.h"

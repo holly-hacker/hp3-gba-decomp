@@ -2,7 +2,7 @@
 #include "background.h"
 #include "char_block.h"
 #include "commands.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"
 #include "minigame_menu.h"

@@ -2,7 +2,7 @@
 #include "background.h"
 #include "color.h"
 #include "combat_2.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
 #include "graphics/display.h"

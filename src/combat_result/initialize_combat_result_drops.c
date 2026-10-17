@@ -7,7 +7,7 @@
 #include "game/rewards.h"
 #include "save.h"
 #include "game_state.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "dialog.h"
 #include "battle/battle.h"
 #include "combat_result.h"

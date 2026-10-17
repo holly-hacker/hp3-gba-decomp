@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "input.h"
 #include "pscreen_items.h"
 #include "shop.h"

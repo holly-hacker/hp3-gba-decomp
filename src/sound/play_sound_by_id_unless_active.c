@@ -1,6 +1,7 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "random.h"
+#include "krawall.h"
 
 s32 PlaySoundByIdUnlessActive_candidate(s32 id, s32 handle)
 {

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "input.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "actor.h"
 #include "overworld/overworld.h"
 #include "map.h"

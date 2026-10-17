@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "combat_menu.h"
 #include "combat_2.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"

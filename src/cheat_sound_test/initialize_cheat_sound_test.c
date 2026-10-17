@@ -1,6 +1,6 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "hw/bios.h"
 #include "cheat_sound_test.h"
 #include "graphics/display.h"

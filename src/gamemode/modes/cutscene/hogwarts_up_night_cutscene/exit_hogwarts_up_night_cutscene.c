@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "hw/io_regs.h"

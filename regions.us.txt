@@ -1985,16 +1985,16 @@ c-file 0x0803FC00 _ src/serial/verify_serial_message_checksum.c VerifySerialMess
 c-file 0x0803FC48 _ src/serial/count_serial_connect_retries.c CountSerialConnectRetries
 
 # Sound (audio)
-c-file 0x0803FC68 _ src/audio/play_sound_by_id.c PlaySoundById
-c-file 0x0803FD04 _ src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
-c-file 0x0803FDB0 _ src/audio/kram_install.c kramInstall
-c-file 0x0803FDFC 0x0803FE48 src/audio/init_audio.c InitAudio
+c-file 0x0803FC68 _ src/sound/play_sound_by_id.c PlaySoundById
+c-file 0x0803FD04 _ src/sound/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
+c-file 0x0803FDB0 _ src/sound/kram_install.c kramInstall
+c-file 0x0803FDFC 0x0803FE48 src/sound/init_audio.c InitAudio
 thumb-func 0x0803FE48 sub_0803FE48
 thumb-func 0x0803FE54 DisableKrawall
 thumb-func 0x0803FE60 EnableKrawall
 thumb-func 0x0803FE6C sub_0803FE6C
-c-file 0x0803FE78 _ src/audio/set_sound_effect_volume.c SetSoundEffectVolume
-c-file 0x0803FE88 0x0803FE98 src/audio/set_music_volume.c SetMusicVolume
+c-file 0x0803FE78 _ src/sound/set_sound_effect_volume.c SetSoundEffectVolume
+c-file 0x0803FE88 0x0803FE98 src/sound/set_music_volume.c SetMusicVolume
 thumb-func 0x0803FE98 StopSoundEffect
 thumb-func 0x0803FEA4 UnmuteAllMusicChannels
 thumb-func 0x0803FEB0 sub_0803FEB0
@@ -2006,10 +2006,10 @@ thumb-func 0x0803FF40 ResumeMusic
 thumb-func 0x0803FF5C StopMusic
 thumb-func 0x0803FF70 PlaySoundEffect_candidate
 thumb-func 0x0803FF8C IsSoundActive_candidate
-c-file 0x0803FF98 0x0803FFC8 src/audio/apply_audio_volume_settings.c ApplyAudioVolumeSettings
+c-file 0x0803FF98 0x0803FFC8 src/sound/apply_audio_volume_settings.c ApplyAudioVolumeSettings
 thumb-func 0x0803FFC8 sub_0803FFC8
 thumb-func 0x0803FFEC sub_0803FFEC
-c-file 0x0804000C _ src/audio/on_krawall_event.c OnKrawallEvent
+c-file 0x0804000C _ src/sound/on_krawall_event.c OnKrawallEvent
 
 # Spongify (spongify pad actor)
 c-file 0x08040038 0x08040114 src/room/actors/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
@@ -2764,9 +2764,9 @@ c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
 c-file 0x08FAAEF8 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows
-c-file 0x08FB0588 _ src/audio/sound_samples.c g_aSoundSamples
-c-file 0x08FB0818 _ src/audio/sound_variants.c g_aSoundVariants
-c-file 0x08FB09F8 0x08FB0CC4 src/audio/sound_config.c g_aSoundConfig
+c-file 0x08FB0588 _ src/sound/sound_samples.c g_aSoundSamples
+c-file 0x08FB0818 _ src/sound/sound_variants.c g_aSoundVariants
+c-file 0x08FB09F8 0x08FB0CC4 src/sound/sound_config.c g_aSoundConfig
 c-file 0x08FB0D94 0x08FB0DB0 src/shop/shop_stock_lists.c g_apShopStockLists
 
 # ROM images of the IWRAM and EWRAM sections, which kramInstall copies to RAM.

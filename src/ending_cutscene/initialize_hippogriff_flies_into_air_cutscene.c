@@ -1,6 +1,6 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "ending_cutscene.h"
 #include "actor.h"

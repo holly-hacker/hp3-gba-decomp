@@ -19,7 +19,7 @@
 #include "decompress.h"
 #include "particles.h"
 #include "oam.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/scanline_effects.h"
 #include "menu/main_menu.h"
 #include "dialog.h"

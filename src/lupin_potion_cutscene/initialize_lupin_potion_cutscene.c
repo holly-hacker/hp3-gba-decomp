@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "color.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "hw/bios.h"
 #include "dialog.h"
 #include "dialog_box.h"

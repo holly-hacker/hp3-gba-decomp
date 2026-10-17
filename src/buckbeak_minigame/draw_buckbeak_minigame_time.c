@@ -2,7 +2,7 @@
 #include "font.h"
 #include "text.h"
 #include "hw/bios.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "buckbeak_minigame.h"
 #include "text_actor.h"
 

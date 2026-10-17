@@ -1,6 +1,6 @@
 #include "types.h"
 #include "info_screen.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "modes.h"
 #include "input.h"
 #include "pscreen_information.h"

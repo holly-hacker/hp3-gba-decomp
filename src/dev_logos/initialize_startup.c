@@ -1,7 +1,7 @@
 #include "types.h"
 #include "dev_logos.h"
 #include "background.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "modes.h"
 #include "font.h"

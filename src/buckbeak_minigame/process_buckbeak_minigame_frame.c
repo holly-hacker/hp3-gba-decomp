@@ -2,7 +2,7 @@
 #include "math.h"
 #include "input.h"
 #include "modes.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "buckbeak_minigame.h"
 
 // Steers Buckbeak, advances the camera and the clock, and checks for rings.

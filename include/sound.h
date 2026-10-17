@@ -25,12 +25,7 @@ typedef struct SoundSample {
 extern const SoundConfigRow g_aSoundConfig[179];       // 0x08FB09F8
 extern const SoundSample g_aSoundSamples[164];         // 0x08FB0588
 extern const SoundSample g_aSoundVariants[15][8];      // 0x08FB0818
-extern void *const KrawallSamples[278];                // 0x08D229F4
 
-// Thumb veneers into the Krawall IWRAM code: start a sample on a channel, returning its handle,
-// and set that channel's frequency (kramSetFreq).
-extern s32 kramPlayVeneer(void *sample, s32 arg1, s32 arg2);
-extern void kramSetFreqVeneer(s32 handle, u32 freq);
 extern s32 IsSoundActive_candidate(s32 handle);
 
 extern s32 PlaySoundById(s32 id);  // returns a handle for StopSoundEffect
@@ -59,17 +54,5 @@ extern void InitAudio(void);
 extern void ApplyAudioVolumeSettings(void);
 extern void OnKrawallEvent(s32 event, s32 param);
 
-// Krawall library entry points called by the startup code, identified against
-// the public Krawall API; see docs/memory-map/krawall.md.
-#define KRAG_INIT_STEREO   1
-#define KRAM_QM_HQ         2
-#define KRAM_MV_CHANNELS16 (4 << 16)
-#define KRAP_CB_JDONE      5  // krapCallback event: jingle finished
-extern void kragInit(u32 stereo);
-extern void kramSetMasterVol(u32 volume);
-extern void kramQualityMode(u32 mode);
-extern void kramSetSFXVol(u32 volume);
-extern void krapCallback(void (*callback)(s32 event, s32 param));
-extern void krapSetMusicVol(u32 volume, u32 fade);
 extern void DisableKrawall(void);
 extern void EnableKrawall(void);

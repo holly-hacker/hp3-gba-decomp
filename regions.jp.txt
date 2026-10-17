@@ -1762,16 +1762,16 @@ c-file 0x0803FC28 _ src/serial/serial_phase2.c SerialPhase2
 c-file 0x0803FC54 _ src/serial/mark_serial_session_closed.c MarkSerialSessionClosed
 c-file 0x0803FC68 _ src/serial/verify_serial_message_checksum.c VerifySerialMessageChecksum
 c-file 0x0803FCB0 _ src/serial/count_serial_connect_retries.c CountSerialConnectRetries
-c-file 0x0803FCD0 _ src/audio/play_sound_by_id.c PlaySoundById
-c-file 0x0803FD6C _ src/audio/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
-c-file 0x0803FE18 _ src/audio/kram_install.c kramInstall
-c-file 0x0803FE64 0x0803FEB0 src/audio/init_audio.c InitAudio
+c-file 0x0803FCD0 _ src/sound/play_sound_by_id.c PlaySoundById
+c-file 0x0803FD6C _ src/sound/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
+c-file 0x0803FE18 _ src/sound/kram_install.c kramInstall
+c-file 0x0803FE64 0x0803FEB0 src/sound/init_audio.c InitAudio
 thumb-func 0x0803FEB0 sub_0803FE48
 thumb-func 0x0803FEBC DisableKrawall
 thumb-func 0x0803FEC8 EnableKrawall
 thumb-func 0x0803FED4 sub_0803FE6C
-c-file 0x0803FEE0 _ src/audio/set_sound_effect_volume.c SetSoundEffectVolume
-c-file 0x0803FEF0 0x0803FF00 src/audio/set_music_volume.c SetMusicVolume
+c-file 0x0803FEE0 _ src/sound/set_sound_effect_volume.c SetSoundEffectVolume
+c-file 0x0803FEF0 0x0803FF00 src/sound/set_music_volume.c SetMusicVolume
 thumb-func 0x0803FF00 StopSoundEffect
 thumb-func 0x0803FF0C UnmuteAllMusicChannels
 thumb-func 0x0803FF18 sub_0803FEB0
@@ -1783,10 +1783,10 @@ thumb-func 0x0803FFA8 ResumeMusic
 thumb-func 0x0803FFC4 StopMusic
 thumb-func 0x0803FFD8 PlaySoundEffect_candidate
 thumb-func 0x0803FFF4 IsSoundActive_candidate
-c-file 0x08040000 0x08040030 src/audio/apply_audio_volume_settings.c ApplyAudioVolumeSettings
+c-file 0x08040000 0x08040030 src/sound/apply_audio_volume_settings.c ApplyAudioVolumeSettings
 thumb-func 0x08040030 sub_0803FFC8
 thumb-func 0x08040054 sub_0803FFEC
-c-file 0x08040074 _ src/audio/on_krawall_event.c OnKrawallEvent
+c-file 0x08040074 _ src/sound/on_krawall_event.c OnKrawallEvent
 c-file 0x080400A0 0x0804017C src/room/actors/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
 thumb-func 0x0804017C sub_08040114
 thumb-func 0x080403C0 sub_08040358
@@ -2487,9 +2487,9 @@ c-file 0x08F3E388 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphi
 c-file 0x08F3E3A0 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows
-c-file 0x08F43A18 _ src/audio/sound_samples.c g_aSoundSamples
-c-file 0x08F43CA8 _ src/audio/sound_variants.c g_aSoundVariants
-c-file 0x08F43E88 0x08F44154 src/audio/sound_config.c g_aSoundConfig
+c-file 0x08F43A18 _ src/sound/sound_samples.c g_aSoundSamples
+c-file 0x08F43CA8 _ src/sound/sound_variants.c g_aSoundVariants
+c-file 0x08F43E88 0x08F44154 src/sound/sound_config.c g_aSoundConfig
 
 c-file 0x08F44224 0x08F44240 src/shop/shop_stock_lists.c g_apShopStockLists
 

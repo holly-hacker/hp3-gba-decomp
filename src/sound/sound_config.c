@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 
 // Indexed by sound id (PlaySoundById). Sample rows index g_aSoundSamples, variant rows index
 // g_aSoundVariants.

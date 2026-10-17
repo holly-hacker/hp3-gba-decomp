@@ -3,7 +3,7 @@
 #include "background.h"
 #include "char_block.h"
 #include "color.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "dialog.h"

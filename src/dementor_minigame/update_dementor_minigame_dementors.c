@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "random.h"
 #include "dementor_minigame_inline.h"
 

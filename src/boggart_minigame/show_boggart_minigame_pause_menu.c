@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "modes.h"
 #include "menu/main_menu.h"
 #include "font.h"

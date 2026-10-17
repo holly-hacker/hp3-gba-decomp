@@ -147,10 +147,10 @@ Derived from a static call graph over direct `bl` edges only. Indirect calls (ac
 pointers, animation opcodes, interrupt handlers) are not followed, and nothing was checked in an
 emulator.
 
-- `PlaySoundById` (`0x0803FC68`, `src/audio/play_sound_by_id.c`) reads `g_aSoundConfig[id]`
+- `PlaySoundById` (`0x0803FC68`, `src/sound/play_sound_by_id.c`) reads `g_aSoundConfig[id]`
   (`0x08FB09F8`). A `SoundModeSample` row plays a sample with no RNG. A `SoundModeVariants` row draws
   `Mt19937RandMax2(7)` to pick one of 8 variants from `g_aSoundVariants`. The tables are in
-  `src/audio/`. Variant-row ids below `0x100`: `0x18`, `0x20`,
+  `src/sound/`. Variant-row ids below `0x100`: `0x18`, `0x20`,
   `0x3A`, `0x3C`, `0x8C`, `0x9B`, `0x9D`, `0x9F`, `0xA0`, `0xA2`, `0xA3`, `0xA5`, `0xA6`, `0xA8`,
   `0xA9`.
 - The sounds reachable from the main menu are `0` (cursor move), `1` (START and select) and `0x47`

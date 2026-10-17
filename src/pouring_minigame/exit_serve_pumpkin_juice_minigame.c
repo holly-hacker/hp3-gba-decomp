@@ -6,7 +6,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "minigame_menu.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "pouring_minigame.h"
 #include "screen_transitions.h"
 

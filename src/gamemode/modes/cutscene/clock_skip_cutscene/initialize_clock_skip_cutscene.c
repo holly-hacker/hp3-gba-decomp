@@ -1,6 +1,6 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "hw/bios.h"
 #include "cutscene/clock_skip_cutscene.h"
 #include "cutscene/hogwarts_up_night_cutscene.h"

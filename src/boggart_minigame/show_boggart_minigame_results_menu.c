@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "actor.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "modes.h"
 #include "menu/main_menu.h"

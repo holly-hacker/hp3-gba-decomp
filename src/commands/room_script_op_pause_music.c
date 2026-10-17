@@ -1,6 +1,6 @@
 #include "types.h"
 #include "commands.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "overworld/room_script.h"
 
 void RoomScriptOpPauseMusic(RoomScriptRecord *pRecord)

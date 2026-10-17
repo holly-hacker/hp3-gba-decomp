@@ -1,6 +1,6 @@
 #include "types.h"
 #include "save.h"
-#include "graphics/audio.h"
+#include "sound.h"
 
 // Applies the saved options-menu volumes (0-10 each).
 void ApplyAudioVolumeSettings(void)

@@ -1,5 +1,6 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
+#include "krawall.h"
 
 void SetSoundEffectVolume(u8 volume)
 {

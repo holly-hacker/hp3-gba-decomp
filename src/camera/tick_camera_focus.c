@@ -1,6 +1,6 @@
 #include "area.h"
 #include "camera.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
 

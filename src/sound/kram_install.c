@@ -1,7 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "ram_clear.h"
-#include "graphics/audio.h"
+#include "sound.h"
 
 // Copies the ROM images of the statically linked IWRAM and EWRAM sections
 // (Krawall's mixer code and state among them) into RAM, then starts the

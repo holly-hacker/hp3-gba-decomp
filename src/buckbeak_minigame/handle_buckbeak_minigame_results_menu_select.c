@@ -1,7 +1,7 @@
 #include "types.h"
 #include "input.h"
 #include "modes.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "buckbeak_minigame.h"
 
 void HandleBuckbeakMinigameResultsMenuSelect(void)

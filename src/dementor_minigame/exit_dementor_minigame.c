@@ -8,7 +8,7 @@
 #include "minigame_menu.h"
 #include "cursor.h"
 #include "minigame_difficulty_select.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "screen_transitions.h"
 
 void ExitDementorMinigame(void)

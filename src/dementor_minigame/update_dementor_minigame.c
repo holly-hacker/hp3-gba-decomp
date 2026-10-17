@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "minigame_menu.h"
 #include "modes.h"
 #include "dementor_minigame.h"

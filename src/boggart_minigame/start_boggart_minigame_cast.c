@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "modes.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "boggart_minigame.h"
 
 void StartBoggartMinigameCast(u32 direction)

@@ -4,7 +4,7 @@
 #include "game/rewards.h"
 #include "save.h"
 #include "game_state.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "input.h"
 #include "items.h"
 #include "dialog.h"

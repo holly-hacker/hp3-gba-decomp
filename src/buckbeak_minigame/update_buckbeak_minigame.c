@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "modes.h"
 #include "buckbeak_minigame.h"
 #include "input.h"

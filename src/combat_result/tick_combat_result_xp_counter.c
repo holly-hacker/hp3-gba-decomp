@@ -5,7 +5,7 @@
 #include "combat_2.h"
 #include "font.h"
 #include "text.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "overworld/room_script.h"
 #include "palette.h"

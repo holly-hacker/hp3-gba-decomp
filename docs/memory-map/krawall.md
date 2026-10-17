@@ -538,7 +538,7 @@ caller statically nail down the whole picture:
     full volumes, the saved volumes (`ApplyAudioVolumeSettings`), music state
     reset, and `krapCallback(OnKrawallEvent)`. `OnKrawallEvent` handles only
     `KRAP_CB_JDONE` (5, jingle finished): it sets the music to a quarter of
-    the saved volume and fades it back up. All are matched in `src/audio/`.
+    the saved volume and fades it back up. All are matched in `src/sound/`.
 
 ### Krawall API entry points called at startup [STRUCTURAL MATCH]
 

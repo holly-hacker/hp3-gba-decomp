@@ -4,7 +4,7 @@
 #include "combat_2.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "modes.h"
 #include "game/rewards.h"

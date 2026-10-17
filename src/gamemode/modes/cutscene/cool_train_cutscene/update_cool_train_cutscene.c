@@ -1,6 +1,6 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "hw/bios.h"
 #include "cutscene/cool_train_cutscene.h"
 #include "graphics/display.h"

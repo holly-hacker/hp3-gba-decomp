@@ -3,7 +3,7 @@
 #include "color.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "font.h"
 #include "modes.h"

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "modes.h"
 #include "input.h"
 #include "pscreen_wizard_cards.h"

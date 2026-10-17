@@ -2,7 +2,7 @@
 #include "background.h"
 #include "modes.h"
 #include "save.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "font.h"
 #include "hedwig_minigame.h"

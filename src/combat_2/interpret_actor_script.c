@@ -8,7 +8,7 @@
 #include "combat_2.h"
 #include "game/rewards.h"
 #include "background.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "particles.h"
 #include "graphics/scanline_effects.h"

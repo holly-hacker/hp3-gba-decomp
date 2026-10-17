@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "input.h"
 #include "pscreen_folio_bruti.h"
 #include "minigame_menu.h"

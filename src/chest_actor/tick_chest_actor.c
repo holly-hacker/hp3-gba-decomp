@@ -2,7 +2,7 @@
 #include "area.h"
 #include "chest_actor.h"
 #include "game/rewards.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "overworld/overworld.h"
 #include "overworld/room_actor.h"
 #include "overworld/room_script.h"

@@ -3,7 +3,7 @@
 #include "math.h"
 #include "modes.h"
 #include "save.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "input.h"
 #include "pscreen_folio_universitas.h"
 #include "minigame_menu.h"

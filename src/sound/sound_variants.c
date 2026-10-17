@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/audio.h"
+#include "sound.h"
 
 // Eight variants per group; PlaySoundById picks one with Mt19937RandMax2(7).
 const SoundSample g_aSoundVariants[15][8] = {

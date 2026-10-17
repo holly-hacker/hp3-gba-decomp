@@ -16,7 +16,7 @@
 #include "flipbook.h"
 #include "hero.h"
 #include "map.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "move.h"
 #include "screen_transitions.h"
 

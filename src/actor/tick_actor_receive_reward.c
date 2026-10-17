@@ -4,7 +4,7 @@
 #include "actor.h"
 #include "game/items.h"
 #include "game/rewards.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "dialog.h"
 #include "dialog_box.h"
 #include "overworld/overworld.h"

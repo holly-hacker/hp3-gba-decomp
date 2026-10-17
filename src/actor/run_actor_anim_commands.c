@@ -1,6 +1,6 @@
 #include "actor.h"
 #include "actor_anim.h"
-#include "graphics/audio.h"
+#include "sound.h"
 
 // Runs the commands at the animation cursor until it reaches a frame, which
 // becomes the current frame for its duration; see actor_anim.h. Move

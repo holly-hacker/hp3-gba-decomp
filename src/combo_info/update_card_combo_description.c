@@ -1,7 +1,7 @@
 #include "types.h"
 #include "combo_info.h"
 #include "modes.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "input.h"
 #include "default_menu.h"
 

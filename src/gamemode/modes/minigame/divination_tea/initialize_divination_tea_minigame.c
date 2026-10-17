@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "char_block.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "minigame/divination_tea.h"

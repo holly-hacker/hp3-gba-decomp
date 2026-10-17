@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "pscreen_save.h"
-#include "graphics/audio.h"
+#include "sound.h"
 #include "graphics/display.h"
 #include "input.h"
 #include "hw/io_regs.h"
