@@ -1,4 +1,5 @@
 #include "types.h"
+#include "combat_menu.h"
 #include "constants/spells.h"
 
 // Gates TrackSpellFamiliarity: a spell can never be cast above its own cap.

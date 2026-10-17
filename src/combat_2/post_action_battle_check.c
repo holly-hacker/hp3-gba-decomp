@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 #include "combat_2.h"
 
 // Runs after a fighter's action resolves: checks for party defeat and, unless

@@ -29,7 +29,7 @@ source). The
 three functions that use the table (`DrawFolioBrutiMonsterPanel`,
 `GetMonsterSpellEffectiveness`, `InitMonsterBattleActor`) are named in
 `functions.us.cfg`; `InitMonsterBattleActor` is additionally matched in
-`src/battle/`, the other two are not extracted, per
+`src/combat_2/`, the other two are not extracted, per
 the project's hard rule 5 that requires fully-walked function
 boundaries.
 

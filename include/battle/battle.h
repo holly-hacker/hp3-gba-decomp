@@ -231,12 +231,6 @@ extern Actor *g_apFighterActors_candidate[7];
 // and the action-state tick.
 #define ACTIVE_FIGHTER (g_pFightState->pFighters[g_pFightState->bActiveFighterIndex])
 
-extern void TickBattleTurnStateMachine(void);
-extern void SetFighterTurnOrderIconDone(s32 fighterIndex);  // sets fighterIndex's turn-order icon to its idle frame
-extern void SetFighterTurnOrderIconActive(s32 fighterIndex);  // sets fighterIndex's turn-order icon to its highlighted frame, bringing it to the front
-extern void sub_08013108(u8 fighterIndex);        // cursor/highlight-to-fighter
-extern u8 RollFighterParalysisEscape(u8 fighterIndex);  // 0 = acts normally, 1 = still paralyzed, 3 = escape roll succeeded
-extern void DrawFighterStatsUi_candidate(s32 fighterType, s32 panelSlot);
 // ShowBattleMessage's first parameter; what each case renders is in
 // docs/memory-map/battle-ui.md's "ShowBattleMessage -- case -> dialog text
 // table". SpecialAbilityText (3) shares the switch's trailing default body.
@@ -269,19 +263,6 @@ typedef enum {
 // skips the second message while it holds.
 #define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
 
-extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
-extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
-extern void OpenEnemyTargetMenu_candidate(u8 fighterIndex);  // bMenuScreen 6, 0x08012B98
-extern void OpenAllyTargetMenu(u8 fighterIndex);             // bMenuScreen 8, 0x080107BC
-extern void OpenPendingFighterMenu_candidate(u8 fighterIndex);  // bMenuScreen 9, 0x0801319C
-extern void TickBattleMenuInput(void);
-extern void DispatchPendingAction(s32 fighterIndex);
-extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);
-extern void ClearPoisonedFighter_candidate(u8 fighterIndex);  // clears Poisoned, zeroes bPoisonDamage; CurePoison's shared helper
-extern void ClearParalyzedFighter_candidate(u8 fighterIndex);
-extern s32 sub_08012E0C(u8 fighterIndex);  // 1 if the fighter has a shadow Actor (monsters 45-47)
-extern void PushBattleState(s32 state);
-extern void TrackSpellFamiliarity(u8 fighterType, u8 spellId, u8 spellLevel, u16 *pHp);  // 0x08010008
 extern void DecrementFolioUniversitasCard(s32 slot);
 extern u16 g_nLastDamage;                       // 0x0300274A
 extern u8 g_bLastTargetIndex;                   // 0x0300274C
@@ -307,9 +288,6 @@ typedef struct EffectStaging {
 } EffectStaging;
 extern EffectStaging g_effectStaging;                 // 0x03002750
 extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
-extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations
-extern void sub_08012B40(void);
-extern void sub_08012A38(void);
 extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
 extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
@@ -322,15 +300,8 @@ typedef struct FighterAnimRow {
 } FighterAnimRow;
 
 extern void *memcpy(void *dst, const void *src, u32 n);
-extern void InitBattleBackground_candidate(void);
-extern void RestoreFighterActors_candidate(void);
-extern void SetupBattleRoster(void);
 extern u32 GetPartyPresenceMask(void);
 extern u32 GetPartySize(void);
-extern void JitterEnemyTurnOrder(void);
-extern void BuildTurnOrder(void);
-extern u8 *GetBattleBackgroundData_candidate(void);
-extern void ResumeBattleAfterSubmode_candidate(void);
 
 // ExitBattle's remaining callees -- generic engine/graphics teardown run on
 // every battle exit, not battle logic; not otherwise analyzed.
@@ -338,7 +309,6 @@ extern void FreeAllParticleEmitters(void);
 extern void FreeAllParticles(void);
 extern void sub_08031668(s32 arg0, s32 arg1);
 extern void FreeFloorEffect(void);
-extern void ClearFighterActorFlag_candidate(u8 fighterIndex);  // 0x08012CB4
 extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes); see docs/formats/save.md
 
 // Battle-message icon actor (shown alongside ShowBattleMessage's text),

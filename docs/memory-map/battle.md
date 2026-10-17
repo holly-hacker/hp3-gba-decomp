@@ -672,14 +672,14 @@ dangerous ones act early (Lupin Werewolf `=20`, Draco `=60`). Buckbeak is
 hardcoded to `10`.
 
 - **`JitterEnemyTurnOrder`** (`0x0800E5B8`, matched byte-exact,
-  `src/battle/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
+  `src/combat_menu/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
   each `Enemy`'s `bAgility`, clamped to `[5, 251]`. Player fighters are
   untouched -- `bAgility` comes straight from
   `g_pPartyMasterStats[fighterType]` for Harry/Hermione/Ron. Runs on
   `pStagingFighters`, ahead of `SetupBattleRoster`'s compaction/copy into
   `pFighters`.
 - **`BuildTurnOrder`** (`0x0800E62C`, matched byte-exact,
-  `src/battle/build_turn_order.c`) selection-sorts `pStagingFighters` into
+  `src/combat_menu/build_turn_order.c`) selection-sorts `pStagingFighters` into
   `pFighters` ascending by `bAgility`. Each of the first `bFighterCount-1`
   passes scans the whole staging array for the lowest `bAgility` still
   above the previous pick (a fainted fighter, `wHp == 0`, is marked
@@ -994,7 +994,7 @@ turn state machine that frame. Every other case (timer already `0`, or the
 previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).
 
 `TickBattleTurnStateMachine`, matched in
-`src/battle/tick_battle_turn_state_machine.c`, drives
+`src/combat_menu/tick_battle_turn_state_machine.c`, drives
 `FightState->bBattleState` (0x1061, an 8-case dispatch) directly:
 every state transition inlines the same guard (refuse to leave states
 `6`/`7`, stash the state being left into `bSavedBattleState`) rather than

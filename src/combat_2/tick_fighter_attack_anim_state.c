@@ -2,6 +2,7 @@
 #include "combat_2.h"
 #include "graphics/audio.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 #include "mt19937.h"
 
 // Enemy-side per-actor tick dispatcher, mirroring TickPlayerActionState's

@@ -4,6 +4,7 @@
 #include "combat_2.h"
 #include "graphics/audio.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 #include "graphics/display.h"
 #include "graphics/graphics.h"
 #include "game/game_modes.h"

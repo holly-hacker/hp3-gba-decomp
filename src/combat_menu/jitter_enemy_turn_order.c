@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 #include "mt19937.h"
 
 // Adds +/-16 random jitter to each Enemy fighter's bAgility (clamped

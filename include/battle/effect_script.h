@@ -50,12 +50,7 @@ extern void WaitForCasterField86Tick_candidate(Actor *actor);
 extern IntPoint ComputeEffectSpawnPosition(void);
 extern void JumpToScriptLabel(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
 extern void sub_08030A1C(u32 a, u32 b, const void *rec);
-extern void sub_08012A00(void);
-// The room's battle background graphic blob: the second entry of g_aBattleBackgroundPairs, or a
-// fixed alternate blob for rooms 8-15 under one battle-state condition.
-extern void *GetBattleBackgroundGraphic(void);
 extern void sub_08037104(u32 a);
-extern void ReviveFighter_candidate(u8 pendingIdx);
 extern ParticleEmitter *CreateScriptEmitter12(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
 extern ParticleEmitter *CreateScriptEmitter8(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
 extern void DarkenScreenPalette(void);

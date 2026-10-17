@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 
 // Switches the battle turn state machine to `state`, remembering the current
 // state in bSavedBattleState. Ignored while the battle is already ending

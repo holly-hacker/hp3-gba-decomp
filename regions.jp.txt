@@ -438,20 +438,20 @@ c-file 0x0800DDB0 _ src/combat/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/combat/exit_battle.c ExitBattle
 thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
 thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
-c-file 0x0800E5B8 _ src/battle/jitter_enemy_turn_order.c JitterEnemyTurnOrder
-c-file 0x0800E62C 0x0800E890 src/battle/build_turn_order.c BuildTurnOrder
+c-file 0x0800E5B8 _ src/combat_menu/jitter_enemy_turn_order.c JitterEnemyTurnOrder
+c-file 0x0800E62C 0x0800E890 src/combat_menu/build_turn_order.c BuildTurnOrder
 thumb-func 0x0800E890 ReviveFighter_candidate
-c-file 0x0800EA68 _ src/battle/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
-c-file 0x0800EB2C 0x0800EBAC src/battle/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
+c-file 0x0800EA68 _ src/combat_menu/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
+c-file 0x0800EB2C 0x0800EBAC src/combat_menu/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate
-c-file 0x0800EDD8 _ src/battle/setup_battle_roster.c SetupBattleRoster
-c-file 0x0800F16C _ src/battle/restore_fighter_actors.c RestoreFighterActors_candidate
-c-file 0x0800F5F0 _ src/battle/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
-c-file 0x0800F794 _ src/battle/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
-c-file 0x0800FEE0 _ src/battle/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
-c-file 0x0800FFAC 0x08010008 src/battle/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
+c-file 0x0800EDD8 _ src/combat_menu/setup_battle_roster.c SetupBattleRoster
+c-file 0x0800F16C _ src/combat_menu/restore_fighter_actors.c RestoreFighterActors_candidate
+c-file 0x0800F5F0 _ src/combat_menu/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
+c-file 0x0800F794 _ src/combat_menu/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
+c-file 0x0800FEE0 _ src/combat_menu/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
+c-file 0x0800FFAC 0x08010008 src/combat_menu/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
 thumb-func 0x08010008 TrackSpellFamiliarity
-c-file 0x080100A0 0x080101D0 src/battle/dispatch_pending_action.c DispatchPendingAction
+c-file 0x080100A0 0x080101D0 src/combat_menu/dispatch_pending_action.c DispatchPendingAction
 thumb-func 0x080101D0 TickBattleMenuInput
 thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x080105D8 OpenSpecialMoveMenu
@@ -483,7 +483,7 @@ thumb-func 0x08012A04 sub_08012A00
 thumb-func 0x08012A3C sub_08012A38
 thumb-func 0x08012A88 GetBattleBackgroundGraphic
 thumb-func 0x08012AC4 GetBattleBackgroundData_candidate
-c-file 0x08012B00 0x08012B44 src/battle/push_battle_state.c PushBattleState
+c-file 0x08012B00 0x08012B44 src/combat_menu/push_battle_state.c PushBattleState
 thumb-func 0x08012B44 sub_08012B40
 thumb-func 0x08012B9C OpenEnemyTargetMenu_candidate
 thumb-func 0x08012C10 sub_08012C0C
@@ -503,7 +503,7 @@ thumb-func 0x08012FD4 IgnoreBattleMenuInput
 thumb-func 0x08012FD8 PrepareBattleMessageDisplay_candidate
 thumb-func 0x08013018 sub_08013014
 thumb-func 0x08013038 sub_08013034
-c-file 0x080130B8 0x0801310C src/battle/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
+c-file 0x080130B8 0x0801310C src/combat_menu/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
 thumb-func 0x0801310C sub_08013108
 thumb-func 0x08013110 TogglePendingFighterCursor_candidate
 thumb-func 0x0801314C sub_08013148

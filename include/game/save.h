@@ -238,4 +238,3 @@ void PackBitsToSaveStream(const u8 *src, u32 count);
 void UnpackNibblesFromSaveStream(u8 *dst, u32 count);
 void UnpackBitPairsFromSaveStream(u8 *dst, u32 count);
 void UnpackBitsFromSaveStream(u8 *dst, u32 count);
-extern void InitCharacterSpells_candidate(u32 index, u16 *pStats);

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 #include "battle/effect_script.h"
 #include "battle/script_opcodes.h"
 #include "char_block.h"

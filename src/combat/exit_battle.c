@@ -1,6 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 #include "color.h"
 #include "combat.h"
 #include "graphics/display.h"

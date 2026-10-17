@@ -1,5 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
+#include "combat_menu.h"
 #include "game/game_modes.h"
 #include "graphics/audio.h"
 #include "mt19937.h"
