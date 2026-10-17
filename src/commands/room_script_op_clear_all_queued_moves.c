@@ -2,6 +2,7 @@
 #include "commands.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
+#include "hero.h"
 
 void RoomScriptOpClearAllQueuedMoves(RoomScriptRecord *pRecord)
 {

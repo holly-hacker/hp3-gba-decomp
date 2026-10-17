@@ -8,6 +8,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "map.h"
+#include "main.h"
 
 void UpdateDialogBox(void)
 {

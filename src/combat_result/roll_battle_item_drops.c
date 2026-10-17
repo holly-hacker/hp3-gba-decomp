@@ -4,6 +4,7 @@
 #include "combat_result.h"
 #include "random.h"
 #include "battle/monster_drop_table.h"
+#include "combat.h"
 
 #define NO_ITEM COMBAT_RESULT_NO_ITEM
 #define MAX_FAINTED_MONSTERS 4

@@ -3,6 +3,7 @@
 #include "text.h"
 #include "actor.h"
 #include "game/items.h"
+#include "items.h"
 #include "game/rewards.h"
 #include "sound.h"
 #include "dialog.h"
@@ -10,7 +11,6 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
-#include "items.h"
 #include "hero.h"
 #include "move.h"
 

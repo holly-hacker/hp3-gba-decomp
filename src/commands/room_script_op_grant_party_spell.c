@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "commands.h"
 #include "overworld/room_script.h"
+#include "combat.h"
 
 typedef struct GrantPartySpellRecord {
     u32 dwOpcode;

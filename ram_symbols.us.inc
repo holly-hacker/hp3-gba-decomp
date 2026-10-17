@@ -11,11 +11,17 @@
 @ The dialog-text-engine symbols have no JP counterpart at all (that
 @ engine isn't present in the JP ROM -- see docs/formats/text.md).
 
-@ --- Statically linked RAM sections (see include/ram_clear.h and ClearWorkRam) ---
+@ --- include/sound.h ---
 .set g_KrawallEwramStart,     0x02000000
 .set g_KrawallEwramEnd,       0x020027F8  @ ClearWorkRam zeroes EWRAM from here
+
+@ --- include/mem.h ---
 .set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM
+
+@ --- include/sound.h ---
 .set g_KrawallIwramStart,     0x03000000  @ IWRAM image kramInstall copies from ROM
+
+@ --- include/krawall.h ---
 .set kradInterrupt,           0x03000004  @ gIntrTableTemplate's timer 1 handler, in that image
 @ Krawall IWRAM code at its runtime address; see docs/memory-map/krawall.md
 .set kramPlayExt,             0x03000094
@@ -39,131 +45,143 @@
 .set mix16to8_patch,          0x03000BF0
 .set mixReal,                 0x03000C48
 .set kramWorker,              0x03001068
+
+@ --- include/sound.h ---
 .set g_KrawallIwramEnd,       0x03001598  @ end of that image; ClearWorkRam zeroes from here
 
+@ --- Boot + runtime (asm) ---
 .set g_pTimer2DebugPc,        0x030015A0  @ code ptr: IntrMain stores [sp,#0x14] here on a Timer 2 IRQ
                                           @ (saved lr per the BIOS IRQ frame, unverified); read by
                                           @ HandleTimer2Interrupt
-.set g_ActiveActorListState, 0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}; see include/actor.h
 
-@ --- Per-tick actor queues (see include/actor.h and TickActorList) ---
+@ --- include/actor.h ---
+.set g_ActiveActorListState, 0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}
 .set g_apOamQueue,             0x030015B8  @ Actor *[0x69]: onscreen actors drawn in depth order
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760  @ Actor *[15]: visible actors with sprite cells
 .set g_bSpriteFrameQueueCount, 0x0300179C  @ u8
-
 .set g_dwActorListActive_candidate, 0x030017A0
 .set g_apCollisionQueue,             0x030017A4  @ Actor *[0x69]: actors awaiting the pairwise check
 .set g_dwCollisionQueueCount,        0x03001948
-
-@ --- Actor pool (see docs/memory-map/heap.md and include/actor.h) ---
 .set SortActorsByDepthIwram,            0x0300194C  @ IWRAM copy of SortActorsByDepth
 .set CheckActorCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckActorCollisions
-.set g_ActorPoolState,              0x03001C08  @ ActorPoolState, 0x1B4 bytes; see include/actor.h
+.set g_ActorPoolState,              0x03001C08  @ ActorPoolState, 0x1B4 bytes
 .set g_pActorPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwActorListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveActors, never cleared; gates FreeActor's VRAM tile release
-.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitActorPool; see include/actor.h
+.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitActorPool
 .set g_ReceivedItemGfx,              0x03001DC8  @ ActorGfxRecord: the item TickActorReceiveReward holds up
+
+@ --- include/area.h ---
 .set g_adwRoomActorUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room actor constructors
-
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ u16: bit 0 = the room also has a second actor/switch row
-
-@ --- Room-script VM (see include/overworld/room_script.h) ---
 .set g_bRoomScriptCurrentChain,        0x03001DDE  @ u8: chain the VM is walking
 .set g_pRoomScriptYieldContinuation, 0x03001DE0  @ u32 *: record to resume at after a yield, or 0
 .set g_pRoomScriptNextRecord,        0x03001DE4  @ u32 *: record following the one being dispatched
 .set g_bRoomScriptCallStackDepth,    0x03001DE8  @ u8: nested chain calls in flight
-
 .set g_bRoomScriptYieldOpcode,            0x03001DE9  @ u8: opcode a running room script yielded on
 .set g_pRoomTableBuffer,                  0x03001DEC  @ RoomBlobHeader *: 0x2200-byte buffer holding the room's runtime tables
 .set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ u32: set to 1 by RespawnGroupAndRunChain while it runs a room chain; cleared by
                                                       @ HandleOverworldPauseMenuInput each frame, which skips the menu check while it is set
-
-@ --- Room-script VM (see include/overworld/room_script.h) ---
 .set g_pRoomActorTable,            0x03001DF4  @ RoomBlobTable *: per-column, per-row tile records
 .set g_pRoomRouteTable,       0x03001DF8  @ RoomBlobTable *: per-route waypoint lists
 .set g_pRoomScriptChainTable, 0x03001DFC  @ RoomScriptTable *: current room's chain offset table
 .set g_aRoomScriptCallStack,        0x03001E00  @ RoomScriptCallFrame[]: saved callers, indexed by depth
 
+@ --- include/background.h ---
 .set g_BgState,        0x03001E80  @ BgState: dwFlags, then the BgLayer[4] array that g_aBgLayers addresses
-
-@ Forces one extra CommitBgLayers call this vblank; see include/interrupts.h.
+@ Forces one extra CommitBgLayers call this vblank.
 .set g_bForcePendingBgWritesFlush,               0x03002038
+
+@ --- include/boggart_minigame.h ---
 .set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ u32: set by StartMinigame
 .set g_BoggartMinigame,                          0x03002048  @ BoggartMinigameState
+
+@ --- include/buckbeak_minigame.h ---
 .set g_dwBuckbeakMinigameForceOverworldExit,           0x03002084  @ u32: set by StartMinigame
 .set g_pBuckbeakMinigame,                         0x03002088  @ BuckbeakMinigameState *: allocated for the minigame's duration
+
+@ --- include/camera.h ---
 .set g_aCameraEffects_candidate,                 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot
 .set g_aCameraFocusSlots,                        0x030020E8  @ CameraFocusSlot[2]: 0x38 bytes each
 .set g_aCameraFollowOffsets,                     0x03002158  @ s32[2][2]: per-slot (X, Y) offset set by SetCameraFollowTarget_candidate
+
+@ --- include/char_block.h ---
 .set g_bBgTileAnimationCount,                    0x03002168  @ u8: number of registered BG tile animations
 .set g_aBgTileAnimations,                        0x0300216C  @ BgTileAnimEntry[4]: 0x10 bytes each; size inferred from the span up to g_apBgTileAnimationBuffers
 .set g_apBgTileAnimationBuffers,                 0x030021AC  @ void *[4]: decoded tile buffer of each BG tile animation
 
-@ --- Cheat menus (see include/cheat.h and include/cheat_*.h) ---
-.set g_CheatState,                     0x030021C0  @ CheatState: {Actor *pCursorActor; u32 dwSelection}; see include/cheat.h
-.set g_CheatLevelAndQuestState,        0x030021C8  @ CheatLevelAndQuestState; see include/cheat_level_and_quest.h
-.set g_CheatMapState,                  0x030021E8  @ CheatMapState; see include/cheat_map.h
-.set g_CheatPartyState,                0x030021F8  @ CheatPartyState; see include/cheat_party.h
-.set g_CheatPortraitsState,            0x03002210  @ CheatPortraitsState: {Actor *pPortraitActor; u32 dwSelection}; see include/cheat_portraits.h
-.set g_CheatSoundTestState,            0x03002218  @ CheatSoundTestState; see include/cheat_sound_test.h
-.set g_CheatWizardCardsState,          0x03002238  @ CheatWizardCardsState: {Actor *pCardActor; u32 dwSelection}; see include/cheat_wizard_cards.h
+@ --- include/cheat.h ---
+.set g_CheatState,                     0x030021C0  @ CheatState: {Actor *pCursorActor; u32 dwSelection}
 
-@ --- Chests ---
+@ --- include/cheat_level_and_quest.h ---
+.set g_CheatLevelAndQuestState,        0x030021C8  @ CheatLevelAndQuestState
+
+@ --- include/cheat_map.h ---
+.set g_CheatMapState,                  0x030021E8  @ CheatMapState
+
+@ --- include/cheat_party.h ---
+.set g_CheatPartyState,                0x030021F8  @ CheatPartyState
+
+@ --- include/cheat_portraits.h ---
+.set g_CheatPortraitsState,            0x03002210  @ CheatPortraitsState: {Actor *pPortraitActor; u32 dwSelection}
+
+@ --- include/cheat_sound_test.h ---
+.set g_CheatSoundTestState,            0x03002218  @ CheatSoundTestState
+
+@ --- include/cheat_wizard_cards.h ---
+.set g_CheatWizardCardsState,          0x03002238  @ CheatWizardCardsState: {Actor *pCardActor; u32 dwSelection}
+
+@ --- include/chest_actor.h ---
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
 
-@ --- Choose character (see include/choose_party_member.h) ---
-.set g_ChooseCharacterState,       0x03002260  @ ChooseCharacterState; see include/choose_party_member.h
+@ --- include/choose_party_member.h ---
+.set g_ChooseCharacterState,       0x03002260  @ ChooseCharacterState
 .set g_dwChooseCharacterBgRow,     0x0300227C  @ u32: BG2 tile row of the choose-character screen panel
 
-@ --- Palette (see include/color.h) ---
-.set g_aColorCycles,               0x03002280  @ ColorCycle[12]; see include/color.h
+@ --- include/color.h ---
+.set g_aColorCycles,               0x03002280  @ ColorCycle[12]
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
 .set g_pPaletteWorkBuffer,        0x030022EC  @ u16 *: 0x400-byte BG+OBJ palette work buffer, allocated by InitGammaPalette
 .set g_dwObjPaletteQueueCount,     0x030022F0  @ u32: queued OBJ palette loads (25 max)
 .set g_dwPaletteEffectCount,       0x030022F4  @ u32: active palette effects
-.set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]; see include/color.h
-.set g_aObjPaletteQueue,            0x030023E8  @ ObjPaletteQueueEntry[25]; see include/color.h
-.set g_PaletteState,              0x030024B0  @ PaletteState; see include/color.h
+.set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]
+.set g_aObjPaletteQueue,            0x030023E8  @ ObjPaletteQueueEntry[25]
+.set g_PaletteState,              0x030024B0  @ PaletteState
 
-@ --- Battle system (see docs/memory-map/battle.md) ---
+@ --- include/combat.h ---
 .set g_pFightState,                 0x030024E8  @ FightState *, the active battle's state
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride, by FighterType
-
-@ --- Room-script resume transition ---
 .set g_bPendingRoomScriptChain,     0x0300260C  @ u8: switch-state chain to walk on a resume transition
 .set g_bPendingRoomScriptRow,       0x0300260D  @ u8: actor row to respawn on a resume transition
-
-@ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_nBattleXpReward,             0x0300260E  @ u16: XP earned this battle, one pool shared by the whole party
 .set g_nBattleGoldReward,           0x03002610  @ u16: Sickles earned this battle; also the scratch amount for gold reward grants
-
-@ --- Overworld ---
 .set g_dwOverworldMonstersDisabled, 0x03002614  @ u32: nonzero suppresses wandering-monster spawns
-
-@ --- Battle system (see docs/memory-map/battle.md) ---
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 .set g_bSelectedFighterSlot_candidate,     0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
 .set g_apFighterActors_candidate,         0x03002668  @ Actor*[7]; one slot per active BattleFighter
 .set g_pBattleMessageIconActor_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_anFaintedRosterIndices,             0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
+
+@ --- include/combat_result.h ---
 .set g_dwCombatResultUnusedCounter,              0x030026E8  @ u32: zeroed by InitializeCombatResult; no reader found
 .set g_dwCombatResultUnusedDelay,                0x030026EC  @ u32: 0x78 after InitializeCombatResult; no reader found
-.set g_dwCombatResultXpRemaining,                0x030026F0  @ u32: XP still to be counted up on the combat result screen, see include/combat_result.h
+.set g_dwCombatResultXpRemaining,                0x030026F0  @ u32: XP still to be counted up on the combat result screen
 .set g_pCombatResultCoinActor,                   0x030026F4  @ Actor *: coin beside the Sickles total, NULL when no Sickles were earned
 .set g_pCombatResultItem0Actor,                  0x030026F8  @ Actor *: icon of the first dropped item, NULL without a drop
 .set g_pCombatResultItem1Actor,                  0x030026FC  @ Actor *: icon of the second dropped item, NULL without a second drop
-.set g_abCombatResultPartySlots,                 0x03002700  @ u8[3]: party stats slot shown per portrait position, see include/combat_result.h
+.set g_abCombatResultPartySlots,                 0x03002700  @ u8[3]: party stats slot shown per portrait position
 .set g_pCombatResultBg2Tilemap,                  0x03002704  @ void *: BG2 graphic (LoadBgGraphicTiles result), partly copied per party member
 .set g_pCombatResultBg1Tilemap,                  0x03002708  @ void *: BG1 graphic (LoadBgGraphicTiles result), partly copied per party member
 .set g_wCombatResultTextTileCursor,              0x0300270C  @ u16: next free text tile of the combat result screen
 .set g_wCombatResultXpTileCursor,                0x0300270E  @ u16: first tile of the XP number, redrawn each TickCombatResultXpCounter
-.set g_aCombatResultPartyRows,                   0x03002710  @ CombatResultPartyRow[3], see include/combat_result.h
+.set g_aCombatResultPartyRows,                   0x03002710  @ CombatResultPartyRow[3]
 .set g_wCombatResultXpNumberX,                   0x03002734  @ u16: screen x of the XP number
 .set g_CombatResultItem0Gfx,                     0x03002738  @ ActorGfxRecord: tile/frame data of the first dropped item's icon
 .set g_CombatResultItem1Gfx,                     0x03002740  @ ActorGfxRecord: tile/frame data of the second dropped item's icon
+
+@ --- include/combat_2.h ---
 .set g_bDefeatWarpParam,                   0x03002748  @ byte
 .set g_bSpellMissStreak,                   0x03002749  @ byte: consecutive-miss streak breaker
 .set g_nLastDamage,                        0x0300274A  @ u16: last computed attack/status damage
@@ -171,35 +189,41 @@
 .set g_effectStaging,                      0x03002750  @ EffectStaging: battle-effect staging area, see TriggerBattleEffect
 .set g_bReviveInsertCount_candidate,        0x03002773  @ u8: incremented by ReviveFighter_candidate when the revived fighter is inserted at or before the active one; no reader found
 
+@ --- include/commands.h ---
 .set g_dwRoomScriptRunState,    0x0300279C  @ u32: room script run state; InitializeOverworld resets 4 to 0 and only resumes a chain in state 2
 .set g_abQuestEventState,       0x030027A0  @ u8[]: quest event state bytes, see docs/formats/save.md
 .set g_bRoomScriptPendingChain, 0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none
 .set g_bCameraShakeSoundHandle,   0x030028A4  @ u8: sound handle TickCameraFocus_candidate stops when a camera shake ends
 
-@ --- Serve Pumpkin Juice minigame (see include/pouring_minigame.h) ---
+@ --- include/credits_cutscene.h ---
 .set g_dwCreditsScrollRow,    0x030028A8  @ u32: last credits text row the scroll reached
 .set g_dwCreditsLine,         0x030028AC  @ u32: next credits text line to draw
 .set g_dwCreditsTileCursor,   0x030028B0  @ u32: next free credits text tile
 .set g_pLinearCutsceneText,   0x030028B4  @ u8 *: unread remainder of the cutscene's text
-.set g_pLinearCutsceneActor, 0x030028B8  @ Actor *; see include/cutscene.h
+.set g_pLinearCutsceneActor, 0x030028B8  @ Actor *
 .set g_dwLinearCutsceneIndex, 0x030028BC  @ u32: GameMode - Credits
 
+@ --- include/cursor.h ---
 .set g_pMenuCursorEmitter, 0x030028C0  @ ParticleEmitter *: emitter of the cursor actor built by SpawnMenuCursorActor(4)
 .set g_nMenuCursorPaletteEffect, 0x030028C4  @ s32: SpawnMenuCursorActor(4)'s palette effect handle, -1 = none
 .set g_dwMenuCursorParticleGfxLoaded, 0x030028C8  @ u32: the cursor's particle graphics pool is loaded
 
-@ --- IWRAM-installed decompression codecs (see docs/formats/graphics.md's
-@ "resource-decompression dispatcher") ---
+@ --- include/decompress.h ---
 .set g_pDecompressLzRleEntry,   0x030028CC  @ DecompressFunc: = g_pDecompressLzRleIwram
 .set g_pDecompressGammaLzEntry, 0x030028D0  @ DecompressFunc: = g_pDecompressGammaLzIwram
 .set g_pDecompressLzRleIwram,   0x030028D4  @ u8[0x1F8]: IWRAM copy of DecompressLzRle
 .set g_pDecompressGammaLzIwram, 0x03002ACC  @ u8[0x33C]: IWRAM copy of DecompressGammaLz
 
-.set g_pMenuCursorActor,                              0x03002E08  @ Actor *: cursor actor created by BeginMenuScreen; see include/default_menu.h
+@ --- include/default_menu.h ---
+.set g_pMenuCursorActor,                              0x03002E08  @ Actor *: cursor actor created by BeginMenuScreen
 .set g_nMenuScreenPaletteEffectSlot,                  0x03002E0C  @ s32: selection pulse palette effect of BeginMenuScreen, -1 when none
+
+@ --- include/dementor_minigame.h ---
 .set g_dwDementorMinigameScriptFlag_candidate,         0x03002E10  @ u32: set by StartMinigame
 .set g_DementorMinigame,                               0x03002E18  @ DementorMinigameState
-.set g_DialogState_candidate,                          0x03002E88  @ DialogState; see include/dialog.h
+
+@ --- include/dialog.h ---
+.set g_DialogState_candidate,                          0x03002E88  @ DialogState
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8  @ u8 *: 0x400-byte buffer, allocated by InitDialogBox
 .set g_awSavedBgPalette0,                              0x03002EAC  @ u16[16]: BG palette bank 0 saved by InitializeDialog and InitializeChooseCharacter, restored by their exits
 .set g_adwSavedBgPriority,                             0x03002ED0  @ u32[2]: BG0/BG1 priority saved by InitializeDialog, restored by ExitDialog
@@ -212,21 +236,33 @@
 .set g_dwDialogPageFull,                               0x03002EF0  @ u32: nonzero once the box's text page is fully drawn
 .set g_dwDialogBoxTileRow,                             0x03002EF4  @ u32: BG1 tile row the box's tilemap is drawn at
 .set g_awDialogBoxPalette,                             0x03002EF8  @ u16[16]: dialog box BG palette, DMAed to bank 0 at the box's top line
-.set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ Actor *; see include/ending_cutscene.h
+
+@ --- include/ending_cutscene.h ---
+.set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ Actor *
 .set g_pHippogriffFliesIntoAirActor2,                 0x03002F1C  @ Actor *
+
+@ --- include/flipbook.h ---
 .set g_aRoomTileAnimations,                            0x03002F24  @ RoomTileAnimation *: 32 entries, allocated by InitRoomTileAnimationTable
 .set g_dwRoomTileAnimationCount,                       0x03002F28  @ u32: entries in use in g_aRoomTileAnimations
+
+@ --- include/font.h ---
 .set g_aFontDescriptors,                                  0x03002F30  @ FontDescriptor[12][2], filled by LoadFontDescriptor
-.set gTextRenderState,                                 0x03003110  @ TextRenderState, see include/font.h
+.set gTextRenderState,                                 0x03003110  @ TextRenderState
 .set gSavedTextTarget,                                 0x03003140  @ TextRenderState: target fields saved by SaveTextTarget
 .set sTextMacroTable,                                  0x03003170  @ u8 *[4]: 0x40-byte heap buffers (allocated by InitTextMacroTable) holding the strings that 0x40-prefixed text codes 0x31-0x34 expand to
+
+@ --- include/game_state.h ---
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
 .set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickActor clears; see src/actor/tick_actor.c
-.set g_JoybusLinkState,          0x03003238  @ JoybusLinkState: GameCube link (JOYBUS) session state, see include/gamecube.h
-.set g_OwlCareKitScreen,        0x03003270  @ OwlCareKitScreenState: live state of the Owl Care Kit care screen, see include/hedwig_minigame.h
-.set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 
-@ --- Overworld actor tracking (see include/overworld/overworld.h) ---
+@ --- include/gamecube.h ---
+.set g_JoybusLinkState,          0x03003238  @ JoybusLinkState: GameCube link (JOYBUS) session state
+
+@ --- include/hedwig_minigame.h ---
+.set g_OwlCareKitScreen,        0x03003270  @ OwlCareKitScreenState: live state of the Owl Care Kit care screen
+
+@ --- include/hero.h ---
+.set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 .set g_nCameraYOffset,               0x0300337C  @ s8: camera Y offset in pixels; 18 after InitRoomBgState_candidate
 .set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
 .set g_pPlayerActor,                    0x03003380  @ Actor *: the player's overworld actor
@@ -235,7 +271,7 @@
 .set g_bPartyCharId0,                    0x0300338C  @ u8: character id of the party leader
 .set g_bPartyCharId1,                    0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2,                    0x0300338E  @ u8: character id of the second follower
-.set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into the field spell table at 0x08060BAC; see include/overworld/overworld.h
+.set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into the field spell table at 0x08060BAC
 .set g_pPlayerShadowActor_candidate,   0x03003390  @ Actor *: type 0x11 actor SpawnPlayerActor_candidate creates for the player
 .set g_pFieldSpellNameActor,            0x030033A0  @ Actor *: selected field spell name text
 .set g_pMapNameTextActor,               0x030033A4  @ Actor *: room name text of ShowMapNamePopup
@@ -243,14 +279,16 @@
 .set g_pFieldSpellPortraitActor,        0x030033AC  @ Actor *: face portrait of the selected field spell's character
 .set g_pMapNamePopupActor,             0x030033B0  @ Actor *: 240x16 bar sprite behind the room name text
 
+@ --- include/huffman.h ---
 .set gDialogTextBlobBase,    0x030033C0  @ active language blob's base pointer (0 = none installed)
 .set gDialogTextOffsetTable, 0x030033C4  @ pointer to the active blob's per-string-ID u32[] offset table
 .set gDialogTextTreeNodes,   0x030033C8  @ pointer to the active blob's Huffman tree node table
-
-@ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
-@ ResetKeyInput, 0x080254A8/0x080258F8) ---
 .set g_aDecompressBgTileIwram,      0x030033CC  @ u8[0x100]: IWRAM copy of DecompressBgTile
-.set g_HighScoreNameEntry,          0x030034D0  @ HighScoreNameEntryState; see include/initials.h
+
+@ --- include/initials.h ---
+.set g_HighScoreNameEntry,          0x030034D0  @ HighScoreNameEntryState
+
+@ --- include/input.h ---
 .set g_wKeysHeld,                0x030034EC  @ u16: current held-key bitmask (standard GBA KEYINPUT bit
                                              @ order), updated once per frame by UpdateKeyInput; also
                                              @ folded into Mt19937AutoSeed's seed as a cheap entropy
@@ -279,8 +317,8 @@
 .set g_dwScrollGridColumnCount,  0x03003528  @ u32: grid columns per row
 .set g_dwScrollGridVisibleRows,  0x0300352C  @ u32: grid rows visible at once
 
+@ --- include/interrupts.h ---
 .set g_VBlankState, 0x03003530  @ the object g_pVBlankState is set to point at
-
 @ Set by InitInterruptSystem to &g_VBlankState; read by every interrupt
 @ handler (HandleVBlankInterrupt, HandleHBlankInterrupt,
 @ HandleTimer0Interrupt, HandleTimer3Interrupt,
@@ -293,30 +331,37 @@
 .set gIntrHandlerIwram, 0x030035A4  @ 0x200-byte IWRAM buffer InstallInterruptHandler
                                     @ CpuSets the live handler code into; gIntrVectorPtr
                                     @ points here
-
 @ Sticky software copy of acked hardware IF bits, ORed by every interrupt
-@ handler after acking its own bit in IF. See include/interrupts.h.
+@ handler after acking its own bit in IF.
 .set g_wPendingIntrFlags, 0x030037A4
-
 @ Reentrancy guard for HandleVBlankInterrupt; body only runs while this
-@ reads back as 1. See include/interrupts.h.
+@ reads back as 1.
 .set g_dwVBlankIntrNestCount, 0x030037A8
-
-@ OAM DMA half-toggle; see include/interrupts.h.
+@ OAM DMA half-toggle.
 .set g_bOamDmaHalfToggle,                    0x030037AC
+
+@ --- include/items.h ---
 .set g_ItemInventory,                     0x030037B0  @ ItemInventory: item counts and equipped items, see include/game/items.h
-.set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32; see include/landmarks.h
+
+@ --- include/landmarks.h ---
+.set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32
 .set g_pUnusedHogwartsMapCursor,             0x03003A54  @ Actor *
 .set g_pUnusedHogwartsMapBg1Tilemap,         0x03003A58  @ void *
 .set g_apUnusedHogwartsMapActors,           0x03003A60  @ Actor *[9]
+
+@ --- include/lupin_potion_cutscene.h ---
 .set g_LupinPotionCutscene,                  0x03003A84  @ LupinPotionCutsceneState
 .set g_aLupinPotionBg2Scroll,                0x03003B3C  @ s32[2]
+
+@ --- include/main.h ---
 .set g_dwGameModeFlags,                      0x03003B44  @ u32: broad flags word read/written across
                                                          @ overworld/room/cutscene transitions and
                                                          @ TickGameModeStack; individual bits
                                                          @ unconfirmed
 .set g_dwFrameSyncTarget,                    0x03003B48  @ u32: frame-pacing target set once by AgbMain,
                                                          @ consumed only by WaitForVBlank
+
+@ --- include/map.h ---
 .set g_bCurrentRoomId,                       0x03003B50  @ byte: current room/map id
 .set g_bControlSlotTicks_candidate,          0x03003B58  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
 .set g_bPendingQuestStateOverride_candidate, 0x03003B5A  @ u8: 0xFF = none; else copied into quest state 0 on room entry
@@ -328,32 +373,44 @@
 .set g_bTouchedMonsterRecordCount,           0x03003B70  @ byte: queued (encounter id, kind) pair count
 .set g_abTouchedMonsterRecords,              0x03003B74  @ u8[20]: 5 x 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,             0x03003B88  @ Actor *: armed wandering-monster actor
+
+@ --- include/math.h ---
 .set g_abIwramDivideCode,                   0x03003B90  @ u8[0x340]: IWRAM copy of the ARM divide routines (InstallIwramDivideRoutines)
 .set g_pfnIwramDivideSignedQuotient,        0x03003ED0  @ IWRAM entry of DivideSignedQuotient
 .set g_pfnIwramDivideSignedRemainder,       0x03003ED4  @ IWRAM entry of DivideSignedRemainder
 .set g_pfnIwramDivideUnsigned,              0x03003ED8  @ IWRAM entry of DivideUnsignedWorker
+
+@ --- include/mem.h ---
 .set gMemPool,                               0x03003EE0  @ MemPool[]; only pool 0 (index 0) is ever registered
 .set gMemPoolCount,                          0x03003EF0  @ u32: live pool count, incremented by InitMemoryPool
+
+@ --- include/modes.h ---
 .set g_GameModeStackContext,                 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
-.set g_dwListMenuSelection,                  0x03003F14  @ u32: selected row of the current list menu; see include/modes.h
+.set g_dwListMenuSelection,                  0x03003F14  @ u32: selected row of the current list menu
 .set g_dwPendingGameMode,                    0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
 .set g_PrevGameModeStackContext,             0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
 .set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
 .set g_apMenuIconActors, 0x03003F68  @ Actor *[]: actors registered by index via RegisterMenuIconActor
+
+@ --- include/minigame_difficulty_select.h ---
 .set g_dwSelectedMinigame,                   0x03003F88  @ u32: minigame index chosen in the minigame menu, read by the difficulty select
-.set g_FloorEffect,                          0x03003F8C  @ FloorEffectState: camera of the per-scanline floor; see include/mode7.h
-.set g_pFloorAffineTable,                    0x03003FAC  @ BgAffineDst *: one BG2 affine record per scanline; see include/mode7.h
-.set g_nFloorHorizonLine,                    0x03003FB0  @ s32: first floor scanline; see include/mode7.h
+
+@ --- include/mode7.h ---
+.set g_FloorEffect,                          0x03003F8C  @ FloorEffectState: camera of the per-scanline floor
+.set g_pFloorAffineTable,                    0x03003FAC  @ BgAffineDst *: one BG2 affine record per scanline
+.set g_nFloorHorizonLine,                    0x03003FB0  @ s32: first floor scanline
 .set g_dwFloorScrollSky,                     0x03003FB4  @ u32: nonzero scrolls BG1 with the floor heading
+
+@ --- include/move.h ---
 .set g_dwRoomCollisionPatternCount,           0x03003FB8  @ u32: pattern count from the collision tilemap header
-.set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]: see include/move.h
+.set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]
 .set g_pRoomCollisionTilemapBuffer,           0x03003FC8  @ u8 *: decompressed collision tilemap resource, 4-byte header then the pattern ids
 .set g_pRoomCollisionBehaviorTable,           0x03003FCC  @ u8 *: 16 collision bytes per pattern, see docs/formats/collision.md
 .set g_pRoomCollisionTilemap,                 0x03003FD0  @ u16 *: pattern ids of the 32x32-pixel blocks, g_pRoomCollisionTilemapBuffer + 4
 .set g_dwPendingCameraFocusFlag,             0x03003FD4  @ u32: cleared on room entry
 .set g_pPendingCameraFocus_candidate,        0x03003FD8  @ void *: argument RestorePendingCameraFocus_candidate is called with
 
-@ --- OAM shadow buffer, see include/oam.h ---
+@ --- include/oam.h ---
 .set g_pOamShadowBuffer,         0x03003FE8
 .set g_pOamDmaShadowBuffer,      0x03003FEC
 .set g_OamShadowBufferA,         0x03003FF0
@@ -364,9 +421,10 @@
 .set g_abAffineSlotUsed,         0x03004FF3  @ u8[32], one per affine hardware slot; see AllocAffineSlot/FreeAffineSlot
 .set g_aObjAffineSetSource,      0x03005014  @ ObjAffineSource[32] (8-byte stride), fed to bios_ObjAffineSet by CommitObjAffineMatrices
 
-@ --- OBJ palette slots / particle emitters (see docs/formats/graphics.md and
-@ docs/formats/battle_scripts.md's TickParticleEmitters note) ---
+@ --- include/palette.h ---
 .set g_aObjPaletteSlots,               0x03005114  @ ObjPaletteSlot[16]
+
+@ --- include/particles.h ---
 .set g_pParticleEmitterActiveListHead, 0x03005198  @ ListNode *
 .set g_wActiveParticleCount,           0x0300519C  @ u16
 .set g_wParticleHighWaterMark,         0x0300519E  @ u16
@@ -382,48 +440,64 @@
 .set g_bParticleSpawnBlocked,          0x030051D0  @ u8: set when a particle's OAM submit fails (queue full); blocks spawning until TickParticleEmitters clears it
 .set g_apParticleGfxPools,             0x030051D8  @ ParticleGfxEntry *[]
 
-@ --- Serve Pumpkin Juice minigame (see include/pouring_minigame.h) ---
-.set g_dwPatronusBgFront,     0x030051E4  @ u32; see include/patronus_cutscene.h
+@ --- include/patronus_cutscene.h ---
+.set g_dwPatronusBgFront,     0x030051E4  @ u32
 .set g_dwPatronusBgBack,      0x030051E8  @ u32
 .set g_dwPatronusSwapPending, 0x030051EC  @ u32
 .set g_bPatronusGraphicIndex, 0x030051F0  @ u8
 .set g_swPatronusBgParam,     0x030051F2  @ s16
 .set g_nPatronusBgOffset,     0x030051F4  @ s32, 16.16
-.set g_ConnectivityMenu, 0x030051F8  @ ListMenuDefinition: RAM copy of g_ConnectivityMenuTemplate with the active row table
 
+@ --- include/pause_menu.h ---
+.set g_ConnectivityMenu, 0x030051F8  @ ListMenuDefinition: RAM copy of g_ConnectivityMenuTemplate with the active row table
 .set g_ListMenuState,                          0x03005220  @ ListMenuState: pause menu cursor row saved by ExitInGameMenu, definition of the list menu on screen
+
+@ --- include/pop_it_minigame.h ---
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005228  @ u32: set by the StartMinigame room script opcode
 .set g_pWizardCrackerPopIt,                    0x03005230  @ WizardCrackerPopItState *: allocated for the minigame's duration
+
+@ --- include/pouring_minigame.h ---
 .set g_ServePumpkinJuice,                      0x03005238  @ ServePumpkinJuiceState
 
-@ --- In-game menu screens (see include/menu/) ---
+@ --- include/pscreen_character.h ---
 .set g_StatusEquipReturnMode,      0x03005298  @ GameMode: StatusEquipCharacterSelect returns to on B (InGameMenu, InGameMenuFadeIn or ItemsItemSelect)
 .set g_StatusEquipNextMode,        0x0300529C  @ GameMode: StatusEquipCharacterSelect advances to on A (StatusEquipSlotSelect or QuantitySelectScreen)
 .set g_dwStatusEquipCharacter,     0x030052A0  @ u32: FighterType chosen in StatusEquipCharacterSelect, read by the slot/item screens and ItemUseScreen
-.set g_StatusEquipCharacterSelect, 0x030052A8  @ StatusEquipCharacterSelectState: slot presence flags and pending mode; see include/pscreen_character.h
+.set g_StatusEquipCharacterSelect, 0x030052A8  @ StatusEquipCharacterSelectState: slot presence flags and pending mode
 .set g_bStatusEquipCharacterSlot,  0x030052B8  @ u8: StatusEquipCharacterSelect cursor slot
+
+@ --- include/pscreen_connectivity.h ---
 .set g_bConnectivityMenuCursor, 0x030052BC  @ s8: Connectivity row restored on re-entry
 .set g_dwStatusEquipSlotType,      0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect
-.set g_StatusEquipItemSelect,      0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/pscreen_connectivity.h
+.set g_StatusEquipItemSelect,      0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette
+
+@ --- include/pscreen_folio.h ---
 .set g_bFoliosMenuCursor, 0x030052F8  @ s8: Folios row restored on re-entry
-.set g_FolioBrutiState,            0x03005300  @ FolioBrutiState: the Folio Bruti screen state; see include/pscreen_folio_bruti.h
-.set g_FolioUniversitasState,      0x03005340  @ FolioUniversitasState: the Folio Universitas screen state; see include/pscreen_folio_universitas.h
-.set g_HelpState,                 0x03005370  @ HelpState: the Help / HelpTopicScreen engine state; see include/pscreen_information.h
-.set g_ItemsItemSelect,            0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter; see include/pscreen_items.h
+
+@ --- include/pscreen_folio_bruti.h ---
+.set g_FolioBrutiState,            0x03005300  @ FolioBrutiState: the Folio Bruti screen state
+
+@ --- include/pscreen_folio_universitas.h ---
+.set g_FolioUniversitasState,      0x03005340  @ FolioUniversitasState: the Folio Universitas screen state
+
+@ --- include/pscreen_information.h ---
+.set g_HelpState,                 0x03005370  @ HelpState: the Help / HelpTopicScreen engine state
+
+@ --- include/pscreen_items.h ---
+.set g_ItemsItemSelect,            0x030054D8  @ ItemsItemSelectState: item list presence, pending mode and list filter
 .set g_ItemsSectionSelectNextMode, 0x030054E4  @ GameMode: pushed once the Items section select fades out
 .set g_bItemsSectionCursor,        0x030054E8  @ s8: Items section select row saved on exit
 .set g_dwItemUseItem,              0x030054EC  @ u32: item chosen in ItemsItemSelect, used by ItemUseScreen
 .set g_dwItemUseQuantity,          0x030054F0  @ u32: quantity chosen in QuantitySelectScreen, used by ItemUseScreen
-.set g_StatusEquipSlotSelect,      0x030054F8  @ StatusEquipSlotSelectState: slot select screen actors and pending mode; see include/pscreen_status_equip.h
-.set g_bStatusEquipSlot,           0x03005564  @ s8: selected equipment slot in StatusEquipSlotSelect
-.set g_CardTradeState, 0x03005568  @ CardTradeState: link card trade session; see include/pscreen_trade.h
 
-@ --- MT19937 PRNG (see docs/memory-map/rng.md) ---
-@ Names mostly match jogotu's BizHawk script naming, cross-checked
-@ against our own disassembly there. That script tracks cursor 1 only;
-@ cursor 2 is undocumented by it and comes from this project's own
-@ disassembly (see rng.md for what's confirmed and what's still open
-@ about it).
+@ --- include/pscreen_status_equip.h ---
+.set g_StatusEquipSlotSelect,      0x030054F8  @ StatusEquipSlotSelectState: slot select screen actors and pending mode
+.set g_bStatusEquipSlot,           0x03005564  @ s8: selected equipment slot in StatusEquipSlotSelect
+
+@ --- include/pscreen_trade.h ---
+.set g_CardTradeState, 0x03005568  @ CardTradeState: link card trade session
+
+@ --- include/random.h ---
 .set gMt19937LastRollByte,      0x03005574  @ low byte of the last tempered value (purpose unconfirmed)
 .set gMt19937DrawIndex,         0x03005578  @ cursor 1: running count of numbers drawn
 .set gMt19937StatePtr,          0x0300557C  @ base of the 624-word MT state array
@@ -434,20 +508,18 @@
 .set gMt19937AutoSeedCallCount, 0x03005590  @ increments each AutoSeed call (purpose unconfirmed)
 .set gMt19937SeedValue,         0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 
-@ --- Save manager and EEPROM ---
-.set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/save.h and docs/formats/save.md
+@ --- include/save.h ---
+.set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see docs/formats/save.md
 .set g_wEepromSavedDispstat,     0x0300561C  @ u16: DISPSTAT saved across EEPROM transfers (EepromTransferBegin/End)
 
-@ --- Screen darken ---
+@ --- include/screen_transitions.h ---
 .set g_pScreenPaletteBackup,        0x03005624  @ u16 *: 0x400-byte palette copy kept by DarkenScreenPalette
 .set g_dwUnk03005638,                      0x03005638  @ u32: set by SetScreenDarkenParams_candidate; no reader found
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300563C  @ u32: palette step ticks of DarkenScreenPalette/RestoreScreenPalette
 
-@ --- Camera and room size ---
+@ --- include/scroll.h ---
 .set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x03005648  @ RoomSizePixels: width and height of the current room in pixels
-
-@ --- Room BG layers and tile cache (see include/scroll.h) ---
 .set g_awBgLayerTileCount,          0x03005898  @ u16[4]: per BG layer, distinct tiles held in the BG tile cache
 .set g_aBgTilesets,                  0x030058A0  @ BgTileset[2]: per tile size class, the tile offset table and Huffman code table
 .set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera_candidate
@@ -462,15 +534,15 @@
 .set g_aBgControl,                  0x03005914  @ RoomBgControl[4]: BGxCNT shadow per BG layer
 .set g_RoomBgBlockData,             0x03005934  @ RoomBgBlockData: per-layer block maps and block tile tables
 .set g_adwBgBlockAttrOffset,        0x03005974  @ u32[4]: offset of each layer's block attribute bytes within its block tile table
-.set g_apBgTileCacheEntries,        0x03005988  @ BgTileCacheEntry *[2]; see include/overworld/room.h
+.set g_apBgTileCacheEntries,        0x03005988  @ BgTileCacheEntry *[2]
 .set g_apBgTileCacheBuckets,        0x03005990  @ u16 *[2]
 .set g_apBgTileCacheFreeSlots,      0x03005998  @ u16 *[2]
 .set g_awBgTileCacheFreeCount,       0x030059A8  @ u16[2]: number of entries in each size class's free slot stack
 .set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState_candidate
 .set g_BgLoadedScroll,              0x030059B8  @ s32[2]: g_BgScroll as of the last tile load; the window VRAM holds
 
-@ --- Serial link (see include/serial/) ---
-.set g_SerialLink, 0x030059D8  @ SerialLink: exchange flags and the game's link callbacks; see include/serial.h
+@ --- include/serial.h ---
+.set g_SerialLink, 0x030059D8  @ SerialLink: exchange flags and the game's link callbacks
 .set g_aSerialRecvMessages, 0x030059E4  @ SerialMessage[2]: latest message received from each peer
 .set g_SerialSendMessage, 0x030059FC  @ SerialMessage: message queued for the next exchange
 .set g_bSerialTick, 0x03005A08  @ u8: stamped into each queued message; incremented once per processed round
@@ -484,7 +556,7 @@
 .set g_bSerialPeerCount, 0x03005A20  @ u8: number of peers in g_aSerialRecvMessages
 .set g_bSerialLocalPlayerId, 0x03005A21  @ u8: GetSerialPlayerId() latched when the game session starts
 .set g_bSerialPlayerMask, 0x03005A22  @ u8: one bit per multiplayer slot that answered the last serial interrupt
-.set g_SerialPlayerState,        0x03005A24  @ SerialPlayerState: serial-link session block; see include/serial.h
+.set g_SerialPlayerState,        0x03005A24  @ SerialPlayerState: serial-link session block
 .set g_dwSerialExchangeCount, 0x03005A90  @ u32: completed exchange rounds
 .set g_dwSerialChecksumExchangeCount, 0x03005A94  @ u32: g_dwSerialExchangeCount latched by SubmitSerialMessage for message checksums
 .set g_dwSerialLastExchangeTime, 0x03005A98  @ u32: dwVBlankCount when the last exchange round finished
@@ -498,61 +570,73 @@
 .set g_dwSerialUnk03005AB8, 0x03005AB8  @ u32: set by sub_0803FB34, returned by sub_0803FB40; neither has a caller
 .set g_dwSerialUnk03005ABC, 0x03005ABC  @ u32: zeroed by InitSerial, no other access found
 
-@ --- Music ---
+@ --- include/sound.h ---
 .set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
 
-@ --- Shops (see include/shop.h) ---
-.set g_FredAndGeorgesShop,       0x03005AC8  @ FredAndGeorgesShopState; see include/shop.h
+@ --- include/store.h ---
+.set g_FredAndGeorgesShop,       0x03005AC8  @ FredAndGeorgesShopState
 
-@ --- Divination tea minigame ---
+@ --- include/tea_leaves_minigame.h ---
 .set g_DivinationTea,            0x03005B28  @ DivinationTeaState
 
-@ --- Dialog text and language ---
+@ --- include/text.h ---
 .set gDialogTextScratchBuf,      0x03005D08  @ pointer to the fixed 0x400-byte decode scratch buffer
 .set gCurrentLanguage,           0x03005D0C  @ byte: language ID (0-7) set by SetLanguage
 .set gLocaleThousandsSep,        0x03005D0D  @ byte: locale-specific number-formatting separator
+
+@ --- include/text_actor.h ---
 .set g_apTextActors,              0x03005D10  @ Actor *[17]: slots filled by SpawnTextActor; its destructor clears the slot
 
-@ --- Game timers (see include/game/game_timer.h) ---
-.set g_aGameTimers,                0x03005D58  @ GameTimer[4]; see include/game/game_timer.h
+@ --- include/timers.h ---
+.set g_aGameTimers,                0x03005D58  @ GameTimer[4]
 
-@ --- Harry and Hermione port-in-time ---
+@ --- include/timeturner_cutscene.h ---
 .set g_HarryHermionePortInTime,  0x03005D98  @ HarryHermionePortInTimeState
 
-@ --- Main menu and options (see include/menu/main_menu.h and include/menu/options.h) ---
-.set g_nMainMenuTextCursor,     0x03005DB0  @ s32: text tile cursor returned by the main menu's copyright text; see include/title.h
-.set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Actor *pCursorActor; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot}; see include/title.h
+@ --- include/title.h ---
+.set g_nMainMenuTextCursor,     0x03005DB0  @ s32: text tile cursor returned by the main menu's copyright text
+.set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Actor *pCursorActor; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot}
+
+@ --- include/title_new.h ---
 .set g_bSaveSlotScreenResult,    0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
-.set g_OptionsState,             0x03005DD0  @ OptionsState: 8 actor pointers, then music, sound and gamma settings; see include/menu/options.h
+
+@ --- include/title_options.h ---
+.set g_OptionsState,             0x03005DD0  @ OptionsState: 8 actor pointers, then music, sound and gamma settings
 .set g_dwOptionsReturnMode,      0x03005E04  @ u32: GameMode that opened the options screen
 .set g_bOptionsSavedMusicVolume, 0x03005E08  @ u8: settings kept across the language select trip
 .set g_bOptionsSavedSoundVolume, 0x03005E09  @ u8
 .set g_bOptionsSavedGammaHigh,   0x03005E0A  @ u8
 .set g_dwOptionsEntryLanguage,   0x03005E0C  @ u32: language when the options screen was entered
 
-@ --- Cool Train cutscene and room actor restore ---
+@ --- include/train_cutscene.h ---
 .set g_wCoolTrainTimer,          0x03005E14  @ u16: frames left in the Cool Train cutscene
+
+@ --- include/trigger_actor.h ---
 .set g_bRestoringRoomActors_candidate, 0x03005E18  @ u8: 1 while RestoreRoomActorState respawns actors; also set when the overworld pushes a pause menu
 
-@ --- Scanline effects (see docs/memory-map/scanline_effects.md) ---
+@ --- include/video.h ---
 .set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
 .set g_ScanlineEffectStaging,    0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
 
-@ --- OBJ tile allocator ---
+@ --- include/vram.h ---
 .set FindFreeObjTileRunIwram, 0x03006088  @ u8[0x9C]: IWRAM copy of FindFreeObjTileRun
 .set g_abObjTileAllocBitmap,    0x03006128  @ u8[128]: set bit = tile in use
 .set g_abObjTileFreeMask,       0x030061A8  @ u8[128]: clear bit = free pending the next OAM swap
 
-@ --- Screen windows ---
+@ --- include/windows.h ---
 .set g_aScreenWindows,          0x03006228  @ ScreenWindow[2]; see TickScreenWindow
 
-@ --- EEPROM ---
+@ --- include/hw/eeprom.h ---
 .set g_pEepromInterface,         0x030062C8  @ EepromInterface *: chosen by EepromSelectInterface
 
-@ --- System stacks and interrupt vector ---
+@ --- Boot + runtime (asm) ---
 .set gSystemStackTop,            0x03007EA0  @ top of the AGB system-mode stack
 .set gIrqStackTop,               0x03007FA0  @ top of the AGB IRQ-mode stack
+
+@ --- include/interrupts.h ---
 .set gIntrVectorPtr,             0x03007FFC  @ BIOS-called user interrupt handler pointer
+
+@ --- include/text.h ---
 .set sDialogLanguageTable,       0x0806BD78  @ ROM: 8 x u32, one string-table blob pointer per language

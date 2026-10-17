@@ -5,12 +5,7 @@
 #include "game/items.h"
 #include "save.h"
 #include "game_state.h"
-
-// Rewards earned this battle, paid out by the combat result screen. The XP total is
-// one pool shared by the whole party; reward grants also stage their Sickles
-// amount in the gold variable.
-extern u16 g_nBattleXpReward;    // 0x0300260E
-extern u16 g_nBattleGoldReward;  // 0x03002610
+#include "combat.h"
 
 // Reward ids share one number space with item ids: 0x00-0x4F are items,
 // 0x50-0x82 are Folio Universitas cards (id - 0x50 is the card index), 0x83

@@ -7,6 +7,7 @@
 #include "map.h"
 #include "title_load.h"
 #include "title_new.h"
+#include "game_state.h"
 
 void HandleSaveLoadContinuation(void)
 {

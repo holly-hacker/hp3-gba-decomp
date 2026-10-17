@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "combat_2.h"
 #include "items.h"
+#include "combat.h"
 
 // Recomputes each party member's base stats from their level, then lowers
 // Def/M.Def percentages (lower is better) and Agi by each equipped item.

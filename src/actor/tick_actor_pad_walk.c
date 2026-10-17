@@ -6,6 +6,7 @@
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"
+#include "hero.h"
 
 // Action state 0x11: walks the party leader to the pixel position in Actor bytes
 // 0x60/0x64 with its followers hidden, faces bPadFinalFacing, then hands control back

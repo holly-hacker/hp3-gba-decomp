@@ -3,6 +3,8 @@
 #include "sound.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
+#include "commands.h"
+#include "hero.h"
 
 // Per-frame update of one camera focus slot: pan toward the target, shake, or follow.
 void TickCameraFocus_candidate(u8 slot)

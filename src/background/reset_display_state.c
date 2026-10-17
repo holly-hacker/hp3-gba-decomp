@@ -4,6 +4,7 @@
 #include "hw/io_regs.h"
 #include "overworld/room.h"
 #include "scroll.h"
+#include "main.h"
 
 void ResetDisplayState(u16 mode)
 {

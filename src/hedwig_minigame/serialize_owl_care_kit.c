@@ -1,6 +1,7 @@
 #include "types.h"
 #include "save.h"
 #include "hedwig_minigame.h"
+#include "game_state.h"
 
 // Writes the Owl Care Kit state: four nibbles (flags, owl name, owl type and
 // an unused one), then the stat meters, ticks, care counters and mail timer.

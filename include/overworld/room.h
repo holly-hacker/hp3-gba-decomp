@@ -49,14 +49,6 @@ typedef struct RoomTableEntry {
     u8 bUnused_7b;
 } RoomTableEntry;
 
-// Read here as a full word, not the byte docs/memory-map/game_modes.md's
-// plate comment describes elsewhere -- real source likely declares it int.
-extern u32 g_bCurrentRoomId;                // 0x03003B50
-// Signed camera Y offset in pixels, added to quest event state 0x1B (sub_0803E45C).
-extern s8 g_nCameraYOffset;
-extern u16 g_wRoomResourceFlags_candidate;
-extern u8 g_abQuestEventState[];
-
 // Fixed indices into g_abQuestEventState; see docs/formats/save.md ("Quest event state").
 // Keep these in sync with the QUEST_* .set definitions in asm/room_script.inc.
 #define QUEST_STORY_STAGE            0x00
@@ -144,13 +136,9 @@ extern u8 g_abQuestEventState[];
 #define QUEST_OBJ_RETURN_TO_LUPIN                      56
 #define QUEST_OBJ_RESCUE_SIRIUS                        57
 #define QUEST_OBJ_FIND_HIPPOGRIFF_BAITING_BOOK_UNUSED  58
-extern u32 g_dwOverworldMonstersDisabled;
-extern u8 g_bPendingQuestStateOverride_candidate;
-extern u32 g_dwRoomBgFlag_candidate;
 
 // Snapshot of the current room's non-default actors; see docs/formats/save.md.
 #define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
-extern u8 g_bRoomSwitchState;  // 0 or 1
 extern u32 GetRoomSwitchState(void);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
 extern void ShowMapNamePopup(void);

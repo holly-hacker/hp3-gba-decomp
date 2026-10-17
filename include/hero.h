@@ -3,6 +3,7 @@
 #include "types.h"
 #include "actor.h"
 #include "camera.h"
+#include "overworld/overworld.h"
 
 // Party member sprites and animations, set by SetPartyMemberAnim. The record arrays are
 // indexed by character id, the animation tables by Actor.bFacing.
@@ -44,3 +45,29 @@ extern const u8 g_abPartyAnim3Anim[22];
 extern const ActorGfxRecord g_UnusedPartyGfx2;
 
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
+
+extern OverworldControlState g_OverworldControlState;
+// Signed camera Y offset in pixels, added to quest event state 0x1B (sub_0803E45C).
+extern s8 g_nCameraYOffset;
+extern u8 g_abRoomScriptExitParams_candidate[2];
+extern Actor *g_pPlayerActor;
+// The two party followers' actors; NULL while the slot is empty.
+extern Actor *g_pFollowerActor0;
+extern Actor *g_pFollowerActor1;
+// Character ids of the leader and the two follower slots.
+extern u8 g_bPartyCharId0;
+extern u8 g_bPartyCharId1;
+extern u8 g_bPartyCharId2;
+// Index into the 9-entry field spell table at 0x08060BAC: {u32 spell,
+// u8 FighterType, u8 minimum bKnownSpellCount}. Flipendo, Lumos and Diffindo
+// for Harry, Flipendo, Reparo and Glacius for Hermione, Flipendo, Alohomora
+// and Spongify for Ron; Diffindo and Spongify need 5 known spells, Glacius 6.
+// CyclePartyLeaderSelection_candidate steps it; it is saved with the party.
+extern u8 g_bSelectedFieldSpell;
+extern Actor *g_pPlayerShadowActor_candidate;
+// HUD actors, cleared by ResetPartyState and freed by sub_08024BD4.
+extern Actor *g_pFieldSpellNameActor;       // selected spell's name text (sub_08023A2C)
+extern Actor *g_pMapNameTextActor;          // room name text (ShowMapNamePopup)
+extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
+extern Actor *g_pFieldSpellPortraitActor;   // face portrait of the spell's character (sub_08023A2C)
+extern Actor *g_pMapNamePopupActor;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)

@@ -7,6 +7,7 @@
 #include "overworld/room.h"
 #include "cursor.h"
 #include "video.h"
+#include "hero.h"
 
 void ExitDialog(void)
 {

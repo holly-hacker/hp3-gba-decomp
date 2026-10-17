@@ -5,6 +5,10 @@
 #include "actor.h"
 #include "overworld/overworld.h"
 #include "map.h"
+#include "area.h"
+#include "hero.h"
+#include "main.h"
+#include "trigger_actor.h"
 
 void HandleOverworldPauseMenuInput(void)
 {

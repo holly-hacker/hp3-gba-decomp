@@ -85,6 +85,4 @@ typedef struct {
     u8 abPad[2];
 } ItemInventory;
 
-extern ItemInventory g_ItemInventory;  // 0x030037B0
-
 #define SAVE_ITEM_QUANTITIES_SIZE sizeof(ItemInventory)

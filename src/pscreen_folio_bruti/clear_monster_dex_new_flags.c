@@ -1,6 +1,7 @@
 #include "types.h"
 #include "save.h"
 #include "pscreen_folio_bruti.h"
+#include "game_state.h"
 
 // Seeing a monster for the first time stores level 2 and analyzing it level 4; the even values mean
 // "new" and drop to 1 and 3 once the Folio Bruti has been opened.

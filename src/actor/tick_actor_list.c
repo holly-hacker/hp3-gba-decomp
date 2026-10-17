@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "mem.h"
 #include "modes.h"
+#include "main.h"
 
 // Runs one update pass over an actor list. TickActor runs for every actor
 // (from the tail when the mode flags allow the full pass), then the actors

@@ -11,6 +11,9 @@
 #include "screen_transitions.h"
 #include "video.h"
 #include "windows.h"
+#include "commands.h"
+#include "hero.h"
+#include "map.h"
 
 void ExitChooseCharacter(void)
 {

@@ -21,3 +21,8 @@ extern void sub_08044F54(Actor *pSelf, Actor *pOther);
 extern const ActorGfxRecord g_aRoomSwitchSprites[5];                // ROM 0x0806C178 (US)
 extern const ActorGfxRecord *const g_apRoomSwitchAssetRecords[12];  // ROM 0x0806C1A0 (US)
 extern const void *const g_apRoomSwitchEffectData[12];               // ROM 0x0806C1D0 (US)
+
+// 1 while RestoreRoomActorState respawns the room's saved actors, and set
+// when the overworld pushes a pause menu; the room actor constructed by
+// sub_08044C00 and its callbacks branch on it.
+extern u8 g_bRestoringRoomActors_candidate;

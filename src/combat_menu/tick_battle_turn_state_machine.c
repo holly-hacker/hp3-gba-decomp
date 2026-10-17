@@ -3,6 +3,7 @@
 #include "combat_menu.h"
 #include "combat_2.h"
 #include "modes.h"
+#include "combat.h"
 
 static inline void TransitionBattleState(int newState)
 {

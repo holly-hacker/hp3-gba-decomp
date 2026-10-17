@@ -7,6 +7,8 @@
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 #include "screen_transitions.h"
+#include "hero.h"
+#include "map.h"
 
 // Every fourth frame the next graphic is loaded into the back BG and swapped in. The state machine
 // fades in from black, runs until frame 0xF0 or a key press, fades to white, then leaves for the

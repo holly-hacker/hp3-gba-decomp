@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game/rewards.h"
 #include "items.h"
+#include "game/rewards.h"
 
 // Returns the slot's item to the inventory; 0 when the slot is empty.
 u32 UnequipItemFromSlot(u8 character, u32 slot)

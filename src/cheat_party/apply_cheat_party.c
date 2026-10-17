@@ -1,6 +1,7 @@
 #include "types.h"
 #include "cheat_party.h"
 #include "overworld/overworld.h"
+#include "hero.h"
 
 // An empty slot (0) clears the party id to 0xFF and drops the follower actor.
 void ApplyCheatParty(void)

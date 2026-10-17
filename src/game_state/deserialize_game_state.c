@@ -14,6 +14,9 @@
 #include "map.h"
 #include "pscreen_folio_bruti.h"
 #include "pscreen_folio_universitas.h"
+#include "combat.h"
+#include "commands.h"
+#include "hero.h"
 
 // Rebuilds the live game state from the slot buffer, in the order
 // SerializeGameStateToSaveBuffer wrote it.

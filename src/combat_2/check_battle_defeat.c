@@ -6,6 +6,10 @@
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"
+#include "combat.h"
+#include "commands.h"
+#include "hero.h"
+#include "map.h"
 
 // Ends the battle in defeat once every non-Enemy fighter (only Buckbeak in a
 // Buckbeak-only encounter) is at 0 HP: fully heals the party, picks the

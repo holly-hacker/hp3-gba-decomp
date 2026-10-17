@@ -4,6 +4,8 @@
 #include "game/items.h"
 #include "actor.h"
 
+extern ItemInventory g_ItemInventory;
+
 // Defined const in src/items/items.c. Declared without const, as the ROM's
 // inventory code was compiled: UseRestorePotion re-reads a field after a call.
 extern ItemEntry g_pItemTable[ITEM_COUNT];

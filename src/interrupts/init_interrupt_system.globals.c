@@ -1,5 +1,6 @@
 #include "types.h"
 #include "interrupts.h"
+#include "krawall.h"
 
 const IntrFunc gIntrTableTemplate[13] = {
     HandleTimer3Interrupt,

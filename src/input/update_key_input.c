@@ -3,6 +3,7 @@
 #include "serial.h"
 #include "hw/io_regs.h"
 #include "modes.h"
+#include "main.h"
 
 void UpdateKeyInput(void)
 {

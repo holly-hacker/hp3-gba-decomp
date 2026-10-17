@@ -1,5 +1,6 @@
 #include "types.h"
 #include "game/items.h"
+#include "items.h"
 #include "game/rewards.h"
 #include "save.h"
 #include "game_state.h"
@@ -7,7 +8,6 @@
 #include "input.h"
 #include "pscreen_items.h"
 #include "store.h"
-#include "items.h"
 
 void UpdateShopBuyList(void)
 {

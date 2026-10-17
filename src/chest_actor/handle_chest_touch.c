@@ -9,6 +9,8 @@
 #include "overworld/room_script.h"
 #include "items.h"
 #include "move.h"
+#include "commands.h"
+#include "hero.h"
 
 // Collision callback of a chest (room actor type 9): decides whether the
 // player or a spell effect opens it. See docs/formats/rooms.md.

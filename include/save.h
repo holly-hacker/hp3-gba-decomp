@@ -171,8 +171,6 @@ typedef struct {
     u8 pad_B0[0x04];
 } SaveStateBlock;
 
-extern SaveStateBlock g_saveStateBlock;
-
 extern const SaveHeader g_DefaultSaveHeader;
 extern const SaveOptions g_DefaultSaveOptions;
 

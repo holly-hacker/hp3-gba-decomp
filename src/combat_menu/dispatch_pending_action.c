@@ -5,6 +5,8 @@
 #include "sound.h"
 #include "random.h"
 #include "overworld/room.h"
+#include "combat.h"
+#include "map.h"
 
 // Starts the active fighter's queued menu action (spell, item, Special Move
 // or flee attempt): announces it and puts the fighter's Actor into the

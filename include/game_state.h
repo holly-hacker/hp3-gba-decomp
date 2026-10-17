@@ -22,3 +22,8 @@ s32 GetSickles(void);  // returns g_saveStateBlock.dwMoney
 extern const Playtime g_stPlaytimeZero;
 extern const Playtime g_stPlaytimeFrameDelta;
 extern const Playtime g_stPlaytimeHourLimit;
+
+extern SaveStateBlock g_saveStateBlock;
+// Cleared by the next TickActor pass that ticks an actor's movement; that
+// actor plays sound 0x47 if its position changed. Its writer is unidentified.
+extern u32 g_dwUnk03003234;

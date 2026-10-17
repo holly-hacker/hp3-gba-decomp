@@ -15,6 +15,8 @@ struct ActorFrameData;
 // folds the mask into the bitmap on a vblank that swaps the OAM buffers.
 extern u8 g_abObjTileAllocBitmap[128];
 extern u8 g_abObjTileFreeMask[128];
+// IWRAM copy of FindFreeObjTileRun.
+extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 startBit);
 
 extern void InstallIwramFindFreeObjTileRun(void);
 extern void InitObjTileAllocBitmaps(u8 bgMode);

@@ -3,6 +3,7 @@
 #include "gen/graphics/overworld.h"
 #include "actor.h"
 #include "pscreen_folio_universitas.h"
+#include "game_state.h"
 
 // Shows card `cardIndex` in one of the three combo slots; any index past the last card
 // (such as 0x33) leaves the slot empty.

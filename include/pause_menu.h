@@ -39,6 +39,7 @@ typedef struct {
     const ListMenuDefinition *pDefinition;  // 0x04: definition of the menu on screen
 } ListMenuState;
 
+extern ListMenuDefinition g_ConnectivityMenu;  // RAM copy of g_ConnectivityMenuTemplate
 extern ListMenuState g_ListMenuState;  // 0x03005220
 extern void ListMenuCursorTick_candidate(Actor *pActor);
 extern void BuildListMenu(const ListMenuDefinition *pDefinition);

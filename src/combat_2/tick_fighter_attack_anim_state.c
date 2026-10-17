@@ -4,6 +4,7 @@
 #include "battle/battle.h"
 #include "combat_menu.h"
 #include "random.h"
+#include "combat.h"
 
 // Enemy-side per-actor tick dispatcher, mirroring TickPlayerActionState's
 // shape: a switch on Actor+0x8D (bActionState), every case branching into

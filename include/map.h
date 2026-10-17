@@ -5,6 +5,7 @@
 #include "color.h"
 #include "graphics/display.h"
 #include "overworld/room.h"
+#include "overworld/room_actor_state.h"
 
 extern void InitializeOverworld(void);
 extern void ExitOverworldScreen(void);
@@ -37,6 +38,20 @@ extern void sub_0802B210(void);
 extern u8 g_bTouchedMonsterRecordCount;
 extern u8 g_abTouchedMonsterRecords[20];
 extern Actor *g_pTouchedWanderingMonster;
+
+// Read here as a full word, not the byte docs/memory-map/game_modes.md's
+// plate comment describes elsewhere -- real source likely declares it int.
+extern u32 g_bCurrentRoomId;
+extern u8 g_bControlSlotTicks_candidate;
+extern u8 g_bPendingQuestStateOverride_candidate;
+extern u32 g_dwRoomBgFlag_candidate;
+// Nonzero blocks the overworld Start/Select menus (SetPauseMenuLocked).
+extern u32 g_dwPauseMenuLocked;
+extern u8 g_bRoomSwitchState;  // 0 or 1
+extern RoomActorStateBuffer *g_pRoomActorStateBuffer;
+// Frames until Start/Select may open a menu again; 4 after room init and
+// each menu open, counted down by UpdateOverworld.
+extern u32 g_dwPauseMenuCooldown;
 
 // 8-byte wandering-monster spawn-position record, two words.
 // Only the low halves reach SpawnWanderingMonsterActor;

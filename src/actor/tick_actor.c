@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "mem.h"
 #include "sound.h"
+#include "game_state.h"
 
 // Runs one actor's per-frame update for TickActorList: frees it if marked for
 // destruction, binds or releases its effect graphics by visibility, runs its

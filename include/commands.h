@@ -190,3 +190,10 @@ struct GotoIfAllQuestFlagsSetRecord;
 void RoomScriptOpGotoIfAllQuestFlagsSet(struct GotoIfAllQuestFlagsSetRecord *pRecord);
 struct SetPendingChainFromExitParamRecord;
 void RoomScriptOpSetPendingChainFromExitParam(struct SetPendingChainFromExitParamRecord *pRecord);
+
+// 0 = idle, 1 = resuming a yielded chain, 2 = yielded (the walk stops after
+// the current record), 3 = walking while a yielded chain is pending, 4 = disabled.
+extern u32 g_dwRoomScriptRunState;
+extern u8 g_abQuestEventState[];
+extern u8 g_bRoomScriptPendingChain;
+extern u8 g_bCameraShakeSoundHandle;  // stopped when a shake effect ends

@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "combat_2.h"
 #include "save.h"
+#include "combat.h"
 
 // Writes the three party members' saved fields.
 void SerializePartyStats(void)

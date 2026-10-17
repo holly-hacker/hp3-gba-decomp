@@ -12,6 +12,7 @@
 #include "overworld/room.h"
 #include "cursor.h"
 #include "scroll.h"
+#include "hero.h"
 
 void InitializeDialog(void)
 {

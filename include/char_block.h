@@ -12,3 +12,7 @@ extern void CommitBgTileAnimations(void);  // run from the vblank callback
 extern void PauseBgTileAnimations(void);   // clears bit 1 (running) of every BG tile animation
 extern void ResumeBgTileAnimations(void);  // sets bit 1 of every BG tile animation
 extern void FreeBgTileAnimations(void);
+
+extern u8 g_bBgTileAnimationCount;
+extern BgTileAnimEntry g_aBgTileAnimations[4];
+extern void *g_apBgTileAnimationBuffers[4];  // decoded tiles of each entry

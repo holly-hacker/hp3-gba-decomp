@@ -204,21 +204,12 @@ typedef struct FightState {
     /*0x14C6*/ u8 bFolioComboFirstCard;  // first card of the combo picked on the Folio Universitas screen for this attack, 0xFF for none
 } FightState;
 
-extern FightState *g_pFightState;
-extern u8 g_bSpellMissStreak;
-
 // FightState->bBonusRewardFlags bits, see docs/memory-map/battle.md.
 typedef enum {
     ExtraExpBonus  = 0x01,
     GrantExtraXp   = 0x02,
     ForceItemDrop  = 0x04,
 } BattleRewardFlags;
-
-extern u32 g_dwBattleRewardFlagsSnapshot;
-extern s32 g_anFaintedRosterIndices[4];
-
-// One slot per active BattleFighter -- see docs/formats/battle-ui.md.
-extern Actor *g_apFighterActors_candidate[7];
 
 // The Folio Universitas card slot lives at +8 (dwCurrentGameModeArg2) in
 // g_PrevGameModeStackContext (see modes.h): PushGameMode_2(0x26, slot, 0) stages
@@ -263,8 +254,6 @@ typedef enum {
 // skips the second message while it holds.
 #define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
 
-extern u16 g_nLastDamage;                       // 0x0300274A
-extern u8 g_bLastTargetIndex;                   // 0x0300274C
 // Battle-effect staging area at 0x03002750. TriggerBattleEffect fills the
 // fields below before spawning the effect actor; the low bytes belong to
 // other battle state (see docs/memory-map/battle.md).
@@ -285,10 +274,6 @@ typedef struct EffectStaging {
     u8 bStateB_candidate;
     u8 bIdStaged_candidate;
 } EffectStaging;
-extern EffectStaging g_effectStaging;                 // 0x03002750
-extern u8 g_bReviveInsertCount_candidate;             // 0x03002773
-extern BattleFighter g_aPartyMasterStats[];     // 0x030024EC, 0x48 stride, by FighterType
-extern u8 g_bDefeatWarpParam;                   // 0x03002748
 
 // per-wActorType windup-flash resource pointer row, stride 0xA0
 // One row per FighterType: sprite records selected by animation state
@@ -304,10 +289,6 @@ extern void *memcpy(void *dst, const void *src, u32 n);
 // every battle exit, not battle logic; not otherwise analyzed.
 extern void FreeFloorEffect(void);
 
-// Battle-message icon actor (shown alongside ShowBattleMessage's text),
-// distinct from the 7 per-fighter Actors in g_apFighterActors_candidate.
-extern Actor *g_pBattleMessageIconActor_candidate;  // 0x03002684
-extern u32 g_bSelectedFighterSlot_candidate;          // 0x03002660
 
 // bIndex/dwParam are adjacent globals (0x03002688/0x0300268C) accessed
 // through one base address in the real code, hence one struct here.
@@ -316,5 +297,4 @@ typedef struct {
     u8 pad[3];
     u32 dwParam;
 } BattleMessageIconState;
-extern BattleMessageIconState g_BattleMessageIconState_candidate;  // 0x03002688
 

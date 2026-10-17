@@ -1,9 +1,9 @@
 #include "types.h"
 #include "constants/items.h"
 #include "game/items.h"
+#include "items.h"
 #include "game/rewards.h"
 #include "gen/graphics/menus.h"
-#include "items.h"
 
 // Cards share the Chocolate Frogs icon; ITEM_REMOVE has an icon of its own.
 void GetItemImageData(u32 item, const void **ppPalette, const void **ppTileData, const void **ppFrameData)

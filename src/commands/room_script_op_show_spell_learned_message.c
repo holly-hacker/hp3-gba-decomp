@@ -7,6 +7,7 @@
 #include "font.h"
 #include "text.h"
 #include "overworld/room_script.h"
+#include "game_state.h"
 
 typedef struct ShowSpellLearnedMessageRecord {
     u32 dwOpcode;

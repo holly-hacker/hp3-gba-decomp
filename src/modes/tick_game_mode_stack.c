@@ -3,6 +3,7 @@
 #include "input.h"
 #include "interrupts.h"
 #include "serial.h"
+#include "main.h"
 
 void TickGameModeStack(void)
 {

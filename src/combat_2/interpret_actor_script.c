@@ -6,6 +6,7 @@
 #include "char_block.h"
 #include "color.h"
 #include "combat_2.h"
+#include "items.h"
 #include "game/rewards.h"
 #include "background.h"
 #include "sound.h"

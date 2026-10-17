@@ -143,10 +143,6 @@ extern void DispatchGameModeDestroy(void);
 // TickGameModeStack has a mode change to apply this frame.
 extern s32 IsGameModeTransitionPending(void);
 
-// See ram_symbols.us.inc: 0x03003B44, a broad game-mode-state flags word
-// touched by dozens of functions across overworld/room/cutscene transitions.
-extern u32 g_dwGameModeFlags;
-
 typedef enum {
     SerialSessionActive = 0x20,
 } GameModeFlags;

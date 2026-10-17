@@ -5,6 +5,7 @@
 #include "combat_2.h"
 #include "graphics/display.h"
 #include "particles.h"
+#include "combat.h"
 
 #define FIGHTER(i) (g_pFightState->pFighters[i])
 #define PENDING(i) (g_pFightState->pPendingFighters_candidate[i])

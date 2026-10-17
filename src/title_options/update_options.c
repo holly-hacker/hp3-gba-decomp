@@ -9,6 +9,7 @@
 #include "save.h"
 #include "text.h"
 #include "default_menu.h"
+#include "map.h"
 
 void UpdateOptions(void)
 {

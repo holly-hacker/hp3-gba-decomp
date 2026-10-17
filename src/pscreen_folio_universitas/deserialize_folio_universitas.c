@@ -1,6 +1,7 @@
 #include "types.h"
 #include "save.h"
 #include "pscreen_folio_universitas.h"
+#include "game_state.h"
 
 // Reads the Folio Universitas card counts (one nibble per card) and the
 // seen and new-card bit sets.

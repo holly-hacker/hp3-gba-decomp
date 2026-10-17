@@ -5,6 +5,8 @@
 #include "overworld/room.h"
 #include "overworld/room_blob.h"
 #include "overworld/room_script.h"
+#include "commands.h"
+#include "trigger_actor.h"
 
 void InitRoomScriptState(void)
 {

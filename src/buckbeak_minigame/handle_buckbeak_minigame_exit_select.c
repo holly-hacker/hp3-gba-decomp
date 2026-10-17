@@ -4,6 +4,8 @@
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 #include "buckbeak_minigame.h"
+#include "hero.h"
+#include "map.h"
 
 void HandleBuckbeakMinigameExitSelect(void)
 {

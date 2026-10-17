@@ -4,6 +4,7 @@
 #include "input.h"
 #include "overworld/room.h"
 #include "store.h"
+#include "map.h"
 
 void UpdateShopMainMenu(void)
 {

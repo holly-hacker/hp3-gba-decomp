@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "combat_menu.h"
 #include "random.h"
+#include "combat.h"
 
 // Adds +/-16 random jitter to each Enemy fighter's bAgility (clamped
 // [5,251]) before BuildTurnOrder sorts by it. Runs on pStagingFighters,

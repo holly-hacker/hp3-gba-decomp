@@ -6,6 +6,7 @@
 #include "dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"
+#include "hero.h"
 
 // Shows the line's speaker portrait. Blocks 0x7C ("You Receive: \n @1 @2") and 0x7D
 // ("You Receive: \n @1 Sickles") use the portrait of the character the player controls.

@@ -15,7 +15,6 @@ extern const ListMenuRowActor g_aConnectivityRowActors[2];      // 0x080694A4
 extern const ListMenuDefinition g_ConnectivityMenuTemplate;       // 0x080694C4
 extern const ListMenuDefinition g_ConfirmTradeMenuDefinition;     // 0x080694E8
 
-extern ListMenuDefinition g_ConnectivityMenu;  // 0x030051F8: RAM copy of g_ConnectivityMenuTemplate
 extern s8 g_bConnectivityMenuCursor;           // 0x030052BC: row restored on re-entry
 
 extern void HandleConnectivityMenuTick(void);

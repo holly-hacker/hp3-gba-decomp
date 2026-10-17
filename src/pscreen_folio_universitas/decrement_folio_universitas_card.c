@@ -1,6 +1,7 @@
 #include "types.h"
 #include "save.h"
 #include "pscreen_folio_universitas.h"
+#include "game_state.h"
 
 u32 DecrementFolioUniversitasCard(u32 cardIndex)
 {

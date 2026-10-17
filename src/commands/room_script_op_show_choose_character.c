@@ -2,6 +2,7 @@
 #include "commands.h"
 #include "modes.h"
 #include "overworld/room_script.h"
+#include "main.h"
 
 typedef struct ShowChooseCharacterRecord {
     u32 dwOpcode;

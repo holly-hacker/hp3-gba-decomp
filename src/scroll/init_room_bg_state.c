@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "overworld/room.h"
 #include "scroll.h"
+#include "hero.h"
 
 void InitRoomBgState_candidate(void)
 {

@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "combat_menu.h"
 #include "combat_2.h"
+#include "combat.h"
 
 #define STAGING(i) (g_pFightState->pStagingFighters[i])
 #define SLOT(i) (g_pFightState->pFighters[i])

@@ -3,6 +3,7 @@
 #include "types.h"
 #include "save.h"
 #include "pscreen_folio_universitas.h"
+#include "game_state.h"
 
 // The ROM compiles GetFolioUniversitasSelectedCombo and IsFolioUniversitasCardSeen into some of the
 // screen's other routines and also keeps an out-of-line copy. Routines that inline them include

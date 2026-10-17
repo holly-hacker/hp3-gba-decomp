@@ -26,7 +26,6 @@ extern void HandleTimer3Interrupt(void);
 extern void HandleVCountInterrupt(void);
 extern void HandleHBlankInterrupt(void);
 extern void HandleTimer0Interrupt(void);
-extern void kradInterrupt(void);  // Krawall timer 1 handler, IWRAM copy; see docs/memory-map/krawall.md
 extern void HandleTimer2Interrupt(void);
 extern void IntrDummy(void);
 
@@ -79,8 +78,6 @@ extern volatile u32 g_dwVBlankIntrNestCount;
 // XORed with 1 once per serviced vblank; selects which 0x400-byte half of
 // the current 0x800-byte OAM shadow buffer gets DMA'd out.
 extern u32 g_bOamDmaHalfToggle;
-// Nonzero forces one extra CommitBgLayers call this vblank; cleared right after.
-extern u32 g_bForcePendingBgWritesFlush;
 // Sticky software copy of acked hardware IF bits, ORed in by every
 // interrupt handler after acking its own bit in IF.
 extern u16 g_wPendingIntrFlags;

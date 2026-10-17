@@ -3,6 +3,8 @@
 #include "sound.h"
 #include "modes.h"
 #include "overworld/room_script.h"
+#include "area.h"
+#include "main.h"
 
 typedef struct PlayRoomSoundEffectRecord {
     u32 dwOpcode;

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "serial.h"
+#include "main.h"
 
 // Queues this frame's message and runs one exchange round. Returns 1 and drops the session if the
 // round times out.

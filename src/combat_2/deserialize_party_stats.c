@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "save.h"
 #include "items.h"
+#include "combat.h"
 
 // Reads the three party members' saved fields and then derives their
 // level-dependent stats.

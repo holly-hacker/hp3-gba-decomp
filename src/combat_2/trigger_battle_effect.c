@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_2.h"
+#include "combat.h"
 
 // Stages a battle effect script into g_effectStaging, spawns the effect
 // actor, then clears the attacker's anim state in FightState. Returns the

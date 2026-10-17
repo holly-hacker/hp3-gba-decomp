@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "modes.h"
 #include "pscreen_folio_universitas.h"
+#include "combat.h"
 
 // Cards that cannot be picked from battle right now: the first combos until the battle's resume
 // arguments allow them, and the reinforcement cards while no fighter is waiting.

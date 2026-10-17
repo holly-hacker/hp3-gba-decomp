@@ -1,8 +1,8 @@
 #include "types.h"
 #include "constants/items.h"
 #include "game/items.h"
-#include "game/rewards.h"
 #include "items.h"
+#include "game/rewards.h"
 
 u32 GetRewardNameStringId_candidate(u32 rewardId)
 {

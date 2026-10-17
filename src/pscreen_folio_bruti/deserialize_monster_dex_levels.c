@@ -1,6 +1,7 @@
 #include "types.h"
 #include "save.h"
 #include "pscreen_folio_bruti.h"
+#include "game_state.h"
 
 // Reads each monster's 3-bit level, low bit first.
 void DeserializeMonsterDexLevels(void)

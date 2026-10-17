@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game/rewards.h"
 #include "items.h"
+#include "game/rewards.h"
 #include "game_state.h"
 
 // Gives `amount` of a reward id and returns how many of it the player now

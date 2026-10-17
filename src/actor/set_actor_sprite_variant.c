@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "actor.h"
+#include "main.h"
 
 void SetActorSpriteVariant(Actor *actor, s8 tableIndex, s8 variantIndex)
 {

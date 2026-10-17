@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game/rewards.h"
 #include "items.h"
+#include "game/rewards.h"
 #include "random.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"

@@ -7,6 +7,7 @@
 #include "sound.h"
 #include "graphics/display.h"
 #include "modes.h"
+#include "items.h"
 #include "game/rewards.h"
 #include "battle/battle.h"
 #include "overworld/overworld.h"

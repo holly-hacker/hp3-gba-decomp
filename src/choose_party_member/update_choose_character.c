@@ -5,6 +5,9 @@
 #include "input.h"
 #include "overworld/room.h"
 #include "cursor.h"
+#include "commands.h"
+#include "main.h"
+#include "map.h"
 
 void UpdateChooseCharacter(void)
 {

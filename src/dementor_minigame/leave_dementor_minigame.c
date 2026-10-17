@@ -3,6 +3,7 @@
 #include "sound.h"
 #include "overworld/room.h"
 #include "dementor_minigame.h"
+#include "map.h"
 
 void LeaveDementorMinigame(void)
 {

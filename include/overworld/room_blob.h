@@ -58,10 +58,6 @@ typedef struct RoomBlobSubBlock {
     RoomBlobTable actorTable;  // inline at +8
 } RoomBlobSubBlock;
 
-// Runtime buffer (0x2200 bytes) and the tables built inside it.
-extern RoomBlobHeader *g_pRoomTableBuffer;
-extern RoomBlobTable *g_pRoomActorTable;
-extern RoomBlobTable *g_pRoomRouteTable;
 // Each room's resource blob, in room table order.
 extern const u8 Room00Blob[];
 extern const u8 Room01Blob[];

@@ -4,6 +4,7 @@
 #include "modes.h"
 #include "save.h"
 #include "overworld/room.h"
+#include "commands.h"
 
 // Cheat menu level args packed in dwCurrentGameModeArg2, one byte each.
 #define CHEAT_ARG_LEVEL_CHAR1 ((u8)g_GameModeStackContext.dwCurrentGameModeArg2)

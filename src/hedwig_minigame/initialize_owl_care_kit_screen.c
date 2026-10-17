@@ -9,6 +9,7 @@
 #include "gen/graphics/minigames/owl_care.h"
 #include "screen_transitions.h"
 #include "mem.h"
+#include "game_state.h"
 
 void InitializeOwlCareKitScreen(void)
 {

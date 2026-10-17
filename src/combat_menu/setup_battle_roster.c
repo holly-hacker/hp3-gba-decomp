@@ -5,6 +5,8 @@
 #include "combat_2.h"
 #include "modes.h"
 #include "hero.h"
+#include "combat.h"
+#include "game_state.h"
 
 // The random-encounter cell for the current mode-stack args: id/kind/variant
 // select the table row, `slot` picks one of its 4 enemy slots.

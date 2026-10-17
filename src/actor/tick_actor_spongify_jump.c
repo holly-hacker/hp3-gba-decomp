@@ -8,6 +8,7 @@
 #include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"
 #include "hero.h"
+#include "map.h"
 
 // Action state 0x10: a Spongify pad bounces the party leader along a parabola from its
 // position to moveTarget, its followers hidden, then hands control back (action state 0x21).

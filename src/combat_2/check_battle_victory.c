@@ -3,6 +3,7 @@
 #include "combat_menu.h"
 #include "combat_2.h"
 #include "sound.h"
+#include "combat.h"
 
 // Ends the battle in victory once every Enemy fighter is at 0 HP: pushes
 // battle state 7 and shows the victory message. The caller passes the

@@ -6,6 +6,7 @@
 #include "pscreen_connectivity.h"
 #include "pause_menu.h"
 #include "screen_transitions.h"
+#include "game_state.h"
 
 void InitializeConnectivityMenu(void)
 {

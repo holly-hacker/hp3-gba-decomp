@@ -24,9 +24,6 @@ typedef struct RoomActorWordState {
 
 #define ROOM_ACTOR_WORD_STATE(pActor) ((RoomActorWordState *)&(pActor)->scriptState)
 
-// Three words zeroed whenever a type 10 or 12 actor is constructed.
-extern u32 g_adwRoomActorUnkACState[3];
-
 // Types 2, 4 and 7 take their runtime actor type from the first word of the record.
 typedef struct RoomActorRecordUnk2 {
     u32 dwActorType;

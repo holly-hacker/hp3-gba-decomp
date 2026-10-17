@@ -3,6 +3,7 @@
 #include "save.h"
 #include "graphics/display.h"
 #include "pscreen_folio_bruti.h"
+#include "game_state.h"
 
 // Marks every monster's cell of the grid with the tile for its level (see ClearMonsterDexNewFlags).
 void DrawFolioBrutiGrid(void)

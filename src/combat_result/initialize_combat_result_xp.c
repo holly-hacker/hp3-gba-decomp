@@ -5,6 +5,7 @@
 #include "text.h"
 #include "combat_result.h"
 #include "hero.h"
+#include "combat.h"
 
 #define FIGHTER(pos) g_aPartyMasterStats[g_abCombatResultPartySlots[pos]]
 #define MAX_DISPLAY_LEVEL 98

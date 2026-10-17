@@ -6,9 +6,11 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "modes.h"
+#include "items.h"
 #include "game/rewards.h"
 #include "mem.h"
 #include "overworld/room.h"
+#include "map.h"
 
 // Battle mode's pInitFn. See docs/memory-map/battle.md.
 void InitializeBattle(void)

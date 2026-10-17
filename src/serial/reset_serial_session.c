@@ -2,6 +2,7 @@
 #include "modes.h"
 #include "input.h"
 #include "serial.h"
+#include "main.h"
 
 void ResetSerialSession(void)
 {

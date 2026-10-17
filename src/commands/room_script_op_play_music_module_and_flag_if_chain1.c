@@ -3,6 +3,8 @@
 #include "sound.h"
 #include "modes.h"
 #include "overworld/room_script.h"
+#include "area.h"
+#include "main.h"
 
 typedef struct PlayMusicModuleAndFlagIfChain1Record {
     u32 dwOpcode;

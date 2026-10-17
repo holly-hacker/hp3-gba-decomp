@@ -14,6 +14,7 @@ typedef void (*DecompressFunc)(const void *src, void *dst, u32 *pSize);
 void DecompressGammaLz(const void *src, void *dst, u32 *pSize);
 extern DecompressFunc g_pDecompressLzRleEntry;
 extern DecompressFunc g_pDecompressGammaLzEntry;
+extern u8 g_pDecompressLzRleIwram[0x1F8];  // IWRAM copy of DecompressLzRle
 extern u8 g_pDecompressGammaLzIwram[0x33C];
 
 // The 4-byte header of a compressed resource. type selects the codec per

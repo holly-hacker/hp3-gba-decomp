@@ -4,6 +4,9 @@
 #include "overworld/room.h"
 #include "overworld/room_script.h"
 #include "time_skip_cutscene.h"
+#include "hero.h"
+#include "main.h"
+#include "map.h"
 
 // Arg2 counts frames. After 0x85 frames, or on A/B/Select/Start, leaves for the
 // overworld: in room 0x28 by exit 6, elsewhere in the current room.

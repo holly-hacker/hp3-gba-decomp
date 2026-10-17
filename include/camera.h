@@ -48,8 +48,6 @@ typedef struct CameraFocusOffset {
 } CameraFocusOffset;
 extern CameraFocusOffset g_aCameraFollowOffsets[];
 
-extern u8 g_bCameraShakeSoundHandle;  // stopped when a shake effect ends
-
 // Result of MoveCameraFocusToward_candidate once the focus is on the target.
 #define CAMERA_FOCUS_ARRIVED 8
 

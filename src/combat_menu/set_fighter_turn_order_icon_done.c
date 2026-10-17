@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
+#include "combat.h"
 
 // Resets the fighter's turn-order icon portrait to its idle frame; enemy
 // fighters use frame 1, party fighters frame 0.

@@ -80,6 +80,8 @@ typedef struct BgState {
     BgLayer aLayers[4];
 } BgState;
 extern BgState g_BgState;  // 0x03001E80
+// Nonzero forces one extra CommitBgLayers call this vblank; cleared right after.
+extern u32 g_bForcePendingBgWritesFlush;
 
 #define BG_LAYER_TWEEN        0x0001  // scroll toward nTarget over wTweenFrames
 #define BG_LAYER_ROTATE       0x0002  // advance wAngle by wAngleStep

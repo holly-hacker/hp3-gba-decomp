@@ -3,6 +3,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "actor.h"
+#include "main.h"
 
 // Applies an ActorAssetRecord: its frame delay, its tiles and frames, and its
 // palette (when it has one) in the actor's OBJ palette bank.

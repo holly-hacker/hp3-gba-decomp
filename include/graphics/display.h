@@ -54,10 +54,6 @@ typedef struct BgTileAnimEntry {
     const BgControlWord *pBgControl;
 } BgTileAnimEntry;
 
-extern u8 g_bBgTileAnimationCount;
-extern BgTileAnimEntry g_aBgTileAnimations[4];
-extern void *g_apBgTileAnimationBuffers[4];  // decoded tiles of each entry
-
 typedef BG_TILE_ANIMATION(16) BgTileAnimation16;
 typedef BG_TILE_ANIMATION(64) BgTileAnimation64;
 typedef BG_TILE_ANIMATION(128) BgTileAnimation128;

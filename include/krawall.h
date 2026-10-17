@@ -22,3 +22,5 @@ extern void kramQualityMode(u32 mode);
 extern void kramSetSFXVol(u32 volume);
 extern void krapCallback(void (*callback)(s32 event, s32 param));
 extern void krapSetMusicVol(u32 volume, u32 fade);
+
+extern void kradInterrupt(void);  // Krawall timer 1 handler, IWRAM copy; see docs/memory-map/krawall.md

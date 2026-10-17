@@ -4,6 +4,7 @@
 #include "font.h"
 #include "text.h"
 #include "pscreen_folio_universitas_inline.h"
+#include "game_state.h"
 
 // Draws the two button hints at the bottom of the screen, and shows or dims the L/R prompts that go with them:
 // what the A button does for the selection and what Select does.

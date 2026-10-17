@@ -34,6 +34,7 @@
 #include "screen_transitions.h"
 #include "scroll.h"
 #include "move.h"
+#include "main.h"
 
 // agbcc special-cases a C function literally named `main`, inserting an
 // implicit call to `__gccmain` at entry that the real ROM code doesn't

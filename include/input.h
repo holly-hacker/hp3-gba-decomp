@@ -77,5 +77,3 @@ extern u8 GetAnyPlayerKeysHeld(void);
 extern u8 GetAnyPlayerKeysPressed(void);
 extern void InitScrollList(u32 rowCount);
 extern void InitScrollGrid(u32 selection, u32 itemCount, u32 columnCount, u32 visibleRows);
-
-extern u16 g_awSerialKeysReceived[2];  // 0x03005A0C: per-player key masks received over the link cable

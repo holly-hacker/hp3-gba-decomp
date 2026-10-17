@@ -3,6 +3,7 @@
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "serial.h"
+#include "main.h"
 
 // Queues a message for the next exchange unless a message of a higher type is already waiting.
 void QueueSerialMessage(u32 type, u32 data)

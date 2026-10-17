@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
 #include "combat_menu.h"
+#include "combat.h"
 
 // Highlights the fighter's turn-order icon portrait (frame 3 for enemies, 2
 // for party members) and gives it the front draw-order bias; every other

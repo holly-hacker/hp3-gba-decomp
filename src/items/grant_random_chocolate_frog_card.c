@@ -1,7 +1,7 @@
 #include "types.h"
 #include "random.h"
-#include "game/rewards.h"
 #include "items.h"
+#include "game/rewards.h"
 
 // Grants one random card for a Chocolate Frog. The 30 rolls cover 10 card
 // slots per category row, taking the first two cards of each 3-card combo:

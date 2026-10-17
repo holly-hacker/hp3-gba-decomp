@@ -37,5 +37,3 @@ typedef struct {
     RoomActorTileRecord aPickupMarker[16];                                 // 0x1794
     RoomActorTileRecord aPresenceMarker[ROOM_ACTOR_STATE_MAX_PRESENCE_MARKERS];  // 0x17D4
 } RoomActorStateBuffer;
-
-extern RoomActorStateBuffer *g_pRoomActorStateBuffer;

@@ -2,6 +2,7 @@
 #include "battle/battle.h"
 #include "combat_2.h"
 #include "random.h"
+#include "combat.h"
 
 #define ATTACKER (g_pFightState->pFighters[attackerIndex])
 #define DEFENDER (g_pFightState->pFighters[defenderIndex])

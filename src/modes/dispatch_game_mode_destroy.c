@@ -1,6 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "input.h"
+#include "main.h"
 
 void DispatchGameModeDestroy(void)
 {

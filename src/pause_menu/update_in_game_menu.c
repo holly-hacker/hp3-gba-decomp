@@ -9,6 +9,7 @@
 #include "overworld/room.h"
 #include "default_menu.h"
 #include "pscreen_character.h"
+#include "map.h"
 
 void UpdateInGameMenu(void)
 {

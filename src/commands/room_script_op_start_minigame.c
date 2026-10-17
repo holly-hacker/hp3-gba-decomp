@@ -6,6 +6,7 @@
 #include "boggart_minigame.h"
 #include "overworld/room_script.h"
 #include "pop_it_minigame.h"
+#include "combat.h"
 
 typedef struct StartMinigameRecord {
     u32 dwOpcode;

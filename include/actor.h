@@ -589,9 +589,9 @@ extern struct Actor *g_apOamQueue[0x69];        // 0x030015B8, onscreen actors d
 extern u32 g_dwOamQueueCount;                    // 0x0300175C
 extern struct Actor *g_apCollisionQueue[0x69];  // 0x030017A4, actors awaiting the pairwise check
 extern u32 g_dwCollisionQueueCount;              // 0x03001948
-// Cleared by the next TickActor pass that ticks an actor's movement; that
-// actor plays sound 0x47 if its position changed. Its writer is unidentified.
-extern u32 g_dwUnk03003234;
+// IWRAM copies of the ARM actor passes, installed by InitActorPool.
+extern void SortActorsByDepthIwram(struct Actor **queue, u32 count);
+extern void CheckActorCollisionsIwram(u32 count, struct Actor **queue);
 
 void FreeAllActors(ListNode **activeListHead);
 

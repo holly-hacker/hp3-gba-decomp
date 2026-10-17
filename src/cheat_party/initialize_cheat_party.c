@@ -12,6 +12,7 @@
 #include "gen/graphics/menus.h"
 #include "screen_transitions.h"
 #include "video.h"
+#include "hero.h"
 
 void InitializeCheatParty(void)
 {

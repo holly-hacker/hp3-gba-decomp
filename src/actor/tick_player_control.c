@@ -7,6 +7,8 @@
 #include "overworld/room_script.h"
 #include "hero.h"
 #include "move.h"
+#include "game_state.h"
+#include "map.h"
 
 // Action state 0x21, the controlled party leader: walks with the D-pad, B casts the
 // selected field spell and L/R change the leader. Does nothing in room 0x20, the

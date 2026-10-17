@@ -3,6 +3,7 @@
 #include "mem.h"
 #include "overworld/overworld.h"
 #include "overworld/room_blob.h"
+#include "commands.h"
 
 // Rebuilds the runtime room tables from a room's resource blob.
 void ParseRoomResourceBlob(const RoomBlobHeader *pBlob)

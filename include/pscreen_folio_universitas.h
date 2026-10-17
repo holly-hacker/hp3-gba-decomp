@@ -3,6 +3,7 @@
 #include "types.h"
 #include "actor.h"
 #include "save.h"
+#include "game_state.h"
 
 // Number of collector's cards in the Folio Universitas, indexed 0-50.
 #define FOLIO_UNIVERSITAS_CARD_COUNT 51

@@ -12,6 +12,7 @@
 #include "battle/effect_script.h"
 #include "combat_result.h"
 #include "screen_transitions.h"
+#include "map.h"
 
 void UpdateCombatResult(void)
 {

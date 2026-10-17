@@ -69,3 +69,24 @@ extern u8 *CopyRoomScriptChain(const RoomBlobTable *pTable, u8 *pDst, u8 index);
 extern u16 GetRoomOffsetTableSize(u16 count);
 // `size` rounded up to a multiple of 4.
 extern u16 AlignRoomSizeTo4(u16 size);
+
+// Three words zeroed whenever a type 10 or 12 actor is constructed.
+extern u32 g_adwRoomActorUnkACState[3];
+extern u16 g_wRoomResourceFlags_candidate;
+// Chain the VM is walking; 0xFF in g_bRoomScriptPendingChain means no jump pending.
+extern u8 g_bRoomScriptCurrentChain;
+extern RoomScriptRecord *g_pRoomScriptYieldContinuation;
+// Record after the one being dispatched.
+extern RoomScriptRecord *g_pRoomScriptNextRecord;
+extern u8 g_bRoomScriptCallStackDepth;
+// Opcode the walk yielded on, latched while resuming.
+extern u8 g_bRoomScriptYieldOpcode;
+// Runtime buffer (0x2200 bytes) and the tables built inside it.
+extern RoomBlobHeader *g_pRoomTableBuffer;
+// Set by the room chain runner while it processes a chain; consumed (cleared)
+// once per frame by HandleOverworldPauseMenuInput.
+extern u32 g_dwRoomChainRanThisFrame_candidate;
+extern RoomBlobTable *g_pRoomActorTable;
+extern RoomBlobTable *g_pRoomRouteTable;
+extern RoomScriptTable *g_pRoomScriptChainTable;
+extern RoomScriptCallFrame g_aRoomScriptCallStack[];

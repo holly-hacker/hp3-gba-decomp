@@ -5,6 +5,7 @@
 #include "font.h"
 #include "text.h"
 #include "pscreen_folio_bruti.h"
+#include "game_state.h"
 
 // The ROM compiles these two routines into DrawFolioBrutiMonsterPanel and also keeps an
 // out-of-line copy, as one translation unit with inline definitions would. The panel includes

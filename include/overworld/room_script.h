@@ -36,23 +36,7 @@ typedef struct RoomScriptCallFrame {
 
 typedef void (*RoomScriptOpcodeHandler)(RoomScriptRecord *pRecord);
 
-// 0 = idle, 1 = resuming a yielded chain, 2 = yielded (the walk stops after
-// the current record), 3 = walking while a yielded chain is pending, 4 = disabled.
-extern u32 g_dwRoomScriptRunState;
-extern RoomScriptTable *g_pRoomScriptChainTable;
-// Chain the VM is walking; 0xFF in g_bRoomScriptPendingChain means no jump pending.
-extern u8 g_bRoomScriptCurrentChain;
-extern u8 g_bRoomScriptPendingChain;
-// Record after the one being dispatched.
-extern RoomScriptRecord *g_pRoomScriptNextRecord;
-// Opcode the walk yielded on, latched while resuming.
-extern u8 g_bRoomScriptYieldOpcode;
-extern RoomScriptRecord *g_pRoomScriptYieldContinuation;
-extern u8 g_bRoomScriptCallStackDepth;
-extern RoomScriptCallFrame g_aRoomScriptCallStack[];
-
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
-extern u8 g_abRoomScriptExitParams_candidate[2];
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
@@ -63,7 +47,3 @@ extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
 extern Actor *SpawnScriptEffectActor(u32 kind);
 extern void sub_080236DC(u32 characterId);
 extern void sub_080237D0(u32 arg0);
-
-// Chain and actor row queued by PlayCutscene for the transition back.
-extern u8 g_bPendingRoomScriptChain;
-extern u8 g_bPendingRoomScriptRow;

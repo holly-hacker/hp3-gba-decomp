@@ -8,6 +8,8 @@
 #include "overworld/room.h"
 #include "overworld/room_actor.h"
 #include "map.h"
+#include "combat.h"
+#include "commands.h"
 
 #define STARTING_ROOM_ID 0x2A
 

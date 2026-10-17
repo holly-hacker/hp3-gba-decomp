@@ -1,7 +1,7 @@
 #include "types.h"
+#include "items.h"
 #include "game/rewards.h"
 #include "save.h"
-#include "items.h"
 
 // Unreferenced: adds `count` of every real item, three of every card, and
 // sets every monster's Folio Bruti level to 4.

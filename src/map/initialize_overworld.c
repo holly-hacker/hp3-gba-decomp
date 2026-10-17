@@ -22,6 +22,9 @@
 #include "screen_transitions.h"
 #include "scroll.h"
 #include "video.h"
+#include "combat.h"
+#include "commands.h"
+#include "main.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.
 #define CURRENT_ROOM g_aRoomTable[g_GameModeStackContext.dwCurrentGameModeArg2]

@@ -3,6 +3,7 @@
 #include "font.h"
 #include "items.h"
 #include "items_inline.h"
+#include "combat.h"
 
 // Restores the member's Stamina or Magic with up to `quantity` of the potion,
 // using only as many as needed, and returns the result message.

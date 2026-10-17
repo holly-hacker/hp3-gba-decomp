@@ -1,6 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "serial.h"
+#include "main.h"
 
 void TickSerialCommIfActive_candidate(void)
 {
