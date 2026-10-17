@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 // Game mode 0x1A (ChooseCharacter): the story-stage choice pushed by the room script op
 // ShowChooseCharacter; see docs/formats/save.md ("Choose-character story-stage choice").

@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "gen/graphics/cutscenes.h"
 
 extern void InitializeLupinPotionCutscene(void);

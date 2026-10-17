@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 // Dialog box state at 0x03002E88; only the fields room scripts touch and the lifetime
 // functions use are named.

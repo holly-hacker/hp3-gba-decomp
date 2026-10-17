@@ -11,6 +11,7 @@
 #include "font.h"
 #include "gen/graphics/menus.h"
 #include "screen_transitions.h"
+#include "video.h"
 
 void InitializeCheatParty(void)
 {

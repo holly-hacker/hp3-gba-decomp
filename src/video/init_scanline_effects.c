@@ -1,7 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "interrupts.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 void InitScanlineEffects(void)
 {

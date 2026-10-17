@@ -5,7 +5,7 @@
 #include "math.h"
 #include "graphics/display.h"
 #include "mode7.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "minigame_menu.h"
 #include "gen/graphics/minigames/buckbeak.h"
 

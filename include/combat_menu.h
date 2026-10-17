@@ -4,7 +4,7 @@
 #include "actor.h"
 #include "battle/battle.h"
 #include "constants/spells.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 extern void DrawFighterStatsUi_candidate(s32 fighterType, s32 panelSlot);
 extern void DrawEnemyStatsUi_candidate(s32 fighterIndex, s32 panelSlot);

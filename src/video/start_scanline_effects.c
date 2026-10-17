@@ -1,6 +1,6 @@
 #include "types.h"
 #include "interrupts.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 void StartScanlineEffects(void)
 {

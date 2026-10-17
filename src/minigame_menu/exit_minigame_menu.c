@@ -7,6 +7,7 @@
 #include "default_menu.h"
 #include "minigame_menu.h"
 #include "screen_transitions.h"
+#include "video.h"
 
 void ExitMinigameMenu(void)
 {

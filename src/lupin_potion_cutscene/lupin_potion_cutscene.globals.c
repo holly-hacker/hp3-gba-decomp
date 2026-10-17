@@ -1,6 +1,6 @@
 #include "types.h"
 #include "lupin_potion_cutscene.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 const ScanlineEffectEntry g_aLupinPotionScanlineTable[2] = {
     { 120, 0, 1, 0, LupinPotionPanelScanlineCallback_candidate },

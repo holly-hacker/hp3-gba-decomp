@@ -11,7 +11,7 @@
 #include "sound.h"
 #include "graphics/display.h"
 #include "particles.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "hw/io_regs.h"
 #include "interrupts.h"
 #include "minigame_menu.h"

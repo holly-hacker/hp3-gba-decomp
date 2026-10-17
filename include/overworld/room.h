@@ -154,6 +154,4 @@ extern u32 g_dwRoomBgFlag_candidate;
 extern u8 g_bRoomSwitchState;  // 0 or 1
 extern u32 GetRoomSwitchState(void);
 extern Actor *SpawnPlayerActor_candidate(u32 charId);
-extern void StopScanlineEffects(void);
 extern void ShowMapNamePopup(void);
-extern void ClearScanlineEffects(void);

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 void ClearScanlineEffectStaging(void)
 {

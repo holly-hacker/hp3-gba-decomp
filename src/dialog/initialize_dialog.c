@@ -4,7 +4,7 @@
 #include "hw/io_regs.h"
 #include "graphics/display.h"
 #include "actor.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "font.h"
 #include "dialog.h"
 #include "dialog_box.h"

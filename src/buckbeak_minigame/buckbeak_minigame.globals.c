@@ -3,7 +3,7 @@
 #include "actor_anim.h"
 #include "buckbeak_minigame.h"
 #include "graphics/display.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 const u32 g_dwBuckbeakMinigameBg2Control = 0xF881;
 const u32 g_dwBuckbeakMinigameBg1Control = 0x760A;

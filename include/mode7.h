@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "hw/bios.h"
 
 // One affine record per visible scanline.

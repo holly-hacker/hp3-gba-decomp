@@ -2180,20 +2180,20 @@ thumb-func 0x08044D24 sub_08044D24
 thumb-func 0x08044F54 sub_08044F54
 
 # Video? (scanline effects), see docs/memory-map/scanline_effects.md
-c-file 0x08045094 _ src/graphics/scanline/init_scanline_effects.c InitScanlineEffects
-c-file 0x080450D4 0x08045118 src/graphics/scanline/queue_scanline_effect_table.c QueueScanlineEffectTable
+c-file 0x08045094 _ src/video/init_scanline_effects.c InitScanlineEffects
+c-file 0x080450D4 0x08045118 src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
 thumb-func 0x08045118 sub_08045118
 thumb-func 0x080451A8 sub_080451A8
 thumb-func 0x08045210 QueueScanlineEffectEntry
 thumb-func 0x08045260 CommitScanlineEffects
-c-file 0x0804528C 0x080452A8 src/graphics/scanline/start_scanline_effects.c StartScanlineEffects
+c-file 0x0804528C 0x080452A8 src/video/start_scanline_effects.c StartScanlineEffects
 thumb-func 0x080452A8 StopScanlineEffects
 thumb-func 0x080452D4 ClearScanlineEffects
 thumb-func 0x080452EC IsScanlineEffectQueueIdle
 thumb-func 0x08045304 GetScanlineEffectLine
-c-file 0x08045314 0x08045318 src/graphics/scanline/scanline_effect_nop.c ScanlineEffectNop
+c-file 0x08045314 0x08045318 src/video/scanline_effect_nop.c ScanlineEffectNop
 thumb-func 0x08045318 ScanlineEffectVCountCallback
-c-file 0x08045374 _ src/graphics/scanline/clear_scanline_effect_staging.c ClearScanlineEffectStaging
+c-file 0x08045374 _ src/video/clear_scanline_effect_staging.c ClearScanlineEffectStaging
 
 # Vram? (OBJ tile allocator)
 c-file 0x080453B4 _ src/vram/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
@@ -2591,7 +2591,7 @@ c-file 0x0806C12C _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFl
 c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
 c-file 0x0806C178 0x0806C200 src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
-c-file 0x0806C2F0 0x0806C300 src/graphics/scanline/default_scanline_effects.c g_aDefaultScanlineEffects
+c-file 0x0806C2F0 0x0806C300 src/video/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file 0x0806C304 _ src/room/actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
 graphics 0x0806E904 _ overworld OverworldSpellEffects
 graphics 0x080781A4 _ battle AllyHeads

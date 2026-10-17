@@ -9,6 +9,7 @@
 #include "font.h"
 #include "pop_it_minigame.h"
 #include "screen_transitions.h"
+#include "video.h"
 
 void InitializeCheatWizardCards(void)
 {

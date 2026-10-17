@@ -4,7 +4,7 @@ See [`../README.md`](../README.md) for the confidence-key legend
 (PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout. Addresses are US;
 JP state is at `0x03005E70`. `InitScanlineEffects`, `QueueScanlineEffectTable`,
 `StartScanlineEffects`, `ClearScanlineEffectStaging`, `ScanlineEffectNop` and the
-default table are matched for both versions in `src/graphics/scanline/`.
+default table are matched for both versions in `src/video/`.
 
 ## Mechanism, PROVEN
 

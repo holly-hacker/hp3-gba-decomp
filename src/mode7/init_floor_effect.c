@@ -1,6 +1,6 @@
 #include "types.h"
 #include "mode7.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 
 void InitFloorEffect(void)
 {

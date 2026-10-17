@@ -1,7 +1,7 @@
 #include "types.h"
 #include "modes.h"
 #include "actor.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "input.h"
 #include "dialog.h"
 #include "dialog_box.h"

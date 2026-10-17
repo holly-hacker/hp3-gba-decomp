@@ -8,6 +8,7 @@
 #include "default_menu.h"
 #include "minigame_difficulty_select.h"
 #include "screen_transitions.h"
+#include "video.h"
 
 void ExitWizardCrackerPopItDifficultySelect(void)
 {

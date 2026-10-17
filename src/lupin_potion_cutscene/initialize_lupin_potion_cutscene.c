@@ -11,7 +11,7 @@
 #include "lupin_potion_cutscene.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "font.h"
 #include "particles.h"
 #include "gen/graphics/menus.h"

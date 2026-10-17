@@ -5,7 +5,7 @@
 #include "modes.h"
 #include "gen/graphics/menus.h"
 #include "graphics/display.h"
-#include "graphics/scanline_effects.h"
+#include "video.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "dialog.h"

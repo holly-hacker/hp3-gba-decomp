@@ -6,6 +6,7 @@
 #include "actor.h"
 #include "overworld/room.h"
 #include "screen_transitions.h"
+#include "video.h"
 
 void ExitLupinPotionCutscene(void)
 {
