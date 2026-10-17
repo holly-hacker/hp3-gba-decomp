@@ -1343,22 +1343,22 @@ c-file 0x0802C638 _ src/mem/merge_into_prev_free_block.c MergeIntoPrevFreeBlock
 c-file 0x0802C67C _ src/mem/absorb_next_free_block.c AbsorbNextFreeBlock
 
 # Modes (possibly sorted as "Menus"), see docs/memory-map/game_modes.md
-c-file 0x0802C6B4 _ src/gamemode/tick_game_mode_stack.c TickGameModeStack
-c-file 0x0802C750 0x0802C7A8 src/gamemode/init_game_mode_stack.c InitGameModeStack
+c-file 0x0802C6B4 _ src/modes/tick_game_mode_stack.c TickGameModeStack
+c-file 0x0802C750 0x0802C7A8 src/modes/init_game_mode_stack.c InitGameModeStack
 thumb-func 0x0802C7A8 GetCurrentGameMode_candidate
 thumb-func 0x0802C7B4 GetPendingGameMode_candidate
-c-file 0x0802C7C4 _ src/gamemode/push_game_mode.c PushGameMode
-c-file 0x0802C7E0 _ src/gamemode/push_game_mode_2.c PushGameMode_2
-c-file 0x0802C800 _ src/gamemode/push_game_mode_3.c PushGameMode_3
-c-file 0x0802C820 _ src/gamemode/tick_frame_systems.c TickFrameSystems
-c-file 0x0802C860 _ src/gamemode/is_game_mode_transition_pending.c IsGameModeTransitionPending
-c-file 0x0802C87C _ src/gamemode/dispatch_game_mode_init.c DispatchGameModeInit
-c-file 0x0802C8A8 _ src/gamemode/dispatch_game_mode_update.c DispatchGameModeUpdate
-c-file 0x0802C8D0 0x0802C90C src/gamemode/dispatch_game_mode_destroy.c DispatchGameModeDestroy
+c-file 0x0802C7C4 _ src/modes/push_game_mode.c PushGameMode
+c-file 0x0802C7E0 _ src/modes/push_game_mode_2.c PushGameMode_2
+c-file 0x0802C800 _ src/modes/push_game_mode_3.c PushGameMode_3
+c-file 0x0802C820 _ src/modes/tick_frame_systems.c TickFrameSystems
+c-file 0x0802C860 _ src/modes/is_game_mode_transition_pending.c IsGameModeTransitionPending
+c-file 0x0802C87C _ src/modes/dispatch_game_mode_init.c DispatchGameModeInit
+c-file 0x0802C8A8 _ src/modes/dispatch_game_mode_update.c DispatchGameModeUpdate
+c-file 0x0802C8D0 0x0802C90C src/modes/dispatch_game_mode_destroy.c DispatchGameModeDestroy
 thumb-func 0x0802C90C SpawnMenuIconActor
 thumb-func 0x0802C944 RegisterMenuIconActor
 thumb-func 0x0802C960 sub_0802C960
-c-file 0x0802C984 _ src/gamemode/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
+c-file 0x0802C984 _ src/modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 
 # Minigame/Difficulty? (minigame difficulty select)
 c-file 0x0802C988 0x0802CB80 src/gamemode/modes/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
@@ -2531,7 +2531,7 @@ c-file 0x0806580C 0x0806581C src/map/room_color_cycles.c g_ColorCyclesDefault
 c-file 0x0806589C _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C9C _ ResetBgLayer
 c-rodata 0x08065CA4 _ GetDirectionFromVector
-c-file 0x08065CBC _ src/gamemode/game_mode_dispatch_table.c g_pGameModeDispatchTable
+c-file 0x08065CBC _ src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file 0x0806601C 0x0806603C src/gamemode/modes/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file 0x0806605C 0x08066064 src/gamemode/modes/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066084 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects

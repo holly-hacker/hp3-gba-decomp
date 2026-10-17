@@ -670,7 +670,6 @@ extern void SetActorPrevActionState(Actor *actor, u8 state);
 // Clears the actor's queued move (Actor+0x3C..0x48).
 extern void CancelActorMove_candidate(Actor *actor);
 extern void SetActorAssetRecord(Actor *actor, const void *rec);
-extern Actor *SpawnMenuIconActor(u32 slot, u32 arg1);  // allocs a type 0x13 actor and files it under slot
 
 extern void AllocActorVramTiles(Actor *actor, ActorAssetRecord *record);
 extern void SetActorAnimStream(Actor *actor, const void *pAnimData, u8 startCommand);

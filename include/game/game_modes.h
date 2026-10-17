@@ -126,7 +126,7 @@ typedef struct {
 } GameModeDispatchEntry;
 
 // 72 entries (GameMode 0-0x47), see docs/memory-map/game_modes.md.
-extern const GameModeDispatchEntry g_pGameModeDispatchTable[72];  // src/gamemode/game_mode_dispatch_table.c
+extern const GameModeDispatchEntry g_pGameModeDispatchTable[72];  // src/modes/game_mode_dispatch_table.c
 
 // Runs the current mode's pInitFn/pUpdateFn/pDestroyFn slot out of
 // g_pGameModeDispatchTable. DispatchGameModeInit additionally calls
@@ -157,6 +157,8 @@ extern u32 g_dwTickCount;
 // subsystems; called once/frame from TickGameModeStack after
 // DispatchGameModeUpdate. See docs/memory-map/frame_systems.md.
 extern void TickFrameSystems(void);
+
+extern struct Actor *SpawnMenuIconActor(u32 slot, u32 arg1);  // allocs a type 0x13 actor and files it under slot
 
 // Pumps the link-cable comm packet when a link session is active
 // (g_dwGameModeFlags bit 0x20); see docs/memory-map/serial.md.

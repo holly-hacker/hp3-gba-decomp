@@ -11,6 +11,7 @@
 #include "palette.h"
 #include "combat_result.h"
 #include "hero.h"
+#include "game/game_modes.h"
 
 #define FIGHTER(pos) g_aPartyMasterStats[g_abCombatResultPartySlots[pos]]
 #define MAX_DISPLAY_LEVEL 98

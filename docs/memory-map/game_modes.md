@@ -53,7 +53,7 @@ game, not just debug menus.
 
 ## Mode-transition shift
 
-`TickGameModeStack` (`0x0802C6B4`, US, matched: `src/gamemode/tick_game_mode_stack.c`)
+`TickGameModeStack` (`0x0802C6B4`, US, matched: `src/modes/tick_game_mode_stack.c`)
 is the per-frame dispatcher. On a pending transition it shifts three
 identical 0x24-byte `GameModeStackContext` blocks -- current
 (`g_GameModeStackContext`, `0x03003EF4`), pending (`g_dwPendingGameMode`,
@@ -77,7 +77,7 @@ single-purpose fields, same as `dwModeState`/`dwModeTimer`/
 (`TickSerialCommIfActive_candidate`, `0x0803EF5C`) when a link session is
 active (`g_dwGameModeFlags` bit `0x20`) -- see `serial.md` for that subsystem.
 
-`InitGameModeStack` (`0x0802C750`, matched: `src/gamemode/init_game_mode_stack.c`)
+`InitGameModeStack` (`0x0802C750`, matched: `src/modes/init_game_mode_stack.c`)
 zeroes the current mode, seeds pending/previous from it, then pushes
 `Startup` or `LanguageSelect` depending on `g_saveManager.header.bLanguageByte` bit `0x80`
 (`flLanguageConfigured`, see `docs/formats/save.md`) -- language already
@@ -94,9 +94,9 @@ called by `ExitCardTrade`/`ExitGameCubeLink`/`ExitInGameMenu`).
 ## Dispatch table
 
 `g_pGameModeDispatchTable` (US `0x08065CBC`, JP `0x08065C48`, extracted to
-`src/gamemode/game_mode_dispatch_table.c`), 72 entries (`GameMode` 0-0x47;
+`src/modes/game_mode_dispatch_table.c`), 72 entries (`GameMode` 0-0x47;
 index 0 unused/reserved, all three fields point at `HandleGameModeNoneNoOp`,
-matched in `src/gamemode/handle_game_mode_none_noop.c` -- a no-op,
+matched in `src/modes/handle_game_mode_none_noop.c` -- a no-op,
 single `bx lr`).
 Each entry is 3 function pointers, `pInitFn`/`pUpdateFn`/`pDestroyFn`:
 `pInitFn` runs once right after the mode variable updates to the new mode,
