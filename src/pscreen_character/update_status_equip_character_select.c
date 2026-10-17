@@ -4,7 +4,7 @@
 #include "game/game_save.h"
 #include "pause_menu.h"
 #include "input.h"
-#include "menu/status_equip.h"
+#include "pscreen_character.h"
 
 void UpdateStatusEquipCharacterSelect(void)
 {

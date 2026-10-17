@@ -1598,12 +1598,12 @@ thumb-func 0x08035664 sub_08035664
 thumb-func 0x08035724 sub_08035724
 
 # Profile/Character? (pause subscreen: status/equip character select)
-c-file 0x08035764 0x08035898 src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
+c-file 0x08035764 0x08035898 src/pscreen_character/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 thumb-func 0x08035898 sub_08035898
 thumb-func 0x08035A34 sub_08035A34
-c-file 0x08035D08 _ src/gamemode/modes/status_equip/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
-c-file 0x08035D20 _ src/gamemode/modes/status_equip/initialize_status_equip_character_select_last_cursor.c InitializeStatusEquipCharacterSelectLastCursor
-c-file 0x08035D64 0x08035D68 src/gamemode/modes/status_equip/exit_status_equip_character_select.c ExitStatusEquipCharacterSelect
+c-file 0x08035D08 _ src/pscreen_character/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
+c-file 0x08035D20 _ src/pscreen_character/initialize_status_equip_character_select_last_cursor.c InitializeStatusEquipCharacterSelectLastCursor
+c-file 0x08035D64 0x08035D68 src/pscreen_character/exit_status_equip_character_select.c ExitStatusEquipCharacterSelect
 thumb-func 0x08035D68 sub_08035D68
 thumb-func 0x08035D6C sub_08035D6C
 thumb-func 0x08035D98 sub_08035D98

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "pause_menu.h"
-#include "menu/status_equip.h"
+#include "pscreen_character.h"
 
 void InitializeStatusEquipCharacterSelect(void)
 {

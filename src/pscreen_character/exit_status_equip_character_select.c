@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/status_equip.h"
+#include "pscreen_character.h"
 
 void ExitStatusEquipCharacterSelect(void)
 {

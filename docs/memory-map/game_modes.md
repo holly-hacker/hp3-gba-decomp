@@ -153,8 +153,9 @@ PROVEN from US decompiles and ROM tables.
 
 Screen state lives in `g_StatusEquipCharacterSelect`,
 `g_StatusEquipSlotSelect` and `g_StatusEquipItemSelect`; each holds the
-mode it pushes after its fade-out. Types are in `include/menu/status_equip.h`;
-the init/update/exit handlers are matched in
+mode it pushes after its fade-out. Types are in `include/pscreen_character.h`
+(character select) and `include/menu/status_equip.h` (slot and item select);
+the init/update/exit handlers are matched in `src/pscreen_character/` and
 `src/gamemode/modes/status_equip/` for both versions.
 
 JP handlers (PROVEN: taken from JP's dispatch table at `0x08065C48` and

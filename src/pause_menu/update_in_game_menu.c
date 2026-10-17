@@ -5,10 +5,10 @@
 #include "modes.h"
 #include "game/game_save.h"
 #include "pause_menu.h"
-#include "menu/status_equip.h"
 #include "input.h"
 #include "overworld/room.h"
 #include "default_menu.h"
+#include "pscreen_character.h"
 
 void UpdateInGameMenu(void)
 {

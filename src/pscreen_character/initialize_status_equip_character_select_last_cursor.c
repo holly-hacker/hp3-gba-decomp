@@ -2,8 +2,8 @@
 #include "graphics/display.h"
 #include "pause_menu.h"
 #include "actor.h"
-#include "menu/status_equip.h"
 #include "default_menu.h"
+#include "pscreen_character.h"
 
 void InitializeStatusEquipCharacterSelectLastCursor(void)
 {

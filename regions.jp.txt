@@ -1415,12 +1415,12 @@ thumb-func 0x08035564 sub_08035520
 c-file 0x08035584 0x080356A8 src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
 thumb-func 0x080356A8 sub_08035664
 thumb-func 0x08035768 sub_08035724
-c-file 0x080357A8 0x080358DC src/gamemode/modes/status_equip/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
+c-file 0x080357A8 0x080358DC src/pscreen_character/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 thumb-func 0x080358DC sub_08035898
 thumb-func 0x08035A78 sub_08035A34
-c-file 0x08035D4C _ src/gamemode/modes/status_equip/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
-c-file 0x08035D64 _ src/gamemode/modes/status_equip/initialize_status_equip_character_select_last_cursor.c InitializeStatusEquipCharacterSelectLastCursor
-c-file 0x08035DA8 0x08035DAC src/gamemode/modes/status_equip/exit_status_equip_character_select.c ExitStatusEquipCharacterSelect
+c-file 0x08035D4C _ src/pscreen_character/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
+c-file 0x08035D64 _ src/pscreen_character/initialize_status_equip_character_select_last_cursor.c InitializeStatusEquipCharacterSelectLastCursor
+c-file 0x08035DA8 0x08035DAC src/pscreen_character/exit_status_equip_character_select.c ExitStatusEquipCharacterSelect
 thumb-func 0x08035DAC sub_08035D68
 thumb-func 0x08035DB0 sub_08035D6C
 thumb-func 0x08035DDC sub_08035D98
