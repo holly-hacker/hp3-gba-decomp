@@ -6,7 +6,7 @@
 #include "input.h"
 #include "pause_menu.h"
 #include "menu/items_menu.h"
-#include "menu/quantity_select.h"
+#include "pscreen_item_count.h"
 #include "items.h"
 
 void UpdateQuantitySelectScreen(void)

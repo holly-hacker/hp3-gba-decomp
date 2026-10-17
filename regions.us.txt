@@ -1713,10 +1713,10 @@ thumb-func 0x080392C0 sub_080392C0
 thumb-func 0x0803931C sub_0803931C
 
 # Profile/ItemQuantity? (pause subscreen: quantity select)
-c-file 0x08039370 0x08039428 src/gamemode/modes/quantity_select/update_quantity_select_screen.c UpdateQuantitySelectScreen
+c-file 0x08039370 0x08039428 src/pscreen_item_count/update_quantity_select_screen.c UpdateQuantitySelectScreen
 thumb-func 0x08039428 sub_08039428
-c-file 0x080394EC _ src/gamemode/modes/quantity_select/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
-c-file 0x08039508 0x0803950C src/gamemode/modes/quantity_select/exit_quantity_select_screen.c ExitQuantitySelectScreen
+c-file 0x080394EC _ src/pscreen_item_count/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
+c-file 0x08039508 0x0803950C src/pscreen_item_count/exit_quantity_select_screen.c ExitQuantitySelectScreen
 thumb-func 0x0803950C sub_0803950C
 thumb-func 0x08039564 sub_08039564
 

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/quantity_select.h"
+#include "pscreen_item_count.h"
 
 void ExitQuantitySelectScreen(void)
 {

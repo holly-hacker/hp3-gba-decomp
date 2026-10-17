@@ -1514,10 +1514,10 @@ thumb-func 0x080392D0 TurnToNextHelpPage
 thumb-func 0x08039304 CancelHelpScreen
 thumb-func 0x08039314 sub_080392C0
 thumb-func 0x08039370 sub_0803931C
-c-file 0x080393C4 0x0803947C src/gamemode/modes/quantity_select/update_quantity_select_screen.c UpdateQuantitySelectScreen
+c-file 0x080393C4 0x0803947C src/pscreen_item_count/update_quantity_select_screen.c UpdateQuantitySelectScreen
 thumb-func 0x0803947C sub_08039428
-c-file 0x08039540 _ src/gamemode/modes/quantity_select/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
-c-file 0x0803955C 0x08039560 src/gamemode/modes/quantity_select/exit_quantity_select_screen.c ExitQuantitySelectScreen
+c-file 0x08039540 _ src/pscreen_item_count/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
+c-file 0x0803955C 0x08039560 src/pscreen_item_count/exit_quantity_select_screen.c ExitQuantitySelectScreen
 thumb-func 0x08039560 sub_0803950C
 thumb-func 0x080395B8 sub_08039564
 c-file 0x080395D0 _ src/gamemode/modes/items/update_items_item_select.c UpdateItemsItemSelect
