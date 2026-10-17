@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "huffman.h"
 
 // Dialog text lookup, language selection and number formatting; see
 // docs/formats/text.md.
@@ -20,6 +21,7 @@ typedef enum {
 extern u8 *gDialogTextScratchBuf;  // 0x400-byte buffer GetDialogText decodes into
 extern u8 gCurrentLanguage;
 extern u8 gLocaleThousandsSep;
+extern DialogTextBlob *sDialogTextTable[8];  // 0x0806BD78
 
 u8 *FormatDecimal(s32 value, u8 *pBuf);
 void InitDialogTextEngine(void);

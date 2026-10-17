@@ -29,7 +29,6 @@ typedef struct {
 extern u8 *gDialogTextBlobBase;
 extern u32 *gDialogTextOffsetTable;
 extern DialogTextTreeNode *gDialogTextTreeNodes;
-extern DialogTextBlob *sDialogTextTable[8];
 
 s32 DecompressDialogText(s32 stringId, u8 *outBuf, s32 maxSize);
 
