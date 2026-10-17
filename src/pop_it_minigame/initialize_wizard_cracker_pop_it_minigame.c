@@ -7,7 +7,7 @@
 #include "particles.h"
 #include "mem.h"
 #include "font.h"
-#include "minigame/wizard_cracker_pop_it.h"
+#include "pop_it_minigame.h"
 
 void InitializeWizardCrackerPopItMinigame(void)
 {

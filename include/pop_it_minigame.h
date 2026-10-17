@@ -61,6 +61,10 @@ typedef enum {
     WizardCrackerPopItStateRoundLost = 7,
 } WizardCrackerPopItMode;
 
+extern void InitializeWizardCrackerPopItMinigame(void);
+extern void UpdateWizardCrackerPopItMinigame(void);
+extern void ExitWizardCrackerPopItMinigame(void);
+
 extern void sub_08032894(void);
 extern void sub_080328FC(void);
 extern u32 sub_0803296C(void);

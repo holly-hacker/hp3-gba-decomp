@@ -1530,8 +1530,8 @@ thumb-func 0x080323AC sub_080323AC
 thumb-func 0x080323B0 sub_080323B0
 
 # Pop-it minigame (wizard cracker pop-it minigame)
-c-file 0x080323B4 _ src/gamemode/modes/minigame/wizard_cracker_pop_it/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
-c-file 0x08032534 0x08032894 src/gamemode/modes/minigame/wizard_cracker_pop_it/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
+c-file 0x080323B4 _ src/pop_it_minigame/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
+c-file 0x08032534 0x08032894 src/pop_it_minigame/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
 thumb-func 0x08032894 sub_08032894
 thumb-func 0x080328FC sub_080328FC
 thumb-func 0x0803296C sub_0803296C
@@ -1549,7 +1549,7 @@ thumb-func 0x080333C8 sub_080333C8
 thumb-func 0x080334A8 sub_080334A8
 thumb-func 0x08033618 sub_08033618
 thumb-func 0x08033710 sub_08033710
-c-file 0x080338A4 0x08033920 src/gamemode/modes/minigame/wizard_cracker_pop_it/exit_wizard_cracker_pop_it_minigame.c ExitWizardCrackerPopItMinigame
+c-file 0x080338A4 0x08033920 src/pop_it_minigame/exit_wizard_cracker_pop_it_minigame.c ExitWizardCrackerPopItMinigame
 thumb-func 0x08033920 sub_08033920
 thumb-func 0x08033988 sub_08033988
 thumb-func 0x080339F4 sub_080339F4
@@ -2546,7 +2546,7 @@ c-file 0x08068BFC 0x08068C08 src/particles/opposite_directions.c g_abOppositeDir
 c-file 0x08068C10 _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068C30 _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068C38 _ src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
-c-file 0x08068D04 0x08068D3C src/gamemode/modes/minigame/wizard_cracker_pop_it/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
+c-file 0x08068D04 0x08068D3C src/pop_it_minigame/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
 c-file 0x08069184 0x08069194 src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
 c-file 0x08069328 _ src/gamemode/modes/minigame/serve_pumpkin_juice/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/gamemode/modes/minigame/serve_pumpkin_juice/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText

@@ -7,7 +7,7 @@
 #include "hw/io_regs.h"
 #include "overworld/room.h"
 #include "font.h"
-#include "minigame/wizard_cracker_pop_it.h"
+#include "pop_it_minigame.h"
 
 void InitializeCheatWizardCards(void)
 {

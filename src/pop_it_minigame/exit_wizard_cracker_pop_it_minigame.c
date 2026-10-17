@@ -7,7 +7,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "minigame_menu.h"
-#include "minigame/wizard_cracker_pop_it.h"
+#include "pop_it_minigame.h"
 #include "cursor.h"
 #include "minigame_difficulty_select.h"
 

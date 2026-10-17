@@ -5,7 +5,7 @@
 #include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
 #include "overworld/room_script.h"
-#include "minigame/wizard_cracker_pop_it.h"
+#include "pop_it_minigame.h"
 
 typedef struct StartMinigameRecord {
     u32 dwOpcode;

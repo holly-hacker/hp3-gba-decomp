@@ -7,7 +7,7 @@
 #include "minigame_difficulty_select.h"
 #include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
-#include "minigame/wizard_cracker_pop_it.h"
+#include "pop_it_minigame.h"
 #include "default_menu.h"
 
 static inline void MoveCursorToSelectedRow(void)

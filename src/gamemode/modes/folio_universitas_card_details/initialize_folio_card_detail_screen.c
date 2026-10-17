@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "minigame/wizard_cracker_pop_it.h"
+#include "pop_it_minigame.h"
 #include "font.h"
 #include "modes.h"
 #include "menu/folio_universitas.h"
