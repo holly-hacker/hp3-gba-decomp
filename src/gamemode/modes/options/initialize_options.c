@@ -4,7 +4,7 @@
 #include "particles.h"
 #include "actor.h"
 #include "menu/options.h"
-#include "game/save.h"
+#include "save.h"
 #include "text.h"
 #include "cursor.h"
 #include "default_menu.h"

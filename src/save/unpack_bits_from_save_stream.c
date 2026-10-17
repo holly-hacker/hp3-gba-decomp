@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Reads count single bits into dst's bytes (0 or 1 each).
 void UnpackBitsFromSaveStream(u8 *dst, u32 count)

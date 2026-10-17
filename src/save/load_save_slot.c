@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Reads a slot from EEPROM into the slot buffer.
 void LoadSaveSlot(u32 slot)

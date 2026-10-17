@@ -1,6 +1,6 @@
 #include "types.h"
 #include "mem.h"
-#include "game/save.h"
+#include "save.h"
 
 // Copies len bytes out of the slot stream, first skipping to the next byte
 // boundary if the cursor is partway through a byte.

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/io_regs.h"
-#include "game/save.h"
+#include "save.h"
 
 void EepromTransferEnd(void)
 {

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Refreshes the RAM header's checksum and rewrites EEPROM blocks 0-1 when
 // the stored header differs. Returns whether it wrote.

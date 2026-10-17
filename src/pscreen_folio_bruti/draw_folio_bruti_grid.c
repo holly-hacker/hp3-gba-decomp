@@ -1,6 +1,6 @@
 #include "types.h"
 #include "background.h"
-#include "game/save.h"
+#include "save.h"
 #include "graphics/display.h"
 #include "pscreen_folio_bruti.h"
 

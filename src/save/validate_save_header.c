@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game/save.h"
-#include "game/sum16.h"
+#include "save.h"
+#include "save_sum16_inline.h"
 
 // Reads the header from EEPROM blocks 0-1. It is valid when its checksum
 // holds and its magic matches the ROM default's.

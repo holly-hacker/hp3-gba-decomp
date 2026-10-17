@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "graphics/audio.h"
 
 // Applies the saved options-menu volumes (0-10 each).

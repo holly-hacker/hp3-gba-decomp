@@ -1,7 +1,7 @@
 #include "types.h"
 #include "mem.h"
 #include "text.h"
-#include "game/save.h"
+#include "save.h"
 
 // Allocates the slot buffer and loads the header, options and slot previews
 // from EEPROM. An invalid header means an uninitialized or foreign save: the

@@ -6,7 +6,7 @@
 #include "input.h"
 #include "menu/main_menu.h"
 #include "pause_menu.h"
-#include "game/save.h"
+#include "save.h"
 
 void UpdateGameSave(void)
 {

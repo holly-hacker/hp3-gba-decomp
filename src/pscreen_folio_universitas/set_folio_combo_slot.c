@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "gen/graphics/overworld.h"
 #include "actor.h"
 #include "pscreen_folio_universitas.h"

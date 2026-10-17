@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Checksums the slot buffer (holding the given slot) and records the result.
 u32 ValidateSaveSlot(u32 slot)

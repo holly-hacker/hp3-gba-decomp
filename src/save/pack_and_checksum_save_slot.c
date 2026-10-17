@@ -1,7 +1,7 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
-#include "game/clear_save_slot_buffer.h"
+#include "save_clear_slot_buffer_inline.h"
 
 // Serializes the game state into the cleared slot buffer and stores the
 // negated checksum in the slot's last halfword.

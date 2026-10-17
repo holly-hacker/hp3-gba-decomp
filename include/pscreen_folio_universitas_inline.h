@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "pscreen_folio_universitas.h"
 
 // The ROM compiles GetFolioUniversitasSelectedCombo and IsFolioUniversitasCardSeen into some of the

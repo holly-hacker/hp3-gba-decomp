@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Reads count nibbles into the low nibbles of dst's bytes, first moving to
 // the next nibble boundary if the cursor is partway through one.

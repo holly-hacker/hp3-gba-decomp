@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "title.h"
 
 // A slot can be loaded when its checksum is good and it holds a started game.

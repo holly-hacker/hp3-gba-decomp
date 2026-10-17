@@ -4,7 +4,7 @@
 #include "clock.h"
 #include "combat_2.h"
 #include "mem.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 #include "items.h"
 #include "overworld/overworld.h"

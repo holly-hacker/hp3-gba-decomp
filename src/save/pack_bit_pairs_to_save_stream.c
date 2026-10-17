@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 void PackBitPairsToSaveStream(const u8 *src, u32 count)
 {

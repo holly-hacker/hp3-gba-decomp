@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Playtime arithmetic.
 

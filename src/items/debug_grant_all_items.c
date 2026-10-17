@@ -1,6 +1,6 @@
 #include "types.h"
 #include "game/rewards.h"
-#include "game/save.h"
+#include "save.h"
 #include "items.h"
 
 // Unreferenced: adds `count` of every real item, three of every card, and

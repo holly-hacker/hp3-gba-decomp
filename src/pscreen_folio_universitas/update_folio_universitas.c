@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "math.h"
 #include "modes.h"
-#include "game/save.h"
+#include "save.h"
 #include "graphics/audio.h"
 #include "input.h"
 #include "pscreen_folio_universitas.h"

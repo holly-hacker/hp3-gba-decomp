@@ -1,7 +1,7 @@
 #include "types.h"
 #include "hw/io_regs.h"
 #include "hw/eeprom.h"
-#include "game/save.h"
+#include "save.h"
 
 // Prepares for a run of EEPROM block transfers: saves DISPSTAT and clears
 // it (no display-status IRQs during the transfer), acknowledges every

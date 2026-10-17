@@ -5,7 +5,7 @@
 #include "graphics/display.h"
 #include "input.h"
 #include "minigame_menu.h"
-#include "game/save.h"
+#include "save.h"
 #include "pop_it_minigame.h"
 
 void UpdateWizardCrackerPopItMinigame(void)

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "clock.h"
 #include "combat_2.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 
 // Starts the playtime counter at zero and marks the save as started, then

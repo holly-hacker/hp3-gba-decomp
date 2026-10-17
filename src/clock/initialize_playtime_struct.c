@@ -1,7 +1,7 @@
 #include "types.h"
 #include "clock.h"
 #include "mem.h"
-#include "game/save.h"
+#include "save.h"
 
 // Zeroes a playtime counter.
 void InitializePlaytimeStruct(Playtime *playtime)

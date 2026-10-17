@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Refreshes the RAM options' checksum and rewrites EEPROM blocks 2-6 when
 // the stored options differ. Returns whether it wrote.

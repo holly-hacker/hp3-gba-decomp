@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "pscreen_folio_bruti.h"
 
 // Seeing a monster for the first time stores level 2 and analyzing it level 4; the even values mean

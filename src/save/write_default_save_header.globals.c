@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Full volume, the first language not yet confirmed, and nothing unlocked.
 const SaveHeader g_DefaultSaveHeader = {

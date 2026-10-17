@@ -4,7 +4,7 @@
 #include "input.h"
 #include "minigame_menu.h"
 #include "boggart_minigame.h"
-#include "game/save.h"
+#include "save.h"
 
 void UpdateBoggartMinigame(void)
 {

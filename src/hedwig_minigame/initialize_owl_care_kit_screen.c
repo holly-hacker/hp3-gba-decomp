@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "modes.h"
-#include "game/save.h"
+#include "save.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "font.h"

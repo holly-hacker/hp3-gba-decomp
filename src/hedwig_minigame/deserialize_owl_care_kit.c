@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "hedwig_minigame.h"
 
 // Reads the Owl Care Kit state: four nibbles (flags, owl name, owl type and

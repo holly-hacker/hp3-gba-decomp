@@ -435,7 +435,7 @@
 .set gMt19937SeedValue,         0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 
 @ --- Save manager and EEPROM ---
-.set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/game/save.h and docs/formats/save.md
+.set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see include/save.h and docs/formats/save.md
 .set g_wEepromSavedDispstat,     0x0300561C  @ u16: DISPSTAT saved across EEPROM transfers (EepromTransferBegin/End)
 
 @ --- Screen darken ---

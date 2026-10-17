@@ -9,7 +9,7 @@
 #include "hw/io_regs.h"
 #include "actor.h"
 #include "overworld/room.h"
-#include "game/save.h"
+#include "save.h"
 #include "font.h"
 #include "gen/graphics/menus.h"
 

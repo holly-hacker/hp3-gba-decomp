@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Reads count 2-bit values into dst's bytes, first moving to the next 2-bit
 // boundary if the cursor is partway through one. Nothing calls it.

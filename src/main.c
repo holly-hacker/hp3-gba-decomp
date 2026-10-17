@@ -14,7 +14,7 @@
 #include "modes.h"
 #include "battle/battle.h"
 #include "random.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 #include "decompress.h"
 #include "particles.h"

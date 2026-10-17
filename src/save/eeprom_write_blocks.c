@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/eeprom.h"
-#include "game/save.h"
+#include "save.h"
 
 // Writes count consecutive 8-byte EEPROM blocks starting at startBlock from
 // src, verifying (and retrying) each block.

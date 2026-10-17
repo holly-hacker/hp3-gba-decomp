@@ -1,6 +1,6 @@
 #include "types.h"
 #include "commands.h"
-#include "game/save.h"
+#include "save.h"
 #include "overworld/room_script.h"
 
 typedef struct UnlockMinigameRecord {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "font.h"
 #include "text.h"
 #include "pscreen_folio_bruti.h"

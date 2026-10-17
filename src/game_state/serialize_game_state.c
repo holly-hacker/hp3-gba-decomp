@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "chest_actor.h"
 #include "combat_2.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 #include "items.h"
 #include "overworld/overworld.h"

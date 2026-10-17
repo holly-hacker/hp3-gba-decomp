@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "graphics/audio.h"
 
 // Registered with krapCallback by InitAudio. When a jingle finishes, the

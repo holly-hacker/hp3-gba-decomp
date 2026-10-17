@@ -2,7 +2,7 @@
 #include "cheat.h"
 #include "combat_2.h"
 #include "modes.h"
-#include "game/save.h"
+#include "save.h"
 #include "overworld/room.h"
 
 // Cheat menu level args packed in dwCurrentGameModeArg2, one byte each.

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "game/save.h"
-#include "game/sum16.h"
+#include "save.h"
+#include "save_sum16_inline.h"
 
 // Reads the options block from EEPROM blocks 2-6 and returns whether its
 // checksum holds.

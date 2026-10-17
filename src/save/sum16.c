@@ -1,2 +1,2 @@
 #define SUM16_LINKAGE
-#include "game/sum16.h"
+#include "save_sum16_inline.h"

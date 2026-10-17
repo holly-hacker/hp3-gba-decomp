@@ -5,7 +5,7 @@
 #include "items.h"
 #include "game/items.h"
 #include "game/rewards.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 #include "graphics/audio.h"
 #include "dialog.h"

@@ -9,7 +9,7 @@
 // inlines it into the header/options functions that follow it, as one
 // translation unit with an inline Sum16 would. Those later functions include
 // this header; src/save/sum16.c defines SUM16_LINKAGE as empty to emit the
-// out-of-line copy, which everything else calls through game/save.h.
+// out-of-line copy, which everything else calls through save.h.
 #ifndef SUM16_LINKAGE
 #define SUM16_LINKAGE extern inline
 #endif

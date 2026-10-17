@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "pscreen_information.h"
 
 s32 IsHelpTopicUnlocked(const u32 *pTextId)

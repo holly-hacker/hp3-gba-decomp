@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Appends the low bit of each of count source bytes to the slot stream.
 void PackBitsToSaveStream(const u8 *src, u32 count)

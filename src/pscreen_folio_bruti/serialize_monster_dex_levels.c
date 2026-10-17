@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "pscreen_folio_bruti.h"
 
 // Writes each monster's 3-bit level, low bit first.

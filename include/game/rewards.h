@@ -3,7 +3,7 @@
 #include "types.h"
 #include "pscreen_folio_universitas.h"
 #include "game/items.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 
 // Rewards earned this battle, paid out by the combat result screen. The XP total is

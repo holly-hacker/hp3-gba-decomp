@@ -5,7 +5,7 @@
 #include "battle/battle.h"
 #include "modes.h"
 #include "pscreen_save.h"
-#include "game/save.h"
+#include "save.h"
 #include "input.h"
 #include "mem.h"
 #include "actor.h"

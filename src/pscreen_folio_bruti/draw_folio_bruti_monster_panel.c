@@ -4,7 +4,7 @@
 #include "battle/effect_script.h"
 #include "combat_2.h"
 #include "math.h"
-#include "game/save.h"
+#include "save.h"
 #include "gen/graphics/overworld.h"
 #include "graphics/display.h"
 #include "actor.h"

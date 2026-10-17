@@ -1,6 +1,6 @@
 #include "types.h"
 #include "text.h"
-#include "game/save.h"
+#include "save.h"
 
 // Records the current language in the save header and marks it as chosen.
 s32 SetSaveLanguageFlag(void)

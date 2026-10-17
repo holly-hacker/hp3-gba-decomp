@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "mem.h"
-#include "game/save.h"
+#include "save.h"
 
 // Zeroes the slot buffer.
 //

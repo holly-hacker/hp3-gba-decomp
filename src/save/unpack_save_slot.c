@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 
 // Deserializes the game state from the slot buffer (already loaded by the

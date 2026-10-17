@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "pscreen_folio_universitas.h"
 
 extern void *memset(void *dst, int value, u32 size);

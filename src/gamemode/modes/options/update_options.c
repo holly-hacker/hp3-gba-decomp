@@ -6,7 +6,7 @@
 #include "title.h"
 #include "menu/options.h"
 #include "overworld/room.h"
-#include "game/save.h"
+#include "save.h"
 #include "text.h"
 #include "default_menu.h"
 

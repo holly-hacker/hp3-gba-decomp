@@ -3,7 +3,7 @@
 #include "modes.h"
 #include "buckbeak_minigame.h"
 #include "input.h"
-#include "game/save.h"
+#include "save.h"
 
 void UpdateBuckbeakMinigame(void)
 {

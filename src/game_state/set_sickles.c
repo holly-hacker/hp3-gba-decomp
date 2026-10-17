@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 
 // Sets the player's money to an exact amount.

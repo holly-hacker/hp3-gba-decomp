@@ -1,7 +1,7 @@
 #include "types.h"
 #include "mem.h"
-#include "game/save.h"
-#include "game/sum16.h"
+#include "save.h"
+#include "save_sum16_inline.h"
 
 // Resets the options block to its ROM default and writes it to EEPROM
 // blocks 2-6.

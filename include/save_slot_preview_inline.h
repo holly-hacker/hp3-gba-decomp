@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "mem.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 
 // Unpacks the preview of a valid slot from the slot buffer, or clears the

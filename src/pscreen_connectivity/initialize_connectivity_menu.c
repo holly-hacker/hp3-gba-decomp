@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "game/save.h"
+#include "save.h"
 #include "mem.h"
 #include "pscreen_connectivity.h"
 #include "pause_menu.h"

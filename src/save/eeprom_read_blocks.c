@@ -1,6 +1,6 @@
 #include "types.h"
 #include "hw/eeprom.h"
-#include "game/save.h"
+#include "save.h"
 
 // Reads count consecutive 8-byte EEPROM blocks starting at startBlock into dst.
 void EepromReadBlocks(u32 startBlock, u32 count, void *dst)

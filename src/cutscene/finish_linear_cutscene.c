@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 #include "overworld/room.h"
 #include "overworld/room_script.h"

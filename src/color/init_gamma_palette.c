@@ -1,5 +1,5 @@
 #include "color.h"
-#include "game/save.h"
+#include "save.h"
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "menu/options.h"

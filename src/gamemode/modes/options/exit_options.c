@@ -5,7 +5,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "menu/options.h"
-#include "game/save.h"
+#include "save.h"
 #include "default_menu.h"
 
 void ExitOptions(void)

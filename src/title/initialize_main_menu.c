@@ -6,7 +6,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "particles.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 #include "map.h"
 #include "title.h"

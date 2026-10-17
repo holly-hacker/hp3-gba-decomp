@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/save.h"
+#include "save.h"
 
 // Writes the slot buffer to the EEPROM blocks of the given slot.
 void WriteSaveSlot(u32 slot)

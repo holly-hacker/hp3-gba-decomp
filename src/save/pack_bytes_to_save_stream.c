@@ -1,6 +1,6 @@
 #include "types.h"
 #include "mem.h"
-#include "game/save.h"
+#include "save.h"
 
 // Appends len bytes to the slot stream, first closing a partly used byte
 // (its unused high bits are cleared).

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "mem.h"
-#include "game/save.h"
+#include "save.h"
 #include "game_state.h"
 
 // Unpacks the leading fields SerializeGameStateToSaveBuffer writes into a
