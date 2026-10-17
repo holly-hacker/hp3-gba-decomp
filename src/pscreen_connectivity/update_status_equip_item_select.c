@@ -2,7 +2,7 @@
 #include "pscreen_items.h"
 #include "graphics/audio.h"
 #include "modes.h"
-#include "game/game_save.h"
+#include "pscreen_save.h"
 #include "pause_menu.h"
 #include "input.h"
 #include "pscreen_connectivity.h"

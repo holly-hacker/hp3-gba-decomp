@@ -1535,10 +1535,10 @@ c-file 0x080399FC _ src/pscreen_items/update_item_use_screen.c UpdateItemUseScre
 c-file 0x08039A58 0x08039A68 src/pscreen_items/exit_item_use_screen.c ExitItemUseScreen
 thumb-func 0x08039A68 SetItemUseItem
 thumb-func 0x08039A74 sub_08039A20
-c-file 0x08039AC8 _ src/gamemode/modes/game_save/initialize_game_save.c InitializeGameSave
-c-file 0x08039B60 0x08039C84 src/gamemode/modes/game_save/update_game_save.c UpdateGameSave
+c-file 0x08039AC8 _ src/pscreen_save/initialize_game_save.c InitializeGameSave
+c-file 0x08039B60 0x08039C84 src/pscreen_save/update_game_save.c UpdateGameSave
 thumb-func 0x08039C84 ResolveSaveConfirmation_candidate
-c-file 0x08039D2C 0x08039D5C src/gamemode/modes/game_save/exit_game_save.c ExitGameSave
+c-file 0x08039D2C 0x08039D5C src/pscreen_save/exit_game_save.c ExitGameSave
 thumb-func 0x08039D5C ShowSaveConfirmationPrompt_candidate
 thumb-func 0x08039D98 ShowSavingMessage_candidate
 thumb-func 0x08039DCC ShowGameSavedMessage_candidate

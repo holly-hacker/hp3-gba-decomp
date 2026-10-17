@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/items.h"
 #include "modes.h"
-#include "game/game_save.h"
+#include "pscreen_save.h"
 #include "graphics/audio.h"
 #include "input.h"
 #include "pause_menu.h"

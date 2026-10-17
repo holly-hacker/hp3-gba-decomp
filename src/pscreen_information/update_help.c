@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "game/game_save.h"
+#include "pscreen_save.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "input.h"

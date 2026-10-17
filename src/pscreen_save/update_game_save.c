@@ -2,7 +2,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "game/game_save.h"
+#include "pscreen_save.h"
 #include "input.h"
 #include "menu/main_menu.h"
 #include "pause_menu.h"

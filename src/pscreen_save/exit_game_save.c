@@ -2,7 +2,7 @@
 #include "battle/battle.h"
 #include "color.h"
 #include "graphics/display.h"
-#include "game/game_save.h"
+#include "pscreen_save.h"
 #include "mem.h"
 #include "actor.h"
 #include "default_menu.h"
