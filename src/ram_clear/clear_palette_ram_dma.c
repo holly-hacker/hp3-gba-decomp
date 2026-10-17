@@ -1,5 +1,4 @@
 #include "ram_clear.h"
-#include "hw/dma.h"
 #include "hw/io_regs.h"
 
 void ClearPaletteRamDma(void)

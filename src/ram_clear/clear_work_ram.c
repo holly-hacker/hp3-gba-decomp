@@ -1,6 +1,5 @@
 #include "ram_clear.h"
 #include "sound.h"
-#include "hw/dma.h"
 #include "hw/io_regs.h"
 
 void ClearWorkRam(void)

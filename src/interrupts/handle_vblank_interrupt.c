@@ -1,7 +1,6 @@
 #include "background.h"
 #include "interrupts.h"
 #include "hw/io_regs.h"
-#include "hw/dma.h"
 #include "oam.h"
 #include "dialog_box.h"
 #include "color.h"

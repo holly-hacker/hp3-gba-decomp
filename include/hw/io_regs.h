@@ -2,6 +2,12 @@
 
 #include "types.h"
 
+typedef struct {
+    const void *src;
+    void *dst;
+    u32 cnt;
+} DmaRegs;
+
 // REG_JOYCNT flags: JOY reset, receive complete and send complete.
 #define JOYCNT_RESET 0x0001
 #define JOYCNT_RECV  0x0002
@@ -65,6 +71,7 @@
 #define REG_DMA0CNT   (*(volatile u32 *)0x040000B8)
 #define REG_DMA0CNT_H (*(volatile u16 *)0x040000BA)
 
+#define REG_DMA3      (*(volatile DmaRegs *)0x040000D4)
 #define REG_DMA3SAD   (*(volatile u32 *)0x040000D4)
 #define REG_DMA3DAD   (*(volatile u32 *)0x040000D8)
 #define REG_DMA3CNT   (*(volatile u32 *)0x040000DC)

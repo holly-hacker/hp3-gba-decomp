@@ -1,5 +1,5 @@
 #include "interrupts.h"
-#include "hw/dma.h"
+#include "hw/io_regs.h"
 
 void InitInterruptSystem(void)
 {

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "oam.h"
-#include "hw/dma.h"
+#include "hw/io_regs.h"
 
 // Defined const in ROM (hidden_oam_entry.c), but this file's declaration
 // lacks const: the ROM code reloads it for every copy.

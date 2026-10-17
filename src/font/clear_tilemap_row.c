@@ -1,6 +1,6 @@
 #include "types.h"
 #include "font.h"
-#include "hw/dma.h"
+#include "hw/io_regs.h"
 
 // Clears tilemap entries left..right of a row.
 void ClearTilemapRow(s32 left, s32 row, s32 right)

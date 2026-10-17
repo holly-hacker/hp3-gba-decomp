@@ -2,7 +2,6 @@
 #include "background.h"
 #include "interrupts.h"
 #include "video.h"
-#include "hw/dma.h"
 #include "hw/io_regs.h"
 #include "dialog.h"
 #include "dialog_box.h"
