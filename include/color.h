@@ -104,6 +104,8 @@ extern void sub_0800D254(const u16 *ptr, s16 val1, s16 val2);
 extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
 extern s32 QueueObjPaletteLoadAtOffset(const u8 *pPalettes, u32 byteOffset, u32 firstColor, u32 colorCount);  // QueueObjPaletteLoad from pPalettes + byteOffset
 extern void TickPaletteAnimations_candidate(void);  // run by TickFrameSystems
+extern void sub_0800D304(void);  // uploads the palette shadows flagged dirty
+extern void sub_0800D354(void);  // flushes the OBJ palette load queue
 extern void ClearPaletteRam(void);
 extern void sub_0800D4A4(u32 a, u32 b, u32 c, u32 d);
 // Starts a palette effect through sub_0800D5DC and sets its bFrameCount; returns its slot.

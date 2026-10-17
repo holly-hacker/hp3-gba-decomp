@@ -15,5 +15,9 @@ extern const u32 g_dwCheatBg1Control;  // 0x0804C448
 extern const ActorAssetRecord g_CheatAnimFrames;  // 0x0804C44C
 extern const u8 g_CheatAnimData[18];    // 0x0804C45C
 
+extern void InitializeCheat(void);
+extern void UpdateCheat(void);
+extern void ExitCheat(void);
+
 extern void ResetCheatPartyFromArgs(void);
 extern void DrawCheatEntries(void);

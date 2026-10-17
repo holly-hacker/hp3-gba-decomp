@@ -11,6 +11,12 @@ extern Actor *g_pLinearCutsceneActor;  // 0x030028B8
 extern const u8 *g_pLinearCutsceneText;  // 0x030028B4: unread remainder of the cutscene's text
 extern u32 g_dwLinearCutsceneIndex;      // 0x030028BC
 
+extern void InitializeLinearCutscene(void);
+extern void UpdateLinearCutscene(void);
+extern void ExitLinearCutscene(void);
+extern void InitializeCredits(void);
+extern void UpdateCredits(void);
+
 extern void SetUpLinearCutscene(u32 cutsceneIndex);
 extern void FinishLinearCutscene(void);
 

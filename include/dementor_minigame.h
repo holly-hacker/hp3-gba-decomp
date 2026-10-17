@@ -84,6 +84,10 @@ typedef enum {
     DementorMinigameStatePauseMenu = 2,
 } DementorMinigameMode;
 
+extern void InitializeDementorMinigame(void);
+extern void UpdateDementorMinigame(void);
+extern void ExitDementorMinigame(void);
+
 extern void SpawnDementorMinigameActors(void);
 extern void ShowDementorMinigameResultsMenu(void);
 extern void ShowDementorMinigamePauseMenu(void);

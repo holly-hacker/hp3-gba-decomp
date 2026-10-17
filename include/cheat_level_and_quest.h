@@ -18,5 +18,9 @@ extern const u32 g_dwCheatLevelAndQuestBg1Control;  // 0x0804C478
 extern const ActorAssetRecord g_CheatLevelAndQuestAnimFrames;  // 0x0804C47C
 extern const u8 g_CheatLevelAndQuestAnimData[18];    // 0x0804C48C
 
+extern void InitializeCheatLevelAndQuest(void);
+extern void UpdateCheatLevelAndQuest(void);
+extern void ExitCheatLevelAndQuest(void);
+
 extern void DrawCheatLevelAndQuestRows(void);
 extern void DrawCheatLevelAndQuestValues(void);

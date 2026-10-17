@@ -66,6 +66,10 @@ typedef enum {
     BoggartMinigameStatePauseMenu = 7,
 } BoggartMinigameMode;
 
+extern void InitializeBoggartMinigame(void);
+extern void UpdateBoggartMinigame(void);
+extern void ExitBoggartMinigame(void);
+
 extern void SpawnBoggartMinigameActors(void);
 extern void StartBoggartMinigameBoggartMotion(void);
 extern u32 CheckBoggartMinigameBoggartReachedStudent(void);

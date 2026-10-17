@@ -4,8 +4,9 @@
 
 extern void *const KrawallSamples[278];                // 0x08D229F4
 
-// Thumb veneers into the Krawall IWRAM code: start a sample on a channel, returning its handle,
-// and set that channel's frequency (kramSetFreq).
+// Thumb veneers into the Krawall IWRAM code: run the mixer (kramWorker, run at vblank), start a
+// sample on a channel, returning its handle, and set that channel's frequency (kramSetFreq).
+extern void kramWorkerVeneer_candidate(void);
 extern s32 kramPlayVeneer(void *sample, s32 arg1, s32 arg2);
 extern void kramSetFreqVeneer(s32 handle, u32 freq);
 

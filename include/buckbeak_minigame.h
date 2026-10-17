@@ -123,6 +123,10 @@ typedef enum {
     BuckbeakMinigameStateFinished = 3, // records the high score, reopens the results menu
 } BuckbeakMinigameMode;
 
+extern void InitializeBuckbeakMinigame(void);
+extern void UpdateBuckbeakMinigame(void);
+extern void ExitBuckbeakMinigame(void);
+
 extern void SetUpBuckbeakMinigameScene(void);
 extern void ResetBuckbeakMinigame(void);
 extern void ProcessBuckbeakMinigameFrame(void);

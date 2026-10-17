@@ -16,4 +16,8 @@ extern const u32 g_dwCheatWizardCardsBg2Control;  // 0x0804CEB8
 
 extern const u8 sFamousWizardCardNames[51][32];  // 0x0804CEC4
 
+extern void InitializeCheatWizardCards(void);
+extern void UpdateCheatWizardCards(void);
+extern void ExitCheatWizardCards(void);
+
 extern void ShowCheatWizardCard(void);

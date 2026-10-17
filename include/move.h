@@ -65,6 +65,7 @@ extern u8 StartMoveVelocity(Actor *actor);  // 0x0802DE68
 extern void GetActorTerrainBox(Actor *actor, TerrainBox *box);  // 0x0802DEE0
 extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
 extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
+extern void NoopInit2(void);
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 // Called by ExitOverworldScreen.
 extern void FreeRoomSharedTileset(void);

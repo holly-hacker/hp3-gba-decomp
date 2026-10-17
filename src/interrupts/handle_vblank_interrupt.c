@@ -4,12 +4,10 @@
 #include "hw/dma.h"
 #include "oam.h"
 #include "dialog_box.h"
-
-extern void sub_0800D354(void);
-extern void CommitScanlineEffects(void);
-extern void sub_08045988(void);
-extern void sub_0800D304(void);
-extern void kramWorkerVeneer_candidate(void);
+#include "color.h"
+#include "video.h"
+#include "windows.h"
+#include "krawall.h"
 
 // gIntrTable slot 1 (INTR_FLAG_VBLANK).
 void HandleVBlankInterrupt(void)

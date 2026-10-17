@@ -21,5 +21,9 @@ extern const u32 g_dwCheatSoundTestBg1Control;  // 0x0804CE90
 extern const ActorAssetRecord g_CheatSoundTestAnimFrames;  // 0x0804CE94
 extern const u8 g_CheatSoundTestAnimData[18];    // 0x0804CEA4
 
+extern void InitializeCheatSoundTest(void);
+extern void UpdateCheatSoundTest(void);
+extern void ExitCheatSoundTest(void);
+
 extern void DrawCheatSoundTestRows(void);
 extern void DrawCheatSoundTestValues(void);

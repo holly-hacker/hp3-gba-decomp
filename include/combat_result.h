@@ -79,6 +79,10 @@ extern u16 g_wCombatResultXpNumberX;       // 0x03002734: screen x of the XP num
 extern ActorGfxRecord g_CombatResultItem0Gfx;  // 0x03002738: tile/frame data of the first drop's icon
 extern ActorGfxRecord g_CombatResultItem1Gfx;  // 0x03002740: tile/frame data of the second drop's icon
 
+extern void InitializeCombatResult(void);
+extern void UpdateCombatResult(void);
+extern void ExitCombatResult(void);
+
 extern void RollBattleItemDrops(int *pItemId0, int *pItemId1);  // 0x080147C0
 extern void InitializeCombatResultXp(void);       // 0x08013AC8: draws the party's Exp/Level/Next rows
 extern void TickCombatResultXpCounter(void);      // 0x08014004: one tick of the XP counter

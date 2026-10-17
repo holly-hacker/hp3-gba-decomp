@@ -1,190 +1,60 @@
 #include "types.h"
 #include "modes.h"
-
-extern void ExitBattle();
-extern void ExitBoggartMinigame();
-extern void ExitBuckbeakMinigame();
-extern void ExitCardComboDescription();
-extern void ExitCardTrade();
-extern void ExitCheat();
-extern void ExitCheatLevelAndQuest();
-extern void ExitCheatMap();
-extern void ExitCheatParty();
-extern void ExitCheatPortraits();
-extern void ExitCheatSoundTest();
-extern void ExitCheatWizardCards();
-extern void ExitChooseCharacter();
-extern void ExitClockSkipCutscene();
-extern void ExitCombatResult();
-extern void ExitConfirmTradeScreen();
-extern void ExitConnectivity();
-extern void ExitCoolTrainCutscene();
-extern void ExitDialog();
-extern void ExitDivinationTeaMinigame();
-extern void ExitFolioBruti();
-extern void ExitFolioCardDetailScreen();
-extern void ExitFolioUniversitas();
-extern void ExitFolios();
-extern void ExitFredAndGeorgesShop();
-extern void ExitGameCubeLink();
-extern void ExitGameSave();
-extern void ExitHarryHermionePortInTimeCutscene();
-extern void ExitHarryPatronusCutscene();
-extern void ExitDementorMinigame();
-extern void ExitHelpScreen();
-extern void ExitHighScoreNameEntry();
-extern void ExitHippogriffFliesIntoAirCutscene();
-extern void ExitHogwartsUpNightCutscene();
-extern void ExitInGameMenu();
-extern void ExitItemUseScreen();
-extern void ExitItemsItemSelect();
-extern void ExitItemsSectionSelect();
-extern void ExitLanguageSelect();
-extern void ExitLinearCutscene();
-extern void ExitLupinPotionCutscene();
-extern void ExitMainMenuScreen();
-extern void ExitMinigameMenu();
-extern void ExitNewGameMenu();
-extern void ExitOptions();
-extern void ExitOverworldScreen();
-extern void ExitOwlNameSelect();
-extern void ExitQuantitySelectScreen();
-extern void ExitStartup();
-extern void ExitStatusEquipCharacterSelect();
-extern void ExitStatusEquipItemSelect();
-extern void ExitStatusEquipSlotSelect();
-extern void ExitTopicScreen();
-extern void ExitUnusedHogwartsMapScreen();
-extern void ExitUnusedMinigame();
-extern void ExitUnusedServePumpkinJuiceMinigame();
-extern void ExitWizardCrackerPopItDifficultySelect();
-extern void ExitWizardCrackerPopItMinigame();
-extern void HandleConnectivityMenuTick();
-extern void HandleFolioCardDetailScreenTick();
-extern void HandleHighScoreDifficultyMenuTick();
-extern void HandleMinigameSelectMenuConfirm();
-extern void HandleOwlCareKitScreenExit();
-extern void HandleOwlCareKitScreenTick();
-extern void HandleSaveLoadContinuation();
-extern void InitializeBattle();
-extern void InitializeBoggartMinigame();
-extern void InitializeBuckbeakMinigame();
-extern void InitializeCardComboDescription();
-extern void InitializeCardTrade();
-extern void InitializeCheat();
-extern void InitializeCheatLevelAndQuest();
-extern void InitializeCheatMap();
-extern void InitializeCheatParty();
-extern void InitializeCheatPortraits();
-extern void InitializeCheatSoundTest();
-extern void InitializeCheatWizardCards();
-extern void InitializeChooseCharacter();
-extern void InitializeClockSkipCutscene();
-extern void InitializeCombatResult();
-extern void InitializeConfirmTradeScreen();
-extern void InitializeConnectivityMenu();
-extern void InitializeCoolTrainCutscene();
-extern void InitializeCredits();
-extern void InitializeDialog();
-extern void InitializeDivinationTeaMinigame();
-extern void InitializeFolioBruti();
-extern void InitializeFolioCardDetailScreen();
-extern void InitializeFolioUniversitas();
-extern void InitializeFolios();
-extern void InitializeFredAndGeorgesShop();
-extern void InitializeGameCubeLink();
-extern void InitializeGameSave();
-extern void InitializeHarryHermionePortInTimeCutscene();
-extern void InitializeHarryPatronusCutscene();
-extern void InitializeDementorMinigame();
-extern void InitializeHelp();
-extern void InitializeHighScoreNameEntryScreen();
-extern void InitializeHippogriffFliesIntoAirCutscene();
-extern void InitializeHogwartsUpNightCutscene();
-extern void InitializeInGameMenu();
-extern void InitializeInGameMenuFadeIn();
-extern void InitializeItemUseScreen();
-extern void InitializeItemsItemSelect();
-extern void InitializeItemsSectionSelect();
-extern void InitializeLanguageSelect();
-extern void InitializeLinearCutscene();
-extern void InitializeLoadGame();
-extern void InitializeLupinPotionCutscene();
-extern void InitializeMainMenu();
-extern void InitializeMinigameMenu();
-extern void InitializeNewGameMenu();
-extern void InitializeOptions();
-extern void InitializeOverworld();
-extern void InitializeOwlCareKitScreen();
-extern void InitializeOwlNameSelect();
-extern void InitializeQuantitySelectScreen();
-extern void InitializeStartup();
-extern void InitializeStatusEquipCharacterSelect();
-extern void InitializeStatusEquipCharacterSelectLastCursor();
-extern void InitializeStatusEquipItemSelect();
-extern void InitializeStatusEquipSlotSelect();
-extern void InitializeTopicScreen();
-extern void InitializeUnusedHogwartsMapScreen();
-extern void InitializeUnusedMinigame();
-extern void InitializeUnusedServePumpkinJuiceMinigame();
-extern void InitializeWizardCrackerPopItDifficultySelect();
-extern void InitializeWizardCrackerPopItMinigame();
-extern void UpdateBattle();
-extern void UpdateBoggartMinigame();
-extern void UpdateBuckbeakMinigame();
-extern void UpdateCardComboDescription();
-extern void UpdateCardTrade();
-extern void UpdateCheat();
-extern void UpdateCheatLevelAndQuest();
-extern void UpdateCheatMap();
-extern void UpdateCheatParty();
-extern void UpdateCheatPortraits();
-extern void UpdateCheatSoundTest();
-extern void UpdateCheatWizardCards();
-extern void UpdateChooseCharacter();
-extern void UpdateClockSkipCutscene();
-extern void UpdateCombatResult();
-extern void UpdateConfirmTradeScreen();
-extern void UpdateCoolTrainCutscene();
-extern void UpdateCredits();
-extern void UpdateDialogBox();
-extern void UpdateDivinationTeaMinigame();
-extern void UpdateFolioBrutiGridCursor();
-extern void UpdateFolioUniversitas();
-extern void UpdateFolios();
-extern void UpdateFredAndGeorgesShop();
-extern void UpdateGameCubeLink();
-extern void UpdateGameSave();
-extern void UpdateHarryHermionePortInTimeCutscene();
-extern void UpdateHarryPatronusCutscene();
-extern void UpdateDementorMinigame();
-extern void UpdateHelp();
-extern void UpdateHighScoreNameEntry();
-extern void UpdateHippogriffFliesIntoAirCutscene();
-extern void UpdateHogwartsUpNightCutscene();
-extern void UpdateInGameMenu();
-extern void UpdateItemUseScreen();
-extern void UpdateItemsItemSelect();
-extern void UpdateItemsSectionSelect();
-extern void UpdateLanguageSelect();
-extern void UpdateLinearCutscene();
-extern void UpdateLoadGame();
-extern void UpdateLupinPotionCutscene();
-extern void UpdateMainMenu();
-extern void UpdateNewGameMenu();
-extern void UpdateOptions();
-extern void UpdateOverworld();
-extern void UpdateOwlNameSelect();
-extern void UpdateQuantitySelectScreen();
-extern void UpdateStartup();
-extern void UpdateStatusEquipCharacterSelect();
-extern void UpdateStatusEquipItemSelect();
-extern void UpdateStatusEquipSlotSelect();
-extern void UpdateTopicScreen();
-extern void UpdateUnusedHogwartsMapScreen();
-extern void UpdateUnusedMinigame();
-extern void UpdateUnusedServePumpkinJuiceMinigame();
-extern void UpdateWizardCrackerPopItMinigame();
+#include "boggart_minigame.h"
+#include "buckbeak_minigame.h"
+#include "challenge_unused.h"
+#include "cheat.h"
+#include "cheat_level_and_quest.h"
+#include "cheat_map.h"
+#include "cheat_party.h"
+#include "cheat_portraits.h"
+#include "cheat_sound_test.h"
+#include "cheat_wizard_cards.h"
+#include "choose_party_member.h"
+#include "combat.h"
+#include "combat_result.h"
+#include "combo_info.h"
+#include "credits_cutscene.h"
+#include "dementor_minigame.h"
+#include "dev_logos.h"
+#include "dialog.h"
+#include "ending_cutscene.h"
+#include "hedwig_minigame.h"
+#include "initials.h"
+#include "instructions_screen.h"
+#include "landmarks.h"
+#include "language_select.h"
+#include "lupin_potion_cutscene.h"
+#include "map.h"
+#include "minigame_difficulty_select.h"
+#include "minigame_menu.h"
+#include "owl_name_select.h"
+#include "patronus_cutscene.h"
+#include "pause_menu.h"
+#include "pop_it_minigame.h"
+#include "pouring_minigame.h"
+#include "pscreen_character.h"
+#include "pscreen_connectivity.h"
+#include "pscreen_folio.h"
+#include "pscreen_folio_bruti.h"
+#include "pscreen_folio_universitas.h"
+#include "pscreen_gamecube.h"
+#include "pscreen_information.h"
+#include "pscreen_item_count.h"
+#include "pscreen_items.h"
+#include "pscreen_save.h"
+#include "pscreen_status_equip.h"
+#include "pscreen_trade.h"
+#include "pscreen_wizard_cards.h"
+#include "store.h"
+#include "tea_leaves_minigame.h"
+#include "time_skip_cutscene.h"
+#include "timeturner_cutscene.h"
+#include "title.h"
+#include "title_load.h"
+#include "title_new.h"
+#include "title_options.h"
+#include "train_cutscene.h"
 
 // Indexed by GameMode (0 unused/reserved). See docs/memory-map/game_modes.md.
 const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {

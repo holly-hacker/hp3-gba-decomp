@@ -27,4 +27,5 @@ extern void SetScreenWindowLayers_candidate(u32 windowId, u32 winIn, u32 winOut)
 extern void SetScreenWindowRect_candidate(u32 windowId, s32 x0, s32 y0, s32 x1, s32 y1);
 // Run by TickFrameSystems; see docs/memory-map/frame_systems.md.
 extern void TickScreenWindows_candidate(void);
+extern void sub_08045988(void);  // writes the window rects to WINxH/WINxV at vblank
 extern void TickScreenWindow(u32 windowId);

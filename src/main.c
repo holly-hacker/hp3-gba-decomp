@@ -33,10 +33,7 @@
 #include "map.h"
 #include "screen_transitions.h"
 #include "scroll.h"
-
-extern void InitSaveSystem(void);
-extern void NoopInit(void);
-extern void NoopInit2(void);
+#include "move.h"
 
 // agbcc special-cases a C function literally named `main`, inserting an
 // implicit call to `__gccmain` at entry that the real ROM code doesn't
