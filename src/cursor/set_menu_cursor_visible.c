@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "cursor.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 // Shows or hides a cursor; for the list cursor (kind 4) also stops or resumes
 // its sparkles, clearing the ones already spawned when hiding.

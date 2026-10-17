@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "move.h"
 
 // Also sets the OAM priority from bits 6-7 of the collision byte, plus 1.

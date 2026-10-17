@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "game/game_save.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "game/save.h"
 #include "default_menu.h"
 

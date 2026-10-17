@@ -1,7 +1,7 @@
 #include "types.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "actor.h"
 #include "menu/options.h"
 #include "game/save.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "actor.h"
 #include "gen/graphics/cutscenes.h"
 

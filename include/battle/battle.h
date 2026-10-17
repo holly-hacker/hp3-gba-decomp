@@ -301,11 +301,8 @@ typedef struct FighterAnimRow {
 
 extern void *memcpy(void *dst, const void *src, u32 n);
 
-// ExitBattle's remaining callees -- generic engine/graphics teardown run on
+// ExitBattle's remaining callee -- generic engine/graphics teardown run on
 // every battle exit, not battle logic; not otherwise analyzed.
-extern void FreeAllParticleEmitters(void);
-extern void FreeAllParticles(void);
-extern void sub_08031668(s32 arg0, s32 arg1);
 extern void FreeFloorEffect(void);
 
 // Battle-message icon actor (shown alongside ShowBattleMessage's text),

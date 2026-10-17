@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "decompress.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "hw/bios.h"
 
 // Decodes tile data into VRAM-safe memory. The header's codec field selects the codec:

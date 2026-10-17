@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "hw/bios.h"
 
 void CommitObjAffineMatrices(void)

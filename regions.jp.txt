@@ -1306,27 +1306,27 @@ c-file 0x08030A18 _ src/palette/is_obj_palette_slot_reserved.c IsObjPaletteSlotR
 c-file 0x08030A2C 0x08030A60 src/palette/find_obj_palette_slot.c FindObjPaletteSlot
 thumb-func 0x08030A60 sub_08030A1C
 thumb-func 0x08030B0C sub_08030AC8
-c-file 0x08030BB4 _ src/graphics/particle/alloc_particle_emitter.c AllocParticleEmitter
-c-file 0x08030C44 _ src/graphics/particle/bucket_particles_by_priority.c BucketParticlesByPriority
-c-file 0x08030CE0 _ src/graphics/particle/tick_particle_emitter.c TickParticleEmitter
-c-file 0x08030DD4 _ src/graphics/particle/spawn_particle.c SpawnParticle
-c-file 0x0803139C _ src/graphics/particle/tick_particle.c TickParticle
-c-file 0x08031478 _ src/graphics/particle/tick_particle_still.c TickParticleStill
-c-file 0x080314C4 _ src/graphics/particle/tick_particle_directional.c TickParticleDirectional
-c-file 0x08031520 _ src/graphics/particle/tick_particle_moving.c TickParticleMoving
-c-file 0x0803157C _ src/graphics/particle/tick_particle_with_gravity.c TickParticleWithGravity
-c-file 0x080315E8 _ src/graphics/particle/init_particle_pools.c InitParticlePools
-c-file 0x08031668 0x080316AC src/graphics/particle/reset_particle_state.c ResetParticleState
+c-file 0x08030BB4 _ src/particles/alloc_particle_emitter.c AllocParticleEmitter
+c-file 0x08030C44 _ src/particles/bucket_particles_by_priority.c BucketParticlesByPriority
+c-file 0x08030CE0 _ src/particles/tick_particle_emitter.c TickParticleEmitter
+c-file 0x08030DD4 _ src/particles/spawn_particle.c SpawnParticle
+c-file 0x0803139C _ src/particles/tick_particle.c TickParticle
+c-file 0x08031478 _ src/particles/tick_particle_still.c TickParticleStill
+c-file 0x080314C4 _ src/particles/tick_particle_directional.c TickParticleDirectional
+c-file 0x08031520 _ src/particles/tick_particle_moving.c TickParticleMoving
+c-file 0x0803157C _ src/particles/tick_particle_with_gravity.c TickParticleWithGravity
+c-file 0x080315E8 _ src/particles/init_particle_pools.c InitParticlePools
+c-file 0x08031668 0x080316AC src/particles/reset_particle_state.c ResetParticleState
 thumb-func 0x080316AC sub_08031668
-c-file 0x080316E8 _ src/graphics/particle/release_particle_emitter.c ReleaseParticleEmitter
-c-file 0x08031718 _ src/graphics/particle/free_all_particle_emitters.c FreeAllParticleEmitters
-c-file 0x08031760 _ src/graphics/particle/free_all_particles.c FreeAllParticles
-c-file 0x0803178C 0x080317DC src/graphics/particle/tick_particle_emitters.c TickParticleEmitters
+c-file 0x080316E8 _ src/particles/release_particle_emitter.c ReleaseParticleEmitter
+c-file 0x08031718 _ src/particles/free_all_particle_emitters.c FreeAllParticleEmitters
+c-file 0x08031760 _ src/particles/free_all_particles.c FreeAllParticles
+c-file 0x0803178C 0x080317DC src/particles/tick_particle_emitters.c TickParticleEmitters
 thumb-func 0x080317DC sub_08031798
-c-file 0x08031830 _ src/graphics/particle/tick_particle_layer.c TickParticleLayer
-c-file 0x0803188C _ src/graphics/particle/release_particle.c ReleaseParticle
-c-file 0x080318B0 _ src/graphics/particle/draw_particle.c DrawParticle
-c-file 0x080319C0 0x080319F4 src/graphics/particle/update_particle_collision.c UpdateParticleCollision
+c-file 0x08031830 _ src/particles/tick_particle_layer.c TickParticleLayer
+c-file 0x0803188C _ src/particles/release_particle.c ReleaseParticle
+c-file 0x080318B0 _ src/particles/draw_particle.c DrawParticle
+c-file 0x080319C0 0x080319F4 src/particles/update_particle_collision.c UpdateParticleCollision
 thumb-func 0x080319F4 sub_080319B0
 c-file 0x08031A40 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file 0x08031B90 _ src/gamemode/modes/cutscene/harry_patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
@@ -2273,8 +2273,8 @@ c-file 0x08067818 0x08067848 src/npc_actor/room_actor_unk6_frames.c g_abRoomActo
 # Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068B7C _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068B84 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
-c-file 0x08068B88 0x08068B94 src/graphics/particle/opposite_directions.c g_abOppositeDirection8
-c-file 0x08068B9C _ src/graphics/particle/oam_dims_attrs.c g_abOamSizeForDims
+c-file 0x08068B88 0x08068B94 src/particles/opposite_directions.c g_abOppositeDirection8
+c-file 0x08068B9C _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068BBC _ src/gamemode/modes/cutscene/harry_patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068BC4 _ src/gamemode/modes/in_game_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file 0x08068C90 0x08068CC8 src/gamemode/modes/minigame/wizard_cracker_pop_it/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "area.h"
 #include "math.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "actor.h"
 #include "overworld/overworld.h"
 #include "overworld/room_script.h"

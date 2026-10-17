@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "oam.h"
 
 void InitOamSystem(void)

@@ -171,7 +171,7 @@ Compressed resources start with a 4-byte header: byte 0 bits 4-6 are
 the **type** (the jump-table index), byte 0 bit 7 requests a delta
 post-pass (`ApplyResourceDeltaPass`, an in-place running sum over `u16`s, applied
 after any type), and bytes 1-3 are the decompressed size (LE 24-bit); see
-`ResourceHeader` in `include/graphics/graphics.h`.
+`ResourceHeader` in `include/decompress.h`.
 So `0xE0` is type 6 with the post-pass. `GetResourceDecompressedSize`
 (`0x0801DD88`) only returns `header >> 8`, the decompressed size.
 

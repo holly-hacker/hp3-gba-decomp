@@ -3,7 +3,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "boggart_minigame.h"
 #include "font.h"
 

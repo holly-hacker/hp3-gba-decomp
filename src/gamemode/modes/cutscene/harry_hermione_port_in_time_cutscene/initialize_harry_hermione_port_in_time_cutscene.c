@@ -3,7 +3,7 @@
 #include "hw/bios.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "cutscene/harry_hermione_port_in_time_cutscene.h"
 #include "hw/io_regs.h"
 #include "overworld/overworld.h"

@@ -3,7 +3,7 @@
 #include "types.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "font.h"
 #include "text.h"
 #include "dialog.h"

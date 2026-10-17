@@ -1,11 +1,10 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
-// Tick for ParticleModeRandomVelocity. Frames last one tick longer than in
-// TickParticleMoving.
-void TickParticleWithGravity(Particle *particle)
+// Tick for ParticleModeRandomDirection and every mode without its own tick.
+void TickParticleMoving(Particle *particle)
 {
-    if (particle->wFrameCounter++ >= particle->bAnimTicks) {
+    if (++particle->wFrameCounter >= particle->bAnimTicks) {
         if (particle->bFrame < particle->pSprite->pHeader->wFrameCount - 1)
             particle->bFrame++;
         else if (particle->wFlags & ParticleEmitterFlagAnimTicksFixed)
@@ -14,5 +13,4 @@ void TickParticleWithGravity(Particle *particle)
     }
     particle->nX += particle->nVelX;
     particle->nY += particle->nVelY;
-    particle->nVelY += particle->wParam46 << 4;
 }

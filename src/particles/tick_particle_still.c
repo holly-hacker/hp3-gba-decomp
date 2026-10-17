@@ -1,8 +1,8 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
-// Identical to TickParticleMoving.
-void TickParticleDirectional(Particle *particle)
+// Tick for ParticleModeStill: animation only.
+void TickParticleStill(Particle *particle)
 {
     if (++particle->wFrameCounter >= particle->bAnimTicks) {
         if (particle->bFrame < particle->pSprite->pHeader->wFrameCount - 1)
@@ -11,6 +11,4 @@ void TickParticleDirectional(Particle *particle)
             particle->bFrame = 0;
         particle->wFrameCounter = 0;
     }
-    particle->nX += particle->nVelX;
-    particle->nY += particle->nVelY;
 }

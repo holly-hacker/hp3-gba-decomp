@@ -1,6 +1,6 @@
 #include "types.h"
 #include "decompress.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "hw/bios.h"
 #include "huffman.h"
 

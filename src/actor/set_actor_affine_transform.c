@@ -1,5 +1,5 @@
 #include "actor.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 void SetActorAffineTransform(Actor *actor, u32 nScaleX, u32 nScaleY, s16 wAngle, u8 bMode)
 {

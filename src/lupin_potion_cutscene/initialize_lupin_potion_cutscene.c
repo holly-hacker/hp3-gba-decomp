@@ -14,7 +14,7 @@
 #include "overworld/room.h"
 #include "graphics/scanline_effects.h"
 #include "font.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "gen/graphics/menus.h"
 
 void InitializeLupinPotionCutscene(void)

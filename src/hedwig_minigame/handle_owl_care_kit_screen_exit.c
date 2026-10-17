@@ -2,7 +2,7 @@
 #include "char_block.h"
 #include "color.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "battle/battle.h"
 #include "mem.h"
 #include "actor.h"

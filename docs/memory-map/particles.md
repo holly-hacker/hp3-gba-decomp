@@ -2,7 +2,7 @@
 
 See [`../README.md`](../README.md) for the confidence-key legend. Addresses are US;
 JP addresses are in the table below. The matched C is authoritative:
-`include/graphics/graphics.h` (`ParticleEmitter`, `Particle`, flag and mode enums) and
+`include/particles.h` (`ParticleEmitter`, `Particle`, flag and mode enums) and
 `src/graphics/`.
 
 ## Structure — PROVEN (byte-matched C)
@@ -24,25 +24,25 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 
 | Function | Address | Source |
 |---|---|---|
-| `AllocParticleEmitter` | `0x08030B70` | `src/graphics/particle/alloc_particle_emitter.c` |
-| `TickParticleEmitter` | `0x08030C9C` | `src/graphics/particle/tick_particle_emitter.c` |
-| `SpawnParticle` | `0x08030D90` | `src/graphics/particle/spawn_particle.c` |
-| `ReleaseParticleEmitter` | `0x080316A4` | `src/graphics/particle/release_particle_emitter.c` |
-| `InitParticlePools` | `0x080315A4` | `src/graphics/particle/init_particle_pools.c` |
-| `ResetParticleState` | `0x08031624` | `src/graphics/particle/reset_particle_state.c` |
-| `FreeAllParticleEmitters` | `0x080316D4` | `src/graphics/particle/free_all_particle_emitters.c` |
-| `FreeAllParticles` | `0x0803171C` | `src/graphics/particle/free_all_particles.c` |
-| `ReleaseParticle` | `0x08031848` | `src/graphics/particle/release_particle.c` |
-| `TickParticleEmitters` | `0x08031748` | `src/graphics/particle/tick_particle_emitters.c` |
-| `BucketParticlesByPriority` | `0x08030C00` | `src/graphics/particle/bucket_particles_by_priority.c` |
-| `TickParticleLayer` | `0x080317EC` | `src/graphics/particle/tick_particle_layer.c` |
-| `TickParticle` | `0x08031358` | `src/graphics/particle/tick_particle.c` |
-| `TickParticleStill` | `0x08031434` | `src/graphics/particle/tick_particle_still.c` |
-| `TickParticleDirectional` | `0x08031480` | `src/graphics/particle/tick_particle_directional.c` |
-| `TickParticleMoving` | `0x080314DC` | `src/graphics/particle/tick_particle_moving.c` |
-| `TickParticleWithGravity` | `0x08031538` | `src/graphics/particle/tick_particle_with_gravity.c` |
-| `DrawParticle` | `0x0803186C` | `src/graphics/particle/draw_particle.c` |
-| `UpdateParticleCollision` | `0x0803197C` | `src/graphics/particle/update_particle_collision.c` |
+| `AllocParticleEmitter` | `0x08030B70` | `src/particles/alloc_particle_emitter.c` |
+| `TickParticleEmitter` | `0x08030C9C` | `src/particles/tick_particle_emitter.c` |
+| `SpawnParticle` | `0x08030D90` | `src/particles/spawn_particle.c` |
+| `ReleaseParticleEmitter` | `0x080316A4` | `src/particles/release_particle_emitter.c` |
+| `InitParticlePools` | `0x080315A4` | `src/particles/init_particle_pools.c` |
+| `ResetParticleState` | `0x08031624` | `src/particles/reset_particle_state.c` |
+| `FreeAllParticleEmitters` | `0x080316D4` | `src/particles/free_all_particle_emitters.c` |
+| `FreeAllParticles` | `0x0803171C` | `src/particles/free_all_particles.c` |
+| `ReleaseParticle` | `0x08031848` | `src/particles/release_particle.c` |
+| `TickParticleEmitters` | `0x08031748` | `src/particles/tick_particle_emitters.c` |
+| `BucketParticlesByPriority` | `0x08030C00` | `src/particles/bucket_particles_by_priority.c` |
+| `TickParticleLayer` | `0x080317EC` | `src/particles/tick_particle_layer.c` |
+| `TickParticle` | `0x08031358` | `src/particles/tick_particle.c` |
+| `TickParticleStill` | `0x08031434` | `src/particles/tick_particle_still.c` |
+| `TickParticleDirectional` | `0x08031480` | `src/particles/tick_particle_directional.c` |
+| `TickParticleMoving` | `0x080314DC` | `src/particles/tick_particle_moving.c` |
+| `TickParticleWithGravity` | `0x08031538` | `src/particles/tick_particle_with_gravity.c` |
+| `DrawParticle` | `0x0803186C` | `src/particles/draw_particle.c` |
+| `UpdateParticleCollision` | `0x0803197C` | `src/particles/update_particle_collision.c` |
 | `CreateMenuCursorEmitter` | `0x0801DBE0` | `src/cursor/create_menu_cursor_emitter.c` |
 | `FixedMultiply` | `0x0802BEE8` | asm; `((a >> 6) * (b >> 6)) >> 4` |
 

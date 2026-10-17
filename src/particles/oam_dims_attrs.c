@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 // OAM size and shape for a sprite of each width and height, indexed
 // [height][width] with 0-3 for 8, 16, 32 and 64 pixels. Pairs that have no OAM

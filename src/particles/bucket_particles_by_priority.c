@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 // ParticleEmitterFlagSkipTick marks a particle as bucketed, so a
 // ParticleEmitterFlagPriorityAbove particle lands only in its target's bucket.

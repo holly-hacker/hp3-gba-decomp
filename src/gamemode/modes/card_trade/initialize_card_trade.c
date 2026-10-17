@@ -1,6 +1,6 @@
 #include "types.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "modes.h"
 #include "mem.h"
 #include "menu/card_trade.h"

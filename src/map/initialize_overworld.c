@@ -7,7 +7,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "dialog.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "modes.h"
 #include "input.h"
 #include "overworld/overworld.h"

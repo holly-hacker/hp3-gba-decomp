@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 void ReleaseActorAffineSlot(Actor *actor)
 {

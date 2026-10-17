@@ -1,6 +1,6 @@
 #include "types.h"
 #include "background.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "hw/dma.h"
 #include "hw/io_regs.h"
 

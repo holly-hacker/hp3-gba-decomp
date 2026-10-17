@@ -4,7 +4,7 @@
 #include "color.h"
 #include "combat_2.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 // Shared cleanup for a fighter escaping Paralyzed, both on a successful
 // escape roll (RollFighterParalysisEscape) and from CureAilments. Clears

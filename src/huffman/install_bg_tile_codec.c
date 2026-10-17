@@ -1,5 +1,5 @@
 #include "arm_routines.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "hw/bios.h"
 #include "huffman.h"
 

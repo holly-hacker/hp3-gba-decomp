@@ -1,6 +1,6 @@
 #include "types.h"
 #include "decompress.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "actor.h"
 #include "hw/io_regs.h"
 #include "vram.h"

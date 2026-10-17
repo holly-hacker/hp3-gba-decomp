@@ -4,7 +4,7 @@
 #include "cheat_map.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "hw/io_regs.h"
 #include "actor.h"
 #include "overworld/room.h"

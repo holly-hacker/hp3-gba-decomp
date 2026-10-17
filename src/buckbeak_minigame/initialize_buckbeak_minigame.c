@@ -3,7 +3,7 @@
 #include "graphics/audio.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "buckbeak_minigame.h"
 #include "menu/main_menu.h"
 #include "mem.h"

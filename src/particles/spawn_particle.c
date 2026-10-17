@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/effect_script.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "actor.h"
 #include "mt19937.h"
 

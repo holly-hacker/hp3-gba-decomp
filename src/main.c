@@ -17,7 +17,7 @@
 #include "game/save.h"
 #include "game_state.h"
 #include "decompress.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "oam.h"
 #include "graphics/audio.h"
 #include "graphics/scanline_effects.h"

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 // Ticks every active emitter once per frame and clears the per-frame flags. An emitter
 // with ParticleEmitterFlagSkipTick set is not ticked this frame.

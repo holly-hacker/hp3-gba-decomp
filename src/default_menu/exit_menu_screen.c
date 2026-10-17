@@ -3,7 +3,7 @@
 #include "cursor.h"
 #include "default_menu.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 void ExitMenuScreen(void)
 {

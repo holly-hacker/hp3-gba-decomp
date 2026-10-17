@@ -10,7 +10,7 @@
 #include "background.h"
 #include "graphics/audio.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "graphics/scanline_effects.h"
 #include "hw/io_regs.h"
 #include "interrupts.h"

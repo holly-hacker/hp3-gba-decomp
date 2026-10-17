@@ -1,6 +1,6 @@
 #include "types.h"
 #include "actor.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 u32 AllocActorAffineSlot(Actor *actor)
 {

@@ -5,7 +5,7 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "game/save.h"
 #include "game_state.h"
 #include "map.h"

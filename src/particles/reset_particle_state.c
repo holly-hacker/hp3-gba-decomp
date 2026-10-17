@@ -1,5 +1,5 @@
 #include "types.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 
 // Marks every graphics pool entry as having no OBJ tile allocation and frees
 // every live emitter and particle.

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "font.h"
 #include "modes.h"
 #include "dementor_minigame.h"

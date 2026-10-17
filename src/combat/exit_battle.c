@@ -9,7 +9,7 @@
 #include "modes.h"
 #include "mem.h"
 #include "actor.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "vram.h"
 #include "map.h"
 

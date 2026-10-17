@@ -5,7 +5,7 @@
 #include "mem.h"
 #include "list.h"
 #include "oam.h"
-#include "../palette.h"
+#include "palette.h"
 
 // See docs/formats/graphics.md.
 
@@ -168,7 +168,8 @@ static inline void FreeParticle(Particle *particle)
 {
     List_MoveToHead(&g_pParticleFreeListHead, &g_pParticleActiveListHead, &particle->node);
     g_wActiveParticleCount--;
-}  // 16.16 multiply keeping 10 bits of each operand
+}
+
 extern u8 g_bParticleSpawnBlocked;                  // 0x030051D0
 extern void TickParticleEmitters(void);
 extern u16 g_wParticleEmitterHighWaterMark;         // 0x030051A2
@@ -208,6 +209,9 @@ extern void SpawnParticle(ParticleEmitter *emitter);
 extern ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex, u32 entryIndex);
 
 extern void ReleaseParticleEmitter(ParticleEmitter *emitter);
+// Loads (sub_08030A1C) and releases (sub_08031668) a particle graphics pool; see ParticleGfxEntry.
+extern void sub_08030A1C(u32 a, u32 b, const void *rec);
+extern void sub_08031668(s32 arg0, s32 arg1);
 
 // Drops the emitter's palette slot reference and returns it to the free list. The ROM
 // inlines this in the emitter tick and in ReleaseParticleEmitter.

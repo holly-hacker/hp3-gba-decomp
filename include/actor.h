@@ -3,7 +3,7 @@
 #include "types.h"
 #include "direction.h"
 #include "mem.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "oam.h"
 
 // See docs/formats/graphics.md.

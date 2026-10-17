@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "graphics/display.h"
-#include "graphics/graphics.h"
+#include "particles.h"
 #include "menu/main_menu.h"
 #include "font.h"
 #include "modes.h"
