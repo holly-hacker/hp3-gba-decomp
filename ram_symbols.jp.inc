@@ -41,7 +41,7 @@
 .set g_KrawallIwramEnd,       0x03001598  @ end of that image; ClearWorkRam zeroes from here
 
 @ --- Boot + runtime (asm) ---
-.set g_pTimer2DebugPc,        0x030015A0  @ see ram_symbols.us.inc
+.set g_pTimer2DebugPc,        0x030015A0
 
 @ --- include/actor.h ---
 .set g_ActiveActorListState, 0x030015B0
@@ -62,42 +62,42 @@
 
 @ --- include/area.h ---
 .set g_adwRoomActorUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room actor constructors
-.set g_wRoomResourceFlags_candidate, 0x03001DDC  @ see ram_symbols.us.inc
+.set g_wRoomResourceFlags_candidate, 0x03001DDC
 .set g_bRoomScriptCurrentChain,        0x03001DDE
 .set g_pRoomScriptYieldContinuation, 0x03001DE0
 .set g_pRoomScriptNextRecord,        0x03001DE4
 .set g_bRoomScriptCallStackDepth,    0x03001DE8
 .set g_bRoomScriptYieldOpcode,            0x03001DE9
-.set g_pRoomTableBuffer,                  0x03001DEC  @ see ram_symbols.us.inc
-.set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ see ram_symbols.us.inc
+.set g_pRoomTableBuffer,                  0x03001DEC
+.set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0
                                                       @ HandleOverworldPauseMenuInput each frame, which skips the menu check while it is set
-.set g_pRoomActorTable,            0x03001DF4  @ see ram_symbols.us.inc
-.set g_pRoomRouteTable,       0x03001DF8  @ see ram_symbols.us.inc
-.set g_pRoomScriptChainTable, 0x03001DFC  @ see ram_symbols.us.inc
+.set g_pRoomActorTable,            0x03001DF4
+.set g_pRoomRouteTable,       0x03001DF8
+.set g_pRoomScriptChainTable, 0x03001DFC
 .set g_aRoomScriptCallStack,        0x03001E00
 
 @ --- include/background.h ---
-.set g_BgState,        0x03001E80  @ see ram_symbols.us.inc
+.set g_BgState,        0x03001E80
 @ Forces one extra CommitBgLayers call this vblank.
 .set g_bForcePendingBgWritesFlush,               0x03002038
 
 @ --- include/boggart_minigame.h ---
 .set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ set by StartMinigame
-.set g_BoggartMinigame,                          0x03002048  @ see ram_symbols.us.inc
+.set g_BoggartMinigame,                          0x03002048
 
 @ --- include/buckbeak_minigame.h ---
 .set g_dwBuckbeakMinigameForceOverworldExit,           0x03002084  @ set by StartMinigame
-.set g_pBuckbeakMinigame,                         0x03002088  @ see ram_symbols.us.inc
+.set g_pBuckbeakMinigame,                         0x03002088
 
 @ --- include/camera.h ---
-.set g_aCameraEffects_candidate,                 0x03002090  @ see ram_symbols.us.inc
-.set g_aCameraFocusSlots,                        0x030020E8  @ see ram_symbols.us.inc
-.set g_aCameraFollowOffsets,                     0x03002158  @ see ram_symbols.us.inc
+.set g_aCameraEffects_candidate,                 0x03002090
+.set g_aCameraFocusSlots,                        0x030020E8
+.set g_aCameraFollowOffsets,                     0x03002158
 
 @ --- include/char_block.h ---
-.set g_bBgTileAnimationCount,                    0x03002168  @ see ram_symbols.us.inc
-.set g_aBgTileAnimations,                        0x0300216C  @ see ram_symbols.us.inc
-.set g_apBgTileAnimationBuffers,                 0x030021AC  @ see ram_symbols.us.inc
+.set g_bBgTileAnimationCount,                    0x03002168
+.set g_aBgTileAnimations,                        0x0300216C
+.set g_apBgTileAnimationBuffers,                 0x030021AC
 
 @ --- include/cheat.h ---
 .set g_CheatState,                     0x030021C0
@@ -124,8 +124,8 @@
 .set g_abOpenedChestFlags,         0x03002240  @ u8[32]: one bit per chest flag id; set when the chest is opened, saved with the game
 
 @ --- include/choose_party_member.h ---
-.set g_ChooseCharacterState,       0x03002260  @ see ram_symbols.us.inc
-.set g_dwChooseCharacterBgRow,     0x0300227C  @ see ram_symbols.us.inc
+.set g_ChooseCharacterState,       0x03002260
+.set g_dwChooseCharacterBgRow,     0x0300227C
 
 @ --- include/color.h ---
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]
@@ -135,7 +135,7 @@
 .set g_dwObjPaletteQueueCount,     0x030022F0  @ u32: queued OBJ palette loads (25 max)
 .set g_dwPaletteEffectCount,       0x030022F4  @ u32: active palette effects
 .set g_aPaletteEffects,            0x030022F8  @ PaletteEffect[12]
-.set g_aObjPaletteQueue,            0x030023E8  @ see ram_symbols.us.inc
+.set g_aObjPaletteQueue,            0x030023E8
 .set g_PaletteState,              0x030024B0  @ PaletteState
 
 @ --- include/combat.h ---
@@ -143,35 +143,35 @@
 .set g_aPartyMasterStats,           0x030024EC  @ BattleFighter[], 0x48 stride
 .set g_bPendingRoomScriptChain,     0x0300260C  @ chain resumed after a game mode
 .set g_bPendingRoomScriptRow,       0x0300260D  @ actor row resumed after a game mode
-.set g_nBattleXpReward,             0x0300260E  @ see ram_symbols.us.inc
-.set g_nBattleGoldReward,           0x03002610  @ see ram_symbols.us.inc
+.set g_nBattleXpReward,             0x0300260E
+.set g_nBattleGoldReward,           0x03002610
 .set g_dwOverworldMonstersDisabled, 0x03002614
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618
 .set g_bSelectedFighterSlot_candidate,     0x03002660
 .set g_apFighterActors_candidate,         0x03002668
 .set g_pBattleMessageIconActor_candidate, 0x03002684
 .set g_BattleMessageIconState_candidate,   0x03002688
-.set g_anFaintedRosterIndices,             0x030026D8  @ see ram_symbols.us.inc
+.set g_anFaintedRosterIndices,             0x030026D8
 
 @ --- include/combat_result.h ---
-.set g_dwCombatResultUnusedCounter,               0x030026E8  @ see ram_symbols.us.inc
-.set g_dwCombatResultUnusedDelay,               0x030026EC  @ see ram_symbols.us.inc
-.set g_dwCombatResultXpRemaining,           0x030026F0  @ see ram_symbols.us.inc
-.set g_pCombatResultCoinActor,               0x030026F4  @ see ram_symbols.us.inc
-.set g_pCombatResultItem0Actor,               0x030026F8  @ see ram_symbols.us.inc
-.set g_pCombatResultItem1Actor,               0x030026FC  @ see ram_symbols.us.inc
-.set g_abCombatResultPartySlots,            0x03002700  @ see ram_symbols.us.inc
-.set g_pCombatResultBg2Tilemap,             0x03002704  @ see ram_symbols.us.inc
-.set g_pCombatResultBg1Tilemap,             0x03002708  @ see ram_symbols.us.inc
-.set g_wCombatResultTextTileCursor,         0x0300270C  @ see ram_symbols.us.inc
-.set g_wCombatResultXpTileCursor,           0x0300270E  @ see ram_symbols.us.inc
-.set g_aCombatResultPartyRows,              0x03002710  @ see ram_symbols.us.inc
-.set g_wCombatResultXpNumberX,              0x03002734  @ see ram_symbols.us.inc
-.set g_CombatResultItem0Gfx,                0x03002738  @ see ram_symbols.us.inc
-.set g_CombatResultItem1Gfx,                0x03002740  @ see ram_symbols.us.inc
+.set g_dwCombatResultUnusedCounter,               0x030026E8
+.set g_dwCombatResultUnusedDelay,               0x030026EC
+.set g_dwCombatResultXpRemaining,           0x030026F0
+.set g_pCombatResultCoinActor,               0x030026F4
+.set g_pCombatResultItem0Actor,               0x030026F8
+.set g_pCombatResultItem1Actor,               0x030026FC
+.set g_abCombatResultPartySlots,            0x03002700
+.set g_pCombatResultBg2Tilemap,             0x03002704
+.set g_pCombatResultBg1Tilemap,             0x03002708
+.set g_wCombatResultTextTileCursor,         0x0300270C
+.set g_wCombatResultXpTileCursor,           0x0300270E
+.set g_aCombatResultPartyRows,              0x03002710
+.set g_wCombatResultXpNumberX,              0x03002734
+.set g_CombatResultItem0Gfx,                0x03002738
+.set g_CombatResultItem1Gfx,                0x03002740
 
 @ --- include/combat_2.h ---
-.set g_bDefeatWarpParam,                   0x03002748  @ see ram_symbols.us.inc
+.set g_bDefeatWarpParam,                   0x03002748
 .set g_bSpellMissStreak,                   0x03002749
 .set g_nLastDamage,                        0x0300274A
 .set g_bLastTargetIndex,                   0x0300274C
@@ -181,20 +181,20 @@
 .set g_dwRoomScriptRunState,    0x0300279C  @ room script run state
 .set g_abQuestEventState,       0x030027A0  @ quest event state bytes
 .set g_bRoomScriptPendingChain, 0x030028A0
-.set g_bCameraShakeSoundHandle,   0x030028A4  @ see ram_symbols.us.inc
+.set g_bCameraShakeSoundHandle,   0x030028A4
 
 @ --- include/credits_cutscene.h ---
-.set g_dwCreditsScrollRow,    0x030028A8  @ see ram_symbols.us.inc
-.set g_dwCreditsLine,         0x030028AC  @ see ram_symbols.us.inc
-.set g_dwCreditsTileCursor,   0x030028B0  @ see ram_symbols.us.inc
-.set g_pLinearCutsceneText,   0x030028B4  @ see ram_symbols.us.inc
-.set g_pLinearCutsceneActor, 0x030028B8  @ see ram_symbols.us.inc
-.set g_dwLinearCutsceneIndex, 0x030028BC  @ see ram_symbols.us.inc
+.set g_dwCreditsScrollRow,    0x030028A8
+.set g_dwCreditsLine,         0x030028AC
+.set g_dwCreditsTileCursor,   0x030028B0
+.set g_pLinearCutsceneText,   0x030028B4
+.set g_pLinearCutsceneActor, 0x030028B8
+.set g_dwLinearCutsceneIndex, 0x030028BC
 
 @ --- include/cursor.h ---
 .set g_pMenuCursorEmitter, 0x030028C0
-.set g_nMenuCursorPaletteEffect, 0x030028C4  @ see ram_symbols.us.inc
-.set g_dwMenuCursorParticleGfxLoaded, 0x030028C8  @ see ram_symbols.us.inc
+.set g_nMenuCursorPaletteEffect, 0x030028C4
+.set g_dwMenuCursorParticleGfxLoaded, 0x030028C8
 
 @ --- include/decompress.h ---
 .set g_pDecompressLzRleEntry,   0x030028CC
@@ -203,30 +203,30 @@
 .set g_pDecompressGammaLzIwram, 0x03002ACC
 
 @ --- include/default_menu.h ---
-.set g_pMenuCursorActor,                              0x03002E08  @ see ram_symbols.us.inc
-.set g_nMenuScreenPaletteEffectSlot,                  0x03002E0C  @ see ram_symbols.us.inc
+.set g_pMenuCursorActor,                              0x03002E08
+.set g_nMenuScreenPaletteEffectSlot,                  0x03002E0C
 
 @ --- include/dementor_minigame.h ---
 .set g_dwDementorMinigameScriptFlag_candidate,         0x03002E10  @ set by StartMinigame
-.set g_DementorMinigame,                               0x03002E18  @ see ram_symbols.us.inc
+.set g_DementorMinigame,                               0x03002E18
 
 @ --- include/dialog.h ---
 .set g_DialogState_candidate,                          0x03002E88
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8
-.set g_awSavedBgPalette0,                              0x03002EAC  @ see ram_symbols.us.inc
-.set g_adwSavedBgPriority,                             0x03002ED0  @ see ram_symbols.us.inc
-.set g_dwDialogTextId,                                 0x03002ED8  @ see ram_symbols.us.inc
-.set g_dwDialogPortrait,                               0x03002EDC  @ see ram_symbols.us.inc
-.set g_pDialogBoxTilemap,                              0x03002EE0  @ see ram_symbols.us.inc
-.set g_pDialogPortraitActor,                          0x03002EE4  @ see ram_symbols.us.inc
-.set g_dwDialogBoxY,                                   0x03002EE8  @ see ram_symbols.us.inc
-.set g_pDialogCursorActor,                            0x03002EEC  @ see ram_symbols.us.inc
-.set g_dwDialogPageFull,                               0x03002EF0  @ see ram_symbols.us.inc
-.set g_dwDialogBoxTileRow,                             0x03002EF4  @ see ram_symbols.us.inc
-.set g_awDialogBoxPalette,                             0x03002EF8  @ see ram_symbols.us.inc
+.set g_awSavedBgPalette0,                              0x03002EAC
+.set g_adwSavedBgPriority,                             0x03002ED0
+.set g_dwDialogTextId,                                 0x03002ED8
+.set g_dwDialogPortrait,                               0x03002EDC
+.set g_pDialogBoxTilemap,                              0x03002EE0
+.set g_pDialogPortraitActor,                          0x03002EE4
+.set g_dwDialogBoxY,                                   0x03002EE8
+.set g_pDialogCursorActor,                            0x03002EEC
+.set g_dwDialogPageFull,                               0x03002EF0
+.set g_dwDialogBoxTileRow,                             0x03002EF4
+.set g_awDialogBoxPalette,                             0x03002EF8
 
 @ --- include/ending_cutscene.h ---
-.set g_pHippogriffFliesIntoAirActor,                  0x03002F18  @ see ram_symbols.us.inc
+.set g_pHippogriffFliesIntoAirActor,                  0x03002F18
 .set g_pHippogriffFliesIntoAirActor2,                 0x03002F1C
 
 @ --- include/flipbook.h ---
@@ -237,23 +237,23 @@
 .set g_aFontDescriptors,                                  0x03002F30
 .set gTextRenderState,                                 0x03003170  @ TextRenderState
 .set gSavedTextTarget,                                 0x030031A0  @ TextRenderState: target fields saved by SaveTextTarget
-.set sTextMacroTable,                                  0x030031D0  @ see ram_symbols.us.inc
+.set sTextMacroTable,                                  0x030031D0
 
 @ --- include/game_state.h ---
 .set g_saveStateBlock,                                 0x030031E0
-.set g_dwUnk03003234,                                  0x03003294  @ see ram_symbols.us.inc
+.set g_dwUnk03003234,                                  0x03003294
 
 @ --- include/gamecube.h ---
-.set g_JoybusLinkState,          0x03003298  @ see ram_symbols.us.inc
+.set g_JoybusLinkState,          0x03003298
 
 @ --- include/hedwig_minigame.h ---
-.set g_OwlCareKitScreen,        0x030032D0  @ see ram_symbols.us.inc
+.set g_OwlCareKitScreen,        0x030032D0
 
 @ --- include/hero.h ---
 .set g_OverworldControlState,                          0x030033B8  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 .set g_nCameraYOffset,                  0x030033DC
-.set g_abRoomScriptExitParams_candidate, 0x030033DD  @ see ram_symbols.us.inc
-.set g_pPlayerActor,                    0x030033E0  @ see ram_symbols.us.inc
+.set g_abRoomScriptExitParams_candidate, 0x030033DD
+.set g_pPlayerActor,                    0x030033E0
 .set g_pFollowerActor0,                 0x030033E4
 .set g_pFollowerActor1,                 0x030033E8
 .set g_bPartyCharId0,                    0x030033EC
@@ -277,19 +277,11 @@
 .set g_HighScoreNameEntry,              0x03003530
 
 @ --- include/input.h ---
-.set g_wKeysHeld,                0x0300354C  @ see ram_symbols.us.inc/docs/memory-map/input.md
-                                             @ order), updated once per frame by UpdateKeyInput; also
-                                             @ folded into Mt19937AutoSeed's seed as a cheap entropy
-                                             @ source (see docs/memory-map/rng.md) -- that's not what the
-                                             @ address is for
+.set g_wKeysHeld,                0x0300354C
 .set g_wKeysHeldPrevious,        0x0300354E
-.set g_wKeysPressed,             0x03003550  @ ~previousHeld); bit 0x01 (A) tested by
-                                             @ TickBattleTurnStateMachine's message-wait fast-forward
-                                             @ check, bits 0x10/0x20 (Right/Left) read elsewhere -- see
-                                             @ docs/memory-map/input.md, docs/formats/folio_bruti.md,
-                                             @ docs/memory-map/battle-ui.md
+.set g_wKeysPressed,             0x03003550
 .set g_wKeysReleased,            0x03003552
-.set g_wInputDisabled,           0x03003554  @ arrays below) to 0 every frame instead of reading KEYINPUT
+.set g_wInputDisabled,           0x03003554
 .set g_awPlayerKeysHeld,         0x03003556
 .set g_awPlayerKeysHeldPrevious, 0x0300355A
 .set g_awPlayerKeysPressed,      0x0300355E
@@ -318,7 +310,7 @@
                                     @ points here
 @ Sticky software copy of acked hardware IF bits, ORed by every interrupt
 @ handler after acking its own bit in IF.
-.set g_wPendingIntrFlags, 0x03003804  @ see ram_symbols.us.inc
+.set g_wPendingIntrFlags, 0x03003804
 @ Reentrancy guard for HandleVBlankInterrupt; body only runs while this
 @ reads back as 1.
 .set g_dwVBlankIntrNestCount, 0x03003808
@@ -335,7 +327,7 @@
 .set g_apUnusedHogwartsMapActors,           0x03003AC0
 
 @ --- include/lupin_potion_cutscene.h ---
-.set g_LupinPotionCutscene,                  0x03003AE4  @ see ram_symbols.us.inc
+.set g_LupinPotionCutscene,                  0x03003AE4
 .set g_aLupinPotionBg2Scroll,                0x03003B9C
 
 @ --- include/main.h ---
@@ -343,15 +335,15 @@
                                                          @ overworld/room/cutscene transitions and
                                                          @ TickGameModeStack; individual bits
                                                          @ unconfirmed
-.set g_dwFrameSyncTarget,                    0x03003BA8  @ see ram_symbols.us.inc
+.set g_dwFrameSyncTarget,                    0x03003BA8
 
 @ --- include/map.h ---
-.set g_bCurrentRoomId,                       0x03003BB0  @ see ram_symbols.us.inc
+.set g_bCurrentRoomId,                       0x03003BB0
 .set g_bControlSlotTicks_candidate,          0x03003BB8  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
 .set g_bPendingQuestStateOverride_candidate, 0x03003BBA
 .set g_dwRoomBgFlag_candidate,               0x03003BBC
 .set g_dwPauseMenuLocked,                    0x03003BC0  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
-.set g_bRoomSwitchState,                     0x03003BC4  @ see ram_symbols.us.inc
+.set g_bRoomSwitchState,                     0x03003BC4
 .set g_pRoomActorStateBuffer,          0x03003BC8
 .set g_dwPauseMenuCooldown,                  0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003BD0  @ byte: queued (encounter id, kind) pair count
@@ -369,30 +361,30 @@
 .set gMemPoolCount,                          0x03003F50
 
 @ --- include/modes.h ---
-.set g_GameModeStackContext,                 0x03003F54  @ see ram_symbols.us.inc
-.set g_dwListMenuSelection,                  0x03003F74  @ see ram_symbols.us.inc
-.set g_dwPendingGameMode,                    0x03003F78  @ see ram_symbols.us.inc
+.set g_GameModeStackContext,                 0x03003F54
+.set g_dwListMenuSelection,                  0x03003F74
+.set g_dwPendingGameMode,                    0x03003F78
 .set g_PrevGameModeStackContext,             0x03003F9C
 .set g_dwTickCount,                          0x03003FC0
-.set g_apMenuIconActors, 0x03003FC8  @ see ram_symbols.us.inc
+.set g_apMenuIconActors, 0x03003FC8
 
 @ --- include/minigame_difficulty_select.h ---
 .set g_dwSelectedMinigame,                   0x03003FE8
 
 @ --- include/mode7.h ---
-.set g_FloorEffect,                          0x03003FEC  @ see ram_symbols.us.inc
-.set g_pFloorAffineTable,                    0x0300400C  @ see ram_symbols.us.inc
-.set g_nFloorHorizonLine,                    0x03004010  @ see ram_symbols.us.inc
-.set g_dwFloorScrollSky,                     0x03004014  @ see ram_symbols.us.inc
+.set g_FloorEffect,                          0x03003FEC
+.set g_pFloorAffineTable,                    0x0300400C
+.set g_nFloorHorizonLine,                    0x03004010
+.set g_dwFloorScrollSky,                     0x03004014
 
 @ --- include/move.h ---
-.set g_dwRoomCollisionPatternCount,           0x03004018  @ see ram_symbols.us.inc
-.set g_adwEdgeEndpointTypes,                  0x03004020  @ see ram_symbols.us.inc
-.set g_pRoomCollisionTilemapBuffer,           0x03004028  @ see ram_symbols.us.inc
-.set g_pRoomCollisionBehaviorTable,           0x0300402C  @ see ram_symbols.us.inc
-.set g_pRoomCollisionTilemap,                 0x03004030  @ see ram_symbols.us.inc
-.set g_dwPendingCameraFocusFlag,             0x03004034  @ see ram_symbols.us.inc
-.set g_pPendingCameraFocus_candidate,        0x03004038  @ see ram_symbols.us.inc
+.set g_dwRoomCollisionPatternCount,           0x03004018
+.set g_adwEdgeEndpointTypes,                  0x03004020
+.set g_pRoomCollisionTilemapBuffer,           0x03004028
+.set g_pRoomCollisionBehaviorTable,           0x0300402C
+.set g_pRoomCollisionTilemap,                 0x03004030
+.set g_dwPendingCameraFocusFlag,             0x03004034
+.set g_pPendingCameraFocus_candidate,        0x03004038
 
 @ --- include/oam.h ---
 .set g_pOamShadowBuffer,    0x03004048
@@ -406,10 +398,10 @@
 .set g_aObjAffineSetSource, 0x03005074
 
 @ --- include/palette.h ---
-.set g_aObjPaletteSlots,               0x03005174  @ see ram_symbols.us.inc
+.set g_aObjPaletteSlots,               0x03005174
 
 @ --- include/particles.h ---
-.set g_pParticleEmitterActiveListHead, 0x030051F8  @ see ram_symbols.us.inc
+.set g_pParticleEmitterActiveListHead, 0x030051F8
 .set g_wActiveParticleCount,           0x030051FC
 .set g_wParticleHighWaterMark,         0x030051FE
 .set g_wActiveParticleEmitterCount,    0x03005200
@@ -425,7 +417,7 @@
 .set g_apParticleGfxPools,             0x03005238
 
 @ --- include/patronus_cutscene.h ---
-.set g_dwPatronusBgFront,     0x03005244  @ see ram_symbols.us.inc
+.set g_dwPatronusBgFront,     0x03005244
 .set g_dwPatronusBgBack,      0x03005248
 .set g_dwPatronusSwapPending, 0x0300524C
 .set g_bPatronusGraphicIndex, 0x03005250
@@ -433,52 +425,52 @@
 .set g_nPatronusBgOffset,     0x03005254
 
 @ --- include/pause_menu.h ---
-.set g_ConnectivityMenu, 0x03005258  @ see ram_symbols.us.inc
+.set g_ConnectivityMenu, 0x03005258
 .set g_ListMenuState,                          0x03005280
 
 @ --- include/pop_it_minigame.h ---
-.set g_dwWizardCrackerPopItForceOverworldExit, 0x03005288  @ see ram_symbols.us.inc
-.set g_pWizardCrackerPopIt,                    0x03005290  @ see ram_symbols.us.inc
+.set g_dwWizardCrackerPopItForceOverworldExit, 0x03005288
+.set g_pWizardCrackerPopIt,                    0x03005290
 
 @ --- include/pouring_minigame.h ---
-.set g_ServePumpkinJuice,                      0x03005298  @ see ram_symbols.us.inc
+.set g_ServePumpkinJuice,                      0x03005298
 
 @ --- include/pscreen_character.h ---
-.set g_StatusEquipReturnMode,      0x030052F8  @ see ram_symbols.us.inc
-.set g_StatusEquipNextMode,        0x030052FC  @ see ram_symbols.us.inc
-.set g_dwStatusEquipCharacter,     0x03005300  @ see ram_symbols.us.inc
-.set g_StatusEquipCharacterSelect, 0x03005308  @ see ram_symbols.us.inc
-.set g_bStatusEquipCharacterSlot,  0x03005318  @ see ram_symbols.us.inc
+.set g_StatusEquipReturnMode,      0x030052F8
+.set g_StatusEquipNextMode,        0x030052FC
+.set g_dwStatusEquipCharacter,     0x03005300
+.set g_StatusEquipCharacterSelect, 0x03005308
+.set g_bStatusEquipCharacterSlot,  0x03005318
 
 @ --- include/pscreen_connectivity.h ---
-.set g_bConnectivityMenuCursor, 0x0300531C  @ see ram_symbols.us.inc
-.set g_StatusEquipItemSelect,      0x03005328  @ see ram_symbols.us.inc
+.set g_bConnectivityMenuCursor, 0x0300531C
+.set g_StatusEquipItemSelect,      0x03005328
 
 @ --- include/pscreen_folio.h ---
-.set g_bFoliosMenuCursor, 0x03005358  @ see ram_symbols.us.inc
+.set g_bFoliosMenuCursor, 0x03005358
 
 @ --- include/pscreen_folio_bruti.h ---
-.set g_FolioBrutiState,            0x03005360  @ see ram_symbols.us.inc
+.set g_FolioBrutiState,            0x03005360
 
 @ --- include/pscreen_folio_universitas.h ---
-.set g_FolioUniversitasState,      0x030053A0  @ see ram_symbols.us.inc
+.set g_FolioUniversitasState,      0x030053A0
 
 @ --- include/pscreen_information.h ---
-.set g_HelpState,                 0x030053D0  @ see ram_symbols.us.inc
+.set g_HelpState,                 0x030053D0
 
 @ --- include/pscreen_items.h ---
-.set g_ItemsItemSelect,            0x03005538  @ see ram_symbols.us.inc
-.set g_ItemsSectionSelectNextMode, 0x03005544  @ see ram_symbols.us.inc
-.set g_bItemsSectionCursor,        0x03005548  @ see ram_symbols.us.inc
-.set g_dwItemUseItem,              0x0300554C  @ see ram_symbols.us.inc
-.set g_dwItemUseQuantity,          0x03005550  @ see ram_symbols.us.inc
+.set g_ItemsItemSelect,            0x03005538
+.set g_ItemsSectionSelectNextMode, 0x03005544
+.set g_bItemsSectionCursor,        0x03005548
+.set g_dwItemUseItem,              0x0300554C
+.set g_dwItemUseQuantity,          0x03005550
 
 @ --- include/pscreen_status_equip.h ---
-.set g_StatusEquipSlotSelect,      0x03005558  @ see ram_symbols.us.inc
-.set g_bStatusEquipSlot,           0x030055C4  @ see ram_symbols.us.inc
+.set g_StatusEquipSlotSelect,      0x03005558
+.set g_bStatusEquipSlot,           0x030055C4
 
 @ --- include/pscreen_trade.h ---
-.set g_CardTradeState, 0x030055C8  @ see ram_symbols.us.inc
+.set g_CardTradeState, 0x030055C8
 
 @ --- include/random.h ---
 .set gMt19937LastRollByte,      0x030055D4
@@ -492,8 +484,8 @@
 .set gMt19937SeedValue,         0x030055F4
 
 @ --- include/save.h ---
-.set g_saveManager,              0x030055F8  @ see ram_symbols.us.inc
-.set g_wEepromSavedDispstat,     0x0300567C  @ see ram_symbols.us.inc
+.set g_saveManager,              0x030055F8
+.set g_wEepromSavedDispstat,     0x0300567C
 
 @ --- include/screen_transitions.h ---
 .set g_pScreenPaletteBackup,            0x03005684
@@ -502,25 +494,25 @@
 
 @ --- include/scroll.h ---
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for actor visibility
-.set g_RoomSizePixels,           0x030056A8  @ see ram_symbols.us.inc
-.set g_awBgLayerTileCount,          0x030058F8  @ see ram_symbols.us.inc
-.set g_aBgTilesets,                  0x03005900  @ see ram_symbols.us.inc
+.set g_RoomSizePixels,           0x030056A8
+.set g_awBgLayerTileCount,          0x030058F8
+.set g_aBgTilesets,                  0x03005900
 .set g_adwBgScrollEnabled,              0x03005920
-.set g_wRoomBgLayer0BlocksWide,       0x0300593C  @ see ram_symbols.us.inc
+.set g_wRoomBgLayer0BlocksWide,       0x0300593C
 .set g_wRoomBgLayer1TilesWide,        0x03005940
 .set g_wRoomBgLayer1TilesHigh,        0x03005942
 .set g_wRoomBgLayer1BlocksWide,       0x03005944
 .set g_wRoomBgLayer2BlocksWide,       0x0300594C
 .set g_wRoomBgLayer3BlocksWide,       0x03005954
-.set g_BgScroll,                       0x03005958  @ see ram_symbols.us.inc
-.set g_RoomBgAux,                       0x03005960  @ see ram_symbols.us.inc
+.set g_BgScroll,                       0x03005958
+.set g_RoomBgAux,                       0x03005960
 .set g_aBgControl,                     0x03005974
 .set g_RoomBgBlockData,                0x03005994
 .set g_adwBgBlockAttrOffset,           0x030059D4
 .set g_apBgTileCacheEntries,            0x030059E8
 .set g_apBgTileCacheBuckets,            0x030059F0
 .set g_apBgTileCacheFreeSlots,          0x030059F8
-.set g_awBgTileCacheFreeCount,       0x03005A08  @ see ram_symbols.us.inc
+.set g_awBgTileCacheFreeCount,       0x03005A08
 .set g_dwUnk030059AC,                   0x03005A0C
 .set g_BgLoadedScroll,                 0x03005A18
 
@@ -562,21 +554,21 @@
 .set g_FredAndGeorgesShop,       0x03005B28
 
 @ --- include/tea_leaves_minigame.h ---
-.set g_DivinationTea,            0x03005B88  @ see ram_symbols.us.inc
+.set g_DivinationTea,            0x03005B88
 
 @ --- include/text.h ---
 .set gDialogTextScratchBuf,      0x03005D68
 .set gCurrentLanguage,           0x03005D6C
-.set gLocaleThousandsSep,        0x03005D6D  @ see ram_symbols.us.inc
+.set gLocaleThousandsSep,        0x03005D6D
 
 @ --- include/text_actor.h ---
-.set g_apTextActors,              0x03005D70  @ see ram_symbols.us.inc
+.set g_apTextActors,              0x03005D70
 
 @ --- include/timers.h ---
 .set g_aGameTimers,                     0x03005DB8
 
 @ --- include/timeturner_cutscene.h ---
-.set g_HarryHermionePortInTime,  0x03005DF8  @ see ram_symbols.us.inc
+.set g_HarryHermionePortInTime,  0x03005DF8
 
 @ --- include/title.h ---
 .set g_nMainMenuTextCursor,     0x03005E10
@@ -593,7 +585,7 @@
 .set g_wCoolTrainTimer,          0x03005E64  @ u16: frames left in the Cool Train cutscene
 
 @ --- include/trigger_actor.h ---
-.set g_bRestoringRoomActors_candidate, 0x03005E68  @ see ram_symbols.us.inc
+.set g_bRestoringRoomActors_candidate, 0x03005E68
 
 @ --- include/video.h ---
 .set g_ScanlineEffectState,      0x03005E70
