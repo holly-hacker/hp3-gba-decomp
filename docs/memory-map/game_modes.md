@@ -287,7 +287,7 @@ Juice (`0x03005298`).
 
 ## UnusedMinigame (0x32)
 
-PROVEN from the matched handlers in `src/unused_challenge/`.
+PROVEN from the matched handlers in `src/challenge_unused/`.
 A placeholder screen: Init clears BG VRAM, enables only the object layer
 (`SetDispcntFlag(0x1000)`), sets BG0's control word
 (`g_dwUnusedMinigameBg0Control`, `0x3F03`) without enabling BG0, zeroes

@@ -362,9 +362,9 @@ c-file 0x0800A4A4 _ src/camera/get_room_scroll_bounds.c GetRoomScrollBounds
 c-file 0x0800A4E8 _ src/camera/set_room_scroll_bounds.c SetRoomScrollBounds
 
 # Challenge (unused)
-c-file 0x0800A510 _ src/unused_challenge/initialize_unused_minigame.c InitializeUnusedMinigame
-c-file 0x0800A560 _ src/unused_challenge/update_unused_minigame.c UpdateUnusedMinigame
-c-file 0x0800A580 0x0800A598 src/unused_challenge/exit_unused_minigame.c ExitUnusedMinigame
+c-file 0x0800A510 _ src/challenge_unused/initialize_unused_minigame.c InitializeUnusedMinigame
+c-file 0x0800A560 _ src/challenge_unused/update_unused_minigame.c UpdateUnusedMinigame
+c-file 0x0800A580 0x0800A598 src/challenge_unused/exit_unused_minigame.c ExitUnusedMinigame
 
 # Character block/animations (BG tile animations)
 thumb-func 0x0800A598 RegisterBgTileAnimation
@@ -2425,7 +2425,7 @@ c-file 0x0804C054 _ src/area/room_actor_constructors.c g_apRoomActorConstructors
 c-file 0x0804C08C 0x0804C09C src/area/default_room_entry_points.c g_aDefaultRoomEntryPoints
 c-file 0x0804C0AC _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C284 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
-c-file 0x0804C43C 0x0804C440 src/unused_challenge/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
+c-file 0x0804C43C 0x0804C440 src/challenge_unused/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
 c-file 0x0804C444 _ src/cheat/cheat.globals.c g_dwCheatBg0Control
 c-file 0x0804C470 _ src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_abCheatLevelAndQuestMax
 c-file 0x0804C4A0 _ src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control

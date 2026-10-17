@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "game/game_modes.h"
 #include "hw/io_regs.h"
-#include "unused_challenge.h"
+#include "challenge_unused.h"
 
 void InitializeUnusedMinigame(void)
 {
