@@ -1,7 +1,8 @@
 #include "types.h"
 #include "modes.h"
 #include "input.h"
-#include "menu/main_menu.h"
+#include "title_load.h"
+#include "title_new.h"
 #include "pause_menu.h"
 
 void UpdateNewGameMenu(void)

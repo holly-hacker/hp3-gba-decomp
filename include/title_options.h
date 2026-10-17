@@ -39,6 +39,9 @@ extern u8 g_bOptionsSavedSoundVolume;  // 0x03005E09
 extern u8 g_bOptionsSavedGammaHigh;    // 0x03005E0A
 extern u32 g_dwOptionsEntryLanguage;   // 0x03005E0C: language when the screen was entered
 
+void InitializeOptions(void);
+void UpdateOptions(void);
+extern void BuildOptionsScreen_candidate(void);
 extern void MoveOptionsCursor_candidate(void);
 extern void AdjustOptionValue_candidate(void);
-extern void BuildOptionsScreen_candidate(void);
+void ExitOptions(void);

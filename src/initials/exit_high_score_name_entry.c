@@ -4,7 +4,6 @@
 #include "modes.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/main_menu.h"
 #include "initials.h"
 #include "cursor.h"
 #include "screen_transitions.h"

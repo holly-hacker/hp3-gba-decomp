@@ -2,7 +2,6 @@
 #include "battle/battle.h"
 #include "graphics/display.h"
 #include "dementor_minigame.h"
-#include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
 #include "minigame_menu.h"

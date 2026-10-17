@@ -3,7 +3,6 @@
 #include "graphics/display.h"
 #include "particles.h"
 #include "pscreen_information.h"
-#include "menu/main_menu.h"
 #include "cursor.h"
 
 void ExitHelpScreen(void)

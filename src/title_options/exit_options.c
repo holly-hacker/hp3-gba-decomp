@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/options.h"
+#include "title_options.h"
 #include "save.h"
 #include "default_menu.h"
 #include "screen_transitions.h"

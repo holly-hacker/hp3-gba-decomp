@@ -3,7 +3,7 @@
 #include "modes.h"
 #include "particles.h"
 #include "actor.h"
-#include "menu/options.h"
+#include "title_options.h"
 #include "save.h"
 #include "text.h"
 #include "cursor.h"

@@ -1,5 +1,6 @@
 #include "types.h"
-#include "menu/main_menu.h"
+#include "title_load.h"
+#include "title_new.h"
 
 void InitializeLoadGame(void)
 {

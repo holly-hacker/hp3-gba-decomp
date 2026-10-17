@@ -3,7 +3,6 @@
 #include "color.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
 #include "minigame_menu.h"

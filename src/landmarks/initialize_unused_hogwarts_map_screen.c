@@ -5,7 +5,6 @@
 #include "modes.h"
 #include "gen/graphics/minigames/hippogriff.h"
 #include "graphics/display.h"
-#include "menu/main_menu.h"
 #include "landmarks.h"
 #include "random.h"
 #include "cursor.h"

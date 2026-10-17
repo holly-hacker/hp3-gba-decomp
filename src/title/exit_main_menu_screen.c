@@ -4,7 +4,6 @@
 #include "color.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "menu/main_menu.h"
 #include "title.h"
 #include "mem.h"
 #include "actor.h"

@@ -3,7 +3,6 @@
 #include "graphics/display.h"
 #include "actor.h"
 #include "dialog.h"
-#include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "cursor.h"

@@ -2,7 +2,6 @@
 #include "background.h"
 #include "graphics/display.h"
 #include "particles.h"
-#include "menu/main_menu.h"
 #include "font.h"
 #include "modes.h"
 #include "boggart_minigame.h"

@@ -1,6 +1,5 @@
 #include "types.h"
 #include "modes.h"
-#include "menu/main_menu.h"
 #include "title.h"
 #include "actor.h"
 #include "cursor.h"

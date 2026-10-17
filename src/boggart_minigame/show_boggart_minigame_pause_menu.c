@@ -2,7 +2,6 @@
 #include "actor.h"
 #include "sound.h"
 #include "modes.h"
-#include "menu/main_menu.h"
 #include "font.h"
 #include "text.h"
 #include "boggart_minigame.h"

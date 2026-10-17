@@ -2,7 +2,6 @@
 #include "char_block.h"
 #include "graphics/display.h"
 #include "modes.h"
-#include "menu/main_menu.h"
 #include "buckbeak_minigame.h"
 #include "cursor.h"
 #include "text_actor.h"

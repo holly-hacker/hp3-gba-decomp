@@ -4,7 +4,6 @@
 #include "color.h"
 #include "graphics/display.h"
 #include "tea_leaves_minigame.h"
-#include "menu/main_menu.h"
 #include "mem.h"
 #include "actor.h"
 #include "cursor.h"

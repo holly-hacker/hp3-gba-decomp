@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/main_menu.h"
+#include "title_new.h"
 
 void InitializeNewGameMenu(void)
 {

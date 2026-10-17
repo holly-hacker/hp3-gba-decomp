@@ -8,7 +8,6 @@
 #include "font.h"
 #include "dialog.h"
 #include "dialog_box.h"
-#include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "cursor.h"

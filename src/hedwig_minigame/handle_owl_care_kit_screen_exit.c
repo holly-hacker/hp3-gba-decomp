@@ -6,7 +6,6 @@
 #include "battle/battle.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/main_menu.h"
 #include "hedwig_minigame.h"
 #include "cursor.h"
 #include "screen_transitions.h"

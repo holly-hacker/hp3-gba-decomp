@@ -2,10 +2,11 @@
 #include "sound.h"
 #include "battle/battle.h"
 #include "modes.h"
-#include "menu/main_menu.h"
 #include "overworld/room.h"
 #include "save.h"
 #include "map.h"
+#include "title_load.h"
+#include "title_new.h"
 
 void HandleSaveLoadContinuation(void)
 {

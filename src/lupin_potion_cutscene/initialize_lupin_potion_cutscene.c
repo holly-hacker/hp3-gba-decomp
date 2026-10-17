@@ -9,7 +9,6 @@
 #include "modes.h"
 #include "hw/io_regs.h"
 #include "lupin_potion_cutscene.h"
-#include "menu/main_menu.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"
 #include "graphics/scanline_effects.h"

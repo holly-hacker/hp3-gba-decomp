@@ -3,7 +3,6 @@
 #include "font.h"
 #include "text.h"
 #include "dialog.h"
-#include "menu/main_menu.h"
 #include "store.h"
 #include "cursor.h"
 #include "items.h"

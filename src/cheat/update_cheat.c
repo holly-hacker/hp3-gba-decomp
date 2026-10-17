@@ -2,7 +2,6 @@
 #include "cheat.h"
 #include "modes.h"
 #include "input.h"
-#include "menu/main_menu.h"
 #include "minigame_menu.h"
 
 void UpdateCheat(void)

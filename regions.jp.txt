@@ -1889,16 +1889,16 @@ c-file 0x080439C8 _ src/title/draw_main_menu_copyright.c DrawMainMenuCopyright
 c-file 0x08043A40 _ src/title/select_main_menu_entry.c SelectMainMenuEntry
 c-file 0x08043A88 _ src/title/has_loadable_save_slot.c HasLoadableSaveSlot
 c-file 0x08043AC4 _ src/title/position_main_menu_cursor_actor.c PositionMainMenuCursorActor
-c-file 0x08043B10 0x08043B90 src/gamemode/modes/load_game/handle_save_load_continuation.c HandleSaveLoadContinuation
+c-file 0x08043B10 0x08043B90 src/title_load/handle_save_load_continuation.c HandleSaveLoadContinuation
 thumb-func 0x08043B90 sub_08043B70
 thumb-func 0x08043C44 sub_08043C24
 thumb-func 0x08043D60 SelectNewGameSlot_candidate
 thumb-func 0x08043E38 ResolveOverwriteConfirmation_candidate
-c-file 0x08043EE8 _ src/gamemode/modes/load_game/initialize_load_game.c InitializeLoadGame
-c-file 0x08043EF8 _ src/gamemode/modes/load_game/update_load_game.c UpdateLoadGame
-c-file 0x08043F0C _ src/gamemode/modes/new_game_menu/initialize_new_game_menu.c InitializeNewGameMenu
-c-file 0x08043F1C _ src/gamemode/modes/new_game_menu/update_new_game_menu.c UpdateNewGameMenu
-c-file 0x08043F7C 0x08043F88 src/gamemode/modes/new_game_menu/exit_new_game_menu.c ExitNewGameMenu
+c-file 0x08043EE8 _ src/title_load/initialize_load_game.c InitializeLoadGame
+c-file 0x08043EF8 _ src/title_load/update_load_game.c UpdateLoadGame
+c-file 0x08043F0C _ src/title_new/initialize_new_game_menu.c InitializeNewGameMenu
+c-file 0x08043F1C _ src/title_new/update_new_game_menu.c UpdateNewGameMenu
+c-file 0x08043F7C 0x08043F88 src/title_new/exit_new_game_menu.c ExitNewGameMenu
 thumb-func 0x08043F88 InitializeSaveSlotScreen_candidate
 thumb-func 0x08043FC4 HandleSaveSlotInput_candidate
 thumb-func 0x08044030 ExitSaveSlotScreen_candidate
@@ -1906,13 +1906,13 @@ thumb-func 0x08044070 sub_08044050
 thumb-func 0x08044090 sub_08044070
 thumb-func 0x080440A0 ConfirmLoadGameSlot_candidate
 thumb-func 0x080440FC sub_080440DC
-c-file 0x08044154 _ src/gamemode/modes/options/initialize_options.c InitializeOptions
-c-file 0x08044214 0x08044308 src/gamemode/modes/options/update_options.c UpdateOptions
+c-file 0x08044154 _ src/title_options/initialize_options.c InitializeOptions
+c-file 0x08044214 0x08044308 src/title_options/update_options.c UpdateOptions
 thumb-func 0x08044308 BuildOptionsScreen_candidate
 thumb-func 0x0804446C sub_08044504
 thumb-func 0x0804452C MoveOptionsCursor_candidate
 thumb-func 0x08044614 AdjustOptionValue_candidate
-c-file 0x080446DC 0x08044748 src/gamemode/modes/options/exit_options.c ExitOptions
+c-file 0x080446DC 0x08044748 src/title_options/exit_options.c ExitOptions
 thumb-func 0x08044748 sub_080447E0
 thumb-func 0x080447A4 sub_0804483C
 c-file 0x080447C0 0x0804488C src/room/actors/spawn_flame_pillar_actor.c SpawnFlamePillarActor
@@ -2313,9 +2313,9 @@ c-file 0x0806BD08 _ src/time_skip_cutscene/hogwarts_up_night_cutscene.globals.c 
 c-file 0x0806BD14 0x0806BDA0 src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
 c-file 0x0806BDA8 0x0806BEA0 src/time_turner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
 c-file 0x0806BEB0 0x0806BED0 src/time_turner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
-c-file 0x0806BF40 _ src/gamemode/modes/main_menu/main_menu.globals.c g_dwMainMenuBg3Control
-c-file 0x0806BF4C 0x0806BF64 src/gamemode/modes/main_menu/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
-c-file 0x0806BF9C 0x0806C044 src/gamemode/modes/options/options_menu_items.c g_aOptionsMenuItems
+c-file 0x0806BF40 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
+c-file 0x0806BF4C 0x0806BF64 src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
+c-file 0x0806BF9C 0x0806C044 src/title_options/options_menu_items.c g_aOptionsMenuItems
 c-file 0x0806C068 _ src/room/actors/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C0B0 _ src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 

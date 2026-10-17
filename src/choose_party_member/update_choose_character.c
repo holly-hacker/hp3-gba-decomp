@@ -3,7 +3,6 @@
 #include "modes.h"
 #include "sound.h"
 #include "input.h"
-#include "menu/main_menu.h"
 #include "overworld/room.h"
 #include "cursor.h"
 

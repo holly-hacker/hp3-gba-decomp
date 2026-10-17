@@ -10,9 +10,10 @@ typedef enum {
 
 extern u8 g_bSaveSlotScreenResult;  // 0x03005DC4
 
+void InitializeNewGameMenu(void);
+void UpdateNewGameMenu(void);
+void ExitNewGameMenu(void);
 extern void InitializeSaveSlotScreen_candidate(u32 titleStringId);
 extern u32 HandleSaveSlotInput_candidate(void);
-extern void SelectNewGameSlot_candidate(void);
-extern void ResolveOverwriteConfirmation_candidate(void);
 extern void ExitSaveSlotScreen_candidate(void);
 extern void ConfirmLoadGameSlot_candidate(void);

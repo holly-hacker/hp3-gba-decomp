@@ -4,7 +4,7 @@
 #include "modes.h"
 #include "input.h"
 #include "title.h"
-#include "menu/options.h"
+#include "title_options.h"
 #include "overworld/room.h"
 #include "save.h"
 #include "text.h"

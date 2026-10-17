@@ -8,7 +8,6 @@
 #include "graphics/scanline_effects.h"
 #include "hw/bios.h"
 #include "hw/io_regs.h"
-#include "menu/main_menu.h"
 #include "dialog.h"
 #include "overworld/overworld.h"
 #include "overworld/room.h"

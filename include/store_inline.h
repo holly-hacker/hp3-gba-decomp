@@ -8,7 +8,6 @@
 #include "text.h"
 #include "dialog.h"
 #include "pscreen_items.h"
-#include "menu/main_menu.h"
 #include "store.h"
 #include "cursor.h"
 #include "items.h"

@@ -5,7 +5,6 @@
 #include "pause_menu.h"
 #include "input.h"
 #include "pscreen_items.h"
-#include "menu/main_menu.h"
 
 void UpdateItemsSectionSelect(void)
 {
