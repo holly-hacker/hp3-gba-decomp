@@ -2103,8 +2103,8 @@ c-file 0x08042D90 0x08042DC8 src/time_skip_cutscene/exit_hogwarts_up_night_cutsc
 
 # Timer
 thumb-func 0x08042DC8 sub_08042DC8
-c-file 0x08042E2C _ src/timer/reset_all_game_timers.c ResetAllGameTimers
-c-file 0x08042E44 0x08042E70 src/timer/reset_game_timer.c ResetGameTimer
+c-file 0x08042E2C _ src/timers/reset_all_game_timers.c ResetAllGameTimers
+c-file 0x08042E44 0x08042E70 src/timers/reset_game_timer.c ResetGameTimer
 thumb-func 0x08042E70 sub_08042E70
 thumb-func 0x08042E9C sub_08042E9C
 thumb-func 0x08042ECC sub_08042ECC

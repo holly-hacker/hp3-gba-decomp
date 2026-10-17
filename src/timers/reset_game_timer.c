@@ -1,5 +1,5 @@
 #include "types.h"
-#include "game/game_timer.h"
+#include "timers.h"
 
 void ResetGameTimer(u32 index)
 {

@@ -26,7 +26,7 @@
 #include "dialog_box.h"
 #include "overworld/room.h"
 #include "math.h"
-#include "game/game_timer.h"
+#include "timers.h"
 #include "vram.h"
 #include "mode7.h"
 #include "flipbook.h"
