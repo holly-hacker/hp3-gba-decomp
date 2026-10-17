@@ -154,3 +154,6 @@ extern s32 SerialPhase2(void);
 extern void MarkSerialSessionClosed(void);
 extern u32 VerifySerialMessageChecksum(SerialMessage *pMessage);
 extern s32 CountSerialConnectRetries(void);
+
+// Marker words in the Serial data; no reader is known.
+extern const u32 g_adwSerialMagic[4];  // 0x0806B8BC

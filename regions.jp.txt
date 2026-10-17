@@ -2303,6 +2303,7 @@ c-file 0x0806B364 _ src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAss
 c-file 0x0806B760 _ src/rising_platform_actor/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B798 _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
+c-file 0x0806B848 _ src/serial/serial_magic.c g_adwSerialMagic
 c-file 0x0806B858 _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
 c-file 0x0806B868 0x0806B8C0 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 _ src/store/shop_stock.c g_aShopStockMisc
