@@ -113,7 +113,7 @@ type-independent meaning).
 
 Every record starts with a `u32` actor type (1-13; indexes
 `g_apRoomActorConstructors`), then `s16 x`, `s16 y` in pixels. Fields after
-that, with the constructors under `src/room/actors/` and the callbacks that
+that, with the constructors and the callbacks that
 read them. `(respawn_group, chain)` is the operand pair of
 `RespawnRowAndRunChain`; a pair of zeros runs nothing. Trailing bytes of `FF`
 are padding. Each type has an assembler macro in `asm/room_blob.inc` that takes

@@ -11,6 +11,7 @@
 #include "spongify_pad_actor.h"
 #include "torch_actor.h"
 #include "trigger_actor.h"
+#include "world_actors.h"
 
 // Room tile actorType -> constructor table; see docs/formats/rooms.md.
 // Type 0 is unused.

@@ -2229,14 +2229,14 @@ thumb-func 0x08045A1C sub_08045A1C
 c-file 0x08045A54 _ src/windows/tick_screen_window.c TickScreenWindow
 
 # World actors
-c-file 0x08045AE8 0x08045ECC src/room/actors/spawn_prop_actor.c SpawnPropActor
+c-file 0x08045AE8 0x08045ECC src/world_actors/spawn_prop_actor.c SpawnPropActor
 thumb-func 0x08045ECC sub_08045ECC
 thumb-func 0x080463E8 sub_080463E8
 thumb-func 0x0804651C sub_0804651C
 thumb-func 0x080465D4 sub_080465D4
 thumb-func 0x08046A48 sub_08046A48
 thumb-func 0x08046AB0 sub_08046AB0
-c-file 0x08046C5C 0x08046CA4 src/overworld/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
+c-file 0x08046C5C 0x08046CA4 src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
 thumb-func 0x08046CA4 MarkRoomActorConsumed
 
 # Krawall, see docs/memory-map/krawall.md
@@ -2592,7 +2592,7 @@ c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTra
 
 c-file 0x0806C178 0x0806C200 src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file 0x0806C2F0 0x0806C300 src/video/default_scanline_effects.c g_aDefaultScanlineEffects
-c-file 0x0806C304 _ src/room/actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
+c-file 0x0806C304 _ src/world_actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
 graphics 0x0806E904 _ overworld OverworldSpellEffects
 graphics 0x080781A4 _ battle AllyHeads
 graphics 0x0807E7F8 _ overworld OverworldPlayerSprites

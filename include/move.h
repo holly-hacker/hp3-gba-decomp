@@ -72,6 +72,7 @@ extern void ApplyRoomSwitchEffect(u32 state);
 // Spawns the effect actor of field spell `spell` (an Actor.bFighterIndex value) at
 // the caster's anchor 0.
 extern void SpawnFieldSpellEffect_candidate(Actor *caster, u8 spell);
+extern void sub_0802E2BC(Actor *pSpell, Actor *pTarget);  // overworld spell effect hits a room actor
 
 extern u32 g_dwPendingCameraFocusFlag;
 extern void *g_pPendingCameraFocus_candidate;

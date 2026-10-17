@@ -20,6 +20,7 @@ extern Actor *SpawnNpcActor(u8 bColumn, u8 bRow);
 extern Actor *sub_0802F6C0(u32 characterId);
 extern void sub_0802F7F0(Actor *pActor);
 extern void sub_0802FCC0(Actor *pSelf, Actor *pOther);
+extern Actor *sub_0802FD5C(Actor *pActor);
 // Starts animation `animId` from the actor's animation table.
 extern void SetActorAnimData_candidate(Actor *actor, u32 animId);
 
