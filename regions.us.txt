@@ -1613,19 +1613,19 @@ thumb-func 0x08035E1C StatusEquipCharacterToSlot
 thumb-func 0x08035E3C sub_08035E3C
 
 # Profile/Connect? (pause subscreen: connectivity)
-c-file 0x08035EB0 _ src/gamemode/modes/connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
-c-file 0x08035F7C _ src/gamemode/modes/connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
-c-file 0x08036038 _ src/gamemode/modes/connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
-c-file 0x080360DC _ src/gamemode/modes/connectivity/exit_connectivity.c ExitConnectivity
-c-file 0x08036120 _ src/gamemode/modes/connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
-c-file 0x08036178 _ src/gamemode/modes/connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
+c-file 0x08035EB0 _ src/pscreen_connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
+c-file 0x08035F7C _ src/pscreen_connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
+c-file 0x08036038 _ src/pscreen_connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
+c-file 0x080360DC _ src/pscreen_connectivity/exit_connectivity.c ExitConnectivity
+c-file 0x08036120 _ src/pscreen_connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
+c-file 0x08036178 _ src/pscreen_connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
 
 # Profile/Equip? (pause subscreen: status/equip)
-c-file 0x080361AC _ src/gamemode/modes/status_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
-c-file 0x08036214 0x080362D8 src/gamemode/modes/status_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
+c-file 0x080361AC _ src/pscreen_connectivity/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
+c-file 0x08036214 0x080362D8 src/pscreen_connectivity/update_status_equip_item_select.c UpdateStatusEquipItemSelect
 thumb-func 0x080362D8 sub_080362D8
 thumb-func 0x080364A8 DrawEquipItemStatComparison
-c-file 0x08036890 0x080368CC src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
+c-file 0x08036890 0x080368CC src/pscreen_connectivity/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x080368CC sub_080368CC
 thumb-func 0x080368E4 sub_080368E4
 
@@ -2551,7 +2551,7 @@ c-file 0x08069184 0x08069194 src/pouring_minigame/serve_pumpkin_juice.globals.c 
 c-file 0x08069328 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x080693CC 0x080693E4 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
-c-file 0x0806945C _ src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
+c-file 0x0806945C _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C _ src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
 c-file 0x08069568 _ src/gamemode/modes/folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control
 c-file 0x080695A4 _ src/graphics/assets/folio_anims.c g_aFolioBrutiCursorAnim
@@ -2561,7 +2561,7 @@ c-file 0x08069A2C 0x08069A50 src/gamemode/modes/gamecube_link/gamecube_link.glob
 c-file 0x08069AB8 _ src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x08069C70 _ src/menu/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B190 0x0806B214 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
-c-file 0x0806B238 _ src/gamemode/modes/connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
+c-file 0x0806B238 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B2FC _ src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B35C 0x0806B3AC src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries

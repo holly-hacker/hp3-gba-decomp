@@ -154,9 +154,10 @@ PROVEN from US decompiles and ROM tables.
 Screen state lives in `g_StatusEquipCharacterSelect`,
 `g_StatusEquipSlotSelect` and `g_StatusEquipItemSelect`; each holds the
 mode it pushes after its fade-out. Types are in `include/pscreen_character.h`
-(character select) and `include/menu/status_equip.h` (slot and item select);
-the init/update/exit handlers are matched in `src/pscreen_character/` and
-`src/gamemode/modes/status_equip/` for both versions.
+(character select), `include/menu/status_equip.h` (slot select) and
+`include/pscreen_connectivity.h` (item select); the init/update/exit handlers
+are matched in `src/pscreen_character/`, `src/gamemode/modes/status_equip/`
+and `src/pscreen_connectivity/` for both versions.
 
 JP handlers (PROVEN: taken from JP's dispatch table at `0x08065C48` and
 built byte-identically from the US source; the Status/Equip RAM globals
@@ -311,7 +312,7 @@ yields it.
 ## Folios (0x13), Connectivity (0x16), ConfirmTradeScreen (0x47)
 
 PROVEN from the matched handlers in `src/gamemode/modes/folios/` and
-`src/gamemode/modes/connectivity/`. All three are pause-menu submenus built from a
+`src/pscreen_connectivity/`. All three are pause-menu submenus built from a
 `ListMenuDefinition` (`include/pause_menu.h`) and share `UpdateInGameMenu`'s shape:
 `dwModeState` 1 waits for the blend fade (`dwModeSubState` 0), 2 handles A
 (`SelectInGameMenuEntry_candidate`), Up/Down (`MoveListMenuCursor`) and B, 4 waits for

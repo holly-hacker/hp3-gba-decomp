@@ -2,7 +2,7 @@
 #include "graphics/display.h"
 #include "modes.h"
 #include "hw/io_regs.h"
-#include "menu/status_equip.h"
+#include "pscreen_connectivity.h"
 
 void InitializeStatusEquipItemSelect(void)
 {

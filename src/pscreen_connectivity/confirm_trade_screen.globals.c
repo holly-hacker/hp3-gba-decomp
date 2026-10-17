@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/connectivity.h"
+#include "pscreen_connectivity.h"
 
 // Row 0 backs out to Connectivity, row 1 continues to CardTrade; the modes in the
 // entries are not read.

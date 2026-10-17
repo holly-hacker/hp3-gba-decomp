@@ -3,8 +3,8 @@
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/status_equip.h"
 #include "default_menu.h"
+#include "pscreen_connectivity.h"
 
 void ExitStatusEquipItemSelect(void)
 {

@@ -404,7 +404,7 @@
 .set g_bStatusEquipCharacterSlot,  0x030052B8  @ u8: StatusEquipCharacterSelect cursor slot
 .set g_bConnectivityMenuCursor, 0x030052BC  @ s8: Connectivity row restored on re-entry
 .set g_dwStatusEquipSlotType,      0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect
-.set g_StatusEquipItemSelect,      0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/menu/status_equip.h
+.set g_StatusEquipItemSelect,      0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette; see include/pscreen_connectivity.h
 .set g_bFoliosMenuCursor, 0x030052F8  @ s8: Folios row restored on re-entry
 .set g_FolioBrutiState,            0x03005300  @ FolioBrutiState: the Folio Bruti screen state; see include/menu/folio_bruti.h
 .set g_FolioUniversitasState,      0x03005340  @ FolioUniversitasState: the Folio Universitas screen state; see include/menu/folio_universitas.h

@@ -7,9 +7,8 @@
 #include "input.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/connectivity.h"
+#include "pscreen_connectivity.h"
 #include "pause_menu.h"
-#include "menu/status_equip.h"
 
 void UpdateConfirmTradeScreen(void)
 {

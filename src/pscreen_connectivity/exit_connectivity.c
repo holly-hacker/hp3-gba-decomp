@@ -6,7 +6,7 @@
 #include "modes.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/connectivity.h"
+#include "pscreen_connectivity.h"
 #include "cursor.h"
 #include "default_menu.h"
 

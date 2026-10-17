@@ -1428,17 +1428,17 @@ thumb-func 0x08035E04 sub_08035DC0
 thumb-func 0x08035E30 StatusEquipSlotToCharacter
 thumb-func 0x08035E60 StatusEquipCharacterToSlot
 thumb-func 0x08035E80 sub_08035E3C
-c-file 0x08035EF4 _ src/gamemode/modes/connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
-c-file 0x08035FC0 _ src/gamemode/modes/connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
-c-file 0x0803607C _ src/gamemode/modes/connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
-c-file 0x08036120 _ src/gamemode/modes/connectivity/exit_connectivity.c ExitConnectivity
-c-file 0x08036164 _ src/gamemode/modes/connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
-c-file 0x080361BC _ src/gamemode/modes/connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
-c-file 0x080361F0 _ src/gamemode/modes/status_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
-c-file 0x08036258 0x0803631C src/gamemode/modes/status_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
+c-file 0x08035EF4 _ src/pscreen_connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
+c-file 0x08035FC0 _ src/pscreen_connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
+c-file 0x0803607C _ src/pscreen_connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
+c-file 0x08036120 _ src/pscreen_connectivity/exit_connectivity.c ExitConnectivity
+c-file 0x08036164 _ src/pscreen_connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
+c-file 0x080361BC _ src/pscreen_connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
+c-file 0x080361F0 _ src/pscreen_connectivity/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
+c-file 0x08036258 0x0803631C src/pscreen_connectivity/update_status_equip_item_select.c UpdateStatusEquipItemSelect
 thumb-func 0x0803631C sub_080362D8
 thumb-func 0x080364EC DrawEquipItemStatComparison
-c-file 0x080368D4 0x08036910 src/gamemode/modes/status_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
+c-file 0x080368D4 0x08036910 src/pscreen_connectivity/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x08036910 sub_080368CC
 thumb-func 0x08036928 sub_080368E4
 c-file 0x08036980 _ src/gamemode/modes/folios/update_folios.c UpdateFolios
@@ -2282,7 +2282,7 @@ c-file 0x08069110 0x08069120 src/pouring_minigame/serve_pumpkin_juice.globals.c 
 c-file 0x080692B4 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x0806933C _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x08069358 0x08069370 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
-c-file 0x080693E8 _ src/gamemode/modes/connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
+c-file 0x080693E8 _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x08069498 _ src/gamemode/modes/folios/folios.globals.c g_aFoliosEntries
 c-file 0x080694F4 _ src/gamemode/modes/folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control
 c-file 0x08069530 _ src/graphics/assets/folio_anims.c g_aFolioBrutiCursorAnim
@@ -2292,7 +2292,7 @@ c-file 0x080699B8 0x080699DC src/gamemode/modes/gamecube_link/gamecube_link.glob
 c-file 0x08069A44 _ src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x08069BFC _ src/menu/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B11C 0x0806B1A0 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
-c-file 0x0806B1C4 _ src/gamemode/modes/connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
+c-file 0x0806B1C4 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B288 _ src/gamemode/modes/status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B2E8 0x0806B338 src/gamemode/modes/card_trade/card_trade.globals.c g_aCardTradeEntries

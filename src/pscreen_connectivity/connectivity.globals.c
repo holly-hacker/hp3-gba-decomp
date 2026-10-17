@@ -1,5 +1,5 @@
 #include "types.h"
-#include "menu/connectivity.h"
+#include "pscreen_connectivity.h"
 #include "gen/graphics/overworld.h"
 
 const ListMenuEntry g_aConnectivityGameCubeEntries[2] = {

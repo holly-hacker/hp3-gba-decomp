@@ -8,6 +8,7 @@
 #include "input.h"
 #include "menu/status_equip.h"
 #include "items.h"
+#include "pscreen_connectivity.h"
 
 void UpdateStatusEquipSlotSelect(void)
 {

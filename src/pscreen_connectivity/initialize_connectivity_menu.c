@@ -3,7 +3,7 @@
 #include "modes.h"
 #include "game/save.h"
 #include "mem.h"
-#include "menu/connectivity.h"
+#include "pscreen_connectivity.h"
 #include "pause_menu.h"
 
 void InitializeConnectivityMenu(void)

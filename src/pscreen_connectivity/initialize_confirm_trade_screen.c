@@ -2,7 +2,7 @@
 #include "modes.h"
 #include "font.h"
 #include "text.h"
-#include "menu/connectivity.h"
+#include "pscreen_connectivity.h"
 #include "pause_menu.h"
 #include "default_menu.h"
 
