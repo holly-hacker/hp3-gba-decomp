@@ -4,8 +4,8 @@ The Help menu (game mode `Help`, `0x17`) and the `HelpTopicScreen` mode (`0x44`,
 minigame instruction pages shown before a minigame and from battle) share one engine
 (`StartHelpScreen`, `RunHelpScript`, `UpdateHelp`) and one block of page scripts in ROM
 (US `0x08069C70`-`0x0806B190`, JP `0x08069BFC`-`0x0806B11C`; every pointer in the JP block is
-the US value minus `0x74`). The source is `src/gamemode/modes/help/help_pages.c`, with the
-opcode macros in `include/menu/help.h`. All of this is **PROVEN** against the interpreter
+the US value minus `0x74`). The source is `src/pscreen_information/help_pages.c`, with the
+opcode macros in `include/pscreen_information.h`. All of this is **PROVEN** against the interpreter
 `RunHelpScript` and a full parse of the block (91 pages, no gaps).
 
 ## Script format
@@ -40,7 +40,7 @@ entries are gated by the save header's unlock flags (see [`save.md`](save.md)).
 
 ## Engine state
 
-`g_HelpState` (`HelpState`, `include/menu/help.h`) holds the page-history stack, the entries
+`g_HelpState` (`HelpState`, `include/pscreen_information.h`) holds the page-history stack, the entries
 of the menu on screen, the cursor and arrow sprites, and the `PushGameMode_3` arguments used
 when the screen closes (`SetHelpExitMode`). `UpdateHelp` is a five-state machine: fade in,
 input (B cancels, Left/Right turn text pages, Up/Down/A drive menus), fade out, load the

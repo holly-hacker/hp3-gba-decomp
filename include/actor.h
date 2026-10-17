@@ -182,9 +182,6 @@ typedef struct ActorGfxRecord {
     void *pFrameData;
 } ActorGfxRecord;
 
-extern const ActorAssetRecord g_aHelpSpriteAssets[22];  // US 0x08069AB8
-extern const void *const g_apHelpSpritePalettes[22];    // US 0x08069C18
-
 // ActorVariantSlot.bFrameFlags.
 typedef enum {
     ActorVariantSlotFlagBlink          = 0x1,  // entries are hidden in the second half of the

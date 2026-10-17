@@ -72,9 +72,11 @@ extern void CancelHelpScreen(void);
 // Draws a page from its script.
 extern void RunHelpScript(const u32 *pScript);
 
+extern void InitializeHelp(void);
 extern void UpdateHelp(void);
+extern void ExitHelpScreen(void);
 
-// Help screen scripts (src/gamemode/modes/help/help_pages.c). The engine reads a page as a stream of
+// Help screen scripts (help_pages.c). The engine reads a page as a stream of
 // 32-bit words: the low byte of each command word is the opcode and the upper bytes its
 // parameters; commands that take operands are followed by that many words. A page ends with
 // HELP_END. Pointer operands are the addresses of other pages.
@@ -125,3 +127,7 @@ extern const u32 g_aHelpPotionsGlossary[];
 extern const u32 g_aHelpItemsGlossary[];
 extern const u32 g_aHelpSpecialMovesGlossary[];
 extern const u32 g_aHelpOwlCareKit[];
+
+// Help screen sprites, drawn by sub_08039020 with the palette of the same index.
+extern const ActorAssetRecord g_aHelpSpriteAssets[22];  // US 0x08069AB8
+extern const void *const g_apHelpSpritePalettes[22];    // US 0x08069C18

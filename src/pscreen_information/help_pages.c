@@ -1,8 +1,8 @@
 #include "types.h"
-#include "menu/help.h"
+#include "pscreen_information.h"
 
 // Help screen page scripts, interpreted by the help engine one 32-bit word at a time (see
-// menu/help.h). Each array holds a topic's pages in order; the menus link to the first page.
+// pscreen_information.h). Each array holds a topic's pages in order; the menus link to the first page.
 
 const u32 g_aHelpFolioUniversitas[] = {
     // page 1/5

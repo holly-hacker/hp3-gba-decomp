@@ -1691,16 +1691,16 @@ thumb-func 0x080387B0 PadGameCubeReceiveBuffer
 thumb-func 0x080387CC StageGameCubeStatusByte
 
 # Profile/Help? (pause subscreen: help)
-c-file 0x080387DC 0x08038874 src/menu/is_help_topic_unlocked.c IsHelpTopicUnlocked
+c-file 0x080387DC 0x08038874 src/pscreen_information/is_help_topic_unlocked.c IsHelpTopicUnlocked
 thumb-func 0x08038874 StartHelpScreen
-c-file 0x08038970 0x08038B8C src/gamemode/modes/help/update_help.c UpdateHelp
+c-file 0x08038970 0x08038B8C src/pscreen_information/update_help.c UpdateHelp
 thumb-func 0x08038B8C LeaveHelpScreen
 thumb-func 0x08038C00 RunHelpScript
 thumb-func 0x08038EB8 OpenSelectedHelpMenuEntry
 thumb-func 0x08038F2C SetHelpMenuSelection
 thumb-func 0x08039020 sub_08039020
-c-file 0x080390A0 _ src/gamemode/modes/help/initialize_help.c InitializeHelp
-c-file 0x080390C0 0x080390F4 src/gamemode/modes/help/exit_help_screen.c ExitHelpScreen
+c-file 0x080390A0 _ src/pscreen_information/initialize_help.c InitializeHelp
+c-file 0x080390C0 0x080390F4 src/pscreen_information/exit_help_screen.c ExitHelpScreen
 thumb-func 0x080390F4 FreeHelpScreen
 thumb-func 0x08039118 SetHelpExitMode
 thumb-func 0x08039148 ClearHelpScreen
@@ -2559,8 +2559,8 @@ c-file 0x08069614 _ src/pscreen_folio_universitas/folio_universitas_anims.c g_aF
 c-file 0x080696B0 _ src/pscreen_folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
 c-file 0x080696EC _ src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFolioCardThumbnails
 c-file 0x08069A2C 0x08069A50 src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
-c-file 0x08069AB8 _ src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
-c-file 0x08069C70 _ src/menu/help_pages.c g_aHelpFolioUniversitas
+c-file 0x08069AB8 _ src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAssets
+c-file 0x08069C70 _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B190 0x0806B214 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B238 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B250 0x0806B280 src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets

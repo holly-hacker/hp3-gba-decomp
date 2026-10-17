@@ -7,7 +7,7 @@
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/help.h"
+#include "pscreen_information.h"
 #include "pause_menu.h"
 
 void UpdateHelp(void)

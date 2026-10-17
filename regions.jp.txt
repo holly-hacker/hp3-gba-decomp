@@ -1494,16 +1494,16 @@ thumb-func 0x080387C8 FlagGameCubeHeaderReceived
 thumb-func 0x080387F0 AcknowledgeGameCubeCommand
 thumb-func 0x080387F4 PadGameCubeReceiveBuffer
 thumb-func 0x08038810 StageGameCubeStatusByte
-c-file 0x08038820 0x080388B8 src/menu/is_help_topic_unlocked.c IsHelpTopicUnlocked
+c-file 0x08038820 0x080388B8 src/pscreen_information/is_help_topic_unlocked.c IsHelpTopicUnlocked
 thumb-func 0x080388B8 StartHelpScreen
-c-file 0x080389B4 0x08038BD0 src/gamemode/modes/help/update_help.c UpdateHelp
+c-file 0x080389B4 0x08038BD0 src/pscreen_information/update_help.c UpdateHelp
 thumb-func 0x08038BD0 LeaveHelpScreen
 thumb-func 0x08038C44 RunHelpScript
 thumb-func 0x08038EFC OpenSelectedHelpMenuEntry
 thumb-func 0x08038F70 SetHelpMenuSelection
 thumb-func 0x0803906C sub_08039020
-c-file 0x080390EC _ src/gamemode/modes/help/initialize_help.c InitializeHelp
-c-file 0x0803910C 0x08039140 src/gamemode/modes/help/exit_help_screen.c ExitHelpScreen
+c-file 0x080390EC _ src/pscreen_information/initialize_help.c InitializeHelp
+c-file 0x0803910C 0x08039140 src/pscreen_information/exit_help_screen.c ExitHelpScreen
 thumb-func 0x08039140 FreeHelpScreen
 thumb-func 0x08039164 SetHelpExitMode
 thumb-func 0x08039194 ClearHelpScreen
@@ -2290,8 +2290,8 @@ c-file 0x080695A0 _ src/pscreen_folio_universitas/folio_universitas_anims.c g_aF
 c-file 0x0806963C _ src/pscreen_folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
 c-file 0x08069678 _ src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFolioCardThumbnails
 c-file 0x080699B8 0x080699DC src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
-c-file 0x08069A44 _ src/graphics/assets/help_sprite_assets.c g_aHelpSpriteAssets
-c-file 0x08069BFC _ src/menu/help_pages.c g_aHelpFolioUniversitas
+c-file 0x08069A44 _ src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAssets
+c-file 0x08069BFC _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B11C 0x0806B1A0 src/gamemode/modes/items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B1C4 _ src/pscreen_connectivity/confirm_trade_screen.globals.c g_aConfirmTradeEntries
 c-file 0x0806B1DC 0x0806B20C src/graphics/assets/status_character_assets.c g_aStatusCharacterAssets

@@ -2,7 +2,7 @@
 #include "color.h"
 #include "graphics/display.h"
 #include "particles.h"
-#include "menu/help.h"
+#include "pscreen_information.h"
 #include "menu/main_menu.h"
 #include "cursor.h"
 

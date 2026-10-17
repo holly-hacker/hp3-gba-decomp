@@ -3,7 +3,7 @@
 #include "graphics/audio.h"
 #include "modes.h"
 #include "input.h"
-#include "menu/help.h"
+#include "pscreen_information.h"
 
 void UpdateTopicScreen(void)
 {

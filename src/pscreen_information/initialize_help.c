@@ -1,6 +1,6 @@
 #include "types.h"
 #include "modes.h"
-#include "menu/help.h"
+#include "pscreen_information.h"
 
 void InitializeHelp(void)
 {

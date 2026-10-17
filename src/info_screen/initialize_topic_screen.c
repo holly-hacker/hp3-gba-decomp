@@ -2,7 +2,7 @@
 #include "info_screen.h"
 #include "battle/battle.h"
 #include "modes.h"
-#include "menu/help.h"
+#include "pscreen_information.h"
 
 // Argument 2 of the pushed mode selects the topic: the minigame whose instructions to show,
 // and the mode to return to.
