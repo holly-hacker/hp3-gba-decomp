@@ -1281,10 +1281,10 @@ c-file 0x080301C8 _ src/oam/hide_unused_oam_entries.c HideUnusedOamEntries
 c-file 0x0803022C 0x08030250 src/oam/reset_affine_slots.c ResetAffineSlots
 thumb-func 0x08030250 sub_0803020C
 thumb-func 0x08030280 sub_0803023C
-c-file 0x080302B8 _ src/gamemode/modes/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
-c-file 0x08030360 0x080304BC src/gamemode/modes/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
+c-file 0x080302B8 _ src/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
+c-file 0x08030360 0x080304BC src/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
 thumb-func 0x080304BC sub_08030478
-c-file 0x080305AC 0x080305D8 src/gamemode/modes/owl_name_select/exit_owl_name_select.c ExitOwlNameSelect
+c-file 0x080305AC 0x080305D8 src/owl_name_select/exit_owl_name_select.c ExitOwlNameSelect
 thumb-func 0x080305D8 sub_08030594
 thumb-func 0x08030634 sub_080305F0
 thumb-func 0x08030688 sub_08030644
@@ -2272,7 +2272,7 @@ c-file 0x08066F88 _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
 c-file 0x08067818 0x08067848 src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
 # Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068B7C _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
-c-file 0x08068B84 _ src/gamemode/modes/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
+c-file 0x08068B84 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file 0x08068B88 0x08068B94 src/graphics/particle/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068B9C _ src/graphics/particle/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068BBC _ src/gamemode/modes/cutscene/harry_patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control

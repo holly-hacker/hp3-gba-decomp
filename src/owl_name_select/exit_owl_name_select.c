@@ -4,7 +4,7 @@
 #include "graphics/display.h"
 #include "mem.h"
 #include "actor.h"
-#include "menu/owl_name_select.h"
+#include "owl_name_select.h"
 
 void ExitOwlNameSelect(void)
 {

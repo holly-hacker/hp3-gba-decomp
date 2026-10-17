@@ -5,7 +5,7 @@
 #include "graphics/display.h"
 #include "font.h"
 #include "menu/menu.h"
-#include "menu/owl_name_select.h"
+#include "owl_name_select.h"
 #include "default_menu.h"
 
 void InitializeOwlNameSelect(void)
