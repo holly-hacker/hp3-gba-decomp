@@ -1,7 +1,7 @@
 #include "types.h"
 #include "game/game_modes.h"
 #include "input.h"
-#include "minigame/high_score_name_entry.h"
+#include "initials.h"
 
 void UpdateHighScoreNameEntry(void)
 {

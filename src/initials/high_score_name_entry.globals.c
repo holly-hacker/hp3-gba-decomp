@@ -1,5 +1,5 @@
 #include "types.h"
-#include "minigame/high_score_name_entry.h"
+#include "initials.h"
 
 const u32 g_dwHighScoreNameEntryBg2Control = 0x3F02;
 const u32 g_dwHighScoreNameEntryBg3Control = 0x3D07;

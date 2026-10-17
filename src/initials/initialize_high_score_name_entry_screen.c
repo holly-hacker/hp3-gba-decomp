@@ -8,7 +8,7 @@
 #include "font.h"
 #include "game/game_modes.h"
 #include "menu/main_menu.h"
-#include "minigame/high_score_name_entry.h"
+#include "initials.h"
 #include "gen/graphics/minigames/wizard_cracker.h"
 #include "gen/graphics/menus.h"
 #include "cursor.h"

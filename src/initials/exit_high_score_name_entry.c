@@ -5,7 +5,7 @@
 #include "mem.h"
 #include "actor.h"
 #include "menu/main_menu.h"
-#include "minigame/high_score_name_entry.h"
+#include "initials.h"
 #include "cursor.h"
 
 void ExitHighScoreNameEntry(void)

@@ -250,7 +250,7 @@
 @ --- Controller input (see docs/memory-map/input.md; UpdateKeyInput/
 @ ResetKeyInput, 0x080254A8/0x080258F8) ---
 .set g_aDecompressBgTileIwram,      0x030033CC  @ u8[0x100]: IWRAM copy of DecompressBgTile
-.set g_HighScoreNameEntry,          0x030034D0  @ HighScoreNameEntryState; see include/minigame/high_score_name_entry.h
+.set g_HighScoreNameEntry,          0x030034D0  @ HighScoreNameEntryState; see include/initials.h
 .set g_wKeysHeld,                0x030034EC  @ u16: current held-key bitmask (standard GBA KEYINPUT bit
                                              @ order), updated once per frame by UpdateKeyInput; also
                                              @ folded into Mt19937AutoSeed's seed as a cheap entropy

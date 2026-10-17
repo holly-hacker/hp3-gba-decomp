@@ -1056,11 +1056,11 @@ thumb-func 0x08025024 sub_08025024
 c-file 0x080250B8 _ src/huffman/install_bg_tile_codec.c InstallBgTileCodec
 
 # Initials? (high score name entry mode)
-c-file 0x080250D4 _ src/gamemode/modes/high_score_name_entry/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
-c-file 0x080251EC 0x08025284 src/gamemode/modes/high_score_name_entry/update_high_score_name_entry.c UpdateHighScoreNameEntry
+c-file 0x080250D4 _ src/initials/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
+c-file 0x080251EC 0x08025284 src/initials/update_high_score_name_entry.c UpdateHighScoreNameEntry
 thumb-func 0x08025284 DrawHighScoreNameEntryKeypad
 thumb-func 0x08025334 sub_08025334
-c-file 0x08025368 0x0802539C src/gamemode/modes/high_score_name_entry/exit_high_score_name_entry.c ExitHighScoreNameEntry
+c-file 0x08025368 0x0802539C src/initials/exit_high_score_name_entry.c ExitHighScoreNameEntry
 thumb-func 0x0802539C HighScoreNameEntryCursorTick
 thumb-func 0x08025410 DrawHighScoreNameEntryPreview
 thumb-func 0x08025484 sub_08025484
@@ -2512,7 +2512,7 @@ c-file 0x08060884 _ src/gamemode/modes/overworld/player_camera_focus_offset.c g_
 c-file 0x0806088C 0x0806089C src/hero/party_focus_gfx.c g_PartyFocusGfx_candidate
 c-file 0x080608EC 0x08060B2C src/hero/party_assets.c g_aPartyWalkAssets
 c-file 0x08060BF4 _ src/hero/party_anims.c g_abPartyStandFrames
-c-file 0x08060E64 _ src/gamemode/modes/high_score_name_entry/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
+c-file 0x08060E64 _ src/initials/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
 c-file 0x08060E7C _ src/input/dpad_direction.c g_abDpadDirection
 c-file 0x08060E8C _ src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file 0x08060EC0 _ src/inventory/actor_scale_steps.c g_adwActorScaleSteps

@@ -7,6 +7,10 @@
 // of letters and digits plus a row holding the "Done" entry; nothing in the
 // retail game pushes this mode.
 
+extern void InitializeHighScoreNameEntryScreen(void);
+extern void UpdateHighScoreNameEntry(void);
+extern void ExitHighScoreNameEntry(void);
+
 #define HIGH_SCORE_NAME_LENGTH 3
 
 // Keypad rows and columns; the cursor sits at (dwRow, dwColumn).
