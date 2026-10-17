@@ -1,4 +1,5 @@
 #include "types.h"
+#include "info_screen.h"
 #include "graphics/audio.h"
 #include "game/game_modes.h"
 #include "input.h"

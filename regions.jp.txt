@@ -964,9 +964,9 @@ c-file 0x08025CB8 _ src/input/get_any_player_keys_held.c GetAnyPlayerKeysHeld
 c-file 0x08025CD8 _ src/input/get_any_player_keys_pressed.c GetAnyPlayerKeysPressed
 c-file 0x08025CF8 _ src/input/init_scroll_list.c InitScrollList
 c-file 0x08025D14 _ src/input/init_scroll_grid.c InitScrollGrid
-c-file 0x08025D84 _ src/gamemode/modes/help_topic_screen/initialize_topic_screen.c InitializeTopicScreen
-c-file 0x08025E74 _ src/gamemode/modes/help_topic_screen/update_topic_screen.c UpdateTopicScreen
-c-file 0x08025EE0 _ src/gamemode/modes/help_topic_screen/exit_topic_screen.c ExitTopicScreen
+c-file 0x08025D84 _ src/info_screen/initialize_topic_screen.c InitializeTopicScreen
+c-file 0x08025E74 _ src/info_screen/update_topic_screen.c UpdateTopicScreen
+c-file 0x08025EE0 _ src/info_screen/exit_topic_screen.c ExitTopicScreen
 c-file 0x08025EEC _ src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file 0x080260C4 _ src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file 0x08026104 _ src/interrupts/enable_interrupts.c EnableInterrupts
