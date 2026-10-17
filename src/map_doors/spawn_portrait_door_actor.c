@@ -1,5 +1,6 @@
 #include "types.h"
 #include "overworld/room_actor.h"
+#include "map_doors.h"
 
 // Room actor constructor for tile actorType 13, a portrait door: a type 2 door
 // whose collision callback routes the change through portrait_room_passage.

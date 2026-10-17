@@ -1138,9 +1138,9 @@ thumb-func 0x0802BA28 sub_0802B9CC
 thumb-func 0x0802BA68 GetEncounterKindTerrainType
 thumb-func 0x0802BA78 FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BB2C PickMaxDamageMonster
-c-file 0x0802BB5C 0x0802BC08 src/room/actors/spawn_door_actor.c SpawnDoorActor
+c-file 0x0802BB5C 0x0802BC08 src/map_doors/spawn_door_actor.c SpawnDoorActor
 thumb-func 0x0802BC08 sub_0802BBAC
-c-file 0x0802BCB0 0x0802BCD0 src/room/actors/spawn_portrait_door_actor.c SpawnPortraitDoorActor
+c-file 0x0802BCB0 0x0802BCD0 src/map_doors/spawn_portrait_door_actor.c SpawnPortraitDoorActor
 thumb-func 0x0802BCD0 sub_0802BC74
 thumb-func 0x0802BCD4 sub_0802BC78
 thumb-func 0x0802BCF0 GrantPartyExperience_candidate

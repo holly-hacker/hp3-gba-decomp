@@ -1,6 +1,7 @@
 #include "types.h"
 #include "area.h"
 #include "overworld/room_actor.h"
+#include "map_doors.h"
 
 // Room actor constructor for tile actorType 2, a door to another room.
 // See docs/formats/rooms.md.

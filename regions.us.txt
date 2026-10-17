@@ -1281,9 +1281,9 @@ thumb-func 0x0802BA1C FindWanderingMonsterSpawnPosition
 thumb-func 0x0802BAD0 PickMaxDamageMonster
 
 # Map doors/portals
-c-file 0x0802BB00 0x0802BBAC src/room/actors/spawn_door_actor.c SpawnDoorActor
+c-file 0x0802BB00 0x0802BBAC src/map_doors/spawn_door_actor.c SpawnDoorActor
 thumb-func 0x0802BBAC sub_0802BBAC
-c-file 0x0802BC54 0x0802BC74 src/room/actors/spawn_portrait_door_actor.c SpawnPortraitDoorActor
+c-file 0x0802BC54 0x0802BC74 src/map_doors/spawn_portrait_door_actor.c SpawnPortraitDoorActor
 thumb-func 0x0802BC74 sub_0802BC74
 thumb-func 0x0802BC78 sub_0802BC78
 
