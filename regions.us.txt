@@ -2170,9 +2170,9 @@ thumb-func 0x08044A94 GrantPickupMarkerItem
 thumb-func 0x08044ADC sub_08044ADC
 
 # Train (cool train cutscene mode)
-c-file 0x08044B00 _ src/gamemode/modes/cutscene/cool_train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
-c-file 0x08044B7C _ src/gamemode/modes/cutscene/cool_train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
-c-file 0x08044BF0 _ src/gamemode/modes/cutscene/cool_train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
+c-file 0x08044B00 _ src/train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
+c-file 0x08044B7C _ src/train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
+c-file 0x08044BF0 _ src/train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
 
 # Trigger actor? (switch actor)
 c-file 0x08044C00 0x08044D24 src/room/actors/spawn_switch_actor.c SpawnSwitchActor
@@ -2588,7 +2588,7 @@ c-file 0x0806BFDC _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeo
 c-file 0x0806BFF4 0x0806C014 src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
 c-file 0x0806C048 0x0806C108 src/title_options/options_menu_items.c g_aOptionsMenuItems
 c-file 0x0806C12C _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
-c-file 0x0806C174 _ src/gamemode/modes/cutscene/cool_train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
+c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
 c-file 0x0806C178 0x0806C200 src/room/actors/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file 0x0806C2F0 0x0806C300 src/graphics/scanline/default_scanline_effects.c g_aDefaultScanlineEffects

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "modes.h"
+#include "train_cutscene.h"
 
 void ExitCoolTrainCutscene(void)
 {

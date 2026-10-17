@@ -2,7 +2,7 @@
 #include "background.h"
 #include "sound.h"
 #include "hw/bios.h"
-#include "cutscene/cool_train_cutscene.h"
+#include "train_cutscene.h"
 #include "graphics/display.h"
 #include "modes.h"
 #include "input.h"
