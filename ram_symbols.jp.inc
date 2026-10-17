@@ -2,7 +2,7 @@
 @ ram_symbols.us.inc for the full explanation. JP-side values, laid out
 @ like the US file. Symbols with no JP counterpart yet are omitted.
 
-@ --- Statically linked RAM sections (see include/mem_clear.h and ClearWorkRam) ---
+@ --- Statically linked RAM sections (see include/ram_clear.h and ClearWorkRam) ---
 .set g_EwramSectionStart,     0x02000000
 .set g_EwramSectionEnd,       0x020027F8  @ ClearWorkRam zeroes EWRAM from here
 .set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM

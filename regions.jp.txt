@@ -1577,12 +1577,12 @@ c-file 0x0803B008 _ src/pscreen_wizard_cards/handle_folio_card_detail_screen_tic
 c-file 0x0803B034 _ src/pscreen_wizard_cards/exit_folio_card_detail_screen.c ExitFolioCardDetailScreen
 c-file 0x0803B04C _ src/pscreen_wizard_cards/spawn_folio_card_actor.c SpawnFolioCardActor
 c-file 0x0803B0A4 _ src/pscreen_wizard_cards/draw_folio_card_detail_text.c DrawFolioCardDetailText
-c-file 0x0803B128 _ src/mem_clear/clear_system_memory.c ClearSystemMemory
-c-file 0x0803B138 _ src/mem_clear/clear_work_ram.c ClearWorkRam
-c-file 0x0803B1AC _ src/mem_clear/clear_video_memory.c ClearVideoMemory
-c-file 0x0803B1C0 _ src/mem_clear/clear_vram.c ClearVram
-c-file 0x0803B1D4 _ src/mem_clear/clear_oam_dma.c ClearOamDma
-c-file 0x0803B1F8 _ src/mem_clear/clear_palette_ram_dma.c ClearPaletteRamDma
+c-file 0x0803B128 _ src/ram_clear/clear_system_memory.c ClearSystemMemory
+c-file 0x0803B138 _ src/ram_clear/clear_work_ram.c ClearWorkRam
+c-file 0x0803B1AC _ src/ram_clear/clear_video_memory.c ClearVideoMemory
+c-file 0x0803B1C0 _ src/ram_clear/clear_vram.c ClearVram
+c-file 0x0803B1D4 _ src/ram_clear/clear_oam_dma.c ClearOamDma
+c-file 0x0803B1F8 _ src/ram_clear/clear_palette_ram_dma.c ClearPaletteRamDma
 
 # MT19937 PRNG, see docs/memory-map/rng.md
 c-file 0x0803B220 _ src/rng/regenerate.c Mt19937Regenerate
@@ -2302,7 +2302,7 @@ c-file 0x0806B364 _ src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAss
 c-file 0x0806B760 _ src/room/actors/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B798 _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
 c-file 0x0806B7A8 0x0806B7D0 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
-c-file 0x0806B858 _ src/mem_clear/clear_work_ram.globals.c g_pIwramSectionStart
+c-file 0x0806B858 _ src/ram_clear/clear_work_ram.globals.c g_pIwramSectionStart
 c-file 0x0806B868 0x0806B8C0 src/room/actors/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 _ src/shop/shop_stock.c g_aShopStockMisc
 c-file 0x0806B9D8 _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons

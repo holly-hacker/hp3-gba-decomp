@@ -14,7 +14,7 @@
 #include "overworld/room.h"
 #include "overworld/room_blob.h"
 #include "interrupts.h"
-#include "mem_clear.h"
+#include "ram_clear.h"
 #include "vram.h"
 #include "hero.h"
 #include "map.h"

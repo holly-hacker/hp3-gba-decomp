@@ -11,7 +11,7 @@
 @ The dialog-text-engine symbols have no JP counterpart at all (that
 @ engine isn't present in the JP ROM -- see docs/formats/text.md).
 
-@ --- Statically linked RAM sections (see include/mem_clear.h and ClearWorkRam) ---
+@ --- Statically linked RAM sections (see include/ram_clear.h and ClearWorkRam) ---
 .set g_EwramSectionStart,     0x02000000
 .set g_EwramSectionEnd,       0x020027F8  @ ClearWorkRam zeroes EWRAM from here
 .set g_abEwramHeap,          0x02002800  @ InitHeap's pool 0, up to the end of EWRAM

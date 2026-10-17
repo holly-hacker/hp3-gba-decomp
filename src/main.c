@@ -7,7 +7,7 @@
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "actor.h"
-#include "mem_clear.h"
+#include "ram_clear.h"
 #include "input.h"
 #include "font.h"
 #include "text.h"

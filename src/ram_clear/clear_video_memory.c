@@ -1,4 +1,4 @@
-#include "mem_clear.h"
+#include "ram_clear.h"
 
 void ClearVideoMemory(void)
 {
