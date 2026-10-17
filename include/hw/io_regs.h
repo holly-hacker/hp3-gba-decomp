@@ -13,6 +13,14 @@ typedef struct {
 #define JOYCNT_RECV  0x0002
 #define JOYCNT_SEND  0x0004
 
+// On-board (EWRAM) and in-chip (IWRAM) work RAM.
+#define EWRAM_BASE ((u8 *)0x02000000)
+#define EWRAM_END  ((u8 *)0x02040000)
+#define IWRAM_BASE ((u8 *)0x03000000)
+// Upper IWRAM holding the IRQ and system stacks (gIrqStackTop,
+// gSystemStackTop) and the BIOS area; ClearWorkRam stops here.
+#define IWRAM_STACKS ((u8 *)0x03007D00)
+
 // BIOS-owned RAM mirror of acked interrupt flags (GBATEK "Interrupt Check
 // Flag"), not an MMIO register -- SWI IntrWait/VBlankIntrWait poll it.
 #define REG_IFBIOS  (*(volatile u16 *)0x03007FF8)
@@ -77,9 +85,6 @@ typedef struct {
 #define REG_DMA3CNT   (*(volatile u32 *)0x040000DC)
 #define REG_DMA3CNT_H (*(volatile u16 *)0x040000DE)
 
-// Active-low button state; UpdateKeyInput XORs with 0x3FF for active-high.
-// Also SIOMLT_RECV (player 0's slot) during a multiplayer link session.
-#define REG_KEYINPUT (*(volatile u16 *)0x04000130)
 // Timer 3 control (the link cable's serial pump) and serial communication.
 #define REG_TM3CNT_L     (*(volatile u16 *)0x0400010C)
 #define REG_TM3CNT_H     (*(volatile u16 *)0x0400010E)
@@ -87,6 +92,9 @@ typedef struct {
 #define REG_SIOMULTI(n)  (((volatile u16 *)0x04000120)[n])
 #define REG_SIOCNT       (*(volatile u16 *)0x04000128)
 #define REG_SIOMLT_SEND  (*(volatile u16 *)0x0400012A)
+// Active-low button state; UpdateKeyInput XORs with 0x3FF for active-high.
+// Also SIOMLT_RECV (player 0's slot) during a multiplayer link session.
+#define REG_KEYINPUT     (*(volatile u16 *)0x04000130)
 #define REG_RCNT         (*(volatile u16 *)0x04000134)
 // JOY Bus (GameCube link) control, receive/transmit words and status.
 #define REG_JOYCNT       (*(volatile u16 *)0x04000140)
@@ -98,14 +106,6 @@ typedef struct {
 #define REG_IF      (*(volatile u16 *)0x04000202)
 #define REG_WAITCNT (*(volatile u16 *)0x04000204)
 #define REG_IME     (*(volatile u16 *)0x04000208)
-
-// On-board (EWRAM) and in-chip (IWRAM) work RAM.
-#define EWRAM_BASE ((u8 *)0x02000000)
-#define EWRAM_END  ((u8 *)0x02040000)
-#define IWRAM_BASE ((u8 *)0x03000000)
-// Upper IWRAM holding the IRQ and system stacks (gIrqStackTop,
-// gSystemStackTop) and the BIOS area; ClearWorkRam stops here.
-#define IWRAM_STACKS ((u8 *)0x03007D00)
 
 // Background palette RAM, 256 colors.
 #define BG_PLTT ((volatile u16 *)0x05000000)
