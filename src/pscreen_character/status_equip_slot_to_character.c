@@ -1,5 +1,5 @@
 #include "pscreen_character.h"
-#include "battle/battle.h"
+#include "combat.h"
 
 u8 StatusEquipSlotToCharacter(u8 slot)
 {

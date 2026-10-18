@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle/battle.h"
+#include "combat.h"
 #include "text.h"
 #include "items.h"
 

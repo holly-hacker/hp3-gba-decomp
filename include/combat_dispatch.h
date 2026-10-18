@@ -1,6 +1,14 @@
 #pragma once
 
-#include "battle/battle.h"
+#include "combat.h"
+
+// bIndex/dwParam are adjacent globals (0x03002688/0x0300268C) accessed
+// through one base address in the real code, hence one struct here.
+typedef struct {
+    u8 bIndex;    // sentinel 0xFF = none pending
+    u8 bCountdown;  // set to 2 by sub_08013320; the pending copy runs when it wraps past 0
+    u32 dwParam;
+} BattleMessageIconState;
 
 extern void InitCharacterSpells_candidate(u32 index, u16 *pStats);
 extern void StopBgTileAnimationsAfterCard_candidate(void);  // stops all BG tile animations

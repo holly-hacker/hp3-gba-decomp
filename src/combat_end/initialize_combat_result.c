@@ -4,7 +4,6 @@
 #include "hw/bios.h"
 #include "hw/io_regs.h"
 #include "modes.h"
-#include "battle/battle.h"
 #include "overworld/room_script.h"
 #include "combat_end.h"
 #include "gen/graphics/menus.h"

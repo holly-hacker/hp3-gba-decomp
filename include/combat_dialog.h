@@ -1,8 +1,38 @@
 #pragma once
 
-#include "battle/battle.h"
+#include "combat.h"
 #include "constants/spells.h"
 #include "video.h"
+
+// ShowBattleMessage's first parameter. SpecialAbilityText (3) shares the switch's
+// trailing default body.
+// Case 5 covers the whole attack-result dispatch, not just crits.
+typedef enum {
+    SpellLevelUp      = 0,
+    EscapeBlocked     = 1,
+    SpecialMoveAnnounce = 2,
+    SpecialAbilityText = 3,
+    ActionAnnounce    = 4,
+    AttackResult      = 5,
+    FaintResult       = 6,
+    ItemUseAnnounce   = 7,
+    StatusRestore     = 8,
+    SpCost            = 9,
+    MpCost            = 10,
+    Victory           = 11,
+    Defeat            = 12,
+    CantMove          = 13,
+    CanMoveAgain      = 14,
+    // Not AttackWeakened, which BattleStatusFlags already owns.
+    AttackWeakenedMessage = 15,
+    // Not Hidden, for the same reason.
+    HiddenFromView    = 16,
+    ImmuneToParalysis = 17,
+} BattleMessageCode;
+// bPendingStatusMessageVariant_candidate's "none" value, written at battle
+// init: the guard at each ShowBattleMessage(AttackResult, 0, variant) site
+// skips the second message while it holds.
+#define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
 
 extern void TickBattleMenuInput(void);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);

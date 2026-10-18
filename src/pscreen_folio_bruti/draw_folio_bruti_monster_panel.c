@@ -1,6 +1,5 @@
 #include "types.h"
 #include "background.h"
-#include "battle/battle.h"
 #include "combat_fighter.h"
 #include "math.h"
 #include "save.h"

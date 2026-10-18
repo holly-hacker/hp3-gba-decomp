@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/battle.h"
 #include "commands.h"
 #include "overworld/room_script.h"
 #include "combat.h"

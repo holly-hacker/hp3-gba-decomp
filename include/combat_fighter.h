@@ -1,13 +1,79 @@
 #pragma once
 
-#include "types.h"
-#include "actor.h"
-#include "battle/battle.h"
-#include "battle/encounters.h"
-#include "battle/monster_drop_table.h"
+#include "combat.h"
 #include "constants/spells.h"
 
 // Battle actors, stats, actions and damage.
+
+// One MonsterTable record, 0x18 bytes.
+typedef struct MonsterTableRow {
+    u16 wHp;                 // 0x00
+    u8 bLevel;               // 0x02
+    u8 bAgility;             // 0x03
+    u8 bAccuracy;            // 0x04
+    u8 bCritChance;          // 0x05
+    u16 wDamageMin;          // 0x06
+    u16 wDamageMax;          // 0x08
+    u8 abEffectiveness[6];   // 0x0A
+    u16 wRewardXp;           // 0x10
+    u16 wRewardGold;         // 0x12
+    u8 bSpecialChance;       // 0x14, not copied to BattleFighter
+    u8 bSpecialId;           // 0x15, not copied to BattleFighter
+    u16 wPad_0x16;           // 0x16
+} MonsterTableRow;
+
+// One per-level row of Harry/Ron/Hermione's level-up stat tables, 12 bytes
+// (last 2 always zero, not a real field). LevelUpFighter_candidate indexes
+// these 0-based -- displayed Level N is row N-1; row 0 is never read back
+// (a fresh Level-1 character never "levels up" into it). bDefenseFactorPercent
+// is dead: RecomputeBaseStatsFromLevel_candidate resets it to 100 right after
+// LevelUpFighter_candidate applies it.
+typedef struct CharacterLevelEntry {
+    u16 wHp_max;
+    u16 wMp_max;
+    u16 wXpDeltaForLevel;
+    u8 bAgility;
+    u8 bAccuracy;
+    u8 bDefenseFactorPercent;
+    u8 bMagicDefensePercent;
+    u8 pad_0A[2];
+} CharacterLevelEntry;
+
+// One row per MonsterTable entry.
+typedef struct MonsterGfxRow {
+    ActorAssetRecord battle;     // 0x00, battle and Folio Bruti sprite
+    ActorAssetRecord overworld;  // 0x10, wandering-monster sprite
+} MonsterGfxRow;
+
+// per-wActorType windup-flash resource pointer row, stride 0xA0
+// One row per FighterType: sprite records selected by animation state
+// (SetPlayerActorAnim). Record 0 is the live sprite, 6 and 7 carry the
+// windup flash palettes, 8 is the fainted sprite.
+typedef struct FighterAnimRow {
+    ActorAssetRecord aRecords[10];
+} FighterAnimRow;
+
+// One random-encounter id's 3 kinds x 4 random variants of enemy slots.
+// At spawn time one variant is picked with Mt19937RandMax(3) and stored
+// on the wandering-monster actor; touching it starts a battle with
+// exactly that cell as the enemy roster. Each variant is 4 monster ids,
+// one per enemy slot; 255 (0xFF) = empty slot (see SetupBattleRoster).
+typedef struct {
+    u8 aVariants[4][4];
+} RandomEncounterKind;
+
+typedef struct {
+    RandomEncounterKind aKinds[3];
+} RandomEncounter;
+
+typedef struct {
+    u8 chance;
+    s16 itemId;
+} MonsterDropSlot;
+
+typedef struct {
+    MonsterDropSlot slot[2];
+} MonsterDropEntry;
 
 extern void ResetCharacterToLevel(u32 character, u32 level);  // sets a party member's saved level and stats from the level table
 extern Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);

@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/battle.h"
 #include "chest_actor.h"
 #include "clock.h"
 #include "combat_fighter.h"

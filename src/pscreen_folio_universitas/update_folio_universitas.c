@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/battle.h"
 #include "math.h"
 #include "modes.h"
 #include "save.h"

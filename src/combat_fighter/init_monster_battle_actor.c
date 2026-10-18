@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/battle.h"
 #include "combat_fighter.h"
 
 // Monster-side counterpart to InitPlayerBattleActor: allocates the fighter's

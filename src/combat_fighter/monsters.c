@@ -1,4 +1,3 @@
-#include "battle/battle.h"
 #include "combat_fighter.h"
 
 // Folio Bruti monster stat table, 69 records. See docs/formats/folio_bruti.md

@@ -1,4 +1,3 @@
-#include "battle/battle.h"
 #include "combat_fighter.h"
 #include "gen/graphics/battle.h"
 #include "gen/graphics/overworld.h"

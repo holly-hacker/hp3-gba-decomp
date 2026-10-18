@@ -1,4 +1,3 @@
-#include "battle/encounters.h"
 #include "combat_fighter.h"
 
 // Random-encounter roster: g_dwCurrentGameModeArg1 selects the id,

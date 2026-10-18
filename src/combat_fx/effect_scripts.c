@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/script_opcodes.h"
 
 #include "combat_fx.h"
 #include "effect_scripts/special_monster_fire_crab_attack.h"

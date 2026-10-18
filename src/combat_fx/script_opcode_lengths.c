@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/script_opcodes.h"
 #include "combat_fx.h"
 
 // Operand byte count for each script opcode; see docs/formats/battle_scripts.md.

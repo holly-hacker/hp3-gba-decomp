@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/battle.h"
 #include "modes.h"
 #include "pscreen_folio_universitas.h"
 #include "combat.h"

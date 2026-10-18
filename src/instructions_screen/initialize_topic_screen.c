@@ -1,5 +1,4 @@
 #include "instructions_screen.h"
-#include "battle/battle.h"
 #include "modes.h"
 #include "pscreen_information.h"
 #include "combat.h"

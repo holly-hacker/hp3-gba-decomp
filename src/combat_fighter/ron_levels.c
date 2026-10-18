@@ -1,4 +1,3 @@
-#include "battle/battle.h"
 #include "combat_fighter.h"
 
 const CharacterLevelEntry g_pRonLevelTable[] = {

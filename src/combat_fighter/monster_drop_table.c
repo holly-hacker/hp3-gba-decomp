@@ -1,6 +1,5 @@
 #include "combat_fighter.h"
 #include "constants/items.h"
-#include "battle/monster_drop_table.h"
 
 // Monster drop table, following the standard monster order (see src/combat_fighter/monsters.c).
 // See docs/memory-map/battle.md.

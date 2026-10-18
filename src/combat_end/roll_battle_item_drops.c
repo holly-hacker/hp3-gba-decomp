@@ -1,9 +1,7 @@
 #include "types.h"
-#include "battle/battle.h"
 #include "combat_fighter.h"
 #include "combat_end.h"
 #include "random.h"
-#include "battle/monster_drop_table.h"
 #include "combat.h"
 #include "combat_dispatch.h"
 

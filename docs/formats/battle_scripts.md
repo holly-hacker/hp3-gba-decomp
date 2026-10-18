@@ -161,7 +161,7 @@ Only a few of the ~168 possible opcodes are semantically identified so
 far. Addresses below (`g_apScriptOpcodeCaseTable`'s literal jump
 targets, read directly from ROM) are cited here in prose, for
 US-ROM-specific reference only -- they are **not** stored in
-`include/battle/script_opcodes.h` or the scripts, see "Why no addresses in
+the opcode definitions in `include/combat_fx.h` or the scripts, see "Why no addresses in
 the opcode header" below:
 
 | Opcode | Name | Operand bytes | Meaning |
@@ -219,7 +219,7 @@ the opcode header" below:
 [`../memory-map/battle.md`](../memory-map/battle.md)'s "`StatusEffect`
 sub-cases" section owns their semantics and the evidence behind each
 name; the names below are the `BSSTATUS_*` constants in
-`include/battle/script_opcodes.h`.
+`include/combat_fx.h`.
 
 | Sub-case | Name | Touches |
 |---|---|---|
@@ -503,7 +503,7 @@ Addresses are ROM-build-specific: they differ between the US and JP
 ROMs (not confirmed to even share this table's content at all), and a
 future shiftable build would relocate code freely -- a fixed address baked
 into what's supposed to be portable bytecode format knowledge would
-silently break both. `include/battle/script_opcodes.h` carries only opcode number, name,
+silently break both. The opcode definitions in `include/combat_fx.h` carry only opcode number, name,
 operand length, and (for `StatusEffect`) named sub-cases -- nothing that
 a different ROM build could invalidate. Addresses belong only in
 Ghidra's database and in this doc's own prose (both already scoped,
@@ -515,7 +515,7 @@ build inputs).
 **PROVEN** (`just compare us` passes). The scripts are C, in one region
 (`c-file` `0x0805994C`-`0x0805BA7C`, `src/combat_fx/effect_scripts.c`):
 
-- `include/battle/script_opcodes.h` -- `enum BattleScriptOpcode`
+- `include/combat_fx.h` -- `enum BattleScriptOpcode`
   (`BSOP_*`, all 168 opcodes; `Unk<XX>` until identified), `enum
   BattleStatusEffect` (`BSSTATUS_*`, `StatusEffect`'s first operand), and
   one `BS_<Name>(a, b, ...)` macro per opcode expanding to the opcode
@@ -581,7 +581,7 @@ have the same sizes, only the addresses differ.
   used top-level opcodes are still unnamed (`opcode_XX`); `StatusEffect`'s
   29 sub-cases are all named. Each is a real, bounded chunk of work:
   read one handler in `InterpretActorScript`, name it and its operand
-  layout in `include/battle/script_opcodes.h`.
+  layout in `include/combat_fx.h`.
 - ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
   -- all 16 of Harry's cards are now named and mapped to their effect id
   as scripts in `src/combat_fx/effect_scripts/`, via the in-game Card Combo

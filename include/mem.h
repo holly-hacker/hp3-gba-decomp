@@ -59,5 +59,8 @@ void *memset(void *dst, int val, u32 len);
 void *CopyMemory(void *dst, const void *src, u32 len);
 void *MoveMemory(void *dst, const void *src, u32 len);
 
+// newlib's memcpy, src/libc/memcpy.c.
+extern void *memcpy(void *dst, const void *src, u32 n);
+
 // Start of pool 0, which InitHeap spans to EWRAM_END.
 extern u8 g_abEwramHeap[];  // 0x02002800

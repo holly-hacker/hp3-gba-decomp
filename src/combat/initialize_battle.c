@@ -5,7 +5,6 @@
 #include "combat_dialog.h"
 #include "combat_dispatch.h"
 #include "sound.h"
-#include "battle/battle.h"
 #include "modes.h"
 #include "mem.h"
 #include "map.h"

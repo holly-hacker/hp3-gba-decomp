@@ -6,7 +6,6 @@
 #include "game/rewards.h"
 #include "game_state.h"
 #include "sound.h"
-#include "battle/battle.h"
 #include "combat_end.h"
 
 // Draws the drop phase: the Sickles earned (25% more with ForceItemDrop) and up

@@ -1,4 +1,4 @@
-#include "battle/battle.h"
+#include "mode7.h"
 #include "char_block.h"
 #include "modes.h"
 #include "buckbeak_minigame.h"
