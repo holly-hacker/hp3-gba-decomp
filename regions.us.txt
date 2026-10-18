@@ -2435,14 +2435,16 @@ c-file 0x0804BD5C _ src/libc/memcpy.c memcpy
 # End of main code section
 
 # Start of data section
-c-file 0x0804BDBC 0x0804BF9C src/actor/direction_vectors.c g_aDirection4Vectors
-c-file 0x0804BFCC 0x0804BFEC src/actor/action_state_data.c g_abTurnAroundDirection
+c-file 0x0804BDBC _ src/actor/direction_vectors.c g_aDirection4Vectors
+c-file 0x0804BFCC _ src/actor/action_state_data.c g_abTurnAroundDirection
+c-file 0x0804BFEC _ src/actor/direction_mirror_frames.c g_abDirection8MirrorFrames
 c-file 0x0804C024 _ src/actor/oam_shape_sizes.c g_aOamShapeSizes
 c-file 0x0804C054 _ src/area/room_actor_constructors.c g_apRoomActorConstructors
-c-file 0x0804C08C 0x0804C09C src/area/default_room_entry_points.c g_aDefaultRoomEntryPoints
+c-file 0x0804C08C _ src/area/default_room_entry_points.c g_aDefaultRoomEntryPoints
+c-file 0x0804C09C _ src/background/background.globals.c g_adwUnusedBgControls
 c-file 0x0804C0AC _ src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file 0x0804C284 _ src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
-c-file 0x0804C43C 0x0804C440 src/challenge_unused/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
+c-file 0x0804C43C _ src/challenge_unused/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
 c-file 0x0804C444 _ src/cheat/cheat.globals.c g_dwCheatBg0Control
 c-file 0x0804C470 _ src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_abCheatLevelAndQuestMax
 c-file 0x0804C4A0 _ src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control

@@ -75,3 +75,12 @@ const s32 g_aDirection32Vectors[32][2] = {
     {  -0x61F7,  -0xEC83 },
     {  -0x31F1,  -0xFB14 },
 };
+
+// Direction reflected vertically ((N/2 - d) mod N); Right and Left reverse instead.
+// Not referenced by any code.
+const u8 g_abDirection16FlipY[16] = { 8, 7, 6, 5, 12, 3, 2, 1, 0, 15, 14, 13, 4, 11, 10, 9 };
+
+const u8 g_abDirection32FlipY[32] = {
+    16, 15, 14, 13, 12, 11, 10, 9, 24, 7, 6, 5, 4, 3, 2, 1,
+    0, 31, 30, 29, 28, 27, 26, 25, 8, 23, 22, 21, 20, 19, 18, 17,
+};
