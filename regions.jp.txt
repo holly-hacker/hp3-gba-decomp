@@ -1542,19 +1542,19 @@ c-file 0x08039D2C _ src/pscreen_save/exit_game_save.c ExitGameSave
 c-file 0x08039D5C _ src/pscreen_save/show_save_confirmation_prompt.c ShowSaveConfirmationPrompt
 c-file 0x08039D98 _ src/pscreen_save/show_saving_message.c ShowSavingMessage
 c-file 0x08039DCC _ src/pscreen_save/show_game_saved_message.c ShowGameSavedMessage
-c-file 0x08039E2C 0x0803A084 src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
-thumb-func 0x0803A084 sub_0803A030
-thumb-func 0x0803A144 DrawStatusEquipStatsPanel
-thumb-func 0x0803A400 sub_0803A3A0
+c-file 0x08039E2C _ src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
+c-file 0x0803A084 _ src/pscreen_status_equip/spawn_status_character_actor.c SpawnStatusCharacterActor
+c-file 0x0803A144 _ src/pscreen_status_equip/draw_status_equip_stats_panel.c DrawStatusEquipStatsPanel
+c-file 0x0803A400 _ src/pscreen_status_equip/spawn_status_equip_slot_actors.c SpawnStatusEquipSlotActors
 c-file 0x0803A50C _ src/pscreen_status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
-c-file 0x0803A584 0x0803A588 src/pscreen_status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
-thumb-func 0x0803A588 ResetStatusEquipSlot
-thumb-func 0x0803A594 sub_0803A534
-thumb-func 0x0803A5C8 TickStatusEquipSlotCursor
-thumb-func 0x0803A5F0 sub_0803A590
-thumb-func 0x0803A664 sub_0803A604
-thumb-func 0x0803A690 sub_0803A630
-thumb-func 0x0803A6D8 sub_0803A678
+c-file 0x0803A584 _ src/pscreen_status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
+c-file 0x0803A588 _ src/pscreen_status_equip/reset_status_equip_slot.c ResetStatusEquipSlot
+c-file 0x0803A594 _ src/pscreen_status_equip/free_status_equip_slot_actors.c FreeStatusEquipSlotActors
+c-file 0x0803A5C8 _ src/pscreen_status_equip/tick_status_equip_slot_cursor.c TickStatusEquipSlotCursor
+c-file 0x0803A5F0 _ src/pscreen_status_equip/draw_status_equip_slot_name.c DrawStatusEquipSlotName
+c-file 0x0803A664 _ src/pscreen_status_equip/close_status_equip_slot_select_screen.c CloseStatusEquipSlotSelectScreen
+c-file 0x0803A690 _ src/pscreen_status_equip/update_status_equip_slot_cursor_anim.c UpdateStatusEquipSlotCursorAnim
+c-file 0x0803A6D8 _ src/pscreen_status_equip/is_status_equip_slot_selectable.c IsStatusEquipSlotSelectable
 c-file 0x0803A730 _ src/pscreen_trade/initialize_card_trade.c InitializeCardTrade
 c-file 0x0803A7E0 0x0803AAB0 src/pscreen_trade/update_card_trade.c UpdateCardTrade
 thumb-func 0x0803AAB0 ResetCardTradeAfterLinkLoss
@@ -2296,7 +2296,8 @@ c-file 0x08069BFC _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B11C _ src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B1A0 _ src/pscreen_save/save_confirmation_menu.c g_SaveConfirmationMenuDefinition
 c-file 0x0806B1C4 _ src/pscreen_save/no_yes_entries.c g_aNoYesEntries
-c-file 0x0806B1DC 0x0806B20C src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
+c-file 0x0806B1DC _ src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
+c-file 0x0806B20C _ src/pscreen_status_equip/status_equip_slot_select.globals.c g_StatusEquipSlotFrameAsset
 c-file 0x0806B288 _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B2E8 0x0806B338 src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B358 _ src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control

@@ -9,7 +9,7 @@ void InitializeStatusEquipSlotSelect(void)
     ReserveObjPaletteSlot(14);
     ReserveObjPaletteSlot(15);
     g_GameModeStackContext.dwModeSubState = 0x10;
-    g_StatusEquipSlotSelect.pCharacter = sub_0803A030(g_dwStatusEquipCharacter);
+    g_StatusEquipSlotSelect.pCharacter = SpawnStatusCharacterActor(g_dwStatusEquipCharacter);
     DrawStatusEquipStatsPanel();
     g_GameModeStackContext.dwModeState = 1;
 
@@ -17,5 +17,5 @@ void InitializeStatusEquipSlotSelect(void)
                                                   g_aStatusEquipSlots[g_bStatusEquipSlot].nY,
                                                   (const ObjPalette *)gStatusEquipSlotCursorPalette);
     g_StatusEquipSlotSelect.pCursor->pfnTick = TickStatusEquipSlotCursor;
-    sub_0803A630();
+    UpdateStatusEquipSlotCursorAnim();
 }

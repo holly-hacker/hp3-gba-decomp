@@ -19,9 +19,17 @@ typedef struct {
     u8 bRight;     // 0x0F
 } StatusEquipSlot;
 
-// Status/equip screen character rotations, indexed by sub_0803A030.
+// Status/equip screen character rotations, indexed by SpawnStatusCharacterActor.
 extern const ActorAssetRecord g_aStatusCharacterAssets[3];  // 0x0806B250
 extern const StatusEquipSlot g_aStatusEquipSlots[6];  // 0x0806B2FC
+
+extern const ActorAssetRecord g_StatusEquipSlotFrameAsset;        // 0x0806B280
+extern const void *const g_pStatusEquipSlotFramePalette;          // 0x0806B290
+extern const ActorAssetRecord g_StatusEquipSlotCursorAsset;       // 0x0806B294
+extern const void *const g_pStatusEquipSlotCursorPalette;         // 0x0806B2A4
+extern const u8 g_abStatusEquipSlotCursorPulseAnim[14];           // 0x0806B2A8
+extern const u8 g_abStatusEquipSlotCursorDimAnim[2];              // 0x0806B2B6
+extern const u8 g_abStatusCharacterSpinAnim[66];                  // 0x0806B2B8
 
 // Screen actors and state of the slot select screen.
 typedef struct {
@@ -40,12 +48,12 @@ extern void UpdateStatusEquipSlotSelect(void);
 extern void InitializeStatusEquipSlotSelect(void);
 extern void ExitStatusEquipSlotSelect(void);
 extern void ResetStatusEquipSlot(void);  // selects slot 0
-extern Actor *sub_0803A030(u32 character);
+extern Actor *SpawnStatusCharacterActor(u32 character);  // the spinning portrait
 extern void DrawStatusEquipStatsPanel(void);
-extern void sub_0803A3A0(void);
-extern void sub_0803A534(void);
+extern void SpawnStatusEquipSlotActors(void);  // slot frames and equipped item icons
+extern void FreeStatusEquipSlotActors(void);
 extern void TickStatusEquipSlotCursor(Actor *pCursor);
-extern void sub_0803A590(void);
-extern void sub_0803A604(void);
-extern void sub_0803A630(void);
-extern u32 sub_0803A678(void);
+extern void DrawStatusEquipSlotName(void);
+extern void CloseStatusEquipSlotSelectScreen(void);
+extern void UpdateStatusEquipSlotCursorAnim(void);
+extern u32 IsStatusEquipSlotSelectable(void);

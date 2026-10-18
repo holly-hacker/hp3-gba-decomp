@@ -1228,7 +1228,7 @@ lands on a component boundary in the effect ranges. The palette-only
 entries are palettes those pointers or battle code literals (for example
 at `0x080117F4` and `0x0801B2D8`) reference directly. `noPalette` marks
 `BattleEffect020`, whose following palette is one of the five loose ones.
-The status/equip screen's `sub_0803A030` reads the three
+The status/equip screen's `SpawnStatusCharacterActor` reads the three
 `StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
 
 These record tables are C with generated labels: `g_aBattleHudAssets`

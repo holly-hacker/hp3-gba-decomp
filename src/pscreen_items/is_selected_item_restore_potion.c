@@ -1,7 +1,6 @@
 #include "types.h"
 #include "pscreen_items.h"
 #include "items.h"
-#include "game/items.h"
 
 u32 IsSelectedItemRestorePotion(void)
 {

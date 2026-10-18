@@ -20,7 +20,7 @@ void UpdateStatusEquipSlotSelect(void)
         {
             SetAlphaBlendTargets(0, 1);
             SetAlphaBlendCoefficients(0, 16);
-            sub_0803A3A0();
+            SpawnStatusEquipSlotActors();
             g_GameModeStackContext.dwModeState = 2;
         }
         break;
@@ -43,7 +43,7 @@ void UpdateStatusEquipSlotSelect(void)
     case 3:
         if (g_wKeysPressed & KeyA)
         {
-            if (sub_0803A678())
+            if (IsStatusEquipSlotSelectable())
             {
                 SelectStatusEquipSlotType(g_aStatusEquipSlots[g_bStatusEquipSlot].dwType);
                 g_StatusEquipSlotSelect.nextMode = StatusEquipItemSelect;
@@ -62,29 +62,29 @@ void UpdateStatusEquipSlotSelect(void)
         {
             PlaySoundById(0);
             g_bStatusEquipSlot = g_aStatusEquipSlots[g_bStatusEquipSlot].bUp;
-            sub_0803A630();
-            sub_0803A590();
+            UpdateStatusEquipSlotCursorAnim();
+            DrawStatusEquipSlotName();
         }
         else if (g_wKeysPressed & KeyDown)
         {
             PlaySoundById(0);
             g_bStatusEquipSlot = g_aStatusEquipSlots[g_bStatusEquipSlot].bDown;
-            sub_0803A630();
-            sub_0803A590();
+            UpdateStatusEquipSlotCursorAnim();
+            DrawStatusEquipSlotName();
         }
         else if (g_wKeysPressed & KeyLeft)
         {
             PlaySoundById(0);
             g_bStatusEquipSlot = g_aStatusEquipSlots[g_bStatusEquipSlot].bLeft;
-            sub_0803A630();
-            sub_0803A590();
+            UpdateStatusEquipSlotCursorAnim();
+            DrawStatusEquipSlotName();
         }
         else if (g_wKeysPressed & KeyRight)
         {
             PlaySoundById(0);
             g_bStatusEquipSlot = g_aStatusEquipSlots[g_bStatusEquipSlot].bRight;
-            sub_0803A630();
-            sub_0803A590();
+            UpdateStatusEquipSlotCursorAnim();
+            DrawStatusEquipSlotName();
         }
         break;
 
@@ -101,7 +101,7 @@ void UpdateStatusEquipSlotSelect(void)
         }
         if (g_GameModeStackContext.dwModeSubState == 0)
         {
-            sub_0803A534();
+            FreeStatusEquipSlotActors();
             g_GameModeStackContext.dwModeState = 5;
         }
         break;
@@ -115,7 +115,7 @@ void UpdateStatusEquipSlotSelect(void)
         TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
-            sub_0803A604();
+            CloseStatusEquipSlotSelectScreen();
             g_GameModeStackContext.dwModeState = 6;
         }
         break;

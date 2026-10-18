@@ -4,7 +4,6 @@
 #include "default_menu.h"
 #include "pscreen_items.h"
 #include "items.h"
-#include "game/items.h"
 
 void DrawItemDescription(u32 item)
 {

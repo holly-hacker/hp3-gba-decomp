@@ -1747,19 +1747,19 @@ c-file 0x08039D44 _ src/pscreen_save/show_saving_message.c ShowSavingMessage
 c-file 0x08039D78 _ src/pscreen_save/show_game_saved_message.c ShowGameSavedMessage
 
 # Profile/Status? (pause subscreen: status)
-c-file 0x08039DD8 0x0803A030 src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
-thumb-func 0x0803A030 sub_0803A030
-thumb-func 0x0803A0F0 DrawStatusEquipStatsPanel
-thumb-func 0x0803A3A0 sub_0803A3A0
+c-file 0x08039DD8 _ src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
+c-file 0x0803A030 _ src/pscreen_status_equip/spawn_status_character_actor.c SpawnStatusCharacterActor
+c-file 0x0803A0F0 _ src/pscreen_status_equip/draw_status_equip_stats_panel.c DrawStatusEquipStatsPanel
+c-file 0x0803A3A0 _ src/pscreen_status_equip/spawn_status_equip_slot_actors.c SpawnStatusEquipSlotActors
 c-file 0x0803A4AC _ src/pscreen_status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
-c-file 0x0803A524 0x0803A528 src/pscreen_status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
-thumb-func 0x0803A528 ResetStatusEquipSlot
-thumb-func 0x0803A534 sub_0803A534
-thumb-func 0x0803A568 TickStatusEquipSlotCursor
-thumb-func 0x0803A590 sub_0803A590
-thumb-func 0x0803A604 sub_0803A604
-thumb-func 0x0803A630 sub_0803A630
-thumb-func 0x0803A678 sub_0803A678
+c-file 0x0803A524 _ src/pscreen_status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
+c-file 0x0803A528 _ src/pscreen_status_equip/reset_status_equip_slot.c ResetStatusEquipSlot
+c-file 0x0803A534 _ src/pscreen_status_equip/free_status_equip_slot_actors.c FreeStatusEquipSlotActors
+c-file 0x0803A568 _ src/pscreen_status_equip/tick_status_equip_slot_cursor.c TickStatusEquipSlotCursor
+c-file 0x0803A590 _ src/pscreen_status_equip/draw_status_equip_slot_name.c DrawStatusEquipSlotName
+c-file 0x0803A604 _ src/pscreen_status_equip/close_status_equip_slot_select_screen.c CloseStatusEquipSlotSelectScreen
+c-file 0x0803A630 _ src/pscreen_status_equip/update_status_equip_slot_cursor_anim.c UpdateStatusEquipSlotCursorAnim
+c-file 0x0803A678 _ src/pscreen_status_equip/is_status_equip_slot_selectable.c IsStatusEquipSlotSelectable
 
 # Profile/Trade? (pause subscreen: card trade)
 c-file 0x0803A6D0 _ src/pscreen_trade/initialize_card_trade.c InitializeCardTrade
@@ -2556,7 +2556,8 @@ c-file 0x08069C70 _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B190 _ src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
 c-file 0x0806B214 _ src/pscreen_save/save_confirmation_menu.c g_SaveConfirmationMenuDefinition
 c-file 0x0806B238 _ src/pscreen_save/no_yes_entries.c g_aNoYesEntries
-c-file 0x0806B250 0x0806B280 src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
+c-file 0x0806B250 _ src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
+c-file 0x0806B280 _ src/pscreen_status_equip/status_equip_slot_select.globals.c g_StatusEquipSlotFrameAsset
 c-file 0x0806B2FC _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file 0x0806B35C 0x0806B3AC src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B3CC _ src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
