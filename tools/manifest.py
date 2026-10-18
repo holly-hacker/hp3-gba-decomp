@@ -2,8 +2,8 @@
 """Parse regions.<ver>.txt, the manifest of extracted byte ranges.
 
 Directive rows (krawall-module, dialog-text, c-file, ...) name a source
-under data/ or src/ and resolve to the assembly some tools/ script packs
-or compiles into build/<ver>/.
+under data/, src/ or 3rd_party/ and resolve to the assembly some tools/
+script packs or compiles into build/<ver>/.
 """
 import sys
 
@@ -36,9 +36,9 @@ DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 # build/<ver>/graphics/<name>.s.
 GRAPHICS_DIRECTIVE = "graphics"
 
-# c-file, c-file-O1 and c-file-arm rows name a .c under src/, compiled to
-# assembly by tools/c/compile_c.py (the `compile-c` recipe, which must run
-# before `gen-link`) with the compiler the ROM was built with -- see
+# c-file, c-file-O1 and c-file-arm rows name a .c under src/ or 3rd_party/,
+# compiled to assembly by tools/c/compile_c.py (the `compile-c` recipe, which
+# must run before `gen-link`) with the compiler the ROM was built with -- see
 # docs/compiler.md.
 C_FILE_DIRECTIVES = {"c-file", "c-file-O1", "c-file-arm"}
 

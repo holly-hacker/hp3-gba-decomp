@@ -43,7 +43,7 @@ supporting evidence, but check tool availability rather than relying on it alone
 Discover options with `python3 -m tools.matching --help`.
 
 1. Identify version, function address, instruction mode, callers, callees, and source
-   profile. Game C uses agbcc; `src/libc/` uses old_agbcc; ARM-mode C uses agbcc_arm
+   profile. Game C uses agbcc; `3rd_party/newlib/` uses old_agbcc; ARM-mode C uses agbcc_arm
    (`c-file-arm`), which `prepare` selects from the function's mode.
 2. Check the current build with `just compare us` and `just compare jp`. Record any
    pre-existing failure before changing code. Do not rerun asset extraction over edits.
@@ -72,7 +72,7 @@ python3 -m tools.matching snapshot build/matching/us/ResolveEnemyAttack baseline
 For an unmatched function, provide `prepare VERSION NAME --source PATH --end 0xEND`.
 The function needs an entry in `full_disasm.s`; persist confirmed names in
 `functions.VERSION.cfg`. END is exclusive and
-must include its pools/padding. Use `--profile-source src/libc/NAME.c` for libc drafts
+must include its pools/padding. Use `--profile-source 3rd_party/newlib/NAME.c` for libc drafts
 outside that directory. No production manifest row is required. Conflicting seed/manifest addresses stop preparation;
 use `--reference-name NAME` only after verifying a differently named disassembly entry.
 

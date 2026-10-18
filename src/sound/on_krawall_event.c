@@ -1,7 +1,7 @@
 #include "types.h"
 #include "save.h"
 #include "sound.h"
-#include "krawall.h"
+#include "3rd_party/krawall.h"
 
 // Registered with krapCallback by InitAudio. When a jingle finishes, the
 // music restarts at a quarter of the saved volume and fades back up.

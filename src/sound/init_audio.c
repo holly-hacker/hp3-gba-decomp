@@ -1,5 +1,5 @@
 #include "sound.h"
-#include "krawall.h"
+#include "3rd_party/krawall.h"
 
 void InitAudio(void)
 {

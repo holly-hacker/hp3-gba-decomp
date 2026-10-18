@@ -56,7 +56,7 @@ Discord server.
 Harry Potter and the Prisoner of Azkaban for the Gameboy Advance (and by extension decompiled code in this repo) uses
 code from open source libraries:
 
-- `src/libc` contains code belonging to or based on the [newlib](https://sourceware.org/pub/newlib/) project. All code
+- `3rd_party/newlib` contains code belonging to or based on the [newlib](https://sourceware.org/pub/newlib/) project. All code
   in this folder should be licensed under a BSD-like license.
 - the [Krawall](https://github.com/sebknzl/krawall) audio engine, licensed under the LGPL v2.1 license
   - This code is currently not included in this repo, but may be in the future

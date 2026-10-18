@@ -15,7 +15,7 @@ safe. Two flag profiles, by directory:
 
 | | compiler | flags |
 |---|---|---|
-| `src/libc/` | `old_agbcc` | `-O2 -fno-builtin`, no interworking |
+| `3rd_party/newlib/` | `old_agbcc` | `-O2 -fno-builtin`, no interworking |
 | everything else | `agbcc` | `-O2 -mthumb-interwork -fhex-asm -Werror` |
 
 A `c-file-O1` row uses the same compiler and flags with `-O1` in place of

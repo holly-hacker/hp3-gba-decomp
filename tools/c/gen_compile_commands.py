@@ -37,7 +37,8 @@ def main() -> None:
 
     entries = [
         {"directory": root, "file": src, "arguments": clang_args(src, prefix)}
-        for src in sorted(glob.glob("src/**/*.c", recursive=True, root_dir=root))
+        for src in sorted(glob.glob("src/**/*.c", recursive=True, root_dir=root)
+                           + glob.glob("3rd_party/**/*.c", recursive=True, root_dir=root))
     ]
 
     out = os.path.join(root, "compile_commands.json")

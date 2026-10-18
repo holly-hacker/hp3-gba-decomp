@@ -46,7 +46,9 @@ local asset edits.
   address.
 - `ram_symbols.{us,jp}.inc`: fixed RAM symbol addresses.
 - `graphics/<feature>.yaml`: graphics groups shared by both versions.
-- `src/libc/` uses the separate newlib compiler profile.
+- `3rd_party/` holds vendored third-party code; `3rd_party/newlib/` uses the
+  separate newlib compiler profile. `include/3rd_party/` holds headers for
+  third-party libraries, such as Krawall.
 - The ignored `asm/krawall/` holds analysis dumps, not build inputs.
 - `build/<ver>/`: generated disassembly, objects, linker script, and ROM.
   Unclaimed manifest ranges are filled from the baserom with `.incbin`.

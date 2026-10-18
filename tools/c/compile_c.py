@@ -5,7 +5,7 @@ agbcc is a bare cc1: it takes preprocessed C and writes assembly, so the
 pipeline is cpp -> agbcc -> build/<ver>/c/<name>.s, which gen_link.py
 wraps into the region's object.
 
-The compiler profile is picked by directory (src/libc/ uses old_agbcc
+The compiler profile is picked by directory (3rd_party/newlib/ uses old_agbcc
 without interworking; other sources use agbcc with interworking).
 The manifest directive selects -O2 (c-file) or -O1 (c-file-O1), or
 agbcc_arm for ARM-mode code (c-file-arm).
@@ -46,7 +46,7 @@ def profile(src: str, prefix: str, o1: bool = False,
     """
     inc = os.path.join(prefix, "include")
     optimization = "-O1" if o1 else "-O2"
-    if src.startswith("src/libc/"):
+    if src.startswith("3rd_party/newlib/"):
         return (
             os.path.join(prefix, "bin", "old_agbcc"),
             ["-I", inc, "-nostdinc", "-undef", "-DABORT_PROVIDED",

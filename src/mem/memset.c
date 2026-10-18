@@ -1,6 +1,6 @@
 // The classic newlib memset shape (byte-fill to alignment, word-fill the
 // middle, byte-fill the remainder), but compiled as ordinary game code,
-// not part of the vendored libc block src/libc/ matches.
+// not part of the vendored libc block 3rd_party/newlib/ matches.
 
 #include "mem.h"
 

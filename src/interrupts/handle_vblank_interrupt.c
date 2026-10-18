@@ -6,7 +6,7 @@
 #include "color.h"
 #include "video.h"
 #include "windows.h"
-#include "krawall.h"
+#include "3rd_party/krawall.h"
 
 // gIntrTable slot 1 (INTR_FLAG_VBLANK).
 void HandleVBlankInterrupt(void)

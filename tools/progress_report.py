@@ -135,7 +135,7 @@ def read_functions(ver: str, rows: list[dict], blocks: list) -> list[dict]:
 def category_of(area: str, source: str | None) -> str:
     if "krawall" in area:
         return "library"
-    if source and source.startswith("src/libc/"):
+    if source and source.startswith("3rd_party/newlib/"):
         return "library"
     return "game"
 

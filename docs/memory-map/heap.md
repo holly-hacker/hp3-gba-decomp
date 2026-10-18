@@ -34,14 +34,14 @@ registered (by `InitHeap`, spanning ~all of EWRAM):
   buffers instead of the end.
 - `HeapStubReturnOne` returns 1 and has no callers.
 
-`memset` (`0x0802C450`) is **not** the vendored newlib copy in `src/libc/`,
+`memset` (`0x0802C450`) is **not** the vendored newlib copy in `3rd_party/newlib/`,
 despite being the classic newlib shape (byte-fill to alignment, word-fill
 the middle, byte-fill the remainder): it sits nowhere near the confirmed
 libgcc/libc block (`0x0804A2C0`-`0x0804BDBC`, see `../compiler.md`), and
 its return sequence (`pop {r4-r7}; pop {r1}; bx r1`) is the interworking
 form `-mthumb-interwork` game code uses, not the plain `pop {...,pc}`
 newlib compiles to without interworking (confirmed against the matched
-`memcpy`/`bzero` in `src/libc/`) — compiling it under the libc profile
+`memcpy`/`bzero` in `3rd_party/newlib/`) — compiling it under the libc profile
 produces the wrong return sequence and doesn't match.
 
 Two agbcc codegen quirks needed for `memset`/`AllocZeroed` to match

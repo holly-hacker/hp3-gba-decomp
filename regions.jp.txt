@@ -2147,8 +2147,8 @@ thumb-func 0x0804BBE4 __muldi3
 thumb-func 0x0804BC54 __negdi2
 
 # newlib, compiled from source by `just compile-c` (docs/compiler.md)
-c-file 0x0804BC6C _ src/libc/bzero.c  bzero
-c-file 0x0804BC88 _ src/libc/memcpy.c memcpy
+c-file 0x0804BC6C _ 3rd_party/newlib/bzero.c  bzero
+c-file 0x0804BC88 _ 3rd_party/newlib/memcpy.c memcpy
 
 # End of main code section, start of data section
 

@@ -21,7 +21,7 @@
 @ --- include/sound.h ---
 .set g_KrawallIwramStart,     0x03000000  @ IWRAM image kramInstall copies from ROM
 
-@ --- include/krawall.h ---
+@ --- include/3rd_party/krawall.h ---
 .set kradInterrupt,           0x03000004  @ gIntrTableTemplate's timer 1 handler, in that image
 @ Krawall IWRAM code at its runtime address; see docs/memory-map/krawall.md
 .set kramPlayExt,             0x03000094
