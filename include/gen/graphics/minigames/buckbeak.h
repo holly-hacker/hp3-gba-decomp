@@ -4,7 +4,6 @@
 #include "types.h"
 
 /* BuckbeakMinigameGraphics */
-extern const u8 gBuckbeakMinigamePalette001Palette[];
 extern const u8 gBuckbeakMinigameBuckbeakTiles[];
 extern const u8 gBuckbeakMinigameBuckbeakFrames[];
 extern const u8 gBuckbeakMinigameBuckbeakTurningTiles[];

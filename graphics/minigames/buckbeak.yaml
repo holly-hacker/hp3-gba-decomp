@@ -2,8 +2,8 @@ groups:
   - name: BuckbeakMinigameGraphics
     runs:
       - kind: image-bank
-        count: 4
-        names: [BuckbeakMinigamePalette001, BuckbeakMinigameBuckbeak, BuckbeakMinigameBuckbeakTurning, BuckbeakMinigameBat]
+        count: 3
+        names: [BuckbeakMinigameBuckbeak, BuckbeakMinigameBuckbeakTurning, BuckbeakMinigameBat]
         noPalette: [BuckbeakMinigameBat]
       # Per difficulty: BG1 then BG0, then the ground
       - kind: graphic-blobs

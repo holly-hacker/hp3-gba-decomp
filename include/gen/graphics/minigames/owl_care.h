@@ -37,7 +37,20 @@ extern const u8 gOwlCare015Frames[];
 extern const u8 gOwlCare016Tiles[];
 extern const u8 gOwlCare016Frames[];
 
+/* OwlCarePalettes */
+extern const u8 gOwlCarePalette001Palette[];
+extern const u8 gOwlCarePalette002Palette[];
+extern const u8 gOwlCarePalette003Palette[];
+extern const u8 gOwlCarePalette004Palette[];
+extern const u8 gOwlCarePalette005Palette[];
+extern const u8 gOwlCarePalette006Palette[];
+extern const u8 gOwlCareWhiteOwlPalette[];
+extern const u8 gOwlCareBrownOwlPalette[];
+extern const u8 gOwlCareGrayOwlPalette[];
+extern const u8 gOwlCarePalette007Palette[];
+
 /* OwlCare */
 extern const u8 gOwlCareGraphic001[];
 extern const u8 gOwlCareGraphic002[];
 extern const u8 gOwlCareGraphic003[];
+extern const u8 gOwlCarePalette008Palette[];

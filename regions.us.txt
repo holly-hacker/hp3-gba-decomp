@@ -2745,13 +2745,16 @@ graphics 0x08D3EFFC _ minigames/buckbeak BuckbeakMinigameWaterFrames
 graphics 0x08D3F2B4 _ cutscenes PatronusCutscene
 graphics 0x08D48D74 _ minigames/pumpkin ServePumpkinJuiceFrames
 graphics 0x08D4A410 _ minigames/divination_tea DivinationTeaFrames
-graphics 0x08D56A68 0x08D71B5C minigames/owl_care OwlCareSprites
-graphics 0x08D71F70 0x08D79D04 minigames/owl_care OwlCare
+graphics 0x08D56A68 _ minigames/owl_care OwlCareSprites
+c-file 0x08D71B5C _ src/hedwig_minigame/owl_care_anims.c g_abOwlCareAnim00
+graphics 0x08D71E10 _ minigames/owl_care OwlCarePalettes
+c-file 0x08D71F50 _ src/hedwig_minigame/owl_care_002_anims.c g_abOwlCare002Anim0
+graphics 0x08D71F70 _ minigames/owl_care OwlCare
 graphics 0x08D79D24 _ menus DialogBackgrounds
 graphics 0x08D7C480 _ battle BattleEffects2
 graphics 0x08D7E528 _ minigames/wizard_cracker WizardCrackerPopIt
 graphics 0x08D80E6C _ minigames/wizard_cracker WizardCrackerSprites
-graphics 0x08D8E7EC 0x08D9A300 minigames/pumpkin PumpkinGraphics
+graphics 0x08D8E7EC _ minigames/pumpkin PumpkinGraphics
 graphics 0x08D9A360 _ menus DebugMenu
 graphics 0x08DA08BC _ menus MenuSelectionPalette
 graphics 0x08DA0AC0 _ cutscenes CutsceneDrawings
@@ -2760,8 +2763,8 @@ graphics 0x08DF3918 _ menus StatusCharacters
 graphics 0x08E1D5DC _ cutscenes HogwartsUpNight
 graphics 0x08E3254C _ menus/us MainMenuTitles
 graphics 0x08E359C0 _ cutscenes CoolTrain
-graphics 0x08E36D88 0x08E3D010 minigames/divination_tea DivinationTeaGraphics
-graphics 0x08E3D030 _ minigames/buckbeak BuckbeakMinigameGraphics
+graphics 0x08E36D88 _ minigames/divination_tea DivinationTeaGraphics
+graphics 0x08E3D050 _ minigames/buckbeak BuckbeakMinigameGraphics
 graphics 0x08E52964 _ minigames/boggart BoggartGraphics
 graphics 0x08E65D6C _ menus FontsAndPortraits
 

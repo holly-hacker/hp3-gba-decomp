@@ -13,3 +13,8 @@ groups:
         noPalette: [DivinationTeaCup]
       - kind: graphic-blobs
         names: [DivinationTeaBg2Graphic, DivinationTeaBg1Graphic]
+      # OBJ palettes of DivinationTeaCup and DivinationTeaLeaf
+      - kind: image-bank
+        names: [DivinationTeaPalette001, DivinationTeaPalette002]
+        componentOrder: [palette]
+        storedCells: false

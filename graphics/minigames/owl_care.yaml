@@ -6,8 +6,28 @@ groups:
         names: {1: OwlCare001}
         noPalette: [OwlCare016]
 
+  # OBJ palettes of OwlCare012, 015, 014, 013, 011 and 016, the owl in each
+  # OwlCareKitState.bTypeIndex color (White, Brown, Gray), then OwlCare002
+  - name: OwlCarePalettes
+    runs:
+      - kind: image-bank
+        count: 10
+        names:
+          1: OwlCarePalette001
+          7: OwlCareWhiteOwl
+          8: OwlCareBrownOwl
+          9: OwlCareGrayOwl
+          10: OwlCarePalette007
+        componentOrder: [palette]
+        storedCells: false
+
   - name: OwlCare
     runs:
       - kind: graphic-blobs
         count: 3
         names: {1: OwlCareGraphic001}
+      # OBJ palette of OwlCare003
+      - kind: image-bank
+        names: [OwlCarePalette008]
+        componentOrder: [palette]
+        storedCells: false

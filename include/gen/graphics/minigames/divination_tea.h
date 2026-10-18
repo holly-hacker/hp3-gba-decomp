@@ -76,3 +76,5 @@ extern const u8 gDivinationTeaCupTiles[];
 extern const u8 gDivinationTeaCupFrames[];
 extern const u8 gDivinationTeaBg2Graphic[];
 extern const u8 gDivinationTeaBg1Graphic[];
+extern const u8 gDivinationTeaPalette001Palette[];
+extern const u8 gDivinationTeaPalette002Palette[];

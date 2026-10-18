@@ -12,3 +12,9 @@ groups:
         names: {1: Pumpkin001}
       - kind: graphic-blobs
         names: [ServePumpkinJuiceBg0Graphic, ServePumpkinJuiceBg1Graphic, ServePumpkinJuiceBg2Graphic]
+      # OBJ palettes of Pumpkin001, Pumpkin002 and Pumpkin003
+      - kind: image-bank
+        count: 3
+        names: {1: Pumpkin044}
+        componentOrder: [palette]
+        storedCells: false
