@@ -33,7 +33,7 @@ typedef struct {
     HelpMenuEntry aEntries[14];          // 0x78
     u8 bSelectedEntry;                   // 0x120
     u8 abPad_121[3];
-    u32 dwTextLines;                     // 0x124; DrawTextLines state of the page's text
+    u32 dwTextTileCursor;                // 0x124; next free text tile, passed to and returned by DrawTextLines
     Actor *apSprites[8];                // 0x128; the page's arrow sprites
     u32 dwSpriteCount;                   // 0x148
     const u32 *pNextPage;                // 0x14C; HELP_NEXT_PAGE
@@ -42,13 +42,15 @@ typedef struct {
     u32 dwExitArg1;                      // 0x158
     u32 dwExitArg2;                      // 0x15C
     u32 dwExitArg3;                      // 0x160
-    u32 bTopicScreen;                    // 0x164; set when entered as HelpTopicScreen
+    u32 bStandalone;                     // 0x164; opened directly (HelpTopicScreen) rather than from
+                                         // the pause menu
 } HelpState;
 extern HelpState g_HelpState;
 
-// Builds the screen from a page table. A nonzero second argument is the
-// HelpTopicScreen variant, which dims the backdrop instead of fading the pause menu.
-extern void StartHelpScreen(const u32 *pPageTable, s32 bTopicScreen);
+// Builds the screen from a page table. A standalone screen (HelpTopicScreen) builds the
+// pause-menu backdrop itself, opens and closes with a screen transition, and leaves straight
+// to the exit mode from its first page.
+extern void StartHelpScreen(const u32 *pPageTable, s32 bStandalone);
 
 // Stores the PushGameMode_3 arguments used when the screen is dismissed.
 extern void SetHelpExitMode(GameMode mode, s32 arg1, s32 arg2, s32 arg3);
@@ -71,6 +73,25 @@ extern void TurnToNextHelpPage(void);
 extern void CancelHelpScreen(void);
 // Draws a page from its script.
 extern void RunHelpScript(const u32 *pScript);
+// Spawns a page sprite (HELP_SPRITE); x 0xB4 is the right arrow, which is drawn flipped.
+extern void SpawnHelpPageSprite(u32 x, u32 y, u32 assetIndex);
+// Draws a menu entry's label; color is the SelectTextFont color of an available entry.
+extern void DrawHelpMenuEntry(u32 entry, u32 color);
+// Menu cursor tick: slides the cursor to the selected entry.
+extern void TickHelpMenuCursor(Actor *pActor);
+// Draws a text box (HELP_TEXT, HELP_TITLE).
+extern void DrawHelpTextBox(s32 x, s32 y, s32 width, s32 height, u32 textId, u32 color);
+// Loads the title palette and spawns the "Help" title.
+extern void SpawnHelpScreenTitle(void);
+
+// Menu entry rows: pixel height (also the line height) and text width.
+#ifdef VERSION_JP
+#define HELP_MENU_ROW_HEIGHT 9
+#define HELP_MENU_ROW_WIDTH 0xD0
+#else
+#define HELP_MENU_ROW_HEIGHT 8
+#define HELP_MENU_ROW_WIDTH 0xC8
+#endif
 
 extern void InitializeHelp(void);
 extern void UpdateHelp(void);
@@ -85,22 +106,39 @@ typedef enum {
     HelpPageMenu = 1,  // a list of entries linking to pages
 } HelpPageKind;
 
+typedef enum {
+    HelpOpEnd = 0,
+    HelpOpHeader = 1,
+    HelpOpMenuLink = 2,
+    HelpOpMenuLinkIf = 3,
+    HelpOpSelectEntry = 4,    // selected entry in byte 1; unused in the data
+    HelpOpText = 5,
+    HelpOpTitle = 6,
+    HelpOpPageNumber = 7,
+    HelpOpSprite = 8,
+    HelpOpNop = 9,            // unused in the data
+    HelpOpSetTextTileCursor = 10,  // dwTextTileCursor in bytes 2-3; unused in the data
+    HelpOpNextPage = 11,
+    HelpOpPrevPage = 12,
+} HelpOp;
+
 #define HELP_OP(op, b1, b2, b3) ((u32)(op) | (u32)(b1) << 8 | (u32)(b2) << 16 | (u32)(b3) << 24)
 
-#define HELP_END                          0
-#define HELP_HEADER(kind)                 HELP_OP(1, kind, 0, 0)
+#define HELP_END                          HelpOpEnd
+#define HELP_HEADER(kind)                 HELP_OP(HelpOpHeader, kind, 0, 0)
 // Menu entry: label text id and the page it opens. LINK_IF adds a predicate on the entry
 // (IsHelpTopicUnlocked) that decides whether the page can be opened.
-#define HELP_MENU_LINK(textId, page)      2, (textId), (u32)(page)
-#define HELP_MENU_LINK_IF(textId, page, isAvailable) 3, (textId), (u32)(page), (u32)(isAvailable)
+#define HELP_MENU_LINK(textId, page)      HelpOpMenuLink, (textId), (u32)(page)
+#define HELP_MENU_LINK_IF(textId, page, isAvailable) \
+    HelpOpMenuLinkIf, (textId), (u32)(page), (u32)(isAvailable)
 // Text box at (x, y) of the given size.
-#define HELP_TEXT(x, y, w, h, textId)     HELP_OP(5, x, y, 0), (w) | (u32)(h) << 8, (textId)
-#define HELP_TITLE(textId)                6, (textId)
-#define HELP_PAGE_NUMBER(current, total)  HELP_OP(7, current, total, 0)
+#define HELP_TEXT(x, y, w, h, textId)     HELP_OP(HelpOpText, x, y, 0), (w) | (u32)(h) << 8, (textId)
+#define HELP_TITLE(textId)                HelpOpTitle, (textId)
+#define HELP_PAGE_NUMBER(current, total)  HELP_OP(HelpOpPageNumber, current, total, 0)
 // Page-turn arrow sprite: index into g_aHelpSpriteAssets, then screen position.
-#define HELP_SPRITE(assetIndex, x, y)     HELP_OP(8, assetIndex, x, y)
-#define HELP_NEXT_PAGE(page)              11, (u32)(page)
-#define HELP_PREV_PAGE(page)              12, (u32)(page)
+#define HELP_SPRITE(assetIndex, x, y)     HELP_OP(HelpOpSprite, assetIndex, x, y)
+#define HELP_NEXT_PAGE(page)              HelpOpNextPage, (u32)(page)
+#define HELP_PREV_PAGE(page)              HelpOpPrevPage, (u32)(page)
 
 // Whether the minigame or Owl Care Kit topic in a menu entry is unlocked; pTextId is the
 // entry's label text id (the minigame names, 0xA4A-0xA4E, or "Owl Care Kit").
@@ -128,6 +166,6 @@ extern const u32 g_aHelpItemsGlossary[];
 extern const u32 g_aHelpSpecialMovesGlossary[];
 extern const u32 g_aHelpOwlCareKit[];
 
-// Help screen sprites, drawn by sub_08039020 with the palette of the same index.
+// Help screen sprites, drawn by SpawnHelpPageSprite with the palette of the same index.
 extern const ActorAssetRecord g_aHelpSpriteAssets[22];  // US 0x08069AB8
 extern const void *const g_apHelpSpritePalettes[22];    // US 0x08069C18

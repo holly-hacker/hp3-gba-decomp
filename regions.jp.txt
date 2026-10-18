@@ -1494,26 +1494,26 @@ thumb-func 0x080387C8 FlagGameCubeHeaderReceived
 thumb-func 0x080387F0 AcknowledgeGameCubeCommand
 thumb-func 0x080387F4 PadGameCubeReceiveBuffer
 thumb-func 0x08038810 StageGameCubeStatusByte
-c-file 0x08038820 0x080388B8 src/pscreen_information/is_help_topic_unlocked.c IsHelpTopicUnlocked
-thumb-func 0x080388B8 StartHelpScreen
-c-file 0x080389B4 0x08038BD0 src/pscreen_information/update_help.c UpdateHelp
-thumb-func 0x08038BD0 LeaveHelpScreen
-thumb-func 0x08038C44 RunHelpScript
-thumb-func 0x08038EFC OpenSelectedHelpMenuEntry
-thumb-func 0x08038F70 SetHelpMenuSelection
-thumb-func 0x0803906C sub_08039020
+c-file 0x08038820 _ src/pscreen_information/is_help_topic_unlocked.c IsHelpTopicUnlocked
+c-file 0x080388B8 _ src/pscreen_information/start_help_screen.c StartHelpScreen
+c-file 0x080389B4 _ src/pscreen_information/update_help.c UpdateHelp
+c-file 0x08038BD0 _ src/pscreen_information/leave_help_screen.c LeaveHelpScreen
+c-file 0x08038C44 _ src/pscreen_information/run_help_script.c RunHelpScript
+c-file 0x08038EFC _ src/pscreen_information/open_selected_help_menu_entry.c OpenSelectedHelpMenuEntry
+c-file 0x08038F70 _ src/pscreen_information/set_help_menu_selection.c SetHelpMenuSelection
+c-file 0x0803906C _ src/pscreen_information/spawn_help_page_sprite.c SpawnHelpPageSprite
 c-file 0x080390EC _ src/pscreen_information/initialize_help.c InitializeHelp
-c-file 0x0803910C 0x08039140 src/pscreen_information/exit_help_screen.c ExitHelpScreen
-thumb-func 0x08039140 FreeHelpScreen
-thumb-func 0x08039164 SetHelpExitMode
-thumb-func 0x08039194 ClearHelpScreen
-thumb-func 0x080391FC sub_080391B0
-thumb-func 0x08039278 sub_08039228
-thumb-func 0x0803929C TurnToPrevHelpPage
-thumb-func 0x080392D0 TurnToNextHelpPage
-thumb-func 0x08039304 CancelHelpScreen
-thumb-func 0x08039314 sub_080392C0
-thumb-func 0x08039370 sub_0803931C
+c-file 0x0803910C _ src/pscreen_information/exit_help_screen.c ExitHelpScreen
+c-file 0x08039140 _ src/pscreen_information/free_help_screen.c FreeHelpScreen
+c-file 0x08039164 _ src/pscreen_information/set_help_exit_mode.c SetHelpExitMode
+c-file 0x08039194 _ src/pscreen_information/clear_help_screen.c ClearHelpScreen
+c-file 0x080391FC _ src/pscreen_information/draw_help_menu_entry.c DrawHelpMenuEntry
+c-file 0x08039278 _ src/pscreen_information/tick_help_menu_cursor.c TickHelpMenuCursor
+c-file 0x0803929C _ src/pscreen_information/turn_to_prev_help_page.c TurnToPrevHelpPage
+c-file 0x080392D0 _ src/pscreen_information/turn_to_next_help_page.c TurnToNextHelpPage
+c-file 0x08039304 _ src/pscreen_information/cancel_help_screen.c CancelHelpScreen
+c-file 0x08039314 _ src/pscreen_information/draw_help_text_box.c DrawHelpTextBox
+c-file 0x08039370 _ src/pscreen_information/spawn_help_screen_title.c SpawnHelpScreenTitle
 c-file 0x080393C4 0x0803947C src/pscreen_item_count/update_quantity_select_screen.c UpdateQuantitySelectScreen
 thumb-func 0x0803947C sub_08039428
 c-file 0x08039540 _ src/pscreen_item_count/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
@@ -1852,7 +1852,7 @@ c-file 0x080426A4 0x080426E4 src/text/format_hex.c FormatHex
 thumb-func 0x080426E4 sub_080426A4
 thumb-func 0x0804277C sub_0804273C
 thumb-func 0x0804280C sub_080427CC
-thumb-func 0x0804292C sub_080428EC
+thumb-func 0x0804292C SpawnUnslottedTextActor
 thumb-func 0x08042988 SpawnTextActor
 thumb-func 0x08042A00 sub_080429C0
 thumb-func 0x08042A14 SetTextActorCenterPosition_candidate

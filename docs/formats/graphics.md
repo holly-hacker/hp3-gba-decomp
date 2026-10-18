@@ -1327,7 +1327,7 @@ addresses. See `docs/formats/items.md`.
 
 `g_aHelpSpriteAssets` (22 `ActorAssetRecord`s) and
 `g_apHelpSpritePalettes` (22 palette pointers, directly after it) are read
-by `sub_08039020(x, y, index)`, which spawns actor type `index` with
+by `SpawnHelpPageSprite(x, y, index)`, which spawns actor type `index` with
 palette `g_apHelpSpritePalettes[index]` and then passes
 `&g_aHelpSpriteAssets[index]` to `SetActorSprite`. Twenty records reuse item
 icons. Record 14 is a 32x32 `lzrle` sprite in `tiles`, `frames`, `palette`

@@ -2,7 +2,7 @@
 #include "pscreen_information.h"
 #include "gen/graphics/menus.h"
 
-// Help screen sprites, drawn by sub_08039020 with the palette of the same
+// Help screen sprites, drawn by SpawnHelpPageSprite with the palette of the same
 // index; see docs/formats/graphics.md.
 const ActorAssetRecord g_aHelpSpriteAssets[22] = {
     { (void *)gMenuSprite006Tiles, (void *)gMenuSprite006Frames, (void *)gMenuSprite006Palette, 0 },  // 0

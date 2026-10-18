@@ -25,7 +25,7 @@ word is the opcode, the upper bytes are parameters, and operands follow as whole
 | `8` | `HELP_SPRITE` | 1 | Page-turn arrow sprite: asset index in byte 1 (into `g_aHelpSpriteAssets`), x in byte 2, y in byte 3. x `0xB4` is the right arrow. |
 | `11` / `12` | `HELP_NEXT_PAGE` / `HELP_PREV_PAGE` | 2 | Page pointer reached with Right / Left. |
 
-Opcodes `4` (set the selected entry), `9` (no-op) and `10` (set the text-line state) are
+Opcodes `4` (set the selected entry), `9` (no-op) and `10` (set the text tile cursor) are
 handled by the interpreter but do not occur in the data.
 
 ## Contents
