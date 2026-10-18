@@ -36,7 +36,8 @@ asm-file 0x0800011C _ asm/rt/disable_irq.s       DisableIrq
 asm-file 0x08000134 _ asm/rt/intr_main.s        IntrMain
 asm-file 0x0800027C _ asm/rt/divide_signed_quotient.s  DivideSignedQuotient
 asm-file 0x080002A4 _ asm/rt/divide_signed_remainder.s DivideSignedRemainder
-asm-file 0x080002E0 0x080005AC asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
+asm-file 0x080002E0 _ asm/rt/divide_unsigned_worker.s  DivideUnsignedWorker
+asm-file 0x080005AC _ asm/rt/ending_padding.s EndingPadding
 asm-file 0x080005B0 _ asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 asm-file 0x080005EC _ asm/decompress_gamma_lz.s      DecompressGammaLz
 
