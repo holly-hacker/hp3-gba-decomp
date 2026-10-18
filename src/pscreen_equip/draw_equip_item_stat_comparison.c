@@ -88,7 +88,7 @@ void DrawEquipItemStatComparison(u32 item)
     // Def: 100 - defense factor percent.
     SelectTextFont(1, 0, -1);
     SetTextMacro1Number(100 - g_aPartyMasterStats[g_dwStatusEquipCharacter].bDefenseFactorPercent);
-    text = GetDialogText(0x8F7);  // "@1 "
+    text = GetDialogText(0x8F7);  // "@1"
     tileCursor = DrawTextLines(tileCursor, 0xC2, EQUIP_STAT_ROW(0), 0x18, EQUIP_STAT_ROW_HEIGHT, &text, 1);
 
     if (defenseDelta > 0)

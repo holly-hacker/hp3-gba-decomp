@@ -19,7 +19,7 @@ DRAW_CHEAT_SOUND_TEST_VALUES_LINKAGE void DrawCheatSoundTestValues(void)
     s32 i;
 
     tileCursor = g_CheatSoundTestState.dwTileCursor;
-    text = GetDialogText(0x8F7);  // "@1 "
+    text = GetDialogText(0x8F7);  // "@1"
     FillBgTilemapRect(1, 0x15, 5, 4, 0xC, 0);
     for (i = 0; i < 2; i++)
     {

@@ -20,7 +20,7 @@ DRAW_CHEAT_LEVEL_AND_QUEST_VALUES_LINKAGE void DrawCheatLevelAndQuestValues(void
     s32 y;
 
     tileCursor = g_CheatLevelAndQuestState.dwTileCursor;
-    text = GetDialogText(0x8F7);  // "@1 "
+    text = GetDialogText(0x8F7);  // "@1"
     FillBgTilemapRect(1, 0x15, 5, 4, 0xC, 0);
     y = 0x32;
     for (i = 0; i < 4; i++)

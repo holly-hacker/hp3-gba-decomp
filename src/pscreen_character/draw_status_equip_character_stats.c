@@ -25,7 +25,7 @@ void DrawStatusEquipCharacterStats(u32 slot, u32 color)
     text = GetDialogText(0x585);  // "Level:"
     tileCursor = DrawString(column * 96 + 0x61, column * 72 + 20, STAT_ROW_Y(0), text);
     SetTextMacro1Number(g_aPartyMasterStats[character].bLevel + 1);
-    text = GetDialogText(0x8F7);  // "@1 "
+    text = GetDialogText(0x8F7);  // "@1"
     tileCursor = DrawStringAligned(tileCursor, column * 72 + 74, STAT_ROW_Y(0), text, 2);
 
     text = GetDialogText(0x583);  // "Exp:"
