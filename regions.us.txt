@@ -1723,19 +1723,19 @@ c-file 0x08039564 _ src/pscreen_item_count/close_quantity_select_screen.c CloseQ
 # Profile/Items? (pause subscreen: items)
 c-file 0x0803957C _ src/pscreen_items/update_items_item_select.c UpdateItemsItemSelect
 c-file 0x08039690 _ src/pscreen_items/initialize_items_item_select.c InitializeItemsItemSelect
-c-file 0x08039728 0x08039750 src/pscreen_items/exit_items_item_select.c ExitItemsItemSelect
-thumb-func 0x08039750 SetItemsItemSelectFilter
-thumb-func 0x0803975C sub_0803975C
-thumb-func 0x080397FC sub_080397FC
-thumb-func 0x08039818 sub_08039818
+c-file 0x08039728 _ src/pscreen_items/exit_items_item_select.c ExitItemsItemSelect
+c-file 0x08039750 _ src/pscreen_items/set_items_item_select_filter.c SetItemsItemSelectFilter
+c-file 0x0803975C _ src/pscreen_items/draw_item_description.c DrawItemDescription
+c-file 0x080397FC _ src/pscreen_items/clear_item_description.c ClearItemDescription
+c-file 0x08039818 _ src/pscreen_items/is_selected_item_restore_potion.c IsSelectedItemRestorePotion
 c-file 0x08039854 _ src/pscreen_items/update_items_section_select.c UpdateItemsSectionSelect
 c-file 0x08039904 _ src/pscreen_items/initialize_items_section_select.c InitializeItemsSectionSelect
 c-file 0x08039930 _ src/pscreen_items/exit_items_section_select.c ExitItemsSectionSelect
 c-file 0x08039974 _ src/pscreen_items/initialize_item_use_screen.c InitializeItemUseScreen
 c-file 0x080399A8 _ src/pscreen_items/update_item_use_screen.c UpdateItemUseScreen
-c-file 0x08039A04 0x08039A14 src/pscreen_items/exit_item_use_screen.c ExitItemUseScreen
-thumb-func 0x08039A14 SetItemUseItem
-thumb-func 0x08039A20 sub_08039A20
+c-file 0x08039A04 _ src/pscreen_items/exit_item_use_screen.c ExitItemUseScreen
+c-file 0x08039A14 _ src/pscreen_items/set_item_use_item.c SetItemUseItem
+c-file 0x08039A20 _ src/pscreen_items/draw_item_use_result.c DrawItemUseResult
 
 # Profile/Save? (pause subscreen: game save)
 c-file 0x08039A74 _ src/pscreen_save/initialize_game_save.c InitializeGameSave

@@ -29,7 +29,7 @@ void UpdateItemsItemSelect(void)
             TickItemList();
             if (g_wKeysPressed & KeyA)
             {
-                if (sub_08039818())
+                if (IsSelectedItemRestorePotion())
                 {
                     PlaySoundById(1);
                     item = GetItemListSelection();

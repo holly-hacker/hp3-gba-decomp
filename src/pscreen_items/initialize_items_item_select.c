@@ -18,8 +18,8 @@ void InitializeItemsItemSelect(void)
     g_ItemsItemSelect.dwHasItems = OpenFilteredItemList(g_ItemsItemSelect.dwFilter, 0x34, 0x36, 1, 0, 3, -1);
     if (g_ItemsItemSelect.dwHasItems != 0)
     {
-        SetItemListCallbacks(sub_0803975C, sub_080397FC);
-        sub_0803975C(GetItemListSelection());
+        SetItemListCallbacks(DrawItemDescription, ClearItemDescription);
+        DrawItemDescription(GetItemListSelection());
     }
     else
     {

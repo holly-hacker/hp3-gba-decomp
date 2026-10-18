@@ -34,9 +34,9 @@ extern void UpdateItemsItemSelect(void);
 extern void InitializeItemsItemSelect(void);
 extern void ExitItemsItemSelect(void);
 extern void SetItemsItemSelectFilter(u32 filter);
-extern void sub_0803975C(u32 item);  // draws the description of the item under the cursor
-extern void sub_080397FC(void);      // clears the description box
-extern u32 sub_08039818(void);       // nonzero when the item under the cursor restores Stamina or Magic
+extern void DrawItemDescription(u32 item);     // draws the description of the item under the cursor
+extern void ClearItemDescription(void);        // clears the description box
+extern u32 IsSelectedItemRestorePotion(void);  // nonzero when the item under the cursor restores Stamina or Magic
 
 // Item use (mode 0x12).
 extern u32 g_dwItemUseItem;      // 0x030054EC: item chosen in item select
@@ -46,4 +46,4 @@ extern void InitializeItemUseScreen(void);
 extern void UpdateItemUseScreen(void);
 extern void ExitItemUseScreen(void);
 extern void SetItemUseItem(u32 item);
-extern void sub_08039A20(u32 textId);  // draws the result message under the Items header
+extern void DrawItemUseResult(u32 textId);  // draws the result message under the Items header
