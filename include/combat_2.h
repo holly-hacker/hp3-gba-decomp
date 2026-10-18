@@ -128,7 +128,7 @@ extern const u8 g_aEffectAnimData_candidate[65][226];        // 0x08054FE2
 extern const u8 g_aEffectAnimData2_candidate[38][108];       // 0x08058944
 extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
 
-extern u8 g_bDefeatWarpParam;
+extern u8 g_bInformusTargetMonster;  // monster id Informus last targeted, passed to the Folio Bruti
 extern u8 g_bSpellMissStreak;
 extern u16 g_nLastDamage;
 extern u8 g_bLastTargetIndex;

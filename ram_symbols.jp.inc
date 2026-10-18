@@ -171,7 +171,7 @@
 .set g_CombatResultItem1Gfx,                0x03002740
 
 @ --- include/combat_2.h ---
-.set g_bDefeatWarpParam,                   0x03002748
+.set g_bInformusTargetMonster,             0x03002748
 .set g_bSpellMissStreak,                   0x03002749
 .set g_nLastDamage,                        0x0300274A
 .set g_bLastTargetIndex,                   0x0300274C

@@ -248,7 +248,7 @@ void TickPlayerActionState(Actor *actor)
                 actor->bActionFlags |= 1;
                 PostActionBattleCheck();
                 if (ACTIVE_FIGHTER.bSpellId == Informus)
-                    PushGameMode_2(FolioBruti, 0, g_bDefeatWarpParam);
+                    PushGameMode_2(FolioBruti, 0, g_bInformusTargetMonster);
                 ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
                 return;
             } else {

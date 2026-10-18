@@ -930,7 +930,7 @@ void InterpretActorScript(Actor *actor)
                 break;
             case BSSTATUS_BumpMonsterDocLevel:
                 MarkMonsterDexAnalyzed(targetFighter->bRosterIndex);
-                g_bDefeatWarpParam = targetFighter->bRosterIndex;
+                g_bInformusTargetMonster = targetFighter->bRosterIndex;
                 break;
             case BSSTATUS_SetPostActionFlashFlag:
                 {

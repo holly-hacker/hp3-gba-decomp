@@ -182,7 +182,7 @@
 .set g_CombatResultItem1Gfx,                     0x03002740  @ ActorGfxRecord: tile/frame data of the second dropped item's icon
 
 @ --- include/combat_2.h ---
-.set g_bDefeatWarpParam,                   0x03002748  @ byte
+.set g_bInformusTargetMonster,             0x03002748  @ byte: monster id Informus last targeted; the Folio Bruti opens on it
 .set g_bSpellMissStreak,                   0x03002749  @ byte: consecutive-miss streak breaker
 .set g_nLastDamage,                        0x0300274A  @ u16: last computed attack/status damage
 .set g_bLastTargetIndex,                   0x0300274C  @ byte: last attack's target fighter index
