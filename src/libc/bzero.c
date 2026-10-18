@@ -1,6 +1,7 @@
 /* newlib's bzero, identical in newlib 1.8.2 through 1.10.0; 1.11.0 widened
    the first parameter to void *.
-   https://sourceware.org/pub/newlib/ -- licence: COPYING.NEWLIB. */
+   https://sourceware.org/pub/newlib/ -- licence: LICENSES/COPYING.NEWLIB,
+   section (10). */
 
 #include <stddef.h>
 

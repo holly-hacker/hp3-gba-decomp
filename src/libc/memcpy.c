@@ -1,5 +1,6 @@
 /* newlib's memcpy, identical in newlib 1.8.2 through 1.11.0.
-   https://sourceware.org/pub/newlib/ -- licence: COPYING.NEWLIB. */
+   https://sourceware.org/pub/newlib/ -- licence: LICENSES/COPYING.NEWLIB,
+   section (10). */
 
 #include <stddef.h>
 
