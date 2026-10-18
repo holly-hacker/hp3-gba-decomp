@@ -929,7 +929,7 @@ void InterpretActorScript(Actor *actor)
                 targetFighter->bStatusFlags |= DefenseBoost;
                 break;
             case BSSTATUS_BumpMonsterDocLevel:
-                sub_08037104(targetFighter->bRosterIndex);
+                MarkMonsterDexAnalyzed(targetFighter->bRosterIndex);
                 g_bDefeatWarpParam = targetFighter->bRosterIndex;
                 break;
             case BSSTATUS_SetPostActionFlashFlag:

@@ -44,4 +44,6 @@ extern void UpdateFolioBrutiGridCursor(void);
 extern void ExitFolioBruti(void);
 extern void SerializeMonsterDexLevels(void);
 extern void DeserializeMonsterDexLevels(void);
-extern void sub_08037104(u32 a);
+// Raise a monster's level to 2 (seen, new) if unseen, or to 4 (analyzed, new) if not yet analyzed.
+extern void MarkMonsterDexSeen(u32 monster);
+extern void MarkMonsterDexAnalyzed(u32 monster);

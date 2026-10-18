@@ -1449,9 +1449,9 @@ c-file 0x08036BFC _ src/pscreen_folio_bruti/update_folio_bruti_grid_cursor.c Upd
 c-file 0x08036D50 _ src/pscreen_folio_bruti/deserialize_monster_dex_levels.c DeserializeMonsterDexLevels
 c-file 0x08036DA4 _ src/pscreen_folio_bruti/draw_folio_bruti_monster_panel.c DrawFolioBrutiMonsterPanel
 c-file 0x0803708C _ src/pscreen_folio_bruti/exit_folio_bruti.c ExitFolioBruti
-c-file 0x080370E4 0x0803712C src/pscreen_folio_bruti/serialize_monster_dex_levels.c SerializeMonsterDexLevels
-thumb-func 0x0803712C sub_080370E8
-thumb-func 0x08037148 sub_08037104
+c-file 0x080370E4 _ src/pscreen_folio_bruti/serialize_monster_dex_levels.c SerializeMonsterDexLevels
+c-file 0x0803712C _ src/pscreen_folio_bruti/mark_monster_dex_seen.c MarkMonsterDexSeen
+c-file 0x08037148 _ src/pscreen_folio_bruti/mark_monster_dex_analyzed.c MarkMonsterDexAnalyzed
 c-file 0x08037164 _ src/pscreen_folio_bruti/draw_folio_bruti_heading.c DrawFolioBrutiHeading
 c-file 0x080371A0 _ src/pscreen_folio_bruti/draw_folio_bruti_monster_text.c DrawFolioBrutiMonsterText
 c-file 0x08037224 _ src/pscreen_folio_bruti/draw_folio_bruti_grid.c DrawFolioBrutiGrid
