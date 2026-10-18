@@ -34,6 +34,7 @@
 #include "pouring_minigame.h"
 #include "pscreen_character.h"
 #include "pscreen_connectivity.h"
+#include "pscreen_equip.h"
 #include "pscreen_folio.h"
 #include "pscreen_folio_bruti.h"
 #include "pscreen_folio_universitas.h"

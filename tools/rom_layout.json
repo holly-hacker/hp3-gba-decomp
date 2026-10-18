@@ -93,6 +93,7 @@
     {"us": "0x08035540", "jp": "0x08035584", "name": "Pressure Pad Actor"},
     {"us": "0x08035764", "jp": "0x080357A8", "name": "PScreen/Character"},
     {"us": "0x08035EB0", "jp": "0x08035EF4", "name": "PScreen/Connectivity"},
+    {"us": "0x080361AC", "jp": "0x080361F0", "name": "PScreen/Equip"},
     {"us": "0x0803693C", "jp": "0x08036980", "name": "PScreen/Folio"},
     {"us": "0x08036A64", "jp": "0x08036AA8", "name": "PScreen/Folio Bruti"},
     {"us": "0x080372B0", "jp": "0x080372F4", "name": "PScreen/Folio Universitas"},

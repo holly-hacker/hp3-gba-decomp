@@ -1434,11 +1434,11 @@ c-file 0x0803607C _ src/pscreen_connectivity/initialize_connectivity_menu.c Init
 c-file 0x08036120 _ src/pscreen_connectivity/exit_connectivity.c ExitConnectivity
 c-file 0x08036164 _ src/pscreen_connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
 c-file 0x080361BC _ src/pscreen_connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
-c-file 0x080361F0 _ src/pscreen_connectivity/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
-c-file 0x08036258 0x0803631C src/pscreen_connectivity/update_status_equip_item_select.c UpdateStatusEquipItemSelect
+c-file 0x080361F0 _ src/pscreen_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
+c-file 0x08036258 0x0803631C src/pscreen_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
 thumb-func 0x0803631C sub_080362D8
 thumb-func 0x080364EC DrawEquipItemStatComparison
-c-file 0x080368D4 0x08036910 src/pscreen_connectivity/exit_status_equip_item_select.c ExitStatusEquipItemSelect
+c-file 0x080368D4 0x08036910 src/pscreen_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x08036910 sub_080368CC
 thumb-func 0x08036928 sub_080368E4
 c-file 0x08036980 _ src/pscreen_folio/update_folios.c UpdateFolios

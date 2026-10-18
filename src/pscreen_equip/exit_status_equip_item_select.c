@@ -1,7 +1,6 @@
 #include "hw/io_regs.h"
-#include "actor.h"
 #include "default_menu.h"
-#include "pscreen_connectivity.h"
+#include "pscreen_equip.h"
 #include "items.h"
 
 void ExitStatusEquipItemSelect(void)

@@ -5,7 +5,7 @@
 #include "input.h"
 #include "pscreen_status_equip.h"
 #include "items.h"
-#include "pscreen_connectivity.h"
+#include "pscreen_equip.h"
 #include "screen_transitions.h"
 
 void UpdateStatusEquipSlotSelect(void)

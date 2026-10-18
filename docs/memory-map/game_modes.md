@@ -158,9 +158,9 @@ Screen state lives in `g_StatusEquipCharacterSelect`,
 `g_StatusEquipSlotSelect` and `g_StatusEquipItemSelect`; each holds the
 mode it pushes after its fade-out. Types are in `include/pscreen_character.h`
 (character select), `include/pscreen_status_equip.h` (slot select) and
-`include/pscreen_connectivity.h` (item select); the init/update/exit handlers
+`include/pscreen_equip.h` (item select); the init/update/exit handlers
 are matched in `src/pscreen_character/`, `src/pscreen_status_equip/`
-and `src/pscreen_connectivity/` for both versions.
+and `src/pscreen_equip/` for both versions.
 
 JP handlers (PROVEN: taken from JP's dispatch table at `0x08065C48` and
 built byte-identically from the US source; the Status/Equip RAM globals

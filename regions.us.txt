@@ -1621,11 +1621,11 @@ c-file 0x08036120 _ src/pscreen_connectivity/initialize_confirm_trade_screen.c I
 c-file 0x08036178 _ src/pscreen_connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
 
 # Profile/Equip? (pause subscreen: status/equip)
-c-file 0x080361AC _ src/pscreen_connectivity/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
-c-file 0x08036214 0x080362D8 src/pscreen_connectivity/update_status_equip_item_select.c UpdateStatusEquipItemSelect
+c-file 0x080361AC _ src/pscreen_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
+c-file 0x08036214 0x080362D8 src/pscreen_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
 thumb-func 0x080362D8 sub_080362D8
 thumb-func 0x080364A8 DrawEquipItemStatComparison
-c-file 0x08036890 0x080368CC src/pscreen_connectivity/exit_status_equip_item_select.c ExitStatusEquipItemSelect
+c-file 0x08036890 0x080368CC src/pscreen_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
 thumb-func 0x080368CC sub_080368CC
 thumb-func 0x080368E4 sub_080368E4
 

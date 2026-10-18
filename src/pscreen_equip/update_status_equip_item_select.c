@@ -1,9 +1,7 @@
-#include "types.h"
 #include "sound.h"
-#include "modes.h"
 #include "pause_menu.h"
 #include "input.h"
-#include "pscreen_connectivity.h"
+#include "pscreen_equip.h"
 #include "items.h"
 
 void UpdateStatusEquipItemSelect(void)
