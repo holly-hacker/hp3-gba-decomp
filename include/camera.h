@@ -48,7 +48,7 @@ typedef struct CameraFocusOffset {
 } CameraFocusOffset;
 extern CameraFocusOffset g_aCameraFollowOffsets[];
 
-// Result of MoveCameraFocusToward_candidate once the focus is on the target.
+// Result of MoveCameraFocusToward once the focus is on the target.
 #define CAMERA_FOCUS_ARRIVED 8
 
 // Resets a camera focus slot and its effect state; the focus then holds (wPinned = 1).
@@ -56,9 +56,9 @@ extern void ResetCameraFocusSlot(u8 slot);
 // Ticks slot's camera focus: follows the target actor, or runs the active pan/shake
 // effect and its completion chain.
 extern void TickCameraFocus_candidate(u8 slot);
-// Steps the focus up to step units toward (targetX, targetY), snapping onto it when
+// Steps the focus up to step units toward target, snapping onto it when
 // within step on both axes. Returns CAMERA_FOCUS_ARRIVED on arrival, 0 otherwise.
-extern u8 MoveCameraFocusToward_candidate(s32 targetX, s32 targetY, s32 step, u8 slot);
+extern u8 MoveCameraFocusToward(FixedPoint target, s32 step, u8 slot);
 // Sets the focus and its latched copy to position.
 extern void SnapCameraFocus(FixedPoint position, u8 slot);
 // wPinned = pinned; cancels any scripted effect, and pinning with 1 also drops the target.

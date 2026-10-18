@@ -8,7 +8,7 @@
 // Per-frame update of one camera focus slot: pan toward the target, shake, or follow.
 void TickCameraFocus_candidate(u8 slot)
 {
-    u8 index = slot;
+    u32 index = slot;
     Actor *pControlled = g_OverworldControlState.aSlots[index].pActor;
     u8 state = g_aCameraEffects_candidate[index].bState;
     u32 framesLeft;
@@ -19,8 +19,7 @@ void TickCameraFocus_candidate(u8 slot)
     {
         if (g_aCameraEffects_candidate[index].pTarget != pControlled || g_aCameraEffects_candidate[index].wCounter == 0)
         {
-            if (MoveCameraFocusToward_candidate(g_aCameraEffects_candidate[index].pTarget->pos.x, g_aCameraEffects_candidate[index].pTarget->pos.y,
-                                                g_aCameraEffects_candidate[index].nStep, index) == CAMERA_FOCUS_ARRIVED)
+            if (MoveCameraFocusToward(g_aCameraEffects_candidate[index].pTarget->pos, g_aCameraEffects_candidate[index].nStep, index) == CAMERA_FOCUS_ARRIVED)
             {
                 if (g_aCameraEffects_candidate[index].wCounter == 0)
                 {

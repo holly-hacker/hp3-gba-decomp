@@ -86,7 +86,7 @@ positions by value and the slot index as a byte; the callee truncates the index 
 The focus follows `pTarget` unless `wPinned` is set. `CameraEffect.bState` selects a
 scripted effect started by room script opcodes `0x10` and `0x12`:
 
-- **1, pan**: `MoveCameraFocusToward_candidate` (`0x0800A1F0`) steps the focus toward
+- **1, pan**: `MoveCameraFocusToward` (`0x0800A1F0`) steps the focus toward
   the target by `nStep` along the angle and returns 8 on arrival. Until `wCounter`
   reaches 0 the focus just holds on the target. On arrival, if the target is the
   controlled actor the effect ends and its velocity and `bActionSubState` are
