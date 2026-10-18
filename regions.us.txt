@@ -211,8 +211,8 @@ asm-file 0x08006440 _ asm/sort_actors_by_depth.s  SortActorsByDepth
 # Background (BG layers)
 c-file 0x08006508 _ src/background/load_bg_graphic_tiles.c LoadBgGraphicTiles
 c-file 0x080065D4 _ src/background/load_graphic_blob_tiles.c LoadGraphicBlobTiles
-c-file 0x080066BC 0x08006788 src/background/get_graphic_blob_tile_load.c GetGraphicBlobTileLoad
-thumb-func 0x08006788 WriteBgGraphicTilemap_candidate
+c-file 0x080066BC _ src/background/get_graphic_blob_tile_load.c GetGraphicBlobTileLoad
+c-file 0x08006788 _ src/background/write_bg_graphic_tilemap.c WriteBgGraphicTilemap
 c-file 0x08006A98 _ src/background/copy_bg_tilemap_rect_by_cell.c CopyBgTilemapRectByCell
 c-file 0x08006C00 _ src/background/copy_bg_tilemap_rect.c CopyBgTilemapRect
 c-file 0x08006EF4 _ src/background/tick_bg_layers.c TickBgLayers

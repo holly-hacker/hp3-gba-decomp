@@ -29,7 +29,7 @@ void InitializeDialog(void)
 
         bios_CPUSet(BG_PLTT, g_awSavedBgPalette0, 0x10);
         g_DialogState_candidate.dwState = 1;
-        WriteBgGraphicTilemap_candidate(1, g_pDialogBoxTilemap, DIALOG_BOX_FIRST_TILE, 0, 0, g_dwDialogBoxTileRow);
+        WriteBgGraphicTilemap(1, g_pDialogBoxTilemap, DIALOG_BOX_FIRST_TILE, 0, 0, g_dwDialogBoxTileRow);
 #ifdef VERSION_JP
         SelectTextFont(10, 0, -1);
 #else

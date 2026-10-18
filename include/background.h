@@ -147,7 +147,7 @@ extern const u16 *GetGraphicBlobTileLoad(u32 bg, const u8 *pBlob, u16 tileOffset
 extern const u16 *GetGraphicBlobTilemap(u32 unused, const u8 *pBlob);
 extern u32 LoadEmbeddedPalette(const u8 *pBlob, u32 row, u32 rowCount);  // returns its size
 extern u32 LoadEmbeddedPaletteFromRow(const u8 *pBlob, u32 row);
-extern void WriteBgGraphicTilemap_candidate(u32 bg, const u16 *pTilemap, u32 tileOffset, u32 palBank, s32 x, s32 y);
+extern void WriteBgGraphicTilemap(u32 bg, const u16 *pTilemap, u16 tileOffset, u16 palBank, s32 x, s32 y);
 // Copies a w x h rectangle of tiles from (srcX, srcY) of a loaded BG tilemap to (dstX, dstY) of the
 // given BG, adding tileOffset to the tile numbers and palBank to their palette.
 extern void CopyBgTilemapRect(u32 bg, const u16 *pTilemap, u16 tileOffset, u16 palBank, u32 srcX, u32 srcY,

@@ -85,6 +85,7 @@ void CopyBgTilemapRect(u32 bg, const u16 *pTilemap, u16 tileOffset, u16 palBank,
             pDest = (u16 *)((u32)pBytes & ~1);
             for (col = w; col != 0; col--)
             {
+                // BUG: tileOffset lands on the preserved low byte; it should be added before the shift.
                 if ((u32)pBytes & 1)
                     *pDest = *(u8 *)pDest | ((*pByteSrc << 8) + tileOffset);
                 else if (col == 1)

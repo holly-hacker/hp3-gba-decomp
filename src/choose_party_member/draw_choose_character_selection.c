@@ -7,10 +7,9 @@
 #include "text.h"
 #include "map.h"
 
-static inline void DrawPanel(u32 tileOffset)
+static inline void DrawPanel(u16 tileOffset)
 {
-    WriteBgGraphicTilemap_candidate(2, g_ChooseCharacterState.pBgTilemap, tileOffset, 0, 0,
-                                    g_dwChooseCharacterBgRow);
+    WriteBgGraphicTilemap(2, g_ChooseCharacterState.pBgTilemap, tileOffset, 0, 0, g_dwChooseCharacterBgRow);
 }
 
 static inline void PlaceOptionActor(s32 option)

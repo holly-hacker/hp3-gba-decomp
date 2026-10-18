@@ -6,7 +6,7 @@ const u16 *LoadGraphicBlob(u32 bg, const u8 *pBlob, u16 tileOffset, u16 palBank,
     const u16 *pTilemap = LoadGraphicBlobTiles(bg, pBlob, tileOffset);
 
     if (pTilemap != NULL)
-        WriteBgGraphicTilemap_candidate(bg, pTilemap, tileOffset, palBank, x, y);
+        WriteBgGraphicTilemap(bg, pTilemap, tileOffset, palBank, x, y);
 
     return pTilemap;
 }
