@@ -2258,26 +2258,9 @@ thumb-func 0x08046CA4 MarkRoomActorConsumed
 
 # Krawall, see docs/memory-map/krawall.md
 c-file-gcc3 0x08046D0C _ 3rd_party/krawall/general.c general
-c-file-gcc3 0x08046D2C 0x08046ED0 3rd_party/krawall/directsound.c directsound
-thumb-func 0x08046ED0 kramGetActiveChannels
-thumb-func 0x08046EF4 kramQualityMode
-thumb-func 0x08046F5C kramSetSFXVol
-thumb-func 0x08046F70 kramGetSFXVol
-thumb-func 0x08046F7C kramSetMasterVol
-thumb-func 0x08046FF0 kramStopSFXChannels
-thumb-func 0x0804701C kramHandleValid
-thumb-func 0x0804704C kramGetFreq
-thumb-func 0x08047064 kramGetVol
-thumb-func 0x08047078 kramGetPan
-thumb-func 0x08047090 kramGetPos
-thumb-func 0x080470AC kramSetMusicVol
-thumb-func 0x080470C0 kramSetSoundTimer
-thumb-func 0x080470E8 kramSetSoundTimerBPM
-thumb-func 0x08047130 kramPauseChannels
-thumb-func 0x08047168 kramUnpauseChannels
-thumb-func 0x0804718C kramStopChannels
-thumb-func 0x080471B0 kramResetChannels
-arm-func 0x080471FC mixRampOut
+c-file-gcc3 0x08046D2C _ 3rd_party/krawall/directsound.c directsound
+c-file-gcc3 0x08046ED0 _ 3rd_party/krawall/mixer.c mixer
+c-file-gcc3-arm 0x080471FC 0x080473B4 3rd_party/krawall/mixer.arm.c mixer_arm
 thumb-func 0x080473B4 pDataSet
 thumb-func 0x08047438 advanceRow
 thumb-func 0x08047558 processRow
@@ -2733,7 +2716,8 @@ dialog-text 0x08F37D1C _ data/text/da.json DialogTextDa
 graphics 0x08F4BEDC _ menus FamousWizardCards
 
 # Krawall read-only data
-c-section 0x08FA953C 0x08FA9568 general .rodata
+c-section 0x08FA953C _ general .rodata
+c-section 0x08FA9568 0x08FA95A8 mixer_arm .rodata
 c-file-gcc3 0x08FA985C 0x08FAA7CC 3rd_party/krawall/player_tables.c player_tables .rodata
 
 # Random data?
@@ -2750,20 +2734,14 @@ c-file 0x08FB0D94 _ src/store/shop_stock_lists.c g_apShopStockLists
 # Krawall code section, will be copied into IWRAM
 label 0x08FB0DB0 g_KrawallIwramRomImage
 c-section 0x08FB0DB0 _ directsound .iwram 0x03000000
-asm-file-cpp 0x08FB0DB4 0x08FB0E40 3rd_party/krawall/directsound_asm.S directsound_asm .iwram 0x03000004
-arm-func 0x08FB0E44 kramPlayExt_Rom
-arm-func 0x08FB109C kramPlay_Rom
-arm-func 0x08FB10D0 kramStop_Rom
-arm-func 0x08FB1198 kramSetFreq_Rom
-arm-func 0x08FB11E4 kramSetVol_Rom
-arm-func 0x08FB1264 kramSetPan_Rom
-arm-func 0x08FB1328 kramSetPos_Rom
-arm-func 0x08FB1378 kramActive_Rom
-asm-file-cpp 0x08FB13B4 0x08FB19F8 3rd_party/krawall/mixer_func.S mixer_func .iwram 0x03000604
-arm-func 0x08FB19F8 mixReal_Rom
-arm-func 0x08FB1E18 kramWorker_Rom
+asm-file-cpp 0x08FB0DB4 _ 3rd_party/krawall/directsound_asm.S directsound_asm .iwram 0x03000004
+c-section 0x08FB0E40 _ mixer_arm .iwram 0x03000090
+asm-file-cpp 0x08FB13B4 _ 3rd_party/krawall/mixer_func.S mixer_func .iwram 0x03000604
+c-file-gcc3-arm 0x08FB19F8 0x08FB2344 3rd_party/krawall/mixer_private.arm.c mixer_private .iwram 0x03000C48
 
 # Krawall data section, will be copied into EWRAM
 label 0x08FB2348 g_KrawallEwramRomImage
-c-section 0x08FB2348 0x08FB2BFC directsound .ewram 0x02000000
-c-section 0x08FB3180 0x08FB3980 mixer_func .ewram 0x02000E38
+c-section 0x08FB2348 _ directsound .ewram 0x02000000
+c-section 0x08FB2BFC _ mixer .ewram 0x020008B4
+c-section 0x08FB3180 _ mixer_func .ewram 0x02000E38
+c-section 0x08FB3980 0x08FB3988 mixer_private .ewram 0x02001638

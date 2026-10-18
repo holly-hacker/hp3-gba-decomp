@@ -11,6 +11,9 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License in COPYING for more details.
+ *
+ * Modified to match the code in Harry Potter and the Prisoner of Azkaban
+ * (Game Boy Advance); changes are marked HP3-GBA.
  */
 
 #ifndef __TYPES_H__
@@ -30,7 +33,7 @@ typedef unsigned int uint;
 
 #define EWRAM __attribute__((section(".ewram")))
 #define IWRAM __attribute__((section(".iwram")))
-#define IWRAM_CODE __attribute__((section (".iwram.text"),long_call))
+#define IWRAM_CODE __attribute__((section (".iwram"),long_call))	// HP3-GBA: upstream ".iwram.text"
 #define LONG_CALL __attribute__((long_call))
 
 #endif

@@ -139,6 +139,24 @@ def place_in_text(asm: str, src: str, keep_rodata: bool = False) -> str:
     return asm
 
 
+SECTION_FLAGS = re.compile(r'^(\s*\.section\s+([.\w]+)),"(\w*)"(?:,%\w+)?\s*$', re.M)
+
+
+def merge_section_flags(asm: str) -> str:
+    """Gives every switch to a section the union of the flags it is given.
+
+    Code and data placed in one named section (IWRAM_CODE and IWRAM) get
+    "ax" and "aw"; the original assembler accepted the change, today's
+    rejects it.
+    """
+    flags: dict[str, set[str]] = {}
+    for m in SECTION_FLAGS.finditer(asm):
+        flags.setdefault(m.group(2), set()).update(m.group(3))
+    return SECTION_FLAGS.sub(
+        lambda m: f'{m.group(1)},"{"".join(sorted(flags[m.group(2)]))}",%progbits',
+        asm)
+
+
 def compile_sectioned(src: str, out: str, prefix: str, tools: str,
                       directive: str) -> None:
     """Compiles (or, for a .S, preprocesses) a third-party source.
@@ -176,6 +194,7 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
         # The original assembler filled an .align inside code with zeros;
         # only the end of a section got nops. Today's fills both with nops.
         asm = re.sub(r"^(\s*\.align\s+\d+)\s*$", r"\1, 0", asm, flags=re.M)
+        asm = merge_section_flags(asm)
     place_in_text(asm, src, keep_rodata=True)
     padding = "".join(f"\t.section\t{name}\n\t.align\t2\n"
                       for name in section_names(asm) if name != ".bss")

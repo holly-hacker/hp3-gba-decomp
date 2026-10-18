@@ -21,19 +21,6 @@
 @ --- include/sound.h ---
 .set g_KrawallIwramStart,     0x03000000  @ IWRAM image kramInstall copies from ROM
 
-@ --- include/3rd_party/krawall.h ---
-@ Krawall IWRAM code at its runtime address; see docs/memory-map/krawall.md
-.set kramPlayExt,             0x03000094
-.set kramPlay,                0x030002EC
-.set kramStop,                0x03000320
-.set kramSetFreq,             0x030003E8
-.set kramSetVol,              0x03000434
-.set kramSetPan,              0x030004B4
-.set kramSetPos,              0x03000578
-.set kramActive,              0x030005C8
-.set mixReal,                 0x03000C48
-.set kramWorker,              0x03001068
-
 @ --- include/sound.h ---
 .set g_KrawallIwramEnd,       0x03001598  @ end of that image; ClearWorkRam zeroes from here
 

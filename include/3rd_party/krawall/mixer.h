@@ -243,7 +243,7 @@ void kramPauseChannels( int sfx, int slot );
 void kramUnpauseChannels( int slot );
 void kramStopChannels( int slot );
 
-void kramResetChannels( int sfx );	// resets vol&pan
+void kramResetChannels();	// resets vol&pan	// HP3-GBA: upstream ( int sfx ); resets vol only
 
 int kramActive( chandle c ) LONG_CALL;
 

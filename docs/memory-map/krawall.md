@@ -63,15 +63,15 @@ reaches the IWRAM functions through these stubs (see "Game-side use").
 |---|---|---|
 | `0x03000000` | `directsound.c` | `dsStereo` |
 | `0x03000004` | `directsound_asm.S` | `kradInterrupt`, the timer 1 handler |
-| `0x03000090` | `mixer.arm.c` | `volMaster[2]`, `hqMode`, `hqRamp`; then `kramPlayExt` (`0x03000094`), `kramPlay` (`0x030002EC`), `kramStop`, `kramSetFreq`, `kramSetVol`, `kramSetPan`, `kramSetPos`, `kramActive` |
+| `0x03000090` | `mixer.arm.c` | `volMaster[2]`, `hqMode`, `hqRamp`; then `kramPlayExt` (`0x03000094`), `kramPlay` (`0x030002EC`), `kramStop`, `kramSetFreq`, `kramSetVol`, `kramSetPan`, `kramSetPos`, `kramActive`, then `cidCounter` (`0x03000600`) |
 | `0x03000604` | `mixer_func.S` | `mixLeft` ... `mix16to8_patch`, `volSumLeft`/`volSumRight` |
 | `0x03000C48` | `mixer_private.arm.c` | `mixReal`, `kramWorker` (`0x03001068`), `mixBuffer` (`0x03001144`) |
 | `0x03001594` | `player.c` | `iidCounter` |
 
-`ram_symbols.<ver>.inc` names the functions of objects not yet built from
-source at their IWRAM addresses; the manifests label their ROM copies with
-a `_Rom` suffix. ROM address `X` runs at `0x03000000 + (X - 0x08FB0DB0)`
-(US).
+ROM address `X` runs at `0x03000000 + (X - 0x08FB0DB0)` (US).
+`IWRAM_CODE` and `IWRAM` share the `.iwram` section, so each object's
+IWRAM code and data are laid out in the order GCC emits them:
+initialised variables, functions, then uninitialised variables.
 
 `kradInterrupt` counts timer 1 interrupts in `dmaBlock`, restarts the
 DirectSound DMA, and on its first call reloads timer 1 with
@@ -113,13 +113,6 @@ against the ROM function of the same name).
 
 | Object | Section | US | JP |
 |---|---|---|---|
-| `mixer.c` | `.text` | `0x08046ED0`-`0x080471FC` | `0x08046DFC`-`0x08047128` |
-| | `.ewram` | `0x08FB2BFC`-`0x08FB3180` | `0x08F4608C`-`0x08F46610` |
-| `mixer.arm.c` | `.text` | `0x080471FC`-`0x080473B4` | `0x08047128`-`0x080472E0` |
-| | `.iwram` | `0x08FB0E40`-`0x08FB13B4` | `0x08F442D0`-`0x08F44844` |
-| | `.rodata` | `0x08FA9568`-`0x08FA95A8` | `0x08F3C9F8`-`0x08F3CA38` |
-| `mixer_private.arm.c` | `.iwram` | `0x08FB19F8`-`0x08FB2344` | `0x08F44E88`-`0x08F457D4` |
-| | `.ewram` | `0x08FB3980`-`0x08FB3988` | `0x08F46E10`-`0x08F46E18` |
 | `player.c` | `.text` | `0x080473B4`-`0x08049E3C` | `0x080472E0`-`0x08049D68` |
 | | `.iwram` | `0x08FB2344`-`0x08FB2348` | `0x08F457D4`-`0x08F457D8` |
 | | `.ewram` | `0x08FB3988`-`0x08FB4B40` | `0x08F46E18`-`0x08F47FD0` |
@@ -127,22 +120,6 @@ against the ROM function of the same name).
 
 What the comparison shows (US):
 
-- `mixer.c`: upstream matches except `kramResetChannels`,
-  `kramQualityMode` (tests `KRAM_QM_RAMP`, like upstream's commented-out
-  variant), `kramSetSFXVol` and `kramSetMusicVol` (no `kramResetChannels`
-  call). The ROM order is `kramGetActiveChannels`, `kramQualityMode`,
-  `kramSetSFXVol`, `kramGetSFXVol`, `kramSetMasterVol`,
-  `kramStopSFXChannels`, `kramHandleValid`, `kramGetFreq`, `kramGetVol`,
-  `kramGetPan`, `kramGetPos`, `kramSetMusicVol`, `kramSetSoundTimer`,
-  `kramSetSoundTimerBPM`, `kramPauseChannels`, `kramUnpauseChannels`,
-  `kramStopChannels`, `kramResetChannels`.
-- `mixer.arm.c`: `mixRampOut`, `mixPanTable`, `kramStop`, `kramSetFreq`,
-  `kramSetVol`, `kramSetPos` and `kramActive` match; `kramPlayExt`,
-  `kramPlay` (which follows `kramPlayExt` in the ROM) and `kramSetPan`
-  differ. The ROM's IWRAM data before the code is 4 bytes,
-  `80 80 00 00` (`volMaster`, `hqMode`, `hqRamp`); upstream initialises
-  `hqRamp` to 1 and puts `cidCounter` after it.
-- `mixer_private.arm.c`: `mixReal` matches; `kramWorker` is close.
 - `player.c`: no function matches; most are 88-97% alike, consistent
   with shifted structure offsets. The function order differs widely.
 

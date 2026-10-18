@@ -11,6 +11,9 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License in COPYING for more details.
+ *
+ * Modified to match the code in Harry Potter and the Prisoner of Azkaban
+ * (Game Boy Advance); changes are marked HP3-GBA.
  */
 
 #ifndef __MTYPES_H__
@@ -20,7 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct __attribute__ ((packed)) {
+typedef struct {	// HP3-GBA: upstream __attribute__ ((packed))
 	unsigned long 	loopLength;
 	unsigned char*	end;
 	unsigned long	c2Freq;
