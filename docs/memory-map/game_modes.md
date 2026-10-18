@@ -137,7 +137,10 @@ PROVEN from US decompiles and ROM tables.
   (`StatusEquipSlotToCharacter`/`StatusEquipCharacterToSlot`); left/right
   wrap and skip absent members. A stores the chosen `FighterType` (0 Harry,
   1 Hermione, 2 Ron; names at `0x0806944C`) in `g_dwStatusEquipCharacter`,
-  which 0x0E, 0x0F and `ItemUseScreen` read.
+  which 0x0E, 0x0F and `ItemUseScreen` read. Each present member gets a
+  stats panel (`DrawStatusEquipCharacterStats`: level, Exp, Next (omitted
+  from displayed level 100), SP and MP). `StatusEquipSlotToColumn` centres
+  a lone member and puts a pair in the outer columns.
 - `StatusEquipSlotSelect` (0x0E): the chosen member's stats panel
   (`DrawStatusEquipStatsPanel`) and a 2x3 grid of equipment slots,
   `g_aStatusEquipSlots` (`0x0806B2FC`, 6 `StatusEquipSlot` entries of 16

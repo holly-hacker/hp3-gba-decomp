@@ -46,7 +46,7 @@ void UpdateStatusEquipCharacterSelect(void)
 
             if (slot != previousSlot)
                 PlaySoundById(0);
-            sub_08035D98(slot);
+            SetStatusEquipCharacterSlot(slot);
         }
         else if (g_wKeysPressed & KeyRight)
         {
@@ -62,7 +62,7 @@ void UpdateStatusEquipCharacterSelect(void)
 
             if (slot != previousSlot)
                 PlaySoundById(0);
-            sub_08035D98(slot);
+            SetStatusEquipCharacterSlot(slot);
         }
         break;
 
@@ -70,7 +70,7 @@ void UpdateStatusEquipCharacterSelect(void)
         TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
-            sub_08035DC0();
+            CloseStatusEquipCharacterSelectScreen();
             g_GameModeStackContext.dwModeState = 4;
         }
         break;

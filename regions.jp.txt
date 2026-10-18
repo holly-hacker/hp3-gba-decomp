@@ -1415,19 +1415,19 @@ thumb-func 0x08035564 sub_08035520
 c-file 0x08035584 0x080356A8 src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
 thumb-func 0x080356A8 sub_08035664
 thumb-func 0x08035768 sub_08035724
-c-file 0x080357A8 0x080358DC src/pscreen_character/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
-thumb-func 0x080358DC sub_08035898
-thumb-func 0x08035A78 sub_08035A34
+c-file 0x080357A8 _ src/pscreen_character/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
+c-file 0x080358DC _ src/pscreen_character/draw_status_equip_character_stats.c DrawStatusEquipCharacterStats
+c-file 0x08035A78 _ src/pscreen_character/begin_status_equip_character_select_screen.c BeginStatusEquipCharacterSelectScreen
 c-file 0x08035D4C _ src/pscreen_character/initialize_status_equip_character_select.c InitializeStatusEquipCharacterSelect
 c-file 0x08035D64 _ src/pscreen_character/initialize_status_equip_character_select_last_cursor.c InitializeStatusEquipCharacterSelectLastCursor
-c-file 0x08035DA8 0x08035DAC src/pscreen_character/exit_status_equip_character_select.c ExitStatusEquipCharacterSelect
-thumb-func 0x08035DAC sub_08035D68
-thumb-func 0x08035DB0 sub_08035D6C
-thumb-func 0x08035DDC sub_08035D98
-thumb-func 0x08035E04 sub_08035DC0
-thumb-func 0x08035E30 StatusEquipSlotToCharacter
-thumb-func 0x08035E60 StatusEquipCharacterToSlot
-thumb-func 0x08035E80 sub_08035E3C
+c-file 0x08035DA8 _ src/pscreen_character/exit_status_equip_character_select.c ExitStatusEquipCharacterSelect
+c-file 0x08035DAC _ src/pscreen_character/noop_status_equip_character_select_drawn.c NoopStatusEquipCharacterSelectDrawn
+c-file 0x08035DB0 _ src/pscreen_character/tick_status_equip_character_cursor.c TickStatusEquipCharacterCursor
+c-file 0x08035DDC _ src/pscreen_character/set_status_equip_character_slot.c SetStatusEquipCharacterSlot
+c-file 0x08035E04 _ src/pscreen_character/close_status_equip_character_select_screen.c CloseStatusEquipCharacterSelectScreen
+c-file 0x08035E30 _ src/pscreen_character/status_equip_slot_to_character.c StatusEquipSlotToCharacter
+c-file 0x08035E60 _ src/pscreen_character/status_equip_character_to_slot.c StatusEquipCharacterToSlot
+c-file 0x08035E80 _ src/pscreen_character/status_equip_slot_to_column.c StatusEquipSlotToColumn
 c-file 0x08035EF4 _ src/pscreen_connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
 c-file 0x08035FC0 _ src/pscreen_connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
 c-file 0x0803607C _ src/pscreen_connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
@@ -1548,7 +1548,7 @@ thumb-func 0x0803A144 DrawStatusEquipStatsPanel
 thumb-func 0x0803A400 sub_0803A3A0
 c-file 0x0803A50C _ src/pscreen_status_equip/initialize_status_equip_slot_select.c InitializeStatusEquipSlotSelect
 c-file 0x0803A584 0x0803A588 src/pscreen_status_equip/exit_status_equip_slot_select.c ExitStatusEquipSlotSelect
-thumb-func 0x0803A588 sub_0803A528
+thumb-func 0x0803A588 ResetStatusEquipSlot
 thumb-func 0x0803A594 sub_0803A534
 thumb-func 0x0803A5C8 TickStatusEquipSlotCursor
 thumb-func 0x0803A5F0 sub_0803A590
@@ -2282,6 +2282,7 @@ c-file 0x08069110 0x08069120 src/pouring_minigame/serve_pumpkin_juice.globals.c 
 c-file 0x080692B4 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x0806933C _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x08069358 0x08069370 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
+c-file 0x080693E4 _ src/pscreen_character/status_equip_character_select.globals.c g_dwStatusEquipCharacterSelectBg3Control
 c-file 0x080693E8 _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x08069498 _ src/pscreen_folio/folios.globals.c g_aFoliosEntries
 c-file 0x080694F4 _ src/pscreen_folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control

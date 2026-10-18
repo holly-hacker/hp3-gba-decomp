@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "modes.h"
+#include "actor.h"
 
 // Pause menu Status/Equip character select, game modes 0x0C/0x0D; see
 // docs/memory-map/game_modes.md.
@@ -19,12 +20,21 @@ extern StatusEquipCharacterSelectState g_StatusEquipCharacterSelect;  // 0x03005
 extern u8 g_bStatusEquipCharacterSlot;  // 0x030052B8: cursor slot (0-2)
 extern u32 g_dwStatusEquipCharacter;    // 0x030052A0: FighterType chosen in character select
 
+extern const u32 g_dwStatusEquipCharacterSelectBg3Control;  // 0x08069458: BG3, the character panels
+
 extern void UpdateStatusEquipCharacterSelect(void);
 extern void InitializeStatusEquipCharacterSelect(void);
 extern void InitializeStatusEquipCharacterSelectLastCursor(void);
 extern void ExitStatusEquipCharacterSelect(void);
-extern void sub_08035A34(void);
-extern void sub_08035D98(u32 slot);
-extern void sub_08035DC0(void);
+// Draws a slot's level, Exp, Next, SP and MP rows; the color argument is unused.
+extern void DrawStatusEquipCharacterStats(u32 slot, u32 color);
+extern void BeginStatusEquipCharacterSelectScreen(void);
+extern void NoopStatusEquipCharacterSelectDrawn(void);
+extern void TickStatusEquipCharacterCursor(Actor *pCursor);
+// Moves the cursor to a slot and redraws the two affected stat panels.
+extern void SetStatusEquipCharacterSlot(u32 slot);
+extern void CloseStatusEquipCharacterSelectScreen(void);
 extern u8 StatusEquipSlotToCharacter(u8 slot);
 extern u8 StatusEquipCharacterToSlot(u32 character);
+// Screen column (0-2) of a slot's panel: one member is centred, two use the outer columns.
+extern u8 StatusEquipSlotToColumn(u8 slot);
