@@ -7,7 +7,8 @@ wraps into the region's object.
 
 The compiler profile is picked by directory (src/libc/ uses old_agbcc
 without interworking; other sources use agbcc with interworking).
-The manifest directive selects -O2 (c-file) or -O1 (c-file-O1).
+The manifest directive selects -O2 (c-file) or -O1 (c-file-O1), or
+agbcc_arm for ARM-mode code (c-file-arm).
 
 The cpp output is cheap to produce and determines everything else, so it
 keys the build cache (tools/buildcache.py): unchanged sources and headers
@@ -24,6 +25,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import buildcache  # noqa: E402
+from manifest import C_FILE_DIRECTIVES  # noqa: E402
 
 def agbcc_prefix() -> str:
     exe = shutil.which("agbcc")
@@ -33,11 +35,13 @@ def agbcc_prefix() -> str:
 
 
 def profile(src: str, prefix: str, o1: bool = False,
-            ver: str | None = None) -> tuple[str, list[str], list[str]]:
+            ver: str | None = None,
+            arm: bool = False) -> tuple[str, list[str], list[str]]:
     """Returns (cc1, cppflags, cflags) for a source file.
 
     ver defines VERSION_US or VERSION_JP for game code whose source differs
-    between the two ROMs.
+    between the two ROMs. arm selects agbcc_arm, which lacks -fhex-asm and
+    needs -fomit-frame-pointer to drop the APCS frame the ROM doesn't have.
     """
     inc = os.path.join(prefix, "include")
     optimization = "-O1" if o1 else "-O2"
@@ -49,10 +53,18 @@ def profile(src: str, prefix: str, o1: bool = False,
              "-D__GNUC__", "-DINTERNAL_NEWLIB", "-D__USER_LABEL_PREFIX__="],
             [optimization, "-fno-builtin"],
         )
+    cppflags = ["-I", "include", "-I", inc, "-nostdinc", "-undef",
+                "-std=gnu89", *([f"-DVERSION_{ver.upper()}"] if ver else [])]
+    if arm:
+        return (
+            os.path.join(prefix, "bin", "agbcc_arm"),
+            cppflags,
+            [optimization, "-mthumb-interwork", "-fomit-frame-pointer",
+             "-Wimplicit", "-Wparentheses", "-Werror", "-fno-builtin"],
+        )
     return (
         os.path.join(prefix, "bin", "agbcc"),
-        ["-I", "include", "-I", inc, "-nostdinc", "-undef", "-std=gnu89",
-         *([f"-DVERSION_{ver.upper()}"] if ver else [])],
+        cppflags,
         # -fno-builtin: without it, agbcc treats any declaration/definition
         # of a reserved name (memset, ...) as conflicting with its own
         # builtin prototype. Applies to every game-code file, not just the
@@ -89,8 +101,9 @@ def place_in_text(asm: str, src: str, keep_rodata: bool = False) -> str:
 
 
 def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
-                o1: bool = False, keep_rodata: bool = False) -> None:
-    cc1, cppflags, cflags = profile(src, prefix, o1, ver)
+                o1: bool = False, keep_rodata: bool = False,
+                arm: bool = False) -> None:
+    cc1, cppflags, cflags = profile(src, prefix, o1, ver, arm)
     pre = subprocess.run(["cpp", *cppflags, src],
                          capture_output=True, text=True)
     if pre.returncode:
@@ -99,21 +112,24 @@ def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
                             keep_rodata, pre.stdout)
     asm = buildcache.load("c", key)
     if asm is None:
-        asm = compile_preprocessed(src, cc1, cflags, pre.stdout, keep_rodata)
+        asm = compile_preprocessed(src, cc1, cflags, pre.stdout, keep_rodata,
+                                   arm)
         buildcache.store("c", key, asm)
     buildcache.write_if_changed(out, asm)
 
 
 def compile_preprocessed(src: str, cc1: str, cflags: list[str], pre: str,
-                         keep_rodata: bool) -> bytes:
+                         keep_rodata: bool, arm: bool = False) -> bytes:
     cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
                         input=pre, capture_output=True, text=True)
     if cc.returncode:
         sys.exit(f"{os.path.basename(cc1)} failed on {src}:\n{cc.stderr}")
     # The region wrapper is .syntax unified; agbcc emits divided syntax.
+    # agbcc_arm doesn't state its instruction set, so .arm does.
     # The trailing .align pads to the 4-byte boundary with explicit zeros,
     # which is what the ROM has.
-    return (".syntax divided\n" + place_in_text(cc.stdout, src, keep_rodata)
+    return (".syntax divided\n" + (".arm\n" if arm else "")
+            + place_in_text(cc.stdout, src, keep_rodata)
             + "\t.align\t2, 0\n" + ".syntax unified\n").encode()
 
 
@@ -128,7 +144,7 @@ def main() -> None:
         for line in [raw.split("#", 1)[0].strip()]
         if line
     ]
-    rows = [parts for parts in lines if parts[0] in {"c-file", "c-file-O1"}]
+    rows = [parts for parts in lines if parts[0] in C_FILE_DIRECTIVES]
     separate_rodata = {parts[3] for parts in lines if parts[0] == "c-rodata"}
     if not rows:
         print(f"no c-file rows in regions.{ver}.txt -- nothing to compile")
@@ -140,7 +156,8 @@ def main() -> None:
         directive, _, _, src, name = row
         compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver, tools,
                     o1=directive == "c-file-O1",
-                    keep_rodata=name in separate_rodata)
+                    keep_rodata=name in separate_rodata,
+                    arm=directive == "c-file-arm")
 
     with ThreadPoolExecutor() as pool:
         list(pool.map(compile_row, rows))

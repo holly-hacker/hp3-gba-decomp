@@ -99,7 +99,7 @@ its `c-file` manifest row, and confirm with the production ROM comparison.
 region.
 
 The compiler is GCC `2.9-arm-000512` (agbcc); game C is Thumb with
-interworking. It cannot build ARM C, so keep ARM functions in assembly. Krawall
+interworking. ARM-mode C uses `agbcc_arm` via `c-file-arm` rows. Krawall
 source must not be vendored without resolving its LGPL licensing; see
 `docs/memory-map/krawall.md` and `docs/formats/krawall.md`.
 

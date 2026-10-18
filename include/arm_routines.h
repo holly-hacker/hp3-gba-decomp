@@ -9,7 +9,7 @@ struct Actor;
 
 // Actor passes run by TickActorList; copied by InitActorPool.
 void CheckActorCollisions(void);
-void SortActorsByDepth(void);
+void SortActorsByDepth(struct Actor **actors, u32 count);
 
 // LZ/RLE resource codec; copied by InstallIwramDecompressCodecs.
 void DecompressLzRle(const void *src, void *dst, u32 *pSize);

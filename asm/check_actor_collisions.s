@@ -159,9 +159,9 @@ CheckActorCollisions:              @ 0x08005F10
 	bx lr
 	arm_func_end CheckActorCollisions
 
-	@ Unexplained trailing word before the next region (DecompressLzRle at
-	@ 0x08006108); identical bytes recur before SortActorsByDepth's own
-	@ next region. Ghidra's own function-boundary analysis excludes it from
-	@ CheckActorCollisions. Kept as raw data rather than reinterpreted as
-	@ a real instruction -- purpose unconfirmed.
+	@ Lone `bx lr` before the next region (DecompressLzRle at 0x08006108),
+	@ excluded from InitActorPool's IWRAM copy. SortActorsByDepth is
+	@ followed by the same word, which compiles from an empty function
+	@ (SortActorsByDepthEnd_candidate). Kept as raw data until this
+	@ routine is C.
 	.4byte 0xE12FFF1E              @ 0x08006104

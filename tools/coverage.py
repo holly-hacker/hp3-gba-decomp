@@ -2,7 +2,8 @@
 """Report how much of the ROM the manifest has claimed, by area and kind.
 
 Reads regions.<ver>.txt and buckets every region-bearing row into:
-  c-file  -- compiled C (c-file, c-file-O1 and c-rodata directives)
+  c-file  -- compiled C (c-file, c-file-O1, c-file-arm and c-rodata
+            directives)
   asm-file -- committed hand assembly
   data    -- extracted-asset directives (krawall, dialog-text, ...)
   raw     -- unclaimed, filled from the baserom with .incbin
@@ -18,7 +19,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import rom_layout  # noqa: E402
-from manifest import read_rows  # noqa: E402
+from manifest import C_FILE_DIRECTIVES, read_rows  # noqa: E402
 
 KINDS = ["c-file", "asm-file", "data", "raw"]
 COLUMNS = ["c-file", "asm-file", "data", "matched", "raw"]
@@ -26,7 +27,7 @@ NON_REGION = {"label", "thumb-func", "arm-func"}
 
 
 def kind_of(directive: str) -> str:
-    if directive in {"c-file", "c-file-O1", "c-rodata"}:
+    if directive in C_FILE_DIRECTIVES or directive == "c-rodata":
         return "c-file"
     if directive == "asm-file":
         return "asm-file"

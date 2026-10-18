@@ -21,6 +21,10 @@ safe. Two flag profiles, by directory:
 A `c-file-O1` row uses the same compiler and flags with `-O1` in place of
 `-O2`. The EEPROM driver (`src/eeprom/`) matches only under `-O1`.
 
+A `c-file-arm` row compiles ARM-mode code with `agbcc_arm` and
+`-O2 -mthumb-interwork -fomit-frame-pointer -Werror` (no `-fhex-asm`,
+which it lacks).
+
 A C file's `.rodata` is normally folded into its own region. A
 `c-rodata <start> <end> <name>` row instead places the `.rodata` of the
 C row named `<name>` at its own address, for an object whose read-only
@@ -94,6 +98,6 @@ regions read the hex column; the mnemonics are meaningless there.
 
 Good first candidates are small, leaf (no calls out), free of
 data-symbol references, and already extracted to `asm/` so there is a
-byte-exact reference to diff against. Anything ARM-mode is out: the SDK's
-ARM compiler does not build on a modern host, so that code stays as
-assembly.
+byte-exact reference to diff against. ARM-mode code uses a `c-file-arm`
+row; the `tools.matching` candidate workflow supports Thumb only, so
+compare ARM candidates by hand.

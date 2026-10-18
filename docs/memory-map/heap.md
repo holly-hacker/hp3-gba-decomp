@@ -187,6 +187,7 @@ on `g_GameModeStackContext.dwCurrentGameMode == Overworld`, it calls
 each actor's callback for the overlapping box slot with the other
 actor as the argument.
 
-Both are kept as assembly (`asm/check_actor_collisions.s`,
-`asm/sort_actors_by_depth.s`): the available compilers are Thumb-only (see
-"ARM-mode code" in [`../compiler.md`](../compiler.md)).
+`SortActorsByDepth` is matched C (`src/arm_routines/sort_actors_by_depth.c`,
+built with `agbcc_arm`; see "ARM-mode code" in
+[`../compiler.md`](../compiler.md)). `CheckActorCollisions` is still
+assembly (`asm/check_actor_collisions.s`).

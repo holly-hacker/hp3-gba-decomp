@@ -36,11 +36,11 @@ DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 # build/<ver>/graphics/<name>.s.
 GRAPHICS_DIRECTIVE = "graphics"
 
-# c-file and c-file-O1 rows name a .c under src/, compiled to assembly by
-# tools/c/compile_c.py (the `compile-c` recipe, which must run before
-# `gen-link`) with the compiler the ROM was built with -- see
+# c-file, c-file-O1 and c-file-arm rows name a .c under src/, compiled to
+# assembly by tools/c/compile_c.py (the `compile-c` recipe, which must run
+# before `gen-link`) with the compiler the ROM was built with -- see
 # docs/compiler.md.
-C_FILE_DIRECTIVES = {"c-file", "c-file-O1"}
+C_FILE_DIRECTIVES = {"c-file", "c-file-O1", "c-file-arm"}
 
 # c-rodata rows place the .rodata of the c-file/c-file-O1 row named <name>
 # at their own address, for a C object whose read-only data the ROM keeps

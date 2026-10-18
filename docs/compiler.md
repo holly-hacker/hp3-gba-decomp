@@ -72,23 +72,20 @@ work, #0x7` / `tst` / `beq` guard that GCC trunk added in r35888
 merged-arm-thumb-backend merge (2000-04-08). No FSF release ever shipped
 that window — 3.0 already carries the fix.
 
-## ARM-mode code — UNCONFIRMED
+## ARM-mode code — PROVEN
 
-Compiled ARM-mode C exists (e.g. `0x08FB11E4` in the Krawall region) and
-is shaped like interworking old-GCC output, but is not byte-verified.
-The SDK's ARM compiler is a separate binary; pret's `gcc_arm/` does not
-build on a modern x86_64 host (`make cc1` fails with `FATAL_EXIT_CODE`
-undeclared in `rtl.c`), so it has not been tested against.
+Game ARM code is built with the SDK's separate ARM compiler, packaged as
+pret/agbcc's `gcc_arm/` and provided by `nix develop` as `agbcc_arm`
+(same `2.9-arm-000512` version string). Flags: `-O2 -mthumb-interwork
+-fomit-frame-pointer`; without `-fomit-frame-pointer` it emits an APCS
+frame the ROM lacks. `SortActorsByDepth` (`0x08006440`) matches
+byte-for-byte under this profile (`c-file-arm`, see [`c.md`](c.md)).
 
-Confirmed practically: the `agbcc`/`old_agbcc` binaries `nix develop` provides
-are Thumb-only regardless of flags -- `-O2 -mthumb-interwork` still emits
-`.code 16`/`.thumb_func` output, and `-marm` is rejected outright
-(`agbcc: Invalid option 'arm'`). `SortActorsByDepth`
-(`0x08006440`) and `CheckActorCollisions` (`0x08005F10`), both
-confirmed ARM-mode by disassembly (see `docs/memory-map/heap.md`), can't be
-matched via `match-function` until `gcc_arm` (or an equivalent) builds in
-this dev shell -- that's a toolchain project of its own, not a per-function
-matching difficulty.
+`agbcc` and `old_agbcc` are Thumb-only: `-marm` is rejected
+(`agbcc: Invalid option 'arm'`).
+
+Other compiled-looking ARM code (e.g. `0x08FB11E4` in the Krawall region)
+is not yet tested against this profile.
 
 The ARM routines at `0x0800027C`, `0x080002A4` and `0x080002E0` are
 hand-written assembly, not compiler runtime: `0x080002E0` is a 32-way

@@ -175,7 +175,7 @@ asm-file 0x08005F10 _ asm/check_actor_collisions.s  CheckActorCollisions
 asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
 asm-file 0x080063B4 _ asm/find_free_obj_tile_run.s    FindFreeObjTileRun
-asm-file 0x08006440 _ asm/sort_actors_by_depth.s  SortActorsByDepth
+c-file-arm 0x08006440 _ src/arm_routines/sort_actors_by_depth.c SortActorsByDepth
 c-file 0x08006508 _ src/background/load_bg_graphic_tiles.c LoadBgGraphicTiles
 c-file 0x080065D4 _ src/background/load_graphic_blob_tiles.c LoadGraphicBlobTiles
 c-file 0x080066BC _ src/background/get_graphic_blob_tile_load.c GetGraphicBlobTileLoad

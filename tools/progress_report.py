@@ -9,15 +9,15 @@ Areas and code blocks come from tools/rom_layout.json. Each code block is
 one unit, and its functions are the manifest's function rows and region
 starts plus the seeds in functions.<ver>.cfg. A function runs to the next
 function start or region boundary; it is matched when it lies in compiled C
-(c-file, c-file-O1) or committed assembly (asm-file), which in the code
-areas is ARM code, the ROM header or library assembly. Code bytes are
+(c-file, c-file-O1, c-file-arm) or committed assembly (asm-file), which in
+the code areas is ARM code, the ROM header or library assembly. Code bytes are
 matched, and complete (linked from source), on the same terms; a block is a
 complete unit when all of it is.
 
 In the data areas, units are the manifest's region rows plus one
 auto-generated unit per unclaimed gap. A data unit counts as matched (and
-complete) when it is compiled C (c-file, c-file-O1, c-rodata), an asm-file
-row or an extracted asset directive.
+complete) when it is compiled C (c-file, c-file-O1, c-file-arm, c-rodata), an
+asm-file row or an extracted asset directive.
 
 Progress categories: a code block's own category (`library` or
 `game`); for data, `library` in the Krawall data area and `game` elsewhere.
