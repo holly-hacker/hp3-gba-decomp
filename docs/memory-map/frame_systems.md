@@ -45,8 +45,8 @@ function. Calls, in order:
   buffer with one DMA instead of per tile through `FindBgTileCacheEntry`.
   `RegisterBgTileAnimation` registers an entry (flags `= arg | 7`),
   `StopAllBgTileAnimations` (`0x0800A83C`) clears bit 0 of every entry,
-  `PauseBgTileAnimations`/`ResumeBgTileAnimations` clear/set bit 1 of every entry. A routine at
-  `0x0800A874` that sets bit 0 on every entry has no callers.
+  `PauseBgTileAnimations`/`ResumeBgTileAnimations` clear/set bit 1 of every entry.
+  `StartAllBgTileAnimations` (`0x0800A874`) sets bit 0 of every entry and has no callers.
 - **`TickOverworldBeforeActors_candidate`**: three calls. `TickCameraFocus_candidate`
   (`0x0800A03C`, JP `0x0800A03C`) runs slot 0's camera focus and any scripted camera
   effect. `UpdateOverworldCamera_candidate` (`0x0803DA4C`, JP `0x0803DAB4`) turns the

@@ -17,7 +17,7 @@ typedef struct BgTileAnimFrame {
 #define BG_TILE_ANIMATION(frameCount) struct {                       \
     u8 bFlags;                                                        \
     u8 bFrameCount;                                                   \
-    u16 wUnk2;            /* copied into the animation's entry */     \
+    u16 wTileOffset;      /* first tile in the character block */    \
     u32 dwBufferSize;     /* bytes allocated for the decoded tiles */ \
     BgTileAnimFrame aFrames[frameCount];                              \
 }
@@ -26,7 +26,7 @@ typedef struct BgTileAnimFrame {
 typedef struct BgTileAnimHeader {
     u8 bFlags;
     u8 bFrameCount;
-    u16 wUnk2;
+    u16 wTileOffset;
     u32 dwBufferSize;
 } BgTileAnimHeader;
 
@@ -53,9 +53,11 @@ typedef BG_TILE_ANIMATION(16) BgTileAnimation16;
 typedef BG_TILE_ANIMATION(64) BgTileAnimation64;
 typedef BG_TILE_ANIMATION(128) BgTileAnimation128;
 
-extern void RegisterBgTileAnimation(const void *pTable, const void *pBgControls, u32 count);
+extern void RegisterBgTileAnimation(const void *pTable, const void *pBgControls, u32 flags);
 extern void TickBgTileAnimations(void);
 extern void CommitBgTileAnimations(void);  // run from the vblank callback
+extern void StopAllBgTileAnimations(void);   // clears bit 0 (active) of every BG tile animation
+extern void StartAllBgTileAnimations(void);  // sets bit 0 of every BG tile animation
 extern void PauseBgTileAnimations(void);   // clears bit 1 (running) of every BG tile animation
 extern void ResumeBgTileAnimations(void);  // sets bit 1 of every BG tile animation
 extern void FreeBgTileAnimations(void);
