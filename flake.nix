@@ -95,8 +95,8 @@
           '';
         };
 
-        # The compiler the ROM was built with (docs/compiler.md). agbcc_arm
-        # isn't built -- it doesn't configure on a modern host.
+        # The compiler the ROM was built with (docs/compiler.md), plus
+        # agbcc_arm for ARM-mode C.
         agbcc = pkgs.stdenv.mkDerivation {
           pname = "agbcc";
           version = "unstable-2026-01-20";
@@ -115,6 +115,8 @@
             make -C gcc clean
             make -C gcc -j1
             mv gcc/agbcc .
+            (cd gcc_arm && ./configure --target=arm-elf --host=i386-linux-gnu && make cc1)
+            mv gcc_arm/cc1 agbcc_arm
             make -C libgcc -j$NIX_BUILD_CORES
             make -C libc -j$NIX_BUILD_CORES
             runHook postBuild
@@ -123,7 +125,7 @@
           installPhase = ''
             runHook preInstall
             mkdir -p $out/bin $out/lib
-            cp agbcc old_agbcc $out/bin/
+            cp agbcc old_agbcc agbcc_arm $out/bin/
             cp libgcc/libgcc.a libc/libc.a $out/lib/
             cp -R libc/include $out/include
             cp ginclude/* $out/include/
