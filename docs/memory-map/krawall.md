@@ -19,7 +19,7 @@ both ROMs:
 $Id: Krawall $Date: 2003/09/01 06:51:01 $
 ```
 
-- US (`baserom.us.gba`): file offset `0xFA9541` (ROM address `0x08FA9541`)
+- US (`baserom.us.gba`): file offset `0xFA953C` (ROM address `0x08FA953C`)
 - JP (`baserom.jp.gba`): file offset `0xF3C9CC` (ROM address `0x08F3C9CC`)
 
 Identical string, identical date, in both versions — confirms a single
@@ -36,12 +36,9 @@ of a real linked data structure, not editor debris.
 
 ### Pointer table referencing the version blob
 
-Three literal-pool references to the region right after the version string
-were found (pointing at `0x08FA95A8`, offset `+0x67` from the string start):
-
-- `0x08047994` and `0x08047A40` — both inside the same function-pair
-  described below.
-- `0x00FB1E10` — a third reference elsewhere in the ROM, not yet chased.
+Two literal-pool references point at `0x08FA95A8` (`effects[]`, offset
+`+0x6C` from the string start), at `0x08047994` and `0x08047A40`, both inside
+the function pair described below. Nothing references the string itself.
 
 ### Likely driver API call site
 
@@ -292,8 +289,9 @@ targets):
    populated entries confirmed by direct reads (some `tick`-only, some with
    both `tick` and `init` set, `flags` observed as 0 or 1), consistent with
    one entry per XM effect letter (`0`–`9`, `A`–`Z`, plus volume-column
-   effects). The table's exact full extent (there's more populated data
-   past `0x08FA97F0`) hasn't been walked to a confirmed terminator yet.
+   effects). It is `effects[]`, 51 entries from `0x08FA95A8` to
+   `0x08FA980C` (entry 0 all-zero), followed by `effectsVC[]`; see
+   "Read-only data layout".
 
    All table entries store the function pointer with the Thumb bit set
    (odd address, BX-style) — the real function start is `addr & ~1`. (Caught
@@ -431,6 +429,34 @@ eff_portanote` into the effect-column function above -- a real,
 gbadisasm-verified symbolic cross-reference between the two tables, not
 just matching shape. About as strong a confirmation of both names as is
 possible without the original source.
+
+## Read-only data layout, `0x08FA953C`-`0x08FAA7D0` (US) [PROVEN]
+
+Between `FamousWizardCards` and the EEPROM library's `.rodata`. JP has the same
+layout at `0x08F3C9CC`; only the function-pointer tables (`mixPanTable`,
+`effects[]`, `effectsVC[]`) differ.
+
+| US range | Contents |
+|---|---|
+| `0x08FA953C`-`0x08FA9568` | `$Id` string, NUL, 2 padding bytes; unreferenced |
+| `0x08FA9568`-`0x08FA95A8` | `mixPanTable[16]` |
+| `0x08FA95A8`-`0x08FA980C` | `effects[51]`, `{func1, func2, inbet1}` |
+| `0x08FA980C`-`0x08FA985C` | `effectsVC[10]`, `{func, inbet}` |
+| `0x08FA985C`-`0x08FA98DC` | `table_sine[64]` (s16) |
+| `0x08FA98DC`-`0x08FA995C` | `table_ramp[64]` (s16) |
+| `0x08FA995C`-`0x08FA99DC` | `table_square[64]` (s16) |
+| `0x08FA99DC`-`0x08FA9A5C` | `table_rand[64]` (s16) |
+| `0x08FA9A5C`-`0x08FA9B4C` | `table_periods[120]` (u16) |
+| `0x08FA9B4C`-`0x08FA9BCC` | `table_finetune[64]` (u16) |
+| `0x08FA9BCC`-`0x08FAA7CC` | `table_linear[768]` (u32) |
+| `0x08FAA7CC`-`0x08FAA7D0` | `0xFFFFFFFF`; unreferenced, owner unknown |
+
+The seven `table_*` arrays are byte-identical to public Krawall's
+`lib/player_tables.c`, in its order. `eff_wave_vibr` reads all four waveforms;
+`krapPlay` and `sub_08049374` also read `table_sine`. `eff_portanote` and
+`sub_08049398` read `table_periods`, `sub_08049398` reads `table_finetune`,
+and `sub_080481B8`, `eff_arpeggio` and `sub_080493FC` read `table_linear`. `mixPanTable` is referenced only from the
+IWRAM pointer table at `0x08FB1E10`.
 
 ## `KramChannel` field offsets, from reading all 51 handlers [STRUCTURAL MATCH]
 
