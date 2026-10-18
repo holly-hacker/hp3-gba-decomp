@@ -2,6 +2,7 @@
 #include "pscreen_character.h"
 #include "pscreen_equip.h"
 #include "items.h"
+#include "items_list.h"
 #include "constants/items.h"
 
 u32 EquipStatusEquipItemSelection(void)

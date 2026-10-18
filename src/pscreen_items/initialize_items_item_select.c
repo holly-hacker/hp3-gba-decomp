@@ -5,7 +5,7 @@
 #include "font.h"
 #include "text.h"
 #include "default_menu.h"
-#include "items.h"
+#include "items_list.h"
 
 void InitializeItemsItemSelect(void)
 {

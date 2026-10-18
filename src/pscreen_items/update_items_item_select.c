@@ -5,6 +5,7 @@
 #include "input.h"
 #include "pscreen_items.h"
 #include "items.h"
+#include "items_list.h"
 #include "pscreen_character.h"
 #include "screen_transitions.h"
 

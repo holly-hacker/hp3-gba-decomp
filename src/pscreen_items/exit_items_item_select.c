@@ -1,7 +1,7 @@
 #include "background.h"
 #include "pscreen_items.h"
 #include "actor.h"
-#include "items.h"
+#include "items_list.h"
 
 void ExitItemsItemSelect(void)
 {

@@ -343,6 +343,11 @@
 @ --- include/items.h ---
 .set g_ItemInventory,                     0x030037B0  @ ItemInventory: item counts and equipped items, see include/game/items.h
 
+@ --- include/items_list.h ---
+.set g_ItemList,                         0x03003848  @ ItemListState: the scrolling item list
+.set g_bItemListScroll,                  0x03003A48  @ s8: index of the item on the top row
+.set g_bItemListCursorRow,               0x03003A49  @ s8: on-screen cursor row
+
 @ --- include/landmarks.h ---
 .set g_dwUnusedHogwartsMapShownBg,           0x03003A50  @ u32
 .set g_pUnusedHogwartsMapCursor,             0x03003A54  @ Actor *

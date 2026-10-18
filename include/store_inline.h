@@ -7,7 +7,7 @@
 #include "text.h"
 #include "store.h"
 #include "cursor.h"
-#include "items.h"
+#include "items_list.h"
 
 // The ROM compiles these into TickShopFadeOut, MoveShopMainMenuCursor,
 // MoveShopCategoryCursor and UpdateShopQuantitySelect and also keeps an

@@ -1,4 +1,5 @@
 #include "items.h"
+#include "items_list.h"
 #include "game/rewards.h"
 #include "game_state.h"
 #include "sound.h"

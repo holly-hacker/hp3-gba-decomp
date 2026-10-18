@@ -135,6 +135,12 @@ indexed global access in the loop keeps that gcse PRE copy, walking pointers let
 A pointer walking down from `&a[N - 1]` with a signed `cmp ptr, base` came from an up-counting
 `for (i = 0; i < N; i++)` that loop.c reversed; written counting down, the giv was "not worth
 while" and the counter stayed (ClearItemInventory, US 0x08026D58).
+A counter the ROM keeps unreduced and stores to a global once after the loop, through the address
+register of an earlier store, was the global field itself (`for (g.n = 0; src[g.n] != END; g.n++)`):
+`loop.c:load_mems` keeps it in a new register that is never a biv. load_mems refuses when a loop
+store or read may alias the field; under strict aliasing an `int` field shares the `u32` elements'
+alias set, a `long` does not (OpenItemListFromIds, US 0x08027B44). `-fno-strength-reduce` on the
+`.i` checks the loop body quickly.
 
 ## 13. Value fails to survive calls
 

@@ -2,7 +2,7 @@
 #include "pause_menu.h"
 #include "input.h"
 #include "pscreen_equip.h"
-#include "items.h"
+#include "items_list.h"
 
 void UpdateStatusEquipItemSelect(void)
 {

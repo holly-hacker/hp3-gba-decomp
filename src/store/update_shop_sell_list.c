@@ -1,7 +1,7 @@
 #include "sound.h"
 #include "input.h"
 #include "store.h"
-#include "items.h"
+#include "items_list.h"
 
 void UpdateShopSellList(void)
 {

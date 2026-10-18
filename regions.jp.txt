@@ -1027,34 +1027,36 @@ c-file 0x08026FA4 _ src/items/owns_item_in_category.c OwnsItemInCategory
 c-file 0x08026FDC _ src/items/get_equipped_item.c GetEquippedItem
 c-file 0x08026FF8 _ src/items/is_folio_page_group_complete.c IsFolioPageGroupComplete
 c-file 0x0802703C _ src/items/set_actor_scale_step.c SetActorScaleStep
-c-file 0x08027060 0x080270A4 src/items/get_party_member_name.c GetPartyMemberName
-thumb-func 0x080270A4 TickItemList
-thumb-func 0x08027208 SetItemListTranslucent
-thumb-func 0x08027290 sub_08027234
-thumb-func 0x0802732C sub_080272D0
-thumb-func 0x080273E0 sub_08027384
-thumb-func 0x08027598 sub_0802753C
-thumb-func 0x08027704 sub_080276A8
-thumb-func 0x080277D0 sub_08027774
-thumb-func 0x080278A0 sub_08027844
-thumb-func 0x08027918 sub_080278BC
-thumb-func 0x08027ACC sub_08027A70
-thumb-func 0x08027B50 OpenFilteredItemList
-thumb-func 0x08027BA0 OpenItemListFromIds
-thumb-func 0x08027C00 CloseItemList
-thumb-func 0x08027C38 GetItemListSelection
-thumb-func 0x08027C64 SetItemListCallbacks
-thumb-func 0x08027C84 sub_08027C28
-thumb-func 0x08027CC0 sub_08027C64
-thumb-func 0x08027CEC sub_08027C90
-thumb-func 0x08027D30 sub_08027CD4
-thumb-func 0x08027DD8 sub_08027D7C
-thumb-func 0x08027E30 sub_08027DD4
-thumb-func 0x08027E8C sub_08027E30
-thumb-func 0x08027EBC sub_08027E60
-thumb-func 0x08027EFC sub_08027EA0
-thumb-func 0x08027F0C sub_08027EB0
-thumb-func 0x08027F4C sub_08027EF0
+c-file 0x08027060 _ src/items/get_party_member_name.c GetPartyMemberName
+
+# Items list
+c-file 0x080270A4 _ src/items_list/tick_item_list.c TickItemList
+c-file 0x08027208 _ src/items_list/set_item_list_translucent.c SetItemListTranslucent
+c-file 0x08027290 _ src/items_list/spawn_item_list_actors.c SpawnItemListActors
+c-file 0x0802732C _ src/items_list/offset_item_list_rows.c OffsetItemListRows
+c-file 0x080273E0 _ src/items_list/spawn_item_list_row.c SpawnItemListRow
+c-file 0x08027598 _ src/items_list/draw_item_list_row_text.c DrawItemListRowText
+c-file 0x08027704 _ src/items_list/scroll_item_list_up.c ScrollItemListUp
+c-file 0x080277D0 _ src/items_list/scroll_item_list_down.c ScrollItemListDown
+c-file 0x080278A0 _ src/items_list/free_item_list_row.c FreeItemListRow
+c-file 0x08027918 _ src/items_list/finish_item_list_scroll.c FinishItemListScroll
+c-file 0x08027ACC _ src/items_list/update_item_list_scroll_arrows.c UpdateItemListScrollArrows
+c-file 0x08027B50 _ src/items_list/open_filtered_item_list.c OpenFilteredItemList
+c-file 0x08027BA0 _ src/items_list/open_item_list_from_ids.c OpenItemListFromIds
+c-file 0x08027C00 _ src/items_list/close_item_list.c CloseItemList
+c-file 0x08027C38 _ src/items_list/get_item_list_selection.c GetItemListSelection
+c-file 0x08027C64 _ src/items_list/set_item_list_callbacks.c SetItemListCallbacks
+c-file 0x08027C84 _ src/items_list/set_item_list_cursor_target.c SetItemListCursorTarget
+c-file 0x08027CC0 _ src/items_list/clear_item_list_cursor_target.c ClearItemListCursorTarget
+c-file 0x08027CEC _ src/items_list/spawn_item_list_rows.c SpawnItemListRows
+c-file 0x08027D30 _ src/items_list/init_item_list.c InitItemList
+c-file 0x08027DD8 _ src/items_list/tick_item_list_cursor.c TickItemListCursor
+c-file 0x08027E30 _ src/items_list/set_item_list_cursor_row.c SetItemListCursorRow
+c-file 0x08027E8C _ src/items_list/free_item_list_rows.c FreeItemListRows
+c-file 0x08027EBC _ src/items_list/alloc_item_list_icon_gfx.c AllocItemListIconGfx
+c-file 0x08027EFC _ src/items_list/free_item_list_icon_gfx.c FreeItemListIconGfx
+c-file 0x08027F0C _ src/items_list/notify_item_list_cursor_move.c NotifyItemListCursorMove
+c-file 0x08027F4C _ src/items_list/spawn_item_list_scroll_arrows.c SpawnItemListScrollArrows
 c-file 0x08027F9C _ src/landmarks/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
 c-file 0x080280A8 0x08028128 src/landmarks/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
 thumb-func 0x08028128 sub_080280CC
@@ -1854,7 +1856,7 @@ thumb-func 0x0804277C sub_0804273C
 thumb-func 0x0804280C sub_080427CC
 thumb-func 0x0804292C SpawnUnslottedTextActor
 thumb-func 0x08042988 SpawnTextActor
-thumb-func 0x08042A00 sub_080429C0
+thumb-func 0x08042A00 SetTextActorString
 thumb-func 0x08042A14 SetTextActorCenterPosition_candidate
 thumb-func 0x08042A30 sub_080429F0
 thumb-func 0x08042AC8 sub_08042A88
@@ -2249,7 +2251,8 @@ c-file 0x08060DF0 _ src/initials/high_score_name_entry.globals.c g_dwHighScoreNa
 c-file 0x08060E08 _ src/input/dpad_direction.c g_abDpadDirection
 c-file 0x08060E18 _ src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file 0x08060E4C _ src/items/actor_scale_steps.c g_adwActorScaleSteps
-c-file 0x08060E70 0x08062940 src/items/items.c g_pItemTable
+c-file 0x08060E70 _ src/items/items.c g_pItemTable
+c-file 0x08062940 _ src/items_list/items_list.globals.c g_abItemListPlaceholderText
 c-file 0x08062944 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file 0x08062980 0x0806298C src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 

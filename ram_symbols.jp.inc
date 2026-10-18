@@ -320,6 +320,11 @@
 @ --- include/items.h ---
 .set g_ItemInventory,                     0x03003810
 
+@ --- include/items_list.h ---
+.set g_ItemList,                         0x030038A8
+.set g_bItemListScroll,                  0x03003AA8
+.set g_bItemListCursorRow,               0x03003AA9
+
 @ --- include/landmarks.h ---
 .set g_dwUnusedHogwartsMapShownBg,           0x03003AB0
 .set g_pUnusedHogwartsMapCursor,             0x03003AB4

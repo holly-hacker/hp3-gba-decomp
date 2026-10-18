@@ -1,7 +1,7 @@
 #include "hw/io_regs.h"
 #include "default_menu.h"
 #include "pscreen_equip.h"
-#include "items.h"
+#include "items_list.h"
 
 void ExitStatusEquipItemSelect(void)
 {

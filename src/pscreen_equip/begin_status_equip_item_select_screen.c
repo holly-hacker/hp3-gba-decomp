@@ -5,6 +5,7 @@
 #include "pscreen_character.h"
 #include "pscreen_equip.h"
 #include "items.h"
+#include "items_list.h"
 
 void BeginStatusEquipItemSelectScreen(void)
 {

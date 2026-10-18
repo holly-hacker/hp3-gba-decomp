@@ -9,4 +9,6 @@ extern Actor *g_apTextActors[17];  // 0x03005D10
 extern Actor *SpawnTextActor(const u8 **ppText, u32 slot);
 // SpawnTextActor without filing the actor in a slot.
 extern Actor *SpawnUnslottedTextActor(const u8 **ppText);
+// Redraws a text actor with a new string.
+extern void SetTextActorString(Actor *pActor, const u8 *pText);
 extern void SetTextActorCenterPosition_candidate(Actor *pActor, s32 x, s32 y);
