@@ -33,11 +33,11 @@ static u32 lastDmaBlock EWRAM;	// HP3-GBA: added
 
 static u32 active EWRAM;
 
-volatile u32 dmaBlock EWRAM;	// HP3-GBA: u32, counted up by kradInterrupt
+volatile u32 dmaBlock EWRAM;	// HP3-GBA: upstream volatile u8, toggled by kradInterrupt
 u8 dsStereo IWRAM;
 
 
-// HP3-GBA: getDmaAddress() follows dsInit()
+// HP3-GBA: getDmaAddress() follows dsInit(); upstream has it here
 
 void dsInit( u32 stereo )
 {
@@ -87,8 +87,8 @@ void dsInit( u32 stereo )
 	 (DMABUFFERSIZE/2 because we want to get a notification when half the buffer has
 	  been played).
 	*/
-	// HP3-GBA: kradInterrupt reprograms the timer to
-	// 65536 - DMABUFFERSIZE, so there is no /2 here either
+	// HP3-GBA: upstream 65536 - (DMABUFFERSIZE/2) + 32 - 3; kradInterrupt
+	// reprograms the timer to 65536 - DMABUFFERSIZE
 	TM1D = 65536 - DMABUFFERSIZE + 32 - 3;
 
 	// enable | generate interrupt | count-up timing
@@ -109,8 +109,8 @@ u32 LONG_CALL getDmaAddress( s8 **left, s8 **right )
 	if( !active )
 		return 0;
 
-	// HP3-GBA: sets the addresses before checking the DMA, and when a
-	// new DMA block has started only mixes into blocks 1 and 2
+	// HP3-GBA: upstream returns 0 when dmaBlock == ( currMixBlock >> 1 ),
+	// before setting the addresses
 	*left = &lBuffer[ nextSample ];
 	*right = &rBuffer[ nextSample ];
 

@@ -30,7 +30,8 @@
 	// HP3-GBA: no kradInterruptUndoCodeMod
 	.GLOBAL kradInterrupt
 kradInterrupt:
-	// HP3-GBA: counts dmaBlock up and resets the dma on every interrupt
+	// HP3-GBA: counts dmaBlock up and resets the dma on every interrupt;
+	// upstream toggles a byte and skips the reset with "bxeq lr" at Lnewend
 	ldr	r0, =dmaBlock
 	ldr	r1, [r0]
 	add	r1, r1, #1
@@ -55,7 +56,7 @@ kradInterrupt:
         tst	r1, #( 1 << 15 )
 
         // nah -> mono
-        beq	Lnewend		// HP3-GBA: reprogram the timer either way
+        beq	Lnewend		// HP3-GBA: upstream "bxeq lr"
 
 	// reset dma2 as well
         bic	r1, r1, #( 1 << 15 )
@@ -64,7 +65,8 @@ kradInterrupt:
         strh	r1, [r0]
 
 Lnewend:
-	// HP3-GBA: this instruction gets rewritten to "bx lr"
+	// HP3-GBA: this instruction gets rewritten to "bx lr"; upstream has
+	// Lnewend before the dma reset, branching here to Lreprogram
 	// reprogram timer
 	ldr	r0, =TM1
 	ldr	r1, [r0]
@@ -73,7 +75,7 @@ Lnewend:
 	str	r2, [r0]
 
 	// load 'new' size
-	ldr	r2, =(65536-DMABUFFERSIZE)	// HP3-GBA: no /2
+	ldr	r2, =(65536-DMABUFFERSIZE)	// HP3-GBA: upstream (65536-(DMABUFFERSIZE/2))
 	// clear lower hword
 	mov	r1, r1, lsr #16
 	// upper hw = control, lower hw = count
@@ -82,7 +84,8 @@ Lnewend:
 	str	r1, [r0]
 
 	// we only have to reprogram the timer once so...
-	// HP3-GBA: ... copy "bx lr" to Lnewend, without a backup
+	// HP3-GBA: ... copy "bx lr" to Lnewend; upstream first backs up the
+	// op at Lnewend in Lopbackup and copies "bxeq lr"
 	ldr	r1, Lop
 	adr	r0, Lnewend
 	str	r1, [r0]

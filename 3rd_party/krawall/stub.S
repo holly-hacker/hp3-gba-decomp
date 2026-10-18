@@ -37,7 +37,8 @@ kramPlaySTUB:
 	.GLOBAL kramPlayExtSTUB
 	.THUMB_FUNC
 kramPlayExtSTUB:
-	// HP3-GBA: calls kramPlayExt through r5 instead of switching to ARM
+	// HP3-GBA: calls kramPlayExt through r5; upstream switches to ARM
+	// (bx pc) and jumps through ip
 	push	{r5, lr}
 	ldr	r5, =kramPlayExt
 	bl	LcallR5
