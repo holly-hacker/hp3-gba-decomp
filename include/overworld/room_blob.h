@@ -6,17 +6,23 @@
 // builds the room's runtime tables from it in one buffer, in the order
 // header records, actor table, warp trigger table, switch-state table.
 
-typedef struct RoomBlobRecord {
-    u32 dwWord0;
-    u32 dwWord4;
-} RoomBlobRecord;
+// A player spawn point: a room blob header record, or a default record. FindRoomEntryPoint
+// matches bEntryId and bIndex against its two arguments.
+typedef struct RoomEntryPoint {
+    s16 nX;
+    s16 nY;
+    u8 bEntryId;
+    u8 bIndex;   // also indexes g_aDefaultRoomEntryPoints; both callers pass 0
+    u8 bFacing;
+    u8 pad_07;
+} RoomEntryPoint;
 
 // Blob start. wSize is the byte offset of the RoomBlobStageIndex that follows
 // (4 + 8 * wRecordCount). The runtime buffer starts with a copy of this header.
 typedef struct RoomBlobHeader {
     u16 wSize;
     u16 wRecordCount;
-    RoomBlobRecord aRecords[0];
+    RoomEntryPoint aRecords[0];
 } RoomBlobHeader;
 
 typedef struct RoomBlobVariantEntry {

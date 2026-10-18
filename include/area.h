@@ -12,21 +12,32 @@
 // Room tile actorType -> constructor table.
 extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];  // ROM 0x0804C054 (US)
 
-// A player spawn point: a room blob header record, or a default record. FindRoomEntryPoint
-// matches bEntryId and bIndex against its two arguments.
-typedef struct RoomEntryPoint {
-    s16 nX;
-    s16 nY;
-    u8 bEntryId;
-    u8 bIndex;   // also indexes g_aDefaultRoomEntryPoints; both callers pass 0
-    u8 bFacing;
-    u8 pad_07;
-} RoomEntryPoint;
-
 // Used by FindRoomEntryPoint when the room has no record for the entry id.
 extern const RoomEntryPoint g_aDefaultRoomEntryPoints[2];  // ROM 0x0804C08C (US)
 
-extern void SpawnMissingRoomGroupActors(u32 row);
+// Runtime actor table record: an 8-byte prefix, then the row's static record, which starts with
+// the actor type.
+typedef struct RoomActorRecord {
+    Actor *pActor;
+    u32 dwUnknown4;
+    u16 wActorType;
+} RoomActorRecord;
+
+// One waypoint of a g_pRoomRouteTable route.
+typedef struct RoomRouteWaypoint {
+    s16 nX;
+    s16 nY;
+    u8 bChain;  // run on arrival
+    u8 abPad[3];
+} RoomRouteWaypoint;
+
+typedef struct RoomRoute {
+    u32 dwCount;
+    RoomRouteWaypoint aWaypoints[0];
+} RoomRoute;
+
+// Spawns every actor of group `row` whose record has no live actor.
+extern void SpawnMissingRoomGroupActors(u8 row);
 // Starts chain `chain`; with resumeFromSaved it continues the saved caller
 // frame on top of the call stack instead.
 extern void RunRoomScriptChain(u32 chain, s32 resumeFromSaved);
@@ -39,16 +50,18 @@ extern u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const Roo
 extern void InitRoomScriptState(void);
 extern void ParseRoomResourceBlob(const RoomBlobHeader *pBlob);
 
-extern void RespawnGroupAndRunChain(u32 respawnRow, u32 chainRow);
+extern void RespawnGroupAndRunChain(u8 respawnRow, u8 chainRow);
 // Whether chain row `row` may run; false for 0, true from 2 up, and for 1 only
-// while g_wRoomResourceFlags_candidate bit 0 is set.
-extern u32 ShouldRunRoomIndex(u32 row);
-extern u16 GetRoomGroupMemberCount(u32 row);
+// while g_wRoomResourceFlags_candidate bit 0 is clear.
+extern u32 ShouldRunRoomIndex(u8 row);
+// Constructs the actor of record (col, row), binds it to the record and returns it.
+extern Actor *SpawnRoomGroupMember(u8 col, u8 row);
+extern u16 GetRoomGroupMemberCount(u8 row);
+extern const RoomEntryPoint *FindRoomEntryPoint(u8 entryId, u8 index);
 extern void *GetRoomActorStaticRecord(u8 bColumn, u8 bRow);
-// Live actor at tile (x, y); every script targets (0, 0xFF), the player slot.
-// x == 0 with y >= 0xFE selects a slot of the array at 0x03003358 instead of a tile; every
-// script uses (0, 255).
-extern Actor *GetRoomActorPtr(u32 x, u32 y);
+// Live actor of record (x, y). (0, 0xFF) instead selects the actor of
+// g_OverworldControlState slot 0, the player; every script uses it.
+extern Actor *GetRoomActorPtr(u8 x, u8 y);
 extern void SetRoomActorPtr(Actor *actor, u8 col, u8 row);
 
 // Waypoint routes in g_pRoomRouteTable; see docs/formats/rooms.md.
@@ -57,7 +70,7 @@ extern IntPoint GetRoomRouteWaypointPos(u8 route, u8 waypoint);
 extern void RunRoomRouteWaypointChain(u8 route, u8 waypoint);  // runs the waypoint's chain
 
 extern void StopRoomScriptChains(void);
-extern u8 GetRoomBlobStageVariant(u32 questState, const void *pRoomResourceBlob);
+extern u8 GetRoomBlobStageVariant(u8 questState, const void *pRoomResourceBlob);
 
 extern u8 *CopyRoomBlobHeaderRecords(const RoomBlobHeader *pBlob, const RoomBlobSubBlock *pVariant);
 // Copies `size` bytes of static tile data to `pDst + 8`.

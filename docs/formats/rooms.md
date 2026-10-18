@@ -84,7 +84,7 @@ is spawned together; scripts and actors address an actor as
 `(group, member)`. The code's names for these indices are `(column, row)` and,
 in script opcodes, `(tileX, tileY)`; they are not positions.
 `SpawnMissingRoomGroupActors(g)` spawns every member of group `g` whose actor slot is empty, and
-`RespawnRowAndRunChain(group, chain)` spawns a group and then runs a chain.
+`RespawnGroupAndRunChain(group, chain)` spawns a group and then runs a chain.
 Room entry spawns group 0 and, with flags bit 0 set, group 1. Runtime group 0
 is the default sub-block's only group; variant group `i` is runtime group
 `i + 1`. Groups range from 0 to 47 members. `SpawnRoomGroupMember`

@@ -141,8 +141,8 @@ c-file 0x08005324 _ src/actor/get_sprite_frame_size.c GetSpriteFrameSize
 c-file 0x08005340 _ src/actor/get_anim_frame_count.c GetAnimFrameCount
 c-file 0x08005348 _ src/actor/get_frame_tile_codec.c GetFrameTileCodec
 c-file 0x0800537C _ src/actor/get_frame_cell_count.c GetFrameCellCount
-c-file 0x08005384 0x0800539C src/actor/get_oam_shape_size_dims.c GetOamShapeSizeDims
-thumb-func 0x0800539C SpawnMissingRoomGroupActors
+c-file 0x08005384 _ src/actor/get_oam_shape_size_dims.c GetOamShapeSizeDims
+c-file 0x0800539C _ src/area/spawn_missing_room_group_actors.c SpawnMissingRoomGroupActors
 c-file 0x08005410 _ src/area/run_room_script_chain.c RunRoomScriptChain
 c-file 0x080055C0 _ src/area/resume_room_script_chain.c ResumeRoomScriptChain
 c-file 0x0800572C _ src/area/build_room_actor_table.c BuildRoomActorTable
@@ -150,26 +150,26 @@ c-file 0x08005808 _ src/area/build_room_actor_group.c BuildRoomActorGroup
 c-file 0x0800588C _ src/area/build_room_route_table.c BuildRoomRouteTable
 c-file 0x08005968 _ src/area/build_room_script_chain_table.c BuildRoomScriptChainTable
 c-file 0x08005A44 _ src/area/init_room_script_state.c InitRoomScriptState
-c-file 0x08005A78 0x08005B00 src/area/parse_room_resource_blob.c ParseRoomResourceBlob
-thumb-func 0x08005B00 RespawnGroupAndRunChain
-thumb-func 0x08005B44 ShouldRunRoomIndex
-thumb-func 0x08005B70 SpawnRoomGroupMember
-thumb-func 0x08005BCC GetRoomGroupMemberCount
-thumb-func 0x08005BE4 FindRoomEntryPoint
-thumb-func 0x08005C38 GetRoomActorStaticRecord
-thumb-func 0x08005C60 GetRoomActorPtr
-c-file 0x08005CAC 0x08005CE8 src/area/set_room_actor_ptr.c SetRoomActorPtr
-thumb-func 0x08005CE8 GetRoomRouteWaypointCount
-thumb-func 0x08005D00 GetRoomRouteWaypointPos
-thumb-func 0x08005D30 RunRoomRouteWaypointChain
-thumb-func 0x08005D88 StopRoomScriptChains
-thumb-func 0x08005DC0 GetRoomBlobStageVariant
-c-file 0x08005DD0 0x08005E18 src/area/copy_room_blob_header_records.c CopyRoomBlobHeaderRecords
-thumb-func 0x08005E18 CopyRoomActorStaticBytes
-thumb-func 0x08005E40 CopyRoomRouteWaypoints
-thumb-func 0x08005E84 CopyRoomScriptChain
-thumb-func 0x08005EC8 GetRoomOffsetTableSize
-thumb-func 0x08005EE8 AlignRoomSizeTo4
+c-file 0x08005A78 _ src/area/parse_room_resource_blob.c ParseRoomResourceBlob
+c-file 0x08005B00 _ src/area/respawn_group_and_run_chain.c RespawnGroupAndRunChain
+c-file 0x08005B44 _ src/area/should_run_room_index.c ShouldRunRoomIndex
+c-file 0x08005B70 _ src/area/spawn_room_group_member.c SpawnRoomGroupMember
+c-file 0x08005BCC _ src/area/get_room_group_member_count.c GetRoomGroupMemberCount
+c-file 0x08005BE4 _ src/area/find_room_entry_point.c FindRoomEntryPoint
+c-file 0x08005C38 _ src/area/get_room_actor_static_record.c GetRoomActorStaticRecord
+c-file 0x08005C60 _ src/area/get_room_actor_ptr.c GetRoomActorPtr
+c-file 0x08005CAC _ src/area/set_room_actor_ptr.c SetRoomActorPtr
+c-file 0x08005CE8 _ src/area/get_room_route_waypoint_count.c GetRoomRouteWaypointCount
+c-file 0x08005D00 _ src/area/get_room_route_waypoint_pos.c GetRoomRouteWaypointPos
+c-file 0x08005D30 _ src/area/run_room_route_waypoint_chain.c RunRoomRouteWaypointChain
+c-file 0x08005D88 _ src/area/stop_room_script_chains.c StopRoomScriptChains
+c-file 0x08005DC0 _ src/area/get_room_blob_stage_variant.c GetRoomBlobStageVariant
+c-file 0x08005DD0 _ src/area/copy_room_blob_header_records.c CopyRoomBlobHeaderRecords
+c-file 0x08005E18 _ src/area/copy_room_actor_static_bytes.c CopyRoomActorStaticBytes
+c-file 0x08005E40 _ src/area/copy_room_route_waypoints.c CopyRoomRouteWaypoints
+c-file 0x08005E84 _ src/area/copy_room_script_chain.c CopyRoomScriptChain
+c-file 0x08005EC8 _ src/area/get_room_offset_table_size.c GetRoomOffsetTableSize
+c-file 0x08005EE8 _ src/area/align_room_size_to_4.c AlignRoomSizeTo4
 asm-file 0x08005F10 _ asm/check_actor_collisions.s  CheckActorCollisions
 asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
 asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
