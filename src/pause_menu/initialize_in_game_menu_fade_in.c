@@ -4,7 +4,7 @@
 void InitializeInGameMenuFadeIn(void)
 {
     if (g_PrevGameModeStackContext.dwCurrentGameMode == StatusEquipCharacterSelect)
-        sub_080323B0();
+        NoopStatusEquipReturned();
 
     g_GameModeStackContext.dwModeState = 1;
     g_GameModeStackContext.dwModeScratchB = g_ListMenuState.bInGameMenuCursor;

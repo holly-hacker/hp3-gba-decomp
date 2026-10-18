@@ -315,7 +315,7 @@ PROVEN from the matched handlers in `src/pscreen_folio/` and
 `src/pscreen_connectivity/`. All three are pause-menu submenus built from a
 `ListMenuDefinition` (`include/pause_menu.h`) and share `UpdateInGameMenu`'s shape:
 `dwModeState` 1 waits for the blend fade (`dwModeSubState` 0), 2 handles A
-(`SelectInGameMenuEntry_candidate`), Up/Down (`MoveListMenuCursor`) and B, 4 waits for
+(`SelectListMenuEntry`), Up/Down (`MoveListMenuCursor`) and B, 4 waits for
 the fade-out (`dwModeSubState == 0x10`) before pushing the next mode. `dwCurrentGameModeArg1 == 1` starts directly in state 2 with a
 screen transition instead of the fade. Exit saves `dwModeScratchB` (the cursor row) in
 `g_bFoliosMenuCursor` / `g_bConnectivityMenuCursor`; Init restores it.

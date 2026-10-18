@@ -18,7 +18,7 @@ void UpdateFolios(void)
     case 2:
         if (g_wKeysPressed & KeyA)
         {
-            SelectInGameMenuEntry_candidate();
+            SelectListMenuEntry();
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))
         {

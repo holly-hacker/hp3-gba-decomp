@@ -32,8 +32,8 @@ void UpdateInGameMenu(void)
         if (g_wKeysPressed & KeyA)
         {
             if (g_GameModeStackContext.dwModeScratchB == 0)
-                sub_080323AC();
-            SelectInGameMenuEntry_candidate();
+                NoopStatusEquipSelected();
+            SelectListMenuEntry();
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))
         {
@@ -51,7 +51,7 @@ void UpdateInGameMenu(void)
         TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
-            sub_0803232C();
+            ExitPauseMenuScreen();
             if (g_GameModeStackContext.dwModeState == 3)
             {
                 g_GameModeStackContext.dwModeState = 4;

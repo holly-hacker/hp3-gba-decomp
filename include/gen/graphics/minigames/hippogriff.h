@@ -27,7 +27,7 @@ extern const u8 gHippogriffLanguageMinigameBgs020[];
 extern const u8 gHippogriffLanguageMinigameBgs021[];
 extern const u8 gHippogriffLanguageMinigameBgs022[];
 extern const u8 gHippogriffLanguageMinigameBgs023[];
-extern const u8 gHippogriffLanguageMinigameBgs024[];
+extern const u8 gPauseMenuObjectiveGraphic[];
 extern const u8 gHippogriffLanguageMinigameBgs025[];
 extern const u8 gHippogriffLanguageMinigameBgs026[];
 extern const u8 gFolioBrutiBg3Graphic[];

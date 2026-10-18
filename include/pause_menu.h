@@ -41,7 +41,7 @@ typedef struct {
 
 extern ListMenuDefinition g_ConnectivityMenu;  // RAM copy of g_ConnectivityMenuTemplate
 extern ListMenuState g_ListMenuState;  // 0x03005220
-extern void ListMenuCursorTick_candidate(Actor *pActor);
+extern void ListMenuCursorTick(Actor *pActor);
 extern void BuildListMenu(const ListMenuDefinition *pDefinition);
 extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);
@@ -54,15 +54,16 @@ extern void UpdateInGameMenu(void);
 extern void InitializeInGameMenu(void);
 extern void InitializeInGameMenuFadeIn(void);
 extern void ExitInGameMenu(void);
-extern void BeginPauseMenuScreen(u32 arg);
+extern void ResumeInGameMenuFromOverlay(void);
+extern void BeginPauseMenuScreen(u32 showObjective);  // nonzero draws the objective panel
 extern void StartMenuFadeIn(void);
 extern void StartMenuOverlayFadeIn(void);
 extern void TickMenuFadeIn(void);
 extern void StartMenuFadeOut(void);
 extern void StartMenuOverlayFadeOut(void);
 extern void TickMenuFadeOut(void);
-extern void SelectInGameMenuEntry_candidate(void);
-extern void sub_0803232C(void);
+extern void SelectListMenuEntry(void);
+extern void ExitPauseMenuScreen(void);
 extern void DrawPauseMenuObjective(void);
-extern void sub_080323AC(void);
-extern void sub_080323B0(void);
+extern void NoopStatusEquipSelected(void);
+extern void NoopStatusEquipReturned(void);

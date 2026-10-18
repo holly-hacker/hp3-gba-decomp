@@ -1509,25 +1509,25 @@ c-file 0x08031CC4 _ src/patronus_cutscene/handle_harry_patronus_cutscene_vblank.
 # Pause (in-game menu and list menu)
 c-file 0x08031D30 _ src/pause_menu/update_in_game_menu.c UpdateInGameMenu
 c-file 0x08031E7C _ src/pause_menu/build_list_menu.c BuildListMenu
-c-file 0x08031F6C 0x08031FB8 src/pause_menu/initialize_in_game_menu.c InitializeInGameMenu
-thumb-func 0x08031FB8 BeginPauseMenuScreen
-c-file 0x08031FF4 0x08032030 src/pause_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
-thumb-func 0x08032030 sub_08032030
-c-file 0x08032054 0x080320A4 src/pause_menu/exit_in_game_menu.c ExitInGameMenu
-thumb-func 0x080320A4 StartMenuFadeIn
-thumb-func 0x080320E8 StartMenuOverlayFadeIn
-thumb-func 0x08032114 TickMenuFadeIn
-thumb-func 0x08032138 StartMenuFadeOut
-thumb-func 0x0803217C StartMenuOverlayFadeOut
-thumb-func 0x080321A8 TickMenuFadeOut
-thumb-func 0x080321CC ListMenuCursorTick_candidate
-thumb-func 0x08032204 SelectInGameMenuEntry_candidate
+c-file 0x08031F6C _ src/pause_menu/initialize_in_game_menu.c InitializeInGameMenu
+c-file 0x08031FB8 _ src/pause_menu/begin_pause_menu_screen.c BeginPauseMenuScreen
+c-file 0x08031FF4 _ src/pause_menu/initialize_in_game_menu_fade_in.c InitializeInGameMenuFadeIn
+c-file 0x08032030 _ src/pause_menu/resume_in_game_menu_from_overlay.c ResumeInGameMenuFromOverlay
+c-file 0x08032054 _ src/pause_menu/exit_in_game_menu.c ExitInGameMenu
+c-file 0x080320A4 _ src/pause_menu/start_menu_fade_in.c StartMenuFadeIn
+c-file 0x080320E8 _ src/pause_menu/start_menu_overlay_fade_in.c StartMenuOverlayFadeIn
+c-file 0x08032114 _ src/pause_menu/tick_menu_fade_in.c TickMenuFadeIn
+c-file 0x08032138 _ src/pause_menu/start_menu_fade_out.c StartMenuFadeOut
+c-file 0x0803217C _ src/pause_menu/start_menu_overlay_fade_out.c StartMenuOverlayFadeOut
+c-file 0x080321A8 _ src/pause_menu/tick_menu_fade_out.c TickMenuFadeOut
+c-file 0x080321CC _ src/pause_menu/list_menu_cursor_tick.c ListMenuCursorTick
+c-file 0x08032204 _ src/pause_menu/select_list_menu_entry.c SelectListMenuEntry
 c-file 0x0803227C _ src/pause_menu/move_list_menu_cursor.c MoveListMenuCursor
-c-file 0x080322BC 0x0803232C src/pause_menu/draw_list_menu_row.c DrawListMenuRow
-thumb-func 0x0803232C sub_0803232C
-thumb-func 0x0803233C DrawPauseMenuObjective
-thumb-func 0x080323AC sub_080323AC
-thumb-func 0x080323B0 sub_080323B0
+c-file 0x080322BC _ src/pause_menu/draw_list_menu_row.c DrawListMenuRow
+c-file 0x0803232C _ src/pause_menu/exit_pause_menu_screen.c ExitPauseMenuScreen
+c-file 0x0803233C _ src/pause_menu/draw_pause_menu_objective.c DrawPauseMenuObjective
+c-file 0x080323AC _ src/pause_menu/noop_status_equip_selected.c NoopStatusEquipSelected
+c-file 0x080323B0 _ src/pause_menu/noop_status_equip_returned.c NoopStatusEquipReturned
 
 # Pop-it minigame (wizard cracker pop-it minigame)
 c-file 0x080323B4 _ src/pop_it_minigame/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
