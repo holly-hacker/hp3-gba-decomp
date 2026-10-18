@@ -11,6 +11,9 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License in COPYING for more details.
+ *
+ * Modified to match the code in Harry Potter and the Prisoner of Azkaban
+ * (Game Boy Advance); changes are marked HP3-GBA.
  */
 
 #ifndef __GENERAL_H__
@@ -33,7 +36,7 @@ This is only needed if you want to call kragInit() again, most likely because yo
 to switch from mono to stereo or vice versa. Calling this while there is sound being output
 will result in an audible (but harmless) hickup.
 */
-void kragReset();
+//void kragReset();	// HP3-GBA: not in the game
 
 //%e
 

@@ -25,6 +25,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import buildcache  # noqa: E402
+from krawall.gen_header import write_public_header  # noqa: E402
 from manifest import (  # noqa: E402
     ASM_CPP_DIRECTIVE,
     C_FILE_DIRECTIVES,
@@ -54,11 +55,16 @@ def profile(src: str, prefix: str, o1: bool = False,
     between the two ROMs. arm selects agbcc_arm, which lacks -fhex-asm,
     needs -quiet to stop printing pass timings, and needs
     -fomit-frame-pointer to drop the APCS frame the ROM doesn't have.
+
+    __GNUC__ is agbcc's (GCC 2): -undef drops the host compiler's, and
+    Krawall's public header (generated into build/include) maps its IWRAM
+    functions to their stubs for GCC 2.
     """
     inc = os.path.join(prefix, "include")
     optimization = "-O1" if o1 else "-O2"
-    cppflags = ["-I", "include", "-I", inc, "-nostdinc", "-undef",
-                "-std=gnu89", *([f"-DVERSION_{ver.upper()}"] if ver else [])]
+    cppflags = ["-I", "include", "-I", write_public_header(), "-I", inc,
+                "-nostdinc", "-undef", "-D__GNUC__=2", "-std=gnu89",
+                *([f"-DVERSION_{ver.upper()}"] if ver else [])]
     if arm:
         return (
             os.path.join(prefix, "bin", "agbcc_arm"),

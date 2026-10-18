@@ -74,7 +74,7 @@ def main() -> None:
     s_start, s_end = compute_samples_bounds(data, ver)
     rows.append((s_start, s_end,
                  f"krawall-samples 0x{ROM_BASE+s_start:08X} 0x{ROM_BASE+s_end:08X} "
-                 f"data/audio/samples KrawallSamples"))
+                 f"data/audio/samples samples"))
 
     module_names, _ = load_krawall_names()
     resolved_names = resolve_names("module", len(MODULE_ADDRS[ver]), module_names)

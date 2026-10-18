@@ -18,7 +18,7 @@ typedef struct SoundConfigRow {
 #define SoundVariantNone 0xFF  // sampleIndex of a variant that plays nothing
 
 typedef struct SoundSample {
-    u16 sampleIndex;  // KrawallSamples index
+    u16 sampleIndex;  // samples index
     u16 freq;         // kramSetFreq argument
 } SoundSample;
 

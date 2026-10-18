@@ -53,9 +53,8 @@ images.
 | `player.c` | `0x080473B4`-`0x08049E3C` | `pDataSet` ... `eff_VC_portanote` |
 | `stub.S` | `0x08049E3C`-`0x08049E84` | `kram*STUB`, Thumb calls into the IWRAM code |
 
-The game calls the IWRAM functions through the stubs: `kramWorkerSTUB`
-from the VBlank handler, `kramPlaySTUB` and `kramSetFreqSTUB` from the
-sound effect code.
+The game, compiled with GCC 2 (agbcc), cannot make long calls, so it
+reaches the IWRAM functions through these stubs (see "Game-side use").
 
 ### `.iwram`
 
@@ -105,6 +104,14 @@ exactly. The word after the tables (`0xFFFFFFFF`, US `0x08FAA7CC`) is
 unreferenced and its owner is not known.
 
 ## Game-side use
+
+Game code includes Krawall's public header, `"3rd_party/krawall.h"`. The
+build generates it into `build/include/` the way Krawall's own build
+does (`tools/krawall/gen_header.py`): `genheader.pre`, the sections of
+`general.h`, `player.h`, `mixer.h` and `directsound.h` between their `%b`
+and `//%e` markers, then `genheader.post`. Under GCC 2 it renames the
+IWRAM functions to their stubs, so `kramPlay` in game source calls
+`kramPlaySTUB`. The sample list is the converter's `samples[]`.
 
 `InitAudio` calls `kragInit(KRAG_INIT_STEREO)`,
 `kramSetMasterVol(KRAM_MV_CHANNELS16 | 128)`,

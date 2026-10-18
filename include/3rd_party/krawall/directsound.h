@@ -11,6 +11,9 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License in COPYING for more details.
+ *
+ * Modified to match the code in Harry Potter and the Prisoner of Azkaban
+ * (Game Boy Advance); changes are marked HP3-GBA.
  */
 
 #ifndef __DIRECTSOUND_H__
@@ -20,7 +23,7 @@
 #include "directsound-def.h"
 
 void dsInit( u32 stereo );
-void dsDeInit();
+//void dsDeInit();	// HP3-GBA: not in the game
 
 u32 getDmaAddress( s8 **left, s8 **right ) LONG_CALL;
 
@@ -50,7 +53,7 @@ void kradDeactivate();
 //%e
 
 extern u8 dsStereo;
-extern void kradInterruptUndoCodeMod() LONG_CALL;
+//extern void kradInterruptUndoCodeMod() LONG_CALL;	// HP3-GBA: not in the game
 
 #endif
 

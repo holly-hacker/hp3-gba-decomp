@@ -2685,7 +2685,7 @@ krawall-module 0x08AE7B30 _ data/audio/modules/Module44.json Module44
 krawall-module 0x08AEA2DC _ data/audio/modules/Module45.json Module45
 krawall-module 0x08AEAF80 _ data/audio/modules/Module46.json Module46
 krawall-module 0x08AED020 _ data/audio/modules/Module47.json Module47
-krawall-samples 0x08AEF7FC _ data/audio/samples KrawallSamples
+krawall-samples 0x08AEF7FC _ data/audio/samples samples
 krawall-module 0x08D22E4C _ data/audio/modules/Module48.json Module48
 krawall-module 0x08D250B0 _ data/audio/modules/Module49.json Module49
 krawall-module 0x08D2DC7C _ data/audio/modules/MusTitle.json MusTitle

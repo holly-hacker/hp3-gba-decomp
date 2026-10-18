@@ -130,17 +130,19 @@ compile-c ver="us": (pack ver)
 gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
+# Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
+# --no-warn-rwx-segments.
 # Assemble every region and link them at their manifest addresses.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
-    arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
+    arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     python3 tools/check_sections.py {{ver}}
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
 # Build without the section check
 build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
-    arm-none-eabi-ld -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf
+    arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/mod.elf build/{{ver}}/mod.gba
 
 # For matching work: `just compare` only reports a byte offset, this says

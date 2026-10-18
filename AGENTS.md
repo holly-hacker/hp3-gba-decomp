@@ -50,7 +50,8 @@ local asset edits.
   agbcc's installed `libgcc.a`/`libc.a`.
 - `3rd_party/krawall/`: the Krawall audio library (LGPL-2.1-or-later),
   with headers in `include/3rd_party/krawall/`; `c-file-gcc3`,
-  `asm-file-cpp` and `c-section` rows (`docs/c.md`).
+  `asm-file-cpp` and `c-section` rows (`docs/c.md`). Game code includes
+  its public `"3rd_party/krawall.h"`, generated into `build/include/`.
 - The ignored `asm/krawall/` holds analysis dumps, not build inputs.
 - `build/<ver>/`: generated disassembly, objects, linker script, and ROM.
   Unclaimed manifest ranges are filled from the baserom with `.incbin`.
