@@ -22,7 +22,7 @@ void UpdateQuantitySelectScreen(void)
             if (g_GameModeStackContext.dwModeScratchB > 1)
             {
                 g_GameModeStackContext.dwModeScratchB--;
-                sub_0803950C();
+                DrawSelectedQuantity();
                 PlaySoundById(0);
             }
         }
@@ -31,7 +31,7 @@ void UpdateQuantitySelectScreen(void)
             if (g_GameModeStackContext.dwModeScratchB < GetItemQuantity(g_dwItemUseItem))
             {
                 g_GameModeStackContext.dwModeScratchB++;
-                sub_0803950C();
+                DrawSelectedQuantity();
                 PlaySoundById(0);
             }
         }
@@ -52,7 +52,7 @@ void UpdateQuantitySelectScreen(void)
         TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
-            sub_08039564();
+            CloseQuantitySelectScreen();
             PushGameMode(g_GameModeStackContext.dwCurrentGameModeArg2);
         }
         break;

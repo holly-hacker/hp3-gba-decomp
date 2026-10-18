@@ -1713,12 +1713,12 @@ c-file 0x080392C0 _ src/pscreen_information/draw_help_text_box.c DrawHelpTextBox
 c-file 0x0803931C _ src/pscreen_information/spawn_help_screen_title.c SpawnHelpScreenTitle
 
 # Profile/ItemQuantity? (pause subscreen: quantity select)
-c-file 0x08039370 0x08039428 src/pscreen_item_count/update_quantity_select_screen.c UpdateQuantitySelectScreen
-thumb-func 0x08039428 sub_08039428
+c-file 0x08039370 _ src/pscreen_item_count/update_quantity_select_screen.c UpdateQuantitySelectScreen
+c-file 0x08039428 _ src/pscreen_item_count/begin_quantity_select_screen.c BeginQuantitySelectScreen
 c-file 0x080394EC _ src/pscreen_item_count/initialize_quantity_select_screen.c InitializeQuantitySelectScreen
-c-file 0x08039508 0x0803950C src/pscreen_item_count/exit_quantity_select_screen.c ExitQuantitySelectScreen
-thumb-func 0x0803950C sub_0803950C
-thumb-func 0x08039564 sub_08039564
+c-file 0x08039508 _ src/pscreen_item_count/exit_quantity_select_screen.c ExitQuantitySelectScreen
+c-file 0x0803950C _ src/pscreen_item_count/draw_selected_quantity.c DrawSelectedQuantity
+c-file 0x08039564 _ src/pscreen_item_count/close_quantity_select_screen.c CloseQuantitySelectScreen
 
 # Profile/Items? (pause subscreen: items)
 c-file 0x0803957C _ src/pscreen_items/update_items_item_select.c UpdateItemsItemSelect
