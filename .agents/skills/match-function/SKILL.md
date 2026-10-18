@@ -44,7 +44,7 @@ Discover options with `python3 -m tools.matching --help`.
 
 1. Identify version, function address, instruction mode, callers, callees, and source
    profile. Game C uses agbcc; `src/libc/` uses old_agbcc; ARM-mode C uses agbcc_arm
-   (`c-file-arm`). The candidate workflow currently supports Thumb only.
+   (`c-file-arm`), which `prepare` selects from the function's mode.
 2. Check the current build with `just compare us` and `just compare jp`. Record any
    pre-existing failure before changing code. Do not rerun asset extraction over edits.
 3. Refresh reference assembly with `just disasm-compare VERSION` when seeds or the

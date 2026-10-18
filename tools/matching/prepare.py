@@ -41,8 +41,8 @@ def prepare(ver, name, source=None, end=None, profile_source=None, reference_nam
     if not match:
         raise ValueError('function needs an address-annotated entry in full_disasm.s; refresh disassembly or check --reference-name')
     mode, addr = match.groups()
-    if mode != 'thumb':
-        raise ValueError('candidate compiler profiles currently support Thumb C only; ARM needs an identified profile')
+    if row and (row[0] == 'c-file-arm') != (mode == 'arm'):
+        raise ValueError(f'{reference_name} is {mode} code, but its manifest row is {row[0]}')
     start = int(addr, 16)
     if row and start != int(row[1], 0):
         raise ValueError(f'reference {reference_name} starts at {start:#x}, but manifest {name} starts at {int(row[1], 0):#x}; investigate names and use --reference-name only for a verified alias')
@@ -99,7 +99,7 @@ def prepare(ver, name, source=None, end=None, profile_source=None, reference_nam
         pass
     meta = dict(version=ver, name=name, start=start, end=end, mode=mode,
                 profile_source=profile_source, reference_name=reference_name, source=str(Path(source).resolve()),
-                o1=bool(row and row[0] == 'c-file-O1'),
+                o1=bool(row and row[0] == 'c-file-O1'), arm=mode == 'arm',
                 boundary='manifest' if row else 'user-specified',
                 reference_verified=True)
     (path / 'workspace.json').write_text(json.dumps(meta, indent=2) + '\n')

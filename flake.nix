@@ -73,7 +73,7 @@
         # (few-instruction) gaps in an otherwise-matching function that
         # resist hand fishing. Pure Python (pycparser is vendored in-repo
         # as perm_pycparser), so this just wraps permuter.py/import.py with
-        # pythonEnv on PATH.
+        # pythonEnv on PATH. Patched to accept ARM-mode objects' R_ARM_V4BX.
         decompPermuter = pkgs.stdenv.mkDerivation {
           pname = "decomp-permuter";
           version = "unstable-2024-01-01";
@@ -83,6 +83,9 @@
             rev = "fb516c435c6f362fbced66e171545324306b607b";
             hash = "sha256-xD7/9vizoALBpQR0l8ZVq8pVOOja1tq1+F1LhQgL45k=";
           };
+          patches = [
+            ./patches/decomp-permuter/0001-ignore-arm-v4bx-relocations.patch
+          ];
           nativeBuildInputs = [ pkgs.makeWrapper ];
           dontBuild = true;
           installPhase = ''

@@ -1,0 +1,12 @@
+--- a/src/objdump.py
++++ b/src/objdump.py
+@@ -568,6 +568,9 @@
+ ) -> Optional[str]:
+     if prev == "<skipped>":
+         return None
++    # Marks an ARM-mode bx for the linker's ARMv4 fixup; no symbol to show.
++    if "R_ARM_V4BX" in reloc_row:
++        return None
+ 
+     before, imm, after = parse_relocated_line(prev)
+     repl = reloc_row.split()[-1]

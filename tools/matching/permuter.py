@@ -16,11 +16,13 @@ def setup(path):
     dest.mkdir(exist_ok=False)
     shutil.copy2(path / 'reference/target.o', dest / 'target.o')
     source = path / 'current/candidate.c'
-    _, flags, _ = profile(meta['profile_source'], agbcc_prefix(), ver=meta['version'])
+    _, flags, _ = profile(meta['profile_source'], agbcc_prefix(), meta.get('o1', False), meta['version'],
+                          meta.get('arm', False))
     pre = run(['cpp', *flags, '-iquote', str(Path(meta['source']).parent), source], cwd=ROOT, capture_output=True, text=True).stdout
     (dest / 'base.c').write_text(pre)
     command = ['python3', '-m', 'tools.matching', 'compile-object',
-               '--profile-source', meta['profile_source'], '--preprocessed']
+               '--profile-source', meta['profile_source'], '--preprocessed',
+               *(['--o1'] if meta.get('o1') else []), *(['--arm'] if meta.get('arm') else [])]
     (dest / 'compile.sh').write_text('#!/bin/sh\nset -eu\n'
         + 'input=$(realpath "$1")\nshift\n[ "$1" = "-o" ]\nshift\noutput=$(realpath -m "$1")\n'
         + 'cd ' + shlex.quote(str(ROOT)) + '\nexec ' + shlex.join(command) + ' "$input" -o "$output"\n')

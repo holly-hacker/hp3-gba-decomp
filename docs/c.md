@@ -99,5 +99,4 @@ regions read the hex column; the mnemonics are meaningless there.
 Good first candidates are small, leaf (no calls out), free of
 data-symbol references, and already extracted to `asm/` so there is a
 byte-exact reference to diff against. ARM-mode code uses a `c-file-arm`
-row; the `tools.matching` candidate workflow supports Thumb only, so
-compare ARM candidates by hand.
+row; `tools.matching prepare` picks the profile from the function's mode.

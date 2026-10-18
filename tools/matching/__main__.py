@@ -23,6 +23,8 @@ def main():
     p.add_argument('-o', required=True)
     p.add_argument('--profile-source', required=True)
     p.add_argument('--preprocessed', action='store_true')
+    p.add_argument('--o1', action='store_true', help='c-file-O1 profile')
+    p.add_argument('--arm', action='store_true', help='c-file-arm profile')
     p = sub.add_parser('compare', help='link against baseline symbols, check bytes and show selected-function differences')
     p.add_argument('workspace')
     p = sub.add_parser('snapshot', help='preserve current candidate and artifacts under an immutable name')
@@ -54,7 +56,8 @@ def main():
     elif args.command == 'compile':
         compile.compile_workspace(args.workspace, args.source, args.dumps)
     elif args.command == 'compile-object':
-        compile.compile_source(args.source, args.o, args.profile_source, preprocessed=args.preprocessed)
+        compile.compile_source(args.source, args.o, args.profile_source, preprocessed=args.preprocessed,
+                               o1=args.o1, arm=args.arm)
     elif args.command == 'compare':
         return compare.compare(args.workspace)
     elif args.command == 'snapshot':

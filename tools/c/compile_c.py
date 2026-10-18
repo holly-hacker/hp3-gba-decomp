@@ -40,8 +40,9 @@ def profile(src: str, prefix: str, o1: bool = False,
     """Returns (cc1, cppflags, cflags) for a source file.
 
     ver defines VERSION_US or VERSION_JP for game code whose source differs
-    between the two ROMs. arm selects agbcc_arm, which lacks -fhex-asm and
-    needs -fomit-frame-pointer to drop the APCS frame the ROM doesn't have.
+    between the two ROMs. arm selects agbcc_arm, which lacks -fhex-asm,
+    needs -quiet to stop printing pass timings, and needs
+    -fomit-frame-pointer to drop the APCS frame the ROM doesn't have.
     """
     inc = os.path.join(prefix, "include")
     optimization = "-O1" if o1 else "-O2"
@@ -59,8 +60,9 @@ def profile(src: str, prefix: str, o1: bool = False,
         return (
             os.path.join(prefix, "bin", "agbcc_arm"),
             cppflags,
-            [optimization, "-mthumb-interwork", "-fomit-frame-pointer",
-             "-Wimplicit", "-Wparentheses", "-Werror", "-fno-builtin"],
+            [optimization, "-quiet", "-mthumb-interwork",
+             "-fomit-frame-pointer", "-Wimplicit", "-Wparentheses", "-Werror",
+             "-fno-builtin"],
         )
     return (
         os.path.join(prefix, "bin", "agbcc"),
@@ -124,13 +126,21 @@ def compile_preprocessed(src: str, cc1: str, cflags: list[str], pre: str,
                         input=pre, capture_output=True, text=True)
     if cc.returncode:
         sys.exit(f"{os.path.basename(cc1)} failed on {src}:\n{cc.stderr}")
-    # The region wrapper is .syntax unified; agbcc emits divided syntax.
-    # agbcc_arm doesn't state its instruction set, so .arm does.
-    # The trailing .align pads to the 4-byte boundary with explicit zeros,
-    # which is what the ROM has.
+    return wrap_asm(cc.stdout, src, keep_rodata, arm).encode()
+
+
+def wrap_asm(asm: str, src: str, keep_rodata: bool = False,
+             arm: bool = False) -> str:
+    """Makes compiler output assemble as a region's contents.
+
+    The region wrapper is .syntax unified; agbcc emits divided syntax.
+    agbcc_arm doesn't state its instruction set, so .arm does.
+    The trailing .align pads to the 4-byte boundary with explicit zeros,
+    which is what the ROM has.
+    """
     return (".syntax divided\n" + (".arm\n" if arm else "")
-            + place_in_text(cc.stdout, src, keep_rodata)
-            + "\t.align\t2, 0\n" + ".syntax unified\n").encode()
+            + place_in_text(asm, src, keep_rodata)
+            + "\t.align\t2, 0\n" + ".syntax unified\n")
 
 
 def main() -> None:
