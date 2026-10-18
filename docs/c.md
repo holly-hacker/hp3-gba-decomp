@@ -11,12 +11,7 @@ system `cpp` and then `agbcc`, and `tools/gen_link.py` wraps the result as
 the region's object, which `tools/assemble.py` assembles. Both steps reuse
 results from `build/cache/` (`tools/buildcache.py`), keyed by the
 preprocessed source and by the assembler's inputs; deleting it is always
-safe. Two flag profiles, by directory:
-
-| | compiler | flags |
-|---|---|---|
-| `3rd_party/newlib/` | `old_agbcc` | `-O2 -fno-builtin`, no interworking |
-| everything else | `agbcc` | `-O2 -mthumb-interwork -fhex-asm -Werror` |
+safe. The flags are `-O2 -mthumb-interwork -fhex-asm -Werror`.
 
 A `c-file-O1` row uses the same compiler and flags with `-O1` in place of
 `-O2`. The EEPROM driver (`src/eeprom/`) matches only under `-O1`.

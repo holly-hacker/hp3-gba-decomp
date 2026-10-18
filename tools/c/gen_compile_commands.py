@@ -25,8 +25,6 @@ DROP = {"-fhex-asm", "-mthumb-interwork", "-Werror", "-O2"}
 def clang_args(src: str, prefix: str) -> list[str]:
     _, cppflags, cflags = compile_c.profile(src, prefix)
     flags = [f for f in [*cppflags, *cflags] if f not in DROP]
-    if not any(f.startswith("-std=") for f in flags):
-        flags.append("-std=gnu89")  # old_agbcc's newlib profile omits it too
     return ["clang", "-xc", *flags, "-c", src]
 
 
@@ -37,8 +35,7 @@ def main() -> None:
 
     entries = [
         {"directory": root, "file": src, "arguments": clang_args(src, prefix)}
-        for src in sorted(glob.glob("src/**/*.c", recursive=True, root_dir=root)
-                           + glob.glob("3rd_party/**/*.c", recursive=True, root_dir=root))
+        for src in sorted(glob.glob("src/**/*.c", recursive=True, root_dir=root))
     ]
 
     out = os.path.join(root, "compile_commands.json")

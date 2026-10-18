@@ -2096,59 +2096,22 @@ asm-file 0x08049DB0 _ asm/rt/bios_calls.s               bios_calls
 c-file-O1 0x08049DF0 _ src/eeprom/eeprom_v124.c EepromV124
 c-file-O1 0x0804A174 _ src/eeprom/eeprom_nowait.c EepromNoWait
 
-asm-file 0x0804A1EC _ asm/rt/call_via_rX.s              _call_via_r0
-asm-file 0x0804A228 _ asm/rt/divsi3.s                   __divsi3
-asm-file 0x0804A2BC 0x0804A2C0 asm/rt/div0.s                    __div0
-thumb-func 0x0804A2C0 __modsi3
-asm-file 0x0804A390 _ asm/rt/udivsi3.s                 __udivsi3
-asm-file 0x0804A408 0x0804A4C8 asm/rt/umodsi3.s                 __umodsi3
-thumb-func 0x0804A4C8 __pack_d
-thumb-func 0x0804A610 __unpack_d
-thumb-func 0x0804A6E8 _fpadd_parts_d
-thumb-func 0x0804A954 __adddf3
-thumb-func 0x0804A984 __subdf3
-thumb-func 0x0804A9BC __muldf3
-thumb-func 0x0804AC64 __divdf3
-thumb-func 0x0804ADEC __fpcmp_parts_d
-thumb-func 0x0804AEEC __cmpdf2
-thumb-func 0x0804AF18 __eqdf2
-thumb-func 0x0804AF64 __nedf2
-thumb-func 0x0804AFB0 __gtdf2
-thumb-func 0x0804AFFC __gedf2
-thumb-func 0x0804B048 __ltdf2
-thumb-func 0x0804B094 __ledf2
-thumb-func 0x0804B0E0 __floatsidf
-thumb-func 0x0804B15C __fixdfsi
-thumb-func 0x0804B1D0 __negdf2
-thumb-func 0x0804B1F8 __make_dp
-thumb-func 0x0804B220 __truncdfsf2
-thumb-func 0x0804B264 __pack_f
-thumb-func 0x0804B31C __unpack_f
-thumb-func 0x0804B398 _fpadd_parts_f
-thumb-func 0x0804B514 __addsf3
-thumb-func 0x0804B540 __subsf3
-thumb-func 0x0804B574 __mulsf3
-thumb-func 0x0804B6D8 __divsf3
-thumb-func 0x0804B7C4 __fpcmp_parts_f
-thumb-func 0x0804B8A8 __cmpsf2
-thumb-func 0x0804B8D0 __eqsf2
-thumb-func 0x0804B918 __nesf2
-thumb-func 0x0804B960 __gtsf2
-thumb-func 0x0804B9A8 __gesf2
-thumb-func 0x0804B9F0 __ltsf2
-thumb-func 0x0804BA38 __lesf2
-thumb-func 0x0804BA80 __floatsisf
-thumb-func 0x0804BAE0 __fixsfsi
-thumb-func 0x0804BB48 __negsf2
-thumb-func 0x0804BB6C __make_fp
-thumb-func 0x0804BB84 __extendsfdf2
-thumb-func 0x0804BBB0 __lshrdi3
-thumb-func 0x0804BBE4 __muldi3
-thumb-func 0x0804BC54 __negdi2
+# libgcc (docs/compiler.md)
+lib-object 0x0804A1EC _ libgcc.a _call_via_rX.o
+lib-object 0x0804A228 _ libgcc.a _divsi3.o
+lib-object 0x0804A2BC _ libgcc.a _dvmd_tls.o
+lib-object 0x0804A2C0 _ libgcc.a _modsi3.o
+lib-object 0x0804A390 _ libgcc.a _udivsi3.o
+lib-object 0x0804A408 _ libgcc.a _umodsi3.o
+lib-object 0x0804A4C8 _ libgcc.a dp-bit.o 0x030062F0
+lib-object 0x0804B264 _ libgcc.a fp-bit.o 0x03006308
+lib-object 0x0804BBB0 _ libgcc.a _lshrdi3.o
+lib-object 0x0804BBE4 _ libgcc.a _muldi3.o
+lib-object 0x0804BC54 _ libgcc.a _negdi2.o
 
-# newlib, compiled from source by `just compile-c` (docs/compiler.md)
-c-file 0x0804BC6C _ 3rd_party/newlib/bzero.c  bzero
-c-file 0x0804BC88 _ 3rd_party/newlib/memcpy.c memcpy
+# newlib (docs/compiler.md)
+lib-object 0x0804BC6C _ libc.a bzero.o
+lib-object 0x0804BC88 _ libc.a memcpy.o
 
 # End of main code section, start of data section
 

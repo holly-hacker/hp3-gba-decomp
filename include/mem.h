@@ -53,13 +53,13 @@ void FreeBlock(void *ptr);
 void *ResizeBlock(void *ptr, u32 size);
 u32 HeapStubReturnOne(void);
 
-// Ordinary game code, not the vendored newlib copy in 3rd_party/newlib/ -- see
+// Ordinary game code; the ROM has no newlib memset -- see
 // docs/memory-map/heap.md.
 void *memset(void *dst, int val, u32 len);
 void *CopyMemory(void *dst, const void *src, u32 len);
 void *MoveMemory(void *dst, const void *src, u32 len);
 
-// newlib's memcpy, 3rd_party/newlib/memcpy.c.
+// newlib's memcpy, linked from agbcc's libc.a.
 extern void *memcpy(void *dst, const void *src, u32 n);
 
 // Start of pool 0, which InitHeap spans to EWRAM_END.

@@ -36,14 +36,14 @@ unmatched, also test every entry that fits the remaining symptom.
 ## 1. Establish the target
 
 Run commands from the repository root. **Check the environment once:** run
-`command -v agbcc old_agbcc arm-none-eabi-as arm-none-eabi-objdump just`.
+`command -v agbcc arm-none-eabi-as arm-none-eabi-objdump just`.
 If all are available, run commands directly; do not start another `nix develop`.
 Otherwise, use `nix develop -c <command>`. Treat a set `IN_NIX_SHELL` variable as
 supporting evidence, but check tool availability rather than relying on it alone.
 Discover options with `python3 -m tools.matching --help`.
 
 1. Identify version, function address, instruction mode, callers, callees, and source
-   profile. Game C uses agbcc; `3rd_party/newlib/` uses old_agbcc; ARM-mode C uses agbcc_arm
+   profile. Game C uses agbcc; ARM-mode C uses agbcc_arm
    (`c-file-arm`), which `prepare` selects from the function's mode.
 2. Check the current build with `just compare us` and `just compare jp`. Record any
    pre-existing failure before changing code. Do not rerun asset extraction over edits.
@@ -72,8 +72,7 @@ python3 -m tools.matching snapshot build/matching/us/ResolveEnemyAttack baseline
 For an unmatched function, provide `prepare VERSION NAME --source PATH --end 0xEND`.
 The function needs an entry in `full_disasm.s`; persist confirmed names in
 `functions.VERSION.cfg`. END is exclusive and
-must include its pools/padding. Use `--profile-source 3rd_party/newlib/NAME.c` for libc drafts
-outside that directory. No production manifest row is required. Conflicting seed/manifest addresses stop preparation;
+must include its pools/padding. No production manifest row is required. Conflicting seed/manifest addresses stop preparation;
 use `--reference-name NAME` only after verifying a differently named disassembly entry.
 
 Preparation refuses to overwrite an existing workspace. It assembles the reference slice (ending at the requested address label

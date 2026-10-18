@@ -2,8 +2,9 @@
 """Parse regions.<ver>.txt, the manifest of extracted byte ranges.
 
 Directive rows (krawall-module, dialog-text, c-file, ...) name a source
-under data/, src/ or 3rd_party/ and resolve to the assembly some tools/
-script packs or compiles into build/<ver>/.
+under data/ or src/ and resolve to the assembly some tools/ script packs
+or compiles into build/<ver>/; lib-object rows name a toolchain library
+object instead.
 """
 import sys
 
@@ -36,9 +37,9 @@ DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 # build/<ver>/graphics/<name>.s.
 GRAPHICS_DIRECTIVE = "graphics"
 
-# c-file, c-file-O1 and c-file-arm rows name a .c under src/ or 3rd_party/,
-# compiled to assembly by tools/c/compile_c.py (the `compile-c` recipe, which
-# must run before `gen-link`) with the compiler the ROM was built with -- see
+# c-file, c-file-O1 and c-file-arm rows name a .c under src/, compiled to
+# assembly by tools/c/compile_c.py (the `compile-c` recipe, which must run
+# before `gen-link`) with the compiler the ROM was built with -- see
 # docs/compiler.md.
 C_FILE_DIRECTIVES = {"c-file", "c-file-O1", "c-file-arm"}
 
@@ -51,6 +52,12 @@ RODATA_SUFFIX = ".rodata"
 # asm-file rows name a committed .s under asm/ directly -- no packing or
 # compiling step, the file is already the region's assembly.
 ASM_FILE_DIRECTIVE = "asm-file"
+
+# lib-object rows name a member of an archive agbcc installs (libgcc.a,
+# libc.a); tools/gen_link.py extracts it and links it unchanged. The region
+# is named after the member without its .o. An optional last field places
+# the member's .bss at that RAM address.
+LIB_OBJECT_DIRECTIVE = "lib-object"
 
 
 # Rows that name a single address rather than a range.
@@ -85,6 +92,17 @@ def read_rows(path: str) -> list[tuple[int, list[str]]]:
     if pending is not None:
         sys.exit(f"{path}:{pending_lineno}: '{NEXT_START}' end with no following region row")
     return rows
+
+
+def read_lib_objects(path: str) -> dict[str, tuple[str, str, int | None]]:
+    """Returns region name -> (archive, member, bss address or None) for
+    every lib-object row."""
+    out = {}
+    for _, parts in read_rows(path):
+        if parts[0] == LIB_OBJECT_DIRECTIVE:
+            bss = int(parts[5], 16) if len(parts) == 6 else None
+            out[parts[4][:-len(".o")]] = (parts[3], parts[4], bss)
+    return out
 
 
 def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
@@ -149,6 +167,17 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 sys.exit(f"{path}:{lineno}: end must be after start")
             asmfile = f"build/{ver}/text/{name}.s"
             regions.append((start, end, asmfile, name))
+            continue
+        if parts[0] == LIB_OBJECT_DIRECTIVE:
+            if len(parts) not in (5, 6):
+                sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <archive> <member> [<bss>]'")
+            start, end = int(parts[1], 16), int(parts[2], 16)
+            if end <= start:
+                sys.exit(f"{path}:{lineno}: end must be after start")
+            archive, member = parts[3], parts[4]
+            if not member.endswith(".o"):
+                sys.exit(f"{path}:{lineno}: library member must be a .o")
+            regions.append((start, end, f"{archive}({member})", member[:-len(".o")]))
             continue
         if parts[0] == ASM_FILE_DIRECTIVE:
             if len(parts) != 5:

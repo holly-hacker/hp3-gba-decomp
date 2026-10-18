@@ -9,8 +9,9 @@ Areas and code blocks come from tools/rom_layout.json. Each code block is
 one unit, and its functions are the manifest's function rows and region
 starts plus the seeds in functions.<ver>.cfg. A function runs to the next
 function start or region boundary; it is matched when it lies in compiled C
-(c-file, c-file-O1, c-file-arm) or committed assembly (asm-file), which in
-the code areas is ARM code, the ROM header or library assembly. Code bytes are
+(c-file, c-file-O1, c-file-arm), committed assembly (asm-file), which in the
+code areas is ARM code or the ROM header, or a linked toolchain library
+object (lib-object). Code bytes are
 matched, and complete (linked from source), on the same terms; a block is a
 complete unit when all of it is.
 
@@ -34,6 +35,7 @@ from manifest import (  # noqa: E402
     C_FILE_DIRECTIVES,
     C_RODATA_DIRECTIVE,
     LABEL_DIRECTIVES,
+    LIB_OBJECT_DIRECTIVE,
     RODATA_SUFFIX,
     read_rows,
 )
@@ -47,7 +49,7 @@ MEASURE_FIELDS = [
     "total_functions", "matched_functions",
 ]
 FUNCTION_DIRECTIVES = {"thumb-func", "arm-func"}
-MATCHED_CODE_DIRECTIVES = C_FILE_DIRECTIVES | {ASM_FILE_DIRECTIVE}
+MATCHED_CODE_DIRECTIVES = C_FILE_DIRECTIVES | {ASM_FILE_DIRECTIVE, LIB_OBJECT_DIRECTIVE}
 CFG_DIRECTIVES = {"thumb_func", "arm_func"}
 
 
@@ -93,7 +95,7 @@ def read_function_starts(ver: str, rows: list[dict]) -> dict[int, str]:
     """
     names: dict[int, str] = {}
     for row in rows:
-        if row["directive"] in C_FILE_DIRECTIVES or row["directive"] == ASM_FILE_DIRECTIVE:
+        if row["directive"] in MATCHED_CODE_DIRECTIVES:
             names[row["start"]] = row["name"]
     with open(f"functions.{ver}.cfg") as f:
         for line in f:
@@ -132,10 +134,8 @@ def read_functions(ver: str, rows: list[dict], blocks: list) -> list[dict]:
     return functions
 
 
-def category_of(area: str, source: str | None) -> str:
+def category_of(area: str) -> str:
     if "krawall" in area:
-        return "library"
-    if source and source.startswith("3rd_party/newlib/"):
         return "library"
     return "game"
 
@@ -255,7 +255,7 @@ def build_report(ver: str) -> dict:
                 m["complete_data"] = size
             metadata = {
                 "complete": matched,
-                "progress_categories": [category_of(area.name, source)],
+                "progress_categories": [category_of(area.name)],
                 "auto_generated": row is None,
             }
             if source:

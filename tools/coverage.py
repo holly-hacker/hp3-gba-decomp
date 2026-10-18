@@ -5,9 +5,10 @@ Reads regions.<ver>.txt and buckets every region-bearing row into:
   c-file  -- compiled C (c-file, c-file-O1, c-file-arm and c-rodata
             directives)
   asm-file -- committed hand assembly
+  lib     -- toolchain library objects (lib-object directives)
   data    -- extracted-asset directives (krawall, dialog-text, ...)
   raw     -- unclaimed, filled from the baserom with .incbin
-"matched" is c-file + asm-file + data, i.e. everything that is not raw.
+"matched" is c-file + asm-file + lib + data, i.e. everything that is not raw.
 
 Each area (code 1, data, code 2), and with --blocks each code block, is
 measured by the bytes of each kind that fall inside it; a region straddling a
@@ -21,8 +22,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import rom_layout  # noqa: E402
 from manifest import C_FILE_DIRECTIVES, read_rows  # noqa: E402
 
-KINDS = ["c-file", "asm-file", "data", "raw"]
-COLUMNS = ["c-file", "asm-file", "data", "matched", "raw"]
+KINDS = ["c-file", "asm-file", "lib", "data", "raw"]
+COLUMNS = ["c-file", "asm-file", "lib", "data", "matched", "raw"]
 NON_REGION = {"label", "thumb-func", "arm-func"}
 
 
@@ -31,6 +32,8 @@ def kind_of(directive: str) -> str:
         return "c-file"
     if directive == "asm-file":
         return "asm-file"
+    if directive == "lib-object":
+        return "lib"
     return "data"
 
 

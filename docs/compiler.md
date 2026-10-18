@@ -15,8 +15,7 @@ binutils, and newlib.
 
 A contiguous run of libgcc and libc objects near the end of the code
 region reproduces **byte for byte** from a locally built agbcc
-`libgcc.a`/`libc.a` (only relocated bytes masked out; trailing `c046`
-object padding appears as `0000` linker fill in the ROM):
+`libgcc.a`/`libc.a` (relocated bytes resolve at link time):
 
 | US | JP | object | bytes |
 |---|---|---|---|
@@ -33,6 +32,11 @@ object padding appears as `0000` linker fill in the ROM):
 | `0804BD28` | `0804BC54` | `_negdi2` | 24 |
 | `0804BD40` | `0804BC6C` | libc `bzero` | 28 |
 | `0804BD5C` | `0804BC88` | libc `memcpy` | 96 |
+
+The build links these objects unchanged from the agbcc install through
+`lib-object` rows in the manifest. `dp-bit` and `fp-bit` each keep a
+`.bss` variable (`thenan`), placed at the RAM address the row gives: US
+`0x030062A0`/`0x030062B8`, JP `0x030062F0`/`0x03006308`.
 
 `dp-bit` and `fp-bit` are ~5.8 KB of compiler-generated Thumb from C, so
 the match pins the code generator, not just the library source.
@@ -140,6 +144,5 @@ wrong value.
 ## Reproducing
 
 `nix develop` provides `agbcc` and `old_agbcc`; `flake.nix` pins the
-source. Compare any object's `.text` from its `libgcc.a`/`libc.a` against
-the addresses above, or read `tools/c/compile_c.py` for the flags each
-half of the ROM was built with.
+source. `just compare` links each library object above from its
+`libgcc.a`/`libc.a`; `tools/c/compile_c.py` holds the game code's flags.

@@ -7,6 +7,8 @@ Writes, all under build/<ver>/ and none of it committed:
                       .include (or .incbin) of the region's real source
   obj/gaps.s          every unclaimed byte range, one section per gap,
                       .incbin straight from the baserom
+  obj/<name>.o        a lib-object row's member, extracted unchanged from
+                      agbcc's installed archive
   link.ld             places each of those sections at its manifest address
 
 The linker, not the order of a concatenated file, decides where things
@@ -21,11 +23,13 @@ Usage: gen_link.py <ver>
 """
 import os
 import re
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from buildcache import write_if_changed  # noqa: E402
-from manifest import RODATA_SUFFIX, Labels, parse_manifest  # noqa: E402
+from c.compile_c import agbcc_prefix  # noqa: E402
+from manifest import RODATA_SUFFIX, Labels, parse_manifest, read_lib_objects  # noqa: E402
 
 BASE_ADDR = 0x08000000
 
@@ -79,6 +83,15 @@ def write_region(objdir: str, ver: str, region, rodata: str | None = None) -> No
     write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
 
 
+def extract_member(objdir: str, archive: str, member: str, name: str) -> None:
+    """Copies one member of agbcc's installed archive to obj/<name>.o."""
+    path = os.path.join(agbcc_prefix(), "lib", archive)
+    run = subprocess.run(["arm-none-eabi-ar", "p", path, member], capture_output=True)
+    if run.returncode or not run.stdout:
+        sys.exit(f"cannot extract {member} from {path}:\n{run.stderr.decode()}")
+    write_if_changed(os.path.join(objdir, f"{name}.o"), run.stdout)
+
+
 def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> list[str]:
     """Writes one section per unclaimed range, with any declared labels
     defined inside it so extracted code can reference raw territory."""
@@ -113,6 +126,7 @@ def main() -> None:
 
     rom_size = os.path.getsize(f"baserom.{ver}.gba")
     regions, labels = parse_manifest(f"regions.{ver}.txt", ver)
+    lib_objects = read_lib_objects(f"regions.{ver}.txt")
 
     objdir = f"build/{ver}/obj"
     os.makedirs(objdir, exist_ok=True)
@@ -132,6 +146,11 @@ def main() -> None:
         addr = end
         if name.endswith(RODATA_SUFFIX):
             placements.append((start, f".rgn{i:03d}", name[:-len(RODATA_SUFFIX)], ".rodata"))
+            continue
+        if name in lib_objects:
+            archive, member, _ = lib_objects[name]
+            extract_member(objdir, archive, member, name)
+            placements.append((start, f".rgn{i:03d}", name, ".text"))
             continue
         rodata = name + RODATA_SUFFIX
         write_region(objdir, ver, region, rodata if rodata in names else None)
@@ -158,8 +177,18 @@ def main() -> None:
             # this, ld pads its LMA to that alignment for overlap checking
             # and falsely reports it overlapping the next region whenever
             # its real ROM address isn't itself 4-aligned.
-            f.write(f"    {section} {hex(address)} : SUBALIGN(1) "
-                    f"{{ {objdir}/{stem}.o({input_section}) }}\n")
+            contents = f"{objdir}/{stem}.o({input_section})"
+            if stem in lib_objects:
+                # A library object has no wrapper to carry the markers.
+                contents = f'"__rgn_{stem}_beg" = .; {contents} "__rgn_{stem}_end" = .;'
+            f.write(f"    {section} {hex(address)} : SUBALIGN(1) {{ {contents} }}\n")
+        # The game's own RAM variables are fixed addresses
+        # (ram_symbols.<ver>.inc); a library object's .bss is placed where
+        # the ROM's references to it point.
+        for i, (stem, (_, _, bss)) in enumerate(sorted(lib_objects.items())):
+            if bss is not None:
+                f.write(f"    .libbss{i:03d} {hex(bss)} (NOLOAD) : "
+                        f"{{ {objdir}/{stem}.o(.bss) }}\n")
         f.write("    /DISCARD/ : { *(.comment) *(.ARM.attributes) *(.note*) }\n")
         f.write("}\n")
 
