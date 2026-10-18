@@ -53,15 +53,17 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
 
 ## Trade session (PROVEN)
 
-`CardTradeState` at `0x03005568` (12 bytes, Ghidra type only so far):
+`CardTradeState` at `0x03005568` (12 bytes, `include/pscreen_trade.h`): a
+`dwStatus` word, then one 4-byte `CardTradeSide` per side, `aSides[0]` local
+and `aSides[1]` peer.
 
 | Offset | Field | Role |
 |---|---|---|
 | +0 | `dwStatus` (u32) | last link result, 0/1 (edge-detected) |
-| +4 | `bConfirmed` | set on confirm, cleared on reset |
-| +5/+6 | `bLocalOffer`/`bLocalLocked` | local card, then latched copy |
-| +7/+11 | `bUnk07`/`bUnk0B` | always `0x33`, never read (UNCONFIRMED) |
-| +8/+9/+10 | `bPeerReady`/`bPeerOffer`/`bPeerLocked` | peer side, same shape |
+| +4/+8 | `aSides[].bReady` | set on confirm, cleared on reset; picks the side's ready icon (`g_aCardTradeReadyIconAssets`) |
+| +5/+9 | `aSides[].bOffer` | offered card |
+| +6/+10 | `aSides[].bLocked` | `bOffer` latched when the trade starts |
+| +7/+11 | `aSides[].bShownCard` | card the side's slot shows; `SetCardTradeSlotCard` redraws only when it changes |
 
 Card values are 0–50 (51 Famous Wizard Cards); `0x33` (51) means "no
 card". The mode's state machine (states 0–8) lives in the shared
@@ -90,7 +92,7 @@ on this path.
 ## Hostile peer (PROVEN where stated)
 
 - The peer's 16-bit word splits with no validation: low byte →
-  `bPeerOffer` (any 0–255), bit 8 → `bPeerReady`
+  `aSides[1].bOffer` (any 0–255), bit 8 → `aSides[1].bReady`
   (`ReceiveCardTradeOffer`, `0x0803ABF8`, registered as the link receive
   callback at init). STRUCTURAL MATCH on the callback invocation itself
   (taken by address, single static pointer).
@@ -108,7 +110,6 @@ on this path.
 
 ## Open questions
 
-- What, if anything, reads `bUnk07`/`bUnk0B`.
 - The `+0x14` word between `g_dwGameModeState` and `g_dwGameModeTimer`
   (blocks extending `GameModeStackContext_candidate` over these words).
 - The role of `g_SerialPlayerState.dwUnk_0x00`. Every access is a store of

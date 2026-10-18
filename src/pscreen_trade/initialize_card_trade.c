@@ -14,24 +14,24 @@ void InitializeCardTrade(void)
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == 1)
     {
         g_GameModeStackContext.dwModeState = 2;
-        g_CardTradeState.bLocalOffer = g_GameModeStackContext.dwCurrentGameModeArg2;
-        g_CardTradeState.bUnk07 = CARD_TRADE_NO_CARD;
-        g_CardTradeState.bUnk0B = CARD_TRADE_NO_CARD;
+        g_CardTradeState.aSides[CARD_TRADE_LOCAL].bOffer = g_GameModeStackContext.dwCurrentGameModeArg2;
+        g_CardTradeState.aSides[CARD_TRADE_LOCAL].bShownCard = CARD_TRADE_NO_CARD;
+        g_CardTradeState.aSides[CARD_TRADE_PEER].bShownCard = CARD_TRADE_NO_CARD;
         BeginPauseMenuScreen(0);
         BuildListMenu(&g_CardTradeMenuDefinition);
         LoadMenuScreenOverlay(gCardTradeOverlay, 0, 0);
         RefreshCardTradeSlots();
-        SpawnCardTradeCardActors();
+        SpawnCardTradeReadyIcons();
         PlayScreenTransitionInByIndex(0x3F, 2);
     }
     else
     {
         g_GameModeStackContext.dwModeState = 0;
         memset(&g_CardTradeState, 0, sizeof(CardTradeState));
-        g_CardTradeState.bLocalOffer = CARD_TRADE_NO_CARD;
-        g_CardTradeState.bPeerOffer = CARD_TRADE_NO_CARD;
-        g_CardTradeState.bUnk07 = CARD_TRADE_NO_CARD;
-        g_CardTradeState.bUnk0B = CARD_TRADE_NO_CARD;
+        g_CardTradeState.aSides[CARD_TRADE_LOCAL].bOffer = CARD_TRADE_NO_CARD;
+        g_CardTradeState.aSides[CARD_TRADE_PEER].bOffer = CARD_TRADE_NO_CARD;
+        g_CardTradeState.aSides[CARD_TRADE_LOCAL].bShownCard = CARD_TRADE_NO_CARD;
+        g_CardTradeState.aSides[CARD_TRADE_PEER].bShownCard = CARD_TRADE_NO_CARD;
         StartMenuOverlayFadeIn();
         LoadMenuScreenOverlay(gCardTradeOverlay, 0, 0);
     }

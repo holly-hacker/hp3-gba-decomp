@@ -1763,22 +1763,22 @@ c-file 0x0803A678 _ src/pscreen_status_equip/is_status_equip_slot_selectable.c I
 
 # Profile/Trade? (pause subscreen: card trade)
 c-file 0x0803A6D0 _ src/pscreen_trade/initialize_card_trade.c InitializeCardTrade
-c-file 0x0803A780 0x0803AA50 src/pscreen_trade/update_card_trade.c UpdateCardTrade
-thumb-func 0x0803AA50 ResetCardTradeAfterLinkLoss
-thumb-func 0x0803AAA8 SpawnCardTradeCardActors
-thumb-func 0x0803AB1C SelectCardTradeEntry
-c-file 0x0803ABBC 0x0803ABF8 src/pscreen_trade/exit_card_trade.c ExitCardTrade
-thumb-func 0x0803ABF8 ReceiveCardTradeOffer
-thumb-func 0x0803AC1C GetCardTradeSendWord
-thumb-func 0x0803AC38 CancelCardTradeOffer
-thumb-func 0x0803AC70 ShowCardTradeLinkStatus
-thumb-func 0x0803ACE0 RefreshCardTradeSlots
-thumb-func 0x0803AD00 SetCardTradeSlotCard
-thumb-func 0x0803AD30 RespawnCardTradeCardActor
-thumb-func 0x0803AD78 DrawCardTradeSlotName
-thumb-func 0x0803ADD0 ShowCardTradeMessage
-thumb-func 0x0803AE28 sub_0803AE28
-thumb-func 0x0803AE78 LeaveCardTradeScreen
+c-file 0x0803A780 _ src/pscreen_trade/update_card_trade.c UpdateCardTrade
+c-file 0x0803AA50 _ src/pscreen_trade/reset_card_trade_after_link_loss.c ResetCardTradeAfterLinkLoss
+c-file 0x0803AAA8 _ src/pscreen_trade/spawn_card_trade_ready_icons.c SpawnCardTradeReadyIcons
+c-file 0x0803AB1C _ src/pscreen_trade/select_card_trade_entry.c SelectCardTradeEntry
+c-file 0x0803ABBC _ src/pscreen_trade/exit_card_trade.c ExitCardTrade
+c-file 0x0803ABF8 _ src/pscreen_trade/receive_card_trade_offer.c ReceiveCardTradeOffer
+c-file 0x0803AC1C _ src/pscreen_trade/get_card_trade_send_word.c GetCardTradeSendWord
+c-file 0x0803AC38 _ src/pscreen_trade/cancel_card_trade_offer.c CancelCardTradeOffer
+c-file 0x0803AC70 _ src/pscreen_trade/show_card_trade_link_status.c ShowCardTradeLinkStatus
+c-file 0x0803ACE0 _ src/pscreen_trade/refresh_card_trade_slots.c RefreshCardTradeSlots
+c-file 0x0803AD00 _ src/pscreen_trade/set_card_trade_slot_card.c SetCardTradeSlotCard
+c-file 0x0803AD30 _ src/pscreen_trade/respawn_card_trade_card_actor.c RespawnCardTradeCardActor
+c-file 0x0803AD78 _ src/pscreen_trade/draw_card_trade_slot_name.c DrawCardTradeSlotName
+c-file 0x0803ADD0 _ src/pscreen_trade/show_card_trade_message.c ShowCardTradeMessage
+c-file 0x0803AE28 _ src/pscreen_trade/tick_card_trade_ready_icon.c TickCardTradeReadyIcon
+c-file 0x0803AE78 _ src/pscreen_trade/leave_card_trade_screen.c LeaveCardTradeScreen
 
 # Profile/View? (pause subscreen: folio card details)
 c-file 0x0803AEA0 _ src/pscreen_wizard_cards/initialize_folio_card_detail_screen.c InitializeFolioCardDetailScreen
@@ -2559,7 +2559,7 @@ c-file 0x0806B238 _ src/pscreen_save/no_yes_entries.c g_aNoYesEntries
 c-file 0x0806B250 _ src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
 c-file 0x0806B280 _ src/pscreen_status_equip/status_equip_slot_select.globals.c g_StatusEquipSlotFrameAsset
 c-file 0x0806B2FC _ src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
-c-file 0x0806B35C 0x0806B3AC src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
+c-file 0x0806B35C _ src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file 0x0806B3CC _ src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
 c-file 0x0806B3D8 _ src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAssets
 c-file 0x0806B7D4 _ src/rising_platform_actor/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite

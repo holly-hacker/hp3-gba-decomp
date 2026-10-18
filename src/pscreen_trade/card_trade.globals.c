@@ -1,5 +1,6 @@
 #include "types.h"
 #include "pscreen_trade.h"
+#include "gen/graphics/overworld.h"
 
 const ListMenuEntry g_aCardTradeEntries[3] = {
     { FolioUniversitas, 0x8C7, 1 },  // "Choose Card"
@@ -23,4 +24,9 @@ const ListMenuDefinition g_CardTradeMenuDefinition = {
 const CardTradeSlotPosition g_aCardTradeSlotPositions[2] = {
     { 0x18, 0x26 },
     { 0x90, 0x26 },
+};
+
+const ActorAssetRecord g_aCardTradeReadyIconAssets[2] = {
+    { (void *)gActorSprite031Tiles, (void *)gActorSprite031Frames, (void *)gActorSprite096Palette, 0 },
+    { (void *)gActorSprite032Tiles, (void *)gActorSprite032Frames, (void *)gActorSprite097Palette, 0 },
 };

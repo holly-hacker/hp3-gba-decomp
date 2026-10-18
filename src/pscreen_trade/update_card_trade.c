@@ -18,7 +18,7 @@ void UpdateCardTrade(void)
 
     if (IsSerialUp() == 0)
     {
-        g_CardTradeState.bPeerOffer = CARD_TRADE_NO_CARD;
+        g_CardTradeState.aSides[CARD_TRADE_PEER].bOffer = CARD_TRADE_NO_CARD;
         SetCardTradeSlotCard(1, CARD_TRADE_NO_CARD);
         SerialConnect(2);
     }
@@ -38,7 +38,7 @@ void UpdateCardTrade(void)
                 StartMenuFadeIn();
                 BuildListMenu(&g_CardTradeMenuDefinition);
                 RefreshCardTradeSlots();
-                SpawnCardTradeCardActors();
+                SpawnCardTradeReadyIcons();
                 g_GameModeStackContext.dwModeState = 1;
             }
             else
@@ -51,7 +51,7 @@ void UpdateCardTrade(void)
         {
             g_GameModeStackContext.dwModeTimer--;
             if (g_GameModeStackContext.dwModeTimer == 0)
-                ShowCardTradeMessage(0xACF);  // no text: clears the message box
+                ShowCardTradeMessage(CARD_TRADE_NO_MESSAGE);
         }
 
         RefreshCardTradeSlots();
@@ -88,14 +88,15 @@ void UpdateCardTrade(void)
             break;
         }
 
-        if ((g_wKeysPressed & KeyB) || g_CardTradeState.bPeerLocked != g_CardTradeState.bPeerOffer)
+        if ((g_wKeysPressed & KeyB)
+            || g_CardTradeState.aSides[CARD_TRADE_PEER].bLocked != g_CardTradeState.aSides[CARD_TRADE_PEER].bOffer)
         {
             CancelCardTradeOffer();
             PlaySoundById(2);
             break;
         }
 
-        if (g_CardTradeState.bPeerReady != 0)
+        if (g_CardTradeState.aSides[CARD_TRADE_PEER].bReady != 0)
         {
             g_GameModeStackContext.dwModeTimer--;
             if (g_GameModeStackContext.dwModeTimer == -1)
@@ -112,7 +113,7 @@ void UpdateCardTrade(void)
                     SetActorMoveTargetWithDuration(g_apMenuIconActors[1],
                         g_aCardTradeSlotPositions[0].bX, g_aCardTradeSlotPositions[0].bY, 30);
 
-                ShowCardTradeMessage(0xACF);  // no text: clears the message box
+                ShowCardTradeMessage(CARD_TRADE_NO_MESSAGE);
                 g_GameModeStackContext.dwModeState = 6;
                 g_GameModeStackContext.dwModeTimer = 30;
             }
@@ -131,16 +132,16 @@ void UpdateCardTrade(void)
         g_GameModeStackContext.dwModeTimer--;
         if (g_GameModeStackContext.dwModeTimer == -1)
         {
-            g_CardTradeState.bLocalOffer = CARD_TRADE_NO_CARD;
+            g_CardTradeState.aSides[CARD_TRADE_LOCAL].bOffer = CARD_TRADE_NO_CARD;
 
-            if (g_CardTradeState.bLocalLocked <= 0x32)
-                DecrementFolioUniversitasCard(g_CardTradeState.bLocalLocked);
+            if (g_CardTradeState.aSides[CARD_TRADE_LOCAL].bLocked <= 0x32)
+                DecrementFolioUniversitasCard(g_CardTradeState.aSides[CARD_TRADE_LOCAL].bLocked);
 
-            if (g_CardTradeState.bPeerLocked <= 0x32)
-                IncrementFolioUniversitasCard(g_CardTradeState.bPeerLocked);
+            if (g_CardTradeState.aSides[CARD_TRADE_PEER].bLocked <= 0x32)
+                IncrementFolioUniversitasCard(g_CardTradeState.aSides[CARD_TRADE_PEER].bLocked);
 
-            SetCardTradeSlotCard(0, g_CardTradeState.bPeerLocked);
-            SetCardTradeSlotCard(1, g_CardTradeState.bLocalLocked);
+            SetCardTradeSlotCard(0, g_CardTradeState.aSides[CARD_TRADE_PEER].bLocked);
+            SetCardTradeSlotCard(1, g_CardTradeState.aSides[CARD_TRADE_LOCAL].bLocked);
             g_GameModeStackContext.dwModeState = 8;
         }
         break;
@@ -156,7 +157,7 @@ void UpdateCardTrade(void)
         if (g_GameModeStackContext.dwModeTimer != -1)
         {
             if (g_GameModeStackContext.dwModeTimer == 5)
-                g_CardTradeState.bLocalOffer = CARD_TRADE_NO_CARD;
+                g_CardTradeState.aSides[CARD_TRADE_LOCAL].bOffer = CARD_TRADE_NO_CARD;
         }
         break;
 
