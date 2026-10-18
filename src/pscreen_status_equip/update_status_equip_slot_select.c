@@ -45,7 +45,7 @@ void UpdateStatusEquipSlotSelect(void)
         {
             if (sub_0803A678())
             {
-                sub_080368CC(g_aStatusEquipSlots[g_bStatusEquipSlot].dwType);
+                SelectStatusEquipSlotType(g_aStatusEquipSlots[g_bStatusEquipSlot].dwType);
                 g_StatusEquipSlotSelect.nextMode = StatusEquipItemSelect;
                 g_GameModeStackContext.dwModeState = 4;
             }

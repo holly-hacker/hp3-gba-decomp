@@ -1622,12 +1622,12 @@ c-file 0x08036178 _ src/pscreen_connectivity/exit_confirm_trade_screen.c ExitCon
 
 # Profile/Equip? (pause subscreen: status/equip)
 c-file 0x080361AC _ src/pscreen_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
-c-file 0x08036214 0x080362D8 src/pscreen_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
-thumb-func 0x080362D8 sub_080362D8
-thumb-func 0x080364A8 DrawEquipItemStatComparison
-c-file 0x08036890 0x080368CC src/pscreen_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
-thumb-func 0x080368CC sub_080368CC
-thumb-func 0x080368E4 sub_080368E4
+c-file 0x08036214 _ src/pscreen_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
+c-file 0x080362D8 _ src/pscreen_equip/begin_status_equip_item_select_screen.c BeginStatusEquipItemSelectScreen
+c-file 0x080364A8 _ src/pscreen_equip/draw_equip_item_stat_comparison.c DrawEquipItemStatComparison
+c-file 0x08036890 _ src/pscreen_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
+c-file 0x080368CC _ src/pscreen_equip/select_status_equip_slot_type.c SelectStatusEquipSlotType
+c-file 0x080368E4 _ src/pscreen_equip/equip_status_equip_item_selection.c EquipStatusEquipItemSelection
 
 # Profile/Folio? (pause subscreen: folios)
 c-file 0x0803693C _ src/pscreen_folio/update_folios.c UpdateFolios
@@ -2542,7 +2542,7 @@ c-file 0x08069184 0x08069194 src/pouring_minigame/serve_pumpkin_juice.globals.c 
 c-file 0x08069328 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x080693CC 0x080693E4 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
-c-file 0x08069458 _ src/pscreen_character/status_equip_character_select.globals.c g_dwStatusEquipCharacterSelectBg3Control
+c-file 0x0806944C _ src/pscreen_character/status_equip_character_select.globals.c g_adwStatusEquipCharacterNameTextIds
 c-file 0x0806945C _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C _ src/pscreen_folio/folios.globals.c g_aFoliosEntries
 c-file 0x08069568 _ src/pscreen_folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control

@@ -468,6 +468,8 @@
 
 @ --- include/pscreen_connectivity.h ---
 .set g_bConnectivityMenuCursor, 0x030052BC  @ s8: Connectivity row restored on re-entry
+
+@ --- include/pscreen_equip.h ---
 .set g_dwStatusEquipSlotType,      0x030052C0  @ u32: equipment type (0-5) of the slot chosen in StatusEquipSlotSelect
 .set g_StatusEquipItemSelect,      0x030052C8  @ StatusEquipItemSelectState: item select list, stat arrows and saved palette
 

@@ -9,7 +9,7 @@ void ExitStatusEquipItemSelect(void)
     BG_PLTT[5] = g_StatusEquipItemSelect.awSavedPalette[1];
     BG_PLTT[6] = g_StatusEquipItemSelect.awSavedPalette[2];
 
-    if (g_StatusEquipItemSelect.pItemList != NULL)
+    if (g_StatusEquipItemSelect.dwItemListOpen != 0)
         CloseItemList();
 
     ExitMenuScreen();

@@ -1435,12 +1435,12 @@ c-file 0x08036120 _ src/pscreen_connectivity/exit_connectivity.c ExitConnectivit
 c-file 0x08036164 _ src/pscreen_connectivity/initialize_confirm_trade_screen.c InitializeConfirmTradeScreen
 c-file 0x080361BC _ src/pscreen_connectivity/exit_confirm_trade_screen.c ExitConfirmTradeScreen
 c-file 0x080361F0 _ src/pscreen_equip/initialize_status_equip_item_select.c InitializeStatusEquipItemSelect
-c-file 0x08036258 0x0803631C src/pscreen_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
-thumb-func 0x0803631C sub_080362D8
-thumb-func 0x080364EC DrawEquipItemStatComparison
-c-file 0x080368D4 0x08036910 src/pscreen_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
-thumb-func 0x08036910 sub_080368CC
-thumb-func 0x08036928 sub_080368E4
+c-file 0x08036258 _ src/pscreen_equip/update_status_equip_item_select.c UpdateStatusEquipItemSelect
+c-file 0x0803631C _ src/pscreen_equip/begin_status_equip_item_select_screen.c BeginStatusEquipItemSelectScreen
+c-file 0x080364EC _ src/pscreen_equip/draw_equip_item_stat_comparison.c DrawEquipItemStatComparison
+c-file 0x080368D4 _ src/pscreen_equip/exit_status_equip_item_select.c ExitStatusEquipItemSelect
+c-file 0x08036910 _ src/pscreen_equip/select_status_equip_slot_type.c SelectStatusEquipSlotType
+c-file 0x08036928 _ src/pscreen_equip/equip_status_equip_item_selection.c EquipStatusEquipItemSelection
 c-file 0x08036980 _ src/pscreen_folio/update_folios.c UpdateFolios
 c-file 0x08036A10 _ src/pscreen_folio/initialize_folios.c InitializeFolios
 c-file 0x08036A64 _ src/pscreen_folio/exit_folios.c ExitFolios
@@ -2282,7 +2282,7 @@ c-file 0x08069110 0x08069120 src/pouring_minigame/serve_pumpkin_juice.globals.c 
 c-file 0x080692B4 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x0806933C _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x08069358 0x08069370 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
-c-file 0x080693E4 _ src/pscreen_character/status_equip_character_select.globals.c g_dwStatusEquipCharacterSelectBg3Control
+c-file 0x080693D8 _ src/pscreen_character/status_equip_character_select.globals.c g_adwStatusEquipCharacterNameTextIds
 c-file 0x080693E8 _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x08069498 _ src/pscreen_folio/folios.globals.c g_aFoliosEntries
 c-file 0x080694F4 _ src/pscreen_folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control

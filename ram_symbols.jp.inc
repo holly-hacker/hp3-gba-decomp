@@ -444,6 +444,9 @@
 
 @ --- include/pscreen_connectivity.h ---
 .set g_bConnectivityMenuCursor, 0x0300531C
+
+@ --- include/pscreen_equip.h ---
+.set g_dwStatusEquipSlotType,      0x03005320
 .set g_StatusEquipItemSelect,      0x03005328
 
 @ --- include/pscreen_folio.h ---

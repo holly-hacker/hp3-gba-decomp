@@ -18,7 +18,7 @@ void InitializeStatusEquipItemSelect(void)
         g_StatusEquipItemSelect.apStatArrows[i] = NULL;
 
     SetAlphaBlendTargets(0x14, 1);
-    sub_080362D8();
+    BeginStatusEquipItemSelectScreen();
     g_GameModeStackContext.dwModeSubState = 0x10;
     g_GameModeStackContext.dwModeState = 1;
 }

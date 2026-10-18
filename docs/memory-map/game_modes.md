@@ -136,7 +136,7 @@ PROVEN from US decompiles and ROM tables.
   The three slots show Hermione, Harry and Ron, left to right
   (`StatusEquipSlotToCharacter`/`StatusEquipCharacterToSlot`); left/right
   wrap and skip absent members. A stores the chosen `FighterType` (0 Harry,
-  1 Hermione, 2 Ron; names at `0x0806944C`) in `g_dwStatusEquipCharacter`,
+  1 Hermione, 2 Ron; names in `g_adwStatusEquipCharacterNameTextIds`) in `g_dwStatusEquipCharacter`,
   which 0x0E, 0x0F and `ItemUseScreen` read. Each present member gets a
   stats panel (`DrawStatusEquipCharacterStats`: level, Exp, Next (omitted
   from displayed level 100), SP and MP). `StatusEquipSlotToColumn` centres

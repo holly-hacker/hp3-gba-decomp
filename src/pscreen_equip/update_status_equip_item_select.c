@@ -17,7 +17,7 @@ void UpdateStatusEquipItemSelect(void)
         break;
 
     case 2:
-        if (g_StatusEquipItemSelect.pItemList != NULL)
+        if (g_StatusEquipItemSelect.dwItemListOpen != 0)
             TickItemList();
 
         if (g_wKeysPressed & (KeyA | KeyB))
@@ -27,7 +27,7 @@ void UpdateStatusEquipItemSelect(void)
                 PlaySoundById(2);
             else if (g_wKeysPressed & KeyA)
             {
-                if (!sub_080368E4())
+                if (!EquipStatusEquipItemSelection())
                 {
                     leave = 0;
                     PlaySoundById(3);
