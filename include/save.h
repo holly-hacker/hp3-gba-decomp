@@ -145,7 +145,7 @@ typedef struct {
     u8 bFlags;               // 0x00: bit 0 = care screen visited
     u8 bNameIndex;           // 0x01: 0-13
     u8 bTypeIndex;           // 0x02: 0-2
-    u8 bUnknown3;            // 0x03
+    u8 bUnknown3;            // 0x03: never written by the game; sent to the GameCube with the owl
     u8 abStatMeters[3];      // 0x04
     u16 wElapsedTicks;       // 0x08
     u8 abCareCounters[6];    // 0x0A

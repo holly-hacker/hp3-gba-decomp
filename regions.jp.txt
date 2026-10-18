@@ -1482,18 +1482,18 @@ c-file 0x08038238 _ src/pscreen_folio_universitas/is_folio_universitas_card_new.
 c-file 0x08038264 _ src/pscreen_folio_universitas/clear_folio_universitas_new_cards.c ClearFolioUniversitasNewCards
 c-file 0x08038278 _ src/pscreen_folio_universitas/is_folio_universitas_card_unavailable.c IsFolioUniversitasCardUnavailable
 c-file 0x080382D4 _ src/pscreen_gamecube/initialize_gamecube_link.c InitializeGameCubeLink
-c-file 0x08038364 0x08038444 src/pscreen_gamecube/update_gamecube_link.c UpdateGameCubeLink
-thumb-func 0x08038444 UpdateGameCubeLinkStatusText
-thumb-func 0x080385FC StageGameCubeStateBytes
-c-file 0x08038650 0x08038694 src/pscreen_gamecube/exit_gamecube_link.c ExitGameCubeLink
-thumb-func 0x08038694 ShowGameCubeLinkMessage
-thumb-func 0x080386D8 SpawnGameCubeLinkIconActors
-thumb-func 0x08038734 DispatchGameCubeLinkCommand
-thumb-func 0x080387A4 VerifyGameCubeHandshakeBytes
-thumb-func 0x080387C8 FlagGameCubeHeaderReceived
-thumb-func 0x080387F0 AcknowledgeGameCubeCommand
-thumb-func 0x080387F4 PadGameCubeReceiveBuffer
-thumb-func 0x08038810 StageGameCubeStatusByte
+c-file 0x08038364 _ src/pscreen_gamecube/update_gamecube_link.c UpdateGameCubeLink
+c-file 0x08038444 _ src/pscreen_gamecube/update_gamecube_link_status_text.c UpdateGameCubeLinkStatusText
+c-file 0x080385FC _ src/pscreen_gamecube/stage_gamecube_state_bytes.c StageGameCubeStateBytes
+c-file 0x08038650 _ src/pscreen_gamecube/exit_gamecube_link.c ExitGameCubeLink
+c-file 0x08038694 _ src/pscreen_gamecube/show_gamecube_link_message.c ShowGameCubeLinkMessage
+c-file 0x080386D8 _ src/pscreen_gamecube/spawn_gamecube_link_icon_actors.c SpawnGameCubeLinkIconActors
+c-file 0x08038734 _ src/pscreen_gamecube/dispatch_gamecube_link_command.c DispatchGameCubeLinkCommand
+c-file 0x080387A4 _ src/pscreen_gamecube/verify_gamecube_handshake_bytes.c VerifyGameCubeHandshakeBytes
+c-file 0x080387C8 _ src/pscreen_gamecube/flag_gamecube_header_received.c FlagGameCubeHeaderReceived
+c-file 0x080387F0 _ src/pscreen_gamecube/acknowledge_gamecube_command.c AcknowledgeGameCubeCommand
+c-file 0x080387F4 _ src/pscreen_gamecube/stage_gamecube_test_pattern.c StageGameCubeTestPattern
+c-file 0x08038810 _ src/pscreen_gamecube/stage_gamecube_status_byte.c StageGameCubeStatusByte
 c-file 0x08038820 _ src/pscreen_information/is_help_topic_unlocked.c IsHelpTopicUnlocked
 c-file 0x080388B8 _ src/pscreen_information/start_help_screen.c StartHelpScreen
 c-file 0x080389B4 _ src/pscreen_information/update_help.c UpdateHelp
@@ -2290,7 +2290,7 @@ c-file 0x08069530 _ src/pscreen_folio_bruti/folio_bruti_anims.c g_aFolioBrutiCur
 c-file 0x080695A0 _ src/pscreen_folio_universitas/folio_universitas_anims.c g_aFolioUniversitasCursorAnim
 c-file 0x0806963C _ src/pscreen_folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
 c-file 0x08069678 _ src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFolioCardThumbnails
-c-file 0x080699B8 0x080699DC src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
+c-file 0x080699B8 _ src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file 0x08069A44 _ src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAssets
 c-file 0x08069BFC _ src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file 0x0806B11C _ src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries

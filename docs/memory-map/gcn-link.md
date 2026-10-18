@@ -116,10 +116,10 @@ byte and passes `(pLength, pBuffer)` to the handler. For receive commands
 
 | Byte | Handler | Behavior |
 |---|---|---|
-| `0x40` | `VerifyGameCubeHandshakeBytes` (`0x08038760`) | scans the scratch buffer for the `0x61`-based handshake sequence, bounded `0x18` |
+| `0x40` | `VerifyGameCubeHandshakeBytes` (`0x08038760`) | compares the received bytes with `"abc...y"` (25 bytes); the result is discarded |
 | `0x41` | `FlagGameCubeHeaderReceived` (`0x08038784`) | if bit 0 of `g_saveManager` +0xD is clear, sets it and `bLinkProgress` = 1 |
 | `0x42` | `AcknowledgeGameCubeCommand` (`0x080387AC`) | no-op acknowledge (`bx lr`) |
-| `0x80` | `PadGameCubeReceiveBuffer` (`0x080387B0`) | fills 26 bytes with `0x5A`, length `0x1A` |
+| `0x80` | `StageGameCubeTestPattern` (`0x080387B0`) | sends `"ABC...Z"`, length `0x1A` |
 | `0x81` | `StageGameCubeStatusByte` (`0x080387CC`) | serves one status byte, length 1 |
 | `0x82` | `StageGameCubeStateBytes` (`0x080385B8`) | serves 7 bytes of `g_saveStateBlock` (`+0x9C`-`+0xA2`) and a zero, length 8; sets `bLinkProgress` = 2 |
 

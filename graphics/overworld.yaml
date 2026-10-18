@@ -74,6 +74,9 @@ groups:
           34: FolioCardThumbnail001
           85: FolioCardBackThumbnail
           86: ActorSprite086
+          88: GameCubeLinkGameCube
+          89: GameCubeLinkGameBoyAdvance
+          90: GameCubeLinkArrows
           91: ItemsSectionIconAll
           92: ItemsSectionIconPotions
           93: ItemsSectionIconMisc
