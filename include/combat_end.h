@@ -87,4 +87,5 @@ extern void RollBattleItemDrops(int *pItemId0, int *pItemId1);  // 0x080147C0
 extern void InitializeCombatResultXp(void);       // 0x08013AC8: draws the party's Exp/Level/Next rows
 extern void TickCombatResultXpCounter(void);      // 0x08014004: one tick of the XP counter
 extern void InitializeCombatResultDrops(void);    // 0x0801456C: rolls and lists the drops and the gold
-extern void sub_0801493C(void);
+extern u32 GrantPartyMemberXp(u32 fighterType, s32 xp);  // 0x080148F4: returns the number of level-ups
+extern void StartCombatResultPaletteEffect(void);       // 0x0801493C

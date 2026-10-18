@@ -596,9 +596,9 @@ c-file 0x08013AC8 _ src/combat_end/initialize_combat_result_xp.c InitializeComba
 c-file 0x08014004 _ src/combat_end/tick_combat_result_xp_counter.c TickCombatResultXpCounter
 c-file 0x0801456C _ src/combat_end/initialize_combat_result_drops.c InitializeCombatResultDrops
 c-file 0x080147C0 _ src/combat_end/roll_battle_item_drops.c RollBattleItemDrops
-c-file 0x080148A8 0x080148F4 src/combat_end/exit_combat_result.c ExitCombatResult
-thumb-func 0x080148F4 sub_080148F4
-thumb-func 0x0801493C sub_0801493C
+c-file 0x080148A8 _ src/combat_end/exit_combat_result.c ExitCombatResult
+c-file 0x080148F4 _ src/combat_end/grant_party_member_xp.c GrantPartyMemberXp
+c-file 0x0801493C 0x08014964 src/combat_end/start_combat_result_palette_effect.c StartCombatResultPaletteEffect
 
 # Combat fighter (battle actors, stats, actions and damage)
 thumb-func 0x08014964 ResetCharacterToLevel

@@ -104,7 +104,7 @@ void InitializeCombatResult(void)
     InitializeCombatResultXp();
     ReserveObjPaletteSlot(0);
     sub_0800D254((void *)GRAPHIC_BLOB_PALETTE_COLORS(gEquipCharacterSelect001), 0, 0x10);
-    sub_0801493C();
+    StartCombatResultPaletteEffect();
     SetAlphaBlendTargets(4, 0x1F);
     SetAlphaBlendCoefficients(9, 7);
     PlayScreenTransitionInByIndex(0x3F, 2);

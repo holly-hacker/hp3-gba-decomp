@@ -1022,7 +1022,11 @@ with level-up sound and sparkle) then a drop phase
 (`InitializeCombatResultDrops`, "The fleeing enemy dropped:" plus up to 2
 items from `RollBattleItemDrops` and the gold total, see
 `bBonusRewardFlags` above). `ExitCombatResult`
-(`0x080148A8`) returns to `Battle` mode. `g_dwBattleRewardFlagsSnapshot`
+(`0x080148A8`) returns to `Battle` mode. `GrantPartyMemberXp`
+(`0x080148F4`), which follows it, applies a whole XP amount at once,
+carrying the excess through each level-up up to level 99, and returns the
+level-up count; its caller is `GrantPartyExperience_candidate`, not the
+result screen. `g_dwBattleRewardFlagsSnapshot`
 is set by `ExitBattle` (`0x0800DE50`, `Battle`'s mode-EXIT handler,
 previously misidentified as a draw function), which tears down
 `g_pFightState`. Reward granting itself goes through `GrantReward`
