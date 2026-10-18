@@ -18,7 +18,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
     u32 queueIndex;
     u32 layer;
     u32 anyOamWork;
-    void (*pfnCheckCollisions)(u32, Actor **) = CheckActorCollisionsIwram;
+    void (*pfnCheckCollisions)(s32, Actor **) = CheckActorCollisionsIwram;
     void (*pfnSortActors)(Actor **, u32) = SortActorsByDepthIwram;
 
     anyOamWork = 0;

@@ -163,11 +163,11 @@ actor list, also uses. `BuildFreeList`, `AllocObjectFromFreeList`, and the
 ## `SortActorsByDepth` / `CheckActorCollisions` — ARM-mode
 
 Both are **confirmed ARM-mode** by disassembly (`arm_func` seeds in
-`functions.us.cfg`, byte-verified via `just disasm-compare`):
-`SortActorsByDepth` (`0x08006440`-`0x08006508`) and
-`CheckActorCollisions` (`0x08005F10`-ends within the same
-`0x08005EE8`-`0x08006508` span, alongside two other unnamed ARM/Thumb
-functions in between that aren't part of this pair). Neither is reachable
+`functions.us.cfg`, byte-verified via `just disasm-compare`). They bound
+the "ARM routines" block (`0x08005F10`-`0x08006508`, the same in US and
+JP): `CheckActorCollisions` (`0x08005F10`) first, then `DecompressLzRle`,
+`DecompressBgTile` and `FindFreeObjTileRun`, and `SortActorsByDepth`
+(`0x08006440`) last. Neither is reachable
 via `bl` anywhere in the ROM -- they're only ever taken by address
 (`InitActorPool` passes both to `bios_CPUSet` to relocate into IWRAM),
 which is why `gbadisasm`'s branch-following never found their boundaries
@@ -182,12 +182,11 @@ then descending screen Y.
 `CheckActorCollisions` does the per-frame pairwise collision pass.
 **PROVEN** by decompile: each actor has two `ActorCollisionBox` slots
 (`Actor.aCollisionBoxes`, `include/actor.h`) and a matching 2-entry
-callback array (`Actor.apfnCollisionCallback`). On AABB overlap, gated
-on `g_GameModeStackContext.dwCurrentGameMode == Overworld`, it calls
-each actor's callback for the overlapping box slot with the other
-actor as the argument.
+callback array (`Actor.apfnCollisionCallback`). Each active slot of the
+earlier actor in a pair is tested against the later actor's slot 0. On
+AABB overlap, gated on `g_GameModeStackContext.dwCurrentGameMode ==
+Overworld`, it calls each actor's callback for the first actor's slot
+with the other actor as the argument.
 
-`SortActorsByDepth` is matched C (`src/arm_routines/sort_actors_by_depth.c`,
-built with `agbcc_arm`; see "ARM-mode code" in
-[`../compiler.md`](../compiler.md)). `CheckActorCollisions` is still
-assembly (`asm/check_actor_collisions.s`).
+Both are matched C (`src/arm_routines/`, built with `agbcc_arm`; see
+"ARM-mode code" in [`../compiler.md`](../compiler.md)).

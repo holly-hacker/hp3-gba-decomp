@@ -1,13 +1,8 @@
 #include "arm_routines.h"
 #include "actor.h"
 
-// Sorts an array of Actor pointers into draw order. ARM-mode; InitActorPool
-// copies it into IWRAM (SortActorsByDepthIwram), and only that copy runs.
-//
-// Shell sort with the gaps 21, 7, 3, 1, packed byte-wise into one constant
-// and peeled off by shifting it left 8 bits each pass. The key sorts by
-// draw layer (oam.priority), then bDepthSortBias, then descending screen Y;
-// the 0x10000 keeps the Y subtraction from borrowing into the bias byte.
+// Shell sort (gaps 21, 7, 3, 1) into draw order: by oam.priority, then
+// bDepthSortBias, then descending screen Y.
 void SortActorsByDepth(Actor **actors, u32 count)
 {
     u32 gaps = 0x15070301;
@@ -39,9 +34,8 @@ void SortActorsByDepth(Actor **actors, u32 count)
     } while (gaps != 0);
 }
 
-// Empty and never referenced. CheckActorCollisions is followed by the same
-// lone return, and both IWRAM copies stop just short of it, which fits an
-// end-of-routine marker whose address once sized the copy.
+// Empty and never referenced; the IWRAM copy stops just short of it, so it
+// likely marked the routine's end.
 void SortActorsByDepthEnd_candidate(void)
 {
 }

@@ -202,10 +202,10 @@ c-file 0x08005EC8 _ src/area/get_room_offset_table_size.c GetRoomOffsetTableSize
 c-file 0x08005EE8 _ src/area/align_room_size_to_4.c AlignRoomSizeTo4
 
 # ARM routines
-asm-file 0x08005F10 _ asm/check_actor_collisions.s  CheckActorCollisions
-asm-file 0x08006108 _ asm/decompress_lz_rle.s      DecompressLzRle
-asm-file 0x08006300 _ asm/decompress_bg_tile.s       DecompressBgTile
-asm-file 0x080063B4 _ asm/find_free_obj_tile_run.s    FindFreeObjTileRun
+c-file-arm 0x08005F10 _ src/arm_routines/check_actor_collisions.c CheckActorCollisions
+c-file-arm 0x08006108 _ src/arm_routines/decompress_lz_rle.c DecompressLzRle
+c-file-arm 0x08006300 _ src/arm_routines/decompress_bg_tile.c DecompressBgTile
+c-file-arm 0x080063B4 _ src/arm_routines/find_free_obj_tile_run.c FindFreeObjTileRun
 c-file-arm 0x08006440 _ src/arm_routines/sort_actors_by_depth.c SortActorsByDepth
 
 # Background (BG layers)

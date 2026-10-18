@@ -118,6 +118,9 @@ typedef struct {
 #define VRAM_SIZE 0x18000
 #define OBJ_VRAM_TILES ((u8 *)0x06010000)
 
+// Game Pak ROM.
+#define ROM_BASE ((u8 *)0x08000000)
+
 // Serial EEPROM bus, memory-mapped over the SRAM-area mirror while a
 // game-pak DMA is in flight; only the low bit of each transferred
 // halfword is wired to the chip. See EepromDma3Transfer.

@@ -16,7 +16,7 @@ struct ActorFrameData;
 extern u8 g_abObjTileAllocBitmap[128];
 extern u8 g_abObjTileFreeMask[128];
 // IWRAM copy of FindFreeObjTileRun.
-extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 startBit);
+extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 bit);
 
 extern void InstallIwramFindFreeObjTileRun(void);
 extern void InitObjTileAllocBitmaps(u8 bgMode);

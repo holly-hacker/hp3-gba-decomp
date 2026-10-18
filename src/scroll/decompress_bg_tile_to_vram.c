@@ -3,7 +3,7 @@
 #include "scroll.h"
 #include "huffman.h"
 
-typedef void (*BgTileDecoder)(u32 bitOffset, void *dest, u32 size, const void *codeTable);
+typedef void (*BgTileDecoder)(u32 bitOffset, u16 *pDest, s32 size, const BgTileCodeTable *pTable);
 
 // Takes a reference on `tileId` in the room BG tile cache of the given size class, decompressing
 // the tile into its BG character VRAM slot on a miss. Returns the slot index.
@@ -44,7 +44,7 @@ u32 DecompressBgTileToVram_candidate(u32 tileId, u32 sizeClass, u32 arg2, u32 la
     pEntries[index].wTileId = tileId;
     pEntries[index].wRefcount = 1;
     pDecode(g_aBgTilesets[sizeClass].pTileBitOffsets[tileId],
-                                (u8 *)VRAM_BASE + (index + sizeClass * 0x400) * 0x20, 0x20,
+                                (u16 *)((u8 *)VRAM_BASE + (index + sizeClass * 0x400) * 0x20), 0x20,
                                 g_aBgTilesets[sizeClass].pCodeTable);
     return index;
 }

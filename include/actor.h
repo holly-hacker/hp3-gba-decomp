@@ -24,6 +24,7 @@ typedef enum {
                                                        // the actor against the room terrain
     ActorFlagOnscreen                 = 0x400,      // set by UpdateActorOnscreenFlags
     ActorFlagTickHandlerSuspendsMovement = 0x800,   // pfnTick asked to skip the rest of this tick
+    ActorFlagCollisionGroup_candidate = 0x4000,     // CheckActorCollisions skips a pair that both set it
     ActorFlagSpecialMoveTrigger       = 0x8000,
     ActorFlagTerrainCollisionB_candidate = 0x10000, // see ActorFlagTerrainCollisionA_candidate
     ActorFlagHasSpriteCells           = 0x20000,    // distinguishes the sprite-frame-update queue
@@ -104,7 +105,7 @@ typedef struct ActorCollisionBox {
     } offsets;            // 0x00
     union {
         u32 dwWord;
-        u8 bState;
+        s8 bState;
     } state;              // 0x04
 } ActorCollisionBox;
 
@@ -589,8 +590,8 @@ extern u32 g_dwOamQueueCount;                    // 0x0300175C
 extern struct Actor *g_apCollisionQueue[0x69];  // 0x030017A4, actors awaiting the pairwise check
 extern u32 g_dwCollisionQueueCount;              // 0x03001948
 // IWRAM copies of the ARM actor passes, installed by InitActorPool.
-extern void SortActorsByDepthIwram(struct Actor **queue, u32 count);
-extern void CheckActorCollisionsIwram(u32 count, struct Actor **queue);
+extern void SortActorsByDepthIwram(struct Actor **actors, u32 count);
+extern void CheckActorCollisionsIwram(s32 count, struct Actor **actors);
 
 void FreeAllActors(ListNode **activeListHead);
 

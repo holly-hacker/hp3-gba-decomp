@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "camera.h"
+#include "arm_routines.h"
 
 // A BG tileset and its palette. Tileset A (layers 0 and 3) and tileset B
 // (layers 1 and 2) each pair with one; the second pair's palette is not
@@ -53,7 +54,7 @@ typedef struct BgTileset {
     u32 dwUnk00;
     u32 dwUnk04;
     u32 *pTileBitOffsets;  // ROM bit offset of each tile's compressed data, indexed by tile id
-    void *pCodeTable;
+    const BgTileCodeTable *pCodeTable;
 } BgTileset;
 extern BgTileset g_aBgTilesets[2];
 extern u16 g_awBgLayerTileCount[4];

@@ -91,6 +91,12 @@ in source wins the shorter live_length and the preferred hard register. Reorder 
 independent statements that consume them (not the loop). Example: UpdateKeyInput's
 loop-setup registers, US `0x080254A8`.
 
+Two locals set to the same constant back to back: `cse.c:make_regs_eqv` sets the one whose
+last mention comes later in the source (`REGNO_LAST_UID`) to the constant and makes the other
+a copy of it, and the copy's refs can decide the tie. Assignment order does not matter; make
+the local the ROM sets to the constant the one mentioned last (DecompressBgTile, US
+`0x08006300`, takes `symbol = code;` at the loop exit so `length` outlasts `code`).
+
 ## 10. Shared tail / apparent need for goto
 
 `jump.c:find_cross_jump/do_cross_jump` can merge suitable jump-ending blocks; duplicated

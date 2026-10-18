@@ -930,7 +930,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   `resource_ptr + size + 8` is a 292-byte Huffman code table, copied to
   IWRAM and passed as `DecompressBgTile`'s `r3` on every call.
 - **`DecompressBgTile`** (`0x08006300`, 180 bytes, ARM,
-  `asm/decompress_bg_tile.s`): a canonical Huffman decoder, IWRAM-installed
+  `src/arm_routines/decompress_bg_tile.c`): a canonical Huffman decoder, IWRAM-installed
   like `DecompressLzRle` and `DecompressGammaLz`. Installed once at boot into IWRAM
   `0x030033CC` by **`InstallBgTileCodec`** (`0x080250B8`,
   called from `main` at `0x0802971E`) via
