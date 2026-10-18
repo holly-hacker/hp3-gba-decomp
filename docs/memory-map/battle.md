@@ -672,14 +672,14 @@ dangerous ones act early (Lupin Werewolf `=20`, Draco `=60`). Buckbeak is
 hardcoded to `10`.
 
 - **`JitterEnemyTurnOrder`** (`0x0800E5B8`, matched byte-exact,
-  `src/combat_core/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
+  `src/combat_board/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
   each `Enemy`'s `bAgility`, clamped to `[5, 251]`. Player fighters are
   untouched -- `bAgility` comes straight from
   `g_pPartyMasterStats[fighterType]` for Harry/Hermione/Ron. Runs on
   `pStagingFighters`, ahead of `SetupBattleRoster`'s compaction/copy into
   `pFighters`.
 - **`BuildTurnOrder`** (`0x0800E62C`, matched byte-exact,
-  `src/combat_core/build_turn_order.c`) selection-sorts `pStagingFighters` into
+  `src/combat_board/build_turn_order.c`) selection-sorts `pStagingFighters` into
   `pFighters` ascending by `bAgility`. Each of the first `bFighterCount-1`
   passes scans the whole staging array for the lowest `bAgility` still
   above the previous pick (a fainted fighter, `wHp == 0`, is marked

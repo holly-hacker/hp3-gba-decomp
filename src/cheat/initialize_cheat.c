@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "battle/battle.h"
-#include "combat_core.h"
+#include "combat_dispatch.h"
 #include "hw/bios.h"
 #include "cheat.h"
 #include "modes.h"

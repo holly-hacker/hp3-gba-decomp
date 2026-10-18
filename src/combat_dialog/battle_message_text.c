@@ -1,5 +1,5 @@
 #include "types.h"
-#include "combat_core.h"
+#include "combat_dialog.h"
 
 // Harry, Hermione, Ron, Buckbeak, then monsters 0-68.
 const u32 g_adwFighterActionTextIds[73] = {

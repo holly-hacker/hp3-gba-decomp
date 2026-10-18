@@ -1,4 +1,4 @@
-#include "combat_core.h"
+#include "combat_dialog.h"
 #include "gen/graphics/battle.h"
 
 // Floor and wall graphic blobs of the battle background, indexed by g_bCurrentRoomId

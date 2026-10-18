@@ -148,7 +148,7 @@
 .set g_dwOverworldMonstersDisabled, 0x03002614
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618
 
-@ --- include/combat_core.h ---
+@ --- include/combat_dispatch.h ---
 .set g_bSelectedFighterSlot_candidate,     0x03002660
 .set g_apFighterActors_candidate,         0x03002668
 .set g_pBattleMessageIconActor_candidate, 0x03002684

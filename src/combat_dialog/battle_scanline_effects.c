@@ -1,4 +1,5 @@
-#include "combat_core.h"
+#include "combat_dialog.h"
+#include "combat_effects_hblank.h"
 #include "mode7.h"
 
 const ScanlineEffectEntry g_aBattleScanlineEffects[4] = {

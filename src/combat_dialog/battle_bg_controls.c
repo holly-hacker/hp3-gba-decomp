@@ -1,5 +1,5 @@
 #include "types.h"
-#include "combat_core.h"
+#include "combat_dialog.h"
 
 const u32 g_dwBattleFloorBgControl = 0x6E82;
 const u32 g_dwBattleBg1Control = 0x0F08;

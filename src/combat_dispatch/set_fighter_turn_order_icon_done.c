@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "combat_core.h"
+#include "combat_dispatch.h"
 #include "combat.h"
 
 // Resets the fighter's turn-order icon portrait to its idle frame; enemy

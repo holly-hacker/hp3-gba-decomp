@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "combat_core.h"
+#include "combat_dialog.h"
+#include "combat_dispatch.h"
 #include "combat_fighter.h"
 #include "sound.h"
 #include "combat.h"

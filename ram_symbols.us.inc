@@ -159,7 +159,7 @@
 .set g_dwOverworldMonstersDisabled, 0x03002614  @ u32: nonzero suppresses wandering-monster spawns
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 
-@ --- include/combat_core.h ---
+@ --- include/combat_dispatch.h ---
 .set g_bSelectedFighterSlot_candidate,     0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
 .set g_apFighterActors_candidate,         0x03002668  @ Actor*[7]; one slot per active BattleFighter
 .set g_pBattleMessageIconActor_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text

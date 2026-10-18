@@ -2,6 +2,8 @@
 #include "background.h"
 #include "combat.h"
 #include "combat_core.h"
+#include "combat_dialog.h"
+#include "combat_dispatch.h"
 #include "sound.h"
 #include "battle/battle.h"
 #include "modes.h"

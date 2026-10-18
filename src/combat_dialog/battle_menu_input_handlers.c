@@ -1,4 +1,5 @@
-#include "combat_core.h"
+#include "combat_dialog.h"
+#include "combat_dispatch.h"
 
 // Indexed by bMenuScreen.
 const BattleMenuInputHandler g_apfnBattleMenuConfirmHandlers[11] = {

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "combat_core.h"
+#include "combat_dispatch.h"
 #include "combat.h"
 
 // Switches the battle turn state machine to `state`, remembering the current

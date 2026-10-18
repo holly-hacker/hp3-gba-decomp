@@ -1,5 +1,5 @@
 #include "battle/battle.h"
-#include "combat_core.h"
+#include "combat_dispatch.h"
 #include "combat_fighter.h"
 #include "combat.h"
 #include "modes.h"

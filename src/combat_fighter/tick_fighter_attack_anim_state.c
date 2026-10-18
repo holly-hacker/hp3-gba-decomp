@@ -2,7 +2,7 @@
 #include "combat_fighter.h"
 #include "sound.h"
 #include "battle/battle.h"
-#include "combat_core.h"
+#include "combat_dialog.h"
 #include "combat_gauge.h"
 #include "random.h"
 #include "combat.h"

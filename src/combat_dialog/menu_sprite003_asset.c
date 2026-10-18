@@ -1,4 +1,4 @@
-#include "combat_core.h"
+#include "combat_dialog.h"
 #include "gen/graphics/menus.h"
 
 const ActorAssetRecord g_MenuSprite003Asset_candidate = {
