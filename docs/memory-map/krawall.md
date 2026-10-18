@@ -103,6 +103,52 @@ their `inbet` flags and repeated entries match the public `player.c`
 exactly. The word after the tables (`0xFFFFFFFF`, US `0x08FAA7CC`) is
 unreferenced and its owner is not known.
 
+## Unmatched objects
+
+Ranges are ROM addresses; RAM images are given by where they are stored.
+"Upstream" is the public source at `9a2b869`, compiled unchanged and
+compared with `python3 -m tools.krawall.compare` (function by function,
+against the ROM function of the same name).
+
+| Object | Section | US | JP |
+|---|---|---|---|
+| `mixer.c` | `.text` | `0x08046ED0`-`0x080471FC` | `0x08046DFC`-`0x08047128` |
+| | `.ewram` | `0x08FB2BFC`-`0x08FB3180` | `0x08F4608C`-`0x08F46610` |
+| `mixer.arm.c` | `.text` | `0x080471FC`-`0x080473B4` | `0x08047128`-`0x080472E0` |
+| | `.iwram` | `0x08FB0E40`-`0x08FB13B4` | `0x08F442D0`-`0x08F44844` |
+| | `.rodata` | `0x08FA9568`-`0x08FA95A8` | `0x08F3C9F8`-`0x08F3CA38` |
+| `mixer_func.S` | `.iwram` | `0x08FB13B4`-`0x08FB19F8` | `0x08F44844`-`0x08F44E88` |
+| | `.ewram` | `0x08FB3180`-`0x08FB3980` | `0x08F46610`-`0x08F46E10` |
+| `mixer_private.arm.c` | `.iwram` | `0x08FB19F8`-`0x08FB2344` | `0x08F44E88`-`0x08F457D4` |
+| | `.ewram` | `0x08FB3980`-`0x08FB3988` | `0x08F46E10`-`0x08F46E18` |
+| `player.c` | `.text` | `0x080473B4`-`0x08049E3C` | `0x080472E0`-`0x08049D68` |
+| | `.iwram` | `0x08FB2344`-`0x08FB2348` | `0x08F457D4`-`0x08F457D8` |
+| | `.ewram` | `0x08FB3988`-`0x08FB4B40` | `0x08F46E18`-`0x08F47FD0` |
+| | `.rodata` | `0x08FA95A8`-`0x08FA985C` | `0x08F3CA38`-`0x08F3CCEC` |
+| `player_tables.c` | `.rodata` | `0x08FA985C`-`0x08FAA7CC` | `0x08F3CCEC`-`0x08F3DC5C` |
+
+What the comparison shows (US):
+
+- `player_tables.c`: upstream matches.
+- `mixer.c`: upstream matches except `kramResetChannels`,
+  `kramQualityMode` (tests `KRAM_QM_RAMP`, like upstream's commented-out
+  variant), `kramSetSFXVol` and `kramSetMusicVol` (no `kramResetChannels`
+  call). The ROM order is `kramGetActiveChannels`, `kramQualityMode`,
+  `kramSetSFXVol`, `kramGetSFXVol`, `kramSetMasterVol`,
+  `kramStopSFXChannels`, `kramHandleValid`, `kramGetFreq`, `kramGetVol`,
+  `kramGetPan`, `kramGetPos`, `kramSetMusicVol`, `kramSetSoundTimer`,
+  `kramSetSoundTimerBPM`, `kramPauseChannels`, `kramUnpauseChannels`,
+  `kramStopChannels`, `kramResetChannels`.
+- `mixer.arm.c`: `mixRampOut`, `mixPanTable`, `kramStop`, `kramSetFreq`,
+  `kramSetVol`, `kramSetPos` and `kramActive` match; `kramPlayExt`,
+  `kramPlay` (which follows `kramPlayExt` in the ROM) and `kramSetPan`
+  differ. The ROM's IWRAM data before the code is 4 bytes,
+  `80 80 00 00` (`volMaster`, `hqMode`, `hqRamp`); upstream initialises
+  `hqRamp` to 1 and puts `cidCounter` after it.
+- `mixer_private.arm.c`: `mixReal` matches; `kramWorker` is close.
+- `player.c`: no function matches; most are 88-97% alike, consistent
+  with shifted structure offsets. The function order differs widely.
+
 ## Game-side use
 
 Game code includes Krawall's public header, `"3rd_party/krawall.h"`. The

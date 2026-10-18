@@ -40,6 +40,9 @@ with GCC 3.0.2 at `-O3` ([`compiler.md`](compiler.md)) from headers in
   at `<start>` and copied there (the IWRAM and EWRAM images).
 - `check_sections.py` rejects an object with a non-empty section that no
   row places.
+- `python3 -m tools.krawall.compare <ver> <source> [<section>=<addr> ...]`
+  compiles one such source and compares each section, and each function
+  by name, with the ROM, before or after it has manifest rows.
 
 Third-party source follows its upstream style rather than the rules
 below.
