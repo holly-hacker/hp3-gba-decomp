@@ -11,6 +11,9 @@ binutils, and newlib.
 - Game code: Thumb, `-O2`, `-mthumb-interwork`.
 - Bundled libgcc/libc: Thumb, `-O2 -fno-builtin`, no interworking.
 
+The Krawall audio library is the exception: it was built separately, with
+GCC 3.0.2 (see "Krawall: GCC 3.0.2" below).
+
 ## Proof: the library block
 
 A contiguous run of libgcc and libc objects near the end of the code
@@ -66,7 +69,9 @@ All 99 switch sites in the code region use the second form, in both
 ROMs. A whole-image sweep finds 138 of the second form and one apparent
 instance of the first, at `0x0841996C` (US) / `0x0841979C` (JP) --
 inside compressed asset data, not code. One `_call_via_rX` table exists
-in the image. There is no second toolchain.
+in the image. The game's own code has no second toolchain; Krawall,
+which was linked in as a separately built library, is the one
+exception (below).
 
 ## Version bracket, independent of agbcc
 
@@ -89,8 +94,8 @@ frame the ROM lacks. The game's ARM routines (`src/arm_routines/`, from
 `agbcc` and `old_agbcc` are Thumb-only: `-marm` is rejected
 (`agbcc: Invalid option 'arm'`).
 
-Other compiled-looking ARM code (e.g. `0x08FB11E4` in the Krawall region)
-is not yet tested against this profile.
+Krawall's ARM code, in the IWRAM image and `mixRampOut`, comes from the
+Krawall compiler below.
 
 The ARM routines at `0x0800027C`, `0x080002A4` and `0x080002E0` are
 hand-written assembly, not compiler runtime: `0x080002E0` is a 32-way
@@ -141,8 +146,45 @@ local lets CSE find (or not find) the sharing the way real's compiler did,
 when a residual diff looks like a register/recompute choice rather than a
 wrong value.
 
+## Krawall: GCC 3.0.2 — PROVEN
+
+Krawall (`3rd_party/krawall/`, see
+[`memory-map/krawall.md`](memory-map/krawall.md)) is compiled with FSF
+GCC 3.0.2, `-O3 -mthumb-interwork`, Thumb (`-mthumb`) for `c-file-gcc3`
+rows and ARM (`-marm`) for `c-file-gcc3-arm` rows. The reconstructed
+`directsound.c` and `general.c` reproduce the ROM byte for byte under
+these flags, as does the public Krawall source's `kradActivate`
+unchanged. The public `mixer.c` says it was built with 3.0.2 ("makes GCC
+3.0.2 generate an invalid constant").
+
+Neighbouring releases do not reproduce it:
+
+- **3.1.1, 3.2.2, 3.2.3, 3.3.2**: `getDmaAddress` and `dsInit` do not
+  match. `dsInit`'s mono branch stays inline where the ROM moves it to the
+  end of the function: from 3.1 on, branch prediction ignores `== 0`
+  tests, which 3.0 predicts false. 3.2.x also keeps `getDmaAddress`'s
+  variable addresses in registers across blocks where the ROM reloads
+  them.
+- 3.1.1 also lays out ARM functions such as `kramSetFreq` differently,
+  and 3.3.2 loads byte fields differently in Thumb code
+  (`eff_cvolslide`).
+- 3.0.4 was not tested; like all of 3.0, it builds only for a 32-bit
+  host.
+
+Over the unmodified public source, 3.0.2 reproduces 20 functions exactly
+against 9 for 3.2.2.
+
+Build details that the bytes depend on:
+
+- GCC before 3.3 left `__arm__`/`__thumb__` to the driver; the build
+  defines them for `cc1` (`tools/c/compile_c.py`).
+- The original assembler filled an `.align` inside a section with zeros,
+  and padded only the end of a code section with `nop`. Today's gas pads
+  both with `nop`, so the build gives the compiler's `.align` directives
+  an explicit zero fill.
+
 ## Reproducing
 
-`nix develop` provides `agbcc` and `old_agbcc`; `flake.nix` pins the
-source. `just compare` links each library object above from its
+`nix develop` provides `agbcc` and `old_agbcc`, and `arm-elf-cc1-3.0.2`
+for Krawall; `flake.nix` pins their sources. `just compare` links each library object above from its
 `libgcc.a`/`libc.a`; `tools/c/compile_c.py` holds the game code's flags.

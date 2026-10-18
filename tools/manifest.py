@@ -2,7 +2,7 @@
 """Parse regions.<ver>.txt, the manifest of extracted byte ranges.
 
 Directive rows (krawall-module, dialog-text, c-file, ...) name a source
-under data/ or src/ and resolve to the assembly some tools/ script packs
+under data/, src/ or 3rd_party/ and resolve to the assembly some tools/ script packs
 or compiles into build/<ver>/; lib-object rows name a toolchain library
 object instead.
 """
@@ -41,13 +41,28 @@ GRAPHICS_DIRECTIVE = "graphics"
 # assembly by tools/c/compile_c.py (the `compile-c` recipe, which must run
 # before `gen-link`) with the compiler the ROM was built with -- see
 # docs/compiler.md.
-C_FILE_DIRECTIVES = {"c-file", "c-file-O1", "c-file-arm"}
+#
+# c-file-gcc3 and c-file-gcc3-arm rows name a .c under 3rd_party/,
+# compiled the same way with the GCC 3.0.2 Krawall was built with, and
+# asm-file-cpp rows a .S that compile_c.py preprocesses. These objects
+# keep their sections apart: the row places one of them, .text unless the
+# optional <section> says otherwise, at <start>, or at the RAM address
+# <vma> when given (code or data that runs from RAM, stored at <start>).
+GCC3_C_DIRECTIVES = {"c-file-gcc3", "c-file-gcc3-arm"}
+ASM_CPP_DIRECTIVE = "asm-file-cpp"
+SECTIONED_DIRECTIVES = GCC3_C_DIRECTIVES | {ASM_CPP_DIRECTIVE}
+C_FILE_DIRECTIVES = {"c-file", "c-file-O1", "c-file-arm"} | SECTIONED_DIRECTIVES
 
 # c-rodata rows place the .rodata of the c-file/c-file-O1 row named <name>
 # at their own address, for a C object whose read-only data the ROM keeps
 # apart from its code. The region is named <name> + RODATA_SUFFIX.
 C_RODATA_DIRECTIVE = "c-rodata"
 RODATA_SUFFIX = ".rodata"
+
+# c-section rows place one more section of a c-file-gcc3, c-file-gcc3-arm
+# or asm-file-cpp row's object, named <name>, at <start> (or <vma>, as
+# above). The region is named <name> + <section>.
+C_SECTION_DIRECTIVE = "c-section"
 
 # asm-file rows name a committed .s under asm/ directly -- no packing or
 # compiling step, the file is already the region's assembly.
@@ -105,6 +120,21 @@ def read_lib_objects(path: str) -> dict[str, tuple[str, str, int | None]]:
     return out
 
 
+def read_placements(path: str) -> dict[str, tuple[str, str, int | None]]:
+    """Returns region name -> (object name, section, RAM address or None)
+    for every region that places one section of a sectioned object."""
+    out = {}
+    for _, parts in read_rows(path):
+        if parts[0] in SECTIONED_DIRECTIVES:
+            section = parts[5] if len(parts) > 5 else ".text"
+            vma = int(parts[6], 16) if len(parts) > 6 else None
+            out[parts[4]] = (parts[4], section, vma)
+        elif parts[0] == C_SECTION_DIRECTIVE:
+            vma = int(parts[5], 16) if len(parts) > 5 else None
+            out[parts[3] + parts[4]] = (parts[3], parts[4], vma)
+    return out
+
+
 def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     """Returns (regions, labels): regions sorted and non-overlapping."""
     regions: list[Region] = []
@@ -126,6 +156,24 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             kind = KRAWALL_DIRECTIVES[parts[0]]
             asmfile = f"build/{ver}/audio/{kind}/{name}.s"
             regions.append((start, end, asmfile, name))
+            continue
+        if parts[0] in SECTIONED_DIRECTIVES:
+            if len(parts) not in (5, 6, 7):
+                sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name> [<section> [<vma>]]'")
+            _, start_s, end_s, _source, name = parts[:5]
+            start, end = int(start_s, 16), int(end_s, 16)
+            if end <= start:
+                sys.exit(f"{path}:{lineno}: end must be after start")
+            regions.append((start, end, f"build/{ver}/c/{name}.s", name))
+            continue
+        if parts[0] == C_SECTION_DIRECTIVE:
+            if len(parts) not in (5, 6):
+                sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <name> <section> [<vma>]'")
+            _, start_s, end_s, name, section = parts[:5]
+            start, end = int(start_s, 16), int(end_s, 16)
+            if end <= start:
+                sys.exit(f"{path}:{lineno}: end must be after start")
+            regions.append((start, end, f"build/{ver}/c/{name}.s", name + section))
             continue
         if parts[0] in C_FILE_DIRECTIVES:
             if len(parts) != 5:
@@ -190,8 +238,12 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             continue
         sys.exit(f"{path}:{lineno}: unrecognized directive '{parts[0]}'")
     names = {r[3] for r in regions}
+    placements = read_placements(path)
     for r in regions:
-        if r[3].endswith(RODATA_SUFFIX) and r[3][:-len(RODATA_SUFFIX)] not in names:
+        if r[3] in placements:
+            if placements[r[3]][0] not in names:
+                sys.exit(f"{path}: c-section row {r[3]} has no object row")
+        elif r[3].endswith(RODATA_SUFFIX) and r[3][:-len(RODATA_SUFFIX)] not in names:
             sys.exit(f"{path}: c-rodata row {r[3][:-len(RODATA_SUFFIX)]} has no c-file row")
     regions.sort(key=lambda r: r[0])
     for i in range(1, len(regions)):

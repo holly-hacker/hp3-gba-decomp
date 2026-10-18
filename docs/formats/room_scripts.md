@@ -46,8 +46,7 @@ Both walk the same record-by-record loop:
 2. Opcode `0` terminates the chain (see "The byte format" below) --
    no handler is called for it.
 3. Otherwise, call the opcode's handler through
-   `g_apRoomScriptOpcodeHandlers[opcode]` (via `ThumbInterworkVeneer`,
-   `_call_via_r1`), passing the record pointer itself as the one
+   `g_apRoomScriptOpcodeHandlers[opcode]` (via `_call_via_r1`), passing the record pointer itself as the one
    argument.
 4. Advance the record pointer by `g_abRoomScriptOpcodeLengths[opcode]`
    bytes and loop, unless the handler set the pause flag (see below).

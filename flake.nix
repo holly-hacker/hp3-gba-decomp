@@ -135,6 +135,49 @@
             runHook postInstall
           '';
         };
+
+        # The compiler Krawall was built with (docs/compiler.md). Only cc1
+        # is built, for a 32-bit host, the only kind GCC 3.0 supports.
+        gccKrawall = pkgs.pkgsi686Linux.stdenv.mkDerivation {
+          pname = "gcc-arm-elf-cc1";
+          version = "3.0.2";
+          src = pkgs.fetchurl {
+            url = "mirror://gnu/gcc/gcc-3.0.2/gcc-core-3.0.2.tar.gz";
+            hash = "sha256-xe0UqSf0iaY/W/aL5EVAMr9kkTNFXIKcWzRmTZhqnkU=";
+          };
+          patches = [
+            ./patches/gcc-3.0.2/0001-obstack-no-cast-lvalue.patch
+            ./patches/gcc-3.0.2/0002-arm-set-decl-rtl.patch
+          ];
+          hardeningDisable = [ "all" ];
+          env.NIX_CFLAGS_COMPILE = "-std=gnu89 -fcommon -fpermissive -w";
+          configurePlatforms = [ ];
+          dontDisableStatic = true;
+          configureFlags = [
+            "--build=i686-pc-linux-gnu"
+            "--host=i686-pc-linux-gnu"
+            "--target=arm-elf"
+            "--enable-languages=c"
+            "--disable-nls"
+            "--without-headers"
+          ];
+          # GCC must be configured from a separate build directory.
+          preConfigure = ''
+            mkdir build && cd build
+            configureScript=../configure
+          '';
+          buildPhase = ''
+            runHook preBuild
+            make -j$NIX_BUILD_CORES all-libiberty
+            make -C gcc -j$NIX_BUILD_CORES cc1
+            runHook postBuild
+          '';
+          installPhase = ''
+            runHook preInstall
+            install -Dm755 gcc/cc1 $out/bin/arm-elf-cc1-3.0.2
+            runHook postInstall
+          '';
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -146,6 +189,7 @@
             gbadisasm
             unkrawerter
             agbcc
+            gccKrawall
             decompPermuter
           ];
         };

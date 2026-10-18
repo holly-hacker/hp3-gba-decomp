@@ -6,7 +6,9 @@ pipeline is cpp -> agbcc -> build/<ver>/c/<name>.s, which gen_link.py
 wraps into the region's object.
 
 The manifest directive selects -O2 (c-file) or -O1 (c-file-O1), or
-agbcc_arm for ARM-mode code (c-file-arm).
+agbcc_arm for ARM-mode code (c-file-arm). Third-party code has its own
+compiler: c-file-gcc3 and c-file-gcc3-arm use GCC 3.0.2, and asm-file-cpp
+rows are only preprocessed.
 
 The cpp output is cheap to produce and determines everything else, so it
 keys the build cache (tools/buildcache.py): unchanged sources and headers
@@ -23,7 +25,18 @@ from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import buildcache  # noqa: E402
-from manifest import C_FILE_DIRECTIVES  # noqa: E402
+from manifest import (  # noqa: E402
+    ASM_CPP_DIRECTIVE,
+    C_FILE_DIRECTIVES,
+    SECTIONED_DIRECTIVES,
+)
+
+GCC3_CC1 = "arm-elf-cc1-3.0.2"
+
+# Krawall's build configuration (docs/memory-map/krawall.md): mixing
+# buffers, channels and player state in EWRAM. The 16 kHz, 60 Hz default
+# needs no define.
+KRAWALL_DEFINES = ["-DIWRAM_USAGE_SMALL"]
 
 def agbcc_prefix() -> str:
     exe = shutil.which("agbcc")
@@ -67,6 +80,34 @@ def profile(src: str, prefix: str, o1: bool = False,
     )
 
 
+def gcc3_profile(src: str, prefix: str,
+                 arm: bool) -> tuple[str, list[str], list[str]]:
+    """Returns (cc1, cppflags, cflags) for third-party C or a .S file.
+
+    GCC before 3.3 left __arm__/__thumb__ to the driver, so they are
+    defined here for both C and assembly.
+    """
+    cc1 = shutil.which(GCC3_CC1)
+    if cc1 is None:
+        sys.exit(f"{GCC3_CC1} not found -- are you in `nix develop`?")
+    lib = os.path.basename(os.path.dirname(src))
+    cppflags = ["-I", f"include/3rd_party/{lib}",
+                "-I", os.path.join(prefix, "include"), "-nostdinc", "-undef",
+                "-D__arm__", *([] if arm else ["-D__thumb__"]),
+                *(KRAWALL_DEFINES if lib == "krawall" else [])]
+    return (cc1, cppflags,
+            ["-quiet", "-fpreprocessed", "-O3", "-mthumb-interwork",
+             "-marm" if arm else "-mthumb"])
+
+
+def section_names(asm: str) -> list[str]:
+    """Every section the assembly switches to, in order of first use.
+    Directives are case-insensitive; Krawall's .S files write .TEXT."""
+    names = re.findall(r"^\s*(?:\.section\s+([.\w]+)|\.(text|data|bss)\b)",
+                       asm, re.M | re.I)
+    return list(dict.fromkeys(a or f".{b.lower()}" for a, b in names))
+
+
 def place_in_text(asm: str, src: str, keep_rodata: bool = False) -> str:
     """Fold read-only data into .text, and reject what has nowhere to go.
 
@@ -90,6 +131,51 @@ def place_in_text(asm: str, src: str, keep_rodata: bool = False) -> str:
                 f"in ram_symbols.<ver>.inc."
             )
     return asm
+
+
+def compile_sectioned(src: str, out: str, prefix: str, tools: str,
+                      directive: str) -> None:
+    """Compiles (or, for a .S, preprocesses) a third-party source.
+
+    Its sections stay apart for the manifest to place, so its read-only
+    data is not folded into .text. Each section ends padded to 4 bytes
+    with the assembler's fill (nop in code, zeros elsewhere), as it was
+    between the original objects.
+    """
+    arm = directive != "c-file-gcc3"
+    cc1, cppflags, cflags = gcc3_profile(src, prefix, arm)
+    if directive == ASM_CPP_DIRECTIVE:
+        cppflags = ["-x", "assembler-with-cpp", "-D__ASSEMBLER__", *cppflags]
+    pre = subprocess.run(["cpp", "-P", *cppflags, src],
+                         capture_output=True, text=True)
+    if pre.returncode:
+        sys.exit(f"cpp failed on {src}:\n{pre.stderr}")
+    if directive == ASM_CPP_DIRECTIVE:
+        asm = pre.stdout
+    else:
+        key = buildcache.digest(tools, os.path.realpath(cc1), cflags, src,
+                                pre.stdout)
+        cached = buildcache.load("c", key)
+        if cached is None:
+            cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
+                                input=pre.stdout, capture_output=True,
+                                text=True)
+            if cc.returncode:
+                sys.exit(f"{GCC3_CC1} failed on {src}:\n{cc.stderr}")
+            cached = cc.stdout.encode()
+            buildcache.store("c", key, cached)
+        # `.file "<stdin>"` would make the assembler list <stdin> as a
+        # dependency (tools/assemble.py).
+        asm = re.sub(r"^\s*\.file\s.*\n", "", cached.decode(), flags=re.M)
+        # The original assembler filled an .align inside code with zeros;
+        # only the end of a section got nops. Today's fills both with nops.
+        asm = re.sub(r"^(\s*\.align\s+\d+)\s*$", r"\1, 0", asm, flags=re.M)
+    place_in_text(asm, src, keep_rodata=True)
+    padding = "".join(f"\t.section\t{name}\n\t.align\t2\n"
+                      for name in section_names(asm) if name != ".bss")
+    wrapped = (".syntax divided\n" + (".arm\n" if arm else ".thumb\n") + asm
+               + "\n" + padding + ".text\n.syntax unified\n")
+    buildcache.write_if_changed(out, wrapped.encode())
 
 
 def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
@@ -153,7 +239,11 @@ def main() -> None:
     prefix = agbcc_prefix()
     tools = buildcache.tool_digest()
     def compile_row(row):
-        directive, _, _, src, name = row
+        directive, _, _, src, name = row[:5]
+        if directive in SECTIONED_DIRECTIVES:
+            compile_sectioned(src, f"build/{ver}/c/{name}.s", prefix, tools,
+                              directive)
+            return
         compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver, tools,
                     o1=directive == "c-file-O1",
                     keep_rodata=name in separate_rodata,

@@ -404,12 +404,12 @@ identities):
 into `Actor+0x98` (a callback-registration slot, not a direct call).
 **`TickActor`** (`0x08001FD8`) is a per-actor per-update-pass
 function: it reads `Actor+0x98`, and if non-null (and a gating check,
-`IsActorTickAllowed`, passes), calls **`ThumbInterworkVeneer_bx_r1`**
-(`0x0804A2C4`, see `krawall.md`) to invoke it. **`TickActorList`**
+`IsActorTickAllowed`, passes), calls libgcc's **`_call_via_r1`**
+(`0x0804A2C4`, see `../compiler.md`) to invoke it. **`TickActorList`**
 (`0x08000918`) walks the linked list of all active actors, calling
 `TickActor` once per actor per call. So the chain is
 `TickActorList` -> (per actor) `TickActor` ->
-`ThumbInterworkVeneer_bx_r1` -> `TickFighterAttackAnimState_candidate`, a
+`_call_via_r1` -> `TickFighterAttackAnimState_candidate`, a
 generic per-actor-per-frame callback dispatch -- "AttackAnimState" is
 arguably too narrow given case `0x1a`'s broader turn/action-execution
 content (target selection, `ResolveEnemyAttack`, message/reward
@@ -721,12 +721,9 @@ via the real jump table, see below).
 ### Functions called from `ShowBattleMessage`, partially identified
 
 - **`PlaySoundEffect_candidate`** (`0x0803FF70`) -- called by
-  `SpellLevelUp` (id `0x1a`). Looks up `DAT_08fb0cc4[soundId]` and
-  passes it into `FUN_08047dfc`, which sits deep in Krawall's driver
-  cluster (`0x08046000`-`0x08048000`, see `krawall.md`) and manipulates
-  a full per-channel state array -- closer in shape to a Krawall
-  module-switch (`kramPlayModule`-equivalent) than a one-shot SFX
-  trigger.
+  `SpellLevelUp` (id `0x1a`). Looks up the module pointer at
+  `0x08FB0CC4[soundId]` and plays it as a jingle,
+  `krapPlay(module, KRAP_MODE_JINGLE, 0)` (see `krawall.md`).
 - **`PrepareBattleMessageDisplay_candidate`** (`0x08012FD4`) -- called
   at the top of every `ShowBattleMessage` case. Draws/positions the
   message window and clears a status bit on every active fighter's
@@ -734,11 +731,10 @@ via the real jump table, see below).
   (`0x08012CB4`), which indexes a 7-slot array,
   **`g_apFighterActors_candidate`** (`0x03002668`, `Actor*[7]`, likely
   one slot per active `BattleFighter`).
-- `0x0804A2C4` (**`ThumbInterworkVeneer_bx_r1`**) is one of a family of
-  generic ARMv4T-Thumb interworking veneers (`0x0804A2C0`-`0x0804A2E4`,
-  one `bx rN` stub per register -- Thumb has no `blx reg`), documented
-  in `krawall.md`; Krawall's mixer uses the same family. Reached from
-  `TickActor`'s callback dispatch.
+- `0x0804A2C4` (**`_call_via_r1`**) is one of libgcc's `_call_via_rX`
+  stubs (`0x0804A2C0`-`0x0804A2FC`, one `bx rN` per register -- Thumb
+  has no `blx reg`; see `../compiler.md`). Reached from `TickActor`'s
+  callback dispatch.
 
 No `_candidate` suffix: every one of the 18 cases has real, verified
 dialog text (case table below), including all 5 of case 5's inner

@@ -90,7 +90,7 @@ void HandleVBlankInterrupt(void)
 
         REG_IF = 1;
         g_wPendingIntrFlags |= 1;
-        kramWorkerVeneer_candidate();
+        kramWorkerSTUB();
     }
     g_dwVBlankIntrNestCount--;
 

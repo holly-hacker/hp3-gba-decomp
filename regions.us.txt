@@ -2257,23 +2257,20 @@ thumb-func 0x08046CA4 MarkRoomActorConsumed
 # End of game code section, start of 3rd party code section
 
 # Krawall, see docs/memory-map/krawall.md
-thumb-func 0x08046D0C kragInit
-thumb-func 0x08046D2C sub_08046D2C
-thumb-func 0x08046E0C getDmaAddress
-thumb-func 0x08046E84 kradActivate
-thumb-func 0x08046EB4 kradDeactivate
-thumb-func 0x08046ED0 sub_08046ED0
+c-file-gcc3 0x08046D0C _ 3rd_party/krawall/general.c general
+c-file-gcc3 0x08046D2C 0x08046ED0 3rd_party/krawall/directsound.c directsound
+thumb-func 0x08046ED0 kramGetActiveChannels
 thumb-func 0x08046EF4 kramQualityMode
 thumb-func 0x08046F5C kramSetSFXVol
-thumb-func 0x08046F70 sub_08046F70
+thumb-func 0x08046F70 kramGetSFXVol
 thumb-func 0x08046F7C kramSetMasterVol
-thumb-func 0x08046FF0 UnmuteAllKrawallChannels_candidate
-thumb-func 0x0804701C sub_0804701C
-thumb-func 0x0804704C sub_0804704C
-thumb-func 0x08047064 sub_08047064
-thumb-func 0x08047078 sub_08047078
-thumb-func 0x08047090 sub_08047090
-thumb-func 0x080470AC sub_080470AC
+thumb-func 0x08046FF0 kramStopSFXChannels
+thumb-func 0x0804701C kramHandleValid
+thumb-func 0x0804704C kramGetFreq
+thumb-func 0x08047064 kramGetVol
+thumb-func 0x08047078 kramGetPan
+thumb-func 0x08047090 kramGetPos
+thumb-func 0x080470AC kramSetMusicVol
 thumb-func 0x080470C0 kramSetSoundTimer
 thumb-func 0x080470E8 kramSetSoundTimerBPM
 thumb-func 0x08047130 kramPauseChannels
@@ -2289,8 +2286,8 @@ thumb-func 0x08047A44 processInstruments
 thumb-func 0x08047D4C timerRoutine
 thumb-func 0x08047DFC krapPlay
 thumb-func 0x080480D8 jingleDone
-thumb-func 0x080481B8 sub_080481B8
-thumb-func 0x0804838C sub_0804838C
+thumb-func 0x080481B8 krapInstPlay
+thumb-func 0x0804838C krapInstRelease
 thumb-func 0x08048400 eff_volslide_s3m
 thumb-func 0x08048578 eff_volslide_xm
 thumb-func 0x08048630 eff_gvolslide
@@ -2307,23 +2304,23 @@ thumb-func 0x08048E54 eff_retrig
 thumb-func 0x08048FD0 eff_arpeggio
 thumb-func 0x080490CC eff_VC_vibrato
 thumb-func 0x08049144 krapStop
-thumb-func 0x08049190 sub_08049190
+thumb-func 0x08049190 krapStopJingle
 thumb-func 0x080491AC krapCallback
 thumb-func 0x080491B8 krapPause
 thumb-func 0x080491EC krapUnpause
 thumb-func 0x08049224 krapIsPaused
 thumb-func 0x0804923C krapSetMusicVol
-thumb-func 0x080492B4 sub_080492B4
-thumb-func 0x080492C0 sub_080492C0
-thumb-func 0x080492F8 sub_080492F8
-thumb-func 0x0804930C sub_0804930C
-thumb-func 0x08049334 sub_08049334
-thumb-func 0x08049354 sub_08049354
-thumb-func 0x08049374 sub_08049374
-thumb-func 0x08049398 sub_08049398
-thumb-func 0x080493BC sub_080493BC
-thumb-func 0x080493E4 sub_080493E4
-thumb-func 0x080493FC sub_080493FC
+thumb-func 0x080492B4 krapGetMusicVol
+thumb-func 0x080492C0 krapInstStop
+thumb-func 0x080492F8 krapInstProcess
+thumb-func 0x0804930C krapInstHandleValid
+thumb-func 0x08049334 krapSetChannelVol
+thumb-func 0x08049354 krapGetChannelVol
+thumb-func 0x08049374 krapInit
+thumb-func 0x08049398 calcPeriodAmiga
+thumb-func 0x080493BC calcFinalFreqAmiga
+thumb-func 0x080493E4 calcPeriodLinear
+thumb-func 0x080493FC calcFinalFreqLinear
 thumb-func 0x08049424 eff_speed
 thumb-func 0x0804943C eff_bpm
 thumb-func 0x0804945C eff_speedbpm
@@ -2360,15 +2357,7 @@ thumb-func 0x08049D04 eff_VC_pan
 thumb-func 0x08049D60 eff_VC_panslide_left
 thumb-func 0x08049DB8 eff_VC_panslide_right
 thumb-func 0x08049E14 eff_VC_portanote
-thumb-func 0x08049E3C kramWorkerVeneer_candidate
-thumb-func 0x08049E40 kramPlayVeneer
-thumb-func 0x08049E44 kramPlayExtVeneer
-thumb-func 0x08049E4E sub_08049E4E
-thumb-func 0x08049E50 kramStopVeneer
-thumb-func 0x08049E54 kramSetFreqVeneer
-thumb-func 0x08049E58 kramSetVolVeneer
-thumb-func 0x08049E5C kramSetPanVeneer
-thumb-func 0x08049E60 kramSetPosVeneer
+asm-file-cpp 0x08049E3C _ 3rd_party/krawall/stub.S stub
 
 # BIOS calls
 asm-file 0x08049E84 _ asm/rt/bios_calls.s               bios_calls
@@ -2741,7 +2730,10 @@ dialog-text 0x08F24704 _ data/text/nl.json DialogTextNl
 dialog-text 0x08F37D1C _ data/text/da.json DialogTextDa
 
 # Graphics section 4
-graphics 0x08F4BEDC 0x08FA953C menus FamousWizardCards
+graphics 0x08F4BEDC _ menus FamousWizardCards
+
+# Krawall read-only data
+c-section 0x08FA953C 0x08FA9568 general .rodata
 
 # Random data?
 c-rodata 0x08FAA7D0 _ EepromV124
@@ -2752,12 +2744,14 @@ c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file 0x08FB0588 _ src/sound/sound_samples.c g_aSoundSamples
 c-file 0x08FB0818 _ src/sound/sound_variants.c g_aSoundVariants
 c-file 0x08FB09F8 0x08FB0CC4 src/sound/sound_config.c g_aSoundConfig
-c-file 0x08FB0D94 0x08FB0DB0 src/store/shop_stock_lists.c g_apShopStockLists
+c-file 0x08FB0D94 _ src/store/shop_stock_lists.c g_apShopStockLists
 
 # Krawall code section, will be copied into IWRAM
 label 0x08FB0DB0 g_KrawallIwramRomImage
-arm-func 0x08FB0DB4 kradInterrupt_Rom
+c-section 0x08FB0DB0 _ directsound .iwram 0x03000000
+asm-file-cpp 0x08FB0DB4 0x08FB0E40 3rd_party/krawall/directsound_asm.S directsound_asm .iwram 0x03000004
 arm-func 0x08FB0E44 kramPlayExt_Rom
+arm-func 0x08FB109C kramPlay_Rom
 arm-func 0x08FB10D0 kramStop_Rom
 arm-func 0x08FB1198 kramSetFreq_Rom
 arm-func 0x08FB11E4 kramSetVol_Rom
@@ -2781,3 +2775,4 @@ arm-func 0x08FB1E18 kramWorker_Rom
 
 # Krawall data section, will be copied into EWRAM
 label 0x08FB2348 g_KrawallEwramRomImage
+c-section 0x08FB2348 0x08FB2BFC directsound .ewram 0x02000000

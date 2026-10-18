@@ -1,865 +1,114 @@
 # Krawall audio engine — memory map
 
 See [`../README.md`](../README.md) for the confidence-key legend
-(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
-document index. The on-ROM module/pattern/sample struct layouts are in
-[`../formats/krawall.md`](../formats/krawall.md).
+(PROVEN / STRUCTURAL MATCH / UNCONFIRMED). The module, pattern and sample
+formats are in [`../formats/krawall.md`](../formats/krawall.md).
 
-## Krawall audio engine — confirmed, located
+## Identity [PROVEN]
 
-Krawall (LGPL, https://github.com/sebknzl/krawall) is confirmed directly
-in both ROMs by the embedded version string below.
+The game's audio driver is Krawall, Sebastian Kienzl's XM/S3M player,
+licensed LGPL-2.1-or-later. Both ROMs carry its CVS keyword string
+`$Id: Krawall $Date: 2003/09/01 06:51:01 $` (US `0x08FA953C`, JP
+`0x08F3C9CC`), and the library is the same in both versions apart from
+relocated addresses.
 
-### Version string (proof of direct source use, not a reimplementation)
+The source lives in `3rd_party/krawall/`, with its headers in
+`include/3rd_party/krawall/`. It starts from the public repository
+(<https://github.com/sebknzl/krawall>, commit `9a2b869`, 2013) and is
+edited only where the 2003 revision in the ROM differs. Each change is
+marked with an `// HP3-GBA:` comment. Compiled unchanged, the public source already reproduces
+twenty functions byte for byte. Krawall is compiled with GCC 3.0.2 at
+`-O3` (see [`../compiler.md`](../compiler.md)) and configured with
+`IWRAM_USAGE_SMALL` at the default 16 kHz, 60 Hz: the mixing buffers,
+channels and player state live in EWRAM.
 
-A CVS/RCS `$Id$` keyword tag from the Krawall source is embedded verbatim in
-both ROMs:
+## Link layout [PROVEN for matched objects, STRUCTURAL MATCH otherwise]
 
-```
-$Id: Krawall $Date: 2003/09/01 06:51:01 $
-```
+The objects are linked in the order `general`, `directsound`,
+`directsound_asm`, `mixer`, `mixer.arm`, `mixer_func`,
+`mixer_private.arm`, `player`, `player_tables`, `stub`. Each section type
+is gathered in that order:
 
-- US (`baserom.us.gba`): file offset `0xFA953C` (ROM address `0x08FA953C`)
-- JP (`baserom.jp.gba`): file offset `0xF3C9CC` (ROM address `0x08F3C9CC`)
-
-Identical string, identical date, in both versions — confirms a single
-shared Krawall revision compiled into both ROM builds. Because the tag
-compiles down from a literal `static const char rcsid[] = "$Id: ...$"` in
-the original source, this proves the actual Krawall source was compiled in
-(not reimplemented from scratch), and pins the exact upstream revision date
-(2003-09-01) — useful for pulling a matching snapshot of the Krawall repo
-history to diff against once we start decompiling the driver.
-
-The string sits inside what looks like a small data blob/struct (pointers to
-nearby offsets follow it — see below), not a lone dead string, so it's part
-of a real linked data structure, not editor debris.
-
-### Pointer table referencing the version blob
-
-Two literal-pool references point at `0x08FA95A8` (`effects[]`, offset
-`+0x6C` from the string start), at `0x08047994` and `0x08047A40`, both inside
-the function pair described below. Nothing references the string itself.
-
-### Likely driver API call site
-
-The code at `0x08047994`–`0x08047A36` (Thumb) and its sibling starting at
-`0x08047A40` iterate a struct array (element size `0x60` bytes, per-channel
-data judging by the loop shape) and, for populated entries, call three
-tightly-clustered small functions:
-
-- `0x0804A2C8`
-- `0x0804A2CC`
-- `0x0804A2D0`
-
-These being only 4 bytes apart and called with matching `(ptr, flag)`-style
-argument patterns is consistent with adjacent entries in Krawall's public
-mixer API — see below for why this is a structural guess, not a confirmed
-match.
-
-### Public Krawall source pulled for reference — NOT a byte-level match
-
-Cloned https://github.com/sebknzl/krawall (LGPL, kept in scratch space only,
-never vendored into this repo per the licensing note in AGENTS.md). Findings
-that matter for how we can use it:
-
-- The repo's git history starts at commit `878a821` / `9a2b869`, dated
-  **2013-07-13/18** — a decade after the `2003/09/01` `$Id` revision date
-  embedded in our ROM.
-- None of the current source files carry `$Id` CVS keyword tags at all
-  (checked `lib/*.h`, `lib/*.c`) — the public release doesn't use CVS
-  keyword substitution the way the compiled ROM clearly does. This confirms
-  (not just suspects) it's a restructured/later snapshot (tagged version
-  `1.0.0`, copyright `2001-2005, 2013`), not the CVS tree this game was
-  built from.
-- **Conclusion: no byte-level diff/match is possible against this source.**
-  It's useful only as an API-shape/naming reference, not for confirming
-  exact function boundaries or struct layouts, and not for the
-  "diff against known source to skip decompiling" shortcut.
-
-What it *is* useful for: `lib/mixer.h` exposes a `chandle`-based API —
-`kramStop(chandle)`, `kramSetFreq(chandle, freq)`, `kramSetVol(chandle, vol)`,
-`kramSetPan(chandle, pan)`, `kramActive(chandle)`, `kramWorker()`, etc. All
-the per-channel setters take `(handle, value)` — this matches the
-`(ptr, flag/value)` call shape seen at the three clustered call sites
-(`0x0804A2C8`–`0x0804A2D0`), which is corroborating-but-not-confirming
-evidence that these are `kramSet*`/`kramStop`/`kramActive`-family calls.
-Which three specifically is still unconfirmed.
-
-## Candidate kramWorker() and inner mixer routine
-
-Chased the third pointer reference (`0x00FB1E10`, a table of ROM/EWRAM/IWRAM
-pointers immediately preceding an ARM-mode function) and found a strongly
-plausible pair of core engine functions, both ARM-mode, right after the
-Krawall version-string data blob:
-
-### `0x08FB1E18` — candidate `kramWorker()` [STRUCTURAL MATCH]
-
-APCS frame-pointer prologue (`mov ip, sp` / `push {r4,r5,r6,fp,ip,lr,pc}`),
-matching epilogue (`ldmdb fp, {r4,r5,r6,fp,sp,lr}` / `bx lr`). Behavior:
-
-1. Calls a Thumb-mode function at `0x08046E0C` (via `mov lr,pc; bx r2`
-   interworking call) passing two stack out-params (`[fp-0x1c]`,
-   `[fp-0x20]`) — plausibly a "get current write pointer" callback,
-   returning a requested/needed sample count in r0/r4.
-2. Compares that count against a running value at EWRAM `0x0200163E`
-   (halfword) — call it `avail`.
-3. **If `avail > requested`** (enough contiguous space): one call into
-   `0x08FB19F8` with the full requested count, decrement `avail` by that
-   amount, return 1 (success/did-work).
-4. **If `avail <= requested`** (not enough contiguous space — buffer
-   wraparound case): checks a function pointer at EWRAM `0x02001638`
-   (null-checked, then actually *called* later in this same path — so
-   `0x02001638` holds a callback, not a flag); fills the first chunk via
-   `0x08FB19F8`, advances the two output pointers by the consumed amount,
-   decrements the remaining requested count, invokes the `0x02001638`
-   callback again (presumably a "wrapped to buffer start" notification),
-   reloads a buffer-size constant from EWRAM `0x0200163C` into the `avail`
-   counter (`0x0200163E`) — i.e. resets available-space after wrapping —
-   and loops back to fill the remainder.
-5. Return value is `0` (nothing to do, taken when the very first callback
-   returns a 0 request count) or `1` (did work) — a plausible
-   `int kramWorker()`-style status return.
-
-This is a genuine ring-buffer wraparound refill loop, which is more
-specific and more internally consistent than a generic "buffer feed" shape
-— strengthens the case this is `kramWorker()` or its direct equivalent.
-**Caveat**: which register/global holds "available space" vs "requested
-amount" is inferred from control flow, not verified by running the code
-(no emulator/debugger session was used) — the mechanics (branch structure,
-the second callback invocation, the constant reload) are read directly off
-real instructions, but the semantic labels attached to each value are best
-judged as reasonable inference, not fact, until checked dynamically.
-
-**EWRAM engine-state globals found so far**: `0x02001638` (callback
-function pointer, invoked on buffer wrap), `0x0200163C` (u16, buffer-size
-constant), `0x0200163E` (u16, available-space counter). Worth grouping into
-a `KramEngineState`-style struct once more fields are found.
-
-### `0x08FB19F8` — candidate inner mixer / channel-scan routine [PROVEN mechanics / STRUCTURAL MATCH interpretation]
-
-The loop mechanics themselves (32 iterations, `+0x2C` stride, status-byte
-check at `+2`) are read directly off real instructions — reproducible by
-disassembling this address. The *interpretation* ("this is a channel array
-scan for active channels") is inference from that shape, not confirmed
-against source.
-
-Also APCS-framed, saves the full `r4-r11` register set (heavier frame than
-`kramWorker`, consistent with being the actual hot per-sample/per-channel
-path). Behavior: iterates what looks like a **32-channel array**
-(`mov sb, #0x20` = 32, decrementing loop counter) with **`0x2C` (44)-byte
-stride per element**, checking a status byte at **offset `+2`** of each
-channel struct to find active channels, then dispatches into per-channel
-mixing via a further `bx` call. 32 channels matches typical GBA audio-engine
-scale (Krawall's public API talks in terms of a fixed channel pool); the
-44-byte stride and offset-2 status byte are concrete candidate fields for a
-future `KramChannel` struct.
-
-Not yet confirmed whether this or a callee is IWRAM-resident at runtime (may
-be DMA'd/copied into IWRAM at init rather than linked there directly — worth
-checking the EWRAM/IWRAM copy step in the init flow once we look at that).
-
-### Full disassembly of `mixReal`, and the 44-byte channel struct [PROVEN mechanics, STRUCTURAL MATCH interpretation]
-
-`gbadisasm` only disassembles part of this function -- it treats the
-mid-function `bx r2` at `0x08FB1A24` (an indirect call, not a return) as a
-function boundary and dumps everything after it as raw `.byte`s. Read the
-whole thing with `objdump -b binary -m arm` over
-`0x08FB19F8`-`0x08FB1E18` instead (outside the manifest/build, pure
-discovery -- see the `disasm ver="us"` comment for why `gbadisasm`'s output
-is reference-only in the first place). This is a large, real software
-mixer, not a stub. Confident findings:
-
-- **Outer skeleton, argument-literal so essentially PROVEN**: at entry,
-  calls IWRAM address `0x03000AFC` as a function, args `(0x03001144,
-  count)` -- a "clear/reset the mix accumulator" pass. Then scans the
-  32-channel array (`0x2C`/44-byte stride, base EWRAM `0x020008B4`, status
-  byte at `+2`, `1` = active -- as already noted above) accumulating each
-  active channel. After the scan, calls IWRAM address `0x03000B38` as a
-  function, args `(0x03001144, savedArg0, savedArg1, count)` -- a
-  "finalize/convert the accumulator to output" pass. `0x03001144` is never
-  called, only ever passed as a pointer -- almost certainly the mix
-  accumulator buffer address, read/written by both bookend calls. This
-  makes all five IWRAM addresses from the pointer-table section above
-  PROVEN: they're real, independently-called code/data, not table-only
-  noise.
-- **`0x03000B30`/`0x03000B34`** are plain IWRAM *data* words (not
-  functions): read, incremented by per-channel byte fields `+0x1E`/`+0x1F`
-  (candidate: a running L/R output-level or position accumulator), and
-  written back every active-channel iteration.
-- **`mixReal` dispatches through `mixPanTable` (`0x08FA9568`)**: it
-  reads `mixPanTable[(u8)[ch+0x20] + (u8)[ch+0x21]]` (`hq` + `mixFunc`,
-  see "`mixPanTable`" below) and `bx`es through the result.
-- **Confirms `0x2C`-stride channel struct fields** beyond `+0x00`
-  (mode: `0` selects a simpler "no resampling" copy path at `0x08FB1CBC`,
-  nonzero the full resampling path) and `+0x02` (status):
-  - `+0x03`: loop-mode byte (`0`/`2` branches seen; forward vs. some kind
-    of wrap/ping-pong handling)
-  - `+0x08`, `+0x0C`: a position/limit `u32` pair, compared each step for
-    loop-boundary wraparound
-  - `+0x10`: a further length/start-offset `u32`
-  - `+0x14`: signed `u32`, fixed-point (16.16) pitch/step -- `asr #16`
-    taken as the per-step integer position delta
-  - `+0x1C`: `u16`, another step-sized value (`lsr #2`'d before use)
-  - `+0x1E`, `+0x1F`: bytes added into the `0x03000B30`/`0x03000B34`
-    accumulators (see above)
-  - `+0x20`, `+0x21`: bytes summed to index the `0x08FA9568` table (see
-    above)
-  These are a **different struct** from the effect-handler one documented
-  in "`KramChannel` field offsets" above (that one's fields run to
-  `+0x5D`, this one is only 44/`0x2C` bytes total) -- confirms the earlier
-  "two different structs, not one" conclusion from a second, independent
-  direction.
-- **Uses the GBA BIOS division SWI (`swi 0x06`, `Div`) directly**, twice
-  (mirrored in both the forward and the `0x08FB1C50` alternate branch), for
-  position/step math -- notable since it's a different division path than
-  the linked-in division routines documented in `docs/compiler.md`;
-  the hot mixer path apparently prefers the BIOS call over the linked-in
-  compiler runtime.
-
-Net effect on the earlier open question ("worth checking the EWRAM/IWRAM
-copy step"): there's now a third confirmed IWRAM code address
-(`0x03000AFC`, `0x03000B38`, alongside the earlier `0x03000AB4`) whose
-bytes have to come from *somewhere* in ROM given "No bulk startup copy
-into IWRAM/EWRAM" above already ruled out a global copy -- finding that
-local Krawall-specific copy (or confirming these are just linked directly
-to run from IWRAM, e.g. via a linker script section this project hasn't
-found the ROM-side evidence for yet) is the concrete next step on this
-thread.
-
-### Cross-referencing the pointer table at 0xFB1DF4–0xFB1E14 [mixed confidence]
-
-The 7-word table immediately preceding `kramWorker`'s candidate address
-(`0x03000AFC`, `0x03001144`, `0x020008B4`, `0x03000B38`, `0x03000B30`,
-`0x03000B34`, `0x08FA9568`, `0x03000AB4`) was checked for independent
-references elsewhere in the ROM (literal 4-byte search, whole ROM):
-
-- **`0x020008B4`** (EWRAM) — **PROVEN heavily used**: 20 independent
-  references, clustered in `0x46E00`–`0x47200`, i.e. inside the same
-  channel-dispatch code region documented above (`0x08047994`/`0x08047A40`).
-  Strong evidence `0x46000`–`0x48000` and `0xFB19F0`–`0xFB1EE0` are one
-  cohesive Krawall driver code block, and that this address is a real,
-  important shared global (likely channel-array base or context pointer).
-- **`0x03000AB4`** (IWRAM) — **PROVEN independently referenced**: appears
-  once in the table and once more at `0x0473B0`, also inside that same code
-  cluster. Confirms this is a real, meaningfully-used address, not table
-  noise.
-- **`0x03000AFC`, `0x03001144`, `0x03000B38`, `0x03000B30`, `0x03000B34`** —
-  **PROVEN**, not table-only: `mixReal` itself (see the full writeup
-  below) reads this same literal pool a second time and uses all five
-  directly.
-
-## No bulk startup copy into IWRAM/EWRAM [PROVEN]
-
-Traced execution from `EntryPoint` (`0x08000000`) to answer the open
-question above about an EWRAM/IWRAM copy step: there isn't one. `EntryPoint`
-sets up the IRQ/System stacks and the user IRQ vector (`0x03007FFC`), then
-`sub_080000EC` does a single `bx` straight into `0x08029690`, which itself
-just calls ~30 subsystem-`Init`-style functions back to back — no
-scatter-load table walk (the classic ADS/RVCT `__main`/`Region$$Table`
-pattern) appears anywhere between reset and there. So whatever put code at
-`0x03000AB4` did it locally (Krawall's own init), not as part of a global
-runtime-init step; there's nothing broader to find here.
-
-## `mixRampOut` — the per-channel ramp-out mix routine [STRUCTURAL MATCH]
-
-`0x080471FC` (ARM, seeded in `functions.us.cfg` as `mixRampOut`) is
-a 4x-unrolled fixed-point resampling loop, matching a classic software
-audio channel mixer: a fractional sample-position accumulator at struct
-offsets `+0x28`/`+0x2A`, per-channel volume bytes at `+0x1E`/`+0x1F`, and a
-`mul`+`asr #3` volume-scale-and-accumulate into the output buffer (`ldrh
-[lr]` / `strh [lr]`). Its remainder/tail case (`< 4` samples left) falls
-through to `ldr ip, =0x03000AB4; bx ip`, a call to `mixBias`, as in public
-Krawall's `mixRampOut`.
-
-## Effect/mixer-descriptor table at `0x08FA9568` [STRUCTURAL MATCH]
-
-Immediately after the Krawall `$Id` string block sits a two-part table,
-read directly (not via gbadisasm, which can't reach function-pointer-only
-targets):
-
-1. **`mixPanTable`** (`0x08FA9568`–`0x08FA95A7`), 16 mix-function
-   pointers matching public Krawall's `mixer.arm.c`: a normal-quality bank
-   `{mixStereo, mixLeft, mixStereo, mixRight, mixCenter, 0, 0, mixRampOut}`
-   followed by the same layout for the HQ variants (`mixStereoHQ`, ...).
-   Indexed by `mixFunc + hq`, where `hq` is `0` or `8`. Every non-null
-   entry is an ARM entry point in the IWRAM image (see the table under
-   "IWRAM mixer functions") except `mixRampOut`, which runs from ROM.
-2. **A Krawall XM effect-command dispatch table**, starting at `0x08FA95B4`:
-   repeating 12-byte entries of `{tick_fn, init_fn, flags}`. At least 40
-   populated entries confirmed by direct reads (some `tick`-only, some with
-   both `tick` and `init` set, `flags` observed as 0 or 1), consistent with
-   one entry per XM effect letter (`0`–`9`, `A`–`Z`, plus volume-column
-   effects). It is `effects[]`, 51 entries from `0x08FA95A8` to
-   `0x08FA980C` (entry 0 all-zero), followed by `effectsVC[]`; see
-   "Read-only data layout".
-
-   All table entries store the function pointer with the Thumb bit set
-   (odd address, BX-style) — the real function start is `addr & ~1`. (Caught
-   this by hand before it corrupted `functions.us.cfg`: gbadisasm silently
-   errors with "function at 0x08048401 is not aligned" rather than
-   crashing, so it's an easy mistake to catch, but seeding the raw odd
-   address first triggered an unrelated-looking `Assertion 'tmp_cnt == 1'
-   failed` abort — the alignment check apparently isn't hit until *after*
-   some duplicate-registration bookkeeping, so the wrong crash message
-   shows up first when other seeds nearby are also present.)
-
-   Spot-checked 3 of the 41 handler addresses by direct disassembly
-   (`0x08048400`, `0x08048578`, `0x08049424`) — all are real Thumb function
-   starts (`push {..,lr}` / `pop {..}` / `bx`) that read/write byte and
-   halfword fields of what's presumably a `KramChannel` struct. All 41
-   are identified by name -- see "Naming the 41 effect handlers" and
-   "`KramChannel` field offsets" below.
-
-   All 41 addresses (`&~1`'d) are seeded in `functions.us.cfg` as
-   `thumb_func`, plus `mixRampOut` above as `arm_func`; `just disasm us`
-   and `just compare us` both pass with them.
-
-## Naming the 41 effect handlers, via `player.c`'s `effects[]`/`effectsVC[]` [STRUCTURAL MATCH, very high confidence]
-
-The public Krawall repo (`github.com/sebknzl/krawall`, `lib/player.c`) defines
-exactly this table shape:
-
-```c
-typedef void (*EffFunc)( MChannel*, bool );
-typedef struct { EffFunc func1; EffFunc func2; u8 inbet1; } effectStruct;
-static const effectStruct effects[] = { ... 50 entries ... };
-
-typedef struct { EffFunc func; u8 inbet; } effectStructVC;
-static const effectStructVC effectsVC[] = { ... 10 entries ... };
-```
-
-`{func1, func2, inbet1}` is exactly our `{tick_fn, init_fn, flags}` shape
-(`func2`/`init_fn` only set for the 4 "dual" entries that combine a
-volume-slide with vibrato or tone-porta). API-shape reference only, per
-"Public Krawall source pulled for reference" above -- nothing here is a
-compiled-code diff.
-
-**Verification**: extracted the `inbet`/`flags` bit for all 50 `effects[]`
-slots (including the unused all-zero ones) directly from ROM and diffed
-against the reference source's sequence -- **exact match, all 50 entries**,
-including which specific unused-slot indices are zero. Stronger still: the
-reference table reuses `eff_volslide_s3m` in slot 23 (paired with
-`eff_vibrato`) and slot 24 (paired with `eff_portanote`), and reuses
-`eff_volslide_xm` the same way in slots 49/50. In the ROM table, slots 23/24
-literally point back at the *same* `tick_fn` address as slot 6
-(`0x8048400`), with `init_fn` pointing at the same addresses as slots 20 and
-19 respectively (`0x80497E0`, `0x8048A48`) -- and slots 49/50 do the
-identical thing with slot 7's address (`0x8048578`) instead. That specific
-reuse pattern reproducing exactly, across 4 independent slots, is not
-something a coincidental table shape would produce. Also extracted and
-verified all 10 `effectsVC[]` (volume-column) entries the same way -- exact
-`inbet` match too, though those functions (`0x8049BAC`-`0x8049E14`) aren't
-seeded in `functions.<ver>.cfg` yet since they weren't part of the original
-41.
-
-Effect-column table (`0x08FA95B4`-`0x08FA980C`, ref. `effects[1..50]`,
-1-indexed to match the source comments -- index 0 and the three commented
-`(!)`/`(*)` slots are unused/all-zero and not real functions):
-
-| # | name | tick addr | init addr |
+| Section | US ROM | JP ROM | Runs at |
 |---|---|---|---|
-| 1 | `eff_speed` | `0x8049424` | |
-| 2 | `eff_bpm` | `0x804943C` | |
-| 3 | `eff_speedbpm` | `0x804945C` | |
-| 4 | `eff_patt_jump` | `0x8049A58` | |
-| 5 | `eff_patt_break` | `0x8049A64` | |
-| 6 | `eff_volslide_s3m` | `0x8048400` | |
-| 7 | `eff_volslide_xm` | `0x8048578` | |
-| 8 | `eff_volslide_df` | `0x80494A0` | |
-| 9 | `eff_volslide_uf` | `0x80494F8` | |
-| 10 | `eff_portadown_xm` | `0x80496B8` | |
-| 11 | `eff_portadown_s3m` | `0x8048998` | |
-| 12 | `eff_portadown_f` | `0x804971C` | |
-| 13 | `eff_portadown_ef` | `0x8049780` | |
-| 14 | `eff_portaup_xm` | `0x80495DC` | |
-| 15 | `eff_portaup_s3m` | `0x80488B4` | |
-| 16 | `eff_portaup_f` | `0x8049628` | |
-| 17 | `eff_portaup_ef` | `0x8049670` | |
-| 18 | `eff_volume` | `0x8049B7C` | |
-| 19 | `eff_portanote` | `0x8048A48` | |
-| 20 | `eff_vibrato` | `0x80497E0` | |
-| 21 | `eff_tremor` | `0x8048DC0` | |
-| 22 | `eff_arpeggio` | `0x8048FD0` | |
-| 23 | `eff_volslide_vibrato` (reuses 6 + 20) | `0x8048400` | `0x80497E0` |
-| 24 | `eff_volslide_porta` (reuses 6 + 19) | `0x8048400` | `0x8048A48` |
-| 25 | `eff_cvolume` | `0x804959C` | |
-| 26 | `eff_cvolslide` | `0x80486E8` | |
-| 27 | `eff_offset` | `0x804989C` | |
-| 28 | `eff_panslide` | `0x8048784` | |
-| 29 | `eff_retrig` | `0x8048E54` | |
-| 30 | `eff_tremolo` | `0x8048C60` | |
-| 31 | `eff_fvibrato` | `0x8048B94` | |
-| 32 | `eff_gvolume` | `0x8049550` | |
-| 33 | `eff_gvolslide` | `0x8048630` | |
-| 34 | `eff_pan` | `0x8049A0C` | |
-| 35 | `eff_panbrello` | `0x8048D18` | |
-| 36 | `eff_mark` | `0x8049484` | |
-| 37 | `eff_glissando` | `0x80498C8` | |
-| 38 | `eff_wave_vibr` | `0x80498E0` | |
-| 39 | `eff_wave_trem` | `0x8049944` | |
-| 40 | `eff_wave_panb` | `0x80499A8` | |
-| 43 | `eff_patternloop` | `0x8049A7C` | |
-| 44 | `eff_notecut` | `0x8049AC4` | |
-| 45 | `eff_notedelay` | `0x8049B00` | |
-| 49 | `eff_volslide_vibrato_xm` (reuses 7 + 20) | `0x8048578` | `0x80497E0` |
-| 50 | `eff_volslide_porta_xm` (reuses 7 + 19) | `0x8048578` | `0x8048A48` |
+| `.text` | `0x08046D0C`-`0x08049E84` | `0x08046C38`-`0x08049DB0` | ROM |
+| `.rodata` | `0x08FA953C`-`0x08FAA7CC` | `0x08F3C9CC`-`0x08F3DC5C` | ROM |
+| `.iwram` | `0x08FB0DB0`-`0x08FB2348` | `0x08F44240`-`0x08F457D8` | `0x03000000`-`0x03001598` |
+| `.ewram` | `0x08FB2348`-`0x08FB4B40` | `0x08F457D8`-`0x08F47FD0` | `0x02000000`-`0x020027F8` |
 
-Volume-column table (`0x08FA980C`-`0x08FA985C`, ref. `effectsVC[1..10]`):
+`kramInstall` copies both RAM images at boot, through `CopyMemory`, before
+`InitAudio` calls `kragInit`. Uninitialised `.iwram`/`.ewram` variables are
+stored as zeros in the images. `g_pKrawallIwramStart` and its neighbours
+hold the same bounds for `ClearWorkRam`, which zeroes the RAM above both
+images.
 
-| # | name | tick addr |
+### `.text` (US)
+
+| Object | Range | Functions |
 |---|---|---|
-| 1 | `eff_VC_volslide_down` | `0x8049BAC` |
-| 2 | `eff_VC_volslide_up` | `0x8049BFC` |
-| 3 | `eff_VC_fvolslide_down` | `0x8049C50` |
-| 4 | `eff_VC_fvolslide_up` | `0x8049C9C` |
-| 5 | `eff_VC_vibrato_setspeed` | `0x8049CE8` |
-| 6 | `eff_VC_vibrato` | `0x80490CC` |
-| 7 | `eff_VC_pan` | `0x8049D04` |
-| 8 | `eff_VC_panslide_left` | `0x8049D60` |
-| 9 | `eff_VC_panslide_right` | `0x8049DB8` |
-| 10 | `eff_VC_portanote` | `0x8049E14` |
+| `general.c` | `0x08046D0C`-`0x08046D2C` | `kragInit` |
+| `directsound.c` | `0x08046D2C`-`0x08046ED0` | `dsInit`, `getDmaAddress`, `kradActivate`, `kradDeactivate` |
+| `mixer.c` | `0x08046ED0`-`0x080471FC` | `kramGetActiveChannels` ... `kramResetChannels` |
+| `mixer.arm.c` | `0x080471FC`-`0x080473B4` | `mixRampOut` (ARM, runs from ROM) |
+| `player.c` | `0x080473B4`-`0x08049E3C` | `pDataSet` ... `eff_VC_portanote` |
+| `stub.S` | `0x08049E3C`-`0x08049E84` | `kram*STUB`, Thumb calls into the IWRAM code |
 
-All 51 functions (41 effect-column + 10 volume-column) are now named in
-`functions.us.cfg`; `just check-all` still passes (renaming/seeding a
-`functions.<ver>.cfg` entry can't change the produced bytes, but re-checked
-anyway per hard rule 4).
+The game calls the IWRAM functions through the stubs: `kramWorkerSTUB`
+from the VBlank handler, `kramPlaySTUB` and `kramSetFreqSTUB` from the
+sound effect code.
 
-`eff_VC_portanote`'s tick path (`0x08049E32`) is a direct `bl
-eff_portanote` into the effect-column function above -- a real,
-gbadisasm-verified symbolic cross-reference between the two tables, not
-just matching shape. About as strong a confirmation of both names as is
-possible without the original source.
+### `.iwram`
 
-## Read-only data layout, `0x08FA953C`-`0x08FAA7D0` (US) [PROVEN]
+| IWRAM | Object | Contents |
+|---|---|---|
+| `0x03000000` | `directsound.c` | `dsStereo` |
+| `0x03000004` | `directsound_asm.S` | `kradInterrupt`, the timer 1 handler |
+| `0x03000090` | `mixer.arm.c` | `volMaster[2]`, `hqMode`, `hqRamp`; then `kramPlayExt` (`0x03000094`), `kramPlay` (`0x030002EC`), `kramStop`, `kramSetFreq`, `kramSetVol`, `kramSetPan`, `kramSetPos`, `kramActive` |
+| `0x03000604` | `mixer_func.S` | `mixLeft` ... `mix16to8_patch`, `volSumLeft`/`volSumRight` |
+| `0x03000C48` | `mixer_private.arm.c` | `mixReal`, `kramWorker` (`0x03001068`), `mixBuffer` (`0x03001144`) |
+| `0x03001594` | `player.c` | `iidCounter` |
 
-Between `FamousWizardCards` and the EEPROM library's `.rodata`. JP has the same
-layout at `0x08F3C9CC`; only the function-pointer tables (`mixPanTable`,
-`effects[]`, `effectsVC[]`) differ.
+`ram_symbols.<ver>.inc` names the functions of objects not yet built from
+source at their IWRAM addresses; the manifests label their ROM copies with
+a `_Rom` suffix. ROM address `X` runs at `0x03000000 + (X - 0x08FB0DB0)`
+(US).
 
-| US range | Contents |
-|---|---|
-| `0x08FA953C`-`0x08FA9568` | `$Id` string, NUL, 2 padding bytes; unreferenced |
-| `0x08FA9568`-`0x08FA95A8` | `mixPanTable[16]` |
-| `0x08FA95A8`-`0x08FA980C` | `effects[51]`, `{func1, func2, inbet1}` |
-| `0x08FA980C`-`0x08FA985C` | `effectsVC[10]`, `{func, inbet}` |
-| `0x08FA985C`-`0x08FA98DC` | `table_sine[64]` (s16) |
-| `0x08FA98DC`-`0x08FA995C` | `table_ramp[64]` (s16) |
-| `0x08FA995C`-`0x08FA99DC` | `table_square[64]` (s16) |
-| `0x08FA99DC`-`0x08FA9A5C` | `table_rand[64]` (s16) |
-| `0x08FA9A5C`-`0x08FA9B4C` | `table_periods[120]` (u16) |
-| `0x08FA9B4C`-`0x08FA9BCC` | `table_finetune[64]` (u16) |
-| `0x08FA9BCC`-`0x08FAA7CC` | `table_linear[768]` (u32) |
-| `0x08FAA7CC`-`0x08FAA7D0` | `0xFFFFFFFF`; unreferenced, owner unknown |
+`kradInterrupt` counts timer 1 interrupts in `dmaBlock`, restarts the
+DirectSound DMA, and on its first call reloads timer 1 with
+`65536 - DMABUFFERSIZE`, then overwrites that reload code with `bx lr`.
 
-The seven `table_*` arrays are byte-identical to public Krawall's
-`lib/player_tables.c`, in its order. `eff_wave_vibr` reads all four waveforms;
-`krapPlay` and `sub_08049374` also read `table_sine`. `eff_portanote` and
-`sub_08049398` read `table_periods`, `sub_08049398` reads `table_finetune`,
-and `sub_080481B8`, `eff_arpeggio` and `sub_080493FC` read `table_linear`. `mixPanTable` is referenced only from the
-IWRAM pointer table at `0x08FB1E10`.
+### `.ewram`
 
-## `KramChannel` field offsets, from reading all 51 handlers [STRUCTURAL MATCH]
+| EWRAM | Object | Contents |
+|---|---|---|
+| `0x02000000` | `directsound.c` | `lBuffer`, `rBuffer`, `nextSample`, `currMixBlock`, `lastDmaBlock`, `active`, `dmaBlock` |
+| `0x020008B4` | `mixer.c` | `channels[32]` (`MixChannel`, 0x2C bytes), `soundTimerCountBackup` |
+| `0x02000E38` | `mixer_func.S` | `volClipTable`, indexed -1024..1023 around `0x02001238` |
+| `0x02001638` | `mixer_private.arm.c` | `soundTimerFunc`, `soundTimerSpeed`, `soundTimerCount` (both 32768) |
+| `0x02001640` | `player.c` | `musicVolume` (128), the player state, `callBack` (`0x020025B4`), `effchns[6]` (`0x020025B8`) |
 
-Cross-referencing field accesses across all 51 named functions (effect +
-volume-column) gives a much fuller picture than any single function did.
-The recurring "recompute mix output" sequence --
-`([ch+4] * [ch+5] * (s8)[ch+0x4D]) >> 12` passed to `sub_0804A2C8` -- alone
-appears in over a dozen of them, which is what makes the following offsets
-confident despite no single function proving all of them at once:
+### `.rodata` (US)
 
-| offset | size | field | evidence |
-|---|---|---|---|
-| `+0x00` | 4 | sample/voice pointer | arg0 to `sub_0804A2C8` in every volume-affecting handler |
-| `+0x04` | 1 | Volume (0-`0x40`) | set directly by `eff_volume`, slid+clamped-at-`0x40` by all `VolSlide*`/`VC_VolSlide*` |
-| `+0x05` | 1 | Channel Volume (0-`0x40`) | same shape, but set by `eff_cvolume`/`ChannelVolSlide` instead -- confirms these are two distinct, both-multiplied-in volume factors, not the same field read two ways |
-| `+0x06` | 1 (s8) | Panning (~-0x40..0x3F) | set/slid by `eff_VC_pan`/`PanSlideLeft`/`PanSlideRight`, combined with a `+0x57` "pan envelope" offset before clamping |
-| `+0x0C` | 2 | Period (live pitch) | read by vibrato as the base to offset from; written directly by the portamento family (`PortaUp*`/`PortaDown*`) |
-| `+0x0E` | 2 | Period, post-vibrato | written only by `eff_VC_vibrato`'s tick path (`period + waveTable[phase]*depth>>7`), consumed downstream (presumably by the mixer) |
-| `+0x18` | 1 | unclear | compared against small constants (`0x14`, `0x17`, `0x31`) in a handful of handlers; not yet pinned to a specific meaning |
-| `+0x19` | 1 | current effect-column param (`xy`) | read generically as input by nearly all 41 effect-column handlers; several memoize a nonzero value into a handler-specific "remembered param" byte elsewhere in the struct (e.g. `+0x3C`, `+0x3E`, `+0x40`, `+0x44`) |
-| `+0x1A` | 2 | tone-porta target delta | set by `eff_VC_portanote`'s init path from the low nibble of its param |
-| `+0x20` | 1 | vibrato phase/position | incremented by `+0x21` (speed) each tick, `&0x3F`-wrapped, used ×2 as a halfword index into the `+0x24` waveform table |
-| `+0x21` | 1 | vibrato speed | set by `eff_VC_vibrato_setspeed` |
-| `+0x22` | 1 | vibrato depth (×4 scaled) | set by `eff_VC_vibrato`'s init path from the low nibble of its `+0x5D` param |
-| `+0x24` | 4 | vibrato waveform table pointer | read by `eff_VC_vibrato`, presumably set by `eff_wave_vibr` (not yet checked) |
-| `+0x48` | 1 | dirty/pending flag | read-and-cleared by several handlers when `+0x18 == 0x14`; likely tells the mixer a per-channel recompute is needed |
-| `+0x4D` | 1 (s8) | volume-combine multiplier | third factor in the `([ch+4]*[ch+5]*[ch+0x4D])>>12` formula everywhere; not yet independently pinned to what sets it (candidate: baked-in panning contribution or instrument default volume) |
-| `+0x57` | 1 | pan envelope offset | added to `+0x06` before the final pan clamp in `VC_Pan`/`PanSlideLeft`/`PanSlideRight` |
-| `+0x5D` | 1 | current volume-column param | the volume-column equivalent of `+0x19` -- confirms the effect-column and volume-column params are stored as two separate bytes in the same struct, not shared |
+JP has the same layout from `0x08F3C9CC`.
 
-**Global (not per-channel) fields, EWRAM `0x02001644`+**: `+0x1D`/`+0x1E`
-hold Global Volume's value/raw-slide-param, written by
-`eff_gvolslide` -- this is the player-wide state struct
-(this document's earlier candidate `KramEngineState`), not
-`KramChannel`.
+| Range | Object | Contents |
+|---|---|---|
+| `0x08FA953C`-`0x08FA9568` | `general.c` | `__id`, the `$Id` string |
+| `0x08FA9568`-`0x08FA95A8` | `mixer.arm.c` | `mixPanTable[16]` |
+| `0x08FA95A8`-`0x08FA980C` | `player.c` | `effects[51]`, `{func1, func2, inbet1}` |
+| `0x08FA980C`-`0x08FA985C` | `player.c` | `effectsVC[10]`, `{func, inbet}` |
+| `0x08FA985C`-`0x08FAA7CC` | `player_tables.c` | `table_sine`, `table_ramp`, `table_square`, `table_rand`, `table_periods`, `table_finetune`, `table_linear` |
 
-**Resolving the earlier "two different offset pictures" question**: this
-struct's fields run out to at least `+0x5D`, well past the 44-byte
-(`0x2C`) stride `mixReal` uses to scan its channel array
-with a status byte at `+2`. Those two pictures don't reconcile into one
-struct -- they're almost certainly **two different structs**: a compact,
-hot-path mixer-channel struct (44 bytes, scanned every mix callback) and a
-separate, larger per-track player/effect-state struct (this one, walked
-once per tick by the effect handlers) that presumably holds a pointer into
-the compact one. Revising the earlier "could be the same struct viewed
-from a different base" note above -- it isn't.
+`effects[]` and `effectsVC[]` give the names of the 51 effect handlers;
+their `inbet` flags and repeated entries match the public `player.c`
+exactly. The word after the tables (`0xFFFFFFFF`, US `0x08FAA7CC`) is
+unreferenced and its owner is not known.
 
-## Where IWRAM code gets installed — SOLVED [PROVEN]
+## Game-side use
 
-Resolved via mGBA's built-in debugger console (not the gdb remote stub --
-that had reliability problems before, see "Dynamic verification attempt"
-below; mGBA's native `watch`/`continue` commands worked cleanly). Set a
-write watchpoint on `0x03000090` (one of the confirmed IWRAM code
-addresses) from a cold reset and `continue`d past one false hit (the BIOS
-itself zero-clears IWRAM early in boot, before any game code runs -- PC
-still inside the BIOS ROM, `0x000003xx`, at that point). The second hit
-landed at PC `0x0802C4FC`, deep in game code, mid-loop, with register
-state pointing at a plain word-copy loop (`ldmia`/`stmia` + tail byte
-copy) -- i.e. a compiled copy routine. Register values at the trap
-(`r4`/length, `r5`-`r6`/src, `r7`/dest, `lr`/caller) plus reading the
-caller statically nail down the whole picture:
-
-- **`0x0802C4BC`** is a general-purpose compiled `CopyMemory(dest, src, len)`
-  -- standard word-copy-with-alignment-check shape, confirmed independently
-  by a Ghidra decompilation of the same address matching byte-for-byte in
-  structure (unaligned fallback + word loop + tail bytes). It is the game's
-  own routine, distinct from the linked-in libc `memcpy` at `0x0804BD5C`.
-  Named `CopyMemory` in `functions.us.cfg`.
-- **`0x0803FDB0`** is the actual installer, called once from the game's
-  top-level init sequence at `0x08029690` (`bl 0x0803FDB0` at `0x08029734`
-  -- this is the same init-call chain traced all the way back in "No bulk
-  startup copy into IWRAM/EWRAM" above; it was never itself a
-  `gbadisasm` seed, and its target `0x08029690` is reached from
-  `EntryPoint` only via an indirect `bx`, which is exactly why
-  `gbadisasm`'s direct-branch-only spidering never reached any of this
-  code on its own). Named `kramInstall` in `functions.us.cfg`. It does
-  two back-to-back `CopyMemory` calls, source/dest/length all literal:
-  - `CopyMemory(dest=0x03000000, src=0x08FB0DB0, len=0x1598)` -- the IWRAM
-    install. `0x1598` = 5528 bytes, comfortably covering every IWRAM
-    address flagged throughout this document (`0x03000090` through
-    `0x03001144`+).
-  - `CopyMemory(dest=0x02000000, src=0x08FB2348, len=0x27F8)` -- and
-    immediately after, an **EWRAM install**.
-    `0x08FB2348` is exactly where the first copy's source region ends
-    (`0x08FB0DB0 + 0x1598`), so the ROM stores one contiguous
-    `0x3D90`-byte image at `0x08FB0DB0`-`0x08FB4B40` that gets split
-    across both copies. `0x02000000` (EWRAM base) is very likely where
-    `KramEngineState` and the `0x020008B4` channel-array base actually
-    live -- these are inside a *copied* image, not simple linked EWRAM
-    globals. Every EWRAM address referenced throughout this document
-    should be checked for whether it falls in
-    `0x02000000`-`0x02002800`.
-  - Both length constants are stored in ROM as full addresses
-    (`0x03001598`, `0x020027F8` respectively) and masked with `0xFFFFFF`
-    at the call site rather than stored as plain lengths -- reads like
-    linker-generated region-end symbols (`__iwram_end`, `__ewram_end`)
-    rather than hand-written constants. The same four bounds are stored as
-    ROM pointers (`g_pKrawallIwramStart` etc., US `0x0806B8CC`) that
-    `ClearWorkRam` uses to zero the RAM above both sections.
-  - Also writes byte `8` to `g_bUnk03005AC0` (`0x03005AC0`) just before the
-    copies; `PlayMusicModule` writes the same value and an uncalled setter
-    at `0x0803FE6C` stores its argument there. No reader was found.
-  - Then calls `InitAudio` (`0x0803FDFC`): `kragInit(KRAG_INIT_STEREO)`,
-    `kramSetMasterVol(KRAM_MV_CHANNELS16 | 128)`, `kramQualityMode(KRAM_QM_HQ)`,
-    full volumes, the saved volumes (`ApplyAudioVolumeSettings`), music state
-    reset, and `krapCallback(OnKrawallEvent)`. `OnKrawallEvent` handles only
-    `KRAP_CB_JDONE` (5, jingle finished): it sets the music to a quarter of
-    the saved volume and fades it back up. All are matched in `src/sound/`.
-
-### Krawall API entry points called at startup [STRUCTURAL MATCH]
-
-Identified by comparing the ROM bodies with the public source's functions:
-
-| Name | US | JP | Evidence |
-|---|---|---|---|
-| `kragInit` | `0x08046D0C` | `0x08046C38` | `kramSetMasterVol(128)`, `dsInit(stereo)`, `kradActivate`, `krapInit` in that order; no `kramResetChannels` call |
-| `kramQualityMode` | `0x08046EF4` | `0x08046E20` | `hqRamp`/`hqMode` (`0x03000093`/`0x03000092`), mode clamped to 0-2, per-channel quality update; tests `KRAM_QM_RAMP` (0x10) like the public source's commented-out variant |
-| `kramSetSFXVol` | `0x08046F5C` | `0x08046E88` | clamps to 255 and stores `volMaster[1]` (`0x03000091`); no `kramResetChannels` call |
-| `kramSetMasterVol` | `0x08046F7C` | `0x08046EA8` | `vol >> 16` selects the channel-count patch, then builds the 1024-entry clip table |
-| `krapCallback` | `0x080491AC` | `0x080490D8` | stores the pointer at `0x020025B4`; the player calls through it with event 1 (`timerRoutine`, fade done), 2 (before `krapStop`), 3 (`eff_mark`), 4 and 6 (`advanceRow`) and 5 (`jingleDone`), the public `KRAP_CB_*` numbering |
-
-This also answers "verify whether `0x03000AB4`/`mixRampOut`'s tail
-target etc. are installed rather than statically linked" from multiple
-sections above: they're installed, via this one `kramInstall` call, not
-per-function.
-
-## IWRAM mixer functions — identified [PROVEN]
-
-The IWRAM-resident functions identify cleanly against public krawall's
-`lib/mixer.arm.c`, `lib/mixer_private.arm.c` and `lib/mixer_func.S` --
-struct offsets,
-branch shapes, and constants (e.g. `kramStop`'s `vol > 5` ramp-out
-threshold, `mixFunc = 7`) match verbatim. ROM address `X` maps to IWRAM
-runtime address `0x03000000 + (X - 0x08FB0DB0)`, per `kramInstall`'s copy.
-
-`kramInstall`'s IWRAM+EWRAM source blob is byte-identical between US
-(`0x08FB0DB0`+) and JP (`0x08F44240`+) except for two unrelated absolute
-addresses in a data table past `mixReal` (`0x08FB1E10`, `0x08FB1EE4`) --
-none of the functions below differ, so the JP addresses below are a direct
-offset match, not a structural guess.
-
-| name | US ROM | US IWRAM | JP ROM | source |
-|---|---|---|---|---|
-| `kramPlayExt` | `0x08FB0E44` | `0x03000094` | `0x08F442D4` | `mixer.arm.c` |
-| `kramStop` | `0x08FB10D0` | `0x03000320` | `0x08F44560` | `mixer.arm.c` |
-| `kramSetFreq` | `0x08FB1198` | `0x030003E8` | `0x08F44628` | `mixer.arm.c` |
-| `kramSetVol` | `0x08FB11E4` | `0x03000434` | `0x08F44674` | `mixer.arm.c` |
-| `kramSetPan` | `0x08FB1264` | `0x030004B4` | `0x08F446F4` | `mixer.arm.c` |
-| `kramSetPos` | `0x08FB1328` | `0x03000578` | `0x08F447B8` | `mixer.arm.c` |
-| `kramActive` | `0x08FB1378` | `0x030005C8` | `0x08F44808` | `mixer.arm.c` |
-| `mixLeft` | `0x08FB13B4` | `0x03000604` | `0x08F44844` | `mixer_func.S` |
-| `mixRight` | `0x08FB1434` | `0x03000684` | `0x08F448C4` | `mixer_func.S` |
-| `mixCenter` | `0x08FB1454` | `0x030006A4` | `0x08F448E4` | `mixer_func.S` |
-| `mixStereo` | `0x08FB14D8` | `0x03000728` | `0x08F44968` | `mixer_func.S` |
-| `mixLeftHQ` | `0x08FB1570` | `0x030007C0` | `0x08F44A00` | `mixer_func.S` |
-| `mixRightHQ` | `0x08FB1654` | `0x030008A4` | `0x08F44AE4` | `mixer_func.S` |
-| `mixCenterHQ` | `0x08FB1678` | `0x030008C8` | `0x08F44B08` | `mixer_func.S` |
-| `mixStereoHQ` | `0x08FB1760` | `0x030009B0` | `0x08F44BF0` | `mixer_func.S` |
-| `mixBias` | `0x08FB1864` | `0x03000AB4` | `0x08F44CF4` | `mixer_func.S` |
-| `mixClear` | `0x08FB18AC` | `0x03000AFC` | `0x08F44D3C` | `mixer_func.S` |
-| `mix16to8` | `0x08FB18E8` | `0x03000B38` | `0x08F44D78` | `mixer_func.S` |
-| `mix16to8_patch` | `0x08FB19A0` | `0x03000BF0` | `0x08F44E30` | `mixer_func.S` |
-| `mixReal` | `0x08FB19F8` | `0x03000C48` | `0x08F44E88` | `mixer_private.arm.c` |
-| `kramWorker` | `0x08FB1E18` | `0x03001068` | `0x08F452A8` | `mixer_private.arm.c` |
-
-`kramPlayExt`'s IWRAM entry is `0x03000094`. `0x03000090` (the "Where
-IWRAM code gets installed" watchpoint address above) sits 4 bytes into
-the previous function's literal pool.
-
-### `kradInterrupt` [STRUCTURAL MATCH]
-
-The image's first function (US ROM `0x08FB0DB4`, IWRAM `0x03000004`, JP
-ROM `0x08F44244`) is the Timer 1 handler in `gIntrTableTemplate`. It
-corresponds to `kradInterrupt` in public `lib/directsound_asm.S`: it
-restarts DMA1, restarts DMA2 if it is enabled, then reprograms `TM1` with
-reload `0xFBB0` and stores `bx lr` over the start of that
-reprogram block, so later calls return before it. Differences from the
-public source: it increments a word at `0x020008B0` instead of toggling the
-`dmaBlock` byte, resets DMA on every call, and keeps no backup of the
-patched instruction (no `kradInterruptUndoCodeMod` counterpart follows it).
-
-Named at their IWRAM addresses in `ram_symbols.us.inc` and
-`ram_symbols.jp.inc`; the manifests label the ROM copies with a `_Rom`
-suffix. `mixRight` (`b` into `mixLeft`'s loop) and
-`mixCenter` are entry points that only `mixPanTable` reaches.
-
-### How this was tracked down: static search first, then dynamic
-
-"No bulk startup copy into IWRAM/EWRAM" (above) already ruled out a
-global scatter-load, so this was a search for a *local* Krawall-specific
-copy. The static-only pass below didn't find it -- what finally worked was
-going dynamic (see the resolution above): a single write watchpoint in
-mGBA's own debugger console, not the gdb remote stub (unreliable here,
-see "Dynamic verification attempt" below). Recorded for anyone
-re-deriving this:
-
-**The IWRAM code footprint is larger than a literal-scan suggests.** In
-the effect handlers' "recompute mix output" call, the literal addresses
-passed to `sub_0804A2C8` (`0x03000434`, `0x030004B4`, `0x030003E8`,
-`0x03000320`, `0x03000090`, `0x03000BF0`, etc.) are not a "table
-selector" argument, and not data at all. `sub_0804A2C8` and
-its neighbors (`sub_0804A2C0`..`sub_0804A2E4`, all defined right next to
-each other at `0x0804A2C0`-`0x0804A2E4`) are **register-indirect call
-trampolines** -- `sub_0804A2C8` is literally just `bx r2`, `sub_0804A2C4`
-is `bx r1`, `sub_0804A2CC` is `bx r3`, etc. This is the standard
-ARMv4T-Thumb interworking veneer pattern (Thumb has no `blx reg`, so
-calling a function pointer held in a register other than what a direct
-`bl` can reach needs a tiny glue stub). So each of those literals is
-itself a real IWRAM function pointer, called through the trampoline --
-meaning the actual IWRAM code footprint is considerably larger than the
-5 addresses first flagged: at least `0x03000090`, `0x03000320`,
-`0x030003E8`, `0x03000434`, `0x030004B4`, `0x03000578`, `0x03000AB4`,
-`0x03000AFC`, `0x03000B38`, `0x03000BF0` are called as code (`0x03000B30`/
-`0x03000B34` remain confirmed as plain data words, not code -- see the
-`mixReal` writeup above).
-
-**Searched exhaustively for the copy mechanism, found none in the
-Krawall-relevant code**:
-- No `CpuSet`/`CpuFastSet` BIOS calls (`swi 0x0B`/`0x0C`) anywhere in the
-  Krawall driver's code cluster (`0x08046000`-`0x08048000`) or near
-  `kramWorker`/`mixReal`.
-- Fully read `kramWorker` itself (`0x08FB1E18`, the top-level per-callback
-  entry point) -- no copy there either, just a buffer-space query (calls
-  `0x08046E0C`, resolving the earlier-flagged "trace the query free space
-  callback" next step -- it's exactly that, confirmed by this read) and a
-  chunked loop calling `mixReal`.
-- Widened the literal-address scan to the whole ROM for anything writing
-  `0x03000000`-`0x03002000`: found only individual small state-cell writes
-  (bytes/halfwords) scattered across dozens of unrelated functions, never
-  a bulk block copy.
-- Found a real DMA3-register setup sequence (`sub_08049F0C`, a generic
-  `DMA3Transfer(src, dest, count)` helper sitting right next to the effect
-  tables) and chased it as the most promising lead yet -- **false alarm**.
-  Its actual callers pass `0x0D000000` as the transfer address, which is
-  the GBA's EEPROM save-data access range, not IWRAM; one caller
-  (`sub_08049F8C`) does a write-then-read pair through that address, the
-  standard GBA EEPROM read protocol. This is unrelated save-data I/O code
-  that happens to sit near the Krawall tables in link order, not an IWRAM
-  loader. Confirmed dead end, not worth re-checking.
-
-A static search alone will not reach `kramInstall`: it is called only
-through the same indirect-`bx` chain (`EntryPoint` -> `0x08029690`) that
-"No bulk startup copy" flags as invisible to `gbadisasm`'s
-direct-branch-only spidering, so literal-address scans over
-already-disassembled territory never see it. Either walk all ~30 calls
-from `0x08029690` by hand, or go straight to a watchpoint -- dynamic
-verification answers it in two hits.
-
-## Cross-referencing everything above against the public Krawall source [STRUCTURAL MATCH, unusually strong]
-
-Same API-shape-only footing as above, and on that footing the public
-source confirms nearly everything mapped in this document by inference,
-field for field. Compared against `lib/mixer.c`,
-`lib/mixer.h`, `lib/mixer_private.h`, `lib/mixer.arm.c`,
-`lib/mixer_private.arm.c`, `lib/directsound.c`, `lib/general.c`,
-`lib/types.h`.
-
-**`struct MixChannel` (`mixer_private.h`) matches the 44-byte channel
-struct almost field-for-field.** Computing byte offsets from the C
-struct (natural ARM alignment, `chandle` is a 4-byte union):
-
-| field | computed offset | our finding | match |
-|---|---|---|---|
-| `vol` (u8) | `+0x00` | -- | (not independently confirmed, but consistent with position) |
-| `pan` (s8) | `+0x01` | -- | consistent with `KramChannel`-the-other-struct's `+0x06`? No -- see caveat below |
-| `status` (u8) | `+0x02` | status byte, `1`=active | **exact** |
-| `loop` (u8) | `+0x03` | loop-mode byte, `0`/`2` seen | **exact** -- source's `LOOP_NORMAL=1`/`LOOP_BIDIR=2` explains the `2` we saw |
-| `start`/`pos`/`end` (ptr×3) | `+0x04`/`+0x08`/`+0x0C` | position/limit `u32` pair at `+0x08`/`+0x0C` | **exact** (we just hadn't separately identified `start`) |
-| `loopLength` (u32) | `+0x10` | further length/start field at `+0x10` | **exact** |
-| `inc` (s32) | `+0x14` | signed fixed-point pitch/step at `+0x14` | **exact** |
-| `id` (chandle, u32) | `+0x18` | -- | not independently identified |
-| `frac` (u16) | `+0x1C` | -- | plausible match for our `+0x1C` "step-sized u16" note, though that was tentative |
-| `lvol`/`rvol` (u8×2) | `+0x1E`/`+0x1F` | bytes summed into the `0x03000B30`/`0x03000B34` output accumulators | **very likely match** -- left/right volume being accumulated into stereo output sums is exactly what those two IWRAM words are for |
-| `hq`/`mixFunc`/`hqs` (u8×3) | `+0x20`/`+0x21`/`+0x22` | bytes summed to index the `0x08FA9568` table at `+0x20`/`+0x21` | **very likely match, refines earlier read** -- see below |
-
-Computed struct size from the public source is `0x28` (40) bytes; our
-observed stride is `0x2C` (44) -- a 4-byte discrepancy, likely
-compiler-specific padding (this ROM is armcc/RVCT-compiled, the public
-source targets GCC/devkitARM -- see `docs/compiler.md`) or a genuine
-extra field in whatever revision shipped in this game. Not resolved this
-pass.
-
-**Refines the `0x08FA9568` table read**: `mixer.arm.c` defines
-`mixPanTable[]`, a **16-entry** function-pointer array (`mixLeft`,
-`mixLeftHQ`, `mixRight`, `mixRightHQ`, `mixCenter`, `mixCenterHQ`,
-`mixStereo`, `mixStereoHQ`, plus HQ-doubled again for a ramp-out
-variant), indexed by `chn->hq | chn->mixFunc` (`SETQUALITY` sets `hq` to
-`0` or `8`, i.e. a bit-3 flag, `SETPANNING` sets `mixFunc` to `0`-`7`) --
-this is *exactly* the `[ch+0x20] + [ch+0x21]`-computed index into
-`0x08FA9568` documented above, and identifies it as "HQ flag `×8` +
-pan-mode `0`-`7`" rather than an opaque "bank + slot" pair. That makes
-the "5 addresses + 2 reserved + 1 function pointer per 32-byte bank"
-reading of that table likely wrong in detail (probably misattributing
-neighboring data as part of the table) -- **worth a re-look**, with a
-concrete 16-entry, 4-byte-stride shape to check
-against, and 8 real names (`mixLeft`/`mixLeftHQ`/etc.) to try to assign
-if the ROM populates more than the 2 slots found so far. Since this game
-apparently ships built for stereo-only DirectSound output (see
-`dsInit`/`dsStereo` below), it'd make sense if only the `mixStereo`/
-`mixStereoHQ` slots are populated and the rest are zero -- consistent
-with what was actually seen.
-
-**`mixReal` matches `mixer_private.arm.c`'s `mixReal()`
-almost line for line**: clears the accumulator (`mixClear(mixBuffer,
-amount)` -- our `0x03000AFC` call), then `for(i=CHANNELNUM;i;i--,c++) if
-(c->status != CHN_ACTIVE) continue;` (our 32-channel/`+2`-status loop,
-`CHANNELNUM` confirmed `#define`d to exactly `32`), and its `DOLOOP`
-macro (`LOOP_BIDIR`: negate `c->inc`; else: `c->pos -= c->loopLength`)
-matches our "position/limit pair + signed pitch/step, direction via
-sign" read of the mixer loop precisely.
-
-**`channels[CHANNELNUM]` (the 44-byte-struct array itself) is declared
-`IWRAM`, or `EWRAM` if built with `IWRAM_USAGE_SMALL`** (`mixer.c`).
-This ROM's array lives at EWRAM `0x020008B4` (documented since the very
-first pass through this driver) -- meaning **this game was built with
-the small/reduced IWRAM-usage config**, not Krawall's default.
-
-**`getDmaAddress(left, right)` (`directsound.c`) is an exact behavioral
-match for the "query free space" callback at `0x08046E0C`**, called
-directly from `kramWorker`: same signature (returns available sample
-count, writes two output buffer pointers), same "only refill the DMA
-half that isn't currently playing" logic (`dmaBlock == currMixBlock>>1`
-check). Named `getDmaAddress` in `functions.us.cfg` (`ds` = the
-public source's own `directsound.c` naming prefix). Its own two DMA
-channels (`DM1`/`DM2`, one per stereo side, each with its own
-`lBuffer`/`rBuffer`) is the real-source explanation for the "two banks"
-in the `0x08FA9568` table -- an L/R DirectSound FIFO, not a generic
-mode-select mechanism.
-
-**`kragInit()` (`general.c`, the public source's top-level init) shows
-no explicit IWRAM copy** -- consistent with the hypothesis that
-`kramInstall`'s explicit `CopyMemory`-based install (found above) is
-specific to *this* armcc/RVCT-compiled build. The public source relies on
-GCC/devkitARM's `IWRAM`/`IWRAM_CODE` section attributes plus
-devkitARM's crt0 auto-copying `.iwram`-attributed data at startup; ADS/
-RVCT has no equivalent crt0 behavior linked into this ROM (confirmed
-separately in "No bulk startup copy into IWRAM/EWRAM" above), so
-whoever ported Krawall for this game's toolchain apparently added an
-explicit install call to compensate. Plausible explanation, not proven.
-
-Also noted in passing, not investigated: `directsound.c` calls
-`kradInterruptUndoCodeMod()` on deinit, implying the interrupt handler
-uses **self-modifying code** -- a real technique worth knowing about if
-`0x08046E0C`'s neighborhood or the interrupt vector code ever gets
-walked, but out of scope here.
-
-## Dynamic verification attempt (gdb stub) — inconclusive, dropped
-
-Use mGBA's own built-in debugger console for dynamic verification, not
-the gdb remote stub described in this section -- see "Where IWRAM code
-gets installed" above, where a `watch`/`continue` pair resolved the
-question in two hits. This section is kept because the gdb-stub problem
-itself was never diagnosed and could resurface if that path is tried
-again.
-
-Tried to confirm the `kramWorker`/mixer candidates by attaching gdb to
-mGBA's GDB stub (`--gdb`, port 2345) with the ROM running under a real BIOS
-dump. Confirmed mGBA halts the CPU on `--gdb` until a client attaches
-(observed BIOS boot sound only start after issuing `continue`), so the
-mechanism works in principle. However, breakpoint+continue sequencing was
-unreliable across many attempts — the stub would sometimes report a stop
-snapshot on attach while simultaneously treating the target as "still
-running" for subsequent commands, and reconnects would intermittently hang
-with no response at all. Root cause not identified (possibly an mGBA
-GDB-stub quirk/bug, possibly a client-side gdb version mismatch — not
-determined). Dropped rather than continuing to iterate blindly; all
-candidate identifications above remain at their stated confidence level
-(STRUCTURAL MATCH / UNCONFIRMED), none upgraded to PROVEN by this attempt.
-Worth revisiting later, possibly with an interactive (non-batch) gdb session
-or a different debugging frontend.
-
-## Open threads
-
-- `ShowBattleMessage`'s `SpellLevelUp` case calls
-  `PlaySoundEffect_candidate` (`0x0803FF70`), which forwards into
-  `0x08047DFC` -- a function inside this driver's cluster that
-  manipulates a full per-channel state array, closer in shape to a
-  module switch (`kramPlayModule`-equivalent) than a one-shot SFX
-  trigger. Not traced from this document's side; see
-  [`battle-ui.md`](battle-ui.md) for the call site.
-- Check whether `KramEngineState` (`0x02001638`+) and the `0x020008B4`
-  channel-array base fall inside `kramInstall`'s EWRAM copy range
-  (`0x02000000`-`0x02002800`). If they do, they're copied-image
-  contents rather than independently-linked globals, which changes how
-  far their exact addresses can be trusted across a US/JP comparison
-  (worth checking whether the JP build's copy uses the same addresses).
-- Re-derive the `0x08FA9568` table's real shape against
-  `mixPanTable[]`'s concrete 16-entry, 4-byte-stride model (indexed by
-  `hq<<3 | mixFunc`), rather than the "32-byte descriptor bank" reading
-  earlier in this document.
-- Resolve the 4-byte gap between the public source's computed
-  `MixChannel` size (`0x28`) and this ROM's observed stride (`0x2C`) --
-  compiler padding or a real extra field.
-- Map more `KramEngineState` fields (EWRAM `0x02001638`-`0x0200163E`);
-  `+0x1D`/`+0x1E` are Global Volume's value and raw slide param.
-- Pin down what sets `KramChannel+0x4D` (the third factor in the
-  volume-combine formula -- candidate: baked-in panning, or instrument
-  default volume) and what `+0x18`/`+0x08` mean (compared against small
-  constants like `0x14`/`0x17`/`0x31` in several handlers).
-- Naming further driver functions needs behavioural/structural
-  inference from disassembly, or an actual 2003-era Krawall source
-  snapshot; the public repo is a different revision and will not
-  resolve identity by diffing (see "Public Krawall source pulled for
-  reference" above).
-- Once more functions are named, start populating `symbols.us.txt`. The
-  51 effect handlers above are the first real candidates.
+`InitAudio` calls `kragInit(KRAG_INIT_STEREO)`,
+`kramSetMasterVol(KRAM_MV_CHANNELS16 | 128)`,
+`kramQualityMode(KRAM_QM_HQ)` and `krapCallback(OnKrawallEvent)`; see
+`src/sound/`. `OnKrawallEvent` handles only `KRAP_CB_JDONE`. The module and
+sample data the player reads are described in
+[`../formats/krawall.md`](../formats/krawall.md).

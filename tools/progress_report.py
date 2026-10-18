@@ -9,7 +9,8 @@ Areas and code blocks come from tools/rom_layout.json. Each code block is
 one unit, and its functions are the manifest's function rows and region
 starts plus the seeds in functions.<ver>.cfg. A function runs to the next
 function start or region boundary; it is matched when it lies in compiled C
-(c-file, c-file-O1, c-file-arm), committed assembly (asm-file), which in the
+(c-file, c-file-O1, c-file-arm, and third-party c-file-gcc3, c-file-gcc3-arm,
+asm-file-cpp and c-section), committed assembly (asm-file), which in the
 code areas is ARM code or the ROM header, or a linked toolchain library
 object (lib-object). Code bytes are
 matched, and complete (linked from source), on the same terms; a block is a
@@ -17,8 +18,7 @@ complete unit when all of it is.
 
 In the data areas, units are the manifest's region rows plus one
 auto-generated unit per unclaimed gap. A data unit counts as matched (and
-complete) when it is compiled C (c-file, c-file-O1, c-file-arm, c-rodata), an
-asm-file row or an extracted asset directive.
+complete) when any row claims it.
 
 Progress categories: a code block's own category (`library` or
 `game`); for data, `library` in the Krawall data area and `game` elsewhere.
@@ -34,9 +34,11 @@ from manifest import (  # noqa: E402
     ASM_FILE_DIRECTIVE,
     C_FILE_DIRECTIVES,
     C_RODATA_DIRECTIVE,
+    C_SECTION_DIRECTIVE,
     LABEL_DIRECTIVES,
     LIB_OBJECT_DIRECTIVE,
     RODATA_SUFFIX,
+    SECTIONED_DIRECTIVES,
     read_rows,
 )
 
@@ -49,7 +51,8 @@ MEASURE_FIELDS = [
     "total_functions", "matched_functions",
 ]
 FUNCTION_DIRECTIVES = {"thumb-func", "arm-func"}
-MATCHED_CODE_DIRECTIVES = C_FILE_DIRECTIVES | {ASM_FILE_DIRECTIVE, LIB_OBJECT_DIRECTIVE}
+MATCHED_CODE_DIRECTIVES = C_FILE_DIRECTIVES | {
+    ASM_FILE_DIRECTIVE, LIB_OBJECT_DIRECTIVE, C_SECTION_DIRECTIVE}
 CFG_DIRECTIVES = {"thumb_func", "arm_func"}
 
 
@@ -67,6 +70,10 @@ def read_units(path: str) -> list[dict]:
             sys.exit(f"{path}:{lineno}: cannot parse region row")
         name = parts[-1]
         source = None
+        if directive in SECTIONED_DIRECTIVES:
+            name = parts[4]
+        elif directive == C_SECTION_DIRECTIVE:
+            name = parts[3]
         if directive in C_FILE_DIRECTIVES:
             source = parts[3]
             c_sources[name] = source
@@ -75,11 +82,12 @@ def read_units(path: str) -> list[dict]:
         rows.append({
             "start": start, "end": end, "directive": directive,
             "name": name, "source": source,
+            "section": parts[4] if directive == C_SECTION_DIRECTIVE else RODATA_SUFFIX,
         })
     for row in rows:
-        if row["directive"] == C_RODATA_DIRECTIVE:
+        if row["directive"] in (C_RODATA_DIRECTIVE, C_SECTION_DIRECTIVE):
             row["source"] = c_sources.get(row["name"])
-            row["name"] += RODATA_SUFFIX
+            row["name"] += row["section"]
     rows.sort(key=lambda r: r["start"])
     for a, b in zip(rows, rows[1:]):
         if b["start"] < a["end"]:

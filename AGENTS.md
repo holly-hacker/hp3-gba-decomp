@@ -47,8 +47,10 @@ local asset edits.
 - `ram_symbols.{us,jp}.inc`: fixed RAM symbol addresses.
 - `graphics/<feature>.yaml`: graphics groups shared by both versions.
 - `lib-object` manifest rows link libgcc and newlib objects unchanged from
-  agbcc's installed `libgcc.a`/`libc.a`. `include/3rd_party/` holds headers
-  for third-party libraries, such as Krawall.
+  agbcc's installed `libgcc.a`/`libc.a`.
+- `3rd_party/krawall/`: the Krawall audio library (LGPL-2.1-or-later),
+  with headers in `include/3rd_party/krawall/`; `c-file-gcc3`,
+  `asm-file-cpp` and `c-section` rows (`docs/c.md`).
 - The ignored `asm/krawall/` holds analysis dumps, not build inputs.
 - `build/<ver>/`: generated disassembly, objects, linker script, and ROM.
   Unclaimed manifest ranges are filled from the baserom with `.incbin`.
@@ -101,9 +103,14 @@ its `c-file` manifest row, and confirm with the production ROM comparison.
 region.
 
 The compiler is GCC `2.9-arm-000512` (agbcc); game C is Thumb with
-interworking. ARM-mode C uses `agbcc_arm` via `c-file-arm` rows. Krawall
-source must not be vendored without resolving its LGPL licensing; see
-`docs/memory-map/krawall.md` and `docs/formats/krawall.md`.
+interworking. ARM-mode C uses `agbcc_arm` via `c-file-arm` rows.
+
+Krawall is compiled with GCC 3.0.2 instead (`docs/compiler.md`). Match it
+by editing the public Krawall source (commit `9a2b869`) as little as the
+ROM requires: keep its file layout, names, formatting and comments, mark
+each change with a `// HP3-GBA: <what differs>` comment, and note in the
+license header that the file was modified. The style rules below do not
+apply to it. See `docs/memory-map/krawall.md`.
 
 Match every decompiled function in both US and JP, in the same pass: apply
 the same rows and names to JP and verify the JP build.

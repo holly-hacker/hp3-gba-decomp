@@ -25,6 +25,25 @@ A C file's `.rodata` is normally folded into its own region. A
 C row named `<name>` at its own address, for an object whose read-only
 data the ROM keeps apart from its code (the EEPROM library objects).
 
+Third-party code under `3rd_party/` (Krawall) has its own rows, compiled
+with GCC 3.0.2 at `-O3` ([`compiler.md`](compiler.md)) from headers in
+`include/3rd_party/<lib>/`:
+
+- `c-file-gcc3 <start> <end> <source.c> <name> [<section> [<vma>]]` for
+  Thumb C, `c-file-gcc3-arm` for ARM C, and `asm-file-cpp` for a
+  preprocessed `.S`.
+- These objects keep `.text`, `.rodata`, `.iwram` and `.ewram` apart.
+  The row places one of them, `.text` unless `<section>` names another.
+- `c-section <start> <end> <name> <section> [<vma>]` places another
+  section of the object `<name>`; its region is `<name><section>`.
+- `<vma>` is the RAM address a section runs at when it is stored in ROM
+  at `<start>` and copied there (the IWRAM and EWRAM images).
+- `check_sections.py` rejects an object with a non-empty section that no
+  row places.
+
+Third-party source follows its upstream style rather than the rules
+below.
+
 `-fhex-asm` is agbcc-only and prints immediates as hex; it changes no
 bytes. A trailing `.align 2, 0` is appended to every compiled region,
 supplying the zero fill the ROM has -- without it the assembler pads Thumb

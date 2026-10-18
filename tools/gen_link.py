@@ -29,7 +29,13 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from buildcache import write_if_changed  # noqa: E402
 from c.compile_c import agbcc_prefix  # noqa: E402
-from manifest import RODATA_SUFFIX, Labels, parse_manifest, read_lib_objects  # noqa: E402
+from manifest import (  # noqa: E402
+    RODATA_SUFFIX,
+    Labels,
+    parse_manifest,
+    read_lib_objects,
+    read_placements,
+)
 
 BASE_ADDR = 0x08000000
 
@@ -83,6 +89,17 @@ def write_region(objdir: str, ver: str, region, rodata: str | None = None) -> No
     write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
 
 
+def write_sectioned(objdir: str, ver: str, region) -> None:
+    """Writes the wrapper .s for a sectioned object (c-file-gcc3 and
+    friends). Its sections go to several places, some of them run from
+    RAM, so link.ld brackets each one instead of the wrapper."""
+    _, _, srcfile, name = region
+    out = prelude(ver)
+    out += [f".global {label}" for label in exported_labels(srcfile)]
+    out += [f'.include "{srcfile}"']
+    write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
+
+
 def extract_member(objdir: str, archive: str, member: str, name: str) -> None:
     """Copies one member of agbcc's installed archive to obj/<name>.o."""
     path = os.path.join(agbcc_prefix(), "lib", archive)
@@ -127,6 +144,7 @@ def main() -> None:
     rom_size = os.path.getsize(f"baserom.{ver}.gba")
     regions, labels = parse_manifest(f"regions.{ver}.txt", ver)
     lib_objects = read_lib_objects(f"regions.{ver}.txt")
+    sectioned = read_placements(f"regions.{ver}.txt")
 
     objdir = f"build/{ver}/obj"
     os.makedirs(objdir, exist_ok=True)
@@ -135,7 +153,8 @@ def main() -> None:
     if len(names) != len(regions) or "gaps" in names:
         sys.exit(f"regions.{ver}.txt: region names must be unique and not 'gaps'")
 
-    # placements: (address, output section, object stem, input section)
+    # placements: (address, output section, object stem, input section,
+    # region name, RAM address or None)
     placements = []
     gaps = []
     addr = BASE_ADDR
@@ -144,33 +163,39 @@ def main() -> None:
         if start > addr:
             gaps.append((addr, start))
         addr = end
+        if name in sectioned:
+            stem, section, vma = sectioned[name]
+            if stem == name:
+                write_sectioned(objdir, ver, region)
+            placements.append((start, f".rgn{i:03d}", stem, section, name, vma))
+            continue
         if name.endswith(RODATA_SUFFIX):
-            placements.append((start, f".rgn{i:03d}", name[:-len(RODATA_SUFFIX)], ".rodata"))
+            placements.append((start, f".rgn{i:03d}", name[:-len(RODATA_SUFFIX)], ".rodata", name, None))
             continue
         if name in lib_objects:
             archive, member, _ = lib_objects[name]
             extract_member(objdir, archive, member, name)
-            placements.append((start, f".rgn{i:03d}", name, ".text"))
+            placements.append((start, f".rgn{i:03d}", name, ".text", name, None))
             continue
         rodata = name + RODATA_SUFFIX
         write_region(objdir, ver, region, rodata if rodata in names else None)
-        placements.append((start, f".rgn{i:03d}", name, ".text"))
+        placements.append((start, f".rgn{i:03d}", name, ".text", name, None))
     if addr < BASE_ADDR + rom_size:
         gaps.append((addr, BASE_ADDR + rom_size))
 
     gap_sections = write_gaps(objdir, ver, gaps, labels)
-    placements += [(g[0], s, "gaps", s) for g, s in zip(gaps, gap_sections)]
+    placements += [(g[0], s, "gaps", s, None, None) for g, s in zip(gaps, gap_sections)]
     placements.sort()
 
     # Objects of regions that no longer exist would otherwise be linked.
-    keep = {f"{stem}{ext}" for _, _, stem, _ in placements for ext in (".s", ".o")}
+    keep = {f"{p[2]}{ext}" for p in placements for ext in (".s", ".o")}
     for entry in os.listdir(objdir):
         if entry not in keep:
             os.remove(os.path.join(objdir, entry))
 
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write("SECTIONS\n{\n")
-        for address, section, stem, input_section in placements:
+        for address, section, stem, input_section, region_name, vma in placements:
             # SUBALIGN(1): a compiled region's .text carries a 4-byte
             # section-alignment attribute (from compile_c.py's trailing
             # `.align 2, 0`) even when it adds no actual padding. Without
@@ -178,10 +203,17 @@ def main() -> None:
             # and falsely reports it overlapping the next region whenever
             # its real ROM address isn't itself 4-aligned.
             contents = f"{objdir}/{stem}.o({input_section})"
-            if stem in lib_objects:
-                # A library object has no wrapper to carry the markers.
-                contents = f'"__rgn_{stem}_beg" = .; {contents} "__rgn_{stem}_end" = .;'
-            f.write(f"    {section} {hex(address)} : SUBALIGN(1) {{ {contents} }}\n")
+            if stem in lib_objects or region_name in sectioned:
+                # Neither a library object nor a sectioned one has a
+                # wrapper that brackets the content.
+                contents = (f'"__rgn_{region_name}_beg" = .; {contents} '
+                            f'"__rgn_{region_name}_end" = .;')
+            # A section that runs from RAM is linked at its RAM address
+            # and stored at its ROM one. Every section states where it is
+            # stored: ld would otherwise give the sections after one that
+            # runs from RAM that one's offset between the two.
+            run = hex(address if vma is None else vma)
+            f.write(f"    {section} {run} : AT({hex(address)}) SUBALIGN(1) {{ {contents} }}\n")
         # The game's own RAM variables are fixed addresses
         # (ram_symbols.<ver>.inc); a library object's .bss is placed where
         # the ROM's references to it point.
@@ -189,6 +221,13 @@ def main() -> None:
             if bss is not None:
                 f.write(f"    .libbss{i:03d} {hex(bss)} (NOLOAD) : "
                         f"{{ {objdir}/{stem}.o(.bss) }}\n")
+        # A label inside a sectioned object's region has no gap to be
+        # defined in; it names a ROM address the original link script
+        # supplied, such as where a RAM image is stored.
+        for start, end, _, name in regions:
+            if name in sectioned:
+                for point in sorted(a for a in labels if start <= a < end):
+                    f.write(f"    {labels[point][0]} = {hex(point)};\n")
         f.write("    /DISCARD/ : { *(.comment) *(.ARM.attributes) *(.note*) }\n")
         f.write("}\n")
 

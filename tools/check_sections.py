@@ -18,7 +18,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from manifest import parse_manifest  # noqa: E402
+from manifest import parse_manifest, read_placements  # noqa: E402
 
 
 def marker_addresses(elf: str) -> dict[str, int]:
@@ -34,6 +34,21 @@ def marker_addresses(elf: str) -> dict[str, int]:
     }
 
 
+def unplaced_sections(ver: str, placements) -> list[str]:
+    """Non-empty sections of sectioned objects that no manifest row
+    places. ld would put them somewhere of its own choosing."""
+    placed = {(stem, section) for stem, section, _ in placements.values()}
+    bad = []
+    for stem in sorted({stem for stem, _, _ in placements.values()}):
+        dump = subprocess.run(["arm-none-eabi-objdump", "-h", f"build/{ver}/obj/{stem}.o"],
+                              capture_output=True, text=True, check=True).stdout
+        for m in re.finditer(r"^\s*\d+\s+(\S+)\s+([0-9a-f]+)\s", dump, re.M):
+            name, size = m.group(1), int(m.group(2), 16)
+            if size and name != ".ARM.attributes" and (stem, name) not in placed:
+                bad.append(f"  {stem}: {name} ({hex(size)} bytes) has no manifest row")
+    return bad
+
+
 def main() -> None:
     if len(sys.argv) != 2:
         sys.exit(f"usage: {sys.argv[0]} <ver>")
@@ -41,6 +56,10 @@ def main() -> None:
 
     regions, _ = parse_manifest(f"regions.{ver}.txt", ver)
     markers = marker_addresses(f"build/{ver}/rom.elf")
+    placements = read_placements(f"regions.{ver}.txt")
+    # A section that runs from RAM is linked, and so measured, there.
+    run_address = {name: vma for name, (_, _, vma) in placements.items()
+                   if vma is not None}
 
     bad = []
     for start, end, srcfile, name in regions:
@@ -51,9 +70,11 @@ def main() -> None:
             bad.append(f"  {name} ({srcfile}): assembled to {hex(fin - beg)} bytes, "
                        f"but regions.{ver}.txt claims {hex(start)}-{hex(end)} = "
                        f"{hex(end - start)}")
-        elif beg != start:
-            bad.append(f"  {name} ({srcfile}): landed at {hex(beg)}, not {hex(start)}")
+        elif beg != run_address.get(name, start):
+            bad.append(f"  {name} ({srcfile}): landed at {hex(beg)}, not "
+                       f"{hex(run_address.get(name, start))}")
 
+    bad += unplaced_sections(ver, placements)
     if bad:
         print(f"{ver}: regions do not match the manifest", file=sys.stderr)
         print("\n".join(bad), file=sys.stderr)

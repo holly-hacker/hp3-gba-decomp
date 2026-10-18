@@ -28,6 +28,13 @@ def clang_args(src: str, prefix: str) -> list[str]:
     return ["clang", "-xc", *flags, "-c", src]
 
 
+def third_party_args(src: str, prefix: str) -> list[str]:
+    """Third-party C is written for GCC 3 (C99 declarations, // comments);
+    only its preprocessor flags carry over."""
+    _, cppflags, _ = compile_c.gcc3_profile(src, prefix, arm=src.endswith(".arm.c"))
+    return ["clang", "-xc", "-std=gnu99", *cppflags, "-c", src]
+
+
 def main() -> None:
     root = os.path.dirname(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))))
@@ -36,6 +43,9 @@ def main() -> None:
     entries = [
         {"directory": root, "file": src, "arguments": clang_args(src, prefix)}
         for src in sorted(glob.glob("src/**/*.c", recursive=True, root_dir=root))
+    ] + [
+        {"directory": root, "file": src, "arguments": third_party_args(src, prefix)}
+        for src in sorted(glob.glob("3rd_party/**/*.c", recursive=True, root_dir=root))
     ]
 
     out = os.path.join(root, "compile_commands.json")

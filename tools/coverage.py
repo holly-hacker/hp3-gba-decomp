@@ -2,9 +2,9 @@
 """Report how much of the ROM the manifest has claimed, by area and kind.
 
 Reads regions.<ver>.txt and buckets every region-bearing row into:
-  c-file  -- compiled C (c-file, c-file-O1, c-file-arm and c-rodata
-            directives)
-  asm-file -- committed hand assembly
+  c-file  -- compiled C (c-file, c-file-O1, c-file-arm, c-file-gcc3,
+            c-file-gcc3-arm, c-rodata and c-section directives)
+  asm-file -- hand assembly (asm-file, asm-file-cpp)
   lib     -- toolchain library objects (lib-object directives)
   data    -- extracted-asset directives (krawall, dialog-text, ...)
   raw     -- unclaimed, filled from the baserom with .incbin
@@ -20,7 +20,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import rom_layout  # noqa: E402
-from manifest import C_FILE_DIRECTIVES, read_rows  # noqa: E402
+from manifest import ASM_CPP_DIRECTIVE, C_FILE_DIRECTIVES, read_rows  # noqa: E402
 
 KINDS = ["c-file", "asm-file", "lib", "data", "raw"]
 COLUMNS = ["c-file", "asm-file", "lib", "data", "matched", "raw"]
@@ -28,10 +28,10 @@ NON_REGION = {"label", "thumb-func", "arm-func"}
 
 
 def kind_of(directive: str) -> str:
-    if directive in C_FILE_DIRECTIVES or directive == "c-rodata":
-        return "c-file"
-    if directive == "asm-file":
+    if directive in ("asm-file", ASM_CPP_DIRECTIVE):
         return "asm-file"
+    if directive in C_FILE_DIRECTIVES or directive in ("c-rodata", "c-section"):
+        return "c-file"
     if directive == "lib-object":
         return "lib"
     return "data"
