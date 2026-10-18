@@ -28,7 +28,7 @@ void UpdateGameSave(void)
                                   g_GameModeStackContext.dwModeSubState);
         if (g_GameModeStackContext.dwModeSubState == 0x10)
         {
-            ShowGameSavedMessage_candidate();
+            ShowGameSavedMessage();
             g_GameModeStackContext.dwModeState = 4;
         }
         break;
@@ -54,12 +54,12 @@ void UpdateGameSave(void)
     case 8:
         if (g_wKeysPressed & KeyA)
         {
-            ResolveSaveConfirmation_candidate();
+            ResolveSaveConfirmation();
         }
         else if (g_wKeysPressed & KeyB)
         {
             g_GameModeStackContext.dwModeScratchB = 0;
-            ResolveSaveConfirmation_candidate();
+            ResolveSaveConfirmation();
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))
         {

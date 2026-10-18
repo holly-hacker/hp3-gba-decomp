@@ -1536,12 +1536,12 @@ c-file 0x08039A58 _ src/pscreen_items/exit_item_use_screen.c ExitItemUseScreen
 c-file 0x08039A68 _ src/pscreen_items/set_item_use_item.c SetItemUseItem
 c-file 0x08039A74 _ src/pscreen_items/draw_item_use_result.c DrawItemUseResult
 c-file 0x08039AC8 _ src/pscreen_save/initialize_game_save.c InitializeGameSave
-c-file 0x08039B60 0x08039C84 src/pscreen_save/update_game_save.c UpdateGameSave
-thumb-func 0x08039C84 ResolveSaveConfirmation_candidate
-c-file 0x08039D2C 0x08039D5C src/pscreen_save/exit_game_save.c ExitGameSave
-thumb-func 0x08039D5C ShowSaveConfirmationPrompt_candidate
-thumb-func 0x08039D98 ShowSavingMessage_candidate
-thumb-func 0x08039DCC ShowGameSavedMessage_candidate
+c-file 0x08039B60 _ src/pscreen_save/update_game_save.c UpdateGameSave
+c-file 0x08039C84 _ src/pscreen_save/resolve_save_confirmation.c ResolveSaveConfirmation
+c-file 0x08039D2C _ src/pscreen_save/exit_game_save.c ExitGameSave
+c-file 0x08039D5C _ src/pscreen_save/show_save_confirmation_prompt.c ShowSaveConfirmationPrompt
+c-file 0x08039D98 _ src/pscreen_save/show_saving_message.c ShowSavingMessage
+c-file 0x08039DCC _ src/pscreen_save/show_game_saved_message.c ShowGameSavedMessage
 c-file 0x08039E2C 0x0803A084 src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
 thumb-func 0x0803A084 sub_0803A030
 thumb-func 0x0803A144 DrawStatusEquipStatsPanel

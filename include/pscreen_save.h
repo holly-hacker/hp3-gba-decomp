@@ -10,7 +10,7 @@ extern const ListMenuEntry g_aNoYesEntries[2];  // 0x0806B238
 extern void InitializeGameSave(void);
 extern void UpdateGameSave(void);
 extern void ExitGameSave(void);
-extern void ShowSaveConfirmationPrompt_candidate(u32 stringId);
-extern void ShowSavingMessage_candidate(void);
-extern void ShowGameSavedMessage_candidate(void);
-extern void ResolveSaveConfirmation_candidate(void);
+extern void ShowSaveConfirmationPrompt(u32 stringId);
+extern void ShowSavingMessage(void);
+extern void ShowGameSavedMessage(void);
+extern void ResolveSaveConfirmation(void);

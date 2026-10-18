@@ -1739,12 +1739,12 @@ c-file 0x08039A20 _ src/pscreen_items/draw_item_use_result.c DrawItemUseResult
 
 # Profile/Save? (pause subscreen: game save)
 c-file 0x08039A74 _ src/pscreen_save/initialize_game_save.c InitializeGameSave
-c-file 0x08039B0C 0x08039C30 src/pscreen_save/update_game_save.c UpdateGameSave
-thumb-func 0x08039C30 ResolveSaveConfirmation_candidate
-c-file 0x08039CD8 0x08039D08 src/pscreen_save/exit_game_save.c ExitGameSave
-thumb-func 0x08039D08 ShowSaveConfirmationPrompt_candidate
-thumb-func 0x08039D44 ShowSavingMessage_candidate
-thumb-func 0x08039D78 ShowGameSavedMessage_candidate
+c-file 0x08039B0C _ src/pscreen_save/update_game_save.c UpdateGameSave
+c-file 0x08039C30 _ src/pscreen_save/resolve_save_confirmation.c ResolveSaveConfirmation
+c-file 0x08039CD8 _ src/pscreen_save/exit_game_save.c ExitGameSave
+c-file 0x08039D08 _ src/pscreen_save/show_save_confirmation_prompt.c ShowSaveConfirmationPrompt
+c-file 0x08039D44 _ src/pscreen_save/show_saving_message.c ShowSavingMessage
+c-file 0x08039D78 _ src/pscreen_save/show_game_saved_message.c ShowGameSavedMessage
 
 # Profile/Status? (pause subscreen: status)
 c-file 0x08039DD8 0x0803A030 src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
