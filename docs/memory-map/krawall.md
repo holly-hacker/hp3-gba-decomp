@@ -16,8 +16,9 @@ The source lives in `3rd_party/krawall/`, with its headers in
 `include/3rd_party/krawall/`. It starts from the public repository
 (<https://github.com/sebknzl/krawall>, commit `9a2b869`, 2013) and is
 edited only where the 2003 revision in the ROM differs. Each change is
-marked with an `// HP3-GBA:` comment. Compiled unchanged, the public source already reproduces
-twenty functions byte for byte. Krawall is compiled with GCC 3.0.2 at
+marked with an `// HP3-GBA:` comment; `mixer_func.S`, `player_tables.c`
+and `player_tables.h` are upstream's unchanged. Compiled unchanged, the
+public source already reproduces twenty functions byte for byte. Krawall is compiled with GCC 3.0.2 at
 `-O3` (see [`../compiler.md`](../compiler.md)) and configured with
 `IWRAM_USAGE_SMALL` at the default 16 kHz, 60 Hz: the mixing buffers,
 channels and player state live in EWRAM.
@@ -117,19 +118,15 @@ against the ROM function of the same name).
 | `mixer.arm.c` | `.text` | `0x080471FC`-`0x080473B4` | `0x08047128`-`0x080472E0` |
 | | `.iwram` | `0x08FB0E40`-`0x08FB13B4` | `0x08F442D0`-`0x08F44844` |
 | | `.rodata` | `0x08FA9568`-`0x08FA95A8` | `0x08F3C9F8`-`0x08F3CA38` |
-| `mixer_func.S` | `.iwram` | `0x08FB13B4`-`0x08FB19F8` | `0x08F44844`-`0x08F44E88` |
-| | `.ewram` | `0x08FB3180`-`0x08FB3980` | `0x08F46610`-`0x08F46E10` |
 | `mixer_private.arm.c` | `.iwram` | `0x08FB19F8`-`0x08FB2344` | `0x08F44E88`-`0x08F457D4` |
 | | `.ewram` | `0x08FB3980`-`0x08FB3988` | `0x08F46E10`-`0x08F46E18` |
 | `player.c` | `.text` | `0x080473B4`-`0x08049E3C` | `0x080472E0`-`0x08049D68` |
 | | `.iwram` | `0x08FB2344`-`0x08FB2348` | `0x08F457D4`-`0x08F457D8` |
 | | `.ewram` | `0x08FB3988`-`0x08FB4B40` | `0x08F46E18`-`0x08F47FD0` |
 | | `.rodata` | `0x08FA95A8`-`0x08FA985C` | `0x08F3CA38`-`0x08F3CCEC` |
-| `player_tables.c` | `.rodata` | `0x08FA985C`-`0x08FAA7CC` | `0x08F3CCEC`-`0x08F3DC5C` |
 
 What the comparison shows (US):
 
-- `player_tables.c`: upstream matches.
 - `mixer.c`: upstream matches except `kramResetChannels`,
   `kramQualityMode` (tests `KRAM_QM_RAMP`, like upstream's commented-out
   variant), `kramSetSFXVol` and `kramSetMusicVol` (no `kramResetChannels`

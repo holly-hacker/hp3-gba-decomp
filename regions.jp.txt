@@ -2447,6 +2447,7 @@ graphics 0x08EDF36C _ menus FamousWizardCards
 
 # Krawall read-only data
 c-section 0x08F3C9CC 0x08F3C9F8 general .rodata
+c-file-gcc3 0x08F3CCEC 0x08F3DC5C 3rd_party/krawall/player_tables.c player_tables .rodata
 
 c-rodata 0x08F3DC60 _ EepromV124
 c-rodata 0x08F3DCA0 _ EepromNoWait
@@ -2476,19 +2477,9 @@ arm-func 0x08F44674 kramSetVol_Rom
 arm-func 0x08F446F4 kramSetPan_Rom
 arm-func 0x08F447B8 kramSetPos_Rom
 arm-func 0x08F44808 kramActive_Rom
-arm-func 0x08F44844 mixLeft_Rom
-arm-func 0x08F448C4 mixRight_Rom
-arm-func 0x08F448E4 mixCenter_Rom
-arm-func 0x08F44968 mixStereo_Rom
-arm-func 0x08F44A00 mixLeftHQ_Rom
-arm-func 0x08F44AE4 mixRightHQ_Rom
-arm-func 0x08F44B08 mixCenterHQ_Rom
-arm-func 0x08F44BF0 mixStereoHQ_Rom
-arm-func 0x08F44CF4 mixBias_Rom
-arm-func 0x08F44D3C mixClear_Rom
-arm-func 0x08F44D78 mix16to8_Rom
-arm-func 0x08F44E30 mix16to8_patch_Rom
+asm-file-cpp 0x08F44844 0x08F44E88 3rd_party/krawall/mixer_func.S mixer_func .iwram 0x03000604
 arm-func 0x08F44E88 mixReal_Rom
 arm-func 0x08F452A8 kramWorker_Rom
 label 0x08F457D8 g_KrawallEwramRomImage
 c-section 0x08F457D8 0x08F4608C directsound .ewram 0x02000000
+c-section 0x08F46610 0x08F46E10 mixer_func .ewram 0x02000E38
