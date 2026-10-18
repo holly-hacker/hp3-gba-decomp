@@ -40,7 +40,7 @@ is called exclusively from the documented battle range `0x08015000`-
 xrefs to the interpreter's entry address are `WaitFramesTick`/
 `WaitForCounterTick`/`WaitForFieldClearTick` restoring `pfnTick` on an
 already-running script actor, not new spawns. Consistent with
-the 65 effect scripts (`src/combat_2/effect_scripts/`) all reading as combat content (spells,
+the 65 effect scripts (`src/combat_fx/effect_scripts/`) all reading as combat content (spells,
 monster attacks, `SpecialHarry`/`SpecialRon` abilities). Static xref
 trace, exhaustive for direct references but not a runtime trace -- see
 `docs/README.md`'s confidence-key legend. Status-effect opcode `0x97`
@@ -49,7 +49,7 @@ is one in-battle consumer among the rest.
 ## The interpreter
 
 **`InterpretActorScript`** (US `0x08018CC0`-`0x0801AE14`, Thumb,
-8532 bytes, matching C in `src/combat_2/interpret_actor_script.c`) is **one function**, reached via `Actor+0x98` (field
+8532 bytes, matching C in `src/combat_fx/interpret_actor_script.c`) is **one function**, reached via `Actor+0x98` (field
 `pfnTick`), a generic per-tick callback pointer set by `FUN_08018be0`
 (US `0x08018BE0`) when it spawns a script actor
 (`Actor+0x62 = effectId`, `Actor+0x98 = InterpretActorScript`).
@@ -141,7 +141,7 @@ operand_bytes : u8[N]     -- N = g_abScriptOpcodeLengths[opcode]
 ```
 
 **`g_abScriptOpcodeLengths`** (US `0x08054F34`, `u8[168]`, one entry per opcode; C in
-`src/combat_2/script_opcode_lengths.c`) gives the
+`src/combat_fx/script_opcode_lengths.c`) gives the
 *extra* operand-byte count per opcode; total instruction length
 (including the opcode byte) is `table[opcode] + 1`. Only indices
 `0x00`-`0xA7` exist (the interpreter's own bounds check); the table ends
@@ -388,7 +388,7 @@ What's actually confirmed:
   independent of spawning: `SetLocal` stores an arbitrary operand value
   into either byte; `IncrementLocal` increments either byte **on the
   currently-executing actor**, not a spawned child -- e.g. effect id 19's
-  script (`src/combat_2/effect_scripts/effect19.h`) calls `BS_IncrementLocal(0)` twice in a row, twice, in its own body,
+  script (`src/combat_fx/effect_scripts/effect19.h`) calls `BS_IncrementLocal(0)` twice in a row, twice, in its own body,
   well before any spawn happens. `SetLocalRandom` stores a Mersenne
   Twister roll into either byte.
 - **`bScriptLocalA` is read back by 8 different comparison opcodes**
@@ -513,7 +513,7 @@ build inputs).
 ## The script/pointer table
 
 **PROVEN** (`just compare us` passes). The scripts are C, in one region
-(`c-file` `0x0805994C`-`0x0805BA7C`, `src/combat_2/effect_scripts.c`):
+(`c-file` `0x0805994C`-`0x0805BA7C`, `src/combat_fx/effect_scripts.c`):
 
 - `include/battle/script_opcodes.h` -- `enum BattleScriptOpcode`
   (`BSOP_*`, all 168 opcodes; `Unk<XX>` until identified), `enum
@@ -527,12 +527,12 @@ build inputs).
   1.0; all other operands are raw bytes. **To name a
   new opcode, rename its enum entry and macro here** (and its `case` in
   `InterpretActorScript`).
-- `src/combat_2/effect_scripts/<name>.h` -- one script each, a
+- `src/combat_fx/effect_scripts/<name>.h` -- one script each, a
   `const u8 g_ab<Name>Script[]` of `BS_*` macros, with a leading comment
   describing the effect. Named by real-world identification where known
   (`special_harry_poison_immunity.h`), else `effect<N>.h`; names group by
   category (`spell_`, `special_harry_`, `special_hermione_`, ...).
-- `src/combat_2/effect_scripts.c` -- `#include`s every script and defines
+- `src/combat_fx/effect_scripts.c` -- `#include`s every script and defines
   `g_apEffectScripts`, in effect-id order.
 
 All scripts share one region because they are packed back to back with
@@ -584,7 +584,7 @@ have the same sizes, only the addresses differ.
   layout in `include/battle/script_opcodes.h`.
 - ~~**Link effect scripts to Harry's Folio Universitas cards.**~~ **Done**
   -- all 16 of Harry's cards are now named and mapped to their effect id
-  as scripts in `src/combat_2/effect_scripts/`, via the in-game Card Combo
+  as scripts in `src/combat_fx/effect_scripts/`, via the in-game Card Combo
   Glossary text (`data/text/en_us.json` string ids `1144`-`1175`, a
   16-entry name list immediately followed by a matching 16-entry
   description list) lining up positionally with

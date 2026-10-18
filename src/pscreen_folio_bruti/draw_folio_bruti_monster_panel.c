@@ -1,7 +1,7 @@
 #include "types.h"
 #include "background.h"
 #include "battle/battle.h"
-#include "combat_2.h"
+#include "combat_fighter.h"
 #include "math.h"
 #include "save.h"
 #include "gen/graphics/overworld.h"

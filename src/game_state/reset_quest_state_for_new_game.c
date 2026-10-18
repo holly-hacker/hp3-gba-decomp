@@ -1,6 +1,6 @@
 #include "types.h"
 #include "chest_actor.h"
-#include "combat_2.h"
+#include "combat_fighter.h"
 #include "mem.h"
 #include "game_state.h"
 #include "items.h"

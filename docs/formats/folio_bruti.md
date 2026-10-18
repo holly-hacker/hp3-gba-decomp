@@ -24,18 +24,18 @@ damage range, accuracy, and the rest) is **PROVEN field by field**,
 each from a live code path that reads it -- see "The monster stat table"
 below, and [`../memory-map/battle.md`](../memory-map/battle.md) for the
 readers themselves. The stat table is decompiled to C
-(`src/combat_2/monsters.c`, 69 `MonsterTableRow` initializers, committed
+(`src/combat_fighter/monsters.c`, 69 `MonsterTableRow` initializers, committed
 source). The
 three functions that use the table (`DrawFolioBrutiMonsterPanel`,
 `GetMonsterSpellEffectiveness`, `InitMonsterBattleActor`) are named in
 `functions.us.cfg`; `InitMonsterBattleActor` is additionally matched in
-`src/combat_2/`, the other two are not extracted, per
+`src/combat_fighter/`, the other two are not extracted, per
 the project's hard rule 5 that requires fully-walked function
 boundaries.
 
 **JP status:** `MonsterTable` content is now **PROVEN byte-identical**
 between US and JP (same as Krawall audio), just at a different address
-(`0x0804F33C`); one C source (`src/combat_2/monsters.c`) serves both via
+(`0x0804F33C`); one C source (`src/combat_fighter/monsters.c`) serves both via
 per-version `c-file` rows. Two of the
 three functions are matched and named in `functions.jp.cfg`:
 `InitMonsterBattleActor` (`0x08014C74`) and `GetMonsterSpellEffectiveness`
@@ -195,7 +195,7 @@ corroboration either way for those two.
 | `0x10` | u16 | `reward_xp` | **PROVEN** -- paid into `g_nBattleXpReward` on kill, confirmed live in-game |
 | `0x12` | u16 | `reward_gold` | **PROVEN** -- paid into `g_nBattleGoldReward`, same evidence |
 | `0x14` | u8 | `special_effect_chance` | **PROVEN** -- percent chance (100 = guaranteed) that a scripted effect also fires after the monster's melee attack |
-| `0x15` | u8 | `special_effect_id` | **PROVEN** -- effect-script id passed to `TriggerBattleEffect`; scripts in `src/combat_2/effect_scripts/` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family |
+| `0x15` | u8 | `special_effect_id` | **PROVEN** -- effect-script id passed to `TriggerBattleEffect`; scripts in `src/combat_fx/effect_scripts/` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family |
 | `0x16` | u16 | padding | STRUCTURAL MATCH -- always 0 across all 69 records, and not read by battle-init |
 
 Every reader named above lives in
@@ -273,7 +273,7 @@ crab is near-immune to a fire spell and maximally vulnerable to ice,
 exactly the type-matchup a bestiary would encode. Indices 4-6 are
 Rat/Albino Rat/Plague Rat (string ids 1190-1192) with HP 18/25/35,
 again increasing with tier and sharing one effectiveness row across the
-family. (Values live in `src/combat_2/monsters.c`.)
+family. (Values live in `src/combat_fighter/monsters.c`.)
 
 Verification snippet:
 
@@ -356,9 +356,9 @@ The 16-byte `ActorAssetRecord`s that follow, up to `0x0804F404`:
 | `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `SetActorSprite`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnActor` palette |
 
 The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table:
-`g_aabFighterHurtSoundIds` (`src/combat_2/fighter_hurt_sounds.c`).
+`g_aabFighterHurtSoundIds` (`src/combat_fighter/fighter_hurt_sounds.c`).
 
-`src/combat_2/monster_graphics_table.c` reconstructs `0x0804E6B4`-`0x0804F404`
+`src/combat_fighter/monster_graphics_table.c` reconstructs `0x0804E6B4`-`0x0804F404`
 (JP `0x0804E5E0`-`0x0804F330`, same content) with every pointer a
 generated image-bank label.
 
@@ -442,7 +442,7 @@ share the same skip guard.
 ### The table as committed C source
 
 **PROVEN** (byte-exact, `just check-all` passes for both versions).
-`src/combat_2/monsters.c` holds the 69 records as `MonsterTableRow`
+`src/combat_fighter/monsters.c` holds the 69 records as `MonsterTableRow`
 initializers in on-disk order (field layout matches the table above
 exactly), each with a leading `// <index>: <name>` comment (names decoded
 straight from the ROM's dialog text, purely human-readable annotations --
@@ -505,4 +505,4 @@ and the shop-stock tables work.
   large and only partially walked, so its boundaries don't meet hard rule
   5's bar; it is named in `functions.us.cfg` so the disassembly reads
   clearly, and nothing more. (`InitMonsterBattleActor`, `0x08014C88`-
-  `0x08014F1C`, is fully matched in `src/combat_2/`.)
+  `0x08014F1C`, is fully matched in `src/combat_fighter/`.)

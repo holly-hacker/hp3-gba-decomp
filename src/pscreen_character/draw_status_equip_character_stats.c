@@ -1,6 +1,6 @@
 #include "pscreen_character.h"
 #include "combat.h"
-#include "combat_2.h"
+#include "combat_fighter.h"
 #include "font.h"
 #include "text.h"
 

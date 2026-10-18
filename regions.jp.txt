@@ -438,20 +438,20 @@ c-file 0x0800DDB0 _ src/combat/update_battle.c UpdateBattle
 c-file 0x0800DE50 0x0800E0CC src/combat/exit_battle.c ExitBattle
 thumb-func 0x0800E0CC DrawFighterStatsUi_candidate
 thumb-func 0x0800E39C DrawEnemyStatsUi_candidate
-c-file 0x0800E5B8 _ src/combat_menu/jitter_enemy_turn_order.c JitterEnemyTurnOrder
-c-file 0x0800E62C 0x0800E890 src/combat_menu/build_turn_order.c BuildTurnOrder
+c-file 0x0800E5B8 _ src/combat_core/jitter_enemy_turn_order.c JitterEnemyTurnOrder
+c-file 0x0800E62C 0x0800E890 src/combat_core/build_turn_order.c BuildTurnOrder
 thumb-func 0x0800E890 ReviveFighter_candidate
-c-file 0x0800EA68 _ src/combat_menu/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
-c-file 0x0800EB2C 0x0800EBAC src/combat_menu/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
+c-file 0x0800EA68 _ src/combat_core/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
+c-file 0x0800EB2C 0x0800EBAC src/combat_core/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
 thumb-func 0x0800EBAC InitBattleBackground_candidate
-c-file 0x0800EDD8 _ src/combat_menu/setup_battle_roster.c SetupBattleRoster
-c-file 0x0800F16C _ src/combat_menu/restore_fighter_actors.c RestoreFighterActors_candidate
-c-file 0x0800F5F0 _ src/combat_menu/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
-c-file 0x0800F794 _ src/combat_menu/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
-c-file 0x0800FEE0 _ src/combat_menu/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
-c-file 0x0800FFAC 0x08010008 src/combat_menu/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
+c-file 0x0800EDD8 _ src/combat_core/setup_battle_roster.c SetupBattleRoster
+c-file 0x0800F16C _ src/combat_core/restore_fighter_actors.c RestoreFighterActors_candidate
+c-file 0x0800F5F0 _ src/combat_core/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
+c-file 0x0800F794 _ src/combat_core/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
+c-file 0x0800FEE0 _ src/combat_core/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
+c-file 0x0800FFAC 0x08010008 src/combat_core/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
 thumb-func 0x08010008 TrackSpellFamiliarity
-c-file 0x080100A0 0x080101D0 src/combat_menu/dispatch_pending_action.c DispatchPendingAction
+c-file 0x080100A0 0x080101D0 src/combat_core/dispatch_pending_action.c DispatchPendingAction
 thumb-func 0x080101D0 TickBattleMenuInput
 thumb-func 0x080104A0 OpenBattleTopMenu
 thumb-func 0x080105D8 OpenSpecialMoveMenu
@@ -483,7 +483,7 @@ thumb-func 0x08012A04 sub_08012A00
 thumb-func 0x08012A3C sub_08012A38
 thumb-func 0x08012A88 GetBattleBackgroundGraphic
 thumb-func 0x08012AC4 GetBattleBackgroundData_candidate
-c-file 0x08012B00 0x08012B44 src/combat_menu/push_battle_state.c PushBattleState
+c-file 0x08012B00 0x08012B44 src/combat_core/push_battle_state.c PushBattleState
 thumb-func 0x08012B44 sub_08012B40
 thumb-func 0x08012B9C OpenEnemyTargetMenu_candidate
 thumb-func 0x08012C10 sub_08012C0C
@@ -503,7 +503,7 @@ thumb-func 0x08012FD4 IgnoreBattleMenuInput
 thumb-func 0x08012FD8 PrepareBattleMessageDisplay_candidate
 thumb-func 0x08013018 sub_08013014
 thumb-func 0x08013038 sub_08013034
-c-file 0x080130B8 0x0801310C src/combat_menu/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
+c-file 0x080130B8 0x0801310C src/combat_core/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
 thumb-func 0x0801310C sub_08013108
 thumb-func 0x08013110 TogglePendingFighterCursor_candidate
 thumb-func 0x0801314C sub_08013148
@@ -517,46 +517,46 @@ thumb-func 0x08013364 sub_08013360
 thumb-func 0x080133B0 sub_080133AC
 thumb-func 0x08013428 sub_08013424
 thumb-func 0x08013460 sub_0801345C
-c-file 0x080134C0 _ src/combat_result/initialize_combat_result.c InitializeCombatResult
-c-file 0x080138F8 _ src/combat_result/update_combat_result.c UpdateCombatResult
-c-file 0x08013ACC _ src/combat_result/initialize_combat_result_xp.c InitializeCombatResultXp
-c-file 0x08013FF0 _ src/combat_result/tick_combat_result_xp_counter.c TickCombatResultXpCounter
-c-file 0x08014558 _ src/combat_result/initialize_combat_result_drops.c InitializeCombatResultDrops
-c-file 0x080147AC _ src/combat_result/roll_battle_item_drops.c RollBattleItemDrops
-c-file 0x08014894 0x080148E0 src/combat_result/exit_combat_result.c ExitCombatResult
+c-file 0x080134C0 _ src/combat_end/initialize_combat_result.c InitializeCombatResult
+c-file 0x080138F8 _ src/combat_end/update_combat_result.c UpdateCombatResult
+c-file 0x08013ACC _ src/combat_end/initialize_combat_result_xp.c InitializeCombatResultXp
+c-file 0x08013FF0 _ src/combat_end/tick_combat_result_xp_counter.c TickCombatResultXpCounter
+c-file 0x08014558 _ src/combat_end/initialize_combat_result_drops.c InitializeCombatResultDrops
+c-file 0x080147AC _ src/combat_end/roll_battle_item_drops.c RollBattleItemDrops
+c-file 0x08014894 0x080148E0 src/combat_end/exit_combat_result.c ExitCombatResult
 thumb-func 0x080148E0 sub_080148F4
 thumb-func 0x08014928 sub_0801493C
 thumb-func 0x08014950 ResetCharacterToLevel
-c-file 0x080149B0 _ src/combat_2/init_player_battle_actor.c InitPlayerBattleActor
-c-file 0x08014C74 _ src/combat_2/init_monster_battle_actor.c InitMonsterBattleActor
-c-file 0x08014F08 _ src/combat_2/spawn_turn_order_icon.c SpawnTurnOrderIcon
-c-file 0x0801500C 0x080150A0 src/combat_2/roll_monster_special_effect.c RollMonsterSpecialEffect
+c-file 0x080149B0 _ src/combat_fighter/init_player_battle_actor.c InitPlayerBattleActor
+c-file 0x08014C74 _ src/combat_fighter/init_monster_battle_actor.c InitMonsterBattleActor
+c-file 0x08014F08 _ src/combat_fighter/spawn_turn_order_icon.c SpawnTurnOrderIcon
+c-file 0x0801500C 0x080150A0 src/combat_fighter/roll_monster_special_effect.c RollMonsterSpecialEffect
 thumb-func 0x080150A0 RecomputeBaseStatsFromLevel_candidate
 thumb-func 0x080150FC GetPartyMemberTotalXp
 thumb-func 0x0801519C LevelUpPartyMember_candidate
 thumb-func 0x08015258 InitPartyStatForCurrentLevel
 thumb-func 0x080152B8 sub_080152CC
 thumb-func 0x08015320 sub_08015334
-c-file 0x08015388 _ src/combat_2/set_monster_actor_anim.c SetMonsterActorAnim
-c-file 0x08015470 0x08015560 src/combat_2/set_player_actor_anim.c SetPlayerActorAnim
+c-file 0x08015388 _ src/combat_fighter/set_monster_actor_anim.c SetMonsterActorAnim
+c-file 0x08015470 0x08015560 src/combat_fighter/set_player_actor_anim.c SetPlayerActorAnim
 thumb-func 0x08015560 UpdateFighterFlashEffect_candidate
-c-file 0x080155F4 0x08015F3C src/combat_2/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
+c-file 0x080155F4 0x08015F3C src/combat_fighter/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
 thumb-func 0x08015F3C ShowItemUseResult
-c-file 0x08016018 _ src/combat_2/tick_player_action_state.c TickPlayerActionState
-c-file 0x08017B48 _ src/combat_2/show_damage_number.c ShowDamageNumber_candidate
-c-file 0x08017C10 _ src/combat_2/resolve_player_attack.c ResolvePlayerAttack
-c-file 0x08017E30 _ src/combat_2/resolve_enemy_attack.c ResolveEnemyAttack
-c-file 0x08017F84 _ src/combat_2/apply_damage_to_enemy_fighter.c ApplyDamageToEnemyFighter
-c-file 0x08018080 0x08018198 src/combat_2/apply_damage_to_ally_fighter.c ApplyDamageToAllyFighter
+c-file 0x08016018 _ src/combat_fighter/tick_player_action_state.c TickPlayerActionState
+c-file 0x08017B48 _ src/combat_fighter/show_damage_number.c ShowDamageNumber_candidate
+c-file 0x08017C10 _ src/combat_fighter/resolve_player_attack.c ResolvePlayerAttack
+c-file 0x08017E30 _ src/combat_fighter/resolve_enemy_attack.c ResolveEnemyAttack
+c-file 0x08017F84 _ src/combat_fighter/apply_damage_to_enemy_fighter.c ApplyDamageToEnemyFighter
+c-file 0x08018080 0x08018198 src/combat_fighter/apply_damage_to_ally_fighter.c ApplyDamageToAllyFighter
 thumb-func 0x08018198 ShowFloatingDamageNumber_candidate
 thumb-func 0x08018280 sub_08018294
-c-file 0x080182F0 _ src/combat_2/check_battle_defeat.c CheckBattleDefeat
-c-file 0x0801844C _ src/combat_2/prune_fainted_and_rebuild_turn_order.c PruneFaintedAndRebuildTurnOrder_candidate
-c-file 0x080186CC 0x08018728 src/combat_2/check_battle_victory.c CheckBattleVictory
+c-file 0x080182F0 _ src/combat_fighter/check_battle_defeat.c CheckBattleDefeat
+c-file 0x0801844C _ src/combat_fighter/prune_fainted_and_rebuild_turn_order.c PruneFaintedAndRebuildTurnOrder_candidate
+c-file 0x080186CC 0x08018728 src/combat_fighter/check_battle_victory.c CheckBattleVictory
 thumb-func 0x08018728 ResetAllPartyLevelsTo1
 thumb-func 0x08018740 ResetPartyHpMpAndStats
-c-file 0x0801876C _ src/combat_2/deserialize_party_stats.c DeserializePartyStats
-c-file 0x080187D8 0x08018830 src/combat_2/serialize_party_stats.c SerializePartyStats
+c-file 0x0801876C _ src/combat_fighter/deserialize_party_stats.c DeserializePartyStats
+c-file 0x080187D8 0x08018830 src/combat_fighter/serialize_party_stats.c SerializePartyStats
 thumb-func 0x08018830 GetMonsterDamageMax
 thumb-func 0x08018844 GetPartyMemberXpToNextLevel
 thumb-func 0x08018858 sub_0801886C
@@ -568,20 +568,20 @@ thumb-func 0x080189FC sub_08018A10
 thumb-func 0x08018A5C sub_08018A70
 thumb-func 0x08018A90 GetMonsterLevel
 thumb-func 0x08018AA4 sub_08018AB8
-c-file 0x08018AB8 0x08018B00 src/combat_2/post_action_battle_check.c PostActionBattleCheck
+c-file 0x08018AB8 0x08018B00 src/combat_fighter/post_action_battle_check.c PostActionBattleCheck
 thumb-func 0x08018B00 sub_08018B14
-c-file 0x08018B5C 0x08018BCC src/combat_2/trigger_battle_effect.c TriggerBattleEffect
+c-file 0x08018B5C 0x08018BCC src/combat_fx/trigger_battle_effect.c TriggerBattleEffect
 thumb-func 0x08018BCC CreateEffectScriptActor
-c-file 0x08018CAC 0x0801AE10 src/combat_2/interpret_actor_script.c InterpretActorScript
+c-file 0x08018CAC 0x0801AE10 src/combat_fx/interpret_actor_script.c InterpretActorScript
 thumb-func 0x0801AE10 CreateBattleEffectEmitter_candidate
 thumb-func 0x0801AF64 ProcessActorFlagBehaviors
 thumb-func 0x0801B12C sub_0801B130
 thumb-func 0x0801B200 sub_0801B204
 thumb-func 0x0801B2E8 sub_0801B2EC
 thumb-func 0x0801B344 sub_0801B348
-c-file 0x0801B42C 0x0801B4B8 src/combat_2/try_apply_paralysis.c TryApplyParalysis
+c-file 0x0801B42C 0x0801B4B8 src/combat_fx/try_apply_paralysis.c TryApplyParalysis
 thumb-func 0x0801B4B8 sub_0801B4BC
-c-file 0x0801B58C 0x0801B5CC src/combat_2/spawn_paralysis_effect.c SpawnParalysisEffect
+c-file 0x0801B58C 0x0801B5CC src/combat_fx/spawn_paralysis_effect.c SpawnParalysisEffect
 thumb-func 0x0801B5CC FlushQueuedBattleDma
 thumb-func 0x0801B61C ComputeEffectSpawnPosition
 thumb-func 0x0801B64C WaitFramesTick
@@ -2174,59 +2174,59 @@ c-file 0x0804D450 _ src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprit
 c-file 0x0804D5F8 _ src/choose_party_member/choose_character_stages.globals.c g_abChooseCharacterStages
 c-file 0x0804D69C 0x0804D6BC src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
 c-file 0x0804D6C4 _ src/color/gamma_remap_tables.c g_abGammaNormalRemap
-c-file 0x0804D724 _ src/combat_menu/battle_effect001_asset.c g_BattleEffect001Asset
-c-file 0x0804D734 _ src/combat_menu/battle_top_menu_text.c g_adwBattleTopMenuTextIds
-c-file 0x0804D750 _ src/combat_menu/battle_hud_assets.c g_aBattleHudAssets
-c-file 0x0804DFA0 _ src/combat_menu/battle_bg_controls.c g_dwBattleFloorBgControl
-c-file 0x0804DFB0 _ src/combat_menu/fighter_spell_menus.c g_aabFighterSpellMenu
-c-file 0x0804DFC8 _ src/combat_menu/battle_backgrounds.c g_aBattleBackgroundPairs
-c-file 0x0804E180 _ src/combat_menu/battle_music.c g_abBattleMusicByRoom
-c-file 0x0804E1C8 _ src/combat_menu/menu_sprite003_asset.c g_MenuSprite003Asset_candidate
-c-file 0x0804E1D8 _ src/combat_menu/battle_scanline_effects.c g_aBattleScanlineEffects
-c-file 0x0804E218 _ src/combat_menu/battle_menu_input_handlers.c g_apfnBattleMenuConfirmHandlers
-c-file 0x0804E270 _ src/combat_menu/battle_message_text.c g_adwFighterActionTextIds
-c-file 0x0804E50C _ src/combat_menu/spell_leveling.c g_abSpellMaxLevel
-c-file 0x0804E518 _ src/combat_menu/battle_status_text.c g_adwFighterCantMoveTextIds
-c-file 0x0804E52C _ src/combat_result/combat_result.globals.c g_dwCombatResultBg2Control
-c-file 0x0804E53C _ src/combat_result/combat_result_assets.globals.c g_CombatResultCoinAsset
-c-file 0x0804E56C _ src/combat_result/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects
-c-file 0x0804E5A0 _ src/combat_result/combat_result_level_up_sparkle.globals.c g_abCombatResultLevelUpSparkleAnim
-c-file 0x0804E5E0 _ src/combat_2/monster_graphics_table.c g_pMonsterGraphicsTable
-c-file 0x0804F330 _ src/combat_2/fighter_hurt_sounds.c g_aabFighterHurtSoundIds
+c-file 0x0804D724 _ src/combat_core/battle_effect001_asset.c g_BattleEffect001Asset
+c-file 0x0804D734 _ src/combat_core/battle_top_menu_text.c g_adwBattleTopMenuTextIds
+c-file 0x0804D750 _ src/combat_core/battle_hud_assets.c g_aBattleHudAssets
+c-file 0x0804DFA0 _ src/combat_core/battle_bg_controls.c g_dwBattleFloorBgControl
+c-file 0x0804DFB0 _ src/combat_core/fighter_spell_menus.c g_aabFighterSpellMenu
+c-file 0x0804DFC8 _ src/combat_core/battle_backgrounds.c g_aBattleBackgroundPairs
+c-file 0x0804E180 _ src/combat_core/battle_music.c g_abBattleMusicByRoom
+c-file 0x0804E1C8 _ src/combat_core/menu_sprite003_asset.c g_MenuSprite003Asset_candidate
+c-file 0x0804E1D8 _ src/combat_core/battle_scanline_effects.c g_aBattleScanlineEffects
+c-file 0x0804E218 _ src/combat_core/battle_menu_input_handlers.c g_apfnBattleMenuConfirmHandlers
+c-file 0x0804E270 _ src/combat_core/battle_message_text.c g_adwFighterActionTextIds
+c-file 0x0804E50C _ src/combat_core/spell_leveling.c g_abSpellMaxLevel
+c-file 0x0804E518 _ src/combat_core/battle_status_text.c g_adwFighterCantMoveTextIds
+c-file 0x0804E52C _ src/combat_end/combat_result.globals.c g_dwCombatResultBg2Control
+c-file 0x0804E53C _ src/combat_end/combat_result_assets.globals.c g_CombatResultCoinAsset
+c-file 0x0804E56C _ src/combat_end/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects
+c-file 0x0804E5A0 _ src/combat_end/combat_result_level_up_sparkle.globals.c g_abCombatResultLevelUpSparkleAnim
+c-file 0x0804E5E0 _ src/combat_fighter/monster_graphics_table.c g_pMonsterGraphicsTable
+c-file 0x0804F330 _ src/combat_fighter/fighter_hurt_sounds.c g_aabFighterHurtSoundIds
 
 # Folio Bruti monster stat table -- content proven byte-identical to the
 # US table (0x0804F410), just at a different address; one C source serves
 # both. See docs/formats/folio_bruti.md.
-c-file 0x0804F33C _ src/combat_2/monsters.c MonsterTable
-c-file 0x0804F9B4 _ src/combat_2/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
-c-file 0x0804FAC8 _ src/combat_2/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
-c-file 0x0804FB54 _ src/combat_2/monster_drop_table.c g_pMonsterDropTable
-c-file 0x0804FD7C _ src/combat_2/harry_levels.c g_pHarryLevelTable
-c-file 0x0805022C _ src/combat_2/ron_levels.c g_pRonLevelTable
-c-file 0x080506DC _ src/combat_2/hermione_levels.c g_pHermioneLevelTable
-c-file 0x08050B8C _ src/combat_2/character_level_tables.c g_apCharacterLevelTables
+c-file 0x0804F33C _ src/combat_fighter/monsters.c MonsterTable
+c-file 0x0804F9B4 _ src/combat_fighter/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
+c-file 0x0804FAC8 _ src/combat_fighter/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
+c-file 0x0804FB54 _ src/combat_fighter/monster_drop_table.c g_pMonsterDropTable
+c-file 0x0804FD7C _ src/combat_fighter/harry_levels.c g_pHarryLevelTable
+c-file 0x0805022C _ src/combat_fighter/ron_levels.c g_pRonLevelTable
+c-file 0x080506DC _ src/combat_fighter/hermione_levels.c g_pHermioneLevelTable
+c-file 0x08050B8C _ src/combat_fighter/character_level_tables.c g_apCharacterLevelTables
 
 # Encounter roster tables, see docs/formats/encounters.md
-c-file 0x08050B98 _ src/combat_2/random_encounters.c g_aRandomEncounters
-c-file 0x08051138 _ src/combat_2/scripted_encounters.c g_aScriptedEncounters
+c-file 0x08050B98 _ src/combat_fighter/random_encounters.c g_aRandomEncounters
+c-file 0x08051138 _ src/combat_fighter/scripted_encounters.c g_aScriptedEncounters
 
-c-file 0x08051174 _ src/combat_2/fighter_anim_table.c g_aFighterAnimTable
-c-file 0x080513F4 _ src/combat_2/battle_effect_id_tables.c g_abHarryCardEffectId
-c-file 0x0805143C _ src/combat_2/defeat_warp_rooms.c g_aDefeatWarpRoomId
-c-file 0x0805148C _ src/combat_2/fighter_anim_data.c g_aFighterAnimDataTable
-c-file 0x08051D9C _ src/combat_2/monster_anim_data.c g_pMonsterAnimFrameTable
-c-file 0x080537DC _ src/combat_2/spell_effect_scripts.c g_abSpellEffectScriptId
-c-file 0x08053818 _ src/combat_2/spell_power.c g_awSpellPowerBase
-c-file 0x080538CC _ src/combat_2/battle_slot_anchor_pos.c g_aBattleSlotAnchorPos_candidate
-c-file 0x080538D4 _ src/combat_2/effect_scanline_tables.c g_adwEffectBgControlOverride_candidate
-c-file 0x08053A44 _ src/combat_2/rain_stream_lists.c g_RainStreakList_candidate
-c-file 0x08053B94 _ src/combat_2/effect_slot_positions.c g_aEffectOrbitParams_candidate
-c-file 0x08053C6C _ src/combat_2/effect_assets.c g_aEffectActorAssets
-c-file 0x08054400 _ src/combat_2/effect_bg_records.c g_aEffectBgRecords_candidate
-c-file 0x08054E60 _ src/combat_2/script_opcode_lengths.c g_abScriptOpcodeLengths
-c-file 0x08054F08 _ src/combat_2/effect_anim_data.c g_abFighterIdleAnimData_candidate
-c-file 0x08059878 _ src/combat_2/effect_scripts.c g_apEffectScripts
-c-file 0x0805B9A8 _ src/combat_effect_scripts/sp_gauge_gfx.c g_aSpGaugeGfx
+c-file 0x08051174 _ src/combat_fighter/fighter_anim_table.c g_aFighterAnimTable
+c-file 0x080513F4 _ src/combat_fighter/battle_effect_id_tables.c g_abHarryCardEffectId
+c-file 0x0805143C _ src/combat_fighter/defeat_warp_rooms.c g_aDefeatWarpRoomId
+c-file 0x0805148C _ src/combat_fighter/fighter_anim_data.c g_aFighterAnimDataTable
+c-file 0x08051D9C _ src/combat_fighter/monster_anim_data.c g_pMonsterAnimFrameTable
+c-file 0x080537DC _ src/combat_fighter/spell_effect_scripts.c g_abSpellEffectScriptId
+c-file 0x08053818 _ src/combat_fighter/spell_power.c g_awSpellPowerBase
+c-file 0x080538CC _ src/combat_fighter/battle_slot_anchor_pos.c g_aBattleSlotAnchorPos_candidate
+c-file 0x080538D4 _ src/combat_fx/effect_scanline_tables.c g_adwEffectBgControlOverride_candidate
+c-file 0x08053A44 _ src/combat_fx/rain_stream_lists.c g_RainStreakList_candidate
+c-file 0x08053B94 _ src/combat_fx/effect_slot_positions.c g_aEffectOrbitParams_candidate
+c-file 0x08053C6C _ src/combat_fx/effect_assets.c g_aEffectActorAssets
+c-file 0x08054400 _ src/combat_fx/effect_bg_records.c g_aEffectBgRecords_candidate
+c-file 0x08054E60 _ src/combat_fx/script_opcode_lengths.c g_abScriptOpcodeLengths
+c-file 0x08054F08 _ src/combat_fx/effect_anim_data.c g_abFighterIdleAnimData_candidate
+c-file 0x08059878 _ src/combat_fx/effect_scripts.c g_apEffectScripts
+c-file 0x0805B9A8 _ src/combat_gauge/sp_gauge_gfx.c g_aSpGaugeGfx
 c-file 0x0805B9B8 _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
 c-file 0x0805BB2C _ src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file 0x0805BB30 _ src/conversation/dialog_blocks.c g_adwDialogBlockTextIds

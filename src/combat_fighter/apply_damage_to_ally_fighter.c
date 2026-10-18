@@ -1,0 +1,48 @@
+#include "types.h"
+#include "battle/battle.h"
+#include "combat_core.h"
+#include "combat_fighter.h"
+#include "combat.h"
+
+// Applies enemy attack damage and poison ticks to an ally. Unlike
+// ApplyDamageToEnemyFighter, this also updates the party's stored HP
+// and does not grant monster kill rewards.
+void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex)
+{
+    // Strips ResolveEnemyAttack/ResolvePlayerAttack's "Critical hit!" sentinel.
+    if ((u32)damage > 998)
+        damage -= 999;
+
+    g_pFightState->pFighters[fighterIndex].wHp -= damage;
+
+    if (g_pFightState->pFighters[fighterIndex].wHp == 0
+        || g_pFightState->pFighters[fighterIndex].wHp > g_pFightState->pFighters[fighterIndex].wHp_max)
+    {
+        if (g_pFightState->bFaintMessageCount_candidate == 0)
+            ShowBattleMessage(AttackResult, (u16)fighterIndex, 2);
+
+        g_pFightState->dwDefeatCheckPending_candidate = 1;
+        g_pFightState->pFighters[fighterIndex].wHp = 0;
+        g_pFightState->pFighters[fighterIndex].nFaintedFlag = -1;
+
+        {
+            u8 idx = fighterIndex;
+            ClearPoisonedFighter_candidate(idx);
+            ClearParalyzedFighter_candidate(idx);
+        }
+
+        SetActorActionState(g_pFightState->pFighters[fighterIndex].pActor, 1);
+
+        if (g_pFightState->bMenuScreen != 0 && g_pFightState->bMenuFighterIndex == fighterIndex)
+        {
+            g_pFightState->bMenuFighterIndex |= 0xff;
+            g_pFightState->bMenuScreen = 0x80;
+        }
+    }
+
+    g_aPartyMasterStats[g_pFightState->pFighters[fighterIndex].bFighterType].wHp =
+        g_pFightState->pFighters[fighterIndex].wHp;
+
+    if (g_pFightState->bActiveFighterIndex == fighterIndex)
+        DrawFighterStatsUi_candidate(g_pFightState->pFighters[fighterIndex].bFighterType, 0);
+}

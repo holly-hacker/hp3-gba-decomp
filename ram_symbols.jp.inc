@@ -147,13 +147,15 @@
 .set g_nBattleGoldReward,           0x03002610
 .set g_dwOverworldMonstersDisabled, 0x03002614
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618
+
+@ --- include/combat_core.h ---
 .set g_bSelectedFighterSlot_candidate,     0x03002660
 .set g_apFighterActors_candidate,         0x03002668
 .set g_pBattleMessageIconActor_candidate, 0x03002684
 .set g_BattleMessageIconState_candidate,   0x03002688
 .set g_anFaintedRosterIndices,             0x030026D8
 
-@ --- include/combat_result.h ---
+@ --- include/combat_end.h ---
 .set g_dwCombatResultUnusedCounter,               0x030026E8
 .set g_dwCombatResultUnusedDelay,               0x030026EC
 .set g_dwCombatResultXpRemaining,           0x030026F0
@@ -170,11 +172,13 @@
 .set g_CombatResultItem0Gfx,                0x03002738
 .set g_CombatResultItem1Gfx,                0x03002740
 
-@ --- include/combat_2.h ---
+@ --- include/combat_fighter.h ---
 .set g_bInformusTargetMonster,             0x03002748
 .set g_bSpellMissStreak,                   0x03002749
 .set g_nLastDamage,                        0x0300274A
 .set g_bLastTargetIndex,                   0x0300274C
+
+@ --- include/combat_fx.h ---
 .set g_effectStaging,                      0x03002750
 
 @ --- include/commands.h ---

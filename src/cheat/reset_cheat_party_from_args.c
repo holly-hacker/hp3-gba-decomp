@@ -1,6 +1,6 @@
 #include "types.h"
 #include "cheat.h"
-#include "combat_2.h"
+#include "combat_fighter.h"
 #include "modes.h"
 #include "overworld/room.h"
 #include "commands.h"

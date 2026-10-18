@@ -1,9 +1,0 @@
-#include "types.h"
-#include "combat_2.h"
-
-const u8 g_aabFighterHurtSoundIds[4][3] = {
-    { 0xA0, 0x9F, 0xA1 },  // Harry
-    { 0xA5, 0xA6, 0xA7 },  // Hermione
-    { 0xA3, 0xA2, 0xA4 },  // Ron
-    { 0x38, 0x39, 0x39 },  // Buckbeak
-};

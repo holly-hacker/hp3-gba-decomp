@@ -1,5 +1,5 @@
 #include "clock.h"
-#include "combat_2.h"
+#include "combat_fighter.h"
 #include "save.h"
 #include "game_state.h"
 

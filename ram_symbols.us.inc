@@ -158,13 +158,15 @@
 .set g_nBattleGoldReward,           0x03002610  @ u16: Sickles earned this battle; also the scratch amount for gold reward grants
 .set g_dwOverworldMonstersDisabled, 0x03002614  @ u32: nonzero suppresses wandering-monster spawns
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
+
+@ --- include/combat_core.h ---
 .set g_bSelectedFighterSlot_candidate,     0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
 .set g_apFighterActors_candidate,         0x03002668  @ Actor*[7]; one slot per active BattleFighter
 .set g_pBattleMessageIconActor_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), pad[2], u32 dwParam}
 .set g_anFaintedRosterIndices,             0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
 
-@ --- include/combat_result.h ---
+@ --- include/combat_end.h ---
 .set g_dwCombatResultUnusedCounter,              0x030026E8  @ u32: zeroed by InitializeCombatResult; no reader found
 .set g_dwCombatResultUnusedDelay,                0x030026EC  @ u32: 0x78 after InitializeCombatResult; no reader found
 .set g_dwCombatResultXpRemaining,                0x030026F0  @ u32: XP still to be counted up on the combat result screen
@@ -181,11 +183,13 @@
 .set g_CombatResultItem0Gfx,                     0x03002738  @ ActorGfxRecord: tile/frame data of the first dropped item's icon
 .set g_CombatResultItem1Gfx,                     0x03002740  @ ActorGfxRecord: tile/frame data of the second dropped item's icon
 
-@ --- include/combat_2.h ---
+@ --- include/combat_fighter.h ---
 .set g_bInformusTargetMonster,             0x03002748  @ byte: monster id Informus last targeted; the Folio Bruti opens on it
 .set g_bSpellMissStreak,                   0x03002749  @ byte: consecutive-miss streak breaker
 .set g_nLastDamage,                        0x0300274A  @ u16: last computed attack/status damage
 .set g_bLastTargetIndex,                   0x0300274C  @ byte: last attack's target fighter index
+
+@ --- include/combat_fx.h ---
 .set g_effectStaging,                      0x03002750  @ EffectStaging: battle-effect staging area, see TriggerBattleEffect
 .set g_bReviveInsertCount_candidate,        0x03002773  @ u8: incremented by ReviveFighter_candidate when the revived fighter is inserted at or before the active one; no reader found
 

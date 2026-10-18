@@ -2,7 +2,7 @@
 #include "font.h"
 #include "text.h"
 #include "combat.h"
-#include "combat_2.h"
+#include "combat_fighter.h"
 #include "game_state.h"
 #include "default_menu.h"
 #include "pscreen_character.h"

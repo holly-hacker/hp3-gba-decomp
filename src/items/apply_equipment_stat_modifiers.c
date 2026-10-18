@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/battle.h"
-#include "combat_2.h"
+#include "combat_fighter.h"
 #include "items.h"
 #include "combat.h"
 

@@ -11,7 +11,7 @@
 #include "cheat_wizard_cards.h"
 #include "choose_party_member.h"
 #include "combat.h"
-#include "combat_result.h"
+#include "combat_end.h"
 #include "combo_info.h"
 #include "credits_cutscene.h"
 #include "dementor_minigame.h"

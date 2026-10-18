@@ -372,7 +372,7 @@ Notes on pieces the pseudocode above elides:
   (`build/us/full_disasm.s:37180-37182` confirms the `Actor+8 == 3`
   branch that skips straight past the MP-deduction/`ResolvePlayerAttack`
   block into his own hardcoded-damage sub-state, `Actor+0x60 == 6`).
-- **Enemy target selection**, matched in `src/combat_2/tick_fighter_attack_anim_state.c`
+- **Enemy target selection**, matched in `src/combat_fighter/tick_fighter_attack_anim_state.c`
   (`TickFighterAttackAnimState_candidate` case `0x1A`, `Actor+0x90 == 0x21`
   sub-branch -- not case `0`, which is just the post-hit flash-clear tail):
   ```c
@@ -510,7 +510,7 @@ defenses `100`) plus a backup `memcpy` of the record into slot 3
 branch (anim data row `type * 0x244`, cursor `base + slot*4 + 2`).
 `bSelectedActionIndex` inits to `0xFF` at `+0x3A`, which is why that offset
 is the action index and `+0x3C` the spell id. The decompilation
-(`src/combat_2/init_player_battle_actor.c`, byte-identical) folds the flag
+(`src/combat_fighter/init_player_battle_actor.c`, byte-identical) folds the flag
 update through the mask temp itself (`mask &= maskVal`); a separate dest
 pseudo would tie to the loaded value in regmove and steal `r0` from the
 mask. No JP row exists for this range, so the JP bytes here are unverified
@@ -531,7 +531,7 @@ types 45-47 additionally spawn a shadow `Actor` (own anim tables at
 `0x18`); `wHp`/`wHp_max` share one load, `bRosterIndex` is the monster
 index, `bFighterType` is `Enemy`, `unk3E` is assigned `-1` directly (no
 read-modify-write), and there is no faint branch. The decompilation
-(`src/combat_2/init_monster_battle_actor.c`, byte-identical) holds the
+(`src/combat_fighter/init_monster_battle_actor.c`, byte-identical) holds the
 cursor addresses in two temps to reproduce ROM's computation order, and
 writes the slot doubling as `slot + slot` (`slot * 2` splits the copy and
 shift across `r3`/`r0`).
@@ -548,7 +548,7 @@ background/palette load. Three cases on `g_PrevGameModeStackContext`:
   `g_aCardTargetingMeta[g_GameModeArg2][0]` -- **already a named, matched
   global** (`extern u8 g_aCardTargetingMeta[][2]`, `0x080514DE`,
   `include/battle/battle.h:374`), used from `TickPlayerActionState`'s own
-  Special-Move-resolution case in `src/combat_2/tick_player_action_state.c`.
+  Special-Move-resolution case in `src/combat_fighter/tick_player_action_state.c`.
   Indexed by the raw Folio Universitas card slot `0`-`15`; `[0]` is the
   target-type byte this function reads, `[1]` is a second, independently
   read boolean -- gates a `StopBgTileAnimationsAfterCard_candidate()` call
@@ -643,7 +643,7 @@ menus, with no `aEnemySlotTurnOrderIndex`/`aAllySlotTurnOrderIndex`
 translation, consistent with indexing straight into the separate pending
 pool. `RestoreFighterActors_candidate` (`0x0800F16C`) spawns this pool's
 `Actor`s the same way it does for `pFighters`, and `TickPlayerActionState`
-(matched, `src/combat_2/tick_player_action_state.c`) pans every
+(matched, `src/combat_fighter/tick_player_action_state.c`) pans every
 `pPendingFighters_candidate[i].pActor` alongside the regular roster
 during the Special Move windup/return camera move (`bActionState == 0x1a`,
 `bActionFlags == 0x21`/`0x40` cases) -- pending fighters are real,
@@ -672,14 +672,14 @@ dangerous ones act early (Lupin Werewolf `=20`, Draco `=60`). Buckbeak is
 hardcoded to `10`.
 
 - **`JitterEnemyTurnOrder`** (`0x0800E5B8`, matched byte-exact,
-  `src/combat_menu/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
+  `src/combat_core/jitter_enemy_turn_order.c`) adds `Mt19937RandSigned(0x10)` to
   each `Enemy`'s `bAgility`, clamped to `[5, 251]`. Player fighters are
   untouched -- `bAgility` comes straight from
   `g_pPartyMasterStats[fighterType]` for Harry/Hermione/Ron. Runs on
   `pStagingFighters`, ahead of `SetupBattleRoster`'s compaction/copy into
   `pFighters`.
 - **`BuildTurnOrder`** (`0x0800E62C`, matched byte-exact,
-  `src/combat_menu/build_turn_order.c`) selection-sorts `pStagingFighters` into
+  `src/combat_core/build_turn_order.c`) selection-sorts `pStagingFighters` into
   `pFighters` ascending by `bAgility`. Each of the first `bFighterCount-1`
   passes scans the whole staging array for the lowest `bAgility` still
   above the previous pick (a fainted fighter, `wHp == 0`, is marked
@@ -892,7 +892,7 @@ read in `InitializeCombatResultDrops` (`0x0801456C`, the combat result
 screen's second phase) for a `25%` gold bonus (`gold += gold >> 2`,
 matching the `42*2*1.25 = 105` figure recorded earlier), and again in
 `RollBattleItemDrops` (`0x080147C0`, matched in
-`src/combat_result/roll_battle_item_drops.c`): for up to 4 fainted monsters
+`src/combat_end/roll_battle_item_drops.c`): for up to 4 fainted monsters
 (`g_anFaintedRosterIndices`, sentinel `-1`), one roll per monster, each
 rolling `0`-`99` against `g_pMonsterDropTable[rosterIndex]`'s two
 `(chance, itemId)` slots (adjacent ranges on the same roll, mutually
@@ -994,7 +994,7 @@ turn state machine that frame. Every other case (timer already `0`, or the
 previous-mode skip) calls `TickBattleTurnStateMachine` (`0x0800F794`).
 
 `TickBattleTurnStateMachine`, matched in
-`src/combat_menu/tick_battle_turn_state_machine.c`, drives
+`src/combat_core/tick_battle_turn_state_machine.c`, drives
 `FightState->bBattleState` (0x1061, an 8-case dispatch) directly:
 every state transition inlines the same guard (refuse to leave states
 `6`/`7`, stash the state being left into `bSavedBattleState`) rather than
@@ -1213,8 +1213,8 @@ identified) runs `LevelUpFighter_candidate` for all 3 party members,
 event), not an automatic threshold check against accumulated XP.
 
 Three `CharacterLevelEntry[100]` tables, 12-byte rows, matched
-byte-exact as curated C source (`src/combat_2/harry_levels.c`,
-`src/combat_2/ron_levels.c`, `src/combat_2/hermione_levels.c`):
+byte-exact as curated C source (`src/combat_fighter/harry_levels.c`,
+`src/combat_fighter/ron_levels.c`, `src/combat_fighter/hermione_levels.c`):
 
 | Table | US address |
 |---|---|
@@ -1358,7 +1358,7 @@ below).
 Its companion byte array at the same index, `g_abSpellEffectId_candidate`
 (`0x080538B0`), holds a per-`(spellId, level)` effect-script id fed into
 `TriggerBattleEffect`. All 30 entries are named in
-`src/combat_2/effect_scripts/`:
+`src/combat_fx/effect_scripts/`:
 
 | `SpellId` | Spell | Effect ids (Uno/Duo/Tria) | Max level | Has `StatusEffect`? |
 |---|---|---|---|---|

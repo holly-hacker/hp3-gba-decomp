@@ -85,7 +85,7 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 
 - [`formats/folio_bruti.md`](formats/folio_bruti.md) — `MonsterTable`,
   the 24-byte monster stat record, per-spell effectiveness, and the
-  bestiary grid. Table lives as committed C in `src/combat_2/monsters.c`.
+  bestiary grid. Table lives as committed C in `src/combat_fighter/monsters.c`.
 - [`formats/graphics.md`](formats/graphics.md) — the generic
   resource-decompression dispatchers and codec inventory, the room
   resource table, OBJ palette and tile loading, PNG sprite banks, and actor
@@ -99,7 +99,7 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   `data/audio/`.
 - [`formats/battle_scripts.md`](formats/battle_scripts.md) — the
   battle-script bytecode VM, its opcode table, and the effect-script
-  pointer table. Scripts are C: `src/combat_2/effect_scripts/`, `include/battle/script_opcodes.h`.
+  pointer table. Scripts are C: `src/combat_fx/effect_scripts/`, `include/battle/script_opcodes.h`.
 - [`formats/room_scripts.md`](formats/room_scripts.md) — the room-script
   bytecode VM (a second, unrelated interpreter): its byte format,
   pause/resume/nested-call state machine, and known opcodes. Scripts are

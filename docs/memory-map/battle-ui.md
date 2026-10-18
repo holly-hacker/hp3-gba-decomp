@@ -297,7 +297,7 @@ i.e. **`Stink Pellet` = effect id `44`, `Wizard Cracker` = effect id
 `46`, `Stink Pellet 2` = effect id `45`**.
 
 Cross-checked against the actual extracted script content
-(`src/combat_2/effect_scripts/effect44.h`/`effect45.h`/`effect46.h`):
+(`src/combat_fx/effect_scripts/effect44.h`/`effect45.h`/`effect46.h`):
 
 - **Effect `44`**: a single unconditional `StatusEffect 17 0 0`
   (opcode `0x97` case `0x11`, "Paralyzed", the *unconditional*-apply
@@ -448,7 +448,7 @@ dispatch, not investigated further.
 
 ### `TickPlayerActionState` (`0x0801602C`) -- player/Buckbeak side
 
-Matched byte-exact by `src/combat_2/tick_player_action_state.c`
+Matched byte-exact by `src/combat_fighter/tick_player_action_state.c`
 (`0x0801602C`-`0x08017B5C`): reads `Actor+0x8D`, dispatches a 27-entry
 `switch` over the table at `0x08016090` (case labels in source order `0`,
 `0xf`, `2`, `0x1a`, `0x15`, `4`, `1`, `5`, matching agbcc's
@@ -605,7 +605,7 @@ whose script has no `StatusEffect` opcode at all -- see the `DefenseBoost`
 bit writeup in [`battle.md`](battle.md); its mapping to effect id `35` is solid (by position
 and elimination) but its actual defense-boost mechanism is not.
 
-All 16 are now named in `src/combat_2/effect_scripts/` as
+All 16 are now named in `src/combat_fx/effect_scripts/` as
 `SpecialHarry<CardName>` (matching the `SpecialHermione*`/`SpecialRon*`
 convention already used for the other two characters' Special Moves),
 e.g. `SpecialHarryHorklumpSpores`, `SpecialHarrySnitch`,

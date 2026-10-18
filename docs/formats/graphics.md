@@ -1232,10 +1232,10 @@ The status/equip screen's `SpawnStatusCharacterActor` reads the three
 `StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
 
 These record tables are C with generated labels: `g_aBattleHudAssets`
-(`src/combat_menu/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
-fighter, `src/combat_2/fighter_anim_table.c`), `g_aEffectActorAssets`,
+(`src/combat_core/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
+fighter, `src/combat_fighter/fighter_anim_table.c`), `g_aEffectActorAssets`,
 `g_apEffectPalettes`, `g_aEffectAnimAssets`, and `g_aEffectAnimAssets2`
-(`src/combat_2/effect_assets.c`), and `g_aStatusCharacterAssets`
+(`src/combat_fx/effect_assets.c`), and `g_aStatusCharacterAssets`
 (`src/pscreen_status_equip/status_character_assets.c`).
 
 ### Item icons (PROVEN, extracted)

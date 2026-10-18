@@ -749,4 +749,3 @@ extern u8 GetFrameCellCount(ActorFrameDesc *frameDesc);
 extern void GetOamShapeSizeDims(u32 shape, u32 size, s32 *dims);
 extern const OamShapeSize g_aOamShapeSizes[3][4];
 
-extern void DestroyLinkedActor(void *linkedActor);
