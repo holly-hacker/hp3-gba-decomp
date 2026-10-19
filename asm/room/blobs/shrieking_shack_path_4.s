@@ -83,7 +83,7 @@ Room47V1Chain3:
     ShowItemRemovedMessage 75
 .endif
     DelayedRespawnRowAndRunChain 1, 0, 0
-    UnmuteAllMusicChannels
+    StopSoundEffectChannels
     RespawnRowAndRunChain Room47V1Group1_id, 0
     SetTileActorAnimStateWithSpeed 0, 255
     End

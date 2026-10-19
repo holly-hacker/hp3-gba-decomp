@@ -720,9 +720,9 @@ via the real jump table, see below).
 
 ### Functions called from `ShowBattleMessage`, partially identified
 
-- **`PlaySoundEffect_candidate`** (`0x0803FF70`) -- called by
+- **`PlayJingle`** (`0x0803FF70`) -- called by
   `SpellLevelUp` (id `0x1a`). Looks up the module pointer at
-  `0x08FB0CC4[soundId]` and plays it as a jingle,
+  `g_apMusicModules[moduleId]` and plays it as a jingle,
   `krapPlay(module, KRAP_MODE_JINGLE, 0)` (see `krawall.md`).
 - **`PrepareBattleMessageDisplay_candidate`** (`0x08012FD4`) -- called
   at the top of every `ShowBattleMessage` case. Draws/positions the

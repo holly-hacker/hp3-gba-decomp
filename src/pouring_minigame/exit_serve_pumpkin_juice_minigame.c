@@ -11,6 +11,6 @@ void ExitUnusedServePumpkinJuiceMinigame(void)
     SetAlphaBlendTargets(0, 0);
     ResetPaletteAnimations();
     FreeAllActors(&g_ActiveActorListState.pHead);
-    sub_0803FF04();
+    StopAllSoundEffects();
     FreeBgTileAnimations();
 }

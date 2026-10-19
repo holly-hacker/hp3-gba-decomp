@@ -3,7 +3,7 @@
 #include "random.h"
 #include "3rd_party/krawall.h"
 
-s32 PlaySoundByIdUnlessActive_candidate(s32 id, s32 handle)
+s32 PlaySoundByIdUnlessActive(s32 id, s32 handle)
 {
     const SoundConfigRow *row;
     const SoundConfigRow *table;
@@ -11,7 +11,7 @@ s32 PlaySoundByIdUnlessActive_candidate(s32 id, s32 handle)
     s32 newHandle;
 
     newHandle = 0;
-    if (!IsSoundActive_candidate(handle))
+    if (!IsSoundActive(handle))
     {
         table = g_aSoundConfig;
         row = table + id;

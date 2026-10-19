@@ -557,7 +557,7 @@
 .set g_dwSerialUnk03005ABC, 0x03005ABC  @ u32: zeroed by InitSerial, no other access found
 
 @ --- include/sound.h ---
-.set g_bUnk03005AC0,             0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule
+.set g_bUnreadAudioValue,        0x03005AC0  @ u8: set to 8 by kramInstall and PlayMusicModule; never read
 .set g_bMusicPaused,             0x03005AC1  @ u8: PauseMusic latch, cleared by ResumeMusic and StopMusic
 .set g_bCurrentMusicModule,      0x03005AC2  @ u8: last module started by PlayMusicModule, 0xFF if none
 

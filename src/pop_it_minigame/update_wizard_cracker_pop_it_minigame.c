@@ -90,13 +90,13 @@ void UpdateWizardCrackerPopItMinigame(void)
             }
             else if (sub_08033CA0())
             {
-                PlaySoundEffect_candidate(0x2B);
+                PlayJingle(0x2B);
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateRoundWon;
                 g_GameModeStackContext.dwModeTimer = 0x78;
             }
             else
             {
-                PlaySoundEffect_candidate(0x2D);
+                PlayJingle(0x2D);
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateRoundLost;
                 g_GameModeStackContext.dwModeTimer = 0x28;
             }

@@ -74,7 +74,7 @@ void ExitOverworldScreen(void)
     if (g_dwGameModeFlags & 0x80000)
         g_dwGameModeFlags |= 0x400000;
 
-    sub_0803FF04();
+    StopAllSoundEffects();
     FreeAllParticleEmitters();
     FreeAllParticles();
     UnreserveObjPaletteSlot(1);

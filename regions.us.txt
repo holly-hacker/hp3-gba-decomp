@@ -779,7 +779,7 @@ c-file 0x0801D25C _ src/commands/room_script_op_set_pause_menu_locked.c RoomScri
 c-file 0x0801D268 _ src/commands/room_script_op_show_folio_category_status_message.c RoomScriptOpShowFolioCategoryStatusMessage
 c-file 0x0801D2C8 _ src/commands/room_script_op_show_party_level_up_message.c RoomScriptOpShowPartyLevelUpMessage
 c-file 0x0801D308 _ src/commands/room_script_op_grant_party_level_ups.c RoomScriptOpGrantPartyLevelUps
-c-file 0x0801D330 _ src/commands/room_script_op_unmute_all_music_channels.c RoomScriptOpUnmuteAllMusicChannels
+c-file 0x0801D330 _ src/commands/room_script_op_stop_sound_effect_channels.c RoomScriptOpStopSoundEffectChannels
 c-file 0x0801D33C _ src/commands/room_script_op_consume_room_item.c RoomScriptOpConsumeRoomItem
 c-file 0x0801D34C _ src/commands/room_script_op_reset_party_leader_selection.c RoomScriptOpResetPartyLeaderSelection
 c-file 0x0801D360 _ src/commands/room_script_op_set_pending_chain_from_exit_param.c RoomScriptOpSetPendingChainFromExitParam
@@ -2001,29 +2001,29 @@ c-file 0x0803FC48 _ src/serial/count_serial_connect_retries.c CountSerialConnect
 
 # Sound (audio)
 c-file 0x0803FC68 _ src/sound/play_sound_by_id.c PlaySoundById
-c-file 0x0803FD04 _ src/sound/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive_candidate
+c-file 0x0803FD04 _ src/sound/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive
 c-file 0x0803FDB0 _ src/sound/kram_install.c kramInstall
-c-file 0x0803FDFC 0x0803FE48 src/sound/init_audio.c InitAudio
-thumb-func 0x0803FE48 sub_0803FE48
-thumb-func 0x0803FE54 DisableKrawall
-thumb-func 0x0803FE60 EnableKrawall
-thumb-func 0x0803FE6C sub_0803FE6C
+c-file 0x0803FDFC _ src/sound/init_audio.c InitAudio
+c-file 0x0803FE48 _ src/sound/disable_krawall_unused.c DisableKrawall_unused
+c-file 0x0803FE54 _ src/sound/disable_krawall.c DisableKrawall
+c-file 0x0803FE60 _ src/sound/enable_krawall.c EnableKrawall
+c-file 0x0803FE6C _ src/sound/set_unread_audio_value.c SetUnreadAudioValue
 c-file 0x0803FE78 _ src/sound/set_sound_effect_volume.c SetSoundEffectVolume
-c-file 0x0803FE88 0x0803FE98 src/sound/set_music_volume.c SetMusicVolume
-thumb-func 0x0803FE98 StopSoundEffect
-thumb-func 0x0803FEA4 UnmuteAllMusicChannels
-thumb-func 0x0803FEB0 sub_0803FEB0
-thumb-func 0x0803FEB4 PlayMusicModule
-thumb-func 0x0803FF04 sub_0803FF04
-thumb-func 0x0803FF10 sub_0803FF10
-thumb-func 0x0803FF1C PauseMusic
-thumb-func 0x0803FF40 ResumeMusic
-thumb-func 0x0803FF5C StopMusic
-thumb-func 0x0803FF70 PlaySoundEffect_candidate
-thumb-func 0x0803FF8C IsSoundActive_candidate
-c-file 0x0803FF98 0x0803FFC8 src/sound/apply_audio_volume_settings.c ApplyAudioVolumeSettings
-thumb-func 0x0803FFC8 sub_0803FFC8
-thumb-func 0x0803FFEC sub_0803FFEC
+c-file 0x0803FE88 _ src/sound/set_music_volume.c SetMusicVolume
+c-file 0x0803FE98 _ src/sound/stop_sound_effect.c StopSoundEffect
+c-file 0x0803FEA4 _ src/sound/stop_sound_effect_channels.c StopSoundEffectChannels
+c-file 0x0803FEB0 _ src/sound/sound_nop.c SoundNop
+c-file 0x0803FEB4 _ src/sound/play_music_module.c PlayMusicModule
+c-file 0x0803FF04 _ src/sound/stop_all_sound_effects.c StopAllSoundEffects
+c-file 0x0803FF10 _ src/sound/pause_music_unused.c PauseMusic_unused
+c-file 0x0803FF1C _ src/sound/pause_music.c PauseMusic
+c-file 0x0803FF40 _ src/sound/resume_music.c ResumeMusic
+c-file 0x0803FF5C _ src/sound/stop_music.c StopMusic
+c-file 0x0803FF70 _ src/sound/play_jingle.c PlayJingle
+c-file 0x0803FF8C _ src/sound/is_sound_active.c IsSoundActive
+c-file 0x0803FF98 _ src/sound/apply_audio_volume_settings.c ApplyAudioVolumeSettings
+c-file 0x0803FFC8 _ src/sound/disable_krawall_timer_interrupt.c DisableKrawallTimerInterrupt
+c-file 0x0803FFEC _ src/sound/enable_krawall_timer_interrupt.c EnableKrawallTimerInterrupt
 c-file 0x0804000C _ src/sound/on_krawall_event.c OnKrawallEvent
 
 # Spongify (spongify pad actor)
@@ -2653,7 +2653,8 @@ c-file 0x08FAAEF8 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphi
 c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file 0x08FB0588 _ src/sound/sound_samples.c g_aSoundSamples
 c-file 0x08FB0818 _ src/sound/sound_variants.c g_aSoundVariants
-c-file 0x08FB09F8 0x08FB0CC4 src/sound/sound_config.c g_aSoundConfig
+c-file 0x08FB09F8 _ src/sound/sound_config.c g_aSoundConfig
+c-file 0x08FB0CC4 _ src/sound/music_modules.c g_apMusicModules
 c-file 0x08FB0D94 _ src/store/shop_stock_lists.c g_apShopStockLists
 
 # Krawall code section, will be copied into IWRAM

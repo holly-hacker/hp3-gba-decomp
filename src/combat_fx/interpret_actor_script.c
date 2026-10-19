@@ -85,7 +85,7 @@ void InterpretActorScript(Actor *actor)
             AttachActorPalette(actor, g_apEffectPalettes[args[1]]);
             break;
         case BSOP_UnmuteMusic:  // unmutes the music channels
-            UnmuteAllMusicChannels();
+            StopSoundEffectChannels();
             break;
         case BSOP_WaitFrames:
             actor->wActionVariant = args[1];
@@ -1110,7 +1110,7 @@ void InterpretActorScript(Actor *actor)
             RestoreScreenPalette();
             break;
         case BSOP_PlaySoundEffect:  // plays a sound effect
-            PlaySoundEffect_candidate(args[1]);
+            PlayJingle(args[1]);
             break;
         case BSOP_Unk14:
         case BSOP_Unk15:

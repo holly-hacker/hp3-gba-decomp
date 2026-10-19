@@ -26,6 +26,6 @@ void ExitBoggartMinigame(void)
     FreeMinigameTextPanel(g_BoggartMinigame.pScorePanel);
     FreeMinigameTextPanel(g_BoggartMinigame.pLivesPanel);
     FreeAllActors(&g_ActiveActorListState.pHead);
-    sub_0803FF04();
+    StopAllSoundEffects();
     SyncSaveOptionsPausingKrawall();
 }

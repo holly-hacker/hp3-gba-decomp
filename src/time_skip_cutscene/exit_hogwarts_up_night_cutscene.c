@@ -13,6 +13,6 @@ void ExitHogwartsUpNightCutscene(void)
     PlayScreenTransitionOutByIndex(0x3F, 2);
     zero = 0;
     bios_CPUSet((void *)&zero, VRAM_BASE, 0x01008000);
-    UnmuteAllMusicChannels();
+    StopSoundEffectChannels();
     FreeAllActors(&g_ActiveActorListState.pHead);
 }

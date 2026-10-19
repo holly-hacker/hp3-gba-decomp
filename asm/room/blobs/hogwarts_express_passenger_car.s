@@ -183,7 +183,7 @@ Room06V1Chain6:
 Room06V1Chain7:
     ArmChainYield 1
     CancelActorAnimSequence 0, 255
-    UnmuteAllMusicChannels
+    StopSoundEffectChannels
     PlaySpecialSceneEffect 1
     DelayedRespawnRowAndRunChain 5, 0, 0
     StartTileActorScript 168, 124, 0, 0, 255, 0, 0, 0, 255, 255, 255

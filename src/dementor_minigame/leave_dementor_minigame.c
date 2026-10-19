@@ -10,7 +10,7 @@ void LeaveDementorMinigame(void)
         PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
         g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
         g_dwPendingGameMode.dwCurrentGameModeArg3 = 0xFF;
-        UnmuteAllMusicChannels();
+        StopSoundEffectChannels();
     }
     else
     {

@@ -18,7 +18,7 @@ void RoomScriptOpShowRewardPickupMessage(ShowRewardPickupMessageRecord *pRecord)
 {
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    PlaySoundEffect_candidate(0x1a);
+    PlayJingle(0x1a);
     SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
     SetTextMacro3String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
     if (pRecord->bRewardId <= 0x4e)

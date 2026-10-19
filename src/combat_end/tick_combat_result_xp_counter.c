@@ -58,7 +58,7 @@ void TickCombatResultXpCounter(void)
             g_aCombatResultPartyRows[0].nXpToNextLevel--;
             if ((s16)FIGHTER(0).wRewardXp == 0)
             {
-                PlaySoundEffect_candidate(0x1B);
+                PlayJingle(0x1B);
                 LevelUpPartyMember_candidate(g_abCombatResultPartySlots[0]);
                 ClearBgTilemapRect(0, 7, 0xE, 3, 1);
                 pText = GetDialogText(0x8F7);  // "@1"
@@ -102,7 +102,7 @@ void TickCombatResultXpCounter(void)
             g_aCombatResultPartyRows[1].nXpToNextLevel--;
             if ((s16)FIGHTER(1).wRewardXp == 0)
             {
-                PlaySoundEffect_candidate(0x1B);
+                PlayJingle(0x1B);
                 LevelUpPartyMember_candidate(g_abCombatResultPartySlots[1]);
                 pText = GetDialogText(0x8F7);  // "@1"
                 ClearBgTilemapRect(0, 0x19, 0xE, 3, 1);
@@ -149,7 +149,7 @@ void TickCombatResultXpCounter(void)
             g_aCombatResultPartyRows[2].nXpToNextLevel--;
             if ((s16)FIGHTER(2).wRewardXp == 0)
             {
-                PlaySoundEffect_candidate(0x1B);
+                PlayJingle(0x1B);
                 LevelUpPartyMember_candidate(g_abCombatResultPartySlots[2]);
                 ClearBgTilemapRect(0, 0x10, 0xE, 3, 1);
                 pText = GetDialogText(0x8F7);  // "@1"

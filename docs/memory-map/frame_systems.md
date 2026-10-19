@@ -96,11 +96,10 @@ scripted effect started by room script opcodes `0x10` and `0x12`:
   (velocity saved and zeroed) while the pan runs.
 - **3, shake**: the focus follows the target with a `±nStep` offset on Y (vertical) every other frame for
   `dwFramesLeft` frames (forever when `dwRunForever` is set). At the end it runs the
-  row/chain and calls `sub_0803FE98`, an unidentified wrapper around `0x08049E50`.
+  row/chain and stops the shake's sound with `StopSoundEffect`.
 - **0, idle**: only the follow behavior.
 
-Whether state 3 is visibly a shake in play, and what `sub_0803FE98` does, are
-UNCONFIRMED.
+Whether state 3 is visibly a shake in play is UNCONFIRMED.
 
 ## `HandleOverworldPauseMenuInput` (`0x0802AEF8`, JP `0x0802AF54`), PROVEN
 

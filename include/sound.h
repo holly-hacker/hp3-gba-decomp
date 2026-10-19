@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "3rd_party/krawall.h"
 
 // Sound effects and Krawall music playback.
 
@@ -26,16 +27,19 @@ extern const SoundConfigRow g_aSoundConfig[179];       // 0x08FB09F8
 extern const SoundSample g_aSoundSamples[164];         // 0x08FB0588
 extern const SoundSample g_aSoundVariants[15][8];      // 0x08FB0818
 
-extern s32 IsSoundActive_candidate(s32 handle);
+// Music and jingle modules by module id (PlayMusicModule, PlayJingle).
+extern const Module *const g_apMusicModules[52];       // 0x08FB0CC4
+
+extern s32 IsSoundActive(s32 handle);
 
 extern s32 PlaySoundById(s32 id);  // returns a handle for StopSoundEffect
-extern void sub_0803FF04(void);
 // Returns handle unchanged while it is still playing, otherwise plays the sound like PlaySoundById.
-extern s32 PlaySoundByIdUnlessActive_candidate(s32 id, s32 handle);
+extern s32 PlaySoundByIdUnlessActive(s32 id, s32 handle);
 extern void PlayMusicModule(u8 moduleId);
-// Clears the mute flag on every active Krawall channel.
-extern void UnmuteAllMusicChannels(void);
-extern void PlaySoundEffect_candidate(u32 id);
+// Both stop every playing sound effect (kramStopSFXChannels); the bodies are identical.
+extern void StopSoundEffectChannels(void);
+extern void StopAllSoundEffects(void);
+extern void PlayJingle(u8 moduleId);
 extern void SetMusicVolume(u8 volume, u32 fade);
 // Pause/resume the music module; ResumeMusic only acts if PauseMusic paused it.
 extern void PauseMusic(void);
@@ -48,7 +52,7 @@ extern u8 g_bCurrentMusicModule;  // 0x03005AC2: last module started by PlayMusi
 extern void SetSoundEffectVolume(u8 volume);
 
 // Audio startup: kramInstall copies the RAM sections and calls InitAudio.
-extern u8 g_bUnk03005AC0;  // set to 8 by kramInstall and PlayMusicModule
+extern u8 g_bUnreadAudioValue;  // set to 8 by kramInstall and PlayMusicModule; nothing reads it
 extern void kramInstall(void);
 extern void InitAudio(void);
 extern void ApplyAudioVolumeSettings(void);
@@ -56,6 +60,15 @@ extern void OnKrawallEvent(s32 event, s32 param);
 
 extern void DisableKrawall(void);
 extern void EnableKrawall(void);
+extern void DisableKrawallTimerInterrupt(void);
+extern void EnableKrawallTimerInterrupt(void);
+
+extern void SetUnreadAudioValue(u8 value);
+
+// No callers.
+extern void DisableKrawall_unused(void);
+extern void SoundNop(void);
+extern void PauseMusic_unused(void);
 
 // Start/end of the statically linked IWRAM and EWRAM sections: Krawall's ARM
 // mixer code and its engine state. kramInstall copies their ROM images to RAM;

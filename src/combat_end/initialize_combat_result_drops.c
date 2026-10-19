@@ -55,9 +55,9 @@ void InitializeCombatResultDrops(void)
 
     // The last Folio Universitas card gets a fanfare.
     if (item0 == REWARD_ID_GOLD - 1)
-        PlaySoundEffect_candidate(0x26);
+        PlayJingle(0x26);
     if (item1 == REWARD_ID_GOLD - 1)
-        PlaySoundEffect_candidate(0x26);
+        PlayJingle(0x26);
 
     g_pCombatResultItem0Actor = NULL;
     g_pCombatResultItem1Actor = NULL;

@@ -8,7 +8,7 @@
 // which equal the sizes since both sections start at their region base.
 void kramInstall(void)
 {
-    g_bUnk03005AC0 = 8;
+    g_bUnreadAudioValue = 8;
     CopyMemory(g_KrawallIwramStart, g_KrawallIwramRomImage, (u32)g_KrawallIwramEnd & 0xFFFFFF);
     CopyMemory(g_KrawallEwramStart, g_KrawallEwramRomImage, (u32)g_KrawallEwramEnd & 0xFFFFFF);
     InitAudio();

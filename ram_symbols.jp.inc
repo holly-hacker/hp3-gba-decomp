@@ -533,7 +533,7 @@
 .set g_dwSerialUnk03005ABC, 0x03005B1C
 
 @ --- include/sound.h ---
-.set g_bUnk03005AC0,             0x03005B20
+.set g_bUnreadAudioValue,        0x03005B20
 .set g_bMusicPaused,             0x03005B21
 .set g_bCurrentMusicModule,      0x03005B22
 

@@ -22,7 +22,7 @@ void RoomScriptOpShowSpellLearnedMessage(ShowSpellLearnedMessageRecord *pRecord)
     {
         if (g_dwRoomScriptRunState == 1)
             g_dwRoomScriptRunState = 2;
-        PlaySoundEffect_candidate(0x1a);
+        PlayJingle(0x1a);
         SetTextMacro1String(GetDialogText(pRecord->bSpellId + 0xac2));
         SetTextMacro3String(GetDialogText(pRecord->bSpellId + 0xac2));
         ShowRoomDialogBox_candidate(0x28f);

@@ -93,7 +93,7 @@ enum RoomScriptOpcode {
     RSOP_ShowMinigameUnlockedMessage = 85,
     RSOP_ShowPartyLevelUpMessage = 86,
     RSOP_GrantPartyLevelUps = 87,
-    RSOP_UnmuteAllMusicChannels = 88,
+    RSOP_StopSoundEffectChannels = 88,
     RSOP_ConsumeRoomItem = 89,
     RSOP_ResetPartyLeaderSelection = 90,
     RSOP_GotoIfAllQuestFlagsSet = 91,

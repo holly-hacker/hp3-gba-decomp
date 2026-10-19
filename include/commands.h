@@ -182,7 +182,7 @@ struct ShowPartyLevelUpMessageRecord;
 void RoomScriptOpShowPartyLevelUpMessage(struct ShowPartyLevelUpMessageRecord *pRecord);
 struct GrantPartyLevelUpsRecord;
 void RoomScriptOpGrantPartyLevelUps(struct GrantPartyLevelUpsRecord *pRecord);
-void RoomScriptOpUnmuteAllMusicChannels(RoomScriptRecord *pRecord);
+void RoomScriptOpStopSoundEffectChannels(RoomScriptRecord *pRecord);
 struct ConsumeRoomItemRecord;
 void RoomScriptOpConsumeRoomItem(struct ConsumeRoomItemRecord *pRecord);
 void RoomScriptOpResetPartyLeaderSelection(RoomScriptRecord *pRecord);

@@ -135,6 +135,12 @@ IWRAM functions to their stubs, so `kramPlay` in game source calls
 `InitAudio` calls `kragInit(KRAG_INIT_STEREO)`,
 `kramSetMasterVol(KRAM_MV_CHANNELS16 | 128)`,
 `kramQualityMode(KRAM_QM_HQ)` and `krapCallback(OnKrawallEvent)`; see
-`src/sound/`. `OnKrawallEvent` handles only `KRAP_CB_JDONE`. The module and
+`src/sound/`. `OnKrawallEvent` handles only `KRAP_CB_JDONE`.
+`g_apMusicModules` lists the 52 modules by module id: `PlayMusicModule`
+loops one (`KRAP_MODE_LOOP`), `PlayJingle` plays one over the music
+(`KRAP_MODE_JINGLE`). `PauseMusic`/`ResumeMusic`/`StopMusic` wrap
+`krapPause(0)`/`krapUnpause`/`krapStop`, and `DisableKrawallTimerInterrupt`
+and `EnableKrawallTimerInterrupt` mask and unmask the Timer 1 interrupt that
+drives `kradInterrupt`. The module and
 sample data the player reads are described in
 [`../formats/krawall.md`](../formats/krawall.md).

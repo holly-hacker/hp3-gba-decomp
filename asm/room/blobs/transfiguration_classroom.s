@@ -187,7 +187,7 @@ Room03V1Chain2:
     QueueTileActorMove Room03V1Group1_id, 0, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     PlayTileActorAnimation Room03V1Group1_id, 0, 10
-    UnmuteAllMusicChannels
+    StopSoundEffectChannels
     ResumeMusic
     @ "What's got into you all today? That's the first time my transformation's not got applause from a class."
     @ "Now - I need someone to assist me in a Transfiguration challenge. Any volunteers?"

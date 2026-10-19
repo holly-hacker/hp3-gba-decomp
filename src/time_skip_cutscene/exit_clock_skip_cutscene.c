@@ -6,6 +6,6 @@
 void ExitClockSkipCutscene(void)
 {
     PlayScreenTransitionOutByIndex(0x3F, 2);
-    UnmuteAllMusicChannels();
+    StopSoundEffectChannels();
     FreeAllActors(&g_ActiveActorListState.pHead);
 }

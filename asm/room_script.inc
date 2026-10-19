@@ -183,7 +183,7 @@
 .set RSOP_ShowMinigameUnlockedMessage, 85
 .set RSOP_ShowPartyLevelUpMessage, 86
 .set RSOP_GrantPartyLevelUps, 87
-.set RSOP_UnmuteAllMusicChannels, 88
+.set RSOP_StopSoundEffectChannels, 88
 .set RSOP_ConsumeRoomItem, 89
 .set RSOP_ResetPartyLeaderSelection, 90
 .set RSOP_GotoIfAllQuestFlagsSet, 91
@@ -541,8 +541,8 @@
     .byte RSOP_GrantPartyLevelUps, 0, 0, 0, (\levelCount), (255), (255), (255)
 .endm
 
-.macro UnmuteAllMusicChannels
-    .byte RSOP_UnmuteAllMusicChannels, 0, 0, 0
+.macro StopSoundEffectChannels
+    .byte RSOP_StopSoundEffectChannels, 0, 0, 0
 .endm
 
 .macro ConsumeRoomItem itemId

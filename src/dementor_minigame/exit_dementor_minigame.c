@@ -20,5 +20,5 @@ void ExitDementorMinigame(void)
     FreeMinigameTextPanel(g_DementorMinigame.pLivesPanel);
     FreeMinigameTextPanel(g_DementorMinigame.pMissesPanel);
     FreeAllActors(&g_ActiveActorListState.pHead);
-    sub_0803FF04();
+    StopAllSoundEffects();
 }
