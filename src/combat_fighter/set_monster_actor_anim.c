@@ -12,7 +12,7 @@ void SetMonsterActorAnim(Actor *actor, u8 state)
         SetActorAnimData(actor, &g_pMonsterGraphicsTable[actor->wActorType - 4].battle,
                           g_pMonsterAnimFrameTable[actor->wActorType - 4], state);
 
-        if ((u16)(actor->wActorType - 0x31) <= 2) {
+        if (IS_SALAMANDER(actor->wActorType - 4)) {
             SetActorAnimData(actor->pShadowActor, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, state);
         } else if (state == 0) {
             actor->anim.pAnimFrameCursor += Mt19937RandMax(2) * 4;
@@ -25,7 +25,7 @@ void SetMonsterActorAnim(Actor *actor, u8 state)
         SetActorAnimData(actor, &g_pMonsterGraphicsTable[actor->wActorType - 4].battle,
                           g_pMonsterAnimFrameTable[actor->wActorType - 4], state);
 
-        if ((u16)(actor->wActorType - 0x31) <= 2)
+        if (IS_SALAMANDER(actor->wActorType - 4))
             SetActorAnimData(actor->pShadowActor, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, state);
     }
 }

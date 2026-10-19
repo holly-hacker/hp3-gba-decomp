@@ -21,7 +21,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
     if (actor->dwFlags & 2)
         return;
 
-    UpdateFighterFlashEffect_candidate(actor);
+    UpdateMonsterScreenShake(actor);
 
     switch (actor->bActionState) {
     case 0:
@@ -270,7 +270,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             actor->bActionFlags = 0x41;
             actor->dwFlags &= 0xfffbffff;
 
-            ShowItemUseResult(actor, active->bSelectedActionIndex);
+            ShowAttackResult(actor, active->bSelectedActionIndex);
 
             phase2:
             if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
@@ -287,7 +287,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                     ShowDamageNumber_candidate(active->bSelectedActionIndex, g_nLastDamage);
 
                 active->bSpellId = Flipendo;
-                ShowItemUseResult(actor, active->bSelectedActionIndex);
+                ShowAttackResult(actor, active->bSelectedActionIndex);
             }
 
             if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
@@ -313,14 +313,14 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
                             g_nLastDamage = g_nLastDamage - 999;
-                            ShowFloatingDamageNumber_candidate(g_nLastDamage, 3, i, 0);
+                            ShowFloatingDamageNumber(g_nLastDamage, 3, i, 0);
                         } else if (g_nLastDamage != 0) {
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pActor->wActorType;
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
-                            ShowFloatingDamageNumber_candidate(g_nLastDamage, 0, i, 0);
+                            ShowFloatingDamageNumber(g_nLastDamage, 0, i, 0);
                         } else {
                             // Zero literal, not g_nLastDamage: on this path
                             // the compiler already holds a register known to
@@ -330,7 +330,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                             g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 1;
                             if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
                                 ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
-                            ShowFloatingDamageNumber_candidate(g_nLastDamage, 2, i, 0);
+                            ShowFloatingDamageNumber(g_nLastDamage, 2, i, 0);
                         }
                         g_pFightState->bFaintMessageCount_candidate++;
                     }

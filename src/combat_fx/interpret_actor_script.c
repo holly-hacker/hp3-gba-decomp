@@ -725,8 +725,8 @@ void InterpretActorScript(Actor *actor)
                     } while (g_anFaintedRosterIndices[0] != -1);
                 }
                 g_anFaintedRosterIndices[n] = targetFighter->bRosterIndex;
-                g_nBattleXpReward += sub_080189C8(targetFighter->bRosterIndex);
-                g_nBattleGoldReward += sub_08018AB8(targetFighter->bRosterIndex);
+                g_nBattleXpReward += GetMonsterRewardXp(targetFighter->bRosterIndex);
+                g_nBattleGoldReward += GetMonsterRewardGold(targetFighter->bRosterIndex);
             }
             break;
         case BSOP_RampBlendUp:  // ramps BLDY from 0 to 16 over frames

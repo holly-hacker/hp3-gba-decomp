@@ -27,23 +27,13 @@ readers themselves. The stat table is decompiled to C
 (`src/combat_fighter/monsters.c`, 69 `MonsterTableRow` initializers, committed
 source). The
 three functions that use the table (`DrawFolioBrutiMonsterPanel`,
-`GetMonsterSpellEffectiveness`, `InitMonsterBattleActor`) are named in
-`functions.us.cfg`; `InitMonsterBattleActor` is additionally matched in
-`src/combat_fighter/`, the other two are not extracted, per
-the project's hard rule 5 that requires fully-walked function
-boundaries.
+`GetMonsterSpellEffectiveness`, `InitMonsterBattleActor`) are matched C in
+both versions.
 
-**JP status:** `MonsterTable` content is now **PROVEN byte-identical**
-between US and JP (same as Krawall audio), just at a different address
-(`0x0804F33C`); one C source (`src/combat_fighter/monsters.c`) serves both via
-per-version `c-file` rows. Two of the
-three functions are matched and named in `functions.jp.cfg`:
-`InitMonsterBattleActor` (`0x08014C74`) and `GetMonsterSpellEffectiveness`
-(`0x080188F8`), both content-verified (matching instruction shapes plus
-the relocated `MonsterTable` literal landing at the same relative
-offset) since `python3 -m tools.matching match-versions`'s signature matching doesn't
-catch either one on its own -- see "The extraction pipeline" below for
-why. `DrawFolioBrutiMonsterPanel` and `DrawFolioBrutiMonsterText` are named in both versions but not yet extracted; the grid screen (`InitializeFolioBruti`, `UpdateFolioBrutiGridCursor`, `ExitFolioBruti`) and its small helpers are matched in both.
+**JP status:** `MonsterTable` content is **PROVEN byte-identical**
+between US and JP, at a different address (`0x0804F33C`); one C source
+(`src/combat_fighter/monsters.c`) serves both via per-version `c-file`
+rows.
 
 ## What we know
 
@@ -77,7 +67,7 @@ it passes to `GetDialogText` (`0x080425E4`, see `docs/formats/text.md`):
 ```
 for spell_index in 0..7:
     sprite = per-slot sprite actor (allocated once, OBJ template 0x080C2E78)
-    effectiveness = sub_0801890C(monster_index, spell_index)   ; r0=r7, r1=r6
+    effectiveness = GetMonsterSpellEffectiveness(monster_index, spell_index)   ; r0=r7, r1=r6
     if effectiveness == -1  OR  ram[0x03003190 + monster_index] <= 2:
         ; monster not yet Informus-analyzed (0x03003190 = g_abMonsterDocLevel_candidate,
         ; bumped to 4 by casting Informus -- see battle.md's
@@ -105,36 +95,13 @@ by the user (see also `docs/memory-map` conventions -- this state byte
 array was already known from the Folio Bruti grid-icon code, not
 independently re-derived here).
 
-**`sub_0801890C(monster_index, spell_index)` -- the effectiveness
-accessor, PROVEN via full decompilation of its body** (US ROM
-`0x0801890C`, `build/us/full_disasm.s` line ~25351):
-
-```c
-u8 sub_0801890C(int monster_index, int spell_index) {
-    if ((unsigned)spell_index > 7)
-        return 0;
-    switch (spell_index) {
-        case 0: return MonsterTable[monster_index].byte[0xA];   // Flipendo
-        case 1: return MonsterTable[monster_index].byte[0xC];   // Verdimillious
-        case 2: return MonsterTable[monster_index].byte[0xB];   // Incendio
-        case 3: return 100;                                     // Petrificus Totalus (fixed)
-        case 4: return MonsterTable[monster_index].byte[0xD];   // Wingardium Leviosa
-        case 5: return 100;                                     // Spongify (fixed)
-        case 6: return MonsterTable[monster_index].byte[0xF];   // Diffindo
-        case 7: return MonsterTable[monster_index].byte[0xE];   // Glacius
-    }
-}
-```
-
-(`MonsterTable[i]` = 24-byte stride, see below; the real code computes
-the record address as `i*3` then `<<3`, i.e. `i*24`, and is a genuine
-Thumb jump table at `_08018924`, 8 `.4byte` case targets, `mov pc, r0`
-dispatch -- textbook `switch` compilation, not hand-rolled.) Only one
-caller exists in the disassembly: the slider loop in `sub_08036D60`
-above. Two of the eight spells (Petrificus Totalus, Spongify) are
-**always 100% effective against every monster** -- not a per-monster
-value at all, just a compiled-in constant in this function. This is a
-real game-design fact, not a gap in the table.
+**`GetMonsterSpellEffectiveness(monster_index, spell_index)`** (US ROM
+`0x0801890C`, `src/combat_fighter/get_monster_spell_effectiveness.c`) maps
+the slider row to a `MonsterTable` effectiveness byte; a row above 7
+returns 0, so the slider loop's `== -1` test never fires. Its only caller
+is the slider loop in `sub_08036D60` above. Two of the eight spells
+(Petrificus Totalus, Spongify) are **always 100% effective against every
+monster**, a constant in this function rather than a table field.
 
 ### The monster stat table
 
@@ -146,7 +113,7 @@ address in `sub_08036D60`'s icon-silhouette code): `0x0804F410 + 69*24 =
 0x0804FA88`, confirming both the stride and the count independently of
 the spell-effectiveness accessor.
 
-Byte layout per record (offsets in hex), as read by `sub_0801890C` and by
+Byte layout per record (offsets in hex), as read by `GetMonsterSpellEffectiveness` and by
 the battle-init routine `InitMonsterBattleActor` (`sub_08014C88`,
 `build/us/full_disasm.s` line ~22494, the field-copy loop starts at ROM
 `0x08014E54`). This routine is the strongest evidence in
@@ -217,7 +184,7 @@ boundary-PROVEN, `RollMonsterSpecialEffect_candidate` reads them with two
 separate `ldrb` instructions (`byte[0x14]`, `byte[0x15]`).
 
 No stored field is used for Petrificus Totalus or Spongify -- confirmed
-by `sub_0801890C` directly (see above), not an oversight in this table.
+by `GetMonsterSpellEffectiveness` directly (see above), not an oversight in this table.
 
 ### Statistical corroboration for the stat fields
 
@@ -355,7 +322,7 @@ The 16-byte `ActorAssetRecord`s that follow, up to `0x0804F404`:
 | `0x0804F3B4` | `g_aAllyTurnOrderIconAssets` | 4 records, indexed by `FighterType` (Harry, Hermione, Ron, Buckbeak) |
 | `0x0804F3F4` | `g_TurnOrderIconContainerAsset` | the turn-order container, applied with `SetActorSprite`; its palette `0x08A38108` is also `SpawnTurnOrderIcon`'s `SpawnActor` palette |
 
-The 12 bytes at `0x0804F404`, read by `sub_08018B14`, are a separate table:
+The 12 bytes at `0x0804F404`, read by `PlayFighterHurtSound`, are a separate table:
 `g_aabFighterHurtSoundIds` (`src/combat_fighter/fighter_hurt_sounds.c`).
 
 `src/combat_fighter/monster_graphics_table.c` reconstructs `0x0804E6B4`-`0x0804F404`

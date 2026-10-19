@@ -12,7 +12,7 @@ void ApplyEquipmentStatModifiers(void)
 
     for (character = 0; character < 3; character++)
     {
-        RecomputeBaseStatsFromLevel_candidate(character);
+        RecomputeBaseStatsFromLevel(character);
 
         for (slot = 0; slot < EQUIP_SLOT_COUNT; slot++)
         {

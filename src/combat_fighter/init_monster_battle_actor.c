@@ -65,8 +65,8 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
         SetActorOrbitX(pActor, slot64, 0x800, 2);
         SetActorOrbitY(pActor, slot64, 0x800, 2);
     }
-    // fire effect monsters? Salamander, Amazonian Salamander, Peruvian Salamander
-    else if ((u8)(type - 0x2D) <= 2)
+    // The salamanders get a shadow Actor.
+    else if (IS_SALAMANDER(type))
     {
         pShadowActor = AllocDefaultActor();
         pShadowActor->wActorType = actorType;

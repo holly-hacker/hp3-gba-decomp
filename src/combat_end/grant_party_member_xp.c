@@ -21,7 +21,7 @@ u32 GrantPartyMemberXp(u32 fighterType, s32 xp)
             break;
 
         remaining = -(s16)g_aPartyMasterStats[fighterType].stats.wRewardXp;
-        LevelUpPartyMember_candidate(fighterType);
+        LevelUpPartyMember(fighterType);
         levelUps++;
     }
 

@@ -599,53 +599,53 @@ c-file 0x0801456C _ src/combat_end/initialize_combat_result_drops.c InitializeCo
 c-file 0x080147C0 _ src/combat_end/roll_battle_item_drops.c RollBattleItemDrops
 c-file 0x080148A8 _ src/combat_end/exit_combat_result.c ExitCombatResult
 c-file 0x080148F4 _ src/combat_end/grant_party_member_xp.c GrantPartyMemberXp
-c-file 0x0801493C 0x08014964 src/combat_end/start_combat_result_palette_effect.c StartCombatResultPaletteEffect
+c-file 0x0801493C _ src/combat_end/start_combat_result_palette_effect.c StartCombatResultPaletteEffect
 
 # Combat fighter (battle actors, stats, actions and damage)
-thumb-func 0x08014964 ResetCharacterToLevel
+c-file 0x08014964 _ src/combat_fighter/reset_character_to_level.c ResetCharacterToLevel
 c-file 0x080149C4 _ src/combat_fighter/init_player_battle_actor.c InitPlayerBattleActor
 c-file 0x08014C88 _ src/combat_fighter/init_monster_battle_actor.c InitMonsterBattleActor
 c-file 0x08014F1C _ src/combat_fighter/spawn_turn_order_icon.c SpawnTurnOrderIcon
-c-file 0x08015020 0x080150B4 src/combat_fighter/roll_monster_special_effect.c RollMonsterSpecialEffect
-thumb-func 0x080150B4 RecomputeBaseStatsFromLevel_candidate
-thumb-func 0x08015110 GetPartyMemberTotalXp
-thumb-func 0x080151B0 LevelUpPartyMember_candidate
-thumb-func 0x0801526C InitPartyStatForCurrentLevel
-thumb-func 0x080152CC sub_080152CC
-thumb-func 0x08015334 sub_08015334
+c-file 0x08015020 _ src/combat_fighter/roll_monster_special_effect.c RollMonsterSpecialEffect
+c-file 0x080150B4 _ src/combat_fighter/recompute_base_stats_from_level.c RecomputeBaseStatsFromLevel
+c-file 0x08015110 _ src/combat_fighter/get_party_member_total_xp.c GetPartyMemberTotalXp
+c-file 0x080151B0 _ src/combat_fighter/level_up_party_member.c LevelUpPartyMember
+c-file 0x0801526C _ src/combat_fighter/init_party_stat_for_current_level.c InitPartyStatForCurrentLevel
+c-file 0x080152CC _ src/combat_fighter/restore_fighter_hp.c RestoreFighterHp
+c-file 0x08015334 _ src/combat_fighter/restore_fighter_mp.c RestoreFighterMp
 c-file 0x0801539C _ src/combat_fighter/set_monster_actor_anim.c SetMonsterActorAnim
-c-file 0x08015484 0x08015574 src/combat_fighter/set_player_actor_anim.c SetPlayerActorAnim
-thumb-func 0x08015574 UpdateFighterFlashEffect_candidate
-c-file 0x08015608 0x08015F50 src/combat_fighter/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
-thumb-func 0x08015F50 ShowItemUseResult
+c-file 0x08015484 _ src/combat_fighter/set_player_actor_anim.c SetPlayerActorAnim
+c-file 0x08015574 _ src/combat_fighter/update_monster_screen_shake.c UpdateMonsterScreenShake
+c-file 0x08015608 _ src/combat_fighter/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
+c-file 0x08015F50 _ src/combat_fighter/show_attack_result.c ShowAttackResult
 c-file 0x0801602C _ src/combat_fighter/tick_player_action_state.c TickPlayerActionState
 c-file 0x08017B5C _ src/combat_fighter/show_damage_number.c ShowDamageNumber_candidate
 c-file 0x08017C24 _ src/combat_fighter/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E44 _ src/combat_fighter/resolve_enemy_attack.c ResolveEnemyAttack
 c-file 0x08017F98 _ src/combat_fighter/apply_damage_to_enemy_fighter.c ApplyDamageToEnemyFighter
-c-file 0x08018094 0x080181AC src/combat_fighter/apply_damage_to_ally_fighter.c ApplyDamageToAllyFighter
-thumb-func 0x080181AC ShowFloatingDamageNumber_candidate
-thumb-func 0x08018294 sub_08018294
+c-file 0x08018094 _ src/combat_fighter/apply_damage_to_ally_fighter.c ApplyDamageToAllyFighter
+c-file 0x080181AC _ src/combat_fighter/show_floating_damage_number.c ShowFloatingDamageNumber
+c-file 0x08018294 _ src/combat_fighter/tick_floating_damage_number.c TickFloatingDamageNumber
 c-file 0x08018304 _ src/combat_fighter/check_battle_defeat.c CheckBattleDefeat
 c-file 0x08018460 _ src/combat_fighter/prune_fainted_and_rebuild_turn_order.c PruneFaintedAndRebuildTurnOrder_candidate
-c-file 0x080186E0 0x0801873C src/combat_fighter/check_battle_victory.c CheckBattleVictory
-thumb-func 0x0801873C ResetAllPartyLevelsTo1
-thumb-func 0x08018754 ResetPartyHpMpAndStats
+c-file 0x080186E0 _ src/combat_fighter/check_battle_victory.c CheckBattleVictory
+c-file 0x0801873C _ src/combat_fighter/reset_all_party_levels_to_1.c ResetAllPartyLevelsTo1
+c-file 0x08018754 _ src/combat_fighter/reset_party_hp_mp_and_stats.c ResetPartyHpMpAndStats
 c-file 0x08018780 _ src/combat_fighter/deserialize_party_stats.c DeserializePartyStats
-c-file 0x080187EC 0x08018844 src/combat_fighter/serialize_party_stats.c SerializePartyStats
-thumb-func 0x08018844 GetMonsterDamageMax
-thumb-func 0x08018858 GetPartyMemberXpToNextLevel
-thumb-func 0x0801886C sub_0801886C
-thumb-func 0x080188C4 sub_080188C4
-thumb-func 0x0801890C GetMonsterSpellEffectiveness
-thumb-func 0x080189C8 sub_080189C8
-thumb-func 0x080189DC sub_080189DC
-thumb-func 0x08018A10 sub_08018A10
-thumb-func 0x08018A70 sub_08018A70
-thumb-func 0x08018AA4 GetMonsterLevel
-thumb-func 0x08018AB8 sub_08018AB8
-c-file 0x08018ACC 0x08018B14 src/combat_fighter/post_action_battle_check.c PostActionBattleCheck
-thumb-func 0x08018B14 sub_08018B14
+c-file 0x080187EC _ src/combat_fighter/serialize_party_stats.c SerializePartyStats
+c-file 0x08018844 _ src/combat_fighter/get_monster_damage_max.c GetMonsterDamageMax
+c-file 0x08018858 _ src/combat_fighter/get_party_member_xp_to_next_level.c GetPartyMemberXpToNextLevel
+c-file 0x0801886C _ src/combat_fighter/get_party_member_level_progress_percent.c GetPartyMemberLevelProgressPercent
+c-file 0x080188C4 _ src/combat_fighter/get_party_member_last_level_up_xp.c GetPartyMemberLastLevelUpXp
+c-file 0x0801890C _ src/combat_fighter/get_monster_spell_effectiveness.c GetMonsterSpellEffectiveness
+c-file 0x080189C8 _ src/combat_fighter/get_monster_reward_xp.c GetMonsterRewardXp
+c-file 0x080189DC _ src/combat_fighter/compute_equipped_defense_percent.c ComputeEquippedDefensePercent
+c-file 0x08018A10 _ src/combat_fighter/compute_equipped_agility.c ComputeEquippedAgility
+c-file 0x08018A70 _ src/combat_fighter/compute_equipped_magic_defense_percent.c ComputeEquippedMagicDefensePercent
+c-file 0x08018AA4 _ src/combat_fighter/get_monster_level.c GetMonsterLevel
+c-file 0x08018AB8 _ src/combat_fighter/get_monster_reward_gold.c GetMonsterRewardGold
+c-file 0x08018ACC _ src/combat_fighter/post_action_battle_check.c PostActionBattleCheck
+c-file 0x08018B14 _ src/combat_fighter/play_fighter_hurt_sound.c PlayFighterHurtSound
 
 # Combat fx (battle effect scripts and emitters)
 c-file 0x08018B70 0x08018BE0 src/combat_fx/trigger_battle_effect.c TriggerBattleEffect

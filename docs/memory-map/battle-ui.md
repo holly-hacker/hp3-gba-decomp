@@ -230,7 +230,7 @@ genuinely two separate layers, not just two ends of one function).
 `TickPlayerActionState`'s `Actor+0x60` sub-state `2`
 (`FUN_08015f50`, `0x08015f50`): it only formats and shows the
 already-computed damage/heal number (`DAT_0300274a`) via
-`ShowBattleMessage`/`ShowFloatingDamageNumber_candidate` -- **it does not itself call
+`ShowBattleMessage`/`ShowFloatingDamageNumber` -- **it does not itself call
 `FUN_08018b70` or compute an item's effect**, so an item's actual
 gameplay effect (heal amount, stat boost, etc.) is set by something else
 entirely, not walked here. This lines up with `g_pItemTable`'s
@@ -438,11 +438,11 @@ transition in flight, and not in Dialog mode". See
   `ApplyDamageToEnemyFighter` (battle.md) means "no messages queued yet".
 
 Found by walking the live call stack (mGBA gdb backtrace) up from
-`ResolveEnemyAttack`; a sibling function, `UpdateFighterFlashEffect_candidate`
-(`0x08015574`-`0x08015607`), toggles a sprite flash/blink effect and is
-called from within this dispatcher (boundary PROVEN, semantics
-STRUCTURAL MATCH only). Deeper call-stack frames above this dispatcher
-(through `0x08001FDA`, `0x0800091A`, `0x0802C822`, `0x0802C6B6`, into
+`ResolveEnemyAttack`; a sibling function, `UpdateMonsterScreenShake`
+(`0x08015574`), called from within this dispatcher, mirrors the battle
+screen shake on the monster (and the shadow of monsters 45-47) by flipping
+it horizontally while `bScreenShakeTimer_candidate` runs. Deeper call-stack
+frames above this dispatcher (through `0x08001FDA`, `0x0800091A`, `0x0802C822`, `0x0802C6B6`, into
 `main` at `0x08029690`) are low-address, high-xref generic engine
 dispatch, not investigated further.
 

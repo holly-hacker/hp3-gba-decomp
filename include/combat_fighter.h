@@ -23,11 +23,11 @@ typedef struct MonsterTableRow {
 } MonsterTableRow;
 
 // One per-level row of Harry/Ron/Hermione's level-up stat tables, 12 bytes
-// (last 2 always zero, not a real field). LevelUpFighter_candidate indexes
-// these 0-based -- displayed Level N is row N-1; row 0 is never read back
-// (a fresh Level-1 character never "levels up" into it). bDefenseFactorPercent
-// is dead: RecomputeBaseStatsFromLevel_candidate resets it to 100 right after
-// LevelUpFighter_candidate applies it.
+// (last 2 always zero, not a real field), indexed by the saved 0-based
+// bLevel (displayed level N is row N-1). wXpDeltaForLevel is the XP from
+// that level to the next. bDefenseFactorPercent and bMagicDefensePercent are
+// dead: RecomputeBaseStatsFromLevel resets both to 100 right after
+// LevelUpPartyMember applies them.
 typedef struct CharacterLevelEntry {
     u16 wHp_max;
     u16 wMp_max;
@@ -75,30 +75,34 @@ typedef struct {
     MonsterDropSlot slot[2];
 } MonsterDropEntry;
 
-extern void ResetCharacterToLevel(u32 character, u32 level);  // sets a party member's saved level and stats from the level table
+// The three salamanders (Salamander, Amazonian Salamander, Peruvian
+// Salamander) are the monsters with a companion shadow Actor.
+#define IS_SALAMANDER(monster) ((monster) == 45 || (monster) == 46 || (monster) == 47)
+
+extern void ResetCharacterToLevel(u32 character, u32 level);
 extern Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex);
 extern Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 battleSlotIndex);
 extern Actor *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrderIndex, u32 gfxSlot);
 extern void RollMonsterSpecialEffect(s32 monsterIndex, s32 targetFighterIndex, s32 damage);
-extern void RecomputeBaseStatsFromLevel_candidate(u32 character);
-// Experience helpers, by party stats slot.
-extern s32 GetPartyMemberTotalXp(u32 slot);        // XP earned so far, 0x08015110
-extern void LevelUpPartyMember_candidate(u32 fighterType);
+extern void RecomputeBaseStatsFromLevel(u32 character);
+extern s32 GetPartyMemberTotalXp(u32 slot);
+extern void LevelUpPartyMember(u32 fighterType);
 extern void InitPartyStatForCurrentLevel(u32 index);
-extern u16 sub_080152CC(s32 x, s32 fighterIndex);
-extern u16 sub_08015334(s32 x, s32 fighterIndex);
+extern s32 RestoreFighterHp(s32 amount, s32 fighterIndex);
+extern s32 RestoreFighterMp(s32 amount, s32 fighterIndex);
 extern void SetMonsterActorAnim(Actor *actor, u8 state);  // 0x0801539C, monster gfx tables + shadow
 extern void SetPlayerActorAnim(Actor *actor, s32 state);   // 0x08015484, party fighter anim tables
-extern void UpdateFighterFlashEffect_candidate(Actor *actor);  // 0x08015574
+extern void UpdateMonsterScreenShake(Actor *actor);
 extern void TickFighterAttackAnimState_candidate(Actor *actor);  // 0x08015608
-extern void ShowItemUseResult(Actor *actor, s32 targetIndex);
+extern void ShowAttackResult(Actor *actor, s32 targetIndex);
 extern void TickPlayerActionState(Actor *actor);
 extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
 extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
 extern void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex);  // 0x08017F98
 extern void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex);
-extern void ShowFloatingDamageNumber_candidate(s32 damage, s32 code, s32 fighterIndex, s32 flag);
+extern void ShowFloatingDamageNumber(s32 damage, s32 color, s32 fighterIndex, s32 showZero);
+extern void TickFloatingDamageNumber(Actor *actor);
 extern void CheckBattleDefeat(void);
 extern void PruneFaintedAndRebuildTurnOrder_candidate(s32 arg0);
 extern void CheckBattleVictory(Actor *actor);                  // 0x080186E0
@@ -106,13 +110,32 @@ extern void ResetAllPartyLevelsTo1(void);
 extern void ResetPartyHpMpAndStats(void);
 void DeserializePartyStats(void);
 void SerializePartyStats(void);
-extern s32 GetPartyMemberXpToNextLevel(u32 slot);  // XP still needed for the next level, 0x08018858
-// The spell's effectiveness (0-100) against a monster, or -1 for a spell the monster has no entry for.
-extern s32 GetMonsterSpellEffectiveness(s32 monsterIndex, s32 spellIndex);
-extern s32 sub_080189C8(u32 rosterIndex);  // per-monster XP reward
-extern s32 sub_08018AB8(u32 rosterIndex);  // per-monster gold reward
+extern u32 GetMonsterDamageMax(u32 monster);
+extern s32 GetPartyMemberXpToNextLevel(u32 slot);  // XP still needed for the next level
+extern u32 GetPartyMemberLevelProgressPercent(u32 slot);
+extern u32 GetPartyMemberLastLevelUpXp(u32 character);
+// The Folio Bruti's spell rows, in display order (not SpellId order).
+typedef enum {
+    FolioSpellFlipendo          = 0,
+    FolioSpellVerdimillious     = 1,
+    FolioSpellIncendio          = 2,
+    FolioSpellPetrificusTotalus = 3,
+    FolioSpellWingardiumLeviosa = 4,
+    FolioSpellSpongify          = 5,
+    FolioSpellDiffindo          = 6,
+    FolioSpellGlacius           = 7,
+} FolioSpellRow;
+
+// The spell's effectiveness (0-100) against a monster, by FolioSpellRow.
+extern s32 GetMonsterSpellEffectiveness(s32 monsterIndex, s32 spell);
+extern s32 GetMonsterRewardXp(u32 monster);
+extern s32 ComputeEquippedDefensePercent(u32 character);
+extern s32 ComputeEquippedAgility(u32 character);
+extern s32 ComputeEquippedMagicDefensePercent(u32 character);
+extern u32 GetMonsterLevel(u32 monster);
+extern s32 GetMonsterRewardGold(u32 monster);
 extern void PostActionBattleCheck(void);
-extern void sub_08018B14(u16 damage, s32 fighterIndex);
+extern void PlayFighterHurtSound(u16 damage, u8 fighterType);
 
 // Data tables.
 extern const MonsterGfxRow g_pMonsterGraphicsTable[69];  // 0x0804E6B4, src/combat_fighter/monster_graphics_table.c

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "combat_dialog.h"
 #include "combat_fx.h"
+#include "combat_fighter.h"
 
 s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance)
 {
@@ -14,7 +15,7 @@ s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChan
         fighter->bStatusFlags |= Paralyzed;
         fighter->bParalysisEscapeChance = escapeChance;
         fighter->pActor->anim.bAnimFrameCounter = 0;
-        if ((u16)(fighter->pActor->wActorType - 0x31) <= 2)
+        if (IS_SALAMANDER(fighter->pActor->wActorType - 4))
             fighter->pActor->pShadowActor->anim.bAnimFrameCounter = 0;
         return 1;
     }

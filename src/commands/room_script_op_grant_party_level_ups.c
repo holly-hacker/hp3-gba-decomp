@@ -13,8 +13,8 @@ void RoomScriptOpGrantPartyLevelUps(GrantPartyLevelUpsRecord *pRecord)
 
     for (i = 0; i < pRecord->bLevelCount; i++)
     {
-        LevelUpPartyMember_candidate(0);
-        LevelUpPartyMember_candidate(1);
-        LevelUpPartyMember_candidate(2);
+        LevelUpPartyMember(0);
+        LevelUpPartyMember(1);
+        LevelUpPartyMember(2);
     }
 }

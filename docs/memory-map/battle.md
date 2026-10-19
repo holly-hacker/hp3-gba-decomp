@@ -826,7 +826,7 @@ the same routine that applies enemy-to-player attack damage after the
 target's hit animation. It has the same HP-underflow/faint check and
 animation-state write as `ApplyDamageToEnemyFighter`, but **no XP/gold
 reward payout**.
-`ShowFloatingDamageNumber_candidate`
+`ShowFloatingDamageNumber`
 (`0x080181AC`) is the floating popup: `"Miss!"` when both its damage and
 a fourth flag argument are `0`, otherwise the formatted amount.
 
@@ -899,7 +899,7 @@ Incremented/mirrored by the actor-script interpreter's opcode `0x30`
 (tracks `Actor+0x60`, also read by
 `TickFighterAttackAnimState_candidate` as an attack-outcome state value)
 and reset to zero at several attack-boundary transitions
-(`TriggerBattleEffect`, `ShowItemUseResult`, inside `ExecutePlayerAttackSequence`).
+(`TriggerBattleEffect`, `ShowAttackResult`, inside `ExecutePlayerAttackSequence`).
 Nothing reads either field's accumulated value; checked every literal
 occurrence of both constants, which is not proof no reader exists by
 another addressing path.
@@ -1188,16 +1188,15 @@ capped at 12) as the spell crit-chance scale. `ResolveEnemyAttack` never
 reads it; no monster ever becomes `ResolvePlayerAttack`'s attacker, so a
 monster's own value has no confirmed reader.
 
-**Leveling.** `LevelUpFighter_candidate` (`0x080151B0`) increments
+**Leveling.** `LevelUpPartyMember` (`0x080151B0`) increments
 `bLevel` (capped at `99`), indexes a per-character, per-level stat table
 with the new value, writes each row into the matching `BattleFighter`
 fields, full-heals HP/MP, then calls
 `ApplyEquipmentStatModifiers` (`0x08026870`) to reapply gear.
-`RecomputeBaseStatsFromLevel_candidate` (`0x080150B4`) does the same
-lookup for `bAgility`/defense without incrementing level (used when
-only reapplying equipment; resets defense/`bMagicDefensePercent` to `100`
-first). `GrantPartyLevelUps` (`0x0801D308`, PROVEN: its one caller is
-identified) runs `LevelUpFighter_candidate` for all 3 party members,
+`RecomputeBaseStatsFromLevel` (`0x080150B4`) is
+`ApplyEquipmentStatModifiers`' starting point: it resets `bAgility` to the
+current row's value and both defense percentages to `100`. `GrantPartyLevelUps` (`0x0801D308`, PROVEN: its one caller is
+identified) runs `LevelUpPartyMember` for all 3 party members,
 `N` times, where `N` is a room-script opcode operand -- see
 `src/commands/room_script_op_grant_party_level_ups.c` (opcode
 `0x57`, see [`../formats/room_scripts.md`](../formats/room_scripts.md)). A room script triggers party level-ups explicitly (e.g. a story
@@ -1234,12 +1233,12 @@ Lvl5, no equipment):
 - `wHp_max`/`wMp_max` match the row directly; displayed agility is
   `255 - bAgility`.
 - **Displayed defense and magic-defense always read `0`**
-  (`100 - 100`): `RecomputeBaseStatsFromLevel_candidate` resets both to
-  `100` immediately after `LevelUpFighter_candidate` sets them from the
+  (`100 - 100`): `RecomputeBaseStatsFromLevel` resets both to
+  `100` immediately after `LevelUpPartyMember` sets them from the
   table -- both table columns never take effect.
 - Displayed next-level XP is the *cumulative* sum of
   `wXpDeltaForLevel` across rows `0..bLevel`, not any single
-  row and not what `LevelUpFighter_candidate` writes into `wRewardXp` (a
+  row and not what `LevelUpPartyMember` writes into `wRewardXp` (a
   plain overwrite with the new row's delta alone). `GetPartyMemberTotalXp`
   (`0x08015110`) computes the cumulative total (the rows below `bLevel`
   plus the current row's delta minus the stored `wRewardXp`, which counts
