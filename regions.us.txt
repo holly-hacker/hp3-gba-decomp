@@ -2212,14 +2212,14 @@ c-file 0x08045374 _ src/video/clear_scanline_effect_staging.c ClearScanlineEffec
 
 # Vram? (OBJ tile allocator)
 c-file 0x080453B4 _ src/vram/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
-c-file 0x080453D8 0x0804542C src/vram/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
-thumb-func 0x0804542C sub_0804542C
+c-file 0x080453D8 _ src/vram/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps
+c-file 0x0804542C _ src/vram/free_all_obj_vram_tiles.c FreeAllObjVramTiles
 c-file 0x08045450 _ src/vram/alloc_obj_vram_tiles.c AllocObjVramTiles
 c-file 0x080454BC _ src/vram/load_obj_tile.c LoadObjTile
 c-file 0x080454DC _ src/vram/load_obj_tile_at.c LoadObjTileAt
 c-file 0x080454F4 _ src/vram/free_obj_vram_tile_allocation_now.c FreeObjVramTileAllocationNow
-c-file 0x08045514 0x08045534 src/vram/free_obj_vram_tile_allocation.c FreeObjVramTileAllocation
-thumb-func 0x08045534 LoadObjVramTilesAt
+c-file 0x08045514 _ src/vram/free_obj_vram_tile_allocation.c FreeObjVramTileAllocation
+c-file 0x08045534 _ src/vram/load_obj_vram_tiles_at.c LoadObjVramTilesAt
 c-file 0x0804555C _ src/vram/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
 c-file 0x08045588 _ src/vram/load_obj_tile_sheet.c LoadObjTileSheet
 c-file 0x080455E4 _ src/vram/mark_obj_tiles_in_use.c MarkObjTilesInUse

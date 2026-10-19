@@ -7,7 +7,7 @@
 // Decompresses every frame of a sprite record's tile graphics into OBJ VRAM,
 // back to back starting at tile firstTile. Each frame occupies width * height / 2
 // bytes (4bpp).
-void LoadObjTileSheet(ActorAssetRecord *record, u16 firstTile)
+void LoadObjTileSheet(const ActorAssetRecord *record, u16 firstTile)
 {
     ActorFrameData *frameData = record->pFrameData;
     u32 byteOffset = 0;

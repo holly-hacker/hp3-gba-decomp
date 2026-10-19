@@ -20,7 +20,8 @@ extern u32 FindFreeObjTileRunIwram(const u8 *pBitmap, u32 runLength, u32 bit);
 
 extern void InstallIwramFindFreeObjTileRun(void);
 extern void InitObjTileAllocBitmaps(u8 bgMode);
-extern void sub_0804542C(void);
+// Frees every OBJ tile and clears pending deferred frees.
+extern void FreeAllObjVramTiles(void);
 // Returns the first allocated tile, or 0xFFFF when none are free.
 extern u32 AllocObjVramTiles(struct ActorAssetRecord *record, u32 pixelCount, u32 is8bpp);
 // Decompresses tileGfx into OBJ VRAM at the actor's wVramTileAllocId.
@@ -35,7 +36,7 @@ extern void FreeObjVramTileAllocation(u16 allocId, u32 pixelCount, u8 is8bpp);
 extern void ApplyDeferredObjTileFrees(void);
 // Decompresses every frame of record's tile graphics into consecutive OBJ VRAM tiles starting at
 // tile firstTile.
-extern void LoadObjTileSheet(struct ActorAssetRecord *record, u16 firstTile);
+extern void LoadObjTileSheet(const struct ActorAssetRecord *record, u16 firstTile);
 // AllocObjVramTiles without the allocation: loads record's tile sheet at firstTile when record
 // is given and returns firstTile. pixelCount is unused.
 extern u16 LoadObjVramTilesAt(const struct ActorAssetRecord *record, u32 pixelCount, u8 is8bpp,

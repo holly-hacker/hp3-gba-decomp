@@ -39,7 +39,7 @@ void ExitBattle(void)
         FreeFloorEffect();
         ResetBgLayers();
         ClearPaletteRam();
-        sub_0804542C();
+        FreeAllObjVramTiles();
 
         for (slot = 0; slot < ARRAY_COUNT(g_apFighterActors_candidate); slot++)
             g_apFighterActors_candidate[slot] = NULL;
@@ -121,7 +121,7 @@ void ExitBattle(void)
         FreeFloorEffect();
         ResetBgLayers();
         ClearPaletteRam();
-        sub_0804542C();
+        FreeAllObjVramTiles();
 
         for (slot = 0; slot < ARRAY_COUNT(g_apFighterActors_candidate); slot++)
             g_apFighterActors_candidate[slot] = NULL;
