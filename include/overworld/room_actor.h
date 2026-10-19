@@ -24,18 +24,18 @@ typedef struct RoomActorWordState {
 
 #define ROOM_ACTOR_WORD_STATE(pActor) ((RoomActorWordState *)&(pActor)->scriptState)
 
-// Types 2, 4 and 7 take their runtime actor type from the first word of the record.
-typedef struct RoomActorRecordUnk2 {
+// Types 2 and 13 (doors); see docs/formats/rooms.md.
+typedef struct RoomActorDoorRecord {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
-    u8 bHalfWidth;   // 0x08, collision box extents
-    u8 bHalfHeight;  // 0x09
-    u8 bA;           // 0x0A
-    u8 bB;           // 0x0B
-    u8 bC;           // 0x0C
-    u8 bD;           // 0x0D
-} RoomActorRecordUnk2;
+    u8 bHalfWidth;        // 0x08, collision box extents
+    u8 bHalfHeight;       // 0x09
+    u8 bExitParam;        // 0x0A, the destination's entry id
+    u8 bDestinationRoom;  // 0x0B
+    u8 bChain;            // 0x0C, runs instead of leaving when nonzero
+    u8 bRequireAPress;    // 0x0D
+} RoomActorDoorRecord;
 
 // Shared by types 4 and 7; differ only in where the fields sit in the record.
 typedef struct RoomActorRecordUnk4 {
@@ -61,16 +61,6 @@ typedef struct RoomActorRecordUnk7 {
     u8 bKind;        // 0x0E
     u8 bArgF;        // 0x0F
 } RoomActorRecordUnk7;
-
-// Actor bytes 0x60-0x70 as written by the type 2, 4 and 7 constructors.
-typedef struct RoomActorBoxState {
-    u16 w60;
-    u8 ab62[2];
-} RoomActorBoxState;
-
-#define ROOM_ACTOR_BOX_STATE(pActor) ((RoomActorBoxState *)&(pActor)->scriptState)
-
-extern void sub_0800CBF0(Actor *pSelf, Actor *pOther);
 
 typedef struct RoomActorRecordUnk1 {
     u32 dwActorType;

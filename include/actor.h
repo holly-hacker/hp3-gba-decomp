@@ -242,6 +242,7 @@ typedef struct ActorAnimState {
 
 typedef union __attribute__((packed)) ActorScriptState {
     u16 wScriptPc;
+    u16 wDoorDestinationRoom;  // room actor types 2 and 13
     struct __attribute__((packed)) {
         u8 bAttackOutcomeState;
         u8 bScriptPageHigh_candidate;
@@ -312,7 +313,8 @@ typedef struct Actor {
     u8 pad_17[0x01];        // -> 0x18
     u8 bRespawnRow;         // 0x18, RespawnGroupAndRunChain arguments for action
     u8 bChainRow;           // 0x19   state 0x14 and trigger actors
-    u8 bUnk1A;              // 0x1A
+    u8 bPauseRange;         // 0x1A, pixels; HandlePausingActorTouch pauses the actor
+                             // when the player comes this close
     u8 bResumeActionState;  // 0x1B, action state to return to after a state 6 pause
     u16 wPauseDuration;     // 0x1C, ticks a state 6 pause lasts
     u16 wPauseTimer;        // 0x1E, counted down in action state 6
@@ -387,6 +389,12 @@ typedef struct Actor {
             s32 nCurve;             // 0x68, 100000 * height / width^2 of the parabola
             u16 wApexX;             // 0x6C, pixels
         } arc;                      // action state 0x10; see also wArcEndX
+        struct __attribute__((packed)) {
+            u8 abExitParams[2];     // 0x62, copied to g_abRoomScriptExitParams_candidate
+            u8 pad_64;
+            u8 bRequireAPress;      // 0x65
+            u8 bChain;              // 0x66, runs instead of leaving when nonzero
+        } door;                     // room actor types 2 and 13; see scriptState.wDoorDestinationRoom
         ActorEffectState effect;
         ActorChestState chest;
     } modeState;

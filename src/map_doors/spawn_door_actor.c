@@ -2,12 +2,13 @@
 #include "area.h"
 #include "overworld/room_actor.h"
 #include "map_doors.h"
+#include "collision.h"
 
 // Room actor constructor for tile actorType 2, a door to another room.
 // See docs/formats/rooms.md.
 Actor *SpawnDoorActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk2 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
+    RoomActorDoorRecord *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(pRecord->dwActorType);
     u8 *pDst;
     u8 i;
@@ -15,20 +16,20 @@ Actor *SpawnDoorActor(u8 bColumn, u8 bRow)
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pActor->dwFlags = 0x2004;
     SetActorActionState(pActor, 0);
-    ROOM_ACTOR_BOX_STATE(pActor)->w60 = pRecord->bB;
+    pActor->scriptState.wDoorDestinationRoom = pRecord->bDestinationRoom;
 
-    for (i = 0, pDst = ROOM_ACTOR_BOX_STATE(pActor)->ab62; i < 2; i++)
-        pDst[i] = pRecord->bA;
+    for (i = 0, pDst = pActor->modeState.door.abExitParams; i < 2; i++)
+        pDst[i] = pRecord->bExitParam;
 
-    pActor->modeState.actor.bFollowResumeDistance = pRecord->bD;
-    pActor->modeState.actor.bRoomScriptArg66_candidate = pRecord->bC;
+    pActor->modeState.door.bRequireAPress = pRecord->bRequireAPress;
+    pActor->modeState.door.bChain = pRecord->bChain;
     pActor->aCollisionBoxes[0].offsets.edges.bTop = -pRecord->bHalfHeight;
     pActor->aCollisionBoxes[0].offsets.edges.bBottom = pRecord->bHalfHeight;
     pActor->aCollisionBoxes[0].offsets.edges.bLeft = -pRecord->bHalfWidth;
     pActor->aCollisionBoxes[0].offsets.edges.bRight = pRecord->bHalfWidth;
     pActor->aCollisionBoxes[0].state.bState = 1;
     pActor->bCollisionBoxCount = 1;
-    pActor->apfnCollisionCallback[0] = sub_0800CBF0;
+    pActor->apfnCollisionCallback[0] = HandleDoorTouch;
     pActor->pfnTick = sub_0802BC74;
     return pActor;
 }

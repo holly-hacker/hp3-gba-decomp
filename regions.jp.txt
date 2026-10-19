@@ -388,10 +388,10 @@ c-file 0x0800CAF8 0x0800CB04 src/clock/copy_playtime.c CopyPlaytime
 thumb-func 0x0800CB04 sub_0800CB04
 thumb-func 0x0800CB1C sub_0800CB1C
 thumb-func 0x0800CB9C sub_0800CB9C
-thumb-func 0x0800CBF0 sub_0800CBF0
-thumb-func 0x0800CCA8 sub_0800CCA8
-thumb-func 0x0800CF74 sub_0800CF74
-thumb-func 0x0800CFDC sub_0800CFDC
+c-file 0x0800CBF0 _ src/collision/handle_door_touch.c HandleDoorTouch
+c-file 0x0800CCA8 _ src/collision/block_actor_with_terrain_box.c BlockActorWithTerrainBox
+c-file 0x0800CF74 _ src/collision/handle_pausing_actor_touch.c HandlePausingActorTouch
+c-file 0x0800CFDC _ src/collision/handle_contact_trigger_touch.c HandleContactTriggerTouch
 c-file 0x0800D008 0x0800D0A0 src/color/apply_gamma_remap_table.c ApplyGammaRemapTable
 thumb-func 0x0800D0A0 SetupColorCycles
 c-file 0x0800D120 _ src/color/apply_gamma_to_colors.c ApplyGammaToColors
