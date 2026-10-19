@@ -81,8 +81,8 @@ typedef enum {
 extern void PushGameMode_3(GameMode mode, s32 arg1, s32 arg2, s32 arg3);
 extern void PushGameMode_2(GameMode mode, s32 arg1, s32 arg2);
 extern void PushGameMode(GameMode mode);
-extern u32 GetCurrentGameMode_candidate(void);  // g_GameModeStackContext.dwCurrentGameMode
-extern u32 GetPendingGameMode_candidate(void);
+extern u32 GetCurrentGameMode(void);  // g_GameModeStackContext.dwCurrentGameMode
+extern u32 GetPendingGameMode(void);  // g_dwPendingGameMode.dwCurrentGameMode without the 0x80 push bit
 
 // The three arg words (+4/+8/+0xC) are generic per-mode parameters, set by
 // PushGameMode_2/PushGameMode_3 and read by the mode's own init -- e.g.
@@ -156,16 +156,6 @@ extern u32 g_dwTickCount;
 // subsystems; called once/frame from TickGameModeStack after
 // DispatchGameModeUpdate. See docs/memory-map/frame_systems.md.
 extern void TickFrameSystems(void);
-
-// Actors filed by slot: list menu row icons (SpawnMenuIconActor) and actors
-// registered by slot (RegisterMenuIconActor).
-extern struct Actor *g_apMenuIconActors[8];  // 0x03003F68
-extern struct Actor *SpawnMenuIconActor(u32 slot, u32 arg1);  // allocs a type 0x13 actor and files it under slot
-// Stores the actor in g_apMenuIconActors[slot] and its slot at Actor+0x0A, and
-// installs sub_0802C960 as its Actor+0x9C callback.
-extern void RegisterMenuIconActor(u32 slot, struct Actor *actor);
-// Clears the actor's g_apMenuIconActors slot if it still holds this actor.
-extern void sub_0802C960(struct Actor *actor);
 
 // Reserved GameMode index 0's dispatch entry (init/update/exit all point here).
 extern void HandleGameModeNoneNoOp(void);

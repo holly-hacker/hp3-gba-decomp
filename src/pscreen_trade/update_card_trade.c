@@ -2,6 +2,7 @@
 #include "background.h"
 #include "sound.h"
 #include "modes.h"
+#include "menu_icon.h"
 #include "save.h"
 #include "input.h"
 #include "actor.h"

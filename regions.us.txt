@@ -1359,9 +1359,9 @@ c-file 0x0802C67C _ src/mem/absorb_next_free_block.c AbsorbNextFreeBlock
 
 # Modes (possibly sorted as "Menus"), see docs/memory-map/game_modes.md
 c-file 0x0802C6B4 _ src/modes/tick_game_mode_stack.c TickGameModeStack
-c-file 0x0802C750 0x0802C7A8 src/modes/init_game_mode_stack.c InitGameModeStack
-thumb-func 0x0802C7A8 GetCurrentGameMode_candidate
-thumb-func 0x0802C7B4 GetPendingGameMode_candidate
+c-file 0x0802C750 _ src/modes/init_game_mode_stack.c InitGameModeStack
+c-file 0x0802C7A8 _ src/modes/get_current_game_mode.c GetCurrentGameMode
+c-file 0x0802C7B4 _ src/modes/get_pending_game_mode.c GetPendingGameMode
 c-file 0x0802C7C4 _ src/modes/push_game_mode.c PushGameMode
 c-file 0x0802C7E0 _ src/modes/push_game_mode_2.c PushGameMode_2
 c-file 0x0802C800 _ src/modes/push_game_mode_3.c PushGameMode_3
@@ -1369,11 +1369,11 @@ c-file 0x0802C820 _ src/modes/tick_frame_systems.c TickFrameSystems
 c-file 0x0802C860 _ src/modes/is_game_mode_transition_pending.c IsGameModeTransitionPending
 c-file 0x0802C87C _ src/modes/dispatch_game_mode_init.c DispatchGameModeInit
 c-file 0x0802C8A8 _ src/modes/dispatch_game_mode_update.c DispatchGameModeUpdate
-c-file 0x0802C8D0 0x0802C90C src/modes/dispatch_game_mode_destroy.c DispatchGameModeDestroy
-thumb-func 0x0802C90C SpawnMenuIconActor
-thumb-func 0x0802C944 RegisterMenuIconActor
-thumb-func 0x0802C960 sub_0802C960
-c-file 0x0802C984 _ src/modes/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
+c-file 0x0802C8D0 _ src/modes/dispatch_game_mode_destroy.c DispatchGameModeDestroy
+c-file 0x0802C90C _ src/menu_icon/spawn_menu_icon_actor.c SpawnMenuIconActor
+c-file 0x0802C944 _ src/menu_icon/register_menu_icon_actor.c RegisterMenuIconActor
+c-file 0x0802C960 _ src/menu_icon/unregister_menu_icon_actor.c UnregisterMenuIconActor
+c-file 0x0802C984 _ src/menu_icon/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 
 # Minigame/Difficulty? (minigame difficulty select)
 c-file 0x0802C988 0x0802CB80 src/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick

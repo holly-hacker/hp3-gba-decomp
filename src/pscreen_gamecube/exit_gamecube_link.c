@@ -11,7 +11,7 @@ void ExitGameCubeLink(void)
 {
     TeardownJoybusHardware();
 
-    if (GetPendingGameMode_candidate() == OwlCareMinigame)
+    if (GetPendingGameMode() == OwlCareMinigame)
         PlayScreenTransitionOutByIndex(0x3F, 2);
 
     ReleaseMenuCursor(g_pMenuCursorActor);

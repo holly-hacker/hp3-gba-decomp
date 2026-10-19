@@ -8,7 +8,7 @@
 #include "palette.h"
 #include "combat_end.h"
 #include "hero.h"
-#include "modes.h"
+#include "menu_icon.h"
 #include "combat.h"
 
 #define FIGHTER(pos) g_aPartyMasterStats[g_abCombatResultPartySlots[pos]]

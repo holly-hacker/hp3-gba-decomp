@@ -1,5 +1,5 @@
 #include "types.h"
-#include "modes.h"
+#include "menu_icon.h"
 #include "actor.h"
 #include "palette.h"
 #include "pscreen_gamecube.h"

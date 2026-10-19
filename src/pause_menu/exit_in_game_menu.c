@@ -10,7 +10,7 @@ void ExitInGameMenu(void)
 {
     g_ListMenuState.bInGameMenuCursor = g_GameModeStackContext.dwModeScratchB;
 
-    if (GetPendingGameMode_candidate() == Overworld)
+    if (GetPendingGameMode() == Overworld)
     {
         SetScreenDarkenParams_candidate(0, 8);
         PlayScreenTransitionOutByIndex(0x3F, 2);

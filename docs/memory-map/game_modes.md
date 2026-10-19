@@ -83,20 +83,18 @@ zeroes the current mode, seeds pending/previous from it, then pushes
 (`flLanguageConfigured`, see `docs/formats/save.md`) -- language already
 chosen skips straight to `Startup`.
 
-Two small, previously-unlabeled functions sit between `InitGameModeStack`
-and `PushGameMode` (found while bounding `InitGameModeStack`'s extent, not
-yet matched): `GetCurrentGameMode_candidate` (`0x0802C7A8`, returns
-`g_GameModeStackContext.dwCurrentGameMode`; no confirmed callers -- not
-reached by any `bl` in the ROM) and `GetPendingGameMode_candidate`
-(`0x0802C7B4`, returns `g_dwPendingGameMode.dwCurrentGameMode & ~0x80`;
-called by `ExitCardTrade`/`ExitGameCubeLink`/`ExitInGameMenu`).
+`GetCurrentGameMode` (`src/modes/get_current_game_mode.c`) returns
+`g_GameModeStackContext.dwCurrentGameMode`; no `bl` in the ROM reaches it.
+`GetPendingGameMode` (`src/modes/get_pending_game_mode.c`) returns
+`g_dwPendingGameMode.dwCurrentGameMode & ~0x80`; `ExitCardTrade`,
+`ExitGameCubeLink` and `ExitInGameMenu` call it.
 
 ## Dispatch table
 
 `g_pGameModeDispatchTable` (US `0x08065CBC`, JP `0x08065C48`, extracted to
 `src/modes/game_mode_dispatch_table.c`), 72 entries (`GameMode` 0-0x47;
 index 0 unused/reserved, all three fields point at `HandleGameModeNoneNoOp`,
-matched in `src/modes/handle_game_mode_none_noop.c` -- a no-op,
+matched in `src/menu_icon/handle_game_mode_none_noop.c` -- a no-op,
 single `bx lr`).
 Each entry is 3 function pointers, `pInitFn`/`pUpdateFn`/`pDestroyFn`:
 `pInitFn` runs once right after the mode variable updates to the new mode,

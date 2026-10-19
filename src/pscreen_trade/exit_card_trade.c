@@ -14,6 +14,6 @@ void ExitCardTrade(void)
     FreeAllParticles();
     FreeAllActors(&g_ActiveActorListState.pHead);
 
-    if (GetPendingGameMode_candidate() == Connectivity)
+    if (GetPendingGameMode() == Connectivity)
         CloseSerialSession();
 }

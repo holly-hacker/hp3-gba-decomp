@@ -84,6 +84,7 @@
     {"us": "0x0802BDEC", "jp": "0x0802BE48", "name": "Math"},
     {"us": "0x0802C174", "jp": "0x0802C1D0", "name": "Memory"},
     {"us": "0x0802C6B4", "jp": "0x0802C710", "name": "Modes"},
+    {"us": "0x0802C90C", "jp": "0x0802C950", "name": "Menu icons"},
     {"us": "0x0802C988", "jp": "0x0802C9CC", "name": "Minigame difficulty select"},
     {"us": "0x0802CF38", "jp": "0x0802CF7C", "name": "Minigame menu"},
     {"us": "0x0802D3BC", "jp": "0x0802D400", "name": "Mode7"},
