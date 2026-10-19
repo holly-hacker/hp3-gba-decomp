@@ -380,14 +380,14 @@ c-file 0x0800C590 _ src/choose_party_member/exit_choose_character.c ExitChooseCh
 c-file 0x0800C618 _ src/choose_party_member/begin_choose_character_panel_scanline.c BeginChooseCharacterPanelScanline
 c-file 0x0800C674 _ src/choose_party_member/end_choose_character_panel_scanline.c EndChooseCharacterPanelScanline
 c-file 0x0800C6D0 _ src/choose_party_member/get_choose_character_panel_bg_row.c GetChooseCharacterPanelBgRow
-c-file 0x0800C6EC 0x0800C844 src/clock/add_playtime_delta.c AddPlaytimeDelta
-thumb-func 0x0800C844 sub_0800C844
+c-file 0x0800C6EC _ src/clock/add_playtime_delta.c AddPlaytimeDelta
+c-file 0x0800C844 _ src/clock/format_playtime_text.c FormatPlaytimeText
 c-file 0x0800CA70 _ src/clock/compare_playtime_field.c ComparePlaytimeField
 c-file 0x0800CAE8 _ src/clock/initialize_playtime_struct.c InitializePlaytimeStruct
-c-file 0x0800CAF8 0x0800CB04 src/clock/copy_playtime.c CopyPlaytime
-thumb-func 0x0800CB04 sub_0800CB04
-thumb-func 0x0800CB1C sub_0800CB1C
-thumb-func 0x0800CB9C sub_0800CB9C
+c-file 0x0800CAF8 _ src/clock/copy_playtime.c CopyPlaytime
+c-file 0x0800CB04 _ src/clock/sum_playtime.c SumPlaytime
+c-file 0x0800CB1C _ src/clock/playtime_fields_equal.c PlaytimeFieldsEqual
+c-file 0x0800CB9C _ src/clock/is_playtime_in_range.c IsPlaytimeInRange
 c-file 0x0800CBF0 _ src/collision/handle_door_touch.c HandleDoorTouch
 c-file 0x0800CCA8 _ src/collision/block_actor_with_terrain_box.c BlockActorWithTerrainBox
 c-file 0x0800CF74 _ src/collision/handle_pausing_actor_touch.c HandlePausingActorTouch
