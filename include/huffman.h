@@ -42,6 +42,10 @@ typedef struct HuffTreeNode {
 } HuffTreeNode;
 extern void DecompressHuffTree(const HuffTreeNode *pTree, void *dst, s32 size);
 
+// Unreferenced per-tile tree-Huffman pair; bit offsets count from ROM_BASE.
+void DecompressHuffTreeTile(u32 bitOffset, u16 *pDest, s32 size, const HuffTreeNode *pTree);
+void BuildHuffTreeTileOffsets(const u16 *pSrc, const HuffTreeNode *pTree, u32 *pDest, u32 count);
+
 // Copies DecompressBgTile to IWRAM; see docs/formats/graphics.md
 // ("On-demand per-tile BG streaming").
 void InstallBgTileCodec(void);

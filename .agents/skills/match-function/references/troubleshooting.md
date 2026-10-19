@@ -366,6 +366,12 @@ A giv that the ROM strength-reduces but the build recomputes shows in `.loop` as
 worth while, A vs B` (B is insn_count): `(s16)(pActor->pos.x >> 16)` and `pActor->pos.x >> 16`
 both become `ldrsh`, but the cast's extra insns pushed a loop from 120 to 131
 (UpdateDementorMinigameDementors, US `0x0801E8CC`).
+`local-alloc.c:update_equiv_regs` also doubles `REG_LIVE_LENGTH` for each constant set seen before
+a non-constant one (`pending = 0x100` at init and reset, then `pending = node`: x4; compare `.flow`
+with `.lreg`). Lengthen the competitor instead: a `u16` temporary for a halfword store adds HImode
+insns (DecompressHuffTreeTile, US `0x08024F80`). `gcse.c` PRE's loop-top temporaries for
+`p++`/`count--` rank the same way, so the decrement's source position picks which one takes the
+register reload later spills (BuildHuffTreeTileOffsets, US `0x08025024`).
 
 ## Candidate acceptance and cleanup
 

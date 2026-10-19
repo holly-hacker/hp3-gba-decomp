@@ -1063,9 +1063,9 @@ thumb-func 0x08024D9C sub_08024D9C
 # Huffman table? (dialog text decompression and BG tile codec)
 c-file 0x08024DC8 _ src/huffman/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024EB8 _ src/huffman/init_dialog_text_table.c InitDialogTextTable
-c-file 0x08024EDC 0x08024F80 src/huffman/decompress_huff_tree.c DecompressHuffTree
-thumb-func 0x08024F80 sub_08024F80
-thumb-func 0x08025024 sub_08025024
+c-file 0x08024EDC _ src/huffman/decompress_huff_tree.c DecompressHuffTree
+c-file 0x08024F80 _ src/huffman/decompress_huff_tree_tile.c DecompressHuffTreeTile
+c-file 0x08025024 _ src/huffman/build_huff_tree_tile_offsets.c BuildHuffTreeTileOffsets
 c-file 0x080250B8 _ src/huffman/install_bg_tile_codec.c InstallBgTileCodec
 
 # Initials? (high score name entry mode)
