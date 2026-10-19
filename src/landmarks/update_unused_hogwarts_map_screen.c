@@ -13,13 +13,13 @@ void UpdateUnusedHogwartsMapScreen(void)
     if (StepCursorUpDown(&g_GameModeStackContext.dwCurrentGameModeArg2, 0,
                          UNUSED_HOGWARTS_MAP_ENTRY_COUNT - 1, 1, 0))
     {
-        sub_080280CC();
+        SlideInUnusedHogwartsMapBackground();
         SetActorMoveTargetWithDuration(g_apUnusedHogwartsMapActors[prevEntry], 0xDA,
                                                   (s16)(g_apUnusedHogwartsMapActors[prevEntry]->pos.y >> 16), 3);
         SetActorMoveTargetWithDuration(
             g_apUnusedHogwartsMapActors[g_GameModeStackContext.dwCurrentGameModeArg2], 0xD2,
             (s16)(g_apUnusedHogwartsMapActors[g_GameModeStackContext.dwCurrentGameModeArg2]->pos.y >> 16), 3);
-        sub_08028240();
+        DrawUnusedHogwartsMapSelection();
     }
     else if (g_wKeysPressed & KeyB)
     {

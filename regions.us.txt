@@ -1204,12 +1204,12 @@ c-file 0x08027EF0 _ src/items_list/spawn_item_list_scroll_arrows.c SpawnItemList
 
 # Hogwarts map (original name not known, maybe "landmarks"?)
 c-file 0x08027F40 _ src/landmarks/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
-c-file 0x0802804C 0x080280CC src/landmarks/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
-thumb-func 0x080280CC sub_080280CC
-thumb-func 0x080281AC sub_080281AC
-c-file 0x08028210 0x08028240 src/landmarks/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
-thumb-func 0x08028240 sub_08028240
-thumb-func 0x080282C4 sub_080282C4
+c-file 0x0802804C _ src/landmarks/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
+c-file 0x080280CC _ src/landmarks/slide_in_unused_hogwarts_map_background.c SlideInUnusedHogwartsMapBackground
+c-file 0x080281AC _ src/landmarks/spawn_unused_hogwarts_map_entry_actors.c SpawnUnusedHogwartsMapEntryActors
+c-file 0x08028210 _ src/landmarks/exit_unused_hogwarts_map_screen.c ExitUnusedHogwartsMapScreen
+c-file 0x08028240 _ src/landmarks/draw_unused_hogwarts_map_selection.c DrawUnusedHogwartsMapSelection
+c-file 0x080282C4 _ src/landmarks/show_first_unused_hogwarts_map_background.c ShowFirstUnusedHogwartsMapBackground
 
 # Language (language select mode)
 c-file 0x08028314 _ src/language_select/initialize_language_select.c InitializeLanguageSelect

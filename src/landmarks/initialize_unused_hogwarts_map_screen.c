@@ -37,11 +37,11 @@ void InitializeUnusedHogwartsMapScreen(void)
     ClearBgTilemap(2);
     ClearBgTilemap(3);
 
-    sub_080281AC();
+    SpawnUnusedHogwartsMapEntryActors();
     g_GameModeStackContext.dwModeState = 0;
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;
-    sub_08028240();
-    sub_080282C4();
+    DrawUnusedHogwartsMapSelection();
+    ShowFirstUnusedHogwartsMapBackground();
     Mt19937AutoSeed();
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

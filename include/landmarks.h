@@ -25,7 +25,7 @@ extern void InitializeUnusedHogwartsMapScreen(void);
 extern void UpdateUnusedHogwartsMapScreen(void);
 extern void ExitUnusedHogwartsMapScreen(void);
 
-extern void sub_080280CC(void);
-extern void sub_080281AC(void);
-extern void sub_08028240(void);
-extern void sub_080282C4(void);
+extern void SlideInUnusedHogwartsMapBackground(void);
+extern void SpawnUnusedHogwartsMapEntryActors(void);
+extern void DrawUnusedHogwartsMapSelection(void);
+extern void ShowFirstUnusedHogwartsMapBackground(void);
