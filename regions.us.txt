@@ -2194,20 +2194,20 @@ c-file 0x08044C00 0x08044D24 src/trigger_actor/spawn_switch_actor.c SpawnSwitchA
 thumb-func 0x08044D24 sub_08044D24
 thumb-func 0x08044F54 sub_08044F54
 
-# Video? (scanline effects), see docs/memory-map/scanline_effects.md
+# Video (scanline effects), see docs/memory-map/scanline_effects.md
 c-file 0x08045094 _ src/video/init_scanline_effects.c InitScanlineEffects
-c-file 0x080450D4 0x08045118 src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
-thumb-func 0x08045118 sub_08045118
-thumb-func 0x080451A8 sub_080451A8
-thumb-func 0x08045210 QueueScanlineEffectEntry
-thumb-func 0x08045260 CommitScanlineEffects
-c-file 0x0804528C 0x080452A8 src/video/start_scanline_effects.c StartScanlineEffects
-thumb-func 0x080452A8 StopScanlineEffects
-thumb-func 0x080452D4 ClearScanlineEffects
-thumb-func 0x080452EC IsScanlineEffectQueueIdle
-thumb-func 0x08045304 GetScanlineEffectLine
-c-file 0x08045314 0x08045318 src/video/scanline_effect_nop.c ScanlineEffectNop
-thumb-func 0x08045318 ScanlineEffectVCountCallback
+c-file 0x080450D4 _ src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
+c-file 0x08045118 _ src/video/insert_scanline_effect_entry.c InsertScanlineEffectEntry
+c-file 0x080451A8 _ src/video/remove_scanline_effect_entry.c RemoveScanlineEffectEntry
+c-file 0x08045210 _ src/video/queue_scanline_effect_entry.c QueueScanlineEffectEntry
+c-file 0x08045260 _ src/video/commit_scanline_effects.c CommitScanlineEffects
+c-file 0x0804528C _ src/video/start_scanline_effects.c StartScanlineEffects
+c-file 0x080452A8 _ src/video/stop_scanline_effects.c StopScanlineEffects
+c-file 0x080452D4 _ src/video/clear_scanline_effects.c ClearScanlineEffects
+c-file 0x080452EC _ src/video/is_scanline_effect_queue_idle.c IsScanlineEffectQueueIdle
+c-file 0x08045304 _ src/video/get_scanline_effect_line.c GetScanlineEffectLine
+c-file 0x08045314 _ src/video/scanline_effect_nop.c ScanlineEffectNop
+c-file 0x08045318 _ src/video/scanline_effect_vcount_callback.c ScanlineEffectVCountCallback
 c-file 0x08045374 _ src/video/clear_scanline_effect_staging.c ClearScanlineEffectStaging
 
 # Vram? (OBJ tile allocator)

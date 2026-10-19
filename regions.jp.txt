@@ -1929,18 +1929,18 @@ c-file 0x08044B2C 0x08044C50 src/trigger_actor/spawn_switch_actor.c SpawnSwitchA
 thumb-func 0x08044C50 sub_08044D24
 thumb-func 0x08044E80 sub_08044F54
 c-file 0x08044FC0 _ src/video/init_scanline_effects.c InitScanlineEffects
-c-file 0x08045000 0x08045044 src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
-thumb-func 0x08045044 sub_08045118
-thumb-func 0x080450D4 sub_080451A8
-thumb-func 0x0804513C QueueScanlineEffectEntry
-thumb-func 0x0804518C CommitScanlineEffects
-c-file 0x080451B8 0x080451D4 src/video/start_scanline_effects.c StartScanlineEffects
-thumb-func 0x080451D4 StopScanlineEffects
-thumb-func 0x08045200 ClearScanlineEffects
-thumb-func 0x08045218 IsScanlineEffectQueueIdle
-thumb-func 0x08045230 GetScanlineEffectLine
-c-file 0x08045240 0x08045244 src/video/scanline_effect_nop.c ScanlineEffectNop
-thumb-func 0x08045244 ScanlineEffectVCountCallback
+c-file 0x08045000 _ src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
+c-file 0x08045044 _ src/video/insert_scanline_effect_entry.c InsertScanlineEffectEntry
+c-file 0x080450D4 _ src/video/remove_scanline_effect_entry.c RemoveScanlineEffectEntry
+c-file 0x0804513C _ src/video/queue_scanline_effect_entry.c QueueScanlineEffectEntry
+c-file 0x0804518C _ src/video/commit_scanline_effects.c CommitScanlineEffects
+c-file 0x080451B8 _ src/video/start_scanline_effects.c StartScanlineEffects
+c-file 0x080451D4 _ src/video/stop_scanline_effects.c StopScanlineEffects
+c-file 0x08045200 _ src/video/clear_scanline_effects.c ClearScanlineEffects
+c-file 0x08045218 _ src/video/is_scanline_effect_queue_idle.c IsScanlineEffectQueueIdle
+c-file 0x08045230 _ src/video/get_scanline_effect_line.c GetScanlineEffectLine
+c-file 0x08045240 _ src/video/scanline_effect_nop.c ScanlineEffectNop
+c-file 0x08045244 _ src/video/scanline_effect_vcount_callback.c ScanlineEffectVCountCallback
 c-file 0x080452A0 _ src/video/clear_scanline_effect_staging.c ClearScanlineEffectStaging
 c-file 0x080452E0 _ src/vram/install_iwram_find_free_obj_tile_run.c InstallIwramFindFreeObjTileRun
 c-file 0x08045304 0x08045358 src/vram/init_obj_tile_alloc_bitmaps.c InitObjTileAllocBitmaps

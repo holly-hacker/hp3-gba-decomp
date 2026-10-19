@@ -2,9 +2,8 @@
 
 See [`../README.md`](../README.md) for the confidence-key legend
 (PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout. Addresses are US;
-JP state is at `0x03005E70`. `InitScanlineEffects`, `QueueScanlineEffectTable`,
-`StartScanlineEffects`, `ClearScanlineEffectStaging`, `ScanlineEffectNop` and the
-default table are matched for both versions in `src/video/`.
+JP state is at `0x03005E70`. Every function below and the default table are
+matched for both versions in `src/video/`.
 
 ## Mechanism, PROVEN
 
@@ -39,7 +38,9 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 |---|---|---|
 | `InitScanlineEffects` | `0x08045094` | Called once from `AgbMain`: clears the index, `ClearScanlineEffectStaging`, queues the default table (`0x0806C2F0`, one entry with line 0 and `ScanlineEffectNop`), copies staging to live, installs the VCount callback, `StartScanlineEffects`. |
 | `QueueScanlineEffectTable` | `0x080450D4` | `(entries, count)`: waits for the pending flag to clear (one vblank per spin), clears staging, copies `count * 0x10` bytes into it, sets the pending flag. |
-| `QueueScanlineEffectEntry` | `0x08045210` | `(index, line, param, callback)`: waits for idle, then overwrites staging entry `index`'s line, `+2` word and callback and sets the pending flag. Its one caller (`UpdateDialogBox`) passes callback `BeginDialogBoxPanelScanline` (`0x0801FC58`). |
+| `InsertScanlineEffectEntry` | `0x08045118` | Unused. `(line, param, callback)`: waits for idle, shifts staging entries from the first with a line at or after `line` up by one (dropping the last), writes the new entry there and sets the pending flag. |
+| `RemoveScanlineEffectEntry` | `0x080451A8` | Unused. `(line)`: waits for idle, finds the staging entry on `line` (no bound check), shifts the later entries down over it (reading one entry past the table) and sets the pending flag. |
+| `QueueScanlineEffectEntry` | `0x08045210` | `(index, line, param, callback)`: waits for idle, then overwrites staging entry `index`'s line, `+2` halfword and callback and sets the pending flag. Its one caller (`UpdateDialogBox`) passes callback `BeginDialogBoxPanelScanline` (`0x0801FC58`). |
 | `CommitScanlineEffects` | `0x08045260` | Called from `HandleVBlankInterrupt`: if the pending flag is set, copies staging over the live table and clears the flag and the index. |
 | `StartScanlineEffects` | `0x0804528C` | Resets the index and enables the VCount interrupt at entry 0's line (`EnableVCountInterrupt`, `0x080261F8`). |
 | `StopScanlineEffects` | `0x080452A8` | Clears IE bit 2, acknowledges IF bit 2, clears `DISPSTAT` bit 5. |

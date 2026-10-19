@@ -16,7 +16,7 @@ typedef struct ScanlineEffectEntry {
 #define SCANLINE_EFFECT_TABLE_SIZE 19
 
 typedef struct ScanlineEffectState {
-    u32 dwPending;                // 0x000, 1 = aStaging waits to be committed
+    volatile u32 dwPending;       // 0x000, 1 = aStaging waits to be committed; cleared at vblank
     volatile u32 dwActiveIndex;   // 0x004, advanced by ScanlineEffectVCountCallback
     ScanlineEffectEntry aEntries[SCANLINE_EFFECT_TABLE_SIZE];  // 0x008, live table
     ScanlineEffectEntry aStaging[SCANLINE_EFFECT_TABLE_SIZE];  // 0x138
@@ -31,8 +31,11 @@ extern void ScanlineEffectVCountCallback(void);
 extern void InitScanlineEffects(void);
 extern void ClearScanlineEffectStaging(void);
 extern void QueueScanlineEffectTable(const void *pEntries, u32 count);
+extern void InsertScanlineEffectEntry(u16 line, u16 param,
+                                      void (*pfnCallback)(u32 *pPayload0, u32 *pPayload1));
+extern void RemoveScanlineEffectEntry(u16 line);
 // Overwrites staging entry `index`'s line, parameter word and callback.
-extern void QueueScanlineEffectEntry(u32 index, u16 line, u32 param,
+extern void QueueScanlineEffectEntry(u32 index, u16 line, u16 param,
                                      void (*pfnCallback)(u32 *pPayload0, u32 *pPayload1));
 // Run at vblank: copies the staging table over the live one if it is pending.
 extern void CommitScanlineEffects(void);
