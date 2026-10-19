@@ -843,9 +843,9 @@ c-file 0x08021638 _ src/game_state/start_new_game_playtime.c StartNewGamePlaytim
 c-file 0x08021660 _ src/game_state/unpack_save_slot_preview.c UnpackSaveSlotPreview
 c-file 0x080216AC _ src/game_state/tick_owl_care_kit_from_overworld.c TickOwlCareKitFromOverworld
 c-file 0x080216B8 _ src/game_state/process_playtime_tick.c ProcessPlaytimeTick
-c-file 0x080216F0 0x080216FC src/game_state/set_sickles.c SetSickles
-thumb-func 0x080216FC AddSickles
-thumb-func 0x08021724 GetSickles
+c-file 0x080216F0 _ src/game_state/set_sickles.c SetSickles
+c-file 0x080216FC _ src/game_state/add_sickles.c AddSickles
+c-file 0x08021724 _ src/game_state/get_sickles.c GetSickles
 c-file 0x08021730 _ src/gamecube/handle_joybus_interrupt.c HandleJoybusInterrupt
 c-file 0x080217A4 _ src/gamecube/handle_joybus_command_word.c HandleJoybusCommandWord
 c-file 0x0802191C _ src/gamecube/handle_joybus_transmit.c HandleJoybusTransmit

@@ -17,7 +17,7 @@ void SetSickles(u32 amount);
 // Adds a signed amount of Sickles to the player's money, clamped to
 // 0..999999, and returns the new total.
 u32 AddSickles(s32 amount);
-s32 GetSickles(void);  // returns g_saveStateBlock.dwMoney
+s32 GetSickles(void);
 
 extern const Playtime g_stPlaytimeZero;
 extern const Playtime g_stPlaytimeFrameDelta;
