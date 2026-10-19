@@ -13,6 +13,9 @@ typedef struct {
 #define JOYCNT_RECV  0x0002
 #define JOYCNT_SEND  0x0004
 
+#define DISPSTAT_VBLANK      0x0001 // REG_DISPSTAT: set during VBlank (scanlines 160-226)
+#define DISPCNT_FORCED_BLANK 0x0080 // REG_DISPCNT: LCD shows white, VRAM freely accessible
+
 // On-board (EWRAM) and in-chip (IWRAM) work RAM.
 #define EWRAM_BASE ((u8 *)0x02000000)
 #define EWRAM_END  ((u8 *)0x02040000)

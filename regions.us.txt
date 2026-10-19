@@ -1217,16 +1217,16 @@ c-file 0x08028408 _ src/language_select/update_language_select.c UpdateLanguageS
 c-file 0x08028524 _ src/language_select/exit_language_select.c ExitLanguageSelect
 c-file 0x08028534 _ src/language_select/draw_language_select_flag.c DrawLanguageSelectFlag
 c-file 0x08028568 _ src/language_select/draw_language_select_entries.c DrawLanguageSelectEntries
-c-file 0x08028588 0x080285F8 src/language_select/draw_language_select_entry.c DrawLanguageSelectEntry
+c-file 0x08028588 _ src/language_select/draw_language_select_entry.c DrawLanguageSelectEntry
 
 # LCD (does vblank related things)
-thumb-func 0x080285F8 sub_080285F8
-thumb-func 0x08028608 sub_08028608
-thumb-func 0x08028618 sub_08028618
-thumb-func 0x08028630 sub_08028630
-thumb-func 0x08028644 sub_08028644
-thumb-func 0x08028654 sub_08028654
-thumb-func 0x0802867C sub_0802867C
+c-file 0x080285F8 _ src/lcd/is_in_vblank.c IsInVBlank
+c-file 0x08028608 _ src/lcd/is_forced_blank.c IsForcedBlank
+c-file 0x08028618 _ src/lcd/wait_for_vblank_flag.c WaitForVBlankFlag
+c-file 0x08028630 _ src/lcd/disable_forced_blank.c DisableForcedBlank
+c-file 0x08028644 _ src/lcd/enable_forced_blank.c EnableForcedBlank
+c-file 0x08028654 _ src/lcd/disable_forced_blank_at_vblank.c DisableForcedBlankAtVBlank
+c-file 0x0802867C _ src/lcd/enable_forced_blank_at_vblank.c EnableForcedBlankAtVBlank
 
 # List (linked lists), see docs/memory-map/heap.md
 c-file 0x080286A0 _ src/list/build_free_list.c BuildFreeList
