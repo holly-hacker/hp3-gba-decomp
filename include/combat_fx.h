@@ -474,4 +474,3 @@ extern const u8 g_aEffectAnimData2_candidate[38][108];       // 0x08058944
 extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
 
 extern EffectStaging g_effectStaging;
-extern u8 g_bReviveInsertCount_candidate;

@@ -96,7 +96,7 @@ void RunFighterTurn(int fighterIndex) {
     }
 
     if (f->bFighterType == Enemy) {
-        DrawEnemyStatsUi_candidate(fighterIndex, 0);      // 0x0800e39c: portrait, HP bar, name, HP/MaxHP, level
+        DrawEnemyStatsUi(fighterIndex, 0);      // 0x0800e39c: portrait, HP bar, name, HP/MaxHP, level
         int target = EnemyTargetSelection_undecoded;      // selection step not decoded; feeds ResolveEnemyAttack below
         MonsterTableEntry *m = &MonsterTable[f->bRosterIndex];
         int damage = ResolveEnemyAttack(fighterIndex, target);   // 0x08017E44
@@ -192,7 +192,7 @@ void DispatchPendingAction(int fighterIndex) {                  // 0x080100a0
     switch (f->bPendingActionKind) {
     case None: case Informus:
         ShowBattleMessage(ActionAnnounce, 0, 0);
-        TrackSpellFamiliarity(f->bFighterType, f->bSpellId, f->bSpellLevel, &f->wHp);
+        TrackSpellFamiliarity(f->bFighterType, f->bSpellId, f->bSpellLevel, &f->stats);
         SetFighterAttackAnimState(f->pActor, 0x1a);    // -> ExecutePlayerAttackSequence
         break;
     case UseItem:
@@ -317,22 +317,7 @@ int ResolvePlayerAttack(int attackerIndex, int targetIndex) {    // 0x08017C24
     return damage;
 }
 
-void TrackSpellFamiliarity(FighterType fighterType, SpellId spellId, char spellLevel,
-                            SpellProgressBlock *p) {              // 0x08010008
-    byte *pCastLevel = p->aSpellCastLevel + spellId;
-    if (*pCastLevel < g_abSpellMaxLevel[spellId] && fighterType != Buckbeak) {
-        byte *pUsage = p->aSpellUsageProgress + spellId;
-        *pUsage += spellLevel + 1;
-        g_abPartySpellUsage[spellId + fighterType * 0x48] += spellLevel + 1;
-        if (g_abSpellLevelUpThreshold[*pCastLevel - 1] <= *pUsage) {
-            ShowBattleMessage(SpellLevelUp, 0, 0);
-            (*pCastLevel)++;
-            *pUsage = 0;
-            g_abPartySpellLevel[spellId + fighterType * 0x48]++;
-            g_abPartySpellUsage[spellId + fighterType * 0x48] = 0;
-        }
-    }
-}
+// TrackSpellFamiliarity (0x08010008): src/combat_core/track_spell_familiarity.c
 
 int RollFighterParalysisEscape(int fighterIndex) {                 // 0x0800FFAC
     Fighter *f = &pFighters[fighterIndex];
@@ -481,7 +466,7 @@ other fighter type reaches.
 **`TickBattleTurnStateMachine`'s case 4** confirms this at the
 dispatch level: non-`Enemy` fighters call `DispatchPendingAction()`
 directly (menu-driven), while `Enemy` fighters skip it and set anim state
-`0x1a` directly after `DrawEnemyStatsUi_candidate`/a can't-move check
+`0x1a` directly after `DrawEnemyStatsUi`/a can't-move check
 (`RollFighterParalysisEscape`).
 
 Both `TickFighterAttackAnimState_candidate` (enemy) and
@@ -629,7 +614,7 @@ the background table points at are described in
 
 `OpenPendingFighterMenu_candidate` (`0x0801319C`) is structurally
 parallel to `OpenEnemyTargetMenu_candidate`/`OpenAllyTargetMenu` (same
-8-frame screen-wipe-transition preamble, same `DrawFighterStatsUi_candidate`
+8-frame screen-wipe-transition preamble, same `DrawFighterStatsUi`
 call, same `bMenuCursor = 0` reset) but targets a third, separate fighter
 pool: `FightState->pPendingFighters_candidate` (`+8`, up to 3 slots,
 `bPendingFighterCount_candidate` at `+0x1491`), not `pFighters`. Its
@@ -702,11 +687,13 @@ hardcoded to `10`.
   turnOrderIndex` for every ally (3-byte array) -- both `0xFF`-initialized
   at roster setup, both later read by target resolution (see "Target
   redirect" above).
-- **`ReviveFighter_candidate`** (`0x0800E890`) restores a revived
-  fighter's `wHp`/`wMp` to max and re-sorts the queue by `bAgility` to
-  reinsert them (`0xff` marks "already acted this round"). Called by
-  opcode `0x97` sub-case `0x1C` (`Revive`) with `g_bEffectTargetIndex` as
-  the target -- Harry's `Revive` card is the only script using it.
+- **`ReviveFighter`** (`0x0800E890`, `src/combat_board/revive_fighter.c`)
+  restores a pending fighter's `wHp`/`wMp` to max and merges it into
+  `pFighters` by `bAgility`, moving `bActiveFighterIndex` and
+  `g_effectStaging.bCasterIndex` past it when it lands at or before the
+  active fighter. Called by opcode `0x97` sub-case `0x1C` (`Revive`) with
+  `g_effectStaging.bTargetIndex` -- Harry's `Revive` card is the only
+  script using it.
 
 ## `BattleFighter+0x42` (`bStatusFlags`), PROVEN
 
@@ -878,7 +865,7 @@ opcode format itself.
 | `0x19` | `ReplenishPartySp` | every active non-fainted fighter: `wSp = wSp_max` |
 | `0x1A` | `ReplenishTargetMp` | `g_bEffectTargetIndex`'s fighter: `wMp = wMp_max` |
 | `0x1B` | `ForceItemDrop` | sets `FightState->bBonusRewardFlags` bit `0x04` -- Ron's `Wizard Cracker`. PROVEN, see below |
-| `0x1C` | `Revive` | `ReviveFighter_candidate`, see "Turn order" above |
+| `0x1C` | `Revive` | `ReviveFighter`, see "Turn order" above |
 
 ### `FightState->bBonusRewardFlags` -- bonus-reward flags, PROVEN
 
@@ -1108,7 +1095,7 @@ countdown whose meaning is local to that state.
   selection resolved (`bMenuInputPending_candidate` clears), transitions
   to state `4`.
 - **4 -- resolve the active fighter's action.** `Enemy` fighters draw the
-  enemy panel (`DrawEnemyStatsUi_candidate`) and call `RollFighterParalysisEscape` (paralysis failure
+  enemy panel (`DrawEnemyStatsUi`) and call `RollFighterParalysisEscape` (paralysis failure
   shows a message and transitions to state `5`), then set the fighter's
   animation state to `0x1a` (attack windup, see `TickPlayerActionState`'s
   own case `0x1a`); non-`Enemy` fighters call
@@ -1149,7 +1136,7 @@ stateDiagram-v2
     Item --> Idle : status-restore resolve tail -- PostActionBattleCheck()
     Flee --> Idle : 30-tick timer expires -- PushBattleState(1)
     Idle --> Impact : faint branch only (ApplyDamageToAllyFighter)
-    Impact --> Idle : ReviveFighter_candidate
+    Impact --> Idle : ReviveFighter
     Idle --> Dmg : set externally by the attacker's own resolve code\n(this fighter is the defender)
     Dmg --> Idle : dwFlags & ActorFlagActionAnimDone observed
     note right of Impact
@@ -1386,15 +1373,10 @@ their damage comes from `ResolvePlayerAttack`, not the bytecode.
 
 ### Spell familiarity/leveling -- `TrackSpellFamiliarity` (`0x08010008`), PROVEN
 
-Called from `DispatchPendingAction`'s `None`/`Informus` cases (see
-consolidated pseudocode above). `aSpellCastLevel`/`aSpellUsageProgress`
-(`BattleFighter+0x10`/`+0x1A`, 10 bytes each, one per `SpellId`) are
-confirmed bounded by `docs/formats/save.md`'s save-slot serializer, which
-packs `BattleFighter+8`..`+0x23` as one contiguous 28-byte run per party
-member. `g_abPartySpellUsage`/`g_abPartySpellLevel` are a separate
-persistent (save-data) tracking array, one `0x48`-strided block (matching
-`BattleFighter`'s own stride) per `FighterType`, only the first 8 bytes
-of each block used (indexed by `SpellId`).
+Called from `DispatchPendingAction`'s `None`/`Informus` cases; matched in
+`src/combat_core/track_spell_familiarity.c`. It credits the cast to the caster's
+`BattleFighter.stats` (`SavedFighterStats`, `+0x08`..`+0x23`, the run the save
+serializer packs) and to the same fields of `g_aPartyMasterStats[fighterType]`.
 
 Two adjacent, non-overlapping tables in ROM: `g_abSpellMaxLevel` at
 `0x0804e5e0`, 10 bytes; `g_abSpellLevelUpThreshold` immediately after at

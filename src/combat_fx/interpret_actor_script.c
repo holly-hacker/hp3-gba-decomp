@@ -1008,7 +1008,7 @@ void InterpretActorScript(Actor *actor)
                 g_pFightState->bBonusRewardFlags |= ForceItemDrop;
                 break;
             case BSSTATUS_Revive:
-                ReviveFighter_candidate(g_effectStaging.bTargetIndex);
+                ReviveFighter(g_effectStaging.bTargetIndex);
                 break;
             }
             break;

@@ -411,13 +411,13 @@ resource buffers get copied into VRAM (recommended next step 2) led
 instead to a **separate, uncompressed resource path** entirely, used by
 what looks like a generic actor/sprite-spawn function,
 `sub_08001528(type, x, y, resource_ptr)` (called from e.g.
-`DrawFighterStatsUi_candidate` via `FUN_080078a4`, and from `SpawnSpGauge`). Three
+`DrawFighterStatsUi` via `FUN_080078a4`, and from `SpawnSpGauge`). Three
 `resource_ptr` values found via direct literal-pool grep for `0x08a3`
 addresses (the same ROM neighborhood as the UI-panel candidate from the
 structural scan, `0x08a32800`-`0x08a3a000`):
 
 - `0x08A396A4`: copied via `CpuFastSet` (`svc 0xC`) straight to OBJ
-  palette RAM (`0x05000200 + bank*32`) in `DrawFighterStatsUi_candidate` and two
+  palette RAM (`0x05000200 + bank*32`) in `DrawFighterStatsUi` and two
   near-identical sibling functions (all reference the same source --
   likely a shared flash/highlight-effect palette). 16 valid BGR555
   colors (bit15=0 throughout), but low-diversity: one accent color

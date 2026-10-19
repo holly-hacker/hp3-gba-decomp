@@ -26,6 +26,8 @@ extern void SetScreenDarkenParams_candidate(u32 arg0, u32 stepTicks);
 // 0x400-byte copy of the BG+OBJ palette that DarkenScreenPalette saves and
 // RestoreScreenPalette restores.
 extern u16 *g_pScreenPaletteBackup;
+// Nonzero while g_pScreenPaletteBackup holds the palette from before DarkenScreenPalette.
+extern u32 g_dwScreenPaletteDarkened;
 extern void InitScreenTransitionState_candidate(void);
 extern void DarkenScreenPalette(void);
 extern void RestoreScreenPalette(void);

@@ -128,7 +128,7 @@ void TickBattleTurnStateMachine(void)
             rollResult = RollFighterParalysisEscape(g_pFightState->bActiveFighterIndex);
             if (rollResult != 0) {
                 g_pFightState->bBattleState = 1;
-                DrawFighterStatsUi_candidate(ACTIVE_FIGHTER.bFighterType, 0);
+                DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
 
                 if (rollResult == 3)
                     ShowBattleMessage(0xe, 0, 0);
@@ -144,7 +144,7 @@ void TickBattleTurnStateMachine(void)
             TickBattleMenuInput();
 
             if (!g_pFightState->bMenuScreen) {
-                DrawFighterStatsUi_candidate(ACTIVE_FIGHTER.bFighterType, 0);
+                DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
 
                 TransitionBattleState(4);
             }
@@ -154,7 +154,7 @@ void TickBattleTurnStateMachine(void)
     case 4:
         fighterType = ACTIVE_FIGHTER.bFighterType;
         if (fighterType == Enemy) {
-            DrawEnemyStatsUi_candidate(g_pFightState->bActiveFighterIndex, 0);
+            DrawEnemyStatsUi(g_pFightState->bActiveFighterIndex, 0);
             rollResult = RollFighterParalysisEscape(g_pFightState->bActiveFighterIndex);
             if (rollResult != 0) {
                 g_pFightState->bBattleState = 1;

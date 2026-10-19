@@ -38,6 +38,7 @@ extern void TickBattleMenuInput(void);
 extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
 extern void OpenAllyTargetMenu(u8 fighterIndex);             // bMenuScreen 8, 0x080107BC
 extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
+extern void sub_08011980(void);  // battle VBlank callback, set by InitBattleDisplay
 
 // Label of each battle top menu row (Cast Spell, Special Move, Informus, Use Item, Flee,
 // Folio Bruti, Help).
@@ -63,7 +64,7 @@ extern const u8 g_abBattleMusicByScriptedEncounter[15]; // 0x0804E28B, indexed b
 
 extern const ActorAssetRecord g_MenuSprite003Asset_candidate;  // 0x0804E29C, no reader found
 
-// Battle screen scanline callbacks, copied to 0x03002690 by InitBattleDisplay,
+// Battle screen scanline callbacks, copied to g_aBattleScanlineEffectBuffer by InitBattleDisplay,
 // sub_08012A00 and sub_08012B40.
 extern const ScanlineEffectEntry g_aBattleScanlineEffects[4];  // 0x0804E2AC
 
@@ -81,6 +82,7 @@ extern const u32 g_adwSpecialMoveResultTextIds[16];  // 0x0804E58C, by ShowBattl
 extern const u32 g_adwReviveTextIds[5];              // 0x0804E5CC, by FighterType; 4 = the whole party
 
 extern const u8 g_abSpellMaxLevel[SPELL_COUNT];  // 0x0804E5E0, by spell id; caps TrackSpellFamiliarity
+extern const u8 g_abSpellLevelUpThreshold[2];  // 0x0804E5EA, by cast level - 1
 extern const u32 g_adwFighterCantMoveTextIds[4];  // 0x0804E5EC, by party FighterType
 extern const u8 g_sBattleTextSpace[];             // 0x0804E5FC, " "
 

@@ -18,7 +18,7 @@ ROM `0x0800D008`-`0x0800DBAC`; every address below is the same in US and JP.
 `InitPaletteBuffer` allocates a buffer's shadow with `AllocZeroed`. Colors are
 loaded through `sub_0800D6BC` (BG wrapper `sub_0800D244`, OBJ wrapper
 `sub_0800D254`): `ApplyGammaToColors` remaps each channel through the gamma table
-into the shadow, then DMA3 copies the span to palette RAM. While `0x030022E8`
+into the shadow, then DMA3 copies the span to palette RAM. While `g_dwPaletteRedirect`
 is nonzero the remapped colors go instead to the 0x400-byte
 `g_pPaletteWorkBuffer` and are `CpuSet` to the buffer pointed to by `0x03005624`.
 `ApplyGammaRemapTable` makes a table active and re-filters palette RAM and

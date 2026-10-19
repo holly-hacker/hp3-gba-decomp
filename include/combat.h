@@ -118,7 +118,8 @@ typedef struct FightState {
     /*0x106E*/ u8 bUnk106E;    // zeroed by InitializeBattle, only on a fresh (non-resumed) battle
     /*0x106F*/ u8 bFighterCount;
     /*0x1070*/ u8 bMenuScreen;  // TickBattleMenuInput's own screen selector; 0, 0xa, and bit 0x80 all mean no active screen
-    /*0x1071*/ u8 pad_1071[0x1078 - 0x1071];
+    /*0x1071*/ u8 pad_1071[0x1074 - 0x1071];
+    /*0x1074*/ u32 dwStatsTextTileCursor;  // DrawString tile cursor of the fighter and enemy stats panels
     /*0x1078*/ u32 dwTextTileCursor;  // DrawTextLines tile cursor of battle messages
     /*0x107C*/ u16 awPalette[0x200];  // BG and OBJ palette, DMAed to palette RAM at the HUD scanline
     /*0x147C*/ u8 pad_147C[0x147E - 0x147C];

@@ -80,6 +80,8 @@ typedef struct ObjPaletteQueueEntry {
     const u16 *pPalette;
 } ObjPaletteQueueEntry;
 
+// Nonzero while palette loads go to g_pPaletteWorkBuffer instead of palette RAM.
+extern u32 g_dwPaletteRedirect;
 extern u16 *g_pPaletteWorkBuffer;            // 0x030022EC
 extern PaletteState g_PaletteState;          // 0x030024B0
 extern ColorCycle g_aColorCycles[12];        // 0x03002280

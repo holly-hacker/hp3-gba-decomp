@@ -21,7 +21,7 @@ void DispatchPendingAction(s32 fighterType)
     case PendingActionInformus:
         ShowBattleMessage(ActionAnnounce, 0, 0);
         spellId = fighter->bSpellId;
-        TrackSpellFamiliarity(fighter->bFighterType, spellId, fighter->bSpellLevel, &fighter->stats.wHp);
+        TrackSpellFamiliarity(fighter->bFighterType, spellId, fighter->bSpellLevel, &fighter->stats);
         SetActorActionState(fighter->pActor, 0x1A);
         fighter->pActor->bActionFlags = 0x21;
         break;

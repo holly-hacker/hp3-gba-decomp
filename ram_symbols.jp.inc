@@ -106,6 +106,7 @@
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
+.set g_dwPaletteRedirect,        0x030022E8  @ u32: nonzero sends palette loads to g_pPaletteWorkBuffer instead of palette RAM
 .set g_pPaletteWorkBuffer,        0x030022EC  @ u16 *: 0x400-byte BG+OBJ palette work buffer, allocated by InitGammaPalette
 .set g_dwObjPaletteQueueCount,     0x030022F0  @ u32: queued OBJ palette loads (25 max)
 .set g_dwPaletteEffectCount,       0x030022F4  @ u32: active palette effects
@@ -128,6 +129,7 @@
 .set g_apFighterActors_candidate,         0x03002668
 .set g_pBattleMessageIconActor_candidate, 0x03002684
 .set g_BattleMessageIconState_candidate,   0x03002688
+.set g_aBattleScanlineEffectBuffer,       0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in
 .set g_anFaintedRosterIndices,             0x030026D8
 
 @ --- include/combat_end.h ---
@@ -475,6 +477,7 @@
 .set g_wEepromSavedDispstat,     0x0300567C
 
 @ --- include/screen_transitions.h ---
+.set g_dwScreenPaletteDarkened,     0x03005680  @ u32: set while g_pScreenPaletteBackup holds the undarkened palette
 .set g_pScreenPaletteBackup,            0x03005684
 .set g_dwUnk03005638,                   0x03005698
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300569C

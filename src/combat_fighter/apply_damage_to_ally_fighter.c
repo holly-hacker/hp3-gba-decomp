@@ -44,5 +44,5 @@ void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex)
         g_pFightState->pFighters[fighterIndex].stats.wHp;
 
     if (g_pFightState->bActiveFighterIndex == fighterIndex)
-        DrawFighterStatsUi_candidate(g_pFightState->pFighters[fighterIndex].bFighterType, 0);
+        DrawFighterStatsUi(g_pFightState->pFighters[fighterIndex].bFighterType, 0);
 }

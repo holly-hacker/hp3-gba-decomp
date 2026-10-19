@@ -238,7 +238,7 @@ name; the names below are the `BSSTATUS_*` constants in
 | `0x14` | `CureAilments` | clears `Poisoned` and `Paralyzed` |
 | `0x18` | `PaletteFlash` | VFX only |
 | `0x19`, `0x1A` | `ReplenishPartySp`, `ReplenishTargetMp` | `BattleFighter+8`/`+0xA` from `+0x24`/`+0x26` |
-| `0x1C` | `Revive` | `ReviveFighter_candidate` |
+| `0x1C` | `Revive` | `ReviveFighter` |
 
 Both other top-level opcodes and the 14 `Local`-prefixed opcodes are
 documented below -- see "What's NOT yet known".

@@ -148,7 +148,7 @@ void TickPlayerActionState(Actor *actor)
         if (flags == 0x21) {
             if (fs->dwPlayerActionActive_candidate == 0)
                 sub_08012A38();
-            DrawFighterStatsUi_candidate(ACTIVE_FIGHTER.bFighterType, 0);
+            DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
                 actor->bActionFlags = 1;
                 return;
@@ -299,7 +299,7 @@ void TickPlayerActionState(Actor *actor)
                     g_nLastDamage = ResolvePlayerAttack(
                         g_pFightState->bActiveFighterIndex,
                         g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]);
-                DrawFighterStatsUi_candidate(g_pFightState->pFighters[g_pFightState->bMenuFighterIndex].bFighterType, 0);
+                DrawFighterStatsUi(g_pFightState->pFighters[g_pFightState->bMenuFighterIndex].bFighterType, 0);
             } else {
                 // Buckbeak carve-out 2/4: Buckbeak does not roll the normal damage formula
                 actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_Buckbeak;

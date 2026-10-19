@@ -1,6 +1,7 @@
 #pragma once
 
 #include "combat.h"
+#include "video.h"
 
 // bIndex/dwParam are adjacent globals (0x03002688/0x0300268C) accessed
 // through one base address in the real code, hence one struct here.
@@ -52,3 +53,7 @@ extern Actor *g_apFighterActors_candidate[7];
 extern Actor *g_pBattleMessageIconActor_candidate;
 extern BattleMessageIconState g_BattleMessageIconState_candidate;
 extern s32 g_anFaintedRosterIndices[4];
+extern void SetupAllyBattleMessageIcon_candidate(u32 fighterType);
+extern void SetupEnemyBattleMessageIcon_candidate(u32 monsterId);
+// g_aBattleScanlineEffects with entry 1 moved to FightState.bWallEndLine.
+extern ScanlineEffectEntry g_aBattleScanlineEffectBuffer[4];

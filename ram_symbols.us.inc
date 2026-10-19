@@ -117,6 +117,7 @@
 .set g_aColorCycles,               0x03002280  @ ColorCycle[12]
 .set g_dwColorCycleActiveMask,     0x030022E0  @ u32: bit n set = color cycle slot n was activated
 .set g_dwColorCycleCount,          0x030022E4  @ u32: color cycle slots handed out since the last reset
+.set g_dwPaletteRedirect,        0x030022E8  @ u32: nonzero sends palette loads to g_pPaletteWorkBuffer instead of palette RAM
 .set g_pPaletteWorkBuffer,        0x030022EC  @ u16 *: 0x400-byte BG+OBJ palette work buffer, allocated by InitGammaPalette
 .set g_dwObjPaletteQueueCount,     0x030022F0  @ u32: queued OBJ palette loads (25 max)
 .set g_dwPaletteEffectCount,       0x030022F4  @ u32: active palette effects
@@ -139,6 +140,7 @@
 .set g_apFighterActors_candidate,         0x03002668  @ Actor*[7]; one slot per active BattleFighter
 .set g_pBattleMessageIconActor_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), u32 dwParam}
+.set g_aBattleScanlineEffectBuffer,       0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in
 .set g_anFaintedRosterIndices,             0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
 
 @ --- include/combat_end.h ---
@@ -166,7 +168,6 @@
 
 @ --- include/combat_fx.h ---
 .set g_effectStaging,                      0x03002750  @ EffectStaging: battle-effect staging area, see TriggerBattleEffect
-.set g_bReviveInsertCount_candidate,        0x03002773  @ u8: incremented by ReviveFighter_candidate when the revived fighter is inserted at or before the active one; no reader found
 
 @ --- include/commands.h ---
 .set g_dwRoomScriptRunState,    0x0300279C  @ u32: room script run state; InitializeOverworld resets 4 to 0 and only resumes a chain in state 2
@@ -499,6 +500,7 @@
 .set g_wEepromSavedDispstat,     0x0300561C  @ u16: DISPSTAT saved across EEPROM transfers (EepromTransferBegin/End)
 
 @ --- include/screen_transitions.h ---
+.set g_dwScreenPaletteDarkened,     0x03005620  @ u32: set while g_pScreenPaletteBackup holds the undarkened palette
 .set g_pScreenPaletteBackup,        0x03005624  @ u16 *: 0x400-byte palette copy kept by DarkenScreenPalette
 .set g_dwUnk03005638,                      0x03005638  @ u32: set by SetScreenDarkenParams_candidate; no reader found
 .set g_dwScreenDarkenStepTicks_candidate, 0x0300563C  @ u32: palette step ticks of DarkenScreenPalette/RestoreScreenPalette
