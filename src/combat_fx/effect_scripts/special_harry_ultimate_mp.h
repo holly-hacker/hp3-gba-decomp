@@ -13,7 +13,7 @@ const u8 g_abSpecialHarryUltimateMpScript[] = {
     BS_WaitFrames(1),
     BS_WaitFrames(20),
     BS_StatusEffect(BSSTATUS_ToggleUltimateVisual, 0, 0),
-    BS_SpawnEffectDetached(36),
+    BS_SpawnEffectNoPalette(36),
     BS_WaitFrames(210),
     BS_StatusEffect(BSSTATUS_ToggleUltimateVisual, 1, 0),
     BS_WaitFrames(20),

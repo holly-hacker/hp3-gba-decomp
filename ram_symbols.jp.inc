@@ -157,6 +157,7 @@
 
 @ --- include/combat_fx.h ---
 .set g_effectStaging,                      0x03002750
+.set g_queuedBattleBgLoad,                0x03002780
 
 @ --- include/commands.h ---
 .set g_dwRoomScriptRunState,    0x0300279C  @ room script run state

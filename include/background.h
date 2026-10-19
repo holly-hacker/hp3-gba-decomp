@@ -35,11 +35,23 @@ typedef struct BgWobble {
     s16 nAmpY;
 } BgWobble;
 
+// A BG tilemap built in RAM: its size in cells, then up to 32x32 cells.
+// HACK: wWidth and wHeight are full-width bitfields rather than plain u16s:
+// agbcc treats a bitfield store as possibly aliasing any memory, so
+// QueueBattleBgLoad reloads the source tilemap pointer after writing them, as
+// the ROM does.
+typedef struct BgTilemapBuffer {
+    u16 wWidth : 16;
+    u16 wHeight : 16;
+    u16 awCells[32 * 32];
+} BgTilemapBuffer;
+
 // Where GetGraphicBlobTileLoad found a graphic blob's raw VRAM block or tile stream.
 typedef struct BgTileLoadInfo {
     const void *pSrc;
     void *pDest;
-    u32 dwUnused;
+    BgTilemapBuffer *pTilemapBuffer;  // not set by GetGraphicBlobTileLoad; QueueBattleBgLoad
+                                      // keeps its tilemap buffer here
     u32 dwSize;  // bytes
 } BgTileLoadInfo;
 

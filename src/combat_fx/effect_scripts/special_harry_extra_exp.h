@@ -9,7 +9,7 @@ const u8 g_abSpecialHarryExtraExpScript[] = {
     BS_ShowActor(),
     BS_WaitForCounter(),
     BS_SetActorAnimFromTable2AndPalette(6, 0),
-    BS_SpawnEffectDetached(14),
+    BS_SpawnEffectNoPalette(14),
     BS_WaitFrames(120),
     BS_SetActorAnimAndPalette(14, 20),
     BS_WaitForCounter(),

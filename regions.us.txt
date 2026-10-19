@@ -648,17 +648,17 @@ c-file 0x08018ACC _ src/combat_fighter/post_action_battle_check.c PostActionBatt
 c-file 0x08018B14 _ src/combat_fighter/play_fighter_hurt_sound.c PlayFighterHurtSound
 
 # Combat fx (battle effect scripts and emitters)
-c-file 0x08018B70 0x08018BE0 src/combat_fx/trigger_battle_effect.c TriggerBattleEffect
-thumb-func 0x08018BE0 CreateEffectScriptActor
-c-file 0x08018CC0 0x0801AE14 src/combat_fx/interpret_actor_script.c InterpretActorScript
-thumb-func 0x0801AE14 CreateBattleEffectEmitter_candidate
-thumb-func 0x0801AF68 ProcessActorFlagBehaviors
-thumb-func 0x0801B130 sub_0801B130
-thumb-func 0x0801B204 sub_0801B204
-thumb-func 0x0801B2EC sub_0801B2EC
-thumb-func 0x0801B348 sub_0801B348
-c-file 0x0801B430 0x0801B4BC src/combat_fx/try_apply_paralysis.c TryApplyParalysis
-thumb-func 0x0801B4BC sub_0801B4BC
+c-file 0x08018B70 _ src/combat_fx/trigger_battle_effect.c TriggerBattleEffect
+c-file 0x08018BE0 _ src/combat_fx/create_effect_script_actor.c CreateEffectScriptActor
+c-file 0x08018CC0 _ src/combat_fx/interpret_actor_script.c InterpretActorScript
+c-file 0x0801AE14 _ src/combat_fx/create_battle_effect_emitter.c CreateBattleEffectEmitter
+c-file 0x0801AF68 _ src/combat_fx/process_actor_flag_behaviors.c ProcessActorFlagBehaviors
+c-file 0x0801B130 _ src/combat_fx/begin_effect_hud_scanline.c BeginEffectHudScanline
+c-file 0x0801B204 _ src/combat_fx/create_burst_to_target_emitter.c CreateBurstToTargetEmitter
+c-file 0x0801B2EC _ src/combat_fx/create_random_burst_emitter.c CreateRandomBurstEmitter
+c-file 0x0801B348 _ src/combat_fx/create_small_burst_to_target_emitter.c CreateSmallBurstToTargetEmitter
+c-file 0x0801B430 _ src/combat_fx/try_apply_paralysis.c TryApplyParalysis
+c-file 0x0801B4BC _ src/combat_fx/queue_battle_bg_load.c QueueBattleBgLoad
 c-file 0x0801B590 0x0801B5D0 src/combat_fx/spawn_paralysis_effect.c SpawnParalysisEffect
 
 # Combat fx script (effect-script tick helpers and scanline callbacks)

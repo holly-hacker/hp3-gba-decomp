@@ -1,6 +1,7 @@
 #pragma once
 
 #include "actor.h"
+#include "background.h"
 #include "save.h"
 
 typedef enum {
@@ -89,7 +90,10 @@ typedef struct FightState {
     /*0x00*/ BattleFighter *pStagingFighters;
     /*0x04*/ BattleFighter *pFighters;
     /*0x08*/ BattleFighter *pPendingFighters_candidate;  // front-popped reinforcement queue, count at +0x1491
-    /*0x0C*/ u8 pad_0C[0x818 - 0x0C];
+    // Effect BG tilemap built by QueueBattleBgLoad and copied to VRAM by
+    // FlushQueuedBattleDma.
+    /*0x0C*/ BgTilemapBuffer effectBgTilemap;
+    /*0x810*/ u8 pad_810[0x818 - 0x810];
     // One turn-order-icon container Actor* per active fighter slot,
     // allocated by SpawnTurnOrderIcon; each container's pLinkedActor_candidate
     // is its portrait sprite, which SetActorAnimFrame/SetFighterTurnOrderIconDone

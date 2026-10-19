@@ -571,17 +571,17 @@ c-file 0x08018A90 _ src/combat_fighter/get_monster_level.c GetMonsterLevel
 c-file 0x08018AA4 _ src/combat_fighter/get_monster_reward_gold.c GetMonsterRewardGold
 c-file 0x08018AB8 _ src/combat_fighter/post_action_battle_check.c PostActionBattleCheck
 c-file 0x08018B00 _ src/combat_fighter/play_fighter_hurt_sound.c PlayFighterHurtSound
-c-file 0x08018B5C 0x08018BCC src/combat_fx/trigger_battle_effect.c TriggerBattleEffect
-thumb-func 0x08018BCC CreateEffectScriptActor
-c-file 0x08018CAC 0x0801AE10 src/combat_fx/interpret_actor_script.c InterpretActorScript
-thumb-func 0x0801AE10 CreateBattleEffectEmitter_candidate
-thumb-func 0x0801AF64 ProcessActorFlagBehaviors
-thumb-func 0x0801B12C sub_0801B130
-thumb-func 0x0801B200 sub_0801B204
-thumb-func 0x0801B2E8 sub_0801B2EC
-thumb-func 0x0801B344 sub_0801B348
-c-file 0x0801B42C 0x0801B4B8 src/combat_fx/try_apply_paralysis.c TryApplyParalysis
-thumb-func 0x0801B4B8 sub_0801B4BC
+c-file 0x08018B5C _ src/combat_fx/trigger_battle_effect.c TriggerBattleEffect
+c-file 0x08018BCC _ src/combat_fx/create_effect_script_actor.c CreateEffectScriptActor
+c-file 0x08018CAC _ src/combat_fx/interpret_actor_script.c InterpretActorScript
+c-file 0x0801AE10 _ src/combat_fx/create_battle_effect_emitter.c CreateBattleEffectEmitter
+c-file 0x0801AF64 _ src/combat_fx/process_actor_flag_behaviors.c ProcessActorFlagBehaviors
+c-file 0x0801B12C _ src/combat_fx/begin_effect_hud_scanline.c BeginEffectHudScanline
+c-file 0x0801B200 _ src/combat_fx/create_burst_to_target_emitter.c CreateBurstToTargetEmitter
+c-file 0x0801B2E8 _ src/combat_fx/create_random_burst_emitter.c CreateRandomBurstEmitter
+c-file 0x0801B344 _ src/combat_fx/create_small_burst_to_target_emitter.c CreateSmallBurstToTargetEmitter
+c-file 0x0801B42C _ src/combat_fx/try_apply_paralysis.c TryApplyParalysis
+c-file 0x0801B4B8 _ src/combat_fx/queue_battle_bg_load.c QueueBattleBgLoad
 c-file 0x0801B58C 0x0801B5CC src/combat_fx/spawn_paralysis_effect.c SpawnParalysisEffect
 thumb-func 0x0801B5CC FlushQueuedBattleDma
 thumb-func 0x0801B61C ComputeEffectSpawnPosition

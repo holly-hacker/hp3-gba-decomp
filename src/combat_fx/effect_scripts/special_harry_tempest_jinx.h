@@ -11,7 +11,7 @@ const u8 g_abSpecialHarryTempestJinxScript[] = {
     BS_QueueScanlineEffect(1),
     BS_TeleportTo(220, 70),
     BS_RampBlendDown(),
-    BS_SpawnEffectDetached(5),
+    BS_SpawnEffectNoPalette(5),
     BS_SpawnEffectAtSelf(6),
     BS_WaitFrames(15),
     BS_SpawnEffectAtSelf(7),

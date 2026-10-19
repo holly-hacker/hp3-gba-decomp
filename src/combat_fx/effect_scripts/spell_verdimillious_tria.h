@@ -8,7 +8,7 @@ const u8 g_abSpellVerdimilliousTriaScript[] = {
     BS_WaitFrames(20),
     BS_PlaySound(91),
     BS_SetLocal(0, 1),
-    BS_SpawnEffectDetached(26),
+    BS_SpawnEffectNoPalette(26),
     BS_WaitFrames(14),
     BS_TeleportTo(68, 64),
     BS_SetOamPriority(0),

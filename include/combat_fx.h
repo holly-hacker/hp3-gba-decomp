@@ -26,6 +26,15 @@ typedef struct EffectStaging {
     u8 bIdStaged_candidate;
 } EffectStaging;
 
+// A BG graphic load queued by QueueBattleBgLoad: FlushQueuedBattleDma copies
+// the tiles and tilemap to VRAM during vblank and clears dwPending.
+typedef struct QueuedBgLoad {
+    BgTileLoadInfo tiles;   // 0x00, tiles.pTilemapBuffer is the tilemap to copy
+    const u16 *pTilemap;    // 0x10, the blob's tilemap
+    u16 *pScreenBase;       // 0x14, destination screen block
+    u32 dwPending;          // 0x18
+} QueuedBgLoad;
+
 // One 0x10-byte background record read by script opcodes 0x7F, 0x8A and 0x8B.
 typedef struct EffectBgRecord {
     void *pGfx;         // 0x00
@@ -70,11 +79,11 @@ enum BattleScriptOpcode {
     BSOP_MoveToAbsolute = 0x0B,
     BSOP_MoveTo = 0x0C,
     BSOP_StopMove = 0x0D,
-    BSOP_SpawnEffectDetached = 0x0E,
+    BSOP_SpawnEffectNoPalette = 0x0E,
     BSOP_SpawnEffect = 0x0F,
-    BSOP_SpawnEffectAtSelfDetached = 0x10,
+    BSOP_SpawnEffectAtSelfNoPalette = 0x10,
     BSOP_SpawnEffectAtSelf = 0x11,
-    BSOP_SpawnEffectOffsetDetached = 0x12,
+    BSOP_SpawnEffectOffsetNoPalette = 0x12,
     BSOP_SpawnEffectOffset = 0x13,
     BSOP_Unk14 = 0x14,
     BSOP_Unk15 = 0x15,
@@ -150,14 +159,14 @@ enum BattleScriptOpcode {
     BSOP_JitterPosition = 0x5B,
     BSOP_EnableSemiTransparency = 0x5C,
     BSOP_DisableBlendMode = 0x5D,
-    BSOP_StartAlphaFade = 0x5E,
+    BSOP_StartAlphaFadeOut = 0x5E,
     BSOP_SetAlphaBlend = 0x5F,
     BSOP_Label = 0x60,
     BSOP_Goto = 0x61,
     BSOP_Goto_2 = 0x62,
     BSOP_GotoLocalIndexedLabel = 0x63,
     BSOP_FreeTileAllocation = 0x64,
-    BSOP_StartDelayedChain = 0x65,
+    BSOP_StartShrinkOrbit = 0x65,
     BSOP_Unk66 = 0x66,
     BSOP_SetLocalRandomRange = 0x67,
     BSOP_SetDepthBiasZero = 0x68,
@@ -198,10 +207,10 @@ enum BattleScriptOpcode {
     BSOP_SetBgPaletteColorsAdjust = 0x8B,
     BSOP_SetBgPriority = 0x8C,
     BSOP_SetEffectTimers = 0x8D,
-    BSOP_StartFadeCounter = 0x8E,
+    BSOP_StartAlphaFadeIn = 0x8E,
     BSOP_SetWindowLayers = 0x8F,
     BSOP_SetWindowRect = 0x90,
-    BSOP_SetBehaviorFlag10 = 0x91,
+    BSOP_StartGrowWindow = 0x91,
     BSOP_HideWindow = 0x92,
     BSOP_ResetBgState = 0x93,
     BSOP_Unk94 = 0x94,
@@ -278,11 +287,11 @@ enum BattleStatusEffect {
 #define BS_MoveToAbsolute(a, b, c) BSOP_MoveToAbsolute, (a), (b), (c)
 #define BS_MoveTo(a, b, c, d, e) BSOP_MoveTo, ((a) & 0xFF), ((b) & 0xFF), (c), (d), (e)
 #define BS_StopMove() BSOP_StopMove
-#define BS_SpawnEffectDetached(a) BSOP_SpawnEffectDetached, (a)
+#define BS_SpawnEffectNoPalette(a) BSOP_SpawnEffectNoPalette, (a)
 #define BS_SpawnEffect(a) BSOP_SpawnEffect, (a)
-#define BS_SpawnEffectAtSelfDetached(a) BSOP_SpawnEffectAtSelfDetached, (a)
+#define BS_SpawnEffectAtSelfNoPalette(a) BSOP_SpawnEffectAtSelfNoPalette, (a)
 #define BS_SpawnEffectAtSelf(a) BSOP_SpawnEffectAtSelf, (a)
-#define BS_SpawnEffectOffsetDetached(a, b, c, d, e) BSOP_SpawnEffectOffsetDetached, (a), ((b) & 0xFF), (c), ((d) & 0xFF), (e)
+#define BS_SpawnEffectOffsetNoPalette(a, b, c, d, e) BSOP_SpawnEffectOffsetNoPalette, (a), ((b) & 0xFF), (c), ((d) & 0xFF), (e)
 #define BS_SpawnEffectOffset(a, b, c, d, e) BSOP_SpawnEffectOffset, (a), ((b) & 0xFF), (c), ((d) & 0xFF), (e)
 #define BS_Unk14(a) BSOP_Unk14, (a)
 #define BS_Unk15(a, b, c, d, e) BSOP_Unk15, (a), (b), (c), (d), (e)
@@ -358,14 +367,14 @@ enum BattleStatusEffect {
 #define BS_JitterPosition(a, b) BSOP_JitterPosition, (a), (b)
 #define BS_EnableSemiTransparency() BSOP_EnableSemiTransparency
 #define BS_DisableBlendMode() BSOP_DisableBlendMode
-#define BS_StartAlphaFade(a) BSOP_StartAlphaFade, (a)
+#define BS_StartAlphaFadeOut(a) BSOP_StartAlphaFadeOut, (a)
 #define BS_SetAlphaBlend(a, b) BSOP_SetAlphaBlend, (a), (b)
 #define BS_Label(a) BSOP_Label, (a)
 #define BS_Goto(a) BSOP_Goto, (a)
 #define BS_Goto_2(a) BSOP_Goto_2, (a)
 #define BS_GotoLocalIndexedLabel(a, b, c, d, e, f, g, h) BSOP_GotoLocalIndexedLabel, (a), (b), (c), (d), (e), (f), (g), (h)
 #define BS_FreeTileAllocation() BSOP_FreeTileAllocation
-#define BS_StartDelayedChain(a, b, c) BSOP_StartDelayedChain, (a), (b), (c)
+#define BS_StartShrinkOrbit(a, b, c) BSOP_StartShrinkOrbit, (a), (b), (c)
 #define BS_Unk66() BSOP_Unk66
 #define BS_SetLocalRandomRange(a, b, c) BSOP_SetLocalRandomRange, (a), (b), (c)
 #define BS_SetDepthBiasZero() BSOP_SetDepthBiasZero
@@ -406,10 +415,10 @@ enum BattleStatusEffect {
 #define BS_SetBgPaletteColorsAdjust(a, b, c, d, e) BSOP_SetBgPaletteColorsAdjust, (a), (b), (c), (d), (e)
 #define BS_SetBgPriority(a, b) BSOP_SetBgPriority, (a), (b)
 #define BS_SetEffectTimers(a, b, c, d, e, f, g, h, i, j) BSOP_SetEffectTimers, (a), (b), (c), (d), (e), (f), (g), (h), (i), (j)
-#define BS_StartFadeCounter(a, b) BSOP_StartFadeCounter, (a), (b)
+#define BS_StartAlphaFadeIn(a, b) BSOP_StartAlphaFadeIn, (a), (b)
 #define BS_SetWindowLayers(a, b, c, d, e, f, g, h, i, j, k) BSOP_SetWindowLayers, (a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k)
 #define BS_SetWindowRect(a, b, c, d, e) BSOP_SetWindowRect, (a), (b), (c), (d), (e)
-#define BS_SetBehaviorFlag10() BSOP_SetBehaviorFlag10
+#define BS_StartGrowWindow() BSOP_StartGrowWindow
 #define BS_HideWindow(a) BSOP_HideWindow, (a)
 #define BS_ResetBgState(a) BSOP_ResetBgState, (a)
 #define BS_Unk94() BSOP_Unk94
@@ -436,17 +445,21 @@ enum BattleStatusEffect {
 extern Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
 extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);  // 0x08018BE0
 extern void InterpretActorScript(Actor *actor);
-extern ParticleEmitter *CreateBattleEffectEmitter_candidate(Actor *actor, s32 a1, s32 a2, s32 a3,
-                                                             s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
-                                                             s32 a9, s32 a10, s32 a11, s32 a12, s32 a13,
-                                                             s32 a14, s32 a15, s32 a16);
-// Scanline callback of the effect tables.
-extern void sub_0801B130(u32 *pPayload0, u32 *pPayload1);
-extern ParticleEmitter *sub_0801B204(Actor *actor, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B2EC(Actor *actor, u32 a, u32 b);
-extern ParticleEmitter *sub_0801B348(Actor *actor, u32 a, u32 b);
+extern ParticleEmitter *CreateBattleEffectEmitter(Actor *actor, u8 unused, u8 spawnPeriod,
+                                                  u8 lifetimeBase, u8 spread, u8 spawnsPerPeriod,
+                                                  u8 velMinX, u8 velMaxX, u8 velMinY, u8 velMaxY,
+                                                  u8 param38, u8 poolIndex, u8 entryIndex,
+                                                  s32 assetIndex, u8 duration, s32 fixedAnimTicks,
+                                                  u8 anchor);
+extern void ProcessActorFlagBehaviors(Actor *actor);
+// Scanline callback of the effect tables at line 112.
+extern void BeginEffectHudScanline(u32 *pPayload0, u32 *pPayload1);
+extern ParticleEmitter *CreateBurstToTargetEmitter(Actor *actor, u8 poolIndex, u8 entryIndex);
+extern ParticleEmitter *CreateRandomBurstEmitter(Actor *actor, u8 poolIndex, u8 entryIndex);
+extern ParticleEmitter *CreateSmallBurstToTargetEmitter(Actor *actor, u8 poolIndex, u8 entryIndex);
 extern s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChance);
-extern void sub_0801B4BC(u32 a, void *b, u32 c, u32 d, void *e);
+extern BgTilemapBuffer *QueueBattleBgLoad(u32 bg, const u8 *pBlob, u16 tileOffset, u16 palBank,
+                                          BgTilemapBuffer *pTilemapBuffer);
 extern void SpawnParalysisEffect(Actor *actor);
 
 // Data tables.
@@ -474,3 +487,4 @@ extern const u8 g_aEffectAnimData2_candidate[38][108];       // 0x08058944
 extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
 
 extern EffectStaging g_effectStaging;
+extern QueuedBgLoad g_queuedBattleBgLoad;

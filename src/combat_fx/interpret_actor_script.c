@@ -129,7 +129,7 @@ void InterpretActorScript(Actor *actor)
             actor->wMoveDuration = 0;
             SetActorVelocity(actor, 0, 0);
             break;
-        case BSOP_SpawnEffectDetached:
+        case BSOP_SpawnEffectNoPalette:  // spawns a child without its palette
             child = CreateEffectScriptActor(args[1], 0);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
@@ -141,7 +141,7 @@ void InterpretActorScript(Actor *actor)
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
             child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
             break;
-        case BSOP_SpawnEffectAtSelfDetached:  // spawns a detached child at this actor's position
+        case BSOP_SpawnEffectAtSelfNoPalette:  // spawns a child without its palette at this actor's position
             child = CreateEffectScriptActor(args[1], 0);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
@@ -155,7 +155,7 @@ void InterpretActorScript(Actor *actor)
             child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
             SnapActorPosition(child, actor->pos.x, actor->pos.y);
             break;
-        case BSOP_SpawnEffectOffsetDetached:  // spawns a detached child at this actor's position plus a scaled offset
+        case BSOP_SpawnEffectOffsetNoPalette:  // spawns a child without its palette at this actor's position plus a scaled offset
             child = CreateEffectScriptActor(args[1], 0);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
@@ -323,11 +323,11 @@ void InterpretActorScript(Actor *actor)
             g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
             break;
         case BSOP_CreateEmitterOnSelf:  // creates an emitter on this actor
-            g_effectStaging.pEmitter_candidate = CreateBattleEffectEmitter_candidate(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
+            g_effectStaging.pEmitter_candidate = CreateBattleEffectEmitter(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
             g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
             break;
         case BSOP_CreateEmitterOnTarget:  // creates an emitter on the target's actor
-            g_effectStaging.pEmitter_candidate = CreateBattleEffectEmitter_candidate(targetFighter->pActor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
+            g_effectStaging.pEmitter_candidate = CreateBattleEffectEmitter(targetFighter->pActor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
             g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
             break;
         case BSOP_Unk35:  // effect actor asset call
@@ -403,16 +403,16 @@ void InterpretActorScript(Actor *actor)
         case BSOP_SetAffineScale3:  // sets affine scale (mode 3)
             SetActorAffineTransform(actor, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), 0, 3);
             break;
-        case BSOP_StartAffineWobble:  // sets a rotating affine transform and behavior flag 2
-            actor->modeState.effect.bBehaviorFlags |= 2;
+        case BSOP_StartAffineWobble:  // sets a rotating affine transform and starts the wobble
+            actor->modeState.effect.bBehaviorFlags |= EffectBehaviorAffineWobble;
             actor->modeState.effect.abParams[3] = args[5];
             actor->modeState.effect.abParams[0] = args[6];
             actor->modeState.effect.abParams[1] = args[7];
             actor->modeState.effect.abParams[2] = args[8];
             SetActorAffineTransform(actor, (args[1] << 16) + (args[2] << 8), (args[3] << 16) + (args[4] << 8), args[5] * -0x7FF, 3);
             break;
-        case BSOP_StopAffineWobble:  // clears behavior flag 2 and its parameters
-            actor->modeState.effect.bBehaviorFlags &= ~2;
+        case BSOP_StopAffineWobble:  // stops the wobble and clears its parameters
+            actor->modeState.effect.bBehaviorFlags &= ~EffectBehaviorAffineWobble;
             actor->modeState.effect.abParams[0] = 0;
             actor->modeState.effect.abParams[1] = 0;
             actor->modeState.effect.abParams[2] = 0;
@@ -511,8 +511,8 @@ void InterpretActorScript(Actor *actor)
             g_effectStaging.wTimerMax_candidate = 0x1F;
             SetAlphaBlendCoefficients(0x10, 0);
             break;
-        case BSOP_StartAlphaFade:  // sets behavior flag 4 (alpha fade) and local B
-            actor->modeState.effect.bBehaviorFlags |= 4;
+        case BSOP_StartAlphaFadeOut:  // starts an alpha fade-out from local B
+            actor->modeState.effect.bBehaviorFlags |= EffectBehaviorAlphaFadeOut;
             actor->modeState.effect.abLocal[1] = args[1];
             break;
         case BSOP_SetAlphaBlend:  // sets alpha blend coefficients
@@ -532,9 +532,9 @@ void InterpretActorScript(Actor *actor)
             actor->wVramTileAllocId = 0xFFFF;
             actor->wVramPixelCount = 0;
             break;
-        case BSOP_StartDelayedChain:  // sets behavior flag 8 (delayed chain)
+        case BSOP_StartShrinkOrbit:  // starts shrinking the orbit
             actor->modeState.effect.bParam6C = args[1];
-            actor->modeState.effect.bBehaviorFlags |= 8;
+            actor->modeState.effect.bBehaviorFlags |= EffectBehaviorShrinkOrbit;
             actor->modeState.effect.abParams[0] = args[2];
             actor->modeState.effect.abParams[1] = args[3];
             actor->modeState.effect.bParam6D = 0;
@@ -673,7 +673,7 @@ void InterpretActorScript(Actor *actor)
             {
                 const void *pControls;
 
-                sub_0801B4BC(args[1], g_aEffectBgRecords_candidate[args[2]].pGfx, g_aEffectBgRecords_candidate[args[2]].wUnk0C, args[3], g_pFightState->pad_0C);
+                QueueBattleBgLoad(args[1], g_aEffectBgRecords_candidate[args[2]].pGfx, g_aEffectBgRecords_candidate[args[2]].wUnk0C, args[3], &g_pFightState->effectBgTilemap);
                 SetBgScrollFixed(args[1], g_aEffectBgRecords_candidate[args[2]].wUnk04 << 16, g_aEffectBgRecords_candidate[args[2]].wUnk06 << 16);
                 g_effectStaging.bBgEffectId_candidate = args[2];
                 pControls = g_aEffectBgRecords_candidate[args[2]].pControls;
@@ -791,8 +791,8 @@ void InterpretActorScript(Actor *actor)
             g_effectStaging.wTimer_candidate = args[1] | args[2] | args[3] | args[4] | args[5];
             g_effectStaging.wTimerMax_candidate = args[6] | args[7] | args[8] | args[9] | args[10];
             break;
-        case BSOP_StartFadeCounter:  // sets behavior flag 0x80 (fade) and its counters
-            actor->modeState.effect.bBehaviorFlags |= 0x80;
+        case BSOP_StartAlphaFadeIn:  // starts an alpha fade-in
+            actor->modeState.effect.bBehaviorFlags |= EffectBehaviorAlphaFadeIn;
             actor->modeState.effect.abLocal[1] = 0x10;
             actor->modeState.effect.bParam6C = args[1];
             actor->modeState.effect.bParam6D = args[1];
@@ -801,12 +801,12 @@ void InterpretActorScript(Actor *actor)
         case BSOP_SetWindowLayers:  // sets a window's layer masks
             SetScreenWindowLayers_candidate(args[1], args[2] | args[3] | args[4] | args[5] | args[6], args[7] | args[8] | args[9] | args[10] | args[11]);
             break;
-        case BSOP_SetWindowRect:  // sets a window rectangle and clears behavior flag 0x10
+        case BSOP_SetWindowRect:  // sets a window rectangle and stops growing window 0
             SetScreenWindowRect_candidate(args[1], args[2] << 16, args[3] << 16, args[4] << 16, args[5] << 16);
-            actor->modeState.effect.bBehaviorFlags &= ~0x10;
+            actor->modeState.effect.bBehaviorFlags &= ~EffectBehaviorGrowWindow;
             break;
-        case BSOP_SetBehaviorFlag10:  // sets behavior flag 0x10
-            actor->modeState.effect.bBehaviorFlags |= 0x10;
+        case BSOP_StartGrowWindow:  // starts growing window 0
+            actor->modeState.effect.bBehaviorFlags |= EffectBehaviorGrowWindow;
             break;
         case BSOP_HideWindow:  // hides a window
             SetScreenWindowLayers_candidate(args[1], 0, 0);
@@ -847,11 +847,11 @@ void InterpretActorScript(Actor *actor)
             switch (args[1])
             {
             case BSSTATUS_SpawnEffectA:
-                g_effectStaging.pEmitter_candidate = sub_0801B204(actor, args[2], args[3]);
+                g_effectStaging.pEmitter_candidate = CreateBurstToTargetEmitter(actor, args[2], args[3]);
                 g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
                 break;
             case BSSTATUS_SpawnEffectB:
-                g_effectStaging.pEmitter_candidate = sub_0801B2EC(actor, args[2], args[3]);
+                g_effectStaging.pEmitter_candidate = CreateRandomBurstEmitter(actor, args[2], args[3]);
                 g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
                 break;
             case BSSTATUS_ExtraExpBonus:
@@ -974,7 +974,7 @@ void InterpretActorScript(Actor *actor)
                 ClearParalyzedFighter_candidate(g_effectStaging.bTargetIndex);
                 break;
             case BSSTATUS_SpawnEffectC:
-                g_effectStaging.pEmitter_candidate = sub_0801B348(actor, args[2], args[3]);
+                g_effectStaging.pEmitter_candidate = CreateSmallBurstToTargetEmitter(actor, args[2], args[3]);
                 g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
                 break;
             case BSSTATUS_PaletteFlash:

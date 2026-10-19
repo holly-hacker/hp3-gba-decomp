@@ -11,7 +11,7 @@ const u32 g_adwEffectBgControlOverride_candidate[4] = { 0x0E02, 0x0F08, 0x0D08, 
 const ScanlineEffectEntry g_aEffectScanlineTable0[6] = {
     {   0, 0, 0, 0, EffectScanlineStopHBlankDma },
     {  88, 0, 0, 0, EffectScanlineCopyTilemap },
-    { 112, 0, 0, 0, sub_0801B130 },
+    { 112, 0, 0, 0, BeginEffectHudScanline },
     { 160, 0, 0, 0, EffectScanlineEnableBlend },
 };
 
@@ -21,7 +21,7 @@ const ScanlineEffectEntry g_aEffectScanlineTable1[9] = {
     {  23, 0, 0, 2, EffectScanlineSetBandScroll },
     {  31, 0, 0, 3, EffectScanlineSetBandScroll },
     {  64, 0, 0, 0, EffectScanlineCopyTilemap },
-    { 112, 0, 0, 0, sub_0801B130 },
+    { 112, 0, 0, 0, BeginEffectHudScanline },
     { 125, 0, 0, 0, EffectScanlineAdvanceScroll },
     { 160, 0, 0, 0, EffectScanlineEnableBlend },
 };
@@ -29,7 +29,7 @@ const ScanlineEffectEntry g_aEffectScanlineTable1[9] = {
 const ScanlineEffectEntry g_aEffectScanlineTable2[6] = {
     {   0, 0, 0, 0, EffectScanlineRestoreBgs },
     {  88, 0, 0, 0, EffectScanlineCopyTilemap },
-    { 112, 0, 0, 0, sub_0801B130 },
+    { 112, 0, 0, 0, BeginEffectHudScanline },
     { 160, 0, 0, 0, EffectScanlineEnableBlend },
 };
 

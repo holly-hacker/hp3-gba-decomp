@@ -11,7 +11,7 @@ byte-exact extraction/pack round-trip -- `just compare us` passes with
 the pipeline below wired in). Opcode *semantics* are worked out for 44 of
 the ~168 possible opcodes (`End`, `Label`, `StatusEffect` with all 29 of its
 own sub-cases named, the 3-opcode `Wait` family, `MoveTo`, `SetActorAnim`,
-`PlaySound`, `SpawnEffect`/`SpawnEffectDetached`, `ToggleActorFlipX`,
+`PlaySound`, `SpawnEffect`/`SpawnEffectNoPalette`, `ToggleActorFlipX`,
 `TeleportToSlotPosition`, `HideActor`, `ShowActor`,
 `SetEnemiesOamPriority`/`SetAlliesOamPriority`, `JitterPosition`, `Goto`,
 `TeleportTo`, `QueueScanlineEffect`, `SetBgPriority`,
@@ -173,8 +173,8 @@ the opcode header" below:
 | `0x09` | `WaitForCounter` | 0 | Waits for `Actor+0xdc` (an externally-driven byte, not written by this opcode) to advance past its value at the moment this opcode ran, or for `Actor+0xc` bit `0x40000` to be set (early abort) -- either condition restores `pfnTick` to `InterpretActorScript`. Tick handler `WaitForCounterTick` (US `0x0801B684`). Handler dispatch at US `0x0801914C`. |
 | `0x0A` | `WaitForFieldClear` | 0 | Waits while `Actor+0x14` (u16) is nonzero (and at least one tick has elapsed), then restores `pfnTick` **and calls `InterpretActorScript` immediately** (via libgcc's `_call_via_r1`, US `0x0804A2C4` -- see "The Wait family" below) -- unlike its two siblings, this resumes the script the same frame the wait ends. Tick handler `WaitForFieldClearTick` (US `0x0801B6D0`). Handler dispatch at US `0x08019168`. |
 | `0x0C` | `MoveTo` | 5 | Computes a target position -- either from a per-fighter-slot table (`0x08053D2A`/`0x08053D38`, the same tables `TeleportToSlotPosition` reads) or from `sub_0801B620`'s query (a small fallback returning one of 3 fixed screen-coordinate pairs, `(0xB0,0x72)`/`(0x30,0x50)`/`(0x40,0x50)`, keyed on global byte `DAT_03002771` -- candidate: a battle-phase/dialog-state indicator, not identified further), offset by two signed operand bytes -- optionally applies a repeated per-generation offset (`bScriptLocalA` iterations of `GetActorAnchor`, gated by operand 4 -- an anchor point of the current animation frame of `r8`'s linked `Actor`, see "The interpreter" above for `r8`), then calls `StartActorMove` (US `0x08001A84`) with the result and operand 2 as the duration. Handler at US `0x08019184`. `WaitForFieldClear` is how a script waits for this to finish -- see "The Wait family" above. |
-| `0x0E` | `SpawnEffectDetached` | 1 (effect id) | `CreateEffectScriptActor(effectId, 0)` -- same call `SpawnEffect` (`0x0F`) makes, but with `attachToParent = 0` instead of `1`; what that parameter actually changes in `CreateEffectScriptActor` isn't traced here. Handler at US `0x08019236`. One of exactly 5 opcode handlers that call `CreateEffectScriptActor` (`0x0E`, `0x0F`, `0x11`, `0x13`, `0x16`, confirmed via `get_xrefs_to`; see "The script-local bytes" below for the spawn-time `bScriptLocalA`/`bScriptLocalB` copy-and-increment all 5 trigger) -- the other 3 (`0x11`, `0x13`, `0x16`) aren't individually named yet. |
-| `0x0F` | `SpawnEffect` | 1 (effect id) | `CreateEffectScriptActor(effectId, 1)` -- see `SpawnEffectDetached` (`0x0E`) immediately above for the sibling family member and the full 5-opcode spawn family. 155 real-script occurrences, the 3rd most-used opcode overall. `CreateEffectScriptActor` (US `0x08018BE0`) is an already-named function; the returned child `Actor*` is passed into the shared spawn-copy tail (US `0x08019320`, not traced further here). Handler at US `0x08019244`. |
+| `0x0E` | `SpawnEffectNoPalette` | 1 (effect id) | `CreateEffectScriptActor(effectId, 0)` -- same call `SpawnEffect` (`0x0F`) makes, but with `attachPalette = 0` instead of `1`: the child does not bind `g_aEffectAnimAssets[effectId].pPalette` (**PROVEN**, `src/combat_fx/create_effect_script_actor.c`). Handler at US `0x08019236`. One of 7 opcodes that spawn a child through `CreateEffectScriptActor`: `SpawnEffect*` `0x0E`-`0x13` (the `NoPalette` variants pass `0`) and `SpawnEffectSharedTiles` `0x16` (**PROVEN**, `src/combat_fx/interpret_actor_script.c`). See "The script-local bytes" below for the spawn-time `bScriptLocalA`/`bScriptLocalB` copy-and-increment all 7 perform. |
+| `0x0F` | `SpawnEffect` | 1 (effect id) | `CreateEffectScriptActor(effectId, 1)` -- see `SpawnEffectNoPalette` (`0x0E`) immediately above for the sibling family member and the full 7-opcode spawn family. 155 real-script occurrences, the 3rd most-used opcode overall. `CreateEffectScriptActor` (US `0x08018BE0`) is an already-named function; the returned child `Actor*` is passed into the shared spawn-copy tail (US `0x08019320`, not traced further here). Handler at US `0x08019244`. |
 | `0x17` | `ToggleActorFlipX` | 0 | Toggles the running actor's horizontal-flip state: `SetActorFlippedX(self, !IsActorFlippedX(self))`. Both are already-named functions (US `0x08003708`/`0x08003928`) that branch on `Actor+0xD1 & 3` (a rendering-mode selector, `0` = plain sprite, nonzero = a multi-cell/affine actor): in plain mode the flip is a single bit (`0x10`) of `Actor+0xD3`; in the other mode `SetActorFlippedX` negates `Actor+0xEC` (the actor's affine/scale-style X parameter, set up by the same helper `StartOrbitMotion`'s neighbors use for cell placement) and re-issues the affine setup call. Traced end-to-end to a real consumer: `WriteActorOamCells` (US `0x08002C18`) reads `Actor+0xEC` at entry and multiplies it against each sub-cell's stored X-offset to compute that cell's on-screen X position, before handing the result to `QueueOamEntry`/`SubmitOamAttrsNudged` (US `0x0802FFA0`/`0x0802FEAC`), which write it into `g_pOamShadowBuffer` (`0x03003FE8`) -- an 8-byte-stride, double-buffered (`+0x0`/`+0x400`) shadow copy of real GBA OAM, matching hardware OAM's exact size (`128 * 8 = 0x400` bytes). Negating a per-cell X-scale multiplier this way is the standard technique for mirroring a multi-cell/affine sprite horizontally on hardware that has no affine H-flip attribute bit -- confirmed by data flow through to the OAM write, not by watching it render. Handler at US `0x0801934C`. |
 | `0x1C` | `TeleportToSlotPosition` | 1 (generation-offset count) | Self-targeted, immediate counterpart to `MoveFighterToSlotPosition` (`0x7B` below): looks up `x`/`y` from the same per-fighter-slot tables (`0x08053D2A`/`0x08053D38`, indexed by the byte at global `0x03002770`), optionally adds a repeated per-generation offset (`operand - 1` iterations of `GetActorAnchor`, gated on `operand != 0` -- the same offset mechanism `MoveTo` uses), then calls `SetActorPosition(self, x, y)` -- **an immediate teleport, not an animated move**: `SetActorPosition` (US `0x080019B0`, already named) writes both the current position (`Actor+0x2c`/`0x30`) and the previous position (`Actor+0x34`/`0x38`) to the same value in one call, so there's no interpolation to animate. Handler at US `0x08019402`. |
 | `0x20` | `SetLocal` | 2 (index, value) | `Actor.bScriptLocal<index> = value` (see "The script-local bytes" below). Handler at US `0x080194E0`. Unconditional store, no bounds check on `index`. |
@@ -373,11 +373,9 @@ What's actually confirmed:
   ever addresses these two bytes. That's why the `Actor` struct gets two
   named byte fields, not an array.
 - **Spawn-time behavior**: when a script spawns a child script-actor
-  (`CreateEffectScriptActor`, called from exactly 5 opcode handlers --
-  `0x0E`, `0x0F`, `0x11`, `0x13`, `0x16`, confirmed via `get_xrefs_to` on
-  the function itself; `0x10`, `0x12`, and `0x17` are separate opcodes that
-  don't call it -- `0x17` is `ToggleActorFlipX`, see its row above), both
-  bytes are copied from parent to child, each incremented by one:
+  (`CreateEffectScriptActor`, from the 7 spawn opcodes `0x0E`-`0x13` and
+  `0x16`), both bytes are copied from parent to child, each incremented by
+  one:
   `child.bScriptLocalA = parent.bScriptLocalA + 1`,
   `child.bScriptLocalB = parent.bScriptLocalB + 1`. This alone would make
   `bScriptLocalA` read like a spawn-depth/generation counter (0 for a
@@ -394,8 +392,8 @@ What's actually confirmed:
   (`GotoIfLocalAEqual`/`_2`, `GotoIfLocalANotEqual`/`_2`, `GotoIfLocalAGreater`,
   `GotoIfLocalALess`, `GotoIfLocalAInRange`, `GotoIfLocalAOutOfRange`) that
   all hardcode index `0` (no operand-driven index, unlike the writer
-  opcodes). `bScriptLocalB`'s reader is outside the bytecode dispatch
-  entirely -- see below.
+  opcodes). `bScriptLocalB` is read back by `GotoIfLocalBEqual`/`_2` and
+  `GotoIfLocalBNotEqual`/`_2`, and by `ProcessActorFlagBehaviors` -- see below.
 
 Two real, distinct usage patterns for `bScriptLocalA`, both present in the
 65 scripts:
@@ -431,33 +429,31 @@ is a general per-actor script variable; auto-incrementing it on spawn is
 just the one
 piece of interpreter-provided behavior that makes the "root vs. spawned
 copy" idiom convenient without an explicit `SetLocal` call.
-`bScriptLocalB` is copied/incremented identically at every spawn site,
-and no opcode inside `InterpretActorScript` reads it back -- but
+`bScriptLocalB` is copied/incremented identically at every spawn site and
+tested by the `GotoIfLocalB*` opcodes (`0x2C`-`0x2F`).
 **`ProcessActorFlagBehaviors`** (US `0x0801AF68`, see "The Wait family"
-above) does, three separate ways, all gated by bits of `Actor+0x66`
-(not itself script-controlled -- no opcode was found writing it, so
-presumably set by whatever native code puts an actor into one of these
-modes in the first place):
+above) also reads it, gated by `ActorEffectState.bBehaviorFlags` (`Actor+0x66`,
+`EffectBehaviorFlags` in `include/actor.h`; **PROVEN**,
+`src/combat_fx/process_actor_flag_behaviors.c`). Opcodes set the bits:
+`StartAffineWobble`/`StopAffineWobble`, `StartAlphaFadeOut`,
+`StartShrinkOrbit`, `StartAlphaFadeIn`, `StartGrowWindow`/`SetWindowRect`,
+and `SetBehaviorFlags`/`ClearBehaviorFlags` for any bit (unused by the
+scripts). Three behaviors read `bScriptLocalB`:
 
-- bit `0x40`: passes `bScriptLocalB` straight to `PlaySoundById` (US
-  `0x0803FC68`) -- looks up a sound-effect config row, dispatching to a
-  fixed or `Mt19937RandMax2`-randomized (up to 7 variants) Krawall sample
-  via veneers into IWRAM-installed driver code (`FUN_08049e40`/`FUN_08049e54`).
-- bit `0x04`: if `bScriptLocalB != 0`, calls `SetAlphaBlendCoefficients`
-  (US `0x0803D350` -- writes the GBA's hardware `BLDALPHA` register
-  directly, confirming the
-  name) with `(bScriptLocalB, 0x10 - bScriptLocalB)`, then decrements it.
-- bit `0x80`: compares `bScriptLocalB` against a threshold at
-  `Actor+0x6b`; while below it, walks a secondary counter at
-  `Actor+0x6d` down and calls the same `SetAlphaBlendCoefficients` with
-  the operands swapped at each step, also decrementing `bScriptLocalB`.
+- `EffectBehaviorPlaySound` (`0x40`): plays sound `bScriptLocalB` every tick.
+- `EffectBehaviorAlphaFadeOut` (`0x04`): while `bScriptLocalB != 0`, calls
+  `SetAlphaBlendCoefficients(bScriptLocalB, 0x10 - bScriptLocalB)`, then
+  decrements it.
+- `EffectBehaviorAlphaFadeIn` (`0x80`): `StartAlphaFadeIn` sets
+  `bScriptLocalB` to `0x10`; while it is above the threshold at `Actor+0x6b`,
+  every `Actor+0x6c` + 1 ticks the same call runs with the operands swapped
+  and `bScriptLocalB` is decremented. At the threshold the bit clears itself.
 
 So **`bScriptLocalB` is concretely a hardware alpha-blend fade step
 counter** (`0`-`0x10`, matching `BLDALPHA`'s two coefficients summing to
-that range) when the actor is in one of these flag-gated modes -- a
-fade in/out effect -- and separately a message-id when in the `0x40`
-mode. Same pattern as `bScriptLocalA`: one interpreter-provided byte,
-multiple context-dependent uses, none of them "generation" as a literal
+that range) under the fade behaviors, and a sound id under `0x40`. Same
+pattern as `bScriptLocalA`: one interpreter-provided byte, multiple
+context-dependent uses, none of them "generation" as a literal
 description.
 
 ### Is `StatusEffect` unique?

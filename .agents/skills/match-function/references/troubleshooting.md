@@ -35,6 +35,16 @@ Repeated use of one loaded register can suggest a cached field; repeated address
 can suggest direct access. Test a meaningful local versus direct field use. Compiler
 optimization means neither observation uniquely identifies the original source.
 
+Across a store, types decide: agbcc's `-O2` enables type-based aliasing, so CSE keeps a loaded
+value past a store of an unrelated type. `c-common.c:c_get_alias_set` gives alias set 0, which
+conflicts with every store, to char types, bitfields, whole-struct copies and any access
+reached through a union member. A ROM reload after an unrelated store (`str r0, [g, #16]; strh;
+ldr r0, [g, #16]`) points to such an access. By the same rule, a build reload the ROM lacks can
+come from a `u8` pad/cast or union the original did not use. Compiling the `.i` with
+`-fno-strict-aliasing` confirms the mechanism; then find which store or load needs the set by
+retyping one side at a time. Example: QueueBattleBgLoad, US `0x0801B4BC`, stores the tilemap
+size through full-width bitfields (`u16 wWidth : 16`, BgTilemapBuffer).
+
 ## 4. Branch layout and expression order
 
 Try the complementary outer condition with arms exchanged when fallthrough differs.

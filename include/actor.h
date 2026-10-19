@@ -254,6 +254,19 @@ typedef union __attribute__((packed)) ActorScriptState {
     } bytes;
 } ActorScriptState;
 
+// ActorEffectState.bBehaviorFlags: per-tick effects ProcessActorFlagBehaviors runs.
+typedef enum {
+    EffectBehaviorAffineWobble = 0x02,  // steps the affine rotation by abParams[2] and adds
+                                        // abParams[0]/[1] to the scale
+    EffectBehaviorAlphaFadeOut = 0x04,  // blends from abLocal[1]/16 down, one step per tick
+    EffectBehaviorShrinkOrbit  = 0x08,  // every bParam6C ticks, shrinks the orbit radii by
+                                        // abParams[0]/[1]
+    EffectBehaviorGrowWindow   = 0x10,  // grows window 0's rectangle each tick
+    EffectBehaviorPlaySound    = 0x40,  // plays sound abLocal[1] each tick
+    EffectBehaviorAlphaFadeIn  = 0x80,  // blends up one step every bParam6C + 1 ticks until
+                                        // abLocal[1] reaches abParams[4], then clears itself
+} EffectBehaviorFlags;
+
 // Bytes 0x62-0x6D of an effect script actor. Read back each tick by
 // ProcessActorFlagBehaviors; bBehaviorFlags selects which fields apply.
 typedef struct __attribute__((packed)) ActorEffectState {
