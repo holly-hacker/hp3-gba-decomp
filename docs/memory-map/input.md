@@ -144,9 +144,10 @@ have no callers found.
 
 ## Known readers
 
-- `TickBattleMenuInput` (`0x080101D0`) -- battle top-menu cursor: `0x10`
-  (Right) advances the list index by `+1`, `0x20` (Left) moves it back by
-  `-1`, both wrapping via `0x08012E38`. See `docs/memory-map/battle-ui.md`.
+- `TickBattleMenuInput` (`0x080101D0`) -- battle menu cursor: `0x10`
+  (Right) advances it by `+1`, `0x20` (Left) moves it back by `-1`, both
+  wrapping via `WrapBattleMenuCursor`; `0x01` (A) and `0x02` (B) confirm and
+  cancel. See `docs/memory-map/battle-ui.md`.
 - `TickBattleTurnStateMachine` state 5 (message-wait) -- `0x01` (A) fast-
   forwards the 30-tick wait. See `docs/memory-map/battle.md`.
 - `UpdateFolioBrutiGridCursor` (`0x08036BB8`) -- `0x10`/`0x20`/`0x40`/`0x80`

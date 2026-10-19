@@ -135,9 +135,12 @@
 .set g_dwOverworldMonstersDisabled, 0x03002614  @ u32: nonzero suppresses wandering-monster spawns
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618  @ u32: FightState->bBonusRewardFlags copy, see RollBattleItemDrops
 
+@ --- include/combat_dialog.h ---
+.set g_aawTargetFlashPalette,             0x03002620  @ u16[2][16]: target flash frames, the sprite's palette then gBattleEffect002Palette
+
 @ --- include/combat_dispatch.h ---
-.set g_bSelectedFighterSlot_candidate,     0x03002660  @ u32: fighter slot with the "selected" sprite scale applied
-.set g_apFighterActors_candidate,         0x03002668  @ Actor*[7]; one slot per active BattleFighter
+.set g_dwSelectedBattleMenuIcon,     0x03002660  @ u32: battle menu row whose icon is enlarged
+.set g_apBattleMenuIconActors,         0x03002668  @ Actor*[7]: battle menu icons, one per menu row
 .set g_pBattleMessageIconActor_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text
 .set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), u32 dwParam}
 .set g_aBattleScanlineEffectBuffer,       0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in

@@ -40,8 +40,8 @@ void DispatchPendingAction(s32 fighterType)
 
         break;
 
-    case PendingActionUseItem:
-        ShowBattleMessage(ItemUseAnnounce, fighter->bSpellLevel, 0);
+    case PendingActionUsePotion:
+        ShowBattleMessage(PotionUseAnnounce, fighter->bSpellLevel, 0);
         SetActorActionState(fighter->pActor, 4);
         break;
 

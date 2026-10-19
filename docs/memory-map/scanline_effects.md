@@ -68,7 +68,7 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 
 `g_aBattleScanlineEffects` (`src/combat_dialog/battle_scanline_effects.c`); its
 queuers overwrite entry 1's line with `FightState.bWallEndLine` (initially 64).
-Each vblank the battle VBlank callback (`sub_08011980`) copies the 32x8-tile wall
+Each vblank the battle VBlank callback (`HandleBattleVBlank`) copies the 32x8-tile wall
 to BG1 rows 23-30 and sets BG1VOFS to 264 minus that line, which also overwrites
 HUD panel rows 23-24 until the line-88 entry restores them.
 

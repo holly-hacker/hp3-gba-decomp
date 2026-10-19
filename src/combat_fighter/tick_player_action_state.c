@@ -147,7 +147,7 @@ void TickPlayerActionState(Actor *actor)
         flags = actor->bActionFlags;
         if (flags == 0x21) {
             if (fs->dwPlayerActionActive_candidate == 0)
-                sub_08012A38();
+                ClearBattleTextPanel();
             DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
                 actor->bActionFlags = 1;

@@ -51,6 +51,10 @@ Try the complementary outer condition with arms exchanged when fallthrough diffe
 Check operand evaluation order and separate an embedded assignment from its comparison;
 a comma expression is another diagnostic form. Negating a condition alone may canonicalize
 back to identical output. Example: ResolveEnemyAttack.
+Arguments and operands expand left to right, and combine places a folded load at its later
+use. A load the ROM performs before an earlier argument or a preceding constant set was
+assigned to a local in its own statement first (TickBattleMenuInput's `lastRow`;
+ShowBattleMessage's `fighterType` before `textId = 0x996`, US `0x080101D0`, `0x08010864`).
 
 ## 5. Switch shape
 
@@ -217,6 +221,10 @@ pool and emits `adds rX, #offset` after the index shift. Example: UpdateBuckbeak
 US 0x08009BE0. Likewise, indexing with a variable the branch has already fixed (`table[kind]`
 inside `if (kind == 1)`) gives `ldr base; adds #offset` where `table[1]` pools `base+offset`
 (HandleChestTouch, US 0x0800BF20).
+An index with a constant folds into the pool only in an address (`&a[i + 4]`); `a[i + 4].field`
+keeps `(i + 4) * size`. When both forms in the ROM pool `a+const` and share `i * size`, the
+records are a separate array starting there (SetBattleMenuIconState, US `0x08011ABC`, indexes
+`g_aBattleMenuIconAssets`, which follows two face tables).
 
 ## 21. Switch layout
 
@@ -281,6 +289,10 @@ a field expanded base first in either spelling, and an integer sum
 To get the index computed first but the base as the sum's target, add a byte offset to a
 byte-pointer base: `*(u16 *)((const u8 *)&nodes[n] + ((bits & 1) << 1))` (DecompressHuffTree,
 US 0x08024EDC).
+For an element of a pointer member, `fighter = &s->p[i]` loads the index first and adds
+`base + index`; reading `s->p[i].field` directly loads the base first and adds
+`index + base` (the address is canonicalized with the multiply first). OpenBattleTopMenu, US
+`0x080104A0`, accesses `g_pFightState->pFighters[i]` directly; TickBattleMenuInput keeps a pointer.
 
 ## 27. Reload registers (r0-r2) shifted from some point on
 
@@ -334,6 +346,9 @@ US `0x0803F0A8`.
 a register when `bank` is also an index. Written with the literal (`field != 2`, `table[2]`) the
 compare takes an immediate and the address folds into the pool. Example: ProcessBuckbeakMinigameFrame,
 US `0x08009144`.
+A constant stored as a stack argument from a callee-saved register set at the function's
+first instruction came from a local initialized to it at its declaration: CSE reuses that
+register for the store. DrawBattleMenuText's `u8 spellId = 0` (JP `0x08011520`).
 
 ## 33. Constant argument materialized after the stack-argument stores
 

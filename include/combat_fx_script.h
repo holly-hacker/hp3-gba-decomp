@@ -12,6 +12,9 @@ extern void EffectScanlineCopyTilemap(u32 *pPayload0, u32 *pPayload1);
 extern void EffectScanlineEnableBlend(u32 *pPayload0, u32 *pPayload1);
 extern void EffectScanlineStopHBlankDma(u32 *pPayload0, u32 *pPayload1);
 
+// Copies a BG load queued by QueueBattleBgLoad to VRAM; run by the battle VBlank callback.
+extern void FlushQueuedBattleDma(void);
+
 extern void WaitFramesTick(Actor *actor);
 extern void WaitForCounterTick(Actor *actor);
 extern void WaitForFieldClearTick(Actor *actor);

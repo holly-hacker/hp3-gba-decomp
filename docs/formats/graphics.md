@@ -1207,11 +1207,12 @@ are identical in both ROMs and claimed as three stored-cells banks:
 | `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 portraits shown in battle when that fighter attacks, 8bpp (512-byte palettes) |
 | `ActionIcons` | `0x08A2DCC4`-`0x08A30814` | `0x08A2DAF4`-`0x08A30644` | 42 one-frame 24x32 icons for choosing a player action in the battle menu, 4bpp |
 
-`BattleFaces` and `ActionIcons` are records 0-71 and 72-132 of the
-133-record `g_aBattleHudAssets` at `0x0804D824` (JP `0x0804D750`), which
-`sub_08012CE4` and `sub_08012D2C` index. Their uses
-come from observing the game, not from tracing those functions. Every
-sprite's palette in these banks is the one its records use.
+`BattleFaces` are the records of `g_aPartyFaceAssets` (4, at `0x0804D824`, JP
+`0x0804D750`) and `g_aMonsterFaceAssets` (68), which
+`SetupAllyBattleMessageIcon_candidate` and `SetupEnemyBattleMessageIcon_candidate`
+index; `ActionIcons` those of `g_aBattleMenuIconAssets` (61), which
+`SetBattleMenuIconState` indexes. Every sprite's palette in these banks is the
+one its records use.
 
 ### Battle effects and status-screen characters (PROVEN, extracted)
 
@@ -1227,13 +1228,14 @@ The battle effect records are 16-byte `ActorAssetRecord`s (animation delay
 five palette pointers between the two runs. Every pointer in these runs
 lands on a component boundary in the effect ranges. The palette-only
 entries are palettes those pointers or battle code literals (for example
-at `0x080117F4` and `0x0801B2D8`) reference directly. `noPalette` marks
+at `0x080117F4` and `0x0801B2D8`) reference directly; `TargetFlash` is the
+flash colour of a targeted fighter (`FlashEnemyTarget` and its siblings). `noPalette` marks
 `BattleEffect020`, whose following palette is one of the five loose ones.
 The status/equip screen's `SpawnStatusCharacterActor` reads the three
 `StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
 
-These record tables are C with generated labels: `g_aBattleHudAssets`
-(`src/combat_dialog/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
+These record tables are C with generated labels: the three battle face and
+icon tables (`src/combat_dialog/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
 fighter, `src/combat_fighter/fighter_anim_table.c`), `g_aEffectActorAssets`,
 `g_apEffectPalettes`, `g_aEffectAnimAssets`, and `g_aEffectAnimAssets2`
 (`src/combat_fx/effect_assets.c`), and `g_aStatusCharacterAssets`

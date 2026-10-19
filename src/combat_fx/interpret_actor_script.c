@@ -783,9 +783,9 @@ void InterpretActorScript(Actor *actor)
         case BSOP_SetBgPriority:
             SetBgPriority(args[1], args[2]);
             if (args[1] == 1)
-                g_effectStaging.bStateB_candidate = args[2];
+                g_effectStaging.bBg1Priority = args[2];
             if (args[1] == 0)
-                g_effectStaging.bStateA_candidate = args[2];
+                g_effectStaging.bBg0Priority = args[2];
             break;
         case BSOP_SetEffectTimers:  // sets the effect timer and its maximum
             g_effectStaging.wTimer_candidate = args[1] | args[2] | args[3] | args[4] | args[5];

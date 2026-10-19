@@ -15,6 +15,8 @@ extern void SetFadeToBlack(u16 layerMask, u16 amount);
 // Selects alpha blending with the layers in the `firstTargets` mask as the first target and
 // those in `secondTargets` as the second.
 extern void SetAlphaBlendTargets(u16 firstTargets, u16 secondTargets);
+// Rewrites BLDALPHA from the coefficients SetAlphaBlendCoefficients last set.
+extern void CommitAlphaBlendCoefficients(void);
 
 // Set by SetScreenDarkenParams_candidate (every caller passes 0, 8).
 // DarkenScreenPalette and RestoreScreenPalette pass the step ticks to the

@@ -124,9 +124,12 @@
 .set g_dwOverworldMonstersDisabled, 0x03002614
 .set g_dwBattleRewardFlagsSnapshot,        0x03002618
 
+@ --- include/combat_dialog.h ---
+.set g_aawTargetFlashPalette,             0x03002620
+
 @ --- include/combat_dispatch.h ---
-.set g_bSelectedFighterSlot_candidate,     0x03002660
-.set g_apFighterActors_candidate,         0x03002668
+.set g_dwSelectedBattleMenuIcon,     0x03002660
+.set g_apBattleMenuIconActors,         0x03002668
 .set g_pBattleMessageIconActor_candidate, 0x03002684
 .set g_BattleMessageIconState_candidate,   0x03002688
 .set g_aBattleScanlineEffectBuffer,       0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in

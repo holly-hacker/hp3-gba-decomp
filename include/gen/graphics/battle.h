@@ -868,7 +868,7 @@ extern const u8 gMonsterPalette040Palette[];
 extern const u8 gBattleEffect001Tiles[];
 extern const u8 gBattleEffect001Frames[];
 extern const u8 gBattleEffect001Palette[];
-extern const u8 gBattleEffect002Palette[];
+extern const u8 gTargetFlashPalette[];
 extern const u8 gBattleEffect003Palette[];
 extern const u8 gBattleEffect004Palette[];
 extern const u8 gBattleEffect005Tiles[];

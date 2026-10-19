@@ -4,9 +4,11 @@
 #include "constants/spells.h"
 #include "video.h"
 
-// ShowBattleMessage's first parameter. SpecialAbilityText (3) shares the switch's
-// trailing default body.
-// Case 5 covers the whole attack-result dispatch, not just crits.
+// ShowBattleMessage's code. Its value and param: SpecialMoveAnnounce and SpecialAbilityText
+// take the Special Move in value; AttackResult the damage (or, for param 2, the fainted
+// fighter's index) and the result variant in param; PotionUseAnnounce and StatusRestore the
+// potion; SpCost and MpCost the amount; HiddenFromView value 1 to clear the box first
+// and the fighter index in param.
 typedef enum {
     SpellLevelUp      = 0,
     EscapeBlocked     = 1,
@@ -15,7 +17,7 @@ typedef enum {
     ActionAnnounce    = 4,
     AttackResult      = 5,
     FaintResult       = 6,
-    ItemUseAnnounce   = 7,
+    PotionUseAnnounce = 7,
     StatusRestore     = 8,
     SpCost            = 9,
     MpCost            = 10,
@@ -34,17 +36,41 @@ typedef enum {
 // skips the second message while it holds.
 #define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
 
+// Top of each text row in the battle message box. The Japanese font's rows are taller.
+#ifdef VERSION_JP
+#define BATTLE_TEXT_ROW0_Y 199
+#define BATTLE_TEXT_ROW1_Y 209
+#define BATTLE_TEXT_ROW2_Y 219
+#define BATTLE_TEXT_ROW3_Y 228
+#else
+#define BATTLE_TEXT_ROW0_Y 200
+#define BATTLE_TEXT_ROW1_Y 208
+#define BATTLE_TEXT_ROW2_Y 216
+#define BATTLE_TEXT_ROW3_Y 224
+#endif
+
 extern void TickBattleMenuInput(void);
-extern void OpenBattleTopMenu(s32 fighterIndex, s32 arg1);
-extern void OpenAllyTargetMenu(u8 fighterIndex);             // bMenuScreen 8, 0x080107BC
-extern void ShowBattleMessage(s32 code, s32 arg1, s32 arg2);
-extern void sub_08011980(void);  // battle VBlank callback, set by InitBattleDisplay
+extern void OpenBattleTopMenu(u32 fighterIndex, u32 row);
+extern void OpenSpecialMoveMenu(u8 fighterIndex);
+extern void OpenItemMenu(u8 fighterIndex);
+extern void OpenSpellTierMenu(u8 fighterIndex, u8 spellRow);
+extern void OpenAllyTargetMenu(u8 fighterIndex);
+extern void ShowBattleMessage(u8 code, u16 value, u16 param);
+extern void DrawBattleMenuText(void);
+// Flash the targeted fighter's sprite palette: an enemy or ally target slot, or a pending fighter.
+extern void FlashEnemyTarget(u32 slot);
+extern void FlashAllyTarget(u32 slot);
+extern void FlashPendingFighter(u32 pendingIndex);
+extern void HandleBattleVBlank(void);  // battle VBlank callback, set by InitBattleDisplay
+extern void SetBattleMenuIconState(u32 kind, u32 row, u32 fighterType, u32 enabled);
+extern void TickBattleMenuStub(void);  // does nothing; called by TickBattleMenuInput
 
 // Label of each battle top menu row (Cast Spell, Special Move, Informus, Use Item, Flee,
 // Folio Bruti, Help).
 extern const u32 g_adwBattleTopMenuTextIds[7];  // 0x0804D808
-// Records 0-71 are the attacking fighter portraits, 72-132 the battle-menu action icons.
-extern const ActorAssetRecord g_aBattleHudAssets[133];  // 0x0804D824
+extern const ActorAssetRecord g_aPartyFaceAssets[4];         // 0x0804D824
+extern const ActorAssetRecord g_aMonsterFaceAssets[68];      // 0x0804D864
+extern const ActorAssetRecord g_aBattleMenuIconAssets[61];   // 0x0804DCA4
 
 extern const u32 g_dwBattleFloorBgControl;  // 0x0804E074, passed to InitFloorDisplay
 extern const u32 g_dwBattleBg1Control;      // 0x0804E078
@@ -85,4 +111,8 @@ extern const u8 g_abSpellMaxLevel[SPELL_COUNT];  // 0x0804E5E0, by spell id; cap
 extern const u8 g_abSpellLevelUpThreshold[2];  // 0x0804E5EA, by cast level - 1
 extern const u32 g_adwFighterCantMoveTextIds[4];  // 0x0804E5EC, by party FighterType
 extern const u8 g_sBattleTextSpace[];             // 0x0804E5FC, " "
+
+// The target flash palette effect's two frames: the sprite's own palette, then
+// gTargetFlashPalette.
+extern u16 g_aawTargetFlashPalette[2][16];
 

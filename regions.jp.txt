@@ -452,21 +452,21 @@ c-file 0x0800F794 _ src/combat_core/tick_battle_turn_state_machine.c TickBattleT
 c-file 0x0800FEE0 _ src/combat_core/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
 c-file 0x0800FFAC _ src/combat_core/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
 c-file 0x08010008 _ src/combat_core/track_spell_familiarity.c TrackSpellFamiliarity
-c-file 0x080100A0 0x080101D0 src/combat_core/dispatch_pending_action.c DispatchPendingAction
-thumb-func 0x080101D0 TickBattleMenuInput
-thumb-func 0x080104A0 OpenBattleTopMenu
-thumb-func 0x080105D8 OpenSpecialMoveMenu
-thumb-func 0x08010660 OpenItemMenu
-thumb-func 0x080106EC sub_080106EC
-thumb-func 0x080107BC OpenAllyTargetMenu
-thumb-func 0x08010864 ShowBattleMessage
-thumb-func 0x08011520 DrawBattleMenuText
-thumb-func 0x0801173C sub_08011738
-thumb-func 0x08011800 sub_080117FC
-thumb-func 0x080118C4 sub_080118C0
-thumb-func 0x08011984 sub_08011980
-thumb-func 0x08011AC0 SetBattleMenuIconState
-thumb-func 0x08011BEC sub_08011BE8
+c-file 0x080100A0 _ src/combat_core/dispatch_pending_action.c DispatchPendingAction
+c-file 0x080101D0 _ src/combat_dialog/tick_battle_menu_input.c TickBattleMenuInput
+c-file 0x080104A0 _ src/combat_dialog/open_battle_top_menu.c OpenBattleTopMenu
+c-file 0x080105D8 _ src/combat_dialog/open_special_move_menu.c OpenSpecialMoveMenu
+c-file 0x08010660 _ src/combat_dialog/open_item_menu.c OpenItemMenu
+c-file 0x080106EC _ src/combat_dialog/open_spell_tier_menu.c OpenSpellTierMenu
+c-file 0x080107BC _ src/combat_dialog/open_ally_target_menu.c OpenAllyTargetMenu
+c-file 0x08010864 _ src/combat_dialog/show_battle_message.c ShowBattleMessage
+c-file 0x08011520 _ src/combat_dialog/draw_battle_menu_text.c DrawBattleMenuText
+c-file 0x0801173C _ src/combat_dialog/flash_enemy_target.c FlashEnemyTarget
+c-file 0x08011800 _ src/combat_dialog/flash_ally_target.c FlashAllyTarget
+c-file 0x080118C4 _ src/combat_dialog/flash_pending_fighter.c FlashPendingFighter
+c-file 0x08011984 _ src/combat_dialog/handle_battle_vblank.c HandleBattleVBlank
+c-file 0x08011AC0 _ src/combat_dialog/set_battle_menu_icon_state.c SetBattleMenuIconState
+c-file 0x08011BEC 0x08011BF0 src/combat_dialog/tick_battle_menu_stub.c TickBattleMenuStub
 thumb-func 0x08011BF0 ConfirmBattleTopMenu
 thumb-func 0x08011EBC ConfirmSpecialMoveMenu
 thumb-func 0x08011FA4 ConfirmSpellTierMenu
@@ -474,27 +474,27 @@ thumb-func 0x080120F0 ConfirmEnemyTargetMenu
 thumb-func 0x0801217C ConfirmAllyTargetMenu
 thumb-func 0x08012240 CancelEnemyTargetMenu
 thumb-func 0x08012340 CancelAllyTargetMenu
-thumb-func 0x08012480 sub_0801247C
-thumb-func 0x0801250C sub_08012508
+thumb-func 0x08012480 MoveEnemyTargetCursor
+thumb-func 0x0801250C MoveAllyTargetCursor
 thumb-func 0x08012598 sub_08012594
 thumb-func 0x08012794 sub_08012790
 thumb-func 0x08012998 InitCharacterSpells_candidate
 thumb-func 0x080129F8 StopBgTileAnimationsAfterCard_candidate
 thumb-func 0x08012A04 sub_08012A00
-thumb-func 0x08012A3C sub_08012A38
+thumb-func 0x08012A3C ClearBattleTextPanel
 thumb-func 0x08012A88 GetBattleBackgroundGraphic
 thumb-func 0x08012AC4 GetBattleBackgroundData_candidate
 c-file 0x08012B00 0x08012B44 src/combat_dispatch/push_battle_state.c PushBattleState
 thumb-func 0x08012B44 sub_08012B40
 thumb-func 0x08012B9C OpenEnemyTargetMenu_candidate
-thumb-func 0x08012C10 sub_08012C0C
-thumb-func 0x08012C64 sub_08012C60
-thumb-func 0x08012CB8 ClearFighterActorFlag_candidate
+thumb-func 0x08012C10 StopEnemyTargetFlash
+thumb-func 0x08012C64 StopAllyTargetFlash
+thumb-func 0x08012CB8 HideBattleMenuIcon
 thumb-func 0x08012CE8 SetupAllyBattleMessageIcon_candidate
 thumb-func 0x08012D30 SetupEnemyBattleMessageIcon_candidate
-thumb-func 0x08012D7C sub_08012D78
+thumb-func 0x08012D7C SelectBattleMenuIcon
 thumb-func 0x08012E10 sub_08012E0C
-thumb-func 0x08012E3C sub_08012E38
+thumb-func 0x08012E3C WrapBattleMenuCursor
 thumb-func 0x08012E54 CancelBattleTopMenu
 thumb-func 0x08012E58 ConfirmSpellChoiceMenu
 thumb-func 0x08012EB0 ConfirmItemMenu
@@ -502,16 +502,16 @@ thumb-func 0x08012F10 CancelToBattleTopMenu
 thumb-func 0x08012F50 CancelSpellTierMenu
 thumb-func 0x08012FD4 IgnoreBattleMenuInput
 thumb-func 0x08012FD8 PrepareBattleMessageDisplay_candidate
-thumb-func 0x08013018 sub_08013014
-thumb-func 0x08013038 sub_08013034
+thumb-func 0x08013018 ClearBattleMessageLine
+thumb-func 0x08013038 DrawBattleMenuFrame
 c-file 0x080130B8 0x0801310C src/combat_dispatch/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
 thumb-func 0x0801310C sub_08013108
 thumb-func 0x08013110 TogglePendingFighterCursor_candidate
-thumb-func 0x0801314C sub_08013148
+thumb-func 0x0801314C StopPendingFighterFlash
 thumb-func 0x080131A0 OpenPendingFighterMenu_candidate
 thumb-func 0x08013210 ConfirmPendingFighterMenu_candidate
 thumb-func 0x08013294 CancelPendingFighterMenu_candidate
-thumb-func 0x080132F8 sub_080132F4
+thumb-func 0x080132F8 DrawAllyTargetStats
 thumb-func 0x08013324 sub_08013320
 thumb-func 0x08013344 sub_08013340
 c-file 0x08013364 _ src/combat_effects_hblank/end_battle_wall_scanline.c EndBattleWallScanline
@@ -1668,7 +1668,7 @@ thumb-func 0x0803D418 PlayScreenTransitionInByIndex
 thumb-func 0x0803D450 PlayScreenTransitionOutByIndex
 c-file 0x0803D488 0x0803D49C src/screen_transitions/set_screen_darken_params.c SetScreenDarkenParams_candidate
 thumb-func 0x0803D49C RestoreScreenPalette
-thumb-func 0x0803D4F0 sub_0803D488
+thumb-func 0x0803D4F0 CommitAlphaBlendCoefficients
 thumb-func 0x0803D510 sub_0803D4A8
 thumb-func 0x0803D570 sub_0803D508
 thumb-func 0x0803D5D0 sub_0803D568
@@ -2036,7 +2036,7 @@ c-file 0x0804D69C 0x0804D6BC src/choose_party_member/choose_character_effects.gl
 c-file 0x0804D6C4 _ src/color/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D724 _ src/combat_core/battle_effect001_asset.c g_BattleEffect001Asset
 c-file 0x0804D734 _ src/combat_dialog/battle_top_menu_text.c g_adwBattleTopMenuTextIds
-c-file 0x0804D750 _ src/combat_dialog/battle_hud_assets.c g_aBattleHudAssets
+c-file 0x0804D750 _ src/combat_dialog/battle_hud_assets.c g_aPartyFaceAssets
 c-file 0x0804DFA0 _ src/combat_dialog/battle_bg_controls.c g_dwBattleFloorBgControl
 c-file 0x0804DFB0 _ src/combat_dialog/fighter_spell_menus.c g_aabFighterSpellMenu
 c-file 0x0804DFC8 _ src/combat_dialog/battle_backgrounds.c g_aBattleBackgroundPairs

@@ -140,7 +140,7 @@ groups:
       # g_aEffectActorAssets records and palettes loaded by code
       - kind: image-bank
         count: 114
-        names: {1: BattleEffect001}
+        names: {1: BattleEffect001, 2: TargetFlash, 3: BattleEffect003}
         noPalette: [BattleEffect020]
         paletteSources:
           BattleEffect006: BattleEffect005

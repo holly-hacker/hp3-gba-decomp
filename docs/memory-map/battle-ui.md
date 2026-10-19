@@ -26,30 +26,33 @@ unrelated dialog text elsewhere in the ROM -- not a practical starting
 point on its own). The real entry point was a byte-pattern search for the
 raw bytes of `0x8f0` (`2288`, `Cast Spell`'s string id) as 32-bit literal
 data, which landed on a 7-entry table at `0x0804d808` referenced from
-`FUN_08011520` -- the menu's own label-drawing function.
+`DrawBattleMenuText` -- the menu's own label-drawing function.
 
-### Menu/UI state machine, `FightState` fields
+### Menu state, `FightState` fields -- PROVEN
 
-- **`field_0x1070`** (u8): which menu *screen* is currently active. Values
-  found: `1` = top-level 7-item menu, `2` = per-character spell list
-  (`Cast Spell`), `4` = 3-item Special Move/Lecture list (Hermione's 3
-  lectures and Ron's 3 moves share this one screen), `5` = spell
-  cast-level list (Uno/Duo/Tria, inferred from `FUN_080101d0`'s case 5
-  reading `pBVar6->aSpellEffectiveness[bSpellId-0x24]` as an item count,
-  not walked further), `6` = target-select/confirm screen, `7` = item
-  list, `8`/`9` = further submenus (not walked). `0` = no menu open.
-- **`field_0x147c`** (u8): the current menu cursor index within whichever
-  screen `field_0x1070` selects.
-- Both consumed by **`FUN_08011520`** (`0x08011520`), called after every
-  cursor move: draws the currently-highlighted entry's label (and, for
-  the spell-level screen, its MP cost) via `GetDialogText`/`DrawTextLines`
-  -- this is the menu's own label-draw routine, not a generic dialog
-  drawer.
+Matched C: `src/combat_dialog/`.
+
+- **`bMenuScreen`** (`+0x1070`, `BattleMenuScreen`): the open screen. `1` top
+  menu, `2` spell list, `4` Special Moves, `5` spell cast levels, `6` enemy
+  target, `7` items, `8` ally target, `9` pending fighter. `0`, `10` and bit
+  `0x80` mean no input is taken.
+- **`bMenuCursor`** (`+0x147C`): the highlighted row, or the target slot on
+  screens `6`, `8` and `9`.
+- **`bSpellMenuCursor`** (`+0x147D`): the spell-list row that opened screen `5`.
+- **`nTargetFlashEffect`** (`+0x1484`): palette effect flashing the targeted
+  fighter's sprite (`FlashEnemyTarget`, `FlashAllyTarget`,
+  `FlashPendingFighter`), ended by the `Stop*Flash` functions.
+
+Each `Open*Menu` function sets `bMenuScreen`, redraws the menu frame and the
+fighter's stats panel, and shows one icon per row through
+`SetBattleMenuIconState` (grayed rows are semi-transparent). After every cursor
+move `DrawBattleMenuText` prints the row's label, for a cast level also its name
+and cost.
 
 ### Top-level menu, PROVEN
 
 **`0x0804d808`**, a 7-entry `int32[7]` table of dialog-text ids, read as
-`table[field_0x147c]` by `FUN_08011520`'s `field_0x1070==1` case:
+`table[bMenuCursor]` by `DrawBattleMenuText` on the top menu:
 
 ```
 [0x8f0, 0x8f1, 0x960, 0x8f2, 0x8f3, 0x8f4, 0x8f5]
@@ -63,8 +66,8 @@ order*: index `2`, between `Special Move` and `Use Item` -- exactly the
 order the user-facing glossary lists it in. All 7 items the user asked
 about are accounted for by this one table.
 
-**`FUN_080104a0`** (`OpenBattleMenu_candidate`, `0x080104a0`) opens this
-screen for a given fighter: sets `field_0x1070=1`, builds a local 7-entry
+**`OpenBattleTopMenu`** opens this
+screen for a given fighter: sets `bMenuScreen=1`, builds a local 7-entry
 enabled/grayed array (all `1` by default), then:
 
 - grays index `1` (`Special Move`) if the active fighter is Hermione with
@@ -77,12 +80,12 @@ enabled/grayed array (all `1` by default), then:
   the natural "is this a boss fight" flag/index candidate (not
   independently named further here).
 
-**`FUN_08011bec`** (`0x08011bec`) is the confirm (A-button) handler for
-this screen, `switch(field_0x147c)` with 7 cases matching the table above
+**`ConfirmBattleTopMenu`** (`0x08011bec`) is the confirm (A-button) handler for
+this screen, `switch(bMenuCursor)` with 7 cases matching the table above
 1:1:
 
-- **case 0, Cast Spell**: `field_0x1070 = 2` (spell-list screen), then
-  builds the list via `FUN_08011abc(1, i, fighterType, 1)` for
+- **case 0, Cast Spell**: `bMenuScreen = 2` (spell-list screen), then
+  builds the list via `SetBattleMenuIconState(1, i, fighterType, 1)` for
   `i` in `[0, pFighter->bUnk_0x0F)` -- **`bUnk_0x0F` is the fighter's
   known-spell count**, directly confirming "only unlocked spells for that
   character" from the task description.
@@ -92,29 +95,29 @@ this screen, `switch(field_0x147c)` with 7 cases matching the table above
   matching `DAT_03003f3c == 0x26` already read by `ResumeBattleAfterSubmode_candidate` earlier
   in [`battle.md`](battle.md) (that function consumes the *result* of a completed card
   selection, not the menu itself -- the two findings now connect).
-  Otherwise (Hermione/Ron) calls **`FUN_080105d8`** (see below) -- one
+  Otherwise (Hermione/Ron) calls **`OpenSpecialMoveMenu`** (see below) -- one
   shared 3-item-list screen for both, not per-character screens.
 - **case 2, Informus**: gated by `DAT_03003f00 != 0xff` (a second,
   independent boss-style check from the graying check above -- same
   "boss" concept, different flag/slot). Sets the active fighter's
   `bSelectedActionIndex=0`, **`bSpellId=1`** (`Informus`'s own real
   `SpellId`, see [`battle.md`](battle.md)'s `bSpellId` writeup -- not borrowed from
-  `Spongify`), `field_0x3b=4`, `bSpellLevel=0`, then `field_0x1070=6`
-  (the same target-select screen spellcasting uses). `field_0x3b` is
+  `Spongify`), `bPendingActionKind=4`, `bSpellLevel=0`, then `bMenuScreen=6`
+  (the same target-select screen spellcasting uses). `bPendingActionKind` is
   `BattleFighter+0x3B`, i.e. **`bPendingActionKind_candidate`** itself
-  (`None`=`0`/`UseItem`=`1`/`SpecialMove`=`2`/`Flee`=`3`/`Informus`=`4`)
+  (`None`=`0`/`UsePotion`=`1`/`SpecialMove`=`2`/`Flee`=`3`/`Informus`=`4`)
   -- the same field `DispatchPendingAction`'s top-level switch reads --
-  so `field_0x3b=4` is simply this menu tagging the pending action as
-  `Informus`, exactly like `Flee`/`UseItem`/`SpecialMove` each tag their
+  so `bPendingActionKind=4` is simply this menu tagging the pending action as
+  `Informus`, exactly like `Flee`/`UsePotion`/`SpecialMove` each tag their
   own screens; a regular `Cast Spell` selection leaves it at `None` (`0`)
-  instead (see `field_0x1070==2` above). There is no `Spongify`-borrowing
+  instead (see `bMenuScreen==2` above). There is no `Spongify`-borrowing
   or cast-disambiguation happening here at all -- `Informus` is a
   first-class pending-action kind with its own real `SpellId`.
-- **case 3, Use Item**: `field_0x1070 = 7` (item-list screen), calls
-  `FUN_08010660` to build the list.
+- **case 3, Use Item**: `bMenuScreen = 7` (item-list screen), calls
+  `OpenItemMenu` to build the list.
 - **case 4, Flee**: gated by `DAT_03003f24 != 0xff` (the same flag
-  `FUN_080104a0` already used to gray this entry -- re-checked here
-  too), sets `field_0x1070=0` (closes the menu) and `field_0x3b=3`.
+  `OpenBattleTopMenu` already used to gray this entry -- re-checked here
+  too), sets `bMenuScreen=0` (closes the menu) and `bPendingActionKind=3`.
 - **case 5, Folio Bruti**: calls `FUN_0802c7c4(0x2d)` -- a mode-push,
   presumably to the Folio Bruti screen (not walked further here; see
   [`../formats/folio_bruti.md`](../formats/folio_bruti.md)).
@@ -124,30 +127,23 @@ this screen, `switch(field_0x147c)` with 7 cases matching the table above
   menu similar to the pause menu" from the user's description (not
   walked further).
 
-Cursor movement and A/B dispatch both live in **`TickBattleMenuInput`**
-(`0x080101d0`): reads the newly-pressed-key bitmask `g_wKeysPressed`
-(`0x030034F0`, standard GBA KEYINPUT bit order -- see
-`docs/memory-map/input.md`; `0x10`=Right advances the list cursor by +1,
-`0x20`=Left moves it back by -1, both with wraparound via `FUN_08012e38`);
-`0x01`=A/confirm, `0x02`=B/cancel dispatch through two 11-entry function-
-pointer tables indexed by `field_0x1070`: confirm table at `0x0804e2ec`,
-cancel table at `0x0804e318`). `field_0x1070`'s per-screen confirm
-handlers: `1`->`0x08011bec` (above), `2`->`0x08012e54`, `4`->`0x08011eb8`
-(below), `5`->`0x08011fa0`, `6`->`0x080120ec`, `7`->`0x08012eac`,
-`8`->`0x08012178`, `9`->`0x0801320c` (all now walked below except `9`,
-which has no function defined at that address at all -- `field_0x1070`
-is never observed being set to `9` anywhere in this whole tree, so this
-slot looks unreachable/dead from battle, not a tracing gap).
+Cursor movement and A/B dispatch both live in **`TickBattleMenuInput`**:
+Right/Left (`g_wKeysPressed`, see [`input.md`](input.md)) step `bMenuCursor`,
+wrapped by `WrapBattleMenuCursor`; the target screens move between occupied
+fighter slots instead, the ally slots in reverse. A and B call the `bMenuScreen`
+entries of `g_apfnBattleMenuConfirmHandlers` (`0x0804E2EC`) and
+`g_apfnBattleMenuCancelHandlers` (`0x0804E318`) with the fighter's type and
+record.
 
 ### The rest of the menu tree, PROVEN, and where the effect calls actually live
 
-Walking every remaining `field_0x1070` confirm handler completes the
+Walking every remaining `bMenuScreen` confirm handler completes the
 picture -- and the headline result is structural: **none of the menu's
 own confirm handlers call the effect-trigger function
 (`FUN_08018b70`) directly.** Every screen in this tree does the same
 thing: write a handful of `BattleFighter` fields (`bSpellId`,
-`bSpellLevel`, `bSelectedActionIndex`, `field_0x3b`, `bSlotParam`) and
-set `field_0x1070 = 0` to close the menu. The actual effect calls all
+`bSpellLevel`, `bSelectedActionIndex`, `bPendingActionKind`, `bSlotParam`) and
+set `bMenuScreen = 0` to close the menu. The actual effect calls all
 happen afterward, in the actor-tick execution layer
 [`battle.md`](battle.md) covers (`TickPlayerActionState`'s
 case `0x1a` =
@@ -157,12 +153,12 @@ decoupled through these struct fields, confirming the split this
 document's opening notes (menu-construction vs. action-execution are
 genuinely two separate layers, not just two ends of one function).
 
-- **`field_0x1070==2`** (`FUN_08012e54`, confirm handler for the
+- **`bMenuScreen==2`** (`ConfirmSpellChoiceMenu`, confirm handler for the
   per-character spell list opened by `Cast Spell`): `bSpellId =
   g_abSpellIdByCursor[fighterType*7 + cursor]` -- **`g_abSpellIdByCursor`
   (`0x0804e084`) is a per-character cursor-position -> real `SpellId`
   remap table** (already
-  independently referenced by `FUN_08011520`'s label-draw code for this
+  independently referenced by `DrawBattleMenuText`'s label-draw code for this
   same screen), needed because not every character's spell list shows
   the same `SpellId`s in the same menu order/count -- Harry's row is
   `[0,2,4,6,3,5,0]`, Ron's is `[0,2,4,6,9,5,0]`, and **Hermione's row,
@@ -173,10 +169,9 @@ genuinely two separate layers, not just two ends of one function).
   actual `Spongify`-is-Ron-only mechanism (see the `bSpellId` writeup
   in [`battle.md`](battle.md)), matching `data/text/en_us.json` string `937`: "Harry receives
   Diffindo, Ron receives Spongify, and Hermione receives Glacius!".
-  `bSpellLevel=0`, `bPendingActionKind_candidate=None` (`field_0x3b=0`). Then
-  `FUN_080106ec(fighterIdx, cursor)` builds the next screen's list before
-  an (unrecovered, but structurally `field_0x1070=5`) jump.
-- **`field_0x1070==5`** (`FUN_08011fa0`, spell cast-level list --
+  `bSpellLevel=0`, `bPendingActionKind_candidate=None` (`bPendingActionKind=0`). Then
+  `OpenSpellTierMenu(fighterIdx, cursor)` opens screen `5`.
+- **`bMenuScreen==5`** (`ConfirmSpellTierMenu`, spell cast-level list --
   Uno/Duo/Tria): confirms the **spell cast-level list from the task
   description** and gates it on affordability --
   `fighter.wSp < g_awSpellMpCost[spellId*3+cursor]` beeps/refuses (SP,
@@ -186,7 +181,7 @@ genuinely two separate layers, not just two ends of one function).
   boss-flag candidate used to gray `Informus`/`Flee`) -- **a boss fight
   blocks Spongify specifically**, a new, concrete behavioral fact. Sets
   `bSpellLevel = cursor`; most spell/level combinations proceed to a
-  target-select screen (`field_0x1070=6`), except a few that execute
+  target-select screen (`bMenuScreen=6`), except a few that execute
   immediately with `bSelectedActionIndex=0xfe` (self/no-target): `Fumos`
   (`bSpellId==8`) at level-1 (`Duo`, its party-wide cast, effect id `32`
   -- see [`battle.md`](battle.md)'s `Hidden` status bullet), `bSpellId==6`
@@ -195,35 +190,35 @@ genuinely two separate layers, not just two ends of one function).
   `Tria` cast doesn't need a target, with `Glacius` special-cased back
   into needing one. Not fully explained; flagged rather than
   over-interpreted.
-- **`field_0x1070==6`** (`FUN_080120ec`, the enemy target-select
+- **`bMenuScreen==6`** (`ConfirmEnemyTargetMenu`, the enemy target-select
   confirm): after a vsync wait and some UI cleanup calls, simply writes
-  `bSelectedActionIndex = cursor` and `field_0x1070 = 0`. Reads
+  `bSelectedActionIndex = cursor` and `bMenuScreen = 0`. Reads
   `aEnemySlotTurnOrderIndex` elsewhere in the target-select code in [`battle.md`](battle.md)
   (`g_pFightState->aEnemySlotTurnOrderIndex`, an array already used as an
   enemy-roster-index list by `ResolvePlayerAttack`'s callers) --
   **this screen targets enemies.** Used by: `Informus`, Ron's `Stink
   Pellet`/`Wizard Cracker`, the spell target-select path above, and
   Hermione's non-self lectures.
-- **`field_0x1070==7`** (`FUN_08012eac`, item-list confirm): checks
+- **`bMenuScreen==7`** (`ConfirmItemMenu`, item-list confirm): checks
   `IsBattleItemSlotUsable(cursor)` (owns that potion -- refuses with a beep if
-  not), then `field_0x3b=1`, `bSpellLevel = cursor + 0x38` (matches
-  `FUN_08011520`'s item-name text lookup, `GetRewardNameStringId_candidate(cursor+0x38)`) --
+  not), then `bPendingActionKind=1`, `bSpellLevel = cursor + 0x38` (matches
+  `DrawBattleMenuText`'s item-name text lookup, `GetRewardNameStringId_candidate(cursor+0x38)`) --
   **items are addressed by the same `bSpellLevel` field spell levels
   use, offset by `0x38`** into `g_pItemTable` (the item database
-  below). Then calls `FUN_080107bc` (below) to
+  below). Then calls `OpenAllyTargetMenu` (below) to
   pick a target.
-- **`FUN_080107bc`** (`0x080107bc`), the shared **ally**-target-select
-  *opener*: sets `field_0x1070 = 8` and reads `aAllySlotTurnOrderIndex` (a
+- **`OpenAllyTargetMenu`** (`0x080107bc`), the shared **ally**-target-select
+  *opener*: sets `bMenuScreen = 8` and reads `aAllySlotTurnOrderIndex` (a
   different array from state 6's `aEnemySlotTurnOrderIndex`) for its list --
-  **`field_0x1070==8` targets allies, not enemies.** Called from three
+  **`bMenuScreen==8` targets allies, not enemies.** Called from three
   places in this tree: `Use Item` (above), Hermione's non-"Proper Wand
   Technique" lectures (`Be More Careful`, `Good Study Habits` --
   consistent with them needing an ally target rather than an enemy), and
   the `bSpellId==8` special case inside the spell-level confirm above.
-- **`field_0x1070==8`** (`FUN_08012178`, the ally target-select
+- **`bMenuScreen==8`** (`ConfirmAllyTargetMenu`, the ally target-select
   confirm): same shape as state 6's confirm -- vsync wait, writes
-  `bSelectedActionIndex = cursor`, `field_0x1070 = 0` -- plus, if
-  `field_0x3b==1` (the `Use Item` marker set above), calls
+  `bSelectedActionIndex = cursor`, `bMenuScreen = 0` -- plus, if
+  `bPendingActionKind==1` (the `Use Item` marker set above), calls
   `RemoveItems(itemIndex, 1)`, consuming the used item.
 
 `Use Item`'s actual effect resolution happens later, in
@@ -241,10 +236,10 @@ Moves use.
 
 ### Special Move submenu (Hermione's 3 Lectures / Ron's 3 Special Moves), PROVEN
 
-**`FUN_080105d8`** (`0x080105d8`) is the shared opener for both
-characters' 3-item Special Move list: sets `field_0x1070=4`, builds
-exactly 3 entries via `FUN_08011abc(3, i, fighterType, 1)` for `i` in
-`0..2`. `FUN_08011520`'s `field_0x1070==4` case picks the label text base
+**`OpenSpecialMoveMenu`** (`0x080105d8`) is the shared opener for both
+characters' 3-item Special Move list: sets `bMenuScreen=4`, builds
+exactly 3 entries via `SetBattleMenuIconState(3, i, fighterType, 1)` for `i` in
+`0..2`. `DrawBattleMenuText`'s `bMenuScreen==4` case picks the label text base
 by fighter type -- `fighterType==Hermione`: `textId = cursor + 0x8fa`
 (`2298`-`2300`, already known to be `Be More Careful`/`Good Study
 Habits`/`Proper Wand Technique`'s *string* ids in that order, per the
@@ -253,22 +248,22 @@ else (Ron): `textId = cursor + 0x8fd` (`2301`-`2303`, i.e. **cursor 0 =
 Stink Pellet, cursor 1 = Wizard Cracker, cursor 2 = Stink Pellet 2**,
 exactly the string-id order already on record).
 
-**`FUN_08011eb8`** (`0x08011eb8`), this screen's confirm handler:
+**`ConfirmSpecialMoveMenu`** (`0x08011eb8`), this screen's confirm handler:
 
 ```c
 BattleFighter *f = ...;
-f->bSpellId = field_0x147c;   // the selected list index, 0-2
-f->bPendingActionKind_candidate = SpecialMove;   // field_0x3b = 2
+f->bSpellId = bMenuCursor;   // the selected list index, 0-2
+f->bPendingActionKind_candidate = SpecialMove;   // bPendingActionKind = 2
 if (fighterType == Hermione) {
     if (f->bSpellId != 1)          // not "Proper Wand Technique"
-        goto target_select;         // FUN_080107bc
+        goto target_select;         // OpenAllyTargetMenu
 } else /* Ron */ {
     if (f->bSpellId != 2)          // not "Stink Pellet 2"
-        goto target_select;         // field_0x1070 = 6, same screen Informus uses
+        goto target_select;         // bMenuScreen = 6, same screen Informus uses
 }
 // self-cast, no target needed:
 f->bSelectedActionIndex = 0xfe;
-field_0x1070 = 0;                   // close menu, execute immediately
+bMenuScreen = 0;                   // close menu, execute immediately
 ```
 
 So **Ron's `bSpellId` is set directly from the menu cursor (0/1/2)**, the
@@ -384,11 +379,9 @@ one per branch of a `MonsterTable.special_effect_chance == 100` check).
 Three callees, all `_candidate` (structurally strong, not proven
 identities):
 
-- **`ShowBattleMessage`** (`0x08010864`) -- dispatches on a message code
-  plus two context args; every case ends by picking a dialog text id and
-  tail-calling `GetDialogText`. Case 6 handles fainted messages; case 5
-  handles damage-number text and the `param_2 < 1000` check matching the
-  `+999` crit sentinel (see the case-5 table below).
+- **`ShowBattleMessage`** (`0x08010864`) -- prints a battle message by
+  `BattleMessageCode`; case 6 shows the queued faint messages, case 5 the
+  attack result (see the tables below).
 - **`ShowDamageNumber_candidate`** (`0x08017B5C`) -- stores a damage
   value onto the target's sprite `Actor+0x62` and triggers a state
   change via `SetActorActionState`.
@@ -657,88 +650,55 @@ format's `itemQuantities` and `equippedItems`.
 
 ### `ShowBattleMessage` -- case -> dialog text table
 
-Text pulled from `data/text/en_us.json` by string ID.
-`GetDialogText` (`0x080425E4`) returns a decompressed-text pointer (or
-0 on failure); prototype `void *GetDialogText(int textId)`. Every call
-site checked (24 across the ROM) is a genuine `bl`, not a tail-branch.
+Matched C: `src/combat_dialog/show_battle_message.c`. Each line goes through
+`DrawBattleMessageLine` (inlined; `DrawTextLines`, see
+[`../formats/text.md`](../formats/text.md)) at one of four text rows
+(`BATTLE_TEXT_ROW0_Y`-`ROW3_Y`), on the right half (centred at x `0xA0`) or the
+left (x `0x58`). Text is from `data/text/en_us.json`.
 
-Several logical cases compile to more than one physical call site
-(tail-duplication, up to 5 for case 6) -- every one of the 25 physical
-`GetDialogText` call sites is individually annotated in Ghidra
-(decompiler PRE_COMMENTs, visible inline in the decompile). Case
-boundaries are read directly from the switch's real 18-entry jump table
-(`0x080108D4`), which does not match the decompiler's own case-label
-order.
-
-| `messageCode` | Text ID | Text |
+| `code` | Text ID | Text |
 |---|---|---|
-| 0 | `0x904` (static) | "The spell levels-up!" |
-| 1 | `0x902` (static) | "Your escape has been blocked." |
-| 2 | `fighterType*4 + 0x970` (dynamic) | e.g. "Harry performs a Special Move:" |
-| 4 | `DAT_0804e344[fighterType]` (hero, indices 0-3) or `DAT_0804e344[rosterIndex+4]` (enemy, indices 4+) -- both branches read the SAME table, confirmed by reading the pool pointers at both call sites | hero: "Harry casts a spell:" / "Hermione casts a spell:" / "Ron casts a spell:" / "Buckbeak attacks!" (indices 0-3). enemy (sampled indices 4-7): "The ruby fire crab attacks!" / "The emerald fire crab attacks!" / "The sapphire fire crab attacks!" / "The Cornish pixie attacks!". A third call site (`0x08010c92`) passes the fighter struct pointer itself as the textId -- almost certainly dead/unreachable code, not resolved |
-| 5 | attack-result text; sub-dispatched on `param2` -- see the table below | "Critical hit!", "@1 damage.", miss/poison/paralysis lines |
-| 6 | fainted-message queue pop (`aFaintMessages_candidate[--bFaintMessageCount_candidate]`): `bEffectId<3` -> `0x8ec+bEffectId`; `==3` -> `0xa3d`; else -> `0x49e+bEffectId`; then unconditionally a damage-amount message, plus a miss-message variant | "Harry"/"Hermione"/"Ron" or "Buckbeak" (who fainted the target), then spell name e.g. "Diffindo"/"Glacius" (what fainted them), then "@1 damage." (two call sites, same text) or "The attack misses." |
-| 7 | `fighterType + 0x973` (dynamic) | e.g. "Harry uses a potion:" |
-| 8 | inner `switch(arg2)`: `0x38`/`0x39` -> `fighterType + 0x98d`; `0x3a`/`0x3b` -> `0xa27`; `0x3c` -> `fighterType + 0x985`; `0x3d` -> `fighterType + 0x981` | "Harry's SP are replenished." / "Your Magic Points are refilled." or "The party is revived!" / "Harry feels better!" / "Harry can move again!" (per fighterType) |
-| 9 | `0x998` (static) | "@1 SP" |
-| 10 | `0x999` (static) | "@1 MP" |
-| 0xb | `0xa1e` (static) | "You are victorious!" |
-| 0xc | `0xa1d` (static) | "You've been defeated." |
-| 0xd | `fighterType==0xff` ? `0xa1c` : `DAT_0804e5ec[fighterType]` | "The opponent can't move!" (enemy), or "Harry"/"Hermione"/"Ron"/"Buckbeak can't move." (hero, per `FighterType`) |
-| 0xe | `fighterType==0xff` ? `0xa20` : `fighterType + 0x981` | "The opponent can move again!" (enemy), or "Harry"/etc. "can move again!" (hero) |
-| 0xf | `0xa3c` (static) | "The opponent's attacks are weakened." |
-| 0x10 | `pFighters[arg3].fighterType + 0x991` (dynamic) | e.g. "Harry is hidden from view!" |
-| 0x11 | `0xa3e` (static) | "The opponent is immune to paralysis!" |
-| default | keyed on the *acting* fighter's `bFighterType`: `1` (Hermione) -> `arg2 + 0xa39`; `2` (Ron) -> `arg2 + 0xa36`; `0` (Harry) -> several sub-branches (`arg2==3`/`6`/`0xf` index different tables, e.g. `0xf` -> `... + 0xa2d`); else -> `0` | Hermione/Ron/Harry special-move descriptions, e.g. "Wow! Harry learned all possible spells!" |
+| 0 | `0x904`, with jingle `0x1A` | "The spell levels-up!" |
+| 1 | `0x902` | "Your escape has been blocked." |
+| 2 | `fighterType + 0x970`, then the move: Harry `value + 0x478`, Hermione `value + 0x8FA`, Ron `value + 0x8FD` | e.g. "Harry performs a Special Move:" |
+| 3 | Harry: `g_adwSpecialMoveResultTextIds[value]`, for moves `3` and `15` plus the targeted ally's `FighterType`, for move `6` `g_adwReviveTextIds[pending fighter's type]`; Hermione `value + 0xA39`; Ron `value + 0xA36` | Special Move result, e.g. "Wow! Harry learned all possible spells!" |
+| 4 | `g_adwFighterActionTextIds[fighterType]` (party) or `[rosterIndex + 4]` (enemy), then for a party spell `spellId + 0x95F`, or `0x8F6` with the spell (`@1`) and cast level (`bSpellLevel + 0x969`, `@2`) for spells with levels; nothing more for Buckbeak or an enemy | "Harry casts a spell:" / "The ruby fire crab attacks!" |
+| 5 | attack result, by `param` -- see the table below | "Critical hit!", "@1 damage.", miss/poison/paralysis lines |
+| 6 | pops `aFaintMessages_candidate` until empty: `@1` from `bEffectId` (`<= 2`: `0x8EC + id`; `3`: `0xA3D`; else `0x49E + id`) in `0x997`, "Critical hit!" above 999, then `0xA1B` when `bFlag` is `1`, else the damage in `0x997`; 30 frames per message, then `CheckBattleVictory` | who fainted the target, with what, and the damage |
+| 7 | `fighterType + 0x973`, then `value + 0x604` | e.g. "Harry uses a potion:" |
+| 8 | by item `value`: Wiggenweld (`0x38`/`0x39`) `targetType + 0x98D`; Pepperup (`0x3A`/`0x3B`) `0xA27`; antidote (`0x3C`) `targetType + 0x985`; anti-paralysis (`0x3D`) `targetType + 0x981` | "Harry's SP are replenished." / "Your Magic Points are refilled." / "Harry feels better!" / "Harry can move again!" |
+| 9 | `0x998` | "@1 SP" |
+| 10 | `0x999` | "@1 MP" |
+| 11 | `0xA1E` | "You are victorious!" |
+| 12 | `0xA1D` | "You've been defeated." |
+| 13 | `g_adwFighterCantMoveTextIds[fighterType]`, enemy `0xA1C` | "Harry can't move." / "The opponent can't move!" |
+| 14 | `fighterType + 0x981`, enemy `0xA20` | "Harry can move again!" / "The opponent can move again!" |
+| 15 | `0xA3C` | "The opponent's attacks are weakened." |
+| 16 | `pFighters[param].bFighterType + 0x991`, on that fighter's own row | e.g. "Harry is hidden from view!" |
+| 17 | `0xA3E` | "The opponent is immune to paralysis!" |
 
-Case 5 is the busiest of these and carries its own inner dispatch. Each
-variant is rendered through `DrawTextLines` (`0x08020F44`, the
-multi-line text-box drawer, see
-[`../formats/text.md`](../formats/text.md)):
+`AttackResult` (5) first prints "Critical hit!" (`0x995`) when `value` exceeds
+999, then:
 
-| Condition | Text ID | Text |
+| `param` | Text ID | Text |
 |---|---|---|
-| `param1 > 999` | `0x995` (static) | "Critical hit!" |
-| `param2 == 0` | `0x997` | "@1 damage." -- value is `param1`, or `param1 - 999` past the sentinel |
-| `param2 == 1` | `0x996` (hero) / `0xa1b` (enemy) | "The spell misses." / "The attack misses." |
-| `param2 == 2` | `DAT_0804e468[fighterType or rosterIndex+4]` | the target's name |
-| `param2 == 3` | `0x976 + targetFighterType` | "Harry is poisoned." |
-| `param2 == 4` | `0x97a + targetFighterType` (enemy attacker) / `0xa1f` | "Harry is paralyzed." / "The opponent is paralyzed!" |
+| `0` | `0x997`, `@1` = `value`, less 999 past a critical hit | "@1 damage." |
+| `1` | `0x996`, or `0xA1B` when the active fighter is an enemy | "The spell misses." / "The attack misses." |
+| `2` | `g_adwFighterFaintTextIds` of fighter `value` (`FighterType`, or `rosterIndex + 4` for an enemy) | the fainted fighter |
+| `3` | `0x976 + targetType` | "Harry is poisoned." |
+| `4` | `0x97A + targetType` (enemy attacker), else `0xA1F` | "Harry is paralyzed." / "The opponent is paralyzed!" |
 
-### `messageCode` -- enum, `BattleMessageCode`
-
-Applied to `ShowBattleMessage`'s first parameter, named from
-the case table below: `SpellLevelUp=0, EscapeBlocked=1,
-SpecialMoveAnnounce=2, SpecialAbilityText=3, ActionAnnounce=4,
-AttackResult=5, FaintResult=6, ItemUseAnnounce=7, StatusRestore=8,
-SpCost=9, MpCost=10, Victory=11, Defeat=12, CantMove=13,
-CanMoveAgain=14, AttackWeakened=15, Hidden=16, ImmuneToParalysis=17`.
-`SpecialAbilityText` (3) doesn't get its own visible `case` label in the
-decompile -- it shares a body with the switch's trailing default block,
-a decompiler-view limitation, not a boundary error (confirmed correct
-via the real jump table, see below).
-
-### Functions called from `ShowBattleMessage`, partially identified
+### Functions called from `ShowBattleMessage`
 
 - **`PlayJingle`** (`0x0803FF70`) -- called by
   `SpellLevelUp` (id `0x1a`). Looks up the module pointer at
   `g_apMusicModules[moduleId]` and plays it as a jingle,
   `krapPlay(module, KRAP_MODE_JINGLE, 0)` (see `krawall.md`).
-- **`PrepareBattleMessageDisplay_candidate`** (`0x08012FD4`) -- called
-  at the top of every `ShowBattleMessage` case. Draws/positions the
-  message window and clears a status bit on every active fighter's
-  sprite `Actor` via **`ClearFighterActorFlag_candidate`**
-  (`0x08012CB4`), which indexes a 7-slot array,
-  **`g_apFighterActors_candidate`** (`0x03002668`, `Actor*[7]`, likely
-  one slot per active `BattleFighter`).
+- **`PrepareBattleMessageDisplay_candidate`** (`0x08012FD4`) -- clears the
+  message box, resets `dwTextTileCursor` and hides the seven battle menu icons
+  (**`g_apBattleMenuIconActors`**, `0x03002668`) via **`HideBattleMenuIcon`**
+  (`0x08012CB4`).
 - `0x0804A2C4` (**`_call_via_r1`**) is one of libgcc's `_call_via_rX`
   stubs (`0x0804A2C0`-`0x0804A2FC`, one `bx rN` per register -- Thumb
   has no `blx reg`; see `../compiler.md`). Reached from `TickActor`'s
   callback dispatch.
-
-No `_candidate` suffix: every one of the 18 cases has real, verified
-dialog text (case table below), including all 5 of case 5's inner
-sub-cases. The one remaining gap -- case 4's third call site (`0x08010c92`) passing
-the fighter struct pointer directly as a textId, likely dead code -- is
-a single unexplained instruction, not a gap in the case identities
-themselves, so it doesn't block dropping the suffix here.

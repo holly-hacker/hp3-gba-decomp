@@ -33,7 +33,7 @@ void InitBattleDisplay(void)
 
     g_dwPaletteRedirect = 0;
     g_dwScreenPaletteDarkened = 0;
-    SetVBlankCallback(sub_08011980);
+    SetVBlankCallback(HandleBattleVBlank);
     InitObjTileAllocBitmaps(1);
     memset(VRAM_BASE, 0, 0x18000);
 

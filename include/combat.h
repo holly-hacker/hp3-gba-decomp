@@ -78,11 +78,26 @@ typedef struct BattleFighter {
 // BattleFighter.bPendingActionKind: what the battle menu queued for DispatchPendingAction.
 typedef enum {
     PendingActionNone        = 0,
-    PendingActionUseItem     = 1,
+    PendingActionUsePotion   = 1,
     PendingActionSpecialMove = 2,
     PendingActionFlee        = 3,
     PendingActionInformus    = 4,
 } PendingActionKind;
+
+// FightState.bMenuScreen: the battle menu screen TickBattleMenuInput drives. Bit 0x80
+// suspends input.
+typedef enum {
+    BattleMenuNone           = 0,
+    BattleMenuTop            = 1,
+    BattleMenuSpellChoice    = 2,
+    BattleMenuSpecialMove    = 4,
+    BattleMenuSpellTier      = 5,
+    BattleMenuEnemyTarget    = 6,
+    BattleMenuItem           = 7,
+    BattleMenuAllyTarget     = 8,
+    BattleMenuPendingFighter = 9,
+    BattleMenuInactive       = 10,  // ignored like BattleMenuNone; no writer found
+} BattleMenuScreen;
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
 // ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate.
@@ -102,7 +117,7 @@ typedef struct FightState {
     // ExitBattle's Folio Universitas/Help resume path snapshots every live
     // (0-bFighterCount) then pending (0-bPendingFighterCount_candidate)
     // fighter's Actor here, densely packed, before the real Actors are
-    // torn down -- exactly 7 slots (the same total as g_apFighterActors_candidate)
+    // torn down -- exactly 7 slots
     // fill this to FightState's 0x104C boundary.
     /*0x834*/ Actor aSuspendedFighterActors_candidate[7];
     /*0x104C*/ FixedPoint savedPos;  // copy of the attacker's Actor.pos
@@ -126,12 +141,14 @@ typedef struct FightState {
     /*0x1074*/ u32 dwStatsTextTileCursor;  // DrawString tile cursor of the fighter and enemy stats panels
     /*0x1078*/ u32 dwTextTileCursor;  // DrawTextLines tile cursor of battle messages
     /*0x107C*/ u16 awPalette[0x200];  // BG and OBJ palette, DMAed to palette RAM at the HUD scanline
-    /*0x147C*/ u8 pad_147C[0x147E - 0x147C];
+    /*0x147C*/ u8 bMenuCursor;       // highlighted row (or target slot) of the bMenuScreen screen
+    /*0x147D*/ u8 bSpellMenuCursor;  // spell-list row that opened the spell tier menu
     /*0x147E*/ u8 bActionDelayCounter_candidate;
     /*0x147F*/ u8 bWallEndLine;  // scanline ending the BG1 wall band (BG1VOFS 264 - line above it); moves with the camera
     /*0x1480*/ u8 bBonusRewardFlags;  // BattleRewardFlags; snapshotted to g_dwBattleRewardFlagsSnapshot by ExitBattle
     /*0x1481*/ u8 bEnemyScalePercent_candidate;  // set by InitializeBattle from Harry's level: 0x40/0x30/0x20 for level 0/1/2+
-    /*0x1482*/ u8 pad_1482[0x1488 - 0x1482];
+    /*0x1482*/ u8 pad_1482[0x1484 - 0x1482];
+    /*0x1484*/ s32 nTargetFlashEffect;  // palette effect handle flashing the targeted fighter's sprite
     /*0x1488*/ u32 dwRonSpecialUsed;  // set once Ron has used his Special Move this battle; grays the menu entry while nonzero
     /*0x148C*/ u32 dwHermioneSpecialUsed;  // set once Hermione has used her Special Move this battle; grays the menu entry while nonzero
     /*0x1490*/ u8 pad_1490;

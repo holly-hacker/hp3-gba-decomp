@@ -22,17 +22,17 @@ void InitializeBattle(void)
     g_dwBattleRewardFlagsSnapshot = 0;
 
     // Allocate all 6 fighter actors (3 on the player side, 3 on the enemy side)
-    for (i = 0; i < ARRAY_COUNT(g_apFighterActors_candidate); i++)
+    for (i = 0; i < ARRAY_COUNT(g_apBattleMenuIconActors); i++)
     {
-        g_apFighterActors_candidate[i] = AllocActorOfType(i + BattleActorType_FighterSlot0);
-        SetActorPosition(g_apFighterActors_candidate[i], i * 0x16 + 0x60, 0x8A);
-        g_apFighterActors_candidate[i]->dwFlags = 0x20000008;
-        g_apFighterActors_candidate[i]->bDepthSortBias = 0x80;
-        g_apFighterActors_candidate[i]->oam.paletteNum = i + 9;
+        g_apBattleMenuIconActors[i] = AllocActorOfType(i + BattleActorType_FighterSlot0);
+        SetActorPosition(g_apBattleMenuIconActors[i], i * 0x16 + 0x60, 0x8A);
+        g_apBattleMenuIconActors[i]->dwFlags = 0x20000008;
+        g_apBattleMenuIconActors[i]->bDepthSortBias = 0x80;
+        g_apBattleMenuIconActors[i]->oam.paletteNum = i + 9;
     }
 
     g_pBattleMessageIconActor_candidate = AllocActorOfType(i + BattleActorType_FighterSlot0);
-    g_bSelectedFighterSlot_candidate = 0;
+    g_dwSelectedBattleMenuIcon = 0;
     SetActorPosition(g_pBattleMessageIconActor_candidate, i * 0x16 + 0x60, 0x8A);
     pIconActor = g_pBattleMessageIconActor_candidate;
     pIconActor->dwFlags = 0x20000008;

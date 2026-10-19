@@ -21,9 +21,11 @@ typedef struct EffectStaging {
     u8 bTargetIndex;
     u8 bCasterIndex;
     u8 bBgEffectId_candidate;
-    u8 bStateA_candidate;
-    u8 bStateB_candidate;
+    u8 bBg0Priority;  // last priorities BSOP_SetBgPriority gave BG0 and BG1
+    u8 bBg1Priority;
     u8 bIdStaged_candidate;
+    u32 dwBgPrioritiesPending;  // set by EffectScanlineEnableBlend; HandleBattleVBlank then
+                                // restores the two priorities above instead of BG1 priority 1
 } EffectStaging;
 
 // A BG graphic load queued by QueueBattleBgLoad: FlushQueuedBattleDma copies

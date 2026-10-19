@@ -195,8 +195,8 @@ void DispatchPendingAction(int fighterIndex) {                  // 0x080100a0
         TrackSpellFamiliarity(f->bFighterType, f->bSpellId, f->bSpellLevel, &f->stats);
         SetFighterAttackAnimState(f->pActor, 0x1a);    // -> ExecutePlayerAttackSequence
         break;
-    case UseItem:
-        ShowBattleMessage(ItemUseAnnounce, f->bSpellLevel, 0);
+    case UsePotion:
+        ShowBattleMessage(PotionUseAnnounce, f->bSpellLevel, 0);
         SetFighterAttackAnimState(f->pActor, 0x04);
         break;
     case SpecialMove:
@@ -427,7 +427,7 @@ monster's record from `MonsterTable`; `InitPlayerBattleActor_candidate`
 | `0x32` | u16 | `wDamageRollMax` (`MonsterTable+0x08`) | PROVEN |
 | `0x34`-`0x39` | u8[6] | `aSpellEffectiveness[6]` (`MonsterTable+0x0A`-`+0x0F`) | PROVEN |
 | `0x3A` | u8 | `bSelectedActionIndex` -- UI slot the target-confirm menu wrote, later resolved to a real fighter (see "Target redirect" above) | STRUCTURAL MATCH |
-| `0x3B` | u8 | `bPendingActionKind` (enum, `None=0/UseItem=1/SpecialMove=2/Flee=3/Informus=4`) | PROVEN |
+| `0x3B` | u8 | `bPendingActionKind` (enum, `None=0/UsePotion=1/SpecialMove=2/Flee=3/Informus=4`) | PROVEN |
 | `0x3C` | u8 | `bSpellId` (enum `SpellId`, `0`-`9`) | PROVEN |
 | `0x3D` | u8 | `bSpellLevel` (0-2, Uno/Duo/Tria) | PROVEN |
 | `0x3E` | u8 | `bUnk_0x3E`, set to `0xff` on init | UNCONFIRMED, no reader traced |
@@ -579,7 +579,7 @@ Called from `InitializeBattle` (`0x0800DBAC`, matched in
 `src/combat/initialize_battle.c`) ahead of `ResumeBattleAfterSubmode_candidate`
 above; all four are visual/Actor plumbing, no combat-mechanical state:
 
-- **`InitBattleDisplay`** (`0x0800EBAC`): VBlank callback (`sub_08011980`),
+- **`InitBattleDisplay`** (`0x0800EBAC`): VBlank callback (`HandleBattleVBlank`),
   VRAM clear, the floor and wall layers (room-indexed table at `0x0804E09C`, with a
   fixed boss-room blob substituted when `g_abQuestEventState[0x1a]` is set and the
   room id is `8`-`15`), the BG1 HUD panel and `FightState.awPalette`, floor camera,
@@ -1128,7 +1128,7 @@ stateDiagram-v2
     [*] --> Idle : InitPlayerBattleActor, spawns fainted (wHp == 0)
     F --> Idle : velocity reaches (0,0)
     Idle --> Attack : DispatchPendingAction: None/Informus
-    Idle --> Item : DispatchPendingAction: UseItem
+    Idle --> Item : DispatchPendingAction: UsePotion
     Idle --> Special : DispatchPendingAction: SpecialMove
     Idle --> Flee : DispatchPendingAction: Flee, Mt19937Chance(75) fails
     Attack --> Idle : delay==0 / Fumos early exit -- PostActionBattleCheck()

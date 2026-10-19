@@ -41,8 +41,8 @@ void ExitBattle(void)
         ClearPaletteRam();
         FreeAllObjVramTiles();
 
-        for (slot = 0; slot < ARRAY_COUNT(g_apFighterActors_candidate); slot++)
-            g_apFighterActors_candidate[slot] = NULL;
+        for (slot = 0; slot < ARRAY_COUNT(g_apBattleMenuIconActors); slot++)
+            g_apBattleMenuIconActors[slot] = NULL;
         g_pBattleMessageIconActor_candidate = NULL;
 
         FreeBlock(g_pFightState->pFighters);
@@ -108,7 +108,7 @@ void ExitBattle(void)
 
         if (g_pFightState->bMenuScreen != 0)
             for (fighterIndex = 0; fighterIndex < 7; fighterIndex++)
-                ClearFighterActorFlag_candidate(fighterIndex);
+                HideBattleMenuIcon(fighterIndex);
 
         UnreserveObjPaletteSlot(0);
         FreeAllParticleEmitters();
@@ -123,8 +123,8 @@ void ExitBattle(void)
         ClearPaletteRam();
         FreeAllObjVramTiles();
 
-        for (slot = 0; slot < ARRAY_COUNT(g_apFighterActors_candidate); slot++)
-            g_apFighterActors_candidate[slot] = NULL;
+        for (slot = 0; slot < ARRAY_COUNT(g_apBattleMenuIconActors); slot++)
+            g_apBattleMenuIconActors[slot] = NULL;
         g_pBattleMessageIconActor_candidate = NULL;
     }
 }
