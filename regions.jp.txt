@@ -444,7 +444,7 @@ c-file 0x0800E62C 0x0800E890 src/combat_board/build_turn_order.c BuildTurnOrder
 thumb-func 0x0800E890 ReviveFighter_candidate
 c-file 0x0800EA68 _ src/combat_board/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
 c-file 0x0800EB2C 0x0800EBAC src/combat_board/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
-thumb-func 0x0800EBAC InitBattleBackground_candidate
+thumb-func 0x0800EBAC InitBattleDisplay
 c-file 0x0800EDD8 _ src/combat_core/setup_battle_roster.c SetupBattleRoster
 c-file 0x0800F16C _ src/combat_core/restore_fighter_actors.c RestoreFighterActors_candidate
 c-file 0x0800F5F0 _ src/combat_core/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
@@ -514,10 +514,10 @@ thumb-func 0x08013294 CancelPendingFighterMenu_candidate
 thumb-func 0x080132F8 sub_080132F4
 thumb-func 0x08013324 sub_08013320
 thumb-func 0x08013344 sub_08013340
-thumb-func 0x08013364 sub_08013360
-thumb-func 0x080133B0 sub_080133AC
-thumb-func 0x08013428 sub_08013424
-thumb-func 0x08013460 sub_0801345C
+c-file 0x08013364 _ src/combat_effects_hblank/end_battle_wall_scanline.c EndBattleWallScanline
+c-file 0x080133B0 _ src/combat_effects_hblank/begin_battle_hud_scanline.c BeginBattleHudScanline
+c-file 0x08013428 _ src/combat_effects_hblank/restore_battle_hud_panel_tilemap.c RestoreBattleHudPanelTilemap
+c-file 0x08013460 _ src/combat_effects_hblank/draw_battle_message_line.c DrawBattleMessageLine_unused
 c-file 0x080134C0 _ src/combat_end/initialize_combat_result.c InitializeCombatResult
 c-file 0x080138F8 _ src/combat_end/update_combat_result.c UpdateCombatResult
 c-file 0x08013ACC _ src/combat_end/initialize_combat_result_xp.c InitializeCombatResultXp

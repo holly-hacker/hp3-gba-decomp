@@ -814,7 +814,7 @@ extern const u8 gActionIcon041Palette[];
 extern const u8 gActionIcon042Tiles[];
 extern const u8 gActionIcon042Frames[];
 extern const u8 gActionIcon042Palette[];
-extern const u8 gBattleGraphics001[];
+extern const u8 gBattleHudPanel[];
 
 /* BattleHudAndEffects */
 extern const u8 gBattleHudItem001Tiles[];

@@ -53,7 +53,7 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 ## Users, PROVEN (call sites)
 
 - `QueueScanlineEffectTable` + `StartScanlineEffects` (+ `IsScanlineEffectQueueIdle`
-  spin): `InitializeChooseCharacter`, `InitBattleBackground_candidate`,
+  spin): `InitializeChooseCharacter`, `InitBattleDisplay`,
   `InitializeDialog`, `InitializeLupinPotionCutscene`, `InitFloorEffect`; the table
   alone from `sub_08008E88`, `sub_08012A00`, `sub_08012B40`, `sub_08018CF8`.
 - Battle script op `0x80` (`QueueScanlineEffect`, handler `0x0801A208`) queues one
@@ -62,6 +62,21 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 - `ClearScanlineEffects`: `ExitChooseCharacter`, `ExitDialog`, `ExitMinigameMenu`,
   `FreeFloorEffect`. `StopScanlineEffects`: the debug-menu, choose-character, dialog,
   Lupin-potion, overworld and Wizard Cracker Pop-It exit/init paths.
+
+## Battle screen table, PROVEN (matched C)
+
+`g_aBattleScanlineEffects` (`src/combat_dialog/battle_scanline_effects.c`); its
+queuers overwrite entry 1's line with `FightState.bWallEndLine` (initially 64).
+Each vblank the battle VBlank callback (`sub_08011980`) copies the 32x8-tile wall
+to BG1 rows 23-30 and sets BG1VOFS to 264 minus that line, which also overwrites
+HUD panel rows 23-24 until the line-88 entry restores them.
+
+| Line | Callback | Effect |
+|---|---|---|
+| 0 | `StartFloorAffineHBlankDma` | Floor affine HBlank DMA (`include/mode7.h`). |
+| entry 1 | `EndBattleWallScanline` | BG1 priority 0, BG1VOFS 0; re-queues itself when `bWallEndLine` changes. |
+| 88 | `RestoreBattleHudPanelTilemap` | Copies the 30x6-tile HUD panel from `gBattleHudPanel` to BG1 rows 19-24. |
+| 112 | `BeginBattleHudScanline` | After HBlank: BG1 scroll (0, 40), BG0VOFS 80, DMAs `FightState.awPalette` (BG and OBJ, 0x200 colors), BG1 priority 0, BLDALPHA 8/8. |
 
 ## UNCONFIRMED
 

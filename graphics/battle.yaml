@@ -121,8 +121,9 @@ groups:
       - kind: image-bank
         count: 42
         names: {1: ActionIcon001}
+      # BG1 battle HUD panel: InitBattleDisplay, RestoreBattleHudPanelTilemap
       - kind: graphic-blobs
-        names: [BattleGraphics001]
+        names: [BattleHudPanel]
 
   - name: BattleHudAndEffects
     runs:

@@ -594,11 +594,11 @@ Called from `InitializeBattle` (`0x0800DBAC`, matched in
 `src/combat/initialize_battle.c`) ahead of `ResumeBattleAfterSubmode_candidate`
 above; all four are visual/Actor plumbing, no combat-mechanical state:
 
-- **`InitBattleBackground_candidate`** (`0x0800EBAC`): VBlank callback,
-  VRAM clear, loads both battle background layers (room-indexed table at
-  `0x0804E09C`, with a fixed boss-room blob substituted when
-  `g_abQuestEventState[0x1a]` is set and the room id is `8`-`15`), camera/BG
-  scroll init, and the battle dialog-box palette block.
+- **`InitBattleDisplay`** (`0x0800EBAC`): VBlank callback (`sub_08011980`),
+  VRAM clear, the floor and wall layers (room-indexed table at `0x0804E09C`, with a
+  fixed boss-room blob substituted when `g_abQuestEventState[0x1a]` is set and the
+  room id is `8`-`15`), the BG1 HUD panel and `FightState.awPalette`, floor camera,
+  `g_aBattleScanlineEffects` and alpha blending.
 - **`RestoreFighterActors_candidate`** (`0x0800F16C`): only called on the
   submode-return path, not for a fresh battle. Rebuilds every fighter's
   sprite `Actor` from the `0x128`-byte backup image `FightState` stashed
@@ -608,7 +608,7 @@ above; all four are visual/Actor plumbing, no combat-mechanical state:
   the `Paralyzed`/`Poisoned` visual pose and status-particle attachment
   from each `BattleFighter.bStatusFlags`.
 - **`GetBattleBackgroundData_candidate`** (`0x08012AC0`): the same
-  room -> background-blob selection `InitBattleBackground_candidate`
+  room -> background-blob selection `InitBattleDisplay`
   inlines for its first layer, factored out standalone so
   `InitializeBattle` can also feed the blob into
   `LoadEmbeddedPalette` to pull its embedded palette.

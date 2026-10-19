@@ -188,7 +188,7 @@ void TickPlayerActionState(Actor *actor)
             if (g_pFightState->bActionDelayCounter_candidate > 4) {
                 SetFloorHeading((u8)(g_FloorEffect.bHeading - 1));
                 g_BgState.aLayers[1].scroll.x += 0xFFFD0000;
-                g_pFightState->bCameraZoomStep_candidate += 1;
+                g_pFightState->bWallEndLine += 1;
             } else if (g_pFightState->bActionDelayCounter_candidate == 4) {
                 SetFloorForwardSpeed(0);
             } else if (g_pFightState->bActionDelayCounter_candidate == 3) {
@@ -256,7 +256,7 @@ void TickPlayerActionState(Actor *actor)
             } else {
                 SetFloorHeading((u8)(g_FloorEffect.bHeading + 1));
                 g_BgState.aLayers[1].scroll.x += 0x30000;
-                g_pFightState->bCameraZoomStep_candidate -= 1;
+                g_pFightState->bWallEndLine -= 1;
             }
         } else if (flags & 1) {
             SetPlayerActorAnim(actor, 1);

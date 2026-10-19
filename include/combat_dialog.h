@@ -63,7 +63,7 @@ extern const u8 g_abBattleMusicByScriptedEncounter[15]; // 0x0804E28B, indexed b
 
 extern const ActorAssetRecord g_MenuSprite003Asset_candidate;  // 0x0804E29C, no reader found
 
-// Battle screen scanline callbacks, copied to 0x03002690 by InitBattleBackground_candidate,
+// Battle screen scanline callbacks, copied to 0x03002690 by InitBattleDisplay,
 // sub_08012A00 and sub_08012B40.
 extern const ScanlineEffectEntry g_aBattleScanlineEffects[4];  // 0x0804E2AC
 

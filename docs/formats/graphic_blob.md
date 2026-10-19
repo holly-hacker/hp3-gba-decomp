@@ -39,7 +39,7 @@ needs those 4 bytes prepended to decode it. The decoded size is not stored.
 
 ## Battle backgrounds
 
-`InitBattleBackground_candidate` indexes a table at `0x0804E09C` by room id
+`InitBattleDisplay` indexes a table at `0x0804E09C` by room id
 (55 rooms, 8 bytes each): a pointer to the floor blob, then to the wall blob.
 The 55 rooms share 14 floor/wall pairs. The 28 blobs are contiguous from
 `0x08856710` to `0x08882CFC`, and each blob's parsed end is the next blob's

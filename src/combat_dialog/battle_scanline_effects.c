@@ -4,7 +4,7 @@
 
 const ScanlineEffectEntry g_aBattleScanlineEffects[4] = {
     { 0x00, 0, 0, 0, StartFloorAffineHBlankDma },
-    { 0x20, 0, 0, 0, sub_08013360 },
-    { 0x58, 0, 0, 0, sub_08013424 },
-    { 0x70, 0, 0, 0, sub_080133AC },
+    { 0x20, 0, 0, 0, EndBattleWallScanline },
+    { 0x58, 0, 0, 0, RestoreBattleHudPanelTilemap },
+    { 0x70, 0, 0, 0, BeginBattleHudScanline },
 };

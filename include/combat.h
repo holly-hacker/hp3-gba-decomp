@@ -123,9 +123,12 @@ typedef struct FightState {
     /*0x106E*/ u8 bUnk106E;    // zeroed by InitializeBattle, only on a fresh (non-resumed) battle
     /*0x106F*/ u8 bFighterCount;
     /*0x1070*/ u8 bMenuScreen;  // TickBattleMenuInput's own screen selector; 0, 0xa, and bit 0x80 all mean no active screen
-    /*0x1071*/ u8 pad_1071[0x147E - 0x1071];
+    /*0x1071*/ u8 pad_1071[0x1078 - 0x1071];
+    /*0x1078*/ u32 dwTextTileCursor;  // DrawTextLines tile cursor of battle messages
+    /*0x107C*/ u16 awPalette[0x200];  // BG and OBJ palette, DMAed to palette RAM at the HUD scanline
+    /*0x147C*/ u8 pad_147C[0x147E - 0x147C];
     /*0x147E*/ u8 bActionDelayCounter_candidate;
-    /*0x147F*/ u8 bCameraZoomStep_candidate;
+    /*0x147F*/ u8 bWallEndLine;  // scanline ending the BG1 wall band (BG1VOFS 264 - line above it); moves with the camera
     /*0x1480*/ u8 bBonusRewardFlags;  // BattleRewardFlags; snapshotted to g_dwBattleRewardFlagsSnapshot by ExitBattle
     /*0x1481*/ u8 bEnemyScalePercent_candidate;  // set by InitializeBattle from Harry's level: 0x40/0x30/0x20 for level 0/1/2+
     /*0x1482*/ u8 pad_1482[0x1488 - 0x1482];

@@ -70,9 +70,10 @@ typedef struct {
 // Window outside/OBJ-window layer enables.
 #define REG_WINOUT (*(volatile u16 *)0x0400004A)
 
-// Color effects: blend control and brightness coefficient.
-#define REG_BLDCNT (*(volatile u16 *)0x04000050)
-#define REG_BLDY   (*(volatile u16 *)0x04000054)
+// Color effects: blend control, alpha and brightness coefficients.
+#define REG_BLDCNT   (*(volatile u16 *)0x04000050)
+#define REG_BLDALPHA (*(volatile u16 *)0x04000052)
+#define REG_BLDY     (*(volatile u16 *)0x04000054)
 
 #define REG_DMA0SAD   (*(volatile u32 *)0x040000B0)
 #define REG_DMA0DAD   (*(volatile u32 *)0x040000B4)

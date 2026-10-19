@@ -65,7 +65,7 @@ void InitializeBattle(void)
             g_pFightState->bEnemyScalePercent_candidate = 0x20;
 
         g_pFightState->bUnk106E = 0;
-        InitBattleBackground_candidate();
+        InitBattleDisplay();
         SetupBattleRoster();
         uVar7 = GetBattleBackgroundData_candidate();
         LoadEmbeddedPalette(uVar7, 0, 0x10);
@@ -75,7 +75,7 @@ void InitializeBattle(void)
     {
         // Resume after Folio Universitas, Help, or Folio Bruti (whose exit
         // rewrites the previous mode to Folio Universitas).
-        InitBattleBackground_candidate();
+        InitBattleDisplay();
         RestoreFighterActors_candidate();
         uVar7 = GetBattleBackgroundData_candidate();
         LoadEmbeddedPalette(uVar7, 0, 0x10);
