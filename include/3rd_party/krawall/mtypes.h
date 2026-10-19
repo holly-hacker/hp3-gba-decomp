@@ -36,11 +36,11 @@ typedef struct {	// HP3-GBA: upstream __attribute__ ((packed))
 	signed char  	data[1];
 } Sample;
 
-typedef struct __attribute__ ((packed)) {
+typedef struct {	// HP3-GBA: upstream __attribute__ ((packed))
 	unsigned short	coord, inc;
 } EnvNode;
 
-typedef struct __attribute__ ((packed)) {
+typedef struct {	// HP3-GBA: upstream __attribute__ ((packed))
 	EnvNode			nodes[ 12 ];
 	unsigned char	max;
 	unsigned char	sus;
@@ -49,7 +49,7 @@ typedef struct __attribute__ ((packed)) {
 } Envelope;
 
 
-typedef struct __attribute__ ((packed)) {
+typedef struct {	// HP3-GBA: upstream __attribute__ ((packed))
 	unsigned short	samples[ 96 ];
 
 	Envelope		envVol;
@@ -62,13 +62,13 @@ typedef struct __attribute__ ((packed)) {
 	unsigned char	vibRate;
 } Instrument;
 
-typedef struct __attribute__ ((packed)) {
+typedef struct {	// HP3-GBA: upstream __attribute__ ((packed))
 	unsigned short 	index[ 16 ];
-	unsigned short	rows;
+	unsigned char	rows;	// HP3-GBA: upstream unsigned short
 	unsigned char 	data[1];
 } Pattern;
 
-typedef struct __attribute__ ((packed)) {
+typedef struct {	// HP3-GBA: upstream __attribute__ ((packed))
 	unsigned char 	channels;
 	unsigned char 	numOrders;
 	unsigned char	songRestart;

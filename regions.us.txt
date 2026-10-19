@@ -2260,86 +2260,8 @@ thumb-func 0x08046CA4 MarkRoomActorConsumed
 c-file-gcc3 0x08046D0C _ 3rd_party/krawall/general.c general
 c-file-gcc3 0x08046D2C _ 3rd_party/krawall/directsound.c directsound
 c-file-gcc3 0x08046ED0 _ 3rd_party/krawall/mixer.c mixer
-c-file-gcc3-arm 0x080471FC 0x080473B4 3rd_party/krawall/mixer.arm.c mixer_arm
-thumb-func 0x080473B4 pDataSet
-thumb-func 0x08047438 advanceRow
-thumb-func 0x08047558 processRow
-thumb-func 0x080479BC processInbetweenRow
-thumb-func 0x08047A44 processInstruments
-thumb-func 0x08047D4C timerRoutine
-thumb-func 0x08047DFC krapPlay
-thumb-func 0x080480D8 jingleDone
-thumb-func 0x080481B8 krapInstPlay
-thumb-func 0x0804838C krapInstRelease
-thumb-func 0x08048400 eff_volslide_s3m
-thumb-func 0x08048578 eff_volslide_xm
-thumb-func 0x08048630 eff_gvolslide
-thumb-func 0x080486E8 eff_cvolslide
-thumb-func 0x08048784 eff_panslide
-thumb-func 0x080488B4 eff_portaup_s3m
-thumb-func 0x08048998 eff_portadown_s3m
-thumb-func 0x08048A48 eff_portanote
-thumb-func 0x08048B94 eff_fvibrato
-thumb-func 0x08048C60 eff_tremolo
-thumb-func 0x08048D18 eff_panbrello
-thumb-func 0x08048DC0 eff_tremor
-thumb-func 0x08048E54 eff_retrig
-thumb-func 0x08048FD0 eff_arpeggio
-thumb-func 0x080490CC eff_VC_vibrato
-thumb-func 0x08049144 krapStop
-thumb-func 0x08049190 krapStopJingle
-thumb-func 0x080491AC krapCallback
-thumb-func 0x080491B8 krapPause
-thumb-func 0x080491EC krapUnpause
-thumb-func 0x08049224 krapIsPaused
-thumb-func 0x0804923C krapSetMusicVol
-thumb-func 0x080492B4 krapGetMusicVol
-thumb-func 0x080492C0 krapInstStop
-thumb-func 0x080492F8 krapInstProcess
-thumb-func 0x0804930C krapInstHandleValid
-thumb-func 0x08049334 krapSetChannelVol
-thumb-func 0x08049354 krapGetChannelVol
-thumb-func 0x08049374 krapInit
-thumb-func 0x08049398 calcPeriodAmiga
-thumb-func 0x080493BC calcFinalFreqAmiga
-thumb-func 0x080493E4 calcPeriodLinear
-thumb-func 0x080493FC calcFinalFreqLinear
-thumb-func 0x08049424 eff_speed
-thumb-func 0x0804943C eff_bpm
-thumb-func 0x0804945C eff_speedbpm
-thumb-func 0x08049484 eff_mark
-thumb-func 0x080494A0 eff_volslide_df
-thumb-func 0x080494F8 eff_volslide_uf
-thumb-func 0x08049550 eff_gvolume
-thumb-func 0x0804959C eff_cvolume
-thumb-func 0x080495DC eff_portaup_xm
-thumb-func 0x08049628 eff_portaup_f
-thumb-func 0x08049670 eff_portaup_ef
-thumb-func 0x080496B8 eff_portadown_xm
-thumb-func 0x0804971C eff_portadown_f
-thumb-func 0x08049780 eff_portadown_ef
-thumb-func 0x080497E0 eff_vibrato
-thumb-func 0x0804989C eff_offset
-thumb-func 0x080498C8 eff_glissando
-thumb-func 0x080498E0 eff_wave_vibr
-thumb-func 0x08049944 eff_wave_trem
-thumb-func 0x080499A8 eff_wave_panb
-thumb-func 0x08049A0C eff_pan
-thumb-func 0x08049A58 eff_patt_jump
-thumb-func 0x08049A64 eff_patt_break
-thumb-func 0x08049A7C eff_patternloop
-thumb-func 0x08049AC4 eff_notecut
-thumb-func 0x08049B00 eff_notedelay
-thumb-func 0x08049B7C eff_volume
-thumb-func 0x08049BAC eff_VC_volslide_down
-thumb-func 0x08049BFC eff_VC_volslide_up
-thumb-func 0x08049C50 eff_VC_fvolslide_down
-thumb-func 0x08049C9C eff_VC_fvolslide_up
-thumb-func 0x08049CE8 eff_VC_vibrato_setspeed
-thumb-func 0x08049D04 eff_VC_pan
-thumb-func 0x08049D60 eff_VC_panslide_left
-thumb-func 0x08049DB8 eff_VC_panslide_right
-thumb-func 0x08049E14 eff_VC_portanote
+c-file-gcc3-arm 0x080471FC _ 3rd_party/krawall/mixer.arm.c mixer_arm
+c-file-gcc3 0x080473B4 _ 3rd_party/krawall/player.c player
 asm-file-cpp 0x08049E3C _ 3rd_party/krawall/stub.S stub
 
 # BIOS calls
@@ -2660,6 +2582,8 @@ krawall-module 0x08AD57E0 _ data/audio/modules/Module36.json Module36
 krawall-module 0x08AD6E38 _ data/audio/modules/Module37.json Module37
 krawall-module 0x08AD7ED0 _ data/audio/modules/MusHogwartsHall.json MusHogwartsHall
 krawall-module 0x08ADA950 _ data/audio/modules/MusHogwartsExpress.json MusHogwartsExpress
+# Krawall's instruments[] is empty, so it shares the next module's address
+label 0x08AE06F4 instruments
 krawall-module 0x08AE06F4 _ data/audio/modules/MusHogwartsHallways.json MusHogwartsHallways
 krawall-module 0x08AE3168 _ data/audio/modules/MusLeakyCauldron.json MusLeakyCauldron
 krawall-module 0x08AE558C _ data/audio/modules/Module42.json Module42
@@ -2717,7 +2641,8 @@ graphics 0x08F4BEDC _ menus FamousWizardCards
 
 # Krawall read-only data
 c-section 0x08FA953C _ general .rodata
-c-section 0x08FA9568 0x08FA95A8 mixer_arm .rodata
+c-section 0x08FA9568 _ mixer_arm .rodata
+c-section 0x08FA95A8 _ player .rodata
 c-file-gcc3 0x08FA985C 0x08FAA7CC 3rd_party/krawall/player_tables.c player_tables .rodata
 
 # Random data?
@@ -2737,11 +2662,13 @@ c-section 0x08FB0DB0 _ directsound .iwram 0x03000000
 asm-file-cpp 0x08FB0DB4 _ 3rd_party/krawall/directsound_asm.S directsound_asm .iwram 0x03000004
 c-section 0x08FB0E40 _ mixer_arm .iwram 0x03000090
 asm-file-cpp 0x08FB13B4 _ 3rd_party/krawall/mixer_func.S mixer_func .iwram 0x03000604
-c-file-gcc3-arm 0x08FB19F8 0x08FB2344 3rd_party/krawall/mixer_private.arm.c mixer_private .iwram 0x03000C48
+c-file-gcc3-arm 0x08FB19F8 _ 3rd_party/krawall/mixer_private.arm.c mixer_private .iwram 0x03000C48
+c-section 0x08FB2344 _ player .iwram 0x03001594
 
 # Krawall data section, will be copied into EWRAM
 label 0x08FB2348 g_KrawallEwramRomImage
 c-section 0x08FB2348 _ directsound .ewram 0x02000000
 c-section 0x08FB2BFC _ mixer .ewram 0x020008B4
 c-section 0x08FB3180 _ mixer_func .ewram 0x02000E38
-c-section 0x08FB3980 0x08FB3988 mixer_private .ewram 0x02001638
+c-section 0x08FB3980 _ mixer_private .ewram 0x02001638
+c-section 0x08FB3988 0x08FB4B40 player .ewram 0x02001640

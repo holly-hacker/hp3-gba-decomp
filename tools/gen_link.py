@@ -221,12 +221,22 @@ def main() -> None:
             if bss is not None:
                 f.write(f"    .libbss{i:03d} {hex(bss)} (NOLOAD) : "
                         f"{{ {objdir}/{stem}.o(.bss) }}\n")
-        # A label inside a sectioned object's region has no gap to be
-        # defined in; it names a ROM address the original link script
-        # supplied, such as where a RAM image is stored.
-        for start, end, _, name in regions:
+        # A label inside a region has no gap to be defined in. Unless the
+        # region's own source defines it, it names a ROM address the
+        # original link supplied, such as where a RAM image is stored or
+        # an empty table that shares the next object's address.
+        for start, end, srcfile, name in regions:
+            points = sorted(a for a in labels if start <= a < end)
+            if not points:
+                continue
             if name in sectioned:
-                for point in sorted(a for a in labels if start <= a < end):
+                own = set()
+            elif srcfile.endswith(".bin"):
+                own = {name}
+            else:
+                own = set(exported_labels(srcfile))
+            for point in points:
+                if labels[point][0] not in own:
                     f.write(f"    {labels[point][0]} = {hex(point)};\n")
         f.write("    /DISCARD/ : { *(.comment) *(.ARM.attributes) *(.note*) }\n")
         f.write("}\n")

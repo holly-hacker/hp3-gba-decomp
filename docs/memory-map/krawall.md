@@ -17,13 +17,16 @@ The source lives in `3rd_party/krawall/`, with its headers in
 (<https://github.com/sebknzl/krawall>, commit `9a2b869`, 2013) and is
 edited only where the 2003 revision in the ROM differs. Each change is
 marked with an `// HP3-GBA:` comment; `mixer_func.S`, `player_tables.c`
-and `player_tables.h` are upstream's unchanged. Compiled unchanged, the
+and `player_tables.h` are upstream's unchanged. `player.c` includes
+upstream's `effects.h`, which includes the converter's
+`../krawerter/effects.h`; that file lives in `include/3rd_party/krawerter/`.
+Every object is built from source and matches in both versions. Compiled unchanged, the
 public source already reproduces twenty functions byte for byte. Krawall is compiled with GCC 3.0.2 at
 `-O3` (see [`../compiler.md`](../compiler.md)) and configured with
 `IWRAM_USAGE_SMALL` at the default 16 kHz, 60 Hz: the mixing buffers,
 channels and player state live in EWRAM.
 
-## Link layout [PROVEN for matched objects, STRUCTURAL MATCH otherwise]
+## Link layout [PROVEN]
 
 The objects are linked in the order `general`, `directsound`,
 `directsound_asm`, `mixer`, `mixer.arm`, `mixer_func`,
@@ -104,24 +107,20 @@ their `inbet` flags and repeated entries match the public `player.c`
 exactly. The word after the tables (`0xFFFFFFFF`, US `0x08FAA7CC`) is
 unreferenced and its owner is not known.
 
-## Unmatched objects
+## Differences from the public source
 
-Ranges are ROM addresses; RAM images are given by where they are stored.
-"Upstream" is the public source at `9a2b869`, compiled unchanged and
-compared with `python3 -m tools.krawall.compare` (function by function,
-against the ROM function of the same name).
+Besides the code changes marked in the source, the 2003 revision's data
+layout differs from upstream's:
 
-| Object | Section | US | JP |
-|---|---|---|---|
-| `player.c` | `.text` | `0x080473B4`-`0x08049E3C` | `0x080472E0`-`0x08049D68` |
-| | `.iwram` | `0x08FB2344`-`0x08FB2348` | `0x08F457D4`-`0x08F457D8` |
-| | `.ewram` | `0x08FB3988`-`0x08FB4B40` | `0x08F46E18`-`0x08F47FD0` |
-| | `.rodata` | `0x08FA95A8`-`0x08FA985C` | `0x08F3CA38`-`0x08F3CCEC` |
-
-What the comparison shows (US):
-
-- `player.c`: no function matches; most are 88-97% alike, consistent
-  with shifted structure offsets. The function order differs widely.
+- None of the module structures in `mtypes.h` is packed, and
+  `Pattern.rows` is one byte.
+- A note and its instrument are one packed big-endian word, as described
+  in [`../formats/krawall.md`](../formats/krawall.md).
+- `MChannel` has no `volumec`/`panningc`; `Player` stores `row`,
+  `pGotoOrder` and `pGotoRow` as bytes.
+- The game has no instruments, so the converter's empty `instruments[]`
+  shares the address of the module that follows it (US `0x08AE06F4`, JP
+  `0x08AE0524`); the manifest names it with a `label` row.
 
 ## Game-side use
 

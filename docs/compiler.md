@@ -150,8 +150,10 @@ wrong value.
 
 Krawall (`3rd_party/krawall/`, see
 [`memory-map/krawall.md`](memory-map/krawall.md)) is compiled with FSF
-GCC 3.0.2, `-O3 -mthumb-interwork`, Thumb (`-mthumb`) for `c-file-gcc3`
-rows and ARM (`-marm`) for `c-file-gcc3-arm` rows. The reconstructed
+GCC 3.0.2, `-O3 -mthumb-interwork -fno-builtin`, Thumb (`-mthumb`) for
+`c-file-gcc3` rows and ARM (`-marm`) for `c-file-gcc3-arm` rows.
+`krapPlay` calls `bzero`, which GCC 3.0.2 turns into a `memset` call
+unless builtins are disabled. The reconstructed
 `directsound.c` and `general.c` reproduce the ROM byte for byte under
 these flags, as does the public Krawall source's `kradActivate`
 unchanged. The public `mixer.c` says it was built with 3.0.2 ("makes GCC

@@ -103,7 +103,7 @@ def gcc3_profile(src: str, prefix: str,
                 *(KRAWALL_DEFINES if lib == "krawall" else [])]
     return (cc1, cppflags,
             ["-quiet", "-fpreprocessed", "-O3", "-mthumb-interwork",
-             "-marm" if arm else "-mthumb"])
+             "-fno-builtin", "-marm" if arm else "-mthumb"])
 
 
 def section_names(asm: str) -> list[str]:
