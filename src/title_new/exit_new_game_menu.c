@@ -2,5 +2,5 @@
 
 void ExitNewGameMenu(void)
 {
-    ExitSaveSlotScreen_candidate();
+    ExitSaveSlotScreen();
 }

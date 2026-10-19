@@ -11,19 +11,19 @@ void UpdateNewGameMenu(void)
     switch (g_GameModeStackContext.dwModeState)
     {
     case 0:
-        if (HandleSaveSlotInput_candidate())
-            SelectNewGameSlot_candidate();
+        if (HandleSaveSlotInput())
+            SelectNewGameSlot();
         break;
 
     case 1:
         if (g_wKeysPressed & KeyA)
         {
-            ResolveOverwriteConfirmation_candidate();
+            ResolveOverwriteConfirmation();
         }
         else if (g_wKeysPressed & KeyB)
         {
             g_GameModeStackContext.dwModeScratchB = 0;
-            ResolveOverwriteConfirmation_candidate();
+            ResolveOverwriteConfirmation();
         }
         else if (g_wKeysPressed & (KeyUp | KeyDown))
         {

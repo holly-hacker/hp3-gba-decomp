@@ -8,7 +8,7 @@
 
 void HandleSaveLoadContinuation(void)
 {
-    ExitSaveSlotScreen_candidate();
+    ExitSaveSlotScreen();
 
     if (g_bSaveSlotScreenResult != SaveSlotResultCancelled)
     {

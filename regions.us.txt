@@ -2147,36 +2147,36 @@ c-file 0x08043A68 _ src/title/has_loadable_save_slot.c HasLoadableSaveSlot
 c-file 0x08043AA4 _ src/title/position_main_menu_cursor_actor.c PositionMainMenuCursorActor
 
 # Title/Load
-c-file 0x08043AF0 0x08043B70 src/title_load/handle_save_load_continuation.c HandleSaveLoadContinuation
-thumb-func 0x08043B70 sub_08043B70
-thumb-func 0x08043C24 sub_08043C24
-thumb-func 0x08043D40 SelectNewGameSlot_candidate
-thumb-func 0x08043E18 ResolveOverwriteConfirmation_candidate
+c-file 0x08043AF0 _ src/title_load/handle_save_load_continuation.c HandleSaveLoadContinuation
+c-file 0x08043B70 _ src/title_load/spawn_save_slot_actors.c SpawnSaveSlotActors
+c-file 0x08043C24 _ src/title_load/draw_save_slot.c DrawSaveSlot
+c-file 0x08043D40 _ src/title_load/select_new_game_slot.c SelectNewGameSlot
+c-file 0x08043E18 _ src/title_load/resolve_overwrite_confirmation.c ResolveOverwriteConfirmation
 c-file 0x08043EC8 _ src/title_load/initialize_load_game.c InitializeLoadGame
 c-file 0x08043ED8 _ src/title_load/update_load_game.c UpdateLoadGame
 
 # Title/New
 c-file 0x08043EEC _ src/title_new/initialize_new_game_menu.c InitializeNewGameMenu
 c-file 0x08043EFC _ src/title_new/update_new_game_menu.c UpdateNewGameMenu
-c-file 0x08043F5C 0x08043F68 src/title_new/exit_new_game_menu.c ExitNewGameMenu
-thumb-func 0x08043F68 InitializeSaveSlotScreen_candidate
-thumb-func 0x08043FA4 HandleSaveSlotInput_candidate
-thumb-func 0x08044010 ExitSaveSlotScreen_candidate
-thumb-func 0x08044050 sub_08044050
-thumb-func 0x08044070 sub_08044070
-thumb-func 0x08044080 ConfirmLoadGameSlot_candidate
-thumb-func 0x080440DC sub_080440DC
+c-file 0x08043F5C _ src/title_new/exit_new_game_menu.c ExitNewGameMenu
+c-file 0x08043F68 _ src/title_new/initialize_save_slot_screen.c InitializeSaveSlotScreen
+c-file 0x08043FA4 _ src/title_new/handle_save_slot_input.c HandleSaveSlotInput
+c-file 0x08044010 _ src/title_new/exit_save_slot_screen.c ExitSaveSlotScreen
+c-file 0x08044050 _ src/title_new/draw_save_slots.c DrawSaveSlots
+c-file 0x08044070 _ src/title_new/start_new_game.c StartNewGame
+c-file 0x08044080 _ src/title_new/confirm_load_game_slot.c ConfirmLoadGameSlot
+c-file 0x080440DC _ src/title_new/move_save_slot_cursor.c MoveSaveSlotCursor
 
 # Title/Options
 c-file 0x08044134 _ src/title_options/initialize_options.c InitializeOptions
-c-file 0x08044240 0x0804439C src/title_options/update_options.c UpdateOptions
-thumb-func 0x0804439C BuildOptionsScreen_candidate
-thumb-func 0x08044504 sub_08044504
-thumb-func 0x080445C0 MoveOptionsCursor_candidate
-thumb-func 0x080446A8 AdjustOptionValue_candidate
-c-file 0x08044774 0x080447E0 src/title_options/exit_options.c ExitOptions
-thumb-func 0x080447E0 sub_080447E0
-thumb-func 0x0804483C sub_0804483C
+c-file 0x08044240 _ src/title_options/update_options.c UpdateOptions
+c-file 0x0804439C _ src/title_options/build_options_screen.c BuildOptionsScreen
+c-file 0x08044504 _ src/title_options/draw_option_value.c DrawOptionValue
+c-file 0x080445C0 _ src/title_options/move_options_cursor.c MoveOptionsCursor
+c-file 0x080446A8 _ src/title_options/adjust_option_value.c AdjustOptionValue
+c-file 0x08044774 _ src/title_options/exit_options.c ExitOptions
+c-file 0x080447E0 _ src/title_options/draw_options_row_label.c DrawOptionsRowLabel
+c-file 0x0804483C _ src/title_options/draw_options_language_hint.c DrawOptionsLanguageHint
 
 # Torch? (flame pillar actor)
 c-file 0x08044894 0x08044960 src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
@@ -2453,9 +2453,11 @@ c-file 0x0806BE38 0x0806BF30 src/timeturner_cutscene/time_turner_room_table.c g_
 c-file 0x0806BF40 0x0806BF60 src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
 c-file 0x0806BFD0 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BFDC _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
-c-file 0x0806BFF4 0x0806C014 src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
+c-file 0x0806BFF4 _ src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
+c-file 0x0806C014 _ src/title_load/save_slot_bar_asset.c g_SaveSlotBarAsset
 c-file 0x0806C024 _ src/title_load/new_game_slot_confirmation_menu.c g_NewGameSlotConfirmationMenuDefinition
-c-file 0x0806C048 0x0806C108 src/title_options/options_menu_items.c g_aOptionsMenuItems
+c-file 0x0806C048 _ src/title_options/options_menu_items.c g_aOptionsMenuItems
+c-file 0x0806C108 _ src/title_options/options_knob_anims.c g_aabOptionsKnobAnims
 c-file 0x0806C12C _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 c-file 0x0806C178 0x0806C200 src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites

@@ -586,10 +586,13 @@
 .set g_MainMenuState,            0x03005DB8  @ MainMenuState: {Actor *pCursorActor; u32 dwLoadGameAvailable; s32 nPaletteEffectSlot}
 
 @ --- include/title_new.h ---
-.set g_bSaveSlotScreenResult,    0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput_candidate
+.set g_bSaveSlotScreenResult,    0x03005DC4  @ u8: SaveSlotScreenResult set by HandleSaveSlotInput
+
+@ --- include/title_load.h ---
+.set g_pSaveSlotCursorActor,     0x03005DC8  @ Actor *: opaque save slot bar over the selected slot
 
 @ --- include/title_options.h ---
-.set g_OptionsState,             0x03005DD0  @ OptionsState: 8 actor pointers, then music, sound and gamma settings
+.set g_OptionsState,             0x03005DD0  @ OptionsState: 8 actor pointers, then the value of each row
 .set g_dwOptionsReturnMode,      0x03005E04  @ u32: GameMode that opened the options screen
 .set g_bOptionsSavedMusicVolume, 0x03005E08  @ u8: settings kept across the language select trip
 .set g_bOptionsSavedSoundVolume, 0x03005E09  @ u8

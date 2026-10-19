@@ -26,9 +26,9 @@ void UpdateOptions(void)
     {
         if (g_wKeysPressed & KeyStart)
         {
-            g_saveManager.header.bMusicVolume = g_OptionsState.dwMusicVolume;
-            g_saveManager.header.bSoundVolume = g_OptionsState.dwSoundVolume;
-            g_saveManager.header.bHeaderFlags.bits.bGammaHigh = g_OptionsState.dwGammaHigh;
+            g_saveManager.header.bMusicVolume = g_OptionsState.adwValues[OptionsRowSound];
+            g_saveManager.header.bSoundVolume = g_OptionsState.adwValues[OptionsRowMusic];
+            g_saveManager.header.bHeaderFlags.bits.bGammaHigh = g_OptionsState.adwValues[OptionsRowGamma];
             PlaySoundById(1);
         }
         else
@@ -71,16 +71,16 @@ void UpdateOptions(void)
             break;
         case 3:
             PlaySoundById(1);
-            g_bOptionsSavedMusicVolume = g_OptionsState.dwMusicVolume;
-            g_bOptionsSavedSoundVolume = g_OptionsState.dwSoundVolume;
-            g_bOptionsSavedGammaHigh = g_OptionsState.dwGammaHigh;
+            g_bOptionsSavedMusicVolume = g_OptionsState.adwValues[OptionsRowSound];
+            g_bOptionsSavedSoundVolume = g_OptionsState.adwValues[OptionsRowMusic];
+            g_bOptionsSavedGammaHigh = g_OptionsState.adwValues[OptionsRowGamma];
             PushGameMode(LanguageSelect);
             break;
         }
 #endif
     }
     else if (g_wKeysPressed & (KeyUp | KeyDown))
-        MoveOptionsCursor_candidate();
+        MoveOptionsCursor();
     else if (g_wKeysPressed & (KeyLeft | KeyRight))
-        AdjustOptionValue_candidate();
+        AdjustOptionValue();
 }

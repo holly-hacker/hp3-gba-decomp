@@ -20,9 +20,9 @@ void InitializeOptions(void)
     g_GameModeStackContext.dwModeState = 0;
     g_GameModeStackContext.dwModeTimer = 3;
 
-    g_OptionsState.dwMusicVolume = g_saveManager.header.bMusicVolume;
-    g_OptionsState.dwSoundVolume = g_saveManager.header.bSoundVolume;
-    g_OptionsState.dwGammaHigh = g_saveManager.header.bHeaderFlags.bits.bGammaHigh;
+    g_OptionsState.adwValues[OptionsRowSound] = g_saveManager.header.bMusicVolume;
+    g_OptionsState.adwValues[OptionsRowMusic] = g_saveManager.header.bSoundVolume;
+    g_OptionsState.adwValues[OptionsRowGamma] = g_saveManager.header.bHeaderFlags.bits.bGammaHigh;
     g_GameModeStackContext.dwModeScratchB = 0;
 #else
     if (g_PrevGameModeStackContext.dwCurrentGameMode != LanguageSelect)
@@ -37,16 +37,16 @@ void InitializeOptions(void)
 
     if (g_PrevGameModeStackContext.dwCurrentGameMode == LanguageSelect)
     {
-        g_OptionsState.dwMusicVolume = g_bOptionsSavedMusicVolume;
-        g_OptionsState.dwSoundVolume = g_bOptionsSavedSoundVolume;
-        g_OptionsState.dwGammaHigh = g_bOptionsSavedGammaHigh;
+        g_OptionsState.adwValues[OptionsRowSound] = g_bOptionsSavedMusicVolume;
+        g_OptionsState.adwValues[OptionsRowMusic] = g_bOptionsSavedSoundVolume;
+        g_OptionsState.adwValues[OptionsRowGamma] = g_bOptionsSavedGammaHigh;
         g_GameModeStackContext.dwModeScratchB = 3;
     }
     else
     {
-        g_OptionsState.dwMusicVolume = g_saveManager.header.bMusicVolume;
-        g_OptionsState.dwSoundVolume = g_saveManager.header.bSoundVolume;
-        g_OptionsState.dwGammaHigh = g_saveManager.header.bHeaderFlags.bits.bGammaHigh;
+        g_OptionsState.adwValues[OptionsRowSound] = g_saveManager.header.bMusicVolume;
+        g_OptionsState.adwValues[OptionsRowMusic] = g_saveManager.header.bSoundVolume;
+        g_OptionsState.adwValues[OptionsRowGamma] = g_saveManager.header.bHeaderFlags.bits.bGammaHigh;
         g_GameModeStackContext.dwModeScratchB = 0;
     }
 #endif
@@ -57,6 +57,6 @@ void InitializeOptions(void)
     SetMenuCursorPosition(g_pMenuCursorActor,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nX - 0xE,
                  g_aOptionsMenuItems[g_GameModeStackContext.dwModeScratchB].nY + 8);
-    BuildOptionsScreen_candidate();
+    BuildOptionsScreen();
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

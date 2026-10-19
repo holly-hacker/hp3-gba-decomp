@@ -88,7 +88,7 @@ groups:
           100: ShopIconExit
           101: DivinationTeaTextFrame
           102: ClockSkipActor1
-          104: ActorSprite104
+          104: SaveSlotBar
           105: OptionsIconSound
           106: OptionsIconMusic
           107: OptionsIconBrightness

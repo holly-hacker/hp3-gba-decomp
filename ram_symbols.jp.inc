@@ -564,6 +564,9 @@
 @ --- include/title_new.h ---
 .set g_bSaveSlotScreenResult,    0x03005E24
 
+@ --- include/title_load.h ---
+.set g_pSaveSlotCursorActor,     0x03005E28
+
 @ --- include/title_options.h ---
 .set g_OptionsState,             0x03005E30
 .set g_dwOptionsReturnMode,      0x03005E5C

@@ -2,5 +2,5 @@
 
 void InitializeNewGameMenu(void)
 {
-    InitializeSaveSlotScreen_candidate(0x8CD);  // "New Game"
+    InitializeSaveSlotScreen(0x8CD);  // "New Game"
 }

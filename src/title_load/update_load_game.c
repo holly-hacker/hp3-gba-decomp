@@ -3,6 +3,6 @@
 
 void UpdateLoadGame(void)
 {
-    if (HandleSaveSlotInput_candidate())
-        ConfirmLoadGameSlot_candidate();
+    if (HandleSaveSlotInput())
+        ConfirmLoadGameSlot();
 }
