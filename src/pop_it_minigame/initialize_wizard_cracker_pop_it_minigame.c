@@ -49,9 +49,9 @@ void InitializeWizardCrackerPopItMinigame(void)
     {
         pPalette = (void *)pEntry->pPalette;
         slotB = pEntry->bSlotB;
-        sub_0800D254(pPalette, slotB << 4, 0x10);
+        LoadObjPaletteColors(pPalette, slotB << 4, 0x10);
         slotA = pEntry->bSlotA;
-        sub_0800D254(pPalette, slotA << 4, 0x10);
+        LoadObjPaletteColors(pPalette, slotA << 4, 0x10);
         ReserveObjPaletteSlot(slotB);
         ReserveObjPaletteSlot(slotA);
         pEntry++;

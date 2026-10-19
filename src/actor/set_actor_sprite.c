@@ -16,7 +16,7 @@ void SetActorSprite(Actor *actor, const void *pRecord)
     palette = record->pPalette;
     if (palette != 0) {
         if (g_dwGameModeFlags & 0x10)
-            sub_0800D254(palette->aColors, actor->oam.paletteNum << 4, 0x10);
+            LoadObjPaletteColors(palette->aColors, actor->oam.paletteNum << 4, 0x10);
         else
             QueueObjPaletteLoad(palette->aColors, actor->oam.paletteNum << 4, 0x10);
     }

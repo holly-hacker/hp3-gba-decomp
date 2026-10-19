@@ -363,7 +363,7 @@ void InterpretActorScript(Actor *actor)
             actor->modeState.effect.bBehaviorFlags &= ~args[1];
             break;
         case BSOP_BlendEffectPalette:  // palette blend on an effect palette
-            sub_0800D254(g_apEffectPalettes[args[2]], args[1] << 4, args[3] << 4);
+            LoadObjPaletteColors(g_apEffectPalettes[args[2]], args[1] << 4, args[3] << 4);
             break;
         case BSOP_SetOamPalette:  // sets the OAM palette bank
             actor->oam.paletteNum = args[1];
@@ -774,11 +774,11 @@ void InterpretActorScript(Actor *actor)
                 JumpToScriptLabel(actor, args[3]);
             break;
         case BSOP_SetBgPaletteColors:  // sets palette colors of a BG record
-            sub_0800D244((u8 *)g_aEffectBgRecords_candidate[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
+            LoadBgPaletteColors((u8 *)g_aEffectBgRecords_candidate[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
             break;
         case BSOP_SetBgPaletteColorsAdjust:  // sets palette colors and adjusts a palette entry
-            sub_0800D244((u8 *)g_aEffectBgRecords_candidate[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
-            sub_0800D4A4((args[3] << 4) + 1, args[5], 1, 1);
+            LoadBgPaletteColors((u8 *)g_aEffectBgRecords_candidate[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
+            StartColorCycle((args[3] << 4) + 1, args[5], 1, 1);
             break;
         case BSOP_SetBgPriority:
             SetBgPriority(args[1], args[2]);

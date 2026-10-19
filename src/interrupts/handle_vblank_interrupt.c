@@ -42,7 +42,7 @@ void HandleVBlankInterrupt(void)
 
             g_bOamEntryCountPrev = g_bOamEntryCount;
             g_bOamEntryCount = 0;
-            sub_0800D354();
+            FlushObjPaletteQueue();
 
             g_pOamDmaShadowBuffer = g_pOamShadowBuffer;
             if (g_pOamShadowBuffer == &g_OamShadowBufferA)
@@ -76,7 +76,7 @@ void HandleVBlankInterrupt(void)
         if (g_pVBlankState->pVBlankCallback != NULL)
             g_pVBlankState->pVBlankCallback();
 
-        sub_0800D304();
+        UploadPaletteAnimations();
 
         g_pVBlankState->wOamFrameReady = 0;
         g_pVBlankState->dwVBlankCount++;

@@ -392,48 +392,48 @@ c-file 0x0800CBF0 _ src/collision/handle_door_touch.c HandleDoorTouch
 c-file 0x0800CCA8 _ src/collision/block_actor_with_terrain_box.c BlockActorWithTerrainBox
 c-file 0x0800CF74 _ src/collision/handle_pausing_actor_touch.c HandlePausingActorTouch
 c-file 0x0800CFDC _ src/collision/handle_contact_trigger_touch.c HandleContactTriggerTouch
-c-file 0x0800D008 0x0800D0A0 src/color/apply_gamma_remap_table.c ApplyGammaRemapTable
-thumb-func 0x0800D0A0 SetupColorCycles
+c-file 0x0800D008 _ src/color/apply_gamma_remap_table.c ApplyGammaRemapTable
+c-file 0x0800D0A0 _ src/color/setup_color_cycles.c SetupColorCycles
 c-file 0x0800D120 _ src/color/apply_gamma_to_colors.c ApplyGammaToColors
-c-file 0x0800D1A4 0x0800D204 src/color/init_gamma_palette.c InitGammaPalette
-thumb-func 0x0800D204 sub_0800D204
-thumb-func 0x0800D244 sub_0800D244
-thumb-func 0x0800D254 sub_0800D254
+c-file 0x0800D1A4 _ src/color/init_gamma_palette.c InitGammaPalette
+c-file 0x0800D204 _ src/color/restore_palettes.c RestorePalettes
+c-file 0x0800D244 _ src/color/load_bg_palette_colors.c LoadBgPaletteColors
+c-file 0x0800D254 _ src/color/load_obj_palette_colors.c LoadObjPaletteColors
 c-file 0x0800D264 _ src/color/queue_obj_palette_load.c QueueObjPaletteLoad
 c-file 0x0800D29C _ src/color/queue_obj_palette_load_at_offset.c QueueObjPaletteLoadAtOffset
 c-file 0x0800D2DC _ src/color/reset_palette_animations.c ResetPaletteAnimations
-c-file 0x0800D2F4 0x0800D304 src/color/tick_palette_animations.c TickPaletteAnimations_candidate
-thumb-func 0x0800D304 sub_0800D304
-thumb-func 0x0800D354 sub_0800D354
-thumb-func 0x0800D39C ClearPaletteRam
-thumb-func 0x0800D3B0 sub_0800D3B0
-thumb-func 0x0800D404 sub_0800D404
-thumb-func 0x0800D460 sub_0800D460
-thumb-func 0x0800D478 sub_0800D478
-thumb-func 0x0800D4A4 sub_0800D4A4
-c-file 0x0800D4E4 0x0800D4F4 src/color/clear_color_cycle.c ClearColorCycle
-thumb-func 0x0800D4F4 sub_0800D4F4
-thumb-func 0x0800D514 sub_0800D514
-thumb-func 0x0800D53C sub_0800D53C
-thumb-func 0x0800D57C StartPaletteEffectWithFrameCount
-thumb-func 0x0800D5A8 sub_0800D5A8
-thumb-func 0x0800D5DC sub_0800D5DC
-thumb-func 0x0800D62C StopPaletteEffect
-thumb-func 0x0800D648 sub_0800D648
-c-file 0x0800D6A4 0x0800D6BC src/color/init_palette_buffer.c InitPaletteBuffer
-thumb-func 0x0800D6BC SetPaletteColors_candidate
-thumb-func 0x0800D73C sub_0800D73C
-thumb-func 0x0800D784 sub_0800D784
+c-file 0x0800D2F4 _ src/color/tick_palette_animations.c TickPaletteAnimations_candidate
+c-file 0x0800D304 _ src/color/upload_palette_animations.c UploadPaletteAnimations
+c-file 0x0800D354 _ src/color/flush_obj_palette_queue.c FlushObjPaletteQueue
+c-file 0x0800D39C _ src/color/clear_palette_ram.c ClearPaletteRam
+c-file 0x0800D3B0 _ src/color/fill_palettes_with_color.c FillPalettesWithColor
+c-file 0x0800D404 _ src/color/upload_palette_shadows.c UploadPaletteShadows
+c-file 0x0800D460 _ src/color/save_bg_palette_shadow.c SaveBgPaletteShadow
+c-file 0x0800D478 _ src/color/toggle_gamma_remap_table.c ToggleGammaRemapTable
+c-file 0x0800D4A4 _ src/color/start_color_cycle.c StartColorCycle
+c-file 0x0800D4E4 _ src/color/clear_color_cycle.c ClearColorCycle
+c-file 0x0800D4F4 _ src/color/set_color_cycle_flags_and_delay.c SetColorCycleFlagsAndDelay
+c-file 0x0800D514 _ src/color/enable_color_cycle.c EnableColorCycle
+c-file 0x0800D53C _ src/color/disable_color_cycle.c DisableColorCycle
+c-file 0x0800D57C _ src/color/start_palette_effect_with_frame_count.c StartPaletteEffectWithFrameCount
+c-file 0x0800D5A8 _ src/color/start_palette_effect_from_desc.c StartPaletteEffectFromDesc
+c-file 0x0800D5DC _ src/color/start_palette_effect.c StartPaletteEffect
+c-file 0x0800D62C _ src/color/stop_palette_effect.c StopPaletteEffect
+c-file 0x0800D648 _ src/color/complete_palette_effect.c CompletePaletteEffect
+c-file 0x0800D6A4 _ src/color/init_palette_buffer.c InitPaletteBuffer
+c-file 0x0800D6BC _ src/color/load_palette_colors.c LoadPaletteColors
+c-file 0x0800D73C _ src/color/apply_gamma_to_color.c ApplyGammaToColor
+c-file 0x0800D784 _ src/color/alloc_color_cycle_slot.c AllocColorCycleSlot
 c-file 0x0800D794 _ src/color/reset_color_cycles.c ResetColorCycles
 c-file 0x0800D7BC _ src/color/tick_color_cycles.c TickColorCycles
-c-file 0x0800D7E8 0x0800D85C src/color/step_color_cycle.c StepColorCycle
-thumb-func 0x0800D85C sub_0800D85C
-thumb-func 0x0800D904 sub_0800D904
+c-file 0x0800D7E8 _ src/color/step_color_cycle.c StepColorCycle
+c-file 0x0800D85C _ src/color/upload_color_cycle.c UploadColorCycle
+c-file 0x0800D904 _ src/color/alloc_palette_effect_slot.c AllocPaletteEffectSlot
 c-file 0x0800D944 _ src/color/reset_palette_effects.c ResetPaletteEffects
 c-file 0x0800D96C _ src/color/clear_palette_effect.c ClearPaletteEffect
 c-file 0x0800D98C _ src/color/tick_palette_effects.c TickPaletteEffects
-c-file 0x0800D9D4 0x0800DB58 src/color/step_palette_effect.c StepPaletteEffect
-thumb-func 0x0800DB58 sub_0800DB58
+c-file 0x0800D9D4 _ src/color/step_palette_effect.c StepPaletteEffect
+c-file 0x0800DB58 _ src/color/upload_palette_effect.c UploadPaletteEffect
 c-file 0x0800DBAC _ src/combat/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 _ src/combat/update_battle.c UpdateBattle
 c-file 0x0800DE50 _ src/combat/exit_battle.c ExitBattle

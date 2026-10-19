@@ -506,7 +506,7 @@ real code) -- disassembled directly from the ROM with `capstone` to
 confirm:
 
 ```
-sub_0800DB58(struct_ptr):
+UploadPaletteEffect(struct_ptr):
     flags = struct_ptr[0]  (u16)
     if not (flags & 2): return             // "pending" flag gate
 
@@ -528,16 +528,16 @@ frame: `sub_08049EBC` (`svc 5`, `VBlankIntrWait`, already named in
 wait/dispatch -> an **IWRAM-resident interrupt handler at `0x030035A8`**
 (the game's own vblank ISR, copied to IWRAM for speed -- not yet
 otherwise documented) -> `0x08025E95` -> `0x0800D306` (inside
-`sub_0800D304`, the palette flush loop, which calls `sub_0800DB58` for each
+`UploadPaletteAnimations`, the palette flush loop, which calls `UploadPaletteEffect` for each
 active palette effect; see [`../memory-map/palette.md`](../memory-map/palette.md))
--> `sub_0800DB58`.
+-> `UploadPaletteEffect`.
 
 Live memory reads of the IWRAM table at the moment of a real hit:
 
 ```
 0x030024B0: source=0x0200BCA0  dest=0x05000000   (bank A: BG palette RAM)
 0x030024B8: source=0x0200BEB0  dest=0x05000200   (bank B: OBJ palette RAM -- this is the one that fired)
-0x0300230C: struct read by sub_0800DB58 for this hit (06080005 FF000808 01000000 0200C2C0)
+0x0300230C: struct read by UploadPaletteEffect for this hit (06080005 FF000808 01000000 0200C2C0)
 ```
 
 **Conclusion**: the DMA source (`0x0200BEB0 + entry*2`) is **EWRAM, not
@@ -949,8 +949,8 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
 
 **The BG palette (PROVEN, static).** Level-table `+0x58` (`dwPaletteData`
 in `levels.md`) is a raw, uncompressed 256-color BGR555 array -- no
-codec, straight `CPUSet` copy via `SetupRoomBgControlAndWindows_candidate`
-(`SetPaletteColorsThunk_candidate`/`SetPaletteColors_candidate`). Index 0 is force-overwritten to black
+codec, loaded via `SetupRoomBgControlAndWindows_candidate`
+(`LoadBgPaletteColors`/`LoadPaletteColors`). Index 0 is force-overwritten to black
 (the GBA backdrop color) by a separate 1-color copy right after the bulk
 one. Confirmed byte-exact against a live mGBA memory dump for room
 `0x28`. `tools/graphics/dump_bg_tiles.py` reads it straight from ROM.

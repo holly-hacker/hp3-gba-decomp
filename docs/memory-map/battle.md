@@ -600,7 +600,7 @@ above; all four are visual/Actor plumbing, no combat-mechanical state:
 - **`LoadEmbeddedPalette`** (`0x08007800`, `(u8 *blob, s32
   paletteRowOffset, s32 rowCount)`): reads `blob[0]` as a flags byte --
   bit `0` set means `blob` holds a raw palette block starting at
-  `blob+2`, loaded via `SetPaletteColorsThunk_candidate`; bit `1` (with
+  `blob+2`, loaded via `LoadBgPaletteColors`; bit `1` (with
   bit `0` clear) loads one fixed 16-color row instead; neither bit is a
   no-op. Not battle-specific -- also called from
   `InitializeLupinPotionCutscene`, `InitializeFolioCardDetailScreen`,
