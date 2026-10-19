@@ -91,7 +91,7 @@
     {"us": "0x0802D704", "jp": "0x0802D748", "name": "Move"},
     {"us": "0x0802F500", "jp": "0x0802F544", "name": "NPC actor"},
     {"us": "0x0802FEAC", "jp": "0x0802FEF0", "name": "OAM Submission"},
-    {"us": "0x0803020C", "jp": "0x08030250", "name": "Owl Name Select"},
+    {"us": "0x08030274", "jp": "0x080302B8", "name": "Owl Name Select"},
     {"us": "0x0803071C", "jp": "0x08030760", "name": "Palette cache"},
     {"us": "0x08030A1C", "jp": "0x08030A60", "name": "Particles"},
     {"us": "0x080319FC", "jp": "0x08031A40", "name": "Patronus cutscene"},

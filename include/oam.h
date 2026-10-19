@@ -62,6 +62,12 @@ extern s32 QueueOamEntry(u8 index, OamEntry *pEntry);
 extern s32 SubmitOamAttrsNudged(u8 index, OamEntry *pEntry);
 // Hides the entry in the second half only.
 extern void HideOamEntryOnAlternateVblanks(u32 index);
+// Sets an entry visible (non-affine) or hidden in both halves.
+extern void ShowOamEntry(u32 index);
+extern void HideOamEntry(u32 index);
+// Claims the first entry hidden in the first half, or returns 0xFF if none.
+extern u32 AllocOamEntry(void);
+extern void FreeOamEntry(u8 index);
 
 // bios_ObjAffineSet's input struct (see include/hw/bios.h): reciprocal
 // scale (8.8 fixed) plus rotation angle; the trailing pad word gives
