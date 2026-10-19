@@ -2114,17 +2114,17 @@ c-file 0x08042B90 _ src/time_skip_cutscene/initialize_hogwarts_up_night_cutscene
 c-file 0x08042C74 _ src/time_skip_cutscene/update_hogwarts_up_night_cutscene.c UpdateHogwartsUpNightCutscene
 c-file 0x08042D10 _ src/time_skip_cutscene/update_clock_skip_cutscene.c UpdateClockSkipCutscene
 c-file 0x08042D74 _ src/time_skip_cutscene/exit_clock_skip_cutscene.c ExitClockSkipCutscene
-c-file 0x08042D90 0x08042DC8 src/time_skip_cutscene/exit_hogwarts_up_night_cutscene.c ExitHogwartsUpNightCutscene
+c-file 0x08042D90 _ src/time_skip_cutscene/exit_hogwarts_up_night_cutscene.c ExitHogwartsUpNightCutscene
 
 # Timer
-thumb-func 0x08042DC8 sub_08042DC8
+c-file 0x08042DC8 _ src/timers/tick_game_timer.c TickGameTimer
 c-file 0x08042E2C _ src/timers/reset_all_game_timers.c ResetAllGameTimers
-c-file 0x08042E44 0x08042E70 src/timers/reset_game_timer.c ResetGameTimer
-thumb-func 0x08042E70 sub_08042E70
-thumb-func 0x08042E9C sub_08042E9C
-thumb-func 0x08042ECC sub_08042ECC
-thumb-func 0x08042EE0 sub_08042EE0
-thumb-func 0x08042EF8 sub_08042EF8
+c-file 0x08042E44 _ src/timers/reset_game_timer.c ResetGameTimer
+c-file 0x08042E70 _ src/timers/start_game_timer_count_down.c StartGameTimerCountDown
+c-file 0x08042E9C _ src/timers/start_game_timer_count_up.c StartGameTimerCountUp
+c-file 0x08042ECC _ src/timers/pause_game_timer.c PauseGameTimer
+c-file 0x08042EE0 _ src/timers/resume_game_timer.c ResumeGameTimer
+c-file 0x08042EF8 _ src/timers/get_game_timer_value.c GetGameTimerValue
 
 # Time turner cutscene
 c-file 0x08042F08 _ src/timeturner_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
