@@ -68,8 +68,8 @@ void ExitBattle(void)
         // Revive party members at 1HP after battle
         for (partyIndex = 0; partyIndex < 4; partyIndex++)
         {
-            if (g_aPartyMasterStats[partyIndex].wHp == 0)
-                g_aPartyMasterStats[partyIndex].wHp = 1;
+            if (g_aPartyMasterStats[partyIndex].stats.wHp == 0)
+                g_aPartyMasterStats[partyIndex].stats.wHp = 1;
         }
     }
     else

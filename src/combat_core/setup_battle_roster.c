@@ -131,7 +131,7 @@ void SetupBattleRoster(void)
     slot = 0;
     if (slot < count) {
         for (; slot < count; slot = (u8)(slot + 1)) {
-            if (g_pFightState->pFighters[slot].wHp != 0) {
+            if (g_pFightState->pFighters[slot].stats.wHp != 0) {
                 BattleFighter *stage = g_pFightState->pStagingFighters;
                 BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage); // dst = g_pFightState->pStagingFighters[idx]
                 memcpy(dst, g_pFightState->pFighters + slot, sizeof(BattleFighter));
@@ -148,7 +148,7 @@ void SetupBattleRoster(void)
     if (slot < count) {
         u16 hp;
         for (; slot < count; slot = (u8)(slot + 1)) {
-            hp = g_pFightState->pFighters[slot].wHp;
+            hp = g_pFightState->pFighters[slot].stats.wHp;
             if (hp == 0) {
                 BattleFighter *stage = g_pFightState->pStagingFighters;
                 BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage); // dst = g_pFightState->pStagingFighters[idx]

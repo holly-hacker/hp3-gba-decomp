@@ -708,7 +708,7 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_KillTarget:  // faints the target and grants its XP and gold
             {
-                targetFighter->wHp = 0;
+                targetFighter->stats.wHp = 0;
                 targetFighter->nFaintedFlag = 0xFFFF;
                 targetFighter->pActor->bActionState = 1;
                 targetFighter->pActor->dwStateTimer = 3;
@@ -963,7 +963,7 @@ void InterpretActorScript(Actor *actor)
                 else
                 {
                     SetPlayerActorAnim(targetFighter->pActor, 0);
-                    InitCharacterSpells_candidate(targetFighter->bFighterType, &targetFighter->wHp);
+                    InitCharacterSpells_candidate(targetFighter->bFighterType, &targetFighter->stats.wHp);
                 }
                 break;
             case BSSTATUS_SpellPowerBoost:
@@ -992,17 +992,17 @@ void InterpretActorScript(Actor *actor)
                 {
                     for (n = 0; n < g_pFightState->bFighterCount; n++)
                     {
-                        if (g_pFightState->pFighters[n].bFighterType != Enemy && g_pFightState->pFighters[n].wHp != 0)
+                        if (g_pFightState->pFighters[n].bFighterType != Enemy && g_pFightState->pFighters[n].stats.wHp != 0)
                         {
-                            g_pFightState->pFighters[n].wHp = g_pFightState->pFighters[n].wHp_max;
-                            g_aPartyMasterStats[g_pFightState->pFighters[n].bFighterType].wHp = g_pFightState->pFighters[n].wHp_max;
+                            g_pFightState->pFighters[n].stats.wHp = g_pFightState->pFighters[n].wHp_max;
+                            g_aPartyMasterStats[g_pFightState->pFighters[n].bFighterType].stats.wHp = g_pFightState->pFighters[n].wHp_max;
                         }
                     }
                 }
                 break;
             case BSSTATUS_ReplenishTargetMp:
-                targetFighter->wMp = targetFighter->wMp_max;
-                g_aPartyMasterStats[targetFighter->bFighterType].wMp = targetFighter->wMp_max;
+                targetFighter->stats.wMp = targetFighter->wMp_max;
+                g_aPartyMasterStats[targetFighter->bFighterType].stats.wMp = targetFighter->wMp_max;
                 break;
             case BSSTATUS_ForceItemDrop:
                 g_pFightState->bBonusRewardFlags |= ForceItemDrop;
@@ -1060,7 +1060,7 @@ void InterpretActorScript(Actor *actor)
                 g_effectStaging.bTargetIndex = 0xFF;
                 for (n = 0; n < g_pFightState->bFighterCount; n++)
                 {
-                    if (g_pFightState->pFighters[n].bFighterType == Enemy && g_pFightState->pFighters[n].wHp != 0
+                    if (g_pFightState->pFighters[n].bFighterType == Enemy && g_pFightState->pFighters[n].stats.wHp != 0
                         && (u16)g_pFightState->pFighters[n].nFaintedFlag != 0xFFFF && g_effectStaging.bTargetIndex == 0xFF)
                         g_effectStaging.bTargetIndex = n;
                 }
@@ -1075,7 +1075,7 @@ void InterpretActorScript(Actor *actor)
                 g_effectStaging.bTargetIndex = 0xFF;
                 for (; n < g_pFightState->bFighterCount; n++)
                 {
-                    if (g_pFightState->pFighters[n].bFighterType == Enemy && g_pFightState->pFighters[n].wHp != 0
+                    if (g_pFightState->pFighters[n].bFighterType == Enemy && g_pFightState->pFighters[n].stats.wHp != 0
                         && (u16)g_pFightState->pFighters[n].nFaintedFlag != 0xFFFF && g_effectStaging.bTargetIndex == 0xFF)
                         g_effectStaging.bTargetIndex = n;
                 }

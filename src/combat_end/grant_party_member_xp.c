@@ -14,13 +14,13 @@ u32 GrantPartyMemberXp(u32 fighterType, s32 xp)
 
     levelUps = 0;
     remaining = xp;
-    while (g_aPartyMasterStats[fighterType].bLevel != MAX_LEVEL)
+    while (g_aPartyMasterStats[fighterType].stats.bLevel != MAX_LEVEL)
     {
-        g_aPartyMasterStats[fighterType].wRewardXp -= remaining;
-        if ((s16)g_aPartyMasterStats[fighterType].wRewardXp > 0)
+        g_aPartyMasterStats[fighterType].stats.wRewardXp -= remaining;
+        if ((s16)g_aPartyMasterStats[fighterType].stats.wRewardXp > 0)
             break;
 
-        remaining = -(s16)g_aPartyMasterStats[fighterType].wRewardXp;
+        remaining = -(s16)g_aPartyMasterStats[fighterType].stats.wRewardXp;
         LevelUpPartyMember_candidate(fighterType);
         levelUps++;
     }

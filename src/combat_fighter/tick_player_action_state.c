@@ -262,9 +262,9 @@ void TickPlayerActionState(Actor *actor)
             SetPlayerActorAnim(actor, 1);
             actor->bActionFlags &= 0xfe;
             if (ACTIVE_FIGHTER.bSpellId == Fumos) {
-                if (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].wHp == 0) {
+                if (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].stats.wHp == 0) {
                     i = 0;
-                    while (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[i]].wHp == 0 ||
+                    while (g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[i]].stats.wHp == 0 ||
                            g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[i]].bFighterType == Enemy)
                         i++;
                     ACTIVE_FIGHTER.bSelectedActionIndex = i;
@@ -292,8 +292,8 @@ void TickPlayerActionState(Actor *actor)
             actor->dwFlags &= 0xfffbffff;
             if (actor->wActorType != Buckbeak) {
                 var_8 = g_abSpellEffectScriptId[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
-                ACTIVE_FIGHTER.wMp -= g_awSpellMpCost[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
-                g_aPartyMasterStats[ACTIVE_FIGHTER.bFighterType].wMp = ACTIVE_FIGHTER.wMp;
+                ACTIVE_FIGHTER.stats.wMp -= g_awSpellMpCost[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
+                g_aPartyMasterStats[ACTIVE_FIGHTER.bFighterType].stats.wMp = ACTIVE_FIGHTER.stats.wMp;
                 if (ACTIVE_FIGHTER.bSelectedActionIndex != 0xfe)
                     // apply player attack
                     g_nLastDamage = ResolvePlayerAttack(
@@ -399,7 +399,7 @@ void TickPlayerActionState(Actor *actor)
             PlaySoundById(0x37);
             actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
 
-            g_nLastDamage = (g_aPartyMasterStats[Harry].bLevel >> 1) + 30;
+            g_nLastDamage = (g_aPartyMasterStats[Harry].stats.bLevel >> 1) + 30;
             if (ACTIVE_FIGHTER.bStatusFlags & SpellPowerBoost)
                 g_nLastDamage = (g_nLastDamage * 4) / 3;
 
@@ -631,8 +631,8 @@ void TickPlayerActionState(Actor *actor)
                 ShowDamageNumber_candidate(i, g_nLastDamage);
                 ApplyDamageToEnemyFighter(g_nLastDamage, i);
             } else {
-                if (g_pFightState->pFighters[i].wHp <= 0xf)
-                    g_nLastDamage = g_pFightState->pFighters[i].wHp - 1;
+                if (g_pFightState->pFighters[i].stats.wHp <= 0xf)
+                    g_nLastDamage = g_pFightState->pFighters[i].stats.wHp - 1;
                 else
                     g_nLastDamage = 0xf;
                 ((Actor *)g_pFightState->pFighters[i].pActor)->modeState.actor.wStagedDamage = g_nLastDamage;

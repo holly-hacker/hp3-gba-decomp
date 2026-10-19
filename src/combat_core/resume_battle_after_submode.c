@@ -24,7 +24,7 @@ void ResumeBattleAfterSubmode_candidate(void)
             g_pFightState->bMenuFighterIndex = 0xFF;
 
             while (g_pFightState->bMenuFighterIndex == 0xFF) {
-                if (g_pFightState->pFighters[i].bFighterType != Enemy && g_pFightState->pFighters[i].wHp != 0)
+                if (g_pFightState->pFighters[i].bFighterType != Enemy && g_pFightState->pFighters[i].stats.wHp != 0)
                     g_pFightState->bMenuFighterIndex = i;
 
                 i++;

@@ -34,7 +34,7 @@ void DrawStatusEquipStatsPanel(void)
     // character at displayed level 100 has no "Next Level:" row.
     for (i = 0; i <= 8; i++)
     {
-        if (i == 2 && FIGHTER.bLevel == 99)
+        if (i == 2 && FIGHTER.stats.bLevel == 99)
             continue;
 
         text = GetDialogText(0x594 + i);
@@ -50,7 +50,7 @@ void DrawStatusEquipStatsPanel(void)
 
     xpToNextLevel = GetPartyMemberXpToNextLevel(g_dwStatusEquipCharacter);
 
-    SetTextMacro1Number(FIGHTER.bLevel + 1);
+    SetTextMacro1Number(FIGHTER.stats.bLevel + 1);
     text = GetDialogText(0x8F7);  // "@1"
     DrawTextLines(0xED, 0x70, STATS_ROW_Y(0), 0x60, STATS_ROW_HEIGHT, &text, 2);
 
@@ -58,7 +58,7 @@ void DrawStatusEquipStatsPanel(void)
     text = GetDialogText(0x8F7);
     DrawTextLines(0xF9, 0x70, STATS_ROW_Y(1), 0x60, STATS_ROW_HEIGHT, &text, 2);
 
-    if (FIGHTER.bLevel != 99)
+    if (FIGHTER.stats.bLevel != 99)
     {
         SetTextMacro1Number(xpToNextLevel);
         text = GetDialogText(0x8F7);
@@ -69,12 +69,12 @@ void DrawStatusEquipStatsPanel(void)
     text = GetDialogText(0x8F7);
     DrawTextLines(0x111, 0x70, STATS_ROW_Y(3), 0x60, STATS_ROW_HEIGHT, &text, 2);
 
-    SetTextMacro1Number(FIGHTER.wHp);
+    SetTextMacro1Number(FIGHTER.stats.wHp);
     SetTextMacro2Number(FIGHTER.wHp_max);
     text = GetDialogText(0x8EF);  // "@1/@2"
     DrawTextLines(0x11D, 0x70, STATS_ROW_Y(5), 0x60, STATS_ROW_HEIGHT, &text, 2);
 
-    SetTextMacro1Number(FIGHTER.wMp);
+    SetTextMacro1Number(FIGHTER.stats.wMp);
     SetTextMacro2Number(FIGHTER.wMp_max);
     text = GetDialogText(0x8EF);
     DrawTextLines(0x129, 0x70, STATS_ROW_Y(6), 0x60, STATS_ROW_HEIGHT, &text, 2);

@@ -36,17 +36,17 @@ void InitializeCombatResultXp(void)
         pText = GetDialogText(0x52A);  // "Level:"
         g_wCombatResultTextTileCursor = DrawStringAligned(g_wCombatResultTextTileCursor, 0x14, 0x70, pText, 0);
         pText = GetDialogText(0x8F7);  // "@1"
-        SetTextMacro1Number(FIGHTER(0).bLevel + 1);
+        SetTextMacro1Number(FIGHTER(0).stats.bLevel + 1);
         g_aCombatResultPartyRows[0].wLevelTileCursor = g_wCombatResultTextTileCursor;
         DrawStringAligned(g_wCombatResultTextTileCursor, 0x4C, 0x70, pText, 2);
         g_wCombatResultTextTileCursor += 8;
-        if (FIGHTER(0).bLevel <= MAX_DISPLAY_LEVEL)
+        if (FIGHTER(0).stats.bLevel <= MAX_DISPLAY_LEVEL)
         {
             pText = GetDialogText(0x52F);  // "Next:"
             g_wCombatResultTextTileCursor = DrawStringAligned(g_wCombatResultTextTileCursor, 0x14, 0x78, pText, 0);
             pText = GetDialogText(0x8F7);  // "@1"
             g_aCombatResultPartyRows[0].nXpToNextLevel = GetPartyMemberXpToNextLevel(g_abCombatResultPartySlots[0]);
-            if (FIGHTER(0).bLevel <= MAX_DISPLAY_LEVEL)
+            if (FIGHTER(0).stats.bLevel <= MAX_DISPLAY_LEVEL)
                 SetTextMacro1Number(g_aCombatResultPartyRows[0].nXpToNextLevel);
             else
                 SetTextMacro1Number(0);
@@ -67,17 +67,17 @@ void InitializeCombatResultXp(void)
         pText = GetDialogText(0x52A);  // "Level:"
         g_wCombatResultTextTileCursor = DrawStringAligned(g_wCombatResultTextTileCursor, 0xA4, 0x70, pText, 0);
         pText = GetDialogText(0x8F7);  // "@1"
-        SetTextMacro1Number(FIGHTER(1).bLevel + 1);
+        SetTextMacro1Number(FIGHTER(1).stats.bLevel + 1);
         g_aCombatResultPartyRows[1].wLevelTileCursor = g_wCombatResultTextTileCursor;
         DrawStringAligned(g_wCombatResultTextTileCursor, 0xDC, 0x70, pText, 2);
         g_wCombatResultTextTileCursor += 8;
-        if (FIGHTER(1).bLevel <= MAX_DISPLAY_LEVEL)
+        if (FIGHTER(1).stats.bLevel <= MAX_DISPLAY_LEVEL)
         {
             pText = GetDialogText(0x52F);  // "Next:"
             g_wCombatResultTextTileCursor = DrawStringAligned(g_wCombatResultTextTileCursor, 0xA4, 0x78, pText, 0);
             pText = GetDialogText(0x8F7);  // "@1"
             g_aCombatResultPartyRows[1].nXpToNextLevel = GetPartyMemberXpToNextLevel(g_abCombatResultPartySlots[1]);
-            if (FIGHTER(1).bLevel <= MAX_DISPLAY_LEVEL)
+            if (FIGHTER(1).stats.bLevel <= MAX_DISPLAY_LEVEL)
                 SetTextMacro1Number(g_aCombatResultPartyRows[1].nXpToNextLevel);
             else
                 SetTextMacro1Number(0);
@@ -101,17 +101,17 @@ void InitializeCombatResultXp(void)
         pText = GetDialogText(0x52A);  // "Level:"
         g_wCombatResultTextTileCursor = DrawStringAligned(g_wCombatResultTextTileCursor, 0x5C, 0x70, pText, 0);
         pText = GetDialogText(0x8F7);  // "@1"
-        SetTextMacro1Number(FIGHTER(2).bLevel + 1);
+        SetTextMacro1Number(FIGHTER(2).stats.bLevel + 1);
         g_aCombatResultPartyRows[2].wLevelTileCursor = g_wCombatResultTextTileCursor;
         DrawStringAligned(g_wCombatResultTextTileCursor, 0x94, 0x70, pText, 2);
         g_wCombatResultTextTileCursor += 8;
-        if (FIGHTER(2).bLevel <= MAX_DISPLAY_LEVEL)
+        if (FIGHTER(2).stats.bLevel <= MAX_DISPLAY_LEVEL)
         {
             pText = GetDialogText(0x52F);  // "Next:"
             g_wCombatResultTextTileCursor = DrawStringAligned(g_wCombatResultTextTileCursor, 0x5C, 0x78, pText, 0);
             pText = GetDialogText(0x8F7);  // "@1"
             g_aCombatResultPartyRows[2].nXpToNextLevel = GetPartyMemberXpToNextLevel(g_abCombatResultPartySlots[2]);
-            if (FIGHTER(2).bLevel <= MAX_DISPLAY_LEVEL)
+            if (FIGHTER(2).stats.bLevel <= MAX_DISPLAY_LEVEL)
                 SetTextMacro1Number(g_aCombatResultPartyRows[2].nXpToNextLevel);
             else
                 SetTextMacro1Number(0);

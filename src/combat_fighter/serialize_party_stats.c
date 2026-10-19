@@ -11,7 +11,7 @@ void SerializePartyStats(void)
 
     for (i = 0; i < 3; i++)
     {
-        pStats = (SavedFighterStats *)&g_aPartyMasterStats[i].wHp;
+        pStats = &g_aPartyMasterStats[i].stats;
         PackBytesToSaveStream(&pStats->wHp, 2);
         PackBytesToSaveStream(&pStats->wMp, 2);
         PackBytesToSaveStream(&pStats->wRewardXp, 2);

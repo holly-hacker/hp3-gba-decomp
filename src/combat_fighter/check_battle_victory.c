@@ -13,7 +13,7 @@ void CheckBattleVictory(Actor *actor)
     u32 i;
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
-        if (g_pFightState->pFighters[i].bFighterType == Enemy && g_pFightState->pFighters[i].wHp != 0)
+        if (g_pFightState->pFighters[i].bFighterType == Enemy && g_pFightState->pFighters[i].stats.wHp != 0)
             return;
     }
 

@@ -95,7 +95,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     }
     fighter->bFighterType = Enemy;
     fighter->pActor = pActor;
-    fighter->wHp = MonsterTable[type].wHp;
+    fighter->stats.wHp = MonsterTable[type].wHp;
     fighter->wHp_max = MonsterTable[type].wHp;
     fighter->bAgility = MonsterTable[type].bAgility;
     fighter->bAccuracy = MonsterTable[type].bAccuracy;
@@ -110,8 +110,8 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     fighter->bEffectivenessGlacius = MonsterTable[type].abEffectiveness[4];
     fighter->bEffectivenessDiffindo = MonsterTable[type].abEffectiveness[5];
 
-    fighter->wRewardXp = MonsterTable[type].wRewardXp;
-    fighter->bLevel = MonsterTable[type].bLevel;
+    fighter->stats.wRewardXp = MonsterTable[type].wRewardXp;
+    fighter->stats.bLevel = MonsterTable[type].bLevel;
     fighter->wRewardGold = MonsterTable[type].wRewardGold;
     fighter->bStatusFlags = StatusNone;
     fighter->nFaintedFlag = 0;

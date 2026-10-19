@@ -20,8 +20,8 @@ u32 UseRestorePotion(u8 character, s32 item, s32 quantity)
         amount = g_pItemTable[item].stats.potion.nMagnitude * quantity;
         pParty = g_aPartyMasterStats;
         pFighter = &pParty[character];
-        if (pFighter->wHp + amount > pFighter->wHp_max)
-            restored = pFighter->wHp_max - pFighter->wHp;
+        if (pFighter->stats.wHp + amount > pFighter->wHp_max)
+            restored = pFighter->wHp_max - pFighter->stats.wHp;
         else
             restored = amount;
         SetTextMacro1String(GetPartyMemberName(character));
@@ -32,7 +32,7 @@ u32 UseRestorePotion(u8 character, s32 item, s32 quantity)
         if (restored % g_pItemTable[item].stats.potion.nMagnitude)
             used++;
         RemoveItemsInline(item, used);
-        pFighter->wHp += restored;
+        pFighter->stats.wHp += restored;
         SetTextMacro2Number(restored);
         return 0x400;  // "@1 is feeling better now, and has recovered @2 Stamina Points."
 
@@ -40,8 +40,8 @@ u32 UseRestorePotion(u8 character, s32 item, s32 quantity)
         amount = g_pItemTable[item].stats.potion.nMagnitude * quantity;
         pParty = g_aPartyMasterStats;
         pFighter = &pParty[character];
-        if (pFighter->wMp + amount > pFighter->wMp_max)
-            restored = pFighter->wMp_max - pFighter->wMp;
+        if (pFighter->stats.wMp + amount > pFighter->wMp_max)
+            restored = pFighter->wMp_max - pFighter->stats.wMp;
         else
             restored = amount;
         SetTextMacro1String(GetPartyMemberName(character));
@@ -52,7 +52,7 @@ u32 UseRestorePotion(u8 character, s32 item, s32 quantity)
         if (restored % g_pItemTable[item].stats.potion.nMagnitude)
             used++;
         RemoveItemsInline(item, used);
-        pFighter->wMp += restored;
+        pFighter->stats.wMp += restored;
         SetTextMacro2Number(restored);
         return 0x401;  // "@1 is feeling better now, and has recovered @2 Magic Points."
 

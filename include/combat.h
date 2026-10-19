@@ -1,6 +1,7 @@
 #pragma once
 
 #include "actor.h"
+#include "save.h"
 
 typedef enum {
     Harry    = 0,
@@ -41,13 +42,7 @@ typedef struct BattleFighter {
     /*0x02*/ u8 unk02;
     /*0x03*/ u8 bSlotParam;
     /*0x04*/ Actor *pActor;
-    /*0x08*/ u16 wHp;
-    /*0x0A*/ u16 wMp;
-    /*0x0C*/ u16 wRewardXp;
-    /*0x0E*/ u8 bLevel;
-    /*0x0F*/ u8 bKnownSpellCount;
-    /*0x10*/ u8 aSpellCastLevel[10];
-    /*0x1A*/ u8 aSpellUsageProgress[10];
+    /*0x08*/ SavedFighterStats stats;
     /*0x24*/ u16 wHp_max;
     /*0x26*/ u16 wMp_max;
     /*0x28*/ u16 wRewardGold;

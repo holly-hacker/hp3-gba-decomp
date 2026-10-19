@@ -40,12 +40,12 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
 
     if (type < 3)
     {
-        fighter->bKnownSpellCount = g_aPartyMasterStats[type].bKnownSpellCount;
+        fighter->stats.bKnownSpellCount = g_aPartyMasterStats[type].stats.bKnownSpellCount;
         i = 0;
         do
         {
-            fighter->aSpellCastLevel[i] = g_aPartyMasterStats[type].aSpellCastLevel[i];
-            fighter->aSpellUsageProgress[i] = g_aPartyMasterStats[type].aSpellUsageProgress[i];
+            fighter->stats.aSpellCastLevel[i] = g_aPartyMasterStats[type].stats.aSpellCastLevel[i];
+            fighter->stats.aSpellUsageProgress[i] = g_aPartyMasterStats[type].stats.aSpellUsageProgress[i];
             i++;
         } while (i <= 9);
     }
@@ -59,16 +59,16 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
 
         if (type < 3)
         {
-            fighter->bLevel = g_aPartyMasterStats[type].bLevel;
-            fighter->wHp = g_aPartyMasterStats[type].wHp;
+            fighter->stats.bLevel = g_aPartyMasterStats[type].stats.bLevel;
+            fighter->stats.wHp = g_aPartyMasterStats[type].stats.wHp;
             fighter->wHp_max = g_aPartyMasterStats[type].wHp_max;
-            fighter->wMp = g_aPartyMasterStats[type].wMp;
+            fighter->stats.wMp = g_aPartyMasterStats[type].stats.wMp;
             fighter->wMp_max = g_aPartyMasterStats[type].wMp_max;
             fighter->bAgility = g_aPartyMasterStats[type].bAgility;
             fighter->bAccuracy = g_aPartyMasterStats[type].bAccuracy;
             fighter->bDefenseFactorPercent = g_aPartyMasterStats[type].bDefenseFactorPercent;
             fighter->bMagicDefensePercent = g_aPartyMasterStats[type].bMagicDefensePercent;
-            fighter->wRewardXp = g_aPartyMasterStats[type].wRewardXp;
+            fighter->stats.wRewardXp = g_aPartyMasterStats[type].stats.wRewardXp;
             fighter->bStatusFlags = StatusNone;
             fighter->nFaintedFlag = 0;
             fighter->unk3E |= 0xFF;
@@ -78,16 +78,16 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
             u8 *partyBase;
 
             // Buckbeak stats
-            fighter->bLevel = 50;
-            fighter->wHp = 400;
+            fighter->stats.bLevel = 50;
+            fighter->stats.wHp = 400;
             fighter->wHp_max = 400;
-            fighter->wMp = 999;
+            fighter->stats.wMp = 999;
             fighter->wMp_max = 999;
             fighter->bAgility = 10;
             fighter->bAccuracy = 101;
             fighter->bDefenseFactorPercent = 100;
             fighter->bMagicDefensePercent = 100;
-            fighter->wRewardXp = 0;
+            fighter->stats.wRewardXp = 0;
             fighter->bStatusFlags = StatusNone;
             fighter->nFaintedFlag = 0;
             fighter->unk3E |= 0xFF;
@@ -99,7 +99,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
         }
     }
 
-    hp = fighter->wHp;
+    hp = fighter->stats.wHp;
 
     if (hp == 0)
     {

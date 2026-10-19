@@ -31,7 +31,7 @@ void BuildTurnOrder(void)
         innerIdx = 0;
 
         while (innerIdx < g_pFightState->bFighterCount) {
-            if (STAGING(innerIdx).wHp == 0) {
+            if (STAGING(innerIdx).stats.wHp == 0) {
                 STAGING(innerIdx).nFaintedFlag = -1;
             } else if (STAGING(innerIdx).bAgility < bestAgility && STAGING(innerIdx).bAgility > prevWinnerAgility) {
                 bestAgility = STAGING(innerIdx).bAgility;
@@ -64,10 +64,10 @@ void BuildTurnOrder(void)
     innerIdx = 0;
     while (innerIdx < g_pFightState->bFighterCount) {
         if ((u16)STAGING(innerIdx).nFaintedFlag == 0
-            && STAGING(innerIdx).wHp != 0) {
+            && STAGING(innerIdx).stats.wHp != 0) {
             SLOT(outerIdx) = STAGING(innerIdx);
             SLOT(outerIdx).nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
-        } else if (STAGING(innerIdx).wHp == 0) {
+        } else if (STAGING(innerIdx).stats.wHp == 0) {
             STAGING(innerIdx).nFaintedFlag = -1;
         }
 

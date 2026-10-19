@@ -17,10 +17,10 @@ void ShowDamageNumber_candidate(s32 targetIndex, s32 damage)
 
         for (i = 0; target == 0xFF && i < g_pFightState->bFighterCount; i++) {
             if (ACTIVE_FIGHTER.bFighterType == Enemy) {
-                if (g_pFightState->pFighters[i].bFighterType != Enemy && g_pFightState->pFighters[i].wHp != 0)
+                if (g_pFightState->pFighters[i].bFighterType != Enemy && g_pFightState->pFighters[i].stats.wHp != 0)
                     target = i;
             } else {
-                if (g_pFightState->pFighters[i].bFighterType == Enemy && g_pFightState->pFighters[i].wHp != 0)
+                if (g_pFightState->pFighters[i].bFighterType == Enemy && g_pFightState->pFighters[i].stats.wHp != 0)
                     target = i;
             }
         }

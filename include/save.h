@@ -94,8 +94,7 @@ typedef enum {
 #define SAVE_SLOT_FIRST_BLOCK 7
 #define SAVE_SLOT_COUNT 3
 
-// The part of a party member's BattleFighter that is saved: wHp through
-// aSpellUsageProgress (BattleFighter +0x08..+0x23).
+// BattleFighter.stats (+0x08..+0x23), the part of a party member's record that is saved.
 typedef struct {
     u16 wHp;
     u16 wMp;

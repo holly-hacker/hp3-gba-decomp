@@ -23,7 +23,7 @@ s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex)
 
         // base power is expressed as `base_power + (scale * player.level) / 9`
         power = g_awSpellPowerBase[ATTACKER.bSpellId][ATTACKER.bSpellLevel];
-        power += (g_awSpellPowerScale[ATTACKER.bSpellId][ATTACKER.bSpellLevel] * ATTACKER.bLevel) / 9;
+        power += (g_awSpellPowerScale[ATTACKER.bSpellId][ATTACKER.bSpellLevel] * ATTACKER.stats.bLevel) / 9;
 
         // boost Hermione's attack by 6.25%, lower Ron's attack by 6.25%
         switch (ATTACKER.bFighterType)
@@ -59,7 +59,7 @@ s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex)
     // Calculate extra crit chance, on top of the 2% base chance.
     // Extra crit chance is 50% of the player's level, or 75% if using PWT, capped to 12.
     // You hit max extra crit chance at lv24, or lv16 with PWT.
-    attackerLevel = ATTACKER.bLevel;
+    attackerLevel = ATTACKER.stats.bLevel;
     if (attackerLevel >= 2)
     {
         critChance = attackerLevel >> 1;

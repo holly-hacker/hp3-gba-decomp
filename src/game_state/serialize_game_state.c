@@ -24,7 +24,7 @@ void SerializeGameStateToSaveBuffer(void)
     PackBytesToSaveStream(&g_bCurrentRoomId, 1);
     PackBytesToSaveStream(&g_saveStateBlock.bSaveFlags, 1);
     PackBytesToSaveStream(&g_abQuestEventState[QUEST_OBJECTIVE_INDEX], 1);
-    leaderDisplayLevel = g_aPartyMasterStats[0].bLevel + 1;
+    leaderDisplayLevel = g_aPartyMasterStats[0].stats.bLevel + 1;
     PackBytesToSaveStream(&leaderDisplayLevel, 1);
     PackBytesToSaveStream(&g_bPartyCharId0, 1);
     PackBytesToSaveStream(&g_bPartyCharId1, 1);

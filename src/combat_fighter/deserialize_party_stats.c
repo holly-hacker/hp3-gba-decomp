@@ -14,7 +14,7 @@ void DeserializePartyStats(void)
 
     for (i = 0; i < 3; i++)
     {
-        pStats = (SavedFighterStats *)&g_aPartyMasterStats[i].wHp;
+        pStats = &g_aPartyMasterStats[i].stats;
         memset(pStats, 0, sizeof(SavedFighterStats));
         UnpackBytesFromSaveStream(&pStats->wHp, 2);
         UnpackBytesFromSaveStream(&pStats->wMp, 2);

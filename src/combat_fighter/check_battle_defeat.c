@@ -21,12 +21,12 @@ void CheckBattleDefeat(void)
     // Buckbeak-only encounter
     if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF && g_GameModeStackContext.dwCurrentGameModeArg1 == 3) {
         for (i = 0; i < g_pFightState->bFighterCount; i++) {
-            if (g_pFightState->pFighters[i].bFighterType == Buckbeak && g_pFightState->pFighters[i].wHp != 0)
+            if (g_pFightState->pFighters[i].bFighterType == Buckbeak && g_pFightState->pFighters[i].stats.wHp != 0)
                 return;
         }
     } else {
         for (i = 0; i < g_pFightState->bFighterCount; i++) {
-            if (g_pFightState->pFighters[i].bFighterType != Enemy && g_pFightState->pFighters[i].wHp != 0)
+            if (g_pFightState->pFighters[i].bFighterType != Enemy && g_pFightState->pFighters[i].stats.wHp != 0)
                 return;
         }
     }
@@ -39,8 +39,8 @@ void CheckBattleDefeat(void)
     PlayMusicModule(0x1C);
 
     for (i = 0; i < 4; i++) {
-        g_aPartyMasterStats[i].wHp = g_aPartyMasterStats[i].wHp_max;
-        g_aPartyMasterStats[i].wMp = g_aPartyMasterStats[i].wMp_max;
+        g_aPartyMasterStats[i].stats.wHp = g_aPartyMasterStats[i].wHp_max;
+        g_aPartyMasterStats[i].stats.wMp = g_aPartyMasterStats[i].wMp_max;
     }
 
     g_GameModeStackContext.dwCurrentGameModeArg3 = 0xFE;

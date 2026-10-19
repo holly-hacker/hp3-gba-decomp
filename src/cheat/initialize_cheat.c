@@ -48,7 +48,7 @@ void InitializeCheat(void)
     g_dwOverworldMonstersDisabled = 0;
 
     for (i = 0; i < 3; i++)
-        InitCharacterSpells_candidate(i, &g_aPartyMasterStats[i].wHp);
+        InitCharacterSpells_candidate(i, &g_aPartyMasterStats[i].stats.wHp);
 
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

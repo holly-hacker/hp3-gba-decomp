@@ -15,9 +15,9 @@ void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex)
 {
     s32 slot;
 
-    FIGHTER(fighterIndex).wHp -= damage;
+    FIGHTER(fighterIndex).stats.wHp -= damage;
 
-    if (FIGHTER(fighterIndex).wHp == 0 || FIGHTER(fighterIndex).wHp > FIGHTER(fighterIndex).wHp_max) {
+    if (FIGHTER(fighterIndex).stats.wHp == 0 || FIGHTER(fighterIndex).stats.wHp > FIGHTER(fighterIndex).wHp_max) {
         g_pFightState->dwDefeatCheckPending_candidate = 1;
 
         if (g_pFightState->bFaintMessageCount_candidate == 0)
@@ -35,7 +35,7 @@ void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex)
         g_anFaintedRosterIndices[slot] = FIGHTER(fighterIndex).bRosterIndex;
         g_nBattleXpReward = MonsterTable[FIGHTER(fighterIndex).bRosterIndex].wRewardXp + g_nBattleXpReward;
         g_nBattleGoldReward = MonsterTable[FIGHTER(fighterIndex).bRosterIndex].wRewardGold + g_nBattleGoldReward;
-        FIGHTER(fighterIndex).wHp = 0;
+        FIGHTER(fighterIndex).stats.wHp = 0;
         FIGHTER(fighterIndex).nFaintedFlag = -1;
         SetActorActionState(FIGHTER(fighterIndex).pActor, 1);
     }
