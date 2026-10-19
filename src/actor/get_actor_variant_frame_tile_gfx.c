@@ -33,6 +33,6 @@ void *GetActorVariantFrameTileGfx(Actor *actor, u8 slot)
         frame = actor->anim.bLastAnimFrameValue;
     }
 
-    frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
+    frameDesc = ACTOR_FRAME_DESC(frameData, frame);
     return (u8 *)record->pTileGfx + frameDesc->wTileGfxOffset;
 }

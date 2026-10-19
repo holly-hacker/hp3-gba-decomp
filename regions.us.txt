@@ -1487,11 +1487,11 @@ c-file 0x0803094C _ src/palette/reserve_obj_palette_slot.c ReserveObjPaletteSlot
 c-file 0x08030960 _ src/palette/unreserve_obj_palette_slot.c UnreserveObjPaletteSlot
 c-file 0x08030978 _ src/palette/bind_obj_palette_slot.c BindObjPaletteSlot
 c-file 0x080309D4 _ src/palette/is_obj_palette_slot_reserved.c IsObjPaletteSlotReserved
-c-file 0x080309E8 0x08030A1C src/palette/find_obj_palette_slot.c FindObjPaletteSlot
+c-file 0x080309E8 _ src/palette/find_obj_palette_slot.c FindObjPaletteSlot
 
 # Particles, see docs/memory-map/particles.md
-thumb-func 0x08030A1C sub_08030A1C
-thumb-func 0x08030AC8 sub_08030AC8
+c-file 0x08030A1C _ src/particles/load_particle_gfx.c LoadParticleGfx
+c-file 0x08030AC8 _ src/particles/reload_particle_gfx.c ReloadParticleGfx
 c-file 0x08030B70 _ src/particles/alloc_particle_emitter.c AllocParticleEmitter
 c-file 0x08030C00 _ src/particles/bucket_particles_by_priority.c BucketParticlesByPriority
 c-file 0x08030C9C _ src/particles/tick_particle_emitter.c TickParticleEmitter
@@ -1502,18 +1502,18 @@ c-file 0x08031480 _ src/particles/tick_particle_directional.c TickParticleDirect
 c-file 0x080314DC _ src/particles/tick_particle_moving.c TickParticleMoving
 c-file 0x08031538 _ src/particles/tick_particle_with_gravity.c TickParticleWithGravity
 c-file 0x080315A4 _ src/particles/init_particle_pools.c InitParticlePools
-c-file 0x08031624 0x08031668 src/particles/reset_particle_state.c ResetParticleState
-thumb-func 0x08031668 sub_08031668
+c-file 0x08031624 _ src/particles/reset_particle_state.c ResetParticleState
+c-file 0x08031668 _ src/particles/release_particle_gfx.c ReleaseParticleGfx
 c-file 0x080316A4 _ src/particles/release_particle_emitter.c ReleaseParticleEmitter
 c-file 0x080316D4 _ src/particles/free_all_particle_emitters.c FreeAllParticleEmitters
 c-file 0x0803171C _ src/particles/free_all_particles.c FreeAllParticles
-c-file 0x08031748 0x08031798 src/particles/tick_particle_emitters.c TickParticleEmitters
-thumb-func 0x08031798 sub_08031798
+c-file 0x08031748 _ src/particles/tick_particle_emitters.c TickParticleEmitters
+c-file 0x08031798 _ src/particles/tick_all_particles.c TickAllParticles
 c-file 0x080317EC _ src/particles/tick_particle_layer.c TickParticleLayer
 c-file 0x08031848 _ src/particles/release_particle.c ReleaseParticle
 c-file 0x0803186C _ src/particles/draw_particle.c DrawParticle
-c-file 0x0803197C 0x080319B0 src/particles/update_particle_collision.c UpdateParticleCollision
-thumb-func 0x080319B0 sub_080319B0
+c-file 0x0803197C _ src/particles/update_particle_collision.c UpdateParticleCollision
+c-file 0x080319B0 _ src/particles/tick_actor_particle_emitters.c TickActorParticleEmitters
 
 # Patronus (Harry Patronus cutscene mode)
 c-file 0x080319FC _ src/patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
@@ -2219,7 +2219,7 @@ c-file 0x080454BC _ src/vram/load_obj_tile.c LoadObjTile
 c-file 0x080454DC _ src/vram/load_obj_tile_at.c LoadObjTileAt
 c-file 0x080454F4 _ src/vram/free_obj_vram_tile_allocation_now.c FreeObjVramTileAllocationNow
 c-file 0x08045514 0x08045534 src/vram/free_obj_vram_tile_allocation.c FreeObjVramTileAllocation
-thumb-func 0x08045534 sub_08045534
+thumb-func 0x08045534 LoadObjVramTilesAt
 c-file 0x0804555C _ src/vram/apply_deferred_obj_tile_frees.c ApplyDeferredObjTileFrees
 c-file 0x08045588 _ src/vram/load_obj_tile_sheet.c LoadObjTileSheet
 c-file 0x080455E4 _ src/vram/mark_obj_tiles_in_use.c MarkObjTilesInUse

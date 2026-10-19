@@ -36,6 +36,10 @@ extern void ApplyDeferredObjTileFrees(void);
 // Decompresses every frame of record's tile graphics into consecutive OBJ VRAM tiles starting at
 // tile firstTile.
 extern void LoadObjTileSheet(struct ActorAssetRecord *record, u16 firstTile);
+// AllocObjVramTiles without the allocation: loads record's tile sheet at firstTile when record
+// is given and returns firstTile. pixelCount is unused.
+extern u16 LoadObjVramTilesAt(const struct ActorAssetRecord *record, u32 pixelCount, u8 is8bpp,
+                              u16 firstTile);
 // Range helpers on the OBJ tile bitmaps; firstTile 0xFFFF (no allocation) is ignored by the clears.
 extern void MarkObjTilesInUse(u16 firstTile, u16 tileCount);
 extern void ClearObjTileAllocBits(u16 firstTile, u16 tileCount);

@@ -33,7 +33,7 @@ void ExitBattle(void)
         FreeAllParticles();
         FreeAllActors(&g_ActiveActorListState.pHead);
         ResetPaletteAnimations();
-        sub_08031668(0, 0);
+        ReleaseParticleGfx(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
         RestoreDefaultVBlankCallback();
         FreeFloorEffect();
@@ -115,7 +115,7 @@ void ExitBattle(void)
         FreeAllParticles();
         FreeAllActors(&g_ActiveActorListState.pHead);
         ResetPaletteAnimations();
-        sub_08031668(0, 0);
+        ReleaseParticleGfx(0, 0);
         PlayScreenTransitionOutByIndex(0x3F, 2);
         RestoreDefaultVBlankCallback();
         FreeFloorEffect();

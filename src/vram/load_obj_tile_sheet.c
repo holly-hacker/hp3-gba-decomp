@@ -13,9 +13,8 @@ void LoadObjTileSheet(ActorAssetRecord *record, u16 firstTile)
     u32 byteOffset = 0;
     u32 i;
 
-    for (i = 0; i < ((ActorFrameData *)record->pFrameData)->wFrameCount; i++) {
-        ActorFrameDesc *desc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                                    + frameData->awFrameOffsets[i]);
+    for (i = 0; i < record->pFrameData->wFrameCount; i++) {
+        ActorFrameDesc *desc = ACTOR_FRAME_DESC(frameData, i);
         u8 *pDest = OBJ_VRAM_TILES + firstTile * 32 + byteOffset;
 
         byteOffset += desc->bWidth * desc->bHeight / 2;

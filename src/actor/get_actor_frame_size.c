@@ -8,8 +8,7 @@ void GetActorFrameSize(Actor *actor, u32 *dims)
     ActorFrameDesc *frameDesc;
 
     frameData = actor->anim.pAnimTable->pFrameData;
-    frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                   + frameData->awFrameOffsets[actor->anim.bLastAnimFrameValue]);
+    frameDesc = ACTOR_FRAME_DESC(frameData, actor->anim.bLastAnimFrameValue);
     dims[0] = frameDesc->bWidth;
     dims[1] = frameDesc->bHeight;
 }

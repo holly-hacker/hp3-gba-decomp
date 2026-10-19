@@ -7,7 +7,7 @@ void GetSpriteFrameSize(const ActorAssetRecord *record, u32 *dims, u8 frame)
     ActorFrameDesc *frameDesc;
 
     frameData = record->pFrameData;
-    frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
+    frameDesc = ACTOR_FRAME_DESC(frameData, frame);
     dims[0] = frameDesc->bWidth;
     dims[1] = frameDesc->bHeight;
 }

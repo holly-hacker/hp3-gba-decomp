@@ -39,8 +39,7 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
         && ((flags & ActorFlagAnimFrameLoaded) || actor->wVramTileAllocId == 0xFFFF)) {
         record = actor->anim.pAnimTable;
         frameData = record->pFrameData;
-        frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                        + frameData->awFrameOffsets[actor->anim.bLastAnimFrameValue]);
+        frameDesc = ACTOR_FRAME_DESC(frameData, actor->anim.bLastAnimFrameValue);
         dims[0] = frameDesc->bWidth;
         dims[1] = frameDesc->bHeight;
         pixelCount = dims[0] * dims[1];
@@ -166,8 +165,7 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
                 ActorFrameDesc *animFrameDesc;
 
                 animFrameData = actor->anim.pAnimTable->pFrameData;
-                animFrameDesc = (ActorFrameDesc *)((u8 *)animFrameData->awFrameOffsets
-                                                    + animFrameData->awFrameOffsets[actor->anim.bLastAnimFrameValue]);
+                animFrameDesc = ACTOR_FRAME_DESC(animFrameData, actor->anim.bLastAnimFrameValue);
                 tileGfx = (u8 *)actor->anim.pAnimTable->pTileGfx + animFrameDesc->wTileGfxOffset;
                 LoadObjTile(actor, tileGfx);
             }

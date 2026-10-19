@@ -22,14 +22,14 @@ typedef struct ParticleSprite {
 } ParticleSprite;
 
 // One 0x2C-byte record of a particle graphics pool (g_apParticleGfxPools[pool]).
-// The OBJ tile allocation is made when the pool is loaded (sub_08030A1C) and released by
-// sub_08031668.
+// The OBJ tile allocation is made by LoadParticleGfx and released by ReleaseParticleGfx.
 typedef struct ParticleGfxEntry {
-    u16 wTileAllocId;       // 0x00, 0xFFFF = none
-    u16 wTileRow;           // 0x02
-    u8 aAnimData[0x20];     // 0x04, ParticleEmitter.pAnimData points here
-    const ParticleSprite *pSprite;  // 0x24
-    u8 pad_28[0x04];        // -> 0x2C
+    u16 wTileAllocId;       // 0x00, first OBJ tile; 0xFFFF = none
+    u16 wPixelCount;        // 0x02, all frames' pixels (4bpp)
+    u16 awFrameTiles[16];   // 0x04, each frame's first tile relative to wTileAllocId;
+                            // ParticleEmitter.pFrameTiles points here
+    const ParticleSprite *pSprite;  // 0x24, the ActorAssetRecord the tiles came from
+    u8 bFrameCount;         // 0x28, padded to 0x2C
 } ParticleGfxEntry;
 
 // ParticleEmitter.wFlags. Bits not listed here are unused by the code decoded so far.
@@ -71,7 +71,7 @@ typedef struct ParticleEmitter {
     u8 pad_1C[0x02];         // -> 0x1E
     s16 sPosY;               // 0x1E
     u32 dwSpeed;             // 0x20
-    const u8 *pAnimData;     // 0x24
+    const u16 *pFrameTiles;  // 0x24, ParticleGfxEntry.awFrameTiles
     u16 wSpawnPeriod;        // 0x28, ticks between spawn attempts minus one
     u16 wLifetimeBase;       // 0x2A
     u16 wLifetimeRange;      // 0x2C, 0 = random 1-5, 5 = exactly 5, else random wLifetimeRange-5
@@ -122,7 +122,7 @@ typedef struct Particle {
     OamEntry oam;            // 0x24
     s32 dwSpeed;             // 0x2C
     s32 dwInitialSpeed;      // 0x30
-    const u8 *pAnimData;     // 0x34
+    const u16 *pFrameTiles;  // 0x34
     s16 sLife;               // 0x38
     u16 wFlags;              // 0x3A, the emitter's wFlags when spawned
     u16 wTileAllocId;        // 0x3C
@@ -207,9 +207,12 @@ extern void SpawnParticle(ParticleEmitter *emitter);
 extern ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex, u32 entryIndex);
 
 extern void ReleaseParticleEmitter(ParticleEmitter *emitter);
-// Loads (sub_08030A1C) and releases (sub_08031668) a particle graphics pool; see ParticleGfxEntry.
-extern void sub_08030A1C(u32 a, u32 b, const void *rec);
-extern void sub_08031668(s32 arg0, s32 arg1);
+struct ActorAssetRecord;
+extern u16 LoadParticleGfx(u32 pool, u32 entry, const struct ActorAssetRecord *record);
+extern u16 ReloadParticleGfx(u32 pool, u32 entry, const struct ActorAssetRecord *record, u32 pixelCount);
+extern void ReleaseParticleGfx(u32 pool, u32 entry);
+extern s8 TickAllParticles(void);
+extern void TickActorParticleEmitters(struct Actor *actor);
 
 // Drops the emitter's palette slot reference and returns it to the free list. The ROM
 // inlines this in the emitter tick and in ReleaseParticleEmitter.

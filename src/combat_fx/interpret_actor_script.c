@@ -331,11 +331,11 @@ void InterpretActorScript(Actor *actor)
             g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
             break;
         case BSOP_Unk35:  // effect actor asset call
-            sub_08030A1C(args[1], args[2], &g_aEffectActorAssets[args[3]]);
+            LoadParticleGfx(args[1], args[2], &g_aEffectActorAssets[args[3]]);
             break;
         case BSOP_Unk36:  // particle system setup
             FreeAllParticles();
-            sub_08031668(args[1], args[2]);
+            ReleaseParticleGfx(args[1], args[2]);
             break;
         case BSOP_FreeAllParticles:
             FreeAllParticles();

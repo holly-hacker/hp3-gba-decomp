@@ -9,7 +9,6 @@ void *GetActorFrameTileGfx(Actor *actor)
 
     record = actor->anim.pAnimTable;
     frameData = record->pFrameData;
-    frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                   + frameData->awFrameOffsets[actor->anim.bLastAnimFrameValue]);
+    frameDesc = ACTOR_FRAME_DESC(frameData, actor->anim.bLastAnimFrameValue);
     return (u8 *)record->pTileGfx + frameDesc->wTileGfxOffset;
 }

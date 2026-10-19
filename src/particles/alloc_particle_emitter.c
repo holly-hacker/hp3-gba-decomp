@@ -21,7 +21,7 @@ ParticleEmitter *AllocParticleEmitter(const ObjPalette *pPalette, u32 poolIndex,
         emitter->wTileAllocId = g_apParticleGfxPools[poolIndex][entryIndex].wTileAllocId;
         emitter->pSprite = g_apParticleGfxPools[poolIndex][entryIndex].pSprite;
         emitter->dwSpeed = 0x20000;
-        emitter->pAnimData = g_apParticleGfxPools[poolIndex][entryIndex].aAnimData;
+        emitter->pFrameTiles = g_apParticleGfxPools[poolIndex][entryIndex].awFrameTiles;
         return emitter;
     }
 

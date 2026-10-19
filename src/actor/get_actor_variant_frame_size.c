@@ -32,7 +32,7 @@ void GetActorVariantFrameSize(Actor *actor, u32 *dims, u8 slot)
         frame = actor->anim.bLastAnimFrameValue;
     }
 
-    frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
+    frameDesc = ACTOR_FRAME_DESC(frameData, frame);
     dims[0] = frameDesc->bWidth;
     dims[1] = frameDesc->bHeight;
 }

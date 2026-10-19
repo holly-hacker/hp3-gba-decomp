@@ -46,7 +46,7 @@ void LoadVariantSlotFrameBounds(Actor *actor)
             frame = actor->anim.bLastAnimFrameValue;
         }
 
-        frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
+        frameDesc = ACTOR_FRAME_DESC(frameData, frame);
 
         if (i == 0) {
             origin = frameDesc->awOrigin;

@@ -18,15 +18,19 @@ An **emitter** is a `0x4C`-byte record; a **particle** is a `0x48`-byte record w
 
 `g_wParticleEmitterHighWaterMark` and `g_wParticleHighWaterMark` track the peaks.
 `g_apParticleGfxPools[pool][entry]` (`ParticleGfxEntry`, `0x2C` bytes) supplies an
-emitter's tile allocation, sprite and animation data. `g_bParticleSpawnBlocked` is set by
-the per-particle update when its OAM submit fails (queue full) and cleared at the end of
-`TickParticleEmitters`.
+emitter's tile allocation, sprite and per-frame tile offsets. `LoadParticleGfx` allocates
+OBJ tiles for all frames of an `ActorAssetRecord` and loads them; `ReleaseParticleGfx` frees
+them. `g_bParticleSpawnBlocked` is set by the per-particle update when its OAM submit fails
+(queue full) and cleared at the end of `TickParticleEmitters`.
 
 | Function | Address | Source |
 |---|---|---|
+| `LoadParticleGfx` | `0x08030A1C` | `src/particles/load_particle_gfx.c` |
+| `ReloadParticleGfx` | `0x08030AC8` | `src/particles/reload_particle_gfx.c` (no callers) |
 | `AllocParticleEmitter` | `0x08030B70` | `src/particles/alloc_particle_emitter.c` |
 | `TickParticleEmitter` | `0x08030C9C` | `src/particles/tick_particle_emitter.c` |
 | `SpawnParticle` | `0x08030D90` | `src/particles/spawn_particle.c` |
+| `ReleaseParticleGfx` | `0x08031668` | `src/particles/release_particle_gfx.c` |
 | `ReleaseParticleEmitter` | `0x080316A4` | `src/particles/release_particle_emitter.c` |
 | `InitParticlePools` | `0x080315A4` | `src/particles/init_particle_pools.c` |
 | `ResetParticleState` | `0x08031624` | `src/particles/reset_particle_state.c` |
@@ -34,6 +38,8 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 | `FreeAllParticles` | `0x0803171C` | `src/particles/free_all_particles.c` |
 | `ReleaseParticle` | `0x08031848` | `src/particles/release_particle.c` |
 | `TickParticleEmitters` | `0x08031748` | `src/particles/tick_particle_emitters.c` |
+| `TickAllParticles` | `0x08031798` | `src/particles/tick_all_particles.c` (no callers) |
+| `TickActorParticleEmitters` | `0x080319B0` | `src/particles/tick_actor_particle_emitters.c` (no callers) |
 | `BucketParticlesByPriority` | `0x08030C00` | `src/particles/bucket_particles_by_priority.c` |
 | `TickParticleLayer` | `0x080317EC` | `src/particles/tick_particle_layer.c` |
 | `TickParticle` | `0x08031358` | `src/particles/tick_particle.c` |
@@ -46,18 +52,11 @@ the per-particle update when its OAM submit fails (queue full) and cleared at th
 | `CreateMenuCursorEmitter` | `0x0801DBE0` | `src/cursor/create_menu_cursor_emitter.c` |
 | `FixedMultiply` | `0x0802BEE8` | asm; `((a >> 6) * (b >> 6)) >> 4` |
 
-JP addresses (same sources, byte-matched): `CreateMenuCursorEmitter` `0x0801DBDC`,
-`AllocParticleEmitter` `0x08030BB4`, `TickParticleEmitter` `0x08030CE0`, `SpawnParticle`
-`0x08030DD4`, `TickParticleEmitters` `0x0803178C`, `InitParticlePools` `0x080315E8`,
-`ResetParticleState` `0x08031668`, `FreeAllParticleEmitters` `0x08031718`, `FreeAllParticles`
-`0x08031760`, `ReleaseParticle` `0x0803188C`, `FixedMultiply` `0x0802BF44`. The particle
-tick and draw functions above sit `0x44` higher than US (`BucketParticlesByPriority`
-`0x08030C44` through `UpdateParticleCollision` `0x080319C0`). The RAM symbols
+JP addresses (same sources, byte-matched): the functions from `LoadParticleGfx` through
+`TickActorParticleEmitters` sit `0x44` higher than US (`0x08030A60`-`0x08031A40`);
+`CreateMenuCursorEmitter` is `0x0801DBDC` and `FixedMultiply` `0x0802BF44`. The RAM symbols
 sit `0x60` higher than US (for example `g_pParticleEmitterActiveListHead` is `0x030051F8`);
 `g_pMenuCursorEmitter` is `0x030028C0` in both.
-
-Not yet decompiled: the graphics pool teardown `sub_08031668`. The bytes at
-`0x08031798`-`0x080317EC` and `0x080319B0`-`0x080319FC` are unseeded functions.
 
 ## Per-frame flow
 

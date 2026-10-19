@@ -86,7 +86,7 @@ Actor *SpawnMenuCursorActor(u32 kind)
             if (!g_dwMenuCursorParticleGfxLoaded)
             {
                 g_dwMenuCursorParticleGfxLoaded = 1;
-                sub_08030A1C(0, 0, &g_MenuCursorParticleAsset);
+                LoadParticleGfx(0, 0, &g_MenuCursorParticleAsset);
             }
             SetActorAnimData(actor, &g_MenuCursorSparkleAnimAsset, g_MenuCursorSparkleAnimData, 0);
             AttachActorPaletteUnshared(actor, (const ObjPalette *)gMenuCursorSparklePalette);

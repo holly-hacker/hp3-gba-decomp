@@ -23,6 +23,6 @@ void ReleaseMenuCursor(Actor *pActor)
     if (g_dwMenuCursorParticleGfxLoaded)
     {
         g_dwMenuCursorParticleGfxLoaded = 0;
-        sub_08031668(0, 0);
+        ReleaseParticleGfx(0, 0);
     }
 }

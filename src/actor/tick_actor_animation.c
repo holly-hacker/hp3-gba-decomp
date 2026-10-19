@@ -19,7 +19,7 @@ void TickActorAnimation(Actor *actor)
     cursor = actor->anim.pAnimFrameCursor;
     if (cursor == NULL) {
         actor->anim.bLastAnimFrameValue++;
-        if (actor->anim.bLastAnimFrameValue >= ((ActorFrameData *)actor->anim.pAnimTable->pFrameData)->wFrameCount)
+        if (actor->anim.bLastAnimFrameValue >= actor->anim.pAnimTable->pFrameData->wFrameCount)
             actor->anim.bLastAnimFrameValue = 0;
 
         frame = actor->anim.bLastAnimFrameValue;

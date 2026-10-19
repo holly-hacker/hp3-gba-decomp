@@ -154,6 +154,11 @@ typedef struct ActorFrameDesc {
                              // ActorFrameData.bFramePartCount parts and bAnchorCount anchors
 } ActorFrameDesc;
 
+// Frame `frame`'s descriptor; ActorFrameData.awFrameOffsets holds byte offsets from the start
+// of the array.
+#define ACTOR_FRAME_DESC(frameData, frame) \
+    ((ActorFrameDesc *)((u8 *)(frameData)->awFrameOffsets + (frameData)->awFrameOffsets[frame]))
+
 // One OAM cell of an animation frame, positioned relative to the actor. x/y are
 // pixel offsets (doubled for a double-size affine actor); size/shape are the OAM
 // attributes; tileOffset is the cell's first tile relative to the frame's tiles.
@@ -169,7 +174,7 @@ typedef struct ActorFrameCell {
 // SetActorAssetRecord's tile/frame pipeline; pPalette is uploaded separately.
 typedef struct ActorAssetRecord {
     void *pTileGfx;
-    void *pFrameData;
+    ActorFrameData *pFrameData;
     const ObjPalette *pPalette;
     u8 bAnimFrameDelay;
 } ActorAssetRecord;
@@ -179,7 +184,7 @@ typedef struct ActorAssetRecord {
 // the animation code reads only these two fields.
 typedef struct ActorGfxRecord {
     void *pTileGfx;
-    void *pFrameData;
+    ActorFrameData *pFrameData;
 } ActorGfxRecord;
 
 // ActorVariantSlot.bFrameFlags.

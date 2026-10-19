@@ -19,8 +19,7 @@ void LoadActorAnimFrameBounds(Actor *actor)
 
     frameData = anim->pAnimTable->pFrameData;
     if (frameData != NULL) {
-        frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                        + frameData->awFrameOffsets[anim->bLastAnimFrameValue]);
+        frameDesc = ACTOR_FRAME_DESC(frameData, anim->bLastAnimFrameValue);
         origin = frameDesc->awOrigin;
 
         actor->bTerrainBoxLeft = frameData->abTerrainBox[0];

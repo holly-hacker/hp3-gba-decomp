@@ -63,8 +63,7 @@ u8 UpdateActorOamCells(Actor *actor)
 
         if (flags & ActorFlagSkipSpriteFrameUpdate) {
             frameData = actor->anim.pAnimTable->pFrameData;
-            frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets
-                                            + frameData->awFrameOffsets[actor->anim.bLastAnimFrameValue]);
+            frameDesc = ACTOR_FRAME_DESC(frameData, actor->anim.bLastAnimFrameValue);
             count = frameDesc->bCellCount & 0x1F;
             frameCell = (ActorFrameCell *)((u8 *)frameDesc + (frameData->bFramePartCount * 6 + 10)
                                             + frameData->bAnchorCount * 2);

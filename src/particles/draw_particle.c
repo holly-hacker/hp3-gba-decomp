@@ -31,7 +31,7 @@ s8 DrawParticle(Particle *particle)
     entryOffset = particle->bFrame * sizeof(u16);
     offsets = header->awFrameOffsets;
     frameDesc = (ActorFrameDesc *)((u8 *)offsets + *((u8 *)offsets + entryOffset));
-    particle->oam.tileNum = particle->wTileAllocId + *(u16 *)((u32)entryOffset + (u32)particle->pAnimData);
+    particle->oam.tileNum = particle->wTileAllocId + *(u16 *)((u32)entryOffset + (u32)particle->pFrameTiles);
     particle->oam.x = pos[0];
     particle->oam.y = pos[1];
     width = frameDesc->bWidth >> 4;

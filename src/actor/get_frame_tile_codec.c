@@ -5,7 +5,7 @@ u32 GetFrameTileCodec(ActorFrameData *frameData, u16 frame)
 {
     ActorFrameDesc *frameDesc;
 
-    frameDesc = (ActorFrameDesc *)((u8 *)frameData->awFrameOffsets + frameData->awFrameOffsets[frame]);
+    frameDesc = ACTOR_FRAME_DESC(frameData, frame);
     if (frameDesc->bCellCount & 0x20)
         return ActorFrameTileCodecRle;
     if (frameDesc->bCellCount & 0x40)
