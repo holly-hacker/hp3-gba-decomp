@@ -788,23 +788,23 @@ c-file 0x0801FEBC _ src/ending_cutscene/update_hippogriff_flies_into_air_cutscen
 c-file 0x0801FEFC _ src/ending_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
 c-file 0x0801FF18 _ src/event_actors/tick_camera_cutaway_actor.c TickCameraCutawayActor
 c-file 0x080200E4 _ src/event_actors/tick_delayed_respawn_actor.c TickDelayedRespawnActor
-c-file 0x08020174 0x080201B0 src/event_actors/spawn_script_effect_actor.c SpawnScriptEffectActor
-thumb-func 0x080201B0 AddRoomTileAnimation_candidate
-thumb-func 0x08020210 TickRoomTileAnimations_candidate
+c-file 0x08020174 _ src/event_actors/spawn_script_effect_actor.c SpawnScriptEffectActor
+c-file 0x080201B0 _ src/flipbook/add_room_tile_animation.c AddRoomTileAnimation
+c-file 0x08020210 _ src/flipbook/tick_room_tile_animations.c TickRoomTileAnimations
 c-file 0x08020260 _ src/flipbook/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
-c-file 0x08020390 0x080203B4 src/flipbook/init_room_tile_animation_table.c InitRoomTileAnimationTable
-thumb-func 0x080203B4 sub_080203CC
-thumb-func 0x080203D8 sub_080203F0
-thumb-func 0x08020414 sub_0802042C
+c-file 0x08020390 _ src/flipbook/init_room_tile_animation_table.c InitRoomTileAnimationTable
+c-file 0x080203B4 _ src/flipbook/clear_room_tile_animations.c ClearRoomTileAnimations
+c-file 0x080203D8 _ src/flipbook/resume_room_tile_animation.c ResumeRoomTileAnimation
+c-file 0x08020414 _ src/flipbook/halt_room_tile_animation.c HaltRoomTileAnimation
 c-file 0x08020428 _ src/flipbook/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
-c-file 0x08020478 0x080204EC src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
-thumb-func 0x080204EC FindRoomTileAnimation_candidate
-thumb-func 0x08020534 sub_0802054C
+c-file 0x08020478 _ src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
+c-file 0x080204EC _ src/flipbook/find_room_tile_animation.c FindRoomTileAnimation
+c-file 0x08020534 _ src/flipbook/rewind_room_tile_animation_step.c RewindRoomTileAnimationStep
 c-file 0x08020558 _ src/flipbook/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
 c-file 0x08020574 _ src/flipbook/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
 c-file 0x08020590 _ src/flipbook/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
-c-file 0x080205AC 0x080205E0 src/flipbook/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
-thumb-func 0x080205E0 sub_080205F8
+c-file 0x080205AC _ src/flipbook/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
+c-file 0x080205E0 _ src/flipbook/tick_room_tile_animation_actor.c TickRoomTileAnimationActor
 c-file 0x08020650 _ src/font/insert_text_line_breaks.c InsertTextLineBreaks
 c-file 0x08020654 _ src/font/draw_text_line.c DrawTextLine
 c-file 0x0802086C _ src/font/draw_string_aligned.c DrawStringAligned

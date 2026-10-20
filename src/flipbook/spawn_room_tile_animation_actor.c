@@ -11,13 +11,13 @@ Actor *SpawnRoomTileAnimationActor_candidate(u8 bColumn, u8 bRow)
 
     SetActorPosition(pActor, pRecord->nPixelX, pRecord->nPixelY);
     pActor->dwFlags = 0x200C;
-    AddRoomTileAnimation_candidate(pRecord->bAnimId, pRecord->nPixelX, pRecord->nPixelY, 0);
+    AddRoomTileAnimation(pRecord->bAnimId, pRecord->nPixelX, pRecord->nPixelY, 0);
 
     if (pRecord->bFlag == 0)
-        sub_0802042C(pRecord->nPixelX, pRecord->nPixelY);
+        HaltRoomTileAnimation(pRecord->nPixelX, pRecord->nPixelY);
     else
-        sub_080203F0(pRecord->nPixelX, pRecord->nPixelY);
+        ResumeRoomTileAnimation(pRecord->nPixelX, pRecord->nPixelY);
 
-    pActor->pfnTick = sub_080205F8;
+    pActor->pfnTick = TickRoomTileAnimationActor;
     return pActor;
 }

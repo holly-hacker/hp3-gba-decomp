@@ -897,25 +897,25 @@ c-file 0x0801FF14 _ src/ending_cutscene/exit_hippogriff_flies_into_air_cutscene.
 # Event actors (room script effect actors)
 c-file 0x0801FF30 _ src/event_actors/tick_camera_cutaway_actor.c TickCameraCutawayActor
 c-file 0x080200FC _ src/event_actors/tick_delayed_respawn_actor.c TickDelayedRespawnActor
-c-file 0x0802018C 0x080201C8 src/event_actors/spawn_script_effect_actor.c SpawnScriptEffectActor
+c-file 0x0802018C _ src/event_actors/spawn_script_effect_actor.c SpawnScriptEffectActor
 
 # Flipbook animations
-thumb-func 0x080201C8 AddRoomTileAnimation_candidate
-thumb-func 0x08020228 TickRoomTileAnimations_candidate
+c-file 0x080201C8 _ src/flipbook/add_room_tile_animation.c AddRoomTileAnimation
+c-file 0x08020228 _ src/flipbook/tick_room_tile_animations.c TickRoomTileAnimations
 c-file 0x08020278 _ src/flipbook/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
-c-file 0x080203A8 0x080203CC src/flipbook/init_room_tile_animation_table.c InitRoomTileAnimationTable
-thumb-func 0x080203CC sub_080203CC
-thumb-func 0x080203F0 sub_080203F0
-thumb-func 0x0802042C sub_0802042C
+c-file 0x080203A8 _ src/flipbook/init_room_tile_animation_table.c InitRoomTileAnimationTable
+c-file 0x080203CC _ src/flipbook/clear_room_tile_animations.c ClearRoomTileAnimations
+c-file 0x080203F0 _ src/flipbook/resume_room_tile_animation.c ResumeRoomTileAnimation
+c-file 0x0802042C _ src/flipbook/halt_room_tile_animation.c HaltRoomTileAnimation
 c-file 0x08020440 _ src/flipbook/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
-c-file 0x08020490 0x08020504 src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
-thumb-func 0x08020504 FindRoomTileAnimation_candidate
-thumb-func 0x0802054C RewindRoomTileAnimationStep
+c-file 0x08020490 _ src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
+c-file 0x08020504 _ src/flipbook/find_room_tile_animation.c FindRoomTileAnimation
+c-file 0x0802054C _ src/flipbook/rewind_room_tile_animation_step.c RewindRoomTileAnimationStep
 c-file 0x08020570 _ src/flipbook/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
 c-file 0x0802058C _ src/flipbook/get_room_tile_anim_frame_delay.c GetRoomTileAnimFrameDelay
 c-file 0x080205A8 _ src/flipbook/get_room_tile_anim_frame_layer_mask.c GetRoomTileAnimFrameLayerMask
-c-file 0x080205C4 0x080205F8 src/flipbook/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
-thumb-func 0x080205F8 sub_080205F8
+c-file 0x080205C4 _ src/flipbook/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlockPos
+c-file 0x080205F8 _ src/flipbook/tick_room_tile_animation_actor.c TickRoomTileAnimationActor
 
 # Font (text rendering)
 c-file 0x08020668 _ src/font/insert_text_line_breaks.c InsertTextLineBreaks

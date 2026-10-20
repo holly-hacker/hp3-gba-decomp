@@ -82,7 +82,7 @@ void ExitOverworldScreen(void)
     FreeAllActors(&g_ActiveActorListState.pHead);
     ResetPaletteAnimations();
     ResetBgLayer(0);
-    sub_080203CC();
+    ClearRoomTileAnimations();
     FreeBgTileAnimations();
 
     g_dwGameModeFlags &= ~GameModeFlagUnk40000000;

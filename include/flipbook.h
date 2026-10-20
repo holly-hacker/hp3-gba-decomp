@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 
-// One animated room tile, stepped by TickRoomTileAnimations_candidate; see
+// One animated room tile, stepped by TickRoomTileAnimations; see
 // docs/memory-map/frame_systems.md.
 typedef struct RoomTileAnimation {
     u8 bSet;
@@ -13,6 +13,9 @@ typedef struct RoomTileAnimation {
     u16 wX;
     u16 wY;
 } RoomTileAnimation;
+
+// RoomTileAnimation.bFlags: set by a ROOM_TILE_ANIM_HALT frame or HaltRoomTileAnimation.
+#define ROOM_TILE_ANIM_FLAG_HALTED 1
 
 #define MAX_ROOM_TILE_ANIMATIONS 32
 extern RoomTileAnimation *g_aRoomTileAnimations;
@@ -49,18 +52,19 @@ typedef ROOM_TILE_ANIM_SET(0) RoomTileAnimSet;
 // Indexed by RoomTileAnimation.bSet.
 extern const RoomTileAnimSet *const g_apRoomTileAnimSets[55];
 
-extern void AddRoomTileAnimation_candidate(u8 bAnimId, s32 x, s32 y, u8 bArg);
-// Counts down the room's timed tile-change entries and applies each one when it expires.
-extern void TickRoomTileAnimations_candidate(void);
+extern void AddRoomTileAnimation(u8 bSet, s32 x, s32 y, u8 bFlags);
+extern void TickRoomTileAnimations(void);
 extern void ApplyRoomTileAnimationFrame(RoomTileAnimation *pAnim);
 extern void InitRoomTileAnimationTable(void);
-extern void sub_080203CC(void);
-extern void sub_080203F0(s32 x, s32 y);
-extern void sub_0802042C(s32 x, s32 y);
+extern void ClearRoomTileAnimations(void);
+extern void ResumeRoomTileAnimation(s32 x, s32 y);
+extern void HaltRoomTileAnimation(s32 x, s32 y);
 extern void ApplyRoomTileAnimationAt(u8 bSet, u32 x, u32 y, u8 bFlags);
 extern Actor *SpawnRoomTileAnimationActor_candidate(u8 bColumn, u8 bRow);
+extern RoomTileAnimation *FindRoomTileAnimation(s32 x, s32 y);
+extern u32 RewindRoomTileAnimationStep(RoomTileAnimation *pAnim);
 extern u32 GetRoomTileAnimFrameBlockCount(const RoomTileAnimation *pAnim);
 extern u32 GetRoomTileAnimFrameDelay(const RoomTileAnimation *pAnim);
 extern u32 GetRoomTileAnimFrameLayerMask(const RoomTileAnimation *pAnim);
 extern void GetRoomTileAnimFrameBlockPos(const RoomTileAnimation *pAnim, u32 index, u16 *pX, u16 *pY);
-extern void sub_080205F8(Actor *pActor);
+extern void TickRoomTileAnimationActor(Actor *pActor);

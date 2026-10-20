@@ -32,7 +32,7 @@ void ApplyRoomTileAnimationFrame(RoomTileAnimation *pAnim)
     }
     else if (pAnim->bDelay == ROOM_TILE_ANIM_HALT)
     {
-        pAnim->bFlags |= 1;
+        pAnim->bFlags |= ROOM_TILE_ANIM_FLAG_HALTED;
     }
     else
     {

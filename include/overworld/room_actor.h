@@ -67,5 +67,5 @@ typedef struct RoomActorRecordUnk1 {
     s16 nPixelX;
     s16 nPixelY;
     u8 bAnimId;     // 0x08
-    u8 bFlag;       // 0x09, nonzero: sub_080203F0, zero: sub_0802042C
+    u8 bFlag;       // 0x09, nonzero: ResumeRoomTileAnimation, zero: HaltRoomTileAnimation
 } RoomActorRecordUnk1;
