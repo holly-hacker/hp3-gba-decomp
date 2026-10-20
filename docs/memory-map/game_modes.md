@@ -266,7 +266,12 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   or calls the screen's exit helper.
 - `UnusedServePumpkinJuiceMinigame` has handlers in the dispatch table but
   no known pusher; its menu rows leave through
-  `PushGameMode_2(MinigameDifficultySelect, 6, arg2)`.
+  `PushGameMode_2(MinigameDifficultySelect, 6, arg2)`. A Tapper-style game:
+  the bartender pours goblets down three lanes at customers walking in from
+  the left and catches the empties they slide back; arg3 is the difficulty.
+  A full goblet past the left end, an empty one past the bartender or a
+  customer reaching the bar loses (`dwModeState` 4). All of its code and its
+  data at US `0x08069038`-`0x08069328` are matched in `src/pouring_minigame/`.
 - `DivinationTeaMinigame` writes BG2's affine parameters directly, drives
   16 leaf actors through `SetActorAffineTransform` (scale words have 8
   fractional bits) and shows a random fortune: dialog text `0xA5F` plus

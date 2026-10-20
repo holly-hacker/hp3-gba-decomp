@@ -18,13 +18,13 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
         if (g_wKeysPressed & KeyStart)
         {
             g_ServePumpkinJuice.dwMenuSelection = 0;
-            sub_08035330();
+            DrawServePumpkinJuicePauseMenu();
             g_GameModeStackContext.dwModeState = ServePumpkinJuiceStatePauseMenu;
         }
 
-        for (i = 0; i < ARRAY_COUNT(g_ServePumpkinJuice.adwUnk20); i++)
+        for (i = 0; i < ARRAY_COUNT(g_ServePumpkinJuice.adwCustomerCount); i++)
         {
-            if (g_ServePumpkinJuice.adwUnk20[i] > 0)
+            if (g_ServePumpkinJuice.adwCustomerCount[i] > 0)
                 found = 1;
             else if (chosen == -1 || Mt19937RandRange(0, 1) == 0)
                 chosen = i;
@@ -36,7 +36,7 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
             g_GameModeStackContext.dwModeState = ServePumpkinJuiceStateRoundOver;
             g_ServePumpkinJuice.dwScore +=
                 ((2 << g_GameModeStackContext.dwCurrentGameModeArg3) + g_ServePumpkinJuice.dwRound + 1) * 100;
-            sub_08035418();
+            DrawServePumpkinJuiceScore();
         }
         else if (chosen != -1)
         {
@@ -45,24 +45,24 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
                 i = 0;
                 while (i < Mt19937RandRange(0, g_ServePumpkinJuice.dwRound) + g_GameModeStackContext.dwCurrentGameModeArg3)
                 {
-                    u32 value = sub_08035474();
+                    u32 type = PickServePumpkinJuiceCustomerType();
 
                     i++;
-                    sub_08034F20(chosen, value, i);
+                    SpawnServePumpkinJuiceCustomer(chosen, type, i);
                 }
             }
         }
 
-        if (g_ServePumpkinJuice.dwUnk0 != 0)
-            sub_08035418();
+        if (g_ServePumpkinJuice.dwScoreChanged != 0)
+            DrawServePumpkinJuiceScore();
 
-        sub_0803518C();
+        DrawServePumpkinJuiceTaps();
         break;
     case ServePumpkinJuiceStateNextRound:
         g_ServePumpkinJuice.dwRound++;
-        sub_0803526C();
+        SpawnServePumpkinJuiceCustomers();
         g_ServePumpkinJuice.dwMenuSelection = 0;
-        sub_08035330();
+        DrawServePumpkinJuicePauseMenu();
         DrawStringAligned(g_ServePumpkinJuice.dwTileCursor, 0x78, 0x2D, g_ServePumpkinJuicePauseText, 1);
         g_GameModeStackContext.dwModeState = ServePumpkinJuiceStatePauseMenu;
         break;
@@ -77,7 +77,7 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
                 break;
             case 1:
                 FillBgTilemapRect(3, 0, 5, 0x1E, 9, 0);
-                sub_0803539C();
+                StartServePumpkinJuiceGame();
                 break;
             case 2:
                 PushGameMode_2(MinigameDifficultySelect, 6, g_GameModeStackContext.dwCurrentGameModeArg2);
@@ -92,7 +92,7 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
         }
 
         if (StepCursorUpDown(&g_ServePumpkinJuice.dwMenuSelection, 0, 2, 1, 0))
-            sub_08035330();
+            DrawServePumpkinJuicePauseMenu();
         break;
     case ServePumpkinJuiceStateWaitInput:
         if (g_wKeysPressed != 0 || g_wKeysHeld == 0)
@@ -104,7 +104,7 @@ void UpdateUnusedServePumpkinJuiceMinigame(void)
             PushGameMode_2(MinigameDifficultySelect, 6, g_GameModeStackContext.dwCurrentGameModeArg2);
         break;
     case ServePumpkinJuiceStateRoundOver:
-        sub_0803518C();
+        DrawServePumpkinJuiceTaps();
         break;
     }
 }

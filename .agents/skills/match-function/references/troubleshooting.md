@@ -57,6 +57,8 @@ Arguments and operands expand left to right, and combine places a folded load at
 use. A load the ROM performs before an earlier argument or a preceding constant set was
 assigned to a local in its own statement first (TickBattleMenuInput's `lastRow`;
 ShowBattleMessage's `fighterType` before `textId = 0x996`, US `0x080101D0`, `0x08010864`).
+`fold` moves a literal to the call or sum it can join (`rand + (k << n) + 12` adds 12 to `rand` first);
+a ROM keeping the literal elsewhere had separate statements (TickServePumpkinJuiceCustomer, US `0x0803494C`).
 
 ## 5. Switch shape
 

@@ -1,0 +1,2 @@
+#define SPAWN_SERVE_PUMPKIN_JUICE_CUSTOMERS_LINKAGE
+#include "pouring_minigame_inline.h"

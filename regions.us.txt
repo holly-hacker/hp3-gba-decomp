@@ -1582,30 +1582,30 @@ thumb-func 0x08033D6C sub_08033D6C
 
 # Pumpkin Juice Pouring minigame
 c-file 0x08033DA4 _ src/pouring_minigame/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
-c-file 0x08033EE0 0x08034174 src/pouring_minigame/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
-thumb-func 0x08034174 sub_08034174
-thumb-func 0x08034270 sub_08034270
-thumb-func 0x08034364 sub_08034364
-thumb-func 0x080343DC sub_080343DC
-thumb-func 0x080344EC sub_080344EC
-thumb-func 0x0803494C sub_0803494C
-thumb-func 0x08034B80 sub_08034B80
-thumb-func 0x08034CD4 sub_08034CD4
-thumb-func 0x08034DEC sub_08034DEC
-thumb-func 0x08034E9C sub_08034E9C
-thumb-func 0x08034F20 sub_08034F20
-thumb-func 0x0803506C sub_0803506C
-thumb-func 0x0803518C sub_0803518C
-c-file 0x08035240 0x0803526C src/pouring_minigame/exit_serve_pumpkin_juice_minigame.c ExitUnusedServePumpkinJuiceMinigame
-thumb-func 0x0803526C sub_0803526C
-thumb-func 0x080352C8 sub_080352C8
-thumb-func 0x0803532C sub_0803532C
-thumb-func 0x08035330 sub_08035330
-thumb-func 0x0803539C sub_0803539C
-thumb-func 0x08035418 sub_08035418
-thumb-func 0x08035474 sub_08035474
-thumb-func 0x080354C0 sub_080354C0
-thumb-func 0x08035520 sub_08035520
+c-file 0x08033EE0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
+c-file 0x08034174 _ src/pouring_minigame/tick_serve_pumpkin_juice_full_goblet.c TickServePumpkinJuiceFullGoblet
+c-file 0x08034270 _ src/pouring_minigame/tick_serve_pumpkin_juice_empty_goblet.c TickServePumpkinJuiceEmptyGoblet
+c-file 0x08034364 _ src/pouring_minigame/tick_serve_pumpkin_juice_dropped_goblet.c TickServePumpkinJuiceDroppedGoblet
+c-file 0x080343DC _ src/pouring_minigame/tick_serve_pumpkin_juice_bartender_arm.c TickServePumpkinJuiceBartenderArm
+c-file 0x080344EC _ src/pouring_minigame/tick_serve_pumpkin_juice_bartender.c TickServePumpkinJuiceBartender
+c-file 0x0803494C _ src/pouring_minigame/tick_serve_pumpkin_juice_customer.c TickServePumpkinJuiceCustomer
+c-file 0x08034B80 _ src/pouring_minigame/tick_serve_pumpkin_juice_customer_part.c TickServePumpkinJuiceCustomerPart
+c-file 0x08034CD4 _ src/pouring_minigame/spawn_serve_pumpkin_juice_bartender.c SpawnServePumpkinJuiceBartender
+c-file 0x08034DEC _ src/pouring_minigame/spawn_serve_pumpkin_juice_full_goblet.c SpawnServePumpkinJuiceFullGoblet
+c-file 0x08034E9C _ src/pouring_minigame/spawn_serve_pumpkin_juice_empty_goblet.c SpawnServePumpkinJuiceEmptyGoblet
+c-file 0x08034F20 _ src/pouring_minigame/spawn_serve_pumpkin_juice_customer.c SpawnServePumpkinJuiceCustomer
+c-file 0x0803506C _ src/pouring_minigame/handle_serve_pumpkin_juice_customer_touch.c HandleServePumpkinJuiceCustomerTouch
+c-file 0x0803518C _ src/pouring_minigame/draw_serve_pumpkin_juice_taps.c DrawServePumpkinJuiceTaps
+c-file 0x08035240 _ src/pouring_minigame/exit_serve_pumpkin_juice_minigame.c ExitUnusedServePumpkinJuiceMinigame
+c-file 0x0803526C _ src/pouring_minigame/spawn_serve_pumpkin_juice_customers.c SpawnServePumpkinJuiceCustomers
+c-file 0x080352C8 _ src/pouring_minigame/handle_serve_pumpkin_juice_goblet_touch.c HandleServePumpkinJuiceGobletTouch
+c-file 0x0803532C _ src/pouring_minigame/handle_serve_pumpkin_juice_bartender_touch.c HandleServePumpkinJuiceBartenderTouch
+c-file 0x08035330 _ src/pouring_minigame/draw_serve_pumpkin_juice_pause_menu.c DrawServePumpkinJuicePauseMenu
+c-file 0x0803539C _ src/pouring_minigame/start_serve_pumpkin_juice_game.c StartServePumpkinJuiceGame
+c-file 0x08035418 _ src/pouring_minigame/draw_serve_pumpkin_juice_score.c DrawServePumpkinJuiceScore
+c-file 0x08035474 _ src/pouring_minigame/pick_serve_pumpkin_juice_customer_type.c PickServePumpkinJuiceCustomerType
+c-file 0x080354C0 _ src/pouring_minigame/spawn_serve_pumpkin_juice_puff.c SpawnServePumpkinJuicePuff
+c-file 0x08035520 _ src/pouring_minigame/tick_serve_pumpkin_juice_puff.c TickServePumpkinJuicePuff
 
 # PressurePad? (push-reset button actor)
 c-file 0x08035540 0x08035664 src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
@@ -2412,7 +2412,7 @@ c-file 0x08068C10 _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068C30 _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068C38 _ src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file 0x08068D04 0x08068D3C src/pop_it_minigame/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
-c-file 0x08069184 0x08069194 src/pouring_minigame/serve_pumpkin_juice.globals.c g_dwServePumpkinJuiceBg0Control
+c-file 0x08069038 _ src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
 c-file 0x08069328 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file 0x080693CC 0x080693E4 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite

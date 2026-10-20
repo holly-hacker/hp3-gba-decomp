@@ -36,14 +36,14 @@ void InitializeUnusedServePumpkinJuiceMinigame(void)
     StartPaletteEffectWithFrameCount(3, 1, 8, 0x10, 0x19, GRAPHIC_BLOB_PALETTE_COLORS(gMenuSelectionPalette), 6);
     Mt19937AutoSeed();
 
-    g_ServePumpkinJuice.dwUnk2C = 0xA8;
-    g_ServePumpkinJuice.dwUnk34 = 0xB8;
-    g_ServePumpkinJuice.dwUnk3C = 0xC8;
-    g_ServePumpkinJuice.dwUnk30 = 0x57;
-    g_ServePumpkinJuice.dwUnk38 = 0x80;
-    g_ServePumpkinJuice.dwUnk40 = 0xA8;
-    g_ServePumpkinJuice.dwUnk14 = 0x55;
-    sub_0803539C();
+    g_ServePumpkinJuice.aLanePos[0].x = 0xA8;
+    g_ServePumpkinJuice.aLanePos[1].x = 0xB8;
+    g_ServePumpkinJuice.aLanePos[2].x = 0xC8;
+    g_ServePumpkinJuice.aLanePos[0].y = 0x57;
+    g_ServePumpkinJuice.aLanePos[1].y = 0x80;
+    g_ServePumpkinJuice.aLanePos[2].y = 0xA8;
+    g_ServePumpkinJuice.dwTextTileBase = 0x55;
+    StartServePumpkinJuiceGame();
 
     SetAlphaBlendTargets(3, 4);
     SetAlphaBlendCoefficients(8, 8);
