@@ -37,8 +37,8 @@ is called exclusively from the documented battle range `0x08015000`-
 `0x08018000` (`RollMonsterSpecialEffect`, `ExecutePlayerAttackSequence`,
 `ResolvePlayerAttack`; see
 [`../memory-map/battle.md`](../memory-map/battle.md)). The only other
-xrefs to the interpreter's entry address are `WaitFramesTick`/
-`WaitForCounterTick`/`WaitForFieldClearTick` restoring `pfnTick` on an
+xrefs to the interpreter's entry address are the `Wait` family's tick
+handlers (see below) restoring `pfnTick` on an
 already-running script actor, not new spawns. Consistent with
 the 65 effect scripts (`src/combat_fx/effect_scripts/`) all reading as combat content (spells,
 monster attacks, `SpecialHarry`/`SpecialRon` abilities). Static xref
@@ -120,11 +120,11 @@ case bodies are laid out in the source's order, which is not opcode order
 (`0x7A`, `0x7B` precede `0x78`, `0x79`; `0xA4` falls through into `0x06`).
 
 `JumpToScriptLabel` (US `0x0801B710`) is the goto/branch-target
-resolver: given a label id, it linearly scans the current script for an
-`opcode 0x60` (`Label`) instruction whose operand byte matches, and
-returns that instruction's offset. This is how a script implements
-control flow (conditional/branch opcodes presumably call this and then
-set `wScriptPC` to the result -- not traced further, out of scope here).
+resolver: it walks the current script opcode by opcode (using the length
+table) from offset 0 to the first `Label` (`0x60`) whose operand is the
+label id, and sets `wScriptPc` to that `Label`'s offset (**PROVEN**,
+`src/combat_fx_script/jump_to_script_label.c`). A missing label is not
+handled.
 
 ## The byte format
 
@@ -172,7 +172,7 @@ the opcode header" below:
 | `0x08` | `WaitFrames` | 1 (frame count) | Sets `Actor+0x8a = frameCount` (u16 target), zeroes `Actor+0x80` (u16 elapsed), points `Actor.pfnTick` at `WaitFramesTick` (US `0x0801B650`, not discovered by `gbadisasm` -- see "The Wait family" below), and **returns from `InterpretActorScript`** -- the first case confirmed to actually reach `InterpretActorScript`'s real epilogue (`0x0801AE04`) instead of continuing the loop, resolving that open question. Handler dispatch at US `0x08019128`. |
 | `0x09` | `WaitForCounter` | 0 | Waits for `Actor+0xdc` (an externally-driven byte, not written by this opcode) to advance past its value at the moment this opcode ran, or for `Actor+0xc` bit `0x40000` to be set (early abort) -- either condition restores `pfnTick` to `InterpretActorScript`. Tick handler `WaitForCounterTick` (US `0x0801B684`). Handler dispatch at US `0x0801914C`. |
 | `0x0A` | `WaitForFieldClear` | 0 | Waits while `Actor+0x14` (u16) is nonzero (and at least one tick has elapsed), then restores `pfnTick` **and calls `InterpretActorScript` immediately** (via libgcc's `_call_via_r1`, US `0x0804A2C4` -- see "The Wait family" below) -- unlike its two siblings, this resumes the script the same frame the wait ends. Tick handler `WaitForFieldClearTick` (US `0x0801B6D0`). Handler dispatch at US `0x08019168`. |
-| `0x0C` | `MoveTo` | 5 | Computes a target position -- either from a per-fighter-slot table (`0x08053D2A`/`0x08053D38`, the same tables `TeleportToSlotPosition` reads) or from `sub_0801B620`'s query (a small fallback returning one of 3 fixed screen-coordinate pairs, `(0xB0,0x72)`/`(0x30,0x50)`/`(0x40,0x50)`, keyed on global byte `DAT_03002771` -- candidate: a battle-phase/dialog-state indicator, not identified further), offset by two signed operand bytes -- optionally applies a repeated per-generation offset (`bScriptLocalA` iterations of `GetActorAnchor`, gated by operand 4 -- an anchor point of the current animation frame of `r8`'s linked `Actor`, see "The interpreter" above for `r8`), then calls `StartActorMove` (US `0x08001A84`) with the result and operand 2 as the duration. Handler at US `0x08019184`. `WaitForFieldClear` is how a script waits for this to finish -- see "The Wait family" above. |
+| `0x0C` | `MoveTo` | 5 | Computes a target position -- either from a per-fighter-slot table (`0x08053D2A`/`0x08053D38`, the same tables `TeleportToSlotPosition` reads) or from `ComputeEffectSpawnPosition` (one of 3 fixed screen positions, `(176,114)` for `g_effectStaging.bSlotParam` 0-2, `(48,80)` for 3-4, `(64,80)` otherwise), offset by two signed operand bytes -- optionally applies a repeated per-generation offset (`bScriptLocalA` iterations of `GetActorAnchor`, gated by operand 4 -- an anchor point of the current animation frame of `r8`'s linked `Actor`, see "The interpreter" above for `r8`), then calls `StartActorMove` (US `0x08001A84`) with the result and operand 2 as the duration. Handler at US `0x08019184`. `WaitForFieldClear` is how a script waits for this to finish -- see "The Wait family" above. |
 | `0x0E` | `SpawnEffectNoPalette` | 1 (effect id) | `CreateEffectScriptActor(effectId, 0)` -- same call `SpawnEffect` (`0x0F`) makes, but with `attachPalette = 0` instead of `1`: the child does not bind `g_aEffectAnimAssets[effectId].pPalette` (**PROVEN**, `src/combat_fx/create_effect_script_actor.c`). Handler at US `0x08019236`. One of 7 opcodes that spawn a child through `CreateEffectScriptActor`: `SpawnEffect*` `0x0E`-`0x13` (the `NoPalette` variants pass `0`) and `SpawnEffectSharedTiles` `0x16` (**PROVEN**, `src/combat_fx/interpret_actor_script.c`). See "The script-local bytes" below for the spawn-time `bScriptLocalA`/`bScriptLocalB` copy-and-increment all 7 perform. |
 | `0x0F` | `SpawnEffect` | 1 (effect id) | `CreateEffectScriptActor(effectId, 1)` -- see `SpawnEffectNoPalette` (`0x0E`) immediately above for the sibling family member and the full 7-opcode spawn family. 155 real-script occurrences, the 3rd most-used opcode overall. `CreateEffectScriptActor` (US `0x08018BE0`) is an already-named function; the returned child `Actor*` is passed into the shared spawn-copy tail (US `0x08019320`, not traced further here). Handler at US `0x08019244`. |
 | `0x17` | `ToggleActorFlipX` | 0 | Toggles the running actor's horizontal-flip state: `SetActorFlippedX(self, !IsActorFlippedX(self))`. Both are already-named functions (US `0x08003708`/`0x08003928`) that branch on `Actor+0xD1 & 3` (a rendering-mode selector, `0` = plain sprite, nonzero = a multi-cell/affine actor): in plain mode the flip is a single bit (`0x10`) of `Actor+0xD3`; in the other mode `SetActorFlippedX` negates `Actor+0xEC` (the actor's affine/scale-style X parameter, set up by the same helper `StartOrbitMotion`'s neighbors use for cell placement) and re-issues the affine setup call. Traced end-to-end to a real consumer: `WriteActorOamCells` (US `0x08002C18`) reads `Actor+0xEC` at entry and multiplies it against each sub-cell's stored X-offset to compute that cell's on-screen X position, before handing the result to `QueueOamEntry`/`SubmitOamAttrsNudged` (US `0x0802FFA0`/`0x0802FEAC`), which write it into `g_pOamShadowBuffer` (`0x03003FE8`) -- an 8-byte-stride, double-buffered (`+0x0`/`+0x400`) shadow copy of real GBA OAM, matching hardware OAM's exact size (`128 * 8 = 0x400` bytes). Negating a per-cell X-scale multiplier this way is the standard technique for mirroring a multi-cell/affine sprite horizontally on hardware that has no affine H-flip attribute bit -- confirmed by data flow through to the OAM write, not by watching it render. Handler at US `0x0801934C`. |
@@ -245,8 +245,8 @@ documented below -- see "What's NOT yet known".
 
 ### The Wait family, and how `InterpretActorScript` actually returns
 
-`WaitFrames`/`WaitForCounter`/`WaitForFieldClear` (`0x08`-`0x0A`) are the only
-three opcodes confirmed to reach `InterpretActorScript`'s real epilogue
+`WaitFrames`/`WaitForCounter`/`WaitForFieldClear` (`0x08`-`0x0A`) and
+`WaitForCasterTimedMove` (`0x7D`) are the opcodes that reach `InterpretActorScript`'s real epilogue
 (`0x0801AE04`: pop registers, `bx lr`) instead of continuing the
 loop. The loop tail's exit test never fires (see "The loop tail"), so the
 only way out is a `return`, which is what these opcodes' handlers do.
@@ -254,15 +254,11 @@ only way out is a `return`, which is what these opcodes' handlers do.
 Each swaps `Actor.pfnTick` away from `InterpretActorScript` to a small
 dedicated tick handler, then returns -- deferring further script
 execution to whenever `TickActor` next calls that handler and
-it decides to swap `pfnTick` back. **None of these three handler
-addresses (`0x0801B650`/`0x0801B684`/`0x0801B6D0`) were disassembled by
-`gbadisasm`** (real code sitting in what looked like an unclaimed gap --
-a genuine false negative, see the memory on disasm vs. Ghidra ground
-truth). All three are verified via `disassemble_bytes` and carry Ghidra
-functions/plate comments as `WaitFramesTick`, `WaitForCounterTick`,
-`WaitForFieldClearTick`.
+it decides to swap `pfnTick` back. The handlers (`WaitFramesTick`,
+`WaitForCounterTick`, `WaitForFieldClearTick`, `WaitForCasterTimedMoveTick`)
+are matched C in `src/combat_fx_script/` (**PROVEN**).
 
-All three call `TickParticleEmitters` (US `0x08031748`) on entry -- the
+All four call `TickParticleEmitters` (US `0x08031748`) on entry -- the
 same function
 `InterpretActorScript`'s own real entry point calls before its first
 opcode fetch. It is unrelated to the calling actor: it ticks every emitter on
@@ -271,7 +267,7 @@ cursor (and, for some particle modes, the gameplay cursor). It is mandatory
 per-tick engine housekeeping that happens to be invoked from these entry
 points. See [`../memory-map/particles.md`](../memory-map/particles.md).
 
-All three also unconditionally call `ProcessActorFlagBehaviors` (US
+All four also unconditionally call `ProcessActorFlagBehaviors` (US
 `0x0801AF68`) every tick regardless of whether the wait condition is met. Decompiled and
 confirmed: a bit-flag dispatcher on `Actor+0x66` driving several
 unrelated per-actor behaviors (a jitter/wobble adjustment, two
@@ -283,18 +279,13 @@ confirmed to have no connection to `Actor.pfnTick` or script resumption
 at all.
 
 **Whether the wait resumes the script the same frame it completes is not
-uniform across the family** -- confirmed by decompiling all three
-handlers:
+uniform across the family:**
 - `WaitFrames` and `WaitForCounter` only ever call `ProcessActorFlagBehaviors`;
   on completion they just restore `pfnTick` and return, so the script
   actually resumes on the actor's *next* regular tick.
-- `WaitForFieldClear` is different: on completion it makes an additional,
-  explicit call straight into `InterpretActorScript` (`0x08018CC1`),
-  reached through libgcc's `_call_via_r1` (US `0x0804A2C4`, see
-  `../compiler.md`; its "`param_2`" argument is simply the hardcoded
-  `InterpretActorScript` address). So **`WaitForFieldClear`
-  does resume the script in the same frame its wait ends**, unlike its two
-  siblings.
+- `WaitForFieldClear` and `WaitForCasterTimedMove` set `pfnTick` back and
+  call it at once (through libgcc's `_call_via_r1`), so they resume the
+  script in the same frame the wait ends.
 
 The three termination conditions:
 
@@ -323,6 +314,8 @@ The three termination conditions:
   otherwise explored) check-and-clear after an attack, consistent with
   "wait for this actor's animation to fully finish" being a shared idiom
   across both scripts and native code, not something scripts invented.
+- **`WaitForCasterTimedMove`**: the caster's `Actor.wTimedMoveTicks`
+  (`+0x86`, the `StartActorTimedMove` countdown) reads as `0`.
 - **`WaitForFieldClear`**: `Actor+0x14` (u16) reads as `0` (and at least
   one tick has elapsed), then resumes the script immediately (see above).
   **Writer found: `Actor+0x14` is a move-duration counter.**

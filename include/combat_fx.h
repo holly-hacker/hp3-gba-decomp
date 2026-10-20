@@ -12,9 +12,9 @@ typedef struct EffectStaging {
     ParticleEmitter *pEmitter_candidate;  // 0x00, emitter spawned by the last emitter opcode
     u8 pad_04[0x02];
     u16 awSavedOrbit[6];    // 0x06, orbit parameters saved by script opcode 0x43
-    u8 pad_12[0x08];
-    u16 wTimer_candidate;
-    u16 wTimerMax_candidate;
+    u16 awBandScroll[4];    // 0x12, BG1 X scroll per band of the scrolling scanline effect
+    u16 wBlendFirstTargets;   // 0x1A, alpha-blend targets EffectScanlineEnableBlend applies
+    u16 wBlendSecondTargets;
     u16 wContextValue;
     u8 bScriptParam;
     u8 bSlotParam;
@@ -192,7 +192,7 @@ enum BattleScriptOpcode {
     BSOP_MoveFighterTo = 0x7A,
     BSOP_MoveFighterToSlotPosition = 0x7B,
     BSOP_MoveCasterTo = 0x7C,
-    BSOP_WaitForCasterField86 = 0x7D,
+    BSOP_WaitForCasterTimedMove = 0x7D,
     BSOP_SetCasterAnim = 0x7E,
     BSOP_LoadBgEffect = 0x7F,
     BSOP_QueueScanlineEffect = 0x80,
@@ -400,7 +400,7 @@ enum BattleStatusEffect {
 #define BS_MoveFighterTo(a, b, c) BSOP_MoveFighterTo, (a), (b), (c)
 #define BS_MoveFighterToSlotPosition(a) BSOP_MoveFighterToSlotPosition, (a)
 #define BS_MoveCasterTo(a, b, c, d, e) BSOP_MoveCasterTo, ((a) & 0xFF), ((b) & 0xFF), (c), (d), (e)
-#define BS_WaitForCasterField86() BSOP_WaitForCasterField86
+#define BS_WaitForCasterTimedMove() BSOP_WaitForCasterTimedMove
 #define BS_SetCasterAnim(a, b) BSOP_SetCasterAnim, (a), (b)
 #define BS_LoadBgEffect(a, b, c) BSOP_LoadBgEffect, (a), (b), (c)
 #define BS_QueueScanlineEffect(a) BSOP_QueueScanlineEffect, (a)

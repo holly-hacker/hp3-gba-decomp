@@ -2,7 +2,7 @@
 const u8 g_abSpecialMonsterPixieAttackScript[] = {
     BS_SetCasterAnim(4, 0),
     BS_MoveCasterTo(-22, -20, 7, 0, 0),
-    BS_WaitForCasterField86(),
+    BS_WaitForCasterTimedMove(),
     BS_SetCasterVelocityProduct(1, 48, 1, 24),
     BS_WaitFrames(1),
     BS_SetCasterVelocityProduct(1, 32, 1, 16),
@@ -17,7 +17,7 @@ const u8 g_abSpecialMonsterPixieAttackScript[] = {
     BS_WaitFrames(5),
     BS_SetCasterAnim(4, 10),
     BS_MoveCasterTo(4, 4, 9, 1, 0),
-    BS_WaitForCasterField86(),
+    BS_WaitForCasterTimedMove(),
     BS_SetCasterVelocityProduct(1, 48, -1, 48),
     BS_WaitFrames(1),
     BS_SetCasterVelocityProduct(-1, 32, -1, 32),

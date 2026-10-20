@@ -79,6 +79,21 @@ HUD panel rows 23-24 until the line-88 entry restores them.
 | 88 | `RestoreBattleHudPanelTilemap` | Copies the 30x6-tile HUD panel from `gBattleHudPanel` to BG1 rows 19-24. |
 | 112 | `BeginBattleHudScanline` | After HBlank: BG1 scroll (0, 40), BG0VOFS 80, DMAs `FightState.awPalette` (BG and OBJ, 0x200 colors), BG1 priority 0, BLDALPHA 8/8. |
 
+## Battle effect tables, PROVEN (matched C)
+
+Script op `0x80` queues one of three tables (`src/combat_fx/effect_scanline_tables.c`);
+each has the HUD panel copy and `BeginEffectHudScanline` (line 112), and ends at line
+160 with `EffectScanlineEnableBlend`. Callbacks are in `src/combat_fx_script/`.
+
+| Callback | Effect |
+|---|---|
+| `EffectScanlineStopHBlankDma` | `StartFloorAffineHBlankDma(NULL, NULL)`, stopping the floor DMA (table 0, line 0). |
+| `EffectScanlineRestoreBgs` | As above, plus BG1VOFS 0, the BG0/BG1 priorities from `g_effectStaging`, and clears WINOUT bit 1 (table 2, line 0). |
+| `EffectScanlineSetBandScroll` | BG1HOFS from `g_effectStaging.awBandScroll[band]` (band = second payload word), BG1VOFS 16; band 0 also stops the floor DMA (table 1, lines 0/15/23/31). |
+| `EffectScanlineAdvanceScroll` | Scrolls bands 0-2 by 3, 2 and 1 pixels per frame; band 3 takes `g_aEffectBgRecords_candidate[0].wUnk04` (table 1, line 125). |
+| `EffectScanlineCopyTilemap` | Copies the 30x6-tile HUD panel from `gBattleHudPanel` to BG1 row 19 (line 88; 64 in table 1). |
+| `EffectScanlineEnableBlend` | Sets `g_effectStaging.dwBgPrioritiesPending` and applies the script's alpha-blend targets. |
+
 ## UNCONFIRMED
 
 What the remaining callbacks draw, and the role of the `+2` halfword. The decoded

@@ -17,8 +17,8 @@ Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, 
     g_effectStaging.wContextValue = damage;
     g_effectStaging.bBg0Priority = 0;
     g_effectStaging.bBg1Priority = 1;
-    g_effectStaging.wTimer_candidate = 0;
-    g_effectStaging.wTimerMax_candidate = 0x1f;
+    g_effectStaging.wBlendFirstTargets = 0;
+    g_effectStaging.wBlendSecondTargets = 0x1f;
     actor = CreateEffectScriptActor(effectId, 1);
     g_pFightState->pAttackAnimActor_candidate = NULL;
     g_pFightState->bAttackAnimState_candidate = 0;

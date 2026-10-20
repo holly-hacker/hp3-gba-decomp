@@ -18,8 +18,13 @@ extern void FlushQueuedBattleDma(void);
 extern void WaitFramesTick(Actor *actor);
 extern void WaitForCounterTick(Actor *actor);
 extern void WaitForFieldClearTick(Actor *actor);
-extern void WaitForCasterField86Tick_candidate(Actor *actor);
+extern void WaitForCasterTimedMoveTick(Actor *actor);
 extern IntPoint ComputeEffectSpawnPosition(void);
 extern void JumpToScriptLabel(Actor *actor, u8 label);  // jumps the script to the Label opcode with this id
-extern ParticleEmitter *CreateScriptEmitter12(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k, u32 l);
-extern ParticleEmitter *CreateScriptEmitter8(Actor *actor, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
+extern ParticleEmitter *CreateScriptEmitter12(Actor *actor, u8 mode, u8 lifetimeBase, u8 spread,
+                                              u8 direction, u8 spawnsPerPeriod, u8 flag18,
+                                              s32 assetIndex, u8 poolIndex, u8 entryIndex, u8 speed,
+                                              u8 duration, u8 spawnPeriod);
+extern ParticleEmitter *CreateScriptEmitter8(Actor *actor, u8 unused, u8 spawnPeriod, u8 lifetimeBase,
+                                             u8 spread, u8 spawnsPerPeriod, s32 assetIndex, u8 poolIndex,
+                                             u8 entryIndex);

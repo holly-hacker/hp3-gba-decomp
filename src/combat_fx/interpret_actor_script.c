@@ -507,8 +507,8 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_EnableSemiTransparency:  // enables semi-transparency and resets the fade timer
             actor->oam.objMode = 1;
-            g_effectStaging.wTimer_candidate = 0;
-            g_effectStaging.wTimerMax_candidate = 0x1F;
+            g_effectStaging.wBlendFirstTargets = 0;
+            g_effectStaging.wBlendSecondTargets = 0x1F;
             SetAlphaBlendCoefficients(0x10, 0);
             break;
         case BSOP_StartAlphaFadeOut:  // starts an alpha fade-out from local B
@@ -662,8 +662,8 @@ void InterpretActorScript(Actor *actor)
             }
             StartActorMove(casterFighter->pActor, x << 16, y << 16, args[3]);
             break;
-        case BSOP_WaitForCasterField86:  // waits on the caster's field 0x86 (returns)
-            actor->pfnTick = WaitForCasterField86Tick_candidate;
+        case BSOP_WaitForCasterTimedMove:  // waits for the caster's timed move to finish (returns)
+            actor->pfnTick = WaitForCasterTimedMoveTick;
             return;
         case BSOP_SetCasterAnim:  // sets the caster's animation; monster actor types are 4 + monster index
             SetActorAnimData(casterFighter->pActor, &g_pMonsterGraphicsTable[casterFighter->pActor->wActorType - 4],
@@ -788,8 +788,8 @@ void InterpretActorScript(Actor *actor)
                 g_effectStaging.bBg0Priority = args[2];
             break;
         case BSOP_SetEffectTimers:  // sets the effect timer and its maximum
-            g_effectStaging.wTimer_candidate = args[1] | args[2] | args[3] | args[4] | args[5];
-            g_effectStaging.wTimerMax_candidate = args[6] | args[7] | args[8] | args[9] | args[10];
+            g_effectStaging.wBlendFirstTargets = args[1] | args[2] | args[3] | args[4] | args[5];
+            g_effectStaging.wBlendSecondTargets = args[6] | args[7] | args[8] | args[9] | args[10];
             break;
         case BSOP_StartAlphaFadeIn:  // starts an alpha fade-in
             actor->modeState.effect.bBehaviorFlags |= EffectBehaviorAlphaFadeIn;

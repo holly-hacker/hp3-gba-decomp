@@ -582,22 +582,22 @@ c-file 0x0801B2E8 _ src/combat_fx/create_random_burst_emitter.c CreateRandomBurs
 c-file 0x0801B344 _ src/combat_fx/create_small_burst_to_target_emitter.c CreateSmallBurstToTargetEmitter
 c-file 0x0801B42C _ src/combat_fx/try_apply_paralysis.c TryApplyParalysis
 c-file 0x0801B4B8 _ src/combat_fx/queue_battle_bg_load.c QueueBattleBgLoad
-c-file 0x0801B58C 0x0801B5CC src/combat_fx/spawn_paralysis_effect.c SpawnParalysisEffect
-thumb-func 0x0801B5CC FlushQueuedBattleDma
-thumb-func 0x0801B61C ComputeEffectSpawnPosition
-thumb-func 0x0801B64C WaitFramesTick
-thumb-func 0x0801B680 WaitForCounterTick
-thumb-func 0x0801B6CC WaitForFieldClearTick
-thumb-func 0x0801B70C JumpToScriptLabel
-thumb-func 0x0801B770 CreateScriptEmitter12
-thumb-func 0x0801B86C CreateScriptEmitter8
-thumb-func 0x0801B900 WaitForCasterField86Tick_candidate
-thumb-func 0x0801B94C EffectScanlineRestoreBgs
-thumb-func 0x0801B994 EffectScanlineAdvanceScroll
-thumb-func 0x0801B9B8 EffectScanlineSetBandScroll
-thumb-func 0x0801B9F0 EffectScanlineCopyTilemap
-thumb-func 0x0801BA28 EffectScanlineEnableBlend
-thumb-func 0x0801BA40 EffectScanlineStopHBlankDma
+c-file 0x0801B58C _ src/combat_fx/spawn_paralysis_effect.c SpawnParalysisEffect
+c-file 0x0801B5CC _ src/combat_fx_script/flush_queued_battle_dma.c FlushQueuedBattleDma
+c-file 0x0801B61C _ src/combat_fx_script/compute_effect_spawn_position.c ComputeEffectSpawnPosition
+c-file 0x0801B64C _ src/combat_fx_script/wait_frames_tick.c WaitFramesTick
+c-file 0x0801B680 _ src/combat_fx_script/wait_for_counter_tick.c WaitForCounterTick
+c-file 0x0801B6CC _ src/combat_fx_script/wait_for_field_clear_tick.c WaitForFieldClearTick
+c-file 0x0801B70C _ src/combat_fx_script/jump_to_script_label.c JumpToScriptLabel
+c-file 0x0801B770 _ src/combat_fx_script/create_script_emitter12.c CreateScriptEmitter12
+c-file 0x0801B86C _ src/combat_fx_script/create_script_emitter8.c CreateScriptEmitter8
+c-file 0x0801B900 _ src/combat_fx_script/wait_for_caster_timed_move_tick.c WaitForCasterTimedMoveTick
+c-file 0x0801B94C _ src/combat_fx_script/effect_scanline_restore_bgs.c EffectScanlineRestoreBgs
+c-file 0x0801B994 _ src/combat_fx_script/effect_scanline_advance_scroll.c EffectScanlineAdvanceScroll
+c-file 0x0801B9B8 _ src/combat_fx_script/effect_scanline_set_band_scroll.c EffectScanlineSetBandScroll
+c-file 0x0801B9F0 _ src/combat_fx_script/effect_scanline_copy_tilemap.c EffectScanlineCopyTilemap
+c-file 0x0801BA28 _ src/combat_fx_script/effect_scanline_enable_blend.c EffectScanlineEnableBlend
+c-file 0x0801BA40 0x0801BA50 src/combat_fx_script/effect_scanline_stop_hblank_dma.c EffectScanlineStopHBlankDma
 thumb-func 0x0801BA50 SpawnSpGauge
 thumb-func 0x0801BB54 TickSpGauge
 thumb-func 0x0801BC64 DestroySlotSpGauge

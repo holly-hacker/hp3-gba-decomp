@@ -51,6 +51,8 @@ Try the complementary outer condition with arms exchanged when fallthrough diffe
 Check operand evaluation order and separate an embedded assignment from its comparison;
 a comma expression is another diagnostic form. Negating a condition alone may canonicalize
 back to identical output. Example: ResolveEnemyAttack.
+An early `return NULL` lands opposite its source position when the other arm has no branch:
+write `if (p != NULL) { ...; return p; } return NULL;` for a NULL-first ROM (CreateScriptEmitter8).
 Arguments and operands expand left to right, and combine places a folded load at its later
 use. A load the ROM performs before an earlier argument or a preceding constant set was
 assigned to a local in its own statement first (TickBattleMenuInput's `lastRow`;
@@ -314,6 +316,8 @@ ReleaseBgTileCacheEntry, US 0x0803DF18.
 The copy also stays when the loop ends an `if` arm whose exit label is followed only by the
 jump past the `else`; ending that arm with its own `return` let cross-jumping remove it
 (MoveMemory, US `0x0802C174`, whose forward branch is CopyMemory's body).
+A pre-loop copy that also holds exit work, folded to constants (`movs r0, #0; b store`), is a
+`for (;;)` starting with `if (...) { X; break; }`: the copy includes X (JumpToScriptLabel).
 
 ## 29. Two-address op with a copy in front of it (`adds rD, rS, #0; eors rD, rC`)
 

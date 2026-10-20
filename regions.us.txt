@@ -659,24 +659,24 @@ c-file 0x0801B2EC _ src/combat_fx/create_random_burst_emitter.c CreateRandomBurs
 c-file 0x0801B348 _ src/combat_fx/create_small_burst_to_target_emitter.c CreateSmallBurstToTargetEmitter
 c-file 0x0801B430 _ src/combat_fx/try_apply_paralysis.c TryApplyParalysis
 c-file 0x0801B4BC _ src/combat_fx/queue_battle_bg_load.c QueueBattleBgLoad
-c-file 0x0801B590 0x0801B5D0 src/combat_fx/spawn_paralysis_effect.c SpawnParalysisEffect
+c-file 0x0801B590 _ src/combat_fx/spawn_paralysis_effect.c SpawnParalysisEffect
 
 # Combat fx script (effect-script tick helpers and scanline callbacks)
-thumb-func 0x0801B5D0 FlushQueuedBattleDma
-thumb-func 0x0801B620 ComputeEffectSpawnPosition
-thumb-func 0x0801B650 WaitFramesTick
-thumb-func 0x0801B684 WaitForCounterTick
-thumb-func 0x0801B6D0 WaitForFieldClearTick
-thumb-func 0x0801B710 JumpToScriptLabel
-thumb-func 0x0801B774 CreateScriptEmitter12
-thumb-func 0x0801B870 CreateScriptEmitter8
-thumb-func 0x0801B904 WaitForCasterField86Tick_candidate
-thumb-func 0x0801B950 EffectScanlineRestoreBgs
-thumb-func 0x0801B998 EffectScanlineAdvanceScroll
-thumb-func 0x0801B9BC EffectScanlineSetBandScroll
-thumb-func 0x0801B9F4 EffectScanlineCopyTilemap
-thumb-func 0x0801BA2C EffectScanlineEnableBlend
-thumb-func 0x0801BA44 EffectScanlineStopHBlankDma
+c-file 0x0801B5D0 _ src/combat_fx_script/flush_queued_battle_dma.c FlushQueuedBattleDma
+c-file 0x0801B620 _ src/combat_fx_script/compute_effect_spawn_position.c ComputeEffectSpawnPosition
+c-file 0x0801B650 _ src/combat_fx_script/wait_frames_tick.c WaitFramesTick
+c-file 0x0801B684 _ src/combat_fx_script/wait_for_counter_tick.c WaitForCounterTick
+c-file 0x0801B6D0 _ src/combat_fx_script/wait_for_field_clear_tick.c WaitForFieldClearTick
+c-file 0x0801B710 _ src/combat_fx_script/jump_to_script_label.c JumpToScriptLabel
+c-file 0x0801B774 _ src/combat_fx_script/create_script_emitter12.c CreateScriptEmitter12
+c-file 0x0801B870 _ src/combat_fx_script/create_script_emitter8.c CreateScriptEmitter8
+c-file 0x0801B904 _ src/combat_fx_script/wait_for_caster_timed_move_tick.c WaitForCasterTimedMoveTick
+c-file 0x0801B950 _ src/combat_fx_script/effect_scanline_restore_bgs.c EffectScanlineRestoreBgs
+c-file 0x0801B998 _ src/combat_fx_script/effect_scanline_advance_scroll.c EffectScanlineAdvanceScroll
+c-file 0x0801B9BC _ src/combat_fx_script/effect_scanline_set_band_scroll.c EffectScanlineSetBandScroll
+c-file 0x0801B9F4 _ src/combat_fx_script/effect_scanline_copy_tilemap.c EffectScanlineCopyTilemap
+c-file 0x0801BA2C _ src/combat_fx_script/effect_scanline_enable_blend.c EffectScanlineEnableBlend
+c-file 0x0801BA44 0x0801BA54 src/combat_fx_script/effect_scanline_stop_hblank_dma.c EffectScanlineStopHBlankDma
 
 # Combat gauge (SP gauge)
 thumb-func 0x0801BA54 SpawnSpGauge
