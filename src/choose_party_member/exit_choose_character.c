@@ -23,7 +23,7 @@ void ExitChooseCharacter(void)
     g_abQuestEventState[0x12] = g_abQuestEventState[0];
     SetActorActionState(g_pPlayerActor, 0x21);
     LoadDialogBoxGraphics();
-    HideScreenWindow_candidate(0);
+    HideScreenWindow(0);
 
     FreeActor(g_ChooseCharacterState.pCursorActor);
     for (i = 0; i < CHOOSE_CHARACTER_OPTION_COUNT; i++)

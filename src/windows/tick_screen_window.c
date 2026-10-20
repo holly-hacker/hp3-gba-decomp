@@ -19,21 +19,21 @@ void TickScreenWindow(u32 windowId)
         {
             if (corner->wFrames > 1)
             {
-                corner->nX += iwramDivideSignedQuotient(corner->nTargetX - corner->nX, corner->wFrames);
-                corner->nY += iwramDivideSignedQuotient(corner->nTargetY - corner->nY, corner->wFrames);
+                corner->pos.x += iwramDivideSignedQuotient(corner->target.x - corner->pos.x, corner->wFrames);
+                corner->pos.y += iwramDivideSignedQuotient(corner->target.y - corner->pos.y, corner->wFrames);
             }
             else
             {
-                corner->nX = corner->nTargetX;
-                corner->nY = corner->nTargetY;
+                corner->pos.x = corner->target.x;
+                corner->pos.y = corner->target.y;
                 corner->wFlags &= ~2;
             }
             corner->wFrames--;
         }
         else
         {
-            corner->nX += corner->nStepX;
-            corner->nY += corner->nStepY;
+            corner->pos.x += corner->step.x;
+            corner->pos.y += corner->step.y;
         }
 
         window->dwFlags |= 1;

@@ -1953,20 +1953,20 @@ c-file 0x080454B4 _ src/vram/load_obj_tile_sheet.c LoadObjTileSheet
 c-file 0x08045510 _ src/vram/mark_obj_tiles_in_use.c MarkObjTilesInUse
 c-file 0x0804555C _ src/vram/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
 c-file 0x080455B4 0x0804560C src/vram/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
-thumb-func 0x0804560C sub_080456E0
-thumb-func 0x080456A0 sub_08045774
-thumb-func 0x08045734 HideScreenWindow_candidate
-thumb-func 0x0804574C sub_08045820
-thumb-func 0x08045764 SetScreenWindowLayers_candidate
-thumb-func 0x080457D4 SetScreenWindowRect_candidate
-thumb-func 0x0804581C sub_080458F0
-thumb-func 0x0804584C sub_08045920
-thumb-func 0x08045870 sub_08045944
-c-file 0x0804589C 0x080458B4 src/windows/tick_screen_windows.c TickScreenWindows_candidate
-thumb-func 0x080458B4 sub_08045988
-thumb-func 0x08045910 sub_080459E4
-thumb-func 0x08045920 sub_080459F4
-thumb-func 0x08045948 sub_08045A1C
+thumb-func 0x0804560C ExpandScreenWindowFromCenter
+c-file 0x080456A0 _ src/windows/shrink_screen_window_to_center.c ShrinkScreenWindowToCenter
+c-file 0x08045734 _ src/windows/hide_screen_window.c HideScreenWindow
+c-file 0x0804574C _ src/windows/show_screen_window.c ShowScreenWindow
+c-file 0x08045764 _ src/windows/set_screen_window_layers.c SetScreenWindowLayers
+c-file 0x080457D4 _ src/windows/set_screen_window_rect.c SetScreenWindowRect
+c-file 0x0804581C _ src/windows/tween_screen_window_corner.c TweenScreenWindowCorner
+c-file 0x0804584C _ src/windows/set_screen_window_corner.c SetScreenWindowCorner
+c-file 0x08045870 _ src/windows/drift_screen_window_corner.c DriftScreenWindowCorner
+c-file 0x0804589C _ src/windows/tick_screen_windows.c TickScreenWindows
+c-file 0x080458B4 _ src/windows/write_screen_window_rects.c WriteScreenWindowRects
+c-file 0x08045910 _ src/windows/hide_screen_windows.c HideScreenWindows
+c-file 0x08045920 _ src/windows/set_screen_windows_layers.c SetScreenWindowsLayers
+c-file 0x08045948 _ src/windows/set_screen_window1_rect.c SetScreenWindow1Rect
 c-file 0x08045980 _ src/windows/tick_screen_window.c TickScreenWindow
 c-file 0x08045A14 0x08045DF8 src/world_actors/spawn_prop_actor.c SpawnPropActor
 thumb-func 0x08045DF8 sub_08045ECC
@@ -2198,7 +2198,8 @@ c-file 0x0806C068 _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFl
 c-file 0x0806C0B0 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
 c-file 0x0806C0B4 0x0806C13C src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
-c-file 0x0806C22C 0x0806C23C src/video/default_scanline_effects.c g_aDefaultScanlineEffects
+c-file 0x0806C22C _ src/video/default_scanline_effects.c g_aDefaultScanlineEffects
+c-file 0x0806C23C _ src/windows/screen_window_dispcnt_flags.c g_awScreenWindowDispcntFlags
 c-file 0x0806C240 _ src/world_actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
 graphics 0x0806E840 _ overworld OverworldSpellEffects
 graphics 0x080780E0 _ battle AllyHeads

@@ -16,7 +16,7 @@ typedef struct SetScreenWindowRecord {
 
 void RoomScriptOpSetScreenWindow(SetScreenWindowRecord *pRecord)
 {
-    SetScreenWindowLayers_candidate(pRecord->bWindowId, pRecord->bWinIn, pRecord->bWinOut);
-    SetScreenWindowRect_candidate(pRecord->bWindowId, pRecord->nX0 << 16, pRecord->nY0 << 16, pRecord->nX1 << 16,
-                                  pRecord->nY1 << 16);
+    SetScreenWindowLayers(pRecord->bWindowId, pRecord->bWinIn, pRecord->bWinOut);
+    SetScreenWindowRect(pRecord->bWindowId, pRecord->nX0 << 16, pRecord->nY0 << 16, pRecord->nX1 << 16,
+                        pRecord->nY1 << 16);
 }

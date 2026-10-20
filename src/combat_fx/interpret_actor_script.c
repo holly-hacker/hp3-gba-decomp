@@ -799,18 +799,18 @@ void InterpretActorScript(Actor *actor)
             actor->modeState.effect.abParams[4] = args[2];
             break;
         case BSOP_SetWindowLayers:  // sets a window's layer masks
-            SetScreenWindowLayers_candidate(args[1], args[2] | args[3] | args[4] | args[5] | args[6], args[7] | args[8] | args[9] | args[10] | args[11]);
+            SetScreenWindowLayers(args[1], args[2] | args[3] | args[4] | args[5] | args[6], args[7] | args[8] | args[9] | args[10] | args[11]);
             break;
         case BSOP_SetWindowRect:  // sets a window rectangle and stops growing window 0
-            SetScreenWindowRect_candidate(args[1], args[2] << 16, args[3] << 16, args[4] << 16, args[5] << 16);
+            SetScreenWindowRect(args[1], args[2] << 16, args[3] << 16, args[4] << 16, args[5] << 16);
             actor->modeState.effect.bBehaviorFlags &= ~EffectBehaviorGrowWindow;
             break;
         case BSOP_StartGrowWindow:  // starts growing window 0
             actor->modeState.effect.bBehaviorFlags |= EffectBehaviorGrowWindow;
             break;
         case BSOP_HideWindow:  // hides a window
-            SetScreenWindowLayers_candidate(args[1], 0, 0);
-            HideScreenWindow_candidate(args[1]);
+            SetScreenWindowLayers(args[1], 0, 0);
+            HideScreenWindow(args[1]);
             break;
         case BSOP_ResetBgState:  // resets a BG's window, scroll and state
             ClearBgTilemapRect(args[1], 0, 0, 0x20, 0xF);

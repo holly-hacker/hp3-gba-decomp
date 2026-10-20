@@ -30,7 +30,7 @@ void InitializeChooseCharacter(void)
 
     REG_WININ = (REG_WININ & 0xFF00) | 0x14;
     REG_WINOUT = (REG_WINOUT & 0xFF00) | 0x3F;
-    SetScreenWindowRect_candidate(0, 0, 0x400000, 0xF00000, 0x800000);
+    SetScreenWindowRect(0, 0, 0x400000, 0xF00000, 0x800000);
 
     g_ChooseCharacterState.pBgTilemap =
         LoadBgGraphic(2, gMenuPanel001, 0x200, 0, 0, g_dwChooseCharacterBgRow);

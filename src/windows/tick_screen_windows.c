@@ -1,7 +1,7 @@
 #include "types.h"
 #include "windows.h"
 
-void TickScreenWindows_candidate(void)
+void TickScreenWindows(void)
 {
     u32 i;
 

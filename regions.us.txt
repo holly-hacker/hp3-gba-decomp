@@ -2227,20 +2227,20 @@ c-file 0x08045630 _ src/vram/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
 c-file 0x08045688 0x080456E0 src/vram/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
 
 # Window (screen windows)
-thumb-func 0x080456E0 sub_080456E0
-thumb-func 0x08045774 sub_08045774
-thumb-func 0x08045808 HideScreenWindow_candidate
-thumb-func 0x08045820 sub_08045820
-thumb-func 0x08045838 SetScreenWindowLayers_candidate
-thumb-func 0x080458A8 SetScreenWindowRect_candidate
-thumb-func 0x080458F0 sub_080458F0
-thumb-func 0x08045920 sub_08045920
-thumb-func 0x08045944 sub_08045944
-c-file 0x08045970 0x08045988 src/windows/tick_screen_windows.c TickScreenWindows_candidate
-thumb-func 0x08045988 sub_08045988
-thumb-func 0x080459E4 sub_080459E4
-thumb-func 0x080459F4 sub_080459F4
-thumb-func 0x08045A1C sub_08045A1C
+thumb-func 0x080456E0 ExpandScreenWindowFromCenter
+c-file 0x08045774 _ src/windows/shrink_screen_window_to_center.c ShrinkScreenWindowToCenter
+c-file 0x08045808 _ src/windows/hide_screen_window.c HideScreenWindow
+c-file 0x08045820 _ src/windows/show_screen_window.c ShowScreenWindow
+c-file 0x08045838 _ src/windows/set_screen_window_layers.c SetScreenWindowLayers
+c-file 0x080458A8 _ src/windows/set_screen_window_rect.c SetScreenWindowRect
+c-file 0x080458F0 _ src/windows/tween_screen_window_corner.c TweenScreenWindowCorner
+c-file 0x08045920 _ src/windows/set_screen_window_corner.c SetScreenWindowCorner
+c-file 0x08045944 _ src/windows/drift_screen_window_corner.c DriftScreenWindowCorner
+c-file 0x08045970 _ src/windows/tick_screen_windows.c TickScreenWindows
+c-file 0x08045988 _ src/windows/write_screen_window_rects.c WriteScreenWindowRects
+c-file 0x080459E4 _ src/windows/hide_screen_windows.c HideScreenWindows
+c-file 0x080459F4 _ src/windows/set_screen_windows_layers.c SetScreenWindowsLayers
+c-file 0x08045A1C _ src/windows/set_screen_window1_rect.c SetScreenWindow1Rect
 c-file 0x08045A54 _ src/windows/tick_screen_window.c TickScreenWindow
 
 # World actors
@@ -2472,7 +2472,8 @@ c-file 0x0806C108 _ src/title_options/options_knob_anims.c g_aabOptionsKnobAnims
 c-file 0x0806C12C _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 c-file 0x0806C178 0x0806C200 src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
-c-file 0x0806C2F0 0x0806C300 src/video/default_scanline_effects.c g_aDefaultScanlineEffects
+c-file 0x0806C2F0 _ src/video/default_scanline_effects.c g_aDefaultScanlineEffects
+c-file 0x0806C300 _ src/windows/screen_window_dispcnt_flags.c g_awScreenWindowDispcntFlags
 c-file 0x0806C304 _ src/world_actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
 
 # Graphics section 1

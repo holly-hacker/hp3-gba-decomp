@@ -9,5 +9,5 @@ typedef struct HideScreenWindowRecord {
 
 void RoomScriptOpHideScreenWindow(HideScreenWindowRecord *pRecord)
 {
-    HideScreenWindow_candidate(pRecord->bWindowId);
+    HideScreenWindow(pRecord->bWindowId);
 }

@@ -71,7 +71,7 @@ void HandleVBlankInterrupt(void)
 
         CommitScanlineEffects();
         RestoreBgAboveDialogBox();
-        sub_08045988();
+        WriteScreenWindowRects();
 
         if (g_pVBlankState->pVBlankCallback != NULL)
             g_pVBlankState->pVBlankCallback();

@@ -27,7 +27,7 @@ static inline void TickTransitionFrame(void)
     TickActiveActors();
     TickParticleEmitters();
     TickBgLayers();
-    TickScreenWindows_candidate();
+    TickScreenWindows();
     TickPaletteAnimations_candidate();
     TickBgTileAnimations();
     HideUnusedOamEntries();

@@ -223,7 +223,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
                 TickActiveActors();
                 TickParticleEmitters();
                 TickBgLayers();
-                TickScreenWindows_candidate();
+                TickScreenWindows();
                 TickPaletteAnimations_candidate();
                 TickBgTileAnimations();
                 UpdateFloorAffineTable();

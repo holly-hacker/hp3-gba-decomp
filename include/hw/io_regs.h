@@ -83,8 +83,15 @@ typedef struct {
 #define REG_WIN0V (*(volatile u16 *)0x04000044)
 #define REG_WIN1V (*(volatile u16 *)0x04000046)
 
+// WIN0H/WIN1H and WIN0V/WIN1V, indexed by window number.
+#define REG_WINH(n) (((volatile u16 *)0x04000040)[n])
+#define REG_WINV(n) (((volatile u16 *)0x04000044)[n])
+
 // Window 0/1 inside layer enables.
 #define REG_WININ (*(volatile u16 *)0x04000048)
+// WININ without volatile, which lets `& 0xFF` narrow to a byte load
+// (SetScreenWindowLayers).
+#define REG_WININ_NONVOLATILE (*(u16 *)0x04000048)
 
 // Window outside/OBJ-window layer enables.
 #define REG_WINOUT (*(volatile u16 *)0x0400004A)

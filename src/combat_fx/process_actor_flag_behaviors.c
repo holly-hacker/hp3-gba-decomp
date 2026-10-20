@@ -76,10 +76,10 @@ void ProcessActorFlagBehaviors(Actor *actor)
 
     if (actor->modeState.effect.bBehaviorFlags & EffectBehaviorGrowWindow)
     {
-        g_aScreenWindows[0].aCorners[0].nX -= 0x28000;
-        g_aScreenWindows[0].aCorners[0].nY -= 0x20000;
-        g_aScreenWindows[0].aCorners[1].nX += 0x2C000;
-        g_aScreenWindows[0].aCorners[1].nY += 0x8000;
+        g_aScreenWindows[0].aCorners[0].pos.x -= 0x28000;
+        g_aScreenWindows[0].aCorners[0].pos.y -= 0x20000;
+        g_aScreenWindows[0].aCorners[1].pos.x += 0x2C000;
+        g_aScreenWindows[0].aCorners[1].pos.y += 0x8000;
         g_aScreenWindows[0].dwFlags |= 1;
     }
 }

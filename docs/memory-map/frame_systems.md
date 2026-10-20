@@ -13,7 +13,7 @@ function. Calls, in order:
 | `TickActiveActors` | `0x080015B8` | always |
 | `TickParticleEmitters` | `0x08031748` | always |
 | `TickBgLayers` | `0x08006EF4` | always |
-| `TickScreenWindows_candidate` | `0x08045970` | always |
+| `TickScreenWindows` | `0x08045970` | always |
 | `TickPaletteAnimations_candidate` | `0x0800D2F4` | always |
 | `TickBgTileAnimations` | `0x0800A610` | always |
 | `HideUnusedOamEntries` | `0x08030184` | always |
@@ -28,10 +28,10 @@ function. Calls, in order:
   ping-pong zoom, `2` rotation, `0x4000` matrix dirty. A dirty matrix is rebuilt
   into the BG affine parameters and reference point (`0x7800`/`0x5000` centre
   constants).
-- **`TickScreenWindows_candidate`**: two hardware-window records (`0x3C` bytes at
-  `g_aScreenWindows`, two corners each) tweened or drifted per frame by `TickScreenWindow`. `sub_08045988`
+- **`TickScreenWindows`**: two hardware-window records (`0x3C` bytes at
+  `g_aScreenWindows`, two corners each) tweened or drifted per frame by `TickScreenWindow`. `WriteScreenWindowRects`
   writes the rects to `WINxH`/`WINxV` (`0x04000040`+) at vblank; the setters are
-  `SetScreenWindowRect_candidate` and `SetScreenWindowLayers_candidate`.
+  `SetScreenWindowRect` and `SetScreenWindowLayers`.
 - **`TickPaletteAnimations_candidate`**: steps the 12 color cycles (`TickColorCycles`,
   `StepColorCycle`) and up to 12 palette effects (`TickPaletteEffects`, `StepPaletteEffect`, per-channel 5-bit RGB
   interpolation). Both mark a dirty flag that the palette flush DMA consumes; see
