@@ -7,7 +7,7 @@
 // from the tile cache; each tile inside the loaded or the current window then loads the new
 // block's tile and writes it, with the block's attribute byte in bits 10+, to the layer's
 // tilemap. The block map entry is overwritten with `blockId`.
-void WriteRoomBgTile_candidate(u16 x, u16 y, u16 blockId, u8 layer)
+void WriteRoomBgBlock(u16 x, u16 y, u16 blockId, u8 layer)
 {
     u16 *pBlockEntry;
     u32 col;
@@ -34,10 +34,10 @@ void WriteRoomBgTile_candidate(u16 x, u16 y, u16 blockId, u8 layer)
     x <<= 2;
     y >>= 5;
     y <<= 2;
-    loadedLeft = g_BgLoadedScroll[0] >> 3;
-    loadedTop = g_BgLoadedScroll[1] >> 3;
-    scrollLeft = g_BgScroll[0] >> 3;
-    scrollTop = g_BgScroll[1] >> 3;
+    loadedLeft = g_BgLoadedScroll.x >> 3;
+    loadedTop = g_BgLoadedScroll.y >> 3;
+    scrollLeft = g_BgScroll.x >> 3;
+    scrollTop = g_BgScroll.y >> 3;
 
     for (row = 0; row < 4; row++)
     {
@@ -59,7 +59,7 @@ void WriteRoomBgTile_candidate(u16 x, u16 y, u16 blockId, u8 layer)
                 pTilemap = (u16 *)((u8 *)VRAM_BASE + g_aBgControl[layer].bScreenBlock * 0x800);
                 pTilemap += (y & 0x1F) * 32;
                 mapX = x & 0x1F;
-                tile = DecompressBgTileToVram_candidate(tileId, sizeClass, 0, layer);
+                tile = AcquireBgTileCacheEntry(tileId, sizeClass, 0, layer);
                 pTilemap[mapX] = tile;
                 pAttrs += (y & 3) * 4 + (x & 3);
                 pTilemap[mapX] |= *pAttrs << 10;
@@ -79,7 +79,7 @@ void WriteRoomBgTile_candidate(u16 x, u16 y, u16 blockId, u8 layer)
                 pTilemap = (u16 *)((u8 *)VRAM_BASE + g_aBgControl[layer].bScreenBlock * 0x800);
                 pTilemap += (y & 0x1F) * 32;
                 mapX = x & 0x1F;
-                tile = DecompressBgTileToVram_candidate(tileId, sizeClass, 0, layer);
+                tile = AcquireBgTileCacheEntry(tileId, sizeClass, 0, layer);
                 pTilemap[mapX] = tile;
                 pAttrs += (y & 3) * 4 + (x & 3);
                 pTilemap[mapX] |= *pAttrs << 10;

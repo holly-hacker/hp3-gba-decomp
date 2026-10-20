@@ -1677,31 +1677,31 @@ c-file 0x0803D834 _ src/screen_transitions/transition_out_wipe_down.c Transition
 c-file 0x0803D8B0 _ src/screen_transitions/transition_out_wipe_up.c TransitionOutWipeUp
 c-file 0x0803D938 _ src/screen_transitions/transition_out_wipe_right.c TransitionOutWipeRight
 c-file 0x0803D9B4 _ src/screen_transitions/transition_out_wipe_left.c TransitionOutWipeLeft
-c-file 0x0803DA40 0x0803DAB4 src/screen_transitions/transition_out_letterbox.c TransitionOutLetterbox
-thumb-func 0x0803DAB4 UpdateOverworldCamera_candidate
-thumb-func 0x0803DBD0 sub_0803DB68
-thumb-func 0x0803DCAC sub_0803DC44
-thumb-func 0x0803DD44 LoadRoomBgLayer0Extra_candidate
-c-file 0x0803DDE4 _ src/scroll/write_room_bg_tile.c WriteRoomBgTile_candidate
-c-file 0x0803DF80 0x0803E0A0 src/scroll/release_bg_tile_cache_entry.c ReleaseBgTileCacheEntry
-thumb-func 0x0803E0A0 sub_0803E038
-thumb-func 0x0803E160 sub_0803E0F8
-thumb-func 0x0803E288 LoadBgTileOnDemand_candidate
-c-file 0x0803E3B4 0x0803E4C4 src/scroll/decompress_bg_tile_to_vram.c DecompressBgTileToVram_candidate
-thumb-func 0x0803E4C4 sub_0803E45C
-c-file 0x0803E564 0x0803E5F0 src/scroll/init_room_bg_state.c InitRoomBgState_candidate
-thumb-func 0x0803E5F0 SetupRoomBgControlAndWindows_candidate
+c-file 0x0803DA40 _ src/screen_transitions/transition_out_letterbox.c TransitionOutLetterbox
+c-file 0x0803DAB4 _ src/scroll/update_overworld_camera.c UpdateOverworldCamera
+c-file 0x0803DBD0 _ src/scroll/reload_room_bg_tiles.c ReloadRoomBgTiles
+c-file 0x0803DCAC _ src/scroll/free_room_bg_block_data.c FreeRoomBgBlockData
+c-file 0x0803DD44 _ src/scroll/load_room_bg_block_tiles0.c LoadRoomBgBlockTiles0
+c-file 0x0803DDE4 _ src/scroll/write_room_bg_block.c WriteRoomBgBlock
+c-file 0x0803DF80 _ src/scroll/release_bg_tile_cache_entry.c ReleaseBgTileCacheEntry
+c-file 0x0803E0A0 _ src/scroll/release_bg_tile_column.c ReleaseBgTileColumn
+c-file 0x0803E160 _ src/scroll/load_bg_tile_column.c LoadBgTileColumn
+c-file 0x0803E288 _ src/scroll/load_bg_tile_row.c LoadBgTileRow
+c-file 0x0803E3B4 _ src/scroll/acquire_bg_tile_cache_entry.c AcquireBgTileCacheEntry
+c-file 0x0803E4C4 _ src/scroll/get_camera_target_position.c GetCameraTargetPosition
+c-file 0x0803E564 _ src/scroll/init_room_bg_state.c InitRoomBgState
+c-file 0x0803E5F0 _ src/scroll/setup_room_bg_control_and_tilesets.c SetupRoomBgControlAndTilesets
 c-file 0x0803E680 _ src/scroll/get_camera_position.c GetCameraPosition
-c-file 0x0803E690 0x0803E6A0 src/scroll/set_camera_position.c SetCameraPosition
-thumb-func 0x0803E6A0 ResetCameraPosition
-thumb-func 0x0803E6B0 sub_0803E648
-thumb-func 0x0803E6CC LoadRoomBgTilemap1_candidate
-thumb-func 0x0803E708 LoadRoomBgTilemap0_candidate
-thumb-func 0x0803E758 LoadRoomBgTilemap2_candidate
-thumb-func 0x0803E794 LoadRoomBgTilemap3_candidate
-thumb-func 0x0803E7D0 LoadRoomBgLayer1Extra_candidate
-thumb-func 0x0803E85C LoadRoomBgLayer2Extra_candidate
-thumb-func 0x0803E8E8 LoadRoomBgLayer3Extra_candidate
+c-file 0x0803E690 _ src/scroll/set_camera_position.c SetCameraPosition
+c-file 0x0803E6A0 _ src/scroll/reset_camera_position.c ResetCameraPosition
+c-file 0x0803E6B0 _ src/scroll/get_room_bg_layer0_size_pixels.c GetRoomBgLayer0SizePixels
+c-file 0x0803E6CC _ src/scroll/load_room_bg_tilemap1.c LoadRoomBgTilemap1
+c-file 0x0803E708 _ src/scroll/load_room_bg_tilemap0.c LoadRoomBgTilemap0
+c-file 0x0803E758 _ src/scroll/load_room_bg_tilemap2.c LoadRoomBgTilemap2
+c-file 0x0803E794 _ src/scroll/load_room_bg_tilemap3.c LoadRoomBgTilemap3
+c-file 0x0803E7D0 _ src/scroll/load_room_bg_block_tiles1.c LoadRoomBgBlockTiles1
+c-file 0x0803E85C _ src/scroll/load_room_bg_block_tiles2.c LoadRoomBgBlockTiles2
+c-file 0x0803E8E8 _ src/scroll/load_room_bg_block_tiles3.c LoadRoomBgBlockTiles3
 c-file 0x0803E974 _ src/scroll/get_room_bg_block_entry.c GetRoomBgBlockEntry
 c-file 0x0803E98C _ src/scroll/set_room_bg_aux_flag_2.c SetRoomBgAuxFlag2
 c-file 0x0803E99C _ src/scroll/clear_room_bg_aux_flag_2.c ClearRoomBgAuxFlag2
@@ -1714,15 +1714,15 @@ c-file 0x0803E9FC _ src/scroll/set_room_bg_aux_pos_b.c SetRoomBgAuxPosB
 c-file 0x0803EA0C _ src/scroll/get_room_bg_layer1_size_pixels.c GetRoomBgLayer1SizePixels
 c-file 0x0803EA28 _ src/scroll/disable_bg_layer_scroll.c DisableBgLayerScroll
 c-file 0x0803EA38 _ src/scroll/enable_bg_layer_scroll.c EnableBgLayerScroll
-c-file 0x0803EA48 0x0803EAA4 src/scroll/find_bg_tile_cache_entry.c FindBgTileCacheEntry
-thumb-func 0x0803EAA4 FreeBgTileBitOffsets
-thumb-func 0x0803EAC0 sub_0803EA58
-thumb-func 0x0803EADC sub_0803EA74
-c-file 0x0803EB2C 0x0803EBE4 src/scroll/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
-thumb-func 0x0803EBE4 sub_0803EB7C
-thumb-func 0x0803EC10 DecodeBgTilesetOffsetTable_candidate
-thumb-func 0x0803ECD0 sub_0803EC68
-thumb-func 0x0803ED58 sub_0803ECF0
+c-file 0x0803EA48 _ src/scroll/find_bg_tile_cache_entry.c FindBgTileCacheEntry
+c-file 0x0803EAA4 _ src/scroll/free_bg_tile_bit_offsets.c FreeBgTileBitOffsets
+c-file 0x0803EAC0 _ src/scroll/queue_bg_strip_release.c QueueBgStripRelease
+c-file 0x0803EADC _ src/scroll/flush_bg_strip_releases.c FlushBgStripReleases
+c-file 0x0803EB2C _ src/scroll/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
+c-file 0x0803EBE4 _ src/scroll/step_scroll_toward.c StepScrollToward
+c-file 0x0803EC10 _ src/scroll/decode_bg_tileset_offset_table.c DecodeBgTilesetOffsetTable
+c-file 0x0803ECD0 _ src/scroll/write_bg_tilemap_entry.c WriteBgTilemapEntry
+c-file 0x0803ED58 _ src/scroll/release_bg_tile_row.c ReleaseBgTileRow
 c-file 0x0803EE10 _ src/serial/process_serial_messages.c ProcessSerialMessages
 c-file 0x0803EED8 _ src/serial/queue_serial_message.c QueueSerialMessage
 c-file 0x0803EF4C _ src/serial/set_serial_callbacks.c SetSerialCallbacks

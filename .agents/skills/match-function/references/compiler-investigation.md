@@ -70,6 +70,18 @@ Example: ResolveEnemyAttack's shared damage recheck implicated jump threading an
 counts. The useful question was which outer arm fell through into a shared check; simply
 negating conditions or inserting a superficially equivalent goto did not change the output.
 
+## Instrument the compiler
+
+This is the very last resort and is rarely needed: exhaust the dumps, the compiler source
+and source-level experiments first, and ask the user for permission before building one.
+
+When a decision is not printed in any dump (local-alloc's qty order, for example), copy the
+pinned `gcc/` directory to scratch, add an `fprintf (stderr, ...)` behind `getenv`, and build it
+serially outside the dev shell's compiler flags:
+`env -u LIBRARY_PATH -u C_INCLUDE_PATH -u CPATH -u NIX_LDFLAGS -u NIX_CFLAGS_COMPILE make -j1`.
+Run it on the workspace's `candidate.i` with the profile's flags, and first check that its `.s` is
+identical to the production compiler's. Use it only for diagnosis.
+
 ## Reference and relocation checks
 
 `prepare` creates a relocatable target, translates known RAM-address literals into symbols,

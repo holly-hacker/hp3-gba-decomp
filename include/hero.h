@@ -54,7 +54,7 @@ extern const ActorGfxRecord g_UnusedPartyGfx2;
 extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 
 extern OverworldControlState g_OverworldControlState;
-// Signed camera Y offset in pixels, added to quest event state 0x1B (sub_0803E45C).
+// Signed camera Y offset in pixels, added to quest event state 0x1B (GetCameraTargetPosition).
 extern s8 g_nCameraYOffset;
 extern u8 g_abRoomScriptExitParams_candidate[2];
 extern Actor *g_pPlayerActor;

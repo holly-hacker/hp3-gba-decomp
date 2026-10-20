@@ -49,7 +49,7 @@ void ApplyRoomTileAnimationFrame(RoomTileAnimation *pAnim)
                 if (layerMask & (1 << layer))
                 {
                     value = GetRoomBgBlockEntry(x, y, layer);
-                    WriteRoomBgTile_candidate(pAnim->wX + dx, pAnim->wY + dy, value, layer);
+                    WriteRoomBgBlock(pAnim->wX + dx, pAnim->wY + dy, value, layer);
                 }
             }
 

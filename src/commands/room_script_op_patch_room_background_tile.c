@@ -12,5 +12,5 @@ typedef struct PatchRoomBackgroundTileRecord {
 
 void RoomScriptOpPatchRoomBackgroundTile(PatchRoomBackgroundTileRecord *pRecord)
 {
-    WriteRoomBgTile_candidate(pRecord->wX, pRecord->wY, pRecord->wTileId, pRecord->bLayer);
+    WriteRoomBgBlock(pRecord->wX, pRecord->wY, pRecord->wTileId, pRecord->bLayer);
 }

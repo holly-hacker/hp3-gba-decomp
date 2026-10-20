@@ -49,8 +49,8 @@ function. Calls, in order:
   `StartAllBgTileAnimations` (`0x0800A874`) sets bit 0 of every entry and has no callers.
 - **`TickOverworldBeforeActors_candidate`**: three calls. `TickCameraFocus_candidate`
   (`0x0800A03C`, JP `0x0800A03C`) runs slot 0's camera focus and any scripted camera
-  effect. `UpdateOverworldCamera_candidate` (`0x0803DA4C`, JP `0x0803DAB4`) turns the
-  focus point into `g_CameraPosition_candidate` (focus minus the half screen, clamped to
+  effect. `UpdateOverworldCamera` (`0x0803DA4C`, JP `0x0803DAB4`) turns the
+  focus point into `g_CameraPosition` (focus minus the half screen, clamped to
   the room) and loads BG tiles on demand as it crosses tile boundaries.
   `TickRoomTileAnimations` (`0x08020228`, JP `0x08020210`) steps the room's
   animated tiles: 8-byte entries `{set, step, delay, flags, x, y}` at `0x03002F24`

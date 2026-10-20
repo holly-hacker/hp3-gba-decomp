@@ -495,28 +495,59 @@
 .set g_dwPaletteFadeStepTicks,  0x0300569C  @ u32: step ticks of the palette fades and DarkenScreenPalette/RestoreScreenPalette
 
 @ --- include/scroll.h ---
-.set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for actor visibility
+.set g_CameraPosition, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x030056A8
+.set g_aBgTileCodeTableBuffers,     0x030056B0  @ u8[2][0x124]: per tile size class, the Huffman code table DecodeBgTilesetOffsetTable copies from the tileset
 .set g_awBgLayerTileCount,          0x030058F8
 .set g_aBgTilesets,                  0x03005900
 .set g_adwBgScrollEnabled,              0x03005920
+.set g_adwBgTilesetTileCount,       0x03005930  @ u32[2]: per tile size class, DecodeBgTilesetOffsetTable's result
+.set g_wRoomBgLayer0TilesWide,      0x03005938  @ u16
+.set g_wRoomBgLayer0TilesHigh,      0x0300593A  @ u16
 .set g_wRoomBgLayer0BlocksWide,       0x0300593C
+.set g_wRoomBgLayer0BlocksHigh,     0x0300593E  @ u16
 .set g_wRoomBgLayer1TilesWide,        0x03005940
 .set g_wRoomBgLayer1TilesHigh,        0x03005942
 .set g_wRoomBgLayer1BlocksWide,       0x03005944
+.set g_wRoomBgLayer1BlocksHigh,     0x03005946  @ u16
+.set g_wRoomBgLayer2TilesWide,      0x03005948  @ u16
+.set g_wRoomBgLayer2TilesHigh,      0x0300594A  @ u16
 .set g_wRoomBgLayer2BlocksWide,       0x0300594C
+.set g_wRoomBgLayer2BlocksHigh,     0x0300594E  @ u16
+.set g_wRoomBgLayer3TilesWide,      0x03005950  @ u16
+.set g_wRoomBgLayer3TilesHigh,      0x03005952  @ u16
 .set g_wRoomBgLayer3BlocksWide,       0x03005954
+.set g_wRoomBgLayer3BlocksHigh,     0x03005956  @ u16
 .set g_BgScroll,                       0x03005958
 .set g_RoomBgAux,                       0x03005960
 .set g_aBgControl,                     0x03005974
+.set g_dwRoomBgLayer0TileWord0,     0x03005984  @ u32: first word of layer 0's block tile table, set by LoadRoomBgBlockTiles0; no reader found
+.set g_dwRoomBgLayer1TileWord0,     0x03005988  @ u32
+.set g_dwRoomBgLayer2TileWord0,     0x0300598C  @ u32
+.set g_dwRoomBgLayer3TileWord0,     0x03005990  @ u32
 .set g_RoomBgBlockData,                0x03005994
+.set g_pRoomBgLayer0MapAlloc,       0x030059B4  @ u8 *: heap block holding layer 0's block map (g_RoomBgBlockData.apBlockMaps[0] is 4 bytes in)
+.set g_pRoomBgLayer1MapAlloc,       0x030059B8  @ u8 *
+.set g_pRoomBgLayer2MapAlloc,       0x030059BC  @ u8 *
+.set g_pRoomBgLayer3MapAlloc,       0x030059C0  @ u8 *
+.set g_pRoomBgLayer0TilesAlloc,     0x030059C4  @ u32 *: heap block holding layer 0's block tile table, advanced past its block count
+.set g_pRoomBgLayer1TilesAlloc,     0x030059C8  @ u32 *
+.set g_pRoomBgLayer2TilesAlloc,     0x030059CC  @ u32 *
+.set g_pRoomBgLayer3TilesAlloc,     0x030059D0  @ u32 *
 .set g_adwBgBlockAttrOffset,           0x030059D4
 .set g_apBgTileCacheEntries,            0x030059E8
 .set g_apBgTileCacheBuckets,            0x030059F0
 .set g_apBgTileCacheFreeSlots,          0x030059F8
+.set g_apRoomBgTilesets,            0x03005A00  @ const void *[2]: the room's tileset A and B resources, set by SetupRoomBgControlAndTilesets
 .set g_awBgTileCacheFreeCount,       0x03005A08
 .set g_dwUnk030059AC,                   0x03005A0C
+.set g_bUnk030059B0,                0x03005A10  @ u8: zeroed by LoadRoomBgTilemap0; no other literal reference found
 .set g_BgLoadedScroll,                 0x03005A18
+.set g_wRoomBgLayer0MapSize,        0x03005A20  @ u16: byte size of layer 0's block map, blocks wide * blocks high * 2; no reader found
+.set g_wRoomBgLayer1MapSize,        0x03005A22  @ u16
+.set g_wRoomBgLayer2MapSize,        0x03005A24  @ u16
+.set g_wRoomBgLayer3MapSize,        0x03005A26  @ u16
+.set g_aBgStripReleases,            0x03005A28  @ BgStripRelease[2]: tile column (0) and row (1) for FlushBgStripReleases to release
 
 @ --- include/serial.h ---
 .set g_SerialLink, 0x03005A38

@@ -32,8 +32,8 @@ s32 UpdateActorOnscreenFlags(Actor *actor)
     top = position[1] + (s16)bounds.words.packedY - 169;
     bottom = position[1] + (s16)(bounds.words.packedY >> 16) + 9;
 
-    if (left < g_CameraPosition_candidate.nX || right > g_CameraPosition_candidate.nX ||
-        bottom < g_CameraPosition_candidate.nY || top > g_CameraPosition_candidate.nY) {
+    if (left < g_CameraPosition.nX || right > g_CameraPosition.nX ||
+        bottom < g_CameraPosition.nY || top > g_CameraPosition.nY) {
         if (actor->bForceOnscreen_candidate != 1) {
             actor->dwFlags &= ~(ActorFlagOnscreen | ActorFlagOnscreenForTileAlloc);
             return 0;

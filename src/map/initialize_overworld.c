@@ -88,33 +88,33 @@ void InitializeOverworld(void)
         g_dwColorCycleActiveMask = 0;
         g_bCurrentRoomId = g_GameModeStackContext.dwCurrentGameModeArg2;
         InitObjTileAllocBitmaps(0);
-        sub_0803DC44();
+        FreeRoomBgBlockData();
 
         // Load the room's BG layers, tilesets, palette and collision.
-        LoadRoomBgTilemap0_candidate(CURRENT_ROOM.pBgTilemap0);
-        LoadRoomBgTilemap1_candidate(CURRENT_ROOM.pBgTilemap1);
-        LoadRoomBgTilemap2_candidate(CURRENT_ROOM.pBgTilemap2);
-        LoadRoomBgTilemap3_candidate(CURRENT_ROOM.pBgTilemap3);
+        LoadRoomBgTilemap0(CURRENT_ROOM.pBgTilemap0);
+        LoadRoomBgTilemap1(CURRENT_ROOM.pBgTilemap1);
+        LoadRoomBgTilemap2(CURRENT_ROOM.pBgTilemap2);
+        LoadRoomBgTilemap3(CURRENT_ROOM.pBgTilemap3);
         pRoom = &CURRENT_ROOM;
-        SetupRoomBgControlAndWindows_candidate(bgCtrl3, bgCtrl1, bgCtrl2, bgCtrl0,
+        SetupRoomBgControlAndTilesets(bgCtrl3, bgCtrl1, bgCtrl2, bgCtrl0,
                                                pRoom->aBgResources[0], pRoom->aBgResources[1]);
         LoadRoomSharedTileset_candidate(
             CURRENT_ROOM.pCollisionBehaviorTable,
             CURRENT_ROOM.pCollisionTilemap);
         NoopOverworldRoomLoad();
-        LoadRoomBgLayer0Extra_candidate(
+        LoadRoomBgBlockTiles0(
             CURRENT_ROOM.pBgLayer0Extra,
             CURRENT_ROOM.dwUnused0_8,
             CURRENT_ROOM.dwUnused0_c);
-        LoadRoomBgLayer1Extra_candidate(
+        LoadRoomBgBlockTiles1(
             CURRENT_ROOM.pBgLayer1Extra,
             CURRENT_ROOM.dwUnused1_8,
             CURRENT_ROOM.dwUnused1_c);
-        LoadRoomBgLayer2Extra_candidate(
+        LoadRoomBgBlockTiles2(
             CURRENT_ROOM.pBgLayer2Extra,
             CURRENT_ROOM.dwUnused2_8,
             CURRENT_ROOM.dwUnused2_c);
-        LoadRoomBgLayer3Extra_candidate(
+        LoadRoomBgBlockTiles3(
             CURRENT_ROOM.pBgLayer3Extra,
             CURRENT_ROOM.dwUnused3_8,
             CURRENT_ROOM.dwUnused3_c);
@@ -221,8 +221,8 @@ void InitializeOverworld(void)
 
         // Display flags and the room's BG control overrides.
         g_dwGameModeFlags &= ~GameModeFlagUnk400000;
-        UpdateOverworldCamera_candidate(1);
-        sub_0803DB68();
+        UpdateOverworldCamera(1);
+        ReloadRoomBgTiles();
         if ((g_dwGameModeFlags & (SerialSessionActive | GameModeFlagUnk100000)) != (SerialSessionActive | GameModeFlagUnk100000))
             TickCameraFocus_candidate(0);
         RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationA);

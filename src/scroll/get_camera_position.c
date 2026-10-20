@@ -3,6 +3,6 @@
 
 void GetCameraPosition(s32 *pPosition)
 {
-    pPosition[0] = g_CameraPosition_candidate.nX;
-    pPosition[1] = g_CameraPosition_candidate.nY;
+    pPosition[0] = g_CameraPosition.nX;
+    pPosition[1] = g_CameraPosition.nY;
 }

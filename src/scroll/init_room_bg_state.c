@@ -3,7 +3,7 @@
 #include "scroll.h"
 #include "hero.h"
 
-void InitRoomBgState_candidate(void)
+void InitRoomBgState(void)
 {
     s32 position[2];
     u32 i;

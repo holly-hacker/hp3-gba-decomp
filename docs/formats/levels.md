@@ -61,8 +61,8 @@ truth-confirmed via its own distinct `=0x0806BE38` literal pool
 entries). The two tables are not the same data and not aliases of each
 other -- confirmed by identical call-graph shape: `InitTimeTurnerCutsceneRoom_candidate`
 calls the exact same field-consumer functions
-(`LoadRoomBgTilemap0-3_candidate`, `SetupRoomBgControlAndWindows_candidate`,
-`LoadRoomSharedTileset_candidate`, `LoadRoomBgLayer0-3Extra_candidate`)
+(`LoadRoomBgTilemap0-3`, `SetupRoomBgControlAndTilesets`,
+`LoadRoomSharedTileset_candidate`, `LoadRoomBgBlockTiles0-3`)
 against `0x0806BE38 + index*0x7C` instead of `0x08063C8C +
 index*0x7C`, which is why both were independently described as "the
 124-byte level table" by separate investigations.
@@ -119,17 +119,17 @@ guessed from zero-valued samples.
 
 | Offset | Field | Meaning | Confidence |
 |---|---|---|---|
-| 0x00/0x10/0x20/0x30 | `dwBgTilemapN` | BG layer N **block-index map**: a `width:u16, height:u16` header (in 4-tile block units) followed by `width*height` block-index entries, decoded via the shared dispatcher (`DecompressResource`) by `LoadRoomBgTilemapN_candidate`. Each entry selects a block from `dwBgLayerNExtra`, not a final tile -- see [`graphics.md`](graphics.md)'s "On-demand per-tile BG streaming" section for the full two-level format and layer-to-hardware-BG mapping | PROVEN (rendered and confirmed against real gameplay for 4 rooms, all 4 layers) |
-| 0x04/0x14/0x24/0x34 | `dwBgLayerNExtra` | BG layer N **block contents**: a `blockCount:u32` header, then `blockCount*32` bytes of 4x4 tile-ID entries (`u16` each) and `blockCount*16` bytes of per-tile palette/flip bytes, decoded by `LoadRoomBgLayerNExtra_candidate`. Tile IDs index into `dwBgTilesetA`/`B` (`+0x54`/`+0x5c`); the palette byte packs `bit0`=hflip, `bit1`=vflip, `bits2-5`=palette bank | PROVEN |
-| 0x08-0x0c / 0x18-0x1c / 0x28-0x2c / 0x38-0x3c | `dwUnusedN_8`/`dwUnusedN_c` | Passed to `LoadRoomBgLayerNExtra_candidate` but not read by it | UNCONFIRMED |
+| 0x00/0x10/0x20/0x30 | `dwBgTilemapN` | BG layer N **block-index map**: a `width:u16, height:u16` header (in 4-tile block units) followed by `width*height` block-index entries, decoded via the shared dispatcher (`DecompressResource`) by `LoadRoomBgTilemapN`. Each entry selects a block from `dwBgLayerNExtra`, not a final tile -- see [`graphics.md`](graphics.md)'s "On-demand per-tile BG streaming" section for the full two-level format and layer-to-hardware-BG mapping | PROVEN (rendered and confirmed against real gameplay for 4 rooms, all 4 layers) |
+| 0x04/0x14/0x24/0x34 | `dwBgLayerNExtra` | BG layer N **block contents**: a `blockCount:u32` header, then `blockCount*32` bytes of 4x4 tile-ID entries (`u16` each) and `blockCount*16` bytes of per-tile palette/flip bytes, decoded by `LoadRoomBgBlockTilesN`. Tile IDs index into `dwBgTilesetA`/`B` (`+0x54`/`+0x5c`); the palette byte packs `bit0`=hflip, `bit1`=vflip, `bits2-5`=palette bank | PROVEN |
+| 0x08-0x0c / 0x18-0x1c / 0x28-0x2c / 0x38-0x3c | `dwUnusedN_8`/`dwUnusedN_c` | Passed to `LoadRoomBgBlockTilesN` but not read by it | PROVEN |
 | 0x40 | `dwCollisionBehaviorTable` | Collision behavior-table pointer (NOT graphics, despite `LoadRoomSharedTileset_candidate`'s name; decodes into `g_pRoomCollisionBehaviorTable`), see [`collision.md`](collision.md) | PROVEN |
 | 0x44 | `dwCollisionTilemap` | Collision tilemap pointer (same caveat), decodes into `g_pRoomCollisionTilemap`; its first u16 is read back as a pattern count into `DAT_03003FB8` | PROVEN |
 | 0x48/0x4c | `dwUnused_48`/`dwUnused_4c` | Not read by any traced consumer | UNCONFIRMED |
 | 0x50 | `dwRoomResourceBlob` | ROM pointer to a per-room resource blob, parsed by `ParseRoomResourceBlob` (`0x08005A78`) into the room's default actor/chest layout, incl. a quest-stage-gated variant sub-table indexed by `g_abQuestEventState[0]` -- see [`rooms.md`](rooms.md) | STRUCTURAL MATCH |
-| 0x54 | `dwBgTilesetA` | BG tileset resource pointer, consumed by `DecodeBgTilesetOffsetTable_candidate` (`0x0803EBA8`). Shared by BG layers 0 and 3 (level-table layer index, see `graphics.md`) | PROVEN |
-| 0x58 | `dwPaletteData` | Raw, uncompressed 256-color (16 banks x 16, BGR555) BG palette array, copied verbatim by `SetupRoomBgControlAndWindows_candidate` -- confirmed byte-exact against a live mGBA memory dump. Index 0 is force-overwritten to black (backdrop color) by a second, separate 1-color copy right after | PROVEN |
+| 0x54 | `dwBgTilesetA` | BG tileset resource pointer, consumed by `DecodeBgTilesetOffsetTable` (`0x0803EBA8`). Shared by BG layers 0 and 3 (level-table layer index, see `graphics.md`) | PROVEN |
+| 0x58 | `dwPaletteData` | Raw, uncompressed 256-color (16 banks x 16, BGR555) BG palette array, copied verbatim by `SetupRoomBgControlAndTilesets` -- confirmed byte-exact against a live mGBA memory dump. Index 0 is force-overwritten to black (backdrop color) by a second, separate 1-color copy right after | PROVEN |
 | 0x5c | `dwBgTilesetB` | Second BG tileset resource pointer, same mechanism. Shared by BG layers 1 and 2 | PROVEN |
-| 0x60 | `dwUnused_60` | Passed to `DecodeBgTilesetOffsetTable_candidate` as an argument but never read inside it -- dead | UNCONFIRMED |
+| 0x60 | `dwUnused_60` | Palette slot of the second `RoomBgResources` pair (with `dwBgTilesetB`, as `0x58` is for `dwBgTilesetA`). `SetupRoomBgControlAndTilesets` passes the pair to `DecodeBgTilesetOffsetTable` by value; neither reads this word | UNCONFIRMED |
 | 0x64 | `pBgTileAnimationA` | Zero in every room except 5, 6 and 7, where it points at `0x08063074`, a BG animation descriptor: `u16 0x8003`, `u16 0`, `u32 0x500` (buffer size), then `(frame pointer, 1)` pairs, registered by `RegisterBgTileAnimation` together with the BG3 control word. `RegisterRoomBgTileAnimation` (`0x0802B174`) hardcodes that descriptor (or the one at `0x0806347C` when `g_abQuestEventState[0x1d]==1`) for rooms 5-7. For other non-null values it registers the pointed-to animation itself, with the BG control word its first byte selects (`0`-`3`: `g_dwBg3Control`, `g_dwBg1Control`, `g_dwBg2Control`, `g_dwBg0Control`); no shipped room reaches that path | PROVEN |
 | 0x68 | `pBgTileAnimationB` | Zero in every room; same consumer | PROVEN (field values) |
 | 0x6c | `wScrollBoundMinX` | Camera/scroll clamp min X. `SetRoomScrollBounds`/`GetRoomScrollBounds` (`0x0800A4E8`/`0x0800A4A4`) read/write offsets 0x6c-0x72 as `(minX,minY)`/`(maxX,maxY)`, falling back to `(0,0)`/`(defaultW,defaultH)` when all four are zero. This is the per-room bounding box | PROVEN |

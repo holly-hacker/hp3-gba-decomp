@@ -56,7 +56,7 @@ void AgbMain(void)
     InitOamSystem();
     InitParticlePools();
     InitScreenTransitionState_candidate();
-    InitRoomBgState_candidate();
+    InitRoomBgState();
     NoopInit2();
     InitInputSystem();
     ResetAllGameTimers();

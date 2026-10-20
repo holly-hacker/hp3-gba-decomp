@@ -7,7 +7,7 @@ typedef void (*BgTileDecoder)(u32 bitOffset, u16 *pDest, s32 size, const BgTileC
 
 // Takes a reference on `tileId` in the room BG tile cache of the given size class, decompressing
 // the tile into its BG character VRAM slot on a miss. Returns the slot index.
-u32 DecompressBgTileToVram_candidate(u32 tileId, u32 sizeClass, u32 arg2, u32 layer)
+u32 AcquireBgTileCacheEntry(u32 tileId, u32 sizeClass, u32 unused, u32 layer)
 {
     u16 index;
     BgTileCacheEntry *pEntries;

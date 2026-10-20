@@ -109,6 +109,16 @@ in source wins the shorter live_length and the preferred hard register. Reorder 
 independent statements that consume them (not the loop). Example: UpdateKeyInput's
 loop-setup registers, US `0x080254A8`.
 
+Block-local pseudos are placed by `local-alloc.c:block_alloc` before global allocation, in
+QTY_CMP_PRI order (`floor_log2(refs) * refs / (death - birth)`, as an integer); equal priorities
+go in birth order. A pseudo tied by `combine_regs` to the result of the add it dies in carries the
+result's refs. Writing the sum back into a struct member's own register (`res.p += offset;
+res.p += 8;`) left `offset` untied and dropped it below two equal-priority neighbours; `res.p + offset`
+expands as `(plus offset subreg)` (entry 26) and ties the sum to `offset`.
+DecodeBgTilesetOffsetTable, US `0x0803EBA8`. The order is not printed in any dump; work
+it out from `.lreg` refs and lifetimes (instrumenting the compiler is a last resort that needs
+the user's permission, see compiler-investigation.md).
+
 Two locals set to the same constant back to back: `cse.c:make_regs_eqv` sets the one whose
 last mention comes later in the source (`REGNO_LAST_UID`) to the constant and makes the other
 a copy of it, and the copy's refs can decide the tie. Assignment order does not matter; make
@@ -305,7 +315,7 @@ For an element of a pointer member, `fighter = &s->p[i]` loads the index first a
 extra or missing reload earlier in insn order shifts every later choice. Causes: a branch
 written out twice and merged by cross-jumping after reload (entry 10), or a REG_EQUIV
 constant pseudo left unallocated and rematerialized just before its use. Example:
-WriteRoomBgTile_candidate, US 0x0803DD7C.
+WriteRoomBgBlock, US 0x0803DD7C.
 
 ## 28. Rotated loop has an extra pre-loop copy of its exit test
 
@@ -381,6 +391,12 @@ did not fold the copies: the parameter pseudo is set more than once. Assign the 
 parameter (`pTilemap = pTilemap + y * stride + x; return *pTilemap;`). A fresh local folds away.
 Example: GetTilemapCell, US `0x08007774`. The "set more than once" part is inferred from the RTL
 dumps, not read out of `combine.c`.
+A dead entry copy of the second argument (`adds r5, r1, #0`, never read) together with header
+loads through fresh copies (`adds r0, r4, #0; ldrh r0, [r0]`) pointed to the first two arguments
+being one 8-byte struct passed by value. Its entry copy is a single DImode move, kept because the
+low word is live, which becomes two moves after reload; each member read through its `subreg` is
+copied to a register first, and the unused high word still occupies a callee-saved register. Example:
+DecodeBgTilesetOffsetTable, US `0x0803EBA8`, takes a RoomBgResources.
 
 ## 35. Clamp written as a ternary versus set-then-override
 

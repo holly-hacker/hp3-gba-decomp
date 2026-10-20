@@ -858,7 +858,7 @@ using it directly for a resource with the bit set need to apply
 
 #### The tilemap format: two levels, not one (PROVEN, from real disassembly)
 
-`LoadBgTileOnDemand_candidate` (`0x0803E220`) reads from two separate
+`LoadBgTileRow` (`0x0803E220`) reads from two separate
 decoded resources per layer, not one flat screen-entry array. Derived
 directly from its disassembly -- the decompiler's pseudocode obscures the
 exact bit widths involved, so the real algorithm below is read from the
@@ -867,8 +867,8 @@ raw instructions, not the decompile summary:
 - **`dwBgTilemapN` (`+0x00`/`+0x10`/`+0x20`/`+0x30`) decodes to a coarse
   block-index map**: a 4-byte header (`width:u16, height:u16`, in 4-tile
   **block** units, not raw tiles) followed by `width*height` block-index
-  entries (`u16` each, one per 32x32-pixel block). `LoadRoomBgLayerNExtra_candidate`
-  reads this header directly (`DAT_030058dc = *DAT_03005954`, etc.) to
+  entries (`u16` each, one per 32x32-pixel block). `LoadRoomBgBlockTilesN`
+  reads this header directly (`g_wRoomBgLayer0BlocksWide` from `g_pRoomBgLayer0MapAlloc`, etc.) to
   set up per-layer stride constants -- not inferred, read straight out of
   the decompile. A block index of `0` is a normal, real block like any
   other, the same way tile index `0` in the level below is a normal
@@ -896,7 +896,7 @@ raw instructions, not the decompile summary:
 - **`tileID` indexes into `dwBgTilesetA`/`B`** (`+0x54`/`+0x5c`, see
   below) via the same generic per-tile offset table already documented --
   layers 0 and 3 share tileset A, layers 1 and 2 share tileset B (from
-  `DecompressBgTileToVram_candidate`'s `sizeClass = ((layer+1) & 2) >> 1`).
+  `AcquireBgTileCacheEntry`'s `sizeClass = ((layer+1) & 2) >> 1`).
 
 An offline extractor needs to resolve the two-level block-map ->
 block-contents lookup above to get each screen position's tile ID and
@@ -908,11 +908,16 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
 
 #### The runtime streaming/caching path (confirmed live)
 
-- **`LoadBgTileOnDemand_candidate`** (`0x0803E220`): for each of the 4 BG
-  layers, walks the two-level tilemap above for the 4x4 block of tiles
-  currently needed, and for each one calls
-  `DecompressBgTileToVram_candidate` with the resolved tile ID.
-- **`DecompressBgTileToVram_candidate`** (`0x0803E34C`): a small hash-map
+- **`LoadBgTileRow`** (`0x0803E220`) and **`LoadBgTileColumn`**
+  (`0x0803E0F8`): for each of the 4 BG layers, walk the two-level tilemap
+  above for the 31-tile row or 21-tile column that starts at a pixel
+  position, pass each tile ID to `AcquireBgTileCacheEntry`, and
+  write the returned cache slot ORed with `paletteByte << 10` into the
+  layer's 32x32 screen block. `ReleaseBgTileRow` and `ReleaseBgTileColumn`
+  walk the same strips and release each tile's cache entry
+  (`src/scroll/`). All four index every layer's block map with layer 0's
+  width, `g_wRoomBgLayer0BlocksWide`.
+- **`AcquireBgTileCacheEntry`** (`0x0803E34C`): a small hash-map
   cache keyed by tile ID (open addressing via a linked-list-in-array
   scheme, capacity `0x400`/`0x200` entries for two separate BG size
   classes). On a cache hit it just bumps a refcount; on a miss it evicts
@@ -923,7 +928,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   function exactly.
 - **`dwBgTilesetA`/`B`** (`+0x54`/`+0x5c`): `size:u16, tileCount:u16`
   header, then at `+4` a `DecompressGammaLz`-compressed per-tile offset table
-  (`tileCount` entries), decoded by `DecodeBgTilesetOffsetTable_candidate`
+  (`tileCount` entries), decoded by `DecodeBgTilesetOffsetTable`
   (`0x0803EBA8`). Each decoded entry is a packed value: `real_addr =
   0x08000000 + (entry >> 3)` is that tile's real ROM address (confirmed
   by tracing the codec's actual ROM reads, and independently by the last
@@ -935,7 +940,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   like `DecompressLzRle` and `DecompressGammaLz`. Installed once at boot into IWRAM
   `0x030033CC` by **`InstallBgTileCodec`** (`0x080250B8`,
   called from `main` at `0x0802971E`) via
-  `CPUSet(0x08006300, 0x030033CC, ...)`. `DecompressBgTileToVram_candidate`
+  `CPUSet(0x08006300, 0x030033CC, ...)`. `AcquireBgTileCacheEntry`
   reaches it through the standard libgcc `_call_via_r5` interworking
   stub (`0x0804A2D4`, confirmed by disassembly to be a bare `bx r5`
   inside the known agbcc libc/libgcc block), with `r5` loaded from a
@@ -950,7 +955,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
 
 **The BG palette (PROVEN, static).** Level-table `+0x58` (`dwPaletteData`
 in `levels.md`) is a raw, uncompressed 256-color BGR555 array -- no
-codec, loaded via `SetupRoomBgControlAndWindows_candidate`
+codec, loaded via `SetupRoomBgControlAndTilesets`
 (`LoadBgPaletteColors`/`LoadPaletteColors`). Index 0 is force-overwritten to black
 (the GBA backdrop color) by a separate 1-color copy right after the bulk
 one. Confirmed byte-exact against a live mGBA memory dump for room

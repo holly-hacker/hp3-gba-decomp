@@ -248,7 +248,7 @@
 
 @ --- include/hero.h ---
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
-.set g_nCameraYOffset,               0x0300337C  @ s8: camera Y offset in pixels; 18 after InitRoomBgState_candidate
+.set g_nCameraYOffset,               0x0300337C  @ s8: camera Y offset in pixels; 18 after InitRoomBgState
 .set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
 .set g_pPlayerActor,                    0x03003380  @ Actor *: the player's overworld actor
 .set g_pFollowerActor0,                 0x03003384  @ Actor *: first party follower, NULL while empty
@@ -518,28 +518,59 @@
 .set g_dwPaletteFadeStepTicks,  0x0300563C  @ u32: step ticks of the palette fades and DarkenScreenPalette/RestoreScreenPalette
 
 @ --- include/scroll.h ---
-.set g_CameraPosition_candidate, 0x03005640  @ CameraFocusOffset: world-space camera origin used for actor visibility
+.set g_CameraPosition, 0x03005640  @ CameraFocusOffset: world-space camera origin used for actor visibility
 .set g_RoomSizePixels,           0x03005648  @ RoomSizePixels: width and height of the current room in pixels
+.set g_aBgTileCodeTableBuffers,     0x03005650  @ u8[2][0x124]: per tile size class, the Huffman code table DecodeBgTilesetOffsetTable copies from the tileset
 .set g_awBgLayerTileCount,          0x03005898  @ u16[4]: per BG layer, distinct tiles held in the BG tile cache
 .set g_aBgTilesets,                  0x030058A0  @ BgTileset[2]: per tile size class, the tile offset table and Huffman code table
-.set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera_candidate
+.set g_adwBgScrollEnabled,           0x030058C0  @ u32[4]: per BG layer, nonzero = scrolled by UpdateOverworldCamera
+.set g_adwBgTilesetTileCount,       0x030058D0  @ u32[2]: per tile size class, DecodeBgTilesetOffsetTable's result
+.set g_wRoomBgLayer0TilesWide,      0x030058D8  @ u16
+.set g_wRoomBgLayer0TilesHigh,      0x030058DA  @ u16
 .set g_wRoomBgLayer0BlocksWide,    0x030058DC  @ u16: width of layer 0's block map; the four layers' sizes are u16 {tiles wide, tiles high, blocks wide, blocks high} from 0x030058D8, 8 bytes apart
+.set g_wRoomBgLayer0BlocksHigh,     0x030058DE  @ u16
 .set g_wRoomBgLayer1TilesWide,     0x030058E0  @ u16
 .set g_wRoomBgLayer1TilesHigh,     0x030058E2  @ u16
 .set g_wRoomBgLayer1BlocksWide,    0x030058E4  @ u16
+.set g_wRoomBgLayer1BlocksHigh,     0x030058E6  @ u16
+.set g_wRoomBgLayer2TilesWide,      0x030058E8  @ u16
+.set g_wRoomBgLayer2TilesHigh,      0x030058EA  @ u16
 .set g_wRoomBgLayer2BlocksWide,    0x030058EC  @ u16
+.set g_wRoomBgLayer2BlocksHigh,     0x030058EE  @ u16
+.set g_wRoomBgLayer3TilesWide,      0x030058F0  @ u16
+.set g_wRoomBgLayer3TilesHigh,      0x030058F2  @ u16
 .set g_wRoomBgLayer3BlocksWide,    0x030058F4  @ u16
+.set g_wRoomBgLayer3BlocksHigh,     0x030058F6  @ u16
 .set g_BgScroll,                    0x030058F8  @ s32[2]: scroll position (x, y) the BG layers' tiles are streamed for
 .set g_RoomBgAux,                    0x03005900  @ RoomBgAux: flag byte and two positions set by SetRoomBgAuxFlag2 .. SetRoomBgAuxPosB
 .set g_aBgControl,                  0x03005914  @ RoomBgControl[4]: BGxCNT shadow per BG layer
+.set g_dwRoomBgLayer0TileWord0,     0x03005924  @ u32: first word of layer 0's block tile table, set by LoadRoomBgBlockTiles0; no reader found
+.set g_dwRoomBgLayer1TileWord0,     0x03005928  @ u32
+.set g_dwRoomBgLayer2TileWord0,     0x0300592C  @ u32
+.set g_dwRoomBgLayer3TileWord0,     0x03005930  @ u32
 .set g_RoomBgBlockData,             0x03005934  @ RoomBgBlockData: per-layer block maps and block tile tables
+.set g_pRoomBgLayer0MapAlloc,       0x03005954  @ u8 *: heap block holding layer 0's block map (g_RoomBgBlockData.apBlockMaps[0] is 4 bytes in)
+.set g_pRoomBgLayer1MapAlloc,       0x03005958  @ u8 *
+.set g_pRoomBgLayer2MapAlloc,       0x0300595C  @ u8 *
+.set g_pRoomBgLayer3MapAlloc,       0x03005960  @ u8 *
+.set g_pRoomBgLayer0TilesAlloc,     0x03005964  @ u32 *: heap block holding layer 0's block tile table, advanced past its block count
+.set g_pRoomBgLayer1TilesAlloc,     0x03005968  @ u32 *
+.set g_pRoomBgLayer2TilesAlloc,     0x0300596C  @ u32 *
+.set g_pRoomBgLayer3TilesAlloc,     0x03005970  @ u32 *
 .set g_adwBgBlockAttrOffset,        0x03005974  @ u32[4]: offset of each layer's block attribute bytes within its block tile table
 .set g_apBgTileCacheEntries,        0x03005988  @ BgTileCacheEntry *[2]
 .set g_apBgTileCacheBuckets,        0x03005990  @ u16 *[2]
 .set g_apBgTileCacheFreeSlots,      0x03005998  @ u16 *[2]
+.set g_apRoomBgTilesets,            0x030059A0  @ const void *[2]: the room's tileset A and B resources, set by SetupRoomBgControlAndTilesets
 .set g_awBgTileCacheFreeCount,       0x030059A8  @ u16[2]: number of entries in each size class's free slot stack
-.set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState_candidate
+.set g_dwUnk030059AC,               0x030059AC  @ u32: zeroed by InitRoomBgState
+.set g_bUnk030059B0,                0x030059B0  @ u8: zeroed by LoadRoomBgTilemap0; no other literal reference found
 .set g_BgLoadedScroll,              0x030059B8  @ s32[2]: g_BgScroll as of the last tile load; the window VRAM holds
+.set g_wRoomBgLayer0MapSize,        0x030059C0  @ u16: byte size of layer 0's block map, blocks wide * blocks high * 2; no reader found
+.set g_wRoomBgLayer1MapSize,        0x030059C2  @ u16
+.set g_wRoomBgLayer2MapSize,        0x030059C4  @ u16
+.set g_wRoomBgLayer3MapSize,        0x030059C6  @ u16
+.set g_aBgStripReleases,            0x030059C8  @ BgStripRelease[2]: tile column (0) and row (1) for FlushBgStripReleases to release
 
 @ --- include/serial.h ---
 .set g_SerialLink, 0x030059D8  @ SerialLink: exchange flags and the game's link callbacks

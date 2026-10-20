@@ -26,7 +26,7 @@ typedef struct CameraEffect {
 } CameraEffect;
 extern CameraEffect g_aCameraEffects_candidate[];
 
-// Per-slot camera focus point: what UpdateOverworldCamera_candidate centres the
+// Per-slot camera focus point: what UpdateOverworldCamera centres the
 // screen on (16.16 world coordinates). Follows pTarget unless wPinned is nonzero.
 typedef struct CameraFocusSlot {
     FixedPoint focus;          // 0x00
