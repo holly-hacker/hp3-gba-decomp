@@ -1,6 +1,6 @@
 #include "types.h"
 #include "commands.h"
-#include "overworld/room_script.h"
+#include "map_experience.h"
 
 typedef struct GrantPartyExperienceRecord {
     u32 dwOpcode;
@@ -9,5 +9,5 @@ typedef struct GrantPartyExperienceRecord {
 
 void RoomScriptOpGrantPartyExperience(GrantPartyExperienceRecord *pRecord)
 {
-    GrantPartyExperience_candidate(pRecord->wExperience);
+    GrantPartyExperience(pRecord->wExperience);
 }

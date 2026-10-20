@@ -39,7 +39,6 @@ typedef void (*RoomScriptOpcodeHandler)(RoomScriptRecord *pRecord);
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
 // Levels a recruited Hermione or Ron up to around Harry's level.
 extern void CatchUpToHarryLevel(u8 characterId);
-extern void GrantPartyExperience_candidate(u32 xp);
 extern void CycleSelectedFieldSpell(Actor *pLeader, u8 direction);
 // Allocates a RoomActorType_ScriptEffect actor of the given kind (ScriptEffectKind_*),
 // ticked by g_apfnScriptEffectActorTicks[kind].
