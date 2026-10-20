@@ -37,7 +37,7 @@ Actor *SpawnPlayerActor(u8 characterId)
     SetActorAnimFrame(g_pPlayerActor, g_abPartyStandFrames[g_pPlayerActor->bFacing]);
     g_OverworldControlState.aSlots[0].pActor = g_pPlayerActor;
     if (g_pPlayerActor->wCharacterId_candidate != 4)
-        g_pPlayerShadowActor_candidate = sub_0802FD5C(g_pPlayerActor);
+        g_pPlayerShadowActor_candidate = SpawnShadowActor(g_pPlayerActor);
 
     g_pPartyTrail = AllocZeroed(PARTY_TRAIL_LENGTH * sizeof(PartyTrailStep));
     g_bPartyTrailWriteIndex = 0;

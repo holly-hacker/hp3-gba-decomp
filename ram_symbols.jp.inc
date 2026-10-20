@@ -341,7 +341,7 @@
 .set g_pRoomActorStateBuffer,          0x03003BC8
 .set g_dwPauseMenuCooldown,                  0x03003BCC  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003BD0  @ byte: queued (encounter id, kind) pair count
-.set g_abTouchedMonsterRecords,              0x03003BD4  @ u8[20]: 5 x 4-byte touched-monster records
+.set g_aTouchedMonsterRecords,               0x03003BD4  @ TouchedMonsterRecord[5]: 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,             0x03003BE8  @ Actor *: armed wandering-monster actor
 
 @ --- include/math.h ---

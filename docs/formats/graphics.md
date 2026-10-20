@@ -830,7 +830,7 @@ background-layer viewer:
 | 3 | BG0 | Unused in this room (a single, all-zero block, i.e. one repeating tile) |
 
 Whether this mapping is fixed across all rooms or configured per-room
-(e.g. via `dwBgControlOverrideA`/`B`, `+0x64`/`+0x68`) isn't confirmed --
+(e.g. via `pBgTileAnimationA`/`B`, `+0x64`/`+0x68`) isn't confirmed --
 only checked for this one room. Since GBA composites lower-priority BG
 numbers over higher ones, a merged render must stack in **hardware**
 order (BG3, BG2, BG1, BG0 bottom-to-top), i.e. level-table layers

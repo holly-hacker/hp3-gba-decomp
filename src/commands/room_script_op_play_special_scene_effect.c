@@ -28,7 +28,7 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
     case 2:
         FreeBgTileAnimations();
         RegisterBgTileAnimation(&g_aSpecialSceneBg2, &g_dwSpecialSceneBgControl, 0);
-        sub_0802B138();
+        StartEndlessCameraShake();
         g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 0;
         break;
     case 0:

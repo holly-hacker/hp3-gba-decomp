@@ -73,7 +73,7 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
     case 0:
         SetActorAnimFrame(pActor, g_abRoomActorTriggerFacingFrames[pActor->bFacing]);
         pActor->oam.hFlip = pActor->bFacing > 4;
-        pActor->pShadowActor = sub_0802FD5C(pActor);
+        pActor->pShadowActor = SpawnShadowActor(pActor);
         break;
     case 18:
     case 20:

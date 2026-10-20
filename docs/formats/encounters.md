@@ -45,16 +45,16 @@ axis means:
   3 kinds, spawning each kind's count (level-table record offsets
   `0x74`-`0x76`; see `levels.md`). Per spawn it picks a variant with
   `Mt19937RandMax(3)`, takes the weighted pick of that variant's slots
-  0-2 (`FUN_0802BAD0`), and stores id/variant/kind on the
+  0-2 (`PickMaxDamageMonster`), and stores id/variant/kind on the
   wandering-monster actor.
 - Touching the monster pushes Battle mode with `(id, variant, kind)`
-  (`FUN_0802B58C`); `SetupBattleRoster` reads exactly that cell's 4
+  (`HandleWanderingMonsterTouch`); `SetupBattleRoster` reads exactly that cell's 4
   slots as the enemy roster. The variant axis is a pre-battle random
   pick, not a room index.
 - `SpawnWanderingMonsterActor` (`0x0802B41C`) renders unanalyzed
   (`g_abMonsterDocLevel <= 2`) monsters as "?" silhouettes.
 - Each kind also selects its spawn-terrain collision type
-  (`FUN_0802BA0C`, table `0x08065828`).
+  (`GetEncounterKindTerrainType`, `g_adwEncounterKindTerrainTypes`).
 
 ## Occurrence
 

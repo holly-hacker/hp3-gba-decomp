@@ -458,9 +458,10 @@ typedef struct Actor {
     u8 bPrevActionState_candidate;  // 0x8E, ExitDialog restores the player to this action state
     u8 bActionSubState;     // 0x8F, secondary per-actor state; see SetActorActionSubState
     u8 bActionFlags;        // 0x90
-    u8 bFighterIndex;       // 0x91
-    u8 bReceivedRewardId;   // 0x92, player: reward id shown by the receive-item action (0x17)
-    u8 pad_93[0x01];        // -> 0x94
+    u8 bFighterIndex;       // 0x91, wandering monsters: random-encounter id
+    u8 bReceivedRewardId;   // 0x92, player: reward id shown by the receive-item action (0x17);
+                             // wandering monsters: encounter kind
+    u8 bEncounterVariant;   // 0x93, wandering monsters: random-encounter variant
     u8 bFlags_0x94_candidate;  // 0x94, bit 0x4 set by a room script; meaning unconfirmed
     u8 pad_95[0x03];        // -> 0x98
     void (*pfnTick)(struct Actor *actor);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)

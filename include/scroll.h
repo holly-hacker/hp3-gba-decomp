@@ -98,7 +98,7 @@ extern u16 g_wRoomBgLayer3BlocksWide;
 extern u16 *GetRoomBgBlockMapEntryPtr(u16 x, u16 y, u8 layer);  // the block map entry covering pixel (x, y)
 extern u32 ReleaseBgTileCacheEntry(u16 tileId, u32 sizeClass, u32 layer);
 extern u32 DecompressBgTileToVram_candidate(u32 tileId, u32 sizeClass, u32 arg2, u32 layer);
-extern void sub_0803EA3C(void);            // frees the room BG state's two blocks (0x030058A0)
+extern void FreeBgTileBitOffsets(void);            // frees the room BG state's two blocks (0x030058A0)
 extern void WriteRoomBgTile_candidate(u16 x, u16 y, u16 tileId, u8 layer);
 extern u16 GetRoomBgBlockEntry(u16 x, u16 y, u8 layer);  // the room BG entry WriteRoomBgTile_candidate writes
 

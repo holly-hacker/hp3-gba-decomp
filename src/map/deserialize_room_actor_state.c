@@ -9,8 +9,8 @@ void DeserializeRoomActorState(void)
 {
     s32 i;
 
-    UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->fxPlayerPosX, 4);
-    UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->fxPlayerPosY, 4);
+    UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->playerPos.x, 4);
+    UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->playerPos.y, 4);
     UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->bPlayerFacing, 1);
     UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->bDefaultCount, 1);
     UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->bKind4Or7Count, 1);
@@ -30,9 +30,9 @@ void DeserializeRoomActorState(void)
     for (i = 0; i < g_pRoomActorStateBuffer->bFloorItemCount; i++)
         UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->aFloorItem[i], sizeof(RoomActorFloorItemRecord));
     for (i = 0; i < g_pRoomActorStateBuffer->bKind5SwitchCount; i++)
-        UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->aKind5Switch[i], sizeof(RoomActorTileRecord));
+        UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->aKind5Switch[i], sizeof(RoomActorSwitchRecord));
     for (i = 0; i < g_pRoomActorStateBuffer->bPickupMarkerCount; i++)
-        UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->aPickupMarker[i], sizeof(RoomActorTileRecord));
+        UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->aPickupMarker[i], sizeof(RoomActorPickupRecord));
     for (i = 0; i < g_pRoomActorStateBuffer->bPresenceMarkerCount; i++)
         UnpackBytesFromSaveStream(&g_pRoomActorStateBuffer->aPresenceMarker[i], sizeof(RoomActorTileRecord));
 }

@@ -207,10 +207,10 @@ in C or assembly.
 | `0x12` | Previous story stage: `InitializeOverworld` and `ExitChooseCharacter` copy index `0` here. On returning to the overworld (game-mode argument 3 = `0xFF`), `InitializeOverworld` maps both stages through the room blob's stage-to-variant table (`GetRoomBlobStageVariant`): equal variants run `RestoreRoomActorState`, different ones `RestoreRoomActorStateMinimal` | **PROVEN** |
 | `0x14`-`0x18` | One flag per Folio Universitas page group `0`-`4`, set to `1` by `SetQuestState 1, 20+group` in the Wizard Card Collectors Club script after that group's reward is granted. `GotoIfAllQuestFlagsSet` branches on all five being nonzero, and `HandleChestTouch` reads `[0x14 + group]` | **PROVEN** |
 | `0x19` | Main-menu objective index (`g_bMainMenuObjectiveIndex`, serialized twice): `DrawPauseMenuObjective` draws dialog text `0x924 + [0x19]`. Set in 28 rooms | **PROVEN** |
-| `0x1A` | Alternate presentation flag for rooms `8`-`15`: when nonzero and the current room id is `8`-`15`, battle setup uses the alternate background data (`0x08882CFC`/`0x08886004` instead of the per-room `0x0804E09C` table), and `InitializeOverworld` plays the music module from the table at `0x08065730` ([`levels.md`](levels.md)), and `SetupRoomBgControlAndWindows_candidate` calls `sub_0802A2A4`, which loads an alternate 16-colour BG palette (embedded palettes at `0x08854EE0`-`0x0885650C`, `0x081B2E98` for room `6`) for room ids `5`-`0x29`. Set to `1` by `PlaySpecialSceneEffect` mode `3`; scripts in 10 rooms set it to `0` or `1` | **PROVEN** (readers/writers), **PROVEN** that the palette at `0x08854EE0` (room `0x29`, Harry's room) is a blue night-time recolour of that room; **UNCONFIRMED** for the other 11 blobs |
+| `0x1A` | Alternate presentation flag for rooms `8`-`15`: when nonzero and the current room id is `8`-`15`, battle setup uses the alternate background data (`0x08882CFC`/`0x08886004` instead of the per-room `0x0804E09C` table), and `InitializeOverworld` plays the music module from the table at `0x08065730` ([`levels.md`](levels.md)), and `SetupRoomBgControlAndWindows_candidate` calls `LoadRoomAltPresentationPalette`, which loads an alternate 16-colour BG palette (embedded palettes at `0x08854EE0`-`0x0885650C`, `0x081B2E98` for room `6`) for room ids `5`-`0x29`. Set to `1` by `PlaySpecialSceneEffect` mode `3`; scripts in 10 rooms set it to `0` or `1` | **PROVEN** (readers/writers), **PROVEN** that the palette at `0x08854EE0` (room `0x29`, Harry's room) is a blue night-time recolour of that room; **UNCONFIRMED** for the other 11 blobs |
 | `0x1B` | Signed vertical camera offset: `sub_0803E45C` subtracts it from the scroll Y. Only the baggage car script writes it (`50`, later `0`) | **STRUCTURAL MATCH** |
 | `0x1C` | New Game+ completion count. `ResetQuestStateForNewGame` (`0x08021580`) zeroes the whole array, but with a nonzero argument (from `FinishLinearCutscene` at game completion) it first saves this byte and restores it plus one. Leaky Cauldron cellar 1's script compares it | **PROVEN** (mechanism), **STRUCTURAL MATCH** (name) |
-| `0x1D` | Rooms 5-7 BG-animation variant (`0`/`1`), written by `PlaySpecialSceneEffect` modes `2` and `1` and read by `ApplyRoomBgControlOverride_candidate` ([`levels.md`](levels.md)) | **PROVEN** |
+| `0x1D` | Rooms 5-7 BG-animation variant (`0`/`1`), written by `PlaySpecialSceneEffect` modes `2` and `1` and read by `RegisterRoomBgTileAnimation` ([`levels.md`](levels.md)) | **PROVEN** |
 | `0x80`-`0xFF` | `ClearQuestStateUpperHalf` zeroes this range (used three times in the baggage car script). `ResetCheatPartyFromArgs` zeroes `0xE0`-`0xFF` when the story-stage argument changes | **PROVEN** |
 | `0x80`-`0x83` | Script-only counters (`Add`/`Subtract` by 1, compared against `0`-`3`) in a few rooms | **UNCONFIRMED** (meaning) |
 | `0xDF`-`0xFD` | Chapter-scoped scratch flags and small counters, mostly compared against `0` and `1`. Room scripts reuse one index with different meanings in different chapters (`ClearQuestStateUpperHalf` clears them at 14 chapter boundaries, e.g. `249` is the "portraits are uneasy" state on the castle floors but a train/Leaky Cauldron event elsewhere). Named only where every use belongs to one event: `0xEE`/`0xEF` (cellar 2 experience-given flags), `0xF2` (Crookshanks caught), `0xF3` (cellar 1 rat tonic found), `0xF7` (cellar 1 intro dialog shown), `0xFC` (Scabbers caught). Written by `SetQuestState` right after the matching event in each case | **PROVEN** (named indices' triggers), **UNCONFIRMED** (the rest) |
@@ -389,7 +389,7 @@ Fixed 17-byte header (packed in this exact, non-sequential field order):
 | remaining bytes (1, 2, 3, 4, 5, 6, 7) | 1 each | *(none)* | Entry counts for the 7 saved tables below -- not represented as their own JSON field, since each is exactly the corresponding table's list length (recomputed on encode). |
 
 7 variable-length record tables follow, each holding up to 32 entries
-(one table up to 570) of a fixed record size, at fixed offsets from the
+(one table up to 120) of a fixed record size, at fixed offsets from the
 base pointer. Each is a plain JSON array of objects -- one field per
 named struct member (see below), no count/size/table-index metadata
 alongside it (that's implied by the key name and array length). Every
@@ -409,29 +409,26 @@ like a slot's `abTailPadding` when all-zero.
 |---|---|---|---|---|
 | `defaultKindActors` | 0x14 | 0x6C (108) | 32 | the fallback/default case -- any kind not one of the values below. The richest record: full `Actor` state, plus the tile positions of up to 3 linked sub-actors (`Actor+0xa0`/`+0xa4`/`+0xa8`) -- captured but **never restored** (the load side reads no such fields for this table). |
 | `kind4Or7Actors` | 0xD94 | 0xC (12) | 32 | kinds `4`, `7`. Captures `Actor+0xc` (flags) **unmasked** -- the only table that doesn't clear bit `0x00200000` before saving it. |
-| `kind5Actors` | 0xF14 | 0x34 (52) | 32 | kind `5`, when the actor's byte at `+0x61` is *not* the ASCII char `'3'` |
-| `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Actor` fields at all -- on restore, the respawned actor's own tile position is used to look up an entry in a separate, static per-map item-drop table (`LookupFloorItemStateEntry`), and these two dwords overwrite that entry. Refreshes persistent floor-item state keyed by tile position, not the spawned actor itself. |
-| `kind5SwitchActors` | 0x1714 | 0x4 | 32 | kind `5`, when `+0x61 == '3'` -- structurally the per-actor counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Actor+0xc)`); a stored `1` makes restore call `MarkRoomActorConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
+| `kind5Actors` | 0xF14 | 0x34 (52) | 32 | kind `5`, when its trigger kind (`Actor+0x61`) is not the switch kind `0x33` |
+| `floorItemStates` | 0x1594 | 0xC (12) | 32 | kind `1`. Its two dwords aren't `Actor` fields: they are the `RoomTileAnimation` at the actor's pixel position (`FindRoomTileAnimation`). Restore writes them back to the respawned actor's tile animation and calls `RewindRoomTileAnimationStep`. |
+| `kind5SwitchActors` | 0x1714 | 0x4 | 32 | kind `5` with trigger kind `0x33` -- structurally the per-actor counterpart to the single-instance `bSwitchState` room switch above, but with up to 32 independent instances per room. `bTriggered` is encoded inverted (stored as `NOT(bit 0x4 of Actor+0xc)`); a stored `1` makes restore call `MarkRoomActorConsumed`, which plays a "consumed/vanish" animation and clears that bit. |
 | `pickupMarkers` | 0x1794 | 0x4 | 16 (the table ends at `presenceMarkers`) | kind `0xB`. `bUnk_0x80` round-trips with a `+1` offset applied only on restore (`Actor+0x80` becomes `bUnk_0x80 + 1`); captured verbatim (`Actor+0x80`'s raw low byte) on save. `bUnk_0x8f`, when it equals `8` on restore, triggers an item-grant popup callback (`GrantPickupMarkerItem`). |
-| `presenceMarkers` | 0x17D4 | 0x4 | 570 (theoretical span; see below) | kinds `2`, `8`, `10` unconditionally, plus kind `5`/`6` under specific status-bit conditions -- just a tile position (`bTileX`/`bTileY`), no extra state: restore only respawns the tile's default actor. |
+| `presenceMarkers` | 0x17D4 | 0x4 | 120 (the table ends at the wandering-monster table below) | kinds `2`, `8`, `10` unconditionally, plus kind `5`/`6` under specific status-bit conditions -- just a tile position (`bTileX`/`bTileY`), no extra state: restore only respawns the tile's default actor. |
 
 None of the numeric "kind" values above are tied to a named enum yet --
 the table names above describe which capture-side branch produces which
 JSON table, not what each kind represents in game terms.
 
-**Not part of the save.** `g_pRoomActorStateBuffer[8]` (a byte the pack/unpack
-functions never touch) and the region at offset `0x19B4` (record size
-`0x24` = 36, inside the nominal span of `presenceMarkers`' table) form an
-eighth, purely in-memory table: captured only for room actors flagged
-`+0x10 == 0xFF` and kind `0x10` (`CaptureRoomActorState`), and restored by both
-`RestoreRoomActorState` and `RestoreRoomActorStateMinimal` independent of any `Unpack*` call.
-`0x0802B0F4` (`memset`s the whole `0x20BC`-byte buffer to 0) runs after
-every restore, and the `Unpack*`-driven load path (`0x0802A3D4`) never
-populates this table at all -- so whatever it holds only survives a room
-transition within the same play session, never a save/reload. This means
-`presenceMarkers`' *effective* usable range is smaller than its
-570-entry span suggests, since the tail of that space doubles as this
-table's storage during normal (non-serialized) play.
+**Not part of the save.** Offset `0x19B4` holds an eighth, in-memory
+table of up to 50 wandering monsters (`RoomActorWanderingMonsterRecord`,
+0x24 bytes: actor type, monster id, position, move target, velocity,
+facing, encounter id, variant and kind), counted by the byte at offset 8.
+`CaptureRoomActorState` fills it from the actors without a room record
+(`+0x10 == 0xFF`) of type `0x10`, and both `RestoreRoomActorState` and
+`RestoreRoomActorStateMinimal` respawn them with `SpawnWanderingMonsterActor`.
+The pack/unpack functions never touch it, and every restore ends by
+clearing the buffer (`ClearRoomActorStateBuffer`), so the monsters survive
+a trip to another game mode (a battle or menu) but not a save/reload.
 
 `InitRoomState` (`0x0802B018`) allocates the whole `0x20BC`-byte buffer
 once (`g_pRoomActorStateBuffer`) with `AllocZeroed`.

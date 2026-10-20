@@ -3,7 +3,7 @@
 #include "map.h"
 
 // The overworld's special-scene BG animations, one 128-frame film per mode of
-// room-script opcode 0x33. Bg2 is also the pBgControlOverrideA of rooms 5-7.
+// room-script opcode 0x33. Bg2 is also the pBgTileAnimationA of rooms 5-7.
 const BgTileAnimation128 g_aSpecialSceneBg2 = {
     3, 128, 0, 0x500,
     {

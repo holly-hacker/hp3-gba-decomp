@@ -1260,40 +1260,40 @@ c-file 0x08029690 _ src/main.c AgbMain
 
 # Map (overworld)
 c-file 0x080297A0 _ src/map/initialize_overworld.c InitializeOverworld
-c-file 0x0802A14C 0x0802A2A4 src/map/exit_overworld_screen.c ExitOverworldScreen
-thumb-func 0x0802A2A4 sub_0802A2A4
+c-file 0x0802A14C _ src/map/exit_overworld_screen.c ExitOverworldScreen
+c-file 0x0802A2A4 _ src/map/load_room_alt_presentation_palette.c LoadRoomAltPresentationPalette
 c-file 0x0802A3D4 _ src/map/deserialize_room_actor_state.c DeserializeRoomActorState
-c-file 0x0802A570 0x0802A70C src/map/serialize_room_actor_state.c SerializeRoomActorState
-thumb-func 0x0802A70C CaptureRoomActorState
-thumb-func 0x0802AB34 RestoreRoomActorState
-thumb-func 0x0802AE64 RestoreRoomActorStateMinimal
+c-file 0x0802A570 _ src/map/serialize_room_actor_state.c SerializeRoomActorState
+c-file 0x0802A70C _ src/map/capture_room_actor_state.c CaptureRoomActorState
+c-file 0x0802AB34 _ src/map/restore_room_actor_state.c RestoreRoomActorState
+c-file 0x0802AE64 _ src/map/restore_room_actor_state_minimal.c RestoreRoomActorStateMinimal
 c-file 0x0802AEF8 _ src/map/handle_overworld_pause_menu_input.c HandleOverworldPauseMenuInput
 c-file 0x0802B018 _ src/map/init_room_state.c InitRoomState
-c-file 0x0802B058 0x0802B08C src/map/update_overworld.c UpdateOverworld
-thumb-func 0x0802B08C sub_0802B08C
-thumb-func 0x0802B098 sub_0802B098
-thumb-func 0x0802B09C sub_0802B09C
+c-file 0x0802B058 _ src/map/update_overworld.c UpdateOverworld
+c-file 0x0802B08C _ src/map/save_room_actor_state_on_exit.c SaveRoomActorStateOnExit
+c-file 0x0802B098 _ src/map/noop_overworld_unused_a.c NoopOverworldUnusedA
+c-file 0x0802B09C _ src/map/noop_overworld_unused_b.c NoopOverworldUnusedB
 c-file 0x0802B0A0 _ src/map/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
-c-file 0x0802B0DC 0x0802B0F4 src/map/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
-thumb-func 0x0802B0F4 ClearRoomActorStateBuffer
-c-file 0x0802B110 0x0802B138 src/map/room_switch_state.c SetRoomSwitchState
-thumb-func 0x0802B138 sub_0802B138
-thumb-func 0x0802B164 OverworldVBlankCallback
-thumb-func 0x0802B174 ApplyRoomBgControlOverride_candidate
-thumb-func 0x0802B20C sub_0802B20C
-thumb-func 0x0802B210 sub_0802B210
-c-file 0x0802B21C 0x0802B344 src/map/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
-thumb-func 0x0802B344 TrySpawnWanderingMonster
-thumb-func 0x0802B41C SpawnWanderingMonsterActor
-thumb-func 0x0802B58C HandleWanderingMonsterTouch
-thumb-func 0x0802B670 sub_0802B670
-thumb-func 0x0802B72C TickWanderingMonsterActor
-thumb-func 0x0802B95C ResetWanderingMonsterTouchState
-thumb-func 0x0802B984 ArmWanderingMonsterTouch_candidate
-thumb-func 0x0802B9CC sub_0802B9CC
-thumb-func 0x0802BA0C GetEncounterKindTerrainType
-thumb-func 0x0802BA1C FindWanderingMonsterSpawnPosition
-thumb-func 0x0802BAD0 PickMaxDamageMonster
+c-file 0x0802B0DC _ src/map/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
+c-file 0x0802B0F4 _ src/map/clear_room_actor_state_buffer.c ClearRoomActorStateBuffer
+c-file 0x0802B110 _ src/map/room_switch_state.c SetRoomSwitchState
+c-file 0x0802B138 _ src/map/start_endless_camera_shake.c StartEndlessCameraShake
+c-file 0x0802B164 _ src/map/overworld_vblank_callback.c OverworldVBlankCallback
+c-file 0x0802B174 _ src/map/register_room_bg_tile_animation.c RegisterRoomBgTileAnimation
+c-file 0x0802B20C _ src/map/noop_overworld_room_load.c NoopOverworldRoomLoad
+c-file 0x0802B210 _ src/map/free_overworld_bg_tile_bit_offsets.c FreeOverworldBgTileBitOffsets
+c-file 0x0802B21C _ src/map/spawn_overworld_monster_encounters.c SpawnOverworldMonsterEncounters
+c-file 0x0802B344 _ src/map/try_spawn_wandering_monster.c TrySpawnWanderingMonster
+c-file 0x0802B41C _ src/map/spawn_wandering_monster_actor.c SpawnWanderingMonsterActor
+c-file 0x0802B58C _ src/map/handle_wandering_monster_touch.c HandleWanderingMonsterTouch
+c-file 0x0802B670 _ src/map/pick_wandering_monster_roam_target.c PickWanderingMonsterRoamTarget
+c-file 0x0802B72C _ src/map/tick_wandering_monster_actor.c TickWanderingMonsterActor
+c-file 0x0802B95C _ src/map/reset_wandering_monster_touch_state.c ResetWanderingMonsterTouchState
+c-file 0x0802B984 _ src/map/handle_wandering_monster_collision.c HandleWanderingMonsterCollision
+c-file 0x0802B9CC _ src/map/try_set_wandering_monster_move_target.c TrySetWanderingMonsterMoveTarget
+c-file 0x0802BA0C _ src/map/get_encounter_kind_terrain_type.c GetEncounterKindTerrainType
+c-file 0x0802BA1C _ src/map/find_wandering_monster_spawn_position.c FindWanderingMonsterSpawnPosition
+c-file 0x0802BAD0 _ src/map/pick_max_damage_monster.c PickMaxDamageMonster
 
 # Map doors/portals
 c-file 0x0802BB00 0x0802BBAC src/map_doors/spawn_door_actor.c SpawnDoorActor
@@ -1440,7 +1440,7 @@ c-file 0x0802F500 0x0802F6C0 src/npc_actor/spawn_npc_actor.c SpawnNpcActor
 thumb-func 0x0802F6C0 sub_0802F6C0
 thumb-func 0x0802F7F0 sub_0802F7F0
 thumb-func 0x0802FCC0 sub_0802FCC0
-thumb-func 0x0802FD5C sub_0802FD5C
+thumb-func 0x0802FD5C SpawnShadowActor
 thumb-func 0x0802FE04 SetActorAnimData_candidate
 thumb-func 0x0802FE50 sub_0802FE50
 
@@ -1949,7 +1949,7 @@ c-file 0x0803E9A4 _ src/scroll/get_room_bg_layer1_size_pixels.c GetRoomBgLayer1S
 c-file 0x0803E9C0 _ src/scroll/disable_bg_layer_scroll.c DisableBgLayerScroll
 c-file 0x0803E9D0 _ src/scroll/enable_bg_layer_scroll.c EnableBgLayerScroll
 c-file 0x0803E9E0 0x0803EA3C src/scroll/find_bg_tile_cache_entry.c FindBgTileCacheEntry
-thumb-func 0x0803EA3C sub_0803EA3C
+thumb-func 0x0803EA3C FreeBgTileBitOffsets
 thumb-func 0x0803EA58 sub_0803EA58
 thumb-func 0x0803EA74 sub_0803EA74
 c-file 0x0803EAC4 0x0803EB7C src/scroll/get_room_bg_block_map_entry_ptr.c GetRoomBgBlockMapEntryPtr
@@ -2397,6 +2397,7 @@ c-file 0x08063074 _ src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
 c-file 0x08063C8C _ src/map/room_table.c g_aRoomTable
 c-file 0x08065730 _ src/map/room_quest_music_override.c g_adwRoomQuestMusicOverride
 c-file 0x0806580C 0x0806581C src/map/room_color_cycles.c g_ColorCyclesDefault
+c-file 0x08065828 _ src/map/wandering_monster.globals.c g_adwEncounterKindTerrainTypes
 c-file 0x0806589C _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C9C _ ResetBgLayer
 c-rodata 0x08065CA4 _ GetDirectionFromVector

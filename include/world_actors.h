@@ -53,3 +53,5 @@ extern const u8 g_abRoomActorTriggerFacingFrames[8];                     // ROM 
 extern const u8 g_abRoomActorTriggerFacingAnimStart[8];                  // ROM 0x0806E8FA (US)
 
 extern void SnapActorXToTileGrid(Actor *actor);
+// Puts a type 5 actor into its consumed state; used to restore a used switch.
+extern void MarkRoomActorConsumed(Actor *pActor);

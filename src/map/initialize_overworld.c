@@ -101,7 +101,7 @@ void InitializeOverworld(void)
         LoadRoomSharedTileset_candidate(
             CURRENT_ROOM.pCollisionBehaviorTable,
             CURRENT_ROOM.pCollisionTilemap);
-        sub_0802B20C();
+        NoopOverworldRoomLoad();
         LoadRoomBgLayer0Extra_candidate(
             CURRENT_ROOM.pBgLayer0Extra,
             CURRENT_ROOM.dwUnused0_8,
@@ -225,8 +225,8 @@ void InitializeOverworld(void)
         sub_0803DB68();
         if ((g_dwGameModeFlags & (SerialSessionActive | GameModeFlagUnk100000)) != (SerialSessionActive | GameModeFlagUnk100000))
             TickCameraFocus_candidate(0);
-        ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideA);
-        ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideB);
+        RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationA);
+        RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationB);
 
         // Per-room BG layer enables and priorities; room 12 and the default start color cycles.
         g_dwRoomBgFlag_candidate = 0;

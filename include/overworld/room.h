@@ -29,8 +29,8 @@ typedef struct RoomTableEntry {
     u32 dwUnused_4c;
     const void *pRoomResourceBlob;
     RoomBgResources aBgResources[2];
-    const void *pBgControlOverrideA;
-    const void *pBgControlOverrideB;
+    const void *pBgTileAnimationA;
+    const void *pBgTileAnimationB;
     u16 wScrollBoundMinX;
     u16 wScrollBoundMinY;
     u16 wScrollBoundMaxX;

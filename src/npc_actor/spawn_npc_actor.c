@@ -43,7 +43,7 @@ Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
     }
     else
     {
-        pActor->pLinkedActor_candidate = sub_0802FD5C(pActor);
+        pActor->pLinkedActor_candidate = SpawnShadowActor(pActor);
     }
 
     if (pActor->bFighterIndex != 0x5F)

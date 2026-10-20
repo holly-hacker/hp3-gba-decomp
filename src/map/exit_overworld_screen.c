@@ -36,7 +36,7 @@ void ExitOverworldScreen(void)
 
     StopRoomScriptChains();
     FreeRoomSharedTileset();
-    sub_0802B210();
+    FreeOverworldBgTileBitOffsets();
 
     if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Battle
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == InGameMenu
@@ -55,15 +55,15 @@ void ExitOverworldScreen(void)
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == TimeTurnerPermissionCutscene
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HippogriffFliesIntoAirCutscene
         || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HarryArrivedAtHogwartsCutscene)
-        sub_0802B08C();
+        SaveRoomActorStateOnExit();
 
     if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HarryPatronusCutscene
         && g_dwPendingGameMode.dwCurrentGameModeArg1 == 1)
-        sub_0802B08C();
+        SaveRoomActorStateOnExit();
 
     if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == BuckbeakMinigame
         && g_dwPendingGameMode.dwCurrentGameModeArg3 != 2)
-        sub_0802B08C();
+        SaveRoomActorStateOnExit();
 
     if (g_dwFieldSpellActive != 0)
         EndFieldSpellEffect(g_pFieldSpellEffectActor);

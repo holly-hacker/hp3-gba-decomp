@@ -17,6 +17,7 @@ typedef struct RoomActorRecordUnkB {
 extern Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow);
 extern void sub_08044960(Actor *pActor);
 extern void sub_08044ADC(Actor *pSelf, Actor *pOther);
+extern void GrantPickupMarkerItem(Actor *pActor);
 extern const ActorGfxRecord g_aRoomFlamePillarSprites[3];             // ROM 0x0806C12C (US)
 extern const ActorGfxRecord *const g_apRoomFlamePillarAnimFrames[3];  // ROM 0x0806C144 (US)
 extern const void *const g_apRoomFlamePillarEffectData[3];             // ROM 0x0806C150 (US)

@@ -24,7 +24,7 @@ void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 enc
     *pTouchCount = 0;
     g_pTouchedWanderingMonster = NULL;
 
-    memset(g_abTouchedMonsterRecords, 0, sizeof(g_abTouchedMonsterRecords));
+    memset(g_aTouchedMonsterRecords, 0, sizeof(g_aTouchedMonsterRecords));
 
     if (countA + countB + countC == 0)
         return;
@@ -57,7 +57,7 @@ void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 enc
                 // Idiomatic form: &g_aRandomEncounters[encounterId].aKinds[kind].aVariants[variant].
                 monsterId = PickMaxDamageMonster((const u8 *)&g_aRandomEncounters[encounterId] + kindOffset + (variant << 2));
 
-                if (FindWanderingMonsterSpawnPosition((u32 *)&pos, terrainType, pPositions, placedCount)) {
+                if (FindWanderingMonsterSpawnPosition(&pos, terrainType, pPositions, placedCount)) {
                     pEntry->x = pos.x;
                     pEntry->y = pos.y;
                     pEntry++;

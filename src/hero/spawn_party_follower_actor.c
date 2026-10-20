@@ -30,7 +30,7 @@ Actor *SpawnPartyFollowerActor(u8 characterId)
     SetActorAssetRecord(pActor, &g_aPartyWalkAssets[pActor->wCharacterId_candidate]);
     SetActorAnimFrame(pActor, g_abPartyStandFrames[pActor->bFacing]);
     if (pActor->wCharacterId_candidate != 4)
-        sub_0802FD5C(pActor);
+        SpawnShadowActor(pActor);
 
     memset(g_pPartyTrail, 0, PARTY_TRAIL_LENGTH * sizeof(PartyTrailStep));
     g_bPartyTrailWriteIndex = 0;

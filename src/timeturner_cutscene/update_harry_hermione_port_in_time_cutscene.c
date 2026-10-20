@@ -35,7 +35,7 @@ void UpdateHarryHermionePortInTimeCutscene(void)
         if (position.y > 0x1F40000)
         {
             SetFadeToWhite(0x2F, 0x10);
-            sub_0803EA3C();
+            FreeBgTileBitOffsets();
             sub_08043114(1);
             g_HarryHermionePortInTime.bRising = 0;
             g_HarryHermionePortInTime.cameraDelta.x = 0;

@@ -37,7 +37,7 @@ Where the buffer ends up in VRAM and the palette bank are not traced.
 ## Use (STRUCTURAL MATCH)
 
 The frames are the scenery outside the Hogwarts Express windows: rooms 5, 6 and 7
-(baggage, passenger and buffet cars) set `pBgControlOverrideA` to
+(baggage, passenger and buffet cars) set `pBgTileAnimationA` to
 `g_aSpecialSceneBg2`. The three resources differ only in the per-entry durations
 (ticks per frame; a duration of 0 holds the current frame, from the tick function):
 
