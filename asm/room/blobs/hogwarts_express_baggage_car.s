@@ -525,7 +525,7 @@ Room05V2Chain1:
     ShowRoomDialog 141
     ClearQuestStateUpperHalf
     PlayScreenTransitionOut
-    Unk2A 5, 255, 255, 255
+    SetPartyLeaderCharacter 5
     SetStoryStage 0
     PlayCutscene 5, 0, Room05V2Chain2_id
     End
@@ -560,7 +560,7 @@ Room05V2Chain5:
     ShowRoomDialog 141
     ClearQuestStateUpperHalf
     PlayScreenTransitionOut
-    Unk2A 5, 255, 255, 255
+    SetPartyLeaderCharacter 5
     SetStoryStage 0
     PlayCutscene 5, 0, Room05V2Chain2_id
     End
@@ -623,7 +623,7 @@ Room05V3Chain1:
     ShowRoomDialog 141
     ClearQuestStateUpperHalf
     PlayScreenTransitionOut
-    Unk2A 5, 255, 255, 255
+    SetPartyLeaderCharacter 5
     SetStoryStage 0
     PlayCutscene 5, 0, Room05V3Chain4_id
     End

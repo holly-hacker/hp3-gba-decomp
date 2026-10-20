@@ -6,12 +6,11 @@ document index.
 
 Status: **STRUCTURAL MATCH** for the interpreter, the state machine, and
 the byte format (read directly from disassembly and cross-checked
-between the two entry points below); 92 of 93 opcodes named
-(`0x2A` is not). This is the VM [`rooms.md`](rooms.md) calls "room
-switch-state chains" -- that document owns the per-room resource-blob
-layout and how a chain index is reached from a warp tile or the
-switch-state actor table; this document owns the interpreter and
-opcode format itself.
+between the two entry points below); all 93 opcodes named. This is
+the VM [`rooms.md`](rooms.md) calls "room switch-state chains" -- that
+document owns the per-room resource-blob layout and how a chain index
+is reached from a warp tile or the switch-state actor table; this
+document owns the interpreter and opcode format itself.
 
 ## What this is
 
@@ -261,10 +260,6 @@ layout as US.
 
 ## Further work
 
-- Identify the remaining opcode (`0x2A`, see "Opcodes"
-  above) -- no systematic pass made yet, only the ones reached
-  while tracing the interpreter's own bookkeeping, the handlers
-  immediately adjacent to it in memory, and the yield/resume path.
 - Confirm `DAT_03001DDC`'s role gating chain `1` at room load (`rooms.md`
   and `InitializeOverworld` both treat it as "has this room's one-time
   chain 1 already run", not independently verified against save state).

@@ -653,7 +653,7 @@ c-file 0x0801CBF4 _ src/commands/room_script_op_play_screen_transition_in.c Room
 c-file 0x0801CC04 _ src/commands/room_script_op_recruit_party_follower.c RoomScriptOpRecruitPartyFollower
 c-file 0x0801CC4C _ src/commands/room_script_op_remove_party_follower.c RoomScriptOpRemovePartyFollower
 c-file 0x0801CC58 _ src/commands/room_script_op_spawn_party_follower_at_tile.c RoomScriptOpSpawnPartyFollowerAtTile
-c-file 0x0801CC7C _ src/commands/room_script_op42.c RoomScriptOp42
+c-file 0x0801CC7C _ src/commands/room_script_op_set_party_leader_character.c RoomScriptOpSetPartyLeaderCharacter
 c-file 0x0801CC88 _ src/commands/room_script_op_start_battle.c RoomScriptOpStartBattle
 c-file 0x0801CCC4 _ src/commands/room_script_op_set_tile_actor_anim_state_value.c RoomScriptOpSetTileActorAnimStateValue
 c-file 0x0801CCE8 _ src/commands/room_script_op_grant_room_reward.c RoomScriptOpGrantRoomReward
@@ -897,20 +897,20 @@ thumb-func 0x08023350 sub_080232F4
 thumb-func 0x08023390 sub_08023334
 thumb-func 0x080233E8 sub_0802338C
 thumb-func 0x0802341C sub_080233C0
-thumb-func 0x08023440 SpawnPlayerActor_candidate
-thumb-func 0x080235A4 sub_08023548
-thumb-func 0x080236A0 SyncFollowerLevelToLeader_candidate
-thumb-func 0x08023738 sub_080236DC
-thumb-func 0x0802382C sub_080237D0
-thumb-func 0x080238C4 sub_08023868
+c-file 0x08023440 _ src/hero/spawn_player_actor.c SpawnPlayerActor
+c-file 0x080235A4 _ src/hero/spawn_party_follower_actor.c SpawnPartyFollowerActor
+c-file 0x080236A0 _ src/hero/catch_up_to_harry_level.c CatchUpToHarryLevel
+c-file 0x08023738 _ src/hero/remove_party_member.c RemovePartyMember
+c-file 0x0802382C 0x080238C4 src/hero/set_party_leader_character.c SetPartyLeaderCharacter
+thumb-func 0x080238C4 SpawnFieldSpellIconActor
 thumb-func 0x08023934 ShowMapNamePopup
-thumb-func 0x08023A88 sub_08023A2C
-thumb-func 0x08023BA0 TickPlayerActor_candidate
-thumb-func 0x08023D5C sub_08023D00
-thumb-func 0x08023FAC sub_08023F50
+thumb-func 0x08023A88 DrawFieldSpellHud
+thumb-func 0x08023BA0 TickPlayerActor
+thumb-func 0x08023D5C TickPartyFollowerActor
+thumb-func 0x08023FAC TickPartySecondFollowerActor
 thumb-func 0x08024290 CyclePartyLeaderSelection_candidate
 c-file 0x08024574 0x08024794 src/hero/set_party_member_anim.c SetPartyMemberAnim
-thumb-func 0x08024794 sub_08024738
+thumb-func 0x08024794 SwapPartyMemberCharacters
 c-file 0x080248E4 0x08024944 src/hero/reset_party_state.c ResetPartyState
 thumb-func 0x08024944 sub_080248E8
 thumb-func 0x08024974 sub_08024918
@@ -925,11 +925,11 @@ thumb-func 0x08024B94 TickHeldRewardActor
 thumb-func 0x08024BC0 SetPlayerShadowVisible
 thumb-func 0x08024BF0 StartFieldSpellCast
 thumb-func 0x08024C30 sub_08024BD4
-thumb-func 0x08024C9C sub_08024C40
+thumb-func 0x08024C9C HandlePlayerPropCollision
 thumb-func 0x08024CEC GetCharPresenceBit
-thumb-func 0x08024D40 sub_08024CE4
+thumb-func 0x08024D40 RefreshFieldSpellHud
 thumb-func 0x08024DA4 TickMapNameActor
-thumb-func 0x08024DF8 sub_08024D9C
+thumb-func 0x08024DF8 DestroyPartyMemberActor
 c-file 0x08024E24 _ src/huffman/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024F14 _ src/huffman/init_dialog_text_table.c InitDialogTextTable
 c-file 0x08024F38 _ src/huffman/decompress_huff_tree.c DecompressHuffTree

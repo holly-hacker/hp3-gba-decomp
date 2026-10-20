@@ -37,11 +37,14 @@ typedef struct RoomScriptCallFrame {
 typedef void (*RoomScriptOpcodeHandler)(RoomScriptRecord *pRecord);
 
 extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
-extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
+// Levels a recruited Hermione or Ron up to around Harry's level.
+extern void CatchUpToHarryLevel(u8 characterId);
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
 // Allocates a RoomActorType_ScriptEffect actor of the given kind (ScriptEffectKind_*),
 // ticked by g_apfnScriptEffectActorTicks[kind].
 extern Actor *SpawnScriptEffectActor(u32 kind);
-extern void sub_080236DC(u32 characterId);
-extern void sub_080237D0(u32 arg0);
+// Removes a character from the party; removing the leader promotes the followers.
+extern void RemovePartyMember(u8 characterId);
+// Changes the leader's character and sprite, keeping the actor.
+extern void SetPartyLeaderCharacter(u8 characterId);

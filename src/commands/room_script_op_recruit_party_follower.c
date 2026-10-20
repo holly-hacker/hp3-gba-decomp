@@ -10,7 +10,7 @@ typedef struct RecruitPartyFollowerRecord {
 
 void RoomScriptOpRecruitPartyFollower(RecruitPartyFollowerRecord *pRecord)
 {
-    SyncFollowerLevelToLeader_candidate(pRecord->bCharacterId);
+    CatchUpToHarryLevel(pRecord->bCharacterId);
     if (g_pFollowerActor0 == NULL)
     {
         sub_08024980(pRecord->bCharacterId);

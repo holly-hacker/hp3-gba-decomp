@@ -283,7 +283,7 @@ Room16V1Chain6:
     SetTileActorFacing 0, 255, 6
     End
 Room16V1Chain7:
-    Unk2A 5, 255, 255, 255
+    SetPartyLeaderCharacter 5
     SetQuestState 1, 224
     RecruitPartyFollower 7
     RecruitPartyFollower 6

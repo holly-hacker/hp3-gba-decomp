@@ -338,7 +338,7 @@ Room24V1Chain4:
     StartTileActorScript 302, 28, 2, Room24V1Group6_id, 0, 0, 0, 2, 255, 255, 255
     StartTileActorScript 302, 28, 2, 0, 255, 0, 0, 2, 255, 255, 255
     ArmChainYield 1
-    Unk2A 6, 255, 255, 255
+    SetPartyLeaderCharacter 6
     DespawnTileActor Room24V1Group6_id, 0
     DespawnTileActor Room24V1Group1_id, 9
     RecruitPartyFollower 7

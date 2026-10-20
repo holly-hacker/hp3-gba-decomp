@@ -47,7 +47,7 @@ enum RoomScriptOpcode {
     RSOP_RecruitPartyFollower = 39,
     RSOP_RemovePartyFollower = 40,
     RSOP_SpawnPartyFollowerAtTile = 41,
-    RSOP_Unk2A = 42,
+    RSOP_SetPartyLeaderCharacter = 42,
     RSOP_StartBattle = 43,
     RSOP_SetTileActorAnimStateValue = 44,
     RSOP_GrantRoomReward = 45,

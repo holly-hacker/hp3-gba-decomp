@@ -257,12 +257,18 @@
 .set g_bPartyCharId1,                    0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2,                    0x0300338E  @ u8: character id of the second follower
 .set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into the field spell table at 0x08060BAC
-.set g_pPlayerShadowActor_candidate,   0x03003390  @ Actor *: type 0x11 actor SpawnPlayerActor_candidate creates for the player
+.set g_pPlayerShadowActor_candidate,   0x03003390  @ Actor *: type 0x11 actor SpawnPlayerActor creates for the player
+.set g_pPartyTrail,                    0x03003398  @ PartyTrailStep *: ring buffer of PARTY_TRAIL_LENGTH player steps the followers replay
+.set g_bPartyTrailWriteIndex,          0x0300339C  @ u8: next g_pPartyTrail entry the player's step is written to
+.set g_bPartyTrailReadIndex0,          0x0300339D  @ u8: next g_pPartyTrail entry follower 0 replays
+.set g_bPartyTrailReadIndex1,          0x0300339E  @ u8: next g_pPartyTrail entry follower 1 replays
 .set g_pFieldSpellNameActor,            0x030033A0  @ Actor *: selected field spell name text
 .set g_pMapNameTextActor,               0x030033A4  @ Actor *: room name text of ShowMapNamePopup
 .set g_dwUnk030033A8,                    0x030033A8  @ u32: zeroed by ResetPartyState and sub_080248E8; no reader found
 .set g_pFieldSpellPortraitActor,        0x030033AC  @ Actor *: face portrait of the selected field spell's character
 .set g_pMapNamePopupActor,             0x030033B0  @ Actor *: 240x16 bar sprite behind the room name text
+.set g_pFieldSpellIconActor,           0x030033B4  @ Actor *: selected field spell's icon
+.set g_PartyTrailLastPos,              0x030033B8  @ FixedPoint: player position at the last g_pPartyTrail step
 
 @ --- include/huffman.h ---
 .set gDialogTextBlobBase,    0x030033C0  @ active language blob's base pointer (0 = none installed)

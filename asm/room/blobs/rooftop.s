@@ -279,7 +279,7 @@ Room25V1Chain4:
     StartActorAnimSequence 0, 255, 0, 0, Room25V1Route25_id, 0, 1, 0, 0, 0
     StartActorAnimSequence Room25V1Group22_id, 0, 0, 0, Room25V1Route25_id, 0, 1, 0, 0, 0
     DespawnRoomRowActors Room25V1Group22_id
-    Unk2A 5, 255, 255, 255
+    SetPartyLeaderCharacter 5
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group23_id, 0
     SetTileActorAnimStateWithSpeed 0, 255
     End
@@ -538,7 +538,7 @@ Room25V1Chain44:
     ArmChainYield 1
     StartActorAnimSequence Room25V1Group20_id, 0, 0, 0, Room25V1Route24_id, 0, 1, 0, 0, 0
     DespawnRoomRowActors Room25V1Group20_id
-    Unk2A 6, 255, 255, 255
+    SetPartyLeaderCharacter 6
     DelayedRespawnRowAndRunChainFrames 0, Room25V1Group21_id, 0
     DelayedRespawnRowAndRunChain 0, Room25V1Group11_id, 0
     SetTileActorAnimStateWithSpeed 0, 255

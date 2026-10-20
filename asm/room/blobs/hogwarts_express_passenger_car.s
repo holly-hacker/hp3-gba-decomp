@@ -333,7 +333,7 @@ Room06V1Chain33:
     StartActorAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route4_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain34:
-    Unk2A 5, 255, 255, 255
+    SetPartyLeaderCharacter 5
     RemovePartyFollower 7
     RemovePartyFollower 6
     SetTileActorFacing 0, 255, 6

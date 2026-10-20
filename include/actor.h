@@ -535,7 +535,7 @@ typedef struct Actor {
 // stored in the room's own tile record instead of a fixed constant, so this
 // list only covers the values actually hardcoded in code.
 typedef enum {
-    RoomActorType_Player           = 0,     // SpawnPlayerActor_candidate
+    RoomActorType_Player           = 0,     // SpawnPlayerActor
     RoomActorType_ScriptedTrigger  = 5,     // sub-behavior picked by a separate per-instance kind field
     RoomActorType_Unk8             = 8,
     RoomActorType_Chest            = 9,     // SpawnChestActor

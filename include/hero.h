@@ -16,6 +16,10 @@ typedef enum {
     PartyAnim4 = 4,
 } PartyAnim;
 extern void SetPartyMemberAnim(Actor *actor, u8 anim);
+extern Actor *SpawnPartyFollowerActor(u8 characterId);
+extern void TickPlayerActor(Actor *actor);
+extern void TickPartyFollowerActor(Actor *actor);
+extern void SwapPartyMemberCharacters(Actor *a, Actor *b);
 extern void ResetPartyState(void);
 extern void sub_080248E8(void);
 extern void sub_08024918(void);
@@ -65,9 +69,25 @@ extern u8 g_bPartyCharId2;
 // CyclePartyLeaderSelection_candidate steps it; it is saved with the party.
 extern u8 g_bSelectedFieldSpell;
 extern Actor *g_pPlayerShadowActor_candidate;
+
+// One step of the player's movement. The followers replay the steps a fixed number of
+// entries behind: follower 0 16 steps, follower 1 31.
+#define PARTY_TRAIL_LENGTH 45
+typedef struct PartyTrailStep {
+    FixedPoint delta;  // the player's position change, 16.16
+    u16 wFacing;
+    u16 wAnimPaused;   // the player's ActorFlagAnimPaused
+} PartyTrailStep;
+extern PartyTrailStep *g_pPartyTrail;
+extern u8 g_bPartyTrailWriteIndex;
+extern u8 g_bPartyTrailReadIndex0;
+extern u8 g_bPartyTrailReadIndex1;
+extern FixedPoint g_PartyTrailLastPos;
+
 // HUD actors, cleared by ResetPartyState and freed by sub_08024BD4.
-extern Actor *g_pFieldSpellNameActor;       // selected spell's name text (sub_08023A2C)
+extern Actor *g_pFieldSpellNameActor;       // selected spell's name text (DrawFieldSpellHud)
 extern Actor *g_pMapNameTextActor;          // room name text (ShowMapNamePopup)
 extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
-extern Actor *g_pFieldSpellPortraitActor;   // face portrait of the spell's character (sub_08023A2C)
+extern Actor *g_pFieldSpellPortraitActor;   // face portrait of the spell's character (DrawFieldSpellHud)
 extern Actor *g_pMapNamePopupActor;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
+extern Actor *g_pFieldSpellIconActor;       // selected spell's icon (RefreshFieldSpellHud)

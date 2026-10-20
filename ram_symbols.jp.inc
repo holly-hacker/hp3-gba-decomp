@@ -247,11 +247,17 @@
 .set g_bPartyCharId2,                    0x030033EE
 .set g_bSelectedFieldSpell,             0x030033EF
 .set g_pPlayerShadowActor_candidate,   0x030033F0
+.set g_pPartyTrail,                    0x030033F8
+.set g_bPartyTrailWriteIndex,          0x030033FC
+.set g_bPartyTrailReadIndex0,          0x030033FD
+.set g_bPartyTrailReadIndex1,          0x030033FE
 .set g_pFieldSpellNameActor,           0x03003400
 .set g_pMapNameTextActor,              0x03003404
 .set g_dwUnk030033A8,                   0x03003408
 .set g_pFieldSpellPortraitActor,      0x0300340C
 .set g_pMapNamePopupActor,             0x03003410
+.set g_pFieldSpellIconActor,           0x03003414
+.set g_PartyTrailLastPos,              0x03003418
 
 @ --- include/huffman.h ---
 .set gDialogTextBlobBase,    0x03003420

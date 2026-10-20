@@ -137,7 +137,7 @@
 .set RSOP_RecruitPartyFollower, 39
 .set RSOP_RemovePartyFollower, 40
 .set RSOP_SpawnPartyFollowerAtTile, 41
-.set RSOP_Unk2A, 42
+.set RSOP_SetPartyLeaderCharacter, 42
 .set RSOP_StartBattle, 43
 .set RSOP_SetTileActorAnimStateValue, 44
 .set RSOP_GrantRoomReward, 45
@@ -357,8 +357,8 @@
     .byte RSOP_SpawnPartyFollowerAtTile, 0, 0, 0, (\characterId), (\group), (\member), (\unused)
 .endm
 
-.macro Unk2A arg, unused0, unused1, unused2
-    .byte RSOP_Unk2A, 0, 0, 0, (\arg), (\unused0), (\unused1), (\unused2)
+.macro SetPartyLeaderCharacter characterId
+    .byte RSOP_SetPartyLeaderCharacter, 0, 0, 0, (\characterId), (255), (255), (255)
 .endm
 
 .macro StartBattle battleId, pendingRow, pendingChain

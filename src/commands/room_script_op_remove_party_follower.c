@@ -9,5 +9,5 @@ typedef struct RemovePartyFollowerRecord {
 
 void RoomScriptOpRemovePartyFollower(RemovePartyFollowerRecord *pRecord)
 {
-    sub_080236DC(pRecord->bCharacterId);
+    RemovePartyMember(pRecord->bCharacterId);
 }

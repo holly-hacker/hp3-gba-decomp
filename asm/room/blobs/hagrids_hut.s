@@ -255,7 +255,7 @@ Room11V1Chain8:
     End
 Room11V1Chain9:
     ArmChainYield 1
-    Unk2A 6, 255, 255, 255
+    SetPartyLeaderCharacter 6
     RespawnRowAndRunChain Room11V1Group2_id, 0
     ArmChainYield 0
     StartActorAnimSequence 0, 255, 0, 0, Room11V1Route11_id, 0, 1, 0, 0, 0
