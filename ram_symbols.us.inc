@@ -367,6 +367,9 @@
 .set g_aTouchedMonsterRecords,               0x03003B74  @ TouchedMonsterRecord[5]: 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,             0x03003B88  @ Actor *: armed wandering-monster actor
 
+@ --- include/map_doors.h ---
+.set g_dwPortraitPassageExitParam,          0x03003B8C  @ u32: portrait door exit param held across portrait_room_passage
+
 @ --- include/math.h ---
 .set g_abIwramDivideCode,                   0x03003B90  @ u8[0x340]: IWRAM copy of the ARM divide routines (InstallIwramDivideRoutines)
 .set g_pfnIwramDivideSignedQuotient,        0x03003ED0  @ IWRAM entry of DivideSignedQuotient

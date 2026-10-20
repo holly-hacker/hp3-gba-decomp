@@ -30,6 +30,6 @@ Actor *SpawnDoorActor(u8 bColumn, u8 bRow)
     pActor->aCollisionBoxes[0].state.bState = 1;
     pActor->bCollisionBoxCount = 1;
     pActor->apfnCollisionCallback[0] = HandleDoorTouch;
-    pActor->pfnTick = sub_0802BC74;
+    pActor->pfnTick = TickDoorActor;
     return pActor;
 }

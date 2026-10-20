@@ -7,6 +7,6 @@ Actor *SpawnPortraitDoorActor(u8 bColumn, u8 bRow)
 {
     Actor *pActor = SpawnDoorActor(bColumn, bRow);
 
-    pActor->apfnCollisionCallback[0] = sub_0802BBAC;
+    pActor->apfnCollisionCallback[0] = HandlePortraitDoorTouch;
     return pActor;
 }

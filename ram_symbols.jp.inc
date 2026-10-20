@@ -344,6 +344,9 @@
 .set g_aTouchedMonsterRecords,               0x03003BD4  @ TouchedMonsterRecord[5]: 4-byte touched-monster records
 .set g_pTouchedWanderingMonster,             0x03003BE8  @ Actor *: armed wandering-monster actor
 
+@ --- include/map_doors.h ---
+.set g_dwPortraitPassageExitParam,          0x03003BEC  @ u32: portrait door exit param held across portrait_room_passage
+
 @ --- include/math.h ---
 .set g_abIwramDivideCode,                   0x03003BF0
 .set g_pfnIwramDivideSignedQuotient,        0x03003F30

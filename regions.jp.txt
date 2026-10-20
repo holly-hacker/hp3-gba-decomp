@@ -1138,11 +1138,11 @@ c-file 0x0802BA28 _ src/map/try_set_wandering_monster_move_target.c TrySetWander
 c-file 0x0802BA68 _ src/map/get_encounter_kind_terrain_type.c GetEncounterKindTerrainType
 c-file 0x0802BA78 _ src/map/find_wandering_monster_spawn_position.c FindWanderingMonsterSpawnPosition
 c-file 0x0802BB2C _ src/map/pick_max_damage_monster.c PickMaxDamageMonster
-c-file 0x0802BB5C 0x0802BC08 src/map_doors/spawn_door_actor.c SpawnDoorActor
-thumb-func 0x0802BC08 sub_0802BBAC
-c-file 0x0802BCB0 0x0802BCD0 src/map_doors/spawn_portrait_door_actor.c SpawnPortraitDoorActor
-thumb-func 0x0802BCD0 sub_0802BC74
-thumb-func 0x0802BCD4 sub_0802BC78
+c-file 0x0802BB5C _ src/map_doors/spawn_door_actor.c SpawnDoorActor
+c-file 0x0802BC08 _ src/map_doors/handle_portrait_door_touch.c HandlePortraitDoorTouch
+c-file 0x0802BCB0 _ src/map_doors/spawn_portrait_door_actor.c SpawnPortraitDoorActor
+c-file 0x0802BCD0 _ src/map_doors/tick_door_actor.c TickDoorActor
+c-file 0x0802BCD4 0x0802BCF0 src/map_doors/get_room_floor_level.c GetRoomFloorLevel
 thumb-func 0x0802BCF0 GrantPartyExperience_candidate
 thumb-func 0x0802BE28 sub_0802BDCC
 c-file 0x0802BE48 _ src/math/install_iwram_divide_routines.c InstallIwramDivideRoutines
