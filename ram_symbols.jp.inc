@@ -128,12 +128,13 @@
 .set g_aawTargetFlashPalette,             0x03002620
 
 @ --- include/combat_dispatch.h ---
-.set g_dwSelectedBattleMenuIcon,     0x03002660
-.set g_apBattleMenuIconActors,         0x03002668
-.set g_pBattleMessageIconActor_candidate, 0x03002684
-.set g_BattleMessageIconState_candidate,   0x03002688
-.set g_aBattleScanlineEffectBuffer,       0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in
-.set g_anFaintedRosterIndices,             0x030026D8
+.set g_dwSelectedBattleMenuIcon,    0x03002660
+.set g_apBattleMenuIconActors,      0x03002668
+.set g_pStatsPortraitActor,         0x03002684
+.set g_StatsPortraitPaletteLoad,    0x03002688
+.set g_aBattleScanlineEffectBuffer, 0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in
+.set g_dwBattleItemToConsume,       0x030026D0
+.set g_anFaintedRosterIndices,      0x030026D8
 
 @ --- include/combat_end.h ---
 .set g_dwCombatResultUnusedCounter,               0x030026E8

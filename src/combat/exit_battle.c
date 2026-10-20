@@ -43,11 +43,11 @@ void ExitBattle(void)
 
         for (slot = 0; slot < ARRAY_COUNT(g_apBattleMenuIconActors); slot++)
             g_apBattleMenuIconActors[slot] = NULL;
-        g_pBattleMessageIconActor_candidate = NULL;
+        g_pStatsPortraitActor = NULL;
 
         FreeBlock(g_pFightState->pFighters);
         FreeBlock(g_pFightState->pStagingFighters);
-        FreeBlock(g_pFightState->pPendingFighters_candidate);
+        FreeBlock(g_pFightState->pFaintedAllies);
         FreeBlock(g_pFightState);
         g_pFightState = NULL;
 
@@ -75,12 +75,12 @@ void ExitBattle(void)
     else
     {
         // Suspending for a Folio/Help submode: snapshot every live
-        // then pending fighter's Actor (densely packed) instead of tearing
+        // then fainted ally's Actor (densely packed) instead of tearing
         // the battle down, so it can be restored by InitializeBattle's resume
         // path on return. `fighterIndex` keeps counting across both loops as
         // the destination slot index.
         u32 fighterIndex;
-        u32 pendingIndex;
+        u32 faintedIndex;
 
         for (fighterIndex = 0; fighterIndex < g_pFightState->bFighterCount; fighterIndex++)
         {
@@ -93,17 +93,17 @@ void ExitBattle(void)
                    g_pFightState->pFighters[fighterIndex].pActor, sizeof(Actor));
         }
 
-        for (pendingIndex = 0;
-             pendingIndex < g_pFightState->bPendingFighterCount_candidate;
-             pendingIndex++, fighterIndex++)
+        for (faintedIndex = 0;
+             faintedIndex < g_pFightState->bFaintedAllyCount;
+             faintedIndex++, fighterIndex++)
         {
-            if (g_pFightState->pPendingFighters_candidate[pendingIndex].pActor->oam.affineMode)
-                ReleaseActorAffineSlot(g_pFightState->pPendingFighters_candidate[pendingIndex].pActor);
+            if (g_pFightState->pFaintedAllies[faintedIndex].pActor->oam.affineMode)
+                ReleaseActorAffineSlot(g_pFightState->pFaintedAllies[faintedIndex].pActor);
 
-            g_pFightState->pPendingFighters_candidate[pendingIndex].pActor->wVramTileAllocId = 0xFFFF;
+            g_pFightState->pFaintedAllies[faintedIndex].pActor->wVramTileAllocId = 0xFFFF;
 
             memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterActors_candidate),
-                   g_pFightState->pPendingFighters_candidate[pendingIndex].pActor, sizeof(Actor));
+                   g_pFightState->pFaintedAllies[faintedIndex].pActor, sizeof(Actor));
         }
 
         if (g_pFightState->bMenuScreen != 0)
@@ -125,6 +125,6 @@ void ExitBattle(void)
 
         for (slot = 0; slot < ARRAY_COUNT(g_apBattleMenuIconActors); slot++)
             g_apBattleMenuIconActors[slot] = NULL;
-        g_pBattleMessageIconActor_candidate = NULL;
+        g_pStatsPortraitActor = NULL;
     }
 }

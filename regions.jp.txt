@@ -463,57 +463,57 @@ c-file 0x08010864 _ src/combat_dialog/show_battle_message.c ShowBattleMessage
 c-file 0x08011520 _ src/combat_dialog/draw_battle_menu_text.c DrawBattleMenuText
 c-file 0x0801173C _ src/combat_dialog/flash_enemy_target.c FlashEnemyTarget
 c-file 0x08011800 _ src/combat_dialog/flash_ally_target.c FlashAllyTarget
-c-file 0x080118C4 _ src/combat_dialog/flash_pending_fighter.c FlashPendingFighter
+c-file 0x080118C4 _ src/combat_dialog/flash_fainted_ally.c FlashFaintedAlly
 c-file 0x08011984 _ src/combat_dialog/handle_battle_vblank.c HandleBattleVBlank
 c-file 0x08011AC0 _ src/combat_dialog/set_battle_menu_icon_state.c SetBattleMenuIconState
-c-file 0x08011BEC 0x08011BF0 src/combat_dialog/tick_battle_menu_stub.c TickBattleMenuStub
-thumb-func 0x08011BF0 ConfirmBattleTopMenu
-thumb-func 0x08011EBC ConfirmSpecialMoveMenu
-thumb-func 0x08011FA4 ConfirmSpellTierMenu
-thumb-func 0x080120F0 ConfirmEnemyTargetMenu
-thumb-func 0x0801217C ConfirmAllyTargetMenu
-thumb-func 0x08012240 CancelEnemyTargetMenu
-thumb-func 0x08012340 CancelAllyTargetMenu
-thumb-func 0x08012480 MoveEnemyTargetCursor
-thumb-func 0x0801250C MoveAllyTargetCursor
-thumb-func 0x08012598 sub_08012594
-thumb-func 0x08012794 sub_08012790
-thumb-func 0x08012998 InitCharacterSpells_candidate
-thumb-func 0x080129F8 StopBgTileAnimationsAfterCard_candidate
-thumb-func 0x08012A04 sub_08012A00
-thumb-func 0x08012A3C ClearBattleTextPanel
-thumb-func 0x08012A88 GetBattleBackgroundGraphic
-thumb-func 0x08012AC4 GetBattleBackgroundData_candidate
-c-file 0x08012B00 0x08012B44 src/combat_dispatch/push_battle_state.c PushBattleState
-thumb-func 0x08012B44 sub_08012B40
-thumb-func 0x08012B9C OpenEnemyTargetMenu_candidate
-thumb-func 0x08012C10 StopEnemyTargetFlash
-thumb-func 0x08012C64 StopAllyTargetFlash
-thumb-func 0x08012CB8 HideBattleMenuIcon
-thumb-func 0x08012CE8 SetupAllyBattleMessageIcon_candidate
-thumb-func 0x08012D30 SetupEnemyBattleMessageIcon_candidate
-thumb-func 0x08012D7C SelectBattleMenuIcon
-thumb-func 0x08012E10 sub_08012E0C
-thumb-func 0x08012E3C WrapBattleMenuCursor
-thumb-func 0x08012E54 CancelBattleTopMenu
-thumb-func 0x08012E58 ConfirmSpellChoiceMenu
-thumb-func 0x08012EB0 ConfirmItemMenu
-thumb-func 0x08012F10 CancelToBattleTopMenu
-thumb-func 0x08012F50 CancelSpellTierMenu
-thumb-func 0x08012FD4 IgnoreBattleMenuInput
-thumb-func 0x08012FD8 PrepareBattleMessageDisplay_candidate
-thumb-func 0x08013018 ClearBattleMessageLine
-thumb-func 0x08013038 DrawBattleMenuFrame
-c-file 0x080130B8 0x0801310C src/combat_dispatch/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
-thumb-func 0x0801310C sub_08013108
-thumb-func 0x08013110 TogglePendingFighterCursor_candidate
-thumb-func 0x0801314C StopPendingFighterFlash
-thumb-func 0x080131A0 OpenPendingFighterMenu_candidate
-thumb-func 0x08013210 ConfirmPendingFighterMenu_candidate
-thumb-func 0x08013294 CancelPendingFighterMenu_candidate
-thumb-func 0x080132F8 DrawAllyTargetStats
-thumb-func 0x08013324 sub_08013320
-thumb-func 0x08013344 sub_08013340
+c-file 0x08011BEC _ src/combat_dialog/tick_battle_menu_stub.c TickBattleMenuStub
+c-file 0x08011BF0 _ src/combat_dispatch/confirm_battle_top_menu.c ConfirmBattleTopMenu
+c-file 0x08011EBC _ src/combat_dispatch/confirm_special_move_menu.c ConfirmSpecialMoveMenu
+c-file 0x08011FA4 _ src/combat_dispatch/confirm_spell_tier_menu.c ConfirmSpellTierMenu
+c-file 0x080120F0 _ src/combat_dispatch/confirm_enemy_target_menu.c ConfirmEnemyTargetMenu
+c-file 0x0801217C _ src/combat_dispatch/confirm_ally_target_menu.c ConfirmAllyTargetMenu
+c-file 0x08012240 _ src/combat_dispatch/cancel_enemy_target_menu.c CancelEnemyTargetMenu
+c-file 0x08012340 _ src/combat_dispatch/cancel_ally_target_menu.c CancelAllyTargetMenu
+c-file 0x08012480 _ src/combat_dispatch/move_enemy_target_cursor.c MoveEnemyTargetCursor
+c-file 0x0801250C _ src/combat_dispatch/move_ally_target_cursor.c MoveAllyTargetCursor
+c-file 0x08012598 _ src/combat_dispatch/zoom_battle_camera_out.c ZoomBattleCameraOut
+c-file 0x08012794 _ src/combat_dispatch/zoom_battle_camera_in.c ZoomBattleCameraIn
+c-file 0x08012998 _ src/combat_dispatch/learn_all_spells.c LearnAllSpells
+c-file 0x080129F8 _ src/combat_dispatch/stop_bg_tile_animations_after_card.c StopBgTileAnimationsAfterCard
+c-file 0x08012A04 _ src/combat_dispatch/restore_battle_scanline_effects.c RestoreBattleScanlineEffects
+c-file 0x08012A3C _ src/combat_dispatch/clear_battle_text_panel.c ClearBattleTextPanel
+c-file 0x08012A88 _ src/combat_dispatch/get_battle_wall_graphic.c GetBattleWallGraphic
+c-file 0x08012AC4 _ src/combat_dispatch/get_battle_floor_graphic.c GetBattleFloorGraphic
+c-file 0x08012B00 _ src/combat_dispatch/push_battle_state.c PushBattleState
+c-file 0x08012B44 _ src/combat_dispatch/reset_battle_display_effects.c ResetBattleDisplayEffects
+c-file 0x08012B9C _ src/combat_dispatch/open_enemy_target_menu.c OpenEnemyTargetMenu
+c-file 0x08012C10 _ src/combat_dispatch/stop_enemy_target_flash.c StopEnemyTargetFlash
+c-file 0x08012C64 _ src/combat_dispatch/stop_ally_target_flash.c StopAllyTargetFlash
+c-file 0x08012CB8 _ src/combat_dispatch/hide_battle_menu_icon.c HideBattleMenuIcon
+c-file 0x08012CE8 _ src/combat_dispatch/show_ally_stats_portrait.c ShowAllyStatsPortrait
+c-file 0x08012D30 _ src/combat_dispatch/show_enemy_stats_portrait.c ShowEnemyStatsPortrait
+c-file 0x08012D7C _ src/combat_dispatch/select_battle_menu_icon.c SelectBattleMenuIcon
+c-file 0x08012E10 _ src/combat_dispatch/fighter_has_shadow_actor.c FighterHasShadowActor
+c-file 0x08012E3C _ src/combat_dispatch/wrap_battle_menu_cursor.c WrapBattleMenuCursor
+c-file 0x08012E54 _ src/combat_dispatch/cancel_battle_top_menu.c CancelBattleTopMenu
+c-file 0x08012E58 _ src/combat_dispatch/confirm_spell_choice_menu.c ConfirmSpellChoiceMenu
+c-file 0x08012EB0 _ src/combat_dispatch/confirm_item_menu.c ConfirmItemMenu
+c-file 0x08012F10 _ src/combat_dispatch/cancel_to_battle_top_menu.c CancelToBattleTopMenu
+c-file 0x08012F50 _ src/combat_dispatch/cancel_spell_tier_menu.c CancelSpellTierMenu
+c-file 0x08012FD4 _ src/combat_dispatch/ignore_battle_menu_input.c IgnoreBattleMenuInput
+c-file 0x08012FD8 _ src/combat_dispatch/clear_battle_message_box.c ClearBattleMessageBox
+c-file 0x08013018 _ src/combat_dispatch/clear_battle_message_line.c ClearBattleMessageLine
+c-file 0x08013038 _ src/combat_dispatch/draw_battle_menu_frame.c DrawBattleMenuFrame
+c-file 0x080130B8 _ src/combat_dispatch/set_fighter_turn_order_icon_done.c SetFighterTurnOrderIconDone
+c-file 0x0801310C _ src/combat_dispatch/end_fighter_turn_stub.c EndFighterTurnStub
+c-file 0x08013110 _ src/combat_dispatch/toggle_fainted_ally_cursor.c ToggleFaintedAllyCursor
+c-file 0x0801314C _ src/combat_dispatch/stop_fainted_ally_flash.c StopFaintedAllyFlash
+c-file 0x080131A0 _ src/combat_dispatch/open_fainted_ally_menu.c OpenFaintedAllyMenu
+c-file 0x08013210 _ src/combat_dispatch/confirm_fainted_ally_menu.c ConfirmFaintedAllyMenu
+c-file 0x08013294 _ src/combat_dispatch/cancel_fainted_ally_menu.c CancelFaintedAllyMenu
+c-file 0x080132F8 _ src/combat_dispatch/draw_ally_target_stats.c DrawAllyTargetStats
+c-file 0x08013324 _ src/combat_dispatch/queue_stats_portrait_palette.c QueueStatsPortraitPalette
+c-file 0x08013344 _ src/combat_dispatch/clear_stats_portrait_palette.c ClearStatsPortraitPalette
 c-file 0x08013364 _ src/combat_effects_hblank/end_battle_wall_scanline.c EndBattleWallScanline
 c-file 0x080133B0 _ src/combat_effects_hblank/begin_battle_hud_scanline.c BeginBattleHudScanline
 c-file 0x08013428 _ src/combat_effects_hblank/restore_battle_hud_panel_tilemap.c RestoreBattleHudPanelTilemap

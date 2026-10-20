@@ -56,7 +56,7 @@ lines 0, 88, 112, 160) end on line 160, the first vblank line, before the wrap.
 - `QueueScanlineEffectTable` + `StartScanlineEffects` (+ `IsScanlineEffectQueueIdle`
   spin): `InitializeChooseCharacter`, `InitBattleDisplay`,
   `InitializeDialog`, `InitializeLupinPotionCutscene`, `InitFloorEffect`; the table
-  alone from `sub_08008E88`, `sub_08012A00`, `sub_08012B40`, `sub_08018CF8`.
+  alone from `sub_08008E88`, `RestoreBattleScanlineEffects`, `ResetBattleDisplayEffects`, `sub_08018CF8`.
 - Battle script op `0x80` (`QueueScanlineEffect`, handler `0x0801A208`) queues one
   of the ROM tables at `0x08053B08`; see
   [`../formats/battle_scripts.md`](../formats/battle_scripts.md).

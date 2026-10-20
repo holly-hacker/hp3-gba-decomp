@@ -69,7 +69,7 @@ void DrawBattleMenuText(void)
 
     case BattleMenuEnemyTarget:
     case BattleMenuAllyTarget:
-    case BattleMenuPendingFighter:
+    case BattleMenuFaintedAlly:
         break;
     }
 

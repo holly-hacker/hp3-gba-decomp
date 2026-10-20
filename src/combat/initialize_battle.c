@@ -13,12 +13,12 @@
 void InitializeBattle(void)
 {
     s32 i;
-    u8 *uVar7;
+    const u8 *uVar7;
     Actor *pIconActor;
 
     ClearObjPaletteSlots();
-    g_BattleMessageIconState_candidate.bIndex = 0xFF;
-    g_BattleMessageIconState_candidate.dwParam = 0;
+    g_StatsPortraitPaletteLoad.bBank = 0xFF;
+    g_StatsPortraitPaletteLoad.pPalette = NULL;
     g_dwBattleRewardFlagsSnapshot = 0;
 
     // Allocate all 6 fighter actors (3 on the player side, 3 on the enemy side)
@@ -31,17 +31,17 @@ void InitializeBattle(void)
         g_apBattleMenuIconActors[i]->oam.paletteNum = i + 9;
     }
 
-    g_pBattleMessageIconActor_candidate = AllocActorOfType(i + BattleActorType_FighterSlot0);
+    g_pStatsPortraitActor = AllocActorOfType(i + BattleActorType_FighterSlot0);
     g_dwSelectedBattleMenuIcon = 0;
-    SetActorPosition(g_pBattleMessageIconActor_candidate, i * 0x16 + 0x60, 0x8A);
-    pIconActor = g_pBattleMessageIconActor_candidate;
+    SetActorPosition(g_pStatsPortraitActor, i * 0x16 + 0x60, 0x8A);
+    pIconActor = g_pStatsPortraitActor;
     pIconActor->dwFlags = 0x20000008;
     pIconActor->bDepthSortBias = 0x80;
 
-    g_pBattleMessageIconActor_candidate->oam.bpp8 = 1;
-    g_pBattleMessageIconActor_candidate->oam.objMode = 0;
+    g_pStatsPortraitActor->oam.bpp8 = 1;
+    g_pStatsPortraitActor->oam.objMode = 0;
 
-    SetActorPosition(g_pBattleMessageIconActor_candidate, 2, 0x75);
+    SetActorPosition(g_pStatsPortraitActor, 2, 0x75);
 
     for (i = 0; i < ARRAY_COUNT(g_anFaintedRosterIndices); i++)
         g_anFaintedRosterIndices[i] = -1;
@@ -54,7 +54,7 @@ void InitializeBattle(void)
         g_pFightState = AllocZeroed(0x14C8);
         g_pFightState->pFighters = AllocZeroed(0x1F8);
         g_pFightState->pStagingFighters = AllocZeroed(0x1F8);
-        g_pFightState->pPendingFighters_candidate = AllocZeroed(0xD8);
+        g_pFightState->pFaintedAllies = AllocZeroed(0xD8);
 
         // set turn order multiplier, see BuildTurnOrder
         if (g_aPartyMasterStats[0].stats.bLevel < 1)
@@ -67,7 +67,7 @@ void InitializeBattle(void)
         g_pFightState->bUnk106E = 0;
         InitBattleDisplay();
         SetupBattleRoster();
-        uVar7 = GetBattleBackgroundData_candidate();
+        uVar7 = GetBattleFloorGraphic();
         LoadEmbeddedPalette(uVar7, 0, 0x10);
         ResumeBattleAfterSubmode_candidate();
     }
@@ -77,7 +77,7 @@ void InitializeBattle(void)
         // rewrites the previous mode to Folio Universitas).
         InitBattleDisplay();
         RestoreFighterActors_candidate();
-        uVar7 = GetBattleBackgroundData_candidate();
+        uVar7 = GetBattleFloorGraphic();
         LoadEmbeddedPalette(uVar7, 0, 0x10);
         ResumeBattleAfterSubmode_candidate();
     }

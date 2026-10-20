@@ -19,7 +19,7 @@ void DrawFighterStatsUi(u8 fighterType, u8 panelSlot)
     g_pFightState->dwStatsTextTileCursor = 0x60;
     pTilemap = GetGraphicBlobTilemap(1, gBattleHudPanel);
     CopyBgTilemapRect(0, pTilemap, 1, 0, panelSlot * 10 + 4, 0, panelSlot * 10 + 4, 24, 6, 6);
-    SetupAllyBattleMessageIcon_candidate(fighterType);
+    ShowAllyStatsPortrait(fighterType);
 
     if (g_aPartyMasterStats[fighterType].stats.wHp == 0)
     {

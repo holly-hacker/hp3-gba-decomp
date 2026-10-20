@@ -1204,12 +1204,12 @@ are identical in both ROMs and claimed as three stored-cells banks:
 | Bank | US | JP | Contents |
 |---|---|---|---|
 | `FighterSprites` | `0x089F46DC`-`0x08A13298` | `0x089F450C`-`0x08A130C8` | the sprites `g_aFighterAnimTable` points to: 30 player battle sprites (Harry, Hermione, Ron, Buckbeak) and one palette-only entry, 4bpp |
-| `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 portraits shown in battle when that fighter attacks, 8bpp (512-byte palettes) |
+| `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 portraits shown beside the battle stats panel, 8bpp (512-byte palettes) |
 | `ActionIcons` | `0x08A2DCC4`-`0x08A30814` | `0x08A2DAF4`-`0x08A30644` | 42 one-frame 24x32 icons for choosing a player action in the battle menu, 4bpp |
 
 `BattleFaces` are the records of `g_aPartyFaceAssets` (4, at `0x0804D824`, JP
 `0x0804D750`) and `g_aMonsterFaceAssets` (68), which
-`SetupAllyBattleMessageIcon_candidate` and `SetupEnemyBattleMessageIcon_candidate`
+`ShowAllyStatsPortrait` and `ShowEnemyStatsPortrait`
 index; `ActionIcons` those of `g_aBattleMenuIconAssets` (61), which
 `SetBattleMenuIconState` indexes. Every sprite's palette in these banks is the
 one its records use.

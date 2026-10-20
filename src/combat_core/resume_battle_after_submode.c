@@ -40,13 +40,13 @@ void ResumeBattleAfterSubmode_candidate(void)
             targetKind = g_aCardTargetingMeta[g_nFolioUniversitasSlot][0];
 
             if (targetKind == 1) {
-                OpenEnemyTargetMenu_candidate(g_pFightState->bMenuFighterIndex);
+                OpenEnemyTargetMenu(g_pFightState->bMenuFighterIndex);
                 g_pFightState->bBattleState = 3;
             } else if (targetKind == 2) {
                 OpenAllyTargetMenu(g_pFightState->bMenuFighterIndex);
                 g_pFightState->bBattleState = 3;
             } else if (targetKind == 3) {
-                OpenPendingFighterMenu_candidate(g_pFightState->bMenuFighterIndex);
+                OpenFaintedAllyMenu(g_pFightState->bMenuFighterIndex);
                 g_pFightState->bBattleState = 3;
             } else {
                 fighter->bSelectedActionIndex = 0x2A;

@@ -20,7 +20,7 @@ void DrawEnemyStatsUi(u8 fighterIndex, u8 panelSlot)
     u16 barRow;
 
     g_pFightState->dwStatsTextTileCursor = 0x60;
-    SetupEnemyBattleMessageIcon_candidate(pEnemy->bRosterIndex);
+    ShowEnemyStatsPortrait(pEnemy->bRosterIndex);
     pTilemap = GetGraphicBlobTilemap(1, gBattleHudPanel);
     CopyBgTilemapRect(0, pTilemap, 1, 0, panelSlot * 10 + 4, 0, panelSlot * 10 + 4, 24, 6, 6);
 

@@ -57,7 +57,7 @@ void TickBattleTurnStateMachine(void)
             if (g_pFightState->bActiveFighterIndex >= g_pFightState->bFighterCount) {
                 TransitionBattleState(2);
             } else {
-                sub_08013108(g_pFightState->bActiveFighterIndex - 1);
+                EndFighterTurnStub(g_pFightState->bActiveFighterIndex - 1);
 
                 if (ACTIVE_FIGHTER.bFighterType == Enemy) {
                     TransitionBattleState(4);
@@ -102,7 +102,7 @@ void TickBattleTurnStateMachine(void)
             if (g_pFightState->dwDefeatCheckPending_candidate != 0) {
                 g_pFightState->dwDefeatCheckPending_candidate = 0;
                 SetFighterTurnOrderIconActive(0);
-                sub_08013108(g_pFightState->bFighterCount - 1);
+                EndFighterTurnStub(g_pFightState->bFighterCount - 1);
             }
 
             g_pFightState->bActiveFighterIndex = 0;
@@ -117,7 +117,7 @@ void TickBattleTurnStateMachine(void)
 
         if (g_pFightState->wBattleStateTimer == 0x10) {
             SetFighterTurnOrderIconActive(0);
-            sub_08013108(g_pFightState->bFighterCount - 1);
+            EndFighterTurnStub(g_pFightState->bFighterCount - 1);
         }
 
         break;

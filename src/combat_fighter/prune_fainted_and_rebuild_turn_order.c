@@ -3,11 +3,11 @@
 #include "combat.h"
 
 // Removes every fighter marked fainted (nFaintedFlag == -1) from pFighters,
-// queueing non-Enemy ones onto pPendingFighters_candidate, then tears down
+// moving fainted party members to pFaintedAllies, then tears down
 // and respawns all turn-order icons, renumbers the fighters' turn keys and
 // records the key of the fighter after the active one.
-// addPendingFighter makes room for one more fighter first (bFighterCount + 1).
-void PruneFaintedAndRebuildTurnOrder_candidate(s32 addPendingFighter)
+// addRevivedAlly makes room for the ally ReviveFighter just merged in (bFighterCount + 1).
+void PruneFaintedAndRebuildTurnOrder_candidate(s32 addRevivedAlly)
 {
     u8 i;
     u8 j;
@@ -25,7 +25,7 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addPendingFighter)
         g_pFightState->aEnemySlotTurnOrderIndex[i] |= 0xFF;
     }
 
-    if (addPendingFighter)
+    if (addRevivedAlly)
         g_pFightState->bFighterCount++;
 
     count = g_pFightState->bFighterCount;
@@ -35,8 +35,8 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addPendingFighter)
             g_pFightState->bFighterCount--;
 
             if (g_pFightState->pFighters[j].bFighterType != Enemy) {
-                g_pFightState->pPendingFighters_candidate[g_pFightState->bPendingFighterCount_candidate] = g_pFightState->pFighters[j];
-                g_pFightState->bPendingFighterCount_candidate++;
+                g_pFightState->pFaintedAllies[g_pFightState->bFaintedAllyCount] = g_pFightState->pFighters[j];
+                g_pFightState->bFaintedAllyCount++;
             }
 
             for (k = j; k < count - 1; k++) {

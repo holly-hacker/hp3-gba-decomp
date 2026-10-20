@@ -48,11 +48,11 @@ void HandleBattleVBlank(void)
     CopyBgTilemapRect(1, GetGraphicBlobTilemap(1, pWall), 0x180, 0, 0, 0, 0, 23, 32, 8);
     CommitAlphaBlendCoefficients();
 
-    if (g_BattleMessageIconState_candidate.bIndex != 0xFF
-        && --g_BattleMessageIconState_candidate.bCountdown == 0xFF) {
-        CopyMemory(&g_pFightState->awPalette[g_BattleMessageIconState_candidate.bIndex * 16],
-                   (const void *)g_BattleMessageIconState_candidate.dwParam, 0x80);
-        g_BattleMessageIconState_candidate.bIndex |= 0xFF;
+    if (g_StatsPortraitPaletteLoad.bBank != 0xFF
+        && --g_StatsPortraitPaletteLoad.bCountdown == 0xFF) {
+        CopyMemory(&g_pFightState->awPalette[g_StatsPortraitPaletteLoad.bBank * 16],
+                   g_StatsPortraitPaletteLoad.pPalette, 0x80);
+        g_StatsPortraitPaletteLoad.bBank |= 0xFF;
     }
 
     FlushQueuedBattleDma();

@@ -139,12 +139,13 @@
 .set g_aawTargetFlashPalette,             0x03002620  @ u16[2][16]: target flash frames, the sprite's palette then gBattleEffect002Palette
 
 @ --- include/combat_dispatch.h ---
-.set g_dwSelectedBattleMenuIcon,     0x03002660  @ u32: battle menu row whose icon is enlarged
-.set g_apBattleMenuIconActors,         0x03002668  @ Actor*[7]: battle menu icons, one per menu row
-.set g_pBattleMessageIconActor_candidate, 0x03002684  @ Actor *: icon shown alongside ShowBattleMessage's text
-.set g_BattleMessageIconState_candidate,   0x03002688  @ {byte bIndex (sentinel 0xFF=none), byte bCountdown (2-frame delay), u32 dwParam}
-.set g_aBattleScanlineEffectBuffer,       0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in
-.set g_anFaintedRosterIndices,             0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
+.set g_dwSelectedBattleMenuIcon,    0x03002660  @ u32: battle menu row whose icon is enlarged
+.set g_apBattleMenuIconActors,      0x03002668  @ Actor*[7]: battle menu icons, one per menu row
+.set g_pStatsPortraitActor,         0x03002684  @ Actor *: the 40x40 face beside the battle stats panel
+.set g_StatsPortraitPaletteLoad,    0x03002688  @ StatsPortraitPaletteLoad: the portrait palette HandleBattleVBlank copies
+.set g_aBattleScanlineEffectBuffer, 0x03002690  @ ScanlineEffectEntry[4]: g_aBattleScanlineEffects with the wall line patched in
+.set g_dwBattleItemToConsume,       0x030026D0  @ u32: item id the ally target menu consumes, set by ConfirmItemMenu
+.set g_anFaintedRosterIndices,      0x030026D8  @ s32[4]: fainted fighters' roster indices this battle, sentinel -1
 
 @ --- include/combat_end.h ---
 .set g_dwCombatResultUnusedCounter,              0x030026E8  @ u32: zeroed by InitializeCombatResult; no reader found

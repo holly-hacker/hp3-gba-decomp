@@ -7,10 +7,10 @@
 #include "combat.h"
 
 #define FIGHTER(i) (g_pFightState->pFighters[i])
-#define PENDING(i) (g_pFightState->pPendingFighters_candidate[i])
+#define FAINTED(i) (g_pFightState->pFaintedAllies[i])
 
 // Rebuilds the battle's Actors after returning from a submode: each live
-// then pending fighter's Actor is re-allocated and restored from the snapshot
+// then fainted ally's Actor is re-allocated and restored from the snapshot
 // ExitBattle took (keeping the new Actor's list links), then the turn-order
 // icons are respawned and the active fighter's icon is highlighted.
 void RestoreFighterActors_candidate(void)
@@ -44,7 +44,7 @@ void RestoreFighterActors_candidate(void)
             AttachActorPaletteUnshared(FIGHTER(i).pActor,
                                                   g_aFighterAnimTable[FIGHTER(i).pActor->wActorType].aRecords[0].pPalette);
 
-        if (sub_08012E0C(i)) {
+        if (FighterHasShadowActor(i)) {
             shadow = AllocDefaultActor();
             shadow->wActorType = FIGHTER(i).pActor->wActorType;
             shadow->bUnk_0x7C = 0;
@@ -82,22 +82,22 @@ void RestoreFighterActors_candidate(void)
         }
     }
 
-    for (k = 0; k < g_pFightState->bPendingFighterCount_candidate; k++, i++) {
+    for (k = 0; k < g_pFightState->bFaintedAllyCount; k++, i++) {
         actor = AllocDefaultActor();
         pNext = actor->node.pNext;
         pPrev = actor->node.pPrev;
         *actor = g_pFightState->aSuspendedFighterActors_candidate[i];
         actor->node.pNext = pNext;
         actor->node.pPrev = pPrev;
-        PENDING(k).pActor = actor;
+        FAINTED(k).pActor = actor;
         actor->dwFlags &= ~ActorFlagHasPaletteSlot;
         actor->dwFlags |= ActorFlagAnimFrameLoaded;
         actor->pLinkedActor_candidate = 0;
         actor->pWindupParticleEmitter = 0;
         actor->oam.affineMode = 0;
         SetActorAffineSlotId(&actor->oam, 0);
-        AttachActorPaletteUnshared(PENDING(k).pActor,
-                                              g_aFighterAnimTable[PENDING(k).pActor->wActorType].aRecords[0].pPalette);
+        AttachActorPaletteUnshared(FAINTED(k).pActor,
+                                              g_aFighterAnimTable[FAINTED(k).pActor->wActorType].aRecords[0].pPalette);
     }
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {

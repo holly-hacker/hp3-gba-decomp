@@ -118,9 +118,9 @@ void UpdateFolioUniversitas(void)
                 else
                     g_pFightState->bFolioComboFirstCard = 0xFF;
                 g_GameModeStackContext.dwCurrentGameModeArg2 = combo;
-                PushGameMode_3(Battle, g_pFightState->abBattleResumeArgs_candidate[0],
-                               g_pFightState->abBattleResumeArgs_candidate[1],
-                               g_pFightState->abBattleResumeArgs_candidate[2]);
+                PushGameMode_3(Battle, g_pFightState->abBattleResumeArgs[0],
+                               g_pFightState->abBattleResumeArgs[1],
+                               g_pFightState->abBattleResumeArgs[2]);
                 break;
 
             case FolioUniversitasPickCard:
@@ -150,9 +150,9 @@ void UpdateFolioUniversitas(void)
 
             case FolioUniversitasPickCombo:
                 g_GameModeStackContext.dwCurrentGameModeArg2 = 0xFF;
-                PushGameMode_3(Battle, g_pFightState->abBattleResumeArgs_candidate[0],
-                               g_pFightState->abBattleResumeArgs_candidate[1],
-                               g_pFightState->abBattleResumeArgs_candidate[2]);
+                PushGameMode_3(Battle, g_pFightState->abBattleResumeArgs[0],
+                               g_pFightState->abBattleResumeArgs[1],
+                               g_pFightState->abBattleResumeArgs[2]);
                 break;
 
             case FolioUniversitasPickCard:

@@ -57,11 +57,11 @@ void TickBattleMenuInput(void)
             DrawAllyTargetStats(g_pFightState->bMenuCursor);
             break;
 
-        case BattleMenuPendingFighter:
-            StopPendingFighterFlash(prevCursor);
+        case BattleMenuFaintedAlly:
+            StopFaintedAllyFlash(prevCursor);
             g_pFightState->bMenuCursor = prevCursor;
-            TogglePendingFighterCursor_candidate();
-            FlashPendingFighter(g_pFightState->bMenuCursor);
+            ToggleFaintedAllyCursor();
+            FlashFaintedAlly(g_pFightState->bMenuCursor);
             break;
 
         case BattleMenuSpellChoice:

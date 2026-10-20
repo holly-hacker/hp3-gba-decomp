@@ -57,10 +57,10 @@ extern void OpenSpellTierMenu(u8 fighterIndex, u8 spellRow);
 extern void OpenAllyTargetMenu(u8 fighterIndex);
 extern void ShowBattleMessage(u8 code, u16 value, u16 param);
 extern void DrawBattleMenuText(void);
-// Flash the targeted fighter's sprite palette: an enemy or ally target slot, or a pending fighter.
+// Flash the targeted fighter's sprite palette: an enemy or ally target slot, or a fainted ally.
 extern void FlashEnemyTarget(u32 slot);
 extern void FlashAllyTarget(u32 slot);
-extern void FlashPendingFighter(u32 pendingIndex);
+extern void FlashFaintedAlly(u32 faintedIndex);
 extern void HandleBattleVBlank(void);  // battle VBlank callback, set by InitBattleDisplay
 extern void SetBattleMenuIconState(u32 kind, u32 row, u32 fighterType, u32 enabled);
 extern void TickBattleMenuStub(void);  // does nothing; called by TickBattleMenuInput
@@ -91,7 +91,7 @@ extern const u8 g_abBattleMusicByScriptedEncounter[15]; // 0x0804E28B, indexed b
 extern const ActorAssetRecord g_MenuSprite003Asset_candidate;  // 0x0804E29C, no reader found
 
 // Battle screen scanline callbacks, copied to g_aBattleScanlineEffectBuffer by InitBattleDisplay,
-// sub_08012A00 and sub_08012B40.
+// RestoreBattleScanlineEffects and ResetBattleDisplayEffects.
 extern const ScanlineEffectEntry g_aBattleScanlineEffects[4];  // 0x0804E2AC
 
 // TickBattleMenuInput calls the bMenuScreen entry of the confirm table on A and of the cancel

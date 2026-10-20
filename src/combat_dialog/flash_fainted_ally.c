@@ -7,9 +7,9 @@
 #include "hw/io_regs.h"
 #include "mem.h"
 
-// Starts flashing the sprite of pending fighter pendingIndex between its own palette and
+// Starts flashing the sprite of fainted ally faintedIndex between its own palette and
 // gTargetFlashPalette. The palette is read at scanline 42, in HBlank.
-void FlashPendingFighter(u32 pendingIndex)
+void FlashFaintedAlly(u32 faintedIndex)
 {
     Actor *actor;
 
@@ -18,7 +18,7 @@ void FlashPendingFighter(u32 pendingIndex)
             ;
     }
 
-    actor = g_pFightState->pPendingFighters_candidate[pendingIndex].pActor;
+    actor = g_pFightState->pFaintedAllies[faintedIndex].pActor;
     bios_CPUFastSet(&OBJ_PLTT[actor->oam.paletteNum * 16], g_aawTargetFlashPalette[0], 8);
     CopyMemory(g_aawTargetFlashPalette[1], gTargetFlashPalette, sizeof(g_aawTargetFlashPalette[1]));
     g_pFightState->nTargetFlashEffect = StartPaletteEffectWithFrameCount(

@@ -31,9 +31,9 @@ void InitializeTopicScreen(void)
         break;
     case 6:
         StartHelpScreen(g_aHelpMenuMain, 1);
-        SetHelpExitMode(Battle, g_pFightState->abBattleResumeArgs_candidate[0],
-                     g_pFightState->abBattleResumeArgs_candidate[1],
-                     g_pFightState->abBattleResumeArgs_candidate[2]);
+        SetHelpExitMode(Battle, g_pFightState->abBattleResumeArgs[0],
+                     g_pFightState->abBattleResumeArgs[1],
+                     g_pFightState->abBattleResumeArgs[2]);
         break;
     }
 }

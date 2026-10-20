@@ -126,7 +126,8 @@ Example: HandleChestTouch, US 0x0800BF20 (the parameter took r4 only with two co
 The same copy can account for dead `movs rN,#0` sets (some in a high register) that the
 ROM keeps: each copy's u8 field stores share one zero mask register through the tail. A size
 argument loaded before the data pointer needs a local read before the call, scoped to each
-copy. Example: TickBgTileAnimations, US `0x0800A610`.
+copy. Example: TickBgTileAnimations, US `0x0800A610`. In ConfirmSpecialMoveMenu, US
+`0x08011EB8`, an else-if chain instead joined at the shared block and lost the zero in `r6`.
 
 A merged tail's register convention is set by whichever branch reaches it needing zero
 fixup moves; the other branch pays the reconciling `adds`. Fix that branch's own tie
@@ -361,6 +362,10 @@ expression, which `i = K` assignments only imitate. Example: DrawChooseCharacter
 The same helper also stops loop.c hoisting: identical constant movables are combined into one
 pseudo that takes a register early, but `integrate.c:try_constants` folds the constant into
 `(plus reg const)` when inlined, so there is nothing to hoist (CopyBgTilemapRectByCell, US `0x08006A98`).
+Conversely, a constant the ROM holds in a register set at the start of an inlined body (shared
+with other uses of the same value) was passed to a word-sized helper parameter: with `u8 row`
+the `0` folded into each use, with `u32 row` it stayed one pseudo, which CSE also reused for
+the loop's `0 < count` test (ConfirmBattleTopMenu's Cast Spell case, US `0x08011BEC`).
 
 ## 34. Parameter copy and base register kept as separate pseudos
 

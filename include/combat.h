@@ -95,7 +95,7 @@ typedef enum {
     BattleMenuEnemyTarget    = 6,
     BattleMenuItem           = 7,
     BattleMenuAllyTarget     = 8,
-    BattleMenuPendingFighter = 9,
+    BattleMenuFaintedAlly    = 9,  // the Revive card's target
     BattleMenuInactive       = 10,  // ignored like BattleMenuNone; no writer found
 } BattleMenuScreen;
 
@@ -104,7 +104,9 @@ typedef enum {
 typedef struct FightState {
     /*0x00*/ BattleFighter *pStagingFighters;
     /*0x04*/ BattleFighter *pFighters;
-    /*0x08*/ BattleFighter *pPendingFighters_candidate;  // front-popped reinforcement queue, count at +0x1491
+    // Party members PruneFaintedAndRebuildTurnOrder_candidate took out of pFighters, up to
+    // bFaintedAllyCount; ReviveFighter brings one back.
+    /*0x08*/ BattleFighter *pFaintedAllies;
     // Effect BG tilemap built by QueueBattleBgLoad and copied to VRAM by
     // FlushQueuedBattleDma.
     /*0x0C*/ BgTilemapBuffer effectBgTilemap;
@@ -115,7 +117,7 @@ typedef struct FightState {
     // actually animate.
     /*0x818*/ Actor *apTurnOrderIconActors[7];
     // ExitBattle's Folio Universitas/Help resume path snapshots every live
-    // (0-bFighterCount) then pending (0-bPendingFighterCount_candidate)
+    // (0-bFighterCount) then fainted ally (0-bFaintedAllyCount)
     // fighter's Actor here, densely packed, before the real Actors are
     // torn down -- exactly 7 slots
     // fill this to FightState's 0x104C boundary.
@@ -152,7 +154,7 @@ typedef struct FightState {
     /*0x1488*/ u32 dwRonSpecialUsed;  // set once Ron has used his Special Move this battle; grays the menu entry while nonzero
     /*0x148C*/ u32 dwHermioneSpecialUsed;  // set once Hermione has used her Special Move this battle; grays the menu entry while nonzero
     /*0x1490*/ u8 pad_1490;
-    /*0x1491*/ u8 bPendingFighterCount_candidate;
+    /*0x1491*/ u8 bFaintedAllyCount;
     /*0x1492*/ u8 pad_1492[0x1494 - 0x1492];
     /*0x1494*/ u32 dwDefeatCheckPending_candidate;  // set to 1 by any lethal-HP-threshold hit (ApplyDamageToEnemyFighter,
                                                      // ApplyDamageToAllyFighter, spell insta-kills); cleared by whichever
@@ -161,8 +163,8 @@ typedef struct FightState {
     /*0x149C*/ u32 dwBattleResultPending;
     /*0x14A0*/ u32 dwPlayerActionActive_candidate;
     /*0x14A4*/ u8 pad_14A4;
-    /*0x14A5*/ u8 abBattleResumeArgs_candidate[3];  // PushGameMode_3 arguments that re-enter Battle from the Help and
-                                                    // Folio Universitas screens; [2] is 0xFF when no card-combo restriction applies
+    /*0x14A5*/ u8 abBattleResumeArgs[3];  // PushGameMode_3 arguments that re-enter Battle from the Help and
+                                          // Folio Universitas screens; [2] is 0xFF when no card-combo restriction applies
     /*0x14A8*/ u8 bPendingStatusMessageVariant_candidate;
     /*0x14A9*/ u8 pad_14A9[0x14AC - 0x14A9];
     /*0x14AC*/ struct {

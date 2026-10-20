@@ -43,12 +43,12 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case EscapeBlocked:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         DrawBattleMessageLine(0x902, BATTLE_TEXT_ROW0_Y, 0);  // "Your escape has been blocked."
         break;
 
     case SpecialMoveAnnounce:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         // "Harry performs a Special Move:", ...
         DrawBattleMessageLine(fighter->bFighterType + 0x970, BATTLE_TEXT_ROW0_Y, 0);
         switch (fighter->bFighterType) {
@@ -69,17 +69,17 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case SpecialAbilityText:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         switch (fighter->bFighterType) {
         case Harry:
-            PrepareBattleMessageDisplay_candidate();
+            ClearBattleMessageBox();
             if (value == 3) {
                 // "Harry feels better!", ... for the targeted ally
                 textId = g_adwSpecialMoveResultTextIds[3]
                     + g_pFightState->pFighters[g_pFightState->aAllySlotTurnOrderIndex[fighter->bSelectedActionIndex]].bFighterType;
             } else if (value == 6) {
                 // "Harry is revived!", ..., "The party is revived!"
-                fighterType = g_pFightState->pPendingFighters_candidate[fighter->bSelectedActionIndex].bFighterType;
+                fighterType = g_pFightState->pFaintedAllies[fighter->bSelectedActionIndex].bFighterType;
                 textId = g_adwReviveTextIds[fighterType];
             } else if (value == 15) {
                 // "Wow! Harry learned all possible spells!", ... for the targeted ally
@@ -105,13 +105,13 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
 
     case ActionAnnounce:
         if (fighter->bFighterType == Enemy) {
-            PrepareBattleMessageDisplay_candidate();
+            ClearBattleMessageBox();
             // "The ruby fire crab attacks!", ...
             DrawBattleMessageLine(g_adwFighterActionTextIds[fighter->bRosterIndex + 4], BATTLE_TEXT_ROW0_Y, 0);
             break;
         }
 
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         if (fighter->bSpellId == Informus)
             spellId = Informus;
         else
@@ -137,7 +137,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
     case AttackResult:
         // Damage above 999 is shown as a first line, then the rest.
         if (value > 999) {
-            PrepareBattleMessageDisplay_candidate();
+            ClearBattleMessageBox();
             DrawBattleMessageLine(0x995, BATTLE_TEXT_ROW0_Y, 1);  // "Critical hit!"
         }
 
@@ -146,13 +146,13 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
             if (value > 999)
                 value -= 999;
             else
-                PrepareBattleMessageDisplay_candidate();
+                ClearBattleMessageBox();
             SetTextMacro1Number(value);
             DrawBattleMessageLine(0x997, BATTLE_TEXT_ROW1_Y, 1);  // "@1 damage."
             break;
 
         case 1:
-            PrepareBattleMessageDisplay_candidate();
+            ClearBattleMessageBox();
             fighterType = fighter->bFighterType;
             textId = 0x996;  // "The spell misses."
             if (fighterType == Enemy)
@@ -193,7 +193,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         while (g_pFightState->bFaintMessageCount_candidate != 0) {
             SelectTextFont(1, 0, -1);
             g_pFightState->bFaintMessageCount_candidate--;
-            PrepareBattleMessageDisplay_candidate();
+            ClearBattleMessageBox();
 
             // @1 is the attacker: "Harry", "Hermione", "Ron", "Buckbeak", or a creature from
             // index 4 ("Ruby Fire Crab", ...).
@@ -238,14 +238,14 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case PotionUseAnnounce:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         // "Harry uses a potion:", ...
         DrawBattleMessageLine(fighter->bFighterType + 0x973, BATTLE_TEXT_ROW0_Y, 0);
         DrawBattleMessageLine(value + 0x604, BATTLE_TEXT_ROW2_Y, 1);  // the item's name
         break;
 
     case StatusRestore:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         switch (value) {
         case ITEM_WIGGENWELD_POTION:
         case ITEM_GRAND_WIGGENWELD_POTION:
@@ -282,17 +282,17 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case Victory:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         DrawBattleMessageLine(0xA1E, BATTLE_TEXT_ROW1_Y, 1);  // "You are victorious!"
         break;
 
     case Defeat:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         DrawBattleMessageLine(0xA1D, BATTLE_TEXT_ROW1_Y, 1);  // "You've been defeated."
         break;
 
     case CantMove:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         if (fighter->bFighterType != Enemy)
             // "Harry can't move.", ...
             textId = g_adwFighterCantMoveTextIds[fighter->bFighterType];
@@ -302,7 +302,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case CanMoveAgain:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         if (fighter->bFighterType != Enemy)
             textId = fighter->bFighterType + 0x981;  // "Harry can move again!", ...
         else
@@ -311,7 +311,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case AttackWeakenedMessage:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         // "The opponent's attacks are weakened."
         DrawBattleMessageLine(0xA3C, BATTLE_TEXT_ROW1_Y, 1);
         break;
@@ -319,7 +319,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
     case HiddenFromView:
         // One line per party member, at its own row.
         if (value == 1)
-            PrepareBattleMessageDisplay_candidate();
+            ClearBattleMessageBox();
         fighterType = g_pFightState->pFighters[param].bFighterType;
         y = fighterType * 8 + BATTLE_TEXT_ROW0_Y;
         text = GetDialogText(fighterType + 0x991);  // "Harry is hidden from view!", ...
@@ -328,7 +328,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case ImmuneToParalysis:
-        PrepareBattleMessageDisplay_candidate();
+        ClearBattleMessageBox();
         // "The opponent is immune to paralysis!"
         DrawBattleMessageLine(0xA3E, BATTLE_TEXT_ROW1_Y, 1);
         break;

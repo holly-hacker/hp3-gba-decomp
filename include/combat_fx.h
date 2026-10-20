@@ -219,7 +219,7 @@ enum BattleScriptOpcode {
     BSOP_Unk95 = 0x95,
     BSOP_FlipTargetFacing = 0x96,
     BSOP_StatusEffect = 0x97,
-    BSOP_Unk98 = 0x98,
+    BSOP_RestoreBattleScanlineEffects = 0x98,
     BSOP_SetLocalAToPartySize = 0x99,
     BSOP_Unk9A = 0x9A,
     BSOP_SetDispcntBit15 = 0x9B,
@@ -427,7 +427,7 @@ enum BattleStatusEffect {
 #define BS_Unk95() BSOP_Unk95
 #define BS_FlipTargetFacing() BSOP_FlipTargetFacing
 #define BS_StatusEffect(a, b, c) BSOP_StatusEffect, (a), (b), (c)
-#define BS_Unk98() BSOP_Unk98
+#define BS_RestoreBattleScanlineEffects() BSOP_RestoreBattleScanlineEffects
 #define BS_SetLocalAToPartySize() BSOP_SetLocalAToPartySize
 #define BS_Unk9A(a, b) BSOP_Unk9A, (a), (b)
 #define BS_SetDispcntBit15() BSOP_SetDispcntBit15

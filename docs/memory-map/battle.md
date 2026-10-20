@@ -536,7 +536,7 @@ background/palette load. Three cases on `g_PrevGameModeStackContext`:
   Special-Move-resolution case in `src/combat_fighter/tick_player_action_state.c`.
   Indexed by the raw Folio Universitas card slot `0`-`15`; `[0]` is the
   target-type byte this function reads, `[1]` is a second, independently
-  read boolean -- gates a `StopBgTileAnimationsAfterCard_candidate()` call
+  read boolean -- gates a `StopBgTileAnimationsAfterCard()` call
   (a wrapper for `StopAllBgTileAnimations`, which clears the active bit on
   every BG tile-animation entry, see
   [`frame_systems.md`](frame_systems.md)) across several post-hit
@@ -547,15 +547,15 @@ background/palette load. Three cases on `g_PrevGameModeStackContext`:
   Reparifors. `[0]`'s
   values: `0` = no target menu -- immediate self/party cast,
   `bSelectedActionIndex = 0x2a`, `bMenuScreen = 0`; `1` =
-  `OpenEnemyTargetMenu_candidate` (`0x08012B98`, `bMenuScreen = 6`,
+  `OpenEnemyTargetMenu` (`0x08012B98`, `bMenuScreen = 6`,
   confirm handler `ConfirmEnemyTargetMenu`) -- matches
   `TickPlayerActionState`'s own `cardMeta != 0` branch, which resolves an
   enemy target the same way; `2` = `OpenAllyTargetMenu` (`0x080107BC`,
   `bMenuScreen = 8`) -- matches its `cardMeta == 2` branch; `3` =
-  `OpenPendingFighterMenu_candidate` (`0x0801319C`, `bMenuScreen = 9`,
-  confirm handler `ConfirmPendingFighterMenu_candidate` -- see
+  `OpenFaintedAllyMenu` (`0x0801319C`, `bMenuScreen = 9`,
+  confirm handler `ConfirmFaintedAllyMenu` -- see
   "`bMenuScreen = 9`" below) -- matches its `cardMeta == 3` branch, which
-  indexes `pPendingFighters_candidate[ACTIVE_FIGHTER.bSelectedActionIndex]`
+  indexes `pFaintedAllies[ACTIVE_FIGHTER.bSelectedActionIndex]`
   directly, the same field this menu's confirm handler writes. Every case
   but `0` also sets `bBattleState = 3`.
 - **fresh battle** (neither `FolioUniversitas` nor `HelpTopicScreen`):
@@ -592,7 +592,7 @@ above; all four are visual/Actor plumbing, no combat-mechanical state:
   shadow `Actor`s for monster types `>= 4` that have one, and re-applies
   the `Paralyzed`/`Poisoned` visual pose and status-particle attachment
   from each `BattleFighter.bStatusFlags`.
-- **`GetBattleBackgroundData_candidate`** (`0x08012AC0`): the same
+- **`GetBattleFloorGraphic`** (`0x08012AC0`): the same
   room -> background-blob selection `InitBattleDisplay`
   inlines for its first layer, factored out standalone so
   `InitializeBattle` can also feed the blob into
@@ -610,42 +610,20 @@ above; all four are visual/Actor plumbing, no combat-mechanical state:
 the background table points at are described in
 [`graphic_blob.md`](../formats/graphic_blob.md).
 
-### `bMenuScreen = 9` -- the pending-fighter target menu, PROVEN
+### `bMenuScreen = 9` -- the fainted ally menu, PROVEN
 
-`OpenPendingFighterMenu_candidate` (`0x0801319C`) is structurally
-parallel to `OpenEnemyTargetMenu_candidate`/`OpenAllyTargetMenu` (same
-8-frame screen-wipe-transition preamble, same `DrawFighterStatsUi`
-call, same `bMenuCursor = 0` reset) but targets a third, separate fighter
-pool: `FightState->pPendingFighters_candidate` (`+8`, up to 3 slots,
-`bPendingFighterCount_candidate` at `+0x1491`), not `pFighters`. Its
-cursor-move handler, `TogglePendingFighterCursor_candidate`
-(`0x0801310C`, `TickBattleMenuInput` case `9`), only ever offers a binary
-choice: `bMenuCursor ^= 1` when `bPendingFighterCount_candidate != 1`,
-else forced to `0`. Its confirm handler,
-`ConfirmPendingFighterMenu_candidate` (`0x0801320C`), writes
-`bSelectedActionIndex = bMenuCursor` directly -- unlike the enemy/ally
-menus, with no `aEnemySlotTurnOrderIndex`/`aAllySlotTurnOrderIndex`
-translation, consistent with indexing straight into the separate pending
-pool. `RestoreFighterActors_candidate` (`0x0800F16C`) spawns this pool's
-`Actor`s the same way it does for `pFighters`, and `TickPlayerActionState`
-(matched, `src/combat_fighter/tick_player_action_state.c`) pans every
-`pPendingFighters_candidate[i].pActor` alongside the regular roster
-during the Special Move windup/return camera move (`bActionState == 0x1a`,
-`bActionFlags == 0x21`/`0x40` cases) -- pending fighters are real,
-on-screen `Actor`s, not placeholder data.
+`FightState.pFaintedAllies` (`+8`) holds the party members
+`PruneFaintedAndRebuildTurnOrder_candidate` took out of `pFighters` when they
+fainted, `bFaintedAllyCount` (`+0x1491`) of them; `ReviveFighter` merges one back.
+Their `Actor`s stay on screen: `RestoreFighterActors_candidate`, `ExitBattle`, the camera
+zooms and `TickPlayerActionState` treat them alongside `pFighters`.
 
-`TickPlayerActionState`'s own Special-Move-resolution case confirms
-`bMenuScreen = 9` is reached exactly when `g_aCardTargetingMeta[slot][0]
-== 3`, and on confirm it calls `TriggerBattleEffect` with
-`pPendingFighters_candidate[ACTIVE_FIGHTER.bSelectedActionIndex].bSlotParam`
-as the target slot -- i.e. this menu really does let the player pick
-which pending fighter a card's effect targets. What populates
-`pPendingFighters_candidate`/`bPendingFighterCount_candidate` in the first
-place is not yet traced (not `SetupBattleRoster`), so which specific
-card(s) use `cardMeta[0] == 3` and what a "pending fighter" represents
-narratively (a held-in-reserve ally, most plausibly) is still
-UNCONFIRMED -- but that it is a live, targetable, on-screen fighter pool,
-not a placeholder concept, is now PROVEN via this matched call.
+`OpenFaintedAllyMenu` (`0x0801319C`) opens screen `9` for a card whose
+`g_aCardTargetingMeta[slot][0]` is `3` (Harry's Revive). With at most two fainted allies,
+`ToggleFaintedAllyCursor` switches the cursor between them (`bMenuCursor ^= 1`, or `0`
+with one). `ConfirmFaintedAllyMenu` stores the cursor in `bSelectedActionIndex` as a
+`pFaintedAllies` index, and `TickPlayerActionState` passes that entry's `bSlotParam` to
+`TriggerBattleEffect`.
 
 ## Turn order -- `bAgility`, PROVEN
 
@@ -688,7 +666,7 @@ hardcoded to `10`.
   at roster setup, both later read by target resolution (see "Target
   redirect" above).
 - **`ReviveFighter`** (`0x0800E890`, `src/combat_board/revive_fighter.c`)
-  restores a pending fighter's `wHp`/`wMp` to max and merges it into
+  restores a fainted ally's `wHp`/`wMp` to max and merges it into
   `pFighters` by `bAgility`, moving `bActiveFighterIndex` and
   `g_effectStaging.bCasterIndex` past it when it lands at or before the
   active fighter. Called by opcode `0x97` sub-case `0x1C` (`Revive`) with

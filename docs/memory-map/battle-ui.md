@@ -34,14 +34,14 @@ Matched C: `src/combat_dialog/`.
 
 - **`bMenuScreen`** (`+0x1070`, `BattleMenuScreen`): the open screen. `1` top
   menu, `2` spell list, `4` Special Moves, `5` spell cast levels, `6` enemy
-  target, `7` items, `8` ally target, `9` pending fighter. `0`, `10` and bit
+  target, `7` items, `8` ally target, `9` fainted ally. `0`, `10` and bit
   `0x80` mean no input is taken.
 - **`bMenuCursor`** (`+0x147C`): the highlighted row, or the target slot on
   screens `6`, `8` and `9`.
 - **`bSpellMenuCursor`** (`+0x147D`): the spell-list row that opened screen `5`.
 - **`nTargetFlashEffect`** (`+0x1484`): palette effect flashing the targeted
   fighter's sprite (`FlashEnemyTarget`, `FlashAllyTarget`,
-  `FlashPendingFighter`), ended by the `Stop*Flash` functions.
+  `FlashFaintedAlly`), ended by the `Stop*Flash` functions.
 
 Each `Open*Menu` function sets `bMenuScreen`, redraws the menu frame and the
 fighter's stats panel, and shows one icon per row through
@@ -74,58 +74,32 @@ enabled/grayed array (all `1` by default), then:
   `dwHermioneSpecialUsed != 0` or Ron with `dwRonSpecialUsed != 0` -- the
   per-battle "already used this Special Move" flags, set by
   `DispatchPendingAction`.
-- grays index `2` (`Informus`) **and** index `4` (`Flee`) together, in the
-  same branch, when `DAT_03003f24 == 0xff` -- matching the user's
-  "Informus/Flee grayed out for bosses" fact exactly; `DAT_03003f24` is
-  the natural "is this a boss fight" flag/index candidate (not
-  independently named further here).
+- grays index `2` (`Informus`) and index `4` (`Flee`) in scripted battles,
+  where the pending mode's argument 3 (`g_dwPendingGameMode.dwCurrentGameModeArg3`)
+  is `0xFF`.
 
-**`ConfirmBattleTopMenu`** (`0x08011bec`) is the confirm (A-button) handler for
-this screen, `switch(bMenuCursor)` with 7 cases matching the table above
-1:1:
+**`ConfirmBattleTopMenu`** (`0x08011BEC`) is this screen's confirm handler. Matched C:
+`src/combat_dispatch/`, with the handlers below and the helpers they share.
 
-- **case 0, Cast Spell**: `bMenuScreen = 2` (spell-list screen), then
-  builds the list via `SetBattleMenuIconState(1, i, fighterType, 1)` for
-  `i` in `[0, pFighter->bUnk_0x0F)` -- **`bUnk_0x0F` is the fighter's
-  known-spell count**, directly confirming "only unlocked spells for that
-  character" from the task description.
-- **case 1, Special Move**: if the active fighter is Harry, saves the
-  current mode-stack context and pushes game mode `0x26` via
-  `FUN_0802c7e0(0x26, 1, 0)` -- **this is the Folio Universitas**,
-  matching `DAT_03003f3c == 0x26` already read by `ResumeBattleAfterSubmode_candidate` earlier
-  in [`battle.md`](battle.md) (that function consumes the *result* of a completed card
-  selection, not the menu itself -- the two findings now connect).
-  Otherwise (Hermione/Ron) calls **`OpenSpecialMoveMenu`** (see below) -- one
-  shared 3-item-list screen for both, not per-character screens.
-- **case 2, Informus**: gated by `DAT_03003f00 != 0xff` (a second,
-  independent boss-style check from the graying check above -- same
-  "boss" concept, different flag/slot). Sets the active fighter's
-  `bSelectedActionIndex=0`, **`bSpellId=1`** (`Informus`'s own real
-  `SpellId`, see [`battle.md`](battle.md)'s `bSpellId` writeup -- not borrowed from
-  `Spongify`), `bPendingActionKind=4`, `bSpellLevel=0`, then `bMenuScreen=6`
-  (the same target-select screen spellcasting uses). `bPendingActionKind` is
-  `BattleFighter+0x3B`, i.e. **`bPendingActionKind_candidate`** itself
-  (`None`=`0`/`UsePotion`=`1`/`SpecialMove`=`2`/`Flee`=`3`/`Informus`=`4`)
-  -- the same field `DispatchPendingAction`'s top-level switch reads --
-  so `bPendingActionKind=4` is simply this menu tagging the pending action as
-  `Informus`, exactly like `Flee`/`UsePotion`/`SpecialMove` each tag their
-  own screens; a regular `Cast Spell` selection leaves it at `None` (`0`)
-  instead (see `bMenuScreen==2` above). There is no `Spongify`-borrowing
-  or cast-disambiguation happening here at all -- `Informus` is a
-  first-class pending-action kind with its own real `SpellId`.
-- **case 3, Use Item**: `bMenuScreen = 7` (item-list screen), calls
-  `OpenItemMenu` to build the list.
-- **case 4, Flee**: gated by `DAT_03003f24 != 0xff` (the same flag
-  `OpenBattleTopMenu` already used to gray this entry -- re-checked here
-  too), sets `bMenuScreen=0` (closes the menu) and `bPendingActionKind=3`.
-- **case 5, Folio Bruti**: calls `FUN_0802c7c4(0x2d)` -- a mode-push,
-  presumably to the Folio Bruti screen (not walked further here; see
-  [`../formats/folio_bruti.md`](../formats/folio_bruti.md)).
-- **case 6, Help**: saves mode-stack context and pushes game mode `0x44`
-  via `FUN_0802c800(0x44, ...)` -- matches `DAT_03003f3c == 0x44`, the
-  other mode value `ResumeBattleAfterSubmode_candidate` branches on, consistent with "opens a
-  menu similar to the pause menu" from the user's description (not
-  walked further).
+- **Cast Spell** opens the spell list (screen `2`), one icon per known spell
+  (`stats.bKnownSpellCount`).
+- **Special Move** beeps once Hermione or Ron has used theirs this battle. Harry's
+  queues `PendingActionSpecialMove`, saves the battle's mode arguments in
+  `FightState.abBattleResumeArgs` and pushes `FolioUniversitas` (`PushGameMode_2(0x26, 1, 0)`);
+  the card is read back by `ResumeBattleAfterSubmode_candidate` ([`battle.md`](battle.md)).
+  Hermione and Ron get `OpenSpecialMoveMenu`.
+- **Informus** beeps in scripted battles (`g_GameModeStackContext.dwCurrentGameModeArg3 ==
+  0xFF`); otherwise it queues `PendingActionInformus` with `bSpellId = Informus` and opens
+  the enemy target menu.
+- **Use Item** opens the item menu (screen `7`).
+- **Flee** beeps in scripted battles (checked on the pending mode, as in
+  `OpenBattleTopMenu`); otherwise it queues `PendingActionFlee` and closes the menu.
+- **Folio Bruti** pushes `FolioBruti`.
+- **Help** saves the resume arguments and pushes `HelpTopicScreen` with argument 2 = `6`.
+
+The enemy target menu zooms the camera in (`ZoomBattleCameraIn`: fighters scale to 1.4x and
+slide down, the floor scrolls forward, the wall band lowers, over 8 frames);
+confirming or cancelling it zooms back out.
 
 Cursor movement and A/B dispatch both live in **`TickBattleMenuInput`**:
 Right/Left (`g_wKeysPressed`, see [`input.md`](input.md)) step `bMenuCursor`,
@@ -171,25 +145,14 @@ genuinely two separate layers, not just two ends of one function).
   Diffindo, Ron receives Spongify, and Hermione receives Glacius!".
   `bSpellLevel=0`, `bPendingActionKind_candidate=None` (`bPendingActionKind=0`). Then
   `OpenSpellTierMenu(fighterIdx, cursor)` opens screen `5`.
-- **`bMenuScreen==5`** (`ConfirmSpellTierMenu`, spell cast-level list --
-  Uno/Duo/Tria): confirms the **spell cast-level list from the task
-  description** and gates it on affordability --
-  `fighter.wSp < g_awSpellMpCost[spellId*3+cursor]` beeps/refuses (SP,
-  not MP, despite the field name -- consistent with `ShowBattleMessage`'s
-  `SpCost`/`MpCost` case split in the message table below). Also refuses
-  casting `Spongify` (`bSpellId==1`) while `DAT_03003f24==0xff` (the same
-  boss-flag candidate used to gray `Informus`/`Flee`) -- **a boss fight
-  blocks Spongify specifically**, a new, concrete behavioral fact. Sets
-  `bSpellLevel = cursor`; most spell/level combinations proceed to a
-  target-select screen (`bMenuScreen=6`), except a few that execute
-  immediately with `bSelectedActionIndex=0xfe` (self/no-target): `Fumos`
-  (`bSpellId==8`) at level-1 (`Duo`, its party-wide cast, effect id `32`
-  -- see [`battle.md`](battle.md)'s `Hidden` status bullet), `bSpellId==6`
-  (`PetrificusTotalus`) + level-1, and (generically) any spell's level-2
-  (`Tria`) cast **except `Glacius`** (`bSpellId==4`) -- i.e. by default a
-  `Tria` cast doesn't need a target, with `Glacius` special-cased back
-  into needing one. Not fully explained; flagged rather than
-  over-interpreted.
+- **`bMenuScreen==5`** (`ConfirmSpellTierMenu`, the cast-level list, Uno/Duo/Tria):
+  beeps when `g_awSpellMpCost[bSpellId][cursor]` exceeds `stats.wMp`, or for `Informus`
+  in a scripted battle (no spell list contains `Informus`). Otherwise it sets
+  `bSpellLevel = cursor` and picks the target screen: Fumos Duo (party-wide, effect `32`,
+  see [`battle.md`](battle.md)'s `Hidden` bullet), Petrificus Totalus Duo and every Tria
+  except Incendio's take effect at once (`bSelectedActionIndex = 0xFE`, menu closed);
+  other Fumos levels open the ally target menu, everything else the enemy target menu.
+  The Fumos and Petrificus Duo tests read `bSpellId` and `bSpellLevel` as one halfword.
 - **`bMenuScreen==6`** (`ConfirmEnemyTargetMenu`, the enemy target-select
   confirm): after a vsync wait and some UI cleanup calls, simply writes
   `bSelectedActionIndex = cursor` and `bMenuScreen = 0`. Reads
@@ -219,7 +182,7 @@ genuinely two separate layers, not just two ends of one function).
   confirm): same shape as state 6's confirm -- vsync wait, writes
   `bSelectedActionIndex = cursor`, `bMenuScreen = 0` -- plus, if
   `bPendingActionKind==1` (the `Use Item` marker set above), calls
-  `RemoveItems(itemIndex, 1)`, consuming the used item.
+  `RemoveItems(g_dwBattleItemToConsume, 1)`, consuming the used item.
 
 `Use Item`'s actual effect resolution happens later, in
 `TickPlayerActionState`'s `Actor+0x60` sub-state `2`
@@ -248,28 +211,12 @@ else (Ron): `textId = cursor + 0x8fd` (`2301`-`2303`, i.e. **cursor 0 =
 Stink Pellet, cursor 1 = Wizard Cracker, cursor 2 = Stink Pellet 2**,
 exactly the string-id order already on record).
 
-**`ConfirmSpecialMoveMenu`** (`0x08011eb8`), this screen's confirm handler:
+**`ConfirmSpecialMoveMenu`** (`src/combat_dispatch/confirm_special_move_menu.c`) stores
+the cursor in `bSpellId`. Hermione's cursor 1 and Ron's cursor 2 close the menu at once
+(`bSelectedActionIndex = 0xFE`); Hermione's others open the ally target menu and Ron's
+the enemy target menu.
 
-```c
-BattleFighter *f = ...;
-f->bSpellId = bMenuCursor;   // the selected list index, 0-2
-f->bPendingActionKind_candidate = SpecialMove;   // bPendingActionKind = 2
-if (fighterType == Hermione) {
-    if (f->bSpellId != 1)          // not "Proper Wand Technique"
-        goto target_select;         // OpenAllyTargetMenu
-} else /* Ron */ {
-    if (f->bSpellId != 2)          // not "Stink Pellet 2"
-        goto target_select;         // bMenuScreen = 6, same screen Informus uses
-}
-// self-cast, no target needed:
-f->bSelectedActionIndex = 0xfe;
-bMenuScreen = 0;                   // close menu, execute immediately
-```
-
-So **Ron's `bSpellId` is set directly from the menu cursor (0/1/2)**, the
-same field spells use, and **cursor index 2 (`Stink Pellet 2`) is the one
-self-cast/no-target move** -- `Stink Pellet`(0) and `Wizard Cracker`(1)
-both require picking a target first.
+Ron's self-cast move is cursor 2, `Stink Pellet 2`.
 
 ### Ron's Special Move effect ids, resolved: `44`/`46`/`45`
 
@@ -661,7 +608,7 @@ left (x `0x58`). Text is from `data/text/en_us.json`.
 | 0 | `0x904`, with jingle `0x1A` | "The spell levels-up!" |
 | 1 | `0x902` | "Your escape has been blocked." |
 | 2 | `fighterType + 0x970`, then the move: Harry `value + 0x478`, Hermione `value + 0x8FA`, Ron `value + 0x8FD` | e.g. "Harry performs a Special Move:" |
-| 3 | Harry: `g_adwSpecialMoveResultTextIds[value]`, for moves `3` and `15` plus the targeted ally's `FighterType`, for move `6` `g_adwReviveTextIds[pending fighter's type]`; Hermione `value + 0xA39`; Ron `value + 0xA36` | Special Move result, e.g. "Wow! Harry learned all possible spells!" |
+| 3 | Harry: `g_adwSpecialMoveResultTextIds[value]`, for moves `3` and `15` plus the targeted ally's `FighterType`, for move `6` `g_adwReviveTextIds[fainted ally's type]`; Hermione `value + 0xA39`; Ron `value + 0xA36` | Special Move result, e.g. "Wow! Harry learned all possible spells!" |
 | 4 | `g_adwFighterActionTextIds[fighterType]` (party) or `[rosterIndex + 4]` (enemy), then for a party spell `spellId + 0x95F`, or `0x8F6` with the spell (`@1`) and cast level (`bSpellLevel + 0x969`, `@2`) for spells with levels; nothing more for Buckbeak or an enemy | "Harry casts a spell:" / "The ruby fire crab attacks!" |
 | 5 | attack result, by `param` -- see the table below | "Critical hit!", "@1 damage.", miss/poison/paralysis lines |
 | 6 | pops `aFaintMessages_candidate` until empty: `@1` from `bEffectId` (`<= 2`: `0x8EC + id`; `3`: `0xA3D`; else `0x49E + id`) in `0x997`, "Critical hit!" above 999, then `0xA1B` when `bFlag` is `1`, else the damage in `0x997`; 30 frames per message, then `CheckBattleVictory` | who fainted the target, with what, and the damage |
@@ -694,7 +641,7 @@ left (x `0x58`). Text is from `data/text/en_us.json`.
   `SpellLevelUp` (id `0x1a`). Looks up the module pointer at
   `g_apMusicModules[moduleId]` and plays it as a jingle,
   `krapPlay(module, KRAP_MODE_JINGLE, 0)` (see `krawall.md`).
-- **`PrepareBattleMessageDisplay_candidate`** (`0x08012FD4`) -- clears the
+- **`ClearBattleMessageBox`** (`0x08012FD4`) -- clears the
   message box, resets `dwTextTileCursor` and hides the seven battle menu icons
   (**`g_apBattleMenuIconActors`**, `0x03002668`) via **`HideBattleMenuIcon`**
   (`0x08012CB4`).

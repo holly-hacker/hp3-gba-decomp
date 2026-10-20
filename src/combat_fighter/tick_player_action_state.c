@@ -160,8 +160,8 @@ void TickPlayerActionState(Actor *actor)
                 else
                     SetActorVelocity(g_pFightState->pFighters[i].pActor, 0x8000, 0x15000);
             }
-            for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++)
-                SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0xFFFF0000, 0x25000);
+            for (i = 0; i < g_pFightState->bFaintedAllyCount; i++)
+                SetActorVelocity(g_pFightState->pFaintedAllies[i].pActor, 0xFFFF0000, 0x25000);
             actor->bActionFlags &= 0xfe;
             SetFloorForwardSpeed(0x250);
         } else if (flags == 0x41) {
@@ -196,9 +196,9 @@ void TickPlayerActionState(Actor *actor)
                     SetActorVelocity(g_pFightState->pFighters[i].pActor, 0, 0);
                     ClearActorOrbit(g_pFightState->pFighters[i].pActor);
                 }
-                for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0, 0);
-                    ClearActorOrbit(g_pFightState->pPendingFighters_candidate[i].pActor);
+                for (i = 0; i < g_pFightState->bFaintedAllyCount; i++) {
+                    SetActorVelocity(g_pFightState->pFaintedAllies[i].pActor, 0, 0);
+                    ClearActorOrbit(g_pFightState->pFaintedAllies[i].pActor);
                 }
                 // Real emits an 8-byte block move (ldr/ldr/str/str off one
                 // base each side), not two independent field stores.
@@ -230,9 +230,9 @@ void TickPlayerActionState(Actor *actor)
                         SetActorOrbitX(g_pFightState->pFighters[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
                     }
                 }
-                for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0x10000, 0xFFFDB000);
-                    SetActorOrbitX(g_pFightState->pPendingFighters_candidate[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
+                for (i = 0; i < g_pFightState->bFaintedAllyCount; i++) {
+                    SetActorVelocity(g_pFightState->pFaintedAllies[i].pActor, 0x10000, 0xFFFDB000);
+                    SetActorOrbitX(g_pFightState->pFaintedAllies[i].pActor, 0, (s16)0xFFFFFC00, 0xc);
                 }
                 SetFloorForwardSpeed((s16)0xFFFFFDB0);
                 actor->bActionFlags &= 0xfe;
@@ -241,9 +241,9 @@ void TickPlayerActionState(Actor *actor)
                     SetActorVelocity(g_pFightState->pFighters[i].pActor, 0, 0);
                     ClearActorOrbit(g_pFightState->pFighters[i].pActor);
                 }
-                for (i = 0; i < g_pFightState->bPendingFighterCount_candidate; i++) {
-                    SetActorVelocity(g_pFightState->pPendingFighters_candidate[i].pActor, 0, 0);
-                    ClearActorOrbit(g_pFightState->pPendingFighters_candidate[i].pActor);
+                for (i = 0; i < g_pFightState->bFaintedAllyCount; i++) {
+                    SetActorVelocity(g_pFightState->pFaintedAllies[i].pActor, 0, 0);
+                    ClearActorOrbit(g_pFightState->pFaintedAllies[i].pActor);
                 }
                 SetFloorForwardSpeed(0);
                 actor->bActionState = 0;
@@ -482,7 +482,7 @@ void TickPlayerActionState(Actor *actor)
                 } else if (cardMeta == 3) {
                     TriggerBattleEffect(g_abHarryCardEffectId[g_nFolioUniversitasSlot],
                                          ACTIVE_FIGHTER.bSlotParam,
-                                         g_pFightState->pPendingFighters_candidate[ACTIVE_FIGHTER.bSelectedActionIndex].bSlotParam,
+                                         g_pFightState->pFaintedAllies[ACTIVE_FIGHTER.bSelectedActionIndex].bSlotParam,
                                          g_pFightState->bActiveFighterIndex,
                                          ACTIVE_FIGHTER.bSelectedActionIndex, 0);
                 } else {
@@ -542,8 +542,8 @@ void TickPlayerActionState(Actor *actor)
             actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (ACTIVE_FIGHTER.bFighterType == Harry &&
                 g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                StopBgTileAnimationsAfterCard_candidate();
-            sub_08012B40();
+                StopBgTileAnimationsAfterCard();
+            ResetBattleDisplayEffects();
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             SetActorActionState(actor, 0);
@@ -554,8 +554,8 @@ void TickPlayerActionState(Actor *actor)
             g_pFightState->bAttackAnimState_candidate = 0;
             actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                StopBgTileAnimationsAfterCard_candidate();
-            sub_08012B40();
+                StopBgTileAnimationsAfterCard();
+            ResetBattleDisplayEffects();
             g_nLastDamage = 5;
             SetActorActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pActor, 2);
             ShowBattleMessage(AttackResult, g_nLastDamage, 0);
@@ -572,8 +572,8 @@ void TickPlayerActionState(Actor *actor)
             g_pFightState->bAttackAnimState_candidate = 0;
             actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                StopBgTileAnimationsAfterCard_candidate();
-            sub_08012B40();
+                StopBgTileAnimationsAfterCard();
+            ResetBattleDisplayEffects();
             g_nLastDamage = 0x14;
             SetActorActionState(g_pFightState->pFighters[g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex]].pActor, 2);
             ShowBattleMessage(AttackResult, g_nLastDamage, 0);
@@ -590,8 +590,8 @@ void TickPlayerActionState(Actor *actor)
             g_pFightState->bAttackAnimState_candidate = 0;
             actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
             if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-                StopBgTileAnimationsAfterCard_candidate();
-            sub_08012B40();
+                StopBgTileAnimationsAfterCard();
+            ResetBattleDisplayEffects();
             g_nLastDamage = 0x14;
             g_pFightState->bFaintMessageCount_candidate = 0;
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
@@ -618,8 +618,8 @@ void TickPlayerActionState(Actor *actor)
         if (actor->scriptState.bytes.bAttackOutcomeState != 5)
             return;
         if (g_aCardTargetingMeta[g_nFolioUniversitasSlot][1] != 0)
-            StopBgTileAnimationsAfterCard_candidate();
-        sub_08012B40();
+            StopBgTileAnimationsAfterCard();
+        ResetBattleDisplayEffects();
         g_pFightState->bFaintMessageCount_candidate = 0;
         for (i = 0; i < g_pFightState->bFighterCount; i++) {
             g_nLastDamage = 0x2d;

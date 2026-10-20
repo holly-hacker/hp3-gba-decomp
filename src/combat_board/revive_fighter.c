@@ -8,15 +8,15 @@
 
 #define STAGING(i) (g_pFightState->pStagingFighters[i])
 #define SLOT(i) (g_pFightState->pFighters[i])
-#define PENDING(i) (g_pFightState->pPendingFighters_candidate[i])
+#define FAINTED(i) (g_pFightState->pFaintedAllies[i])
 
-// Brings pending fighter pendingIdx back at full HP and MP and merges it into the turn
+// Brings fainted ally faintedIndex back at full HP and MP and merges it into the turn
 // order (ascending bAgility) ahead of the first fighter that is not faster. The active
 // and caster indices move past it when it lands at or before the active fighter; its
 // bAgility is then set to 0xFF to mark it placed.
-void ReviveFighter(u8 pendingIdx)
+void ReviveFighter(u8 faintedIndex)
 {
-    BattleFighter *pRevived = &PENDING(pendingIdx);
+    BattleFighter *pRevived = &FAINTED(faintedIndex);
     u32 i;
     u32 j;
 
@@ -35,7 +35,7 @@ void ReviveFighter(u8 pendingIdx)
         if (STAGING(i).bAgility >= pRevived->bAgility)
         {
             if (STAGING(g_pFightState->bActiveFighterIndex).bAgility
-                >= PENDING(pendingIdx).bAgility)
+                >= FAINTED(faintedIndex).bAgility)
             {
                 g_pFightState->bActiveFighterIndex++;
                 g_effectStaging.bCasterIndex++;
@@ -43,7 +43,7 @@ void ReviveFighter(u8 pendingIdx)
 
             SLOT(j++) = *pRevived;
             SLOT(j) = STAGING(i);
-            PENDING(pendingIdx).bAgility = 0xFF;
+            FAINTED(faintedIndex).bAgility = 0xFF;
         }
         else
         {
@@ -54,9 +54,9 @@ void ReviveFighter(u8 pendingIdx)
     if (pRevived->bAgility < 0xFF)
         SLOT(j) = *pRevived;
 
-    g_pFightState->bPendingFighterCount_candidate--;
-    if (g_pFightState->bPendingFighterCount_candidate != 0 && pendingIdx == 0)
-        PENDING(0) = PENDING(1);
+    g_pFightState->bFaintedAllyCount--;
+    if (g_pFightState->bFaintedAllyCount != 0 && faintedIndex == 0)
+        FAINTED(0) = FAINTED(1);
 
     PruneFaintedAndRebuildTurnOrder_candidate(1);
 }

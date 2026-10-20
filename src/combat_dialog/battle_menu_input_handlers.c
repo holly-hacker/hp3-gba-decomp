@@ -12,7 +12,7 @@ const BattleMenuInputHandler g_apfnBattleMenuConfirmHandlers[11] = {
     ConfirmEnemyTargetMenu,
     ConfirmItemMenu,
     ConfirmAllyTargetMenu,
-    ConfirmPendingFighterMenu_candidate,
+    ConfirmFaintedAllyMenu,
     IgnoreBattleMenuInput,
 };
 
@@ -26,6 +26,6 @@ const BattleMenuInputHandler g_apfnBattleMenuCancelHandlers[11] = {
     CancelEnemyTargetMenu,
     CancelToBattleTopMenu,
     CancelAllyTargetMenu,
-    CancelPendingFighterMenu_candidate,
+    CancelFaintedAllyMenu,
     IgnoreBattleMenuInput,
 };

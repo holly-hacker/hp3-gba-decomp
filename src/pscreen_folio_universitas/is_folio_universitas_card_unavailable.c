@@ -3,16 +3,18 @@
 #include "pscreen_folio_universitas.h"
 #include "combat.h"
 
-// Cards that cannot be picked from battle right now: the first combos until the battle's resume
-// arguments allow them, and the reinforcement cards while no fighter is waiting.
+// Cards whose combo cannot be played in the current battle.
 u32 IsFolioUniversitasCardUnavailable(s32 cardIndex)
 {
+    // Cards 3-5, Tempest Jinx: it blows an opponent off-screen, which would skip a scripted
+    // battle's (0xFF) opponent.
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == FolioUniversitasPickCombo
-        && g_pFightState->abBattleResumeArgs_candidate[2] == 0xFF && cardIndex > 2 && cardIndex <= 5)
+        && g_pFightState->abBattleResumeArgs[2] == 0xFF && cardIndex > 2 && cardIndex <= 5)
         return 1;
 
+    // Cards 20-22, Revive: only while an ally has fainted.
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == FolioUniversitasPickCombo
-        && g_pFightState->bPendingFighterCount_candidate == 0 && cardIndex > 0x13 && cardIndex <= 0x16)
+        && g_pFightState->bFaintedAllyCount == 0 && cardIndex > 19 && cardIndex <= 22)
         return 1;
 
     return 0;

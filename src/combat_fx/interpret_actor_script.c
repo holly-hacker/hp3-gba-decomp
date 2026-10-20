@@ -817,7 +817,7 @@ void InterpretActorScript(Actor *actor)
             SetBgScrollStep(args[1], 0, 0);
             SetBgScrollFixed(args[1], 0, 0);
             if (args[1] == 1)
-                LoadGraphicBlobTiles(1, GetBattleBackgroundGraphic(), 0x180);
+                LoadGraphicBlobTiles(1, GetBattleWallGraphic(), 0x180);
             break;
         case BSOP_Unk94:  // SetActorListActive_candidate(1)
             SetActorListActive_candidate(1);
@@ -963,7 +963,7 @@ void InterpretActorScript(Actor *actor)
                 else
                 {
                     SetPlayerActorAnim(targetFighter->pActor, 0);
-                    InitCharacterSpells_candidate(targetFighter->bFighterType, &targetFighter->stats.wHp);
+                    LearnAllSpells(targetFighter->bFighterType, &targetFighter->stats);
                 }
                 break;
             case BSSTATUS_SpellPowerBoost:
@@ -1012,8 +1012,8 @@ void InterpretActorScript(Actor *actor)
                 break;
             }
             break;
-        case BSOP_Unk98:  // sub_08012A00 call
-            sub_08012A00();
+        case BSOP_RestoreBattleScanlineEffects:
+            RestoreBattleScanlineEffects();
             break;
         case BSOP_SetLocalAToPartySize:  // sets local A to the party size
             if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF && g_GameModeStackContext.dwCurrentGameModeArg1 == 3)
@@ -1092,7 +1092,7 @@ void InterpretActorScript(Actor *actor)
             actor->modeState.effect.abLocal[args[1]] = Mt19937RandMax(args[2]);
             break;
         case BSOP_ReloadBattleBackgroundTiles:  // reloads the room's battle background tiles on BG1
-            LoadGraphicBlobTiles(1, GetBattleBackgroundGraphic(), 0x180);
+            LoadGraphicBlobTiles(1, GetBattleWallGraphic(), 0x180);
             break;
         case BSOP_PlaySoundOrDefault:  // PlaySound, or sound 0x4B when the context value is 0
             if (g_effectStaging.wContextValue == 0)

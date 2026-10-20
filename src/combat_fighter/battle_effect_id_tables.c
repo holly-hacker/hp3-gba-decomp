@@ -12,7 +12,7 @@ const u8 g_abHarryCardEffectId[22] = {
 };
 
 // [0] is the target type read by TickPlayerActionState. [1] is nonzero for
-// cards whose resolution calls StopBgTileAnimationsAfterCard_candidate.
+// cards whose resolution calls StopBgTileAnimationsAfterCard.
 const u8 g_aCardTargetingMeta[22][2] = {
     { 0, 1 }, { 1, 1 }, { 0, 1 }, { 2, 0 }, { 0, 0 }, { 0, 0 }, { 3, 0 }, { 0, 1 },
     { 0, 0 }, { 2, 1 }, { 0, 1 }, { 0, 0 }, { 0, 0 }, { 1, 0 }, { 0, 1 }, { 2, 1 },
