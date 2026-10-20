@@ -65,7 +65,7 @@ void InitializeOverworld(void)
         ClearVram();
         ClearObjPaletteSlots();
         g_wKeysPressed = 0;
-        g_dwGameModeFlags &= ~8;
+        g_dwGameModeFlags &= ~GameModeFlagUnk8;
         ReserveObjPaletteSlot(1);
         ReserveObjPaletteSlot(2);
         SetVBlankCallback(OverworldVBlankCallback);
@@ -84,7 +84,7 @@ void InitializeOverworld(void)
         DisableBg(0);
 
         // Make the requested room current.
-        g_dwGameModeFlags &= ~0x2000000;
+        g_dwGameModeFlags &= ~GameModeFlagUnk2000000;
         g_dwColorCycleActiveMask = 0;
         g_bCurrentRoomId = g_GameModeStackContext.dwCurrentGameModeArg2;
         InitObjTileAllocBitmaps(0);
@@ -210,8 +210,8 @@ void InitializeOverworld(void)
         }
 
         // Music.
-        if (g_dwGameModeFlags & 0x1000000)
-            g_dwGameModeFlags &= ~0x1000000;
+        if (g_dwGameModeFlags & GameModeFlagKeepScriptMusic)
+            g_dwGameModeFlags &= ~GameModeFlagKeepScriptMusic;
         else if (g_abQuestEventState[QUEST_ALT_PRESENTATION] != 0)
             PlayMusicModule(g_adwRoomQuestMusicOverride[g_GameModeStackContext.dwCurrentGameModeArg2]);
         else if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0xf && (u8)(g_abQuestEventState[QUEST_STORY_STAGE] - 2) < 2)
@@ -220,10 +220,10 @@ void InitializeOverworld(void)
             PlayMusicModule(CURRENT_ROOM.bDefaultMusicModule);
 
         // Display flags and the room's BG control overrides.
-        g_dwGameModeFlags &= ~0x400000;
+        g_dwGameModeFlags &= ~GameModeFlagUnk400000;
         UpdateOverworldCamera_candidate(1);
         sub_0803DB68();
-        if ((g_dwGameModeFlags & 0x100020) != 0x100020)
+        if ((g_dwGameModeFlags & (SerialSessionActive | GameModeFlagUnk100000)) != (SerialSessionActive | GameModeFlagUnk100000))
             TickCameraFocus_candidate(0);
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideA);
         ApplyRoomBgControlOverride_candidate(CURRENT_ROOM.pBgControlOverrideB);
@@ -408,7 +408,7 @@ void InitializeOverworld(void)
         if (g_bCurrentRoomId != 0x20)
             ShowMapNamePopup();
 
-        g_dwGameModeFlags &= ~0x10;
+        g_dwGameModeFlags &= ~GameModeFlagSwitchingMode;
         g_bControlSlotTicks_candidate = 0;
         g_dwPendingCameraFocusFlag = 0;
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3

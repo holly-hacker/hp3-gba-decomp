@@ -1,4 +1,5 @@
 #include "types.h"
+#include "modes.h"
 #include "commands.h"
 #include "sound.h"
 #include "area.h"
@@ -13,6 +14,6 @@ void RoomScriptOpPlayMusicModuleAndFlagIfChain1(PlayMusicModuleAndFlagIfChain1Re
 {
     // InitializeOverworld clears this bit and skips its room-music selection when it is set.
     if (g_bRoomScriptCurrentChain == 1)
-        g_dwGameModeFlags |= 0x1000000;
+        g_dwGameModeFlags |= GameModeFlagKeepScriptMusic;
     PlayMusicModule(pRecord->bModuleId);
 }

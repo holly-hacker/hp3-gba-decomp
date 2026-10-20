@@ -1,4 +1,5 @@
 #include "types.h"
+#include "modes.h"
 #include "commands.h"
 #include "hero.h"
 #include "main.h"
@@ -15,6 +16,6 @@ void RoomScriptOpCloseRoomDialog(CloseRoomDialogRecord *pRecord)
 
     for (i = 0; i < ARRAY_COUNT(g_abRoomScriptExitParams_candidate); i++)
         g_abRoomScriptExitParams_candidate[i] = pRecord->bExitParam;
-    if (g_dwGameModeFlags & 1)
-        g_dwGameModeFlags &= ~1;
+    if (g_dwGameModeFlags & GameModeFlagOverlayMode)
+        g_dwGameModeFlags &= ~GameModeFlagOverlayMode;
 }

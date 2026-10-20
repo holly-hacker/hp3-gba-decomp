@@ -11,16 +11,16 @@ void TickGameModeStack(void)
 
     if (IsGameModeTransitionPending())
     {
-        g_dwGameModeFlags |= 0x10;
+        g_dwGameModeFlags |= GameModeFlagSwitchingMode;
         DispatchGameModeDestroy();
         g_dwPendingGameMode.dwCurrentGameMode &= ~0x80;
-        g_dwGameModeFlags &= ~0x80000000;
+        g_dwGameModeFlags &= ~GameModeFlagModeChangeRequested;
 
         g_PrevGameModeStackContext = g_GameModeStackContext;
         g_GameModeStackContext = g_dwPendingGameMode;
 
         DispatchGameModeInit();
-        g_dwGameModeFlags &= ~0x10;
+        g_dwGameModeFlags &= ~GameModeFlagSwitchingMode;
     }
 
     g_pVBlankState->dwFrameCounter++;

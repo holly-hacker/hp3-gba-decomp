@@ -8,6 +8,6 @@ void DispatchGameModeDestroy(void)
 
     ResetKeyInput();
     pDestroyFn = g_pGameModeDispatchTable[g_GameModeStackContext.dwCurrentGameMode].pDestroyFn;
-    if (pDestroyFn != NULL && (g_dwGameModeFlags & 1) == 0)
+    if (pDestroyFn != NULL && (g_dwGameModeFlags & GameModeFlagOverlayMode) == 0)
         pDestroyFn();
 }

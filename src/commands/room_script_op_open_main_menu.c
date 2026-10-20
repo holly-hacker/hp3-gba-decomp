@@ -6,5 +6,5 @@
 void RoomScriptOpOpenMainMenu(RoomScriptRecord *pRecord)
 {
     PushGameMode(MainMenu);
-    g_dwGameModeFlags |= 0x80000000;
+    g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
 }

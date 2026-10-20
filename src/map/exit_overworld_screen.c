@@ -71,8 +71,8 @@ void ExitOverworldScreen(void)
     sub_08024918();
     RestoreDefaultVBlankCallback();
 
-    if (g_dwGameModeFlags & 0x80000)
-        g_dwGameModeFlags |= 0x400000;
+    if (g_dwGameModeFlags & GameModeFlagUnk80000)
+        g_dwGameModeFlags |= GameModeFlagUnk400000;
 
     StopAllSoundEffects();
     FreeAllParticleEmitters();
@@ -85,5 +85,5 @@ void ExitOverworldScreen(void)
     sub_080203CC();
     FreeBgTileAnimations();
 
-    g_dwGameModeFlags &= ~0x40000000;
+    g_dwGameModeFlags &= ~GameModeFlagUnk40000000;
 }

@@ -20,7 +20,8 @@ void HandleOverworldPauseMenuInput(void)
         && g_dwRoomChainRanThisFrame_candidate == 0
         && IsGameModeTransitionPending() == 0
         && g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bState != 1
-        && (g_dwGameModeFlags & 0x80000811) == 0
+        && (g_dwGameModeFlags & (GameModeFlagOverlayMode | GameModeFlagSwitchingMode
+                                 | GameModeFlagScreenTransition | GameModeFlagModeChangeRequested)) == 0
         && (g_pPlayerActor->dwFlags & ActorFlagAnimPaused) == 0
         && g_pPlayerActor->bActionState == 0x21) {
         if (g_wKeysPressed & KeyStart) {

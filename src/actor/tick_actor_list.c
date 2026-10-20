@@ -1,4 +1,5 @@
 #include "types.h"
+#include "modes.h"
 #include "actor.h"
 #include "main.h"
 
@@ -28,7 +29,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
     g_dwCollisionQueueCount = 0;
     layer = 0;
 
-    if ((g_dwGameModeFlags & 0x40008) == 8) {
+    if ((g_dwGameModeFlags & (GameModeFlagUnk8 | GameModeFlagUnk40000)) == GameModeFlagUnk8) {
         actor = (Actor *)list->pHead;
         while (actor != NULL) {
             next = (Actor *)actor->node.pNext;
@@ -44,7 +45,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
             actor = next;
         }
 
-        if (!(g_dwGameModeFlags & 0x800) && g_dwCollisionQueueCount != 0 &&
+        if (!(g_dwGameModeFlags & GameModeFlagScreenTransition) && g_dwCollisionQueueCount != 0 &&
             list == &g_ActiveActorListState)
             pfnCheckCollisions(g_dwCollisionQueueCount, g_apCollisionQueue);
 

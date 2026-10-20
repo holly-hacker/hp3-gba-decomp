@@ -75,7 +75,7 @@ single-purpose fields, same as `dwModeState`/`dwModeTimer`/
 
 `TickGameModeStack` also pumps the link-cable comm packet
 (`TickSerialCommIfActive_candidate`, `0x0803EF5C`) when a link session is
-active (`g_dwGameModeFlags` bit `0x20`) -- see `serial.md` for that subsystem.
+active (`SerialSessionActive`) -- see `serial.md` for that subsystem.
 
 `InitGameModeStack` (`0x0802C750`, matched: `src/modes/init_game_mode_stack.c`)
 zeroes the current mode, seeds pending/previous from it, then pushes
@@ -107,7 +107,8 @@ The three dispatchers (`DispatchGameModeInit`/`Update`/`Destroy`,
 index this table by `g_GameModeStackContext.dwCurrentGameMode`, call the
 selected slot's function pointer if non-NULL, and are otherwise identical
 except: `Init`/`Destroy` additionally call `ResetKeyInput` first, and
-`Destroy` additionally requires `g_dwGameModeFlags` bit `0x1` clear.
+`Destroy` additionally requires `GameModeFlagOverlayMode` clear. The
+`g_dwGameModeFlags` bits are the `GameModeFlags` enum in `include/modes.h`.
 
 `pDestroyFn`'s functions were previously misnamed `DrawXxx` in Ghidra (a
 stale guess from before this dispatch timing was established) and have been

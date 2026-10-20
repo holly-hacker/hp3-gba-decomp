@@ -2,8 +2,7 @@
 
 #include "types.h"
 
-// A broad game-mode-state flags word touched by dozens of functions across
-// overworld/room/cutscene transitions.
+// GameModeFlags (modes.h) bits, set and tested across mode, room and screen transitions.
 extern u32 g_dwGameModeFlags;
 // Read only by WaitForVBlank and written only by AgbMain: the frame-pacing
 // target WaitForVBlank busy-waits up to.

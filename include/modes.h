@@ -134,7 +134,7 @@ extern const GameModeDispatchEntry g_pGameModeDispatchTable[72];  // src/modes/g
 // Runs the current mode's pInitFn/pUpdateFn/pDestroyFn slot out of
 // g_pGameModeDispatchTable. DispatchGameModeInit additionally calls
 // ResetKeyInput first; DispatchGameModeDestroy additionally checks
-// g_dwGameModeFlags bit 0x1 before dispatching.
+// GameModeFlagOverlayMode before dispatching.
 extern void DispatchGameModeInit(void);
 extern void DispatchGameModeUpdate(void);
 extern void DispatchGameModeDestroy(void);
@@ -143,12 +143,35 @@ extern void DispatchGameModeDestroy(void);
 // TickGameModeStack has a mode change to apply this frame.
 extern s32 IsGameModeTransitionPending(void);
 
+// g_dwGameModeFlags bits. No code sets the Unk bits; they are only tested or cleared.
 typedef enum {
+    // A dialog or choose-character mode was pushed over the current mode;
+    // DispatchGameModeDestroy keeps the mode underneath alive while set.
+    GameModeFlagOverlayMode = 0x1,
+    GameModeFlagUnk8 = 0x8,
+    // Set by TickGameModeStack from a mode's destroy through the next mode's init.
+    GameModeFlagSwitchingMode = 0x10,
     SerialSessionActive = 0x20,
-    // No code sets these; TickCameraCutawayActor disables BG0 when any is set.
     GameModeFlagUnk80 = 0x80,
+    GameModeFlagScreenTransitionOut = 0x400,  // with GameModeFlagScreenTransition
+    // A screen transition handler is running (PlayScreenTransition*ByIndex).
+    GameModeFlagScreenTransition = 0x800,
+    GameModeFlagSerialMessageQueued = 0x1000,  // set by QueueSerialMessage, never read
     GameModeFlagUnk4000 = 0x4000,
+    GameModeFlagUnk10000 = 0x10000,
+    GameModeFlagUnk20000 = 0x20000,
+    GameModeFlagUnk40000 = 0x40000,
+    GameModeFlagUnk80000 = 0x80000,
+    GameModeFlagUnk100000 = 0x100000,
+    GameModeFlagUnk400000 = 0x400000,
     GameModeFlagUnk800000 = 0x800000,
+    // A chain 1 room script started music, so InitializeOverworld keeps it
+    // instead of playing the room's own.
+    GameModeFlagKeepScriptMusic = 0x1000000,
+    GameModeFlagUnk2000000 = 0x2000000,
+    GameModeFlagUnk40000000 = 0x40000000,
+    // Set beside some PushGameMode calls; cleared once TickGameModeStack switches modes.
+    GameModeFlagModeChangeRequested = 0x80000000,
 } GameModeFlags;
 
 // u32: incremented once per TickGameModeStack call, before mode dispatch.

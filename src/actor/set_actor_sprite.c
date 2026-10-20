@@ -1,3 +1,4 @@
+#include "modes.h"
 #include "color.h"
 #include "actor.h"
 #include "main.h"
@@ -15,7 +16,7 @@ void SetActorSprite(Actor *actor, const void *pRecord)
 
     palette = record->pPalette;
     if (palette != 0) {
-        if (g_dwGameModeFlags & 0x10)
+        if (g_dwGameModeFlags & GameModeFlagSwitchingMode)
             LoadObjPaletteColors(palette->aColors, actor->oam.paletteNum << 4, 0x10);
         else
             QueueObjPaletteLoad(palette->aColors, actor->oam.paletteNum << 4, 0x10);

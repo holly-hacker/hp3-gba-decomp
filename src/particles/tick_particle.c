@@ -1,4 +1,5 @@
 #include "types.h"
+#include "modes.h"
 #include "particles.h"
 #include "main.h"
 
@@ -38,7 +39,7 @@ s8 TickParticle(Particle *particle)
     else
         collision = 0;
 
-    if (!(g_dwGameModeFlags & 0x440000)) {
+    if (!(g_dwGameModeFlags & (GameModeFlagUnk40000 | GameModeFlagUnk400000))) {
         if (collision == 1)
             goto free;
         result = DrawParticle(particle);

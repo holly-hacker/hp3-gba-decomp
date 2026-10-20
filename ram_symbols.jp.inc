@@ -322,10 +322,7 @@
 .set g_aLupinPotionBg2Scroll,                0x03003B9C
 
 @ --- include/main.h ---
-.set g_dwGameModeFlags,                      0x03003BA4  @ u32: broad game-mode flags word
-                                                         @ overworld/room/cutscene transitions and
-                                                         @ TickGameModeStack; individual bits
-                                                         @ unconfirmed
+.set g_dwGameModeFlags,                      0x03003BA4  @ u32: GameModeFlags (include/modes.h)
 .set g_dwFrameSyncTarget,                    0x03003BA8
 
 @ --- include/map.h ---

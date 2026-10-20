@@ -107,7 +107,8 @@ Runs last in the overworld frame. It first calls `HandleWanderingMonsterTouch`, 
 opens a menu only when every gate passes: the controlled actor's `bActionSubState`
 is not 5, `g_dwRoomChainRanThisFrame_candidate` (`0x03001DF0`) is clear, no game mode
 transition is pending, the slot's queued actor move is not active (`bState != 1`),
-`g_dwGameModeFlags & 0x80000811` is clear, the player actor is not
+none of `GameModeFlagOverlayMode`, `GameModeFlagSwitchingMode`,
+`GameModeFlagScreenTransition` and `GameModeFlagModeChangeRequested` is set, the player actor is not
 `ActorFlagAnimPaused`, and its `bActionState` is `0x21`. Then:
 
 - Start (`0x8` in `g_wKeysPressed`) pushes `InGameMenu` (`0x0A`); Select (`0x4`)

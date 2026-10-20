@@ -95,7 +95,7 @@ through `TickParticle`, so particles are queued among the actors of their priori
    `wParam38`).
 3. Unless `ParticleEmitterFlagNoCollision`, sets the OAM priority from the collision type
    under the particle (`UpdateParticleCollision`: bits 6-7 plus 1).
-4. Unless `g_dwGameModeFlags` has `0x40000` or `0x400000`, frees the particle on collision
+4. Unless `g_dwGameModeFlags` has `GameModeFlagUnk40000` or `GameModeFlagUnk400000`, frees the particle on collision
    type 1 and otherwise queues its OAM entry (`DrawParticle`). Offscreen particles are not
    queued. A full OAM queue sets `g_bParticleSpawnBlocked`.
 

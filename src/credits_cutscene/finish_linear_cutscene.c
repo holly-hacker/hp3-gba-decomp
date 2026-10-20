@@ -28,7 +28,7 @@ void FinishLinearCutscene(void)
     {
         g_abRoomScriptExitParams_candidate[0] = 0;
         PushGameMode_2(Overworld, 0, 0x10);
-        g_dwGameModeFlags |= 0x80000000;
+        g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
     }
     else
     {

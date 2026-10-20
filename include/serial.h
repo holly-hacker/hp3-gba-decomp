@@ -126,7 +126,7 @@ extern s32 BeginSerialSession(void);
 extern u32 GetSerialMode(void);
 extern void SetSerialMode(u32 mode);
 // Pumps the link-cable comm packet when a link session is active
-// (g_dwGameModeFlags bit 0x20); see docs/memory-map/serial.md.
+// (SerialSessionActive); see docs/memory-map/serial.md.
 extern void TickSerialCommIfActive_candidate(void);
 extern s16 GetMt19937LastRollByte(void);
 extern s16 GetSerialChecksumRollByte(void);

@@ -14,6 +14,6 @@ void RoomScriptOpShowChooseCharacter(ShowChooseCharacterRecord *pRecord)
 {
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    g_dwGameModeFlags |= 1;
+    g_dwGameModeFlags |= GameModeFlagOverlayMode;
     PushGameMode_3(ChooseCharacter, pRecord->bModeArg1, pRecord->bModeArg2, pRecord->bModeArg3);
 }

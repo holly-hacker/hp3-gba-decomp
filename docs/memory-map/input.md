@@ -22,7 +22,7 @@ state.
 if (g_wInputDisabled != 0) {
     // clears g_wKeysHeld/g_wKeysHeldPrevious/g_wKeysPressed/g_wKeysReleased
     // and all four per-player arrays to 0, then returns
-} else if ((g_dwGameModeFlags & 0x20) != 0) {
+} else if ((g_dwGameModeFlags & SerialSessionActive) != 0) {
     // serial-link input: update both players' masks from the link
     // input buffer (g_awSerialKeysReceived, 0x03005A0C, see
     // docs/memory-map/serial.md), then select the local player's slot

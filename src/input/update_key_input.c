@@ -1,4 +1,5 @@
 #include "types.h"
+#include "modes.h"
 #include "input.h"
 #include "serial.h"
 #include "hw/io_regs.h"
@@ -25,7 +26,7 @@ void UpdateKeyInput(void)
         return;
     }
 
-    if ((g_dwGameModeFlags & 0x20) != 0)
+    if ((g_dwGameModeFlags & SerialSessionActive) != 0)
     {
         s32 i;
         s32 localPlayer = GetSerialPlayerId();

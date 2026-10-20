@@ -344,10 +344,7 @@
 .set g_aLupinPotionBg2Scroll,                0x03003B3C  @ s32[2]
 
 @ --- include/main.h ---
-.set g_dwGameModeFlags,                      0x03003B44  @ u32: broad flags word read/written across
-                                                         @ overworld/room/cutscene transitions and
-                                                         @ TickGameModeStack; individual bits
-                                                         @ unconfirmed
+.set g_dwGameModeFlags,                      0x03003B44  @ u32: GameModeFlags (include/modes.h)
 .set g_dwFrameSyncTarget,                    0x03003B48  @ u32: frame-pacing target set once by AgbMain,
                                                          @ consumed only by WaitForVBlank
 

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "modes.h"
 #include "hw/io_regs.h"
 #include "mem.h"
 #include "serial.h"
@@ -27,5 +28,5 @@ void QueueSerialMessage(u32 type, u32 data)
     }
     message.bSeq = g_bSerialTick;
     CopyMemory(&g_SerialSendMessage, &message, sizeof(message));
-    g_dwGameModeFlags |= 0x1000;
+    g_dwGameModeFlags |= GameModeFlagSerialMessageQueued;
 }
