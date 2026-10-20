@@ -24,6 +24,8 @@ typedef enum {
                                                        // the actor against the room terrain
     ActorFlagOnscreen                 = 0x400,      // set by UpdateActorOnscreenFlags
     ActorFlagTickHandlerSuspendsMovement = 0x800,   // pfnTick asked to skip the rest of this tick
+    ActorFlagUnk2000                  = 0x2000,     // set by most room actor constructors; no reader
+                                                       // found yet
     ActorFlagCollisionGroup_candidate = 0x4000,     // CheckActorCollisions skips a pair that both set it
     ActorFlagSpecialMoveTrigger       = 0x8000,
     ActorFlagTerrainCollisionB_candidate = 0x10000, // see ActorFlagTerrainCollisionA_candidate
@@ -446,7 +448,8 @@ typedef struct Actor {
     u8 bTerrainType;        // 0x7D, collision type under the actor, set by RespondToTerrain
     u8 pad_7E[0x02];        // -> 0x80
     u32 dwStateTimer;       // 0x80
-    u16 wUnk84;             // 0x84, zeroed by the type 6 room actor constructor
+    s16 wUnk84;             // 0x84, zeroed by the type 6 room actor constructor. Field spell
+                             // effects: ticks of flight left, from 45; see TickDiffindoEffect
     u16 wTimedMoveTicks;    // 0x86, ticks left in a StartActorTimedMove move
     u8 pad_88[0x02];        // -> 0x8a
     u16 wActionVariant;     // 0x8A

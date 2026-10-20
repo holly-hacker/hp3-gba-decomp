@@ -377,8 +377,10 @@
 .set g_pRoomCollisionTilemapBuffer,           0x03004028
 .set g_pRoomCollisionBehaviorTable,           0x0300402C
 .set g_pRoomCollisionTilemap,                 0x03004030
-.set g_dwPendingCameraFocusFlag,             0x03004034
-.set g_pPendingCameraFocus_candidate,        0x03004038
+.set g_dwFieldSpellActive,                   0x03004034
+.set g_pFieldSpellEffectActor,               0x03004038
+.set g_pFieldSpellCompanionActor,            0x0300403C
+.set g_nLumosScale,                          0x03004040
 
 @ --- include/oam.h ---
 .set g_pOamShadowBuffer,    0x03004048

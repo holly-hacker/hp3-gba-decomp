@@ -148,7 +148,7 @@ u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type)
         }
         break;
     case 0x1F:
-        if (g_dwPendingCameraFocusFlag == 0 || g_pPlayerActor->bFighterIndex != 1)
+        if (g_dwFieldSpellActive == 0 || g_pPlayerActor->bFighterIndex != 1)
             type = 1;
         break;
     case 0x29:

@@ -15,9 +15,9 @@ void SetPartyMemberAnim(Actor *actor, u8 anim)
     switch (anim)
     {
     case PartyAnimStand:
-        if (g_dwPendingCameraFocusFlag != 0 && actor->bFighterIndex == 1)
+        if (g_dwFieldSpellActive != 0 && actor->bFighterIndex == 1)
         {
-            SetActorAssetRecord(actor, &g_PartyFocusGfx_candidate);
+            SetActorAssetRecord(actor, &g_PartyLumosGfx);
             SetActorAnimFrame(actor, g_abPartyStandFrames[actor->bFacing]);
         }
         else
@@ -31,9 +31,9 @@ void SetPartyMemberAnim(Actor *actor, u8 anim)
         actor->dwFlags &= ~ActorFlagHasAnimation;
         break;
     case PartyAnimWalk:
-        if (g_dwPendingCameraFocusFlag != 0 && actor->bFighterIndex == 1)
+        if (g_dwFieldSpellActive != 0 && actor->bFighterIndex == 1)
         {
-            SetActorAnimData(actor, &g_PartyFocusGfx_candidate, g_aPartyWalkAnims[actor->bFacing], 0);
+            SetActorAnimData(actor, &g_PartyLumosGfx, g_aPartyWalkAnims[actor->bFacing], 0);
         }
         else if (actor->wCharacterId_candidate == 4)
         {

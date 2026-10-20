@@ -22,28 +22,28 @@ void TickActorCastFieldSpell(Actor *actor)
             actor->dwFlags &= ~ActorFlagSpecialMoveTrigger;
             switch (actor->bFighterIndex) {
             case 0:
-                SpawnFieldSpellEffect_candidate(actor, 0);
+                SpawnFieldSpellEffect(actor, 0);
                 break;
             case 1:
-                SpawnFieldSpellEffect_candidate(actor, 1);
+                SpawnFieldSpellEffect(actor, 1);
                 break;
             case 2:
-                SpawnFieldSpellEffect_candidate(actor, 2);
+                SpawnFieldSpellEffect(actor, 2);
                 break;
             case 3:
-                SpawnFieldSpellEffect_candidate(actor, 3);
+                SpawnFieldSpellEffect(actor, 3);
                 break;
             case 4:
-                SpawnFieldSpellEffect_candidate(actor, 4);
+                SpawnFieldSpellEffect(actor, 4);
                 break;
             case 5:
-                SpawnFieldSpellEffect_candidate(actor, 5);
+                SpawnFieldSpellEffect(actor, 5);
                 break;
             case 6:
-                SpawnFieldSpellEffect_candidate(actor, 6);
+                SpawnFieldSpellEffect(actor, 6);
                 break;
             case 7:
-                SpawnFieldSpellEffect_candidate(actor, 7);
+                SpawnFieldSpellEffect(actor, 7);
                 break;
             }
         }

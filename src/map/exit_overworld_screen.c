@@ -65,8 +65,8 @@ void ExitOverworldScreen(void)
         && g_dwPendingGameMode.dwCurrentGameModeArg3 != 2)
         sub_0802B08C();
 
-    if (g_dwPendingCameraFocusFlag != 0)
-        RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
+    if (g_dwFieldSpellActive != 0)
+        EndFieldSpellEffect(g_pFieldSpellEffectActor);
 
     FreePartyActors();
     RestoreDefaultVBlankCallback();

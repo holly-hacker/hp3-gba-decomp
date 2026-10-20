@@ -358,7 +358,7 @@
 .set g_bCurrentRoomId,                       0x03003B50  @ byte: current room/map id
 .set g_bControlSlotTicks_candidate,          0x03003B58  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
 .set g_bPendingQuestStateOverride_candidate, 0x03003B5A  @ u8: 0xFF = none; else copied into quest state 0 on room entry
-.set g_dwRoomBgFlag_candidate,               0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by sub_0802E6FC
+.set g_dwRoomBgFlag_candidate,               0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by EndFieldSpellEffect
 .set g_dwPauseMenuLocked,                    0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
 .set g_bRoomSwitchState,                     0x03003B64  @ u8: current room switch state (0 or 1), see SetRoomSwitchState
 .set g_pRoomActorStateBuffer,               0x03003B68  @ 0x20BC-byte buffer, allocated by InitRoomState; see docs/formats/save.md
@@ -400,8 +400,10 @@
 .set g_pRoomCollisionTilemapBuffer,           0x03003FC8  @ u8 *: decompressed collision tilemap resource, 4-byte header then the pattern ids
 .set g_pRoomCollisionBehaviorTable,           0x03003FCC  @ u8 *: 16 collision bytes per pattern, see docs/formats/collision.md
 .set g_pRoomCollisionTilemap,                 0x03003FD0  @ u16 *: pattern ids of the 32x32-pixel blocks, g_pRoomCollisionTilemapBuffer + 4
-.set g_dwPendingCameraFocusFlag,             0x03003FD4  @ u32: cleared on room entry
-.set g_pPendingCameraFocus_candidate,        0x03003FD8  @ void *: argument RestorePendingCameraFocus_candidate is called with
+.set g_dwFieldSpellActive,                   0x03003FD4  @ u32: 1 while a field spell effect actor exists; cleared on room entry
+.set g_pFieldSpellEffectActor,               0x03003FD8  @ Actor *: the field spell effect actor
+.set g_pFieldSpellCompanionActor,            0x03003FDC  @ Actor *: Lumos's glow actor
+.set g_nLumosScale,                          0x03003FE0  @ s32: 16.16 affine scale of Lumos's light
 
 @ --- include/oam.h ---
 .set g_pOamShadowBuffer,         0x03003FE8

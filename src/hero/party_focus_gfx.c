@@ -5,7 +5,7 @@
 const ActorGfxRecord g_UnusedPartyGfx = {
     (void *)gOverworldPlayer002Tiles, (void *)gOverworldPlayer002Frames,
 };
-// Replaces the walk sprites of fighter 1 while g_dwPendingCameraFocusFlag is set.
-const ActorGfxRecord g_PartyFocusGfx_candidate = {
-    (void *)gOverworldPlayer003Tiles, (void *)gOverworldPlayer003Frames,
+// The walk sprites of a party member casting Lumos (bFighterIndex 1) while its light is lit.
+const ActorGfxRecord g_PartyLumosGfx = {
+    (void *)gHarryLumosTiles, (void *)gHarryLumosFrames,
 };

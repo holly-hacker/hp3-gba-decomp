@@ -410,7 +410,7 @@ void InitializeOverworld(void)
 
         g_dwGameModeFlags &= ~GameModeFlagSwitchingMode;
         g_bControlSlotTicks_candidate = 0;
-        g_dwPendingCameraFocusFlag = 0;
+        g_dwFieldSpellActive = 0;
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
             RunRoomScriptChain(g_bPendingRoomScriptChain, 0);

@@ -26,8 +26,8 @@ void RoomScriptOpStartActorAnimSequence(StartActorAnimSequenceRecord *pRecord)
     u8 scriptDataLow;
     u8 scriptDataHigh;
 
-    if (g_dwPendingCameraFocusFlag != 0)
-        RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
+    if (g_dwFieldSpellActive != 0)
+        EndFieldSpellEffect(g_pFieldSpellEffectActor);
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
 

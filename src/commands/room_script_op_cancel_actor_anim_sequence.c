@@ -20,8 +20,8 @@ void RoomScriptOpCancelActorAnimSequence(CancelActorAnimSequenceRecord *pRecord)
         pActor->anim.bAnimFrameCounter = 0;
         if (pActor->pLinkedActor_candidate != NULL)
             pActor->pLinkedActor_candidate->anim.bAnimFrameCounter = 0;
-        if (g_dwPendingCameraFocusFlag != 0)
-            RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
+        if (g_dwFieldSpellActive != 0)
+            EndFieldSpellEffect(g_pFieldSpellEffectActor);
         SetActorActionState(pActor, 0);
         SetActorPrevActionState(g_pPlayerActor, 0);
     }

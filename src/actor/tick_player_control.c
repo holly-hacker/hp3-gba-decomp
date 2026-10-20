@@ -45,11 +45,11 @@ void TickPlayerControl(Actor *actor)
         SetPartyMemberAnim(actor, PartyAnimStand);
     }
 
-    if ((g_wKeysPressed & KeyB) && g_dwPendingCameraFocusFlag == 0 && actor->wCharacterId_candidate != 4) {
+    if ((g_wKeysPressed & KeyB) && g_dwFieldSpellActive == 0 && actor->wCharacterId_candidate != 4) {
         if (actor->bTerrainType != 0x2D || stopped)
             StartFieldSpellCast(actor);
     }
-    else if ((g_wKeysPressed & (KeyL | KeyR)) && g_dwPendingCameraFocusFlag == 0) {
+    else if ((g_wKeysPressed & (KeyL | KeyR)) && g_dwFieldSpellActive == 0) {
         if (g_wKeysPressed & KeyR)
             CycleSelectedFieldSpell(actor, 1);
         else

@@ -26,8 +26,8 @@ void RoomScriptOpStartTileActorScript(StartTileActorScriptRecord *pRecord)
     if (pActor == NULL)
         return;
 
-    if (g_dwPendingCameraFocusFlag != 0)
-        RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
+    if (g_dwFieldSpellActive != 0)
+        EndFieldSpellEffect(g_pFieldSpellEffectActor);
     if (g_dwRoomScriptRunState == 2)
         pActor->dwFlags |= ActorFlagRoomScriptYield;
 

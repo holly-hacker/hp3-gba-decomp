@@ -7,7 +7,7 @@ const ActorGfxRecord g_aRoomSpongifyPadSprites[4] = {
     { (void *)gSpongifyPadRug001Tiles, (void *)gSpongifyPadRug001Frames },
     { (void *)gSpongifyPadRug002Tiles, (void *)gSpongifyPadRug002Frames },
     { (void *)gSpongifyPadLeavesTiles, (void *)gSpongifyPadLeavesFrames },
-    { (void *)gOverworldSpellEffect007Tiles, (void *)gOverworldSpellEffect007Frames },
+    { (void *)gSpongifyEffectTiles, (void *)gSpongifyEffectFrames },
 };
 
 // Indexed by the actor's character id.

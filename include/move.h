@@ -70,11 +70,52 @@ extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable,
 // Called by ExitOverworldScreen.
 extern void FreeRoomSharedTileset(void);
 extern void ApplyRoomSwitchEffect(u32 state);
-// Spawns the effect actor of field spell `spell` (an Actor.bFighterIndex value) at
-// the caster's anchor 0.
-extern void SpawnFieldSpellEffect_candidate(Actor *caster, u8 spell);
-extern void sub_0802E2BC(Actor *pSpell, Actor *pTarget);  // overworld spell effect hits a room actor
+// Field spell effects. The effect actor keeps its FieldSpell in wCharacterId_candidate and the
+// caster in pLinkedActor_candidate; its collision callbacks run the spell on what it touches.
+extern Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell);
+extern void HandleFieldSpellHit(Actor *effect, Actor *target);
+extern void HandleFieldSpellSecondaryHit(Actor *effect, Actor *target);
+extern void EndFieldSpellEffect(Actor *effect);  // pfnDestructor of the effect actor
+extern void TickFieldSpellEffect(Actor *effect);
+extern void TickDiffindoEffect(Actor *effect);
+extern void TickGlaciusEffect(Actor *effect);
+extern void TickSpongifyEffect(Actor *effect);
+extern void InitReparoParticleEmitter(ParticleEmitter *emitter);
+extern void InitGlaciusParticleEmitter(ParticleEmitter *emitter, Actor *effect);
+extern void InitSpongifyParticleEmitter0(ParticleEmitter *emitter, Actor *effect);
+extern void InitSpongifyParticleEmitter1(ParticleEmitter *emitter, Actor *effect);
+extern void TickFieldSpellCompanionActor(Actor *companion);
+extern void PlayFieldSpellHitSound(Actor *effect);
 
-extern u32 g_dwPendingCameraFocusFlag;
-extern void *g_pPendingCameraFocus_candidate;
-extern void RestorePendingCameraFocus_candidate(void *pFocus);
+extern u32 g_dwFieldSpellActive;
+extern Actor *g_pFieldSpellEffectActor;
+extern Actor *g_pFieldSpellCompanionActor;
+extern s32 g_nLumosScale;
+
+// ROM 0x080660D4 (US): field spell effect sprites and animations, see
+// src/move/field_spell_effects.globals.c.
+extern const ActorAssetRecord g_aFieldSpellCastAssets[8];
+extern const ActorAssetRecord g_aFieldSpellAssets[8];
+extern const ActorAssetRecord g_aFieldSpellCompanionAssets[8];
+extern const ActorGfxRecord g_LumosParticleGfx;
+extern const ActorGfxRecord g_ReparoParticleGfx0;
+extern const ActorGfxRecord g_ReparoParticleGfx1;
+extern const ActorGfxRecord g_ReparoParticleGfx2;
+extern const ActorGfxRecord g_GlaciusParticleGfx;
+extern const ActorGfxRecord g_SpongifyParticleGfx0;
+extern const ActorGfxRecord g_SpongifyParticleGfx1;
+extern const ActorGfxRecord g_LumosPlayerGfx;
+extern const ActorGfxRecord g_LumosEndPlayerGfx;
+extern const u8 g_abLumosPlayerStandFrames[8];
+extern const u8 g_abFacingDirection4[8];
+extern const u8 g_aaFieldSpellCastAnims[8][66];
+extern const u8 g_aaFieldSpellCompanionAnims[8][66];
+extern const u8 g_aaFieldSpellAnims[8][66];
+extern const u8 g_aaFieldSpellFlightAnims[8][66];
+extern const u8 g_aaFieldSpellImpactAnims[4][66];
+extern const u8 g_aaAlohomoraUnlockAnims[4][66];
+extern const u8 g_abDiffindoEndAnim[66];
+extern const u8 g_abDiffindoHitAnim[66];
+extern const u8 g_abSpongifyHitAnim[66];
+extern const u8 g_abSpongifyEndAnim[66];
+extern const PixelVector g_aFieldSpellVelocities[8];

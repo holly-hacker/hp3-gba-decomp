@@ -3,15 +3,32 @@ groups:
     runs:
       - kind: image-bank
         count: 28
-        names: {1: OverworldSpellEffect001}
+        names:
+          1: OverworldSpellEffect001
+          2: FlipendoEffect
+          3: LumosCast
+          4: ReparoEffect
+          5: AlohomoraEffect
+          6: GlaciusEffect
+          7: SpongifyEffect
+          8: DiffindoEffect
+          9: UnusedFieldSpellCast
+          10: LumosLight
+          11: UnusedFieldSpellEffect
+          12: LumosGlow
+          13: LumosParticle
+          14: ReparoParticle1
+          17: GlaciusParticle
+          18: SpongifyParticle1
+          20: OverworldSpellEffect020
         paletteSources:
-          OverworldSpellEffect012: OverworldSpellEffect003
+          LumosGlow: LumosCast
 
   - name: OverworldPlayerSprites
     runs:
       - kind: image-bank
         count: 19
-        names: {1: OverworldPlayer001}
+        names: {1: OverworldPlayer001, 3: HarryLumos, 4: OverworldPlayer004}
         noPalette: [OverworldPlayer019]
         paletteSources:
           OverworldPlayer002: OverworldPlayer004

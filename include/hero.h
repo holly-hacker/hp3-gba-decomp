@@ -36,7 +36,7 @@ extern void PlayerReceiveReward(u32 rewardId);
 extern void PlayerReceiveRewardAlt(u32 rewardId);  // also sets the action timer to 0x42
 
 extern const ActorGfxRecord g_UnusedPartyGfx;
-extern const ActorGfxRecord g_PartyFocusGfx_candidate;
+extern const ActorGfxRecord g_PartyLumosGfx;
 extern const ActorAssetRecord g_aPartyWalkAssets[PARTY_CHARACTER_COUNT];
 extern const ActorAssetRecord g_aPartyAnim3Assets[PARTY_CHARACTER_COUNT];
 extern const ActorAssetRecord g_aPartyCastAssets[PARTY_CHARACTER_COUNT];

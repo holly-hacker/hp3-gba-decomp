@@ -25,8 +25,8 @@ void TickActorReceiveReward(Actor *actor)
     switch (actor->bActionSubState) {
     case 0:
         if (--actor->dwStateTimer == -1) {
-            if (g_dwPendingCameraFocusFlag != 0 && actor->bFighterIndex == 1)
-                RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
+            if (g_dwFieldSpellActive != 0 && actor->bFighterIndex == 1)
+                EndFieldSpellEffect(g_pFieldSpellEffectActor);
             CancelActorMove_candidate(actor);
             actor->bFacing = DirectionDown;
             actor->dwFlags &= ~ActorFlagVisible;

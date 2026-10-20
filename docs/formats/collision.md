@@ -50,9 +50,9 @@ toward a target: it probes the pixel ahead of the actor's terrain box
 (`Actor` bytes `0xC0`-`0xC3`) and, when a diagonal is blocked, falls back
 to the horizontal and then the vertical direction.
 
-- `0x1F`: blocks unless a spell-effect actor is currently active
-  (`DAT_03003FD4`, set by `SpawnFieldSpellEffect_candidate`) AND
-  the player actor's `field_0x91` is set.
+- `0x1F`: blocks unless Lumos is lit: a field spell effect is active
+  (`g_dwFieldSpellActive`, set by `SpawnFieldSpellEffect`) and the
+  player's `bFighterIndex` (the spell it casts) is 1, Lumos.
 - `0x29`: blocks every actor except ones with `wActorType==0xF`.
 
 `0x22` force-blocks actors with `wActorType==0` specifically (exempts

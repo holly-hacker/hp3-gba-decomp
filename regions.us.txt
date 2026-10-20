@@ -1419,21 +1419,21 @@ c-file 0x0802D704 _ src/move/resolve_actor_terrain.c ResolveActorTerrain
 c-file 0x0802D7A0 _ src/move/terrain_collision.c GetCollisionTypeAtPixel_candidate
 c-file 0x0802DF3C _ src/move/apply_room_switch_effect.c ApplyRoomSwitchEffect
 c-file 0x0802DF74 _ src/move/nudge_actor.c NudgeAlongVelocity
-c-file 0x0802E030 0x0802E090 src/move/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
-thumb-func 0x0802E090 SpawnFieldSpellEffect_candidate
-thumb-func 0x0802E2BC sub_0802E2BC
-thumb-func 0x0802E644 sub_0802E644
-thumb-func 0x0802E6FC RestorePendingCameraFocus_candidate
-thumb-func 0x0802E7E8 sub_0802E7E8
-thumb-func 0x0802EE60 sub_0802EE60
-thumb-func 0x0802EFDC sub_0802EFDC
-thumb-func 0x0802F12C sub_0802F12C
-thumb-func 0x0802F2EC sub_0802F2EC
-thumb-func 0x0802F34C sub_0802F34C
-thumb-func 0x0802F390 sub_0802F390
-thumb-func 0x0802F3E4 sub_0802F3E4
-thumb-func 0x0802F434 sub_0802F434
-thumb-func 0x0802F494 sub_0802F494
+c-file 0x0802E030 _ src/move/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
+c-file 0x0802E090 _ src/move/spawn_field_spell_effect.c SpawnFieldSpellEffect
+c-file 0x0802E2BC _ src/move/handle_field_spell_hit.c HandleFieldSpellHit
+c-file 0x0802E644 _ src/move/handle_field_spell_secondary_hit.c HandleFieldSpellSecondaryHit
+c-file 0x0802E6FC _ src/move/end_field_spell_effect.c EndFieldSpellEffect
+c-file 0x0802E7E8 _ src/move/tick_field_spell_effect.c TickFieldSpellEffect
+c-file 0x0802EE60 _ src/move/tick_diffindo_effect.c TickDiffindoEffect
+c-file 0x0802EFDC _ src/move/tick_glacius_effect.c TickGlaciusEffect
+c-file 0x0802F12C _ src/move/tick_spongify_effect.c TickSpongifyEffect
+c-file 0x0802F2EC _ src/move/init_reparo_particle_emitter.c InitReparoParticleEmitter
+c-file 0x0802F34C _ src/move/init_glacius_particle_emitter.c InitGlaciusParticleEmitter
+c-file 0x0802F390 _ src/move/init_spongify_particle_emitter0.c InitSpongifyParticleEmitter0
+c-file 0x0802F3E4 _ src/move/init_spongify_particle_emitter1.c InitSpongifyParticleEmitter1
+c-file 0x0802F434 _ src/move/tick_field_spell_companion_actor.c TickFieldSpellCompanionActor
+c-file 0x0802F494 _ src/move/play_field_spell_hit_sound.c PlayFieldSpellHitSound
 
 # NPC Actor
 c-file 0x0802F500 0x0802F6C0 src/npc_actor/spawn_npc_actor.c SpawnNpcActor
@@ -2378,7 +2378,7 @@ c-file 0x0806053C 0x08060554 src/game_state/process_playtime_tick.globals.c g_st
 c-rodata 0x08060620 0x08060625 InitJoybusSession
 c-file 0x080606A8 0x080606B8 src/hedwig_minigame/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060884 _ src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
-c-file 0x0806088C _ src/hero/party_focus_gfx.c g_PartyFocusGfx_candidate
+c-file 0x0806088C _ src/hero/party_focus_gfx.c g_PartyLumosGfx
 c-file 0x0806089C _ src/hero/field_spell_portrait_assets.c g_aFieldSpellPortraitAssets
 c-file 0x080608EC _ src/hero/party_assets.c g_aPartyWalkAssets
 c-file 0x08060B2C _ src/hero/field_spells.c g_aFieldSpellIconAssets
@@ -2405,7 +2405,8 @@ c-file 0x0806601C _ src/minigame_difficulty_select/minigame_difficulty_select.gl
 c-file 0x0806603C _ src/minigame_high_score/minigame_high_score.globals.c g_MinigameTextPanelCapAsset
 c-file 0x0806605C _ src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066084 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
-c-file 0x08066094 0x080660D4 src/move/terrain_collision.globals.c g_abOppositeFacing
+c-file 0x08066094 _ src/move/terrain_collision.globals.c g_abOppositeFacing
+c-file 0x080660D4 _ src/move/field_spell_effects.globals.c g_aFieldSpellCastAssets
 c-file 0x08066E44 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
 c-file 0x08066FFC _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
 c-file 0x0806788C 0x080678BC src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames

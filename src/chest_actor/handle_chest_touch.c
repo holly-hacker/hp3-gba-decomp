@@ -69,7 +69,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
             }
         }
         // Kind 2 (spawned hidden) also needs these conditions; why is unconfirmed.
-        else if ((g_wKeysPressed & KeyA) && g_dwPendingCameraFocusFlag != 0
+        else if ((g_wKeysPressed & KeyA) && g_dwFieldSpellActive != 0
                  && pOther->bFighterIndex == 1 && kind == 2 && opened == 0)
         {
             pSelf->modeState.chest.bOpened = 1;
@@ -100,7 +100,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
             SetActorActionState(g_pPlayerActor, 0);
             SetActorPrevActionState(g_pPlayerActor, 0);
         }
-        sub_0802E2BC(pOther, pSelf);
+        HandleFieldSpellHit(pOther, pSelf);
         break;
     }
 }

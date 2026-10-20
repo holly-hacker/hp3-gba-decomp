@@ -164,7 +164,7 @@ its tick `TickChestActor`.
   `g_abQuestEventState[0x14 + group]` flag is clear, otherwise A runs the
   pair. Kind 2 (two chests, both in default group 0) spawns hidden with
   collision off; its animations make it appear from and vanish into sparkles.
-  It opens on A, with extra conditions on `g_dwPendingCameraFocusFlag` and the
+  It opens on A, with extra conditions on `g_dwFieldSpellActive` and the
   player's `bFighterIndex`. **UNCONFIRMED:** what makes it visible; no code or
   script that reveals it has been found.
 
