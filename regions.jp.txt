@@ -988,10 +988,10 @@ c-file 0x08026350 _ src/interrupts/handle_timer0_interrupt.c HandleTimer0Interru
 c-file 0x08026378 _ src/interrupts/handle_timer3_interrupt.c HandleTimer3Interrupt
 c-file 0x080263A0 _ src/interrupts/intr_dummy.c IntrDummy
 c-file 0x080263A4 _ src/invisible_actors/spawn_trigger_rect_actor.c SpawnTriggerRectActor
-c-file 0x08026470 0x0802654C src/invisible_actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
-thumb-func 0x0802654C sub_080264F0
-thumb-func 0x08026614 sub_080265B8
-thumb-func 0x080266D0 sub_08026674
+c-file 0x08026470 _ src/invisible_actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
+c-file 0x0802654C _ src/invisible_actors/tick_trigger_zone_actor.c TickTriggerZoneActor
+c-file 0x08026614 _ src/invisible_actors/handle_trigger_zone_touch.c HandleTriggerZoneTouch
+c-file 0x080266D0 _ src/invisible_actors/handle_trigger_zone_prop_touch.c HandleTriggerZonePropTouch
 c-file 0x08026748 _ src/items/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 c-file 0x080267B0 _ src/items/equip_item_in_slot.c EquipItemInSlot
 c-file 0x0802682C _ src/items/can_fighter_equip_item.c CanFighterEquipItem

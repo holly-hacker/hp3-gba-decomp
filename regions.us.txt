@@ -1129,10 +1129,10 @@ c-file 0x08026344 _ src/interrupts/intr_dummy.c IntrDummy
 
 # Invisible actors? (trigger actors)
 c-file 0x08026348 _ src/invisible_actors/spawn_trigger_rect_actor.c SpawnTriggerRectActor
-c-file 0x08026414 0x080264F0 src/invisible_actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
-thumb-func 0x080264F0 sub_080264F0
-thumb-func 0x080265B8 sub_080265B8
-thumb-func 0x08026674 sub_08026674
+c-file 0x08026414 _ src/invisible_actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
+c-file 0x080264F0 _ src/invisible_actors/tick_trigger_zone_actor.c TickTriggerZoneActor
+c-file 0x080265B8 _ src/invisible_actors/handle_trigger_zone_touch.c HandleTriggerZoneTouch
+c-file 0x08026674 _ src/invisible_actors/handle_trigger_zone_prop_touch.c HandleTriggerZonePropTouch
 
 # Items
 c-file 0x080266EC _ src/items/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard

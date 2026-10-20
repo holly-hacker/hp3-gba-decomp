@@ -1,0 +1,53 @@
+#include "types.h"
+#include "area.h"
+#include "overworld/room_actor.h"
+#include "invisible_actors.h"
+
+// Per-frame tick of a trigger zone (room actor types 4 and 7). The collision
+// callbacks fire it from idle state 0: state 4 runs the record's pair and
+// re-arms after the delay, state 5 runs it and frees the zone.
+void TickTriggerZoneActor(Actor *pActor)
+{
+    RoomActorRecordUnk4 *pRecord;
+
+    switch (pActor->bActionState)
+    {
+    case 0:
+        // Idle until a collision callback fires it.
+        break;
+
+    case 1:
+        pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        break;
+
+    case 3:
+        // Re-arm once the delay runs out.
+        if (--pActor->dwStateTimer == -1)
+        {
+            pActor->dwFlags |= ActorFlagWantsCollisionCheck;
+            SetActorActionState(pActor, 0);
+        }
+        break;
+
+    case 4:
+        pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
+        if (pActor->wActorType == 7)
+            RespawnGroupAndRunChain(((RoomActorRecordUnk7 *)pRecord)->bRespawnGroup,
+                                    ((RoomActorRecordUnk7 *)pRecord)->bChain);
+        else
+            RespawnGroupAndRunChain(pRecord->bRespawnGroup, pRecord->bChain);
+        pActor->dwStateTimer = ROOM_ACTOR_WORD_STATE(pActor)->n60;
+        SetActorActionState(pActor, 3);
+        break;
+
+    case 5:
+        pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
+        if (pActor->wActorType == 7)
+            RespawnGroupAndRunChain(((RoomActorRecordUnk7 *)pRecord)->bRespawnGroup,
+                                    ((RoomActorRecordUnk7 *)pRecord)->bChain);
+        else
+            RespawnGroupAndRunChain(pRecord->bRespawnGroup, pRecord->bChain);
+        SetActorActionState(pActor, 1);
+        break;
+    }
+}

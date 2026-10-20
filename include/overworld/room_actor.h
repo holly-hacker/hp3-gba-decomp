@@ -42,24 +42,30 @@ typedef struct RoomActorRecordUnk4 {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
-    u8 bHalfWidth;   // 0x08
-    u8 bHalfHeight;  // 0x09
-    u16 wArgA;       // 0x0A, scaled by 30 into Actor 0x60
-    u8 bKind;        // 0x0C
-    u8 bArgD;        // 0x0D
+    u8 bHalfWidth;      // 0x08
+    u8 bHalfHeight;     // 0x09
+    u16 wRearmDelay;    // 0x0A, scaled by 30 into Actor 0x60
+    u8 bKind;           // 0x0C
+    u8 bRequireAPress;  // 0x0D
+    u8 pad_E;
+    u8 bRespawnGroup;   // 0x0F, RespawnGroupAndRunChain arguments run when it fires
+    u8 bChain;          // 0x10
 } RoomActorRecordUnk4;
 
 typedef struct RoomActorRecordUnk7 {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
-    u8 bLeft;        // 0x08
-    u8 bTop;         // 0x09
-    u8 bRight;       // 0x0A
-    u8 bBottom;      // 0x0B
-    u16 wArgC;       // 0x0C, scaled by 30 into Actor 0x60
-    u8 bKind;        // 0x0E
-    u8 bArgF;        // 0x0F
+    u8 bLeft;           // 0x08
+    u8 bTop;            // 0x09
+    u8 bRight;          // 0x0A
+    u8 bBottom;         // 0x0B
+    u16 wRearmDelay;    // 0x0C, scaled by 30 into Actor 0x60
+    u8 bKind;           // 0x0E
+    u8 bRequireAPress;  // 0x0F
+    u8 pad_10;
+    u8 bRespawnGroup;   // 0x11, RespawnGroupAndRunChain arguments run when it fires
+    u8 bChain;          // 0x12
 } RoomActorRecordUnk7;
 
 typedef struct RoomActorRecordUnk1 {

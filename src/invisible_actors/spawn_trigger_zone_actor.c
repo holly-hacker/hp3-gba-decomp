@@ -13,10 +13,10 @@ Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow)
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pActor->dwFlags = 0x200C;
     pActor->bRoomActorKind_candidate = pRecord->bKind;
-    ROOM_ACTOR_WORD_STATE(pActor)->n60 = pRecord->wArgA * 30;
-    ROOM_ACTOR_WORD_STATE(pActor)->b70 = pRecord->bArgD;
+    ROOM_ACTOR_WORD_STATE(pActor)->n60 = pRecord->wRearmDelay * 30;
+    ROOM_ACTOR_WORD_STATE(pActor)->b70 = pRecord->bRequireAPress;
     SetActorActionState(pActor, 0);
-    pActor->apfnCollisionCallback[0] = sub_080265B8;
+    pActor->apfnCollisionCallback[0] = HandleTriggerZoneTouch;
     pActor->aCollisionBoxes[0].offsets.edges.bLeft = -pRecord->bHalfWidth;
     pActor->aCollisionBoxes[0].offsets.edges.bTop = -pRecord->bHalfHeight;
     pActor->aCollisionBoxes[0].offsets.edges.bRight = pRecord->bHalfWidth;
@@ -28,11 +28,11 @@ Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow)
     {
         pActor->aCollisionBoxes[1] = pActor->aCollisionBoxes[0];
         pActor->bCollisionBoxCount = 2;
-        pActor->apfnCollisionCallback[1] = sub_08026674;
+        pActor->apfnCollisionCallback[1] = HandleTriggerZonePropTouch;
         pActor->apfnCollisionCallback[0] = 0;
         pActor->aCollisionBoxes[0].state.bState = 0;
     }
 
-    pActor->pfnTick = sub_080264F0;
+    pActor->pfnTick = TickTriggerZoneActor;
     return pActor;
 }
