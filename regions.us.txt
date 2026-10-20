@@ -1436,13 +1436,13 @@ c-file 0x0802F434 _ src/move/tick_field_spell_companion_actor.c TickFieldSpellCo
 c-file 0x0802F494 _ src/move/play_field_spell_hit_sound.c PlayFieldSpellHitSound
 
 # NPC Actor
-c-file 0x0802F500 0x0802F6C0 src/npc_actor/spawn_npc_actor.c SpawnNpcActor
-thumb-func 0x0802F6C0 sub_0802F6C0
-thumb-func 0x0802F7F0 sub_0802F7F0
-thumb-func 0x0802FCC0 sub_0802FCC0
-thumb-func 0x0802FD5C SpawnShadowActor
-thumb-func 0x0802FE04 SetActorAnimData_candidate
-thumb-func 0x0802FE50 sub_0802FE50
+c-file 0x0802F500 _ src/npc_actor/spawn_npc_actor.c SpawnNpcActor
+c-file 0x0802F6C0 _ src/npc_actor/spawn_character_npc_actor.c SpawnCharacterNpcActor
+c-file 0x0802F7F0 _ src/npc_actor/tick_npc_actor.c TickNpcActor
+c-file 0x0802FCC0 _ src/npc_actor/handle_npc_actor_touch.c HandleNpcActorTouch
+c-file 0x0802FD5C _ src/npc_actor/spawn_shadow_actor.c SpawnShadowActor
+c-file 0x0802FE04 _ src/npc_actor/start_npc_script_animation.c StartNpcScriptAnimation
+c-file 0x0802FE50 _ src/npc_actor/tick_shadow_actor.c TickShadowActor
 
 # OAM submission
 c-file 0x0802FEAC _ src/oam/submit_oam_attrs_nudged.c SubmitOamAttrsNudged
@@ -2410,7 +2410,11 @@ c-file 0x08066094 _ src/move/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x080660D4 _ src/move/field_spell_effects.globals.c g_aFieldSpellCastAssets
 c-file 0x08066E44 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
 c-file 0x08066FFC _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
-c-file 0x0806788C 0x080678BC src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
+c-file 0x0806788C _ src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
+c-file 0x080678BC _ src/npc_actor/npc_walk_anims.c g_aaabNpcWalkAnims
+c-file 0x08067E5C _ src/npc_actor/npc_script_anims.c g_aabNpcScriptAnims
+c-file 0x08068BDC _ src/npc_actor/character_npc_kinds.c g_abCharacterNpcKinds
+c-file 0x08068BE8 _ src/npc_actor/shadow_actor_gfx.c g_ShadowActorGfx
 c-file 0x08068BF0 _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068BF8 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file 0x08068BFC 0x08068C08 src/particles/opposite_directions.c g_abOppositeDirection8
@@ -2658,6 +2662,7 @@ c-file-gcc3 0x08FA985C 0x08FAA7CC 3rd_party/krawall/player_tables.c player_table
 c-rodata 0x08FAA7D0 _ EepromV124
 c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
+c-rodata 0x08FAAE98 _ TickNpcActor
 c-file 0x08FAAEF8 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file 0x08FB0588 _ src/sound/sound_samples.c g_aSoundSamples

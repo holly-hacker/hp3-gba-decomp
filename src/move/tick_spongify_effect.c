@@ -10,7 +10,7 @@ void TickSpongifyEffect(Actor *effect)
 {
     u32 spell = effect->wCharacterId_candidate;
 
-    if (effect->bActionSubState == 3 && (u16)--effect->wUnk84 == 0xFFFF)
+    if (effect->bActionSubState == 3 && (u16)--effect->timer84.nFlightTicks == 0xFFFF)
     {
         effect->dwFlags &= ~ActorFlagWantsCollisionCheck;
         SetActorActionSubState(effect, 5);
@@ -47,7 +47,7 @@ void TickSpongifyEffect(Actor *effect)
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_abSpongifyEndAnim, 0);
         SetActorActionSubState(effect, 0x12);
         FreeAllParticleEmitters();
-        if (effect->wUnk84 > 0)
+        if (effect->timer84.nFlightTicks > 0)
             PlayFieldSpellHitSound(effect);
         break;
     case 0x12:

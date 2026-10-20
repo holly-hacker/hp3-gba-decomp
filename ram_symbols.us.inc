@@ -408,6 +408,9 @@
 .set g_pFieldSpellCompanionActor,            0x03003FDC  @ Actor *: Lumos's glow actor
 .set g_nLumosScale,                          0x03003FE0  @ s32: 16.16 affine scale of Lumos's light
 
+@ --- include/npc_actor.h ---
+.set g_nNpcPaletteEffectSlot,               0x03003FE4  @ s32: StartPaletteEffect handle of an NPC script animation's flash
+
 @ --- include/oam.h ---
 .set g_pOamShadowBuffer,         0x03003FE8
 .set g_pOamDmaShadowBuffer,      0x03003FEC

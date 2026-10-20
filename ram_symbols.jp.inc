@@ -385,6 +385,9 @@
 .set g_pFieldSpellCompanionActor,            0x0300403C
 .set g_nLumosScale,                          0x03004040
 
+@ --- include/npc_actor.h ---
+.set g_nNpcPaletteEffectSlot,               0x03004044  @ s32: StartPaletteEffect handle of an NPC script animation's flash
+
 @ --- include/oam.h ---
 .set g_pOamShadowBuffer,    0x03004048
 .set g_pOamDmaShadowBuffer, 0x0300404C

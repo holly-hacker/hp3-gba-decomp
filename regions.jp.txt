@@ -1258,13 +1258,13 @@ c-file 0x0802F3D4 _ src/move/init_spongify_particle_emitter0.c InitSpongifyParti
 c-file 0x0802F428 _ src/move/init_spongify_particle_emitter1.c InitSpongifyParticleEmitter1
 c-file 0x0802F478 _ src/move/tick_field_spell_companion_actor.c TickFieldSpellCompanionActor
 c-file 0x0802F4D8 _ src/move/play_field_spell_hit_sound.c PlayFieldSpellHitSound
-c-file 0x0802F544 0x0802F704 src/npc_actor/spawn_npc_actor.c SpawnNpcActor
-thumb-func 0x0802F704 sub_0802F6C0
-thumb-func 0x0802F834 sub_0802F7F0
-thumb-func 0x0802FD04 sub_0802FCC0
-thumb-func 0x0802FDA0 SpawnShadowActor
-thumb-func 0x0802FE48 SetActorAnimData_candidate
-thumb-func 0x0802FE94 sub_0802FE50
+c-file 0x0802F544 _ src/npc_actor/spawn_npc_actor.c SpawnNpcActor
+c-file 0x0802F704 _ src/npc_actor/spawn_character_npc_actor.c SpawnCharacterNpcActor
+c-file 0x0802F834 _ src/npc_actor/tick_npc_actor.c TickNpcActor
+c-file 0x0802FD04 _ src/npc_actor/handle_npc_actor_touch.c HandleNpcActorTouch
+c-file 0x0802FDA0 _ src/npc_actor/spawn_shadow_actor.c SpawnShadowActor
+c-file 0x0802FE48 _ src/npc_actor/start_npc_script_animation.c StartNpcScriptAnimation
+c-file 0x0802FE94 _ src/npc_actor/tick_shadow_actor.c TickShadowActor
 c-file 0x0802FEF0 _ src/oam/submit_oam_attrs_nudged.c SubmitOamAttrsNudged
 c-file 0x0802FF70 _ src/oam/init_oam_system.c InitOamSystem
 c-file 0x0802FF9C _ src/oam/alloc_oam_entry.c AllocOamEntry
@@ -2135,7 +2135,11 @@ c-file 0x08066020 _ src/move/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066060 _ src/move/field_spell_effects.globals.c g_aFieldSpellCastAssets
 c-file 0x08066DD0 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
 c-file 0x08066F88 _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
-c-file 0x08067818 0x08067848 src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
+c-file 0x08067818 _ src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
+c-file 0x08067848 _ src/npc_actor/npc_walk_anims.c g_aaabNpcWalkAnims
+c-file 0x08067DE8 _ src/npc_actor/npc_script_anims.c g_aabNpcScriptAnims
+c-file 0x08068B68 _ src/npc_actor/character_npc_kinds.c g_abCharacterNpcKinds
+c-file 0x08068B74 _ src/npc_actor/shadow_actor_gfx.c g_ShadowActorGfx
 # Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068B7C _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068B84 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
@@ -2367,6 +2371,7 @@ c-file-gcc3 0x08F3CCEC 0x08F3DC5C 3rd_party/krawall/player_tables.c player_table
 c-rodata 0x08F3DC60 _ EepromV124
 c-rodata 0x08F3DCA0 _ EepromNoWait
 c-rodata 0x08F3DCB4 0x08F3DCC0 ResetBuckbeakMinigame
+c-rodata 0x08F3E328 _ TickNpcActor
 
 c-file 0x08F3E388 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file 0x08F3E3A0 _ src/dialog/dialog_text_info.c g_aDialogTextInfo

@@ -9,7 +9,7 @@ const ActorGfxRecord g_aRoomActorTriggerSprites[80] = {
     { (void *)gActorSprite2_128Tiles, (void *)gActorSprite2_128Frames },  // 2
     { (void *)gChestTiles, (void *)gChestFrames },  // 3
     { (void *)gActorSprite2_129Tiles, (void *)gActorSprite2_129Frames },  // 4
-    { (void *)gOverworldPlayer019Tiles, (void *)gOverworldPlayer019Frames },  // 5
+    { (void *)gActorShadowTiles, (void *)gActorShadowFrames },  // 5
     { (void *)gLockedDoorTiles, (void *)gLockedDoorFrames },  // 6
     { (void *)gActorSprite2_131Tiles, (void *)gActorSprite2_131Frames },  // 7
     { (void *)gActorSprite2_132Tiles, (void *)gActorSprite2_132Frames },  // 8

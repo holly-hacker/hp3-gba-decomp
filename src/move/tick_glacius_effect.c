@@ -10,7 +10,7 @@ void TickGlaciusEffect(Actor *effect)
 {
     ParticleEmitter *emitter;
 
-    if (effect->bActionSubState == 3 && (u16)--effect->wUnk84 == 0xFFFF)
+    if (effect->bActionSubState == 3 && (u16)--effect->timer84.nFlightTicks == 0xFFFF)
     {
         effect->dwFlags &= ~ActorFlagWantsCollisionCheck;
         SetActorActionSubState(effect, 5);
@@ -46,7 +46,7 @@ void TickGlaciusEffect(Actor *effect)
     case 0x11:
         CancelActorMove_candidate(effect);
         SetActorActionSubState(effect, 0x12);
-        if (effect->wUnk84 > 0)
+        if (effect->timer84.nFlightTicks > 0)
             PlayFieldSpellHitSound(effect);
         break;
     case 0x12:

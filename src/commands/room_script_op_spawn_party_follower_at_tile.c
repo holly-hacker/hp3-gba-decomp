@@ -13,7 +13,7 @@ typedef struct SpawnPartyFollowerAtTileRecord {
 
 void RoomScriptOpSpawnPartyFollowerAtTile(SpawnPartyFollowerAtTileRecord *pRecord)
 {
-    Actor *pActor = sub_0802F6C0(pRecord->bCharacterId);
+    Actor *pActor = SpawnCharacterNpcActor(pRecord->bCharacterId);
 
     RemovePartyMember(pRecord->bCharacterId);
     SetRoomActorPtr(pActor, pRecord->bTileX, pRecord->bTileY);

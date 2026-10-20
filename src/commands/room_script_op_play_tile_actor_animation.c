@@ -19,6 +19,6 @@ void RoomScriptOpPlayTileActorAnimation(PlayTileActorAnimationRecord *pRecord)
     pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
     if (g_dwRoomScriptRunState == 2)
         pActor->dwFlags |= ActorFlagRoomScriptYield;
-    SetActorAnimData_candidate(pActor, pRecord->wAnimId);
+    StartNpcScriptAnimation(pActor, pRecord->wAnimId);
     pActor->dwFlags |= ActorFlagHasAnimation;
 }

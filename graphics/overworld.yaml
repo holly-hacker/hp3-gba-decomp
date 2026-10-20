@@ -28,8 +28,8 @@ groups:
     runs:
       - kind: image-bank
         count: 19
-        names: {1: OverworldPlayer001, 3: HarryLumos, 4: OverworldPlayer004}
-        noPalette: [OverworldPlayer019]
+        names: {1: OverworldPlayer001, 3: HarryLumos, 4: OverworldPlayer004, 19: ActorShadow}
+        noPalette: [ActorShadow]
         paletteSources:
           OverworldPlayer002: OverworldPlayer004
           OverworldPlayer008: OverworldPlayer004

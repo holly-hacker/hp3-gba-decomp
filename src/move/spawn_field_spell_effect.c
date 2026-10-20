@@ -33,7 +33,7 @@ Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell)
     g_dwFieldSpellActive = 1;
     effect->pLinkedActor_candidate = caster;
     effect->bFighterIndex = 0;
-    effect->wUnk84 = 45;
+    effect->timer84.nFlightTicks = 45;
 
     switch (spell)
     {

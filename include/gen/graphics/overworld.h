@@ -115,8 +115,8 @@ extern const u8 gOverworldPlayer017Tiles[];
 extern const u8 gOverworldPlayer017Frames[];
 extern const u8 gOverworldPlayer018Tiles[];
 extern const u8 gOverworldPlayer018Frames[];
-extern const u8 gOverworldPlayer019Tiles[];
-extern const u8 gOverworldPlayer019Frames[];
+extern const u8 gActorShadowTiles[];
+extern const u8 gActorShadowFrames[];
 
 /* MonsterOverworldSprites */
 extern const u8 gMonsterOverworld001Tiles[];

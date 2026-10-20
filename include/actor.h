@@ -332,7 +332,8 @@ typedef struct Actor {
     u8 bDepthSortBias;      // 0x16, draw-order bias; see SortActorsByDepth
     u8 pad_17[0x01];        // -> 0x18
     u8 bRespawnRow;         // 0x18, RespawnGroupAndRunChain arguments for action
-    u8 bChainRow;           // 0x19   state 0x14 and trigger actors
+    u8 bChainRow;           // 0x19   state 0x14 and trigger actors. bRespawnRow also holds
+                             // the animation StartNpcScriptAnimation plays
     u8 bPauseRange;         // 0x1A, pixels; HandlePausingActorTouch pauses the actor
                              // when the player comes this close
     u8 bResumeActionState;  // 0x1B, action state to return to after a state 6 pause
@@ -448,8 +449,12 @@ typedef struct Actor {
     u8 bTerrainType;        // 0x7D, collision type under the actor, set by RespondToTerrain
     u8 pad_7E[0x02];        // -> 0x80
     u32 dwStateTimer;       // 0x80
-    s16 wUnk84;             // 0x84, zeroed by the type 6 room actor constructor. Field spell
-                             // effects: ticks of flight left, from 45; see TickDiffindoEffect
+    union __attribute__((packed)) {
+        s16 nFlightTicks;       // field spell effects: ticks of flight left, from 45; see
+                                 // TickDiffindoEffect
+        u16 wInteractCooldown;  // NPCs: ticks until they can be talked to again; see
+                                 // HandleNpcActorTouch
+    } timer84;              // 0x84
     u16 wTimedMoveTicks;    // 0x86, ticks left in a StartActorTimedMove move
     u8 pad_88[0x02];        // -> 0x8a
     u16 wActionVariant;     // 0x8A
@@ -462,7 +467,9 @@ typedef struct Actor {
     u8 bReceivedRewardId;   // 0x92, player: reward id shown by the receive-item action (0x17);
                              // wandering monsters: encounter kind
     u8 bEncounterVariant;   // 0x93, wandering monsters: random-encounter variant
-    u8 bFlags_0x94_candidate;  // 0x94, bit 0x4 set by a room script; meaning unconfirmed
+    u8 bFlags_0x94_candidate;  // 0x94, bit 0x4 set by a room script; meaning unconfirmed.
+                                // NPCs: 0x1 talked to (until the cooldown ends), 0x2 not
+                                // interactable, 0x4 keeps the sprite frame TickNpcActor would set
     u8 pad_95[0x03];        // -> 0x98
     void (*pfnTick)(struct Actor *actor);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
     void (*pfnDestructor)(struct Actor *actor);  // 0x9C, called by FreeActor if non-null

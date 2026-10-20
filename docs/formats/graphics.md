@@ -1145,9 +1145,10 @@ swatches. The gauge palette at `0x08A38FE0` just before them belongs to
 ### Actor-type sprites and coin icon (PROVEN, extracted)
 
 `g_aActorTypeAssets` (137 `ActorAssetRecord`s, ending at the next table
-`sub_0802F6C0` reads) holds sprites for spawned actors: `sub_0802F6C0`
-indexes it through a per-type byte table, and `SetActorAnimData_candidate`
-uses its records from 110 on. `0x080B9A84`-`0x080BC1C4`, directly after
+`SpawnCharacterNpcActor` reads) holds sprites for spawned actors:
+`SpawnCharacterNpcActor` indexes it through a per-character byte table
+(`g_abCharacterNpcKinds`), and `StartNpcScriptAnimation` uses its records
+from 110 on. `0x080B9A84`-`0x080BC1C4`, directly after
 the overworld monster sprites, holds, in order: a 21-frame rat (Scabbers)
 with its palette (records 0, 4, 112), a standalone palette (record 107
 pairs it with an overworld monster sprite), a 25-frame rat growing into the

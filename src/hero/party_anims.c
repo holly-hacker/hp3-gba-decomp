@@ -193,5 +193,5 @@ const u8 g_abPartyAnim3Anim[22] = {
 };
 
 const ActorGfxRecord g_UnusedPartyGfx2 = {
-    (void *)gOverworldPlayer019Tiles, (void *)gOverworldPlayer019Frames,
+    (void *)gActorShadowTiles, (void *)gActorShadowFrames,
 };

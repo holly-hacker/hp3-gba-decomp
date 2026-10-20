@@ -15,8 +15,8 @@ const ActorAssetRecord g_UnknownWanderingMonsterAsset = {
 
 // No reference found.
 const ActorGfxRecord g_UnusedWanderingMonsterGfx = {
-    (void *)gOverworldPlayer019Tiles,
-    (void *)gOverworldPlayer019Frames,
+    (void *)gActorShadowTiles,
+    (void *)gActorShadowFrames,
 };
 
 const u8 g_WanderingMonsterAnimData[] = {
