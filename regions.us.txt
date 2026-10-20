@@ -676,14 +676,14 @@ c-file 0x0801B998 _ src/combat_fx_script/effect_scanline_advance_scroll.c Effect
 c-file 0x0801B9BC _ src/combat_fx_script/effect_scanline_set_band_scroll.c EffectScanlineSetBandScroll
 c-file 0x0801B9F4 _ src/combat_fx_script/effect_scanline_copy_tilemap.c EffectScanlineCopyTilemap
 c-file 0x0801BA2C _ src/combat_fx_script/effect_scanline_enable_blend.c EffectScanlineEnableBlend
-c-file 0x0801BA44 0x0801BA54 src/combat_fx_script/effect_scanline_stop_hblank_dma.c EffectScanlineStopHBlankDma
+c-file 0x0801BA44 _ src/combat_fx_script/effect_scanline_stop_hblank_dma.c EffectScanlineStopHBlankDma
 
 # Combat gauge (SP gauge)
-thumb-func 0x0801BA54 SpawnSpGauge
-thumb-func 0x0801BB58 TickSpGauge
-thumb-func 0x0801BC68 DestroySlotSpGauge
-thumb-func 0x0801BCB0 DestroyLinkedActor
-thumb-func 0x0801BCDC UpdateSpGaugeFrame
+c-file 0x0801BA54 _ src/combat_gauge/spawn_sp_gauge.c SpawnSpGauge
+c-file 0x0801BB58 _ src/combat_gauge/tick_sp_gauge.c TickSpGauge
+c-file 0x0801BC68 _ src/combat_gauge/destroy_slot_sp_gauge.c DestroySlotSpGauge
+c-file 0x0801BCB0 _ src/combat_gauge/destroy_linked_actor.c DestroyLinkedActor
+c-file 0x0801BCDC _ src/combat_gauge/update_sp_gauge_frame.c UpdateSpGaugeFrame
 
 # CardComboDescription game mode
 c-file 0x0801BD0C _ src/combo_info/initialize_card_combo_description.c InitializeCardComboDescription

@@ -597,12 +597,12 @@ c-file 0x0801B994 _ src/combat_fx_script/effect_scanline_advance_scroll.c Effect
 c-file 0x0801B9B8 _ src/combat_fx_script/effect_scanline_set_band_scroll.c EffectScanlineSetBandScroll
 c-file 0x0801B9F0 _ src/combat_fx_script/effect_scanline_copy_tilemap.c EffectScanlineCopyTilemap
 c-file 0x0801BA28 _ src/combat_fx_script/effect_scanline_enable_blend.c EffectScanlineEnableBlend
-c-file 0x0801BA40 0x0801BA50 src/combat_fx_script/effect_scanline_stop_hblank_dma.c EffectScanlineStopHBlankDma
-thumb-func 0x0801BA50 SpawnSpGauge
-thumb-func 0x0801BB54 TickSpGauge
-thumb-func 0x0801BC64 DestroySlotSpGauge
-thumb-func 0x0801BCAC DestroyLinkedActor
-thumb-func 0x0801BCD8 UpdateSpGaugeFrame
+c-file 0x0801BA40 _ src/combat_fx_script/effect_scanline_stop_hblank_dma.c EffectScanlineStopHBlankDma
+c-file 0x0801BA50 _ src/combat_gauge/spawn_sp_gauge.c SpawnSpGauge
+c-file 0x0801BB54 _ src/combat_gauge/tick_sp_gauge.c TickSpGauge
+c-file 0x0801BC64 _ src/combat_gauge/destroy_slot_sp_gauge.c DestroySlotSpGauge
+c-file 0x0801BCAC _ src/combat_gauge/destroy_linked_actor.c DestroyLinkedActor
+c-file 0x0801BCD8 _ src/combat_gauge/update_sp_gauge_frame.c UpdateSpGaugeFrame
 c-file 0x0801BD08 _ src/combo_info/initialize_card_combo_description.c InitializeCardComboDescription
 c-file 0x0801BEA4 _ src/combo_info/update_card_combo_description.c UpdateCardComboDescription
 c-file 0x0801BED8 _ src/combo_info/exit_card_combo_description.c ExitCardComboDescription
