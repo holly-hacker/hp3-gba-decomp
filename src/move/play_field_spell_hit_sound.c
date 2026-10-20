@@ -8,7 +8,7 @@ void PlayFieldSpellHitSound(Actor *effect)
 {
     switch (effect->wCharacterId_candidate)
     {
-    case 7:
+    case FieldSpellWingardiumLeviosa:
         PlaySoundById(0x51);
         break;
     case FieldSpellReparo:

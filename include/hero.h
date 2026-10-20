@@ -74,6 +74,8 @@ typedef enum {
     FieldSpellGlacius   = 4,
     FieldSpellSpongify  = 5,
     FieldSpellDiffindo  = 6,
+    FieldSpellWingardiumLeviosa = 7,  // no g_aFieldSpells entry selects it; its effect,
+                                      // icon and name remain
 } FieldSpell;
 
 // Three field spells per party character, selected by g_bSelectedFieldSpell.
@@ -84,7 +86,7 @@ typedef struct FieldSpellEntry {
     u8 bMinKnownSpells;   // bKnownSpellCount needed to select it
 } FieldSpellEntry;
 extern const FieldSpellEntry g_aFieldSpells[FIELD_SPELL_COUNT];
-// Indexed by FieldSpell; the eighth icon is unused.
+// Indexed by FieldSpell; FieldSpellWingardiumLeviosa's icon is a copy of Reparo's.
 extern const ActorAssetRecord g_aFieldSpellIconAssets[8];
 // Face portraits by FighterType; Buckbeak's repeats Ron's.
 extern const ActorAssetRecord g_aFieldSpellPortraitAssets[4];

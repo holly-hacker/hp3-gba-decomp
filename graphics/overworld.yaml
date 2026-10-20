@@ -12,9 +12,9 @@ groups:
           6: GlaciusEffect
           7: SpongifyEffect
           8: DiffindoEffect
-          9: UnusedFieldSpellCast
+          9: WingardiumLeviosaCast
           10: LumosLight
-          11: UnusedFieldSpellEffect
+          11: WingardiumLeviosaEffect
           12: LumosGlow
           13: LumosParticle
           14: ReparoParticle1
@@ -85,7 +85,7 @@ groups:
           11: FieldSpellIconGlacius
           12: FieldSpellIconSpongify
           13: FieldSpellIconDiffindo
-          14: FieldSpellIconUnused
+          14: FieldSpellIconWingardiumLeviosa
           15: ActorSprite015
           17: MinigameTextPanelCap
           18: MinigameTextPanelMiddle

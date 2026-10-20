@@ -13,7 +13,7 @@ const ActorAssetRecord g_aFieldSpellCastAssets[8] = {
     { (void *)gGlaciusEffectTiles, (void *)gGlaciusEffectFrames, (const ObjPalette *)gGlaciusEffectPalette, 0 },  // Glacius
     { (void *)gSpongifyEffectTiles, (void *)gSpongifyEffectFrames, (const ObjPalette *)gSpongifyEffectPalette, 0 },  // Spongify
     { (void *)gDiffindoEffectTiles, (void *)gDiffindoEffectFrames, (const ObjPalette *)gDiffindoEffectPalette, 0 },  // Diffindo
-    { (void *)gUnusedFieldSpellCastTiles, (void *)gUnusedFieldSpellCastFrames, (const ObjPalette *)gUnusedFieldSpellCastPalette, 0 },  // unused
+    { (void *)gWingardiumLeviosaCastTiles, (void *)gWingardiumLeviosaCastFrames, (const ObjPalette *)gWingardiumLeviosaCastPalette, 0 },  // Wingardium Leviosa
 };
 
 // Indexed by FieldSpell: the effect actor's sprite once the cast animation ends.
@@ -25,7 +25,7 @@ const ActorAssetRecord g_aFieldSpellAssets[8] = {
     { (void *)gGlaciusEffectTiles, (void *)gGlaciusEffectFrames, (const ObjPalette *)gGlaciusEffectPalette, 0 },  // Glacius
     { (void *)gSpongifyEffectTiles, (void *)gSpongifyEffectFrames, (const ObjPalette *)gSpongifyEffectPalette, 0 },  // Spongify
     { (void *)gDiffindoEffectTiles, (void *)gDiffindoEffectFrames, (const ObjPalette *)gDiffindoEffectPalette, 0 },  // Diffindo
-    { (void *)gUnusedFieldSpellEffectTiles, (void *)gUnusedFieldSpellEffectFrames, (const ObjPalette *)gUnusedFieldSpellEffectPalette, 0 },  // unused
+    { (void *)gWingardiumLeviosaEffectTiles, (void *)gWingardiumLeviosaEffectFrames, (const ObjPalette *)gWingardiumLeviosaEffectPalette, 0 },  // Wingardium Leviosa
 };
 
 // Indexed by FieldSpell: the sprite of g_pFieldSpellCompanionActor (only Lumos spawns one).
@@ -37,7 +37,7 @@ const ActorAssetRecord g_aFieldSpellCompanionAssets[8] = {
     { (void *)gGlaciusEffectTiles, (void *)gGlaciusEffectFrames, (const ObjPalette *)gGlaciusEffectPalette, 0 },  // Glacius
     { (void *)gSpongifyEffectTiles, (void *)gSpongifyEffectFrames, (const ObjPalette *)gSpongifyEffectPalette, 0 },  // Spongify
     { (void *)gDiffindoEffectTiles, (void *)gDiffindoEffectFrames, (const ObjPalette *)gDiffindoEffectPalette, 0 },  // Diffindo
-    { (void *)gUnusedFieldSpellCastTiles, (void *)gUnusedFieldSpellCastFrames, (const ObjPalette *)gUnusedFieldSpellCastPalette, 0 },  // unused
+    { (void *)gWingardiumLeviosaCastTiles, (void *)gWingardiumLeviosaCastFrames, (const ObjPalette *)gWingardiumLeviosaCastPalette, 0 },  // Wingardium Leviosa
 };
 
 // Lumos's particles, loaded as particle pool 2 entry 0.
@@ -89,7 +89,7 @@ const u8 g_aaFieldSpellCastAnims[8][66] = {
     {  // Diffindo
         ANIM_FRAME(0, 1), ANIM_FRAME(1, 1), ANIM_FRAME(2, 1), ANIM_JUMP(0),
     },
-    {  // unused
+    {  // Wingardium Leviosa
         ANIM_FRAME(0, 1), ANIM_FRAME(1, 1), ANIM_FRAME(2, 1), ANIM_END,
     },
 };
@@ -121,7 +121,7 @@ const u8 g_aaFieldSpellCompanionAnims[8][66] = {
     {  // Diffindo
         ANIM_FRAME(0, 1), ANIM_JUMP(0),
     },
-    {  // unused
+    {  // Wingardium Leviosa
         ANIM_FRAME(0, 1), ANIM_END,
     },
 };
@@ -157,7 +157,7 @@ const u8 g_aaFieldSpellAnims[8][66] = {
     {  // Diffindo
         ANIM_FRAME(0, 1), ANIM_FRAME(1, 1), ANIM_FRAME(2, 1), ANIM_END,
     },
-    {  // unused
+    {  // Wingardium Leviosa
         ANIM_FRAME(0, 1), ANIM_END,
     },
 };

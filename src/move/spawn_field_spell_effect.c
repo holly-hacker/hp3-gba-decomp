@@ -47,7 +47,7 @@ Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell)
         LoadParticleGfx(2, 2, (const ActorAssetRecord *)&g_ReparoParticleGfx2);
         break;
     case FieldSpellAlohomora:
-    case 7:
+    case FieldSpellWingardiumLeviosa:
         PlaySoundById(0x49);
         break;
     case FieldSpellLumos:

@@ -41,7 +41,7 @@ void TickFieldSpellEffect(Actor *effect)
 
         switch (spell)
         {
-        case 7:
+        case FieldSpellWingardiumLeviosa:
             effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
             effect->bUnk_0x7C = 4;
             SetActorActionState(effect, 0xF);
@@ -229,9 +229,9 @@ void TickFieldSpellEffect(Actor *effect)
         case FieldSpellSpongify:
         case FieldSpellDiffindo:
             break;
-        // HACK: without a break, case 7 isn't merged with 2-6 into one range, which keeps the
+        // HACK: without a break, the last case isn't merged with 2-6 into one range, which keeps the
         // case count high enough for the ROM's jump table.
-        case 7:
+        case FieldSpellWingardiumLeviosa:
             ;
         }
     }

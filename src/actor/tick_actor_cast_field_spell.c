@@ -21,29 +21,29 @@ void TickActorCastFieldSpell(Actor *actor)
         else if (actor->dwFlags & ActorFlagSpecialMoveTrigger) {
             actor->dwFlags &= ~ActorFlagSpecialMoveTrigger;
             switch (actor->bFighterIndex) {
-            case 0:
-                SpawnFieldSpellEffect(actor, 0);
+            case FieldSpellFlipendo:
+                SpawnFieldSpellEffect(actor, FieldSpellFlipendo);
                 break;
-            case 1:
-                SpawnFieldSpellEffect(actor, 1);
+            case FieldSpellLumos:
+                SpawnFieldSpellEffect(actor, FieldSpellLumos);
                 break;
-            case 2:
-                SpawnFieldSpellEffect(actor, 2);
+            case FieldSpellReparo:
+                SpawnFieldSpellEffect(actor, FieldSpellReparo);
                 break;
-            case 3:
-                SpawnFieldSpellEffect(actor, 3);
+            case FieldSpellAlohomora:
+                SpawnFieldSpellEffect(actor, FieldSpellAlohomora);
                 break;
-            case 4:
-                SpawnFieldSpellEffect(actor, 4);
+            case FieldSpellGlacius:
+                SpawnFieldSpellEffect(actor, FieldSpellGlacius);
                 break;
-            case 5:
-                SpawnFieldSpellEffect(actor, 5);
+            case FieldSpellSpongify:
+                SpawnFieldSpellEffect(actor, FieldSpellSpongify);
                 break;
-            case 6:
-                SpawnFieldSpellEffect(actor, 6);
+            case FieldSpellDiffindo:
+                SpawnFieldSpellEffect(actor, FieldSpellDiffindo);
                 break;
-            case 7:
-                SpawnFieldSpellEffect(actor, 7);
+            case FieldSpellWingardiumLeviosa:
+                SpawnFieldSpellEffect(actor, FieldSpellWingardiumLeviosa);
                 break;
             }
         }

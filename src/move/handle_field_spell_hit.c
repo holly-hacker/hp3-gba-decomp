@@ -135,7 +135,7 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
             SetActorActionSubState(effect, 0x11);
         break;
     case FieldSpellLumos:
-    case 7:
+    case FieldSpellWingardiumLeviosa:
         break;
     }
 }

@@ -11,7 +11,7 @@ const ActorAssetRecord g_aFieldSpellIconAssets[8] = {
     { (void *)gFieldSpellIconGlaciusTiles, (void *)gFieldSpellIconGlaciusFrames, (void *)gFieldSpellIconGlaciusPalette, 0 },
     { (void *)gFieldSpellIconSpongifyTiles, (void *)gFieldSpellIconSpongifyFrames, (void *)gFieldSpellIconSpongifyPalette, 0 },
     { (void *)gFieldSpellIconDiffindoTiles, (void *)gFieldSpellIconDiffindoFrames, (void *)gFieldSpellIconDiffindoPalette, 0 },
-    { (void *)gFieldSpellIconUnusedTiles, (void *)gFieldSpellIconUnusedFrames, (void *)gFieldSpellIconUnusedPalette, 0 },
+    { (void *)gFieldSpellIconWingardiumLeviosaTiles, (void *)gFieldSpellIconWingardiumLeviosaFrames, (void *)gFieldSpellIconWingardiumLeviosaPalette, 0 },
 };
 
 const FieldSpellEntry g_aFieldSpells[FIELD_SPELL_COUNT] = {
