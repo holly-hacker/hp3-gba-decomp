@@ -1863,53 +1863,53 @@ c-file 0x0803C2E0 _ src/save/validate_save_options.c ValidateSaveOptions
 c-file 0x0803C318 _ src/save/eeprom_read_blocks.c EepromReadBlocks
 c-file 0x0803C348 _ src/save/eeprom_write_blocks.c EepromWriteBlocks
 c-file 0x0803C378 _ src/save/eeprom_transfer_begin.c EepromTransferBegin
-c-file 0x0803C3A8 0x0803C3BC src/save/eeprom_transfer_end.c EepromTransferEnd
+c-file 0x0803C3A8 _ src/save/eeprom_transfer_end.c EepromTransferEnd
 
 # Screen (screen transitions)
-thumb-func 0x0803C3BC sub_0803C3BC
-thumb-func 0x0803C450 PlayPaletteFadeTransition_candidate
-thumb-func 0x0803C538 sub_0803C538
-thumb-func 0x0803C610 DarkenScreenPalette
-thumb-func 0x0803C690 sub_0803C690
-thumb-func 0x0803C714 sub_0803C714
-thumb-func 0x0803C798 sub_0803C798
-thumb-func 0x0803C848 sub_0803C848
-thumb-func 0x0803C8DC sub_0803C8DC
-thumb-func 0x0803C96C sub_0803C96C
-thumb-func 0x0803CA18 sub_0803CA18
-thumb-func 0x0803CAC8 sub_0803CAC8
-thumb-func 0x0803CB5C sub_0803CB5C
-thumb-func 0x0803CBEC sub_0803CBEC
-thumb-func 0x0803CC98 sub_0803CC98
-thumb-func 0x0803CD7C sub_0803CD7C
-thumb-func 0x0803CE54 sub_0803CE54
-thumb-func 0x0803CF24 sub_0803CF24
-thumb-func 0x0803CFF4 sub_0803CFF4
-thumb-func 0x0803D164 sub_0803D164
-c-file 0x0803D2C8 0x0803D2E8 src/screen_transitions/init_screen_transition_state.c InitScreenTransitionState_candidate
-thumb-func 0x0803D2E8 SetFadeToBlack
+c-file 0x0803C3BC _ src/screen_transitions/tick_alpha_blend_ramps.c TickAlphaBlendRamps
+c-file 0x0803C450 _ src/screen_transitions/transition_in_palette_fade.c TransitionInPaletteFade
+c-file 0x0803C538 _ src/screen_transitions/transition_out_palette_fade.c TransitionOutPaletteFade
+c-file 0x0803C610 _ src/screen_transitions/darken_screen_palette.c DarkenScreenPalette
+c-file 0x0803C690 _ src/screen_transitions/transition_in_wipe_down.c TransitionInWipeDown
+c-file 0x0803C714 _ src/screen_transitions/transition_in_wipe_right.c TransitionInWipeRight
+c-file 0x0803C798 _ src/screen_transitions/transition_in_split_horizontal.c TransitionInSplitHorizontal
+c-file 0x0803C848 _ src/screen_transitions/transition_out_split_horizontal.c TransitionOutSplitHorizontal
+c-file 0x0803C8DC _ src/screen_transitions/transition_in_converge_horizontal.c TransitionInConvergeHorizontal
+c-file 0x0803C96C _ src/screen_transitions/transition_out_converge_horizontal.c TransitionOutConvergeHorizontal
+c-file 0x0803CA18 _ src/screen_transitions/transition_in_split_vertical.c TransitionInSplitVertical
+c-file 0x0803CAC8 _ src/screen_transitions/transition_out_split_vertical.c TransitionOutSplitVertical
+c-file 0x0803CB5C _ src/screen_transitions/transition_in_converge_vertical.c TransitionInConvergeVertical
+c-file 0x0803CBEC _ src/screen_transitions/transition_out_converge_vertical.c TransitionOutConvergeVertical
+c-file 0x0803CC98 _ src/screen_transitions/transition_in_box_expand.c TransitionInBoxExpand
+c-file 0x0803CD7C _ src/screen_transitions/transition_out_box_expand.c TransitionOutBoxExpand
+c-file 0x0803CE54 _ src/screen_transitions/transition_in_box_shrink.c TransitionInBoxShrink
+c-file 0x0803CF24 _ src/screen_transitions/transition_out_box_shrink.c TransitionOutBoxShrink
+c-file 0x0803CFF4 _ src/screen_transitions/transition_in_mosaic.c TransitionInMosaic
+c-file 0x0803D164 _ src/screen_transitions/transition_out_mosaic.c TransitionOutMosaic
+c-file 0x0803D2C8 _ src/screen_transitions/init_screen_transition_state.c InitScreenTransitionState_candidate
+c-file 0x0803D2E8 _ src/screen_transitions/set_fade_to_black.c SetFadeToBlack
 c-file 0x0803D310 _ src/screen_transitions/set_fade_to_white.c SetFadeToWhite
-c-file 0x0803D338 0x0803D350 src/screen_transitions/set_alpha_blend_targets.c SetAlphaBlendTargets
-thumb-func 0x0803D350 SetAlphaBlendCoefficients
-thumb-func 0x0803D378 sub_0803D378
-thumb-func 0x0803D39C sub_0803D39C
-thumb-func 0x0803D3B0 PlayScreenTransitionInByIndex
-thumb-func 0x0803D3E8 PlayScreenTransitionOutByIndex
-c-file 0x0803D420 0x0803D434 src/screen_transitions/set_screen_darken_params.c SetScreenDarkenParams_candidate
-thumb-func 0x0803D434 RestoreScreenPalette
-thumb-func 0x0803D488 CommitAlphaBlendCoefficients
-thumb-func 0x0803D4A8 sub_0803D4A8
-thumb-func 0x0803D508 sub_0803D508
-thumb-func 0x0803D568 sub_0803D568
-thumb-func 0x0803D5E8 sub_0803D5E8
-thumb-func 0x0803D668 sub_0803D668
-thumb-func 0x0803D70C sub_0803D70C
-thumb-func 0x0803D76C sub_0803D76C
-thumb-func 0x0803D7CC sub_0803D7CC
-thumb-func 0x0803D848 sub_0803D848
-thumb-func 0x0803D8D0 sub_0803D8D0
-thumb-func 0x0803D94C sub_0803D94C
-thumb-func 0x0803D9D8 sub_0803D9D8
+c-file 0x0803D338 _ src/screen_transitions/set_alpha_blend_targets.c SetAlphaBlendTargets
+c-file 0x0803D350 _ src/screen_transitions/set_alpha_blend_coefficients.c SetAlphaBlendCoefficients
+c-file 0x0803D378 _ src/screen_transitions/set_alpha_blend_ramp_limits.c SetAlphaBlendRampLimits
+c-file 0x0803D39C _ src/screen_transitions/set_alpha_blend_ramp_velocities.c SetAlphaBlendRampVelocities
+c-file 0x0803D3B0 _ src/screen_transitions/play_screen_transition_in_by_index.c PlayScreenTransitionInByIndex
+c-file 0x0803D3E8 _ src/screen_transitions/play_screen_transition_out_by_index.c PlayScreenTransitionOutByIndex
+c-file 0x0803D420 _ src/screen_transitions/set_palette_fade_params.c SetPaletteFadeParams
+c-file 0x0803D434 _ src/screen_transitions/restore_screen_palette.c RestoreScreenPalette
+c-file 0x0803D488 _ src/screen_transitions/commit_alpha_blend_coefficients.c CommitAlphaBlendCoefficients
+c-file 0x0803D4A8 _ src/screen_transitions/transition_in_fade_from_black.c TransitionInFadeFromBlack
+c-file 0x0803D508 _ src/screen_transitions/transition_in_fade_from_white.c TransitionInFadeFromWhite
+c-file 0x0803D568 _ src/screen_transitions/transition_in_wipe_up.c TransitionInWipeUp
+c-file 0x0803D5E8 _ src/screen_transitions/transition_in_wipe_left.c TransitionInWipeLeft
+c-file 0x0803D668 _ src/screen_transitions/transition_in_letterbox.c TransitionInLetterbox
+c-file 0x0803D70C _ src/screen_transitions/transition_out_fade_to_black.c TransitionOutFadeToBlack
+c-file 0x0803D76C _ src/screen_transitions/transition_out_fade_to_white.c TransitionOutFadeToWhite
+c-file 0x0803D7CC _ src/screen_transitions/transition_out_wipe_down.c TransitionOutWipeDown
+c-file 0x0803D848 _ src/screen_transitions/transition_out_wipe_up.c TransitionOutWipeUp
+c-file 0x0803D8D0 _ src/screen_transitions/transition_out_wipe_right.c TransitionOutWipeRight
+c-file 0x0803D94C _ src/screen_transitions/transition_out_wipe_left.c TransitionOutWipeLeft
+c-file 0x0803D9D8 0x0803DA4C src/screen_transitions/transition_out_letterbox.c TransitionOutLetterbox
 
 # Scroll (room BG streaming and overworld camera)
 thumb-func 0x0803DA4C UpdateOverworldCamera_candidate

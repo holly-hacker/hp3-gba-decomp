@@ -2,49 +2,74 @@
 
 #include "types.h"
 
+// A screen transition blocks until done. blendArg is the BLDCNT first-target layer mask the
+// fade or wipe darkens (or brightens); every caller passes 0x3F.
 typedef void (*ScreenTransitionHandler)(u16 blendArg);
 
-// Indexed by transitionIndex. Entry 2 of the in table (PlayPaletteFadeTransition_candidate) is a
-// blocking full-screen palette fade that keeps the normal per-frame tick running.
-extern void sub_0803D4A8(u16 blendArg);
-extern void sub_0803D508(u16 blendArg);
-extern void PlayPaletteFadeTransition_candidate(u16 blendArg);
-extern void sub_0803C690(u16 blendArg);
-extern void sub_0803D568(u16 blendArg);
-extern void sub_0803C714(u16 blendArg);
-extern void sub_0803D5E8(u16 blendArg);
-extern void sub_0803C798(u16 blendArg);
-extern void sub_0803C8DC(u16 blendArg);
-extern void sub_0803CA18(u16 blendArg);
-extern void sub_0803CB5C(u16 blendArg);
-extern void sub_0803CC98(u16 blendArg);
-extern void sub_0803CE54(u16 blendArg);
-extern void sub_0803CFF4(u16 blendArg);
-extern void sub_0803D668(u16 blendArg);
-extern void sub_0803D70C(u16 blendArg);
-extern void sub_0803D76C(u16 blendArg);
-extern void sub_0803C538(u16 blendArg);
-extern void sub_0803D7CC(u16 blendArg);
-extern void sub_0803D848(u16 blendArg);
-extern void sub_0803D8D0(u16 blendArg);
-extern void sub_0803D94C(u16 blendArg);
-extern void sub_0803C848(u16 blendArg);
-extern void sub_0803C96C(u16 blendArg);
-extern void sub_0803CAC8(u16 blendArg);
-extern void sub_0803CBEC(u16 blendArg);
-extern void sub_0803CD7C(u16 blendArg);
-extern void sub_0803CF24(u16 blendArg);
-extern void sub_0803D164(u16 blendArg);
-extern void sub_0803D9D8(u16 blendArg);
+// Incoming transitions (g_apfnScreenTransitionsIn), in table order. Each starts from the screen
+// its outgoing counterpart left; window wipes show the backdrop inside a window that shrinks off
+// the screen.
+extern void TransitionInFadeFromBlack(u16 blendArg);
+extern void TransitionInFadeFromWhite(u16 blendArg);
+extern void TransitionInPaletteFade(u16 blendArg);
+extern void TransitionInWipeDown(u16 blendArg);
+extern void TransitionInWipeUp(u16 blendArg);
+extern void TransitionInWipeRight(u16 blendArg);
+extern void TransitionInWipeLeft(u16 blendArg);
+extern void TransitionInSplitHorizontal(u16 blendArg);
+extern void TransitionInConvergeHorizontal(u16 blendArg);
+extern void TransitionInSplitVertical(u16 blendArg);
+extern void TransitionInConvergeVertical(u16 blendArg);
+extern void TransitionInBoxExpand(u16 blendArg);
+extern void TransitionInBoxShrink(u16 blendArg);
+extern void TransitionInMosaic(u16 blendArg);
+extern void TransitionInLetterbox(u16 blendArg);
+
+// Outgoing transitions (g_apfnScreenTransitionsOut), in table order. Window wipes grow a
+// backdrop-only window over the screen, then leave it fully darkened.
+extern void TransitionOutFadeToBlack(u16 blendArg);
+extern void TransitionOutFadeToWhite(u16 blendArg);
+extern void TransitionOutPaletteFade(u16 blendArg);
+extern void TransitionOutWipeDown(u16 blendArg);
+extern void TransitionOutWipeUp(u16 blendArg);
+extern void TransitionOutWipeRight(u16 blendArg);
+extern void TransitionOutWipeLeft(u16 blendArg);
+extern void TransitionOutSplitHorizontal(u16 blendArg);
+extern void TransitionOutConvergeHorizontal(u16 blendArg);
+extern void TransitionOutSplitVertical(u16 blendArg);
+extern void TransitionOutConvergeVertical(u16 blendArg);
+extern void TransitionOutBoxExpand(u16 blendArg);
+extern void TransitionOutBoxShrink(u16 blendArg);
+extern void TransitionOutMosaic(u16 blendArg);
+extern void TransitionOutLetterbox(u16 blendArg);
 
 extern const ScreenTransitionHandler g_apfnScreenTransitionsIn[15];
 extern const ScreenTransitionHandler g_apfnScreenTransitionsOut[15];
 
 // Runs g_apfnScreenTransitionsIn[transitionIndex].
-extern void PlayScreenTransitionInByIndex(u32 blendArg, u32 transitionIndex);
+extern void PlayScreenTransitionInByIndex(u16 blendArg, u32 transitionIndex);
 // Runs g_apfnScreenTransitionsOut[transitionIndex].
-extern void PlayScreenTransitionOutByIndex(u32 blendArg, u32 transitionIndex);
+extern void PlayScreenTransitionOutByIndex(u16 blendArg, u32 transitionIndex);
 
+// A BLDALPHA coefficient in 8.8 fixed point that TickAlphaBlendRamps moves by wVelocity per
+// call, reversing at wMin and wMax.
+typedef struct AlphaBlendRamp {
+    s16 wValue;
+    s16 wVelocity;
+    s16 wMin;
+    s16 wMax;
+} AlphaBlendRamp;
+
+extern AlphaBlendRamp g_AlphaBlendEvaRamp;
+extern AlphaBlendRamp g_AlphaBlendEvbRamp;
+
+// Steps both ramps and writes their integer parts to BLDALPHA. Unused, as are the setters of
+// the ramp limits and velocities.
+extern void TickAlphaBlendRamps(void);
+extern void SetAlphaBlendRampLimits(s32 evaMin, s32 evaMax, s32 evbMin, s32 evbMax);
+extern void SetAlphaBlendRampVelocities(s32 evaVelocity, s32 evbVelocity);
+
+// Sets BLDALPHA and both ramp values.
 extern void SetAlphaBlendCoefficients(u16 eva, u16 evb);
 // Sets BLDCNT (layer mask | fade mode) and BLDY (amount, at most 0x10).
 extern void SetFadeToWhite(u16 layerMask, u16 amount);
@@ -55,17 +80,17 @@ extern void SetAlphaBlendTargets(u16 firstTargets, u16 secondTargets);
 // Rewrites BLDALPHA from the coefficients SetAlphaBlendCoefficients last set.
 extern void CommitAlphaBlendCoefficients(void);
 
-// Set by SetScreenDarkenParams_candidate (every caller passes 0, 8).
-// DarkenScreenPalette and RestoreScreenPalette pass the step ticks to the
-// palette effect they start (PaletteEffect.bStepTicks_candidate); no reader
-// of g_dwUnk03005638 has been found.
-extern u32 g_dwUnk03005638;
-extern u32 g_dwScreenDarkenStepTicks_candidate;
-extern void SetScreenDarkenParams_candidate(u32 arg0, u32 stepTicks);
-// 0x400-byte copy of the BG+OBJ palette that DarkenScreenPalette saves and
-// RestoreScreenPalette restores.
+// The BGR555 color TransitionOutPaletteFade fades to, and the step ticks of the palette
+// effects that the palette fades and DarkenScreenPalette/RestoreScreenPalette start
+// (PaletteEffect.bStepTicks_candidate). Set by SetPaletteFadeParams; every caller passes 0, 8.
+extern u32 g_dwPaletteFadeColor;
+extern u32 g_dwPaletteFadeStepTicks;
+extern void SetPaletteFadeParams(u32 color, u32 stepTicks);
+// 0x400-byte palette copy: TransitionOutPaletteFade saves BG and OBJ palette RAM there,
+// DarkenScreenPalette the BG palette shadow.
 extern u16 *g_pScreenPaletteBackup;
-// Nonzero while g_pScreenPaletteBackup holds the palette from before DarkenScreenPalette.
+// Nonzero while g_pScreenPaletteBackup holds the palette from before DarkenScreenPalette or
+// TransitionOutPaletteFade.
 extern u32 g_dwScreenPaletteDarkened;
 extern void InitScreenTransitionState_candidate(void);
 extern void DarkenScreenPalette(void);

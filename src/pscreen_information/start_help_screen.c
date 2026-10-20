@@ -35,9 +35,9 @@ void StartHelpScreen(const u32 *pPageTable, s32 bStandalone)
 
     if (g_HelpState.bStandalone)
     {
-        SetScreenDarkenParams_candidate(0, 8);
+        SetPaletteFadeParams(0, 8);
         PlayScreenTransitionInByIndex(0x3F, 2);
-        SetScreenDarkenParams_candidate(0, 8);
+        SetPaletteFadeParams(0, 8);
         SetAlphaBlendTargets(4, 1);
         SetAlphaBlendCoefficients(16, 0);
         g_GameModeStackContext.dwModeState = 2;

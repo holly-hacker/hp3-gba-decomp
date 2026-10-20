@@ -25,9 +25,9 @@ void ExitOverworldScreen(void)
     }
     else if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == InGameMenu)
     {
-        SetScreenDarkenParams_candidate(0, 8);
+        SetPaletteFadeParams(0, 8);
         PlayScreenTransitionOutByIndex(0x3F, 2);
-        SetScreenDarkenParams_candidate(0, 8);
+        SetPaletteFadeParams(0, 8);
     }
     else
     {

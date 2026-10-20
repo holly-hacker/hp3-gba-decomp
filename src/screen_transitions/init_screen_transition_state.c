@@ -3,6 +3,6 @@
 
 void InitScreenTransitionState_candidate(void)
 {
-    SetScreenDarkenParams_candidate(0, 8);
+    SetPaletteFadeParams(0, 8);
     g_pScreenPaletteBackup = AllocZeroed(0x400);
 }

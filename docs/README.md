@@ -74,6 +74,9 @@ Memory map (live RAM layout and the code that drives it):
 - [`memory-map/frame_systems.md`](memory-map/frame_systems.md) — the
   per-frame `TickFrameSystems` sequence and the BG-layer, window, palette
   and tile-animation ticks it runs.
+- [`memory-map/screen_transitions.md`](memory-map/screen_transitions.md) — the
+  in/out screen transition tables (fades, window wipes, mosaics, palette fades),
+  the screen-darken effect and the alpha-blend coefficient ramps.
 - [`memory-map/serial.md`](memory-map/serial.md) — the link-cable layer
   (multiplayer SIO, Timer3 ISR pump, handshake) and the card-trade
   session (mode `0x15`, `CardTradeState`, offer/lock/compare/commit).

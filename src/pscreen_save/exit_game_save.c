@@ -6,9 +6,9 @@
 
 void ExitGameSave(void)
 {
-    SetScreenDarkenParams_candidate(0, 8);
+    SetPaletteFadeParams(0, 8);
     PlayScreenTransitionOutByIndex(0x3F, 2);
-    SetScreenDarkenParams_candidate(0, 8);
+    SetPaletteFadeParams(0, 8);
     ExitMenuScreen();
     FreeAllActors(&g_ActiveActorListState.pHead);
     ResetPaletteAnimations();

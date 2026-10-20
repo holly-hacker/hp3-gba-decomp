@@ -479,10 +479,12 @@
 .set g_wEepromSavedDispstat,     0x0300567C
 
 @ --- include/screen_transitions.h ---
-.set g_dwScreenPaletteDarkened,     0x03005680  @ u32: set while g_pScreenPaletteBackup holds the undarkened palette
-.set g_pScreenPaletteBackup,            0x03005684
-.set g_dwUnk03005638,                   0x03005698
-.set g_dwScreenDarkenStepTicks_candidate, 0x0300569C
+.set g_dwScreenPaletteDarkened, 0x03005680  @ u32: set while g_pScreenPaletteBackup holds the undarkened palette
+.set g_pScreenPaletteBackup,    0x03005684
+.set g_AlphaBlendEvaRamp,       0x03005688  @ AlphaBlendRamp: BLDALPHA EVA coefficient (8.8)
+.set g_AlphaBlendEvbRamp,       0x03005690  @ AlphaBlendRamp: BLDALPHA EVB coefficient (8.8)
+.set g_dwPaletteFadeColor,      0x03005698  @ u32: BGR555 color TransitionOutPaletteFade fades to
+.set g_dwPaletteFadeStepTicks,  0x0300569C  @ u32: step ticks of the palette fades and DarkenScreenPalette/RestoreScreenPalette
 
 @ --- include/scroll.h ---
 .set g_CameraPosition_candidate, 0x030056A0  @ CameraFocusOffset: world-space camera origin used for actor visibility

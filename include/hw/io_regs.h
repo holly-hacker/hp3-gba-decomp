@@ -16,6 +16,14 @@ typedef struct {
 #define DISPSTAT_VBLANK      0x0001 // REG_DISPSTAT: set during VBlank (scanlines 160-226)
 #define DISPSTAT_HBLANK      0x0002 // REG_DISPSTAT: set during HBlank
 #define DISPCNT_FORCED_BLANK 0x0080 // REG_DISPCNT: LCD shows white, VRAM freely accessible
+#define DISPCNT_WIN0_ON      0x2000 // REG_DISPCNT: window 0 enabled
+#define DISPCNT_WIN1_ON      0x4000 // REG_DISPCNT: window 1 enabled
+#define BGCNT_MOSAIC         0x0040 // REG_BGxCNT: mosaic enabled
+#define BLDCNT_BRIGHTEN      0x0080 // REG_BLDCNT: brighten the first targets by BLDY
+#define BLDCNT_DARKEN        0x00C0 // REG_BLDCNT: darken the first targets by BLDY
+
+#define SCREEN_WIDTH  240
+#define SCREEN_HEIGHT 160
 
 // On-board (EWRAM) and in-chip (IWRAM) work RAM.
 #define EWRAM_BASE ((u8 *)0x02000000)
@@ -46,6 +54,7 @@ typedef struct {
 #define REG_BG0CNT  (*(volatile u16 *)0x04000008)
 #define REG_BG1CNT  (*(volatile u16 *)0x0400000A)
 #define REG_BG2CNT  (*(volatile u16 *)0x0400000C)
+#define REG_BG3CNT  (*(volatile u16 *)0x0400000E)
 
 // BG0-BG3 scroll offsets, indexed by BG number.
 #define REG_BGHOFS(n) (*(volatile u16 *)(0x04000010 + (n) * 4))
@@ -68,11 +77,20 @@ typedef struct {
 // BG3 affine parameters; the reference point follows PD as BG2's does.
 #define REG_BG3PA   (*(volatile u16 *)0x04000030)
 
+// Window 0/1 horizontal (left << 8 | right) and vertical (top << 8 | bottom) extents.
+#define REG_WIN0H (*(volatile u16 *)0x04000040)
+#define REG_WIN1H (*(volatile u16 *)0x04000042)
+#define REG_WIN0V (*(volatile u16 *)0x04000044)
+#define REG_WIN1V (*(volatile u16 *)0x04000046)
+
 // Window 0/1 inside layer enables.
 #define REG_WININ (*(volatile u16 *)0x04000048)
 
 // Window outside/OBJ-window layer enables.
 #define REG_WINOUT (*(volatile u16 *)0x0400004A)
+
+// Mosaic sizes minus one: BG H, BG V, OBJ H, OBJ V in successive nibbles.
+#define REG_MOSAIC (*(volatile u16 *)0x0400004C)
 
 // Color effects: blend control, alpha and brightness coefficients.
 #define REG_BLDCNT   (*(volatile u16 *)0x04000050)
