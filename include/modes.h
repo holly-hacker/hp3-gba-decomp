@@ -145,6 +145,10 @@ extern s32 IsGameModeTransitionPending(void);
 
 typedef enum {
     SerialSessionActive = 0x20,
+    // No code sets these; TickCameraCutawayActor disables BG0 when any is set.
+    GameModeFlagUnk80 = 0x80,
+    GameModeFlagUnk4000 = 0x4000,
+    GameModeFlagUnk800000 = 0x800000,
 } GameModeFlags;
 
 // u32: incremented once per TickGameModeStack call, before mode dispatch.

@@ -40,10 +40,8 @@ extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
 extern void SyncFollowerLevelToLeader_candidate(u32 characterId);
 extern void GrantPartyExperience_candidate(u32 xp);
 extern void CyclePartyLeaderSelection_candidate(Actor *pLeader, u32 direction);
-// Allocates a RoomActorType_ScriptEffect actor of the given kind (Actor+0x8C),
-// ticked by the kind's entry in the script-effect tick table. Kind 1 (the delayed respawn timer,
-// tick at 0x080200FC) counts dwStateTimer down, then runs the row/chain, or resumes the yielded
-// chain if the walk yielded on a delayed-respawn opcode.
+// Allocates a RoomActorType_ScriptEffect actor of the given kind (ScriptEffectKind_*),
+// ticked by g_apfnScriptEffectActorTicks[kind].
 extern Actor *SpawnScriptEffectActor(u32 kind);
 extern void sub_080236DC(u32 characterId);
 extern void sub_080237D0(u32 arg0);

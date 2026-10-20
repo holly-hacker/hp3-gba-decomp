@@ -377,6 +377,15 @@ typedef struct Actor {
             u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
         } actor;
         struct __attribute__((packed)) {
+            u8 pad_62[0x04];
+            u16 wFocusX;            // 0x66, pixels the camera cuts away to
+            u16 wFocusY;            // 0x68
+            u8 bPlayerViewTransition;  // 0x6A, screen transition leaving and returning to the player
+            u8 bFocusViewTransition;   // 0x6B, screen transition entering and leaving the focus
+            u8 bRespawnRow;         // 0x6C, RespawnGroupAndRunChain arguments run at the focus
+            u8 bChainRow;           // 0x6D
+        } cutaway;                  // camera cutaway script effect; see TickCameraCutawayActor
+        struct __attribute__((packed)) {
             union __attribute__((packed)) {
                 u16 wPair;          // tested as a whole: zero runs nothing
                 struct __attribute__((packed)) {

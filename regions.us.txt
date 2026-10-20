@@ -892,12 +892,12 @@ c-file 0x0801FDD4 _ src/display/set_dispcnt_except_mode.c SetDispcntExceptMode
 # Ending cutscene (hippogriff-flies-into-air cutscene mode)
 c-file 0x0801FDE8 _ src/ending_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
 c-file 0x0801FED4 _ src/ending_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
-c-file 0x0801FF14 0x0801FF30 src/ending_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
+c-file 0x0801FF14 _ src/ending_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
 
-# Event actors?
-thumb-func 0x0801FF30 TickCameraCutawayActor
-thumb-func 0x080200FC TickDelayedRespawnActor
-thumb-func 0x0802018C SpawnScriptEffectActor
+# Event actors (room script effect actors)
+c-file 0x0801FF30 _ src/event_actors/tick_camera_cutaway_actor.c TickCameraCutawayActor
+c-file 0x080200FC _ src/event_actors/tick_delayed_respawn_actor.c TickDelayedRespawnActor
+c-file 0x0802018C 0x080201C8 src/event_actors/spawn_script_effect_actor.c SpawnScriptEffectActor
 
 # Flipbook animations
 thumb-func 0x080201C8 AddRoomTileAnimation_candidate
@@ -2370,7 +2370,8 @@ c-file 0x0805E110 _ src/dementor_minigame/dementor_minigame.globals.c g_Dementor
 c-file 0x0805E280 _ src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file 0x0805E28C _ src/dialog/dialog.globals.c g_aDialogScanlineEffects
 c-file 0x0805EB10 _ src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
-c-file 0x0805EB34 0x0805EB94 src/event_actors/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
+c-file 0x0805EB34 _ src/event_actors/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
+c-file 0x0805EB94 _ src/event_actors/script_effect_actor_ticks.c g_apfnScriptEffectActorTicks
 c-file 0x0805EB9C _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/font/load_font_descriptor.globals.c g_aFontTable
 c-file 0x0806053C 0x08060554 src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
@@ -2438,7 +2439,8 @@ c-file 0x0806B3CC _ src/pscreen_wizard_cards/folio_universitas_card_details.glob
 c-file 0x0806B3D8 _ src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAssets
 c-file 0x0806B7D4 _ src/rising_platform_actor/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file 0x0806B80C _ src/save/write_default_save_header.globals.c g_DefaultSaveHeader
-c-file 0x0806B81C 0x0806B844 src/save/write_default_save_options.globals.c g_DefaultSaveOptions
+c-file 0x0806B81C _ src/save/write_default_save_options.globals.c g_DefaultSaveOptions
+c-file 0x0806B844 _ src/screen_transitions/screen_transition_handlers.c g_apfnScreenTransitionsIn
 c-file 0x0806B8BC _ src/serial/serial_magic.c g_adwSerialMagic
 c-file 0x0806B8CC _ src/sound/sound_sections.c g_pKrawallIwramStart
 c-file 0x0806B8DC 0x0806B934 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
