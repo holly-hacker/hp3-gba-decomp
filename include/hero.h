@@ -62,11 +62,34 @@ extern Actor *g_pFollowerActor1;
 extern u8 g_bPartyCharId0;
 extern u8 g_bPartyCharId1;
 extern u8 g_bPartyCharId2;
-// Index into the 9-entry field spell table at 0x08060BAC: {u32 spell,
-// u8 FighterType, u8 minimum bKnownSpellCount}. Flipendo, Lumos and Diffindo
-// for Harry, Flipendo, Reparo and Glacius for Hermione, Flipendo, Alohomora
-// and Spongify for Ron; Diffindo and Spongify need 5 known spells, Glacius 6.
-// CyclePartyLeaderSelection_candidate steps it; it is saved with the party.
+// Spells cast outside battle, in name text order (0x51B + id).
+typedef enum {
+    FieldSpellFlipendo  = 0,
+    FieldSpellLumos     = 1,
+    FieldSpellReparo    = 2,
+    FieldSpellAlohomora = 3,
+    FieldSpellGlacius   = 4,
+    FieldSpellSpongify  = 5,
+    FieldSpellDiffindo  = 6,
+} FieldSpell;
+
+// Three field spells per party character, selected by g_bSelectedFieldSpell.
+#define FIELD_SPELL_COUNT 9
+typedef struct FieldSpellEntry {
+    u32 dwSpell;          // FieldSpell
+    u8 bFighterType;      // FighterType of the character casting it
+    u8 bMinKnownSpells;   // bKnownSpellCount needed to select it
+} FieldSpellEntry;
+extern const FieldSpellEntry g_aFieldSpells[FIELD_SPELL_COUNT];
+// Indexed by FieldSpell; the eighth icon is unused.
+extern const ActorAssetRecord g_aFieldSpellIconAssets[8];
+// Face portraits by FighterType; Buckbeak's repeats Ron's.
+extern const ActorAssetRecord g_aFieldSpellPortraitAssets[4];
+// The 240x16 bar behind the room name.
+extern const ActorAssetRecord g_MapNamePopupAsset;
+
+// Index into g_aFieldSpells. CyclePartyLeaderSelection_candidate steps it; it is
+// saved with the party.
 extern u8 g_bSelectedFieldSpell;
 extern Actor *g_pPlayerShadowActor_candidate;
 
@@ -91,3 +114,10 @@ extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no r
 extern Actor *g_pFieldSpellPortraitActor;   // face portrait of the spell's character (DrawFieldSpellHud)
 extern Actor *g_pMapNamePopupActor;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
 extern Actor *g_pFieldSpellIconActor;       // selected spell's icon (RefreshFieldSpellHud)
+
+// Spawns g_pFieldSpellIconActor and shows the selected field spell.
+extern Actor *SpawnFieldSpellIconActor(void);
+// Shows the selected spell's name and fieldSpell's character portrait.
+extern void DrawFieldSpellHud(u32 fieldSpell);
+// pfnTick of the room name popup actors.
+extern void TickMapNameActor(Actor *actor);

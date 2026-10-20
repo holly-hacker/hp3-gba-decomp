@@ -57,7 +57,19 @@ groups:
         names:
           1: DementorMinigameSpell
           2: DementorMinigameDamage
-          3: ActorSprite003
+          3: FieldSpellPortraitHarry
+          4: FieldSpellPortraitHermione
+          5: FieldSpellPortraitRon
+          6: MapNamePopupBar
+          7: FieldSpellIconFlipendo
+          8: FieldSpellIconLumos
+          9: FieldSpellIconReparo
+          10: FieldSpellIconAlohomora
+          11: FieldSpellIconGlacius
+          12: FieldSpellIconSpongify
+          13: FieldSpellIconDiffindo
+          14: FieldSpellIconUnused
+          15: ActorSprite015
           17: MinigameTextPanelCap
           18: MinigameTextPanelMiddle
           19: InGameMenuIconStatusEquip

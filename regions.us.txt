@@ -1022,12 +1022,12 @@ c-file 0x080233E4 _ src/hero/spawn_player_actor.c SpawnPlayerActor
 c-file 0x08023548 _ src/hero/spawn_party_follower_actor.c SpawnPartyFollowerActor
 c-file 0x08023644 _ src/hero/catch_up_to_harry_level.c CatchUpToHarryLevel
 c-file 0x080236DC _ src/hero/remove_party_member.c RemovePartyMember
-c-file 0x080237D0 0x08023868 src/hero/set_party_leader_character.c SetPartyLeaderCharacter
+c-file 0x080237D0 _ src/hero/set_party_leader_character.c SetPartyLeaderCharacter
 
 # Hero Hud
-thumb-func 0x08023868 SpawnFieldSpellIconActor
-thumb-func 0x080238D8 ShowMapNamePopup
-thumb-func 0x08023A2C DrawFieldSpellHud
+c-file 0x08023868 _ src/hero/spawn_field_spell_icon_actor.c SpawnFieldSpellIconActor
+c-file 0x080238D8 _ src/hero/show_map_name_popup.c ShowMapNamePopup
+c-file 0x08023A2C 0x08023B44 src/hero/draw_field_spell_hud.c DrawFieldSpellHud
 
 # Hero Party
 thumb-func 0x08023B44 TickPlayerActor
@@ -2378,8 +2378,10 @@ c-file 0x0806053C 0x08060554 src/game_state/process_playtime_tick.globals.c g_st
 c-rodata 0x08060620 0x08060625 InitJoybusSession
 c-file 0x080606A8 0x080606B8 src/hedwig_minigame/owl_care_kit.globals.c g_dwOwlCareBg3Control
 c-file 0x08060884 _ src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
-c-file 0x0806088C 0x0806089C src/hero/party_focus_gfx.c g_PartyFocusGfx_candidate
-c-file 0x080608EC 0x08060B2C src/hero/party_assets.c g_aPartyWalkAssets
+c-file 0x0806088C _ src/hero/party_focus_gfx.c g_PartyFocusGfx_candidate
+c-file 0x0806089C _ src/hero/field_spell_portrait_assets.c g_aFieldSpellPortraitAssets
+c-file 0x080608EC _ src/hero/party_assets.c g_aPartyWalkAssets
+c-file 0x08060B2C _ src/hero/field_spells.c g_aFieldSpellIconAssets
 c-file 0x08060BF4 _ src/hero/party_anims.c g_abPartyStandFrames
 c-file 0x08060E64 _ src/initials/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
 c-file 0x08060E7C _ src/input/dpad_direction.c g_abDpadDirection

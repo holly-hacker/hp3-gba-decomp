@@ -256,7 +256,7 @@
 .set g_bPartyCharId0,                    0x0300338C  @ u8: character id of the party leader
 .set g_bPartyCharId1,                    0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2,                    0x0300338E  @ u8: character id of the second follower
-.set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into the field spell table at 0x08060BAC
+.set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into g_aFieldSpells
 .set g_pPlayerShadowActor_candidate,   0x03003390  @ Actor *: type 0x11 actor SpawnPlayerActor creates for the player
 .set g_pPartyTrail,                    0x03003398  @ PartyTrailStep *: ring buffer of PARTY_TRAIL_LENGTH player steps the followers replay
 .set g_bPartyTrailWriteIndex,          0x0300339C  @ u8: next g_pPartyTrail entry the player's step is written to
