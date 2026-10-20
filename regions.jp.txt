@@ -1851,17 +1851,17 @@ c-file 0x08042618 _ src/text/get_language.c GetLanguage
 c-file 0x08042624 _ src/text/get_dialog_text.c GetDialogText
 c-file 0x08042648 _ src/text/append_dialog_text.c AppendDialogText
 c-file 0x08042678 _ src/text/append_string.c AppendString
-c-file 0x080426A4 0x080426E4 src/text/format_hex.c FormatHex
-thumb-func 0x080426E4 sub_080426A4
-thumb-func 0x0804277C sub_0804273C
-thumb-func 0x0804280C sub_080427CC
-thumb-func 0x0804292C SpawnUnslottedTextActor
-thumb-func 0x08042988 SpawnTextActor
-thumb-func 0x08042A00 SetTextActorString
-thumb-func 0x08042A14 SetTextActorCenterPosition_candidate
-thumb-func 0x08042A30 sub_080429F0
-thumb-func 0x08042AC8 sub_08042A88
-thumb-func 0x08042AE4 ClearTextActorSlot
+c-file 0x080426A4 _ src/text/format_hex.c FormatHex
+c-file 0x080426E4 _ src/text_actor/spawn_text_actor_lines.c SpawnTextActorLines
+c-file 0x0804277C _ src/text_actor/resize_text_actor.c ResizeTextActor
+c-file 0x0804280C _ src/text_actor/draw_text_actor_text.c DrawTextActorText
+c-file 0x0804292C _ src/text_actor/spawn_unslotted_text_actor.c SpawnUnslottedTextActor
+c-file 0x08042988 _ src/text_actor/spawn_text_actor.c SpawnTextActor
+c-file 0x08042A00 _ src/text_actor/set_text_actor_string.c SetTextActorString
+c-file 0x08042A14 _ src/text_actor/set_text_actor_center_position.c SetTextActorCenterPosition_candidate
+c-file 0x08042A30 _ src/text_actor/set_text_actor_aligned_position.c SetTextActorAlignedPosition
+c-file 0x08042AC8 _ src/text_actor/clear_text_actor_slots.c ClearTextActorSlots
+c-file 0x08042AE4 _ src/text_actor/clear_text_actor_slot.c ClearTextActorSlot
 c-file 0x08042B08 _ src/time_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene
 c-file 0x08042BD0 _ src/time_skip_cutscene/initialize_hogwarts_up_night_cutscene.c InitializeHogwartsUpNightCutscene
 c-file 0x08042CB4 _ src/time_skip_cutscene/update_hogwarts_up_night_cutscene.c UpdateHogwartsUpNightCutscene

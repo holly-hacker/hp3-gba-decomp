@@ -557,6 +557,12 @@ typedef enum {
     BattleActorType_EffectScript = 0x17,  // CreateEffectScriptActor, spell/attack visual effect
 } BattleActorType;
 
+// wActorType values of actors spawned in any game mode. ActorType_Text shares
+// its value with BattleActorType_FighterSlot0 + 6.
+typedef enum {
+    ActorType_Text = 0x14,  // SpawnTextActor and the other text actor spawners
+} ActorType;
+
 // Actor pool: a 0x69-slot, 0x128-byte-stride free list carved out of a
 // bulk AllocZeroed'd buffer by InitActorPool, plus a small auxiliary
 // buffer and IWRAM-relocated copies of the two per-frame actor-list
