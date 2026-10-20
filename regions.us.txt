@@ -1027,22 +1027,22 @@ c-file 0x080237D0 _ src/hero/set_party_leader_character.c SetPartyLeaderCharacte
 # Hero Hud
 c-file 0x08023868 _ src/hero/spawn_field_spell_icon_actor.c SpawnFieldSpellIconActor
 c-file 0x080238D8 _ src/hero/show_map_name_popup.c ShowMapNamePopup
-c-file 0x08023A2C 0x08023B44 src/hero/draw_field_spell_hud.c DrawFieldSpellHud
+c-file 0x08023A2C _ src/hero/draw_field_spell_hud.c DrawFieldSpellHud
 
 # Hero Party
-thumb-func 0x08023B44 TickPlayerActor
-thumb-func 0x08023D00 TickPartyFollowerActor
-thumb-func 0x08023F50 TickPartySecondFollowerActor
-thumb-func 0x08024234 CyclePartyLeaderSelection_candidate
-c-file 0x08024518 0x08024738 src/hero/set_party_member_anim.c SetPartyMemberAnim
-thumb-func 0x08024738 SwapPartyMemberCharacters
-c-file 0x08024888 0x080248E8 src/hero/reset_party_state.c ResetPartyState
-thumb-func 0x080248E8 sub_080248E8
-thumb-func 0x08024918 sub_08024918
-thumb-func 0x08024980 sub_08024980
-thumb-func 0x080249A4 sub_080249A4
-thumb-func 0x080249C8 GetPartyPresenceMask
-thumb-func 0x080249FC GetPartySize
+c-file 0x08023B44 _ src/hero/tick_player_actor.c TickPlayerActor
+c-file 0x08023D00 _ src/hero/tick_party_follower_actor.c TickPartyFollowerActor
+c-file 0x08023F50 _ src/hero/tick_party_second_follower_actor.c TickPartySecondFollowerActor
+c-file 0x08024234 _ src/hero/cycle_selected_field_spell.c CycleSelectedFieldSpell
+c-file 0x08024518 _ src/hero/set_party_member_anim.c SetPartyMemberAnim
+c-file 0x08024738 _ src/hero/swap_party_member_characters.c SwapPartyMemberCharacters
+c-file 0x08024888 _ src/hero/reset_party_state.c ResetPartyState
+c-file 0x080248E8 _ src/hero/spawn_party_followers.c SpawnPartyFollowers
+c-file 0x08024918 _ src/hero/free_party_actors.c FreePartyActors
+c-file 0x08024980 _ src/hero/spawn_follower_actor0.c SpawnFollowerActor0
+c-file 0x080249A4 _ src/hero/spawn_follower_actor1.c SpawnFollowerActor1
+c-file 0x080249C8 _ src/hero/get_party_presence_mask.c GetPartyPresenceMask
+c-file 0x080249FC _ src/hero/get_party_size.c GetPartySize
 
 # Hero Rewards? (receive reward in overworld)
 c-file 0x08024A30 _ src/hero/player_receive_reward.c PlayerReceiveReward

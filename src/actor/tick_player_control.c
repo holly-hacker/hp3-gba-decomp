@@ -51,8 +51,8 @@ void TickPlayerControl(Actor *actor)
     }
     else if ((g_wKeysPressed & (KeyL | KeyR)) && g_dwPendingCameraFocusFlag == 0) {
         if (g_wKeysPressed & KeyR)
-            CyclePartyLeaderSelection_candidate(actor, 1);
+            CycleSelectedFieldSpell(actor, 1);
         else
-            CyclePartyLeaderSelection_candidate(actor, 0);
+            CycleSelectedFieldSpell(actor, 0);
     }
 }

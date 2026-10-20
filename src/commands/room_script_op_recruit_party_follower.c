@@ -13,12 +13,12 @@ void RoomScriptOpRecruitPartyFollower(RecruitPartyFollowerRecord *pRecord)
     CatchUpToHarryLevel(pRecord->bCharacterId);
     if (g_pFollowerActor0 == NULL)
     {
-        sub_08024980(pRecord->bCharacterId);
+        SpawnFollowerActor0(pRecord->bCharacterId);
         g_bPartyCharId1 = g_pFollowerActor0->wCharacterId_candidate;
     }
     else
     {
-        sub_080249A4(pRecord->bCharacterId);
+        SpawnFollowerActor1(pRecord->bCharacterId);
         g_bPartyCharId2 = g_pFollowerActor1->wCharacterId_candidate;
     }
 }

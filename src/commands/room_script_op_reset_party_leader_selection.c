@@ -4,5 +4,5 @@
 
 void RoomScriptOpResetPartyLeaderSelection(RoomScriptRecord *pRecord)
 {
-    CyclePartyLeaderSelection_candidate(g_pPlayerActor, 2);
+    CycleSelectedFieldSpell(g_pPlayerActor, 2);
 }

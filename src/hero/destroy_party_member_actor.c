@@ -1,10 +1,2 @@
-#include "actor.h"
-#include "overworld/overworld.h"
-
-void DestroyPartyMemberActor(Actor *actor)
-{
-    actor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
-    if (actor->pLinkedActor_candidate != NULL)
-        actor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
-    actor->pShadowActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
-}
+#define DESTROY_PARTY_MEMBER_ACTOR_LINKAGE
+#include "hero_inline.h"

@@ -904,20 +904,20 @@ c-file 0x08023738 _ src/hero/remove_party_member.c RemovePartyMember
 c-file 0x0802382C _ src/hero/set_party_leader_character.c SetPartyLeaderCharacter
 c-file 0x080238C4 _ src/hero/spawn_field_spell_icon_actor.c SpawnFieldSpellIconActor
 c-file 0x08023934 _ src/hero/show_map_name_popup.c ShowMapNamePopup
-c-file 0x08023A88 0x08023BA0 src/hero/draw_field_spell_hud.c DrawFieldSpellHud
-thumb-func 0x08023BA0 TickPlayerActor
-thumb-func 0x08023D5C TickPartyFollowerActor
-thumb-func 0x08023FAC TickPartySecondFollowerActor
-thumb-func 0x08024290 CyclePartyLeaderSelection_candidate
-c-file 0x08024574 0x08024794 src/hero/set_party_member_anim.c SetPartyMemberAnim
-thumb-func 0x08024794 SwapPartyMemberCharacters
-c-file 0x080248E4 0x08024944 src/hero/reset_party_state.c ResetPartyState
-thumb-func 0x08024944 sub_080248E8
-thumb-func 0x08024974 sub_08024918
-thumb-func 0x080249DC sub_08024980
-thumb-func 0x08024A00 sub_080249A4
-thumb-func 0x08024A24 GetPartyPresenceMask
-thumb-func 0x08024A58 GetPartySize
+c-file 0x08023A88 _ src/hero/draw_field_spell_hud.c DrawFieldSpellHud
+c-file 0x08023BA0 _ src/hero/tick_player_actor.c TickPlayerActor
+c-file 0x08023D5C _ src/hero/tick_party_follower_actor.c TickPartyFollowerActor
+c-file 0x08023FAC _ src/hero/tick_party_second_follower_actor.c TickPartySecondFollowerActor
+c-file 0x08024290 _ src/hero/cycle_selected_field_spell.c CycleSelectedFieldSpell
+c-file 0x08024574 _ src/hero/set_party_member_anim.c SetPartyMemberAnim
+c-file 0x08024794 _ src/hero/swap_party_member_characters.c SwapPartyMemberCharacters
+c-file 0x080248E4 _ src/hero/reset_party_state.c ResetPartyState
+c-file 0x08024944 _ src/hero/spawn_party_followers.c SpawnPartyFollowers
+c-file 0x08024974 _ src/hero/free_party_actors.c FreePartyActors
+c-file 0x080249DC _ src/hero/spawn_follower_actor0.c SpawnFollowerActor0
+c-file 0x08024A00 _ src/hero/spawn_follower_actor1.c SpawnFollowerActor1
+c-file 0x08024A24 _ src/hero/get_party_presence_mask.c GetPartyPresenceMask
+c-file 0x08024A58 _ src/hero/get_party_size.c GetPartySize
 c-file 0x08024A8C _ src/hero/player_receive_reward.c PlayerReceiveReward
 c-file 0x08024AE4 _ src/hero/player_receive_reward_alt.c PlayerReceiveRewardAlt
 c-file 0x08024B48 _ src/hero/get_party_master_stats_slot_candidate.c GetPartyMasterStatsSlot_candidate

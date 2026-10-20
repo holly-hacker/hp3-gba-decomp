@@ -128,7 +128,7 @@ void InitializeOverworld(void)
         g_OverworldControlState.bSlotIndex = 0;
         ParseRoomResourceBlob(CURRENT_ROOM.pRoomResourceBlob);
         pPlayer = SpawnPlayerActor(g_bPartyCharId0);
-        sub_080248E8();
+        SpawnPartyFollowers();
         SetCameraFocusPinned(0, 0);
         SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
         SetRoomScrollBounds(

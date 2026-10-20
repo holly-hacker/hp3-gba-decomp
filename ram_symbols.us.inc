@@ -264,7 +264,7 @@
 .set g_bPartyTrailReadIndex1,          0x0300339E  @ u8: next g_pPartyTrail entry follower 1 replays
 .set g_pFieldSpellNameActor,            0x030033A0  @ Actor *: selected field spell name text
 .set g_pMapNameTextActor,               0x030033A4  @ Actor *: room name text of ShowMapNamePopup
-.set g_dwUnk030033A8,                    0x030033A8  @ u32: zeroed by ResetPartyState and sub_080248E8; no reader found
+.set g_dwUnk030033A8,                    0x030033A8  @ u32: zeroed by ResetPartyState and SpawnPartyFollowers; no reader found
 .set g_pFieldSpellPortraitActor,        0x030033AC  @ Actor *: face portrait of the selected field spell's character
 .set g_pMapNamePopupActor,             0x030033B0  @ Actor *: 240x16 bar sprite behind the room name text
 .set g_pFieldSpellIconActor,           0x030033B4  @ Actor *: selected field spell's icon

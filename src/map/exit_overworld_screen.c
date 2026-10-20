@@ -68,7 +68,7 @@ void ExitOverworldScreen(void)
     if (g_dwPendingCameraFocusFlag != 0)
         RestorePendingCameraFocus_candidate(g_pPendingCameraFocus_candidate);
 
-    sub_08024918();
+    FreePartyActors();
     RestoreDefaultVBlankCallback();
 
     if (g_dwGameModeFlags & GameModeFlagUnk80000)

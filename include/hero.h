@@ -19,12 +19,13 @@ extern void SetPartyMemberAnim(Actor *actor, u8 anim);
 extern Actor *SpawnPartyFollowerActor(u8 characterId);
 extern void TickPlayerActor(Actor *actor);
 extern void TickPartyFollowerActor(Actor *actor);
-extern void SwapPartyMemberCharacters(Actor *a, Actor *b);
+extern void TickPartySecondFollowerActor(Actor *actor);
+extern Actor *SwapPartyMemberCharacters(Actor *a, Actor *b);  // returns b
 extern void ResetPartyState(void);
-extern void sub_080248E8(void);
-extern void sub_08024918(void);
-extern void sub_08024980(u32 characterId);  // fills follower slot 0
-extern void sub_080249A4(u32 characterId);  // fills follower slot 1
+extern void SpawnPartyFollowers(void);
+extern void FreePartyActors(void);
+extern Actor *SpawnFollowerActor0(u32 characterId);  // fills follower slot 0
+extern Actor *SpawnFollowerActor1(u32 characterId);  // fills follower slot 1
 // ItemCharacterMask of a character id; -1 for an unknown id.
 extern s32 GetCharPresenceBit(u8 characterId);
 extern u32 GetPartyPresenceMask(void);
@@ -90,7 +91,7 @@ extern const ActorAssetRecord g_aFieldSpellPortraitAssets[4];
 // The 240x16 bar behind the room name.
 extern const ActorAssetRecord g_MapNamePopupAsset;
 
-// Index into g_aFieldSpells. CyclePartyLeaderSelection_candidate steps it; it is
+// Index into g_aFieldSpells. CycleSelectedFieldSpell steps it; it is
 // saved with the party.
 extern u8 g_bSelectedFieldSpell;
 extern Actor *g_pPlayerShadowActor_candidate;
@@ -112,7 +113,7 @@ extern FixedPoint g_PartyTrailLastPos;
 // HUD actors, cleared by ResetPartyState and freed by FreeFieldHudActors.
 extern Actor *g_pFieldSpellNameActor;       // selected spell's name text (DrawFieldSpellHud)
 extern Actor *g_pMapNameTextActor;          // room name text (ShowMapNamePopup)
-extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found
+extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and SpawnPartyFollowers; no reader found
 extern Actor *g_pFieldSpellPortraitActor;   // face portrait of the spell's character (DrawFieldSpellHud)
 extern Actor *g_pMapNamePopupActor;         // 240x16 bar sprite behind the room name (ShowMapNamePopup)
 extern Actor *g_pFieldSpellIconActor;       // selected spell's icon (RefreshFieldSpellHud)
