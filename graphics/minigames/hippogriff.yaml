@@ -10,7 +10,11 @@ groups:
           14: LanguageSelectBg1Graphic
           15: HippogriffLanguageMinigameBgs015
           18: MenuScreenGraphic
-          19: HippogriffLanguageMinigameBgs019
+          19: MinigameMenuNumber1
+          20: MinigameMenuNumber2
+          21: MinigameMenuNumber3
+          22: MinigameMenuNumber4
+          23: MinigameMenuIcons
           24: PauseMenuObjectiveGraphic
           25: HippogriffLanguageMinigameBgs025
           27: FolioBrutiBg3Graphic

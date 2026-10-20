@@ -1376,28 +1376,28 @@ c-file 0x0802C960 _ src/menu_icon/unregister_menu_icon_actor.c UnregisterMenuIco
 c-file 0x0802C984 _ src/menu_icon/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 
 # Minigame/Difficulty? (minigame difficulty select)
-c-file 0x0802C988 0x0802CB80 src/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
-thumb-func 0x0802CB80 sub_0802CB80
-thumb-func 0x0802CC44 sub_0802CC44
+c-file 0x0802C988 _ src/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
+c-file 0x0802CB80 _ src/minigame_difficulty_select/draw_minigame_difficulty_row.c DrawMinigameDifficultyRow
+c-file 0x0802CC44 _ src/minigame_difficulty_select/draw_minigame_difficulty_high_score.c DrawMinigameDifficultyHighScore
 c-file 0x0802CCF4 _ src/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
-c-file 0x0802CD88 0x0802CDB8 src/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
+c-file 0x0802CD88 _ src/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
 
 # Minigame/HighScore? (minigame high score helpers)
-thumb-func 0x0802CDB8 SyncSaveOptionsPausingKrawall
-thumb-func 0x0802CDCC SpawnMinigameTextPanel
-thumb-func 0x0802CEE4 FreeMinigameTextPanel
+c-file 0x0802CDB8 _ src/minigame_high_score/sync_save_options_pausing_krawall.c SyncSaveOptionsPausingKrawall
+c-file 0x0802CDCC _ src/minigame_high_score/spawn_minigame_text_panel.c SpawnMinigameTextPanel
+c-file 0x0802CEE4 _ src/minigame_high_score/free_minigame_text_panel.c FreeMinigameTextPanel
 
 # Minigame/Menu? (minigame menu)
-c-file 0x0802CF38 0x0802D08C src/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
-thumb-func 0x0802D08C HandleMinigameMenuSelection
-thumb-func 0x0802D148 DrawMinigameSelectMenu
-thumb-func 0x0802D1C8 ShowMinigameLockedMessageIfNeeded
+c-file 0x0802CF38 _ src/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
+c-file 0x0802D08C _ src/minigame_menu/handle_minigame_menu_selection.c HandleMinigameMenuSelection
+c-file 0x0802D148 _ src/minigame_menu/draw_minigame_select_menu.c DrawMinigameSelectMenu
+c-file 0x0802D1C8 _ src/minigame_menu/show_minigame_locked_message_if_needed.c ShowMinigameLockedMessageIfNeeded
 c-file 0x0802D264 _ src/minigame_menu/initialize_minigame_menu.c InitializeMinigameMenu
-c-file 0x0802D2F0 0x0802D314 src/minigame_menu/exit_minigame_menu.c ExitMinigameMenu
-thumb-func 0x0802D314 BeginMinigameSwitchFade_candidate
-thumb-func 0x0802D334 TickMinigameSwitchFadeOut_candidate
-thumb-func 0x0802D368 SwapMinigameSelection_candidate
-thumb-func 0x0802D384 TickMinigameSwitchFadeIn_candidate
+c-file 0x0802D2F0 _ src/minigame_menu/exit_minigame_menu.c ExitMinigameMenu
+c-file 0x0802D314 _ src/minigame_menu/begin_minigame_switch_fade.c BeginMinigameSwitchFade
+c-file 0x0802D334 _ src/minigame_menu/tick_minigame_switch_fade_out.c TickMinigameSwitchFadeOut
+c-file 0x0802D368 _ src/minigame_menu/swap_minigame_selection.c SwapMinigameSelection
+c-file 0x0802D384 _ src/minigame_menu/tick_minigame_switch_fade_in.c TickMinigameSwitchFadeIn
 
 # Mode7 (perspective floor on affine BG2)
 c-file 0x0802D3BC _ src/mode7/update_floor_affine_table.c UpdateFloorAffineTable
@@ -2399,8 +2399,9 @@ c-file 0x0806589C _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C9C _ ResetBgLayer
 c-rodata 0x08065CA4 _ GetDirectionFromVector
 c-file 0x08065CBC _ src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTable
-c-file 0x0806601C 0x0806603C src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
-c-file 0x0806605C 0x08066064 src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
+c-file 0x0806601C _ src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
+c-file 0x0806603C _ src/minigame_high_score/minigame_high_score.globals.c g_MinigameTextPanelCapAsset
+c-file 0x0806605C _ src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file 0x08066084 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file 0x08066094 0x080660D4 src/move/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066E44 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows

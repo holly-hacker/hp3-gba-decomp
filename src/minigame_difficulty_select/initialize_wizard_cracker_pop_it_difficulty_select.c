@@ -21,8 +21,8 @@ void InitializeWizardCrackerPopItDifficultySelect(void)
 
     g_GameModeStackContext.dwModeScratchB = 0;
     for (i = 0; i <= MINIGAME_ERASE_SCORES_ROW; i++)
-        sub_0802CB80(i, i == 0 ? 6 : 1);
+        DrawMinigameDifficultyRow(i, i == 0 ? 6 : 1);
 
-    sub_0802CC44(g_GameModeStackContext.dwModeScratchB);
+    DrawMinigameDifficultyHighScore(g_GameModeStackContext.dwModeScratchB);
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

@@ -4,7 +4,7 @@
 #include "actor.h"
 #include "math.h"
 #include "palette.h"
-#include "minigame_difficulty_select.h"
+#include "minigame_high_score.h"
 
 extern u32 g_dwBoggartMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame
 

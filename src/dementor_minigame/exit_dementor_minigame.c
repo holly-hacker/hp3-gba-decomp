@@ -1,7 +1,7 @@
 #include "dementor_minigame.h"
 #include "actor.h"
 #include "cursor.h"
-#include "minigame_difficulty_select.h"
+#include "minigame_high_score.h"
 #include "sound.h"
 #include "screen_transitions.h"
 

@@ -14,12 +14,12 @@ void HandleMinigameSelectMenuConfirm(void)
     switch (g_GameModeStackContext.dwModeState)
     {
     case 1:
-        if (TickMinigameSwitchFadeOut_candidate())
-            SwapMinigameSelection_candidate();
+        if (TickMinigameSwitchFadeOut())
+            SwapMinigameSelection();
         break;
 
     case 2:
-        TickMinigameSwitchFadeIn_candidate();
+        TickMinigameSwitchFadeIn();
         break;
 
     case 0:
@@ -27,7 +27,7 @@ void HandleMinigameSelectMenuConfirm(void)
         {
             SetActorMoveTargetWithDuration(g_pMenuCursorActor,
                                                       g_GameModeStackContext.dwCurrentGameModeArg2 * 0x20 + 0x48, 0x70, 8);
-            BeginMinigameSwitchFade_candidate();
+            BeginMinigameSwitchFade();
             g_GameModeStackContext.dwModeState = 1;
             PlaySoundById(0);
             break;
@@ -35,13 +35,7 @@ void HandleMinigameSelectMenuConfirm(void)
 
         if (g_wKeysPressed & KeyA)
         {
-            if ((g_GameModeStackContext.dwCurrentGameModeArg2 == 0
-                     ? g_saveManager.header.bHeaderFlags.all & flWizardCrackerPopItUnlocked
-                 : g_GameModeStackContext.dwCurrentGameModeArg2 == 1
-                     ? g_saveManager.header.bHeaderFlags.all & flBuckbeakUnlocked
-                 : g_GameModeStackContext.dwCurrentGameModeArg2 == 2
-                     ? g_saveManager.header.bHeaderFlags.all & flBoggartUnlocked
-                     : g_saveManager.header.bHeaderFlags.all & flTeaLeafDivinationUnlocked) != 0)
+            if (IS_MINIGAME_UNLOCKED(g_GameModeStackContext.dwCurrentGameModeArg2))
             {
                 PlaySoundById(1);
                 if (g_GameModeStackContext.dwCurrentGameModeArg2 == 3)

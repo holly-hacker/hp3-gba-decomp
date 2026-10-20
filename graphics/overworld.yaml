@@ -58,6 +58,8 @@ groups:
           1: DementorMinigameSpell
           2: DementorMinigameDamage
           3: ActorSprite003
+          17: MinigameTextPanelCap
+          18: MinigameTextPanelMiddle
           19: InGameMenuIconStatusEquip
           20: InGameMenuIconFolios
           21: InGameMenuIconSave

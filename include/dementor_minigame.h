@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 #include "math.h"
-#include "minigame_difficulty_select.h"
+#include "minigame_high_score.h"
 
 extern u32 g_dwDementorMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
 

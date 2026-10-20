@@ -4,6 +4,7 @@
 #include "save.h"
 #include "input.h"
 #include "minigame_difficulty_select.h"
+#include "minigame_high_score.h"
 #include "buckbeak_minigame.h"
 #include "boggart_minigame.h"
 #include "pop_it_minigame.h"
@@ -45,23 +46,23 @@ void HandleHighScoreDifficultyMenuTick(void)
 
         if (g_wKeysPressed & KeyUp)
         {
-            sub_0802CB80(g_GameModeStackContext.dwModeScratchB, 1);
+            DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 1);
             g_GameModeStackContext.dwModeScratchB = g_GameModeStackContext.dwModeScratchB == 0
                 ? lastRow
                 : g_GameModeStackContext.dwModeScratchB - 1;
-            sub_0802CB80(g_GameModeStackContext.dwModeScratchB, 6);
+            DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 6);
         }
         else if (g_wKeysPressed & KeyDown)
         {
-            sub_0802CB80(g_GameModeStackContext.dwModeScratchB, 1);
+            DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 1);
             g_GameModeStackContext.dwModeScratchB = g_GameModeStackContext.dwModeScratchB < lastRow
                 ? g_GameModeStackContext.dwModeScratchB + 1
                 : 0;
-            sub_0802CB80(g_GameModeStackContext.dwModeScratchB, 6);
+            DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 6);
         }
 
         if (g_GameModeStackContext.dwModeScratchB < MINIGAME_DIFFICULTY_COUNT)
-            sub_0802CC44(g_GameModeStackContext.dwModeScratchB);
+            DrawMinigameDifficultyHighScore(g_GameModeStackContext.dwModeScratchB);
 
         MoveCursorToSelectedRow();
     }
@@ -92,10 +93,10 @@ void HandleHighScoreDifficultyMenuTick(void)
             for (i = 0; i < MINIGAME_DIFFICULTY_COUNT; i++)
                 g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][i] = 0;
 
-            sub_0802CB80(g_GameModeStackContext.dwModeScratchB, 1);
+            DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 1);
             g_GameModeStackContext.dwModeScratchB = 0;
-            sub_0802CB80(g_GameModeStackContext.dwModeScratchB, 6);
-            sub_0802CC44(g_GameModeStackContext.dwModeScratchB);
+            DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 6);
+            DrawMinigameDifficultyHighScore(g_GameModeStackContext.dwModeScratchB);
             MoveCursorToSelectedRow();
             SyncSaveOptionsPausingKrawall();
         }

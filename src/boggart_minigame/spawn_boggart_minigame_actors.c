@@ -1,7 +1,7 @@
 #include "types.h"
 #include "actor.h"
 #include "boggart_minigame.h"
-#include "minigame_difficulty_select.h"
+#include "minigame_high_score.h"
 
 void SpawnBoggartMinigameActors(void)
 {

@@ -43,6 +43,6 @@ that is already loaded; see [`../formats/graphic_blob.md`](../formats/graphic_bl
 - The Patronus frames 1-5 (`g_apPatronusGraphics`, `0x08FAAEF8`) are cycled by
   the cutscene update; only entry 0 carries a palette (**UNCONFIRMED**: that
   they use it).
-- The four 8x10 blobs of the minigame select menu (table at `0x08066064`, x
-  positions at `0x08066074`) are loaded onto BG3 at tile offset `0x60` by
+- The four 8x10 blobs of the minigame select menu (`g_apMinigameMenuNumbers`,
+  x positions in `g_adwMinigameMenuNumberX`) are loaded onto BG3 at tile offset `0x60` by
   `HandleMinigameMenuSelection`; the palette source is not traced.

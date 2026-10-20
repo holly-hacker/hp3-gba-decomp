@@ -4,7 +4,7 @@
 #include "buckbeak_minigame.h"
 #include "mem.h"
 #include "actor.h"
-#include "minigame_difficulty_select.h"
+#include "minigame_high_score.h"
 #include "screen_transitions.h"
 
 void ExitBuckbeakMinigame(void)

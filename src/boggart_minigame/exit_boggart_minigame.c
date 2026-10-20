@@ -2,7 +2,7 @@
 #include "actor.h"
 #include "boggart_minigame.h"
 #include "cursor.h"
-#include "minigame_difficulty_select.h"
+#include "minigame_high_score.h"
 #include "sound.h"
 #include "screen_transitions.h"
 
