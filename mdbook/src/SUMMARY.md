@@ -17,4 +17,4 @@
 - [Technical]()
   - [Game Modes](tech/gamemodes.md)
 - [Known Glitches]()
-- [Unused and Cut Content]()
+- [Unused and Cut Content](cut_content.md)
