@@ -422,6 +422,8 @@ typedef struct Actor {
             u8 bRequireAPress;      // 0x65
             u8 bChain;              // 0x66, runs instead of leaving when nonzero
         } door;                     // room actor types 2 and 13; see scriptState.wDoorDestinationRoom
+        u8 bPropBlocksPlayer_candidate;  // 0x62, RoomActorType_ScriptedTrigger: see
+                                         // HandlePlayerPropCollision
         ActorEffectState effect;
         ActorChestState chest;
     } modeState;

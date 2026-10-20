@@ -1046,19 +1046,19 @@ thumb-func 0x080249FC GetPartySize
 
 # Hero Rewards? (receive reward in overworld)
 c-file 0x08024A30 _ src/hero/player_receive_reward.c PlayerReceiveReward
-c-file 0x08024A88 0x08024AEC src/hero/player_receive_reward_alt.c PlayerReceiveRewardAlt
+c-file 0x08024A88 _ src/hero/player_receive_reward_alt.c PlayerReceiveRewardAlt
 
-# Hero Stats? (party stat slots)
-thumb-func 0x08024AEC GetPartyMasterStatsSlot_candidate
-thumb-func 0x08024B38 TickHeldRewardActor
-thumb-func 0x08024B64 SetPlayerShadowVisible
-thumb-func 0x08024B94 StartFieldSpellCast
-thumb-func 0x08024BD4 sub_08024BD4
-thumb-func 0x08024C40 HandlePlayerPropCollision
-thumb-func 0x08024C90 GetCharPresenceBit
-thumb-func 0x08024CE4 RefreshFieldSpellHud
-thumb-func 0x08024D48 TickMapNameActor
-thumb-func 0x08024D9C DestroyPartyMemberActor
+# Hero Stats (party stat slots and field HUD)
+c-file 0x08024AEC _ src/hero/get_party_master_stats_slot_candidate.c GetPartyMasterStatsSlot_candidate
+c-file 0x08024B38 _ src/hero/tick_held_reward_actor.c TickHeldRewardActor
+c-file 0x08024B64 _ src/hero/set_player_shadow_visible.c SetPlayerShadowVisible
+c-file 0x08024B94 _ src/hero/start_field_spell_cast.c StartFieldSpellCast
+c-file 0x08024BD4 _ src/hero/free_field_hud_actors.c FreeFieldHudActors
+c-file 0x08024C40 _ src/hero/handle_player_prop_collision.c HandlePlayerPropCollision
+c-file 0x08024C90 _ src/hero/get_char_presence_bit.c GetCharPresenceBit
+c-file 0x08024CE4 _ src/hero/refresh_field_spell_hud.c RefreshFieldSpellHud
+c-file 0x08024D48 _ src/hero/tick_map_name_actor.c TickMapNameActor
+c-file 0x08024D9C _ src/hero/destroy_party_member_actor.c DestroyPartyMemberActor
 
 # Huffman table? (dialog text decompression and BG tile codec)
 c-file 0x08024DC8 _ src/huffman/decompress_dialog_text.c DecompressDialogText

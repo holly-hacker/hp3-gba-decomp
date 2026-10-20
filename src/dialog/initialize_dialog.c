@@ -18,7 +18,7 @@ void InitializeDialog(void)
 
     if (g_DialogState_candidate.dwState == 0)
     {
-        sub_08024BD4();
+        FreeFieldHudActors();
         g_adwSavedBgPriority[0] = REG_BG0CNT & 3;
         g_adwSavedBgPriority[1] = REG_BG1CNT & 3;
 

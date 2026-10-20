@@ -25,6 +25,8 @@ extern void sub_080248E8(void);
 extern void sub_08024918(void);
 extern void sub_08024980(u32 characterId);  // fills follower slot 0
 extern void sub_080249A4(u32 characterId);  // fills follower slot 1
+// ItemCharacterMask of a character id; -1 for an unknown id.
+extern s32 GetCharPresenceBit(u8 characterId);
 extern u32 GetPartyPresenceMask(void);
 extern u32 GetPartySize(void);
 // Starts the player's receive-item action and grants one of the reward (30-60 Sickles for
@@ -107,7 +109,7 @@ extern u8 g_bPartyTrailReadIndex0;
 extern u8 g_bPartyTrailReadIndex1;
 extern FixedPoint g_PartyTrailLastPos;
 
-// HUD actors, cleared by ResetPartyState and freed by sub_08024BD4.
+// HUD actors, cleared by ResetPartyState and freed by FreeFieldHudActors.
 extern Actor *g_pFieldSpellNameActor;       // selected spell's name text (DrawFieldSpellHud)
 extern Actor *g_pMapNameTextActor;          // room name text (ShowMapNamePopup)
 extern u32 g_dwUnk030033A8;  // zeroed by ResetPartyState and sub_080248E8; no reader found

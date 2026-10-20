@@ -24,7 +24,7 @@ void InitializeChooseCharacter(void)
 
     bios_CPUSet(BG_PLTT, g_awSavedBgPalette0, 0x10);
     g_ChooseCharacterState.bSavedBg2Priority = REG_BG2CNT & 3;
-    sub_08024BD4();
+    FreeFieldHudActors();
     bgRow = GetChooseCharacterPanelBgRow();
     g_dwChooseCharacterBgRow = bgRow;
 

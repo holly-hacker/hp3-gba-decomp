@@ -919,17 +919,17 @@ thumb-func 0x08024A00 sub_080249A4
 thumb-func 0x08024A24 GetPartyPresenceMask
 thumb-func 0x08024A58 GetPartySize
 c-file 0x08024A8C _ src/hero/player_receive_reward.c PlayerReceiveReward
-c-file 0x08024AE4 0x08024B48 src/hero/player_receive_reward_alt.c PlayerReceiveRewardAlt
-thumb-func 0x08024B48 GetPartyMasterStatsSlot_candidate
-thumb-func 0x08024B94 TickHeldRewardActor
-thumb-func 0x08024BC0 SetPlayerShadowVisible
-thumb-func 0x08024BF0 StartFieldSpellCast
-thumb-func 0x08024C30 sub_08024BD4
-thumb-func 0x08024C9C HandlePlayerPropCollision
-thumb-func 0x08024CEC GetCharPresenceBit
-thumb-func 0x08024D40 RefreshFieldSpellHud
-thumb-func 0x08024DA4 TickMapNameActor
-thumb-func 0x08024DF8 DestroyPartyMemberActor
+c-file 0x08024AE4 _ src/hero/player_receive_reward_alt.c PlayerReceiveRewardAlt
+c-file 0x08024B48 _ src/hero/get_party_master_stats_slot_candidate.c GetPartyMasterStatsSlot_candidate
+c-file 0x08024B94 _ src/hero/tick_held_reward_actor.c TickHeldRewardActor
+c-file 0x08024BC0 _ src/hero/set_player_shadow_visible.c SetPlayerShadowVisible
+c-file 0x08024BF0 _ src/hero/start_field_spell_cast.c StartFieldSpellCast
+c-file 0x08024C30 _ src/hero/free_field_hud_actors.c FreeFieldHudActors
+c-file 0x08024C9C _ src/hero/handle_player_prop_collision.c HandlePlayerPropCollision
+c-file 0x08024CEC _ src/hero/get_char_presence_bit.c GetCharPresenceBit
+c-file 0x08024D40 _ src/hero/refresh_field_spell_hud.c RefreshFieldSpellHud
+c-file 0x08024DA4 _ src/hero/tick_map_name_actor.c TickMapNameActor
+c-file 0x08024DF8 _ src/hero/destroy_party_member_actor.c DestroyPartyMemberActor
 c-file 0x08024E24 _ src/huffman/decompress_dialog_text.c DecompressDialogText
 c-file 0x08024F14 _ src/huffman/init_dialog_text_table.c InitDialogTextTable
 c-file 0x08024F38 _ src/huffman/decompress_huff_tree.c DecompressHuffTree

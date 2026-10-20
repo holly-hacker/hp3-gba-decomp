@@ -91,4 +91,4 @@ extern u32 g_dwDialogBoxTileRow;            // 0x03002EF4
 extern u16 g_awDialogBoxPalette[16];        // 0x03002EF8
 extern const ScanlineEffectEntry g_aDialogScanlineEffects[1];  // 0x0805E28C
 
-extern void sub_08024BD4(void);
+extern void FreeFieldHudActors(void);

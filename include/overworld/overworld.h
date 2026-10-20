@@ -24,7 +24,8 @@ extern void StartFieldSpellCast(Actor *actor);
 extern void SetPlayerShadowVisible(u32 visible);
 extern void TickHeldRewardActor(Actor *actor);  // pfnTick of the item TickActorReceiveReward spawns
 // The player's collision callback: touching a prop actor (RoomActorType_ScriptedTrigger) with
-// its 0x62 byte set and 0x67 byte 0xFF stops the player in place, unless casting.
+// bPropBlocksPlayer_candidate set and bRoomActorArg67_candidate 0xFF stops the player in place,
+// unless casting (action state 0x13).
 extern void HandlePlayerPropCollision(Actor *self, Actor *other);
 extern void RefreshFieldSpellHud(Actor *iconActor);
 // Marks the actor, its linked actor and its shadow for destruction.
