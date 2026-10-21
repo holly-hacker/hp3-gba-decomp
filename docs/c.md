@@ -108,6 +108,7 @@ just diff-region <name> jp
 ```
 
 It disassembles the region from the donor ROM and from the build side by
-side, marking differing instructions. Mode comes from
-`functions.<ver>.cfg`, overridable with `--arm`/`--thumb`. For data
+side, marking differing instructions. Mode comes from the row's
+directive, or for assembly from the source's first mode directive,
+overridable with `--arm`/`--thumb`. For data
 regions read the hex column; the mnemonics are meaningless there.

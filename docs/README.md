@@ -21,7 +21,7 @@ Every finding in these documents is marked:
 
 Names carrying a `_candidate` suffix are at STRUCTURAL MATCH or weaker;
 dropping the suffix is what promoting an identification to PROVEN looks
-like in `functions.<ver>.cfg` and in Ghidra.
+like.
 
 ## Documents
 

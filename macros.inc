@@ -21,14 +21,6 @@
 	.size \name, .-\name
 	.endm
 
-	@ thumb_func_start for a halfword-aligned entry point (gbadisasm output).
-	.macro non_word_aligned_thumb_func_start name
-	.global \name
-	.thumb
-	.thumb_func
-	.type \name, %function
-	.endm
-
 	@ Names a Thumb function entry point inside still-raw incbin territory
 	@ (the `thumb-func` manifest directive), so its symbol carries the Thumb
 	@ bit. Unlike thumb_func_start, byte-free -- no `.align`, since

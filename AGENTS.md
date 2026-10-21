@@ -33,9 +33,8 @@ local asset edits.
 ## Repository map
 
 - `regions.{us,jp}.txt`: build manifests (`c-file` rows, assembly, asset
-  directives). `functions.{us,jp}.cfg`: function names and ARM/Thumb entry
-  points. `ram_symbols.{us,jp}.inc`: RAM symbol addresses. Keep all sorted
-  by address.
+  directives). `ram_symbols.{us,jp}.inc`: RAM symbol addresses. Keep both
+  sorted by address.
 - `src/` and `include/`: game C, one folder per subsystem or screen.
 - `3rd_party/krawall/`: the Krawall audio library (LGPL-2.1-or-later),
   headers in `include/3rd_party/krawall/`.

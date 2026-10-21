@@ -17,30 +17,6 @@
         # pyyaml: the graphics group descriptions under graphics/ (tools/graphics).
         pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.numpy ps.pillow ps.pyyaml ]);
 
-        # pret's matching GBA disassembler. Pinned to the last upstream
-        # commit (inactive since 2020-01). Two heap bugs in disasm.c crash
-        # it on real ROMs under modern glibc; patched here.
-        gbadisasm = pkgs.stdenv.mkDerivation {
-          pname = "gbadisasm";
-          version = "unstable-2020-01-07";
-          src = pkgs.fetchFromGitHub {
-            owner = "camthesaxman";
-            repo = "gbadisasm";
-            rev = "e35982bd105fd8b9bb497d955900f8375cdc9e60";
-            hash = "sha256-XcYvUqDyytySjav2fSMV4t3GU1pjDBlYQzhEPlvsjJc=";
-          };
-          nativeBuildInputs = [ pkgs.gnutar ];
-          patches = [
-            ./patches/gbadisasm/0001-fix-double-free-thumb-fallback.patch
-            ./patches/gbadisasm/0002-fix-realloc-stale-pointer.patch
-            ./patches/gbadisasm/0003-fix-tail-truncation.patch
-          ];
-          installPhase = ''
-            mkdir -p $out/bin
-            cp gbadisasm $out/bin/
-          '';
-        };
-
         # Krawall module/sample/instrument data extraction/export tool.
         # Used only for casual `.xm` listening exports
         # (`just dump-music-xm`) and manual one-off `-m`/`-x` runs --
@@ -156,7 +132,6 @@
             pythonEnv
             pkgs.just
             pkgs.mgba
-            gbadisasm
             unkrawerter
             agbcc
             gccKrawall

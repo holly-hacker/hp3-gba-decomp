@@ -2,31 +2,61 @@
 """Compare an existing linked ROM region against the donor bytes.
 
 Does not rebuild: use just diff-region NAME VERSION for a fresh build.
-Instruction mode comes from the function seed or defaults to Thumb;
---arm/--thumb override it. Byte equality includes literal pools and padding.
+Instruction mode comes from the row's directive (ARM for c-file-arm and
+c-file-gcc3-arm objects), or for assembly from the source's first mode
+directive; --arm/--thumb override it. Byte equality includes literal pools and padding.
 """
 import argparse
 import os
+import re
 import sys
 
 import capstone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from manifest import parse_manifest  # noqa: E402
+from manifest import (  # noqa: E402
+    ASM_CPP_DIRECTIVE,
+    ASM_FILE_DIRECTIVE,
+    C_SECTION_DIRECTIVE,
+    LABEL_DIRECTIVES,
+    SECTIONED_DIRECTIVES,
+    parse_manifest,
+    read_rows,
+)
 
 CONTEXT = 4
 
 
+ARM_C_DIRECTIVES = {"c-file-arm", "c-file-gcc3-arm"}
+ASM_MODE = re.compile(r"^\s*(arm_func_start|thumb_func_start|\.arm|\.thumb|\.code\s+(?:16|32))\b",
+                      re.I | re.M)
+
+
+def asm_mode(path: str) -> str:
+    with open(path) as f:
+        found = ASM_MODE.search(f.read())
+    if found is None:
+        return "thumb"
+    directive = found.group(1).lower()
+    return "arm" if directive.startswith(("arm", ".arm")) or directive.endswith("32") else "thumb"
+
+
 def mode_for(ver: str, address: int) -> str:
-    try:
-        with open(f"functions.{ver}.cfg") as f:
-            for line in f:
-                parts = line.split()
-                if len(parts) >= 2 and parts[0] in ("arm_func", "thumb_func"):
-                    if int(parts[1], 16) == address:
-                        return "arm" if parts[0] == "arm_func" else "thumb"
-    except FileNotFoundError:
-        pass
+    """The mode of the row starting at address: ARM C objects by directive,
+    assembly by its source's first mode directive, otherwise Thumb."""
+    rows = [parts for _, parts in read_rows(f"regions.{ver}.txt")
+            if parts[0] not in LABEL_DIRECTIVES]
+    objects = {parts[4]: parts for parts in rows if parts[0] in SECTIONED_DIRECTIVES}
+    for parts in rows:
+        if int(parts[1], 16) != address:
+            continue
+        if parts[0] == C_SECTION_DIRECTIVE:
+            parts = objects[parts[3]]
+        if parts[0] in ARM_C_DIRECTIVES:
+            return "arm"
+        if parts[0] in (ASM_FILE_DIRECTIVE, ASM_CPP_DIRECTIVE):
+            return asm_mode(parts[3])
+        return "thumb"
     return "thumb"
 
 

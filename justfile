@@ -12,27 +12,6 @@ setup:
     sha1sum -c rom.us.sha1
     sha1sum -c rom.jp.sha1
 
-# Discovery/reference aid only -- NOT used by the build (see `gen-link`).
-# Regenerate the full-ROM disassembly from the baserom + function config.
-disasm ver="us":
-    mkdir -p build/{{ver}}
-    { \
-        echo ".syntax unified"; \
-        echo '.include "macros.inc"'; \
-        echo ".text"; \
-        gbadisasm -c functions.{{ver}}.cfg baserom.{{ver}}.gba; \
-    } > build/{{ver}}/full_disasm.s
-
-# Doesn't gate `just compare` (see `disasm`'s comment) but catches bad
-# function-boundary seeds in functions.<ver>.cfg -- misaligned/duplicate
-# seeds can make gbadisasm mis-split functions in ways that still assemble.
-# Assemble the full-ROM disassembly and confirm it's still byte-perfect.
-disasm-compare ver="us": (disasm ver)
-    arm-none-eabi-as -mcpu=arm7tdmi build/{{ver}}/full_disasm.s -o build/{{ver}}/full_disasm.o
-    arm-none-eabi-ld -T ld_script.ld build/{{ver}}/full_disasm.o -o build/{{ver}}/full_disasm.elf
-    arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/full_disasm.elf build/{{ver}}/full_disasm.gba
-    cmp baserom.{{ver}}.gba build/{{ver}}/full_disasm.gba && echo "MATCH"
-
 # One object per region, gaps .incbin'd from the baserom, and a linker
 # script placing each at its manifest address.
 # Generate the build inputs from regions.<ver>.txt.
@@ -155,16 +134,14 @@ diff-region name ver="us": (build ver)
 compare ver="us": (build ver)
     cmp baserom.{{ver}}.gba build/{{ver}}/rom.gba && echo "MATCH"
 
-# Verifies donor ROMs, full disassembly, linked builds for both versions,
-# and manifest/function-config ordering.
+# Verifies donor ROMs, linked builds for both versions and manifest ordering.
 # Full sanity sweep: run everything, confirm it all still matches. Run before committing.
-check-all: setup (disasm-compare "us") (disasm-compare "jp") (compare "us") (compare "jp") check-sorted
-    @echo "us and jp: full disassembly and linked build both match the donor ROM."
+check-all: setup (compare "us") (compare "jp") check-sorted
+    @echo "us and jp: linked build matches the donor ROM."
 
-# Confirm regions.<ver>.txt, functions.<ver>.cfg and ram_symbols.<ver>.inc stay sorted by address.
+# Confirm regions.<ver>.txt and ram_symbols.<ver>.inc stay sorted by address.
 check-sorted:
     python3 tools/check_sorted_regions.py
-    python3 tools/check_sorted_functions.py
     python3 tools/check_sorted_ram_symbols.py
 
 # Lossy (effect remapping, pattern rewrites for playback accuracy) and NOT
