@@ -1070,13 +1070,13 @@ c-file 0x080250B8 _ src/huffman/install_bg_tile_codec.c InstallBgTileCodec
 
 # Initials? (high score name entry mode)
 c-file 0x080250D4 _ src/initials/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
-c-file 0x080251EC 0x08025284 src/initials/update_high_score_name_entry.c UpdateHighScoreNameEntry
-thumb-func 0x08025284 DrawHighScoreNameEntryKeypad
-thumb-func 0x08025334 sub_08025334
-c-file 0x08025368 0x0802539C src/initials/exit_high_score_name_entry.c ExitHighScoreNameEntry
-thumb-func 0x0802539C HighScoreNameEntryCursorTick
-thumb-func 0x08025410 DrawHighScoreNameEntryPreview
-thumb-func 0x08025484 sub_08025484
+c-file 0x080251EC _ src/initials/update_high_score_name_entry.c UpdateHighScoreNameEntry
+c-file 0x08025284 _ src/initials/draw_high_score_name_entry_keypad.c DrawHighScoreNameEntryKeypad
+c-file 0x08025334 _ src/initials/update_high_score_name_entry_selected_char.c UpdateHighScoreNameEntrySelectedChar
+c-file 0x08025368 _ src/initials/exit_high_score_name_entry.c ExitHighScoreNameEntry
+c-file 0x0802539C _ src/initials/high_score_name_entry_cursor_tick.c HighScoreNameEntryCursorTick
+c-file 0x08025410 _ src/initials/draw_high_score_name_entry_preview.c DrawHighScoreNameEntryPreview
+c-file 0x08025484 _ src/initials/clear_high_score_name_entry_tail.c ClearHighScoreNameEntryTail
 
 # Input, see docs/memory-map/input.md
 c-file 0x080254A8 _ src/input/update_key_input.c UpdateKeyInput

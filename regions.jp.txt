@@ -937,13 +937,13 @@ c-file 0x08024FDC _ src/huffman/decompress_huff_tree_tile.c DecompressHuffTreeTi
 c-file 0x08025080 _ src/huffman/build_huff_tree_tile_offsets.c BuildHuffTreeTileOffsets
 c-file 0x08025114 _ src/huffman/install_bg_tile_codec.c InstallBgTileCodec
 c-file 0x08025130 _ src/initials/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
-c-file 0x08025248 0x080252E0 src/initials/update_high_score_name_entry.c UpdateHighScoreNameEntry
-thumb-func 0x080252E0 DrawHighScoreNameEntryKeypad
-thumb-func 0x08025390 sub_08025334
-c-file 0x080253C4 0x080253F8 src/initials/exit_high_score_name_entry.c ExitHighScoreNameEntry
-thumb-func 0x080253F8 HighScoreNameEntryCursorTick
-thumb-func 0x0802546C DrawHighScoreNameEntryPreview
-thumb-func 0x080254E0 sub_08025484
+c-file 0x08025248 _ src/initials/update_high_score_name_entry.c UpdateHighScoreNameEntry
+c-file 0x080252E0 _ src/initials/draw_high_score_name_entry_keypad.c DrawHighScoreNameEntryKeypad
+c-file 0x08025390 _ src/initials/update_high_score_name_entry_selected_char.c UpdateHighScoreNameEntrySelectedChar
+c-file 0x080253C4 _ src/initials/exit_high_score_name_entry.c ExitHighScoreNameEntry
+c-file 0x080253F8 _ src/initials/high_score_name_entry_cursor_tick.c HighScoreNameEntryCursorTick
+c-file 0x0802546C _ src/initials/draw_high_score_name_entry_preview.c DrawHighScoreNameEntryPreview
+c-file 0x080254E0 _ src/initials/clear_high_score_name_entry_tail.c ClearHighScoreNameEntryTail
 c-file 0x08025504 _ src/input/update_key_input.c UpdateKeyInput
 c-file 0x0802566C _ src/input/step_scroll_list_selection.c StepScrollListSelection
 c-file 0x08025738 _ src/input/step_scroll_grid_row.c StepScrollGridRow

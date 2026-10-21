@@ -38,3 +38,5 @@ extern const u8 g_abHighScoreNameEntryDoneText[];     // 0x08060E74
 extern void DrawHighScoreNameEntryKeypad(void);
 extern void DrawHighScoreNameEntryPreview(void);
 extern void HighScoreNameEntryCursorTick(Actor *pActor);
+extern void UpdateHighScoreNameEntrySelectedChar(void);
+extern void ClearHighScoreNameEntryTail(void);
