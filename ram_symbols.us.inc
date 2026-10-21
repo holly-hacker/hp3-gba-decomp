@@ -650,6 +650,9 @@
 .set g_bOptionsSavedGammaHigh,   0x03005E0A  @ u8
 .set g_dwOptionsEntryLanguage,   0x03005E0C  @ u32: language when the options screen was entered
 
+@ --- include/torch_actor.h ---
+.set g_nFlamePillarSoundHandle,  0x03005E10  @ s32: handle of the flame pillar ignition sound
+
 @ --- include/train_cutscene.h ---
 .set g_wCoolTrainTimer,          0x03005E14  @ u16: frames left in the Cool Train cutscene
 

@@ -623,6 +623,9 @@
 .set g_OptionsState,             0x03005E30
 .set g_dwOptionsReturnMode,      0x03005E5C
 
+@ --- include/torch_actor.h ---
+.set g_nFlamePillarSoundHandle,  0x03005E60  @ s32: handle of the flame pillar ignition sound
+
 @ --- include/train_cutscene.h ---
 .set g_wCoolTrainTimer,          0x03005E64  @ u16: frames left in the Cool Train cutscene
 

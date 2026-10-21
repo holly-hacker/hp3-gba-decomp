@@ -2178,11 +2178,11 @@ c-file 0x08044774 _ src/title_options/exit_options.c ExitOptions
 c-file 0x080447E0 _ src/title_options/draw_options_row_label.c DrawOptionsRowLabel
 c-file 0x0804483C _ src/title_options/draw_options_language_hint.c DrawOptionsLanguageHint
 
-# Torch? (flame pillar actor)
-c-file 0x08044894 0x08044960 src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
-thumb-func 0x08044960 sub_08044960
-thumb-func 0x08044A94 GrantPickupMarkerItem
-thumb-func 0x08044ADC sub_08044ADC
+# Torch (flame pillar actor)
+c-file 0x08044894 _ src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
+c-file 0x08044960 _ src/torch_actor/tick_flame_pillar_actor.c TickFlamePillarActor
+c-file 0x08044A94 _ src/torch_actor/ignite_flame_pillar.c IgniteFlamePillar
+c-file 0x08044ADC _ src/torch_actor/handle_flame_pillar_touch.c HandleFlamePillarTouch
 
 # Train (cool train cutscene mode)
 c-file 0x08044B00 _ src/train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene

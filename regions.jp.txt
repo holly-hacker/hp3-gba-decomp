@@ -1915,10 +1915,10 @@ c-file 0x08044614 _ src/title_options/adjust_option_value.c AdjustOptionValue
 c-file 0x080446DC _ src/title_options/exit_options.c ExitOptions
 c-file 0x08044748 _ src/title_options/draw_options_row_label.c DrawOptionsRowLabel
 c-file 0x080447A4 _ src/title_options/draw_options_language_hint.c DrawOptionsLanguageHint
-c-file 0x080447C0 0x0804488C src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
-thumb-func 0x0804488C sub_08044960
-thumb-func 0x080449C0 GrantPickupMarkerItem
-thumb-func 0x08044A08 sub_08044ADC
+c-file 0x080447C0 _ src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
+c-file 0x0804488C _ src/torch_actor/tick_flame_pillar_actor.c TickFlamePillarActor
+c-file 0x080449C0 _ src/torch_actor/ignite_flame_pillar.c IgniteFlamePillar
+c-file 0x08044A08 _ src/torch_actor/handle_flame_pillar_touch.c HandleFlamePillarTouch
 c-file 0x08044A2C _ src/train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
 c-file 0x08044AA8 _ src/train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file 0x08044B1C _ src/train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene

@@ -110,7 +110,7 @@ void RestoreRoomActorState(void)
     {
         pActor = SpawnRoomGroupMember(pPickup->bTileCol, pPickup->bTileRow);
         if (pPickup->bActionSubState == 8)
-            GrantPickupMarkerItem(pActor);
+            IgniteFlamePillar(pActor);
         pActor->dwStateTimer = pPickup->bStateTimer + 1;
     }
 

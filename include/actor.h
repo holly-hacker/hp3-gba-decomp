@@ -250,6 +250,7 @@ typedef struct ActorAnimState {
 typedef union __attribute__((packed)) ActorScriptState {
     u16 wScriptPc;
     u16 wDoorDestinationRoom;  // room actor types 2 and 13
+    u16 wFlameOutTicks;        // flame pillars: ticks the flame stays out
     struct __attribute__((packed)) {
         u8 bAttackOutcomeState;
         u8 bScriptPageHigh_candidate;
@@ -425,6 +426,17 @@ typedef struct Actor {
             u8 bRequireAPress;      // 0x65
             u8 bChain;              // 0x66, runs instead of leaving when nonzero
         } door;                     // room actor types 2 and 13; see scriptState.wDoorDestinationRoom
+        struct __attribute__((packed)) {
+            u16 wLitTicks;          // 0x62, ticks the flame burns
+            union __attribute__((packed)) {
+                u16 wPair;          // tested as a whole: zero runs nothing
+                struct __attribute__((packed)) {
+                    u8 bRespawnRow;
+                    u8 bChainRow;
+                } rows;
+            } touch;                // 0x64, RespawnGroupAndRunChain arguments run when
+                                    // the player touches the flame
+        } flamePillar;              // room actor type 11; see TickFlamePillarActor
         u8 bPropBlocksPlayer_candidate;  // 0x62, RoomActorType_ScriptedTrigger: see
                                          // HandlePlayerPropCollision
         ActorEffectState effect;
