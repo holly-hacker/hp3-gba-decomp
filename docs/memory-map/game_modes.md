@@ -273,10 +273,16 @@ PROVEN from US decompiles; the state names in the headers are provisional.
   A full goblet past the left end, an empty one past the bartender or a
   customer reaching the bar loses (`dwModeState` 4). All of its code and its
   data at US `0x08069038`-`0x08069328` are matched in `src/pouring_minigame/`.
-- `DivinationTeaMinigame` writes BG2's affine parameters directly, drives
-  16 leaf actors through `SetActorAffineTransform` (scale words have 8
-  fractional bits) and shows a random fortune: dialog text `0xA5F` plus
-  `Mt19937RandRange(0, 0x5A)`. Its final state pushes `MinigameMenu` with cursor entry 3.
+- `DivinationTeaMinigame` rotates the tea on BG2 at `dwSwirlSpeed` (clamped
+  to `0x40`-`0xFFF`): each A press adds `(1000 / frames since the last press) >> 3`,
+  and without input it decays by `(speed - 0x40) / 70` per frame. The 16 leaf
+  actors orbit their spawn points and step their orbit speed by `0x80` toward
+  it; `SetActorAffineTransform` spins them (scale words have 8 fractional
+  bits). B stops the stirring: the leaves slow and grow while the blend
+  cross-fades, then the four cups are freed and a random fortune is shown:
+  dialog text `0xA5F` plus `Mt19937RandRange(0, 0x5A)`. Start opens a
+  Resume/Exit pause menu. Its final state pushes `MinigameMenu` with cursor
+  entry 3. All of its code is matched in `src/tea_leaves_minigame/`.
 
 The other handlers are matched in `src/gamemode/modes/minigame/<minigame>/` for both versions.
 JP handlers (init/update/exit, from JP's dispatch table): 0x1B

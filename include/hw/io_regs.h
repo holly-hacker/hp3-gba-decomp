@@ -18,6 +18,7 @@ typedef struct {
 #define DISPCNT_FORCED_BLANK 0x0080 // REG_DISPCNT: LCD shows white, VRAM freely accessible
 #define DISPCNT_WIN0_ON      0x2000 // REG_DISPCNT: window 0 enabled
 #define DISPCNT_WIN1_ON      0x4000 // REG_DISPCNT: window 1 enabled
+#define DISPCNT_OBJWIN_ON    0x8000 // REG_DISPCNT: OBJ window enabled
 #define BGCNT_MOSAIC         0x0040 // REG_BGxCNT: mosaic enabled
 #define BLDCNT_BRIGHTEN      0x0080 // REG_BLDCNT: brighten the first targets by BLDY
 #define BLDCNT_DARKEN        0x00C0 // REG_BLDCNT: darken the first targets by BLDY

@@ -43,25 +43,25 @@ void InitializeDivinationTeaMinigame(void)
     SetTextTargetFromBgControl(bgControl);
     SelectTextFont(5, 0, -1);
 
-    g_DivinationTea.dwUnk1D0 = 0x40;
+    g_DivinationTea.dwSwirlSpeed = 0x40;
     SetBgRotation(2, 0, 0x40);
     SetBgZoomRange(2, 1, 0x800);
-    sub_08041D84();
+    SpawnDivinationTeaActors();
     Mt19937AutoSeed();
 
     g_GameModeStackContext.dwModeState = DivinationTeaStateIntro;
-    g_DivinationTea.dwUnk1D8 = 0;
+    g_DivinationTea.dwPaused = 0;
     g_DivinationTea.pCursorActor = NULL;
-    g_DivinationTea.dwUnk1C0 = 0;
-    g_DivinationTea.dwUnk1C4 = 0;
+    g_DivinationTea.dwStopped = 0;
+    g_DivinationTea.dwSettled = 0;
     g_DivinationTea.pFortuneText = NULL;
-    g_DivinationTea.dwBlendEvb = 0x10;
-    g_DivinationTea.dwBlendEva = 0;
+    g_DivinationTea.nBlendEvb = 0x10;
+    g_DivinationTea.nBlendEva = 0;
     g_DivinationTea.dwFrame = 0;
-    g_DivinationTea.dwUnk1D4 = 0;
+    g_DivinationTea.dwLastStirFrame = 0;
 
     SetAlphaBlendTargets(2, 4);
-    SetAlphaBlendCoefficients(g_DivinationTea.dwBlendEva, g_DivinationTea.dwBlendEvb);
+    SetAlphaBlendCoefficients(g_DivinationTea.nBlendEva, g_DivinationTea.nBlendEvb);
     PlayMusicModule(8);
     g_GameModeStackContext.dwModeTimer = 3;
     PlayScreenTransitionInByIndex(0x3F, 2);

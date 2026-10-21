@@ -13,25 +13,25 @@ void UpdateDivinationTeaMinigame(void)
 {
     DivinationTeaLeaf *pLeaf;
     Actor *pActor;
-    u32 score;
+    u32 speed;
     s32 roll;
     s32 i;
 
-    if (g_DivinationTea.dwUnk1D8 != 0)
+    if (g_DivinationTea.dwPaused != 0)
     {
-        sub_080422D0();
+        UpdateDivinationTeaPauseMenu();
         return;
     }
 
     g_DivinationTea.dwFrame++;
 
-    if (g_DivinationTea.dwUnk1C0 != 0)
+    if (g_DivinationTea.dwStopped != 0)
     {
-        if (g_DivinationTea.dwUnk1C4 == 0)
-            sub_08041FA0();
+        if (g_DivinationTea.dwSettled == 0)
+            SettleDivinationTeaLeaves();
     }
 
-    if (g_DivinationTea.dwUnk1C4 == 0)
+    if (g_DivinationTea.dwSettled == 0)
     {
         for (i = 0; i < DIVINATION_TEA_LEAF_COUNT; i++)
         {
@@ -46,7 +46,7 @@ void UpdateDivinationTeaMinigame(void)
     }
     else if (g_GameModeStackContext.dwModeState == DivinationTeaStateIntro)
     {
-        sub_0804200C();
+        StartDivinationTeaFortune();
     }
 
     switch (g_GameModeStackContext.dwModeState)
@@ -60,23 +60,23 @@ void UpdateDivinationTeaMinigame(void)
 
         if (g_wKeysPressed & KeyStart)
         {
-            sub_080421B8();
+            ShowDivinationTeaPauseMenu();
         }
         else if (g_wKeysPressed & KeyA)
         {
-            if (g_DivinationTea.dwUnk1C0 != 0)
+            if (g_DivinationTea.dwStopped != 0)
                 break;
 
-            if (g_DivinationTea.dwFrame > g_DivinationTea.dwUnk1D4)
+            if (g_DivinationTea.dwFrame > g_DivinationTea.dwLastStirFrame)
             {
-                sub_08042288(g_DivinationTea.dwUnk1D0
-                             + (1000 / (g_DivinationTea.dwFrame - g_DivinationTea.dwUnk1D4) >> 3));
-                g_DivinationTea.dwUnk1D4 = g_DivinationTea.dwFrame;
+                SetDivinationTeaSwirlSpeed(g_DivinationTea.dwSwirlSpeed
+                             + (1000 / (g_DivinationTea.dwFrame - g_DivinationTea.dwLastStirFrame) >> 3));
+                g_DivinationTea.dwLastStirFrame = g_DivinationTea.dwFrame;
             }
         }
         else if (g_wKeysPressed & KeyB)
         {
-            if (g_DivinationTea.dwUnk1C0 == 0)
+            if (g_DivinationTea.dwStopped == 0)
             {
                 PlaySoundById(1);
                 SetBgZoomStep(2, 1);
@@ -85,13 +85,13 @@ void UpdateDivinationTeaMinigame(void)
                                       (void *)g_DivinationTeaCupAnimData, 1);
             }
 
-            g_DivinationTea.dwUnk1C0 = 1;
+            g_DivinationTea.dwStopped = 1;
         }
-        else if (g_DivinationTea.dwUnk1C0 == 0 && g_DivinationTea.dwUnk1C4 == 0)
+        else if (g_DivinationTea.dwStopped == 0 && g_DivinationTea.dwSettled == 0)
         {
-            score = g_DivinationTea.dwUnk1D0;
-            score -= (score - 0x40) / 0x46;
-            sub_08042288(score);
+            speed = g_DivinationTea.dwSwirlSpeed;
+            speed -= (speed - 0x40) / 0x46;
+            SetDivinationTeaSwirlSpeed(speed);
         }
         break;
     case DivinationTeaStateFadeIn:

@@ -1829,18 +1829,18 @@ c-file 0x080418DC _ src/store/show_shop_message.c ShowShopMessage
 c-file 0x08041924 _ src/store/update_shop_message.c UpdateShopMessage
 c-file 0x08041948 _ src/store/exit_shop_message.c ExitShopMessage
 c-file 0x08041954 _ src/tea_leaves_minigame/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
-c-file 0x08041AC8 0x08041DEC src/tea_leaves_minigame/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
-thumb-func 0x08041DEC sub_08041D84
-thumb-func 0x08042008 sub_08041FA0
-thumb-func 0x08042074 sub_0804200C
-thumb-func 0x08042114 sub_080420AC
-thumb-func 0x080421D4 sub_0804216C
-thumb-func 0x08042220 sub_080421B8
-c-file 0x080422A4 0x080422F0 src/tea_leaves_minigame/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
-thumb-func 0x080422F0 sub_08042288
-thumb-func 0x08042338 sub_080422D0
-thumb-func 0x080423A8 sub_08042340
-thumb-func 0x080423E4 sub_0804237C
+c-file 0x08041AC8 _ src/tea_leaves_minigame/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
+c-file 0x08041DEC _ src/tea_leaves_minigame/spawn_divination_tea_actors.c SpawnDivinationTeaActors
+c-file 0x08042008 _ src/tea_leaves_minigame/settle_divination_tea_leaves.c SettleDivinationTeaLeaves
+c-file 0x08042074 _ src/tea_leaves_minigame/start_divination_tea_fortune.c StartDivinationTeaFortune
+c-file 0x08042114 _ src/tea_leaves_minigame/slow_divination_tea_leaves.c SlowDivinationTeaLeaves
+c-file 0x080421D4 _ src/tea_leaves_minigame/update_divination_tea_leaf_speeds.c UpdateDivinationTeaLeafSpeeds
+c-file 0x08042220 _ src/tea_leaves_minigame/show_divination_tea_pause_menu.c ShowDivinationTeaPauseMenu
+c-file 0x080422A4 _ src/tea_leaves_minigame/exit_divination_tea_minigame.c ExitDivinationTeaMinigame
+c-file 0x080422F0 _ src/tea_leaves_minigame/set_divination_tea_swirl_speed.c SetDivinationTeaSwirlSpeed
+c-file 0x08042338 _ src/tea_leaves_minigame/update_divination_tea_pause_menu.c UpdateDivinationTeaPauseMenu
+c-file 0x080423A8 _ src/tea_leaves_minigame/move_divination_tea_menu_cursor.c MoveDivinationTeaMenuCursor
+c-file 0x080423E4 _ src/tea_leaves_minigame/resume_divination_tea_minigame.c ResumeDivinationTeaMinigame
 c-file 0x08042428 _ src/text/format_decimal.c FormatDecimal
 c-file 0x080425D0 _ src/text/init_dialog_text_engine.c InitDialogTextEngine
 c-file 0x080425F0 _ src/text/set_language.c SetLanguage
