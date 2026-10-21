@@ -24,6 +24,7 @@ typedef struct {
 extern MainMenuState g_MainMenuState;  // 0x03005DB8
 extern s32 g_nMainMenuTextCursor;     // 0x03005DB0: next free text tile, after the copyright lines
 
+extern const char g_szBuildDate[12];
 extern const u32 g_dwMainMenuBg3Control;
 extern const u32 g_dwMainMenuBg2Control;
 extern const u32 g_dwMainMenuBg1Control;

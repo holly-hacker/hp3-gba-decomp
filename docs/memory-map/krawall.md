@@ -104,8 +104,8 @@ JP has the same layout from `0x08F3C9CC`.
 
 `effects[]` and `effectsVC[]` give the names of the 51 effect handlers;
 their `inbet` flags and repeated entries match the public `player.c`
-exactly. The word after the tables (`0xFFFFFFFF`, US `0x08FAA7CC`) is
-unreferenced and its owner is not known.
+exactly. The word after the tables (`0xFFFFFFFF`, US `0x08FAA7CC`,
+`asm/krawall_trailing_word.s`) is unreferenced and its owner is not known.
 
 ## Differences from the public source
 

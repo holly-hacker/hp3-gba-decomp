@@ -98,6 +98,7 @@ void ResetWanderingMonsterTouchState(void);
 extern void HandleWanderingMonsterTouch(void);
 
 // BGxCNT values applied to each BG layer at room load.
+extern const ActorGfxRecord g_UnusedOverworldShadowGfx;
 extern const u32 g_dwBg2Control;
 extern const u32 g_dwBg1Control;
 extern const u32 g_dwBg3Control;
@@ -116,6 +117,7 @@ extern const u32 g_adwRoomQuestMusicOverride[55];
 
 extern const ColorCycleTable g_ColorCyclesDefault;
 extern const ColorCycleTable g_ColorCyclesRoom12;
+extern const u8 g_abUnusedMapData[12];
 
 // Wandering-monster resources, src/map/wandering_monster.globals.c.
 extern const u32 g_adwEncounterKindTerrainTypes[3];

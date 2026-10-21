@@ -2312,7 +2312,8 @@ c-file 0x0804CEB8 _ src/cheat_wizard_cards/cheat_wizard_cards.globals.c g_dwChea
 c-file 0x0804CEC4 _ src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWizardCardNames
 c-file 0x0804D524 _ src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprite
 c-file 0x0804D6CC _ src/choose_party_member/choose_character_stages.globals.c g_abChooseCharacterStages
-c-file 0x0804D770 0x0804D790 src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
+c-file 0x0804D770 _ src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
+c-file 0x0804D790 _ src/color/unused_color_zeros.c g_abUnusedColorZeros
 c-file 0x0804D798 _ src/color/gamma_remap_tables.c g_abGammaNormalRemap
 c-file 0x0804D7F8 _ src/combat_core/battle_effect001_asset.c g_BattleEffect001Asset
 c-file 0x0804D808 _ src/combat_dialog/battle_top_menu_text.c g_adwBattleTopMenuTextIds
@@ -2376,7 +2377,8 @@ c-file 0x0805EB9C _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/font/load_font_descriptor.globals.c g_aFontTable
 c-file 0x0806053C _ src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
 c-file 0x08060554 _ src/gamecube/joybus_error_strings.c g_apJoybusErrorStrings
-c-rodata 0x08060620 0x08060625 InitJoybusSession
+c-rodata 0x08060620 _ InitJoybusSession
+asm-file 0x08060625 _ asm/gamecube/init_joybus_session_padding.s InitJoybusSessionPadding
 c-file 0x08060628 _ src/hedwig_minigame/owl_care_kit.globals.c g_aOwlCareSprites
 c-file 0x08060884 _ src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
 c-file 0x0806088C _ src/hero/party_focus_gfx.c g_PartyLumosGfx
@@ -2392,12 +2394,14 @@ c-file 0x08060EE4 _ src/items/items.c g_pItemTable
 c-file 0x080629B4 _ src/items_list/items_list.globals.c g_abItemListPlaceholderText
 c-file 0x080629B8 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file 0x080629F4 _ src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
-c-file 0x08062A00 0x0806305C src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_LupinPotionShadowGfx
+c-file 0x08062A00 _ src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_LupinPotionShadowGfx
+c-file 0x0806305C _ src/map/unused_overworld_shadow_gfx.c g_UnusedOverworldShadowGfx
 c-file 0x08063064 _ src/map/overworld.globals.c g_dwBg2Control
 c-file 0x08063074 _ src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
 c-file 0x08063C8C _ src/map/room_table.c g_aRoomTable
 c-file 0x08065730 _ src/map/room_quest_music_override.c g_adwRoomQuestMusicOverride
-c-file 0x0806580C 0x0806581C src/map/room_color_cycles.c g_ColorCyclesDefault
+c-file 0x0806580C _ src/map/room_color_cycles.c g_ColorCyclesDefault
+c-file 0x0806581C _ src/map/unused_map_data.c g_abUnusedMapData
 c-file 0x08065828 _ src/map/wandering_monster.globals.c g_adwEncounterKindTerrainTypes
 c-file 0x0806589C _ src/math/sine_table.c g_anSineTable
 c-rodata 0x08065C9C _ ResetBgLayer
@@ -2427,7 +2431,8 @@ c-file 0x08068D3C _ src/pop_it_minigame/wizard_cracker_pop_it_anims.c g_aWizardC
 c-file 0x08069038 _ src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
 c-file 0x08069328 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file 0x080693CC 0x0806940C src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_PushResetButtonSprite
+c-file 0x080693CC _ src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_PushResetButtonSprite
+c-file 0x0806940C _ src/pscreen_character/unused_party_asset_records.c g_aUnusedPartyAssetRecords
 c-file 0x0806944C _ src/pscreen_character/status_equip_character_select.globals.c g_adwStatusEquipCharacterNameTextIds
 c-file 0x0806945C _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C _ src/pscreen_folio/folios.globals.c g_aFoliosEntries
@@ -2464,6 +2469,7 @@ c-file 0x0806BD98 _ src/time_skip_cutscene/hogwarts_up_night_cutscene.globals.c 
 c-file 0x0806BDA4 0x0806BE30 src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
 c-file 0x0806BE38 0x0806BF30 src/timeturner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
 c-file 0x0806BF40 0x0806BF60 src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
+c-file 0x0806BFC4 _ src/title/build_date.c g_szBuildDate
 c-file 0x0806BFD0 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BFDC _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
 c-file 0x0806BFF4 _ src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
@@ -2659,14 +2665,16 @@ graphics 0x08F4BEDC _ menus FamousWizardCards
 c-section 0x08FA953C _ general .rodata
 c-section 0x08FA9568 _ mixer_arm .rodata
 c-section 0x08FA95A8 _ player .rodata
-c-file-gcc3 0x08FA985C 0x08FAA7CC 3rd_party/krawall/player_tables.c player_tables .rodata
+c-file-gcc3 0x08FA985C _ 3rd_party/krawall/player_tables.c player_tables .rodata
+asm-file 0x08FAA7CC _ asm/krawall_trailing_word.s KrawallTrailingWord
 
 # Random data?
 c-rodata 0x08FAA7D0 _ EepromV124
 c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 _ ResetBuckbeakMinigame
 c-data 0x08FAA830 _ g_apJoybusErrorStrings
-c-rodata 0x08FAA858 0x08FAA86A UpdateOwlStatMeters
+c-rodata 0x08FAA858 _ UpdateOwlStatMeters
+asm-file 0x08FAA86A _ asm/hedwig_minigame/owl_stat_meter_weights_padding.s OwlStatMeterWeightsPadding
 c-rodata 0x08FAA86C _ SpawnOwlCareKitActors
 c-rodata 0x08FAA878 _ RunLupinPotionCastScripts
 c-rodata 0x08FAADB8 _ RunLupinPotionCameraScript

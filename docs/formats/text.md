@@ -35,7 +35,7 @@ known".
     `asm/data/debug_collector_card_names.us.s`).
   - A cluster of multiplayer/link-cable debug strings (`Error: Send
     Overrun`, `Error: Recv CRC`, etc., around `0x08060554`) and a build
-    date stamp (`Apr  5 2004` near `0x0806bfc4`).
+    date stamp (`g_szBuildDate`, `Apr  5 2004` at `0x0806BFC4`).
   - Two short UI/debug strings, `LEVEL PASSED!` and `YOU LOSE!`
     (`0x080693b0`).
   - None of the above are dialog or menu text (character select, item

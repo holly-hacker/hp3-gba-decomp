@@ -102,6 +102,7 @@ extern PaletteEffect g_aPaletteEffects[12];  // 0x030022F8
 extern ObjPaletteQueueEntry g_aObjPaletteQueue[25];  // 0x030023E8
 
 
+extern const u8 g_abUnusedColorZeros[8];   // 0x0804D790
 extern const u8 g_abGammaNormalRemap[32];  // 0x0804D798
 extern const u8 g_abGammaHighRemap[32];    // 0x0804D7B8
 // Approximate inverse of g_abGammaHighRemap, used to undo it.
