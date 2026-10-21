@@ -114,22 +114,25 @@ def section_names(asm: str) -> list[str]:
     return list(dict.fromkeys(a or f".{b.lower()}" for a, b in names))
 
 
-def place_in_text(asm: str, src: str, keep_rodata: bool = False) -> str:
+def place_in_text(asm: str, src: str, keep_rodata: bool = False,
+                  keep_data: bool = False) -> str:
     """Fold read-only data into .text, and reject what has nowhere to go.
 
     The generated link.ld places each region's .text, so agbcc's
     `.section .rodata` for const data has to become .text -- the bytes are
     the same and both live in ROM. keep_rodata leaves it in place for a
-    source whose .rodata a c-rodata row puts at its own address.
-    `.data` and .comm/.lcomm have no home: they want writable RAM, whose
-    addresses are fixed by the ROM, so RAM variables belong in
+    source whose .rodata a c-rodata row puts at its own address, and
+    keep_data does the same for `.data` placed by a c-data row.
+    Otherwise `.data` and .comm/.lcomm have no home: they want writable
+    RAM, whose addresses are fixed by the ROM, so RAM variables belong in
     ram_symbols.<ver>.inc and are `extern` in C.
     """
     if not keep_rodata:
         asm = re.sub(r"^\s*\.section\s+\.rodata\b.*$", ".text", asm, flags=re.M)
-    for pattern, shown, what in ((r"\.data\b", ".data", "a writable global"),
-                                 (r"\.l?comm\b", ".comm/.lcomm",
-                                  "an uninitialised global")):
+    rejected = [(r"\.l?comm\b", ".comm/.lcomm", "an uninitialised global")]
+    if not keep_data:
+        rejected.insert(0, (r"\.data\b", ".data", "a writable global"))
+    for pattern, shown, what in rejected:
         if re.search(rf"^\s*{pattern}", asm, re.M):
             sys.exit(
                 f"{src}: emits {shown} ({what}). RAM lives at fixed "
@@ -205,33 +208,34 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
 
 def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
                 o1: bool = False, keep_rodata: bool = False,
-                arm: bool = False) -> None:
+                keep_data: bool = False, arm: bool = False) -> None:
     cc1, cppflags, cflags = profile(src, prefix, o1, ver, arm)
     pre = subprocess.run(["cpp", *cppflags, src],
                          capture_output=True, text=True)
     if pre.returncode:
         sys.exit(f"cpp failed on {src}:\n{pre.stderr}")
     key = buildcache.digest(tools, os.path.realpath(cc1), cflags, src,
-                            keep_rodata, pre.stdout)
+                            keep_rodata, keep_data, pre.stdout)
     asm = buildcache.load("c", key)
     if asm is None:
         asm = compile_preprocessed(src, cc1, cflags, pre.stdout, keep_rodata,
-                                   arm)
+                                   keep_data, arm)
         buildcache.store("c", key, asm)
     buildcache.write_if_changed(out, asm)
 
 
 def compile_preprocessed(src: str, cc1: str, cflags: list[str], pre: str,
-                         keep_rodata: bool, arm: bool = False) -> bytes:
+                         keep_rodata: bool, keep_data: bool = False,
+                         arm: bool = False) -> bytes:
     cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
                         input=pre, capture_output=True, text=True)
     if cc.returncode:
         sys.exit(f"{os.path.basename(cc1)} failed on {src}:\n{cc.stderr}")
-    return wrap_asm(cc.stdout, src, keep_rodata, arm).encode()
+    return wrap_asm(cc.stdout, src, keep_rodata, keep_data, arm).encode()
 
 
 def wrap_asm(asm: str, src: str, keep_rodata: bool = False,
-             arm: bool = False) -> str:
+             keep_data: bool = False, arm: bool = False) -> str:
     """Makes compiler output assemble as a region's contents.
 
     The region wrapper is .syntax unified; agbcc emits divided syntax.
@@ -240,7 +244,7 @@ def wrap_asm(asm: str, src: str, keep_rodata: bool = False,
     which is what the ROM has.
     """
     return (".syntax divided\n" + (".arm\n" if arm else "")
-            + place_in_text(asm, src, keep_rodata)
+            + place_in_text(asm, src, keep_rodata, keep_data)
             + "\t.align\t2, 0\n" + ".syntax unified\n")
 
 
@@ -257,6 +261,7 @@ def main() -> None:
     ]
     rows = [parts for parts in lines if parts[0] in C_FILE_DIRECTIVES]
     separate_rodata = {parts[3] for parts in lines if parts[0] == "c-rodata"}
+    separate_data = {parts[3] for parts in lines if parts[0] == "c-data"}
     if not rows:
         print(f"no c-file rows in regions.{ver}.txt -- nothing to compile")
         return
@@ -272,6 +277,7 @@ def main() -> None:
         compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver, tools,
                     o1=directive == "c-file-O1",
                     keep_rodata=name in separate_rodata,
+                    keep_data=name in separate_data,
                     arm=directive == "c-file-arm")
 
     with ThreadPoolExecutor() as pool:

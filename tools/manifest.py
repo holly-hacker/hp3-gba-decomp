@@ -59,6 +59,18 @@ C_FILE_DIRECTIVES = {"c-file", "c-file-O1", "c-file-arm"} | SECTIONED_DIRECTIVES
 C_RODATA_DIRECTIVE = "c-rodata"
 RODATA_SUFFIX = ".rodata"
 
+# c-data rows do the same for the object's .data, its initialised
+# non-const data, which the ROM stores apart from its .rodata (a
+# non-const table of string pointers, whose strings stay in .rodata).
+# The region is named <name> + DATA_SUFFIX.
+C_DATA_DIRECTIVE = "c-data"
+DATA_SUFFIX = ".data"
+
+# Directive -> region-name suffix for the rows that place one section of
+# a c-file/c-file-O1 row's object.
+SPLIT_SECTION_DIRECTIVES = {C_RODATA_DIRECTIVE: RODATA_SUFFIX,
+                            C_DATA_DIRECTIVE: DATA_SUFFIX}
+
 # c-section rows place one more section of a c-file-gcc3, c-file-gcc3-arm
 # or asm-file-cpp row's object, named <name>, at <start> (or <vma>, as
 # above). The region is named <name> + <section>.
@@ -185,7 +197,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             asmfile = f"build/{ver}/c/{name}.s"
             regions.append((start, end, asmfile, name))
             continue
-        if parts[0] == C_RODATA_DIRECTIVE:
+        if parts[0] in SPLIT_SECTION_DIRECTIVES:
             if len(parts) != 4:
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <name>'")
             _, start_s, end_s, name = parts
@@ -193,7 +205,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if end <= start:
                 sys.exit(f"{path}:{lineno}: end must be after start")
             asmfile = f"build/{ver}/c/{name}.s"
-            regions.append((start, end, asmfile, name + RODATA_SUFFIX))
+            regions.append((start, end, asmfile, name + SPLIT_SECTION_DIRECTIVES[parts[0]]))
             continue
         if parts[0] == GRAPHICS_DIRECTIVE:
             if len(parts) != 5:
@@ -243,8 +255,10 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
         if r[3] in placements:
             if placements[r[3]][0] not in names:
                 sys.exit(f"{path}: c-section row {r[3]} has no object row")
-        elif r[3].endswith(RODATA_SUFFIX) and r[3][:-len(RODATA_SUFFIX)] not in names:
-            sys.exit(f"{path}: c-rodata row {r[3][:-len(RODATA_SUFFIX)]} has no c-file row")
+        else:
+            for directive, suffix in SPLIT_SECTION_DIRECTIVES.items():
+                if r[3].endswith(suffix) and r[3][:-len(suffix)] not in names:
+                    sys.exit(f"{path}: {directive} row {r[3][:-len(suffix)]} has no c-file row")
     regions.sort(key=lambda r: r[0])
     for i in range(1, len(regions)):
         if regions[i][0] < regions[i - 1][1]:

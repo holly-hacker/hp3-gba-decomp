@@ -27,7 +27,13 @@ extern s32 g_nMainMenuTextCursor;     // 0x03005DB0: next free text tile, after 
 extern const u32 g_dwMainMenuBg3Control;
 extern const u32 g_dwMainMenuBg2Control;
 extern const u32 g_dwMainMenuBg1Control;
-extern const u8 *const g_apMainMenuTitleGraphic[8];
+// One title graphic per Language; JP has a single entry that no code reads.
+#ifdef VERSION_JP
+#define MAIN_MENU_TITLE_COUNT 1
+#else
+#define MAIN_MENU_TITLE_COUNT 8
+#endif
+extern const u8 *const g_apMainMenuTitleGraphic[MAIN_MENU_TITLE_COUNT];
 extern const u32 g_adwMainMenuStateTimeouts[6];
 
 void InitializeMainMenu(void);

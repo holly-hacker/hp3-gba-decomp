@@ -3,7 +3,7 @@
 
 Reads regions.<ver>.txt and buckets every region-bearing row into:
   c-file  -- compiled C (c-file, c-file-O1, c-file-arm, c-file-gcc3,
-            c-file-gcc3-arm, c-rodata and c-section directives)
+            c-file-gcc3-arm, c-rodata, c-data and c-section directives)
   asm-file -- hand assembly (asm-file, asm-file-cpp)
   lib     -- toolchain library objects (lib-object directives)
   data    -- extracted-asset directives (krawall, dialog-text, ...)
@@ -30,7 +30,7 @@ NON_REGION = {"label", "thumb-func", "arm-func"}
 def kind_of(directive: str) -> str:
     if directive in ("asm-file", ASM_CPP_DIRECTIVE):
         return "asm-file"
-    if directive in C_FILE_DIRECTIVES or directive in ("c-rodata", "c-section"):
+    if directive in C_FILE_DIRECTIVES or directive in ("c-rodata", "c-data", "c-section"):
         return "c-file"
     if directive == "lib-object":
         return "lib"

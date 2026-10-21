@@ -2022,7 +2022,7 @@ c-file 0x0804C39C _ src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_
 c-file 0x0804C3CC _ src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control
 c-file 0x0804C3F8 _ src/cheat_party/cheat_party.globals.c g_dwCheatPartyBg0Control
 c-file 0x0804C544 _ src/cheat_portraits/cheat_portraits.globals.c g_dwCheatPortraitsBg1Control
-c-file 0x0804C548 0x0804C9C8 src/cheat_portraits/portrait_table.c g_apPortraitTable
+c-file 0x0804C548 _ src/cheat_portraits/portrait_table.c g_apPortraitTable
 c-file 0x0804CDB8 _ src/cheat_sound_test/cheat_sound_test.globals.c g_dwCheatSoundTestBg0Control
 c-file 0x0804CDE4 _ src/cheat_wizard_cards/cheat_wizard_cards.globals.c g_dwCheatWizardCardsBg2Control
 c-file 0x0804CDF0 _ src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWizardCardNames
@@ -2098,7 +2098,8 @@ c-file 0x0805EA60 _ src/event_actors/room_script_opcode_lengths.c g_abRoomScript
 c-file 0x0805EAC0 _ src/event_actors/script_effect_actor_ticks.c g_apfnScriptEffectActorTicks
 c-file 0x0805EAC8 _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x08060408 _ src/font/load_font_descriptor.globals.c g_aExtFontTable
-c-file 0x080604C8 0x080604E0 src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
+c-file 0x080604C8 _ src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
+c-file 0x080604E0 _ src/gamecube/joybus_error_strings.c g_apJoybusErrorStrings
 c-rodata 0x080605AC 0x080605B1 InitJoybusSession
 c-file 0x080605B4 _ src/hedwig_minigame/owl_care_kit.globals.c g_aOwlCareSprites
 c-file 0x08060810 _ src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
@@ -2143,7 +2144,7 @@ c-file 0x08068B74 _ src/npc_actor/shadow_actor_gfx.c g_ShadowActorGfx
 # Direction to Direction opposite tables (8-way, then 4-way)
 c-file 0x08068B7C _ src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file 0x08068B84 _ src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
-c-file 0x08068B88 0x08068B94 src/particles/opposite_directions.c g_abOppositeDirection8
+c-file 0x08068B88 _ src/particles/opposite_directions.c g_abOppositeDirection8
 c-file 0x08068B9C _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068BBC _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068BC4 _ src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
@@ -2190,7 +2191,8 @@ c-file 0x0806BD14 0x0806BDA0 src/time_skip_cutscene/clock_skip_cutscene.globals.
 c-file 0x0806BDA8 0x0806BEA0 src/timeturner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
 c-file 0x0806BEB0 0x0806BED0 src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
 c-file 0x0806BF40 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
-c-file 0x0806BF4C 0x0806BF64 src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
+c-file 0x0806BF4C _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
+c-file 0x0806BF64 _ src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
 c-file 0x0806BF68 _ src/title_load/save_slot_bar_asset.c g_SaveSlotBarAsset
 c-file 0x0806BF78 _ src/title_load/new_game_slot_confirmation_menu.c g_NewGameSlotConfirmationMenuDefinition
 c-file 0x0806BF9C _ src/title_options/options_menu_items.c g_aOptionsMenuItems
@@ -2198,7 +2200,7 @@ c-file 0x0806C044 _ src/title_options/options_knob_anims.c g_aabOptionsKnobAnims
 c-file 0x0806C068 _ src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file 0x0806C0B0 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 
-c-file 0x0806C0B4 0x0806C13C src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
+c-file 0x0806C0B4 _ src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file 0x0806C22C _ src/video/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file 0x0806C23C _ src/windows/screen_window_dispcnt_flags.c g_awScreenWindowDispcntFlags
 c-file 0x0806C240 _ src/world_actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
@@ -2372,7 +2374,8 @@ c-file-gcc3 0x08F3CCEC 0x08F3DC5C 3rd_party/krawall/player_tables.c player_table
 
 c-rodata 0x08F3DC60 _ EepromV124
 c-rodata 0x08F3DCA0 _ EepromNoWait
-c-rodata 0x08F3DCB4 0x08F3DCC0 ResetBuckbeakMinigame
+c-rodata 0x08F3DCB4 _ ResetBuckbeakMinigame
+c-data 0x08F3DCC0 _ g_apJoybusErrorStrings
 c-rodata 0x08F3DCE8 0x08F3DCFA UpdateOwlStatMeters
 c-rodata 0x08F3DCFC _ SpawnOwlCareKitActors
 c-rodata 0x08F3DD08 _ RunLupinPotionCastScripts

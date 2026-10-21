@@ -42,7 +42,7 @@ User-confirmed against actual gameplay for 4 rooms (`0x28`, `0x26`,
 level-table layer maps to which hardware BG register. Build input through
 [`room_graphics.md`](room_graphics.md), which extracts and packs these
 resources. **PROVEN and extracted for a third resource class**: the game's dialog
-portraits (`g_apPortraitTable`, `0x0804C61C`, 72 records -- see
+portraits (`g_apPortraitTable`, `0x0804C61C`, 72 filled records -- see
 "Character portraits" below), whose 54 unique images are extracted to
 editable PNGs and rebuilt from them through an `image-bank` region.
 Tile data otherwise remains
@@ -1349,8 +1349,9 @@ main-menu graphics after `g_MainMenuPalette` (not extracted).
 
 ### Character portraits (PROVEN, extracted)
 
-`g_apPortraitTable` (US `0x0804C61C`, 72 `ActorAssetRecord` entries, 16
-bytes each: `{pTileGfx, pFrameData, pPalette, reserved(0)}`) holds the
+`g_apPortraitTable` (US `0x0804C61C`, 135 `ActorAssetRecord` entries, 16
+bytes each: `{pTileGfx, pFrameData, pPalette, reserved(0)}`, of which
+only the first 72 are filled and the rest are zero) holds the
 game's dialog-portrait art. It's reachable from
 `InitializeCheatPortraits` (`0x0800B5A8`), a debug menu for paging
 through them, but the records themselves are ordinary dialog assets --
@@ -1441,8 +1442,8 @@ through them, but the records themselves are ordinary dialog assets --
   table order: table pointers delimit each tile and frame component, and
   each 512-byte palette ends at the next resource. The `Portraits`
   `image-bank` row claims all 131,576 bytes as 8-bit `PortraitNNN.png`
-  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/cheat_portraits/portrait_table.c` reconstructs the 72
-  records at `0x0804C61C`-`0x0804CA9C`, referencing generated labels so
+  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/cheat_portraits/portrait_table.c` reconstructs the 135
+  records at `0x0804C61C`-`0x0804CE8C`, referencing generated labels so
   repeated records share their original image. Both regions are
   verified by the whole-ROM comparison; JP addresses are not yet mapped.
 

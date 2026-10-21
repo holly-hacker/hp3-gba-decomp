@@ -33,12 +33,11 @@ import rom_layout  # noqa: E402
 from manifest import (  # noqa: E402
     ASM_FILE_DIRECTIVE,
     C_FILE_DIRECTIVES,
-    C_RODATA_DIRECTIVE,
     C_SECTION_DIRECTIVE,
     LABEL_DIRECTIVES,
     LIB_OBJECT_DIRECTIVE,
-    RODATA_SUFFIX,
     SECTIONED_DIRECTIVES,
+    SPLIT_SECTION_DIRECTIVES,
     read_rows,
 )
 
@@ -82,10 +81,12 @@ def read_units(path: str) -> list[dict]:
         rows.append({
             "start": start, "end": end, "directive": directive,
             "name": name, "source": source,
-            "section": parts[4] if directive == C_SECTION_DIRECTIVE else RODATA_SUFFIX,
+            "section": (parts[4] if directive == C_SECTION_DIRECTIVE
+                        else SPLIT_SECTION_DIRECTIVES.get(directive)),
         })
     for row in rows:
-        if row["directive"] in (C_RODATA_DIRECTIVE, C_SECTION_DIRECTIVE):
+        if (row["directive"] in SPLIT_SECTION_DIRECTIVES
+                or row["directive"] == C_SECTION_DIRECTIVE):
             row["source"] = c_sources.get(row["name"])
             row["name"] += row["section"]
     rows.sort(key=lambda r: r["start"])

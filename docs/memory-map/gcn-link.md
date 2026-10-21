@@ -76,7 +76,8 @@ session code clears all of it):
 The fields at +0x0-+0x9 and +0x1C-+0x22 are volatile (every store is preceded
 by a load in the ROM).
 
-`bError` codes follow the string table at `0x08FAA830`, whose entries name
+`bError` codes follow `g_apJoybusErrorStrings` (`0x08FAA830`, strings at
+`0x08060554`; `src/gamecube/joybus_error_strings.c`), whose entries name
 them in order: 0 None, 1 Game Code Send, 2 Game Code Recv, 3 Timeout,
 4 Invalid Command, 5 Invalid Mode, 6 Recv Missing Packet, 7 Recv CRC,
 8 Recv Overrun, 9 Send Overrun. No reader of the table was found.
@@ -134,4 +135,4 @@ pointer, length-into-code, or unclamped callback dispatch.
 
 - Exact protocol meaning of the `0x40`/`0x41` handshake bytes and the
   `wRecvCommandMax`/`wSendCommandMax` contract with the GameCube title.
-- Readers of `dwPeerGameCode` and the `0x08FAA830` error-string table.
+- Readers of `dwPeerGameCode` and `g_apJoybusErrorStrings`.

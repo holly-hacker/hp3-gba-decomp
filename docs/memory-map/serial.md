@@ -46,9 +46,8 @@ See [`../README.md`](../README.md) for the confidence key. The GameCube
   to fill `g_awSerialKeysReceived` (and apply a type 3 RNG seed). A timeout clears
   `SerialSessionActive` and runs `ResetSerialSession`. Message types and `SERIAL_FLAG_*` roles are in
   `include/serial.h`.
-- A 9-entry error vocabulary (`Error: Send Overrun`, `Recv CRC`, `Timeout`,
-  `Game Code Recv/Send`, …) sits at `0x08060554` but is currently
-  unreferenced — dead debug strings, reached by computed index if at all.
+- The `Error: ...` strings at `0x08060554` name the GameCube link's
+  `bError` codes (`g_apJoybusErrorStrings`, [`gcn-link.md`](gcn-link.md)).
   The game-code check means both ends must run the same title.
 
 ## Trade session (PROVEN)

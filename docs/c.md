@@ -24,6 +24,10 @@ A C file's `.rodata` is normally folded into its own region. A
 `c-rodata <start> <end> <name>` row instead places the `.rodata` of the
 C row named `<name>` at its own address, for an object whose read-only
 data the ROM keeps apart from its code (the EEPROM library objects).
+A `c-data <start> <end> <name>` row likewise places the object's `.data`,
+initialised non-const data such as `char *table[] = { "..." }`: the
+pointer table goes to `.data` and its strings to `.rodata`, which the
+c-file row then places (`src/gamecube/joybus_error_strings.c`).
 
 Third-party code under `3rd_party/` (Krawall) has its own rows, compiled
 with GCC 3.0.2 at `-O3` ([`compiler.md`](compiler.md)) from headers in
@@ -83,8 +87,8 @@ occupies 4, and getting this wrong shifts every subsequent offset.
 **RAM variables are `extern`, never definitions.** `int g_foo;` becomes a
 common symbol the linker places wherever it likes, but RAM addresses are
 fixed by the ROM. Declare it `extern` in C and give it an address in
-`ram_symbols.<ver>.inc`. `compile_c.py` rejects `.data`/`.comm` rather
-than letting them vanish.
+`ram_symbols.<ver>.inc`. `compile_c.py` rejects `.data` (unless a
+`c-data` row places it) and `.comm` rather than letting them vanish.
 
 **`const` data is folded into `.text`.** The generated linker script
 places each region's `.text` only. `compile_c.py` rewrites

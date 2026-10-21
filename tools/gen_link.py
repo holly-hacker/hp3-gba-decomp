@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from buildcache import write_if_changed  # noqa: E402
 from c.compile_c import agbcc_prefix  # noqa: E402
 from manifest import (  # noqa: E402
-    RODATA_SUFFIX,
+    SPLIT_SECTION_DIRECTIVES,
     Labels,
     parse_manifest,
     read_lib_objects,
@@ -64,27 +64,30 @@ def exported_labels(srcfile: str) -> list[str]:
         return re.findall(r"^([A-Za-z_][A-Za-z0-9_]*):", f.read(), re.M)
 
 
-def write_region(objdir: str, ver: str, region, rodata: str | None = None) -> None:
+def write_region(objdir: str, ver: str, region,
+                 split: dict[str, str] | None = None) -> None:
     """Writes the wrapper .s for one region, named after it.
 
-    rodata names the region holding this C object's .rodata (a c-rodata
-    row); that region's markers bracket the object's .rodata.
+    split maps each section of this C object that a row of its own places
+    (.rodata for c-rodata, .data for c-data) to that row's region, whose
+    markers bracket the section.
     """
+    split = split or {}
     start, end, srcfile, name = region
     out = prelude(ver)
     # ld rounds an output section's size up to its alignment, so a region
     # that came out a couple of bytes short still measures full there.
     # These bracket the real content for tools/check_sections.py.
-    if rodata is not None:
-        out += [".section .rodata", f"__rgn_{rodata}_beg:", ".text"]
+    for section, region_name in split.items():
+        out += [f".section {section}", f"__rgn_{region_name}_beg:", ".text"]
     out.append(f"__rgn_{name}_beg:")
     if srcfile.endswith(".bin"):
         out += [f".global {name}", f"{name}:", f'.incbin "{srcfile}"']
     else:
         out += [f".global {label}" for label in exported_labels(srcfile)]
         out += [f'.include "{srcfile}"']
-    if rodata is not None:
-        out += [".section .rodata", f"__rgn_{rodata}_end:", ".text"]
+    for section, region_name in split.items():
+        out += [f".section {section}", f"__rgn_{region_name}_end:", ".text"]
     out.append(f"__rgn_{name}_end:")
     write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
 
@@ -169,16 +172,19 @@ def main() -> None:
                 write_sectioned(objdir, ver, region)
             placements.append((start, f".rgn{i:03d}", stem, section, name, vma))
             continue
-        if name.endswith(RODATA_SUFFIX):
-            placements.append((start, f".rgn{i:03d}", name[:-len(RODATA_SUFFIX)], ".rodata", name, None))
+        suffix = next((s for s in SPLIT_SECTION_DIRECTIVES.values()
+                       if name.endswith(s) and name[:-len(s)] in names), None)
+        if suffix is not None:
+            placements.append((start, f".rgn{i:03d}", name[:-len(suffix)], suffix, name, None))
             continue
         if name in lib_objects:
             archive, member, _ = lib_objects[name]
             extract_member(objdir, archive, member, name)
             placements.append((start, f".rgn{i:03d}", name, ".text", name, None))
             continue
-        rodata = name + RODATA_SUFFIX
-        write_region(objdir, ver, region, rodata if rodata in names else None)
+        split = {s: name + s for s in SPLIT_SECTION_DIRECTIVES.values()
+                 if name + s in names}
+        write_region(objdir, ver, region, split)
         placements.append((start, f".rgn{i:03d}", name, ".text", name, None))
     if addr < BASE_ADDR + rom_size:
         gaps.append((addr, BASE_ADDR + rom_size))

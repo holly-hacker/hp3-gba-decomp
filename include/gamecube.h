@@ -17,7 +17,7 @@ typedef u32 (*JoybusCommandCallback)(u32 command, u16 *pLength, u16 *pBuffer);
 #define JOYBUS_STATE_SENT       5  // a send command completed; reported once
 #define JOYBUS_STATE_ERROR      6  // a word was rejected; kept until the next JOY reset
 
-// Values of JoybusLinkState.bError, named after the string table at 0x08FAA830.
+// Values of JoybusLinkState.bError, named after g_apJoybusErrorStrings.
 #define JOYBUS_ERROR_NONE                0
 #define JOYBUS_ERROR_GAME_CODE_SEND      1
 #define JOYBUS_ERROR_GAME_CODE_RECV      2
@@ -28,6 +28,7 @@ typedef u32 (*JoybusCommandCallback)(u32 command, u16 *pLength, u16 *pBuffer);
 #define JOYBUS_ERROR_RECV_CRC            7
 #define JOYBUS_ERROR_RECV_OVERRUN        8
 #define JOYBUS_ERROR_SEND_OVERRUN        9
+#define JOYBUS_ERROR_COUNT              10
 
 // Low byte of every word that carries one received data halfword.
 #define JOYBUS_WORD_DATA 0x60
@@ -82,6 +83,8 @@ extern JoybusLinkState g_JoybusLinkState;
 
 // This cartridge's header game code (0x080000AC), read as one word.
 extern const u32 g_dwRomHeaderGameCode;
+
+extern char *g_apJoybusErrorStrings[JOYBUS_ERROR_COUNT];
 
 extern void HandleJoybusInterrupt(void);
 extern u32 HandleJoybusCommandWord(u32 word);

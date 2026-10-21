@@ -7,7 +7,7 @@ void UpdateCheatPortraits(void)
     if (g_GameModeStackContext.dwModeState != 0)
         return;
 
-    if (StepCursorLeftRight(&g_CheatPortraitsState.dwSelection, 0, 0x86, 1, 0))
+    if (StepCursorLeftRight(&g_CheatPortraitsState.dwSelection, 0, CHEAT_PORTRAIT_COUNT - 1, 1, 0))
         ShowCheatPortrait();
 
     if (g_wKeysPressed & KeyA)
