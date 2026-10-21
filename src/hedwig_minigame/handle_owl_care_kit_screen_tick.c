@@ -6,22 +6,22 @@ void HandleOwlCareKitScreenTick(void)
 {
     if (g_wKeysPressed & KeyA)
     {
-        if (sub_08022134() != 0)
+        if (ConfirmOwlCareKitAction() != 0)
             PlaySoundById(1);
         else
             PlaySoundById(2);
     }
     else if (g_wKeysPressed & KeyB)
-        sub_08022EE4();
+        HandleOwlCareKitCancel();
     else if (g_wKeysPressed & (KeyLeft | KeyRight))
     {
         PlaySoundById(0);
-        sub_08022F28();
+        StepOwlCareKitSelection();
     }
 
     ProcessOwlCareKitTick(g_OwlCareKitScreen.pOwl->bActionState <= 4);
     ProcessOwlCareKitTick(g_OwlCareKitScreen.pOwl->bActionState <= 4);
-    sub_08021E80();
-    sub_08022B40();
-    sub_0802238C();
+    UpdateOwlCareKitPanel();
+    UpdateOwlDroppings();
+    TickOwlCareKitBackground();
 }

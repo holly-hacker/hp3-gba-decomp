@@ -77,10 +77,10 @@ lists. Belts/Gloves/Boots/Hats/Cloaks stock their entire category run;
 Charms stocks 8 of 12 (Bracelet/Beads/Head Band/Remembrall are never
 sold); Misc mixes all 6 potions with Chocolate Frogs.
 
-`nBuyPrice` doubles as a reward-selection weight in
-`SelectWeightedOwlRewardItem` (`0x080231FC`, called from
-`ProcessOwlMailReward`, see [`save.md`](save.md)'s "Owl Care Kit"
-section).
+`nBuyPrice` also picks the Owl Care Kit's Mail reward:
+`SelectOwlMailRewardItem` (`0x080231FC`) returns the item 0-61 with the
+highest price below a budget, see [`save.md`](save.md)'s "Owl Care Kit"
+section.
 
 ## Item categories -- `dwCategory` (`+0x18`)
 

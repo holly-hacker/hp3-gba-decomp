@@ -1,23 +1,40 @@
 groups:
   - name: OwlCareSprites
     runs:
+      # The owl's sprites (g_aOwlCareSprites), the cage door and droppings, and
+      # the thought bubbles of the six care actions (g_aOwlThoughtBubbleSprites)
       - kind: image-bank
         count: 16
-        names: {1: OwlCare001}
-        noPalette: [OwlCare016]
+        names:
+          1: OwlCare001
+          2: OwlCareCageDoorSprite
+          3: OwlCareDroppingSprite
+          4: OwlCare004
+          11: OwlCareExerciseBubbleSprite
+          12: OwlCareFeedBubbleSprite
+          13: OwlCareGroomBubbleSprite
+          14: OwlCarePetBubbleSprite
+          15: OwlCareCleanBubbleSprite
+          16: OwlCareTeachBubbleSprite
+        noPalette: [OwlCareTeachBubbleSprite]
 
-  # OBJ palettes of OwlCare012, 015, 014, 013, 011 and 016, the owl in each
-  # OwlCareKitState.bTypeIndex color (White, Brown, Gray), then OwlCare002
+  # OBJ palettes of the thought bubbles, the owl in each
+  # OwlCareKitState.bTypeIndex color (White, Brown, Gray), then the cage door
   - name: OwlCarePalettes
     runs:
       - kind: image-bank
         count: 10
         names:
-          1: OwlCarePalette001
+          1: OwlCareFeedBubble
+          2: OwlCareCleanBubble
+          3: OwlCarePetBubble
+          4: OwlCareGroomBubble
+          5: OwlCareExerciseBubble
+          6: OwlCareTeachBubble
           7: OwlCareWhiteOwl
           8: OwlCareBrownOwl
           9: OwlCareGrayOwl
-          10: OwlCarePalette007
+          10: OwlCareCageDoor
         componentOrder: [palette]
         storedCells: false
 
@@ -26,8 +43,8 @@ groups:
       - kind: graphic-blobs
         count: 3
         names: {1: OwlCareGraphic001}
-      # OBJ palette of OwlCare003
+      # OBJ palette of the droppings
       - kind: image-bank
-        names: [OwlCarePalette008]
+        names: [OwlCareDropping]
         componentOrder: [palette]
         storedCells: false

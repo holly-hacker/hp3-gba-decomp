@@ -17,18 +17,18 @@ void InitializeOwlCareKitScreen(void)
     memset(&g_OwlCareKitScreen, 0, sizeof(OwlCareKitScreenState));
     g_GameModeStackContext.dwModeState = 0;
 
-    if (!(g_saveStateBlock.owlCareKit.bFlags & 1))
-        sub_08023188();
+    if (!(g_saveStateBlock.owlCareKit.bFlags & OwlCareKitFlagVisited))
+        ResetOwlCareKit();
 
-    g_OwlCareKitScreen.abUnkD4[0] = 250;
-    g_OwlCareKitScreen.abUnkD4[1] = 250;
-    g_OwlCareKitScreen.abUnkD4[2] = 250;
+    g_OwlCareKitScreen.abShownMeters[0] = 250;
+    g_OwlCareKitScreen.abShownMeters[1] = 250;
+    g_OwlCareKitScreen.abShownMeters[2] = 250;
     g_OwlCareKitScreen.bUnkDC = 0;
-    g_OwlCareKitScreen.bUnkDD = 0;
+    g_OwlCareKitScreen.bMetersRedrawn = 0;
     g_OwlCareKitScreen.dwUnkD8 = 0;
-    g_OwlCareKitScreen.bUnkDF = 0;
-    g_OwlCareKitScreen.bUnkDE = 0;
-    g_OwlCareKitScreen.bUnkE0 = 5;
+    g_OwlCareKitScreen.bDroppingCount = 0;
+    g_OwlCareKitScreen.bPanel = OwlCareKitPanelNone;
+    g_OwlCareKitScreen.bShownSelection = 5;
     g_GameModeStackContext.dwModeScratchB = 0;
 
     ResetDisplayState(0);
@@ -44,13 +44,13 @@ void InitializeOwlCareKitScreen(void)
     SetBgControl(0, bgControl);
 
     g_GameModeStackContext.dwModeSubState = 0x10;
-    g_OwlCareKitScreen.bUnkE5 = 1;
-    g_OwlCareKitScreen.bUnkE6 = 0;
+    g_OwlCareKitScreen.nBlendStep = 1;
+    g_OwlCareKitScreen.bBgTimer = 0;
     SetAlphaBlendTargets(4, 8);
     SetAlphaBlendCoefficients(g_GameModeStackContext.dwModeSubState, 0x10 - g_GameModeStackContext.dwModeSubState);
-    sub_0802246C();
-    sub_08022B40();
+    SpawnOwlCareKitActors();
+    UpdateOwlDroppings();
     PlayMusicModule(0x15);
-    sub_08021E80();
+    UpdateOwlCareKitPanel();
     PlayScreenTransitionInByIndex(0x3F, 2);
 }

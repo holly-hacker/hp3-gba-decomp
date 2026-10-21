@@ -141,7 +141,7 @@ typedef enum {
 // docs/formats/save.md. The slot stream stores bFlags..bUnknown3 as nibbles
 // and the rest as bytes.
 typedef struct {
-    u8 bFlags;               // 0x00: bit 0 = care screen visited
+    u8 bFlags;               // 0x00: OwlCareKitFlags
     u8 bNameIndex;           // 0x01: 0-13
     u8 bTypeIndex;           // 0x02: 0-2
     u8 bUnknown3;            // 0x03: never written by the game; sent to the GameCube with the owl
@@ -150,6 +150,12 @@ typedef struct {
     u8 abCareCounters[6];    // 0x0A
     u16 wMailTimer;          // 0x10
 } OwlCareKitState;
+
+// OwlCareKitState.bFlags.
+typedef enum {
+    OwlCareKitFlagVisited = 0x1,  // the care screen has been visited
+    OwlCareKitFlagMailOut = 0x2,  // the owl is away with the mail
+} OwlCareKitFlags;
 
 // Live save-adjacent state block at 0x03003180 (money, playtime, save flags,
 // ...), 0xB4 bytes: ResetSaveStateForNewGame and the slot unpacker clear it
@@ -167,7 +173,7 @@ typedef struct {
     u8 abFolioUniversitasSeen[7];         // 0x8B: 51 bits
     u8 abFolioUniversitasCardIsNew[7];    // 0x92: 51 bits
     OwlCareKitState owlCareKit;           // 0x9C: 0x12 bytes, sized 0x14 by agbcc's rounding
-    u8 pad_B0[0x04];
+    u32 dwOwlCareKitTicks;                // 0xB0: ProcessOwlCareKitTick calls, saturating; never read
 } SaveStateBlock;
 
 extern const SaveHeader g_DefaultSaveHeader;

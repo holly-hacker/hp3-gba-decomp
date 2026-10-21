@@ -978,44 +978,44 @@ c-file 0x08021BD8 _ src/gamecube/handle_joybus_reset.c HandleJoybusReset
 
 # Hedwig minigame (Owl Care Kit mode)
 c-file 0x08021C08 _ src/hedwig_minigame/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
-c-file 0x08021D6C 0x08021DF8 src/hedwig_minigame/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
-thumb-func 0x08021DF8 ProcessOwlCareKitTick
-thumb-func 0x08021E80 sub_08021E80
-thumb-func 0x08021FE4 ProcessOwlMailReward
-thumb-func 0x08022134 sub_08022134
-thumb-func 0x08022284 ProcessOwlCareAction
-thumb-func 0x080222F0 UpdateOwlStatMeters
-thumb-func 0x0802238C sub_0802238C
-thumb-func 0x0802246C sub_0802246C
-thumb-func 0x08022564 sub_08022564
-thumb-func 0x08022B40 sub_08022B40
-thumb-func 0x08022BEC sub_08022BEC
-thumb-func 0x08022C84 sub_08022C84
-thumb-func 0x08022CF0 sub_08022CF0
-c-file 0x08022D98 0x08022DE8 src/hedwig_minigame/handle_owl_care_kit_screen_exit.c HandleOwlCareKitScreenExit
-thumb-func 0x08022DE8 InitializeOwlActorSprite
-thumb-func 0x08022E44 SetOwlPaletteRow
+c-file 0x08021D6C _ src/hedwig_minigame/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
+c-file 0x08021DF8 _ src/hedwig_minigame/process_owl_care_kit_tick.c ProcessOwlCareKitTick
+c-file 0x08021E80 _ src/hedwig_minigame/update_owl_care_kit_panel.c UpdateOwlCareKitPanel
+c-file 0x08021FE4 _ src/hedwig_minigame/process_owl_mail_reward.c ProcessOwlMailReward
+c-file 0x08022134 _ src/hedwig_minigame/confirm_owl_care_kit_action.c ConfirmOwlCareKitAction
+c-file 0x08022284 _ src/hedwig_minigame/process_owl_care_action.c ProcessOwlCareAction
+c-file 0x080222F0 _ src/hedwig_minigame/update_owl_stat_meters.c UpdateOwlStatMeters
+c-file 0x0802238C _ src/hedwig_minigame/tick_owl_care_kit_background.c TickOwlCareKitBackground
+c-file 0x0802246C _ src/hedwig_minigame/spawn_owl_care_kit_actors.c SpawnOwlCareKitActors
+c-file 0x08022564 _ src/hedwig_minigame/tick_owl_actor.c TickOwlActor
+c-file 0x08022B40 _ src/hedwig_minigame/update_owl_droppings.c UpdateOwlDroppings
+c-file 0x08022BEC _ src/hedwig_minigame/start_owl_cleaning.c StartOwlCleaning
+c-file 0x08022C84 _ src/hedwig_minigame/tick_owl_cleaner.c TickOwlCleaner
+c-file 0x08022CF0 _ src/hedwig_minigame/attach_owl_cleaner_emitter.c AttachOwlCleanerEmitter
+c-file 0x08022D98 _ src/hedwig_minigame/handle_owl_care_kit_screen_exit.c HandleOwlCareKitScreenExit
+c-file 0x08022DE8 _ src/hedwig_minigame/initialize_owl_actor_sprite.c InitializeOwlActorSprite
+c-file 0x08022E44 _ src/hedwig_minigame/set_owl_palette_row.c SetOwlPaletteRow
 c-file 0x08022E6C _ src/hedwig_minigame/deserialize_owl_care_kit.c DeserializeOwlCareKit
-c-file 0x08022EA8 0x08022EE4 src/hedwig_minigame/serialize_owl_care_kit.c SerializeOwlCareKit
-thumb-func 0x08022EE4 sub_08022EE4
-thumb-func 0x08022F28 sub_08022F28
-thumb-func 0x08022F44 sub_08022F44
-thumb-func 0x08022FBC sub_08022FBC
-thumb-func 0x08022FEC sub_08022FEC
-thumb-func 0x0802302C sub_0802302C
-thumb-func 0x0802309C sub_0802309C
-thumb-func 0x080230EC sub_080230EC
-thumb-func 0x0802312C sub_0802312C
-thumb-func 0x08023188 sub_08023188
-thumb-func 0x080231B8 sub_080231B8
-thumb-func 0x080231FC SelectWeightedOwlRewardItem
-thumb-func 0x08023240 sub_08023240
-thumb-func 0x08023268 sub_08023268
-thumb-func 0x0802329C sub_0802329C
-thumb-func 0x080232F4 sub_080232F4
-thumb-func 0x08023334 sub_08023334
-thumb-func 0x0802338C sub_0802338C
-thumb-func 0x080233C0 sub_080233C0
+c-file 0x08022EA8 _ src/hedwig_minigame/serialize_owl_care_kit.c SerializeOwlCareKit
+c-file 0x08022EE4 _ src/hedwig_minigame/handle_owl_care_kit_cancel.c HandleOwlCareKitCancel
+c-file 0x08022F28 _ src/hedwig_minigame/step_owl_care_kit_selection.c StepOwlCareKitSelection
+c-file 0x08022F44 _ src/hedwig_minigame/draw_owl_care_kit_text_panel.c DrawOwlCareKitTextPanel
+c-file 0x08022FBC _ src/hedwig_minigame/draw_owl_away_message.c DrawOwlAwayMessage
+c-file 0x08022FEC _ src/hedwig_minigame/draw_owl_name.c DrawOwlName
+c-file 0x0802302C _ src/hedwig_minigame/draw_owl_care_kit_menu_label.c DrawOwlCareKitMenuLabel
+c-file 0x0802309C _ src/hedwig_minigame/draw_owl_care_kit_menu_icon.c DrawOwlCareKitMenuIcon
+c-file 0x080230EC _ src/hedwig_minigame/update_owl_stat_meter_bars.c UpdateOwlStatMeterBars
+c-file 0x0802312C _ src/hedwig_minigame/draw_owl_stat_meter_bar.c DrawOwlStatMeterBar
+c-file 0x08023188 _ src/hedwig_minigame/reset_owl_care_kit.c ResetOwlCareKit
+c-file 0x080231B8 _ src/hedwig_minigame/find_owl_neediest_care.c FindOwlNeediestCare
+c-file 0x080231FC _ src/hedwig_minigame/select_owl_mail_reward_item.c SelectOwlMailRewardItem
+c-file 0x08023240 _ src/hedwig_minigame/set_owl_cage_door_anim.c SetOwlCageDoorAnim
+c-file 0x08023268 _ src/hedwig_minigame/tick_owl_cage_door.c TickOwlCageDoor
+c-file 0x0802329C _ src/hedwig_minigame/tick_owl_care_kit_cursor.c TickOwlCareKitCursor
+c-file 0x080232F4 _ src/hedwig_minigame/set_owl_state.c SetOwlState
+c-file 0x08023334 _ src/hedwig_minigame/spawn_owl_thought_bubble.c SpawnOwlThoughtBubble
+c-file 0x0802338C _ src/hedwig_minigame/tick_owl_thought_bubble.c TickOwlThoughtBubble
+c-file 0x080233C0 _ src/hedwig_minigame/destroy_owl_cleaner.c DestroyOwlCleaner
 
 # Hero
 c-file 0x080233E4 _ src/hero/spawn_player_actor.c SpawnPlayerActor
@@ -2376,7 +2376,7 @@ c-file 0x0805EB9C _ src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file 0x080604DC _ src/font/load_font_descriptor.globals.c g_aFontTable
 c-file 0x0806053C 0x08060554 src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
 c-rodata 0x08060620 0x08060625 InitJoybusSession
-c-file 0x080606A8 0x080606B8 src/hedwig_minigame/owl_care_kit.globals.c g_dwOwlCareBg3Control
+c-file 0x08060628 _ src/hedwig_minigame/owl_care_kit.globals.c g_aOwlCareSprites
 c-file 0x08060884 _ src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
 c-file 0x0806088C _ src/hero/party_focus_gfx.c g_PartyLumosGfx
 c-file 0x0806089C _ src/hero/field_spell_portrait_assets.c g_aFieldSpellPortraitAssets
@@ -2621,7 +2621,7 @@ graphics 0x08D4A410 _ minigames/divination_tea DivinationTeaFrames
 graphics 0x08D56A68 _ minigames/owl_care OwlCareSprites
 c-file 0x08D71B5C _ src/hedwig_minigame/owl_care_anims.c g_abOwlCareAnim00
 graphics 0x08D71E10 _ minigames/owl_care OwlCarePalettes
-c-file 0x08D71F50 _ src/hedwig_minigame/owl_care_002_anims.c g_abOwlCare002Anim0
+c-file 0x08D71F50 _ src/hedwig_minigame/owl_cage_door_anims.c g_abOwlCageDoorAnim0
 graphics 0x08D71F70 _ minigames/owl_care OwlCare
 graphics 0x08D79D24 _ menus DialogBackgrounds
 graphics 0x08D7C480 _ battle BattleEffects2
@@ -2664,6 +2664,8 @@ c-file-gcc3 0x08FA985C 0x08FAA7CC 3rd_party/krawall/player_tables.c player_table
 c-rodata 0x08FAA7D0 _ EepromV124
 c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
+c-rodata 0x08FAA858 0x08FAA86A UpdateOwlStatMeters
+c-rodata 0x08FAA86C 0x08FAA878 SpawnOwlCareKitActors
 c-rodata 0x08FAAE98 _ TickNpcActor
 c-file 0x08FAAEF8 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo

@@ -14,7 +14,7 @@ void HandleOwlCareKitScreenExit(void)
     if (g_OwlCareKitScreen.pCursor != NULL)
         ReleaseMenuCursor(g_OwlCareKitScreen.pCursor);
 
-    sub_080233C0(g_OwlCareKitScreen.pUnk08);
+    DestroyOwlCleaner(g_OwlCareKitScreen.pCleaner);
     FreeAllParticles();
     FreeAllParticleEmitters();
     ResetPaletteAnimations();
