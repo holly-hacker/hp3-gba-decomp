@@ -10,47 +10,47 @@ void UpdateWizardCrackerPopItMinigame(void)
 {
     u32 score;
 
-    sub_08033710();
-    sub_080331D4();
+    TickWizardCrackerPopItKinds();
+    TickWizardCrackerPopItSelectionBlend();
 
     switch (g_GameModeStackContext.dwModeState)
     {
     case WizardCrackerPopItStateFadeIn:
         if (--g_GameModeStackContext.dwModeTimer == 0)
-            g_GameModeStackContext.dwModeState = WizardCrackerPopItStateWaitStart;
+            g_GameModeStackContext.dwModeState = WizardCrackerPopItStateSelect;
         break;
-    case WizardCrackerPopItStateWaitStart:
-        sub_08032E5C();
+    case WizardCrackerPopItStateSelect:
+        HandleWizardCrackerPopItCursorInput();
         if (g_wKeysPressed & KeyStart)
         {
             PlaySoundById(1);
-            sub_08033C30();
+            DrawWizardCrackerPopItPauseMenu();
             g_GameModeStackContext.dwModeState = WizardCrackerPopItStatePauseMenu;
             g_GameModeStackContext.dwModeScratchB = 0;
         }
         else if (g_wKeysPressed & KeyA)
         {
             PlaySoundById(0xA8);
-            if (g_pWizardCrackerPopIt->dwUnk19C != 0)
+            if (g_pWizardCrackerPopIt->dwSelectedCount != 0)
             {
-                sub_080330C8();
-                g_GameModeStackContext.dwModeState = WizardCrackerPopItStateRoundSetup;
+                PopWizardCrackerPopItSelection();
+                g_GameModeStackContext.dwModeState = WizardCrackerPopItStatePopping;
             }
         }
         break;
-    case WizardCrackerPopItStateRoundSetup:
-        sub_08032E5C();
-        if (sub_08033B74())
+    case WizardCrackerPopItStatePopping:
+        HandleWizardCrackerPopItCursorInput();
+        if (AreWizardCrackerPopItCrackersIdle())
         {
-            g_GameModeStackContext.dwModeState = WizardCrackerPopItStatePlaying;
-            g_pWizardCrackerPopIt->bUnk18C = 0xAA;
+            g_GameModeStackContext.dwModeState = WizardCrackerPopItStateSettling;
+            g_pWizardCrackerPopIt->bLandSoundId = 0xAA;
         }
         break;
     case WizardCrackerPopItStateRoundWon:
         if (--g_GameModeStackContext.dwModeTimer == -1)
         {
             score = g_pWizardCrackerPopIt->dwScore;
-            sub_08032AA8();
+            StartWizardCrackerPopItRound();
             g_pWizardCrackerPopIt->dwScore = score;
             if (score >
                 g_saveManager.options.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3])
@@ -60,35 +60,35 @@ void UpdateWizardCrackerPopItMinigame(void)
             FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
             g_GameModeStackContext.dwModeState = WizardCrackerPopItStateFadeIn;
             g_GameModeStackContext.dwModeTimer = 8;
-            g_pWizardCrackerPopIt->dwUnk1A4 = 0;
-            sub_08033BE4();
+            g_pWizardCrackerPopIt->dwPopBonus = 0;
+            DrawWizardCrackerPopItScore();
         }
         break;
     case WizardCrackerPopItStateRoundLost:
         if (--g_GameModeStackContext.dwModeTimer == -1)
         {
-            sub_08033CE0();
+            DrawWizardCrackerPopItResultsMenu();
             g_GameModeStackContext.dwModeState = WizardCrackerPopItStateResultsMenu;
             g_GameModeStackContext.dwModeScratchB = 0;
-            sub_080328FC();
-            g_pWizardCrackerPopIt->dwUnk1A4 = 0;
-            sub_08033BE4();
+            AddWizardCrackerPopItClearBonus();
+            g_pWizardCrackerPopIt->dwPopBonus = 0;
+            DrawWizardCrackerPopItScore();
         }
         break;
-    case WizardCrackerPopItStatePlaying:
-        sub_08032E5C();
-        if (sub_08032CFC())
+    case WizardCrackerPopItStateSettling:
+        HandleWizardCrackerPopItCursorInput();
+        if (SettleWizardCrackerPopItBoard())
         {
-            sub_08032B88();
-            if (sub_0803296C() == 1)
+            RebuildWizardCrackerPopItGrid();
+            if (HasWizardCrackerPopItMoves() == 1)
             {
-                g_GameModeStackContext.dwModeState = WizardCrackerPopItStateWaitStart;
-                sub_08032894();
-                sub_08033B28(g_pWizardCrackerPopIt->dwUnk190, g_pWizardCrackerPopIt->dwUnk194);
-                g_pWizardCrackerPopIt->dwUnk1A4 = 0;
-                sub_08033BE4();
+                g_GameModeStackContext.dwModeState = WizardCrackerPopItStateSelect;
+                ClampWizardCrackerPopItCursor();
+                SelectWizardCrackerPopItGroup(g_pWizardCrackerPopIt->nCursorColumn, g_pWizardCrackerPopIt->nCursorRow);
+                g_pWizardCrackerPopIt->dwPopBonus = 0;
+                DrawWizardCrackerPopItScore();
             }
-            else if (sub_08033CA0())
+            else if (IsWizardCrackerPopItBoardClear())
             {
                 PlayJingle(0x2B);
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateRoundWon;
@@ -108,25 +108,25 @@ void UpdateWizardCrackerPopItMinigame(void)
             PlaySoundById(1);
             if (g_GameModeStackContext.dwModeScratchB == 0)
             {
-                g_GameModeStackContext.dwModeState = WizardCrackerPopItStateWaitStart;
+                g_GameModeStackContext.dwModeState = WizardCrackerPopItStateSelect;
                 FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
             }
             else if (g_GameModeStackContext.dwModeScratchB == 1)
             {
-                sub_08032AA8();
+                StartWizardCrackerPopItRound();
                 FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateFadeIn;
                 g_GameModeStackContext.dwModeTimer = 8;
             }
             else
             {
-                sub_08033D6C();
+                QuitWizardCrackerPopItMinigame();
             }
         }
         else if (g_wKeysPressed & (KeyB | KeyStart))
         {
             PlaySoundById(2);
-            g_GameModeStackContext.dwModeState = WizardCrackerPopItStateWaitStart;
+            g_GameModeStackContext.dwModeState = WizardCrackerPopItStateSelect;
             FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
         }
         else if (StepCursorUpDown(&g_dwListMenuSelection, 0, 2, 1, 0))
@@ -145,14 +145,14 @@ void UpdateWizardCrackerPopItMinigame(void)
             PlaySoundById(1);
             if (g_GameModeStackContext.dwModeScratchB == 0)
             {
-                sub_08032AA8();
+                StartWizardCrackerPopItRound();
                 FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
                 g_GameModeStackContext.dwModeState = WizardCrackerPopItStateFadeIn;
                 g_GameModeStackContext.dwModeTimer = 8;
             }
             else
             {
-                sub_08033D6C();
+                QuitWizardCrackerPopItMinigame();
             }
         }
         else if (!(g_wKeysPressed & KeyB))

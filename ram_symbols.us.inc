@@ -455,6 +455,7 @@
 
 @ --- include/pop_it_minigame.h ---
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005228  @ u32: set by the StartMinigame room script opcode
+.set g_nWizardCrackerPopItBlendHoldFrame,      0x0300522C  @ s32: frame the selection blend pulse paused at, or -1
 .set g_pWizardCrackerPopIt,                    0x03005230  @ WizardCrackerPopItState *: allocated for the minigame's duration
 
 @ --- include/pouring_minigame.h ---

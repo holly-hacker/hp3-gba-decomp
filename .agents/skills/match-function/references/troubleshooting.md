@@ -28,6 +28,8 @@ doesn't fold. An unwanted `bic` versus a reference's `eors`+`ands` pair: drop th
 re-read the array. Example: UpdateKeyInput, US `0x080254A8`.
 To keep the ROM's `ldrsh` plus register mask for `s16field & 0xFF` (which otherwise narrows to `ldrh`),
 assign inside the expression: `table[(angle = s.field) & 0xFF]`. Example: ProcessBuckbeakMinigameFrame.
+A `u8` field tested `x-- == 0` compares the new value with `0xFF`; the ROM's `lsls #24; cmp #0` on
+the old value is `x-- <= 0` (SettleWizardCrackerPopItBoard).
 
 ## 3. Cached field/address
 
@@ -249,6 +251,8 @@ records are a separate array starting there (SetBattleMenuIconState, US `0x08011
 - Case bodies are emitted in source order. A jump table whose targets are out of numeric order
   means the source cases were written in that order (Wizard Cracker Pop-it update: 5, 0, 1, 6,
   7, 2, 3, 4).
+- An empty `case 0: break;` changes the compare tree's pivot without adding a body
+  (TickWizardCrackerPopItCracker tests 1 before 4 and 15).
 - `case 0: X; break; case 1: X; break;` gives `cmp #1; beq; cmp #1; blo` (Harry vs Dementors
   init). `case 0: case 1:` merges into one range test (`bls`).
 - A chain of `if / else if / else` on one value is not a `switch`, and swapping `== 0` for

@@ -1546,39 +1546,39 @@ c-file 0x080323B0 _ src/pause_menu/noop_status_equip_returned.c NoopStatusEquipR
 
 # Pop-it minigame (wizard cracker pop-it minigame)
 c-file 0x080323B4 _ src/pop_it_minigame/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
-c-file 0x08032534 0x08032894 src/pop_it_minigame/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
-thumb-func 0x08032894 sub_08032894
-thumb-func 0x080328FC sub_080328FC
-thumb-func 0x0803296C sub_0803296C
-thumb-func 0x08032AA8 sub_08032AA8
-thumb-func 0x08032B88 sub_08032B88
-thumb-func 0x08032C20 sub_08032C20
-thumb-func 0x08032CFC sub_08032CFC
-thumb-func 0x08032E5C sub_08032E5C
-thumb-func 0x08032F30 sub_08032F30
-thumb-func 0x080330C8 sub_080330C8
-thumb-func 0x080331D4 sub_080331D4
-thumb-func 0x08033278 sub_08033278
-thumb-func 0x0803333C sub_0803333C
-thumb-func 0x080333C8 sub_080333C8
-thumb-func 0x080334A8 sub_080334A8
-thumb-func 0x08033618 sub_08033618
-thumb-func 0x08033710 sub_08033710
-c-file 0x080338A4 0x08033920 src/pop_it_minigame/exit_wizard_cracker_pop_it_minigame.c ExitWizardCrackerPopItMinigame
-thumb-func 0x08033920 sub_08033920
-thumb-func 0x08033988 sub_08033988
-thumb-func 0x080339F4 sub_080339F4
-thumb-func 0x08033A40 sub_08033A40
-thumb-func 0x08033A9C sub_08033A9C
-thumb-func 0x08033B28 sub_08033B28
-thumb-func 0x08033B74 sub_08033B74
-thumb-func 0x08033BA4 sub_08033BA4
-thumb-func 0x08033BE4 sub_08033BE4
-thumb-func 0x08033C30 sub_08033C30
-thumb-func 0x08033CA0 sub_08033CA0
-thumb-func 0x08033CE0 sub_08033CE0
-thumb-func 0x08033D34 sub_08033D34
-thumb-func 0x08033D6C sub_08033D6C
+c-file 0x08032534 _ src/pop_it_minigame/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
+c-file 0x08032894 _ src/pop_it_minigame/clamp_wizard_cracker_pop_it_cursor.c ClampWizardCrackerPopItCursor
+c-file 0x080328FC _ src/pop_it_minigame/add_wizard_cracker_pop_it_clear_bonus.c AddWizardCrackerPopItClearBonus
+c-file 0x0803296C _ src/pop_it_minigame/has_wizard_cracker_pop_it_moves.c HasWizardCrackerPopItMoves
+c-file 0x08032AA8 _ src/pop_it_minigame/start_wizard_cracker_pop_it_round.c StartWizardCrackerPopItRound
+c-file 0x08032B88 _ src/pop_it_minigame/rebuild_wizard_cracker_pop_it_grid.c RebuildWizardCrackerPopItGrid
+c-file 0x08032C20 _ src/pop_it_minigame/close_wizard_cracker_pop_it_empty_columns.c CloseWizardCrackerPopItEmptyColumns
+c-file 0x08032CFC _ src/pop_it_minigame/settle_wizard_cracker_pop_it_board.c SettleWizardCrackerPopItBoard
+c-file 0x08032E5C _ src/pop_it_minigame/handle_wizard_cracker_pop_it_cursor_input.c HandleWizardCrackerPopItCursorInput
+c-file 0x08032F30 _ src/pop_it_minigame/tick_wizard_cracker_pop_it_cracker.c TickWizardCrackerPopItCracker
+c-file 0x080330C8 _ src/pop_it_minigame/pop_wizard_cracker_pop_it_selection.c PopWizardCrackerPopItSelection
+c-file 0x080331D4 _ src/pop_it_minigame/tick_wizard_cracker_pop_it_selection_blend.c TickWizardCrackerPopItSelectionBlend
+c-file 0x08033278 _ src/pop_it_minigame/clear_wizard_cracker_pop_it_selection.c ClearWizardCrackerPopItSelection
+c-file 0x0803333C _ src/pop_it_minigame/select_wizard_cracker_pop_it_cracker.c SelectWizardCrackerPopItCracker
+c-file 0x080333C8 _ src/pop_it_minigame/flood_select_wizard_cracker_pop_it_group.c FloodSelectWizardCrackerPopItGroup
+c-file 0x080334A8 _ src/pop_it_minigame/fill_wizard_cracker_pop_it_board.c FillWizardCrackerPopItBoard
+c-file 0x08033618 _ src/pop_it_minigame/set_wizard_cracker_pop_it_cracker_anim.c SetWizardCrackerPopItCrackerAnim
+c-file 0x08033710 _ src/pop_it_minigame/tick_wizard_cracker_pop_it_kinds.c TickWizardCrackerPopItKinds
+c-file 0x080338A4 _ src/pop_it_minigame/exit_wizard_cracker_pop_it_minigame.c ExitWizardCrackerPopItMinigame
+c-file 0x08033920 _ src/pop_it_minigame/spawn_wizard_cracker_pop_it_cracker.c SpawnWizardCrackerPopItCracker
+c-file 0x08033988 _ src/pop_it_minigame/set_wizard_cracker_pop_it_cracker_pop_anim.c SetWizardCrackerPopItCrackerPopAnim
+c-file 0x080339F4 _ src/pop_it_minigame/animate_wizard_cracker_pop_it_kind.c AnimateWizardCrackerPopItKind
+c-file 0x08033A40 _ src/pop_it_minigame/set_wizard_cracker_pop_it_kind_variant.c SetWizardCrackerPopItKindVariant
+c-file 0x08033A9C _ src/pop_it_minigame/tick_wizard_cracker_pop_it_cursor.c TickWizardCrackerPopItCursor
+c-file 0x08033B28 _ src/pop_it_minigame/select_wizard_cracker_pop_it_group.c SelectWizardCrackerPopItGroup
+c-file 0x08033B74 _ src/pop_it_minigame/are_wizard_cracker_pop_it_crackers_idle.c AreWizardCrackerPopItCrackersIdle
+c-file 0x08033BA4 _ src/pop_it_minigame/reset_wizard_cracker_pop_it_settle.c ResetWizardCrackerPopItSettle
+c-file 0x08033BE4 _ src/pop_it_minigame/draw_wizard_cracker_pop_it_score.c DrawWizardCrackerPopItScore
+c-file 0x08033C30 _ src/pop_it_minigame/draw_wizard_cracker_pop_it_pause_menu.c DrawWizardCrackerPopItPauseMenu
+c-file 0x08033CA0 _ src/pop_it_minigame/is_wizard_cracker_pop_it_board_clear.c IsWizardCrackerPopItBoardClear
+c-file 0x08033CE0 _ src/pop_it_minigame/draw_wizard_cracker_pop_it_results_menu.c DrawWizardCrackerPopItResultsMenu
+c-file 0x08033D34 _ src/pop_it_minigame/start_wizard_cracker_pop_it_palette_effects.c StartWizardCrackerPopItPaletteEffects
+c-file 0x08033D6C _ src/pop_it_minigame/quit_wizard_cracker_pop_it_minigame.c QuitWizardCrackerPopItMinigame
 
 # Pumpkin Juice Pouring minigame
 c-file 0x08033DA4 _ src/pouring_minigame/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
@@ -2421,7 +2421,8 @@ c-file 0x08068BFC 0x08068C08 src/particles/opposite_directions.c g_abOppositeDir
 c-file 0x08068C10 _ src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file 0x08068C30 _ src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file 0x08068C38 _ src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
-c-file 0x08068D04 0x08068D3C src/pop_it_minigame/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
+c-file 0x08068D04 _ src/pop_it_minigame/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
+c-file 0x08068D3C _ src/pop_it_minigame/wizard_cracker_pop_it_anims.c g_aWizardCrackerPopItPopAssets
 c-file 0x08069038 _ src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
 c-file 0x08069328 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText

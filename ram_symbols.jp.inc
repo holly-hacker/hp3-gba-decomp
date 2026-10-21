@@ -432,6 +432,7 @@
 
 @ --- include/pop_it_minigame.h ---
 .set g_dwWizardCrackerPopItForceOverworldExit, 0x03005288
+.set g_nWizardCrackerPopItBlendHoldFrame,      0x0300528C
 .set g_pWizardCrackerPopIt,                    0x03005290
 
 @ --- include/pouring_minigame.h ---

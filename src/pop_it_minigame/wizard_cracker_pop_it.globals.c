@@ -7,10 +7,10 @@ const u32 g_dwWizardCrackerPopItBg2Control = 0x1E06;
 const u32 g_dwWizardCrackerPopItBg0Control = 0x1D09;
 const u32 g_dwWizardCrackerPopItBg3Control = 0x1C0C;
 
-const WizardCrackerPopItPaletteEntry g_aWizardCrackerPopItPalettes[5] = {
-    { gWizardCrackerPopItPalette001Palette, 12, 10 },
-    { gWizardCrackerPopItPalette002Palette, 13, 11 },
-    { gWizardCrackerPopItPalette003Palette, 14,  8 },
-    { gWizardCrackerPopItPalette004Palette, 15,  7 },
-    { gWizardCracker001Palette,              6,  9 },
+const WizardCrackerPopItPaletteEntry g_aWizardCrackerPopItPalettes[WIZARD_CRACKER_POP_IT_KINDS] = {
+    { gWizardCrackerWrappedPalette,  12, 10 },
+    { gWizardCrackerTrianglePalette, 13, 11 },
+    { gWizardCrackerOvalPalette,     14,  8 },
+    { gWizardCrackerDumbbellPalette, 15,  7 },
+    { gWizardCrackerSweetPalette,     6,  9 },
 };

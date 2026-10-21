@@ -41,29 +41,29 @@ void InitializeWizardCrackerPopItMinigame(void)
     SetBgScroll(0, 0, 0);
     SetBgScroll(1, 0, 0);
 
-    g_pWizardCrackerPopIt->pActor0 = NULL;
+    g_pWizardCrackerPopIt->pCursor = NULL;
     g_pWizardCrackerPopIt->dwScore = 0;
 
     pEntry = g_aWizardCrackerPopItPalettes;
     for (i = 4; i >= 0; i--)
     {
         pPalette = (void *)pEntry->pPalette;
-        slotB = pEntry->bSlotB;
+        slotB = pEntry->bSelectedSlot;
         LoadObjPaletteColors(pPalette, slotB << 4, 0x10);
-        slotA = pEntry->bSlotA;
+        slotA = pEntry->bIdleSlot;
         LoadObjPaletteColors(pPalette, slotA << 4, 0x10);
         ReserveObjPaletteSlot(slotB);
         ReserveObjPaletteSlot(slotA);
         pEntry++;
     }
 
-    sub_08032AA8();
-    sub_08033D34();
+    StartWizardCrackerPopItRound();
+    StartWizardCrackerPopItPaletteEffects();
     PlayMusicModule(0x16);
     g_GameModeStackContext.dwModeState = WizardCrackerPopItStateFadeIn;
     g_GameModeStackContext.dwModeTimer = 8;
     PlayScreenTransitionInByIndex(0x3F, 2);
     SetAlphaBlendTargets(4, 2);
-    g_pWizardCrackerPopIt->dwUnk1A8 = 0;
-    g_pWizardCrackerPopIt->bUnk180 = 0;
+    g_pWizardCrackerPopIt->nFrameCounter = 0;
+    g_pWizardCrackerPopIt->bBlendStep = 0;
 }

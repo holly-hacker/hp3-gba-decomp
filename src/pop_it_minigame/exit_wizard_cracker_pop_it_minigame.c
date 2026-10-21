@@ -22,12 +22,12 @@ void ExitWizardCrackerPopItMinigame(void)
 
     for (i = 0; i < ARRAY_COUNT(g_aWizardCrackerPopItPalettes); i++)
     {
-        UnreserveObjPaletteSlot(g_aWizardCrackerPopItPalettes[i].bSlotB);
-        UnreserveObjPaletteSlot(g_aWizardCrackerPopItPalettes[i].bSlotA);
+        UnreserveObjPaletteSlot(g_aWizardCrackerPopItPalettes[i].bSelectedSlot);
+        UnreserveObjPaletteSlot(g_aWizardCrackerPopItPalettes[i].bIdleSlot);
     }
 
     ResetPaletteAnimations();
-    ReleaseMenuCursor(g_pWizardCrackerPopIt->pActor0);
+    ReleaseMenuCursor(g_pWizardCrackerPopIt->pCursor);
     FreeAllActors(&g_ActiveActorListState.pHead);
     g_GameModeStackContext.dwCurrentGameModeArg2 = 1;
     FreeAllParticles();
