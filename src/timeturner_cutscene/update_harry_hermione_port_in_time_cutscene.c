@@ -36,7 +36,7 @@ void UpdateHarryHermionePortInTimeCutscene(void)
         {
             SetFadeToWhite(0x2F, 0x10);
             FreeBgTileBitOffsets();
-            sub_08043114(1);
+            LoadHarryHermionePortInTimeRoom(1);
             g_HarryHermionePortInTime.bRising = 0;
             g_HarryHermionePortInTime.cameraDelta.x = 0;
             g_HarryHermionePortInTime.cameraDelta.y = 0x70000;
@@ -66,10 +66,10 @@ void UpdateHarryHermionePortInTimeCutscene(void)
 
     OffsetCameraFocus(g_HarryHermionePortInTime.cameraDelta, 0);
     GetCameraFocusPosition(&position, 0);
-    SetActorPosition(g_HarryHermionePortInTime.pActorA,
+    SetActorPosition(g_HarryHermionePortInTime.apActors[0],
                       g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorAX,
                       (position.y >> 16) + 0x20);
-    SetActorPosition(g_HarryHermionePortInTime.pActorB,
+    SetActorPosition(g_HarryHermionePortInTime.apActors[1],
                       g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorBX,
                       (position.y >> 16) + 0x20);
     UpdateOverworldCamera(0);

@@ -55,30 +55,21 @@ immediately before *that* are four separate BGxCNT constants, `g_dwBg2Control`,
 
 `docs/formats/graphics.md`'s "Level-table entry layout" section
 documents a **separate** 124-byte-stride room table at `0x0806BE38`
-(`g_aTimeTurnerCutsceneRoomTable`), reached via a completely different
-function, `InitTimeTurnerCutsceneRoom_candidate` (`0x08043114`, ground-
-truth-confirmed via its own distinct `=0x0806BE38` literal pool
-entries). The two tables are not the same data and not aliases of each
-other -- confirmed by identical call-graph shape: `InitTimeTurnerCutsceneRoom_candidate`
-calls the exact same field-consumer functions
-(`LoadRoomBgTilemap0-3`, `SetupRoomBgControlAndTilesets`,
-`LoadRoomSharedTileset_candidate`, `LoadRoomBgBlockTiles0-3`)
-against `0x0806BE38 + index*0x7C` instead of `0x08063C8C +
-index*0x7C`, which is why both were independently described as "the
-124-byte level table" by separate investigations.
+(`g_aTimeTurnerCutsceneRoomTable`), read only by
+`LoadHarryHermionePortInTimeRoom` (US `0x08043114`) through its own
+`=0x0806BE38` literal. It calls the same field consumers as
+`InitializeOverworld` (`LoadRoomBgTilemap0-3`, `SetupRoomBgControlAndTilesets`,
+`LoadRoomSharedTileset_candidate`, `LoadRoomBgBlockTiles0-3`) against
+`0x0806BE38 + index*0x7C` instead of `0x08063C8C + index*0x7C`.
 
-`InitTimeTurnerCutsceneRoom_candidate` is only ever called with index 0
-(scene start) and 1 (the cutscene's mid-point transition) from
-`InitializeHarryHermionePortInTimeCutscene`/
-`UpdateHarryHermionePortInTimeCutscene` (`0x08042F08`/`0x08042FC0`) --
-the Harry/Hermione Time-Turner sequence. So `g_aTimeTurnerCutsceneRoomTable`
-is a compact, purpose-built **2-entry** instance of the same
-`RoomTableEntry` layout, holding just the two static background
-snapshots that cutscene needs, entirely independent of the 55-entry
-room index space. It is immediately followed (`+0xF8` = `2*0x7C`) by a
-small stride-8 coordinate pair table and, at `+0x78` per entry (matching
-`bDefaultMusicModule` below), the cutscene's own two background-music
-selections -- the same field layout, reused at small scale.
+The table has two entries, one per map of the Harry/Hermione Time-Turner
+cutscene, which carries the player from one map to the other:
+`InitializeHarryHermionePortInTimeCutscene` loads entry 0 (the hospital
+wing), and `UpdateHarryHermionePortInTimeCutscene` loads entry 1 (the
+path to Hagrid's hut) at the white flash once the camera has risen far
+enough. Each entry's `bDefaultMusicModule` is that map's music. The
+camera start point per entry is `g_aHarryHermionePortInTimeCameraStart`
+(`0x0806BF30`).
 
 ## Room names, PROVEN
 

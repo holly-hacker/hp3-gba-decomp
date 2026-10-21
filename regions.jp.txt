@@ -1874,9 +1874,9 @@ c-file 0x08042F0C _ src/timers/pause_game_timer.c PauseGameTimer
 c-file 0x08042F20 _ src/timers/resume_game_timer.c ResumeGameTimer
 c-file 0x08042F38 _ src/timers/get_game_timer_value.c GetGameTimerValue
 c-file 0x08042F48 _ src/timeturner_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
-c-file 0x08043000 0x08043154 src/timeturner_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
-thumb-func 0x08043154 sub_08043114
-thumb-func 0x08043348 sub_08043308
+c-file 0x08043000 _ src/timeturner_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
+c-file 0x08043154 _ src/timeturner_cutscene/load_harry_hermione_port_in_time_room.c LoadHarryHermionePortInTimeRoom
+c-file 0x08043348 _ src/timeturner_cutscene/spawn_harry_hermione_port_in_time_actor.c SpawnHarryHermionePortInTimeActor
 c-file 0x08043490 _ src/timeturner_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
 c-file 0x080434B0 _ src/title/initialize_main_menu.c InitializeMainMenu
 c-file 0x0804359C _ src/title/update_main_menu.c UpdateMainMenu
@@ -2192,9 +2192,10 @@ c-file 0x0806BA8C _ src/tea_leaves_minigame/divination_tea.globals.c g_Divinatio
 c-file 0x0806BAFC _ src/tea_leaves_minigame/divination_tea_bg_animation.c g_DivinationTeaTable
 dialog-text-table 0x0806BD04 _ sDialogTextTable
 c-file 0x0806BD08 _ src/time_skip_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
-c-file 0x0806BD14 0x0806BDA0 src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
-c-file 0x0806BDA8 0x0806BEA0 src/timeturner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
-c-file 0x0806BEB0 0x0806BED0 src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeActorPos
+c-file 0x0806BD14 _ src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
+c-file 0x0806BDA0 _ src/timeturner_cutscene/harry_hermione_port_in_time_shadow_gfx.c g_HarryHermionePortInTimeShadowGfx
+c-file 0x0806BDA8 _ src/timeturner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
+c-file 0x0806BEA0 _ src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeCameraStart
 c-file 0x0806BF34 _ src/title/build_date.c g_szBuildDate
 c-file 0x0806BF40 _ src/title/main_menu.globals.c g_dwMainMenuBg3Control
 c-file 0x0806BF4C _ src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts

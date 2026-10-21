@@ -94,5 +94,5 @@ from the baserom. It is a viewing aid, not build input.
 The Time-Turner cutscene's two-entry table (`g_aTimeTurnerCutsceneRoomTable`,
 `src/timeturner_cutscene/time_turner_room_table.c`) uses the same entry layout and no data of
 its own: entry 0 refers to the resources of room 33 and entry 1 to those of room
-14, with its own music and encounter values. The small coordinate table that
-follows it is still raw.
+14, with its own music and encounter values. The cutscene moves the player from
+the first map to the second; see [`levels.md`](levels.md).

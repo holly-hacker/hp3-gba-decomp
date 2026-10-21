@@ -233,7 +233,7 @@ Dialog/UI text uses neither dispatcher; its Huffman scheme is in
 `0x0806BE38` (`g_aTimeTurnerCutsceneRoomTable`) is a compact, purpose-
 built 2-entry table using this same `RoomTableEntry` layout, reached
 only from the Harry/Hermione Time-Turner cutscene
-(`InitTimeTurnerCutsceneRoom_candidate`, `0x08043114`) -- it is
+(`LoadHarryHermionePortInTimeRoom`, `0x08043114`) -- it is
 independent of the main 55-entry per-room table at `0x08063C8C`. Both
 tables share the identical field-consumer call sequence; see
 [`levels.md`](levels.md) for the full field-by-field layout and the

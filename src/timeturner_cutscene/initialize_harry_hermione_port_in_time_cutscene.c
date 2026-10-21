@@ -20,15 +20,15 @@ void InitializeHarryHermionePortInTimeCutscene(void)
     InitObjTileAllocBitmaps(0);
     SetAlphaBlendTargets(0, 0x1F);
     SetAlphaBlendCoefficients(9, 10);
-    sub_08043114(0);
-    sub_08043308(0);
-    sub_08043308(1);
+    LoadHarryHermionePortInTimeRoom(0);
+    SpawnHarryHermionePortInTimeActor(0);
+    SpawnHarryHermionePortInTimeActor(1);
 
     GetCameraFocusPosition(&position, 0);
-    SetActorPosition(g_HarryHermionePortInTime.pActorA,
+    SetActorPosition(g_HarryHermionePortInTime.apActors[0],
                       g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorAX,
                       (position.y >> 16) + 0x20);
-    SetActorPosition(g_HarryHermionePortInTime.pActorB,
+    SetActorPosition(g_HarryHermionePortInTime.apActors[1],
                       g_aHarryHermionePortInTimeActorPos[g_HarryHermionePortInTime.dwPositionIndex].nActorBX,
                       (position.y >> 16) + 0x20);
 

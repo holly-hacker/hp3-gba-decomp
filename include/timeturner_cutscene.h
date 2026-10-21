@@ -5,14 +5,12 @@
 #include "math.h"
 #include "overworld/room.h"
 
-// The mode's screen state at 0x03005D98 (US). Fields used by the mode handlers;
-// the actor setup helpers sub_08043114/sub_08043308 own the rest.
+// The mode's screen state at 0x03005D98 (US).
 typedef struct {
     FixedPoint cameraDelta;  // 0x00: passed to OffsetCameraFocus; y is the 16.16 fixed-point progress
     u32 bRising;          // 0x08: 1 while progress rises, 0 once it falls back
-    Actor *pActorA;     // 0x0C
-    Actor *pActorB;     // 0x10
-    u32 dwPositionIndex;  // 0x14: row of g_aHarryHermionePortInTimeActorPos
+    Actor *apActors[2];   // 0x0C: see SpawnHarryHermionePortInTimeActor
+    u32 dwPositionIndex;  // 0x14: the loaded room; row of g_aHarryHermionePortInTimeActorPos
 } HarryHermionePortInTimeState;
 
 extern HarryHermionePortInTimeState g_HarryHermionePortInTime;  // 0x03005D98
@@ -26,12 +24,16 @@ typedef struct {
 } HarryHermionePortInTimePosition;
 
 extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeActorPos[2];  // 0x0806BF40
+extern const IntPoint g_aHarryHermionePortInTimeCameraStart[2];
+extern const ActorAssetRecord g_aHarryHermionePortInTimeActorAssets[2];
+extern const u8 g_aHarryHermionePortInTimeAnims[2][32];
+extern const ActorGfxRecord g_HarryHermionePortInTimeShadowGfx;
 
-// Entries 0 and 1 of the Time-Turner cutscene's own table, ROM 0x0806BE38 (US).
+// The cutscene's start and destination maps, ROM 0x0806BE38 (US).
 extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
 
 void InitializeHarryHermionePortInTimeCutscene(void);
 void UpdateHarryHermionePortInTimeCutscene(void);
-extern void sub_08043114(u32 arg);
-extern void sub_08043308(u32 arg);
+void LoadHarryHermionePortInTimeRoom(u32 roomIndex);
+void SpawnHarryHermionePortInTimeActor(u32 index);
 void ExitHarryHermionePortInTimeCutscene(void);

@@ -3,8 +3,9 @@
 #include "overworld/room.h"
 #include "timeturner_cutscene.h"
 
-// The room table entries of the two backgrounds of the Harry and Hermione Time-Turner
-// cutscene. They reuse the resources of rooms 33 (hospital_wing) and 14 (path_to_hagrids_hut).
+// The two maps of the Harry and Hermione Time-Turner cutscene, which carries them from the
+// first to the second; see LoadHarryHermionePortInTimeRoom. They reuse the resources of rooms
+// 33 (hospital_wing) and 14 (path_to_hagrids_hut).
 const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2] = {
     {
         .pBgTilemap0 = gRoom33BgMap0,
