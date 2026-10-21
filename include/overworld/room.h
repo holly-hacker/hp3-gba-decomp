@@ -4,8 +4,8 @@
 #include "actor.h"
 #include "scroll.h"
 
-// One 124-byte record per room, indexed by room id; 55 entries. See
-// docs/formats/levels.md. The pointers reference ROM resources.
+// One 124-byte record per room, indexed by room id; 55 entries. The pointers
+// reference ROM resources.
 typedef struct RoomTableEntry {
     const void *pBgTilemap0;
     const void *pBgLayer0Extra;
@@ -45,7 +45,7 @@ typedef struct RoomTableEntry {
     u8 bUnused_7b;
 } RoomTableEntry;
 
-// Fixed indices into g_abQuestEventState; see docs/formats/save.md ("Quest event state").
+// Fixed indices into g_abQuestEventState.
 // Keep these in sync with the QUEST_* .set definitions in asm/room_script.inc.
 #define QUEST_STORY_STAGE            0x00
 #define QUEST_DEFEAT_WARP_SELECTOR   0x10
@@ -133,7 +133,7 @@ typedef struct RoomTableEntry {
 #define QUEST_OBJ_RESCUE_SIRIUS                        57
 #define QUEST_OBJ_FIND_HIPPOGRIFF_BAITING_BOOK_UNUSED  58
 
-// Snapshot of the current room's non-default actors; see docs/formats/save.md.
+// Snapshot of the current room's non-default actors.
 #define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
 extern u32 GetRoomSwitchState(void);
 // Spawns the player at the entry point g_abRoomScriptExitParams_candidate[0] and resets the

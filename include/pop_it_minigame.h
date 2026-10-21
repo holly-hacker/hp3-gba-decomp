@@ -66,7 +66,7 @@ typedef struct {
 
 extern WizardCrackerPopItState *g_pWizardCrackerPopIt;  // 0x03005230
 
-// Set by the StartMinigame room script opcode (docs/formats/room_scripts.md).
+// Set by the StartMinigame room script opcode.
 // While nonzero, ExitWizardCrackerPopItMinigame sets the pending mode's
 // arg1 to 3 and arg3 to 0xFF. The name is provisional.
 extern u32 g_dwWizardCrackerPopItForceOverworldExit;  // 0x03005228

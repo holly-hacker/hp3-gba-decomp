@@ -23,7 +23,7 @@
 // Builds the battle roster: party formation (Buckbeak/Harry/Hermione trio
 // for fight 3, else by party size/presence), enemy slots from the scripted
 // or random encounter table, then fighters compacted live-first with
-// fainted appended. See docs/formats/encounters.md.
+// fainted appended.
 //
 // `idx` is shared across all four loops (enemy-slot fill count, then
 // compaction write index) -- splitting it into separate counters changes

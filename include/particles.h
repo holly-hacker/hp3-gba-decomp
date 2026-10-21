@@ -136,7 +136,6 @@ typedef struct Particle {
     s16 wParam46;            // 0x46, mode 6 gravity: nVelY grows by wParam46 << 4 per tick
 } Particle;
 
-// See docs/formats/battle_scripts.md's TickParticleEmitters note --
 // TickParticleEmitters walks g_pParticleEmitterActiveListHead each frame.
 extern ListNode *g_pParticleEmitterFreeListHead;    // 0x030051B0
 extern u16 g_wActiveParticleEmitterCount;           // 0x030051A0

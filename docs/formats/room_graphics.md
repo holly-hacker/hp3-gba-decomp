@@ -1,9 +1,9 @@
 # Room graphics
 
-The 14 resources each room-table entry points at (see [`levels.md`](levels.md)):
+The 14 resources each room-table entry (`RoomTableEntry`) points at:
 four BG layers (a block map and a block set each), the collision behavior table
 and collision map, and two tileset/palette pairs. Formats of the pieces are in
-[`graphics.md`](graphics.md) and [`collision.md`](collision.md); this document
+[`graphics.md`](graphics.md); this document
 covers how they sit in the ROM and how they are built.
 
 ## ROM layout (PROVEN, US and JP)
@@ -95,4 +95,4 @@ The Time-Turner cutscene's two-entry table (`g_aTimeTurnerCutsceneRoomTable`,
 `src/timeturner_cutscene/time_turner_room_table.c`) uses the same entry layout and no data of
 its own: entry 0 refers to the resources of room 33 and entry 1 to those of room
 14, with its own music and encounter values. The cutscene moves the player from
-the first map to the second; see [`levels.md`](levels.md).
+the first map to the second.

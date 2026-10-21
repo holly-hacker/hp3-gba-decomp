@@ -5,7 +5,6 @@
 #include "gen/graphics/overworld.h"
 
 // Room actor constructor for tile actorType 12, a platform that lifts the party.
-// See docs/formats/rooms.md.
 Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordRaisingPlatform *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

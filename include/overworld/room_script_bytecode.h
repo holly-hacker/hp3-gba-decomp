@@ -1,8 +1,8 @@
 #pragma once
 
-// Room-script opcode numbers; see docs/formats/room_scripts.md. A record is a u32 opcode
-// followed by its operand bytes, always a multiple of 4 bytes in total. The assembler
-// macros that emit records are in asm/room_script.inc, which repeats these numbers.
+// Room-script opcode numbers. A record is a u32 opcode followed by its operand bytes,
+// always a multiple of 4 bytes in total. The assembler macros that emit records are in
+// asm/room_script.inc, which repeats these numbers.
 
 enum RoomScriptOpcode {
     RSOP_End = 0,

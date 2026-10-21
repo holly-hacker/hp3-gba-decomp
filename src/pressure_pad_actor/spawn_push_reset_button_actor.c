@@ -3,7 +3,7 @@
 #include "pressure_pad_actor.h"
 
 // Room actor constructor for tile actorType 8, a button that a Flipendo spell
-// presses to respawn a push puzzle's actors. See docs/formats/rooms.md.
+// presses to respawn a push puzzle's actors.
 Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordPushResetButton *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

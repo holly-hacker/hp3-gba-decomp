@@ -1,7 +1,6 @@
 #include "combat_fighter.h"
 
-// Folio Bruti monster stat table, 69 records. See docs/formats/folio_bruti.md
-// for how each field was identified. Content is byte-identical between
+// Folio Bruti monster stat table, 69 records. Content is byte-identical between
 // the US and JP ROMs (different addresses); one source serves both,
 // placed per-version by regions.<ver>.txt c-file rows.
 // Effectiveness order is the GetMonsterSpellEffectiveness case order

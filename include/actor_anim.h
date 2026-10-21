@@ -31,5 +31,5 @@
 // the base SetActorAnimData was given).
 #define ANIM_JUMP(index)            0xFE, (index)
 // Sets ActorFlagSpecialMoveTrigger and stores `marker` in Actor.unk_DC for
-// one tick; see WaitForCounter in docs/formats/battle_scripts.md.
+// one tick.
 #define ANIM_EVENT(marker)          0xFF, (marker)

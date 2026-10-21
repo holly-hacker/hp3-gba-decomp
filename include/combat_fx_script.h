@@ -2,7 +2,7 @@
 
 #include "actor.h"
 
-// Effect-script tick helpers and scanline callbacks; see docs/formats/battle_scripts.md.
+// Effect-script tick helpers and scanline callbacks.
 
 // Scanline callbacks of the effect tables in combat_fx.h.
 extern void EffectScanlineRestoreBgs(u32 *pPayload0, u32 *pPayload1);

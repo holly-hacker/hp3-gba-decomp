@@ -1,11 +1,15 @@
-@ Room-script bytecode macros; see docs/formats/room_scripts.md.
+@ Room-script bytecode macros, run by RunRoomScriptChain.
 @ A record is a u32 opcode followed by its operand bytes, always a multiple of
 @ 4 bytes in total. Multi-byte operands are given as one value and split
 @ little-endian; trailing operand bytes the handler never reads (or that are
 @ always the same) are filled in by the macro.
+@ (group, member) names a room actor (GetRoomActorPtr). "Branches" means
+@ CompareAndBranchRoomScript: it calls the taken side's chain (a zero falseChain
+@ means none) and spawns the taken row's missing actors if ShouldRunRoomIndex
+@ allows it; the walk returns to the caller when that chain ends. "Yields" means
+@ the walk stops after the opcode when ArmChainYield 1 preceded it.
 
-@ Fixed indices into g_abQuestEventState (quest event state); see
-@ docs/formats/save.md. Keep these in sync with the QUEST_* defines in
+@ Fixed indices into g_abQuestEventState (quest event state). Keep these in sync with the QUEST_* defines in
 @ include/overworld/room.h.
 .set QUEST_STORY_STAGE, 0x00
 .set QUEST_DEFEAT_WARP_SELECTOR, 0x10
@@ -193,10 +197,12 @@
     .byte RSOP_End, 0, 0, 0
 .endm
 
+@ Sets ActorFlagPendingDestroy and ActorFlagAnimFrameLoaded on room actor (group, member) and its linked actor.
 .macro DespawnTileActor group, member
     .byte RSOP_DespawnTileActor, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
+@ Sets room actor (group, member)'s move speed to `speed` pixels (x1.25 for the player) and bActionFlags bit 0x8.
 .macro SetTileActorMoveSpeed group, member, speed
     .byte RSOP_SetTileActorMoveSpeed, 0, 0, 0, (\group), (\member), (((\speed) >> 0) & 0xFF), (((\speed) >> 8) & 0xFF)
 .endm
@@ -209,6 +215,7 @@
     .byte RSOP_ClearTileActorFlagBit, 0, 0, 0, (\group), (\member), (\bit), (255)
 .endm
 
+@ Plays sound 5 (0x24 for block 0x270) and opens dialog block `blockId`. Yields.
 .macro ShowRoomDialog blockId
     .byte RSOP_ShowRoomDialog, 0, 0, 0, (((\blockId) >> 0) & 0xFF), (((\blockId) >> 8) & 0xFF), (0), (0)
 .endm
@@ -221,10 +228,12 @@
     .byte RSOP_ResumeMusic, 0, 0, 0
 .endm
 
+@ PlayMusicModule(moduleId); in chain 1 also sets GameModeFlagKeepScriptMusic.
 .macro PlayMusicModuleAndFlagIfChain1 moduleId
     .byte RSOP_PlayMusicModuleAndFlagIfChain1, 0, 0, 0, (\moduleId), (255), (255), (255)
 .endm
 
+@ PlayJingle(soundId); in chain 1 also sets GameModeFlagKeepScriptMusic.
 .macro PlayRoomSoundEffect soundId
     .byte RSOP_PlayRoomSoundEffect, 0, 0, 0, (\soundId), (255), (255), (255)
 .endm
@@ -233,6 +242,7 @@
     .byte RSOP_PlaySoundById, 0, 0, 0, (\soundId), (255), (255), (255)
 .endm
 
+@ SetMusicVolume(volume, 1).
 .macro SetRoomMusicVolume volume, unused0, unused1, unused2
     .byte RSOP_SetRoomMusicVolume, 0, 0, 0, (\volume), (\unused0), (\unused1), (\unused2)
 .endm
@@ -241,6 +251,8 @@
     .byte RSOP_SetSoundEffectVolume, 0, 0, 0, (\volume), (\unused0), (\unused1), (\unused2)
 .endm
 
+@ RespawnGroupAndRunChain(respawnRow, chainRow) after `delay` * 30 frames, or now if 0. Yields
+@ when delayed and not the last record.
 .macro DelayedRespawnRowAndRunChain delay, respawnRow, chainRow
     .byte RSOP_DelayedRespawnRowAndRunChain, 0, 0, 0, (((\delay) >> 0) & 0xFF), (((\delay) >> 8) & 0xFF), (\respawnRow), (\chainRow)
 .endm
@@ -249,50 +261,69 @@
     .byte RSOP_SetStoryStage, 0, 0, 0, (\stage), (255), (255), (255)
 .endm
 
+@ Sets room actor (group, member)'s action state to 4.
 .macro SetTileActorAnimState group, member
     .byte RSOP_SetTileActorAnimState, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
+@ Starts camera effect 1 of the current control slot toward room actor (group, member): step `speed`
+@ (sign-magnitude 8.8), wCounter `unknown`, RespawnGroupAndRunChain(byte1, byte2). Saves and zeroes the
+@ controlled actor's velocity. Yields.
 .macro QueueTileActorMove group, member, byte1, byte2, speed, unknown
     .byte RSOP_QueueTileActorMove, 0, 0, 0, (\group), (\member), (\byte1), (\byte2), (((\speed) >> 0) & 0xFF), (((\speed) >> 8) & 0xFF), (((\unknown) >> 0) & 0xFF), (((\unknown) >> 8) & 0xFF)
 .endm
 
+@ Sets every exit parameter to `exitParam` and pushes Overworld with `exitId`.
 .macro ReturnToOverworld exitId, exitParam
     .byte RSOP_ReturnToOverworld, 0, 0, 0, (\exitId), (\exitParam), (255), (255)
 .endm
 
+@ Starts camera effect 3 on every control slot: step `amplitude` pixels for `duration` * 30
+@ frames (0 = forever), RespawnGroupAndRunChain(respawnRow, chainRow).
 .macro SetAllQueuedMoveParams duration, amplitude, respawnRow, chainRow, unused
     .byte RSOP_SetAllQueuedMoveParams, 0, 0, 0, (((\duration) >> 0) & 0xFF), (((\duration) >> 8) & 0xFF), (((\amplitude) >> 0) & 0xFF), (((\amplitude) >> 8) & 0xFF), (\respawnRow), (\chainRow), (((\unused) >> 0) & 0xFF), (((\unused) >> 8) & 0xFF)
 .endm
 
+@ Sets every control slot's camera effect to state 0.
 .macro ClearAllQueuedMoves
     .byte RSOP_ClearAllQueuedMoves, 0, 0, 0
 .endm
 
+@ Places room actor (group, member) at pixel (x, y) facing `facing`; sets bActionFlags bit 0x10.
 .macro SetTileActorPosition x, y, group, member, facing, unused
     .byte RSOP_SetTileActorPosition, 0, 0, 0, (((\x) >> 0) & 0xFF), (((\x) >> 8) & 0xFF), (((\y) >> 0) & 0xFF), (((\y) >> 8) & 0xFF), (\group), (\member), (\facing), (\unused)
 .endm
 
+@ Stores the pending row and chain and pushes the cutscene mode for `cutsceneId` (see
+@ RoomScriptOpPlayCutscene).
 .macro PlayCutscene cutsceneId, pendingRow, pendingChain
     .byte RSOP_PlayCutscene, 0, 0, 0, (\cutsceneId), (\pendingRow), (\pendingChain), (255)
 .endm
 
+@ Sets every exit parameter to `exitParam` and clears GameModeFlagOverlayMode.
 .macro CloseRoomDialog unused0, exitParam, unused1, unused2
     .byte RSOP_CloseRoomDialog, 0, 0, 0, (\unused0), (\exitParam), (\unused1), (\unused2)
 .endm
 
+@ Sets room actor (group, member) to action state 0x12 following room actor (targetGroup,
+@ targetMember), or control slot 0's actor if `useTargetTile` is 0.
 .macro SetTileActorFollowTarget group, member, targetGroup, targetMember, useTargetTile, resumeDistance, stopDistance, unused
     .byte RSOP_SetTileActorFollowTarget, 0, 0, 0, (\group), (\member), (\targetGroup), (\targetMember), (\useTargetTile), (\resumeDistance), (\stopDistance), (\unused)
 .endm
 
+@ Sets room actor (group, member) to action state 7 + `animStateSelector` (6 also clears
+@ ActorFlagHasAnimation) and stores the other operands in its script fields. Yields.
 .macro StartActorAnimSequence group, member, effectId, localA, route, waypoint, animStateSelector, stateByte0x60, flagsA, flagsB
     .byte RSOP_StartActorAnimSequence, 0, 0, 0, (\group), (\member), (\effectId), (\localA), (\route), (\waypoint), (\animStateSelector), (\stateByte0x60), (\flagsA), (\flagsB), (255), (255)
 .endm
 
+@ Sets room actor (group, member) to action state 15 at script position `scriptPC` and stores the other
+@ operands in its script fields. Yields.
 .macro StartTileActorScript scriptPC, effectId, localA, group, member, arg65, arg66, arg64, unused0, unused1, unused2
     .byte RSOP_StartTileActorScript, 0, 0, 0, (((\scriptPC) >> 0) & 0xFF), (((\scriptPC) >> 8) & 0xFF), (\effectId), (\localA), (\group), (\member), (\arg65), (\arg66), (\arg64), (\unused0), (\unused1), (\unused2)
 .endm
 
+@ StartNpcScriptAnimation on room actor (group, member) with `animId`. Yields.
 .macro PlayTileActorAnimation group, member, animId
     .byte RSOP_PlayTileActorAnimation, 0, 0, 0, (\group), (\member), (((\animId) >> 0) & 0xFF), (((\animId) >> 8) & 0xFF)
 .endm
@@ -301,6 +332,7 @@
     .byte RSOP_OpenMainMenu, 0, 0, 0
 .endm
 
+@ Sets the run state to 1 (arm) or 0; an armed yielding opcode ends the walk.
 .macro ArmChainYield arm
     .byte RSOP_ArmChainYield, 0, 0, 0, (\arm), (255), (255), (255)
 .endm
@@ -321,10 +353,14 @@
     .byte RSOP_CopyQuestState, 0, 0, 0, (\srcIndex), (\dstIndex), (\unused0), (\unused1)
 .endm
 
+@ Cancels room actor (group, member)'s move and animation counters, ends an active field spell, and sets
+@ the actor's action state and the player's previous action state to 0.
 .macro CancelActorAnimSequence group, member
     .byte RSOP_CancelActorAnimSequence, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
+@ Sets room actor (group, member)'s action state and previous action state to 0x21 and its move speed
+@ to 2.5 pixels.
 .macro SetTileActorAnimStateWithSpeed group, member
     .byte RSOP_SetTileActorAnimStateWithSpeed, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
@@ -333,18 +369,22 @@
     .byte RSOP_PatchRoomBackgroundTile, 0, 0, 0, (((\x) >> 0) & 0xFF), (((\x) >> 8) & 0xFF), (((\y) >> 0) & 0xFF), (((\y) >> 8) & 0xFF), (((\tileId) >> 0) & 0xFF), (((\tileId) >> 8) & 0xFF), (\layer), (\unused)
 .endm
 
+@ Sets GameModeFlagOverlayMode and pushes ChooseCharacter with the three mode arguments. Yields.
 .macro ShowChooseCharacter modeArg1, modeArg2, modeArg3, unused
     .byte RSOP_ShowChooseCharacter, 0, 0, 0, (\modeArg1), (\modeArg2), (\modeArg3), (\unused)
 .endm
 
+@ PlayScreenTransitionOutByIndex(0x3F, 2).
 .macro PlayScreenTransitionOut
     .byte RSOP_PlayScreenTransitionOut, 0, 0, 0
 .endm
 
+@ PlayScreenTransitionInByIndex(0x3F, 2).
 .macro PlayScreenTransitionIn
     .byte RSOP_PlayScreenTransitionIn, 0, 0, 0
 .endm
 
+@ CatchUpToHarryLevel(characterId), then spawns it as follower 0, or follower 1 if 0 exists.
 .macro RecruitPartyFollower characterId
     .byte RSOP_RecruitPartyFollower, 0, 0, 0, (\characterId), (255), (255), (255)
 .endm
@@ -353,6 +393,8 @@
     .byte RSOP_RemovePartyFollower, 0, 0, 0, (\characterId), (255), (255), (255)
 .endm
 
+@ Spawns `characterId`'s NPC actor, removes it from the party and registers it as room actor
+@ (group, member).
 .macro SpawnPartyFollowerAtTile characterId, group, member, unused
     .byte RSOP_SpawnPartyFollowerAtTile, 0, 0, 0, (\characterId), (\group), (\member), (\unused)
 .endm
@@ -361,18 +403,23 @@
     .byte RSOP_SetPartyLeaderCharacter, 0, 0, 0, (\characterId), (255), (255), (255)
 .endm
 
+@ Clears the chain call stack, stores the pending row and chain, plays sound 6 and pushes Battle
+@ with `battleId`.
 .macro StartBattle battleId, pendingRow, pendingChain
     .byte RSOP_StartBattle, 0, 0, 0, (\battleId), (\pendingRow), (\pendingChain), (255)
 .endm
 
+@ Sets room actor (group, member)'s action state to `actionState` and its substate to 0.
 .macro SetTileActorAnimStateValue group, member, actionState
     .byte RSOP_SetTileActorAnimStateValue, 0, 0, 0, (\group), (\member), (\actionState), (255)
 .endm
 
+@ PlayerReceiveReward(rewardId), or PlayerReceiveRewardAlt if `variant` is nonzero.
 .macro GrantRoomReward rewardId, variant
     .byte RSOP_GrantRoomReward, 0, 0, 0, (\rewardId), (\variant), (255), (255)
 .endm
 
+@ Sets the alpha-blend first targets to the BGs whose operand is 1, second targets 0x1F.
 .macro SetBackgroundBlendLayers bg0, bg1, bg2, bg3
     .byte RSOP_SetBackgroundBlendLayers, 0, 0, 0, (\bg0), (\bg1), (\bg2), (\bg3)
 .endm
@@ -389,10 +436,12 @@
     .byte RSOP_SetBackgroundPriority, 0, 0, 0, (\bg), (\priority), (\unused0), (\unused1)
 .endm
 
+@ SetCameraFollowTarget_candidate on room actor (group, member) with an uninitialized offset.
 .macro SetCameraFollowTileActor group, member, unused0, unused1
     .byte RSOP_SetCameraFollowTileActor, 0, 0, 0, (\group), (\member), (\unused0), (\unused1)
 .endm
 
+@ Runs special scene effect `mode` 0-5 (see RoomScriptOpPlaySpecialSceneEffect).
 .macro PlaySpecialSceneEffect mode
     .byte RSOP_PlaySpecialSceneEffect, 0, 0, 0, (\mode), (255), (255), (255)
 .endm
@@ -409,6 +458,7 @@
     .byte RSOP_GotoIfStoryStageCompare, 0, 0, 0, (\cmpOp), (\value), (\trueChain), (\falseChain), (\trueRow), (\falseRow), (255), (255)
 .endm
 
+@ Sets quest state `index` to Mt19937RandRange(min, max).
 .macro SetRandomQuestState min, max, index, unused0, unused1, unused2
     .byte RSOP_SetRandomQuestState, 0, 0, 0, (((\min) >> 0) & 0xFF), (((\min) >> 8) & 0xFF), (((\max) >> 0) & 0xFF), (((\max) >> 8) & 0xFF), (\index), (\unused0), (\unused1), (\unused2)
 .endm
@@ -425,6 +475,7 @@
     .byte RSOP_HideScreenWindow, 0, 0, 0, (\windowId), (\unused0), (\unused1), (\unused2)
 .endm
 
+@ Sets room actor (group, member) to action state 3 facing `facing` (halved for four-way actors).
 .macro SetTileActorFacing group, member, facing
     .byte RSOP_SetTileActorFacing, 0, 0, 0, (\group), (\member), (\facing), (255)
 .endm
@@ -437,6 +488,7 @@
     .byte RSOP_SubtractQuestState, 0, 0, 0, (\amount), (\index), (255), (255)
 .endm
 
+@ Zeroes quest state 0x80-0xFF.
 .macro ClearQuestStateUpperHalf
     .byte RSOP_ClearQuestStateUpperHalf, 0, 0, 0
 .endm
@@ -445,6 +497,8 @@
     .byte RSOP_NoOpAlt, 0, 0, 0, (((\unknown) >> 0) & 0xFF), (((\unknown) >> 8) & 0xFF), (((\unknown) >> 16) & 0xFF), (((\unknown) >> 24) & 0xFF)
 .endm
 
+@ Jumps to `chain` without returning, and spawns row `row`'s missing actors if ShouldRunRoomIndex
+@ allows it.
 .macro InvokeChainIfEnabled row, chain
     .byte RSOP_InvokeChainIfEnabled, 0, 0, 0, (\row), (\chain), (255), (255)
 .endm
@@ -461,10 +515,12 @@
     .byte RSOP_SetTileActorDrawLayer, 0, 0, 0, (\group), (\member), (\priority), (\unused)
 .endm
 
+@ Stores the pending row and chain and pushes FredAndGeorgesShop with `modeArg`.
 .macro EnterFredAndGeorgesShop modeArg, pendingRow, pendingChain
     .byte RSOP_EnterFredAndGeorgesShop, 0, 0, 0, (\modeArg), (\pendingRow), (\pendingChain), (255)
 .endm
 
+@ Restores all three party members' HP and MP; QUEST_SCRATCH_RESULT is 1 if any changed.
 .macro FullHealParty
     .byte RSOP_FullHealParty, 0, 0, 0
 .endm
@@ -473,14 +529,18 @@
     .byte RSOP_RespawnRowAndRunChain, 0, 0, 0, (\respawnRow), (\chainRow), (255), (255)
 .endm
 
+@ Stores the pending row and chain and pushes minigame 0, 1, 2 or 4 (its help topic if
+@ `showHelp`) with mode argument 3 = `param`.
 .macro StartMinigame minigameId, param, showHelp, pendingRow, pendingChain
     .byte RSOP_StartMinigame, 0, 0, 0, (\minigameId), (\param), (\showHelp), (\pendingRow), (\pendingChain), (255), (255), (255)
 .endm
 
+@ DespawnTileActor on every actor of row `row`, if ShouldRunRoomIndex allows it.
 .macro DespawnRoomRowActors row
     .byte RSOP_DespawnRoomRowActors, 0, 0, 0, (\row), (255), (255), (255)
 .endm
 
+@ Increments `characterId`'s known-spell count, up to 6 (7 for master stats slot 1).
 .macro GrantPartySpell characterId
     .byte RSOP_GrantPartySpell, 0, 0, 0, (\characterId), (255), (255), (255)
 .endm
@@ -493,26 +553,35 @@
     .byte RSOP_ClearOverworldMonstersDisabled, 0, 0, 0
 .endm
 
+@ Sets room actor (group, member) to action state 0x1B facing `facing` (halved for four-way actors)
+@ with script page `scriptPageHigh`.
 .macro SetTileActorFacingAndScriptPage group, member, facing, scriptPageHigh
     .byte RSOP_SetTileActorFacingAndScriptPage, 0, 0, 0, (\group), (\member), (\facing), (\scriptPageHigh)
 .endm
 
+@ If `set`, sets bit 0x4 of room actor (group, member)'s bFlags_0x94_candidate.
 .macro SetTileActorSpecialFlag group, member, set
     .byte RSOP_SetTileActorSpecialFlag, 0, 0, 0, (\group), (\member), (\set), (255)
 .endm
 
+@ Sets the save header's unlock flag for minigame `minigameId` (0-4).
 .macro UnlockMinigame minigameId
     .byte RSOP_UnlockMinigame, 0, 0, 0, (\minigameId), (255), (255), (255)
 .endm
 
+@ Plays jingle 0x1A and opens dialog block 0x28D (0x295 above reward 0x4E) naming the reward.
+@ Yields.
 .macro ShowRewardPickupMessage rewardId
     .byte RSOP_ShowRewardPickupMessage, 0, 0, 0, (\rewardId), (0), (0), (255)
 .endm
 
+@ Opens dialog block 0x28E naming reward `rewardId`. Yields.
 .macro ShowItemRemovedMessage rewardId
     .byte RSOP_ShowItemRemovedMessage, 0, 0, 0, (\rewardId), (0), (0), (255)
 .endm
 
+@ Plays jingle 0x1A and opens dialog block 0x28F naming spell text 0xAC2 + `spellId`; skipped
+@ if `skipIfSaveFlag` and save flag 0x04 is set. Yields.
 .macro ShowSpellLearnedMessage spellId, skipIfSaveFlag
     .byte RSOP_ShowSpellLearnedMessage, 0, 0, 0, (\spellId), (\skipIfSaveFlag), (0), (0)
 .endm
@@ -525,14 +594,18 @@
     .byte RSOP_GotoIfFolioPageGroupComplete, 0, 0, 0, (\pageGroupId), (\trueRow), (\trueChain), (\falseRow), (\falseChain), (\unused0), (\unused1), (\unused2)
 .endm
 
+@ Opens dialog block 0x290 (0x291 if `complete`) naming text 0x405 + `category`. Yields.
 .macro ShowFolioCategoryStatusMessage category, complete
     .byte RSOP_ShowFolioCategoryStatusMessage, 0, 0, 0, (\category), (\complete), (0), (0)
 .endm
 
+@ Opens dialog block 0x292 naming text 0xA4A + `minigameId` (block 0x299 for minigame 3).
+@ Yields.
 .macro ShowMinigameUnlockedMessage minigameId
     .byte RSOP_ShowMinigameUnlockedMessage, 0, 0, 0, (\minigameId), (0), (0), (255)
 .endm
 
+@ Opens dialog block 0x293 with `levelCount`. Yields.
 .macro ShowPartyLevelUpMessage levelCount
     .byte RSOP_ShowPartyLevelUpMessage, 0, 0, 0, (\levelCount), (0), (0), (255)
 .endm
@@ -549,14 +622,17 @@
     .byte RSOP_ConsumeRoomItem, 0, 0, 0, (\itemId), (255), (255), (255)
 .endm
 
+@ CycleSelectedFieldSpell(g_pPlayerActor, 2).
 .macro ResetPartyLeaderSelection
     .byte RSOP_ResetPartyLeaderSelection, 0, 0, 0
 .endm
 
+@ Branches on quest states QUEST_FOLIO_REWARD_FIRST-LAST all being nonzero.
 .macro GotoIfAllQuestFlagsSet trueChain, falseChain, trueRow, falseRow
     .byte RSOP_GotoIfAllQuestFlagsSet, 0, 0, 0, (\trueChain), (\falseChain), (\trueRow), (\falseRow)
 .endm
 
+@ Jumps to `chainIfExit0` or `chainIfExit1` when the first exit parameter is 0 or 1.
 .macro SetPendingChainFromExitParam chainIfExit1, chainIfExit0, unused0, unused1
     .byte RSOP_SetPendingChainFromExitParam, 0, 0, 0, (\chainIfExit1), (\chainIfExit0), (\unused0), (\unused1)
 .endm

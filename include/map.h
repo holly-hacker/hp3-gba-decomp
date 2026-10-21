@@ -28,7 +28,7 @@ extern void NoopOverworldUnusedB(void);
 // Always returns 0.
 s32 TickOverworldControlSlots_candidate(void);
 extern void TickOverworldBeforeActors_candidate(void);
-extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes); see docs/formats/save.md
+extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes)
 extern u32 SetRoomSwitchState(u32 state);  // returns nonzero if the state changed
 // Starts the first slot's camera shake with no time limit and plays its cue.
 extern void StartEndlessCameraShake(void);
@@ -39,7 +39,7 @@ extern void NoopOverworldRoomLoad(void);
 // FreeBgTileBitOffsets for ExitOverworldScreen.
 extern void FreeOverworldBgTileBitOffsets(void);
 
-// Wandering-monster overworld state (see docs/formats/encounters.md).
+// Wandering-monster overworld state.
 // Touching a wandering monster records its encounter id and kind here;
 // every fifth touch respawns replacements via TrySpawnWanderingMonster
 // (see HandleWanderingMonsterTouch). Cleared on room load by
@@ -72,7 +72,7 @@ typedef IntPoint SpawnPosition;
 
 // Room load: spawn each kind's level-table count (offsets 0x74-0x76) of
 // wandering monsters for encounter id (level-table offset 0x77), picking
-// each spawn's random variant up front. See docs/formats/encounters.md.
+// each spawn's random variant up front.
 void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 encounterId);
 // Collision-type table lookup by encounter kind, selecting the spawn
 // terrain for that kind.

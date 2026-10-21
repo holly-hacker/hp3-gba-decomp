@@ -32,7 +32,7 @@ typedef enum {
 } FolioUniversitasPurpose;
 
 // Adds one copy of a card (count saturates at 9), marking it seen and new the
-// first time, and returns the card's count. See docs/formats/save.md.
+// first time, and returns the card's count.
 u32 IncrementFolioUniversitasCard(u32 cardIndex);
 
 extern const u32 g_dwFolioUniversitasBg3Control;  // 0x080696B0

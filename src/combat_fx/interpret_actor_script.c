@@ -23,7 +23,7 @@
 #include "mode7.h"
 #include "modes.h"
 
-// Runs an effect actor's bytecode script (docs/formats/battle_scripts.md).
+// Runs an effect actor's bytecode script (the BS_* macros in combat_fx.h).
 // Each call executes opcodes until one returns: the wait opcodes hand the
 // actor to a tick handler that resumes the interpreter later.
 void InterpretActorScript(Actor *actor)

@@ -2,7 +2,7 @@
 #include "combat_fx.h"
 #include "gen/graphics/battle.h"
 
-// Battle effect sprites used by actor scripts (docs/formats/battle_scripts.md).
+// Battle effect sprites used by actor scripts.
 const ActorAssetRecord g_aEffectActorAssets[17] = {
     { (void *)gBattleEffect005Tiles, (void *)gBattleEffect005Frames, (void *)gBattleEffect005Palette, 3 }, // 0
     { (void *)gBattleEffect006Tiles, (void *)gBattleEffect006Frames, (void *)gBattleEffect005Palette, 3 }, // 1

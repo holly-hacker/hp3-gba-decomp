@@ -1,4 +1,4 @@
-@ Assembler macros for per-room resource blobs; see docs/formats/rooms.md.
+@ Assembler macros for per-room resource blobs.
 @ All data is byte-packed: only .byte/.2byte/.4byte are used, never .hword/.word.
 
 .include "asm/room_script.inc"

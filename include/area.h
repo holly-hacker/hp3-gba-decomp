@@ -7,7 +7,7 @@
 #include "overworld/room_script.h"
 
 // Area loading: builds the current room's runtime tables from its resource blob
-// and runs its room-script chains; see docs/formats/rooms.md.
+// and runs its room-script chains.
 
 // Room tile actorType -> constructor table.
 extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];  // ROM 0x0804C054 (US)
@@ -64,7 +64,7 @@ extern void *GetRoomActorStaticRecord(u8 bColumn, u8 bRow);
 extern Actor *GetRoomActorPtr(u8 x, u8 y);
 extern void SetRoomActorPtr(Actor *actor, u8 col, u8 row);
 
-// Waypoint routes in g_pRoomRouteTable; see docs/formats/rooms.md.
+// Waypoint routes in g_pRoomRouteTable.
 extern u8 GetRoomRouteWaypointCount(u8 route);  // waypoint count
 extern IntPoint GetRoomRouteWaypointPos(u8 route, u8 waypoint);
 extern void RunRoomRouteWaypointChain(u8 route, u8 waypoint);  // runs the waypoint's chain

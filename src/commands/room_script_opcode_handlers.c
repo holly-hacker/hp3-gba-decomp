@@ -2,7 +2,7 @@
 #include "overworld/room_script.h"
 #include "overworld/room_script_bytecode.h"
 
-// Room-script opcode -> handler table; see docs/formats/room_scripts.md.
+// Room-script opcode -> handler table.
 // Opcode 0 ends a chain and has no handler.
 
 const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[RSOP_COUNT] = {

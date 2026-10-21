@@ -3,7 +3,7 @@
 #include "overworld/room_actor.h"
 #include "flipbook.h"
 
-// Room actor constructor for tile actorType 1; see docs/formats/rooms.md.
+// Room actor constructor for tile actorType 1.
 Actor *SpawnRoomTileAnimationActor_candidate(u8 bColumn, u8 bRow)
 {
     RoomActorRecordTileAnimation *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

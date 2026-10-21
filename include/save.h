@@ -27,7 +27,7 @@ typedef struct {
     u8 flLanguageConfigured : 1;
 } __attribute__((packed)) SaveLanguage;
 
-// See docs/formats/save.md. File-level header, shared across all 3 save
+// File-level header, shared across all 3 save
 // slots -- the live RAM copy is SaveManager.header (0x03005598, IWRAM).
 typedef struct {
     u8 szMagic[8];        // 0x0: "HPPOA001" (US) / "HPPOA004" (JP)
@@ -39,7 +39,7 @@ typedef struct {
     u16 wChecksum;        // 0xE-0xF: -Sum16(header, 16)
 } SaveHeader;
 
-// bHeaderFlags bits, see docs/formats/save.md.
+// bHeaderFlags bits.
 typedef enum {
     flOwlCareKitUnlocked           = 0x01,
     flWizardCrackerPopItUnlocked   = 0x02,
@@ -137,9 +137,8 @@ typedef enum {
     Unknown_0x04 = 0x04,
 } SaveFlags;
 
-// The Owl Care Kit's persistent state (SaveStateBlock.owlCareKit); see
-// docs/formats/save.md. The slot stream stores bFlags..bUnknown3 as nibbles
-// and the rest as bytes.
+// The Owl Care Kit's persistent state (SaveStateBlock.owlCareKit). The slot
+// stream stores bFlags..bUnknown3 as nibbles and the rest as bytes.
 typedef struct {
     u8 bFlags;               // 0x00: OwlCareKitFlags
     u8 bNameIndex;           // 0x01: 0-13
@@ -159,7 +158,7 @@ typedef enum {
 
 // Live save-adjacent state block at 0x03003180 (money, playtime, save flags,
 // ...), 0xB4 bytes: ResetSaveStateForNewGame and the slot unpacker clear it
-// with that size. See docs/formats/save.md. abMonsterDocLevel is accessed as
+// with that size. abMonsterDocLevel is accessed as
 // a member to reproduce the ROM's base+0x10 address shape shared by three
 // code sites.
 typedef struct {

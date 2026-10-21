@@ -4,8 +4,7 @@
 #include "actor.h"
 
 // Shop tab stock lists, defined in src/store/shop_stock.c and consumed as a
-// pointer table by src/store/shop_stock_lists.c. See docs/formats/items.md's
-// "Shop prices" section.
+// pointer table by src/store/shop_stock_lists.c.
 
 extern const u32 g_aShopStockMisc[];
 extern const u32 g_aShopStockBelts[];

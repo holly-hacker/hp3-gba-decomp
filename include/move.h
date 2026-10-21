@@ -46,7 +46,7 @@ extern u32 g_dwRoomCollisionPatternCount;
 extern const u8 g_abOppositeFacing[8];
 // ROM 0x0806609C (US): a tile's four edges, indexed by facing / 2.
 extern const SlopeLineSegment g_aTileEdgeSegments[4];
-// ROM 0x080660A4 (US): terrain types 2-25, see docs/formats/collision.md.
+// ROM 0x080660A4 (US): terrain types 2-25.
 extern const SlopeLineSegment g_aSlopeLineSegments[24];
 
 extern void ResolveActorTerrain(Actor *actor);  // 0x0802D704
@@ -64,7 +64,7 @@ extern void ReverseActorDirection(Actor *actor);  // 0x0802DE28
 extern u8 StartMoveVelocity(Actor *actor);  // 0x0802DE68
 extern void GetActorTerrainBox(Actor *actor, TerrainBox *box);  // 0x0802DEE0
 extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
-extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0, see docs/formats/collision.md
+extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0
 extern void NoopInit2(void);
 extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 // Called by ExitOverworldScreen.

@@ -5,8 +5,7 @@
 #include "map.h"
 
 // Room load: spawn each kind's level-table count of wandering monsters,
-// picking each spawn's random variant up front (see
-// docs/formats/encounters.md). The placed-position buffer keeps new
+// picking each spawn's random variant up front. The placed-position buffer keeps new
 // spawns from overlapping; the touch-record state is reset for the new
 // room.
 void SpawnOverworldMonsterEncounters(u32 countA, u32 countB, u32 countC, u32 encounterId)

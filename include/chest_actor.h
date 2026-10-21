@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 
-// The chest, room actor type 9; see docs/formats/rooms.md.
+// The chest, room actor type 9.
 
 // Chest record. wFlagId is the chest's bit in g_abOpenedChestFlags.
 typedef struct RoomActorRecordChest {

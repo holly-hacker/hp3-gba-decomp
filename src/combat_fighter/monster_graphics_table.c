@@ -2,8 +2,7 @@
 #include "gen/graphics/battle.h"
 #include "gen/graphics/overworld.h"
 
-// Monster sprite records and the battle overlay records after them; see
-// docs/formats/folio_bruti.md ("Monster graphics table"). Content is
+// Monster sprite records and the battle overlay records after them. Content is
 // identical between the US and JP ROMs apart from addresses.
 
 const MonsterGfxRow g_pMonsterGraphicsTable[69] = {

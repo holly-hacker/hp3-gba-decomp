@@ -12,7 +12,7 @@ void SerializeOwlCareKit(void);
 // Per-tick Owl Care Kit clock, a no-op until the care screen has been visited.
 // Counts down the Mail flight timer, otherwise advances the elapsed-tick counter;
 // each time that passes 149 it resets and, if nGrowCounters is set, raises all
-// six care counters by 1 (cap 250). See docs/formats/save.md.
+// six care counters by 1 (cap 250).
 void ProcessOwlCareKitTick(s32 nGrowCounters);
 
 #define OWL_CARE_KIT_MAX_DROPPINGS 50

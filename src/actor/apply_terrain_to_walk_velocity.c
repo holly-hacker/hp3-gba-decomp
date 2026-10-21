@@ -4,7 +4,7 @@
 #include "overworld/overworld.h"
 
 // Sets the walk velocity (nMoveSpeed in `direction`) and returns the facing to show.
-// On stairs (collision types 0x1B-0x28, see docs/formats/collision.md) the velocity
+// On stairs (collision types 0x1B-0x28) the velocity
 // follows the stairs' slope; on ice (0x2D) the velocity is kept and so is the facing.
 s8 ApplyTerrainToWalkVelocity(Actor *actor, s8 direction)
 {

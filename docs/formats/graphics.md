@@ -234,9 +234,8 @@ built 2-entry table using this same `RoomTableEntry` layout, reached
 only from the Harry/Hermione Time-Turner cutscene
 (`LoadHarryHermionePortInTimeRoom`, `0x08043114`) -- it is
 independent of the main 55-entry per-room table at `0x08063C8C`. Both
-tables share the identical field-consumer call sequence; see
-[`levels.md`](levels.md) for the full field-by-field layout and the
-evidence distinguishing the two tables.
+tables share the identical field-consumer call sequence; the layout is
+`RoomTableEntry` in `include/overworld/room.h`.
 
 ### Level-table entry layout (offsets confirmed for a 124-byte entry)
 
@@ -822,7 +821,7 @@ background-layer viewer:
 | Level-table layer | Hardware BG | Role |
 |---|---|---|
 | 0 | BG3 | Main background (floor/walls) |
-| 1 | BG1 | Foreground -- tiles drawn over the player character, matching the collision map's separate "foreground" layer (see [`collision.md`](collision.md)) |
+| 1 | BG1 | Foreground -- tiles drawn over the player character, matching the collision map's separate "foreground" layer |
 | 2 | BG2 | Overlay props/decorations |
 | 3 | BG0 | Unused in this room (a single, all-zero block, i.e. one repeating tile) |
 
@@ -950,8 +949,7 @@ decoded directly from `dwBgTilesetA`/`B` by tile ID.
   halfwords (first = low byte). Output confirmed by rendering and by
   the user matching it to real gameplay (see status above).
 
-**The BG palette (PROVEN, static).** Level-table `+0x58` (`dwPaletteData`
-in `levels.md`) is a raw, uncompressed 256-color BGR555 array -- no
+**The BG palette (PROVEN, static).** Level-table `+0x58` is a raw, uncompressed 256-color BGR555 array -- no
 codec, loaded via `SetupRoomBgControlAndTilesets`
 (`LoadBgPaletteColors`/`LoadPaletteColors`). Index 0 is force-overwritten to black
 (the GBA backdrop color) by a separate 1-color copy right after the bulk
@@ -1125,8 +1123,7 @@ Pucrunch 1.11".
 
 ### Overworld monster sprites (PROVEN, extracted)
 
-`g_pMonsterGraphicsTable`'s second records (see
-[`folio_bruti.md`](folio_bruti.md)'s "Monster graphics table") point into
+`g_pMonsterGraphicsTable`'s second records point into
 `0x080AC8CC`-`0x080B9A84`: 28 sprites in first-use table order, each six
 frame streams, its frame record, and (for 17) its own 32-byte palette,
 followed by one standalone palette used as a recolor by rows 59-62. The
@@ -1246,8 +1243,7 @@ fighter, `src/combat_fighter/fighter_anim_table.c`), `g_aEffectActorAssets`,
 
 ### Item icons (PROVEN, extracted)
 
-`ItemEntry.pPalette/pTileData/pFrameData` (`docs/formats/items.md`'s item
-table, `+0x04/+0x08/+0x0C`) is a second, fully statically-walkable instance of
+`ItemEntry.pPalette/pTileData/pFrameData` (`+0x04/+0x08/+0x0C`) is a second, fully statically-walkable instance of
 the OBJ tile-loading path described above -- found by decompiling
 `GetItemImageData` (`0x08026bcc`, called by `FUN_08027384`, an item-spawn
 function), which reads exactly these 3 fields and hands them to
@@ -1327,7 +1323,7 @@ except `ItemChocolateFrogs` (71st, which card rewards also use) and the
 id-`0x86` icon last as `ItemRemove`; 11 icons use `rle`, the rest `lzrle`.
 `src/items/items.c` includes the generated `include/gen/graphics/menus.h` and
 references the `gItemNNNPalette/Tiles/Frames` labels instead of literal
-addresses. See `docs/formats/items.md`.
+addresses.
 
 ### Help screen sprites (PROVEN, partly extracted)
 

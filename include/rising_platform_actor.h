@@ -3,8 +3,7 @@
 #include "types.h"
 #include "actor.h"
 
-// Room actor of tile actorType 12, a platform that lifts the party; see
-// docs/formats/rooms.md.
+// Room actor of tile actorType 12, a platform that lifts the party.
 
 // Static tile record of actorType 12, returned by GetRoomActorStaticRecord.
 typedef struct RoomActorRecordRaisingPlatform {

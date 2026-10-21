@@ -4,7 +4,7 @@
 #include "event_actors.h"
 #include "overworld/room_script.h"
 
-// Room-script VM entry (see docs/formats/room_scripts.md). Walks chain `chain`
+// Room-script VM entry. Walks chain `chain`
 // record by record until it ends or a handler yields (run state 2). A handler that
 // queues a jump through g_bRoomScriptPendingChain starts that chain next; unless the
 // opcode is 0x40 the caller is saved and the walk returns to it once the callee ends.

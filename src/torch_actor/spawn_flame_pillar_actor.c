@@ -3,7 +3,7 @@
 #include "torch_actor.h"
 
 // Room actor constructor for tile actorType 11, a flame jet that cycles on and
-// off. See docs/formats/rooms.md.
+// off.
 Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordFlamePillar *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

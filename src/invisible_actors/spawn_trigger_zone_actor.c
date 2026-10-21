@@ -4,7 +4,7 @@
 #include "invisible_actors.h"
 
 // Room actor constructor for tile actorType 4, a trigger zone sized by half
-// extents. See docs/formats/rooms.md.
+// extents.
 Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordTriggerZone *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

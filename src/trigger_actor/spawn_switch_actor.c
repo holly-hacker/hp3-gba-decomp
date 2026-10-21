@@ -3,7 +3,7 @@
 #include "trigger_actor.h"
 
 // Room actor constructor for tile actorType 3, a two-state switch (button,
-// pressure plate or lever). See docs/formats/rooms.md.
+// pressure plate or lever).
 Actor *SpawnSwitchActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordSwitch *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

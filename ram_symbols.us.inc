@@ -176,7 +176,7 @@
 
 @ --- include/commands.h ---
 .set g_dwRoomScriptRunState,    0x0300279C  @ u32: room script run state; InitializeOverworld resets 4 to 0 and only resumes a chain in state 2
-.set g_abQuestEventState,       0x030027A0  @ u8[]: quest event state bytes, see docs/formats/save.md
+.set g_abQuestEventState,       0x030027A0  @ u8[]: quest event state bytes
 .set g_bRoomScriptPendingChain, 0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none
 .set g_bCameraShakeSoundHandle,   0x030028A4  @ u8: sound handle TickCameraFocus_candidate stops when a camera shake ends
 
@@ -354,7 +354,7 @@
 .set g_dwRoomBgFlag_candidate,               0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by EndFieldSpellEffect
 .set g_dwPauseMenuLocked,                    0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
 .set g_bRoomSwitchState,                     0x03003B64  @ u8: current room switch state (0 or 1), see SetRoomSwitchState
-.set g_pRoomActorStateBuffer,               0x03003B68  @ 0x20BC-byte buffer, allocated by InitRoomState; see docs/formats/save.md
+.set g_pRoomActorStateBuffer,               0x03003B68  @ 0x20BC-byte buffer, allocated by InitRoomState
 .set g_dwPauseMenuCooldown,                  0x03003B6C  @ u32: frames until Start/Select may open a menu again; 4 after init/menu open
 .set g_bTouchedMonsterRecordCount,           0x03003B70  @ byte: queued (encounter id, kind) pair count
 .set g_aTouchedMonsterRecords,               0x03003B74  @ TouchedMonsterRecord[5]: 4-byte touched-monster records
@@ -394,7 +394,7 @@
 .set g_dwRoomCollisionPatternCount,           0x03003FB8  @ u32: pattern count from the collision tilemap header
 .set g_adwEdgeEndpointTypes,                  0x03003FC0  @ u32[2]
 .set g_pRoomCollisionTilemapBuffer,           0x03003FC8  @ u8 *: decompressed collision tilemap resource, 4-byte header then the pattern ids
-.set g_pRoomCollisionBehaviorTable,           0x03003FCC  @ u8 *: 16 collision bytes per pattern, see docs/formats/collision.md
+.set g_pRoomCollisionBehaviorTable,           0x03003FCC  @ u8 *: 16 collision bytes per pattern
 .set g_pRoomCollisionTilemap,                 0x03003FD0  @ u16 *: pattern ids of the 32x32-pixel blocks, g_pRoomCollisionTilemapBuffer + 4
 .set g_dwFieldSpellActive,                   0x03003FD4  @ u32: 1 while a field spell effect actor exists; cleared on room entry
 .set g_pFieldSpellEffectActor,               0x03003FD8  @ Actor *: the field spell effect actor
@@ -506,7 +506,7 @@
 .set gMt19937SeedValue,         0x03005594  @ accumulating seed value (SetSeed/AutoSeed)
 
 @ --- include/save.h ---
-.set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state; see docs/formats/save.md
+.set g_saveManager,              0x03005598  @ SaveManager: the live RAM copy of the save header (first member) and slot state
 .set g_wEepromSavedDispstat,     0x0300561C  @ u16: DISPSTAT saved across EEPROM transfers (EepromTransferBegin/End)
 
 @ --- include/screen_transitions.h ---

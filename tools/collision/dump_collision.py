@@ -1,18 +1,8 @@
 #!/usr/bin/env python3
 """Render every room's collision map (walkability + tile-type + layer
-data) as PNGs for visual inspection against real gameplay. See
-docs/formats/collision.md for the format this decodes and what every
-tile type/layer value means (code-confirmed vs. user-verified in-game).
-
-Research/debugging aid only -- NOT build input. Collision data isn't
-proven complete enough for a regions.<ver>.txt row yet (several field
-offsets and the room-25/room-29 slope-orientation discrepancy are still
-open, see collision.md's "Not yet located"), so there is no pack step:
-this only ever reads the baserom and writes to extracted/, mirroring
-dump_krawall.py's role for Krawall.
-
-US only -- the level table's JP-ROM address isn't located yet (see
-docs/formats/levels.md).
+data) as PNGs for viewing. Not build input: the collision data is built from
+data/graphics/rooms/ (see docs/formats/room_graphics.md). Reads the
+baserom and writes to extracted/, like dump_krawall.py. US only.
 
 Usage: dump_collision.py <ver>   (writes extracted/collision/<ver>/)
 """
@@ -39,7 +29,6 @@ UPSCALE = 3
 # Only types 1-25 actually block movement (FUN_0802DA20); 0x1F/0x29 are
 # force-blocked conditionally by ApplyTileCollisionEffect_candidate;
 # everything else 26+ is passable terrain with a side effect, not a wall.
-# See docs/formats/collision.md.
 CONDITIONAL_BLOCK_TYPES = {0x1F, 0x29}
 KNOWN_EFFECT_NAMES = {
     0x1F: "Lumos crossing (user-verified) / conditional block",
@@ -199,9 +188,6 @@ def render_room(rom, ver, idx, slopes):
                         # Small filled corner block, not a full row/column
                         # outline -- an outline draws a visible grid over
                         # any region where most tiles share a layer value.
-                        # Unrelated to the slope-orientation bug in
-                        # collision.md; that's real regardless of marker
-                        # style.
                         annot[py0:py0 + 2, px0:px0 + 2] = LAYER_MARK_COLORS[layer]
 
     return bw, annot, seen_special

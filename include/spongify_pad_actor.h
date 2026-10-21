@@ -6,7 +6,7 @@
 #include "particles.h"
 
 // Room actor of tile actorType 10, a Spongify pad that launches the party to a
-// target point; see docs/formats/rooms.md.
+// target point.
 
 // Static tile record of actorType 10, returned by GetRoomActorStaticRecord.
 typedef struct RoomActorRecordSpongifyPad {

@@ -4,8 +4,7 @@ A room's resources are contiguous in the ROM, in this order (offsets are the
 room table entry's fields): for each of the 4 BG layers a block map (+0x00)
 and its block set (+0x04); the collision behavior table (+0x40) and collision
 map (+0x44); tileset A (+0x54), palette A (+0x58), tileset B (+0x5C), palette
-B (+0x60). See docs/formats/graphics.md, docs/formats/levels.md and
-docs/formats/collision.md.
+B (+0x60). See docs/formats/room_graphics.md.
 
 read_room() decodes them from a ROM, build_room() encodes them back.
 """

@@ -2,8 +2,7 @@
 #include "game/items.h"
 #include "gen/graphics/menus.h"
 
-// g_pItemTable, 132 records. See docs/formats/items.md for how each
-// field was identified.
+// g_pItemTable, 132 records.
 //
 // Real items (index 0-78) carry no icon pointers here: each one's icon
 // is a separate ROM resource named by the gItemNNNPalette/Tiles/

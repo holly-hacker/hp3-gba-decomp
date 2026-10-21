@@ -9,7 +9,7 @@
 #include "hero.h"
 
 // Collision callback of a chest (room actor type 9): decides whether the
-// player or a spell effect opens it. See docs/formats/rooms.md.
+// player or a spell effect opens it.
 void HandleChestTouch(Actor *pSelf, Actor *pOther)
 {
     u8 kind = pSelf->modeState.chest.bKind;

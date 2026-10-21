@@ -4,7 +4,6 @@
 #include "gen/graphics/overworld.h"
 
 // Room actor constructor for tile actorType 9, the chest.
-// See docs/formats/rooms.md.
 Actor *SpawnChestActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordChest *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

@@ -3,8 +3,7 @@
 #include "types.h"
 #include "actor.h"
 
-// Room-script VM; see docs/formats/room_scripts.md. A chain is a sequence of
-// records, each starting with a u32 opcode (0 ends the chain).
+// Room-script VM. A chain is a sequence of records, each starting with a u32 opcode (0 ends the chain).
 
 // Chain index -> chain offset table, reached through g_pRoomScriptChainTable.
 typedef struct RoomScriptTable {

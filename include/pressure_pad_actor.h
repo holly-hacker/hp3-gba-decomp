@@ -4,7 +4,7 @@
 #include "actor.h"
 
 // Room actor of tile actorType 8, a button that a Flipendo spell presses to respawn
-// a push puzzle's actors; see docs/formats/rooms.md.
+// a push puzzle's actors.
 
 // Static tile record of actorType 8, returned by GetRoomActorStaticRecord.
 typedef struct RoomActorRecordPushResetButton {

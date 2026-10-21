@@ -5,7 +5,6 @@
 #include "collision.h"
 
 // Room actor constructor for tile actorType 2, a door to another room.
-// See docs/formats/rooms.md.
 Actor *SpawnDoorActor(u8 bColumn, u8 bRow)
 {
     RoomActorDoorRecord *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

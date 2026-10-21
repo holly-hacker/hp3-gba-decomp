@@ -6,7 +6,7 @@
 #include "hero.h"
 
 // Per-frame tick of a chest (room actor type 9). HandleChestTouch starts the
-// opening in action substate 8; see docs/formats/rooms.md.
+// opening in action substate 8.
 void TickChestActor(Actor *pActor)
 {
     u8 kind = pActor->modeState.chest.bKind;

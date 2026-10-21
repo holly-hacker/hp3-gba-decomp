@@ -4,8 +4,8 @@
 #include "actor.h"
 
 // Per-tile room actor constructors, selected by the u16 actorType at +8 of a
-// tile record; see docs/formats/rooms.md. The caller stores the returned
-// actor in the record and sets its tile column (+0x10) and row (+0x11).
+// tile record. The caller stores the returned actor in the record and sets its tile
+// column (+0x10) and row (+0x11).
 typedef Actor *(*RoomActorConstructor)(u8 bColumn, u8 bRow);
 
 #define ROOM_ACTOR_TYPE_COUNT 14
@@ -24,7 +24,7 @@ typedef struct RoomActorWordState {
 
 #define ROOM_ACTOR_WORD_STATE(pActor) ((RoomActorWordState *)&(pActor)->scriptState)
 
-// Types 2 and 13 (doors); see docs/formats/rooms.md.
+// Types 2 and 13 (doors).
 typedef struct RoomActorDoorRecord {
     u32 dwActorType;
     s16 nPixelX;

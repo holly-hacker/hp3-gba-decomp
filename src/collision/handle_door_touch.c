@@ -11,7 +11,6 @@
 
 // Collision callback of a door (room actor type 2): the player leaves for the
 // destination room through game mode 8, or the door's chain runs instead.
-// See docs/formats/rooms.md.
 void HandleDoorTouch(Actor *pSelf, Actor *pOther)
 {
     u32 i;

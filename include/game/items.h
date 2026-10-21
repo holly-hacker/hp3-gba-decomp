@@ -3,9 +3,8 @@
 #include "types.h"
 #include "constants/items.h"
 
-// dwCategory. The table is laid out as contiguous per-category runs --
-// see docs/formats/items.md's "Item categories" section. 12 (0xC) appears
-// only on the dummy end-of-list record (index 79).
+// dwCategory. The table is laid out as contiguous per-category runs.
+// 12 (0xC) appears only on the dummy end-of-list record (index 79).
 typedef enum {
     ItemCategoryBelt       = 0,
     ItemCategoryCharm      = 1,
@@ -21,8 +20,7 @@ typedef enum {
 
 // nCharacterMask, a bitmask -- CanFighterEquipItem (0x080267D0) ORs
 // together the bit for whichever FighterType is equipping. Only read
-// for dwCategory < ItemCategoryPotion (see docs/formats/items.md's
-// "Equip eligibility" section); items outside that range store 0 here.
+// for dwCategory < ItemCategoryPotion; items outside that range store 0 here.
 typedef enum {
     ItemCharacterMaskNone     = 0,
     ItemCharacterMaskHarry    = 0x1,
@@ -50,8 +48,7 @@ typedef union {
     } potion;
 } ItemStats;
 
-// g_pItemTable's per-item record, 0x34 bytes. See docs/formats/items.md
-// for how each field was identified.
+// g_pItemTable's per-item record, 0x34 bytes.
 typedef struct ItemEntry {
     s32 nNameTextId;         // 0x00 -- dialog string id for the display name
     const void *pPalette;    // 0x04 -- icon palette pointer, see docs/formats/graphics.md
@@ -62,7 +59,7 @@ typedef struct ItemEntry {
     u32 dwCategory;          // 0x18 -- ItemCategory
     s32 nCharacterMask;      // 0x1C -- ItemCharacterMask bits
     u32 dwFlags;             // 0x20 -- bit 2: consumable (potions); bits 0 and 1
-                             // unread (see docs/formats/items.md)
+                             // unread
     ItemStats stats;         // 0x24
     u32 dwUnk2C;             // 0x2C -- unidentified
     s32 nMagicDefense;       // 0x30 -- M.Def stat
@@ -74,7 +71,7 @@ typedef struct ItemEntry {
 
 #define EQUIP_SLOT_COUNT 6
 
-// The player's items, saved whole. See docs/formats/save.md.
+// The player's items, saved whole.
 typedef struct {
     // Owned count per item id, indexed by reward id (see rewards.h), which
     // extends past the last real item.

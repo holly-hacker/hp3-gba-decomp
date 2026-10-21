@@ -3,7 +3,6 @@
 // Random-encounter roster: g_dwCurrentGameModeArg1 selects the id,
 // g_dwCurrentGameModeArg3 the kind, g_dwCurrentGameModeArg2 the pre-picked variant.
 // Room users from g_pRoomTable bEncounterVariant; ids 16/23/24/26 are unreferenced.
-// See docs/formats/encounters.md.
 const RandomEncounter g_aRandomEncounters[30] = {
     { {  // id 0: room 38 (Leaky Cauldron - Cellar 1)
         { {  // kind 0

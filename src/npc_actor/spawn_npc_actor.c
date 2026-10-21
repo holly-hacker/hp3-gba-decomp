@@ -2,7 +2,7 @@
 #include "area.h"
 #include "npc_actor.h"
 
-// Room actor constructor for tile actorType 6, an NPC; see docs/formats/rooms.md.
+// Room actor constructor for tile actorType 6, an NPC.
 // bFighterIndex doubles as the kind index into the asset tables.
 Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
 {

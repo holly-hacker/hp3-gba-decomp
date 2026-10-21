@@ -4,7 +4,7 @@
 
 // Writes g_pRoomActorStateBuffer's room-actor snapshot: the
 // player's position and switch state, then each table's entry count followed
-// by its records (see docs/formats/save.md for the table meanings).
+// by its records.
 void SerializeRoomActorState(void)
 {
     s32 i;

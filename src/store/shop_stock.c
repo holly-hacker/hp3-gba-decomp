@@ -2,8 +2,7 @@
 #include "constants/items.h"
 #include "store.h"
 
-// Shop tab stock lists, terminated by ITEM_COUNT. See docs/formats/items.md's
-// "Shop prices" section.
+// Shop tab stock lists, terminated by ITEM_COUNT.
 
 const u32 g_aShopStockMisc[] = {
     ITEM_CHOCOLATE_FROGS,

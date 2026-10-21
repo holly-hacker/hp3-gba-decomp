@@ -12,7 +12,7 @@
 #include "trigger_actor.h"
 #include "world_actors.h"
 
-// Room tile actorType -> constructor table; see docs/formats/rooms.md.
+// Room tile actorType -> constructor table.
 // Type 0 is unused.
 const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT] = {
     0,

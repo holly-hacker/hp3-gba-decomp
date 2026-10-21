@@ -11,7 +11,7 @@
 // floor (GetRoomFloorLevel), up and right from entry 0 otherwise. The
 // destination room rides along as the mode's third argument, and the
 // passage's portrait door at the far end leaves for it with the original
-// door's exit param. See docs/formats/rooms.md.
+// door's exit param.
 void HandlePortraitDoorTouch(Actor *pSelf, Actor *pOther)
 {
     if (pOther->wActorType != RoomActorType_Player)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Parse/re-encode a Harry Potter and the Prisoner of Azkaban (GBA) .sav file.
 
-Format reference: docs/formats/save.md
+The in-game layout is SaveManager and the serialize functions (include/save.h).
 
 The backup is an 8KB (64Kbit) EEPROM: 1024 blocks of 8 bytes each. Each
 block is stored byte-reversed in the .sav file relative to the game's own
@@ -331,7 +331,7 @@ def parse_header(raw: bytes) -> dict:
         # exhaustive xref search on this field's storage address and on
         # the containing SaveManager base turns up nothing that touches
         # it outside whole-header operations (checksum, memcpy, default
-        # compare). See docs/formats/save.md.
+        # compare).
         "abUnknown0": data[11:13].hex(),
     }
     result.update(decode_header_flags(data[13]))
@@ -604,8 +604,7 @@ def encode_party_member(w: SaveWriter, m: dict):
 # A snapshot of every non-default actor active in the player's current
 # room (spawned monsters, pickups, switches, chests, etc.), restored when
 # the room is re-entered -- not an inventory list, despite the shape of
-# the on-disk field order. See docs/formats/save.md's "Room-actor state"
-# section.
+# the on-disk field order.
 #
 # Fixed header (player position/facing, a room switch flag, and one
 # entry-count byte per table below, in this exact order), then the 7
@@ -619,7 +618,7 @@ def encode_party_member(w: SaveWriter, m: dict):
 # *(short*)(actor+8)) and 0x0802AB34/0x0802AE64 (restore, respawn each
 # tile's default actor via 0x08005B70 then overlay these fields). Most
 # fields copy a byte/word/dword straight from a fixed offset of the live
-# `Actor` struct (docs/formats/battle_scripts.md); ones with no
+# `Actor` struct (include/actor.h); ones with no
 # identified meaning keep that struct's own offset in their name
 # (`bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing
 # `bUnk_0x0F`-style convention for unnamed fields. A record's leftover,
@@ -639,7 +638,7 @@ SPEC_DEFAULT_KIND = [
     ("nMoveSpeed", 0x04, "I"),
     ("dwUnk_0x80", 0x08, "I"),
     ("wUnk_0x86", 0x0C, "H"),
-    ("wWaitTarget_0x8a", 0x0E, "H"),  # Actor+0x8a, the WaitFrames/WaitForCounter target (battle_scripts.md)
+    ("wWaitTarget_0x8a", 0x0E, "H"),  # Actor+0x8a, the WaitFrames/WaitForCounter target
     ("bSubActorATileX", 0x10, "B"),  # tile position of Actor+0xa0's linked actor -- capture-only, never restored
     ("bSubActorATileY", 0x11, "B"),
     ("bSubActorBTileX", 0x12, "B"),  # Actor+0xa4's linked actor -- capture-only
@@ -742,7 +741,7 @@ SPEC_PICKUP_MARKER = [
 
 SPEC_PRESENCE_MARKER = [
     # kinds 2, 8, 10 unconditionally, plus kind 5/6 under specific
-    # status-bit conditions (see docs/formats/save.md). Just a tile
+    # status-bit conditions. Just a tile
     # position -- restore only respawns the tile's default actor, no
     # further state applied.
     ("bTileX", 0x0, "B"),
@@ -997,7 +996,7 @@ def decode_slot_stream(payload: bytes) -> dict:
     # above. Persistent global state, not per-room (confirmed unchanged
     # across a real room-to-room crossing). Indices ~224-254 are
     # flags/counters that reset to 0 together at a specific story
-    # checkpoint. See docs/formats/save.md for the per-index evidence.
+    # checkpoint.
     slot["abQuestEventState"] = list(r.read_bytes(256))
 
     monster_dex = []
@@ -1009,8 +1008,7 @@ def decode_slot_stream(payload: bytes) -> dict:
     # MonsterTable's first FOLIO_BRUTI_COUNT (53) rows are the real,
     # in-game-visible Folio Bruti bestiary entries; the remaining 16
     # (indices 53-68) are boss/story encounters that share the same
-    # table but are never reachable through the bestiary UI (see
-    # docs/formats/folio_bruti.md, "The grid boundary"). Each entry is
+    # table but are never reachable through the bestiary UI. Each entry is
     # a 3-bit value.
     slot["a3FolioBrutiLevels"] = monster_dex[:FOLIO_BRUTI_COUNT]
     slot["a3BossMonsterLevels"] = monster_dex[FOLIO_BRUTI_COUNT:]
@@ -1024,7 +1022,7 @@ def decode_slot_stream(payload: bytes) -> dict:
     # A second 51-bit flag per card, same layout: drives the "flashing new
     # card" indicator in the Folio Universitas UI (confirmed by the user).
     # Set/cleared in lockstep with a1FolioUniversitasSeen whenever a
-    # card's count transitions to/from 0 -- see docs/formats/save.md.
+    # card's count transitions to/from 0.
     slot["a1FolioUniversitasCardIsNew"] = [bool(b) for b in bytes_to_bits(r.read_bytes(7), 51)]
     slot["owlCareKit"] = decode_owl_care_kit(r)
 

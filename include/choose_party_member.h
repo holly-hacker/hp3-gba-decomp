@@ -5,7 +5,7 @@
 #include "video.h"
 
 // Game mode 0x1A (ChooseCharacter): the story-stage choice pushed by the room script op
-// ShowChooseCharacter; see docs/formats/save.md ("Choose-character story-stage choice").
+// ShowChooseCharacter.
 // The mode's three arguments are the story stages offered by the options.
 #define CHOOSE_CHARACTER_OPTION_COUNT 3
 

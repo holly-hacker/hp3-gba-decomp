@@ -2054,7 +2054,7 @@ c-file 0x0804F330 _ src/combat_fighter/fighter_hurt_sounds.c g_aabFighterHurtSou
 
 # Folio Bruti monster stat table -- content proven byte-identical to the
 # US table (0x0804F410), just at a different address; one C source serves
-# both. See docs/formats/folio_bruti.md.
+# both.
 c-file 0x0804F33C _ src/combat_fighter/monsters.c MonsterTable
 c-file 0x0804F9B4 _ src/combat_fighter/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
 c-file 0x0804FAC8 _ src/combat_fighter/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
@@ -2064,7 +2064,7 @@ c-file 0x0805022C _ src/combat_fighter/ron_levels.c g_pRonLevelTable
 c-file 0x080506DC _ src/combat_fighter/hermione_levels.c g_pHermioneLevelTable
 c-file 0x08050B8C _ src/combat_fighter/character_level_tables.c g_apCharacterLevelTables
 
-# Encounter roster tables, see docs/formats/encounters.md
+# Encounter roster tables
 c-file 0x08050B98 _ src/combat_fighter/random_encounters.c g_aRandomEncounters
 c-file 0x08051138 _ src/combat_fighter/scripted_encounters.c g_aScriptedEncounters
 

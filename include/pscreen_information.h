@@ -124,7 +124,9 @@ typedef enum {
 
 #define HELP_OP(op, b1, b2, b3) ((u32)(op) | (u32)(b1) << 8 | (u32)(b2) << 16 | (u32)(b3) << 24)
 
+// Ends the page.
 #define HELP_END                          HelpOpEnd
+// Page kind: HelpPageText, or HelpPageMenu (records the page and spawns the menu cursor).
 #define HELP_HEADER(kind)                 HELP_OP(HelpOpHeader, kind, 0, 0)
 // Menu entry: label text id and the page it opens. LINK_IF adds a predicate on the entry
 // (IsHelpTopicUnlocked) that decides whether the page can be opened.
@@ -133,10 +135,13 @@ typedef enum {
     HelpOpMenuLinkIf, (textId), (u32)(page), (u32)(isAvailable)
 // Text box at (x, y) of the given size.
 #define HELP_TEXT(x, y, w, h, textId)     HELP_OP(HelpOpText, x, y, 0), (w) | (u32)(h) << 8, (textId)
+// One-line title box at (0x10, 0x20).
 #define HELP_TITLE(textId)                HelpOpTitle, (textId)
+// "current/total" (text 0x8EF) at the bottom of the page.
 #define HELP_PAGE_NUMBER(current, total)  HELP_OP(HelpOpPageNumber, current, total, 0)
 // Page-turn arrow sprite: index into g_aHelpSpriteAssets, then screen position.
 #define HELP_SPRITE(assetIndex, x, y)     HELP_OP(HelpOpSprite, assetIndex, x, y)
+// Pages reached with Right and Left.
 #define HELP_NEXT_PAGE(page)              HelpOpNextPage, (u32)(page)
 #define HELP_PREV_PAGE(page)              HelpOpPrevPage, (u32)(page)
 

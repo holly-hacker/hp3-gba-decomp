@@ -362,8 +362,7 @@ void NoopInit2(void)
 {
 }
 
-// Loads the room's collision behavior table and collision tilemap; see
-// docs/formats/collision.md.
+// Loads the room's collision behavior table and collision tilemap.
 void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap)
 {
     u32 size;

@@ -5,8 +5,8 @@
 #include "flipbook.h"
 
 // The snapshot of the current room's non-default actors saved with each slot
-// (g_pRoomActorStateBuffer, ROOM_ACTOR_STATE_BUFFER_SIZE bytes); see
-// docs/formats/save.md. CaptureRoomActorState fills it from the live actors and
+// (g_pRoomActorStateBuffer, ROOM_ACTOR_STATE_BUFFER_SIZE bytes).
+// CaptureRoomActorState fills it from the live actors and
 // RestoreRoomActorState respawns each record's tile actor and writes the saved
 // fields back. Most records start with the tile (column, row) of the actor's
 // room record; the rest are copies of Actor fields.

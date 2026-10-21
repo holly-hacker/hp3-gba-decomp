@@ -1833,7 +1833,7 @@ c-file 0x0803B64C _ src/rising_platform_actor/spawn_raising_platform_actor.c Spa
 c-file 0x0803B71C _ src/rising_platform_actor/tick_raising_platform_actor.c TickRaisingPlatformActor
 c-file 0x0803BA18 _ src/rising_platform_actor/handle_raising_platform_touch.c HandleRaisingPlatformTouch
 
-# Save (save stream and EEPROM access), see docs/formats/save.md
+# Save (save stream and EEPROM access)
 c-file 0x0803BAF4 _ src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
 c-file 0x0803BB78 _ src/save/pack_bit_pairs_to_save_stream.c PackBitPairsToSaveStream
 c-file 0x0803BC08 _ src/save/load_save_slot_previews.c LoadSaveSlotPreviews
@@ -2267,7 +2267,7 @@ asm-file-cpp 0x08049E3C _ 3rd_party/krawall/stub.S stub
 # BIOS calls
 asm-file 0x08049E84 _ asm/rt/bios_calls.s               bios_calls
 
-# EEPROM save driver, see docs/formats/save.md
+# EEPROM save driver
 c-file-O1 0x08049EC4 _ src/eeprom/eeprom_v124.c EepromV124
 c-file-O1 0x0804A248 _ src/eeprom/eeprom_nowait.c EepromNoWait
 

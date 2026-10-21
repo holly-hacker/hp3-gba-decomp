@@ -62,8 +62,8 @@ typedef enum {
                                             // bAnimFrameIndex_candidate
     ActorDrawFlagFollowBelow     = 0x4,   // FollowOwnerActor: 1 pixel below the owner
     ActorDrawFlagFollowAbove     = 0x8,   // FollowOwnerActor: 1 pixel above the owner
-    ActorDrawFlagPostActionFlash = 0x10,  // see docs/formats/battle_scripts.md; queues the
-                                            // actor's OAM entries with SubmitOamAttrsNudged
+    ActorDrawFlagPostActionFlash = 0x10,  // queues the actor's OAM entries
+                                            // with SubmitOamAttrsNudged
     ActorDrawFlagBlink           = 0x20,  // WriteActorOamCells hides the entries on alternate
                                             // vblanks. UpdateActorOamCells's own entries are
                                             // queued into the slot it just hid, so they stay visible
@@ -348,15 +348,14 @@ typedef struct Actor {
     FixedPoint pos;         // 0x2C
     FixedPoint posPrev;     // 0x34, pending position: IntegrateActorVelocity sets it
                              // to pos plus velocity, and TickActorList copies it into pos
-                             // after collisions. See docs/formats/battle_scripts.md's
-                             // StartOrbitMotion/ApplyActorOrbitMotion writeup.
+                             // after collisions.
                              // SetActorPosition/SnapActorPosition also set this
                              // equal to pos (no interpolation pending after a teleport)
     FixedPoint vel;         // 0x3C
     FixedPoint accel;       // 0x44, added to vel each tick by IntegrateActorVelocity
     FixedPoint moveTarget;  // 0x4C, set by SetActorMoveTarget/StartActorMove
     union {
-        ActorOrbit orbit;           // 0x54; see docs/formats/battle_scripts.md
+        ActorOrbit orbit;           // 0x54
         struct {
             u8 pad_54[0x08];        // -> 0x5C
             u32 dwOrbitRadii;       // 0x5C, both radii at once; nonzero runs ApplyActorOrbitMotion
@@ -398,8 +397,7 @@ typedef struct Actor {
                 } rows;
             } finish;               // 0x62, RespawnGroupAndRunChain arguments run when a
                                     // walk-once route ends
-            u8 bRoute;              // 0x64, route walked by action states 7-13; see
-                                    // docs/formats/rooms.md's waypoint routes
+            u8 bRoute;              // 0x64, route walked by action states 7-13
             u8 bWaypoint;           // 0x65, next waypoint
             u8 pad_66[0x03];
             u8 bForward;            // 0x69, ping-pong walk direction: nonzero toward the last waypoint
@@ -487,8 +485,8 @@ typedef struct Actor {
     void (*pfnDestructor)(struct Actor *actor);  // 0x9C, called by FreeActor if non-null
     struct Actor *pShadowActor;  // 0xA0, companion actor (main -> shadow); the
                                    // actor followed in action state 0x12
-    struct Actor *pLinkedActor_candidate;  // 0xA4, one of three linked-actor slots
-                                     // (see docs/formats/room_scripts.md); caller-defined
+    struct Actor *pLinkedActor_candidate;  // 0xA4, one of three linked-actor slots;
+                                     // caller-defined
     struct Actor *pOwnerActor;   // 0xA8, back-link (shadow -> main)
     u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultActor; also read by
                              // CheckActorTerrainCollision as one of several "movement stopped"

@@ -4,7 +4,7 @@
 #include "invisible_actors.h"
 
 // Room actor constructor for tile actorType 7, a trigger zone with explicit
-// edges. See docs/formats/rooms.md.
+// edges.
 Actor *SpawnTriggerRectActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordTriggerRect *pRecord = GetRoomActorStaticRecord(bColumn, bRow);

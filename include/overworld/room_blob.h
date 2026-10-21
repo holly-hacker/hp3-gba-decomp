@@ -2,9 +2,9 @@
 
 #include "types.h"
 
-// Per-room resource blob, see docs/formats/rooms.md. ParseRoomResourceBlob
-// builds the room's runtime tables from it in one buffer, in the order
-// header records, actor table, warp trigger table, switch-state table.
+// Per-room resource blob. ParseRoomResourceBlob builds the room's runtime tables
+// from it in one buffer, in the order header records, actor table, warp trigger
+// table, switch-state table.
 
 // A player spawn point: a room blob header record, or a default record. FindRoomEntryPoint
 // matches bEntryId and bIndex against its two arguments.

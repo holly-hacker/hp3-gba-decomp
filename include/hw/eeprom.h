@@ -17,7 +17,7 @@ typedef struct
     u8 addressBits;
 } EepromInterface;
 
-// Selected by EepromSelectInterface; NULL until then. See docs/formats/save.md.
+// Selected by EepromSelectInterface; NULL until then.
 extern const EepromInterface *g_pEepromInterface;
 
 extern const EepromInterface sEepromInterface4K;

@@ -8,7 +8,7 @@
 #include "map.h"
 
 // Records the player and every room actor that differs from its default
-// state into g_pRoomActorStateBuffer; see docs/formats/save.md.
+// state into g_pRoomActorStateBuffer.
 void CaptureRoomActorState(void)
 {
     Actor *pActor;
