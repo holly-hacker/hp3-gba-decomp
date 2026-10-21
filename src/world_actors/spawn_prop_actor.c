@@ -19,25 +19,27 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
     ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind = pRecord->bKind;
     kind = pRecord->bKind;
     ROOM_ACTOR_TRIGGER_STATE(pActor)->b62 = pRecord->b62;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b63 = pRecord->b63;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b64 = pRecord->b64;
+    ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable = pRecord->bPushable;
+    ROOM_ACTOR_TRIGGER_STATE(pActor)->bBreakable = pRecord->bBreakable;
     ROOM_ACTOR_TRIGGER_STATE(pActor)->b65 = pRecord->b65;
     ROOM_ACTOR_TRIGGER_STATE(pActor)->b66 = pRecord->b66;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b68 = pRecord->b68;
+    ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow = pRecord->bChainRow;
     pActor->bFacing = pRecord->bFacing;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b69 = 0;
+    ROOM_ACTOR_TRIGGER_STATE(pActor)->bActivated = 0;
     ROOM_ACTOR_TRIGGER_STATE(pActor)->b6A = 0;
     ROOM_ACTOR_TRIGGER_STATE(pActor)->b60 &= 0xFD;
-    pActor->pfnTick = sub_08045ECC;
-    pActor->apfnCollisionCallback[0] = sub_080465D4;
-    pActor->apfnCollisionCallback[1] = sub_0804651C;
+    pActor->pfnTick = TickPropActor;
+    pActor->apfnCollisionCallback[0] = HandlePropActorTouch;
+    pActor->apfnCollisionCallback[1] = HandlePropActorSecondaryTouch;
     SetActorPendingPalette(pActor, g_apRoomActorTriggerEffectData[ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind]);
     SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind],
                       (void *)g_abRoomActorTriggerAnimData[ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind], 0);
 
-    if (kind - 0x1A <= 0xC)
+    if (kind == 26 || kind == 27 || kind == 28 || kind == 29 || kind == 30
+        || kind == 31 || kind == 32 || kind == 33 || kind == 34 || kind == 35
+        || kind == 36 || kind == 37 || kind == 38)
     {
-        if (kind == 0x1A || kind == 0x1D)
+        if (kind == 26 || kind == 29)
             pActor->oam.priority = 1;
         else
             pActor->oam.priority = 3;
@@ -50,7 +52,7 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
     }
 
     pActor->bDepthSortBias = 0x80;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b67 = 0xFF;
+    ROOM_ACTOR_TRIGGER_STATE(pActor)->bBrokenFrame = 0xFF;
 
     switch (kind)
     {
@@ -90,7 +92,7 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
         pActor->dwFlags |= 8;
         pActor->dwFlags &= ~0x04000000;
 
-        if (ROOM_ACTOR_TRIGGER_STATE(pActor)->b63 == 0)
+        if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable == 0)
             SetActorAnimFrame(pActor, 1);
 
         break;

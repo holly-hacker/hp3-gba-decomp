@@ -29,7 +29,7 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
     case FieldSpellFlipendo:
         if (target->wActorType == RoomActorType_ScriptedTrigger)
         {
-            if (ROOM_ACTOR_TRIGGER_STATE(target)->b63 != 0)
+            if (ROOM_ACTOR_TRIGGER_STATE(target)->bPushable != 0)
             {
                 PlaySoundById(0x50);
                 effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
@@ -41,7 +41,7 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
                 effect->dwStateTimer = 14;
                 break;
             }
-            if (ROOM_ACTOR_TRIGGER_STATE(target)->b67 != 0xFF)
+            if (ROOM_ACTOR_TRIGGER_STATE(target)->bBrokenFrame != 0xFF)
                 break;
         }
         PlaySoundById(0x50);
@@ -61,7 +61,7 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
         if (target->wActorType == 4 && target->bRoomActorKind_candidate == 3
             && g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing] == 3)
             effect->oam.hFlip = 1;
-        if (ROOM_ACTOR_TRIGGER_STATE(target)->b67 != 0xFF && ROOM_ACTOR_TRIGGER_STATE(target)->b64 != 0
+        if (ROOM_ACTOR_TRIGGER_STATE(target)->bBrokenFrame != 0xFF && ROOM_ACTOR_TRIGGER_STATE(target)->bBreakable != 0
             && effect->pLinkedActor_candidate == g_pPlayerActor)
         {
             CancelActorMove_candidate(effect->pLinkedActor_candidate);

@@ -10,7 +10,7 @@ void HandleTriggerZonePropTouch(Actor *pSelf, Actor *pOther)
     s32 x;
     s32 y;
 
-    if (pOther->wActorType == RoomActorType_ScriptedTrigger && ROOM_ACTOR_TRIGGER_STATE(pOther)->b63 != 0)
+    if (pOther->wActorType == RoomActorType_ScriptedTrigger && ROOM_ACTOR_TRIGGER_STATE(pOther)->bPushable != 0)
     {
         SetActorActionState(pSelf, 5);
         pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;

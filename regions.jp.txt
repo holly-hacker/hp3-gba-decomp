@@ -1968,15 +1968,15 @@ c-file 0x08045910 _ src/windows/hide_screen_windows.c HideScreenWindows
 c-file 0x08045920 _ src/windows/set_screen_windows_layers.c SetScreenWindowsLayers
 c-file 0x08045948 _ src/windows/set_screen_window1_rect.c SetScreenWindow1Rect
 c-file 0x08045980 _ src/windows/tick_screen_window.c TickScreenWindow
-c-file 0x08045A14 0x08045DF8 src/world_actors/spawn_prop_actor.c SpawnPropActor
-thumb-func 0x08045DF8 sub_08045ECC
-thumb-func 0x08046314 sub_080463E8
-thumb-func 0x08046448 sub_0804651C
-thumb-func 0x08046500 sub_080465D4
-thumb-func 0x08046974 sub_08046A48
-thumb-func 0x080469DC sub_08046AB0
-c-file 0x08046B88 0x08046BD0 src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
-thumb-func 0x08046BD0 MarkRoomActorConsumed
+c-file 0x08045A14 _ src/world_actors/spawn_prop_actor.c SpawnPropActor
+c-file 0x08045DF8 _ src/world_actors/tick_prop_actor.c TickPropActor
+c-file 0x08046314 _ src/world_actors/tick_prop_actor_player_control.c TickPropActorPlayerControl
+c-file 0x08046448 _ src/world_actors/handle_prop_actor_secondary_touch.c HandlePropActorSecondaryTouch
+c-file 0x08046500 _ src/world_actors/handle_prop_actor_touch.c HandlePropActorTouch
+c-file 0x08046974 _ src/world_actors/init_prop_break_emitter.c InitPropBreakEmitter
+c-file 0x080469DC _ src/world_actors/break_prop_actor.c BreakPropActor
+c-file 0x08046B88 _ src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
+c-file 0x08046BD0 _ src/world_actors/mark_room_actor_consumed.c MarkRoomActorConsumed
 c-file-gcc3 0x08046C38 _ 3rd_party/krawall/general.c general
 c-file-gcc3 0x08046C58 _ 3rd_party/krawall/directsound.c directsound
 c-file-gcc3 0x08046DFC _ 3rd_party/krawall/mixer.c mixer

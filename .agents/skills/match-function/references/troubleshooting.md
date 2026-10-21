@@ -90,6 +90,9 @@ When a short-lived temporary takes its source's register (`ldrh r0; lsls r0, r0,
 ROM's is fresh, `local-alloc.c:combine_regs` tied them because the destination was block-local.
 Reusing a variable that lives across blocks breaks the tie, even across unrelated roles
 (DecompressHuffTree, US 0x08024EDC, computes the tree size in `bits`).
+Conversely, an x/y pair in two adjacent callee-saved registers that nothing earlier may share was a
+two-word struct local (`IntPoint`) set field by field: it is live from entry on every path reaching
+its use (TickPropActorPlayerControl, HandlePropActorTouch, US `0x080463E8`, `0x080465D4`).
 
 ## 9. Constant allocation ties
 

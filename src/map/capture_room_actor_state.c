@@ -57,7 +57,7 @@ void CaptureRoomActorState(void)
                 pKind4Or7->dwStateTimer = pActor->dwStateTimer;
                 break;
             case 5:
-                if (((*(u32 *)&pStatic->b64 & 0xFF0000FF) == 0 && pStatic->b63 == 0)
+                if (((*(u32 *)&pStatic->bBreakable & 0xFF0000FF) == 0 && pStatic->bPushable == 0)
                     || pStatic->bKind == 9 || pStatic->bKind == 4)
                 {
                     pPresence = &g_pRoomActorStateBuffer->aPresenceMarker[g_pRoomActorStateBuffer->bPresenceMarkerCount++];
@@ -97,7 +97,7 @@ void CaptureRoomActorState(void)
                 pPresence->bTileRow = pActor->bRoomTileRow_candidate;
                 break;
             default:
-                if (pActor->wActorType == 6 && pStatic->b63 == 0)
+                if (pActor->wActorType == 6 && pStatic->bPushable == 0)
                 {
                     pPresence = &g_pRoomActorStateBuffer->aPresenceMarker[g_pRoomActorStateBuffer->bPresenceMarkerCount++];
                     pPresence->bTileCol = pActor->bRoomTileCol_candidate;

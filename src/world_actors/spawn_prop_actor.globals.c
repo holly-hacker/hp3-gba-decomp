@@ -293,15 +293,14 @@ const u32 g_adwRoomActorTriggerPushFacing[8] = {
     DirectionDown, DirectionLeft, DirectionLeft, DirectionLeft,
 };
 
-const ActorGfxRecord g_aRoomActorTriggerEffectSprites[7] = {
-    { (void *)gOverworldSpellEffect021Tiles, (void *)gOverworldSpellEffect021Frames },
-    { (void *)gOverworldSpellEffect022Tiles, (void *)gOverworldSpellEffect022Frames },
-    { (void *)gOverworldSpellEffect023Tiles, (void *)gOverworldSpellEffect023Frames },
-    { (void *)gOverworldSpellEffect024Tiles, (void *)gOverworldSpellEffect024Frames },
-    { (void *)gOverworldSpellEffect025Tiles, (void *)gOverworldSpellEffect025Frames },
-    { (void *)gOverworldSpellEffect026Tiles, (void *)gOverworldSpellEffect026Frames },
-    { (void *)gOverworldSpellEffect027Tiles, (void *)gOverworldSpellEffect027Frames },
-};
+// Particle sprites of BreakPropActor: 0-2 for kind 0, 3-5 for the other kinds; 6 is unused.
+const ActorGfxRecord g_RoomPropParticleGfx0 = { (void *)gOverworldSpellEffect021Tiles, (void *)gOverworldSpellEffect021Frames };
+const ActorGfxRecord g_RoomPropParticleGfx1 = { (void *)gOverworldSpellEffect022Tiles, (void *)gOverworldSpellEffect022Frames };
+const ActorGfxRecord g_RoomPropParticleGfx2 = { (void *)gOverworldSpellEffect023Tiles, (void *)gOverworldSpellEffect023Frames };
+const ActorGfxRecord g_RoomPropParticleGfx3 = { (void *)gOverworldSpellEffect024Tiles, (void *)gOverworldSpellEffect024Frames };
+const ActorGfxRecord g_RoomPropParticleGfx4 = { (void *)gOverworldSpellEffect025Tiles, (void *)gOverworldSpellEffect025Frames };
+const ActorGfxRecord g_RoomPropParticleGfx5 = { (void *)gOverworldSpellEffect026Tiles, (void *)gOverworldSpellEffect026Frames };
+const ActorGfxRecord g_RoomPropParticleGfx6 = { (void *)gOverworldSpellEffect027Tiles, (void *)gOverworldSpellEffect027Frames };
 
 // One animation block per kind.
 const u8 g_abRoomActorTriggerAnimData[91][90] = {

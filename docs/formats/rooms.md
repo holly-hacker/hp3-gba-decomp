@@ -131,7 +131,7 @@ below (`SpawnDoorActor`, ..., `SpawnPortraitDoorActor`; see
 | 2, 13 | 16 | door: moves the player to another room through game mode 8. Type 13 is a portrait door, linking each floor with `portrait_room` (31): it enters `portrait_room_passage` (32) first, with the destination as the next game mode argument, and from there leaves directly | `half_width` (8), `half_height` (9) collision box; `exit_param` (A) is the destination's entry id; `destination_room` (B); `chain` (C) runs instead of leaving when nonzero; `require_a_press` (D). Type 2's touch handler is `HandleDoorTouch`: in `grand_staircase` (30), a door to room 19 or 21 goes to 21 while `g_bRoomSwitchState` is set and to 19 otherwise. Type 13's is `HandlePortraitDoorTouch`: the exit param waits in `g_dwPortraitPassageExitParam` during the passage, which is entered at entry 1 when the destination ranks lower by `GetRoomFloorLevel` and at entry 0 otherwise. Each entry stands in a trigger zone whose chain spawns the passage's portrait door at the other end and walks the player to it (`PlaySpecialSceneEffect` 4, down-left from entry 1; 5, up-right from entry 0) |
 | 3 | 20 | two-state switch | `variant` (9) selects sprite and trigger kind; `rearm_delay` (A, u16, x30 ticks); `initial_frame` (C); pairs at E/F and 10/11 run on the first and second activation (`on_activate_*`, `on_deactivate_*`) |
 | 4 | 20 | trigger zone | `half_width`, `half_height` (8, 9); `rearm_delay` (A, u16, x30 ticks); `trigger_kind` (C): 0 fires once on touch, other values re-arm after `rearm_delay`, 3-5 fire when hit by overworld spell effect 2, 3 or 4 (actor type `0xF`, spell index in `wCharacterId`), 2 reacts to type 5 actors; `require_a_press` (D); pair at F/10 |
-| 5 | 24 | scripted prop; `kind` (C, 0-82) selects sprite and behavior | `facing` (D); `chain` (14) runs when a spell hits it; others unresolved |
+| 5 | 24 | scripted prop; `kind` (C, 0-82) selects sprite and behavior; see `src/world_actors/` | `facing` (D); `pushable` (F): Flipendo pushes it, and a block pushed fully onto terrain `0x22` (water) sinks and can then be walked over; `breakable` (10): Flipendo breaks it, Reparo restores it; `chain` (14) runs when it is triggered, or on its first break; E is read by `HandlePlayerPropCollision`, 12 by Alohomora; 11 is unresolved |
 | 6 | 16 | NPC | `sprite` (8, index into `g_aActorTypeAssets`); `facing` (9, stored halved); `interact_cooldown` (A, u16, x30 ticks); `interact_mode` (C): 0 interactable once, 1 repeatable after the cooldown; pair at D/E runs on interaction (both zero: not interactable) |
 | 7 | 20 | trigger zone with explicit edges | `left`, `top`, `right`, `bottom` (8-B); `rearm_delay` (C, u16); `trigger_kind` (E); `require_a_press` (F); pair at 11/12 |
 | 8 | 28 | push puzzle reset button: a Flipendo spell effect (actor type `0xF`, spell 0) presses variant 0; at the press animation's `ANIM_EVENT` the targets are freed and respawned at their record positions. Every use targets pushable props (kind 1 blocks, kind 81 book stacks) | `variant` (8); eight `(group, member)` targets (9-0x18) that are freed and respawned |
@@ -248,8 +248,7 @@ described by these two room-local systems than by the per-`Actor` VM.
 
 ## Further work
 
-- Type 5 fields other than `kind`, `facing` and `chain`, and the meaning of
-  each `kind`; type 3's remaining variants; type 10 and 11 fields marked
+- Type 5 record byte 11, and the meaning of each `kind`; type 3's remaining variants; type 10 and 11 fields marked
   without a role above.
 - `StartActorAnimSequence` selectors that share a walking mode (action states 7/10,
   8/11/13, 9/12) run the same walker in `TickActorActionState`; selector 6 (state 13)

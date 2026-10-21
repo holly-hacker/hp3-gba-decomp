@@ -2244,15 +2244,15 @@ c-file 0x08045A1C _ src/windows/set_screen_window1_rect.c SetScreenWindow1Rect
 c-file 0x08045A54 _ src/windows/tick_screen_window.c TickScreenWindow
 
 # World actors
-c-file 0x08045AE8 0x08045ECC src/world_actors/spawn_prop_actor.c SpawnPropActor
-thumb-func 0x08045ECC sub_08045ECC
-thumb-func 0x080463E8 sub_080463E8
-thumb-func 0x0804651C sub_0804651C
-thumb-func 0x080465D4 sub_080465D4
-thumb-func 0x08046A48 sub_08046A48
-thumb-func 0x08046AB0 sub_08046AB0
-c-file 0x08046C5C 0x08046CA4 src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
-thumb-func 0x08046CA4 MarkRoomActorConsumed
+c-file 0x08045AE8 _ src/world_actors/spawn_prop_actor.c SpawnPropActor
+c-file 0x08045ECC _ src/world_actors/tick_prop_actor.c TickPropActor
+c-file 0x080463E8 _ src/world_actors/tick_prop_actor_player_control.c TickPropActorPlayerControl
+c-file 0x0804651C _ src/world_actors/handle_prop_actor_secondary_touch.c HandlePropActorSecondaryTouch
+c-file 0x080465D4 _ src/world_actors/handle_prop_actor_touch.c HandlePropActorTouch
+c-file 0x08046A48 _ src/world_actors/init_prop_break_emitter.c InitPropBreakEmitter
+c-file 0x08046AB0 _ src/world_actors/break_prop_actor.c BreakPropActor
+c-file 0x08046C5C _ src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
+c-file 0x08046CA4 _ src/world_actors/mark_room_actor_consumed.c MarkRoomActorConsumed
 
 # End of game code section, start of 3rd party code section
 
