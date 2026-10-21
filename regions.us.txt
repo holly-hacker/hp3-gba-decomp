@@ -1829,9 +1829,9 @@ c-file 0x0803B598 _ src/random/next.c Mt19937Next
 c-file 0x0803B5F4 _ src/random/next2.c Mt19937Next2
 
 # Riser? (raising platform actor)
-c-file 0x0803B64C 0x0803B71C src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
-thumb-func 0x0803B71C sub_0803B71C
-thumb-func 0x0803BA18 sub_0803BA18
+c-file 0x0803B64C _ src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
+c-file 0x0803B71C _ src/rising_platform_actor/tick_raising_platform_actor.c TickRaisingPlatformActor
+c-file 0x0803BA18 _ src/rising_platform_actor/handle_raising_platform_touch.c HandleRaisingPlatformTouch
 
 # Save (save stream and EEPROM access), see docs/formats/save.md
 c-file 0x0803BAF4 _ src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream

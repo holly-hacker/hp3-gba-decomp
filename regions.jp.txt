@@ -1601,9 +1601,9 @@ c-file 0x0803B594 _ src/random/chance_noisy.c Mt19937ChanceNoisy
 c-file 0x0803B5C8 _ src/random/seed_array.c Mt19937SeedArray
 c-file 0x0803B600 _ src/random/next.c Mt19937Next
 c-file 0x0803B65C _ src/random/next2.c Mt19937Next2
-c-file 0x0803B6B4 0x0803B784 src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
-thumb-func 0x0803B784 sub_0803B71C
-thumb-func 0x0803BA80 sub_0803BA18
+c-file 0x0803B6B4 _ src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
+c-file 0x0803B784 _ src/rising_platform_actor/tick_raising_platform_actor.c TickRaisingPlatformActor
+c-file 0x0803BA80 _ src/rising_platform_actor/handle_raising_platform_touch.c HandleRaisingPlatformTouch
 c-file 0x0803BB5C _ src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
 c-file 0x0803BBE0 _ src/save/pack_bit_pairs_to_save_stream.c PackBitPairsToSaveStream
 c-file 0x0803BC70 _ src/save/load_save_slot_previews.c LoadSaveSlotPreviews

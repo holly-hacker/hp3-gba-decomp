@@ -138,7 +138,7 @@ below (`SpawnDoorActor`, ..., `SpawnPortraitDoorActor`; see
 | 9 | 16 | chest, see "Chests" below | `flag_id` (8, u16); `kind` (A, 0-3); `reward_id` (B); `chain` (C), `respawn_group` (D) |
 | 10 | 16 | Spongify pad: overworld spell effect 5 arms it, then touching it launches the player and followers to the target point | `target_x`, `target_y` (8, A, s16); `variant` (C) |
 | 11 | 16 | flame jet that alternates on and off; contact runs the pair | `variant` (C); pair at D/E; off and on periods at 8 and A |
-| 12 | 12 | raising platform: the party gathers on it, it lifts them, then runs the pair | pair at 8/9; nonzero `arg_0a` (A) starts it inactive until overworld spell effect 2 hits it |
+| 12 | 12 | raising platform: the party gathers on it, it lifts them, then runs the pair | pair at 8/9; nonzero `arg_0a` (A) starts it inactive until a Reparo spell effect (spell 2) hits it |
 
 ### Chests
 

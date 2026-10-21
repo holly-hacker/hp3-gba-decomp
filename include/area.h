@@ -84,7 +84,8 @@ extern u16 GetRoomOffsetTableSize(u16 count);
 // `size` rounded up to a multiple of 4.
 extern u16 AlignRoomSizeTo4(u16 size);
 
-// Three words zeroed whenever a type 10 or 12 actor is constructed.
+// Three words zeroed whenever a type 10 or 12 actor is constructed. Type 12 keeps
+// one flag per party member (player, follower 0, follower 1) set on reaching it.
 extern u32 g_adwRoomActorUnkACState[3];
 extern u16 g_wRoomResourceFlags_candidate;
 // Chain the VM is walking; 0xFF in g_bRoomScriptPendingChain means no jump pending.

@@ -16,14 +16,14 @@ Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow)
     pActor->dwFlags = 0x1D;
     SetActorActionSubState(pActor, 0xA);
     pActor->anim.bAnimFrameDelay = 1;
-    pActor->pfnTick = sub_0803B71C;
-    pActor->apfnCollisionCallback[0] = sub_0803BA18;
-    pActor->modeState.actor.bRoomScriptArg64_candidate = pRecord->abArg8[0];
-    pActor->modeState.actor.bFollowResumeDistance = pRecord->abArg8[1];
-    ROOM_ACTOR_WORD_STATE(pActor)->n60 = pRecord->abArg8[2];
+    pActor->pfnTick = TickRaisingPlatformActor;
+    pActor->apfnCollisionCallback[0] = HandleRaisingPlatformTouch;
+    RAISING_PLATFORM_STATE(pActor)->finish.rows.bRespawnRow = pRecord->abArg8[0];
+    RAISING_PLATFORM_STATE(pActor)->finish.rows.bChainRow = pRecord->abArg8[1];
+    RAISING_PLATFORM_STATE(pActor)->dwInactive = pRecord->abArg8[2];
     SetActorPendingPalette(pActor, gRaisingPlatformPalette);
 
-    if (ROOM_ACTOR_WORD_STATE(pActor)->n60 == 0)
+    if (RAISING_PLATFORM_STATE(pActor)->dwInactive == 0)
         SetActorAnimData(pActor, &g_RoomRaisingPlatformSprite, (void *)g_abRoomRaisingPlatformAnimData, 2);
     else
         SetActorAnimData(pActor, &g_RoomRaisingPlatformSprite, (void *)g_abRoomRaisingPlatformAnimData, 0);
