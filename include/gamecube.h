@@ -2,7 +2,7 @@
 
 #include "types.h"
 
-// JOYBUS transport for the GameCube link; see docs/memory-map/gcn-link.md.
+// JOYBUS transport for the GameCube link.
 
 // Handles one command byte (0x40-0x7F received from the GameCube, 0x80 and up sent to it).
 // pLength is the byte count received into pBuffer, or receives the byte count to send from it.

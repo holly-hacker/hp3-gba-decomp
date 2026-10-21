@@ -9,7 +9,7 @@
 #define SERIAL_MAX_PLAYERS 4
 
 // Serial-link session block at 0x03005A24, written by the link init/teardown
-// code and SerialTimer3Intr. See docs/memory-map/serial.md.
+// code and SerialTimer3Intr.
 typedef struct SerialPlayerState {
     s32 dwUnk_0x00;         // 0x00, only ever written -1 and compared with -1
     u8 bPlayerCount;        // 0x04, g_dwSerialPlayerCount latched by SerialTimer3Intr before the handshake
@@ -33,7 +33,7 @@ extern SerialPlayerState g_SerialPlayerState;
 extern s32 GetSerialPlayerId(void);
 
 // A message exchanged once per round, 12 bytes. The parent's send word starts each round and the
-// children answer; see docs/memory-map/serial.md.
+// children answer.
 typedef struct SerialMessage {
     u8 bType;         // 0 none, 1 idle, 2 keys, 3 RNG seed
     u8 bSeq;          // g_bSerialTick when queued
@@ -126,7 +126,7 @@ extern s32 BeginSerialSession(void);
 extern u32 GetSerialMode(void);
 extern void SetSerialMode(u32 mode);
 // Pumps the link-cable comm packet when a link session is active
-// (SerialSessionActive); see docs/memory-map/serial.md.
+// (SerialSessionActive).
 extern void TickSerialCommIfActive_candidate(void);
 extern s16 GetMt19937LastRollByte(void);
 extern s16 GetSerialChecksumRollByte(void);

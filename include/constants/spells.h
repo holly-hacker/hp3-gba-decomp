@@ -7,6 +7,6 @@
 #define SPELL_COUNT  10
 
 // Each spell is learnable at three levels; tables index spellId * 3 +
-// spellLevel. See docs/memory-map/battle.md.
+// spellLevel.
 #define SPELL_LEVELS 3
 

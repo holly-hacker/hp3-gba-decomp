@@ -38,7 +38,7 @@ extern void TweenScreenWindowCorner(u32 windowId, u32 corner, s32 x, s32 y, u16 
 extern void SetScreenWindowCorner(u32 windowId, u32 corner, s32 x, s32 y);
 extern void DriftScreenWindowCorner(u32 windowId, u32 corner, s32 stepX, s32 stepY);
 
-// Run by TickFrameSystems; see docs/memory-map/frame_systems.md.
+// Run by TickFrameSystems.
 extern void TickScreenWindows(void);
 extern void WriteScreenWindowRects(void);  // writes changed rects to WINxH/WINxV at vblank
 extern void HideScreenWindows(void);

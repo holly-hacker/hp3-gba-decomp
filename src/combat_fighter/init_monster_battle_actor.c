@@ -3,7 +3,7 @@
 
 // Monster-side counterpart to InitPlayerBattleActor: allocates the fighter's
 // Actor, hardwires pActor->pfnTick = TickFighterAttackAnimState_candidate,
-// then populates the BattleFighter from MonsterTable. See docs/memory-map/battle.md.
+// then populates the BattleFighter from MonsterTable.
 
 #define BATTLE_SLOT_ORIGIN_X 204
 #define BATTLE_SLOT_ORIGIN_Y 78

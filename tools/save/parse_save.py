@@ -576,9 +576,7 @@ def decode_party_member(r: SaveReader) -> dict:
     level = r.read_bytes(1)[0]
     # BattleFighter's known-spell count -- gates how many of the 10
     # aSpellCastLevel slots below the battle Cast Spell menu shows
-    # (FUN_08011bec iterates i in [0, bKnownSpellCount)). Identified in
-    # docs/memory-map/battle.md; propagated here and to the Ghidra
-    # struct field name.
+    # (FUN_08011bec iterates i in [0, bKnownSpellCount)).
     known_spell_count = r.read_bytes(1)[0]
     spell_cast_level = list(r.read_bytes(10))
     spell_usage_progress = list(r.read_bytes(10))

@@ -3,8 +3,7 @@
 #include "types.h"
 #include "actor.h"
 
-// One animated room tile, stepped by TickRoomTileAnimations; see
-// docs/memory-map/frame_systems.md.
+// One animated room tile, stepped by TickRoomTileAnimations.
 typedef struct RoomTileAnimation {
     u8 bSet;
     u8 bStep;

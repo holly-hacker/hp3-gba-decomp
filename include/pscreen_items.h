@@ -4,8 +4,7 @@
 #include "modes.h"
 #include "pause_menu.h"
 
-// Pause menu Items screen, game modes 0x10-0x12; see
-// docs/memory-map/game_modes.md.
+// Pause menu Items screen, game modes 0x10-0x12.
 
 // Section select (mode 0x10). Each row selects an item list filter: 0xA
 // (all non-equipment items), ItemCategoryPotion or ItemCategoryMisc.

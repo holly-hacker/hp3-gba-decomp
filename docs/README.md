@@ -30,59 +30,13 @@ Engine and toolchain:
 - [`compiler.md`](compiler.md) — the toolchain: GCC `2.9-arm-000512`
   (agbcc) + binutils + newlib, the byte-exact libgcc/libc block that
   proves it, and the flags each half of the ROM was built with.
-- [`c.md`](c.md) — adding a `c-file` region: the pipeline, what agbcc
-  accepts, the constraints that affect matching, and `just diff-region`
-  for iterating on one that doesn't.
+- [`c.md`](c.md) — writing C: the pipeline, what agbcc accepts, the
+  constraints that affect matching, and `just diff-region`.
 
-Memory map (live RAM layout and the code that drives it):
+Other:
 
-- [`memory-map/battle.md`](memory-map/battle.md) — `BattleFighter`,
-  `MonsterTable`→fighter field correspondence, turn order, the melee and
-  spell damage formulas, the `bStatusFlags` status-effect system and all
-  29 `StatusEffect` sub-cases, spell tables and familiarity/leveling,
-  and the per-character level-up stat tables.
-- [`memory-map/battle-ui.md`](memory-map/battle-ui.md) — the battle
-  menu tree (`FightState`'s menu state machine, every screen's confirm
-  handler), `ShowBattleMessage`'s case→dialog-text table, Harry's 16
-  Folio Universitas cards, and Hermione's/Ron's Special Moves.
-- [`memory-map/heap.md`](memory-map/heap.md) — the heap allocator
-  (`MemPool`/`MemBlock`, first-fit alloc/free) and the actor pool built
-  on top of it; the two ARM-mode actor-list functions and why they're
-  blocked on the toolchain, not on matching difficulty.
-- [`memory-map/particles.md`](memory-map/particles.md) — particle emitters
-  and particles: pools, the per-frame tick, the spawn draw order, which
-  draws use each RNG cursor, and the main-menu cursor emitter's
-  configuration and RNG cost.
-- [`memory-map/krawall.md`](memory-map/krawall.md) — the Krawall audio
-  engine: locating it in the ROM, the mixer/effect-handler driver code,
-  the `MixChannel`/effect-state struct fields, and the IWRAM/EWRAM
-  install mechanism.
-- [`memory-map/rng.md`](memory-map/rng.md) — the MT19937 PRNG function
-  cluster, its two independent draw cursors, and the bounded-random
-  helpers gameplay code rolls against.
-- [`memory-map/input.md`](memory-map/input.md) — controller input:
-  `UpdateKeyInput`/`ResetKeyInput`, the held/pressed/released key masks
-  and their standard GBA `KEYINPUT` bit layout, and the serial-link
-  per-player input path.
-- [`memory-map/scanline_effects.md`](memory-map/scanline_effects.md) — the
-  VCount-interrupt callback list: entry format, live/staging tables, and the
-  `InitScanlineEffects`/`QueueScanlineEffectTable`/`CommitScanlineEffects` API.
-- [`memory-map/menu_screen.md`](memory-map/menu_screen.md) — the shared menu-screen
-  setup functions and the palette-less graphic blobs they draw with.
-- [`memory-map/palette.md`](memory-map/palette.md) — BG/OBJ shadow palettes,
-  gamma remapping, color cycles and palette effects.
-- [`memory-map/frame_systems.md`](memory-map/frame_systems.md) — the
-  per-frame `TickFrameSystems` sequence and the BG-layer, window, palette
-  and tile-animation ticks it runs.
-- [`memory-map/screen_transitions.md`](memory-map/screen_transitions.md) — the
-  in/out screen transition tables (fades, window wipes, mosaics, palette fades),
-  the screen-darken effect and the alpha-blend coefficient ramps.
-- [`memory-map/serial.md`](memory-map/serial.md) — the link-cable layer
-  (multiplayer SIO, Timer3 ISR pump, handshake) and the card-trade
-  session (mode `0x15`, `CardTradeState`, offer/lock/compare/commit).
-- [`memory-map/gcn-link.md`](memory-map/gcn-link.md) — the GameCube link
-  (JOYBUS slave for owl races, mode `0x41`, `JoybusLinkState`, wire
-  protocol and link commands).
+- [`link_peers.md`](link_peers.md) — what a modified game on the other end
+  of a card-trade or GameCube link can do.
 
 Data formats (each with its `data/` extraction pipeline, where one exists):
 
@@ -125,11 +79,6 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
 - [`formats/text.md`](formats/text.md) — the 8-language dialog/UI string
   table, its Huffman scheme, the charmap, and the VWF text engine.
   Pipeline: `tools/text/`, `data/text/`.
-
-The per-character level-up stat tables (pipeline: `tools/levels/`,
-`data/levels/`) have no `formats/` document of their own yet; their
-record layout is in [`memory-map/battle.md`](memory-map/battle.md)'s
-`bLevel` section and in `tools/levels/level_codec.py`.
 
 ## Conventions
 

@@ -27,7 +27,7 @@ void *memset(void *dst0, int val, u32 len)
     wordCount = len >> 2;
     pattern = (val << 8) | val;
     pattern |= pattern << 16;
-    // Indexed, not a walking `*p++` -- see docs/memory-map/heap.md.
+    // Indexed, not a walking `*p++`: required to match.
     for (i = 0; i < wordCount; i++) {
         ((u32 *)ptr)[i] = pattern;
     }

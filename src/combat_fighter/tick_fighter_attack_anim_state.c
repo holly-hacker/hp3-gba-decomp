@@ -9,7 +9,7 @@
 // Enemy-side per-actor tick dispatcher, mirroring TickPlayerActionState's
 // shape: a switch on Actor+0x8D (bActionState), every case branching into
 // a shared no-op tail rather than returning directly. Registered as
-// InitMonsterBattleActor's pActor->pfnTick. See docs/memory-map/battle.md.
+// InitMonsterBattleActor's pActor->pfnTick.
 void TickFighterAttackAnimState_candidate(Actor *actor)
 {
     u8 *pFlags;

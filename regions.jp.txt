@@ -1584,7 +1584,7 @@ c-file 0x0803B1C0 _ src/ram_clear/clear_vram.c ClearVram
 c-file 0x0803B1D4 _ src/ram_clear/clear_oam_dma.c ClearOamDma
 c-file 0x0803B1F8 _ src/ram_clear/clear_palette_ram_dma.c ClearPaletteRamDma
 
-# MT19937 PRNG, see docs/memory-map/rng.md
+# MT19937 PRNG
 c-file 0x0803B220 _ src/random/regenerate.c Mt19937Regenerate
 c-file 0x0803B37C _ src/random/alloc_state.c Mt19937AllocState
 c-file 0x0803B398 _ src/random/auto_seed.c Mt19937AutoSeed

@@ -593,7 +593,7 @@ typedef enum {
 // Actor pool: a 0x69-slot, 0x128-byte-stride free list carved out of a
 // bulk AllocZeroed'd buffer by InitActorPool, plus a small auxiliary
 // buffer and IWRAM-relocated copies of the two per-frame actor-list
-// passes (see docs/memory-map/heap.md).
+// passes.
 // pBuffer/pFreeListHead are adjacent words (0x03001C08/0x03001C0C) --
 // InitActorPool's real code loads pBuffer's address once and reaches
 // pFreeListHead through it at +4, so this stays one struct rather than
@@ -601,7 +601,7 @@ typedef enum {
 //
 // The rest of the state follows: a queue that TickActorList fills with the
 // actors whose UpdateActorOamCells result was 2, and a byte that gates its
-// extra OAM pass (see docs/memory-map/heap.md).
+// extra OAM pass.
 typedef struct ActorPoolState {
     void *pBuffer;
     void *pFreeListHead;
@@ -706,7 +706,7 @@ extern u8 UpdateActorOamCells(Actor *actor);
 // Queues the OAM cells of one frame of frameData, copying the other attributes
 // from pTemplate and placing them relative to the screen position pos[0]/pos[1].
 // cellFlags bit 0 hides the cells on alternate vblanks; bit 1 is set for
-// TickActorList's extra OAM pass (see docs/memory-map/heap.md).
+// TickActorList's extra OAM pass.
 extern void WriteActorOamCells(ActorFrameData *frameData, u16 frame, u8 cellFlags, s32 *pos,
                                 u16 tileBase, OamEntry *pTemplate, Actor *actor);
 extern void UpdateActorSpriteFrame(Actor *actor, u32 mode);

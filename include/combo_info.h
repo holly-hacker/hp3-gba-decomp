@@ -1,8 +1,7 @@
 #pragma once
 
 
-// Game mode handlers of the card combo description screen (CardComboDescription); see
-// docs/memory-map/game_modes.md.
+// Game mode handlers of the card combo description screen (CardComboDescription).
 
 extern void InitializeCardComboDescription(void);
 extern void UpdateCardComboDescription(void);

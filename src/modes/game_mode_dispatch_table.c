@@ -56,7 +56,7 @@
 #include "title_options.h"
 #include "train_cutscene.h"
 
-// Indexed by GameMode (0 unused/reserved). See docs/memory-map/game_modes.md.
+// Indexed by GameMode (0 unused/reserved).
 const GameModeDispatchEntry g_pGameModeDispatchTable[72] = {
     { HandleGameModeNoneNoOp, HandleGameModeNoneNoOp, HandleGameModeNoneNoOp },
     { InitializeStartup, UpdateStartup, ExitStartup },

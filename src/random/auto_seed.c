@@ -3,7 +3,7 @@
 #include "interrupts.h"
 
 // g_wKeysHeld (0x030034EC) is the live held-key bitmask maintained by
-// UpdateKeyInput (see docs/memory-map/input.md), folded in here purely as
+// UpdateKeyInput, folded in here purely as
 // a cheap, frame-varying entropy source -- not RNG state itself.
 void Mt19937AutoSeed(void)
 {

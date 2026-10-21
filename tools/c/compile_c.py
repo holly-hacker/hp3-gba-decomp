@@ -34,7 +34,7 @@ from manifest import (  # noqa: E402
 
 GCC3_CC1 = "arm-elf-cc1-3.0.2"
 
-# Krawall's build configuration (docs/memory-map/krawall.md): mixing
+# Krawall's build configuration: mixing
 # buffers, channels and player state in EWRAM. The 16 kHz, 60 Hz default
 # needs no define.
 KRAWALL_DEFINES = ["-DIWRAM_USAGE_SMALL"]

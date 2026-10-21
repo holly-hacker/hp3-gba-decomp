@@ -224,8 +224,7 @@ layout is untested.
 `DecompressGammaLz` with `CpuSet`; `InstallBgTileCodec` (`0x080250B8`)
 copies `DecompressBgTile`. `InstallIwramDecompressCodecs` is not
 statically reachable by `gbadisasm`'s function discovery (same issue
-as `kramInstall`, see
-[`../memory-map/krawall.md`](../memory-map/krawall.md)).
+as `kramInstall`).
 
 Dialog/UI text uses neither dispatcher; its Huffman scheme is in
 [`text.md`](text.md).
@@ -530,7 +529,7 @@ wait/dispatch -> an **IWRAM-resident interrupt handler at `0x030035A8`**
 (the game's own vblank ISR, copied to IWRAM for speed -- not yet
 otherwise documented) -> `0x08025E95` -> `0x0800D306` (inside
 `UploadPaletteAnimations`, the palette flush loop, which calls `UploadPaletteEffect` for each
-active palette effect; see [`../memory-map/palette.md`](../memory-map/palette.md))
+active palette effect)
 -> `UploadPaletteEffect`.
 
 Live memory reads of the IWRAM table at the moment of a real hit:

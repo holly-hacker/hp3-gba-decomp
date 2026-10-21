@@ -53,8 +53,8 @@ extern u8 g_bTouchedMonsterRecordCount;
 extern TouchedMonsterRecord g_aTouchedMonsterRecords[5];
 extern Actor *g_pTouchedWanderingMonster;
 
-// Read here as a full word, not the byte docs/memory-map/game_modes.md's
-// plate comment describes elsewhere -- real source likely declares it int.
+// Read here as a full word, though other code reads it as a byte; the original
+// source likely declares it int.
 extern u32 g_bCurrentRoomId;
 extern u8 g_bControlSlotTicks_candidate;
 extern u8 g_bPendingQuestStateOverride_candidate;

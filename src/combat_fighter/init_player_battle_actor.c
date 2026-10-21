@@ -7,7 +7,7 @@
 // Party-side counterpart to InitMonsterBattleActor: allocates the fighter's
 // Actor, hardwires pActor->pfnTick = TickPlayerActionState, then populates
 // the BattleFighter from g_aPartyMasterStats (Harry/Hermione/Ron) or from
-// hardcoded values (Buckbeak). See docs/memory-map/battle.md.
+// hardcoded values (Buckbeak).
 Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battleSlotIndex)
 {
     Actor *pActor;

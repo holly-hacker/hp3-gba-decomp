@@ -195,7 +195,7 @@ typedef enum {
 // and the action-state tick.
 #define ACTIVE_FIGHTER (g_pFightState->pFighters[g_pFightState->bActiveFighterIndex])
 
-// Game mode handlers of the battle screen; see docs/memory-map/battle.md.
+// Game mode handlers of the battle screen.
 
 extern void InitializeBattle(void);
 extern void UpdateBattle(void);

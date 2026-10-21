@@ -2,7 +2,7 @@
 
 #include "types.h"
 
-// See docs/memory-map/game_modes.md. Index 0 into g_pGameModeDispatchTable
+// Index 0 into g_pGameModeDispatchTable
 // is unused/reserved -- there is no GameMode value 0.
 typedef enum {
     Startup                          = 0x01,
@@ -110,7 +110,7 @@ extern u32 g_dwListMenuSelection;  // 0x03003F14: the same word as g_GameModeSta
 // Mirrors g_GameModeStackContext's layout for the not-yet-applied mode --
 // PushGameMode/PushGameMode_2/PushGameMode_3 stage here, TickGameModeStack
 // shifts it into g_GameModeStackContext on pop. Only the two fields ExitBattle
-// touches are named; see docs/memory-map/game_modes.md for the rest.
+// touches are named.
 extern GameModeStackContext g_dwPendingGameMode;  // 0x03003F18
 
 // The third of three identical 0x24-byte blocks (current/pending/previous)
@@ -128,7 +128,7 @@ typedef struct {
     void (*pDestroyFn)(void);
 } GameModeDispatchEntry;
 
-// 72 entries (GameMode 0-0x47), see docs/memory-map/game_modes.md.
+// 72 entries (GameMode 0-0x47).
 extern const GameModeDispatchEntry g_pGameModeDispatchTable[72];  // src/modes/game_mode_dispatch_table.c
 
 // Runs the current mode's pInitFn/pUpdateFn/pDestroyFn slot out of
@@ -181,7 +181,7 @@ extern u32 g_dwTickCount;
 
 // Ticks active actors, particle emitters, and several other per-frame
 // subsystems; called once/frame from TickGameModeStack after
-// DispatchGameModeUpdate. See docs/memory-map/frame_systems.md.
+// DispatchGameModeUpdate.
 extern void TickFrameSystems(void);
 
 // Reserved GameMode index 0's dispatch entry (init/update/exit all point here).

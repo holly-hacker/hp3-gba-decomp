@@ -3,7 +3,7 @@
 #include "modes.h"
 #include "actor.h"
 
-// Status/Equip item select (mode 0x0F); see docs/memory-map/game_modes.md.
+// Status/Equip item select (mode 0x0F).
 typedef struct {
     u32 dwUnk0;                // 0x00
     GameMode nextMode;         // 0x04: mode pushed once the fade-out finishes

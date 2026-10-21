@@ -13,7 +13,7 @@
 #include "map.h"
 #include "screen_transitions.h"
 
-// Battle mode's pDestroyFn. See docs/memory-map/battle.md.
+// Battle mode's pDestroyFn.
 void ExitBattle(void)
 {
     GameMode pendingMode;

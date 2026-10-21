@@ -32,7 +32,7 @@ typedef struct {
 #define CARD_TRADE_LOCAL 0
 #define CARD_TRADE_PEER  1
 
-// Link card trade session at 0x03005568; see docs/memory-map/serial.md.
+// Link card trade session at 0x03005568.
 typedef struct {
     u32 dwStatus;              // 0x00: last link result, 0/1
     CardTradeSide aSides[2];   // 0x04

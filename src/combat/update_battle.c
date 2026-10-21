@@ -5,7 +5,7 @@
 #include "modes.h"
 #include "mode7.h"
 
-// Battle mode's pUpdateFn (per-frame tick). See docs/memory-map/battle.md.
+// Battle mode's pUpdateFn (per-frame tick).
 void UpdateBattle(void)
 {
     u8 timer;

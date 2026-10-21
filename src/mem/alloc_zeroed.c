@@ -2,7 +2,7 @@
 
 // Same first-fit search as AllocBlock, but memsets the returned block to
 // 0. The round-up's stepwise shape and the loop below are both required
-// to match -- see docs/memory-map/heap.md.
+// to match.
 void *AllocZeroed(u32 size)
 {
     u32 len = size;

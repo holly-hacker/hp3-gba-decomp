@@ -9,7 +9,7 @@
 #include "mem.h"
 #include "map.h"
 
-// Battle mode's pInitFn. See docs/memory-map/battle.md.
+// Battle mode's pInitFn.
 void InitializeBattle(void)
 {
     s32 i;

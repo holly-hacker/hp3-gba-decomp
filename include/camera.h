@@ -7,7 +7,7 @@
 // Per-slot scripted camera effect, started by room script opcodes 0x10
 // (QueueTileActorMove: pan the camera focus to an actor) and 0x12
 // (SetAllQueuedMoveParams: shake). One 0x2C-byte record per control slot,
-// ticked by TickCameraFocus_candidate. See docs/memory-map/frame_systems.md.
+// ticked by TickCameraFocus_candidate.
 typedef struct CameraEffect {
     Actor *pTarget;           // 0x00, pan target
     FixedPoint savedVel;       // 0x04, the controlled actor's velocity, restored when the pan ends

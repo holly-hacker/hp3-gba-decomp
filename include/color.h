@@ -3,7 +3,7 @@
 #include "types.h"
 
 // Palette module (ROM 0x0800D008-0x0800DBAC): gamma-corrected shadow
-// palettes, color cycling and palette effects. See docs/memory-map/palette.md.
+// palettes, color cycling and palette effects.
 
 // A RAM shadow of one 0x200-byte palette half and the palette RAM it is
 // uploaded to.

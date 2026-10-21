@@ -141,8 +141,7 @@ dialog/UI text uses its own non-BIOS Huffman decoder -- see
 Two dead ends worth not re-walking: `sub_0804A2CC`, which looks like a
 custom decompressor by name proximity, is a shared
 register-indirect-call trampoline (`bx r3`), one of the interworking
-veneers documented in
-[`../memory-map/krawall.md`](../memory-map/krawall.md); and the BIOS
+veneers; and the BIOS
 Huffman path (type 2) is ruled out for text content by approach 2 above.
 
 **Open door, not closed**: a text-loading caller could still exist
@@ -175,7 +174,7 @@ loops `DrawTextLine` directly, one call per line, advancing Y by
 `gTextRenderState.lineHeight` each iteration, until the string is
 null-terminated or out of vertical room. Multi-line box drawing built on
 the single-line primitive. Found via `ShowBattleMessage`'s `AttackResult`
-case ([`../memory-map/battle-ui.md`](../memory-map/battle-ui.md)).
+case.
 
 **`DrawTextLine`** (`0x08020714`): lays out one line, then draws it with
 `DrawStringAligned`. Reads one byte at a time and branches on its value:

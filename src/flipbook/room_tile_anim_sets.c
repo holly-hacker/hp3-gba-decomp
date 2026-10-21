@@ -1,6 +1,6 @@
 #include "flipbook.h"
 
-// Room tile animation sets; see docs/memory-map/frame_systems.md.
+// Room tile animation sets.
 
 #define FRAME(frame) ((const RoomTileAnimFrame *)&(frame))
 

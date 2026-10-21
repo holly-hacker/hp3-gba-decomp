@@ -5,7 +5,7 @@
 
 // Controller input state maintained by UpdateKeyInput, called once per
 // game-loop iteration from TickGameModeStack, and the menu-cursor helpers
-// built on it. See docs/memory-map/input.md.
+// built on it.
 
 // g_wKeys* bits (KEYINPUT layout).
 enum {

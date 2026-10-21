@@ -281,17 +281,10 @@
 
 @ --- include/input.h ---
 .set g_wKeysHeld,                0x030034EC  @ u16: current held-key bitmask (standard GBA KEYINPUT bit
-                                             @ order), updated once per frame by UpdateKeyInput; also
-                                             @ folded into Mt19937AutoSeed's seed as a cheap entropy
-                                             @ source (see docs/memory-map/rng.md) -- that's not what the
-                                             @ address is for
+                                             @ order), updated once per frame by UpdateKeyInput
 .set g_wKeysHeldPrevious,        0x030034EE  @ u16: g_wKeysHeld from the previous frame's update
 .set g_wKeysPressed,             0x030034F0  @ u16: keys newly pressed this frame (currentHeld &
-                                             @ ~previousHeld); bit 0x01 (A) tested by
-                                             @ TickBattleTurnStateMachine's message-wait fast-forward
-                                             @ check, bits 0x10/0x20 (Right/Left) read elsewhere -- see
-                                             @ docs/memory-map/input.md, docs/formats/folio_bruti.md,
-                                             @ docs/memory-map/battle-ui.md
+                                             @ ~previousHeld)
 .set g_wKeysReleased,            0x030034F2  @ u16: keys newly released this frame (previousHeld & ~currentHeld)
 .set g_wInputDisabled,           0x030034F4  @ u16: nonzero forces all key state above (and the per-player
                                              @ arrays below) to 0 every frame instead of reading KEYINPUT
@@ -383,9 +376,9 @@
 @ --- include/modes.h ---
 .set g_GameModeStackContext,                 0x03003EF4  @ {dwCurrentGameMode, dwCurrentGameModeArg1, dwCurrentGameModeArg2, dwCurrentGameModeArg3, ...}
 .set g_dwListMenuSelection,                  0x03003F14  @ u32: selected row of the current list menu
-.set g_dwPendingGameMode,                    0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode; see docs/memory-map/game_modes.md
-.set g_PrevGameModeStackContext,             0x03003F3C  @ GameModeStackContext, 0x24 bytes; see docs/memory-map/game_modes.md
-.set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call; see docs/memory-map/game_modes.md
+.set g_dwPendingGameMode,                    0x03003F18  @ GameMode: mirrors g_GameModeStackContext's layout for the not-yet-applied mode
+.set g_PrevGameModeStackContext,             0x03003F3C  @ GameModeStackContext, 0x24 bytes
+.set g_dwTickCount,                          0x03003F60  @ u32: incremented once per TickGameModeStack call
 .set g_apMenuIconActors, 0x03003F68  @ Actor *[]: actors registered by index via RegisterMenuIconActor
 
 @ --- include/minigame_difficulty_select.h ---
@@ -662,7 +655,7 @@
 .set g_nSwitchSoundHandle,       0x03005E1C  @ s32: handle of the switch actor sound
 
 @ --- include/video.h ---
-.set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md
+.set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries
 .set g_ScanlineEffectStaging,    0x03005F58  @ 19 staged entries, committed to the live table by CommitScanlineEffects
 
 @ --- include/vram.h ---

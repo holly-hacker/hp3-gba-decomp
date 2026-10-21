@@ -22,8 +22,7 @@ X-position (and into the animated "?" placeholder branch for
 unseen/unanalyzed monsters). The backing monster stat table (HP, base
 damage range, accuracy, and the rest) is **PROVEN field by field**,
 each from a live code path that reads it -- see "The monster stat table"
-below, and [`../memory-map/battle.md`](../memory-map/battle.md) for the
-readers themselves. The stat table is decompiled to C
+below. The stat table is decompiled to C
 (`src/combat_fighter/monsters.c`, 69 `MonsterTableRow` initializers, committed
 source). The
 three functions that use the table (`DrawFolioBrutiMonsterPanel`,
@@ -70,8 +69,8 @@ for spell_index in 0..7:
     effectiveness = GetMonsterSpellEffectiveness(monster_index, spell_index)   ; r0=r7, r1=r6
     if effectiveness == -1  OR  ram[0x03003190 + monster_index] <= 2:
         ; monster not yet Informus-analyzed (0x03003190 = g_abMonsterDocLevel_candidate,
-        ; bumped to 4 by casting Informus -- see battle.md's
-        ; `BumpMonsterDocLevel` writeup) (or this spell has no data):
+        ; bumped to 4 by casting Informus, `BumpMonsterDocLevel`)
+        ; (or this spell has no data):
         ; draw the fixed/animated "?" placeholder graphic
         ; (gfx 0x0806959C, frame data 0x080695CE)
     else:
@@ -91,7 +90,7 @@ so a higher value pushes the dot right, and the "?" branch fires exactly
 when the monster's per-monster state byte at `0x03003190 + index` is
 `<=2` (not yet analyzed), matching the "unseen -> silhouette, seen ->
 sprite, analyzed -> name+description+dots" three-state design described
-by the user (see also `docs/memory-map` conventions -- this state byte
+by the user (this state byte
 array was already known from the Folio Bruti grid-icon code, not
 independently re-derived here).
 
@@ -164,12 +163,6 @@ corroboration either way for those two.
 | `0x14` | u8 | `special_effect_chance` | **PROVEN** -- percent chance (100 = guaranteed) that a scripted effect also fires after the monster's melee attack |
 | `0x15` | u8 | `special_effect_id` | **PROVEN** -- effect-script id passed to `TriggerBattleEffect`; scripts in `src/combat_fx/effect_scripts/` (e.g. `27` = poison bite, `60` = paralyzing blow). Clusters by monster family |
 | `0x16` | u16 | padding | STRUCTURAL MATCH -- always 0 across all 69 records, and not read by battle-init |
-
-Every reader named above lives in
-[`../memory-map/battle.md`](../memory-map/battle.md), which owns each
-field's semantics and the evidence behind it (turn order,
-`ResolveEnemyAttack`'s formula, `ResolvePlayerAttack`'s effectiveness
-switch, the XP/gold payout, `RollMonsterSpecialEffect_candidate`).
 
 **The `bLevel` note.** `BattleFighter+0xE` is a proven level counter for
 *player* fighters. No monster ever reaches either code path that reads
@@ -381,7 +374,7 @@ functions**, all seeded in `functions.us.cfg` and verified to assemble
 byte-exact (`just disasm-compare`/`just check-all` both pass).
 
 Reads `g_wKeysPressed` (`0x030034F0`, standard GBA KEYINPUT bit order,
-see `docs/memory-map/input.md`; bits `0x10`/`0x20` = D-pad
+bits `0x10`/`0x20` = D-pad
 Right/Left, `0x40`/`0x80` = Up/Down) and updates the cursor's row (`+0xC`)
 and column (`+0x10`) fields directly in the screen-state struct. All four
 directions share the identical guard, run as a do-while after applying

@@ -3,7 +3,7 @@
 #include "types.h"
 
 // BG tile animations: tiles decoded into a buffer each tick and uploaded to their BG's
-// character block at vblank; see docs/memory-map/frame_systems.md.
+// character block at vblank.
 
 // One frame of a BG tile animation: its tile data and how many ticks it shows
 // (0 holds it).
@@ -13,7 +13,7 @@ typedef struct BgTileAnimFrame {
 } BgTileAnimFrame;
 
 // A BG tile animation registered by RegisterBgTileAnimation and stepped by
-// TickBgTileAnimations; see docs/memory-map/frame_systems.md.
+// TickBgTileAnimations.
 #define BG_TILE_ANIMATION(frameCount) struct {                       \
     u8 bFlags;                                                        \
     u8 bFrameCount;                                                   \

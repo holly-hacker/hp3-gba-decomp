@@ -11,7 +11,7 @@
 // populates aEnemySlotTurnOrderIndex[bSlotParam]/aAllySlotTurnOrderIndex[bSlotParam].
 // Duplicate bAgility values are broken by nudging the loser's stored
 // agility up by 1 the first time it ties an already-found winner, keeping the
-// sort stable/deterministic. See docs/memory-map/battle.md.
+// sort stable/deterministic.
 void BuildTurnOrder(void)
 {
     u8 outerIdx;

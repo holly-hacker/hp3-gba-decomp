@@ -2,8 +2,6 @@
 
 #include "types.h"
 
-// See docs/memory-map/scanline_effects.md.
-
 // One VCOUNT-triggered callback. A table ends at the first null pfnCallback.
 typedef struct ScanlineEffectEntry {
     u16 wLine;               // 0x00, VCOUNT line the callback fires on (0xFFFF = unused)

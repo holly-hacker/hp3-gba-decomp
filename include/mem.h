@@ -2,8 +2,6 @@
 
 #include "types.h"
 
-// See docs/memory-map/heap.md.
-
 // +8/+0xC's meaning depends on whether the block is free or allocated:
 // free, they're the pool's free-list link (a MemBlock*); allocated,
 // AllocBlock/AllocZeroed repurpose them as the owning pool index (+8)
@@ -53,8 +51,7 @@ void FreeBlock(void *ptr);
 void *ResizeBlock(void *ptr, u32 size);
 u32 HeapStubReturnOne(void);
 
-// Ordinary game code; the ROM has no newlib memset -- see
-// docs/memory-map/heap.md.
+// Ordinary game code; the ROM has no newlib memset.
 void *memset(void *dst, int val, u32 len);
 void *CopyMemory(void *dst, const void *src, u32 len);
 void *MoveMemory(void *dst, const void *src, u32 len);

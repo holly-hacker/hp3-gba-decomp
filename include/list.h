@@ -2,8 +2,6 @@
 
 #include "types.h"
 
-// See docs/memory-map/heap.md.
-
 // Generic intrusive doubly-linked-list node: List_PushHead's `node`
 // argument must point at one of these.
 typedef struct ListNode {

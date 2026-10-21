@@ -4,8 +4,7 @@
 #include "modes.h"
 #include "actor.h"
 
-// Pause menu Status/Equip character select, game modes 0x0C/0x0D; see
-// docs/memory-map/game_modes.md.
+// Pause menu Status/Equip character select, game modes 0x0C/0x0D.
 
 extern GameMode g_StatusEquipReturnMode;  // 0x03005298: StatusEquipCharacterSelect's B target
 extern GameMode g_StatusEquipNextMode;    // 0x0300529C: StatusEquipCharacterSelect's A target

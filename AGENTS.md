@@ -59,7 +59,7 @@ local asset edits.
   with `--blocks`). The per-version code/data areas and named code blocks
   are in `tools/rom_layout.json`, shared with `tools/progress_report.py`.
 - `docs/README.md`: findings index and confidence definitions.
-  `docs/memory-map/` describes code and RAM; `docs/formats/` describes data.
+  `docs/formats/` describes data.
 
 ## ROM mapping
 
@@ -102,7 +102,7 @@ is the public Krawall source (commit `9a2b869`), edited as little as the
 ROM requires: keep its file layout, names, formatting and comments, mark
 each change with a `// HP3-GBA: <what differs>` comment, and note in the
 license header that the file was modified. The style rules below do not
-apply to it. See `docs/memory-map/krawall.md`.
+apply to it.
 
 Apply every change to both US and JP in the same pass and verify both
 builds.

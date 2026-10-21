@@ -4,7 +4,7 @@
 #include "actor.h"
 
 // Combat result screen, game mode 0x2C (CombatResult), pushed by the battle state machine once the
-// last enemy is defeated; see docs/memory-map/battle.md. It counts up the battle's XP, then
+// last enemy is defeated. It counts up the battle's XP, then
 // shows the drops and gold. dwModeState values of UpdateCombatResult.
 typedef enum {
     CombatResultStateXp = 0,         // XP counter, then "Press the A Button to continue."

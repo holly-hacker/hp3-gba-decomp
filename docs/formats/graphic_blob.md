@@ -103,9 +103,7 @@ to the battle set, and one 128x132-tile map.
 Blobs without a palette (flags0 bit 0 clear: `0x78`, `0xF8`) draw with a palette
 that is already loaded. Their PNGs show the colors of the item their settings
 record as `palette` (gray when none), and the packer ignores it.
-The sources are the run's `paletteSources` option; see
-[`../memory-map/menu_screen.md`](../memory-map/menu_screen.md) for which are
-established. Four blobs have more tiles than their images' distinct tiles: the tile
+The sources are the run's `paletteSources` option. Four blobs have more tiles than their images' distinct tiles: the tile
 numbering is not the standard rebuild's. They list their tilemap cells'
 tiles and flips as `layout` in their settings, and every cell of a tile must keep
 the same pixels. Blobs with flags `0x7A` carry a 16-color (32-byte) palette (flags0 bit 1)
@@ -141,5 +139,3 @@ tiles after the last one the tilemap uses; they are kept in
 `<name>.unused.png`. Palette entries with the unused bit 15 set are listed per
 blob as `highBits`. The GammaLz tile streams re-encode byte for byte
 (`tools/graphics/encode_gamma_lz.py`, without the outer header).
-
-See [`battle.md`](../memory-map/battle.md) for the loader functions.

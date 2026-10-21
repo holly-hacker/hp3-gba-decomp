@@ -450,7 +450,7 @@ c-file 0x0800CCA8 _ src/collision/block_actor_with_terrain_box.c BlockActorWithT
 c-file 0x0800CF74 _ src/collision/handle_pausing_actor_touch.c HandlePausingActorTouch
 c-file 0x0800CFDC _ src/collision/handle_contact_trigger_touch.c HandleContactTriggerTouch
 
-# Color (palette effects), see docs/memory-map/palette.md
+# Color (palette effects)
 c-file 0x0800D008 _ src/color/apply_gamma_remap_table.c ApplyGammaRemapTable
 c-file 0x0800D0A0 _ src/color/setup_color_cycles.c SetupColorCycles
 c-file 0x0800D120 _ src/color/apply_gamma_to_colors.c ApplyGammaToColors
@@ -494,7 +494,7 @@ c-file 0x0800D98C _ src/color/tick_palette_effects.c TickPaletteEffects
 c-file 0x0800D9D4 _ src/color/step_palette_effect.c StepPaletteEffect
 c-file 0x0800DB58 _ src/color/upload_palette_effect.c UploadPaletteEffect
 
-# Combat (battle mode), see docs/memory-map/battle.md
+# Combat (battle mode)
 c-file 0x0800DBAC _ src/combat/initialize_battle.c InitializeBattle
 c-file 0x0800DDB0 _ src/combat/update_battle.c UpdateBattle
 c-file 0x0800DE50 _ src/combat/exit_battle.c ExitBattle
@@ -519,7 +519,7 @@ c-file 0x0800FFAC _ src/combat_core/roll_fighter_paralysis_escape.c RollFighterP
 c-file 0x08010008 _ src/combat_core/track_spell_familiarity.c TrackSpellFamiliarity
 c-file 0x080100A0 _ src/combat_core/dispatch_pending_action.c DispatchPendingAction
 
-# Combat dialog (battle menus and messages), see docs/memory-map/battle-ui.md
+# Combat dialog (battle menus and messages)
 c-file 0x080101D0 _ src/combat_dialog/tick_battle_menu_input.c TickBattleMenuInput
 c-file 0x080104A0 _ src/combat_dialog/open_battle_top_menu.c OpenBattleTopMenu
 c-file 0x080105D8 _ src/combat_dialog/open_special_move_menu.c OpenSpecialMoveMenu
@@ -798,7 +798,7 @@ c-file 0x0801D858 _ src/credits_cutscene/exit_linear_cutscene.c ExitLinearCutsce
 c-file 0x0801D888 _ src/credits_cutscene/initialize_linear_cutscene.c InitializeLinearCutscene
 c-file 0x0801D8C0 _ src/credits_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 
-# Cursor (menu cursor emitter and resource deltas), see docs/memory-map/particles.md
+# Cursor (menu cursor emitter and resource deltas)
 c-file 0x0801D940 _ src/cursor/spawn_menu_cursor_actor.c SpawnMenuCursorActor
 c-file 0x0801DBE0 _ src/cursor/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 c-file 0x0801DC6C _ src/cursor/release_menu_cursor.c ReleaseMenuCursor
@@ -814,7 +814,7 @@ c-file 0x0801DE5C _ src/decompress/decompress_resource_vram.c DecompressResource
 c-file 0x0801DF24 _ src/decompress/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassUnused
 c-file 0x0801DF48 _ src/decompress/apply_resource_delta_pass.c ApplyResourceDeltaPass
 
-# Default menu, see docs/memory-map/menu_screen.md
+# Default menu
 c-file 0x0801DF6C _ src/default_menu/initialize_menu_screen.c InitializeMenuScreen
 c-file 0x0801DF90 _ src/default_menu/load_menu_screen_frame.c LoadMenuScreenFrame
 c-file 0x0801E004 _ src/default_menu/load_menu_screen_overlay.c LoadMenuScreenOverlay
@@ -962,7 +962,7 @@ c-file 0x08021694 _ src/game_state/set_sickles.c SetSickles
 c-file 0x080216A0 _ src/game_state/add_sickles.c AddSickles
 c-file 0x080216C8 _ src/game_state/get_sickles.c GetSickles
 
-# GameCube (Joybus transport), see docs/memory-map/gcn-link.md
+# GameCube (Joybus transport)
 c-file 0x080216D4 _ src/gamecube/handle_joybus_interrupt.c HandleJoybusInterrupt
 c-file 0x08021748 _ src/gamecube/handle_joybus_command_word.c HandleJoybusCommandWord
 c-file 0x080218C0 _ src/gamecube/handle_joybus_transmit.c HandleJoybusTransmit
@@ -1078,7 +1078,7 @@ c-file 0x0802539C _ src/initials/high_score_name_entry_cursor_tick.c HighScoreNa
 c-file 0x08025410 _ src/initials/draw_high_score_name_entry_preview.c DrawHighScoreNameEntryPreview
 c-file 0x08025484 _ src/initials/clear_high_score_name_entry_tail.c ClearHighScoreNameEntryTail
 
-# Input, see docs/memory-map/input.md
+# Input
 c-file 0x080254A8 _ src/input/update_key_input.c UpdateKeyInput
 c-file 0x08025610 _ src/input/step_scroll_list_selection.c StepScrollListSelection
 c-file 0x080256DC _ src/input/step_scroll_grid_row.c StepScrollGridRow
@@ -1228,7 +1228,7 @@ c-file 0x08028644 _ src/lcd/enable_forced_blank.c EnableForcedBlank
 c-file 0x08028654 _ src/lcd/disable_forced_blank_at_vblank.c DisableForcedBlankAtVBlank
 c-file 0x0802867C _ src/lcd/enable_forced_blank_at_vblank.c EnableForcedBlankAtVBlank
 
-# List (linked lists), see docs/memory-map/heap.md
+# List (linked lists)
 c-file 0x080286A0 _ src/list/build_free_list.c BuildFreeList
 c-file 0x080286D8 _ src/list/alloc_object_from_free_list.c AllocObjectFromFreeList
 c-file 0x0802870C _ src/list/list_move_to_head.c List_MoveToHead
@@ -1337,7 +1337,7 @@ c-file 0x0802C12C _ src/math/to_percent.c ToPercent
 c-file 0x0802C148 _ src/math/sign_magnitude8_8_to_fixed.c SignMagnitude8_8ToFixed
 c-file 0x0802C164 _ src/math/length_squared.c LengthSquared
 
-# Memory (heap), see docs/memory-map/heap.md
+# Memory (heap)
 c-file 0x0802C174 _ src/mem/move_memory.c MoveMemory
 c-file 0x0802C254 _ src/mem/init_heap.c InitHeap
 c-file 0x0802C26C _ src/mem/alloc_block.c AllocBlock
@@ -1357,7 +1357,7 @@ c-file 0x0802C608 _ src/mem/unlink_free_block.c UnlinkFreeBlock
 c-file 0x0802C638 _ src/mem/merge_into_prev_free_block.c MergeIntoPrevFreeBlock
 c-file 0x0802C67C _ src/mem/absorb_next_free_block.c AbsorbNextFreeBlock
 
-# Modes (possibly sorted as "Menus"), see docs/memory-map/game_modes.md
+# Modes (possibly sorted as "Menus")
 c-file 0x0802C6B4 _ src/modes/tick_game_mode_stack.c TickGameModeStack
 c-file 0x0802C750 _ src/modes/init_game_mode_stack.c InitGameModeStack
 c-file 0x0802C7A8 _ src/modes/get_current_game_mode.c GetCurrentGameMode
@@ -1489,7 +1489,7 @@ c-file 0x08030978 _ src/palette/bind_obj_palette_slot.c BindObjPaletteSlot
 c-file 0x080309D4 _ src/palette/is_obj_palette_slot_reserved.c IsObjPaletteSlotReserved
 c-file 0x080309E8 _ src/palette/find_obj_palette_slot.c FindObjPaletteSlot
 
-# Particles, see docs/memory-map/particles.md
+# Particles
 c-file 0x08030A1C _ src/particles/load_particle_gfx.c LoadParticleGfx
 c-file 0x08030AC8 _ src/particles/reload_particle_gfx.c ReloadParticleGfx
 c-file 0x08030B70 _ src/particles/alloc_particle_emitter.c AllocParticleEmitter
@@ -1690,7 +1690,7 @@ c-file 0x080381F4 _ src/pscreen_folio_universitas/is_folio_universitas_card_new.
 c-file 0x08038220 _ src/pscreen_folio_universitas/clear_folio_universitas_new_cards.c ClearFolioUniversitasNewCards
 c-file 0x08038234 _ src/pscreen_folio_universitas/is_folio_universitas_card_unavailable.c IsFolioUniversitasCardUnavailable
 
-# Profile/GameCube? (pause subscreen: GameCube link), see docs/memory-map/gcn-link.md
+# Profile/GameCube? (pause subscreen: GameCube link)
 c-file 0x08038290 _ src/pscreen_gamecube/initialize_gamecube_link.c InitializeGameCubeLink
 c-file 0x08038320 _ src/pscreen_gamecube/update_gamecube_link.c UpdateGameCubeLink
 c-file 0x08038400 _ src/pscreen_gamecube/update_gamecube_link_status_text.c UpdateGameCubeLinkStatusText
@@ -1810,7 +1810,7 @@ c-file 0x0803B158 _ src/ram_clear/clear_vram.c ClearVram
 c-file 0x0803B16C _ src/ram_clear/clear_oam_dma.c ClearOamDma
 c-file 0x0803B190 _ src/ram_clear/clear_palette_ram_dma.c ClearPaletteRamDma
 
-# Rand? (MT19937 PRNG), see docs/memory-map/rng.md
+# MT19937 PRNG
 c-file 0x0803B1B8 _ src/random/regenerate.c Mt19937Regenerate
 c-file 0x0803B314 _ src/random/alloc_state.c Mt19937AllocState
 c-file 0x0803B330 _ src/random/auto_seed.c Mt19937AutoSeed
@@ -1958,7 +1958,7 @@ c-file 0x0803EBA8 _ src/scroll/decode_bg_tileset_offset_table.c DecodeBgTilesetO
 c-file 0x0803EC68 _ src/scroll/write_bg_tilemap_entry.c WriteBgTilemapEntry
 c-file 0x0803ECF0 _ src/scroll/release_bg_tile_row.c ReleaseBgTileRow
 
-# Serial (link cable), see docs/memory-map/serial.md
+# Serial (link cable)
 c-file 0x0803EDA8 _ src/serial/process_serial_messages.c ProcessSerialMessages
 c-file 0x0803EE70 _ src/serial/queue_serial_message.c QueueSerialMessage
 c-file 0x0803EEE4 _ src/serial/set_serial_callbacks.c SetSerialCallbacks
@@ -2194,7 +2194,7 @@ c-file 0x08044C00 _ src/trigger_actor/spawn_switch_actor.c SpawnSwitchActor
 c-file 0x08044D24 _ src/trigger_actor/tick_switch_actor.c TickSwitchActor
 c-file 0x08044F54 _ src/trigger_actor/handle_switch_actor_touch.c HandleSwitchActorTouch
 
-# Video (scanline effects), see docs/memory-map/scanline_effects.md
+# Video (scanline effects)
 c-file 0x08045094 _ src/video/init_scanline_effects.c InitScanlineEffects
 c-file 0x080450D4 _ src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
 c-file 0x08045118 _ src/video/insert_scanline_effect_entry.c InsertScanlineEffectEntry
@@ -2256,7 +2256,7 @@ c-file 0x08046CA4 _ src/world_actors/mark_room_actor_consumed.c MarkRoomActorCon
 
 # End of game code section, start of 3rd party code section
 
-# Krawall, see docs/memory-map/krawall.md
+# Krawall
 c-file-gcc3 0x08046D0C _ 3rd_party/krawall/general.c general
 c-file-gcc3 0x08046D2C _ 3rd_party/krawall/directsound.c directsound
 c-file-gcc3 0x08046ED0 _ 3rd_party/krawall/mixer.c mixer

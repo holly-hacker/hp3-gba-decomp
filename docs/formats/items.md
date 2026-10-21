@@ -65,8 +65,7 @@ depending on buy/sell mode; `UpdateShopBuyList` (`0x080416CC`) compares
 `nBuyPrice` against the player's Sickle count to gate a purchase.
 
 **Buyability is gated by shop-tab membership, not `nBuyPrice`.** The
-shop (Fred and George's, `src/store/`; see
-[`game_modes.md`](../memory-map/game_modes.md)) has 7
+shop (Fred and George's, `src/store/`) has 7
 tabs -- Miscellaneous, Belts, Charms, Gloves, Boots, Hats, Cloaks --
 each a fixed item-id list in `src/store/shop_stock.c`, pointed
 at by `g_apShopStockLists` (`src/store/shop_stock_lists.c`,

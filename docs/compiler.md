@@ -147,8 +147,7 @@ wrong value.
 
 ## Krawall: GCC 3.0.2 — PROVEN
 
-Krawall (`3rd_party/krawall/`, see
-[`memory-map/krawall.md`](memory-map/krawall.md)) is compiled with FSF
+Krawall (`3rd_party/krawall/`) is compiled with FSF
 GCC 3.0.2, `-O3 -mthumb-interwork -fno-builtin`, Thumb (`-mthumb`) for
 `c-file-gcc3` rows and ARM (`-marm`) for `c-file-gcc3-arm` rows.
 `krapPlay` calls `bzero`, which GCC 3.0.2 turns into a `memset` call

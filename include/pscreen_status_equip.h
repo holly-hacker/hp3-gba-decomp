@@ -4,8 +4,7 @@
 #include "modes.h"
 #include "actor.h"
 
-// Pause menu Status/Equip slot select, game mode 0x0E; see
-// docs/memory-map/game_modes.md.
+// Pause menu Status/Equip slot select, game mode 0x0E.
 
 // Slot select (mode 0x0E): one entry per equipment slot, in a 2x3 grid.
 typedef struct {

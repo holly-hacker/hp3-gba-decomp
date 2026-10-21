@@ -4,7 +4,7 @@
 
 // Stages a battle effect script into g_effectStaging, spawns the effect
 // actor, then clears the attacker's anim state in FightState. Returns the
-// spawned actor; no call site uses the value. See docs/memory-map/battle.md.
+// spawned actor; no call site uses the value.
 Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage)
 {
     Actor *actor;

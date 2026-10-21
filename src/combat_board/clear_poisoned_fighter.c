@@ -9,7 +9,7 @@
 // damage, and refreshes the sprite (undoes the poison discoloration/anim).
 // Player-only: called even for an enemy fighter, but only ever does
 // anything for a live Poisoned status, and every source of Poisoned so far
-// is player-facing (see docs/memory-map/battle.md).
+// is player-facing.
 void ClearPoisonedFighter_candidate(u8 fighterIndex)
 {
     BattleFighter *fighter = &g_pFightState->pFighters[fighterIndex];

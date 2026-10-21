@@ -3,7 +3,7 @@
 #include "types.h"
 #include "math.h"
 
-// BG layer scroll/affine state and tile data decoding; see docs/memory-map/frame_systems.md.
+// BG layer scroll/affine state and tile data decoding.
 
 // A BGxCNT value. dwControl in ROM tables is this word; the low half is the register.
 typedef struct BgControl {

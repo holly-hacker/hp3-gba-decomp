@@ -28,8 +28,7 @@ which only happens if the stride and count are both right. Indexed by
 the current room/map index, i.e. `g_bCurrentRoomId` (the same value
 `InitializeOverworld` reads out of
 `g_bCurrentGameModeArg2`, RAM `0x03003EFC` -- the current game mode's
-second argument slot, mirroring `g_dwPendingGameModeArg2`
-(`docs/memory-map/game_modes.md`); for `Overworld`/`RoomMode` that
+second argument slot, mirroring `g_dwPendingGameModeArg2`; for `Overworld`/`RoomMode` that
 argument is the room index, but the slot's meaning is mode-dependent in
 general, so it is not itself a room-id symbol). Consumed by
 `InitializeOverworld` (`0x080297A0`), which is one function through `0x0802A14B`
@@ -173,8 +172,7 @@ about how room content is placed.
 - `g_ColorCyclesDefault` (`0x0806580C`) and `g_ColorCyclesRoom12` (`0x08065814`): 8-byte
   `ColorCycleTable`s, `u16` count (1), `u16` padding, then one `ColorCycleDesc`
   `{start color, color count, delay, flags}` (`{8, 8, 3, 1}` and `{0x68, 8, 3, 1}`).
-  `SetupColorCycles` starts them as palette color cycles (see
-  [`../memory-map/palette.md`](../memory-map/palette.md)); room 12 uses its own table and
+  `SetupColorCycles` starts them as palette color cycles; room 12 uses its own table and
   every room without a switch arm uses the default.
 - `g_pRoomQuestMusicOverride` is 55 words, ending exactly at `0x0806580C`.
 
