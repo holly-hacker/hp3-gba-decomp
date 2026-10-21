@@ -30,7 +30,6 @@ typedef struct {
     u8 bFighterIndex;          // 0x1A
     u8 bTileCol;               // 0x1B
     u8 bTileRow;               // 0x1C
-    u8 pad_1D[3];
     ActorAnimState anim;       // 0x20
     u8 pad_34[0x0C];
     RoomActorScriptBlock script;  // 0x40
@@ -72,7 +71,6 @@ typedef struct {
 typedef struct {
     u8 bTileCol;               // 0x00
     u8 bTileRow;               // 0x01
-    u8 pad_02[2];
     RoomTileAnimation tileAnim;  // 0x04
 } RoomActorFloorItemRecord;
 
@@ -126,7 +124,6 @@ typedef struct {
     u8 bPickupMarkerCount;     // 0x07
     u8 bWanderingMonsterCount; // 0x08: not serialized
     u8 bSwitchState;           // 0x09
-    u8 pad_0A[2];
     FixedPoint playerPos;      // 0x0C
     RoomActorDefaultRecord aDefault[ROOM_ACTOR_STATE_MAX_RECORDS];        // 0x14
     RoomActorKind4Or7Record aKind4Or7[ROOM_ACTOR_STATE_MAX_RECORDS];      // 0xD94

@@ -30,7 +30,6 @@ typedef struct RoomScriptRecord {
 typedef struct RoomScriptCallFrame {
     RoomScriptRecord *pReturn;
     u8 bRow;
-    u8 pad[3];
 } RoomScriptCallFrame;
 
 typedef void (*RoomScriptOpcodeHandler)(RoomScriptRecord *pRecord);

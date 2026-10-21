@@ -44,7 +44,6 @@ typedef struct BgTileAnimEntry {
     u8 bFrame;
     u8 bTimer;
     u16 wTileOffset;  // first tile in the character block
-    u16 pad_06;
     const BgTileAnimHeader *pAnimation;
     const BgControlWord *pBgControl;
 } BgTileAnimEntry;

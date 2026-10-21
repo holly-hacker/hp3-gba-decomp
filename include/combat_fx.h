@@ -44,7 +44,6 @@ typedef struct EffectBgRecord {
     u16 wUnk06;         // 0x06
     void *pControls;    // 0x08
     u16 wUnk0C;         // 0x0C
-    u16 pad_0E;         // 0x0E
 } EffectBgRecord;
 
 // What EffectBgRecord::pControls points at: an 8-byte control block, then streams.

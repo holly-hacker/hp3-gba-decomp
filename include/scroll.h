@@ -44,7 +44,6 @@ typedef struct BgTileCacheEntry {
     u16 wRefcount;
     u16 wTileId;
     u16 wNext;  // next entry in the hash chain, 0xFFFF ends it
-    u16 pad_06;
 } BgTileCacheEntry;
 extern BgTileCacheEntry *g_apBgTileCacheEntries[2];  // 0x400 and 0x200 entries
 extern u16 *g_apBgTileCacheBuckets[2];               // chain heads by tile id & 0x7FF / 0x3FF
@@ -85,7 +84,6 @@ extern void InitRoomBgState(void);
 extern u16 FindBgTileCacheEntry(u16 tileId, u32 sizeClass);
 typedef struct RoomBgAux {
     u8 bFlags;
-    u8 pad_01[3];
     s32 aPosA[2];
     s32 aPosB[2];
 } RoomBgAux;

@@ -60,7 +60,6 @@ typedef struct JoybusLinkState {
     volatile u8 bCommand;         // 0x07: command byte of the transfer in progress, 0 for none
     u8 pad_08;
     volatile u8 bInitialSetup;    // 0x09: set while InitJoybusSession runs SetupJoybusHardware
-    u8 pad_0A[2];
     u32 dwGameCode;               // 0x0C: this cartridge's header game code, sent on every JOY reset
     u32 dwPeerGameCode;           // 0x10: the game code the GameCube sent
     u32 dwExpectedPeerGameCode;   // 0x14: "GAZE"

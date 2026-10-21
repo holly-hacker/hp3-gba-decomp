@@ -5,7 +5,6 @@
 typedef struct SetScreenWindowRecord {
     u32 dwOpcode;
     u8 bWindowId;
-    u8 pad_05[1];
     s16 nX0;  // pixels
     s16 nY0;
     s16 nX1;

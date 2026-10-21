@@ -67,16 +67,14 @@ extern u32 AllocOamEntry(void);
 extern void FreeOamEntry(u8 index);
 
 // bios_ObjAffineSet's input struct (see include/hw/bios.h): reciprocal
-// scale (8.8 fixed) plus rotation angle; the trailing pad word gives
-// each entry an 8-byte stride. AllocAffineSlot/FreeAffineSlot manage
-// g_abAffineSlotUsed/g_bAffineSlotHighWaterMark (see ram_symbols.us.inc);
+// scale (8.8 fixed) plus rotation angle, in 8-byte entries.
+// AllocAffineSlot/FreeAffineSlot manage g_abAffineSlotUsed/g_bAffineSlotHighWaterMark (see ram_symbols.us.inc);
 // GetActorAffineSlotId/SetActorAffineSlotId read/write the allocated
 // index in an OamEntry's affine index bits (see OAM_ATTR1).
 typedef struct ObjAffineSource {
     s16 sx;
     s16 sy;
     u16 theta;
-    u16 pad6;
 } ObjAffineSource;
 extern ObjAffineSource g_aObjAffineSetSource[32];  // 0x03005014
 extern u8 g_bAffineSlotHighWaterMark;

@@ -90,7 +90,6 @@ typedef struct ParticleEmitter {
     s8 abVelRange[4];        // 0x44
     u8 bAnimTicks;           // 0x48
     u8 bParalysisEffectFlag_candidate;  // 0x49, set on the emitter spawned by SpawnParalysisEffect
-    u8 pad_4A[0x02];        // -> 0x4C
 } ParticleEmitter;
 
 // ParticleEmitter.bMode / Particle.bMode: how a particle's velocity is chosen.
@@ -130,7 +129,6 @@ typedef struct Particle {
     u8 bMode;                // 0x42
     u8 bParam;               // 0x43, direction index
     u8 bUnk44;               // 0x44
-    u8 pad_45;
     s16 wParam46;            // 0x46, mode 6 gravity: nVelY grows by wParam46 << 4 per tick
 } Particle;
 

@@ -130,7 +130,6 @@ typedef struct FightState {
     /*0x1060*/ u8 bScreenShakeTimer_candidate;
     /*0x1061*/ u8 bBattleState;              // TickBattleTurnStateMachine's dispatch value, 0-7
     /*0x1062*/ u8 bSavedBattleState;         // bBattleState stashed across state 5 (message wait), restored after
-    /*0x1063*/ u8 pad_1063;
     /*0x1064*/ u32 dwStateJustEntered;       // one-shot flag consumed by each state's own tick, set whenever bBattleState changes
     /*0x1068*/ u16 wBattleStateTimer;        // generic per-state countdown, meaning is state-specific
     /*0x106A*/ u16 wNextFighterTurnKey_candidate;  // nFaintedFlag of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder_candidate
@@ -139,7 +138,6 @@ typedef struct FightState {
     /*0x106E*/ u8 bUnk106E;    // zeroed by InitializeBattle, only on a fresh (non-resumed) battle
     /*0x106F*/ u8 bFighterCount;
     /*0x1070*/ u8 bMenuScreen;  // TickBattleMenuInput's own screen selector; 0, 0xa, and bit 0x80 all mean no active screen
-    /*0x1071*/ u8 pad_1071[0x1074 - 0x1071];
     /*0x1074*/ u32 dwStatsTextTileCursor;  // DrawString tile cursor of the fighter and enemy stats panels
     /*0x1078*/ u32 dwTextTileCursor;  // DrawTextLines tile cursor of battle messages
     /*0x107C*/ u16 awPalette[0x200];  // BG and OBJ palette, DMAed to palette RAM at the HUD scanline
@@ -149,13 +147,11 @@ typedef struct FightState {
     /*0x147F*/ u8 bWallEndLine;  // scanline ending the BG1 wall band (BG1VOFS 264 - line above it); moves with the camera
     /*0x1480*/ u8 bBonusRewardFlags;  // BattleRewardFlags; snapshotted to g_dwBattleRewardFlagsSnapshot by ExitBattle
     /*0x1481*/ u8 bEnemyScalePercent_candidate;  // set by InitializeBattle from Harry's level: 0x40/0x30/0x20 for level 0/1/2+
-    /*0x1482*/ u8 pad_1482[0x1484 - 0x1482];
     /*0x1484*/ s32 nTargetFlashEffect;  // palette effect handle flashing the targeted fighter's sprite
     /*0x1488*/ u32 dwRonSpecialUsed;  // set once Ron has used his Special Move this battle; grays the menu entry while nonzero
     /*0x148C*/ u32 dwHermioneSpecialUsed;  // set once Hermione has used her Special Move this battle; grays the menu entry while nonzero
     /*0x1490*/ u8 pad_1490;
     /*0x1491*/ u8 bFaintedAllyCount;
-    /*0x1492*/ u8 pad_1492[0x1494 - 0x1492];
     /*0x1494*/ u32 dwDefeatCheckPending_candidate;  // set to 1 by any lethal-HP-threshold hit (ApplyDamageToEnemyFighter,
                                                      // ApplyDamageToAllyFighter, spell insta-kills); cleared by whichever
                                                      // code path reacts to it after its own CheckBattleDefeat call
@@ -166,7 +162,6 @@ typedef struct FightState {
     /*0x14A5*/ u8 abBattleResumeArgs[3];  // PushGameMode_3 arguments that re-enter Battle from the Help and
                                           // Folio Universitas screens; [2] is 0xFF when no card-combo restriction applies
     /*0x14A8*/ u8 bPendingStatusMessageVariant_candidate;
-    /*0x14A9*/ u8 pad_14A9[0x14AC - 0x14A9];
     /*0x14AC*/ struct {
         u16 wDamage;
         u8 bEffectId;

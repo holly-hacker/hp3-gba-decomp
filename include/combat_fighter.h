@@ -36,7 +36,6 @@ typedef struct CharacterLevelEntry {
     u8 bAccuracy;
     u8 bDefenseFactorPercent;
     u8 bMagicDefensePercent;
-    u8 pad_0A[2];
 } CharacterLevelEntry;
 
 // One row per MonsterTable entry.

@@ -37,7 +37,6 @@ typedef struct CameraFocusSlot {
     IntPoint scrollMax;        // 0x28
     Actor *pTarget;            // 0x30, actor the focus follows
     u16 wPinned;               // 0x34, 0 = follow pTarget every frame, 1 = hold
-    u8 pad_36[0x02];           // -> 0x38
 } CameraFocusSlot;
 extern CameraFocusSlot g_aCameraFocusSlots[];
 

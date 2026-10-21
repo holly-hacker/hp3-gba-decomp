@@ -54,7 +54,6 @@ typedef struct {
     u8 bSettleRow;          // 0x182, rows 0-5 rise into gaps, 6 closes columns, 7 done
     u8 abColumnGaps[WIZARD_CRACKER_POP_IT_COLUMNS];  // 0x183, empty cells above bSettleRow
     u8 bLandSoundId;        // 0x18C, 0xAA-0xB1, rising with each cracker that lands
-    u8 pad_18D[3];
     s32 nCursorColumn;      // 0x190
     s32 nCursorRow;         // 0x194
     s32 nColumnCount;       // 0x198, columns still holding crackers

@@ -81,7 +81,6 @@ typedef struct BgLayer {
     s16 nPb;           // 0x50
     s16 nPc;           // 0x52
     s16 nPd;           // 0x54
-    u8 pad_56[0x02];
     s32 nRefX;         // 0x58: BG affine reference point
     s32 nRefY;         // 0x5C
     BgWobble wobble;   // 0x60
@@ -218,7 +217,6 @@ typedef struct TileDataHeader {
     u8 bUnused : 5;
     u8 bCodec : 2;  // 0 copy, 1 run-length, 2 LZ77, 3 GammaLz
     u8 bUnused2 : 1;
-    u8 pad_01;
     u16 wSize;      // bytes of tile data after the header
     u8 aData[0];    // the encoded data
 } TileDataHeader;

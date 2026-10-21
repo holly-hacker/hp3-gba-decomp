@@ -16,7 +16,6 @@ typedef struct SerialPlayerState {
     s8 bPlayerId;           // 0x05, this GBA's multiplayer terminal ID: SIOCNT bits 4-5
                              // (0 = parent, 1-3 = child) sampled by SerialTimer3Intr
                              // while linked; -1 when no session
-    u8 pad_06[0x02];        // -> 0x08
     s32 (*pfnWaitCallback)(void); // 0x08, polled by SerialConnect while SIOCNT is not ready; 0 aborts
     u16 *pSendCurrent;      // 0x0C
     u16 *pSendNext;         // 0x10, receives each message SubmitSerialMessage checksums
