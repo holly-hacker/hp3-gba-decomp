@@ -3,7 +3,7 @@
 @ Hand-written ARM-mode unsigned divide: quotient in r0, remainder in
 @ r1. A 32-way binary-search dispatch on the dividend's bit length into
 @ unrolled restoring division. Not compiler runtime -- libgcc's are the
-@ Thumb routines in this directory.
+@ Thumb lib-object routines.
 	arm_func_start DivideUnsignedWorker
 DivideUnsignedWorker: @ 0x080002E0
 	cmp r1, #1

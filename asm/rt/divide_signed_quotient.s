@@ -1,7 +1,7 @@
 .text
 
 @ Hand-written ARM-mode signed divide: quotient in r0. Not compiler
-@ runtime -- libgcc's are the Thumb routines in this directory.
+@ runtime -- libgcc's are the Thumb lib-object routines.
 	arm_func_start DivideSignedQuotient
 DivideSignedQuotient: @ 0x0800027C
 	ands r3, r1, #0x80000000

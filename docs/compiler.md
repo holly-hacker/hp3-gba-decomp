@@ -17,29 +17,9 @@ GCC 3.0.2 (see "Krawall: GCC 3.0.2" below).
 ## Proof: the library block
 
 A contiguous run of libgcc and libc objects near the end of the code
-region reproduces **byte for byte** from a locally built agbcc
-`libgcc.a`/`libc.a` (relocated bytes resolve at link time):
-
-| US | JP | object | bytes |
-|---|---|---|---|
-| `0804A2C0` | `0804A1EC` | `_call_via_rX` | 60 |
-| `0804A2FC` | `0804A228` | `_divsi3` | 148 |
-| `0804A390` | `0804A2BC` | `_dvmd_tls` (`__div0`) | 4 |
-| `0804A394` | `0804A2C0` | `_modsi3` | 208 |
-| `0804A464` | `0804A390` | `_udivsi3` | 120 |
-| `0804A4DC` | `0804A408` | `_umodsi3` | 192 |
-| `0804A59C` | `0804A4C8` | `dp-bit` | 3484 |
-| `0804B338` | `0804B264` | `fp-bit` | 2380 |
-| `0804BC84` | `0804BBB0` | `_lshrdi3` | 52 |
-| `0804BCB8` | `0804BBE4` | `_muldi3` | 112 |
-| `0804BD28` | `0804BC54` | `_negdi2` | 24 |
-| `0804BD40` | `0804BC6C` | libc `bzero` | 28 |
-| `0804BD5C` | `0804BC88` | libc `memcpy` | 96 |
-
-The build links these objects unchanged from the agbcc install through
-`lib-object` rows in the manifest. `dp-bit` and `fp-bit` each keep a
-`.bss` variable (`thenan`), placed at the RAM address the row gives: US
-`0x030062A0`/`0x030062B8`, JP `0x030062F0`/`0x03006308`.
+region (`_call_via_rX` through libc `memcpy`) reproduces **byte for byte**
+from a locally built agbcc `libgcc.a`/`libc.a`. The build links them
+unchanged through the manifest's `lib-object` rows.
 
 `dp-bit` and `fp-bit` are ~5.8 KB of compiler-generated Thumb from C, so
 the match pins the code generator, not just the library source.
@@ -96,54 +76,6 @@ frame the ROM lacks. The game's ARM routines (`src/arm_routines/`, from
 
 Krawall's ARM code, in the IWRAM image and `mixRampOut`, comes from the
 Krawall compiler below.
-
-The ARM routines at `0x0800027C`, `0x080002A4` and `0x080002E0` are
-hand-written assembly, not compiler runtime: `0x080002E0` is a 32-way
-binary-search dispatch into unrolled restoring division, and the two
-wrappers above it return the remainder through a pointer in `r2`. The
-compiler's own division helpers are the Thumb `_divsi3`/`_modsi3`/
-`_udivsi3`/`_umodsi3` objects listed above.
-
-## Optimizer quirk: cross-branch loop-invariant merging
-
-`gcc/loop.c`'s `-O2` invariant-hoisting pass can merge two textually-separate
-loads in a loop's `if`/`else` branches into one value hoisted above the loop
-and cached in a register, even though only one branch executes per
-iteration -- e.g. a global-pointer address that the real ROM instead
-reloads via a fresh literal-pool load in each branch, uncached.
-
-Mechanism (checked against the pinned agbcc revision, see "Reproducing"
-below): `find_and_verify_loops` records each invariant-looking `set` as a
-`struct movable`. `combine_movables` unifies two movables whenever
-`n_times_set[regno] == 1` for both and `rtx_equal_for_loop_p` finds their
-generated RTL identical -- true for any two branches loading the same
-global through the same addressing mode, regardless of C-level phrasing, so
-renaming variables or splitting the expression differently does not defeat
-the merge itself. `move_movables` then hoists the merged pair only if
-`threshold * savings * lifetime >= insn_count` (`threshold` is a
-target-wide constant from `regclass.c`; `savings`/`lifetime`/`insn_count`
-are specific to the loop's actual instruction sequence, and merging roughly
-doubles the first two). A residual "extra register-cached global" diff is
-therefore still closable by hand: match real's exact statement and branch
-order (not just its logic) so the surrounding loop's cost numbers drop the
-merged candidate back under threshold. `DecompressDialogText`
-(`src/huffman/decompress_dialog_text.c`) is a worked example -- initializing
-`pending`/`pendingFlag` before the null check, and writing the
-pending/pendingFlag update as `if (decodedByte > 0xef && !pendingFlag)
-{...} else if (pendingFlag) {...} else {...}` (matching real's exact
-fallthrough/branch-target layout, no `goto`) both push the hoist back below
-threshold. A change that raises `n_times_set[regno]` for one side, or
-changes `insn_count`, can also break the merge or its hoist.
-
-A separate quirk: at a block with two predecessors, GCC 2.9's `cse.c` can
-eliminate a redundant sub-expression (e.g. a repeated `x << 24`) but still
-re-derive the final value at the join point instead of reusing either
-predecessor's already-computed copy, when that value is exposed only
-through a persistent named local rather than repeated inline expressions.
-Re-deriving the expression at each use site instead of caching it in a
-local lets CSE find (or not find) the sharing the way real's compiler did,
-when a residual diff looks like a register/recompute choice rather than a
-wrong value.
 
 ## Krawall: GCC 3.0.2 — PROVEN
 

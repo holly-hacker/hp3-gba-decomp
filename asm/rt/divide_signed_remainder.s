@@ -2,7 +2,7 @@
 
 @ Hand-written ARM-mode signed divide/modulo: quotient in r0, remainder
 @ stored through the pointer passed in r2. Not compiler runtime --
-@ libgcc's are the Thumb routines in this directory.
+@ libgcc's are the Thumb lib-object routines.
 	arm_func_start DivideSignedRemainder
 DivideSignedRemainder: @ 0x080002A4
 	stmdb sp!, {r2}
