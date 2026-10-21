@@ -1,37 +1,30 @@
 # Agent guide
 
 Matching decompilation of *Harry Potter and the Prisoner of Azkaban* for the
-Game Boy Advance (Griptonite Games / EA, 2004). Both USA/Europe (`us`) and
-Japan (`jp`) have byte-identical builds from the C, assembly and asset
-sources in this repository. Asset extraction is supported where formats are
-understood. Verify each version independently.
+Game Boy Advance (Griptonite Games / EA, 2004). All code is decompiled: both
+USA/Europe (`us`) and Japan (`jp`) build byte-identical ROMs from the C,
+assembly and asset sources in this repository. Verify each version
+independently.
 
 ## Hard rules
 
 1. **Preserve matching.** Every commit must keep both ROM builds byte-identical
-   to their verified baseroms. Never commit a change that breaks matching.
+   to their verified baseroms.
 2. **Keep ROM content out of git.** Do not commit donor ROMs, extracted game
-   assets, or raw ROM blobs. Local asset source under `data/` must be ignored;
-   check ignore coverage when adding a subsystem. Curated decompiled code and
-   reconstructed C tables follow the existing `src/` conventions.
-3. **Keep the matching toolchain fixed.** Compiler versions and flags are part
-   of matching. Use the profiles in `tools/c/compile_c.py`; do not upgrade or
-   reflag the compiler to make a change compile or match.
-4. **Verify ROM claims against bytes.** Confirm addresses, instruction mode,
-   layouts, and semantics before encoding them as facts. Compute address,
-   offset, size, and stride arithmetic with a calculator or script, never
-   mentally. Keep hypotheses explicitly marked.
-5. **Commit curated knowledge, written standalone.** Track boundaries,
-   symbols, code, format definitions, and documentation, per version where
-   address-bearing. Regenerable output belongs in ignored directories
-   (normally `build/`) with a reproducible command. Docs, comments, and commit
-   messages state current facts and rationale, without conversation history,
-   abandoned guesses, or session references.
+   assets, or raw ROM blobs. Local asset source under `data/` must be ignored.
+3. **Keep the matching toolchain fixed.** Use the compiler profiles in
+   `tools/c/compile_c.py`; do not upgrade or reflag the compiler.
+4. **Verify ROM claims against bytes.** Compute address, offset, size, and
+   stride arithmetic with a script, never mentally.
+5. **Commit curated knowledge, written standalone.** Regenerable output
+   belongs in ignored directories (normally `build/`). Docs, comments, and
+   commit messages state current facts, without conversation history or
+   session references.
 
 The user commits and pushes. Do not run `git commit` without explicit
 authorization for that specific commit. Never run `git push`. Commit messages
-should identify the functions, regions or subsystem changed; omit agent
-session trailers and retain applicable `Co-Authored-By` attribution.
+identify the functions, regions or subsystem changed; omit agent session
+trailers and retain applicable `Co-Authored-By` attribution.
 
 The top-level `README.md` and `mdbook/` are human-maintained: propose
 corrections to the user instead of editing them. Preserve unrelated work and
@@ -39,110 +32,53 @@ local asset edits.
 
 ## Repository map
 
-- `functions.{us,jp}.cfg`: function names and ARM/Thumb entry points for
-  gbadisasm. `regions.{us,jp}.txt`: build manifests (assembly, `c-file`
-  regions, asset directives, labels inside raw regions). Keep both sorted by
-  address.
-- `ram_symbols.{us,jp}.inc`: fixed RAM symbol addresses.
-- `graphics/<feature>.yaml`: graphics groups shared by both versions.
-- `lib-object` manifest rows link libgcc and newlib objects unchanged from
-  agbcc's installed `libgcc.a`/`libc.a`.
+- `regions.{us,jp}.txt`: build manifests (`c-file` rows, assembly, asset
+  directives). `functions.{us,jp}.cfg`: function names and ARM/Thumb entry
+  points. `ram_symbols.{us,jp}.inc`: RAM symbol addresses. Keep all sorted
+  by address.
+- `src/` and `include/`: game C, organized by the code blocks in
+  `tools/rom_layout.json`.
 - `3rd_party/krawall/`: the Krawall audio library (LGPL-2.1-or-later),
-  with headers in `include/3rd_party/krawall/`; `c-file-gcc3`,
-  `asm-file-cpp` and `c-section` rows (`docs/c.md`). Game code includes
-  its public `"3rd_party/krawall.h"`, generated into `build/include/`.
-- The ignored `asm/krawall/` holds analysis dumps, not build inputs.
-- `build/<ver>/`: generated disassembly, objects, linker script, and ROM.
-  Unclaimed manifest ranges are filled from the baserom with `.incbin`.
-  `build/cache/` is a safe-to-delete content-addressed cache.
-- `tools/coverage.py`: manifest coverage by ROM area/kind (and by code block
-  with `--blocks`). The per-version code/data areas and named code blocks
-  are in `tools/rom_layout.json`, shared with `tools/progress_report.py`.
-- `docs/README.md`: findings index and confidence definitions.
-  `docs/formats/` describes data.
-
-## ROM mapping
-
-Read the relevant subsystem documentation and existing symbols before tracing
-new code. Record findings in the owning document and link to it from related
-documents rather than duplicating facts. Use the confidence levels in
-`docs/README.md`: **PROVEN**, **STRUCTURAL MATCH**, and **UNCONFIRMED**.
-
-Matched C under `src/` is authoritative: it is verified to compile to the ROM
-bytes, so prefer it (and its headers) over prose docs when they disagree. To
-name a global, look up its address in `ram_symbols.<ver>.inc` and cite the
-symbol rather than the raw address.
-
-Use `sub_<ADDR>` for unidentified functions and descriptive names when their
-behavior is supported by evidence. Retain `_candidate` for provisional
-identifications. Sync confirmed names into the function config, manifest,
-declarations, and documentation.
-
-Confirm the complete extent before adding a manifest region: walk all reachable
-branches to termination, account for literal pools and alignment, and prove
-table counts and strides. A truncated region can still pass the whole-ROM
-comparison because its remainder is filled from the baserom. Leave uncertain
-ranges raw and document the candidate boundaries.
-
-Verify function boundaries and ARM/Thumb interpretation against ROM bytes and
-`build/<ver>/full_disasm.s`. Failed discovery or search does not prove code is
-absent. If available, a Ghidra MCP can be used for additional verification.
+  headers in `include/3rd_party/krawall/`.
+- `graphics/<feature>.yaml`: graphics groups shared by both versions.
+- `docs/`: compiler notes, manifest row kinds (`docs/c.md`) and data
+  formats (`docs/formats/`).
+- `build/<ver>/`: generated objects, linker script, disassembly and ROM.
 
 ## C code
 
-Read `docs/compiler.md` and `docs/c.md` before changing C, and confirm every
-change with the ROM comparison. `just diff-region <name> <ver>` shows
-instruction differences in a region.
-
-The compiler is GCC `2.9-arm-000512` (agbcc); game C is Thumb with
-interworking. ARM-mode C uses `agbcc_arm` via `c-file-arm` rows.
-
-Krawall is compiled with GCC 3.0.2 instead (`docs/compiler.md`). Its source
-is the public Krawall source (commit `9a2b869`), edited as little as the
-ROM requires: keep its file layout, names, formatting and comments, mark
-each change with a `// HP3-GBA: <what differs>` comment, and note in the
-license header that the file was modified. The style rules below do not
-apply to it.
-
-Apply every change to both US and JP in the same pass and verify both
-builds.
+Read `docs/compiler.md` and `docs/c.md` before changing C. Game C is Thumb
+with interworking, compiled with GCC `2.9-arm-000512` (agbcc); Krawall uses
+GCC 3.0.2. Apply every change to both US and JP and verify both builds.
 
 Use C89 and existing types from `include/`. Raw pointers (casts of integer
 addresses) must never appear in C code; the only exception is
-`include/hw/io_regs.h`. One region per source file; keep
-code and data separate. RAM variables are `extern` declarations with addresses
-in `ram_symbols.<ver>.inc`. Account for agbcc's four-byte struct size rounding
-and verify layouts against ROM accesses.
+`include/hw/io_regs.h`. RAM variables are `extern` declarations with
+addresses in `ram_symbols.<ver>.inc`.
+
+Krawall follows the public Krawall source (commit `9a2b869`): keep its
+layout, names, formatting and comments, and mark each difference with a
+`// HP3-GBA: <what differs>` comment. The style rules above do not apply.
 
 ## Assets
 
 `extract` converts the donor ROM into local editable `data/` source; `pack`
 converts that source into build input; `dump` produces analysis output.
-Extraction can overwrite local edits: never run it automatically on builds or
-over hand-edited assets.
-
-For a new subsystem, document the format in `docs/formats/`, follow the
-existing extractor/packer/codec pattern under `tools/`, add manifest support
-and Just recipes, and verify byte-exact round trips. Add extraction to
-`extract-all` when it supplies required build inputs. A new graphics format is
-a kind module in `tools/graphics/kinds/`; see `docs/formats/graphics.md`.
-Some tools are analysis-only or US-only; check before relying on them.
+Extraction can overwrite local edits: never run it over hand-edited assets.
+New formats are documented in `docs/formats/`, follow the existing
+extractor/packer pattern under `tools/`, and must round-trip byte-exactly.
 
 ## Commands and validation
 
 Run commands from the repository root inside `nix develop` (or
 `nix develop -c <command>`); `just --list` shows recipes, which default to
-`us`. On a fresh checkout, supply `baserom.{us,jp}.gba`, run `just setup`
-(verifies hashes), then `just extract-all`.
+`us`. On a fresh checkout, supply `baserom.{us,jp}.gba`, run `just setup`,
+then `just extract-all`.
 
-- `just compare <ver>`: compile, pack, link, validate sections, and compare
-  the ROM byte for byte against its baserom.
-- `just disasm-compare <ver>`: reassemble the full disassembly and compare.
-  Run after changing function seeds.
-- `just check-sorted`: validate manifest and function-config ordering.
-- `just check-all`: all of the above for both versions plus donor hashes. Run
-  before proposing a commit.
+- `just compare <ver>`: build and compare the ROM byte for byte.
+- `just diff-region <name> <ver>`: instruction differences in a region.
+- `just check-all`: every check for both versions. Run before proposing a
+  commit.
 
-Use checks appropriate to the files changed; documentation-only edits need
-reference and diff checks. Report what was verified and any unavailable checks
-without claiming an unrun build matches.
+Report what was verified and any unavailable checks without claiming an
+unrun build matches.
