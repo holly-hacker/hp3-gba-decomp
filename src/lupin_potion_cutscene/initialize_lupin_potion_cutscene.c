@@ -26,9 +26,9 @@ void InitializeLupinPotionCutscene(void)
     ReserveObjPaletteSlot(1);
     ReserveObjPaletteSlot(2);
     QueueObjPaletteLoad((const u16 *)gMainMenuPalette, 0, 0x10);
-    sub_08028AD4();
-    sub_08029558();
-    sub_08028F7C();
+    LoadLupinPotionCutsceneBgs();
+    SpawnLupinPotionCast();
+    ResetLupinPotionScripts();
 
     g_GameModeStackContext.dwModeState = 0;
     g_GameModeStackContext.dwCurrentGameModeArg2 = 0;

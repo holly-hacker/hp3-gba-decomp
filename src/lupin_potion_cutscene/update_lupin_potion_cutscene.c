@@ -26,20 +26,21 @@ void UpdateLupinPotionCutscene(void)
         {
             g_GameModeStackContext.dwModeState = 0;
             g_LupinPotionCutscene.nPanelOffset = 0x28;
-            sub_08029380();
+            CloseLupinPotionDialogPanel();
         }
-        for (i = 0; i < ARRAY_COUNT(g_LupinPotionCutscene.apPanelActor); i++)
+        for (i = 0; i < LUPIN_POTION_PANEL_PIECES; i++)
         {
             if (g_LupinPotionCutscene.apPanelActor[i] != NULL)
                 SetActorPosition(g_LupinPotionCutscene.apPanelActor[i], i << 5,
                                   g_LupinPotionCutscene.nPanelOffset + 0x9F);
         }
-        if (g_LupinPotionCutscene.pPanelActor8 != NULL)
-            SetActorPosition(g_LupinPotionCutscene.pPanelActor8, 0, g_LupinPotionCutscene.nPanelOffset + 0x9F);
+        if (g_LupinPotionCutscene.apPanelActor[LUPIN_POTION_PANEL_PIECES] != NULL)
+            SetActorPosition(g_LupinPotionCutscene.apPanelActor[LUPIN_POTION_PANEL_PIECES], 0,
+                             g_LupinPotionCutscene.nPanelOffset + 0x9F);
         if ((g_wKeysPressed & (KeySelect | KeyStart)) != 0)
         {
             g_GameModeStackContext.dwModeState = 4;
-            sub_08029380();
+            CloseLupinPotionDialogPanel();
         }
         break;
     case 1:
@@ -49,36 +50,37 @@ void UpdateLupinPotionCutscene(void)
             g_GameModeStackContext.dwModeState = 2;
             g_LupinPotionCutscene.nPanelOffset = 0;
         }
-        for (i = 0; i < ARRAY_COUNT(g_LupinPotionCutscene.apPanelActor); i++)
+        for (i = 0; i < LUPIN_POTION_PANEL_PIECES; i++)
         {
             if (g_LupinPotionCutscene.apPanelActor[i] != NULL)
                 SetActorPosition(g_LupinPotionCutscene.apPanelActor[i], i << 5,
                                   g_LupinPotionCutscene.nPanelOffset + 0x9F);
         }
-        if (g_LupinPotionCutscene.pPanelActor8 != NULL)
-            SetActorPosition(g_LupinPotionCutscene.pPanelActor8, 0, g_LupinPotionCutscene.nPanelOffset + 0x9F);
+        if (g_LupinPotionCutscene.apPanelActor[LUPIN_POTION_PANEL_PIECES] != NULL)
+            SetActorPosition(g_LupinPotionCutscene.apPanelActor[LUPIN_POTION_PANEL_PIECES], 0,
+                             g_LupinPotionCutscene.nPanelOffset + 0x9F);
         if ((g_wKeysPressed & (KeySelect | KeyStart)) != 0)
         {
             g_GameModeStackContext.dwModeState = 4;
-            sub_08029380();
+            CloseLupinPotionDialogPanel();
         }
     case 2:
     default:
         if ((g_wKeysPressed & (KeyA | KeyB)) != 0)
         {
-            if (sub_08029260() == 0)
+            if (ShowNextLupinPotionDialogLine() == 0)
                 g_GameModeStackContext.dwModeState = 3;
         }
         if ((g_wKeysPressed & (KeySelect | KeyStart)) != 0)
         {
             g_GameModeStackContext.dwModeState = 4;
-            sub_08029380();
+            CloseLupinPotionDialogPanel();
         }
         break;
     case 0:
         g_GameModeStackContext.dwCurrentGameModeArg2++;
-        sub_08028FD8();
-        sub_08029144();
+        RunLupinPotionCastScripts();
+        RunLupinPotionCameraScript();
         if ((g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart)) != 0)
             g_GameModeStackContext.dwModeState = 4;
         break;

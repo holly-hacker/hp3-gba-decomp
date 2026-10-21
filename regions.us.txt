@@ -1238,22 +1238,22 @@ c-file 0x08028760 _ src/list/list_remove.c List_Remove
 
 # Lupin (Lupin potion cutscene mode)
 c-file 0x0802878C _ src/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene
-c-file 0x0802887C 0x08028AD4 src/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
-thumb-func 0x08028AD4 sub_08028AD4
-thumb-func 0x08028BAC sub_08028BAC
-thumb-func 0x08028D30 sub_08028D30
-thumb-func 0x08028F7C sub_08028F7C
-thumb-func 0x08028FD8 sub_08028FD8
-thumb-func 0x08029144 sub_08029144
-thumb-func 0x08029260 sub_08029260
-thumb-func 0x08029380 sub_08029380
-thumb-func 0x080293DC sub_080293DC
-thumb-func 0x08029490 sub_08029490
-c-file 0x08029528 0x08029558 src/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
-thumb-func 0x08029558 sub_08029558
-thumb-func 0x08029584 sub_08029584
-thumb-func 0x080295C4 sub_080295C4
-thumb-func 0x080295E0 LupinPotionPanelScanlineCallback_candidate
+c-file 0x0802887C _ src/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
+c-file 0x08028AD4 0x08028BAC src/lupin_potion_cutscene/load_lupin_potion_cutscene_bgs.c LoadLupinPotionCutsceneBgs
+thumb-func 0x08028BAC SpawnLupinPotionCastActor
+thumb-func 0x08028D30 TickLupinPotionCastActor
+c-file 0x08028F7C 0x08028FD8 src/lupin_potion_cutscene/reset_lupin_potion_scripts.c ResetLupinPotionScripts
+thumb-func 0x08028FD8 RunLupinPotionCastScripts
+thumb-func 0x08029144 RunLupinPotionCameraScript
+thumb-func 0x08029260 ShowNextLupinPotionDialogLine
+c-file 0x08029380 0x080293DC src/lupin_potion_cutscene/close_lupin_potion_dialog_panel.c CloseLupinPotionDialogPanel
+thumb-func 0x080293DC SpawnLupinPotionPanelActor
+thumb-func 0x08029490 SpawnLupinPotionEffectActor
+c-file 0x08029528 _ src/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
+c-file 0x08029558 _ src/lupin_potion_cutscene/spawn_lupin_potion_cast.c SpawnLupinPotionCast
+c-file 0x08029584 _ src/lupin_potion_cutscene/tick_lupin_potion_shadow_actor.c TickLupinPotionShadowActor
+c-file 0x080295C4 _ src/lupin_potion_cutscene/tick_lupin_potion_effect_actor.c TickLupinPotionEffectActor
+c-file 0x080295E0 _ src/lupin_potion_cutscene/lupin_potion_panel_scanline_callback.c LupinPotionPanelScanlineCallback
 
 # Main (AgbMain)
 c-file 0x08029690 _ src/main.c AgbMain

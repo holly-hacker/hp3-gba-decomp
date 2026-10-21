@@ -1086,22 +1086,22 @@ c-file 0x080287A4 _ src/list/list_push_head.c List_PushHead
 c-file 0x080287BC _ src/list/list_remove.c List_Remove
 
 c-file 0x080287E8 _ src/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene
-c-file 0x080288D8 0x08028B30 src/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
-thumb-func 0x08028B30 sub_08028AD4
-thumb-func 0x08028C08 sub_08028BAC
-thumb-func 0x08028D8C sub_08028D30
-thumb-func 0x08028FD8 sub_08028F7C
-thumb-func 0x08029034 sub_08028FD8
-thumb-func 0x080291A0 sub_08029144
-thumb-func 0x080292BC sub_08029260
-thumb-func 0x080293DC sub_08029380
-thumb-func 0x08029438 sub_080293DC
-thumb-func 0x080294EC sub_08029490
-c-file 0x08029584 0x080295B4 src/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
-thumb-func 0x080295B4 sub_08029558
-thumb-func 0x080295E0 sub_08029584
-thumb-func 0x08029620 sub_080295C4
-thumb-func 0x0802963C LupinPotionPanelScanlineCallback_candidate
+c-file 0x080288D8 _ src/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
+c-file 0x08028B30 0x08028C08 src/lupin_potion_cutscene/load_lupin_potion_cutscene_bgs.c LoadLupinPotionCutsceneBgs
+thumb-func 0x08028C08 SpawnLupinPotionCastActor
+thumb-func 0x08028D8C TickLupinPotionCastActor
+c-file 0x08028FD8 0x08029034 src/lupin_potion_cutscene/reset_lupin_potion_scripts.c ResetLupinPotionScripts
+thumb-func 0x08029034 RunLupinPotionCastScripts
+thumb-func 0x080291A0 RunLupinPotionCameraScript
+thumb-func 0x080292BC ShowNextLupinPotionDialogLine
+c-file 0x080293DC 0x08029438 src/lupin_potion_cutscene/close_lupin_potion_dialog_panel.c CloseLupinPotionDialogPanel
+thumb-func 0x08029438 SpawnLupinPotionPanelActor
+thumb-func 0x080294EC SpawnLupinPotionEffectActor
+c-file 0x08029584 _ src/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
+c-file 0x080295B4 _ src/lupin_potion_cutscene/spawn_lupin_potion_cast.c SpawnLupinPotionCast
+c-file 0x080295E0 _ src/lupin_potion_cutscene/tick_lupin_potion_shadow_actor.c TickLupinPotionShadowActor
+c-file 0x08029620 _ src/lupin_potion_cutscene/tick_lupin_potion_effect_actor.c TickLupinPotionEffectActor
+c-file 0x0802963C _ src/lupin_potion_cutscene/lupin_potion_panel_scanline_callback.c LupinPotionPanelScanlineCallback
 c-file 0x080296EC _ src/main.c AgbMain
 c-file 0x080297FC _ src/map/initialize_overworld.c InitializeOverworld
 c-file 0x0802A1A8 _ src/map/exit_overworld_screen.c ExitOverworldScreen
