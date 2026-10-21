@@ -3,30 +3,32 @@
 #include "types.h"
 #include "actor.h"
 
-// Room actor of tile actorType 8, a button that a spell presses to respawn a push
-// puzzle's actors; see docs/formats/rooms.md.
+// Room actor of tile actorType 8, a button that a Flipendo spell presses to respawn
+// a push puzzle's actors; see docs/formats/rooms.md.
 
 // Static tile record of actorType 8, returned by GetRoomActorStaticRecord.
-typedef struct RoomActorRecordUnk8 {
+typedef struct RoomActorRecordPushResetButton {
     u16 wActorType;
     u16 wUnk2;
     s16 nPixelX;
     s16 nPixelY;
     u8 bVariant;  // 0x08
-    u8 abPairs[16];  // 0x09, eight {A, B} pairs, copied to Actor 0x60 (A) and 0x68 (B)
-} RoomActorRecordUnk8;
+    u8 abTargets[16];  // 0x09, eight {group, member} pairs; see PushResetButtonTargets
+} RoomActorRecordPushResetButton;
 
 extern Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow);
-extern void sub_08035664(Actor *pActor);
-extern void sub_08035724(Actor *pSelf, Actor *pOther);
-extern const ActorGfxRecord g_RoomActorUnk8Sprite;                    // ROM 0x080693CC (US)
-extern const ActorGfxRecord *const g_apRoomActorUnk8AssetRecords[2];  // ROM 0x080693D4 (US)
-extern const void *const g_apRoomActorUnk8EffectData[2];               // ROM 0x080693DC (US)
+extern void TickPushResetButtonActor(Actor *pActor);
+extern void HandlePushResetButtonTouch(Actor *pSelf, Actor *pOther);
+extern const ActorGfxRecord g_PushResetButtonSprite;               // ROM 0x080693CC (US)
+extern const ActorGfxRecord *const g_apPushResetButtonSprites[2];  // ROM 0x080693D4 (US)
+extern const void *const g_apPushResetButtonPalettes[2];           // ROM 0x080693DC (US)
+extern const u8 g_aabPushResetButtonPressAnims[2][20];             // ROM 0x080693E4 (US)
 
-// Actor bytes 0x60-0x6F as written by the type 8 constructor.
-typedef struct RoomActorUnk8State {
-    u8 abA[8];
-    u8 abB[8];
-} RoomActorUnk8State;
+// Actor bytes 0x60-0x6F: the room records the button frees and respawns, as
+// GetRoomActorPtr/SpawnRoomGroupMember arguments. (0, 0) entries are unused.
+typedef struct PushResetButtonTargets {
+    u8 abGroups[8];
+    u8 abMembers[8];
+} PushResetButtonTargets;
 
-#define ROOM_ACTOR_UNK8_STATE(pActor) ((RoomActorUnk8State *)&(pActor)->scriptState)
+#define PUSH_RESET_BUTTON_TARGETS(pActor) ((PushResetButtonTargets *)&(pActor)->scriptState)

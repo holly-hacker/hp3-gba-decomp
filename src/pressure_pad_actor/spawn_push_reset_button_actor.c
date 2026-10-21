@@ -2,12 +2,12 @@
 #include "area.h"
 #include "pressure_pad_actor.h"
 
-// Room actor constructor for tile actorType 8, a button that a spell presses to
-// respawn a push puzzle's actors. See docs/formats/rooms.md.
+// Room actor constructor for tile actorType 8, a button that a Flipendo spell
+// presses to respawn a push puzzle's actors. See docs/formats/rooms.md.
 Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk8 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
-    Actor *pActor = AllocActorOfType(RoomActorType_Unk8);
+    RoomActorRecordPushResetButton *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
+    Actor *pActor = AllocActorOfType(RoomActorType_PushResetButton);
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pActor->oam.objMode = 0;
@@ -16,27 +16,29 @@ Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow)
     pActor->bDepthSortBias = 0xFF;
     pActor->wCharacterId_candidate = pRecord->bVariant;
     pActor->anim.bAnimFrameDelay = 0;
-    pActor->pfnTick = sub_08035664;
-    pActor->apfnCollisionCallback[0] = sub_08035724;
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[0] = pRecord->abPairs[0];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[0] = pRecord->abPairs[1];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[1] = pRecord->abPairs[2];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[1] = pRecord->abPairs[3];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[2] = pRecord->abPairs[4];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[2] = pRecord->abPairs[5];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[3] = pRecord->abPairs[6];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[3] = pRecord->abPairs[7];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[4] = pRecord->abPairs[8];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[4] = pRecord->abPairs[9];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[5] = pRecord->abPairs[10];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[5] = pRecord->abPairs[11];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[6] = pRecord->abPairs[12];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[6] = pRecord->abPairs[13];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abA[7] = pRecord->abPairs[14];
-    ROOM_ACTOR_UNK8_STATE(pActor)->abB[7] = pRecord->abPairs[15];
-    pActor->dwFlags = 0x0400221D;
-    SetActorPendingPalette(pActor, g_apRoomActorUnk8EffectData[pActor->wCharacterId_candidate]);
-    SetActorAssetRecord(pActor, g_apRoomActorUnk8AssetRecords[pActor->wCharacterId_candidate]);
+    pActor->pfnTick = TickPushResetButtonActor;
+    pActor->apfnCollisionCallback[0] = HandlePushResetButtonTouch;
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[0] = pRecord->abTargets[0];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[0] = pRecord->abTargets[1];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[1] = pRecord->abTargets[2];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[1] = pRecord->abTargets[3];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[2] = pRecord->abTargets[4];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[2] = pRecord->abTargets[5];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[3] = pRecord->abTargets[6];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[3] = pRecord->abTargets[7];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[4] = pRecord->abTargets[8];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[4] = pRecord->abTargets[9];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[5] = pRecord->abTargets[10];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[5] = pRecord->abTargets[11];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[6] = pRecord->abTargets[12];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[6] = pRecord->abTargets[13];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[7] = pRecord->abTargets[14];
+    PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[7] = pRecord->abTargets[15];
+    pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasTickLogic
+                      | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate | ActorFlagUnk2000
+                      | ActorFlagTerrainDrawLayer;
+    SetActorPendingPalette(pActor, g_apPushResetButtonPalettes[pActor->wCharacterId_candidate]);
+    SetActorAssetRecord(pActor, g_apPushResetButtonSprites[pActor->wCharacterId_candidate]);
     SetActorAnimFrame(pActor, 0);
     SetActorActionState(pActor, 0);
     return pActor;

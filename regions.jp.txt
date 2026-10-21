@@ -1412,9 +1412,9 @@ c-file 0x0803545C _ src/pouring_minigame/draw_serve_pumpkin_juice_score.c DrawSe
 c-file 0x080354B8 _ src/pouring_minigame/pick_serve_pumpkin_juice_customer_type.c PickServePumpkinJuiceCustomerType
 c-file 0x08035504 _ src/pouring_minigame/spawn_serve_pumpkin_juice_puff.c SpawnServePumpkinJuicePuff
 c-file 0x08035564 _ src/pouring_minigame/tick_serve_pumpkin_juice_puff.c TickServePumpkinJuicePuff
-c-file 0x08035584 0x080356A8 src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
-thumb-func 0x080356A8 sub_08035664
-thumb-func 0x08035768 sub_08035724
+c-file 0x08035584 _ src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
+c-file 0x080356A8 _ src/pressure_pad_actor/tick_push_reset_button_actor.c TickPushResetButtonActor
+c-file 0x08035768 _ src/pressure_pad_actor/handle_push_reset_button_touch.c HandlePushResetButtonTouch
 c-file 0x080357A8 _ src/pscreen_character/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 c-file 0x080358DC _ src/pscreen_character/draw_status_equip_character_stats.c DrawStatusEquipCharacterStats
 c-file 0x08035A78 _ src/pscreen_character/begin_status_equip_character_select_screen.c BeginStatusEquipCharacterSelectScreen
@@ -2151,7 +2151,7 @@ c-file 0x08068C90 0x08068CC8 src/pop_it_minigame/wizard_cracker_pop_it.globals.c
 c-file 0x08068FC4 _ src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
 c-file 0x080692B4 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x0806933C _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file 0x08069358 0x08069370 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
+c-file 0x08069358 0x08069398 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_PushResetButtonSprite
 c-file 0x080693D8 _ src/pscreen_character/status_equip_character_select.globals.c g_adwStatusEquipCharacterNameTextIds
 c-file 0x080693E8 _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x08069498 _ src/pscreen_folio/folios.globals.c g_aFoliosEntries

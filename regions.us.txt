@@ -1608,9 +1608,9 @@ c-file 0x080354C0 _ src/pouring_minigame/spawn_serve_pumpkin_juice_puff.c SpawnS
 c-file 0x08035520 _ src/pouring_minigame/tick_serve_pumpkin_juice_puff.c TickServePumpkinJuicePuff
 
 # PressurePad? (push-reset button actor)
-c-file 0x08035540 0x08035664 src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
-thumb-func 0x08035664 sub_08035664
-thumb-func 0x08035724 sub_08035724
+c-file 0x08035540 _ src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
+c-file 0x08035664 _ src/pressure_pad_actor/tick_push_reset_button_actor.c TickPushResetButtonActor
+c-file 0x08035724 _ src/pressure_pad_actor/handle_push_reset_button_touch.c HandlePushResetButtonTouch
 
 # Profile/Character? (pause subscreen: status/equip character select)
 c-file 0x08035764 _ src/pscreen_character/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
@@ -2425,7 +2425,7 @@ c-file 0x08068D04 0x08068D3C src/pop_it_minigame/wizard_cracker_pop_it.globals.c
 c-file 0x08069038 _ src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
 c-file 0x08069328 _ src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
 c-file 0x080693B0 _ src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file 0x080693CC 0x080693E4 src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_RoomActorUnk8Sprite
+c-file 0x080693CC 0x0806940C src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_PushResetButtonSprite
 c-file 0x0806944C _ src/pscreen_character/status_equip_character_select.globals.c g_adwStatusEquipCharacterNameTextIds
 c-file 0x0806945C _ src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file 0x0806950C _ src/pscreen_folio/folios.globals.c g_aFoliosEntries

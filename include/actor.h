@@ -562,7 +562,7 @@ typedef struct Actor {
 typedef enum {
     RoomActorType_Player           = 0,     // SpawnPlayerActor
     RoomActorType_ScriptedTrigger  = 5,     // sub-behavior picked by a separate per-instance kind field
-    RoomActorType_Unk8             = 8,
+    RoomActorType_PushResetButton  = 8,     // SpawnPushResetButtonActor
     RoomActorType_Chest            = 9,     // SpawnChestActor
     RoomActorType_UnkA             = 0xA,
     RoomActorType_UnkB             = 0xB,
@@ -570,6 +570,7 @@ typedef enum {
     RoomActorType_ScriptEffect     = 0xE,   // SpawnScriptEffectActor, e.g. delayed chain runs;
                                               // reuses the same value as BattleActorType_FighterSlot0
                                               // since room/overworld and battle never run concurrently
+    RoomActorType_FieldSpellEffect = 0xF,   // SpawnFieldSpellEffect; wCharacterId_candidate is the FieldSpell
     RoomActorType_WanderingMonster = 0x10,  // SpawnWanderingMonsterActor; reuses
                                               // BattleActorType_FighterSlot0 + 2 for the same reason
 } RoomActorType;

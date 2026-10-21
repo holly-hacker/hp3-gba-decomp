@@ -13,7 +13,7 @@ Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell)
     Actor *effect;
     FixedPoint anchor;
 
-    effect = AllocActorOfType(0xF);
+    effect = AllocActorOfType(RoomActorType_FieldSpellEffect);
     effect->oam.priority = 1;
     effect->bDepthSortBias = 0;
     GetActorAnchorPosition(caster, 0, &anchor);
