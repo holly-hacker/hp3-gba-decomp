@@ -1,6 +1,5 @@
 #include "ram_clear.h"
 #include "hw/io_regs.h"
-#include "oam.h"
 
 void ClearOamDma(void)
 {

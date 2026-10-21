@@ -2,9 +2,6 @@
 
 #include "types.h"
 
-// GBA hardware OAM base address (see GBATEK).
-#define OAM_BASE ((void *)0x07000000)
-
 // One hardware OAM entry's attributes (see GBATEK). Game code builds these
 // in RAM and queues them with QueueOamEntry/SubmitOamAttrsNudged. The first
 // word's fields are u32 bitfields and the second word's u16.

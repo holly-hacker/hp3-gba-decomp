@@ -149,6 +149,9 @@ typedef struct {
 #define VRAM_SIZE 0x18000
 #define OBJ_VRAM_TILES ((u8 *)0x06010000)
 
+// Sprite attribute memory (OAM).
+#define OAM_BASE ((void *)0x07000000)
+
 // Game Pak ROM.
 #define ROM_BASE ((u8 *)0x08000000)
 
