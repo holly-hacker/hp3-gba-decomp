@@ -46,6 +46,8 @@ come from a `u8` pad/cast or union the original did not use. Compiling the `.i` 
 `-fno-strict-aliasing` confirms the mechanism; then find which store or load needs the set by
 retyping one side at a time. Example: QueueBattleBgLoad, US `0x0801B4BC`, stores the tilemap
 size through full-width bitfields (`u16 wWidth : 16`, BgTilemapBuffer).
+Same-type accesses through pointers each set once to a constant address are disambiguated; a
+ROM reload there means one pointer was reassigned (ExpandScreenWindowFromCenter's `pStart`/`pEnd`).
 
 ## 4. Branch layout and expression order
 

@@ -2224,10 +2224,10 @@ c-file 0x0804555C _ src/vram/apply_deferred_obj_tile_frees.c ApplyDeferredObjTil
 c-file 0x08045588 _ src/vram/load_obj_tile_sheet.c LoadObjTileSheet
 c-file 0x080455E4 _ src/vram/mark_obj_tiles_in_use.c MarkObjTilesInUse
 c-file 0x08045630 _ src/vram/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
-c-file 0x08045688 0x080456E0 src/vram/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
+c-file 0x08045688 _ src/vram/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
 
 # Window (screen windows)
-thumb-func 0x080456E0 ExpandScreenWindowFromCenter
+c-file 0x080456E0 _ src/windows/expand_screen_window_from_center.c ExpandScreenWindowFromCenter
 c-file 0x08045774 _ src/windows/shrink_screen_window_to_center.c ShrinkScreenWindowToCenter
 c-file 0x08045808 _ src/windows/hide_screen_window.c HideScreenWindow
 c-file 0x08045820 _ src/windows/show_screen_window.c ShowScreenWindow
