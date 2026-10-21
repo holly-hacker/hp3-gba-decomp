@@ -63,7 +63,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
         }
     }
 
-    if (mode == 1 && g_dwActorListActive_candidate != 0 && g_dwOamQueueCount > 1)
+    if (mode == 1 && g_dwActorDepthSortEnabled != 0 && g_dwOamQueueCount > 1)
         pfnSortActors(g_apOamQueue, g_dwOamQueueCount);
 
     for (queueIndex = g_bSpriteFrameQueueCount; queueIndex != 0; queueIndex--) {

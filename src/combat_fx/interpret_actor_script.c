@@ -234,7 +234,9 @@ void InterpretActorScript(Actor *actor)
                 SetActorVelocity(actor, velX, velY);
             }
             break;
-        case BSOP_Unk1F:  // BG helper call with signed x and y
+        case BSOP_SetBgScrollStepXY:
+            // NOTE: steps x by the BG index and y by args[2]; args[3] is never read.
+            // (s8)args[2] and (s8)args[3] may have been intended.
             SetBgScrollStep(args[1], (s8)args[1] << 16, (s8)args[2] << 16);
             break;
         case BSOP_SetLocal:
@@ -330,10 +332,10 @@ void InterpretActorScript(Actor *actor)
             g_effectStaging.pEmitter_candidate = CreateBattleEffectEmitter(targetFighter->pActor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
             g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
             break;
-        case BSOP_Unk35:  // effect actor asset call
+        case BSOP_LoadParticleGfx:
             LoadParticleGfx(args[1], args[2], &g_aEffectActorAssets[args[3]]);
             break;
-        case BSOP_Unk36:  // particle system setup
+        case BSOP_ReleaseParticleGfx:
             FreeAllParticles();
             ReleaseParticleGfx(args[1], args[2]);
             break;
@@ -819,11 +821,11 @@ void InterpretActorScript(Actor *actor)
             if (args[1] == 1)
                 LoadGraphicBlobTiles(1, GetBattleWallGraphic(), 0x180);
             break;
-        case BSOP_Unk94:  // SetActorListActive_candidate(1)
-            SetActorListActive_candidate(1);
+        case BSOP_EnableActorDepthSort:
+            SetActorDepthSortEnabled(1);
             break;
-        case BSOP_Unk95:  // SetActorListActive_candidate(0)
-            SetActorListActive_candidate(0);
+        case BSOP_DisableActorDepthSort:
+            SetActorDepthSortEnabled(0);
             break;
         case BSOP_FlipTargetFacing:  // flips the target's facing unless it is type 0x3A
             {
@@ -1021,7 +1023,7 @@ void InterpretActorScript(Actor *actor)
             else
                 actor->modeState.effect.abLocal[0] = GetPartySize();
             break;
-        case BSOP_Unk9A:  // BG helper call with x
+        case BSOP_SetBgScrollStepX:
             SetBgScrollStep(args[1], args[2] << 16, 0);
             break;
         case BSOP_SelectFirstAlly:  // selects the first ally as target
@@ -1112,16 +1114,16 @@ void InterpretActorScript(Actor *actor)
         case BSOP_PlaySoundEffect:  // plays a sound effect
             PlayJingle(args[1]);
             break;
-        case BSOP_Unk14:
-        case BSOP_Unk15:
-        case BSOP_Unk3A:
-        case BSOP_Unk3F:
-        case BSOP_Unk40:
+        case BSOP_Nop14:
+        case BSOP_Nop15:
+        case BSOP_Nop3A:
+        case BSOP_Nop3F:
+        case BSOP_Nop40:
         case BSOP_Label:
-        case BSOP_Unk66:
-        case BSOP_Unk6D:
-        case BSOP_Unk6E:
-        case BSOP_UnkA1:
+        case BSOP_Nop66:
+        case BSOP_Nop6D:
+        case BSOP_Nop6E:
+        case BSOP_NopA1:
         default:
             break;
         }

@@ -20,6 +20,6 @@ void InitActorPool(void)
     bios_CPUSet(SortActorsByDepth, SortActorsByDepthIwram, 0x4000031);
     bios_CPUSet(CheckActorCollisions, CheckActorCollisionsIwram, 0x400007D);
 
-    g_dwActorListActive_candidate = 1;
+    g_dwActorDepthSortEnabled = 1;
     g_dwUnk03001DC4 = 0;
 }

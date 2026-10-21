@@ -60,7 +60,7 @@ void InitializeOverworld(void)
     else
     {
         // Video, VRAM and VBlank setup.
-        SetActorListActive_candidate(1);
+        SetActorDepthSortEnabled(1);
         FreeBgTileAnimations();
         ClearVram();
         ClearObjPaletteSlots();

@@ -93,7 +93,7 @@ c-file 0x08001C58 _ src/actor/get_direction_to_actor.c GetDirectionToActor
 c-file 0x08001CA0 _ src/actor/get_direction_from_actor.c GetDirectionFromActor
 c-file 0x08001CE8 _ src/actor/get_direction_vector.c GetDirectionVector
 c-file 0x08001D3C _ src/actor/find_actors_by_type.c FindActorsByType
-c-file 0x08001D90 _ src/actor/set_actor_list_active.c SetActorListActive_candidate
+c-file 0x08001D90 _ src/actor/set_actor_depth_sort_enabled.c SetActorDepthSortEnabled
 c-file 0x08001D9C _ src/actor/do_actors_overlap.c DoActorsOverlap
 c-file 0x08001DF8 _ src/actor/actor_is_null_actor_type.c ActorIsNullActorType
 c-file 0x08001E0C _ src/actor/set_actor_anim_set.c SetActorAnimSet_candidate

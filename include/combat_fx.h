@@ -87,8 +87,8 @@ enum BattleScriptOpcode {
     BSOP_SpawnEffectAtSelf = 0x11,
     BSOP_SpawnEffectOffsetNoPalette = 0x12,
     BSOP_SpawnEffectOffset = 0x13,
-    BSOP_Unk14 = 0x14,
-    BSOP_Unk15 = 0x15,
+    BSOP_Nop14 = 0x14,
+    BSOP_Nop15 = 0x15,
     BSOP_SpawnEffectSharedTiles = 0x16,
     BSOP_ToggleActorFlipX = 0x17,
     BSOP_ToggleActorFlipY = 0x18,
@@ -98,7 +98,7 @@ enum BattleScriptOpcode {
     BSOP_TeleportToSlotPosition = 0x1C,
     BSOP_SetVelocity = 0x1D,
     BSOP_SetVelocity16 = 0x1E,
-    BSOP_Unk1F = 0x1F,
+    BSOP_SetBgScrollStepXY = 0x1F,
     BSOP_SetLocal = 0x20,
     BSOP_IncrementLocal = 0x21,
     BSOP_SkipBytes = 0x22,
@@ -120,18 +120,18 @@ enum BattleScriptOpcode {
     BSOP_CreateEmitter8 = 0x32,
     BSOP_CreateEmitterOnSelf = 0x33,
     BSOP_CreateEmitterOnTarget = 0x34,
-    BSOP_Unk35 = 0x35,
-    BSOP_Unk36 = 0x36,
+    BSOP_LoadParticleGfx = 0x35,
+    BSOP_ReleaseParticleGfx = 0x36,
     BSOP_FreeAllParticles = 0x37,
     BSOP_ReleaseWindupEmitter = 0x38,
     BSOP_ReleaseKind2Emitters = 0x39,
-    BSOP_Unk3A = 0x3A,
+    BSOP_Nop3A = 0x3A,
     BSOP_SetBehaviorFlags = 0x3B,
     BSOP_ClearBehaviorFlags = 0x3C,
     BSOP_BlendEffectPalette = 0x3D,
     BSOP_SetOamPalette = 0x3E,
-    BSOP_Unk3F = 0x3F,
-    BSOP_Unk40 = 0x40,
+    BSOP_Nop3F = 0x3F,
+    BSOP_Nop40 = 0x40,
     BSOP_StartOrbitMotion = 0x41,
     BSOP_StartOrbitMotionRandom = 0x42,
     BSOP_SaveOrbit = 0x43,
@@ -169,15 +169,15 @@ enum BattleScriptOpcode {
     BSOP_GotoLocalIndexedLabel = 0x63,
     BSOP_FreeTileAllocation = 0x64,
     BSOP_StartShrinkOrbit = 0x65,
-    BSOP_Unk66 = 0x66,
+    BSOP_Nop66 = 0x66,
     BSOP_SetLocalRandomRange = 0x67,
     BSOP_SetDepthBiasZero = 0x68,
     BSOP_SetDepthBiasMax = 0x69,
     BSOP_SetDepthBias = 0x6A,
     BSOP_SetDepthBiasInverseLocalA = 0x6B,
     BSOP_SetDepthBiasLocalA = 0x6C,
-    BSOP_Unk6D = 0x6D,
-    BSOP_Unk6E = 0x6E,
+    BSOP_Nop6D = 0x6D,
+    BSOP_Nop6E = 0x6E,
     BSOP_ScrollBgUp = 0x6F,
     BSOP_ScrollBgDown = 0x70,
     BSOP_SetTargetVelocityScaled = 0x71,
@@ -215,20 +215,20 @@ enum BattleScriptOpcode {
     BSOP_StartGrowWindow = 0x91,
     BSOP_HideWindow = 0x92,
     BSOP_ResetBgState = 0x93,
-    BSOP_Unk94 = 0x94,
-    BSOP_Unk95 = 0x95,
+    BSOP_EnableActorDepthSort = 0x94,
+    BSOP_DisableActorDepthSort = 0x95,
     BSOP_FlipTargetFacing = 0x96,
     BSOP_StatusEffect = 0x97,
     BSOP_RestoreBattleScanlineEffects = 0x98,
     BSOP_SetLocalAToPartySize = 0x99,
-    BSOP_Unk9A = 0x9A,
+    BSOP_SetBgScrollStepX = 0x9A,
     BSOP_SetDispcntBit15 = 0x9B,
     BSOP_ClearDispcntBit15 = 0x9C,
     BSOP_SelectFirstAlly = 0x9D,
     BSOP_SelectNextAlly = 0x9E,
     BSOP_SelectFirstLiveEnemy = 0x9F,
     BSOP_SelectNextLiveEnemy = 0xA0,
-    BSOP_UnkA1 = 0xA1,
+    BSOP_NopA1 = 0xA1,
     BSOP_SetLocalRandom = 0xA2,
     BSOP_ReloadBattleBackgroundTiles = 0xA3,
     BSOP_PlaySoundOrDefault = 0xA4,
@@ -321,9 +321,9 @@ enum BattleStatusEffect {
 // (dx * xScale, dy * yScale) pixels.
 #define BS_SpawnEffectOffset(a, b, c, d, e) BSOP_SpawnEffectOffset, (a), ((b) & 0xFF), (c), ((d) & 0xFF), (e)
 // No-op.
-#define BS_Unk14(a) BSOP_Unk14, (a)
+#define BS_Nop14(a) BSOP_Nop14, (a)
 // No-op.
-#define BS_Unk15(a, b, c, d, e) BSOP_Unk15, (a), (b), (c), (d), (e)
+#define BS_Nop15(a, b, c, d, e) BSOP_Nop15, (a), (b), (c), (d), (e)
 // (effect): SpawnEffect with the child sharing OBJ tiles.
 #define BS_SpawnEffectSharedTiles(a) BSOP_SpawnEffectSharedTiles, (a)
 // Toggles the horizontal flip.
@@ -343,8 +343,8 @@ enum BattleStatusEffect {
 #define BS_SetVelocity(a, b) BSOP_SetVelocity, ((a) & 0xFF), ((b) & 0xFF)
 // (xSign, vx, ySign, vy): sets the velocity to 8.8 (vx, vy) pixels; a sign of 0xFF negates.
 #define BS_SetVelocity16(a, b, c, d) BSOP_SetVelocity16, (a), (((b) >> 8) & 0xFF), ((b) & 0xFF), (c), (((d) >> 8) & 0xFF), ((d) & 0xFF)
-// (bg, y, unused): SetBgScrollStep(bg, bg, y); the layer doubles as the x step.
-#define BS_Unk1F(a, b, c) BSOP_Unk1F, (a), (b), (c)
+// (bg, x, y): SetBgScrollStep(bg, (s8)bg, (s8)x); `y` is ignored.
+#define BS_SetBgScrollStepXY(a, b, c) BSOP_SetBgScrollStepXY, (a), (b), (c)
 // (index, value): sets local `index` (0 = A, 1 = B).
 #define BS_SetLocal(a, b) BSOP_SetLocal, (a), (b)
 // (index): increments local `index`.
@@ -388,9 +388,9 @@ enum BattleStatusEffect {
 // Creates an emitter on the target with CreateBattleEffectEmitter, operands in its parameter order.
 #define BS_CreateEmitterOnTarget(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) BSOP_CreateEmitterOnTarget, (a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p)
 // (pool, entry, asset): LoadParticleGfx(pool, entry, &g_aEffectActorAssets[asset]).
-#define BS_Unk35(a, b, c) BSOP_Unk35, (a), (b), (c)
+#define BS_LoadParticleGfx(a, b, c) BSOP_LoadParticleGfx, (a), (b), (c)
 // (pool, entry): frees every particle, then ReleaseParticleGfx(pool, entry).
-#define BS_Unk36(a, b) BSOP_Unk36, (a), (b)
+#define BS_ReleaseParticleGfx(a, b) BSOP_ReleaseParticleGfx, (a), (b)
 // Frees every particle.
 #define BS_FreeAllParticles() BSOP_FreeAllParticles
 // Releases this actor's windup emitter.
@@ -398,7 +398,7 @@ enum BattleStatusEffect {
 // Releases every emitter whose bParalysisEffectFlag_candidate is 2, as the emitter opcodes set it.
 #define BS_ReleaseKind2Emitters() BSOP_ReleaseKind2Emitters
 // No-op.
-#define BS_Unk3A() BSOP_Unk3A
+#define BS_Nop3A() BSOP_Nop3A
 // (flags): sets EffectBehavior* flags.
 #define BS_SetBehaviorFlags(a) BSOP_SetBehaviorFlags, (a)
 // (flags): clears EffectBehavior* flags.
@@ -408,9 +408,9 @@ enum BattleStatusEffect {
 // (bank): sets the OBJ palette bank.
 #define BS_SetOamPalette(a) BSOP_SetOamPalette, (a)
 // No-op.
-#define BS_Unk3F() BSOP_Unk3F
+#define BS_Nop3F() BSOP_Nop3F
 // No-op.
-#define BS_Unk40() BSOP_Unk40
+#define BS_Nop40() BSOP_Nop40
 // (params, step): starts orbit row `params`, its X angle advanced by local A * `step`.
 #define BS_StartOrbitMotion(a, b) BSOP_StartOrbitMotion, (a), (b)
 // (params): starts orbit row `params` at a random angle.
@@ -488,7 +488,7 @@ enum BattleStatusEffect {
 // (a, b, c): sets EffectBehaviorShrinkOrbit with bParam6C = a, abParams[0..1] = (b, c), bParam6D = 0.
 #define BS_StartShrinkOrbit(a, b, c) BSOP_StartShrinkOrbit, (a), (b), (c)
 // No-op.
-#define BS_Unk66() BSOP_Unk66
+#define BS_Nop66() BSOP_Nop66
 // (index, min, max): sets local `index` to a random value in [min, max).
 #define BS_SetLocalRandomRange(a, b, c) BSOP_SetLocalRandomRange, (a), (b), (c)
 // Sets the depth-sort bias to 0.
@@ -502,9 +502,9 @@ enum BattleStatusEffect {
 // Sets the depth-sort bias to local A.
 #define BS_SetDepthBiasLocalA() BSOP_SetDepthBiasLocalA
 // No-op.
-#define BS_Unk6D() BSOP_Unk6D
+#define BS_Nop6D() BSOP_Nop6D
 // No-op.
-#define BS_Unk6E() BSOP_Unk6E
+#define BS_Nop6E() BSOP_Nop6E
 // (bg): subtracts 2 pixels from BG `bg`'s x scroll and 3 from the floor heading.
 #define BS_ScrollBgUp(a) BSOP_ScrollBgUp, (a)
 // (bg): adds 2 pixels to BG `bg`'s x scroll and 3 to the floor heading.
@@ -584,10 +584,10 @@ enum BattleStatusEffect {
 #define BS_HideWindow(a) BSOP_HideWindow, (a)
 // (bg): clears BG `bg`'s tilemap and scroll; BG 1 also reloads the battle background tiles.
 #define BS_ResetBgState(a) BSOP_ResetBgState, (a)
-// SetActorListActive_candidate(1).
-#define BS_Unk94() BSOP_Unk94
-// SetActorListActive_candidate(0).
-#define BS_Unk95() BSOP_Unk95
+// Enables depth-sorting of the actor OAM queue.
+#define BS_EnableActorDepthSort() BSOP_EnableActorDepthSort
+// Disables depth-sorting of the actor OAM queue.
+#define BS_DisableActorDepthSort() BSOP_DisableActorDepthSort
 // Toggles the target's horizontal flip, unless its actor type is 0x3A or the context value is 0.
 #define BS_FlipTargetFacing() BSOP_FlipTargetFacing
 // (effect, a, b): applies BSSTATUS_* `effect` with two operands.
@@ -597,7 +597,7 @@ enum BattleStatusEffect {
 // Sets local A to the party size (3 when game mode args 1 and 3 are 3 and 0xFF).
 #define BS_SetLocalAToPartySize() BSOP_SetLocalAToPartySize
 // (bg, x): SetBgScrollStep(bg, x, 0).
-#define BS_Unk9A(a, b) BSOP_Unk9A, (a), (b)
+#define BS_SetBgScrollStepX(a, b) BSOP_SetBgScrollStepX, (a), (b)
 // Sets DISPCNT bit 15 (OBJ window) and OAM mode 2.
 #define BS_SetDispcntBit15() BSOP_SetDispcntBit15
 // Clears DISPCNT bit 15 (OBJ window) and sets OAM mode 0.
@@ -611,7 +611,7 @@ enum BattleStatusEffect {
 // Targets the next live enemy; sets local B to 1 when there is none.
 #define BS_SelectNextLiveEnemy() BSOP_SelectNextLiveEnemy
 // No-op.
-#define BS_UnkA1() BSOP_UnkA1
+#define BS_NopA1() BSOP_NopA1
 // (index, max): sets local `index` to a random value in [0, max].
 #define BS_SetLocalRandom(a, b) BSOP_SetLocalRandom, (a), (b)
 // Reloads the room's battle background tiles on BG 1.

@@ -1,9 +1,9 @@
 // Flobberworm's special attack animation; no status effect.
 const u8 g_abSpecialMonsterFlobberwormAttackScript[] = {
-    BS_Unk35(1, 1, 4),
-    BS_Unk35(1, 2, 5),
-    BS_Unk35(1, 3, 6),
-    BS_Unk35(1, 4, 7),
+    BS_LoadParticleGfx(1, 1, 4),
+    BS_LoadParticleGfx(1, 2, 5),
+    BS_LoadParticleGfx(1, 3, 6),
+    BS_LoadParticleGfx(1, 4, 7),
     BS_SnapToCaster(3),
     BS_SetActorAnim(13, 0),
     BS_SetOamPriority(0),
@@ -21,9 +21,9 @@ const u8 g_abSpecialMonsterFlobberwormAttackScript[] = {
     BS_StatusEffect(BSSTATUS_SpawnEffectB, 1, 4),
     BS_WaitFrames(10),
     BS_ReleaseKind2Emitters(),
-    BS_Unk36(1, 4),
-    BS_Unk36(1, 3),
-    BS_Unk36(1, 2),
-    BS_Unk36(1, 1),
+    BS_ReleaseParticleGfx(1, 4),
+    BS_ReleaseParticleGfx(1, 3),
+    BS_ReleaseParticleGfx(1, 2),
+    BS_ReleaseParticleGfx(1, 1),
     BS_End(),
 };

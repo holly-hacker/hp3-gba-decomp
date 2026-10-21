@@ -1,8 +1,8 @@
 // Grants the party bonus XP.
 const u8 g_abSpecialHermioneGoodStudyHabitsScript[] = {
     BS_GotoIfLocalAEqual(1, 38),
-    BS_Unk35(1, 1, 8),
-    BS_Unk35(1, 2, 9),
+    BS_LoadParticleGfx(1, 1, 8),
+    BS_LoadParticleGfx(1, 2, 9),
     BS_TeleportToSlotPosition(1),
     BS_SetActorAnim(50, 0),
     BS_WaitFrames(1),
@@ -19,7 +19,7 @@ const u8 g_abSpecialHermioneGoodStudyHabitsScript[] = {
     BS_WaitFrames(24),
     BS_StatusEffect(BSSTATUS_SpellPowerBoost, 0, 0),
     BS_AdvanceAttackOutcome(),
-    BS_Unk36(1, 1),
-    BS_Unk36(1, 2),
+    BS_ReleaseParticleGfx(1, 1),
+    BS_ReleaseParticleGfx(1, 2),
     BS_End(),
 };

@@ -61,7 +61,7 @@ const u8 g_abSpecialHarryHorklumpSporesScript[] = {
     BS_SetActorAnim(15, 11),
     BS_WaitFrames(6),
     BS_QueueScanlineEffect(0),
-    BS_Unk1F(0, 255, 0),
+    BS_SetBgScrollStepXY(0, 255, 0),
     BS_SetAlphaBlend(0, 16),
     BS_SetEffectTimers(1, 0, 0, 0, 0, 63, 0, 0, 0, 0),
     BS_LoadBgEffect(0, 4, 15),

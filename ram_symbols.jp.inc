@@ -23,7 +23,7 @@
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760
 .set g_bSpriteFrameQueueCount, 0x0300179C
-.set g_dwActorListActive_candidate, 0x030017A0
+.set g_dwActorDepthSortEnabled, 0x030017A0
 .set g_apCollisionQueue,             0x030017A4
 .set g_dwCollisionQueueCount,        0x03001948
 .set SortActorsByDepthIwram,            0x0300194C

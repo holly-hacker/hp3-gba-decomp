@@ -8,7 +8,7 @@ const u8 g_abSpecialHarrySnitchScript[] = {
     BS_WaitFrames(2),
     BS_SetActorAnim(47, 0),
     BS_PlaySound(139),
-    BS_Unk35(1, 2, 9),
+    BS_LoadParticleGfx(1, 2, 9),
     BS_CreateEmitterOnSelf(8, 1, 10, 10, 1, 246, 10, 255, 0, 2, 1, 2, 9, 180, 1, 0),
     BS_StartAffineWobble(0x0100, 0x0100, 0, 24, 24, 0),
     BS_WaitFrames(1),

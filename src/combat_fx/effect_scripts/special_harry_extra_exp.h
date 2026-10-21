@@ -1,8 +1,8 @@
 // Grants the party bonus XP for winning the encounter.
 const u8 g_abSpecialHarryExtraExpScript[] = {
     BS_GotoIfLocalAEqual(1, 29),
-    BS_Unk35(1, 1, 8),
-    BS_Unk35(1, 2, 9),
+    BS_LoadParticleGfx(1, 1, 8),
+    BS_LoadParticleGfx(1, 2, 9),
     BS_TeleportTo(76, 112),
     BS_SetActorAnim(14, 0),
     BS_SetOamPriority(1),
@@ -16,8 +16,8 @@ const u8 g_abSpecialHarryExtraExpScript[] = {
     BS_HideActor(),
     BS_WaitFrames(25),
     BS_ReleaseKind2Emitters(),
-    BS_Unk36(1, 2),
-    BS_Unk36(1, 1),
+    BS_ReleaseParticleGfx(1, 2),
+    BS_ReleaseParticleGfx(1, 1),
     BS_StatusEffect(BSSTATUS_ExtraExpBonus, 0, 0),
     BS_AdvanceAttackOutcome(),
     BS_End(),

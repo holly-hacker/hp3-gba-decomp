@@ -25,7 +25,7 @@
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760  @ Actor *[15]: visible actors with sprite cells
 .set g_bSpriteFrameQueueCount, 0x0300179C  @ u8
-.set g_dwActorListActive_candidate, 0x030017A0
+.set g_dwActorDepthSortEnabled, 0x030017A0
 .set g_apCollisionQueue,             0x030017A4  @ Actor *[0x69]: actors awaiting the pairwise check
 .set g_dwCollisionQueueCount,        0x03001948
 .set SortActorsByDepthIwram,            0x0300194C  @ IWRAM copy of SortActorsByDepth

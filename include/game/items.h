@@ -61,7 +61,7 @@ typedef struct ItemEntry {
     u32 dwFlags;             // 0x20 -- bit 2: consumable (potions); bits 0 and 1
                              // unread
     ItemStats stats;         // 0x24
-    u32 dwUnk2C;             // 0x2C -- unidentified
+    u32 dwUnused;            // 0x2C -- zero for every item; never read
     s32 nMagicDefense;       // 0x30 -- M.Def stat
 } ItemEntry;
 

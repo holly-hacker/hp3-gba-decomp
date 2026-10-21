@@ -1,9 +1,9 @@
 // Fire Crab's special attack animation; no status effect.
 const u8 g_abSpecialMonsterFireCrabAttackScript[] = {
-    BS_Unk35(1, 1, 0),
-    BS_Unk35(1, 2, 1),
-    BS_Unk35(1, 3, 2),
-    BS_Unk35(1, 4, 3),
+    BS_LoadParticleGfx(1, 1, 0),
+    BS_LoadParticleGfx(1, 2, 1),
+    BS_LoadParticleGfx(1, 3, 2),
+    BS_LoadParticleGfx(1, 4, 3),
     BS_SnapToCaster(3),
     BS_SetActorAnim(0, 0),
     BS_SetOamPriority(0),
@@ -24,9 +24,9 @@ const u8 g_abSpecialMonsterFireCrabAttackScript[] = {
     BS_SetActorAnim(0, 7),
     BS_ReleaseKind2Emitters(),
     BS_WaitFrames(11),
-    BS_Unk36(1, 4),
-    BS_Unk36(1, 3),
-    BS_Unk36(1, 2),
-    BS_Unk36(1, 1),
+    BS_ReleaseParticleGfx(1, 4),
+    BS_ReleaseParticleGfx(1, 3),
+    BS_ReleaseParticleGfx(1, 2),
+    BS_ReleaseParticleGfx(1, 1),
     BS_End(),
 };

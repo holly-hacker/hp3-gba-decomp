@@ -21,7 +21,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 2, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 1: Leather Belt
@@ -35,7 +34,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 4, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 2: Rope
@@ -49,7 +47,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskRon,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 8, .nAgility = -3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 3: Swedish Shortsnout Dragon-hide Belt
@@ -63,7 +60,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 8, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 4: Common Welsh Green Dragon-hide Belt
@@ -77,7 +73,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 8, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 5: Romanian Longhorn Dragon-hide Belt
@@ -91,7 +86,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 12, .nAgility = 1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 6: Chinese Fireball Dragon-hide Belt
@@ -105,7 +99,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 16, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 7: Hungarian Horntail Dragon-hide Belt
@@ -119,7 +112,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 16, .nAgility = 3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 8: Bracelet
@@ -133,7 +125,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 2, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 9: Beads
@@ -147,7 +138,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 3, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 1,
     },
     { // 10: Pocket Watch
@@ -161,7 +151,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 7, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 4,
     },
     { // 11: Quidditch Wrist Guards
@@ -175,7 +164,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskRon,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 8, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 5,
     },
     { // 12: Head Band
@@ -189,7 +177,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 10, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 6,
     },
     { // 13: Eagle Feather Quill
@@ -203,7 +190,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 10, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 7,
     },
     { // 14: Crystal Ball
@@ -217,7 +203,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 12, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 8,
     },
     { // 15: Dragon Liver
@@ -231,7 +216,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 12, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 8,
     },
     { // 16: Rabbit Fur Gloves
@@ -245,7 +229,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 12, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 8,
     },
     { // 17: Remembrall
@@ -259,7 +242,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 20, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 3,
     },
     { // 18: Spellotape
@@ -273,7 +255,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 30,
     },
     { // 19: Golden Snitch
@@ -287,7 +268,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 25, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 10,
     },
     { // 20: Mittens
@@ -301,7 +281,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 2, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 21: Leather Gloves
@@ -315,7 +294,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 4, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 22: Quidditch Gloves
@@ -329,7 +307,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 4, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 23: Potions Gloves
@@ -343,7 +320,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskRon,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 6, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 24: Swedish Shortsnout Dragon-hide Gloves
@@ -357,7 +333,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 8, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 25: Common Welsh Green Dragon-hide Gloves
@@ -371,7 +346,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 10, .nAgility = 1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 26: Romanian Longhorn Dragon-hide Gloves
@@ -385,7 +359,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 12, .nAgility = 2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 27: Chinese Fireball Dragon-hide Gloves
@@ -399,7 +372,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 15, .nAgility = 3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 28: Hungarian Horntail Dragon-hide Gloves
@@ -413,7 +385,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 18, .nAgility = 4 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 29: Sneakers
@@ -427,7 +398,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 4, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 30: Leather Boots
@@ -441,7 +411,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 4, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 31: Galoshes
@@ -455,7 +424,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskRon,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 5, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 32: Quidditch Boots
@@ -469,7 +437,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 8, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 33: Swedish Shortsnout Dragon-hide Boots
@@ -483,7 +450,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 12, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 34: Common Welsh Green Dragon-hide Boots
@@ -497,7 +463,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 15, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 2,
     },
     { // 35: Romanian Longhorn Dragon-hide Boots
@@ -511,7 +476,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 15, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 3,
     },
     { // 36: Chinese Fireball Dragon-hide Boots
@@ -525,7 +489,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 15, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 5,
     },
     { // 37: Hungarian Horntail Dragon-hide Boots
@@ -539,7 +502,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 20, .nAgility = 5 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 5,
     },
     { // 38: Cap
@@ -553,7 +515,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 3, .nAgility = 1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 1,
     },
     { // 39: Black Pointed Hat
@@ -567,7 +528,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 5, .nAgility = 1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 1,
     },
     { // 40: Rear Admiral's Hat
@@ -581,7 +541,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskRon,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 6, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 1,
     },
     { // 41: Quidditch Helmet
@@ -595,7 +554,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 8, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 2,
     },
     { // 42: Swedish Shortsnout Dragon-hide Cap
@@ -609,7 +567,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 9, .nAgility = -1 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 3,
     },
     { // 43: Common Welsh Green Dragon-hide Cap
@@ -623,7 +580,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 10, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 3,
     },
     { // 44: Romanian Longhorn Dragon-hide Cap
@@ -637,7 +593,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 12, .nAgility = -2 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 4,
     },
     { // 45: Chinese Fireball Dragon-hide Cap
@@ -651,7 +606,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 15, .nAgility = -3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 5,
     },
     { // 46: Hungarian Horntail Dragon-hide Cap
@@ -665,7 +619,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 15, .nAgility = 3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 5,
     },
     { // 47: School Robe
@@ -679,7 +632,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 7, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 48: Quidditch Robe
@@ -693,7 +645,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 10, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 4,
     },
     { // 49: Winter Cloak
@@ -707,7 +658,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 15, .nAgility = -3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 8,
     },
     { // 50: Potions Robe
@@ -721,7 +671,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskRon,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 20, .nAgility = -3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 10,
     },
     { // 51: Swedish Shortsnout Dragon-hide Cloak
@@ -735,7 +684,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 25, .nAgility = -3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 10,
     },
     { // 52: Common Welsh Green Dragon-hide Cloak
@@ -749,7 +697,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 35, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 12,
     },
     { // 53: Romanian Longhorn Dragon-hide Cloak
@@ -763,7 +710,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 40, .nAgility = 3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 15,
     },
     { // 54: Chinese Fireball Dragon-hide Cloak
@@ -777,7 +723,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 45, .nAgility = 3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 18,
     },
     { // 55: Hungarian Horntail Dragon-hide Cloak
@@ -791,7 +736,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskHarry | ItemCharacterMaskRon | ItemCharacterMaskHermione,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 50, .nAgility = 3 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 20,
     },
     { // 56: Wiggenweld Potion
@@ -805,7 +749,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 7,
         .stats = { .potion = { .nEffect = PotionEffectStamina, .nMagnitude = 20 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 57: Grand Wiggenweld Potion
@@ -819,7 +762,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 7,
         .stats = { .potion = { .nEffect = PotionEffectStamina, .nMagnitude = 50 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 58: Pepperup Potion
@@ -833,7 +775,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 7,
         .stats = { .potion = { .nEffect = PotionEffectMagic, .nMagnitude = 20 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 59: Grand Pepperup Potion
@@ -847,7 +788,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 7,
         .stats = { .potion = { .nEffect = PotionEffectMagic, .nMagnitude = 50 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 60: Antidote to Common Poisons
@@ -861,7 +801,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 7,
         .stats = { .potion = { .nEffect = PotionEffectPoison, .nMagnitude = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 61: Anti-Paralysis Potion
@@ -875,7 +814,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 7,
         .stats = { .potion = { .nEffect = PotionEffectParalysis, .nMagnitude = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 62: Rat Tonic
@@ -889,7 +827,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 63: Shrivelfig
@@ -903,7 +840,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 64: Daisy Roots
@@ -917,7 +853,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 65: Rat Spleen
@@ -931,7 +866,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 66: Leech Juice
@@ -945,7 +879,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 67: Firebolt
@@ -959,7 +892,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 68: Scabbers
@@ -973,7 +905,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 69: Hedwig
@@ -987,7 +918,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 70: Chocolate Frogs
@@ -1001,7 +931,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 71: Crookshanks
@@ -1015,7 +944,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 72: Time-Turner
@@ -1029,7 +957,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 73: Trevor
@@ -1043,7 +970,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 74: A Book Page
@@ -1057,7 +983,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 75: Valve Handle
@@ -1071,7 +996,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 76: Chocolate
@@ -1085,7 +1009,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 77: Dead Caterpillar
@@ -1099,7 +1022,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 78: 'The Monster Book of Monsters'
@@ -1113,7 +1035,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 2,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 79 -- dummy end-of-list record; icon pointers clone index 62's (Rat Tonic)
@@ -1127,7 +1048,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = ItemCharacterMaskNone,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 80
@@ -1141,7 +1061,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 81
@@ -1155,7 +1074,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 82
@@ -1169,7 +1087,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 83
@@ -1183,7 +1100,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 84
@@ -1197,7 +1113,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 85
@@ -1211,7 +1126,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 86
@@ -1225,7 +1139,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 87
@@ -1239,7 +1152,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 88
@@ -1253,7 +1165,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 89
@@ -1267,7 +1178,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 90
@@ -1281,7 +1191,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 91
@@ -1295,7 +1204,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 92
@@ -1309,7 +1217,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 93
@@ -1323,7 +1230,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 94
@@ -1337,7 +1243,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 95
@@ -1351,7 +1256,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 96
@@ -1365,7 +1269,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 97
@@ -1379,7 +1282,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 98
@@ -1393,7 +1295,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 99
@@ -1407,7 +1308,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 100
@@ -1421,7 +1321,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 101
@@ -1435,7 +1334,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 102
@@ -1449,7 +1347,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 103
@@ -1463,7 +1360,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 104
@@ -1477,7 +1373,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 105
@@ -1491,7 +1386,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 106
@@ -1505,7 +1399,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 107
@@ -1519,7 +1412,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 108
@@ -1533,7 +1425,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 109
@@ -1547,7 +1438,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 110
@@ -1561,7 +1451,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 111
@@ -1575,7 +1464,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 112
@@ -1589,7 +1477,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 113
@@ -1603,7 +1490,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 114
@@ -1617,7 +1503,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 115
@@ -1631,7 +1516,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 116
@@ -1645,7 +1529,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 117
@@ -1659,7 +1542,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 118
@@ -1673,7 +1555,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 119
@@ -1687,7 +1568,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 120
@@ -1701,7 +1581,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 121
@@ -1715,7 +1594,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 122
@@ -1729,7 +1607,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 123
@@ -1743,7 +1620,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 124
@@ -1757,7 +1633,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 125
@@ -1771,7 +1646,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 126
@@ -1785,7 +1659,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 127
@@ -1799,7 +1672,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 128
@@ -1813,7 +1685,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 129
@@ -1827,7 +1698,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 130
@@ -1841,7 +1711,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
     { // 131
@@ -1855,7 +1724,6 @@ const ItemEntry g_pItemTable[ITEM_COUNT] = {
         .nCharacterMask = 0,
         .dwFlags = 0,
         .stats = { .equipment = { .nDefenseX2 = 0, .nAgility = 0 } },
-        .dwUnk2C = 0,
         .nMagicDefense = 0,
     },
 };

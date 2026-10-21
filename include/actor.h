@@ -624,8 +624,8 @@ typedef struct ActorPoolAuxRecord {
 } ActorPoolAuxRecord;
 extern ActorPoolAuxRecord *g_pActorPoolAuxBuffer;
 // Nonzero lets TickActorList depth-sort the OAM queue.
-extern u32 g_dwActorListActive_candidate;
-extern void SetActorListActive_candidate(u32 active);
+extern u32 g_dwActorDepthSortEnabled;
+extern void SetActorDepthSortEnabled(u32 enabled);
 // Rounding bias for WriteActorOamCells' scaled cell offsets; always 0.
 extern u32 g_dwUnk03001DC4;
 // Set to 1 by every TickActiveActors call and never cleared, so it is 0
