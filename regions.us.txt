@@ -1239,16 +1239,16 @@ c-file 0x08028760 _ src/list/list_remove.c List_Remove
 # Lupin (Lupin potion cutscene mode)
 c-file 0x0802878C _ src/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene
 c-file 0x0802887C _ src/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
-c-file 0x08028AD4 0x08028BAC src/lupin_potion_cutscene/load_lupin_potion_cutscene_bgs.c LoadLupinPotionCutsceneBgs
-thumb-func 0x08028BAC SpawnLupinPotionCastActor
-thumb-func 0x08028D30 TickLupinPotionCastActor
-c-file 0x08028F7C 0x08028FD8 src/lupin_potion_cutscene/reset_lupin_potion_scripts.c ResetLupinPotionScripts
-thumb-func 0x08028FD8 RunLupinPotionCastScripts
-thumb-func 0x08029144 RunLupinPotionCameraScript
-thumb-func 0x08029260 ShowNextLupinPotionDialogLine
-c-file 0x08029380 0x080293DC src/lupin_potion_cutscene/close_lupin_potion_dialog_panel.c CloseLupinPotionDialogPanel
-thumb-func 0x080293DC SpawnLupinPotionPanelActor
-thumb-func 0x08029490 SpawnLupinPotionEffectActor
+c-file 0x08028AD4 _ src/lupin_potion_cutscene/load_lupin_potion_cutscene_bgs.c LoadLupinPotionCutsceneBgs
+c-file 0x08028BAC _ src/lupin_potion_cutscene/spawn_lupin_potion_cast_actor.c SpawnLupinPotionCastActor
+c-file 0x08028D30 _ src/lupin_potion_cutscene/tick_lupin_potion_cast_actor.c TickLupinPotionCastActor
+c-file 0x08028F7C _ src/lupin_potion_cutscene/reset_lupin_potion_scripts.c ResetLupinPotionScripts
+c-file 0x08028FD8 _ src/lupin_potion_cutscene/run_lupin_potion_cast_scripts.c RunLupinPotionCastScripts
+c-file 0x08029144 _ src/lupin_potion_cutscene/run_lupin_potion_camera_script.c RunLupinPotionCameraScript
+c-file 0x08029260 _ src/lupin_potion_cutscene/show_next_lupin_potion_dialog_line.c ShowNextLupinPotionDialogLine
+c-file 0x08029380 _ src/lupin_potion_cutscene/close_lupin_potion_dialog_panel.c CloseLupinPotionDialogPanel
+c-file 0x080293DC _ src/lupin_potion_cutscene/spawn_lupin_potion_panel_actor.c SpawnLupinPotionPanelActor
+c-file 0x08029490 _ src/lupin_potion_cutscene/spawn_lupin_potion_effect_actor.c SpawnLupinPotionEffectActor
 c-file 0x08029528 _ src/lupin_potion_cutscene/exit_lupin_potion_cutscene.c ExitLupinPotionCutscene
 c-file 0x08029558 _ src/lupin_potion_cutscene/spawn_lupin_potion_cast.c SpawnLupinPotionCast
 c-file 0x08029584 _ src/lupin_potion_cutscene/tick_lupin_potion_shadow_actor.c TickLupinPotionShadowActor
@@ -2390,8 +2390,8 @@ c-file 0x08060EC0 _ src/items/actor_scale_steps.c g_adwActorScaleSteps
 c-file 0x08060EE4 _ src/items/items.c g_pItemTable
 c-file 0x080629B4 _ src/items_list/items_list.globals.c g_abItemListPlaceholderText
 c-file 0x080629B8 _ src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
-c-file 0x080629F4 0x08062A00 src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
-c-file 0x08062A08 0x08062A38 src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_aLupinPotionScanlineTable
+c-file 0x080629F4 _ src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
+c-file 0x08062A00 0x0806305C src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_LupinPotionShadowGfx
 c-file 0x08063064 _ src/map/overworld.globals.c g_dwBg2Control
 c-file 0x08063074 _ src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
 c-file 0x08063C8C _ src/map/room_table.c g_aRoomTable
@@ -2665,7 +2665,9 @@ c-rodata 0x08FAA7D0 _ EepromV124
 c-rodata 0x08FAA810 _ EepromNoWait
 c-rodata 0x08FAA824 0x08FAA830 ResetBuckbeakMinigame
 c-rodata 0x08FAA858 0x08FAA86A UpdateOwlStatMeters
-c-rodata 0x08FAA86C 0x08FAA878 SpawnOwlCareKitActors
+c-rodata 0x08FAA86C _ SpawnOwlCareKitActors
+c-rodata 0x08FAA878 _ RunLupinPotionCastScripts
+c-rodata 0x08FAADB8 _ RunLupinPotionCameraScript
 c-rodata 0x08FAAE98 _ TickNpcActor
 c-file 0x08FAAEF8 _ src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file 0x08FAAF10 _ src/dialog/dialog_text_info.c g_aDialogTextInfo

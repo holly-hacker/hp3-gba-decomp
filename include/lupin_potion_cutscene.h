@@ -55,6 +55,14 @@ typedef struct {
     s32 nPanelOffset;     // 0xB4: panel's y offset from its resting position (0 = raised, 0x28 = lowered)
 } LupinPotionCutsceneState;
 
+// One line of a dialog page; a zero dwTextId ends the page.
+typedef struct {
+    u32 dwTextId;
+    u32 dwSpeaker;  // g_aLupinPotionPanelAssets index of the portrait
+} LupinPotionDialogLine;
+
+#define LUPIN_POTION_DIALOG_PAGE_LINES 12
+
 extern LupinPotionCutsceneState g_LupinPotionCutscene;  // 0x03003A84
 extern s32 g_aLupinPotionBg2Scroll[2];                  // 0x03003B3C
 
@@ -63,6 +71,26 @@ extern const u32 g_dwLupinPotionBg3Control;
 extern const u32 g_dwLupinPotionBg1Control;
 extern const u32 g_dwLupinPotionTextBgControl;  // BG2
 extern const u32 g_dwLupinPotionBg0Control;
+extern const ActorGfxRecord g_LupinPotionShadowGfx;
+extern const LupinPotionDialogLine g_aLupinPotionDialog[2][LUPIN_POTION_DIALOG_PAGE_LINES];
+extern const IntPoint g_aLupinPotionCastPositions[LUPIN_POTION_CAST_COUNT];
+extern const ActorAssetRecord g_aLupinPotionCastAssets[LUPIN_POTION_CAST_COUNT];
+extern const ActorAssetRecord g_aLupinPotionPose4Assets[5];  // by the pose command's nArg1
+// Poses 0-2 of the first three cast members; the others use g_aLupinPotionCastAssets.
+extern const ActorAssetRecord g_aLupinPotionPoseAssets[3][3];
+extern const ActorAssetRecord g_aLupinPotionPanelAssets[6];  // 0: panel piece, else portraits
+extern const ActorAssetRecord g_aLupinPotionEffectAssets[2];
+extern const u8 g_abLupinPotionStandFrames[4];  // by facing
+extern const u8 g_aLupinPotionWalkAnims[4][24];      // by facing
+extern const u8 g_aLupinPotionPose4Anims[5][62];     // by the pose command's nArg1
+extern const u8 g_aLupinPotionPose1Anims[3][36];
+extern const u8 g_aLupinPotionPose2WalkAnims[3][24];
+extern const u8 g_aLupinPotionPose2StandAnims[3][24];
+extern const u8 g_aLupinPotionWalkBackAnims[4][24];  // by facing, moving against it
+extern const u8 g_aLupinPotionEffectAnims[2][62];
+extern const LupinPotionScriptCommand
+    g_aLupinPotionCastScripts[LUPIN_POTION_CAST_COUNT][LUPIN_POTION_SCRIPT_LENGTH];
+extern const LupinPotionScriptCommand g_aLupinPotionCameraScript[LUPIN_POTION_SCRIPT_LENGTH];
 
 // Scanline callback that shows the panel on BG2 (see nPanelOffset).
 extern void LupinPotionPanelScanlineCallback(u32 *pPayload0, u32 *pPayload1);
@@ -76,7 +104,7 @@ extern void RunLupinPotionCameraScript(void);
 extern u32 ShowNextLupinPotionDialogLine(void);
 extern void CloseLupinPotionDialogPanel(void);
 extern Actor *SpawnLupinPotionPanelActor(s32 kind);
-extern Actor *SpawnLupinPotionEffectActor(s32 kind, s32 x, s32 y);
+extern Actor *SpawnLupinPotionEffectActor(s32 kind, FixedPoint pos);
 extern void SpawnLupinPotionCast(void);
 extern void TickLupinPotionShadowActor(Actor *pActor);
 extern void TickLupinPotionEffectActor(Actor *pActor);
