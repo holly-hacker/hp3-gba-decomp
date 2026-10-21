@@ -1,8 +1,7 @@
 """Decode one BG tile using its tileset's canonical Huffman table.
 
 The packed tile offset counts bits from the start of ROM. Each 32-bit
-little-endian word supplies bits least-significant bit first. See
-docs/formats/graphics.md, "On-demand per-tile BG streaming".
+little-endian word supplies bits least-significant bit first.
 """
 import struct
 

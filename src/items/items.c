@@ -7,7 +7,7 @@
 // Real items (index 0-78) carry no icon pointers here: each one's icon
 // is a separate ROM resource named by the gItemNNNPalette/Tiles/
 // Frames labels the image-bank row packs -- see
-// the generated header and docs/formats/graphics.md's "Item icons" section.
+// the generated header.
 
 const ItemEntry g_pItemTable[ITEM_COUNT] = {
     { // 0: Ordinary Belt

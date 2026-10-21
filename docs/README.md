@@ -40,12 +40,11 @@ Other:
 
 Data formats (each with its `data/` extraction pipeline, where one exists):
 
-- [`formats/graphics.md`](formats/graphics.md) — the generic
-  resource-decompression dispatchers and codec inventory, the room
-  resource table, OBJ palette and tile loading, PNG sprite banks, and actor
-  animation command streams. Pipeline: `tools/graphics/`, `data/graphics/`.
-- [`formats/krawall.md`](formats/krawall.md) — the Krawall module /
-  pattern / sample on-ROM structs. Pipeline: `tools/krawall/`,
+- [`formats/graphics.md`](formats/graphics.md) — the codecs and their
+  encoders (GammaLz is Pucrunch 1.11), the graphics build format, and PNG
+  sprite images. Pipeline: `tools/graphics/`, `data/graphics/`.
+- [`formats/krawall.md`](formats/krawall.md) — how the Krawall music data
+  is laid out in ROM, and its JSON/WAV source. Pipeline: `tools/krawall/`,
   `data/audio/`.
 - [`formats/room_graphics.md`](formats/room_graphics.md) — the 14 resources per
   room (maps, blocks, collision, tilesets, palettes): ROM layout, tileset codec,
@@ -56,9 +55,8 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   tile frames and animation tables of the special scene effect.
 - [`formats/fonts.md`](formats/fonts.md) — the ten 2 bpp text fonts, their
   header and bitmap layout, and how they are selected.
-- [`formats/text.md`](formats/text.md) — the 8-language dialog/UI string
-  table, its Huffman scheme, the charmap, and the VWF text engine.
-  Pipeline: `tools/text/`, `data/text/`.
+- [`formats/text.md`](formats/text.md) — the dialog string tables and how
+  the charmap was derived. Pipeline: `tools/text/`, `data/text/`.
 
 ## Conventions
 

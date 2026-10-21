@@ -3,7 +3,7 @@
 #include "gen/graphics/menus.h"
 
 // Help screen sprites, drawn by SpawnHelpPageSprite with the palette of the same
-// index; see docs/formats/graphics.md.
+// index.
 const ActorAssetRecord g_aHelpSpriteAssets[22] = {
     { (void *)gMenuSprite006Tiles, (void *)gMenuSprite006Frames, (void *)gMenuSprite006Palette, 0 },  // 0
     { (void *)gItem063Tiles, (void *)gItem063Frames, (void *)gItem063Palette, 0 },  // 1

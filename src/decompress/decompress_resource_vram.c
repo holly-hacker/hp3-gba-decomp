@@ -3,7 +3,7 @@
 #include "hw/bios.h"
 #include "huffman.h"
 
-// Decompresses an OBJ tile resource with VRAM-safe codecs; see docs/formats/graphics.md.
+// Decompresses an OBJ tile resource with VRAM-safe codecs.
 u32 DecompressResourceVram(const void *pResource, void *pDest)
 {
     const ResourceHeader *pHeader = pResource;

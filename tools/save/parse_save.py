@@ -320,7 +320,7 @@ def parse_header(raw: bytes) -> dict:
         "szMagic": magic.decode("ascii", errors="replace"),
         "flLanguageConfigured": bool(lang_byte & 0x80),
         # Options menu language selector (0=English US, 1=English UK, ...
-        # per docs/formats/text.md's language list); confirmed against a real
+        # as in include/text.h's language ids); confirmed against a real
         # save switching to English UK.
         "bLanguageIndex": lang_byte & 0x7F,
         # Options menu: Music/Sound volume (0-10 scale, 0x0a default).

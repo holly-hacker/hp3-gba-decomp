@@ -1,8 +1,8 @@
 """Decode a DecompressLzRle stream from a ROM address.
 
 The source address is exactly the codec's input pointer: for type-7
-resources it follows the four-byte resource header. See
-docs/formats/graphics.md, "The DecompressLzRle codec, decoded".
+resources it follows the four-byte resource header. The ROM's decoder is
+src/arm_routines/decompress_lz_rle.c.
 """
 
 ROM_BASE = 0x08000000

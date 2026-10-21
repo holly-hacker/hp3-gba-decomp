@@ -1,23 +1,12 @@
 """Decode a GBA BIOS-compressed resource blob (LZ77UnComp, HuffUnComp, or
 RLUnComp) directly from a ROM address, matching the well-documented public
 BIOS compression formats (GBATEK) that the game's generic resource
-dispatcher (DecompressResource/DecompressResourceVram, see docs/formats/text.md sec 6 and
+dispatcher (DecompressResource/DecompressResourceVram, see
 docs/formats/graphics.md) calls via svc 0x11/0x13/0x14 for types 1/2/3.
 
-Unlike tools/graphics/decode_gamma_lz.py (a proprietary, undocumented codec that had to
-be reverse-engineered), these are standard formats -- reimplemented
-directly from the public spec, not by executing ROM code.
-
-Verified against a real, live-confirmed example: ROM 0x080BCDD8, an
-RLUnComp-compressed 32-byte (one 4bpp tile) sprite graphic, caught via an
-mGBA watchpoint on OBJ tile VRAM (0x06010000) during actual gameplay --
-see docs/formats/graphics.md's "A real, confirmed sprite tile" section.
-
-Only rl_uncomp (type 3) has been exercised against a real, confirmed
-resource so far. lz77_uncomp and huff_uncomp (types 1/2) are straight
-reimplementations of the public GBA BIOS spec, not speculative, but no
-resource found in this ROM has needed them yet -- treat them as
-unverified-in-practice until one does.
+rl_uncomp and lz77_uncomp decode the ROM's sprite and room resources, which
+encode_bios_rle.py and encode_bios_lz77.py rebuild byte for byte. No
+extracted resource uses huff_uncomp.
 """
 import struct
 

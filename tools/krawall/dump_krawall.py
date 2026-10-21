@@ -26,11 +26,9 @@ the threshold enough to find them segfaults on the JP ROM outright. All 52
 module addresses per version are confirmed by the same means every other
 region in this file is: the parsing below accounts for every byte with
 zero overlaps and zero gaps. See
-docs/formats/krawall.md for the full writeup. `unkrawerter` is still used
+docs/formats/krawall.md. `unkrawerter` is still used
 directly (not via this script) by `just dump-music-xm` for casual
 .xm listening exports.
-
-See docs/formats/krawall.md for what's confirmed and what's still open.
 
 Usage: dump_krawall.py <ver>   (writes asm/krawall/, prints manifest
                                     rows for regions.<ver>.txt to stdout)
@@ -79,8 +77,7 @@ MODULE_ADDRS = {
 # krawerter's Sample.cpp: fixed-size mixer overrun buffer appended after
 # every sample's real PCM data ("17*4 cause the max inc in the mixer can be
 # (rounded up) 17 and we go 4 samples over the end in the worst case, +1
-# for interpolation"). See docs/formats/krawall.md's Trailing padding
-# absorption -- verified byte-for-byte against every sample in both ROMs.
+# for interpolation"). See docs/formats/krawall.md -- verified byte-for-byte against every sample in both ROMs.
 SAMPLES_ADD = 17 * 4 + 1
 
 
@@ -212,8 +209,7 @@ def find_regions(ver: str) -> tuple[bytes, list[Region]]:
 
     for i, (p_addr, span) in enumerate(sorted(seen_patterns.items())):
         # krawerter emits ".align" (4-byte on this target) before every
-        # Pattern label, zero-padded -- see docs/formats/krawall.md's
-        # Trailing padding absorption.
+        # Pattern label, zero-padded -- see docs/formats/krawall.md.
         end = align4(p_addr + span)
         regions.append(Region(p_addr, end, "pattern", f"KrawallPattern{i}", ver))
 
@@ -229,7 +225,7 @@ def find_regions(ver: str) -> tuple[bytes, list[Region]]:
 
     # Every sample/pattern's computed end must land exactly on the next
     # region's start -- there's no format reason for a real gap here (see
-    # docs/formats/krawall.md's Trailing padding absorption). If it doesn't,
+    # docs/formats/krawall.md). If it doesn't,
     # something about the ROM's layout doesn't match our understanding of
     # the format and this needs investigating, not silently leaving a
     # fallback .incbin gap in its place.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """One-time bootstrap: decode the game's real dialog/UI string tables
 from the US baserom into curated, editable JSON under data/text/. See
-docs/formats/text.md's "The real dialog string table, decoded" section.
+docs/formats/text.md.
 
 The string-only JSON files are local, gitignored editable source. Existing
 files are kept unless --force is passed, so extract-all does not overwrite

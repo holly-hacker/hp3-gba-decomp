@@ -2,7 +2,7 @@
 
 Token choices come from pucrunch_gammalz.py (Pucrunch 1.11's passes, LGPL);
 this file writes the game's container around them. See
-docs/formats/graphics.md, "The DecompressGammaLz codec, decoded";
+docs/formats/graphics.md, "GammaLz: Pucrunch 1.11";
 decode_gamma_lz.py is the inverse.
 
 - Outer header: type 6 in bits 4-7, delta flag 0x80, 24-bit decoded size.

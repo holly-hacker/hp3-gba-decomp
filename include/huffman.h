@@ -2,8 +2,6 @@
 
 #include "types.h"
 
-// See docs/formats/text.md.
-
 typedef enum {
     DialogTextOk       = 0,
     DialogTextNoBlob   = 1, // InitDialogTextTable never called
@@ -46,6 +44,5 @@ extern void DecompressHuffTree(const HuffTreeNode *pTree, void *dst, s32 size);
 void DecompressHuffTreeTile(u32 bitOffset, u16 *pDest, s32 size, const HuffTreeNode *pTree);
 void BuildHuffTreeTileOffsets(const u16 *pSrc, const HuffTreeNode *pTree, u32 *pDest, u32 count);
 
-// Copies DecompressBgTile to IWRAM; see docs/formats/graphics.md
-// ("On-demand per-tile BG streaming").
+// Copies DecompressBgTile to IWRAM.
 void InstallBgTileCodec(void);

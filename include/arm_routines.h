@@ -14,8 +14,7 @@ void SortActorsByDepth(struct Actor **actors, u32 count);
 // LZ/RLE resource codec; copied by InstallIwramDecompressCodecs.
 void DecompressLzRle(const void *src, void *dst, u32 *pSize);
 
-// Huffman BG tile decoder; copied by InstallBgTileCodec. See
-// docs/formats/graphics.md ("On-demand per-tile BG streaming").
+// Huffman BG tile decoder; copied by InstallBgTileCodec.
 // Canonical code table: per code length, the number of codes and the index
 // of the length's first symbol, then the symbols.
 typedef struct BgTileCodeTable {

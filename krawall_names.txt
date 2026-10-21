@@ -19,9 +19,8 @@
 # After editing this file, re-run `just extract-krawall` to rename the
 # corresponding data/audio/ files, then update the affected
 # krawall-module/krawall-samples rows in regions.us.txt and regions.jp.txt.
-# See docs/formats/krawall.md's Future work for current limitations
-# (renaming an already-custom-named entry again doesn't clean up the
-# previous name -- delete the stale file by hand).
+# Renaming an already-custom-named entry again doesn't clean up the
+# previous name -- delete the stale file by hand.
 
 module 0 MusBattleBoss
 module 1 MusLeakyCauldronCellar

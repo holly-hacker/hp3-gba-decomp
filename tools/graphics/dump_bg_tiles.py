@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """Render a room's BG layers (walls/floor/props/foreground) as PNGs for
-visual inspection, plus an alpha-composited merged view. See
-docs/formats/graphics.md's "On-demand per-tile BG streaming" section for
-the format this decodes -- user-confirmed against real gameplay for
-rooms 0x28/0x26/0x27/0x24, structurally checked for the rest.
+visual inspection, plus an alpha-composited merged view, decoding the
+room table's BG resources the way src/scroll/ does.
 
 Research/debugging aid only -- NOT build input, mirrors
 dump_collision.py's role. US only (no ver subdirectory in the output --
@@ -12,7 +10,7 @@ possibly different addresses).
 
 Real BG palette: level-table field `+0x58` is a raw, uncompressed
 256-color (16 banks x 16, BGR555) array -- confirmed byte-exact against
-a live mGBA memory dump. See docs/formats/graphics.md.
+a live mGBA memory dump.
 
 Filename convention matches tools/collision/dump_collision.py: room name
 decoded the same way, sanitized the same way (idx:02d_Room_Name).

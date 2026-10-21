@@ -5,10 +5,8 @@
 #include "oam.h"
 #include "math.h"
 
-// See docs/formats/graphics.md.
-
 // Actor.dwFlags. Bits confirmed by usage in TickActor/TickActorList and
-// their callees (see docs/formats/graphics.md); several names are inferred
+// their callees; several names are inferred
 // from a single read/write site rather than exhaustively proven.
 typedef enum {
     ActorFlagVisible                  = 0x1,        // required (with HasSpriteCells clear)
@@ -119,7 +117,7 @@ typedef struct ActorRect {
     s16 bottom;
 } ActorRect;
 
-// Header of an ActorAssetRecord.pFrameData block; see docs/formats/graphics.md.
+// Header of an ActorAssetRecord.pFrameData block.
 // Each awFrameOffsets entry is a byte offset from awFrameOffsets itself to
 // that frame's ActorFrameDesc.
 typedef struct ActorFrameData {
@@ -242,7 +240,7 @@ typedef struct ActorAnimState {
                              // right of the last, while bForceOnscreen_candidate is set
     } unk_DC;               // 0x04, agbcc rounds the union to 4 bytes (-> 0x08)
     ActorAssetRecord *pAnimTable;  // 0x08, set by SetActorAssetRecord; its pFrameData
-                             // holds the animation frames -- see docs/formats/graphics.md
+                             // holds the animation frames
     u8 *pAnimFrameCursor;   // 0x0C
     u8 *pAnimFrameBase;     // 0x10
 } ActorAnimState;

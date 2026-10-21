@@ -1,15 +1,5 @@
-@ Named RAM/ROM addresses referenced (via `ldr rX, =SYMBOL`-style
-@ literal-pool loads) from asm/*.s files, so the source reads by
-@ meaning rather than raw hex. Assembles to identical bytes either way
-@ (.set defines a plain absolute constant) -- purely a readability aid,
-@ not something the build depends on for correctness.
-@
-@ US-side values. Symbols also used from a JP-side extracted file (the
-@ MT19937 ones below) have a matching, differently-valued definition in
-@ ram_symbols.jp.inc -- that's what lets the identical .s source in
-@ e.g. asm/rng/mt19937_regenerate.s assemble correctly for both ROMs.
-@ The dialog-text-engine symbols have no JP counterpart at all (that
-@ engine isn't present in the JP ROM -- see docs/formats/text.md).
+@ Fixed RAM addresses of the symbols declared extern in C and referenced
+@ from asm. ram_symbols.jp.inc holds the JP values in the same layout.
 
 @ --- include/sound.h ---
 .set g_KrawallEwramStart,     0x02000000

@@ -51,7 +51,7 @@ typedef union {
 // g_pItemTable's per-item record, 0x34 bytes.
 typedef struct ItemEntry {
     s32 nNameTextId;         // 0x00 -- dialog string id for the display name
-    const void *pPalette;    // 0x04 -- icon palette pointer, see docs/formats/graphics.md
+    const void *pPalette;    // 0x04 -- icon palette pointer
     const void *pTileData;   // 0x08 -- icon compressed tile-data pointer
     const void *pFrameData;  // 0x0C -- icon frame/layout header pointer
     s32 nBuyPrice;           // 0x10 -- shop buy price (Sickles)

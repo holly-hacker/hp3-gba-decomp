@@ -3,8 +3,7 @@
 #include "types.h"
 #include "huffman.h"
 
-// Dialog text lookup, language selection and number formatting; see
-// docs/formats/text.md.
+// Dialog text lookup, language selection and number formatting.
 
 // Language ids, as stored in gCurrentLanguage and used to index sDialogTextTable.
 typedef enum {

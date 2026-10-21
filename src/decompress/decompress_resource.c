@@ -2,7 +2,7 @@
 #include "decompress.h"
 #include "hw/bios.h"
 
-// Decompresses a level/room resource into work RAM; see docs/formats/graphics.md.
+// Decompresses a level/room resource into work RAM.
 u32 DecompressResource(const void *pResource, void *pDest)
 {
     const ResourceHeader *pHeader = pResource;

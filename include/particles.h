@@ -5,8 +5,6 @@
 #include "oam.h"
 #include "palette.h"
 
-// See docs/formats/graphics.md.
-
 // Particle sprite header, laid out like ActorFrameData. Reached through the
 // second word of ParticleEmitter.pSprite's record.
 typedef struct ParticleSpriteHeader {

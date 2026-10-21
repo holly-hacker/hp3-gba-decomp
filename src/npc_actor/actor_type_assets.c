@@ -3,7 +3,7 @@
 #include "gen/graphics/overworld.h"
 #include "npc_actor.h"
 
-// Sprites of spawned actors, indexed by actor kind; see docs/formats/graphics.md.
+// Sprites of spawned actors, indexed by actor kind.
 const ActorAssetRecord g_aActorTypeAssets[137] = {
     { (void *)gUnnamed001Tiles, (void *)gUnnamed001Frames, (void *)gUnnamed001Palette, 0 },  // 0
     { (void *)gActorSprite2_021Tiles, (void *)gActorSprite2_021Frames, (void *)gActorSprite2_021Palette, 0 },  // 1

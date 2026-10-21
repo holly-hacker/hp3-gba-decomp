@@ -5,11 +5,8 @@ module-header songIndex derivation, and sample trailing-buffer generation.
 Used by both tools/krawall/extract_krawall.py (ROM -> data/audio/ JSON+WAV,
 one-time bootstrap) and tools/krawall/pack_krawall.py (data/audio/ -> per-version
 assembly at build time). All formats here are confirmed against this
-game's actual embedded Krawall revision (2003-09-01) -- see
-docs/formats/krawall.md's "Pattern atom encoding" and "Module header
-fields" sections for the verification behind each of these, including
-where it disagrees with the current public krawall repo's active (later
-revision) code paths.
+game's actual embedded Krawall revision (2003-09-01), which differs from
+the current public krawall repo -- see docs/formats/krawall.md.
 
 Also holds krawall_names.txt loading/resolution (module/sample naming)
 for tools/krawall/extract_krawall.py.
@@ -79,8 +76,7 @@ def resolve_names(kind: str, count: int, names: dict[int, str]) -> list[str]:
     return resolved
 
 # krawerter's Sample.cpp: fixed-size mixer overrun buffer appended after
-# every sample's real PCM data. See docs/formats/krawall.md's Trailing
-# padding absorption.
+# every sample's real PCM data. See docs/formats/krawall.md.
 SAMPLES_ADD = 17 * 4 + 1
 
 
@@ -91,7 +87,7 @@ def align4(addr: int) -> int:
 def decompress_pattern(data: bytes, rows: int) -> list[list[dict]]:
     """Parse a pattern's compressed row stream (starting right after the
     rows-count byte) into rows of sparse channel events. Field values are
-    decoded per docs/formats/krawall.md's Pattern atom encoding (packed
+    decoded per docs/formats/krawall.md (packed
     16-bit note/instrument word, our confirmed revision only -- NOT the
     current public krawall repo's active byte-per-field encoding)."""
     out: list[list[dict]] = []
@@ -176,7 +172,7 @@ def compress_pattern(rows: list[list[dict]]) -> tuple[bytes, list[int]]:
 
 def derive_song_index(order: list) -> list[int]:
     """Port of Mod.cpp::outputFile()'s songIndex derivation -- see
-    docs/formats/krawall.md's Module header fields. `order` entries are
+    docs/formats/krawall.md. `order` entries are
     `None` for the 254 skip marker, else a pattern index."""
     song_index = [0] * 64
     idx = 1

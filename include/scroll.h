@@ -39,8 +39,7 @@ extern s32 StepScrollToward(s32 current, s32 target);
 extern u32 g_adwBgScrollEnabled[4];
 extern u32 g_dwUnk030059AC;  // zeroed by InitRoomBgState; no other literal reference found
 
-// Room BG tile VRAM cache, per tile-size class (layers 0/3 and 1/2): see
-// docs/formats/graphics.md ("The runtime streaming/caching path").
+// Room BG tile VRAM cache, per tile-size class (layers 0/3 and 1/2).
 typedef struct BgTileCacheEntry {
     u16 wRefcount;
     u16 wTileId;
@@ -51,7 +50,7 @@ extern BgTileCacheEntry *g_apBgTileCacheEntries[2];  // 0x400 and 0x200 entries
 extern u16 *g_apBgTileCacheBuckets[2];               // chain heads by tile id & 0x7FF / 0x3FF
 extern u16 *g_apBgTileCacheFreeSlots[2];             // stack of free entry indices
 // Per tile size class: where each tile's compressed pixels start and the Huffman code table
-// shared by all of them (see docs/formats/graphics.md, "The runtime streaming/caching path").
+// shared by all of them.
 typedef struct BgTileset {
     const BgTileCodeTable *pRomCodeTable;  // in the tileset resource; copied to pCodeTable
     const u8 *pTileData;                   // compressed tiles, right after the code table

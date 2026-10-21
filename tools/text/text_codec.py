@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Codec for the game's dialog/UI text string tables -- reimplemented
 directly from sub_08024DC8 (decode) and its blob layout
-(sub_08024EB8/sub_08042588). See docs/formats/text.md's "The real dialog
-string table, decoded" section for the full derivation.
+(sub_08024EB8/sub_08042588).
 
 Blob layout, per language, base address B (found via the 8-entry pointer
 table at ROM 0x0806BD78):
@@ -31,8 +30,8 @@ at a time.
 
 Decoded glyph bytes <=0xEF are single-byte codes; >0xEF starts a
 two-byte extended code, combined as (byte0<<8)|byte1 -- see
-docs/formats/text.md for what is and isn't decoded about the extended
-charmap itself. This codec operates on the raw glyph-code byte stream,
+docs/formats/text.md for what is and isn't decoded about the charmap
+itself. This codec operates on the raw glyph-code byte stream,
 not on any character mapping.
 """
 import struct
@@ -262,8 +261,7 @@ def build_tree_from_strings(strings: list[bytes]) -> tuple[bytes, dict[int, list
 # every real string containing them across all 8 languages (proper
 # nouns shared verbatim in the credits -- "Hernández", "Gómez",
 # "Börjel" -- pin several codes at once; French/Spanish/Italian
-# grammar pins the rest). See docs/formats/text.md's "The extended
-# charmap, decoded" section for the full derivation and evidence.
+# grammar pins the rest). See docs/formats/text.md.
 #
 # 0x7B/0x7C/0x7D/0x7E are printable ASCII positions that turn out to be
 # REPURPOSED, not literal '{', '|', '}', '~' -- confirmed by real

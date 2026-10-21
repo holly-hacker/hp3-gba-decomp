@@ -1,972 +1,68 @@
 # Graphics asset format
 
-See [`../README.md`](../README.md) for the confidence-key legend
-(PROVEN / STRUCTURAL MATCH / UNCONFIRMED) used throughout, and for the
-document index.
+The C under `src/` defines how the game reads its graphics:
+`DecompressResource`/`DecompressResourceVram` (`include/decompress.h`), the
+actor frame data (`include/actor.h`), and BG tile streaming
+(`src/scroll/`). This document covers the build format and how the original
+tools encoded the data.
 
-Status: **PROVEN** end-to-end for a complete real sprite (the main-menu
-wand cursor) -- ROM source, decompression codec, tile data, and palette
-all verified against live game memory, including two independent
-methods (live memory read and ROM decode) landing on byte-identical
-results. **PROVEN** for the `DecompressGammaLz` codec's decode mechanism
-(`tools/graphics/decode_gamma_lz.py`) and the `DecompressLzRle` codec
-(`tools/graphics/decode_lz_rle.py`), both decoded in Python and checked
-byte-for-byte against the ROM implementations on real resources.
-**PROVEN** that three other real palettes
-(`0x08A38108`, `0x08A38FE0`, `0x080BD344`) are genuine final color data
-for their actors, traced through a deferred per-frame queue to the
-vblank DMA that writes real hardware OBJ palette RAM. **PROVEN** that
-this palette mechanism is statically extractable at scale, not just
-one-at-a-time via live triggering: a static trace of `SpawnActor`'s call
-sites found 14 real palettes (9 new) with zero gameplay. **PROVEN and
-extracted end-to-end for one whole tile-data-consuming resource class**:
-every real item's icon (`ItemEntry.pPalette/pTileData/pFrameData`, see "Item
-icons" below) is now statically decoded, extracted to editable indexed
-PNGs under `data/graphics/menus/`, and rebuilt from them into a
-byte-verified `regions.us.txt` region (see "Graphics build format"). **PROVEN end-to-end for
-level/room BG graphics, fully static, and extracted**: the two-level
-tilemap format (block-index map + per-block tile-ID/palette data), the
-per-tile streaming codec (`DecompressBgTile`, `0x08006300`), and the
-BG palette (level-table `+0x58`, raw uncompressed, no codec) are all
-statically ROM-derived and wired into `tools/graphics/dump_bg_tiles.py`,
-which renders all 55 rooms' 4 BG layers (`extracted/graphics/rooms/layers/`)
-plus an alpha-composited merged view per room (`extracted/graphics/rooms/`,
-naming matches `dump_collision.py`'s convention). Its Python tile decoder
-was byte-compared against the ARM codec for all 234,979 tiles in the 110
-tilesets reachable from the room and Time-Turner tables. Index
-0 within any bank is transparent (GBA convention, not an opaque color);
-merge stacking order is level-table layer `0,2,1,3` bottom-to-top, not
-literal index order (see "On-demand per-tile BG streaming" for why).
-User-confirmed against actual gameplay for 4 rooms (`0x28`, `0x26`,
-`0x27`, `0x24`) and structurally checked for the rest, including which
-level-table layer maps to which hardware BG register. Build input through
-[`room_graphics.md`](room_graphics.md), which extracts and packs these
-resources. **PROVEN and extracted for a third resource class**: the game's dialog
-portraits (`g_apPortraitTable`, `0x0804C61C`, 72 filled records -- see
-"Character portraits" below), whose 54 unique images are extracted to
-editable PNGs and rebuilt from them through an `image-bank` region.
-Tile data otherwise remains
-the bottleneck for "extract everything" beyond items, rooms, and
-portraits -- only 2 further non-BG tile resources are confirmed (the
-spark and the wand), both via live tracing.
-**STRUCTURAL MATCH** for three earlier candidate art regions from
-static ROM scanning, none code-confirmed and one (`0x08933000`-area's
-sibling `0x080BCA24`) a **false positive** for the actor it resembles
--- see "The wand cursor sprite" for why pixel-shape plausibility isn't
-sufficient evidence on its own. Standing caveat throughout this doc:
-rendered content using a fake grayscale ramp palette must only be
-described structurally, never as depicting specific real-world content
-(item icons and portraits are the exceptions -- their real, decoded
-palettes make identifying content legitimate). Room graphics (see
-[`room_graphics.md`](room_graphics.md)) and the image banks are build
-input; other graphics data has no build-integrated extractor yet.
+## Compressed resources
 
-## What we know
+A resource begins with a 4-byte `ResourceHeader`. Bits 4-6 of byte 0 give
+the type, bit 7 asks for the `u16` delta pass, and bytes 1-3 hold the
+decoded size. The two dispatchers map types to codecs differently. A BIOS
+RLE stream on the VRAM path (type 3) repeats the header at `+4`.
 
-### Real tile data, structurally confirmed
-
-A large run of genuine, non-random, tile-organized 4bpp GBA graphics
-sits at ROM **`0x08933000`-`0x08997000`** (~400KB, contiguous,
-tile-aligned), with a second, sparser candidate region immediately
-before it at **`0x08880000`-`0x08933000`**.
-
-**Caveat on "genuine, artist-authored":** this claim rests on structural
-evidence (below), not on recognizing specific subject matter. All
-rendering done so far uses a synthetic grayscale ramp palette (palette
-index x17 as gray value) because the real palette hasn't been decoded
-yet (blocked on the `DecompressGammaLz` codec, see below). Under a fake palette,
-smooth gradients and shapes are easy to over-interpret as specific
-real-world content (sky, hills, etc.). A grayscale ramp with no
-ground-truth colors cannot support identifying subject matter at all --
-readings like "sky gradient / hill silhouette / fence /
-ground-water-texture" are not defensible from these renders. What holds
-up: this region contains a repeating fence/lattice pattern and some
-curling/scrollwork shapes with clean edges and bilateral symmetry, and
-a separate area with smooth gradient bands -- real structure, not noise,
-but "what it depicts" stays unconfirmed until it's rendered with the
-correct palette.
-
-The second region is not one uniform tileset -- a finer flatness scan
-(2KB windows) found 17 distinct contiguous good-tile runs inside it,
-separated by non-tile-shaped gaps (likely still-compressed data or
-unrelated bytes at the coarser scan's resolution):
-
-```
-0x08881800-0x08882c00  0x0888a400-0x0888b000  0x0888b400-0x0888d000
-0x0888d400-0x0888f000  0x0888f400-0x08890000  0x08890800-0x08894400 (largest, 15KB)
-0x088ae000-0x088ae800  0x088b0000-0x088b0800  0x088e8400-0x088e8c00
-0x08924400-0x08924c00  0x08926c00-0x08927400  0x08929c00-0x0892a400
-0x0892a800-0x0892b400  0x0892b800-0x0892c000  0x0892c400-0x08930400 (16KB)
-0x08930800-0x08931000  0x08931400-0x08933000
-```
-
-The run at `0x0888b400`-`0x0888f000` renders (grayscale) as smooth
-gradient bands plus a fence/lattice band, distinct from the
-scrollwork/fence tileset at `0x08933000`+ -- but see the subject-matter
-caveat above: calling this an "outdoor background scene" overreaches what
-a grayscale render can show. The defensible claim is non-random,
-tile-shaped data with a different visual character than the `0x08933000`
-region. UNCONFIRMED beyond that.
-
-Found by a structural scanner (not statistics on raw bytes, but on
-decoded pixels): every 4-byte-aligned 32-byte window across the full 16MB
-ROM was decoded as an 8x8 4bpp tile and scored for horizontal/vertical
-pixel-adjacency coherence (a metric that needs no assumed palette or
-canvas width -- real art has smooth edges between adjacent pixels far
-more often than random bytes do). This region scored far above ROM-wide
-background; Krawall audio, executable code, and an earlier weaker
-candidate at `0x08937000` (found by a cruder entropy scan, now understood
-to be the same tileset family, see below) all scored much lower.
-
-**Rendered proof** (grayscale ramp palette -- index*17 as gray value, so
-shape is visible independent of real color, but subject matter is NOT
-reliable under a fake palette -- see caveat above): shows non-random
-structure -- a repeating curling scrollwork-shaped band and a repeating
-picket-fence/lattice-shaped strip, both with clean edges and bilateral
-symmetry, repeating consistently across the full 400KB span (i.e. many
-visually-related tiles back to back). Whether this is genuinely
-decorative/artist-authored art (plausible, given the clean repeating
-geometry) or something else entirely is not confirmed -- only the
-non-random, tile-shaped, repeating-motif structure is. Confirmed by
-directly viewing the rendered PNGs, not just inferred from scores.
-
-**Byte-distribution corroboration**: within this region, the 10 most
-common bytes are exactly the 4bpp "flat" bytes where both nibbles match
-(`0x33`, `0x00`, `0x44`, `0x55`, `0x11`, `0x66`, `0xDD`, `0xBB`, `0x22`,
-`0xEE`) -- adjacent-pixel-pairs sharing one palette index, the classic
-signature of flat-filled/outlined pixel art. This also explains an
-earlier, independent finding: a sliding-window entropy scan (see
-[`text.md`](text.md)'s approach 3) flagged `0x08937000`-`0x0896b000` as
-tile-shaped with dominant byte `0x33` while hunting for a font -- same
-underlying phenomenon, same tileset family, not a distinct font
-candidate.
-
-### Third region: UI panel graphics candidate
-
-A ROM-wide vectorized structural scan (same pixel-adjacency-coherence
-metric as above, run over the *entire* 16MB ROM excluding everything
-already covered by `regions.us.txt` and trailing padding) surfaced a
-new, previously-unexamined cluster at **`0x08a32800`-`0x08a3a000`**
-(just before Krawall audio starts at `0x08A9C6D0`), visually distinct
-from both regions above. A zoomed grayscale crop of
-**`0x08a36800`-`0x08a38400`** specifically shows a row of clean,
-repeating **bordered rectangular panels with rounded corners** -- a
-fairly objective geometric read (not color/content speculation): each
-panel has a lighter outline/frame and a filled interior, cleanly
-repeating left to right. This is a strong candidate for UI
-button/panel/inventory-slot art. STRUCTURAL MATCH -- not yet PROVEN
-(no palette, and not yet cross-referenced against any code that
-consumes it).
-
-Note this region sits outside the level-table/`DecompressGammaLz` call graph
-traced so far -- whether it's compressed at all (and if so, with which
-scheme) hasn't been determined; it was found by scanning raw ROM bytes
-directly, not via a decompressed buffer.
-
-### The resource-decompression dispatchers
-
-**PROVEN** from disassembly unless marked otherwise.
-
-Compressed resources start with a 4-byte header: byte 0 bits 4-6 are
-the **type** (the jump-table index), byte 0 bit 7 requests a delta
-post-pass (`ApplyResourceDeltaPass`, an in-place running sum over `u16`s, applied
-after any type), and bytes 1-3 are the decompressed size (LE 24-bit); see
-`ResourceHeader` in `include/decompress.h`.
-So `0xE0` is type 6 with the post-pass. `GetResourceDecompressedSize`
-(`0x0801DD88`) only returns `header >> 8`, the decompressed size.
-
-A type number means nothing on its own: two dispatchers read the same
-header shape but map types to codecs differently.
-
-- **`DecompressResource`**: level/room resources, 11 direct `bl` call sites,
-  all in the level/graphics loaders reached via the room tables (see
-  the entry layout below).
-- **`DecompressResourceVram`** (`0x0801DE5C`): OBJ tile data, 3 call
-  sites (see "There is no missing 4th caller"), including item icons
-  and portraits.
-
-| Type | `DecompressResource` | `DecompressResourceVram` |
+| Codec | Python decoder | Python encoder |
 |---|---|---|
-| 0 | `CpuSet` copy of `hdr+4` | `CpuFastSet` copy of `hdr+4` |
-| 1 | BIOS LZ77 (WRAM), `hdr` | BIOS LZ77 (VRAM), `hdr` |
-| 2 | BIOS Huffman, `hdr` | `DecompressHuffTree`, `hdr+4` |
-| 3 | BIOS RLE (WRAM), `hdr` | BIOS RLE (VRAM), `hdr+4` |
-| 4 | `DecompressLzRle`, `hdr` | -- |
-| 5 | -- | -- |
-| 6 | `DecompressGammaLz`, `hdr+4` | `DecompressGammaLz`, `hdr+4` |
-| 7 | -- | `DecompressLzRle`, `hdr+4` |
+| BIOS LZ77 / Huffman / RLE | `decode_bios.py` | `encode_bios_rle.py`, `encode_bios_lz77.py` |
+| `DecompressLzRle` | `decode_lz_rle.py` | `encode_lz_rle.py` |
+| `DecompressGammaLz` | `decode_gamma_lz.py` | `encode_gamma_lz.py` + `pucrunch_gammalz.py` |
+| `DecompressBgTile` | `decode_bgtile.py` | `bgtileset.py` |
 
-`--` slots do nothing but the delta-pass check. The second column of
-each cell is the source address passed to the codec. Where it is
-`hdr`, the dispatcher header doubles as the BIOS header; where a BIOS
-call gets `hdr+4`, the resource carries a second, duplicate header at
-`+4` (see "Item icons").
+The tools are in `tools/graphics/`. Each encoder's docstring gives the
+parse rules that reproduce the ROM's streams.
 
-`DecompressLzRle` is type 4 in `DecompressResource` but type 7 in
-`DecompressResourceVram`; every resource decoded with it so far (wand
-glow, item icons, portraits) came through the latter as type 7.
-**UNCONFIRMED:** `DecompressResource`'s type 4 passes `hdr` rather than
-`hdr+4`; no type-4 resource on that path has been seen, so its stream
-layout is untested.
+### GammaLz: Pucrunch 1.11
 
-#### Codec inventory
+The GammaLz token stream is
+[Pucrunch](https://a1bert.kapsi.fi/Dev/pucrunch/) 1.11 (30-Jan-2000) by
+Pasi Ojala, run with its default options. The 1.11 DOS build
+(`pucrunch_x86_old.zip`, run in DOSBox with `-d -c0`) chooses the same
+tokens, escape and distance widths, initial escape, and rank table for the
+pre-delta data of all 1,605 GammaLz resources in the US ROM. The 1.11
+source survives only in Internet Archive snapshots of
+`www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c` (2001-2006). Later releases
+make different choices: 1.14 adds an all-lengths search in `OptimizeLength`,
+drops the RESCAN condition `lzlen > rle`, and cuts the fill ranks from 31
+to 15.
 
-| Codec | Where | Format | Repo decoder |
-|---|---|---|---|
-| BIOS copy / LZ77 / Huffman / RLE | `svc 0xB`/`0xC`, `0x11`/`0x12`, `0x13`, `0x14`/`0x15` | standard GBA BIOS | `decode_bios.py` (Python); RLE encoder `encode_bios_rle.py` |
-| `DecompressHuffTree` | Thumb, ROM (`src/huffman/decompress_huff_tree.c`) | tree Huffman, not BIOS format; same node layout as the dialog-text decoder `DecompressDialogText` (see [`text.md`](text.md)): `u16` node count at `+0`, 4-byte nodes from `+4`, bitstream after the tree, bits LSB-first from `u16`s, output bytes paired into halfwords (no resource seen) | none |
-| `DecompressHuffTreeTile`, `BuildHuffTreeTileOffsets` | Thumb, ROM (`src/huffman/`), unreferenced | the same tree nodes and bitstream as `DecompressHuffTree`, decoded from a ROM bit offset like `DecompressBgTile`; `BuildHuffTreeTileOffsets` records each 32-byte tile's starting bit offset | none |
-| `DecompressLzRle` | ARM, ROM `0x08006108` (504 B) -> IWRAM `0x030028D4`, entry pointer `0x030028CC` | proprietary, halfword-aligned (see "the `DecompressLzRle` codec, decoded") | `decode_lz_rle.py`; encoder `encode_lz_rle.py` (see "Sprite images") |
-| `DecompressGammaLz` | ARM, ROM `0x080005EC` (828 B) -> IWRAM `0x03002ACC`, entry pointer `0x030028D0` | Pucrunch 1.11 token format in a proprietary container (see "The `DecompressGammaLz` codec, decoded") | `decode_gamma_lz.py` (Python); encoder `encode_gamma_lz.py` |
-| `DecompressBgTile` | ARM, ROM `0x08006300` (180 B) -> IWRAM `0x030033CC` | canonical Huffman, one BG tile per call; no header, not dispatched (see "On-demand per-tile BG streaming") | `decode_bgtile.py` (Python) |
-
-`InstallIwramDecompressCodecs` (`0x0801DD40`) copies `DecompressLzRle` and
-`DecompressGammaLz` with `CpuSet`; `InstallBgTileCodec` (`0x080250B8`)
-copies `DecompressBgTile`. `InstallIwramDecompressCodecs` is not
-statically reachable by `gbadisasm`'s function discovery (same issue
-as `kramInstall`).
-
-Dialog/UI text uses neither dispatcher; its Huffman scheme is in
-[`text.md`](text.md).
-
-`0x0806BE38` (`g_aTimeTurnerCutsceneRoomTable`) is a compact, purpose-
-built 2-entry table using this same `RoomTableEntry` layout, reached
-only from the Harry/Hermione Time-Turner cutscene
-(`LoadHarryHermionePortInTimeRoom`, `0x08043114`) -- it is
-independent of the main 55-entry per-room table at `0x08063C8C`. Both
-tables share the identical field-consumer call sequence; the layout is
-`RoomTableEntry` in `include/overworld/room.h`.
-
-### Level-table entry layout (offsets confirmed for a 124-byte entry)
-
-These offsets hold **decompressed payloads, not palettes or tilesets**.
-Decoding `+0x04` (508 bytes) and `+0x14` (3748 bytes) with
-`DecompressGammaLz` (see below) -- two different entries' worth of data -- both produce
-the same recognizable shape: runs of 4 consecutive `u16` values with
-small ascending low-10-bit fields and only 2 distinct values in the high
-bits across the whole buffer. That's the canonical **GBA BG screen-entry
-(tilemap) format** (10-bit tile index + hflip/vflip/palette-bank bits in
-the top bits), not pixel or color data. Note that the destination-buffer
-access pattern alone (no length header read vs. a leading tile-count
-header read) does *not* distinguish a palette/tileset pair from this --
-only decoding the payload settles it.
-
-- `+0x04 / +0x14 / +0x24 / +0x34` (and very likely `+0x00/+0x10/+0x20/
-  +0x30` too, not individually checked): **BG tilemap/screen-entry
-  data**, one per background layer. PROVEN for `+0x04`/`+0x14` (decoded
-  and pattern-matched against the known GBA format), STRUCTURAL MATCH by
-  inference for the others until each is individually verified.
-- The internal "leading count-word" behavior (`count << 5` before
-  advancing) is undecoded against a tilemap payload -- it is not a
-  tileset tile-count header, since the payload isn't a tileset.
-- `+0x08/0x0c`, `+0x18/0x1c`, `+0x28/0x2c`, `+0x38/0x3c`: always zero in
-  the one entry inspected so far -- padding/reserved, unconfirmed as a
-  general rule.
-- `+0x40/+0x44`: two more real resource pointers, same decompression
-  path and same `DecompressGammaLz` codec; also decoded to the ascending-index/
-  mostly-zero tilemap shape rather than plausible BGR555 colors. Asset
-  class still not pinned down beyond "also a tilemap-shaped decode",
-  which itself is a bit surprising for what were guessed to be a 5th
-  shared/palette-like resource -- worth re-examining.
-- `+0x50` through the entry's tail (up to `+0x7B`, stride is `0x7C`):
-  **NOT pointers at all**, despite superficially parsing as plausible ROM
-  addresses (one such value was fed through a from-scratch, independently
-  written standard-GBA-LZ77 decoder as a sanity check: the very first
-  back-reference token demands copying from a negative offset in an
-  empty output buffer -- an invalid stream, proving it's not a real
-  compressed-resource header). These are plain numeric arguments (sizes,
-  coordinates) passed directly into a screen/window-setup routine
-  (`sub_0803E588`). PROVEN not to be graphics pointers.
-- **All decompression destinations observed are dynamically-allocated
-  EWRAM heap buffers**, not fixed VRAM addresses -- the actual
-  VRAM upload happens later via DMA/CpuSet, outside this call graph
-  (not traced yet). This means you cannot identify a field's asset class
-  by its destination address alone within this call graph.
-- Every genuine resource pointer actually inspected so far uses
-  **compression type 6**, now fully decoded -- see next section. **No
-  real palette content has been found in any level-table field decoded
-  so far** -- the actual BG palette for this level's tiles must live
-  somewhere else (or the palette/tileset guess mapped to the wrong
-  offsets entirely; not yet determined).
-
-### The `DecompressGammaLz` codec, decoded (PROVEN)
-
-The Python decoder follows the ARM-mode ROM implementation (`0x080005EC`,
-828 bytes, copied into IWRAM at runtime; see the dispatcher section above).
-It was byte-compared against that implementation for 508 distinct type-6
-resources from the room and Time-Turner tables, including tileset offset
-tables. Every decoded length also matches the outer 24-bit size field;
-the worked example below produces 508 bytes.
-
-Algorithm, bit-level:
-
-- **Outer wrapper header** (4 bytes, read by `DecompressResource`, not the
-  codec itself): `byte0`: `type = (byte0>>4)&7` (6 = this codec),
-  `extra_pass = (byte0>>4)&8`; `byte1..3` (LE 24-bit): decompressed size.
-- **Codec's own internal header** (4 bytes, right after the outer
-  header): `byte0` = byte count (always a multiple of 4) of a small
-  table copied onto the stack, indexed as `table[code-1]` for short
-  run-length codes (`code < 0x20`); `byte1` = an escape/sentinel value,
-  initially compared against a `byte3`-bit prefix read each iteration
-  (match => coded token, no match => the remaining `8-byte3` bits
-  complete a literal byte); `byte2` = bit-width of an extra
-  distance-extension field for long back-references; `byte3` = the
-  literal-prefix bit-width above, also reused directly as a raw-bit
-  field width elsewhere. **The sentinel is mutable, not a fixed
-  constant**: one specific token (gamma code 1, lookahead bits `01`)
-  swaps it to 0 for the rest of the stream, so a later prefix match
-  tests against 0, not the header's `byte1`.
-- **Bit reader**: 32-bit MSB-first shift register with a
-  sentinel-refill idiom (`r8 <<= 1; if r8==0: r8 = next_word(); r8 =
-  (r8<<1)|carry`).
-- **Length/gap code** (a capped exp-Golomb/Elias-gamma variant, at ROM
-  `0x8000634`): count leading 1-bits (up to 7) via `GetBit`, then read
-  that many more raw bits and OR them onto `1<<ones`; result in `[1,255]`.
-- **Main loop** (`0x800072C`+): reads a raw field via the packed
-  control word; on a sentinel match it's a coded token, further split
-  by a gamma code into three kinds -- an LZ-style back-reference
-  (distance/length built from the gamma code, copying from
-  `dst + pos - distance`, with the classic gap-0/gap-1/gap>1
-  self-overlap handling for RLE-style short-distance repeats), the
-  sentinel-swap literal noted above, or a byte-fill run (length + fill
-  byte, both gamma-coded); a non-match instead completes and emits a
-  literal byte. All emitted bytes are packed two-at-a-time into `u16`
-  halfword stores via a toggling parity flag. The byte/halfword/run
-  copy sub-cases in the final ~250 bytes of the codec
-  (`0x8000814`-`0x80008F8`) are documented branch-by-branch in
-  `asm/decompress_gamma_lz.s`; the Python decoder emits bytes directly.
-- **Companion post-pass** (`ApplyResourceDeltaPass`, `0x0801DF48`; a
-  byte-identical unreferenced copy sits at `0x0801DF24`, run by the
-  *caller* only when `extra_pass` is set, not
-  part of the codec itself): an in-place running sum over the decoded
-  buffer treated as `u16[]` -- the codec's raw output is itself
-  delta-coded in this mode, and this pass integrates it back to
-  absolute values. This is exactly the delta-decode step needed to get
-  the ascending-tile-index tilemap runs described above to make sense.
-
-**Naming note**: this is not a Huffman codec (BIOS Huffman is
-dispatcher type 2, `svc 0x13`). It is a proprietary LZ77/Elias-gamma
-hybrid with no known public spec or SDK symbol, so `DecompressGammaLz`
-is named after its format.
-
-**Worked example** (a concrete resource pointer, for manual
-inspection): ROM `0x08658a6c` (level-table entry 0's `+0x00` field,
-file offset `0x658a6c` / decimal `6654572`). First 4 bytes:
-`e0 fc 01 00` -- byte0 `0xe0` decodes to type 6 with the extra-pass
-delta flag set; bytes 1-3 (`fc 01 00` LE) give a declared decompressed
-size of 508 bytes. Everything after that 4-byte header is the
-`DecompressGammaLz` stream itself, consumable only via the decoder above (raw
-hex/GIMP inspection of the compressed bytes won't show anything
-recognizable -- compressed streams don't look like their decoded
-content).
-
-`tools/graphics/decode_gamma_lz.py` implements this bitstream in Python.
-It checks the decoded length against the resource header and applies the
-delta pass when requested. The image-bank pipeline uses it for sprite
-tiles (see "Sprite images"); room resources are not extracted yet.
-
-#### Encoder: Pucrunch 1.11 (PROVEN)
-
-The token stream is the format of [Pucrunch](https://a1bert.kapsi.fi/Dev/pucrunch/)
-1.11 (30-Jan-2000), a C64 compressor by Pasi Ojala, and the ROM's token
-choices are exactly Pucrunch 1.11's with its default options. The 1.11
-DOS build (`pucrunch_x86_old.zip` on the author's site, run in DOSBox
-with `-d -c0`) produces, for the pre-delta data of all 1,605 GammaLz
-resources found in the US ROM, the same tokens, escape and LZ distance
-widths, initial escape, and rank table. The 1.11 source survives only in
-Internet Archive snapshots of `www.cs.tut.fi/~albert/Dev/pucrunch/pucrunch.c`
-(2001-2006); later releases differ (1.14 adds an all-lengths search in
-`OptimizeLength`, drops the RESCAN condition `lzlen > rle`, and cuts the
-fill ranks from 31 to 15).
-
-`tools/graphics/pucrunch_gammalz.py` translates 1.11's token-choosing
-passes (LGPL v2.1, see its header); `tools/graphics/encode_gamma_lz.py`
-writes the game's container around them. Together they reproduce all
-1,605 decodable GammaLz resources in each ROM byte for byte. The
+`pucrunch_gammalz.py` translates 1.11's token-choosing passes (LGPL v2.1),
+and `encode_gamma_lz.py` writes the game's container around them. The
 container differs from Pucrunch's own output:
 
-- the 8 header bytes above instead of Pucrunch's C64 header;
+- the 4-byte codec header (see `asm/decompress_gamma_lz.s`) replaces
+  Pucrunch's C64 header.
 - the fill table is `rleValues[1..]` rounded up to a multiple of 4 bytes
-  (`min(32, 4*(rleUsed/4+1))`), so ranks beyond those used keep their
-  initial run-count ranking; every 32-byte table ends in `0x45`
-  (**UNCONFIRMED** cause: one entry past the 31 ranks);
-- distance low bytes are stored as is, not XORed with `0xFF`;
-- bits are packed MSB-first into little-endian 32-bit words, the last
-  zero-padded;
-- a resource is also compressed after u16 delta coding and flagged
-  `0x80` when that stream is strictly shorter.
-
-The match search compares each position against all earlier ones with
-numpy (O(n^2)), so encoding the largest (63 KB) resource takes about 15 s.
-The build cache (`tools/buildcache.py`) keeps every encoded item, and
-`tools/images/sprite.py` also caches encoded sprite streams under
-`build/cache/gammalz/` by input hash, which extraction fills.
-
-### Real, uncompressed palettes -- found via code tracing (PROVEN)
-
-Unlike everything above, these were found by tracing forward from
-actual code, not by scanning ROM bytes -- tracing where decompressed
-resource buffers get copied into VRAM (recommended next step 2) led
-instead to a **separate, uncompressed resource path** entirely, used by
-what looks like a generic actor/sprite-spawn function,
-`sub_08001528(type, x, y, resource_ptr)` (called from e.g.
-`DrawFighterStatsUi` via `FUN_080078a4`, and from `SpawnSpGauge`). Three
-`resource_ptr` values found via direct literal-pool grep for `0x08a3`
-addresses (the same ROM neighborhood as the UI-panel candidate from the
-structural scan, `0x08a32800`-`0x08a3a000`):
-
-- `0x08A396A4`: copied via `CpuFastSet` (`svc 0xC`) straight to OBJ
-  palette RAM (`0x05000200 + bank*32`) in `DrawFighterStatsUi` and two
-  near-identical sibling functions (all reference the same source --
-  likely a shared flash/highlight-effect palette). 16 valid BGR555
-  colors (bit15=0 throughout), but low-diversity: one accent color
-  (`R120 G96 B120`) followed by 15 entries of solid white -- consistent
-  with a hit-flash/sparkle effect, not general art.
-- `0x08A38108`: passed as `resource_ptr` to `sub_08001528`. 16 valid,
-  genuinely diverse BGR555 colors (cyan/green/teal/blue progression,
-  then red/orange tones, black-filled tail) -- a real curated palette,
-  not a placeholder.
-- `0x08A38FE0`: same call pattern, different actor. 16 valid, diverse
-  colors (blue, white, brown, cream, greens, warm oranges/reds) -- also
-  a real curated palette.
-- `0x080BD344`: found live via mGBA breakpoint on `BindObjPaletteSlot`
-  (triggered by the title screen's "Press Start" prompt). 16 valid,
-  diverse colors (warm orange/red fading to white, gold, then a
-  repeated gray-brown) -- also real, plausibly a title-screen sparkle/
-  particle effect given the trigger.
-
-`0x08A38108` is the turn-order container's palette and `0x08A38FE0` the
-gauges' palette; both are claimed by the `BattleHudItems` bank (see
-"Turn-order container and gauge sprites").
-
-### `sub_08001528`'s call chain, traced (PROVEN through several hops)
-
-Read `sub_08001528` itself and followed `resource_ptr` through every
-function that touches it, to resolve the mismatch above. Verified
-against the actual disassembly at each hop (not just Ghidra's
-decompile, which was independently cross-checked and matched exactly):
-
-- `sub_08001528(type, x, y, resource_ptr)`: a generic pooled-actor
-  spawner (fixed 0x128-byte slots, doubly-linked free/active lists --
-  the allocator itself, `sub_080286D8`, is a textbook intrusive
-  free-list-pop/active-list-push pair). `resource_ptr` is not
-  dereferenced here at all -- forwarded untouched to `AttachActorPalette`.
-- `AttachActorPalette(actor, resource_ptr)`: also doesn't dereference
-  `resource_ptr` -- passes it to `FindObjPaletteSlot` for a cache lookup.
-- `FindObjPaletteSlot(resource_ptr)`: an **OBJ palette cache lookup**, not a
-  loader. Scans a fixed 16-slot table at `0x03005114` (8-byte stride:
-  `{void *ptr; u16 refcount; u16 flags;}`) for an existing entry whose
-  stored *pointer value* equals `resource_ptr` (plain pointer equality,
-  never dereferences `resource_ptr`'s contents). Returns the slot index,
-  or `0xFF` if not already cached.
-- Back in `AttachActorPalette`: on a cache hit, `resource_ptr` is discarded
-  (a `0` is passed onward instead -- no need to re-load). On a miss, a
-  new slot index is allocated (`AllocObjPaletteSlot`) and `resource_ptr` is
-  passed on for real, for the first and only time.
-- `BindObjPaletteSlot(slotIndex, actor, resource_ptr)`: bumps the cache slot's
-  refcount; if `resource_ptr != 0` (first load), stores it in the slot
-  and calls `QueueObjPaletteLoad(&palette->aColors[1], slotIndex*16 + 1, 0xF)`,
-  where `palette` is an `ObjPalette` (`resource_ptr`).
-  Also stores `slotIndex` into the upper nibble of the actor's
-  `+0xD5` byte (matches the `>>4` read of that same field seen
-  elsewhere, e.g. `ReleaseActorPalette` -- consistent cross-reference, good
-  sign the slot-index tracking is understood correctly).
-- `QueueObjPaletteLoad(ptr, val1, val2)`: **not a decoder** -- a deferred
-  request queue. Appends `{val1: u16, val2: u16, ptr: void*}` (8-byte
-  entries) to a table at `0x030023E8` (max 24 entries, count at
-  `0x030022F0`). This is consistent with GBA engines deferring actual
-  VRAM/palette-RAM writes to vblank rather than writing immediately.
-  **Nothing in the disassembly reads this table via a literal address**
-  -- every one of the handful of `=0x030023E8`/`=0x030022F0` references
-  is a write, from this function and one sibling (`QueueObjPaletteLoadAtOffset`). The
-  actual processor is reached some other way (a runtime-computed base
-  pointer, not a literal load) -- static literal-pool tracing stops
-  being effective here.
-
-`val2 = 0xF` (15) and `val1 = slotIndex*16+1` upload entries 1-15 of a
-16-entry `ObjPalette` into the slot's palette bank. Entry 0 is the GBA OBJ
-transparent color and is not uploaded. `resource_ptr` is therefore
-palette-only data, not a combined palette+tileset struct; the actor's tile
-graphics are a separate resource (see below).
-
-### The deferred queue's flush, confirmed live (PROVEN via mGBA debugger)
-
-The queue processor that static analysis couldn't find (no literal-address
-reads of `0x030023E8` anywhere in the disassembly) was located with the
-user driving mGBA's built-in debugger console interactively (not the
-gdb-stub approach that was previously unreliable for Krawall -- mGBA's
-native console, with its own breakpoint/watchpoint/backtrace commands,
-worked reliably here). A write watchpoint on OBJ palette RAM
-(`0x05000200`, length `0x200`) caught a real hit, whose PC (`0x0800DB9C`)
-fell just past the end of a named function (`sub_0800D9D4`) into a
-stretch of bytes `gbadisasm` never split into a function (no seed in
-`functions.us.cfg`, sitting there as raw `.byte` data despite containing
-real code) -- disassembled directly from the ROM with `capstone` to
-confirm:
-
-```
-UploadPaletteEffect(struct_ptr):
-    flags = struct_ptr[0]  (u16)
-    if not (flags & 2): return             // "pending" flag gate
-
-    struct_ptr[0] = flags & 0xFFFD          // clear pending flag
-    table = 0x030024B0                       // fixed IWRAM table (2 pointers per bank)
-    if (flags & 4): table += 8               // select alternate table ("bank B")
-
-    entry = struct_ptr[6] (byte) * 2         // slot index -> halfword byte-offset
-
-    DMA3SAD (0x040000D4) = table[0] + entry  // source
-    DMA3DAD (0x040000D8) = table[1] + entry  // dest
-    DMA3CNT (0x040000DC) = struct_ptr[0xA] | 0x80000000   // count/mode | DMA-enable
-```
-
-A live `bt` (mGBA's backtrace, off by default -- needs `stack trace-only`
-first) traced the full call chain that reaches this function every
-frame: `sub_08049EBC` (`svc 5`, `VBlankIntrWait`, already named in
-[`text.md`](text.md)'s BIOS wrapper table) -> BIOS vblank
-wait/dispatch -> an **IWRAM-resident interrupt handler at `0x030035A8`**
-(the game's own vblank ISR, copied to IWRAM for speed -- not yet
-otherwise documented) -> `0x08025E95` -> `0x0800D306` (inside
-`UploadPaletteAnimations`, the palette flush loop, which calls `UploadPaletteEffect` for each
-active palette effect)
--> `UploadPaletteEffect`.
-
-Live memory reads of the IWRAM table at the moment of a real hit:
-
-```
-0x030024B0: source=0x0200BCA0  dest=0x05000000   (bank A: BG palette RAM)
-0x030024B8: source=0x0200BEB0  dest=0x05000200   (bank B: OBJ palette RAM -- this is the one that fired)
-0x0300230C: struct read by UploadPaletteEffect for this hit (06080005 FF000808 01000000 0200C2C0)
-```
-
-**Conclusion**: the DMA source (`0x0200BEB0 + entry*2`) is **EWRAM, not
-ROM** -- confirming a staging buffer sits between the ROM resource and
-the final palette-RAM DMA, exactly as GBA engines commonly do (decode/
-stage during the frame, flush at vblank when it's safe to touch palette
-RAM). The actual ROM-to-EWRAM copy step itself was not caught live (the
-watchpoint was on the palette-RAM destination, not the staging buffer --
-watching writes to `0x0200BEB0` length `0x200` would catch it, not yet
-tried), but there is no evidence or reason to expect it transforms the
-data -- **this closes out the palette question**: `&resource_ptr->aColors[1]`
-in ROM is confirmed to be the real, final 15-color BGR555 data. No further palette work is needed for the
-three known examples (`0x08A38108`, `0x08A38FE0`, `0x080BD344` -- the
-third found live via this same debugging session, fired by the
-title-screen "Press Start" prompt, also 16 valid diverse BGR555 colors:
-warm orange/red fading to white, gold, and a repeated gray-brown).
-
-**Update -- the tile source is now found, live, via the same technique.**
-See the next section: not the shared-tileset hypothesis originally
-guessed here, but real per-actor BIOS-compressed tile data via the
-*same* generic dispatcher (`DecompressResourceVram`) documented above, which
-turns out to also be exercised for
-OBJ (sprite) tiles, not only BG/level graphics as first assumed.
-
-### A real, confirmed sprite tile (PROVEN via mGBA debugger)
-
-Same live-debugging technique as the palette flush above, pointed at
-OBJ tile VRAM (`0x06010000`, length `0x8000`) instead of palette RAM.
-After skipping past the expected boot-time full-VRAM zero-clear (fires
-first, `old value == new value == 0`, harmless), a real hit landed with
-`LR = 0x0801DEDB`, immediately after a call to `sub_08049EB0` (the
-already-known `svc 0x15` / `RLUnCompVram` BIOS wrapper). `LR` falls
-inside **`DecompressResourceVram`** -- the same generic resource dispatcher
-documented above, whose case-3 branch (RLE)
-calls exactly this wrapper. A second hit shortly after, `LR =
-0x0801DEEB`, also fell inside the same function. This is a live,
-direct confirmation that `DecompressResourceVram` -- previously only traced
-statically to BG/level-graphics call sites -- is *also* used for OBJ
-sprite tiles during real gameplay, not a separate, still-unfound
-mechanism.
-
-The register state at the first hit (`r3 = r5 = 0x080BCDD8`) pointed
-directly at a real BIOS RLE-compressed resource in ROM. Confirmed:
-
-```
-0x080BCDD8: 30 20 00 00  -- byte0=0x30 -> type nibble 3 (RLUnComp), size=0x20 (32 bytes = one 4bpp tile)
-```
-
-Decoded with a from-scratch RLUnComp implementation
-(`tools/graphics/decode_bios.py`, see below), verified byte-for-byte
-against a hand-traced decode:
-
-```
-20 00 00 0d 80 97 00 00 60 87 09 00 69 76 09 00
-90 98 8f 00 00 00 00 00 00 00 00 00 30 20 00 00
-```
-
-Rendered as an 8x8 4bpp tile (grayscale ramp -- real palette for *this
-specific* tile not yet confirmed, though the "flash" palette
-`0x08A396A4` was tried as a plausible guess given the effect-like
-context): a small blob that grows from a narrow top, widens through
-the middle, peaks at a bright value (nibble 15) near the bottom, then
-fades -- an unmistakable **spark/glow particle shape**, not noise or
-an arbitrary UI element. This is the first tile-level graphics find in
-this whole investigation confirmed by direct decode of a live-traced
-real resource, rather than by statistical guessing over raw ROM bytes.
-
-**Not yet done**: this specific tile's correct palette (three real
-candidates exist; which one actually pairs with this specific actor
-hasn't been confirmed -- would need to read the actor's palette-slot
-field, or catch a palette hit and a tile hit in the same session close
-together in time/context). Finding the rest of the sprite's tiles is
-done -- see next section.
-
-### The wand cursor sprite (PROVEN -- ROM source, tile data, and palette all verified against real game memory)
-
-**Status: fully resolved.** This section originally documented a false
-positive; corrected below, then resolved for real via live memory
-reads and a newly-built, verified proprietary-codec decoder.
-
-#### `0x080BCA24` is NOT the cursor sprite
-
-`0x080BCA24` is a 224-byte (7-tile) RLUnComp resource in the same ROM
-neighborhood as the confirmed spark tile (`0x080BCDD8`), found by
-scanning for structurally-valid small BIOS resources (try every offset,
-keep only ones that decode cleanly to the declared size, score by
-tile-adjacency coherence). Rendered in a 3x3-grid-with-hflip layout it
-gives a clean, recognizable wand silhouette -- real wand-shaped art, not
-coincidence-from-noise -- so it is easy to mistake for the cursor.
-
-It is not: its decoded tiles have **zero byte match** against the wand
-data captured live from VRAM (below). Whatever `0x080BCA24` is used for,
-it isn't this cursor. Treat it as a worked example of why pixel-shape
-plausibility is not evidence without ground truth -- a correct-*looking*
-result here was still the wrong resource.
-
-#### The real sprite: OAM, live VRAM, and live palette
-
-Confirmed the wand is a real OBJ (hardware sprite), not BG art, using
-mGBA's per-layer visibility toggle (Objects layer shows "the wand
-sprite, including the particles that fall from it"). Read its OAM
-entry live (`0x07000000`+, decoded standard GBA attr0/attr1/attr2
-format):
-
-```
-Y=90 X=1  shape=square size=16x16 (2x2 tiles)  hflip=1  tile_base=4 (VRAM 0x06010080)  palette_bank=1
-```
-
-Two nearby small OBJ entries (tile=3 and tile=1, palette bank 2,
-8x8 single tiles) are the falling particles, not the wand body.
-
-Read the real tile data directly from OBJ tile VRAM (`0x06010080`,
-128 bytes = 4 tiles) and the real palette directly from OBJ palette
-RAM (`0x05000200 + 1*32 = 0x05000220`, 16 colors). Rendered with the
-correct whole-sprite hflip (tile *positions* mirror, AND each tile's
-pixel content mirrors -- not per-tile-in-place): a genuine, complete
-wand -- teal/cyan ornate tip blending into a dark reddish-brown wooden
-shaft, tapering to a handle.
-**Confirmed correct by the user against the actual running game.**
-
-The live palette bank 2 (the falling particles) is byte-identical to the
-statically-extracted ROM palette `0x080BD344` -- an independent live
-cross-check of that palette. The wand's own
-palette (bank 1) is a new, distinct real palette: warm red/orange
-(shared with bank 2's first half) transitioning into cool teals/greens
-instead of gold. Its ROM source hasn't been located.
-
-#### Finding the ROM source: the `DecompressLzRle` codec, decoded
-
-No match for the live tile/palette bytes in the ROM raw (uncompressed)
-or in any standard BIOS format (LZ77/Huffman/RLE, scanned across the
-whole ROM) -- meaning it's compressed with one of the two proprietary
-codecs. Rather than guess further, caught it live: breakpointed the
-`DecompressLzRle` codec's IWRAM entry point (`0x030028D4`, installed from ROM
-`0x08006108` -- see the dispatcher section above) and watched it fire
-repeatedly while the wand's glow tiles loaded. `r0` at each hit is a
-clean, uncorrupted ROM source address (unlike watching the VRAM
-*write* destination, which catches the codec mid-stream with an
-already-advanced read cursor -- a dead end tried first). Found **four
-distinct source addresses** all targeting the same VRAM destination
-(`0x06010080`): `0x080BC9CC`, `0x080BCADC`, `0x080BCBD0`, `0x080BCCD8`
--- almost certainly four animation frames of the glow, redrawn on a
-cycle (a fifth, unrelated destination, `0x06010100`/tile 8, is a
-different graphic loading in the same batch, not the wand).
-
-Disassembling the codec directly (`0x08006108`, 504 bytes, ARM mode)
-shows halfword-aligned stores with byte-parity tracking. The parity only
-controls write width: `tools/graphics/decode_lz_rle.py` appends the same
-bytes directly and returns the actual decoded length. Its output was
-byte-compared against the ARM implementation for 126 distinct item-icon,
-portrait, and wand-glow streams.
-
-**Verification: `0x080BCBD0` decodes to a 128-byte output that is a
-byte-for-byte exact match against all four wand tiles read live from
-VRAM.** The codec stops writing at exactly that boundary (everything
-past byte 128 in the output buffer is untouched scratch memory) -- not
-an assumed cutoff, the real behavior. This is now the strongest
-evidence of any finding in this document: independently confirmed via
-two different methods (live memory read, and ROM decode) landing on
-identical bytes.
-
-**`tools/graphics/decode_bios.py`** (new, checked into the repo): decodes any of
-the three standard BIOS formats (LZ77UnComp, HuffUnComp, RLUnComp) from
-a ROM address, dispatching on the header's type nibble exactly like the
-game's own dispatcher. Unlike `tools/graphics/decode_gamma_lz.py` (which had to
-reverse-engineer an undocumented proprietary codec by executing real
-ROM code in an emulator), these are the public, well-documented GBA
-BIOS formats, reimplemented directly from spec -- verified against the
-live-confirmed `0x080BCDD8` example above. The RLE decoder specifically
-had to be written to stop exactly at the declared byte count even
-mid-token (matching real BIOS behavior). Consuming whole literal-run
-tokens regardless of remaining size computes the wrong stream length and
-corrupts the next-resource offset.
-
-### Static palette extraction at scale (PROVEN, 14 real palettes found with zero gameplay)
-
-Live-triggering every asset individually doesn't scale to "extract
-everything" -- the actual goal. Once the mechanism was understood (not
-before), the palette side of it turned out to be fully statically
-enumerable: `sub_08001528`'s `resource_ptr` argument is *always*
-treated as a 16-entry `ObjPalette` by `BindObjPaletteSlot`, entries 1-15
-uploaded, with no branching on its contents --
-confirmed by tracing the call chain to the real vblank DMA flush (see
-above). That means every call site's `resource_ptr` literal is a
-palette candidate, findable by walking each call site backward through
-its enclosing function for the last assignment to the argument
-register, without running the game at all.
-
-Tracing every `bl SpawnActor` (30 total) backward through literal pools
-and register copies to its `resource_ptr` argument gives:
-**14 of 30 resolved to real ROM addresses, all producing genuinely
-diverse palettes** (5-15 distinct colors out of 15, not degenerate
-single-color runs) when decoded as `ObjPalette` entries 1-15 -- including independently re-deriving the two
-already-known palettes `0x08A38108`/`0x08A38FE0` as a cross-check.
-Nine new real palette addresses found this way (some referenced by
-more than one call site):
-
-```
-0x08d79d04  0x080c1d9c  0x08d9a320  0x08d9a340  0x08d9a300
-0x08077aec  0x080c2e78  0x08069574  0x080cc614
-```
-
-Visually confirmed varied and real (not scanning artifacts) by
-rendering swatches: rose/pink tones, yellow-to-orange-to-teal,
-blues, a red/orange/cream set, purple/lavender, and blue-gray with
-bright green accents -- distinct palette *families*, not near-duplicates
-of each other or of the four already-known ones.
-
-**The 16 unresolved call sites** have `resource_ptr` set some other
-way the backward trace doesn't follow (loaded from a struct field,
-computed at runtime, passed down from a caller) -- a static,
-best-effort trace, not full dataflow analysis. Deeper resolution is
-possible but not done.
-
-**The real remaining gap is tiles, not palettes.** Only two tile
-resources are confirmed at all (the spark `0x080BCDD8` and the wand's
-4 glow frames), both found via live tracing, not a repeatable static
-scan. Unlike the palette path, there's no confirmed single dispatcher
-argument convention to statically walk for tiles yet.
-
-**There is no missing 4th caller.** `grep -c "bl DecompressResourceVram"` against
-`build/us/full_disasm.s` gives **exactly 3** static call sites, and no
-indirect/literal-pool references to its address exist anywhere else in
-the disassembly, so the wand's live-traced call necessarily went through
-one of these 3. They are not all level/BG-only:
-
-- `sub_080454BC(actor, resourcePtr)` (`0x080454BC`): computes
-  `dest = 0x06010000 + tileIndexField(actor)*32` and calls
-  `DecompressResourceVram(resourcePtr, dest)` -- a **generic single-resource OBJ
-  tile loader**, keyed off a tile-index field read from the actor
-  struct, not level-table data.
-- `sub_080454DC(resourcePtr, ...)` (`0x080454DC`): same shape, dest
-  computed from an argument rather than an actor-struct field.
-- `sub_08045588(record, ...)` (`0x08045588`): a **loop** over a
-  per-record sub-resource table (entries read at `record[6]`'s
-  struct, fields include `w:u8, h:u8` tile-dimensions and a `u16`
-  source-blob offset), computing per-entry VRAM destinations
-  cumulatively and calling `DecompressResourceVram` once per entry -- i.e. a real,
-  generic **multi-tile sprite-sheet loader**, exactly the missing
-  "many tiles per actor" mechanism.
-
-Both `sub_080454BC` (`LoadObjTile`) and `sub_080454DC` (`LoadObjTileAt`)
-are called from deep inside actor-update/animation code
-(`build/us/full_disasm.s` around line 5156/5183, inside a large unnamed
-function reading per-actor animation-frame fields) -- not the 124-byte
-level table at all. This is a genuine, reusable, generic OBJ tile-loading
-path, analogous to `sub_08001528` for palettes, but **the resource
-pointer's own source within that caller hasn't been traced back to a
-literal/statically-walkable form yet** -- unlike the palette path where
-`sub_08001528`'s `resource_ptr` argument is always a clean literal at the
-call site. This path is confirmed OBJ-only (destinations are
-`0x06010000`-relative, sprite tile VRAM); it is not the mechanism behind
-BG/level tile graphics -- see the next section for that.
-
-### On-demand per-tile BG streaming (PROVEN -- rendered and confirmed against real gameplay)
-
-BG character tiles are decompressed **one tile at a time, on demand, as
-the room's tilemap reveals them**, through a small LRU-cached streaming
-system, independent of the `DecompressResource`/`DecompressResourceVram` dispatcher
-documented above. Found via a live mGBA write watchpoint on BG character
-VRAM (`0x06000000`, length `0x8000`) during a real room load and while
-walking around -- every hit landed inside the same function pair,
-confirming it's exercised for real gameplay, not a rare/unused path.
-
-**Status: the full pipeline -- tilemap format, tile decompression, and
-palette -- renders all 4 BG layers of a room via `tools/graphics/dump_bg_tiles.py`,
-confirmed tile-for-tile against actual gameplay by the user for `0x28`
-("Leaky Cauldron - Hallway"), `0x26`/`0x27` ("Cellar 1"/"2"), and `0x24`
-("Fred and George's Shop"), including which level-table layer index maps
-to which hardware BG register.** The tilemap format is a two-level
-block-index-map-plus-block-contents structure, detailed below -- it is
-not raw pixel data at the tileset's `blob_base`, and not a flat
-one-`u16`-per-tile screen-entry array.
-
-#### Layer index -> hardware BG register (PROVEN, user-confirmed in mGBA)
-
-The level table's 4 BG layer slots (`dwBgTilemapN`/`dwBgLayerNExtra`,
-`N=0..3`) do not correspond 1:1 to hardware `BG0`-`BG3` by index. Verified
-against room `0x28`'s real rendered output compared to mGBA's own
-background-layer viewer:
-
-| Level-table layer | Hardware BG | Role |
-|---|---|---|
-| 0 | BG3 | Main background (floor/walls) |
-| 1 | BG1 | Foreground -- tiles drawn over the player character, matching the collision map's separate "foreground" layer |
-| 2 | BG2 | Overlay props/decorations |
-| 3 | BG0 | Unused in this room (a single, all-zero block, i.e. one repeating tile) |
-
-Whether this mapping is fixed across all rooms or configured per-room
-(e.g. via `pBgTileAnimationA`/`B`, `+0x64`/`+0x68`) isn't confirmed --
-only checked for this one room. Since GBA composites lower-priority BG
-numbers over higher ones, a merged render must stack in **hardware**
-order (BG3, BG2, BG1, BG0 bottom-to-top), i.e. level-table layers
-`0, 2, 1, 3` -- literal level-table index order puts BG1 and BG2 in the
-wrong relative order.
-
-**The dispatcher's delta-decode post-pass applies to every compression
-type, not just type 6 (PROVEN, from real disassembly).** `DecompressResource`'s
-tail (`0x0801DE36`-`0x0801DE4C`) checks byte0 bit 7 and, if set, calls the
-delta-decode pass (`ApplyResourceDeltaPass`) unconditionally after every dispatch
-type 0-8 -- the bit is independent of compression type, not specific to
-type 6. `tools/graphics/decode_gamma_lz.py` applies this pass internally
-for type-6 resources; `dump_bg_tiles.py`'s `decode_resource()` applies
-the same `_apply_delta_pass` (imported from `decode_gamma_lz.py`) to every
-other type after dispatch, since `decode_bios.py`'s raw
-LZ77/Huffman/RLE/type-0 decoders have no way to know about a
-dispatcher-level flag on their own. Confirmed against room `0x24`
-("Fred and George's Shop"), whose type-1 (LZ77) block-map has this bit
-set and only decodes to a sane `10x8` grid with the pass applied --
-verified against real gameplay via mGBA's background viewer.
-`decode_bios.py`'s own standalone CLI does not apply this pass, since it
-has no dispatcher-header context to check the bit against -- callers
-using it directly for a resource with the bit set need to apply
-`_apply_delta_pass` themselves.
-
-#### The tilemap format: two levels, not one (PROVEN, from real disassembly)
-
-`LoadBgTileRow` (`0x0803E220`) reads from two separate
-decoded resources per layer, not one flat screen-entry array. Derived
-directly from its disassembly -- the decompiler's pseudocode obscures the
-exact bit widths involved, so the real algorithm below is read from the
-raw instructions, not the decompile summary:
-
-- **`dwBgTilemapN` (`+0x00`/`+0x10`/`+0x20`/`+0x30`) decodes to a coarse
-  block-index map**: a 4-byte header (`width:u16, height:u16`, in 4-tile
-  **block** units, not raw tiles) followed by `width*height` block-index
-  entries (`u16` each, one per 32x32-pixel block). `LoadRoomBgBlockTilesN`
-  reads this header directly (`g_wRoomBgLayer0BlocksWide` from `g_pRoomBgLayer0MapAlloc`, etc.) to
-  set up per-layer stride constants -- not inferred, read straight out of
-  the decompile. A block index of `0` is a normal, real block like any
-  other, the same way tile index `0` in the level below is a normal
-  tile, not a sentinel for "empty" -- a block-index array that's mostly
-  `0` is not evidence a layer is unused.
-- **`dwBgLayerNExtra` (`+0x04`/`+0x14`/`+0x24`/`+0x34`) decodes to the
-  block contents**: a 4-byte header (`blockCount:u32`), then
-  `blockCount*32` bytes of per-block tile data (16 `u16` tile IDs per
-  block, a 4x4 arrangement) immediately followed by `blockCount*16` bytes
-  of per-tile palette/flip bytes (1 byte per tile, same 4x4 order).
-  Verified byte-exact for all 4 layers of room `0x28`: `header == blockCount`
-  and `total_decoded_size - 4 == blockCount*48` held with zero slack for
-  every layer (`blockCount` `106`/`46`/`11`/`1`).
-- **Per-tile lookup**, for absolute tile position `(tileX, tileY)`:
-  `blockX, subX = divmod(tileX, 4)`; `blockY, subY = divmod(tileY, 4)`;
-  `blk = block_map[blockY*width + blockX]`; `subIndex = subY*4 + subX`;
-  `tileID = tile_id_array[blk*16 + subIndex]` (u16); `paletteByte =
-  palette_array[blk*16 + subIndex]` (byte). Confirmed against the real
-  disassembly's exact shift/mask sequence, not the decompiler's summary.
-- **`paletteByte` packs `bit0`=hflip, `bit1`=vflip, `bits2-5`=palette
-  bank** (4 bits, matching the standard GBA screen-entry's hflip/vflip/
-  bank fields, just pre-shifted into a byte instead of packed into the
-  final `u16` directly -- the runtime OR's `paletteByte << 10` onto the
-  cache-slot index to build the real VRAM screen-entry).
-- **`tileID` indexes into `dwBgTilesetA`/`B`** (`+0x54`/`+0x5c`, see
-  below) via the same generic per-tile offset table already documented --
-  layers 0 and 3 share tileset A, layers 1 and 2 share tileset B (from
-  `AcquireBgTileCacheEntry`'s `sizeClass = ((layer+1) & 2) >> 1`).
-
-An offline extractor needs to resolve the two-level block-map ->
-block-contents lookup above to get each screen position's tile ID and
-palette/flip byte (`tools/graphics/dump_bg_tiles.py`'s `decode_layer`/
-`render_layer` do exactly this), but does not need the LRU cache or
-VRAM-streaming machinery below -- that exists purely to support the
-*runtime's* on-demand loading, and is irrelevant once tile pixel data is
-decoded directly from `dwBgTilesetA`/`B` by tile ID.
-
-#### The runtime streaming/caching path (confirmed live)
-
-- **`LoadBgTileRow`** (`0x0803E220`) and **`LoadBgTileColumn`**
-  (`0x0803E0F8`): for each of the 4 BG layers, walk the two-level tilemap
-  above for the 31-tile row or 21-tile column that starts at a pixel
-  position, pass each tile ID to `AcquireBgTileCacheEntry`, and
-  write the returned cache slot ORed with `paletteByte << 10` into the
-  layer's 32x32 screen block. `ReleaseBgTileRow` and `ReleaseBgTileColumn`
-  walk the same strips and release each tile's cache entry
-  (`src/scroll/`). All four index every layer's block map with layer 0's
-  width, `g_wRoomBgLayer0BlocksWide`.
-- **`AcquireBgTileCacheEntry`** (`0x0803E34C`): a small hash-map
-  cache keyed by tile ID (open addressing via a linked-list-in-array
-  scheme, capacity `0x400`/`0x200` entries for two separate BG size
-  classes). On a cache hit it just bumps a refcount; on a miss it evicts
-  the LRU entry and calls `DecompressBgTile` to decompress exactly
-  one 32-byte tile (`0x20` = one 4bpp 8x8 tile) directly into BG
-  character VRAM at `dest = 0x06000000 + (cacheSlot + sizeClass*0x400) *
-  0x20`. Verified live: every watchpoint hit's call chain matched this
-  function exactly.
-- **`dwBgTilesetA`/`B`** (`+0x54`/`+0x5c`): `size:u16, tileCount:u16`
-  header, then at `+4` a `DecompressGammaLz`-compressed per-tile offset table
-  (`tileCount` entries), decoded by `DecodeBgTilesetOffsetTable`
-  (`0x0803EBA8`). Each decoded entry is a packed value: `real_addr =
-  0x08000000 + (entry >> 3)` is that tile's real ROM address (confirmed
-  by tracing the codec's actual ROM reads, and independently by the last
-  tile's computed address landing on the next resource's address).
-  `resource_ptr + size + 8` is a 292-byte Huffman code table, copied to
-  IWRAM and passed as `DecompressBgTile`'s `r3` on every call.
-- **`DecompressBgTile`** (`0x08006300`, 180 bytes, ARM,
-  `src/arm_routines/decompress_bg_tile.c`): a canonical Huffman decoder, IWRAM-installed
-  like `DecompressLzRle` and `DecompressGammaLz`. Installed once at boot into IWRAM
-  `0x030033CC` by **`InstallBgTileCodec`** (`0x080250B8`,
-  called from `main` at `0x0802971E`) via
-  `CPUSet(0x08006300, 0x030033CC, ...)`. `AcquireBgTileCacheEntry`
-  reaches it through the standard libgcc `_call_via_r5` interworking
-  stub (`0x0804A2D4`, confirmed by disassembly to be a bare `bx r5`
-  inside the known agbcc libc/libgcc block), with `r5` loaded from a
-  fixed literal -- not a per-tile function-pointer table; the
-  decompiler's pseudocode for this call is misleading about which
-  argument is the call target. Decompresses one tile per call
-  (`r0`=ROM bit offset from the offset-table entry, `r1`=dest,
-  `r2`=`0x20`, `r3`=table: `count[18]` at +0, `base[18]` at +0x12,
-  `symbol[256]` at +0x24). Bits are read LSB-first; symbol pairs form
-  halfwords (first = low byte). Output confirmed by rendering and by
-  the user matching it to real gameplay (see status above).
-
-**The BG palette (PROVEN, static).** Level-table `+0x58` is a raw, uncompressed 256-color BGR555 array -- no
-codec, loaded via `SetupRoomBgControlAndTilesets`
-(`LoadBgPaletteColors`/`LoadPaletteColors`). Index 0 is force-overwritten to black
-(the GBA backdrop color) by a separate 1-color copy right after the bulk
-one. Confirmed byte-exact against a live mGBA memory dump for room
-`0x28`. `tools/graphics/dump_bg_tiles.py` reads it straight from ROM.
-
-The offset table's per-tile entries are bit lengths, including the last
-tile's, so every tile's extent is known (see
-[`room_graphics.md`](room_graphics.md)).
-
-### Graphics build format
+  (`min(32, 4*(rleUsed/4+1))`), so unused ranks keep their initial
+  ranking. Every 32-byte table ends in `0x45`.
+- distance low bytes are stored as they are, not XORed with `0xFF`.
+- bits are packed MSB-first into little-endian 32-bit words, and the last
+  word is zero-padded.
+- a resource is also compressed after `u16` delta coding, and that version
+  is used, with flag `0x80`, when its stream is strictly shorter.
+
+The match search is O(n^2), so the largest resource (63 KB) takes about
+15 s to encode. The build cache (`tools/buildcache.py`) and
+`build/cache/gammalz/` keep the encoded results.
+
+## Graphics build format
 
 A `graphics <start> <end> <feature> <Group>` manifest row claims one group:
 contiguous graphics of one feature, such as a minigame's sprites and
 backgrounds. `graphics/<feature>.yaml` describes the feature's groups for
-both versions; a version without a group has no row for it. A group is a
-list of runs, each of one kind: `image-bank` (this document),
+both versions. A version that lacks a group has no row for it. A group is a
+list of runs, and each run has one kind: `image-bank` (this document),
 `graphic-blobs` and `tile-streams` ([`graphic_blob.md`](graphic_blob.md)),
 `tile-frames` ([`special_scene_frames.md`](special_scene_frames.md)),
 `fonts` ([`fonts.md`](fonts.md)) or `room-graphics`
@@ -983,534 +79,129 @@ groups:
         names: [ServePumpkinJuiceBg0Graphic, ServePumpkinJuiceBg1Graphic, ServePumpkinJuiceBg2Graphic]
 ```
 
-`names` lists one name per item, or maps one-based positions to names, each
-naming the items from its position up to the next entry by counting up the
-name's trailing number (`count` then gives the run's length). Every item is
-labeled `g<Name>`, with a component suffix for images (`gItem001Tiles`).
-Other keys are the kind's options, such as an image run's `bpp`; only values
-that differ from the kind's `OPTIONS` defaults are written.
+`names` either lists one name per item or maps one-based positions to
+names. A mapped name covers the items from its position up to the next
+entry, counting up the name's trailing number, and `count` gives the run's
+length. Every item is labeled `g<Name>`, and images add a component suffix
+(`gItem001Tiles`). Other keys are the kind's options, such as an image
+run's `bpp`. Only values that differ from the kind's `OPTIONS` defaults are
+written.
 
 The editable files live in `data/graphics/<feature>/` (`battle`,
-`overworld`, `menus`, `cutscenes`, `minigames/<game>`, `rooms`). Its
-`graphics.json` (`format: 2`) holds each group's item settings, run by run,
-without names or addresses; every file in the directory must belong to
-exactly one group. A subdirectory with its own `graphics.json` is a nested
-feature: `menus/us` and `menus/jp` hold groups only one version has, whose
-files would otherwise collide.
+`overworld`, `menus`, `cutscenes`, `minigames/<game>`, `rooms`). Each
+directory's `graphics.json` (`format: 2`) holds each group's item settings,
+run by run, without names or addresses. Every file in the directory must
+belong to exactly one group. A subdirectory with its own `graphics.json` is
+a nested feature: `menus/us` and `menus/jp` hold the groups only one
+version has, whose files would otherwise collide.
 
 `just pack <ver>` (`tools/graphics/pack_graphics.py`, kinds in
 `tools/graphics/kinds/`) builds every item through the build cache and
-writes `build/<ver>/graphics/<Group>.bin` and `.s`; the group's size must
-equal the manifest range. `include/gen/graphics/<feature>.h` declares the
-labels of every group of the feature, including groups only the other
-version has, so headers are the same for both versions and are committed.
+writes `build/<ver>/graphics/<Group>.bin` and `.s`. The group's size must
+equal its manifest range. `include/gen/graphics/<feature>.h` declares the
+labels of every group in the feature, including groups only the other
+version has, so the headers are the same for both versions and are
+committed.
 
 `just extract-graphics [group ...]` (`tools/graphics/extract_graphics.py`)
-walks each group from its start, taking each item's length from the item
-itself and each run's length from its names, and requires the walk to end
-exactly at the group's end. It extracts every group once (from the US ROM
-when its manifest has the group, otherwise JP), and every item must rebuild
-byte for byte. Without group names it replaces all of `data/graphics/`.
+walks each group from its start. It takes each item's length from the item
+itself and each run's length from its names, and the walk must end exactly
+at the group's end. Each group is extracted once, from the US ROM if its
+manifest has the group and from JP otherwise, and every item must rebuild
+byte for byte. With no group names it replaces all of `data/graphics/`.
 
-An `image-bank` run's options are `bpp` (4 or 8), `componentOrder` (the
-ROM order of each image's `palette`/`tiles`/`frames` components),
-`storedCells`, `noPalette`, `paletteHeader`/`paletteTrailer` bytes
-around every palette, and `paletteSources`, which maps a sprite without a
-palette to the item whose palette the game draws it with (taken from the
-sprite's asset records); extraction colors its PNGs with that palette, and
-packing ignores it. An image's settings in `graphics.json` are one of:
+An `image-bank` run's options are:
 
-- a **derived sprite**, `{offset, compression}`: one frame,
-  `<name>.png`, cells cut from the image size (see "Sprite images");
-- a **stored-layout sprite**, `{palette, header, frames}`:
-  `<name>.png`, a sheet of all its frames, each frame listing `offset`,
-  `compression`, `cells` (`[x, y, w, h]` in tiles), `parts`, and
-  `extra`, plus `size` when smaller than the sheet's cells; `palette:
-  false` means the sprite's palette lives elsewhere; its PNG carries the
-  `paletteSources` palette, or a gray one, which packing ignores;
-- a **palette**, `{paletteOnly: true}`: `<name>.png`, a one-row
-  swatch whose PNG palette is the data.
+- `bpp`: 4 or 8.
+- `componentOrder`: the ROM order of each image's `palette`/`tiles`/`frames`
+  components.
+- `storedCells`.
+- `noPalette`.
+- `paletteHeader`/`paletteTrailer`: bytes around every palette.
+- `paletteSources`: maps a sprite without a palette to the item whose
+  palette the game draws it with. Extraction colors the sprite's PNGs with
+  that palette, and packing ignores it.
 
-Components are labeled `g<Name><Component>`, skipping components an entry
-lacks. Packing fails on a PNG that is not indexed, a pixel index or palette
-outside the bit depth, or a drawn pixel outside every cell. In a
-stored-layout run, a sprite's tiles are its back-to-back frame streams, its
-palette is present only when the next data is not a tile stream, and a
-palette not followed by tiles is its own entry. A sprite without a palette
-whose next data is not a tile stream is listed in `noPalette`.
+An image's settings in `graphics.json` take one of three forms:
 
-### Sprite images
+- a **derived sprite**, `{offset, compression}`: one frame, `<name>.png`,
+  with cells cut from the image size (see "Sprite images").
+- a **stored-layout sprite**, `{palette, header, frames}`: `<name>.png`, a
+  sheet of all its frames. Each frame lists `offset`, `compression`, `cells`
+  (`[x, y, w, h]` in tiles), `parts` and `extra`, plus `size` when the frame
+  is smaller than the sheet's cells. `palette: false` means the sprite's
+  palette lives elsewhere. Its PNG then carries the `paletteSources` palette
+  or a gray one, and packing ignores it.
+- a **palette**, `{paletteOnly: true}`: `<name>.png`, a one-row swatch whose
+  PNG palette is the data.
 
-**PROVEN** as a build pipeline: the extractor rebuilds every image in
-every bank from its PNGs and requires byte-identical components before
-writing an index, and all banks pass the whole-ROM comparison. Each image
-is one indexed PNG plus a few settings per frame; `tools/images/sprite.py`
-derives everything else.
+Components are labeled `g<Name><Component>`, and components an entry lacks
+are skipped. Packing fails on a PNG that is not indexed, on a pixel index
+or palette outside the bit depth, and on a drawn pixel outside every cell.
+In a stored-layout run:
 
-- **PNG**: each frame's full pixel canvas, 4-bit (`bpp: 4`) or 8-bit
-  indexed. Its `PLTE` is the ROM palette in order, including entry 0's
-  stored color (usually `0x7C1F` magenta); `tRNS` marks index 0
-  transparent for viewing. Channels convert as `c5 << 3 | c5 >> 2` on
-  extraction and `c8 >> 3` on packing. Short palettes pad with black.
-- **Sheet** (stored-layout sprites): the frames in order, left to right,
-  8 per row, in equal cells as large as the widest and tallest frame. A
-  frame fills its cell's top-left corner, `size` pixels (`[w, h]`, the
-  frame descriptor's `+0x2`/`+0x3`) when smaller than the cell; every
-  other sheet pixel must be index 0.
-- **`offset`**: the canvas's top-left pixel relative to the actor's
-  anchor; it becomes the frame descriptor's `+0x6`/`+0x8` and each cell's
-  X/Y.
+- a sprite's tiles are its frame streams back to back.
+- a sprite's palette is present only when the next data is not a tile
+  stream.
+- a palette that is not followed by tiles is its own entry.
+- a sprite without a palette whose next data is not a tile stream is listed
+  in `noPalette`.
+
+## Sprite images
+
+Each image is one indexed PNG plus a few settings per frame.
+`tools/images/sprite.py` derives everything else and requires every
+component to rebuild byte for byte.
+
+- **PNG**: each frame's full pixel canvas, 4-bit or 8-bit indexed. Its
+  `PLTE` is the ROM palette in order, including entry 0's stored color
+  (usually `0x7C1F` magenta), and `tRNS` makes index 0 transparent for
+  viewing. Channels convert as `c5 << 3 | c5 >> 2` on extraction and
+  `c8 >> 3` on packing. Short palettes are padded with black.
+- **Sheet** (stored-layout sprites): the frames in order, left to right, 8
+  per row, in equal cells as large as the widest and tallest frame. A frame
+  fills its cell's top-left corner, `size` pixels when smaller than the
+  cell. Every other sheet pixel must be index 0.
+- **`offset`**: the canvas's top-left pixel relative to the actor's anchor.
 - **`compression`**: `lzrle` (`DecompressResourceVram` type 7), `rle`
-  (type 3, BIOS `RLUnComp` with the duplicated header), `gammalz`
-  (type 6), or `raw` (type 0, uncompressed), chosen per frame (one
-  overworld sprite mixes `lzrle` and `rle`; one ally head sprite
-  mixes `lzrle`, `rle`, and `raw`).
-- **`padding`** (stored-cells frames only, optional): the bytes after
-  the stream's last token when any is nonzero (see "Tile streams"). Item icons use both with no
-  size-based rule: every `rle` icon would be 2-5 bytes smaller as
-  `lzrle`, so it is a per-asset setting.
+  (type 3), `gammalz` (type 6) or `raw` (type 0), chosen per frame. Some
+  sprites mix codecs. No size rule picks between them: every `rle` item
+  icon would be 2-5 bytes smaller as `lzrle`.
+- **`padding`** (stored-cells frames only, optional): the bytes after the
+  stream's last token, recorded when any of them is nonzero.
 
-**Cell cutting** for derived sprites (every item icon and portrait
-matches): each canvas dimension, in tiles, splits into power-of-two
-strips, smallest first (7 -> 1, 2, 4; 10 -> 2, 8). Cells are emitted row
-strip by row strip, column strips left to right. A strip intersection with
+**Cell cutting** (derived sprites; every item icon and portrait matches
+it): each canvas dimension, in tiles, splits into power-of-two strips,
+smallest first (7 -> 1, 2, 4; 10 -> 2, 8). Cells are emitted row strip by
+row strip, with column strips left to right. A strip intersection that has
 no OAM shape is halved along its longer side (8x1 -> two 4x1, 1x8 -> two
-1x4, top/left first). Each cell's tile offset is the running tile count at
-the sprite's bit depth; tile data is the cells' 8x8 tiles, row-major
-within each cell, low nibble first at 4bpp.
+1x4, top or left first). Each cell's tile offset is the running tile count
+at the sprite's bit depth. The tile data is the cells' 8x8 tiles, row-major
+within each cell, with the low nibble first at 4bpp.
 
-**Stored cells**: the overworld monster sprites (and the battle sprites)
-fit their cells to the drawing, skipping empty areas and shifting cells
-to cover the art, and frames of one sprite with similar content can get
-different layouts. No rule reproducing every layout is known, so these
-banks keep each frame's cells. Across 820 monster frames, cells are
-tile-aligned, inside the canvas, and never overlap.
+**Stored cells**: the overworld monster sprites and the battle sprites fit
+their cells to the drawing. They skip empty areas and shift cells to cover
+the art, and similar frames of one sprite can get different layouts. No
+rule is known that reproduces every layout, so these banks keep each
+frame's cells.
 
-**Frame record**: `{width, height, header[4], frameCount, tileBytes,
-extraCount, partCount}` (width, height, and tileBytes are the maxima over
-frames; `header` is signed bytes, zero for derived sprites), one `u16`
-descriptor offset per frame, then per frame in order the descriptor
-`{cellCount | flags, 0, width, height, tileOffset, offsetX, offsetY}`,
-`extraCount` `u16`s, `partCount` 6-byte parts (signed bytes; meaning not
-decoded), and one 4-byte `ActorFrameCell` per cell, then zero bytes to a word
-boundary (records with 6-byte parts can end on a halfword). `tileOffset` is the
-frame's stream position within the sprite's tiles. Bits 5-7 of
-`bCellCount` are `0x40` on every `lzrle` frame, `0x20` on every `rle`
-frame, and `0` on every `raw` and `gammalz` frame, whose codec comes from
-the stream's resource header; the packer derives them from `compression`.
-**UNCONFIRMED:** no reader of these bits has been found.
+**Tile streams** are made of the 4-byte resource header, the compressed
+stream, then zero bytes up to a word boundary at least five bytes past the
+last token. The first of those zero bytes is the LzRle end token. `raw` and
+`gammalz` streams instead end on a word boundary followed by one padding
+word. Padding is zero in all but four sprite streams: two GammaLz words
+(`00 14 33 00`, `00 14 A4 00`) and two LzRle tails with a single `0x10`
+byte.
 
-**Tile streams** are the 4-byte resource header, the compressed stream,
-then zero bytes to a word boundary at least five bytes past the last
-token (the LzRle end token is the first of them).
-`tools/graphics/encode_lz_rle.py` reproduces every LzRle stream in the
-image banks: it takes a byte run of at least 3 (up to 1089) when no
-back-reference is longer; otherwise the longest non-overlapping
-back-reference of at least 3 (length <= distance, up to 33), preferring
-the farthest on ties within the 1023-byte window; it defers a copy as a
-literal when the run starting at the next byte is longer than the copy;
-literals group in chunks of up to 63. `tools/graphics/encode_bios_rle.py`
-reproduces all 37 RLE streams with runs of at least 3 and both token kinds
-capped at 127 bytes.
+## Unconfirmed
 
-`raw` and `gammalz` streams instead end on a word boundary followed by
-one padding word. Padding is zero in all but four sprite streams: two
-GammaLz words (`00 14 33 00`, `00 14 A4 00`) and two LzRle tails with a
-single `0x10` byte. **UNCONFIRMED**: these look like leftover memory from
-the original tools. A frame with nonzero padding keeps its padding bytes
-as `padding`. GammaLz streams are encoded as described in "Encoder:
-Pucrunch 1.11".
-
-### Overworld monster sprites (PROVEN, extracted)
-
-`g_pMonsterGraphicsTable`'s second records point into
-`0x080AC8CC`-`0x080B9A84`: 28 sprites in first-use table order, each six
-frame streams, its frame record, and (for 17) its own 32-byte palette,
-followed by one standalone palette used as a recolor by rows 59-62. The
-`MonsterOverworldSprites` `image-bank` row claims the range as
-`MonsterOverworldNNN` entries (stored cells, `tiles`, `frames`, `palette`
-order). Sprites without their own palette use the recolor palettes at
-`0x08A39000`-`0x08A39500`: 40 consecutive 32-byte palettes, all referenced
-by `g_pMonsterGraphicsTable` or the turn-order icon records, claimed by
-the palette-only `MonsterPalettes` bank as `MonsterPaletteNNN.png`
-swatches. The gauge palette at `0x08A38FE0` just before them belongs to
-`BattleHudItems`, and a tile stream follows them.
-
-### Actor-type sprites and coin icon (PROVEN, extracted)
-
-`g_aActorTypeAssets` (137 `ActorAssetRecord`s, ending at the next table
-`SpawnCharacterNpcActor` reads) holds sprites for spawned actors:
-`SpawnCharacterNpcActor` indexes it through a per-character byte table
-(`g_abCharacterNpcKinds`), and `StartNpcScriptAnimation` uses its records
-from 110 on. `0x080B9A84`-`0x080BC1C4`, directly after
-the overworld monster sprites, holds, in order: a 21-frame rat (Scabbers)
-with its palette (records 0, 4, 112), a standalone palette (record 107
-pairs it with an overworld monster sprite), a 25-frame rat growing into the
-Giant Rat (first mission, second boss fight) with no palette of its own
-(records 110, 111), and a one-frame coin
-icon with its palette, referenced from two other records
-(read by `sub_0801456C` and code at `0x08003F20`). The `UnnamedSprites`
-`image-bank` row claims the range as `Unnamed001`-`Unnamed004` (stored cells,
-`tiles`, `frames`, `palette` order).
-
-### Turn-order container and gauge sprites (PROVEN, extracted)
-
-`0x08A37DA4`-`0x08A39000`, directly before the recolor palettes, holds
-`g_TurnOrderIconContainerAsset`'s sprite (four 24x24 frames: green and red
-boxes, plain and highlighted) with its palette, then two gauges draining
-from green to red (25 frames at 16x32 and 17 frames at 8x24). The two
-gauges are the records `SpawnSpGauge` passes to `SetActorAssetRecord`
-(the four words after `g_apEffectScripts`), and it spawns their actor
-with the palette at `0x08A38FE0`, stored after the second gauge. The
-`BattleHudItems` `image-bank` row claims the range as `BattleHudItem001`-
-`BattleHudItem003` (stored cells, `tiles`, `frames`, `palette` order; the
-shared palette is `BattleHudItem003`'s).
-
-### Battle sprites, turn-order icons, and ally heads (PROVEN, extracted)
-
-Three `image-bank` rows claim the sprites `g_pMonsterGraphicsTable`'s
-battle records, `g_MonsterShadowGfxRow`, `g_aEnemyTurnOrderIconAssets`,
-and `g_aAllyTurnOrderIconAssets` point to (stored cells, `tiles`,
-`frames`, `palette` order). The byte ranges are identical in both ROMs at
-different addresses, so both manifests share one run per bank. The same holds for `MonsterOverworldSprites`
-(JP `0x080AC808`-`0x080B99C0`), `BattleHudItems` (JP
-`0x08A37BD4`-`0x08A38E30`), and `MonsterPalettes` (JP
-`0x08A38E30`-`0x08A39330`), which the records also point into.
-
-| Bank | US | JP | Contents |
-|---|---|---|---|
-| `AllyHeads` | `0x080781A4`-`0x0807E7F8` | `0x080780E0`-`0x0807E734` | ally records 0-2: head rotations (32, 127, 32 frames; `rle`, `lzrle`, and six `raw` frames), no palettes |
-| `MonsterBattleSprites` | `0x089AE030`-`0x089F1DD4` | `0x089ADE60`-`0x089F1C04` | 35 battle sprites, 652 `gammalz` frames, 25 own palettes, plus `MonsterBattle026`, a recolor palette for `MonsterBattle003` |
-| `BattleIcons` | `0x089F1DD4`-`0x089F46DC` | `0x089F1C04`-`0x089F450C` | the shadow sprite (`BattleIcon001`), 35 enemy turn-order icons, the palettes of ally records 0-1 and 2 (`BattleIcon037`, `BattleIcon038`), and ally record 3 with its palette |
-
-The ally records' frames are full head rotations. The only code found
-that loads the records is `SpawnTurnOrderIcon`, which shows frame 0 as
-the turn-order icon; **UNCONFIRMED** whether other code (for example an
-overworld head display) uses the remaining frames. The records follow
-`g_aEnemyTurnOrderIconAssets` directly, so a computed index could reach
-them without a literal pointer.
-
-A palette after a sprite's frames is normally that sprite's own. The
-extractor's `noPalette` setting marks the two sprites whose following
-palette belongs to other records (`MonsterBattle025` and
-`BattleIcon036`, checked against every record's palette pointer), so it
-becomes its own palette-only entry.
-
-### Fighter sprites, battle faces, and action icons (PROVEN, extracted)
-
-The sprites after `BattleIcons`, up to `0x08A30814` (JP `0x08A30644`),
-are identical in both ROMs and claimed as three stored-cells banks:
-
-| Bank | US | JP | Contents |
-|---|---|---|---|
-| `FighterSprites` | `0x089F46DC`-`0x08A13298` | `0x089F450C`-`0x08A130C8` | the sprites `g_aFighterAnimTable` points to: 30 player battle sprites (Harry, Hermione, Ron, Buckbeak) and one palette-only entry, 4bpp |
-| `BattleFaces` | `0x08A13298`-`0x08A2DCC4` | `0x08A130C8`-`0x08A2DAF4` | 70 one-frame 40x40 portraits shown beside the battle stats panel, 8bpp (512-byte palettes) |
-| `ActionIcons` | `0x08A2DCC4`-`0x08A30814` | `0x08A2DAF4`-`0x08A30644` | 42 one-frame 24x32 icons for choosing a player action in the battle menu, 4bpp |
-
-`BattleFaces` are the records of `g_aPartyFaceAssets` (4, at `0x0804D824`, JP
-`0x0804D750`) and `g_aMonsterFaceAssets` (68), which
-`ShowAllyStatsPortrait` and `ShowEnemyStatsPortrait`
-index; `ActionIcons` those of `g_aBattleMenuIconAssets` (61), which
-`SetBattleMenuIconState` indexes. Every sprite's palette in these banks is the
-one its records use.
-
-### Battle effects and status-screen characters (PROVEN, extracted)
-
-| Bank | US | JP | Contents |
-|---|---|---|---|
-| `BattleEffects` | `0x08A39500`-`0x08A9C6D0` | `0x08A39330`-`0x08A9C500` | 103 battle effect sprites and 11 palette-only entries, 4bpp |
-| `BattleEffects2` | `0x08D7C480`-`0x08D7E528` | `0x08D7C2B0`-`0x08D7E358` | one more battle effect sprite |
-| `StatusCharacters` | `0x08DF3918`-`0x08E1D5DC` | `0x08DF3748`-`0x08E1D40C` | Harry, Hermione, and Ron rotating in 32 frames each, 8bpp |
-
-The battle effect records are 16-byte `ActorAssetRecord`s (animation delay
-3 or 5) at `0x08053D40`-`0x08053E50` and `0x08053E64`-`0x080544D4` (JP
-`0x08053C6C`-`0x08054400`), which `CreateEffectScriptActor` reads, with
-five palette pointers between the two runs. Every pointer in these runs
-lands on a component boundary in the effect ranges. The palette-only
-entries are palettes those pointers or battle code literals (for example
-at `0x080117F4` and `0x0801B2D8`) reference directly; `TargetFlash` is the
-flash colour of a targeted fighter (`FlashEnemyTarget` and its siblings). `noPalette` marks
-`BattleEffect020`, whose following palette is one of the five loose ones.
-The status/equip screen's `SpawnStatusCharacterActor` reads the three
-`StatusCharacters` records at `0x0806B250` (JP `0x0806B1DC`).
-
-These record tables are C with generated labels: the three battle face and
-icon tables (`src/combat_dialog/battle_hud_assets.c`), `g_aFighterAnimTable` (ten records per
-fighter, `src/combat_fighter/fighter_anim_table.c`), `g_aEffectActorAssets`,
-`g_apEffectPalettes`, `g_aEffectAnimAssets`, and `g_aEffectAnimAssets2`
-(`src/combat_fx/effect_assets.c`), and `g_aStatusCharacterAssets`
-(`src/pscreen_status_equip/status_character_assets.c`).
-
-### Item icons (PROVEN, extracted)
-
-`ItemEntry.pPalette/pTileData/pFrameData` (`+0x04/+0x08/+0x0C`) is a second, fully statically-walkable instance of
-the OBJ tile-loading path described above -- found by decompiling
-`GetItemImageData` (`0x08026bcc`, called by `FUN_08027384`, an item-spawn
-function), which reads exactly these 3 fields and hands them to
-`SpawnActor` (`0x08001528`, the same generic pooled-actor spawner
-documented above) as `resource_ptr`, then to `LoadObjTile`/
-`LoadObjTileSheet` (`0x080454BC`/`0x08045588`). Unlike the general case,
-every item's `resourcePtr` is a clean literal at its own table entry, so
-this closes out "extract everything" for this one resource class
-without needing a live trace:
-
-- **`pPalette`: a 32-byte, 16-entry BGR555 palette.** The game uploads
-  only entries 1-15, exactly the `sub_08001528` convention already proven
-  above (`&aColors[1]` = 15 real colors; index 0 is the GBA OBJ
-  transparent color). Entry 0 stores a transparent-key color instead,
-  `0x7C1F` in 60 of 79 icons.
-- **`pFrameData`: a frame/layout header**, the same generic per-actor
-  animation-frame format `LoadObjTileSheet`/`LoadActorAnimFrameCells` (renders the
-  in-world sprite these items also spawn) read from `actor+0xe0`.
-  Fixed 12-byte part; `+0x06` is a `u16` frame count (every one of the
-  79 real items has exactly 1). One `u16` offset per frame follows at
-  `+0x0C`, relative to that same `+0x0C` base, pointing at a small
-  record: pixel width (`+0x02`, `u8`), height (`+0x03`, `u8`), and a
-  `u16` source offset (`+0x04`) into `pTileData`.
-  - Corroborates open thread 1 below (`sub_08045588`'s per-actor
-    sub-resource table): its `w:u8, h:u8, source-blob-offset:u16`
-    fields are exactly what's decoded here, now against 79 real,
-    named, concrete instances rather than one traced dataflow guess.
-- **`pTileData`: the tile pixel data**, at `pTileData + source_offset`, header
-  -prefixed like any generic resource (`byte0`'s nibble = type,
-  `byte1..3` LE = decompressed size, matching `width*height/2` exactly
-  in all 79 real items -- an independent structural check that the
-  frame-header field identities above are right). Two nibbles appear:
-  type 3 (BIOS `RLUnComp`, 11 of 79) and type 7 -- `DecompressResourceVram`'s
-  *own* nibble for the `DecompressLzRle` codec (`0x0804a2cc` via the
-  `0x030028CC` IWRAM entry), distinct from `DecompressResource`'s nibble 4 for
-  that same codec (two different dispatchers, two different
-  nibble-to-codec mappings, same underlying decoder already proven
-  above under "The `DecompressLzRle` codec, decoded"). No other nibble appears
-  among the 79 real items.
-
-**Type 3's real stream starts 8 bytes past the outer header, not 4 --
-confirmed against raw disassembly, not just decompile.** `DecompressResourceVram`'s
-case-3 branch (disassembled directly: `add r0,r3,#0x4` then
-`bl sub_08049eb0`, which is a bare `svc 0x15` / `RLUnCompVram` wrapper)
-passes the resource address plus 4 straight into the real BIOS RLE
-routine -- but that BIOS call needs its *own* self-contained 4-byte
-type+size header at whatever address it's given, distinct from the
-generic dispatcher header `DecompressResourceVram` already consumed at
-`pTileData + source_offset + 0`. Every type-3 icon's data has that same
-header duplicated verbatim at `+ 0x4` (`tools/images/sprite.py` requires
-this on every decode, since it's a real invariant of the format, not an
-assumption), so the real token stream starts at `+ 0x8`. Skipping only
-the outer header (the correct convention for type 7, which has no such
-duplicate) is a dead end for type 3: it feeds the duplicate header's
-own bytes into the decoder as real tokens, visibly corrupting the
-rendered icon while still producing *a* plausible-sized image -- not
-something a byte-count or size check catches, only a look at the
-rendered PNG.
-
-**Verified by decoding and rendering real ROM data, not just reading
-the struct shape**: "Ordinary Belt" (32x32, type-7 / `DecompressLzRle` tiles) decodes
-to a recognizable belt with a gold buckle; "Antidote to Common Poisons"
-(16x32, type-7) decodes to a recognizable potion bottle; "Wiggenweld
-Potion" and "Trevor" (both type-3, post-fix) decode to a recognizable
-potion bottle and toad respectively. All confirmed by direct visual
-inspection of the rendered PNG, matching their item names unambiguously.
-
-**Extent**: all 79 real items' icon data forms one fully contiguous ROM
-span with zero gaps between items, in table order -- confirmed by checking
-each `pPalette`/`pTileData`/`pFrameData` extent against the next. One more
-icon in the same format follows directly: `GetItemImageData` returns it for
-the pseudo-item id `0x86` instead of reading the item table (a 24x24 gold
-curved arrow, the equipment list's "Remove" row). The `ItemAndHelpIcons`
-group in `graphics/menus.yaml` claims the 80 icons as 4-bit `ItemNNN.png`
-sprites in `palette`, `tiles`, `frames` order (see "Graphics build format"),
-except `ItemChocolateFrogs` (71st, which card rewards also use) and the
-id-`0x86` icon last as `ItemRemove`; 11 icons use `rle`, the rest `lzrle`.
-`src/items/items.c` includes the generated `include/gen/graphics/menus.h` and
-references the `gItemNNNPalette/Tiles/Frames` labels instead of literal
-addresses.
-
-### Help screen sprites (PROVEN, partly extracted)
-
-`g_aHelpSpriteAssets` (22 `ActorAssetRecord`s) and
-`g_apHelpSpritePalettes` (22 palette pointers, directly after it) are read
-by `SpawnHelpPageSprite(x, y, index)`, which spawns actor type `index` with
-palette `g_apHelpSpritePalettes[index]` and then passes
-`&g_aHelpSpriteAssets[index]` to `SetActorSprite`. Twenty records reuse item
-icons. Record 14 is a 32x32 `lzrle` sprite in `tiles`, `frames`, `palette`
-order stored directly after the item icons; the `HelpSprites`
-`image-bank` row claims it as `Help001.png`. Page commands (opcode 8:
-draw sprite `byte1` at `byte2`, `byte3`) in the page data after
-`g_apHelpSpritePalettes` never draw indices 3-6, 8, or 14, so record 14 is
-likely unused (UNCONFIRMED: pages outside that area were not searched). Record 0 points into the
-main-menu graphics after `g_MainMenuPalette` (not extracted).
-
-### Character portraits (PROVEN, extracted)
-
-`g_apPortraitTable` (US `0x0804C61C`, 135 `ActorAssetRecord` entries, 16
-bytes each: `{pTileGfx, pFrameData, pPalette, reserved(0)}`, of which
-only the first 72 are filled and the rest are zero) holds the
-game's dialog-portrait art. It's reachable from
-`InitializeCheatPortraits` (`0x0800B5A8`), a debug menu for paging
-through them, but the records themselves are ordinary dialog assets --
-"debug" describes the viewer, not the data.
-
-- **`pTileGfx`**: 8bpp OBJ tile data, header type 7. Consumed via
-  `SetActorAssetRecord` (`0x0800187C`, stores `&PortraitRecord` into
-  `Actor+0xE0`) -> `UpdateActorSpriteFrame` (`0x08002F28`) ->
-  `LoadObjTile` -> `DecompressResourceVram` (`0x0801DE5C`), whose type 7
-  is the `DecompressLzRle` codec (`DecompressLzRle`, ARM, `0x08006108`; see "The
-  resource-decompression dispatchers"). Verified against 71 real images.
-- **`pFrameData`**: an uncompressed per-actor frame/OAM-cell
-  descriptor, read directly -- despite `pTileGfx`'s neighboring header
-  superficially inviting the same treatment, this pointer is never
-  routed through either decompression dispatcher. Layout (byte offsets
-  from `pFrameData`; C types `ActorFrameData`/`ActorFrameDesc` in
-  `include/actor.h`):
-  - `+0x0`/`+0x1` (`u8`): the largest frame width/height in pixels (true
-    of all 146 distinct sprites in `g_aActorTypeAssets` and the portrait
-    table); read by `GetActorMaxFrameSize` (`0x08001BF0`).
-  - `+0x2`-`+0x5` (`s8` each): terrain box left/right/top/bottom, the same
-    for every frame. `LoadActorAnimFrameBounds` (`0x080023B4`) copies it
-    to `Actor+0xC0`.
-  - `+0x6` (`u16`): frame count. `GetActorVariantFrameSize`
-    (`0x08000E28`) wraps a frame index of -1 to `count - 1`.
-  - `+0x8` (`u16`): byte size of the largest frame's tiles: 32 per tile for
-    the 4bpp actor-type sprites, 64 for the 8bpp portraits (true of all 146
-    distinct sprites); read by `GetAnimMaxFrameTileBytes`.
-  - `+0xA` (`u8`): anchor-point count (`0` in every observed portrait).
-    Each frame's anchors follow its descriptor at `+0xA`, an `s8` x/y
-    pixel offset from the actor's position each; `GetActorFrameAnchor`
-    (`0x08001F98`) reads one, for example where battle effects attach.
-  - `+0xB` (`u8`): collision-box count (`0` in every observed portrait).
-    Each frame's boxes follow its anchors, 6 bytes each: `s8`
-    left/right/top/bottom and a state byte, copied into
-    `Actor.aCollisionBoxes` with the count in `Actor+0xAF`.
-  - `+0xC + frame*2` (`u16`): per-frame offset, added to `pFrameData +
-    0xC` to get that frame's descriptor base. Only frame 0 has been
-    exercised.
-  - Frame descriptor base `+0x0` (`u8`): cell count in the low 5 bits; bit 5
-    marks tiles compressed as resource type 3 (RLE), bit 6 type 7 (LzRle),
-    neither type 6 (GammaLz), matching each frame's tile header in every
-    actor-type sprite (`GetFrameTileCodec`).
-  - Frame descriptor base `+0x2`/`+0x3` (`u8`): frame width/height in
-    pixels. `UpdateActorSpriteFrame` passes `width*height` to the OBJ
-    tile allocator (`AllocObjVramTiles`), which divides it by 64 (4bpp) or 32
-    (8bpp, 32-byte units); every item icon's values are `32x32` or
-    `16x32`, matching their decoded sizes.
-  - Frame descriptor base `+0x4` (`u16`): byte offset of the frame's
-    tile data from `pTileGfx` (`GetActorVariantFrameTileGfx`,
-    `0x08000EC0`, and `UpdateActorSpriteFrame`'s `LoadObjTile` path).
-  - Frame descriptor base `+0x6`/`+0x8` (`s16`): x/y of the frame's
-    top-left corner relative to the actor. With the width and height
-    they give `Actor.spriteBounds`.
-  - Cell table starts at frame-descriptor-base `+ 0xA +
-    anchor_count*2 + box_count*6` (`+0xA` for every portrait). Each cell is 4 bytes
-    `{b0, b1, b2, b3}`:
-    - size = `(b2 & 0xF) >> 2`, shape = `(b2 & 0x3F) >> 4` (2 bits
-      each) -- the standard GBA OAM shape/size pair, decoding to
-      `{1x1,2x2,4x4,8x8}` square / `{2x1,4x1,4x2,8x4}` wide /
-      `{1x2,1x4,2x4,4x8}` tall tiles.
-    - relative tile offset = `((b3 << 2) | (b2 >> 6)) * 2` (8bpp tiles,
-      hardware-doubled) into `pTileGfx`'s decompressed stream. Cells
-      are stored back-to-back with no padding: cell *n*'s offset always
-      equals the sum of every earlier cell's own `w*h` tile count.
-    - X = `sign9((b1 & 1) << 8 | b0)`, Y = `sign9((b2 & 3) << 7 | (b1
-      >> 1))` -- signed 9-bit pixel offsets relative to the actor's own
-      on-screen anchor, doubled for a double-size affine actor. C type
-      `ActorFrameCell`, a packed bitfield word, decoded by
-      `UpdateActorOamCells` (`0x08002618`, matched). `WriteActorOamCells`
-      (`0x08002C18`, matched) decodes the same bytes into a live OAM
-      entry's position/shape/tile fields.
-  - Confirmed against real hardware, not just the struct shape: for
-    record 1, a live mGBA OAM dump (`x/4 0x07000000 20`) and OBJ-VRAM
-    dump (`x/4 0x06010E00 784`) matched this decode's shape/size/tile
-    numbers and X/Y deltas exactly, and the decompressed tile bytes
-    matched real VRAM byte-for-byte across all 3136 bytes.
-- **`pPalette`**: a raw, unheadered 256-entry BGR555 table (no 2-byte
-  header, unlike the 15-color `sub_08001528` convention above). Index 0
-  is the hardware-fixed OBJ transparent index for 8bpp sprites, not
-  user-selectable -- rendered as alpha 0.
-- **Duplicates**: 18 of the 72 records point at only 5 distinct
-  underlying images (`23=19`, `46=24`, `47=25`, `48=26`, and
-  `42/44/50/51/53/62/63/64/65/66/67/69/70/71=40`).
-- **Extraction**: the largest portrait decodes to 5120 bytes; the Python
-  decoder grows its output buffer to the stream's actual length.
-  The 54 unique resources fill `0x08E6D438`-`0x08E8D630` in first-use
-  table order: table pointers delimit each tile and frame component, and
-  each 512-byte palette ends at the next resource. The `Portraits`
-  `image-bank` row claims all 131,576 bytes as 8-bit `PortraitNNN.png`
-  sprites (all `lzrle`) in `tiles`, `frames`, `palette` order. `src/cheat_portraits/portrait_table.c` reconstructs the 135
-  records at `0x0804C61C`-`0x0804CE8C`, referencing generated labels so
-  repeated records share their original image. Both regions are
-  verified by the whole-ROM comparison; JP addresses are not yet mapped.
-
-### Actor animation command streams (STRUCTURAL MATCH, from `RunActorAnimCommands`)
-
-`SetActorAnimData(actor, record, data, start)` points an actor at a byte
-stream (`data + start * 2`); `RunActorAnimCommands` reads it two bytes at a time. A
-first byte up to `0xEE` shows that frame for the second byte's count of ticks
-(0 holds it); `0xEF`-`0xFF` run immediately, in sequence, until the next
-frame. `include/actor_anim.h` spells them as `ANIM_*` macros, which
-the ROM's animation tables use.
-
-| Byte | Command | Operand |
-|---|---|---|
-| `0xEF` | move x forward (mirrored when h-flipped) | signed pixels |
-| `0xF0` | set `ActorFlagActionAnimDone`, stay here | ignored (0, or `0xFF` in some monster animations) |
-| `0xF1` / `0xF2` | toggle v-flip / h-flip | -- |
-| `0xF3` / `0xF4` | set / clear `ActorFlagVisible` | -- |
-| `0xF5`-`0xFC` | move down-left, up-left, down-right, up-right, down, up, left, right | pixels |
-| `0xFD` | `PlaySoundById` | sound id |
-| `0xFE` | jump to command `n` of the stream | `n` |
-| `0xFF` | event marker: sets `ActorFlagSpecialMoveTrigger`, stores the operand at `Actor+0xDC`, holds one tick | marker |
-
-Tables that keep several streams per row (room actor kinds, monsters, effect
-animations) pad each row with zeros to a fixed stride.
-
-## Open threads
-
-In rough priority order. BG/level tile graphics are PROVEN end-to-end,
-confirmed against real gameplay across multiple rooms (see "On-demand
-per-tile BG streaming" above); OBJ tiles still lack a statically-walkable
-resource-pointer trace.
-
-1. **The last BG tile's compressed length is unknown.** The offset
-   table gives tile starts only. `decode_bgtile.py` decodes the requested
-   32-byte tile without needing its compressed byte length.
-2. **Trace `LoadObjTile`/`LoadObjTileAt`/`LoadObjTileSheet`'s
-   (`0x080454BC`/`0x080454DC`/`0x08045588`) remaining callers.** Two
-   real call chains are now closed out this way: item icons (see below)
-   and the character-portrait table (`g_apPortraitTable`, see
-   "Character portraits" below) -- both confirmed by tracing
-   `resourcePtr` back to a table with named fields, not just
-   dataflow. Other actor types spawned outside those two tables (most
-   world/battle actors) still aren't enumerated this way.
-3. **The wand's palette** (bank 1) has no located ROM source. All four
-   glow-frame streams (`0x080BC9CC`, `0x080BCADC`, `0x080BCBD0`,
-   `0x080BCCD8`) decode to 128 bytes and match the ARM codec output.
-   Bank 1 is neither raw nor
-   standard-BIOS-compressed, so it presumably uses `DecompressLzRle` or `DecompressGammaLz` and
-   findable by a live breakpoint on whatever writes OBJ palette RAM
-   `0x05000220`-`0x0500023F`, reading the source register at entry.
-4. **The spark/particle effect's remaining tiles and its palette
-   pairing.** One real tile is confirmed (`0x080BCDD8`, via
-   `DecompressResourceVram`'s RLE path); it is likely a multi-tile animation like
-   the wand's glow. Three real palettes exist (`0x08A38108`,
-   `0x08A38FE0`, `0x080BD344`); which one pairs with this effect isn't
-   confirmed.
-5. **The three structural-scan candidate regions** (`0x08933000`
-   filigree tileset, `0x0888xxxx` region, `0x08a36800` UI panels) have
-   **no confirmed code reference**. A grep of `build/us/full_disasm.s`
-   for PC-relative literal-pool loads of these addresses found zero hits
-   for the filigree tileset and the UI-panel region; the `0x0888xxxx`
-   region had 3 nearby hits (`0x08882CFC` at disasm lines 15979/20385,
-   `0x08886004` at line 16074) that don't match any of the 17
-   tile-shaped sub-runs identified there. All three need a code-confirmed
-   live trace (OAM/VRAM watchpoint) before being trusted -- a
-   literal-pool grep is not enough, and neither is pixel-shape
-   plausibility (see `0x080BCA24` under "The wand cursor sprite":
-   found by this same technique, in the same ROM neighbourhood, and
-   demonstrably not the sprite it resembles). Standard BIOS LZ77 is
-   ruled out for the filigree blob specifically -- no valid LZ77 stream
-   longer than 100 bytes exists anywhere spanning that region.
-
-The general methodology this subsystem settled on: **live mGBA
-breakpoints/watchpoints beat blind ROM scanning whenever a live trigger
-is available**, driven interactively through mGBA's built-in debugger
-console.
+- Why every 32-byte GammaLz fill table ends in `0x45`. It may be one entry
+  past the 31 ranks.
+- The nonzero stream padding and the BG tileset residue bytes look like
+  leftover memory from the original tools.
+- Whether any code uses the ally head frames other than frame 0 (the
+  turn-order icon).
+- Help sprite record 14 looks unused: the help pages never draw indices
+  3-6, 8 or 14. Pages outside the help page data were not searched.
+- No `DecompressResource` type-4 (LzRle) resource exists, so that path's
+  stream layout (`hdr`, not `hdr+4`) has never been exercised.

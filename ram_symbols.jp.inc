@@ -1,6 +1,5 @@
-@ Named RAM addresses referenced from C and asm/*.s files -- see
-@ ram_symbols.us.inc for the full explanation. JP-side values, laid out
-@ like the US file. Symbols with no JP counterpart yet are omitted.
+@ JP values of ram_symbols.us.inc, in the same layout. Symbols with no JP
+@ counterpart are omitted.
 
 @ --- include/sound.h ---
 .set g_KrawallEwramStart,     0x02000000

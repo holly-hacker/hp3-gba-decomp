@@ -3,7 +3,7 @@
 the curated JSON+WAV format under data/audio/. See docs/formats/krawall.md.
 
 Module/pattern/sample *content* is proven byte-identical between US and JP
-(docs/formats/krawall.md's Confirmed stats), so this only ever needs to
+(docs/formats/krawall.md), so this only ever needs to
 read the US ROM -- data/audio/ is version-independent. Per-version
 addresses live in regions.<ver>.txt's krawall-module/krawall-samples rows
 instead.

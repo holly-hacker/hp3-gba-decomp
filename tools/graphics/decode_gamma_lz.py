@@ -1,6 +1,6 @@
 """Decode a DecompressGammaLz resource from its outer-header address.
 
-See docs/formats/graphics.md, "The DecompressGammaLz codec, decoded".
+The ROM's decoder is asm/decompress_gamma_lz.s.
 """
 import struct
 

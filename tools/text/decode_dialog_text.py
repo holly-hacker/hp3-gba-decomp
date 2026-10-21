@@ -2,9 +2,7 @@
 """Decode a dialog/UI text string from the game's real string table --
 reimplemented directly from the disassembly of sub_08024DC8 (the Huffman-
 style bitstream decoder) and sub_08024EB8/sub_08042588 (table init and
-per-language dispatch). See docs/formats/text.md's "The text engine,
-found" section for the full derivation and how each address below was
-confirmed.
+per-language dispatch).
 
 Layout, all ROM addresses (US, not yet checked against JP):
   0x0806BD78: 8 x u32, one ROM pointer per language (order matches the
@@ -23,11 +21,9 @@ Layout, all ROM addresses (US, not yet checked against JP):
 Decoded output bytes are the game's own glyph codes, not ASCII: values
 0x00-0xEF are single-byte glyphs (0x20-0x7E happen to line up with ASCII
 for the Latin cases exercised so far); values 0xF0-0xFF start a two-byte
-extended glyph code for accented/non-Latin characters (see
-sub_08020714 in docs/formats/text.md). This tool prints values <=0xEF as
+extended glyph code (see DrawTextLine). This tool prints values <=0xEF as
 their raw byte (readable as ASCII/Latin-1-ish for English) and anything
-else as an escaped \\xNN pair, since the extended charmap isn't decoded
-yet -- see docs/formats/text.md for what is and isn't confirmed there.
+else as an escaped \\xNN pair; text_codec.py's CHARMAP maps the rest.
 
 Usage: decode_dialog_text.py <ver> <lang 0-7> <string id (int or hex)>
 Writes the decoded raw bytes to stdout.

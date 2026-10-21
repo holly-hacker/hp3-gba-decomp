@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Encode data as a DecompressLzRle stream, byte-identical to the ROM's encoder.
 
-The token format is described in docs/formats/graphics.md ("The
-DecompressLzRle codec, decoded"); tools/graphics/decode_lz_rle.py is the
+The token format is DecompressLzRle's (src/arm_routines/decompress_lz_rle.c);
+tools/graphics/decode_lz_rle.py is the
 inverse. The parse reproduces every LzRle stream in the US item-icon and
 portrait banks:
 

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Decode and encode a room BG tileset resource (dwBgTilesetA/B in the room table).
 
-Layout, byte for byte (see docs/formats/graphics.md, "On-demand per-tile BG
-streaming"):
+Layout, byte for byte:
 
   u16 size          bytes from the end of this head to the Huffman table, minus 8
   u16 tile_count
