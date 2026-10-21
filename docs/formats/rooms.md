@@ -136,7 +136,7 @@ below (`SpawnDoorActor`, ..., `SpawnPortraitDoorActor`; see
 | 7 | 20 | trigger zone with explicit edges | `left`, `top`, `right`, `bottom` (8-B); `rearm_delay` (C, u16); `trigger_kind` (E); `require_a_press` (F); pair at 11/12 |
 | 8 | 28 | push puzzle reset button: a Flipendo spell effect (actor type `0xF`, spell 0) presses variant 0; at the press animation's `ANIM_EVENT` the targets are freed and respawned at their record positions. Every use targets pushable props (kind 1 blocks, kind 81 book stacks) | `variant` (8); eight `(group, member)` targets (9-0x18) that are freed and respawned |
 | 9 | 16 | chest, see "Chests" below | `flag_id` (8, u16); `kind` (A, 0-3); `reward_id` (B); `chain` (C), `respawn_group` (D) |
-| 10 | 16 | Spongify pad: overworld spell effect 5 arms it, then touching it launches the player and followers to the target point | `target_x`, `target_y` (8, A, s16); `variant` (C) |
+| 10 | 16 | Spongify pad: a Spongify spell effect arms it for 150 ticks; the player stepping on it then gathers the party and launches them to the target point, running the pair on landing | `target_x`, `target_y` (8, A, s16); `variant` (C); pair at D/E |
 | 11 | 16 | flame jet that alternates on and off; contact runs the pair | `variant` (C); pair at D/E; off and on periods at 8 and A |
 | 12 | 12 | raising platform: the party gathers on it, it lifts them, then runs the pair | pair at 8/9; nonzero `arg_0a` (A) starts it inactive until a Reparo spell effect (spell 2) hits it |
 

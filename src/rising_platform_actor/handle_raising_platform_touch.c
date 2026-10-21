@@ -27,7 +27,7 @@ void HandleRaisingPlatformTouch(Actor *pSelf, Actor *pOther)
             }
             else
             {
-                g_adwRoomActorUnkACState[1] = 1;
+                g_adwPartyMemberArrived[1] = 1;
             }
 
             if (g_pFollowerActor1 != NULL)
@@ -38,7 +38,7 @@ void HandleRaisingPlatformTouch(Actor *pSelf, Actor *pOther)
             }
             else
             {
-                g_adwRoomActorUnkACState[2] = 1;
+                g_adwPartyMemberArrived[2] = 1;
             }
 
             SetActorActionSubState(pSelf, 19);

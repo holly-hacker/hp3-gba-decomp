@@ -23,7 +23,7 @@ const void *const g_apRoomSpongifyPadEffectData[3] = {
     gActorSprite2_115Palette,
 };
 
-// Command 5 is sub_08040680's spell effect.
+// Command 5 is the animation of SpawnSpongifyPadEffect.
 const u8 g_abRoomSpongifyPadAnimData[30] = {
     // 0
     ANIM_FRAME(0, 9), ANIM_FRAME(1, 9), ANIM_JUMP(0),
@@ -33,3 +33,7 @@ const u8 g_abRoomSpongifyPadAnimData[30] = {
     ANIM_FRAME(22, 3), ANIM_FRAME(23, 3), ANIM_FRAME(24, 3), ANIM_FRAME(25, 3),
     ANIM_FRAME(42, 3), ANIM_END,
 };
+
+// The same sprites as g_SpongifyParticleGfx0/1, loaded into particle pool 2 entries 2 and 3.
+const ActorGfxRecord g_RoomSpongifyPadParticleGfx0 = { (void *)gSpongifyParticle1Tiles, (void *)gSpongifyParticle1Frames };
+const ActorGfxRecord g_RoomSpongifyPadParticleGfx1 = { (void *)gSpongifyParticle2Tiles, (void *)gSpongifyParticle2Frames };

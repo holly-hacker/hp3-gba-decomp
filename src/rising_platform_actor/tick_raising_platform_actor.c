@@ -5,7 +5,7 @@
 #include "rising_platform_actor.h"
 
 // Sub-states: 19 waits for the party to walk onto the platform (one
-// g_adwRoomActorUnkACState flag per member), 3 rises carrying the player, 2 walks
+// g_adwPartyMemberArrived flag per member), 3 rises carrying the player, 2 walks
 // the player off to the left, 20 lowers and releases the party, 5 destroys it.
 void TickRaisingPlatformActor(Actor *pActor)
 {
@@ -18,15 +18,15 @@ void TickRaisingPlatformActor(Actor *pActor)
     switch (pActor->bActionSubState)
     {
     case 19:
-        if (g_adwRoomActorUnkACState[0] == 0)
-            g_adwRoomActorUnkACState[0] = FaceActorTowardMoveTarget(g_pPlayerActor);
-        if (g_pFollowerActor0 != NULL && g_adwRoomActorUnkACState[1] == 0)
-            g_adwRoomActorUnkACState[1] = FaceActorTowardMoveTarget(g_pFollowerActor0);
-        if (g_pFollowerActor1 != NULL && g_adwRoomActorUnkACState[2] == 0)
-            g_adwRoomActorUnkACState[2] = FaceActorTowardMoveTarget(g_pFollowerActor1);
+        if (g_adwPartyMemberArrived[0] == 0)
+            g_adwPartyMemberArrived[0] = FaceActorTowardMoveTarget(g_pPlayerActor);
+        if (g_pFollowerActor0 != NULL && g_adwPartyMemberArrived[1] == 0)
+            g_adwPartyMemberArrived[1] = FaceActorTowardMoveTarget(g_pFollowerActor0);
+        if (g_pFollowerActor1 != NULL && g_adwPartyMemberArrived[2] == 0)
+            g_adwPartyMemberArrived[2] = FaceActorTowardMoveTarget(g_pFollowerActor1);
 
-        if (g_adwRoomActorUnkACState[0] != 0 && g_adwRoomActorUnkACState[1] != 0
-            && g_adwRoomActorUnkACState[2] != 0)
+        if (g_adwPartyMemberArrived[0] != 0 && g_adwPartyMemberArrived[1] != 0
+            && g_adwPartyMemberArrived[2] != 0)
         {
             if (g_pFollowerActor0 != NULL)
                 g_pFollowerActor0->pOwnerActor = g_pPlayerActor;
@@ -98,8 +98,8 @@ void TickRaisingPlatformActor(Actor *pActor)
             pActor->dwFlags |= ActorFlagWantsCollisionCheck;
             SetActorActionSubState(pActor, 10);
 
-            for (i = 0; i < ARRAY_COUNT(g_adwRoomActorUnkACState); i++)
-                g_adwRoomActorUnkACState[i] = 0;
+            for (i = 0; i < ARRAY_COUNT(g_adwPartyMemberArrived); i++)
+                g_adwPartyMemberArrived[i] = 0;
 
             if (RAISING_PLATFORM_STATE(pActor)->finish.wPair != 0)
                 RespawnGroupAndRunChain(RAISING_PLATFORM_STATE(pActor)->finish.rows.bRespawnRow,

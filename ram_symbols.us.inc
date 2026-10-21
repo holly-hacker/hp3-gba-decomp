@@ -47,7 +47,7 @@
 .set g_ReceivedItemGfx,              0x03001DC8  @ ActorGfxRecord: the item TickActorReceiveReward holds up
 
 @ --- include/area.h ---
-.set g_adwRoomActorUnkACState,         0x03001DD0  @ u32[3]: zeroed by the type 10 and 12 room actor constructors
+.set g_adwPartyMemberArrived,          0x03001DD0  @ u32[3]: player and follower 0/1 reached a Spongify pad or raising platform
 .set g_wRoomResourceFlags_candidate, 0x03001DDC  @ u16: bit 0 = the room also has a second actor/switch row
 .set g_bRoomScriptCurrentChain,        0x03001DDE  @ u8: chain the VM is walking
 .set g_pRoomScriptYieldContinuation, 0x03001DE0  @ u32 *: record to resume at after a yield, or 0

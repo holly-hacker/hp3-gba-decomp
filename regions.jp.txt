@@ -1787,13 +1787,13 @@ c-file 0x08040000 _ src/sound/apply_audio_volume_settings.c ApplyAudioVolumeSett
 c-file 0x08040030 _ src/sound/disable_krawall_timer_interrupt.c DisableKrawallTimerInterrupt
 c-file 0x08040054 _ src/sound/enable_krawall_timer_interrupt.c EnableKrawallTimerInterrupt
 c-file 0x08040074 _ src/sound/on_krawall_event.c OnKrawallEvent
-c-file 0x080400A0 0x0804017C src/spongify_pad_actor/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
-thumb-func 0x0804017C sub_08040114
-thumb-func 0x080403C0 sub_08040358
-thumb-func 0x08040504 sub_0804049C
-thumb-func 0x08040648 sub_080405E0
-thumb-func 0x08040698 sub_08040630
-thumb-func 0x080406E8 sub_08040680
+c-file 0x080400A0 _ src/spongify_pad_actor/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
+c-file 0x0804017C _ src/spongify_pad_actor/tick_spongify_pad_actor.c TickSpongifyPadActor
+c-file 0x080403C0 _ src/spongify_pad_actor/handle_spongify_pad_touch.c HandleSpongifyPadTouch
+c-file 0x08040504 _ src/spongify_pad_actor/tick_spongify_pad_effect.c TickSpongifyPadEffect
+c-file 0x08040648 _ src/spongify_pad_actor/init_spongify_pad_particle_emitter0.c InitSpongifyPadParticleEmitter0
+c-file 0x08040698 _ src/spongify_pad_actor/init_spongify_pad_particle_emitter1.c InitSpongifyPadParticleEmitter1
+c-file 0x080406E8 _ src/spongify_pad_actor/spawn_spongify_pad_effect.c SpawnSpongifyPadEffect
 c-file 0x08040788 _ src/store/show_shop_main_menu.c ShowShopMainMenu
 c-file 0x08040834 _ src/store/update_shop_main_menu.c UpdateShopMainMenu
 c-file 0x0804091C _ src/store/move_shop_main_menu_cursor.c MoveShopMainMenuCursor
@@ -2178,7 +2178,7 @@ c-file 0x0806B7A8 _ src/save/write_default_save_options.globals.c g_DefaultSaveO
 c-file 0x0806B7D0 _ src/screen_transitions/screen_transition_handlers.c g_apfnScreenTransitionsIn
 c-file 0x0806B848 _ src/serial/serial_magic.c g_adwSerialMagic
 c-file 0x0806B858 _ src/sound/sound_sections.c g_pKrawallIwramStart
-c-file 0x0806B868 0x0806B8C0 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
+c-file 0x0806B868 _ src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B8D0 _ src/store/shop_stock.c g_aShopStockMisc
 c-file 0x0806B9D8 _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file 0x0806BA8C _ src/tea_leaves_minigame/divination_tea.globals.c g_DivinationTeaCupAnimData

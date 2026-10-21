@@ -564,15 +564,16 @@ typedef enum {
     RoomActorType_ScriptedTrigger  = 5,     // sub-behavior picked by a separate per-instance kind field
     RoomActorType_PushResetButton  = 8,     // SpawnPushResetButtonActor
     RoomActorType_Chest            = 9,     // SpawnChestActor
-    RoomActorType_UnkA             = 0xA,
-    RoomActorType_UnkB             = 0xB,
-    RoomActorType_UnkC             = 0xC,
+    RoomActorType_SpongifyPad      = 0xA,   // SpawnSpongifyPadActor
+    RoomActorType_FlamePillar      = 0xB,   // SpawnFlamePillarActor
+    RoomActorType_RaisingPlatform  = 0xC,   // SpawnRaisingPlatformActor
     RoomActorType_ScriptEffect     = 0xE,   // SpawnScriptEffectActor, e.g. delayed chain runs;
                                               // reuses the same value as BattleActorType_FighterSlot0
                                               // since room/overworld and battle never run concurrently
     RoomActorType_FieldSpellEffect = 0xF,   // SpawnFieldSpellEffect; wCharacterId_candidate is the FieldSpell
     RoomActorType_WanderingMonster = 0x10,  // SpawnWanderingMonsterActor; reuses
                                               // BattleActorType_FighterSlot0 + 2 for the same reason
+    RoomActorType_SpongifyPadEffect = 0x15, // SpawnSpongifyPadEffect
 } RoomActorType;
 
 // wActorType values used by battle-mode actor spawners. See RoomActorType

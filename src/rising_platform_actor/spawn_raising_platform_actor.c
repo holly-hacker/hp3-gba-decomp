@@ -9,7 +9,7 @@
 Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow)
 {
     RoomActorRecordUnkC *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
-    Actor *pActor = AllocActorOfType(RoomActorType_UnkC);
+    Actor *pActor = AllocActorOfType(RoomActorType_RaisingPlatform);
     u32 i;
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
@@ -28,8 +28,8 @@ Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow)
     else
         SetActorAnimData(pActor, &g_RoomRaisingPlatformSprite, (void *)g_abRoomRaisingPlatformAnimData, 0);
 
-    for (i = 0; i < ARRAY_COUNT(g_adwRoomActorUnkACState); i++)
-        g_adwRoomActorUnkACState[i] = 0;
+    for (i = 0; i < ARRAY_COUNT(g_adwPartyMemberArrived); i++)
+        g_adwPartyMemberArrived[i] = 0;
 
     pActor->oam.priority = 3;
     pActor->bDepthSortBias = 0x80;

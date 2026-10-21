@@ -2027,13 +2027,13 @@ c-file 0x0803FFEC _ src/sound/enable_krawall_timer_interrupt.c EnableKrawallTime
 c-file 0x0804000C _ src/sound/on_krawall_event.c OnKrawallEvent
 
 # Spongify (spongify pad actor)
-c-file 0x08040038 0x08040114 src/spongify_pad_actor/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
-thumb-func 0x08040114 sub_08040114
-thumb-func 0x08040358 sub_08040358
-thumb-func 0x0804049C sub_0804049C
-thumb-func 0x080405E0 sub_080405E0
-thumb-func 0x08040630 sub_08040630
-thumb-func 0x08040680 sub_08040680
+c-file 0x08040038 _ src/spongify_pad_actor/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
+c-file 0x08040114 _ src/spongify_pad_actor/tick_spongify_pad_actor.c TickSpongifyPadActor
+c-file 0x08040358 _ src/spongify_pad_actor/handle_spongify_pad_touch.c HandleSpongifyPadTouch
+c-file 0x0804049C _ src/spongify_pad_actor/tick_spongify_pad_effect.c TickSpongifyPadEffect
+c-file 0x080405E0 _ src/spongify_pad_actor/init_spongify_pad_particle_emitter0.c InitSpongifyPadParticleEmitter0
+c-file 0x08040630 _ src/spongify_pad_actor/init_spongify_pad_particle_emitter1.c InitSpongifyPadParticleEmitter1
+c-file 0x08040680 _ src/spongify_pad_actor/spawn_spongify_pad_effect.c SpawnSpongifyPadEffect
 
 # Store (Fred and George's shop)
 c-file 0x08040720 _ src/store/show_shop_main_menu.c ShowShopMainMenu
@@ -2452,7 +2452,7 @@ c-file 0x0806B81C _ src/save/write_default_save_options.globals.c g_DefaultSaveO
 c-file 0x0806B844 _ src/screen_transitions/screen_transition_handlers.c g_apfnScreenTransitionsIn
 c-file 0x0806B8BC _ src/serial/serial_magic.c g_adwSerialMagic
 c-file 0x0806B8CC _ src/sound/sound_sections.c g_pKrawallIwramStart
-c-file 0x0806B8DC 0x0806B934 src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
+c-file 0x0806B8DC _ src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file 0x0806B944 _ src/store/shop_stock.c g_aShopStockMisc
 c-file 0x0806BA4C _ src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file 0x0806BB00 _ src/tea_leaves_minigame/divination_tea.globals.c g_DivinationTeaCupAnimData

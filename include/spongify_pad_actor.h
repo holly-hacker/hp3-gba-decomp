@@ -2,6 +2,8 @@
 
 #include "types.h"
 #include "actor.h"
+#include "math.h"
+#include "particles.h"
 
 // Room actor of tile actorType 10, a Spongify pad that launches the party to a
 // target point; see docs/formats/rooms.md.
@@ -18,11 +20,27 @@ typedef struct RoomActorRecordUnkA {
     u8 abArgD[2];
 } RoomActorRecordUnkA;
 
+// Actor bytes 0x60-0x6D as set by the constructor from the record arguments.
+typedef struct SpongifyPadState {
+    IntPoint target;  // 0x60, pixels: where the party lands
+    u32 dwArmed;      // 0x68, 1 from a Spongify effect hit until the player steps on it
+    u8 bRespawnRow;   // 0x6C, RespawnGroupAndRunChain arguments run on landing
+    u8 bChainRow;     // 0x6D
+} SpongifyPadState;
+
+#define SPONGIFY_PAD_STATE(pActor) ((SpongifyPadState *)&(pActor)->scriptState)
+
 extern Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow);
-extern void sub_08040114(Actor *pActor);
-extern void sub_08040358(Actor *pSelf, Actor *pOther);
-// [3] is the spell effect sprite of sub_08040680.
+extern void TickSpongifyPadActor(Actor *pActor);
+extern void HandleSpongifyPadTouch(Actor *pSelf, Actor *pOther);
+extern void TickSpongifyPadEffect(Actor *pEffect);
+extern void InitSpongifyPadParticleEmitter0(ParticleEmitter *pEmitter, Actor *pEffect);
+extern void InitSpongifyPadParticleEmitter1(ParticleEmitter *pEmitter, Actor *pEffect);
+extern void SpawnSpongifyPadEffect(Actor *pPad, Actor *pPlayer);
+// [3] is the effect sprite of SpawnSpongifyPadEffect.
 extern const ActorGfxRecord g_aRoomSpongifyPadSprites[4];             // ROM 0x0806B8DC (US)
 extern const ActorGfxRecord *const g_apRoomSpongifyPadAnimFrames[3];  // ROM 0x0806B8FC (US)
 extern const void *const g_apRoomSpongifyPadEffectData[3];             // ROM 0x0806B908 (US)
 extern const u8 g_abRoomSpongifyPadAnimData[30];                       // ROM 0x0806B914 (US)
+extern const ActorGfxRecord g_RoomSpongifyPadParticleGfx0;             // ROM 0x0806B934 (US)
+extern const ActorGfxRecord g_RoomSpongifyPadParticleGfx1;             // ROM 0x0806B93C (US)
