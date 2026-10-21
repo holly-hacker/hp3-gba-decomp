@@ -123,9 +123,9 @@ none of `GameModeFlagOverlayMode`, `GameModeFlagSwitchingMode`,
 `g_dwRoomChainRanThisFrame_candidate` is set to 1 by `RespawnGroupAndRunChain`
 (and `sub_08005D30`) around a room chain and cleared unconditionally at the end of
 this function every frame. `g_bRestoringRoomActors_candidate` is also set to 1 on entry to
-`RestoreRoomActorState` and cleared on exit. Its readers are the room actor constructor
-`sub_08044C00` (a room actor spawn-table entry) and its callbacks `sub_08044D24` and
-`sub_08044F54`, which take a different path while it is set.
+`RestoreRoomActorState` and cleared on exit. Its readers are the switch actor
+`SpawnSwitchActor`, `TickSwitchActor` and `HandleSwitchActorTouch`, which mute the flip
+sound while it is set.
 
 ## UNCONFIRMED
 

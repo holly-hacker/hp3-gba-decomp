@@ -659,6 +659,7 @@
 
 @ --- include/trigger_actor.h ---
 .set g_bRestoringRoomActors_candidate, 0x03005E18  @ u8: 1 while RestoreRoomActorState respawns actors; also set when the overworld pushes a pause menu
+.set g_nSwitchSoundHandle,       0x03005E1C  @ s32: handle of the switch actor sound
 
 @ --- include/video.h ---
 .set g_ScanlineEffectState,      0x03005E20  @ pending flag, active index, 19 live entries; see docs/memory-map/scanline_effects.md

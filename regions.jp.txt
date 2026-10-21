@@ -1922,9 +1922,9 @@ c-file 0x08044A08 _ src/torch_actor/handle_flame_pillar_touch.c HandleFlamePilla
 c-file 0x08044A2C _ src/train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
 c-file 0x08044AA8 _ src/train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file 0x08044B1C _ src/train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
-c-file 0x08044B2C 0x08044C50 src/trigger_actor/spawn_switch_actor.c SpawnSwitchActor
-thumb-func 0x08044C50 sub_08044D24
-thumb-func 0x08044E80 sub_08044F54
+c-file 0x08044B2C _ src/trigger_actor/spawn_switch_actor.c SpawnSwitchActor
+c-file 0x08044C50 _ src/trigger_actor/tick_switch_actor.c TickSwitchActor
+c-file 0x08044E80 _ src/trigger_actor/handle_switch_actor_touch.c HandleSwitchActorTouch
 c-file 0x08044FC0 _ src/video/init_scanline_effects.c InitScanlineEffects
 c-file 0x08045000 _ src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
 c-file 0x08045044 _ src/video/insert_scanline_effect_entry.c InsertScanlineEffectEntry

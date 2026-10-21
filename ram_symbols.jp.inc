@@ -632,6 +632,7 @@
 
 @ --- include/trigger_actor.h ---
 .set g_bRestoringRoomActors_candidate, 0x03005E68
+.set g_nSwitchSoundHandle,       0x03005E6C
 
 @ --- include/video.h ---
 .set g_ScanlineEffectState,      0x03005E70
