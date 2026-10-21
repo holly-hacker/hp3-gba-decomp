@@ -47,14 +47,13 @@ Data formats (each with its `data/` extraction pipeline, where one exists):
   is laid out in ROM, and its JSON/WAV source. Pipeline: `tools/krawall/`,
   `data/audio/`.
 - [`formats/room_graphics.md`](formats/room_graphics.md) — the 14 resources per
-  room (maps, blocks, collision, tilesets, palettes): ROM layout, tileset codec,
-  and how they are extracted and built. Tools: `tools/room_graphics/`.
-- [`formats/graphic_blob.md`](formats/graphic_blob.md) — the palette, tilemap
-  and tile-stream blob loaded by `LoadGraphicBlobTiles`; battle backgrounds use it.
-- [`formats/special_scene_frames.md`](formats/special_scene_frames.md) — the 128 raw
-  tile frames and animation tables of the special scene effect.
-- [`formats/fonts.md`](formats/fonts.md) — the ten 2 bpp text fonts, their
-  header and bitmap layout, and how they are selected.
+  room and their editable source. Tools: `tools/room_graphics/`.
+- [`formats/graphic_blob.md`](formats/graphic_blob.md) — what the graphic blobs
+  hold (battle and effect backgrounds, rain tiles) and their extraction.
+- [`formats/special_scene_frames.md`](formats/special_scene_frames.md) — the train
+  window scenery frames and how to view them.
+- [`formats/fonts.md`](formats/fonts.md) — the text fonts and their glyph
+  atlases.
 - [`formats/text.md`](formats/text.md) — the dialog string tables and how
   the charmap was derived. Pipeline: `tools/text/`, `data/text/`.
 

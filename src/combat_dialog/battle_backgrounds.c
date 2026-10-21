@@ -1,8 +1,7 @@
 #include "combat_dialog.h"
 #include "gen/graphics/battle.h"
 
-// Floor and wall graphic blobs of the battle background, indexed by g_bCurrentRoomId
-// (docs/formats/graphic_blob.md).
+// Floor and wall graphic blobs of the battle background, indexed by g_bCurrentRoomId.
 const BattleBackgroundPair g_aBattleBackgroundPairs[55] = {
     { (void *)gBattleFloor01, (void *)gBattleWall01 }, // 0: defense_against_the_dark_arts_classroom
     { (void *)gBattleFloor02, (void *)gBattleWall02 }, // 1: potions_classroom

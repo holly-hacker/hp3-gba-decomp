@@ -2,10 +2,10 @@
 
 #include "types.h"
 
-// Variable-width text renderer; see docs/formats/fonts.md.
+// Variable-width text renderer.
 
 // Font descriptor, filled from a font blob by LoadFontDescriptor (see
-// docs/formats/fonts.md). Widths are indexed by (glyphCode - firstCode).
+// tools/fonts/fonts.py). Widths are indexed by (glyphCode - firstCode).
 typedef struct {
     u8 height;
     u16 firstCode;

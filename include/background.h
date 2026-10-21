@@ -145,11 +145,10 @@ extern void SetTilemapRectPalette(u16 *pTilemap, u32 x, u32 y, s32 w, s32 h, u16
 extern void GetBgSizePixels(u32 bg, u16 *pWidth, u16 *pHeight);
 extern u16 GetTilemapCell(const u16 *pTilemap, u32 x, u32 y, u32 stride);
 
-// The colors of a graphic blob's embedded palette, after its two flag bytes
-// (see docs/formats/graphic_blob.md).
+// The colors of a graphic blob's embedded palette, after its two flag bytes.
 #define GRAPHIC_BLOB_PALETTE_COLORS(blob) ((const u16 *)((const u8 *)(blob) + 2))
 
-// Graphic loading; the blob layout is in docs/formats/graphic_blob.md. The tilemap result is
+// Graphic loading; the blob layout is in tools/graphic_blob/blobs.py. The tilemap result is
 // width, height, then the cells.
 extern const u16 *LoadBgGraphic(u32 bg, const u8 *pBlob, u16 tileOffset, u16 palBank, u32 x, u32 y);
 extern const u16 *LoadBgGraphicTiles(u32 bg, const u8 *pBlob, u16 tileOffset, u16 palBank);
