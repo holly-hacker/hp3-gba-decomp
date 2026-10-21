@@ -15,25 +15,12 @@ If changed need to be made to this file, it should be proposed to a human so the
 
 [![Code](https://decomp.dev/holly-hacker/hp3-gba-decomp/us.svg?mode=shield&measure=code&label=Code)](https://decomp.dev/holly-hacker/hp3-gba-decomp) [![Data](https://decomp.dev/holly-hacker/hp3-gba-decomp/us.svg?mode=shield&measure=data&label=Data)](https://decomp.dev/holly-hacker/hp3-gba-decomp)
 
-This repo holds a heavily AI-assisted decompilation of Harry Potter and the Prisoner of Azkaban for the Gameboy Advance.
-
-The goal of this project is to both explore automated reverse engineering, and to look into a game I've loved as a
-child. A very far-off stretch goal is to make a shiftable build allowing for modding, but this seems very unlikely and
-expensive. A more realistic goal is to extract assets and some of the code into a form that perfectly reproduces part of
-the ROM. Minor mods can be made by appending modified data to the end of the ROM.
+This repo holds an AI-assisted, matching decompilation of Harry Potter and the Prisoner of Azkaban for the Gameboy
+Advance.
 
 Note that while this project contains mostly AI-generated assets, this README is and will always be written by a human.
 All code under `src/` and `include/` is at the very least checked over by a human. Files under `doc/` and `tools/` will
 almost exclusively be AI-generated and not meant for human consumption.
-
-Rough list of current priorities:
-
-| Area                                                    | Reason                              |
-| ------------------------------------------------------- | ----------------------------------- |
-| Sources of RNG calls                                    | Improve RNG manipulation            |
-| Find differences between international and Japanese ROM | Completeness, find patched bugs     |
-| Improve understanding of save system                    | Completeness, entrypoint for ACE    |
-| Document room scripts                                   | Better understand quest progression |
 
 ## Setup
 
