@@ -1,7 +1,7 @@
 # Writing C
 
 The compiler and its flags are in [`compiler.md`](compiler.md). This is
-what to know before adding a `c-file` region.
+what to know before changing C.
 
 ## The pipeline
 
@@ -97,7 +97,7 @@ places each region's `.text` only. `compile_c.py` rewrites
 Shared constants and types belong in `include/`, so a wrong row count or
 struct layout is a compile error rather than a silently shifted table.
 
-## Iterating on a function that does not match
+## Finding a mismatch
 
 `just compare` reports a byte offset in a 16 MB image; `check_sections.py`
 catches only wrong size or address. To see what actually differs:
@@ -111,10 +111,3 @@ It disassembles the region from the donor ROM and from the build side by
 side, marking differing instructions. Mode comes from
 `functions.<ver>.cfg`, overridable with `--arm`/`--thumb`. For data
 regions read the hex column; the mnemonics are meaningless there.
-
-## Choosing what to convert
-
-Good first candidates are small, leaf (no calls out), free of
-data-symbol references, and already extracted to `asm/` so there is a
-byte-exact reference to diff against. ARM-mode code uses a `c-file-arm`
-row.

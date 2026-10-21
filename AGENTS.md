@@ -2,10 +2,9 @@
 
 Matching decompilation of *Harry Potter and the Prisoner of Azkaban* for the
 Game Boy Advance (Griptonite Games / EA, 2004). Both USA/Europe (`us`) and
-Japan (`jp`) have byte-identical builds. Active work is mapping ROM code and
-data, documenting their behavior, and decompiling individual functions to
-matching C. Asset extraction is also supported where formats are understood.
-Coverage differs between versions; verify each version independently.
+Japan (`jp`) have byte-identical builds from the C, assembly and asset
+sources in this repository. Asset extraction is supported where formats are
+understood. Verify each version independently.
 
 ## Hard rules
 
@@ -17,7 +16,7 @@ Coverage differs between versions; verify each version independently.
    reconstructed C tables follow the existing `src/` conventions.
 3. **Keep the matching toolchain fixed.** Compiler versions and flags are part
    of matching. Use the profiles in `tools/c/compile_c.py`; do not upgrade or
-   reflag the compiler to make a candidate compile or match.
+   reflag the compiler to make a change compile or match.
 4. **Verify ROM claims against bytes.** Confirm addresses, instruction mode,
    layouts, and semantics before encoding them as facts. Compute address,
    offset, size, and stride arithmetic with a calculator or script, never
@@ -31,7 +30,7 @@ Coverage differs between versions; verify each version independently.
 
 The user commits and pushes. Do not run `git commit` without explicit
 authorization for that specific commit. Never run `git push`. Commit messages
-should identify the function or region matched or symbolized; omit agent
+should identify the functions, regions or subsystem changed; omit agent
 session trailers and retain applicable `Co-Authored-By` attribution.
 
 The top-level `README.md` and `mdbook/` are human-maintained: propose
@@ -89,28 +88,24 @@ Verify function boundaries and ARM/Thumb interpretation against ROM bytes and
 `build/<ver>/full_disasm.s`. Failed discovery or search does not prove code is
 absent. If available, a Ghidra MCP can be used for additional verification.
 
-## Matching functions
+## C code
 
-Read `docs/compiler.md`, `docs/c.md`, and `.agents/skills/match-function/SKILL.md`
-before matching. `python3 -m tools.matching --help` lists the candidate
-workflow (`prepare`, `compile`, `compare`, `snapshot`, permuter). Work in
-isolated generated workspaces, then integrate a verified match into `src/` and
-its `c-file` manifest row, and confirm with the production ROM comparison.
-`just diff-region <name> <ver>` shows instruction differences in an integrated
-region.
+Read `docs/compiler.md` and `docs/c.md` before changing C, and confirm every
+change with the ROM comparison. `just diff-region <name> <ver>` shows
+instruction differences in a region.
 
 The compiler is GCC `2.9-arm-000512` (agbcc); game C is Thumb with
 interworking. ARM-mode C uses `agbcc_arm` via `c-file-arm` rows.
 
-Krawall is compiled with GCC 3.0.2 instead (`docs/compiler.md`). Match it
-by editing the public Krawall source (commit `9a2b869`) as little as the
+Krawall is compiled with GCC 3.0.2 instead (`docs/compiler.md`). Its source
+is the public Krawall source (commit `9a2b869`), edited as little as the
 ROM requires: keep its file layout, names, formatting and comments, mark
 each change with a `// HP3-GBA: <what differs>` comment, and note in the
 license header that the file was modified. The style rules below do not
 apply to it. See `docs/memory-map/krawall.md`.
 
-Match every decompiled function in both US and JP, in the same pass: apply
-the same rows and names to JP and verify the JP build.
+Apply every change to both US and JP in the same pass and verify both
+builds.
 
 Use C89 and existing types from `include/`. Raw pointers (casts of integer
 addresses) must never appear in C code; the only exception is
