@@ -17,8 +17,8 @@ byte-for-byte against the ROM implementations on real resources.
 for their actors, traced through a deferred per-frame queue to the
 vblank DMA that writes real hardware OBJ palette RAM. **PROVEN** that
 this palette mechanism is statically extractable at scale, not just
-one-at-a-time via live triggering: `tools/graphics/find_actor_palettes.py`
-found 14 real palettes (9 new) with zero gameplay. **PROVEN and
+one-at-a-time via live triggering: a static trace of `SpawnActor`'s call
+sites found 14 real palettes (9 new) with zero gameplay. **PROVEN and
 extracted end-to-end for one whole tile-data-consuming resource class**:
 every real item's icon (`ItemEntry.pPalette/pTileData/pFrameData`, see "Item
 icons" below) is now statically decoded, extracted to editable indexed
@@ -727,10 +727,8 @@ palette candidate, findable by walking each call site backward through
 its enclosing function for the last assignment to the argument
 register, without running the game at all.
 
-**`tools/graphics/find_actor_palettes.py`** (new): finds every `bl
-sub_08001528` in `build/us/full_disasm.s` (30 total), resolves each
-call's `resource_ptr` argument via backward literal-pool/register-copy
-tracing, and decodes+reports each resolved one's palette. Result:
+Tracing every `bl SpawnActor` (30 total) backward through literal pools
+and register copies to its `resource_ptr` argument gives:
 **14 of 30 resolved to real ROM addresses, all producing genuinely
 diverse palettes** (5-15 distinct colors out of 15, not degenerate
 single-color runs) when decoded as `ObjPalette` entries 1-15 -- including independently re-deriving the two

@@ -1,13 +1,9 @@
-#!/usr/bin/env python3
 """Decode a DecompressLzRle stream from a ROM address.
 
 The source address is exactly the codec's input pointer: for type-7
 resources it follows the four-byte resource header. See
 docs/formats/graphics.md, "The DecompressLzRle codec, decoded".
-
-Usage: decode_lz_rle.py <ver> <hex addr> (writes decoded bytes to stdout)
 """
-import sys
 
 ROM_BASE = 0x08000000
 
@@ -44,17 +40,3 @@ def decode_lz_rle(rom: bytes, src_addr: int) -> bytes:
         else:
             output.extend(rom[pos:pos + control])
             pos += control
-
-
-def main() -> None:
-    if len(sys.argv) != 3:
-        sys.exit(f"usage: {sys.argv[0]} <ver> <hex addr>")
-    ver, addr_s = sys.argv[1], sys.argv[2]
-    addr = int(addr_s, 16)
-    with open(f"baserom.{ver}.gba", "rb") as f:
-        rom = f.read()
-    sys.stdout.buffer.write(decode_lz_rle(rom, addr))
-
-
-if __name__ == "__main__":
-    main()

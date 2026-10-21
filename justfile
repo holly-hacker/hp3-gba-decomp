@@ -149,7 +149,7 @@ build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link
 # which instructions differ.
 # Disassemble one region side by side against the donor ROM.
 diff-region name ver="us": (build ver)
-    python3 -m tools.matching diff-region {{ver}} {{name}}
+    python3 tools/diff_region.py {{ver}} {{name}}
 
 # Build and check the result matches the donor ROM byte-for-byte.
 compare ver="us": (build ver)
@@ -174,9 +174,3 @@ check-sorted:
 dump-music-xm ver="us":
     mkdir -p extracted/{{ver}}/music_xm
     unkrawerter -k -x -o extracted/{{ver}}/music_xm baserom.{{ver}}.gba
-
-# Proposes candidates only -- see the script's docstring for how to confirm
-# one before trusting it (e.g. copying a name into functions.jp.cfg).
-# Find US<->JP thumb_func address correspondences by instruction shape.
-match-functions *args:
-    python3 -m tools.matching match-versions {{args}}

@@ -420,28 +420,10 @@ rows (`0x0804F410`-`0x0804FA88` US, `0x0804F33C`-`0x0804F9B4` JP) place
 the one source at each ROM's address, the same way `g_pMonsterDropTable`
 and the shop-stock tables work.
 
-- Two of the three US-named functions are matched into `functions.jp.cfg`
-  too: `InitMonsterBattleActor` (JP `0x08014C74`) and
-  `GetMonsterSpellEffectiveness` (JP `0x080188F8`), plus the JP
-  `MonsterTable` address itself (`0x0804F33C`, content byte-identical to
-  US). `python3 -m tools.matching match-versions`'s automated signature matching does
-  NOT find either function on its own -- its `bl`/`blx`-target masking
-  doesn't cover the plain `ldr =literal` absolute addresses these two
-  rely on heavily (the jump table pointer, the `MonsterTable` address
-  itself), so their signatures differ between versions even though the
-  code is identical. Both were instead confirmed by direct content
-  comparison: matching instruction shapes end-to-end, plus (for
-  `InitMonsterBattleActor`) the exact same struct-offset copy sequence
-  as the already-verified US version, and (for
-  `GetMonsterSpellEffectiveness`) the same case-handler struct offsets
-  (e.g. `+0xA` for Flipendo) after skipping past the jump table itself
-  (which capstone, lacking boundary info, decodes as garbage
-  instructions -- expected and harmless, same as gbadisasm would do
-  before a function is seeded). Match a candidate on its *interior* (the
-  field-copy sequence), not just its prologue: `0x08014F08` carries a
-  prologue identical to `InitMonsterBattleActor`'s while being an
-  unrelated function, and only the interior check separates it from the
-  real one at `0x08014C74`.
+- JP addresses: `InitMonsterBattleActor` `0x08014C74`,
+  `GetMonsterSpellEffectiveness` `0x080188F8`, and `MonsterTable`
+  `0x0804F33C` (content byte-identical to US). JP `0x08014F08` has the
+  same prologue as `InitMonsterBattleActor` but is an unrelated function.
 
 ## What's NOT yet known
 

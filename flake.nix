@@ -11,11 +11,11 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        # pillow: writes the extracted PNGs in tools/items/extract_item_icons.py.
+        # capstone: tools/diff_region.py.
         # numpy: collision maps (tools/collision) and GammaLz match search (tools/graphics).
+        # pillow: extracted and dumped PNGs.
         # pyyaml: the graphics group descriptions under graphics/ (tools/graphics).
-        # toml: decomp-permuter's settings/weights files below.
-        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.numpy ps.pillow ps.pyyaml ps.toml ]);
+        pythonEnv = pkgs.python3.withPackages (ps: [ ps.capstone ps.numpy ps.pillow ps.pyyaml ]);
 
         # pret's matching GBA disassembler. Pinned to the last upstream
         # commit (inactive since 2020-01). Two heap bugs in disasm.c crash
@@ -43,7 +43,7 @@
 
         # Krawall module/sample/instrument data extraction/export tool.
         # Used only for casual `.xm` listening exports
-        # (`just extract-music-xm`) and manual one-off `-m`/`-x` runs --
+        # (`just dump-music-xm`) and manual one-off `-m`/`-x` runs --
         # not for discovery (see tools/krawall/extract_krawall.py). A
         # heap-corrupting out-of-bounds write in its XM writer is patched
         # here -- see patches/unkrawerter/README.md.
@@ -65,36 +65,6 @@
           installPhase = ''
             mkdir -p $out/bin
             cp unkrawerter $out/bin/
-          '';
-        };
-
-        # Randomized/exhaustive AST-level rewriter that scores candidate C
-        # against a target .o via objdump diffing -- used to close small
-        # (few-instruction) gaps in an otherwise-matching function that
-        # resist hand fishing. Pure Python (pycparser is vendored in-repo
-        # as perm_pycparser), so this just wraps permuter.py/import.py with
-        # pythonEnv on PATH. Patched to accept ARM-mode objects' R_ARM_V4BX.
-        decompPermuter = pkgs.stdenv.mkDerivation {
-          pname = "decomp-permuter";
-          version = "unstable-2024-01-01";
-          src = pkgs.fetchFromGitHub {
-            owner = "simonlindholm";
-            repo = "decomp-permuter";
-            rev = "fb516c435c6f362fbced66e171545324306b607b";
-            hash = "sha256-xD7/9vizoALBpQR0l8ZVq8pVOOja1tq1+F1LhQgL45k=";
-          };
-          patches = [
-            ./patches/decomp-permuter/0001-ignore-arm-v4bx-relocations.patch
-          ];
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          dontBuild = true;
-          installPhase = ''
-            mkdir -p $out/share/decomp-permuter $out/bin
-            cp -r . $out/share/decomp-permuter
-            makeWrapper ${pythonEnv}/bin/python3 $out/bin/permuter.py \
-              --add-flags $out/share/decomp-permuter/permuter.py
-            makeWrapper ${pythonEnv}/bin/python3 $out/bin/import.py \
-              --add-flags $out/share/decomp-permuter/import.py
           '';
         };
 
@@ -190,7 +160,6 @@
             unkrawerter
             agbcc
             gccKrawall
-            decompPermuter
           ];
         };
       });

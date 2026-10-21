@@ -11,9 +11,8 @@ fields" sections for the verification behind each of these, including
 where it disagrees with the current public krawall repo's active (later
 revision) code paths.
 
-Also holds krawall_names.txt loading/resolution (module/sample naming),
-shared by tools/krawall/extract_krawall.py and tools/krawall/gen_krawall_regions.py so
-both agree on the same name for a given index.
+Also holds krawall_names.txt loading/resolution (module/sample naming)
+for tools/krawall/extract_krawall.py.
 """
 import re
 import sys

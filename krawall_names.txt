@@ -17,10 +17,8 @@
 # sample 12 PianoC4
 #
 # After editing this file, re-run `just extract-krawall` to rename the
-# corresponding data/audio/ files, then regenerate and splice the
-# affected rows into regions.<ver>.txt:
-#   python3 tools/krawall/gen_krawall_regions.py us
-#   python3 tools/krawall/gen_krawall_regions.py jp
+# corresponding data/audio/ files, then update the affected
+# krawall-module/krawall-samples rows in regions.us.txt and regions.jp.txt.
 # See docs/formats/krawall.md's Future work for current limitations
 # (renaming an already-custom-named entry again doesn't clean up the
 # previous name -- delete the stale file by hand).

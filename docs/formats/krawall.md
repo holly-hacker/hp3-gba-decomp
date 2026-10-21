@@ -355,9 +355,7 @@ it locally with `tools/krawall/extract_krawall.py` before building -- see below.
   are contiguous and immediately precede its header) and `krawall-samples
   <start> <end> <dir> <name>` (one row for the *entire* sample set --
   confirmed to be one contiguous run together with the pointer list, see
-  Confirmed stats). `tools/krawall/gen_krawall_regions.py <ver>` computes these
-  rows from the baserom and re-verifies both contiguity assumptions,
-  refusing to emit if a future baserom's layout doesn't match.
+  Confirmed stats).
 - `tools/krawall/pack_krawall.py <ver>` (the `pack-krawall` recipe, which `just
   build` depends on) reads `data/audio/` plus those manifest rows and
   writes real assembly -- not raw bytes -- to `build/<ver>/audio/...`
@@ -459,9 +457,9 @@ see `krawall_codec.py`'s `load_krawall_names`/`resolve_names`).
 `tools/krawall/extract_krawall.py` picks it up on re-run, using the custom
 name for the `.json`/`.wav` filenames and (for samples) the name patterns
 reference via `instrument`; it also deletes the default-named
-`Module<N>`/`Sample<N>` file(s) a prior run wrote.
-`tools/krawall/gen_krawall_regions.py` resolves module names the same way,
-so its output rows can be spliced into `regions.<ver>.txt` to match.
+`Module<N>`/`Sample<N>` file(s) a prior run wrote. The matching
+`krawall-module`/`krawall-samples` rows in `regions.<ver>.txt` are renamed
+by hand.
 
 Names must be valid assembler identifiers (letters/digits/underscore, not
 starting with a digit) since `pack_krawall.py` emits them as real labels.

@@ -89,10 +89,6 @@ Verify function boundaries and ARM/Thumb interpretation against ROM bytes and
 `build/<ver>/full_disasm.s`. Failed discovery or search does not prove code is
 absent. If available, a Ghidra MCP can be used for additional verification.
 
-`just match-functions --help` proposes US/JP function correspondences. Treat
-them as candidates and verify before transferring names or adding regions; do
-not assume a fixed offset between versions.
-
 ## Matching functions
 
 Read `docs/compiler.md`, `docs/c.md`, and `.agents/skills/match-function/SKILL.md`

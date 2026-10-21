@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Decode a GBA BIOS-compressed resource blob (LZ77UnComp, HuffUnComp, or
 RLUnComp) directly from a ROM address, matching the well-documented public
 BIOS compression formats (GBATEK) that the game's generic resource
@@ -19,14 +18,8 @@ resource so far. lz77_uncomp and huff_uncomp (types 1/2) are straight
 reimplementations of the public GBA BIOS spec, not speculative, but no
 resource found in this ROM has needed them yet -- treat them as
 unverified-in-practice until one does.
-
-Usage: decode_bios.py <ver> <hex addr>
-  <hex addr> is the ROM address of the resource's 4-byte BIOS header
-  (byte0 high nibble = type 1/2/3, low 3 bytes = decompressed size).
-Writes raw decoded bytes to stdout.
 """
 import struct
-import sys
 
 ROM_BASE = 0x08000000
 
@@ -140,18 +133,3 @@ def decode_bios(rom: bytes, addr: int) -> bytes:
     if decoder is None:
         raise ValueError(f"not a BIOS-compressed header (type nibble {type_nibble:#x} at {addr:#010x})")
     return decoder(rom, addr)
-
-
-def main() -> None:
-    if len(sys.argv) != 3:
-        sys.exit(f"usage: {sys.argv[0]} <ver> <hex addr>")
-    ver, addr_s = sys.argv[1], sys.argv[2]
-    addr = int(addr_s, 16)
-    with open(f"baserom.{ver}.gba", "rb") as f:
-        rom = f.read()
-    out = decode_bios(rom, addr)
-    sys.stdout.buffer.write(out)
-
-
-if __name__ == "__main__":
-    main()

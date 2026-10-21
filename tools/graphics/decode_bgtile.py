@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Decode one BG tile using its tileset's canonical Huffman table.
 
 The packed tile offset counts bits from the start of ROM. Each 32-bit
@@ -6,7 +5,6 @@ little-endian word supplies bits least-significant bit first. See
 docs/formats/graphics.md, "On-demand per-tile BG streaming".
 """
 import struct
-import sys
 
 ROM_BASE = 0x08000000
 
@@ -61,11 +59,3 @@ def build_tile_offsets(blob_base: int, offset_table_bytes: bytes, num_entries: i
             pos += 1
         val = (val + gap) & mask
     return offsets
-
-
-def main() -> None:
-    sys.exit("no standalone CLI -- see dump_bg_tiles.py")
-
-
-if __name__ == "__main__":
-    main()

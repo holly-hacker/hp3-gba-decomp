@@ -573,5 +573,3 @@ a slot's content past its checksum.
   confirmed so far only drives its own sound/graphic-swap effect
   (`0x0802DF3C`); whatever door/platform/gate a lever is meant to
   control elsewhere in the room isn't traced yet.
-- JP-side addresses are not yet matched from these US ones (see
-  `python3 -m tools.matching match-versions` / `just match-functions`).

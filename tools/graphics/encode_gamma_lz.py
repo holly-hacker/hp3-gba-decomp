@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Encode data as a DecompressGammaLz resource, byte-identical to the ROM.
 
 Token choices come from pucrunch_gammalz.py (Pucrunch 1.11's passes, LGPL);
@@ -13,12 +12,8 @@ decode_gamma_lz.py is the inverse.
   last word is zero-padded.
 - The resource is also encoded after u16 delta coding, and that version is
   kept when it is strictly shorter.
-
-Usage: encode_gamma_lz.py <ver> <hex addr> (re-encodes the ROM resource
-and reports whether it matches)
 """
 import struct
-import sys
 
 from pucrunch_gammalz import LITERAL, LZ77, RANKS, RLE, parse
 
@@ -144,21 +139,3 @@ def encode_gamma_lz_stream(data: bytes) -> bytes:
     """Return the stream without its outer header (flags and size), never
     delta coded: the form decode_gamma_lz.decode_gamma_lz_stream reads."""
     return _encode_once(bytes(data), False)[4:]
-
-
-def main() -> None:
-    if len(sys.argv) != 3:
-        sys.exit(f"usage: {sys.argv[0]} <ver> <hex addr>")
-    from decode_gamma_lz import ROM_BASE, decode_gamma_lz
-    ver, addr = sys.argv[1], int(sys.argv[2], 16)
-    with open(f"baserom.{ver}.gba", "rb") as f:
-        rom = f.read()
-    encoded = encode_gamma_lz(decode_gamma_lz(rom, addr))
-    start = addr - ROM_BASE
-    match = rom[start:start + len(encoded)] == encoded
-    print(f"{addr:#x}: {len(encoded)} bytes, {'match' if match else 'MISMATCH'}")
-    sys.exit(0 if match else 1)
-
-
-if __name__ == "__main__":
-    main()

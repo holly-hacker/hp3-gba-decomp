@@ -11,7 +11,8 @@ import sys
 
 import capstone
 
-from tools.manifest import parse_manifest  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from manifest import parse_manifest  # noqa: E402
 
 CONTEXT = 4
 

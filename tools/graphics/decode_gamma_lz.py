@@ -1,11 +1,8 @@
-#!/usr/bin/env python3
 """Decode a DecompressGammaLz resource from its outer-header address.
 
 See docs/formats/graphics.md, "The DecompressGammaLz codec, decoded".
-Usage: decode_gamma_lz.py <ver> <hex addr> (writes decoded bytes to stdout)
 """
 import struct
-import sys
 
 ROM_BASE = 0x08000000
 
@@ -129,17 +126,3 @@ def _apply_delta_pass(buf: bytes) -> bytes:
     for i in range(1, n):
         vals[i] = (vals[i] + vals[i - 1]) & 0xFFFF
     return struct.pack(f"<{n}H", *vals) + buf[n * 2:]
-
-
-def main() -> None:
-    if len(sys.argv) != 3:
-        sys.exit(f"usage: {sys.argv[0]} <ver> <hex addr>")
-    ver, addr_s = sys.argv[1], sys.argv[2]
-    addr = int(addr_s, 16)
-    with open(f"baserom.{ver}.gba", "rb") as f:
-        rom = f.read()
-    sys.stdout.buffer.write(decode_gamma_lz(rom, addr))
-
-
-if __name__ == "__main__":
-    main()

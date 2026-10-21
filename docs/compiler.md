@@ -132,8 +132,7 @@ merged candidate back under threshold. `DecompressDialogText`
 pending/pendingFlag update as `if (decodedByte > 0xef && !pendingFlag)
 {...} else if (pendingFlag) {...} else {...}` (matching real's exact
 fallthrough/branch-target layout, no `goto`) both push the hoist back below
-threshold. decomp-permuter is worth a run if manual restructuring doesn't
-converge -- a mutation that raises `n_times_set[regno]` for one side, or
+threshold. A change that raises `n_times_set[regno]` for one side, or
 changes `insn_count`, can also break the merge or its hoist.
 
 A separate quirk: at a block with two predecessors, GCC 2.9's `cse.c` can
