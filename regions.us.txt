@@ -1989,8 +1989,8 @@ c-file 0x0803FA7C _ src/serial/set_serial_wait_callback.c SetSerialWaitCallback
 c-file 0x0803FA88 _ src/serial/get_serial_player_count.c GetSerialPlayerCount
 c-file 0x0803FA94 _ src/serial/get_serial_player_id.c GetSerialPlayerId
 c-file 0x0803FAA4 _ src/serial/exchange_serial_frame.c ExchangeSerialFrame_candidate
-c-file 0x0803FB34 _ src/serial/sub_0803fb34.c sub_0803FB34
-c-file 0x0803FB40 _ src/serial/sub_0803fb40.c sub_0803FB40
+c-file 0x0803FB34 _ src/serial/set_serial_unused_value.c SetSerialUnusedValue
+c-file 0x0803FB40 _ src/serial/get_serial_unused_value.c GetSerialUnusedValue
 c-file 0x0803FB4C _ src/serial/set_serial_send_keys.c SetSerialSendKeys
 c-file 0x0803FB78 _ src/serial/is_serial_up.c IsSerialUp
 c-file 0x0803FBA0 _ src/serial/is_serial_frame_ready.c IsSerialFrameReady

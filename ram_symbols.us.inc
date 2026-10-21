@@ -588,7 +588,7 @@
 .set g_dwSerialUnk03005AAC, 0x03005AAC  @ u32: zeroed by InitSerial, no other access found
 .set g_dwSerialUnk03005AB0, 0x03005AB0  @ u32: zeroed by InitSerial, no other access found
 .set g_dwSerialConnectRetries, 0x03005AB4  @ u32: CountSerialConnectRetries call counter
-.set g_dwSerialUnk03005AB8, 0x03005AB8  @ u32: set by sub_0803FB34, returned by sub_0803FB40; neither has a caller
+.set g_dwSerialUnusedValue, 0x03005AB8  @ u32: set by SetSerialUnusedValue, returned by GetSerialUnusedValue; neither has a caller
 .set g_dwSerialUnk03005ABC, 0x03005ABC  @ u32: zeroed by InitSerial, no other access found
 
 @ --- include/sound.h ---

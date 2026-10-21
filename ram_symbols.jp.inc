@@ -581,7 +581,7 @@
 .set g_dwSerialUnk03005AAC, 0x03005B0C
 .set g_dwSerialUnk03005AB0, 0x03005B10
 .set g_dwSerialConnectRetries, 0x03005B14
-.set g_dwSerialUnk03005AB8, 0x03005B18
+.set g_dwSerialUnusedValue, 0x03005B18
 .set g_dwSerialUnk03005ABC, 0x03005B1C
 
 @ --- include/sound.h ---

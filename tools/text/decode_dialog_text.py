@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Decode a dialog/UI text string from the game's real string table --
-reimplemented directly from the disassembly of sub_08024DC8 (the Huffman-
-style bitstream decoder) and sub_08024EB8/sub_08042588 (table init and
-per-language dispatch).
+reimplemented directly from the disassembly of DecompressDialogText (the
+Huffman-style bitstream decoder) and InitDialogTextTable/SetLanguage
+(table init and per-language dispatch).
 
 Layout, all ROM addresses (US, not yet checked against JP):
   0x0806BD78: 8 x u32, one ROM pointer per language (order matches the

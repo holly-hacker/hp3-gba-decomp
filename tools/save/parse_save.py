@@ -232,9 +232,10 @@ class SaveReader:
 
 # SaveHeader offset 0xD (SaveManager_03005598.aHeader[0xd] in Ghidra) is a
 # bitmask, confirmed field-by-field against the minigame-select screen
-# (FUN_0802d1c8/FUN_0802d148/FUN_0802d08c) and against a real save going
+# (ShowMinigameLockedMessageIfNeeded/DrawMinigameSelectMenu/
+# HandleMinigameMenuSelection) and against a real save going
 # from the options menu's default to Gamma=High (bit 0x80 -- also read by
-# a menu-graphics selector, FUN_0800d1a4). File-level (part of SaveHeader,
+# InitGammaPalette). File-level (part of SaveHeader,
 # shared across all 3 save slots), unlike the per-slot abQuestEventState --
 # also confirmed against a real save where this went from 0x00 to 0x04
 # (bit 0x04) at the exact save unlocking the 2nd minigame ("Buckbeak's
@@ -354,10 +355,11 @@ def encode_header(h: dict) -> bytes:
 
 
 # SaveOptions holds minigame high scores (SaveManager+0x10, live RAM copy
-# at DAT_030055A8, synced to EEPROM by SyncSaveOptionsIfDirty). Confirmed
+# g_saveManager.options, synced to EEPROM by SyncSaveOptionsIfDirty). Confirmed
 # byte-exact against a real save: bytes 4-5 are Wizard Cracker Pop-it's
 # Medium-difficulty high score (0->1080 in the sample). The write code
-# (FUN_08032534, case 4/6) does `*(u32*)(&DAT_030055A8 + difficulty*4)`,
+# (UpdateWizardCrackerPopItMinigame) stores to
+# `aadwHighScores[HighScoreWizardCrackerPopIt][difficulty]`,
 # and the display/erase-check code (DrawDifficultySelectMenu) reads 3
 # consecutive u32s per minigame (`minigameIndex*0xC` outer stride) -- so
 # bytes 0-3/4-7/8-11 are very likely Wizard Cracker Pop-it's Easy/Medium/
@@ -576,7 +578,7 @@ def decode_party_member(r: SaveReader) -> dict:
     level = r.read_bytes(1)[0]
     # BattleFighter's known-spell count -- gates how many of the 10
     # aSpellCastLevel slots below the battle Cast Spell menu shows
-    # (FUN_08011bec iterates i in [0, bKnownSpellCount)).
+    # (ConfirmBattleTopMenu iterates i in [0, bKnownSpellCount)).
     known_spell_count = r.read_bytes(1)[0]
     spell_cast_level = list(r.read_bytes(10))
     spell_usage_progress = list(r.read_bytes(10))
@@ -869,7 +871,7 @@ def encode_room_actor_state(w: SaveWriter, state: dict):
 #
 # Field layout in the save stream: 4 nibbles (each nibble is the low
 # nibble of one RAM byte at 0x0300321C-0x0300321F), then 3 bytes, then 6
-# bytes, then 2 bytes, then 2 bytes -- matching FUN_08022EA8's pack-call
+# bytes, then 2 bytes, then 2 bytes -- matching SerializeOwlCareKit's pack-call
 # sequence exactly.
 # --------------------------------------------------------------------------
 
@@ -886,7 +888,7 @@ def decode_owl_care_kit(r: SaveReader) -> dict:
         # Set the first time the player confirms Owl Care Kit from the
         # Connectivity menu; while clear, the mode-0x29 init (re)resets
         # careCounters to 125 each instead of keeping their existing
-        # values -- PROVEN via FUN_08021C08/FUN_08023188.
+        # values -- PROVEN via InitializeOwlCareKitScreen/ResetOwlCareKit.
         "flVisited": bool(flags_nibble & 1),
         # Remaining 3 bits of the flags nibble -- no confirmed meaning.
         "bFlagsUnknown": flags_nibble >> 1,
@@ -901,7 +903,7 @@ def decode_owl_care_kit(r: SaveReader) -> dict:
         "nUnknown3": unk3,
         # The 3 on-screen status bars, labeled "Mind, Body and Spirit" in
         # the in-game help text (dialog string 0x915) and computed from
-        # careCounters below via a weighted average (FUN_080222F0).
+        # careCounters below via a weighted average (UpdateOwlStatMeters).
         # STRUCTURAL MATCH: the 3-meter identity and the derivation from
         # careCounters are proven; this index order (Mind/Body/Spirit)
         # matches the help text's listing order but isn't independently
@@ -910,20 +912,20 @@ def decode_owl_care_kit(r: SaveReader) -> dict:
         # One counter per care action, PROVEN index order via the menu
         # drawer and the switch dispatch both indexing off the same
         # cursor variable (DAT_03003F14): case 0=Feed .. 5=Teach, each
-        # calling FUN_08022284(index) to lower that action's counter.
+        # calling ProcessOwlCareAction(index) to lower that action's counter.
         # Regrows toward 0xFA (250) over time when neglected.
         "careCounters": dict(zip(
             (f"b{name}Counter" for name in OWL_CARE_ACTIONS), care_counters)),
         # Elapsed-tick counter driving careCounters' regrowth -- advances
         # once per care-screen tick while flVisited is set and
-        # wMailTimer is 0 (FUN_08021DF8).
+        # wMailTimer is 0 (ProcessOwlCareKitTick).
         "wElapsedTicks": elapsed_ticks,
         # The "Mail" action's (case 6, dialog string 0x66F) flight
         # countdown: set to 600 (~10s at 60fps) when the owl is sent off,
         # explicitly decremented once per tick, gates careCounters'
         # regrowth while nonzero. Matches the in-game help text ("sends
         # your owl off to fetch an item... check back in a few
-        # minutes") and the mail-return item grant (FUN_08021FE4,
+        # minutes") and the mail-return item grant (ProcessOwlMailReward,
         # GetDialogText 0xAC1 "The owl mail has arrived!").
         "wMailTimer": mail_timer,
     }

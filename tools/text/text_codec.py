@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Codec for the game's dialog/UI text string tables -- reimplemented
-directly from sub_08024DC8 (decode) and its blob layout
-(sub_08024EB8/sub_08042588).
+directly from DecompressDialogText (decode) and its blob
+layout (InitDialogTextTable/SetLanguage).
 
 Blob layout, per language, base address B (found via the 8-entry pointer
 table at ROM 0x0806BD78):
@@ -23,7 +23,7 @@ String count N is derived, not scanned: since the bitstream section
 starts immediately after the offset table with no gap, offset[0] ==
 header + 4*N, so N = (offset[0] - header) // 4. Verified against
 English (US, lang 0): gives exactly 2767, matching an 0xACF boundary
-constant seen near a real sub_08020FF8 call site in the disassembly.
+constant seen near a real PrintTextBox call site in the disassembly.
 
 Bit order: LSB-first within each byte (bit 0 first), refilling one byte
 at a time.

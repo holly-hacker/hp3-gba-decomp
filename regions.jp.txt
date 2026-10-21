@@ -1753,8 +1753,8 @@ c-file 0x0803FAE4 _ src/serial/set_serial_wait_callback.c SetSerialWaitCallback
 c-file 0x0803FAF0 _ src/serial/get_serial_player_count.c GetSerialPlayerCount
 c-file 0x0803FAFC _ src/serial/get_serial_player_id.c GetSerialPlayerId
 c-file 0x0803FB0C _ src/serial/exchange_serial_frame.c ExchangeSerialFrame_candidate
-c-file 0x0803FB9C _ src/serial/sub_0803fb34.c sub_0803FB34
-c-file 0x0803FBA8 _ src/serial/sub_0803fb40.c sub_0803FB40
+c-file 0x0803FB9C _ src/serial/set_serial_unused_value.c SetSerialUnusedValue
+c-file 0x0803FBA8 _ src/serial/get_serial_unused_value.c GetSerialUnusedValue
 c-file 0x0803FBB4 _ src/serial/set_serial_send_keys.c SetSerialSendKeys
 c-file 0x0803FBE0 _ src/serial/is_serial_up.c IsSerialUp
 c-file 0x0803FC08 _ src/serial/is_serial_frame_ready.c IsSerialFrameReady

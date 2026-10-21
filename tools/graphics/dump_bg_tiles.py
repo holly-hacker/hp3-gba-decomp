@@ -63,7 +63,7 @@ def decode_resource(rom: bytes, ver: str, hdr_addr: int) -> bytes:
     """Generic dispatcher-header decode: hdr_addr is the resource's own
     4-byte type/size header (DecompressResource's convention).
 
-    The dispatcher applies a delta-decode post-pass (sub_0801DF48,
+    The dispatcher applies a delta-decode post-pass (ApplyResourceDeltaPass,
     in-place running sum over the output as u16[]) whenever byte0 bit 7
     is set -- confirmed from DecompressResource's real disassembly to run
     unconditionally after every type (0-8), not just type 6. Type 6 gets
