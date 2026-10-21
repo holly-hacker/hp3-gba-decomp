@@ -3,7 +3,7 @@
 #include "npc_actor.h"
 
 // An NPC's walk animation for each Direction4 facing, in the same rows as
-// g_abRoomActorUnk6Frames (selected by g_adwRoomActorUnk6FrameRows).
+// g_abNpcFacingFrames (selected by g_adwNpcAnimRows).
 const u8 g_aaabNpcWalkAnims[12][4][30] = {
     {  // 0
         {

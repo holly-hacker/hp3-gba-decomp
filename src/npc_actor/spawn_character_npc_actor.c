@@ -33,7 +33,7 @@ Actor *SpawnCharacterNpcActor(u8 characterId)
     pActor->apfnCollisionCallback[1] = NULL;
     SetActorPendingPalette(pActor, g_aActorTypeAssets[pActor->bFighterIndex].pPalette);
     SetActorAssetRecord(pActor, &g_aActorTypeAssets[pActor->bFighterIndex]);
-    SetActorAnimFrame(pActor, g_abRoomActorUnk6Frames[g_adwRoomActorUnk6FrameRows[pActor->bFighterIndex]][pActor->bFacing]);
+    SetActorAnimFrame(pActor, g_abNpcFacingFrames[g_adwNpcAnimRows[pActor->bFighterIndex]][pActor->bFacing]);
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = 0x80;
     pActor->oam.hFlip = pActor->bFacing == Direction4Left;

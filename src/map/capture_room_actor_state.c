@@ -12,7 +12,7 @@
 void CaptureRoomActorState(void)
 {
     Actor *pActor;
-    RoomActorRecordUnk5 *pStatic;
+    RoomActorRecordProp *pStatic;
     RoomActorPickupRecord *pPickup;
     RoomActorFloorItemRecord *pFloorItem;
     RoomActorKind4Or7Record *pKind4Or7;

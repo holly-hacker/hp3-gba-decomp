@@ -6,7 +6,7 @@
 // off. See docs/formats/rooms.md.
 Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnkB *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
+    RoomActorRecordFlamePillar *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(RoomActorType_FlamePillar);
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);

@@ -4,7 +4,7 @@
 #include "actor.h"
 
 // The actorType 11 static tile record returned by GetRoomActorStaticRecord.
-typedef struct RoomActorRecordUnkB {
+typedef struct RoomActorRecordFlamePillar {
     u16 wActorType;
     u16 wUnk2;
     s16 nPixelX;
@@ -12,7 +12,7 @@ typedef struct RoomActorRecordUnkB {
     u16 wArg8;
     u16 wArgA;
     u8 abArgC[3];
-} RoomActorRecordUnkB;
+} RoomActorRecordFlamePillar;
 
 extern Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow);
 extern void TickFlamePillarActor(Actor *pActor);

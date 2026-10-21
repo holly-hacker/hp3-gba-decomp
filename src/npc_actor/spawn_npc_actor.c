@@ -6,7 +6,7 @@
 // bFighterIndex doubles as the kind index into the asset tables.
 Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk6 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
+    RoomActorRecordNpc *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(pRecord->dwActorType);
 
     SetActorPosition(pActor, pRecord->nPixelX, pRecord->nPixelY);
@@ -25,7 +25,7 @@ Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
     SetActorPendingPalette(pActor, g_aActorTypeAssets[pActor->bFighterIndex].pPalette);
     pActor->bFacing = pRecord->bFacing >> 1;
     SetActorAssetRecord(pActor, &g_aActorTypeAssets[pActor->bFighterIndex]);
-    SetActorAnimFrame(pActor, g_abRoomActorUnk6Frames[g_adwRoomActorUnk6FrameRows[pActor->bFighterIndex]][pActor->bFacing]);
+    SetActorAnimFrame(pActor, g_abNpcFacingFrames[g_adwNpcAnimRows[pActor->bFighterIndex]][pActor->bFacing]);
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = 0x80;
     pActor->nMoveSpeed = 0x10000;

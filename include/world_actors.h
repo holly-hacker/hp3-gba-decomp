@@ -5,7 +5,7 @@
 
 // Scripted trigger actor. bKind (0-82) selects the sprite, draw flags and
 // collision behavior; the remaining record bytes become Actor bytes 0x62-0x68.
-typedef struct RoomActorRecordUnk5 {
+typedef struct RoomActorRecordProp {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
@@ -19,7 +19,7 @@ typedef struct RoomActorRecordUnk5 {
     u8 b66;        // 0x12
     u8 pad_13;
     u8 b68;        // 0x14
-} RoomActorRecordUnk5;
+} RoomActorRecordProp;
 
 // Actor bytes 0x60-0x6A as written by the type 5 constructor.
 typedef struct RoomActorTriggerState {

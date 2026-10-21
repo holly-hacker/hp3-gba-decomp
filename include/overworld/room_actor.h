@@ -38,7 +38,7 @@ typedef struct RoomActorDoorRecord {
 } RoomActorDoorRecord;
 
 // Shared by types 4 and 7; differ only in where the fields sit in the record.
-typedef struct RoomActorRecordUnk4 {
+typedef struct RoomActorRecordTriggerZone {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
@@ -50,9 +50,9 @@ typedef struct RoomActorRecordUnk4 {
     u8 pad_E;
     u8 bRespawnGroup;   // 0x0F, RespawnGroupAndRunChain arguments run when it fires
     u8 bChain;          // 0x10
-} RoomActorRecordUnk4;
+} RoomActorRecordTriggerZone;
 
-typedef struct RoomActorRecordUnk7 {
+typedef struct RoomActorRecordTriggerRect {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
@@ -66,12 +66,12 @@ typedef struct RoomActorRecordUnk7 {
     u8 pad_10;
     u8 bRespawnGroup;   // 0x11, RespawnGroupAndRunChain arguments run when it fires
     u8 bChain;          // 0x12
-} RoomActorRecordUnk7;
+} RoomActorRecordTriggerRect;
 
-typedef struct RoomActorRecordUnk1 {
+typedef struct RoomActorRecordTileAnimation {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
     u8 bAnimId;     // 0x08
     u8 bFlag;       // 0x09, nonzero: ResumeRoomTileAnimation, zero: HaltRoomTileAnimation
-} RoomActorRecordUnk1;
+} RoomActorRecordTileAnimation;

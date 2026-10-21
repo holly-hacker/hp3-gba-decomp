@@ -8,7 +8,7 @@
 // re-arms after the delay, state 5 runs it and frees the zone.
 void TickTriggerZoneActor(Actor *pActor)
 {
-    RoomActorRecordUnk4 *pRecord;
+    RoomActorRecordTriggerZone *pRecord;
 
     switch (pActor->bActionState)
     {
@@ -32,8 +32,8 @@ void TickTriggerZoneActor(Actor *pActor)
     case 4:
         pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
         if (pActor->wActorType == 7)
-            RespawnGroupAndRunChain(((RoomActorRecordUnk7 *)pRecord)->bRespawnGroup,
-                                    ((RoomActorRecordUnk7 *)pRecord)->bChain);
+            RespawnGroupAndRunChain(((RoomActorRecordTriggerRect *)pRecord)->bRespawnGroup,
+                                    ((RoomActorRecordTriggerRect *)pRecord)->bChain);
         else
             RespawnGroupAndRunChain(pRecord->bRespawnGroup, pRecord->bChain);
         pActor->dwStateTimer = ROOM_ACTOR_WORD_STATE(pActor)->n60;
@@ -43,8 +43,8 @@ void TickTriggerZoneActor(Actor *pActor)
     case 5:
         pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
         if (pActor->wActorType == 7)
-            RespawnGroupAndRunChain(((RoomActorRecordUnk7 *)pRecord)->bRespawnGroup,
-                                    ((RoomActorRecordUnk7 *)pRecord)->bChain);
+            RespawnGroupAndRunChain(((RoomActorRecordTriggerRect *)pRecord)->bRespawnGroup,
+                                    ((RoomActorRecordTriggerRect *)pRecord)->bChain);
         else
             RespawnGroupAndRunChain(pRecord->bRespawnGroup, pRecord->bChain);
         SetActorActionState(pActor, 1);

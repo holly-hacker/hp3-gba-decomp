@@ -2,7 +2,7 @@
 #include "npc_actor.h"
 
 // An NPC's animation frame for each Direction4 facing.
-const u8 g_abRoomActorUnk6Frames[12][4] = {
+const u8 g_abNpcFacingFrames[12][4] = {
     { 4, 2, 0, 2 },
     { 2, 1, 0, 1 },
     { 4, 2, 0, 2 },

@@ -6,7 +6,7 @@
 // The chest, room actor type 9; see docs/formats/rooms.md.
 
 // Chest record. wFlagId is the chest's bit in g_abOpenedChestFlags.
-typedef struct RoomActorRecordUnk9 {
+typedef struct RoomActorRecordChest {
     u16 wActorType;
     u16 wUnk2;
     s16 nPixelX;
@@ -16,7 +16,7 @@ typedef struct RoomActorRecordUnk9 {
     u8 bRewardId;       // 0x0B, see rewards.h; above REWARD_ID_GOLD runs the pair instead
     u8 bChain;          // 0x0C
     u8 bRespawnGroup;   // 0x0D
-} RoomActorRecordUnk9;
+} RoomActorRecordChest;
 
 // One bit per chest flag id, set when that chest is opened. Saved with the game.
 extern u8 g_abOpenedChestFlags[32];

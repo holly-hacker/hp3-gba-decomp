@@ -8,7 +8,7 @@
 // See docs/formats/rooms.md.
 Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnkC *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
+    RoomActorRecordRaisingPlatform *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocActorOfType(RoomActorType_RaisingPlatform);
     u32 i;
 

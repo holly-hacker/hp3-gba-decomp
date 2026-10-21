@@ -7,7 +7,7 @@
 // pressure plate or lever). See docs/formats/rooms.md.
 Actor *SpawnSwitchActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordUnk3 *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
+    RoomActorRecordSwitch *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
     Actor *pActor = AllocDefaultActor();
 
     if (pActor != 0)

@@ -3,7 +3,7 @@
 #include "types.h"
 #include "actor.h"
 
-typedef struct RoomActorRecordUnk6 {
+typedef struct RoomActorRecordNpc {
     u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
@@ -18,7 +18,7 @@ typedef struct RoomActorRecordUnk6 {
             u8 bChainRow;
         } bytes;
     } argC;                 // 0x0C
-} RoomActorRecordUnk6;
+} RoomActorRecordNpc;
 
 extern Actor *SpawnNpcActor(u8 bColumn, u8 bRow);
 extern Actor *SpawnCharacterNpcActor(u8 characterId);
@@ -30,9 +30,9 @@ extern void TickShadowActor(Actor *pShadow);
 
 extern s32 g_nNpcPaletteEffectSlot;  // StartPaletteEffect handle of a script animation's flash
 
-extern const u32 g_adwRoomActorUnk6FrameRows[110];      // ROM 0x08066E44 (US)
+extern const u32 g_adwNpcAnimRows[110];                 // ROM 0x08066E44 (US)
 extern const ActorAssetRecord g_aActorTypeAssets[137];  // ROM 0x08066FFC (US), indexed by an actor kind
-extern const u8 g_abRoomActorUnk6Frames[12][4];         // ROM 0x0806788C (US)
+extern const u8 g_abNpcFacingFrames[12][4];             // ROM 0x0806788C (US)
 extern const u8 g_aaabNpcWalkAnims[12][4][30];          // ROM 0x080678BC (US)
 extern const u8 g_aabNpcScriptAnims[27][128];           // ROM 0x08067E5C (US)
 extern const u8 g_abCharacterNpcKinds[12];              // ROM 0x08068BDC (US)

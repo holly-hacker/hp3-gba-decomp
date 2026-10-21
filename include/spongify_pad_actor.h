@@ -9,7 +9,7 @@
 // target point; see docs/formats/rooms.md.
 
 // Static tile record of actorType 10, returned by GetRoomActorStaticRecord.
-typedef struct RoomActorRecordUnkA {
+typedef struct RoomActorRecordSpongifyPad {
     u16 wActorType;
     u16 wUnk2;
     s16 nPixelX;
@@ -18,7 +18,7 @@ typedef struct RoomActorRecordUnkA {
     s16 nArgA;
     u8 bVariant;  // 0x0C
     u8 abArgD[2];
-} RoomActorRecordUnkA;
+} RoomActorRecordSpongifyPad;
 
 // Actor bytes 0x60-0x6D as set by the constructor from the record arguments.
 typedef struct SpongifyPadState {

@@ -1,8 +1,8 @@
 #include "types.h"
 #include "npc_actor.h"
 
-// Row of g_abRoomActorUnk6Frames for each NPC kind.
-const u32 g_adwRoomActorUnk6FrameRows[110] = {
+// Row of g_abNpcFacingFrames for each NPC kind.
+const u32 g_adwNpcAnimRows[110] = {
     1, 2, 2, 4, 1, 0, 3, 3, 4, 4, 4, 4, 5, 2, 2, 2,
     4, 2, 1, 4, 2, 6, 2, 2, 2, 6, 2, 2, 2, 2, 2, 2,
     2, 7, 2, 2, 1, 8, 9, 2, 2, 2, 2, 2, 2, 2, 2, 2,

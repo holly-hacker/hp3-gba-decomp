@@ -2133,9 +2133,9 @@ c-file 0x08065FE8 _ src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg
 c-file 0x08066010 _ src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file 0x08066020 _ src/move/terrain_collision.globals.c g_abOppositeFacing
 c-file 0x08066060 _ src/move/field_spell_effects.globals.c g_aFieldSpellCastAssets
-c-file 0x08066DD0 _ src/npc_actor/spawn_npc_actor.globals.c g_adwRoomActorUnk6FrameRows
+c-file 0x08066DD0 _ src/npc_actor/spawn_npc_actor.globals.c g_adwNpcAnimRows
 c-file 0x08066F88 _ src/npc_actor/actor_type_assets.c g_aActorTypeAssets
-c-file 0x08067818 _ src/npc_actor/room_actor_unk6_frames.c g_abRoomActorUnk6Frames
+c-file 0x08067818 _ src/npc_actor/npc_facing_frames.c g_abNpcFacingFrames
 c-file 0x08067848 _ src/npc_actor/npc_walk_anims.c g_aaabNpcWalkAnims
 c-file 0x08067DE8 _ src/npc_actor/npc_script_anims.c g_aabNpcScriptAnims
 c-file 0x08068B68 _ src/npc_actor/character_npc_kinds.c g_abCharacterNpcKinds

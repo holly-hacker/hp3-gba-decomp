@@ -7,13 +7,13 @@
 // docs/formats/rooms.md.
 
 // Static tile record of actorType 12, returned by GetRoomActorStaticRecord.
-typedef struct RoomActorRecordUnkC {
+typedef struct RoomActorRecordRaisingPlatform {
     u16 wActorType;
     u16 wUnk2;
     s16 nPixelX;
     s16 nPixelY;
     u8 abArg8[3];
-} RoomActorRecordUnkC;
+} RoomActorRecordRaisingPlatform;
 
 extern Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow);
 extern void TickRaisingPlatformActor(Actor *pActor);

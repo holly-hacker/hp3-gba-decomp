@@ -9,7 +9,7 @@
 #include "npc_actor.h"
 
 // Standing frame of an eight-way NPC (kind 0x21) for each Direction8 facing,
-// in the rows of g_abRoomActorUnk6Frames.
+// in the rows of g_abNpcFacingFrames.
 const u8 g_abNpcFacingFrames8[12][8] = {
     { 4, 3, 2, 1, 0, 1, 2, 3 },
     { 2, 2, 1, 1, 0, 0, 1, 1 },
@@ -31,7 +31,7 @@ void TickNpcActor(Actor *pActor)
 {
     s8 facing = pActor->bFacing;
     u8 kind = pActor->bFighterIndex;
-    RoomActorRecordUnk6 *pRecord;
+    RoomActorRecordNpc *pRecord;
 
     if (g_GameModeStackContext.dwCurrentGameMode != Overworld
         && g_GameModeStackContext.dwCurrentGameMode != Dialog)
@@ -69,13 +69,13 @@ void TickNpcActor(Actor *pActor)
         if (kind == 0x21)
         {
             if (!(pActor->bFlags_0x94_candidate & 4))
-                SetActorAnimFrame(pActor, g_abRoomActorUnk6Frames[g_adwRoomActorUnk6FrameRows[pActor->bFighterIndex]][0]);
+                SetActorAnimFrame(pActor, g_abNpcFacingFrames[g_adwNpcAnimRows[pActor->bFighterIndex]][0]);
             pActor->oam.hFlip = facing > DirectionDown;
         }
         else if (kind != 0x5F)
         {
             if (!(pActor->bFlags_0x94_candidate & 4))
-                SetActorAnimFrame(pActor, g_abRoomActorUnk6Frames[g_adwRoomActorUnk6FrameRows[pActor->bFighterIndex]][facing]);
+                SetActorAnimFrame(pActor, g_abNpcFacingFrames[g_adwNpcAnimRows[pActor->bFighterIndex]][facing]);
             SetActorFlippedX(pActor, facing == Direction4Left);
         }
         break;
@@ -151,10 +151,10 @@ void TickNpcActor(Actor *pActor)
             {
                 if (kind == 0x21)
                     SetActorAnimData(pActor, &g_aActorTypeAssets[kind],
-                                     g_aaabNpcWalkAnims[g_adwRoomActorUnk6FrameRows[kind]][0], 0);
+                                     g_aaabNpcWalkAnims[g_adwNpcAnimRows[kind]][0], 0);
                 else if (kind != 0x5F)
                     SetActorAnimData(pActor, &g_aActorTypeAssets[kind],
-                                     g_aaabNpcWalkAnims[g_adwRoomActorUnk6FrameRows[kind]][facing], 0);
+                                     g_aaabNpcWalkAnims[g_adwNpcAnimRows[kind]][facing], 0);
             }
         }
         else if (pActor->bActionSubState == 10 || pActor->bActionSubState == 2
@@ -166,12 +166,12 @@ void TickNpcActor(Actor *pActor)
                 if (kind == 0x21)
                 {
                     SetActorAssetRecord(pActor, &g_aActorTypeAssets[kind]);
-                    SetActorAnimFrame(pActor, g_abNpcFacingFrames8[g_adwRoomActorUnk6FrameRows[kind]][facing]);
+                    SetActorAnimFrame(pActor, g_abNpcFacingFrames8[g_adwNpcAnimRows[kind]][facing]);
                 }
                 else if (kind != 0x5F)
                 {
                     SetActorAssetRecord(pActor, &g_aActorTypeAssets[kind]);
-                    SetActorAnimFrame(pActor, g_abRoomActorUnk6Frames[g_adwRoomActorUnk6FrameRows[kind]][facing]);
+                    SetActorAnimFrame(pActor, g_abNpcFacingFrames[g_adwNpcAnimRows[kind]][facing]);
                 }
             }
         }
