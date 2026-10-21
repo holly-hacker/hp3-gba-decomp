@@ -1464,14 +1464,14 @@ c-file 0x0803023C _ src/oam/hide_oam_entry.c HideOamEntry
 
 # Owl selection
 c-file 0x08030274 _ src/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
-c-file 0x0803031C 0x08030478 src/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
-thumb-func 0x08030478 sub_08030478
-c-file 0x08030568 0x08030594 src/owl_name_select/exit_owl_name_select.c ExitOwlNameSelect
-thumb-func 0x08030594 sub_08030594
-thumb-func 0x080305F0 sub_080305F0
-thumb-func 0x08030644 sub_08030644
-thumb-func 0x080306B8 sub_080306B8
-thumb-func 0x080306F0 sub_080306F0
+c-file 0x0803031C _ src/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
+c-file 0x08030478 _ src/owl_name_select/step_owl_name_select_choice.c StepOwlNameSelectChoice
+c-file 0x08030568 _ src/owl_name_select/exit_owl_name_select.c ExitOwlNameSelect
+c-file 0x08030594 _ src/owl_name_select/spawn_owl_name_select_actors.c SpawnOwlNameSelectActors
+c-file 0x080305F0 _ src/owl_name_select/draw_owl_name_select_heading.c DrawOwlNameSelectHeading
+c-file 0x08030644 _ src/owl_name_select/draw_owl_name_select_choice.c DrawOwlNameSelectChoice
+c-file 0x080306B8 _ src/owl_name_select/confirm_owl_name_select_page.c ConfirmOwlNameSelectPage
+c-file 0x080306F0 _ src/owl_name_select/cancel_owl_name_select_page.c CancelOwlNameSelectPage
 
 # Palette (OBJ palette bank cache)
 c-file 0x0803071C _ src/palette/bind_actor_pending_palette.c BindActorPendingPalette

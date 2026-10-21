@@ -1282,14 +1282,14 @@ c-file 0x0803022C _ src/oam/reset_affine_slots.c ResetAffineSlots
 c-file 0x08030250 _ src/oam/show_oam_entry.c ShowOamEntry
 c-file 0x08030280 _ src/oam/hide_oam_entry.c HideOamEntry
 c-file 0x080302B8 _ src/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
-c-file 0x08030360 0x080304BC src/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
-thumb-func 0x080304BC sub_08030478
-c-file 0x080305AC 0x080305D8 src/owl_name_select/exit_owl_name_select.c ExitOwlNameSelect
-thumb-func 0x080305D8 sub_08030594
-thumb-func 0x08030634 sub_080305F0
-thumb-func 0x08030688 sub_08030644
-thumb-func 0x080306FC sub_080306B8
-thumb-func 0x08030734 sub_080306F0
+c-file 0x08030360 _ src/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
+c-file 0x080304BC _ src/owl_name_select/step_owl_name_select_choice.c StepOwlNameSelectChoice
+c-file 0x080305AC _ src/owl_name_select/exit_owl_name_select.c ExitOwlNameSelect
+c-file 0x080305D8 _ src/owl_name_select/spawn_owl_name_select_actors.c SpawnOwlNameSelectActors
+c-file 0x08030634 _ src/owl_name_select/draw_owl_name_select_heading.c DrawOwlNameSelectHeading
+c-file 0x08030688 _ src/owl_name_select/draw_owl_name_select_choice.c DrawOwlNameSelectChoice
+c-file 0x080306FC _ src/owl_name_select/confirm_owl_name_select_page.c ConfirmOwlNameSelectPage
+c-file 0x08030734 _ src/owl_name_select/cancel_owl_name_select_page.c CancelOwlNameSelectPage
 c-file 0x08030760 _ src/palette/bind_actor_pending_palette.c BindActorPendingPalette
 c-file 0x080307D8 _ src/palette/alloc_obj_palette_slot.c AllocObjPaletteSlot
 c-file 0x08030868 _ src/palette/clear_obj_palette_slots.c ClearObjPaletteSlots

@@ -11,9 +11,10 @@ extern void InitializeOwlNameSelect(void);
 extern void UpdateOwlNameSelect(void);
 extern void ExitOwlNameSelect(void);
 
-extern void sub_08030478(void);  // Left/Right: changes the highlighted name or type
-extern void sub_08030594(void);  // creates the owl and arrow actors
-extern void sub_080305F0(void);  // draws the page heading
-extern void sub_08030644(void);  // draws the highlighted name or type
-extern void sub_080306B8(void);  // A: confirms the page
-extern void sub_080306F0(void);  // B: leaves the page
+extern void StepOwlNameSelectChoice(void);   // Left/Right: changes the highlighted name or type
+extern void SpawnOwlNameSelectActors(void);  // the two arrows and the owl, menu icon slots 0-2
+extern void DrawOwlNameSelectHeading(void);
+extern void DrawOwlNameSelectChoice(void);   // the highlighted name or type
+extern void ConfirmOwlNameSelectPage(void);  // A: the name page fades to the type page,
+                                             // the type page opens the care screen
+extern void CancelOwlNameSelectPage(void);   // B: leaves the page

@@ -32,11 +32,11 @@ void UpdateOwlNameSelect(void)
 
     case 2:
         if (g_wKeysPressed & KeyA)
-            sub_080306B8();
+            ConfirmOwlNameSelectPage();
         else if (g_wKeysPressed & KeyB)
-            sub_080306F0();
+            CancelOwlNameSelectPage();
         else if (g_wKeysPressed & (KeyRight | KeyLeft))
-            sub_08030478();
+            StepOwlNameSelectChoice();
         break;
 
     case 3:
@@ -49,8 +49,8 @@ void UpdateOwlNameSelect(void)
                 if (g_GameModeStackContext.dwModeState == 4)
                 {
                     g_GameModeStackContext.dwCurrentGameModeArg1 = 1;
-                    sub_080305F0();
-                    sub_08030644();
+                    DrawOwlNameSelectHeading();
+                    DrawOwlNameSelectChoice();
                     g_GameModeStackContext.dwModeState = 1;
                 }
                 else
@@ -72,8 +72,8 @@ void UpdateOwlNameSelect(void)
                 else
                 {
                     g_GameModeStackContext.dwCurrentGameModeArg1 = 0;
-                    sub_080305F0();
-                    sub_08030644();
+                    DrawOwlNameSelectHeading();
+                    DrawOwlNameSelectChoice();
                     g_GameModeStackContext.dwModeState = 1;
                 }
             }

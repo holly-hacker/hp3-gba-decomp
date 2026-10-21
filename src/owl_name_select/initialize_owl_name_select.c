@@ -31,8 +31,8 @@ void InitializeOwlNameSelect(void)
     SetBgScroll(3, 8, 0);
     ClearDispcntFlag(0x1000);
 
-    sub_08030594();
+    SpawnOwlNameSelectActors();
     SetTextTargetFromBgControl(bg2Control);
-    sub_080305F0();
-    sub_08030644();
+    DrawOwlNameSelectHeading();
+    DrawOwlNameSelectChoice();
 }
