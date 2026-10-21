@@ -13,8 +13,6 @@ If changed need to be made to this file, it should be proposed to a human so the
 
 # hp3-gba-decomp
 
-[![Code](https://decomp.dev/holly-hacker/hp3-gba-decomp/us.svg?mode=shield&measure=code&label=Code)](https://decomp.dev/holly-hacker/hp3-gba-decomp) [![Data](https://decomp.dev/holly-hacker/hp3-gba-decomp/us.svg?mode=shield&measure=data&label=Data)](https://decomp.dev/holly-hacker/hp3-gba-decomp)
-
 This repo holds an AI-assisted, matching decompilation of Harry Potter and the Prisoner of Azkaban for the Gameboy
 Advance.
 
