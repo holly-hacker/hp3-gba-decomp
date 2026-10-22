@@ -38,7 +38,7 @@ void InitBattleDisplay(void)
     memset(VRAM_BASE, 0, 0x18000);
 
     if (g_abQuestEventState[QUEST_ALT_PRESENTATION]
-        && g_bCurrentRoomId >= 8 && g_bCurrentRoomId <= 15)
+        && IS_HOGWARTS_GROUNDS_ROOM(g_bCurrentRoomId))
         pFloor = gBattleAltFloor;
     else
         pFloor = g_aBattleBackgroundPairs[g_bCurrentRoomId].pFloor;
@@ -59,7 +59,7 @@ void InitBattleDisplay(void)
     CopyMemory(g_pFightState->awPalette, pHud, 0x100);
 
     if (g_abQuestEventState[QUEST_ALT_PRESENTATION]
-        && g_bCurrentRoomId >= 8 && g_bCurrentRoomId <= 15)
+        && IS_HOGWARTS_GROUNDS_ROOM(g_bCurrentRoomId))
         pWall = gBattleAltWall;
     else
         pWall = g_aBattleBackgroundPairs[g_bCurrentRoomId].pWall;

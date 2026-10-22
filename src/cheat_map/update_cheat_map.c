@@ -61,6 +61,6 @@ void UpdateCheatMap(void)
     }
     else if (g_wKeysPressed & KeySelect)
     {
-        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x35);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomDiagonAlleyTestMap4);
     }
 }

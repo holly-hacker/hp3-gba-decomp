@@ -6,7 +6,7 @@
 #include "map.h"
 
 // Arg2 counts frames. After 0x85 frames, or on A/B/Select/Start, leaves for the
-// overworld: in room 0x28 by exit 6, elsewhere in the current room.
+// overworld: in RoomLeakyCauldronHallway by exit 6, elsewhere in the current room.
 void UpdateClockSkipCutscene(void)
 {
     g_GameModeStackContext.dwCurrentGameModeArg2++;
@@ -14,10 +14,10 @@ void UpdateClockSkipCutscene(void)
     if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0x85
         || (g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart)) != 0)
     {
-        if (g_bCurrentRoomId == 0x28)
+        if (g_bCurrentRoomId == RoomLeakyCauldronHallway)
         {
             g_abRoomScriptExitParams_candidate[0] = 0;
-            PushGameMode_2(Overworld, OverworldEntryEnterRoom, 6);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomHogwartsExpressPassengerCar);
             g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
         }
         else

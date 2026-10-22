@@ -72,7 +72,7 @@ void UpdateHarryPatronusCutscene(void)
         else
         {
             g_abRoomScriptExitParams_candidate[0] = 2;
-            PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x21);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomHospitalWing);
         }
         break;
     }

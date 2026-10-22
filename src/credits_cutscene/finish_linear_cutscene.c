@@ -12,7 +12,7 @@
 void FinishLinearCutscene(void)
 {
     if (g_GameModeStackContext.dwCurrentGameMode == Intro)
-        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x2A);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomLeakyCauldronMain);
     else if (g_GameModeStackContext.dwCurrentGameMode == HippogriffTookToAirCutscene)
         PushGameMode(Credits);
     else if (g_GameModeStackContext.dwCurrentGameMode == Credits)
@@ -24,10 +24,10 @@ void FinishLinearCutscene(void)
         g_saveStateBlock.bSaveFlags |= Unknown_0x04;
         PushGameMode_2(GameSave, 0, 0);
     }
-    else if (g_bCurrentRoomId == 5)
+    else if (g_bCurrentRoomId == RoomHogwartsExpressBaggageCar)
     {
         g_abRoomScriptExitParams_candidate[0] = 0;
-        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x10);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomEntranceHall);
         g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
     }
     else

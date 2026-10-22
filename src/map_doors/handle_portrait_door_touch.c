@@ -19,7 +19,7 @@ void HandlePortraitDoorTouch(Actor *pSelf, Actor *pOther)
     if (pOther->bActionSubState == 4)
         return;
 
-    if (g_GameModeStackContext.dwCurrentGameModeArg2 == 32)
+    if (g_GameModeStackContext.dwCurrentGameModeArg2 == RoomPortraitRoomPassage)
     {
         g_abRoomScriptExitParams_candidate[0] = g_dwPortraitPassageExitParam;
         PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_GameModeStackContext.dwCurrentGameModeArg3);
@@ -35,5 +35,6 @@ void HandlePortraitDoorTouch(Actor *pSelf, Actor *pOther)
         g_abRoomScriptExitParams_candidate[0] = 1;
     else
         g_abRoomScriptExitParams_candidate[0] = 0;
-    PushGameMode_3(Overworld, OverworldEntryEnterRoom, 32, pSelf->scriptState.wDoorDestinationRoom);
+    PushGameMode_3(Overworld, OverworldEntryEnterRoom, RoomPortraitRoomPassage,
+                   pSelf->scriptState.wDoorDestinationRoom);
 }

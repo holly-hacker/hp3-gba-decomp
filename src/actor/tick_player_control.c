@@ -17,7 +17,7 @@ void TickPlayerControl(Actor *actor)
     s8 direction;
     u8 facing;
 
-    if (g_bCurrentRoomId == 0x20)  // portrait room passage
+    if (g_bCurrentRoomId == RoomPortraitRoomPassage)
         return;
 
     if (actor->vel.x == 0 && actor->vel.y == 0)

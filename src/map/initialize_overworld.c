@@ -220,7 +220,8 @@ void InitializeOverworld(void)
             g_dwGameModeFlags &= ~GameModeFlagKeepScriptMusic;
         else if (g_abQuestEventState[QUEST_ALT_PRESENTATION] != 0)
             PlayMusicModule(g_adwRoomQuestMusicOverride[g_GameModeStackContext.dwCurrentGameModeArg2]);
-        else if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0xf && (u8)(g_abQuestEventState[QUEST_STORY_STAGE] - 2) < 2)
+        else if (g_GameModeStackContext.dwCurrentGameModeArg2 == RoomHogwartsGroundsWhompingWillow
+                 && (u8)(g_abQuestEventState[QUEST_STORY_STAGE] - 2) < 2)
             PlayMusicModule(0x12);
         else
             PlayMusicModule(CURRENT_ROOM.bDefaultMusicModule);
@@ -234,26 +235,27 @@ void InitializeOverworld(void)
         RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationA);
         RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationB);
 
-        // Per-room BG layer enables and priorities; room 12 and the default start color cycles.
+        // Per-room BG layer enables and priorities; RoomHagridsGardenMaze and the default start
+        // color cycles.
         g_dwRoomBgFlag_candidate = 0;
         switch (g_GameModeStackContext.dwCurrentGameModeArg2)
         {
-        case 1:
+        case RoomPotionsClassroom:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 0);
             SetBgPriority(2, 0);
             SetAlphaBlendTargets(4, 0x1f);
             break;
-        case 0x14:
-        case 0x29:
+        case RoomThirdFloor:
+        case RoomLeakyCauldronHarrysRoom:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             SetAlphaBlendTargets(4, 0x1f);
             break;
-        case 6:
+        case RoomHogwartsExpressPassengerCar:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
@@ -261,74 +263,74 @@ void InitializeOverworld(void)
             SetBgPriority(2, 0);
             SetAlphaBlendTargets(4, 0x1f);
             break;
-        case 0x16:
-        case 0x2d:
+        case RoomFifthFloor:
+        case RoomShriekingShackPath2:
             SetBgPriority(2, 0);
             break;
-        case 0xc:
+        case RoomHagridsGardenMaze:
             SetupColorCycles(&g_ColorCyclesRoom12);
             break;
-        case 0x13:
+        case RoomSecondFloor:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             break;
-        case 4:
+        case RoomTransfigurationClassroomMaze:
             SetBgPriority(2, 0);
             break;
-        case 3:
-            g_dwRoomBgFlag_candidate = 1;
-            EnableBg(0);
-            SetBgPriority(0, 1);
-            SetBgPriority(2, 0);
-            break;
-        case 0x1b:
+        case RoomTransfigurationClassroom:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             break;
-        case 0x20:
+        case RoomStaffRoom:
+            g_dwRoomBgFlag_candidate = 1;
+            EnableBg(0);
+            SetBgPriority(0, 1);
+            SetBgPriority(2, 0);
+            break;
+        case RoomPortraitRoomPassage:
             g_dwRoomBgFlag_candidate = 1;
             DisableBg(1);
             break;
-        case 0x18:
-        case 0x1f:
+        case RoomSeventhFloor:
+        case RoomPortraitRoom:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 0);
             break;
-        case 0x22:
-        case 0x23:
+        case RoomLibrary:
+        case RoomLibrary2:
             SetBgPriority(2, 0);
             break;
-        case 7:
-        case 0xb:
-        case 0x1d:
+        case RoomHogwartsExpressBuffetCar:
+        case RoomHagridsHut:
+        case RoomGryffindorCommonRoom:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             break;
-        case 5:
-            g_dwRoomBgFlag_candidate = 1;
-            EnableBg(0);
-            SetBgPriority(0, 1);
-            SetBgPriority(2, 0);
-            break;
-        case 0x2a:
+        case RoomHogwartsExpressBaggageCar:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             break;
-        case 0x1e:
+        case RoomLeakyCauldronMain:
+            g_dwRoomBgFlag_candidate = 1;
+            EnableBg(0);
+            SetBgPriority(0, 1);
+            SetBgPriority(2, 0);
+            break;
+        case RoomGrandStaircase:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryEnterRoom)
             {
-                if (prevRoomId == 0x15)
+                if (prevRoomId == RoomFourthFloor)
                 {
                     SetRoomSwitchState(1);
                     ApplyRoomSwitchEffect(1);
@@ -342,55 +344,55 @@ void InitializeOverworld(void)
             else
                 ApplyRoomSwitchEffect(GetRoomSwitchState());
             break;
-        case 0x10:
-        case 0x17:
+        case RoomEntranceHall:
+        case RoomSixthFloor:
             g_dwRoomBgFlag_candidate = 1;
             SetBgPriority(2, 0);
             EnableBg(0);
             SetBgPriority(0, 1);
             break;
-        case 0x11:
+        case RoomGreatHall:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 0);
             SetAlphaBlendTargets(5, 0x1f);
             SetAlphaBlendCoefficients(0xd, 7);
             break;
-        case 0x24:
+        case RoomFredAndGeorgesShop:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 2);
             SetBgPriority(2, 2);
             break;
-        case 0x26:
-        case 0x27:
+        case RoomLeakyCauldronCellar1:
+        case RoomLeakyCauldronCellar2:
             SetBgPriority(2, 0);
             break;
-        case 0x21:
+        case RoomHospitalWing:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             break;
-        case 2:
+        case RoomPotionsClassroomMaze:
             SetBgPriority(1, 0);
             SetBgPriority(2, 1);
             break;
-        case 0x25:
+        case RoomWizardCardCollectorsClub:
             g_dwRoomBgFlag_candidate = 1;
             EnableBg(0);
             SetBgPriority(0, 3);
             SetBgPriority(2, 0);
             break;
-        case 0x1c:
+        case RoomGryffindorBoysDormitory:
             SetBgPriority(1, 0);
             break;
-        case 0x19:
-        case 0x2c:
-        case 0x2e:
-        case 0x2f:
-        case 0x30:
-        case 0x31:
+        case RoomRooftop:
+        case RoomShriekingShackPath:
+        case RoomShriekingShackPath3:
+        case RoomShriekingShackPath4:
+        case RoomShriekingShackPath5:
+        case RoomShriekingShackPath6:
             break;
         default:
             SetupColorCycles(&g_ColorCyclesDefault);
@@ -411,7 +413,7 @@ void InitializeOverworld(void)
         }
 
         PlayScreenTransitionInByIndex(0x3f, 2);
-        if (g_bCurrentRoomId != 0x20)
+        if (g_bCurrentRoomId != RoomPortraitRoomPassage)
             ShowMapNamePopup();
 
         g_dwGameModeFlags &= ~GameModeFlagSwitchingMode;

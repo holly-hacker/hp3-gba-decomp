@@ -3,6 +3,7 @@
 #include "combat.h"
 #include "constants/spells.h"
 #include "video.h"
+#include "overworld/room.h"
 
 // ShowBattleMessage's code. Its value and param: SpecialMoveAnnounce and SpecialAbilityText
 // take the Special Move in value; AttackResult the damage (or, for param 2, the fainted
@@ -83,9 +84,9 @@ typedef struct {
     const void *pFloor;  // graphic blob, see docs/formats/graphic_blob.md
     const void *pWall;
 } BattleBackgroundPair;
-extern const BattleBackgroundPair g_aBattleBackgroundPairs[55];  // 0x0804E09C, indexed by g_bCurrentRoomId
+extern const BattleBackgroundPair g_aBattleBackgroundPairs[ROOM_COUNT];  // 0x0804E09C, indexed by g_bCurrentRoomId
 
-extern const u8 g_abBattleMusicByRoom[55];          // 0x0804E254, indexed by g_bCurrentRoomId
+extern const u8 g_abBattleMusicByRoom[ROOM_COUNT];  // 0x0804E254, indexed by g_bCurrentRoomId
 extern const u8 g_abBattleMusicByScriptedEncounter[15]; // 0x0804E28B, indexed by dwCurrentGameModeArg1 (scripted encounter id)
 
 extern const ActorAssetRecord g_MenuSprite003Asset_candidate;  // 0x0804E29C, no reader found

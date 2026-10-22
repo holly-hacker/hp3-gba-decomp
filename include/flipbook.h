@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "actor.h"
+#include "overworld/room.h"
 
 // One animated room tile, stepped by TickRoomTileAnimations.
 typedef struct RoomTileAnimation {
@@ -49,7 +50,7 @@ typedef ROOM_TILE_ANIM_FRAME(0) RoomTileAnimFrame;
 typedef ROOM_TILE_ANIM_SET(0) RoomTileAnimSet;
 
 // Indexed by RoomTileAnimation.bSet.
-extern const RoomTileAnimSet *const g_apRoomTileAnimSets[55];
+extern const RoomTileAnimSet *const g_apRoomTileAnimSets[ROOM_COUNT];
 
 extern void AddRoomTileAnimation(u8 bSet, s32 x, s32 y, u8 bFlags);
 extern void TickRoomTileAnimations(void);

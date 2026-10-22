@@ -8,48 +8,48 @@ void LoadRoomAltPresentationPalette(void)
 {
     switch (g_GameModeStackContext.dwCurrentGameModeArg2)
     {
-    case 41:
+    case RoomLeakyCauldronHarrysRoom:
         LoadEmbeddedPalette(gRoomAltPalette001Palette, 0, 16);
         break;
-    case 28:
+    case RoomGryffindorBoysDormitory:
         LoadEmbeddedPalette(gRoomAltPalette002Palette, 0, 16);
         break;
-    case 8:
-    case 9:
-    case 10:
-    case 13:
-    case 15:
+    case RoomHogwartsGroundsCastleDoors:
+    case RoomHogwartsGroundsBoathouse:
+    case RoomHogwartsGroundsGreenhouses:
+    case RoomHogwartsGroundsLake:
+    case RoomHogwartsGroundsWhompingWillow:
         LoadEmbeddedPalette(gRoomAltPalette003Palette, 0, 16);
         break;
-    case 11:
+    case RoomHagridsHut:
         LoadEmbeddedPalette(gRoomAltPalette004Palette, 0, 16);
         break;
-    case 5:
+    case RoomHogwartsExpressBaggageCar:
         LoadEmbeddedPalette(gRoomAltPalette005Palette, 0, 16);
         break;
-    case 7:
+    case RoomHogwartsExpressBuffetCar:
         LoadEmbeddedPalette(gRoomAltPalette006Palette, 0, 16);
         break;
-    case 6:
+    case RoomHogwartsExpressPassengerCar:
         LoadEmbeddedPalette(gTrainWindowNightPalette, 0, 16);
         break;
-    case 17:
+    case RoomGreatHall:
         LoadEmbeddedPalette(gRoomAltPalette007Palette, 0, 16);
         break;
-    case 24:
+    case RoomSeventhFloor:
         LoadEmbeddedPalette(gRoomAltPalette008Palette, 0, 16);
         break;
-    case 26:
+    case RoomLupinsOffice:
         LoadEmbeddedPalette(gRoomAltPalette009Palette, 0, 16);
         break;
-    case 30:
+    case RoomGrandStaircase:
         LoadEmbeddedPalette(gRoomAltPalette010Palette, 0, 16);
         break;
-    case 34:
-    case 35:
+    case RoomLibrary:
+    case RoomLibrary2:
         LoadEmbeddedPalette(gRoomAltPalette011Palette, 0, 16);
         break;
-    case 36:
+    case RoomFredAndGeorgesShop:
         LoadEmbeddedPalette(gRoomAltPalette012Palette, 0, 16);
         break;
     }

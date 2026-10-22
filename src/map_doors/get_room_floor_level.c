@@ -1,5 +1,6 @@
 #include "types.h"
 #include "map_doors.h"
+#include "overworld/room.h"
 
 // Ranks a room by castle floor, for HandlePortraitDoorTouch to pick the
 // direction of the portrait passage walk. second_floor (19) to seventh_floor
@@ -8,9 +9,9 @@
 // below them.
 s32 GetRoomFloorLevel(s32 roomId)
 {
-    if (roomId == 31 || roomId == 16 || roomId == 17)
+    if (roomId == RoomPortraitRoom || roomId == RoomEntranceHall || roomId == RoomGreatHall)
         return 18;
-    if (roomId == 18)
+    if (roomId == RoomHogwartsDungeons)
         return 17;
     return roomId;
 }

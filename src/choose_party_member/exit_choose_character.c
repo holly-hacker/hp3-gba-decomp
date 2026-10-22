@@ -31,6 +31,6 @@ void ExitChooseCharacter(void)
 
     ReserveObjPaletteSlot(1);
     ReserveObjPaletteSlot(2);
-    if (g_bCurrentRoomId == 1)
+    if (g_bCurrentRoomId == RoomPotionsClassroom)
         SetAlphaBlendTargets(4, 0x1F);
 }

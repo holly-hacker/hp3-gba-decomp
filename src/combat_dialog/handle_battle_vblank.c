@@ -41,7 +41,7 @@ void HandleBattleVBlank(void)
     UploadPaletteShadows();
 
     if (g_abQuestEventState[QUEST_ALT_PRESENTATION]
-        && g_bCurrentRoomId >= 8 && g_bCurrentRoomId <= 15)
+        && IS_HOGWARTS_GROUNDS_ROOM(g_bCurrentRoomId))
         pWall = gBattleAltWall;
     else
         pWall = g_aBattleBackgroundPairs[g_bCurrentRoomId].pWall;

@@ -2,7 +2,7 @@
 #include "map.h"
 
 // Music module per room while QUEST_ALT_PRESENTATION is set.
-const u32 g_adwRoomQuestMusicOverride[55] = {
+const u32 g_adwRoomQuestMusicOverride[ROOM_COUNT] = {
     13,  // 0: defense_against_the_dark_arts_classroom
     13,  // 1: potions_classroom
     19,  // 2: potions_classroom_maze

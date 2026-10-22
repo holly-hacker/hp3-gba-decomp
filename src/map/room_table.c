@@ -5,7 +5,7 @@
 
 // One entry per room id. Each room's resources are the Room<NN>... symbols of its
 // graphics region (data/room_graphics/) and blob region (asm/room/blobs/).
-const RoomTableEntry g_aRoomTable[55] = {
+const RoomTableEntry g_aRoomTable[ROOM_COUNT] = {
     // 0 defense_against_the_dark_arts_classroom
     {
         .pBgTilemap0 = gRoom00BgMap0,

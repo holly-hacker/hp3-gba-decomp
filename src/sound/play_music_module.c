@@ -12,7 +12,7 @@ void PlayMusicModule(u8 moduleId)
     {
         krapPlay(g_apMusicModules[moduleId], KRAP_MODE_LOOP, 0);
         // Identical arms: the ROM keeps the room id read but not the tested value.
-        if (g_bCurrentRoomId == 0)
+        if (g_bCurrentRoomId == RoomDefenseAgainstTheDarkArtsClassroom)
             SetUnreadAudioValue(8);
         else
             SetUnreadAudioValue(8);

@@ -18,7 +18,7 @@ void UpdateHarryHermionePortInTimeCutscene(void)
     if ((g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart)) != 0)
     {
         g_abRoomScriptExitParams_candidate[0] = 0;
-        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0xE);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomPathToHagridsHut);
     }
 
     if (g_HarryHermionePortInTime.bRising != 0)
@@ -54,7 +54,7 @@ void UpdateHarryHermionePortInTimeCutscene(void)
             if (g_GameModeStackContext.dwCurrentGameModeArg2 > 0x1E)
             {
                 g_abRoomScriptExitParams_candidate[0] = 0;
-                PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0xE);
+                PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomPathToHagridsHut);
             }
         }
         fade = (g_HarryHermionePortInTime.cameraDelta.y * 3) >> 16;

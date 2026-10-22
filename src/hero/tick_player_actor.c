@@ -25,7 +25,7 @@ void TickPlayerActor(Actor *actor)
         && !(g_dwGameModeFlags & GameModeFlagScreenTransitionOut)
         && g_GameModeStackContext.dwCurrentGameMode == Overworld
         && !(actor->dwFlags & ActorFlagAnimPaused)
-        && g_bCurrentRoomId != 0x20)  // portrait room passage
+        && g_bCurrentRoomId != RoomPortraitRoomPassage)
     {
         if (g_pFieldSpellIconActor == NULL)
             SpawnFieldSpellIconActor();

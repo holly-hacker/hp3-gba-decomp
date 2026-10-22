@@ -1708,7 +1708,7 @@ const ROOM_TILE_ANIM_SET(7) g_RoomTileAnim54 = {
     },
 };
 
-const RoomTileAnimSet *const g_apRoomTileAnimSets[55] = {
+const RoomTileAnimSet *const g_apRoomTileAnimSets[ROOM_COUNT] = {
     (const RoomTileAnimSet *)&g_RoomTileAnim0,
     (const RoomTileAnimSet *)&g_RoomTileAnim1,
     (const RoomTileAnimSet *)&g_RoomTileAnim2,

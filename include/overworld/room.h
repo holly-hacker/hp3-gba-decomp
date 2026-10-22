@@ -4,7 +4,73 @@
 #include "actor.h"
 #include "scroll.h"
 
-// One 124-byte record per room, indexed by room id; 55 entries. The pointers
+// Room ids: g_bCurrentRoomId, the Overworld mode's dwCurrentGameModeArg2 and the
+// g_aRoomTable index.
+typedef enum {
+    RoomDefenseAgainstTheDarkArtsClassroom = 0,
+    RoomPotionsClassroom                   = 1,
+    RoomPotionsClassroomMaze               = 2,
+    RoomTransfigurationClassroom           = 3,
+    RoomTransfigurationClassroomMaze       = 4,
+    RoomHogwartsExpressBaggageCar          = 5,
+    RoomHogwartsExpressPassengerCar        = 6,
+    RoomHogwartsExpressBuffetCar           = 7,
+    RoomHogwartsGroundsCastleDoors         = 8,
+    RoomHogwartsGroundsBoathouse           = 9,
+    RoomHogwartsGroundsGreenhouses         = 10,
+    RoomHagridsHut                         = 11,
+    RoomHagridsGardenMaze                  = 12,
+    RoomHogwartsGroundsLake                = 13,
+    RoomPathToHagridsHut                   = 14,
+    RoomHogwartsGroundsWhompingWillow      = 15,
+    RoomEntranceHall                       = 16,
+    RoomGreatHall                          = 17,
+    RoomHogwartsDungeons                   = 18,
+    RoomSecondFloor                        = 19,
+    RoomThirdFloor                         = 20,
+    RoomFourthFloor                        = 21,
+    RoomFifthFloor                         = 22,
+    RoomSixthFloor                         = 23,
+    RoomSeventhFloor                       = 24,
+    RoomRooftop                            = 25,
+    RoomLupinsOffice                       = 26,
+    RoomStaffRoom                          = 27,
+    RoomGryffindorBoysDormitory            = 28,
+    RoomGryffindorCommonRoom               = 29,
+    RoomGrandStaircase                     = 30,
+    RoomPortraitRoom                       = 31,
+    RoomPortraitRoomPassage                = 32,
+    RoomHospitalWing                       = 33,
+    RoomLibrary                            = 34,
+    RoomLibrary2                           = 35,
+    RoomFredAndGeorgesShop                 = 36,
+    RoomWizardCardCollectorsClub           = 37,
+    RoomLeakyCauldronCellar1               = 38,
+    RoomLeakyCauldronCellar2               = 39,
+    RoomLeakyCauldronHallway               = 40,
+    RoomLeakyCauldronHarrysRoom            = 41,
+    RoomLeakyCauldronMain                  = 42,
+    RoomShriekingShackInterior             = 43,
+    RoomShriekingShackPath                 = 44,
+    RoomShriekingShackPath2                = 45,
+    RoomShriekingShackPath3                = 46,
+    RoomShriekingShackPath4                = 47,
+    RoomShriekingShackPath5                = 48,
+    RoomShriekingShackPath6                = 49,
+    RoomDiagonAlleyTestMap1                = 50,
+    RoomDiagonAlleyTestMap2                = 51,
+    RoomDiagonAlleyTestMap3                = 52,
+    RoomDiagonAlleyTestMap4                = 53,
+    RoomDiagonAlleyTestMap5                = 54,
+    ROOM_COUNT                             = 55,
+} RoomId;
+
+// Rooms 8-15: the Hogwarts grounds, including Hagrid's hut, his garden maze and the path to the hut.
+// Unparenthesized to match GetBattleFloorGraphic and GetBattleWallGraphic: use only as an && term.
+#define IS_HOGWARTS_GROUNDS_ROOM(id) \
+    (id) >= RoomHogwartsGroundsCastleDoors && (id) <= RoomHogwartsGroundsWhompingWillow
+
+// One 124-byte record per room, indexed by room id; ROOM_COUNT entries. The pointers
 // reference ROM resources.
 typedef struct RoomTableEntry {
     const void *pBgTilemap0;

@@ -38,18 +38,18 @@ void HandleDoorTouch(Actor *pSelf, Actor *pOther)
     // Grand staircase (30): a door to the second (19) or fourth floor (21)
     // leads to whichever the room switch state selects. Its exit params are
     // rewritten to match, for the next touch.
-    if (g_bCurrentRoomId == 30
-        && (pSelf->scriptState.wDoorDestinationRoom == 19
-            || pSelf->scriptState.wDoorDestinationRoom == 21))
+    if (g_bCurrentRoomId == RoomGrandStaircase
+        && (pSelf->scriptState.wDoorDestinationRoom == RoomSecondFloor
+            || pSelf->scriptState.wDoorDestinationRoom == RoomFourthFloor))
     {
         if (GetRoomSwitchState())
         {
-            pSelf->scriptState.wDoorDestinationRoom = 21;
+            pSelf->scriptState.wDoorDestinationRoom = RoomFourthFloor;
             exitParam = 2;
         }
         else
         {
-            pSelf->scriptState.wDoorDestinationRoom = 19;
+            pSelf->scriptState.wDoorDestinationRoom = RoomSecondFloor;
             exitParam = 1;
         }
         for (j = 0; j < 2; j++)

@@ -9,7 +9,7 @@
 const u8 *GetBattleFloorGraphic(void)
 {
     if (g_abQuestEventState[QUEST_ALT_PRESENTATION]
-        && g_bCurrentRoomId >= 8 && g_bCurrentRoomId <= 15)
+        && IS_HOGWARTS_GROUNDS_ROOM(g_bCurrentRoomId))
         return gBattleAltFloor;
 
     return g_aBattleBackgroundPairs[g_bCurrentRoomId].pFloor;

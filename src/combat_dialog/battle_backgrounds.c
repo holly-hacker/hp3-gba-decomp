@@ -2,7 +2,7 @@
 #include "gen/graphics/battle.h"
 
 // Floor and wall graphic blobs of the battle background, indexed by g_bCurrentRoomId.
-const BattleBackgroundPair g_aBattleBackgroundPairs[55] = {
+const BattleBackgroundPair g_aBattleBackgroundPairs[ROOM_COUNT] = {
     { (void *)gBattleFloor01, (void *)gBattleWall01 }, // 0: defense_against_the_dark_arts_classroom
     { (void *)gBattleFloor02, (void *)gBattleWall02 }, // 1: potions_classroom
     { (void *)gBattleFloor03, (void *)gBattleWall03 }, // 2: potions_classroom_maze

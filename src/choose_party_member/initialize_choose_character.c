@@ -19,7 +19,7 @@ void InitializeChooseCharacter(void)
     s32 stageRow;
     s32 bgRow;
 
-    if (g_bCurrentRoomId == 1)
+    if (g_bCurrentRoomId == RoomPotionsClassroom)
         SetAlphaBlendTargets(0, 0);
 
     bios_CPUSet(BG_PLTT, g_awSavedBgPalette0, 0x10);

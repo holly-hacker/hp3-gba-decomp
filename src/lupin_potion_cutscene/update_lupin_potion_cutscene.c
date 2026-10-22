@@ -87,7 +87,7 @@ void UpdateLupinPotionCutscene(void)
         break;
     case 4:
         g_abRoomScriptExitParams_candidate[0] = 2;
-        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0xD);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomHogwartsGroundsLake);
         break;
     }
 

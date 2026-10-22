@@ -119,11 +119,11 @@ extern const BgTileAnimation128 g_aSpecialSceneBg2;  // 0x08063074
 extern const BgTileAnimation128 g_aSpecialSceneBg0;  // 0x0806347C
 extern const BgTileAnimation128 g_aSpecialSceneBg1;  // 0x08063884
 
-extern const RoomTableEntry g_aRoomTable[55];  // ROM 0x08063C8C
+extern const RoomTableEntry g_aRoomTable[ROOM_COUNT];  // ROM 0x08063C8C
 
 // Krawall module id per room, read as a byte at [room * 4]; used instead of
 // bDefaultMusicModule while quest event state 0x1A is set.
-extern const u32 g_adwRoomQuestMusicOverride[55];
+extern const u32 g_adwRoomQuestMusicOverride[ROOM_COUNT];
 
 extern const ColorCycleTable g_ColorCyclesDefault;
 extern const ColorCycleTable g_ColorCyclesRoom12;
