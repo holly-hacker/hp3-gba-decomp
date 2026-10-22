@@ -15,8 +15,9 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addRevivedAlly)
     u8 count;
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
-        g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->dwFlags |= 0x82;
-        g_pFightState->apTurnOrderIconActors[i]->dwFlags |= 0x82;
+        g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->dwFlags
+            |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        g_pFightState->apTurnOrderIconActors[i]->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         g_pFightState->apTurnOrderIconActors[i] = 0;
     }
 

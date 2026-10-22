@@ -131,9 +131,9 @@ void TickBattleTurnStateMachine(void)
                 DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
 
                 if (rollResult == 3)
-                    ShowBattleMessage(0xe, 0, 0);
+                    ShowBattleMessage(CanMoveAgain, 0, 0);
                 else
-                    ShowBattleMessage(0xd, 0, 0);
+                    ShowBattleMessage(CantMove, 0, 0);
 
                 TransitionBattleState(5);
             } else {
@@ -160,14 +160,14 @@ void TickBattleTurnStateMachine(void)
                 g_pFightState->bBattleState = 1;
 
                 if (rollResult == 3)
-                    ShowBattleMessage(0xe, 0, 0);
+                    ShowBattleMessage(CanMoveAgain, 0, 0);
                 else
-                    ShowBattleMessage(0xd, 0, 0);
+                    ShowBattleMessage(CantMove, 0, 0);
 
                 TransitionBattleState(5);
                 break;
             }
-            ShowBattleMessage(4, 0, 0);
+            ShowBattleMessage(ActionAnnounce, 0, 0);
             SetActorActionState(ACTIVE_FIGHTER.pActor, 0x1a);
             ACTIVE_FIGHTER.pActor->bActionFlags = 0x21;
             TransitionBattleState(0);

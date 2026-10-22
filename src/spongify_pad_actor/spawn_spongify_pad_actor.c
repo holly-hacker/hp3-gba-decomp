@@ -12,7 +12,8 @@ Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow)
     u32 i;
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
-    pActor->dwFlags = 0x200D;
+    pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasTickLogic
+                      | ActorFlagUnk2000;
     SetActorActionState(pActor, 0);
     SetActorActionSubState(pActor, 1);
     pActor->anim.bAnimFrameDelay = 1;

@@ -19,8 +19,8 @@ void HandleOwlCareKitScreenTick(void)
         StepOwlCareKitSelection();
     }
 
-    ProcessOwlCareKitTick(g_OwlCareKitScreen.pOwl->bActionState <= 4);
-    ProcessOwlCareKitTick(g_OwlCareKitScreen.pOwl->bActionState <= 4);
+    ProcessOwlCareKitTick(g_OwlCareKitScreen.pOwl->bActionState <= OwlStateIdleAnim4);
+    ProcessOwlCareKitTick(g_OwlCareKitScreen.pOwl->bActionState <= OwlStateIdleAnim4);
     UpdateOwlCareKitPanel();
     UpdateOwlDroppings();
     TickOwlCareKitBackground();

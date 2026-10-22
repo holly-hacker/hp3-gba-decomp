@@ -23,8 +23,9 @@ void RoomScriptOpDespawnRoomRowActors(DespawnRoomRowActorsRecord *pRecord)
             if (pActor != NULL)
             {
                 if (pActor->pLinkedActor_candidate != NULL)
-                    pActor->pLinkedActor_candidate->dwFlags |= 0x82;
-                pActor->dwFlags |= 0x82;
+                    pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy
+                                                               | ActorFlagAnimFrameLoaded;
+                pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             }
         }
     }

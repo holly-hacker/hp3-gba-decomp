@@ -12,7 +12,9 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
     u32 kind;
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
-    pActor->dwFlags = 0x04002215;
+    pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation
+                      | ActorFlagTerrainCollisionA_candidate | ActorFlagUnk2000
+                      | ActorFlagTerrainDrawLayer;
     SetActorActionState(pActor, 0);
     pActor->bUnk_0x7C = 5;
     pActor->anim.bAnimFrameDelay = 1;
@@ -44,7 +46,8 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
         else
             pActor->oam.priority = 3;
 
-        pActor->dwFlags &= ~0x04000204;
+        pActor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate
+                             | ActorFlagTerrainDrawLayer);
     }
     else
     {
@@ -58,23 +61,23 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
     {
     case 66:
         pActor->oam.priority = 0;
-        pActor->dwFlags &= ~0x04000200;
+        pActor->dwFlags &= ~(ActorFlagTerrainCollisionA_candidate | ActorFlagTerrainDrawLayer);
         break;
     case 12:
         pActor->oam.priority = 3;
-        pActor->oam.hFlip = pActor->bFacing > 4;
-        pActor->dwFlags &= ~0x200;
+        pActor->oam.hFlip = pActor->bFacing > DirectionDown;
+        pActor->dwFlags &= ~ActorFlagTerrainCollisionA_candidate;
         break;
     case 40:
-        pActor->dwFlags &= ~4;
+        pActor->dwFlags &= ~ActorFlagWantsCollisionCheck;
         // fall through
     case 39:
         pActor->oam.priority = 1;
-        pActor->dwFlags &= ~0x200;
+        pActor->dwFlags &= ~ActorFlagTerrainCollisionA_candidate;
         break;
     case 0:
         SetActorAnimFrame(pActor, g_abRoomActorTriggerFacingFrames[pActor->bFacing]);
-        pActor->oam.hFlip = pActor->bFacing > 4;
+        pActor->oam.hFlip = pActor->bFacing > DirectionDown;
         pActor->pShadowActor = SpawnShadowActor(pActor);
         break;
     case 18:
@@ -85,19 +88,20 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
         pActor->bDrawFlags |= ActorDrawFlagBlink;
         break;
     case 1:
-        pActor->dwFlags |= 8;
-        pActor->dwFlags &= ~0x04000000;
+        pActor->dwFlags |= ActorFlagHasTickLogic;
+        pActor->dwFlags &= ~ActorFlagTerrainDrawLayer;
         break;
     case 81:
-        pActor->dwFlags |= 8;
-        pActor->dwFlags &= ~0x04000000;
+        pActor->dwFlags |= ActorFlagHasTickLogic;
+        pActor->dwFlags &= ~ActorFlagTerrainDrawLayer;
 
         if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable == 0)
             SetActorAnimFrame(pActor, 1);
 
         break;
     case 82:
-        pActor->dwFlags &= ~0x04000204;
+        pActor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate
+                             | ActorFlagTerrainDrawLayer);
         SetActorDrawLayer(pActor, 1);
         break;
     case 14:

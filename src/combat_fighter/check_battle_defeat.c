@@ -44,7 +44,7 @@ void CheckBattleDefeat(void)
     }
 
     g_GameModeStackContext.dwCurrentGameModeArg3 = 0xFE;
-    g_pFightState->bMenuScreen = 0;
+    g_pFightState->bMenuScreen = BattleMenuNone;
     g_pFightState->dwBattleResultPending = 1;
     g_pFightState->bDefeatWarpTarget = g_aDefeatWarpRoomId[g_abQuestEventState[QUEST_DEFEAT_WARP_SELECTOR]];
 

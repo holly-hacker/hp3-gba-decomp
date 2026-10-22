@@ -5,5 +5,5 @@
 void TickExperiencePopup(Actor *pActor)
 {
     if (--pActor->dwStateTimer == 0)
-        pActor->dwFlags |= 0x82;
+        pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
 }

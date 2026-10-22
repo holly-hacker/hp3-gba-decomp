@@ -39,7 +39,7 @@ void SetPartyMemberAnim(Actor *actor, u8 anim)
         {
             SetActorAnimData(actor, &g_aPartyWalkAssets[actor->wCharacterId_candidate],
                               g_aPartyWalkAnimsChar4[actor->bFacing], 0);
-            actor->oam.hFlip = actor->bFacing > 4;
+            actor->oam.hFlip = actor->bFacing > DirectionDown;
         }
         else if (actor->wCharacterId_candidate == 8)
         {
@@ -65,5 +65,5 @@ void SetPartyMemberAnim(Actor *actor, u8 anim)
         break;
     }
 
-    actor->oam.hFlip = actor->bFacing > 4;
+    actor->oam.hFlip = actor->bFacing > DirectionDown;
 }

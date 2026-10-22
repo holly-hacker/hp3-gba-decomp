@@ -9,7 +9,7 @@ void PositionMainMenuCursorActor(u32 tween)
 
     // Load Game's row is skipped when it is unavailable.
     slot = g_GameModeStackContext.dwModeScratchB;
-    if (!g_MainMenuState.dwLoadGameAvailable && slot > 1)
+    if (!g_MainMenuState.dwLoadGameAvailable && slot > MainMenuLoadGame)
         slot--;
 
     if (tween)

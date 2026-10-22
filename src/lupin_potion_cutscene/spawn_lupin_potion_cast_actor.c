@@ -17,14 +17,14 @@ Actor *SpawnLupinPotionCastActor(s32 index)
                       | ActorFlagFourWayDirections_candidate;
     SetActorActionState(pActor, 0);
     pActor->anim.bAnimFrameDelay = 0;
-    pActor->bFacing = 3;
+    pActor->bFacing = Direction4Left;
     pActor->pfnTick = TickLupinPotionCastActor;
     SetActorPendingPalette(pActor, g_aLupinPotionCastAssets[pActor->bFighterIndex].pPalette);
     SetActorAnimDataAtCommand(pActor, &g_aLupinPotionCastAssets[pActor->bFighterIndex],
                               g_aLupinPotionWalkAnims[pActor->bFacing], Mt19937RandMax2(7));
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = 0x80;
-    pActor->oam.hFlip = pActor->bFacing > 2;
+    pActor->oam.hFlip = pActor->bFacing > Direction4Down;
     pActor->nMoveSpeed = 0;
 
     pShadow = AllocActorOfType(0x11);

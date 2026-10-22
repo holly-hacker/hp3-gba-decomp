@@ -14,7 +14,8 @@ Actor *SpawnChestActor(u8 bColumn, u8 bRow)
     u32 flagId;
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
-    pActor->dwFlags = 0x04002015;
+    pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation
+                      | ActorFlagUnk2000 | ActorFlagTerrainDrawLayer;
     SetActorActionState(pActor, 0);
     SetActorActionSubState(pActor, 1);
     pActor->bUnk_0x7C = 1;

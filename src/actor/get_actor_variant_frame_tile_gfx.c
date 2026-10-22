@@ -19,8 +19,8 @@ void *GetActorVariantFrameTileGfx(Actor *actor, u8 slot)
     record = &actor->aVariantSlots[slot].pSpriteVariantTables[tableIndex][variantIndex];
     frameData = record->pFrameData;
 
-    wrap = actor->aVariantSlots[slot].bFrameFlags & 4;
-    if (wrap || (actor->aVariantSlots[slot].bFrameFlags & 8)) {
+    wrap = actor->aVariantSlots[slot].bFrameFlags & ActorVariantSlotFlagPrevFrameWrap;
+    if (wrap || (actor->aVariantSlots[slot].bFrameFlags & ActorVariantSlotFlagPrevFrameClamp)) {
         frame = actor->anim.bLastAnimFrameValue - 1;
         if (frame < 0) {
             if (wrap)

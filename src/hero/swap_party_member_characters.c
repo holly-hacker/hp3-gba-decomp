@@ -51,8 +51,8 @@ Actor *SwapPartyMemberCharacters(Actor *a, Actor *b)
     SetActorAssetRecord(b, &g_aPartyWalkAssets[b->wCharacterId_candidate]);
     SetActorAnimFrame(a, g_abPartyStandFrames[a->bFacing]);
     SetActorAnimFrame(b, g_abPartyStandFrames[b->bFacing]);
-    a->oam.hFlip = a->bFacing > 4;
-    b->oam.hFlip = b->bFacing > 4;
+    a->oam.hFlip = a->bFacing > DirectionDown;
+    b->oam.hFlip = b->bFacing > DirectionDown;
     b->bFacing = 0x2A;  // matches no trail facing, so b restarts its walk animation
 
     a->dwFlags |= ActorFlagVisible;

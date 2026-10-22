@@ -16,6 +16,6 @@ void InitGlaciusParticleEmitter(ParticleEmitter *emitter, Actor *effect)
     emitter->bSpawnsPerPeriod = 2;
     emitter->bParam43 = 0;
     emitter->bAnimTicks = 3;
-    emitter->bDirection = 4;
+    emitter->bDirection = DirectionDown;
     emitter->dwSpeed = 0x100;
 }

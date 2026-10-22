@@ -32,7 +32,8 @@ void TickLupinPotionCastActor(Actor *pActor)
             SetActorAssetRecord(pActor, pAsset);
             SetActorAnimFrame(pActor, g_abLupinPotionStandFrames[facing]);
         }
-        else if ((pActor->vel.x > 0 && facing == 3) || (pActor->vel.x < 0 && facing == 1))
+        else if ((pActor->vel.x > 0 && facing == Direction4Left)
+                 || (pActor->vel.x < 0 && facing == Direction4Right))
             SetActorAnimDataAtCommand(pActor, pAsset, g_aLupinPotionWalkBackAnims[facing], Mt19937RandMax2(7));
         else
             SetActorAnimDataAtCommand(pActor, pAsset, g_aLupinPotionWalkAnims[facing], Mt19937RandMax2(7));
@@ -74,5 +75,5 @@ void TickLupinPotionCastActor(Actor *pActor)
     }
 
     pActor->bActionFlags = 0;
-    pActor->oam.hFlip = facing > 2;
+    pActor->oam.hFlip = facing > Direction4Down;
 }

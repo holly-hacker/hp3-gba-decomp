@@ -14,7 +14,7 @@ void RoomScriptOpGrantPartySpell(GrantPartySpellRecord *pRecord)
     u32 count = g_aPartyMasterStats[slot].stats.bKnownSpellCount;
     u32 next = count;
 
-    if (slot != 1)
+    if (slot != Hermione)
         next = count + 1;
     if (next <= 6)
         g_aPartyMasterStats[slot].stats.bKnownSpellCount = count + 1;

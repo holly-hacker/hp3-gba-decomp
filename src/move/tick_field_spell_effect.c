@@ -54,7 +54,7 @@ void TickFieldSpellEffect(Actor *effect)
         case FieldSpellAlohomora:
             SetActorAnimData(effect, &g_aFieldSpellAssets[spell],
                              g_aaFieldSpellFlightAnims[effect->pLinkedActor_candidate->bFacing], 0);
-            effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > 4;
+            effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > DirectionDown;
             effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
             effect->bUnk_0x7C = 4;
             SetActorActionState(effect, 0xF);
@@ -66,7 +66,7 @@ void TickFieldSpellEffect(Actor *effect)
         case FieldSpellReparo:
             SetActorAnimData(effect, &g_aFieldSpellAssets[spell],
                              g_aaFieldSpellFlightAnims[effect->pLinkedActor_candidate->bFacing], 0);
-            effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > 4;
+            effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > DirectionDown;
             effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
             effect->bUnk_0x7C = 4;
             SetActorActionState(effect, 0xF);

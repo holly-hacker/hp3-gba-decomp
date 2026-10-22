@@ -35,7 +35,9 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = -0x40;
     pActor->nMoveSpeed = 1;
-    pActor->dwFlags = 0x20006019;
+    pActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
+                      | ActorFlagUnk2000 | ActorFlagCollisionGroup_candidate
+                      | ActorFlagKeepPaletteSlot;
 
     SetActorActionState(pActor, 0xF);
 
@@ -77,7 +79,8 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
         pShadowActor->oam.priority = 1;
         pShadowActor->bDepthSortBias = -0x40;
         pShadowActor->nMoveSpeed = 1;
-        pShadowActor->dwFlags = 0x6019;
+        pShadowActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
+                                | ActorFlagUnk2000 | ActorFlagCollisionGroup_candidate;
         pShadowActor->anim.bAnimFrameDelay = 1;
 
         AttachActorPalette(pShadowActor, g_MonsterShadowGfxRow.pPalette);

@@ -5,6 +5,7 @@
 #include "screen_transitions.h"
 #include "serial.h"
 #include "pscreen_trade.h"
+#include "pscreen_folio_universitas.h"
 
 void SelectCardTradeEntry(void)
 {
@@ -13,7 +14,7 @@ void SelectCardTradeEntry(void)
     case 0:  // "Choose Card"
         PlaySoundById(1);
         PlayScreenTransitionOutByIndex(0x3F, 2);
-        PushGameMode_2(FolioUniversitas, 2,
+        PushGameMode_2(FolioUniversitas, FolioUniversitasPickCard,
                        g_CardTradeState.aSides[CARD_TRADE_LOCAL].bOffer != CARD_TRADE_NO_CARD
                            ? g_CardTradeState.aSides[CARD_TRADE_LOCAL].bOffer : 0);
         break;

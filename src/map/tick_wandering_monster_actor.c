@@ -24,25 +24,25 @@ void TickWanderingMonsterActor(Actor *pActor)
         SetActorActionSubState(pActor, 1);
         switch (pActor->bFacing)
         {
-        case 0:
+        case Direction4Up:
             SetActorMoveTarget(pActor, pActor->pos.x, pActor->pos.y + (Mt19937RandMax(16) << 16) + 0xC0000);
-            pActor->bFacing = 2;
+            pActor->bFacing = Direction4Down;
             SetActorFlippedX(pActor, 0);
             break;
-        case 2:
+        case Direction4Down:
             SetActorMoveTarget(pActor, pActor->pos.x, pActor->pos.y - (Mt19937RandMax(16) << 16) - 0xC0000);
-            pActor->bFacing = 0;
+            pActor->bFacing = Direction4Up;
             SetActorFlippedX(pActor, 0);
             break;
-        case 1:
+        case Direction4Right:
             // Unlike the other turns, leaves bFacing as it was. In action state 15 the
             // facing is recomputed from the new move target later in this tick.
             SetActorMoveTarget(pActor, pActor->pos.x - (Mt19937RandMax(16) << 16) - 0xC0000, pActor->pos.y);
             SetActorFlippedX(pActor, 1);
             break;
-        case 3:
+        case Direction4Left:
             SetActorMoveTarget(pActor, pActor->pos.x + (Mt19937RandMax(16) << 16) + 0xC0000, pActor->pos.y);
-            pActor->bFacing = 1;
+            pActor->bFacing = Direction4Right;
             SetActorFlippedX(pActor, 0);
             break;
         }

@@ -280,16 +280,16 @@ void TickPlayerActionState(Actor *actor)
             }
         }
 
-        if (actor->dwFlags & 0x8000) {
+        if (actor->dwFlags & ActorFlagSpecialMoveTrigger) {
             // Buckbeak carve-out 1/4: skips the special-move effect; the flag
             // clear below still runs.
             if (actor->wActorType != Buckbeak)
                 TriggerBattleEffect(1, ACTIVE_FIGHTER.bSlotParam,
                                     0, g_pFightState->bActiveFighterIndex, 0, 0);
-            actor->dwFlags &= 0xffff7fff;
+            actor->dwFlags &= ~ActorFlagSpecialMoveTrigger;
         }
-        if (actor->dwFlags & 0x40000) {
-            actor->dwFlags &= 0xfffbffff;
+        if (actor->dwFlags & ActorFlagActionAnimDone) {
+            actor->dwFlags &= ~ActorFlagActionAnimDone;
             if (actor->wActorType != Buckbeak) {
                 var_8 = g_abSpellEffectScriptId[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
                 ACTIVE_FIGHTER.stats.wMp -= g_awSpellMpCost[ACTIVE_FIGHTER.bSpellId][ACTIVE_FIGHTER.bSpellLevel];
@@ -449,8 +449,8 @@ void TickPlayerActionState(Actor *actor)
                     ShowBattleMessage(SpecialAbilityText, ACTIVE_FIGHTER.bSpellId, 0);
             }
         }
-        if (actor->dwFlags & 0x40000) {
-            actor->dwFlags &= 0xfffbffff;
+        if (actor->dwFlags & ActorFlagActionAnimDone) {
+            actor->dwFlags &= ~ActorFlagActionAnimDone;
             fighterType = ACTIVE_FIGHTER.bFighterType;
             if (fighterType == Harry) {
                 if (g_pFightState->bFolioComboFirstCard != 0xff) {
@@ -521,7 +521,7 @@ void TickPlayerActionState(Actor *actor)
                 SetPlayerActorAnim(actor, 0);
             }
         }
-        if (actor->dwFlags & 0x8000) {
+        if (actor->dwFlags & ActorFlagSpecialMoveTrigger) {
             selActionIdx = ACTIVE_FIGHTER.bSelectedActionIndex;
             if (g_pFightState->aEnemySlotTurnOrderIndex[selActionIdx] == 0xff) {
                 i = 0;
@@ -529,7 +529,7 @@ void TickPlayerActionState(Actor *actor)
                     i++;
                 ACTIVE_FIGHTER.bSelectedActionIndex = i;
             }
-            actor->dwFlags &= 0xffff7fff;
+            actor->dwFlags &= ~ActorFlagSpecialMoveTrigger;
             TriggerBattleEffect(g_abSpecialMoveEffectId[ACTIVE_FIGHTER.bSpellId],
                                  ACTIVE_FIGHTER.bSlotParam,
                                  (u8)(ACTIVE_FIGHTER.bSelectedActionIndex + 3),
@@ -665,8 +665,8 @@ void TickPlayerActionState(Actor *actor)
             actor->bActionFlags &= 0xfe;
             actor->dwStateTimer = 0x1e;
         }
-        if (actor->dwFlags & 0x40000) {
-            actor->dwFlags &= 0xfffbffff;
+        if (actor->dwFlags & ActorFlagActionAnimDone) {
+            actor->dwFlags &= ~ActorFlagActionAnimDone;
             result = GetPotionEffect(ACTIVE_FIGHTER.bSpellLevel);
             switch (result) {
             case 1:

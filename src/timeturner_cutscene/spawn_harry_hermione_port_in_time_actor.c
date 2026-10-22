@@ -17,7 +17,7 @@ void SpawnHarryHermionePortInTimeActor(u32 index)
                      | ActorFlagFourWayDirections_candidate;
     SetActorActionState(ACTOR, 0);
     ACTOR->anim.bAnimFrameDelay = 0;
-    ACTOR->bFacing = 3;
+    ACTOR->bFacing = Direction4Left;
     SetActorPendingPalette(ACTOR, g_aHarryHermionePortInTimeActorAssets[ACTOR->bFighterIndex].pPalette);
     SetActorAnimData(ACTOR, &g_aHarryHermionePortInTimeActorAssets[ACTOR->bFighterIndex],
                      g_aHarryHermionePortInTimeAnims[index], 0);

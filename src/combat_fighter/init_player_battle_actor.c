@@ -30,7 +30,8 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
 
     pActor->bDepthSortBias = 0x40;
     pActor->nMoveSpeed = 1;
-    pActor->dwFlags = 0x20006011;
+    pActor->dwFlags = ActorFlagVisible | ActorFlagHasAnimation | ActorFlagUnk2000
+                      | ActorFlagCollisionGroup_candidate | ActorFlagKeepPaletteSlot;
 
     SetActorActionState(pActor, 0xF);
 
@@ -108,7 +109,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
         SetActorAnimFrame(pActor, 8);
         SetActorActionState(pActor, 0);
         pActor->bActionFlags = hp;  // hp == 0 on this path; keeps hp in sb
-        pActor->dwFlags &= ~0x10;
+        pActor->dwFlags &= ~ActorFlagHasAnimation;
         SnapActorPosition(pActor, (0xD4 - slot * 9 * 4) << 16, slot * 0x40000 + 0x6E0000);
         fighter->nFaintedFlag = -1;
     }

@@ -7,7 +7,7 @@
 // clears the links between it and its linked actor.
 static inline void DestroyActorAndUnlink(Actor *actor)
 {
-    actor->dwFlags |= 0x82;
+    actor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
     if (actor->pLinkedActor_candidate != NULL)
     {
         if (actor->pLinkedActor_candidate->pLinkedActor_candidate != NULL)

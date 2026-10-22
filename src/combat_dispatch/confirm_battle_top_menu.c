@@ -5,6 +5,7 @@
 #include "combat_dispatch_inline.h"
 #include "modes.h"
 #include "sound.h"
+#include "pscreen_folio_universitas.h"
 
 // Folio Universitas and Help return to Battle with the arguments it was entered with.
 static inline void SaveBattleResumeArgs(void)
@@ -36,7 +37,7 @@ void ConfirmBattleTopMenu(u32 fighterType, BattleFighter *pFighter)
         if (fighterType == Harry) {
             pFighter->bPendingActionKind = PendingActionSpecialMove;
             SaveBattleResumeArgs();
-            PushGameMode_2(FolioUniversitas, 1, 0);
+            PushGameMode_2(FolioUniversitas, FolioUniversitasPickCombo, 0);
         } else {
             OpenSpecialMoveMenu(g_pFightState->bMenuFighterIndex);
         }

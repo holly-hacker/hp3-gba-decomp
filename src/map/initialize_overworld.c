@@ -20,6 +20,7 @@
 #include "video.h"
 #include "combat.h"
 #include "commands.h"
+#include "overworld/room_script_bytecode.h"
 #include "main.h"
 
 // The room being loaded, per dwCurrentGameModeArg2.
@@ -50,11 +51,15 @@ void InitializeOverworld(void)
     if (g_GameModeStackContext.dwCurrentGameModeArg1 == 9)
     {
         if (g_dwRoomScriptRunState == 2
-            && (g_bRoomScriptYieldOpcode == 5 || g_bRoomScriptYieldOpcode == 0x24
-                || g_bRoomScriptYieldOpcode == 0x2b || g_bRoomScriptYieldOpcode == 0x4f
-                || g_bRoomScriptYieldOpcode == 0x50 || g_bRoomScriptYieldOpcode == 0x51
-                || g_bRoomScriptYieldOpcode == 0x54 || g_bRoomScriptYieldOpcode == 0x55
-                || g_bRoomScriptYieldOpcode == 0x56))
+            && (g_bRoomScriptYieldOpcode == RSOP_ShowRoomDialog
+                || g_bRoomScriptYieldOpcode == RSOP_ShowChooseCharacter
+                || g_bRoomScriptYieldOpcode == RSOP_StartBattle
+                || g_bRoomScriptYieldOpcode == RSOP_ShowRewardPickupMessage
+                || g_bRoomScriptYieldOpcode == RSOP_ShowItemRemovedMessage
+                || g_bRoomScriptYieldOpcode == RSOP_ShowSpellLearnedMessage
+                || g_bRoomScriptYieldOpcode == RSOP_ShowFolioCategoryStatusMessage
+                || g_bRoomScriptYieldOpcode == RSOP_ShowMinigameUnlockedMessage
+                || g_bRoomScriptYieldOpcode == RSOP_ShowPartyLevelUpMessage))
             ResumeRoomScriptChain();
     }
     else

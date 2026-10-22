@@ -13,7 +13,7 @@ Actor *SpawnSwitchActor(u8 bColumn, u8 bRow)
     {
         SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
         pActor->wActorType = pRecord->dwActorType;
-        pActor->dwFlags = 0x808;
+        pActor->dwFlags = ActorFlagHasTickLogic | ActorFlagTickHandlerSuspendsMovement;
         pActor->wCharacterId_candidate = pRecord->bVariant;
         pActor->oam.objMode = 0;
         pActor->oam.bpp8 = 0;
@@ -41,8 +41,8 @@ Actor *SpawnSwitchActor(u8 bColumn, u8 bRow)
                 pActor->bActionFlags |= 0x20;
 
             pActor->apfnCollisionCallback[0] = HandleSwitchActorTouch;
-            pActor->dwFlags |= 0x2005;
-            pActor->dwFlags &= ~0x800;
+            pActor->dwFlags |= ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagUnk2000;
+            pActor->dwFlags &= ~ActorFlagTickHandlerSuspendsMovement;
         }
     }
 

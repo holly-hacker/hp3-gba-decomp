@@ -16,7 +16,7 @@ void HandleBoggartMinigameHit(void)
         SetActorSprite(pActor, &g_aBoggartFormAssets[4]);
         pActor->oam.priority = 2;
         SetActorAnimFrame(pActor, 0);
-        g_BoggartMinigame.pActor->dwFlags |= 0x82;
+        g_BoggartMinigame.pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         g_BoggartMinigame.pActor = pActor;
     }
     else

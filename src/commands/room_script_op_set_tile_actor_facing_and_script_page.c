@@ -16,7 +16,7 @@ void RoomScriptOpSetTileActorFacingAndScriptPage(SetTileActorFacingAndScriptPage
 
     SetActorActionState(pActor, 0x1b);
     SetActorActionSubState(pActor, 0);
-    if (pActor->dwFlags & 0x100000)
+    if (pActor->dwFlags & ActorFlagFourWayDirections_candidate)
         pActor->bFacing = pRecord->bFacing >> 1;
     else
         pActor->bFacing = pRecord->bFacing;

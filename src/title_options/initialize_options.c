@@ -40,7 +40,7 @@ void InitializeOptions(void)
         g_OptionsState.adwValues[OptionsRowSound] = g_bOptionsSavedMusicVolume;
         g_OptionsState.adwValues[OptionsRowMusic] = g_bOptionsSavedSoundVolume;
         g_OptionsState.adwValues[OptionsRowGamma] = g_bOptionsSavedGammaHigh;
-        g_GameModeStackContext.dwModeScratchB = 3;
+        g_GameModeStackContext.dwModeScratchB = OptionsRowLanguage;
     }
     else
     {

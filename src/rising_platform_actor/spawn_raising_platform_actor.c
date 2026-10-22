@@ -12,7 +12,8 @@ Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow)
     u32 i;
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
-    pActor->dwFlags = 0x1D;
+    pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasTickLogic
+                      | ActorFlagHasAnimation;
     SetActorActionSubState(pActor, 0xA);
     pActor->anim.bAnimFrameDelay = 1;
     pActor->pfnTick = TickRaisingPlatformActor;

@@ -50,14 +50,14 @@ void ResumeBattleAfterSubmode_candidate(void)
                 g_pFightState->bBattleState = 3;
             } else {
                 fighter->bSelectedActionIndex = 0x2A;
-                g_pFightState->bMenuScreen = 0;
+                g_pFightState->bMenuScreen = BattleMenuNone;
             }
 
             return;
         }
     }
 
-    if (g_pFightState->bMenuScreen == 1) {
+    if (g_pFightState->bMenuScreen == BattleMenuTop) {
         if (g_PrevGameModeStackContext.dwCurrentGameMode == HelpTopicScreen) {
             OpenBattleTopMenu(g_pFightState->bMenuFighterIndex, 6);
         } else if (fighter->bPendingActionKind == PendingActionSpecialMove) {

@@ -19,7 +19,9 @@ Actor *SpawnWanderingMonsterActor(u8 monsterId, u16 x, u16 y, u8 encounterId, u8
     pActor->bFighterIndex = encounterId;
     pActor->bEncounterVariant = variant;
     pActor->bReceivedRewardId = kind;
-    pActor->dwFlags = 0x04100215;
+    pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation
+                      | ActorFlagTerrainCollisionA_candidate | ActorFlagFourWayDirections_candidate
+                      | ActorFlagTerrainDrawLayer;
     pActor->bUnk_0x7C = 0;
     pActor->anim.bAnimFrameDelay = 1;
     pActor->pfnTick = TickWanderingMonsterActor;

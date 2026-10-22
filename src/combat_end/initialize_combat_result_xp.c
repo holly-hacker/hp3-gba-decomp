@@ -128,14 +128,14 @@ void InitializeCombatResultXp(void)
     pText = GetDialogText(0x52B);  // "You gained experience: @1"
     x = 0x78;
 #ifdef VERSION_US
-    if (GetLanguage() == 6)
+    if (GetLanguage() == LanguageDutch)
         x = 0x6C;
 #endif
     g_wCombatResultTextTileCursor = DrawStringAligned(g_wCombatResultTextTileCursor, x, 0x94, pText, 1);
     width = MeasureMacroString(GetDialogText(0x52B));
     x = width / 2 + 0x84;
 #ifdef VERSION_US
-    if (GetLanguage() == 6)
+    if (GetLanguage() == LanguageDutch)
         x -= 0x10;
 #endif
     g_wCombatResultXpNumberX = x;

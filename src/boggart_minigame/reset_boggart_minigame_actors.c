@@ -11,6 +11,6 @@ void ResetBoggartMinigameActors(void)
         SetActorAnimFrame(*ppStudent++, 0);
 
     if (g_BoggartMinigame.pCastEffectActor != NULL)
-        g_BoggartMinigame.pCastEffectActor->dwFlags |= 0x82;
+        g_BoggartMinigame.pCastEffectActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
     g_BoggartMinigame.pCastEffectActor = NULL;
 }

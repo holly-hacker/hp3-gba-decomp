@@ -29,7 +29,7 @@ void DeserializeGameStateFromSaveBuffer(void)
     UnpackBytesFromSaveStream(&g_saveStateBlock.bSaveFlags, 1);
     UnpackBytesFromSaveStream(&g_abQuestEventState[QUEST_OBJECTIVE_INDEX], 1);
     UnpackBytesFromSaveStream(&leaderDisplayLevel, 1);
-    g_aPartyMasterStats[0].stats.bLevel = leaderDisplayLevel - 1;
+    g_aPartyMasterStats[Harry].stats.bLevel = leaderDisplayLevel - 1;
     UnpackBytesFromSaveStream(&g_bPartyCharId0, 1);
     UnpackBytesFromSaveStream(&g_bPartyCharId1, 1);
     UnpackBytesFromSaveStream(&g_bPartyCharId2, 1);

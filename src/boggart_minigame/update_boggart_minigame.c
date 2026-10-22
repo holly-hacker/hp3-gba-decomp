@@ -55,7 +55,7 @@ void UpdateBoggartMinigame(void)
             else
             {
                 ResetBoggartMinigameActors();
-                g_BoggartMinigame.pActor->dwFlags |= 0x82;
+                g_BoggartMinigame.pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
                 g_BoggartMinigame.dwCountdown = 3;
                 g_GameModeStackContext.dwModeState = BoggartMinigameStateIntro;
             }
@@ -67,7 +67,7 @@ void UpdateBoggartMinigame(void)
             ClearBoggartMinigameMessage();
             g_BoggartMinigame.bRound++;
             ResetBoggartMinigameActors();
-            g_BoggartMinigame.pActor->dwFlags |= 0x82;
+            g_BoggartMinigame.pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             g_BoggartMinigame.dwCountdown = 3;
             g_GameModeStackContext.dwModeState = BoggartMinigameStateIntro;
         }

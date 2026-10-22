@@ -18,7 +18,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
     u8 monsterIndex;
     u32 i;
 
-    if (actor->dwFlags & 2)
+    if (actor->dwFlags & ActorFlagPendingDestroy)
         return;
 
     UpdateMonsterScreenShake(actor);
@@ -52,7 +52,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             *pFlags &= 0xfe;
         }
 
-        if ((actor->dwFlags & 0x40000) == 0)
+        if ((actor->dwFlags & ActorFlagActionAnimDone) == 0)
             return;
 
         SetActorActionState(actor, 0);
@@ -85,7 +85,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             DestroyLinkedActor(actor->pLinkedActor_candidate);
 
         if (actor->pShadowActor != 0)
-            actor->pShadowActor->dwFlags |= 0x82;
+            actor->pShadowActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
 
         if (g_pFightState->bFaintMessageCount_candidate == 0)
             CheckBattleVictory(actor);
@@ -93,14 +93,14 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         if (g_pFightState->dwBattleResultPending != 0) {
             if (actor->wActorType == 0x3a)
                 return;
-            actor->dwFlags &= 0xfffffffe;
+            actor->dwFlags &= ~ActorFlagVisible;
             return;
         }
 
         if (actor->wActorType == (fighterType = 0x3a))
             return;
 
-        actor->dwFlags |= 0x82;
+        actor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
 
         if ((u16)(actor->wActorType - 0x31) > 2)
             return;
@@ -226,7 +226,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             actor->bActionFlags &= 0xfe;
         }
 
-        if (actor->dwFlags & 0x8000) {
+        if (actor->dwFlags & ActorFlagSpecialMoveTrigger) {
             if (MonsterTable[monsterIndex].bSpecialChance == 100) {
                 g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, active->bSelectedActionIndex);
                 RollMonsterSpecialEffect(monsterIndex, active->bSelectedActionIndex, g_nLastDamage);
@@ -237,10 +237,10 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                 actor->scriptState.bytes.bAttackOutcomeState = 2;
             }
 
-            actor->dwFlags &= 0xffff7fff;
+            actor->dwFlags &= ~ActorFlagSpecialMoveTrigger;
         }
 
-        if (((actor->dwFlags & 0x40000) == 0) || (actor->anim.unk_DC.bEnemyAttackPhase_candidate == 0xff)) {
+        if (((actor->dwFlags & ActorFlagActionAnimDone) == 0) || (actor->anim.unk_DC.bEnemyAttackPhase_candidate == 0xff)) {
             if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
                 goto skipPhase0;
 
@@ -249,7 +249,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         }
         {
         phase0:
-            // g_nLastDamage is shared with the dwFlags&0x8000 block above:
+            // g_nLastDamage is shared with the ActorFlagSpecialMoveTrigger block above:
             // exactly one of the two ResolveEnemyAttack calls fires per
             // attack (bSpecialChance==100 there, <=99 here), and this tail
             // always reads whichever one just ran.
@@ -268,7 +268,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             }
 
             actor->bActionFlags = 0x41;
-            actor->dwFlags &= 0xfffbffff;
+            actor->dwFlags &= ~ActorFlagActionAnimDone;
 
             ShowAttackResult(actor, active->bSelectedActionIndex);
 
@@ -346,7 +346,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
     skipPhase0:
         if (actor->wActorType != 0x3e)
             return;
-        if ((actor->dwFlags & 0x40000) == 0)
+        if ((actor->dwFlags & ActorFlagActionAnimDone) == 0)
             return;
     finish:
         g_pFightState->pAttackAnimActor_candidate = 0;
@@ -355,7 +355,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         active->bSpellId = Flipendo;
         actor->anim.unk_DC.bEnemyAttackPhase_candidate = 0;
         actor->bActionFlags = 0x41;
-        actor->dwFlags &= 0xfffbffff;
+        actor->dwFlags &= ~ActorFlagActionAnimDone;
         return;
     }
     }

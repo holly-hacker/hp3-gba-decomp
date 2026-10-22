@@ -37,7 +37,7 @@ void SpawnParticle(ParticleEmitter *emitter)
             return;
         }
 
-        if (emitter->pTarget->bFacing > 4)
+        if (emitter->pTarget->bFacing > DirectionDown)
         {
             pos.x = emitter->pTarget->posPrev.x - (pos.x << 16);
             endPos.x = emitter->pTarget->posPrev.x - (endPos.x << 16);
@@ -68,7 +68,7 @@ void SpawnParticle(ParticleEmitter *emitter)
             return;
         }
 
-        if (emitter->pTarget->bFacing > 4)
+        if (emitter->pTarget->bFacing > DirectionDown)
             pos.x = emitter->pTarget->posPrev.x - (pos.x << 16);
         else
             pos.x = emitter->pTarget->posPrev.x + (pos.x << 16);

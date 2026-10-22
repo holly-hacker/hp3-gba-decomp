@@ -13,7 +13,7 @@ Actor *SpawnDoorActor(u8 bColumn, u8 bRow)
     u8 i;
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
-    pActor->dwFlags = 0x2004;
+    pActor->dwFlags = ActorFlagWantsCollisionCheck | ActorFlagUnk2000;
     SetActorActionState(pActor, 0);
     pActor->scriptState.wDoorDestinationRoom = pRecord->bDestinationRoom;
 

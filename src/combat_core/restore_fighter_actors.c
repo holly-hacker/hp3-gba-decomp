@@ -51,7 +51,8 @@ void RestoreFighterActors_candidate(void)
             shadow->oam.priority = 1;
             shadow->bDepthSortBias = 0xC8;
             shadow->nMoveSpeed = 1;
-            shadow->dwFlags = 0x6019;
+            shadow->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
+                              | ActorFlagUnk2000 | ActorFlagCollisionGroup_candidate;
             shadow->anim.bAnimFrameDelay = 1;
             AttachActorPalette(shadow, g_MonsterShadowGfxRow.pPalette);
             SetActorAnimData(shadow, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, 0);

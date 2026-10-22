@@ -26,7 +26,7 @@ void InitializeBattle(void)
     {
         g_apBattleMenuIconActors[i] = AllocActorOfType(i + BattleActorType_FighterSlot0);
         SetActorPosition(g_apBattleMenuIconActors[i], i * 0x16 + 0x60, 0x8A);
-        g_apBattleMenuIconActors[i]->dwFlags = 0x20000008;
+        g_apBattleMenuIconActors[i]->dwFlags = ActorFlagHasTickLogic | ActorFlagKeepPaletteSlot;
         g_apBattleMenuIconActors[i]->bDepthSortBias = 0x80;
         g_apBattleMenuIconActors[i]->oam.paletteNum = i + 9;
     }
@@ -35,7 +35,7 @@ void InitializeBattle(void)
     g_dwSelectedBattleMenuIcon = 0;
     SetActorPosition(g_pStatsPortraitActor, i * 0x16 + 0x60, 0x8A);
     pIconActor = g_pStatsPortraitActor;
-    pIconActor->dwFlags = 0x20000008;
+    pIconActor->dwFlags = ActorFlagHasTickLogic | ActorFlagKeepPaletteSlot;
     pIconActor->bDepthSortBias = 0x80;
 
     g_pStatsPortraitActor->oam.bpp8 = 1;
@@ -57,9 +57,9 @@ void InitializeBattle(void)
         g_pFightState->pFaintedAllies = AllocZeroed(0xD8);
 
         // set turn order multiplier, see BuildTurnOrder
-        if (g_aPartyMasterStats[0].stats.bLevel < 1)
+        if (g_aPartyMasterStats[Harry].stats.bLevel < 1)
             g_pFightState->bEnemyScalePercent_candidate = 0x40;
-        else if (g_aPartyMasterStats[0].stats.bLevel < 2)
+        else if (g_aPartyMasterStats[Harry].stats.bLevel < 2)
             g_pFightState->bEnemyScalePercent_candidate = 0x30;
         else
             g_pFightState->bEnemyScalePercent_candidate = 0x20;

@@ -17,8 +17,8 @@ void MoveMainMenuCursor(void)
         if (g_GameModeStackContext.dwModeScratchB == MainMenuLoadGame
             && !g_MainMenuState.dwLoadGameAvailable)
             g_GameModeStackContext.dwModeScratchB--;
-        if (g_GameModeStackContext.dwModeScratchB > 3)
-            g_GameModeStackContext.dwModeScratchB = 3;
+        if (g_GameModeStackContext.dwModeScratchB > MainMenuMiniGames)
+            g_GameModeStackContext.dwModeScratchB = MainMenuMiniGames;
     }
     else if (g_wKeysPressed & KeyDown)
     {
@@ -26,8 +26,8 @@ void MoveMainMenuCursor(void)
         if (g_GameModeStackContext.dwModeScratchB == MainMenuLoadGame
             && !g_MainMenuState.dwLoadGameAvailable)
             g_GameModeStackContext.dwModeScratchB = MainMenuOptions;
-        if (g_GameModeStackContext.dwModeScratchB > 3)
-            g_GameModeStackContext.dwModeScratchB = 0;
+        if (g_GameModeStackContext.dwModeScratchB > MainMenuMiniGames)
+            g_GameModeStackContext.dwModeScratchB = MainMenuNewGame;
     }
 
     DrawMainMenuEntry(previous, g_GameModeStackContext.dwModeScratchB);

@@ -21,6 +21,6 @@ s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChan
     }
 
     if (isEnemyMonster)
-        ShowBattleMessage(0x11, 0, g_effectStaging.bTargetIndex);
+        ShowBattleMessage(ImmuneToParalysis, 0, g_effectStaging.bTargetIndex);
     return 0;
 }

@@ -65,11 +65,11 @@ void UpdateOptions(void)
 #ifndef VERSION_JP
         switch (g_GameModeStackContext.dwModeScratchB)
         {
-        case 0:
-        case 1:
-        case 2:
+        case OptionsRowSound:
+        case OptionsRowMusic:
+        case OptionsRowGamma:
             break;
-        case 3:
+        case OptionsRowLanguage:
             PlaySoundById(1);
             g_bOptionsSavedMusicVolume = g_OptionsState.adwValues[OptionsRowSound];
             g_bOptionsSavedSoundVolume = g_OptionsState.adwValues[OptionsRowMusic];
