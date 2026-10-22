@@ -56,5 +56,5 @@ void HandleDoorTouch(Actor *pSelf, Actor *pOther)
             pSelf->modeState.door.abExitParams[j] = exitParam;
     }
 
-    PushGameMode_2(Overworld, 0, pSelf->scriptState.wDoorDestinationRoom);
+    PushGameMode_2(Overworld, OverworldEntryEnterRoom, pSelf->scriptState.wDoorDestinationRoom);
 }

@@ -7,6 +7,7 @@
 #include "cursor.h"
 #include "minigame_high_score.h"
 #include "screen_transitions.h"
+#include "map.h"
 
 void ExitWizardCrackerPopItMinigame(void)
 {
@@ -14,7 +15,7 @@ void ExitWizardCrackerPopItMinigame(void)
 
     if (g_dwWizardCrackerPopItForceOverworldExit != 0)
     {
-        g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
+        g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryReturn;
         g_dwPendingGameMode.dwCurrentGameModeArg3 = 0xFF;
     }
 

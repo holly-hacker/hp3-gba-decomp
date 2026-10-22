@@ -22,7 +22,7 @@ void UpdateShopMainMenu(void)
             break;
         case 2:
             PlaySoundById(2);
-            PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
             break;
         }
     }
@@ -39,6 +39,6 @@ void UpdateShopMainMenu(void)
     else if (g_wKeysPressed & KeyB)
     {
         PlaySoundById(2);
-        PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
     }
 }

@@ -5,12 +5,13 @@
 #include "minigame_high_score.h"
 #include "sound.h"
 #include "screen_transitions.h"
+#include "map.h"
 
 void ExitBoggartMinigame(void)
 {
     if (g_BoggartMinigame.dwExitToMenu == 1)
     {
-        g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
+        g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryReturn;
         g_dwPendingGameMode.dwCurrentGameModeArg3 = 0xFF;
     }
 

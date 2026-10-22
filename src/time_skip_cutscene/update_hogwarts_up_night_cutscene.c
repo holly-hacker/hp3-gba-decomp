@@ -29,5 +29,5 @@ void UpdateHogwartsUpNightCutscene(void)
 
     if (g_GameModeStackContext.dwCurrentGameModeArg2 == 0xC0
         || (g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart)) != 0)
-        PushGameMode_3(Overworld, 3, g_bCurrentRoomId, 0xFF);
+        PushGameMode_3(Overworld, OverworldEntryReturn, g_bCurrentRoomId, 0xFF);
 }

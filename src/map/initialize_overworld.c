@@ -28,7 +28,7 @@
 
 // Overworld mode's pInitFn. Sets up video and the room's BG layers, spawns the
 // player, restores or respawns the room's actors and picks the room's music.
-// dwCurrentGameModeArg1 is how the mode was entered; Arg2 is the room id.
+// dwCurrentGameModeArg1 is the OverworldEntryKind; Arg2 is the room id.
 void InitializeOverworld(void)
 {
     u32 prevRoomId;
@@ -48,7 +48,7 @@ void InitializeOverworld(void)
         g_dwRoomScriptRunState = 0;
 
     // Resume after a room-script yield: keep the loaded room, at most resume the chain.
-    if (g_GameModeStackContext.dwCurrentGameModeArg1 == 9)
+    if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryResumeScript)
     {
         if (g_dwRoomScriptRunState == 2
             && (g_bRoomScriptYieldOpcode == RSOP_ShowRoomDialog
@@ -143,7 +143,7 @@ void InitializeOverworld(void)
             CURRENT_ROOM.wScrollBoundMaxY);
 
         // Fresh entry: spawn the room's actors.
-        if (g_GameModeStackContext.dwCurrentGameModeArg1 == 0)
+        if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryEnterRoom)
         {
             SpawnMissingRoomGroupActors(0);
             RunRoomScriptChain(0, 0);
@@ -156,8 +156,8 @@ void InitializeOverworld(void)
 
         // Restore saved actor state and spawn wandering monsters.
         if (g_dwOverworldMonstersDisabled == 0
-            && (g_GameModeStackContext.dwCurrentGameModeArg1 == 0
-                || (g_GameModeStackContext.dwCurrentGameModeArg1 == 2
+            && (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryEnterRoom
+                || (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryRestore
                     && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)))
         {
             if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
@@ -190,7 +190,8 @@ void InitializeOverworld(void)
                 CURRENT_ROOM.bEncounterCountC,
                 CURRENT_ROOM.bEncounterVariant);
         }
-        else if (g_GameModeStackContext.dwCurrentGameModeArg1 - 2 < 2)
+        else if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryRestore
+                 || g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryReturn)
         {
             if (GetRoomBlobStageVariant(g_abQuestEventState[QUEST_PREV_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob)
                 == GetRoomBlobStageVariant(g_abQuestEventState[QUEST_STORY_STAGE], CURRENT_ROOM.pRoomResourceBlob))
@@ -325,7 +326,7 @@ void InitializeOverworld(void)
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
-            if (g_GameModeStackContext.dwCurrentGameModeArg1 == 0)
+            if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryEnterRoom)
             {
                 if (prevRoomId == 0x15)
                 {
@@ -398,7 +399,7 @@ void InitializeOverworld(void)
 
         // Finish: quest state, screen transition and map name popup.
         LoadDialogBoxGraphics();
-        if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3
+        if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryReturn
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
             SpawnMissingRoomGroupActors(g_bPendingRoomScriptRow);
 
@@ -416,11 +417,11 @@ void InitializeOverworld(void)
         g_dwGameModeFlags &= ~GameModeFlagSwitchingMode;
         g_bControlSlotTicks_candidate = 0;
         g_dwFieldSpellActive = 0;
-        if (g_GameModeStackContext.dwCurrentGameModeArg1 == 3
+        if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryReturn
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)
             RunRoomScriptChain(g_bPendingRoomScriptChain, 0);
     }
 
     // The entry kind is consumed.
-    g_GameModeStackContext.dwCurrentGameModeArg1 = 0;
+    g_GameModeStackContext.dwCurrentGameModeArg1 = OverworldEntryEnterRoom;
 }

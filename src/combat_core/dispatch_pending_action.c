@@ -48,7 +48,7 @@ void DispatchPendingAction(s32 fighterType)
     case PendingActionFlee:
         if (Mt19937Chance(75)) {
             PlaySoundById(0x9D);
-            PushGameMode_2(Overworld, 3, g_bCurrentRoomId);
+            PushGameMode_2(Overworld, OverworldEntryReturn, g_bCurrentRoomId);
         } else {
             ShowBattleMessage(EscapeBlocked, 0, 0);
             SetActorActionState(fighter->pActor, 5);

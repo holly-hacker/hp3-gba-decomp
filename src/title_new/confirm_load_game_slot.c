@@ -16,7 +16,7 @@ void ConfirmLoadGameSlot(void)
         if (g_saveManager.adwSlotValid[slot]
             && (g_saveManager.aSlotPreview[slot].bSaveFlags & PlaytimeCounterActive))
         {
-            PushGameMode_2(Overworld, 2, g_bCurrentRoomId);
+            PushGameMode_2(Overworld, OverworldEntryRestore, g_bCurrentRoomId);
             PlaySoundById(1);
         }
         else

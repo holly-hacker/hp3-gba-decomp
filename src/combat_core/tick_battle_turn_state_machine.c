@@ -7,6 +7,7 @@
 #include "modes.h"
 #include "combat.h"
 #include "input.h"
+#include "map.h"
 
 static inline void TransitionBattleState(int newState)
 {
@@ -201,7 +202,7 @@ void TickBattleTurnStateMachine(void)
 
         if (--g_pFightState->wBattleStateTimer == 0xffff) {
             g_pFightState->wBattleStateTimer = 0xff;
-            PushGameMode_2(Overworld, 0, g_pFightState->bDefeatWarpTarget);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_pFightState->bDefeatWarpTarget);
         }
 
         break;

@@ -7,8 +7,8 @@ void LeaveDementorMinigame(void)
 {
     if (g_dwDementorMinigameScriptFlag_candidate != 0)
     {
-        PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
-        g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
+        g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryReturn;
         g_dwPendingGameMode.dwCurrentGameModeArg3 = 0xFF;
         StopSoundEffectChannels();
     }

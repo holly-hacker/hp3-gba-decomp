@@ -12,7 +12,7 @@
 void FinishLinearCutscene(void)
 {
     if (g_GameModeStackContext.dwCurrentGameMode == Intro)
-        PushGameMode_2(Overworld, 0, 0x2A);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x2A);
     else if (g_GameModeStackContext.dwCurrentGameMode == HippogriffTookToAirCutscene)
         PushGameMode(Credits);
     else if (g_GameModeStackContext.dwCurrentGameMode == Credits)
@@ -27,11 +27,11 @@ void FinishLinearCutscene(void)
     else if (g_bCurrentRoomId == 5)
     {
         g_abRoomScriptExitParams_candidate[0] = 0;
-        PushGameMode_2(Overworld, 0, 0x10);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x10);
         g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
     }
     else
     {
-        PushGameMode_3(Overworld, 3, g_bCurrentRoomId, 0xFF);
+        PushGameMode_3(Overworld, OverworldEntryReturn, g_bCurrentRoomId, 0xFF);
     }
 }

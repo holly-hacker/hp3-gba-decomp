@@ -22,7 +22,7 @@ void UpdateCoolTrainCutscene(void)
         DisableBg(0);
         zero = 0;
         bios_CPUSet((void *)&zero, VRAM_BASE, 0x01008000);
-        PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
         StopSoundEffectChannels();
         SetMusicVolume(0x64, 0);
     }

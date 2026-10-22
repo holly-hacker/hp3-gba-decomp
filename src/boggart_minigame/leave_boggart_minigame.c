@@ -6,7 +6,7 @@ void LeaveBoggartMinigame(void)
 {
     if (g_dwBoggartMinigameScriptFlag_candidate != 0)
     {
-        PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
         g_BoggartMinigame.dwExitToMenu = 1;
     }
     else

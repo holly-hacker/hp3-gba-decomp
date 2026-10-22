@@ -6,6 +6,7 @@
 #include "actor.h"
 #include "minigame_high_score.h"
 #include "screen_transitions.h"
+#include "map.h"
 
 void ExitBuckbeakMinigame(void)
 {
@@ -18,7 +19,7 @@ void ExitBuckbeakMinigame(void)
     if (g_GameModeStackContext.dwCurrentGameModeArg3 != 2)
     {
         g_dwPendingGameMode.dwCurrentGameModeArg3 = 0xFF;
-        g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
+        g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryReturn;
     }
 
     FreeBlock(g_pBuckbeakMinigame);

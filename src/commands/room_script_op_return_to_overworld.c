@@ -3,6 +3,7 @@
 #include "modes.h"
 #include "hero.h"
 #include "main.h"
+#include "map.h"
 
 typedef struct ReturnToOverworldRecord {
     u32 dwOpcode;
@@ -16,6 +17,6 @@ void RoomScriptOpReturnToOverworld(ReturnToOverworldRecord *pRecord)
 
     for (i = 0; i < ARRAY_COUNT(g_abRoomScriptExitParams_candidate); i++)
         g_abRoomScriptExitParams_candidate[i] = pRecord->bExitParam;
-    PushGameMode_2(Overworld, 0, pRecord->bExitId);
+    PushGameMode_2(Overworld, OverworldEntryEnterRoom, pRecord->bExitId);
     g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
 }

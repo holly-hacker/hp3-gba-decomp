@@ -59,7 +59,7 @@ void ExitBattle(void)
         else if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFE)
         {
             ClearRoomActorStateBuffer();
-            g_dwPendingGameMode.dwCurrentGameModeArg1 = 0;
+            g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryEnterRoom;
             g_GameModeStackContext.dwCurrentGameModeArg1 = 2;
             g_GameModeStackContext.dwCurrentGameMode = FolioUniversitas;
             ClearPaletteRam();

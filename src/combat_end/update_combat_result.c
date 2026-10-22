@@ -97,7 +97,7 @@ void UpdateCombatResult(void)
         if (g_wKeysPressed & KeyA)
         {
             PlaySoundById(1);
-            PushGameMode_2(Overworld, 2, g_bCurrentRoomId);
+            PushGameMode_2(Overworld, OverworldEntryRestore, g_bCurrentRoomId);
         }
         break;
     }

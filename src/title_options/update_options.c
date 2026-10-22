@@ -52,7 +52,7 @@ void UpdateOptions(void)
         switch (g_dwOptionsReturnMode)
         {
         case Overworld:
-            PushGameMode_2(Overworld, 2, g_bCurrentRoomId);
+            PushGameMode_2(Overworld, OverworldEntryRestore, g_bCurrentRoomId);
             break;
         case MainMenu:
             PushGameMode_2(MainMenu, 0, g_PrevGameModeStackContext.dwModeScratchB);

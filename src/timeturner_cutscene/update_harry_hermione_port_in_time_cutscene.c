@@ -5,6 +5,7 @@
 #include "screen_transitions.h"
 #include "scroll.h"
 #include "hero.h"
+#include "map.h"
 
 // Any of A/B/Select/Start skips to the overworld (exit 0xE). Otherwise progress rises until the
 // camera focus passes y = 0x1F4, flashes white, then falls back to 0 and leaves for the
@@ -17,7 +18,7 @@ void UpdateHarryHermionePortInTimeCutscene(void)
     if ((g_wKeysPressed & (KeyA | KeyB | KeySelect | KeyStart)) != 0)
     {
         g_abRoomScriptExitParams_candidate[0] = 0;
-        PushGameMode_2(Overworld, 0, 0xE);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0xE);
     }
 
     if (g_HarryHermionePortInTime.bRising != 0)
@@ -53,7 +54,7 @@ void UpdateHarryHermionePortInTimeCutscene(void)
             if (g_GameModeStackContext.dwCurrentGameModeArg2 > 0x1E)
             {
                 g_abRoomScriptExitParams_candidate[0] = 0;
-                PushGameMode_2(Overworld, 0, 0xE);
+                PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0xE);
             }
         }
         fade = (g_HarryHermionePortInTime.cameraDelta.y * 3) >> 16;

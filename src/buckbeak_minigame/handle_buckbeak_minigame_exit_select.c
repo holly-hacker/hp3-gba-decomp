@@ -11,12 +11,12 @@ void HandleBuckbeakMinigameExitSelect(void)
         if (g_GameModeStackContext.dwCurrentGameModeArg3 == 2)
         {
             g_abRoomScriptExitParams_candidate[0] = 0;
-            PushGameMode_2(Overworld, 0, 0x19);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x19);
             StopSoundEffectChannels();
         }
         else
         {
-            PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
             StopSoundEffectChannels();
         }
     }

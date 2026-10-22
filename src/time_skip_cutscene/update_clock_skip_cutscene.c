@@ -17,12 +17,12 @@ void UpdateClockSkipCutscene(void)
         if (g_bCurrentRoomId == 0x28)
         {
             g_abRoomScriptExitParams_candidate[0] = 0;
-            PushGameMode_2(Overworld, 0, 6);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, 6);
             g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
         }
         else
         {
-            PushGameMode_3(Overworld, 3, g_bCurrentRoomId, 0xFF);
+            PushGameMode_3(Overworld, OverworldEntryReturn, g_bCurrentRoomId, 0xFF);
         }
     }
 }

@@ -8,7 +8,7 @@ void QuitWizardCrackerPopItMinigame(void)
 {
     if (g_dwWizardCrackerPopItForceOverworldExit != 0)
     {
-        PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
         StopSoundEffectChannels();
     }
     else

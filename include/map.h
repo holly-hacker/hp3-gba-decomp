@@ -7,6 +7,16 @@
 #include "overworld/room.h"
 #include "overworld/room_actor_state.h"
 
+// Overworld's dwCurrentGameModeArg1: how InitializeOverworld sets up the room.
+typedef enum {
+    OverworldEntryEnterRoom = 0,      // spawns the room's actors and runs chain 0
+    OverworldEntryRestore = 2,        // restores the saved actor state; with Arg3 0xFF also
+                                      // spawns wandering monsters
+    OverworldEntryReturn = 3,         // restores the saved actor state; with Arg3 0xFF spawns
+                                      // g_bPendingRoomScriptRow and runs g_bPendingRoomScriptChain
+    OverworldEntryResumeScript = 9,   // keeps the loaded room and resumes a yielded chain
+} OverworldEntryKind;
+
 extern void InitializeOverworld(void);
 extern void ExitOverworldScreen(void);
 // Loads the room's alternate (night) BG palette while QUEST_ALT_PRESENTATION is set.

@@ -8,6 +8,7 @@
 #include "overworld/room.h"
 #include "commands.h"
 #include "hero.h"
+#include "map.h"
 
 void UpdateCheatMap(void)
 {
@@ -52,7 +53,7 @@ void UpdateCheatMap(void)
         g_abRoomScriptExitParams_candidate[0] = 0;
         g_abQuestEventState[QUEST_SPAWN_ID_COPY] = 0;
         Mt19937AutoSeed();
-        PushGameMode_2(Overworld, 0, mapIndex);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, mapIndex);
     }
     else if (g_wKeysPressed & KeyB)
     {
@@ -60,6 +61,6 @@ void UpdateCheatMap(void)
     }
     else if (g_wKeysPressed & KeySelect)
     {
-        PushGameMode_2(Overworld, 0, 0x35);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x35);
     }
 }

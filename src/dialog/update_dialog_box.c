@@ -64,7 +64,7 @@ void UpdateDialogBox(void)
 
     case DialogPhaseDone:
         g_dwGameModeFlags &= ~GameModeFlagOverlayMode;
-        PushGameMode_2(g_PrevGameModeStackContext.dwCurrentGameMode, 9, g_bCurrentRoomId);
+        PushGameMode_2(g_PrevGameModeStackContext.dwCurrentGameMode, OverworldEntryResumeScript, g_bCurrentRoomId);
         break;
     }
 

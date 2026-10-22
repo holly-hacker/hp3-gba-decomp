@@ -22,7 +22,7 @@ void HandlePortraitDoorTouch(Actor *pSelf, Actor *pOther)
     if (g_GameModeStackContext.dwCurrentGameModeArg2 == 32)
     {
         g_abRoomScriptExitParams_candidate[0] = g_dwPortraitPassageExitParam;
-        PushGameMode_2(Overworld, 0, g_GameModeStackContext.dwCurrentGameModeArg3);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_GameModeStackContext.dwCurrentGameModeArg3);
         return;
     }
 
@@ -35,5 +35,5 @@ void HandlePortraitDoorTouch(Actor *pSelf, Actor *pOther)
         g_abRoomScriptExitParams_candidate[0] = 1;
     else
         g_abRoomScriptExitParams_candidate[0] = 0;
-    PushGameMode_3(Overworld, 0, 32, pSelf->scriptState.wDoorDestinationRoom);
+    PushGameMode_3(Overworld, OverworldEntryEnterRoom, 32, pSelf->scriptState.wDoorDestinationRoom);
 }

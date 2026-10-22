@@ -51,7 +51,7 @@ void UpdateChooseCharacter(void)
     {
         PlaySoundById(4);
         g_dwGameModeFlags &= ~GameModeFlagOverlayMode;
-        PushGameMode_2(g_PrevGameModeStackContext.dwCurrentGameMode, 9, g_bCurrentRoomId);
+        PushGameMode_2(g_PrevGameModeStackContext.dwCurrentGameMode, OverworldEntryResumeScript, g_bCurrentRoomId);
 
         g_abQuestEventState[0xFF] = g_GameModeStackContext.dwCurrentGameModeArg2;
         g_ChooseCharacterState.bPreviousStage = g_abQuestEventState[0];

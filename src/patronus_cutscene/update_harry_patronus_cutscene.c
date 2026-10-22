@@ -65,14 +65,14 @@ void UpdateHarryPatronusCutscene(void)
     default:
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == 1)
         {
-            PushGameMode_2(Overworld, 0, g_bCurrentRoomId);
-            g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
+            g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryReturn;
             g_dwPendingGameMode.dwCurrentGameModeArg3 = 0xFF;
         }
         else
         {
             g_abRoomScriptExitParams_candidate[0] = 2;
-            PushGameMode_2(Overworld, 0, 0x21);
+            PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0x21);
         }
         break;
     }

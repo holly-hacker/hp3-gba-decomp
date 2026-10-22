@@ -5,6 +5,7 @@
 #include "lupin_potion_cutscene.h"
 #include "scroll.h"
 #include "hero.h"
+#include "map.h"
 
 // The panel slides in (state 1), waits for input (2), slides back out (3) and then runs the
 // idle state (0); any of A/B/Select/Start in state 0, or Select/Start elsewhere, ends the
@@ -86,7 +87,7 @@ void UpdateLupinPotionCutscene(void)
         break;
     case 4:
         g_abRoomScriptExitParams_candidate[0] = 2;
-        PushGameMode_2(Overworld, 0, 0xD);
+        PushGameMode_2(Overworld, OverworldEntryEnterRoom, 0xD);
         break;
     }
 

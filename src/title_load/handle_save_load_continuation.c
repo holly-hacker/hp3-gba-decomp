@@ -29,7 +29,7 @@ void HandleSaveLoadContinuation(void)
                 PushGameMode(Intro);
             }
             else
-                PushGameMode_3(Overworld, 2, g_bCurrentRoomId, 0xFF);
+                PushGameMode_3(Overworld, OverworldEntryRestore, g_bCurrentRoomId, 0xFF);
         }
     }
 }

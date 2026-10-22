@@ -1,6 +1,7 @@
 #include "modes.h"
 #include "actor.h"
 #include "screen_transitions.h"
+#include "map.h"
 
 void ExitCombatResult(void)
 {
@@ -13,5 +14,5 @@ void ExitCombatResult(void)
         g_dwPendingGameMode.dwCurrentGameModeArg3 = 0;
 
     g_GameModeStackContext.dwCurrentGameMode = Battle;
-    g_dwPendingGameMode.dwCurrentGameModeArg1 = 3;
+    g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryReturn;
 }
