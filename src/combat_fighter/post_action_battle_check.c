@@ -4,7 +4,7 @@
 #include "modes.h"
 
 // Runs after a fighter's action resolves: checks for party defeat and, unless
-// that ended the battle, returns the state machine to state 1 (next fighter),
+// that ended the battle, returns the state machine to BattleStateNextTurn,
 // rebuilding the turn order first if a fighter was just knocked out.
 void PostActionBattleCheck(void)
 {
@@ -12,7 +12,7 @@ void PostActionBattleCheck(void)
     CheckBattleDefeat();
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 != 0xFE) {
-        PushBattleState(1);
+        PushBattleState(BattleStateNextTurn);
 
         if (g_pFightState->dwDefeatCheckPending_candidate) {
             g_pFightState->dwDefeatCheckPending_candidate = 0;

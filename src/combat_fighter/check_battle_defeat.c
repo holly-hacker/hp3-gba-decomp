@@ -13,7 +13,7 @@
 // Ends the battle in defeat once every non-Enemy fighter (only Buckbeak in a
 // Buckbeak-only encounter) is at 0 HP: fully heals the party, picks the
 // overworld warp room from the defeat-warp selector, sets the story stage to
-// 0x1F (saving the old one as a pending override) and pushes battle state 6.
+// 0x1F (saving the old one as a pending override) and pushes BattleStateDefeat.
 void CheckBattleDefeat(void)
 {
     u8 i;
@@ -55,5 +55,5 @@ void CheckBattleDefeat(void)
 
     g_bPendingQuestStateOverride_candidate = g_abQuestEventState[QUEST_STORY_STAGE];
     g_abQuestEventState[QUEST_STORY_STAGE] = 0x1F;
-    PushBattleState(6);
+    PushBattleState(BattleStateDefeat);
 }

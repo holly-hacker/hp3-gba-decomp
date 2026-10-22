@@ -11,7 +11,7 @@
 
 static inline void TransitionBattleState(int newState)
 {
-    if (g_pFightState->bBattleState != 6 && g_pFightState->bBattleState != 7) {
+    if (g_pFightState->bBattleState != BattleStateDefeat && g_pFightState->bBattleState != BattleStateVictory) {
         g_pFightState->bSavedBattleState = g_pFightState->bBattleState;
         g_pFightState->bBattleState = newState;
         g_pFightState->dwStateJustEntered = 1;
@@ -26,13 +26,13 @@ void TickBattleTurnStateMachine(void)
     u8 savedState;
 
     switch (g_pFightState->bBattleState) {
-    case 0:
+    case BattleStateActing:
         if (g_pFightState->dwStateJustEntered)
             g_pFightState->dwStateJustEntered = 0;
 
         break;
 
-    case 1:
+    case BattleStateNextTurn:
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
             g_pFightState->bPendingStatusMessageVariant_candidate = 0x12;
@@ -56,14 +56,14 @@ void TickBattleTurnStateMachine(void)
                 break;
 
             if (g_pFightState->bActiveFighterIndex >= g_pFightState->bFighterCount) {
-                TransitionBattleState(2);
+                TransitionBattleState(BattleStateNewRound);
             } else {
                 EndFighterTurnStub(g_pFightState->bActiveFighterIndex - 1);
 
                 if (ACTIVE_FIGHTER.bFighterType == Enemy) {
-                    TransitionBattleState(4);
+                    TransitionBattleState(BattleStateStartAction);
                 } else {
-                    TransitionBattleState(3);
+                    TransitionBattleState(BattleStateAllyTurn);
                 }
             }
         } else {
@@ -71,7 +71,7 @@ void TickBattleTurnStateMachine(void)
         }
         break;
 
-    case 2:
+    case BattleStateNewRound:
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
             g_pFightState->wBattleStateTimer = 0x1e;
@@ -109,9 +109,9 @@ void TickBattleTurnStateMachine(void)
             g_pFightState->bActiveFighterIndex = 0;
 
             if (ACTIVE_FIGHTER.bFighterType != Enemy) {
-                TransitionBattleState(3);
+                TransitionBattleState(BattleStateAllyTurn);
             } else {
-                TransitionBattleState(4);
+                TransitionBattleState(BattleStateStartAction);
             }
             break;
         }
@@ -123,12 +123,12 @@ void TickBattleTurnStateMachine(void)
 
         break;
 
-    case 3:
+    case BattleStateAllyTurn:
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
             rollResult = RollFighterParalysisEscape(g_pFightState->bActiveFighterIndex);
             if (rollResult != 0) {
-                g_pFightState->bBattleState = 1;
+                g_pFightState->bBattleState = BattleStateNextTurn;
                 DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
 
                 if (rollResult == 3)
@@ -136,7 +136,7 @@ void TickBattleTurnStateMachine(void)
                 else
                     ShowBattleMessage(CantMove, 0, 0);
 
-                TransitionBattleState(5);
+                TransitionBattleState(BattleStateMessage);
             } else {
                 g_pFightState->bMenuFighterIndex = g_pFightState->bActiveFighterIndex;
                 OpenBattleTopMenu(g_pFightState->bMenuFighterIndex, 0);
@@ -147,38 +147,38 @@ void TickBattleTurnStateMachine(void)
             if (g_pFightState->bMenuScreen == BattleMenuNone) {
                 DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
 
-                TransitionBattleState(4);
+                TransitionBattleState(BattleStateStartAction);
             }
         }
         break;
 
-    case 4:
+    case BattleStateStartAction:
         fighterType = ACTIVE_FIGHTER.bFighterType;
         if (fighterType == Enemy) {
             DrawEnemyStatsUi(g_pFightState->bActiveFighterIndex, 0);
             rollResult = RollFighterParalysisEscape(g_pFightState->bActiveFighterIndex);
             if (rollResult != 0) {
-                g_pFightState->bBattleState = 1;
+                g_pFightState->bBattleState = BattleStateNextTurn;
 
                 if (rollResult == 3)
                     ShowBattleMessage(CanMoveAgain, 0, 0);
                 else
                     ShowBattleMessage(CantMove, 0, 0);
 
-                TransitionBattleState(5);
+                TransitionBattleState(BattleStateMessage);
                 break;
             }
             ShowBattleMessage(ActionAnnounce, 0, 0);
             SetActorActionState(ACTIVE_FIGHTER.pActor, 0x1a);
             ACTIVE_FIGHTER.pActor->bActionFlags = 0x21;
-            TransitionBattleState(0);
+            TransitionBattleState(BattleStateActing);
         } else {
             DispatchPendingAction(fighterType);
-            TransitionBattleState(0);
+            TransitionBattleState(BattleStateActing);
         }
         break;
 
-    case 5:
+    case BattleStateMessage:
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
             g_pFightState->wBattleStateTimer = 0x1e;
@@ -194,7 +194,7 @@ void TickBattleTurnStateMachine(void)
 
         break;
 
-    case 6:
+    case BattleStateDefeat:
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
             g_pFightState->wBattleStateTimer = 0x96;
@@ -207,7 +207,7 @@ void TickBattleTurnStateMachine(void)
 
         break;
 
-    case 7:
+    case BattleStateVictory:
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
             g_pFightState->wBattleStateTimer = 0x1e;

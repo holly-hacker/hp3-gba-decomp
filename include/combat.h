@@ -100,6 +100,18 @@ typedef enum {
     BattleMenuSuspended      = 0x80,  // bit; set when the ally whose menu is open faints
 } BattleMenuScreen;
 
+// FightState.bBattleState: TickBattleTurnStateMachine's state.
+typedef enum {
+    BattleStateActing = 0,       // a fighter's action plays; PushBattleState(BattleStateNextTurn) ends it
+    BattleStateNextTurn = 1,     // advances bActiveFighterIndex
+    BattleStateNewRound = 2,     // poison damage and the defeat check; the battle starts here
+    BattleStateAllyTurn = 3,     // paralysis-escape roll, else the battle menu
+    BattleStateStartAction = 4,  // an enemy picks its attack, or the ally's chosen action is dispatched
+    BattleStateMessage = 5,      // waits 30 ticks or A, then returns to bSavedBattleState
+    BattleStateDefeat = 6,       // warps to bDefeatWarpTarget
+    BattleStateVictory = 7,      // pushes CombatResult
+} BattleTurnState;
+
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
 // ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate.
 typedef struct FightState {
@@ -129,8 +141,8 @@ typedef struct FightState {
     /*0x1059*/ u8 aEnemySlotTurnOrderIndex[4];
     /*0x105D*/ u8 aAllySlotTurnOrderIndex[3];
     /*0x1060*/ u8 bScreenShakeTimer_candidate;
-    /*0x1061*/ u8 bBattleState;              // TickBattleTurnStateMachine's dispatch value, 0-7
-    /*0x1062*/ u8 bSavedBattleState;         // bBattleState stashed across state 5 (message wait), restored after
+    /*0x1061*/ u8 bBattleState;              // BattleTurnState
+    /*0x1062*/ u8 bSavedBattleState;         // bBattleState stashed across BattleStateMessage, restored after
     /*0x1064*/ u32 dwStateJustEntered;       // one-shot flag consumed by each state's own tick, set whenever bBattleState changes
     /*0x1068*/ u16 wBattleStateTimer;        // generic per-state countdown, meaning is state-specific
     /*0x106A*/ u16 wNextFighterTurnKey_candidate;  // nFaintedFlag of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder_candidate
@@ -169,7 +181,7 @@ typedef struct FightState {
         u8 bFlag;
     } aFaintMessages_candidate[6];
     /*0x14C4*/ u8 bFaintMessageCount_candidate;
-    /*0x14C5*/ u8 bDefeatWarpTarget;  // overworld warp-target index set by CheckBattleDefeat; state 6's PushGameMode_2 arg3
+    /*0x14C5*/ u8 bDefeatWarpTarget;  // RoomId set by CheckBattleDefeat; BattleStateDefeat warps there
     /*0x14C6*/ u8 bFolioComboFirstCard;  // first card of the combo picked on the Folio Universitas screen for this attack, 0xFF for none
 } FightState;
 

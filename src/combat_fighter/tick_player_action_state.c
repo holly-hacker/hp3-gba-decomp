@@ -97,7 +97,7 @@ static inline void ReturnFighterToPosition(Actor *actor)
     ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
     SetActorFlippedX(actor, 0);
     SetActorActionState(actor, 0);
-    PushBattleState(1);
+    PushBattleState(BattleStateNextTurn);
 }
 
 void TickPlayerActionState(Actor *actor)

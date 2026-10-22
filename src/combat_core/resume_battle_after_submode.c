@@ -30,7 +30,7 @@ void ResumeBattleAfterSubmode_candidate(void)
                 i++;
             }
 
-            PushBattleState(2);
+            PushBattleState(BattleStateNewRound);
             g_pFightState->bScreenShakeTimer_candidate = 0x1E;
             return;
         }
@@ -41,13 +41,13 @@ void ResumeBattleAfterSubmode_candidate(void)
 
             if (targetKind == 1) {
                 OpenEnemyTargetMenu(g_pFightState->bMenuFighterIndex);
-                g_pFightState->bBattleState = 3;
+                g_pFightState->bBattleState = BattleStateAllyTurn;
             } else if (targetKind == 2) {
                 OpenAllyTargetMenu(g_pFightState->bMenuFighterIndex);
-                g_pFightState->bBattleState = 3;
+                g_pFightState->bBattleState = BattleStateAllyTurn;
             } else if (targetKind == 3) {
                 OpenFaintedAllyMenu(g_pFightState->bMenuFighterIndex);
-                g_pFightState->bBattleState = 3;
+                g_pFightState->bBattleState = BattleStateAllyTurn;
             } else {
                 fighter->bSelectedActionIndex = 0x2A;
                 g_pFightState->bMenuScreen = BattleMenuNone;
