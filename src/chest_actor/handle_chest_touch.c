@@ -83,7 +83,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
         }
         break;
 
-    case 0xF:
+    case RoomActorType_FieldSpellEffect:
         // Overworld spell effect 3 unchains a kind 1 chest, which then opens
         // like kind 0.
         if (pOther->wCharacterId_candidate != 3)

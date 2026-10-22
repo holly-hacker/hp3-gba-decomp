@@ -29,7 +29,7 @@ Actor *SpawnPlayerActor(u8 characterId)
     SetActorPrevActionState(g_pPlayerActor, 0x21);
     g_pPlayerActor->nMoveSpeed = 0x28000;
     g_pPlayerActor->pfnTick = TickPlayerActor;
-    g_pPlayerActor->apfnCollisionCallback[0] = HandlePlayerPropCollision;
+    g_pPlayerActor->apfnCollisionCallback[0] = HandlePlayerWorldActorCollision;
     g_pPlayerActor->oam.priority = 1;
     g_pPlayerActor->bDepthSortBias = 0x80;
     SetActorPendingPalette(g_pPlayerActor, g_aPartyWalkAssets[g_pPlayerActor->wCharacterId_candidate].pPalette);

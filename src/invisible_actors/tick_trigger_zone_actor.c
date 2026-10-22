@@ -3,9 +3,10 @@
 #include "overworld/room_actor.h"
 #include "invisible_actors.h"
 
-// Per-frame tick of a trigger zone (room actor types 4 and 7). The collision
-// callbacks fire it from idle state 0: state 4 runs the record's pair and
-// re-arms after the delay, state 5 runs it and frees the zone.
+// Per-frame tick of a trigger zone (RoomActorType_TriggerZone or
+// RoomActorType_TriggerRect). The collision callbacks fire it from idle state 0:
+// state 4 runs the record's pair and re-arms after the delay, state 5 runs it and
+// frees the zone.
 void TickTriggerZoneActor(Actor *pActor)
 {
     RoomActorRecordTriggerZone *pRecord;
@@ -31,7 +32,7 @@ void TickTriggerZoneActor(Actor *pActor)
 
     case 4:
         pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
-        if (pActor->wActorType == 7)
+        if (pActor->wActorType == RoomActorType_TriggerRect)
             RespawnGroupAndRunChain(((RoomActorRecordTriggerRect *)pRecord)->bRespawnGroup,
                                     ((RoomActorRecordTriggerRect *)pRecord)->bChain);
         else
@@ -42,7 +43,7 @@ void TickTriggerZoneActor(Actor *pActor)
 
     case 5:
         pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
-        if (pActor->wActorType == 7)
+        if (pActor->wActorType == RoomActorType_TriggerRect)
             RespawnGroupAndRunChain(((RoomActorRecordTriggerRect *)pRecord)->bRespawnGroup,
                                     ((RoomActorRecordTriggerRect *)pRecord)->bChain);
         else

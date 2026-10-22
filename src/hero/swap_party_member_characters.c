@@ -19,13 +19,13 @@ Actor *SwapPartyMemberCharacters(Actor *a, Actor *b)
     {
         g_bPartyCharId0 = a->wCharacterId_candidate;
         a->wActorType = RoomActorType_Player;
-        b->wActorType = 0x12;
+        b->wActorType = RoomActorType_PartyFollower;
     }
     else if (a->wCharacterId_candidate == g_bPartyCharId0)
     {
         g_bPartyCharId0 = b->wCharacterId_candidate;
         b->wActorType = RoomActorType_Player;
-        a->wActorType = 0x12;
+        a->wActorType = RoomActorType_PartyFollower;
     }
 
     tmp = a->oam.paletteNum;

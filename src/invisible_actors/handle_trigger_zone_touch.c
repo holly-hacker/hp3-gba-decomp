@@ -15,7 +15,7 @@ void HandleTriggerZoneTouch(Actor *pSelf, Actor *pOther)
 
     if (kind == 3)
     {
-        if (pOther->wActorType == 0xF && pOther->wCharacterId_candidate == FieldSpellReparo)
+        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wCharacterId_candidate == FieldSpellReparo)
         {
             SetActorActionState(pSelf, 5);
             HandleFieldSpellHit(pOther, pSelf);
@@ -23,12 +23,12 @@ void HandleTriggerZoneTouch(Actor *pSelf, Actor *pOther)
     }
     else if (kind == 4)
     {
-        if (pOther->wActorType == 0xF && pOther->wCharacterId_candidate == FieldSpellAlohomora)
+        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wCharacterId_candidate == FieldSpellAlohomora)
             SetActorActionState(pSelf, 5);
     }
     else if (kind == 5)
     {
-        if (pOther->wActorType == 0xF && pOther->wCharacterId_candidate == FieldSpellGlacius)
+        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wCharacterId_candidate == FieldSpellGlacius)
         {
             SetActorActionState(pSelf, 5);
             SetActorActionSubState(pOther, 0x10);

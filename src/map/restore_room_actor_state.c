@@ -12,12 +12,12 @@
 // their saved state back, then clears the buffer.
 void RestoreRoomActorState(void)
 {
-    RoomActorKind4Or7Record *pKind4Or7;
+    RoomActorTriggerZoneRecord *pTriggerZone;
     RoomActorDefaultRecord *pDefault;
-    RoomActorKind5Record *pKind5;
-    RoomActorFloorItemRecord *pFloorItem;
+    RoomActorWorldActorRecord *pWorldActor;
+    RoomActorTileAnimationRecord *pTileAnimation;
     RoomActorSwitchRecord *pSwitch;
-    RoomActorPickupRecord *pPickup;
+    RoomActorFlamePillarRecord *pFlamePillar;
     RoomActorTileRecord *pPresence;
     RoomActorWanderingMonsterRecord *pMonster;
     u16 count;
@@ -32,15 +32,15 @@ void RestoreRoomActorState(void)
     SetActorActionSubState(g_pPlayerActor, 0);
     g_bRestoringRoomActors_candidate = 1;
 
-    if (g_pRoomActorStateBuffer->bKind4Or7Count != 0)
+    if (g_pRoomActorStateBuffer->bTriggerZoneCount != 0)
     {
-        pKind4Or7 = g_pRoomActorStateBuffer->aKind4Or7;
-        for (count = g_pRoomActorStateBuffer->bKind4Or7Count; count != 0; pKind4Or7++, count--)
+        pTriggerZone = g_pRoomActorStateBuffer->aTriggerZone;
+        for (count = g_pRoomActorStateBuffer->bTriggerZoneCount; count != 0; pTriggerZone++, count--)
         {
-            pActor = SpawnRoomGroupMember(pKind4Or7->bTileCol, pKind4Or7->bTileRow);
-            pActor->dwFlags = pKind4Or7->dwFlags;
-            SetActorActionState(pActor, pKind4Or7->bActionState);
-            pActor->dwStateTimer = pKind4Or7->dwStateTimer;
+            pActor = SpawnRoomGroupMember(pTriggerZone->bTileCol, pTriggerZone->bTileRow);
+            pActor->dwFlags = pTriggerZone->dwFlags;
+            SetActorActionState(pActor, pTriggerZone->bActionState);
+            pActor->dwStateTimer = pTriggerZone->dwStateTimer;
         }
     }
 
@@ -69,49 +69,49 @@ void RestoreRoomActorState(void)
         }
     }
 
-    if (g_pRoomActorStateBuffer->bKind5Count != 0)
+    if (g_pRoomActorStateBuffer->bWorldActorCount != 0)
     {
-        pKind5 = g_pRoomActorStateBuffer->aKind5;
-        for (count = g_pRoomActorStateBuffer->bKind5Count; count != 0; pKind5++, count--)
+        pWorldActor = g_pRoomActorStateBuffer->aWorldActor;
+        for (count = g_pRoomActorStateBuffer->bWorldActorCount; count != 0; pWorldActor++, count--)
         {
-            pActor = SpawnRoomGroupMember(pKind5->bTileCol, pKind5->bTileRow);
-            SetActorActionSubState(pActor, pKind5->bActionSubState);
-            pActor->bDepthSortBias = pKind5->bDepthSortBias;
-            pActor->dwFlags = pKind5->dwFlags;
-            pActor->wTimedMoveTicks = pKind5->wTimedMoveTicks;
-            pActor->anim = pKind5->anim;
-            SnapActorPosition(pActor, pKind5->wPosX << 16, pKind5->wPosY << 16);
-            pActor->vel = pKind5->vel;
-            pActor->accel = pKind5->accel;
-            pActor->modeState.actor.bRoomActorArg67_candidate = pKind5->bRoomActorArg67;
-            pActor->scriptState.bytes.bAttackOutcomeState = pKind5->bScriptStateLow;
+            pActor = SpawnRoomGroupMember(pWorldActor->bTileCol, pWorldActor->bTileRow);
+            SetActorActionSubState(pActor, pWorldActor->bActionSubState);
+            pActor->bDepthSortBias = pWorldActor->bDepthSortBias;
+            pActor->dwFlags = pWorldActor->dwFlags;
+            pActor->wTimedMoveTicks = pWorldActor->wTimedMoveTicks;
+            pActor->anim = pWorldActor->anim;
+            SnapActorPosition(pActor, pWorldActor->wPosX << 16, pWorldActor->wPosY << 16);
+            pActor->vel = pWorldActor->vel;
+            pActor->accel = pWorldActor->accel;
+            pActor->modeState.actor.bRoomActorArg67_candidate = pWorldActor->bRoomActorArg67;
+            pActor->scriptState.bytes.bAttackOutcomeState = pWorldActor->bScriptStateLow;
         }
     }
 
-    pFloorItem = g_pRoomActorStateBuffer->aFloorItem;
-    for (count = 0; count < g_pRoomActorStateBuffer->bFloorItemCount; pFloorItem++, count++)
+    pTileAnimation = g_pRoomActorStateBuffer->aTileAnimation;
+    for (count = 0; count < g_pRoomActorStateBuffer->bTileAnimationCount; pTileAnimation++, count++)
     {
-        pActor = SpawnRoomGroupMember(pFloorItem->bTileCol, pFloorItem->bTileRow);
+        pActor = SpawnRoomGroupMember(pTileAnimation->bTileCol, pTileAnimation->bTileRow);
         pTileAnim = FindRoomTileAnimation((s16)(pActor->pos.x >> 16), (s16)(pActor->pos.y >> 16));
-        *pTileAnim = pFloorItem->tileAnim;
+        *pTileAnim = pTileAnimation->tileAnim;
         RewindRoomTileAnimationStep(pTileAnim);
     }
 
-    pSwitch = g_pRoomActorStateBuffer->aKind5Switch;
-    for (count = 0; count < g_pRoomActorStateBuffer->bKind5SwitchCount; pSwitch++, count++)
+    pSwitch = g_pRoomActorStateBuffer->aWorldActorSwitch;
+    for (count = 0; count < g_pRoomActorStateBuffer->bWorldActorSwitchCount; pSwitch++, count++)
     {
         pActor = SpawnRoomGroupMember(pSwitch->bTileCol, pSwitch->bTileRow);
         if (pSwitch->bConsumed)
             MarkRoomActorConsumed(pActor);
     }
 
-    pPickup = g_pRoomActorStateBuffer->aPickupMarker;
-    for (count = 0; count < g_pRoomActorStateBuffer->bPickupMarkerCount; pPickup++, count++)
+    pFlamePillar = g_pRoomActorStateBuffer->aFlamePillar;
+    for (count = 0; count < g_pRoomActorStateBuffer->bFlamePillarCount; pFlamePillar++, count++)
     {
-        pActor = SpawnRoomGroupMember(pPickup->bTileCol, pPickup->bTileRow);
-        if (pPickup->bActionSubState == 8)
+        pActor = SpawnRoomGroupMember(pFlamePillar->bTileCol, pFlamePillar->bTileRow);
+        if (pFlamePillar->bActionSubState == 8)
             IgniteFlamePillar(pActor);
-        pActor->dwStateTimer = pPickup->bStateTimer + 1;
+        pActor->dwStateTimer = pFlamePillar->bStateTimer + 1;
     }
 
     if (g_pRoomActorStateBuffer->bPresenceMarkerCount != 0)

@@ -12,12 +12,12 @@
 void CaptureRoomActorState(void)
 {
     Actor *pActor;
-    RoomActorRecordProp *pStatic;
-    RoomActorPickupRecord *pPickup;
-    RoomActorFloorItemRecord *pFloorItem;
-    RoomActorKind4Or7Record *pKind4Or7;
+    RoomActorRecordWorldActor *pStatic;
+    RoomActorFlamePillarRecord *pFlamePillar;
+    RoomActorTileAnimationRecord *pTileAnimation;
+    RoomActorTriggerZoneRecord *pTriggerZone;
     RoomActorSwitchRecord *pSwitch;
-    RoomActorKind5Record *pKind5;
+    RoomActorWorldActorRecord *pWorldActor;
     RoomActorTileRecord *pPresence;
     RoomActorDefaultRecord *pDefault;
     RoomActorWanderingMonsterRecord *pMonster;
@@ -34,29 +34,29 @@ void CaptureRoomActorState(void)
             pStatic = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
             switch (pActor->wActorType)
             {
-            case 11:
-                pPickup = &g_pRoomActorStateBuffer->aPickupMarker[g_pRoomActorStateBuffer->bPickupMarkerCount++];
-                pPickup->bTileCol = pActor->bRoomTileCol_candidate;
-                pPickup->bTileRow = pActor->bRoomTileRow_candidate;
-                pPickup->bStateTimer = pActor->dwStateTimer;
-                pPickup->bActionSubState = pActor->bActionSubState;
+            case RoomActorType_FlamePillar:
+                pFlamePillar = &g_pRoomActorStateBuffer->aFlamePillar[g_pRoomActorStateBuffer->bFlamePillarCount++];
+                pFlamePillar->bTileCol = pActor->bRoomTileCol_candidate;
+                pFlamePillar->bTileRow = pActor->bRoomTileRow_candidate;
+                pFlamePillar->bStateTimer = pActor->dwStateTimer;
+                pFlamePillar->bActionSubState = pActor->bActionSubState;
                 break;
-            case 1:
-                pFloorItem = &g_pRoomActorStateBuffer->aFloorItem[g_pRoomActorStateBuffer->bFloorItemCount++];
-                pFloorItem->bTileCol = pActor->bRoomTileCol_candidate;
-                pFloorItem->bTileRow = pActor->bRoomTileRow_candidate;
-                pFloorItem->tileAnim = *FindRoomTileAnimation((s16)(pActor->pos.x >> 16), (s16)(pActor->pos.y >> 16));
+            case RoomActorType_TileAnimation:
+                pTileAnimation = &g_pRoomActorStateBuffer->aTileAnimation[g_pRoomActorStateBuffer->bTileAnimationCount++];
+                pTileAnimation->bTileCol = pActor->bRoomTileCol_candidate;
+                pTileAnimation->bTileRow = pActor->bRoomTileRow_candidate;
+                pTileAnimation->tileAnim = *FindRoomTileAnimation((s16)(pActor->pos.x >> 16), (s16)(pActor->pos.y >> 16));
                 break;
-            case 4:
-            case 7:
-                pKind4Or7 = &g_pRoomActorStateBuffer->aKind4Or7[g_pRoomActorStateBuffer->bKind4Or7Count++];
-                pKind4Or7->bTileCol = pActor->bRoomTileCol_candidate;
-                pKind4Or7->bTileRow = pActor->bRoomTileRow_candidate;
-                pKind4Or7->dwFlags = pActor->dwFlags;
-                pKind4Or7->bActionState = pActor->bActionState;
-                pKind4Or7->dwStateTimer = pActor->dwStateTimer;
+            case RoomActorType_TriggerZone:
+            case RoomActorType_TriggerRect:
+                pTriggerZone = &g_pRoomActorStateBuffer->aTriggerZone[g_pRoomActorStateBuffer->bTriggerZoneCount++];
+                pTriggerZone->bTileCol = pActor->bRoomTileCol_candidate;
+                pTriggerZone->bTileRow = pActor->bRoomTileRow_candidate;
+                pTriggerZone->dwFlags = pActor->dwFlags;
+                pTriggerZone->bActionState = pActor->bActionState;
+                pTriggerZone->dwStateTimer = pActor->dwStateTimer;
                 break;
-            case 5:
+            case RoomActorType_WorldActor:
                 if (((*(u32 *)&pStatic->bBreakable & 0xFF0000FF) == 0 && pStatic->bPushable == 0)
                     || pStatic->bKind == 9 || pStatic->bKind == 4)
                 {
@@ -64,40 +64,40 @@ void CaptureRoomActorState(void)
                     pPresence->bTileCol = pActor->bRoomTileCol_candidate;
                     pPresence->bTileRow = pActor->bRoomTileRow_candidate;
                 }
-                else if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind == 0x33)
+                else if (WORLD_ACTOR_STATE(pActor)->bKind == 0x33)
                 {
-                    pSwitch = &g_pRoomActorStateBuffer->aKind5Switch[g_pRoomActorStateBuffer->bKind5SwitchCount++];
+                    pSwitch = &g_pRoomActorStateBuffer->aWorldActorSwitch[g_pRoomActorStateBuffer->bWorldActorSwitchCount++];
                     pSwitch->bTileCol = pActor->bRoomTileCol_candidate;
                     pSwitch->bTileRow = pActor->bRoomTileRow_candidate;
                     pSwitch->bConsumed = ((pActor->dwFlags >> 2) ^ 1) & 1;
                 }
                 else
                 {
-                    pKind5 = &g_pRoomActorStateBuffer->aKind5[g_pRoomActorStateBuffer->bKind5Count++];
-                    pKind5->bTileCol = pActor->bRoomTileCol_candidate;
-                    pKind5->bTileRow = pActor->bRoomTileRow_candidate;
-                    pKind5->bActionSubState = pActor->bActionSubState;
-                    pKind5->bDepthSortBias = pActor->bDepthSortBias;
-                    pKind5->dwFlags = pActor->dwFlags & ~ActorFlagHasPaletteSlot;
-                    pKind5->wTimedMoveTicks = pActor->wTimedMoveTicks;
-                    pKind5->anim = pActor->anim;
-                    pKind5->wPosX = (s16)(pActor->pos.x >> 16);
-                    pKind5->wPosY = (s16)(pActor->pos.y >> 16);
-                    pKind5->vel = pActor->vel;
-                    pKind5->accel = pActor->accel;
-                    pKind5->bRoomActorArg67 = pActor->modeState.actor.bRoomActorArg67_candidate;
-                    pKind5->bScriptStateLow = pActor->scriptState.bytes.bAttackOutcomeState;
+                    pWorldActor = &g_pRoomActorStateBuffer->aWorldActor[g_pRoomActorStateBuffer->bWorldActorCount++];
+                    pWorldActor->bTileCol = pActor->bRoomTileCol_candidate;
+                    pWorldActor->bTileRow = pActor->bRoomTileRow_candidate;
+                    pWorldActor->bActionSubState = pActor->bActionSubState;
+                    pWorldActor->bDepthSortBias = pActor->bDepthSortBias;
+                    pWorldActor->dwFlags = pActor->dwFlags & ~ActorFlagHasPaletteSlot;
+                    pWorldActor->wTimedMoveTicks = pActor->wTimedMoveTicks;
+                    pWorldActor->anim = pActor->anim;
+                    pWorldActor->wPosX = (s16)(pActor->pos.x >> 16);
+                    pWorldActor->wPosY = (s16)(pActor->pos.y >> 16);
+                    pWorldActor->vel = pActor->vel;
+                    pWorldActor->accel = pActor->accel;
+                    pWorldActor->bRoomActorArg67 = pActor->modeState.actor.bRoomActorArg67_candidate;
+                    pWorldActor->bScriptStateLow = pActor->scriptState.bytes.bAttackOutcomeState;
                 }
                 break;
-            case 2:
-            case 8:
-            case 10:
+            case RoomActorType_Door:
+            case RoomActorType_PushResetButton:
+            case RoomActorType_SpongifyPad:
                 pPresence = &g_pRoomActorStateBuffer->aPresenceMarker[g_pRoomActorStateBuffer->bPresenceMarkerCount++];
                 pPresence->bTileCol = pActor->bRoomTileCol_candidate;
                 pPresence->bTileRow = pActor->bRoomTileRow_candidate;
                 break;
             default:
-                if (pActor->wActorType == 6 && pStatic->bPushable == 0)
+                if (pActor->wActorType == RoomActorType_Npc && pStatic->bPushable == 0)
                 {
                     pPresence = &g_pRoomActorStateBuffer->aPresenceMarker[g_pRoomActorStateBuffer->bPresenceMarkerCount++];
                     pPresence->bTileCol = pActor->bRoomTileCol_candidate;

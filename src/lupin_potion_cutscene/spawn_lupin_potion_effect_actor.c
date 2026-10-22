@@ -3,7 +3,7 @@
 
 Actor *SpawnLupinPotionEffectActor(s32 kind, FixedPoint pos)
 {
-    Actor *pActor = AllocActorOfType(6);
+    Actor *pActor = AllocActorOfType(RoomActorType_Npc);
 
     if (pActor != NULL)
     {

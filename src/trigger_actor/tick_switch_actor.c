@@ -3,7 +3,7 @@
 #include "trigger_actor.h"
 #include "trigger_actor_inline.h"
 
-// Variants: 0 flips on when a type 5 actor touches it; 1 is on while weighed
+// Variants: 0 flips on when a RoomActorType_WorldActor touches it; 1 is on while weighed
 // down; 2 and 5 spring back nRearmTicks after turning on; 3 flips on when the
 // player comes within bPauseRange; 4 re-arms nRearmTicks after each flip; 6-8
 // flip on an A press; 9 and 10 only hold a frame; 11 has no sprite and

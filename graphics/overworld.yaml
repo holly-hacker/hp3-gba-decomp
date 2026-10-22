@@ -237,7 +237,7 @@ groups:
           ActorSprite2_193: ActorPalette060
           ActorSprite2_194: ActorPalette061
           ActorSprite2_195: ActorPalette062
-      # The palettes g_apRoomActorTriggerEffectData points to
+      # The palettes g_apWorldActorEffectData points to
       - kind: image-bank
         count: 62
         names: {1: ActorPalette001}

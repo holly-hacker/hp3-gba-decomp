@@ -19,7 +19,7 @@ Actor *SpawnCharacterNpcActor(u8 characterId)
     else
         pSource = g_pPlayerActor;
 
-    pActor = AllocActorOfType(6);
+    pActor = AllocActorOfType(RoomActorType_Npc);
     SnapActorPosition(pActor, pSource->pos.x, pSource->pos.y);
     pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagUnk2000
                      | ActorFlagFourWayDirections_candidate | ActorFlagTerrainDrawLayer;

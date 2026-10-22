@@ -1054,7 +1054,7 @@ c-file 0x08024B38 _ src/hero/tick_held_reward_actor.c TickHeldRewardActor
 c-file 0x08024B64 _ src/hero/set_player_shadow_visible.c SetPlayerShadowVisible
 c-file 0x08024B94 _ src/hero/start_field_spell_cast.c StartFieldSpellCast
 c-file 0x08024BD4 _ src/hero/free_field_hud_actors.c FreeFieldHudActors
-c-file 0x08024C40 _ src/hero/handle_player_prop_collision.c HandlePlayerPropCollision
+c-file 0x08024C40 _ src/hero/handle_player_world_actor_collision.c HandlePlayerWorldActorCollision
 c-file 0x08024C90 _ src/hero/get_char_presence_bit.c GetCharPresenceBit
 c-file 0x08024CE4 _ src/hero/refresh_field_spell_hud.c RefreshFieldSpellHud
 c-file 0x08024D48 _ src/hero/tick_map_name_actor.c TickMapNameActor
@@ -1132,7 +1132,7 @@ c-file 0x08026348 _ src/invisible_actors/spawn_trigger_rect_actor.c SpawnTrigger
 c-file 0x08026414 _ src/invisible_actors/spawn_trigger_zone_actor.c SpawnTriggerZoneActor
 c-file 0x080264F0 _ src/invisible_actors/tick_trigger_zone_actor.c TickTriggerZoneActor
 c-file 0x080265B8 _ src/invisible_actors/handle_trigger_zone_touch.c HandleTriggerZoneTouch
-c-file 0x08026674 _ src/invisible_actors/handle_trigger_zone_prop_touch.c HandleTriggerZonePropTouch
+c-file 0x08026674 _ src/invisible_actors/handle_trigger_zone_world_actor_touch.c HandleTriggerZoneWorldActorTouch
 
 # Items
 c-file 0x080266EC _ src/items/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
@@ -2244,13 +2244,13 @@ c-file 0x08045A1C _ src/windows/set_screen_window1_rect.c SetScreenWindow1Rect
 c-file 0x08045A54 _ src/windows/tick_screen_window.c TickScreenWindow
 
 # World actors
-c-file 0x08045AE8 _ src/world_actors/spawn_prop_actor.c SpawnPropActor
-c-file 0x08045ECC _ src/world_actors/tick_prop_actor.c TickPropActor
-c-file 0x080463E8 _ src/world_actors/tick_prop_actor_player_control.c TickPropActorPlayerControl
-c-file 0x0804651C _ src/world_actors/handle_prop_actor_secondary_touch.c HandlePropActorSecondaryTouch
-c-file 0x080465D4 _ src/world_actors/handle_prop_actor_touch.c HandlePropActorTouch
-c-file 0x08046A48 _ src/world_actors/init_prop_break_emitter.c InitPropBreakEmitter
-c-file 0x08046AB0 _ src/world_actors/break_prop_actor.c BreakPropActor
+c-file 0x08045AE8 _ src/world_actors/spawn_world_actor.c SpawnWorldActor
+c-file 0x08045ECC _ src/world_actors/tick_world_actor.c TickWorldActor
+c-file 0x080463E8 _ src/world_actors/tick_world_actor_player_control.c TickWorldActorPlayerControl
+c-file 0x0804651C _ src/world_actors/handle_world_actor_secondary_touch.c HandleWorldActorSecondaryTouch
+c-file 0x080465D4 _ src/world_actors/handle_world_actor_touch.c HandleWorldActorTouch
+c-file 0x08046A48 _ src/world_actors/init_world_actor_break_emitter.c InitWorldActorBreakEmitter
+c-file 0x08046AB0 _ src/world_actors/break_world_actor.c BreakWorldActor
 c-file 0x08046C5C _ src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
 c-file 0x08046CA4 _ src/world_actors/mark_room_actor_consumed.c MarkRoomActorConsumed
 
@@ -2483,7 +2483,7 @@ c-file 0x0806C174 _ src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTra
 c-file 0x0806C178 _ src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file 0x0806C2F0 _ src/video/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file 0x0806C300 _ src/windows/screen_window_dispcnt_flags.c g_awScreenWindowDispcntFlags
-c-file 0x0806C304 _ src/world_actors/spawn_prop_actor.globals.c g_aRoomActorTriggerSprites
+c-file 0x0806C304 _ src/world_actors/spawn_world_actor.globals.c g_aWorldActorSprites
 
 # Graphics section 1
 graphics 0x0806E904 _ overworld OverworldSpellEffects

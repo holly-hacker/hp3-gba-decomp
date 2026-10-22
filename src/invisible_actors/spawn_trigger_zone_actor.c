@@ -28,7 +28,7 @@ Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow)
     {
         pActor->aCollisionBoxes[1] = pActor->aCollisionBoxes[0];
         pActor->bCollisionBoxCount = 2;
-        pActor->apfnCollisionCallback[1] = HandleTriggerZonePropTouch;
+        pActor->apfnCollisionCallback[1] = HandleTriggerZoneWorldActorTouch;
         pActor->apfnCollisionCallback[0] = 0;
         pActor->aCollisionBoxes[0].state.bState = 0;
     }

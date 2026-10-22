@@ -3,12 +3,12 @@
 #include "npc_actor.h"
 #include "world_actors.h"
 
-// Room actor constructor for tile actorType 5, a scripted prop whose kind selects
-// its sprite and behavior.
-Actor *SpawnPropActor(u8 bColumn, u8 bRow)
+// Room actor constructor for RoomActorType_WorldActor, whose kind selects its sprite
+// and behavior.
+Actor *SpawnWorldActor(u8 bColumn, u8 bRow)
 {
-    RoomActorRecordProp *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
-    Actor *pActor = AllocActorOfType(RoomActorType_ScriptedTrigger);
+    RoomActorRecordWorldActor *pRecord = GetRoomActorStaticRecord(bColumn, bRow);
+    Actor *pActor = AllocActorOfType(RoomActorType_WorldActor);
     u32 kind;
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
@@ -18,24 +18,24 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
     SetActorActionState(pActor, 0);
     pActor->bUnk_0x7C = 5;
     pActor->anim.bAnimFrameDelay = 1;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind = pRecord->bKind;
+    WORLD_ACTOR_STATE(pActor)->bKind = pRecord->bKind;
     kind = pRecord->bKind;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b62 = pRecord->b62;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable = pRecord->bPushable;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->bBreakable = pRecord->bBreakable;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b65 = pRecord->b65;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b66 = pRecord->b66;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow = pRecord->bChainRow;
+    WORLD_ACTOR_STATE(pActor)->b62 = pRecord->b62;
+    WORLD_ACTOR_STATE(pActor)->bPushable = pRecord->bPushable;
+    WORLD_ACTOR_STATE(pActor)->bBreakable = pRecord->bBreakable;
+    WORLD_ACTOR_STATE(pActor)->b65 = pRecord->b65;
+    WORLD_ACTOR_STATE(pActor)->b66 = pRecord->b66;
+    WORLD_ACTOR_STATE(pActor)->bChainRow = pRecord->bChainRow;
     pActor->bFacing = pRecord->bFacing;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->bActivated = 0;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b6A = 0;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->b60 &= 0xFD;
-    pActor->pfnTick = TickPropActor;
-    pActor->apfnCollisionCallback[0] = HandlePropActorTouch;
-    pActor->apfnCollisionCallback[1] = HandlePropActorSecondaryTouch;
-    SetActorPendingPalette(pActor, g_apRoomActorTriggerEffectData[ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind]);
-    SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind],
-                      (void *)g_abRoomActorTriggerAnimData[ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind], 0);
+    WORLD_ACTOR_STATE(pActor)->bActivated = 0;
+    WORLD_ACTOR_STATE(pActor)->b6A = 0;
+    WORLD_ACTOR_STATE(pActor)->b60 &= 0xFD;
+    pActor->pfnTick = TickWorldActor;
+    pActor->apfnCollisionCallback[0] = HandleWorldActorTouch;
+    pActor->apfnCollisionCallback[1] = HandleWorldActorSecondaryTouch;
+    SetActorPendingPalette(pActor, g_apWorldActorEffectData[WORLD_ACTOR_STATE(pActor)->bKind]);
+    SetActorAnimData(pActor, g_apWorldActorAnimFrames[WORLD_ACTOR_STATE(pActor)->bKind],
+                      (void *)g_abWorldActorAnimData[WORLD_ACTOR_STATE(pActor)->bKind], 0);
 
     if (kind == 26 || kind == 27 || kind == 28 || kind == 29 || kind == 30
         || kind == 31 || kind == 32 || kind == 33 || kind == 34 || kind == 35
@@ -55,7 +55,7 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
     }
 
     pActor->bDepthSortBias = 0x80;
-    ROOM_ACTOR_TRIGGER_STATE(pActor)->bBrokenFrame = 0xFF;
+    WORLD_ACTOR_STATE(pActor)->bBrokenFrame = 0xFF;
 
     switch (kind)
     {
@@ -76,7 +76,7 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
         pActor->dwFlags &= ~ActorFlagTerrainCollisionA_candidate;
         break;
     case 0:
-        SetActorAnimFrame(pActor, g_abRoomActorTriggerFacingFrames[pActor->bFacing]);
+        SetActorAnimFrame(pActor, g_abWorldActorFacingFrames[pActor->bFacing]);
         pActor->oam.hFlip = pActor->bFacing > DirectionDown;
         pActor->pShadowActor = SpawnShadowActor(pActor);
         break;
@@ -95,7 +95,7 @@ Actor *SpawnPropActor(u8 bColumn, u8 bRow)
         pActor->dwFlags |= ActorFlagHasTickLogic;
         pActor->dwFlags &= ~ActorFlagTerrainDrawLayer;
 
-        if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable == 0)
+        if (WORLD_ACTOR_STATE(pActor)->bPushable == 0)
             SetActorAnimFrame(pActor, 1);
 
         break;

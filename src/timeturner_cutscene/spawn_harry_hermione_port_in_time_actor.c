@@ -10,7 +10,7 @@ void SpawnHarryHermionePortInTimeActor(u32 index)
 {
     Actor *pShadow;
 
-    ACTOR = AllocActorOfType(6);
+    ACTOR = AllocActorOfType(RoomActorType_Npc);
     ACTOR->wCharacterId_candidate = index;
     ACTOR->bFighterIndex = index;
     ACTOR->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
@@ -25,7 +25,7 @@ void SpawnHarryHermionePortInTimeActor(u32 index)
     ACTOR->bDepthSortBias = 0x80;
     ACTOR->nMoveSpeed = 0;
 
-    pShadow = AllocActorOfType(0x11);
+    pShadow = AllocActorOfType(RoomActorType_Shadow);
     pShadow->bFacing = 0;
     pShadow->oam.objMode = 1;
     pShadow->oam.bpp8 = 0;

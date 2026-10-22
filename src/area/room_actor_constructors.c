@@ -20,7 +20,7 @@ const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT] = {
     SpawnDoorActor,
     SpawnSwitchActor,
     SpawnTriggerZoneActor,
-    SpawnPropActor,
+    SpawnWorldActor,
     SpawnNpcActor,
     SpawnTriggerRectActor,
     SpawnPushResetButtonActor,

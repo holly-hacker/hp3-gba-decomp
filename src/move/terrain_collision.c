@@ -131,9 +131,9 @@ u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type)
     switch (type)
     {
     case 0x22:
-        if (actor->wActorType == 0)
+        if (actor->wActorType == RoomActorType_Player)
             type = 1;
-        else if (actor->wActorType == 5)
+        else if (actor->wActorType == RoomActorType_WorldActor)
         {
             if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->left, box->top }) != 0x22)
                 break;
@@ -152,7 +152,7 @@ u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type)
             type = 1;
         break;
     case 0x29:
-        if (actor->wActorType != 0xF)
+        if (actor->wActorType != RoomActorType_FieldSpellEffect)
             type = 1;
         break;
     case 0x23:

@@ -5,14 +5,14 @@
 #include "particles.h"
 #include "world_actors.h"
 
-// pfnTick of a prop. A pushable prop slows by half a pixel per tick; sub-states 12-13 sink a
+// pfnTick of a world actor. A pushable one slows by half a pixel per tick; sub-states 12-13 sink a
 // block pushed onto water (see SnapActorXToTileGrid). Action state 4 runs the kind's
 // activation, 2 waits out a break or Reparo restore, 33 lets the player steer it.
-void TickPropActor(Actor *pActor)
+void TickWorldActor(Actor *pActor)
 {
-    u8 kind = ROOM_ACTOR_TRIGGER_STATE(pActor)->bKind;
+    u8 kind = WORLD_ACTOR_STATE(pActor)->bKind;
 
-    if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable != 0)
+    if (WORLD_ACTOR_STATE(pActor)->bPushable != 0)
     {
         if (pActor->vel.x < 0)
             pActor->vel.x += 0x8000;
@@ -27,9 +27,9 @@ void TickPropActor(Actor *pActor)
     switch (pActor->bActionSubState)
     {
     case 6:
-        if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable != 0)
+        if (WORLD_ACTOR_STATE(pActor)->bPushable != 0)
         {
-            ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable = 0;
+            WORLD_ACTOR_STATE(pActor)->bPushable = 0;
             SetActorActionState(pActor, 0);
         }
         break;
@@ -46,7 +46,7 @@ void TickPropActor(Actor *pActor)
         {
             SetActorActionSubState(pActor, 1);
             SetActorActionState(pActor, 0);
-            SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 3);
+            SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 3);
         }
         else if (kind == 90)
         {
@@ -58,7 +58,7 @@ void TickPropActor(Actor *pActor)
         {
             SetActorActionSubState(pActor, 1);
             SetActorActionState(pActor, 4);
-            SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
+            SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
         }
         break;
     case 12:
@@ -94,25 +94,25 @@ void TickPropActor(Actor *pActor)
     case 0:
         break;
     case 33:
-        TickPropActorPlayerControl(pActor);
+        TickWorldActorPlayerControl(pActor);
         break;
     case 2:
         if (kind == 46 || kind == 47 || kind == 48 || kind == 49 || kind == 50 || kind == 54 || kind == 77)
         {
             if (pActor->dwFlags & ActorFlagActionAnimDone)
             {
-                if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow != 0)
-                    RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow);
+                if (WORLD_ACTOR_STATE(pActor)->bChainRow != 0)
+                    RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pActor)->bChainRow);
                 SetActorActionState(pActor, 1);
             }
         }
         else if (--pActor->dwStateTimer == 0)
         {
-            if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bBrokenFrame != 0xFF
-                && ROOM_ACTOR_TRIGGER_STATE(pActor)->bBrokenFrame >= 80)
+            if (WORLD_ACTOR_STATE(pActor)->bBrokenFrame != 0xFF
+                && WORLD_ACTOR_STATE(pActor)->bBrokenFrame >= 80)
             {
-                SetActorAnimFrame(pActor, ROOM_ACTOR_TRIGGER_STATE(pActor)->bBrokenFrame - 80);
-                ROOM_ACTOR_TRIGGER_STATE(pActor)->bBrokenFrame = 0xFF;
+                SetActorAnimFrame(pActor, WORLD_ACTOR_STATE(pActor)->bBrokenFrame - 80);
+                WORLD_ACTOR_STATE(pActor)->bBrokenFrame = 0xFF;
             }
             SetActorActionState(pActor, 0);
             FreeAllParticleEmitters();
@@ -127,20 +127,20 @@ void TickPropActor(Actor *pActor)
         {
             SetActorActionSubState(pActor, 6);
             SetActorActionState(pActor, 0);
-            ROOM_ACTOR_TRIGGER_STATE(pActor)->bPushable = 0;
+            WORLD_ACTOR_STATE(pActor)->bPushable = 0;
             pActor->vel.x = 0;
             pActor->vel.y = 0;
             if (kind == 81)
                 SetActorAnimFrame(pActor, 1);
             else
-                SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
-            RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow);
+                SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
+            RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pActor)->bChainRow);
         }
         else
         {
             SetActorActionSubState(pActor, 1);
             SetActorActionState(pActor, 4);
-            SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
+            SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
         }
         break;
     case 4:
@@ -151,20 +151,20 @@ void TickPropActor(Actor *pActor)
         {
             SetActorActionSubState(pActor, 1);
             SetActorActionState(pActor, 0);
-            if (ROOM_ACTOR_TRIGGER_STATE(pActor)->b60 & 1)
+            if (WORLD_ACTOR_STATE(pActor)->b60 & 1)
             {
-                SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 0);
-                ROOM_ACTOR_TRIGGER_STATE(pActor)->b60 &= ~1;
+                SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 0);
+                WORLD_ACTOR_STATE(pActor)->b60 &= ~1;
             }
             else
             {
                 if (kind == 39)
-                    SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 3);
+                    SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 3);
                 else
-                    SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
-                ROOM_ACTOR_TRIGGER_STATE(pActor)->b60 |= 1;
+                    SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
+                WORLD_ACTOR_STATE(pActor)->b60 |= 1;
             }
-            RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow);
+            RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pActor)->bChainRow);
         }
         else if (kind == 90)
         {
@@ -176,24 +176,24 @@ void TickPropActor(Actor *pActor)
         {
             if (pActor->dwFlags & ActorFlagActionAnimDone)
             {
-                SetActorAnimData(pActor, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
-                ROOM_ACTOR_TRIGGER_STATE(pActor)->bActivated = 1;
-                if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow != 0)
-                    RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow);
+                SetActorAnimData(pActor, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
+                WORLD_ACTOR_STATE(pActor)->bActivated = 1;
+                if (WORLD_ACTOR_STATE(pActor)->bChainRow != 0)
+                    RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pActor)->bChainRow);
             }
         }
         else if (kind == 68)
         {
-            ROOM_ACTOR_TRIGGER_STATE(pActor)->bActivated = 1;
-            if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow != 0)
-                RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow);
+            WORLD_ACTOR_STATE(pActor)->bActivated = 1;
+            if (WORLD_ACTOR_STATE(pActor)->bChainRow != 0)
+                RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pActor)->bChainRow);
         }
         else if (kind == 62)
         {
             pActor->dwFlags &= ~(ActorFlagVisible | ActorFlagWantsCollisionCheck);
-            ROOM_ACTOR_TRIGGER_STATE(pActor)->bActivated = 1;
-            if (ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow != 0)
-                RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pActor)->bChainRow);
+            WORLD_ACTOR_STATE(pActor)->bActivated = 1;
+            if (WORLD_ACTOR_STATE(pActor)->bChainRow != 0)
+                RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pActor)->bChainRow);
         }
         else if (kind == 6)
         {

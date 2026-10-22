@@ -10,11 +10,11 @@
 #include "world_actors.h"
 #include "gen/graphics/overworld.h"
 
-// Collision box 0. The player presses A at kinds 68 and 80, or rebreaks a prop that Reparo is
-// restoring by standing on it. Flipendo pushes a pushable prop (stopped at the screen edge)
-// or breaks a breakable one, Reparo restores it, Glacius and Diffindo trigger their kinds.
-// Two pushed props stop each other unless one has bFighterIndex 4.
-void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
+// Collision box 0. The player presses A at kinds 68 and 80, or rebreaks a world actor that
+// Reparo is restoring by standing on it. Flipendo pushes a pushable one (stopped at the screen
+// edge) or breaks a breakable one, Reparo restores it, Glacius and Diffindo trigger their kinds.
+// Two pushed world actors stop each other unless one has bFighterIndex 4.
+void HandleWorldActorTouch(Actor *pSelf, Actor *pOther)
 {
     u8 kind;
     u16 spell;
@@ -26,11 +26,11 @@ void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
     if (pOther->dwFlags & ActorFlagNoPushTrigger_candidate)
         return;
 
-    kind = ROOM_ACTOR_TRIGGER_STATE(pSelf)->bKind;
+    kind = WORLD_ACTOR_STATE(pSelf)->bKind;
 
     switch (pOther->wActorType)
     {
-    case 4:  // trigger zones handle prop contact themselves
+    case RoomActorType_TriggerZone:  // trigger zones handle world actor contact themselves
         break;
     case RoomActorType_Player:
         if (pOther->bActionState != 0x21)
@@ -38,7 +38,7 @@ void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
 
         if (kind == 80 && (g_wKeysPressed & KeyA))
         {
-            SetActorAnimData(pSelf, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
+            SetActorAnimData(pSelf, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
             SetActorActionState(pSelf, 4);
             pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;
         }
@@ -47,17 +47,17 @@ void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
             SetActorActionState(pSelf, 4);
             pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;
         }
-        else if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBreakable != 0
-                 && ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBrokenFrame > 80
+        else if (WORLD_ACTOR_STATE(pSelf)->bBreakable != 0
+                 && WORLD_ACTOR_STATE(pSelf)->bBrokenFrame > 80
                  && pOther->pos.x == pOther->posPrev.x && pOther->pos.y == pOther->posPrev.y
                  && DoActorsOverlap(pSelf, pOther))
         {
-            if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBrokenFrame != 0xFF)
-                SetActorAnimFrame(pSelf, ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBrokenFrame - 80);
-            BreakPropActor(pSelf);
+            if (WORLD_ACTOR_STATE(pSelf)->bBrokenFrame != 0xFF)
+                SetActorAnimFrame(pSelf, WORLD_ACTOR_STATE(pSelf)->bBrokenFrame - 80);
+            BreakWorldActor(pSelf);
         }
         break;
-    case RoomActorType_ScriptedTrigger:
+    case RoomActorType_WorldActor:
         if (pSelf->bFighterIndex == 4 || pOther->bFighterIndex == 4)
             break;
         pSelf->posPrev.x = pSelf->pos.x;
@@ -74,18 +74,18 @@ void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
         switch (spell)
         {
         case FieldSpellFlipendo:
-            if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBrokenFrame != 0xFF)
+            if (WORLD_ACTOR_STATE(pSelf)->bBrokenFrame != 0xFF)
                 break;
 
-            if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bPushable != 0)
+            if (WORLD_ACTOR_STATE(pSelf)->bPushable != 0)
             {
                 if (kind == 57 && pOther->bFacing == DirectionLeft)
                 {
-                    ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBrokenFrame = pSelf->anim.bLastAnimFrameValue;
-                    SetActorAnimData(pSelf, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
-                    ROOM_ACTOR_TRIGGER_STATE(pSelf)->bPushable = 0;
-                    if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow != 0)
-                        RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow);
+                    WORLD_ACTOR_STATE(pSelf)->bBrokenFrame = pSelf->anim.bLastAnimFrameValue;
+                    SetActorAnimData(pSelf, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
+                    WORLD_ACTOR_STATE(pSelf)->bPushable = 0;
+                    if (WORLD_ACTOR_STATE(pSelf)->bChainRow != 0)
+                        RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pSelf)->bChainRow);
                     break;
                 }
 
@@ -111,47 +111,47 @@ void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
                     else
                     {
                         PlaySoundById(0x21);
-                        pSelf->vel.x = g_aRoomActorTriggerPushVelocity[pOther->bFacing][0] << 16;
-                        pSelf->vel.y = g_aRoomActorTriggerPushVelocity[pOther->bFacing][1] << 16;
+                        pSelf->vel.x = g_aWorldActorPushVelocity[pOther->bFacing][0] << 16;
+                        pSelf->vel.y = g_aWorldActorPushVelocity[pOther->bFacing][1] << 16;
                     }
-                    pSelf->bFacing = g_adwRoomActorTriggerPushFacing[pOther->bFacing];
+                    pSelf->bFacing = g_adwWorldActorPushFacing[pOther->bFacing];
                     HandleFieldSpellHit(pOther, pSelf);
                 }
             }
-            else if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBreakable != 0)
+            else if (WORLD_ACTOR_STATE(pSelf)->bBreakable != 0)
             {
-                BreakPropActor(pSelf);
+                BreakWorldActor(pSelf);
             }
             break;
         case FieldSpellReparo:
-            if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBrokenFrame != 0xFF)
+            if (WORLD_ACTOR_STATE(pSelf)->bBrokenFrame != 0xFF)
             {
-                if (pSelf->bActionState == 2 || ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBreakable == 0)
+                if (pSelf->bActionState == 2 || WORLD_ACTOR_STATE(pSelf)->bBreakable == 0)
                     break;
 
                 if (kind == 0)
                 {
-                    LoadParticleGfx(1, 0, (const ActorAssetRecord *)&g_RoomPropParticleGfx0);
-                    LoadParticleGfx(1, 1, (const ActorAssetRecord *)&g_RoomPropParticleGfx1);
-                    LoadParticleGfx(1, 2, (const ActorAssetRecord *)&g_RoomPropParticleGfx2);
+                    LoadParticleGfx(1, 0, (const ActorAssetRecord *)&g_WorldActorParticleGfx0);
+                    LoadParticleGfx(1, 1, (const ActorAssetRecord *)&g_WorldActorParticleGfx1);
+                    LoadParticleGfx(1, 2, (const ActorAssetRecord *)&g_WorldActorParticleGfx2);
                 }
                 else
                 {
-                    LoadParticleGfx(1, 0, (const ActorAssetRecord *)&g_RoomPropParticleGfx3);
-                    LoadParticleGfx(1, 1, (const ActorAssetRecord *)&g_RoomPropParticleGfx4);
-                    LoadParticleGfx(1, 2, (const ActorAssetRecord *)&g_RoomPropParticleGfx5);
+                    LoadParticleGfx(1, 0, (const ActorAssetRecord *)&g_WorldActorParticleGfx3);
+                    LoadParticleGfx(1, 1, (const ActorAssetRecord *)&g_WorldActorParticleGfx4);
+                    LoadParticleGfx(1, 2, (const ActorAssetRecord *)&g_WorldActorParticleGfx5);
                 }
                 PlaySoundById(0x20);
-                InitPropBreakEmitter(AllocParticleEmitter((const ObjPalette *)gOverworldSpellEffect027Palette, 1, 0), pSelf);
-                InitPropBreakEmitter(AllocParticleEmitter((const ObjPalette *)gOverworldSpellEffect027Palette, 1, 1), pSelf);
-                InitPropBreakEmitter(AllocParticleEmitter((const ObjPalette *)gOverworldSpellEffect027Palette, 1, 2), pSelf);
+                InitWorldActorBreakEmitter(AllocParticleEmitter((const ObjPalette *)gOverworldSpellEffect027Palette, 1, 0), pSelf);
+                InitWorldActorBreakEmitter(AllocParticleEmitter((const ObjPalette *)gOverworldSpellEffect027Palette, 1, 1), pSelf);
+                InitWorldActorBreakEmitter(AllocParticleEmitter((const ObjPalette *)gOverworldSpellEffect027Palette, 1, 2), pSelf);
                 pSelf->dwStateTimer = 16;
-                ROOM_ACTOR_TRIGGER_STATE(pSelf)->bBrokenFrame += 80;
+                WORLD_ACTOR_STATE(pSelf)->bBrokenFrame += 80;
                 SetActorActionState(pSelf, 2);
             }
             else if (kind == 53)
             {
-                SetActorAnimData(pSelf, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
+                SetActorAnimData(pSelf, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
                 SetActorActionState(pSelf, 0);
                 pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;
             }
@@ -159,7 +159,7 @@ void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
         case FieldSpellDiffindo:
             if (kind == 46 || kind == 47 || kind == 48 || kind == 49 || kind == 50 || kind == 54 || kind == 77)
             {
-                SetActorAnimData(pSelf, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 2);
+                SetActorAnimData(pSelf, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
                 SetActorActionState(pSelf, 2);
                 pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;
                 HandleFieldSpellHit(pOther, pSelf);
@@ -176,24 +176,24 @@ void HandlePropActorTouch(Actor *pSelf, Actor *pOther)
             }
             else if (kind == 76)
             {
-                SetActorAnimData(pSelf, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 7);
+                SetActorAnimData(pSelf, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 7);
                 SetActorActionState(pSelf, 0);
                 pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;
-                if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow != 0)
-                    RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow);
+                if (WORLD_ACTOR_STATE(pSelf)->bChainRow != 0)
+                    RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pSelf)->bChainRow);
             }
             else if (kind == 52)
             {
-                SetActorAnimData(pSelf, g_apRoomActorTriggerAnimFrames[kind], g_abRoomActorTriggerAnimData[kind], 12);
+                SetActorAnimData(pSelf, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 12);
                 SetActorActionState(pSelf, 0);
                 pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;
-                if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow != 0)
-                    RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow);
+                if (WORLD_ACTOR_STATE(pSelf)->bChainRow != 0)
+                    RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pSelf)->bChainRow);
             }
             else if (kind == 63)
             {
-                if (ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow != 0)
-                    RespawnGroupAndRunChain(0, ROOM_ACTOR_TRIGGER_STATE(pSelf)->bChainRow);
+                if (WORLD_ACTOR_STATE(pSelf)->bChainRow != 0)
+                    RespawnGroupAndRunChain(0, WORLD_ACTOR_STATE(pSelf)->bChainRow);
             }
             HandleFieldSpellHit(pOther, pSelf);
             break;

@@ -40,7 +40,7 @@ typedef struct {
     FixedPoint vel;            // 0x64
 } RoomActorDefaultRecord;
 
-// Actor types 4 and 7.
+// RoomActorType_TriggerZone and RoomActorType_TriggerRect.
 typedef struct {
     u8 bTileCol;               // 0x00
     u8 bTileRow;               // 0x01
@@ -48,9 +48,9 @@ typedef struct {
     u8 bActionState;           // 0x03
     u32 dwFlags;               // 0x04
     u32 dwStateTimer;          // 0x08
-} RoomActorKind4Or7Record;
+} RoomActorTriggerZoneRecord;
 
-// Actor type 5 other than the switch kind.
+// RoomActorType_WorldActor other than the switch kind.
 typedef struct {
     u8 bTileCol;               // 0x00
     u8 bTileRow;               // 0x01
@@ -65,29 +65,29 @@ typedef struct {
     u16 wPosY;                 // 0x22
     FixedPoint vel;            // 0x24
     FixedPoint accel;          // 0x2C
-} RoomActorKind5Record;
+} RoomActorWorldActorRecord;
 
-// Actor type 1: the room tile animation at the actor's position.
+// RoomActorType_TileAnimation: the room tile animation at the actor's position.
 typedef struct {
     u8 bTileCol;               // 0x00
     u8 bTileRow;               // 0x01
     RoomTileAnimation tileAnim;  // 0x04
-} RoomActorFloorItemRecord;
+} RoomActorTileAnimationRecord;
 
-// Actor type 5, switch kind.
+// RoomActorType_WorldActor, switch kind.
 typedef struct {
     u8 bTileCol;
     u8 bTileRow;
     u8 bConsumed;              // ActorFlagWantsCollisionCheck was clear
 } RoomActorSwitchRecord;
 
-// Actor type 11.
+// RoomActorType_FlamePillar.
 typedef struct {
     u8 bTileCol;
     u8 bTileRow;
     u8 bStateTimer;            // low byte of dwStateTimer, restored plus 1
     u8 bActionSubState;
-} RoomActorPickupRecord;
+} RoomActorFlamePillarRecord;
 
 // An actor whose default state is restored by respawning it.
 typedef struct {
@@ -116,21 +116,21 @@ typedef struct {
 typedef struct {
     u8 bPlayerFacing;          // 0x00
     u8 bDefaultCount;          // 0x01: entries of aDefault
-    u8 bKind4Or7Count;         // 0x02
-    u8 bKind5Count;            // 0x03
-    u8 bFloorItemCount;        // 0x04
+    u8 bTriggerZoneCount;      // 0x02
+    u8 bWorldActorCount;       // 0x03
+    u8 bTileAnimationCount;    // 0x04
     u8 bPresenceMarkerCount;   // 0x05
-    u8 bKind5SwitchCount;      // 0x06
-    u8 bPickupMarkerCount;     // 0x07
+    u8 bWorldActorSwitchCount; // 0x06
+    u8 bFlamePillarCount;      // 0x07
     u8 bWanderingMonsterCount; // 0x08: not serialized
     u8 bSwitchState;           // 0x09
     FixedPoint playerPos;      // 0x0C
-    RoomActorDefaultRecord aDefault[ROOM_ACTOR_STATE_MAX_RECORDS];        // 0x14
-    RoomActorKind4Or7Record aKind4Or7[ROOM_ACTOR_STATE_MAX_RECORDS];      // 0xD94
-    RoomActorKind5Record aKind5[ROOM_ACTOR_STATE_MAX_RECORDS];            // 0xF14
-    RoomActorFloorItemRecord aFloorItem[ROOM_ACTOR_STATE_MAX_RECORDS];    // 0x1594
-    RoomActorSwitchRecord aKind5Switch[ROOM_ACTOR_STATE_MAX_RECORDS];     // 0x1714
-    RoomActorPickupRecord aPickupMarker[16];                               // 0x1794
+    RoomActorDefaultRecord aDefault[ROOM_ACTOR_STATE_MAX_RECORDS];              // 0x14
+    RoomActorTriggerZoneRecord aTriggerZone[ROOM_ACTOR_STATE_MAX_RECORDS];      // 0xD94
+    RoomActorWorldActorRecord aWorldActor[ROOM_ACTOR_STATE_MAX_RECORDS];        // 0xF14
+    RoomActorTileAnimationRecord aTileAnimation[ROOM_ACTOR_STATE_MAX_RECORDS];  // 0x1594
+    RoomActorSwitchRecord aWorldActorSwitch[ROOM_ACTOR_STATE_MAX_RECORDS];      // 0x1714
+    RoomActorFlamePillarRecord aFlamePillar[16];                                // 0x1794
     RoomActorTileRecord aPresenceMarker[ROOM_ACTOR_STATE_MAX_PRESENCE_MARKERS];  // 0x17D4
     RoomActorWanderingMonsterRecord aWanderingMonster[ROOM_ACTOR_STATE_MAX_WANDERING_MONSTERS];  // 0x19B4
 } RoomActorStateBuffer;

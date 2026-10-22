@@ -6,7 +6,7 @@
 // Spawns a cast member walking at a random point of its cycle, with its drop shadow.
 Actor *SpawnLupinPotionCastActor(s32 index)
 {
-    Actor *pActor = AllocActorOfType(6);
+    Actor *pActor = AllocActorOfType(RoomActorType_Npc);
     Actor *pShadow;
 
     pActor->wCharacterId_candidate = index;
@@ -27,7 +27,7 @@ Actor *SpawnLupinPotionCastActor(s32 index)
     pActor->oam.hFlip = pActor->bFacing > Direction4Down;
     pActor->nMoveSpeed = 0;
 
-    pShadow = AllocActorOfType(0x11);
+    pShadow = AllocActorOfType(RoomActorType_Shadow);
     pShadow->bFacing = 0;
     pShadow->oam.objMode = 0;
     pShadow->oam.bpp8 = 0;

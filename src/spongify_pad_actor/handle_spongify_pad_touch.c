@@ -7,7 +7,7 @@
 #include "spongify_pad_actor.h"
 
 // Collision callback: a Spongify spell effect arms the pad, and the player stepping on
-// an armed pad gathers the party on it. A moving scripted trigger actor is pushed back
+// an armed pad gathers the party on it. A moving RoomActorType_WorldActor is pushed back
 // out unless its bFighterIndex is 4.
 void HandleSpongifyPadTouch(Actor *pSelf, Actor *pOther)
 {
@@ -52,7 +52,7 @@ void HandleSpongifyPadTouch(Actor *pSelf, Actor *pOther)
             SetActorActionSubState(pSelf, 19);
         }
         break;
-    case RoomActorType_ScriptedTrigger:
+    case RoomActorType_WorldActor:
         if (pOther->bFighterIndex != 4)
         {
             if (pOther->vel.x != 0)

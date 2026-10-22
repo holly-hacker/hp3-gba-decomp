@@ -5,14 +5,14 @@
 #include "sound.h"
 #include "world_actors.h"
 
-// Collision callback of the effect actor's second box: Flipendo bursts on a prop of kind 0x3A.
+// Collision callback of the effect actor's second box: Flipendo bursts on a world actor of kind 0x3A.
 // The kind is read from the effect's own scriptState, where HandleFieldSpellHit reads the
 // target's.
 void HandleFieldSpellSecondaryHit(Actor *effect, Actor *target)
 {
     u8 spell;
 
-    if (target->wActorType != 0
+    if (target->wActorType != RoomActorType_Player
         && (effect->wCharacterId_candidate == FieldSpellReparo || (target->dwFlags & ActorFlagVisible))
         && !(effect->dwFlags & ActorFlagNoPushTrigger_candidate)
         && !(target->dwFlags & ActorFlagNoPushTrigger_candidate))
@@ -21,8 +21,8 @@ void HandleFieldSpellSecondaryHit(Actor *effect, Actor *target)
         switch (effect->wCharacterId_candidate)
         {
         case FieldSpellFlipendo:
-            if (target->wActorType == RoomActorType_ScriptedTrigger
-                && ROOM_ACTOR_TRIGGER_STATE(effect)->bKind == 0x3A)
+            if (target->wActorType == RoomActorType_WorldActor
+                && WORLD_ACTOR_STATE(effect)->bKind == 0x3A)
             {
                 PlaySoundById(0x50);
                 effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);

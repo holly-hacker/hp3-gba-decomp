@@ -3,7 +3,7 @@
 #include "world_actors.h"
 #include "gen/graphics/overworld.h"
 
-const ActorGfxRecord g_aRoomActorTriggerSprites[80] = {
+const ActorGfxRecord g_aWorldActorSprites[80] = {
     { (void *)gActorSprite2_126Tiles, (void *)gActorSprite2_126Frames },  // 0
     { (void *)gPushableBlockTiles, (void *)gPushableBlockFrames },  // 1
     { (void *)gActorSprite2_128Tiles, (void *)gActorSprite2_128Frames },  // 2
@@ -87,101 +87,101 @@ const ActorGfxRecord g_aRoomActorTriggerSprites[80] = {
 };
 
 // Indexed by the actor's kind.
-const ActorGfxRecord *const g_apRoomActorTriggerAnimFrames[91] = {
-    &g_aRoomActorTriggerSprites[0],
-    &g_aRoomActorTriggerSprites[1],
-    &g_aRoomActorTriggerSprites[2],
-    &g_aRoomActorTriggerSprites[3],
-    &g_aRoomActorTriggerSprites[3],
-    &g_aRoomActorTriggerSprites[4],
-    &g_aRoomActorTriggerSprites[6],
-    &g_aRoomActorTriggerSprites[7],
-    &g_aRoomActorTriggerSprites[8],
-    &g_aRoomActorTriggerSprites[9],
-    &g_aRoomActorTriggerSprites[10],
-    &g_aRoomActorTriggerSprites[11],
-    &g_aRoomActorTriggerSprites[12],
-    &g_aRoomActorTriggerSprites[13],
-    &g_aRoomActorTriggerSprites[14],
-    &g_aRoomActorTriggerSprites[14],
-    &g_aRoomActorTriggerSprites[15],
-    &g_aRoomActorTriggerSprites[16],
-    &g_aRoomActorTriggerSprites[17],
-    &g_aRoomActorTriggerSprites[18],
-    &g_aRoomActorTriggerSprites[19],
-    &g_aRoomActorTriggerSprites[20],
-    &g_aRoomActorTriggerSprites[21],
-    &g_aRoomActorTriggerSprites[22],
-    &g_aRoomActorTriggerSprites[23],
-    &g_aRoomActorTriggerSprites[24],
-    &g_aRoomActorTriggerSprites[25],
-    &g_aRoomActorTriggerSprites[26],
-    &g_aRoomActorTriggerSprites[27],
-    &g_aRoomActorTriggerSprites[28],
-    &g_aRoomActorTriggerSprites[27],
-    &g_aRoomActorTriggerSprites[26],
-    &g_aRoomActorTriggerSprites[27],
-    &g_aRoomActorTriggerSprites[36],
-    &g_aRoomActorTriggerSprites[36],
-    &g_aRoomActorTriggerSprites[31],
-    &g_aRoomActorTriggerSprites[32],
-    &g_aRoomActorTriggerSprites[37],
-    &g_aRoomActorTriggerSprites[38],
-    &g_aRoomActorTriggerSprites[33],
-    &g_aRoomActorTriggerSprites[33],
-    &g_aRoomActorTriggerSprites[34],
-    &g_aRoomActorTriggerSprites[29],
-    &g_aRoomActorTriggerSprites[29],
-    &g_aRoomActorTriggerSprites[30],
-    &g_aRoomActorTriggerSprites[35],
-    &g_aRoomActorTriggerSprites[39],
-    &g_aRoomActorTriggerSprites[39],
-    &g_aRoomActorTriggerSprites[39],
-    &g_aRoomActorTriggerSprites[40],
-    &g_aRoomActorTriggerSprites[40],
-    &g_aRoomActorTriggerSprites[41],
-    &g_aRoomActorTriggerSprites[42],
-    &g_aRoomActorTriggerSprites[44],
-    &g_aRoomActorTriggerSprites[45],
-    &g_aRoomActorTriggerSprites[46],
-    &g_aRoomActorTriggerSprites[47],
-    &g_aRoomActorTriggerSprites[48],
-    &g_aRoomActorTriggerSprites[49],
-    &g_aRoomActorTriggerSprites[50],
-    &g_aRoomActorTriggerSprites[51],
-    &g_aRoomActorTriggerSprites[52],
-    &g_aRoomActorTriggerSprites[53],
-    &g_aRoomActorTriggerSprites[54],
-    &g_aRoomActorTriggerSprites[55],
-    &g_aRoomActorTriggerSprites[56],
-    &g_aRoomActorTriggerSprites[57],
-    &g_aRoomActorTriggerSprites[58],
-    &g_aRoomActorTriggerSprites[59],
-    &g_aRoomActorTriggerSprites[60],
-    &g_aRoomActorTriggerSprites[61],
-    &g_aRoomActorTriggerSprites[62],
-    &g_aRoomActorTriggerSprites[63],
-    &g_aRoomActorTriggerSprites[64],
-    &g_aRoomActorTriggerSprites[65],
-    &g_aRoomActorTriggerSprites[66],
-    &g_aRoomActorTriggerSprites[67],
-    &g_aRoomActorTriggerSprites[68],
-    &g_aRoomActorTriggerSprites[69],
-    &g_aRoomActorTriggerSprites[70],
-    &g_aRoomActorTriggerSprites[71],
-    &g_aRoomActorTriggerSprites[72],
-    &g_aRoomActorTriggerSprites[73],
-    &g_aRoomActorTriggerSprites[74],
-    &g_aRoomActorTriggerSprites[75],
-    &g_aRoomActorTriggerSprites[76],
-    &g_aRoomActorTriggerSprites[67],
-    &g_aRoomActorTriggerSprites[33],
-    &g_aRoomActorTriggerSprites[77],
-    &g_aRoomActorTriggerSprites[78],
-    &g_aRoomActorTriggerSprites[79],
+const ActorGfxRecord *const g_apWorldActorAnimFrames[91] = {
+    &g_aWorldActorSprites[0],
+    &g_aWorldActorSprites[1],
+    &g_aWorldActorSprites[2],
+    &g_aWorldActorSprites[3],
+    &g_aWorldActorSprites[3],
+    &g_aWorldActorSprites[4],
+    &g_aWorldActorSprites[6],
+    &g_aWorldActorSprites[7],
+    &g_aWorldActorSprites[8],
+    &g_aWorldActorSprites[9],
+    &g_aWorldActorSprites[10],
+    &g_aWorldActorSprites[11],
+    &g_aWorldActorSprites[12],
+    &g_aWorldActorSprites[13],
+    &g_aWorldActorSprites[14],
+    &g_aWorldActorSprites[14],
+    &g_aWorldActorSprites[15],
+    &g_aWorldActorSprites[16],
+    &g_aWorldActorSprites[17],
+    &g_aWorldActorSprites[18],
+    &g_aWorldActorSprites[19],
+    &g_aWorldActorSprites[20],
+    &g_aWorldActorSprites[21],
+    &g_aWorldActorSprites[22],
+    &g_aWorldActorSprites[23],
+    &g_aWorldActorSprites[24],
+    &g_aWorldActorSprites[25],
+    &g_aWorldActorSprites[26],
+    &g_aWorldActorSprites[27],
+    &g_aWorldActorSprites[28],
+    &g_aWorldActorSprites[27],
+    &g_aWorldActorSprites[26],
+    &g_aWorldActorSprites[27],
+    &g_aWorldActorSprites[36],
+    &g_aWorldActorSprites[36],
+    &g_aWorldActorSprites[31],
+    &g_aWorldActorSprites[32],
+    &g_aWorldActorSprites[37],
+    &g_aWorldActorSprites[38],
+    &g_aWorldActorSprites[33],
+    &g_aWorldActorSprites[33],
+    &g_aWorldActorSprites[34],
+    &g_aWorldActorSprites[29],
+    &g_aWorldActorSprites[29],
+    &g_aWorldActorSprites[30],
+    &g_aWorldActorSprites[35],
+    &g_aWorldActorSprites[39],
+    &g_aWorldActorSprites[39],
+    &g_aWorldActorSprites[39],
+    &g_aWorldActorSprites[40],
+    &g_aWorldActorSprites[40],
+    &g_aWorldActorSprites[41],
+    &g_aWorldActorSprites[42],
+    &g_aWorldActorSprites[44],
+    &g_aWorldActorSprites[45],
+    &g_aWorldActorSprites[46],
+    &g_aWorldActorSprites[47],
+    &g_aWorldActorSprites[48],
+    &g_aWorldActorSprites[49],
+    &g_aWorldActorSprites[50],
+    &g_aWorldActorSprites[51],
+    &g_aWorldActorSprites[52],
+    &g_aWorldActorSprites[53],
+    &g_aWorldActorSprites[54],
+    &g_aWorldActorSprites[55],
+    &g_aWorldActorSprites[56],
+    &g_aWorldActorSprites[57],
+    &g_aWorldActorSprites[58],
+    &g_aWorldActorSprites[59],
+    &g_aWorldActorSprites[60],
+    &g_aWorldActorSprites[61],
+    &g_aWorldActorSprites[62],
+    &g_aWorldActorSprites[63],
+    &g_aWorldActorSprites[64],
+    &g_aWorldActorSprites[65],
+    &g_aWorldActorSprites[66],
+    &g_aWorldActorSprites[67],
+    &g_aWorldActorSprites[68],
+    &g_aWorldActorSprites[69],
+    &g_aWorldActorSprites[70],
+    &g_aWorldActorSprites[71],
+    &g_aWorldActorSprites[72],
+    &g_aWorldActorSprites[73],
+    &g_aWorldActorSprites[74],
+    &g_aWorldActorSprites[75],
+    &g_aWorldActorSprites[76],
+    &g_aWorldActorSprites[67],
+    &g_aWorldActorSprites[33],
+    &g_aWorldActorSprites[77],
+    &g_aWorldActorSprites[78],
+    &g_aWorldActorSprites[79],
 };
 
-const void *const g_apRoomActorTriggerEffectData[91] = {
+const void *const g_apWorldActorEffectData[91] = {
     gActorPalette001Palette,
     gActorPalette002Palette,
     gActorPalette002Palette,
@@ -277,7 +277,7 @@ const void *const g_apRoomActorTriggerEffectData[91] = {
 
 // Velocity (whole pixels per frame) and the facing a pushed actor takes from
 // its pusher's Direction; diagonals push horizontally.
-const s32 g_aRoomActorTriggerPushVelocity[8][2] = {
+const s32 g_aWorldActorPushVelocity[8][2] = {
     { 0, -5 },  // Up
     { 5, 0 },  // UpRight
     { 5, 0 },  // Right
@@ -288,22 +288,22 @@ const s32 g_aRoomActorTriggerPushVelocity[8][2] = {
     { -5, 0 },  // UpLeft
 };
 
-const u32 g_adwRoomActorTriggerPushFacing[8] = {
+const u32 g_adwWorldActorPushFacing[8] = {
     DirectionUp, DirectionRight, DirectionRight, DirectionRight,
     DirectionDown, DirectionLeft, DirectionLeft, DirectionLeft,
 };
 
-// Particle sprites of BreakPropActor: 0-2 for kind 0, 3-5 for the other kinds; 6 is unused.
-const ActorGfxRecord g_RoomPropParticleGfx0 = { (void *)gOverworldSpellEffect021Tiles, (void *)gOverworldSpellEffect021Frames };
-const ActorGfxRecord g_RoomPropParticleGfx1 = { (void *)gOverworldSpellEffect022Tiles, (void *)gOverworldSpellEffect022Frames };
-const ActorGfxRecord g_RoomPropParticleGfx2 = { (void *)gOverworldSpellEffect023Tiles, (void *)gOverworldSpellEffect023Frames };
-const ActorGfxRecord g_RoomPropParticleGfx3 = { (void *)gOverworldSpellEffect024Tiles, (void *)gOverworldSpellEffect024Frames };
-const ActorGfxRecord g_RoomPropParticleGfx4 = { (void *)gOverworldSpellEffect025Tiles, (void *)gOverworldSpellEffect025Frames };
-const ActorGfxRecord g_RoomPropParticleGfx5 = { (void *)gOverworldSpellEffect026Tiles, (void *)gOverworldSpellEffect026Frames };
-const ActorGfxRecord g_RoomPropParticleGfx6 = { (void *)gOverworldSpellEffect027Tiles, (void *)gOverworldSpellEffect027Frames };
+// Particle sprites of BreakWorldActor: 0-2 for kind 0, 3-5 for the other kinds; 6 is unused.
+const ActorGfxRecord g_WorldActorParticleGfx0 = { (void *)gOverworldSpellEffect021Tiles, (void *)gOverworldSpellEffect021Frames };
+const ActorGfxRecord g_WorldActorParticleGfx1 = { (void *)gOverworldSpellEffect022Tiles, (void *)gOverworldSpellEffect022Frames };
+const ActorGfxRecord g_WorldActorParticleGfx2 = { (void *)gOverworldSpellEffect023Tiles, (void *)gOverworldSpellEffect023Frames };
+const ActorGfxRecord g_WorldActorParticleGfx3 = { (void *)gOverworldSpellEffect024Tiles, (void *)gOverworldSpellEffect024Frames };
+const ActorGfxRecord g_WorldActorParticleGfx4 = { (void *)gOverworldSpellEffect025Tiles, (void *)gOverworldSpellEffect025Frames };
+const ActorGfxRecord g_WorldActorParticleGfx5 = { (void *)gOverworldSpellEffect026Tiles, (void *)gOverworldSpellEffect026Frames };
+const ActorGfxRecord g_WorldActorParticleGfx6 = { (void *)gOverworldSpellEffect027Tiles, (void *)gOverworldSpellEffect027Frames };
 
 // One animation block per kind.
-const u8 g_abRoomActorTriggerAnimData[91][90] = {
+const u8 g_abWorldActorAnimData[91][90] = {
     {  // 0
         // 0
         ANIM_FRAME(0, 0), ANIM_END,
@@ -822,5 +822,5 @@ const u8 g_abRoomActorTriggerAnimData[91][90] = {
 };
 
 // Frame and animation start command for each Direction.
-const u8 g_abRoomActorTriggerFacingFrames[8] = { 4, 3, 2, 1, 0, 1, 2, 3 };
-const u8 g_abRoomActorTriggerFacingAnimStart[8] = { 5, 5, 5, 2, 2, 2, 2, 5 };
+const u8 g_abWorldActorFacingFrames[8] = { 4, 3, 2, 1, 0, 1, 2, 3 };
+const u8 g_abWorldActorFacingAnimStart[8] = { 5, 5, 5, 2, 2, 2, 2, 5 };

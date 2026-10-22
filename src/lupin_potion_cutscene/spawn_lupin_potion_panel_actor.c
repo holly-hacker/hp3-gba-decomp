@@ -6,7 +6,7 @@
 // OBJ palette 1.
 Actor *SpawnLupinPotionPanelActor(s32 kind)
 {
-    Actor *pActor = AllocActorOfType(6);
+    Actor *pActor = AllocActorOfType(RoomActorType_Npc);
 
     if (pActor != NULL)
     {

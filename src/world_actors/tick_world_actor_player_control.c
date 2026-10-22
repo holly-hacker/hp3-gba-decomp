@@ -6,9 +6,9 @@
 #include "scroll.h"
 #include "world_actors.h"
 
-// Action state 33: the D-pad drives the prop while it stays on screen; A or B returns
+// Action state 33: the D-pad drives the world actor while it stays on screen; A or B returns
 // control to the player.
-void TickPropActorPlayerControl(Actor *pActor)
+void TickWorldActorPlayerControl(Actor *pActor)
 {
     u32 stopped;
     s8 direction;
@@ -59,6 +59,6 @@ void TickPropActorPlayerControl(Actor *pActor)
         SetActorActionSubState(pActor, 2);
         SetActorActionState(pActor, 0);
         SetActorActionState(g_pPlayerActor, 0x21);
-        ROOM_ACTOR_TRIGGER_STATE(pActor)->b6A = 0;
+        WORLD_ACTOR_STATE(pActor)->b6A = 0;
     }
 }

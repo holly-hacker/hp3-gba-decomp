@@ -246,7 +246,7 @@ typedef struct ActorAnimState {
 
 typedef union __attribute__((packed)) ActorScriptState {
     u16 wScriptPc;
-    u16 wDoorDestinationRoom;  // room actor types 2 and 13
+    u16 wDoorDestinationRoom;  // RoomActorType_Door and RoomActorType_PortraitDoor
     u16 wFlameOutTicks;        // flame pillars: ticks the flame stays out
     struct __attribute__((packed)) {
         u8 bAttackOutcomeState;
@@ -419,7 +419,8 @@ typedef struct Actor {
             u8 pad_64;
             u8 bRequireAPress;      // 0x65
             u8 bChain;              // 0x66, runs instead of leaving when nonzero
-        } door;                     // room actor types 2 and 13; see scriptState.wDoorDestinationRoom
+        } door;                     // RoomActorType_Door and RoomActorType_PortraitDoor; see
+                                    // scriptState.wDoorDestinationRoom
         struct __attribute__((packed)) {
             u16 wLitTicks;          // 0x62, ticks the flame burns
             union __attribute__((packed)) {
@@ -430,9 +431,9 @@ typedef struct Actor {
                 } rows;
             } touch;                // 0x64, RespawnGroupAndRunChain arguments run when
                                     // the player touches the flame
-        } flamePillar;              // room actor type 11; see TickFlamePillarActor
-        u8 bPropBlocksPlayer_candidate;  // 0x62, RoomActorType_ScriptedTrigger: see
-                                         // HandlePlayerPropCollision
+        } flamePillar;              // RoomActorType_FlamePillar; see TickFlamePillarActor
+        u8 bWorldActorBlocksPlayer_candidate;  // 0x62, RoomActorType_WorldActor: see
+                                               // HandlePlayerWorldActorCollision
         ActorEffectState effect;
         ActorChestState chest;
     } modeState;
@@ -544,25 +545,32 @@ typedef struct Actor {
     s8 bSpriteVariantIndex;       // 0x125
 } Actor;
 
-// wActorType values used by room/overworld actor spawners (room-tile
-// constructor dispatch at g_apRoomActorConstructors, 0x0804C054). Several
-// constructor slots (1-4, 6, 7, 13) forward a per-instance type value already
-// stored in the room's own tile record instead of a fixed constant, so this
-// list only covers the values actually hardcoded in code.
+// wActorType values of overworld actors. 0-13 are the room tile types, the
+// g_apRoomActorConstructors index (type 0's slot is unused); constructors 1-4, 6, 7
+// and 13 copy the type from the tile record.
 typedef enum {
     RoomActorType_Player           = 0,     // SpawnPlayerActor
-    RoomActorType_ScriptedTrigger  = 5,     // sub-behavior picked by a separate per-instance kind field
+    RoomActorType_TileAnimation    = 1,     // SpawnRoomTileAnimationActor_candidate
+    RoomActorType_Door             = 2,     // SpawnDoorActor
+    RoomActorType_Switch           = 3,     // SpawnSwitchActor
+    RoomActorType_TriggerZone      = 4,     // SpawnTriggerZoneActor
+    RoomActorType_WorldActor       = 5,     // SpawnWorldActor; sub-behavior picked by a per-instance kind field
+    RoomActorType_Npc              = 6,     // SpawnNpcActor; also the cutscene cast actors
+    RoomActorType_TriggerRect      = 7,     // SpawnTriggerRectActor
     RoomActorType_PushResetButton  = 8,     // SpawnPushResetButtonActor
     RoomActorType_Chest            = 9,     // SpawnChestActor
     RoomActorType_SpongifyPad      = 0xA,   // SpawnSpongifyPadActor
     RoomActorType_FlamePillar      = 0xB,   // SpawnFlamePillarActor
     RoomActorType_RaisingPlatform  = 0xC,   // SpawnRaisingPlatformActor
+    RoomActorType_PortraitDoor     = 0xD,   // SpawnPortraitDoorActor
     RoomActorType_ScriptEffect     = 0xE,   // SpawnScriptEffectActor, e.g. delayed chain runs;
                                               // reuses the same value as BattleActorType_FighterSlot0
                                               // since room/overworld and battle never run concurrently
     RoomActorType_FieldSpellEffect = 0xF,   // SpawnFieldSpellEffect; wCharacterId_candidate is the FieldSpell
     RoomActorType_WanderingMonster = 0x10,  // SpawnWanderingMonsterActor; reuses
                                               // BattleActorType_FighterSlot0 + 2 for the same reason
+    RoomActorType_Shadow           = 0x11,  // the shadow under an NPC or cutscene cast actor
+    RoomActorType_PartyFollower    = 0x12,  // SpawnPartyFollowerActor
     RoomActorType_SpongifyPadEffect = 0x15, // SpawnSpongifyPadEffect
 } RoomActorType;
 

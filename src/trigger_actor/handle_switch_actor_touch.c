@@ -32,7 +32,7 @@ void HandleSwitchActorTouch(Actor *pSelf, Actor *pOther)
     }
     else if (variant == 0)
     {
-        if (pOther->wActorType == RoomActorType_ScriptedTrigger)
+        if (pOther->wActorType == RoomActorType_WorldActor)
         {
             pSelf->bActionState = 4;
             pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;

@@ -14,7 +14,7 @@ void ResolveActorTerrain(Actor *actor)
     {
         g_adwEdgeEndpointTypes[0] = 0xFF;
         type = GetActorTerrainType(actor, &box);
-        if (actor->wActorType == 0xF && IsBlockingCollisionType(type) && (s32)actor->vel.y <= 0)
+        if (actor->wActorType == RoomActorType_FieldSpellEffect && IsBlockingCollisionType(type) && (s32)actor->vel.y <= 0)
         {
             actor->posPrev.y += 0x180000;
             type = GetActorTerrainType(actor, &box);

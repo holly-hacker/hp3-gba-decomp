@@ -6,7 +6,7 @@
 // Spawns the semi-transparent drop shadow that follows pOwner on its draw layer.
 Actor *SpawnShadowActor(Actor *pOwner)
 {
-    Actor *pShadow = AllocActorOfType(0x11);
+    Actor *pShadow = AllocActorOfType(RoomActorType_Shadow);
 
     pShadow->bFacing = 0;
     pShadow->oam.objMode = 0;

@@ -42,7 +42,7 @@ u32 TryNudgeActor(Actor *actor, PixelVector delta)
     actor->posPrev.x += delta.x;
     actor->posPrev.y += delta.y;
     type = GetActorTerrainType(actor, &box);
-    if (actor->wActorType == 0xF && IsBlockingTerrainType(type) && (s32)actor->vel.y <= 0)
+    if (actor->wActorType == RoomActorType_FieldSpellEffect && IsBlockingTerrainType(type) && (s32)actor->vel.y <= 0)
     {
         actor->posPrev.y += 0x180000;
         type = GetActorTerrainType(actor, &box);

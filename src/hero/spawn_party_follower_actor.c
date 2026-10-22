@@ -12,7 +12,7 @@ Actor *SpawnPartyFollowerActor(u8 characterId)
     Actor *pActor;
     const RoomEntryPoint *pEntry;
 
-    pActor = AllocActorOfType(0x12);
+    pActor = AllocActorOfType(RoomActorType_PartyFollower);
     pEntry = FindRoomEntryPoint(g_abRoomScriptExitParams_candidate[0], 0);
     SnapActorPosition(pActor, g_pPlayerActor->pos.x, g_pPlayerActor->pos.y);
     pActor->bFacing = pEntry->bFacing;

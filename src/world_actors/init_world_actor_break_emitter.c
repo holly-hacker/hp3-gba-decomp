@@ -3,10 +3,10 @@
 #include "particles.h"
 #include "world_actors.h"
 
-// Debris burst that follows a breaking prop.
-void InitPropBreakEmitter(ParticleEmitter *pEmitter, Actor *pProp)
+// Debris burst that follows a breaking world actor.
+void InitWorldActorBreakEmitter(ParticleEmitter *pEmitter, Actor *pWorldActor)
 {
-    pEmitter->pTarget = pProp;
+    pEmitter->pTarget = pWorldActor;
     pEmitter->wSpawnPeriod = 1;
     pEmitter->wLifetimeBase = 10;
     pEmitter->wFlags = ParticleEmitterFlagRelease | ParticleEmitterFlagAnimTicksFixed

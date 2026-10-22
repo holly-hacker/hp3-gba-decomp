@@ -104,7 +104,7 @@ void TickFieldSpellEffect(Actor *effect)
             SetActorAnimFrame(g_pPlayerActor, g_abLumosPlayerStandFrames[g_pPlayerActor->bFacing]);
             g_pPlayerActor->dwFlags |= ActorFlagVisible;
 
-            g_pFieldSpellCompanionActor = AllocActorOfType(0xF);
+            g_pFieldSpellCompanionActor = AllocActorOfType(RoomActorType_FieldSpellEffect);
             g_pFieldSpellCompanionActor->pLinkedActor_candidate = effect->pLinkedActor_candidate;
             GetActorFlippedAnchor(g_pFieldSpellCompanionActor->pLinkedActor_candidate, 0, &anchor);
             SnapActorPosition(g_pFieldSpellCompanionActor,
