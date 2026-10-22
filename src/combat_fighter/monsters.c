@@ -21,7 +21,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 100,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 1: Emerald Fire Crab
         .wHp = 50,
@@ -36,7 +35,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 30,
         .bSpecialChance = 100,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 2: Sapphire Fire Crab
         .wHp = 120,
@@ -51,7 +49,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 50,
         .bSpecialChance = 100,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 3: Cornish Pixie
         .wHp = 28,
@@ -66,7 +63,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 100,
         .bSpecialId = 4,
-        .wPad_0x16 = 0,
     },
     { // 4: Rat
         .wHp = 18,
@@ -81,7 +77,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 2,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 5: Albino Rat
         .wHp = 25,
@@ -96,7 +91,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 5,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 6: Plague Rat
         .wHp = 35,
@@ -111,7 +105,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 5,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 7: Clabbert
         .wHp = 80,
@@ -126,7 +119,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 22,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 8: Suit of Armor (Footman)
         .wHp = 40,
@@ -141,7 +133,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 14,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 9: Suit of Armor (Cavalier)
         .wHp = 80,
@@ -156,7 +147,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 30,
         .bSpecialChance = 10,
         .bSpecialId = 60,
-        .wPad_0x16 = 0,
     },
     { // 10: Suit of Armor (Paladin)
         .wHp = 35,
@@ -171,7 +161,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 11: Suit of Armor (Squire)
         .wHp = 65,
@@ -186,7 +175,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 20,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 12: Suit of Armor (Swordsman)
         .wHp = 180,
@@ -201,7 +189,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 50,
         .bSpecialChance = 20,
         .bSpecialId = 60,
-        .wPad_0x16 = 0,
     },
     { // 13: Suit of Armor (Crusader)
         .wHp = 75,
@@ -216,7 +203,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 30,
         .bSpecialChance = 20,
         .bSpecialId = 60,
-        .wPad_0x16 = 0,
     },
     { // 14: Suit of Armor (Knight)
         .wHp = 160,
@@ -231,7 +217,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 40,
         .bSpecialChance = 35,
         .bSpecialId = 60,
-        .wPad_0x16 = 0,
     },
     { // 15: Funnelweb Spider
         .wHp = 16,
@@ -246,7 +231,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 13,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 16: Brown Recluse Spider
         .wHp = 23,
@@ -261,7 +245,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 42,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 17: Large Spider
         .wHp = 45,
@@ -276,7 +259,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 25,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 18: Redback Spider
         .wHp = 67,
@@ -291,7 +273,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 34,
         .bSpecialChance = 25,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 19: Giant Spider
         .wHp = 40,
@@ -306,7 +287,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 6,
         .bSpecialChance = 20,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 20: Cocoon Spider
         .wHp = 100,
@@ -321,7 +301,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 25,
         .bSpecialChance = 20,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 21: Whitetail Spider
         .wHp = 130,
@@ -336,7 +315,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 35,
         .bSpecialChance = 40,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 22: Flobberworm
         .wHp = 45,
@@ -351,7 +329,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 40,
         .bSpecialChance = 100,
         .bSpecialId = 13,
-        .wPad_0x16 = 0,
     },
     { // 23: Snail
         .wHp = 80,
@@ -366,7 +343,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 20,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 24: Large Orange Snail
         .wHp = 100,
@@ -381,7 +357,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 16,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 25: Flailtail Snail
         .wHp = 160,
@@ -396,7 +371,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 32,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 26: Bat
         .wHp = 16,
@@ -411,7 +385,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 100,
         .bSpecialId = 16,
-        .wPad_0x16 = 0,
     },
     { // 27: Fruitbat
         .wHp = 22,
@@ -426,7 +399,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 100,
         .bSpecialId = 16,
-        .wPad_0x16 = 0,
     },
     { // 28: Mortis Bat
         .wHp = 40,
@@ -441,7 +413,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 10,
         .bSpecialChance = 100,
         .bSpecialId = 16,
-        .wPad_0x16 = 0,
     },
     { // 29: Dragonfly
         .wHp = 44,
@@ -456,7 +427,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 12,
         .bSpecialChance = 100,
         .bSpecialId = 17,
-        .wPad_0x16 = 0,
     },
     { // 30: Imperial Dragonfly
         .wHp = 87,
@@ -471,7 +441,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 12,
         .bSpecialChance = 100,
         .bSpecialId = 17,
-        .wPad_0x16 = 0,
     },
     { // 31: Horklump
         .wHp = 75,
@@ -486,7 +455,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 18,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 32: Snake
         .wHp = 55,
@@ -501,7 +469,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 15,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 33: Spitting Snake
         .wHp = 140,
@@ -516,7 +483,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 40,
         .bSpecialChance = 25,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 34: Wasp
         .wHp = 37,
@@ -531,7 +497,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 13,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 35: Tarantula Hawk Wasp
         .wHp = 78,
@@ -546,7 +511,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 25,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 36: Bowtruckle
         .wHp = 45,
@@ -561,7 +525,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 20,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 37: Oaken Bowtruckle
         .wHp = 150,
@@ -576,7 +539,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 40,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 38: Doxy
         .wHp = 40,
@@ -591,7 +553,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 12,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 39: Doxy Queen
         .wHp = 200,
@@ -606,7 +567,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 34,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 40: Hinkypunk
         .wHp = 130,
@@ -621,7 +581,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 14,
         .bSpecialChance = 100,
         .bSpecialId = 57,
-        .wPad_0x16 = 0,
     },
     { // 41: Gytrash
         .wHp = 55,
@@ -636,7 +595,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 10,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 42: Grindylow
         .wHp = 80,
@@ -651,7 +609,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 14,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 43: Red Cap
         .wHp = 20,
@@ -666,7 +623,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 44: Armored Red Cap
         .wHp = 160,
@@ -681,7 +637,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 34,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 45: Salamander
         .wHp = 45,
@@ -696,7 +651,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 12,
         .bSpecialChance = 100,
         .bSpecialId = 58,
-        .wPad_0x16 = 0,
     },
     { // 46: Amazonian Salamander
         .wHp = 100,
@@ -711,7 +665,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 17,
         .bSpecialChance = 100,
         .bSpecialId = 58,
-        .wPad_0x16 = 0,
     },
     { // 47: Peruvian Salamander
         .wHp = 160,
@@ -726,7 +679,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 24,
         .bSpecialChance = 100,
         .bSpecialId = 58,
-        .wPad_0x16 = 0,
     },
     { // 48: Charmed Skeleton
         .wHp = 80,
@@ -741,7 +693,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 40,
         .bSpecialChance = 100,
         .bSpecialId = 59,
-        .wPad_0x16 = 0,
     },
     { // 49: Jinxed Skeleton
         .wHp = 125,
@@ -756,7 +707,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 40,
         .bSpecialChance = 100,
         .bSpecialId = 59,
-        .wPad_0x16 = 0,
     },
     { // 50: Tree Frog
         .wHp = 55,
@@ -771,7 +721,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 14,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 51: Wide-mouth Toad
         .wHp = 75,
@@ -786,7 +735,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 24,
         .bSpecialChance = 25,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 52: Bullfrog
         .wHp = 145,
@@ -801,7 +749,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 34,
         .bSpecialChance = 25,
         .bSpecialId = 27,
-        .wPad_0x16 = 0,
     },
     { // 53: Flesh-eating Slug (not in game, needs to be in file for coders - no need to translate)
         .wHp = 50,
@@ -816,7 +763,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 54: Whomping Willow
         .wHp = 650,
@@ -831,7 +777,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 60,
         .bSpecialChance = 100,
         .bSpecialId = 61,
-        .wPad_0x16 = 0,
     },
     { // 55: Forest Troll
         .wHp = 800,
@@ -846,7 +791,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 90,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 56: River Troll
         .wHp = 375,
@@ -861,7 +805,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 100,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 57: Venemous Tentacula
         .wHp = 290,
@@ -876,7 +819,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 40,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 58: 'The Monster Book of Monsters'
         .wHp = 25,
@@ -891,7 +833,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 8,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 59: Giant Rat
         .wHp = 45,
@@ -906,7 +847,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 10,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 60: Crabbe
         .wHp = 90,
@@ -921,7 +861,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 100,
         .bSpecialId = 54,
-        .wPad_0x16 = 0,
     },
     { // 61: Draco
         .wHp = 975,
@@ -936,7 +875,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 150,
         .bSpecialChance = 100,
         .bSpecialId = 56,
-        .wPad_0x16 = 0,
     },
     { // 62: Goyle
         .wHp = 90,
@@ -951,7 +889,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 100,
         .bSpecialId = 55,
-        .wPad_0x16 = 0,
     },
     { // 63: Lupin Werewolf
         .wHp = 600,
@@ -966,7 +903,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 400,
         .bSpecialChance = 30,
         .bSpecialId = 60,
-        .wPad_0x16 = 0,
     },
     { // 64: Snake
         .wHp = 30,
@@ -981,7 +917,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 4,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 65: Brown Recluse Spider
         .wHp = 20,
@@ -996,7 +931,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 100,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 66: 'The Monster Book of Monsters'
         .wHp = 180,
@@ -1011,7 +945,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 8,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 67: 'The Monster Book of Monsters'
         .wHp = 575,
@@ -1026,7 +959,6 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 8,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
     { // 68: Native of Fiji. Has a heavily jeweled shell.
         .wHp = 25,
@@ -1041,6 +973,5 @@ const MonsterTableRow MonsterTable[] = {
         .wRewardGold = 8,
         .bSpecialChance = 0,
         .bSpecialId = 0,
-        .wPad_0x16 = 0,
     },
 };

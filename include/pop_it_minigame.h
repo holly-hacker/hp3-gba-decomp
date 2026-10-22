@@ -32,7 +32,7 @@ typedef struct {
     u32 dwVariant;          // 0x04, idle animation stream; see SetWizardCrackerPopItCrackerAnim
     u32 dwCount;            // 0x08, crackers of this kind dealt
     u32 dwPendingVariant;   // 0x0C, variant to switch to when nTimer runs out; 0xFF none
-    s32 nUnk10;             // 0x10, 2-6 for a dealt kind, else -1; never read
+    s32 nDealtMark;         // 0x10, -1 until the kind is first dealt, then 2-6; only the -1 test reads it
 } WizardCrackerPopItKindState;  // 0x14
 
 // Allocated by InitializeWizardCrackerPopItMinigame, freed by

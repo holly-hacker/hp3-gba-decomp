@@ -135,7 +135,7 @@ typedef struct FightState {
     /*0x106A*/ u16 wNextFighterTurnKey_candidate;  // nFaintedFlag of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder_candidate
     /*0x106C*/ u8 bActiveFighterIndex;
     /*0x106D*/ u8 bMenuFighterIndex;
-    /*0x106E*/ u8 bUnk106E;    // zeroed by InitializeBattle, only on a fresh (non-resumed) battle
+    /*0x106E*/ u8 bUnused;     // zeroed by InitializeBattle on a fresh battle, never read
     /*0x106F*/ u8 bFighterCount;
     /*0x1070*/ u8 bMenuScreen;  // TickBattleMenuInput's own screen selector; 0, 0xa, and bit 0x80 all mean no active screen
     /*0x1074*/ u32 dwStatsTextTileCursor;  // DrawString tile cursor of the fighter and enemy stats panels

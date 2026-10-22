@@ -64,7 +64,7 @@ void InitializeBattle(void)
         else
             g_pFightState->bEnemyScalePercent_candidate = 0x20;
 
-        g_pFightState->bUnk106E = 0;
+        g_pFightState->bUnused = 0;
         InitBattleDisplay();
         SetupBattleRoster();
         uVar7 = GetBattleFloorGraphic();

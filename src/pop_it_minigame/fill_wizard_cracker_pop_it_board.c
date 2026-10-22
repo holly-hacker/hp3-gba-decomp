@@ -25,15 +25,15 @@ void FillWizardCrackerPopItBoard(s32 kindCount)
         g_pWizardCrackerPopIt->aKinds[i].nTimer = Mt19937RandRange(20, 40);
         g_pWizardCrackerPopIt->aKinds[i].dwVariant = 0;
         g_pWizardCrackerPopIt->aKinds[i].dwPendingVariant = 0xFF;
-        g_pWizardCrackerPopIt->aKinds[i].nUnk10 = -1;
+        g_pWizardCrackerPopIt->aKinds[i].nDealtMark = -1;
     }
 
     for (i = 0; i < ARRAY_COUNT(g_pWizardCrackerPopIt->apCrackers); i++)
     {
         kind = Mt19937RandMax(kindCount - 1);
-        if (g_pWizardCrackerPopIt->aKinds[kind].nUnk10 == -1)
+        if (g_pWizardCrackerPopIt->aKinds[kind].nDealtMark == -1)
         {
-            g_pWizardCrackerPopIt->aKinds[kind].nUnk10 = dealtKinds % 5 + 2;
+            g_pWizardCrackerPopIt->aKinds[kind].nDealtMark = dealtKinds % 5 + 2;
             dealtKinds++;
         }
 

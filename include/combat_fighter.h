@@ -19,7 +19,7 @@ typedef struct MonsterTableRow {
     u16 wRewardGold;         // 0x12
     u8 bSpecialChance;       // 0x14, not copied to BattleFighter
     u8 bSpecialId;           // 0x15, not copied to BattleFighter
-    u16 wPad_0x16;           // 0x16
+    u16 wUnused;             // 0x16, zero in every row
 } MonsterTableRow;
 
 // One per-level row of Harry/Ron/Hermione's level-up stat tables, 12 bytes

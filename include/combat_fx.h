@@ -40,10 +40,10 @@ typedef struct QueuedBgLoad {
 // One 0x10-byte background record read by script opcodes 0x7F, 0x8A and 0x8B.
 typedef struct EffectBgRecord {
     void *pGfx;         // 0x00
-    u16 wUnk04;         // 0x04
-    u16 wUnk06;         // 0x06
+    u16 wScrollX;       // 0x04, initial BG scroll
+    u16 wScrollY;       // 0x06
     void *pControls;    // 0x08
-    u16 wUnk0C;         // 0x0C
+    u16 wTileOffset;    // 0x0C, passed to QueueBattleBgLoad
 } EffectBgRecord;
 
 // What EffectBgRecord::pControls points at: an 8-byte control block, then streams.

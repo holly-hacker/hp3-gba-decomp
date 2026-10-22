@@ -675,8 +675,8 @@ void InterpretActorScript(Actor *actor)
             {
                 const void *pControls;
 
-                QueueBattleBgLoad(args[1], g_aEffectBgRecords_candidate[args[2]].pGfx, g_aEffectBgRecords_candidate[args[2]].wUnk0C, args[3], &g_pFightState->effectBgTilemap);
-                SetBgScrollFixed(args[1], g_aEffectBgRecords_candidate[args[2]].wUnk04 << 16, g_aEffectBgRecords_candidate[args[2]].wUnk06 << 16);
+                QueueBattleBgLoad(args[1], g_aEffectBgRecords_candidate[args[2]].pGfx, g_aEffectBgRecords_candidate[args[2]].wTileOffset, args[3], &g_pFightState->effectBgTilemap);
+                SetBgScrollFixed(args[1], g_aEffectBgRecords_candidate[args[2]].wScrollX << 16, g_aEffectBgRecords_candidate[args[2]].wScrollY << 16);
                 g_effectStaging.bBgEffectId_candidate = args[2];
                 pControls = g_aEffectBgRecords_candidate[args[2]].pControls;
                 if (pControls != NULL)
