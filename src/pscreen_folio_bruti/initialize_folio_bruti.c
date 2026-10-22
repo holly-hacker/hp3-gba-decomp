@@ -19,7 +19,7 @@ void InitializeFolioBruti(void)
     g_FolioBrutiState.pCursor = NULL;
     for (i = 0; i < ARRAY_COUNT(g_FolioBrutiState.apSpellDots); i++)
         g_FolioBrutiState.apSpellDots[i] = NULL;
-    g_FolioBrutiState.dwUnk0 = 0;
+    g_FolioBrutiState.dwDotsOrbiting = 0;
 
     // Coming from battle, start on the monster being fought.
     if (g_PrevGameModeStackContext.dwCurrentGameMode == Battle)

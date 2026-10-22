@@ -12,14 +12,6 @@ typedef struct {
     u32 dwImmediate;   // 0x08: nonzero pushes the mode right away with a screen transition
 } ListMenuEntry;
 
-// One 16-byte record of a list menu's row actors, read by SetActorSprite.
-typedef struct {
-    void *pTileGfx;
-    void *pFrameData;            // 0x04
-    const ObjPalette *pPalette;  // 0x08
-    u32 dwUnkC;
-} ListMenuRowActor;
-
 // Layout of a list menu, 0x24 bytes. Rows are drawn at base + row * stride.
 typedef struct {
     u16 wTitleStringId;
@@ -30,7 +22,7 @@ typedef struct {
     const ListMenuEntry *pEntries;  // 0x10
     u16 wRowActorCount;     // 0x14: one actor per row, created from pRowActors
     ShortPoint rowActorOffset;  // 0x18
-    const ListMenuRowActor *pRowActors;  // 0x1C
+    const ActorAssetRecord *pRowActors;  // 0x1C
     ShortPoint cursorOffset;    // 0x20
 } ListMenuDefinition;
 
@@ -47,7 +39,7 @@ extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);
 
 extern const ListMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38
-extern const ListMenuRowActor g_aInGameMenuRowActors[6];  // 0x08068C80
+extern const ActorAssetRecord g_aInGameMenuRowActors[6];  // 0x08068C80
 extern const ListMenuDefinition g_InGameMenuDefinition;  // 0x08068CE0
 
 extern void UpdateInGameMenu(void);

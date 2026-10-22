@@ -30,8 +30,7 @@ extern CameraEffect g_aCameraEffects_candidate[];
 // screen on (16.16 world coordinates). Follows pTarget unless wPinned is nonzero.
 typedef struct CameraFocusSlot {
     FixedPoint focus;          // 0x00
-    FixedPoint unk08;          // 0x08, zeroed by ResetCameraFocusSlot; no other access found
-    FixedPoint unk10;          // 0x10, zeroed by ResetCameraFocusSlot; no other access found
+    FixedPoint aUnused[2];     // 0x08, zeroed by ResetCameraFocusSlot; no other access found
     FixedPoint latched;        // 0x18, copy of the focus point
     IntPoint scrollMin;        // 0x20, room scroll bounds; only slot 0's are used
     IntPoint scrollMax;        // 0x28

@@ -7,8 +7,7 @@
 
 // Chest record. wFlagId is the chest's bit in g_abOpenedChestFlags.
 typedef struct RoomActorRecordChest {
-    u16 wActorType;
-    u16 wUnk2;
+    u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
     u16 wFlagId;        // 0x08

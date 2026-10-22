@@ -7,8 +7,7 @@
 
 // Static tile record of actorType 12, returned by GetRoomActorStaticRecord.
 typedef struct RoomActorRecordRaisingPlatform {
-    u16 wActorType;
-    u16 wUnk2;
+    u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
     u8 abArg8[3];

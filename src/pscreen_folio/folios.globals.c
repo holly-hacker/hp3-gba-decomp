@@ -7,7 +7,7 @@ const ListMenuEntry g_aFoliosEntries[2] = {
     { FolioBruti,       0x8F4, 1 },  // "Folio Bruti"
 };
 
-const ListMenuRowActor g_aFoliosRowActors[2] = {
+const ActorAssetRecord g_aFoliosRowActors[2] = {
     { (void *)gInGameMenuIconFoliosTiles, (void *)gInGameMenuIconFoliosFrames, (const ObjPalette *)gInGameMenuIconFoliosPalette, 0 },
     { (void *)gInGameMenuIconFoliosTiles, (void *)gInGameMenuIconFoliosFrames, (const ObjPalette *)gInGameMenuIconFoliosPalette, 0 },
 };

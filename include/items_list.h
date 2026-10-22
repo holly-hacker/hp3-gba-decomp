@@ -27,7 +27,7 @@ typedef struct ItemListState {
     u32 dwScrolledUp;                                // 0x00C: a held Up continues the scroll
     Actor *pCursor;                                  // 0x010
     u32 dwState;                                     // 0x014: ItemListPhase
-    u32 dwUnk18;                                     // 0x018
+    u32 dwUnused;                                    // 0x018: no access found
     ActorGfxRecord aIconGfx[ITEM_LIST_SLOT_COUNT];   // 0x01C: indexed by abIconGfxSlot
     u8 abIconGfxUsed[ITEM_LIST_SLOT_COUNT];          // 0x044
     u32 adwItems[ITEM_LIST_MAX_ITEMS];               // 0x04C

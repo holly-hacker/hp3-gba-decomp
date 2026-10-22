@@ -34,7 +34,7 @@ typedef struct {
     SaveLanguage language;  // 0x8
     u8 bMusicVolume;      // 0x9: options-menu Music volume, 0-10
     u8 bSoundVolume;      // 0xA: options-menu Sound volume, 0-10
-    u8 abUnknown0[2];     // 0xB-0xC: unused padding (ValidateSaveHeader doesn't check it)
+    u8 abUnused[2];       // 0xB-0xC: never read; the default header holds { 1, 0 }
     SaveHeaderFlags bHeaderFlags;  // 0xD
     u16 wChecksum;        // 0xE-0xF: -Sum16(header, 16)
 } SaveHeader;

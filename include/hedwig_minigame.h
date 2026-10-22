@@ -36,8 +36,8 @@ typedef struct {
     Actor *apDroppings[OWL_CARE_KIT_MAX_DROPPINGS];  // 0x0C
     u8 abShownMeters[3];          // 0xD4; meter values drawn, all start at 250
     u8 abUnmapped_D7[1];
-    s32 dwUnkD8;                  // 0xD8
-    u8 bUnkDC;                    // 0xDC
+    s32 nUnused;                  // 0xD8; cleared on entry, never read
+    u8 bUnused;                   // 0xDC; cleared on entry, never read
     u8 bMetersRedrawn;            // 0xDD; set when a meter bar is redrawn
     u8 bPanel;                    // 0xDE; OwlCareKitPanel
     u8 bDroppingCount;            // 0xDF; apDroppings in use

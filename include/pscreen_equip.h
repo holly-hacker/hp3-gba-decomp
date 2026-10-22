@@ -5,13 +5,13 @@
 
 // Status/Equip item select (mode 0x0F).
 typedef struct {
-    u32 dwUnk0;                // 0x00
+    u32 dwUnused1;             // 0x00: cleared on entry, never read
     GameMode nextMode;         // 0x04: mode pushed once the fade-out finishes
     u32 dwTextCursor;          // 0x08: text tile cursor after the stat labels
-    u32 dwUnkC;                // 0x0C
+    u32 dwUnused2;             // 0x0C: no access found
     u32 dwHasItems;            // 0x10: nonzero when an item list was built
     u32 dwItemListOpen;        // 0x14: nonzero while the item list is open
-    u32 dwUnk18;               // 0x18
+    u32 dwUnused3;             // 0x18: cleared on entry, never read
     Actor *apStatArrows[3];    // 0x1C: Def/Agi/M.Def up/down arrows
     u16 awSavedPalette[3];     // 0x28: BG palette colors 4-6, restored on exit
 } StatusEquipItemSelectState;

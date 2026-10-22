@@ -7,7 +7,7 @@
 // player steers; only slot 0 is ever populated.
 typedef struct OverworldControlSlot {
     Actor *pActor;
-    u8 aUnknown4[12];
+    u8 abUnused[12];  // no access found
 } OverworldControlSlot;
 
 typedef struct OverworldControlState {

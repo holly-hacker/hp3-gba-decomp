@@ -37,7 +37,7 @@ Actor *SpawnChestActor(u8 bColumn, u8 bRow)
     pActor->pfnTick = TickChestActor;
     pActor->apfnCollisionCallback[0] = HandleChestTouch;
     SetActorPendingPalette(pActor, gChestPalette);
-    pActor->modeState.chest.bUnk67 = 0;
+    pActor->modeState.chest.bUnused = 0;
     pActor->modeState.chest.bUnchaining = 0;
 
     // Kind 2 spawns hidden and untouchable.

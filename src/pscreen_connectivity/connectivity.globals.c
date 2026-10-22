@@ -18,7 +18,7 @@ const ListMenuEntry g_aConnectivityOwlCareEntries[2] = {
     { OwlCareMinigame,    0x539, 1 },  // "Owl Care Kit"
 };
 
-const ListMenuRowActor g_aConnectivityRowActors[2] = {
+const ActorAssetRecord g_aConnectivityRowActors[2] = {
     { (void *)gInGameMenuIconConnectivityTiles, (void *)gInGameMenuIconConnectivityFrames, (const ObjPalette *)gInGameMenuIconConnectivityPalette, 0 },
     { (void *)gInGameMenuIconConnectivityTiles, (void *)gInGameMenuIconConnectivityFrames, (const ObjPalette *)gInGameMenuIconConnectivityPalette, 0 },
 };

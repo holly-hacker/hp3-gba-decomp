@@ -14,7 +14,7 @@ void BeginStatusEquipItemSelectScreen(void)
     u32 tileCursor;
 
     g_StatusEquipItemSelect.dwHasItems = 0;
-    g_StatusEquipItemSelect.dwUnk0 = 0;
+    g_StatusEquipItemSelect.dwUnused1 = 0;
     BeginMenuScreen(0xA41, 9, 0);  // "Status/Equip"
 
     // The Remove row is listed only while the slot holds an item.

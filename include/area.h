@@ -19,7 +19,7 @@ extern const RoomEntryPoint g_aDefaultRoomEntryPoints[2];  // ROM 0x0804C08C (US
 // the actor type.
 typedef struct RoomActorRecord {
     Actor *pActor;
-    u32 dwUnknown4;
+    u32 dwUnused;  // no access found
     u16 wActorType;
 } RoomActorRecord;
 

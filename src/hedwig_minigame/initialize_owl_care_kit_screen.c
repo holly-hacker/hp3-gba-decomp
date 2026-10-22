@@ -23,9 +23,9 @@ void InitializeOwlCareKitScreen(void)
     g_OwlCareKitScreen.abShownMeters[0] = 250;
     g_OwlCareKitScreen.abShownMeters[1] = 250;
     g_OwlCareKitScreen.abShownMeters[2] = 250;
-    g_OwlCareKitScreen.bUnkDC = 0;
+    g_OwlCareKitScreen.bUnused = 0;
     g_OwlCareKitScreen.bMetersRedrawn = 0;
-    g_OwlCareKitScreen.dwUnkD8 = 0;
+    g_OwlCareKitScreen.nUnused = 0;
     g_OwlCareKitScreen.bDroppingCount = 0;
     g_OwlCareKitScreen.bPanel = OwlCareKitPanelNone;
     g_OwlCareKitScreen.bShownSelection = 5;

@@ -56,7 +56,7 @@ void DrawFolioBrutiMonsterPanel(void)
                               g_aFolioBrutiDotUnknownAnim, 0);
             x = 0xB0 << 13;
             orbit.wAngleX = ((spell << 5) & 0xFF) << 8;
-            if (g_FolioBrutiState.dwUnk0 == 0)
+            if (g_FolioBrutiState.dwDotsOrbiting == 0)
                 CopyOrbitParamsFromTable(g_FolioBrutiState.apSpellDots[spell], &orbit);
         }
         else
@@ -71,9 +71,9 @@ void DrawFolioBrutiMonsterPanel(void)
     }
 
     if (g_saveStateBlock.abMonsterDocLevel[monster] <= 2)
-        g_FolioBrutiState.dwUnk0 = 1;
+        g_FolioBrutiState.dwDotsOrbiting = 1;
     else
-        g_FolioBrutiState.dwUnk0 = 0;
+        g_FolioBrutiState.dwDotsOrbiting = 0;
 
     if (monster <= 0x44)
     {

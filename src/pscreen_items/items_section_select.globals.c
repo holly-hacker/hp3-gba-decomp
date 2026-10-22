@@ -11,7 +11,7 @@ const ListMenuEntry g_aItemsSectionEntries[3] = {
 
 const u32 g_aItemsSectionFilters[3] = { 0xA, ItemCategoryPotion, ItemCategoryMisc };
 
-const ListMenuRowActor g_aItemsSectionRowActors[3] = {
+const ActorAssetRecord g_aItemsSectionRowActors[3] = {
     { (void *)gItemsSectionIconAllTiles, (void *)gItemsSectionIconAllFrames, (const ObjPalette *)gItemsSectionIconAllPalette, 0 },
     { (void *)gItemsSectionIconPotionsTiles, (void *)gItemsSectionIconPotionsFrames, (const ObjPalette *)gItemsSectionIconPotionsPalette, 0 },
     { (void *)gItemsSectionIconMiscTiles, (void *)gItemsSectionIconMiscFrames, (const ObjPalette *)gItemsSectionIconMiscPalette, 0 },

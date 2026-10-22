@@ -15,12 +15,13 @@ typedef struct {
 
 extern HarryHermionePortInTimeState g_HarryHermionePortInTime;  // 0x03005D98
 
-// One row per position index: the x coordinate of actor A at +0x00 and of actor B at +0x08.
+// One row per actor position index. The y coordinates are never read; the actors are placed
+// relative to the camera focus instead.
 typedef struct {
-    s32 nActorAX;    // 0x00
-    s32 dwUnk4;       // 0x04
-    s32 nActorBX;    // 0x08
-    s32 dwUnk0xC;     // 0x0C
+    s32 nActorAX;  // 0x00
+    s32 nActorAY;  // 0x04
+    s32 nActorBX;  // 0x08
+    s32 nActorBY;  // 0x0C
 } HarryHermionePortInTimePosition;
 
 extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeActorPos[2];  // 0x0806BF40

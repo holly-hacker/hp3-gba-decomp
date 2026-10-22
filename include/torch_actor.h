@@ -5,8 +5,7 @@
 
 // The actorType 11 static tile record returned by GetRoomActorStaticRecord.
 typedef struct RoomActorRecordFlamePillar {
-    u16 wActorType;
-    u16 wUnk2;
+    u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
     u16 wArg8;

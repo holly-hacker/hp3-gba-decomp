@@ -287,7 +287,7 @@ typedef struct __attribute__((packed)) ActorChestState {
     u8 bKind;               // 0x64, 0-3
     u8 bOpened;             // 0x65, set once opening starts or when spawned already open
     u8 bUnchaining;         // 0x66, kind 1: set when spell effect 3 starts unchaining it
-    u8 bUnk67;              // 0x67, cleared by the constructor
+    u8 bUnused;             // 0x67, cleared by the constructor
     union __attribute__((packed)) {
         u16 wPair;          // tested as a whole: zero means no pair
         struct __attribute__((packed)) {

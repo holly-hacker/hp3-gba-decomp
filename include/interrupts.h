@@ -44,7 +44,7 @@ typedef struct {
     void (*pHBlankCallback)(void);  // 0x04: invoked by HandleHBlankInterrupt if set
     void (*pVCountCallback)(void);  // 0x08: invoked by HandleVCountInterrupt if set
     u32   dwTimer0Count;            // 0x0C: incremented once per Timer 0 interrupt
-    u8    unk10[0x8];               // 0x10: unconfirmed
+    u8    abUnused[0x8];            // 0x10: no access found
     u32   dwTimer3Count;            // 0x18: incremented once per Timer 3 interrupt
     u32   dwVBlankCount;            // 0x1C: incremented once per real vblank
     u32   dwVBlankConsumed;         // 0x20: last dwVBlankCount value WaitForVBlank consumed

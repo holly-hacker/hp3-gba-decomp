@@ -135,7 +135,7 @@ void SpawnParticle(ParticleEmitter *emitter)
     particle->oam.size = emitter->bOamSize;
     particle->oam.shape = 0;
     particle->pFrameTiles = emitter->pFrameTiles;
-    particle->bUnk44 = 0;
+    particle->bUnused = 0;
 
     switch (particle->bMode)
     {

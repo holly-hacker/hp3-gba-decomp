@@ -32,18 +32,18 @@ void BuildOptionsScreen(void)
 #ifndef VERSION_JP
         case OptionsRowLanguage:
 #endif
-            SetActorSprite(pActor, &g_aOptionsMenuItems[i]);
+            SetActorSprite(pActor, &g_aOptionsMenuItems[i].asset);
             break;
 
         case OptionsItemSoundBar:
         case OptionsItemMusicBar:
-            SetActorSprite(pActor, &g_aOptionsMenuItems[i]);
+            SetActorSprite(pActor, &g_aOptionsMenuItems[i].asset);
             pActor->oam.priority = 1;
             break;
 
         case OptionsItemSoundKnob:
         case OptionsItemMusicKnob:
-            SetActorAnimData(pActor, &g_aOptionsMenuItems[i],
+            SetActorAnimData(pActor, &g_aOptionsMenuItems[i].asset,
                              g_aabOptionsKnobAnims[i - OptionsItemSoundKnob], 0);
             break;
         }

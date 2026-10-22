@@ -128,7 +128,7 @@ typedef struct Particle {
     s8 bFrame;               // 0x41
     u8 bMode;                // 0x42
     u8 bParam;               // 0x43, direction index
-    u8 bUnk44;               // 0x44
+    u8 bUnused;              // 0x44, cleared by SpawnParticle, never read
     s16 wParam46;            // 0x46, mode 6 gravity: nVelY grows by wParam46 << 4 per tick
 } Particle;
 

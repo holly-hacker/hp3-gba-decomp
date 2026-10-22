@@ -333,7 +333,7 @@ def parse_header(raw: bytes) -> dict:
         # the containing SaveManager base turns up nothing that touches
         # it outside whole-header operations (checksum, memcpy, default
         # compare).
-        "abUnknown0": data[11:13].hex(),
+        "abUnused": data[11:13].hex(),
     }
     result.update(decode_header_flags(data[13]))
     if not checksum_ok(data):
@@ -347,7 +347,7 @@ def encode_header(h: dict) -> bytes:
     data[8] = (0x80 if h["flLanguageConfigured"] else 0) | (h["bLanguageIndex"] & 0x7F)
     data[9] = h["bMusicVolume"]
     data[10] = h["bSoundVolume"]
-    data[11:13] = bytes.fromhex(h["abUnknown0"])
+    data[11:13] = bytes.fromhex(h["abUnused"])
     data[13] = encode_header_flags(h)
     struct.pack_into("<H", data, 14, 0)
     struct.pack_into("<H", data, 14, (-sum16(bytes(data))) & 0xFFFF)

@@ -8,8 +8,7 @@
 
 // Static tile record of actorType 8, returned by GetRoomActorStaticRecord.
 typedef struct RoomActorRecordPushResetButton {
-    u16 wActorType;
-    u16 wUnk2;
+    u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
     u8 bVariant;  // 0x08

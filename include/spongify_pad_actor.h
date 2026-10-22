@@ -10,8 +10,7 @@
 
 // Static tile record of actorType 10, returned by GetRoomActorStaticRecord.
 typedef struct RoomActorRecordSpongifyPad {
-    u16 wActorType;
-    u16 wUnk2;
+    u32 dwActorType;
     s16 nPixelX;
     s16 nPixelY;
     s16 nArg8;

@@ -14,7 +14,7 @@ const ListMenuEntry g_aInGameMenuEntries[6] = {
 };
 
 // One icon per row.
-const ListMenuRowActor g_aInGameMenuRowActors[6] = {
+const ActorAssetRecord g_aInGameMenuRowActors[6] = {
     { (void *)gInGameMenuIconStatusEquipTiles, (void *)gInGameMenuIconStatusEquipFrames, (const ObjPalette *)gInGameMenuIconStatusEquipPalette, 0 },
     { (void *)gInGameMenuIconItemsTiles,   (void *)gInGameMenuIconItemsFrames,   (const ObjPalette *)gInGameMenuIconItemsPalette,   0 },
     { (void *)gInGameMenuIconFoliosTiles, (void *)gInGameMenuIconFoliosFrames, (const ObjPalette *)gInGameMenuIconFoliosPalette, 0 },

@@ -10,7 +10,7 @@
 // (all non-equipment items), ItemCategoryPotion or ItemCategoryMisc.
 extern const ListMenuEntry g_aItemsSectionEntries[3];          // 0x0806B190
 extern const u32 g_aItemsSectionFilters[3];                    // 0x0806B1B4
-extern const ListMenuRowActor g_aItemsSectionRowActors[3];   // 0x0806B1C0
+extern const ActorAssetRecord g_aItemsSectionRowActors[3];   // 0x0806B1C0
 extern const ListMenuDefinition g_ItemsSectionMenuDefinition;  // 0x0806B1F0
 
 extern void UpdateItemsSectionSelect(void);

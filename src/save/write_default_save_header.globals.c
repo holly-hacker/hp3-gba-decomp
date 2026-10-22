@@ -10,7 +10,7 @@ const SaveHeader g_DefaultSaveHeader = {
     { 0, 0 },
     10,
     10,
-    { 1, 0 },  // abUnknown0
+    { 1, 0 },  // abUnused
     { 0 },
     0,
 };

@@ -21,7 +21,7 @@ extern const u8 g_aFolioBrutiDotAnims[4][14];       // 0x080695DC
 // Folio Bruti screen state: the grid has 9 columns by 6 rows, the monster at (column, row) being
 // MonsterTable[row * 9 + column]; the last cell is unused, so only the first 53 monsters show.
 typedef struct {
-    u32 dwUnk0;                // 0x00: cleared on entry, never read
+    u32 dwDotsOrbiting;        // 0x00: last panel's dots orbit; the next keeps their orbit running
     u32 dwDetailTileCursor;    // 0x04: first free text tile after the spell labels
     u32 dwHeadingTileCursor;   // 0x08: first free text tile after the heading
     u32 dwRow;                 // 0x0C

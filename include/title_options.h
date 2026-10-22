@@ -34,10 +34,7 @@ extern OptionsState g_OptionsState;  // 0x03005DD0
 
 // One row of the options screen, 0x18 bytes each.
 typedef struct {
-    const void *pTileGfx;
-    const void *pFrameData;  // 0x04
-    u32 dwUnk08;
-    u32 dwUnk0C;
+    ActorAssetRecord asset;  // its own palette is null; pPalette is attached at spawn
     const void *pPalette;    // 0x10
     s16 nX;                  // 0x14
     s16 nY;                  // 0x16
