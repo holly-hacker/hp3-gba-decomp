@@ -7,7 +7,7 @@
 // ShowBattleMessage's code. Its value and param: SpecialMoveAnnounce and SpecialAbilityText
 // take the Special Move in value; AttackResult the damage (or, for param 2, the fainted
 // fighter's index) and the result variant in param; PotionUseAnnounce and StatusRestore the
-// potion; SpCost and MpCost the amount; HiddenFromView value 1 to clear the box first
+// potion; SpAmount and MpAmount the amount; HiddenFromView value 1 to clear the box first
 // and the fighter index in param.
 typedef enum {
     SpellLevelUp      = 0,
@@ -19,8 +19,8 @@ typedef enum {
     FaintResult       = 6,
     PotionUseAnnounce = 7,
     StatusRestore     = 8,
-    SpCost            = 9,
-    MpCost            = 10,
+    SpAmount          = 9,
+    MpAmount          = 10,
     Victory           = 11,
     Defeat            = 12,
     CantMove          = 13,

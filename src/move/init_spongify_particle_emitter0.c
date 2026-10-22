@@ -10,7 +10,7 @@ void InitSpongifyParticleEmitter0(ParticleEmitter *emitter, Actor *effect)
     emitter->wDuration = 1;
     emitter->wLifetimeBase = 20;
     emitter->wLifetimeRange = 10;
-    emitter->wFlags = ParticleEmitterFlagRelease | 0x10;
+    emitter->wFlags = ParticleEmitterFlagRelease | ParticleEmitterFlagUnused10;
     emitter->wSpread = 5;
     emitter->wSpawnTimer = 1;
     emitter->bMode = ParticleModeRandomSpeed;

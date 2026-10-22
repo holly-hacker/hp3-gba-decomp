@@ -13,7 +13,7 @@ void TickGameModeStack(void)
     {
         g_dwGameModeFlags |= GameModeFlagSwitchingMode;
         DispatchGameModeDestroy();
-        g_dwPendingGameMode.dwCurrentGameMode &= ~0x80;
+        g_dwPendingGameMode.dwCurrentGameMode &= ~GameModeSwitchPending;
         g_dwGameModeFlags &= ~GameModeFlagModeChangeRequested;
 
         g_PrevGameModeStackContext = g_GameModeStackContext;

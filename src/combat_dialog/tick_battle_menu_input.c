@@ -20,7 +20,7 @@ void TickBattleMenuInput(void)
     fighterType = fighter->bFighterType;
     prevCursor = g_pFightState->bMenuCursor;
 
-    if (g_pFightState->bMenuScreen & 0x80 || g_pFightState->bMenuScreen == BattleMenuNone
+    if (g_pFightState->bMenuScreen & BattleMenuSuspended || g_pFightState->bMenuScreen == BattleMenuNone
         || g_pFightState->bMenuScreen == BattleMenuInactive)
         return;
 

@@ -33,10 +33,10 @@ void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex)
 
         SetActorActionState(g_pFightState->pFighters[fighterIndex].pActor, 1);
 
-        if (g_pFightState->bMenuScreen != 0 && g_pFightState->bMenuFighterIndex == fighterIndex)
+        if (g_pFightState->bMenuScreen != BattleMenuNone && g_pFightState->bMenuFighterIndex == fighterIndex)
         {
             g_pFightState->bMenuFighterIndex |= 0xff;
-            g_pFightState->bMenuScreen = 0x80;
+            g_pFightState->bMenuScreen = BattleMenuSuspended;
         }
     }
 

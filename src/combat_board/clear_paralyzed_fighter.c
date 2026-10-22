@@ -5,10 +5,9 @@
 #include "particles.h"
 #include "combat.h"
 
-// Shared cleanup for a fighter escaping Paralyzed, both on a successful
-// escape roll (RollFighterParalysisEscape) and from CureAilments. Clears
-// Paralyzed, sets the paired unnamed 0x80 status bit, and resets the
-// escape-chance ratchet back to its starting value.
+// Ends a fighter's paralysis: on a successful escape roll, CureAilments, a
+// paralysis-curing potion, or fainting. Clears Paralyzed, sets ParalysisImmune,
+// and resets the escape-chance ratchet back to its starting value.
 void ClearParalyzedFighter_candidate(u8 fighterIndex)
 {
     if (g_pFightState->pFighters[fighterIndex].bStatusFlags & Paralyzed)
@@ -16,7 +15,7 @@ void ClearParalyzedFighter_candidate(u8 fighterIndex)
         Actor *actor;
 
         g_pFightState->pFighters[fighterIndex].bStatusFlags &= ~Paralyzed;
-        g_pFightState->pFighters[fighterIndex].bStatusFlags |= 0x80;
+        g_pFightState->pFighters[fighterIndex].bStatusFlags |= ParalysisImmune;
         g_pFightState->pFighters[fighterIndex].bParalysisEscapeChance = 100;
         g_pFightState->pFighters[fighterIndex].pActor->wActionVariant = 0;
 

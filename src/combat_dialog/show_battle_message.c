@@ -271,12 +271,12 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         DrawBattleMessageLine(textId, BATTLE_TEXT_ROW1_Y, 1);
         break;
 
-    case SpCost:
+    case SpAmount:
         SetTextMacro1Number(value);
         DrawBattleMessageLine(0x998, BATTLE_TEXT_ROW2_Y, 1);  // "@1 SP"
         break;
 
-    case MpCost:
+    case MpAmount:
         SetTextMacro1Number(value);
         DrawBattleMessageLine(0x999, BATTLE_TEXT_ROW2_Y, 1);  // "@1 MP"
         break;

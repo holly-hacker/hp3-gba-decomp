@@ -76,13 +76,16 @@ typedef enum {
     HippogriffFliesIntoAirCutscene   = 0x45,
     CardComboDescription             = 0x46,
     ConfirmTradeScreen               = 0x47,
+    // OR'd in by PushGameMode*, so the pending mode differs from the current one
+    // (even when pushing the same mode) until TickGameModeStack switches to it.
+    GameModeSwitchPending            = 0x80,
 } GameMode;
 
 extern void PushGameMode_3(GameMode mode, s32 arg1, s32 arg2, s32 arg3);
 extern void PushGameMode_2(GameMode mode, s32 arg1, s32 arg2);
 extern void PushGameMode(GameMode mode);
 extern u32 GetCurrentGameMode(void);  // g_GameModeStackContext.dwCurrentGameMode
-extern u32 GetPendingGameMode(void);  // g_dwPendingGameMode.dwCurrentGameMode without the 0x80 push bit
+extern u32 GetPendingGameMode(void);  // g_dwPendingGameMode.dwCurrentGameMode without GameModeSwitchPending
 
 // The three arg words (+4/+8/+0xC) are generic per-mode parameters, set by
 // PushGameMode_2/PushGameMode_3 and read by the mode's own init -- e.g.

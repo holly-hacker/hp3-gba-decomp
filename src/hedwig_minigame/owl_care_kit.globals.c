@@ -67,9 +67,9 @@ const OwlAnim g_aOwlAnims[OWL_STATE_COUNT] = {
     { &g_aOwlCareSprites[0], g_abOwlCareAnim03 },  // OwlStateNeedGroom
     { &g_aOwlCareSprites[0], g_abOwlCareAnim03 },  // OwlStateNeedExercise
     { &g_aOwlCareSprites[0], g_abOwlCareAnim03 },  // OwlStateNeedTeach
-    { &g_aOwlCareSprites[0], g_abOwlCareAnim21 },
-    { &g_aOwlCareSprites[0], g_abOwlCareAnim22 },
-    { &g_aOwlCareSprites[0], g_abOwlCareAnim23 },
+    { &g_aOwlCareSprites[0], g_abOwlCareAnim21 },  // OwlStateUnusedA
+    { &g_aOwlCareSprites[0], g_abOwlCareAnim22 },  // OwlStateUnusedB
+    { &g_aOwlCareSprites[0], g_abOwlCareAnim23 },  // OwlStateUnusedC
     { &g_aOwlCareSprites[6], g_abOwlCareAnim24 },  // OwlStateMailDepart
     { &g_aOwlCareSprites[6], g_abOwlCareAnim25 },  // OwlStateMailReturn
     { &g_aOwlCareSprites[4], g_abOwlCareAnim26 },  // OwlStateLand

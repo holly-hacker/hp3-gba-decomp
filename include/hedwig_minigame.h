@@ -75,6 +75,9 @@ typedef enum {
     OwlStateNeedGroom = 18,
     OwlStateNeedExercise = 19,
     OwlStateNeedTeach = 20,
+    OwlStateUnusedA = 21,          // OwlStateUnusedA-C are never set; each has its own animation
+    OwlStateUnusedB = 22,
+    OwlStateUnusedC = 23,
     OwlStateMailDepart = 24,
     OwlStateMailReturn = 25,
     OwlStateLand = 26,

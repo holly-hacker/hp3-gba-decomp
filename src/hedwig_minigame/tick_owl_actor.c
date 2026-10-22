@@ -177,9 +177,9 @@ void TickOwlActor(Actor *pOwl)
     case OwlStateNeedGroom:
     case OwlStateNeedExercise:
     case OwlStateNeedTeach:
-    case 21:
-    case 22:
-    case 23:
+    case OwlStateUnusedA:
+    case OwlStateUnusedB:
+    case OwlStateUnusedC:
         if (pOwl->dwFlags & ActorFlagActionAnimDone)
             SetOwlState(OwlStateIdle);
         break;

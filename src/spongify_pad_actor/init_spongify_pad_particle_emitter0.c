@@ -11,7 +11,7 @@ void InitSpongifyPadParticleEmitter0(ParticleEmitter *pEmitter, Actor *pEffect)
     pEmitter->wDuration = 1;
     pEmitter->wLifetimeBase = 20;
     pEmitter->wLifetimeRange = 10;
-    pEmitter->wFlags = ParticleEmitterFlagRelease | 0x10;
+    pEmitter->wFlags = ParticleEmitterFlagRelease | ParticleEmitterFlagUnused10;
     pEmitter->wSpread = 5;
     pEmitter->wSpawnTimer = 1;
     pEmitter->bMode = ParticleModeRandomSpeed;

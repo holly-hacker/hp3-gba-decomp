@@ -6,8 +6,8 @@
 // Attaches a particle emitter to actor (as its pWindupParticleEmitter) for
 // BSOP_CreateEmitter12, using palette g_aEffectActorAssets[assetIndex] and
 // particle graphics entry entryIndex of pool poolIndex. The emitter is
-// released after duration ticks. A nonzero flag18 also sets emitter flags
-// 0x08 and 0x10, which no decoded particle code reads.
+// released after duration ticks. A nonzero flag18 also sets the unread
+// ParticleEmitterFlagUnused8 and ParticleEmitterFlagUnused10.
 ParticleEmitter *CreateScriptEmitter12(Actor *actor, u8 mode, u8 lifetimeBase, u8 spread,
                                        u8 direction, u8 spawnsPerPeriod, u8 flag18,
                                        s32 assetIndex, u8 poolIndex, u8 entryIndex, u8 speed,
@@ -29,7 +29,8 @@ ParticleEmitter *CreateScriptEmitter12(Actor *actor, u8 mode, u8 lifetimeBase, u
         actor->pWindupParticleEmitter->dwSpeed = speed << 12;
         actor->pWindupParticleEmitter->wFlags |= ParticleEmitterFlagNoCollision;
         if (flag18)
-            actor->pWindupParticleEmitter->wFlags |= 0x18;
+            actor->pWindupParticleEmitter->wFlags
+                |= ParticleEmitterFlagUnused8 | ParticleEmitterFlagUnused10;
         return actor->pWindupParticleEmitter;
     }
 

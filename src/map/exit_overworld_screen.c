@@ -19,11 +19,11 @@
 // mode that returns to the overworld.
 void ExitOverworldScreen(void)
 {
-    if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Battle)
+    if ((g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == Battle)
     {
         PlayScreenTransitionOutByIndex(0x3F, 0xD);
     }
-    else if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == InGameMenu)
+    else if ((g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == InGameMenu)
     {
         SetPaletteFadeParams(0, 8);
         PlayScreenTransitionOutByIndex(0x3F, 2);
@@ -38,30 +38,30 @@ void ExitOverworldScreen(void)
     FreeRoomSharedTileset();
     FreeOverworldBgTileBitOffsets();
 
-    if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Battle
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == InGameMenu
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == Options
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == BoggartMinigame
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == DementorMinigame
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == WizardCrackerPopItMinigame
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HelpTopicScreen
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == ClockSkipCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HogwartsUpNightCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == CoolTrainCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == UnusedChristmasArrivedCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == SiriusBlackCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == PeterPettigrewCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == RonSleepingCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == TimeTurnerPermissionCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HippogriffFliesIntoAirCutscene
-        || (g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HarryArrivedAtHogwartsCutscene)
+    if ((g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == Battle
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == InGameMenu
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == Options
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == BoggartMinigame
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == DementorMinigame
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == WizardCrackerPopItMinigame
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == HelpTopicScreen
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == ClockSkipCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == HogwartsUpNightCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == CoolTrainCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == UnusedChristmasArrivedCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == SiriusBlackCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == PeterPettigrewCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == RonSleepingCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == TimeTurnerPermissionCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == HippogriffFliesIntoAirCutscene
+        || (g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == HarryArrivedAtHogwartsCutscene)
         SaveRoomActorStateOnExit();
 
-    if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == HarryPatronusCutscene
+    if ((g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == HarryPatronusCutscene
         && g_dwPendingGameMode.dwCurrentGameModeArg1 == 1)
         SaveRoomActorStateOnExit();
 
-    if ((g_dwPendingGameMode.dwCurrentGameMode & ~0x80) == BuckbeakMinigame
+    if ((g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == BuckbeakMinigame
         && g_dwPendingGameMode.dwCurrentGameModeArg3 != 2)
         SaveRoomActorStateOnExit();
 

@@ -30,11 +30,13 @@ typedef struct ParticleGfxEntry {
     u8 bFrameCount;         // 0x28, padded to 0x2C
 } ParticleGfxEntry;
 
-// ParticleEmitter.wFlags. Bits not listed here are unused by the code decoded so far.
+// ParticleEmitter.wFlags, copied to each particle on spawn. Unlisted bits are unused.
 typedef enum {
     ParticleEmitterFlagFourWayDirections = 0x0001,  // mode 1 picks from the 4-way vector table
     ParticleEmitterFlagRelease          = 0x0002,  // count wDuration down, then release
     ParticleEmitterFlagAnimTicksFixed   = 0x0004,  // use bAnimTicks and loop the animation
+    ParticleEmitterFlagUnused8          = 0x0008,  // set by CreateScriptEmitter12, never read
+    ParticleEmitterFlagUnused10         = 0x0010,  // set by it and the Spongify emitters, never read
     ParticleEmitterFlagSpawnDisabled    = 0x0040,  // no spawning while set
     ParticleEmitterFlagNoCollision      = 0x0080,  // particles skip UpdateParticleCollision
     ParticleEmitterFlagPriorityFromTarget = 0x0100,  // particle OAM priority = the target's

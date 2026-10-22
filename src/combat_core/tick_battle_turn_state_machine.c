@@ -143,7 +143,7 @@ void TickBattleTurnStateMachine(void)
         } else {
             TickBattleMenuInput();
 
-            if (!g_pFightState->bMenuScreen) {
+            if (g_pFightState->bMenuScreen == BattleMenuNone) {
                 DrawFighterStatsUi(ACTIVE_FIGHTER.bFighterType, 0);
 
                 TransitionBattleState(4);

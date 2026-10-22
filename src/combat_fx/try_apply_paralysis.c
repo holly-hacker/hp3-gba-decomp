@@ -9,7 +9,7 @@ s32 TryApplyParalysis(BattleFighter *fighter, s32 isEnemyMonster, s32 escapeChan
         && isEnemyMonster == 0)
         return 0;
 
-    if (!(fighter->bStatusFlags & 0x90))
+    if (!(fighter->bStatusFlags & (Paralyzed | ParalysisImmune)))
     {
         fighter->pActor->wActionVariant = 2;
         fighter->bStatusFlags |= Paralyzed;

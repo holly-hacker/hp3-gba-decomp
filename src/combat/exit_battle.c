@@ -19,7 +19,7 @@ void ExitBattle(void)
     GameMode pendingMode;
     u32 slot;
 
-    pendingMode = g_dwPendingGameMode.dwCurrentGameMode & ~0x80;
+    pendingMode = g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending;
     g_dwBattleRewardFlagsSnapshot = g_pFightState->bBonusRewardFlags;
 
     if (pendingMode != FolioUniversitas && pendingMode != FolioBruti &&
@@ -106,7 +106,7 @@ void ExitBattle(void)
                    g_pFightState->pFaintedAllies[faintedIndex].pActor, sizeof(Actor));
         }
 
-        if (g_pFightState->bMenuScreen != 0)
+        if (g_pFightState->bMenuScreen != BattleMenuNone)
             for (fighterIndex = 0; fighterIndex < 7; fighterIndex++)
                 HideBattleMenuIcon(fighterIndex);
 

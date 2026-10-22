@@ -34,6 +34,7 @@ typedef enum {
     Paralyzed        = 0x10,
     DefenseBoost     = 0x20,
     SpellPowerBoost  = 0x40,
+    ParalysisImmune  = 0x80,  // set on escaping paralysis; TryApplyParalysis then fails
 } BattleStatusFlags;
 
 // Live, in-battle per-fighter record, 0x48 bytes.
@@ -84,8 +85,7 @@ typedef enum {
     PendingActionInformus    = 4,
 } PendingActionKind;
 
-// FightState.bMenuScreen: the battle menu screen TickBattleMenuInput drives. Bit 0x80
-// suspends input.
+// FightState.bMenuScreen: the battle menu screen TickBattleMenuInput drives.
 typedef enum {
     BattleMenuNone           = 0,
     BattleMenuTop            = 1,
@@ -97,6 +97,7 @@ typedef enum {
     BattleMenuAllyTarget     = 8,
     BattleMenuFaintedAlly    = 9,  // the Revive card's target
     BattleMenuInactive       = 10,  // ignored like BattleMenuNone; no writer found
+    BattleMenuSuspended      = 0x80,  // bit; set when the ally whose menu is open faints
 } BattleMenuScreen;
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
@@ -137,7 +138,7 @@ typedef struct FightState {
     /*0x106D*/ u8 bMenuFighterIndex;
     /*0x106E*/ u8 bUnused;     // zeroed by InitializeBattle on a fresh battle, never read
     /*0x106F*/ u8 bFighterCount;
-    /*0x1070*/ u8 bMenuScreen;  // TickBattleMenuInput's own screen selector; 0, 0xa, and bit 0x80 all mean no active screen
+    /*0x1070*/ u8 bMenuScreen;  // BattleMenuScreen
     /*0x1074*/ u32 dwStatsTextTileCursor;  // DrawString tile cursor of the fighter and enemy stats panels
     /*0x1078*/ u32 dwTextTileCursor;  // DrawTextLines tile cursor of battle messages
     /*0x107C*/ u16 awPalette[0x200];  // BG and OBJ palette, DMAed to palette RAM at the HUD scanline

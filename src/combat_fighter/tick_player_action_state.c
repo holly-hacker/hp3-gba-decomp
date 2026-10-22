@@ -669,16 +669,16 @@ void TickPlayerActionState(Actor *actor)
             actor->dwFlags &= ~ActorFlagActionAnimDone;
             result = GetPotionEffect(ACTIVE_FIGHTER.bSpellLevel);
             switch (result) {
-            case 1:
+            case PotionEffectStamina:
                 TriggerBattleEffect(8, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex, g_pFightState->bActiveFighterIndex, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
                 break;
-            case 2:
+            case PotionEffectMagic:
                 TriggerBattleEffect(0x3e, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex, g_pFightState->bActiveFighterIndex, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
                 break;
-            case 4:
+            case PotionEffectParalysis:
                 TriggerBattleEffect(0x3f, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex, g_pFightState->bActiveFighterIndex, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
                 break;
-            case 3:
+            case PotionEffectPoison:
                 TriggerBattleEffect(0x40, ACTIVE_FIGHTER.bSlotParam, ACTIVE_FIGHTER.bSelectedActionIndex, g_pFightState->bActiveFighterIndex, g_pFightState->aEnemySlotTurnOrderIndex[ACTIVE_FIGHTER.bSelectedActionIndex], 0);
                 break;
             }
@@ -700,26 +700,26 @@ void TickPlayerActionState(Actor *actor)
 
             result = GetPotionEffect(spellLevel);
             switch (result) {
-            case 1: {
+            case PotionEffectStamina: {
                 s32 x = GetPotionMagnitude(spellLevel);
                 amount = RestoreFighterHp(x, fighterIndex);
                 ShowFloatingDamageNumber(amount, 0xd, fighterIndex, 1);
-                code = 9;
+                code = SpAmount;
                 ShowBattleMessage(code, amount, 0);
                 break;
             }
-            case 2: {
+            case PotionEffectMagic: {
                 s32 x = GetPotionMagnitude(spellLevel);
                 amount = RestoreFighterMp(x, fighterIndex);
                 ShowFloatingDamageNumber(amount, 6, fighterIndex, 1);
-                code = 0xa;
+                code = MpAmount;
                 ShowBattleMessage(code, amount, 0);
                 break;
             }
-            case 3:
+            case PotionEffectPoison:
                 ClearPoisonedFighter_candidate(fighterIndex);
                 break;
-            case 4:
+            case PotionEffectParalysis:
                 ClearParalyzedFighter_candidate(fighterIndex);
                 break;
             }
