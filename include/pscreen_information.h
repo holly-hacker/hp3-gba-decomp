@@ -55,7 +55,9 @@ extern void StartHelpScreen(const u32 *pPageTable, s32 bStandalone);
 // Stores the PushGameMode_3 arguments used when the screen is dismissed.
 extern void SetHelpExitMode(GameMode mode, s32 arg1, s32 arg2, s32 arg3);
 
-// Pushes the stored mode and starts the screen transition out.
+// From a standalone screen's first page, pushes the stored mode and starts the screen
+// transition out. Otherwise fades out (HelpScreenStateFadeOut) to the parent page, or out of
+// the screen from the first page.
 extern void LeaveHelpScreen(void);
 
 // Frees the screen's actors and particles.
@@ -96,6 +98,15 @@ extern void SpawnHelpScreenTitle(void);
 extern void InitializeHelp(void);
 extern void UpdateHelp(void);
 extern void ExitHelpScreen(void);
+
+// g_GameModeStackContext.dwModeState in the Help screen.
+typedef enum {
+    HelpScreenStateFadeIn = 1,
+    HelpScreenStateBrowse = 2,
+    HelpScreenStateFadeOut = 3,
+    HelpScreenStateLoadPage = 4,  // the pending page, else the parent page, else frees the screen
+    HelpScreenStateExit = 5,      // pushes dwExitMode
+} HelpScreenMode;
 
 // Help screen scripts (help_pages.c). The engine reads a page as a stream of
 // 32-bit words: the low byte of each command word is the opcode and the upper bytes its

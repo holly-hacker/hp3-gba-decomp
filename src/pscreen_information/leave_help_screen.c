@@ -14,7 +14,7 @@ void LeaveHelpScreen(void)
         g_GameModeStackContext.dwModeSubState = 0;
         if (g_HelpState.bPageDepth == 0)
             SetAlphaBlendTargets(0x14, 1);
-        g_GameModeStackContext.dwModeState = 3;
+        g_GameModeStackContext.dwModeState = HelpScreenStateFadeOut;
         g_HelpState.pPendingPage = NULL;
     }
 }

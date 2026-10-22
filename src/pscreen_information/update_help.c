@@ -11,16 +11,16 @@ void UpdateHelp(void)
 {
     switch (g_GameModeStackContext.dwModeState)
     {
-    case 1:
+    case HelpScreenStateFadeIn:
         TickMenuFadeIn();
         if (g_GameModeStackContext.dwModeSubState == 0)
         {
             SetAlphaBlendTargets(4, 1);
-            g_GameModeStackContext.dwModeState = 2;
+            g_GameModeStackContext.dwModeState = HelpScreenStateBrowse;
         }
         break;
 
-    case 2:
+    case HelpScreenStateBrowse:
         if (g_wKeysPressed & KeyB)
             CancelHelpScreen();
 
@@ -56,7 +56,7 @@ void UpdateHelp(void)
         }
         break;
 
-    case 3:
+    case HelpScreenStateFadeOut:
         TickMenuFadeOut();
         if (g_GameModeStackContext.dwModeSubState == 14 && g_HelpState.pPendingPage == NULL
             && g_HelpState.bPageDepth == 0)
@@ -65,11 +65,11 @@ void UpdateHelp(void)
         if (g_GameModeStackContext.dwModeSubState == 16)
         {
             ClearHelpScreen();
-            g_GameModeStackContext.dwModeState = 4;
+            g_GameModeStackContext.dwModeState = HelpScreenStateLoadPage;
         }
         break;
 
-    case 4:
+    case HelpScreenStateLoadPage:
         if (g_HelpState.pPendingPage == NULL)
         {
             if (g_HelpState.bPageDepth == 0)
@@ -83,7 +83,7 @@ void UpdateHelp(void)
                 SetAlphaBlendCoefficients(16 - g_GameModeStackContext.dwModeSubState,
                                           g_GameModeStackContext.dwModeSubState);
                 FreeHelpScreen();
-                g_GameModeStackContext.dwModeState = 5;
+                g_GameModeStackContext.dwModeState = HelpScreenStateExit;
                 break;
             }
 
@@ -91,18 +91,18 @@ void UpdateHelp(void)
             g_HelpState.bSelectedEntry = g_HelpState.aPageStack[g_HelpState.bPageDepth].dwSelectedEntry;
             RunHelpScript(g_HelpState.aPageStack[g_HelpState.bPageDepth].pPage);
             g_GameModeStackContext.dwModeSubState = 16;
-            g_GameModeStackContext.dwModeState = 1;
+            g_GameModeStackContext.dwModeState = HelpScreenStateFadeIn;
         }
         else
         {
             g_HelpState.bSelectedEntry = 0;
             RunHelpScript(g_HelpState.pPendingPage);
             g_GameModeStackContext.dwModeSubState = 16;
-            g_GameModeStackContext.dwModeState = 1;
+            g_GameModeStackContext.dwModeState = HelpScreenStateFadeIn;
         }
         break;
 
-    case 5:
+    case HelpScreenStateExit:
         PushGameMode_3(g_HelpState.dwExitMode, g_HelpState.dwExitArg1, g_HelpState.dwExitArg2,
                        g_HelpState.dwExitArg3);
         break;

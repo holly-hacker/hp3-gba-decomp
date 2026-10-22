@@ -8,6 +8,6 @@ void TurnToNextHelpPage(void)
         PlaySoundById(0);
         g_GameModeStackContext.dwModeSubState = 0;
         g_HelpState.pPendingPage = g_HelpState.pNextPage;
-        g_GameModeStackContext.dwModeState = 3;
+        g_GameModeStackContext.dwModeState = HelpScreenStateFadeOut;
     }
 }

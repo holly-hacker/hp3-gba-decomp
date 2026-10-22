@@ -12,7 +12,7 @@ void OpenSelectedHelpMenuEntry(void)
             PlaySoundById(1);
             g_GameModeStackContext.dwModeSubState = 0;
             g_HelpState.pPendingPage = g_HelpState.aEntries[g_HelpState.bSelectedEntry].pPage;
-            g_GameModeStackContext.dwModeState = 3;
+            g_GameModeStackContext.dwModeState = HelpScreenStateFadeOut;
         }
         else
         {

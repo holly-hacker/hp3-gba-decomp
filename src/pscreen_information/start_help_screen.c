@@ -40,11 +40,11 @@ void StartHelpScreen(const u32 *pPageTable, s32 bStandalone)
         SetPaletteFadeParams(0, 8);
         SetAlphaBlendTargets(4, 1);
         SetAlphaBlendCoefficients(16, 0);
-        g_GameModeStackContext.dwModeState = 2;
+        g_GameModeStackContext.dwModeState = HelpScreenStateBrowse;
     }
     else
     {
-        g_GameModeStackContext.dwModeState = 1;
+        g_GameModeStackContext.dwModeState = HelpScreenStateFadeIn;
     }
 
     g_HelpState.dwPaletteEffect = StartPaletteEffectWithFrameCount(
